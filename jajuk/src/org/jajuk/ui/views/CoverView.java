@@ -55,6 +55,7 @@ import org.jajuk.Main;
 import org.jajuk.base.Album;
 import org.jajuk.base.Author;
 import org.jajuk.base.Cover;
+import org.jajuk.base.CoverRepository;
 import org.jajuk.base.Directory;
 import org.jajuk.base.Event;
 import org.jajuk.base.FIFO;
@@ -105,6 +106,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
     /**Disk covers*/
     ArrayList alFiles = new ArrayList(10);
     
+    /**URL and size of the image */
     JLabel jl;
     
     /**Default cover */
@@ -192,10 +194,11 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
         ObservationManager.register(EVENT_COVER_REFRESH,this);
         ObservationManager.register(EVENT_PLAYER_STOP,this);
         ObservationManager.register(EVENT_ZERO,this);
-        
         try {
-            //check if the cover should be refreshed at startup
-            coverDefault = new Cover(new URL(IMAGES_SPLASHSCREEN),Cover.DEFAULT_COVER); //instanciate default cover
+            //instanciate default cover
+            if (coverDefault == null){
+                coverDefault = new Cover(new URL(IMAGES_SPLASHSCREEN),Cover.DEFAULT_COVER);
+            }
         } catch (Exception e) {
             Log.error(e);
         }
@@ -296,7 +299,10 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                                             searching(true);  //display searching icon
                                             URL url = (URL)it.next();
                                             Log.debug("Found Cover: "+url.toString()); //$NON-NLS-1$
-                                            alLocalCovers.add(new Cover(url,Cover.REMOTE_COVER));//create a cover with given url ( image will be really downloaded when required if no preload)
+                                            Cover cover = new Cover(url,Cover.REMOTE_COVER);//create a cover with given url ( image will be really downloaded when required if no preload)
+                                            if (!alCovers.contains(cover)){
+                                                alLocalCovers.add(cover);
+                                            }
                                             searching(false); 
                                         }
                                         if (bStop){
@@ -549,7 +555,6 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                         }
                         Cover cover = (Cover)alCovers.get(index);  //take image at the given index
                         URL url = cover.getURL();
-                        byte[] bData = cover.getData();
                         //enable delete button only for local covers
                         if (cover.getType() == Cover.LOCAL_COVER || cover.getType() == Cover.ABSOLUTE_DEFAULT_COVER){
                             jbDelete.setEnabled(true);
@@ -558,17 +563,13 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                             jbDelete.setEnabled(false);
                         }
                         if (url != null){
-                            int iSize = 0;
                             String sType = " (L)"; //local cover //$NON-NLS-1$
-                            if (bData != null){
+                            if (cover.getType() == Cover.REMOTE_COVER){
                                 sType = " (@)"; //Web cover //$NON-NLS-1$
-                                iSize = (int)(Math.ceil((double)bData.length/1024));
                             }
-                            else{
-                                iSize = (int)(Math.ceil((double)new File(url.getFile()).length()/1024));
-                            }
-                            jl.setToolTipText("<html>"+url.toString()+"<br>"+iSize+"K"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                            setSizeText(iSize+"K"+sType); //$NON-NLS-1$
+                            String size = CoverRepository.getInstance().getSize(cover.getURL());
+                            jl.setToolTipText("<html>"+url.toString()+"<br>"+size+"K"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                            setSizeText(size+"K"+sType); //$NON-NLS-1$
                             setFoundText();
                         }
                         //set tooltip for previous and next track
@@ -700,7 +701,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                     public void run() {
                         synchronized(bLock){
                             Cover cover = (Cover)alCovers.get(index);
-                            if (cover.getData() == null){ //means it is a default or local cover
+                            if (cover.getType() != Cover.REMOTE_COVER){ 
                                 Messages.showErrorMessage("130",cover.getURL().toString()); //$NON-NLS-1$
                                 return;
                             }
@@ -745,7 +746,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
     
     /**
      * Save a cover on disk 
-     * @param sFilePath URL of the futur file
+     * @param sFilePath URL of the future file
      * @param cover Jajuk cover to be saved
      */
     private void saveCover(String sFilePath,Cover cover){
@@ -753,7 +754,8 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
         File file = new File(sFilePath);
         try{
             BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
-            bos.write(cover.getData());
+            //we need to re-download the cover because we don't store anymore bytes in the cover object
+            bos.write(DownloadManager.download(cover.getURL()));
             bos.flush();
             bos.close();
             InformationJPanel.getInstance().setMessage(Messages.getString("CoverView.11"),InformationJPanel.INFORMATIVE); //$NON-NLS-1$

@@ -20,17 +20,13 @@
 
 package org.jajuk.base;
 
-import java.awt.MediaTracker;
 import java.net.URL;
 
 import javax.swing.ImageIcon;
 
 import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.DownloadManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
-import org.jajuk.util.error.JajukException;
-import org.jajuk.util.log.Log;
 
 
 /**
@@ -152,24 +148,7 @@ public class Cover implements Comparable,ITechnicalStrings {
      * @return Returns the image.
      */
     public ImageIcon getImage() throws Exception {
-        if (image == null){ //do nothing if the image is already loaded
-            long l = System.currentTimeMillis();
-            if ( iType == LOCAL_COVER || iType == DEFAULT_COVER  || iType == ABSOLUTE_DEFAULT_COVER){
-                this.image = new ImageIcon(url);
-                if ( image.getImageLoadStatus() != MediaTracker.COMPLETE){
-                    throw new JajukException("129"); //$NON-NLS-1$
-                }
-            }
-            else if (iType == REMOTE_COVER){
-                bData = DownloadManager.download(url);
-                this.image = new ImageIcon(bData); 
-                if ( image.getImageLoadStatus() != MediaTracker.COMPLETE){
-                    throw new JajukException("129"); //$NON-NLS-1$
-                }
-            }
-            Log.debug("Loaded "+url.toString()+" in  "+(System.currentTimeMillis()-l)+" ms"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        }
-        return image;
+          return CoverRepository.getInstance().getImage(url,iType);
     }
     
     /**
@@ -178,14 +157,15 @@ public class Cover implements Comparable,ITechnicalStrings {
     public String toString(){
         return "Type="+iType +" URL="+url; //$NON-NLS-1$ //$NON-NLS-2$
     }
-    
+  
     /**
      * Equals needed for consitency for sorting
      */
     public boolean equals(Object o){
        boolean bOut = false;
-        Cover cOther = (Cover)o;
-       if (getType() == Cover.ABSOLUTE_DEFAULT_COVER || cOther.getType()==Cover.ABSOLUTE_DEFAULT_COVER){
+       Cover cOther = (Cover)o;
+       if (getType() == Cover.ABSOLUTE_DEFAULT_COVER 
+               || cOther.getType()==Cover.ABSOLUTE_DEFAULT_COVER){
            return  (cOther.getType() == getType()); //either both are default cover, either one is not and so, they are unequal
        }
        //here, all url are not null
@@ -197,8 +177,5 @@ public class Cover implements Comparable,ITechnicalStrings {
        bOut = url.getFile().equals(cOther.getURL().getFile());
        return bOut;
     }
-    
-    public byte[] getData() {
-        return bData;
-    }
+   
 }
