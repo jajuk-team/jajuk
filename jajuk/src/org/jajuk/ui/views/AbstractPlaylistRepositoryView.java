@@ -34,7 +34,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
-import javax.swing.SwingUtilities;
 
 import org.jajuk.base.PlaylistFile;
 import org.jajuk.i18n.Messages;
@@ -224,7 +223,9 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 		if ( subject.equals(EVENT_DEVICE_MOUNT) || subject.equals(EVENT_DEVICE_UNMOUNT) || subject.equals(EVENT_DEVICE_REFRESH) ) {
 			SwingWorker sw = new SwingWorker() {
 				public Object  construct(){
-					jpRoot.removeAll();
+				    if (jpRoot.getComponentCount() > 0){
+						jpRoot.removeAll();
+				    }
 					populatePlaylists();
 					return null;
 				}
@@ -233,7 +234,8 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 					//set queue playlist as default in playlist editor
 					selectPlaylistFileItem(plfiQueue);
 					setCurrentPlayListFileInEditor(plfiQueue);
-					SwingUtilities.updateComponentTreeUI(AbstractPlaylistRepositoryView.this);
+					AbstractPlaylistRepositoryView.this.revalidate();
+					AbstractPlaylistRepositoryView.this.repaint();
 				}
 			};
 			sw.start();

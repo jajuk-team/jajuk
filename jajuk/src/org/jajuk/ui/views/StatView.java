@@ -27,8 +27,6 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.TreeMap;
 
-import javax.swing.SwingUtilities;
-
 import layout.TableLayout;
 
 import org.jajuk.base.Device;
@@ -353,7 +351,9 @@ public class StatView extends ViewAdapter implements Observer{
 	public synchronized  void update(final String subject) {
 		if (EVENT_DEVICE_REFRESH.equals(subject) || EVENT_DEVICE_DELETE.equals(subject)){
 			Util.waiting();
-			removeAll();
+			if (getComponentCount() > 0){
+			    removeAll();
+			}
 			ChartPanel cp1 = createStyleRepartition(); 
 			if ( cp1!= null) add(cp1,"0,0"); //$NON-NLS-1$
 			ChartPanel cp2 = createCollectionSize(); 
@@ -362,7 +362,8 @@ public class StatView extends ViewAdapter implements Observer{
 			if ( cp3!= null) add(cp3,"1,1"); //$NON-NLS-1$
 			ChartPanel cp4 = createDeviceRepartition(); 
 			if ( cp4!= null) add(cp4,"1,0"); //$NON-NLS-1$
-			SwingUtilities.updateComponentTreeUI(StatView.getInstance());
+			StatView.getInstance().revalidate();
+			StatView.getInstance().repaint();
 			Util.stopWaiting();
 		}
 	}

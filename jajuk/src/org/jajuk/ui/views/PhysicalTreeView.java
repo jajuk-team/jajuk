@@ -38,7 +38,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
-import javax.swing.SwingUtilities;
 import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeExpansionListener;
 import javax.swing.event.TreeModelEvent;
@@ -757,11 +756,8 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 						dir.removeProperty(DIRECTORY_OPTION_SYNCHRO_MODE);
 						dir.setProperty(DIRECTORY_OPTION_SYNCHRO_MODE,"n"); //$NON-NLS-1$
 					}
-					SwingUtilities.invokeLater(new Runnable() {
-						public void run() {
-							SwingUtilities.updateComponentTreeUI(jtree);
-						}
-					});
+					jtree.revalidate();
+					jtree.repaint();
 				}
 				else if ( e.getSource() == jmiDirResynchro){
 					Iterator it = alDirs.iterator();  //iterate on selected dirs and childs recursively
@@ -769,11 +765,8 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 						Directory dir = (Directory)it.next();
 						dir.removeProperty(DIRECTORY_OPTION_SYNCHRO_MODE);
 					}
-					SwingUtilities.invokeLater(new Runnable() {
-						public void run() {
-							SwingUtilities.updateComponentTreeUI(jtree);
-						}
-					});
+					jtree.revalidate();
+					jtree.repaint();
 				}
 				else if ( e.getSource() == jmiPlaylistFilePlay || e.getSource()==jmiPlaylistFilePush || e.getSource() == jmiPlaylistFilePlayShuffle || e.getSource() == jmiPlaylistFilePlayRepeat){
 					PlaylistFile plf = ((PlaylistFileNode)paths[0].getLastPathComponent()).getPlaylistFile();
@@ -822,7 +815,8 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 					return null;
 				}
 				public void finished() {
-					SwingUtilities.updateComponentTreeUI(jtree);
+				    jtree.revalidate();
+				    jtree.repaint();
 					expand();
 					int i = jspTree.getVerticalScrollBar().getValue();
 					jspTree.getVerticalScrollBar().setValue(i);

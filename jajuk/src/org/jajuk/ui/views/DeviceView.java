@@ -232,7 +232,9 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 	
 	private void refreshDevices(){
 		//remove all devices
-		jpDevices.removeAll();
+	    if (jpDevices.getComponentCount() > 0 ){
+	        jpDevices.removeAll();
+	    }
 		//New device
 		DeviceItem diNew = new DeviceItem(ICON_DEVICE_NEW,Messages.getString("DeviceView.17")); //$NON-NLS-1$
 		diNew.setToolTipText(Messages.getString("DeviceView.18")); //$NON-NLS-1$
@@ -435,7 +437,8 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 				public void run() {
 					Util.waiting();
 					refreshDevices();
-					SwingUtilities.updateComponentTreeUI(jpDevices);
+					jpDevices.revalidate();
+					jpDevices.repaint();
 					Util.stopWaiting();
 				}
 			});

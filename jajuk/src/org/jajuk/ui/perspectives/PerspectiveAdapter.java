@@ -112,7 +112,9 @@ public abstract class PerspectiveAdapter implements IPerspective,ITechnicalStrin
             ViewManager.removeView(currentView);
         }
        alViews.clear();
-       getContentPane().removeAll();
+       if (getContentPane().getComponentCount() > 0){
+           getContentPane().removeAll();
+       }
     }
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.perspectives.IPerspective#getID()

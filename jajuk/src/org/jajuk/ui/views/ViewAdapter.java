@@ -20,14 +20,12 @@
 
 package org.jajuk.ui.views;
 
-import java.awt.Graphics;
+import java.awt.Dimension;
 import java.awt.event.ComponentEvent;
 
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
 import org.jajuk.base.ITechnicalStrings;
-import org.jajuk.util.Util;
 
 /**
  *  Default implementation for views
@@ -49,7 +47,7 @@ public abstract class ViewAdapter extends JPanel implements IView,ITechnicalStri
 	private int iLogicalY;
 	/**Should be shown option for this view*/
 	private boolean bShouldBeShown = true;
-	
+	private static final Dimension d = new Dimension(0,0);
 	/**
 	 * Constructor
 	 */
@@ -83,9 +81,12 @@ public abstract class ViewAdapter extends JPanel implements IView,ITechnicalStri
 	 * View refresh
 	 */
 	public void refresh(){
-		removeAll();
-		populate();
-		SwingUtilities.updateComponentTreeUI(this);
+	    if (getComponentCount() > 0){
+	        removeAll();
+	    }
+	    populate();
+		this.revalidate();
+		this.repaint();
 	}
 	
 	/**
@@ -180,9 +181,9 @@ public abstract class ViewAdapter extends JPanel implements IView,ITechnicalStri
     public void componentShown(ComponentEvent e) {
     }
 	
-    public void paint(Graphics g)  {
-        g.drawImage(Util.getIcon(IMAGES_STAT_PAPER).getImage(),0,0,760,400,null);
-        super.paint(g);
+      
+    public Dimension getMinimumSize(){
+        return d;
     }
 
     

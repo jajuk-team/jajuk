@@ -55,7 +55,9 @@ public class JajukContainer extends JPanel{
 	
 	public void setView(IView c){
 	    setLayout(new BoxLayout(this,BoxLayout.X_AXIS));
-	    removeAll();
+	    if (getComponentCount() > 0){
+	        removeAll();
+	    }
 	    add((Component)c);
 	}
 	

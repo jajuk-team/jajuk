@@ -124,13 +124,16 @@ public class PerspectiveManager  implements ITechnicalStrings {
 					}	
 				}
 				currentPerspective = perspective;
-				Main.jpContentPane.removeAll();
+				if (Main.jpContentPane.getComponentCount() > 0 ){
+				    Main.jpContentPane.removeAll();
+				}
 				Main.jpContentPane.add(perspective.getContentPane(),BorderLayout.CENTER);
+				Main.jpContentPane.revalidate();
+				Main.jpContentPane.repaint();
 				PerspectiveBarJPanel.getInstance().setActivated(perspective);
-				SwingUtilities.updateComponentTreeUI(Main.getWindow());
-				Util.stopWaiting();
 			}
 		});
+		Util.stopWaiting();
 	}  
     
     /** 
