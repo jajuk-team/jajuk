@@ -40,6 +40,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
@@ -47,6 +48,7 @@ import javax.swing.event.ListSelectionListener;
 
 import layout.TableLayout;
 
+import org.jajuk.Main;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.History;
@@ -56,7 +58,9 @@ import org.jajuk.ui.CommandJPanel;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.LNFManager;
 import org.jajuk.ui.ObservationManager;
+import org.jajuk.ui.PerspectiveBarJPanel;
 import org.jajuk.ui.SearchBox;
+import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.Util;
@@ -94,6 +98,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 	JCheckBox jcbBeforeDelete;
 	JCheckBox jcbBeforeExit;
 	JCheckBox jcbBeforeRemoveDevice;
+	JCheckBox jcbBeforeDeleteCover;
 	JPanel jpOptions;
 	JCheckBox jcbDisplayUnmounted;
 	JCheckBox jcbRestart;
@@ -274,7 +279,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jpConfirmations = new JPanel();
 		jpConfirmations.setBorder(BorderFactory.createTitledBorder(Messages.getString("ParameterView.26"))); //$NON-NLS-1$
 		double sizeConfirmations[][] = {{0.99},
-				{iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator}};
+				{iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator}};
 		jpConfirmations.setLayout(new TableLayout(sizeConfirmations));
 		jcbBeforeDelete = new JCheckBox(Messages.getString("ParameterView.27")); //$NON-NLS-1$
 		jcbBeforeDelete.setToolTipText(Messages.getString("ParameterView.28")); //$NON-NLS-1$
@@ -282,9 +287,12 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jcbBeforeExit.setToolTipText(Messages.getString("ParameterView.30")); //$NON-NLS-1$
 		jcbBeforeRemoveDevice = new JCheckBox(Messages.getString("ParameterView.164")); //$NON-NLS-1$
 		jcbBeforeRemoveDevice.setToolTipText(Messages.getString("ParameterView.165")); //$NON-NLS-1$
+		jcbBeforeDeleteCover = new JCheckBox(Messages.getString("ParameterView.171")); //$NON-NLS-1$
+		jcbBeforeDeleteCover.setToolTipText(Messages.getString("ParameterView.172")); //$NON-NLS-1$
 		jpConfirmations.add(jcbBeforeDelete,"0,1"); //$NON-NLS-1$
 		jpConfirmations.add(jcbBeforeExit,"0,3"); //$NON-NLS-1$
 		jpConfirmations.add(jcbBeforeRemoveDevice,"0,5"); //$NON-NLS-1$
+		jpConfirmations.add(jcbBeforeDeleteCover,"0,7"); //$NON-NLS-1$
 		
 		//--Options
 		jpOptions = new JPanel();
@@ -748,7 +756,15 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 					ConfigurationManager.setProperty(CONF_OPTIONS_LANGUAGE,sLocal);
 					ConfigurationManager.setProperty(CONF_OPTIONS_LNF,(String)jcbLAF.getSelectedItem());
 					if (!LNFManager.getCurrent().equals((String)jcbLAF.getSelectedItem())){  //Lnf has changed
-						Messages.showInfoMessage(Messages.getString("ParameterView.104")); //$NON-NLS-1$
+						SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                Main.getWindow().setShown(false);
+        						LNFManager.setLookAndFeel(ConfigurationManager.getProperty(CONF_OPTIONS_LNF));
+        						PerspectiveBarJPanel.getInstance().setActivated(PerspectiveManager. getCurrentPerspective());  //force the perspective panel to refresh
+        						SwingUtilities.updateComponentTreeUI(Main.getWindow());
+        						Main.getWindow().setShown(true);
+        					}
+                        });
 					}
 					int iLogLevel = jcbLogLevel.getSelectedIndex(); 
 					Log.setVerbosity(iLogLevel);
@@ -796,6 +812,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 					ConfigurationManager.setProperty(CONF_CONFIRMATIONS_DELETE_FILE,Boolean.toString(jcbBeforeDelete.isSelected()));
 					ConfigurationManager.setProperty(CONF_CONFIRMATIONS_EXIT,Boolean.toString(jcbBeforeExit.isSelected()));
 					ConfigurationManager.setProperty(CONF_CONFIRMATIONS_REMOVE_DEVICE,Boolean.toString(jcbBeforeRemoveDevice.isSelected()));
+					ConfigurationManager.setProperty(CONF_CONFIRMATIONS_DELETE_COVER,Boolean.toString(jcbBeforeDeleteCover.isSelected()));
 					//history
 					String sHistoryDuration = jtfHistory.getText();
 					if (!sHistoryDuration.equals("")){ //$NON-NLS-1$
@@ -907,6 +924,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jcbBeforeDelete.setSelected(ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_DELETE_FILE));
 		jcbBeforeExit.setSelected(ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_EXIT));
 		jcbBeforeRemoveDevice.setSelected(ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_REMOVE_DEVICE));
+		jcbBeforeDeleteCover.setSelected(ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_DELETE_COVER));
 		//options
 		boolean bHidden = ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED);
 		jcbDisplayUnmounted.setSelected(bHidden);

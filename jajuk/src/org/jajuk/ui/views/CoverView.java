@@ -45,6 +45,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileFilter;
@@ -82,6 +83,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
     JPanel jpControl;
     JButton jbPrevious;
     JButton jbNext;
+    JButton jbDelete;
     JButton jbSave;
     JButton jbSaveAs;
     JButton jbDefault;
@@ -130,7 +132,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
         jpControl.setBorder(BorderFactory.createEtchedBorder());
         int iXspace = 5;
         double sizeControl[][] =
-        {{20,iXspace,20,2*iXspace,20,iXspace,20,2*iXspace,20,2*iXspace,0.30,2*iXspace,0.30,2*iXspace,0.40,2*iXspace,20},
+        {{20,iXspace,20,2*iXspace,20,iXspace,20,iXspace,20,iXspace,20,iXspace,0.30,iXspace,0.30,2*iXspace,0.40,2*iXspace,20},
                 {25}};
         jpControl.setLayout(new TableLayout(sizeControl));
         jbPrevious = new JButton(Util.getIcon(ICON_PREVIOUS));
@@ -139,6 +141,9 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
         jbNext = new JButton(Util.getIcon(ICON_NEXT));
         jbNext.addActionListener(this);
         jbNext.setToolTipText(Messages.getString("CoverView.5")); //$NON-NLS-1$
+        jbDelete = new JButton(Util.getIcon(ICON_DELETE));
+        jbDelete.addActionListener(this);
+        jbDelete.setToolTipText(Messages.getString("CoverView.2")); //$NON-NLS-1$
         jbSave = new JButton(Util.getIcon(ICON_SAVE));
         jbSave.addActionListener(this);
         jbSave.setToolTipText(Messages.getString("CoverView.6")); //$NON-NLS-1$
@@ -162,13 +167,14 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
         
         jpControl.add(jbPrevious,"0,0");//$NON-NLS-1$
         jpControl.add(jbNext,"2,0");//$NON-NLS-1$
-        jpControl.add(jbSave,"4,0");//$NON-NLS-1$
-        jpControl.add(jbSaveAs,"6,0");//$NON-NLS-1$
-        jpControl.add(jbDefault,"8,0");//$NON-NLS-1$
-        jpControl.add(Util.getCentredPanel(jlSize,BoxLayout.X_AXIS),"10,0");//$NON-NLS-1$
-        jpControl.add(Util.getCentredPanel(jlFound,BoxLayout.X_AXIS),"12,0");//$NON-NLS-1$
-        jpControl.add(Util.getCentredPanel(jcbAccuracy,BoxLayout.X_AXIS),"14,0");//$NON-NLS-1$
-        jpControl.add(Util.getCentredPanel(jlSearching,BoxLayout.X_AXIS),"16,0");//$NON-NLS-1$
+        jpControl.add(jbDelete,"4,0");//$NON-NLS-1$
+        jpControl.add(jbSave,"6,0");//$NON-NLS-1$
+        jpControl.add(jbSaveAs,"8,0");//$NON-NLS-1$
+        jpControl.add(jbDefault,"10,0");//$NON-NLS-1$
+        jpControl.add(Util.getCentredPanel(jlSize,BoxLayout.X_AXIS),"12,0");//$NON-NLS-1$
+        jpControl.add(Util.getCentredPanel(jlFound,BoxLayout.X_AXIS),"14,0");//$NON-NLS-1$
+        jpControl.add(Util.getCentredPanel(jcbAccuracy,BoxLayout.X_AXIS),"16,0");//$NON-NLS-1$
+        jpControl.add(Util.getCentredPanel(jlSearching,BoxLayout.X_AXIS),"18,0");//$NON-NLS-1$
         addComponentListener(this);
         
         ObservationManager.register(EVENT_COVER_REFRESH,this);
@@ -406,6 +412,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
         new Thread(){
             public void run(){
                 displayCurrentCover();
+                SwingUtilities.updateComponentTreeUI(CoverView.this);  //make sure the image is repainted
             }
         }.start();
     }
@@ -464,6 +471,14 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
             final byte[] bData = cover.getData();
             SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
+                    Cover cover = (Cover)alCovers.get(index);  //take image at the given index
+                    //enable delete button only for local covers
+                    if (cover.getType() == Cover.LOCAL_COVER || cover.getType() == Cover.ABSOLUTE_DEFAULT_COVER){
+                        jbDelete.setEnabled(true);
+                    }
+                    else{
+                        jbDelete.setEnabled(false);
+                    }
                     if (url != null){
                         int iSize = 0;
                         String sType = " (L)"; //local cover //$NON-NLS-1$
@@ -529,6 +544,47 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
             }.start();
         }
         else if(e.getSource() == jbNext){ //next : show a worse cover
+            index--;
+            if (index < 0){
+                index = alCovers.size()-1;
+            }
+            new Thread(){
+                public void run(){
+                    displayCurrentCover();
+                }
+            }.start();
+        }
+        else if(e.getSource() == jbDelete){ //delete a local cover
+            Cover cover = (Cover)alCovers.get(index);
+	        //show confirmation message if required
+    	    if ( ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_DELETE_COVER)){
+    	        int iResu = JOptionPane.showConfirmDialog(Main.getWindow(),Messages.getString("Confirmation_delete_cover")+" : "+cover.getURL().toString(),Messages.getString("Main.21"),JOptionPane.YES_NO_OPTION);  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    			if (iResu == JOptionPane.NO_OPTION){
+    				return;
+    			}
+    	    }
+    	    //yet there? ok, delete the cover
+            try{
+                File file = new File(cover.getURL().getFile());
+                if (file.isFile() && file.exists()){
+                    file.delete();
+                }
+                else{  //not a file, must have a problem
+                    throw new Exception("");
+                }
+            }
+            catch(Exception ioe){
+                Log.error("131",ioe);
+                Messages.showErrorMessage("131");
+                return;
+            }
+            //If this was the absolute cover, remove the reference in the collection
+            if (cover.getType() == Cover.ABSOLUTE_DEFAULT_COVER){
+                Directory dir = FIFO.getInstance().getCurrentFile().getDirectory(); 
+                dir.removeProperty("default_cover");
+            }
+            // reorganize covers
+            alCovers.remove(index);
             index--;
             if (index < 0){
                 index = alCovers.size()-1;
