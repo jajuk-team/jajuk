@@ -25,7 +25,9 @@ import java.net.URL;
 
 import javax.swing.ImageIcon;
 
+import org.jajuk.util.DownloadManager;
 import org.jajuk.util.Util;
+import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
 
@@ -128,11 +130,16 @@ public class Cover implements Comparable,ITechnicalStrings {
      */
     public ImageIcon getImage() throws Exception {
         long l = System.currentTimeMillis();
-        this.image = new ImageIcon(java.awt.Toolkit.getDefaultToolkit().getImage(url));
-        if (image.getImageLoadStatus() != MediaTracker.COMPLETE ){
-            throw new Exception(); //the cover can't be displayed, must be a no-more existing page 
+        if ( iType == LOCAL_COVER || iType == DEFAULT_COVER){
+            this.image = new ImageIcon(url);
         }
-        Log.debug("Loading "+url.toString()+" in  "+(System.currentTimeMillis()-l)+" ms");
+        else if (iType == REMOTE_COVER){
+            this.image = new ImageIcon(DownloadManager.download(url)); 
+            if ( image.getImageLoadStatus() != MediaTracker.COMPLETE){
+                throw new JajukException("129");
+            }
+        }
+        Log.debug("Loaded "+url.toString()+" in  "+(System.currentTimeMillis()-l)+" ms");
         return image;
     }
     

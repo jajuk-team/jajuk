@@ -35,6 +35,7 @@ import org.apache.commons.httpclient.methods.GetMethod;
 import org.jajuk.Main;
 import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.i18n.Messages;
+import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
 /**
@@ -49,8 +50,11 @@ public class DownloadManager implements ITechnicalStrings {
 	private static HttpClient client = null;
     
 	
-	/**Number of active connections ( should be 0 or 1, multiple connections are not allowed to avoid out of memory errors and dead locks*/
-	private static int iCon = 0;
+	/**Is there a current connecton? multiple connections are not allowed to avoid out of memory errors and dead locks*/
+	private static boolean bActiveConnection = false;
+	
+	/**Inform the current connection that a concurrent connection has been tried and that this one should be trashed*/
+	private static boolean bConcurrentConnection = false;
 	
 	/**
 	 * @param sProxyUser
@@ -63,7 +67,7 @@ public class DownloadManager implements ITechnicalStrings {
 		client.setTimeout(iDataTimeout); //data receptino timeout
 		client.getState().setAuthenticationPreemptive(true);
 		if (sProxyUser!= null && sProxyPassswd!= null){
-			client.getState().setProxyCredentials(null,null, new UsernamePasswordCredentials(sProxyUser,sProxyPassswd)  );
+			client.getState().setProxyCredentials(null,"proxy", new UsernamePasswordCredentials(sProxyUser,sProxyPassswd)  );
 		}
 		return client;
 	}
@@ -103,28 +107,17 @@ public class DownloadManager implements ITechnicalStrings {
 	 * @param search
 	 * @return a list of urls
 	 */
-	public static ArrayList getRemoteCoversList(String search){
+	public static ArrayList getRemoteCoversList(String search) throws JajukException{
 	    ArrayList alOut = new ArrayList(20); //URL list   
 	    try{
-	        if ( client == null){
-	            if (ConfigurationManager.getBoolean(CONF_NETWORK_USE_PROXY)){
-	                client = getHTTPClient(ConfigurationManager.getProperty(CONF_NETWORK_PROXY_LOGIN),DownloadManager.getProxyPwd(),3000,7000);
-	            }
-	            else{
-	                client = getHTTPClient(3000,7000);
-	            }
-	        }
+	        bActiveConnection = true;
 	        String sSearchUrl = "http://images.google.com/images?q="+URLEncoder.encode(search, "ISO-8859-1")+"&ie=ISO-8859-1&hl=en&btnG=Google+Search";
 	        Log.debug("Search URL: "+sSearchUrl);
-	        GetMethod get = new GetMethod(sSearchUrl);
-	        get.addRequestHeader(new Header("User-Agent","Mozilla/4.0 (compatible; MSIE 5.0; Windows 2000) Opera 6.03  [en]"));
-	        get.setDoAuthentication( true );
-	        int status = client.executeMethod(getHostConfiguration("216.239.39.99"), get );
-	        if (status != HttpStatus.SC_OK){ //should be 200
-	          return alOut;  
+	        byte[] bRes = download(new URL(sSearchUrl));
+	        if (bRes == null || bRes.length==0){
+	            return alOut;
 	        }
-	        String sRes = get.getResponseBodyAsString();
-	        get.releaseConnection();
+	        String sRes = new String(bRes);
 	        String[] strings = sRes.split("imgurl=");
 	        for (int i=1;i<strings.length;i++){
 	            String s = strings[i].substring(0,strings[i].indexOf('&'));
@@ -132,10 +125,55 @@ public class DownloadManager implements ITechnicalStrings {
 	            alOut.add(new URL(s));
 	        }
 	    }
+	    catch(JajukException je){  //concurrent exception 
+	        throw je;
+	    }
 	    catch(Exception e){
 	        Log.error(e);
 	    }
 	    return alOut;
+	}
+	
+	/**
+	 * Download the resource at the given url
+	 * @param url to download
+	 * @throws JajukException if a concurrent connection is alive
+	 * @return
+	 */
+	public static byte[] download(URL url) throws JajukException{
+	    byte[] bOut = null;
+	    GetMethod get = null;
+	    try{
+	        if ( client == null){
+	            int iConTO = 1000*ConfigurationManager.getInt(CONF_NETWORK_CONNECTION_TO);
+	            int iTraTO =  1000*ConfigurationManager.getInt(CONF_NETWORK_TRANSFERT_TO);
+	            if (ConfigurationManager.getBoolean(CONF_NETWORK_USE_PROXY)){
+	                client = getHTTPClient(ConfigurationManager.getProperty(CONF_NETWORK_PROXY_LOGIN),DownloadManager.getProxyPwd(),iConTO,iTraTO);
+	            }
+	            else{
+	                client = getHTTPClient(iConTO,iTraTO);
+	            }
+	        }
+	        get = new GetMethod(url.toString());
+	        get.addRequestHeader(new Header("User-Agent","Mozilla/4.0 (compatible; MSIE 5.0; Windows 2000) Opera 6.03  [en]"));
+	        get.setDoAuthentication( true );
+	        int status = client.executeMethod(getHostConfiguration(url.getHost()), get );
+	        if (status != HttpStatus.SC_OK){ //should be 200
+	            return null;
+	        }
+	        bOut = get.getResponseBody();
+	        if ( bConcurrentConnection){ //if another session has tried to download another url, this one shouls be trashed
+	            throw new JajukException("129");
+	        }
+	     }
+	    catch(Exception e){
+	        throw new JajukException("129"); //mainly time outs
+	    }
+	    finally{
+	        get.releaseConnection();
+	        bActiveConnection = false;
+	    }
+	    return bOut;
 	}
 	
     
@@ -148,4 +186,22 @@ public class DownloadManager implements ITechnicalStrings {
     }
     
     
+    /**
+     * @return Returns the bConcurrentConnection.
+     */
+    public static boolean isConcurrentConnection() {
+        return bConcurrentConnection;
+    }
+    /**
+     * @param concurrentConnection The bConcurrentConnection to set.
+     */
+    public static void setConcurrentConnection(boolean concurrentConnection) {
+        bConcurrentConnection = concurrentConnection;
+    }
+    /**
+     * @return Returns the bActiveConnection.
+     */
+    public static boolean isActiveConnection() {
+        return bActiveConnection;
+    }
 }

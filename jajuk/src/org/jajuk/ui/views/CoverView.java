@@ -29,6 +29,7 @@ import java.awt.image.AreaAveragingScaleFilter;
 import java.awt.image.FilteredImageSource;
 import java.awt.image.ImageFilter;
 import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -75,6 +76,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
 	JButton jbSave;
 	JButton jbSaveAs;
 	JButton jbDefault;
+	JLabel jlFound;
 
 	/**Date last resize (used for adjustment management)*/
 	private long lDateLastResize;
@@ -83,6 +85,9 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
 	ArrayList alFiles = new ArrayList(10);
 	
 	JLabel jl;
+	
+	/**Default cover */
+	private static Cover coverDefault; 
 	
 	/**Concurency flag to avoid several refreshs blocked by the cover search*/
 	static boolean bAlreadyRefreshing = false;
@@ -110,7 +115,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
 		jpControl.setBorder(BorderFactory.createEtchedBorder());
 		int iXspace = 5;
 		double sizeControl[][] =
-			{{20,iXspace,20,2*iXspace,20,iXspace,20,2*iXspace,20},
+			{{20,iXspace,20,2*iXspace,20,iXspace,20,2*iXspace,20,2*iXspace,0.99},
 				{25}};
 		jpControl.setLayout(new TableLayout(sizeControl));
 		jbPrevious = new JButton(Util.getIcon(ICON_PREVIOUS));
@@ -128,17 +133,25 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
 		jbDefault = new JButton(Util.getIcon(ICON_DEFAULT_COVER));
 		jbDefault.addActionListener(this);
 		jbDefault.setToolTipText(Messages.getString("CoverView.8")); //$NON-NLS-1$
+		jlFound = new JLabel("");
 		jpControl.add(jbPrevious,"0,0");//$NON-NLS-1$
 		jpControl.add(jbNext,"2,0");//$NON-NLS-1$
 		jpControl.add(jbSave,"4,0");//$NON-NLS-1$
 		jpControl.add(jbSaveAs,"6,0");//$NON-NLS-1$
 		jpControl.add(jbDefault,"8,0");//$NON-NLS-1$
+		jpControl.add(jlFound,"10,0");//$NON-NLS-1$
 		
 		ObservationManager.register(EVENT_COVER_REFRESH,this);
 		ObservationManager.register(EVENT_PLAYER_STOP,this);
 	
-		//check if the cover should be refreshed at startup
-		update(EVENT_COVER_REFRESH);
+		try {
+        //check if the cover should be refreshed at startup
+           coverDefault = new Cover(new URL(IMAGES_SPLASHSCREEN),Cover.DEFAULT_COVER); //instanciate default cover
+    } catch (MalformedURLException e) {
+        Log.error(e);
+    }
+		alCovers.add(coverDefault); //add the default cover
+	    update(EVENT_COVER_REFRESH);
 	}
 	
 	
@@ -146,13 +159,14 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
 	 * @see org.jajuk.ui.Observer#update(java.lang.String)
 	 */
 	public synchronized void update(String subject){
+	    clearFoundCover();
 	    if (bAlreadyRefreshing){ //another refreshing is probably blocked until time out by a web search
 	           return;
 	    }
 	    bAlreadyRefreshing = true;
 	    try{
 	        if ( EVENT_COVER_REFRESH.equals(subject)){
-	            org.jajuk.base.File fCurrent = FIFO.getInstance().getCurrentFile();
+	            final org.jajuk.base.File fCurrent = FIFO.getInstance().getCurrentFile();
 	            //if current file is null ( probably a file cannot be read ) 
 	            if ( fCurrent == null){
 	                displayCurrentCover(); //do nothing
@@ -163,50 +177,82 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
 	                return;
 	            }
 	            this.fDir = fDir; //store this dir
-	            alCovers.clear();
-	            java.io.File[] files = fDir.listFiles();
-	            for (int i=0;i<files.length;i++){
-	                String sExt = Util.getExtension(files[i]);
-	                if (sExt.equalsIgnoreCase("jpg") || sExt.equalsIgnoreCase("png") || sExt.equalsIgnoreCase("gif")){ //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-	                    alCovers.add(new Cover(files[i].toURL(),Cover.LOCAL_COVER));
+	            synchronized(alCovers){
+	                alCovers.clear();
+	                alCovers.add(coverDefault); //add the default cover
+	                //search for local covers
+	                java.io.File[] files = fDir.listFiles();
+	                for (int i=0;i<files.length;i++){
+	                    String sExt = Util.getExtension(files[i]);
+	                    if (sExt.equalsIgnoreCase("jpg") || sExt.equalsIgnoreCase("png") || sExt.equalsIgnoreCase("gif")){ //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+	                        alCovers.add(new Cover(files[i].toURL(),Cover.LOCAL_COVER));
+	                    }
 	                }
+	                //display local or default cover without wait
+	                Collections.sort(alCovers); //sort the list
+	                index = alCovers.size()-1;  //current index points to the best available cover
+	                SwingUtilities.invokeLater(new Runnable() {
+	                    public void run() {
+	                        jlFound.setText(alCovers.size()-1+" "+Messages.getString("CoverView.9"));
+	                    }
+	                });
 	            }
-	            if (alCovers.size() == 0){
-	                if (ConfigurationManager.getBoolean(CONF_COVERS_AUTO_COVER)){
-	                    String sQuery = Util.createQuery(fCurrent);
-	                    if (sQuery.equals("")){
-	                        alCovers.add(new Cover(new URL(IMAGES_SPLASHSCREEN),Cover.DEFAULT_COVER)); //add the default cover
-	    	            }
-	                    ArrayList alUrls = DownloadManager.getRemoteCoversList(sQuery);
-	                    if (alUrls.size() == 0){
-	                        alCovers.add(new Cover(new URL(IMAGES_SPLASHSCREEN),Cover.DEFAULT_COVER)); //add the default cover
-	                    }
-	                    Iterator it = alUrls.iterator();
-	                    while ( it.hasNext()){
-	                        URL url = (URL)it.next();
-	                        Log.debug("Found Cover: "+url.toString());
-	                        Cover cover = null;
-	                        try{
-	                            cover = new Cover(url,Cover.REMOTE_COVER);
-	                            alCovers.add(cover);
-	                        }
-	                        catch(Exception e){
-	                            Log.debug("Wrong url: "+url.toString());
-	                        }
-	                    }
+	            displayCurrentCover(); //display in advance without waiting for web search to accelerate local covers display
+	            //then we search for web covers asynchronously
+	            if (ConfigurationManager.getBoolean(CONF_COVERS_AUTO_COVER)){
+	                if ( DownloadManager.isActiveConnection()){ //if a download was yet being done, tell the download manager to trash it and leave
+	                    DownloadManager.setConcurrentConnection(true);
 	                }
-		        }
-	            else{
-	                Collections.sort(alCovers); //sort the list 
-		        }
-	            index = alCovers.size()-1;  //current index points to the best available cover
-	            displayCurrentCover();
+	                else{
+	                    new Thread(){ //start search asynchronously
+	                        public void run() {
+	                            synchronized(alCovers){
+	                                int iCoversBeforeSearch = alCovers.size(); //stores number of covers before web search
+	                                final String sQuery = Util.createQuery(fCurrent);
+	                                Log.debug("Query="+sQuery);
+	                                if (!sQuery.equals("")){ //there is not enough information in tags for a web search
+	                                    final ArrayList alUrls;
+	                                    try{
+	                                        alUrls = DownloadManager.getRemoteCoversList(sQuery);
+	                                    }
+	                                    catch(Exception e){
+	                                        return; //no web covers found, just leave
+	                                    }
+	                                    Iterator it = alUrls.iterator(); //add logicaly found covers 
+	                                    while ( it.hasNext()){
+	                                        URL url = (URL)it.next();
+	                                        Log.debug("Found Cover: "+url.toString());
+	                                        Cover cover = null;
+	                                        cover = new Cover(url,Cover.REMOTE_COVER); //create a cover with given url ( image will be really downloaded when required)
+	                                        alCovers.add(cover);
+	                                    }
+	                                    Collections.sort(alCovers); //sort the list again with new covers
+	                                    //refresh number of found covers
+	                                    SwingUtilities.invokeLater(new Runnable() {
+                                            public void run() {
+                                                jlFound.setText(alCovers.size()-1+" "+Messages.getString("CoverView.9"));
+                                            }
+                                        });
+	                                    //display the best found cover if no one was found before
+	                                    if (iCoversBeforeSearch == 1 && alCovers.size() >1){
+	                                        index = alCovers.size()-1;  //current index points to the best available cover
+	                                        displayCurrentCover();    
+	                                    }
+	                                }
+	                            }
+	                        }
+	                    }.start();
+	                }
+	            } 
 	        }
 	        else if ( EVENT_PLAYER_STOP.equals(subject)){
-	            alCovers.clear();
-	            alCovers.add(new Cover(new URL(IMAGES_SPLASHSCREEN),Cover.DEFAULT_COVER)); //add the default cover
-	            index = 0;
-	            displayCurrentCover();
+	            clearFoundCover();
+	            synchronized(alCovers){
+	                alCovers.clear();
+	                alCovers.add(coverDefault); //add the default cover
+	                index = 0;
+	                displayCurrentCover();
+	            }
 	        }
 	    }
 	    catch(Exception e){
@@ -217,6 +263,15 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
 	    }
 	}
 
+	/**Clear the found covers label*/
+	private void clearFoundCover(){
+	    SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                jlFound.setText("");
+            }
+        });
+	}
+	
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.IView#getDesc()
 	 */
@@ -263,6 +318,12 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
 	        }
 	        catch(Exception e){ //this cover cannot be loaded
 	            alCovers.remove(index);
+	            //refresh number of found covers
+                SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
+                        jlFound.setText(alCovers.size()-1+" "+Messages.getString("CoverView.9"));
+                    }
+                });
 	            index  --; //look at next cover    
 	        }
 	    }
@@ -276,6 +337,23 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
 	    URL url = cover.getURL();
 	    if (url != null){
 	        jl.setToolTipText(url.toString());
+	    }
+	    //set tooltip for previous and next track
+	    int indexPrevious  = index+1;
+        if (indexPrevious > alCovers.size()-1){
+            indexPrevious = 0;
+        }
+	    URL urlPrevious = ((Cover)alCovers.get(indexPrevious)).getURL();
+	    if (urlPrevious != null){
+	        jbPrevious.setToolTipText("<html>"+Messages.getString("CoverView.4")+"<br>"+urlPrevious.toString()+"</html>"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+	    }
+	    int indexNext = index-1;
+        if (indexNext < 0){
+            indexNext = alCovers.size()-1;
+        }
+	    URL urlNext = ((Cover)alCovers.get(indexNext)).getURL();
+	    if (urlNext != null){
+	        jbNext.setToolTipText("<html>"+Messages.getString("CoverView.5")+"<br>"+urlNext.toString()+"</html>"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 	    }
 	    SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
@@ -292,18 +370,30 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
      */
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == jbPrevious){  //previous : show a better cover
+            setCursor(Util.WAIT_CURSOR);
             index = index+1;
             if (index > alCovers.size()-1){
                 index = 0;
             }
-            displayCurrentCover();
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                    displayCurrentCover();
+                    setCursor(Util.DEFAULT_CURSOR);
+                }
+            });
         }
         else if(e.getSource() == jbNext){ //next : show a worse cover
+            setCursor(Util.WAIT_CURSOR);
             index = index-1;
             if (index < 0){
                 index = alCovers.size()-1;
             }
-            displayCurrentCover();
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                    displayCurrentCover();
+                    setCursor(Util.DEFAULT_CURSOR);
+                }
+            });
         }
     }
     
