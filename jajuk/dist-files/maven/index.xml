@@ -9,7 +9,7 @@
     </section>
   
 	<section name='Supported languages'>
-		<p><a href='./translation_howto.html'>Please translate</a></p>
+		<p><a href='./translation_howto.html'>Want to translate ?</a></p>
 		<table style='width: 100%; text-align: left;' border='0' cellpadding='2' cellspacing='2'>
 			<tbody>
 				<tr>
@@ -18,9 +18,9 @@
 						<img alt='English' title='English' src='flags/flag_en.png' style='width: 21px; height: 14px;'/>
 						<img alt='French' title='French' src='flags/flag_fr.png' style='width: 21px; height: 14px;'/>
 						<img alt='German' title='German' src='flags/flag_de.png' style='width: 21px; height: 14px;'/>
-						<img alt='Italian' title='Italian' src='flags/flag_it.png' style='width: 21px; height: 14px;'/>
-						<img alt='Swedish' title='Swedish' src='flags/flag_sv.png' style='width: 21px; height: 14px;'/>
-						<img alt='Dutch' title='Dutch' src='flags/flag_nl.png' style='width: 21px; height: 14px;'/>
+						<img alt='Italian' title='Italian' src='flags/flag_it.png' style='width: 21px; height: 14px;'/>*
+						<img alt='Swedish' title='Swedish' src='flags/flag_sv.png' style='width: 21px; height: 14px;'/>*
+						<img alt='Dutch' title='Dutch' src='flags/flag_nl.png' style='width: 21px; height: 14px;'/>*
 					</td>
 				</tr>
 				<tr>
@@ -50,6 +50,7 @@
 				</tr>
 			</tbody>
 		</table>
+		<p>(*): Partially translated, <a href='./translation_howto.html#Translation_upgrades'>translation to be updated</a></p>
 	</section>  
 
 	<section name='Latest news'>

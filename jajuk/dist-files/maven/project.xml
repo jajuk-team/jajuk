@@ -50,8 +50,14 @@
             <unsubscribe>http://lists.sourceforge.net/lists/listinfo/jajuk-general</unsubscribe>
             <archive>http://sourceforge.net/mailarchive/forum.php?forum=jajuk-general</archive>
         </mailingList>
+        <mailingList>
+            <name>Jajuk Developers</name>
+            <subscribe>http://lists.sourceforge.net/lists/listinfo/jajuk-developers</subscribe>
+            <unsubscribe>http://lists.sourceforge.net/lists/listinfo/jajuk-developers</unsubscribe>
+            <archive>http://sourceforge.net/mailarchive/forum.php?forum=jajuk-developers</archive>
+        </mailingList>
     </mailingLists>
-  
+    
   <versions>
   </versions>
   
@@ -179,12 +185,17 @@
 		</contributor>
 		<contributor>
 			<name>Aurélien Pedron</name>
-			<roles><role>Bug reports, tests</role></roles>
+			<roles><role>Bug reports, qualification</role></roles>
 		</contributor>
 		<contributor>
 			<name>darsa</name>
 			 <email>darsa@users.sourceforge.net</email>
 			<roles><role>Bug reports</role></roles>
+		</contributor>
+		<contributor>
+			<name>Jérome Fortain</name>
+			 <email></email>
+			<roles><role>Bug reports, qualification</role></roles>
 		</contributor>
 	</contributors>
 	
