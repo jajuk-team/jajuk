@@ -56,7 +56,6 @@ public class Player {
 				}			
 			}
 		};
-		thread.setPriority(Thread.MIN_PRIORITY);  //set max priority to avoid scratchs
 		thread.start();
 		}
 	

@@ -346,7 +346,6 @@ public class LogicalTreeView extends ViewAdapter implements ActionListener{
 		};
 		jtree.addMouseListener(ml);
 		
-		
 		//expand all
 		for (int i=0;i<jtree.getRowCount();i++){
 			Object o = jtree.getPathForRow(i).getLastPathComponent(); 
@@ -433,27 +432,27 @@ public class LogicalTreeView extends ViewAdapter implements ActionListener{
 				alFilesToPlay.add(file);
 			}
 		}
-		if ( e.getSource() == jmiTrackPlay 
+		if ( alTracks.size() > 0  && (e.getSource() == jmiTrackPlay 
 				|| e.getSource() == jmiAlbumPlay
 				|| e.getSource() == jmiAuthorPlay
-				|| e.getSource() == jmiStylePlay ){
+				|| e.getSource() == jmiStylePlay )){
 			FIFO.getInstance().push(alFilesToPlay,false);
 			
 		}
-		else if ( e.getSource() == jmiTrackPush 
+		else if (alTracks.size() > 0  && ( e.getSource() == jmiTrackPush 
 				|| e.getSource() == jmiAlbumPush
 				|| e.getSource() == jmiAuthorPush
-				|| e.getSource() == jmiStylePush ){
+				|| e.getSource() == jmiStylePush) ){
 			FIFO.getInstance().push(alFilesToPlay,true);
 		}
-		else if ( e.getSource() == jmiAlbumPlayShuffle
+		else if ( alTracks.size() > 0  && (e.getSource() == jmiAlbumPlayShuffle
 				|| e.getSource() == jmiAuthorPlayShuffle
-				|| e.getSource() == jmiStylePlayShuffle ){
+				|| e.getSource() == jmiStylePlayShuffle )){
 			FIFO.getInstance().push(Util.randomize(alFilesToPlay),false);
 		}
-		else if ( e.getSource() == jmiAlbumPlayRepeat
+		else if (alTracks.size() > 0  && ( e.getSource() == jmiAlbumPlayRepeat
 				|| e.getSource() == jmiAuthorPlayRepeat
-				|| e.getSource() == jmiStylePlayRepeat ){
+				|| e.getSource() == jmiStylePlayRepeat) ){
 			FIFO.getInstance().push(alFilesToPlay,false,false,true);
 		}
 	}

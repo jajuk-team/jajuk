@@ -491,22 +491,22 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == jmiFilePlay ){
+		if (e.getSource() == jmiFilePlay && alFiles.size() > 0 ){
 			FIFO.getInstance().push(alFiles,false);
 		}
-		else if (e.getSource() == jmiFilePush ){
+		else if (e.getSource() == jmiFilePush  && alFiles.size() > 0){
 			FIFO.getInstance().push(alFiles,true);
 		}
-		else if (e.getSource() == jmiDirPlay || e.getSource() == jmiDevPlay){  
+		else if ( alFiles.size() > 0 && (e.getSource() == jmiDirPlay || e.getSource() == jmiDevPlay)){  
 			FIFO.getInstance().push(alFiles,false);
 		}
-		else if (e.getSource() == jmiDirPush || e.getSource() == jmiDevPush){
+		else if (alFiles.size() > 0 && (e.getSource() == jmiDirPush || e.getSource() == jmiDevPush)){
 			FIFO.getInstance().push(alFiles,true);
 		}
-		else if (e.getSource() == jmiDirPlayShuffle || e.getSource() == jmiDevPlayShuffle){
+		else if (alFiles.size() > 0 && (e.getSource() == jmiDirPlayShuffle || e.getSource() == jmiDevPlayShuffle)){
 			FIFO.getInstance().push(Util.randomize(alFiles),false);
 		}
-		else if (e.getSource() == jmiDirPlayRepeat || e.getSource() == jmiDevPlayRepeat){
+		else if (alFiles.size() > 0 && (e.getSource() == jmiDirPlayRepeat || e.getSource() == jmiDevPlayRepeat)){
 			FIFO.getInstance().push(alFiles,false,false,true);
 		}
 		else if ( e.getSource() == jmiDevMount){
