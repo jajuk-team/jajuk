@@ -1,95 +1,122 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html>
 <head>
-  <meta content="text/html; charset=ISO-8859-1"
- http-equiv="content-type">
-  <title>Using Playlists</title>
+  <meta http-equiv="CONTENT-TYPE"
+ content="text/html; charset=iso-8859-15">
+  <title>Utiliser les playlistes</title>
+  <meta name="GENERATOR" content="OpenOffice.org 1.1.0  (Linux)">
+  <meta name="CREATED" content="20040321;21341700">
+  <meta name="CHANGED" content="20040321;21374800">
 </head>
-<body>
-<h1>Using playlists</h1>
+<body lang="fr-FR" dir="ltr">
+<h1>Utiliser les playlistes</h1>
+<p>Une playliste est un regroupement de morceaux pré-<span lang="fr-FR">sélectionnés.</span>
+Jajuk utilise le format m3u pour lire et écrire les fichiers
+playliste. Notez que les fichiers référencés
+dans les playlistes peuvent se trouver en <span lang="fr-FR">dehors</span>
+de tout support géré par Jajuk . Dans ce cas, Jajuk les
+lits mais quelques limitations y sont appliqués, par <span lang="fr-FR">exemple</span>,
+ils ne sont pas ajoutés dans la barre d'historique.</p>
+<h2>Types de playlistes</h2>
+<p><img src="../../images/up01_1.jpg" name="Image1"
+ style="border: 0px solid ; width: 250px; height: 486px;" alt=""><br>
 <br>
-A playlist is a set of preselected tracks. Jajuk uses m3u format to
-read and write playlist files. Note that files in playlists can be
-located outside any Jajuk device. In this case, Jajuk can read them but
-some limitations apply to them. For instance, they are not added in the
-history bar.<br>
+<i>Fig
+01 : les <span lang="fr-FR">différents</span> types de
+playlistes</i><br>
 <br>
-<h2>Playlist types<br>
-</h2>
-<img
- src="file:///data/saveable/java/workspace/jajuk/dist-files/doc/jajuk-hs/images/up01_1.jpg"
- alt="" style="width: 250px; height: 486px;"><br>
+1- <span lang="fr-FR">Playliste</span> "file"
+: contient les morceaux à jouer.<br>
 <br>
-<span style="font-style: italic;">
-Fig 01 : different types of playlists</span><br>
+2- <span lang="fr-FR">Playliste</span>
+"nouvelle" : Vide au démarrage, elle est utilisée
+pour créer de nouvelles playlistes. Glissez-déposez y
+des fichiers à partir de la vue arbre ou table.<br>
 <br>
-1- Queue Playlist :
-display tracks to be played<br>
+3-
+<span lang="fr-FR">Playliste</span> "signets" :
+Glissez-déposez y des morceaux pour un accès
+rapide.<br>
 <br>
-2- New Playlist : void at startup, use it to create new playlists. Drag
-&amp; drop inside from tree or table views to add tracks.<br>
+4- <span lang="fr-FR">Playliste</span> "Best of "
+: contient vos 20 morceaux favoris.<br>
 <br>
-3- Bookmarks playlist : drag and drop track inside to quickly access
-your favorite tracks.<br>
-<br>
-4- Best of playlist : contains the 20 best tracks of your collection.<br>
-<br>
-5 - Some regular playlist ( .m3u files ).
-<br>
-<br>
-<h2>Playing/saving a playlist</h2>
-To launch a playlist, you can : <br>
+5 - Quelques exemples de
+playlistes normales ( fichiers .m3u ). </p>
+<h2>Lire / sauver une playliste</h2>
+<p>Pour lire un playliste, vous pouvez :</p>
 <ul>
-  <li>Select a playlist by left-clicking on it. Then, you can launch
-any playlist by clicking on it.<br>
+  <li>
+    <p style="margin-bottom: 0cm;">Sélectionner une playliste par un
+clic. Vous pouvez alors la lancer en re-cliquant dessus.</p>
   </li>
-  <li>Right-click on a playlist and click on "play" menu option.<br>
+  <li>
+    <p>Cliquer ( clic droit ) sur la playliste et cliquez sur "jouer"
+dans la popup.</p>
   </li>
 </ul>
-To save a playlist :<br>
+<p>Pour sauver la playliste :</p>
 <ul>
-  <li>Right-click on a playlist and select 'save' or 'save as' in the
-popup menu.</li>
+  <li>
+    <p>Cliquez ( clic droit ) sur la <span lang="fr-FR">playliste</span>
+et <span lang="fr-FR">sélectionnez</span> 'sauver' ou 'sauver <span
+ lang="fr-FR">sous' dans</span> la popup. </p>
+  </li>
 </ul>
+<p><br>
+<br>
+</p>
+<h2>Playlistes normales</h2>
+<p>Quand vous <span lang="fr-FR">rafraîchissez</span> un
+support, Jajuk trouvera <span lang="fr-FR">notamment</span> les
+fichiers .m3u qui seront alors affichés dans la vue
+référentiel de playlistes. Notez que si vous vous
+trouvez dans la perspective physique, une même playliste se
+trouvant dans plusieurs supports sera affichée plusieurs fois.
+Dans la <span lang="fr-FR">perspective</span> logique, vous ne voyez
+pas des fichiers playliste mais des playlistes logiques. Ainsi, une
+seule playliste logique associées à plusieurs fichiers
+playliste sera visible et si vous modifiez une playliste logique, la
+modification sera répercutées dans tous les fichiers
+playliste ( un message d'avertissement s'affiche ).<br>
 <br>
 <br>
-<h2>Regular playlists</h2>
-When refreshing a device, Jajuk will find all m3u files which will be
-displayed in the playlist repository view. Note that if you are in
-physical perspective, sames playlist files on different devices will be
-displayed several times. In Logical perspective, you will not see
-playlists files but logical playlists. So, only once logical playlist
-will be displayed and will map several physical playlists files. If you
-modify one logical playlist, modification will be propagate to every
-mapped physical playlist files ( a warning message will be displayed ).<br>
+</p>
+<h2>L'éditeur de playliste</h2>
+<p>L'éditeur de playliste permet de modifier <span lang="fr-FR">l'ordre</span>
+de morceaux et d'ajouter ou de supprimer des morceaux.<br>
+<br>
+<img src="../../images/up02_1.jpg" name="Image2"
+ style="border: 0px solid ; width: 576px; height: 150px;" alt=""><br>
+<br>
+<i>Fig.
+02 : <span lang="fr-FR">éditeur</span> de playliste</i><br>
+<br>
+1-
+Jouer la playliste<br>
+<br>
+2- Sauver la playliste<br>
+<br>
+3- Ajouter un
+nouveau morceau dans la playliste<br>
+<br>
+4- Supprimer le <span lang="fr-FR">morceau</span>
+sélectionné de la playliste<br>
+<br>
+5- Montez le morceau
+dans la <span lang="fr-FR">sélection</span><br>
+<br>
+6-
+Descendre le morceau dans la <span lang="fr-FR">sélection</span><br>
+<br>
+7-
+Afficher la playliste en train d'être jouée.<br>
+<br>
+8-
+Effacer totalement la playliste.<br>
 <br>
 <br>
-<h2>Using playlist editor</h2>
-The playlist editor allows you to change tracks order, to add new
-tracks or remove ones.<br>
 <br>
-<img
- src="file:///data/saveable/java/workspace/jajuk/dist-files/doc/jajuk-hs/images/up02_1.jpg"
- alt="" style="width: 576px; height: 150px;"><br>
-<br>
-<span style="font-style: italic;">Fig. 02 : Playlist editor</span><br>
-<br>
-1- Play selected playlist<br>
-<br>
-2- Save the playlist<br>
-<br>
-3- Add a new file to this playlist<br>
-<br>
-4- Remove a file from this playlist<br>
-<br>
-5- Up : decrease file playing index<br>
-<br>
-6- Down : increase file playing index<br>
-<br>
-7- Display currently played playlist<br>
-<br>
-8- Clear playlist<br>
-<br>
-<br>
+</p>
 </body>
 </html>
