@@ -20,6 +20,7 @@
 
 package org.jajuk.ui;
 
+import java.awt.Component;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.dnd.DragSource;
@@ -33,7 +34,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 
-import javax.swing.JPanel;
+import javax.swing.JTable;
 
 import org.jajuk.base.Album;
 import org.jajuk.base.Author;
@@ -44,14 +45,9 @@ import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
 import org.jajuk.base.Style;
 import org.jajuk.base.Track;
+import org.jajuk.ui.views.AbstractPlaylistEditorView;
 import org.jajuk.util.log.Log;
 
-/**
- *  Dnd support for playlists
- *
- * @author     bflorat
- * @created    13 févr. 2004
- */
 /**
  * 
  *  DND handler for playlists
@@ -61,11 +57,11 @@ import org.jajuk.util.log.Log;
  */
 public class PlaylistTransferHandler implements DropTargetListener {
 	
-	private JPanel jpanel;
+	private Component jpanel;
 	private DropTarget dropTarget; //droptarget
 	
-	public PlaylistTransferHandler(JPanel jpanel, int action) {
-		this.jpanel = jpanel;
+	public PlaylistTransferHandler(Component c, int action) {
+		this.jpanel = c;
 		dropTarget = new DropTarget(jpanel, action, this);
 	}
 	
@@ -82,11 +78,23 @@ public class PlaylistTransferHandler implements DropTargetListener {
 	}
 	
 	public final void dragOver(DropTargetDragEvent dtde) {
-		PlaylistFileItem plfi = (PlaylistFileItem)(((DropTarget)dtde.getSource()).getComponent());
-		if ( plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_BESTOF){ //no dnd to best of playlist
-				dtde.rejectDrag();
-		}	
+		Component c = ((DropTarget)dtde.getSource()).getComponent();
+		PlaylistFileItem plfi = null;
+		if ( c instanceof PlaylistFileItem){
+			plfi = (PlaylistFileItem)c;
+		}
+		else if (c instanceof AbstractPlaylistEditorView){
+			plfi = ((AbstractPlaylistEditorView)c).getCurrentPlaylistFileItem();
+		}
+		else if (c instanceof JTable){
+			c = c.getParent().getParent().getParent();
+			plfi = ((AbstractPlaylistEditorView)c).getCurrentPlaylistFileItem();
+		}
+		if ( plfi!= null && plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_BESTOF){ //no dnd to best of playlist
+			dtde.rejectDrag();
+		}
 	}
+	
 	
 	public final void dropActionChanged(DropTargetDragEvent dtde) {
 		int action = dtde.getDropAction();
@@ -97,7 +105,21 @@ public class PlaylistTransferHandler implements DropTargetListener {
 		try {
 			int action = dtde.getDropAction();
 			Transferable transferable = dtde.getTransferable();
-			PlaylistFileItem plfi = (PlaylistFileItem)(((DropTarget)dtde.getSource()).getComponent());
+			Component c = ((DropTarget)dtde.getSource()).getComponent();
+			PlaylistFileItem plfi = null;
+			if ( c instanceof PlaylistFileItem){
+				plfi = (PlaylistFileItem)c;
+			}
+			else if (c instanceof AbstractPlaylistEditorView){
+				plfi = ((AbstractPlaylistEditorView)c).getCurrentPlaylistFileItem();
+			}
+			else if (c instanceof JTable){
+				c = c.getParent().getParent().getParent();
+				plfi = ((AbstractPlaylistEditorView)c).getCurrentPlaylistFileItem();
+			}
+			if ( plfi == null){
+				return;
+			}
 			Object oData = null;
 			if (transferable.isDataFlavorSupported(TransferableTreeNode.NODE_FLAVOR) || transferable.isDataFlavorSupported(TransferableTableRow.ROW_FLAVOR)) {
 				String sFlavor  = ((DataFlavor)Arrays.asList(transferable.getTransferDataFlavors()).get(0)).getHumanPresentableName(); 

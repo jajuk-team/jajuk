@@ -65,7 +65,7 @@ public class PhysicalPlaylistEditorView extends AbstractPlaylistEditorView{
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.views.AbstractPlaylistEditorView#getCurrentPlaylistFileItems()
 	 */
-	ArrayList getCurrentPlaylistFileItems() {
+	ArrayList getRepositoryCurrentPlaylistFileItem() {
 		return PhysicalPlaylistRepositoryView.getInstance().getPlaylistFileItems();
 	}
 	

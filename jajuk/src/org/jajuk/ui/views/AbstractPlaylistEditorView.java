@@ -20,6 +20,7 @@
 
 package org.jajuk.ui.views;
 
+import java.awt.dnd.DnDConstants;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -55,6 +56,7 @@ import org.jajuk.ui.JajukTable;
 import org.jajuk.ui.ObservationManager;
 import org.jajuk.ui.Observer;
 import org.jajuk.ui.PlaylistFileItem;
+import org.jajuk.ui.PlaylistTransferHandler;
 import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
@@ -243,6 +245,9 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 		ObservationManager.register(EVENT_PLAYER_STOP,this);
 		ObservationManager.register(EVENT_FILE_LAUNCHED,this);
 		tRefresh.start();
+		//DND
+		new PlaylistTransferHandler(this,DnDConstants.ACTION_COPY_OR_MOVE);
+		new PlaylistTransferHandler(jtable,DnDConstants.ACTION_COPY_OR_MOVE);
 	}
 	
 	/* (non-Javadoc)
@@ -443,7 +448,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 			}
 		}
 		else if (ae.getSource() == jbCurrent){
-			Iterator it = getCurrentPlaylistFileItems().iterator();
+			Iterator it = getRepositoryCurrentPlaylistFileItem().iterator();
 			File file = FIFO.getInstance().getCurrentFile(); //look at current file playlist property
 			String sId = file.getProperty(OPTION_PLAYLIST);
 			if ( sId != null){ //if null, it means this file has not been launched from a playlist
@@ -509,11 +514,19 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 	 * Get the playlist file items in the associated playlist repository view 
 	 * @return
 	 */
-	abstract ArrayList getCurrentPlaylistFileItems();
+	abstract ArrayList getRepositoryCurrentPlaylistFileItem();
 	
 	/**
 	 * Set the current playlist file item in the playlist repository view
 	 * @param plfi
 	 */
 	abstract void setRepositoryPlayListFileItem(PlaylistFileItem plfi);
+	
+	/**
+	 * @return Returns current playlist file item
+	 */
+	public PlaylistFileItem getCurrentPlaylistFileItem() {
+		return plfi;
+	}
+
 }

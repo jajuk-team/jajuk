@@ -63,7 +63,7 @@ public class LogicalPlaylistEditorView extends AbstractPlaylistEditorView{
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.views.AbstractPlaylistEditorView#getCurrentPlaylistFileItems()
 	 */
-	ArrayList getCurrentPlaylistFileItems() {
+	ArrayList getRepositoryCurrentPlaylistFileItem() {
 		return LogicalPlaylistRepositoryView.getInstance().getPlaylistFileItems();
 	}
 
