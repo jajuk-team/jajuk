@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 bflorat
+ *  Copyright (C) 2003 Bertrand Florat
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -23,7 +23,7 @@ import java.math.BigInteger;
 
 /**
  * This classes provides some hashing code. It contains mainly an implementation of MD5 algorithm and some other trivial hashing methods. The implementation follows RFC 1321 and passes all RFC 1321 tests.
- * @Author bflorat 
+ * @Author Bertrand Florat 
  * @created 26 oct. 2003
  */
 
