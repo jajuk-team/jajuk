@@ -300,11 +300,15 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener{
         else if( EVENT_PLAYER_STOP.equals(subject) || EVENT_ZERO.equals(subject)){
             jmiPause.setEnabled(false);
             jmiStop.setEnabled(false);
+            jmiNext.setEnabled(false);
+            jmiPrevious.setEnabled(false);
             jmiPause.setText(Messages.getString("JajukWindow.10")); //$NON-NLS-1$
         }
         else if ( EVENT_PLAYER_PLAY.equals(subject)){
             jmiPause.setEnabled(true);
             jmiStop.setEnabled(true);
+            jmiNext.setEnabled(true);
+            jmiPrevious.setEnabled(true);
             jmiPause.setText(Messages.getString("JajukWindow.10")); //$NON-NLS-1$
          }
         else if ( EVENT_PLAYER_PAUSE.equals(subject)){

@@ -542,6 +542,8 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
                     jbPlayPause.setEnabled(false);
                     jbStop.setEnabled(false);
                     jbFwd.setEnabled(false);
+                    jbNext.setEnabled(false);
+                    jbPrevious.setEnabled(false);
                     jsPosition.setEnabled(false);
                     setCurrentPosition(0);
                     jbPlayPause.setIcon(Util.getIcon(ICON_PAUSE)); //resume any current pause
@@ -552,6 +554,8 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
                     jbPlayPause.setEnabled(true);
                     jbStop.setEnabled(true);
                     jbFwd.setEnabled(true);
+                    jbNext.setEnabled(true);
+                    jbPrevious.setEnabled(true);
                     jsPosition.setEnabled(true);
                     jbPlayPause.setIcon(Util.getIcon(ICON_PAUSE)); //resume any current pause
                 }
