@@ -1,13 +1,15 @@
 Summary: Jajuk Advanced Jukebox
 Name: jajuk
-Version: 0.3.1
-Release: 1
-Group: Applications/Audio
+Version: 0.3.1rc3
+Release: 1mdk
+Group: Applications
 Copyright: Copyright Bertrand Florat & Jajuk team 2003 - 2004
 URL: http://jajuk.sourceforge.net
+Source: http://jajuk.sourceforge.net
 Packager: Bertrand Florat
 BuildRoot: %_topdir/%{name}
-BuildArch: i686
+BuildArch: i386
+Requires: java2 >= 1.4.2
 
 %description
 Jajuk Advanced Jukebox
