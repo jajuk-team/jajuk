@@ -124,9 +124,9 @@ public class PerspectiveManager  implements ITechnicalStrings {
 					}	
 				}
 				currentPerspective = perspective;
-				Main.jpMainContentPane.removeAll();
-				Main.jpMainContentPane.add(perspective.getContentPane(),BorderLayout.CENTER);
-				Main.jpMainContentPane.repaint();  //this repaint is mandatory to avoid strange paintings
+				Main.jpContentPane.removeAll();
+				Main.jpContentPane.add(perspective.getContentPane(),BorderLayout.CENTER);
+				Main.jpContentPane.repaint();  //this repaint is mandatory to avoid strange paintings
 				PerspectiveBarJPanel.getInstance().setActivated(perspective);
 				Util.stopWaiting();
 			}

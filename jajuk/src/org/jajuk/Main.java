@@ -76,8 +76,8 @@ public class Main implements ITechnicalStrings {
 	public static PerspectiveBarJPanel perspectiveBar;
 	/**Lower information panel*/
 	public static InformationJPanel information;
-	/**Main contentPane*/
-	public static JPanel jpMainContentPane;
+	/**Main content pane*/
+	public static JPanel jpContentPane;
 	/**Main frame panel*/
 	public static JPanel jpFrame;
 	/**Jajuk slashscreen*/
@@ -149,7 +149,6 @@ public class Main implements ITechnicalStrings {
 			Messages.getInstance().registerLocal("it","Language_desc_it"); //$NON-NLS-1$ //$NON-NLS-2$
 			Messages.getInstance().registerLocal("sv","Language_desc_sv"); //$NON-NLS-1$ //$NON-NLS-2$
 			Messages.getInstance().registerLocal("nl","Language_desc_nl"); //$NON-NLS-1$ //$NON-NLS-2$
-			Messages.getInstance().registerLocal("zh","Language_desc_zh"); //$NON-NLS-1$ //$NON-NLS-2$
 			
 			//configuration manager startup
 			org.jajuk.util.ConfigurationManager.getInstance();
@@ -527,7 +526,7 @@ public class Main implements ITechnicalStrings {
         }
         //ui init 
 		SwingUtilities.invokeAndWait(new Runnable() { //use invokeAndWait to get a better progressive ui display
-		    public void run(){
+		   public void run(){
 				try {
 				    //starts ui
 					jw = JajukWindow.getInstance();
@@ -547,22 +546,22 @@ public class Main implements ITechnicalStrings {
 					information = InformationJPanel.getInstance();
 					
 					//Main panel
-					jpMainContentPane = new JPanel();
-					jpMainContentPane.setOpaque(true);
-					jpMainContentPane.setBorder(BorderFactory.createEtchedBorder());
-					jpMainContentPane.setLayout(new BorderLayout());
+					jpContentPane = new JPanel();
+					jpContentPane.setOpaque(true);
+					jpContentPane.setBorder(BorderFactory.createEtchedBorder());
+					jpContentPane.setLayout(new BorderLayout());
 					
 					//Add static panels
 					jpFrame.add(command, BorderLayout.NORTH);
 					jpFrame.add(information, BorderLayout.SOUTH);
+					jpFrame.add(jpContentPane, BorderLayout.CENTER);
 					
 					//display window
 					jw.pack();
 					jw.setExtendedState(Frame.MAXIMIZED_BOTH);  //maximalize
 					jw.setVisible(true); //show main window
 					sc.toFront();
-					
-					
+
 				} catch (Exception e) { //last chance to catch any error for logging purpose
 					e.printStackTrace();
 					Log.error("106", e); //$NON-NLS-1$
@@ -577,17 +576,14 @@ public class Main implements ITechnicalStrings {
 				try {
 					//Create the perspective manager 
 					PerspectiveManager.load();
-					
-					//Create the perspective tool bar panel (requires Perspectives load )
+
+					// Create the perspective tool bar panel
 					perspectiveBar = PerspectiveBarJPanel.getInstance();
 					jpFrame.add(perspectiveBar, BorderLayout.WEST);
-						
-				    //Initialize perspective manager and load all views
+
+					//Initialize perspective manager and load all views
 					PerspectiveManager.init();
 		
-					jpFrame.add(jpMainContentPane, BorderLayout.CENTER);
-					
-					
 					//Display info message if first session
 					if (ConfigurationManager.getBoolean(CONF_FIRST_CON)){
 						ConfigurationManager.setProperty(CONF_FIRST_CON,FALSE);
@@ -603,7 +599,9 @@ public class Main implements ITechnicalStrings {
 					
 					//Close splash screen
 					sc.dispose();
-			
+					
+					bUILauched = true;
+		
 				} catch (Exception e) { //last chance to catch any error for logging purpose
 					e.printStackTrace();
 					Log.error("106", e); //$NON-NLS-1$

@@ -394,9 +394,9 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
             jl.setMinimumSize(new Dimension(0,0));
             final URL url = cover.getURL();
             final byte[] bData = cover.getData();
-            if (url != null){
-                SwingUtilities.invokeLater(new Runnable() {
-                    public void run() {
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                    if (url != null){
                         int iSize = 0;
                         String sType = " (L)"; //local cover //$NON-NLS-1$
                         if (bData != null){
@@ -409,40 +409,27 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                         jl.setToolTipText("<html>"+url.toString()+"<br>"+iSize+"K"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                         jlSize.setText(iSize+"K"+sType); //$NON-NLS-1$
                     }
-                });
-            }
-            //set tooltip for previous and next track
-            int indexPrevious  = index+1;
-            if (indexPrevious > alCovers.size()-1){
-                indexPrevious = 0;
-            }
-            final URL urlPrevious = ((Cover)alCovers.get(indexPrevious)).getURL();
-            if (urlPrevious != null){
-                SwingUtilities.invokeLater(new Runnable() {
-                    public void run() {
+                    //set tooltip for previous and next track
+                    int indexPrevious  = index+1;
+                    if (indexPrevious > alCovers.size()-1){
+                        indexPrevious = 0;
+                    }
+                    final URL urlPrevious = ((Cover)alCovers.get(indexPrevious)).getURL();
+                    if (urlPrevious != null){
                         jbPrevious.setToolTipText("<html>"+Messages.getString("CoverView.4")+"<br>"+urlPrevious.toString()+"</html>"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
                     }
-                });
-            }
-            int indexNext = index-1;
-            if (indexNext < 0){
-                indexNext = alCovers.size()-1;
-            }
-            final URL urlNext = ((Cover)alCovers.get(indexNext)).getURL();
-            if (urlNext != null){
-                SwingUtilities.invokeLater(new Runnable() {
-                    public void run() {
+                    int indexNext = index-1;
+                    if (indexNext < 0){
+                        indexNext = alCovers.size()-1;
+                    }
+                    final URL urlNext = ((Cover)alCovers.get(indexNext)).getURL();
+                    if (urlNext != null){
                         jbNext.setToolTipText("<html>"+Messages.getString("CoverView.5")+"<br>"+urlNext.toString()+"</html>"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
                     }
-                });
-            }
-            SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
                     setCursor(Util.WAIT_CURSOR);
                     removeAll();
                     add(jpControl,"0,0");//$NON-NLS-1$
                     add(jl,"0,1");//$NON-NLS-1$
-                    SwingUtilities.updateComponentTreeUI(CoverView.this.getRootPane());//refresh
                     setCursor(Util.DEFAULT_CURSOR);
                 }
             });
