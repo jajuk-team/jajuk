@@ -44,6 +44,7 @@ import org.jajuk.base.FIFO;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.History;
 import org.jajuk.base.ITechnicalStrings;
+import org.jajuk.base.Player;
 import org.jajuk.base.Type;
 import org.jajuk.base.TypeManager;
 import org.jajuk.i18n.Messages;
@@ -435,7 +436,9 @@ public class Main implements ITechnicalStrings {
 	 *                <p>1: unexpected error
 	 */
 	public static void exit(int iExitCode) {
-		//set exiting flag
+		//stop sound to avoid strange crash when stopping
+	    Player.mute(true);
+	    //set exiting flag
 		bExiting = true;
 		//store exit code to be read by the system hook
 		Main.iExitCode = iExitCode;
@@ -466,18 +469,28 @@ public class Main implements ITechnicalStrings {
 		org.jajuk.base.File fileToPlay = null;
 	    if (!ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_NOTHING)){
 			if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_LAST) ||
-			        ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_LAST_KEEP_POS)){
-				fileToPlay = FileManager.getFile(History.getInstance().getLastFile());
-				if (fileToPlay != null && fileToPlay.isReady()){
-				    alToPlay.add(fileToPlay);    
+			        ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_LAST_KEEP_POS) ||
+			        ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_FILE)){
+				
+			    if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_FILE)){
+				    fileToPlay = FileManager.getFile(ConfigurationManager.getProperty(CONF_STARTUP_FILE));
+				}
+				else{
+				    fileToPlay = FileManager.getFile(History.getInstance().getLastFile());    
+				}
+			   if (fileToPlay != null){
+				    if ( fileToPlay.isScanned() ){ //device is refreshng or synchronizing
+				        Messages.showErrorMessage("120",fileToPlay.getDirectory().getDevice().getName()); //$NON-NLS-1$
+				    }
+				    else{
+				        alToPlay.add(fileToPlay);    
+				    }
+				}
+				else{ //file no more exists
+		            Messages.showErrorMessage("009",fileToPlay.getDirectory().getDevice().getName()); //$NON-NLS-1$
 				}
 			}
-			else if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_FILE)){
-			    fileToPlay = FileManager.getFile(ConfigurationManager.getProperty(CONF_STARTUP_FILE));
-				if (fileToPlay != null && fileToPlay.isReady()){
-				    alToPlay.add(fileToPlay);    
-				}
-			}
+			
 			else if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_SHUFFLE)){
 				alToPlay = FileManager.getGlobalShufflePlaylist();
 			}
