@@ -106,6 +106,7 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
 			JajukJMenuBar.getInstance().jcbmiRepeat.setSelected(!b);
 			if (!b == true) { //enabled button
 				CommandJPanel.getInstance().jbRepeat.setIcon(Util.getIcon(ICON_REPEAT_ON));
+				FIFO.getInstance().forceRepeat(FIFO.getInstance().getCurrentFile());
 			}
 			else {
 				CommandJPanel.getInstance().jbRepeat.setIcon(Util.getIcon(ICON_REPEAT_OFF));

@@ -509,6 +509,11 @@ public class FIFO implements ITechnicalStrings,Runnable{
 		bGlobalRandom = globalRandom;
 	}
 	
+	public void forceRepeat(File file){
+	    alRepeated.clear();
+	    alRepeated.add(file);
+	}
+	
 	/**
 	 * @param bestof The bestof mode set.
 	 */
