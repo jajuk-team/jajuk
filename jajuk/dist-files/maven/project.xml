@@ -172,6 +172,17 @@
 	      <organization>Jajuk team</organization>
 	      <timezone>+2</timezone>
 	    </developer>
+
+	   <developer>
+	      <name>Josep Carles Collazos</name>
+	      <id>jespo</id>
+    	  <roles>
+		      <role>Spanish translator / developer</role>
+	      </roles>
+	      <email>jespo@users.sourceforge.net</email>
+	      <organization>Jajuk team</organization>
+	      <timezone>+2</timezone>
+	    </developer>
 		    
   </developers>
   
