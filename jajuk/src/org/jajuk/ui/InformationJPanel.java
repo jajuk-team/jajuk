@@ -133,7 +133,6 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings{
 		add(jpTotal,"3,0"); //$NON-NLS-1$
 		add(jpCurrent,"4,0"); //$NON-NLS-1$
 		
-			
 	}
 
 	/**
@@ -195,6 +194,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings{
 				jlMessage.setToolTipText(sMessage);
 			}
 		});
+		ObservationManager.notify(EVENT_INFORMATION_DISPLAY);
 	}
 
 	/**
@@ -244,4 +244,5 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings{
 		jlTotal.setText(string);
 	}
 
+	
 }

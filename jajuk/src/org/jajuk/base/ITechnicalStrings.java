@@ -260,6 +260,8 @@ public interface ITechnicalStrings {
 	public static final String EVENT_PLAYER_RESUME="player resume";
 	public static final String EVENT_PLAYLIST_REFRESH="playlist refresh";
 	public static final String EVENT_FILE_LAUNCHED="file launched";
+	public static final String EVENT_INFORMATION_DISPLAY="information display";
+	public static final String EVENT_ANIMATION_DISPLAY="animation display";
 		
 	//Look and feel
 	public static final String LNF_METAL = "Metal";

@@ -51,11 +51,11 @@ public class ObservationManager {
 	}
 	
 	/**
-	 * Deregister a component for a given subject
+	 * Unregister a component for a given subject
 	 * @param subject Subject ( event ) to observe
 	 * @param jc component to deregister
 	 */
-	public static synchronized void deregister(String subject,JComponent jc){
+	public static synchronized void unregister(String subject,JComponent jc){
 		Vector vComponents = (Vector)hEventComponents.get(subject);
 		if (vComponents == null){
 			vComponents.remove(jc);
