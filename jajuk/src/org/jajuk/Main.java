@@ -108,6 +108,12 @@ public class Main implements ITechnicalStrings {
 			bDebugMode = (args.length>0 && args[0].equals("-debug"));
 			Util.setExecLocation(bDebugMode);//$NON-NLS-1$ 
 			
+			//check for jajuk home directory presence, needed by log
+			File fJajukDir = new File(FILE_JAJUK_DIR);
+			if (!fJajukDir.exists() || !fJajukDir.isDirectory()) {
+				fJajukDir.mkdir(); //create the directory if it doesn't exist
+			}
+			
 			// log startup
 			Log.getInstance();
 			Log.setVerbosity(Log.DEBUG);
@@ -115,14 +121,16 @@ public class Main implements ITechnicalStrings {
 			//Launch splashscreen, can't be in the dispatcher to be immediatly displayed 
 			sc = new SplashScreen(jw);	
 			
+			//Register locals, needed by ConfigurationManager to choose default language
+			Messages.getInstance().registerLocal("en","Language_desc_en"); //$NON-NLS-1$ //$NON-NLS-2$
+			Messages.getInstance().registerLocal("fr","Language_desc_fr"); //$NON-NLS-1$ //$NON-NLS-2$
+			Messages.getInstance().registerLocal("de","Language_desc_de"); //$NON-NLS-1$ //$NON-NLS-2$
+			Messages.getInstance().registerLocal("it","Language_desc_it"); //$NON-NLS-1$ //$NON-NLS-2$
+			Messages.getInstance().registerLocal("sv","Language_desc_sv"); //$NON-NLS-1$ //$NON-NLS-2$
+			Messages.getInstance().registerLocal("nl","Language_desc_nl"); //$NON-NLS-1$ //$NON-NLS-2$
+			
 			//configuration manager startup
 			org.jajuk.util.ConfigurationManager.getInstance();
-			
-			//check for jajuk home directory presence
-			File fJajukDir = new File(FILE_JAJUK_DIR);
-			if (!fJajukDir.exists() || !fJajukDir.isDirectory()) {
-				fJajukDir.mkdir(); //create the directory if it doesn't exist
-			}
 			
 			//Upgrade configuration from previous releases
 			upgrade();
@@ -134,15 +142,7 @@ public class Main implements ITechnicalStrings {
 			LNFManager.register(LNF_KUNSTSTOFF,LNF_KUNSTSTOFF_CLASS);
 			LNFManager.register(LNF_LIQUID,LNF_LIQUID_CLASS);
 			LNFManager.register(LNF_METOUIA,LNF_METOUIA_CLASS);
-			
-			//Register locals
-			Messages.getInstance().registerLocal("en","Language_desc_en"); //$NON-NLS-1$ //$NON-NLS-2$
-			Messages.getInstance().registerLocal("fr","Language_desc_fr"); //$NON-NLS-1$ //$NON-NLS-2$
-			Messages.getInstance().registerLocal("de","Language_desc_de"); //$NON-NLS-1$ //$NON-NLS-2$
-			Messages.getInstance().registerLocal("it","Language_desc_it"); //$NON-NLS-1$ //$NON-NLS-2$
-			Messages.getInstance().registerLocal("sv","Language_desc_sv"); //$NON-NLS-1$ //$NON-NLS-2$
-			Messages.getInstance().registerLocal("nl","Language_desc_nl"); //$NON-NLS-1$ //$NON-NLS-2$
-			
+					
 			//perform initial checkups
 			initialCheckups();
 			
