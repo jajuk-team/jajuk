@@ -30,7 +30,7 @@ import org.jajuk.util.Util;
 public interface ITechnicalStrings {
 	
 	// Jjauk version
-	public static final String JAJUK_VERSION = "0.2.1";
+	public static final String JAJUK_VERSION = "0.2.4";
 	
 	//About 
 	public static final String ABOUT = "<html>Jajuk version "+JAJUK_VERSION+"</html>";
