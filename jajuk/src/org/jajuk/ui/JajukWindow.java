@@ -92,7 +92,6 @@ public class JajukWindow extends JFrame implements ITechnicalStrings,ComponentLi
         	    setShown(true);
     	    }
         	public void windowIconified(WindowEvent arg0) {
-				    setShown(false);
 			}
 			public void windowClosing(WindowEvent we) {
 				Main.exit(0);
@@ -204,6 +203,7 @@ public class JajukWindow extends JFrame implements ITechnicalStrings,ComponentLi
 		if (visible){
 			setState(Frame.NORMAL);
 			setVisible(true);
+			toFront();
 		}
 		//hide
 		else{
