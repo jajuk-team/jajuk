@@ -27,6 +27,7 @@ import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Toolkit;
 
+import javax.swing.BorderFactory;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -65,6 +66,7 @@ public class SplashScreen extends JDialog implements ITechnicalStrings{
 		jpContent.add(jlImage,"0,0"); //$NON-NLS-1$
 		jpRelease = Util.getCentredPanel(jlRelease); //centred horizontaly
 		jpContent.add(jpRelease,"0,1"); //$NON-NLS-1$
+		jpRelease.setBorder(BorderFactory.createEmptyBorder(0,5,0,5));
 		pack();
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		Dimension labelSize = jlImage.getPreferredSize();
