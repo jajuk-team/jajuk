@@ -98,7 +98,7 @@ public class PerspectiveBarJPanel extends JPanel implements ITechnicalStrings{
 			JButton jb = new JButton(Util.getIcon("jar:"+Util.getExecLocation()+"!"+perspective.getIconPath())); //$NON-NLS-1$ //$NON-NLS-2$
 			try{
 				jb.setToolTipText(Messages.getString("PerspectiveBarJPanel."+perspective.getID())); //$NON-NLS-1$
-				jb.setBorder(BorderFactory.createLoweredBevelBorder());
+				jb.setBorder(BorderFactory.createEmptyBorder(4,4,4,4));  //no border
 			}
 			catch(Exception e){  //ignore tooltip missing
 			}; 
