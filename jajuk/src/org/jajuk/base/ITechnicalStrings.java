@@ -150,7 +150,7 @@ public interface ITechnicalStrings {
 	public static final String FILE_LOCK = System.getProperty("user.home")+"/.jajuk/.lock";
 	public static final String FILE_ABOUT = "about.html";
 	public static final String FILE_DEFAULT_COVER = "cover.jpg";
-	public static final String FILE_DEFAULT_COVER_2 = "front.jpg";
+	public static final String FILE_DEFAULT_COVER_2 = "front";
 	
 	//players impls
 	public static final String PLAYER_IMPL_JAVALAYER= "org.jajuk.players.JavaLayerPlayerImpl";
