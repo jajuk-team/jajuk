@@ -107,6 +107,11 @@ public class DeviceManager implements ITechnicalStrings{
 			Messages.showErrorMessage("013"); //$NON-NLS-1$
 			return;
 		}
+		//check if device can be unmounted
+		if (!FIFO.canUnmount(device)){
+			Messages.showErrorMessage("121"); //$NON-NLS-1$
+			return;
+		}
 		//if it is mounted, try to unmount it
 		if (device.isMounted()){ 
 			try{
