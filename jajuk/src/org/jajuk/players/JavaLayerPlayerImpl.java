@@ -56,7 +56,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl,ITechnicalStrings{
     /**current track info*/
     private Map mInfo;
     /**Current position in %*/
-    float fPos;
+    private float fPos;
     /**Length to be played in secs*/
     long length;
     /**Stored Volume*/
@@ -87,10 +87,10 @@ public class JavaLayerPlayerImpl implements IPlayerImpl,ITechnicalStrings{
                 //computes read time
                 if (mInfo.containsKey("audio.length.bytes")) { //$NON-NLS-1$
                     int byteslength = ((Integer) mInfo.get("audio.length.bytes")).intValue(); //$NON-NLS-1$
-                    fPos = (float)iBytesread / byteslength;
-                    lTime = (long)(Util.getTimeLengthEstimation(mInfo)*fPos);
+                    JavaLayerPlayerImpl.this.fPos = (float)iBytesread / byteslength;
+                    JavaLayerPlayerImpl.this.lTime = (long)(Util.getTimeLengthEstimation(mInfo)*fPos);
                 }
-                lDateLastUpdate = System.currentTimeMillis();
+                JavaLayerPlayerImpl.this.lDateLastUpdate = System.currentTimeMillis();
             }
         }
         
