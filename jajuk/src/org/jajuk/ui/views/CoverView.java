@@ -353,7 +353,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
         if ( alCovers.size() == 0 ){
             return;
         }
-        synchronized(bLock){
+         synchronized(bLock){
             Log.debug("display index: "+index); //$NON-NLS-1$
             //find next OK cover
             ImageIcon icon = null;
@@ -363,6 +363,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                     setCursor(Util.WAIT_CURSOR);
                     cover = (Cover)alCovers.get(index); 
                     icon = cover.getImage();
+                    icon.getImage().flush();      //free image memory             
                     setCursor(Util.DEFAULT_CURSOR);
                     break;
                 }
@@ -390,6 +391,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
             Container ji =  ViewManager.getContainer(CoverView.this);
             ImageFilter filter = new AreaAveragingScaleFilter(this.getWidth()-8,this.getHeight()-30);
             Image img = createImage(new FilteredImageSource(icon.getImage().getSource(),filter));
+            img.flush();//free image memory
             jl = new JLabel(new ImageIcon(img));
             jl.setMinimumSize(new Dimension(0,0));
             final URL url = cover.getURL();
