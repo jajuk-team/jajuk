@@ -54,7 +54,7 @@ public class FIFO implements ITechnicalStrings,Runnable,Observer{
 	/**Stop flag**/
 	private static volatile boolean bStop;
 
-    /**Deep time*/
+    /**Sleep time*/
     private final int SLEEP_TIME = 100;
 
     /**Refresh time in ms*/
@@ -359,7 +359,7 @@ public class FIFO implements ITechnicalStrings,Runnable,Observer{
 						Properties pDetails = new Properties();
 						pDetails.put(DETAIL_CURRENT_POSITION,new Integer(iPos));
 						pDetails.put(DETAIL_TOTAL,Util.formatTimeBySec((int)(lTotalTime-(lTime/1000)),false));
-					    pDetails.put(DETAIL_CURRENT_STATUS_MESSAGE,Util.formatTime(lTime)+" / "+Util.formatTime(fCurrent.getTrack().getLength()*1000)); //$NON-NLS-1$
+					    pDetails.put(DETAIL_CURRENT_STATUS_MESSAGE,Util.formatTimeBySec(lTime/1000,false)+" / "+Util.formatTimeBySec(fCurrent.getTrack().getLength(),false)); //$NON-NLS-1$
 						ObservationManager.notify(EVENT_HEART_BEAT,pDetails);
 					}
 					i++;
@@ -420,6 +420,10 @@ public class FIFO implements ITechnicalStrings,Runnable,Observer{
 					bPlaying = true;
 					Player.stop();  //for security, make sure no other track is playing
 					ObservationManager.notify(EVENT_COVER_REFRESH); //request update cover 
+					Properties pDetails = new Properties();
+					pDetails.put(DETAIL_CURRENT_FILE_ID,fCurrent.getId());
+					pDetails.put(DETAIL_CURRENT_DATE,new Long(System.currentTimeMillis()));
+				    ObservationManager.notify(EVENT_FILE_LAUNCHED,pDetails);
 					if (ConfigurationManager.getBoolean(CONF_STATE_INTRO)){ //intro mode enabled
 						Player.play(fCurrent,Float.parseFloat(ConfigurationManager.getProperty(CONF_OPTIONS_INTRO_BEGIN))/100,1000*Integer.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_INTRO_LENGTH)));
 					}
@@ -439,10 +443,6 @@ public class FIFO implements ITechnicalStrings,Runnable,Observer{
 					fCurrent.getTrack().incSessionHits();//inc session hits
 					fCurrent.getTrack().setRate(fCurrent.getTrack().getRate()+1); //inc rate by 1 because it is played
 					FileManager.setRateHasChanged(true);
-					Properties pDetails = new Properties();
-					pDetails.put(DETAIL_CURRENT_FILE_ID,fCurrent.getId());
-					pDetails.put(DETAIL_CURRENT_DATE,new Long(System.currentTimeMillis()));
-				    ObservationManager.notify(EVENT_FILE_LAUNCHED,pDetails);
 				}
 			}
 			//fifo is over ( stop request ) , reinit labels in information panel before exiting
