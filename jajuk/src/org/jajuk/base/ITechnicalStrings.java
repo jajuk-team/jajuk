@@ -317,6 +317,7 @@ public interface ITechnicalStrings {
 	public static final String CONF_STATE_SHUFFLE = "jajuk.state.mode.shuffle";
 	public static final String CONF_STATE_CONTINUE = "jajuk.state.mode.continue";
 	public static final String CONF_STATE_INTRO = "jajuk.state.mode.intro";
+	public static final String CONF_STATE_WAS_PLAYING = "jajuk.state.was_playing"; //wether user exited jajuk in stop state or playing state
 	public static final String CONF_STARTUP_FILE = "jajuk.startup.file";
 	public static final String CONF_STARTUP_MODE = "jajuk.startup.mode";
 	public static final String CONF_CONFIRMATIONS_DELETE_FILE = "jajuk.confirmations.delete_file";
