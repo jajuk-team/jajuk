@@ -68,6 +68,7 @@ import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.DownloadManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
+import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
 /**
@@ -82,7 +83,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
     private File fDir;
     
     /**List of available covers for the current file*/
-    ArrayList alCovers = new ArrayList(20);
+    private ArrayList alCovers = new ArrayList(20);
     
     //control panel
     JPanel jpControl;
@@ -197,7 +198,6 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
         } catch (Exception e) {
             Log.error(e);
         }
-        alCovers.add(coverDefault); //add the default cover
         update(EVENT_COVER_REFRESH);
         this.addComponentListener(this); //listen for resize
     }
@@ -217,7 +217,6 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                     //if current file is null ( probably a file cannot be read ) or basic file 
                     if ( fCurrent == null || fCurrent.getDirectory() == null){
                         index = 0;
-                        alCovers.add(coverDefault);
                         displayCurrentCover(); 
                         return; 
                     }
@@ -310,6 +309,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                                             //Add found covers
                                             alCovers.addAll(alLocalCovers);
                                             Collections.sort(alCovers); //sort the list again with new covers
+                                            index += alLocalCovers.size(); //inc index of current track
                                             //refresh number of found covers
                                             setFoundText();
                                             //display the best found cover if no one was found before
@@ -453,43 +453,81 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
     }
     
     /**
-     * Display current cover
-     *
+     * Display current cover (at this.index), try all covers in case of error
      */
     private void displayCurrentCover(){
-        synchronized(bLock){
-            if ( alCovers.size() == 0 ){  //should not append
+        if ( alCovers.size() == 0){ //should not append
+            alCovers.add(coverDefault); //Add at last the default cover if all remote cover has been discarded
+            try {
+                displayCover(0);
+            } catch (JajukException e) {
+                Log.error(e);
+            }
+            return;    
+        }
+        if (alCovers.size() == 1 &&( (Cover)alCovers.get(0)).getType() == Cover.DEFAULT_COVER){ //only a default cover 
+            try {
+                displayCover(0);
+            } catch (JajukException e) {
+                Log.error(e);
+            }
+            return;    
+        }
+        //else, there is at least one local cover and no default cover
+        while ( alCovers.size() > 0){
+            Cover cover = null;
+            try{
+                displayCover(index);
                 return;
             }
+            catch(Exception e){
+                Log.debug("Removed cover: "+alCovers.get(index)); //$NON-NLS-1$
+                alCovers.remove(index);    
+                //refresh number of found covers
+                setFoundText();
+                //try a worse cover...
+                if (index - 1 >= 0){
+                    index --;
+                }
+                else{ //no more worse cover
+                    index = alCovers.size()-1; //come back to best cover
+                }
+            }
+        }
+        //if this code is executed, it means than no available cover was found, then display default cover
+        alCovers.add(coverDefault); //Add at last the default cover if all remote cover has been discarded
+        try {
+            index = 0;
+            displayCover(0);
+        } catch (JajukException e) {
+            Log.error(e);
+        }
+    }
+    
+    
+    /**
+     * Display given cover
+     * @param index index of the cover to display
+     * @throws a JajukException if current cover can't be diplayed ( read error for ex.)
+     *
+     */
+    private void displayCover(final int index) throws JajukException{
+        synchronized(bLock){
             Log.debug("display index: "+index); //$NON-NLS-1$
             searching(true); //lookup icon
             //find next correct cover
             ImageIcon icon = null;
             Cover cover = null; 
-            while ( index >= 0){//there are some more covers after
-                try{
-                    setCursor(Util.WAIT_CURSOR); //waiting cursor
-                    cover = (Cover)alCovers.get(index);  //take image at the given index
-                    icon = cover.getImage();
-                    icon.getImage().flush();      //free image memory             
-                    setCursor(Util.DEFAULT_CURSOR);
-                    break;
-                }
-                catch(Exception e){ //this cover cannot be loaded
-                    alCovers.remove(index);
-                    //Add at last the default cover if all remote cover has been discarded
-                    if (alCovers.size() == 0){
-                        alCovers.add(coverDefault);
-                    }
-                    Log.debug("Removed cover: "+cover); //$NON-NLS-1$
-                }
-                //refresh number of found covers
-                setFoundText(); 
-                index  --; //look at next cover    
+            try{
+                setCursor(Util.WAIT_CURSOR); //waiting cursor
+                cover = (Cover)alCovers.get(index);  //take image at the given index
+                icon = cover.getImage();
+                icon.getImage().flush();      //free image memory             
             }
-            if (icon == null){ //none available cover
+            catch(Exception e){ //this cover cannot be loaded
+                setCursor(Util.DEFAULT_CURSOR);
                 searching(false);
-                return;
+                throw new JajukException("000");
             }
             Image img = icon.getImage();
             if (ConfigurationManager.getBoolean(CONF_COVERS_RESIZE)){
@@ -735,8 +773,8 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
      */ 
     private int getCoverNumber(){
         synchronized(bLock){
-            if (alCovers.size()>0 && ((Cover)alCovers.get(0)).getType() == Cover.DEFAULT_COVER){
-                return alCovers.size() -1;
+            if (alCovers.size() == 0 ||  ((Cover)alCovers.get(0)).getType() == Cover.DEFAULT_COVER){
+                return 0;
             }
             else{
                 return alCovers.size() ;

@@ -156,6 +156,9 @@ public class Cover implements Comparable,ITechnicalStrings {
             long l = System.currentTimeMillis();
             if ( iType == LOCAL_COVER || iType == DEFAULT_COVER  || iType == ABSOLUTE_DEFAULT_COVER){
                 this.image = new ImageIcon(url);
+                if ( image.getImageLoadStatus() != MediaTracker.COMPLETE){
+                    throw new JajukException("129"); //$NON-NLS-1$
+                }
             }
             else if (iType == REMOTE_COVER){
                 bData = DownloadManager.download(url);
