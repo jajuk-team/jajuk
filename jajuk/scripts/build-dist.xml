@@ -91,7 +91,7 @@
     	<fileset file='${basedir}/native/*.so'/>
     </copy>
     <copy todir='${rpmdistdir}/usr/share/applications' >
-    	<fileset file='${basedir}/dist-files/packaging/Jajuk.desktop'/>
+    	<fileset file='${basedir}/dist-files/packaging/RPMS/Jajuk.desktop'/>
     </copy>
     <chmod file='${rpmdistdir}/usr/share/applications/Jajuk.desktop' perm='ugo+rwx'/>
     <copy todir='${rpmdistdir}/usr/share/doc/packages/jajuk' >
@@ -213,7 +213,7 @@
     </target>
     
     <target name='rpm' depends='jar,helpsetjar'>
-    	<copy todir='${rpmbuilddir}/SPECS' file='${basedir}/dist-files/packaging/jajuk.specs'/>
+    	<copy todir='${rpmbuilddir}/SPECS' file='${basedir}/dist-files/packaging/RPMS/jajuk.specs'/>
     	<rpm specFile='jajuk.specs' topDir='${rpmbuilddir}' cleanBuildDir='yes' removeSpec='no' command='-bb' />
     </target>
    
@@ -221,7 +221,7 @@
          classname='com.izforge.izpack.ant.IzPackTask'/>
       <target name='izpack' depends='jar,helpsetjar' >
         <echo message='Makes the installer using IzPack'/>
-                <izpack input='/data/java/workspace/jajuk/dist-files/packaging/jajuk.izpack'
+                <izpack input='/data/java/workspace/jajuk/dist-files/packaging/IzPack/jajuk.izpack'
         output='/tmp/${distjarname}${version}.jar'
         basedir='/data/java/workspace/jajuk'
         izPackDir='/prog/IzPack'/>

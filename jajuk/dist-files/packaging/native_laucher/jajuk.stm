@@ -1,0 +1,13 @@
+Target=d:\test\Jajuk-0.3.1.exe
+UnpackFolder=.
+UsePaths=NO
+Compress=YES
+OverwritePrompt=NO
+Prompt for folder=NO
+MsgFirst=<<IDC_OK_RADIO>>
+File=D:\test\jajuk\setup.exe<DELETEONCLOSE>
+File=D:\test\jajuk\launcher.ini<DELETEONCLOSE>
+File=D:\test\jajuk\launcher-Win32.exe.manifest<DELETEONCLOSE>
+File=D:\test\jajuk\jajuk-install-0.3.1.jar<DELETEONCLOSE>
+RunLast=setup.exe<wait><suppress>
+MsgLast=
