@@ -69,6 +69,7 @@
 		<action dev='masiar' type='update'>RFE 939827 Change time display format</action>
 		<action dev='bflorat' type='fix'>921421 Freeze problems with id3 reads</action>  
      	<action dev='bflorat' type='fix'>930306	Sound problems with JRE 1.5 beta 1</action>  
+     	<action dev='bflorat' type='fix'>953490 Problem searching doc</action>  
      </release>
      
   </body>

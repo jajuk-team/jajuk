@@ -16,37 +16,37 @@
 				<tr>
 					<td style='vertical-align: top;'><b>Jajuk</b> ( buttons, labels, tooltips... )</td>
 					<td style='vertical-align: top;'>
-						<img alt='en' src='flags/flag_en.png' style='width: 21px; height: 14px;'/>
-						<img alt='fr' src='flags/flag_fr.png' style='width: 21px; height: 14px;'/>
-						<img alt='de' src='flags/flag_de.png' style='width: 21px; height: 14px;'/>
-						<img alt='it' src='flags/flag_it.png' style='width: 21px; height: 14px;'/>
-						<img alt='sv' src='flags/flag_sv.png' style='width: 21px; height: 14px;'/>
-						<img alt='nl' src='flags/flag_nl.png' style='width: 21px; height: 14px;'/>
+						<img alt='English' title='English' src='flags/flag_en.png' style='width: 21px; height: 14px;'/>
+						<img alt='French' title='French' src='flags/flag_fr.png' style='width: 21px; height: 14px;'/>
+						<img alt='German' title='German' src='flags/flag_de.png' style='width: 21px; height: 14px;'/>
+						<img alt='Italian' title='Italian' src='flags/flag_it.png' style='width: 21px; height: 14px;'/>
+						<img alt='Swedish' title='Swedish' src='flags/flag_sv.png' style='width: 21px; height: 14px;'/>
+						<img alt='Dutch' title='Dutch' src='flags/flag_nl.png' style='width: 21px; height: 14px;'/>
 					</td>
 				</tr>
 				<tr>
 					<td style='vertical-align: top;'>Readme file at install and on the web site</td>
 					<td style='vertical-align: top;'>
-						<img alt='en' src='flags/flag_en.png' style='width: 21px; height: 14px;'/>
-						<img alt='fr' src='flags/flag_fr.png' style='width: 21px; height: 14px;'/>
-						<img alt='de' src='flags/flag_de.png' style='width: 21px; height: 14px;'/>
-						<img alt='it' src='flags/flag_it.png' style='width: 21px; height: 14px;'/>
-						<img alt='sv' src='flags/flag_sv.png' style='width: 21px; height: 14px;'/>
-						<img alt='nl' src='flags/flag_nl.png' style='width: 21px; height: 14px;'/>
-						<img alt='zh' src='flags/flag_zh.png' style='width: 21px; height: 14px;'/>
+						<img alt='English' title='English' src='flags/flag_en.png' style='width: 21px; height: 14px;'/>
+						<img alt='French' title='French' src='flags/flag_fr.png' style='width: 21px; height: 14px;'/>
+						<img alt='German' title='German' src='flags/flag_de.png' style='width: 21px; height: 14px;'/>
+						<img alt='Italian' title='Italian' src='flags/flag_it.png' style='width: 21px; height: 14px;'/>
+						<img alt='Swedish' title='Swedish' src='flags/flag_sv.png' style='width: 21px; height: 14px;'/>
+						<img alt='Dutch' title='Dutch' src='flags/flag_nl.png' style='width: 21px; height: 14px;'/>						
+						<img alt='Chinese' title='Chinese' src='flags/flag_zh.png' style='width: 21px; height: 14px;'/>
 					</td>
 				</tr>
 				<tr>
 					<td style='vertical-align: top;'>Online Documentation ( Help perspective )</td>
 					<td style='vertical-align: top;'>
-						<img alt='en' src='flags/flag_en.png' style='width: 21px; height: 14px;'/>
-						<img alt='fr' src='flags/flag_fr.png' style='width: 21px; height: 14px;'/>
+						<img alt='English' title='English' src='flags/flag_en.png' style='width: 21px; height: 14px;'/>
+						<img alt='French' title='French' src='flags/flag_fr.png' style='width: 21px; height: 14px;'/>
 					</td>
 				</tr>
 				<tr>
 					<td style='vertical-align: top;'>Web site ( <a href='http://jajuk.sourceforge.net'>http://jajuk.sourceforge.net</a> )</td>
 					<td style='vertical-align: top;'>
-						<img alt='en' src='flags/flag_en.png' style='width: 21px; height: 14px;'/>
+						<img alt='English' title='English' src='flags/flag_en.png' style='width: 21px; height: 14px;'/>					
 					</td>
 				</tr>
 			</tbody>
@@ -203,6 +203,7 @@
     </tr>
   </tbody>
 </table>
+	<p>Java is a trademark or registered trademark of Sun Microsystems, Inc. in the United States and other countries.</p>
    </section>
   </body>
 </document>
