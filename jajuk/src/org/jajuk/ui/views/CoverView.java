@@ -249,7 +249,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                                             return; //no web covers found, just leave
                                         }
                                         //remove default cover if some remote cover have been found
-                                        if ( alCovers.size()>0 && ((Cover)alCovers.get(0)).getType() == Cover.DEFAULT_COVER){
+                                        if ( alUrls.size() > 0 && alCovers.size()>0 && ((Cover)alCovers.get(0)).getType() == Cover.DEFAULT_COVER){
                                             alCovers.remove(0);
                                         }
                                         Iterator it = alUrls.iterator(); //add logicaly found covers 
@@ -375,7 +375,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                     //refresh number of found covers
                     SwingUtilities.invokeLater(new Runnable() {
                         public void run() {
-                            jlFound.setText(jlFound+" "+Messages.getString("CoverView.9"));
+                            jlFound.setText(getCoverNumber()+" "+Messages.getString("CoverView.9"));
                         }
                     });
                     index  --; //look at next cover    
@@ -538,7 +538,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
     * @return number of real covers ( not default) covers found
     */ 
     private int getCoverNumber(){
-        if (((Cover)alCovers.get(0)).getType() == Cover.DEFAULT_COVER){
+        if (alCovers.size()>0 && ((Cover)alCovers.get(0)).getType() == Cover.DEFAULT_COVER){
             return alCovers.size() -1;
         }
         else{
