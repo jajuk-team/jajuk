@@ -217,6 +217,9 @@ public class Directory extends PropertyAdapter implements Comparable{
 			return;
 		}
 		for (int i = 0; i < files.length; i++) {
+			if (files[i].isDirectory()){ //if it is a directory, continue
+				continue;
+			}
 			boolean bIsMusic = Boolean.valueOf(TypeManager.getTypeByExtension(Util.getExtension(files[i])).getProperty(TYPE_PROPERTY_IS_MUSIC)).booleanValue();
 			if (bIsMusic) {
 				//check the file is not already known in old database
