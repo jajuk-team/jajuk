@@ -415,16 +415,13 @@ public class DeviceWizard extends JFrame implements ActionListener,ITechnicalStr
 					case 1: //file cd
 						jcbAutoMount.setSelected(false);
 						break;
-					case 2: //audio cd
+					case 2: //remote
 						jcbAutoMount.setSelected(false);
 						break;
-					case 3: //remote
+					case 3: //ext dd
 						jcbAutoMount.setSelected(false);
 						break;
-					case 4: //ext dd
-						jcbAutoMount.setSelected(false);
-						break;
-					case 5: //player
+					case 4: //player
 						jcbAutoMount.setSelected(false);
 						break;
 				}

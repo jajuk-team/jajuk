@@ -140,5 +140,7 @@ public class StyleManager {
 	public static synchronized Style getStyle(String sId) {
 		return (Style) hmStyles.get(sId);
 	}
+	
+	
 
 }

@@ -56,7 +56,6 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	public static String[] sDeviceTypes = {
 			Messages.getString("Device_type.directory"),
 			Messages.getString("Device_type.file_cd"),
-			Messages.getString("Device_type.audio_cd"),
 			Messages.getString("Device_type.remote"),
 			Messages.getString("Device_type.extdd"),
 			Messages.getString("Device_type.player"),

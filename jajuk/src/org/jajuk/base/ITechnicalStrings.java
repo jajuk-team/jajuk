@@ -115,7 +115,7 @@ public interface ITechnicalStrings {
 	
 	//images
 	public static final String IMAGES_SPLASHSCREEN =  PATH_IMAGES + "jajuk-slashscreen.png";
-	
+	public static final String IMAGES_STAT_PAPER =  PATH_IMAGES + "No-Ones-Laughing-3.jpg";
 	
 	//logs
 	public static final String LOG_PATTERN="%d{yyyy/MM/dd HH:mm:ss} [%p] %m\n";
@@ -175,6 +175,7 @@ public interface ITechnicalStrings {
 	public static final String VIEW_NAME_LOGICAL_TABLE = "org.jajuk.ui.views.LogicalTableView";
 	public static final String VIEW_NAME_ABOUT = "org.jajuk.ui.views.AboutView";
 	public static final String VIEW_NAME_HELP = "org.jajuk.ui.views.HelpView";
+	public static final String VIEW_NAME_STAT = "org.jajuk.ui.views.StatView";
 	 	
 	//extensions
 	public static final String EXT_MP3 = "mp3";
@@ -271,7 +272,7 @@ public interface ITechnicalStrings {
 	public static final String VIEW_TRACK_LIST		= "VIEW_TRACK_LIST";
 	
 	//Date format
-	public static final String DATE_FILE = "dd/MM/yyyy";
+	public static final String DATE_FILE = "yyyyMMdd";
 	
 	//XML tags
 	public static final String XML_TYPES = "types";
@@ -344,7 +345,7 @@ public interface ITechnicalStrings {
 		"\t</perspective>\n"+
 		"\t<perspective class='"+PERSPECTIVE_NAME_STATISTICS+"'>\n"+
 		"\t\t<views>\n"+
-/*		"\t\t\t<view class='org.jajuk.ui.views.StatView'/>\n"+*/
+		"\t\t\t<view class='"+VIEW_NAME_STAT+"' width='100' height='100' x='0' y='0' />\n"+
 		"\t\t</views>\n"+
 		"\t</perspective>\n"+
 		"\t<perspective  class='"+PERSPECTIVE_NAME_HELP+"'>\n"+

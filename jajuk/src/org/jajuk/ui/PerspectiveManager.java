@@ -212,6 +212,7 @@ public class PerspectiveManager extends DefaultHandler implements ITechnicalStri
 				int iHeight = 0;
 				int iX = 0;
 				int iY = 0;
+				long l = System.currentTimeMillis();
 				try {
 					sClassName = attributes.getValue(attributes.getIndex("class")); 
 					iWidth = Integer.parseInt(attributes.getValue(attributes.getIndex("width")));
@@ -224,7 +225,7 @@ public class PerspectiveManager extends DefaultHandler implements ITechnicalStri
 					return;
 				}
 				pCurrent.addView(view,iWidth,iHeight,iX,iY);
-				Log.debug("Registered view: "+attributes.getValue(0));
+				Log.debug(new StringBuffer("Registered view: ").append(attributes.getValue(0)).append(" in ").append(System.currentTimeMillis()-l).append(" ms").toString());
 			}
 
 		}

@@ -54,6 +54,7 @@ import org.jajuk.ui.LNFManager;
 import org.jajuk.ui.PerspectiveBarJPanel;
 import org.jajuk.ui.PerspectiveManager;
 import org.jajuk.ui.SplashScreen;
+import org.jajuk.ui.views.PhysicalTreeView;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;

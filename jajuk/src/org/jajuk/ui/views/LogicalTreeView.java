@@ -251,6 +251,7 @@ public class LogicalTreeView extends ViewAdapter implements ActionListener,Obser
 		//delete previous tree
 		removeAll();
 		top.removeAllChildren();
+		SwingUtilities.updateComponentTreeUI(this); //needed to avoid stange dedoubling of trees
 		ArrayList alTracks = TrackManager.getSortedTracks();
 		Iterator it1 = alTracks.iterator();
 		while ( it1.hasNext()){
@@ -488,12 +489,12 @@ public class LogicalTreeView extends ViewAdapter implements ActionListener,Obser
 	public void update(String subject) {
 		System.out.println(subject);
 		if ( subject.equals(EVENT_DEVICE_UNMOUNT) || subject.equals(EVENT_DEVICE_UNMOUNT)){
-			SwingUtilities.updateComponentTreeUI(jspTree);
+			SwingUtilities.updateComponentTreeUI(this.getRootPane());
 			jtree.setRowHeight(25);
 		}
 		else if( subject.equals(EVENT_DEVICE_REFRESH)){
 			populate();
-			SwingUtilities.updateComponentTreeUI(jspTree);
+			SwingUtilities.updateComponentTreeUI(this.getRootPane());
 			jtree.setRowHeight(25);
 		}
 	}

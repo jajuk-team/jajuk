@@ -19,6 +19,7 @@
 package org.jajuk.ui.views;
 
 import java.awt.Component;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -278,6 +279,7 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 		//delete previous tree
 		removeAll();
 		top.removeAllChildren();
+		SwingUtilities.updateComponentTreeUI(this);
 		//add devices
 		ArrayList alDevices = DeviceManager.getDevices();
 		Collections.sort(alDevices);
@@ -356,18 +358,14 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 							else setIcon(new ImageIcon(ICON_DEVICE_CD_UNMOUNTED_SMALL));
 							break;
 						case 2 : 
-							if ( device.isMounted())	setIcon(new ImageIcon(ICON_DEVICE_CD_AUDIO_MOUNTED_SMALL));
-							else setIcon(new ImageIcon(ICON_DEVICE_CD_AUDIO_UNMOUNTED_SMALL));
-							break;
-						case 3 : 
 							if ( device.isMounted())	setIcon(new ImageIcon(ICON_DEVICE_REMOTE_MOUNTED_SMALL));
 							else setIcon(new ImageIcon(ICON_DEVICE_REMOTE_UNMOUNTED_SMALL));
 							break;
-						case 4 : 
+						case 3 : 
 							if ( device.isMounted())	setIcon(new ImageIcon(ICON_DEVICE_EXT_DD_MOUNTED_SMALL));
 							else setIcon(new ImageIcon(ICON_DEVICE_EXT_DD_UNMOUNTED_SMALL));
 							break;
-						case 5 : 
+						case 4 : 
 							if ( device.isMounted())	setIcon(new ImageIcon(ICON_DEVICE_PLAYER_MOUNTED_SMALL));
 							else setIcon(new ImageIcon(ICON_DEVICE_PLAYER_UNMOUNTED_SMALL));
 							break;
@@ -554,7 +552,7 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 	System.out.println(subject);
 		if ( subject.equals(EVENT_DEVICE_UNMOUNT) || subject.equals(EVENT_DEVICE_UNMOUNT) || subject.equals(EVENT_DEVICE_REFRESH) ) {
 			populate();
-			SwingUtilities.updateComponentTreeUI(jspTree);
+			SwingUtilities.updateComponentTreeUI(this.getRootPane());
 			jtree.setRowHeight(25);
 		}
 	}

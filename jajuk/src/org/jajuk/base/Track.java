@@ -172,6 +172,19 @@ public class Track extends PropertyAdapter implements Comparable{
 		return alFiles;
 	}
 
+	/**
+	 * Get additionned size of all files this track map to
+	 * @return the total size
+	 */
+	public long getTotalSize(){
+		long l = 0;
+		Iterator it = alFiles.iterator();
+		while ( it.hasNext()){
+			File file = (File)it.next();
+			l += file.lSize;
+		}
+		return l;
+	}
 	
 	/**
 	 * @return best file to play for this track

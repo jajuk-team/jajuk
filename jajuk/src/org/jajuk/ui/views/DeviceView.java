@@ -262,21 +262,13 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 					break;
 				case 2 : 
 					if ( device.isMounted()){
-						sIcon = ICON_DEVICE_CD_AUDIO_MOUNTED;
-					}
-					else{
-						sIcon = ICON_DEVICE_CD_AUDIO_UNMOUNTED;
-					}
-					break;
-				case 3 : 
-					if ( device.isMounted()){
 						sIcon = ICON_DEVICE_REMOTE_MOUNTED;
 					}
 					else{
 						sIcon = ICON_DEVICE_REMOTE_UNMOUNTED;
 					}
 					break;
-				case 4 : 
+				case 3 : 
 					if ( device.isMounted()){
 						sIcon = ICON_DEVICE_EXT_DD_MOUNTED;
 					}
@@ -284,7 +276,7 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 						sIcon = ICON_DEVICE_EXT_DD_UNMOUNTED;
 					}
 					break;
-				case 5 : 
+				case 4 : 
 					if ( device.isMounted()){
 						sIcon = ICON_DEVICE_PLAYER_MOUNTED;
 					}

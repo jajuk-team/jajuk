@@ -27,9 +27,11 @@ import java.net.URL;
 import javax.help.CSH;
 import javax.help.HelpBroker;
 import javax.help.HelpSet;
+import javax.swing.JButton;
 import javax.swing.JEditorPane;
 import javax.swing.JScrollPane;
 
+import org.jajuk.ui.CommandJPanel;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 
@@ -66,10 +68,14 @@ public class HelpView extends ViewAdapter {
 		hv = this;
 		try{
 			ClassLoader cl = HelpView.class.getClassLoader();
-			URL url = HelpSet.findHelpSet(cl,"/prog/api/jh2.0/demos/hs/merge/Master.hs");
-			hs= new HelpSet(cl,url);
+			URL url = HelpSet.findHelpSet(cl,"Master.hs");
+			hs= new HelpSet(null,url);
 			hb = hs.createHelpBroker();
-			new CSH.DisplayHelpFromSource(hb);
+			/*JButton jbHelp = new JButton("help!");
+			jbHelp.addActionListener(new CSH.DisplayHelpFromSource(hb));
+			add(jbHelp);*/
+			//CSH.setHelpIDString(this.getRootPane(),"main");
+			//hb.showID("main");
 		}
 		catch(Exception e){
 			Log.error(e); 
