@@ -599,7 +599,6 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                         add(jl,"0,1");//$NON-NLS-1$
                         setCursor(Util.DEFAULT_CURSOR);
                         searching(false);
-                        System.gc();//suggest JVM to perform a memory cleanup        
                     }
                 }
             });

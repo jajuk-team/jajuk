@@ -222,7 +222,6 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 		AlbumManager.cleanup();
 		//Playlists cleanup
 		PlaylistManager.cleanup();
-		System.gc(); //force garbage collection after cleanup
 	}
 
 	

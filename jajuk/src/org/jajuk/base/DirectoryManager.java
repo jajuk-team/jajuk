@@ -111,7 +111,6 @@ public class DirectoryManager {
 				alIds.remove(directory.getId());
 			}
 		}
-		System.gc(); //force garbage collection after cleanup
 	}
 
 	/**

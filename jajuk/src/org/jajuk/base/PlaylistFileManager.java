@@ -82,7 +82,6 @@ public class PlaylistFileManager {
 				it.remove();
 			}
 		}
-		System.gc(); //force garbage collection after cleanup
 	}
 
 	/** Return all registred PlaylistFiles */
