@@ -53,6 +53,8 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,Obser
 	//consts
 	/** Informative message type  ( displayed in blue ) **/
 	public static final int INFORMATIVE = 0;
+	/** Player message type  ( displayed in blue ) **/
+	public static final int PLAYER = 2;
 	/** Informative message type ( displayed in red )**/
 	public static final int ERROR = 1;
 	/**Self instance*/
@@ -108,7 +110,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,Obser
 		 //message bar
 		jlMessage = new JLabel();  
 		jlMessage.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		setMessage(Messages.getString("Main.13"), InformationJPanel.INFORMATIVE);  //$NON-NLS-1$
+		setMessage(Messages.getString("JajukWindow.18"), InformationJPanel.PLAYER);  //$NON-NLS-1$
 		
 		//selection bar
 		jlSelection = new JLabel();  
@@ -205,6 +207,9 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,Obser
 				case INFORMATIVE:
 					jlMessage.setForeground(Color.BLUE);
 					break;
+				case PLAYER:
+					jlMessage.setForeground(Color.BLUE);
+					break;
 				case ERROR:
 					jlMessage.setForeground(Color.RED);
 					break;
@@ -216,7 +221,9 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,Obser
 				jlMessage.setToolTipText(sMessage);
 			}
 		});
-		ObservationManager.notify(EVENT_INFORMATION_DISPLAY);
+		if (iMessageType == PLAYER){ //only notify for player messages
+		    ObservationManager.notify(EVENT_INFORMATION_DISPLAY);
+		}
 	}
 
 	/**
@@ -295,7 +302,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,Obser
 	            String sMessage = Messages.getString("FIFO.10")+file.getTrack().getAuthor().getName2() //$NON-NLS-1$
 	            		+" / "+file.getTrack().getAlbum().getName2()+" / " //$NON-NLS-1$ //$NON-NLS-2$
 	            		+file.getTrack().getName();//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-	            setMessage(sMessage,InformationJPanel.INFORMATIVE); 
+	            setMessage(sMessage,InformationJPanel.PLAYER); 
 	            setQuality(file.getQuality2()+Messages.getString("FIFO.13")); //$NON-NLS-1$
 	        }
 	    }
