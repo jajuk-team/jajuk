@@ -339,11 +339,11 @@ public class FIFO implements ITechnicalStrings{
                 Util.stopWaiting(); //stop the waiting cursor
                 return;
             }
-            if (  (fCurrent!= null && fCurrent.getDirectory() == null )  //basic file
+            if (  (fCurrent != null && fCurrent.getDirectory() == null )  //basic file
                    || itemLast == null  //first track, display cover
                    || itemLast.getFile().getDirectory() == null //previous file was a basic file
                    || (ConfigurationManager.getBoolean(CONF_COVERS_SHUFFLE) && ConfigurationManager.getBoolean(CONF_COVERS_CHANGE_AT_EACH_TRACK)) //change cover at each track in shuffle cover mode ? 
-                    ||(itemLast != null  && !itemLast.getFile().getDirectory().equals(fCurrent.getDirectory())) ){  //if we are always in the same directory, just leave to save cpu
+                    ||( !itemLast.getFile().getDirectory().equals(fCurrent.getDirectory())) ){  //if we are always in the same directory, just leave to save cpu
                 ObservationManager.notify(EVENT_COVER_REFRESH); //request update cover 
             }
             itemLast = (StackItem)getCurrentItem().clone(); //save the last played track
