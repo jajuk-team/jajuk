@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding='iso-8859-1'?> 
+<document> 
+	<properties> 
+		<author email="bertrand@florat.net">Bertrand Florat</author>
+		<title>Translation Howto</title> 
+	</properties> 
+  	<body>
+  		<section name='Translation howto'>
+   			<subsection name='Target'>
+   			 <p>Anyone can translate Jajuk, no computer science is required.
+				For any question or comments, please send me a mail : <a href="mailto:bertrand@florat.net">
+				bertrand@florat.net</a>. Translate current Jajuk version takes approximatly 3 hours.</p>
+    		</subsection>
+   			
+   			<subsection name='How it works'>
+   			<p>Jajuk uses the standard Java internationalization (i18n) system based on properties file. Files are:</p>
+			<p>${jajuk installation path}/src/org/jajuk/i18n/<br></br>
+                                          jajuk.properties<br></br>
+                                          jajuk_fr.properties<br></br>
+                                          jajuk_${locale}.properties</p>
+            <p>${locale} is a ISO language code, see <a href='http://www.ics.uci.edu/pub/ietf/http/related/iso639.txt'>http://www.ics.uci.edu/pub/ietf/http/related/iso639.txt</a>. 
+            jajuk.properties contains default resource bunddle (english) and you have a property file for each language.</p>
+    		</subsection>
+   			
+   			<subsection name='How to translate'>
+			<ul>
+			<li><p>Get  property file of your choice as a source language. Example: use jajuk.properties as english source language at <a href='http://cvs.sourceforge.net/viewcvs.py/jajuk/jajuk/src/org/jajuk/i18n/jajuk.properties'>http://cvs.sourceforge.net/viewcvs.py/jajuk/jajuk/src/org/jajuk/i18n/jajuk.properties</a>
+				or any other property file in the directory.</p>
+			</li>
+			<li><p>Your file should begin with :</p>
+				<p><span style="font-family: monospace;">#Jajuk ${your language} langpack. <br></br>
+				#Written by : ${your name}<br></br>
+				#Copyright 2003,2004 ${your name}, this is part of Jajuk distributed under the GPL V2 license<br></br>
+				#FROM ${source language} ${cvs version}</span></p>
+				<p>FROM comment gives exact CVS version you translated to allow diffs with newer versions</p>
+			</li>
+			
+			<li><p>Look at file structure: It is a simple key=value  format. Example:</p>
+				<p><span style="font-family: monospace;">ParameterView.73=Check this if you allow others people to come read music from your box<br></br>
+				ParameterView.74=Password :<br></br>
+				ParameterView.75=Set password access to your box. If no password is set, no one can read from it</span></p>
+				<p>Simply translate each value, Previous example in french:</p>
+				<p><span style="font-family: monospace;">ParameterView.73=Accepter que d'autres utilisateurs lise la musique située sur votre machine<br></br>
+				ParameterView.74=Mot de passe :<br></br>
+				ParameterView.75=Fixez un mot de passe à votre machine. Tant que le mot de passe n'est pas fixé, personne ne peut s'y connecter</span></p>
+			</li>
+
+			<li><p>Send me (  <a href='bertrand@florat.net'>bertrand@florat.net</a>) your work as a property file with your local ( ex: jajuk_ru.properties for russian ). It could be nice you send also a message in the forum: 
+			<a href='http://sourceforge.net/forum/forum.php?forum_id=315360'>http://sourceforge.net/forum/forum.php?forum_id=315360</a>. Contact me if you have a developer profile so I will create a 
+			CVS account for you. Then you will be able to commit and maintain your translation files directly in the repository.</p>
+			</li>
+
+			<li><p>(Optional) If you want to test your work ( needs ant to be installed ):</p></li>
+				<ul>
+					<li><p>Edit  ${jajuk installation path}/src/org/jajuk/Main.java file.and search for line :</p></li>
+					<p><span style="font-family: monospace;">Messages.registerLocal("fr","Language_desc_fr"); //$NON-NLS-1$ //$NON-NLS-2$</span></p>
+					<p>Add after this line your own local. Example :</p>
+					<span style="font-family: monospace;">Messages.registerLocal("ru","Language_desc_ru"); //$NON-NLS-1$ //$NON-NLS-2$</span>
+					<li><p>Copy your properties file in the ${jajuk installation path}/src/org/jajuk/i18n directory</p></li>
+					<li><p>Go in the ${jajuk installation path} directory where you can find the build.xml file</p></li>
+					<li><p>Rebuild Jajuk typing 'ant'</p></li>
+					<li><p>Launch Jajuk and set language in the parameter view of the configuration perspective.</p></li>
+					<li><p>Check your work.</p></li>
+				</ul>
+			</ul>
+
+    	</subsection>
+   			
+   			<subsection name='Tips'>
+   			<ul>
+	   			<li><p>Off course, do not modify keys but only values.</p></li>
+				<li><p>If a value contains a '\ ', do not drop it, it means there is a space at line start or end.</p></li>
+				<li><p>Keep all punctuation and specials characters like '[','.' and so on...</p></li>
+				<li><p>Set date format according your locale, ex: DD/MM/YYYY in french, YYYY-MM-DD in english</p></li>
+				<li><p>Try to keep values length near from english's one so labels will not be too long and stay visible.</p></li>
+				</ul>
+    		</subsection>
+    	</section>
+  </body>
+</document>
