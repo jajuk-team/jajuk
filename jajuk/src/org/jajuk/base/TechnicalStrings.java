@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.2  2003/10/09 21:14:13  bflorat
+ * new keys and suppressed hard path
+ *
  * Revision 1.1  2003/10/07 21:02:22  bflorat
  * Initial commit
  *
@@ -31,7 +34,7 @@ package org.jajuk.base;
 public interface TechnicalStrings {
 	
 		// directory path
-	public static final String ICON_PATH = "D:/DonneesSeb/PC/ProjetJukebox/dist-files/icons/";
+	public static final String ICON_PATH = System.getProperty("user.dir")+"/dist-files/icons/";
 	
 		// paths to icons
 	public static final String ICON_REPEAT = ICON_PATH + "16x16/repeat.png";
@@ -55,5 +58,9 @@ public interface TechnicalStrings {
 	public static final String ICON_PERSPECTIVE_HELP				= ICON_PATH + "16x16/bottom.png";
 	public static final String ICON_PERSPECTIVE_STATISTICS		= ICON_PATH + "16x16/bottom.png";
 	public static final String ICON_PERSPECTIVE_CONFIGURATION	= ICON_PATH + "16x16/bottom.png";
+
+	//logs
+	public static final String LOG_FILE = System.getProperty("user.home")+"/.jajuk/jajuk.log";
+	public static final String LOG_PATTERN="%d{HH:mm:ss} [%p] %m\n";
 
 }
