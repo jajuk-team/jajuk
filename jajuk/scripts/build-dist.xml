@@ -38,7 +38,7 @@
   </target>
  
  <target name="compile" description="o Compile the code" depends="mkdist">
-    <javac destdir="${distdir}/classes" deprecation="true" debug="true" optimize="false" excludes="**/package.html">
+    <javac destdir="${distdir}/classes" deprecation="true" debug="false" optimize="true" excludes="**/package.html">
       <src>
         <pathelement path="${distdir}/${srcdir}">
         </pathelement>

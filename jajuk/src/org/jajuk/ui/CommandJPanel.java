@@ -19,35 +19,30 @@
  */
 package org.jajuk.ui;
 
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.util.HashSet;
-import java.util.Iterator;
 
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
-import javax.swing.JTextField;
 import javax.swing.JToolBar;
-import javax.swing.ListCellRenderer;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import layout.TableLayout;
 
 import org.jajuk.base.FIFO;
-import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.History;
 import org.jajuk.base.HistoryItem;
 import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.base.Player;
+import org.jajuk.base.SearchResult;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Util;
@@ -59,7 +54,7 @@ import org.jajuk.util.log.Log;
  * @author     bflorat
  * @created    3 oct. 2003
  */
-public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionListener{
+public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionListener,ListSelectionListener,ChangeListener{
 	
 	//singleton
 	static private CommandJPanel command;
@@ -101,6 +96,10 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 	static boolean bIsContinueEnabled = true;
 	/**Intro mode flag*/
 	static boolean bIsIntroEnabled = false;
+	/**Forward or rewind jump size in track percentage*/
+	static final int JUMP_SIZE = 10;
+	/**Slider move event filter*/
+	private boolean bPositionChanging = false;
 
 	
 		
@@ -114,7 +113,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 	private CommandJPanel(){
 		//dimensions
 		int height1 = 25;  //buttons, components
-		int height2 = 36; //slider ( at least this height in the gtk+ l&f ) 
+		//int height2 = 36; //slider ( at least this height in the gtk+ l&f ) 
 		int iSeparator = 0;
 		//set default layout and size
 		double[][] size ={{0.25,iSeparator,300,iSeparator,0.13,iSeparator,0.10,iSeparator,0.19,iSeparator,0.16,iSeparator,0.16},
@@ -124,7 +123,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		//search toolbar
 		jtbSearch = new JToolBar();
 		jtbSearch.setFloatable(false);
-		sbSearch = new SearchBox();
+		sbSearch = new SearchBox(this);
 		jtbSearch.add(sbSearch);
 			
 		//history toolbar
@@ -173,9 +172,11 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		jbGlobalRandom.setToolTipText(Messages.getString("CommandJPanel.Play_a_shuffle_selection_from_the_entire_collection_1")); //$NON-NLS-1$
 		jtbSpecial.add(jbGlobalRandom);
 		jbBestof = new JButton(Util.getIcon(ICON_BESTOF)); 
+		jbBestof.addActionListener(this);
 		jbBestof.setToolTipText(Messages.getString("CommandJPanel.Play_your_own_favorite_tracks_2")); //$NON-NLS-1$
 		jtbSpecial.add(jbBestof);
 		jbMute = new JButton(Util.getIcon(ICON_MUTE)); 
+		jbMute.addActionListener(this);
 		jbMute.setToolTipText(Messages.getString("CommandJPanel.Turn_sound_off_3")); //$NON-NLS-1$
 		jtbSpecial.add(jbMute);
 		
@@ -194,6 +195,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		jtbPlay.addSeparator();
 		jbRew = new JButton(Util.getIcon(ICON_REW)); 
 		jbRew.setToolTipText(Messages.getString("CommandJPanel.Fast_rewind_in_current_track_6")); //$NON-NLS-1$
+		jbRew.addActionListener(this);
 		jtbPlay.add(jbRew);
 		jbPlayPause = new JButton(Util.getIcon(ICON_PLAY)); 
 		jbPlayPause.setToolTipText(Messages.getString("CommandJPanel.Play/pause_current_track_7")); //$NON-NLS-1$
@@ -205,6 +207,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		jtbPlay.add(jbStop);
 		jbFwd = new JButton(Util.getIcon(ICON_FWD)); 
 		jbFwd.setToolTipText(Messages.getString("CommandJPanel.Fast_forward_in_current_track_9")); //$NON-NLS-1$
+		jbFwd.addActionListener(this);
 		jtbPlay.add(jbFwd);
 		
 		//Volume toolbar
@@ -214,6 +217,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		jtbVolume.add(jlVolume);
 		jsVolume = new JSlider(0,100,50);
 		jsVolume.setToolTipText(Messages.getString("CommandJPanel.Volume_1")); //$NON-NLS-1$
+		jsVolume.addChangeListener(this);
 		jtbVolume.add(jsVolume);
 		
 		//Position toolbar
@@ -222,6 +226,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		jlPosition = new JLabel(Util.getIcon(ICON_POSITION)); 
 		jtbPosition.add(jlPosition);
 		jsPosition = new JSlider(0,100,0);
+		jsPosition.addChangeListener(this);
 		jsPosition.setToolTipText(Messages.getString("CommandJPanel.Go_to_this_position_in_the_played_track_2")); //$NON-NLS-1$
 		jtbPosition.add(jsPosition);
 				
@@ -277,9 +282,21 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		if (ae.getSource() == jbGlobalRandom ){
 			org.jajuk.base.File file = FileManager.getShuffleFile();
 			if (file != null){
+				FIFO.getInstance().setBestof(false); //break best of mode if set
 				FIFO.getInstance().setGlobalRandom(true);
 				FIFO.getInstance().push(file,false,true);
 			}
+		}
+		if (ae.getSource() == jbBestof ){
+			org.jajuk.base.File file = FileManager.getBestOfFile();
+			if (file != null){
+				FIFO.getInstance().setGlobalRandom(false); //break global random mode if set
+				FIFO.getInstance().setBestof(true);
+				FIFO.getInstance().push(file,false,true);
+			}
+		}
+		else if (ae.getSource() == jbMute ){
+			Util.setMute(!Util.getMute());
 		}
 		else if(ae.getSource() == jbStop){
 			Player.stop();
@@ -290,8 +307,66 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		else if (ae.getSource() == jbNext){
 			FIFO.getInstance().playNext();
 		}
-		
+		else if (ae.getSource() == jbRew){
+			int iCurrentPosition = FIFO.getInstance().getCurrentPosition();
+			int iTrackLength = (int)(FIFO.getInstance().getCurrentFile().getTrack().getLength());
+			float fCurrentPercent = 100*(float)iCurrentPosition/iTrackLength;
+			FIFO.getInstance().setCurrentPosition(fCurrentPercent-JUMP_SIZE);
+		}
+		else if (ae.getSource() == jbFwd){
+			int iCurrentPosition = FIFO.getInstance().getCurrentPosition();
+			int iTrackLength = (int)(FIFO.getInstance().getCurrentFile().getTrack().getLength());
+			float fCurrentPercent = 100*(float)iCurrentPosition/iTrackLength;
+			FIFO.getInstance().setCurrentPosition(fCurrentPercent+JUMP_SIZE);
+		}
+	}
+	
+	/* (non-Javadoc)
+	 * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.ListSelectionEvent)
+	 */
+	public void valueChanged(ListSelectionEvent e) {
+		if (!e.getValueIsAdjusting()){
+			SearchResult sr = (SearchResult)sbSearch.alResults.get(sbSearch.jlist.getSelectedIndex());
+			FIFO.getInstance().push(sr.getFile(),false);
+			sbSearch.popup.hide();
+			requestFocus();	
+		}
+	}
+	
+	 /*
+	  *  @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
+	 */
+	public void stateChanged(ChangeEvent e) {
+		if ( e.getSource() == jsVolume){
+			Util.setVolume((float)jsVolume.getValue()/100);
+		}
+		else if (e.getSource() == jsPosition && !bPositionChanging){
+			bPositionChanging = true;
+			new Thread(){  //set position asynchonously and after a delay to take only one value when slider is moved
+				public void run(){
+					try{
+						Thread.sleep(500);
+					}
+					catch(InterruptedException ie){
+						Log.error(ie);
+					}
+					FIFO.getInstance().setCurrentPosition(jsPosition.getValue());
+					bPositionChanging = false;
+				}
+			}.start();
+		}
 	}
 
+	/**
+	 * Set Slider position
+	 * @param i percentage of slider
+	 */
+	public void setCurrentPosition(int i){
+		if ( !bPositionChanging ){//don't move slider when user do it himself a	t the same time
+			bPositionChanging = true;  //block events so player is not affected
+			this.jsPosition.setValue(i);
+			bPositionChanging = false;
+		}
+	}
 
 }

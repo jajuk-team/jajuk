@@ -37,14 +37,19 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import layout.TableLayout;
 
+import org.jajuk.base.FileManager;
 import org.jajuk.base.History;
+import org.jajuk.base.SearchResult;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.CommandJPanel;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.LNFManager;
+import org.jajuk.ui.SearchBox;
 import org.jajuk.ui.ViewManager;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.MD5Processor;
@@ -57,7 +62,7 @@ import org.jajuk.util.log.Log;
  * @author     bflorat
  * @created    17 nov. 2003
  */
-public class ParameterView extends ViewAdapter implements ActionListener {
+public class ParameterView extends ViewAdapter implements ActionListener,ListSelectionListener {
 
 	/**Self instance*/
 	private static ParameterView pv;
@@ -73,7 +78,7 @@ public class ParameterView extends ViewAdapter implements ActionListener {
 		JRadioButton jrbLast;
 		JRadioButton jrbShuffle;
 		JRadioButton jrbFile;
-		JTextField jtfFile;		
+		SearchBox sbSearch;		
 	JPanel jpConfirmations;
 		JCheckBox jcbBeforeDelete;
 		JCheckBox jcbBeforeExit;
@@ -175,8 +180,14 @@ public class ParameterView extends ViewAdapter implements ActionListener {
 		jrbShuffle.setToolTipText(Messages.getString("ParameterView.15")); //$NON-NLS-1$
 		jrbFile = new JRadioButton(Messages.getString("ParameterView.16")); //$NON-NLS-1$
 		jrbFile.setToolTipText(Messages.getString("ParameterView.17")); //$NON-NLS-1$
-		jtfFile = new JTextField();	
-		jtfFile.setToolTipText(Messages.getString("ParameterView.18")); //$NON-NLS-1$
+		sbSearch = new SearchBox(this);
+		if (STARTUP_MODE_FILE.equals(ConfigurationManager.getProperty(CONF_STARTUP_MODE))){
+			String sFileId = ConfigurationManager.getProperty(CONF_STARTUP_FILE);
+			if ( !"".equals(sFileId)){
+				sbSearch.setText(FileManager.getFile(sFileId).getTrack().getName());
+			}
+		}
+		sbSearch.setToolTipText(Messages.getString("ParameterView.18")); //$NON-NLS-1$
 		bgStart.add(jrbNothing);
 		bgStart.add(jrbLast);
 		bgStart.add(jrbShuffle);
@@ -187,7 +198,7 @@ public class ParameterView extends ViewAdapter implements ActionListener {
 		jpStart.add(jrbLast,"2,2"); //$NON-NLS-1$
 		jpStart.add(jrbShuffle,"2,4"); //$NON-NLS-1$
 		jpStart.add(jrbFile,"2,6"); //$NON-NLS-1$
-		jpStart.add(jtfFile,"4,6"); //$NON-NLS-1$
+		jpStart.add(sbSearch,"4,6"); //$NON-NLS-1$
 		//Confirmations
 		jpConfirmations = new JPanel();
 		jpConfirmations.setBorder(BorderFactory.createTitledBorder(Messages.getString("ParameterView.26"))); //$NON-NLS-1$
@@ -517,5 +528,18 @@ public class ParameterView extends ViewAdapter implements ActionListener {
 	public String getViewName() {
 		return "org.jajuk.ui.views.ParameterView";
 	}
+	
+	/* (non-Javadoc)
+	 * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.ListSelectionEvent)
+	 */
+	public void valueChanged(ListSelectionEvent e) {
+		if (!e.getValueIsAdjusting()){
+			SearchResult sr = (SearchResult)sbSearch.alResults.get(sbSearch.jlist.getSelectedIndex());
+			sbSearch.setText(sr.getFile().getTrack().getName());
+			ConfigurationManager.setProperty(CONF_STARTUP_FILE,sr.getFile().getId());
+			sbSearch.popup.hide();
+		}
+	}
+
 
 }

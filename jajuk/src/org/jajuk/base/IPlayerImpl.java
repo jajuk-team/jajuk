@@ -27,8 +27,19 @@ package org.jajuk.base;
  */
 public interface IPlayerImpl {
 		
-		public void play(File file,int iPosition,int iLength) throws Exception;
+	/**
+	 * Lauches player
+	 * @param file : jajuk file to be played
+	 * @param fPosition position in % of the file
+	 * @param length length to play in ms
+	 * @throws Exception
+	 */	
+	public void play(File file,float fPosition,long length) throws Exception;
 
-		public void stop() throws Exception;
+	/**
+	 * Stop current player
+	 * @throws Exception
+	 */
+	public void stop() throws Exception;
 		
 }

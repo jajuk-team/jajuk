@@ -20,8 +20,6 @@
 
 package org.jajuk.ui.views;
 
-import java.net.URL;
-
 import javax.swing.JEditorPane;
 import javax.swing.JScrollPane;
 
@@ -64,7 +62,7 @@ public class AboutView extends ViewAdapter {
 	 */
 	public void display(){
 		try{
-			jep = new JEditorPane("text/html",Util.readFile(new URL(FILE_ABOUT)).toString());
+			jep = new JEditorPane("text/html",Util.readJarFile(PATH_RELATIVE_DOCS+FILE_ABOUT).toString());
 		}
 		catch(Exception e){
 			Log.error(e);

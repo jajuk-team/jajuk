@@ -50,12 +50,13 @@ public class JavaLayerPlayerImpl implements IPlayerImpl,ITechnicalStrings{
 	/* (non-Javadoc)
 	 * @see org.jajuk.base.IPlayerImpl#play()
 	 */
-	public void play(org.jajuk.base.File file,int iPosition,int iLength) throws Exception{
+	public void play(org.jajuk.base.File file,float fPosition,long length) throws Exception{
 		try{
 			bStarted = false;
 			player = new AdvancedPlayer(new BufferedInputStream(new FileInputStream(new File(file.getAbsolutePath())))); 
 			player.setPlayBackListener(new PlaybackListener() {
 				public void playbackFinished(PlaybackEvent pbe){
+					System.out.println("finished");
 					FIFO.getInstance().finished();
 				}
 				public void playbackStarted(PlaybackEvent pbe){
@@ -64,12 +65,13 @@ public class JavaLayerPlayerImpl implements IPlayerImpl,ITechnicalStrings{
 			});
 			FIFO.getInstance().lTrackStart = System.currentTimeMillis();  //time correction
 			Util.stopWaiting();
-			if (iPosition < 0){
+			if (fPosition < 0){  //-1 means we want to play entire file
 				player.play();
 			}
 			else{
-				int iFirstFrame = (int)(file.getTrack().getLength()*iPosition*0.41666); // position/100 (%) /1000 (ms) *24 because 1 frame =24ms
-				int iLastFrame = (int)(iFirstFrame+(iLength*41.6666));
+				int iFirstFrame = (int)(file.getTrack().getLength()*fPosition*0.41666); // (position*fPosition/100(%)) *1000(ms) /24 because 1 frame =24ms
+				int iLastFrame = (int)(iFirstFrame+(length*41.666)); //length*1000(ms)/24
+				System.out.println("playing: position= "+fPosition+ " length= "+length);
 				player.play(iFirstFrame,iLastFrame);
 			}
 		}

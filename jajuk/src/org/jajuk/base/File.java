@@ -44,8 +44,6 @@ public class File extends PropertyAdapter implements Comparable{
 	/** pre-calculated absolute path for perf*/
 	private String sAbs = null;
 
-	
-	
 	/**
 	 * File instanciation 
 	 * @param sId
@@ -75,7 +73,6 @@ public class File extends PropertyAdapter implements Comparable{
 		String sStyle = tag.getStyleName();
 		long length = tag.getLength(); //length in sec
 		String sYear = tag.getYear();
-		String sQuality = tag.getQuality();
 		Album album = AlbumManager.registerAlbum(sAlbumName);
 		Style style = StyleManager.registerStyle(sStyle);
 		Author author = AuthorManager.registerAuthor(sAuthorName);
@@ -222,4 +219,6 @@ public class File extends PropertyAdapter implements Comparable{
 	}
 	
 	
+	
+
 }

@@ -224,7 +224,6 @@ public class StatView extends ViewAdapter implements Observer{
 			JFreeChart jfchart = null;
 			int iMounthsNumber = 10; //number of mounts we show, mounts before are set together in 'before'
 			long lSizeByMounth[] = new long[iMounthsNumber+1]; //contains size ( in Go ) for each mounth, first cell is before
-			int iNow = Integer.parseInt(new SimpleDateFormat(DATE_FILE).format(new Date()))/100; //reference mounth
 			//data
 			int[] iMounts = getMounts(iMounthsNumber);
 			Iterator it = TrackManager.getTracks().iterator();
@@ -284,9 +283,7 @@ public class StatView extends ViewAdapter implements Observer{
 		try {
 			CategoryDataset cdata = null;
 			JFreeChart jfchart = null;
-			int iNow = Integer.parseInt(new SimpleDateFormat(DATE_FILE).format(new Date()))/100; //reference mounth
 			int iMounthsNumber = 10; //number of mounts we show, mounts before are set together in 'before'
-			String[] sMounths = getMountsLabels(iMounthsNumber);
 			int iTracksByMounth[] = new int[iMounthsNumber+1]; //contains number of tracks for each mounth, first cell is 'before'
 			//data
 			int[] iMounts = getMounts(iMounthsNumber);

@@ -98,7 +98,6 @@ public class TrackManager implements ITechnicalStrings {
 				itTracks.remove();
 				continue;
 			}
-			ArrayList alFiles = track.getFiles();
 			Iterator itFiles = track.getFiles().iterator();
 			while (itFiles.hasNext()) {
 				org.jajuk.base.File file = (org.jajuk.base.File) itFiles.next();

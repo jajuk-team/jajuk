@@ -22,6 +22,7 @@ package org.jajuk.base;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import org.jajuk.ui.CommandJPanel;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.ObservationManager;
 import org.jajuk.util.ConfigurationManager;
@@ -67,8 +68,14 @@ public class FIFO extends Thread implements ITechnicalStrings{
 	/** Total time in fifo (sec)*/
 	private long lTotalTime = 0;
 	
+	/** Offset since begin in ms*/
+	long lOffset = 0;
+	
 	/** Glocal random enabled ? */
 	private boolean bGlobalRandom = false;
+	
+	/** Best of enabled ? */
+	private boolean bBestOf = false;
 	
 	/** Repeated set */
 	private ArrayList alRepeated = new ArrayList(50);
@@ -107,6 +114,7 @@ public class FIFO extends Thread implements ITechnicalStrings{
 		Util.waiting();
 		this.bForcedRepeat = bForcedRepeat;
 		if (!bAuto){
+			FIFO.getInstance().setBestof(false); //best of mode is broken by any push
 			FIFO.getInstance().setGlobalRandom(false); //global random mode is broken by any push
 			if (TRUE.equals(ConfigurationManager.getProperty(CONF_STATE_REPEAT)) || this.bForcedRepeat){  //repeat is on
 				alRepeated = alFiles;
@@ -123,6 +131,9 @@ public class FIFO extends Thread implements ITechnicalStrings{
 		while (it.hasNext()){
 			File file = (File)it.next();
 			if (file != null){
+				if ( !bAuto){
+					file.getTrack().setRate(file.getTrack().getRate()+2); //inc rate by 2 because it is explicitely selected to be played by human
+				}
 				alFIFO.add(file);	
 				lTotalTime += file.getTrack().getLength();
 			}
@@ -210,12 +221,14 @@ public class FIFO extends Thread implements ITechnicalStrings{
 				if (bPlaying ){//already playing something
 					long length = fCurrent.getTrack().getLength();;
 					if ( i%(REFRESH_TIME/SLEEP_TIME) == 0 && length!=0){  //actual refresh less frequent for cpu
-						long lTime = System.currentTimeMillis() - lTrackStart;
+						long lTime = (System.currentTimeMillis() - lTrackStart) + lOffset;
 						if ( bIntroEnabled){
 							lTime += (fCurrent.getTrack().getLength()*Integer.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_INTRO_BEGIN))*10);
 						}
 						InformationJPanel.getInstance().setCurrentStatusMessage(Util.formatTime(lTime)+" / "+Util.formatTime(fCurrent.getTrack().getLength()*1000));
-						InformationJPanel.getInstance().setCurrentStatus((int)((lTime/10)/length));
+						int iPos = (int)((lTime/10)/length);
+						InformationJPanel.getInstance().setCurrentStatus(iPos);
+						CommandJPanel.getInstance().setCurrentPosition(iPos);
 						InformationJPanel.getInstance().setTotalStatusMessage(Integer.toString((int)(lTotalTime-(lTime/1000)))+"'");
 					}
 					i++;
@@ -233,6 +246,9 @@ public class FIFO extends Thread implements ITechnicalStrings{
 					if ( bGlobalRandom){ //Global random mode
 						push(FileManager.getShuffleFile(),false,true);
 					}
+					else if ( bBestOf){ //Best of mode
+						push(FileManager.getBestOfFile(),false,true);
+					}
 					else if ( fCurrent!= null && ( TRUE.equals(ConfigurationManager.getProperty(CONF_STATE_REPEAT)) || bForcedRepeat)){ //repeat mode ?
 						if (iRepeatIndex == alRepeated.size()){
 							iRepeatIndex = 0;
@@ -249,9 +265,9 @@ public class FIFO extends Thread implements ITechnicalStrings{
 					else{  //fifo empty and nothing planned to be played, lets re-initialize labels
 						if ( i%(REFRESH_TIME/SLEEP_TIME) == 0){  //actual refresh less frequent for cpu
 							lTotalTime = 0;
-							long lTime = 0;
 							InformationJPanel.getInstance().setCurrentStatusMessage(Util.formatTime(0)+" / "+Util.formatTime(0));
 							InformationJPanel.getInstance().setCurrentStatus(0);
+							CommandJPanel.getInstance().setCurrentPosition(0);
 							InformationJPanel.getInstance().setTotalStatusMessage("0'");
 						}
 						i++;
@@ -263,6 +279,7 @@ public class FIFO extends Thread implements ITechnicalStrings{
 				}
 				synchronized(this){  //lock fifo access when lauching
 					int index = 0;
+					lOffset = 0;
 					if (ConfigurationManager.getProperty(CONF_STATE_SHUFFLE).equals(TRUE)){
 						index = (int)(Math.random() * alFIFO.size());
 						fCurrent = (File) (alFIFO.get(index));//take the first file in the fifo
@@ -282,6 +299,10 @@ public class FIFO extends Thread implements ITechnicalStrings{
 					else{
 						Player.play(fCurrent,-1,-1);  //play it
 					}
+					//add hits number
+					fCurrent.getTrack().incHits();  //inc hits number 
+					fCurrent.getTrack().incSessionHits();//inc session hits
+					fCurrent.getTrack().setRate(fCurrent.getTrack().getRate()+1); //inc rate by 1 because it is played
 					lTrackStart = System.currentTimeMillis();
 					if ( !(fCurrent instanceof BasicFile)){
 						History.getInstance().addItem(fCurrent.getId(),System.currentTimeMillis());
@@ -352,12 +373,59 @@ public class FIFO extends Thread implements ITechnicalStrings{
 	public boolean isGlobalRandom() {
 		return bGlobalRandom;
 	}
+	
+	/**
+	 * @return Returns the bestof mode.
+	 */
+	public boolean isBestof() {
+		return bBestOf;
+	}
 
 	/**
 	 * @param globalRandom The bGlobalRandom to set.
 	 */
 	public void setGlobalRandom(boolean globalRandom) {
 		bGlobalRandom = globalRandom;
+	}
+	
+	/**
+	 * @param bestof The bestof mode set.
+	 */
+	public void setBestof(boolean bBestOf) {
+		this.bBestOf = bBestOf;
+	}
+	
+	/**
+	 * Get current track position
+	 * @return position in sec
+	 */
+	public int getCurrentPosition(){
+		return (int)((System.currentTimeMillis() + lOffset - lTrackStart)/1000);
+	}
+	
+	/**
+	 * Move inside a track
+	 * @param fPosition position in % of track length
+	 */
+	public void setCurrentPosition(float fPosition){
+		/*commun tests : position in track bounds?
+		if ( iPosition<0 || iPosition>= fCurrent.getTrack().getLength()){
+			return;
+		}
+		if (ConfigurationManager.getBoolean(CONF_STATE_INTRO) ){  //intro mode enabled
+			int iBegin = Integer.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_INTRO_BEGIN));
+			int iLength = Integer.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_INTRO_LENGTH));
+			if (iPosition<iLength && iPosition>iBegin){ //check position is compatible with intro bounds options
+				Player.stop();
+				Player.play(fCurrent,iPosition,iLength-iPosition);
+				lOffset =  fCurrent.getTrack().getLength()*iPosition*10;
+			}
+		}
+		else{//intro mode enabled*/
+			Player.stop();
+			Player.play(fCurrent,fPosition,1000*fCurrent.getTrack().getLength());
+			lOffset = (long)(fCurrent.getTrack().getLength()*fPosition*10);
+		//}
 	}
 
 	

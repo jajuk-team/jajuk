@@ -40,7 +40,7 @@ public class Track extends PropertyAdapter implements Comparable{
 	private Album album;
 	/**Track style*/
 	private Style style;
-	/**Track author*/
+	/**Track author in sec*/
 	private Author author;
 	/**Track length*/
 	private long length;
@@ -58,6 +58,8 @@ public class Track extends PropertyAdapter implements Comparable{
 	private ArrayList alFiles = new ArrayList(1);
 	/**Track compare hash for perfs*/
 	private String sHashCompare;
+	/** Number of hits for current jajuk session */
+	private int iSessionHits = 0;
 	
 	
 	
@@ -228,7 +230,7 @@ public class Track extends PropertyAdapter implements Comparable{
 	}
 
 	/**
-	 * @return
+	 * @return length in sec
 	 */
 	public long getLength() {
 		return length;
@@ -338,6 +340,20 @@ public class Track extends PropertyAdapter implements Comparable{
 	 */
 	public String getHashCompare() {
 		return sHashCompare;
+	}
+	
+	/**
+	 * @return Returns the iSessionHits.
+	 */
+	public int getSessionHits() {
+		return iSessionHits;
+	}
+
+	/**
+	 * @param sessionHits The iSessionHits to inc.
+	 */
+	public void incSessionHits() {
+		iSessionHits ++;
 	}
 
 }

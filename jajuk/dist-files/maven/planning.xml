@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<document>
+  <body>
+  	<section name="Planning">
+  		<section name="0.2">
+	   		<ul>
+	   			<li>Ogg Vorbis support
+	   			<li>Network-type device ( P2P )
+	   			<li>Online help part 1/3
+	   		</ul>	
+	   	</section>
+	   	<section name="0.3">
+	   		<ul>
+	   			<li>Alter functions ( cut/copy/paste, delete, rename... )
+	   			<li>New statristics, sorted by theme ( tabbed pane )
+	   			<li>Online help part 2/3
+	   		</ul>	
+	   	</section>
+	   	<section name="0.4">
+	   		<ul>
+	   			<li>Disk Jokey magic function ( makes an automatic programmation based on user preferences )
+	   			<li>Online help part 3/3
+	   			<li>Tips of the day
+	   		</ul>	
+	   	</section>
+	   	<section name="0.5">
+	   		<ul>
+	   			<li>New perspective : edtions to get collection reports and print them
+	   		</ul>	
+	   	</section>
+	   	<section name="science fiction">
+	   		<ul>
+	   			<li>Audio CDs support
+	   			<li>Eyes candies animations when playing in a new persperctive
+	   			<li>Equilizers in a new perspective
+	   			<li>CDDB based on mp3 ( even possibled ? )
+	   			<li>Covers lookup on the web ( even possibled ? )
+	   		</ul>	
+	   	</section>
+  	</section>
+  </body>
+</document>

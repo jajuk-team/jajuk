@@ -79,7 +79,7 @@ public class Main implements ITechnicalStrings {
 		try {
 			//starts ui
 			jframe = new JFrame("Jajuk : Just Another Jukebox"); //$NON-NLS-1$
-			jframe.setIconImage(Util.getIcon(ICON_STYLE).getImage());
+			jframe.setIconImage(Util.getIcon(IMAGES_SPLASHSCREEN).getImage());
 			
 			//Launch splashscreen
 			new Thread(){

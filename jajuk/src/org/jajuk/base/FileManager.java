@@ -21,7 +21,6 @@
 package org.jajuk.base;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.TreeSet;
 
@@ -138,6 +137,26 @@ public class FileManager implements ITechnicalStrings{
 		return (File)alEligibleFiles.get((int)(Math.random()*alEligibleFiles.size()));
 	}
 	
+	/**
+	 * Return a shuffle mounted file from the entire collection with rate weight ( best of mode )
+	 * @return
+	 */
+	public static synchronized File getBestOfFile(){
+		//create a tempory table to remove unmounted files
+		TreeSet tsEligibleFiles = new TreeSet();
+		Iterator it = alFiles.iterator();
+		while ( it.hasNext()){
+			File file = (File)it.next();
+			if (file.getDirectory().getDevice().isMounted() && !file.getDirectory().getDevice().isRefreshing()){
+				long lScore = (long)(Math.random()*(100/(file.getTrack().getSessionHits()+1))*Math.log(file.getTrack().getRate()));  //computes score for each file ( part of shuffleness, part of hits weight )
+				tsEligibleFiles.add(new FileScore(file,lScore));
+			}
+		}
+		FileScore fsBestOne = (FileScore)tsEligibleFiles.last(); 
+		return fsBestOne.getFile(); //return highest score file
+	}
+	
+	
 	/** Return next mounted file ( used in continue mode )
 	 * @param file : a file
 	 * @return next file from entire collection
@@ -217,6 +236,54 @@ public class FileManager implements ITechnicalStrings{
 	 		}
 	 	}
 	 	return tsResu;
+	}
+
+}
+
+/**
+ * 
+ *  File score
+ *
+ * @author     bflorat
+ * @created    22 janv. 2004
+ */
+class FileScore implements Comparable{
+	/** The score */
+	long lScore;
+	/**The file*/
+	File file;
+	
+	public FileScore(File file,long lScore){
+		this.lScore = lScore;
+		this.file = file;
+	}
+	
+	/**
+	 * @return Returns the file.
+	 */
+	public File getFile() {
+		return file;
+	}
+
+	/**
+	 * @return Returns the lScore.
+	 */
+	public long getLScore() {
+		return lScore;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Comparable#compareTo(java.lang.Object)
+	 */
+	public int compareTo(Object o) {
+		FileScore fscore = (FileScore)o;
+		if ( fscore.getLScore() < lScore){
+			return 1;
+		}
+		else if ( fscore.getLScore() > lScore){
+			return -1;
+		}
+		return 0;
 	}
 
 }

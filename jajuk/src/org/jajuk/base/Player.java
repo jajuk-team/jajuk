@@ -40,16 +40,16 @@ public class Player {
 	 * Asynchronous play for specified file with specified time interval
 	 * @param file to play
 	 * @param position in % of the file length
-	 * @param length in sec 
+	 * @param length in ms 
 	 */
-	public static synchronized void play(File file,final int iPosition,final int iLength) {
+	public static synchronized void play(File file,final float fPosition,final long length) {
 		fCurrent = file;
 		pCurrentPlayerImpl = file.getTrack().getType().getPlayerImpl();
 		Thread thread = new Thread() {
 			public void run() {
 				try {
 					synchronized(bLock){  //ultimate concurrency protection
-						pCurrentPlayerImpl.play(fCurrent,iPosition,iLength);
+						pCurrentPlayerImpl.play(fCurrent,fPosition,length);
 					}
 				} catch (Exception e) {
 					Log.error("007",fCurrent.getAbsolutePath(), e); //$NON-NLS-1$

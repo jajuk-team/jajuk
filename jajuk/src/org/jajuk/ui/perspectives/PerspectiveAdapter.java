@@ -69,7 +69,7 @@ public abstract class PerspectiveAdapter implements IPerspective,ITechnicalStrin
 			return;
 		}
 		alViews.add(view);
-		ViewManager.registerView(view,this);
+		ViewManager.registerView(view);
 		int iCommandYSize = 108;
 		int iCommandXSize = 45;
 		ViewManager.setSize(view,(Main.jframe.getWidth()-iCommandXSize)*iWidth/100,(Main.jframe.getHeight()-iCommandYSize)*iHeight/100);

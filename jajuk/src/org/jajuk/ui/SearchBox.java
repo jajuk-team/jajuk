@@ -22,6 +22,7 @@ package org.jajuk.ui;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
@@ -35,10 +36,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.Popup;
 import javax.swing.PopupFactory;
-import javax.swing.event.ListSelectionEvent;
+import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionListener;
 
-import org.jajuk.base.FIFO;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.SearchResult;
 import org.jajuk.i18n.Messages;
@@ -50,7 +50,7 @@ import org.jajuk.util.log.Log;
  * @author     bflorat
  * @created    15 janv. 2004
  */
-public class SearchBox extends JTextField implements KeyListener,ListSelectionListener{
+public class SearchBox extends JTextField implements KeyListener{
 	
 	/**Do search panel need a search*/
 	private boolean bNeedSearch = false;
@@ -58,15 +58,18 @@ public class SearchBox extends JTextField implements KeyListener,ListSelectionLi
 	private static final int WAIT_TIME = 1000;
 	private static final int MIN_CRITERIA_LENGTH = 1;
 	/**Search result*/
-	private ArrayList alResults;
+	public ArrayList alResults;
 	/**Typed string*/
 	private String sTyped;
-	private Popup popup;
-	private JList jlist;
+	public Popup popup;
+	public JList jlist;
 	private long lDateTyped;
+	/**Listener to handle selections*/
+	private ListSelectionListener lsl;
 	
 	
-	public SearchBox(){
+	public SearchBox(ListSelectionListener lsl){
+		this.lsl = lsl;
 		// lauches a thread used to perform dynamic search chen user is typing
 		new Thread(){
 			public void run(){
@@ -134,9 +137,7 @@ public class SearchBox extends JTextField implements KeyListener,ListSelectionLi
 		bNeedSearch = false;
 		setEnabled(false); //no typing during search
 		if ( sTyped.length() >= MIN_CRITERIA_LENGTH){  //second test to get sure user didn't typed before entering this method
-			System.out.println("search");
 			synchronized(FileManager.class){  //get sure collection is not accessed during search
-				TreeSet tsResults = new TreeSet();//Stores sorted results
 				TreeSet tsResu = FileManager.search(sTyped.toString());
 				if (tsResu.size() > 0){
 					DefaultListModel model = new DefaultListModel();
@@ -147,35 +148,29 @@ public class SearchBox extends JTextField implements KeyListener,ListSelectionLi
 						model.addElement(((SearchResult)it.next()).getResu());
 					}
 					jlist = new JList(model);
-					jlist.setSelectedIndex(0);
 					PopupFactory factory = PopupFactory.getSharedInstance();
 					JScrollPane jsp = new JScrollPane(jlist);
 					jlist.setSelectionMode(0);
-					jlist.addListSelectionListener(this);
+					jlist.addListSelectionListener(lsl);
 					jsp.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 					if (popup!=null){
 						popup.hide();
 					}
-					popup = factory.getPopup(this,jsp, this.getX()+5, this.getY()+75);
+					Point point = new Point(0,0);  //take upper-left point relative to the textfield 
+					SwingUtilities.convertPointToScreen(point,this); //take absolute coordonates in the screen ( popups works only on absolute coordonates in oposition to swing widgets)
+					popup = factory.getPopup(this,jsp, (int)point.getX(), (int)point.getY()+25);
 					popup.show();
+				}
+				else{
+					if (popup!=null){
+						popup.hide();
+					}
 				}
 			}
 		}
 		setEnabled(true);
 		requestFocus();
 	}
-
-
-	/* (non-Javadoc)
-	 * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.ListSelectionEvent)
-	 */
-	public void valueChanged(ListSelectionEvent e) {
-		if (!e.getValueIsAdjusting()){
-			SearchResult sr = (SearchResult)alResults.get(jlist.getSelectedIndex());
-			FIFO.getInstance().push(sr.getFile(),false);
-			popup.hide();
-			requestFocus();	
-		}
-	}
+	
 }
 

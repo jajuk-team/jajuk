@@ -134,7 +134,6 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 		
 		jtable = new JTable();
 		//add 
-		int iYspace = 5;
 		double size[][] =
 		{{0.99},
 		{30,0.99}};

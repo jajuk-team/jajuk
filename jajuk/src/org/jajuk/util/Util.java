@@ -28,13 +28,17 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.Reader;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.StringTokenizer;
 
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.BooleanControl;
+import javax.sound.sampled.FloatControl;
+import javax.sound.sampled.Line;
+import javax.sound.sampled.Mixer;
 import javax.swing.ImageIcon;
 import javax.swing.SwingUtilities;
 
@@ -43,6 +47,8 @@ import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
+
+import com.sun.media.sound.MixerSourceLine;
 
 /**
  * General use utilities methods
@@ -85,6 +91,9 @@ public class Util implements ITechnicalStrings {
 		"Terror","Indie","BritPop","Negerpunk","Polsk Punk","Beat","Christian Gangsta","Heavy Metal",
 		"Black Metal","Crossover","Contemporary C","Christian Rock","Merengue","Salsa","Thrash Metal",
 		"Anime","JPop","SynthPop"};
+	
+	/** Mute state*/
+	private static boolean bMute;
 	
 	/**
 	 * No constructor
@@ -159,19 +168,18 @@ public class Util implements ITechnicalStrings {
 	
 	
 	/**
-	 * Open a file and return a string buffer with the file content.
+	 * Open a file from current jar and return a string buffer with the file content.
 	 * 
-	 * @param url : file uri
+	 * @param sUrl : relative file url
 	 * @return StringBuffer - File content.
 	 * @throws JajukException -Throws a JajukException if a problem occurs during the file  access.
 	 */
-	public static StringBuffer readFile(URL url) throws JajukException {
+	public static StringBuffer readJarFile(String sURL) throws JajukException {
 		// Read
-		String s;
 		InputStream is;
 		StringBuffer sb = null;
 		try {
-			is = Main.class.getResourceAsStream("docs/about.html");
+			is = Main.class.getResourceAsStream(sURL);
 		// Read
 		byte[] b = new byte[200];
 		sb = new StringBuffer();
@@ -329,6 +337,72 @@ public class Util implements ITechnicalStrings {
 		catch(IOException ie){
 			Log.error(ie);
 		}
+	}
+	
+	/**
+	 * Set volume in %
+	 * @param fVolume
+	 */
+	public static void setVolume(float fVolume){
+		try {
+			Mixer mixer = AudioSystem.getMixer(null);
+			Line[] lines = mixer.getSourceLines();
+			Line line = null;
+			for (int i=0;i<lines.length;i++){
+				if ( lines[i] instanceof MixerSourceLine ){
+					line = lines[i];
+					break;
+				}
+			}
+			if ( line == null){
+				return;
+			}
+			FloatControl  volCtrl = (FloatControl)line.getControl(FloatControl.Type.MASTER_GAIN);
+			float fCurrent = 0.0f; 
+			if ( fVolume<=0.5){
+				fCurrent = Math.abs(volCtrl.getMinimum()*2*fVolume) + volCtrl.getMinimum();
+			}
+			else{
+				fCurrent = volCtrl.getMaximum()*fVolume;
+			}
+			volCtrl.setValue(fCurrent);
+		} catch (Exception e) {
+			Log.error(e);
+		}
+	}
+
+	/**
+	 * Set mute state
+	 * @param bMute
+	 */
+	public static void setMute(boolean bMute){
+		try {
+			Util.bMute = bMute;
+			Mixer mixer = AudioSystem.getMixer(null);
+			Line line = null;
+			Line[] lines = mixer.getSourceLines();
+			for (int i=0;i<lines.length;i++){
+				if ( lines[i] instanceof MixerSourceLine ){
+					line = lines[i];
+					break;
+				}
+			}
+			if ( line == null){
+				return;
+			}
+			BooleanControl  bc = (BooleanControl)line.getControl(BooleanControl.Type.MUTE);
+			bc.setValue(bMute);
+		} catch (Exception e) {
+			Log.error(e);
+		}
+	}
+
+	/**
+	 * Get mute state
+	 * @return
+	 */
+	public static boolean getMute(){
+		return bMute;
 	}
 	
 }

@@ -79,8 +79,8 @@
 
     <dependency>
 	   <groupId>lib</groupId>
-        <artifactId>jl</artifactId>
-        <version>0.30</version> 
+        <artifactId>javalayer</artifactId>
+        <version>0.4</version> 
     </dependency>
 
    <dependency>

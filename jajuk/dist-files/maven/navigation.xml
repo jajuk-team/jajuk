@@ -13,6 +13,7 @@
     <menu name="Overview">
       <item name="FAQ" href="/faq.html" />
       <item name="Status" href="/status.html" />
+      <item name="Planning" href="/planning.html" />
       <item name="Javadoc" href="apidocs/index.html" />
       <item name="CVS Stats" href="statcvs/index.html" />
       <item name="CVS web repository" href="http://cvs.sourceforge.net/viewcvs.py/jajuk/" />

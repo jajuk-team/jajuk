@@ -50,7 +50,7 @@ public class ViewManager implements ITechnicalStrings{
 	
 	
 	/**Maintain relation view/perspective, a view can be in only one perspective*/
-	public static void registerView(final IView view,IPerspective perspective){
+	public static void registerView(final IView view){
 		JInternalFrame ji = new JInternalFrame(view.getDesc(),true,true,true,true);
 		ji.setContentPane((JComponent)view);
 		ji.setDefaultCloseOperation(JInternalFrame.DO_NOTHING_ON_CLOSE);
@@ -73,15 +73,12 @@ public class ViewManager implements ITechnicalStrings{
 	public static void notify(String sEvent,IView view){
 		try{
 			if (sEvent.equals(EVENT_VIEW_REFRESH_REQUEST)){
-				JInternalFrame ji = (JInternalFrame)hmViewContainer.get(view);
 				view.refresh();
 			}
 			else if (sEvent.equals(EVENT_VIEW_CLOSE_REQUEST)){
-				JInternalFrame ji = (JInternalFrame)hmViewContainer.get(view);
 				setVisible(view,false);
 			}
 			else if (sEvent.equals(EVENT_VIEW_SHOW_REQUEST)){
-				JInternalFrame ji = (JInternalFrame)hmViewContainer.get(view);
 				setVisible(view,true);
 			}
 		}catch(Exception e){
