@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.6  2003/11/03 06:08:05  bflorat
+ * 03/11/2003
+ *
  * Revision 1.5  2003/10/31 13:05:06  bflorat
  * 31/10/2003
  *
@@ -60,8 +63,8 @@ public class AlbumManager {
 	 * Register an Album
 	 *@param sName
 	 */
-	public static Album registerAlbum(String sName) {
-		String sId = MD5Processor.hash(sName);
+	public static synchronized  Album registerAlbum(String sName) {
+		String sId = MD5Processor.hash(sName.trim().toLowerCase());
 		return registerAlbum(sId,sName);
 	}
 	
@@ -70,16 +73,19 @@ public class AlbumManager {
 		 * Register an Album with a known id
 		 *@param sName
 		 */
-		public static Album registerAlbum(String sId,String sName) {
+		public static  synchronized Album registerAlbum(String sId,String sName) {
+			String sIdTest = MD5Processor.hash(sName.trim().toLowerCase());
+			if (hmAlbums.containsKey(sIdTest)){
+				return (Album)hmAlbums.get(sIdTest);
+			}
 			Album album = new Album(sId,sName);
-			//TODO format
 			hmAlbums.put(sId,album);
 			return album;
 		}
 
 
 	/**Return all registred Albums*/
-	public static ArrayList getAlbums() {
+	public static synchronized ArrayList getAlbums() {
 		return new ArrayList(hmAlbums.values());
 	}
 
@@ -88,7 +94,7 @@ public class AlbumManager {
 	 * @param id
 	 * @return
 	 */
-	public static Album getAlbum(String sId) {
+	public static synchronized Album getAlbum(String sId) {
 		return (Album) hmAlbums.get(sId);
 	}
 	

@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.5  2003/11/03 06:08:05  bflorat
+ * 03/11/2003
+ *
  * Revision 1.4  2003/10/28 21:34:37  bflorat
  * 28/10/2003
  *
@@ -101,8 +104,8 @@ public class Author extends PropertyAdapter {
 	 * @param otherAuthor
 	 * @return
 	 */
-	public boolean equals(Author otherAuthor){
-		return this.getId().equals(otherAuthor.getId() );
+	public boolean equals(Object otherAuthor){
+		return this.getId().equals(((Author)otherAuthor).getId() );
 	}	
 
 		/**

@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.6  2003/11/03 06:08:05  bflorat
+ * 03/11/2003
+ *
  * Revision 1.5  2003/10/31 13:05:06  bflorat
  * 31/10/2003
  *
@@ -176,6 +179,10 @@ public interface ITechnicalStrings {
 	public static final String XML_PLAYLIST_FILES = "playlist_files";
 	public static final String XML_PLAYLIST_FILE = "playlist_file";
 	public static final String XML_PLAYLISTS = "playlists";
+	public static final String[] XML_RESERVED_ATTRIBUTE_NAMES = {"name","id","extension","player_impl","tag_impl","music",
+			"type","url","album","style","author","length","year","added","rate","files","hits","directory","size",
+			"quality","track","playlist_files","hashcode"};
+		
 	public static final String XML_PLAYLIST = "playlist";
 	public static final String XML_PERSPECTIVES_CONF = 
 		"<?xml version='1.0' encoding='UTF-8'?>\n"+

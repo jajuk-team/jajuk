@@ -9,12 +9,10 @@
  * 
  * You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
  * USA. $Log$
- * USA. Revision 1.11  2003/10/31 13:04:16  bflorat
- * USA. 31/10/2003
- * USA.
- * USA. Revision 1.10  2003/10/28 21:34:12  bflorat
- * USA. - Added perspectives.xml creation
- * USA. Revision 1.9 2003/10/26 21:28:49 bflorat 26/10/2003
+ * USA. Revision 1.12  2003/11/03 06:08:06  bflorat
+ * USA. 03/11/2003
+ * USA. USA. Revision 1.11 2003/10/31 13:04:16 bflorat USA. 31/10/2003 USA. USA. Revision 1.10 2003/10/28 21:34:12 bflorat USA. - Added perspectives.xml creation USA. Revision 1.9
+ * 2003/10/26 21:28:49 bflorat 26/10/2003
  * 
  * Revision 1.8 2003/10/23 22:07:40 bflorat 23/10/2003
  * 
@@ -51,6 +49,8 @@ import java.util.RandomAccess;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 
+import org.jajuk.base.Author;
+import org.jajuk.base.AuthorManager;
 import org.jajuk.base.Collection;
 import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;
@@ -65,6 +65,7 @@ import org.jajuk.ui.JajukJMenuBar;
 import org.jajuk.ui.PerspectiveBarJPanel;
 import org.jajuk.ui.perspectives.IPerspectiveManager;
 import org.jajuk.ui.perspectives.PerspectiveManagerFactory;
+import org.jajuk.util.MD5Processor;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
@@ -89,17 +90,17 @@ public class Main implements ITechnicalStrings {
 			//	log startup
 			Log.getInstance();
 			Log.setVerbosity(Log.DEBUG);
-			
+
 			//registers supported types
-		try {
-			  //TODO get player impl in user-conf.xml
-			  TypeManager.registerType(Messages.getString("Main.Mpeg_layer_3_5"), EXT_MP3, PLAYER_IMPL_JAVALAYER, TAG_IMPL_MP3INFO, true); //$NON-NLS-1$ //$NON-NLS-2$
-			  TypeManager.registerType(Messages.getString("Main.Playlist_7"), EXT_PLAYLIST, PLAYER_IMPL_JAVALAYER, null, false); //$NON-NLS-1$ //$NON-NLS-2$
-			  TypeManager.registerType(Messages.getString("Main.Ogg_vorbis_9"), EXT_OGG, PLAYER_IMPL_JAVALAYER, null, true); //$NON-NLS-1$ //$NON-NLS-2$
-		  } catch (Exception e1) {
-				  Log.error(Messages.getString("Main.Error_registering_players_11"), e1); //$NON-NLS-1$
-		  }
-			
+			try {
+				//TODO get player impl in user-conf.xml
+				TypeManager.registerType(Messages.getString("Main.Mpeg_layer_3_5"), EXT_MP3, PLAYER_IMPL_JAVALAYER, TAG_IMPL_MP3INFO, true); //$NON-NLS-1$ //$NON-NLS-2$
+				TypeManager.registerType(Messages.getString("Main.Playlist_7"), EXT_PLAYLIST, PLAYER_IMPL_JAVALAYER, null, false); //$NON-NLS-1$ //$NON-NLS-2$
+				TypeManager.registerType(Messages.getString("Main.Ogg_vorbis_9"), EXT_OGG, PLAYER_IMPL_JAVALAYER, null, true); //$NON-NLS-1$ //$NON-NLS-2$
+			} catch (Exception e1) {
+				Log.error(Messages.getString("Main.Error_registering_players_11"), e1); //$NON-NLS-1$
+			}
+
 			//perform initial checkups
 			initialCheckups();
 
@@ -118,8 +119,8 @@ public class Main implements ITechnicalStrings {
 			});
 			Container container = jframe.getContentPane();
 			// Create the perspective manager
-			//IPerspectiveManager perspectiveManager = PerspectiveManagerFactory.getPerspectiveManager();
-			//perspectiveManager.setParentContainer(container);
+			IPerspectiveManager perspectiveManager = PerspectiveManagerFactory.getPerspectiveManager();
+			perspectiveManager.setParentContainer(container);
 
 			//Creates the command panel
 			command = CommandJPanel.getInstance();
@@ -137,13 +138,9 @@ public class Main implements ITechnicalStrings {
 			information.setTotalStatusMessage("00:23:23/01:34:56"); //$NON-NLS-1$
 			information.setCurrentStatus(76);
 			//**************************
-			
+
 			//Load collection
 			Collection.load();
-
-			//Clean the collection up
-			Collection.cleanup();
-			//TODO check time to do this, lauch it modulo day ?
 
 			//Starts the FIFO
 			new FIFO().start();
@@ -157,11 +154,6 @@ public class Main implements ITechnicalStrings {
 			jframe.setJMenuBar(JajukJMenuBar.getInstance());
 			Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
 			jframe.show();
-
-			//tests en bouchonné
-			//DeviceManager.registerDevice("portable","directory","/data/mp3/Massive Attack_Mezzanine_256kbps_SmokeALot").refresh(); //perform a refresh
-			//DeviceManager.registerDevice("portable","directory","/data/mp3").refresh(); //perform a refresh
-			//DeviceManager.registerDevice("extdd","directory","/media/sda1/mp3").refresh(); //perform a refresh
 
 		} catch (JajukException je) { //last chance to catch any error for logging purpose
 			Log.error(je);
@@ -202,10 +194,10 @@ public class Main implements ITechnicalStrings {
 	 * Exit code, used to perform saves...
 	 * 
 	 * @param iExitCode
-	 *                 exit code
-	 *                 <p>
-	 *                 0 : normal exit
-	 *                 <p>1: unexpected error
+	 *                exit code
+	 *                <p>
+	 *                0 : normal exit
+	 *                <p>1: unexpected error
 	 */
 	public static void exit(int iExitCode) {
 		try {

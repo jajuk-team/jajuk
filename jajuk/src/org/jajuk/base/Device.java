@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.7  2003/11/03 06:08:05  bflorat
+ * 03/11/2003
+ *
  * Revision 1.6  2003/10/31 13:05:06  bflorat
  * 31/10/2003
  *
@@ -43,6 +46,7 @@ import java.util.Iterator;
 
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.JajukFileFilter;
+import org.jajuk.util.MD5Processor;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 
@@ -112,8 +116,8 @@ public class Device extends PropertyAdapter implements ITechnicalStrings{
 	 * @param otherDevice
 	 * @return
 	 */
-	public boolean equals(Device otherDevice) {
-		return this.getId().equals(otherDevice.getId() );
+	public boolean equals(Object otherDevice) {
+		return this.getId().equals(((Device)otherDevice).getId() );
 	}
 
 	/**
@@ -125,7 +129,16 @@ public class Device extends PropertyAdapter implements ITechnicalStrings{
 		final Device device = this;
 		//current reference to the inner thread class
 		new Thread() {
-			public void run() {
+			public void  run() {
+				
+				/*Remove all directories, playlist files and files for this device before rescan. 
+				Note  that logical item ( tracks, styles...) are device independant and connot be cleared.
+				They will be clean up at next jajuk restart and old track data is used to populate device without full tag scan
+				*/ 
+				FileManager.cleanDevice(device.getId());
+				PlaylistFileManager.cleanDevice(device.getId());
+				DirectoryManager.cleanDevice(device.getId());
+				
 				long lTime = System.currentTimeMillis();
 				if (bAlreadyRefreshing){
 					Messages.showErrorMessage("107");
@@ -133,10 +146,6 @@ public class Device extends PropertyAdapter implements ITechnicalStrings{
 				}
 				bAlreadyRefreshing = true;
 				Log.debug("Starting refresh of device : "+device);
-				//create a get a clean copy of items lists to rebuild them
-				ArrayList alNewFiles = (ArrayList)FileManager.getFiles().clone();
-				Iterator it = alNewFiles.iterator();
-				//TODO see refresh method
 				
 				File fTop = new File(device.sUrl);
 				if (!fTop.exists()) {
@@ -182,7 +191,6 @@ public class Device extends PropertyAdapter implements ITechnicalStrings{
 							fCurrent = fCurrent.getParentFile();
 							if (dParent!=null){
 								dParent = dParent.getParentDirectory();
-							
 							}
 						}
 					}					
@@ -190,6 +198,8 @@ public class Device extends PropertyAdapter implements ITechnicalStrings{
 				Log.debug("Refresh done. Found : "+FileManager.getFiles().size()+" files in "+(int)((System.currentTimeMillis()-lTime)/1000)+" sec");
 				bAlreadyRefreshing = false;
 				
+				//Clean the collection up
+				Collection.cleanup();
 			}
 		}
 		.start();

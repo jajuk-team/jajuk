@@ -16,8 +16,8 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
- * Revision 1.1  2003/10/17 20:36:45  bflorat
- * 17/10/2003
+ * Revision 1.2  2003/11/03 06:08:05  bflorat
+ * 03/11/2003
  *
  */
 package org.jajuk.base;
@@ -36,6 +36,8 @@ public interface IPropertyable {
 	 * Get all properties for this item
 	 **/
 	public Properties getProperties();
+	
+	public void setProperties(Properties properties) ;
 	
 	/**
 	 * Get a property

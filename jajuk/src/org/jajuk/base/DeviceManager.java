@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.6  2003/11/03 06:08:05  bflorat
+ * 03/11/2003
+ *
  * Revision 1.5  2003/10/31 13:05:06  bflorat
  * 31/10/2003
  *
@@ -63,7 +66,7 @@ public class DeviceManager {
 	 *@param sName
 	 *@return device 
 	 */
-	public static Device  registerDevice(String sName,String sDeviceType,String sUrl) {
+	public static synchronized Device  registerDevice(String sName,String sDeviceType,String sUrl) {
 		String sId = MD5Processor.hash(sUrl+sName+sDeviceType);
 		return registerDevice(sId,sName,sDeviceType,sUrl);
 	}
@@ -73,7 +76,7 @@ public class DeviceManager {
 		 *@param sName
 		 *@return device 
 		 */
-		public static Device  registerDevice(String sId,String sName,String sDeviceType,String sUrl) {
+		public static synchronized Device  registerDevice(String sId,String sName,String sDeviceType,String sUrl) {
 			Device device = new Device(sId,sName,sDeviceType,sUrl);
 			hmDevices.put(sId,device);
 			return device;
@@ -81,7 +84,7 @@ public class DeviceManager {
 
 
 	/**Return all registred devices*/
-	public static ArrayList getDevices() {
+	public static synchronized ArrayList getDevices() {
 		return new ArrayList(hmDevices.values());
 	}
 
@@ -90,7 +93,7 @@ public class DeviceManager {
 	 * @param sName
 	 * @return
 	 */
-	public static Device getDevice(String sId) {
+	public static synchronized Device getDevice(String sId) {
 		return (Device) hmDevices.get(sId);
 	}
 

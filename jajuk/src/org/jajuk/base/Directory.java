@@ -9,6 +9,9 @@
  * 
  * You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
  * USA. $Log$
+ * USA. Revision 1.7  2003/11/03 06:08:05  bflorat
+ * USA. 03/11/2003
+ * USA.
  * USA. Revision 1.6  2003/10/31 13:05:06  bflorat
  * USA. 31/10/2003
  * USA.
@@ -29,6 +32,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.Vector;
 
 import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.MD5Processor;
@@ -110,8 +116,8 @@ public class Directory extends PropertyAdapter {
 	 * @param otherDirectory
 	 * @return
 	 */
-	public boolean equals(Directory otherDirectory) {
-		return this.getId().equals(otherDirectory.getId() );
+	public boolean equals(Object otherDirectory) {
+		return this.getId().equals(((Directory)otherDirectory).getId() );
 	}
 
 	/**
@@ -150,11 +156,21 @@ public class Directory extends PropertyAdapter {
 	}
 
 	/**
+	 * Add a child directory in local refences
 	 * @param directory
 	 */
 	public void addDirectory(Directory directory) {
 		alDirectories.add(directory);
 	}
+	
+	/**
+	 * Remove a child directory from local refences
+	 * @param directory
+	 */
+	public void removeDirectory(Directory directory) {
+		alDirectories.remove(directory);
+	}
+	
 	
 	/**
 		 * @return
@@ -178,17 +194,31 @@ public class Directory extends PropertyAdapter {
 	 */
 	public void scan() {
 		java.io.File[] files = getFio().listFiles(JajukFileFilter.getInstance(false, true));
+		if (files == null){  //none file, leave
+			return;
+		}
 		for (int i = 0; i < files.length; i++) {
 			if (TypeManager.getTypeByExtension(Util.getExtension(files[i])).isMusic()) {
+				//check the file is not already known in old database
+				org.jajuk.base.File fileRef = null;
+				String sId = MD5Processor.hash(getDevice().getUrl() + getAbsolutePath() + files[i].getName());
+				Iterator it = TrackManager.getTracks().iterator();
+				while (it.hasNext() && fileRef == null){
+					Track track = (Track)it.next();
+					Iterator it2 =  track.getFiles().iterator();
+					while (it2.hasNext()){
+						org.jajuk.base.File file = (org.jajuk.base.File)it2.next();
+						if (file.getId().equals(sId)){
+							fileRef = file;
+							break;
+						}
+					}
+				}
+				if (fileRef!= null){  //read tag data from database, no real read from file for performances reasons
+					org.jajuk.base.File newFile = FileManager.registerFile(fileRef.getName(), this, fileRef.getTrack(), fileRef.getSize(),fileRef.getQuality());
+					continue;
+				}
 				
-				/*org.jajuk.base.File fCompare = new org.jajuk.base.File("0",fio.getName(),this,null,0,"");
-				ArrayList alFiles = FileManager.getFiles();
-				int index = alFiles.indexOf(fCompare);
-				if (index != -1){  //file already exists, we don't rescan it 
-					org.jajuk.base.File file = (org.jajuk.base.File)alFiles.get(index);
-					FileManager.registerFile(file.getName(), this, file.getTrack(), file.getSize(), file.getQuality());
-					return;
-				}*/
 				Tag tag = new Tag(files[i]);
 				String sTrackName = tag.getTrackName();
 				String sAlbumName = tag.getAlbumName();

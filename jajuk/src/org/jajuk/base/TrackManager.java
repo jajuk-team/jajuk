@@ -1,31 +1,21 @@
 /*
  * Jajuk Copyright (C) 2003 bflorat
  * 
- * This program is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by the Free
- * Software Foundation; either version 2 of the License, or any later version.
+ * This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the
+ * License, or any later version.
  * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
- * more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
  * 
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
- * Place - Suite 330, Boston, MA 02111-1307, USA. $Log$
- * Place - Suite 330, Boston, MA 02111-1307, USA. Revision 1.6  2003/10/31 13:05:06  bflorat
- * Place - Suite 330, Boston, MA 02111-1307, USA. 31/10/2003
- * Place - Suite 330, Boston, MA 02111-1307, USA.
- * Place - Suite 330, Boston, MA 02111-1307, USA. Revision 1.5  2003/10/28 21:34:37  bflorat
- * Place - Suite 330, Boston, MA 02111-1307, USA. 28/10/2003
- * Place - Suite 330, Boston, MA 02111-1307, USA.
- * Place - Suite 330, Boston, MA 02111-1307, USA. Revision 1.4  2003/10/26 21:28:49  bflorat
- * Place - Suite 330, Boston, MA 02111-1307, USA. 26/10/2003
- * Place - Suite 330, Boston, MA 02111-1307, USA.
- * Place - Suite 330, Boston, MA 02111-1307, USA. Revision 1.3  2003/10/24 15:44:25  bflorat
- * Place - Suite 330, Boston, MA 02111-1307, USA. 24/10/2003
- * Place - Suite 330, Boston, MA 02111-1307, USA.
- * Revision 1.2 2003/10/23 22:07:40 bflorat 23/10/2003
+ * You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
+ * USA. $Log$
+ * USA. Revision 1.7  2003/11/03 06:08:05  bflorat
+ * USA. 03/11/2003
+ * USA. Place - Suite 330, Boston, MA 02111-1307, USA. Revision 1.6 2003/10/31 13:05:06 bflorat Place - Suite 330, Boston, MA 02111-1307, USA. 31/10/2003 Place - Suite
+ * 330, Boston, MA 02111-1307, USA. Place - Suite 330, Boston, MA 02111-1307, USA. Revision 1.5 2003/10/28 21:34:37 bflorat Place - Suite 330, Boston, MA 02111-1307, USA. 28/10/2003 Place - Suite
+ * 330, Boston, MA 02111-1307, USA. Place - Suite 330, Boston, MA 02111-1307, USA. Revision 1.4 2003/10/26 21:28:49 bflorat Place - Suite 330, Boston, MA 02111-1307, USA. 26/10/2003 Place - Suite
+ * 330, Boston, MA 02111-1307, USA. Place - Suite 330, Boston, MA 02111-1307, USA. Revision 1.3 2003/10/24 15:44:25 bflorat Place - Suite 330, Boston, MA 02111-1307, USA. 24/10/2003 Place - Suite
+ * 330, Boston, MA 02111-1307, USA. Revision 1.2 2003/10/23 22:07:40 bflorat 23/10/2003
  * 
  * Revision 1.1 2003/10/21 17:51:43 bflorat 21/10/2003
  *  
@@ -37,6 +27,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import org.jajuk.util.MD5Processor;
 
@@ -45,7 +36,7 @@ import org.jajuk.util.MD5Processor;
  * 
  * @author bflorat @created 17 oct. 2003
  */
-public class TrackManager implements ITechnicalStrings{
+public class TrackManager implements ITechnicalStrings {
 	/** Tracks collection* */
 	static HashMap hmTracks = new HashMap(100);
 
@@ -61,30 +52,61 @@ public class TrackManager implements ITechnicalStrings{
 	 * 
 	 * @param sName
 	 */
-	public static Track registerTrack(String sName, Album album, Style style, Author author, long length, String sYear, Type type) {
-		String sId = MD5Processor.hash(style.getName()+author.getName()+sYear+length+type.getName()+sName);
-		return registerTrack(sId,sName,album,style,author,length,sYear,type);
+	public static synchronized Track registerTrack(String sName, Album album, Style style, Author author, long length, String sYear, Type type) {
+		String sId = MD5Processor.hash(style.getName() + author.getName() + sYear + length + type.getName() + sName);
+		return registerTrack(sId, sName, album, style, author, length, sYear, type);
 	}
-	
+
 	/**
 	 * Register an Track with a known id
 	 * 
 	 * @param sName
 	 */
-	public static Track registerTrack(String sId,String sName, Album album, Style style, Author author, long length, String sYear, Type type) {
+	public static synchronized Track registerTrack(String sId, String sName, Album album, Style style, Author author, long length, String sYear, Type type) {
 		Track track = null;
-		if ( !hmTracks.containsKey(sId)){
+		if (!hmTracks.containsKey(sId)) {
 			String sAdditionDate = new SimpleDateFormat(DATE_FILE).format(new Date());
-			track = new Track(sId,sName, album, style, author, length, sYear, type, sAdditionDate);
-				//	TODO format
+			track = new Track(sId, sName, album, style, author, length, sYear, type);
+			track.setAdditionDate(sAdditionDate);
 			hmTracks.put(sId, track);
 		}
-		return (Track)hmTracks.get(sId);
+		return (Track) hmTracks.get(sId);
 	}
 
+	/**
+	 * Remove a track
+	 * 
+	 * @param style
+	 *                   id
+	 */
+	public static synchronized void remove(String sId) {
+		hmTracks.remove(sId);
+	}
+
+	/**
+	 * Perform a track cleanup : delete useless items
+	 *  
+	 */
+	public static synchronized void cleanup() {
+		Iterator itTracks = hmTracks.values().iterator();
+		while (itTracks.hasNext()) {
+			Track track = (Track) itTracks.next();
+			Iterator itFiles = track.getFiles().iterator();
+			while (itFiles.hasNext()) {
+				org.jajuk.base.File file = (org.jajuk.base.File) itFiles.next();
+				if (FileManager.getFile(file.getId()) == null) { //test if the file exists in the main file repository
+					itFiles.remove();
+					track.removeFile(file); //no? remove it from the track
+				}
+			}
+			if (track.getFiles().size() == 0) { //the track don't map anymore to any physical item, just remove it
+				itTracks.remove();
+			}
+		}
+	}
 
 	/** Return all registred Tracks */
-	public static ArrayList getTracks() {
+	public static synchronized ArrayList getTracks() {
 		return new ArrayList(hmTracks.values());
 	}
 
@@ -94,7 +116,7 @@ public class TrackManager implements ITechnicalStrings{
 	 * @param sName
 	 * @return
 	 */
-	public static Track getTrack(String sId) {
+	public static synchronized Track getTrack(String sId) {
 		return (Track) hmTracks.get(sId);
 	}
 

@@ -16,8 +16,8 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
- * Revision 1.4  2003/10/31 13:05:06  bflorat
- * 31/10/2003
+ * Revision 1.5  2003/11/03 06:08:05  bflorat
+ * 03/11/2003
  *
  * Revision 1.1  2003/10/12 21:08:11  bflorat
  * 12/10/2003
@@ -52,7 +52,7 @@ public class TypeManager {
 	 * Register a type jajuk can read
 	 * @param type
 	 */
-	public static Type registerType(String sName,String sExtension, String sPlayerImpl,String sTagImpl,boolean bIsMusic) {
+	public static synchronized Type registerType(String sName,String sExtension, String sPlayerImpl,String sTagImpl,boolean bIsMusic) {
 		String sId = new Integer(hmSupportedTypes.size()).toString();
 		return registerType(sId,sName,sExtension,sPlayerImpl,sTagImpl,bIsMusic);
 	}
@@ -62,7 +62,7 @@ public class TypeManager {
 	 * Register a type jajuk can read with a known id
 	 * @param type
 	 */
-	public static Type registerType(String sId,String sName,String sExtension, String sPlayerImpl,String sTagImpl,boolean bIsMusic) {
+	public static synchronized Type registerType(String sId,String sName,String sExtension, String sPlayerImpl,String sTagImpl,boolean bIsMusic) {
 		Type type = null;
 		try{
 			type = new Type(sId,sName,sExtension,sPlayerImpl,sTagImpl,bIsMusic);
@@ -80,17 +80,17 @@ public class TypeManager {
 	 * @param type
 	 * @return
 	 */
-	public static boolean isExtensionSupported(String sExt) {
+	public static synchronized boolean isExtensionSupported(String sExt) {
 		return hmSupportedTypes.containsKey(sExt);
 	}
 
 	/**Return all registred types*/
-	public static ArrayList getTypes() {
+	public static synchronized ArrayList getTypes() {
 		return new ArrayList(hmSupportedTypes.values());
 	}
 	
 	/**Return a registred type by its id*/
-		public static Type getType(String sId) {
+		public static synchronized Type getType(String sId) {
 			Iterator it = hmSupportedTypes.values().iterator();
 			while (it.hasNext()){
 				Type type = (Type)it.next();
@@ -106,7 +106,7 @@ public class TypeManager {
 	 * @param sExtension
 	 * @return
 	 */
-	public static Type getTypeByExtension(String sExtension) {
+	public static synchronized Type getTypeByExtension(String sExtension) {
 		return (Type) hmSupportedTypes.get(sExtension);
 	}
 
@@ -114,7 +114,7 @@ public class TypeManager {
 	 * Return a list "a,b,c" of registered extensions, used by FileChooser
 	 * @return
 	 */
-	public static String getTypeListString() {
+	public static synchronized String getTypeListString() {
 		StringBuffer sb = new StringBuffer();
 		Iterator it = hmSupportedTypes.keySet().iterator();
 		while (it.hasNext()) {

@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.7  2003/11/03 06:08:05  bflorat
+ * 03/11/2003
+ *
  * Revision 1.6  2003/10/31 13:05:06  bflorat
  * 31/10/2003
  *
@@ -88,7 +91,7 @@ public class Track extends PropertyAdapter {
 	 * @param type
 	 * @param sAdditionDate
 	 */
-	public Track(String sId, String sName,Album album,Style style,Author author,long length,String sYear,Type type,String sAdditionDate) {
+	public Track(String sId, String sName,Album album,Style style,Author author,long length,String sYear,Type type) {
 		this.sId = sId;
 		this.sName = sName;
 		this.album = album;
@@ -97,7 +100,6 @@ public class Track extends PropertyAdapter {
 		this.length = length;
 		this.sYear = sYear;
 		this.type = type;
-		this.sAdditionDate=sAdditionDate;
 	}
 	
 	/**
@@ -116,6 +118,17 @@ public class Track extends PropertyAdapter {
 			sOut += '\n'+alFiles.get(i).toString();
 		}
 		return sOut; 
+	}
+	
+	
+	public Object clone(){
+		Track track = new Track(sId,sName,album,style,author,length,sYear,type);
+		track.setAdditionDate(sAdditionDate);
+		track.setRate(lRate);
+		track.setHits(iHits);
+		track.setProperties(getProperties());
+		track.alFiles = (ArrayList)alFiles.clone();
+		return track;
 	}
 
 	/**
@@ -214,8 +227,8 @@ public class Track extends PropertyAdapter {
 	 * @param otherTrack
 	 * @return
 	 */
-	public boolean equals(Track otherTrack){
-		return this.getId().equals(otherTrack.getId() );
+	public boolean equals(Object otherTrack){
+		return this.getId().equals(((Track)otherTrack).getId() );
 	}	
 	
 	
@@ -240,6 +253,15 @@ public class Track extends PropertyAdapter {
 	public void addFile(File file){
 		alFiles.add(file);	
 	}
+	
+	/**
+	 * Remove an associated file 
+	 * @param file
+	 */
+	public void removeFile(File file){
+		alFiles.remove(file);	
+	}
+
 
 	/**
 	 * @param hits The iHits to set.

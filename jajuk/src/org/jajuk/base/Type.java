@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.7  2003/11/03 06:08:05  bflorat
+ * 03/11/2003
+ *
  * Revision 1.6  2003/10/31 13:05:06  bflorat
  * 31/10/2003
  *
@@ -47,7 +50,7 @@ import org.jajuk.util.Util;
  * @author     bflorat
  * @created    12 oct. 2003
  */
-public class Type {
+public class Type extends PropertyAdapter{
 	
 	/**Type id*/
 	private String sId;
@@ -131,8 +134,8 @@ public class Type {
 	 * @param otherType
 	 * @return
 	 */
-	public boolean equals(Type otherType){
-		return this.getId().equals(otherType.getId() );
+	public boolean equals(Object otherType){
+		return this.getId().equals(((Type)otherType).getId() );
 	}	
 
 	/**
