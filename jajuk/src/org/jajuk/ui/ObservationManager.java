@@ -49,7 +49,7 @@ public class ObservationManager implements ITechnicalStrings{
 	 * @param jc component to register
 	 */
 	public static void register(String subject,Object obj){
-		Log.debug("Register: "+subject+" by: "+obj); //$NON-NLS-1$ //$NON-NLS-2$
+		Log.debug("Register: \""+subject+"\" by: "+obj); //$NON-NLS-1$ //$NON-NLS-2$
 		ArrayList alComponents = (ArrayList)hEventComponents.get(subject);
 		if (alComponents == null){
 			alComponents = new ArrayList(1);
