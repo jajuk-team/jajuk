@@ -24,6 +24,7 @@ import java.awt.Image;
 import java.awt.image.AreaAveragingScaleFilter;
 import java.awt.image.FilteredImageSource;
 import java.awt.image.ImageFilter;
+import java.io.File;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -31,6 +32,7 @@ import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 
+import org.jajuk.base.Directory;
 import org.jajuk.base.FIFO;
 import org.jajuk.ui.ObservationManager;
 import org.jajuk.ui.Observer;
@@ -48,6 +50,9 @@ public class CoverView extends ViewAdapter implements Observer{
 
 	/**Current Image*/
 	private static Image image;
+	
+	/**Current directory*/
+	private static File fDir;
 		
 	
 	/**
@@ -80,6 +85,10 @@ public class CoverView extends ViewAdapter implements Observer{
 	public void update(String subject){
 		if ( subject.equals(EVENT_COVER_REFRESH)){
 			java.io.File fDir = new java.io.File(FIFO.getInstance().getCurrentFile().getAbsolutePath()).getParentFile();
+			if ( CoverView.fDir!= null && CoverView.fDir.equals(fDir) ){  //if we are always in the same directory, just leave to save cpu
+				return;
+			}
+			CoverView.fDir = fDir;
 			java.io.File[] files = fDir.listFiles();
 			boolean bFound = false;
 			//first, search for a 'cover.jpg' file
@@ -100,9 +109,10 @@ public class CoverView extends ViewAdapter implements Observer{
 					}
 				}
 			}
-			if ( bFound){
-				display();
+			if ( !bFound){
+				image = java.awt.Toolkit.getDefaultToolkit().getImage(IMAGES_SPLASHSCREEN);
 			}
+			display();
 		}
 	}
 
