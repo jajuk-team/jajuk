@@ -162,8 +162,8 @@ public class FIFO implements ITechnicalStrings,Runnable{
 			if ( file.getDirectory()!=null && !file.getDirectory().getDevice().isMounted()){  //file is null if it is a BasicFile
 				//not mounted, ok let them a chance to mount it:
 				String sMessage = Messages.getString("Error.025")+" ("+file.getDirectory().getDevice().getName()+Messages.getString("FIFO.4"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-				int i = JOptionPane.showConfirmDialog(Main.getWindow(),sMessage,Messages.getString("Warning"),JOptionPane.OK_CANCEL_OPTION,JOptionPane.WARNING_MESSAGE); //$NON-NLS-1$
-				if ( i == JOptionPane.OK_OPTION){
+				int i = JOptionPane.showConfirmDialog(Main.getWindow(),sMessage,Messages.getString("Warning"),JOptionPane.YES_NO_CANCEL_OPTION,JOptionPane.WARNING_MESSAGE); //$NON-NLS-1$
+				if ( i == JOptionPane.YES_OPTION){
 					try{
 						file.getDirectory().getDevice().mount();
 					}
@@ -171,12 +171,12 @@ public class FIFO implements ITechnicalStrings,Runnable{
 						it.remove();
 						Log.error(e);
 						Messages.showErrorMessage("011",file.getDirectory().getDevice().getName()); //$NON-NLS-1$
-						break;
+						return;
 					}
 				}
 				else{
 					it.remove();
-					break;
+					return;
 				}
 			}
 		}
@@ -469,17 +469,17 @@ public class FIFO implements ITechnicalStrings,Runnable{
 		if ( fifo == null || !bPlaying || getInstance().fCurrent == null){ //currently stopped
 			return true;
 		}
-		if (getInstance().fCurrent.getDirectory().getDevice().equals(device)){
+		if (getInstance().fCurrent.getDirectory().getDevice().equals(device)){ //is current track  on this device?
 			return false;
 		}
-		Iterator it = getInstance().alFIFO.iterator();
+		Iterator it = getInstance().alFIFO.iterator(); //are next tracks in fifo on this device?
 		while (it.hasNext()){
 			File file = (File)it.next();
 			if ( file.getDirectory().getDevice().equals(device)){
 				return false;
 			}
 		}
-		it = getInstance().alRepeated.iterator();
+		it = getInstance().alRepeated.iterator();  //are repeat fifo tracks on this device ?
 		while (it.hasNext()){
 			File file = (File)it.next();
 			if ( file.getDirectory().getDevice().equals(device)){
