@@ -76,6 +76,7 @@ public interface ITechnicalStrings {
 	public static final String ICON_PERSPECTIVE_LOGICAL	= "/org/jajuk/icons/16x16/logical_perspective.png";
 	public static final String ICON_PERSPECTIVE_STATISTICS	= "/org/jajuk/icons/16x16/percent.png";
 	public static final String ICON_PERSPECTIVE_CONFIGURATION	= "/org/jajuk/icons/16x16/configure.png";
+	public static final String ICON_PERSPECTIVE_PLAYER	= "/org/jajuk/icons/16x16/player_perspective.png";
 	public static final String ICON_PERSPECTIVE_HELP	= "/org/jajuk/icons/16x16/info.png";
 	public static final String ICON_OPEN_FILE	= PATH_ICONS + "16x16/fileopen.png";
 	public static final String ICON_EXIT=  PATH_ICONS + "16x16/exit.png";
@@ -204,6 +205,7 @@ public interface ITechnicalStrings {
 	public static final String PERSPECTIVE_NAME_CONFIGURATION = "org.jajuk.ui.perspectives.ConfigurationPerspective";
 	public static final String PERSPECTIVE_NAME_STATISTICS = "org.jajuk.ui.perspectives.StatPerspective";
 	public static final String PERSPECTIVE_NAME_HELP = "org.jajuk.ui.perspectives.HelpPerspective";
+	public static final String PERSPECTIVE_NAME_PLAYER = "org.jajuk.ui.perspectives.Pla	yerPerspective";
 	
 	 //views
 	public static final String VIEW_NAME_DEVICES = "org.jajuk.ui.views.DeviceView";
