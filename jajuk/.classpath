@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
     <classpathentry kind="src" path="src"/>
+    <classpathentry kind="src" path="tests/bflorat"/>
+    <classpathentry kind="src" path="tests/sgringoire"/>
     <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+    <classpathentry kind="output" path="bin"/>
     <classpathentry kind="lib" path="lib/jl030.jar"/>
     <classpathentry kind="lib" path="lib/log4j-1.2.6.jar"/>
-    <classpathentry kind="output" path="bin"/>
 </classpath>
