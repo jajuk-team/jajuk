@@ -65,20 +65,24 @@ public class Player implements ITechnicalStrings{
 			else{
 				pCurrentPlayerImpl.play(fCurrent,fPosition,length,ConfigurationManager.getFloat(CONF_VOLUME));
 			}
-		} catch (Exception e) {
-			Properties pDetails = new Properties();
-			pDetails.put(DETAIL_CURRENT_FILE,file);
-			ObservationManager.notify(new Event(EVENT_PLAY_ERROR,pDetails)); //notify the error 
-			Log.error("007",fCurrent.getAbsolutePath(), e); //$NON-NLS-1$
-			try {
-				Thread.sleep(WAIT_AFTER_ERROR); //make sure user has time to see this error message
-			} catch (InterruptedException e1) {
-				e1.printStackTrace();
-			}
-			Player.stop();
-			FIFO.getInstance().finished();
-		
-		}			
+		} catch (final Exception e) {
+			//process playing error asynchonously to avoid loop problems when capscading errors
+            new Thread(){
+			    public void run(){
+                    Properties pDetails = new Properties();
+                    pDetails.put(DETAIL_CURRENT_FILE,file);
+                    ObservationManager.notify(new Event(EVENT_PLAY_ERROR,pDetails)); //notify the error 
+                    Log.error("007",fCurrent.getAbsolutePath(), e); //$NON-NLS-1$
+                    try {
+                        Thread.sleep(WAIT_AFTER_ERROR); //make sure user has time to see this error message
+                    } catch (InterruptedException e1) {
+                        e1.printStackTrace();
+                    }
+                    Player.stop();
+                    FIFO.getInstance().finished();        
+                }
+            }.start();
+       }			
 	}
 	
 	/**
