@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.4  2003/11/21 15:52:08  bflorat
+ * Exit confirmation
+ *
  * Revision 1.3  2003/11/20 19:12:22  bflorat
  * 20/11/2003
  *
@@ -30,6 +33,7 @@
 package org.jajuk.ui.views;
 
 import java.awt.Checkbox;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -78,6 +82,7 @@ public class ParameterView extends ViewAdapter implements ActionListener {
 		JButton jbFile;		
 	JPanel jpConfirmations;
 		JCheckBox jcbBeforeDelete;
+		JCheckBox jcbBeforeExit;
 	JPanel jpOptions;
 		JCheckBox jcbDisplayUnmounted;
 		JCheckBox jcbRestart;
@@ -99,6 +104,8 @@ public class ParameterView extends ViewAdapter implements ActionListener {
 		JCheckBox jcbHideProperties;
 	JPanel jpOKCancel;
 		JButton jbOK;
+		JButton jbDefault;
+		
 		
 	
 	/**Return self instance*/
@@ -167,12 +174,16 @@ public class ParameterView extends ViewAdapter implements ActionListener {
 		jpConfirmations = new JPanel();
 		jpConfirmations.setBorder(BorderFactory.createTitledBorder("Confirmations"));
 		double sizeConfirmations[][] = {{0.99},
-														 {iYSeparator,20,iYSeparator}};
+										 {iYSeparator,20,iYSeparator,20,iYSeparator}};
 		jpConfirmations.setLayout(new TableLayout(sizeConfirmations));
 		jcbBeforeDelete = new JCheckBox("Before physically delete a file");
 		jcbBeforeDelete.setToolTipText("Ask before physically delete a file");
 		jcbBeforeDelete.setSelected(Boolean.valueOf(ConfigurationManager.getProperty(CONF_CONFIRMATIONS_DELETE_FILE)).booleanValue());
+		jcbBeforeExit = new JCheckBox("Before exiting Jajuk");
+		jcbBeforeExit.setToolTipText("Ask before exiting Jajuk");
+		jcbBeforeExit.setSelected(Boolean.valueOf(ConfigurationManager.getProperty(CONF_CONFIRMATIONS_EXIT)).booleanValue());
 		jpConfirmations.add(jcbBeforeDelete,"0,1");
+		jpConfirmations.add(jcbBeforeExit,"0,3");
 		//Options
 		jpOptions = new JPanel();
 		jpOptions.setBorder(BorderFactory.createTitledBorder("Options"));
@@ -218,7 +229,7 @@ public class ParameterView extends ViewAdapter implements ActionListener {
 		jpCombos.add(jcbLogLevel,"1,4");
 		JPanel jpIntro = new JPanel();
 		double sizeIntro[][] = {{0.50,0.50},
-														 {20,iYSeparator,20}};
+							 {20,iYSeparator,20}};
 		jpIntro.setLayout(new TableLayout(sizeIntro));
 		jlIntroPosition = new JLabel("Intro begin position (%) : ");
 		jtfIntroPosition = new JTextField(3);
@@ -234,17 +245,24 @@ public class ParameterView extends ViewAdapter implements ActionListener {
 		jpOptions.add(jcbRestart,"0,3");
 		jpOptions.add(jpCombos,"0,5");
 		jpOptions.add(jpIntro,"0,7");
-		
-		
+		//OK
+		jpOKCancel = new JPanel();
+		jpOKCancel.setLayout(new FlowLayout());
+		jbOK = new JButton("OK");
+		jbOK.addActionListener(this);
+		jpOKCancel.add(jbOK);
+		jbDefault = new JButton("Default");
+		jbDefault.addActionListener(this);
+		jpOKCancel.add(jbDefault);
 		//global layout
 		double size[][] = {{0.5,0.5},
-								 {0.40,iYSeparator,0.30,iYSeparator,0.20}};
+					{0.40,iYSeparator,0.30,iYSeparator,0.25,iYSeparator,0.05}};
 		setLayout(new TableLayout(size));
-		add(jpHistory,"0,0");
+		add(jpHistory,"1,0");
 		add(jpStart,"0,2");
 		add(jpConfirmations,"0,4");
-		add(jpOptions,"1,0");
-		
+		add(jpOptions,"0,0");
+		add(jpOKCancel,"0,6");
 	}
 
 	/* (non-Javadoc)
@@ -272,7 +290,10 @@ public class ParameterView extends ViewAdapter implements ActionListener {
 			}
 		}
 		else if (e.getSource() == jbOK){
-			
+			//Read all parameters
+			//Confirmations
+			ConfigurationManager.setProperty(CONF_CONFIRMATIONS_DELETE_FILE,Boolean.toString(jcbBeforeDelete.isSelected()));
+			ConfigurationManager.setProperty(CONF_CONFIRMATIONS_EXIT,Boolean.toString(jcbBeforeExit.isSelected()));
 		}
 		
 	}

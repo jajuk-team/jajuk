@@ -9,6 +9,9 @@
  * 
  * You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,USA
  * $Log$
+ * Revision 1.24  2003/11/21 15:52:06  bflorat
+ * Exit confirmation
+ *
  * Revision 1.23  2003/11/21 15:00:39  bflorat
  * Corrected various display bugs when changing current perspective
  *
@@ -33,6 +36,7 @@ import java.io.IOException;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import org.jajuk.base.Collection;
@@ -47,6 +51,7 @@ import org.jajuk.ui.JajukJMenuBar;
 import org.jajuk.ui.PerspectiveBarJPanel;
 import org.jajuk.ui.PerspectiveManager;
 import org.jajuk.ui.SplashScreen;
+import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
@@ -111,11 +116,12 @@ public class Main implements ITechnicalStrings {
 			
 			//Starts the FIFO
 			FIFO.getInstance().start();
-			
-			
+						
+			jframe.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 			jframe.addWindowListener(new WindowAdapter() {
 				public void windowClosing(WindowEvent we) {
 					exit(0);
+					return;
 				}
 			});
 			jpFrame = (JPanel)jframe.getContentPane();
@@ -144,18 +150,15 @@ public class Main implements ITechnicalStrings {
 			jpDesktop.setBorder(BorderFactory.createEtchedBorder());
 			jpDesktop.setLayout(new BorderLayout());
 		
-			
 			//Add static panels
 			jpFrame.add(command, BorderLayout.NORTH);
 			jpFrame.add(perspectiveBar, BorderLayout.WEST);
 			jpFrame.add(information, BorderLayout.SOUTH);
 			jpFrame.add(jpDesktop, BorderLayout.CENTER);
 				
-			
 			//Set menu bar to the frame
 			jframe.setJMenuBar(JajukJMenuBar.getInstance());
 			
-		
 			//display window
 			jframe.pack();
 			jframe.setExtendedState(Frame.MAXIMIZED_BOTH);  //maximalize
@@ -228,6 +231,12 @@ public class Main implements ITechnicalStrings {
 	 */
 	public static void exit(int iExitCode) {
 		try {
+			if (Boolean.valueOf(ConfigurationManager.getProperty(CONF_CONFIRMATIONS_EXIT)).booleanValue()){
+				int iResu = JOptionPane.showConfirmDialog(jframe,Messages.getString("Confirmation_exit"),"Confirmation",JOptionPane.YES_NO_OPTION);
+				if (iResu == JOptionPane.NO_OPTION){
+					return;
+				}
+			}
 			Log.debug("Exiting with code : "+iExitCode);
 			if (iExitCode == 0){ //commit only if exit is safe to avoid commiting empty collection
 				//commit configuration

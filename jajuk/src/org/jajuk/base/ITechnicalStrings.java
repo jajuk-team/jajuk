@@ -166,7 +166,8 @@ public interface ITechnicalStrings {
  	public static final String CONF_ICON_INTRO= "jajuk.state.ui.icon.intro";
 	public static final String CONF_STARTUP_FILE= "jajuk.startup.file";
 	public static final String CONF_STARTUP_MODE= "jajuk.startup.mode";
-	public static final String CONF_CONFIRMATIONS_DELETE_FILE= "jajuk.confirmations.delete.file";
+	public static final String CONF_CONFIRMATIONS_DELETE_FILE= "jajuk.confirmations.delete_file";
+	public static final String CONF_CONFIRMATIONS_EXIT= "jajuk.confirmations.exit";
 	public static final String CONF_OPTIONS_HIDE_UNMOUNTED= "jajuk.options.hide_unmounted";
 	public static final String CONF_OPTIONS_RESTART= "jajuk.options.restart";
 	public static final String CONF_OPTIONS_LOG_LEVEL= "jajuk.options.log_level";

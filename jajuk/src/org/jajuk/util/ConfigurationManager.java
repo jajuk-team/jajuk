@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.15  2003/11/21 15:52:08  bflorat
+ * Exit confirmation
+ *
  * Revision 1.14  2003/11/20 21:40:30  bflorat
  * 20/11/2003
  *
@@ -124,6 +127,7 @@ public class ConfigurationManager implements ITechnicalStrings{
 		properties.put(CONF_STATE_INTRO,FALSE); //$NON-NLS-1$
 		properties.put(CONF_ICON_INTRO,ICON_INTRO_OFF);  
 		properties.put(CONF_CONFIRMATIONS_DELETE_FILE,TRUE);
+		properties.put(CONF_CONFIRMATIONS_EXIT,FALSE);
 	
 		//Options
 		properties.put(CONF_OPTIONS_HIDE_UNMOUNTED,FALSE);
