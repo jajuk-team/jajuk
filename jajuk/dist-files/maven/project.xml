@@ -116,6 +116,10 @@
 			<roles><role>Bug reports, RFE, news reporting</role></roles>
 		</contributor>
 		<contributor>
+			<name>kournikola</name>
+			<roles><role>Bug reports, RFE, news reporting</role></roles>
+		</contributor>
+		<contributor>
 			<name>Aurélien Pedron</name>
 			<roles><role>Bug reports, tests</role></roles>
 		</contributor>

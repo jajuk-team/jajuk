@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding='iso-8859-1'?> 
+<document> 
+	<properties> 
+		<author email="bertrand@florat.net">Bertrand Florat</author>
+		<title>Installation guide</title> 
+	</properties> 
+  	<body>
+  		<section name='Installation guide'>
+   			<subsection name='Targeted platforms'>
+   				<p>This documentation targets : Gnu/Linux, MS Windows, MAC, ...</p>
+   			</subsection>
+   			
+   			<subsection name='Requirements'>
+				<p><b>JRE 1.4.2 and above</b>. See REQUIREMENTS part in the Readme file at : <a href='http://jajuk.sourceforge.net/README.html#Requirements'>http://jajuk.sourceforge.net/README.html#Requirements</a></p>
+   			</subsection>
+   			
+   			<subsection name='Download'>
+				<p>Download Jajuk last distribution at :<a href='http://sourceforge.net/projects/jajuk/'>http://sourceforge.net/projects/jajuk/</a></p>
+   			</subsection>
+   			
+   			<subsection name='Installation'>
+				<p>We use IzPack Java installer ( <a href='http://www.izforge.com'>http://www.izforge.com</a> ) to stay GPL and platform-independent. The distribution file is an executable jar file, 
+				the java version of a 'setup.exe' file but working with any operating system.</p>
+				<ul>
+					<li><p>Double-click on the downloaded file ( <span style="font-family: monospace;">jajuk-install-${version}.jar</span> ). If nothing appends, it means jar extension is not mapped to <span style="font-family: monospace;">java</span> program. 
+						Then, you can map it with you OS ( open with... )  or launch it by typing in a console:  <span style="font-family: monospace;">java -jar jajuk-install-${version}.jar</span></p></li>
+					<li><p>Select your language for installation</p></li>
+					<li><p>Read carefully the provided README file</p></li>
+					<li><p>Read and accept GPL license</p></li>
+					<li><p>Select installation target : Example: <span style="font-family: monospace;">/opt/jajuk</span> under Unix,  <span style="font-family: monospace;">c:\Program Files\jajuk</span> under Windows.</p></li>
+					<li><p>Create shortcuts ( only for Windows ) : just click on the 'next' button.</p></li>
+					<li><p>(Optional) Create an automatized installation script if you want to achieve fast installations with the same parameters.</p></li>
+				</ul>
+   			</subsection>
+   			
+			<subsection name='First launch'>
+				<ul>
+					<li><p><u>Under Unix</u> : Create a shortcut or launch script : <span style="font-family: monospace;">sh
+						${jajuk installation path}/jajuk.sh</span></p></li>
+					<li><p><u>Under Windows</u> : Launch Jajuk by clicking on Jajuk icon : Start / Jajuk / Jajuk</p></li>
+   				</ul>
+			</subsection>
+   			
+   			<subsection name='Upgrade'>
+				<p>If you already have a working release of Jajuk:</p>
+				<ul>
+					<li><p>It is safe to install the new release over previous one without uninstalling.</p></li>
+					<li><p>Your collection and configuration is kept and is stored under <span style="font-family: monospace;">${your home directory}/.jajuk</span></p></li>
+				</ul>
+   			</subsection>
+   			
+   			<subsection name='Uninstallation'>
+				<p>If Jajuk doesn't address your needs, you can uninstall it this way : </p>
+				<ul>
+					<li><p><u>Under Unix</u> : launch : <span style="font-family: monospace;">java -jar ${jajuk installation path}/Unistaller/uninstaller.jar</span></p></li>
+					<li><p><u>Under Windows</u> : Launch uninstaller by clicking on 'Uninstall' icon next to 'Jajuk ' one</p></li>
+   				</ul>
+   			</subsection>
+   		</section>
+  	</body>
+ </document>
+   			

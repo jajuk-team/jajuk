@@ -1,58 +1,57 @@
 <?xml version="1.0"?>
 <document>
   <body>
-  	<section name="Roadmap">
+  	<section name="Technical Roadmap">
   		<section name="0.1">
-	   		<p>Initial version, offers most of targetted features. 0.2 to 0.5 releases will bring additionnal non-mandatory features.</p>
+	   		<p>Initial version, offers most of targeted features. Next releases will bring additional non-mandatory features. 
+	   		Native language translations will be added thanks contributors.</p>
 	   	</section>
   		<section name="0.2">
 	   		<ul>
-	   			<li>ID3 tags update</li>
-	   			<li>Advanced table filters</li>
-	   			<li>Bestof playlist size setting</li>
-	   			<li>Online help part 1/3</li>
+	   			<li><p>Ogg Vorbis support</p></li>
+	   			<li><p>ID3 tags update</p></li>
+	   			<li><p>Online help part 1/3</p></li>
 	   		</ul>	
 	   	</section>
 	   	<section name="0.3">
 	   		<ul>
-	   			<li>Java web start support</li>
-	   			<li>Ogg Vorbis support</li>
-	   			<li>Network-type device ( P2P )</li>
-	   			<li>Online help part 2/3</li>
+	   			<li><p>Network-type device (P2P) : developed by Gerhard Dietrichsteiner</p></li>
+	   			<li><p>Online help part 2/3</p></li>
 	   		</ul>	
 	   	</section>
 	   	<section name="0.4">
 	   		<ul>
-	   			<li>Alter functions ( cut/copy/paste, delete, rename... )</li>
-	   			<li>New statristics, sorted by theme ( tabbed pane )</li>
-	   			<li>Online help part 3/3</li>
+	   			<li><p>Alter functions ( cut/copy/paste, delete, rename... )</p></li>
+	   			<li><p>New stats, sorted by theme ( tabbed pane )</p></li>
+	   			<li><p>Online help part 3/3</p></li>
 	   		</ul>	
 	   	</section>
 	   	<section name="0.5">
 	   		<ul>
-	   			<li>Automatic views resizing</li>
-	   			<li>User properties management</li>
-	   			<li>Key shortcuts for track navigation</li>
+	   			<li><p>Automatic views resizing</p></li>
+	   			<li><p>User properties management</p></li>
+	   			<li><p>Key shortcuts for track navigation</p></li>
 	   		</ul>	
 	   	</section>
 	   	<section name="0.6">
 	   		<ul>
-	   			<li>Disk Jokey magic function ( makes an automatic programmation based on user preferences )</li>
-	   			<li>Tips of the day</li>
+	   			<li><p>Re-tagger based on CDDB</p></li> 
+	   			<li><p>Disk Jokey magic function</p></li>
+	   			<li><p>Tips of the day</p></li>
+	   			<li><p>Advanced table filters</p></li>
 	   		</ul>	
 	   	</section>
 	   	<section name="0.7">
 	   		<ul>
-	   			<li>New perspective : edtions to get collection reports and print them</li>
+	   			<li><p>New perspective : editions to get collection reports and print them</p></li>
 	   		</ul>	
 	   	</section>
 	   	<section name="science fiction">
 	   		<ul>
-	   			<li>Audio CDs support</li>
-	   			<li>Eye candies animations when playing in a new persperctive</li>
-	   			<li>Equilizers in a new perspective</li>
-	   			<li>CDDB based on mp3 ( even possible ? )</li>
-	   			<li>Covers lookup on the web ( even possible ? )</li>
+	   			<li><p>Audio CDs support</p></li>
+	   			<li><p>Eye candies animations when playing in a new perspective</p></li>
+	   			<li><p>Equalizers in a new perspective</p></li>
+	   			<li><p>Covers lookup on the web ( even possible ? )</p></li>
 	   		</ul>	
 	   	</section>
   	</section>

@@ -6,33 +6,48 @@
 	</properties> 
   	<body>
   		<section name='Translation howto'>
+   			<subsection name='Already translated'>
+    			<p>These langages are already translated or are being translated :</p>
+    			<ul>
+    				<li>English (default, en)</li>
+    				<li>French (fr)</li>
+    				<li>German (de)</li>
+    				<li>Swedish (sv)</li>
+    				<li>Spanish (sp)</li>
+    			</ul>
+    		</subsection>
+
    			<subsection name='Target'>
    			 <p>Anyone can translate Jajuk, no computer science is required.
 				For any question or comments, please send me a mail : <a href="mailto:bertrand@florat.net">
 				bertrand@florat.net</a>. Translate current Jajuk version takes approximatly 3 hours.</p>
     		</subsection>
-   			
-   			<subsection name='How it works'>
-   			<p>Jajuk uses the standard Java internationalization (i18n) system based on properties file. Files are:</p>
-			<p>${jajuk installation path}/src/org/jajuk/i18n/<br></br>
+
+   			<subsection name='README file translation'>
+   			 <p>The README file is displayed during installation and is on the web site. Its name is README_${iso3 code}.html. Get README file of your choice as a source language. Example: use README.html as english source language at 
+   			 <a href='http://cvs.sourceforge.net/viewcvs.py/jajuk/jajuk/dist-files/doc/README.html'>http://cvs.sourceforge.net/viewcvs.py/jajuk/jajuk/dist-files/doc/README.html</a>
+					or any other README file in the directory and translate it.</p>
+    		</subsection>
+
+   			<subsection name='Jajuk translation'>
+	   			<p>Jajuk uses the standard Java internationalization (i18n) system based on properties file. Files are:</p>
+				<p>${jajuk installation path}/src/org/jajuk/i18n/<br></br>
                                           jajuk.properties<br></br>
                                           jajuk_fr.properties<br></br>
                                           jajuk_${locale}.properties</p>
-            <p>${locale} is a ISO language code, see <a href='http://www.ics.uci.edu/pub/ietf/http/related/iso639.txt'>http://www.ics.uci.edu/pub/ietf/http/related/iso639.txt</a>. 
-            jajuk.properties contains default resource bunddle (english) and you have a property file for each language.</p>
-    		</subsection>
-   			
-   			<subsection name='How to translate'>
-			<ul>
-			<li><p>Get  property file of your choice as a source language. Example: use jajuk.properties as english source language at <a href='http://cvs.sourceforge.net/viewcvs.py/jajuk/jajuk/src/org/jajuk/i18n/jajuk.properties'>http://cvs.sourceforge.net/viewcvs.py/jajuk/jajuk/src/org/jajuk/i18n/jajuk.properties</a>
-				or any other property file in the directory.</p>
-			</li>
-			<li><p>Your file should begin with :</p>
+        	    <p>${locale} is a ISO language code, see <a href='http://www.ics.uci.edu/pub/ietf/http/related/iso639.txt'>http://www.ics.uci.edu/pub/ietf/http/related/iso639.txt</a>. 
+            	jajuk.properties contains default resource bunddle (english) and you have a property file for each language.</p>
+				<p>Translation :</p>
+				<ul>
+				<li><p>Get  property file of your choice as a source language. Example: use jajuk.properties as english source language at <a href='http://cvs.sourceforge.net/viewcvs.py/jajuk/jajuk/src/org/jajuk/i18n/jajuk.properties'>http://cvs.sourceforge.net/viewcvs.py/jajuk/jajuk/src/org/jajuk/i18n/jajuk.properties</a>
+					or any other property file in the directory.</p>
+				</li>
+				<li><p>Your file should begin with :</p>
 				<p><span style="font-family: monospace;">#Jajuk ${your language} langpack. <br></br>
 				#Written by : ${your name}<br></br>
 				#Copyright 2003,2004 ${your name}, this is part of Jajuk distributed under the GPL V2 license<br></br>
 				#FROM ${source language} ${cvs version}<br></br>
-				#$Revision$</span></p>
+				#$$Revision$$</span></p>
 				<p>FROM comment gives exact CVS version you translated to allow diffs with newer versions and Revision gives current CVS version of your file.</p>
 			</li>
 			

@@ -45,5 +45,8 @@
        <action dev='bflorat' type='update'>Made some Swing optimizations according to 'Duglan Bob' advices</action>  
        <action dev='bflorat' type='update'>Collection file is now stored in UTF-16 to support more language character sets than UTF-8</action>  
      </release>
+     <release version='0.1.6' date='work in progress' description=''>
+       <action dev='bflorat' type='add'>Added Previous and Next in systray</action>  
+     </release>
   </body>
 </document>
