@@ -22,7 +22,6 @@ package org.jajuk.ui;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.beans.PropertyVetoException;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -64,12 +63,18 @@ public class ViewManager implements ITechnicalStrings{
 			}
 		});
 		//auto-selection behavior
-		ji.addMouseListener(new MouseAdapter() {
+		ji.getGlassPane().addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+			}
+
 			public void mouseEntered(MouseEvent e) {
 				try {
-					ji.setSelected(true);
-				} catch (PropertyVetoException e1) {
-					Log.error(e1);
+					if ( !ji.isSelected()){
+						ji.setSelected(true);
+				
+					} 
+				}catch (Exception e1) {
+					e1.printStackTrace();
 				}
 			}
 		});

@@ -20,6 +20,7 @@ package org.jajuk.ui.views;
 
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.dnd.DnDConstants;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -33,13 +34,11 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 import javax.swing.BoxLayout;
-import javax.swing.JComponent;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.SwingUtilities;
-import javax.swing.TransferHandler;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 import javax.swing.event.TreeSelectionEvent;
@@ -60,8 +59,10 @@ import org.jajuk.base.FileManager;
 import org.jajuk.base.PlaylistFile;
 import org.jajuk.base.PlaylistFileManager;
 import org.jajuk.i18n.Messages;
+import org.jajuk.ui.TreeTransferHandler;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.ObservationManager;
+import org.jajuk.ui.TransferableTreeNode;
 import org.jajuk.util.Util;
 
 /**
@@ -364,9 +365,6 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 		}
 		//create tree
 		jtree = new JTree(top);
-		//drag and drop support
-		jtree.setDragEnabled(true);
-		jtree.setTransferHandler(new TransferHandler("text"));
 		jtree.putClientProperty("JTree.lineStyle", "Angled");
 		jtree.getSelectionModel().setSelectionMode(TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
 		jtree.setCellRenderer(new DefaultTreeCellRenderer() {
@@ -443,6 +441,9 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 			public void valueChanged(TreeSelectionEvent e) {
 				Util.waiting();
 				TreePath[] tpSelected = jtree.getSelectionModel().getSelectionPaths();
+				if ( tpSelected == null){ //nothing selected, can be called during dnd
+					return;
+				}
 				HashSet hsSelectedFiles = new HashSet(100);
 				int items = 0;
 				long lSize = 0;
@@ -478,11 +479,6 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 		//Listen for double clic
 		MouseListener ml = new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
-				//DND support
-				JComponent c = (JComponent)e.getSource();
-				TransferHandler handler = c.getTransferHandler();
-				handler.exportAsDrag(c, e, TransferHandler.COPY);
-				
 				TreePath path = jtree.getPathForLocation(e.getX(), e.getY());
 				if ( e.getClickCount() == 2){
 					Object o = path.getLastPathComponent();
@@ -542,6 +538,10 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 			}
 		};
 		jtree.addMouseListener(ml);
+		jtree.setAutoscrolls(true);
+		//DND support
+		new TreeTransferHandler(jtree, DnDConstants.ACTION_COPY_OR_MOVE,true);
+		
 		
 		//expand all
 		for (int i=0;i<jtree.getRowCount();i++){
@@ -640,30 +640,28 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
  * @author     bflorat
  * @created    29 nov. 2003
  */
-class FileNode extends DefaultMutableTreeNode{
-	
-	/**Associated file*/
-	private File file;
+class FileNode extends TransferableTreeNode{
 	
 	/**
 	 * Constructor
 	 * @param file
 	 */
 	public FileNode(File file){
-		this.file = file;
+		super(file);
 	}
 	
 	/**
 	 * return a string representation of this file node
 	 */
 	public String toString(){
-		return file.getName();
+		return ((File)super.getData()).getName();
 	}
+	
 	/**
 	 * @return Returns the file.
 	 */
 	public File getFile() {
-		return file;
+		return (File)super.getData();
 	}
 	
 }
@@ -673,10 +671,7 @@ class FileNode extends DefaultMutableTreeNode{
  * @author     bflorat
  * @created    29 nov. 2003
  */
-class DeviceNode extends DefaultMutableTreeNode{
-	
-	/**Associated device*/
-	private Device device;
+class DeviceNode extends TransferableTreeNode{
 	
 	/**device -> deviceNode hashmap */
 	public static HashMap hmDeviceDeviceNode = new HashMap(100);
@@ -686,7 +681,7 @@ class DeviceNode extends DefaultMutableTreeNode{
 	 * @param device
 	 */
 	public DeviceNode(Device device){
-		this.device = device;
+		super(device);
 		hmDeviceDeviceNode.put(device,this);
 	}
 	
@@ -699,13 +694,13 @@ class DeviceNode extends DefaultMutableTreeNode{
 	 * return a string representation of this device node
 	 */
 	public String toString(){
-		return device.getName();
+		return ((Device)super.getData()).getName();
 	}
 	/**
 	 * @return Returns the device.
 	 */
 	public Device getDevice() {
-		return device;
+		return (Device)super.getData();
 	}
 	
 }
@@ -716,10 +711,7 @@ class DeviceNode extends DefaultMutableTreeNode{
  * @author     bflorat
  * @created    29 nov. 2003
  */
-class DirectoryNode  extends DefaultMutableTreeNode{
-	
-	/**Associated Directory*/
-	private Directory directory;
+class DirectoryNode  extends TransferableTreeNode{
 	
 	/**directory -> directoryNode hashmap */
 	public static HashMap hmDirectoryDirectoryNode = new HashMap(100);
@@ -729,7 +721,7 @@ class DirectoryNode  extends DefaultMutableTreeNode{
 	 * @param Directory
 	 */
 	public DirectoryNode(Directory directory){
-		this.directory = directory;
+		super(directory);
 		hmDirectoryDirectoryNode.put(directory,this);
 	}
 	
@@ -742,13 +734,13 @@ class DirectoryNode  extends DefaultMutableTreeNode{
 	 * return a string representation of this directory node
 	 */
 	public String toString(){
-		return directory.getName();
+		return ((Directory)getData()).getName();
 	}
 	/**
 	 * @return Returns the directory.
 	 */
 	public Directory getDirectory() {
-		return directory;
+		return (Directory)getData();
 	}
 	
 }
@@ -758,23 +750,29 @@ class DirectoryNode  extends DefaultMutableTreeNode{
  * @author     bflorat
  * @created    29 nov. 2003
  */
-class PlaylistFileNode  extends DefaultMutableTreeNode{
-	
-	/**Associated PlaylistFile*/
-	private PlaylistFile playlistFile;
+class PlaylistFileNode  extends TransferableTreeNode{
 	
 	/**
 	 * Constructor
 	 * @param PlaylistFile
 	 */
 	public PlaylistFileNode(PlaylistFile playlistFile){
-		this.playlistFile = playlistFile;
+		super(playlistFile);
 	}
 	
 	/**
 	 * return a string representation of this playlistFile node
 	 */
 	public String toString(){
-		return playlistFile.getName();
+		return ((PlaylistFile)super.getData()).getName();
 	}
+	
+	/**
+	 * @return Returns the playlist file node.
+	 */
+	public PlaylistFile getDirectory() {
+		return (PlaylistFile)getData();
+	}
+		
 }
+

@@ -23,6 +23,7 @@ package org.jajuk.ui.views;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.dnd.DnDConstants;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -51,6 +52,7 @@ import org.jajuk.base.PlaylistFileManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.ObservationManager;
 import org.jajuk.ui.Observer;
+import org.jajuk.ui.PlaylistTransferHandler;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Util;
 
@@ -336,6 +338,7 @@ public class PhysicalPlaylistRepositoryView extends ViewAdapter implements Obser
 			jpName.setPreferredSize(new Dimension(40,10));
 			add(jpName);
 			add(Box.createVerticalGlue());
+			new PlaylistTransferHandler(this,DnDConstants.ACTION_COPY_OR_MOVE,false);
 		}
 		
 				
