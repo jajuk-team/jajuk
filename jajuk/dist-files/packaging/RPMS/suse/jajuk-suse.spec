@@ -1,6 +1,6 @@
 Summary: Jajuk Advanced Jukebox
 Name: jajuk
-Version: 0.3.2
+Version: 0.3.3
 Release: 1Suse
 Group: Applications/Audio
 Copyright: Copyright Bertrand Florat & Jajuk team 2003 - 2004

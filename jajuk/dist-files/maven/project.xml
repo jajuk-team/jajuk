@@ -7,7 +7,7 @@
  
   <id>jajuk</id>
  
-  <currentVersion>0.3.2</currentVersion>
+  <currentVersion>0.3.3</currentVersion>
  
   <organization>
     <name>Jajuk team</name>
@@ -243,8 +243,8 @@
 
     <dependency>
 	   <groupId>lib</groupId>
-        <artifactId>javalayer</artifactId>
-        <version>0.4</version> 
+        <artifactId>jlayer</artifactId>
+        <version>1.0</version> 
     </dependency>
 
    <dependency>
@@ -304,7 +304,7 @@
      <dependency>
 	   <groupId>lib</groupId>
         <artifactId>mp3spi</artifactId>
-        <version>1.9</version> 
+        <version>1.9.2.1</version> 
     </dependency>
     
      <dependency>
@@ -316,7 +316,7 @@
      <dependency>
 	   <groupId>lib</groupId>
         <artifactId>vorbisspi</artifactId>
-        <version>1.0</version> 
+        <version>1.0.1</version> 
     </dependency>
 
      <dependency>
