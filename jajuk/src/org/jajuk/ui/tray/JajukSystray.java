@@ -20,6 +20,7 @@
 
 package org.jajuk.ui.tray;
 
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.MalformedURLException;
@@ -152,24 +153,11 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener{
                     jmenu.setVisible(false);
                     //show window if it is not visible and hide it if it is visible
                     if (!JajukWindow.getInstance().isVisible()){
-                        //start ui if needed
-                        if (!Main.isUILauched()){
-                            new Thread(){
-                                public void run(){
-                                    try {
-                                        Main.lauchUI();
-                                    } catch (Exception e) {
-                                        Log.error(e);
-                                    }
-                                }
-                            }.start();
-                        }
-                        else{
-                            JajukWindow.getInstance().setVisible(true);
-                        }
+                         JajukWindow.getInstance().setShown(true);
                     }
                     else{
-                        JajukWindow.getInstance().setVisible(false);
+                        JajukWindow.getInstance().setShown(false);
+                        JajukWindow.getInstance().setState(Frame.ICONIFIED); //force iconification
                     }
                 }
             });
@@ -200,12 +188,17 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener{
 			Main.exit(0);
 		}
 		else if (e.getSource() == jmiAbout){
-			//make frame visible
+			//set default perspective to show if UIi is not yet started
+		    if (Main.isUILauched()){
+		        PerspectiveManager.setCurrentPerspective(PERSPECTIVE_NAME_HELP);    
+		    }
+		    else{
+		        Main.setDefaultPerspective(PERSPECTIVE_NAME_HELP);
+		    }
+		    //make frame visible
 			if ( !JajukWindow.getInstance().isVisible()){
-				JajukWindow.getInstance().setVisible(true);
+				JajukWindow.getInstance().setShown(true);
 			}
-			//set help perspectievb to show "about" view
-			PerspectiveManager.setCurrentPerspective(PERSPECTIVE_NAME_HELP);
 		}
 		else if (e.getSource() == jmiShuffle){
 			ArrayList alToPlay = FileManager.getGlobalShufflePlaylist();

@@ -227,7 +227,11 @@ public class PerspectiveManager  implements ITechnicalStrings {
      * Begins management
      */
     public static void init() {
-        int index = alNames.indexOf(ConfigurationManager.getProperty(CONF_PERSPECTIVE_DEFAULT));
+        String sPerspective = Main.getDefaultPerspective();  //take a look to see if a default perspective is set (About tray for exemple)
+        if (sPerspective == null){
+            sPerspective = ConfigurationManager.getProperty(CONF_PERSPECTIVE_DEFAULT); //no? take the configuration ( user last perspective)
+        }
+        int index = alNames.indexOf(sPerspective);
         IPerspective perspective = (IPerspective)alPerspectives.get(index);
         setCurrentPerspective(perspective);
     }
@@ -276,7 +280,9 @@ public static void setCurrentPerspective(final IPerspective perspective) {
      */
     public static void setCurrentPerspective(String sPerspectiveID) {
         int index = alNames.indexOf(sPerspectiveID);
-        setCurrentPerspective((IPerspective)alPerspectives.get(index));
+        if (index != -1){
+            setCurrentPerspective((IPerspective)alPerspectives.get(index));
+        }
     }
     
     /**

@@ -28,6 +28,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 
 import org.jajuk.Main;
 import org.jajuk.base.FIFO;
@@ -36,6 +37,7 @@ import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Util;
+import org.jajuk.util.log.Log;
 
 /**
  *  Jajuk main window
@@ -87,10 +89,10 @@ public class JajukWindow extends JFrame implements ITechnicalStrings,ComponentLi
 		
 		addWindowListener(new WindowAdapter() {
             public void windowDeiconified(WindowEvent arg0) {
-        	    setVisible(true);
+        	    setShown(true);
     	    }
         	public void windowIconified(WindowEvent arg0) {
-				    setVisible(false);
+				    setShown(false);
 			}
 			public void windowClosing(WindowEvent we) {
 				Main.exit(0);
@@ -173,18 +175,40 @@ public class JajukWindow extends JFrame implements ITechnicalStrings,ComponentLi
 	/**
 	 * @param visible The bVisible to set.
 	 */
-	public void setVisible(boolean visible) {
-		//store state
+	public void setShown(boolean visible) {
+	    //start ui if needed
+	    if (visible && !Main.isUILauched()){
+	        if (SwingUtilities.isEventDispatchThread()){ //must be lauched from another thread
+	            Thread t = new Thread(){ 
+	                public void run(){
+	                    try {
+	                        Main.lauchUI();
+	                    } catch (Exception e) {
+	                        Log.error(e);
+	                    }
+	                }
+	            };
+	            t.start();
+	        }
+	        else{
+	            try {
+	                Main.lauchUI();
+	            } catch (Exception e) {
+	                Log.error(e);
+	            }
+	        }
+	    }
+	     //store state
 	    bVisible = visible;
 		//show 
 		if (visible){
 			setState(Frame.NORMAL);
-			super.setVisible(true);
+			setVisible(true);
 		}
 		//hide
 		else{
-		    if (!Main.isNoTaskBar()){ //hide the window only if it is explicitely required 
-		        super.setVisible(false);
+		    if (Main.isNoTaskBar()){ //hide the window only if it is explicitely required 
+		        setVisible(false);
 		    }
 		 }
 	}
