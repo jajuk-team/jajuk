@@ -77,7 +77,7 @@ public class Main implements ITechnicalStrings {
 	public static void main(String[] args) {
 		try {
 			//starts ui
-			jframe = new JFrame("Jajuk : Just Another Jukebox"); //$NON-NLS-1$
+			jframe = new JFrame("Jajuk : Just Another Jukebox | Java Jukebox"); 
 			jframe.setIconImage(Util.getIcon(IMAGES_SPLASHSCREEN).getImage());
 			
 			//Launch splashscreen
@@ -329,21 +329,16 @@ public class Main implements ITechnicalStrings {
 		if (!ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_NOTHING)){
 			if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_LAST)){
 				file = FileManager.getFile(History.getInstance().getLastFile());
-				if ( file != null){
-					FIFO.getInstance().push(file,false);
-				}
 			}
 			else if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_FILE)){
 				file = FileManager.getFile(ConfigurationManager.getProperty(CONF_STARTUP_FILE));
-				if ( file != null){
-					FIFO.getInstance().push(file,false);
-				}
 			}
 			else if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_SHUFFLE)){
 				file = FileManager.getShuffleFile();
-				if (file != null){
-					FIFO.getInstance().push(file,false);
-				}
+			}
+			//launch selected file
+			if (file != null && file.isReady()){
+				FIFO.getInstance().push(file,false);
 			}
 		}
 	}

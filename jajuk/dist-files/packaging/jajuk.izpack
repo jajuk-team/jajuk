@@ -25,7 +25,7 @@
     </locale>
     <native name="ShellLink.dll" type="izpack"/>
     <resources>
-         <res id='HTMLInfoPanel.info' src='/data/java/workspace/jajuk/dist-files/doc/README.txt'/>
+         <res id='HTMLInfoPanel.info' src='/data/java/workspace/jajuk/dist-files/doc/README.html'/>
         <res id='LicencePanel.licence' src='/data/java/workspace/jajuk/dist-files/legals/LICENSE.txt'/>
         <res id='shortcutSpec.xml' src='/data/java/workspace/jajuk/dist-files/packaging/shortcutSpec.xml'/>
     	<res id='Installer.image' src='/data/java/workspace/jajuk/dist-files/images/jajuk-installer.png' />

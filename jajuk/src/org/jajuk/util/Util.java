@@ -488,5 +488,15 @@ public class Util implements ITechnicalStrings {
 		}
 		return al;
 	}
+	
+	
+	 /**
+	 * Return url of jar we are executing 
+     * @return URL of jar we are executing
+     */
+    public static URL getJarLocation (Class cClass)  {
+        return cClass.getProtectionDomain().getCodeSource().getLocation();
+     }
+	
 
 }

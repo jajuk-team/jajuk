@@ -91,13 +91,9 @@ public class ConfigurationManager implements ITechnicalStrings{
 		// User preferences
 		properties.put(CONF_PERSPECTIVE_DEFAULT,PERSPECTIVE_NAME_CONFIGURATION); 
 		properties.put(CONF_STATE_REPEAT,FALSE); 
-		properties.put(CONF_ICON_REPEAT,ICON_REPEAT_OFF);  
 		properties.put(CONF_STATE_SHUFFLE,FALSE); 
-		properties.put(CONF_ICON_SHUFFLE,ICON_SHUFFLE_OFF);  
 		properties.put(CONF_STATE_CONTINUE,TRUE);
-		properties.put(CONF_ICON_CONTINUE,ICON_CONTINUE_ON);  
 		properties.put(CONF_STATE_INTRO,FALSE); 
-		properties.put(CONF_ICON_INTRO,ICON_INTRO_OFF);  
 		properties.put(CONF_CONFIRMATIONS_DELETE_FILE,TRUE);
 		properties.put(CONF_CONFIRMATIONS_EXIT,FALSE);
 		

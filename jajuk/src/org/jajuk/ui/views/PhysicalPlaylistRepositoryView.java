@@ -167,7 +167,7 @@ public class PhysicalPlaylistRepositoryView extends ViewAdapter implements Obser
 		
 		//refresh
 		populate();
-		jpRoot.add(Box.createVerticalGlue());
+		jpRoot.add(Box.createVerticalStrut(1000));  //make sure playlists items are packed to the top
 		JScrollPane jsp = new JScrollPane(jpRoot);
 		add(jsp);
 		//Register on the list for subject we are interrested in
@@ -197,6 +197,7 @@ public class PhysicalPlaylistRepositoryView extends ViewAdapter implements Obser
 		if ( subject.equals(EVENT_DEVICE_MOUNT) || subject.equals(EVENT_DEVICE_UNMOUNT) || subject.equals(EVENT_DEVICE_REFRESH) ) {
 			jpRoot.removeAll();
 			populate();
+			jpRoot.add(Box.createVerticalStrut(1000));
 			SwingUtilities.updateComponentTreeUI(this);
 		}
 	}

@@ -82,17 +82,14 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
 				ConfigurationManager.setProperty(CONF_STATE_CONTINUE, Boolean.toString(!bContinue));
 				JajukJMenuBar.getInstance().jcbmiContinue.setSelected(false);
 				CommandJPanel.getInstance().jbContinue.setIcon(Util.getIcon(ICON_CONTINUE_OFF));
-				ConfigurationManager.setProperty(CONF_ICON_CONTINUE,ICON_CONTINUE_OFF);
 			}
 			boolean b = ConfigurationManager.getBoolean(CONF_STATE_REPEAT);
 			ConfigurationManager.setProperty(CONF_STATE_REPEAT, Boolean.toString(!b));
 			JajukJMenuBar.getInstance().jcbmiRepeat.setSelected(!b);
 			if (!b == true) { //enabled button
-				ConfigurationManager.setProperty(CONF_ICON_REPEAT,ICON_REPEAT_ON);
 				CommandJPanel.getInstance().jbRepeat.setIcon(Util.getIcon(ICON_REPEAT_ON));
 			}
 			else {
-				ConfigurationManager.setProperty(CONF_ICON_REPEAT,ICON_REPEAT_OFF);
 				CommandJPanel.getInstance().jbRepeat.setIcon(Util.getIcon(ICON_REPEAT_OFF));
 			}
 		}
@@ -101,11 +98,9 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
 			ConfigurationManager.setProperty(CONF_STATE_SHUFFLE, Boolean.toString(!b));
 			JajukJMenuBar.getInstance().jcbmiShuffle.setSelected(!b);
 			if (!b == true) { //enabled button
-				ConfigurationManager.setProperty(CONF_ICON_SHUFFLE,ICON_SHUFFLE_ON);
 				CommandJPanel.getInstance().jbRandom.setIcon(Util.getIcon(ICON_SHUFFLE_ON));
 			}
 			else {
-				ConfigurationManager.setProperty(CONF_ICON_SHUFFLE,ICON_SHUFFLE_OFF);
 				CommandJPanel.getInstance().jbRandom.setIcon(Util.getIcon(ICON_SHUFFLE_OFF));
 			}
 		}
@@ -116,17 +111,14 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
 				ConfigurationManager.setProperty(CONF_STATE_REPEAT, Boolean.toString(!bRepeat));
 				JajukJMenuBar.getInstance().jcbmiRepeat.setSelected(false);
 				CommandJPanel.getInstance().jbRepeat.setIcon(Util.getIcon(ICON_REPEAT_OFF)); 
-				ConfigurationManager.setProperty(CONF_ICON_REPEAT,ICON_REPEAT_OFF);
 			}
 			boolean b = ConfigurationManager.getBoolean(CONF_STATE_CONTINUE);
 			ConfigurationManager.setProperty(CONF_STATE_CONTINUE, Boolean.toString(!b));
 			JajukJMenuBar.getInstance().jcbmiContinue.setSelected(!b);
 			if (!b == true) { //enabled button
-				ConfigurationManager.setProperty(CONF_ICON_CONTINUE,ICON_CONTINUE_ON);
 				CommandJPanel.getInstance().jbContinue.setIcon(Util.getIcon(ICON_CONTINUE_ON));
 			}
 			else {
-				ConfigurationManager.setProperty(CONF_ICON_CONTINUE,ICON_CONTINUE_OFF);
 				CommandJPanel.getInstance().jbContinue.setIcon(Util.getIcon(ICON_CONTINUE_OFF));
 			}
 		}
@@ -135,11 +127,9 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
 			ConfigurationManager.setProperty(CONF_STATE_INTRO, Boolean.toString(!b));
 			JajukJMenuBar.getInstance().jcbmiIntro.setSelected(!b);
 			if (!b == true) { //enabled button
-				ConfigurationManager.setProperty(CONF_ICON_INTRO,ICON_INTRO_ON);
 				CommandJPanel.getInstance().jbIntro.setIcon(Util.getIcon(ICON_INTRO_ON));
 			}
 			else {
-				ConfigurationManager.setProperty(CONF_ICON_INTRO,ICON_INTRO_OFF);
 				CommandJPanel.getInstance().jbIntro.setIcon(Util.getIcon(ICON_INTRO_OFF));
 			}
 		}

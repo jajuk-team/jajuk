@@ -25,6 +25,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -146,22 +147,47 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		jtbMode.setRollover(true);
 		jtbMode.setFloatable(false);
 		jtbMode.add(Box.createHorizontalGlue());
-		jbRepeat = new JButton(Util.getIcon(ConfigurationManager.getProperty(CONF_ICON_REPEAT))); 
+		ImageIcon ii = null;
+		if ( ConfigurationManager.getBoolean(CONF_STATE_REPEAT)){
+			ii = Util.getIcon(ICON_REPEAT_ON);
+		}
+		else{
+			ii = Util.getIcon(ICON_REPEAT_OFF);
+		}
+		jbRepeat = new JButton(ii); 
 		jbRepeat.setActionCommand(EVENT_REPEAT_MODE_STATUS_CHANGED);
 		jbRepeat.setToolTipText("Repeat mode : play tracks in a loop");
 		jbRepeat.addActionListener(JajukListener.getInstance());
 		jtbMode.add(jbRepeat);
-		jbRandom = new JButton(Util.getIcon(ConfigurationManager.getProperty(CONF_ICON_SHUFFLE)));
+		if ( ConfigurationManager.getBoolean(CONF_STATE_SHUFFLE)){
+			ii = Util.getIcon(ICON_SHUFFLE_ON);
+		}
+		else{
+			ii = Util.getIcon(ICON_SHUFFLE_OFF);
+		}
+		jbRandom = new JButton(ii);
 		jbRandom.setToolTipText(Messages.getString("CommandJPanel.shuffle_mode___play_a_random_track_from_the_selection_2")); //$NON-NLS-1$
 		jbRandom.setActionCommand(EVENT_SHUFFLE_MODE_STATUS_CHANGED);
 		jbRandom.addActionListener(JajukListener.getInstance());
 		jtbMode.add(jbRandom);
-		jbContinue = new JButton(Util.getIcon(ConfigurationManager.getProperty(CONF_ICON_CONTINUE))); 
+		if ( ConfigurationManager.getBoolean(CONF_STATE_CONTINUE)){
+			ii = Util.getIcon(ICON_CONTINUE_ON);
+		}
+		else{
+			ii = Util.getIcon(ICON_CONTINUE_OFF);
+		}
+		jbContinue = new JButton(ii); 
 		jbContinue.setToolTipText(Messages.getString("CommandJPanel.continue_mode___continue_to_play_next_tracks_when_finished_3")); //$NON-NLS-1$
 		jbContinue.setActionCommand(EVENT_CONTINUE_MODE_STATUS_CHANGED);
 		jbContinue.addActionListener(JajukListener.getInstance());
 		jtbMode.add(jbContinue);
-		jbIntro = new JButton(Util.getIcon(ConfigurationManager.getProperty(CONF_ICON_INTRO))); 
+		if ( ConfigurationManager.getBoolean(CONF_STATE_INTRO)){
+			ii = Util.getIcon(ICON_INTRO_ON);
+		}
+		else{
+			ii = Util.getIcon(ICON_INTRO_OFF);
+		}
+		jbIntro = new JButton(ii); 
 		jbIntro.setToolTipText(Messages.getString("CommandJPanel.intro_mode___play_just_a_part_of_each_track_offset_and_time_can_be_set_in_the_parameters_view_4")); //$NON-NLS-1$
 		jbIntro.setActionCommand(EVENT_INTRO_MODE_STATUS_CHANGED);
 		jbIntro.addActionListener(JajukListener.getInstance());

@@ -31,7 +31,7 @@
   	</copy>
   	<copy todir='${distdir}' >
      <fileset file='${basedir}/dist-files/legals/LICENSE.txt'/>
-  	 <fileset file='${basedir}/dist-files/doc/README.txt'/>
+  	 <fileset file='${basedir}/dist-files/doc/README.html'/>
   	</copy>
   	<copy todir='${distdir}/src' >
      <fileset file='${basedir}/dist-files/packaging/MANIFEST.MF'/>

@@ -22,6 +22,7 @@ package org.jajuk.base;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import org.jajuk.Main;
 import org.jajuk.ui.CommandJPanel;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.ObservationManager;
@@ -373,6 +374,7 @@ public class FIFO implements ITechnicalStrings,Runnable{
 						History.getInstance().addItem(fCurrent.getId(),System.currentTimeMillis());
 					}
 					InformationJPanel.getInstance().setMessage("Now Playing : "+fCurrent.getTrack().getAuthor().getName2()+" / "+fCurrent.getTrack().getAlbum().getName2()+" / "+fCurrent.getTrack().getName(),InformationJPanel.INFORMATIVE);
+					Main.jframe.setTitle(fCurrent.getTrack().getName());
 					InformationJPanel.getInstance().setQuality(fCurrent.getQuality()+" kbps");
 				}
 			}
@@ -406,6 +408,7 @@ public class FIFO implements ITechnicalStrings,Runnable{
 		InformationJPanel.getInstance().setTotalStatusMessage("00:00:00");
 		InformationJPanel.getInstance().setMessage("Ready to play",InformationJPanel.INFORMATIVE);
 		InformationJPanel.getInstance().setQuality("");
+		Main.jframe.setTitle("Jajuk : Just Another Jukebox | Java Jukebox");
 	}
 	
 	/**

@@ -97,7 +97,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 		int iXspace = 5;
 		double sizeControl[][] =
 			{{0.15,iXspace,0.4,iXspace,10,iXspace,0.4,2*iXspace,80},
-			{25}};
+			{22}};
 		jpControl.setLayout(new TableLayout(sizeControl));
 		jlFilter = new JLabel("Filter: ");
 		jcbProperty = new JComboBox();

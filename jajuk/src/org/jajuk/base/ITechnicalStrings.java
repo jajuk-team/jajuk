@@ -19,6 +19,9 @@
  */
 package org.jajuk.base;
 
+import org.jajuk.Main;
+import org.jajuk.util.Util;
+
 
 /**
  *  Contains all technical/ non-translatable strings
@@ -35,10 +38,11 @@ public interface ITechnicalStrings {
 	public static final String ABOUT = "<html>Jajuk version "+JAJUK_VERSION+"</html>";
 	
 	// directory path
-	public static final String PATH_ICONS = "jar:file:"+System.getProperty("user.dir")+"/jajuk.jar!/org/jajuk/icons/";
-	public static final String PATH_IMAGES = "jar:file:"+System.getProperty("user.dir")+"/jajuk.jar!/org/jajuk/images/";
+	public static final String PATH_CURRENT_JAR = Util.getJarLocation(Main.class).toString();
+	public static final String PATH_ICONS = "jar:"+PATH_CURRENT_JAR+"!/org/jajuk/icons/";
+	public static final String PATH_IMAGES = "jar:"+PATH_CURRENT_JAR+"!/org/jajuk/images/";
 	public static final String PATH_RELATIVE_DOCS = "docs/";
-	public static final String PATH_DOCS = "jar:file:"+System.getProperty("user.dir")+"/jajuk.jar!/org/jajuk/"+PATH_RELATIVE_DOCS;
+	public static final String PATH_DOCS = "jar:"+PATH_CURRENT_JAR+"!/org/jajuk/"+PATH_RELATIVE_DOCS;
 		
 		// paths to icons
 	public static final String ICON_REPEAT_ON = PATH_ICONS + "16x16/repeat.png";
@@ -263,10 +267,6 @@ public interface ITechnicalStrings {
 	public static final String CONF_STATE_SHUFFLE="jajuk.state.mode.shuffle";
 	public static final String CONF_STATE_CONTINUE="jajuk.state.mode.continue";
 	public static final String CONF_STATE_INTRO="jajuk.state.mode.intro";
-	public static final String CONF_ICON_REPEAT= "jajuk.state.ui.icon.repeat";
- 	public static final String CONF_ICON_SHUFFLE= "jajuk.state.ui.icon.shuffle";
- 	public static final String CONF_ICON_CONTINUE= "jajuk.state.ui.icon.continue";
- 	public static final String CONF_ICON_INTRO= "jajuk.state.ui.icon.intro";
 	public static final String CONF_STARTUP_FILE= "jajuk.startup.file";
 	public static final String CONF_STARTUP_MODE= "jajuk.startup.mode";
 	public static final String CONF_CONFIRMATIONS_DELETE_FILE= "jajuk.confirmations.delete_file";
@@ -346,22 +346,20 @@ public interface ITechnicalStrings {
 		 "<perspectives jajuk_version='"+JAJUK_VERSION+"'>\n"+
 		"\t<perspective  class='"+PERSPECTIVE_NAME_PHYSICAL+"'>\n"+
 		"\t\t<views>\n"+
-		"\t\t\t<view class='"+VIEW_NAME_PHYSICAL_TREE+"' width='30' height='100' x='20' y='0'/>\n"+
-		"\t\t\t<view class='"+VIEW_NAME_PHYSICAL_TABLE+"' width='40' height='60' x='60' y='0'/>\n"+
-		"\t\t\t<view class='"+VIEW_NAME_COVER+"' width='20' height='30' x='0' y='70'/>\n"+
-		"\t\t\t<view class='"+VIEW_NAME_PHYSICAL_NAVIGATION_BAR+"' width='20' height='70' x='0' y='0'/>\n"+
-		"\t\t\t<view class='"+VIEW_NAME_PHYSICAL_PLAYLIST_REPOSITORY+"' width='10' height='100' x='50' y='0'/>\n"+
-		"\t\t\t<view class='"+VIEW_NAME_PHYSICAL_PLAYLIST_EDITOR+"' width='40' height='40' x='60' y='60'/>\n"+
+		"\t\t\t<view class='"+VIEW_NAME_PHYSICAL_TREE+"' width='30' height='100' x='0' y='0'/>\n"+
+		"\t\t\t<view class='"+VIEW_NAME_PHYSICAL_TABLE+"' width='60' height='70' x='40' y='0'/>\n"+
+		"\t\t\t<view class='"+VIEW_NAME_COVER+"' width='20' height='30' x='80' y='70'/>\n"+
+		"\t\t\t<view class='"+VIEW_NAME_PHYSICAL_PLAYLIST_REPOSITORY+"' width='10' height='100' x='30' y='0'/>\n"+
+		"\t\t\t<view class='"+VIEW_NAME_PHYSICAL_PLAYLIST_EDITOR+"' width='40' height='30' x='40' y='70'/>\n"+
 		"\t\t</views>\n"+
 		"\t\t</perspective>\n"+
 		"\t<perspective class='"+PERSPECTIVE_NAME_LOGICAL+"'>\n"+
 		"\t\t<views>\n"+
-		"\t\t\t<view class='"+VIEW_NAME_LOGICAL_TREE+"' width='30' height='100' x='20' y='0'/>\n"+
-		"\t\t\t<view class='"+VIEW_NAME_LOGICAL_TABLE+"' width='40' height='60' x='60' y='0'/>\n"+
-		"\t\t\t<view class='"+VIEW_NAME_COVER+"' width='20' height='30' x='0' y='70'/>\n"+
-		"\t\t\t<view class='"+VIEW_NAME_LOGICAL_NAVIGATION_BAR+"' width='20' height='70' x='0' y='0'/>\n"+
-		"\t\t\t<view class='"+VIEW_NAME_LOGICAL_PLAYLIST_REPOSITORY+"' width='10' height='100' x='50' y='0'/>\n"+
-		"\t\t\t<view class='"+VIEW_NAME_LOGICAL_PLAYLIST_EDITOR+"' width='40' height='40' x='60' y='60'/>\n"+
+		"\t\t\t<view class='"+VIEW_NAME_LOGICAL_TREE+"' width='30' height='100' x='0' y='0'/>\n"+
+		"\t\t\t<view class='"+VIEW_NAME_LOGICAL_TABLE+"' width='60' height='70' x='40' y='0'/>\n"+
+		"\t\t\t<view class='"+VIEW_NAME_COVER+"' width='20' height='30' x='80' y='70'/>\n"+
+		"\t\t\t<view class='"+VIEW_NAME_LOGICAL_PLAYLIST_REPOSITORY+"' width='10' height='100' x='30' y='0'/>\n"+
+		"\t\t\t<view class='"+VIEW_NAME_LOGICAL_PLAYLIST_EDITOR+"' width='40' height='30' x='40' y='70'/>\n"+
 		"\t\t</views>\n"+
 		"\t</perspective>\n"+
 		"\t<perspective class='"+PERSPECTIVE_NAME_CONFIGURATION+"'>\n"+
