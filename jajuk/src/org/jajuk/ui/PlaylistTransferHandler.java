@@ -194,7 +194,6 @@ public class PlaylistTransferHandler implements DropTargetListener,ITechnicalStr
 			if ( plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE){
 				FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alSelectedFiles),
 						ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),true);
-				
 			}
 			//bookmark case
 			else if ( plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_BOOKMARK){

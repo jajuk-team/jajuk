@@ -143,7 +143,6 @@ public interface ITechnicalStrings {
 	public static final String ICON_UP =  PATH_ICONS + "16x16/up.png";
 	public static final String ICON_DOWN =  PATH_ICONS + "16x16/down.png";
 	public static final String ICON_ADD_SHUFFLE =  PATH_ICONS + "16x16/add_shuffle.png";
-	public static final String ICON_CURRENT_PLAYLIST =  PATH_ICONS + "16x16/run.png";
 	public static final String ICON_CLEAR =  PATH_ICONS + "16x16/clear.png";
 	public static final String ICON_SAVE =  PATH_ICONS + "16x16/save.png";
 	public static final String ICON_SAVE_AS =  PATH_ICONS + "16x16/saveas.png";
@@ -212,7 +211,6 @@ public interface ITechnicalStrings {
 	//Directories properties
 	public static final String DIRECTORY_OPTION_SYNCHRO_MODE = "sync";  //can be 'y' or 'n'
 	public static final String OPTION_EXPANDED = "exp";  //can be 'y' or 'n'
-	public static final String OPTION_PLAYLIST_INDEX = "plf_index";  //playlist file index
 	public static final String OPTION_PLAYLIST = "plf";  //associated playlist file
 		
 	//perspectives

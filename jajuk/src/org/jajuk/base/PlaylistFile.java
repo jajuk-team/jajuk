@@ -261,8 +261,6 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 		}
 		for (int i =0;i<alBasicFiles.size();i++){
 			BasicFile bfile = (BasicFile)alBasicFiles.get(i);
-			//set indexes to enable selection in editor
-			bfile.setProperty(OPTION_PLAYLIST_INDEX,Integer.toString(i));
 			//set associated playlist for " go to current playlist" function
 			bfile.setProperty(OPTION_PLAYLIST,this.getId());
 		}
@@ -282,19 +280,7 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 			FIFO.getInstance().insert(new StackItem(bf),index); //insert this track in the fifo
 		}
 		else {
-			//get max index value for tracks
-			Iterator it = getBasicFiles().iterator();
-			int iMax = -1;
-			while ( it.hasNext()){
-				BasicFile bfTest = (BasicFile)it.next();
-				int i = Integer.parseInt(bfTest.getProperty(OPTION_PLAYLIST_INDEX));
-				if ( i>iMax){
-					iMax = i;
-				}
-			}
-			ArrayList al = getBasicFiles(); 
-			bf.setProperty(OPTION_PLAYLIST_INDEX,Integer.toString(iMax+1));
-			al.add(index,bf);
+			getBasicFiles().add(index,bf);
 			setModified(true);
 		}
 	}
@@ -334,7 +320,10 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 		if ( iType == PlaylistFileItem.PLAYLIST_TYPE_BOOKMARK){
 			Bookmarks.getInstance().down(index);
 		}
-		else if ( index < alBasicFiles.size()-1){ //the last track cannot go depper
+		else if(iType == PlaylistFileItem.PLAYLIST_TYPE_QUEUE){
+		    FIFO.getInstance().down(index);
+		}
+		else if ( alBasicFiles != null &&  index < alBasicFiles.size()-1){ //the last track cannot go depper
 			BasicFile bfile = (BasicFile)alBasicFiles.get(index+1); //save n+1 file
 			alBasicFiles.set(index+1,alBasicFiles.get(index));
 			alBasicFiles.set(index,bfile); //n+1 file becomes nth file
@@ -350,7 +339,10 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 		if ( iType == PlaylistFileItem.PLAYLIST_TYPE_BOOKMARK){
 			Bookmarks.getInstance().up(index);
 		}
-		else if ( index > 0){ //the first track cannot go further
+		else if(iType == PlaylistFileItem.PLAYLIST_TYPE_QUEUE){
+		    FIFO.getInstance().up(index);
+		}
+		else if ( alBasicFiles != null &&  index > 0){ //the first track cannot go further
 			BasicFile bfile = (BasicFile)alBasicFiles.get(index-1); //save n-1 file
 			alBasicFiles.set(index-1,alBasicFiles.get(index));
 			alBasicFiles.set(index,bfile); //n-1 file becomes nth file

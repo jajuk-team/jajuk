@@ -73,7 +73,4 @@ public class PhysicalPlaylistEditorView extends AbstractPlaylistEditorView{
 	void setRepositoryPlayListFileItem(PlaylistFileItem plfi) {
 		PhysicalPlaylistRepositoryView.getInstance().selectPlaylistFileItem(plfi);
 	}
-
-
-
 }

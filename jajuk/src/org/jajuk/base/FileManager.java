@@ -267,13 +267,13 @@ public class FileManager implements ITechnicalStrings{
 				}
 			}
 			Collections.sort(alEligibleFiles);
+			Collections.reverse(alEligibleFiles); //reverse score
 			int i = 0;
 			while (i<alEligibleFiles.size() && i<iNbBestofFiles){
 			    File file = ((FileScore)alEligibleFiles.get(i)).getFile();
 			    alBestofFiles.add(file);
 			    i++;
 			}
-			Collections.reverse(alBestofFiles); //reserve for score
 			FileManager.setRateHasChanged(false);
 		}
 		return alBestofFiles;

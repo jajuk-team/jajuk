@@ -75,7 +75,9 @@ public class File extends PropertyAdapter implements Comparable{
 		String sAuthorName = tag.getAuthorName();
 		String sStyle = tag.getStyleName();
 		long length = tag.getLength(); //length in sec
-		sQuality = tag.getQuality();
+		this.sQuality = tag.getQuality();
+		this.sName = fio.getName();
+		this.sAbs = fio.getAbsolutePath();
 		String sYear = tag.getYear();
 		Album album = AlbumManager.registerAlbum(sAlbumName);
 		Style style = StyleManager.registerStyle(sStyle);

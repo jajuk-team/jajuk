@@ -647,6 +647,47 @@ public class FIFO implements ITechnicalStrings{
 	}
 	
 	/**
+	 * Put up an item from given index to index-1
+	 * @param index
+	 */
+	public synchronized void up(int index){
+	    if (index == 0 || index == alFIFO.size()){ //Can't put up first track in queue or first planned track. This should be already made by ui behavior
+	        return;
+	    }
+	    if (index < alFIFO.size()){
+	        StackItem item = (StackItem)alFIFO.get(index);
+	        alFIFO.remove(index); //remove the item
+	        alFIFO.add(index-1,item); //add it again above
+	    }
+	    else{ //planned track
+	        StackItem item = (StackItem)alPlanned.get(index-alFIFO.size());
+	        alFIFO.remove(index-alFIFO.size()); //remove the item
+	        alFIFO.add(index-alFIFO.size()-1,item); //add it again above
+	    }
+	}
+
+	
+	/**
+	 * Put down an item from given index to index+1
+	 * @param index
+	 */
+	public synchronized void down(int index){
+	    if (index == 0 || index == alFIFO.size()-1 || index == alFIFO.size() + alPlanned.size() -1){ //Can't put down current track, nor last rack in fifo, nor last planned track. This should be already made by ui behavior
+	        return;
+	    }
+	    if (index < alFIFO.size()){
+	        StackItem item = (StackItem)alFIFO.get(index);
+	        alFIFO.remove(index); //remove the item
+	        alFIFO.add(index+1,item); //add it again above
+	    }
+	    else{ //planned track
+	        StackItem item = (StackItem)alPlanned.get(index-alFIFO.size());
+	        alFIFO.remove(index-alFIFO.size()); //remove the item
+	        alFIFO.add((index-alFIFO.size())+1,item); //add it again above
+	    }
+	}
+
+	/**
 	 * Go to given index and lauch it
 	 * @param index
 	 */

@@ -127,4 +127,17 @@ public class StackItem {
 		item.setPlanned(bPlanned);
 		return item;
 	}
+	
+	/**
+	 * Equals method
+	 * @return whether both items are equals. Condition : file is the same.
+	 */
+	public boolean equals(Object o){
+	    if (!(o instanceof StackItem)){
+	        return false;
+	    }
+	    StackItem itemOther = (StackItem)o;
+	    return (itemOther.getFile().equals(file));
+	}
+	
 }

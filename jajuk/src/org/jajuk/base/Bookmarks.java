@@ -60,7 +60,6 @@ public class Bookmarks implements ITechnicalStrings {
 			String sId = stFiles.nextToken();
 			File file = FileManager.getFile(sId);
 			if ( file != null){
-				file.setProperty(OPTION_PLAYLIST_INDEX,Integer.toString(alFiles.size()));
 				alFiles.add(file);
 			}
 		}
@@ -135,17 +134,6 @@ public class Bookmarks implements ITechnicalStrings {
 	 * @param index
 	 */
 	public synchronized void addFile(int index,File file){
-		//get max index value for tracks
-		Iterator it = alFiles.iterator();
-		int iMax = -1;
-		while ( it.hasNext()){
-			File fileTest = (File)it.next();
-			int i = Integer.parseInt(fileTest.getProperty(OPTION_PLAYLIST_INDEX));
-			if ( i>iMax){
-				iMax = i;
-			}
-		}
-		file.setProperty(OPTION_PLAYLIST_INDEX,Integer.toString(iMax+1));
 		alFiles.add(index,file);
 		ConfigurationManager.setProperty(CONF_BOOKMARKS,toString());
 	}
