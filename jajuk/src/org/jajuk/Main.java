@@ -141,6 +141,7 @@ public class Main implements ITechnicalStrings {
 			org.jajuk.util.ConfigurationManager.load();
 		
 			//starts ui
+			System.setProperty( "apple.laf.useScreenMenuBar", "true"); //mac integration
 			jw = new JajukWindow(); 
 			
 			//Set look and feel
@@ -337,6 +338,8 @@ public class Main implements ITechnicalStrings {
 	 *                <p>1: unexpected error
 	 */
 	public static void exit(int iExitCode) {
+		//hide window
+		jw.setVisible(false);
 		//store exit code to be read by the system hook
 		Main.iExitCode = iExitCode;
 		//check if a confirmation is needed
