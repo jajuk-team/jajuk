@@ -34,8 +34,8 @@
      </release>
      <release version='0.1.5' date='work in progress' description='work in progress'>
        <action dev='bflorat' type='add'>Path selection button for Unix mount points in device wizzard</action>  
-       <action dev='bflorat' type='fix'>Fixed issues in online doc</action>  
-       <action dev='bflorat' type='fix'>[bug] Physical/logical table views : errors when filtering with no results</action>  
+       <action dev='bflorat' type='fix'>930598 Issues in online doc</action>  
+       <action dev='bflorat' type='fix'>929372 Physical/logical table views : errors when filtering with no results</action>  
      </release>
   </body>
 </document>
