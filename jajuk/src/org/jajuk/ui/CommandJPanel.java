@@ -579,7 +579,11 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 					jbStop.setEnabled(false);
 					jbFwd.setEnabled(false);
 					jsPosition.setEnabled(false);
+					jsPosition.removeChangeListener(CommandJPanel.this);  //remove listener to force the value to zero
+					jsPosition.setValue(0);
+					jsPosition.addChangeListener(CommandJPanel.this);
 					jbPlayPause.setIcon(Util.getIcon(ICON_PAUSE)); //resume any current pause
+					ConfigurationManager.setProperty(CONF_STARTUP_LAST_POSITION,"0");//reset startup position
 				}
 				else if ( EVENT_PLAYER_PLAY.equals(subject)){
 					jbRew.setEnabled(true);
@@ -615,9 +619,17 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 						addHistoryItem(hi);
 					}
 				}
+				
 			}
 		});
 		
+	}
+	
+	/**
+	 * ToString() method
+	 */
+	public String toString(){
+	    return getClass().getName();
 	}
 	
 }

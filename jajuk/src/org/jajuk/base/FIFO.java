@@ -114,7 +114,7 @@ public class FIFO implements ITechnicalStrings,Runnable{
 	private int iPosition;
 	
 	/** First played file flag**/
-	private boolean bFirstFile = true;
+	private static boolean bFirstFile = true;
 	
 	/**First file should seek to position flag*/
 	private boolean bSeekFirstFile = false;
@@ -339,7 +339,7 @@ public class FIFO implements ITechnicalStrings,Runnable{
 					if ( i%(REFRESH_TIME/SLEEP_TIME) == 0 ){  //actual refresh less frequent for cpu
 						lTime = Player.getElapsedTime();
 						int iPos = (length!=0)?(int)((lTime/10)/length):0;  //if length=0, pos is always 0 to avoid division by zero
-						ConfigurationManager.setProperty(CONF_LAST_POSITION,Float.toString(((float)iPos)/100)); //store current position
+						ConfigurationManager.setProperty(CONF_STARTUP_LAST_POSITION,Float.toString(((float)iPos)/100)); //store current position
 						//lauch some messages to information and command panels
 						Properties pDetails = new Properties();
 						pDetails.put(DETAIL_CURRENT_POSITION,new Integer(iPos));
@@ -377,8 +377,6 @@ public class FIFO implements ITechnicalStrings,Runnable{
 					else{  //fifo empty and nothing planned to be played, lets re-initialize labels
 						if ( i%(REFRESH_TIME/SLEEP_TIME) == 0){  //actual refresh less frequent for cpu
 							lTotalTime = 0;
-							ObservationManager.notify(EVENT_ZERO); //	reinit ui
-						    ConfigurationManager.setProperty(CONF_LAST_POSITION,"0");
 						}
 						i++;
 						continue; //leave
@@ -392,7 +390,7 @@ public class FIFO implements ITechnicalStrings,Runnable{
 					//intro workaround : intro mode is only read at track launch and can't be set during the play
 					bIntroEnabled = ConfigurationManager.getBoolean(CONF_STATE_INTRO); //re-read intro mode
 					if ( !bPlaying){  //test this to avoid notifying at each launch
-						ObservationManager.notify(EVENT_PLAYER_PLAY);  //notify to devices like commandJPanel to update ui
+						ObservationManager.notify(EVENT_PLAYER_PLAY);  //notify to devices like commandJPanel to update ui when the play button has been pressed
 					}
 					int index = 0;
 					lOffset = 0;
@@ -415,7 +413,7 @@ public class FIFO implements ITechnicalStrings,Runnable{
 					}
 					else{
 						if (bFirstFile && bSeekFirstFile){ //if it is the first played file and we are in startup mode keep position
-						    float fPos = ConfigurationManager.getFloat(CONF_LAST_POSITION);
+						    float fPos = ConfigurationManager.getFloat(CONF_STARTUP_LAST_POSITION);
 						    Player.play(fCurrent,fPos,-1);  //play it
 						}
 						else{

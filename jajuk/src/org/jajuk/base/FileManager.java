@@ -29,8 +29,8 @@ import java.util.Iterator;
 import java.util.Properties;
 import java.util.TreeSet;
 
+import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 
 /**
@@ -151,7 +151,8 @@ public class FileManager implements ITechnicalStrings{
 	 */
 	public static synchronized ArrayList getGlobalShufflePlaylist(){
 	    ArrayList alEligibleFiles = getReadyFiles();
-	    return Util.randomize(alEligibleFiles);
+	    Collections.shuffle(alEligibleFiles);
+	    return alEligibleFiles;
 	}
 	
 	/**
@@ -315,6 +316,11 @@ public class FileManager implements ITechnicalStrings{
 	public static synchronized File getPreviousFile(File file){
 		File filePrevious = null;
 		ArrayList alSortedFiles = getSortedFiles();
+		//test if this file is the very first one
+		if (alSortedFiles.indexOf(file) == 0){
+		    Messages.showErrorMessage("128");
+		    return null;
+		}
 		//look for a correct file from index to collection begin
 		boolean bOk = false;
 		for (int index=alSortedFiles.indexOf(file)-1;index>=0;index--){

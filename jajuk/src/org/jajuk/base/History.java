@@ -83,11 +83,17 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
 			return ;
 		}
 		HistoryItem hi = new HistoryItem(sFileId,lDate);
+		//check if previous history item is not the same, otherwise, leave
+		if (alHistory.size() > 0){
+		    HistoryItem hiPrevious = (HistoryItem)alHistory.get(0);
+		    if (hiPrevious.getFileId().equals(hi.getFileId())){
+		        return;
+		    }
+		}
 		alHistory.add(0,hi);
 		Properties pDetails = new Properties();
 		pDetails.put(DETAIL_HISTORY_ITEM,hi);
 		ObservationManager.notify(EVENT_ADD_HISTORY_ITEM,pDetails);
-		return ;
 	}
 	
 	/** Clear history */
