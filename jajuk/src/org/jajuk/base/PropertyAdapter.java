@@ -164,6 +164,10 @@ public class PropertyAdapter implements IPropertyable, ITechnicalStrings,Seriali
 	 * @see org.jajuk.base.Propertyable#setProperty(java.lang.String, java.lang.String)
 	 */
 	public void setProperty(String sKey, String sValue) {
+		//JRE properties soesn't accept null value
+		if (sValue == null){
+			sValue = ""; //$NON-NLS-1$
+		}
 		Properties properties = getProperties();
 		//Using standard attributes is forbidden
 		for (int i=0;i<XML_RESERVED_ATTRIBUTE_NAMES.length;i++){
