@@ -69,8 +69,8 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 			JButton jbBestof;
 			JButton jbMute;
 		JToolBar jtbPlay;
-			JButton jbUp;
-			JButton jbDown;
+			JButton jbPrevious;
+			JButton jbNext;
 			JButton jbRew;
 			JButton jbPlayPause;
 			JButton jbStop;
@@ -175,12 +175,14 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		jtbPlay = new JToolBar();
 		jtbPlay.setRollover(true);
 		jtbPlay.setFloatable(false);
-		jbUp = new JButton(new ImageIcon(ICON_UP)); 
-		jbUp.setToolTipText(Messages.getString("CommandJPanel.Play_previous_track_in_current_selection_4")); //$NON-NLS-1$
-		jtbPlay.add(jbUp);
-		jbDown = new JButton(new ImageIcon(ICON_DOWN)); 
-		jbDown.setToolTipText(Messages.getString("CommandJPanel.Play_next_track_in_current_selection_5")); //$NON-NLS-1$
-		jtbPlay.add(jbDown);
+		jbPrevious = new JButton(new ImageIcon(ICON_PREVIOUS)); 
+		jbPrevious.setToolTipText(Messages.getString("CommandJPanel.Play_previous_track_in_current_selection_4")); //$NON-NLS-1$
+		jbPrevious.addActionListener(this);
+		jtbPlay.add(jbPrevious);
+		jbNext = new JButton(new ImageIcon(ICON_NEXT)); 
+		jbNext.setToolTipText(Messages.getString("CommandJPanel.Play_next_track_in_current_selection_5")); //$NON-NLS-1$
+		jbNext.addActionListener(this);
+		jtbPlay.add(jbNext);
 		jtbPlay.addSeparator();
 		jbRew = new JButton(new ImageIcon(ICON_REW)); 
 		jbRew.setToolTipText(Messages.getString("CommandJPanel.Fast_rewind_in_current_track_6")); //$NON-NLS-1$
@@ -270,6 +272,12 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		}
 		else if(ae.getSource() == jbStop){
 			Player.stop();
+		}
+		else if (ae.getSource() == jbPrevious){
+			FIFO.getInstance().playPrevious();
+		}
+		else if (ae.getSource() == jbNext){
+			FIFO.getInstance().playNext();
 		}
 	}
 }

@@ -51,8 +51,8 @@ public interface ITechnicalStrings {
 	public static final String ICON_ROLL = PATH_ICONS + "16x16/roll.png";
 	public static final String ICON_BESTOF = PATH_ICONS + "16x16/bestof.png";
 	public static final String ICON_MUTE = PATH_ICONS + "16x16/mute.png";
-	public static final String ICON_UP = PATH_ICONS + "16x16/up.png";
-	public static final String ICON_DOWN = PATH_ICONS + "16x16/down.png";
+	public static final String ICON_PREVIOUS = PATH_ICONS + "16x16/previous.png";
+	public static final String ICON_NEXT = PATH_ICONS + "16x16/next.png";
 	public static final String ICON_REW = PATH_ICONS + "16x16/player_rew.png";
 	public static final String ICON_PLAY = PATH_ICONS + "16x16/player_end.png";
 	public static final String ICON_STOP = PATH_ICONS + "16x16/player_stop.png";

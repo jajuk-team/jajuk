@@ -182,6 +182,21 @@ public class FIFO extends Thread implements ITechnicalStrings{
 		alFIFO.clear();
 	}
 	
+	/**
+	 * Play previous track
+	 */
+	public synchronized void playPrevious(){
+		push(FileManager.getPreviousFile(fCurrent),false);
+	}
+	
+	/**
+	 * Play next track
+	 */
+	public synchronized void playNext(){
+		finished();
+	}
+	
+	
 	/* (non-Javadoc)
 	 * @see java.lang.Runnable#run()
 	 */

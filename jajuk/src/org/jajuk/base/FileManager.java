@@ -162,5 +162,33 @@ public class FileManager implements ITechnicalStrings{
 		}
 		return fileNext;
 	}
+	
+	
+	/** Return previous mounted file 
+	 * @param file : a file
+	 * @return previous file from entire collection
+	 */
+	public static synchronized File getPreviousFile(File file){
+		File filePrevious = null;
+		ArrayList alSortedFiles = getSortedFiles();
+		int index = alSortedFiles.indexOf(file) - 1;
+		if (index < 0 ){  //problem or we reach begin of collection
+			if (ConfigurationManager.getBoolean(CONF_OPTIONS_RESTART)){  //restart collection
+				index = alSortedFiles.size() -1;
+			}
+			else{
+				return null;
+			}
+		}
+		while ( index >= 0){
+			filePrevious = (File)alSortedFiles.get(index);
+			index --;
+			if (filePrevious.getDirectory().getDevice().isMounted() && !filePrevious.getDirectory().getDevice().isRefreshing()){  //file must be on a mounted device not refreshing
+				break;
+			}
+		}
+		return filePrevious;
+	}
+	
 
 }
