@@ -20,17 +20,22 @@
 
 package org.jajuk.ui.views;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
-import java.util.StringTokenizer;
+import java.awt.FontMetrics;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 
-import javax.swing.BoxLayout;
 import javax.swing.JLabel;
+import javax.swing.SwingUtilities;
 
+import org.jajuk.Main;
 import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.ObservationManager;
 import org.jajuk.ui.Observer;
+import org.jajuk.util.log.Log;
 
 import com.jgoodies.animation.Animation;
 import com.jgoodies.animation.Animations;
@@ -44,11 +49,13 @@ import com.jgoodies.animation.components.BasicTextLabel;
  * @author     bflorat
  * @created    13 août 2004
  */
-public class AnimationView extends ViewAdapter implements ITechnicalStrings,Observer {
+public class AnimationView extends ViewAdapter implements ITechnicalStrings,Observer,ComponentListener {
 	
-	private static final int DEFAULT_FRAME_RATE = 30;
-	private static final int DEFAULT_DURATION = 3000;
-	
+	private static final int DEFAULT_FRAME_RATE = 15;
+	private static final int DEFAULT_DURATION = 5000;
+	private static final int DEFAULT_PAUSE = 500;
+	/**Current panel width**/
+	private int iSize;
 	private BasicTextLabel btl1;
 	private JLabel jl1;
 	private Animator animator;
@@ -62,41 +69,77 @@ public class AnimationView extends ViewAdapter implements ITechnicalStrings,Obse
 	public String getID() {
 		return getClass().getName(); //$NON-NLS-1$
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.views.IView#getDesc()
 	 */
 	public String getDesc() {
 		return "AnimationView.0"; //$NON-NLS-1$
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.views.IView#populate()
 	 */
 	public void populate() {
-		Font font = new Font("dialog", Font.BOLD, 40); //$NON-NLS-1$
+		setLayout(new BorderLayout());
+		addComponentListener(this);
 		btl1 = new BasicTextLabel(" "); //$NON-NLS-1$
-		btl1.setFont(font);
-	    btl1.setOpaque(false);
-		setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
-        setBackground(Color.white);
-        add(btl1);
-        ObservationManager.register(EVENT_INFORMATION_DISPLAY,this);
-        //check if a track has already been lauched
-        update(EVENT_INFORMATION_DISPLAY);
-    }
-
-	/**Set the text to be displayed**/
-	public void setText(String sText){
-		if ( animator!=null ){
-			animator.stop();
-		}
-		Animation anim = BasicTextAnimation.defaultFade(btl1,DEFAULT_DURATION,sText,Color.darkGray);
-		anim = Animations.repeat(Float.POSITIVE_INFINITY,anim);
-		animator = new Animator(anim,DEFAULT_FRAME_RATE);
-		animator.start();
+		btl1.setOpaque(false);
+		setBackground(Color.WHITE);
+		setForeground(Color.BLACK);
+		add(btl1);
+		
+		ObservationManager.register(EVENT_INFORMATION_DISPLAY,this);
+		//check if a track has already been lauched
+		update(EVENT_INFORMATION_DISPLAY);
 	}
-
+	
+	/**Set the text to be displayed**/
+	public void setText(final String sText){
+		SwingUtilities.invokeLater(new Runnable() { //this is mandatory to get actual getWitdth
+			public void run() {
+				iSize = AnimationView.this.getWidth(); //current width. Must be called inside an invoke and wait, otherwise, returns zero
+				Font font = null;
+				boolean bOk = false;
+				int i = 40;
+				while (!bOk){
+					font = new Font("dialog", Font.BOLD, i); //$NON-NLS-1$
+					FontMetrics fontMetrics = Main.getWindow().getFontMetrics(font);
+					int iFontSize = SwingUtilities.computeStringWidth(fontMetrics,sText);
+					if (iFontSize<=iSize-150){
+						bOk = true;
+					}
+					else{
+						i --;
+					}
+				}
+				btl1.setFont(font);
+				if ( animator!=null ){
+					animator.stop();
+				}
+				Animation animPause = Animations.pause(DEFAULT_PAUSE);
+				Animation anim = null;
+				//select a random animation
+				int iShuffle = (int)(Math.random() * 3);
+				switch(iShuffle){
+				case 0:
+					anim = BasicTextAnimation.defaultScale(btl1,DEFAULT_DURATION,sText,Color.darkGray);
+					break;
+				case 1:
+					anim = BasicTextAnimation.defaultSpace(btl1,DEFAULT_DURATION,sText,Color.darkGray);
+					break;
+				case 2:
+					anim = BasicTextAnimation.defaultFade(btl1,DEFAULT_DURATION,sText,Color.darkGray);
+					break;
+				}
+				Animation animAll = Animations.sequential(anim,animPause);
+				anim = Animations.repeat(Float.POSITIVE_INFINITY,animAll);
+				animator = new Animator(anim,DEFAULT_FRAME_RATE);
+				animator.start();
+			}
+		});
+	}
+	
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.Observer#update(java.lang.String)
 	 */
@@ -104,16 +147,22 @@ public class AnimationView extends ViewAdapter implements ITechnicalStrings,Obse
 		if (subject.equals(EVENT_INFORMATION_DISPLAY)){
 			String s = InformationJPanel.getInstance().getMessage();
 			if (s != null  && !s.trim().equals("")){ //$NON-NLS-1$
-			    setText(s);   
+				setText(s);   
 			}
 		}
 	}
 	
-	private int getFont(String s){
-	    //FONT 22, 10% = 1/3
-	    StringTokenizer st = new StringTokenizer(s,"\n"); //$NON-NLS-1$
-	    int iLines = st.countTokens();
-	    return 0;
-	}
 	
+	/* (non-Javadoc)
+	 * @see java.awt.event.ComponentListener#componentResized(java.awt.event.ComponentEvent)
+	 */
+	public void componentResized(ComponentEvent e) {
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				iSize = SwingUtilities.getRootPane(AnimationView.this).getWidth(); //current  width
+				update(EVENT_INFORMATION_DISPLAY);//force redisplay
+			}
+		});
+		Log.debug("View resized, new width="+iSize);
+	}
 }
