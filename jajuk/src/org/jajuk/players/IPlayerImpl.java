@@ -71,7 +71,7 @@ public interface IPlayerImpl {
 	public void resume() throws Exception;
 	
 	/**Seek to a given position in %. ex : 0.2 for 20% */
-	public void seek(float fPosition);
+	public void seek(float fPosition,boolean bMuted);
 	
 	/**Return track position in %*/
 	public float getCurrentPosition();

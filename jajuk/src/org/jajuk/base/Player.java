@@ -92,10 +92,32 @@ public class Player implements ITechnicalStrings{
 	}
 	
 	/**
-	 * Mute/unmute the player
+	 * Alternative Mute/unmute the player
 	 * @throws Exception
 	 */
 	public static void mute() {
+		try {
+			if (pCurrentPlayerImpl!=null){
+				if (Player.bMute){ //already muted, unmute it by setting the volume previous mute
+					pCurrentPlayerImpl.setVolume(ConfigurationManager.getFloat(CONF_VOLUME));
+				}
+				else{
+					pCurrentPlayerImpl.mute();
+				}
+				Player.bMute = !Player.bMute;
+			}
+		} catch (Exception e) {
+			Log.error(e); 
+		}
+	}
+	
+	
+	/**
+	 * Mute/unmute the player
+	 * @param bMute
+	 * @throws Exception
+	 */
+	public static void mute(boolean bMute) {
 		try {
 			if (pCurrentPlayerImpl!=null){
 				if (bMute){ //already muted, unmute it by setting the volume previous mute
@@ -104,12 +126,13 @@ public class Player implements ITechnicalStrings{
 				else{
 					pCurrentPlayerImpl.mute();
 				}
-				bMute = !bMute;
+				Player.bMute = bMute;
 			}
 		} catch (Exception e) {
 			Log.error(e); 
 		}
 	}
+	
 	
 	/**
 	 * 
@@ -136,6 +159,7 @@ public class Player implements ITechnicalStrings{
 			Log.error(e); 
 		}	
 	}
+	
 	
 	/**
 	 * @return Returns the lTime in ms
@@ -184,7 +208,7 @@ public class Player implements ITechnicalStrings{
 	
 	/**Seek to a given position in %. ex : 0.2 for 20% */
 	public static void seek(float fPosition){
-		pCurrentPlayerImpl.seek(fPosition);
+		pCurrentPlayerImpl.seek(fPosition,bMute);
 	}
 	
 	/**
