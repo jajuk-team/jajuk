@@ -101,6 +101,7 @@
     	<action dev='bflorat' type='add'>RFE 981210 : A new option for chosing encoding for collection file : UTF-8 or UTF-16</action>  
       	<action dev='bflorat' type='add'>Collection file backup options</action>  
       	<action dev='bflorat' type='update'>Parameter view now uses tabs</action>
+    	<action dev='bflorat' type='update'>Now file choosers try to guess a right root directory</action>
     	<action dev='bflorat' type='fix'>1001432 We shouldn't be able to choose a startup file in parameter view if this mode is not selected</action>  
       </release>
 
