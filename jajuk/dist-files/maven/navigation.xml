@@ -37,7 +37,7 @@
     <menu name='Project'>
       <item name='Jobs' href='./jobs.html' />
       <item name='Roadmap' href='./planning.html' />
-      <item name='TODO list' href='./todo_list.html' />
+      <item name='Tasks list' href='http://sourceforge.net/pm/?group_id=91412' />
       <item name='Translator guide' href='./translation_howto.html' />
       <item name='Developer guide' href='./developer_guide.html' />
       <item name='Specifications (PDF) ' href='./specs.pdf' />

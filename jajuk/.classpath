@@ -25,5 +25,7 @@
 	<classpathentry kind="lib" path="lib/mp3spi-1.9.2.1.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/basicplayer-2.3.jar"/>
+	<classpathentry kind="lib" path="jajuk-help_fr.jar"/>
+	<classpathentry kind="lib" path="jajuk-help.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
