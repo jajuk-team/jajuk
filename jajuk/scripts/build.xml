@@ -4,6 +4,7 @@
 
 <project default="jar" name="jajuk" basedir=".">
 	<property name="libdir" value="lib" />
+	<property name="nativedir" value="native" />
 	<property name="classdir" value="classes" />
 	<property name="srcdir" value="src" />
 	<property name="bindir" value="bin" />
@@ -23,13 +24,17 @@
 	<target name="compile" description="o Compile the code" depends="clean">
 		<mkdir dir="${classdir}">
 		</mkdir>
-		<javac destdir="${classdir}" deprecation="true" debug="false" optimize="true" excludes="**/package.html">
+		<javac destdir="${classdir}" deprecation="true" debug="true" optimize="true" excludes="**/package.html">
 			<src>
 				<pathelement path="${srcdir}">
 				</pathelement>
 			</src>
 			<classpath>
 				<fileset dir="${libdir}">
+					<include name="*.jar">
+					</include>
+				</fileset>
+				<fileset dir="${nativedir}">
 					<include name="*.jar">
 					</include>
 				</fileset>
