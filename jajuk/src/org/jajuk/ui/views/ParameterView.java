@@ -108,6 +108,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 	JPanel jpTags;
 	JCheckBox jcbDeepScan;
 	JCheckBox jcbUseParentDir;
+	JCheckBox jcbRegexp;
 	JPanel jpOKCancel;
 	JButton jbOK;
 	JButton jbDefault;
@@ -392,14 +393,18 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jpTags = new JPanel();
 		jpTags.setBorder(BorderFactory.createTitledBorder(Messages.getString("ParameterView.98")));  //$NON-NLS-1$
 		double sizeTags[][] = {{0.99},
-				{iYSeparator,20,iYSeparator,20,iYSeparator}};
+				{iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator}};
 		jpTags.setLayout(new TableLayout(sizeTags));
 		jcbDeepScan = new JCheckBox(Messages.getString("ParameterView.99"));  //$NON-NLS-1$
 		jcbDeepScan.setToolTipText(Messages.getString("ParameterView.100")); //$NON-NLS-1$
 		jcbUseParentDir = new JCheckBox(Messages.getString("ParameterView.101"));  //$NON-NLS-1$
+		jcbRegexp = new JCheckBox(Messages.getString("ParameterView.113")); //$NON-NLS-1$
+		jcbRegexp.setSelected(ConfigurationManager.getBoolean(CONF_REGEXP));//$NON-NLS-1$
+		jcbRegexp.setToolTipText(Messages.getString("ParameterView.114")); //$NON-NLS-1$
 		jcbUseParentDir.setToolTipText(Messages.getString("ParameterView.102")); //$NON-NLS-1$
 		jpTags.add(jcbDeepScan,"0,1"); //$NON-NLS-1$
 		jpTags.add(jcbUseParentDir,"0,3"); //$NON-NLS-1$
+		jpTags.add(jcbRegexp,"0,5");//$NON-NLS-1$
 		
 		//OK
 		jpOKCancel = new JPanel();
@@ -516,6 +521,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 					//tags
 					ConfigurationManager.setProperty(CONF_TAGS_DEEP_SCAN,Boolean.toString(jcbDeepScan.isSelected()));
 					ConfigurationManager.setProperty(CONF_TAGS_USE_PARENT_DIR,Boolean.toString(jcbUseParentDir.isSelected()));
+					ConfigurationManager.setProperty(CONF_REGEXP,Boolean.toString(jcbRegexp.isSelected()));
 					//cover
 					if ( ConfigurationManager.getBoolean(CONF_OPTIONS_COVER)){
 						ViewManager.notify(EVENT_VIEW_SHOW_REQUEST,CoverView.class);
