@@ -127,7 +127,8 @@ public class Messages extends DefaultHandler implements ITechnicalStrings	{
 	 * @param sLocal
 	 */
 	public void setLocal(String sLocal) throws Exception{
-  		this.sLocal = sLocal;
+	    this.properties = null; //make sure to reinitialize cached strings
+	    this.sLocal = sLocal;
   	}
 	
 	/**Parse a factice properties file inside an XML file as CDATA*
