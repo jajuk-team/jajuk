@@ -2,16 +2,31 @@
 <head>
   <meta content="text/html; charset=ISO-8859-1"
  http-equiv="content-type">
-  <title>The statistics view</title>
+  <title>The Playlist Editor view</title>
 </head>
 <body>
-<h1>The Statistics view</h1>
-<p>This view displays various facts about your collection. For the moment, it features:</p>
-<ul>
-  <li>The style repartition (it is reliable only if your collection is well tagged). It allow you to know which style you own the most.</li>
-  <li>The size repartition by devices. It allows you to know what are your device sizes in comparaison.</li>
-  <li>Your entire collection size per mounth (a same track can map several files). It allow you get your collection size evolution: it can be useful to know if some cleanups are required for exemple.</li>
-  <li>Your entire collection number of tracks per mounth. It allow you to know how many actual different tracks you have, independently of the number of redondant files you have in your collection.</li>
-</ul>
+<h1>The Playlist Editor view</h1>
+<p>This view allows you to change tracks order, to add new tracks or remove ones. It works on the playlist selected in the <a href='view_playlist_repository.html'>Playlist Repository view</a>.</p>
+
+<h2>Different types of items</h2>
+<p>In the playlist editor, you will find several types of items :</p>
+<p><IMG SRC="../icons/16x16/player_perspective.png" NAME="Image1" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=0> 
+ Regular tracks in the playlist. In the Queue playlist, it matches user selection to be played.</p>
+<p><IMG SRC="../icons/16x16/clock.png" NAME="Image1" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=0>
+ Planned tracks (only in Queue playlist): shows next tracks to be played when selection is done and if you use the continue mode (see <a href='pm.html'>Playing music page</a>). It is useful to know which are next tracks when there is no more than one or few files in the queue.</p>
+<p><IMG SRC="../icons/16x16/repeat.png" NAME="Image1" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=0> 
+Repeated tracks (only in Queue playlist): shows tracks that are played in a loop. Note that you can have a regular selection after a repeated one but never the opposite.</p>
+
+<h2>The Control Panel</h2>
+<p><IMG SRC="../icons/16x16/player_play.png" NAME="Image1" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=0> Play selected playlist (all playlists except Queue)</p>
+<p><IMG SRC="../icons/16x16/save.png" NAME="Image1" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=0> Save the playlist (all playlists). If it is a special playlist, Jajuk will ask you to provide a path and filename to store the playlist.</p>
+<p><IMG SRC="../icons/16x16/add.png" NAME="Image1" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=0> Add a new file to this playlist. When none line is selected, it adds a new item at the end of the playlist. Otherwise, it adds the track at the current selected line (previous item goes after it).
+In the Queue playlist, it is not possible to change current track so it is not possible to perform an add on first line.</p>
+<p><IMG SRC="../icons/16x16/remove.png" NAME="Image1" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=0> Remove a file from this playlist. Next tracks goes up in the list.</p>
+<p><IMG SRC="../icons/16x16/add_shuffle.png" NAME="Image1" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=0> Add a shuffle track. Same behavior than the regular add.</p>
+<p><IMG SRC="../icons/16x16/up.png" NAME="Image1" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=0> Up : decrease file playing index</p>
+<p><IMG SRC="../icons/16x16/down.png" NAME="Image1" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=0> Down : increase file playing index</p>
+<p><IMG SRC="../icons/16x16/clear.png" NAME="Image1" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=0>
+ Clear playlist. Under Queue playlist, it means to stop the player and void the queue.</p>
 </body>
 </html>
