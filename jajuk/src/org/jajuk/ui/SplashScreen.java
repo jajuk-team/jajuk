@@ -46,14 +46,7 @@ public class SplashScreen extends JWindow implements ITechnicalStrings
 		JPanel jpContent = (JPanel)getContentPane();
 		jpContent.setLayout(new BoxLayout(jpContent,BoxLayout.Y_AXIS));
 		JLabel l = new JLabel(Util.getIcon(IMAGES_SPLASHSCREEN));
-		/*JPanel jpVersion = new JPanel();
-		jpVersion.setLayout(new BoxLayout(jpVersion,BoxLayout.X_AXIS));
-		JLabel jlVersion = new JLabel("Release : "+JAJUK_VERSION);
-		jpVersion.add(Box.createHorizontalGlue());
-		jpVersion.add(jlVersion);
-		jpVersion.add(Box.createHorizontalGlue());*/
 		jpContent.add(l);
-		//jpContent.add(jpVersion);
 		pack();
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		Dimension labelSize = l.getPreferredSize();

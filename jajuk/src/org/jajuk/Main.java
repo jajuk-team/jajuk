@@ -35,6 +35,7 @@ import java.util.Iterator;
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import org.jajuk.base.Collection;
 import org.jajuk.base.Device;
@@ -198,8 +199,14 @@ public class Main implements ITechnicalStrings {
 			jw.setExtendedState(Frame.MAXIMIZED_BOTH);  //maximalize
 			//show window if set in the systray conf
 			if ( ConfigurationManager.getBoolean(CONF_SHOW_AT_STARTUP) || !Util.underWindows()){
-				jw.setVisible(true);
+				jw.setVisible(true); //show main window
+				SwingUtilities.invokeLater(new Runnable() { //force screenshot to be upper main window
+					public void run() {
+						sc.show();
+					}
+				});
 			}
+		
 			//Mount and refresh devices
 			mountAndRefresh();
 			
@@ -213,9 +220,6 @@ public class Main implements ITechnicalStrings {
 			
 			//Initialize perspective manager and load all views
 			PerspectiveManager.init();
-			
-			//Close splash screen
-			sc.dispose();
 			
 			//Display info message if first session
 			if (TRUE.equals(ConfigurationManager.getProperty(CONF_FIRST_CON))){
@@ -247,6 +251,10 @@ public class Main implements ITechnicalStrings {
 			
 			//Launch startup track if any
 			launchInitialTrack();
+			
+			//Close splash screen
+			sc.dispose();
+			
 		} catch (JajukException je) { //last chance to catch any error for logging purpose
 			Log.error(je);
 			exit(1);
@@ -337,6 +345,8 @@ public class Main implements ITechnicalStrings {
 	 *                <p>1: unexpected error
 	 */
 	public static void exit(int iExitCode) {
+		//force sound to stop quickly
+		FIFO.getInstance().stopRequest();  
 		//hide window
 		jw.setVisible(false);
 		//store exit code to be read by the system hook
