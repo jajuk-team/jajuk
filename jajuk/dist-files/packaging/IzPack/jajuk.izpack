@@ -2,7 +2,7 @@
 <installation version='1.0'>
     <info>
         <appname>jajuk</appname>
-        <appversion>0.3.2rc2</appversion>
+        <appversion>0.3.2rc3</appversion>
         <javaversion>1.4.2</javaversion>
       <url>http://jajuk.sourceforge.net</url>
     </info>
@@ -84,6 +84,7 @@
             <file targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/README_ita.html'/>
             <file targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/README_nld.html'/>
             <file targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/README_swe.html'/>
+            <file targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/README_esp.html'/>
             <file targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/jajuk.bat'>
             	<os family='windows'/>
            </file>

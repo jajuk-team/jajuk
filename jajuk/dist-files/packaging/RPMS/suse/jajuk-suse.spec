@@ -1,6 +1,6 @@
 Summary: Jajuk Advanced Jukebox
 Name: jajuk
-Version: 0.3.2rc2
+Version: 0.3.2rc3
 Release: 1Suse
 Group: Applications/Audio
 Copyright: Copyright Bertrand Florat & Jajuk team 2003 - 2004
@@ -40,6 +40,4 @@ Jajuk main principles are :
 %post
 
 %postun
-rm -rf /usr/share/doc/packages/jajuk
-rm -rf /usr/lib/jajuk
    

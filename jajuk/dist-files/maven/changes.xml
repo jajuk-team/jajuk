@@ -195,8 +195,9 @@
     	<action dev='bflorat' type='fix'> 1089785	JAJUK.EXE is detected by AVG as having a trojan horse</action>
     	<action dev='bflorat' type='fix'>1086794 Help search engine problem</action>
     	<action dev='bflorat' type='fix'>1091598 Occupies far too much ram : set Xmx to 40MB</action>
+     	<action dev='bflorat' type='fix'>1098567	Linux: Problem upgrading RPM from 0.3.1 to 0.3.2</action>
     	<action dev='bflorat' type='fix'>Fixed minor UI issues (disable) in parameter view</action>
-     </release>
+    </release>
           
   </body>
 </document>

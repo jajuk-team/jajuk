@@ -6,6 +6,18 @@
   <title>Jajuk qualification tests</title>
 </head>
 <body>
+<h1>Release notes for 0.3.2<br>
+</h1>
+<ul>
+  <li>[Only Linux users using RPM package] IMPORTANT NOTE FOR UPGRADE
+FROM 0.3.1 TO 0.3.2 : due to a bug in 0.3.1 packaging, please use&nbsp;
+    <span style="font-family: monospace;"><span
+ style="font-family: monospace;">rpm -Uvh </span><span
+ style="font-weight: bold; font-family: monospace;">--nopostun</span>
+jajuk-${version}-suse.rpm or unsinstall 0.3.1 and install 0.3.2.</span>
+  </li>
+</ul>
+<span style="font-weight: bold;"></span><br>
 <h1>Jajuk qualification tests<br>
 </h1>
 <br>
@@ -15,13 +27,12 @@
     <tr>
       <td style="vertical-align: top;">Date<br>
       </td>
-      <td style="vertical-align: top;">2004/12/05<br>
+      <td style="vertical-align: top;">2005/01/09<br>
       </td>
     </tr>
     <tr>
       <td style="vertical-align: top;">Tester(s) </td>
-      <td style="vertical-align: top;">J&eacute;rome Fortain,&nbsp;
-NeoClust, Nicolas Richard, Bertrand Florat</td>
+      <td style="vertical-align: top;">Bertrand Florat</td>
     </tr>
     <tr>
       <td style="vertical-align: top;">Packager<br>
@@ -35,13 +46,7 @@ NeoClust, Nicolas Richard, Bertrand Florat</td>
     </tr>
     <tr>
       <td style="vertical-align: top;"> Release</td>
-      <td style="vertical-align: top;">0.3.1</td>
-    </tr>
-    <tr>
-      <td style="vertical-align: top;">Fixes during qualification<br>
-      </td>
-      <td style="vertical-align: top;"><br>
-      </td>
+      <td style="vertical-align: top;">0.3.2</td>
     </tr>
   </tbody>
 </table>
@@ -104,24 +109,20 @@ name<br>
       </td>
     </tr>
     <tr>
-      <td style="vertical-align: top;">Docking : check
-perspectives/views features like resize, persistence</td>
-      <td style="vertical-align: top;"><br>
-      </td>
-    </tr>
-    <tr>
       <td style="vertical-align: top;">Packaging: native packages for
 windows, suse and Mandrake</td>
       <td style="vertical-align: top;"><br>
       </td>
     </tr>
     <tr>
-      <td style="vertical-align: top;">Full FIFO rewrite, planned tracks</td>
+      <td style="vertical-align: top;">Tray under Windows (check
+disparition)<br>
+      </td>
       <td style="vertical-align: top;"><br>
       </td>
     </tr>
     <tr>
-      <td style="vertical-align: top;">New covers options (pre-load...)<br>
+      <td style="vertical-align: top;">Documentation<br>
       </td>
       <td style="vertical-align: top;"><br>
       </td>
@@ -641,65 +642,6 @@ number<br>
   </tbody>
 </table>
 <br>
-<h2>Known issues</h2>
-<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
- cellspacing="2">
-  <tbody>
-    <tr>
-      <td
- style="vertical-align: top; background-color: rgb(204, 204, 204);">Issue
-Description<br>
-      </td>
-      <td
- style="vertical-align: top; background-color: rgb(204, 204, 204);">Workaround<br>
-      </td>
-    </tr>
-    <tr>
-      <td style="vertical-align: top;">
-      <p>For normal playlists (not queue) in playlist editor, current
-playd track is highlighted in Orange. If a playlist has several times
-the same track, all of them will be highlighted.</p>
-      </td>
-      <td style="vertical-align: top;">None </td>
-    </tr>
-    <tr>
-      <td style="vertical-align: top;">In the installer, README page :
-flags are not displayed if user is not connected on Internet because
-they are link to Jajuk web site.<br>
-      </td>
-      <td style="vertical-align: top;">None, we can't use local cover
-in the installer.<br>
-      </td>
-    </tr>
-    <tr>
-      <td style="vertical-align: top;">Under Windows, you must have the
-jajuk window visible in taskbar in addition to the tray because
-otherwise, the tray can disappear when mouse goes over it (JDIC API
-tray bug). <br>
-      <br>
-      </td>
-      <td style="vertical-align: top;">You can try to overwrite this
-behavior by using -notaskbar option in jajuk lauch script or command.
-It will probably be fixed with next JDIC releases. </td>
-    </tr>
-    <tr>
-      <td style="vertical-align: top;">OutOfMemory issues<br>
-      </td>
-      <td style="vertical-align: top;">Avoid to use the Cover/Pre-load
-option or auto-cover<br>
-      </td>
-    </tr>
-    <tr>
-      <td style="vertical-align: top;"><a
- href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1078871&amp;group_id=91412&amp;atid=677776">Metouia
-Look and Feel problem</a><br>
-When dynamicaly changing Look And Feel to Metouia, the<br>
-top command panel buttons have repaint problems.<br>
-      </td>
-      <td style="vertical-align: top;">&nbsp; Restart jajuk</td>
-    </tr>
-  </tbody>
-</table>
 <br>
 <br>
 <h2>Comments</h2>
@@ -707,11 +649,6 @@ top command panel buttons have repaint problems.<br>
 <table style="width: 100%; text-align: left;" border="1" cellpadding="2"
  cellspacing="2">
   <tbody>
-    <tr>
-      <td style="vertical-align: top;">Also tested under Windows XP SP1
-and Mandrake 10.0<br>
-      </td>
-    </tr>
     <tr>
       <td style="vertical-align: top;">Have fun using Jajuk ! </td>
     </tr>
@@ -736,180 +673,204 @@ and Mandrake 10.0<br>
 <table border="1" cellpadding="2" cellspacing="2" width="100%">
   <tbody>
     <tr>
-      <td>rc6: 02/12/04 : 7 bugs : 37</td>
-    </tr>
-    <tr>
-      <td>o [BF] [Bug] Wrong total time to play [OK] 6</td>
-    </tr>
-    <tr>
-      <td>o [BF] [Bug] In device wizzard, url buttons should be
-disabled for existing devices [OK] 4</td>
-    </tr>
-    <tr>
-      <td>o [BF] [Bug] Device wizzard : device automount set even if
-off [OK] 6</td>
-    </tr>
-    <tr>
-      <td>o [JF] [Bug] Cover freezes and negative indexes [check] 10</td>
-    </tr>
-    <tr>
-      <td>o [BF] [Bug] If playing error, error message in information
-panel not visible [OK] 4</td>
-    </tr>
-    <tr>
-      <td>o [BF] [Bug] Waiting cursor not visible long enough [OK] 3</td>
-    </tr>
-    <tr>
-      <td>o [BF] [Bug] Launch a track from a normal playlist, is not
-highlighted if not first row [OK] 4</td>
+      <td><br>
+      </td>
     </tr>
     <tr>
       <td><br>
       </td>
     </tr>
     <tr>
-      <td>rc5: 30/11/04 : 7 bugs : 27</td>
-    </tr>
-    <tr>
-      <td>o [JF] [Bug] Wrong Player perspective tooltip I18N [OK] 2</td>
-    </tr>
-    <tr>
-      <td>o [JF] [Bug/RFE] No tooltip in tray items [OK] 2</td>
-    </tr>
-    <tr>
-      <td>o [JF] [Bug] Animation view shouldn't display technical
-messages [OK] 3</td>
-    </tr>
-    <tr>
-      <td>o [JF] [Bug/RFE] Intro icon is the same than Apply filter, we
-changed intro icon [OK] 2</td>
-    </tr>
-    <tr>
-      <td>o [BF] [Bug] Sometimes under windows, tray disapears [OK] 7</td>
-    </tr>
-    <tr>
-      <td>o [BF] [Bug, packaging] install jar contains duplicate image
-files, saves 400 KB [OK] 3</td>
-    </tr>
-    <tr>
-      <td>o [BF] [Bug] Stop : no information panel reset to zero [OK] 6</td>
+      <td><br>
+      </td>
     </tr>
     <tr>
       <td><br>
       </td>
     </tr>
     <tr>
-      <td>rc4: 28/11/04 : 2 bugs : 12</td>
-    </tr>
-    <tr>
-      <td>o [NR] [Bug] Wrong version in welcome panel of IzPack
-installer [OK] 3</td>
-    </tr>
-    <tr>
-      <td>o [BF] [Bug] Various design problems in Dialog messages that
-can cause dead locks and freezes[check] 9</td>
+      <td><br>
+      </td>
     </tr>
     <tr>
       <td><br>
       </td>
     </tr>
     <tr>
-      <td>rc3: 25/11/04 : 7 bugs : 49</td>
-    </tr>
-    <tr>
-      <td>o [BF] [Bug] Device refreshing problems(CRITICAL) [OK] 10</td>
-    </tr>
-    <tr>
-      <td>o [BF] [Bug] Add a track in playlist editor, repeat mode
-should be the one of previous track [OK] 6</td>
-    </tr>
-    <tr>
-      <td>o [BF] [Perf] Event-based playlist editor refreshn should
-save 5% CPU more</td>
-    </tr>
-    <tr>
-      <td>o [BF] [Bug] Technical message in information panel if
-quality is unknown [OK] 2</td>
-    </tr>
-    <tr>
-      <td>o [BF] [Bug] Full freeze when dispatching some error
-messages, can conduct to collection corruption [OK] 10</td>
-    </tr>
-    <tr>
-      <td>o [BF] [Bug] Sometimes errors when setting tags in cover
-view, added more checks [check] 3</td>
-    </tr>
-    <tr>
-      <td>o [BF] [Bug] CRITICAL Infinite loop when lauching some tracks
-due to null files from FileManager in StackItem [check] 10</td>
-    </tr>
-    <tr>
-      <td>o [BF] [Bug] Trivial perf problem in FileManager.nextFile for
-repeat collection, freeze[check] 8</td>
+      <td><br>
+      </td>
     </tr>
     <tr>
       <td><br>
       </td>
     </tr>
     <tr>
-      <td>rc2: 24/11/04 : 8 bugs : 42</td>
-    </tr>
-    <tr>
-      <td>o [JF] [Bug] Collection corruption [Check] 10</td>
-    </tr>
-    <tr>
-      <td>o [JF] [Bug] Locale not token into account [OK] 10</td>
-    </tr>
-    <tr>
-      <td>o [BF] [Bug] Increased player buffer to 10M to avoid scratchs
-[Check] 3</td>
-    </tr>
-    <tr>
-      <td>o [BF] [Bug] Sometimes, first planned track in orange in
-playlist editor (2 bugs) [OK] 3</td>
-    </tr>
-    <tr>
-      <td>o [JF] [Bug] Continue in album doesn't work from tray [OK] 6</td>
-    </tr>
-    <tr>
-      <td>o [JF] [Bug] When unacessible covers are removed, no
-searching icon visible [check] 2</td>
-    </tr>
-    <tr>
-      <td>o [BF] [Bug] Various bugs on playlist editor add/add shuffle
-[OK] 5</td>
-    </tr>
-    <tr>
-      <td>o [BF] [Bug] Swedish Readme file corrupted [OK] 2</td>
+      <td><br>
+      </td>
     </tr>
     <tr>
       <td><br>
       </td>
     </tr>
     <tr>
-      <td>rc1 : 23/11/04</td>
-    </tr>
-    <tr>
-      <td>o Reference</td>
+      <td><br>
+      </td>
     </tr>
     <tr>
       <td><br>
       </td>
     </tr>
     <tr>
-      <td>Total : 31 bugs, Score : 165</td>
+      <td><br>
+      </td>
     </tr>
     <tr>
-      <td>Scores for release :</td>
+      <td><br>
+      </td>
     </tr>
     <tr>
-      <td>[JF] : 9 bugs, Score: 47</td>
+      <td><br>
+      </td>
     </tr>
     <tr>
-      <td>[BF] : 22 bugs, 1 perf fix, Score: 116</td>
+      <td><br>
+      </td>
     </tr>
     <tr>
-      <td>[NR] : 1 bugs : 3</td>
+      <td><br>
+      </td>
+    </tr>
+    <tr>
+      <td><br>
+      </td>
+    </tr>
+    <tr>
+      <td><br>
+      </td>
+    </tr>
+    <tr>
+      <td><br>
+      </td>
+    </tr>
+    <tr>
+      <td><br>
+      </td>
+    </tr>
+    <tr>
+      <td><br>
+      </td>
+    </tr>
+    <tr>
+      <td><br>
+      </td>
+    </tr>
+    <tr>
+      <td><br>
+      </td>
+    </tr>
+    <tr>
+      <td><br>
+      </td>
+    </tr>
+    <tr>
+      <td><br>
+      </td>
+    </tr>
+    <tr>
+      <td><br>
+      </td>
+    </tr>
+    <tr>
+      <td><br>
+      </td>
+    </tr>
+    <tr>
+      <td><br>
+      </td>
+    </tr>
+    <tr>
+      <td><br>
+      </td>
+    </tr>
+    <tr>
+      <td><br>
+      </td>
+    </tr>
+    <tr>
+      <td><br>
+      </td>
+    </tr>
+    <tr>
+      <td><br>
+      </td>
+    </tr>
+    <tr>
+      <td><br>
+      </td>
+    </tr>
+    <tr>
+      <td><br>
+      </td>
+    </tr>
+    <tr>
+      <td><br>
+      </td>
+    </tr>
+    <tr>
+      <td><br>
+      </td>
+    </tr>
+    <tr>
+      <td><br>
+      </td>
+    </tr>
+    <tr>
+      <td><br>
+      </td>
+    </tr>
+    <tr>
+      <td><br>
+      </td>
+    </tr>
+    <tr>
+      <td><br>
+      </td>
+    </tr>
+    <tr>
+      <td><br>
+      </td>
+    </tr>
+    <tr>
+      <td><br>
+      </td>
+    </tr>
+    <tr>
+      <td><br>
+      </td>
+    </tr>
+    <tr>
+      <td><br>
+      </td>
+    </tr>
+    <tr>
+      <td><br>
+      </td>
+    </tr>
+    <tr>
+      <td><br>
+      </td>
+    </tr>
+    <tr>
+      <td><br>
+      </td>
+    </tr>
+    <tr>
+      <td><br>
+      </td>
+    </tr>
+    <tr>
+      <td><br>
+      </td>
     </tr>
   </tbody>
 </table>

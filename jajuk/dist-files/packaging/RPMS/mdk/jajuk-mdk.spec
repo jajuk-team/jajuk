@@ -1,5 +1,5 @@
 %define name                     jajuk
-%define version                     0.3.2rc2
+%define version                     0.3.2rc3
 %define release                     1mdk
 
 %define section                  Multimedia/Sound
@@ -51,5 +51,3 @@ update-menus
 
 %postun
 update-menus
-rm -rf /usr/share/doc/jajuk
-rm -rf /usr/lib/jajuk

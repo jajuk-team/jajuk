@@ -28,6 +28,7 @@
     <search/>
     <menu name='Documentation'>
       <item name='Installation' href='./installation.html' />
+      <item name='Release notes' href='./main_qualification.html' />
       <item name='README notes' href='./README.html' />
       <item name='FAQ' href='./faq.html' />
       <item name='Site documentation (PDF)' href='./jajuk.pdf' />
@@ -40,7 +41,6 @@
       <item name='Translator guide' href='./translation_howto.html' />
       <item name='Developer guide' href='./developer_guide.html' />
       <item name='Specifications (PDF) ' href='./specs.pdf' />
-      <item name='Qualification forms' href='./main_qualification.html' />
     </menu>
    </body>
 </project>
