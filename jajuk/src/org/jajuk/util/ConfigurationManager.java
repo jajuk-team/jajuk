@@ -170,6 +170,11 @@ public class ConfigurationManager implements ITechnicalStrings{
 		properties.put(CONF_BACKUP_SIZE,"30");//$NON-NLS-1$
 		properties.put(CONF_COLLECTION_CHARSET,"UTF-8");//$NON-NLS-1$
 		properties.put(CONF_LAST_POSITION,"0");
+		properties.put(CONF_NETWORK_USE_PROXY,FALSE);
+		properties.put(CONF_NETWORK_PROXY_HOSTNAME,"proxy");//default proxy name, just a guess
+		properties.put(CONF_NETWORK_PROXY_PORT,"3128");
+		properties.put(CONF_NETWORK_PROXY_LOGIN,"");
+		properties.put(CONF_OPTIONS_AUTO_COVER,TRUE);
 	}
 	
 	
