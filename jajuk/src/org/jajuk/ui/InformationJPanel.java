@@ -291,7 +291,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,Obser
 	    else if (EVENT_FILE_LAUNCHED.equals(subject)){
 	        File file = FIFO.getInstance().getCurrentFile();
 	        if (file != null){
-	            String sMessage = Messages.getString("FIFO.10")+" " +file.getTrack().getAuthor().getName2() //$NON-NLS-1$
+	            String sMessage = Messages.getString("FIFO.10")+" " +file.getTrack().getAuthor().getName2() //$NON-NLS-1$ //$NON-NLS-2$
 	            		+" / "+file.getTrack().getAlbum().getName2()+" / " //$NON-NLS-1$ //$NON-NLS-2$
 	            		+file.getTrack().getName();//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	            setMessage(sMessage,InformationJPanel.INFORMATIVE); 
