@@ -45,11 +45,14 @@
        <action dev='bflorat' type='update'>Made some Swing optimizations according to 'Duglan Bob' advices</action>  
        <action dev='bflorat' type='update'>Collection file is now stored in UTF-16 to support more language character sets than UTF-8</action>  
      </release>
-     <release version='0.1.6' date='work in progress' description=''>
+     <release version='0.1.6' date='2004-04-20' description='Italian translation'>
        <action dev='ricciocri' type='add'>Italian translation (Jajuk and Readme file)</action>  
+       <action dev='oscariot' type='add'>Swedish README file</action>  
        <action dev='bflorat' type='add'>Added Previous and Next in systray</action>  
        <action dev='bflorat' type='fix'>930002 Logical perspective not visible</action>  
        <action dev='bflorat' type='fix'>938407 Systray menu not in the selected locale</action>  
+       <action dev='bflorat' type='fix'>939817 Tracks with no id3 tags get trimmed by first dot</action>  
+       <action dev='bflorat' type='fix'>939816 Collection corruption when exiting while refreshing collection</action>  
      </release>
   </body>
 </document>
