@@ -33,7 +33,7 @@ import org.jajuk.util.log.Log;
  * @Author     bflorat
  * @created    17 oct. 2003
  */
-public class Device extends PropertyAdapter implements ITechnicalStrings{
+public class Device extends PropertyAdapter implements ITechnicalStrings, Comparable{
 
 	/** ID. Ex:1,2,3...*/
 	private String sId;
@@ -355,6 +355,16 @@ public class Device extends PropertyAdapter implements ITechnicalStrings{
 	 */
 	public void setUrl(String url) {
 		sUrl = url;
+	}
+	
+	/**
+	 *Alphabetical comparator used to display ordered lists of devices
+	 *@param other device to be compared
+	 *@return comparaison result 
+	 */
+	public int compareTo(Object o){
+		Device otherDevice = (Device)o;
+		return  getName().compareToIgnoreCase(otherDevice.getName());
 	}
 
 }

@@ -30,7 +30,7 @@ import org.jajuk.util.Util;
  * @Author   bflorat
  * @created    17 oct. 2003
  */
-public class Track extends PropertyAdapter {
+public class Track extends PropertyAdapter implements Comparable{
 
 	/** Track ID. Ex:1,2,3...*/
 	private String sId;
@@ -146,6 +146,17 @@ public class Track extends PropertyAdapter {
 	}
 
 	
+	/**
+	 *Alphabetical comparator used to display ordered lists of tracks
+	 *@param other track to be compared
+	 *@return comparaison result 
+	 */
+	public int compareTo(Object o){
+		Track otherTrack = (Track)o;
+		StringBuffer sbCuurent = new StringBuffer(style.getName2()).append(author.getName2()).append(album.getName2()).append(sName);
+		StringBuffer sbOther = new StringBuffer(otherTrack.getStyle().getName2()).append(otherTrack.getAuthor().getName2()).append(otherTrack.getAlbum().getName2()).append(otherTrack.getName());
+		return  sbCuurent.toString().compareToIgnoreCase(sbOther.toString());
+	}
 	
 	/**
 	 * @return
@@ -305,5 +316,7 @@ public class Track extends PropertyAdapter {
 	public void setAdditionDate(String additionDate) {
 		sAdditionDate = additionDate;
 	}
+
+	
 
 }

@@ -26,9 +26,12 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.TreeSet;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -83,18 +86,17 @@ public class LogicalTreeView extends ViewAdapter implements ActionListener{
 	DefaultMutableTreeNode top;
 	
 	/** Track selection*/
-	ArrayList alTracks;
+	TreeSet tsTracks;
 	
 	/** Style selection*/
-	ArrayList alStyles;
+	TreeSet tsStyles;
 	
 	/** author selection*/
-	ArrayList alAuthors;
+	TreeSet tsAuthors;
 
 	/** album selection*/
-	ArrayList alAlbums;
+	TreeSet tsAlbums;
 
-	
 	JPopupMenu jmenuStyle;
 		JMenuItem jmiStylePlay;
 		JMenuItem jmiStylePush;
@@ -321,10 +323,10 @@ public class LogicalTreeView extends ViewAdapter implements ActionListener{
 				}
 				else if ( jtree.getSelectionCount() > 0 && e.getClickCount() == 1 && e.getButton()==MouseEvent.BUTTON3){  //right clic on a selected node set
 					TreePath[] paths = jtree.getSelectionModel().getSelectionPaths();
-					alTracks = new ArrayList(paths.length);
-					alStyles = new ArrayList(paths.length);
-					alAuthors = new ArrayList(paths.length);
-					alAlbums = new ArrayList(paths.length);
+					tsTracks = new TreeSet();
+					tsStyles = new TreeSet();
+					tsAuthors = new TreeSet();
+					tsAlbums = new TreeSet();
 					Object o = paths[0].getLastPathComponent();
 					//Track selection
 					if ( o instanceof TrackNode  ){
@@ -333,7 +335,7 @@ public class LogicalTreeView extends ViewAdapter implements ActionListener{
 							if ( o instanceof TrackNode){
 								Track track = ((TrackNode)o).getTrack();
 								if (track.getPlayeableFile() != null){
-									alTracks.add(((TrackNode)o).getTrack());
+									tsTracks.add(((TrackNode)o).getTrack());
 								}
 								else{
 									Messages.showErrorMessage("010");
@@ -352,7 +354,7 @@ public class LogicalTreeView extends ViewAdapter implements ActionListener{
 							o = paths[i].getLastPathComponent();
 							if ( o instanceof StyleNode){
 								Style style = ((StyleNode)o).getStyle();
-								alStyles.add(((StyleNode)o).getStyle());
+								tsStyles.add(((StyleNode)o).getStyle());
 							}
 							else{
 								return; //we don't accept different type selections
@@ -366,7 +368,7 @@ public class LogicalTreeView extends ViewAdapter implements ActionListener{
 							o = paths[i].getLastPathComponent();
 							if ( o instanceof AuthorNode){
 								Author author = ((AuthorNode)o).getAuthor();
-								alAuthors.add(((AuthorNode)o).getAuthor());
+								tsAuthors.add(((AuthorNode)o).getAuthor());
 							}
 							else{
 								return; //we don't accept different type selections
@@ -380,7 +382,7 @@ public class LogicalTreeView extends ViewAdapter implements ActionListener{
 							o = paths[i].getLastPathComponent();
 							if ( o instanceof AlbumNode){
 								Album album = ((AlbumNode)o).getAlbum();
-								alAlbums.add(((AlbumNode)o).getAlbum());
+								tsAlbums.add(((AlbumNode)o).getAlbum());
 							}
 							else{
 								return; //we don't accept different type selections
@@ -406,7 +408,8 @@ public class LogicalTreeView extends ViewAdapter implements ActionListener{
 	
 	/**Fill the tree */
 	public void populate(){
-		Iterator it1 = TrackManager.getTracks().iterator();
+		ArrayList alTracks = TrackManager.getSortedTracks();
+		Iterator it1 = alTracks.iterator();
 		while ( it1.hasNext()){
 			Track track = (Track)it1.next();
 			StyleNode styleNode = null;
@@ -472,105 +475,104 @@ public class LogicalTreeView extends ViewAdapter implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		//Play or push on a set of tracks
 		if (e.getSource() == jmiTrackPlay || e.getSource() == jmiTrackPush){
-			ArrayList alFiles = new ArrayList(alTracks.size());
-			Iterator it = alTracks.iterator();
+			ArrayList alFilesToPlay = new ArrayList(tsTracks.size());
+			Iterator it = tsTracks.iterator();
 			while ( it.hasNext()){
 				File file = ((Track)it.next()).getPlayeableFile();
 				if ( file != null){
-					alFiles.add(file);
+					alFilesToPlay.add(file);
 				}
 			}
+			Collections.sort(alFilesToPlay);
 			if (e.getSource() == jmiTrackPlay){
-				FIFO.getInstance().push(alFiles,false);
+				FIFO.getInstance().push(alFilesToPlay,false);
 			}
 			else {
-				FIFO.getInstance().push(alFiles,true);
+				FIFO.getInstance().push(alFilesToPlay,true);
 			}
 		}
 		//play or push on a set of styles
 		else if (e.getSource() == jmiStylePlay || e.getSource() == jmiStylePush){
-			ArrayList alFiles = new ArrayList(100); //files to be played
-			ArrayList alTracks = new ArrayList(100);
-			Iterator itStyles = alStyles.iterator();
+			ArrayList alFilesToPlay = new ArrayList(100); //files to be played
+			TreeSet tsTracksToPlay = new TreeSet();
+			Iterator itStyles = tsStyles.iterator();
 			while (itStyles.hasNext()){
 				Style style = (Style)itStyles.next();
-				Iterator itTracks = TrackManager.getTracks().iterator();
+				ArrayList alAllTracks = TrackManager.getTracks();
+				Iterator itTracks = alAllTracks.iterator();
 				while (itTracks.hasNext()){
 					Track track = (Track)itTracks.next();
 					if (track.getStyle().equals(style)){
-						alTracks.add(track);
+						tsTracksToPlay.add(track);
 					}
 				}
-				Iterator it = alTracks.iterator();
+				Iterator it = tsTracksToPlay.iterator();
 				while ( it.hasNext()){
-					alFiles.add(((Track)it.next()).getPlayeableFile());
+					alFilesToPlay.add(((Track)it.next()).getPlayeableFile());
 				}
 				if (e.getSource() == jmiStylePlay){
-					FIFO.getInstance().push(alFiles,false);
+					FIFO.getInstance().push(alFilesToPlay,false);
 				}
 				else {
-					FIFO.getInstance().push(alFiles,true);
+					FIFO.getInstance().push(alFilesToPlay,true);
 				}
 			}	
 			
 		}
 		//		play or push on a set of authors
 		else if (e.getSource() == jmiAuthorPlay || e.getSource() == jmiAuthorPush){
-			ArrayList alFiles = new ArrayList(100); //files to be played
-			ArrayList alTracks = new ArrayList(100);
-			Iterator itAuthors = alAuthors.iterator();
+			ArrayList alFilesToPlay = new ArrayList(100); //files to be played
+			TreeSet tsTracksToPlay = new TreeSet();
+			Iterator itAuthors = tsAuthors.iterator();
 			while (itAuthors.hasNext()){
 				Author author = (Author)itAuthors.next();
 				Iterator itTracks = TrackManager.getTracks().iterator();
 				while (itTracks.hasNext()){
 					Track track = (Track)itTracks.next();
 					if (track.getAuthor().equals(author)){
-						alTracks.add(track);
+						tsTracksToPlay.add(track);
 					}
 				}
-				Iterator it = alTracks.iterator();
+				Iterator it = tsTracksToPlay.iterator();
 				while ( it.hasNext()){
-					alFiles.add(((Track)it.next()).getPlayeableFile());
+					alFilesToPlay.add(((Track)it.next()).getPlayeableFile());
 				}
 				if (e.getSource() == jmiAuthorPlay){
-					FIFO.getInstance().push(alFiles,false);
+					FIFO.getInstance().push(alFilesToPlay,false);
 				}
 				else {
-					FIFO.getInstance().push(alFiles,true);
+					FIFO.getInstance().push(alFilesToPlay,true);
 				}
 			}	
 			
 		}
 		//		play or push on a set of albums
 		else if (e.getSource() == jmiAlbumPlay || e.getSource() == jmiAlbumPush){
-			ArrayList alFiles = new ArrayList(100); //files to be played
-			ArrayList alTracks = new ArrayList(100);
-			Iterator itAlbums = alAlbums.iterator();
+			ArrayList alFilesToPlay = new ArrayList(100); //files to be played
+			TreeSet tsTracksToPlay = new TreeSet();
+			Iterator itAlbums = tsAlbums.iterator();
 			while (itAlbums.hasNext()){
 				Album album = (Album)itAlbums.next();
 				Iterator itTracks = TrackManager.getTracks().iterator();
 				while (itTracks.hasNext()){
 					Track track = (Track)itTracks.next();
 					if (track.getAlbum().equals(album)){
-						alTracks.add(track);
+						tsTracksToPlay.add(track);
 					}
 				}
-				Iterator it = alTracks.iterator();
+				Iterator it = tsTracksToPlay.iterator();
 				while ( it.hasNext()){
-					alFiles.add(((Track)it.next()).getPlayeableFile());
+					alFilesToPlay.add(((Track)it.next()).getPlayeableFile());
 				}
 				if (e.getSource() == jmiAlbumPlay){
-					FIFO.getInstance().push(alFiles,false);
+					FIFO.getInstance().push(alFilesToPlay,false);
 				}
 				else {
-					FIFO.getInstance().push(alFiles,true);
+					FIFO.getInstance().push(alFilesToPlay,true);
 				}
 			}	
-			
 		}
-		
 	}	
-
 }
 
 

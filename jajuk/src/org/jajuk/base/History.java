@@ -75,7 +75,7 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
 			return ;
 		}
 		HistoryItem hi = new HistoryItem(sFileId,lDate);
-		alHistory.add(hi);
+		alHistory.add(0,hi);
 		CommandJPanel.getInstance().addHistoryItem(hi);
 		return ;
 	}
@@ -87,10 +87,19 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
 	
 	/** Clear history for all history items before iDays days*/
 	public synchronized void clear(int iDays){
+		//Begins by clearing deleted files
+		Iterator it = alHistory.iterator();
+		while (it.hasNext()){
+			HistoryItem hi = (HistoryItem)it.next();
+			if (hi.toString() == null ){
+				it.remove();
+			}
+		}
+		//Follow day limits
 		if (iDays == -1){ //infinite history
 			return;
 		}
-		Iterator it = alHistory.iterator();
+		it = alHistory.iterator();
 		while (it.hasNext()){
 			HistoryItem hi = (HistoryItem)it.next();
 			if (hi.getDate() < (System.currentTimeMillis()- (iDays*86400000))){
@@ -158,8 +167,7 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
 	 * @return
 	 */
 	public synchronized HistoryItem getHistoryItem(int index){
-		int indexHistory = alHistory.size()-1-index;
-		return (indexHistory < alHistory.size())?(HistoryItem)alHistory.get(indexHistory):null;
+		return (HistoryItem)alHistory.get(index);
 	}
 	
 	
@@ -217,7 +225,7 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
 		}
 		else if (sQName.equals("play")){
 			HistoryItem hi = new HistoryItem(attributes.getValue(attributes.getIndex("file")),Long.parseLong(attributes.getValue(attributes.getIndex("date"))));
-			alHistory.add(hi);
+			alHistory.add(0,hi);
 		}
 	}
 

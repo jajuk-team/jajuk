@@ -38,7 +38,7 @@ import org.jajuk.util.log.Log;
  * 
  * @Author bflorat @created 17 oct. 2003
  */
-public class Directory extends PropertyAdapter {
+public class Directory extends PropertyAdapter implements Comparable{
 
 	/** ID. Ex:1,2,3... */
 	private String sId;
@@ -232,7 +232,7 @@ public class Directory extends PropertyAdapter {
 				Type type = TypeManager.getTypeByExtension(Util.getExtension(files[i]));
 				Track track = TrackManager.registerTrack(sTrackName, album, style, author, length, sYear, type);
 				org.jajuk.base.File newFile = FileManager.registerFile(files[i].getName(), this, track, files[i].length(), sQuality);
-				TrackManager.getTrack(track.getId()).addFile(newFile);
+				track.addFile(newFile);
 			}
 			else{  //playlist file
 				try{
@@ -285,6 +285,17 @@ public class Directory extends PropertyAdapter {
 	 */
 	public File getFio() {
 		return fio;
+	}
+	
+	
+	/**
+	 *Alphabetical comparator used to display ordered lists of directories
+	 *@param other directory to be compared
+	 *@return comparaison result 
+	 */
+	public int compareTo(Object o){
+		Directory otherDirectory = (Directory)o;
+		return  getAbsolutePath().compareToIgnoreCase(otherDirectory.getAbsolutePath());
 	}
 
 }

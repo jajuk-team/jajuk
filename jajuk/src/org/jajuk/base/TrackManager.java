@@ -22,6 +22,7 @@ package org.jajuk.base;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -34,9 +35,10 @@ import org.jajuk.util.MD5Processor;
  * @author bflorat @created 17 oct. 2003
  */
 public class TrackManager implements ITechnicalStrings {
-	/** Tracks collection* */
+	/** Tracks collection maps: ID -> track* */
 	static HashMap hmTracks = new HashMap(100);
 
+	
 	/**
 	 * No constructor available, only static access
 	 */
@@ -66,8 +68,12 @@ public class TrackManager implements ITechnicalStrings {
 			track = new Track(sId, sName, album, style, author, length, sYear, type);
 			track.setAdditionDate(sAdditionDate);
 			hmTracks.put(sId, track);
+			return track;
 		}
-		return (Track) hmTracks.get(sId);
+		else{
+			return (Track)hmTracks.get(sId);
+		}
+		
 	}
 
 	/**
@@ -96,8 +102,8 @@ public class TrackManager implements ITechnicalStrings {
 			while (itFiles.hasNext()) {
 				org.jajuk.base.File file = (org.jajuk.base.File) itFiles.next();
 				if (FileManager.getFile(file.getId()) == null) { //test if the file exists in the main file repository
-					itFiles.remove();
 					track.removeFile(file); //no? remove it from the track
+					itFiles.remove();
 				}
 			}
 			if (track.getFiles().size() == 0) { //the track don't map anymore to any physical item, just remove it
@@ -110,6 +116,14 @@ public class TrackManager implements ITechnicalStrings {
 	public static synchronized ArrayList getTracks() {
 		return new ArrayList(hmTracks.values());
 	}
+	
+	
+	/** Return sorted registred Tracks */
+		public static synchronized ArrayList getSortedTracks() {
+			ArrayList alTracks = new ArrayList(hmTracks.values());
+			Collections.sort(alTracks);
+			return alTracks;
+		}
 
 	/**
 	 * Return Track by id

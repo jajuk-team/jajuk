@@ -22,6 +22,7 @@ package org.jajuk.base;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.TreeSet;
 
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.MD5Processor;
@@ -34,9 +35,11 @@ import org.jajuk.util.log.Log;
  */
 public class FileManager implements ITechnicalStrings{
 	/** Files collection* */
-	static ArrayList alFilesId = new ArrayList(1000);
+	private static ArrayList alFilesId = new ArrayList(1000);
 	/** Files collection* */
-	static ArrayList alFiles = new ArrayList(1000);
+	private static ArrayList alFiles = new ArrayList(1000);
+	/** Sorted fiel collection ( for performances ) */
+	private static TreeSet tsSortedFiles = new TreeSet();
 	
 	
 	/**
@@ -66,6 +69,7 @@ public class FileManager implements ITechnicalStrings{
 		if ( !alFilesId.contains(sId)){
 			alFilesId.add(sId);
 			alFiles.add(file);
+			tsSortedFiles.add(file);
 			if ( Device.isRefreshing()){
 				Log.debug("registrated new file: "+ file);
 			}
@@ -84,6 +88,7 @@ public class FileManager implements ITechnicalStrings{
 			File file = (File) it.next();
 			if (file.getDirectory()==null || file.getDirectory().getDevice().getId().equals(sId)) {
 				it.remove();
+				tsSortedFiles.remove(file);
 			}
 		}
 		System.gc(); //force garbage collection after cleanup
@@ -93,6 +98,12 @@ public class FileManager implements ITechnicalStrings{
 	public static synchronized ArrayList getFiles() {
 		return new ArrayList(alFiles);
 	} 
+	
+	/** Return sorted registred files*/
+	public static synchronized ArrayList getSortedFiles() {
+		return new ArrayList(tsSortedFiles);
+	} 
+
 	
 	/**
 	   * Return file by id
@@ -131,8 +142,9 @@ public class FileManager implements ITechnicalStrings{
 	 */
 	public static synchronized File getNextFile(File file){
 		File fileNext = null;
-		int index = alFiles.indexOf(file) + 1;
-		if (index >= alFiles.size()){  //problem or we reach end of collection
+		ArrayList alSortedFiles = getSortedFiles();
+		int index = alSortedFiles.indexOf(file) + 1;
+		if (index >= alSortedFiles.size()){  //problem or we reach end of collection
 			if (ConfigurationManager.getBoolean(CONF_OPTIONS_RESTART)){  //restart collection
 				index = 0;
 			}
@@ -140,8 +152,8 @@ public class FileManager implements ITechnicalStrings{
 				return null;
 			}
 		}
-		while ( index < alFiles.size()){
-			fileNext = (File)alFiles.get(index);
+		while ( index < alSortedFiles.size()){
+			fileNext = (File)alSortedFiles.get(index);
 			index ++;
 			if (fileNext.getDirectory().getDevice().isMounted()){  //file must be on a mounted device
 				break;

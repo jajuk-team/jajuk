@@ -246,7 +246,7 @@ public class FIFO extends Thread implements ITechnicalStrings{
 					}
 					lTrackStart = System.currentTimeMillis();
 					History.getInstance().addItem(fCurrent.getId(),System.currentTimeMillis());
-					InformationJPanel.getInstance().setMessage("<html>Now Playing : <i>"+fCurrent.getTrack().getAuthor().getName2()+" / "+fCurrent.getTrack().getName()+"</i></html>",InformationJPanel.INFORMATIVE);
+					InformationJPanel.getInstance().setMessage("<html>Now Playing : <i>"+fCurrent.getTrack().getAuthor().getName2()+" / "+fCurrent.getTrack().getAlbum().getName2()+" / "+fCurrent.getTrack().getName()+"</i></html>",InformationJPanel.INFORMATIVE);
 					InformationJPanel.getInstance().setQuality(fCurrent.getQuality()+" kbps");
 				}
 			}

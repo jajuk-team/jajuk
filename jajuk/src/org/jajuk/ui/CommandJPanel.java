@@ -39,6 +39,7 @@ import org.jajuk.base.FileManager;
 import org.jajuk.base.History;
 import org.jajuk.base.HistoryItem;
 import org.jajuk.base.ITechnicalStrings;
+import org.jajuk.base.Player;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
 
@@ -186,9 +187,11 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		jtbPlay.add(jbRew);
 		jbPlayPause = new JButton(new ImageIcon(ICON_PLAY)); 
 		jbPlayPause.setToolTipText(Messages.getString("CommandJPanel.Play/pause_current_track_7")); //$NON-NLS-1$
+		jbPlayPause.addActionListener(this);
 		jtbPlay.add(jbPlayPause);
 		jbStop = new JButton(new ImageIcon(ICON_STOP)); 
 		jbStop.setToolTipText(Messages.getString("CommandJPanel.Stop_current_track_8")); //$NON-NLS-1$
+		jbStop.addActionListener(this);
 		jtbPlay.add(jbStop);
 		jbFwd = new JButton(new ImageIcon(ICON_FWD)); 
 		jbFwd.setToolTipText(Messages.getString("CommandJPanel.Fast_forward_in_current_track_9")); //$NON-NLS-1$
@@ -264,7 +267,9 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 				FIFO.getInstance().setGlobalRandom(true);
 				FIFO.getInstance().push(file,false,true);
 			}
-			
+		}
+		else if(ae.getSource() == jbStop){
+			Player.stop();
 		}
 	}
 }

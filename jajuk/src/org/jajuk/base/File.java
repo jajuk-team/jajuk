@@ -28,7 +28,7 @@ import org.jajuk.util.Util;
  * @author     bflorat
  * @created    12 oct. 2003
  */
-public class File extends PropertyAdapter{
+public class File extends PropertyAdapter implements Comparable{
 	/** author ID. Ex:1,2,3...*/
 	protected String sId;
 	/**File name */
@@ -189,6 +189,16 @@ public class File extends PropertyAdapter{
 		sbOut.insert(0,'/');
 		sbOut.insert(0,getDirectory().getDevice().getUrl());
 		return sbOut.toString();
+	}
+	
+	/**
+	 *Alphabetical comparator used to display ordered lists of files
+	 *@param other file to be compared
+	 *@return comparaison result 
+	 */
+	public int compareTo(Object o){
+		File otherFile = (File)o;
+		return  getAbsolutePath().compareToIgnoreCase(otherFile.getAbsolutePath());
 	}
 	
 	

@@ -28,7 +28,7 @@ import org.jajuk.util.Util;
  * @Author     bflorat
  * @created    17 oct. 2003
  */
-public class PlaylistFile extends PropertyAdapter {
+public class PlaylistFile extends PropertyAdapter implements Comparable {
 
 	/**ID. Ex:1,2,3...*/
 	private String  sId;
@@ -122,6 +122,16 @@ public class PlaylistFile extends PropertyAdapter {
 	 */
 	public Directory getDirectory() {
 		return dParentDirectory;
+	}
+	
+	/**
+	 *Alphabetical comparator used to display ordered lists of playlist files
+	 *@param other playlistfile to be compared
+	 *@return comparaison result 
+	 */
+	public int compareTo(Object o){
+		PlaylistFile otherPlaylistFile = (PlaylistFile)o;
+		return  getName().compareToIgnoreCase(otherPlaylistFile.getName());
 	}
 
 }

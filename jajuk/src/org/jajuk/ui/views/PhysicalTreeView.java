@@ -26,8 +26,11 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.TreeSet;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -75,13 +78,13 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener{
 	DefaultMutableTreeNode top;
 	
 	/** Files selection*/
-	ArrayList alFiles;
+	TreeSet tsFiles;
 	
 	/** Directories selection*/
-	ArrayList alDirs;
+	TreeSet tsDirs;
 	
 	/** Devices selection*/
-	ArrayList alDevices;
+	TreeSet tsDevices;
 	
 	JPopupMenu jmenuFile;
 		JMenuItem jmiFilePlay;
@@ -311,20 +314,20 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener{
 				}
 				else if ( jtree.getSelectionCount() > 0 && e.getClickCount() == 1 && e.getButton()==MouseEvent.BUTTON3){  //right clic on a selected node set
 					//Only keep files
-					//TODO accept playlists
+					//TODO TBI accept playlists
 					TreePath[] paths = jtree.getSelectionModel().getSelectionPaths();
-					alFiles = new ArrayList(paths.length);
-					alDirs = new ArrayList(paths.length);
-					alDevices = new ArrayList(paths.length);
+					tsFiles = new TreeSet();
+					tsDirs = new TreeSet();
+					tsDevices = new TreeSet();
 					Object o = paths[0].getLastPathComponent();
-					//File or playlist selection
-					if ( o instanceof FileNode || o instanceof PlaylistFileNode ){
+					//File selection
+					if ( o instanceof FileNode ){
 						for (int i=0;i<paths.length;i++){
 							o = paths[i].getLastPathComponent();
-							if ( o instanceof FileNode || o instanceof PlaylistFileNode){
+							if ( o instanceof FileNode ){
 								File file = ((FileNode)o).getFile();
 								if (file.getDirectory().getDevice().isMounted()){
-									alFiles.add(((FileNode)o).getFile());
+									tsFiles.add(((FileNode)o).getFile());
 								}
 								else{
 									Messages.showErrorMessage("120");
@@ -344,7 +347,7 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener{
 							if ( o instanceof DirectoryNode){
 								Directory dir = ((DirectoryNode)o).getDirectory();
 								if (dir.getDevice().isMounted()){
-									alDirs.add(((DirectoryNode)o).getDirectory());
+									tsDirs.add(((DirectoryNode)o).getDirectory());
 								}
 								else{
 									Messages.showErrorMessage("120");
@@ -380,14 +383,18 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener{
 	/**Fill the tree */
 	public void populate(){
 		//add devices
-		Iterator it1 = DeviceManager.getDevices().iterator();
+		ArrayList alDevices = DeviceManager.getDevices();
+		Collections.sort(alDevices);
+		Iterator it1 = alDevices.iterator();
 		while ( it1.hasNext()){
 			Device device = (Device)it1.next();
 			DefaultMutableTreeNode nodeDevice = new DeviceNode(device);
 			top.add(nodeDevice);
 		}
 		//add directories
-		Iterator it2 = DirectoryManager.getDirectories().iterator();
+		ArrayList alDirectories = DirectoryManager.getDirectories();
+		Collections.sort(alDirectories);
+		Iterator it2 = alDirectories.iterator();
 		while (it2.hasNext()){
 			Directory directory = (Directory)it2.next();
 			if (!directory.getName().equals("")){ //device root directory, do not display
@@ -406,7 +413,9 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener{
 			}
 		}
 		//add files
-		Iterator it3 = FileManager.getFiles().iterator();
+		ArrayList alFiles = FileManager.getFiles();
+		Collections.sort(alFiles);
+		Iterator it3 = alFiles.iterator();
 		while (it3.hasNext()){
 			File file = (File)it3.next();
 			DirectoryNode directoryNode = DirectoryNode.getDirectoryNode(file.getDirectory());
@@ -415,7 +424,9 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener{
 			}
 		}
 		//add playlist files
-		Iterator it4 = PlaylistFileManager.getPlaylistFiles().iterator();
+		ArrayList alPlaylistFiles = PlaylistFileManager.getPlaylistFiles();
+		Collections.sort(alPlaylistFiles);
+		Iterator it4 = alPlaylistFiles.iterator();
 		while (it4.hasNext()){
 			PlaylistFile playlistFile = (PlaylistFile)it4.next();
 			DirectoryNode directoryNode = DirectoryNode.getDirectoryNode(playlistFile.getDirectory());
@@ -431,32 +442,34 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener{
 	 */
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == jmiFilePlay ){
-			FIFO.getInstance().push(alFiles,false);
+			FIFO.getInstance().push(new ArrayList(tsFiles),false);
 		}
 		else if (e.getSource() == jmiFilePush ){
-			FIFO.getInstance().push(alFiles,true);
+			FIFO.getInstance().push(new ArrayList(tsFiles),true);
 		}
 		else if (e.getSource() == jmiDirPlay  || e.getSource() == jmiDirPush || e.getSource() == jmiDirPlayShuffle){
-			ArrayList alFiles = new ArrayList(100); //files to be played
-			Iterator it = alDirs.iterator();
+			ArrayList alFilesToPlay = new ArrayList(); //files to be played
+			Iterator it = tsDirs.iterator();
 			while (it.hasNext()){
 				Directory dir = (Directory)it.next();
-				Iterator it2  = FileManager.getFiles().iterator();
+				ArrayList alFiles = FileManager.getFiles();
+				Collections.sort(alFiles);
+				Iterator it2  = alFiles.iterator();
 				while (it2.hasNext()){
 					File file = (File)it2.next();
 					if ( file.getDirectory().getDevice().isMounted() && file.hasAncestor(dir)){  //mount test is only for performance reasons 
-						alFiles.add(file);
+						alFilesToPlay.add(file);
 					}
 				}
 			}
 			if (e.getSource() == jmiDirPlay){
-				FIFO.getInstance().push(alFiles,false);
+				FIFO.getInstance().push(alFilesToPlay,false);
 			}
 			else if (e.getSource() == jmiDirPush){
-				FIFO.getInstance().push(alFiles,true);
+				FIFO.getInstance().push(alFilesToPlay,true);
 			}
 			else if (e.getSource() == jmiDirPlayShuffle){
-				FIFO.getInstance().push(Util.randomize(alFiles),false);
+				FIFO.getInstance().push(Util.randomize(alFilesToPlay),false);
 			}
 		}
 	}
