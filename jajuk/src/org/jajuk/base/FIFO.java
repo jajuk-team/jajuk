@@ -36,6 +36,7 @@ import org.jajuk.util.log.Log;
 
 /**
  *  Manages playing sequences
+ *  <p>Avoid to synchronize these methods because they are called very often and AWT dispatcher thread is frozen when JVM execute a static syncrhonized method, even ouside AWT dispatcher thread</p> 
  *
  * @author     Bertrand Florat
  * @created    12 oct. 2003
@@ -95,7 +96,7 @@ public class FIFO implements ITechnicalStrings{
      * Set given repeat mode to all in FIFO
      * @param bRepeat
      */
-    public synchronized void setRepeatModeToAll(boolean bRepeat){
+    public void setRepeatModeToAll(boolean bRepeat){
         Iterator it = alFIFO.iterator();
         while ( it.hasNext()){
             StackItem item = (StackItem)it.next();
@@ -249,7 +250,7 @@ public class FIFO implements ITechnicalStrings{
      * Finished method, called by the PlayerImpl when the track is finished
      *
      */
-    public synchronized void finished(){
+    public void finished(){
         try{
             if (getCurrentItem() == null ){
                 return;
@@ -313,7 +314,7 @@ public class FIFO implements ITechnicalStrings{
      * Lauch track at given index in the fifo
      * @param int index
      */
-    private synchronized void launch(int index){
+    private void launch(int index){
         try{
             Util.waiting();
             //intro workaround : intro mode is only read at track launch and can't be set during the play
@@ -340,7 +341,7 @@ public class FIFO implements ITechnicalStrings{
             Properties pDetails = new Properties();
             pDetails.put(DETAIL_CURRENT_FILE_ID,fCurrent.getId());
             pDetails.put(DETAIL_CURRENT_DATE,new Long(System.currentTimeMillis()));
-            ObservationManager.notify(new Event(EVENT_FILE_LAUNCHED,pDetails));
+            ObservationManager.notify(new Event(EVENT_FILE_LAUNCHED,pDetails)); //notify synchronized to avoid problems in history bars in case of playing error 
             if (ConfigurationManager.getBoolean(CONF_STATE_INTRO)){ //intro mode enabled
                 Player.play(fCurrent,Float.parseFloat(ConfigurationManager.getProperty(CONF_OPTIONS_INTRO_BEGIN))/100,1000*Integer.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_INTRO_LENGTH)));
             }
@@ -372,7 +373,7 @@ public class FIFO implements ITechnicalStrings{
      * Set current index
      * @param index
      */
-    public synchronized void setIndex(int index){
+    public void setIndex(int index){
         this.index =  index;
     }
     
@@ -382,7 +383,7 @@ public class FIFO implements ITechnicalStrings{
      * Computes planned tracks
      *@param bClear : clear planned tracks stack  
      */
-    public synchronized void computesPlanned(boolean bClear){
+    public  void computesPlanned(boolean bClear){
         //Check if we are in continue mode and we have some tracks in FIFO, if not : no planned tracks
         if (!ConfigurationManager.getBoolean(CONF_STATE_CONTINUE) || alFIFO.size() == 0){
             alPlanned.clear();
@@ -433,7 +434,7 @@ public class FIFO implements ITechnicalStrings{
      * Clears the fifo, for example when we want to add a group of files stopping previous plays
      *
      */
-    public synchronized void clear() {
+    public  void clear() {
         alFIFO.clear();
         alPlanned.clear();
     }
@@ -442,7 +443,7 @@ public class FIFO implements ITechnicalStrings{
      * 
      * @return whether the FIFO contains at least one track in repeat mode
      */
-    public synchronized boolean containsRepeat(){
+    public  boolean containsRepeat(){
         Iterator it = alFIFO.iterator();
         boolean bRepeat = false;
         while (it.hasNext()){
@@ -459,7 +460,7 @@ public class FIFO implements ITechnicalStrings{
      * 
      * @return whether the FIFO contains only repeated files
      */
-    public synchronized boolean containsOnlyRepeat(){
+    public  boolean containsOnlyRepeat(){
         Iterator it = alFIFO.iterator();
         boolean bOnlyRepeat = true;
         while (it.hasNext()){
@@ -501,7 +502,7 @@ public class FIFO implements ITechnicalStrings{
     /**
      * Play previous track
      */
-    public synchronized void playPrevious(){
+    public  void playPrevious(){
         try{
             JajukTimer.getInstance().reset();
             JajukTimer.getInstance().addTrackTime(alFIFO);
@@ -518,7 +519,7 @@ public class FIFO implements ITechnicalStrings{
     /**
      * Play previous album
      */
-    public synchronized void playPreviousAlbum(){
+    public  void playPreviousAlbum(){
         try{
             //we don't support album navigation inside repeated tracks
             if (((StackItem)getItem(0)).isRepeat()){
@@ -568,7 +569,7 @@ public class FIFO implements ITechnicalStrings{
     /**
      * Play next track in selection
      */
-    public synchronized void playNext(){
+    public void playNext(){
         try{
             //if playing, stop current
             if ( Player.isPlaying()){
@@ -598,7 +599,7 @@ public class FIFO implements ITechnicalStrings{
     /**
      * Play next track in selection
      */
-    public synchronized void playNextAlbum(){
+    public void playNextAlbum(){
         try{
             // we don't support album navigation inside repeated tracks
             if (((StackItem)getItem(0)).isRepeat()){
@@ -659,7 +660,7 @@ public class FIFO implements ITechnicalStrings{
      *  Get the currently played  file
      * @return File
      **/
-    public synchronized File getCurrentFile(){ 
+    public File getCurrentFile(){ 
         StackItem item = getCurrentItem();
         return (item==null)?null:item.getFile();
     }
@@ -668,7 +669,7 @@ public class FIFO implements ITechnicalStrings{
      *  Get the currently played  stack item
      * @return stack item
      **/
-    public synchronized StackItem getCurrentItem(){ 
+    public StackItem getCurrentItem(){ 
         if (index < alFIFO.size()){
             StackItem item = (StackItem)alFIFO.get(index);
             return item;
@@ -684,7 +685,7 @@ public class FIFO implements ITechnicalStrings{
      * @param index : index
      * @return stack item
      **/
-    public synchronized StackItem getItem(int index){ 
+    public StackItem getItem(int index){ 
         if (index < alFIFO.size()){
             StackItem item = (StackItem)alFIFO.get(index);
             return item;
@@ -698,7 +699,7 @@ public class FIFO implements ITechnicalStrings{
      *  Get index of the last repeated item, -1 if none repeated 
      * @return index
      **/
-    public synchronized int getLastRepeatedItem(){ 
+    public int getLastRepeatedItem(){ 
         int i = -1;
         Iterator iterator = alFIFO.iterator();
         while (iterator.hasNext()){
@@ -739,7 +740,7 @@ public class FIFO implements ITechnicalStrings{
     /**
      * Stop request. Void the fifo
      */
-    public synchronized void stopRequest() {
+    public  void stopRequest() {
         //fifo is over ( stop request ) , reinit labels in information panel before exiting
         bStop = true;
         //	set was playing state if it is not a stop called by jajuk exit 
@@ -762,14 +763,14 @@ public class FIFO implements ITechnicalStrings{
     /**
      * @return Returns the alFIFO.
      */
-    public synchronized ArrayList getFIFO() {
+    public ArrayList getFIFO() {
         return alFIFO;
     }
     
     /**
      * Shuffle the FIFO, used when user select the Random mode
      */
-    public synchronized void shuffle(){
+    public void shuffle(){
         Collections.shuffle(alFIFO);
         alPlanned.clear(); //force recomputes planned tracks
     }
@@ -779,7 +780,7 @@ public class FIFO implements ITechnicalStrings{
      * @param file
      * @param iPos
      */
-    public synchronized void insert(StackItem item,int iPos){
+    public void insert(StackItem item,int iPos){
         ArrayList alStack = new ArrayList(1);
         alStack.add(item);
         insert(alStack,iPos);
@@ -791,7 +792,7 @@ public class FIFO implements ITechnicalStrings{
      * @param file
      * @param iPos
      */
-    public synchronized void insert(ArrayList alFiles,int iPos){
+    public void insert(ArrayList alFiles,int iPos){
         if (iPos <= alFIFO.size()){  //add in the FIFO, accept a file at size() position to allow increasing FIFO at the end
             alFIFO.addAll(iPos,alFiles);
             JajukTimer.getInstance().addTrackTime(alFiles);
@@ -803,7 +804,7 @@ public class FIFO implements ITechnicalStrings{
      * Put up an item from given index to index-1
      * @param index
      */
-    public synchronized void up(int index){
+    public void up(int index){
         if (index == 0 || index == alFIFO.size()){ //Can't put up first track in queue or first planned track. This should be already made by ui behavior
             return;
         }
@@ -824,7 +825,7 @@ public class FIFO implements ITechnicalStrings{
      * Put down an item from given index to index+1
      * @param index
      */
-    public synchronized void down(int index){
+    public void down(int index){
         if (index == 0 || index == alFIFO.size()-1 || index == alFIFO.size() + alPlanned.size() -1){ //Can't put down current track, nor last rack in fifo, nor last planned track. This should be already made by ui behavior
             return;
         }
@@ -844,7 +845,7 @@ public class FIFO implements ITechnicalStrings{
      * Go to given index and lauch it
      * @param index
      */
-    public synchronized void goTo(int index){
+    public void goTo(int index){
         try{
             if (containsRepeat()){
                 // if there are some tracks in repeat, mode
@@ -879,7 +880,7 @@ public class FIFO implements ITechnicalStrings{
      * @param start index
      * @param stop index
      */
-    public synchronized void remove(int iStart,int iStop){
+    public  void remove(int iStart,int iStop){
         if (iStart<=iStop && iStart>=0 && iStop < alFIFO.size()+alPlanned.size()){ //check size
             //drop items from the end to the begining
             for (int i=iStop; i>=iStart; i--){
@@ -914,7 +915,7 @@ public class FIFO implements ITechnicalStrings{
      * 
      * @return Last Stack item in FIFO
      */
-    public synchronized StackItem getLast(){
+    public StackItem getLast(){
         if (alFIFO.size() == 0){
             return null;
         }
@@ -925,7 +926,7 @@ public class FIFO implements ITechnicalStrings{
      * 
      * @return Last played item
      * */
-    public synchronized StackItem getLastPlayed(){
+    public StackItem getLastPlayed(){
         return itemLast;
     }
     
@@ -933,13 +934,13 @@ public class FIFO implements ITechnicalStrings{
     /**
      * @return Returns the index.
      */
-    public synchronized int getIndex() {
+    public int getIndex() {
         return index;
     }
     /**
      * @return Returns the alPlanned.
      */
-    public synchronized ArrayList getPlanned() {
+    public ArrayList getPlanned() {
         return alPlanned;
     }
 }
