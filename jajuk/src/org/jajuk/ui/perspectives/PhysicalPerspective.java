@@ -70,9 +70,9 @@ public class PhysicalPerspective extends PerspectiveAdapter{
 	    net.infonode.docking.View dockingPlaylistEditorView = addView(view);
 		viewMap.addView(4,dockingPlaylistEditorView);
         
-        SplitWindow vertPlaylistCoverSplit = new SplitWindow(true,0.7f,dockingPlaylistEditorView,dockingCoverView);
-        SplitWindow horTableCoverSplit = new SplitWindow(false,0.7f,dockingPhysicalTableView,vertPlaylistCoverSplit);
-        SplitWindow verTreeRepositorySplit = new SplitWindow(true,0.7f,dockingPhysicalTreeView,dockingPhysicalPlaylistRepository);
+        SplitWindow vertPlaylistCoverSplit = new SplitWindow(true,0.5f,dockingPlaylistEditorView,dockingCoverView);
+        SplitWindow horTableCoverSplit = new SplitWindow(false,0.6f,dockingPhysicalTableView,vertPlaylistCoverSplit);
+        SplitWindow verTreeRepositorySplit = new SplitWindow(true,0.75f,dockingPhysicalTreeView,dockingPhysicalPlaylistRepository);
         SplitWindow verMainSplit = new SplitWindow(true,0.4f,verTreeRepositorySplit,horTableCoverSplit);
 		
         setRootWindow(viewMap,verMainSplit);  

@@ -74,9 +74,9 @@ public class LogicalPerspective extends PerspectiveAdapter{
 	    net.infonode.docking.View dockingPlaylistEditorView = addView(view);
 		viewMap.addView(4,dockingPlaylistEditorView);
         
-        SplitWindow vertPlaylistCoverSplit = new SplitWindow(true,0.7f,dockingPlaylistEditorView,dockingCoverView);
-        SplitWindow horTableCoverSplit = new SplitWindow(false,0.7f,dockingLogicalTableView,vertPlaylistCoverSplit);
-        SplitWindow verTreeRepositorySplit = new SplitWindow(true,0.7f,dockingLogicalTreeView,dockingLogicalPlaylistRepository);
+        SplitWindow vertPlaylistCoverSplit = new SplitWindow(true,0.5f,dockingPlaylistEditorView,dockingCoverView);
+        SplitWindow horTableCoverSplit = new SplitWindow(false,0.6f,dockingLogicalTableView,vertPlaylistCoverSplit);
+        SplitWindow verTreeRepositorySplit = new SplitWindow(true,0.75f,dockingLogicalTreeView,dockingLogicalPlaylistRepository);
         SplitWindow verMainSplit = new SplitWindow(true,0.4f,verTreeRepositorySplit,horTableCoverSplit);
 		
         setRootWindow(viewMap,verMainSplit);
