@@ -267,14 +267,8 @@ public class Main implements ITechnicalStrings {
 							PerspectiveManager.registerDefaultPerspectives();
 						}
 						else{
-							try {
 								PerspectiveManager.load();
-							} catch (JajukException e) {
-								Log.error(e);
-								System.exit(1);
-							}
 						}
-						
 						// Create the perspective tool bar panel
 						perspectiveBar = PerspectiveBarJPanel.getInstance();
 						jpFrame.remove(jp);
