@@ -223,8 +223,8 @@ public class ViewManager implements ITechnicalStrings,ComponentListener{
 		}
 		IView view = getViewByContainer((Container)e.getComponent());
 		if (view != null){
-			int iLogicalX = bound((int)(100*(float)e.getComponent().getX()/iMainWidth),PRECISION);
-			int iLogicalY = bound((int)(100*(float)e.getComponent().getY()/iMainHeight),PRECISION);
+			int iLogicalX = bound((int)(100*(float)e.getComponent().getX()/iMainWidth),PRECISION,true);
+			int iLogicalY = bound((int)(100*(float)e.getComponent().getY()/iMainHeight),PRECISION,true);
 			view.setLogicalX(iLogicalX);
 			view.setLogicalY(iLogicalY);
 		}
@@ -239,8 +239,8 @@ public class ViewManager implements ITechnicalStrings,ComponentListener{
 		int iMainHeight = Main.getWindow().getHeight()- BORDER_Y_SIZE; //desktop pane size in pixels
 		IView view = getViewByContainer((Container)e.getComponent());
 		if (view != null){
-			int iLogicalWidth = bound((int)(100*(float)e.getComponent().getWidth()/iMainWidth),PRECISION);
-			int iLogicalHeight = bound((int)(100*(float)e.getComponent().getHeight()/iMainHeight),PRECISION);
+			int iLogicalWidth = bound((int)(100*(float)e.getComponent().getWidth()/iMainWidth),PRECISION,false);
+			int iLogicalHeight = bound((int)(100*(float)e.getComponent().getHeight()/iMainHeight),PRECISION,false);
 			view.setLogicalWidth(iLogicalWidth);
 			view.setLogicalHeight(iLogicalHeight);
 		}
@@ -248,21 +248,30 @@ public class ViewManager implements ITechnicalStrings,ComponentListener{
 	
 	/**
 	 * Computes a dimension in screen percent for a precision of given percents 
-	 * @param i
+	 * @param i value to compute
+	 * @param iPrecision 
+	 *  @param bAllowZero
 	 * @return
 	 */
-	private int bound(int i,int iPrecision){
-		if ( i> 100 ){
+	private int bound(int i,int iPrecision,boolean bAllowZero){
+		//if dimension is too large, floor it
+	    if ( i> 100 ){
 			i=100;
 		}
+	    //ceil it
 		else if (i<0){
 			i = 0;
 		}
-		if (i%10 < 5){
+		//computes value upon a given precision
+	    if (i%10 < 5){
 			i -= i%iPrecision;
 		}
 		else{
 			i += (iPrecision-(i%iPrecision));
+		}
+	    //don't allow zero for a dimension, at least the precision
+		if ( !bAllowZero && i < iPrecision ){
+		    i = iPrecision;
 		}
 		return i;
 	}

@@ -40,6 +40,7 @@ import org.jajuk.i18n.Messages;
 import org.jajuk.ui.JajukJMenuBar;
 import org.jajuk.ui.PerspectiveBarJPanel;
 import org.jajuk.ui.views.AboutView;
+import org.jajuk.ui.views.AnimationView;
 import org.jajuk.ui.views.CDScanView;
 import org.jajuk.ui.views.CoverView;
 import org.jajuk.ui.views.DeviceView;
@@ -83,6 +84,19 @@ public class PerspectiveManager  implements ITechnicalStrings {
     private static long lTime;
     /**Temporary perspective name used when parsing*/
     private static String sPerspectiveName;
+    /**Commit flag, if false, configuration will not be commited*/
+    public static boolean bShouldCommit = true;
+    
+    
+    
+    /**
+     * Reset registered perspectives
+     *
+     */
+    private static void reset(){
+        alNames.clear();
+        alPerspectives.clear();
+    }
     
     /**
      * Load configuration file
@@ -287,6 +301,9 @@ public static void setCurrentPerspective(final IPerspective perspective) {
      * Saves perspectives and views position in the perspective.xml file
      */
     public static void commit() throws IOException {
+        if (!bShouldCommit){
+            return;
+        }
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(FILE_PERSPECTIVES_CONF),"UTF-8")); //$NON-NLS-1$
         bw.write("<?xml version='1.0' encoding='UTF-8'?>\n"); //$NON-NLS-1$
         bw.write("<perspectives jajuk_version='"+JAJUK_VERSION+"'>\n"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -317,26 +334,37 @@ public static void setCurrentPerspective(final IPerspective perspective) {
      *
      */
     public static void registerDefaultPerspectives(){
+        //reset
+        reset();
         IPerspective perspective = null;
         //physical perspective
         perspective = new PhysicalPerspective();
         perspective.setIconPath(ICON_PERSPECTIVE_PHYSICAL);
         perspective.setID(PERSPECTIVE_NAME_PHYSICAL);
-        perspective.addView(new PhysicalTreeView().setLogicalCoord(30,100,0,0).setShouldBeShown(true));
-        perspective.addView(new PhysicalTableView().setLogicalCoord(60,70,40,0).setShouldBeShown(true));
+        perspective.addView(new AnimationView().setLogicalCoord(100,10,0,0).setShouldBeShown(true));
+        perspective.addView(new PhysicalTreeView().setLogicalCoord(30,90,0,10).setShouldBeShown(true));
+        perspective.addView(new PhysicalTableView().setLogicalCoord(60,60,40,10).setShouldBeShown(true));
         perspective.addView(new CoverView().setLogicalCoord(20,30,80,70).setShouldBeShown(true));
-        perspective.addView(new PhysicalPlaylistRepositoryView().setLogicalCoord(10,100,30,0).setShouldBeShown(true));
+        perspective.addView(new PhysicalPlaylistRepositoryView().setLogicalCoord(10,90,30,10).setShouldBeShown(true));
         perspective.addView(new PhysicalPlaylistEditorView().setLogicalCoord(40,30,40,70).setShouldBeShown(true));
         registerPerspective(perspective);
         //Logical perspective
         perspective = new LogicalPerspective();
         perspective.setIconPath(ICON_PERSPECTIVE_LOGICAL);
         perspective.setID(PERSPECTIVE_NAME_LOGICAL);
-        perspective.addView(new LogicalTreeView().setLogicalCoord(30,100,0,0).setShouldBeShown(true));
-        perspective.addView(new LogicalTableView().setLogicalCoord(60,70,40,0).setShouldBeShown(true));
+        perspective.addView(new AnimationView().setLogicalCoord(100,10,0,0).setShouldBeShown(true));
+        perspective.addView(new LogicalTreeView().setLogicalCoord(30,90,0,10).setShouldBeShown(true));
+        perspective.addView(new LogicalTableView().setLogicalCoord(60,60,40,10).setShouldBeShown(true));
         perspective.addView(new CoverView().setLogicalCoord(20,30,80,70).setShouldBeShown(true));
-        perspective.addView(new LogicalPlaylistRepositoryView().setLogicalCoord(10,100,30,0).setShouldBeShown(true));
+        perspective.addView(new LogicalPlaylistRepositoryView().setLogicalCoord(10,90,30,10).setShouldBeShown(true));
         perspective.addView(new LogicalPlaylistEditorView().setLogicalCoord(40,30,40,70).setShouldBeShown(true));
+        registerPerspective(perspective);
+        // Player perspective
+        perspective = new PlayerPerspective();
+        perspective.setIconPath(ICON_PERSPECTIVE_PLAYER);
+        perspective.setID(PERSPECTIVE_NAME_PLAYER);
+        perspective.addView(new AnimationView().setLogicalCoord(50,100,0,0).setShouldBeShown(true));
+        perspective.addView(new CoverView().setLogicalCoord(50,100,50,0).setShouldBeShown(true));
         registerPerspective(perspective);
         //Configuration perspective
         perspective = new ConfigurationPerspective();
