@@ -102,7 +102,9 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 	private boolean bPositionChanging = false;
 	
 	
-	
+	/**
+	 * @return singleton
+	 */
 	public static synchronized CommandJPanel getInstance(){
 		if (command == null){
 			command = new CommandJPanel();
@@ -110,6 +112,9 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		return command;
 	}
 	
+	/**
+	 * Constructor
+	 */
 	private CommandJPanel(){
 		//dimensions
 		int height1 = 25;  //buttons, components
@@ -288,9 +293,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		jcbHistory.setSelectedIndex(0);
 		jcbHistory.addActionListener(this);
 	}
-	
-	
-	
+		
 	
 	/**
 	 * Clear history bar
@@ -303,8 +306,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		});
 	}
 	
-	
-	
+		
 	/* (non-Javadoc)
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
