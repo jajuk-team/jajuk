@@ -77,7 +77,7 @@ public class PropertyAdapter implements IPropertyable, ITechnicalStrings,Seriali
 		PhysicalTableView.12=Directory
 		PhysicalTableView.13=File
 		PhysicalTableView.14=Rate*/
-		if ( sKey.equals(Messages.getString("PhysicalTableView.7"))){ //Track
+		if ( sKey.equals(Messages.getString("PhysicalTableView.7"))){ //Track //$NON-NLS-1$
 			if ( this instanceof File ){
 				return ((File)this).getTrack().getName();
 			}
@@ -88,7 +88,7 @@ public class PropertyAdapter implements IPropertyable, ITechnicalStrings,Seriali
 				return null;
 			}
 		}
-		else if ( sKey.equals(Messages.getString("PhysicalTableView.8"))){ //Album
+		else if ( sKey.equals(Messages.getString("PhysicalTableView.8"))){ //Album //$NON-NLS-1$
 			if ( this instanceof File ){
 				return ((File)this).getTrack().getAlbum().getName2();
 			}
@@ -99,7 +99,7 @@ public class PropertyAdapter implements IPropertyable, ITechnicalStrings,Seriali
 				return null;
 			}
 		}
-		else if ( sKey.equals(Messages.getString("PhysicalTableView.9"))){ //Author
+		else if ( sKey.equals(Messages.getString("PhysicalTableView.9"))){ //Author //$NON-NLS-1$
 			if ( this instanceof File ){
 				return ((File)this).getTrack().getAuthor().getName2();
 			}
@@ -110,7 +110,7 @@ public class PropertyAdapter implements IPropertyable, ITechnicalStrings,Seriali
 				return null;
 			}
 		}
-		else if ( sKey.equals(Messages.getString("PhysicalTableView.10"))){ //Length
+		else if ( sKey.equals(Messages.getString("PhysicalTableView.10"))){ //Length //$NON-NLS-1$
 			if ( this instanceof File ){
 				return Long.toString(((File)this).getTrack().getLength());
 			}
@@ -121,7 +121,7 @@ public class PropertyAdapter implements IPropertyable, ITechnicalStrings,Seriali
 				return null;
 			}
 		}
-		else if ( sKey.equals(Messages.getString("PhysicalTableView.11"))){ //Style
+		else if ( sKey.equals(Messages.getString("PhysicalTableView.11"))){ //Style //$NON-NLS-1$
 			if ( this instanceof File ){
 				return ((File)this).getTrack().getStyle().getName2();
 			}
@@ -132,7 +132,7 @@ public class PropertyAdapter implements IPropertyable, ITechnicalStrings,Seriali
 				return null;
 			}
 		}
-		else if ( sKey.equals(Messages.getString("PhysicalTableView.12"))){ //Directory, only physical 
+		else if ( sKey.equals(Messages.getString("PhysicalTableView.12"))){ //Directory, only physical  //$NON-NLS-1$
 			if ( this instanceof File ){
 				return ((File)this).getDirectory().getName();
 			}
@@ -140,7 +140,7 @@ public class PropertyAdapter implements IPropertyable, ITechnicalStrings,Seriali
 				return null;
 			}
 		}
-		else if ( sKey.equals(Messages.getString("PhysicalTableView.13"))){ //File, only physical 
+		else if ( sKey.equals(Messages.getString("PhysicalTableView.13"))){ //File, only physical  //$NON-NLS-1$
 			if ( this instanceof File ){
 				return ((File)this).getName();
 			}
@@ -148,7 +148,7 @@ public class PropertyAdapter implements IPropertyable, ITechnicalStrings,Seriali
 				return null;
 			}
 		}
-		else if ( sKey.equals(Messages.getString("PhysicalTableView.14"))){ //Rate
+		else if ( sKey.equals(Messages.getString("PhysicalTableView.14"))){ //Rate //$NON-NLS-1$
 			if ( this instanceof File ){
 				return Long.toString(((File)this).getTrack().getRate());
 			}

@@ -153,7 +153,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 			applyFilter(jcbProperty.getSelectedItem().toString(),jtfValue.getText());
 		}
 		else if(e.getSource() == jbClearFilter){ //remove all filters
-			jtfValue.setText(""); //clear value textfield
+			jtfValue.setText(""); //clear value textfield //$NON-NLS-1$
 			applyFilter(null,null);
 		}
 	}

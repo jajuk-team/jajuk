@@ -167,8 +167,8 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 				load(); //populate playlist
 			}
 			else{  //error accessing playlist file
-				Log.error("009",fio.getAbsolutePath(),new Exception());
-				Messages.showErrorMessage("009",fio.getAbsolutePath());
+				Log.error("009",fio.getAbsolutePath(),new Exception()); //$NON-NLS-1$
+				Messages.showErrorMessage("009",fio.getAbsolutePath()); //$NON-NLS-1$
 			}
 		}
 		return alBasicFiles;
@@ -254,7 +254,7 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 		}
 		catch(Exception e){
 			Log.error("017",getName(),e); //$NON-NLS-1$
-			Messages.showErrorMessage("017",fio.getAbsolutePath());
+			Messages.showErrorMessage("017",fio.getAbsolutePath()); //$NON-NLS-1$
 		}
 		finally{
 			if ( br != null){
@@ -262,7 +262,7 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 					br.close();
 				} catch (IOException e1) {
 					Log.error(e1);
-					Messages.showErrorMessage("017",fio.getAbsolutePath());
+					Messages.showErrorMessage("017",fio.getAbsolutePath()); //$NON-NLS-1$
 				}
 			}
 		}

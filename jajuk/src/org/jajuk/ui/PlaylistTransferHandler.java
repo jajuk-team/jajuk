@@ -96,13 +96,13 @@ public class PlaylistTransferHandler implements DropTargetListener {
 			Object oData = null;
 			if (transferable.isDataFlavorSupported(TransferableTreeNode.NODE_FLAVOR) || transferable.isDataFlavorSupported(TransferableTableRow.ROW_FLAVOR)) {
 				String sFlavor  = ((DataFlavor)Arrays.asList(transferable.getTransferDataFlavors()).get(0)).getHumanPresentableName(); 
-				if ( sFlavor.equals("Node")){
+				if ( sFlavor.equals("Node")){ //$NON-NLS-1$
 					dtde.acceptDrop(action);				
 					dtde.dropComplete(true);
 					TransferableTreeNode ttn = (TransferableTreeNode)transferable.getTransferData(TransferableTreeNode.NODE_FLAVOR);
 					oData = ttn.getData();	
 				}
-				else if ( sFlavor.equals("Row") ){
+				else if ( sFlavor.equals("Row") ){ //$NON-NLS-1$
 					dtde.acceptDrop(action);				
 					dtde.dropComplete(true);
 					TransferableTableRow ttr = (TransferableTableRow)transferable.getTransferData(TransferableTableRow.ROW_FLAVOR);

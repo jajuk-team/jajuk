@@ -344,7 +344,7 @@ public class StatView extends ViewAdapter implements Observer{
 	 * @see org.jajuk.ui.IView#getViewName()
 	 */
 	public String getViewName() {
-		return "org.jajuk.ui.views.StatView";
+		return "org.jajuk.ui.views.StatView";   //$NON-NLS-1$
 	}
 
 	/* (non-Javadoc)

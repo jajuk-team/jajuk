@@ -247,7 +247,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 			}
 			String sOut = new StringBuffer("[").append(device.getName()).append(Messages.getString("Device.25")).append((int)((System.currentTimeMillis()-lTime)/1000)). //$NON-NLS-1$ //$NON-NLS-2$
 					append(Messages.getString("Device.26")).append(iNbNewFiles).append(Messages.getString("Device.27")). //$NON-NLS-1$ //$NON-NLS-2$
-					append(iNbFilesBeforeRefresh - (FileManager.getFiles().size()-iNbNewFiles)).append(Messages.getString("Device.28")).toString();
+					append(iNbFilesBeforeRefresh - (FileManager.getFiles().size()-iNbNewFiles)).append(Messages.getString("Device.28")).toString(); //$NON-NLS-1$
 			InformationJPanel.getInstance().setMessage(sOut,InformationJPanel.INFORMATIVE); //$NON-NLS-1$
 			Log.debug(sOut); 
 			bAlreadyRefreshing = false;
@@ -423,14 +423,14 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 						}
 						catch(JajukException je){
 							Messages.showErrorMessage(je.getCode(),fSrcFiles[i].getAbsolutePath());
-							Messages.showErrorMessage("027");
+							Messages.showErrorMessage("027"); //$NON-NLS-1$
 							Log.error(je);
 							return iNbCreatedFiles;
 						}
 						catch(Exception e){
 							Messages.showErrorMessage("020",fSrcFiles[i].getAbsolutePath()); //$NON-NLS-1$
-							Messages.showErrorMessage("027");
-							Log.error("020",fSrcFiles[i].getAbsolutePath(),e);
+							Messages.showErrorMessage("027"); //$NON-NLS-1$
+							Log.error("020",fSrcFiles[i].getAbsolutePath(),e); //$NON-NLS-1$
 							return iNbCreatedFiles;
 						}
 					}
@@ -610,11 +610,14 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 			Messages.showErrorMessage("112"); //$NON-NLS-1$
 			return false;
 		}
-		if ( iDeviceType == 0 || iDeviceType == 1 || iDeviceType == 4){  //dir, file cd, ext dd
-			File file = new File(sUrl);
-			if ( file.exists() && file.canRead()){
-				bOK = true;
+		if ( iDeviceType != 2 ){
+				File file = new File(sUrl);
+				if ( file.exists() && file.canRead()){
+					bOK = true;
+				}
 			}
+		else{
+			bOK = false; //TBI
 		}
 		return bOK;
 	}

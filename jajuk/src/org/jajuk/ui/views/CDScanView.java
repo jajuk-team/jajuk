@@ -88,6 +88,7 @@ public class CDScanView extends ViewAdapter implements ActionListener {
 		jtfMountPoint = new JTextField(10);
 		jtfMountPoint.setToolTipText(Messages.getString("CDScanView.5")); //$NON-NLS-1$
 		jbScan = new JButton(Messages.getString("CDScanView.6"),Util.getIcon(ICON_REFRESH)); //$NON-NLS-1$
+		jbScan.setToolTipText(Messages.getString("CDScanView.18")); //$NON-NLS-1$
 		jbScan.addActionListener(this);
 		add(jlName,"1,1"); //$NON-NLS-1$
 		add(jtfName,"3,1"); //$NON-NLS-1$
@@ -108,7 +109,7 @@ public class CDScanView extends ViewAdapter implements ActionListener {
 	 * @see org.jajuk.ui.IView#getViewName()
 	 */
 	public String getViewName() {
-		return "org.jajuk.ui.views.CDScanView";
+		return "org.jajuk.ui.views.CDScanView"; //$NON-NLS-1$
 	}
 
 	/* (non-Javadoc)

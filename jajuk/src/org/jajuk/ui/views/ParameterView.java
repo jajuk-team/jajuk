@@ -54,6 +54,7 @@ import org.jajuk.ui.SearchBox;
 import org.jajuk.ui.ViewManager;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.MD5Processor;
+import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 
 /**
@@ -160,7 +161,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 			  }
 		});
 		jtfHistory.setToolTipText(Messages.getString("ParameterView.2")); //$NON-NLS-1$
-		jbClearHistory = new JButton(Messages.getString("ParameterView.3")); //$NON-NLS-1$
+		jbClearHistory = new JButton(Messages.getString("ParameterView.3"),Util.getIcon(ICON_CLEAR)); //$NON-NLS-1$
 		jbClearHistory.setToolTipText(Messages.getString("ParameterView.4")); //$NON-NLS-1$
 		jbClearHistory.addActionListener(this);
 		jpHistory.add(jlHistory,"0,0"); //$NON-NLS-1$
@@ -335,14 +336,19 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 				{iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator}};
 		jpP2P.setLayout(new TableLayout(sizeP2P));
 		jcbShare = new JCheckBox(Messages.getString("ParameterView.72")); //$NON-NLS-1$
+		jcbShare.setEnabled(false); //TBI
 		jcbShare.setToolTipText(Messages.getString("ParameterView.73")); //$NON-NLS-1$
 		jlPasswd = new JLabel(Messages.getString("ParameterView.74")); //$NON-NLS-1$
+		jlPasswd.setEnabled(false); //TBI
 		jpfPasswd = new JPasswordField();
+		jpfPasswd.setEnabled(false); //TBI
 		jpfPasswd.setToolTipText(Messages.getString("ParameterView.75")); //$NON-NLS-1$
 		jcbAddRemoteProperties = new JCheckBox(Messages.getString("ParameterView.76")); //$NON-NLS-1$
+		jcbAddRemoteProperties.setEnabled(false); //TBI
 		jcbAddRemoteProperties.setToolTipText(Messages.getString("ParameterView.77")); //$NON-NLS-1$
 		jcbHideProperties = new JCheckBox(Messages.getString("ParameterView.78")); //$NON-NLS-1$
 		jcbHideProperties.setToolTipText(Messages.getString("ParameterView.79")); //$NON-NLS-1$
+		jcbHideProperties.setEnabled(false); //TBI
 		jpP2P.add(jcbShare,"0,1"); //$NON-NLS-1$
 		jpP2P.add(jlPasswd,"0,3"); //$NON-NLS-1$
 		jpP2P.add(jpfPasswd,"1,3"); //$NON-NLS-1$
