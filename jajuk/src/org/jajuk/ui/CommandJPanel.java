@@ -19,6 +19,7 @@
  */
 package org.jajuk.ui;
 
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -140,7 +141,8 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
                 
                 //history
                 jcbHistory = new SteppedComboBox(History.getInstance().getHistory().toArray());
-                jcbHistory.setPopupWidth(1000);
+            	int iWidth = (int)(Toolkit.getDefaultToolkit().getScreenSize().getWidth()/2);
+            	jcbHistory.setPopupWidth(iWidth);
                 jcbHistory.setToolTipText(Messages.getString("CommandJPanel.0")); //$NON-NLS-1$
                 jcbHistory.addActionListener(CommandJPanel.this);
                 
