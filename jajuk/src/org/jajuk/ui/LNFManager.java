@@ -27,6 +27,7 @@ import javax.swing.UIManager;
 import javax.swing.plaf.ComboBoxUI;
 
 import org.jajuk.base.ITechnicalStrings;
+import org.jajuk.i18n.Messages;
 import org.jajuk.util.log.Log;
 
 /**
@@ -51,10 +52,12 @@ public class LNFManager implements ITechnicalStrings{
 		}
 		sCurrent = sLaf;
 		try{
-			UIManager.setLookAndFeel((String)hmNameClass.get(sCurrent));	
+		    String sClassName = (String)hmNameClass.get(sCurrent);
+			UIManager.setLookAndFeel(sClassName);	
 		}
 		catch(Exception e){
 			Log.error("123",sCurrent,e); //$NON-NLS-1$
+			Messages.showErrorMessage("123",sCurrent);//$NON-NLS-1$
 		}
 	}
 	
