@@ -386,7 +386,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 			}
 			if (ae.getSource() == jbNovelties ){
 				ArrayList alToPlay  = FileManager.getGlobalNoveltiesPlaylist();
-				if ( alToPlay.size() > 0){
+				if ( alToPlay!= null && alToPlay.size() > 0){
 					FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alToPlay),
 							ConfigurationManager.getBoolean(CONF_STATE_REPEAT),false),false);
 				}
