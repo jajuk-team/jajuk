@@ -3,9 +3,10 @@
   PUBLIC "-//Sun Microsystems Inc.//DTD JavaHelp TOC Version 2.0//EN"
          "./toc_2_0.dtd">
 <toc version="2.0">
-<tocitem text="Aide en ligne Jajuk">
-
-   <tocitem text="Introduction au système d'aide de Jajuk" target="top"/>
-  
+<tocitem text="Aide Jajuk">
+   <tocitem text="Introduction" target="top"/>
+   <tocitem text="Perspectives et vues" target="pav"/>
+   <tocitem text="Jouer de la musique" target="pm"/>
+   <tocitem text="Utiliser les playlistes" target="up"/>
 </tocitem>
 </toc>
