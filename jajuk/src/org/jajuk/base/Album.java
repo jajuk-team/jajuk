@@ -21,6 +21,7 @@ package org.jajuk.base;
 
 import java.util.ArrayList;
 
+import org.jajuk.i18n.Messages;
 import org.jajuk.util.Util;
 
 /**
@@ -55,6 +56,18 @@ public class Album extends PropertyAdapter {
 	 */
 	public String getName() {
 		return sName;
+	}
+	
+	/**
+	 * Return album name, dealing with unkwnown for any language
+	 * @return album name
+	 */
+	public String getName2() {
+		String sOut = getName();
+		if (sOut.equals("unknown_album")){
+			sOut = Messages.getString("unknown_album");
+		}
+		return sOut;
 	}
 
 	/**

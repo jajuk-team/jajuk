@@ -28,7 +28,10 @@ package org.jajuk.base;
  */
 public interface ITechnicalStrings {
 	
-		// directory path
+	// Jjauk version
+	public static final String JAJUK_VERSION = "0.1";
+	
+	// directory path
 	public static final String PATH_ICONS = System.getProperty("user.dir")+"/dist-files/icons/";
 	public static final String PATH_IMAGES = System.getProperty("user.dir")+"/dist-files/images/";
 		
@@ -81,15 +84,29 @@ public interface ITechnicalStrings {
 	public static final String ICON_DEVICE_PLAYER_UNMOUNTED =  PATH_ICONS + "64x64/player_unmount.png";
 	public static final String ICON_DEVICE_REMOTE_MOUNTED =  PATH_ICONS + "64x64/remote_mount.png";
 	public static final String ICON_DEVICE_REMOTE_UNMOUNTED =  PATH_ICONS + "64x64/remote_unmount.png";
+	public static final String ICON_DEVICE_CD_MOUNTED_SMALL =  PATH_ICONS + "22x22/cdrom_mount.png";
+	public static final String ICON_DEVICE_CD_UNMOUNTED_SMALL =  PATH_ICONS + "22x22/cdrom_unmount.png";
+	public static final String ICON_DEVICE_CD_AUDIO_MOUNTED_SMALL =  PATH_ICONS + "22x22/cdaudio_mount.png";
+	public static final String ICON_DEVICE_CD_AUDIO_UNMOUNTED_SMALL =  PATH_ICONS + "22x22/cdaudio_unmount.png";
+	public static final String ICON_DEVICE_EXT_DD_MOUNTED_SMALL =  PATH_ICONS + "22x22/ext_dd_mount.png";
+	public static final String ICON_DEVICE_EXT_DD_UNMOUNTED_SMALL =  PATH_ICONS + "22x22/ext_dd_unmount.png";
+	public static final String ICON_DEVICE_DIRECTORY_MOUNTED_SMALL =  PATH_ICONS + "22x22/folder_mount.png";
+	public static final String ICON_DEVICE_DIRECTORY_UNMOUNTED_SMALL =  PATH_ICONS + "22x22/folder_unmount.png";
+	public static final String ICON_DEVICE_PLAYER_MOUNTED_SMALL =  PATH_ICONS + "22x22/player_mount.png";
+	public static final String ICON_DEVICE_PLAYER_UNMOUNTED_SMALL =  PATH_ICONS + "22x22/player_unmount.png";
+	public static final String ICON_DEVICE_REMOTE_MOUNTED_SMALL =  PATH_ICONS + "22x22/remote_mount.png";
+	public static final String ICON_DEVICE_REMOTE_UNMOUNTED_SMALL =  PATH_ICONS + "22x22/remote_unmount.png";
 	public static final String ICON_OK =  PATH_ICONS + "22x22/ok.png";
 	public static final String ICON_KO =  PATH_ICONS + "22x22/ko.png";
-	public static final String ICON_FILE =  PATH_ICONS + "16x16/bestof.png";
+	public static final String ICON_FILE =  PATH_ICONS + "16x16/track.png";
 	public static final String ICON_DIRECTORY =  PATH_ICONS + "16x16/fileopen.png";
-	public static final String ICON_DEVICE =  PATH_ICONS + "16x16/bestof.png";
-	public static final String ICON_PLAYLIST_FILE =  PATH_ICONS + "16x16/refresh.png";
+	public static final String ICON_PLAYLIST_FILE =  PATH_ICONS + "16x16/playlist.png";
+	public static final String ICON_STYLE =  PATH_ICONS + "16x16/style.png";
+	public static final String ICON_AUTHOR =  PATH_ICONS + "16x16/author.png";
+	public static final String ICON_ALBUM =  PATH_ICONS + "16x16/album.png";
 	
 	//images
-	public static final String IMAGES_SPLASHSCREEN =  PATH_IMAGES + "jajuk-logo.png";
+	public static final String IMAGES_SPLASHSCREEN =  PATH_IMAGES + "jajuk-slashscreen.png";
 	
 	
 	//logs
@@ -103,6 +120,8 @@ public interface ITechnicalStrings {
 	public static final String FILE_PERSPECTIVES_CONF = System.getProperty("user.home")+"/.jajuk/perspectives.xml";
 	public static final String FILE_CONFIGURATION = System.getProperty("user.home")+"/.jajuk/conf.properties";
 	public static final String FILE_HISTORY = System.getProperty("user.home")+"/.jajuk/history.xml";
+	public static final String FILE_LOCK = System.getProperty("user.home")+"/.jajuk/.lock";
+	
 	
 	//players impls
 	public static final String PLAYER_IMPL_JAVALAYER= "org.jajuk.players.JavaLayerPlayerImpl";
@@ -279,7 +298,7 @@ public interface ITechnicalStrings {
 	public static final String XML_PLAYLIST = "playlist";
 	public static final String XML_PERSPECTIVES_CONF = 
 		"<?xml version='1.0' encoding='UTF-8'?>\n"+
-		 "<perspectives>\n"+
+		 "<perspectives jajuk_version='"+JAJUK_VERSION+"'>\n"+
 		"\t<perspective  class='"+PERSPECTIVE_NAME_PHYSICAL+"'>\n"+
 		"\t\t<views>\n"+
 		"\t\t\t<view class='org.jajuk.ui.views.PhysicalTreeView' width='30' height='100' x='0' y='0'/>\n"+/*
@@ -292,8 +311,8 @@ public interface ITechnicalStrings {
 		"\t\t</perspective>\n"+
 		"\t<perspective class='"+PERSPECTIVE_NAME_LOGICAL+"'>\n"+
 		"\t\t<views>\n"+
-	/*	"\t\t\t<view class='org.jajuk.ui.views.LogicalTreeView'/>\n"+
-		"\t\t\t<view class='org.jajuk.ui.views.NavigationBarView' />\n"+
+		"\t\t\t<view class='org.jajuk.ui.views.LogicalTreeView' width='30' height='100' x='0' y='0'/>\n"+
+	/*	"\t\t\t<view class='org.jajuk.ui.views.NavigationBarView' />\n"+
 		"\t\t\t<view class='org.jajuk.ui.views.TrackListView'/>\n"+
 		"\t\t\t<view class='org.jajuk.ui.views.CoverView'  />\n"+
 		"\t\t\t<view class='org.jajuk.ui.views.PlaylistRepositoryView'/>\n"+

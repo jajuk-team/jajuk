@@ -60,7 +60,8 @@ import org.jajuk.util.Util;
 /**
  * Physical tree view
  * 
- * @author bflorat @created 28 nov. 2003
+ * @author bflorat 
+ * @created 28 nov. 2003
  */
 public class PhysicalTreeView extends ViewAdapter implements ActionListener{
 
@@ -82,7 +83,6 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener{
 	/** Devices selection*/
 	ArrayList alDevices;
 	
-	/** Files menu item */
 	JPopupMenu jmenuFile;
 		JMenuItem jmiFilePlay;
 		JMenuItem jmiFilePush;
@@ -99,6 +99,7 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener{
 		JMenuItem jmiDirPlayShuffle;
 		JMenuItem jmiDirPlayRepeat;
 		JMenuItem jmiDirDesynchro;
+		JMenuItem jmiDirResynchro;
 		JMenuItem jmiDirCreatePlaylist;
 		JMenuItem jmiDirCopy;
 		JMenuItem jmiDirCut;
@@ -170,6 +171,8 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener{
 		jmiDirPlayRepeat.addActionListener(this);
 		jmiDirDesynchro = new JMenuItem("Desynchronize");
 		jmiDirDesynchro.addActionListener(this);
+		jmiDirResynchro = new JMenuItem("Resynchronize");
+		jmiDirResynchro.addActionListener(this);
 		jmiDirCreatePlaylist = new JMenuItem("Create playlist");
 		jmiDirCreatePlaylist.addActionListener(this);
 		jmiDirCopy = new JMenuItem("Copy");
@@ -218,32 +221,37 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener{
 				setFont(new Font("Dialog",Font.PLAIN,10));
 				if (value instanceof FileNode ){
 					setIcon(new ImageIcon(ICON_FILE));
-					//TODO set real icons
 				}
 				else if (value instanceof PlaylistFileNode){
 					setIcon(new ImageIcon(ICON_PLAYLIST_FILE));
 				}
 				else if (value instanceof DeviceNode){
-					switch (((DeviceNode)value).getDevice().getDeviceType()){
+					Device device = (Device)((DeviceNode)value).getDevice();
+					switch ( device.getDeviceType()){
 						case 0 : 
-							setIcon(new ImageIcon(ICON_DEVICE_DIRECTORY_MOUNTED));
+							if ( device.isMounted())	setIcon(new ImageIcon(ICON_DEVICE_DIRECTORY_MOUNTED_SMALL));
+							else setIcon(new ImageIcon(ICON_DEVICE_DIRECTORY_UNMOUNTED_SMALL));
 							break;
-					case 1 : 
-						setIcon(new ImageIcon(ICON_DEVICE_CD_MOUNTED));
+						case 1 : 
+							if ( device.isMounted())	setIcon(new ImageIcon(ICON_DEVICE_CD_MOUNTED_SMALL));
+							else setIcon(new ImageIcon(ICON_DEVICE_CD_UNMOUNTED_SMALL));
 						break;
-					case 2 : 
-						setIcon(new ImageIcon(ICON_DEVICE_CD_AUDIO_MOUNTED));
-						break;
-					case 3 : 
-						setIcon(new ImageIcon(ICON_DEVICE_REMOTE_MOUNTED));
-						break;
-					case 4 : 
-						setIcon(new ImageIcon(ICON_DEVICE_EXT_DD_MOUNTED));
-						break;
-					case 5 : 
-						setIcon(new ImageIcon(ICON_DEVICE_PLAYER_MOUNTED));
-						break;
-				
+						case 2 : 
+							if ( device.isMounted())	setIcon(new ImageIcon(ICON_DEVICE_CD_AUDIO_MOUNTED_SMALL));
+							else setIcon(new ImageIcon(ICON_DEVICE_CD_AUDIO_UNMOUNTED_SMALL));
+							break;
+						case 3 : 
+							if ( device.isMounted())	setIcon(new ImageIcon(ICON_DEVICE_REMOTE_MOUNTED_SMALL));
+							else setIcon(new ImageIcon(ICON_DEVICE_REMOTE_UNMOUNTED_SMALL));
+							break;
+						case 4 : 
+							if ( device.isMounted())	setIcon(new ImageIcon(ICON_DEVICE_EXT_DD_MOUNTED_SMALL));
+							else setIcon(new ImageIcon(ICON_DEVICE_EXT_DD_UNMOUNTED_SMALL));
+							break;
+						case 5 : 
+							if ( device.isMounted())	setIcon(new ImageIcon(ICON_DEVICE_PLAYER_MOUNTED_SMALL));
+							else setIcon(new ImageIcon(ICON_DEVICE_PLAYER_UNMOUNTED_SMALL));
+							break;
 					}
 				}
 				else if (value instanceof DirectoryNode){
@@ -330,7 +338,7 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener{
 						jmenuFile.show(jtree,e.getX(),e.getY());
 					}
 					//directory selection
-					if ( o instanceof DirectoryNode ){
+					else if ( o instanceof DirectoryNode ){
 						for (int i=0;i<paths.length;i++){
 							o = paths[i].getLastPathComponent();
 							if ( o instanceof DirectoryNode){

@@ -51,8 +51,9 @@ public class Player {
 				} catch (Exception e) {
 					Log.error("007",fCurrent.getAbsolutePath(), e); //$NON-NLS-1$
 					InformationJPanel.getInstance().setMessage(Messages.getString("Error.007")+" : "+fCurrent.getAbsolutePath(),InformationJPanel.ERROR);//$NON-NLS-1$
+					Player.stop();
 					FIFO.getInstance().finished();
-				}
+				}			
 			}
 		}
 		.start();

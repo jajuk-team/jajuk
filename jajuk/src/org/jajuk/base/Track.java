@@ -20,6 +20,7 @@
 package org.jajuk.base;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import org.jajuk.util.Util;
 
@@ -160,6 +161,33 @@ public class Track extends PropertyAdapter {
 		return alFiles;
 	}
 
+	
+	/**
+	 * @return best file to play for this track
+	 */
+	public File getPlayeableFile() {
+		File fileOut = null;
+		ArrayList alMountedFiles = new ArrayList(2);
+		//firstly, keep only mounted files
+		Iterator it = alFiles.iterator();
+		while ( it.hasNext()){
+			File file = (File)it.next();
+			if (file.getDirectory().getDevice().isMounted()){
+				alMountedFiles.add(file);
+			}
+		}
+		//then keep best quality
+		it = alMountedFiles.iterator();
+		while ( it.hasNext()){
+			File file = (File)it.next();
+			if (fileOut == null || Integer.parseInt(file.getQuality()) > Integer.parseInt(fileOut.getQuality())){
+				fileOut = file;
+			}
+		}
+		return fileOut;
+	}
+
+	
 	/**
 	 * @return
 	 */

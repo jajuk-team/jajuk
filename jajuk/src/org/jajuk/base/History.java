@@ -111,7 +111,7 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
 		}
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(FILE_HISTORY), "UTF-8"));
 		bw.write("<?xml version='1.0' encoding='UTF-8'?>\n");
-		bw.write("<history begin_date='"+Long.toString(lDateStart)+"'>\n");
+		bw.write("<history jajuk_version='"+JAJUK_VERSION+"' begin_date='"+Long.toString(lDateStart)+"'>\n");
 		Iterator it = alHistory.iterator();
 		while ( it.hasNext()){
 			HistoryItem hi = (HistoryItem)it.next();

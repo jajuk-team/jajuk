@@ -237,6 +237,7 @@ public class FIFO extends Thread implements ITechnicalStrings{
 					alFIFO.remove(index);//remove it from todo list;
 					Log.debug("Now playing :"+fCurrent); //$NON-NLS-1$
 					bPlaying = true;
+					Player.stop();  //for security
 					if (ConfigurationManager.getBoolean(CONF_STATE_INTRO)){ //intro mode enabled
 						Player.play(fCurrent,Integer.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_INTRO_BEGIN)),Integer.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_INTRO_LENGTH)));
 					}

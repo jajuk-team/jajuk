@@ -14,6 +14,7 @@
       <item name="FAQ" href="/faq.html" />
       <item name="Status" href="/status.html" />
       <item name="Javadoc" href="apidocs/index.html" />
+      <item name="CVS Stats" href="statcvs/index.html" />
     </menu>
     <search/>
     <menu name="Documentation">

@@ -69,7 +69,7 @@ public class Main implements ITechnicalStrings {
 	public static InformationJPanel information;
 	public static JPanel jpDesktop;
 	public static JPanel jpFrame;
-	
+	public static SplashScreen sc;
 
 	public static void main(String[] args) {
 		try {
@@ -78,7 +78,7 @@ public class Main implements ITechnicalStrings {
 			jframe = new JFrame("Jajuk : Just Another Jukebox"); //$NON-NLS-1$
 			
 			//Launch splashscreen
-			SplashScreen sc = new SplashScreen(jframe);
+			sc = new SplashScreen(jframe);
 		
 			//Register locals
 			Messages.registerLocal("en","Language_desc_en"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -220,6 +220,18 @@ public class Main implements ITechnicalStrings {
 	 * @throws Exception
 	 */
 	private static void initialCheckups() throws Exception {
+		//check for a concurrent jajuk session
+		File fJajukLock = new File(FILE_LOCK);
+		if (fJajukLock.exists() ) {
+			sc.dispose();
+			Log.error(new JajukException("124"));
+			Messages.showErrorMessage("124");	
+			System.exit(-1);
+		}
+		else{
+			fJajukLock.createNewFile();
+		}
+		
 		//check for jajuk home directory presence
 		File fJajukDir = new File(FILE_JAJUK_DIR);
 		if (!fJajukDir.exists() || !fJajukDir.isDirectory()) {
@@ -260,6 +272,9 @@ public class Main implements ITechnicalStrings {
 	 */
 	public static void exit(int iExitCode) {
 		try {
+			//			Remove lock file
+			File fJajukLock = new File(FILE_LOCK);
+			fJajukLock.delete();
 			if (Boolean.valueOf(ConfigurationManager.getProperty(CONF_CONFIRMATIONS_EXIT)).booleanValue()){
 				int iResu = JOptionPane.showConfirmDialog(jframe,Messages.getString("Confirmation_exit"),Messages.getString("Main.16"),JOptionPane.YES_NO_OPTION); //$NON-NLS-1$ //$NON-NLS-2$
 				if (iResu == JOptionPane.NO_OPTION){
@@ -274,6 +289,7 @@ public class Main implements ITechnicalStrings {
 				org.jajuk.base.Collection.commit();
 				//commit history
 				History.commit();
+				
 			}
 		} catch (IOException e) {
 			Log.error("", e); //$NON-NLS-1$

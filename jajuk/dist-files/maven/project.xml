@@ -82,6 +82,18 @@
         <artifactId>jl</artifactId>
         <version>0.30</version> 
     </dependency>
+
+   <dependency>
+	   <groupId>lib</groupId>
+        <artifactId>LiquidLnF</artifactId>
+        <version>1.0</version> 
+    </dependency>
+
+   <dependency>
+	   <groupId>lib</groupId>
+        <artifactId>kunststoff</artifactId>
+        <version>1.0</version> 
+    </dependency>
    
   </dependencies>
 

@@ -67,7 +67,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 	public static void commit() throws IOException {
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(FILE_COLLECTION), "UTF-8"));
 		bw.write("<?xml version='1.0' encoding='UTF-8'?>\n");
-		bw.write("<collection>\n");
+		bw.write("<collection jajuk_version='"+JAJUK_VERSION+"'>\n");
 		//types
 		bw.write("\t<types>\n");
 		Iterator it = TypeManager.getTypes().iterator();

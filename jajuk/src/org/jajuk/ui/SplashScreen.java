@@ -20,13 +20,15 @@
 
 package org.jajuk.ui;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Toolkit;
 
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JWindow;
 
 import org.jajuk.base.ITechnicalStrings;
@@ -42,8 +44,17 @@ public class SplashScreen extends JWindow implements ITechnicalStrings
 	public SplashScreen(Frame f)
 	{
 		super(f);
+		JPanel jpContent = (JPanel)getContentPane();
+		jpContent.setLayout(new BoxLayout(jpContent,BoxLayout.Y_AXIS));
 		JLabel l = new JLabel(new ImageIcon(IMAGES_SPLASHSCREEN));
-		getContentPane().add(l, BorderLayout.CENTER);
+		/*JPanel jpVersion = new JPanel();
+		jpVersion.setLayout(new BoxLayout(jpVersion,BoxLayout.X_AXIS));
+		JLabel jlVersion = new JLabel("Release : "+JAJUK_VERSION);
+		jpVersion.add(Box.createHorizontalGlue());
+		jpVersion.add(jlVersion);
+		jpVersion.add(Box.createHorizontalGlue());*/
+		jpContent.add(l);
+		//jpContent.add(jpVersion);
 		pack();
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		Dimension labelSize = l.getPreferredSize();
