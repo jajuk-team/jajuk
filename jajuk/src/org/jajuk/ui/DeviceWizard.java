@@ -66,6 +66,7 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 	JLabel jlUrl;
 	JTextField jtfUrl;
 	JButton jbUrl;
+	JButton jbUrlMountPoint;
 	JLabel jlMountPoint;
 	JTextField jtfMountPoint;
 	JCheckBox jcbRefresh;
@@ -77,7 +78,6 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 	ButtonGroup bgSynchro;
 	JRadioButton jrbBidirSynchro;
 	JRadioButton jrbUnidirSynchro;
-	JCheckBox jcb1;
 	JPanel jpButtons;
 	JButton jbOk;
 	JButton jbCancel;
@@ -124,13 +124,18 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 		jbUrl.setToolTipText(Messages.getString("DeviceWizard.43")); //$NON-NLS-1$
 		jbUrl.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
 		jbUrl.addActionListener(this);
+		jbUrlMountPoint = new JButton(Util.getIcon(ICON_OPEN_FILE));
+		jbUrlMountPoint.setToolTipText(Messages.getString("DeviceWizard.47")); //$NON-NLS-1$
+		jbUrlMountPoint.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+		jbUrlMountPoint.addActionListener(this);
 		jlMountPoint = new JLabel(Messages.getString("DeviceWizard.4")); //$NON-NLS-1$
 		jtfMountPoint = new JTextField();
 		jtfMountPoint.setToolTipText(Messages.getString("DeviceWizard.47")); //$NON-NLS-1$
-		String sOS = (String)System.getProperties().get("os.name"); //$NON-NLS-1$
-		if (sOS.trim().toLowerCase().lastIndexOf("windows")!=-1){ //$NON-NLS-1$
+		//mount point notion is unknown under Windows
+		if (Util.underWindows()){
 			jlMountPoint.setEnabled(false);
 			jtfMountPoint.setEnabled(false);
+			jbUrlMountPoint.setEnabled(false);
 		}
 		jcbRefresh = new JCheckBox(Messages.getString("DeviceWizard.7")); //$NON-NLS-1$
 		jcbRefresh.setToolTipText(Messages.getString("DeviceWizard.48")); //$NON-NLS-1$
@@ -168,10 +173,6 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 		jrbBidirSynchro.addActionListener(this);
 		bgSynchro.add(jrbBidirSynchro);
 		bgSynchro.add(jrbUnidirSynchro);
-		jcb1 = new JCheckBox(Messages.getString("DeviceWizard.15")); //$NON-NLS-1$
-		jcb1.setToolTipText(Messages.getString("DeviceWizard.16")); //$NON-NLS-1$
-		jcb1.setEnabled(false);
-		jcb1.setBorder(BorderFactory.createEmptyBorder(0, 25, 0, 0));
 		jp1.add(jlType, "0,0"); //$NON-NLS-1$
 		jp1.add(jcbType, "2,0"); //$NON-NLS-1$
 		jp1.add(jlName, "0,2"); //$NON-NLS-1$
@@ -179,6 +180,7 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 		jp1.add(jlUrl, "0,4"); //$NON-NLS-1$
 		jp1.add(jtfUrl, "2,4"); //$NON-NLS-1$
 		jp1.add(jbUrl, "4,4"); //$NON-NLS-1$
+		jp1.add(jbUrlMountPoint, "4,6"); //$NON-NLS-1$
 		jp1.add(jlMountPoint, "0,6"); //$NON-NLS-1$
 		jp1.add(jtfMountPoint, "2,6"); //$NON-NLS-1$
 		jp1.add(jcbRefresh, "0,8"); //$NON-NLS-1$
@@ -194,7 +196,6 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 		jp2.setBorder(BorderFactory.createEmptyBorder(0, 15, 0, 15));
 		jp2.add(jrbUnidirSynchro, "0,1"); //$NON-NLS-1$
 		jp2.add(jrbBidirSynchro, "0,3"); //$NON-NLS-1$
-		//jp2.add(jcb1, "0,5");   //not featured for the moment
 		if (jcbSynchronized.getItemCount()==0){
 			jcboxSynchronized.setEnabled(false);
 			jcbSynchronized.setEnabled(false);
@@ -231,8 +232,6 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 		jcbAutoRefresh.setSelected(false);
 		jrbUnidirSynchro.setSelected(true);//default synchro mode
 		jrbBidirSynchro.setEnabled(false);
-		jcb1.setEnabled(false);
-		jcb1.setSelected(false);
 	}
 	
 	
@@ -273,13 +272,11 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 			jcboxSynchronized.setEnabled(false);
 			jcbSynchronized.setEnabled(false);
 			jrbBidirSynchro.setEnabled(false);
-			jcb1.setEnabled(false);
 		}
 		String sSynchroSource = device.getProperty(DEVICE_OPTION_SYNCHRO_SOURCE); 
 		if ( sSynchroSource != null){
 			jrbBidirSynchro.setEnabled(true);
 			jrbUnidirSynchro.setEnabled(true);
-			jcb1.setEnabled(true);
 			jcboxSynchronized.setSelected(true);
 			jcboxSynchronized.setEnabled(true);
 			jcbSynchronized.setEnabled(true);
@@ -289,9 +286,6 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 			}
 			else{
 				jrbUnidirSynchro.setSelected(true);
-			}
-			if (TRUE.equals(device.getProperty(DEVICE_OPTION_SYNCHRO_OPT1))){
-				jcb1.setSelected(true);
 			}
 		}
 	}
@@ -315,12 +309,10 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 				jcbSynchronized.setEnabled(true);
 				jrbBidirSynchro.setEnabled(true);
 				jrbUnidirSynchro.setEnabled(true);
-				jcb1.setEnabled(true);
 			} else {
 				jcbSynchronized.setEnabled(false);
 				jrbBidirSynchro.setEnabled(false);
 				jrbUnidirSynchro.setEnabled(false);
-				jcb1.setEnabled(false);
 			}
 		} 
 		else if (e.getSource() == jbOk){
@@ -366,12 +358,6 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 				}
 				else{
 					device.setProperty(DEVICE_OPTION_SYNCHRO_MODE,DEVICE_OPTION_SYNCHRO_MODE_UNI);
-					if (jcb1.isSelected()){
-						device.setProperty(DEVICE_OPTION_SYNCHRO_OPT1,TRUE);
-					}
-					else{
-						device.setProperty(DEVICE_OPTION_SYNCHRO_OPT1,FALSE);
-					}
 				}
 			}
 			else{  //no synchro
@@ -409,6 +395,17 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
 				java.io.File file = jfc.getSelectedFile();
 				jtfUrl.setText(file.getAbsolutePath());	
+			}
+		}
+		else if (e.getSource() == jbUrlMountPoint){
+			JajukFileChooser jfc = new JajukFileChooser(new JajukFileFilter(true,false));
+			jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+			jfc.setDialogTitle(Messages.getString("DeviceWizard.47"));//$NON-NLS-1$
+			jfc.setMultiSelectionEnabled(false);
+			int returnVal = jfc.showOpenDialog(this);
+			if (returnVal == JFileChooser.APPROVE_OPTION) {
+				java.io.File file = jfc.getSelectedFile();
+				jtfMountPoint.setText(file.getAbsolutePath());	
 			}
 		}
 		else if(e.getSource() == jcbType){
