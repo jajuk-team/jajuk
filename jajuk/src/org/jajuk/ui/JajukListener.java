@@ -16,8 +16,8 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
- * Revision 1.4  2003/10/21 20:43:06  bflorat
- * TechnicalStrings to ITechnicalStrings according to coding convention
+ * Revision 1.5  2003/11/14 11:19:03  bflorat
+ * - Corrected command icon bug
  *
  */
 package org.jajuk.ui;
@@ -85,15 +85,18 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
 				//Repeat and continue can't be set together, so deselect repeat mode
 				ConfigurationManager.setProperty(CONF_STATE_CONTINUE, new Boolean(!bContinue).toString());
 				JajukJMenuBar.getInstance().jcbmiContinue.setSelected(false);
-				CommandJPanel.getInstance().jbContinue.setIcon(new ImageIcon(ICON_CONTINUE_OFF)); 
+				CommandJPanel.getInstance().jbContinue.setIcon(new ImageIcon(ICON_CONTINUE_OFF));
+				ConfigurationManager.setProperty(CONF_ICON_CONTINUE,ICON_CONTINUE_OFF);
 			}
 			boolean b = Boolean.valueOf(ConfigurationManager.getProperty(CONF_STATE_REPEAT)).booleanValue();
 			ConfigurationManager.setProperty(CONF_STATE_REPEAT, new Boolean(!b).toString());
 			JajukJMenuBar.getInstance().jcbmiRepeat.setSelected(!b);
 			if (!b == true) { //enabled button
+				ConfigurationManager.setProperty(CONF_ICON_REPEAT,ICON_REPEAT_ON);
 				CommandJPanel.getInstance().jbRepeat.setIcon(new ImageIcon(ICON_REPEAT_ON));
 			}
 			else {
+				ConfigurationManager.setProperty(CONF_ICON_REPEAT,ICON_REPEAT_OFF);
 				CommandJPanel.getInstance().jbRepeat.setIcon(new ImageIcon(ICON_REPEAT_OFF));
 			}
 		}
@@ -102,9 +105,11 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
 			ConfigurationManager.setProperty(CONF_STATE_SHUFFLE, new Boolean(!b).toString());
 			JajukJMenuBar.getInstance().jcbmiShuffle.setSelected(!b);
 			if (!b == true) { //enabled button
+				ConfigurationManager.setProperty(CONF_ICON_SHUFFLE,ICON_SHUFFLE_ON);
 				CommandJPanel.getInstance().jbRandom.setIcon(new ImageIcon(ICON_SHUFFLE_ON));
 			}
 			else {
+				ConfigurationManager.setProperty(CONF_ICON_SHUFFLE,ICON_SHUFFLE_OFF);
 				CommandJPanel.getInstance().jbRandom.setIcon(new ImageIcon(ICON_SHUFFLE_OFF));
 			}
 		}
@@ -115,14 +120,17 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
 				ConfigurationManager.setProperty(CONF_STATE_REPEAT, new Boolean(!bRepeat).toString());
 				JajukJMenuBar.getInstance().jcbmiRepeat.setSelected(false);
 				CommandJPanel.getInstance().jbRepeat.setIcon(new ImageIcon(ICON_REPEAT_OFF)); 
+				ConfigurationManager.setProperty(CONF_ICON_REPEAT,ICON_REPEAT_OFF);
 			}
 			boolean b = Boolean.valueOf(ConfigurationManager.getProperty(CONF_STATE_CONTINUE)).booleanValue();
 			ConfigurationManager.setProperty(CONF_STATE_CONTINUE, new Boolean(!b).toString());
 			JajukJMenuBar.getInstance().jcbmiContinue.setSelected(!b);
 			if (!b == true) { //enabled button
+				ConfigurationManager.setProperty(CONF_ICON_CONTINUE,ICON_CONTINUE_ON);
 				CommandJPanel.getInstance().jbContinue.setIcon(new ImageIcon(ICON_CONTINUE_ON));
 			}
 			else {
+				ConfigurationManager.setProperty(CONF_ICON_CONTINUE,ICON_CONTINUE_OFF);
 				CommandJPanel.getInstance().jbContinue.setIcon(new ImageIcon(ICON_CONTINUE_OFF));
 			}
 		}
@@ -131,9 +139,11 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
 			ConfigurationManager.setProperty(CONF_STATE_INTRO, new Boolean(!b).toString());
 			JajukJMenuBar.getInstance().jcbmiIntro.setSelected(!b);
 			if (!b == true) { //enabled button
+				ConfigurationManager.setProperty(CONF_ICON_INTRO,ICON_INTRO_ON);
 				CommandJPanel.getInstance().jbIntro.setIcon(new ImageIcon(ICON_INTRO_ON));
 			}
 			else {
+				ConfigurationManager.setProperty(CONF_ICON_INTRO,ICON_INTRO_OFF);
 				CommandJPanel.getInstance().jbIntro.setIcon(new ImageIcon(ICON_INTRO_OFF));
 			}
 		}
