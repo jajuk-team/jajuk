@@ -265,7 +265,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 	 *  
 	 */
 	public void startElement(String sUri, String sName, String sQName, Attributes attributes) throws SAXException {
-		switch(sQName.hashCode()){
+	    switch(sQName.hashCode()){
 			case HASHCODE_DEVICE : //device case
 			    Device device = null;
 			    device = DeviceManager.registerDevice(attributes.getValue(0), attributes.getValue(1), Integer.parseInt(attributes.getValue(2)), attributes.getValue(3), attributes.getValue(4));
@@ -303,14 +303,23 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 				String sParentId = attributes.getValue(2);
 				if (!"-1".equals(sParentId)) { //$NON-NLS-1$
 					dParent = DirectoryManager.getDirectory(sParentId); //We know the parent directory is already referenced because of order conservation
+					if (dParent == null){ //check directory is exists
+					    break;
+					}				
 				}
 				device = DeviceManager.getDevice(attributes.getValue(3));
+				if (device == null){ //check device exists
+				    break;
+				}
 				Directory directory = DirectoryManager.registerDirectory(attributes.getValue(0), attributes.getValue(1), dParent, device);
 				directory.populateProperties(attributes, 4);
 			break;
 			case HASHCODE_FILE:
-				dParent = DirectoryManager.getDirectory(attributes.getValue(2));
-				track = TrackManager.getTrack(attributes.getValue(3));
+			    dParent = DirectoryManager.getDirectory(attributes.getValue(2));
+				if (dParent == null){ //check directory is exists
+				    break;
+				}
+			    track = TrackManager.getTrack(attributes.getValue(3));
 				long lSize = Long.parseLong(attributes.getValue(4));
 				org.jajuk.base.File file = FileManager.registerFile(attributes.getValue(0), attributes.getValue(1), dParent, track, lSize, attributes.getValue(5));
 				file.populateProperties(attributes, 6);
@@ -319,6 +328,9 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 			break;
 			case HASHCODE_PLAYLIST_FILE:
 				dParent = DirectoryManager.getDirectory(attributes.getValue(3));
+				if (dParent == null){ //check directory is exists
+				    break;
+				}
 				PlaylistFile plf = PlaylistFileManager.registerPlaylistFile(attributes.getValue(0), attributes.getValue(1), attributes.getValue(2), dParent);
 				plf.populateProperties(attributes, 4);
 			break;
