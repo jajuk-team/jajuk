@@ -20,6 +20,8 @@
 
 package org.jajuk.ui.perspectives;
 
+import org.jajuk.i18n.Messages;
+
 /**
  *  Player perspective, contains view usefull to be displayed duriong playing
  *
@@ -32,7 +34,7 @@ public class PlayerPerspective extends PerspectiveAdapter {
      * @see org.jajuk.ui.perspectives.IPerspective#getDesc()
      */
     public String getDesc() {
-        return "Perspective_Description_Player"; //$NON-NLS-1$
+        return Messages.getString("Perspective_Description_Player"); //$NON-NLS-1$
     }
 
 }
