@@ -308,7 +308,8 @@ public interface ITechnicalStrings {
 	public static final String CONF_VOLUME= "jajuk.volume"; //gain (float)
 	public static final String CONF_REGEXP= "jajuk.regexp"; //use regular expressions ?
 	public static final String CONF_BACKUP_SIZE= "jajuk.backup_size"; //backup size for collection.xml in MB
-		
+	public static final String CONF_COLLECTION_CHARSET= "jajuk.collection_charset";//collection file charset (utf-8 or utf-16)
+	
 	
 	//miscelanous
 	public static final String TRUE= "true";

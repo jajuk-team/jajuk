@@ -113,6 +113,12 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 	JCheckBox jcbDeepScan;
 	JCheckBox jcbUseParentDir;
 	JCheckBox jcbRegexp;
+	JPanel jpAdvanced;
+	JCheckBox jcbBackup;
+	JLabel jlBackupSize;
+	JTextField jtfBackupSize;
+	JLabel jlCollectionEncoding;
+	JComboBox jcbCollectionEncoding;
 	JPanel jpOKCancel;
 	JButton jbOK;
 	JButton jbDefault;
@@ -410,7 +416,30 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jpTags.add(jcbDeepScan,"0,1"); //$NON-NLS-1$
 		jpTags.add(jcbUseParentDir,"0,3"); //$NON-NLS-1$
 		jpTags.add(jcbRegexp,"0,5");//$NON-NLS-1$
-		
+		//Advanced
+		jpAdvanced = new JPanel();
+		jpAdvanced.setBorder(BorderFactory.createTitledBorder(Messages.getString("ParameterView.115")));  //$NON-NLS-1$
+		double sizeAdvanced[][] = {{0.5,0.5},
+				{iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator}};
+		jpAdvanced.setLayout(new TableLayout(sizeAdvanced));
+		jcbBackup = new JCheckBox(Messages.getString("ParameterView.116"));  //$NON-NLS-1$
+		jcbBackup.addActionListener(this);
+		jcbBackup.setToolTipText(Messages.getString("ParameterView.117")); //$NON-NLS-1$
+		jlBackupSize = new JLabel(Messages.getString("ParameterView.118")); //$NON-NLS-1$
+		jlBackupSize.setToolTipText(Messages.getString("ParameterView.119")); //$NON-NLS-1$
+		jtfBackupSize = new JTextField(4);
+		jtfBackupSize.setToolTipText(Messages.getString("ParameterView.119")); //$NON-NLS-1$
+		jlCollectionEncoding = new JLabel(Messages.getString("ParameterView.120")); //$NON-NLS-1$
+		jlCollectionEncoding.setToolTipText(Messages.getString("ParameterView.121")); //$NON-NLS-1$
+		jcbCollectionEncoding = new JComboBox();
+		jcbCollectionEncoding.setToolTipText(Messages.getString("ParameterView.121")); //$NON-NLS-1$
+		jcbCollectionEncoding.addItem("UTF-8");
+		jcbCollectionEncoding.addItem("UTF-16");
+		jpAdvanced.add(jcbBackup,"0,1");//$NON-NLS-1$
+		jpAdvanced.add(jlBackupSize,"0,3");//$NON-NLS-1$
+		jpAdvanced.add(jtfBackupSize,"1,3");//$NON-NLS-1$
+		jpAdvanced.add(jlCollectionEncoding,"0,5");//$NON-NLS-1$
+		jpAdvanced.add(jcbCollectionEncoding,"1,5");//$NON-NLS-1$
 		//OK
 		jpOKCancel = new JPanel();
 		jpOKCancel.setLayout(new FlowLayout());
@@ -420,7 +449,6 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jbDefault = new JButton(Messages.getString("ParameterView.86")); //$NON-NLS-1$
 		jbDefault.addActionListener(this);
 		jpOKCancel.add(jbDefault);
-		//global layout
 		//global layout
 		double size[][] = {{0.99},
 				{0.9,0.10}};
@@ -433,6 +461,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jtpMain.addTab(Messages.getString("ParameterView.8"),jpHistory); //$NON-NLS-1$
 		jtpMain.addTab(Messages.getString("ParameterView.71"),jpP2P); //$NON-NLS-1$
 		jtpMain.addTab(Messages.getString("ParameterView.26"),jpConfirmations); //$NON-NLS-1$
+		jtpMain.addTab(Messages.getString("ParameterView.115"),jpAdvanced); //$NON-NLS-1$
 		add(jtpMain,"0,0");
 		add(jpOKCancel,"0,1"); //$NON-NLS-1$
 		//update widgets state
@@ -531,7 +560,10 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 					ConfigurationManager.setProperty(CONF_TAGS_DEEP_SCAN,Boolean.toString(jcbDeepScan.isSelected()));
 					ConfigurationManager.setProperty(CONF_TAGS_USE_PARENT_DIR,Boolean.toString(jcbUseParentDir.isSelected()));
 					ConfigurationManager.setProperty(CONF_REGEXP,Boolean.toString(jcbRegexp.isSelected()));
-					//cover
+					//Advanced
+					ConfigurationManager.setProperty(CONF_BACKUP_SIZE,jtfBackupSize.getText());
+					ConfigurationManager.setProperty(CONF_COLLECTION_CHARSET,jcbCollectionEncoding.getSelectedItem().toString());
+					//Cover
 					if ( ConfigurationManager.getBoolean(CONF_OPTIONS_COVER)){
 						ViewManager.notify(EVENT_VIEW_SHOW_REQUEST,CoverView.class);
 						ViewManager.notify(EVENT_VIEW_REFRESH_REQUEST,CoverView.class);
@@ -549,6 +581,16 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 					updateSelection();
 					InformationJPanel.getInstance().setMessage(Messages.getString("ParameterView.110"),InformationJPanel.INFORMATIVE); //$NON-NLS-1$
 					ConfigurationManager.commit();
+				}
+				else if (e.getSource() == jcbBackup){ //if backup option is unchecked, reset backup size
+				    if ( jcbBackup.isSelected()){
+				        jtfBackupSize.setEnabled(true);
+				        jtfBackupSize.setText(ConfigurationManager.getProperty(CONF_BACKUP_SIZE));
+				    }
+				    else{
+				        jtfBackupSize.setEnabled(false);
+				        jtfBackupSize.setText("0");
+				    }
 				}
 			}
 		}.start();
@@ -593,6 +635,17 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jcbHideProperties.setSelected(bHidden);
 		jcbDeepScan.setSelected(ConfigurationManager.getBoolean(CONF_TAGS_DEEP_SCAN));
 		jcbUseParentDir.setSelected(ConfigurationManager.getBoolean(CONF_TAGS_USE_PARENT_DIR));
+		int iBackupSize = ConfigurationManager.getInt(CONF_BACKUP_SIZE);
+		if (iBackupSize<=0){ //backup size =0 means no backup
+		    jcbBackup.setSelected(false);   
+		    jtfBackupSize.setEnabled(false);
+		}
+		else{
+		    jcbBackup.setSelected(true);
+		    jtfBackupSize.setEnabled(true);
+		}
+		jtfBackupSize.setText(Integer.toString(iBackupSize));
+		jcbCollectionEncoding.setSelectedItem(ConfigurationManager.getProperty(CONF_COLLECTION_CHARSET)); 
 	}
 	
 	/* (non-Javadoc)

@@ -424,7 +424,10 @@ public class Util implements ITechnicalStrings {
 	 */
 	public static void backupFile(File file,int iMB){
 		try{
-			//calculates total size in MB for the file to backup and its backup files
+			if (Integer.parseInt(ConfigurationManager.getProperty(CONF_BACKUP_SIZE))<=0){ //0 or less means no backup
+			    return;
+			}
+		    //calculates total size in MB for the file to backup and its backup files
 			long lUsedMB = 0;
 			int index = 0;//backup index
 			File[] files = new File(file.getAbsolutePath()).getParentFile().listFiles();
