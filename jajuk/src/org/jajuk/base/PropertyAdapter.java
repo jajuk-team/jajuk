@@ -124,9 +124,9 @@ public class PropertyAdapter implements IPropertyable, ITechnicalStrings,Seriali
 				return null;
 			}
 		}
-		else if ( sKey.equals(Messages.getString("PhysicalTableView.12"))){ //Directory, only physical  //$NON-NLS-1$
+		else if ( sKey.equals(Messages.getString("PhysicalTableView.12"))){ //Device, only physical  //$NON-NLS-1$
 			if ( this instanceof File ){
-				return ((File)this).getDirectory().getName();
+				return ((File)this).getDirectory().getDevice().getName();
 			}
 			else{
 				return null;
