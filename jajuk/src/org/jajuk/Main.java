@@ -85,24 +85,31 @@ public class Main implements ITechnicalStrings {
 	public static SplashScreen sc;
 	/**Exit code*/
 	private static int iExitCode = 0;
+	/**Debug mode*/
+	private static boolean bDebugMode;
 	/**Exiting flag*/
 	public static boolean bExiting = false;
 	
 	public static void main(String[] args)  {
 		try {
 			//set exec location path ( normal or debug )
-			Util.setExecLocation((args.length>0 && args[0].equals("-debug")));//$NON-NLS-1$ 
+			bDebugMode = (args.length>0 && args[0].equals("-debug"));
+		    Util.setExecLocation(bDebugMode);//$NON-NLS-1$ 
 			
+		    // log startup
+			Log.getInstance();
+			Log.setVerbosity(Log.DEBUG);
+		
 			//Launch splashscreen
 			sc = new SplashScreen(jw);	
 			
 			//Register locals
-			Messages.registerLocal("en","Language_desc_en"); //$NON-NLS-1$ //$NON-NLS-2$
-			Messages.registerLocal("fr","Language_desc_fr"); //$NON-NLS-1$ //$NON-NLS-2$
-			Messages.registerLocal("de","Language_desc_de"); //$NON-NLS-1$ //$NON-NLS-2$
-			Messages.registerLocal("it","Language_desc_it"); //$NON-NLS-1$ //$NON-NLS-2$
-			Messages.registerLocal("sv","Language_desc_sv"); //$NON-NLS-1$ //$NON-NLS-2$
-			Messages.registerLocal("nl","Language_desc_nl"); //$NON-NLS-1$ //$NON-NLS-2$
+			Messages.getInstance().registerLocal("en","Language_desc_en"); //$NON-NLS-1$ //$NON-NLS-2$
+			Messages.getInstance().registerLocal("fr","Language_desc_fr"); //$NON-NLS-1$ //$NON-NLS-2$
+			Messages.getInstance().registerLocal("de","Language_desc_de"); //$NON-NLS-1$ //$NON-NLS-2$
+			Messages.getInstance().registerLocal("it","Language_desc_it"); //$NON-NLS-1$ //$NON-NLS-2$
+			Messages.getInstance().registerLocal("sv","Language_desc_sv"); //$NON-NLS-1$ //$NON-NLS-2$
+			Messages.getInstance().registerLocal("nl","Language_desc_nl"); //$NON-NLS-1$ //$NON-NLS-2$
 									
 			//configuration manager startup
 			org.jajuk.util.ConfigurationManager.getInstance();
@@ -113,14 +120,36 @@ public class Main implements ITechnicalStrings {
 				fJajukDir.mkdir(); //create the directory if it doesn't exist
 			}
 			
-			//log startup
-			Log.getInstance();
-			Log.setVerbosity(Log.DEBUG);
-			
 			//Upgrade configuration from previous releases
 			upgrade();
 			
-			//registers supported types and default properties
+			//Registers supported look and feels
+			LNFManager.register(LNF_METAL,LNF_METAL_CLASS); 
+			LNFManager.register(LNF_GTK,LNF_GTK_CLASS); 
+			LNFManager.register(LNF_WINDOWS,LNF_WINDOWS_CLASS);
+			LNFManager.register(LNF_KUNSTSTOFF,LNF_KUNSTSTOFF_CLASS);
+			LNFManager.register(LNF_LIQUID,LNF_LIQUID_CLASS);
+								
+			//perform initial checkups
+			initialCheckups();
+			
+			//Display user configuration
+			Log.debug(System.getProperties().toString());
+			
+			//Load user configuration
+			org.jajuk.util.ConfigurationManager.load();
+		
+			//Set locale
+			Messages.getInstance().setLocal(ConfigurationManager.getProperty(CONF_OPTIONS_LANGUAGE));
+			
+			//Register device types
+			DeviceManager.registerDeviceType(Messages.getString("Device_type.directory"));//$NON-NLS-1$
+			DeviceManager.registerDeviceType(Messages.getString("Device_type.file_cd"));//$NON-NLS-1$
+			DeviceManager.registerDeviceType(Messages.getString("Device_type.remote"));//$NON-NLS-1$
+			DeviceManager.registerDeviceType(Messages.getString("Device_type.extdd"));//$NON-NLS-1$
+			DeviceManager.registerDeviceType(Messages.getString("Device_type.player"));//$NON-NLS-1$
+					
+			//registers supported audio supports and default properties
 			try {
 				//mp3
 				Type type = TypeManager.registerType(Messages.getString("Type.mp3"), EXT_MP3, PLAYER_IMPL_JAVALAYER, TAG_IMPL_JLGUI_MP3); //$NON-NLS-1$ //$NON-NLS-2$
@@ -150,33 +179,7 @@ public class Main implements ITechnicalStrings {
 			} catch (Exception e1) {
 				Log.error("026",e1); //$NON-NLS-1$
 			}
-			
-			//Registers supported look and feels
-			LNFManager.register(LNF_METAL,LNF_METAL_CLASS); 
-			LNFManager.register(LNF_GTK,LNF_GTK_CLASS); 
-			LNFManager.register(LNF_WINDOWS,LNF_WINDOWS_CLASS);
-			LNFManager.register(LNF_KUNSTSTOFF,LNF_KUNSTSTOFF_CLASS);
-			LNFManager.register(LNF_LIQUID,LNF_LIQUID_CLASS);
-								
-			//perform initial checkups
-			initialCheckups();
-			
-			//Display user configuration
-			Log.debug(System.getProperties().toString());
-			
-			//Load user configuration
-			org.jajuk.util.ConfigurationManager.load();
 		
-			//Set locale
-			Messages.setLocal(ConfigurationManager.getProperty(CONF_OPTIONS_LANGUAGE));
-			
-			//Register device types
-			DeviceManager.registerDeviceType(Messages.getString("Device_type.directory"));//$NON-NLS-1$
-			DeviceManager.registerDeviceType(Messages.getString("Device_type.file_cd"));//$NON-NLS-1$
-			DeviceManager.registerDeviceType(Messages.getString("Device_type.remote"));//$NON-NLS-1$
-			DeviceManager.registerDeviceType(Messages.getString("Device_type.extdd"));//$NON-NLS-1$
-			DeviceManager.registerDeviceType(Messages.getString("Device_type.player"));//$NON-NLS-1$
-					
 			//Load collection
 			Collection.load();
 			
@@ -270,7 +273,7 @@ public class Main implements ITechnicalStrings {
 			Runtime.getRuntime().addShutdownHook(new Thread() {
 				public void run() {
 					try{
-						if (iExitCode == 0){ //commit only if exit is safe to avoid commiting empty collection
+						if (iExitCode == 0){ //commit only if exit is safe (to avoid commiting empty collection)
 							//commit configuration
 							org.jajuk.util.ConfigurationManager.commit();
 							//commit history
@@ -468,4 +471,11 @@ public class Main implements ITechnicalStrings {
 		}
 	}
 
+    /**
+     * @return Returns the bDebugMode.
+     */
+    public static boolean isDebugMode() {
+        return bDebugMode;
+    }
+  
 }

@@ -239,7 +239,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jpCombos.setLayout(new TableLayout(sizeCombos));
 		jlLanguage = new JLabel(Messages.getString("ParameterView.38")); //$NON-NLS-1$
 		jcbLanguage = new JComboBox();
-		Iterator itDescs = Messages.getDescs().iterator();
+		Iterator itDescs = Messages.getInstance().getDescs().iterator();
 		while (itDescs.hasNext()){
 			String sDesc = (String)itDescs.next();
 			jcbLanguage.addItem(Messages.getString(sDesc));
@@ -474,8 +474,8 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 					ConfigurationManager.setProperty(CONF_OPTIONS_HIDE_UNMOUNTED,Boolean.toString(bHiddenState));
 					ConfigurationManager.setProperty(CONF_OPTIONS_RESTART,Boolean.toString(jcbRestart.isSelected()));
 					ConfigurationManager.setProperty(CONF_OPTIONS_COVER,Boolean.toString(jcbCover.isSelected()));
-					String sLocal = (String)Messages.getLocals().get(jcbLanguage.getSelectedIndex());
-					if (!Messages.getLocal().equals(sLocal)){  //local has changed
+					String sLocal = (String)Messages.getInstance().getLocals().get(jcbLanguage.getSelectedIndex());
+					if (!Messages.getInstance().getLocal().equals(sLocal)){  //local has changed
 						Messages.showInfoMessage(Messages.getString("ParameterView.103")); //$NON-NLS-1$
 					}
 					ConfigurationManager.setProperty(CONF_OPTIONS_LANGUAGE,sLocal);
@@ -580,7 +580,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		this.bHidden = bHidden; 
 		jcbRestart.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_RESTART));
 		jcbCover.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_COVER));
-		jcbLanguage.setSelectedIndex(Messages.getLocals().indexOf(ConfigurationManager.getProperty(CONF_OPTIONS_LANGUAGE)));
+		jcbLanguage.setSelectedIndex(Messages.getInstance().getLocals().indexOf(ConfigurationManager.getProperty(CONF_OPTIONS_LANGUAGE)));
 		jcbLAF.setSelectedItem(ConfigurationManager.getProperty(CONF_OPTIONS_LNF));
 		jcbLogLevel.setSelectedIndex(Integer.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_LOG_LEVEL)));
 		jtfIntroLength.setText(ConfigurationManager.getProperty(CONF_OPTIONS_INTRO_LENGTH));

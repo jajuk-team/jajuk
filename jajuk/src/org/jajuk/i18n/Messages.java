@@ -21,38 +21,63 @@ package org.jajuk.i18n;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Locale;
-import java.util.ResourceBundle;
+import java.util.Properties;
+import java.util.StringTokenizer;
 
 import javax.swing.Icon;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 
 import org.jajuk.Main;
+import org.jajuk.base.ITechnicalStrings;
+import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * Utility class to get strings from localized property files
- *
+ *<p>Singleton</p>
  * @author     bflorat
  * @created    5 oct. 2003
  */
-public class Messages {
-	
-	private static final String BUNDLE_NAME = "org.jajuk.i18n.jajuk-latin1"; //$NON-NLS-1$
+public class Messages extends DefaultHandler implements ITechnicalStrings	{
 	/**Local ( language) to be used, default is english */
-	private static String sLocal;
+	private String sLocal;
 	/**Supported Locals*/
-	public static ArrayList alLocals = new ArrayList(10);
+	public ArrayList alLocals = new ArrayList(10);
 	/**Locals description */
-	public static ArrayList alDescs = new ArrayList(10);
-	/**Used ressource bundle*/
-	private static ResourceBundle rb = ResourceBundle.getBundle(BUNDLE_NAME);
+	public ArrayList alDescs = new ArrayList(10);
+	/**self instance for singleton*/
+	private static Messages mesg;
+	/**Messages themself extracted from an XML file to this properties class**/
+	private Properties properties;
+	/**english messages used as default**/
+	private Properties propertiesEn;
 	
+		
 	/**
 	 * Private Constructor
 	 */
 	private Messages() {
+	    try{
+	        propertiesEn = parseLangpack("en");
+	    }
+	    catch(Exception e){
+	        Log.error(e);
+	    }
+	}
+	
+	/**
+	 * @return Singleton instance
+	 */
+	public static Messages getInstance(){
+	    if ( mesg == null){
+	        mesg = new Messages();
+	    }
+	    return mesg;
 	}
 	
 	/**
@@ -61,11 +86,14 @@ public class Messages {
 	 */
 	public static String getString(String key) {
 		String sOut = key;
-		try{
-			sOut = rb.getString(key); 
+		sOut = getInstance().properties.getProperty(key); 
+		if (sOut == null){ //this property is unknown for this local, try in english
+		    sOut = getInstance().propertiesEn.getProperty(key);
 		}
-		catch(Exception e){
-			Log.error("105","key: "+key,e); //$NON-NLS-1$ //$NON-NLS-2$
+		//at least, returned property is the key name but we trace an error to show it
+		if (sOut == null){
+		    Log.error("105","key: "+key,new Exception()); //$NON-NLS-1$ //$NON-NLS-2$
+		    sOut = key;
 		}
 		return sOut;
 	}
@@ -75,7 +103,7 @@ public class Messages {
 	 * @param sName : local name like "english"
 	 * @param sLocal : local name like "en"
 	 */
-	public static void registerLocal(String sLocal ,String sDesc){
+	public void registerLocal(String sLocal ,String sDesc){
 		alLocals.add(sLocal);
 		alDescs.add(sDesc);
 	}
@@ -84,7 +112,7 @@ public class Messages {
 	 * Return list of available locals
 	 * @return
 	 */
-	public static ArrayList getLocals(){
+	public ArrayList getLocals(){
 		return alLocals;
 	}
 	
@@ -92,7 +120,7 @@ public class Messages {
 	 * Return list of available locals
 	 * @return
 	 */
-	public static ArrayList getDescs(){
+	public ArrayList getDescs(){
 		return alDescs;
 	}
 	
@@ -100,15 +128,64 @@ public class Messages {
 	 * Change current local
 	 * @param sLocal
 	 */
-	public static void setLocal(String sLocal){
-		Messages.sLocal = sLocal;
-		if ( sLocal.equals("en")){ //take english as an exception because it uses the base properties file //$NON-NLS-1$
-			rb = ResourceBundle.getBundle(BUNDLE_NAME,new Locale(""));	 //$NON-NLS-1$
+	public void setLocal(String sLocal) throws Exception{
+  		this.sLocal = sLocal;
+  		this.properties = parseLangpack(sLocal);	
+	}
+	
+	/**Parse a factice properties file inside an XML file as CDATA*
+	 * @param sLocal
+	 * @return a properties with all entries
+	 * @throws Exception
+	 */ 
+	private Properties parseLangpack(String sLocal) throws Exception {
+	    final Properties properties = new Properties();
+	    //	  Choose right jajuk_<lang>.properties file to load
+		StringBuffer sbFilename = new StringBuffer(FILE_LANGPACK_PART1);
+		if (!sLocal.equals("en")){ //for english, properties file is simply jajuk.properties
+		    sbFilename.append('_').append(sLocal);
+		}
+		sbFilename.append(FILE_LANGPACK_PART2);
+		String sUrl; //property file URL, either in the jajuk.jar jar (normal execution) or found as regular file if in development debug mode
+		if (Main.isDebugMode()){
+		    sUrl = "file:"+System.getProperty("user.dir")+"/src/org/jajuk/i18n/"+ sbFilename.toString();
 		}
 		else{
-			rb = ResourceBundle.getBundle(BUNDLE_NAME,new Locale(sLocal));
+		    sUrl = "jar:"+Util.getExecLocation()+"!/org/jajuk/i18n/"+ sbFilename.toString();
+		}
+		//parse it, actually it is a big properties file as CDATA in an XML file 
+		try {
+			SAXParserFactory spf = SAXParserFactory.newInstance();
+			spf.setValidating(false);
+			spf.setNamespaceAware(false);
+			SAXParser saxParser = spf.newSAXParser();
+			saxParser.parse(sUrl,new DefaultHandler() {
+			    StringBuffer sb = new StringBuffer(15000); //this buffer will contain the entire properties strings 
+			    //call for each element strings, actually will be called several time if the element is large (our case : large CDATA)
+			    public void characters(char[] ch, int start, int length) throws SAXException {
+                    sb.append(ch,start,length);
+                 }
+			    //call when closing the tag (</body> in our case )
+			    public void endElement(String uri, String localName, String qName) throws SAXException {
+			        String sWhole = sb.toString();
+                    //ok, parse it ( comments start with #)
+                    StringTokenizer st = new StringTokenizer(sWhole,"\n");
+                    while (st.hasMoreTokens()){
+                        String sLine = st.nextToken();
+                        if (sLine.length()>0 && !sLine.startsWith("#") && sLine.indexOf('=')!=-1){
+                            StringTokenizer stLine = new StringTokenizer(sLine,"=");
+                            properties.put(stLine.nextToken(),stLine.nextToken());
+                        }
+                    }
+			    }
+             });
+			return properties;
+		}
+		catch (Exception e) {
+			throw e;
 		}
 	}
+	
 	
 	/**
 	 * Return the message display to the user corresponding to the error code.
@@ -119,7 +196,7 @@ public class Messages {
 	public static String getErrorMessage(String pCode) {
 		String sOut = pCode;
 		try{
-			sOut = rb.getString("Error." + pCode); //$NON-NLS-1$
+			sOut = getString("Error." + pCode); //$NON-NLS-1$
 		}
 		catch(Exception e){
 			Log.error("105","code: "+pCode,e); //$NON-NLS-1$ //$NON-NLS-2$
@@ -220,8 +297,16 @@ public class Messages {
 	/**
 	 * @return Returns the sLocal.
 	 */
-	public static String getLocal() {
-		return sLocal;
+	public String getLocal() {
+		return this.sLocal;
 	}
 	
+	/**
+	 * Return true if the messaging system is started, can be usefull mainly at startup by services ( like logs) using them to avoid dead locks
+	 * @return
+	 */
+	public static boolean isInitialized(){
+	    return !(mesg == null);
+	}
+		
 }

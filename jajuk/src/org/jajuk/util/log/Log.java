@@ -55,7 +55,7 @@ public class Log implements ITechnicalStrings{
 	/**
 	 *  Constructor for the Log object
 	 */
-	Log () {
+	private Log () {
 		try {
 			//--create console+file logger
 			logger = Logger.getLogger("norm");  //$NON-NLS-1$
@@ -69,12 +69,10 @@ public class Log implements ITechnicalStrings{
 			logger.addAppender(fileAppender);
 			logger.addAppender(new ConsoleAppender(new PatternLayout(LOG_PATTERN)));
 			//message for logging system start
-			Log.info(Messages.getString("Log.2")); //$NON-NLS-1$
-			Log.info(Messages.getString("Log.9")+JAJUK_VERSION);  //$NON-NLS-1$
-			Log.info(Messages.getString("Log.3")); //$NON-NLS-1$
+			Log.info("******************JAJUK******************"); //$NON-NLS-1$
+			Log.info("Version: "+JAJUK_VERSION);  //$NON-NLS-1$
 		} catch (Exception e) {
 			Log.stack(e);
-			System.out.println(Messages.getString("Log.4")); //$NON-NLS-1$
 		}
 	}
 	
@@ -118,7 +116,14 @@ public class Log implements ITechnicalStrings{
 	 * @param t the exception itself
 	 **/
 	public static void error(String sCode,String sInfosup,Throwable t){
-		logger.error('('+sCode+") "+Messages.getErrorMessage(sCode)+ ((sInfosup==null)?"":":"+sInfosup),t); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		String sOut;
+		if ( Messages.isInitialized()){
+		    sOut = '('+sCode+") "+Messages.getErrorMessage(sCode)+ ((sInfosup==null)?"":":"+sInfosup); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		}
+		else{
+		    sOut = '('+sCode+") "+ ((sInfosup==null)?"":":"+sInfosup); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		}
+	    logger.error(sOut);
 	}
 	
 	/**
@@ -162,7 +167,6 @@ public class Log implements ITechnicalStrings{
 	public  static void fatal(String s){
 		logger.fatal(s);
 	}
-	
 	
 	
 	/**

@@ -40,8 +40,8 @@ public interface ITechnicalStrings {
 	public static final String PATH_IMAGES = "jar:"+Util.getExecLocation()+"!/org/jajuk/images/";
 	public static final String PATH_RELATIVE_DOCS = "docs/";
 	public static final String PATH_DOCS = "jar:"+Util.getExecLocation()+"!/org/jajuk/"+PATH_RELATIVE_DOCS;
-		
-		// paths to icons
+			
+	// icons
 	public static final String ICON_LOGO = PATH_ICONS + "64x64/jajuk-logo.png";
 	public static final String ICON_LOGO_ICO = PATH_IMAGES + "jajuk-logo.ico";
 	public static final String ICON_REPEAT_ON = PATH_ICONS + "16x16/repeat.png";
@@ -150,6 +150,8 @@ public interface ITechnicalStrings {
 	public static final String FILE_ABOUT = "about.html";
 	public static final String FILE_DEFAULT_COVER = "cover.jpg";
 	public static final String FILE_DEFAULT_COVER_2 = "front";
+	public static final String FILE_LANGPACK_PART1 = "jajuk"; //langpack name : jajuk_<locale>.properties
+	public static final String FILE_LANGPACK_PART2 = ".properties"; //langpack name : jajuk_<locale>.properties
 	
 	//players impls
 	public static final String PLAYER_IMPL_JAVALAYER= "org.jajuk.players.JavaLayerPlayerImpl";

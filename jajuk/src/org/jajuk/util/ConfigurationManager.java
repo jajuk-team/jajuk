@@ -139,11 +139,12 @@ public class ConfigurationManager implements ITechnicalStrings{
 		properties.put(CONF_OPTIONS_HIDE_UNMOUNTED,FALSE);
 		properties.put(CONF_OPTIONS_RESTART,TRUE);
 		properties.put(CONF_OPTIONS_COVER,TRUE);
+		//set default language without properties file available (normaly only at install)
 		String sLanguage = System.getProperty("user.language"); //$NON-NLS-1$
-		if (Messages.getLocals().contains(sLanguage)){
+		if (Messages.getInstance().getLocals().contains(sLanguage)){ //user language exists in jajuk, take it as default
 			properties.put(CONF_OPTIONS_LANGUAGE,sLanguage);
 		}
-		else{
+		else{ //user language is unknown, take english as a default, user will be able to change it later anyway
 			properties.put(CONF_OPTIONS_LANGUAGE,"en"); //$NON-NLS-1$
 		}
 		properties.put(CONF_OPTIONS_LNF,LNF_LIQUID);
