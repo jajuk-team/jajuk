@@ -256,7 +256,7 @@ public class Main implements ITechnicalStrings {
 			
 			//Auto refresh devices
 			autoRefresh();
-			
+						
 			//show window if set in the systray conf
 			if ( ConfigurationManager.getBoolean(CONF_SHOW_AT_STARTUP) ){
 			    launchUI();
