@@ -53,8 +53,8 @@ import org.jajuk.util.log.Log;
 
 /**
  * Device creation wizzard
- * 
- * @author bflorat @created 9 nov. 2003
+ * @author bflorat 
+ * @created 9 nov. 2003
  */
 public class DeviceWizard extends JDialog implements ActionListener,ITechnicalStrings {
 	JPanel jpMain;
@@ -377,10 +377,9 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 			else{
 				ObservationManager.notify(EVENT_DEVICE_REFRESH);  //refresh trees with empty device
 			}
-			//ViewManager.notify(EVENT_VIEW_REFRESH_REQUEST,DeviceView.getInstance());
 			dispose();
 			if (bNew){
-				Messages.showInfoMessage(Messages.getString("DeviceWizard.44"));  //$NON-NLS-1$
+				InformationJPanel.getInstance().setMessage(Messages.getString("DeviceWizard.44"),InformationJPanel.INFORMATIVE);  //$NON-NLS-1$
 			}
 		}
 		else if (e.getSource() == jbCancel){
