@@ -27,6 +27,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -540,7 +541,8 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 				else if ( alTracks.size() > 0  && (e.getSource() == jmiAlbumPlayShuffle
 						|| e.getSource() == jmiAuthorPlayShuffle
 						|| e.getSource() == jmiStylePlayShuffle )){
-					FIFO.getInstance().push(Util.randomize(alFilesToPlay),false);
+				    Collections.shuffle(alFilesToPlay);
+					FIFO.getInstance().push(alFilesToPlay,false);
 				}
 				else if (alTracks.size() > 0  && ( e.getSource() == jmiAlbumPlayRepeat
 						|| e.getSource() == jmiAuthorPlayRepeat

@@ -22,6 +22,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.regex.PatternSyntaxException;
 
@@ -254,7 +255,8 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
 				}
 				//shuffle play
 				else if ( e.getSource() == jmiFilePlayShuffle){
-					FIFO.getInstance().push(Util.randomize(alFilesToPlay),false);
+				    Collections.shuffle(alFilesToPlay);
+					FIFO.getInstance().push(alFilesToPlay,false);
 				}
 				//repeat play
 				else if ( e.getSource() == jmiFilePlayRepeat){

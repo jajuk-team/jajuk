@@ -21,6 +21,7 @@ package org.jajuk.ui.views;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.regex.PatternSyntaxException;
 
@@ -255,7 +256,8 @@ public class LogicalTableView extends AbstractTableView implements Observer{
 				}
 				//shuffle play
 				else if ( e.getSource() == jmiTrackPlayShuffle){
-					FIFO.getInstance().push(Util.randomize(alFilesToPlay),false);
+				    Collections.shuffle(alFilesToPlay);
+					FIFO.getInstance().push(alFilesToPlay,false);
 				}
 				//repeat play
 				else if ( e.getSource() == jmiTrackPlayRepeat){

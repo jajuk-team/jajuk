@@ -708,7 +708,8 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 					FIFO.getInstance().push(alFiles,true);
 				}
 				else if (alFiles!= null && alFiles.size() > 0 && (e.getSource() == jmiDirPlayShuffle || e.getSource() == jmiDevPlayShuffle)){
-					FIFO.getInstance().push(Util.randomize(alFiles),false);
+				    Collections.shuffle(alFiles);
+					FIFO.getInstance().push(alFiles,false);
 				}
 				else if (alFiles!= null && alFiles.size() > 0 && (e.getSource() == jmiDirPlayRepeat || e.getSource() == jmiDevPlayRepeat)){
 					FIFO.getInstance().push(alFiles,false,false,true);
@@ -800,7 +801,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 							FIFO.getInstance().push(alFiles,true);
 						}
 						else if ( e.getSource() == jmiPlaylistFilePlayShuffle ){
-							FIFO.getInstance().push(Util.randomize(alFiles),false);
+							FIFO.getInstance().push(alFiles,false);
 						}
 						else if ( e.getSource() == jmiPlaylistFilePlayRepeat){
 							FIFO.getInstance().push(alFiles,false,false,true);
