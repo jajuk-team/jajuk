@@ -94,7 +94,7 @@ public class JajukWindow extends JFrame implements ITechnicalStrings,ComponentLi
 	 */
 	public JajukWindow(){
 		jw = this;
-		bVisible = ConfigurationManager.getBoolean(CONF_SHOW_AT_STARTUP);
+		bVisible = ConfigurationManager.getBoolean(CONF_SHOW_AT_STARTUP,true);
 		iWidth = (int)(Toolkit.getDefaultToolkit().getScreenSize().getWidth());
 		iHeight = (int)(Toolkit.getDefaultToolkit().getScreenSize().getHeight());
 		setTitle(Messages.getString("Main.10"));  //$NON-NLS-1$
