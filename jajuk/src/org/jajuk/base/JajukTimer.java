@@ -107,11 +107,17 @@ public class JajukTimer {
     }
     
     /**
-     * 
      * @return Current track ellapsed time in secs
      */
     public long getCurrentTrackEllapsedTime(){
         return Player.getElapsedTime()/1000;
+    }
+    
+     /**
+     * @return Current track position in % (ex:0.2)
+     */
+    public float getCurrentTrackPosition(){
+        return Player.getCurrentPosition();
     }
     
     /**

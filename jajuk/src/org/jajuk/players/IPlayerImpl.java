@@ -71,6 +71,6 @@ public interface IPlayerImpl {
 	/**Return track position in %*/
 	public float getCurrentPosition();
 	
-	/**Return whether player is seeking */
-	public boolean isSeeking();
+	/**Return player state */
+	public int getState();
 }
