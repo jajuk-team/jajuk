@@ -22,7 +22,10 @@ package org.jajuk.base;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import javax.swing.JOptionPane;
+
 import org.jajuk.Main;
+import org.jajuk.i18n.Messages;
 import org.jajuk.ui.CommandJPanel;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.ObservationManager;
@@ -39,7 +42,7 @@ import org.jajuk.util.log.Log;
  * @created    12 oct. 2003
  */
 public class FIFO implements ITechnicalStrings,Runnable{
-
+	
 	/**Cuurently played track */
 	private File fCurrent;
 	
@@ -63,7 +66,7 @@ public class FIFO implements ITechnicalStrings,Runnable{
 	
 	/** Forced repeat mode flag*/
 	boolean bForcedRepeat;
-		
+	
 	/** Current track start date*/
 	public long lTrackStart; 
 	
@@ -173,17 +176,36 @@ public class FIFO implements ITechnicalStrings,Runnable{
 		Iterator it = alFiles.iterator();
 		while (it.hasNext()){
 			File file = (File)it.next();
-			if (file != null){
-				if ( !bAuto){
-					file.getTrack().setRate(file.getTrack().getRate()+2); //inc rate by 2 because it is explicitely selected to be played by human
-				}
-				alFIFO.add(file);
-				lTotalTime += file.getTrack().getLength();
+			if (file == null){
+				break;
 			}
+			if ( !file.isReady()){
+				//not mounted, ok let them a chance to mount it:
+				String sMessage = Messages.getString("Error.025")+" ("+file.getDirectory().getDevice().getName()+"). Do you want to try to mount it ?";
+				int i = JOptionPane.showConfirmDialog(Main.jframe,sMessage,Messages.getString("Warning"),JOptionPane.OK_CANCEL_OPTION,JOptionPane.WARNING_MESSAGE);
+				if ( i == JOptionPane.OK_OPTION){
+					try{
+						file.getDirectory().getDevice().mount();
+					}
+					catch(Exception e){
+						Log.error(e);
+						Messages.showErrorMessage("011",file.getDirectory().getDevice().getName());
+						break;
+					}
+				}
+				else{
+					break;
+				}
+			}
+			if ( !bAuto){
+				file.getTrack().setRate(file.getTrack().getRate()+2); //inc rate by 2 because it is explicitely selected to be played by human
+			}
+			alFIFO.add(file);
+			lTotalTime += file.getTrack().getLength();
 		}
 	}
 	
-
+	
 	/**
 	 * Push some files in the fifo
 	 * @param file, file to be played
@@ -209,7 +231,7 @@ public class FIFO implements ITechnicalStrings,Runnable{
 		push(file,bAppend,bAuto,false);
 	}
 	
-
+	
 	/**
 	 * Push some files in the fifo
 	 * @param alFiles, list of files to be played
@@ -229,7 +251,7 @@ public class FIFO implements ITechnicalStrings,Runnable{
 		push(file,bAppend,false);
 	}
 	
-		
+	
 	/**
 	 * Clears the fifo, for example when we want to add a group of files stopping previous plays
 	 *
@@ -474,7 +496,7 @@ public class FIFO implements ITechnicalStrings,Runnable{
 	public boolean isBestof() {
 		return bBestOf;
 	}
-
+	
 	/**
 	 * @param globalRandom The bGlobalRandom to set.
 	 */
@@ -488,7 +510,7 @@ public class FIFO implements ITechnicalStrings,Runnable{
 	public void setBestof(boolean bBestOf) {
 		this.bBestOf = bBestOf;
 	}
-		
+	
 	
 	/**
 	 * Get current position in %
@@ -519,7 +541,7 @@ public class FIFO implements ITechnicalStrings,Runnable{
 		}
 		lOffset +=  fCurrent.getTrack().getLength()*1000*(fPosition - fCurrentPosition);
 	}
-
+	
 	/**
 	 * Stop request. Void the fifo
 	 */
@@ -551,35 +573,35 @@ public class FIFO implements ITechnicalStrings,Runnable{
 			ObservationManager.notify(EVENT_PLAYER_UNPAUSE);
 		}
 	}
-
 	
-
+	
+	
 	/**
 	 * @return Returns the bPaused.
 	 */
 	public synchronized boolean isPaused() {
 		return bPaused;
 	}
-
+	
 	/**
 	 * @return Returns the bStop.
 	 */
 	public static boolean isStopped() {
 		return bStop;
 	}
-
+	
 	/**
 	 * @return Returns the play time in ms.
 	 */
 	public long getCurrentPlayTime() {
 		return lTime;
 	}
-
+	
 	/**
 	 * @return Returns the alFIFO.
 	 */
 	public synchronized ArrayList getFIFO() {
 		return alFIFO;
 	}
-
+	
 }

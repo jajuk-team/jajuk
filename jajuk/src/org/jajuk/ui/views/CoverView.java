@@ -40,6 +40,7 @@ import org.jajuk.ui.Observer;
 import org.jajuk.ui.ViewManager;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Util;
+import org.jajuk.util.log.Log;
 
 /**
  *  Cover view. Displays an image for the current album
@@ -64,9 +65,11 @@ public class CoverView extends ViewAdapter implements Observer{
 		try {
 			image = java.awt.Toolkit.getDefaultToolkit().getImage(new URL(IMAGES_SPLASHSCREEN));
 		} catch (MalformedURLException e) {
-			e.printStackTrace();
+			Log.error(e);
 		}
 		ObservationManager.register(EVENT_COVER_REFRESH,this);
+		ObservationManager.register(EVENT_PLAYER_STOP,this);
+		
 	}
 	
 	/* (non-Javadoc)
@@ -88,7 +91,7 @@ public class CoverView extends ViewAdapter implements Observer{
 	 * @see org.jajuk.ui.Observer#update(java.lang.String)
 	 */
 	public void update(String subject){
-		if ( subject.equals(EVENT_COVER_REFRESH)){
+		if ( EVENT_COVER_REFRESH.equals(subject)){
 			java.io.File fDir = new java.io.File(FIFO.getInstance().getCurrentFile().getAbsolutePath()).getParentFile();
 			if ( !fDir.exists() || (this.fDir!= null && this.fDir.equals(fDir)) ){  //if we are always in the same directory, just leave to save cpu
 				return;
@@ -118,8 +121,16 @@ public class CoverView extends ViewAdapter implements Observer{
 				try {
 					image = java.awt.Toolkit.getDefaultToolkit().getImage(new URL(IMAGES_SPLASHSCREEN));
 				} catch (MalformedURLException e) {
-					e.printStackTrace();
+					Log.error(e);
 				}
+			}
+			display();
+		}
+		else if ( EVENT_PLAYER_STOP.equals(subject)){
+			try {
+				image = java.awt.Toolkit.getDefaultToolkit().getImage(new URL(IMAGES_SPLASHSCREEN));
+			} catch (MalformedURLException e) {
+				Log.error(e);
 			}
 			display();
 		}

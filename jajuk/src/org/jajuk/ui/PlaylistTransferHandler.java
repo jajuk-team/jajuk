@@ -90,15 +90,19 @@ public class PlaylistTransferHandler implements DropTargetListener {
 				TransferableTreeNode ttn = (TransferableTreeNode)transferable.getTransferData(TransferableTreeNode.NODE_FLAVOR);
 				PlaylistFileItem plfi = (PlaylistFileItem)(((DropTarget)dtde.getSource()).getComponent());
 				Object oData = ttn.getData();
-				if ( plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_NEW){
+				if ( plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE){
 					if (oData instanceof File){
-						plfi.getPlaylistFile().addBasicFile(new BasicFile((File)oData));
 						FIFO.getInstance().push((File)oData,true);
 					}
 				}
 				else if ( plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_BOOKMARK){
 					if (oData instanceof File){
 						Bookmarks.getInstance().addFile((File)oData);
+					}
+				}
+				else if ( plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_NORMAL){
+					if (oData instanceof File){
+						plfi.getPlaylistFile().addBasicFile(new BasicFile((File)oData));
 					}
 				}
 			}

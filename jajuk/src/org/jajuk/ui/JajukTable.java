@@ -21,6 +21,13 @@
 package org.jajuk.ui;
 
 import java.awt.Component;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.awt.dnd.DnDConstants;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.swing.JComponent;
 import javax.swing.JTable;
@@ -37,7 +44,7 @@ import com.sun.TableSorter;
  * @author     bflorat
  * @created    21 févr. 2004
  */
-public class JajukTable extends JTable{
+public class JajukTable extends JTable {
 
 	/**
 	 * Constructor
@@ -71,5 +78,7 @@ public class JajukTable extends JTable{
 		}
 		return c;
 	}
-
+	
 }
+
+

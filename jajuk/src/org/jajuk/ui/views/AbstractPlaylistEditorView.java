@@ -30,7 +30,6 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.JToolBar;
 import javax.swing.table.AbstractTableModel;
 
@@ -191,7 +190,6 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 		
 		jtable = new JajukTable(model);
 		jtable.addMouseListener(this);
-		jtable.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
 		double size[][] =
 		{{0.99},
 		{30,0.99}};
@@ -220,26 +218,26 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 		//clean data
 		alFiles = new ArrayList(10);
 		switch(iType){
-			case 0:  //regular playlist
+			case PlaylistFileItem.PLAYLIST_TYPE_NORMAL:  //regular playlist
 				alFiles = plfi.getPlaylistFile().getBasicFiles();
 				break;
-			case 1:  //new playlist
+			case PlaylistFileItem.PLAYLIST_TYPE_NEW:  //new playlist
 				break;
-			case 2:  //bookmarks
+			case PlaylistFileItem.PLAYLIST_TYPE_BOOKMARK:  //bookmarks
 				ArrayList alBookmarks = Bookmarks.getInstance().getFiles(); 
 				Iterator it = alBookmarks.iterator();
 				while (it.hasNext()){
 					alFiles.add(new BasicFile((File)it.next()));
 				}
 				break;
-			case 3:  //bestof
+			case PlaylistFileItem.PLAYLIST_TYPE_BESTOF:  //bestof
 				ArrayList alBestof = FileManager.getBestOfFiles(); 
 				it = alBestof.iterator();
 				while (it.hasNext()){
 					alFiles.add(new BasicFile((File)it.next()));
 				}
 				break;
-			case 4:  //queue
+			case PlaylistFileItem.PLAYLIST_TYPE_QUEUE:  //queue
 				if ( FIFO.isStopped()){
 					break;
 				}
@@ -266,24 +264,41 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 	 */
 	public void update(String subject) {
 		if ( EVENT_PLAYLIST_REFRESH.equals(subject)){
-			//remove old rows
-			if (alFiles != null && alFiles.size()>0){
-				alFiles = new ArrayList(10);
-			 	model.fireTableRowsDeleted(0,alFiles.size()-1);
-			}
+			ArrayList alPrevious = (ArrayList)alFiles.clone();
 			if ( plfi != null){
 				jlTitle.setText(plfi.getName());
 				jlTitle.setToolTipText(plfi.getName());
+				alFiles = new ArrayList(10);
 				populate();
+				//check if a refresh is need
 				iRowNum = alFiles.size();
-				if ( alFiles.size() > 0){
+				boolean bNeedRefresh = false;
+				if ( iRowNum != alPrevious.size() || iRowNum == 0){
+					bNeedRefresh = true;
+				}
+				else{
+					Iterator it = alPrevious.iterator();
+					Iterator it2 = alFiles.iterator();
+					while ( it.hasNext()){
+						File file = (File)it.next();
+						if ( !file.equals(it2.next())){
+							bNeedRefresh = true;
+							break;
+						}
+					}
+				}
+				if ( alFiles.size() > 0 && bNeedRefresh){
+					//remove old rows
+					if (alFiles != null && alFiles.size()>0){
+						model.fireTableRowsDeleted(0,alFiles.size()-1);
+					}
 					model.fireTableRowsInserted(0,alFiles.size()-1);				
 				}
 				//set colunm size
-				/*int iTrackColWidth = jtable.getColumnModel().getColumn(0).getPreferredWidth();
+				int iTrackColWidth = jtable.getColumnModel().getColumn(0).getPreferredWidth();
 				int iLocationColWidth = jtable.getColumnModel().getColumn(0).getPreferredWidth();
 				jtable.getColumnModel().getColumn(0).setPreferredWidth((int)((iTrackColWidth+iLocationColWidth)*0.2)); // track name
-				jtable.getColumnModel().getColumn(1).setPreferredWidth((int)((iTrackColWidth+iLocationColWidth)*0.8)); //location*/
+				jtable.getColumnModel().getColumn(1).setPreferredWidth((int)((iTrackColWidth+iLocationColWidth)*0.8)); //location
 				//set buttons
 				if ( iType == PlaylistFileItem.PLAYLIST_TYPE_QUEUE){
 					jbAdd.setEnabled(false);

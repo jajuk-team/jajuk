@@ -534,6 +534,8 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 			}
 		}
 		bMounted = true;
+		//notify views to refresh
+		ObservationManager.notify(EVENT_DEVICE_MOUNT);
 	}
 	
 	/**
