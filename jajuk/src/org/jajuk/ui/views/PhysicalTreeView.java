@@ -39,6 +39,8 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.SwingUtilities;
+import javax.swing.event.TreeExpansionEvent;
+import javax.swing.event.TreeExpansionListener;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 import javax.swing.event.TreeSelectionEvent;
@@ -562,6 +564,34 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 			}
 		};
 		jtree.addMouseListener(ml);
+		//Expansion analyse to keep expended state 
+		jtree.addTreeExpansionListener(new TreeExpansionListener() {
+			public void treeCollapsed(TreeExpansionEvent event) {
+				Object o = event.getPath().getLastPathComponent(); 
+				if (o instanceof DirectoryNode){
+					Directory dir = ((DirectoryNode)o).getDirectory(); 
+					dir.removeProperty(OPTION_EXPANDED);
+				}
+				else if (o instanceof DeviceNode){
+					Device device = ((DeviceNode)o).getDevice();
+					device.removeProperty(OPTION_EXPANDED);
+				}
+			}
+
+			public void treeExpanded(TreeExpansionEvent event) {
+				Object o = event.getPath().getLastPathComponent(); 
+				if (o instanceof DirectoryNode){
+					Directory dir = ((DirectoryNode)o).getDirectory(); 
+					dir.removeProperty(OPTION_EXPANDED);
+					dir.setProperty(OPTION_EXPANDED,"y");
+				}
+				else if (o instanceof DeviceNode){
+					Device device = ((DeviceNode)o).getDevice();
+					device.setProperty(OPTION_EXPANDED,"y");
+				}
+				
+			}
+		});
 		jtree.setAutoscrolls(true);
 		//DND support
 		new TreeTransferHandler(jtree, DnDConstants.ACTION_COPY_OR_MOVE,true);
@@ -570,11 +600,20 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 		//expand all
 		for (int i=0;i<jtree.getRowCount();i++){
 			Object o = jtree.getPathForRow(i).getLastPathComponent(); 
-			if ( o instanceof DeviceNode && ((DeviceNode)o).getDevice().isMounted()  && !((DeviceNode)o).getDevice().isRefreshing()){
-				jtree.expandRow(i); 
+			if ( o instanceof DeviceNode && ((DeviceNode)o).getDevice().isMounted()  && !((DeviceNode)o).getDevice().isRefreshing() 
+					&& !((DeviceNode)o).getDevice().isSynchronizing() ){
+				Device device = ((DeviceNode)o).getDevice();
+				String sExp = device.getProperty(OPTION_EXPANDED); 
+				if ( "y".equals(sExp)){
+					jtree.expandRow(i);	
+				}
 			}
-			else if (o instanceof DirectoryNode && ((DirectoryNode)o).getDirectory().getFiles().size()==0){
-				jtree.expandRow(i);
+			else if ( o instanceof DirectoryNode){
+				Directory dir = ((DirectoryNode)o).getDirectory();
+				String sExp = dir.getProperty(OPTION_EXPANDED); 
+				if ( "y".equals(sExp)){
+					jtree.expandRow(i);	
+				}
 			}
 		}
 		jspTree = new JScrollPane(jtree);
@@ -662,8 +701,10 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 	public void update(String subject) {
 		if ( subject.equals(EVENT_DEVICE_MOUNT) || subject.equals(EVENT_DEVICE_UNMOUNT) || subject.equals(EVENT_DEVICE_REFRESH) ) {
 			populate();
+			int i = jspTree.getVerticalScrollBar().getValue();
 			SwingUtilities.updateComponentTreeUI(jtree);
 			jtree.setRowHeight(25);
+			jspTree.getVerticalScrollBar().setValue(i);
 		}
 	}
 

@@ -174,7 +174,9 @@ public interface ITechnicalStrings {
 	public static final String DEVICE_OPTION_SYNCHRO_MODE_BI = "bi";
 	public static final String DEVICE_OPTION_SYNCHRO_MODE_UNI = "uni";
 	public static final String DEVICE_OPTION_SYNCHRO_OPT1 = "opt1";
+	
 	public static final String DIRECTORY_OPTION_SYNCHRO_MODE = "sync";  //can be 'y' or 'n'
+	public static final String OPTION_EXPANDED = "exp";  //can be 'y' or 'n'
 	
 	//perspectives
 	public static final String PERSPECTIVE_NAME_PHYSICAL = "org.jajuk.ui.perspectives.PhysicalPerspective";
