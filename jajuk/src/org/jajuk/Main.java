@@ -1,13 +1,19 @@
 /*
  * Jajuk Copyright (C) 2003 bflorat
  * 
- * This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the
+ * This program is free software; you can redistribute 
+ * it and/or modify it under the terms of the GNU General Public License
+ *  as published by the Free Software Foundation; either version 2 of the
  * License, or any later version.
  * 
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * This program is distributed in the hope that it will be useful, but 
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY 
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
  * 
- * You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,USA
+ * You should have received a copy of the GNU General Public License along 
+ * with this program; if not, write to the Free Software Foundation, 
+ * Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,USA
  * $Revision$
  */
 package org.jajuk;
@@ -45,7 +51,6 @@ import org.jajuk.ui.PerspectiveBarJPanel;
 import org.jajuk.ui.PerspectiveManager;
 import org.jajuk.ui.SplashScreen;
 import org.jajuk.ui.ViewManager;
-import org.jajuk.ui.perspectives.ConfigurationPerspective;
 import org.jajuk.ui.views.DeviceView;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.error.JajukException;
@@ -102,6 +107,8 @@ public class Main implements ITechnicalStrings {
 			LNFManager.register(LNF_GTK,"com.sun.java.swing.plaf.gtk.GTKLookAndFeel"); //$NON-NLS-1$
 			LNFManager.register(LNF_WINDOWS,"com.sun.java.swing.plaf.windows.WindowsLookAndFeel");//$NON-NLS-1$
 			LNFManager.register(LNF_KUNSTSTOFF,"com.incors.plaf.kunststoff.KunststoffLookAndFeel");//$NON-NLS-1$
+			LNFManager.register(LNF_LIQUID,"com.birosoft.liquid.LiquidLookAndFeel");//$NON-NLS-1$
+			
 			//perform initial checkups
 			initialCheckups();
 			
@@ -111,7 +118,9 @@ public class Main implements ITechnicalStrings {
 			//Load collection
 			Collection.load();
 			
-						
+			//	Clean the collection up
+			org.jajuk.base.Collection.cleanup();
+								
 			//Load user configuration
 			org.jajuk.util.ConfigurationManager.load();
 			
@@ -120,7 +129,6 @@ public class Main implements ITechnicalStrings {
 						
 			//Set local
 			Messages.setLocal(ConfigurationManager.getProperty(CONF_OPTIONS_LANGUAGE));
-			
 			
 			//Load history
 			History.load();
@@ -147,7 +155,6 @@ public class Main implements ITechnicalStrings {
 			// Create the information bar panel
 			information = InformationJPanel.getInstance();
 			//****temp
-			information.setMessage("Now playing foo track...", InformationJPanel.INFORMATIVE); //temp //$NON-NLS-1$
 			information.setSelection("124 items : 4.5Mo"); //temp //$NON-NLS-1$
 			information.setCurrentStatusMessage("00:01:02/00:05:12"); //$NON-NLS-1$
 			information.setTotalStatus(50);
@@ -194,6 +201,9 @@ public class Main implements ITechnicalStrings {
 			
 			//Mount and refresh devices
 			mountAndRefresh();
+			
+			//Display a message
+			information.setMessage("Jajuk successfully started", InformationJPanel.INFORMATIVE); //$NON-NLS-1$
 			
 			//Lauch startup track if any
 			launchInitialTrack();
@@ -287,9 +297,7 @@ public class Main implements ITechnicalStrings {
 				FIFO.push(alFiles,false);
 			}
 			else if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_FILE)){
-				ArrayList alFiles = new ArrayList(1);
-				alFiles.add(FileManager.getFile(ConfigurationManager.getProperty(CONF_STARTUP_FILE)));
-				FIFO.push(alFiles,false);
+				//TODO implements file selection
 			}
 			else if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_SHUFFLE)){
 				org.jajuk.base.File file = FileManager.getShuffleFile();

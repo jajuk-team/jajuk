@@ -21,6 +21,7 @@ package org.jajuk.base;
 
 import java.util.ArrayList;
 
+import org.jajuk.ui.InformationJPanel;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.log.Log;
 
@@ -82,6 +83,21 @@ public class FIFO extends Thread implements ITechnicalStrings{
 	}
 	
 	/**
+	 * Push one file in the fifo
+	 * @param file, file to be played
+	 * @param bAppend keep previous files or stop them to start a new one ?
+	 */
+	public static synchronized void push(File file, boolean bAppend) {
+		if (!bAppend) {
+			Player.stop();
+			bPlaying = false;
+			clear();
+		}
+		alFIFO.add(file);
+	}
+	
+	
+	/**
 	 * Clears the fifo, for example when we want to add a group of files stopping previous plays
 	 *
 	 */
@@ -121,6 +137,8 @@ public class FIFO extends Thread implements ITechnicalStrings{
 				Log.debug("Now playing :"+fCurrent); //$NON-NLS-1$
 				bPlaying = true;
 				Player.play(fCurrent);  //play it
+				History.getInstance().addItem(fCurrent.getId(),System.currentTimeMillis());
+				InformationJPanel.getInstance().setMessage("Now Playing : "+fCurrent.getTrack().getName(),InformationJPanel.INFORMATIVE);
 			}
 		} catch (Exception e) {
 			Log.error("122", e); //$NON-NLS-1$
@@ -140,7 +158,6 @@ public class FIFO extends Thread implements ITechnicalStrings{
 	 *
 	 */
 	public static synchronized void finished(){
-		Log.debug(fCurrent+ " is finished"); //$NON-NLS-1$
 		bPlaying = false;
 	}
 	

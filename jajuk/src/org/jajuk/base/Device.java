@@ -197,9 +197,6 @@ public class Device extends PropertyAdapter implements ITechnicalStrings{
 				}
 				Log.debug("Refresh done. Found : "+FileManager.getFiles().size()+" files in "+(int)((System.currentTimeMillis()-lTime)/1000)+" sec");
 				bAlreadyRefreshing = false;
-				
-				//Clean the collection up
-				Collection.cleanup();
 			}
 		}
 		.start();

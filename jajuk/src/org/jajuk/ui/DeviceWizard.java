@@ -129,6 +129,8 @@ public class DeviceWizard extends JFrame implements ActionListener,ITechnicalStr
 			Device device = (Device) it.next();
 			jcbSynchronized.addItem(device.getName());
 		}
+		//Default automount behavior
+		jcbType.addActionListener(this);
 		bgSynchro = new ButtonGroup();
 		jrbFullSynchro = new JRadioButton("Full synchronization");
 		jrbFullSynchro.setBorder(BorderFactory.createEmptyBorder(0, 25, 0, 0));
@@ -204,6 +206,7 @@ public class DeviceWizard extends JFrame implements ActionListener,ITechnicalStr
 	public void updateWidgetsDefault(){
 		jcbRefresh.setSelected(true);
 		jcbAutoRefresh.setEnabled(false);
+		jcbAutoMount.setSelected(true);
 		jrbFullSynchro.setSelected(true);//default synchro mode
 		jrbFullSynchro.setEnabled(false);
 	}
@@ -214,15 +217,12 @@ public class DeviceWizard extends JFrame implements ActionListener,ITechnicalStr
 	public void updateWidgets(Device device){
 		bNew = false;
 		this.device = device;
-		
-		//no instant refresh for updates
-		jcbRefresh.setEnabled(false);
-		jcbRefresh.setSelected(false);
 		updateWidgetsDefault();
 		jcbType.setSelectedItem(device.getDeviceTypeS());
 		jtfName.setText(device.getName());
 		jtfUrl.setText(device.getUrl());
 		jtfMountPoint.setText(device.getMountPoint());
+		jcbRefresh.setEnabled(false); //no instant refresh for updates
 		jcbRefresh.setSelected(false);
 		if (TRUE.equals(device.getProperty(DEVICE_OPTION_AUTO_MOUNT))){
 			jcbAutoMount.setSelected(true);
@@ -402,7 +402,28 @@ public class DeviceWizard extends JFrame implements ActionListener,ITechnicalStr
 					jtfMountPoint.setText(file.getAbsolutePath());
 				}
 			}
-			
+		}
+		else if(e.getSource() == jcbType){
+			switch(jcbType.getSelectedIndex()){
+					case 0: //directory
+						jcbAutoMount.setSelected(true);
+						break;
+					case 1: //file cd
+						jcbAutoMount.setSelected(false);
+						break;
+					case 2: //audio cd
+						jcbAutoMount.setSelected(false);
+						break;
+					case 3: //remote
+						jcbAutoMount.setSelected(false);
+						break;
+					case 4: //ext dd
+						jcbAutoMount.setSelected(false);
+						break;
+					case 5: //player
+						jcbAutoMount.setSelected(false);
+						break;
+				}
 		}
 	}
 }

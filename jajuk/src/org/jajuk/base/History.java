@@ -25,13 +25,13 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import org.jajuk.i18n.Messages;
+import org.jajuk.ui.CommandJPanel;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.xml.sax.Attributes;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
-import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 
 /**
@@ -62,13 +62,15 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
 	}
 	
 	/** Add an history item */
-	public void addItem(String sFileId,long lDate){
+	public synchronized HistoryItem addItem(String sFileId,long lDate){
 		HistoryItem hi = new HistoryItem(sFileId,lDate);
 		alHistory.add(hi);
+		CommandJPanel.getInstance().addHistoryItem(hi);
+		return hi;
 	}
 	
 	/** Clear history */
-	public void clear(){
+	public synchronized void clear(){
 		alHistory.clear();
 	}
 	
@@ -114,12 +116,21 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
 	 * 
 	 * @return id of last played registered track or null if history is empty
 	 */
-	public String getLastFile(){
+	public synchronized String getLastFile(){
 		if (alHistory.size() == 0){
 			return null;
 		}
 		HistoryItem hiLast = (HistoryItem)alHistory.get(alHistory.size()); 
 		return hiLast.getFileId();
+	}
+	
+	/**
+	 * Return the history item by index
+	 * @param index
+	 * @return
+	 */
+	public synchronized HistoryItem getHistoryItem(int index){
+		return (HistoryItem)alHistory.get(alHistory.size()-1-index);
 	}
 	
 	
@@ -188,53 +199,14 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
 
 	}
 
+	/**
+	 * @return Returns the alHistory.
+	 */
+	public ArrayList getHistory() {
+		return alHistory;
+	}
+
 }
 
 
-/**
- * An history item
- *
- * @author     bflorat
- * @created    19 nov. 2003
- */
-class HistoryItem{
-	/**File Id*/
-	private String sFileId;
-	/**Play date*/
-	private long lDate;
-	
-	public HistoryItem(String sFileId,long lDate){
-		this.sFileId = sFileId;
-		this.lDate = lDate;
-	}
-	
-	
-	/**
-	 * @return Returns the date.
-	 */
-	public long getDate() {
-		return lDate;
-	}
 
-	/**
-	 * @param date The date to set.
-	 */
-	public void setDate(long lDate) {
-		this.lDate = lDate;
-	}
-
-	/**
-	 * @return Returns the sFileId.
-	 */
-	public String getFileId() {
-		return sFileId;
-	}
-
-	/**
-	 * @param fileId The sFileId to set.
-	 */
-	public void setFileId(String fileId) {
-		sFileId = fileId;
-	}
-
-}

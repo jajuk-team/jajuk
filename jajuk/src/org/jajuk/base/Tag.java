@@ -13,12 +13,11 @@
 package org.jajuk.base;
 
 import java.io.File;
+import java.util.StringTokenizer;
 
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
-
-import com.sun.rsasign.t;
 
 /**
  * abstract tag, independent from real implementation
@@ -53,12 +52,12 @@ public class Tag {
 	 * @return track name as defined in tags are file name otherwise
 	 */
 	public String getTrackName() {
-		String sTrackName = fio.getName();
+		String sTrackName = new StringTokenizer(Util.formatTag(fio.getName()),".").nextToken().toString();
 		String sTemp = "";
 		try {
 			sTemp = tagImpl.getTrackName();
 			if (sTemp != null && !sTemp.equals("")){
-				sTrackName = Util.formatTag(sTemp);
+				sTrackName = Util.formatTag(sTemp);  //remove the extension
 			}
 		} catch (Exception e) {
 			Log.error("103", fio.getName(),e);

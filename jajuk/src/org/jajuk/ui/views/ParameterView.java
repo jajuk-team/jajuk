@@ -27,14 +27,13 @@ import java.util.Iterator;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
 import javax.swing.InputVerifier;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
-import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
@@ -44,7 +43,6 @@ import layout.TableLayout;
 
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.InformationJPanel;
-import org.jajuk.ui.JajukFileChooser;
 import org.jajuk.ui.LNFManager;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.MD5Processor;
@@ -73,7 +71,7 @@ public class ParameterView extends ViewAdapter implements ActionListener {
 		JRadioButton jrbLast;
 		JRadioButton jrbShuffle;
 		JRadioButton jrbFile;
-		JButton jbFile;		
+		JList jlFile;		
 	JPanel jpConfirmations;
 		JCheckBox jcbBeforeDelete;
 		JCheckBox jcbBeforeExit;
@@ -157,7 +155,7 @@ public class ParameterView extends ViewAdapter implements ActionListener {
 		jpHistory.setBorder(BorderFactory.createTitledBorder(Messages.getString("ParameterView.8"))); //$NON-NLS-1$
 		//Start
 		jpStart = new JPanel();
-		double sizeStart[][] = {{0.15,iXSeparator,0.6,iXSeparator,0.1,iXSeparator},
+		double sizeStart[][] = {{0.15,iXSeparator,0.4,iXSeparator,0.3,iXSeparator},
 												 {20,iYSeparator,20,iYSeparator,20,iYSeparator,20}};
 		jpStart.setLayout(new TableLayout(sizeStart));
 		jlStart = new JLabel(Messages.getString("ParameterView.9")); //$NON-NLS-1$
@@ -170,21 +168,19 @@ public class ParameterView extends ViewAdapter implements ActionListener {
 		jrbShuffle.setToolTipText(Messages.getString("ParameterView.15")); //$NON-NLS-1$
 		jrbFile = new JRadioButton(Messages.getString("ParameterView.16")); //$NON-NLS-1$
 		jrbFile.setToolTipText(Messages.getString("ParameterView.17")); //$NON-NLS-1$
-		jbFile = new JButton(new ImageIcon(ICON_OPEN_FILE));		
-		jbFile.addActionListener(this);
-		jbFile.setToolTipText(Messages.getString("ParameterView.18")); //$NON-NLS-1$
+		jlFile = new JList();	
+		jlFile.setToolTipText(Messages.getString("ParameterView.18")); //$NON-NLS-1$
 		bgStart.add(jrbNothing);
 		bgStart.add(jrbLast);
 		bgStart.add(jrbShuffle);
 		bgStart.add(jrbFile);
-		jbFile.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));	
 		jpStart.setBorder(BorderFactory.createTitledBorder(Messages.getString("ParameterView.19"))); //$NON-NLS-1$
 		jpStart.add(jlStart,"0,2"); //$NON-NLS-1$
 		jpStart.add(jrbNothing,"2,0"); //$NON-NLS-1$
 		jpStart.add(jrbLast,"2,2"); //$NON-NLS-1$
 		jpStart.add(jrbShuffle,"2,4"); //$NON-NLS-1$
 		jpStart.add(jrbFile,"2,6"); //$NON-NLS-1$
-		jpStart.add(jbFile,"4,6"); //$NON-NLS-1$
+		jpStart.add(jlFile,"4,6"); //$NON-NLS-1$
 		//Confirmations
 		jpConfirmations = new JPanel();
 		jpConfirmations.setBorder(BorderFactory.createTitledBorder(Messages.getString("ParameterView.26"))); //$NON-NLS-1$
@@ -364,16 +360,6 @@ public class ParameterView extends ViewAdapter implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == jbClearHistory){
 			//clear
-		}
-		else if (e.getSource() == jbFile){
-			jrbFile.setSelected(true);
-			JajukFileChooser jfc = new JajukFileChooser();
-			jfc.setMultiSelectionEnabled(false);
-			int returnVal = jfc.showOpenDialog(this);
-			if (returnVal == JFileChooser.APPROVE_OPTION) {
-				java.io.File file = jfc.getSelectedFile();
-				ConfigurationManager.setProperty(CONF_STARTUP_FILE,file.getAbsolutePath());	
-			}
 		}
 		else if (e.getSource() == jbOK){
 			//**Read all parameters**

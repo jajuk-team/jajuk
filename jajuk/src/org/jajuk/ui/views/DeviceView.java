@@ -201,7 +201,8 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 		jpDevices.add(diNew);
 		diNew.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-					new DeviceWizard();
+					DeviceWizard dw = new DeviceWizard();
+					dw.updateWidgetsDefault();
 			}
 		});
 		

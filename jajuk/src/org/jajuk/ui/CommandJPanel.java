@@ -20,10 +20,17 @@
  */
 package org.jajuk.ui;
 
+import java.awt.Dimension;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.Vector;
+
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
@@ -32,6 +39,11 @@ import javax.swing.JToolBar;
 
 import layout.TableLayout;
 
+import org.jajuk.base.FIFO;
+import org.jajuk.base.File;
+import org.jajuk.base.FileManager;
+import org.jajuk.base.History;
+import org.jajuk.base.HistoryItem;
 import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
@@ -42,7 +54,7 @@ import org.jajuk.util.ConfigurationManager;
  * @author     bflorat
  * @created    3 oct. 2003
  */
-public class CommandJPanel extends JPanel implements ITechnicalStrings{
+public class CommandJPanel extends JPanel implements ITechnicalStrings,ItemListener{
 	
 	//singleton
 	static private CommandJPanel command;
@@ -51,7 +63,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings{
 		 JToolBar jtbSearch;
 			JTextField jtfSearch;
 		JToolBar jtbHistory;
-			JComboBox jcbHistory;
+			SteppedComboBox jcbHistory;
 		JToolBar jtbMode;
 			JButton jbRepeat;
 			JButton jbRandom;
@@ -74,6 +86,8 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings{
 		JToolBar jtbPosition;
 			JLabel jlPosition;
 			JSlider jsPosition;
+			
+		boolean bSelect = false;
 			
 	//variables declaration
 	/**Repeat mode flag*/
@@ -99,7 +113,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings{
 		int height2 = 36; //slider ( at least this height in the gtk+ l&f ) 
 		int iSeparator = 0;
 		//set default layout and size
-		double[][] size ={{0.15,iSeparator,0.15,iSeparator,0.13,iSeparator,0.10,iSeparator,0.19,iSeparator,0.13,iSeparator,0.13},
+		double[][] size ={{0.15,iSeparator,200,iSeparator,0.13,iSeparator,0.10,iSeparator,0.19,iSeparator,0.13,iSeparator,0.13},
 						{height1}};
 		setLayout(new TableLayout(size));
 		setBorder(BorderFactory.createEtchedBorder());
@@ -111,9 +125,20 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings{
 			
 		//history toolbar
 		jtbHistory = new JToolBar();
-		jcbHistory = new JComboBox();
+		jcbHistory = new SteppedComboBox(new Vector());
+		jcbHistory.setMinimumSize(new Dimension(180,20));
+		jcbHistory.setPreferredSize(new Dimension(180,20));
+		jcbHistory.setMaximumSize(new Dimension(180,20));
+		jcbHistory.setPopupWidth(1000);
 		jcbHistory.setToolTipText(Messages.getString("CommandJPanel.play_history_1")); //$NON-NLS-1$
+		Iterator it1 = History.getInstance().getHistory().iterator();
+		while (it1.hasNext()){
+			HistoryItem hi = (HistoryItem)it1.next();
+			addHistoryItem(hi);
+		}
+		jcbHistory.addItemListener(this);
 		jtbHistory.add(jcbHistory);
+		
 		
 		//Mode toolbar
 		jtbMode = new JToolBar();
@@ -198,6 +223,41 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings{
 		add(jtbPlay,"8,0");
 		add(jtbVolume,"10,0");
 		add(jtbPosition,"12,0");
+	}
+	
+	/** 
+	 * Add an history item in the history combo box
+	 * @param file
+	 */
+	public void addHistoryItem(HistoryItem hi){
+		File file = FileManager.getFile(hi.getFileId());
+		String sAuthor = file.getTrack().getAuthor().getName();
+		if (sAuthor.equals(Messages.getString("Track_unknown_author"))){
+			sAuthor = "";
+		}
+		else{
+			sAuthor +=" / ";
+		}
+		String sDate = new SimpleDateFormat("dd/MM/yy HH:mm").format(new Date(hi.getDate()));
+		String sOut = "["+sDate+"] "+sAuthor+file.getTrack().getName();
+		jcbHistory.insertItemAt(sOut,0);
+		bSelect = false;
+		jcbHistory.setSelectedIndex(0);
+		bSelect = true;
+	}
+
+
+
+	/* (non-Javadoc)
+	 * @see java.awt.event.ItemListener#itemStateChanged(java.awt.event.ItemEvent)
+	 */
+	public void itemStateChanged(ItemEvent arg0) {
+		if ( bSelect && arg0.getSource() == jcbHistory){
+			HistoryItem hi = History.getInstance().getHistoryItem(jcbHistory.getSelectedIndex());
+			System.out.println(FileManager.getFile(hi.getFileId()));
+			FIFO.push(FileManager.getFile(hi.getFileId()),false);
+		}
+	
 	}
 
 }

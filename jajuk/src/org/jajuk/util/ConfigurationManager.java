@@ -30,6 +30,7 @@ import org.jajuk.i18n.Messages;
 import org.jajuk.util.log.Log;
 
 /**
+ * @TODO a faire
  * Manage all the configuration and user preferences of jajuk.
  * <p> Singleton
  * @author		bflorat
@@ -100,7 +101,7 @@ public class ConfigurationManager implements ITechnicalStrings{
 		else{
 			properties.put(CONF_OPTIONS_LANGUAGE,"en");
 		}
-		properties.put(CONF_OPTIONS_LNF,LNF_KUNSTSTOFF);
+		properties.put(CONF_OPTIONS_LNF,LNF_LIQUID);
 		properties.put(CONF_OPTIONS_LOG_LEVEL,Integer.toString(Log.WARNING));
 		properties.put(CONF_OPTIONS_INTRO_BEGIN,"0");
 		properties.put(CONF_OPTIONS_INTRO_LENGTH,"20");

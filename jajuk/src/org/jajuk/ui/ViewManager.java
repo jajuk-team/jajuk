@@ -69,7 +69,7 @@ public class ViewManager implements ITechnicalStrings{
 				ji.repaint();
 				IPerspective perspective = (IPerspective)hmViewPerspective.get(view.getName());
 				perspective.getDesktop().repaint();
-				Main.jframe.repaint();
+			//	Main.jframe.repaint();
 			}
 			else if (sEvent.equals(EVENT_VIEW_CLOSE_REQUEST)){
 				JInternalFrame ji = (JInternalFrame)hmViewContainer.get(view.getName());
