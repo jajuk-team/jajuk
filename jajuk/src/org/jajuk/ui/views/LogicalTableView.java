@@ -281,9 +281,7 @@ public class LogicalTableView extends AbstractTableView implements Observer{
 		int iSize = alToShow.size();
 		int iColNum = 6 ;
 		it = alToShow.iterator();
-		Object[][] oValues = new Object[iSize][iColNum+1];
 		//Track | Album | Author | Length | Style | Rate	
-		int i=0;
 		while (it.hasNext()){
 			Track track = (Track)it.next();
 			if ( sPropertyName != null && sPropertyValue!= null){ //if name or value are null, means there is no filter
@@ -291,12 +289,15 @@ public class LogicalTableView extends AbstractTableView implements Observer{
 				if ( sValue == null){ //try to filter on a unknown property, don't take this file
 					continue;
 				}
-				if ( sValue.toLowerCase().indexOf(sPropertyValue.toLowerCase()) == -1){  // test if the property contains this property value ( ignore case )
+				else if ( sValue.toLowerCase().indexOf(sPropertyValue.toLowerCase()) == -1){  // test if the property contains this property value ( ignore case )
 					it.remove(); //no? remove it
-					continue;
 				}
 			}
-			//else, populate this values
+		}
+		//populate this values
+		Object[][] oValues = new Object[alToShow.size()][iColNum+1];
+		for  (int i=0;i<alToShow.size();i++){
+			Track track = (Track)alToShow.get(i);
 			oValues[i][0] = track.getName();
 			oValues[i][1] = track.getAlbum().getName2();
 			oValues[i][2] = track.getAuthor().getName2();
@@ -304,7 +305,6 @@ public class LogicalTableView extends AbstractTableView implements Observer{
 			oValues[i][4] = track.getStyle().getName2();
 			oValues[i][5] = new Long(track.getRate());
 			oValues[i][6] = track.getId();
-			i++;
 		}
 		model.setValues(oValues);
 		model.fireTableDataChanged();

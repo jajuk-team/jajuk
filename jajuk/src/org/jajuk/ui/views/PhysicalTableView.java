@@ -281,25 +281,23 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
 		int iSize = alFiles.size();
 		int iColNum = 8;
 		it = alToShow.iterator();
-		Object[][] oValues = new Object[iSize][iColNum+1];
 		//Track | Album | Author |  Length | Style | Device | File name | Rate
-		int i=0;
 		while (it.hasNext()){
 			File file = (File)it.next();
-			if ( file.shouldBeHidden()){
-				continue;
-			}
 			if ( sPropertyName != null && sPropertyValue != null ){ //if name or value is null, means there is no filter
 				String sValue = file.getProperty(sPropertyName);
 				if ( sValue == null){ //try to filter on a unknown property, don't take this file
 					continue;
 				}
-				if ( sValue.toLowerCase().indexOf(sPropertyValue.toLowerCase()) == -1){  // test if the file porperty contains this property value ( ignore case )
+				else if ( sValue.toLowerCase().indexOf(sPropertyValue.toLowerCase()) == -1){  // test if the file porperty contains this property value ( ignore case )
 					it.remove(); //no? remove it
-					continue;
 				}
 			}
-			//else, populate this values
+		}
+		//populate this values
+		Object[][] oValues = new Object[alToShow.size()][iColNum+1];
+		for (int i=0;i<alToShow.size();i++){
+			File file = (File)alToShow.get(i);
 			oValues[i][0] = file.getTrack().getName();
 			oValues[i][1] = file.getTrack().getAlbum().getName2();
 			oValues[i][2] = file.getTrack().getAuthor().getName2();
@@ -309,7 +307,6 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
 			oValues[i][6] = file.getName();
 			oValues[i][7] = new Long(file.getTrack().getRate());
 			oValues[i][8] = file.getId();
-			i++;
 		}
 		model.setValues(oValues);
 		model.fireTableDataChanged();
