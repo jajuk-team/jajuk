@@ -27,9 +27,6 @@ import javax.swing.JOptionPane;
 
 import org.jajuk.Main;
 import org.jajuk.i18n.Messages;
-import org.jajuk.ui.CommandJPanel;
-import org.jajuk.ui.InformationJPanel;
-import org.jajuk.ui.JajukWindow;
 import org.jajuk.ui.ObservationManager;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Util;
@@ -331,12 +328,14 @@ public class FIFO implements ITechnicalStrings,Runnable{
 					long length = fCurrent.getTrack().getLength();
 					if ( i%(REFRESH_TIME/SLEEP_TIME) == 0 ){  //actual refresh less frequent for cpu
 						lTime = Player.getElapsedTime();
-						InformationJPanel.getInstance().setCurrentStatusMessage(Util.formatTime(lTime)+" / "+Util.formatTime(fCurrent.getTrack().getLength()*1000)); //$NON-NLS-1$
 						int iPos = (length!=0)?(int)((lTime/10)/length):0;  //if length=0, pos is always 0 to avoid division by zero
-						InformationJPanel.getInstance().setCurrentStatus(iPos);
 						ConfigurationManager.setProperty(CONF_LAST_POSITION,Float.toString(((float)iPos)/100)); //store current position
-						CommandJPanel.getInstance().setCurrentPosition(iPos);
-						InformationJPanel.getInstance().setTotalStatusMessage(Util.formatTimeBySec((int)(lTotalTime-(lTime/1000)),false));
+						//lauch some messages to information and command panels
+						Properties pDetails = new Properties();
+						pDetails.put(DETAIL_CURRENT_POSITION,new Integer(iPos));
+						pDetails.put(DETAIL_TOTAL,Util.formatTimeBySec((int)(lTotalTime-(lTime/1000)),false));
+					    pDetails.put(DETAIL_CURRENT_STATUS_MESSAGE,Util.formatTime(lTime)+" / "+Util.formatTime(fCurrent.getTrack().getLength()*1000)); //$NON-NLS-1$
+						ObservationManager.notify(EVENT_HEART_BEAT,pDetails);
 					}
 					i++;
 					continue; //leave
@@ -368,11 +367,8 @@ public class FIFO implements ITechnicalStrings,Runnable{
 					else{  //fifo empty and nothing planned to be played, lets re-initialize labels
 						if ( i%(REFRESH_TIME/SLEEP_TIME) == 0){  //actual refresh less frequent for cpu
 							lTotalTime = 0;
-							InformationJPanel.getInstance().setCurrentStatusMessage(Util.formatTime(0)+" / "+Util.formatTime(0)); //$NON-NLS-1$
-							InformationJPanel.getInstance().setCurrentStatus(0);
-							CommandJPanel.getInstance().setCurrentPosition(0);
-							InformationJPanel.getInstance().setTotalStatusMessage("00:00:00"); //$NON-NLS-1$
-							ConfigurationManager.setProperty(CONF_LAST_POSITION,"0");
+							ObservationManager.notify(EVENT_ZERO); //	reinit ui
+						    ConfigurationManager.setProperty(CONF_LAST_POSITION,"0");
 						}
 						i++;
 						continue; //leave
@@ -429,11 +425,6 @@ public class FIFO implements ITechnicalStrings,Runnable{
 						pDetails.put(DETAIL_CURRENT_DATE,new Long(System.currentTimeMillis()));
 					    ObservationManager.notify(EVENT_FILE_LAUNCHED,pDetails);
 					}
-					String sMessage = Messages.getString("FIFO.10")+fCurrent.getTrack().getAuthor().getName2()+" / "+fCurrent.getTrack().getAlbum().getName2()+" / "+fCurrent.getTrack().getName();//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-					InformationJPanel.getInstance().setMessage(sMessage,InformationJPanel.INFORMATIVE); 
-					JajukWindow.getInstance().setTooltip(sMessage);
-					Main.getWindow().setTitle(fCurrent.getTrack().getName());
-					InformationJPanel.getInstance().setQuality(fCurrent.getQuality()+Messages.getString("FIFO.13")); //$NON-NLS-1$
 				}
 			}
 			//fifo is over ( stop request ) , reinit labels in information panel before exiting
@@ -461,14 +452,7 @@ public class FIFO implements ITechnicalStrings,Runnable{
 	 */
 	private synchronized void reset(){
 		lTotalTime = 0;
-		InformationJPanel.getInstance().setCurrentStatusMessage(Util.formatTime(0)+" / "+Util.formatTime(0)); //$NON-NLS-1$
-		InformationJPanel.getInstance().setCurrentStatus(0);
-		CommandJPanel.getInstance().setCurrentPosition(0);
-		InformationJPanel.getInstance().setTotalStatusMessage("00:00:00"); //$NON-NLS-1$
-		InformationJPanel.getInstance().setMessage(Messages.getString("FIFO.16"),InformationJPanel.INFORMATIVE); //$NON-NLS-1$
-		JajukWindow.getInstance().setTooltip(Messages.getString("FIFO.16")); //$NON-NLS-1$
-		InformationJPanel.getInstance().setQuality(""); //$NON-NLS-1$
-		Main.getWindow().setTitle(Messages.getString("FIFO.18")); //$NON-NLS-1$
+		ObservationManager.notify(EVENT_ZERO);
 	}
 	
 	/**

@@ -33,7 +33,6 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import org.jajuk.i18n.Messages;
-import org.jajuk.ui.CommandJPanel;
 import org.jajuk.ui.ObservationManager;
 import org.jajuk.ui.Observer;
 import org.jajuk.util.ConfigurationManager;
@@ -72,7 +71,8 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
 	private History() {
 	    ObservationManager.register(EVENT_FILE_LAUNCHED,this);
 	    //check if something has alredy started
-	    if (ObservationManager.getDetails(EVENT_FILE_LAUNCHED) != null){
+	    if (ObservationManager.getDetail(EVENT_FILE_LAUNCHED,DETAIL_CURRENT_FILE_ID) != null &&
+	            ObservationManager.getDetail(EVENT_FILE_LAUNCHED,DETAIL_CURRENT_DATE) != null){
 	        update(EVENT_FILE_LAUNCHED);
 	    }
 	}
@@ -84,7 +84,9 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
 		}
 		HistoryItem hi = new HistoryItem(sFileId,lDate);
 		alHistory.add(0,hi);
-		CommandJPanel.getInstance().addHistoryItem(hi);
+		Properties pDetails = new Properties();
+		pDetails.put(DETAIL_HISTORY_ITEM,hi);
+		ObservationManager.notify(EVENT_ADD_HISTORY_ITEM,pDetails);
 		return ;
 	}
 	
@@ -265,9 +267,8 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
 	public void update(String subject) {
 	    try {
 	        if (subject.equals(EVENT_FILE_LAUNCHED)){
-	            Properties pDetails = ObservationManager.getDetails(subject);
-	            String sFileID = pDetails.getProperty(DETAIL_CURRENT_FILE_ID);
-	            long lDate =( (Long)pDetails.get(DETAIL_CURRENT_DATE)).longValue();
+	            String sFileID = (String)ObservationManager.getDetail(EVENT_FILE_LAUNCHED,DETAIL_CURRENT_FILE_ID);
+	            long lDate =( (Long)ObservationManager.getDetail(EVENT_FILE_LAUNCHED,DETAIL_CURRENT_DATE)).longValue();
 	            addItem(sFileID,lDate);
 	        }
 	    }
@@ -278,6 +279,3 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
 	}
 
 }
-
-
-

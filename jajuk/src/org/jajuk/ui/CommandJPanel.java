@@ -289,13 +289,15 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
                 ObservationManager.register(EVENT_PLAYER_STOP,CommandJPanel.this);
                 ObservationManager.register(EVENT_PLAYER_PAUSE,CommandJPanel.this);
                 ObservationManager.register(EVENT_PLAYER_RESUME,CommandJPanel.this);
+                ObservationManager.register(EVENT_HEART_BEAT,CommandJPanel.this);
+                ObservationManager.register(EVENT_ADD_HISTORY_ITEM,CommandJPanel.this);
                 
-                //update initial state because the FIFO could have send a play notification at startup before this view being created
+                //update initial state 
                 update(EVENT_PLAYER_PLAY);
+                //check if some track has been lauched before the view has been displayed
+               update(EVENT_HEART_BEAT);
             }
-            
         });
-        
     }	
     
     
@@ -539,6 +541,21 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
             jbFwd.setEnabled(true);
             jsPosition.setEnabled(true);
             jbPlayPause.setIcon(Util.getIcon(ICON_PAUSE));
+        }
+        else if (subject.equals(EVENT_HEART_BEAT)){
+            Integer iPos = (Integer)ObservationManager.getDetail(EVENT_HEART_BEAT,DETAIL_CURRENT_POSITION); 
+            if (iPos != null){
+                setCurrentPosition(iPos.intValue());
+            }
+        }
+        else if (subject.equals(EVENT_ZERO)){
+            setCurrentPosition(0);
+        }
+        else if (subject.equals(EVENT_ADD_HISTORY_ITEM)){
+            HistoryItem hi = (HistoryItem)ObservationManager.getDetail(EVENT_ADD_HISTORY_ITEM,DETAIL_HISTORY_ITEM);
+            if (hi != null ){
+                addHistoryItem(hi);
+            }
         }
     }
     

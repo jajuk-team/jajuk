@@ -32,8 +32,11 @@ import javax.swing.border.EtchedBorder;
 
 import layout.TableLayout;
 
+import org.jajuk.base.FIFO;
+import org.jajuk.base.File;
 import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.i18n.Messages;
+import org.jajuk.util.Util;
 
 /**
  *  Status / information panel ( static view )
@@ -41,7 +44,7 @@ import org.jajuk.i18n.Messages;
  * @author     bflorat
  * @created    11 oct. 2003
  */
-public class InformationJPanel extends JPanel implements ITechnicalStrings{
+public class InformationJPanel extends JPanel implements ITechnicalStrings,Observer{
 	//consts
 	/** Informative message type  ( displayed in blue ) **/
 	public static final int INFORMATIVE = 0;
@@ -94,6 +97,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings{
 		 //message bar
 		jlMessage = new JLabel();  
 		jlMessage.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+		setMessage(Messages.getString("Main.13"), InformationJPanel.INFORMATIVE);  //$NON-NLS-1$
 		
 		//selection bar
 		jlSelection = new JLabel();  
@@ -125,7 +129,6 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings{
 		jpCurrent.add(Box.createHorizontalStrut(3));
 		jpCurrent.add(jpbCurrent);
 		
-		
 		//add widgets
 		add(jlMessage,"0,0"); //$NON-NLS-1$
 		add(jlSelection,"1,0"); //$NON-NLS-1$
@@ -133,6 +136,12 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings{
 		add(jpTotal,"3,0"); //$NON-NLS-1$
 		add(jpCurrent,"4,0"); //$NON-NLS-1$
 		
+		  //check if some track has been lauched before the view has been displayed
+        update(EVENT_HEART_BEAT);
+        //register for given events
+        ObservationManager.register(EVENT_HEART_BEAT,this);
+        ObservationManager.register(EVENT_ZERO,this);
+        ObservationManager.register(EVENT_FILE_LAUNCHED,this);
 	}
 
 	/**
@@ -243,6 +252,42 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings{
 		sTotalStatus = string;
 		jlTotal.setText(string);
 	}
-
+	
+	/* (non-Javadoc)
+     * @see org.jajuk.ui.Observer#update(java.lang.String)
+     */
+	public void update(String subject) {
+	    if (subject.equals(EVENT_HEART_BEAT)){
+	        String sCurrentStatusMessage =  (String)ObservationManager.getDetail(EVENT_HEART_BEAT,DETAIL_CURRENT_STATUS_MESSAGE);
+	        if (sCurrentStatusMessage != null){
+	            setCurrentStatusMessage(sCurrentStatusMessage);
+	        }
+	        Integer iCurrentStatus = (Integer)ObservationManager.getDetail(EVENT_HEART_BEAT,DETAIL_CURRENT_POSITION);
+	        if (iCurrentStatus != null){
+	            setCurrentStatus(iCurrentStatus.intValue());
+	        }
+	        String sCurrentTotalMessage =  (String)ObservationManager.getDetail(EVENT_HEART_BEAT,DETAIL_TOTAL);
+	        if (sCurrentTotalMessage != null){
+	            setTotalStatusMessage(sCurrentTotalMessage);
+	        }
+	    }
+	    else  if (subject.equals(EVENT_ZERO)){
+	        setCurrentStatusMessage(Util.formatTime(0)+" / "+Util.formatTime(0)); //$NON-NLS-1$
+	        setCurrentStatus(0);
+	        setTotalStatusMessage("00:00:00");//$NON-NLS-1$
+	        setMessage(Messages.getString("FIFO.16"),InformationJPanel.INFORMATIVE); //$NON-NLS-1$
+	        setQuality(""); //$NON-NLS-1$
+	     }
+	    else if (subject.equals(EVENT_FILE_LAUNCHED)){
+	        File file = FIFO.getInstance().getCurrentFile();
+	        if (file != null){
+	            String sMessage = Messages.getString("FIFO.10")+file.getTrack().getAuthor().getName2()
+	            		+" / "+file.getTrack().getAlbum().getName2()+" / "
+	            		+file.getTrack().getName();//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+	            setMessage(sMessage,InformationJPanel.INFORMATIVE); 
+	            setQuality(file.getQuality()+Messages.getString("FIFO.13")); //$NON-NLS-1$
+	        }
+	    }
+	}
 	
 }

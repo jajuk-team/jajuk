@@ -34,6 +34,7 @@ import javax.swing.SwingUtilities;
 
 import org.jajuk.Main;
 import org.jajuk.base.FIFO;
+import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.base.Player;
@@ -57,7 +58,7 @@ import snoozesoft.systray4j.SysTrayMenuListener;
  * @author     bflorat
  * @created    23 mars 2004
  */
-public class JajukWindow extends JFrame implements ITechnicalStrings,ComponentListener,SysTrayMenuListener {
+public class JajukWindow extends JFrame implements ITechnicalStrings,ComponentListener,SysTrayMenuListener,Observer {
 	
 	/**Initial width at startup*/
 	private int iWidth ; 
@@ -343,6 +344,25 @@ public class JajukWindow extends JFrame implements ITechnicalStrings,ComponentLi
 			Log.error(e);
 		}
 	}
+
+    /* (non-Javadoc)
+     * @see org.jajuk.ui.Observer#update(java.lang.String)
+     */
+    public void update(String subject) {
+        if (subject.equals(EVENT_FILE_LAUNCHED)){
+            File file = FIFO.getInstance().getCurrentFile();
+            if (file != null){
+                String sMessage = Messages.getString("FIFO.10")+file.getTrack().getAuthor().getName2()+" / "+file.getTrack().getAlbum().getName2()+" / "+file.getTrack().getName();//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                setTooltip(sMessage);
+                setTitle(file.getTrack().getName());
+            }
+         }
+        else  if (subject.equals(EVENT_ZERO)){
+            setTooltip(Messages.getString("FIFO.16")); //$NON-NLS-1$
+            setTitle(Messages.getString("FIFO.18")); //$NON-NLS-1$
+        }
+    
+    }
 
 	
 }

@@ -297,9 +297,6 @@ public class Main implements ITechnicalStrings {
 							PerspectiveManager.setCurrentPerspective(PERSPECTIVE_NAME_CONFIGURATION);
 						}
 						
-						//Display a message
-						information.setMessage(Messages.getString("Main.13"), InformationJPanel.INFORMATIVE);  //$NON-NLS-1$
-						
 						//Close splash screen
 						sc.dispose();
 				

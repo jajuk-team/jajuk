@@ -99,10 +99,24 @@ public class ObservationManager {
 	
 	/**
 	 * Return the details for an event, or null if there is no details
-	 * @param sEvent
-	 * @return
+	 * @param sEvent event name
+	 * @param sDetail Detail name
+	 * @return the detail as an object or null if the event or the detail doesn't exist
 	 */
-	public static synchronized Properties getDetails(String sEvent){
+	public static synchronized Object getDetail(String sEvent,String sDetailName){
+	    Properties pDetails = (Properties)hEventDetails.get(sEvent);
+	    if (pDetails != null){
+	        return pDetails.get(sDetailName);
+	    }
+	    return null;
+	}
+	
+	/**
+	 * Return the details for an event, or null if there is no details
+	 * @param sEvent event name
+	 * @return the detaisl or null there are not details
+	 */
+	public static synchronized Object getDetails(String sEvent){
 	    return (Properties)hEventDetails.get(sEvent);
 	}
 	

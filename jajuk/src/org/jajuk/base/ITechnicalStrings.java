@@ -270,10 +270,17 @@ public interface ITechnicalStrings {
 	public static final String EVENT_FILE_LAUNCHED="file launched";
 	public static final String EVENT_INFORMATION_DISPLAY="information display";
 	public static final String EVENT_ANIMATION_DISPLAY="animation display";
+	public static final String EVENT_HEART_BEAT="heart beat";
+	public static final String EVENT_ZERO="zero";
+	public static final String EVENT_ADD_HISTORY_ITEM="history item";
 	
 	//details keys
 	public static final String DETAIL_CURRENT_FILE_ID="current file id";
 	public static final String DETAIL_CURRENT_DATE="current date";
+	public static final String DETAIL_CURRENT_POSITION="current position";
+	public static final String DETAIL_TOTAL="total time";
+	public static final String DETAIL_CURRENT_STATUS_MESSAGE="current status message";
+	public static final String DETAIL_HISTORY_ITEM="history item";
 			
 	//Look and feel
 	public static final String LNF_METAL = "Metal";
