@@ -64,6 +64,7 @@
 		<action dev='bflorat' type='update'>Devices refreshing faster</action>
 		<action dev='bflorat' type='update'>Better id3 tags recognition, especially for styles/genres</action>
 		<action dev='bflorat' type='update'>Changed volume (gain) code, should solve some saturation problems</action>
+		<action dev='bflorat' type='update'>Better backup system for collection files</action>
 		<action dev='masiar' type='update'>RFE 939827 Change time display format</action>
 		<action dev='bflorat' type='fix'>921421 Freeze problems with id3 reads</action>  
      	<action dev='bflorat' type='fix'>930306	Sound problems with JRE 1.5 beta 1</action>  
