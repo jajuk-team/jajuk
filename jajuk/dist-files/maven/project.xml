@@ -135,7 +135,7 @@
 	      <organization>Jajuk team</organization>
 	      <timezone>+2</timezone>
 	    </developer>
-	    
+	   
 	    <developer>
 	      <name>Sébastien Gringoire</name>
 	      <id>sgringoi</id>
@@ -173,6 +173,11 @@
 			<name>darsa</name>
 			<roles><role>Bug reports</role></roles>
 		</contributor>
+		<contributor>
+		 	<name>Marc-Siebren Kwadijk</name>
+	    	<roles><role>Dutch translation</role></roles>
+		</contributor>
+
 	</contributors>
 	
  <dependencies>
