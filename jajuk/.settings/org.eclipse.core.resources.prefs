@@ -1,4 +1,4 @@
-#Tue Nov 09 00:31:51 CET 2004
+#Thu Nov 18 23:46:09 CET 2004
 encoding//src/org/jajuk/i18n/jajuk_it.properties=UTF-8
 encoding//dist-files/doc/README_nld.html=ISO-8859-1
 encoding//src/org/jajuk/i18n/jajuk_sv.properties=UTF-8
@@ -6,7 +6,6 @@ encoding//dist-files/doc/README_deu.html=ISO-8859-1
 encoding//dist-files/doc/README_ita.html=ISO-8859-1
 encoding/<project>=UTF-8
 encoding//src/org/jajuk/i18n/jajuk_de.properties=UTF-8
-encoding//src/org/jajuk/i18n/jajuk.properties=UTF-8
 encoding//dist-files/doc/README_swe.html=ISO-8859-1
 eclipse.preferences.version=1
 encoding//dist-files/doc/README_chn.html=ISO-8859-1
