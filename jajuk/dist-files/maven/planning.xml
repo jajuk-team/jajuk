@@ -23,17 +23,23 @@
 	   	</section>
 	   	<section name="0.4">
 	   		<ul>
-	   			<li>Disk Jokey magic function ( makes an automatic programmation based on user preferences )</li>
+	   			<li>Views automatic resizing when closing</li>
+	   			<li>User properties management</li>
 	   			<li>Online help part 3/3</li>
-	   			<li>Tips of the day</li>
 	   		</ul>	
 	   	</section>
 	   	<section name="0.5">
 	   		<ul>
+	   			<li>Disk Jokey magic function ( makes an automatic programmation based on user preferences )</li>
+	   			<li>Tips of the day</li>
+	   		</ul>	
+	   	</section>
+	   	<section name="0.6">
+	   		<ul>
 	   			<li>New perspective : edtions to get collection reports and print them</li>
 	   		</ul>	
 	   	</section>
-	   	<section name="science fiction">
+	   	<section name="latter ( science fiction )">
 	   		<ul>
 	   			<li>Audio CDs support</li>
 	   			<li>Eye candies animations when playing in a new persperctive</li>

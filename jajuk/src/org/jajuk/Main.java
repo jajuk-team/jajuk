@@ -30,14 +30,12 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
 import org.jajuk.base.Collection;
 import org.jajuk.base.Device;
@@ -214,9 +212,6 @@ public class Main implements ITechnicalStrings {
 			//Display a message
 			information.setMessage("Jajuk successfully started", InformationJPanel.INFORMATIVE); //$NON-NLS-1$
 			
-			//refresh command bar ( workaround for bug 887609 )
-			SwingUtilities.updateComponentTreeUI(CommandJPanel.getInstance());
-			
 			//Lauch startup track if any
 			launchInitialTrack();
 				
@@ -335,9 +330,7 @@ public class Main implements ITechnicalStrings {
 			if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_LAST)){
 				file = FileManager.getFile(History.getInstance().getLastFile());
 				if ( file != null){
-					ArrayList alFiles = new ArrayList(1);
-					alFiles.add(file);
-					FIFO.getInstance().push(alFiles,false);
+					FIFO.getInstance().push(file,false);
 				}
 			}
 			else if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_FILE)){

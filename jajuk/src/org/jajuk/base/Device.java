@@ -23,6 +23,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 import org.jajuk.i18n.Messages;
+import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.ObservationManager;
 import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.Util;
@@ -63,6 +64,11 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 
 	/**Convenient lock */
 	public static byte[] bLock = new byte[0];
+	/** Number of files in this device before refresh ( for refresh stats ) */
+	public int iNbFilesBeforeRefresh;
+	/** Number of new files found during refresh ( for refresh stats ) */
+	public int iNbNewFiles;
+	
 
 	/**
 	 * Device constructor
@@ -138,10 +144,11 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 					Note  that logical item ( tracks, styles...) are device independant and connot be cleared.
 					They will be clean up at next jajuk restart and old track data is used to populate device without full tag scan
 					*/ 
+					iNbFilesBeforeRefresh = FileManager.getFiles().size();
+					iNbNewFiles = 0;
 					FileManager.cleanDevice(device.getId());
 					PlaylistFileManager.cleanDevice(device.getId());
 					DirectoryManager.cleanDevice(device.getId());
-					
 					long lTime = System.currentTimeMillis();
 					if (bAlreadyRefreshing){
 						Messages.showErrorMessage("107");
@@ -185,6 +192,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 								indexTab[iDeep]++; //inc index for next time we will reach this deep
 								fCurrent = files[indexTab[iDeep]];
 								dParent = DirectoryManager.registerDirectory(fCurrent.getName(),dParent,device);
+								InformationJPanel.getInstance().setMessage(new StringBuffer("Refreshing device : [").append(device.getName()).append("]  Entering: [").append(dParent.getAbsolutePath()).append("]").toString(),InformationJPanel.INFORMATIVE);
 								dParent.scan();
 								iDeep++;
 							}
@@ -198,6 +206,9 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 							}
 						}					
 					}
+					InformationJPanel.getInstance().setMessage(new StringBuffer("[").append(device.getName()).append("] refreshed in ").append((int)((System.currentTimeMillis()-lTime)/1000)).
+							append(" sec - ").append(iNbNewFiles).append(" new files - ").
+							append(FileManager.getFiles().size()-iNbFilesBeforeRefresh-iNbNewFiles).append(" erased references").toString(),InformationJPanel.INFORMATIVE);
 					Log.debug("Refresh done in "+(int)((System.currentTimeMillis()-lTime)/1000)+" sec");
 					bAlreadyRefreshing = false;
 					//notify views to refresh

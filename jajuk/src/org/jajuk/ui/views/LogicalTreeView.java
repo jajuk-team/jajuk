@@ -151,6 +151,7 @@ public class LogicalTreeView extends ViewAdapter implements ActionListener,Obser
 	 */
 	public void display(){
 		//**Menu items**
+		
 		//Style menu
 		jmenuStyle = new JPopupMenu();
 		jmiStylePlay = new JMenuItem("Play");
@@ -162,10 +163,13 @@ public class LogicalTreeView extends ViewAdapter implements ActionListener,Obser
 		jmiStylePlayRepeat = new JMenuItem("Play repeat");
 		jmiStylePlayRepeat.addActionListener(this);
 		jmiStyleDelete = new JMenuItem("Delete");
+		jmiStyleDelete.setEnabled(false);
 		jmiStyleDelete.addActionListener(this);
 		jmiStyleSetProperty = new JMenuItem("Set a property");
+		jmiStyleSetProperty.setEnabled(false);
 		jmiStyleSetProperty.addActionListener(this);
 		jmiStyleProperties = new JMenuItem("Properties");
+		jmiStyleProperties.setEnabled(false);
 		jmiStyleProperties.addActionListener(this);
 		jmenuStyle.add(jmiStylePlay);
 		jmenuStyle.add(jmiStylePush);
@@ -186,10 +190,13 @@ public class LogicalTreeView extends ViewAdapter implements ActionListener,Obser
 		jmiAuthorPlayRepeat = new JMenuItem("Play repeat");
 		jmiAuthorPlayRepeat.addActionListener(this);
 		jmiAuthorDelete = new JMenuItem("Delete");
+		jmiAuthorDelete.setEnabled(false);
 		jmiAuthorDelete.addActionListener(this);
 		jmiAuthorSetProperty = new JMenuItem("Set a property");
+		jmiAuthorSetProperty.setEnabled(false);
 		jmiAuthorSetProperty.addActionListener(this);
 		jmiAuthorProperties = new JMenuItem("Properties");
+		jmiAuthorProperties.setEnabled(false);
 		jmiAuthorProperties.addActionListener(this);
 		jmenuAuthor.add(jmiAuthorPlay);
 		jmenuAuthor.add(jmiAuthorPush);
@@ -210,10 +217,13 @@ public class LogicalTreeView extends ViewAdapter implements ActionListener,Obser
 		jmiAlbumPlayRepeat = new JMenuItem("Play repeat");
 		jmiAlbumPlayRepeat.addActionListener(this);
 		jmiAlbumDelete = new JMenuItem("Delete");
+		jmiAlbumDelete.setEnabled(false);
 		jmiAlbumDelete.addActionListener(this);
 		jmiAlbumSetProperty = new JMenuItem("Set a property");
+		jmiAlbumSetProperty.setEnabled(false);
 		jmiAlbumSetProperty.addActionListener(this);
 		jmiAlbumProperties = new JMenuItem("Properties");
+		jmiAlbumProperties.setEnabled(false);
 		jmiAlbumProperties.addActionListener(this);
 		jmenuAlbum.add(jmiAlbumPlay);
 		jmenuAlbum.add(jmiAlbumPush);
@@ -230,10 +240,13 @@ public class LogicalTreeView extends ViewAdapter implements ActionListener,Obser
 		jmiTrackPush = new JMenuItem("Push");
 		jmiTrackPush.addActionListener(this);
 		jmiTrackDelete = new JMenuItem("Delete");
+		jmiTrackDelete.setEnabled(false);
 		jmiTrackDelete.addActionListener(this);
 		jmiTrackSetProperty = new JMenuItem("Set a property");
+		jmiTrackSetProperty.setEnabled(false);
 		jmiTrackSetProperty.addActionListener(this);
 		jmiTrackProperties = new JMenuItem("Properties");
+		jmiTrackProperties.setEnabled(false);
 		jmiTrackProperties.addActionListener(this);
 		jmenuTrack.add(jmiTrackPlay);
 		jmenuTrack.add(jmiTrackPush);

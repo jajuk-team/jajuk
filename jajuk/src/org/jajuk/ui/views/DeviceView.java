@@ -162,6 +162,7 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 		jtbButtons.addSeparator();
 		jtbButtons.add(jbSynchro);
 		jtbButtons.addSeparator();
+	
 		//devices
 		jpDevices = new JPanel();
 		jpDevices.setPreferredSize(new Dimension(200,1000));

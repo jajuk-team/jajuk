@@ -113,8 +113,11 @@ public interface ITechnicalStrings {
 	public static final String ICON_APPLY_FILTER =  PATH_ICONS + "16x16/filter.png";
 	public static final String ICON_CLEAR_FILTER =  PATH_ICONS + "16x16/clear.png";
 	public static final String ICON_ADVANCED_FILTER =  PATH_ICONS + "16x16/complex_search.png";
-	
-	
+	public static final String ICON_PLAYLIST_NORMAL =  PATH_ICONS + "40x40/playlist_normal.png";
+	public static final String ICON_PLAYLIST_NEW =  PATH_ICONS + "40x40/playlist_new.png";
+	public static final String ICON_PLAYLIST_BOOKMARK =  PATH_ICONS + "40x40/playlist_bookmark.png";
+	public static final String ICON_PLAYLIST_BESTOF =  PATH_ICONS + "40x40/playlist_bestof.png";
+		
 	//images
 	public static final String IMAGES_SPLASHSCREEN =  PATH_IMAGES + "jajuk-slashscreen.png";
 	public static final String IMAGES_STAT_PAPER =  PATH_IMAGES + "No-Ones-Laughing-3.jpg";
@@ -215,7 +218,10 @@ public interface ITechnicalStrings {
 	public static final String EVENT_VIEW_COMMAND_SELECT_HISTORY_ITEM="select history item";
 	public static final String EVENT_HELP_REQUIRED="help required";
 	public static final String EVENT_COVER_REFRESH="cover refresh";
-	
+	public static final String EVENT_PLAYER_STOP="player stop";
+	public static final String EVENT_PLAYER_PLAY="player play";
+	public static final String EVENT_PLAYER_PAUSE="player pause";
+	public static final String EVENT_PLAYER_UNPAUSE="player unpause";
 	
 	
 	//Look and feel

@@ -163,18 +163,25 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 		jmiFilePush = new JMenuItem("Push");
 		jmiFilePush.addActionListener(this);
 		jmiFileCopy = new JMenuItem("Copy");
+		jmiFileCopy.setEnabled(false);
 		jmiFileCopy.addActionListener(this);
 		jmiFileCut = new JMenuItem("Cut");
+		jmiFileCut.setEnabled(false);
 		jmiFileCut.addActionListener(this);
 		jmiFilePaste = new JMenuItem("Paste");
+		jmiFilePaste.setEnabled(false);
 		jmiFilePaste.addActionListener(this);
 		jmiFileRename = new JMenuItem("Rename");
+		jmiFileRename.setEnabled(false);
 		jmiFileRename.addActionListener(this);
 		jmiFileDelete = new JMenuItem("Delete");
+		jmiFileDelete.setEnabled(false);
 		jmiFileDelete.addActionListener(this);
 		jmiFileSetProperty = new JMenuItem("Set a property");
+		jmiFileSetProperty.setEnabled(false);
 		jmiFileSetProperty.addActionListener(this);
 		jmiFileProperties = new JMenuItem("Properties");
+		jmiFileProperties.setEnabled(false);
 		jmiFileProperties.addActionListener(this);
 		jmenuFile.add(jmiFilePlay);
 		jmenuFile.add(jmiFilePush);
@@ -185,6 +192,7 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 		jmenuFile.add(jmiFileDelete);
 		jmenuFile.add(jmiFileSetProperty);
 		jmenuFile.add(jmiFileProperties);
+		
 		//Directory menu
 		jmenuDir = new JPopupMenu();
 		jmiDirPlay = new JMenuItem("Play");
@@ -196,24 +204,34 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 		jmiDirPlayRepeat = new JMenuItem("Play repeat");
 		jmiDirPlayRepeat.addActionListener(this);
 		jmiDirDesynchro = new JMenuItem("Desynchronize");
+		jmiDirDesynchro.setEnabled(false);
 		jmiDirDesynchro.addActionListener(this);
 		jmiDirResynchro = new JMenuItem("Resynchronize");
+		jmiDirResynchro.setEnabled(false);
 		jmiDirResynchro.addActionListener(this);
 		jmiDirCreatePlaylist = new JMenuItem("Create playlist");
+		jmiDirCreatePlaylist.setEnabled(false);
 		jmiDirCreatePlaylist.addActionListener(this);
 		jmiDirCopy = new JMenuItem("Copy");
+		jmiDirCopy.setEnabled(false);
 		jmiDirCopy.addActionListener(this);
 		jmiDirCut = new JMenuItem("Cut");
+		jmiDirCut.setEnabled(false);
 		jmiDirCut.addActionListener(this);
 		jmiDirPaste = new JMenuItem("Paste");
+		jmiDirPaste.setEnabled(false);
 		jmiDirPaste.addActionListener(this);
 		jmiDirRename = new JMenuItem("Rename");
+		jmiDirRename.setEnabled(false);
 		jmiDirRename.addActionListener(this);
 		jmiDirDelete = new JMenuItem("Delete");
+		jmiDirDelete.setEnabled(false);
 		jmiDirDelete.addActionListener(this);
 		jmiDirSetProperty = new JMenuItem("Set a property");
+		jmiDirSetProperty.setEnabled(false);
 		jmiDirSetProperty.addActionListener(this);
 		jmiDirProperties = new JMenuItem("Properties");
+		jmiDirProperties.setEnabled(false);
 		jmiDirProperties.addActionListener(this);
 		jmenuDir.add(jmiDirPlay);
 		jmenuDir.add(jmiDirPush);
@@ -246,14 +264,18 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 		jmiDevRefresh = new JMenuItem("Refresh");
 		jmiDevRefresh.addActionListener(this);
 		jmiDevSynchronize = new JMenuItem("Synchronize");
+		jmiDevSynchronize.setEnabled(false);
 		jmiDevSynchronize.addActionListener(this);
 		jmiDevTest = new JMenuItem("Test");
 		jmiDevTest.addActionListener(this);
 		jmiDevCreatePlaylist = new JMenuItem("Create playlists");
+		jmiDevCreatePlaylist.setEnabled(false);
 		jmiDevCreatePlaylist.addActionListener(this);
 		jmiDevSetProperty = new JMenuItem("Set a property");
+		jmiDevSetProperty.setEnabled(false);
 		jmiDevSetProperty.addActionListener(this);
 		jmiDevProperties = new JMenuItem("Properties");
+		jmiDevProperties.setEnabled(false);
 		jmiDevProperties.addActionListener(this);
 		jmenuDev.add(jmiDevPlay);
 		jmenuDev.add(jmiDevPush);
@@ -456,7 +478,7 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 					Object o = path.getLastPathComponent();
 					if (o instanceof FileNode){
 						File file = ((FileNode)o).getFile();
-						if (file.getDirectory().getDevice().isMounted() && !file.getDirectory().getDevice().isRefreshing()){
+						if (file.isReady()){
 							FIFO.getInstance().push(file,false);
 						}
 						else{
@@ -484,7 +506,7 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 							DefaultMutableTreeNode node = (DefaultMutableTreeNode)e2.nextElement();
 							if (node instanceof FileNode){
 								File file = ((FileNode)node).getFile();
-								if (file.getDirectory().getDevice().isMounted() && !file.getDirectory().getDevice().isRefreshing()){
+								if (file.isReady()){
 									getInstance().alFiles.add(((FileNode)node).getFile());
 								}
 								else{

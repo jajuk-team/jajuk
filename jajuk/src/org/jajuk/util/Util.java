@@ -287,6 +287,7 @@ public class Util implements ITechnicalStrings {
 	 * Set current cursor as waiting cursor
 	 */
 	public static void waiting(){
+	//System.out.println("waiting");	
 		Main.jframe.setCursor(WAIT_CURSOR);
 	}
 
@@ -294,6 +295,7 @@ public class Util implements ITechnicalStrings {
 	 * Set current cursor as default cursor
 	 */
 	public static void stopWaiting(){
+	//System.out.println("stop waiting");	
 		SwingUtilities.invokeLater(new Runnable(){  //actually change cursor when last repaint in awt repaint thread fifo is done 
 			public void run(){
 				Main.jframe.setCursor(DEFAULT_CURSOR);

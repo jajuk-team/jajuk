@@ -24,6 +24,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -53,7 +54,7 @@ import org.jajuk.util.log.Log;
  * @author     bflorat
  * @created    3 oct. 2003
  */
-public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionListener,ListSelectionListener,ChangeListener{
+public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionListener,ListSelectionListener,ChangeListener,Observer{
 	
 	//singleton
 	static private CommandJPanel command;
@@ -115,32 +116,36 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		//int height2 = 36; //slider ( at least this height in the gtk+ l&f ) 
 		int iSeparator = 0;
 		//set default layout and size
-		double[][] size ={{0.25,iSeparator,300,iSeparator,0.13,iSeparator,0.10,iSeparator,0.19,iSeparator,0.16,iSeparator,0.16},
-						{height1}};
+		double[][] size ={{0.20,iSeparator,272,iSeparator,0.13,iSeparator,0.10,iSeparator,0.21,iSeparator,0.16,iSeparator,0.16},
+						{height1}}; //note we can't set a % for history combo box because of popup size
 		setLayout(new TableLayout(size));
 		setBorder(BorderFactory.createEtchedBorder());
 		//search toolbar
 		jtbSearch = new JToolBar();
 		jtbSearch.setFloatable(false);
 		sbSearch = new SearchBox(this);
+		jtbSearch.add(Box.createHorizontalGlue());
 		jtbSearch.add(sbSearch);
+		jtbSearch.add(Box.createHorizontalGlue());
 			
 		//history toolbar
 		jtbHistory = new JToolBar();
 		jcbHistory = new SteppedComboBox(History.getInstance().getHistory().toArray());
 		jtbHistory.setFloatable(false);
-		jcbHistory.setMinimumSize(new Dimension(150,20));
-		jcbHistory.setPreferredSize(new Dimension(300,20));
-		jcbHistory.setMaximumSize(new Dimension(300,20));
+		jtbHistory.add(Box.createHorizontalGlue());;
+		jcbHistory.setMinimumSize(new Dimension(100,20));
+		jcbHistory.setPreferredSize(new Dimension(270,20));
 		jcbHistory.setPopupWidth(1000);
 		jcbHistory.setToolTipText(Messages.getString("CommandJPanel.play_history_1")); //$NON-NLS-1$
 		jcbHistory.addActionListener(this);
 		jtbHistory.add(jcbHistory);
+		jtbHistory.add(Box.createHorizontalGlue());
 		
 		//Mode toolbar
 		jtbMode = new JToolBar();
 		jtbMode.setRollover(true);
 		jtbMode.setFloatable(false);
+		jtbMode.add(Box.createHorizontalGlue());
 		jbRepeat = new JButton(Util.getIcon(ConfigurationManager.getProperty(CONF_ICON_REPEAT))); 
 		jbRepeat.setActionCommand(EVENT_REPEAT_MODE_STATUS_CHANGED);
 		jbRepeat.setToolTipText("Repeat mode : play tracks in a loop");
@@ -161,9 +166,11 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		jbIntro.setActionCommand(EVENT_INTRO_MODE_STATUS_CHANGED);
 		jbIntro.addActionListener(JajukListener.getInstance());
 		jtbMode.add(jbIntro);
+		jtbMode.add(Box.createHorizontalGlue());
 		
 		//Special functions toolbar
 		jtbSpecial = new JToolBar();
+		jtbSpecial.add(Box.createHorizontalGlue());
 		jtbSpecial.setFloatable(false);
 		jtbSpecial.setRollover(true);
 		jbGlobalRandom = new JButton(Util.getIcon(ICON_ROLL)); 
@@ -178,11 +185,13 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		jbMute.addActionListener(this);
 		jbMute.setToolTipText(Messages.getString("CommandJPanel.Turn_sound_off_3")); //$NON-NLS-1$
 		jtbSpecial.add(jbMute);
+		jtbSpecial.add(Box.createHorizontalGlue());
 		
 		//Play toolbar
 		jtbPlay = new JToolBar();
 		jtbPlay.setRollover(true);
 		jtbPlay.setFloatable(false);
+		jtbPlay.add(Box.createHorizontalGlue());
 		jbPrevious = new JButton(Util.getIcon(ICON_PREVIOUS)); 
 		jbPrevious.setToolTipText(Messages.getString("CommandJPanel.Play_previous_track_in_current_selection_4")); //$NON-NLS-1$
 		jbPrevious.addActionListener(this);
@@ -193,41 +202,51 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		jtbPlay.add(jbNext);
 		jtbPlay.addSeparator();
 		jbRew = new JButton(Util.getIcon(ICON_REW)); 
+		jbRew.setEnabled(false);
 		jbRew.setToolTipText(Messages.getString("CommandJPanel.Fast_rewind_in_current_track_6")); //$NON-NLS-1$
 		jbRew.addActionListener(this);
 		jtbPlay.add(jbRew);
 		jbPlayPause = new JButton(Util.getIcon(ICON_PAUSE)); 
 		jbPlayPause.setToolTipText(Messages.getString("CommandJPanel.Play/pause_current_track_7")); //$NON-NLS-1$
+		jbPlayPause.setEnabled(false);
 		jbPlayPause.addActionListener(this);
 		jtbPlay.add(jbPlayPause);
 		jbStop = new JButton(Util.getIcon(ICON_STOP)); 
 		jbStop.setToolTipText(Messages.getString("CommandJPanel.Stop_current_track_8")); //$NON-NLS-1$
 		jbStop.addActionListener(this);
+		jbStop.setEnabled(false);
 		jtbPlay.add(jbStop);
 		jbFwd = new JButton(Util.getIcon(ICON_FWD)); 
 		jbFwd.setToolTipText(Messages.getString("CommandJPanel.Fast_forward_in_current_track_9")); //$NON-NLS-1$
+		jbFwd.setEnabled(false);
 		jbFwd.addActionListener(this);
 		jtbPlay.add(jbFwd);
+		jtbPlay.add(Box.createHorizontalGlue());
 		
 		//Volume toolbar
 		jtbVolume = new JToolBar();
 		jtbVolume.setFloatable(false);
+		jtbVolume.add(Box.createHorizontalGlue());
 		jlVolume = new JLabel(Util.getIcon(ICON_VOLUME)); 
 		jtbVolume.add(jlVolume);
 		jsVolume = new JSlider(0,100,50);
 		jsVolume.setToolTipText(Messages.getString("CommandJPanel.Volume_1")); //$NON-NLS-1$
 		jsVolume.addChangeListener(this);
 		jtbVolume.add(jsVolume);
+		jtbVolume.add(Box.createHorizontalGlue());
 		
 		//Position toolbar
 		jtbPosition = new JToolBar();
 		jtbPosition.setFloatable(false);
+		jtbPosition.add(Box.createHorizontalGlue());
 		jlPosition = new JLabel(Util.getIcon(ICON_POSITION)); 
 		jtbPosition.add(jlPosition);
 		jsPosition = new JSlider(0,100,0);
 		jsPosition.addChangeListener(this);
+		jsPosition.setEnabled(false);
 		jsPosition.setToolTipText(Messages.getString("CommandJPanel.Go_to_this_position_in_the_played_track_2")); //$NON-NLS-1$
 		jtbPosition.add(jsPosition);
+		jtbPosition.add(Box.createHorizontalGlue());
 				
 		//add toolbars to main panel
 		add(jtbSearch,"0,0");
@@ -237,6 +256,13 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		add(jtbPlay,"8,0");
 		add(jtbVolume,"10,0");
 		add(jtbPosition,"12,0");
+		
+		//register to player events
+		ObservationManager.register(EVENT_PLAYER_PLAY,this);
+		ObservationManager.register(EVENT_PLAYER_STOP,this);
+		ObservationManager.register(EVENT_PLAYER_PAUSE,this);
+		ObservationManager.register(EVENT_PLAYER_UNPAUSE,this);
+		
 	}	
 	
 	
@@ -275,7 +301,13 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 			HistoryItem hi = History.getInstance().getHistoryItem(jcbHistory.getSelectedIndex());
 			if (hi != null){
 				org.jajuk.base.File file = FileManager.getFile(hi.getFileId());
-				FIFO.getInstance().push(file,false);
+				if (file.isReady()){  //file must be on a mounted device not refreshing
+					FIFO.getInstance().push(file,false);
+				}
+				else{
+					Messages.showErrorMessage("120",file.getDirectory().getDevice().getName());
+					jcbHistory.setSelectedItem(null);
+				}
 			}
 		}
 		if (ae.getSource() == jbGlobalRandom ){
@@ -302,12 +334,6 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		}
 		else if(ae.getSource() == jbPlayPause){
 			FIFO.getInstance().pauseRequest();
-			if ( FIFO.getInstance().isPaused()){
-				jbPlayPause.setIcon(Util.getIcon(ICON_PLAY));
-			}
-			else{
-				jbPlayPause.setIcon(Util.getIcon(ICON_PAUSE));
-			}
 		}
 		else if (ae.getSource() == jbPrevious){
 			FIFO.getInstance().playPrevious();
@@ -370,6 +396,38 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 			bPositionChanging = true;  //block events so player is not affected
 			this.jsPosition.setValue(i);
 			bPositionChanging = false;
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see org.jajuk.ui.Observer#update(java.lang.String)
+	 */
+	public void update(String subject) {
+		if( subject.equals(EVENT_PLAYER_STOP)){
+			jbRew.setEnabled(false);
+			jbPlayPause.setEnabled(false);
+			jbStop.setEnabled(false);
+			jbFwd.setEnabled(false);
+			jsPosition.setEnabled(false);
+		}
+		else if ( subject.equals(EVENT_PLAYER_PLAY)){
+			jbRew.setEnabled(true);
+			jbPlayPause.setEnabled(true);
+			jbStop.setEnabled(true);
+			jbFwd.setEnabled(true);
+			jsPosition.setEnabled(true);
+		}
+		else if ( subject.equals(EVENT_PLAYER_PAUSE)){
+			jbRew.setEnabled(false);
+			jbFwd.setEnabled(false);
+			jsPosition.setEnabled(false);
+			jbPlayPause.setIcon(Util.getIcon(ICON_PLAY));
+		}
+		else if ( subject.equals(EVENT_PLAYER_UNPAUSE)){
+			jbRew.setEnabled(true);
+			jbFwd.setEnabled(true);
+			jsPosition.setEnabled(true);
+			jbPlayPause.setIcon(Util.getIcon(ICON_PAUSE));
 		}
 	}
 

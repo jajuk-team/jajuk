@@ -73,6 +73,7 @@ public class ObservationManager {
 		Util.waiting();
 		ArrayList alComponents =(ArrayList)hmEventComponents.get(subject); 
 		if (alComponents == null){
+			Util.stopWaiting();
 			return;
 		}
 		Iterator it = alComponents.iterator();  

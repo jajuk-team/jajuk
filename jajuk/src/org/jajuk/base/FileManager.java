@@ -127,7 +127,7 @@ public class FileManager implements ITechnicalStrings{
 		Iterator it = alFiles.iterator();
 		while ( it.hasNext()){
 			File file = (File)it.next();
-			if (file.getDirectory().getDevice().isMounted() && !file.getDirectory().getDevice().isRefreshing()){
+			if (file.isReady()){
 				alEligibleFiles.add(file);
 			}
 		}
@@ -147,7 +147,7 @@ public class FileManager implements ITechnicalStrings{
 		Iterator it = alFiles.iterator();
 		while ( it.hasNext()){
 			File file = (File)it.next();
-			if (file.getDirectory().getDevice().isMounted() && !file.getDirectory().getDevice().isRefreshing()){
+			if (file.isReady()){
 				long lRate = file.getTrack().getRate();
 				long lScore = (long)(Math.random()*(100/(file.getTrack().getSessionHits()+1))*Math.log(lRate));  //computes score for each file ( part of shuffleness, part of hits weight )
 				tsEligibleFiles.add(new FileScore(file,lScore));
@@ -169,7 +169,7 @@ public class FileManager implements ITechnicalStrings{
 		boolean bOk = false;
 		for (int index=alSortedFiles.indexOf(file)+1;index<alSortedFiles.size();index++){
 			fileNext = (File)alSortedFiles.get(index);
-			if (fileNext.getDirectory().getDevice().isMounted() && !fileNext.getDirectory().getDevice().isRefreshing()){  //file must be on a mounted device not refreshing
+			if (fileNext.isReady()){  //file must be on a mounted device not refreshing
 				bOk = true;
 				break;
 			}
@@ -183,7 +183,7 @@ public class FileManager implements ITechnicalStrings{
 		//ok, if we are in restart collection mode, restart from collection begin to file index
 		for (int index=0;index<alSortedFiles.indexOf(file);index++){
 			fileNext = (File)alSortedFiles.get(index);
-			if (fileNext.getDirectory().getDevice().isMounted() && !fileNext.getDirectory().getDevice().isRefreshing()){  //file must be on a mounted device not refreshing
+			if (fileNext.isReady()){  //file must be on a mounted device not refreshing
 				bOk = true;
 				break;
 			}
@@ -206,7 +206,7 @@ public class FileManager implements ITechnicalStrings{
 		boolean bOk = false;
 		for (int index=alSortedFiles.indexOf(file)-1;index>=0;index--){
 			filePrevious = (File)alSortedFiles.get(index);
-			if (filePrevious.getDirectory().getDevice().isMounted() && !filePrevious.getDirectory().getDevice().isRefreshing()){  //file must be on a mounted device not refreshing
+			if (filePrevious.isReady()){  //file must be on a mounted device not refreshing
 				bOk = true;
 				break;
 			}

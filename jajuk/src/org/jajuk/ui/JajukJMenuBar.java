@@ -85,12 +85,12 @@ import org.jajuk.util.Util;
 		//Properties menu
 		properties = new JMenu(Messages.getString("JajukJMenuBar.Properties_3")); //$NON-NLS-1$
 		jmiNewProperty = new JMenuItem(Messages.getString("JajukJMenuBar.New_Property_1"),Util.getIcon(ICON_NEW)); //$NON-NLS-1$
+		jmiNewProperty.setEnabled(false);
 		jmiDeleteProperty = new JMenuItem(Messages.getString("JajukJMenuBar.Delete_a_Property_9"),Util.getIcon(ICON_DELETE)); //$NON-NLS-1$
+		jmiDeleteProperty.setEnabled(false);
 		properties.add(jmiNewProperty);
 		properties.add(jmiDeleteProperty);
 		properties.addSeparator();
-		properties.add(new JMenuItem("property1")); //temp //$NON-NLS-1$
-		properties.add(new JMenuItem("property2")); //temp //$NON-NLS-1$
 		
 		//Views menu
 		views = new JMenu(Messages.getString("JajukJMenuBar.Views_2")); //$NON-NLS-1$

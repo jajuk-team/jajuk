@@ -199,7 +199,7 @@ public class Track extends PropertyAdapter implements Comparable{
 		Iterator it = alFiles.iterator();
 		while ( it.hasNext()){
 			File file = (File)it.next();
-			if (file.getDirectory().getDevice().isMounted() && !file.getDirectory().getDevice().isRefreshing()){
+			if (file.isReady()){
 				alMountedFiles.add(file);
 			}
 		}

@@ -55,7 +55,7 @@ public class FIFO implements ITechnicalStrings,Runnable{
 	/**Self instance*/
 	static private FIFO fifo= null; 	
 	
-	/**True is a track is playing */
+	/**True if a track is playing */
 	static private boolean bPlaying;
 	
 	/** Forced repeat mode flag*/
@@ -239,14 +239,32 @@ public class FIFO implements ITechnicalStrings,Runnable{
 	 * Play previous track
 	 */
 	public synchronized void playPrevious(){
-		push(FileManager.getPreviousFile(fCurrent),false);
+		if ( fCurrent != null){
+			push(FileManager.getPreviousFile(fCurrent),false);	
+		}
+		else{
+			File file = FileManager.getFile(History.getInstance().getLastFile());
+			file = FileManager.getPreviousFile(file);
+			if ( file != null && file.isReady()){
+				FIFO.getInstance().push(file,false);
+			}
+		}
 	}
 	
 	/**
 	 * Play next track
 	 */
 	public synchronized void playNext(){
-		finished();
+		if ( fCurrent != null){  //if stopped, nothing to stop
+			finished();
+		}
+		else{
+			File file = FileManager.getFile(History.getInstance().getLastFile());
+			file = FileManager.getNextFile(file);
+			if ( file != null && file.isReady()){
+				FIFO.getInstance().push(file,false);
+			}
+		}
 	}
 	
 	
@@ -265,7 +283,6 @@ public class FIFO implements ITechnicalStrings,Runnable{
 					long length = fCurrent.getTrack().getLength();;
 					if ( i%(REFRESH_TIME/SLEEP_TIME) == 0 && length!=0){  //actual refresh less frequent for cpu
 						lTime = (System.currentTimeMillis() - lTrackStart) + lOffset - lPauseTime;
-	//System.out.println("core: "+lTime);
 						if ( bIntroEnabled){
 							lTime += (fCurrent.getTrack().getLength()*Integer.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_INTRO_BEGIN))*10);
 						}
@@ -322,6 +339,9 @@ public class FIFO implements ITechnicalStrings,Runnable{
 					continue;
 				}
 				synchronized(this){  //lock fifo access when lauching
+					if ( !bPlaying){  //test this to avoid notifying at each launch
+						ObservationManager.notify(EVENT_PLAYER_PLAY);  //notify to devices like commandJPanel to update ui
+					}
 					int index = 0;
 					lOffset = 0;
 					lPauseTime = 0;
@@ -357,12 +377,11 @@ public class FIFO implements ITechnicalStrings,Runnable{
 				}
 			}
 			//fifo is over ( stop request ) , reinit labels in information panel before exiting
-			InformationJPanel.getInstance().setCurrentStatusMessage(Util.formatTime(0)+" / "+Util.formatTime(0));
-			InformationJPanel.getInstance().setCurrentStatus(0);
-			CommandJPanel.getInstance().setCurrentPosition(0);
-			InformationJPanel.getInstance().setTotalStatusMessage("0'");
-			InformationJPanel.getInstance().setMessage("Ready to play",InformationJPanel.INFORMATIVE);
-			InformationJPanel.getInstance().setQuality("");
+			reset();  //reset ui
+			Player.stop();  //stop player
+			fifo = null; //delete singleton
+			init();  //reinit all variables
+			ObservationManager.notify(EVENT_PLAYER_STOP);  //notify to devices like commandJPanel to update ui
 		} catch (Exception e) {
 			Log.error("122", e); //$NON-NLS-1$
 		}
@@ -374,6 +393,19 @@ public class FIFO implements ITechnicalStrings,Runnable{
 	 */
 	public synchronized void stopFIFO() {
 		bStop = true;
+	}
+	
+	/** 
+	 * Reset all ui indicators ( when stopping for instance )
+	 */
+	private synchronized void reset(){
+		lTotalTime = 0;
+		InformationJPanel.getInstance().setCurrentStatusMessage(Util.formatTime(0)+" / "+Util.formatTime(0));
+		InformationJPanel.getInstance().setCurrentStatus(0);
+		CommandJPanel.getInstance().setCurrentPosition(0);
+		InformationJPanel.getInstance().setTotalStatusMessage("0'");
+		InformationJPanel.getInstance().setMessage("Ready to play",InformationJPanel.INFORMATIVE);
+		InformationJPanel.getInstance().setQuality("");
 	}
 	
 	/**
@@ -399,7 +431,7 @@ public class FIFO implements ITechnicalStrings,Runnable{
 	 * @return
 	 */
 	public static boolean canUnmount(Device device){
-		if ( fifo== null){ //currently stopped
+		if ( fifo== null || !bPlaying){ //currently stopped
 			return true;
 		}
 		if (getInstance().fCurrent.getDirectory().getDevice().equals(device)){
@@ -487,11 +519,8 @@ public class FIFO implements ITechnicalStrings,Runnable{
 	/**
 	 * Stop request. Void the fifo
 	 */
-	public void stopRequest() {
+	public synchronized void stopRequest() {
 		bStop = true;
-		Player.stop();
-		fifo = null;
-		init();
 	}
 	
 	/**
@@ -502,10 +531,10 @@ public class FIFO implements ITechnicalStrings,Runnable{
 			bPaused = true;
 			lPauseDate = System.currentTimeMillis();
 			Player.stop();
+			ObservationManager.notify(EVENT_PLAYER_PAUSE);
 		}
 		else{
 			lPauseTime+=(System.currentTimeMillis()-lPauseDate);
-	System.out.println("pause time:"+lPauseTime);
 			//restart paused track
 			if (ConfigurationManager.getBoolean(CONF_STATE_INTRO)){ //intro mode enabled
 				Player.play(fCurrent,getCurrentPosition(),(long)(1000*(1-getCurrentPosition())*Integer.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_INTRO_LENGTH))));
@@ -514,6 +543,7 @@ public class FIFO implements ITechnicalStrings,Runnable{
 				Player.play(fCurrent,getCurrentPosition(),1000*fCurrent.getTrack().getLength());  //play it
 			}
 			bPaused = false;
+			ObservationManager.notify(EVENT_PLAYER_UNPAUSE);
 		}
 	}
 

@@ -52,7 +52,7 @@ public class TrackManager implements ITechnicalStrings {
 	 * @param sName
 	 */
 	public static synchronized Track registerTrack(String sName, Album album, Style style, Author author, long length, String sYear, Type type) {
-		String sId = MD5Processor.hash(style.getName() + author.getName() + sYear + length + type.getName() + sName);
+		String sId = MD5Processor.hash(style.getName() + author.getName() +album.getName() + sYear + length + type.getName() + sName);
 		return registerTrack(sId, sName, album, style, author, length, sYear, type);
 	}
 
