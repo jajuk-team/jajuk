@@ -88,19 +88,23 @@ public class ObservationManager implements ITechnicalStrings{
 		if (!subject.equals(EVENT_HEART_BEAT)){ //do not show this heart beat 
 		    Log.debug("Notify: "+subject); //$NON-NLS-1$
 		}
-		ArrayList alComponents =(ArrayList)hEventComponents.get(subject); 
-		if (alComponents == null){
-			return;
-		}
-		synchronized(alComponents){
-			Iterator it = alComponents.iterator();  
-			while (it.hasNext()){
-				Observer obs = (Observer)it.next();
-				try{
-					obs.update(subject);
-				}
-				catch(Exception e){
-					Log.error(e);
+		synchronized(hEventComponents){
+			ArrayList alComponents =(ArrayList)hEventComponents.get(subject);
+			if (alComponents == null){
+				return;
+			}
+			synchronized(alComponents){
+				Iterator it = alComponents.iterator();  
+				while (it.hasNext()){
+					Observer obs = (Observer)it.next();
+					if (obs != null){
+						try{
+							obs.update(subject);
+						}
+						catch(Exception e){
+							Log.error(e);
+						}
+					}
 				}
 			}
 		}
@@ -117,11 +121,12 @@ public class ObservationManager implements ITechnicalStrings{
 			ObservationManager.notifySync(subject);
 		}
 		else{
-			new Thread(){
+			Thread t = new Thread(){
 				public void run(){
 					ObservationManager.notifySync(subject);
 				}
-			}.start();
+			};
+			t.start();
 		}
 	}
 	
