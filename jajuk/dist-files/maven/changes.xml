@@ -1,14 +1,31 @@
-<?xml version="1.0"?>
+<?xml version='1.0'?>
 <document>
   <properties>
     <title>Changes</title>
-    <author email="bertrand@florat.net">Bertrand Florat</author>
+    <author email='bertrand@florat.net'>Bertrand Florat</author>
   </properties>
   <body>
-    <release version="1.0" date="14/11/2003">
-      <action dev="bflorat" type="add" >
-        Initial site release, first contact with Maven ;-)
-      </action>
+    <release version='0.1' date='2003-03-21' description='Initial release'>
+      <action dev='bflorat' type='add' >Jajuk initial release</action>
     </release>
+    <release version='0.1.1' date='2003-03-23' description='Hot fixes'>
+      <action dev='bflorat' type='fix'>921441 Special XML characters not correctly managed by Jajuk</action> 
+      <action dev='bflorat' type='fix'>921040  &gt; character bug </action> 
+      <action dev='bflorat' type='fix'>921744 Freezes when setting volume</action> 
+      <action dev='bflorat' type='fix'>921743 No save as playlists in logical perspective</action>  
+      <action dev='bflorat' type='add'>Some labels renames</action>  
+      <action dev='bflorat' type='add'>Save for special lists in playlist editor works</action>  
+    </release>
+    <release version='0.1.2' date='2003-03-26' description='Maintenance release'>
+      <action dev='bflorat' type='fix'>921441 ( 2nd time ) Collection corruption when using some special XML characters</action>  
+      <action dev='bflorat' type='fix'>921267 Problem restoring main window under windows and linux + blocking bug under kde3.2 ( mandrake 10 ) : window is too small</action>  
+      <action dev='bflorat' type='add'>(developpers) Added -debug option at startup to switch images url from a jar to a directory under eclipse</action>  
+    </release>
+    <release version='0.1.3' date='2003-04-02' description='Requested features release (systray)'>
+      <action dev='bflorat' type='fix'>927800 Error message not shown before an exit</action>  
+      <action dev='bflorat' type='add'>RFE 921256 Systray (only under MS Windows for now)</action>  
+      <action dev='bflorat' type='add'>RFE 921854 Drag and drop improved, you can now drop tracks from tree or table direcly in playlist editor</action>  
+      <action dev='bflorat' type='update'>Now collection and configuration are saved on disk at exit even when Jajuk window is not closed (logout, CTRL-C...)</action>  
+     </release>
   </body>
 </document>
