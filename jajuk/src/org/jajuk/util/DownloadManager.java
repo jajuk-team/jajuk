@@ -48,13 +48,7 @@ public class DownloadManager implements ITechnicalStrings {
     /**Http client**/
 	private static HttpClient client = null;
     	
-	/**Is there a current connecton? multiple connections are not allowed to avoid out of memory errors and dead locks*/
-	private static boolean bActiveConnection = false;
-	
-	/**Inform the current connection that a concurrent connection has been tried and that this one should be trashed*/
-	private static boolean bTrashData = false;
-	
-	/**
+		/**
 	 * @param sProxyUser
 	 * @param sProxyPassswd
 	 * @return an HTTP client
@@ -106,9 +100,8 @@ public class DownloadManager implements ITechnicalStrings {
 	 * @return a list of urls
 	 */
 	public static ArrayList getRemoteCoversList(String search) throws JajukException{
-	    ArrayList alOut = new ArrayList(20); //URL list   
+		ArrayList alOut = new ArrayList(20); //URL list   
 	    try{
-	        bActiveConnection = true;
 	        String sSearchUrl = "http://images.google.com/images?q="+URLEncoder.encode(search, "ISO-8859-1")+"&ie=ISO-8859-1&hl=en&btnG=Google+Search"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	        Log.debug("Search URL: "+sSearchUrl); //$NON-NLS-1$
 	        byte[] bRes = download(new URL(sSearchUrl));
@@ -151,7 +144,6 @@ public class DownloadManager implements ITechnicalStrings {
 	 * @return result as an array of bytes, null if a problem occured
 	 */
 	public static byte[] download(URL url) throws JajukException{
-	    bActiveConnection = true; //tell others a connection is engaged
 	    byte[] bOut = null;
 	    GetMethod get = null;
 	    try{
@@ -170,10 +162,6 @@ public class DownloadManager implements ITechnicalStrings {
 	        get.setDoAuthentication( true );
 	        int status = client.executeMethod(getHostConfiguration(url.getHost()), get );
 	        bOut = get.getResponseBody();
-	        if ( bTrashData){ //if another session has tried to download another url, this one shouls be trashed
-	            Log.debug("Trash data required");
-	        	throw new JajukException("129"); //$NON-NLS-1$
-	        }
 	     }
 	    catch(Exception e){
 	        Log.debug("Time out during cover lookup");
@@ -181,8 +169,6 @@ public class DownloadManager implements ITechnicalStrings {
 	    }
 	    finally{
 	        get.releaseConnection();
-	        bActiveConnection = false;
-	        bTrashData = false;
 	    }
 	    return bOut;
 	}
@@ -195,18 +181,5 @@ public class DownloadManager implements ITechnicalStrings {
     public static String getProxyPwd(){
         return JOptionPane.showInputDialog(Main.getWindow(),Messages.getString("DownloadManager.0"),Messages.getString("DownloadManager.1"),JOptionPane.INFORMATION_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
     }
-    
    
-    /**
-     * @param Set the Trash data
-     */
-    public static void setTrashData(boolean concurrentConnection) {
-        bTrashData = concurrentConnection;
-    }
-    /**
-     * @return Returns the bActiveConnection.
-     */
-    public static boolean isActiveConnection() {
-        return bActiveConnection;
-    }
 }
