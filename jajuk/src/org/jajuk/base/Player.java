@@ -43,8 +43,8 @@ public class Player implements ITechnicalStrings{
 	private static boolean bMute = false;
 	/**Paused flag*/
 	private static boolean bPaused = false;
-	/**Loading lock, used by pause to wait next track is started*/
-	public static final byte[] bLoading = new byte[0];
+	/**Playing ?*/
+	private static boolean bPlaying = false;
 	
 	
 	/**
@@ -60,9 +60,8 @@ public class Player implements ITechnicalStrings{
 			public void run() {
 				try {
 					synchronized(bLock){  //ultimate concurrency protection
-						synchronized(bLoading){
-						    pCurrentPlayerImpl.play(fCurrent,fPosition,length,bMute,ConfigurationManager.getFloat(CONF_VOLUME));
-						}
+					    bPlaying = true;
+					    pCurrentPlayerImpl.play(fCurrent,fPosition,length,bMute,ConfigurationManager.getFloat(CONF_VOLUME));
 					}
 				} catch (Exception e) {
 					Log.error("007",fCurrent.getAbsolutePath(), e); //$NON-NLS-1$
@@ -85,6 +84,7 @@ public class Player implements ITechnicalStrings{
 			if (fCurrent!=null){
 				fCurrent.getTrack().getType().getPlayerImpl().stop();
 				setPaused(false); //cancel any current pause
+				bPlaying = false;
 			}
 		} catch (Exception e) {
 			Log.error("008",fCurrent.getName(),e); //$NON-NLS-1$
@@ -147,10 +147,11 @@ public class Player implements ITechnicalStrings{
 	/**Pause the player*/
 	public static void pause() {
 		 try {
-			synchronized(bLoading){ //wait loading is done to really pause
-			    pCurrentPlayerImpl.pause();
-			}
-			bPaused = true;
+		     if (!bPlaying){ //ignore pause when not playing to avoid confusion between two tracks
+		         return;
+		     }
+		     pCurrentPlayerImpl.pause();
+		     bPaused = true;
 		} catch (Exception e) {
 			Log.error(e); 
 		}
