@@ -248,13 +248,18 @@ public class Main implements ITechnicalStrings {
 			launchInitialTrack();        
 			
 			//lauch systray if needed, only for linux and windows, not mac for the moment
-		    if (Util.isUnderLinux() || Util.isUnderWindows()){
-		    	new Thread(){  //do it in a thread to avoid tray disparition under windows
-		    		public void run(){
-		    			jsystray = JajukSystray.getInstance();	
-		    		}
-		    	}.start();
-		    }
+			if (Util.isUnderLinux() || Util.isUnderWindows()){
+				new Thread(){//do it in a thread to avoid tray disparition under windows
+					public void run(){
+						try {
+							Thread.sleep(2000); //required to avoid icon disparition under windows dor unknwon reasons
+						} catch (InterruptedException e) {
+							Log.error(e);
+						}
+						jsystray = JajukSystray.getInstance();	
+					}
+				}.start();
+			}
 			
 			//show window if set in the systray conf
 			if ( ConfigurationManager.getBoolean(CONF_SHOW_AT_STARTUP) ){
@@ -264,7 +269,7 @@ public class Main implements ITechnicalStrings {
 		} catch (JajukException je) { //last chance to catch any error for logging purpose
 			Log.error(je);
 			if ( je.getCode().equals("005")){ //$NON-NLS-1$
-			   Messages.getChoice(Messages.getErrorMessage("005"),JOptionPane.ERROR_MESSAGE);
+			   Messages.getChoice(Messages.getErrorMessage("005"),JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$
 			    exit(1);
         	}
 		} catch (Exception e) { //last chance to catch any error for logging purpose
