@@ -280,7 +280,7 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener{
 		}
 		else if (EVENT_FILE_LAUNCHED.equals(subject)){
 		    File file  = FileManager.getFile((String)ObservationManager.getDetail(EVENT_FILE_LAUNCHED,DETAIL_CURRENT_FILE_ID));
-		    String sOut = "";
+		    String sOut = ""; //$NON-NLS-1$
 		    if (file != null ){
 		        sOut = file.getTrack().getName(); 
 		    }

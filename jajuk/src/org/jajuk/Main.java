@@ -476,7 +476,7 @@ public class Main implements ITechnicalStrings {
 				catch(Exception e){
 					Log.error("112",device.getName(),e); //$NON-NLS-1$
 					//show a confirm dialog if the device can't be mounted, we can't use regular Messages.showErrprMessage because main window is not yet displayed
-					String sMessage = Messages.getErrorMessage("112")+" : "+device.getName(); //$NON-NLS-1$ 
+					String sMessage = Messages.getErrorMessage("112")+" : "+device.getName(); //$NON-NLS-1$ //$NON-NLS-2$ 
 					JOptionPane.showMessageDialog(null,sMessage,Messages.getString("Error"),JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$
 					continue;
 				}

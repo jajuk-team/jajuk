@@ -254,7 +254,7 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
 			History.lDateStart = Long.parseLong(attributes.getValue(attributes.getIndex("begin_date"))); //$NON-NLS-1$
 		}
 		else if (sQName.equals("play")){ //$NON-NLS-1$
-			String sID = attributes.getValue(attributes.getIndex("file"));
+			String sID = attributes.getValue(attributes.getIndex("file")); //$NON-NLS-1$
 			//test if this fiel is still kwown int the collection
 			if (FileManager.getFile(sID) != null){
 			    HistoryItem hi = new HistoryItem(sID,Long.parseLong(attributes.getValue(attributes.getIndex("date")))); //$NON-NLS-1$ //$NON-NLS-2$
