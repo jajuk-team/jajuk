@@ -147,6 +147,7 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 	
 	/** Constructor */
 	public PhysicalTreeView(){
+		ptv = this;
 		//**Menu items**
 		//File menu
 		jmenuFile = new JPopupMenu();
@@ -270,7 +271,6 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 		
 		//fill the tree
 		populate();
-		ptv = this;
 	}
 	
 	/**Fill the tree */
@@ -552,11 +552,7 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 	 */
 	public void update(String subject) {
 	System.out.println(subject);
-		if ( subject.equals(EVENT_DEVICE_UNMOUNT) || subject.equals(EVENT_DEVICE_UNMOUNT)){
-			SwingUtilities.updateComponentTreeUI(jspTree);
-			jtree.setRowHeight(25);
-		}
-		else if( subject.equals(EVENT_DEVICE_REFRESH)){
+		if ( subject.equals(EVENT_DEVICE_UNMOUNT) || subject.equals(EVENT_DEVICE_UNMOUNT) || subject.equals(EVENT_DEVICE_REFRESH) ) {
 			populate();
 			SwingUtilities.updateComponentTreeUI(jspTree);
 			jtree.setRowHeight(25);

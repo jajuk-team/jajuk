@@ -64,7 +64,7 @@ public class FileManager implements ITechnicalStrings{
 	 * 
 	 * @param sName
 	 */
-	public static File registerFile(String sId, String sName, Directory directory, Track track, long lSize, String sQuality) {
+	public static synchronized File registerFile(String sId, String sName, Directory directory, Track track, long lSize, String sQuality) {
 		File file = new File(sId, sName, directory, track, lSize, sQuality);
 		if ( !alFilesId.contains(sId)){
 			alFilesId.add(sId);

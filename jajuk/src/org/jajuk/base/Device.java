@@ -62,6 +62,8 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 			Messages.getString("Device_type.player"),
 	};
 
+	/**Convenient lock */
+	public static byte[] bLock = new byte[0];
 
 	/**
 	 * Device constructor
@@ -131,74 +133,77 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 		//current reference to the inner thread class
 		new Thread() {
 			public void  run() {
-				/*Remove all directories, playlist files and files for this device before rescan. 
-				Note  that logical item ( tracks, styles...) are device independant and connot be cleared.
-				They will be clean up at next jajuk restart and old track data is used to populate device without full tag scan
-				*/ 
-				FileManager.cleanDevice(device.getId());
-				PlaylistFileManager.cleanDevice(device.getId());
-				DirectoryManager.cleanDevice(device.getId());
-				
-				long lTime = System.currentTimeMillis();
-				if (bAlreadyRefreshing){
-					Messages.showErrorMessage("107");
-					return;
-				}
-				bAlreadyRefreshing = true;
-				Log.debug("Starting refresh of device : "+device);
-				
-				File fTop = new File(device.sUrl);
-				if (!fTop.exists()) {
-					Messages.showErrorMessage("101");
-					return;
-				}
-				
-				//index init
-				File fCurrent = fTop;
-				int[] indexTab = new int[100]; //directory index  
-				for (int i = 0; i < 100; i++) { //init
-					indexTab[i] = -1;
-				}
-				int iDeep = 0; //deep
-				Directory dParent = null;
-				
-				//Create a directory for device itself and scan files to allow files at the root of the device
-				if (!device.getDeviceTypeS().equals(DEVICE_TYPE_REMOTE) || !device.getDeviceTypeS().equals(DEVICE_TYPE_AUDIO_CD)){
-					Directory d = DirectoryManager.registerDirectory(device);
-					dParent = d;
-					d.scan();
-				}
-				//Start actual scan
-				while (iDeep >= 0) {
-					//Log.debug("entering :"+fCurrent);
-					File[] files = fCurrent.listFiles(JajukFileFilter.getInstance(true,false)); //only directories
-					if (files== null || files.length == 0 ){  //files is null if fCurrent is a not a directory 
-						indexTab[iDeep] = -1;//re-init for next time we will reach this deep
-						iDeep--; //come up
-						fCurrent = fCurrent.getParentFile();
-						dParent = dParent.getParentDirectory();
-					} else {
-						if (indexTab[iDeep] < files.length-1 ){  //enter sub-directory
-							indexTab[iDeep]++; //inc index for next time we will reach this deep
-							fCurrent = files[indexTab[iDeep]];
-							dParent = DirectoryManager.registerDirectory(fCurrent.getName(),dParent,device);
-							dParent.scan();
-							iDeep++;
-						}
-						else{
-							indexTab[iDeep] = -1;
-							iDeep --;
+				//lock the synchro
+				synchronized(bLock){
+					/*Remove all directories, playlist files and files for this device before rescan. 
+					Note  that logical item ( tracks, styles...) are device independant and connot be cleared.
+					They will be clean up at next jajuk restart and old track data is used to populate device without full tag scan
+					*/ 
+					FileManager.cleanDevice(device.getId());
+					PlaylistFileManager.cleanDevice(device.getId());
+					DirectoryManager.cleanDevice(device.getId());
+					
+					long lTime = System.currentTimeMillis();
+					if (bAlreadyRefreshing){
+						Messages.showErrorMessage("107");
+						return;
+					}
+					bAlreadyRefreshing = true;
+					Log.debug("Starting refresh of device : "+device);
+					
+					File fTop = new File(device.sUrl);
+					if (!fTop.exists()) {
+						Messages.showErrorMessage("101");
+						return;
+					}
+					
+					//index init
+					File fCurrent = fTop;
+					int[] indexTab = new int[100]; //directory index  
+					for (int i = 0; i < 100; i++) { //init
+						indexTab[i] = -1;
+					}
+					int iDeep = 0; //deep
+					Directory dParent = null;
+					
+					//Create a directory for device itself and scan files to allow files at the root of the device
+					if (!device.getDeviceTypeS().equals(DEVICE_TYPE_REMOTE) || !device.getDeviceTypeS().equals(DEVICE_TYPE_AUDIO_CD)){
+						Directory d = DirectoryManager.registerDirectory(device);
+						dParent = d;
+						d.scan();
+					}
+					//Start actual scan
+					while (iDeep >= 0) {
+						//Log.debug("entering :"+fCurrent);
+						File[] files = fCurrent.listFiles(JajukFileFilter.getInstance(true,false)); //only directories
+						if (files== null || files.length == 0 ){  //files is null if fCurrent is a not a directory 
+							indexTab[iDeep] = -1;//re-init for next time we will reach this deep
+							iDeep--; //come up
 							fCurrent = fCurrent.getParentFile();
-							if (dParent!=null){
-								dParent = dParent.getParentDirectory();
+							dParent = dParent.getParentDirectory();
+						} else {
+							if (indexTab[iDeep] < files.length-1 ){  //enter sub-directory
+								indexTab[iDeep]++; //inc index for next time we will reach this deep
+								fCurrent = files[indexTab[iDeep]];
+								dParent = DirectoryManager.registerDirectory(fCurrent.getName(),dParent,device);
+								dParent.scan();
+								iDeep++;
 							}
-						}
-					}					
+							else{
+								indexTab[iDeep] = -1;
+								iDeep --;
+								fCurrent = fCurrent.getParentFile();
+								if (dParent!=null){
+									dParent = dParent.getParentDirectory();
+								}
+							}
+						}					
+					}
+					Log.debug("Refresh done in "+(int)((System.currentTimeMillis()-lTime)/1000)+" sec");
+					bAlreadyRefreshing = false;
+					//notify views to refresh
+					ObservationManager.notify(EVENT_DEVICE_REFRESH);
 				}
-				Log.debug("Refresh done in "+(int)((System.currentTimeMillis()-lTime)/1000)+" sec");
-				bAlreadyRefreshing = false;
-				//notify views to refresh
-				ObservationManager.notify(EVENT_DEVICE_REFRESH);
 			}
 		}
 		.start();
@@ -281,15 +286,20 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 		int iExit = 0;
 		if (sOS.trim().toLowerCase().lastIndexOf("windows")==-1 && !getMountPoint().trim().equals("")){  //not a windows
 			try{
-				Process process = Runtime.getRuntime().exec("mount "+getMountPoint());
-				iExit = process.waitFor();
-				if ( iExit != 0){  //0: OK, 1: already mounted or error
-					throw new Exception();
+				//look to see if the device is already mounted ( the mount command cannot say that )
+				File file = new File(getMountPoint());
+				if ( file.exists() && file.list().length == 0){
+					Process process = Runtime.getRuntime().exec("mount "+getMountPoint());//run the actual mount command
+					iExit = process.waitFor();
+					if ( iExit != 0){  //0: OK, 1:  error
+						throw new Exception();
+					}
 				}
 			}
 			catch(Exception e){
 				Log.error("011",Integer.toString(iExit),e);	//mount failed
 				Messages.showErrorMessage("011",getName());
+				return;
 			}
 		}
 		bMounted = true;
@@ -300,35 +310,34 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	 *
 	 */
 	public  void unmount() throws Exception{
-		if (!bMounted){
-			Messages.showErrorMessage("120");
+		//look to see if the device is already mounted ( the mount command cannot say that )
+		File file = new File(getMountPoint());
+		if (!bMounted || file.list().length==0 ){
+			Messages.showErrorMessage("014");
+			return;
+		}
+		if (!FIFO.getInstance().canUnmount(this)){ //ask fifo if it doens't use any track from this device
+			Messages.showErrorMessage("121");
+			return;
 		}
 		String sOS = (String)System.getProperties().get("os.name");
 		int iExit = 0;
-			if (sOS.trim().toLowerCase().lastIndexOf("windows")==-1 && !getMountPoint().trim().equals("")){  //not a windows
-				try{
-					Process process = Runtime.getRuntime().exec("umount "+getMountPoint());
-					iExit = process.waitFor();
-					if ( iExit == 2){  //not mounted
-						return;
-					}
-					else if ( iExit != 0 ){  //0: OK, 1: already mounted
-						throw new Exception();
-					}
-				}
-				catch(Exception e){
-					Log.error("012",Integer.toString(iExit),e);	//mount failed
-					Messages.showErrorMessage("012",getName());
-					return;
+		if (sOS.trim().toLowerCase().lastIndexOf("windows")==-1 && !getMountPoint().trim().equals("")){  //not a windows
+			try{
+				Process process = Runtime.getRuntime().exec("umount "+getMountPoint());
+				iExit = process.waitFor();
+				if ( iExit != 0 ){  //0: OK, 1: already mounted
+					throw new Exception();
 				}
 			}
-		if (FIFO.getInstance().canUnmount(this)){
-			bMounted = false;
-			ObservationManager.notify(EVENT_DEVICE_UNMOUNT);
+			catch(Exception e){
+				Log.error("012",Integer.toString(iExit),e);	//mount failed
+				Messages.showErrorMessage("012",getName());
+				return;
+			}
 		}
-		else{
-			Messages.showErrorMessage("121");
-		}
+		bMounted = false;
+		ObservationManager.notify(EVENT_DEVICE_UNMOUNT);
 	}
 	
 	/**

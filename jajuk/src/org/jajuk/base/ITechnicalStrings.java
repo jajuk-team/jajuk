@@ -174,6 +174,7 @@ public interface ITechnicalStrings {
 	public static final String VIEW_NAME_LOGICAL_TREE = "org.jajuk.ui.views.LogicalTreeView";
 	public static final String VIEW_NAME_LOGICAL_TABLE = "org.jajuk.ui.views.LogicalTableView";
 	public static final String VIEW_NAME_ABOUT = "org.jajuk.ui.views.AboutView";
+	public static final String VIEW_NAME_HELP = "org.jajuk.ui.views.HelpView";
 	 	
 	//extensions
 	public static final String EXT_MP3 = "mp3";
@@ -348,7 +349,7 @@ public interface ITechnicalStrings {
 		"\t</perspective>\n"+
 		"\t<perspective  class='"+PERSPECTIVE_NAME_HELP+"'>\n"+
 		"\t\t<views>\n"+
-		/*"\t\t\t<view class='org.jajuk.ui.views.HelpView'/>\n"+*/
+		"\t\t\t<view class='"+VIEW_NAME_HELP+"' width='70' height='100' x='0' y='0' />\n"+
 		"\t\t\t<view class='"+VIEW_NAME_ABOUT+"' width='30' height='100' x='70' y='0' />\n"+
 		"\t\t</views>\n"+
 		"\t</perspective>\n"+

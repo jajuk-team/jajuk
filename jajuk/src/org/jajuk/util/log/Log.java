@@ -82,13 +82,10 @@ public class Log implements ITechnicalStrings{
 	 * <p>Implementation of the singleton pattern
 	 */
 	public static Log getInstance(){
-		if ( Log.log != null){
-			return Log.log;
-		}
-		else{
+		if ( Log.log == null){
 			Log.log = new Log();     	
-			return Log.log;
-		}
+		}	
+		return Log.log;
 	}
 	
 	
