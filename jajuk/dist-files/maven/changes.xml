@@ -99,15 +99,15 @@
       <release version='0.3' date='work in progress' description='Many confort novelties'>
     	<action dev='bflorat' type='add'>RFE962688	 save geometry windows</action>  
       	<action dev='bflorat' type='add'>IzPack installer upgrade, now in Liquid look and feel and many look improvments</action>  
-    	<action dev='bflorat' type='add'>New tab named Advanced in parameters view with expert options</action>  
+    	<action dev='bflorat' type='add'>Advanced tab in parameters view with expert options</action>  
     	<action dev='bflorat' type='add'>RFE 981210 : A new option for chosing encoding for collection file : UTF-8 or UTF-16</action>  
       	<action dev='bflorat' type='add'>Collection file backup options</action>  
     	<action dev='bflorat' type='add'>New Look and feel : Metouia</action>  
     	<action dev='bflorat' type='add'>New view : animation</action>  
     	<action dev='bflorat' type='add'>New perspective Player with animation and cover view</action>  
-    	<action dev='bflorat' type='add'>New special button in the command panel : novelties to play recently added tracks</action>  
+    	<action dev='bflorat' type='add'>New special function in the command panel : novelties to play recently added tracks</action>  
     	<action dev='bflorat' type='add'>New parameter tab with a button to reset perspectives defaults</action>  
-    	<action dev='bflorat' type='add'>New option in parameter view : search in unmounted devices usefull with the search box</action>  
+    	<action dev='bflorat' type='add'>New option in parameter view : search in unmounted devices for searchs in the search box</action>  
     	<action dev='bflorat' type='add'>New option in parameter view : novelties age</action>  
     	<action dev='bflorat' type='add'>Three new startup modes : bestof, novelties and last track keep position(new default)</action>  
     	<action dev='bflorat' type='add'>Startup modes now feature a keep selected mode option (default=true)</action>  
