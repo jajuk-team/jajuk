@@ -26,7 +26,7 @@
     <name>Search</name>
     <label>Recherche</label>
     <type>javax.help.SearchView</type>
-    <data engine="com.sun.java.help.search.DefaultSearchEngine">fr/JavaHelpSearch</data>
+    <data engine="com.sun.java.help.search.DefaultSearchEngine">JavaHelpSearch</data>
   </view>
 
   <view>

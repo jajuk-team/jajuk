@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=utf-8">
+	<TITLE>The Physical/Logical Table view</TITLE>
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 1.1.3  (Linux)">
+	<META NAME="CREATED" CONTENT="20050308;19305500">
+	<META NAME="CHANGED" CONTENT="20050308;19310200">
+</HEAD>
+<BODY LANG="en-US" DIR="LTR">
+<H1>The Physical/Logical Table view 
+</H1>
+<P>These views show all files/tracks from your collection in a table
+and is used to perform contextual operations and filtering. For the
+moment, columns (track name, directory...) are static but in Jajuk
+future releases, you should be able to add new custom ones. Physical
+Table view displays all files from your collection (so you can get
+several time the same file if located in several devices or
+directories) when the Logical Table view only deals with tracks and
+related information. Note that a single track can actually map
+several files but will only be displayed once in this view.</P>
+<P><U>Notes</U>: 
+</P>
+<UL>
+	<LI><P STYLE="margin-bottom: 0cm">Rate is related to the track, not
+	to a single file. It is computed this way: +1 when a track is added
+	in queue and +2 when it is played. 
+	</P>
+	<LI><P>As usual, you can limit to files from mounted devices using
+	the &quot;show only mounted devices&quot; option in Parameter view/
+	Option tab. 
+	</P>
+</UL>
+<H2>Drag and Drop</H2>
+<P>At any time, you can drag a single file or track from the table to
+any Playlist in the Playlist repository view or to the current
+Playlist Editor.</P>
+<H2>Contextual menu</H2>
+<P>File/track contextual menu features:</P>
+<UL>
+	<LI><P STYLE="margin-bottom: 0cm">Play: Stop current track/file and
+	play it 
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm">Push: Don't stop current track but
+	simply add the selection in the queue (see Queue playlist) 
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm">Play shuffle: Stop current track
+	and play selection randomly (note that this mode is automatically
+	used when playing a track if you set Shuffle mode in command view) 
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm">Play repeat: Stop current track
+	and play selection in a loop (note that this mode is automatically
+	used when playing a track if you set Repeat mode in command view) 
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm">Play directory (only physical
+	table): stop current track and play all files found in the selection
+	directory 
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm">Play album (only logical table):
+	stop current track and play all tracks of the selection album 
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm">Play directory (only logical
+	table): stop current track and play all tracks of the selection
+	author 
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm">Set a property (not yet
+	implemented). Set a property to this item 
+	</P>
+	<LI><P>Properties (not yet implemented). Show item properties. 
+	</P>
+</UL>
+<H2>Filtering panel</H2>
+<P>To filter tracks/files following some criteria, select the
+criteria using the combo box (track name, author and so on), then
+type the filter value in the text field and type [enter]. If filter
+value is void, all tracks/files will be displayed.</P>
+<P>o Filter type combo box: select the criteria you want to filter
+on. 
+</P>
+<P>o Filter value text field: type value you want to filter on. 
+</P>
+<P><IMG SRC="../icons/16x16/filter.png" NAME="Image1" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=0>&nbsp;Use
+the filter (you can also type [Enter])</P>
+<P><IMG SRC="../icons/16x16/clear.png" NAME="Image2" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=0>&nbsp;Clear
+filter and show all tracks/files</P>
+<P><IMG SRC="../icons/16x16/complex_search.png" NAME="Image3" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=0>&nbsp;Use
+complex filters (not yet implemented)</P>
+</BODY>
+</HTML>

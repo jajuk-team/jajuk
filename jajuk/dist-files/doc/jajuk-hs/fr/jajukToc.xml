@@ -4,9 +4,52 @@
          "./toc_2_0.dtd">
 <toc version="2.0">
 <tocitem text="Aide Jajuk">
-   <tocitem text="Introduction" target="top"/>
-   <tocitem text="Perspectives et vues" target="pav"/>
-   <tocitem text="Jouer de la musique" target="pm"/>
-   <tocitem text="Utiliser les playlistes" target="up"/>
-</tocitem>
+   	<tocitem text="Introduction" target="top"/>
+	<tocitem text="Formats supportés" target="formats"/>
+   	<tocitem text="Notions générales" expand="true">
+		<tocitem text="Perspectives et vues" target="pav"/>
+   		<tocitem text="Utiliser les supports" target="devices"/>
+		<tocitem text="Jouer de la musique" target="pm"/>
+   		<tocitem text="Utiliser les playlistes" target="up"/>
+   		<tocitem text="Utiliser le tray" target="tray"/>
+		</tocitem>
+		<tocitem text="Vues"  expand="true">
+			<tocitem text="Vues statiques"  expand="true">
+				<tocitem text="La vue Commande" target="view_command"/>
+				<tocitem text="La vue Information" target="view_information"/>
+			</tocitem>
+			<tocitem text="Vues contextuelles"  expand="true">
+				<tocitem text="Perspective Physique"  expand="true">
+					<tocitem text="La vue Arbre Physique" target="view_physical_tree"/>
+					<tocitem text="La vue Table Physique" target="view_table"/>
+					<tocitem text="La vue Référentiel de playlistes" target="view_playlist_repository"/>
+					<tocitem text="La vue Editeur de playlistes" target="view_playlist_editor"/>
+					<tocitem text="La vue Couvertures" target="view_cover"/>
+				</tocitem> 	
+				<tocitem text="Perspective Logique"  expand="true">
+					<tocitem text="La vue Arbre Logique" target="view_physical_tree"/>
+					<tocitem text="La vue Table Logique" target="view_table"/>
+					<tocitem text="La vue Référentiel de playlistes" target="view_playlist_repository"/>
+					<tocitem text="La vue Editeur de playlistes" target="view_playlist_editor"/>
+					<tocitem text="La vue Couvertures" target="view_cover"/>
+				</tocitem> 	
+				<tocitem text="Perspective Lecteur"  expand="true">
+					<tocitem text="La vue Animation" target="view_animation"/>
+					<tocitem text="La vue Couvertures" target="view_cover"/>
+				</tocitem> 	
+				<tocitem text="Perspective Configuration"  expand="true">
+				<tocitem text="La vue Paramétrage" target="view_parameter"/>
+					<tocitem text="La vue scanner de CDs" target="view_cd_scanner"/>
+					<tocitem text="La vue des Supports" target="view_devices"/>
+				</tocitem> 
+				<tocitem text="Perspective Statistiques"  expand="true">
+					<tocitem text="La vue statistiques" target="view_stats"/>
+				</tocitem>
+				<tocitem text="Perspective Aide"  expand="true">
+					<tocitem text="La vue Aide" target="view_help"/>
+					<tocitem text="La vue A Propos" target="view_about"/>
+				</tocitem> 	
+			</tocitem> 	
+		</tocitem>
+	</tocitem>
 </toc>

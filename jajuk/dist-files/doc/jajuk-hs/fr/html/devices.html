@@ -1,0 +1,146 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=utf-8">
+	<TITLE>Utiliser des supports</TITLE>
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 1.1.3  (Linux)">
+	<META NAME="CREATED" CONTENT="20050308;18045000">
+	<META NAME="CHANGED" CONTENT="20050308;19354500">
+</HEAD>
+<BODY LANG="en-US" DIR="LTR">
+<H1 LANG="fr-FR">Utiliser des supports</H1>
+<H2 LANG="fr-FR">D&eacute;finition</H2>
+<P LANG="fr-FR">Jajuk joue de la musique &agrave; partir de supports.
+Un support est un ensemble de fichiers audio. Cela peut &ecirc;tre : 
+</P>
+<UL>
+	<LI><P LANG="fr-FR" STYLE="margin-bottom: 0cm">Un r&eacute;pertoire 
+	</P>
+	<LI><P LANG="fr-FR" STYLE="margin-bottom: 0cm">Un CD-ROM de donn&eacute;es
+		</P>
+	<LI><P LANG="fr-FR" STYLE="margin-bottom: 0cm">Un disque dur externe
+		</P>
+	<LI><P LANG="fr-FR" STYLE="margin-bottom: 0cm">Un lecteur physique
+	tel qu'un iPod 
+	</P>
+	<LI><P LANG="fr-FR">Un r&eacute;pertoire distant (non impl&eacute;ment&eacute;)
+		</P>
+</UL>
+<P LANG="fr-FR"><U>Note</U>: Dans tous les cas, except&eacute; les
+r&eacute;pertoires distants, les supports sont des r&eacute;pertoires
+standards du point de vue du syst&egrave;me mais Jajuk diff&eacute;rencie
+les cas pour traiter les particularit&eacute;s (par exemple, un
+CD-ROM est en lecture seule) et ainsi fournir une interface graphique
+adapt&eacute;e.</P>
+<P LANG="fr-FR">Un support contient g&eacute;n&eacute;ralement des
+fichiers MP3, OGG et d'autres formats audio support&eacute;s, des
+fichiers pour playlistes (ou liste de lecture) ainsi que des JPG, GIF
+et autres fichiers images support&eacute; pour les couvertures.</P>
+<P LANG="fr-FR">Ce que nous nommons collection est une combinaison de
+supports que vous avez cr&eacute;&eacute;s.</P>
+<H2 LANG="fr-FR">Rafra&icirc;chir les supports</H2>
+<P LANG="fr-FR">Sous Jajuk, les supports peuvent &ecirc;tre
+rafra&icirc;chis de temps &agrave; autre. En effet, ce qui rend Jajuk
+si rapide est son indexation des collections : les fichiers de
+musique ne sont pas scann&eacute;s et leurs meta-donn&eacute;es ne
+sont pas lus &agrave; chaque d&eacute;marrage mais Jajuk construit
+une collection ou un index durant le rafra&icirc;chissement
+(enregistr&eacute; sur le disque dans {r&eacute;pertoire
+personnel}/.jajuk/collection.xml). Cela permet un d&eacute;marrage
+rapide et la connaissance en quelques secondes de tous les fichiers
+audio sur plusieurs centaines de GO de collection musicale. Cela
+permet aussi de filtrer et de r&eacute;aliser de puissantes
+recherches sur une collection compl&egrave;te en temps r&eacute;el.</P>
+<P LANG="fr-FR">Jajuk ne reconna&icirc;t les nouveaux fichiers que
+lors d'un rafra&icirc;chissement des supports: si vous copiez un
+nouveau fichier sur votre disque, il ne sera pas connu tant que vous
+n'aurez pas un rafra&icirc;chi le support source.</P>
+<P LANG="fr-FR">Les supports peuvent &ecirc;tre rafra&icirc;chis &agrave;
+chaque d&eacute;marrage mais ce n'est pas recommand&eacute; pour les
+supports volumineux car cela prend beaucoup de temps. Notez cependant
+que Jajuk int&egrave;gre des optimisations qui acc&eacute;l&egrave;re
+grandement le rafra&icirc;chissement: par d&eacute;faut, Jajuk ne lit
+pas les meta-donn&eacute;es des fichiers connus. Vous pouvez le
+forcer &agrave; les lire avec l'option &quot;Forcer la lecture des
+meta-donn&eacute;es&quot; dans la vue Param&egrave;tre/Onglet Option
+si vous changez les meta-donn&eacute;es en utilisant une autre
+application.</P>
+<P><SPAN LANG="fr-FR">Vous pouvez rafra&icirc;chir un support depuis
+la &quot;Perspective Physique&quot; avec la commande &quot;Rafra&icirc;chir&quot;
+depuis le menu contextuel du support s&eacute;lectionn&eacute; ou
+depuis </SPAN><A HREF="view_devices.html"><SPAN LANG="fr-FR">la vue
+P&eacute;riph&eacute;ries</SPAN></A> <SPAN LANG="fr-FR">dans la
+perspective Configuration.</SPAN></P>
+<H2 LANG="fr-FR">Monter/D&eacute;monter des supports</H2>
+<P LANG="fr-FR">Monter un support signifie le rendre disponible (donc
+connu de Jajuk) et le d&eacute;monter signifie le d&eacute;connecter.
+C'est l'&eacute;quivalent des notions de &quot;Mount&quot; et
+&quot;Unmount&quot; que l'on trouve sous Unix. Vous pouvez configurer
+les supports dans la vue Support afin qu'ils soient automatiquement
+mont&eacute;s au d&eacute;marrage. Certains supports peuvent
+naturellement &ecirc;tre auto-mont&eacute;s comme par exemple un
+r&eacute;pertoire depuis votre disque dur interne. D'un autre c&ocirc;t&eacute;,
+nous d&eacute;courageons l'auto-montage des supports sources qui ne
+sont pas &quot;stables&quot;, c'est-&agrave;-dire les supports CD ou
+les cl&eacute;s USB (par exemple), car il est probable qu'ils ne
+soient plus disponibles au prochain d&eacute;marrage de Jajuk. Quand
+un support requiert un montage, jajuk va v&eacute;rifier la
+disponibilit&eacute; physique de ce dernier (par exemple la pr&eacute;sence
+du CD dans le lecteur) et va essayer d'y acc&eacute;der sur demande.
+Sous Unix, il se peut que cela ex&eacute;cute une commande &quot;Mount&quot;.
+Si vous essayez de jouer un morceau situ&eacute; sur un support non
+mont&eacute;, alors Jajuk vous demandera si vous voulez le monter.
+Dans tous les cas, vous aurez un message d'erreur si le support ne
+peut &ecirc;tre mont&eacute;</P>
+<P><SPAN LANG="fr-FR">Vous pouvez monter ou d&eacute;monter un
+support depuis la perspective physique avec les commandes &quot;monter
+ou d&eacute;monter&quot; du menu contextuel du support s&eacute;lectionn&eacute;
+ou depuis </SPAN><A HREF="view_devices.html"><SPAN LANG="fr-FR">la
+vue Support</SPAN></A> <SPAN LANG="fr-FR">dans la perspective
+Configuration.</SPAN></P>
+<H2 LANG="fr-FR">Synchroniser les supports</H2>
+<P LANG="fr-FR">Quand on cr&eacute;e un support (voir la
+documentation sur la vue p&eacute;riph&eacute;rique pour plus
+d'informations), vous pouvez demander &agrave; Jajuk de le
+synchroniser avec un autre. Cela vous permet de copier en un simple
+clic tous les nouveaux fichiers d'un support source &agrave; un
+autre. Notez que vous pouvez effectuer une synchronisation partielle
+par la d&eacute;synchronisation de quelques r&eacute;pertoires dans
+la perspective Physique option Arbre Physique ou par le menu
+contextuel sur le r&eacute;pertoire choisi. (voir la bo&icirc;te de
+s&eacute;lection en bas de la vue Information pour conna&icirc;tre la
+taille (r&eacute;cursivement) de la s&eacute;lection). Vous pouvez
+aussi effectuer des synchronisations bi-directionnelles (tous les
+nouveaux fichiers d'un support sont copi&eacute;s vers l'autre) et
+pas seulement unidirectionnelles. 
+</P>
+<P><SPAN LANG="fr-FR">Vous pouvez synchroniser deux supports depuis
+la perspective physique avec la commande &quot;Synchroniser&quot; du
+menu contextuel du support <SPAN LANG="fr-FR">s&eacute;lectionn&eacute;</SPAN>
+ou depuis </SPAN><A HREF="view_devices.html"><SPAN LANG="fr-FR">La
+vue Support</SPAN></A> <SPAN LANG="fr-FR">dans la perspective
+Configuration.</SPAN></P>
+<H2 LANG="fr-FR">Sauvegarde de la collection</H2>
+<P LANG="fr-FR">Toute vos collections et les propri&eacute;t&eacute;s
+des morceaux sont enregistr&eacute;es dans un fichier collection
+(fichier {r&eacute;pertoire utilisateur}/.jajuk/collection.xml). Par
+d&eacute;faut Jajuk effectue une sauvegarde de ce fichier
+(collection-&lt;date&gt;.xml files) jusqu'&agrave; ce que sa taille
+atteigne les 20 MB sur le disque.</P>
+<P LANG="fr-FR">Vous pouvez param&eacute;trer la sauvegarde dans la
+vue Param&egrave;tre option Options Avanc&eacute;es. il est
+heureusement tr&egrave;s rare que cela arrive, mais si votre
+collection est corrompue, alors arr&ecirc;tez Jajuk, &eacute;crasez
+le ficher collection.xml par la sauvegarde de votre choix, et
+red&eacute;marrez Jajuk.</P>
+<H2 LANG="fr-FR">Fichiers basiques</H2>
+<P LANG="fr-FR">Noter que Jajuk peut &eacute;galement lire des
+fichiers qui n'ont pas &eacute;t&eacute; r&eacute;f&eacute;renc&eacute;s
+sur un support. Ils sont appel&eacute;s &quot;fichiers basiques&quot;
+et sont principalement utilis&eacute;s quand on cr&eacute;e une
+playliste. Nous vous encourageons &agrave; ne pas les utiliser car
+vous perdriez beaucoup des fonctionnalit&eacute;s de Jajuk. Vous
+pouvez jouer un fichier basique par la fonction &quot;Fichier -&gt;
+Ouvrir&quot; de la vue Commande en haut de la fen&ecirc;tre.</P>
+</BODY>
+</HTML>
