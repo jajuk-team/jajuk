@@ -25,8 +25,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Properties;
 
@@ -100,12 +98,7 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
      *
      */
     public JajukSystray(){
-        URL url = null;
-        try {
-            url = new URL(ICON_LOGO_ICO);
-        } catch (MalformedURLException e) {
-            Log.error(e);
-        }
+     
         jmenu = new JPopupMenu(Messages.getString("JajukWindow.3")); //$NON-NLS-1$
         jmiExit =  new JMenuItem(Messages.getString("JajukWindow.4"),Util.getIcon(ICON_EXIT)); //$NON-NLS-1$
         jmiExit.setToolTipText(Messages.getString("JajukWindow.21")); //$NON-NLS-1$
