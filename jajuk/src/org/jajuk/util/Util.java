@@ -347,16 +347,19 @@ public class Util implements ITechnicalStrings {
 	 */
 	public static void setVolume(float fVolume){
 		try {
-			Line line = getCurrentLine();	FloatControl  volCtrl = (FloatControl)line.getControl(FloatControl.Type.MASTER_GAIN);
-			float fCurrent = 0.0f; 
-			if ( fVolume<=50){
-				fCurrent = Math.abs(volCtrl.getMinimum()*2*(fVolume/100)) + volCtrl.getMinimum();
+			Line line = getCurrentLine();	
+			if ( line != null){
+				FloatControl  volCtrl = (FloatControl)line.getControl(FloatControl.Type.MASTER_GAIN);
+				float fCurrent = 0.0f; 
+				if ( fVolume<=50){
+					fCurrent = Math.abs(volCtrl.getMinimum()*2*(fVolume/100)) + volCtrl.getMinimum();
+				}
+				else{
+					fCurrent = volCtrl.getMaximum()*(fVolume/100);
+				}
+				volCtrl.setValue(fCurrent);
+				Util.fVolume = fVolume;
 			}
-			else{
-				fCurrent = volCtrl.getMaximum()*(fVolume/100);
-			}
-			volCtrl.setValue(fCurrent);
-			Util.fVolume = fVolume;
 		} catch (Exception e) {
 			Log.error(e);
 		}
@@ -369,8 +372,10 @@ public class Util implements ITechnicalStrings {
 	public static void setMute(boolean bMute){
 		try{
 			Line line = getCurrentLine();
-			BooleanControl  bc = (BooleanControl)line.getControl(BooleanControl.Type.MUTE);
-			bc.setValue(bMute);
+			if (line != null){
+				BooleanControl  bc = (BooleanControl)line.getControl(BooleanControl.Type.MUTE);
+				bc.setValue(bMute);
+			}
 			Util.bMute = bMute;
 		} catch (Exception e) {
 			Log.error(e);

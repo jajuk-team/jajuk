@@ -468,10 +468,10 @@ public class FIFO implements ITechnicalStrings,Runnable{
 	/**
 	 * Stop request. Void the fifo
 	 */
-	public synchronized void stopRequest() {
+	public void stopRequest() {
+		bStop = true;
 		Player.stop();
 		fifo = null;
-		bStop = true;
 	}
 	
 	/**
@@ -505,6 +505,13 @@ public class FIFO implements ITechnicalStrings,Runnable{
 	 */
 	public synchronized boolean isPaused() {
 		return bPaused;
+	}
+
+	/**
+	 * @return Returns the bStop.
+	 */
+	public boolean isStopped() {
+		return bStop;
 	}
 
 }
