@@ -416,7 +416,10 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 			br = new BufferedReader(new FileReader(fio));
 			String sLine = null;
 			while ((sLine = br.readLine()) != null){
-				sLine = sLine.replace('\\','/'); //replace '\' by '/'
+				if (sLine.length() == 0){ //void line
+				    continue;
+				}
+			    sLine = sLine.replace('\\','/'); //replace '\' by '/'
 				if ( sLine.charAt(0) == '.'){ //deal with url begining by "./something"
 					sLine = sLine.substring(1,sLine.length());
 				}
