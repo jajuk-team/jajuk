@@ -94,228 +94,225 @@ public class Main implements ITechnicalStrings {
 	public static boolean bExiting = false;
 	/**Perspective release flag used in upgrade method**/
 	private static boolean bPerspectiveReleaseOK = true;
-		
+	
 	
 	/**
 	 * Main entry
 	 * @param args
 	 */
 	public static void main(final String[] args){
-		//set exec location path ( normal or debug )
-		bDebugMode = (args.length>0 && args[0].equals("-debug"));
-		Util.setExecLocation(bDebugMode);//$NON-NLS-1$ 
-		
-		// log startup
-		Log.getInstance();
-		Log.setVerbosity(Log.DEBUG);
-		
-		//Launch splashscreen, can't be in the dispatcher to be immediatly displayed 
-		sc = new SplashScreen(jw);	
-		
-		//Make the most possible in the dispatcher thread to avoid 
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run(){
-				try {
-					//Register locals
-					Messages.getInstance().registerLocal("en","Language_desc_en"); //$NON-NLS-1$ //$NON-NLS-2$
-					Messages.getInstance().registerLocal("fr","Language_desc_fr"); //$NON-NLS-1$ //$NON-NLS-2$
-					Messages.getInstance().registerLocal("de","Language_desc_de"); //$NON-NLS-1$ //$NON-NLS-2$
-					Messages.getInstance().registerLocal("it","Language_desc_it"); //$NON-NLS-1$ //$NON-NLS-2$
-					Messages.getInstance().registerLocal("sv","Language_desc_sv"); //$NON-NLS-1$ //$NON-NLS-2$
-					Messages.getInstance().registerLocal("nl","Language_desc_nl"); //$NON-NLS-1$ //$NON-NLS-2$
-					
-					//configuration manager startup
-					org.jajuk.util.ConfigurationManager.getInstance();
-					
-					//check for jajuk home directory presence
-					File fJajukDir = new File(FILE_JAJUK_DIR);
-					if (!fJajukDir.exists() || !fJajukDir.isDirectory()) {
-						fJajukDir.mkdir(); //create the directory if it doesn't exist
-					}
-					
-					//Upgrade configuration from previous releases
-					upgrade();
-					
-					//Registers supported look and feels
-					LNFManager.register(LNF_METAL,LNF_METAL_CLASS); 
-					LNFManager.register(LNF_GTK,LNF_GTK_CLASS); 
-					LNFManager.register(LNF_WINDOWS,LNF_WINDOWS_CLASS);
-					LNFManager.register(LNF_KUNSTSTOFF,LNF_KUNSTSTOFF_CLASS);
-					LNFManager.register(LNF_LIQUID,LNF_LIQUID_CLASS);
-					LNFManager.register(LNF_METOUIA,LNF_METOUIA_CLASS);
-					
-					//perform initial checkups
-					initialCheckups();
-					
-					//Display user configuration
-					Log.debug(System.getProperties().toString());
-					
-					//Load user configuration
-					org.jajuk.util.ConfigurationManager.load();
-					
-					//Set locale
-					Messages.getInstance().setLocal(ConfigurationManager.getProperty(CONF_OPTIONS_LANGUAGE));
-					
-					//Register device types
-					DeviceManager.registerDeviceType(Messages.getString("Device_type.directory"));//$NON-NLS-1$
-					DeviceManager.registerDeviceType(Messages.getString("Device_type.file_cd"));//$NON-NLS-1$
-					DeviceManager.registerDeviceType(Messages.getString("Device_type.remote"));//$NON-NLS-1$
-					DeviceManager.registerDeviceType(Messages.getString("Device_type.extdd"));//$NON-NLS-1$
-					DeviceManager.registerDeviceType(Messages.getString("Device_type.player"));//$NON-NLS-1$
-					
-					//registers supported audio supports and default properties
-					registerTypes();
-					
-					//Load collection
-					Collection.load();
-					
-					//Clean the collection up
-					Collection.cleanup();
-					
-					//starts ui
-					jw = new JajukWindow();
-					
-					//Set look and feel
-					LNFManager.setLookAndFeel(ConfigurationManager.getProperty(CONF_OPTIONS_LNF));
-					
-					//check for another session
-					checkOtherSession();
-					
-					//Set actual log verbosity
-					Log.setVerbosity(Integer.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_LOG_LEVEL)));
-					
-					//Load history
-					History.load();
-					
-					//Starts the FIFO
-					FIFO.getInstance();
-					
-					//Creates the panel
-					jpFrame = (JPanel)jw.getContentPane();
-					jpFrame.setOpaque(true);
-					jpFrame.setLayout(new BorderLayout());
-					
-					//create the command bar
-					command = CommandJPanel.getInstance();
-					
-					// Create the information bar panel
-					information = InformationJPanel.getInstance();
-					
-					//start exit hook
-					Runtime.getRuntime().addShutdownHook(new Thread() {
-						public void run() {
-							try{
-								if (iExitCode == 0){ //commit only if exit is safe (to avoid commiting empty collection)
-									//commit configuration
-									org.jajuk.util.ConfigurationManager.commit();
-									//commit history
-									History.commit();
-									//commit perspectives
-									PerspectiveManager.commit();
-									//commit collection if not refreshing ( fix for 939816 )
-									if ( !DeviceManager.isAnyDeviceRefreshing()){
-										Collection.commit();
-										//backup this file
-										Util.backupFile(new File(FILE_COLLECTION),ConfigurationManager.getInt(CONF_BACKUP_SIZE));
-									}
-								}
-							} catch (IOException e) {
-								Log.error("", e); //$NON-NLS-1$
-							}
-						}
-					});
-					
-					//Main panel
-					jpDesktop = new JPanel();
-					jpDesktop.setOpaque(true);
-					jpDesktop.setBorder(BorderFactory.createEtchedBorder());
-					jpDesktop.setLayout(new BorderLayout());
-					
-					//Add static panels
-					jpFrame.add(command, BorderLayout.NORTH);
-					jpFrame.add(information, BorderLayout.SOUTH);
-					jpFrame.add(jpDesktop, BorderLayout.CENTER);
-					JPanel jp = new JPanel(); //we use an empty panel to take west place before actual panel ( perspective bar ). just for a better displaying
-					jp.setPreferredSize(new Dimension(3000,3000));//make sure the temp panel makes screen maximalized
-					jpFrame.add(jp, BorderLayout.WEST);
-					
-					//Set menu bar to the frame
-					jw.setJMenuBar(JajukJMenuBar.getInstance());
-					
-					//display window
-					jw.pack();
-					jw.setExtendedState(Frame.MAXIMIZED_BOTH);  //maximalize
-					//show window if set in the systray conf
-					if ( ConfigurationManager.getBoolean(CONF_SHOW_AT_STARTUP) || !Util.isUnderWindows()){
-						jw.setVisible(true); //show main window
-						sc.toFront();
-					}
-					//Create the perspective manager 
-					File fPerspectives = new File(FILE_PERSPECTIVES_CONF); //check for perspectives.xml file
-					if (!fPerspectives.exists() || !bPerspectiveReleaseOK) {  //if perspective file doesn't exist or is an old version
-						// Register default perspective configuration (need locale, so cannot be done in initCheckup() )
-						PerspectiveManager.registerDefaultPerspectives();
-					}
-					else{
-						try {
-							PerspectiveManager.load();
-						} catch (JajukException e) {
-							Log.error(e);
-							System.exit(1);
-						}
-					}
-					
-					// Create the perspective tool bar panel
-					perspectiveBar = PerspectiveBarJPanel.getInstance();
-					jpFrame.remove(jp);
-					jpFrame.add(perspectiveBar, BorderLayout.WEST);
-					
-					//Initialize perspective manager and load all views
-					PerspectiveManager.init();
-										
-					//Mount and refresh devices
-					mountAndRefresh();
-										
-					//Display info message if first session
-					if (TRUE.equals(ConfigurationManager.getProperty(CONF_FIRST_CON))){
-						ConfigurationManager.setProperty(CONF_FIRST_CON,FALSE);
-						Messages.showInfoMessage(Messages.getString("Main.12")); //$NON-NLS-1$
-						PerspectiveManager.setCurrentPerspective(PERSPECTIVE_NAME_CONFIGURATION);
-					}
-					
-					//Display a message
-					information.setMessage(Messages.getString("Main.13"), InformationJPanel.INFORMATIVE);  //$NON-NLS-1$
-					
-					//Launch startup track if any
-					launchInitialTrack();
-					
-					//Close splash screen
-					new Thread(){
-						public void run(){
-							try {
-								Thread.sleep(2000);
-							} catch (InterruptedException e) {
-								Log.error(e);
-							}
-							sc.dispose();
-						}
-					}.start();
-						
-					
-				} catch (JajukException je) { //last chance to catch any error for logging purpose
-					Log.error(je);
-					if ( je.getCode().equals("005")){
-						Messages.showErrorMessage("005");
-					}
-					exit(1);
-				} catch (Exception e) { //last chance to catch any error for logging purpose
-					e.printStackTrace();
-					Log.error("106", e); //$NON-NLS-1$
-					exit(1);
-				}
+		//non ui init
+		try{
+			//set exec location path ( normal or debug )
+			bDebugMode = (args.length>0 && args[0].equals("-debug"));
+			Util.setExecLocation(bDebugMode);//$NON-NLS-1$ 
+			
+			// log startup
+			Log.getInstance();
+			Log.setVerbosity(Log.DEBUG);
+			
+			//Launch splashscreen, can't be in the dispatcher to be immediatly displayed 
+			sc = new SplashScreen(jw);	
+			
+			//configuration manager startup
+			org.jajuk.util.ConfigurationManager.getInstance();
+			
+			//check for jajuk home directory presence
+			File fJajukDir = new File(FILE_JAJUK_DIR);
+			if (!fJajukDir.exists() || !fJajukDir.isDirectory()) {
+				fJajukDir.mkdir(); //create the directory if it doesn't exist
 			}
-		});	
-				
+			
+			//Upgrade configuration from previous releases
+			upgrade();
+			
+			//Registers supported look and feels
+			LNFManager.register(LNF_METAL,LNF_METAL_CLASS); 
+			LNFManager.register(LNF_GTK,LNF_GTK_CLASS); 
+			LNFManager.register(LNF_WINDOWS,LNF_WINDOWS_CLASS);
+			LNFManager.register(LNF_KUNSTSTOFF,LNF_KUNSTSTOFF_CLASS);
+			LNFManager.register(LNF_LIQUID,LNF_LIQUID_CLASS);
+			LNFManager.register(LNF_METOUIA,LNF_METOUIA_CLASS);
+			
+			//Register locals
+			Messages.getInstance().registerLocal("en","Language_desc_en"); //$NON-NLS-1$ //$NON-NLS-2$
+			Messages.getInstance().registerLocal("fr","Language_desc_fr"); //$NON-NLS-1$ //$NON-NLS-2$
+			Messages.getInstance().registerLocal("de","Language_desc_de"); //$NON-NLS-1$ //$NON-NLS-2$
+			Messages.getInstance().registerLocal("it","Language_desc_it"); //$NON-NLS-1$ //$NON-NLS-2$
+			Messages.getInstance().registerLocal("sv","Language_desc_sv"); //$NON-NLS-1$ //$NON-NLS-2$
+			Messages.getInstance().registerLocal("nl","Language_desc_nl"); //$NON-NLS-1$ //$NON-NLS-2$
+			
+			//perform initial checkups
+			initialCheckups();
+			
+			//Display user configuration
+			Log.debug(System.getProperties().toString());
+			
+			//Load user configuration
+			org.jajuk.util.ConfigurationManager.load();
+			
+			//Set look and feel
+			LNFManager.setLookAndFeel(ConfigurationManager.getProperty(CONF_OPTIONS_LNF));
+					
+			//Set locale
+			Messages.getInstance().setLocal(ConfigurationManager.getProperty(CONF_OPTIONS_LANGUAGE));
+			
+			//Register device types
+			DeviceManager.registerDeviceType(Messages.getString("Device_type.directory"));//$NON-NLS-1$
+			DeviceManager.registerDeviceType(Messages.getString("Device_type.file_cd"));//$NON-NLS-1$
+			DeviceManager.registerDeviceType(Messages.getString("Device_type.remote"));//$NON-NLS-1$
+			DeviceManager.registerDeviceType(Messages.getString("Device_type.extdd"));//$NON-NLS-1$
+			DeviceManager.registerDeviceType(Messages.getString("Device_type.player"));//$NON-NLS-1$
+			
+			//registers supported audio supports and default properties
+			registerTypes();
+			
+			//Load collection
+			Collection.load();
+			
+			//Clean the collection up
+			Collection.cleanup();
+			
+			//check for another session
+			checkOtherSession();
+			
+			//Set actual log verbosity
+			Log.setVerbosity(Integer.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_LOG_LEVEL)));
+			
+			//Load history
+			History.load();
+			
+			//Starts the FIFO
+			FIFO.getInstance();
+			
+			//start exit hook
+			Runtime.getRuntime().addShutdownHook(new Thread() {
+				public void run() {
+					try{
+						if (iExitCode == 0){ //commit only if exit is safe (to avoid commiting empty collection)
+							//commit configuration
+							org.jajuk.util.ConfigurationManager.commit();
+							//commit history
+							History.commit();
+							//commit perspectives
+							PerspectiveManager.commit();
+							//commit collection if not refreshing ( fix for 939816 )
+							if ( !DeviceManager.isAnyDeviceRefreshing()){
+								Collection.commit();
+								//backup this file
+								Util.backupFile(new File(FILE_COLLECTION),ConfigurationManager.getInt(CONF_BACKUP_SIZE));
+							}
+						}
+					} catch (IOException e) {
+						Log.error("", e); //$NON-NLS-1$
+					}
+				}
+			});
+			
+			//Mount and refresh devices
+			mountAndRefresh();
+			
+			//Launch startup track if any
+			launchInitialTrack();
+			
+			//ui init 
+			SwingUtilities.invokeLater(new Runnable() {
+				public void run(){
+					try {
+						//starts ui
+						jw = new JajukWindow();
+					
+												
+						//Creates the panel
+						jpFrame = (JPanel)jw.getContentPane();
+						jpFrame.setOpaque(true);
+						jpFrame.setLayout(new BorderLayout());
+						
+						//create the command bar
+						command = CommandJPanel.getInstance();
+						
+						// Create the information bar panel
+						information = InformationJPanel.getInstance();
+						
+						//Main panel
+						jpDesktop = new JPanel();
+						jpDesktop.setOpaque(true);
+						jpDesktop.setBorder(BorderFactory.createEtchedBorder());
+						jpDesktop.setLayout(new BorderLayout());
+						
+						//Add static panels
+						jpFrame.add(command, BorderLayout.NORTH);
+						jpFrame.add(information, BorderLayout.SOUTH);
+						jpFrame.add(jpDesktop, BorderLayout.CENTER);
+						JPanel jp = new JPanel(); //we use an empty panel to take west place before actual panel ( perspective bar ). just for a better displaying
+						jp.setPreferredSize(new Dimension(3000,3000));//make sure the temp panel makes screen maximalized
+						jpFrame.add(jp, BorderLayout.WEST);
+						
+						//Set menu bar to the frame
+						jw.setJMenuBar(JajukJMenuBar.getInstance());
+						
+						//display window
+						jw.pack();
+						jw.setExtendedState(Frame.MAXIMIZED_BOTH);  //maximalize
+						//show window if set in the systray conf
+						if ( ConfigurationManager.getBoolean(CONF_SHOW_AT_STARTUP) || !Util.isUnderWindows()){
+							jw.setVisible(true); //show main window
+							sc.toFront();
+						}
+						//Create the perspective manager 
+						File fPerspectives = new File(FILE_PERSPECTIVES_CONF); //check for perspectives.xml file
+						if (!fPerspectives.exists() || !bPerspectiveReleaseOK) {  //if perspective file doesn't exist or is an old version
+							// Register default perspective configuration (need locale, so cannot be done in initCheckup() )
+							PerspectiveManager.registerDefaultPerspectives();
+						}
+						else{
+							try {
+								PerspectiveManager.load();
+							} catch (JajukException e) {
+								Log.error(e);
+								System.exit(1);
+							}
+						}
+						
+						// Create the perspective tool bar panel
+						perspectiveBar = PerspectiveBarJPanel.getInstance();
+						jpFrame.remove(jp);
+						jpFrame.add(perspectiveBar, BorderLayout.WEST);
+						
+						//Initialize perspective manager and load all views
+						PerspectiveManager.init();
+						
+						//Display info message if first session
+						if (TRUE.equals(ConfigurationManager.getProperty(CONF_FIRST_CON))){
+							ConfigurationManager.setProperty(CONF_FIRST_CON,FALSE);
+							Messages.showInfoMessage(Messages.getString("Main.12")); //$NON-NLS-1$
+							PerspectiveManager.setCurrentPerspective(PERSPECTIVE_NAME_CONFIGURATION);
+						}
+						
+						//Display a message
+						information.setMessage(Messages.getString("Main.13"), InformationJPanel.INFORMATIVE);  //$NON-NLS-1$
+						
+						//Close splash screen
+						sc.dispose();
+						
+					} catch (Exception e) { //last chance to catch any error for logging purpose
+						e.printStackTrace();
+						Log.error("106", e); //$NON-NLS-1$
+						exit(1);
+					}
+				}
+			});	
+		} catch (JajukException je) { //last chance to catch any error for logging purpose
+			Log.error(je);
+			if ( je.getCode().equals("005")){
+				Messages.showErrorMessage("005");
+			}
+			exit(1);
+		} catch (Exception e) { //last chance to catch any error for logging purpose
+			e.printStackTrace();
+			Log.error("106", e); //$NON-NLS-1$
+			exit(1);
+		}
 	}
 	
 	
@@ -526,8 +523,8 @@ public class Main implements ITechnicalStrings {
 			Main.bPerspectiveReleaseOK = false;
 		}
 	}
-
-/**
+	
+	/**
 	 * @return Returns the bDebugMode.
 	 */
 	public static boolean isDebugMode() {
