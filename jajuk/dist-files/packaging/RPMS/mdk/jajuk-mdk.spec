@@ -17,7 +17,6 @@ Group:                         Sound
 Url:                         http://%{name}.sourceforge.net
 Source: http://jajuk.sourceforge.net
 BuildRoot: %_topdir/%{name}
-Requires:                     j2re >= 1.4.2
 
 %description
 Jajuk is a Java music organizer for all platforms.

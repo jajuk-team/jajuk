@@ -8,7 +8,6 @@ URL: http://jajuk.sourceforge.net
 Source: http://jajuk.sourceforge.net
 Packager: Bertrand Florat
 BuildRoot: %_topdir/%{name}
-Requires: java2 >= 1.4.2
 
 %description
 Jajuk is a Java music organizer for all platforms.
