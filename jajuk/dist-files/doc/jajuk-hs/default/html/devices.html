@@ -5,87 +5,56 @@
   <title>Using devices</title>
 </head>
 <body>
-<h1>Using Devices<br>
-</h1>
+<h1>Using Devices</h1>
 <h2>Definition</h2>
-Jajuk plays music from devices. A device is a set of files. It can be :
+<p>Jajuk plays music from devices. A device is a set of audio files. It can be : </p>
 <ul>
   <li>A directory</li>
   <li>A data CD-ROM</li>
-  <li>A Remote directory (not yet implemented) </li>
   <li>An External Hard Disk </li>
   <li>A Physical Player like an iPod</li>
+  <li>A Remote directory (not yet implemented) </li>
 </ul>
-<p><u>Note</u> : In all cases
-except Remote, devices are regular directories from the OS point of
-view but Jajuk makes the difference to deal with particularities (for
-instance, a CD-ROM is read-only) and to provide a more fiendly
-Graphical Interface.</p>
-<p>Devices usually contains MP3, OGG and others supported audio files, M3P
-files for playlists and JPG, GIF and others supported image files for
-covers.</p>
-<p>What we name a collection is the set of devices you created.</p>
+<p><u>Note</u>: In all cases except remote, devices are regular directories 
+from the OS point of view but Jajuk makes the difference to deal with 
+particularities (for instance, a CD-ROM is read-only) and to provide a friendlier graphical interface.</p>
+<p>A device usually contains MP3, OGG and others supported audio files, M3P files for playlists and JPG, GIF and others supported image files for covers.</p>
+<p>What we name a collection is the combination of devices you created.</p>
 <h2>Refreshing devices</h2>
-<p>Under Jajuk, devices should be refreshed from times to times. Indeed,
-what's make Jajuk so fast is its collection index: music files are not
-scanned nor there tags read at each startup but Jajuk builds during
-refresh a collection or index (stores on the disk as {home
-directory}/.jajuk/collection.xml). It allows Jajuk to start and be
-aware of all files from a multi 100GB of music collection in only few
-seconds. It also allow to perform searchs and filtering on the entire
-collection in real time.</p>
-<p>Jajuk only know files from refreshed devices : if you copy a file on
-your disk, Jajuk will know it only after the associated device refresh.</p>
-<p>Devices can be refreshed at each startup but it is not recommented
-because of the delay. Note however that Jajuk integrates some
-optimizations that greatly accelerates refreshing: by default, Jajuk
-doesn't read tags for known files. You can force it to read them with
-the "Force tag read" option in Parameter View / Option tab if you
-changed tags using another application.</p>
-<p>You can refresh a device from the physical perspective with "Refresh"
-command from contextual menu on selected device or from the Device view
-in the Configuration perspective.</p>
+<p>Under Jajuk, devices should be refreshed from times to times. Indeed, what's make Jajuk so 
+fast is its collection index: music files are not scanned and their tags not read at each startup but 
+Jajuk builds a collection or index during refresh (stored on the disk as {home directory}/.jajuk/collection.xml). 
+It allows Jajuk to start and be aware of all tracks from a multi 100GB of music collection in only few seconds. 
+It is also used to perform searches and filtering on the entire collection in real time.</p>
+<p>Jajuk only know files from refreshed devices: if you copy a file on your disk, Jajuk will know it only after the source device refresh.</p>
+<p>Devices can be refreshed at each startup but it is not recommended because of the spaces of time. Note however that Jajuk integrates some optimizations 
+that greatly accelerates refreshing: by default, Jajuk doesn't read tags for known files. You can force it to read them with the "Force tag read" 
+option in Parameter View / Option tab if you changed tags using another application.</p>
+<p>You can refresh a device from the physical perspective with "Refresh" command from contextual menu on selected device or from <a href='view_devices.html'>the Device view</a> in the Configuration perspective.</p>
 <h2>Mounting/unmouting devices</h2>
-<p>Mounting a device means to make it available and unmounting it means to
-disconnect it. It is near the Unix mount notion. You can configure
-devices in the Device view so they will be automaticaly mounted at
-startup. Some device can naturally be auto-mounted : a directory
-from your internal harddisk for exemple. On the other hand, we highly
-discourage to auto-mount some others like CD or USB keys: they are very
-likely to be unavailable at next startup. When a mount is required on a
-device, Jajuk will check it is physicaly available (for a CD for
-instance) and try to acess it if requiered. Under Unix, it can perform
-a "mount" command if needed. If you try to play a track located in an
-unmounted device, Jajuk will ask you if you want it to mount this
-device. In all case, you will get an error message if the device cannot
-be mounted.</p>
+<p>Mounting a device means to make it available and unmounting it means to disconnect it. It is near the Unix mount notion. You can 
+configure devices in the Device view so they will be automatically mounted at startup. Some device can naturally be auto-mounted: a 
+directory from your internal hard disk for example. On the other hand, we highly discourage to auto-mount some others like CD or USB keys because 
+they are likely to be unavailable at next startup. When a mount is required on a device, Jajuk will check it is physically available 
+(for a CD for instance) and try to access it if required. Under Unix, it can eventually perform a "mount" command. If you try to play a track 
+located in an unmounted device, Jajuk will ask you if you want it to mount this device. In all cases, you will get an error message if the 
+device cannot be mounted.</p>
+<p>You can mount or unmount a device from the physical perspective with "Mount or Unmount" commands from contextual menu on selected device or from <a href='view_devices.html'>the Device view</a> in the Configuration perspective.</p>
 <h2>Synchronizing devices</h2>
-<p>When creating a device (see device view documentation for more
-information), you can tell Jajuk to make it synchronized with
-another device. This allows you to copy by a single click all the new
-files from source device to the other. Note that you can perform
-partial synchronization by desynchronizing some directories in the
-Physical perspective / Physical tree and contextual menu on
-directories. You can also perform bidirectional synchronizations (all
-new files from a device are copied to the other) and not only
-unidirectional.</p>
-<p>You can launch a synchronization from the Physical Tree in Physical
-perspective / contextual menu on a device or from the Device view in
-Configuration perspective.</p>
+<p>When creating a device (see device view documentation for more information), you can tell Jajuk to make it synchronized with another device. 
+This allows you to copy by a single click all the new files from source device to the other. Note that you can perform partial 
+synchronization by desynchronizing some directories in the Physical perspective / Physical tree and contextual menu on directories 
+(watch the selection box in the Information view at the bottom to know recursive size of a selection). You can also perform bidirectional 
+synchronizations (all new files from a device are copied to the other) and not only unidirectional.</p>
+<p>You can synchronize two devices from the physical perspective with "Synchronize" command from contextual menu on selected device or from <a href='view_devices.html'>the Device view</a> in the Configuration perspective.</p>
 <h2>Collection backup</h2>
-<p>All your collection and properties on your tracks are stored in the
-collection file ({home directory}/.jajuk/collection.xml file). By
-default Jajuk performs a backup of this collection file
-(collection-&lt;date&gt;.xml files) until it takes 20MB on the disk.
-You can parameter backup in the Parameter view / Advanced tab. It is
-very unlikely to append but if your collection is corrupted, stop
-Jajuk, overwrite the collection.xml file by the backup file of your
-choice and start Jajuk again.</p>
+<p>All your collection and properties on your tracks are stored in the collection file ({home directory}/.jajuk/collection.xml file). 
+By default Jajuk performs a backup of this collection file (collection-&lt;date&gt;.xml files) until it takes 20MB on the disk. 
+You can parameter backup in the Parameter view / Advanced tab. It is very unlikely to append but if your collection is corrupted, 
+stop Jajuk, overwrite the collection.xml file by the backup file of your choice and start Jajuk again.</p>
 <h2>Basic files</h2>
-<p>Note that Jajuk can also read files that are not referenced in a
-device. They are called "basic files" and are mainly used when creating
-playlists. We don't recommand to use them because you will loose many
-functionnailities. You can play a basic file by "File - &gt; Open"
-function from the Command view at the top of the Window.</p>
+<p>Note that Jajuk can also read files that are not referenced in a device. They are called "basic files" and are mainly 
+used when creating playlists. We discourage you to use them because you will loose a lot of features. You can play a 
+basic file by "File -&gt; Open" function from the Command view at the top of the Window.</p>
 </body>
 </html>

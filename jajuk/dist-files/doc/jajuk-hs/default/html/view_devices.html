@@ -2,16 +2,82 @@
 <head>
   <meta content="text/html; charset=ISO-8859-1"
  http-equiv="content-type">
-  <title>The statistics view</title>
+  <title>The Devices view</title>
 </head>
 <body>
-<h1>The Statistics view</h1>
-<p>This view displays various facts about your collection. For the moment, it features:</p>
+<h1>The Devices view</h1>
+<p>This view displays devices you created and manages them. Please read the <a href='devices.html'>Using Devices page</a> to learn about devices principles.</p>
+<h2>The devices repository</h2>
+<p>In the lower part of the Devices view, you will find devices you created. The green array on the bottom of a device means it is now mounted.</p>
+<p><IMG SRC="../icons/64x64/new.png" NAME="Image1" ALIGN=BOTTOM WIDTH=64 HEIGHT=64 BORDER=0>
+	&nbsp;This is not an actual device but a shortcut to create a new one. Please click on it to create a new Device.</p>
+<p><IMG SRC="../icons/64x64/cdrom_mount.png" NAME="Image1" ALIGN=BOTTOM WIDTH=64 HEIGHT=64 BORDER=0>
+	&nbsp;Data CDROM</p>
+<p><IMG SRC="../icons/64x64/folder_mount.png" NAME="Image1" ALIGN=BOTTOM WIDTH=64 HEIGHT=64 BORDER=0>
+	&nbsp;Folder from your hard disk</p>
+<p><IMG SRC="../icons/64x64/player_mount.png" NAME="Image1" ALIGN=BOTTOM WIDTH=64 HEIGHT=64 BORDER=0>
+	&nbsp;Player (like an iPod)</p>
+<p><IMG SRC="../icons/64x64/ext_dd_mount.png" NAME="Image1" ALIGN=BOTTOM WIDTH=64 HEIGHT=64 BORDER=0>
+	&nbsp;External Hard Disk or storage device like USB keys  (mainly on USB or Firewire)</p>
+<p><IMG SRC="../icons/64x64/remote_mount.png" NAME="Image1" ALIGN=BOTTOM WIDTH=64 HEIGHT=64 BORDER=0>
+	&nbsp;Remote Jajuk device (not yet implemented)</p>
+	<p><b>Contextual menu on devices features </b>(please read the <a href='devices.html'>Using Devices page</a> if you don't understand the actions):</p>
+	<ul>
+		<li>Mount: Mount this device</li>
+		<li>Unmount: Unmount this device</li>
+		<li>Test: Test if this device is available</li>
+		<li>Refresh: Perform a device refresh</li>
+		<li>Synchronize: (available only if this device is configured to synchronize with another device)</li>
+		<li>Remove device: Remove this device from your collection. No data will be deleted from your hard disk. 
+			You can set a confirmation dialog (is the default) in Parameter view / Confirmations tab.</li>
+		<li>Get Properties: Display devices properties and change some configuration.</li>
+	</ul>
+<h2>Control panel</h2>
+<p>The Control panel in the upper part of this view features (please read the <a href='devices.html'>Using Devices page</a> if you don't understand the actions):</p>
+<p><IMG SRC="../icons/16x16/new.png" NAME="Image1" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=0>
+	&nbsp;Create a new device (you can also click on the "New" device)</p>
+<p><IMG SRC="../icons/16x16/delete.png" NAME="Image1" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=0>
+	&nbsp;Remove selected device from your collection. No data will be deleted from your hard disk. 
+			You can set a confirmation dialog (is the default) in Parameter view / Confirmations tab.</p>
+<p><IMG SRC="../icons/16x16/properties.png" NAME="Image1" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=0>
+	&nbsp;Display selected device properties and change some configuration.</p>
+<p><IMG SRC="../icons/16x16/mount.png" NAME="Image1" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=0>
+	&nbsp;Mount selected device</p>
+<p><IMG SRC="../icons/16x16/unmount.png" NAME="Image1" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=0>
+	&nbsp;Unmount selected device</p>
+<p><IMG SRC="../icons/16x16/test.png" NAME="Image1" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=0>
+	&nbsp;Test selected device to check if it is available</p>
+<p><IMG SRC="../icons/16x16/refresh.png" NAME="Image1" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=0>
+	&nbsp;Refresh selected device</p>
+<p><IMG SRC="../icons/16x16/synchro.png" NAME="Image1" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=0>
+	&nbsp;Synchronize selected device (available only if this device is configured to synchronize with another device)</p>
+<h2>Device wizard / properties</h2>
+<p>If you don't understand Jajuk device notions like mounting, refreshing or synchronizing, please read the <a href='devices.html'>Using Devices page</a>.</p>
+<p>This window appears when you create a new device or when you update some properties of an existing device. You can show device properties
+	by double clicking on it, by using contextual menu/ Get Properties or by selecting the device and using the Properties button in the Control Pane. It features:</p>
 <ul>
-  <li>The style repartition (it is reliable only if your collection is well tagged). It allow you to know which style you own the most.</li>
-  <li>The size repartition by devices. It allows you to know what are your device sizes in comparaison.</li>
-  <li>Your entire collection size per mounth (a same track can map several files). It allow you get your collection size evolution: it can be useful to know if some cleanups are required for exemple.</li>
-  <li>Your entire collection number of tracks per mounth. It allow you to know how many actual different tracks you have, independently of the number of redondant files you have in your collection.</li>
+	<li>Device type combo box (Cannot be changed after creation): choose the device type you wish to create.</li>
+	<li>Device name  (Cannot be changed after creation): Enter name of the device. For example "CD A" for a CD or "Laptop" for a directory.</li>
+	<li>Device location  (Cannot be changed after creation): full path to the device. For example "/data/music" under Unix or "d:\music" under Windows. 
+		You can use the directory selector using the button on the right. </li>
+	<li>Unix mount point (only under Linux/Unix). This is optional and allows Jajuk trying to perform a system "mount" command if required when mounting a device. 
+		For example, if you want to mount a CD device whose Unix mount point is /mnt/cdrom and that CD is not Unix mounted, Jajuk 
+		will try to mount it by itself. Note however that this should be useless with last Linux distributions that perform auto-mount.</li>
+	<li>"Perform an instant refresh" (default): Perform a device refresh immediately after creating the device. 
+		This is recommended. Note that this should take a while, especially for the first time. </li>
+	<li>"Auto mount at startup" (checked by default for directories, unchecked by default for all others devices): Perform an auto-mount when starting Jajuk. This is recommended for directories or eventually external devices if always plugged but avoid this 
+for CD or devices that can be unplugged or changed quite often.</li>
+	<li>Synchronized with combo box: If you have more than one device, you will be able to synchronize them. The current device is the target device and the other one the source device.
+		<ul>
+		<li>"Unidirectional synchronization": all new files from the source device are copied to this device.</li>
+		<li>"Bidirectional synchronization": all new files from one device are copied to the other.</li>
+		</ul>
+		<u>Notes:</u>
+		<ul>
+		<li>You can ignore recursively some directories when performing synchronization (if the two synchronized devices have not the same capacity for example) by desynchronizing directories in the Physical tree/ contextual menu on directories.</li>
+		<li>Synchronization never performs deletes so if you renames some files on the source device, you will get both older and newer version in the target device after synchronization.</li>
+		</ul>
+	</li>
 </ul>
 </body>
 </html>
