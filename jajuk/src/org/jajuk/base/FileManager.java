@@ -178,14 +178,14 @@ public class FileManager implements ITechnicalStrings{
 	}
 	
 	/**
-	 * Return a playlist with the entire accessible novelties collection 
-	 * @return The entire accessible novelties collection
+	 * Return a playlist with the entire accessible shuffled novelties collection 
+	 * @return The entire accessible novelties collection or null if none track in given time interval
 	 */
 	public static synchronized ArrayList getGlobalNoveltiesPlaylist(){
 	    ArrayList alEligibleFiles = new ArrayList(1000);
-		Iterator it = hmIdFile.values().iterator();
+        Iterator it = TrackManager.getTracks().iterator(); //search in tracks, not files to avoid duplicates items
 		while ( it.hasNext()){
-			File file = (File)it.next();
+            File file = ((Track)it.next()).getPlayeableFile();
 			if (!file.isReady()){
 			    continue;
 			}
@@ -207,7 +207,8 @@ public class FileManager implements ITechnicalStrings{
 		if (alEligibleFiles.size() ==0 ){
 			return null;
 		}
-		return alEligibleFiles;
+		Collections.shuffle(alEligibleFiles); //shuffle results
+        return alEligibleFiles;
 	}
 	
 	/**
@@ -222,37 +223,38 @@ public class FileManager implements ITechnicalStrings{
 	
 	/**
 	 * 
-	 * @return a sorted set of the collection by rate
+	 * @return a sorted set of the collection by rate, lowest first
 	 */
 	private static synchronized TreeSet getSortedByRate(){
 		//create a tempory table to remove unmounted files
 		TreeSet tsEligibleFiles = new TreeSet();
-		Iterator it = hmIdFile.values().iterator();
+		Iterator it = TrackManager.getTracks().iterator(); //search in tracks, not files to avoid duplicates items
 		while ( it.hasNext()){
-			File file = (File)it.next();
+			File file = ((Track)it.next()).getPlayeableFile();
 			if (file.isReady()){
 				long lRate = file.getTrack().getRate();
 				long lScore = (long)(Math.random()*(100/(file.getTrack().getSessionHits()+1))*Math.log(lRate));  //computes score for each file ( part of shuffleness, part of hits weight )
 				tsEligibleFiles.add(new FileScore(file,lScore));
 			}
 		}
-		return tsEligibleFiles;
+        return tsEligibleFiles;
 	}
 	
 	/**
-	 * Return a playlist with the entire accessible bestof collection 
+	 * Return a playlist with the entire accessible bestof collection, best first
 	 * @return The entire accessible bestof collection
 	 */
 	public static synchronized ArrayList getGlobalBestofPlaylist(){
-		TreeSet ts = getSortedByRate();
-	    ArrayList al = new ArrayList(ts.size());
-	    Iterator it = ts.iterator();
-	    while (it.hasNext()){
-	        FileScore fs = (FileScore)it.next();
-	        al.add(fs.getFile());
-	    }
-	    return al;
-	}
+        TreeSet ts = getSortedByRate();
+        ArrayList al = new ArrayList(ts.size());
+        Iterator it = ts.iterator();
+        while (it.hasNext()){
+            FileScore fs = (FileScore)it.next();
+            al.add(fs.getFile());
+        }
+        Collections.reverse(al); //reverse to have best first
+        return al;
+    }
 	
 	/**
 	 * Return CONF_BESTOF_SIZE top files 
