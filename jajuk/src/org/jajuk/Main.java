@@ -9,6 +9,9 @@
  * 
  * You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,USA
  * $Log$
+ * Revision 1.16  2003/11/14 11:02:14  bflorat
+ * - Added user configuration persistence
+ *
  * Revision 1.15  2003/11/13 18:56:56  bflorat
  * 13/11/2003
  *
@@ -37,6 +40,7 @@ import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 
+import org.apache.log4j.lf5.viewer.configure.ConfigurationManager;
 import org.jajuk.base.Collection;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.ITechnicalStrings;
@@ -66,10 +70,14 @@ public class Main implements ITechnicalStrings {
 
 	public static void main(String[] args) {
 		try {
-			//	log startup
+			//configuration manager startup
+			org.jajuk.util.ConfigurationManager.getInstance();
+					
+			//log startup
 			Log.getInstance();
 			Log.setVerbosity(Log.DEBUG);
-
+			
+			
 			//registers supported types
 			try {
 				//TODO get player impl in user-conf.xml
@@ -83,6 +91,9 @@ public class Main implements ITechnicalStrings {
 			//perform initial checkups
 			initialCheckups();
 
+			//Load user configuration
+			org.jajuk.util.ConfigurationManager.load();
+			
 			//Display user configuration
 			Log.debug(System.getProperties().toString());
 
@@ -180,6 +191,11 @@ public class Main implements ITechnicalStrings {
 		if (!fJajukDir.exists() || !fJajukDir.isDirectory()) {
 			fJajukDir.mkdir(); //create the directory if it doesn't exist
 		}
+		//check for configuration file presence
+		File fConfig = new File(FILE_CONFIGURATION);
+		if (!fConfig.exists()) { //if config file doesn't exit, create it with default values
+			org.jajuk.util.ConfigurationManager.commit();
+		}
 		//check for collection.xml file
 		File fCollection = new File(FILE_COLLECTION);
 		if (!fCollection.exists()) { //if collection file doesn't exit, create it empty
@@ -205,6 +221,9 @@ public class Main implements ITechnicalStrings {
 	 */
 	public static void exit(int iExitCode) {
 		try {
+			//commit configuration
+			org.jajuk.util.ConfigurationManager.commit();
+			//commit collection
 			org.jajuk.base.Collection.commit();
 		} catch (IOException e) {
 			Log.error("", e);

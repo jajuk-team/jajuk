@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.10  2003/11/14 11:02:17  bflorat
+ * - Added user configuration persistence
+ *
  * Revision 1.9  2003/11/13 18:56:55  bflorat
  * 13/11/2003
  *
@@ -136,6 +139,7 @@ public interface ITechnicalStrings {
 	public static final String FILE_LOG = System.getProperty("user.home")+"/.jajuk/jajuk.log";
 	public static final String FILE_COLLECTION = System.getProperty("user.home")+"/.jajuk/collection.xml";
 	public static final String FILE_PERSPECTIVES_CONF = System.getProperty("user.home")+"/.jajuk/perspectives.xml";
+	public static final String FILE_CONFIGURATION = System.getProperty("user.home")+"/.jajuk/conf.properties";
 	
 	//players impls
 	public static final String PLAYER_IMPL_JAVALAYER= "org.jajuk.players.JavaLayerPlayerImpl";

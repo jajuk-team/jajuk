@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.9  2003/11/14 11:02:18  bflorat
+ * - Added user configuration persistence
+ *
  * Revision 1.8  2003/11/13 18:56:56  bflorat
  * 13/11/2003
  *
@@ -34,21 +37,50 @@
  */
 package org.jajuk.util;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Properties;
 
 import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.i18n.Messages;
+import org.jajuk.util.log.Log;
 
 /**
  * Manage all the configuration and user preferences of jajuk.
- * 
- * @author		sgringoi
+ * <p> Singleton
+ * @author		bflorat
  * @version	1.0
- * @created		5 oct. 2003
+ * @created		14 nov. 2003
  */
 public class ConfigurationManager implements ITechnicalStrings{
 	
+	/**Properties in memory */
 	private static Properties properties = null;
+	
+	/**Self instance**/
+	static private ConfigurationManager cm;
+	
+	
+	/**Singleton accessor */
+	public static ConfigurationManager getInstance(){
+		if (cm == null){
+			cm = new ConfigurationManager();
+		}
+		return cm;
+	}
+	
+	/**
+	 * Constructor
+	 *
+	 */
+	private ConfigurationManager(){
+		properties = new Properties();
+		setDefaultProperties();
+	}
+	
 	
 	/**
 	 * Return the value of a property, or null if the property is not found.
@@ -57,32 +89,15 @@ public class ConfigurationManager implements ITechnicalStrings{
 	 * @return String Value of the property named pName.
 	 */
 	public static String getProperty(String pName) {
-		if (properties == null) {
-			createProperties();
-		}
 		return properties.getProperty(pName);
 	}
 
 
 	/**
-	 * Return the value of a property, or a default value if the property is not found.
-	 * 
-	 * @param pName Name of the property.
-	 * @param pDefault Default value returned if the property is not found.
-	 * @return String Value of the property named pName.
+	 * Set default values
+	 *
 	 */
-	public static String getProperty(String pName, String pDefault) {
-		String res = getProperty(pName);
-		if (res == null) {
-			res = pDefault;
-		}
-		return pDefault;
-	}
-	
-	
-	private static void createProperties() {
-		properties = new Properties();
-		
+	private static void setDefaultProperties() {
 		// Default parameters
 		properties.put(CONF_VIEW_PHYSICAL, "org.jajuk.ui.views.PhysicalTreeView");//,org.jajuk.ui.views.TrackListView"); //$NON-NLS-1$ //$NON-NLS-2$
 		
@@ -98,12 +113,41 @@ public class ConfigurationManager implements ITechnicalStrings{
 		properties.put(CONF_ICON_CONTINUE,ICON_CONTINUE_ON);  
 		properties.put(CONF_STATE_INTRO,"false"); //$NON-NLS-1$
 		properties.put(CONF_ICON_INTRO,ICON_INTRO_OFF);  
-		//TODO get it from xml property file
 		
 	}
 	
 	
+	/**
+	 * Set a property
+	 * @param sName
+	 * @param sValue
+	 */
 	public static void setProperty(String sName,String sValue){
 		properties.setProperty(sName,sValue);
 	}
+	
+	/** Commit properties in a file */
+	public static void commit(){
+		try {
+			properties.store(new FileOutputStream(FILE_CONFIGURATION),"User configuration");
+		} catch (IOException e) {
+			Log.error("113",e);
+			Messages.showErrorMessage("113");
+		}
+		
+	}
+	
+	/** Load properties from in file */
+	public static void load() {
+		try {
+			properties.load(new FileInputStream(FILE_CONFIGURATION));
+		} catch (IOException e) {
+			Log.error("114", e);
+			Messages.showErrorMessage("114");
+		}
+
+	}
+	
+	
+	
 }
