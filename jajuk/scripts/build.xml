@@ -2,86 +2,74 @@
 <!--Jajuk Ant script for end users-->
 <!-- This ant script is written to be executed from command line in a standard jajuk installation, not from the IDE-->
 
-<project default='jar' name='jajuk' basedir='.'>
-  <property name='libdir' value='lib' />
-  <property name='classdir' value='classes'/>
-  <property name='srcdir' value='src'/>
-  <property name='bindir' value='bin'/>
-  <property name='javadocdir' value='doc/javadoc'/>
-  <property name='jarname' value='jajuk.jar'/>
-  <property name='version' value='0.2'/>
-  <property name='distfilesdir' value='dist-files'/>
-  <property name='docdir' value='doc'/>
-  
-  <target name='clean' description='o Clean up the generated directories'>
-    <delete dir='${classdir}'>
-    </delete>
-    <delete file='${bindir}/${jarname}'>
-    </delete>
-  </target>
- 
-   <target name='native2ascii' description='Transform i18n resourses bundle to be correctly displayed' depends='clean'>
-	<native2ascii encoding='UTF-8' src='${srcdir}/org/jajuk/i18n' dest='${srcdir}/org/jajuk/i18n' includes='*.properties' ext='.tmp'/>     
-  	<move file='${srcdir}/org/jajuk/i18n/jajuk.tmp' tofile='${classdir}/org/jajuk/i18n/jajuk-latin1.properties'/>
-  	<move file='${srcdir}/org/jajuk/i18n/jajuk_de.tmp' tofile='${classdir}/org/jajuk/i18n/jajuk-latin1_de.properties'/>
-  	<move file='${srcdir}/org/jajuk/i18n/jajuk_fr.tmp' tofile='${classdir}/org/jajuk/i18n/jajuk-latin1_fr.properties'/>
-  	<move file='${srcdir}/org/jajuk/i18n/jajuk_it.tmp' tofile='${classdir}/org/jajuk/i18n/jajuk-latin1_it.properties'/>
-  	<move file='${srcdir}/org/jajuk/i18n/jajuk_nl.tmp' tofile='${classdir}/org/jajuk/i18n/jajuk-latin1_nl.properties'/>
-  	<move file='${srcdir}/org/jajuk/i18n/jajuk_sv.tmp' tofile='${classdir}/org/jajuk/i18n/jajuk-latin1_sv.properties'/>
-  	<delete>
-  	  <fileset dir='${srcdir}/org/jajuk/i18n/' includes="**/*.tmp"/>
-  	 </delete>
-  </target>
- 
-  <target name='compile' description='o Compile the code' depends='native2ascii' >
-    <mkdir dir='${classdir}'>
-    </mkdir>
-    <javac destdir='${classdir}' deprecation='true' debug='false' optimize='true' excludes='**/package.html'>
-      <src>
-        <pathelement path='${srcdir}'>
-        </pathelement>
-      </src>
-      <classpath>
-        <fileset dir='${libdir}'>
-          <include name='*.jar'>
-          </include>
-        </fileset>
-      </classpath>
-    </javac>
-    <mkdir dir="${classdir}/org/jajuk/icons"/>
-    <mkdir dir="${classdir}/org/jajuk/images"/>
-  	<mkdir dir="${classdir}/org/jajuk/docs"/>
-  	<copy todir="${classdir}/org/jajuk/icons" >
-     <fileset dir="${distfilesdir}/icons"/>
-  	</copy>
-  	<copy todir="${classdir}/org/jajuk/images" >
-     <fileset dir="${distfilesdir}/images"/>
-  	</copy>
-  </target>
+<project default="jar" name="jajuk" basedir=".">
+	<property name="libdir" value="lib" />
+	<property name="classdir" value="classes" />
+	<property name="srcdir" value="src" />
+	<property name="bindir" value="bin" />
+	<property name="javadocdir" value="javadoc" />
+	<property name="jarname" value="jajuk.jar" />
+	<property name="version" value="0.2" />
+	<property name="distfilesdir" value="dist-files" />
+	<property name="docdir" value="doc" />
 
-  <target name='jar' description='o Create the jar' depends='compile'>
-    <jar jarfile='${bindir}/${jarname}' excludes='**/package.html' basedir='${classdir}' manifest="${srcdir}/MANIFEST.MF" />
-  </target>
+	<target name="clean" description="o Clean up the generated directories">
+		<delete dir="${classdir}">
+		</delete>
+		<delete file="${bindir}/${jarname}">
+		</delete>
+	</target>
 
- <target name='javadoc'>
-   	  <delete dir='${javadocdir}'/>
-   	  <mkdir dir='${javadocdir}'/>
-     <property name='copyright' value='Copyright &amp;copy;  Jajuk team. All Rights Reserved.'/>
-     <javadoc destdir='${javadocdir}' access='private' use='true'
-            notree='false' nonavbar='false' noindex='false'
-            splitindex='true' author='true' version='true'
-            nodeprecatedlist='false' nodeprecated='false'
-            packagenames='org.jajuk.base,org.jajuk.ui.views,org.jajuk,org.jajuk.i18n,org.jajuk.ui.perspectives,org.jajuk.util.log,org.jajuk.ui,org.jajuk.util,org.jajuk.util.error,org.jajuk.players'
-            sourcepath='src'
-            Windowtitle='Jajuk ${version} API'   >
-		<classpath>
-         <fileset dir='${libdir}'>
-           <include name='*.jar'>
-           </include>
-         </fileset>
-         <pathelement location='${bindir}/${jarname}'/>
-       </classpath>
-      </javadoc>
-    </target>
- 
+	<target name="compile" description="o Compile the code" depends="clean">
+		<mkdir dir="${classdir}">
+		</mkdir>
+		<javac destdir="${classdir}" deprecation="true" debug="false" optimize="true" excludes="**/package.html">
+			<src>
+				<pathelement path="${srcdir}">
+				</pathelement>
+			</src>
+			<classpath>
+				<fileset dir="${libdir}">
+					<include name="*.jar">
+					</include>
+				</fileset>
+			</classpath>
+		</javac>
+		<mkdir dir="${classdir}/org/jajuk/icons" />
+		<mkdir dir="${classdir}/org/jajuk/images" />
+		<mkdir dir="${classdir}/org/jajuk/docs" />
+		<copy todir="${classdir}/org/jajuk/icons">
+			<fileset dir="${distfilesdir}/icons" />
+		</copy>
+		<copy todir="${classdir}/org/jajuk/images">
+			<fileset dir="${distfilesdir}/images" />
+		</copy>
+		<copy todir="${classdir}/org/jajuk/i18n">
+			<fileset file="${srcdir}/org/jajuk/i18n/*.properties" />
+		</copy>
+		<copy todir="${classdir}">
+			<fileset file="${srcdir}/log4j.properties" />
+		</copy>
+	</target>
+
+	<target name="jar" description="o Create the jar" depends="compile">
+		<jar jarfile="${bindir}/${jarname}" excludes="**/package.html" basedir="${classdir}" manifest="${srcdir}/MANIFEST.MF" />
+		<delete dir="${classdir}" />
+	</target>
+
+	<target name="javadoc">
+		<delete dir="${javadocdir}" />
+		<mkdir dir="${javadocdir}" />
+		<property name="copyright" value="Copyright &amp;copy;  Jajuk team. All Rights Reserved." />
+		<javadoc destdir="${javadocdir}" access="private" use="true" notree="false" nonavbar="false" noindex="false" splitindex="true" author="true" version="true" nodeprecatedlist="false" nodeprecated="false" packagenames="org.jajuk.base,org.jajuk.ui.views,org.jajuk,org.jajuk.i18n,org.jajuk.ui.perspectives,org.jajuk.util.log,org.jajuk.ui,org.jajuk.util,org.jajuk.util.error,org.jajuk.players" sourcepath="src" Windowtitle="Jajuk ${version} API">
+			<classpath>
+				<fileset dir="${libdir}">
+					<include name="*.jar">
+					</include>
+				</fileset>
+				<pathelement location="${bindir}/${jarname}" />
+			</classpath>
+		</javadoc>
+	</target>
+
 </project>
