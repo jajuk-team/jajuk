@@ -129,7 +129,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 				int iSeparator = 1;
 				//set default layout and size
 				double[][] size ={{5*iSeparator,0.15,10*iSeparator,0.17,iSeparator,0.11,iSeparator,
-					0.11,iSeparator,0.18,iSeparator,0.12,0,20,10*iSeparator,0.15},
+					0.11,iSeparator,0.18,iSeparator,0.12,iSeparator,0.15,10*iSeparator,20},
 						{height1}}; //note we can't set a % for history combo box because of popup size
 				setLayout(new TableLayout(size));
 				sbSearch = new SearchBox(CommandJPanel.this);
@@ -186,7 +186,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 				jbNovelties.addActionListener(CommandJPanel.this);
 				jbNovelties.setToolTipText(Messages.getString("CommandJPanel.16")); //$NON-NLS-1$
 				jtbSpecial.add(jbNovelties);
-				jbNorm = new JButton(Util.getIcon(ICON_PLAY)); 
+				jbNorm = new JButton(Util.getIcon(ICON_MODE_NORMAL)); 
 				jbNorm.addActionListener(CommandJPanel.this);
 				jbNorm.setToolTipText(Messages.getString("CommandJPanel.17")); //$NON-NLS-1$
 				jtbSpecial.add(jbNorm);
@@ -259,9 +259,9 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 				add(jtbMode,"5,0"); //$NON-NLS-1$
 				add(jtbSpecial,"7,0"); //$NON-NLS-1$
 				add(jtbPlay,"9,0"); //$NON-NLS-1$
-				add(jpVolume,"11,0"); //$NON-NLS-1$
-				add(jbMute,"13,0");
-				add(jpPosition,"15,0"); //$NON-NLS-1$
+				add(jpPosition,"11,0"); //$NON-NLS-1$
+				add(jpVolume,"13,0"); //$NON-NLS-1$
+				add(jbMute,"15,0");
 				
 				//register to player events
 				ObservationManager.register(EVENT_PLAYER_PLAY,CommandJPanel.this);
