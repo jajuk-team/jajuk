@@ -8,4 +8,7 @@
 	<mapID target="pav" url="html/pav.html" />
 	<mapID target="pm" url="html/pm.html" />
 	<mapID target="up" url="html/up.html" />
+	<mapID target="tray" url="html/tray.html" />
+	<mapID target="view_command" url="html/view_command.html" />
+	
 </map>
