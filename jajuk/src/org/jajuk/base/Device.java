@@ -570,7 +570,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	
 	/**
 	 * Unmount the device with ejection 
-	 *
+	 * @param bEjection set whether the device must be ejected
 	 */
 	public  void unmount(boolean bEjection) throws Exception{
 		//look to see if the device is already mounted ( the unix 'mount' command cannot say that )
@@ -594,7 +594,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 					throw new Exception();
 				}
 				if ( bEjection){  //jection if required
-					process = Runtime.getRuntime().exec("eject"); //$NON-NLS-1$
+					process = Runtime.getRuntime().exec("eject "+getMountPoint()); //$NON-NLS-1$
 					process.waitFor();
 				}
 			}
