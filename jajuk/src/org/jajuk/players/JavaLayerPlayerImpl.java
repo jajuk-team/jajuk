@@ -32,6 +32,7 @@ import org.jajuk.base.FIFO;
 import org.jajuk.base.Type;
 import org.jajuk.base.TypeManager;
 import org.jajuk.i18n.Messages;
+import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
@@ -123,12 +124,10 @@ public class JavaLayerPlayerImpl implements IPlayerImpl,ITechnicalStrings,BasicP
 	 * @see org.jajuk.players.IPlayerImpl#pause()
 	 */
 	public synchronized void pause() throws Exception{
-		Log.debug("PAUSED AT: "+lTime);
 		player.pause();
 	}
 	
 	public synchronized void resume() throws Exception{
-		Log.debug("RESUMED AT: "+lTime);
 		player.resume();
 	}	
 	
@@ -139,7 +138,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl,ITechnicalStrings,BasicP
 	public void seek(float posValue){
 		//leave if already seeking
 		if (player != null && getState() == BasicPlayer.SEEKING){
-			Log.debug("Already seeking, leaving");
+			Log.debug("Already seeking, leaving"); //$NON-NLS-1$
 			return;
 		}
 		if (mPlayingData.containsKey("audio.type") && player!=null) { //$NON-NLS-1$
@@ -195,6 +194,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl,ITechnicalStrings,BasicP
 			if (mPlayingData.containsKey("audio.length.bytes")) { //$NON-NLS-1$
 				int byteslength = ((Integer) mPlayingData.get("audio.length.bytes")).intValue(); //$NON-NLS-1$
 				fPos = (byteslength!=0)?(float)iBytesread/(float)byteslength:0;
+                ConfigurationManager.setProperty(CONF_STARTUP_LAST_POSITION,Float.toString(fPos));
 				lTime = (long)(Util.getTimeLengthEstimation(mPlayingData)*fPos);
 			}
 			//test end of length
