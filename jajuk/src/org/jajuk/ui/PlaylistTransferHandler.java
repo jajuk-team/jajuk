@@ -31,8 +31,10 @@ import java.awt.dnd.DropTargetListener;
 
 import javax.swing.JPanel;
 
+import org.jajuk.base.Bookmarks;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
+import org.jajuk.util.log.Log;
 
 /**
  *  Dnd support for playlists
@@ -85,19 +87,22 @@ public class PlaylistTransferHandler implements DropTargetListener {
 				dtde.acceptDrop(action);				
 				dtde.dropComplete(true);
 				TransferableTreeNode ttn = (TransferableTreeNode)transferable.getTransferData(TransferableTreeNode.NODE_FLAVOR);
-				PlaylistFileItem plfi = (PlaylistFileItem)dtde.getSource();
+				PlaylistFileItem plfi = (PlaylistFileItem)(((DropTarget)dtde.getSource()).getComponent());
 				Object oData = ttn.getData();
 				if ( plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_NEW){
 					if (oData instanceof File){
 						FIFO.getInstance().push((File)oData,true);
 					}
 				}
-				System.out.println("drop:" + ttn.getData());
-				return;					
+				else if ( plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_BOOKMARK){
+					if (oData instanceof File){
+						Bookmarks.getInstance().addFile((File)oData);
+					}
+				}
 			}
 		}		
 		catch (Exception e) {	
-			System.out.println(e);
+			Log.error(e);
 			dtde.rejectDrop();
 			dtde.dropComplete(false);
 		}	

@@ -287,9 +287,8 @@ public interface ITechnicalStrings {
 	public static final String CONF_FIRST_CON= "jajuk.first_con";
 	public static final String CONF_TAGS_DEEP_SCAN= "jajuk.tags.deep_scan";
 	public static final String CONF_TAGS_USE_PARENT_DIR= "jajuk.tags.use_parent_dir";
+	public static final String CONF_BOOKMARKS= "jajuk.bookmarks"; //contains files id separated by a colon
 	
-	
- 	
 	//miscelanous
 	public static final String TRUE= "true";
 	public static final String FALSE= "false";

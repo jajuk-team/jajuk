@@ -37,6 +37,8 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.SwingUtilities;
+import javax.swing.event.TreeExpansionEvent;
+import javax.swing.event.TreeExpansionListener;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 import javax.swing.event.TreeSelectionEvent;
@@ -386,7 +388,6 @@ public class LogicalTreeView extends ViewAdapter implements ActionListener,Obser
 		//Tree selection listener to detect a selection
 		jtree.addTreeSelectionListener(new TreeSelectionListener() {
 			public void valueChanged(TreeSelectionEvent e) {
-				Util.waiting();
 				TreePath[] tpSelected = jtree.getSelectionModel().getSelectionPaths();
 				HashSet hsSelectedTracks = new HashSet(100);
 				int items = 0;
@@ -408,8 +409,6 @@ public class LogicalTreeView extends ViewAdapter implements ActionListener,Obser
 				}
 				StringBuffer sbOut = new StringBuffer().append(items).append(" tracks");
 				InformationJPanel.getInstance().setSelection(sbOut.toString());
-				Util.stopWaiting();
-				
 			}
 		});
 		//Listen for double clic
@@ -470,12 +469,64 @@ public class LogicalTreeView extends ViewAdapter implements ActionListener,Obser
 			}
 		};
 		jtree.addMouseListener(ml);
+		//Expansion analyse to keep expended state 
+		jtree.addTreeExpansionListener(new TreeExpansionListener() {
+			public void treeCollapsed(TreeExpansionEvent event) {
+				Object o = event.getPath().getLastPathComponent(); 
+				if (o instanceof StyleNode){
+					Style style = ((StyleNode)o).getStyle();
+					style.removeProperty(OPTION_EXPANDED);
+				}
+				else if (o instanceof AuthorNode){
+					Author author = ((AuthorNode)o).getAuthor();
+					author.removeProperty(OPTION_EXPANDED);
+				}
+				else if (o instanceof AlbumNode){
+					Album album = ((AlbumNode)o).getAlbum();
+					album.removeProperty(OPTION_EXPANDED);
+				}
+			}
+
+			public void treeExpanded(TreeExpansionEvent event) {
+				Object o = event.getPath().getLastPathComponent(); 
+				if (o instanceof StyleNode){
+					Style style = ((StyleNode)o).getStyle();
+					style.setProperty(OPTION_EXPANDED,"y");
+				}
+				else if (o instanceof AuthorNode){
+					Author author = ((AuthorNode)o).getAuthor();
+					author.setProperty(OPTION_EXPANDED,"y");
+				}
+				else if (o instanceof AlbumNode){
+					Album album = ((AlbumNode)o).getAlbum();
+					album.setProperty(OPTION_EXPANDED,"y");
+				}
+			}
+		});
 		
 		//expand all
 		for (int i=0;i<jtree.getRowCount();i++){
 			Object o = jtree.getPathForRow(i).getLastPathComponent(); 
-			if ( !(o instanceof AlbumNode) && !(o instanceof TrackNode)){
-				jtree.expandRow(i); 
+			if ( o instanceof StyleNode){
+				Style style = ((StyleNode)o).getStyle();
+				String sExp = style.getProperty(OPTION_EXPANDED); 
+				if ( "y".equals(sExp)){
+					jtree.expandRow(i);	
+				}
+			}
+			else if ( o instanceof AuthorNode){
+				Author author = ((AuthorNode)o).getAuthor();
+				String sExp = author.getProperty(OPTION_EXPANDED); 
+				if ( "y".equals(sExp)){
+					jtree.expandRow(i);	
+				}
+			}
+			else if ( o instanceof AlbumNode){
+				Album album = ((AlbumNode)o).getAlbum();
+				String sExp = album.getProperty(OPTION_EXPANDED); 
+				if ( "y".equals(sExp)){
+					jtree.expandRow(i);	
+				}
 			}
 		}
 		jspTree = new JScrollPane(jtree);

@@ -41,6 +41,7 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
 import org.jajuk.Main;
+import org.jajuk.base.Bookmarks;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.PlaylistFile;
@@ -260,6 +261,9 @@ public class PhysicalPlaylistRepositoryView extends ViewAdapter implements Obser
 			ArrayList alFiles = null;
 			if ( plfiSelected.getType() == PlaylistFileItem.PLAYLIST_TYPE_BESTOF){
 				alFiles = FileManager.getBestOfFiles();
+			}
+			else if ( plfiSelected.getType() == PlaylistFileItem.PLAYLIST_TYPE_BOOKMARK){
+				alFiles = Bookmarks.getInstance().getFiles();
 			}
 			else{
 				alFiles = plfiSelected.getPlaylistFile().getBasicFiles();

@@ -450,7 +450,6 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 		//Tree selection listener to detect a selection
 		jtree.addTreeSelectionListener(new TreeSelectionListener() {
 			public void valueChanged(TreeSelectionEvent e) {
-				Util.waiting();
 				TreePath[] tpSelected = jtree.getSelectionModel().getSelectionPaths();
 				if ( tpSelected == null){ //nothing selected, can be called during dnd
 					return;
@@ -484,7 +483,6 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 					sbOut.append(lSize).append(" MB");
 				}
 				InformationJPanel.getInstance().setSelection(sbOut.toString());
-				Util.stopWaiting();
 			}
 		});
 		//Listen for double clic

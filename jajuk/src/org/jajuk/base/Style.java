@@ -86,10 +86,11 @@ public class Style extends PropertyAdapter implements Comparable{
 	public String toXml() {
 		StringBuffer sb = new StringBuffer("\t\t<style id='" + sId);
 		sb.append("' name='");
-		sb.append(Util.formatXML(sName)).append("'/>\n");
+		sb.append(Util.formatXML(sName)).append("' ")
+			.append(getPropertiesXml()).append("/>\n");//$NON-NLS-1$;
 		return sb.toString();
 	}
-
+	
 	/**
 	 * @return
 	 */
