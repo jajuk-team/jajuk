@@ -66,13 +66,22 @@ import org.jajuk.util.log.Log;
  */
 public class Main implements ITechnicalStrings {
 	
+	/** Main window*/
 	private static JajukWindow jw;
+	/**Top command panel*/
 	public static CommandJPanel command;
+	/**Left side perspective selection panel*/
 	public static PerspectiveBarJPanel perspectiveBar;
+	/**Lower information panel*/
 	public static InformationJPanel information;
+	/**Main desktop pane*/
 	public static JPanel jpDesktop;
+	/**Main frame panel*/
 	public static JPanel jpFrame;
+	/**Jajuk slashscreen*/
 	public static SplashScreen sc;
+	/**Exit code*/
+	private static int iExitCode = 0;
 	
 	public static void main(String[] args)  {
 		try {
@@ -214,6 +223,24 @@ public class Main implements ITechnicalStrings {
 				return;
 			}
 			
+			//start exit hook
+			Runtime.getRuntime().addShutdownHook(new Thread() {
+				public void run() {
+					try{
+						if (iExitCode == 0){ //commit only if exit is safe to avoid commiting empty collection
+							//commit configuration
+							org.jajuk.util.ConfigurationManager.commit();
+							//commit collection
+							org.jajuk.base.Collection.commit();
+							//commit history
+							History.commit();
+						}
+					} catch (IOException e) {
+						Log.error("", e); //$NON-NLS-1$
+					}
+				}
+			});
+			
 			//Display a message
 			information.setMessage(Messages.getString("Main.13"), InformationJPanel.INFORMATIVE);  //$NON-NLS-1$
 			
@@ -300,7 +327,7 @@ public class Main implements ITechnicalStrings {
 	}
 	
 	/**
-	 * Exit code, used to perform saves...
+	 * Exit code, then system will execute the exit hook
 	 * 
 	 * @param iExitCode
 	 *                exit code
@@ -309,30 +336,19 @@ public class Main implements ITechnicalStrings {
 	 *                <p>1: unexpected error
 	 */
 	public static void exit(int iExitCode) {
-		try {
-			//check if a confirmation is needed
-			if (Boolean.valueOf(ConfigurationManager.getProperty(CONF_CONFIRMATIONS_EXIT)).booleanValue()){
-				int iResu = JOptionPane.showConfirmDialog(jw,Messages.getString("Confirmation_exit"),Messages.getString("Main.21"),JOptionPane.YES_NO_OPTION);  //$NON-NLS-1$ //$NON-NLS-2$
-				if (iResu == JOptionPane.NO_OPTION){
-					return;
-				}
+		//store exit code to be read by the system hook
+		Main.iExitCode = iExitCode;
+		//check if a confirmation is needed
+		if (Boolean.valueOf(ConfigurationManager.getProperty(CONF_CONFIRMATIONS_EXIT)).booleanValue()){
+			int iResu = JOptionPane.showConfirmDialog(jw,Messages.getString("Confirmation_exit"),Messages.getString("Main.21"),JOptionPane.YES_NO_OPTION);  //$NON-NLS-1$ //$NON-NLS-2$
+			if (iResu == JOptionPane.NO_OPTION){
+				return;
 			}
-			 //hide systray
-             jw.closeSystray();
-			//display a message
-             Log.debug("Exit with code: "+iExitCode); //$NON-NLS-1$
-			if (iExitCode == 0){ //commit only if exit is safe to avoid commiting empty collection
-				//commit configuration
-				org.jajuk.util.ConfigurationManager.commit();
-				//commit collection
-				org.jajuk.base.Collection.commit();
-				//commit history
-				History.commit();
-				
-			}
-		} catch (IOException e) {
-			Log.error("", e); //$NON-NLS-1$
 		}
+		//hide systray
+		jw.closeSystray();
+		//display a message
+		Log.debug("Exit with code: "+iExitCode); //$NON-NLS-1$
 		System.exit(iExitCode);
 	}
 	
