@@ -49,8 +49,6 @@ public class Type extends PropertyAdapter{
 	 * @param sExtension type file extension (.mp3...)
 	 * @param sPlayerImpl Type player implementation class
 	 * @param sTagImpl Type Tagger implementation class
-	 * @param bIsMusic is this type music ?
-	 * @param bSupportsSeeking does this type supports seeking
 	 * @throws Exception
 	 */
 	public Type(String sId, String sName,String sExtension, String sPlayerImpl,String sTagImpl) throws Exception{

@@ -32,7 +32,7 @@ import org.jajuk.util.log.Log;
  * @author     bflorat
  * @created    12 oct. 2003
  */
-public class TypeManager {
+public class TypeManager implements ITechnicalStrings{
 
 	static HashMap hmSupportedTypes = new HashMap(5);
 
@@ -105,6 +105,22 @@ public class TypeManager {
 	 */
 	public static synchronized Type getTypeByExtension(String sExtension) {
 		return (Type) hmSupportedTypes.get(sExtension);
+	}
+	
+	/**
+	 * Return all music types
+	 * @return
+	 */
+	public static synchronized ArrayList getAllMusicTypes() {
+		ArrayList alResu = new ArrayList(5);	
+		Iterator it = hmSupportedTypes.values().iterator();
+		while (it.hasNext()){
+			Type type = (Type)it.next();
+			if (type.getProperty(TYPE_PROPERTY_IS_MUSIC).equals(TRUE)){
+				alResu.add(type);
+			}
+		}
+		return alResu;
 	}
 
 	/**

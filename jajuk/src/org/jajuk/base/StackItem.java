@@ -40,10 +40,7 @@ public class StackItem {
     /**Planned track ?*/
     private boolean bPlanned = false;
         
-    /**Visible track (only used for planned tracks)*/
-    private boolean bVisible = true;
-    
-    
+      
     /**
      * Constructor
      * @param file associated file
@@ -72,7 +69,6 @@ public class StackItem {
          this.bRepeat = bRepeat;
          this.bUserLaunch = bUserLauched;
          this.bPlanned = false;
-         this.bVisible = true;
      }
    
     
@@ -90,20 +86,7 @@ public class StackItem {
         bRepeat = repeat;
     }
     
-    /**
-     * @return Returns the bVisible.
-     */
-    public boolean isVisible() {
-        return bVisible;
-    }
-    
-    /**
-     * @param visible The bVisible to set.
-     */
-    public void setVisible(boolean visible) {
-        bVisible = visible;
-    }
-    
+      
     /**
      * @return Returns the file.
      */
@@ -134,4 +117,14 @@ public class StackItem {
     public void setPlanned(boolean planned) {
         bPlanned = planned;
     }
+    
+    /**
+	 * Clone method
+	 * @return a clonned stack item
+	 */
+	public Object clone(){
+		StackItem item = new StackItem(file,bRepeat,bUserLaunch);
+		item.setPlanned(bPlanned);
+		return item;
+	}
 }

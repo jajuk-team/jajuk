@@ -69,7 +69,14 @@ public class JajukTimer {
     public void addTrackTime(ArrayList alFiles){
         Iterator it = alFiles.iterator();
         while ( it.hasNext()){
-            addTrackTime((File)it.next());
+            Object o = it.next();
+            if (o instanceof File){
+            	addTrackTime((File)o);
+            }
+            else{
+            	File file =((StackItem)o).getFile();
+            	addTrackTime(file);
+            }
         }
     }
     

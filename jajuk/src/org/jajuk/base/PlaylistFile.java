@@ -278,6 +278,9 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 		if ( iType == PlaylistFileItem.PLAYLIST_TYPE_BOOKMARK){
 			Bookmarks.getInstance().addFile(index,bf);
 		}
+		if ( iType == PlaylistFileItem.PLAYLIST_TYPE_QUEUE){
+			FIFO.getInstance().insert(new StackItem(bf),index); //insert this track in the fifo
+		}
 		else {
 			//get max index value for tracks
 			Iterator it = getBasicFiles().iterator();
@@ -364,7 +367,12 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 		if ( iType == PlaylistFileItem.PLAYLIST_TYPE_BOOKMARK){
 			Bookmarks.getInstance().remove(index);
 		}
-		alBasicFiles.remove(index);
+		else if ( iType == PlaylistFileItem.PLAYLIST_TYPE_QUEUE){
+			FIFO.getInstance().remove(index,index);
+		}
+		else{
+			alBasicFiles.remove(index);
+		}
 		setModified(true);
 	}
 	
@@ -550,7 +558,8 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 			Messages.showErrorMessage("018");	 //$NON-NLS-1$
 		}
 		else{
-			FIFO.getInstance().push(Util.createStackItems(alFiles,false,true),false);
+			FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFiles),
+					ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
 		}
 	}
 	
@@ -580,7 +589,9 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 	 * Save as... the playlist file 
 	 */
 	public void saveAs(){
-		JajukFileChooser jfchooser = new JajukFileChooser(new JajukFileFilter(true,new Type[]{TypeManager.getTypeByExtension(EXT_PLAYLIST)}));
+		ArrayList alTypes = new ArrayList(1);
+		alTypes.add(TypeManager.getTypeByExtension(EXT_PLAYLIST));
+		JajukFileChooser jfchooser = new JajukFileChooser(new JajukFileFilter(true,alTypes));
 		int returnVal = jfchooser.showSaveDialog(Main.getWindow());
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			java.io.File file = jfchooser.getSelectedFile();
