@@ -97,7 +97,10 @@ public class Main implements ITechnicalStrings {
 	public static boolean bExiting = false;
 	/**Perspective release flag used in upgrade method**/
 	private static boolean bPerspectiveReleaseOK = true;
-	
+	/**General use lock used for synchronization*/
+	private static byte[] bLock = new byte[0];
+	/**List of auto-refreshed devices */
+	private static ArrayList alAutoRefreshedDevices = new ArrayList(4);
 	
 	/**
 	 * Main entry
@@ -476,7 +479,7 @@ public class Main implements ITechnicalStrings {
 				    fileToPlay = FileManager.getFile(ConfigurationManager.getProperty(CONF_STARTUP_FILE));
 				}
 				else {  //last file from begining or last file keep position
-				    if (ConfigurationManager.getBoolean(CONF_STATE_WAS_PLAYING)){  //make sure user didn't exit jajuk in the stopped state
+				    if (ConfigurationManager.getBoolean(CONF_STATE_WAS_PLAYING) && History.getInstance().getHistory().size()>0){  //make sure user didn't exit jajuk in the stopped state and that history is not void
 				        fileToPlay = FileManager.getFile(History.getInstance().getLastFile());
 				    }
 				    else{ //do not try to lauch anything, stay in stop state
@@ -484,8 +487,10 @@ public class Main implements ITechnicalStrings {
 				    }
 				}
 			   if (fileToPlay != null){
-				    if ( fileToPlay.isScanned() ){ //device is refreshng or synchronizing
-				        Messages.showErrorMessage("120",fileToPlay.getDirectory().getDevice().getName()); //$NON-NLS-1$
+				    //if the required track is in a refreshed device, do not lauch anything, leave without boring error message 
+				    if (alAutoRefreshedDevices.contains(fileToPlay.getDirectory().getDevice())){
+				        Log.debug("Startup file is in an auto-refreshed device, leave"); //$NON-NLS-1$
+				        return;
 				    }
 				    else{
 				        alToPlay.add(fileToPlay);    
@@ -537,7 +542,8 @@ public class Main implements ITechnicalStrings {
 				}
 			}
 			if (TRUE.equals(device.getProperty(DEVICE_OPTION_AUTO_REFRESH))){
-				device.refresh(true);
+				alAutoRefreshedDevices.add(device);
+			    device.refresh(true);
 			}
 		}
 	}
