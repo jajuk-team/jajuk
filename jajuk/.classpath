@@ -7,5 +7,6 @@
     <classpathentry kind="lib" path="lib/jl030.jar"/>
     <classpathentry kind="lib" path="lib/log4j-1.2.6.jar"/>
     <classpathentry kind="lib" path="lib/kunststoff.jar"/>
+    <classpathentry kind="lib" path="lib/tablelayout.jar"/>
     <classpathentry kind="output" path="bin"/>
 </classpath>
