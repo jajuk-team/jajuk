@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=iso-8859-15">
+	<TITLE>Jajuk developer guide</TITLE>
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 1.1.0  (Linux)">
+	<META NAME="CREATED" CONTENT="20040501;19483400">
+	<META NAME="CHANGED" CONTENT="20040501;21185000">
+</HEAD>
+<BODY LANG="fr-FR" DIR="LTR">
+<H1 LANG="en-US">Developer guide</H1>
+<P LANG="en-US"><FONT COLOR="#ff0000">Please make this manual alive.
+Add your own notes in <FONT FACE="monospace">developer_guide.html</FONT>
+file in the CVS repository : <FONT FACE="monospace">dist-files/doc/</FONT>.</FONT><BR><BR>Welcome
+to new Jajuk developers ! Have fun.</P>
+<H1 LANG="en-US">Mailing List / forum</H1>
+<P><SPAN LANG="en-US"><BR>Please subscribe to Jajuk developer mailing
+list ( </SPAN><A HREF="mailto:jajuk-developers@lists.sourceforge.net"><SPAN LANG="en-US">jajuk-developers@lists.sourceforge.net</SPAN></A><SPAN LANG="en-US">
+) at </SPAN><A HREF="http://lists.sourceforge.net/lists/listinfo/jajuk-developers"><SPAN LANG="en-US">http://lists.sourceforge.net/lists/listinfo/jajuk-developers</SPAN></A><SPAN LANG="en-US">.
+This list is for instant messages. For some more important messages
+like a release process, we use the developer forum (
+</SPAN><A HREF="http://sourceforge.net/forum/forum.php?forum_id=315362"><SPAN LANG="en-US">http://sourceforge.net/forum/forum.php?forum_id=315362
+</SPAN></A><SPAN LANG="en-US">). Please make sure to monitor it. </SPAN>
+</P>
+<H1 LANG="en-US">CVS</H1>
+<P><SPAN LANG="en-US">I assume you know CVS. If you are not so
+familiar with CVS, please read the CVS :
+</SPAN><A HREF="http://www.cvshome.org/docs/manual/cvs-1.11.15/cvs.html"><SPAN LANG="en-US">http://www.cvshome.org/docs/manual/cvs-1.11.15/cvs.html.</SPAN></A></P>
+<H2 LANG="en-US">Connexion</H2>
+<P LANG="en-US">The Connexion String is
+<FONT FACE="monospace">:extssh:bflorat@cvs.sourceforge.net:/cvsroot/jajuk<BR><BR></FONT>Under
+eclipse CVS repository location looks like :<BR><BR><IMG SRC="images/cvs_connexion.png" NAME="Image1" ALIGN=BOTTOM WIDTH=637 HEIGHT=567 BORDER=0><BR><BR><BR>
+</P>
+<H2 LANG="en-US">CVS rules</H2>
+<UL>
+	<LI><P LANG="en-US">Make sure the whole project yet compiles and is
+	in an acceptable stability state before committing something. if you
+	feel your work not stable enough, keep it on your local workspace
+	for the moment. 
+	</P>
+	<LI><P LANG="en-US">During a release process, please follow freezes
+	(see release process part).</P>
+	<LI><P LANG="en-US">You should work most of the time in the head
+	branch for minor changes.</P>
+	<LI><P LANG="en-US">If you start to code a big feature (like P2P)
+	with a lot of impacts on the project and potentially dangerous for
+	current release, create your own branch for this feature and merge
+	your work into the head when you feel ready and when no release is
+	planned for some days.</P>
+	<LI><P LANG="en-US">Before starting a new major release (0.2 for
+	example is a major release), we create a maintenance branch for
+	previous release (0.1) only to be used for critical bugs fixes. You
+	should continue to work in the Head branch. All new features, fixes,
+	translations... are only done on the head branch.</P>
+</UL>
+<P LANG="en-US"><BR><BR>
+</P>
+<H1 LANG="en-US">Eclipse configuration</H1>
+<UL>
+	<LI><P LANG="en-US">In options / &quot;Java&quot; / &quot;Code
+	generation&quot; / &quot;Code and comments&quot;, please import
+	<FONT FACE="monospace">scripts/code_generation.xml</FONT> file. This
+	is a template for new java sources.</P>
+	<LI><P LANG="en-US">When you launch Jajuk from eclipse, you have to
+	specify '<FONT FACE="monospace">-debug</FONT>' as program argument
+	so classes in directories takes images from local <FONT FACE="Courier, monospace">jajuk.jar</FONT>
+	file and doesn't look for images with an url from inside the jar.</P>
+</UL>
+<P LANG="en-US"><BR><BR>
+</P>
+<H1 LANG="en-US">Release process</H1>
+<P LANG="en-US">Jajuk has a 5 days-release process:</P>
+<UL>
+	<LI><P LANG="en-US">The release process is announced with a message
+	in the developer forum, make sure you monitor it.</P>
+</UL>
+<UL>
+	<LI><P LANG="en-US">During all 5 days: development freezes in the
+	repository: commit only fixes. English labels are frozen for
+	translators.</P>
+	<LI><P LANG="en-US">Day 1 and 2: translators upgrade their
+	translation if needed. 
+	</P>
+	<LI><P LANG="en-US">Day 3 and 4: packager releases first snapshots,
+	developers test, report bugs using the SF Issue Tracker, and commit
+	fixes. Packager makes as many snapshots ( rc releases ) as needed
+	until no more bugs are found. If architectural or severe bugs are
+	found, the release could be postponed.</P>
+	<LI><P LANG="en-US">Day 5: release is published in SF. Jajuk
+	Communication Delegate issues the new in Freshmeat and other web
+	sites. 
+	</P>
+</UL>
+<P LANG="en-US"><BR><BR>
+</P>
+<H1 LANG="en-US">Code conventions</H1>
+<P LANG="en-US">We mainly follow Sun Java conventions with special
+code standards : 
+</P>
+<H3 LANG="en-US"><B>Code structure</B></H3>
+<P LANG="en-US"><FONT FACE="monospace">public void myMethod(){ <BR>&nbsp;&nbsp;if
+(size == 0) { <BR>&nbsp;&nbsp;&nbsp;&nbsp;try { <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size
+= (long) inStream.available(); <BR>&nbsp;&nbsp;&nbsp;&nbsp;} catch
+(IOException e) {<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;e.printStackTrace();<BR>&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;}
+<BR>&nbsp;&nbsp;else if (size == currentSize) {<BR>&nbsp;&nbsp;&nbsp;&nbsp;++size;
+<BR>&nbsp;&nbsp;} <BR>&nbsp;&nbsp;else {<BR>&nbsp;&nbsp;&nbsp;&nbsp;--size;<BR>&nbsp;&nbsp;}
+<BR>} </FONT>
+</P>
+<H3 LANG="en-US"><B>Variables and attributes names</B></H3>
+<P LANG="en-US">Begin variable name by the first letters of the type
+so the variable is auto-described: <FONT FACE="monospace"><BR>String
+sFoo StringBuffer sbFoo Track track;</FONT> 
+</P>
+<H3 LANG="en-US"><B>Interfaces</B></H3>
+<P LANG="en-US">Begin interfaces with a upper 'I'. The 'i' is not
+taken into account for variables names:<BR><FONT FACE="monospace">IPerspectiveManager
+pm;</FONT></P>
+<H3>XML</H3>
+<UL>
+	<UL>
+		<LI><P>Avoid to use PCDATA values, use attributes instead : it's
+		faster to parse and much easier to code.</P>
+		<LI><P>Use single quotes, not double quotes. 
+		</P>
+	</UL>
+</UL>
+<P LANG="en-US"><BR><BR>
+</P>
+<H1 LANG="en-US">Comments / Javadoc 
+</H1>
+<P LANG="en-US">Please correctly comment all attributes and methods
+with javadoc norms ( <FONT FACE="Courier, monospace">/** comments */</FONT>
+).<BR><BR><BR><BR><BR>
+</P>
+</BODY>
+</HTML>

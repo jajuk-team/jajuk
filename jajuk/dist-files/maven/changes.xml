@@ -54,11 +54,13 @@
        <action dev='bflorat' type='fix'>939817 Tracks with no id3 tags get trimmed by first dot</action>  
        <action dev='bflorat' type='fix'>939816 Collection corruption when exiting while refreshing collection</action>  
      </release>
-     <release version='0.2' date='work in progress' description='Ogg Vorbis support'>
+     <release version='0.2' date='work in progress' description='New formats support, Swedish translation'>
      	<action dev='bflorat' type='add'>New sound formats supported : Ogg Vorbis,WAV, SPEEX, AU, AIFF</action>  
      	<action dev='bflorat' type='add'>Volume saved between sessions</action>  
-		<action dev='bflorat' type='add'>Swedish translation</action>  
-     	<action dev='bflorat' type='update'>Devices refreshing is now much faster</action>
+		<action dev='oscariot' type='add'>Swedish translation</action>  
+		<action dev='bflorat' type='add'>RFE 933296 Covers resizing/maximalizing</action>
+		<action dev='bflorat' type='add'>Regular expression for table filters (option)</action>
+		<action dev='bflorat' type='update'>Devices refreshing faster</action>
 		<action dev='bflorat' type='update'>Better id3 tags recognition, especially for styles/genres</action>
 		<action dev='bflorat' type='update'>Changed volume (gain) code, should solve some saturation problems</action>
 		<action dev='bflorat' type='fix'>921421 Freeze problems with id3 reads</action>  
