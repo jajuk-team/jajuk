@@ -290,12 +290,6 @@ public class Util implements ITechnicalStrings {
 		}
 	}	
 	
-	/**Format a time (ms) to a human readable format*/
-	public static String formatTime(long l){
-		String sOut = new SimpleDateFormat("HH:mm:ss").format(new Date(l)); //$NON-NLS-1$
-		return sOut;
-	}
-	
 	/**Format a time from secs to a human readable format*/
 	public static String formatTimeBySec(long l, boolean bTrimZeros){
 		long lHours = l/3600;
