@@ -181,10 +181,15 @@ public class Cover implements Comparable,ITechnicalStrings {
     public boolean equals(Object o){
        boolean bOut = false;
         Cover cOther = (Cover)o;
-       if (getType() == 2 || cOther.getType()==2){
+       if (getType() == Cover.ABSOLUTE_DEFAULT_COVER || cOther.getType()==Cover.ABSOLUTE_DEFAULT_COVER){
            return  (cOther.getType() == getType()); //either both are default cover, either one is not and so, they are unequal
        }
        //here, all url are not null
+       //for local covers, we concidere that 2 covers with the same file name are identical even if they are in different directories
+       if (getType() != Cover.REMOTE_COVER){
+           return Util.getOnlyFile(url.getFile()).equals(Util.getOnlyFile(cOther.getURL().getFile()));
+       }
+       //Remote cover
        bOut = url.getFile().equals(cOther.getURL().getFile());
        return bOut;
     }

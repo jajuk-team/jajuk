@@ -56,6 +56,7 @@ import org.jajuk.Main;
 import org.jajuk.base.Cover;
 import org.jajuk.base.Directory;
 import org.jajuk.base.FIFO;
+import org.jajuk.base.Track;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.ObservationManager;
@@ -210,31 +211,43 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                     displayCurrentCover(); 
                     return; 
                 }
-                this.fDir = new java.io.File(fCurrent.getAbsolutePath()).getParentFile(); //store this dir
                 synchronized(alCovers){
                     alCovers.clear();
-                    //search for local covers
-                    java.io.File[] files = fDir.listFiles();
-                    boolean bAbsoluteCover = false; //whether an absolute cover ( unique) has been found
-                    for (int i=0;i<files.length;i++){
-                        String sExt = Util.getExtension(files[i]);
-                        if (sExt.equalsIgnoreCase("jpg") || sExt.equalsIgnoreCase("png") || sExt.equalsIgnoreCase("gif")){ //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                            if (Util.isAbsoluteDefaultCover(FIFO.getInstance().getCurrentFile().getDirectory(),files[i].getName())){
-                                if (!bAbsoluteCover){ //the concidere only the first found absolute cover
-                                    alCovers.add(new Cover(files[i].toURL(),Cover.ABSOLUTE_DEFAULT_COVER));
+                    //search for local covers in all directories mapping the current track to reach other devices covers and display them together
+                    this.fDir = null; //analyzed directory
+                    Track trackCurrent = fCurrent.getTrack();
+                    ArrayList alFiles = trackCurrent.getFiles(); //list of files mapping the track
+                    Iterator it = alFiles.iterator();
+                    while (it.hasNext()){
+                        org.jajuk.base.File file = (org.jajuk.base.File)it.next();
+                        if ( !file.getDirectory().getDevice().isReady()) { //if the device is not ready, just ignore it
+                            continue;
+                        }
+                        fDir = new java.io.File(file.getAbsolutePath()).getParentFile(); //store this dir
+                        java.io.File[] files = fDir.listFiles();
+                        boolean bAbsoluteCover = false; //whether an absolute cover ( unique) has been found
+                        for (int i=0;i<files.length;i++){
+                            String sExt = Util.getExtension(files[i]);
+                            if (sExt.equalsIgnoreCase("jpg") || sExt.equalsIgnoreCase("png") || sExt.equalsIgnoreCase("gif")){ //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                if (!bAbsoluteCover && Util.isAbsoluteDefaultCover(FIFO.getInstance().getCurrentFile().getDirectory(),files[i].getName())){
+                                    //test the cover is not already used
+                                    Cover cover = new Cover(files[i].toURL(),Cover.ABSOLUTE_DEFAULT_COVER);
+                                    if (!alCovers.contains(cover)){
+                                        alCovers.add(cover);
+                                    }
                                     bAbsoluteCover = true;
                                 }
-                                else{
-                                    continue;
+                                else{ //normal local cover
+                                    Cover cover = new Cover(files[i].toURL(),Cover.LOCAL_COVER);
+                                    if (!alCovers.contains(cover)){
+                                        alCovers.add(cover);
+                                    }
                                 }
                             }
-                            else{ //normal local cover
-                                alCovers.add(new Cover(files[i].toURL(),Cover.LOCAL_COVER));
-                            }
                         }
-                    }
-                    if (alCovers.size() == 0){//add the default cover if none other cover has been found
-                        alCovers.add(coverDefault); 
+                        if (alCovers.size() == 0){//add the default cover if none other cover has been found
+                            alCovers.add(coverDefault); 
+                        }
                     }
                     //display local or default cover without wait
                     Collections.sort(alCovers); //sort the list
@@ -290,7 +303,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                                                 else{
                                                     index = alCovers.size()-1;  //current index points to the best available cover
                                                 }
-                                                displayCurrentCover();    
+                                                displayCurrentCover();
                                             }
                                         }
                                         catch(Exception e){
@@ -300,8 +313,8 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                                             searching(false); //hide searching icon
                                         }
                                     }
-                                  }
-                             }
+                                }
+                            }
                         };
                         t.setPriority(Thread.MIN_PRIORITY); //low priority
                         t.start();
@@ -556,14 +569,14 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
         }
         else if(e.getSource() == jbDelete){ //delete a local cover
             Cover cover = (Cover)alCovers.get(index);
-	        //show confirmation message if required
-    	    if ( ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_DELETE_COVER)){
-    	        int iResu = JOptionPane.showConfirmDialog(Main.getWindow(),Messages.getString("Confirmation_delete_cover")+" : "+cover.getURL().toString(),Messages.getString("Main.21"),JOptionPane.YES_NO_OPTION);  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-    			if (iResu == JOptionPane.NO_OPTION){
-    				return;
-    			}
-    	    }
-    	    //yet there? ok, delete the cover
+            //show confirmation message if required
+            if ( ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_DELETE_COVER)){
+                int iResu = JOptionPane.showConfirmDialog(Main.getWindow(),Messages.getString("Confirmation_delete_cover")+" : "+cover.getURL().toString(),Messages.getString("Main.21"),JOptionPane.YES_NO_OPTION);  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                if (iResu == JOptionPane.NO_OPTION){
+                    return;
+                }
+            }
+            //yet there? ok, delete the cover
             try{
                 File file = new File(cover.getURL().getFile());
                 if (file.isFile() && file.exists()){
