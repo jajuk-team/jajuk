@@ -305,8 +305,9 @@ public interface ITechnicalStrings {
 		 "<perspectives jajuk_version='"+JAJUK_VERSION+"'>\n"+
 		"\t<perspective  class='"+PERSPECTIVE_NAME_PHYSICAL+"'>\n"+
 		"\t\t<views>\n"+
-		"\t\t\t<view class='org.jajuk.ui.views.PhysicalTreeView' width='30' height='100' x='0' y='0'/>\n"+/*
-		"\t\t\t<view class='org.jajuk.ui.views.NavigationBarView' />\n"+
+		"\t\t\t<view class='org.jajuk.ui.views.PhysicalTreeView' width='30' height='100' x='0' y='0'/>\n"+
+		"\t\t\t<view class='org.jajuk.ui.views.PhysicalTableView' width='40' height='100' x='60' y='0'/>\n"+
+		/*"\t\t\t<view class='org.jajuk.ui.views.NavigationBarView' />\n"+
 		"\t\t\t<view class='org.jajuk.ui.views.TrackListView' />\n"+
 		"\t\t\t<view class='org.jajuk.ui.views.CoverView'  />\n"+
 		"\t\t\t<view class='org.jajuk.ui.views.PlaylistRepositoryView'/>\n"+

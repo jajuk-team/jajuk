@@ -106,6 +106,7 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 		jbDelete.setActionCommand(EVENT_DEVICE_DELETE);
 		jbDelete.addActionListener(this);
 		jbDelete.setToolTipText("Remove a device");
+		jbDelete.setEnabled(false); //false by default, cannot delete mounted device
 		
 		jbProperties = new JButton(new ImageIcon(ICON_PROPERTIES));
 		jbProperties.setActionCommand(EVENT_DEVICE_PROPERTIES);
@@ -190,7 +191,9 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 		jmiDelete = new JMenuItem("Delete device",new ImageIcon(ICON_DELETE));
 		jmiDelete.addActionListener(this);
 		jmiDelete.setActionCommand(EVENT_DEVICE_DELETE);
+		jmiDelete.setEnabled(false); //false by default, cannot delete mounted device
 		jpmenu.add(jmiDelete);
+		
 		
 		jmiProperties = new JMenuItem("Get properties",new ImageIcon(ICON_PROPERTIES));
 		jmiProperties.addActionListener(this);
@@ -311,6 +314,14 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 					diSelected = di;
 					dSelected = device;
 					diSelected.setBorder(BorderFactory.createLineBorder(Color.BLACK,5));
+					if (dSelected.isMounted()){
+						jbDelete.setEnabled(false);
+						jmiDelete.setEnabled(false);
+					}
+					else{
+						jbDelete.setEnabled(true);
+						jmiDelete.setEnabled(true);
+					}
 				}
 			});
 			di.setToolTipText(device.getDeviceTypeS());

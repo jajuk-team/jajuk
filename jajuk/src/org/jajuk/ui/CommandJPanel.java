@@ -137,6 +137,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		jtbMode.setFloatable(false);
 		jbRepeat = new JButton(new ImageIcon(ConfigurationManager.getProperty(CONF_ICON_REPEAT))); 
 		jbRepeat.setActionCommand(EVENT_REPEAT_MODE_STATUS_CHANGED);
+		jbRepeat.setToolTipText("Repeat mode : play tracks in a loop");
 		jbRepeat.addActionListener(JajukListener.getInstance());
 		jtbMode.add(jbRepeat);
 		jbRandom = new JButton(new ImageIcon(ConfigurationManager.getProperty(CONF_ICON_SHUFFLE)));

@@ -64,7 +64,7 @@ public abstract class PerspectiveAdapter implements IPerspective,ITechnicalStrin
 	public void addView(IView view,int iWidth,int iHeight,int iX,int iY) {
 		alViews.add(view);
 		ViewManager.registerView(view,this);
-		int iCommandYSize = 105;
+		int iCommandYSize = 108;
 		int iCommandXSize = 45;
 		ViewManager.setSize(view,(Main.jframe.getWidth()-iCommandXSize)*iWidth/100,(Main.jframe.getHeight()-iCommandYSize)*iHeight/100);
 		ViewManager.setLocation(view,(Main.jframe.getWidth()-iCommandXSize)*iX/100,(Main.jframe.getHeight()-iCommandYSize)*iY/100);

@@ -89,6 +89,13 @@ public class Main implements ITechnicalStrings {
 			//configuration manager startup
 			org.jajuk.util.ConfigurationManager.getInstance();
 					
+			//check for jajuk home directory presence
+			File fJajukDir = new File(FILE_JAJUK_DIR);
+			if (!fJajukDir.exists() || !fJajukDir.isDirectory()) {
+				fJajukDir.mkdir(); //create the directory if it doesn't exist
+			}
+			
+			
 			//log startup
 			Log.getInstance();
 			Log.setVerbosity(Log.DEBUG);
@@ -244,14 +251,6 @@ public class Main implements ITechnicalStrings {
 					}
 				}
 			}.start();
-			
-			
-		}
-		
-		//check for jajuk home directory presence
-		File fJajukDir = new File(FILE_JAJUK_DIR);
-		if (!fJajukDir.exists() || !fJajukDir.isDirectory()) {
-			fJajukDir.mkdir(); //create the directory if it doesn't exist
 		}
 		//check for configuration file presence
 		File fConfig = new File(FILE_CONFIGURATION);

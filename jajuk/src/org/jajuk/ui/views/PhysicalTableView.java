@@ -18,11 +18,12 @@
 
 package org.jajuk.ui.views;
 
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import org.jajuk.base.Track;
-import org.jajuk.base.TrackManager;
+import org.jajuk.base.File;
+import org.jajuk.base.FileManager;
 
 /**
  * Logical table view
@@ -30,10 +31,10 @@ import org.jajuk.base.TrackManager;
  * @author bflorat 
  * @created 13 dec. 2003
  */
-public class LogicalTableView extends AbstractTableView{
+public class PhysicalTableView extends AbstractTableView{
 
 	/** Self instance */
-	private static LogicalTableView ltv;
+	private static PhysicalTableView ltv;
 
 		
 	/*
@@ -42,20 +43,20 @@ public class LogicalTableView extends AbstractTableView{
 	 * @see org.jajuk.ui.IView#getDesc()
 	 */
 	public String getDesc() {
-		return "Logical table view";
+		return "Physical table view";
 	}
 	
 
 	/** Return singleton */
-	public static LogicalTableView getInstance() {
+	public static PhysicalTableView getInstance() {
 		if (ltv == null) {
-			ltv = new LogicalTableView();
+			ltv = new PhysicalTableView();
 		}
 		return ltv;
 	}
 
 	/** Constructor */
-	public LogicalTableView(){
+	public PhysicalTableView(){
 		super();
 		populate();
 		setModel(this);
@@ -64,24 +65,25 @@ public class LogicalTableView extends AbstractTableView{
 	
 	/**Fill the tree */
 	public void populate(){
-		//col number
-		iColNum = 6;
 		//Columns names
-		sColName = new String[]{"Track","Album","Author","Length","Style","Rate"};
+		sColName = new String[]{"Track","Album","Author","Length","Style","Directory","File","Rate"};
 		//Values
-		ArrayList alTracks = TrackManager.getSortedTracks();
-		int iSize = alTracks.size();
-		Iterator it = alTracks.iterator();
+		ArrayList alFiles = FileManager.getSortedFiles();
+		int iSize = alFiles.size();
+		Iterator it = alFiles.iterator();
 		oValues = new Object[iSize][iColNum];
-		//Track | Album | Author | Length | Style | Rate	
+		//Track | Album | Author |  Length | Style | Directory | File name | Rate
 		for (int i = 0;it.hasNext();i++){
-			Track track = (Track)it.next(); 
-			oValues[i][0] = track.getName();
-			oValues[i][1] = track.getAlbum().getName2();
-			oValues[i][2] = track.getAuthor().getName2();
-			oValues[i][3] = Long.toString(track.getLength());
-			oValues[i][4] = track.getStyle().getName2();
-			oValues[i][5] = Long.toString(track.getRate());
+			File file = (File)it.next(); 
+			oValues[i][0] = file.getTrack().getName();
+			oValues[i][1] = file.getTrack().getAlbum().getName2();
+			oValues[i][2] = file.getTrack().getAuthor().getName2();
+			oValues[i][3] = Long.toString(file.getTrack().getLength());
+			oValues[i][4] = file.getTrack().getStyle().getName2();
+			oValues[i][5] = file.getDirectory().getName();
+			oValues[i][6] = file.getName();
+			oValues[i][7] = Long.toString(file.getTrack().getRate());
+			
 		}
 		//row num
 		iRowNum = iSize;
@@ -98,7 +100,7 @@ public class LogicalTableView extends AbstractTableView{
 	 * @see org.jajuk.ui.IView#getViewName()
 	 */
 	public String getViewName() {
-		return "org.jajuk.ui.views.LogicalTableView";
+		return "org.jajuk.ui.views.PhysicalTableView";
 	}
 }
 

@@ -22,6 +22,8 @@ package org.jajuk.base;
 
 import java.util.ArrayList;
 
+import org.jajuk.i18n.Messages;
+import org.jajuk.ui.ObservationManager;
 import org.jajuk.util.MD5Processor;
 
 /**
@@ -29,7 +31,7 @@ import org.jajuk.util.MD5Processor;
  * @Author    bflorat
  * @created    17 oct. 2003
  */
-public class DeviceManager {
+public class DeviceManager implements ITechnicalStrings{
 	/**Device collection**/
 	static ArrayList alDevices = new ArrayList(100);
 	/**Device ids*/
@@ -93,6 +95,10 @@ public class DeviceManager {
 	 * @param device
 	 */
 	public static synchronized void removeDevice(Device device){
+		if (device.isMounted() || device.isRefreshing()){
+			Messages.showErrorMessage("013");
+			return;
+		}
 		alDevices.remove(device);
 		alDeviceIds.remove(device.getId());
 		DirectoryManager.cleanDevice(device.getId());
@@ -100,6 +106,8 @@ public class DeviceManager {
 		PlaylistFileManager.cleanDevice(device.getId());
 		//	Clean the collection up
 		org.jajuk.base.Collection.cleanup();
+		//refresh views
+		ObservationManager.notify(EVENT_DEVICE_REFRESH);
 	}
 
 }

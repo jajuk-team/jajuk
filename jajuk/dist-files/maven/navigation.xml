@@ -15,6 +15,7 @@
       <item name="Status" href="/status.html" />
       <item name="Javadoc" href="apidocs/index.html" />
       <item name="CVS Stats" href="statcvs/index.html" />
+      <item name="View CVS" href="http://cvs.sourceforge.net/viewcvs.py/jajuk/" />
     </menu>
     <search/>
     <menu name="Documentation">

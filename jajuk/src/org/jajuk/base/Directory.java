@@ -214,6 +214,7 @@ public class Directory extends PropertyAdapter implements Comparable{
 				}
 				if (fileRef!= null && !ConfigurationManager.getBoolean(CONF_TAGS_DEEP_SCAN)){  //read tag data from database, no real read from file for performances reasons if only the deep scan is disable
 					org.jajuk.base.File file = FileManager.registerFile(fileRef.getId(),fileRef.getName(), this, fileRef.getTrack(), fileRef.getSize(),fileRef.getQuality());
+					addFile(file);
 					continue;
 				}
 				
@@ -232,6 +233,7 @@ public class Directory extends PropertyAdapter implements Comparable{
 				Type type = TypeManager.getTypeByExtension(Util.getExtension(files[i]));
 				Track track = TrackManager.registerTrack(sTrackName, album, style, author, length, sYear, type);
 				org.jajuk.base.File newFile = FileManager.registerFile(files[i].getName(), this, track, files[i].length(), sQuality);
+				addFile(newFile);
 				track.addFile(newFile);
 			}
 			else{  //playlist file

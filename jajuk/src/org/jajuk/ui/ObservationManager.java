@@ -42,7 +42,7 @@ public class ObservationManager {
 	 * @param subject Subject ( event ) to observe
 	 * @param jc component to register
 	 */
-	public static void register(String subject,JComponent jc){
+	public static synchronized void register(String subject,JComponent jc){
 		ArrayList alComponents = (ArrayList)hmEventComponents.get(subject);
 		if (alComponents == null){
 			alComponents = new ArrayList(1);
@@ -56,7 +56,7 @@ public class ObservationManager {
 	 * @param subject Subject ( event ) to observe
 	 * @param jc component to deregister
 	 */
-	public static void deregister(String subject,JComponent jc){
+	public static synchronized void deregister(String subject,JComponent jc){
 		ArrayList alComponents = (ArrayList)hmEventComponents.get(subject);
 		if (alComponents == null){
 			alComponents.remove(jc);
@@ -68,7 +68,11 @@ public class ObservationManager {
 	 * @param subject
 	 */
 	public static synchronized void notify(String subject){
-		Iterator it = ((ArrayList)hmEventComponents.get(subject)).iterator();  
+		ArrayList alComponents =(ArrayList)hmEventComponents.get(subject); 
+		if (alComponents == null){
+			return;
+		}
+		Iterator it = alComponents.iterator();  
 		while (it.hasNext()){
 			((Observer)it.next()).update(subject);
 		}

@@ -197,6 +197,8 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 				}
 				Log.debug("Refresh done in "+(int)((System.currentTimeMillis()-lTime)/1000)+" sec");
 				bAlreadyRefreshing = false;
+				//notify views to refresh
+				ObservationManager.notify(EVENT_DEVICE_REFRESH);
 			}
 		}
 		.start();

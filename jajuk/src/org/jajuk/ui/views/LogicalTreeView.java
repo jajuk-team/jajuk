@@ -36,6 +36,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
+import javax.swing.SwingUtilities;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 import javax.swing.event.TreeSelectionEvent;
@@ -54,6 +55,8 @@ import org.jajuk.base.Style;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.i18n.Messages;
+import org.jajuk.ui.ObservationManager;
+import org.jajuk.ui.Observer;
 import org.jajuk.util.Util;
 
 /**
@@ -62,13 +65,17 @@ import org.jajuk.util.Util;
  * @author bflorat 
  * @created 28 nov. 2003
  */
-public class LogicalTreeView extends ViewAdapter implements ActionListener{
-
+public class LogicalTreeView extends ViewAdapter implements ActionListener,Observer{
+	
 	/** Self instance */
 	private static LogicalTreeView ltv;
-
+	
 	/** The logical tree */
 	JTree jtree;
+	
+	/** The tree scrollpane*/
+	JScrollPane jspTree;
+	
 	
 	/** Top tree node */
 	DefaultMutableTreeNode top;
@@ -78,43 +85,43 @@ public class LogicalTreeView extends ViewAdapter implements ActionListener{
 	
 	/** Current selection */
 	TreePath[] paths;
-
-		
+	
+	
 	JPopupMenu jmenuStyle;
-		JMenuItem jmiStylePlay;
-		JMenuItem jmiStylePush;
-		JMenuItem jmiStylePlayShuffle;
-		JMenuItem jmiStylePlayRepeat;
-		JMenuItem jmiStyleDelete;
-		JMenuItem jmiStyleSetProperty;
-		JMenuItem jmiStyleProperties;
-		
+	JMenuItem jmiStylePlay;
+	JMenuItem jmiStylePush;
+	JMenuItem jmiStylePlayShuffle;
+	JMenuItem jmiStylePlayRepeat;
+	JMenuItem jmiStyleDelete;
+	JMenuItem jmiStyleSetProperty;
+	JMenuItem jmiStyleProperties;
+	
 	JPopupMenu jmenuAuthor;
-		JMenuItem jmiAuthorPlay;
-		JMenuItem jmiAuthorPush;
-		JMenuItem jmiAuthorPlayShuffle;
-		JMenuItem jmiAuthorPlayRepeat;
-		JMenuItem jmiAuthorDelete;
-		JMenuItem jmiAuthorSetProperty;
-		JMenuItem jmiAuthorProperties;
-		
+	JMenuItem jmiAuthorPlay;
+	JMenuItem jmiAuthorPush;
+	JMenuItem jmiAuthorPlayShuffle;
+	JMenuItem jmiAuthorPlayRepeat;
+	JMenuItem jmiAuthorDelete;
+	JMenuItem jmiAuthorSetProperty;
+	JMenuItem jmiAuthorProperties;
+	
 	JPopupMenu jmenuAlbum;
-		JMenuItem jmiAlbumPlay;
-		JMenuItem jmiAlbumPush;
-		JMenuItem jmiAlbumPlayShuffle;
-		JMenuItem jmiAlbumPlayRepeat;
-		JMenuItem jmiAlbumDelete;
-		JMenuItem jmiAlbumSetProperty;
-		JMenuItem jmiAlbumProperties;
-		
+	JMenuItem jmiAlbumPlay;
+	JMenuItem jmiAlbumPush;
+	JMenuItem jmiAlbumPlayShuffle;
+	JMenuItem jmiAlbumPlayRepeat;
+	JMenuItem jmiAlbumDelete;
+	JMenuItem jmiAlbumSetProperty;
+	JMenuItem jmiAlbumProperties;
+	
 	JPopupMenu jmenuTrack;
-		JMenuItem jmiTrackPlay;
-		JMenuItem jmiTrackPush;
-		JMenuItem jmiTrackDelete;
-		JMenuItem jmiTrackSetProperty;
-		JMenuItem jmiTrackProperties;
-		
-		
+	JMenuItem jmiTrackPlay;
+	JMenuItem jmiTrackPush;
+	JMenuItem jmiTrackDelete;
+	JMenuItem jmiTrackSetProperty;
+	JMenuItem jmiTrackProperties;
+	
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -123,7 +130,7 @@ public class LogicalTreeView extends ViewAdapter implements ActionListener{
 	public String getDesc() {
 		return "Logical tree view";
 	}
-
+	
 	/** Return singleton */
 	public static LogicalTreeView getInstance() {
 		if (ltv == null) {
@@ -131,7 +138,7 @@ public class LogicalTreeView extends ViewAdapter implements ActionListener{
 		}
 		return ltv;
 	}
-
+	
 	/** Constructor */
 	public LogicalTreeView(){
 		//**Menu items**
@@ -224,140 +231,26 @@ public class LogicalTreeView extends ViewAdapter implements ActionListener{
 		jmenuTrack.add(jmiTrackDelete);
 		jmenuTrack.add(jmiTrackSetProperty);
 		jmenuTrack.add(jmiTrackProperties);
-
+		
 		
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		//fill the tree
 		top = new DefaultMutableTreeNode("Collection");
+		
+		//Register on the list for subject we are interrested in
+		ObservationManager.register(EVENT_DEVICE_MOUNT,this);
+		ObservationManager.register(EVENT_DEVICE_UNMOUNT,this);
+		ObservationManager.register(EVENT_DEVICE_REFRESH,this);
+		//fill the tree
 		populate();
 		
-		jtree = new JTree(top);
-		jtree.putClientProperty("JTree.lineStyle", "Angled");
-		jtree.setRowHeight(25);
-		jtree.getSelectionModel().setSelectionMode(TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
-		jtree.setCellRenderer(new DefaultTreeCellRenderer() {
-			public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-				super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
-				setFont(new Font("Dialog",Font.PLAIN,10));
-				if (value instanceof StyleNode ){
-					setIcon(new ImageIcon(ICON_STYLE));
-				}
-				else if (value instanceof AuthorNode){
-					setIcon(new ImageIcon(ICON_AUTHOR));
-				}
-				else if (value instanceof AlbumNode){
-					setIcon(new ImageIcon(ICON_ALBUM));
-				}
-				else if (value instanceof TrackNode){
-					setIcon(new ImageIcon(ICON_FILE));
-				}
-				return this;
-			}
-		});
-		DefaultTreeModel treeModel = new DefaultTreeModel(top);
-		//Tree model listener to detect changes in the tree structure
-		treeModel.addTreeModelListener(new TreeModelListener(){
-			
-			public void treeNodesChanged(TreeModelEvent e) {
-				DefaultMutableTreeNode node;
-				node = (DefaultMutableTreeNode)
-				(e.getTreePath().getLastPathComponent());
-				
-				try {
-					int index = e.getChildIndices()[0];
-					node = (DefaultMutableTreeNode)
-					(node.getChildAt(index));
-				} catch (NullPointerException exc) {}
-				
-			}
-			
-			public void treeNodesInserted(TreeModelEvent e) {
-			}
-			
-			public void treeNodesRemoved(TreeModelEvent e) {
-			}
-			
-			public void treeStructureChanged(TreeModelEvent e) {
-			}
-			
-		});
-		
-		//Tree selection listener to detect a selection
-		jtree.addTreeSelectionListener(new TreeSelectionListener() {
-			public void valueChanged(TreeSelectionEvent e) {
-			}
-		});
-		//Listen for double clic
-		MouseListener ml = new MouseAdapter() {
-			public void mousePressed(MouseEvent e) {
-				TreePath path = jtree.getPathForLocation(e.getX(), e.getY());
-				if ( e.getClickCount() == 2){
-					Object o = path.getLastPathComponent();
-					if (o instanceof TrackNode){
-						Track track = ((TrackNode)o).getTrack();
-						File file = track.getPlayeableFile();
-						if (file != null){
-							FIFO.getInstance().push(file,false);
-						}
-						else{
-							Messages.showErrorMessage("010",track.getName());
-						}
-					}
-				}
-				else if ( jtree.getSelectionCount() > 0 && e.getClickCount() == 1 && e.getButton()==MouseEvent.BUTTON3){  //right clic on a selected node set
-					paths = jtree.getSelectionModel().getSelectionPaths();
-					alTracks = new ArrayList(100);
-					//test mix between types ( not allowed )
-					String sClass = paths[0].getLastPathComponent().getClass().toString();
-					for (int i=0;i<paths.length;i++){
-						if (!paths[i].getLastPathComponent().getClass().toString().equals(sClass)){
-							return;
-						}	
-					}
-					//get all components recursively
-					for (int i=0;i<paths.length;i++){
-						Object o = paths[i].getLastPathComponent();
-						Enumeration e2 = ((DefaultMutableTreeNode)o).depthFirstEnumeration(); //return all childs nodes recursively
-						while ( e2.hasMoreElements()){
-							DefaultMutableTreeNode node = (DefaultMutableTreeNode)e2.nextElement();
-							if (node instanceof TrackNode){
-								Track track = ((TrackNode)node).getTrack();
-								if (track.getPlayeableFile() != null ){
-									alTracks.add(((TrackNode)node).getTrack());
-								}
-							}
-						}
-					}
-					//display menus according node type
-					if (paths[0].getLastPathComponent() instanceof TrackNode ){
-						jmenuTrack.show(jtree,e.getX(),e.getY());
-					}
-					else if (paths[0].getLastPathComponent() instanceof AlbumNode){
-						jmenuAlbum.show(jtree,e.getX(),e.getY());
-					}
-					else if (paths[0].getLastPathComponent() instanceof AuthorNode){
-						jmenuAuthor.show(jtree,e.getX(),e.getY()); 
-					}
-					else if (paths[0].getLastPathComponent() instanceof StyleNode){
-						jmenuStyle.show(jtree,e.getX(),e.getY()); 
-					}
-				}
-			}
-		};
-		jtree.addMouseListener(ml);
-		
-		//expand all
-		for (int i=0;i<jtree.getRowCount();i++){
-			Object o = jtree.getPathForRow(i).getLastPathComponent(); 
-			if ( !(o instanceof AlbumNode) && !(o instanceof TrackNode)){
-				jtree.expandRow(i); 
-			}
-		}
-		add(new JScrollPane(jtree));
+		ltv = this;
 	}
 	
 	/**Fill the tree */
 	public void populate(){
+		//delete previous tree
+		removeAll();
+		top.removeAllChildren();
 		ArrayList alTracks = TrackManager.getSortedTracks();
 		Iterator it1 = alTracks.iterator();
 		while ( it1.hasNext()){
@@ -417,6 +310,131 @@ public class LogicalTreeView extends ViewAdapter implements ActionListener{
 			//create track
 			albumNode.add(new TrackNode(track));
 		}
+		jtree = new JTree(top);
+		jtree.putClientProperty("JTree.lineStyle", "Angled");
+		jtree.setRowHeight(25);
+		jtree.getSelectionModel().setSelectionMode(TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
+		jtree.setCellRenderer(new DefaultTreeCellRenderer() {
+			public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) {
+				super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
+				setFont(new Font("Dialog",Font.PLAIN,10));
+				if (value instanceof StyleNode ){
+					setIcon(new ImageIcon(ICON_STYLE));
+				}
+				else if (value instanceof AuthorNode){
+					setIcon(new ImageIcon(ICON_AUTHOR));
+				}
+				else if (value instanceof AlbumNode){
+					setIcon(new ImageIcon(ICON_ALBUM));
+				}
+				else if (value instanceof TrackNode){
+					setIcon(new ImageIcon(ICON_FILE));
+				}
+				return this;
+			}
+		});
+		DefaultTreeModel treeModel = new DefaultTreeModel(top);
+		//Tree model listener to detect changes in the tree structure
+		treeModel.addTreeModelListener(new TreeModelListener(){
+			
+			public void treeNodesChanged(TreeModelEvent e) {
+				DefaultMutableTreeNode node;
+				node = (DefaultMutableTreeNode)
+				(e.getTreePath().getLastPathComponent());
+				
+				try {
+					int index = e.getChildIndices()[0];
+					node = (DefaultMutableTreeNode)
+					(node.getChildAt(index));
+				} catch (NullPointerException exc) {}
+				
+			}
+			
+			public void treeNodesInserted(TreeModelEvent e) {
+			}
+			
+			public void treeNodesRemoved(TreeModelEvent e) {
+			}
+			
+			public void treeStructureChanged(TreeModelEvent e) {
+			}
+			
+		});
+		
+		//Tree selection listener to detect a selectionr
+		jtree.addTreeSelectionListener(new TreeSelectionListener() {
+			public void valueChanged(TreeSelectionEvent e) {
+			}
+		});
+		//Listen for double clic
+		MouseListener ml = new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+				TreePath path = jtree.getPathForLocation(e.getX(), e.getY());
+				if ( e.getClickCount() == 2){
+					Object o = path.getLastPathComponent();
+					if (o instanceof TrackNode){
+						Track track = ((TrackNode)o).getTrack();
+						File file = track.getPlayeableFile();
+						if (file != null){
+							FIFO.getInstance().push(file,false);
+						}
+						else{
+							Messages.showErrorMessage("010",track.getName());
+						}
+					}
+				}
+				else if ( jtree.getSelectionCount() > 0 && e.getClickCount() == 1 && e.getButton()==MouseEvent.BUTTON3){  //right clic on a selected node set
+					paths = jtree.getSelectionModel().getSelectionPaths();
+					getInstance().alTracks = new ArrayList(100);
+					//test mix between types ( not allowed )
+					String sClass = paths[0].getLastPathComponent().getClass().toString();
+					for (int i=0;i<paths.length;i++){
+						if (!paths[i].getLastPathComponent().getClass().toString().equals(sClass)){
+							return;
+						}	
+					}
+					//get all components recursively
+					for (int i=0;i<paths.length;i++){
+						Object o = paths[i].getLastPathComponent();
+						Enumeration e2 = ((DefaultMutableTreeNode)o).depthFirstEnumeration(); //return all childs nodes recursively
+						while ( e2.hasMoreElements()){
+							DefaultMutableTreeNode node = (DefaultMutableTreeNode)e2.nextElement();
+							if (node instanceof TrackNode){
+								Track track = ((TrackNode)node).getTrack();
+								if (track.getPlayeableFile() != null ){
+									getInstance().alTracks.add(((TrackNode)node).getTrack());
+								}
+							}
+						}
+					}
+					//display menus according node type
+					if (paths[0].getLastPathComponent() instanceof TrackNode ){
+						jmenuTrack.show(jtree,e.getX(),e.getY());
+					}
+					else if (paths[0].getLastPathComponent() instanceof AlbumNode){
+						jmenuAlbum.show(jtree,e.getX(),e.getY());
+					}
+					else if (paths[0].getLastPathComponent() instanceof AuthorNode){
+						jmenuAuthor.show(jtree,e.getX(),e.getY()); 
+					}
+					else if (paths[0].getLastPathComponent() instanceof StyleNode){
+						jmenuStyle.show(jtree,e.getX(),e.getY()); 
+					}
+				}
+			}
+		};
+		jtree.addMouseListener(ml);
+		
+		//expand all
+		for (int i=0;i<jtree.getRowCount();i++){
+			Object o = jtree.getPathForRow(i).getLastPathComponent(); 
+			if ( !(o instanceof AlbumNode) && !(o instanceof TrackNode)){
+				jtree.expandRow(i); 
+			}
+		}
+		jspTree = new JScrollPane(jtree);
+		add(jspTree);
+		
 	}
 	
 	/* (non-Javadoc)
@@ -433,36 +451,53 @@ public class LogicalTreeView extends ViewAdapter implements ActionListener{
 			}
 		}
 		if ( alTracks.size() > 0  && (e.getSource() == jmiTrackPlay 
-				|| e.getSource() == jmiAlbumPlay
-				|| e.getSource() == jmiAuthorPlay
-				|| e.getSource() == jmiStylePlay )){
+						|| e.getSource() == jmiAlbumPlay
+						|| e.getSource() == jmiAuthorPlay
+						|| e.getSource() == jmiStylePlay )){
 			FIFO.getInstance().push(alFilesToPlay,false);
 			
 		}
 		else if (alTracks.size() > 0  && ( e.getSource() == jmiTrackPush 
-				|| e.getSource() == jmiAlbumPush
-				|| e.getSource() == jmiAuthorPush
-				|| e.getSource() == jmiStylePush) ){
+							|| e.getSource() == jmiAlbumPush
+							|| e.getSource() == jmiAuthorPush
+							|| e.getSource() == jmiStylePush) ){
 			FIFO.getInstance().push(alFilesToPlay,true);
 		}
 		else if ( alTracks.size() > 0  && (e.getSource() == jmiAlbumPlayShuffle
-				|| e.getSource() == jmiAuthorPlayShuffle
-				|| e.getSource() == jmiStylePlayShuffle )){
+							|| e.getSource() == jmiAuthorPlayShuffle
+							|| e.getSource() == jmiStylePlayShuffle )){
 			FIFO.getInstance().push(Util.randomize(alFilesToPlay),false);
 		}
 		else if (alTracks.size() > 0  && ( e.getSource() == jmiAlbumPlayRepeat
-				|| e.getSource() == jmiAuthorPlayRepeat
-				|| e.getSource() == jmiStylePlayRepeat) ){
+							|| e.getSource() == jmiAuthorPlayRepeat
+							|| e.getSource() == jmiStylePlayRepeat) ){
 			FIFO.getInstance().push(alFilesToPlay,false,false,true);
 		}
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.IView#getViewName()
 	 */
 	public String getViewName() {
 		return "org.jajuk.ui.views.LogicalTreeView";
 	}
+	
+	/* (non-Javadoc)
+	 * @see org.jajuk.ui.Observer#update(java.lang.String)
+	 */
+	public void update(String subject) {
+		System.out.println(subject);
+		if ( subject.equals(EVENT_DEVICE_UNMOUNT) || subject.equals(EVENT_DEVICE_UNMOUNT)){
+			SwingUtilities.updateComponentTreeUI(jspTree);
+			jtree.setRowHeight(25);
+		}
+		else if( subject.equals(EVENT_DEVICE_REFRESH)){
+			populate();
+			SwingUtilities.updateComponentTreeUI(jspTree);
+			jtree.setRowHeight(25);
+		}
+	}
+	
 }
 
 
@@ -496,7 +531,7 @@ class StyleNode extends DefaultMutableTreeNode{
 	public Style getStyle() {
 		return style;
 	}
-
+	
 }
 
 /**
@@ -538,7 +573,7 @@ class AuthorNode extends DefaultMutableTreeNode{
 	public Author getAuthor() {
 		return author;
 	}
-
+	
 }
 
 
@@ -581,7 +616,7 @@ class AlbumNode  extends DefaultMutableTreeNode{
 	public Album getAlbum() {
 		return album;
 	}
-
+	
 }
 
 /**
@@ -623,7 +658,7 @@ class TrackNode  extends DefaultMutableTreeNode{
 	public Track getTrack() {
 		return track;
 	}
-
+	
 }
 
 
