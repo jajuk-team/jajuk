@@ -58,8 +58,6 @@ import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
-import com.sun.SwingWorker;
-
 
 /**
  * Jajuk lauching class
@@ -152,7 +150,7 @@ public class Main implements ITechnicalStrings {
 			//Starts the FIFO
 			FIFO.getInstance();
 			
-			
+			//Creates the command panel
 			jframe.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 			jframe.addWindowListener(new WindowAdapter() {
 				public void windowClosing(WindowEvent we) {
@@ -163,76 +161,59 @@ public class Main implements ITechnicalStrings {
 			jpFrame = (JPanel)jframe.getContentPane();
 			jpFrame.setLayout(new BorderLayout());
 			jpFrame.setOpaque(true);
+			command = CommandJPanel.getInstance();
+			// Create the information bar panel
+			information = InformationJPanel.getInstance();
 			
-			//Creates the command panel
-			SwingWorker sw = new SwingWorker() {
-				public Object construct() {
-					return null;
-				}
-			  //use a SwingWorker to avoid a strange bug on JButtons and JSliders 
-				public void finished() {
-					try{
-						command = CommandJPanel.getInstance();
-						// Create the information bar panel
-						information = InformationJPanel.getInstance();
-						
-						
-						//Main panel
-						jpDesktop = new JPanel();
-						jpDesktop.setOpaque(true);
-						jpDesktop.setBorder(BorderFactory.createEtchedBorder());
-						jpDesktop.setLayout(new BorderLayout());
-						
-						//Add static panels
-						jpFrame.add(command, BorderLayout.NORTH);
-						jpFrame.add(information, BorderLayout.SOUTH);
-						jpFrame.add(jpDesktop, BorderLayout.CENTER);
-						JPanel jp = new JPanel(); //we use an empty panel to take west place before actual panel ( perspective bar ). just for a better displaying
-						jpFrame.add(jp, BorderLayout.WEST);
-						
-						//Set menu bar to the frame
-						jframe.setJMenuBar(JajukJMenuBar.getInstance());
-						
-						//display window
-						jframe.pack();
-						jframe.setExtendedState(Frame.MAXIMIZED_BOTH);  //maximalize
-						jframe.setVisible(true);
-						//Mount and refresh devices
-						mountAndRefresh();
-						
-						//Create the perspective manager 
-						PerspectiveManager.load();
-						
-						// Create the perspective tool bar panel
-						perspectiveBar = PerspectiveBarJPanel.getInstance();
-						jpFrame.remove(jp);
-						jpFrame.add(perspectiveBar, BorderLayout.WEST);
-						
-						//Initialize perspective manager and load all views
-						PerspectiveManager.init();
-						
-						//Close splash screen
-						sc.dispose();
-						
-						//Display info message if first session
-						if (TRUE.equals(ConfigurationManager.getProperty(CONF_FIRST_CON))){
-							ConfigurationManager.setProperty(CONF_FIRST_CON,FALSE);
-							Messages.showInfoMessage(Messages.getString("Main.12")); //$NON-NLS-1$
-							PerspectiveManager.setCurrentPerspective(PERSPECTIVE_NAME_CONFIGURATION);
-							return;
-						}
-						
-						//Display a message
-						information.setMessage(Messages.getString("Main.13"), InformationJPanel.INFORMATIVE);  //$NON-NLS-1$
-						return;
-					} catch (JajukException je) { //last chance to catch any error for logging purpose
-						Log.error(je);
-						exit(1);
-						return;
-					}
-				}
-			};
-			sw.start();
+			
+			//Main panel
+			jpDesktop = new JPanel();
+			jpDesktop.setOpaque(true);
+			jpDesktop.setBorder(BorderFactory.createEtchedBorder());
+			jpDesktop.setLayout(new BorderLayout());
+			
+			//Add static panels
+			jpFrame.add(command, BorderLayout.NORTH);
+			jpFrame.add(information, BorderLayout.SOUTH);
+			jpFrame.add(jpDesktop, BorderLayout.CENTER);
+			JPanel jp = new JPanel(); //we use an empty panel to take west place before actual panel ( perspective bar ). just for a better displaying
+			jpFrame.add(jp, BorderLayout.WEST);
+			
+			//Set menu bar to the frame
+			jframe.setJMenuBar(JajukJMenuBar.getInstance());
+			
+			//display window
+			jframe.pack();
+			jframe.setExtendedState(Frame.MAXIMIZED_BOTH);  //maximalize
+			jframe.setVisible(true);
+			
+			//Mount and refresh devices
+			mountAndRefresh();
+			
+			//Create the perspective manager 
+			PerspectiveManager.load();
+			
+			// Create the perspective tool bar panel
+			perspectiveBar = PerspectiveBarJPanel.getInstance();
+			jpFrame.remove(jp);
+			jpFrame.add(perspectiveBar, BorderLayout.WEST);
+			
+			//Initialize perspective manager and load all views
+			PerspectiveManager.init();
+			
+			//Close splash screen
+			sc.dispose();
+			
+			//Display info message if first session
+			if (TRUE.equals(ConfigurationManager.getProperty(CONF_FIRST_CON))){
+				ConfigurationManager.setProperty(CONF_FIRST_CON,FALSE);
+				Messages.showInfoMessage(Messages.getString("Main.12")); //$NON-NLS-1$
+				PerspectiveManager.setCurrentPerspective(PERSPECTIVE_NAME_CONFIGURATION);
+				return;
+			}
+			
+			//Display a message
+			information.setMessage(Messages.getString("Main.13"), InformationJPanel.INFORMATIVE);  //$NON-NLS-1$
 			
 			//Lauch startup track if any
 			launchInitialTrack();

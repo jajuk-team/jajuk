@@ -113,7 +113,7 @@ public class FIFO implements ITechnicalStrings,Runnable{
 	 * Singleton access
 	 * @return
 	 */
-	public static FIFO getInstance(){
+	public synchronized static FIFO getInstance(){
 		if (fifo == null){
 			fifo = new FIFO();
 		}
