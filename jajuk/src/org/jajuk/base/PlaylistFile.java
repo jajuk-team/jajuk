@@ -217,7 +217,7 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 	 * @return Returns the list of basic files this playlist maps to
 	 */
 	public synchronized ArrayList getBasicFiles() throws JajukException{
-		if ( iType == PlaylistFileItem.PLAYLIST_TYPE_NORMAL && alBasicFiles == null){ //normal playlist
+		if ( iType == PlaylistFileItem.PLAYLIST_TYPE_NORMAL && alBasicFiles == null){ //normal playlist, test if list is null for perfs (avoid reading again the m3u file)
 			if ( fio.exists() && fio.canRead()){  //check device is mounted
 				alBasicFiles = load(); //populate playlist
 			}
