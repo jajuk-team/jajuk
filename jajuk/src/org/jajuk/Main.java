@@ -362,7 +362,7 @@ public class Main implements ITechnicalStrings {
 				}
 			}
 			if (TRUE.equals(device.getProperty(DEVICE_OPTION_AUTO_REFRESH))){
-				device.refresh();
+				device.refresh(true);
 			}
 		}
 	}

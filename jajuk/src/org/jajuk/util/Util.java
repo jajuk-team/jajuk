@@ -21,11 +21,13 @@ package org.jajuk.util;
 
 import java.awt.Cursor;
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -361,6 +363,32 @@ public class Util implements ITechnicalStrings {
 			Log.error(ie);
 		}
 	}
+	
+	
+	/**
+	 * Copy a file to given directory
+	 * @param file : file to copy
+	 * @param directory : destination directory
+	 */
+	public static void copy(File file,File directory) throws Exception{
+		File fileNew = new File(new StringBuffer(directory.getAbsolutePath()).append("/").append(file.getName()).toString());
+		if ( !file.exists() || !file.canRead() ){
+			throw new JajukException("023",file.getAbsolutePath(),null);
+		}
+		if (  !fileNew.getParentFile().canWrite() ){
+			throw new JajukException("024",file.getAbsolutePath(),null);
+		}
+		BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
+		BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(fileNew));
+		byte[] b = new byte[10000];
+		while ( bis.read(b)!= 0 ){
+			bos.write(b);
+		}
+		bis.close();
+		bos.flush();
+		bos.close();
+	}
+	
 	
 	/**
 	 * Set volume in % ( ex: 0.1 for 10% )

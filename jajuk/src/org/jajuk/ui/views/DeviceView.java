@@ -209,6 +209,7 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 		jmiProperties.setActionCommand(EVENT_DEVICE_PROPERTIES);
 		jpmenu.add(jmiProperties);
 		
+		
 		//add devices
 		refreshDevices();
 		
@@ -316,6 +317,7 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 					diSelected = di;
 					dSelected = device;
 					diSelected.setBorder(BorderFactory.createLineBorder(Color.BLACK,5));
+					//remove options for unmounted devices
 					if (dSelected.isMounted()){
 						jbDelete.setEnabled(false);
 						jmiDelete.setEnabled(false);
@@ -323,6 +325,15 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 					else{
 						jbDelete.setEnabled(true);
 						jmiDelete.setEnabled(true);
+					}
+					//remove options for non synchronized devices
+					if (dSelected.getProperty(DEVICE_OPTION_SYNCHRO_SOURCE) == null){
+						jbSynchro.setEnabled(false);
+						jmiSynchronize.setEnabled(false);
+					}
+					else{
+						jbSynchro.setEnabled(true);
+						jmiSynchronize.setEnabled(true);
 					}
 				}
 			});
@@ -395,11 +406,11 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 				dw.updateWidgets(dSelected);
 			}
 			else if (ae.getActionCommand().equals(EVENT_DEVICE_REFRESH)){
-				dSelected.refresh();
+				dSelected.refresh(true);
 				//TODO refresh window with progress bar, infos and OK/Cancel buttons
 			}
 			else if (ae.getActionCommand().equals(EVENT_DEVICE_SYNCHRO)){
-				dSelected.synchronize();
+				dSelected.synchronize(true);
 			}
 			else if (ae.getActionCommand().equals(EVENT_DEVICE_TEST)){
 				if (dSelected.test()){

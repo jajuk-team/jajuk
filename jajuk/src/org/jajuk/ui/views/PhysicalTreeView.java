@@ -634,12 +634,12 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 		}
 		else if ( e.getSource() == jmiDevRefresh){
 			Device device = ((DeviceNode)(paths[0].getLastPathComponent())).getDevice();
-			device.refresh();
+			device.refresh(true);
 			ObservationManager.notify(EVENT_DEVICE_REFRESH);
 		}
 		else if ( e.getSource() == jmiDevSynchronize){
 			Device device = ((DeviceNode)(paths[0].getLastPathComponent())).getDevice();
-			device.synchronize();
+			device.synchronize(true);
 			ObservationManager.notify(EVENT_DEVICE_REFRESH);
 		}
 		else if ( e.getSource() == jmiDirDesynchro){

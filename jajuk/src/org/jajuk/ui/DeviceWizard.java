@@ -87,6 +87,9 @@ public class DeviceWizard extends JFrame implements ActionListener,ITechnicalStr
 	/**Current device*/
 	Device device;
 	
+	/** All devices expect itself */
+	ArrayList alDevices = new ArrayList(10);
+	
 	
 	public DeviceWizard() {
 		super("Device wizard");
@@ -127,26 +130,30 @@ public class DeviceWizard extends JFrame implements ActionListener,ITechnicalStr
 		jcboxSynchronized = new JCheckBox("Synchronized with : ");
 		jcboxSynchronized.addActionListener(this);
 		jcbSynchronized = new JComboBox();
-		jcbSynchronized.setEnabled(false);
-		ArrayList alDevices = DeviceManager.getDevices();
-		Iterator it = alDevices.iterator();
+		//populate combo
+		Iterator it = DeviceManager.getDevices().iterator();
 		while (it.hasNext()) {
-			Device device = (Device) it.next();
-			jcbSynchronized.addItem(device.getName());
+			Device device2 = (Device) it.next();
+			alDevices.add(device2);
+			jcbSynchronized.addItem(device2.getName());
 		}
+		jcbSynchronized.setEnabled(false);
 		//Default automount behavior
 		jcbType.addActionListener(this);
 		bgSynchro = new ButtonGroup();
 		jrbBidirSynchro = new JRadioButton("Unidirectional synchronization");
+		jrbBidirSynchro.setToolTipText("All new files found on the source device are copied into this device. Nothing will be written to source device");
 		jrbBidirSynchro.setBorder(BorderFactory.createEmptyBorder(0, 25, 0, 0));
 		jrbBidirSynchro.addActionListener(this);
 		jrbUnidirSynchro = new JRadioButton("Bidirectional synchronization");
+		jrbUnidirSynchro.setToolTipText("All new files found on the one device are copied to the other one");
 		jrbUnidirSynchro.setBorder(BorderFactory.createEmptyBorder(0, 25, 0, 0));
 		jrbUnidirSynchro.setEnabled(false);
 		jrbUnidirSynchro.addActionListener(this);
 		bgSynchro.add(jrbBidirSynchro);
 		bgSynchro.add(jrbUnidirSynchro);
 		jcb1 = new JCheckBox("If a track is desynchronized from source device, delete it from this device (USE WITH CARE) ");
+		jcb1.setToolTipText("If a track is desynchronized from source device, it will be deleted from this device (USE WITH CARE)");
 		jcb1.setEnabled(false);
 		jcb1.setBorder(BorderFactory.createEmptyBorder(0, 25, 0, 0));
 		jp1.add(jlType, "0,0");
@@ -217,6 +224,16 @@ public class DeviceWizard extends JFrame implements ActionListener,ITechnicalStr
 	public void updateWidgets(Device device){
 		bNew = false;
 		this.device = device;
+		jcbSynchronized.removeAllItems();
+		alDevices.clear();
+		Iterator it = DeviceManager.getDevices().iterator();
+		while (it.hasNext()) {
+			Device device2 = (Device) it.next();
+			if ( !device2.equals(device)){
+				alDevices.add(device2);
+				jcbSynchronized.addItem(device2.getName());
+			}
+		}
 		updateWidgetsDefault();
 		jcbType.setSelectedItem(device.getDeviceTypeS());
 		jtfName.setText(device.getName());
@@ -232,7 +249,6 @@ public class DeviceWizard extends JFrame implements ActionListener,ITechnicalStr
 			jcbAutoRefresh.setEnabled(true);
 			jcbAutoRefresh.setSelected(true);
 		}
-		jcbSynchronized.removeItemAt(DeviceManager.getDevices().indexOf(device));//do not propose to synchronize a device with itself
 		if (jcbSynchronized.getItemCount()==0){
 			jcboxSynchronized.setEnabled(false);
 			jcbSynchronized.setEnabled(false);
@@ -247,7 +263,7 @@ public class DeviceWizard extends JFrame implements ActionListener,ITechnicalStr
 			jcboxSynchronized.setSelected(true);
 			jcboxSynchronized.setEnabled(true);
 			jcbSynchronized.setEnabled(true);
-			jcbSynchronized.setSelectedIndex(DeviceManager.getDevices().indexOf(DeviceManager.getDevice(sSynchroSource)));
+			jcbSynchronized.setSelectedIndex(alDevices.indexOf(DeviceManager.getDevice(sSynchroSource)));
 			if (DEVICE_OPTION_SYNCHRO_MODE_BI.equals(device.getProperty(DEVICE_OPTION_SYNCHRO_MODE))){
 				jrbBidirSynchro.setSelected(true);
 			}
@@ -288,6 +304,17 @@ public class DeviceWizard extends JFrame implements ActionListener,ITechnicalStr
 			}
 		} 
 		else if (e.getSource() == jbOk){
+			//surface checks
+			if ( jtfUrl.getText().trim().equals("")){
+				Messages.showErrorMessage("021");
+				this.setVisible(true);
+				return;
+			}
+			if ( jtfName.getText().trim().equals("")){
+				Messages.showErrorMessage("022");
+				this.setVisible(true);
+				return;
+			}
 			if (bNew){
 				device = DeviceManager.registerDevice(jtfName.getText(),jcbType.getSelectedIndex(),jtfUrl.getText(),jtfMountPoint.getText());
 				if (device == null){ //means device name is already token
@@ -305,7 +332,7 @@ public class DeviceWizard extends JFrame implements ActionListener,ITechnicalStr
 			device.setProperty(DEVICE_OPTION_AUTO_MOUNT,Boolean.toString(jcbAutoMount.isSelected()));
 			device.setProperty(DEVICE_OPTION_AUTO_REFRESH,Boolean.toString(jcbAutoRefresh.isSelected()));
 			if (jcbSynchronized.isEnabled() && jcbSynchronized.getSelectedItem() != null){
-				device.setProperty(DEVICE_OPTION_SYNCHRO_SOURCE,((Device)DeviceManager.getDevices().get(jcbSynchronized.getSelectedIndex())).getId());
+				device.setProperty(DEVICE_OPTION_SYNCHRO_SOURCE,((Device)alDevices.get(jcbSynchronized.getSelectedIndex())).getId());
 				if (jrbBidirSynchro.isSelected()){
 					device.setProperty(DEVICE_OPTION_SYNCHRO_MODE,DEVICE_OPTION_SYNCHRO_MODE_BI);
 				}
@@ -327,7 +354,7 @@ public class DeviceWizard extends JFrame implements ActionListener,ITechnicalStr
 			if (jcbRefresh.isSelected()){
 				try{
 					device.mount();
-					device.refresh();
+					device.refresh(true);
 				}
 				catch(Exception e2){
 					Log.error("112",device.getName(),e2);

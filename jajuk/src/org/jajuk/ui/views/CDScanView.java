@@ -125,7 +125,7 @@ public class CDScanView extends ViewAdapter implements ActionListener {
 			try{
 				device.mount();
 				ObservationManager.notify(EVENT_DEVICE_MOUNT);
-				device.refresh();
+				device.refresh(true);
 				ObservationManager.notify(EVENT_DEVICE_REFRESH);
 				do{
 					Thread.sleep(500); //sleep to get sure refresh thread is realy started
