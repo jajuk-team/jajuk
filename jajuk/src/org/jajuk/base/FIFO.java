@@ -64,8 +64,6 @@ public class FIFO implements ITechnicalStrings{
     /** First played file flag**/
     private static boolean bFirstFile = true;
     
-    /**Concurency flag*/
-    private static volatile boolean bFlag = false;
     /**
      * Singleton access
      * @return
@@ -92,7 +90,6 @@ public class FIFO implements ITechnicalStrings{
         alPlanned = new ArrayList(10);
         JajukTimer.getInstance().reset();
         index = 0;
-        itemLast = null;
     }
     
     /**
@@ -150,10 +147,6 @@ public class FIFO implements ITechnicalStrings{
      * @param bAppend keep previous files or stop them to start a new one ?
      */
     public  void pushCommand( ArrayList alItems,  boolean bAppend) {
-        if (bFlag){  //soft concurency check : we can't synchronize this method because it can call an invokeAndWait and conduct to GUI freeze
-            return;
-        }
-        bFlag = true;
         try{
             Util.waiting();
             //wake up FIFO if stopped
@@ -237,7 +230,6 @@ public class FIFO implements ITechnicalStrings{
         }
         finally{
             ObservationManager.notify(EVENT_PLAYLIST_REFRESH); //refresh playlist editor
-            bFlag = false;
             Util.stopWaiting();
         }
     }
@@ -299,6 +291,7 @@ public class FIFO implements ITechnicalStrings{
                 }
                 else{ //no ? just reset UI and leave
                     JajukTimer.getInstance().reset();
+                    bStop = true;
                     ObservationManager.notify(EVENT_ZERO);
                     return;
                 }
@@ -720,9 +713,7 @@ public class FIFO implements ITechnicalStrings{
         }
         return i;
     }
-    
-    
-    
+           
     /**
      * Return true if none file is playing or planned to play for the given device
      * @param device device to unmount
@@ -930,6 +921,15 @@ public class FIFO implements ITechnicalStrings{
         }
         return (StackItem)alFIFO.get(alFIFO.size()-1);
     }
+    
+    /**
+     * 
+     * @return Last played item
+     * */
+    public synchronized StackItem getLastPlayed(){
+        return itemLast;
+    }
+    
     
     /**
      * @return Returns the index.

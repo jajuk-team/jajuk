@@ -30,6 +30,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Properties;
 
 import javax.swing.BorderFactory;
@@ -328,7 +329,8 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		ObservationManager.register(EVENT_ZERO,CommandJPanel.this);
 		ObservationManager.register(EVENT_MUTE_STATE,CommandJPanel.this);
 		ObservationManager.register(EVENT_REPEAT_MODE_STATUS_CHANGED,CommandJPanel.this);
-		
+		ObservationManager.register(EVENT_DEVICE_REFRESH,CommandJPanel.this);
+        
 		//if a track is playing, display right state
 		if ( FIFO.getInstance().getCurrentFile() != null){
 			//update initial state 
@@ -354,7 +356,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		jcbHistory.insertItemAt(sOut,0);
 		jcbHistory.setSelectedIndex(0);
 		jcbHistory.addActionListener(this);
-	}
+    }
 	
 	
 	/**
@@ -367,6 +369,19 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 			}
 		});
 	}
+    
+    /**Refresh history bar*/
+    public void refreshHistoryBar(){
+        jcbHistory.removeActionListener(this); //stop listening this item when manupulating it
+        jcbHistory.removeAllItems();
+        Iterator it = History.getInstance().getHistory().iterator();
+        while (it.hasNext()){
+            HistoryItem hi = (HistoryItem)it.next();
+            jcbHistory.addItem(hi.toString());
+        }
+        jcbHistory.setSelectedIndex(0);
+        jcbHistory.addActionListener(this);
+    }
 	
 	
 	/* (non-Javadoc)
@@ -623,23 +638,19 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 						addHistoryItem(hi);
 					}
 				}
-				else if (EVENT_PLAY_ERROR.equals(subject)){
-					SwingUtilities.invokeLater(new Runnable() {
-						public void run() {
-							if (jcbHistory.getItemCount() > 0){
-								jcbHistory.removeActionListener(CommandJPanel.this); //stop listening this item when manupulating it
-								jcbHistory.removeItemAt(0);
-								//select first row
-								if (jcbHistory.getItemCount()>0){
-									jcbHistory.setSelectedIndex(0);
-								}
-								jcbHistory.addActionListener(CommandJPanel.this);
-							}
-						}
-					});
-				}
+			/*	else if (EVENT_PLAY_ERROR.equals(subject)){
+				    if (jcbHistory.getItemCount() > 0){
+				        jcbHistory.removeActionListener(CommandJPanel.this); //stop listening this item when manupulating it
+				        jcbHistory.removeItemAt(0);
+				        //select first row
+				        if (jcbHistory.getItemCount()>0){
+				            jcbHistory.setSelectedIndex(0);
+				        }
+				        jcbHistory.addActionListener(CommandJPanel.this);
+				    }
+				}*/
 				else if(EVENT_SPECIAL_MODE.equals(subject)){
-					if (ObservationManager.getDetail(EVENT_SPECIAL_MODE,DETAIL_ORIGIN).equals(DETAIL_SPECIAL_MODE_NORMAL)){
+				    if (ObservationManager.getDetail(EVENT_SPECIAL_MODE,DETAIL_ORIGIN).equals(DETAIL_SPECIAL_MODE_NORMAL)){
 						// deselect shuffle mode
 						ConfigurationManager.setProperty(CONF_STATE_SHUFFLE, FALSE);
 						JajukJMenuBar.getInstance().jcbmiShuffle.setSelected(false);
@@ -656,6 +667,10 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 						CommandJPanel.getInstance().jbRepeat.setBorder(BorderFactory.createRaisedBevelBorder());    
 					}
 				}
+                else if(EVENT_DEVICE_REFRESH.equals(subject)){
+                   History.getInstance().cleanup();
+                   refreshHistoryBar();
+                }
 			}
 		});
 		
