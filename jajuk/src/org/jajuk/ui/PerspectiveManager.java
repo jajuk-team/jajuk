@@ -127,6 +127,14 @@ public class PerspectiveManager extends DefaultHandler implements ITechnicalStri
 	}
 
 	
+	/** 
+	 * Set current perspective
+	 * @param sPerspectiveName
+	 */
+	public static void setCurrentPerspective(String sPerspectiveName) {
+		setCurrentPerspective((IPerspective)hmPerspectives.get(sPerspectiveName));
+	}
+	
 	/**
 	 * Notify the manager for  a perspective change request
 	 * @param sPerspectiveName

@@ -110,6 +110,8 @@ public class ConfigurationManager implements ITechnicalStrings{
 		properties.put(CONF_OPTIONS_P2P_HIDE_LOCAL_PROPERTIES,TRUE);
 		properties.put(CONF_HISTORY,"-1");
 		properties.put(CONF_OPTIONS_P2P_PASSWORD,"");
+		
+		properties.put(CONF_FIRST_CON,TRUE);
 	}
 	
 	

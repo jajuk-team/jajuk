@@ -86,7 +86,7 @@ public class Util implements ITechnicalStrings {
 		while (st.hasMoreTokens()) {
 			sExt = st.nextToken();
 		}
-		return sExt;
+		return sExt.toLowerCase();
 	}
 
 	/**

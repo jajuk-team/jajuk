@@ -44,7 +44,7 @@ public class Player {
 				try {
 					pCurrentPlayerImpl.play(fCurrent);
 				} catch (Exception e) {
-					Log.error(Messages.getString("Player.Error_playing____1") + fCurrent.getAbsolutePath(), e); //$NON-NLS-1$
+					Log.error("007",fCurrent.getAbsolutePath(), e); //$NON-NLS-1$
 				}
 			}
 		}
@@ -61,7 +61,7 @@ public class Player {
 				fCurrent.getTrack().getType().getPlayerImpl().stop();
 			}
 		} catch (Exception e) {
-			Log.error(Messages.getString("Player.Error_stoping____2"), e); //$NON-NLS-1$
+			Log.error("008",fCurrent.getName(),e); //$NON-NLS-1$
 		}
 	}
 

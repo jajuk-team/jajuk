@@ -156,18 +156,18 @@ public class File extends PropertyAdapter{
 	 */
 	public String getAbsolutePath(){
 		Directory dCurrent = getDirectory();
-		StringBuffer sbOut = new StringBuffer(dCurrent.getDevice().getUrl());
-		sbOut.append(java.io.File.separatorChar).append(dCurrent.getName());
-		boolean bTop = false;
-		while (!bTop){
+		StringBuffer sbOut = new StringBuffer(this.getName());
+		do{
+			if (dCurrent == null || dCurrent.getName().equals("")){  //if it is the root directory, no parent
+				break;
+			}
+			sbOut.insert(0,'/');
+			sbOut.insert(0,dCurrent.getName());
 			dCurrent = dCurrent.getParentDirectory();
-			if (dCurrent != null){  //if it is the root directory, no parent
-				sbOut.append(java.io.File.separatorChar).append(dCurrent.getName());
-			}
-			else{
-				bTop = true;
-			}
 		}
+		while(true);
+		sbOut.insert(0,'/');
+		sbOut.insert(0,getDirectory().getDevice().getUrl());
 		return sbOut.toString();
 	}
 	

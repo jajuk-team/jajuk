@@ -253,19 +253,19 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 			Album album = AlbumManager.registerAlbum(attributes.getValue(0), attributes.getValue(1));
 			album.populateProperties(attributes, 2);
 		} else if (sQName.equals(XML_TRACK)) {
-			String sId = attributes.getValue(0);
-			String sTrackName = attributes.getValue(1);
-			Album album = AlbumManager.getAlbum(attributes.getValue(2));
-			Style style = StyleManager.getStyle(attributes.getValue(3));
-			Author author = AuthorManager.getAuthor(attributes.getValue(4));
-			long length = Long.parseLong(attributes.getValue(5));
-			String sYear = attributes.getValue(6);
-			Type type = TypeManager.getType(attributes.getValue(8));
+			String sId = attributes.getValue(attributes.getIndex(XML_ID));
+			String sTrackName = attributes.getValue(attributes.getIndex(XML_TRACK_NAME));
+			Album album = AlbumManager.getAlbum(attributes.getValue(attributes.getIndex(XML_TRACK_ALBUM)));
+			Style style = StyleManager.getStyle(attributes.getValue(attributes.getIndex(XML_TRACK_STYLE)));
+			Author author = AuthorManager.getAuthor(attributes.getValue(attributes.getIndex(XML_TRACK_AUTHOR)));
+			long length = Long.parseLong(attributes.getValue(attributes.getIndex(XML_TRACK_LENGTH)));
+			String sYear = attributes.getValue(attributes.getIndex(XML_TRACK_YEAR));
+			Type type = TypeManager.getType(attributes.getValue(attributes.getIndex(XML_TRACK_TYPE)));
 			Track track = TrackManager.registerTrack(sId, sTrackName, album, style, author, length, sYear, type);
-			track.populateProperties(attributes, 11);
-			track.setRate(Long.parseLong(attributes.getValue(7)));
-			track.setHits(Integer.parseInt(attributes.getValue(9)));
-			track.setAdditionDate(attributes.getValue(10));
+			track.setRate(Long.parseLong(attributes.getValue(attributes.getIndex(XML_TRACK_RATE))));
+			track.setHits(Integer.parseInt(attributes.getValue(attributes.getIndex(XML_TRACK_HITS))));
+			track.setAdditionDate(attributes.getValue(attributes.getIndex(XML_TRACK_ADDED)));
+			track.populateProperties(attributes, 12);
 		} else if (sQName.equals(XML_DIRECTORY)) {
 			Directory dParent = null;
 			String sParentId = attributes.getValue(2);

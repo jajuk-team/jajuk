@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
@@ -28,6 +29,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import org.jajuk.base.Collection;
+import org.jajuk.base.Device;
+import org.jajuk.base.DeviceManager;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.History;
@@ -41,6 +44,9 @@ import org.jajuk.ui.LNFManager;
 import org.jajuk.ui.PerspectiveBarJPanel;
 import org.jajuk.ui.PerspectiveManager;
 import org.jajuk.ui.SplashScreen;
+import org.jajuk.ui.ViewManager;
+import org.jajuk.ui.perspectives.ConfigurationPerspective;
+import org.jajuk.ui.views.DeviceView;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
@@ -177,7 +183,18 @@ public class Main implements ITechnicalStrings {
 		
 			//Close splash screen
 			sc.dispose();
-		
+			
+			//Display info message if first session
+			if (TRUE.equals(ConfigurationManager.getProperty(CONF_FIRST_CON))){
+				ConfigurationManager.setProperty(CONF_FIRST_CON,FALSE);
+				Messages.showInfoMessage("Main_first_connection");
+				PerspectiveManager.setCurrentPerspective(PERSPECTIVE_NAME_CONFIGURATION);
+				return;
+			}
+			
+			//Mount and refresh devices
+			mountAndRefresh();
+			
 			//Lauch startup track if any
 			launchInitialTrack();
 				
@@ -283,5 +300,31 @@ public class Main implements ITechnicalStrings {
 				}
 			}
 		}
+	}
+	
+	
+	/**
+	 * Auto-Mount and auto-refresh required devices
+	 *
+	 */
+	private static void mountAndRefresh(){
+		Iterator it = DeviceManager.getDevices().iterator();
+		while (it.hasNext()){
+			Device device = (Device)it.next();
+			if (TRUE.equals(device.getProperty(DEVICE_OPTION_AUTO_MOUNT))){
+				try{
+					device.mount();
+				}
+				catch(Exception e){
+					Log.error("112",device.getName(),e);
+					Messages.showErrorMessage("112",device.getName());
+				}
+			}
+			if (TRUE.equals(device.getProperty(DEVICE_OPTION_AUTO_REFRESH))){
+				device.refresh();
+			}
+		}
+		ViewManager.notify(EVENT_VIEW_REFRESH_REQUEST,DeviceView.getInstance());
+			
 	}
 }

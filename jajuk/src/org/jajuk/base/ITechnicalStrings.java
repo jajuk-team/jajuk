@@ -203,6 +203,7 @@ public interface ITechnicalStrings {
 	public static final String CONF_OPTIONS_P2P_HIDE_LOCAL_PROPERTIES= "jajuk.options.p2p.hide_local_properties";
 	public static final String CONF_OPTIONS_P2P_PASSWORD= "jajuk.options.p2p.password";
 	public static final String CONF_HISTORY= "jajuk.options.history";
+	public static final String CONF_FIRST_CON= "jajuk.first_con";
 	
  	
 	//miscelanous
@@ -242,6 +243,18 @@ public interface ITechnicalStrings {
 	public static final String[] XML_RESERVED_ATTRIBUTE_NAMES = {"name","id","extension","player_impl","tag_impl","music",
 			"type","url","album","style","author","length","year","added","rate","files","hits","directory","size",
 			"quality","track","playlist_files","hashcode"};
+	public static final String XML_ID = "id";
+	public static final String XML_TRACK_NAME = "name";
+	public static final String XML_TRACK_ALBUM = "album";
+	public static final String XML_TRACK_STYLE = "style";
+	public static final String XML_TRACK_AUTHOR = "author";
+	public static final String XML_TRACK_LENGTH = "length";
+	public static final String XML_TRACK_YEAR = "year";
+	public static final String XML_TRACK_TYPE = "type";
+	public static final String XML_TRACK_RATE = "rate";
+	public static final String XML_TRACK_HITS = "hits";
+	public static final String XML_TRACK_ADDED = "added";
+	
 		
 	public static final String XML_PLAYLIST = "playlist";
 	public static final String XML_PERSPECTIVES_CONF = 

@@ -99,7 +99,7 @@ public class FIFO extends Thread implements ITechnicalStrings{
 				if (bPlaying ){//already playing something
 					continue; //leave
 				}
-				if (!bPlaying && alFIFO.size() == 0 && fCurrent!= null && ConfigurationManager.getProperty(CONF_STATE_CONTINUE).equals("true")){ //empty fifo
+				if (!bPlaying && alFIFO.size() == 0 && fCurrent!= null && TRUE.equals(ConfigurationManager.getProperty(CONF_STATE_CONTINUE))){ //empty fifo
 					File fileNext = FileManager.getNextFile(fCurrent);
 					if ( fileNext != null ){
 						alFIFO.add(FileManager.getNextFile(fCurrent));	

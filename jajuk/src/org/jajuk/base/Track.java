@@ -122,7 +122,8 @@ public class Track extends PropertyAdapter {
 		sb.append(album.getId()).append("' style='");//$NON-NLS-1$
 		sb.append(style.getId()).append("' author='");//$NON-NLS-1$
 		sb.append(author.getId()).append("' length='");//$NON-NLS-1$
-		sb.append(length).append("' year='");//$NON-NLS-1$
+		sb.append(length).append("' type='");//$NON-NLS-1$
+		sb.append(type.getId()).append("' year='");//$NON-NLS-1$
 		sb.append(sYear).append("' rate='");//$NON-NLS-1$
 		sb.append(lRate).append("' files='");//$NON-NLS-1$
 		for (int i=0;i<alFiles.size();i++){

@@ -41,6 +41,7 @@ import org.jajuk.base.DeviceManager;
 import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.views.DeviceView;
+import org.jajuk.util.log.Log;
 
 /**
  * Device creation wizzard
@@ -128,10 +129,6 @@ public class DeviceWizard extends JFrame implements ActionListener,ITechnicalStr
 			Device device = (Device) it.next();
 			jcbSynchronized.addItem(device.getName());
 		}
-		if (jcbSynchronized.getItemCount()==0){
-			jcboxSynchronized.setEnabled(false);
-			jcbSynchronized.setEnabled(false);
-		}
 		bgSynchro = new ButtonGroup();
 		jrbFullSynchro = new JRadioButton("Full synchronization");
 		jrbFullSynchro.setBorder(BorderFactory.createEmptyBorder(0, 25, 0, 0));
@@ -176,6 +173,11 @@ public class DeviceWizard extends JFrame implements ActionListener,ITechnicalStr
 		jp2.add(jcb1, "0,5");
 		jp2.add(jcb2, "0,7");
 		jp2.add(jcb3, "0,9");
+		if (jcbSynchronized.getItemCount()==0){
+			jcboxSynchronized.setEnabled(false);
+			jcbSynchronized.setEnabled(false);
+			jrbFullSynchro.setEnabled(false);
+		}
 		
 		//buttons
 		jpButtons = new JPanel();
@@ -234,6 +236,7 @@ public class DeviceWizard extends JFrame implements ActionListener,ITechnicalStr
 		if (jcbSynchronized.getItemCount()==0){
 			jcboxSynchronized.setEnabled(false);
 			jcbSynchronized.setEnabled(false);
+			jrbFullSynchro.setEnabled(false);
 		}
 		String sSynchroSource = device.getProperty(DEVICE_OPTION_SYNCHRO_SOURCE); 
 		if ( sSynchroSource != null){
@@ -368,7 +371,15 @@ public class DeviceWizard extends JFrame implements ActionListener,ITechnicalStr
 				device.removeProperty(DEVICE_OPTION_SYNCHRO_SOURCE);
 			}
 			if (jcbRefresh.isSelected()){
-				device.refresh();
+				try{
+					device.mount();
+					device.refresh();
+				}
+				catch(Exception e2){
+					Log.error("112",device.getName(),e2);
+					Messages.showErrorMessage("112",device.getName());
+				}
+				
 			}
 			ViewManager.notify(EVENT_VIEW_REFRESH_REQUEST,DeviceView.getInstance());
 			dispose();
