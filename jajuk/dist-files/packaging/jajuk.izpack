@@ -42,7 +42,11 @@
     <packs>
         <pack name="main pack" required="yes">
             <description>Main pack</description>
-            <fileset targetdir="$INSTALL_PATH/bin" dir="/tmp/jajuk-dist/jajuk/bin"/>
+            <file targetdir="$INSTALL_PATH/bin" src="/tmp/jajuk-dist/jajuk/bin/jajuk.jar"/>
+            <file targetdir="$INSTALL_PATH/bin" src="/tmp/jajuk-dist/jajuk/bin/jajuk-help.jar"/>
+            <file targetdir="$INSTALL_PATH/bin" src="/tmp/jajuk-dist/jajuk/bin/systray4j.dll">
+            	<os family='windows'/>
+           </file>
             <fileset targetdir="$INSTALL_PATH/dist-files" dir="/tmp/jajuk-dist/jajuk/dist-files"/>
             <fileset targetdir="$INSTALL_PATH/lib" dir="/tmp/jajuk-dist/jajuk/lib"/>
             <file targetdir="$INSTALL_PATH" src="/tmp/jajuk-dist/jajuk/build.xml"/>
