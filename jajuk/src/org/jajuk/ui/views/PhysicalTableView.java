@@ -21,8 +21,6 @@ package org.jajuk.ui.views;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import javax.swing.SwingUtilities;
-
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.ui.ObservationManager;
@@ -97,7 +95,6 @@ public class PhysicalTableView extends AbstractTableView implements Observer{
 			oValues[i][5] = file.getDirectory().getName();
 			oValues[i][6] = file.getName();
 			oValues[i][7] = Long.toString(file.getTrack().getRate());
-			
 		}
 		//row num
 		iRowNum = iSize;
@@ -124,7 +121,6 @@ public class PhysicalTableView extends AbstractTableView implements Observer{
 	public void update(String subject) {
 		if ( subject.equals(EVENT_DEVICE_MOUNT) || subject.equals(EVENT_DEVICE_UNMOUNT) || subject.equals(EVENT_DEVICE_REFRESH) ) {
 			populate();
-			SwingUtilities.updateComponentTreeUI(jtable);
 		}
 	}
 }

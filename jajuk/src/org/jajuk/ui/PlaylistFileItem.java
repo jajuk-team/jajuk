@@ -54,6 +54,7 @@ import org.jajuk.util.Util;
 		public static final int PLAYLIST_TYPE_NEW = 1;
 		public static final int PLAYLIST_TYPE_BOOKMARK = 2;
 		public static final int PLAYLIST_TYPE_BESTOF = 3;
+		public static final int PLAYLIST_TYPE_QUEUE = 4;
 		
 		
 		/**

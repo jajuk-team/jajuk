@@ -21,6 +21,7 @@
 package org.jajuk.ui.views;
 
 
+
 /**
  * Playliost editor/manager 
  * <p>Logical perspective
@@ -54,6 +55,5 @@ public class LogicalPlaylistEditorView extends AbstractPlaylistEditorView{
 	public String getViewName() {
 		return "org.jajuk.ui.views.LogicalPlaylistEditorView";
 	}
-
-
+	
 }

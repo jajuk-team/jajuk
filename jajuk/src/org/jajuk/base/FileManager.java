@@ -43,6 +43,8 @@ public class FileManager implements ITechnicalStrings{
 	private static TreeSet tsSortedFiles = new TreeSet();
 	/** Map ids and properties, survives to a refresh, is used to recover old properties after refresh */
 	private static HashMap hmIdProperties = new HashMap(100);
+	/** Number of tracks in the best of */
+	private static final int NB_BEST_OF_FILES = 20;
 	
 	
 	/**
@@ -162,7 +164,7 @@ public class FileManager implements ITechnicalStrings{
 	 * @return top files
 	 */
 	public static synchronized ArrayList getBestOfFiles(){
-		ArrayList al = new ArrayList(20);
+		ArrayList al = new ArrayList(NB_BEST_OF_FILES);
 		//create a tempory table to remove unmounted files
 		TreeSet tsEligibleFiles = new TreeSet();
 		Iterator it = FileManager.getFiles().iterator();
@@ -173,7 +175,7 @@ public class FileManager implements ITechnicalStrings{
 				tsEligibleFiles.add(new FileScore(file,lRate));
 			}
 		}
-		for (int i=0;i<20;i++){
+		for (int i=0;i<NB_BEST_OF_FILES;i++){
 			FileScore fileScore = null;
 			if ( tsEligibleFiles.size() == 0){
 				break;			

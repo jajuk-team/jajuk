@@ -137,5 +137,17 @@ public class Playlist extends PropertyAdapter {
 		}
 		return false;
 	}	
+	
+	/**
+	 * Get playlist name
+	 * @return playlist name
+	 */
+	public String getName(){
+		String sOut = "";
+		if ( alFiles.size() > 0){
+			sOut =((PlaylistFile)alFiles.get(0)).getName(); 
+		}
+		return sOut; 
+	}
 
 }

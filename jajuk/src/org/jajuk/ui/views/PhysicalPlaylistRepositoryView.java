@@ -160,6 +160,7 @@ public class PhysicalPlaylistRepositoryView extends ViewAdapter implements Obser
 				//set new item
 				plfiSelected = plfi;
 				plfiSelected.setBorder(BorderFactory.createLineBorder(Color.BLACK,5));
+				PhysicalPlaylistEditorView.getInstance().setCurrentPlayListFile(plfiSelected.getPlaylistFile());
 			}
 		};
 		
@@ -205,10 +206,14 @@ public class PhysicalPlaylistRepositoryView extends ViewAdapter implements Obser
 	 */
 	private void populate(){
 		//special playlists
-		
+		//queue
+		PlaylistFileItem plfi = new PlaylistFileItem(PlaylistFileItem.PLAYLIST_TYPE_QUEUE,ICON_PLAYLIST_QUEUE,null,"Queue");
+		plfi.setToolTipText("Current queue : drag and drop into for playing");
+		plfi.addMouseListener(ma);
+		jpRoot.add(plfi);
 		//new
-		PlaylistFileItem plfi = new PlaylistFileItem(PlaylistFileItem.PLAYLIST_TYPE_NEW,ICON_PLAYLIST_NEW,null,"New");
-		plfi.setToolTipText("Dynamic playlist : drag and drop into for playing");
+		plfi = new PlaylistFileItem(PlaylistFileItem.PLAYLIST_TYPE_NEW,ICON_PLAYLIST_NEW,null,"New");
+		plfi.setToolTipText("New playlist : drag and drop into for adding files");
 		plfi.addMouseListener(ma);
 		jpRoot.add(plfi);
 		//bookmark
@@ -221,6 +226,8 @@ public class PhysicalPlaylistRepositoryView extends ViewAdapter implements Obser
 		plfi.setToolTipText("Best of playlist : contains top tracks");
 		plfi.addMouseListener(ma);
 		jpRoot.add(plfi);
+		
+		jpRoot.add(Box.createVerticalStrut(20));
 	
 		//normal playlists
 		ArrayList al = PlaylistFileManager.getPlaylistFiles();
@@ -255,7 +262,7 @@ public class PhysicalPlaylistRepositoryView extends ViewAdapter implements Obser
 			}
 		}
 		else if(ae.getSource() == jmiEdit){
-			
+			PhysicalPlaylistEditorView.getInstance().setCurrentPlayListFile(plfiSelected.getPlaylistFile());
 		}
 		else if(ae.getSource() == jmiPlay){
 			ArrayList alFiles = null;

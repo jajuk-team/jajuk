@@ -117,6 +117,7 @@ public interface ITechnicalStrings {
 	public static final String ICON_APPLY_FILTER =  PATH_ICONS + "16x16/filter.png";
 	public static final String ICON_CLEAR_FILTER =  PATH_ICONS + "16x16/clear.png";
 	public static final String ICON_ADVANCED_FILTER =  PATH_ICONS + "16x16/complex_search.png";
+	public static final String ICON_PLAYLIST_QUEUE =  PATH_ICONS + "40x40/playlist_queue.png";
 	public static final String ICON_PLAYLIST_NORMAL =  PATH_ICONS + "40x40/playlist_normal.png";
 	public static final String ICON_PLAYLIST_NEW =  PATH_ICONS + "40x40/playlist_new.png";
 	public static final String ICON_PLAYLIST_BOOKMARK =  PATH_ICONS + "40x40/playlist_bookmark.png";
@@ -127,7 +128,7 @@ public interface ITechnicalStrings {
 	public static final String ICON_UP =  PATH_ICONS + "16x16/up.png";
 	public static final String ICON_DOWN =  PATH_ICONS + "16x16/down.png";
 	public static final String ICON_CURRENT_PLAYLIST =  PATH_ICONS + "16x16/run.png";
-	public static final String ICON_CLEAR =  PATH_ICONS + "16x16/new.png";
+	public static final String ICON_CLEAR =  PATH_ICONS + "16x16/clear.png";
 	public static final String ICON_SAVE =  PATH_ICONS + "16x16/save.png";
 	
 		
@@ -235,6 +236,8 @@ public interface ITechnicalStrings {
 	public static final String EVENT_PLAYER_PLAY="player play";
 	public static final String EVENT_PLAYER_PAUSE="player pause";
 	public static final String EVENT_PLAYER_UNPAUSE="player unpause";
+	public static final String EVENT_PLAYLIST_REFRESH="playlist refresh";
+	
 	
 	
 	//Look and feel

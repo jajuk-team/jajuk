@@ -209,22 +209,30 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 			br = new BufferedReader(new FileReader(fio));
 			String sLine = null;
 			while ((sLine = br.readLine()) != null){
+				sLine = sLine.replace('\\','/'); //replace '\' by '/'
+				if ( sLine.charAt(0) == '.'){ //deal with url begining by "./something"
+					sLine = sLine.substring(1,sLine.length());
+				}
 				StringBuffer sb = new StringBuffer(sLine);
 				if ( sb.charAt(0) == '#'){  //comment
 					continue;
 				}
 				else{
 					File fileTrack = null;
-					if (sb.charAt(0) == '.' || (sb.indexOf("/")==-1 && sb.indexOf("\\")==-1)){  //relative path or not directory at all, move to this directory
-						fileTrack = new File(getDirectory().getDevice().getUrl()+getDirectory().getAbsolutePath()+"/"+sLine);			
+					StringBuffer sbFileDir = new StringBuffer(getDirectory().getDevice().getUrl()).append(getDirectory().getAbsolutePath());
+					if ( sLine.charAt(0)!='/'){
+						sb.insert(0,'/');
 					}
-					else{//a full path is specified
-						fileTrack = new File(sLine); 
+					//take a look relatively to playlist directory to check files exists
+					fileTrack = new File(sbFileDir.append(sb).toString());
+					if ( !fileTrack.exists()){  //check if this file exists
+						fileTrack = new File(sb.toString()); //check if given url is not absolute
+						if ( !fileTrack.exists()){ //no more ? leave
+							continue;
+						}	
 					}
-					if ( fileTrack.exists()){
-						BasicFile bfile = new BasicFile(fileTrack);
-						alBasicFiles.add(bfile);
-					}
+					BasicFile bfile = new BasicFile(fileTrack);
+					alBasicFiles.add(bfile);
 				}
 			}
 		}
