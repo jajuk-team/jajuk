@@ -68,10 +68,6 @@
           <include name='*.jar'>
           </include>
         </fileset>
-        <fileset dir='${distdir}/native'>
-          <include name='*.jar'>
-          </include>
-        </fileset>
       </classpath>
     </javac>
     <mkdir dir='${distdir}/${classdir}/org/jajuk/icons'/>

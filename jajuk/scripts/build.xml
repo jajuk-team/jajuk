@@ -34,10 +34,6 @@
 					<include name="*.jar">
 					</include>
 				</fileset>
-				<fileset dir="${nativedir}">
-					<include name="*.jar">
-					</include>
-				</fileset>
 			</classpath>
 		</javac>
 		<mkdir dir="${classdir}/org/jajuk/icons" />

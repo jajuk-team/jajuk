@@ -68,12 +68,6 @@
             <file targetdir="$INSTALL_PATH/native" src="/tmp/jajuk-dist/jajuk/native/libtray.so">
             	<os family='unix'/>
            </file>
-           <file targetdir="$INSTALL_PATH/native" src="/tmp/jajuk-dist/jajuk/native/tray_windows-0.1.6.jar">
-            	<os family='windows'/>
-           </file>
-            <file targetdir="$INSTALL_PATH/native" src="/tmp/jajuk-dist/jajuk/native/tray_linux-0.1.6.jar">
-            	<os family='unix'/>
-           </file>
             <fileset targetdir="$INSTALL_PATH/dist-files" dir="/tmp/jajuk-dist/jajuk/dist-files"/>
             <fileset targetdir="$INSTALL_PATH/lib" dir="/tmp/jajuk-dist/jajuk/lib"/>
             <file targetdir="$INSTALL_PATH" src="/tmp/jajuk-dist/jajuk/build.xml"/>
