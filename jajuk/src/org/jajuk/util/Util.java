@@ -16,14 +16,27 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.2  2003/10/24 12:46:58  sgringoi
+ * Add readFile() method
+ *
  * Revision 1.1  2003/10/12 21:08:12  bflorat
  * 12/10/2003
  *
  */
 package org.jajuk.util;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.StringTokenizer;
+
+import org.jajuk.util.error.JajukException;
 
 /**
  *  General use utilities methods  
@@ -54,5 +67,75 @@ public class Util {
 		return sExt;	 
 	}
 
+	/**
+	 * Open a file and return a string buffer with the file content.
+	 * @param path - File path
+	 * @return StringBuffer - File content.
+	 * @throws JajukException - Throws a JajukException if a problem occurs during the file access.
+	 */
+	public static StringBuffer readFile(String path) throws JajukException {
+/*		URL url;
+		try {
+			url = new URL(path);
+		} catch (MalformedURLException e) {
+			JajukException te = new JajukException("jajuk0004", path, e);
+			throw te;
+		}
+		URLConnection urlConn;
+		try {
+			urlConn = url.openConnection();
+		} catch (IOException e) {
+			JajukException te = new JajukException("jajuk0005", path, e);
+			throw te;
+		}
+			
+			// Use cache
+		if (urlConn != null)
+		{
+			urlConn.setUseCaches(true);
+		}
+
+			// Read
+		BufferedReader input;
+		try {
+			input = new BufferedReader(new InputStreamReader(urlConn.getInputStream()));
+		} catch (IOException e) {
+			JajukException te = new JajukException("jajuk0006", path, e);
+			throw te;
+		}
+*/
+			// Read
+		File file = new File(path);
+		FileReader fileReader;
+		try {
+			fileReader = new FileReader(file);
+		} catch (FileNotFoundException e) {
+			JajukException te = new JajukException("jajuk0006", path, e);
+			throw te;
+		}
+		BufferedReader input = new BufferedReader(fileReader);
+		
+			// Read
+		StringBuffer strColl = new StringBuffer();
+		String line = null;
+		try {
+			while ((line = input.readLine()) != null) {
+				strColl.append(line);
+			}
+		} catch (IOException e) {
+			JajukException te = new JajukException("jajuk0006", path, e);
+			throw te;
+		}
+			
+			// Close the bufferedReader
+		try {
+			input.close();
+		} catch (IOException e) {
+			JajukException te = new JajukException("jajuk0007", path, e);
+			throw te;
+		}
+
+		return strColl;
+	}
 	
 }
