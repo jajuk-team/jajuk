@@ -63,7 +63,7 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
 	 * @see org.jajuk.ui.IView#getDesc()
 	 */
 	public String getDesc() {
-		return Messages.getString("PhysicalTableView.0"); //$NON-NLS-1$
+		return "PhysicalTableView.0"; //$NON-NLS-1$
 	}
 	
 	
@@ -101,15 +101,14 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
 		jmenuFile.add(jmiFilePlayRepeat);
 		jmenuFile.add(jmiFileSetProperty);
 		jmenuFile.add(jmiFileProperties);
-		
 	}
 	
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.IView#display()
 	 */
-	public void display(){
-		populate();
-		super.display();
+	public void populate(){
+	    populateTable();
+		super.populate();
 		//Register on the list for subject we are interrested in
 		ObservationManager.register(EVENT_DEVICE_MOUNT,this);
 		ObservationManager.register(EVENT_DEVICE_UNMOUNT,this);
@@ -117,7 +116,7 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
 	}	
 	
 	/**populate the table */
-	public void populate(){
+	public void populateTable(){
 		//Columns names
 		String[] sColName = new String[]{Messages.getString("PhysicalTableView.7"),Messages.getString("PhysicalTableView.8"),Messages.getString("PhysicalTableView.9"),Messages.getString("PhysicalTableView.10"),Messages.getString("PhysicalTableView.11"),Messages.getString("PhysicalTableView.12"),Messages.getString("PhysicalTableView.13"),Messages.getString("PhysicalTableView.14")}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
 		//Values
@@ -160,10 +159,10 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.jajuk.ui.IView#getViewName()
+	 * @see org.jajuk.ui.IView#getID()
 	 */
-	public String getViewName() {
-		return "org.jajuk.ui.views.PhysicalTableView"; //$NON-NLS-1$
+	public String getID() {
+	    return "org.jajuk.ui.views.PhysicalTableView"; //$NON-NLS-1$
 	}
 	
 	

@@ -96,7 +96,7 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.IView#display()
 	 */
-	public void display(){
+	public void populate(){
 		//buttons
 		jtbButtons = new JToolBar();
 		jtbButtons.setRollover(true);
@@ -223,10 +223,10 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.jajuk.ui.views.IView#getName()
+	 * @see org.jajuk.ui.IView#getID()
 	 */
-	public String getViewName() {
-		return VIEW_NAME_DEVICES;
+	public String getID() {
+	    return VIEW_NAME_DEVICES;
 	}
 	
 	
@@ -241,7 +241,8 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 			public void mouseClicked(MouseEvent e) {
 				DeviceWizard dw = new DeviceWizard();
 				dw.updateWidgetsDefault();
-				dw.show();
+				dw.pack();
+				dw.setVisible(true);
 			}
 		});
 		//Add devices
@@ -303,7 +304,8 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 						else {
 							DeviceWizard dw = new DeviceWizard();
 							dw.updateWidgets(dSelected);
-							dw.show();
+							dw.pack();
+							dw.setVisible(true);
 						}
 					}
 					//remove old device item border
@@ -360,7 +362,8 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 		if (ae.getActionCommand().equals(EVENT_DEVICE_NEW)){
 			DeviceWizard dw = new DeviceWizard();
 			dw.updateWidgetsDefault();
-			dw.show();
+			dw.pack();
+			dw.setVisible(true);
 			return;
 		}
 		if (dSelected == null){  //test a device is selected
@@ -391,7 +394,8 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 		else if (ae.getActionCommand().equals(EVENT_DEVICE_PROPERTIES)){
 			DeviceWizard dw = new DeviceWizard();
 			dw.updateWidgets(dSelected);
-			dw.show();
+			dw.pack();
+			dw.setVisible(true);
 		}
 		else if (ae.getActionCommand().equals(EVENT_DEVICE_REFRESH)){
 			dSelected.refresh(true);
@@ -418,7 +422,7 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 	 * @see org.jajuk.ui.IView#getDesc()
 	 */
 	public String getDesc() {
-		return Messages.getString("DeviceView.23"); //$NON-NLS-1$
+		return "DeviceView.23"; //$NON-NLS-1$
 	}
 	
 	

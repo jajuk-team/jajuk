@@ -78,7 +78,7 @@ public class CDScanView extends ViewAdapter implements ActionListener {
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.IView#display()
 	 */
-	public void display(){
+	public void populate(){
 		float fXSeparator = 0.05f;
 		float fYSeparator = 0.15f;
 		double[][] dSize={
@@ -113,13 +113,13 @@ public class CDScanView extends ViewAdapter implements ActionListener {
 	 * @see org.jajuk.ui.IView#getDesc()
 	 */
 	public String getDesc() {
-		return Messages.getString("CDScanView.12");	 //$NON-NLS-1$
+		return "CDScanView.12";	 //$NON-NLS-1$
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.jajuk.ui.IView#getViewName()
+	 * @see org.jajuk.ui.IView#getID()
 	 */
-	public String getViewName() {
+	public String getID() {
 		return "org.jajuk.ui.views.CDScanView"; //$NON-NLS-1$
 	}
 	

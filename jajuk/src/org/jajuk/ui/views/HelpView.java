@@ -28,7 +28,6 @@ import javax.help.HelpSet;
 import javax.help.JHelp;
 import javax.swing.BoxLayout;
 
-import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.log.Log;
 
@@ -71,7 +70,7 @@ public class HelpView extends ViewAdapter{
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.IView#display()
 	 */
-	public void display(){
+	public void populate(){
 		try{
 			setLayout(new BoxLayout(this,BoxLayout.X_AXIS));
 			ClassLoader cl = HelpView.class.getClassLoader();
@@ -90,13 +89,13 @@ public class HelpView extends ViewAdapter{
 	 * @see org.jajuk.ui.IView#getDesc()
 	 */
 	public String getDesc() {
-		return Messages.getString("HelpView.2");	  //$NON-NLS-1$
+		return "HelpView.2";	  //$NON-NLS-1$
 	}
 
 	/* (non-Javadoc)
-	 * @see org.jajuk.ui.IView#getViewName()
+	 * @see org.jajuk.ui.IView#getID()
 	 */
-	public String getViewName() {
+	public String getID() {
 		return "org.jajuk.ui.views.HelpView"; //$NON-NLS-1$
 	}
 

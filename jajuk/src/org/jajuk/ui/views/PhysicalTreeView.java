@@ -153,7 +153,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 	 * @see org.jajuk.ui.IView#getDesc()
 	 */
 	public String getDesc() {
-		return Messages.getString("PhysicalTreeView.0"); //$NON-NLS-1$
+		return "PhysicalTreeView.0"; //$NON-NLS-1$
 	}
 	
 	/** Return singleton */
@@ -172,7 +172,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.IView#display()
 	 */
-	public void display(){
+	public void populate(){
 		//**Menu items**
 		//File menu
 		jmenuFile = new JPopupMenu();
@@ -359,7 +359,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 		ObservationManager.register(EVENT_DEVICE_REFRESH,this);
 		
 		//fill the tree
-		populate();
+		populateTree();
 		
 		//create tree
 		jtree = new JTree(top);
@@ -616,7 +616,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 	}
 	
 	/**Fill the tree */
-	public void populate(){
+	public void populateTree(){
 		this.transferFocus();
 		top.removeAllChildren();
 		//add devices
@@ -822,7 +822,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 		if ( subject.equals(EVENT_DEVICE_MOUNT) || subject.equals(EVENT_DEVICE_UNMOUNT) || subject.equals(EVENT_DEVICE_REFRESH) ) {
 			SwingWorker sw = new SwingWorker() {
 				public Object  construct(){
-					populate();
+					populateTree();
 					return null;
 				}
 				public void finished() {
@@ -838,10 +838,10 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.jajuk.ui.IView#getViewName()
+	 * @see org.jajuk.ui.IView#getID()
 	 */
-	public String getViewName() {
-		return "org.jajuk.ui.views.PhysicalTreeView"; //$NON-NLS-1$
+	public String getID() {
+	    return "org.jajuk.ui.views.PhysicalTreeView"; //$NON-NLS-1$
 	}
 	
 	/**

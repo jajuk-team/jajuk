@@ -33,10 +33,10 @@ public interface IView {
 	 * Returns the view identifier.
 	 * @return View identifier.
 	 */
-	public String getViewName();
+	public String getID();
 	
 	/**
-	 * Returns the view description.
+	 * Returns the view description as i18n key
 	 * @return View description.
 	 */
 	public String getDesc();
@@ -48,24 +48,90 @@ public interface IView {
 	public void setVisible(boolean pVisible);
 	
 	/**
-	 * Display the view 
+	 * Populate the view 
 	 */
-	public void display();
+	public void populate();
 	
 	/**
 	 * Get displayed state
-	 * @return displayed state
+	 * @return populated state
 	 */
-	public boolean isDisplayed();
+	public boolean isPopulated();
+	
 	/**
-	 * @param isDisplayed The bIsDisplayed to set.
+	 * @param The bIsPopulated to set.
 	 */
-	public void setIsDisplayed(boolean isDisplayed) ;
+	public void setIsPopulated(boolean isDisplayed) ;
 	
 	/**
 	 * View refresh
 	 */
 	public void refresh();
 	
+	/**
+     * @return Returns the iHeight.
+     */
+    public int getLogicalHeight();
+   
+    /**
+     * @param height The iHeight to set.
+     */
+    public void setLogicalHeight(int height);
+    
+    /**
+     * @return Returns the iWidth.
+     */
+    public int getLogicalWidth();
+    
+    /**
+     * @param width The iWidth to set.
+     */
+    public void setLogicalWidth(int width) ;
+    
+    /**
+     * @return Returns the iX.
+     */
+    public int getLogicalX();
+    
+    /**
+     * @param ix The iX to set.
+     */
+    public void setLogicalX(int ix);
+    
+    /**
+     * @return Returns the iY.
+     */
+    public int getLogicalY() ;
+    
+    /**
+     * @param iy The iY to set.
+     */
+    public void setLogicalY(int iy) ;
+
+    /**
+     * Set all view coordonates
+     * @param iWidth
+     * @param iHeight
+     * @param iX
+     * @param iY
+     * @return view itself
+     */
+    public IView setLogicalCoord(int iWidth,int iHeight,int iX,int iY);
+    
+    /**
+     * Set the should be shown flag
+     * @param b 
+     * @return IView
+     */
+    public IView setShouldBeShown(boolean b);
+    
+    /**
+     * 
+     * @return should be shown flag
+     */
+    public boolean isShouldBeShown();
+    	
+    
+    
 
 }

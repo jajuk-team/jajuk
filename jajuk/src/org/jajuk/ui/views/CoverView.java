@@ -37,10 +37,8 @@ import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 
 import org.jajuk.base.FIFO;
-import org.jajuk.i18n.Messages;
 import org.jajuk.ui.ObservationManager;
 import org.jajuk.ui.Observer;
-import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 
@@ -81,16 +79,14 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.IView#display()
 	 */
-	public void display(){
-		if (ConfigurationManager.getBoolean(CONF_OPTIONS_COVER)){
-			JInternalFrame ji = ViewManager.getFrame(this);
-			ImageFilter filter = new AreaAveragingScaleFilter(ji.getWidth()-8,ji.getHeight()-30);
-			Image img = createImage(new FilteredImageSource(image.getSource(),filter));
-			JLabel jl = new JLabel(new ImageIcon(img));
-			removeAll(); //remove old picture
-			add(jl);
-			SwingUtilities.updateComponentTreeUI(this.getRootPane());//refresh
-		}
+	public void populate(){
+		JInternalFrame ji = ViewManager.getFrame(this);
+		ImageFilter filter = new AreaAveragingScaleFilter(ji.getWidth()-8,ji.getHeight()-30);
+		Image img = createImage(new FilteredImageSource(image.getSource(),filter));
+		JLabel jl = new JLabel(new ImageIcon(img));
+		removeAll(); //remove old picture
+		add(jl);
+		SwingUtilities.updateComponentTreeUI(this.getRootPane());//refresh
 	}
 	
 	/**
@@ -103,7 +99,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
 			Log.error(e);
 			return;
 		}
-		display();
+		populate();
 	}
 	
 	/* (non-Javadoc)
@@ -155,7 +151,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
 				displayDefault();
 				return;
 			}
-			display();
+			populate();
 		}
 		else if ( EVENT_PLAYER_STOP.equals(subject)){
 			displayDefault();
@@ -166,14 +162,14 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
 	 * @see org.jajuk.ui.IView#getDesc()
 	 */
 	public String getDesc() {
-		return Messages.getString("CoverView.3");	 //$NON-NLS-1$
+		return "CoverView.3";	 //$NON-NLS-1$
 	}
 
 	/* (non-Javadoc)
-	 * @see org.jajuk.ui.IView#getViewName()
+	 * @see org.jajuk.ui.IView#getID()
 	 */
-	public String getViewName() {
-		return "org.jajuk.ui.views.CoverView"; //$NON-NLS-1$
+	public String getID() {
+	    return "org.jajuk.ui.views.CoverView"; //$NON-NLS-1$
 	}
 
 	/* (non-Javadoc)
@@ -199,7 +195,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
 		}
 		SwingUtilities.invokeLater(new Thread(){
 			public void run(){
-				display();
+				populate();
 			}
 		});
 	}

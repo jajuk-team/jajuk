@@ -81,7 +81,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.IView#display()
 	 */
-	public void display() {
+	public void populate() {
 		//Control panel
 		jpControl = new JPanel();
 		jpControl.setBorder(BorderFactory.createEtchedBorder());
@@ -152,7 +152,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 	}	
 	
 	/**Fill the tree */
-	abstract public void populate();
+	abstract public void populateTable();
 	
 	/* (non-Javadoc)
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
@@ -172,10 +172,6 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 		}
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.jajuk.ui.IView#getViewName()
-	 */
-	abstract public String getViewName();
 	
 	/**
 	 * Apply a filter, to be implemented by physical and logical tables, alter the model

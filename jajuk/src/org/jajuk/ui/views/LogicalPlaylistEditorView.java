@@ -54,9 +54,9 @@ public class LogicalPlaylistEditorView extends AbstractPlaylistEditorView{
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.jajuk.ui.IView#getViewName()
+	 * @see org.jajuk.ui.IView#getID()
 	 */
-	public String getViewName() {
+	public String getID() {
 		return "org.jajuk.ui.views.LogicalPlaylistEditorView"; //$NON-NLS-1$
 	}
 
@@ -73,6 +73,5 @@ public class LogicalPlaylistEditorView extends AbstractPlaylistEditorView{
 	void setRepositoryPlayListFileItem(PlaylistFileItem plfi) {
 		LogicalPlaylistRepositoryView.getInstance().selectPlaylistFileItem(plfi);
 	}
-
 	
 }

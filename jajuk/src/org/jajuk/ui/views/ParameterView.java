@@ -91,7 +91,6 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 	JPanel jpOptions;
 	JCheckBox jcbDisplayUnmounted;
 	JCheckBox jcbRestart;
-	JCheckBox jcbCover;
 	JLabel jlLanguage;
 	JComboBox jcbLanguage;
 	JLabel jlLAF;
@@ -139,7 +138,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.IView#display()
 	 */
-	public void display(){
+	public void populate(){
 		int iXSeparator = 5;
 		int iYSeparator = 5;
 		
@@ -244,8 +243,6 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jcbDisplayUnmounted.setToolTipText(Messages.getString("ParameterView.35")); //$NON-NLS-1$
 		jcbRestart = new JCheckBox(Messages.getString("ParameterView.36")); //$NON-NLS-1$
 		jcbRestart.setToolTipText(Messages.getString("ParameterView.37")); //$NON-NLS-1$
-		jcbCover = new JCheckBox(Messages.getString("ParameterView.96")); //$NON-NLS-1$
-		jcbCover.setToolTipText(Messages.getString("ParameterView.97")); //$NON-NLS-1$
 		JPanel jpCombos = new JPanel();
 		double sizeCombos[][] = {{0.50,0.50},
 				{20,iYSeparator,20,iYSeparator,20}};
@@ -379,9 +376,8 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jp.add(jtfBestofSize,"1,4"); //$NON-NLS-1$
 		jpOptions.add(jcbDisplayUnmounted,"0,1"); //$NON-NLS-1$
 		jpOptions.add(jcbRestart,"0,3"); //$NON-NLS-1$
-		jpOptions.add(jcbCover,"0,5"); //$NON-NLS-1$
-		jpOptions.add(jpCombos,"0,7"); //$NON-NLS-1$
-		jpOptions.add(jp,"0,9"); //$NON-NLS-1$
+		jpOptions.add(jpCombos,"0,5"); //$NON-NLS-1$
+		jpOptions.add(jp,"0,7"); //$NON-NLS-1$
 		//P2P
 		jpP2P = new JPanel();
 		jpP2P.setBorder(BorderFactory.createTitledBorder(Messages.getString("ParameterView.71"))); //$NON-NLS-1$
@@ -486,7 +482,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 	 * @see org.jajuk.ui.IView#getDesc()
 	 */
 	public String getDesc() {
-		return Messages.getString("ParameterView.87"); //$NON-NLS-1$
+		return "ParameterView.87"; //$NON-NLS-1$
 	}
 	
 	/* (non-Javadoc)
@@ -509,7 +505,6 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 					}
 					ConfigurationManager.setProperty(CONF_OPTIONS_HIDE_UNMOUNTED,Boolean.toString(bHiddenState));
 					ConfigurationManager.setProperty(CONF_OPTIONS_RESTART,Boolean.toString(jcbRestart.isSelected()));
-					ConfigurationManager.setProperty(CONF_OPTIONS_COVER,Boolean.toString(jcbCover.isSelected()));
 					String sLocal = (String)Messages.getInstance().getLocals().get(jcbLanguage.getSelectedIndex());
 					if (!Messages.getInstance().getLocal().equals(sLocal)){  //local has changed
 						Messages.showInfoMessage(Messages.getString("ParameterView.103")); //$NON-NLS-1$
@@ -570,14 +565,6 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 					//Advanced
 					ConfigurationManager.setProperty(CONF_BACKUP_SIZE,jtfBackupSize.getText());
 					ConfigurationManager.setProperty(CONF_COLLECTION_CHARSET,jcbCollectionEncoding.getSelectedItem().toString());
-					//Cover
-					if ( ConfigurationManager.getBoolean(CONF_OPTIONS_COVER)){
-						ViewManager.notify(EVENT_VIEW_SHOW_REQUEST,CoverView.class);
-						ViewManager.notify(EVENT_VIEW_REFRESH_REQUEST,CoverView.class);
-					}
-					else{
-						ViewManager.notify(EVENT_VIEW_CLOSE_REQUEST,CoverView.class);
-					}
 					InformationJPanel.getInstance().setMessage(Messages.getString("ParameterView.109"),InformationJPanel.INFORMATIVE); //$NON-NLS-1$
 					ConfigurationManager.commit();
 					
@@ -628,7 +615,6 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jcbDisplayUnmounted.setSelected(bHidden);
 		this.bHidden = bHidden; 
 		jcbRestart.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_RESTART));
-		jcbCover.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_COVER));
 		jcbLanguage.setSelectedIndex(Messages.getInstance().getLocals().indexOf(ConfigurationManager.getProperty(CONF_OPTIONS_LANGUAGE)));
 		jcbLAF.setSelectedItem(ConfigurationManager.getProperty(CONF_OPTIONS_LNF));
 		jcbLogLevel.setSelectedIndex(Integer.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_LOG_LEVEL)));
@@ -656,10 +642,10 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.jajuk.ui.IView#getViewName()
+	 * @see org.jajuk.ui.IView#getID()
 	 */
-	public String getViewName() {
-		return "org.jajuk.ui.views.ParameterView"; //$NON-NLS-1$
+	public String getID() {
+	    return "org.jajuk.ui.views.ParameterView"; //$NON-NLS-1$
 	}
 	
 	/* (non-Javadoc)

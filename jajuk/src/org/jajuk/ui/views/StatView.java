@@ -91,7 +91,7 @@ public class StatView extends ViewAdapter implements Observer{
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.IView#display()
 	 */
-	public void display(){
+	public void populate(){
 		double[][] size = new double[][]{
 				{0.5f,0.5f},
 				{0.5f,0.5f}
@@ -337,14 +337,14 @@ public class StatView extends ViewAdapter implements Observer{
 	 * @see org.jajuk.ui.IView#getDesc()
 	 */
 	public String getDesc() {
-		return Messages.getString("StatView.16");	 //$NON-NLS-1$
+		return "StatView.16";	 //$NON-NLS-1$
 	}
 
 	/* (non-Javadoc)
-	 * @see org.jajuk.ui.IView#getViewName()
+	 * @see org.jajuk.ui.IView#getID()
 	 */
-	public String getViewName() {
-		return "org.jajuk.ui.views.StatView";   //$NON-NLS-1$
+	public String getID() {
+	    return "org.jajuk.ui.views.StatView";   //$NON-NLS-1$
 	}
 
 	/* (non-Javadoc)

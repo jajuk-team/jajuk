@@ -127,7 +127,7 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 	 * @see org.jajuk.ui.IView#getDesc()
 	 */
 	public String getDesc() {
-		return Messages.getString("LogicalTreeView.0"); //$NON-NLS-1$
+		return "LogicalTreeView.0"; //$NON-NLS-1$
 	}
 	
 	/** Return singleton */
@@ -147,7 +147,7 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.IView#display()
 	 */
-	public void display(){
+	public void populate(){
 		//**Menu items**
 		
 		//Style menu
@@ -261,7 +261,7 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 		ObservationManager.register(EVENT_DEVICE_UNMOUNT,this);
 		ObservationManager.register(EVENT_DEVICE_REFRESH,this);
 		//fill the tree
-		populate();
+		populateTree();
 		//tree itself
 		jtree = new JTree(top);
 		jtree.putClientProperty("JTree.lineStyle", "Angled"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -441,7 +441,7 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 	}
 	
 	/**Fill the tree */
-	public void populate(){
+	public void populateTree(){
 		//delete previous tree
 		top.removeAllChildren();
 		ArrayList alTracks = TrackManager.getSortedTracks();
@@ -552,10 +552,10 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.jajuk.ui.IView#getViewName()
+	 * @see org.jajuk.ui.IView#getID()
 	 */
-	public String getViewName() {
-		return "org.jajuk.ui.views.LogicalTreeView"; //$NON-NLS-1$
+	public String getID() {
+	    return "org.jajuk.ui.views.LogicalTreeView"; //$NON-NLS-1$
 	}
 	
 	/* (non-Javadoc)
@@ -565,7 +565,7 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 		if ( subject.equals(EVENT_DEVICE_MOUNT) || subject.equals(EVENT_DEVICE_UNMOUNT)){
 			SwingWorker sw = new SwingWorker() {
 				public Object  construct(){
-					populate();
+					populateTree();
 					return null;
 				}
 				public void finished() {
@@ -581,7 +581,7 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 		else if( subject.equals(EVENT_DEVICE_REFRESH)){
 			SwingWorker sw = new SwingWorker() {
 				public Object  construct(){
-					populate();
+					populateTree();
 					return null;
 				}
 				public void finished() {

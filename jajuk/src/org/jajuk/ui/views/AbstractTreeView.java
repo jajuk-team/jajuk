@@ -38,5 +38,4 @@ public abstract class AbstractTreeView extends ViewAdapter {
 	/** The phyical tree */
 	JTree jtree;
 	
-	
 }

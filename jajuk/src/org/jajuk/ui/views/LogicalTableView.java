@@ -64,7 +64,7 @@ public class LogicalTableView extends AbstractTableView implements Observer{
 	 * @see org.jajuk.ui.IView#getDesc()
 	 */
 	public String getDesc() {
-		return Messages.getString("LogicalTableView.0"); //$NON-NLS-1$
+		return "LogicalTableView.0"; //$NON-NLS-1$
 	}
 	
 	
@@ -80,7 +80,7 @@ public class LogicalTableView extends AbstractTableView implements Observer{
 	public LogicalTableView(){
 		super();
 		ltv = this;
-		//Track menu
+	    // Track menu
 		jmenuTrack = new JPopupMenu();
 		jmiTrackPlay = new JMenuItem(Messages.getString("PhysicalTableView.1")); //$NON-NLS-1$
 		jmiTrackPlay.addActionListener(this);
@@ -107,9 +107,9 @@ public class LogicalTableView extends AbstractTableView implements Observer{
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.IView#display()
 	 */
-	public void display(){
-		populate();
-		super.display();
+	public void populate(){
+		populateTable();
+		super.populate();
 		//Register on the list for subject we are interrested in
 		ObservationManager.register(EVENT_DEVICE_MOUNT,this);
 		ObservationManager.register(EVENT_DEVICE_UNMOUNT,this);
@@ -117,7 +117,7 @@ public class LogicalTableView extends AbstractTableView implements Observer{
 	}
 	
 	/**Fill the tree */
-	public void populate(){
+	public void populateTable(){
 		//col number
 		int iColNum = 6;
 		//Columns names
@@ -159,9 +159,9 @@ public class LogicalTableView extends AbstractTableView implements Observer{
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.jajuk.ui.IView#getViewName()
+	 * @see org.jajuk.ui.IView#getID()
 	 */
-	public String getViewName() {
+	public String getID() {
 		return "org.jajuk.ui.views.LogicalTableView"; //$NON-NLS-1$
 	}
 	

@@ -27,7 +27,6 @@ import java.util.Iterator;
 
 import org.jajuk.base.PlaylistFile;
 import org.jajuk.base.PlaylistFileManager;
-import org.jajuk.i18n.Messages;
 import org.jajuk.ui.Observer;
 import org.jajuk.ui.PlaylistFileItem;
 
@@ -60,31 +59,31 @@ public class PhysicalPlaylistRepositoryView extends AbstractPlaylistRepositoryVi
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.IView#display()
 	 */
-	public void display(){
+	public void populate(){
 		//commons
-		super.display();
+		super.populate();
 	}
 	
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.IView#getDesc()
 	 */
 	public String getDesc() {
-		return Messages.getString("PhysicalPlaylistRepositoryView.6");	 //$NON-NLS-1$
+		return "PhysicalPlaylistRepositoryView.6";	 //$NON-NLS-1$
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.jajuk.ui.IView#getViewName()
+	 * @see org.jajuk.ui.IView#getID()
 	 */
-	public String getViewName() {
-		return "org.jajuk.ui.views.PhysicalPlaylistRepositoryView"; //$NON-NLS-1$
+	public String getID() {
+	    return "org.jajuk.ui.views.PhysicalPlaylistRepositoryView"; //$NON-NLS-1$
 	}
 	
 	
 	/**
 	 * Create playlists from collection 
 	 */
-	void populate(){
-		super.populate();
+	void populatePlaylists(){
+		super.populatePlaylists();
 		//normal playlists
 		ArrayList al = PlaylistFileManager.getPlaylistFiles();
 		Collections.sort(al);
