@@ -624,11 +624,12 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	
 	
 	/**
-	 * Synchronize
+	 * Test device accessibility
 	 *@return true if the device is available
 	 */
 	public boolean test(){
 		boolean bOK = false;
+		boolean bWasMounted = bMounted;  //store mounted state of device before mount test
 		try{
 			if (!bMounted){
 				mount();  //try to mount
@@ -638,14 +639,39 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 			Messages.showErrorMessage("112"); //$NON-NLS-1$
 			return false;
 		}
-		if ( iDeviceType != 2 ){
+		if ( iDeviceType != 2 ){ //not a remote device
 			File file = new File(sUrl);
-			if ( file.exists() && file.canRead()){
-				bOK = true;
+			if ( file.exists() && file.canRead()){ //see if the url exists and is readable
+				//check if this device was void
+				boolean bVoid = true;
+				Iterator it = FileManager.getFiles().iterator();
+				while (it.hasNext()){
+					org.jajuk.base.File f = (org.jajuk.base.File)it.next();
+					if (f.getDirectory().getDevice().equals(this)){ //at least one fiel in this device
+						bVoid = false;
+						break;
+					}
+				}
+				if (!bVoid){  //if the device is not supposed to be void, check if it is the case, if no, the device must not be unix-mounted
+					if (file.list().length > 0){
+						bOK = true; 
+					}
+				}
+				else{  //device is void, OK we assume it is accessible
+					bOK = true;
+				}
 			}
 		}
 		else{
 			bOK = false; //TBI
+		}
+		//unmount the device if it was mounted only for the test 
+		if (!bWasMounted){
+			try {
+				unmount(false);
+			} catch (Exception e1) {
+				Log.error(e1);
+			}
 		}
 		return bOK;
 	}
