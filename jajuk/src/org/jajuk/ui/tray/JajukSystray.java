@@ -64,6 +64,7 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
 	TrayIcon trayIcon;
     JPopupMenu jmenu;
 	JMenuItem jmiExit;
+	JMenuItem jmiMute;
 	JMenuItem jmiAbout;
 	JMenuItem jmiShuffle;
 	JMenuItem jmiBestof;
@@ -107,15 +108,17 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
 			jmenu = new JPopupMenu(Messages.getString("JajukWindow.3")); //$NON-NLS-1$
 			jmiExit =  new JMenuItem(Messages.getString("JajukWindow.4"),Util.getIcon(ICON_EXIT)); //$NON-NLS-1$
 			jmiExit.addActionListener(this);
+			jmiMute =  new JMenuItem(Messages.getString("JajukWindow.2"),Util.getIcon(ICON_MUTE)); //$NON-NLS-1$
+			jmiMute.addActionListener(this);
 			jmiAbout =  new JMenuItem(Messages.getString("JajukWindow.5"),Util.getIcon(ICON_INFO)); //$NON-NLS-1$
 			jmiAbout.addActionListener(this);
-			jmiShuffle =  new JMenuItem(Messages.getString("JajukWindow.6"),Util.getIcon(ICON_SHUFFLE_GLOBAL_ON)); //$NON-NLS-1$
+			jmiShuffle =  new JMenuItem(Messages.getString("JajukWindow.6"),Util.getIcon(ICON_SHUFFLE_GLOBAL)); //$NON-NLS-1$
 			jmiShuffle.addActionListener(this);
-			jmiBestof =  new JMenuItem(Messages.getString("JajukWindow.7"),Util.getIcon(ICON_BESTOF_ON)); //$NON-NLS-1$
+			jmiBestof =  new JMenuItem(Messages.getString("JajukWindow.7"),Util.getIcon(ICON_BESTOF)); //$NON-NLS-1$
 			jmiBestof.addActionListener(this);
 			jmiNorm =  new JMenuItem(Messages.getString("JajukWindow.16"),Util.getIcon(ICON_MODE_NORMAL)); //$NON-NLS-1$
 			jmiNorm.addActionListener(this);
-			jmiNovelties =  new JMenuItem(Messages.getString("JajukWindow.15"),Util.getIcon(ICON_NOVELTIES_ON)); //$NON-NLS-1$
+			jmiNovelties =  new JMenuItem(Messages.getString("JajukWindow.15"),Util.getIcon(ICON_NOVELTIES)); //$NON-NLS-1$
 			jmiNovelties.addActionListener(this);
 			jcbmiVisible =  new JCheckBoxMenuItem(Messages.getString("JajukWindow.8")); //$NON-NLS-1$
 			jcbmiVisible.setState(JajukWindow.getInstance().isVisible()); 
@@ -144,7 +147,8 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
 			jmenu.addSeparator();
 			jmenu.add(jmiAbout);
 			jmenu.addSeparator();
-			jmenu.add(jmiExit);
+			jmenu.add(jmiMute);
+			jmenu.addSeparator();
 			jmenu.add(jmiExit);
 			jmenu.add(jmiOut);
 			
@@ -174,7 +178,8 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
 			ObservationManager.register(EVENT_PLAYER_PLAY,this);
 			ObservationManager.register(EVENT_PLAYER_RESUME,this);
 			ObservationManager.register(EVENT_PLAYER_STOP,this);
-			
+			ObservationManager.register(EVENT_MUTE_STATE,this);
+	        
 			//check if a fiel has been already started
 			if (FIFO.getInstance().getCurrentFile() == null){
 			    update(EVENT_PLAYER_STOP);    
@@ -243,6 +248,9 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
 			FIFO.getInstance().stopRequest();
 			ObservationManager.notify(EVENT_PLAYLIST_REFRESH); //alert playlists editors ( queue playlist ) something changed for him
 		}
+		else if (e.getSource() == jmiMute){
+		    Player.mute();  //change mute state 
+		}
 		else if (e.getSource() == jmiPause){
 		    if ( Player.isPaused()){  //player was paused, resume it
 		        bPaused = false;
@@ -266,6 +274,16 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
 	public void update(String subject) {
 		if (EVENT_ZERO.equals(subject)){
 			trayIcon.setToolTip(Messages.getString("JajukWindow.18")); //$NON-NLS-1$
+		}
+		else if (EVENT_MUTE_STATE.equals(subject)){
+		    if (Player.isMuted()){
+		        jmiMute.setText(Messages.getString("JajukWindow.1")); //NON-NLS-1$
+		        jmiMute.setIcon(Util.getIcon(ICON_UNMUTE)); //show unmute icon
+		    }
+		    else{
+		        jmiMute.setText(Messages.getString("JajukWindow.2")); //NON-NLS-1$
+		        jmiMute.setIcon(Util.getIcon(ICON_MUTE)); //show mute icon
+		    }	
 		}
 		else if (EVENT_FILE_LAUNCHED.equals(subject)){
 		    File file  = FileManager.getFile((String)ObservationManager.getDetail(EVENT_FILE_LAUNCHED,DETAIL_CURRENT_FILE_ID));
