@@ -36,6 +36,7 @@
        <action dev='skyreacher' type='add'>German translation (Jajuk and Readme file)</action>  
        <action dev='bflorat' type='add'>Path selection button for Unix mount points in device wizzard</action>  
        <action dev='bflorat' type='add'>Added best of size parameter</action>  
+       <action dev='bflorat' type='add'>Macosx menu support thanks to Romain Herault</action>  
        <action dev='bflorat' type='fix'>930598 Issues in online doc</action>  
        <action dev='bflorat' type='fix'>929372 Physical/logical table views : errors when filtering with no results</action>  
        <action dev='bflorat' type='fix'>921441 New changes to solve this issue that one user reported again in 0.1.4</action>  
