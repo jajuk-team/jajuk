@@ -29,6 +29,7 @@ import java.io.Serializable;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 
+import javax.swing.JOptionPane;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
@@ -192,7 +193,16 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
     		FileManager.sortFiles();//resort collection in case of
 		} catch (Exception e) {
 			Log.error(e);
-			throw new JajukException("005"); //$NON-NLS-1$
+			//collection corrupted, OK, try to write a void collection file
+			cleanup();
+			DeviceManager.cleanAllDevices();
+			try{
+			    commit();
+			}
+			catch(Exception e2){
+			    Log.error(e2);
+			}
+			Messages.getChoice(Messages.getErrorMessage("005"),JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$
 		}
 	}
 

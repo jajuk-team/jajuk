@@ -263,6 +263,13 @@ public class DeviceManager implements ITechnicalStrings{
 	public static void setMountPoint(Device device,String sMountPoint) {
 		device.setMountPoint(sMountPoint);
 	}
-
+	
+	
+	/**
+	 * Clean all devices
+	 */
+	public static synchronized void cleanAllDevices() {
+	    alDevices.clear();
+	}
 
 }
