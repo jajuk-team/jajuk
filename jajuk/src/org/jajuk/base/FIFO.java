@@ -220,9 +220,12 @@ public class FIFO implements ITechnicalStrings,Runnable,Observer{
 		}
 		//set repeat and other env. 
 		if (!bAuto){
+			FIFO.getInstance().setNovelties(false); //novelties mode is broken by any push
 			FIFO.getInstance().setBestof(false); //best of mode is broken by any push
 			FIFO.getInstance().setGlobalRandom(false); //global random mode is broken by any push
-			if (TRUE.equals(ConfigurationManager.getProperty(CONF_STATE_REPEAT)) || this.bForcedRepeat){  //repeat is on
+			fForcedRepeat = null; //forced repeat is broken by any push
+			bForcedRepeat = false;
+			if (ConfigurationManager.getBoolean(CONF_STATE_REPEAT) || this.bForcedRepeat){  //repeat is on
 				alRepeated = alFiles;
 			}
 		}
@@ -269,7 +272,7 @@ public class FIFO implements ITechnicalStrings,Runnable,Observer{
 	 * @param bAuto file is added by the system, not by a user action
 	 */
 	public synchronized void push(File file, boolean bAppend, boolean bAuto) {
-		push(file,bAppend,bAuto,false);
+	       push(file,bAppend,bAuto,false);
 	}
 	
 	
@@ -279,7 +282,7 @@ public class FIFO implements ITechnicalStrings,Runnable,Observer{
 	 * @param bAppend keep previous files or stop them to start a new one ?
 	 */
 	public synchronized void push(ArrayList alFiles, boolean bAppend) {
-		push(alFiles,bAppend,false,false);
+	    push(alFiles,bAppend,false,false);    
 	}
 	
 	
