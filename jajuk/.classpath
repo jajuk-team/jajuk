@@ -8,5 +8,6 @@
     <classpathentry kind="lib" path="lib/id3-1.6.0d7.jar"/>
     <classpathentry kind="lib" path="lib/kunststoff-1.0.jar"/>
     <classpathentry kind="lib" path="lib/LiquidLnF-1.0.jar"/>
+    <classpathentry kind="lib" path="lib/jh-2.0.jar"/>
     <classpathentry kind="output" path="bin"/>
 </classpath>

@@ -95,7 +95,6 @@ public class Main implements ITechnicalStrings {
 				fJajukDir.mkdir(); //create the directory if it doesn't exist
 			}
 			
-			
 			//log startup
 			Log.getInstance();
 			Log.setVerbosity(Log.DEBUG);
@@ -130,6 +129,9 @@ public class Main implements ITechnicalStrings {
 								
 			//Load user configuration
 			org.jajuk.util.ConfigurationManager.load();
+			
+			//Set actual log verbosity
+			Log.setVerbosity(Integer.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_LOG_LEVEL)));
 			
 			//Set look and feel
 			LNFManager.setLookAndFeel(ConfigurationManager.getProperty(CONF_OPTIONS_LNF));
@@ -187,15 +189,13 @@ public class Main implements ITechnicalStrings {
 		
 			//Mount and refresh devices
 			mountAndRefresh();
-			
-			
+					
 			//Create the perspective manager 
 			PerspectiveManager.load();
 						
 			//Initialize perspective manager and load all views
 			PerspectiveManager.init();
-		
-			
+					
 			//Close splash screen
 			sc.dispose();
 			
@@ -351,6 +351,9 @@ public class Main implements ITechnicalStrings {
 			}
 			if (TRUE.equals(device.getProperty(DEVICE_OPTION_AUTO_REFRESH))){
 				device.refresh();
+				synchronized(Device.bLock){  //wait until refresh is done 
+					
+				}
 			}
 		}
 	}
