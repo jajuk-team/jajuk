@@ -541,7 +541,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jpPerspectives.setLayout(new TableLayout(sizeAdvanced));
 		jlPerspectivesReinit = new JLabel(Messages.getString("ParameterView.123")); //$NON-NLS-1$
 		jlPerspectivesReinit.setToolTipText(Messages.getString("ParameterView.124")); //$NON-NLS-1$
-		jbPerspectivesReinit = new JButton(Messages.getString("ParameterView.125")); //$NON-NLS-1$
+		jbPerspectivesReinit = new JButton(Messages.getString("ParameterView.125"),Util.getIcon(ICON_REFRESH)); //$NON-NLS-1$
 		jbPerspectivesReinit.setToolTipText(Messages.getString("ParameterView.124")); //$NON-NLS-1$
 		jbPerspectivesReinit.addActionListener(this);
 		jpPerspectives.add(jlPerspectivesReinit,"0,1"); //$NON-NLS-1$

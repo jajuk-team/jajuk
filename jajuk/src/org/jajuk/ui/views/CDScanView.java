@@ -82,7 +82,7 @@ public class CDScanView extends ViewAdapter implements ActionListener {
 		float fXSeparator = 0.05f;
 		float fYSeparator = 0.15f;
 		double[][] dSize={
-				{fXSeparator,0.25,fXSeparator,0.5,fXSeparator,40,fXSeparator},
+				{fXSeparator,0.35,fXSeparator,0.4,fXSeparator,40,fXSeparator},
 				{fYSeparator,20,fYSeparator,20,fYSeparator,20,fYSeparator}
 		};
 		setLayout(new TableLayout(dSize));

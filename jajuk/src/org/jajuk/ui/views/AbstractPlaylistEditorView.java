@@ -234,7 +234,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 		jtb.add(jbClear);
 		
 		jpControl.add(jtb,"1,0"); //$NON-NLS-1$
-		jpControl.add(jlTitle,"2,0"); //$NON-NLS-1$
+		jpControl.add(Util.getCentredPanel(jlTitle),"2,0"); //$NON-NLS-1$
 		
 		jtable = new JajukTable(model,false);
 		jtable.setSelectionMode(DefaultListSelectionModel.SINGLE_SELECTION); //mono-row selection
