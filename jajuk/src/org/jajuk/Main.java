@@ -88,9 +88,6 @@ public class Main implements ITechnicalStrings {
 			//set exec location path ( normal or debug )
 			Util.setExecLocation((args.length>0 && args[0].equals("-debug")));//$NON-NLS-1$ 
 			
-			//starts ui
-			jw = new JajukWindow(); 
-			
 			//Launch splashscreen
 			sc = new SplashScreen(jw);	
 			
@@ -141,6 +138,9 @@ public class Main implements ITechnicalStrings {
 			
 			//Load user configuration
 			org.jajuk.util.ConfigurationManager.load();
+		
+			//starts ui
+			jw = new JajukWindow(); 
 			
 			//Set look and feel
 			LNFManager.setLookAndFeel(ConfigurationManager.getProperty(CONF_OPTIONS_LNF));

@@ -293,7 +293,7 @@ public interface ITechnicalStrings {
 	public static final String CONF_TAGS_DEEP_SCAN= "jajuk.tags.deep_scan";
 	public static final String CONF_TAGS_USE_PARENT_DIR= "jajuk.tags.use_parent_dir";
 	public static final String CONF_BOOKMARKS= "jajuk.bookmarks"; //contains files id separated by a colon
-	public static final String CONF_SHOW_AT_STARTUP= "jajuk.show"; //show jajuk window at startup
+	public static final String CONF_SHOW_AT_STARTUP= "jajuk.show_at_startup"; //show jajuk window at startup
 	
 	
 	//miscelanous
