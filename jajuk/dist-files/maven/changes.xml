@@ -221,6 +221,7 @@
      	<action dev='bflorat' type='fix' issue='1156281'>Continue mode when stopped</action>
      	<action dev='bflorat' type='fix' issue='1155644'>UI reset missing in some cases</action>
      	<action dev='bflorat' type='fix' issue='1153534'>Elapsed time error with large files</action>
+       <action dev='bflorat' type='fix' issue='921441'>Special XML characters not correctly managed by Jajuk (more checkups)</action> 
      </release>
           
   </body>
