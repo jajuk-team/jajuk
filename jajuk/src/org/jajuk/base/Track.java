@@ -196,9 +196,21 @@ public class Track extends PropertyAdapter implements Comparable{
 		}
 		//then keep best quality
 		it = alMountedFiles.iterator();
+		fileOut = (File)it.next();  //for the moment, the out file is the first found
 		while ( it.hasNext()){
 			File file = (File)it.next();
-			if (fileOut == null || Integer.parseInt(file.getQuality()) > Integer.parseInt(fileOut.getQuality())){
+			int iQuality = 0;
+			int iQualityOut = 0; //quality for out file
+			try {
+				iQuality = Integer.parseInt(file.getQuality());
+			}
+			catch(NumberFormatException nfe){}//quality string can be something like "error", in this case, we considere quality=0
+			try{
+				iQualityOut = Integer.parseInt(fileOut.getQuality());
+			}
+			catch(NumberFormatException nfe){}//quality string can be something like "error", in this case, we considere quality=0
+			
+			if (iQuality > iQualityOut){
 				fileOut = file;
 			}
 		}
