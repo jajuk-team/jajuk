@@ -25,6 +25,7 @@ import java.util.ResourceBundle;
 
 import javax.swing.Icon;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 import org.jajuk.Main;
 import org.jajuk.util.log.Log;
@@ -36,7 +37,7 @@ import org.jajuk.util.log.Log;
  * @created    5 oct. 2003
  */
 public class Messages {
-
+	
 	private static final String BUNDLE_NAME = "org.jajuk.i18n.jajuk"; //$NON-NLS-1$
 	/**Local ( language) to be used, default is english */
 	private static String sLocal;
@@ -46,13 +47,13 @@ public class Messages {
 	public static ArrayList alDescs = new ArrayList(10);
 	/**Used ressource bundle*/
 	private static ResourceBundle rb = ResourceBundle.getBundle(BUNDLE_NAME);
-
+	
 	/**
 	 * Private Constructor
 	 */
 	private Messages() {
 	}
-
+	
 	/**
 	 * @param key
 	 * @return
@@ -130,16 +131,24 @@ public class Messages {
 	 * Show a dialog with specified error message
 	 * @param sCode
 	 */
-	public static void showErrorMessage(String sCode){
-		JOptionPane.showMessageDialog(Main.jframe,Messages.getErrorMessage(sCode),Messages.getErrorMessage("102"),JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$
+	public static void showErrorMessage(final String sCode){
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				JOptionPane.showMessageDialog(Main.jframe,Messages.getErrorMessage(sCode),Messages.getErrorMessage("102"),JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$	}
+			}
+		});
 	}
 	
 	/**
 	 * Show a dialog with specified error message
 	 * @param sMessage
 	 */
-	public static void showInfoMessage(String sMessage){
-		JOptionPane.showMessageDialog(Main.jframe,sMessage,Messages.getString("Info"),JOptionPane.INFORMATION_MESSAGE); //$NON-NLS-1$
+	public static void showInfoMessage(final String sMessage){
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				JOptionPane.showMessageDialog(Main.jframe,sMessage,Messages.getString("Info"),JOptionPane.INFORMATION_MESSAGE); //$NON-NLS-1$
+			}
+		});
 	}
 	
 	
@@ -147,16 +156,25 @@ public class Messages {
 	 * Show a dialog with specified warning message
 	 * @param sMessage
 	 */
-	public static void showWarningMessage(String sMessage){
-		JOptionPane.showMessageDialog(Main.jframe,sMessage,Messages.getString("Warning"),JOptionPane.WARNING_MESSAGE); //$NON-NLS-1$
+	public static void showWarningMessage(final String sMessage){
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				JOptionPane.showMessageDialog(Main.jframe,sMessage,Messages.getString("Warning"),JOptionPane.WARNING_MESSAGE); //$NON-NLS-1$
+			}
+		});
+		
 	}
 	
 	/**
 	 * Show a dialog with specified error message and an icon
 	 * @param sMessage
 	 */
-	public static void showInfoMessage(String sMessage,Icon icon){
-		JOptionPane.showMessageDialog(Main.jframe,sMessage,Messages.getString("Info"),JOptionPane.INFORMATION_MESSAGE,icon); //$NON-NLS-1$
+	public static void showInfoMessage(final String sMessage,final Icon icon){
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				JOptionPane.showMessageDialog(Main.jframe,sMessage,Messages.getString("Info"),JOptionPane.INFORMATION_MESSAGE,icon); //$NON-NLS-1$
+			}
+		});
 	}
 	
 	/**
@@ -164,8 +182,12 @@ public class Messages {
 	 * @param sCode
 	 * @param sInfoSup
 	 */
-	public static void showErrorMessage(String sCode,String sInfoSup){
-		JOptionPane.showMessageDialog(Main.jframe,Messages.getErrorMessage(sCode)+" : "+sInfoSup,Messages.getErrorMessage("102"),JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+	public static void showErrorMessage(final String sCode,final String sInfoSup){
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				JOptionPane.showMessageDialog(Main.jframe,Messages.getErrorMessage(sCode)+" : "+sInfoSup,Messages.getErrorMessage("102"),JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+			}
+		});
 	}
 	
 	/**
@@ -173,8 +195,12 @@ public class Messages {
 	 * @param sMessage
 	 * @param sInfoSup
 	 */
-	public static void showInfoMessage(String sMessage,String sInfoSup){
-		JOptionPane.showMessageDialog(Main.jframe,Messages.getString(sMessage)+" : "+sInfoSup,Messages.getString("Info"),JOptionPane.INFORMATION_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+	public static void showInfoMessage(final String sMessage,final String sInfoSup){
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				JOptionPane.showMessageDialog(Main.jframe,Messages.getString(sMessage)+" : "+sInfoSup,Messages.getString("Info"),JOptionPane.INFORMATION_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+			}
+		});
 	}
 	
 	
@@ -184,5 +210,5 @@ public class Messages {
 	public static String getLocal() {
 		return sLocal;
 	}
-
+	
 }

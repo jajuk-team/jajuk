@@ -337,13 +337,6 @@ public class FIFO implements ITechnicalStrings,Runnable{
 					continue; //leave
 				}
 				if (!bPlaying && alFIFO.size() == 0  ){//empty fifo, lets decide what to do with folowing priorities : global random / repeat / continue
-					//intro workaround : intro mode is only read at track lauch and can't be set during the play
-					if (ConfigurationManager.getBoolean(CONF_STATE_INTRO)){ //intro mode enabled
-						bIntroEnabled = true;
-					}
-					else{
-						bIntroEnabled = false;
-					}
 					//next file choice
 					if ( bGlobalRandom){ //Global random mode
 						push(FileManager.getShuffleFile(),false,true);
@@ -381,6 +374,8 @@ public class FIFO implements ITechnicalStrings,Runnable{
 				}
 				synchronized(this){  //lock fifo access when lauching
 					Util.waiting();
+					//intro workaround : intro mode is only read at track lauch and can't be set during the play
+					bIntroEnabled = ConfigurationManager.getBoolean(CONF_STATE_INTRO); //re-read intro mode
 					if ( !bPlaying){  //test this to avoid notifying at each launch
 						ObservationManager.notify(EVENT_PLAYER_PLAY);  //notify to devices like commandJPanel to update ui
 					}
