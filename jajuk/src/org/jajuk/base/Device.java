@@ -64,9 +64,9 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	/**directories*/
 	private ArrayList alDirectories = new ArrayList(20);
 	/**Already refreshing flag*/
-	private boolean bAlreadyRefreshing = false;
+	private volatile boolean bAlreadyRefreshing = false;
 	/**Already synchronizing flag*/
-	private boolean bAlreadySynchronizing = false;
+	private volatile boolean bAlreadySynchronizing = false;
 	/**Convenient lock */
 	public static byte[] bLock = new byte[0];
 	/** Number of files in this device before refresh ( for refresh stats ) */
@@ -285,7 +285,13 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	        Log.error(e);
 	    }
 	    finally{  //make sure to unlock refreshing even if an error occured
-	        bAlreadyRefreshing = false;
+            //cleanup logical items
+            TrackManager.cleanup();
+             StyleManager.cleanup();
+             AlbumManager.cleanup();
+             AuthorManager.cleanup();
+             PlaylistManager.cleanup();
+            bAlreadyRefreshing = false;
 	    }
 	}
 	
