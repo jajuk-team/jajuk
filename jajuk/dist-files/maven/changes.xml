@@ -90,6 +90,16 @@
        	<action dev='bflorat' type='fix'>982810	Cannot cancel play of multiple selection in table view</action>  
        	<action dev='bflorat' type='fix'>983762	Testing a device should keep it unmounted if it was not</action>  
      </release>
-     
+      <release version='0.2.2' date='2004-07-07' description='Major bug fix release'>
+      	<action dev='bflorat' type='fix'>? Cannot create new devices</action>  
+      </release>
+      <release version='0.2.3' date='2004-07-08' description='Major bug fix release'>
+      	<action dev='bflorat' type='fix'>? Cannot create new devices (again)</action>  
+      </release>
+      <release version='0.2.4' date='work in progress' description=''>
+      	<action dev='bflorat' type='update'>Parameter view now uses tabs</action>
+    	<action dev='bflorat' type='fix'>? We shouldn't be able to choose a startup file in parameter view if this mode is not selected</action>  
+      </release>
+
   </body>
 </document>
