@@ -55,7 +55,7 @@
 		      <role>Main conceptor and developer</role>
 	      </roles>
 	      <id>bflorat</id>
-	      <email>bertrand@florat.net</email>
+	      <email>bflorat@users.sourceforge.net</email>
 	      <organization>Jajuk team</organization>
 	      <timezone>2</timezone>
 	    </developer>
@@ -89,6 +89,16 @@
 	      <email>jonathankresge@users.sourceforge.net</email>
 	      <organization>Jajuk team</organization>
 	      <timezone>-4</timezone>
+	    </developer>
+	    <developer>
+	      <name>Riccardo Capecchi</name>
+	      <id>ricciocri</id>
+	     <roles>
+			<role>Italian translator</role>
+	     </roles>
+	      <email>ricciocri@users.sourceforge.net</email>
+	      <organization>Jajuk team</organization>
+	      <timezone>+2</timezone>
 	    </developer>
 	    <developer>
 	      <name>Sébastien Gringoire</name>
