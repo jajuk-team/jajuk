@@ -102,9 +102,20 @@ public class DeviceManager implements ITechnicalStrings{
 	 * @param device
 	 */
 	public static synchronized void removeDevice(Device device){
-		if (device.isMounted() || device.isRefreshing()){
+		//if device is refreshing or synchronizing, just leave
+		if (device.isSynchronizing() || device.isRefreshing()){
 			Messages.showErrorMessage("013"); //$NON-NLS-1$
 			return;
+		}
+		//if it is mounted, try to unmount it
+		if (device.isMounted()){ 
+			try{
+				device.unmount();
+			}
+			catch(Exception e){
+				Messages.showErrorMessage("013"); //$NON-NLS-1$
+				return;
+			}
 		}
 		alDevices.remove(device);
 		alDeviceIds.remove(device.getId());
