@@ -144,11 +144,11 @@ public class JavaLayerPlayerImpl implements IPlayerImpl,ITechnicalStrings{
                 }
             };
             player.addBasicPlayerListener(bpListener);
-            player.open(new File(file.getAbsolutePath())); 
             //make sure to stop any current player
             if (!bStopped && player!=null){
                 player.stop();
             }
+            player.open(new File(file.getAbsolutePath())); 
             Util.stopWaiting();
             if (fPosition < 0 && player!=null){  //-1 means we want to play entire file
                 player.play();
