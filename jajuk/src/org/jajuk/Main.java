@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.swing.BorderFactory;
@@ -145,15 +146,18 @@ public class Main implements ITechnicalStrings {
 			//perform initial checkups
 			initialCheckups();
 			
-			//Display user configuration
-			Log.debug(System.getProperties().toString());
-			
 			//Load user configuration
 			org.jajuk.util.ConfigurationManager.load();
 			
 			//Set actual log verbosity
 			Log.setVerbosity(Integer.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_LOG_LEVEL)));
+
+			//Display user system configuration
+			Log.debug(System.getProperties().toString());
 			
+			//Display user Jajuk configuration
+			Log.debug(ConfigurationManager.getProperties().toString());
+
 			//Set look and feel
 			LNFManager.setLookAndFeel(ConfigurationManager.getProperty(CONF_OPTIONS_LNF));
 					
@@ -178,8 +182,7 @@ public class Main implements ITechnicalStrings {
 			
 			//check for another session
 			checkOtherSession();
-			
-			
+						
 			//Load history
 			History.load();
 			
@@ -256,6 +259,7 @@ public class Main implements ITechnicalStrings {
 						//display window
 						jw.pack();
 						jw.setExtendedState(Frame.MAXIMIZED_BOTH);  //maximalize
+						
 						//show window if set in the systray conf
 						if ( ConfigurationManager.getBoolean(CONF_SHOW_AT_STARTUP) || !Util.isUnderWindows()){
 							jw.setVisible(true); //show main window
@@ -448,27 +452,34 @@ public class Main implements ITechnicalStrings {
 	 * Launch initial track at startup
 	 */
 	private static void launchInitialTrack(){
-		org.jajuk.base.File file = null;
-		if (!ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_NOTHING)){
+	    ArrayList alToPlay = new ArrayList();
+		org.jajuk.base.File fileToPlay = null;
+	    if (!ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_NOTHING)){
 			if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_LAST) ||
 			        ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_LAST_KEEP_POS)){
-				file = FileManager.getFile(History.getInstance().getLastFile());
+				fileToPlay = FileManager.getFile(History.getInstance().getLastFile());
+				if (fileToPlay != null && fileToPlay.isReady()){
+				    alToPlay.add(FileManager.getFile(History.getInstance().getLastFile()));    
+				}
 			}
 			else if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_FILE)){
-				file = FileManager.getFile(ConfigurationManager.getProperty(CONF_STARTUP_FILE));
+			    fileToPlay = FileManager.getFile(History.getInstance().getLastFile());
+				if (fileToPlay != null && fileToPlay.isReady()){
+				    alToPlay.add(FileManager.getFile(History.getInstance().getLastFile()));    
+				}
 			}
 			else if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_SHUFFLE)){
-				file = FileManager.getShuffleFile();
+				alToPlay = FileManager.getGlobalShufflePlaylist();
 			}
 			else if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_BESTOF)){
-				file = FileManager.getBestOfFile();
+			    alToPlay = FileManager.getGlobalBestofPlaylist();
 			}
 			else if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_NOVELTIES)){
-				file = FileManager.getNoveltyFile();
+			    alToPlay = FileManager.getGlobalNoveltiesPlaylist();
 			}
 			//launch selected file
-			if (file != null && file.isReady()){
-				FIFO.getInstance().push(file,false);
+			if (alToPlay  != null && alToPlay.size() >0){
+				FIFO.getInstance().push(alToPlay,false);
 			}
 		}
 	}

@@ -206,7 +206,6 @@ public class Log  implements ITechnicalStrings{
      */
     public static void stack(Exception e){
         e.printStackTrace();
-        System.out.println();
     }
     
     /**

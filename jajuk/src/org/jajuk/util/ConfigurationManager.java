@@ -208,7 +208,6 @@ public class ConfigurationManager implements ITechnicalStrings{
 	public static void load() {
 		try {
 			properties.load(new FileInputStream(FILE_CONFIGURATION));
-			Log.debug(properties.toString());
 		} catch (IOException e) {
 			Log.error("114", e); //$NON-NLS-1$
 			Messages.showErrorMessage("114"); //$NON-NLS-1$
@@ -216,4 +215,10 @@ public class ConfigurationManager implements ITechnicalStrings{
 
 	}
 	
+    /**
+     * @return Returns the properties.
+     */
+    public static Properties getProperties() {
+        return properties;
+    }
 }
