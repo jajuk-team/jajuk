@@ -454,7 +454,7 @@ public class Main implements ITechnicalStrings {
 			}
 			//launch selected file
 			if (alToPlay  != null && alToPlay.size() >0){
-				FIFO.getInstance().push(alToPlay,false);
+				FIFO.getInstance().push(Util.createStackItems(alToPlay,false,false),false);
 			}
 		}
 	}

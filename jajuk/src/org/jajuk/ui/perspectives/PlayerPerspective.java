@@ -49,11 +49,11 @@ public class PlayerPerspective extends PerspectiveAdapter {
 		net.infonode.docking.View dockingAnimationView = addView(view);
 		viewMap.addView(0,dockingAnimationView);
 		
-	    view = new CoverView();
+	    view = new CoverView("3");
 	    net.infonode.docking.View dockingCoverView1 = addView(view);
 		viewMap.addView(3,dockingCoverView1);
 		
-		view = new CoverView();
+		view = new CoverView("4");
 	    net.infonode.docking.View dockingCoverView2 = addView(view);
 		viewMap.addView(4,dockingCoverView2);
 		

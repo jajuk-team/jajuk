@@ -32,6 +32,7 @@ import org.jajuk.base.BasicFile;
 import org.jajuk.base.BasicPlaylistFile;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.ITechnicalStrings;
+import org.jajuk.base.StackItem;
 import org.jajuk.ui.perspectives.IPerspective;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.ui.views.IView;
@@ -96,25 +97,27 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
 			}
 		}
 		else if (e.getActionCommand().equals(EVENT_REPEAT_MODE_STATUS_CHANGED)) {
-			boolean bContinue = ConfigurationManager.getBoolean(CONF_STATE_CONTINUE);
-			if (bContinue){
-				//Repeat and continue can't be set together, so deselect repeat mode
-				ConfigurationManager.setProperty(CONF_STATE_CONTINUE, Boolean.toString(!bContinue));
-				JajukJMenuBar.getInstance().jcbmiContinue.setSelected(false);
-				CommandJPanel.getInstance().jbContinue.setBorder(BorderFactory.createRaisedBevelBorder());
-			}
 			boolean b = ConfigurationManager.getBoolean(CONF_STATE_REPEAT);
 			ConfigurationManager.setProperty(CONF_STATE_REPEAT, Boolean.toString(!b));
 			JajukJMenuBar.getInstance().jcbmiRepeat.setSelected(!b);
 			if (!b == true) { //enabled button
 				CommandJPanel.getInstance().jbRepeat.setBorder(BorderFactory.createLoweredBevelBorder());
-				//set the forced repeat track to repeat over it even with others tracks in the fifo
-				FIFO.getInstance().forceRepeat(FIFO.getInstance().getCurrentFile());
+				//if FIFO is not void, repeat over current item
+				StackItem item = FIFO.getInstance().getCurrentItem();
+				if ( item != null){
+				    item.setRepeat(true);    
+				}
 			}
 			else {//disable repeat mode
 			    CommandJPanel.getInstance().jbRepeat.setBorder(BorderFactory.createRaisedBevelBorder());
-			    FIFO.getInstance().forceRepeat(null); //reset forced
+			    //remove repeat mode to all items
+			    FIFO.getInstance().setRepeatModeToAll(false);
+			    //remove tracks before current position
+			    FIFO.getInstance().remove(0,FIFO.getInstance().getIndex()-1);
+			    FIFO.getInstance().setIndex(0); //select first track
 			}
+			//computes planned tracks
+			FIFO.getInstance().computesPlanned();
 		}
 		else if (e.getActionCommand().equals(EVENT_SHUFFLE_MODE_STATUS_CHANGED)) {
 			boolean b = ConfigurationManager.getBoolean(CONF_STATE_SHUFFLE);
@@ -127,25 +130,21 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
 			else {
 				CommandJPanel.getInstance().jbRandom.setBorder(BorderFactory.createRaisedBevelBorder());
 			}
+			//computes planned tracks
+			FIFO.getInstance().computesPlanned();
 		}
 		else if (e.getActionCommand().equals(EVENT_CONTINUE_MODE_STATUS_CHANGED)) {
-			boolean bRepeat = ConfigurationManager.getBoolean(CONF_STATE_REPEAT);
-			if (bRepeat){
-				//Repeat and continue can't be set together, so deselect repeat mode
-				ConfigurationManager.setProperty(CONF_STATE_REPEAT, Boolean.toString(!bRepeat));
-				JajukJMenuBar.getInstance().jcbmiRepeat.setSelected(false);
-				CommandJPanel.getInstance().jbRepeat.setBorder(BorderFactory.createRaisedBevelBorder()); 
-			}
 			boolean b = ConfigurationManager.getBoolean(CONF_STATE_CONTINUE);
 			ConfigurationManager.setProperty(CONF_STATE_CONTINUE, Boolean.toString(!b));
 			JajukJMenuBar.getInstance().jcbmiContinue.setSelected(!b);
 			if (!b == true) { //enabled button
-				CommandJPanel.getInstance().jbContinue.setBorder(BorderFactory.createLoweredBevelBorder());
-				FIFO.getInstance().forceRepeat(null);//remove forced repeat mode if any
+			    CommandJPanel.getInstance().jbContinue.setBorder(BorderFactory.createLoweredBevelBorder());
 			}
 			else {
 				CommandJPanel.getInstance().jbContinue.setBorder(BorderFactory.createRaisedBevelBorder());
 			}
+			//computes planned tracks
+			FIFO.getInstance().computesPlanned();
 		}
 		else if (e.getActionCommand().equals(EVENT_INTRO_MODE_STATUS_CHANGED)) {
 			boolean b = Boolean.valueOf(ConfigurationManager.getProperty(CONF_STATE_INTRO)).booleanValue();

@@ -38,6 +38,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.StringTokenizer;
 
@@ -52,11 +53,9 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import org.jajuk.Main;
-import org.jajuk.base.Album;
-import org.jajuk.base.Author;
 import org.jajuk.base.Directory;
 import org.jajuk.base.ITechnicalStrings;
-import org.jajuk.base.Track;
+import org.jajuk.base.StackItem;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.CommandJPanel;
 import org.jajuk.ui.InformationJPanel;
@@ -296,7 +295,11 @@ public class Util implements ITechnicalStrings {
 	
 	/**Format a time from secs to a human readable format*/
 	public static String formatTimeBySec(long l, boolean bTrimZeros){
-		long lHours = l/3600;
+		if (l == -1){ //means we are in repeat mode
+		    return "--:--";
+		}
+	    if (l<0) l =0;  //make sure to to get negative values
+	    long lHours = l/3600;
 		long lMins = l/60-(lHours*60);
 		long lSecs = l-(lHours*3600)-(lMins*60);
 		StringBuffer sbHours = new StringBuffer(Long.toString(lHours));
@@ -678,61 +681,6 @@ public class Util implements ITechnicalStrings {
 		return milliseconds;
 	}
 	
-	
-	  /**
-     * 
-     * @param file
-     * @return an accurate  google search query for a file
-     */
-    public  static String createQuery(org.jajuk.base.File file){
-        String sQuery = ""; //$NON-NLS-1$
-        int iAccuracy = ConfigurationManager.getInt(CONF_COVERS_ACCURACY);
-        Track track = file.getTrack();
-        Author author = track.getAuthor();
-        Album album = track.getAlbum();
-        switch(iAccuracy){
-        	case 0: //low, default
-        	    if (!author.isUnknown()){
-        	        sQuery += author.getName() + " "; //$NON-NLS-1$    
-        	    }
-        	    if (!album.isUnknown()){
-        	        sQuery += album.getName() + " "; //$NON-NLS-1$    
-        	    }
-        	    break;
-        	 case 1: //medium
-        	     if (!author.isUnknown()){
-              	     sQuery += "\"" +author.getName() + "\" "; //put "" around it //$NON-NLS-1$ //$NON-NLS-2$
-        	     }
-        	     if (!album.isUnknown()){
-         	        sQuery += "\""+ album.getName() + "\" "; //$NON-NLS-1$    
-         	    }
-              	 break;
-        	 case 2: //high 
-        	     if (!author.isUnknown()){
-              	     sQuery += "+\"" +author.getName() + "\" "; //put "" around it //$NON-NLS-1$ //$NON-NLS-2$
-        	     }
-        	     if (!album.isUnknown()){
-         	        sQuery += "+\""+ album.getName() + "\" "; //$NON-NLS-1$    
-         	    }
-                 break;
-             case 3: //by author 
-                 if (!author.isUnknown()){
-         	        sQuery += author.getName() + " "; //$NON-NLS-1$    
-         	    } 
-                 break;
-             case 4: //by album 
-                 if (!album.isUnknown()){
-         	        sQuery += album.getName() + " "; //$NON-NLS-1$    
-         	    } 
-                 break;
-             case 5: //by track name 
-                 sQuery += track.getName() ; 
-                 break;
-             default :
-                 break;
-             }
-            return sQuery;
-    }
     
     /**
      * 
@@ -814,6 +762,26 @@ public class Util implements ITechnicalStrings {
             return alFilesToPlay;
         }
         return alFiles; 
+    }
+      
+    /**
+     * Convert a list of files into a list of StackItem
+     * @param alFiles
+     * @param bRepeat
+     * @param bUserLauched
+     * @return
+     */
+    public static ArrayList createStackItems(ArrayList alFiles,boolean bRepeat,boolean bUserLauched){
+        ArrayList alOut = new ArrayList(alFiles.size());
+        Iterator it = alFiles.iterator();
+        while (it.hasNext()){
+            org.jajuk.base.File file = (org.jajuk.base.File)it.next();
+            StackItem item = new StackItem(file);
+            item.setRepeat(bRepeat);
+            item.setUserLaunch(bUserLauched);
+            alOut.add(item);
+        }
+        return alOut;
     }
 	
 }

@@ -187,6 +187,8 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 			SAXParser saxParser = spf.newSAXParser();
 			File frt = new File(FILE_COLLECTION);
 			saxParser.parse(frt.toURL().toString(),getInstance());
+            //Sort collection
+    		FileManager.sortFiles();//resort collection in case of
 		} catch (Exception e) {
 			Log.error(e);
 			throw new JajukException("005"); //$NON-NLS-1$

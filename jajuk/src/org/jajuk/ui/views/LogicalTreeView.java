@@ -54,6 +54,7 @@ import org.jajuk.base.Album;
 import org.jajuk.base.Author;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
+import org.jajuk.base.StackItem;
 import org.jajuk.base.Style;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
@@ -350,7 +351,7 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 						Track track = ((TrackNode)o).getTrack();
 						File file = track.getPlayeableFile();
 						if (file != null){
-							FIFO.getInstance().push(file,false);
+							FIFO.getInstance().push(new StackItem(file,true),false);
 						}
 						else{
 							Messages.showErrorMessage("010",track.getName()); //$NON-NLS-1$
@@ -550,7 +551,7 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 				else if (alTracks.size() > 0  && ( e.getSource() == jmiAlbumPlayRepeat
 						|| e.getSource() == jmiAuthorPlayRepeat
 						|| e.getSource() == jmiStylePlayRepeat) ){
-					FIFO.getInstance().push(Util.applyPlayOption(alFilesToPlay),false,false,true);
+					FIFO.getInstance().push(Util.applyPlayOption(alFilesToPlay),false);
 				}
 			}
 		}.start();

@@ -58,7 +58,7 @@ public class PhysicalPerspective extends PerspectiveAdapter{
 	    net.infonode.docking.View dockingPhysicalTableView = addView(view);
 		viewMap.addView(1,dockingPhysicalTableView);
         
-        view = new CoverView();
+        view = new CoverView("2");
 	    net.infonode.docking.View dockingCoverView = addView(view);
 		viewMap.addView(2,dockingCoverView);
         

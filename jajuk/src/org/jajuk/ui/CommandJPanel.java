@@ -27,7 +27,6 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.util.ArrayList;
-import java.util.Properties;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -54,9 +53,11 @@ import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.base.JajukTimer;
 import org.jajuk.base.Player;
 import org.jajuk.base.SearchResult;
+import org.jajuk.base.StackItem;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Util;
+import org.jajuk.util.log.Log;
 
 import com.sun.SwingWorker;
 
@@ -287,7 +288,6 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
                 ObservationManager.register(EVENT_PLAYER_STOP,CommandJPanel.this);
                 ObservationManager.register(EVENT_PLAYER_PAUSE,CommandJPanel.this);
                 ObservationManager.register(EVENT_PLAYER_RESUME,CommandJPanel.this);
-                ObservationManager.register(EVENT_HEART_BEAT,CommandJPanel.this);
                 ObservationManager.register(EVENT_ADD_HISTORY_ITEM,CommandJPanel.this);
                 ObservationManager.register(EVENT_PLAY_ERROR,CommandJPanel.this);
                 ObservationManager.register(EVENT_SPECIAL_MODE,CommandJPanel.this);
@@ -385,7 +385,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
                             if (hi != null){
                                 org.jajuk.base.File file = FileManager.getFile(hi.getFileId());
                                 if (file!= null && !file.isScanned()){  //file must be on a mounted device not refreshing
-                                    FIFO.getInstance().push(file,false);
+                                    FIFO.getInstance().push(new StackItem(file,true),false);
                                 }
                                 else{
                                     Messages.showErrorMessage("120",file.getDirectory().getDevice().getName()); //$NON-NLS-1$
@@ -399,37 +399,26 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
                 if (ae.getSource() == jbBestof ){
                     ArrayList alToPlay = FileManager.getGlobalBestofPlaylist();
                     if ( alToPlay.size() > 0){
-                        Properties pDetails = new Properties();
-                        pDetails.put(DETAIL_SPECIAL_MODE,DETAIL_SPECIAL_MODE_BESTOF);
-                        pDetails.put(DETAIL_SELECTION,alToPlay);
-                        ObservationManager.notify(EVENT_SPECIAL_MODE,pDetails);
+                        FIFO.getInstance().push(Util.createStackItems(alToPlay,false,false),false);
                     }
                 }
                 if (ae.getSource() == jbGlobalRandom ){
                     ArrayList alToPlay = FileManager.getGlobalShufflePlaylist();
                     if ( alToPlay.size() > 0){
-                        Properties pDetail = new Properties();
-                        pDetail.put(DETAIL_SPECIAL_MODE,DETAIL_SPECIAL_MODE_SHUFFLE);
-                        pDetail.put(DETAIL_SELECTION,alToPlay);
-                        ObservationManager.notify(EVENT_SPECIAL_MODE,pDetail);
-                    }
+                        FIFO.getInstance().push(Util.createStackItems(alToPlay,false,false),false);
+                     }
                 }
                 if (ae.getSource() == jbNovelties ){
                     ArrayList alToPlay  = FileManager.getGlobalNoveltiesPlaylist();
                     if ( alToPlay.size() > 0){
-                        Properties pDetail = new Properties();
-                        pDetail.put(DETAIL_SPECIAL_MODE,DETAIL_SPECIAL_MODE_NOVELTIES);
-                        pDetail.put(DETAIL_SELECTION,alToPlay);
-                        ObservationManager.notify(EVENT_SPECIAL_MODE,pDetail);
+                        FIFO.getInstance().push(Util.createStackItems(alToPlay,false,false),false);
                     }
                     else{ //none novelty found
                         Messages.showErrorMessage("127"); //$NON-NLS-1$
                     }
                 }
                 if (ae.getSource() == jbNorm ){
-                    Properties pDetail = new Properties();
-                    pDetail.put(DETAIL_SPECIAL_MODE,DETAIL_SPECIAL_MODE_NORMAL);
-                    ObservationManager.notify(EVENT_SPECIAL_MODE,pDetail);
+                    FIFO.getInstance().clear();
                 }
                 else if (ae.getSource() == jbMute ){
                     Player.mute(); //change mute state
@@ -470,7 +459,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
             public Object construct() {
                 if (!e.getValueIsAdjusting()){
                     SearchResult sr = (SearchResult)sbSearch.alResults.get(sbSearch.jlist.getSelectedIndex());
-                    FIFO.getInstance().push(sr.getFile(),false);
+                    FIFO.getInstance().push(new StackItem(sr.getFile(),true),false);
                 }
                 return null;
             }
@@ -499,6 +488,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
             bPositionChanging = true;
             lDateLastPosMove = System.currentTimeMillis();
             float fPosition = (float)jsPosition.getValue()/100;
+            Log.debug("Seeking to: "+fPosition);
             //max position can't be 100% to allow seek properly
             if (fPosition == 1.0f){
                 fPosition = 0.99f;
@@ -675,7 +665,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
             }
             else if (e.getSource() == jbNext){
                 synchronized(bLock){
-                    FIFO.getInstance().playNextAlbum();
+//                  REFACTOR / TBI FIFO.getInstance().playNextAlbum();/
                     if ( Player.isPaused()){  //player was paused, reset pause button
                         Player.setPaused(false);
                         ObservationManager.notify(EVENT_PLAYER_RESUME);  //notify of this event

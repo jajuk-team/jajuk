@@ -28,7 +28,6 @@ import java.awt.event.MouseWheelListener;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Properties;
 
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenuItem;
@@ -211,29 +210,18 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
 		}
 		else if (e.getSource() == jmiShuffle){
 			ArrayList alToPlay = FileManager.getGlobalShufflePlaylist();
-			Properties pDetails = new Properties();
-			pDetails.put(DETAIL_SPECIAL_MODE,DETAIL_SPECIAL_MODE_SHUFFLE);
-			pDetails.put(DETAIL_SELECTION,alToPlay);
-			ObservationManager.notify(EVENT_SPECIAL_MODE,pDetails);
+			FIFO.getInstance().push(Util.createStackItems(alToPlay,false,false),false);
 		}
 		else if (e.getSource() == jmiBestof){
 			ArrayList alToPlay = FileManager.getGlobalBestofPlaylist();
-			Properties pDetails = new Properties();
-			pDetails.put(DETAIL_SPECIAL_MODE,DETAIL_SPECIAL_MODE_BESTOF);
-			pDetails.put(DETAIL_SELECTION,alToPlay);
-			ObservationManager.notify(EVENT_SPECIAL_MODE,pDetails);		
+			FIFO.getInstance().push(Util.createStackItems(alToPlay,false,false),false);
 		}
 		else if (e.getSource() == jmiNovelties){
 			ArrayList alToPlay = FileManager.getGlobalNoveltiesPlaylist();
-			Properties pDetails = new Properties();
-			pDetails.put(DETAIL_SPECIAL_MODE,DETAIL_SPECIAL_MODE_NOVELTIES);
-			pDetails.put(DETAIL_SELECTION,alToPlay);
-			ObservationManager.notify(EVENT_SPECIAL_MODE,pDetails);
+			FIFO.getInstance().push(Util.createStackItems(alToPlay,false,false),false);
 		}
 		else if (e.getSource() == jmiNorm){
-			Properties pDetails = new Properties();
-			pDetails.put(DETAIL_SPECIAL_MODE,DETAIL_SPECIAL_MODE_NORMAL);
-			ObservationManager.notify(EVENT_SPECIAL_MODE,pDetails);
+		    FIFO.getInstance().clear();
 		}
 		else if (e.getSource() == jcbmiVisible){
 			ConfigurationManager.setProperty(CONF_SHOW_AT_STARTUP,Boolean.toString(jcbmiVisible.getState()));

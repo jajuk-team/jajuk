@@ -118,6 +118,8 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 	JTextField jtfBestofSize;
 	JLabel jlNoveltiesAge;
 	JTextField jtfNoveltiesAge;
+	JLabel jlVisiblePlanned;
+	JTextField jtfVisiblePlanned;
 	JPanel jpP2P;
 	JCheckBox jcbShare;
 	JLabel jlPasswd;
@@ -301,7 +303,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jpOptions = new JPanel();
 		jpOptions.setBorder(BorderFactory.createTitledBorder(Messages.getString("ParameterView.33"))); //$NON-NLS-1$
 		double sizeOptions[][] = {{0.99},
-				{iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,60+2*iYSeparator,iYSeparator,110,iYSeparator}};
+				{iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,60+2*iYSeparator,iYSeparator,130,iYSeparator}};
 		jpOptions.setLayout(new TableLayout(sizeOptions));
 		jcbDisplayUnmounted = new JCheckBox(Messages.getString("ParameterView.34")); //$NON-NLS-1$
 		jcbDisplayUnmounted.setToolTipText(Messages.getString("ParameterView.35")); //$NON-NLS-1$
@@ -346,7 +348,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		//Intro
 		JPanel jp = new JPanel();
 		double sizeIntro[][] = {{0.50,0.50},
-				{20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator}};
+				{20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator}};
 		jp.setLayout(new TableLayout(sizeIntro));
 		//intro position
 		jlIntroPosition = new JLabel(Messages.getString("ParameterView.59")); //$NON-NLS-1$
@@ -459,6 +461,33 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 				return verify(input);
 			}
 		});
+		//number of visible tracks
+		jlVisiblePlanned = new JLabel(Messages.getString("ParameterView.178")); //$NON-NLS-1$
+		jlVisiblePlanned.setToolTipText(Messages.getString("ParameterView.179")); //$NON-NLS-1$
+		jtfVisiblePlanned = new JTextField(3);
+		jtfVisiblePlanned.setToolTipText(Messages.getString("ParameterView.130")); //$NON-NLS-1$
+		jtfVisiblePlanned.setInputVerifier(new InputVerifier(){
+			public boolean verify(JComponent input) {
+				JTextField tf = (JTextField) input;
+				String sText = tf.getText();
+				try{
+					int iValue = Integer.parseInt(sText);
+					if (iValue < 0 || iValue > 100){ //number of planned tracks between 0 and 100 
+						jbOK.setEnabled(false);
+						return false;
+					}
+				}
+				catch(Exception e){
+					return false;
+				}
+				jbOK.setEnabled(true);
+				return true;
+			}
+			
+			public boolean shouldYieldFocus(JComponent input) {
+				return verify(input);
+			}
+		});
 		//add panels
 		jp.add(jlIntroPosition,"0,0"); //$NON-NLS-1$
 		jp.add(jtfIntroPosition,"1,0"); //$NON-NLS-1$
@@ -468,6 +497,9 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jp.add(jtfBestofSize,"1,4"); //$NON-NLS-1$
 		jp.add(jlNoveltiesAge,"0,6"); //$NON-NLS-1$
 		jp.add(jtfNoveltiesAge,"1,6"); //$NON-NLS-1$
+		jp.add(jlVisiblePlanned,"0,8"); //$NON-NLS-1$
+		jp.add(jtfVisiblePlanned,"1,8"); //$NON-NLS-1$
+		
 		jpOptions.add(jcbDisplayUnmounted,"0,1"); //$NON-NLS-1$
 		jpOptions.add(jcbRestart,"0,3"); //$NON-NLS-1$
 		jpOptions.add(jcbSearchUnmounted,"0,5"); //$NON-NLS-1$
@@ -799,6 +831,10 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 					if (!sNoveltiesAge.equals("")){ //$NON-NLS-1$
 						ConfigurationManager.setProperty(CONF_OPTIONS_NOVELTIES_AGE,sNoveltiesAge);
 					}
+					String sVisiblePlanned = jtfVisiblePlanned.getText();
+					if (!sVisiblePlanned.equals("")){ //$NON-NLS-1$
+						ConfigurationManager.setProperty(CONF_OPTIONS_VISIBLE_PLANNED,sVisiblePlanned);
+					}
 					//startup
 					if (jrbNothing.isSelected()){
 						ConfigurationManager.setProperty(CONF_STARTUP_MODE,STARTUP_MODE_NOTHING);
@@ -963,6 +999,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jtfIntroPosition.setText(ConfigurationManager.getProperty(CONF_OPTIONS_INTRO_BEGIN));
 		jtfBestofSize.setText(ConfigurationManager.getProperty(CONF_BESTOF_SIZE));
 		jtfNoveltiesAge.setText(ConfigurationManager.getProperty(CONF_OPTIONS_NOVELTIES_AGE));
+		jtfVisiblePlanned.setText(ConfigurationManager.getProperty(CONF_OPTIONS_VISIBLE_PLANNED));
 		jcbShare.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_P2P_SHARE));
 		jpfPasswd.setText(ConfigurationManager.getProperty(CONF_OPTIONS_P2P_PASSWORD));
 		jcbAddRemoteProperties.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_P2P_ADD_REMOTE_PROPERTIES));

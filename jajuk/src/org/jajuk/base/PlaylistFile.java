@@ -248,16 +248,10 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 			//clean data
 			alBasicFiles = new ArrayList(10);
 			if ( !FIFO.isStopped()){
-				//add currently played file
-				org.jajuk.base.File file = FIFO.getInstance().getCurrentFile();
-				if ( file != null){
-					alBasicFiles.add(new BasicFile(file));  
-				}
-				//next files
 				ArrayList alQueue = (ArrayList)FIFO.getInstance().getFIFO().clone();
 				Iterator it = alQueue.iterator();
 				while (it.hasNext()){
-					BasicFile bfile = new BasicFile((org.jajuk.base.File)it.next()); 
+					BasicFile bfile = new BasicFile(((StackItem)it.next()).getFile()); 
 					alBasicFiles.add(bfile);
 				}
 			}
@@ -553,7 +547,7 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 			Messages.showErrorMessage("018");	 //$NON-NLS-1$
 		}
 		else{
-			FIFO.getInstance().push(alFiles,false);
+			FIFO.getInstance().push(Util.createStackItems(alFiles,false,true),false);
 		}
 	}
 	

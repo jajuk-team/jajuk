@@ -232,6 +232,9 @@ public class DeviceManager implements ITechnicalStrings{
 				deviceToCheck.setProperty(DEVICE_OPTION_SYNCHRO_SOURCE,null);
 			}
 		}
+		//Sort collection
+		FileManager.sortFiles();//resort collection in case of
+		
 		//refresh views
 		ObservationManager.notify(EVENT_DEVICE_REFRESH);
 	}

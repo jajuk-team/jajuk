@@ -34,7 +34,8 @@ import org.jajuk.util.log.Log;
 
 /**
  *  This is a mediator managing relationships between subjets and observers 
- * @author     bflorat
+ * <p>All notification methods are synchronized to assure event order 
+ *  @author     bflorat
  * @created    12 dec. 2003
  */
 public class ObservationManager implements ITechnicalStrings{
@@ -76,7 +77,7 @@ public class ObservationManager implements ITechnicalStrings{
 	 * Notify all components having registered for the given subject
 	 * @param subject
 	 */
-	public static void notify(final String subject){
+	public static synchronized void notify(final String subject){
 		notify(subject,false); //asynchronous notification by default to avoid exception throw in the register current thread
 	}
 	
@@ -84,10 +85,8 @@ public class ObservationManager implements ITechnicalStrings{
 	 * Notify synchronously all components having registered for the given subject
 	 * @param subject
 	 */
-	public static void notifySync(final String subject){
-	    if (!subject.equals(EVENT_HEART_BEAT)){ //do not show this heart beat 
-	        Log.debug("Notify: "+subject); //$NON-NLS-1$
-	    }
+	public static synchronized void notifySync(final String subject){
+	    Log.debug("Notify: "+subject); //$NON-NLS-1$
 	    ArrayList alComponents =(ArrayList)hEventComponents.get(subject);
 	    if (alComponents == null){
 	        return;
@@ -122,7 +121,7 @@ public class ObservationManager implements ITechnicalStrings{
 	 * @param subject
 	 * @param whether the notification is synchronous or not
 	 */
-	public static void notify(final String subject, boolean bSync){
+	public static synchronized void notify(final String subject, boolean bSync){
 		if (bSync){
 			ObservationManager.notifySync(subject);
 		}
@@ -141,7 +140,7 @@ public class ObservationManager implements ITechnicalStrings{
 	 * @param subject
 	 * @param pDetails informations about this event
 	 */
-	public static void notify(final String subject,Properties pDetails){
+	public static synchronized void notify(final String subject,Properties pDetails){
 		hEventDetails.put(subject,pDetails);
 		notify(subject);
 	}

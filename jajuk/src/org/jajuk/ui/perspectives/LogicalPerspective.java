@@ -62,7 +62,7 @@ public class LogicalPerspective extends PerspectiveAdapter{
 	    net.infonode.docking.View dockingLogicalTableView = addView(view);
 		viewMap.addView(1,dockingLogicalTableView);
         
-        view = new CoverView();
+        view = new CoverView("1");
 	    net.infonode.docking.View dockingCoverView = addView(view);
 		viewMap.addView(2,dockingCoverView);
         

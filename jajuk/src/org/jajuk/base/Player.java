@@ -176,7 +176,12 @@ public class Player implements ITechnicalStrings{
 	 * @return Returns the lTime in ms
 	 */
 	public static long getElapsedTime() {
-		return pCurrentPlayerImpl.getElapsedTime();
+		if (pCurrentPlayerImpl != null){
+		    return pCurrentPlayerImpl.getElapsedTime();
+		}
+		else{
+		    return 0;
+		}
 	}
 	
 	/**Pause the player*/
@@ -185,8 +190,10 @@ public class Player implements ITechnicalStrings{
 		     if (!bPlaying){ //ignore pause when not playing to avoid confusion between two tracks
 		         return;
 		     }
-		     pCurrentPlayerImpl.pause();
-		     bPaused = true;
+		     if (pCurrentPlayerImpl != null){
+		         pCurrentPlayerImpl.pause();
+			}
+		    bPaused = true;
 		} catch (Exception e) {
 			Log.error(e); 
 		}
@@ -195,8 +202,10 @@ public class Player implements ITechnicalStrings{
 	/**resume the player*/
 	public static void resume(){
 		try {
-			pCurrentPlayerImpl.resume();
-			bPaused = false;
+		    if (pCurrentPlayerImpl != null){
+		        pCurrentPlayerImpl.resume();
+			}
+		    bPaused = false;
 		} catch (Exception e) {
 			Log.error(e); 
 		}
@@ -220,7 +229,7 @@ public class Player implements ITechnicalStrings{
 	/**Seek to a given position in %. ex : 0.2 for 20% */
 	public static void seek(float fPosition){
 	    //check if we are yet seeking
-	    if (!pCurrentPlayerImpl.isSeeking()){
+	    if (pCurrentPlayerImpl !=null && !pCurrentPlayerImpl.isSeeking()){
 	        // bound seek
 	        if (fPosition < 0.0f){
 	            fPosition = 0.0f;
@@ -228,7 +237,12 @@ public class Player implements ITechnicalStrings{
 	        else if (fPosition >= 1.0f){
 	            fPosition = 0.99f;
 	        }
-	        pCurrentPlayerImpl.seek(fPosition);
+	        try{
+	            pCurrentPlayerImpl.seek(fPosition);
+	        }
+	        catch(Exception e){ //we can get some errors in unexpected cases
+	            Log.debug(e.toString());
+	        }
 	    }
 	}
 	
@@ -236,6 +250,19 @@ public class Player implements ITechnicalStrings{
 	 * @return position in track in %
 	 */
 	public static float getCurrentPosition(){
-		return pCurrentPlayerImpl.getCurrentPosition();
+	    if (pCurrentPlayerImpl != null){
+	        return pCurrentPlayerImpl.getCurrentPosition();
+		}
+	    else{
+	        return 0.0f;
+	    }
+	
+	    
 	}
+    /**
+     * @return Returns the bPlaying.
+     */
+    public static boolean isPlaying() {
+        return bPlaying;
+    }
 }

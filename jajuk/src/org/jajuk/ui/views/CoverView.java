@@ -52,6 +52,8 @@ import javax.swing.filechooser.FileFilter;
 import layout.TableLayout;
 
 import org.jajuk.Main;
+import org.jajuk.base.Album;
+import org.jajuk.base.Author;
 import org.jajuk.base.Cover;
 import org.jajuk.base.Directory;
 import org.jajuk.base.FIFO;
@@ -114,10 +116,23 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
     /**Thread lock for displayer*/
     byte[] bLock = new byte[0];
     
+    /**ID*/
+    public String sID;
+    
+    
+    
+    
+    
+    
+    
+    
+    
     /**
      * Constructor
+     * @param sID ID used to store independently parameters of views
      */
-    public CoverView() {
+    public CoverView(String sID) {
+        this.sID = sID;
     }
     
     /* (non-Javadoc)
@@ -166,7 +181,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
         jcbAccuracy.addItem(Messages.getString("ParameterView.168")); //$NON-NLS-1$
         jcbAccuracy.addItem(Messages.getString("CoverView.12")); //$NON-NLS-1$
         jcbAccuracy.addItem(Messages.getString("CoverView.13")); //$NON-NLS-1$
-        jcbAccuracy.setSelectedIndex(Integer.parseInt(ConfigurationManager.getProperty(CONF_COVERS_ACCURACY)));
+        jcbAccuracy.setSelectedIndex(Integer.parseInt(ConfigurationManager.getProperty(CONF_COVERS_ACCURACY+"_"+sID)));
         jcbAccuracy.addActionListener(this);
         
         jpControl.add(jbPrevious,"0,0");//$NON-NLS-1$
@@ -274,7 +289,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                             public void run() {
                                 synchronized(alCovers){
                                     int iCoversBeforeSearch = alCovers.size(); //stores number of covers before web search
-                                    final String sQuery = Util.createQuery(fCurrent);
+                                    final String sQuery = createQuery(fCurrent);
                                     Log.debug("Query="+sQuery); //$NON-NLS-1$
                                     if (!sQuery.equals("")){ //there is not enough information in tags for a web search //$NON-NLS-1$
                                         final ArrayList alUrls;
@@ -550,7 +565,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
      */
     public void actionPerformed(final ActionEvent e) {
         if (e.getSource() == jcbAccuracy){
-            ConfigurationManager.setProperty(CONF_COVERS_ACCURACY,Integer.toString(jcbAccuracy.getSelectedIndex()));
+            ConfigurationManager.setProperty(CONF_COVERS_ACCURACY+"_"+sID,Integer.toString(jcbAccuracy.getSelectedIndex()));
             SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
                     update(EVENT_COVER_REFRESH); //force refreshing
@@ -713,6 +728,61 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
         else{
             return alCovers.size() ;
         }
+    }
+    
+    /**
+     * 
+     * @param file
+     * @return an accurate  google search query for a file
+     */
+    public  String createQuery(org.jajuk.base.File file){
+        String sQuery = ""; //$NON-NLS-1$
+        int iAccuracy = ConfigurationManager.getInt(CONF_COVERS_ACCURACY+"_"+sID);
+        Track track = file.getTrack();
+        Author author = track.getAuthor();
+        Album album = track.getAlbum();
+        switch(iAccuracy){
+        	case 0: //low, default
+        	    if (!author.isUnknown()){
+        	        sQuery += author.getName() + " "; //$NON-NLS-1$    
+        	    }
+        	    if (!album.isUnknown()){
+        	        sQuery += album.getName() + " "; //$NON-NLS-1$    
+        	    }
+        	    break;
+        	 case 1: //medium
+        	     if (!author.isUnknown()){
+              	     sQuery += "\"" +author.getName() + "\" "; //put "" around it //$NON-NLS-1$ //$NON-NLS-2$
+        	     }
+        	     if (!album.isUnknown()){
+         	        sQuery += "\""+ album.getName() + "\" "; //$NON-NLS-1$    
+         	    }
+              	 break;
+        	 case 2: //high 
+        	     if (!author.isUnknown()){
+              	     sQuery += "+\"" +author.getName() + "\" "; //put "" around it //$NON-NLS-1$ //$NON-NLS-2$
+        	     }
+        	     if (!album.isUnknown()){
+         	        sQuery += "+\""+ album.getName() + "\" "; //$NON-NLS-1$    
+         	    }
+                 break;
+             case 3: //by author 
+                 if (!author.isUnknown()){
+         	        sQuery += author.getName() + " "; //$NON-NLS-1$    
+         	    } 
+                 break;
+             case 4: //by album 
+                 if (!album.isUnknown()){
+         	        sQuery += album.getName() + " "; //$NON-NLS-1$    
+         	    } 
+                 break;
+             case 5: //by track name 
+                 sQuery += track.getName() ; 
+                 break;
+             default :
+                 break;
+             }
+            return sQuery;
     }
     
     

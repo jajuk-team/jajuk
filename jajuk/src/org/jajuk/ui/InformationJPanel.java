@@ -149,7 +149,6 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,Obser
 		  //check if some track has been lauched before the view has been displayed
         update(EVENT_FILE_LAUNCHED);
         //register for given events
-        ObservationManager.register(EVENT_HEART_BEAT,this);
         ObservationManager.register(EVENT_ZERO,this);
         ObservationManager.register(EVENT_FILE_LAUNCHED,this);
         ObservationManager.register(EVENT_PLAY_ERROR,this);
@@ -272,7 +271,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,Obser
      * @see org.jajuk.ui.Observer#update(java.lang.String)
      */
 	public void update(String subject) {
-	    if (EVENT_HEART_BEAT.equals(subject)){
+	    if (EVENT_HEART_BEAT.equals(subject) &&!FIFO.isStopped()){
 	        long length = JajukTimer.getInstance().getCurrentTrackTotalTime(); 
             long lTime = JajukTimer.getInstance().getCurrentTrackEllapsedTime();
         	long lTotalTime = JajukTimer.getInstance().getTotalTimeToPlay();

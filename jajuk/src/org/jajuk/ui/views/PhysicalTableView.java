@@ -32,6 +32,7 @@ import javax.swing.JPopupMenu;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
+import org.jajuk.base.StackItem;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.ObservationManager;
 import org.jajuk.ui.Observer;
@@ -121,7 +122,7 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
 		//Columns names
 		String[] sColName = new String[]{Messages.getString("PhysicalTableView.7"),Messages.getString("PhysicalTableView.8"),Messages.getString("PhysicalTableView.9"),Messages.getString("PhysicalTableView.10"),Messages.getString("PhysicalTableView.11"),Messages.getString("PhysicalTableView.12"),Messages.getString("PhysicalTableView.13"),Messages.getString("PhysicalTableView.14")}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
 		//Values
-		ArrayList alFiles = FileManager.getSortedFiles();
+		ArrayList alFiles = FileManager.getFiles();
 		ArrayList alToShow = new ArrayList(alFiles.size());
 		Iterator it = alFiles.iterator();
 		while ( it.hasNext()){
@@ -195,7 +196,7 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
 		if ( e.getClickCount() == 2){ //double clic, can be only one file
 			File file = FileManager.getFile(jtable.getSortingModel().getValueAt(jtable.getSelectedRow(),jtable.getColumnCount()).toString());
 			if (!file.isScanned()){
-				FIFO.getInstance().push(file,false);//launch it
+				FIFO.getInstance().push(new StackItem(file,true),false);//launch it
 			}
 			else{
 				Messages.showErrorMessage("120",file.getDirectory().getDevice().getName()); //$NON-NLS-1$
@@ -260,7 +261,7 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
 				}
 				//repeat play
 				else if ( e.getSource() == jmiFilePlayRepeat){
-					FIFO.getInstance().push(Util.applyPlayOption(alFilesToPlay),false,false,true);
+					FIFO.getInstance().push(Util.applyPlayOption(alFilesToPlay),false);
 				}
 			}
 		}.start();
@@ -272,7 +273,7 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
 	 */
 	public void applyFilter(String sPropertyName,String sPropertyValue) {
 		//Values
-		ArrayList alFiles = FileManager.getSortedFiles();
+		ArrayList alFiles = FileManager.getFiles();
 		ArrayList alToShow = new ArrayList(alFiles.size());
 		Iterator it = alFiles.iterator();
 		while ( it.hasNext()){

@@ -150,6 +150,9 @@ public interface ITechnicalStrings {
 	public static final String ICON_DEFAULT_COVER =  PATH_ICONS + "16x16/ok.png";
 	public static final String ICON_MODE_NORMAL =  PATH_ICONS + "16x16/norm.png";
 	public static final String ICON_NET_SEARCH =  PATH_ICONS + "16x16/netsearch.png";
+	public static final String ICON_TRACK_FIFO_PLANNED =  PATH_ICONS + "16x16/clock.png";
+	public static final String ICON_TRACK_FIFO_NORM =  PATH_ICONS + "16x16/player_perspective.png";
+	public static final String ICON_TRACK_FIFO_REPEAT =  PATH_ICONS + "16x16/repeat.png";
 			
 	//images
 	public static final String IMAGES_SPLASHSCREEN =  PATH_IMAGES + "jajuk-splashscreen.png";
@@ -275,6 +278,7 @@ public interface ITechnicalStrings {
 	public static final String EVENT_PLAYER_PAUSE="player pause";//the pause button has been pressed
 	public static final String EVENT_PLAYER_RESUME="player resume";//the resume button has been pressed
 	public static final String EVENT_PLAYLIST_REFRESH="playlist refresh";
+	public static final String EVENT_PLAYLIST_CHANGED="playlist changed";
 	public static final String EVENT_FILE_LAUNCHED="file launched";//a file has been lauched by the fifo
 	public static final String EVENT_INFORMATION_DISPLAY="information display";//the information need to be updated
 	public static final String EVENT_HEART_BEAT="heart beat";//heart beat for geenral use to refresh subscribers every n secs
@@ -298,6 +302,7 @@ public interface ITechnicalStrings {
 	public static final String DETAIL_SPECIAL_MODE_NORMAL="norm";
 	public static final String DETAIL_SELECTION="selection";
 	public static final String DETAIL_ENABLE="enable";
+	public static final String DETAIL_ORIGIN="origin";
 				
 	//Look and feel
 	public static final String LNF_METAL = "Metal";
@@ -355,6 +360,7 @@ public interface ITechnicalStrings {
 	public static final String CONF_OPTIONS_P2P_HIDE_LOCAL_PROPERTIES = "jajuk.options.p2p.hide_local_properties";
 	public static final String CONF_OPTIONS_P2P_PASSWORD = "jajuk.options.p2p.password";
 	public static final String CONF_OPTIONS_NOVELTIES_AGE = "jajuk.options.novelties";
+	public static final String CONF_OPTIONS_VISIBLE_PLANNED = "jajuk.options.visible_planned"; //number of visible planned tracks
 	public static final String CONF_HISTORY = "jajuk.options.history";
 	public static final String CONF_FIRST_CON = "jajuk.first_con";
 	public static final String CONF_TAGS_DEEP_SCAN = "jajuk.tags.deep_scan";

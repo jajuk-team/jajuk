@@ -30,6 +30,7 @@ import javax.swing.JPopupMenu;
 
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
+import org.jajuk.base.StackItem;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.i18n.Messages;
@@ -196,7 +197,7 @@ public class LogicalTableView extends AbstractTableView implements Observer{
 			Track track = TrackManager.getTrack(jtable.getSortingModel().getValueAt(jtable.getSelectedRow(),jtable.getColumnCount()).toString());
 			File file = track.getPlayeableFile();
 			if ( file != null){
-				FIFO.getInstance().push(file,false);//launch it	
+				FIFO.getInstance().push(new StackItem(file,true),false);//launch it	
 			}
 			else{
 				Messages.showErrorMessage("010",track.getName()); //$NON-NLS-1$
@@ -261,7 +262,7 @@ public class LogicalTableView extends AbstractTableView implements Observer{
 				}
 				//repeat play
 				else if ( e.getSource() == jmiTrackPlayRepeat){
-					FIFO.getInstance().push(Util.applyPlayOption(alFilesToPlay),false,false,true);
+					FIFO.getInstance().push(Util.applyPlayOption(alFilesToPlay),false);
 				}
 			}
 		}.start();

@@ -146,6 +146,7 @@ public class ConfigurationManager implements ITechnicalStrings{
 		properties.put(CONF_OPTIONS_RESTART,TRUE);
 		properties.put(CONF_OPTIONS_SEARCH_UNMOUNTED,TRUE);
 		properties.put(CONF_OPTIONS_NOVELTIES_AGE,"30"); //$NON-NLS-1$
+		properties.put(CONF_OPTIONS_VISIBLE_PLANNED,"10"); //$NON-NLS-1$
 		//set default trace level, debug in debug mode and warning in normal mode
 		if (Main.isDebugMode()){
 		    properties.put(CONF_OPTIONS_LOG_LEVEL,Integer.toString(Log.DEBUG));
@@ -192,7 +193,10 @@ public class ConfigurationManager implements ITechnicalStrings{
 		properties.put(CONF_COVERS_RESIZE,TRUE);
 		properties.put(CONF_COVERS_MIN_SIZE,"5"); //$NON-NLS-1$
 		properties.put(CONF_COVERS_MAX_SIZE,"100"); //$NON-NLS-1$
-		properties.put(CONF_COVERS_ACCURACY,"1"); //low accuracy //$NON-NLS-1$
+		properties.put(CONF_COVERS_ACCURACY+"_1","1"); //low accuracy //$NON-NLS-1$
+		properties.put(CONF_COVERS_ACCURACY+"_2","1"); //low accuracy //$NON-NLS-1$
+		properties.put(CONF_COVERS_ACCURACY+"_3","3"); //Author accuracy //$NON-NLS-1$
+		properties.put(CONF_COVERS_ACCURACY+"_4","4"); //Album accuracy //$NON-NLS-1$
 		properties.put(CONF_COVERS_CHANGE_AT_EACH_TRACK,FALSE); 
 	}
 	

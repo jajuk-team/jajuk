@@ -26,6 +26,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Properties;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -129,7 +130,10 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 				else{ //we selected a new playlist file
 					Util.waiting();
 					selectPlaylistFileItem(plfi);
-					setCurrentPlayListFileInEditor(plfi);
+					Properties properties = new Properties();
+					properties.put(DETAIL_SELECTION,plfi);
+					properties.put(DETAIL_ORIGIN,this);
+					ObservationManager.notify(EVENT_PLAYLIST_CHANGED,properties);
 					if (e.getButton() == MouseEvent.BUTTON3){  //right button
 						showMenu(plfi,e);
 					}
@@ -147,7 +151,10 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 		ObservationManager.register(EVENT_DEVICE_REFRESH,this);
 		//set queue playlist as default in playlist editor
 		selectPlaylistFileItem(plfiQueue);	
-		setCurrentPlayListFileInEditor(plfiQueue);
+		Properties properties = new Properties();
+		properties.put(DETAIL_SELECTION,plfiQueue);
+		properties.put(DETAIL_ORIGIN,this);
+		ObservationManager.notify(EVENT_PLAYLIST_CHANGED,properties);
 	}
 	
 	
@@ -177,13 +184,6 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 		jpmenu.show(e.getComponent(),e.getX(),e.getY());
 		
 	}
-	
-	/**
-	 * Set playlist file in the associated editor view
-	 * @param plfi
-	 */
-	abstract void setCurrentPlayListFileInEditor(PlaylistFileItem plfi);
-	
 	
 	/**
 	 * Set current playlist file item
@@ -233,7 +233,10 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 					jpRoot.add(Box.createVerticalStrut(500));  //make sure specials playlists are paked to the top
 					//set queue playlist as default in playlist editor
 					selectPlaylistFileItem(plfiQueue);
-					setCurrentPlayListFileInEditor(plfiQueue);
+					Properties properties = new Properties();
+					properties.put(DETAIL_SELECTION,plfiQueue);
+					properties.put(DETAIL_ORIGIN,this);
+					ObservationManager.notify(EVENT_PLAYLIST_CHANGED,properties);
 					AbstractPlaylistRepositoryView.this.revalidate();
 					AbstractPlaylistRepositoryView.this.repaint();
 				}

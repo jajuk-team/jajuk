@@ -47,6 +47,8 @@ public class FileManager implements ITechnicalStrings{
 	private static boolean bRateHasChanged = true;
 	/**Best of files*/
 	private static ArrayList alBestofFiles = new ArrayList(20);
+	/**Sorted files*/
+	private static ArrayList alSortedFiles = new ArrayList(1000);
 	
 	/**
 	 * No constructor available, only static access
@@ -96,14 +98,17 @@ public class FileManager implements ITechnicalStrings{
 
 	/** Return all registred files */
 	public static synchronized ArrayList getFiles() {
-		return new ArrayList(hmIdFile.values());
-	} 
+		if (alSortedFiles.size() == 0){
+		    alSortedFiles = new ArrayList(hmIdFile.values());
+		    sortFiles();
+		}
+	    return alSortedFiles;
+	}
 	
-	/** Return sorted registred files*/
-	public static synchronized ArrayList getSortedFiles() {
-		ArrayList al = getFiles();
-		Collections.sort(al);
-		return al;
+	/** Sorts collection*/
+	public static synchronized void sortFiles() {
+		Collections.sort(alSortedFiles);
+		Log.debug("Collection sorted");
 	} 
 
 	
@@ -284,7 +289,7 @@ public class FileManager implements ITechnicalStrings{
 		    return null;
 		}
 	    File fileNext = null;
-		ArrayList alSortedFiles = getSortedFiles();
+		ArrayList alSortedFiles = getFiles();
 		//look for a correct file from index to collection end
 		boolean bOk = false;
 		for (int index=alSortedFiles.indexOf(file)+1;index<alSortedFiles.size();index++){
@@ -313,7 +318,7 @@ public class FileManager implements ITechnicalStrings{
 		}
 		return null;
 	}
-	
+
 	
 	/** Return previous mounted file 
 	 * @param file : a file
@@ -324,7 +329,7 @@ public class FileManager implements ITechnicalStrings{
 		    return null;
 		}
 	    File filePrevious = null;
-		ArrayList alSortedFiles = getSortedFiles();
+		ArrayList alSortedFiles = getFiles();
 		//test if this file is the very first one
 		if (alSortedFiles.indexOf(file) == 0){
 		    Messages.showErrorMessage("128"); //$NON-NLS-1$
@@ -356,7 +361,7 @@ public class FileManager implements ITechnicalStrings{
 	    }
 	    ArrayList alResu = new ArrayList(10);
 	    Directory dir = file.getDirectory();
-	    Iterator it = getSortedFiles().iterator();
+	    Iterator it = getFiles().iterator();
 	    while ( it.hasNext()){
 	        File f = (File)it.next();
 	        Directory d = f.getDirectory();
@@ -378,7 +383,7 @@ public class FileManager implements ITechnicalStrings{
 	    }
 	    ArrayList alResu = new ArrayList(10);
 	    Directory dir = file.getDirectory();
-	    Iterator it = getSortedFiles().iterator();
+	    Iterator it = getFiles().iterator();
 	    boolean bSeenTheOne = false;
 	    while ( it.hasNext()){
 	        File f = (File)it.next();

@@ -101,11 +101,4 @@ public class PhysicalPlaylistRepositoryView extends AbstractPlaylistRepositoryVi
 		}
 	}
 	
-	
-	/* (non-Javadoc)
-	 * @see org.jajuk.ui.views.AbstractPlaylistRepositoryView#setCurrentPlayListFileInEditor(org.jajuk.ui.PlaylistFileItem)
-	 */
-	void setCurrentPlayListFileInEditor(PlaylistFileItem plfi) {
-		PhysicalPlaylistEditorView.getInstance().setCurrentPlayListFile(plfi);
-	}
 }

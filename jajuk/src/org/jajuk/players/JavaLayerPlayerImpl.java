@@ -176,8 +176,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl,ITechnicalStrings{
     public synchronized void stop() {
         if (player!= null ){
             try {
-                player.setGain(0.01f); //set this to avoid starnge sound
-    		    player.stop();
+                player.stop();
             } catch (Exception e) {
                 Log.error(e);
             }

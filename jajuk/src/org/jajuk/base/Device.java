@@ -269,6 +269,8 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	            Log.debug(sOut); 
 	            //clear history to remove olf files referenced in it
 	            History.getInstance().clear(Integer.parseInt(ConfigurationManager.getProperty(CONF_HISTORY))); //delete old history items
+	            //Sort collection
+	    		FileManager.sortFiles();//resort collection in case of
 	            //notify views to refresh
 	            ObservationManager.notify(EVENT_DEVICE_REFRESH);		
 	        }

@@ -73,7 +73,11 @@ public class JajukTable extends JTable implements ITechnicalStrings{
 		int colIndex = columnAtPoint(p);
 		int realColumnIndex = convertColumnIndexToModel(colIndex);
 		TableModel model = getModel();
-		String sTip = model.getValueAt(rowIndex,colIndex).toString();
+		Object o = model.getValueAt(rowIndex,colIndex);
+		if (o == null){
+		    return null;
+		}
+		String sTip = o.toString();
 		return sTip;
 	}
 	
