@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.3  2003/10/10 22:32:13  bflorat
+ * *** empty log message ***
+ *
  * Revision 1.2  2003/10/09 21:14:13  bflorat
  * new keys and suppressed hard path
  *
@@ -53,11 +56,11 @@ public interface TechnicalStrings {
 	public static final String ICON_VOLUME = ICON_PATH + "16x16/volume.png";
 	public static final String ICON_POSITION = ICON_PATH + "16x16/bottom.png";
 	
-	public static final String ICON_PERSPECTIVE_PHYSICAL			= ICON_PATH + "16x16/bottom.png";
-	public static final String ICON_PERSPECTIVE_LOGICAL			= ICON_PATH + "16x16/bottom.png";
-	public static final String ICON_PERSPECTIVE_HELP				= ICON_PATH + "16x16/bottom.png";
-	public static final String ICON_PERSPECTIVE_STATISTICS		= ICON_PATH + "16x16/bottom.png";
-	public static final String ICON_PERSPECTIVE_CONFIGURATION	= ICON_PATH + "16x16/bottom.png";
+	public static final String ICON_PERSPECTIVE_PHYSICAL			= ICON_PATH + "16x16/physical_perspective.png";
+	public static final String ICON_PERSPECTIVE_LOGICAL			= ICON_PATH + "16x16/logical_perspective.png";
+	public static final String ICON_PERSPECTIVE_HELP				= ICON_PATH + "16x16/info.png";
+	public static final String ICON_PERSPECTIVE_STATISTICS		= ICON_PATH + "16x16/percent.png";
+	public static final String ICON_PERSPECTIVE_CONFIGURATION	= ICON_PATH + "16x16/configure.png";
 
 	//logs
 	public static final String LOG_FILE = System.getProperty("user.home")+"/.jajuk/jajuk.log";

@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.3  2003/10/10 22:32:42  bflorat
+ * *** empty log message ***
+ *
  * Revision 1.2  2003/10/10 15:58:26  bflorat
  * - Set rollover on buttons
  * - border
@@ -81,7 +84,7 @@ public class CommandJPanel extends JPanel implements TechnicalStrings{
 	public CommandJPanel(){
 		//set default layout and size
 		setLayout(new BoxLayout(this,BoxLayout.X_AXIS)); //we use a BoxLayout and not a FlowLayout to allow resizing
-		setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		setBorder(BorderFactory.createEtchedBorder());
 		//dimensions
 		int height1 = 25;  //buttons, components
 		int height2 = 36; //slider ( at least this height in the gtk+ l&f ) 
@@ -202,7 +205,6 @@ public class CommandJPanel extends JPanel implements TechnicalStrings{
 		jtbVolume.setMaximumSize(d200_2);
 		jlVolume = new JLabel(new ImageIcon(ICON_VOLUME)); 
 		jtbVolume.add(jlVolume);
-		jtbVolume.addSeparator();
 		jsVolume = new JSlider(0,100,50);
 		jsVolume.setToolTipText(Messages.getString("CommandJPanel.Volume_1")); //$NON-NLS-1$
 		jsVolume.setMinimumSize(d50_2);
@@ -217,7 +219,6 @@ public class CommandJPanel extends JPanel implements TechnicalStrings{
 		jtbPosition.setMaximumSize(d200_2);
 		jlPosition = new JLabel(new ImageIcon(ICON_POSITION)); 
 		jtbPosition.add(jlPosition);
-		jtbPosition.addSeparator();
 		jsPosition = new JSlider(0,100,0);
 		jsPosition.setToolTipText(Messages.getString("CommandJPanel.Go_to_this_position_in_the_played_track_2")); //$NON-NLS-1$
 		jsPosition.setMinimumSize(d50_2);
