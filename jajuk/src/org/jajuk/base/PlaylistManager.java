@@ -44,7 +44,7 @@ public class PlaylistManager {
 	 * Register an Playlist
 	 *@param file : playlist file
 	 */	
-	public static Playlist registerPlaylist(PlaylistFile plFile) {
+	public static synchronized Playlist registerPlaylist(PlaylistFile plFile) {
 		String sId = plFile.getHashcode();
 		return registerPlaylist(sId,plFile);
 	}
@@ -53,7 +53,7 @@ public class PlaylistManager {
 	 * Register an Playlist with a known id
 	 *@param file : playlist file
 	 */	
-	public static Playlist registerPlaylist(String sId,PlaylistFile plFile) {
+	public static synchronized Playlist registerPlaylist(String sId,PlaylistFile plFile) {
 		if (hmPlaylists.containsKey(sId)){ //playlist already exist, add a file
 			Playlist playlist = (Playlist)hmPlaylists.get(sId);
 			playlist.addFile(plFile);
@@ -66,7 +66,7 @@ public class PlaylistManager {
 
 
 	/**Return all registred Playlists*/
-	public static ArrayList getPlaylists() {
+	public static synchronized ArrayList getPlaylists() {
 		return new ArrayList(hmPlaylists.values());
 	}
 
