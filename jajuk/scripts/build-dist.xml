@@ -6,7 +6,7 @@
   <property name='libdir' value='lib'/>
   <property name='srcdir' value='src'/>
   <property name='javadocdir' value='dist-files/doc/javadoc'/>
-  <property name='version' value='0.1.2'/>
+  <property name='version' value='0.1.3'/>
   <property name='jarname' value='jajuk.jar'/>
   <property name='helpsetjarname' value='jajuk-help.jar'/>
   <property name='distjarname' value='jajuk-install-'/>
@@ -25,13 +25,16 @@
      <fileset dir='${libdir}'/>
   	</copy>
   	<mkdir dir='${distdir}/bin'/>
+  	<copy todir='${distdir}/bin' >
+     <fileset file='${basedir}/systray4j.dll'/>
+  	</copy>
     <mkdir dir='${distdir}/classes'/>
     <copy todir='${distdir}/src' >
      <fileset dir='${srcdir}'/>
   	</copy>
   	<copy todir='${distdir}' >
      <fileset file='${basedir}/dist-files/legals/LICENSE.txt'/>
-  	 <fileset file='${basedir}/dist-files/doc/README.html'/>
+      <fileset file='${basedir}/dist-files/doc/README.html'/>
   	</copy>
   	<copy todir='${distdir}/src' >
      <fileset file='${basedir}/dist-files/packaging/MANIFEST.MF'/>
