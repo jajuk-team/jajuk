@@ -38,6 +38,7 @@ import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
@@ -50,6 +51,7 @@ import org.jajuk.base.FileManager;
 import org.jajuk.base.History;
 import org.jajuk.base.HistoryItem;
 import org.jajuk.base.ITechnicalStrings;
+import org.jajuk.base.JajukTimer;
 import org.jajuk.base.Player;
 import org.jajuk.base.SearchResult;
 import org.jajuk.i18n.Messages;
@@ -113,6 +115,12 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
     private static long lDateLastPosMove;
     /**Lock to avoid multiple next/previous*/
     private static byte[] bLock = new byte[0];
+    /** Swing Timer to refresh the component*/ 
+    private Timer timer = new Timer(JajukTimer.DEFAULT_HEARTBEAT,new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+             update(EVENT_HEART_BEAT);
+        }
+    });
     
     
     
@@ -293,6 +301,9 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 	                //check if some track has been lauched before the view has been displayed
 	                update(EVENT_HEART_BEAT);
                 }
+                
+                //start timer
+                timer.start();
             }
         });
         //set buttons borders, must be here for an unknwon reason due to a liquid lnf 
@@ -580,10 +591,10 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
                     jbPlayPause.setIcon(Util.getIcon(ICON_PAUSE));
                 }
                 else if (EVENT_HEART_BEAT.equals(subject)){
-                    Integer iPos = (Integer)ObservationManager.getDetail(EVENT_HEART_BEAT,DETAIL_CURRENT_POSITION); 
-                    if (iPos != null){
-                        setCurrentPosition(iPos.intValue());
-                    }
+                	long length = JajukTimer.getInstance().getCurrentTrackTotalTime(); 
+                    long lTime = JajukTimer.getInstance().getCurrentTrackEllapsedTime();
+                	int iPos = (length!=0)?(int)(100*lTime/length):0;  //if length=0, pos is always 0 to avoid division by zero
+                    setCurrentPosition(iPos);
                 }
                 else if (EVENT_MUTE_STATE.equals(subject)){
                     if ( Player.isMuted()){

@@ -20,6 +20,8 @@
 package org.jajuk.ui;
 
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -28,6 +30,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 import javax.swing.border.EtchedBorder;
 
 import layout.TableLayout;
@@ -35,6 +38,7 @@ import layout.TableLayout;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
 import org.jajuk.base.ITechnicalStrings;
+import org.jajuk.base.JajukTimer;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.Util;
 
@@ -52,6 +56,12 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,Obser
 	public static final int ERROR = 1;
 	/**Self instance*/
 	static private InformationJPanel ijp = null; 	
+	 /** Swing Timer to refresh the component*/ 
+    private Timer timer = new Timer(JajukTimer.DEFAULT_HEARTBEAT,new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+             update(EVENT_HEART_BEAT);
+        }
+    });
 	
 	
 	/**
@@ -143,6 +153,8 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,Obser
         ObservationManager.register(EVENT_ZERO,this);
         ObservationManager.register(EVENT_FILE_LAUNCHED,this);
         ObservationManager.register(EVENT_PLAY_ERROR,this);
+        //start timer
+        timer.start();
 	}
 
 	/**
@@ -261,18 +273,14 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,Obser
      */
 	public void update(String subject) {
 	    if (EVENT_HEART_BEAT.equals(subject)){
-	        String sCurrentStatusMessage =  (String)ObservationManager.getDetail(EVENT_HEART_BEAT,DETAIL_CURRENT_STATUS_MESSAGE);
-	        if (sCurrentStatusMessage != null){
-	            setCurrentStatusMessage(sCurrentStatusMessage);
-	        }
-	        Integer iCurrentStatus = (Integer)ObservationManager.getDetail(EVENT_HEART_BEAT,DETAIL_CURRENT_POSITION);
-	        if (iCurrentStatus != null){
-	            setCurrentStatus(iCurrentStatus.intValue());
-	        }
-	        String sCurrentTotalMessage =  (String)ObservationManager.getDetail(EVENT_HEART_BEAT,DETAIL_TOTAL);
-	        if (sCurrentTotalMessage != null){
-	            setTotalStatusMessage(sCurrentTotalMessage);
-	        }
+	        long length = JajukTimer.getInstance().getCurrentTrackTotalTime(); 
+            long lTime = JajukTimer.getInstance().getCurrentTrackEllapsedTime();
+        	long lTotalTime = JajukTimer.getInstance().getTotalTimeToPlay();
+            int iPos = (length!=0)?(int)(100*lTime/length):0;  //if length=0, pos is always 0 to avoid division by zero
+	        setCurrentStatus(iPos);
+	        String sCurrentTotalMessage =  Util.formatTimeBySec(JajukTimer.getInstance().getTotalTimeToPlay(),false);
+	         setTotalStatusMessage(sCurrentTotalMessage);
+	        setCurrentStatusMessage(Util.formatTimeBySec(lTime,false)+" / "+Util.formatTimeBySec(length,false)); //$NON-NLS-1$);
 	    }
 	    else if (EVENT_ZERO.equals(subject)){
 	        setCurrentStatusMessage(Util.formatTimeBySec(0,false)+" / "+Util.formatTimeBySec(0,false)); //$NON-NLS-1$
