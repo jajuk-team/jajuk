@@ -71,7 +71,7 @@
      	<action dev='bflorat' type='fix'>930306	Sound problems with JRE 1.5 beta 1</action>  
      	<action dev='bflorat' type='fix'>953490 Problem searching doc</action>  
      </release>
-     <release version='0.2.1' date='2004-06-25' description='Maintenance release'>
+     <release version='0.2.1' date='2004-07-02' description='Maintenance release'>
      	<action dev='bflorat' type='add'>Now possible to add an entire device in playlist editor with drag and drop</action>  
 		<action dev='bflorat' type='update'>RFE 973052 Remove an unmounted device</action>
     	<action dev='bflorat' type='update'>Come back to UTF-8 to store collection file</action>

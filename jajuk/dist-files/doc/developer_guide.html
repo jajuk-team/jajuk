@@ -96,9 +96,36 @@ images with an url from inside the jar.</p>
 </ul>
 <img style="width: 637px; height: 585px;" alt=""
  src="images/eclipse_encoding.png"><br>
-<p><br>
+<h2><br>
+</h2>
+<h2>ant scripts and i18n</h2>
+<p>Read this if you are a developper planning to make also some
+translation ! You shouldn't have to use any provided ant script when
+under Eclipse
+environment. Three ant scripts are found in the tree:</p>
+<ul>
+  <li>
+    <p>At root, <span style="font-style: italic;">build.xml</span>
+[default target: native2ascii]: this ant
+script is used by developpers translating Jajuk to refresh latin1
+version of their properties langpack files. Others targets are useless
+for now.</p>
+  </li>
+  <li>
+    <p><span style="font-style: italic;">scripts/build.xml</span> :
+this
+is the stored build file packaged with
+the distribution and used in command line to recompile Jajuk using a
+standard installation. Do not use it under Eclise.</p>
+  </li>
+  <li>
+    <p><span style="font-style: italic;">scripts/build-dist.xml</span>
+:
+this is the ant script used by the
+packager to generate Jajuk distribution. You shouldn't have to use it.</p>
+  </li>
+</ul>
 <br>
-</p>
 <h2><a name="Release_process"></a>Release process</h2>
 <p lang="en-US">Jajuk has a 5 days-release process:</p>
 <ul>

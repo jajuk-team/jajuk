@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding='iso-8859-1'?> 
+<?xml version="1.0" encoding='UTF-8'?> 
 <document> 
 	<properties> 
 		<author email="bertrand@florat.net">Bertrand Florat</author>
@@ -48,20 +48,22 @@
 				<p><span style="font-family: monospace;">#Jajuk ${your language} langpack. <br></br>
 				#Written by : ${your name}<br></br>
 				#Copyright 2003,2004 ${your name}, this is part of Jajuk distributed under the GPL V2 license<br></br>
-				#Encoding : UTF-8<br></br>
+				#Encoding : ${your encoding, UTF-8 prefered}<br></br>
 				#FROM ${source language} ${cvs version}<br></br>
-				#$Revision$</span></p>
+				#$Revision: 1.1 $</span></p>
 				<p>FROM comment gives exact CVS version you translated to allow diffs with newer versions and Revision gives automatically the current CVS version of your file ( do not change this line manually, it will be updated by CVS).</p>
 			</li>
-			<li>Your file should be in written in UTF-8 encoding, especialy if it is a Western Europe or Asian langage. If you don't know how to set the encoding, please send be a mail.</li>
+			<li>Please write your files in UTF-8 encoding, especialy if it is a Western Europe or Asian langage. If you don't know how to set the encoding, please <a href='mailto:bertrand@florat.net'>send be a mail</a>. You can write in UTF-8 using for exemple : 
+			eclipse, ultraedit under Windows and eclipse, kate, vi under Linux. Please set the encoding you used at the top of your file. If 
+			you don"t know which encoding you use, start Jajuk, go to Help perspective/About view, clic on the <i>system</i> tab and your encoding is given by <i>file.encoding</i> property.</li>
 			<li><p>Look at file structure: It is a simple key=value  format. Example:</p>
 				<p><span style="font-family: monospace;">ParameterView.73=Check this if you allow others people to come read music from your box<br></br>
 				ParameterView.74=Password :<br></br>
 				ParameterView.75=Set password access to your box. If no password is set, no one can read from it</span></p>
 				<p>Simply translate each value, Previous example in French:</p>
-				<p><span style="font-family: monospace;">ParameterView.73=Accepter que d'autres utilisateurs lise la musique situ�e sur votre machine<br></br>
+				<p><span style="font-family: monospace;">ParameterView.73=Accepter que d'autres utilisateurs lise la musique située sur votre machine<br></br>
 				ParameterView.74=Mot de passe :<br></br>
-				ParameterView.75=Fixez un mot de passe � votre machine. Tant que le mot de passe n'est pas fix�, personne ne peut s'y connecter</span></p>
+				ParameterView.75=Fixez un mot de passe à votre machine. Tant que le mot de passe n'est pas fixé, personne ne peut s'y connecter</span></p>
 			</li>
 			
 			<li><p>Translate even lines like <span style="font-family: monospace;">Language_desc_*=*</span> (other languages names) and <u>add a new line with your own language name.</u></p></li>

@@ -1,39 +1,33 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<!--Jajuk Ant script for end users-->
-<!-- This ant script is written to be executed from command line in a standard jajuk installation, not from the IDE-->
+<!--Jajuk Ant script for developers, to be used under eclipse or another IDE-->
 
-<project default='jar' name='jajuk' basedir='.'>
+<project default='native2ascii' name='jajuk' basedir='.'>
   <property name='libdir' value='lib' />
   <property name='classdir' value='classes'/>
   <property name='srcdir' value='src'/>
   <property name='bindir' value='bin'/>
-  <property name='javadocdir' value='doc/javadoc'/>
+  <property name='distfilesdir' value='dist-files'/>
+  <property name='javadocdir' value='${distfilesdir}/doc/javadoc'/>
   <property name='jarname' value='jajuk.jar'/>
   <property name='version' value='0.2'/>
-  <property name='distfilesdir' value='dist-files'/>
   <property name='docdir' value='doc'/>
   
-  <target name='clean' description='o Clean up the generated directories'>
-    <delete dir='${classdir}'>
-    </delete>
-    <delete file='${bindir}/${jarname}'>
-    </delete>
-  </target>
- 
-   <target name='native2ascii' description='Transform i18n resourses bundle to be correctly displayed' depends='clean'>
+   
+  <target name='native2ascii' description='Transform i18n resourses bundle to be correctly displayed under eclipse environment'>
 	<native2ascii encoding='UTF-8' src='${srcdir}/org/jajuk/i18n' dest='${srcdir}/org/jajuk/i18n' includes='*.properties' ext='.tmp'/>     
-  	<move file='${srcdir}/org/jajuk/i18n/jajuk.tmp' tofile='${classdir}/org/jajuk/i18n/jajuk-latin1.properties'/>
-  	<move file='${srcdir}/org/jajuk/i18n/jajuk_de.tmp' tofile='${classdir}/org/jajuk/i18n/jajuk-latin1_de.properties'/>
-  	<move file='${srcdir}/org/jajuk/i18n/jajuk_fr.tmp' tofile='${classdir}/org/jajuk/i18n/jajuk-latin1_fr.properties'/>
-  	<move file='${srcdir}/org/jajuk/i18n/jajuk_it.tmp' tofile='${classdir}/org/jajuk/i18n/jajuk-latin1_it.properties'/>
-  	<move file='${srcdir}/org/jajuk/i18n/jajuk_nl.tmp' tofile='${classdir}/org/jajuk/i18n/jajuk-latin1_nl.properties'/>
-  	<move file='${srcdir}/org/jajuk/i18n/jajuk_sv.tmp' tofile='${classdir}/org/jajuk/i18n/jajuk-latin1_sv.properties'/>
+  	<move file='${srcdir}/org/jajuk/i18n/jajuk.tmp' tofile='${srcdir}/org/jajuk/i18n/jajuk-latin1.properties'/>
+  	<move file='${srcdir}/org/jajuk/i18n/jajuk_de.tmp' tofile='${srcdir}/org/jajuk/i18n/jajuk-latin1_de.properties'/>
+  	<move file='${srcdir}/org/jajuk/i18n/jajuk_fr.tmp' tofile='${srcdir}/org/jajuk/i18n/jajuk-latin1_fr.properties'/>
+  	<move file='${srcdir}/org/jajuk/i18n/jajuk_it.tmp' tofile='${srcdir}/org/jajuk/i18n/jajuk-latin1_it.properties'/>
+  	<move file='${srcdir}/org/jajuk/i18n/jajuk_nl.tmp' tofile='${srcdir}/org/jajuk/i18n/jajuk-latin1_nl.properties'/>
+  	<move file='${srcdir}/org/jajuk/i18n/jajuk_sv.tmp' tofile='${srcdir}/org/jajuk/i18n/jajuk-latin1_sv.properties'/>
   	<delete>
-  	  <fileset dir='${srcdir}/org/jajuk/i18n/' includes="**/*.tmp"/>
+  	 <fileset dir='${srcdir}/org/jajuk/i18n/' includes="**/*.tmp"/>
   	 </delete>
   </target>
- 
-  <target name='compile' description='o Compile the code' depends='native2ascii' >
+  
+  
+  <target name='compile' description='o Compile the code' >
     <mkdir dir='${classdir}'>
     </mkdir>
     <javac destdir='${classdir}' deprecation='true' debug='false' optimize='true' excludes='**/package.html'>
@@ -48,6 +42,12 @@
         </fileset>
       </classpath>
     </javac>
+	<mkdir dir='${classdir}/org/jajuk/i18n_temp'/>
+  	<copy todir='${classdir}/org/jajuk/i18n_temp' >
+     <fileset file='${srcdir}/org/jajuk/i18n/*.properties'/>
+	</copy>
+	<native2ascii encoding='UTF-8' src='${classdir}/org/jajuk/i18n_temp' dest='${classdir}/org/jajuk/i18n' includes='*.properties' />     
+    <delete dir='${distdir}/classes/org/jajuk/i18n_temp'/>
     <mkdir dir="${classdir}/org/jajuk/icons"/>
     <mkdir dir="${classdir}/org/jajuk/images"/>
   	<mkdir dir="${classdir}/org/jajuk/docs"/>
@@ -60,7 +60,7 @@
   </target>
 
   <target name='jar' description='o Create the jar' depends='compile'>
-    <jar jarfile='${bindir}/${jarname}' excludes='**/package.html' basedir='${classdir}' manifest="${srcdir}/MANIFEST.MF" />
+    <jar jarfile='/${jarname}' excludes='**/package.html' basedir='${classdir}' manifest="${distfilesdir}/packaging/MANIFEST.MF" />
   </target>
 
  <target name='javadoc'>
@@ -79,7 +79,7 @@
            <include name='*.jar'>
            </include>
          </fileset>
-         <pathelement location='${bindir}/${jarname}'/>
+         <pathelement location='${jarname}'/>
        </classpath>
       </javadoc>
     </target>

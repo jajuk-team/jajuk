@@ -5,8 +5,9 @@
   <property name='distdir' value='/tmp/jajuk-dist/jajuk'/>
   <property name='libdir' value='lib'/>
   <property name='srcdir' value='src'/>
+  <property name='classdir' value='classes'/>
   <property name='javadocdir' value='dist-files/doc/javadoc'/>
-  <property name='version' value='0.2.1-rc3'/>
+  <property name='version' value='0.2.1-rc4'/>
   <property name='jarname' value='jajuk.jar'/>
   <property name='helpsetjarname' value='jajuk-help.jar'/>
   <property name='distjarname' value='jajuk-install-'/>
@@ -27,20 +28,18 @@
   	<copy todir='${distdir}/bin' >
      <fileset file='${basedir}/systray4j.dll'/>
   	</copy>
-    <mkdir dir='${distdir}/classes'/>
+    <mkdir dir='${distdir}/${classdir}'/>
     <copy todir='${distdir}/src' >
-     <fileset dir='${srcdir}'/>
+     <fileset dir='${srcdir}' >
+     	<exclude name='**/*latin1*'/> 
+     </fileset>
   	</copy>
   	<copy todir='${distdir}' >
      <fileset file='${basedir}/dist-files/legals/LICENSE.txt'/>
-      <fileset file='${basedir}/dist-files/doc/README.html'/>
-      <fileset file='${basedir}/dist-files/doc/README_fra.html'/>
-      <fileset file='${basedir}/dist-files/doc/README_deu.html'/>
-      <fileset file='${basedir}/dist-files/doc/README_ita.html'/>
-      <fileset file='${basedir}/dist-files/doc/README_nld.html'/>
-      <fileset file='${basedir}/dist-files/doc/README_chn.html'/>
-      <fileset file='${basedir}/dist-files/doc/README_swe.html'/>
-   </copy>
+      <fileset dir='${basedir}/dist-files/doc'>
+      	<include name='README*.html'/>
+      </fileset>
+     </copy>
   	<copy todir='${distdir}/src' >
      <fileset file='${basedir}/dist-files/packaging/MANIFEST.MF'/>
   	</copy>
@@ -55,9 +54,22 @@
       </fileset>
      </copy>
   </target>
+  
+  <target name='native2ascii' description='Transform i18n resourses bundle to be correctly displayed under eclipse environment' depends='mkdist'>
+	<native2ascii encoding='UTF-8' src='${srcdir}/org/jajuk/i18n' dest='${distdir}/${srcdir}/org/jajuk/i18n' includes='*.properties' ext='.tmp'/>     
+  	<move file='${distdir}/${srcdir}/org/jajuk/i18n/jajuk.tmp' tofile='${distdir}/${classdir}/org/jajuk/i18n/jajuk-latin1.properties'/>
+  	<move file='${distdir}/${srcdir}/org/jajuk/i18n/jajuk_de.tmp' tofile='${distdir}/${classdir}/org/jajuk/i18n/jajuk-latin1_de.properties'/>
+  	<move file='${distdir}/${srcdir}/org/jajuk/i18n/jajuk_fr.tmp' tofile='${distdir}/${classdir}/org/jajuk/i18n/jajuk-latin1_fr.properties'/>
+  	<move file='${distdir}/${srcdir}/org/jajuk/i18n/jajuk_it.tmp' tofile='${distdir}/${classdir}/org/jajuk/i18n/jajuk-latin1_it.properties'/>
+  	<move file='${distdir}/${srcdir}/org/jajuk/i18n/jajuk_nl.tmp' tofile='${distdir}/${classdir}/org/jajuk/i18n/jajuk-latin1_nl.properties'/>
+  	<move file='${distdir}/${srcdir}/org/jajuk/i18n/jajuk_sv.tmp' tofile='${distdir}/${classdir}/org/jajuk/i18n/jajuk-latin1_sv.properties'/>
+	<delete>
+  	 <fileset dir='${distdir}/${srcdir}/org/jajuk/i18n' includes='**/*latin1*,**/*.tmp'/>
+    </delete>
+  </target>
  
- <target name='compile' description='o Compile the code' depends='mkdist'>
-    <javac destdir='${distdir}/classes' deprecation='true' debug='false' optimize='true' excludes='**/package.html'>
+ <target name='compile' description='o Compile the code' depends='native2ascii'>
+    <javac destdir='${distdir}/${classdir}' deprecation='true' debug='false' optimize='true' excludes='**/package.html'>
       <src>
         <pathelement path='${distdir}/${srcdir}'>
         </pathelement>
@@ -69,23 +81,16 @@
         </fileset>
       </classpath>
     </javac>
-    <!--Transformation from UTF-8 to Latin1 -->
-    <mkdir dir='${distdir}/classes/org/jajuk/i18n_temp'/>
-  	<copy todir='${distdir}/classes/org/jajuk/i18n_temp' >
-     <fileset file='${distdir}/src/org/jajuk/i18n/*.properties'/>
-	</copy>
-	<native2ascii encoding='UTF-8' src='${distdir}/classes/org/jajuk/i18n_temp' dest='${distdir}/classes/org/jajuk/i18n' includes='*.properties' />     
-    <delete dir='${distdir}/classes/org/jajuk/i18n_temp'/>
-   <mkdir dir='${distdir}/classes/org/jajuk/icons'/>
-    <mkdir dir='${distdir}/classes/org/jajuk/images'/>
-  	<mkdir dir='${distdir}/classes/org/jajuk/docs'/>
-  	<copy todir='${distdir}/classes/org/jajuk/icons' >
+    <mkdir dir='${distdir}/${classdir}/org/jajuk/icons'/>
+    <mkdir dir='${distdir}/${classdir}/org/jajuk/images'/>
+  	<mkdir dir='${distdir}/${classdir}/org/jajuk/docs'/>
+  	<copy todir='${distdir}/${classdir}/org/jajuk/icons' >
      <fileset dir='${basedir}/dist-files/icons'/>
   	</copy>
-  	<copy todir='${distdir}/classes/org/jajuk/images' >
+  	<copy todir='${distdir}/${classdir}/org/jajuk/images' >
      <fileset dir='${basedir}/dist-files/images'/>
   	</copy>
-  	<copy todir='${distdir}/classes/org/jajuk/docs' >
+  	<copy todir='${distdir}/${classdir}/org/jajuk/docs' >
      <fileset file='${basedir}/dist-files/doc/about.html'/>
   	</copy>
   	<copy todir='${distdir}' >
@@ -96,12 +101,13 @@
  
 
   <target name='jar' description='o Create the jar' depends='compile'>
-    <jar jarfile='${distdir}/bin/${jarname}' excludes='**/package.html' basedir='${distdir}/classes' manifest='${basedir}/dist-files/packaging/MANIFEST.MF'/>
-    <delete dir='${distdir}/classes'/>
+    <jar jarfile='${distdir}/bin/${jarname}' excludes='**/package.html' basedir='${distdir}/${classdir}' manifest='${basedir}/dist-files/packaging/MANIFEST.MF'/>
+    <delete dir='${distdir}/${classdir}'/>
     <copy todir='${basedir}' >
      <fileset file='${distdir}/bin/${jarname}'/>
   	</copy>
   </target>
+
   
   <target name='helpsetjar' description='o Create the heplset jar' depends='mkdist'>
     <delete file='${distdir}/bin/${helpsetjarname}'/>
@@ -118,15 +124,15 @@
    </target>
  
    <target name='static_jar' description='o Create the static jar' depends='compile'>
-      <unzip dest='${distdir}/classes'>
+      <unzip dest='${distdir}/${classdir}'>
 	      <fileset dir='${distdir}/lib'>
 	          <include name='*.jar'>
 	          </include>
 	        </fileset>
 	        </unzip>
-	         <delete dir='${distdir}/classes/META-INF'>
+	         <delete dir='${distdir}/${classdir}/META-INF'>
 		    </delete>
-     <jar jarfile='${distdir}/bin/jajuk-${version}.jar' excludes='**/package.html' basedir='${distdir}/classes' manifest='${basedir}/dist-files/packaging/MANIFEST_static.MF'/>
+     <jar jarfile='${distdir}/bin/jajuk-${version}.jar' excludes='**/package.html' basedir='${distdir}/${classdir}' manifest='${basedir}/dist-files/packaging/MANIFEST_static.MF'/>
   </target>
   
   <target name='dist-zip' description='o Create a zip distribution' depends='jar'>
