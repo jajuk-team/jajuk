@@ -13,6 +13,9 @@
  * You should have received a copy of the GNU General Public License along with
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA. $Log$
+ * Place - Suite 330, Boston, MA 02111-1307, USA. Revision 1.5  2003/10/28 21:34:37  bflorat
+ * Place - Suite 330, Boston, MA 02111-1307, USA. 28/10/2003
+ * Place - Suite 330, Boston, MA 02111-1307, USA.
  * Place - Suite 330, Boston, MA 02111-1307, USA. Revision 1.4  2003/10/26 21:28:49  bflorat
  * Place - Suite 330, Boston, MA 02111-1307, USA. 26/10/2003
  * Place - Suite 330, Boston, MA 02111-1307, USA.
@@ -27,7 +30,9 @@
 
 package org.jajuk.base;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 import org.jajuk.util.MD5Processor;
@@ -37,7 +42,7 @@ import org.jajuk.util.MD5Processor;
  * 
  * @author bflorat @created 17 oct. 2003
  */
-public class TrackManager {
+public class TrackManager implements ITechnicalStrings{
 	/** Tracks collection* */
 	static HashMap hmTracks = new HashMap(100);
 
@@ -53,12 +58,16 @@ public class TrackManager {
 	 * 
 	 * @param sName
 	 */
-	public static Track registerTrack(String sName, Album album, Style style, Author author, long length, String sYear, Type type,  String sAdditionDate) {
+	public static Track registerTrack(String sName, Album album, Style style, Author author, long length, String sYear, Type type) {
+		Track track = null;
 		String sId = MD5Processor.hash(style.getName()+author.getName()+sYear+length+type.getName()+sName);
-		Track track = new Track(sId,sName, album, style, author, length, sYear, type, sAdditionDate);
-		//TODO format
-		hmTracks.put(sId, track);
-		return track;
+		if ( !hmTracks.containsKey(sId)){
+			String sAdditionDate = new SimpleDateFormat(DATE_FILE).format(new Date());
+			track = new Track(sId,sName, album, style, author, length, sYear, type, sAdditionDate);
+				//	TODO format
+			hmTracks.put(sId, track);
+		}
+		return (Track)hmTracks.get(sId);
 	}
 
 	/** Return all registred Tracks */
@@ -67,13 +76,13 @@ public class TrackManager {
 	}
 
 	/**
-	 * Return Track by name
+	 * Return Track by id
 	 * 
 	 * @param sName
 	 * @return
 	 */
-	public static Track getTrack(String sName) {
-		return (Track) hmTracks.get(sName);
+	public static Track getTrack(String sId) {
+		return (Track) hmTracks.get(sId);
 	}
 
 	/**

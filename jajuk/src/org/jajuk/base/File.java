@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.8  2003/10/28 21:34:37  bflorat
+ * 28/10/2003
+ *
  * Revision 1.7  2003/10/26 21:28:49  bflorat
  * 26/10/2003
  *
@@ -159,11 +162,7 @@ public class File extends PropertyAdapter{
 		 * @return
 		 */
 		public boolean equals(File otherFile){
-			if ( this.getName().equals(otherFile.getName())
-			&& (this.getDirectory().equals(otherFile.getDirectory()))){
-					return true;
-			}
-			return false;
+			return this.getId().equals(otherFile.getId() );
 		}	
 		
 	/**
@@ -187,4 +186,5 @@ public class File extends PropertyAdapter{
 			return sbOut.toString();
 		}
 		
+	
 }

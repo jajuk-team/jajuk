@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.4  2003/10/28 21:34:37  bflorat
+ * 28/10/2003
+ *
  * Revision 1.3  2003/10/26 21:28:49  bflorat
  * 26/10/2003
  *
@@ -90,14 +93,14 @@ public interface ITechnicalStrings {
 	public static final String ICON_DELETE=  PATH_ICONS + "16x16/delete.png";
 
 	//logs
-	public static final String LOG_PATTERN="%d{HH:mm:ss} [%p] %m\n";
+	public static final String LOG_PATTERN="%d{yyyy/MM/dd HH:mm:ss} [%p] %m\n";
 	public static final String LOG_FILE_SIZE="1MB";
 
 	//files
 	public static final String FILE_JAJUK_DIR = System.getProperty("user.home")+"/.jajuk";
 	public static final String FILE_LOG = System.getProperty("user.home")+"/.jajuk/jajuk.log";
 	public static final String FILE_COLLECTION = System.getProperty("user.home")+"/.jajuk/collection.xml";
-	
+	public static final String FILE_PERSPECTIVES_CONF = System.getProperty("user.home")+"/.jajuk/perspectives.xml";
 	
 	//players impls
 	public static final String PLAYER_IMPL_JAVALAYER= "org.jajuk.players.JavaLayerPlayerImpl";
@@ -131,6 +134,8 @@ public interface ITechnicalStrings {
  	public static final String CONF_ICON_CONTINUE= "jajuk.state.ui.icon.continue";
  	public static final String CONF_ICON_INTRO= "jajuk.state.ui.icon.intro";
 	
+	
+	
 	//views identifiers 
 	/** Identifier of the physical tree view */
 	public static final String VIEW_PHYSICAL_TREE	= "VIEW_PHYSICAL_TREE";
@@ -161,5 +166,48 @@ public interface ITechnicalStrings {
 	public static final String XML_PLAYLIST_FILE = "playlist_file";
 	public static final String XML_PLAYLISTS = "playlists";
 	public static final String XML_PLAYLIST = "playlist";
+	public static final String XML_PERSPECTIVES_CONF = 
+		"<?xml version='1.0' encoding='UTF-8'?>\n"+
+		 "<perspectives default='physical' >\n"+
+		"\t<perspective  name='physical' class='org.jajuk.ui.perspectives.PhysicalPerspective'>\n"+
+		"\t\t<views>\n"+
+		"\t\t\t<view name='logical tree' class='org.jajuk.ui.views.PhysicalTreeView' />\n"+
+		"\t\t\t<view name='logical tree' class='org.jajuk.ui.views.NavigationBarView' />\n"+
+		"\t\t\t<view name='logical tree' class='org.jajuk.ui.views.TrackListView' />\n"+
+		"\t\t\t<view name='logical tree' class='org.jajuk.ui.views.CoverView'  />\n"+
+		"\t\t\t<view name='logical tree' class='org.jajuk.ui.views.PlaylistRepositoryView'/>\n"+
+		"\t\t\t<view name='logical tree' class='org.jajuk.ui.views.PlaylistEditorView'  />\n"+
+		"\t\t</views>\n"+
+		"\t\t</perspective>\n"+
+		"\t<perspective name='logical' class='org.jajuk.ui.perspectives.LogicalPerspective'>\n"+
+		"\t\t<views>\n"+
+		"\t\t\t<view name='logical tree' class='org.jajuk.ui.views.LogicalTreeView'/>\n"+
+		"\t\t\t<view name='logical tree' class='org.jajuk.ui.views.NavigationBarView' />\n"+
+		"\t\t\t<view name='logical tree' class='org.jajuk.ui.views.TrackListView'/>\n"+
+		"\t\t\t<view name='logical tree' class='org.jajuk.ui.views.CoverView'  />\n"+
+		"\t\t\t<view name='logical tree' class='org.jajuk.ui.views.PlaylistRepositoryView'/>\n"+
+		"\t\t\t<view name='logical tree' class='org.jajuk.ui.views.PlaylistEditorView'  />\n"+
+		"\t\t</views>\n"+
+		"\t</perspective>\n"+
+		"\t<perspective name='configuration' class='org.jajuk.ui.perspectives.ConfigurationPerspective'>\n"+
+		"\t\t<views>\n"+
+		"\t\t\t<view name='logical tree' class='org.jajuk.ui.views.ParametersView'/>\n"+
+		"\t\t\t<view name='logical tree' class='org.jajuk.ui.views.DeviceView'  />\n"+
+		"\t\t\t<view name='logical tree' class='org.jajuk.ui.views.CdScanView'/>\n"+
+		"\t\t</views>\n"+
+		"\t</perspective>\n"+
+		"\t<perspective name='stat' class='org.jajuk.ui.perspectives.StatPerspective'>\n"+
+		"\t\t<views>\n"+
+		"\t\t\t<view name='logical tree' class='org.jajuk.ui.views.StatView'/>\n"+
+		"\t\t</views>\n"+
+		"\t</perspective>\n"+
+		"\t<perspective  name='help' class='org.jajuk.ui.perspectives.HelpPerspective'>\n"+
+		"\t\t<views>\n"+
+		"\t\t\t<view name='logical tree' class='org.jajuk.ui.views.HelpView'/>\n"+
+		"\t\t\t<view name='logical tree' class='org.jajuk.ui.views.AboutView' />\n"+
+		"\t\t</views>\n"+
+		"\t</perspective>\n"+
+		"</perspectives>";
+
 	
 }

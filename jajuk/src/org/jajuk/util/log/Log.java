@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.5  2003/10/28 21:35:10  bflorat
+ * 28/10/2003
+ *
  * Revision 1.4  2003/10/26 21:28:49  bflorat
  * 26/10/2003
  *
@@ -53,6 +56,8 @@ public class Log implements ITechnicalStrings{
 		private static Logger loggerTemp;	
 		/** logger for persistent events ( output in a file )*/
 		private static Logger logger;	
+		/** logger for debug events ( just console )*/
+		private static Logger loggerDebug;	
 		//verbosity consts
 		public static final int FATAL = 0;
 		public static final int ERROR = 1;
@@ -72,8 +77,11 @@ public class Log implements ITechnicalStrings{
 		Log () {
 			try {
 				//--create console+file logger
-				logger = Logger.getLogger("temp.file");  //this logger is a children of the temp logger to get console output by inherance //$NON-NLS-1$
-				logger.setLevel(Level.DEBUG);  
+				logger = Logger.getLogger("norm"); 
+				logger.setLevel(Level.INFO);  
+				loggerDebug = Logger.getLogger("debug");
+				loggerDebug.setLevel(Level.DEBUG);
+				loggerDebug.addAppender(new ConsoleAppender(new PatternLayout(LOG_PATTERN)));
 				//add appenders: display message at the same time in the log file and on the console
 				RollingFileAppender fileAppender = new RollingFileAppender(new PatternLayout(LOG_PATTERN),FILE_LOG,true);
 				fileAppender.setMaxFileSize(LOG_FILE_SIZE);  //set log file maximum size
@@ -107,7 +115,7 @@ public class Log implements ITechnicalStrings{
 		 * Log a debug-level  message
 		 */
 		public static void debug(String s){
-				logger.debug(s);
+				loggerDebug.debug(s);
 		}
     
 		/**

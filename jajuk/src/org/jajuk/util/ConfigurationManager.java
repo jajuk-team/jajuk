@@ -16,8 +16,11 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
- * Revision 1.6  2003/10/26 21:28:49  bflorat
- * 26/10/2003
+ * Revision 1.7  2003/10/28 21:35:10  bflorat
+ * 28/10/2003
+ *
+ * Revision 1.5  2003/10/24 12:46:22  sgringoi
+ * Read the jajuk configuration file to initialize the ConfigurationManager
  *
  * Revision 1.4  2003/10/21 20:43:06  bflorat
  * TechnicalStrings to ITechnicalStrings according to coding convention
@@ -35,6 +38,7 @@ import java.util.Properties;
 
 import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.i18n.Messages;
+import org.jajuk.util.error.JajukException;
 
 /**
  * Manage all the configuration and user preferences of jajuk.
@@ -43,9 +47,33 @@ import org.jajuk.i18n.Messages;
  * @version	1.0
  * @created		5 oct. 2003
  */
-public class ConfigurationManager implements ITechnicalStrings{
-	
+public class ConfigurationManager implements ITechnicalStrings {
 	private static Properties properties = null;
+	
+	/**
+	 * Initialize the jajuk configuration.
+	 */
+	public static void initJajukConfiguration() {
+		if (properties == null) {
+			properties = new Properties();
+		}
+		
+		createErrorProperties();
+		
+		// Read the jajuk configuration file
+		String jajukConfFile = "D:/DonneesSeb/workspace/jajuk/tests/sgringoire/properties/jajukConfiguration.xml";
+		StringBuffer strXML = null;
+		try {
+			strXML = Util.readFile(jajukConfFile);
+
+			Contexte ctx = Contexte.creerContexte(strXML.toString());
+			
+			properties.putAll(ctx.getPropertiesFormat());
+		} catch (JajukException e) {
+			e.display();
+			return;
+		}
+	}
 	
 	/**
 	 * Return the value of a property, or null if the property is not found.
@@ -55,11 +83,11 @@ public class ConfigurationManager implements ITechnicalStrings{
 	 */
 	public static String getProperty(String pName) {
 		if (properties == null) {
-			createProperties();
+			createErrorProperties();
 		}
-		return properties.getProperty(pName);
-	}
 
+		return (String)properties.getProperty(pName);
+	}
 
 	/**
 	 * Return the value of a property, or a default value if the property is not found.
@@ -73,34 +101,38 @@ public class ConfigurationManager implements ITechnicalStrings{
 		if (res == null) {
 			res = pDefault;
 		}
-		return pDefault;
+		
+		return res;
+	}
+	
+	/**
+	 * Return the message display to the user corresponding to the error code.
+	 * 
+	 * @param pCode Error code.
+	 * @return String Message corresponding to the error code.
+	 */
+	public static String getErrorMessage(String pCode) {
+		return getProperty("jajuk.error." + pCode); //$NON-NLS-1$
 	}
 	
 	
-	private static void createProperties() {
-		properties = new Properties();
-		
-		// Default parameters
-		properties.put(CONF_VIEW_PHYSICAL, "org.jajuk.ui.views.PhysicalTreeView");//,org.jajuk.ui.views.TrackListView"); //$NON-NLS-1$ //$NON-NLS-2$
-		
-		// User preferences
-		properties.put(CONF_PERSPECTIVE_DEFAULT, "org.jajuk.ui.perspectives.PhysicalPerspective"); //$NON-NLS-1$ //$NON-NLS-2$
-	
-		//Modes
-		properties.put(CONF_STATE_REPEAT,"false"); //$NON-NLS-1$
-		properties.put(CONF_ICON_REPEAT,ICON_REPEAT_OFF);  
-		properties.put(CONF_STATE_SHUFFLE,"false"); //$NON-NLS-1$
-		properties.put(CONF_ICON_SHUFFLE,ICON_SHUFFLE_OFF);  
-		properties.put(CONF_STATE_CONTINUE,"true"); //$NON-NLS-1$
-		properties.put(CONF_ICON_CONTINUE,ICON_CONTINUE_ON);  
-		properties.put(CONF_STATE_INTRO,"false"); //$NON-NLS-1$
-		properties.put(CONF_ICON_INTRO,ICON_INTRO_OFF);  
-		//TODO get it from xml property file
-		
+	private static void createErrorProperties() {
+		if (properties == null) {
+			properties = new Properties();
+		}
+
+			// Error code
+		properties.setProperty("jajuk.error.jajuk0001", Messages.getString("Error.The_first_perspective_is_not_found._7")); //$NON-NLS-2$ //$NON-NLS-1$
+		properties.setProperty("jajuk.error.jajuk0002", Messages.getString("Error.Can__t_open_the_view__9")); //$NON-NLS-2$ //$NON-NLS-1$
+		properties.setProperty("jajuk.error.jajuk0003", Messages.getString("Error.Can__t_instanciate_the_perspective_named__9")); //$NON-NLS-1$ //$NON-NLS-2$
+		properties.setProperty("jajuk.error.jajuk0004", Messages.getString("Can't open the file ")); //$NON-NLS-1$
+		properties.setProperty("jajuk.error.jajuk0005", Messages.getString("A problem appear during the connection to the file ")); //$NON-NLS-1$
+		properties.setProperty("jajuk.error.jajuk0006", Messages.getString("File not found ")); //$NON-NLS-1$
+		properties.setProperty("jajuk.error.jajuk0007", Messages.getString("Can't close the file ")); //$NON-NLS-1$
+		properties.setProperty("jajuk.error.jajuk0008", Messages.getString("A problem occurs during the parsing of the file ")); //$NON-NLS-1$
 	}
-	
-	
 	public static void setProperty(String sName,String sValue){
 		properties.setProperty(sName,sValue);
 	}
+
 }

@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.4  2003/10/28 21:34:37  bflorat
+ * 28/10/2003
+ *
  * Revision 1.3  2003/10/26 21:28:49  bflorat
  * 26/10/2003
  *
@@ -54,17 +57,16 @@ public class PlaylistManager {
 
 	/**
 	 * Register an Playlist
-	 *@param files : playlist files
+	 *@param file : playlist file
 	 */	
-	public static Playlist registerPlaylist(ArrayList alPlaylistFiles) {
-		Iterator it = alPlaylistFiles.iterator();
-		String sName ="";
-		while (it.hasNext()){
-			PlaylistFile pf = (PlaylistFile)it.next();
-			sName += pf.getId();
+	public static Playlist registerPlaylist(PlaylistFile plFile) {
+		String sId = plFile.getHashcode();
+		if (hmPlaylists.containsKey(sId)){ //playlist already exist, add a file
+			Playlist playlist = (Playlist)hmPlaylists.get(sId);
+			playlist.addFile(plFile);
+			return playlist;
 		}
-		String sId = MD5Processor.hash(sName);
-		Playlist playlist = new Playlist(sId,alPlaylistFiles);
+		Playlist playlist = new Playlist(sId,plFile);
 		hmPlaylists.put(sId,playlist);
 		return playlist;
 	}

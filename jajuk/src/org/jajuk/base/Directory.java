@@ -9,6 +9,9 @@
  * 
  * You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
  * USA. $Log$
+ * USA. Revision 1.5  2003/10/28 21:34:37  bflorat
+ * USA. 28/10/2003
+ * USA.
  * USA. Revision 1.4  2003/10/26 21:28:49  bflorat
  * USA. 26/10/2003
  * USA. Place - Suite 330, Boston, MA 02111-1307, USA. Revision 1.3 2003/10/24 15:44:25 bflorat Place - Suite 330, Boston, MA 02111-1307, USA. 24/10/2003 Place - Suite 330,
@@ -19,13 +22,15 @@
  */
 package org.jajuk.base;
 
+import java.io.BufferedReader;
 import java.io.File;
-import java.text.SimpleDateFormat;
+import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.Date;
 
 import org.jajuk.util.JajukFileFilter;
+import org.jajuk.util.MD5Processor;
 import org.jajuk.util.Util;
+import org.jajuk.util.log.Log;
 
 /**
  * A physical directory
@@ -103,10 +108,7 @@ public class Directory extends PropertyAdapter {
 	 * @return
 	 */
 	public boolean equals(Directory otherDirectory) {
-		if ((this.getName().equals(otherDirectory.getName())) && (this.getParentDirectory().equals(otherDirectory.getParentDirectory())) && (this.getDevice().equals(otherDirectory.getDevice()))) {
-			return true;
-		}
-		return false;
+		return this.getId().equals(otherDirectory.getId() );
 	}
 
 	/**
@@ -175,14 +177,15 @@ public class Directory extends PropertyAdapter {
 		java.io.File[] files = getFio().listFiles(JajukFileFilter.getInstance(false, true));
 		for (int i = 0; i < files.length; i++) {
 			if (TypeManager.getTypeByExtension(Util.getExtension(files[i])).isMusic()) {
-				org.jajuk.base.File fCompare = new org.jajuk.base.File("0",fio.getName(),this,null,0,"");
+				
+				/*org.jajuk.base.File fCompare = new org.jajuk.base.File("0",fio.getName(),this,null,0,"");
 				ArrayList alFiles = FileManager.getFiles();
 				int index = alFiles.indexOf(fCompare);
 				if (index != -1){  //file already exists, we don't rescan it 
 					org.jajuk.base.File file = (org.jajuk.base.File)alFiles.get(index);
 					FileManager.registerFile(file.getName(), this, file.getTrack(), file.getSize(), file.getQuality());
 					return;
-				}
+				}*/
 				Tag tag = new Tag(files[i]);
 				String sTrackName = tag.getTrackName();
 				String sAlbumName = tag.getAlbumName();
@@ -190,16 +193,37 @@ public class Directory extends PropertyAdapter {
 				String sStyle = tag.getStyleName();
 				long length = tag.getLength(); //length in sec
 				String sYear = tag.getYear();
-				String sAdditionDate = new SimpleDateFormat(DATE_FILE).format(new Date());
 				String sQuality = tag.getQuality();
 				
 				Album album = AlbumManager.registerAlbum(sAlbumName);
 				Style style = StyleManager.registerStyle(sStyle);
 				Author author = AuthorManager.registerAuthor(sAuthorName);
 				Type type = TypeManager.getTypeByExtension(Util.getExtension(files[i]));
-				Track track = TrackManager.registerTrack(sTrackName, album, style, author, length, sYear, type, sAdditionDate);
-				//System.out.println(track);
-				FileManager.registerFile(files[i].getName(), this, track, files[i].length(), sQuality);
+				Track track = TrackManager.registerTrack(sTrackName, album, style, author, length, sYear, type);
+				org.jajuk.base.File newFile = FileManager.registerFile(files[i].getName(), this, track, files[i].length(), sQuality);
+				Log.debug("Found File: "+ newFile);
+				TrackManager.getTrack(track.getId()).addFile(newFile);
+			}
+			else{  //playlist file
+				try{
+					String sName = files[i].getName();
+					BufferedReader br = new BufferedReader(new FileReader(files[i]));
+					StringBuffer sbContent = new StringBuffer();
+					String sTemp;
+					do{
+						sTemp = br.readLine();
+						sbContent.append(sTemp);
+					}
+					while ( sTemp != null);
+					String sHashcode =MD5Processor.hash(sbContent.toString()); 
+					PlaylistFile plFile = PlaylistFileManager.registerPlaylistFile(sName,sHashcode,this);
+					PlaylistManager.registerPlaylist(plFile);
+					Log.debug("Found Playlist file: "+ plFile);
+				}
+				catch(Exception e){
+					Log.error(e);
+				}
+				
 			}
 		}
 	}

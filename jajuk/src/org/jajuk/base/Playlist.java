@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.3  2003/10/28 21:34:37  bflorat
+ * 28/10/2003
+ *
  * Revision 1.2  2003/10/23 22:07:40  bflorat
  * 23/10/2003
  *
@@ -39,16 +42,16 @@ public class Playlist extends PropertyAdapter {
 	/**ID. Ex:1,2,3...*/
 	private String sId;
 	/**Associated playlist files**/
-	private ArrayList alFiles;
+	private ArrayList alFiles = new ArrayList(2);
 	
 	/**
 	 * Playlist constructor
 	 * @param sId
-	 * @param files : associated playlist files
+	 * @param file :an associated playlist file
 	 */
-	public Playlist(String sId,ArrayList alFiles){
+	public Playlist(String sId,PlaylistFile plFiles){
 		this.sId = sId;
-		this.alFiles = alFiles;
+		this.alFiles.add(plFiles);
 	}
 
 	/**
@@ -68,7 +71,7 @@ public class Playlist extends PropertyAdapter {
 	 */
 	public String toXml() {
 		StringBuffer sb = new StringBuffer("\t\t<playlist id='" + sId);
-		sb.append("'' playlist_files='");
+		sb.append("' playlist_files='");
 		for (int i=0;i<alFiles.size();i++){
 			sb.append(((PlaylistFile)alFiles.get(i)).getId()).append(',');
 		}
@@ -86,17 +89,7 @@ public class Playlist extends PropertyAdapter {
 	 * @return
 	 */
 	public boolean equals(Playlist otherPlaylist){
-		boolean bOut = true;
-		ArrayList alOtherFiles = otherPlaylist.getFiles();
-		if (alOtherFiles.size() != alFiles.size()){ //if length is not the same, just leave
-			return false;
-		}	
-		for (int i=0;i<alOtherFiles.size();i++){ //check for each file that we contain it
-			if (!mapPlaylistFile(((PlaylistFile)alOtherFiles.get(i)).getId())){
-				return false;
-			}
-		}
-		return true;
+		return this.getId().equals(otherPlaylist.getId() );
 	}	
 
 
@@ -106,6 +99,13 @@ public class Playlist extends PropertyAdapter {
 	public ArrayList getFiles() {
 		return alFiles;
 	}
+	
+	/**
+		 * @return
+		 */
+		public void addFile(PlaylistFile plFile) {
+			alFiles.add(plFile);
+		}
 
 	/**
 	 * @return

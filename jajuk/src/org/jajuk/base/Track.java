@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.5  2003/10/28 21:34:37  bflorat
+ * 28/10/2003
+ *
  * Revision 1.4  2003/10/26 21:28:49  bflorat
  * 26/10/2003
  *
@@ -118,7 +121,7 @@ public class Track extends PropertyAdapter {
 	 */
 	public String toXml() {
 		StringBuffer sb = new StringBuffer("\t\t<track id='" + sId);//$NON-NLS-1$
-		sb.append("' name=' ");//$NON-NLS-1$
+		sb.append("' name='");//$NON-NLS-1$
 		sb.append(Util.formatXML(sName)).append("' album='");//$NON-NLS-1$
 		sb.append(album.getId()).append("' style='");//$NON-NLS-1$
 		sb.append(style.getId()).append("' author='");//$NON-NLS-1$
@@ -134,7 +137,7 @@ public class Track extends PropertyAdapter {
 		sb.append(iHits).append("' added='");//$NON-NLS-1$
 		sb.append(sAdditionDate).append("' ");//$NON-NLS-1$
 		sb.append(getPropertiesXml());
-		sb.append(sName).append("/>\n");//$NON-NLS-1$
+		sb.append("/>\n");//$NON-NLS-1$
 		return sb.toString();
 	}
 
@@ -209,16 +212,7 @@ public class Track extends PropertyAdapter {
 	 * @return
 	 */
 	public boolean equals(Track otherTrack){
-		if (
-			(this.getStyle().equals(otherTrack.getStyle())) &&	
-			(this.getAuthor().equals(otherTrack.getAuthor())) &&
-			(this.getYear().equals(otherTrack.getYear())) &&
-			(this.getLength() == otherTrack.getLength()) &&
-			(this.getType().equals(otherTrack.getType())) &&
-			(this.getName().equals(otherTrack.getName())) ){
-				return true;
-		}
-		return false;
+		return this.getId().equals(otherTrack.getId() );
 	}	
 	
 	
