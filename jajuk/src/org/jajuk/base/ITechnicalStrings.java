@@ -37,7 +37,7 @@ public interface ITechnicalStrings {
 	public static final int PRECISION = 5;
 		
 	// Jajuk version
-	public static final String JAJUK_VERSION = "0.2.4";
+	public static final String JAJUK_VERSION = "0.3";
 	
 	//About 
 	public static final String ABOUT = "<html>Jajuk version "+JAJUK_VERSION+"</html>";

@@ -29,10 +29,10 @@
     </menu>
     <search/>
     <menu name='Documentation'>
+      <item name='Installation' href='./installation.html' />
       <item name='README notes' href='./README.html' />
       <item name='FAQ' href='./faq.html' />
       <item name='Site documentation (PDF)' href='./jajuk.pdf' />
-      <item name='Installation' href='./installation.html' />
       <item name="Get Java" href="http://java.sun.com" img="./images/get_java_blue-button.gif"/>
     </menu>
     <menu name='Developers'>

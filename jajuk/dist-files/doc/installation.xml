@@ -15,7 +15,7 @@
    			</subsection>
    			
    			<subsection name='Download'>
-				<p>Download Jajuk last distribution at :<a href='http://sourceforge.net/projects/jajuk/'>http://sourceforge.net/projects/jajuk/</a></p>
+				<p>Download Jajuk last distribution at :<a href='http://sourceforge.net/project/showfiles.php?group_id=91412'>http://sourceforge.net/project/showfiles.php?group_id=91412</a></p>
    			</subsection>
    			
    			<subsection name='Installation'>
@@ -48,8 +48,9 @@
    			<subsection name='Upgrade'>
 				<p>If you already have a working release of Jajuk:</p>
 				<ul>
-					<li><p>It is safe to install the new release over previous one without uninstalling.</p></li>
+					<li><p>It is safe to install the new release over previous one without uninstalling, Jajuk supports backwards compatibility.</p></li>
 					<li><p>Your collection and configuration is kept and is stored under <span style="font-family: monospace;">${your home directory}/.jajuk</span></p></li>
+					<li><p>However Jajuk don't support downwards compatibility : A Jajuk release is not supposed to work with configuration/persistence files from a previous release.</p></li>
 				</ul>
    			</subsection>
    			
