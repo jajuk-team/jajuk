@@ -763,13 +763,17 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
             device.synchronize(true);
         }
         else if (e.getSource() == jmiDevTest){
-            Device device = ((DeviceNode)(paths[0].getLastPathComponent())).getDevice();
-            if (device.test()){
-                Messages.showInfoMessage(Messages.getString("DeviceView.21"),Util.getIcon(ICON_OK)); //$NON-NLS-1$
-            }
-            else{
-                Messages.showInfoMessage(Messages.getString("DeviceView.22"),Util.getIcon(ICON_KO)); //$NON-NLS-1$
-            }
+            new Thread(){ //test asynchronously in case of delay (samba pbm for ie) 
+                public void run(){ 
+                    Device device = ((DeviceNode)(paths[0].getLastPathComponent())).getDevice();
+                    if (device.test()){
+                        Messages.showInfoMessage(Messages.getString("DeviceView.21"),Util.getIcon(ICON_OK)); //$NON-NLS-1$
+                    }
+                    else{
+                        Messages.showInfoMessage(Messages.getString("DeviceView.22"),Util.getIcon(ICON_KO)); //$NON-NLS-1$
+                    }
+                }
+            }.start();
         }
         else if ( e.getSource() == jmiDirDesynchro){
             Iterator it = alDirs.iterator();  //iterate on selected dirs and childs recursively

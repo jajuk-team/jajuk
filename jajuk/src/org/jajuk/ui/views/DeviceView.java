@@ -406,7 +406,7 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 			dSelected.synchronize(true);
 		}
 		else if (ae.getActionCommand().equals(EVENT_DEVICE_TEST)){
-			SwingUtilities.invokeLater(new Runnable() {
+			new Thread() {//test asynchronously in case of delay (samba pbm for ie) 
                 public void run() {
                    if (dSelected.test()){
         				Messages.showInfoMessage(Messages.getString("DeviceView.21"),Util.getIcon(ICON_OK)); //$NON-NLS-1$
@@ -415,7 +415,7 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
         				Messages.showInfoMessage(Messages.getString("DeviceView.22"),Util.getIcon(ICON_KO)); //$NON-NLS-1$
         			}
                 }
-            });
+            }.start();
 		}
 	}
 	
