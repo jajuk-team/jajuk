@@ -459,13 +459,13 @@ public class Main implements ITechnicalStrings {
 			        ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_LAST_KEEP_POS)){
 				fileToPlay = FileManager.getFile(History.getInstance().getLastFile());
 				if (fileToPlay != null && fileToPlay.isReady()){
-				    alToPlay.add(FileManager.getFile(History.getInstance().getLastFile()));    
+				    alToPlay.add(fileToPlay);    
 				}
 			}
 			else if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_FILE)){
-			    fileToPlay = FileManager.getFile(History.getInstance().getLastFile());
+			    fileToPlay = FileManager.getFile(ConfigurationManager.getProperty(CONF_STARTUP_FILE));
 				if (fileToPlay != null && fileToPlay.isReady()){
-				    alToPlay.add(FileManager.getFile(History.getInstance().getLastFile()));    
+				    alToPlay.add(fileToPlay);    
 				}
 			}
 			else if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_SHUFFLE)){
