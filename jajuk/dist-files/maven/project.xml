@@ -57,6 +57,7 @@
 	      <id>bflorat</id>
 	      <email>bertrand@florat.net</email>
 	      <organization>Jajuk team</organization>
+	      <timezone>2</timezone>
 	    </developer>
 	    <developer>
 	      <name>Gerhard Dietrichsteiner</name>
@@ -66,6 +67,7 @@
 	     </roles>
 	      <email>skyreacher@users.sourceforge.net</email>
 	      <organization>Jajuk team</organization>
+	      <timezone>2</timezone>
 	    </developer>
 	    <developer>
 	      <name>Sébastien Gringoire</name>
@@ -75,6 +77,7 @@
 	      </roles>
 	      <email></email>
 	      <organization>Jajuk team</organization>
+	      <timezone>2</timezone>
 	    </developer>
   </developers>
   
@@ -90,6 +93,10 @@
 		<contributor>
 			<name>nico-de-nantes</name>
 			<roles><role>Bug reports, RFE, news reporting</role></roles>
+		</contributor>
+		<contributor>
+			<name>Aurélien Pedron</name>
+			<roles><role>Bug reports, tests</role></roles>
 		</contributor>
 	</contributors>
 	

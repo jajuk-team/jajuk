@@ -122,7 +122,7 @@
       <td style='vertical-align: top;'>
       <h2>Physical perspective</h2>
       <p>Navigate into devices, directories and files</p>
-      <img alt='' src='./screenshots/screenshot_perspective_physical.jpg'></img>
+      <a href="./screenshots/screenshot_perspective_physical_large.jpg"><img alt='' src='./screenshots/screenshot_perspective_physical.jpg'></img></a>
     </td>
       <td style='vertical-align: top;'><span style='font-weight: bold;'>Views</span>:
        <ul>
@@ -138,7 +138,7 @@
       <td style='vertical-align: top;'>
       <h2>Logical perspective</h2>
       <p>Navigate into styles, albums, authors and tracks (macos X by Romain Herault)</p>
-      <img src='./screenshots/screenshot_perspective_logical.jpg' alt=''></img>
+      <a href="./screenshots/screenshot_perspective_logical_large.jpg"><img alt='' src='./screenshots/screenshot_perspective_logical.jpg'></img></a>
       </td>
       <td style='vertical-align: top;'><span style='font-weight: bold;'>Views</span>:
       <ul>
@@ -154,7 +154,7 @@
       <td style='vertical-align: top;'>
       <h2>Configuration perspective </h2>
       <p>Configure devices, system options, perform a quick CD scanning ... </p>
-      <img alt='' src='./screenshots/screenshot_perspective_configuration.jpg'></img>
+      <a href="./screenshots/screenshot_perspective_configuration_large.jpg"><img alt='' src='./screenshots/screenshot_perspective_configuration.jpg'></img></a>
  </td>
       <td style='vertical-align: top;'><span style='font-weight: bold;'>Views</span>:
       <ul>
@@ -168,7 +168,7 @@
       <td style='vertical-align: top;'>
       <h2>Statistics perspective</h2>
       <p>Get facts ( style repartition, number of tracks ...) about your music collection</p>
-      <img src='./screenshots/screenshot_perspective_stat.jpg' alt=''></img>
+      <a href="./screenshots/screenshot_perspective_stat_large.jpg"><img alt='' src='./screenshots/screenshot_perspective_stat.jpg'></img></a>
       </td>
       <td style='vertical-align: top;'><span style='font-weight: bold;'>Views</span>:
       <ul>
@@ -180,7 +180,7 @@
       <td style='vertical-align: top;'>
       <h2>Help perspective</h2>
       <p>Documentation with a full-featured help system</p>
-      <img src='./screenshots/screenshot_perspective_help.jpg' alt=''></img>
+      <a href="./screenshots/screenshot_perspective_help_large.jpg"><img alt='' src='./screenshots/screenshot_perspective_help.jpg'></img></a>
       </td>
       <td style='vertical-align: top;'><span style='font-weight: bold;'>Views</span>:
       <ul>
