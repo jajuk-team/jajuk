@@ -189,12 +189,12 @@ public class Directory extends PropertyAdapter implements Comparable{
 
 	/**
 	 * Scan all files in a directory
-	 * 
+	 * 3ilf7eahh59rj5lr5cousdphr
 	 * @param
 	 */
 	public void scan() {
 		java.io.File[] files = getFio().listFiles(JajukFileFilter.getInstance(false, true));
-		if (files == null){  //none file, leave
+		if (files == null || files.length==0){  //none file, leave
 			return;
 		}
 		for (int i = 0; i < files.length; i++) {

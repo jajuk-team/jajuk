@@ -78,7 +78,7 @@ public class Main implements ITechnicalStrings {
 		try {
 			//starts ui
 			jframe = new JFrame("Jajuk : Just Another Jukebox | Java Jukebox"); 
-			jframe.setIconImage(Util.getIcon(IMAGES_SPLASHSCREEN).getImage());
+			jframe.setIconImage(Util.getIcon(ICON_LOGO).getImage());
 			
 			//Launch splashscreen
 			new Thread(){

@@ -21,9 +21,6 @@
 package org.jajuk.ui.views;
 
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.dnd.DnDConstants;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -36,7 +33,6 @@ import java.util.Iterator;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -52,9 +48,8 @@ import org.jajuk.base.PlaylistFileManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.ObservationManager;
 import org.jajuk.ui.Observer;
-import org.jajuk.ui.PlaylistTransferHandler;
+import org.jajuk.ui.PlaylistFileItem;
 import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.Util;
 
 /**
  * Shows playlist files
@@ -148,7 +143,7 @@ public class PhysicalPlaylistRepositoryView extends ViewAdapter implements Obser
 						return;
 					}
 					else { //right button again lauch it 
-						ArrayList alFiles = Util.parsePlaylist(plfi.getPlaylistFile());
+						ArrayList alFiles =  plfi.getPlaylistFile().getBasicFiles();
 						if ( alFiles.size() == 0){
 							Messages.showErrorMessage("018");	
 						}
@@ -169,7 +164,7 @@ public class PhysicalPlaylistRepositoryView extends ViewAdapter implements Obser
 		
 		//refresh
 		populate();
-		jpRoot.add(Box.createVerticalStrut(1000));  //make sure playlists items are packed to the top
+		jpRoot.add(Box.createVerticalStrut(500));  //make sure playlists items are packed to the top
 		JScrollPane jsp = new JScrollPane(jpRoot);
 		add(jsp);
 		//Register on the list for subject we are interrested in
@@ -199,7 +194,7 @@ public class PhysicalPlaylistRepositoryView extends ViewAdapter implements Obser
 		if ( subject.equals(EVENT_DEVICE_MOUNT) || subject.equals(EVENT_DEVICE_UNMOUNT) || subject.equals(EVENT_DEVICE_REFRESH) ) {
 			jpRoot.removeAll();
 			populate();
-			jpRoot.add(Box.createVerticalStrut(1000));
+			jpRoot.add(Box.createVerticalStrut(500));
 			SwingUtilities.updateComponentTreeUI(this);
 		}
 	}
@@ -267,7 +262,7 @@ public class PhysicalPlaylistRepositoryView extends ViewAdapter implements Obser
 				alFiles = FileManager.getBestOfFiles();
 			}
 			else{
-				alFiles = Util.parsePlaylist(plfiSelected.getPlaylistFile());
+				alFiles = plfiSelected.getPlaylistFile().getBasicFiles();
 			}
 			if ( alFiles.size() == 0){
 				Messages.showErrorMessage("018");	
@@ -287,73 +282,4 @@ public class PhysicalPlaylistRepositoryView extends ViewAdapter implements Obser
 }
 
 
-	/**
-	 * A physical playlist icon + text
-	 *
-	 * @author     bflorat
-	 * @created    31 dec. 2004	 
-	 */
-	class PlaylistFileItem extends JPanel{
-		
-		/** Associated playlist file*/
-		PlaylistFile plf;
-		
-		/**Associated name*/
-		String sName;
-		
-		/** Playlist file type : 0: normal, 1:new, 2:bookmarks, 3:bestif*/
-		int iType = 0;
-		
-		public static final int PLAYLIST_TYPE_NORMAL = 0;
-		public static final int PLAYLIST_TYPE_NEW = 1;
-		public static final int PLAYLIST_TYPE_BOOKMARK = 2;
-		public static final int PLAYLIST_TYPE_BESTOF = 3;
-		
-		
-		/**
-		 * Constructor
-		 * @param iType : Playlist file type : 0: normal, 1:new, 2:bookmarks, 3:bestif
-		 * @param sIcon : icon to be shown
-		 * @param sName : nom of the playlist file to be displayed
-		 */
-		PlaylistFileItem(int iType,String sIcon,PlaylistFile plf, String sName){
-			this.iType = iType;
-			this.plf = plf;
-			setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
-			setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
-			JPanel jpIcon  = new JPanel();
-			jpIcon.setLayout(new BoxLayout(jpIcon,BoxLayout.X_AXIS));
-			JLabel jlIcon = new JLabel(Util.getIcon(sIcon)); 
-			jpIcon.add(Box.createGlue());
-			jpIcon.add(jlIcon);
-			jpIcon.add(Box.createGlue());
-			add(jpIcon);
-			JLabel jlName = new JLabel(sName);
-			jlName.setFont(new Font("Dialog",Font.PLAIN,10));
-			JPanel jpName  = new JPanel();
-			jpName.setLayout(new BoxLayout(jpName,BoxLayout.X_AXIS));
-			jpName.add(Box.createGlue());
-			jpName.add(jlName);
-			jpName.add(Box.createGlue());
-			jpName.setPreferredSize(new Dimension(40,10));
-			add(jpName);
-			add(Box.createVerticalGlue());
-			new PlaylistTransferHandler(this,DnDConstants.ACTION_COPY_OR_MOVE,false);
-		}
-		
-				
-		/**
-		 * @return Returns the playlist file.
-		 */
-		public PlaylistFile getPlaylistFile() {
-			return plf;
-		}
-
-		/**
-		 * @return Returns the Type.
-		 */
-		public int getType() {
-			return iType;
-		}
-
-	}
+	

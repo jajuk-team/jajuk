@@ -43,9 +43,7 @@ import javax.swing.ImageIcon;
 import javax.swing.SwingUtilities;
 
 import org.jajuk.Main;
-import org.jajuk.base.BasicFile;
 import org.jajuk.base.ITechnicalStrings;
-import org.jajuk.base.PlaylistFile;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
@@ -451,43 +449,6 @@ public class Util implements ITechnicalStrings {
 		return fVolume;
 	}
 	
-	/**
-	 * Parse a playlist file
-	 * @param plf : playlist file to parse
-	 * @return the list of basic files 
-	 */
-	public static ArrayList parsePlaylist(PlaylistFile plf){
-		ArrayList al = new ArrayList(10);
-		String sDir = plf.getDirectory().getDevice().getUrl()+plf.getDirectory().getAbsolutePath()+"/";
-		File file = new File(sDir+plf.getName());
-		try {
-			BufferedReader br = new BufferedReader(new FileReader(file));
-			String sLine = null;
-			while ((sLine = br.readLine()) != null){
-				StringBuffer sb = new StringBuffer(sLine);
-				if ( sb.charAt(0) == '#'){  //comment
-					continue;
-				}
-				else{
-					File fileTrack = null;
-					if (sb.charAt(0) == '.' || (sb.indexOf("/")==-1 && sb.indexOf("\\")==-1)){  //relative path or not directory at all, move to this directory
-						fileTrack = new File(sDir+sLine);			
-					}
-					else{//a full path is specified
-						fileTrack = new File(sLine); 
-					}
-					if ( fileTrack.exists()){
-						BasicFile bfile = new BasicFile(fileTrack);
-						al.add(bfile);
-					}
-				}
-			}
-		}
-		catch(Exception e){
-			Log.error("017",plf.getName(),e);
-		}
-		return al;
-	}
 	
 	
 	 /**

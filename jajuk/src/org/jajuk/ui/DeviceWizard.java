@@ -390,7 +390,9 @@ public class DeviceWizard extends JFrame implements ActionListener,ITechnicalStr
 					Log.error("112",device.getName(),e2);
 					Messages.showErrorMessage("112",device.getName());
 				}
-				
+			}
+			else{
+				ObservationManager.notify(EVENT_DEVICE_REFRESH);  //refresh trees with empty device
 			}
 			ViewManager.notify(EVENT_VIEW_REFRESH_REQUEST,DeviceView.getInstance());
 			dispose();

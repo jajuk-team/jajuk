@@ -59,10 +59,10 @@ import org.jajuk.base.FileManager;
 import org.jajuk.base.PlaylistFile;
 import org.jajuk.base.PlaylistFileManager;
 import org.jajuk.i18n.Messages;
-import org.jajuk.ui.TreeTransferHandler;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.ObservationManager;
 import org.jajuk.ui.TransferableTreeNode;
+import org.jajuk.ui.TreeTransferHandler;
 import org.jajuk.util.Util;
 
 /**
@@ -308,9 +308,10 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 	/**Fill the tree */
 	public void populate(){
 		//delete previous tree
+		this.transferFocus();
 		removeAll();
 		top.removeAllChildren();
-		SwingUtilities.updateComponentTreeUI(this);
+	//	SwingUtilities.updateComponentTreeUI(this);
 		//add devices
 		ArrayList alDevices = DeviceManager.getDevices();
 		Collections.sort(alDevices);

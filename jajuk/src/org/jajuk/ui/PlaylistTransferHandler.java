@@ -20,7 +20,6 @@
 
 package org.jajuk.ui;
 
-import java.awt.Point;
 import java.awt.datatransfer.Transferable;
 import java.awt.dnd.DragSource;
 import java.awt.dnd.DragSourceEvent;
@@ -31,6 +30,9 @@ import java.awt.dnd.DropTargetEvent;
 import java.awt.dnd.DropTargetListener;
 
 import javax.swing.JPanel;
+
+import org.jajuk.base.FIFO;
+import org.jajuk.base.File;
 
 /**
  *  Dnd support for playlists
@@ -50,7 +52,7 @@ public class PlaylistTransferHandler implements DropTargetListener {
 	private JPanel jpanel;
 	private DropTarget dropTarget; //droptarget
 	
-	public PlaylistTransferHandler(JPanel jpanel, int action, boolean drawIcon) {
+	public PlaylistTransferHandler(JPanel jpanel, int action) {
 		this.jpanel = jpanel;
 		dropTarget = new DropTarget(jpanel, action, this);
 	}
@@ -71,7 +73,6 @@ public class PlaylistTransferHandler implements DropTargetListener {
 	}
 	
 	public final void dropActionChanged(DropTargetDragEvent dtde) {
-		Point pt = dtde.getLocation();
 		int action = dtde.getDropAction();
 		dtde.acceptDrag(action);			
 	}
@@ -80,11 +81,17 @@ public class PlaylistTransferHandler implements DropTargetListener {
 		try {
 			int action = dtde.getDropAction();
 			Transferable transferable = dtde.getTransferable();
-			Point pt = dtde.getLocation();
 			if (transferable.isDataFlavorSupported(TransferableTreeNode.NODE_FLAVOR)) {
 				dtde.acceptDrop(action);				
 				dtde.dropComplete(true);
 				TransferableTreeNode ttn = (TransferableTreeNode)transferable.getTransferData(TransferableTreeNode.NODE_FLAVOR);
+				PlaylistFileItem plfi = (PlaylistFileItem)dtde.getSource();
+				Object oData = ttn.getData();
+				if ( plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_NEW){
+					if (oData instanceof File){
+						FIFO.getInstance().push((File)oData,true);
+					}
+				}
 				System.out.println("drop:" + ttn.getData());
 				return;					
 			}

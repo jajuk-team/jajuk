@@ -290,6 +290,7 @@ public class FIFO implements ITechnicalStrings,Runnable{
 						InformationJPanel.getInstance().setCurrentStatusMessage(Util.formatTime(lTime)+" / "+Util.formatTime(fCurrent.getTrack().getLength()*1000));
 						int iPos = (int)((lTime/10)/length);
 						InformationJPanel.getInstance().setCurrentStatus(iPos);
+						Log.debug("test spliter: "+iPos);  //temp
 						CommandJPanel.getInstance().setCurrentPosition(iPos);
 						InformationJPanel.getInstance().setTotalStatusMessage(Util.formatTimeBySec((int)(lTotalTime-(lTime/1000))));
 					}
@@ -311,7 +312,7 @@ public class FIFO implements ITechnicalStrings,Runnable{
 					else if ( bBestOf){ //Best of mode
 						push(FileManager.getBestOfFile(),false,true);
 					}
-					else if ( fCurrent!= null && ( TRUE.equals(ConfigurationManager.getProperty(CONF_STATE_REPEAT)) || bForcedRepeat)){ //repeat mode ?
+					else if ( fCurrent!= null && alRepeated.size()>0 && ( TRUE.equals(ConfigurationManager.getProperty(CONF_STATE_REPEAT)) || bForcedRepeat)){ //repeat mode ?
 						if (iRepeatIndex == alRepeated.size()){
 							iRepeatIndex = 0;
 						}

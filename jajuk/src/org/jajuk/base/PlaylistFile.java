@@ -19,7 +19,17 @@
  */
 package org.jajuk.base;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import org.jajuk.util.Util;
+import org.jajuk.util.log.Log;
 
 
 /**
@@ -38,6 +48,12 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 	private String  sHashcode;
 	/**Playlist parent directory*/
 	private Directory dParentDirectory;
+	/**Basic Files list*/
+	private ArrayList alBasicFiles = new ArrayList(10);
+	/**Modification flag*/
+	private boolean bModified = false;
+	/**Associated physical file*/
+	private File fio;
 	
 	
 	/**
@@ -52,6 +68,8 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 		this.sName = sName;
 		this.sHashcode = sHashcode;
 		this.dParentDirectory = dParentDirectory;
+		this.fio = new File(getDirectory().getDevice().getUrl()+getDirectory().getAbsolutePath()+"/"+getName());
+		load(); //populate playlist
 	}
 
 	
@@ -133,5 +151,96 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 		PlaylistFile otherPlaylistFile = (PlaylistFile)o;
 		return  getName().compareToIgnoreCase(otherPlaylistFile.getName());
 	}
+
+	/**
+	 * @return Returns the list of basic files this playlist maps to
+	 */
+	public ArrayList getBasicFiles() {
+		return alBasicFiles;
+	}
+	
+	/**
+	 * Add a basic file to this playlist file
+	 * @param bf
+	 */
+	public void addBasicFile(BasicFile bf){
+		alBasicFiles.add(bf);
+		bModified = true;
+	}
+	
+	/**
+	 * Update playlist file on disk if needed
+	 *
+	 */
+	public void commit(){
+		BufferedWriter bw = null;
+		if ( bModified){
+			try {
+				bw = new BufferedWriter(new FileWriter(fio));
+				bw.write(PLAYLIST_NOTE+"\n");
+				Iterator it = alBasicFiles.iterator();
+				while ( it.hasNext()){
+					BasicFile bfile = (BasicFile)it.next();
+					bw.write(bfile.getAbsolutePath()+"\n");
+				}
+			}
+			catch(Exception e){
+				Log.error("017",getName(),e);
+			}
+			finally{
+				if ( bw != null){
+					try {
+						bw.flush();
+						bw.close();
+					} catch (IOException e1) {
+						Log.error(e1);
+					}
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Parse a playlist file
+	 */
+	public void load(){
+		BufferedReader br = null;
+		try {
+			br = new BufferedReader(new FileReader(fio));
+			String sLine = null;
+			while ((sLine = br.readLine()) != null){
+				StringBuffer sb = new StringBuffer(sLine);
+				if ( sb.charAt(0) == '#'){  //comment
+					continue;
+				}
+				else{
+					File fileTrack = null;
+					if (sb.charAt(0) == '.' || (sb.indexOf("/")==-1 && sb.indexOf("\\")==-1)){  //relative path or not directory at all, move to this directory
+						fileTrack = new File(getDirectory().getDevice().getUrl()+getDirectory().getAbsolutePath()+"/"+sLine);			
+					}
+					else{//a full path is specified
+						fileTrack = new File(sLine); 
+					}
+					if ( fileTrack.exists()){
+						BasicFile bfile = new BasicFile(fileTrack);
+						alBasicFiles.add(bfile);
+					}
+				}
+			}
+		}
+		catch(Exception e){
+			Log.error("017",getName(),e);
+		}
+		finally{
+			if ( br != null){
+				try {
+					br.close();
+				} catch (IOException e1) {
+					Log.error(e1);
+				}
+			}
+		}
+	}
+	
 
 }

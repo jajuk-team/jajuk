@@ -24,7 +24,6 @@ import java.awt.AlphaComposite;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.datatransfer.Transferable;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DragGestureEvent;
 import java.awt.dnd.DragGestureListener;
@@ -159,12 +158,7 @@ public class TreeTransferHandler implements DragGestureListener, DragSourceListe
 		if (drawImage) {
 			paintImage(pt);
 		}
-		if (canPerformAction(tree, draggedNode, action, pt)) {
-			dtde.acceptDrag(action);			
-		}
-		else {
-			dtde.rejectDrag();
-		}
+		dtde.acceptDrag(action);			
 	}
 	
 	public final void dragExit(DropTargetEvent dte) {
@@ -179,12 +173,7 @@ public class TreeTransferHandler implements DragGestureListener, DragSourceListe
 		if (drawImage) {
 			paintImage(pt);
 		}
-		if (canPerformAction(tree, draggedNode, action, pt)) {
-			dtde.acceptDrag(action);			
-		}
-		else {
-			dtde.rejectDrag();
-		}
+		dtde.acceptDrag(action);			
 	}
 	
 	public final void dropActionChanged(DropTargetDragEvent dtde) {
@@ -193,40 +182,10 @@ public class TreeTransferHandler implements DragGestureListener, DragSourceListe
 		if (drawImage) {
 			paintImage(pt);
 		}
-		if (canPerformAction(tree, draggedNode, action, pt)) {
-			dtde.acceptDrag(action);			
-		}
-		else {
-			dtde.rejectDrag();
-		}
+		dtde.acceptDrag(action);			
 	}
 	
 	public final void drop(DropTargetDropEvent dtde) {
-		try {
-			if (drawImage) {
-				clearImage();
-			}
-			int action = dtde.getDropAction();
-			Transferable transferable = dtde.getTransferable();
-			Point pt = dtde.getLocation();
-			if (transferable.isDataFlavorSupported(TransferableTreeNode.NODE_FLAVOR) && canPerformAction(tree, draggedNode, action, pt)) {
-				TreePath pathTarget = tree.getPathForLocation(pt.x, pt.y);
-				DefaultMutableTreeNode node = (DefaultMutableTreeNode) transferable.getTransferData(TransferableTreeNode.NODE_FLAVOR);
-				DefaultMutableTreeNode newParentNode =(DefaultMutableTreeNode)pathTarget.getLastPathComponent();
-				if (executeDrop(tree, node, newParentNode, action)) {
-					dtde.acceptDrop(action);				
-					dtde.dropComplete(true);
-					return;					
-				}
-			}
-			dtde.rejectDrop();
-			dtde.dropComplete(false);
-		}		
-		catch (Exception e) {	
-			System.out.println(e);
-			dtde.rejectDrop();
-			dtde.dropComplete(false);
-		}	
 	}
 	
 	private final void paintImage(Point pt) {
@@ -239,30 +198,6 @@ public class TreeTransferHandler implements DragGestureListener, DragSourceListe
 		tree.paintImmediately(rect2D.getBounds());
 	}
 	
-	public boolean canPerformAction(JTree target, DefaultMutableTreeNode draggedNode, int action, Point location) {
-		TreePath pathTarget = target.getPathForLocation(location.x, location.y);
-		if (pathTarget == null) {
-			target.setSelectionPath(null);
-			return(false);
-		}
-		target.setSelectionPath(pathTarget);
-		if(action == DnDConstants.ACTION_COPY) {
-			return(true);
-		}
-		else
-			if(action == DnDConstants.ACTION_MOVE) {	
-				DefaultMutableTreeNode parentNode =(DefaultMutableTreeNode)pathTarget.getLastPathComponent();				
-				if (draggedNode.isRoot() || parentNode == draggedNode.getParent() || draggedNode.isNodeDescendant(parentNode)) {					
-					return(false);	
-				}
-				else {
-					return(true);
-				}				 
-			}
-			else {		
-				return(false);	
-			}
-	}
 	
 	
 	public boolean executeDrop(JTree target, DefaultMutableTreeNode draggedNode, DefaultMutableTreeNode newParentNode, int action) { 

@@ -47,6 +47,13 @@ public class MP3InfoTagImpl implements ITagImpl {
 	/*ID3 V2 tag*/
 	ID3V2Tag id3v2tag = null;
 	
+	
+	/**Constructor*/
+	public MP3InfoTagImpl(){
+		OutputCtr.setLevel(0);		
+	}
+	
+	
 	/* (non-Javadoc)
 	 * @see org.jajuk.base.ITagImpl#getTrackName()
 	 */
@@ -149,7 +156,10 @@ public class MP3InfoTagImpl implements ITagImpl {
 	 * @see org.jajuk.base.ITagImpl#setFile(java.io.File)
 	 */
 	public void setFile(File fio) throws Exception {
-		OutputCtr.setLevel(0);
+		//reinit to prevent a new track from using a previous file tags
+		reader = null;
+		tag = null;
+		id3v2tag = null;
 		reader = new ID3Reader(fio.getAbsolutePath());
 		tag = reader.getExtendedID3Tag();
 		id3v2tag = ID3Reader.getV2Tag();
