@@ -599,7 +599,6 @@ public class Main implements ITechnicalStrings {
 				} catch (Exception e) { //last chance to catch any error for logging purpose
 					e.printStackTrace();
 					Log.error("106", e); //$NON-NLS-1$
-					exit(1);
 				}
 			}
 		});
@@ -631,7 +630,6 @@ public class Main implements ITechnicalStrings {
 				} catch (Exception e) { //last chance to catch any error for logging purpose
 					e.printStackTrace();
 					Log.error("106", e); //$NON-NLS-1$
-					exit(1);
 				}
 			}
 		});
