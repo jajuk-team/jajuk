@@ -31,7 +31,7 @@ import org.jajuk.util.Util;
  * 
  * @author bflorat @created 17 oct. 2003
  */
-public class Style extends PropertyAdapter {
+public class Style extends PropertyAdapter implements Comparable{
 
 	/** Style ID. Ex:1,2,3... */
 	private String sId;
@@ -128,4 +128,13 @@ public class Style extends PropertyAdapter {
 		alAuthors.add(author);
 	}
 
+	/**
+	 *Alphabetical comparator used to display ordered lists
+	 *@param other item to be compared
+	 *@return comparaison result 
+	 */
+	public int compareTo(Object o){
+		Style otherStyle = (Style)o;
+		return  getName2().compareToIgnoreCase(otherStyle.getName2());
+	}
 }

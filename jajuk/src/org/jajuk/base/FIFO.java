@@ -56,6 +56,10 @@ public class FIFO extends Thread implements ITechnicalStrings{
 	/**True is a track is playing */
 	static private boolean bPlaying = false;
 	
+	/** Forced repeat mode flag*/
+	boolean bForcedRepeat = false;
+	
+	
 	/** Current track start date*/
 	private long lTrackStart; 
 	
@@ -96,11 +100,13 @@ public class FIFO extends Thread implements ITechnicalStrings{
 	 * @param alFiles, list of files to be played
 	 * @param bAppend keep previous files or stop them to start a new one ?
 	 * @param bAuto file is added by the system, not by a user action
+	 * @param bForcedRepeat Force repeat mode for selection
 	 */
-	public synchronized void push(ArrayList alFiles, boolean bAppend,boolean bAuto) {
+	public synchronized void push(ArrayList alFiles, boolean bAppend,boolean bAuto,boolean bForcedRepeat) {
+		this.bForcedRepeat = bForcedRepeat;
 		if (!bAuto){
 			FIFO.getInstance().setGlobalRandom(false); //global random mode is broken by any push
-			if (TRUE.equals(ConfigurationManager.getProperty(CONF_STATE_REPEAT))){  //repeat is on
+			if (TRUE.equals(ConfigurationManager.getProperty(CONF_STATE_REPEAT)) || this.bForcedRepeat){  //repeat is on
 				alRepeated = alFiles;
 				iRepeatIndex = 0;
 			}
@@ -121,26 +127,41 @@ public class FIFO extends Thread implements ITechnicalStrings{
 		}
 	}
 	
+
+	/**
+	 * Push some files in the fifo
+	 * @param file, file to be played
+	 * @param bAppend keep previous files or stop them to start a new one ?
+	 * @param bAuto file is added by the system, not by a user action
+	 * @param bForcedRepeat Force repeat mode for selection
+	 */
+	public synchronized void push(File file, boolean bAppend, boolean bAuto,boolean bForcedRepeat) {
+		ArrayList alFiles = new ArrayList(1);
+		alFiles.add(file);
+		push(alFiles,bAppend,bAuto,bForcedRepeat);
+	}
+	
+	
+	
+	/**
+	 * Push some files in the fifo
+	 * @param file, file to be played
+	 * @param bAppend keep previous files or stop them to start a new one ?
+	 * @param bAuto file is added by the system, not by a user action
+	 */
+	public synchronized void push(File file, boolean bAppend, boolean bAuto) {
+		push(file,bAppend,bAuto,false);
+	}
+	
+
 	/**
 	 * Push some files in the fifo
 	 * @param alFiles, list of files to be played
 	 * @param bAppend keep previous files or stop them to start a new one ?
 	 */
 	public synchronized void push(ArrayList alFiles, boolean bAppend) {
-		push(alFiles,bAppend,false);
+		push(alFiles,bAppend,false,false);
 	}
-	
-	/**
-	 * Push some files in the fifo
-	 * @param file, file to be played
-	 * @param bAppend keep previous files or stop them to start a new one ?
-	 */
-	public synchronized void push(File file, boolean bAppend, boolean bAuto) {
-		ArrayList alFiles = new ArrayList(1);
-		alFiles.add(file);
-		push(alFiles,bAppend,bAuto);
-	}
-
 	
 	
 	/**
@@ -149,9 +170,7 @@ public class FIFO extends Thread implements ITechnicalStrings{
 	 * @param bAppend keep previous files or stop them to start a new one ?
 	 */
 	public synchronized void push(File file, boolean bAppend) {
-		ArrayList al = new ArrayList(1);
-		al.add(file);
-		push(al,bAppend,false);
+		push(file,bAppend,false);
 	}
 	
 	
@@ -196,11 +215,11 @@ public class FIFO extends Thread implements ITechnicalStrings{
 					if ( bGlobalRandom){ //Global random mode
 						push(FileManager.getShuffleFile(),false,true);
 					}
-					else if ( fCurrent!= null && TRUE.equals(ConfigurationManager.getProperty(CONF_STATE_REPEAT))){ //repeat mode ?
+					else if ( fCurrent!= null && ( TRUE.equals(ConfigurationManager.getProperty(CONF_STATE_REPEAT)) || bForcedRepeat)){ //repeat mode ?
 						if (iRepeatIndex == alRepeated.size()){
 							iRepeatIndex = 0;
 						}
-						push((File)alRepeated.get(iRepeatIndex),false,true);
+						push((File)alRepeated.get(iRepeatIndex),false,true,bForcedRepeat);
 						iRepeatIndex ++;
 					}
 					else if ( fCurrent!= null && TRUE.equals(ConfigurationManager.getProperty(CONF_STATE_CONTINUE))){ //continue mode ?
@@ -246,7 +265,7 @@ public class FIFO extends Thread implements ITechnicalStrings{
 					}
 					lTrackStart = System.currentTimeMillis();
 					History.getInstance().addItem(fCurrent.getId(),System.currentTimeMillis());
-					InformationJPanel.getInstance().setMessage("<html>Now Playing : <i>"+fCurrent.getTrack().getAuthor().getName2()+" / "+fCurrent.getTrack().getAlbum().getName2()+" / "+fCurrent.getTrack().getName()+"</i></html>",InformationJPanel.INFORMATIVE);
+					InformationJPanel.getInstance().setMessage("Now Playing : "+fCurrent.getTrack().getAuthor().getName2()+" / "+fCurrent.getTrack().getAlbum().getName2()+" / "+fCurrent.getTrack().getName(),InformationJPanel.INFORMATIVE);
 					InformationJPanel.getInstance().setQuality(fCurrent.getQuality()+" kbps");
 				}
 			}

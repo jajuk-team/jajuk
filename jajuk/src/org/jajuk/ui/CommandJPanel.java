@@ -131,7 +131,6 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		jcbHistory.addActionListener(this);
 		jtbHistory.add(jcbHistory);
 		
-		
 		//Mode toolbar
 		jtbMode = new JToolBar();
 		jtbMode.setRollover(true);

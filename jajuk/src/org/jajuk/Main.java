@@ -73,7 +73,7 @@ public class Main implements ITechnicalStrings {
 
 	public static void main(String[] args) {
 		try {
-			
+		
 			//starts ui
 			jframe = new JFrame("Jajuk : Just Another Jukebox"); //$NON-NLS-1$
 			

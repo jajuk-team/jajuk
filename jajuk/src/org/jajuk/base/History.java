@@ -51,7 +51,7 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
 	/** Self instance */
 	private static History history;
 	
-	/** History repository*/
+	/** History repository, last play first*/
 	private static ArrayList alHistory = new ArrayList(100);
 	
 	/** History begin date*/
@@ -167,7 +167,7 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
 	 * @return
 	 */
 	public synchronized HistoryItem getHistoryItem(int index){
-		return (HistoryItem)alHistory.get(index);
+		return (index>= 0? (HistoryItem)alHistory.get(index):null);
 	}
 	
 	
@@ -225,7 +225,7 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
 		}
 		else if (sQName.equals("play")){
 			HistoryItem hi = new HistoryItem(attributes.getValue(attributes.getIndex("file")),Long.parseLong(attributes.getValue(attributes.getIndex("date"))));
-			alHistory.add(0,hi);
+			alHistory.add(hi);
 		}
 	}
 

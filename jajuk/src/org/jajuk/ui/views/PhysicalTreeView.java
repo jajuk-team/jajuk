@@ -26,7 +26,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -304,7 +303,7 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener{
 					Object o = path.getLastPathComponent();
 					if (o instanceof FileNode){
 						File file = ((FileNode)o).getFile();
-						if (file.getDirectory().getDevice().isMounted()){
+						if (file.getDirectory().getDevice().isMounted() && !file.getDirectory().getDevice().isRefreshing()){
 							FIFO.getInstance().push(file,false);
 						}
 						else{
@@ -326,7 +325,7 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener{
 							o = paths[i].getLastPathComponent();
 							if ( o instanceof FileNode ){
 								File file = ((FileNode)o).getFile();
-								if (file.getDirectory().getDevice().isMounted()){
+								if (file.getDirectory().getDevice().isMounted() && !file.getDirectory().getDevice().isRefreshing()){
 									tsFiles.add(((FileNode)o).getFile());
 								}
 								else{
@@ -346,7 +345,7 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener{
 							o = paths[i].getLastPathComponent();
 							if ( o instanceof DirectoryNode){
 								Directory dir = ((DirectoryNode)o).getDirectory();
-								if (dir.getDevice().isMounted()){
+								if (dir.getDevice().isMounted() && !dir.getDevice().isRefreshing()){
 									tsDirs.add(((DirectoryNode)o).getDirectory());
 								}
 								else{
@@ -370,7 +369,7 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener{
 		//expand all
 		for (int i=0;i<jtree.getRowCount();i++){
 			Object o = jtree.getPathForRow(i).getLastPathComponent(); 
-			if ( o instanceof DeviceNode && ((DeviceNode)o).getDevice().isMounted()){
+			if ( o instanceof DeviceNode && ((DeviceNode)o).getDevice().isMounted()  && !((DeviceNode)o).getDevice().isRefreshing()){
 				jtree.expandRow(i); 
 			}
 			else if (o instanceof DirectoryNode && ((DirectoryNode)o).getDirectory().getFiles().size()==0){
@@ -447,7 +446,7 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener{
 		else if (e.getSource() == jmiFilePush ){
 			FIFO.getInstance().push(new ArrayList(tsFiles),true);
 		}
-		else if (e.getSource() == jmiDirPlay  || e.getSource() == jmiDirPush || e.getSource() == jmiDirPlayShuffle){
+		else if (e.getSource() == jmiDirPlay  || e.getSource() == jmiDirPush || e.getSource() == jmiDirPlayShuffle || e.getSource() == jmiDirPlayRepeat){
 			ArrayList alFilesToPlay = new ArrayList(); //files to be played
 			Iterator it = tsDirs.iterator();
 			while (it.hasNext()){
@@ -457,7 +456,7 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener{
 				Iterator it2  = alFiles.iterator();
 				while (it2.hasNext()){
 					File file = (File)it2.next();
-					if ( file.getDirectory().getDevice().isMounted() && file.hasAncestor(dir)){  //mount test is only for performance reasons 
+					if ( file.getDirectory().getDevice().isMounted() && !file.getDirectory().getDevice().isRefreshing() && file.hasAncestor(dir)){  //mount test is only for performance reasons, nop on a device during refreshing 
 						alFilesToPlay.add(file);
 					}
 				}
@@ -470,6 +469,9 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener{
 			}
 			else if (e.getSource() == jmiDirPlayShuffle){
 				FIFO.getInstance().push(Util.randomize(alFilesToPlay),false);
+			}
+			else if (e.getSource() == jmiDirPlayRepeat){
+				FIFO.getInstance().push(alFilesToPlay,false,false,true);
 			}
 		}
 	}

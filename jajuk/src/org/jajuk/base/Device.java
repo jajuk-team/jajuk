@@ -50,7 +50,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	/**directories*/
 	private ArrayList alDirectories = new ArrayList(20);
 	/**Already refreshing flag*/
-	private static boolean bAlreadyRefreshing = false;
+	private boolean bAlreadyRefreshing = false;
 	/**Device types strings . ex:directory, remote...*/
 	public static String[] sDeviceTypes = {
 			Messages.getString("Device_type.directory"),
@@ -130,7 +130,6 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 		//current reference to the inner thread class
 		new Thread() {
 			public void  run() {
-				
 				/*Remove all directories, playlist files and files for this device before rescan. 
 				Note  that logical item ( tracks, styles...) are device independant and connot be cleared.
 				They will be clean up at next jajuk restart and old track data is used to populate device without full tag scan
@@ -263,7 +262,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	
 	/** Tells if a device is refreshing
 	 */
-	public static boolean isRefreshing(){
+	public boolean isRefreshing(){
 		return bAlreadyRefreshing;
 	}
 	

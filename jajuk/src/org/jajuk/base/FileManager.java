@@ -70,7 +70,7 @@ public class FileManager implements ITechnicalStrings{
 			alFilesId.add(sId);
 			alFiles.add(file);
 			tsSortedFiles.add(file);
-			if ( Device.isRefreshing()){
+			if ( directory.getDevice().isRefreshing()){
 				Log.debug("registrated new file: "+ file);
 			}
 		}
@@ -88,6 +88,7 @@ public class FileManager implements ITechnicalStrings{
 			File file = (File) it.next();
 			if (file.getDirectory()==null || file.getDirectory().getDevice().getId().equals(sId)) {
 				it.remove();
+				alFilesId.remove(file.getId());
 				tsSortedFiles.remove(file);
 			}
 		}
@@ -126,7 +127,7 @@ public class FileManager implements ITechnicalStrings{
 		Iterator it = alFiles.iterator();
 		while ( it.hasNext()){
 			File file = (File)it.next();
-			if (file.getDirectory().getDevice().isMounted()){
+			if (file.getDirectory().getDevice().isMounted() && !file.getDirectory().getDevice().isRefreshing()){
 				alEligibleFiles.add(file);
 			}
 		}
@@ -155,7 +156,7 @@ public class FileManager implements ITechnicalStrings{
 		while ( index < alSortedFiles.size()){
 			fileNext = (File)alSortedFiles.get(index);
 			index ++;
-			if (fileNext.getDirectory().getDevice().isMounted()){  //file must be on a mounted device
+			if (fileNext.getDirectory().getDevice().isMounted() && !fileNext.getDirectory().getDevice().isRefreshing()){  //file must be on a mounted device not refreshing
 				break;
 			}
 		}

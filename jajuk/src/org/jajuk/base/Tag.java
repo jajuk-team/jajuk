@@ -63,8 +63,8 @@ public class Tag implements ITechnicalStrings{
 		String sTrackName = new StringTokenizer(Util.formatTag(fio.getName()),".").nextToken().toString();
 		String sTemp = "";
 		try {
-			sTemp = tagImpl.getTrackName();
-			if (sTemp != null && !sTemp.equals("")){
+			sTemp = tagImpl.getTrackName().trim();
+			if (!"".equals(sTemp)){
 				sTrackName = Util.formatTag(sTemp);  //remove the extension
 			}
 		} catch (Exception e) {
@@ -80,8 +80,11 @@ public class Tag implements ITechnicalStrings{
 		String sAlbumlName = null;
 		String sTemp = "";
 		try {
-			sTemp = tagImpl.getAlbumName();
-			if (sTemp != null && !sTemp.equals("")){
+			sTemp = tagImpl.getAlbumName().trim();
+			if (Messages.getString("unknown_album").equals(sTemp)){  //it is done to avoid duplicates unknown albums if the tag is the real string "unknown" in the current language 
+					sAlbumlName = "unknown_album";
+			}
+			else if (!"".equals(sTemp)){
 				sAlbumlName = sTemp;
 			}
 		} catch (Exception e) {
@@ -106,8 +109,11 @@ public class Tag implements ITechnicalStrings{
 		String sAuthorName = "unknown_author";
 		String sTemp = "";
 		try {
-			sTemp = tagImpl.getAuthorName();
-			if (sTemp != null && !sTemp.equals("")){
+			sTemp = tagImpl.getAuthorName().trim();
+			if (Messages.getString("unknown_author").equals(sTemp)){  //it is done to avoid duplicates unknown authors if the tag is the real string "unknown" in the current language 
+				sAuthorName = "unknown_author";
+			}
+			else if (!"".equals(sTemp)){
 				sAuthorName = Util.formatTag(sTemp);
 			}
 		} catch (Exception e) {
@@ -125,9 +131,12 @@ public class Tag implements ITechnicalStrings{
 		String style = "unknown_style";
 		String sTemp = "";
 		try {
-			sTemp = tagImpl.getStyleName();
-			if (sTemp != null && !sTemp.equals("")){
-				if(sTemp.equals("unknown")){
+			sTemp = tagImpl.getStyleName().trim();
+			if (Messages.getString("unknown_style").equals(sTemp)){  //it is done to avoid duplicates unknown styles if the tag is the real string "unknown" in the current language 
+				style = "unknown_style";
+			}
+			else if (!"".equals(sTemp)){
+				if( sTemp.equals("unknown")){
 					sTemp = style;
 				}
 				style = Util.formatTag(sTemp);

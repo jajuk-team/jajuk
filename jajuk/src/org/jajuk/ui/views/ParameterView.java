@@ -337,7 +337,7 @@ public class ParameterView extends ViewAdapter implements ActionListener {
 				{iYSeparator,20,iYSeparator,20,iYSeparator}};
 		jpTags.setLayout(new TableLayout(sizeTags));
 		jcbDeepScan = new JCheckBox("Perform a deep tag scan"); 
-		jcbDeepScan.setToolTipText("<html>Force Jajuk to read the entire files to check length.<p>Use it only if you want to get exact track length but be aware that the refresh will be <b>much</b> slower ( up to 15 times )</html>");
+		jcbDeepScan.setToolTipText("<html>Force Jajuk to re-read the actual id3 tags.<p>This can be usefull to refresh tags you changed with another program</html>");
 		jcbUseParentDir = new JCheckBox("Use parent directory as album name"); 
 		jcbUseParentDir.setToolTipText("Tell Jajuk to use parent directory as album name for a track if it can't be get by tags");
 		jpTags.add(jcbDeepScan,"0,1"); //$NON-NLS-1$

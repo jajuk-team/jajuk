@@ -335,8 +335,12 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 		if (ae.getActionCommand().equals(EVENT_DEVICE_NEW)){
 			DeviceWizard dw = new DeviceWizard();
 			dw.updateWidgetsDefault();
+			return;
 		}
-		else if (ae.getActionCommand().equals(EVENT_DEVICE_DELETE)){
+		if (dSelected == null){  //test a device is selected
+			return;
+		}
+	 	if (ae.getActionCommand().equals(EVENT_DEVICE_DELETE)){
 			DeviceManager.removeDevice(dSelected);
 			jpDevices.remove(diSelected);
 			dSelected = null;

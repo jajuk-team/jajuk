@@ -30,7 +30,7 @@ import org.jajuk.util.Util;
  * @author     bflorat
  * @created    17 oct. 2003
  */
-public class Author extends PropertyAdapter {
+public class Author extends PropertyAdapter implements Comparable{
 
 	/** author ID. Ex:1,2,3...*/
 	private String sId;
@@ -128,6 +128,16 @@ public class Author extends PropertyAdapter {
 	 */
 	public void addAlbum(Album album) {
 		alAlbums.add(album);
+	}
+	
+	/**
+	 *Alphabetical comparator used to display ordered lists
+	 *@param other item to be compared
+	 *@return comparaison result 
+	 */
+	public int compareTo(Object o){
+		Author otherAuthor = (Author)o;
+		return  getName2().compareToIgnoreCase(otherAuthor.getName2());
 	}
 	
 }

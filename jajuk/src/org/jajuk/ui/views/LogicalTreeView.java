@@ -26,7 +26,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -51,22 +50,12 @@ import javax.swing.tree.TreeSelectionModel;
 
 import org.jajuk.base.Album;
 import org.jajuk.base.Author;
-import org.jajuk.base.AuthorManager;
-import org.jajuk.base.Device;
-import org.jajuk.base.DeviceManager;
-import org.jajuk.base.Directory;
-import org.jajuk.base.DirectoryManager;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
-import org.jajuk.base.FileManager;
-import org.jajuk.base.PlaylistFile;
-import org.jajuk.base.PlaylistFileManager;
 import org.jajuk.base.Style;
-import org.jajuk.base.StyleManager;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.i18n.Messages;
-import org.jajuk.util.Util;
 
 /**
  * Logical tree view

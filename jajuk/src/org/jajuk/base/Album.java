@@ -30,7 +30,7 @@ import org.jajuk.util.Util;
  * @Author     bflorat
  * @created    17 oct. 2003
  */
-public class Album extends PropertyAdapter {
+public class Album extends PropertyAdapter implements Comparable{
 
 	/** Album ID. Ex:1,2,3...*/
 	private String sId;
@@ -128,4 +128,14 @@ public class Album extends PropertyAdapter {
 		alTracks.add(track);
 	}
 
+	/**
+	 *Alphabetical comparator used to display ordered lists
+	 *@param other item to be compared
+	 *@return comparaison result 
+	 */
+	public int compareTo(Object o){
+		Album otherAlbum = (Album)o;
+		return  getName2().compareToIgnoreCase(otherAlbum.getName2());
+	}
+	
 }

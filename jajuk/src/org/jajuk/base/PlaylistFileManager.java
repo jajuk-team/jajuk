@@ -62,7 +62,7 @@ public class PlaylistFileManager {
 		PlaylistFile playlistFile = new PlaylistFile(sId, sName, sHashcode, dParentDirectory);
 		if ( !hmPlaylistFiles.containsKey(sId)){
 			hmPlaylistFiles.put(sId, playlistFile);
-			if ( Device.isRefreshing()){
+			if ( dParentDirectory.getDevice().isRefreshing()){
 				Log.debug("Registered new playlist file: "+ playlistFile);
 			}
 		}
