@@ -1,15 +1,22 @@
-Summary: Jajuk Advanced Jukebox
-Name: jajuk
-Version: 0.3.1
-Release: suse
-Group: Applications/Audio
-Copyright: Copyright Bertrand Florat & Jajuk team 2003 - 2004
-URL: http://jajuk.sourceforge.net
+%define name                     jajuk
+%define version                     0.3.2
+%define release                     1mdk
+
+%define section                  Multimedia/Sound
+%define title                         Jajuk
+%define longtitle                 Jajuk Advanced Jukebox
+
+
+Summary:                    %{longtitle}
+Name:                         %{name}
+Version:                     %{version}
+Release:                     %{release}
+License:                     GPL
+Group:                         Sound
+Url:                         http://%{name}.sourceforge.net
 Source: http://jajuk.sourceforge.net
-Packager: Bertrand Florat
 BuildRoot: %_topdir/%{name}
-BuildArch: i386
-Requires: java2 >= 1.4.2
+Requires:                     j2re >= 1.4.2
 
 %description
 Jajuk is a Java music organizer for all platforms.
@@ -56,19 +63,22 @@ Jajuk main principles are :
    /usr/lib/jajuk/lib/vorbisspi-1.0.jar
     /usr/lib/jajuk/lib/infonodeDockingWindows-1.1.0.jar
    /usr/lib/jajuk/native/libtray.so
-   /usr/share/applications/Jajuk.desktop
-   /usr/share/doc/packages/jajuk/README.html
-   /usr/share/doc/packages/jajuk/README_chn.html
-   /usr/share/doc/packages/jajuk/README_deu.html
-   /usr/share/doc/packages/jajuk/README_fra.html
-   /usr/share/doc/packages/jajuk/README_ita.html
-   /usr/share/doc/packages/jajuk/README_nld.html
-   /usr/share/doc/packages/jajuk/README_swe.html
-   /usr/share/pixmaps/jajuk-logo.png
+   /usr/share/doc/jajuk/README.html
+   /usr/share/doc/jajuk/README_chn.html
+   /usr/share/doc/jajuk/README_deu.html
+   /usr/share/doc/jajuk/README_fra.html
+   /usr/share/doc/jajuk/README_ita.html
+   /usr/share/doc/jajuk/README_nld.html
+   /usr/share/doc/jajuk/README_swe.html
+   /usr/share/icons/jajuk-logo.png
+   /usr/share/icons/mini/jajuk-logo.png
+   /usr/share/icons/large/jajuk-logo.png
+   /usr/lib/menu/jajuk
 
 %post
+update-menus
 
 %postun
-rm -rf /usr/share/doc/packages/jajuk
+update-menus
+rm -rf /usr/share/doc/jajuk
 rm -rf /usr/lib/jajuk
-   

@@ -284,20 +284,25 @@
     <target name='rpm' depends='jar,helpsetjar'>
     	<!--Suse-->
     	<copy todir='${rpmbuilddir_suse}/SPECS' >
-    		<fileset file='${basedir}/dist-files/packaging/RPMS/suse/jajuk-suse.specs'/>
+    		<fileset file='${basedir}/dist-files/packaging/RPMS/suse/jajuk-suse.spec'/>
     	</copy>
     	<copy todir='/home/bflorat' >
     		<fileset file='${basedir}/dist-files/packaging/RPMS/suse/.rpmmacros'/>
     	</copy>
-    	<rpm specFile='jajuk-suse.specs' topDir='${rpmbuilddir_suse}' cleanBuildDir='yes' removeSpec='no' command='-bb' />
+    	<rpm specFile='jajuk-suse.spec' topDir='${rpmbuilddir_suse}' cleanBuildDir='yes' removeSpec='no' command='-bb' />
     	<!--Mandrake-->
     	<copy todir='${rpmbuilddir_mdk}/SPECS' >
-    		<fileset file='${basedir}/dist-files/packaging/RPMS/mdk/jajuk-mdk.specs'/>
+    		<fileset file='${basedir}/dist-files/packaging/RPMS/mdk/jajuk-mdk.spec'/>
     	</copy>
     	<copy todir='/home/bflorat' >
     		<fileset file='${basedir}/dist-files/packaging/RPMS/mdk/.rpmmacros'/>
     	</copy>
- 		<rpm specFile='jajuk-mdk.specs' topDir='${rpmbuilddir_mdk}' cleanBuildDir='yes' removeSpec='no' command='-bb' /> 
+ 		<rpm specFile='jajuk-mdk.spec' topDir='${rpmbuilddir_mdk}' cleanBuildDir='yes' removeSpec='no' command='-bb' /> 
+ 		<!-- Reset .rpmmacros to suse -->
+ 		<copy todir='/home/bflorat' >
+    		<fileset file='${basedir}/dist-files/packaging/RPMS/suse/.rpmmacros'/>
+    	</copy>
+    	
     </target>
    
    
