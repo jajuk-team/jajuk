@@ -20,21 +20,10 @@
 
 package org.jajuk.ui.perspectives;
 
-import java.awt.BorderLayout;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 
-import net.infonode.docking.RootWindow;
 import net.infonode.docking.SplitWindow;
-import net.infonode.docking.theme.SlimFlatDockingTheme;
 import net.infonode.docking.util.ViewMap;
-import net.infonode.util.Direction;
 
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.views.CoverView;

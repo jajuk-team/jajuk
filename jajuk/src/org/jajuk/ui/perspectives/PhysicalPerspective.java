@@ -21,7 +21,6 @@
 package org.jajuk.ui.perspectives;
 import java.io.IOException;
 
-
 import net.infonode.docking.SplitWindow;
 import net.infonode.docking.util.ViewMap;
 

@@ -24,8 +24,6 @@ import java.awt.Container;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.swing.JPanel;
-
 import org.jajuk.ui.views.IView;
 /**
  * Representation of a perspective

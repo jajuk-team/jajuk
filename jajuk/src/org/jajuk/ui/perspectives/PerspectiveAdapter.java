@@ -36,7 +36,6 @@ import java.util.Iterator;
 import javax.swing.JPanel;
 
 import net.infonode.docking.DockingWindow;
-import net.infonode.docking.DockingWindowAdapter;
 import net.infonode.docking.RootWindow;
 import net.infonode.docking.theme.SlimFlatDockingTheme;
 import net.infonode.docking.util.DockingUtil;
@@ -44,12 +43,8 @@ import net.infonode.docking.util.ViewMap;
 import net.infonode.util.Direction;
 
 import org.jajuk.base.ITechnicalStrings;
-import org.jajuk.ui.JajukContainer;
-import org.jajuk.ui.JajukJMenuBar;
-import org.jajuk.ui.views.AnimationView;
 import org.jajuk.ui.views.IView;
 import org.jajuk.ui.views.ViewManager;
-import org.jajuk.util.log.Log;
 
 /**
  * Perspective adapter, provide default implementation for perspectives

@@ -47,7 +47,6 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
-import javax.swing.JDesktopPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 

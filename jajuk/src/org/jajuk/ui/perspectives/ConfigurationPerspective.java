@@ -22,11 +22,8 @@ package org.jajuk.ui.perspectives;
 
 import java.io.IOException;
 
-import net.infonode.docking.RootWindow;
 import net.infonode.docking.SplitWindow;
-import net.infonode.docking.theme.SlimFlatDockingTheme;
 import net.infonode.docking.util.ViewMap;
-import net.infonode.util.Direction;
 
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.views.CDScanView;

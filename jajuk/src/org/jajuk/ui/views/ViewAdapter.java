@@ -20,12 +20,14 @@
 
 package org.jajuk.ui.views;
 
+import java.awt.Graphics;
 import java.awt.event.ComponentEvent;
 
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import org.jajuk.base.ITechnicalStrings;
+import org.jajuk.util.Util;
 
 /**
  *  Default implementation for views
@@ -194,4 +196,10 @@ public abstract class ViewAdapter extends JPanel implements IView,ITechnicalStri
     public void componentShown(ComponentEvent e) {
     }
 	
+    public void paint(Graphics g)  {
+        g.drawImage(Util.getIcon(IMAGES_STAT_PAPER).getImage(),0,0,760,400,null);
+        super.paint(g);
+    }
+
+    
 }

@@ -29,7 +29,6 @@ import javax.swing.SwingUtilities;
 
 import org.jajuk.Main;
 import org.jajuk.base.ITechnicalStrings;
-import org.jajuk.ui.JajukJMenuBar;
 import org.jajuk.ui.PerspectiveBarJPanel;
 import org.jajuk.ui.views.IView;
 import org.jajuk.util.ConfigurationManager;

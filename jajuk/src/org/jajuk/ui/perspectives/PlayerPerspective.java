@@ -20,16 +20,15 @@
 
 package org.jajuk.ui.perspectives;
 
-import java.awt.BorderLayout;
 import java.io.IOException;
+
+import net.infonode.docking.SplitWindow;
+import net.infonode.docking.util.ViewMap;
 
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.views.AnimationView;
 import org.jajuk.ui.views.CoverView;
 import org.jajuk.ui.views.IView;
-
-import net.infonode.docking.SplitWindow;
-import net.infonode.docking.util.ViewMap;
 
 /**
  *  Player perspective, contains view usefull to be displayed duriong playing
