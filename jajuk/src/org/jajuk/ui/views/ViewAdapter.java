@@ -45,7 +45,7 @@ public abstract class ViewAdapter extends JPanel implements IView,ITechnicalStri
 	 * toString method
 	 */
 	public String toString(){
-		return "View[name="+getName()+" description='"+getDesc()+"]";
+		return "View[name="+getViewName()+" description='"+getDesc()+"]";
 	}
 
 

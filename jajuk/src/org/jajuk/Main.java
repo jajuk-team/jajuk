@@ -27,6 +27,9 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -131,15 +134,13 @@ public class Main implements ITechnicalStrings {
 			History.load();
 			
 			//Starts the FIFO
-			Thread thread = FIFO.getInstance();
-			thread.setPriority(Thread.MIN_PRIORITY); //min priority : preserve player
-			thread.start();
+			FIFO.getInstance().start();
 			
 			jframe.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 			jframe.addWindowListener(new WindowAdapter() {
 				public void windowClosing(WindowEvent we) {
 					exit(0);
-					return;
+					return; 
 				}
 			});
 			jpFrame = (JPanel)jframe.getContentPane();
@@ -221,16 +222,30 @@ public class Main implements ITechnicalStrings {
 	 * @throws Exception
 	 */
 	private static void initialCheckups() throws Exception {
-		//check for a concurrent jajuk session
-		File fJajukLock = new File(FILE_LOCK);
-		if (fJajukLock.exists() ) {
+		try {
+			//check for a concurrent jajuk session
+			Socket socket = new Socket("127.0.0.1", 62321);  //try to connect to an existing socket server
+			ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+			oos.writeObject("");
+			//	No error? jajuk already started
 			sc.dispose();
 			Log.error(new JajukException("124"));
 			Messages.showErrorMessage("124");	
 			System.exit(-1);
-		}
-		else{
-			fJajukLock.createNewFile();
+			
+		} catch (IOException e) { //error? looks like Jajuk is not started, lets start the listener 
+			new Thread(){
+				public void run(){
+					try{
+						ServerSocket ss = new ServerSocket(62321);
+						ss.accept();
+					}
+					catch(Exception e){
+					}
+				}
+			}.start();
+			
+			
 		}
 		
 		//check for jajuk home directory presence
@@ -273,9 +288,6 @@ public class Main implements ITechnicalStrings {
 	 */
 	public static void exit(int iExitCode) {
 		try {
-			//			Remove lock file
-			File fJajukLock = new File(FILE_LOCK);
-			fJajukLock.delete();
 			if (Boolean.valueOf(ConfigurationManager.getProperty(CONF_CONFIRMATIONS_EXIT)).booleanValue()){
 				int iResu = JOptionPane.showConfirmDialog(jframe,Messages.getString("Confirmation_exit"),Messages.getString("Main.16"),JOptionPane.YES_NO_OPTION); //$NON-NLS-1$ //$NON-NLS-2$
 				if (iResu == JOptionPane.NO_OPTION){

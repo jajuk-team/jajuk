@@ -405,9 +405,6 @@ public class DeviceWizard extends JFrame implements ActionListener,ITechnicalStr
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
 				java.io.File file = jfc.getSelectedFile();
 				jtfUrl.setText(file.getAbsolutePath());	
-				if (jtfMountPoint.isEnabled()){
-					jtfMountPoint.setText(file.getAbsolutePath());
-				}
 			}
 		}
 		else if(e.getSource() == jcbType){

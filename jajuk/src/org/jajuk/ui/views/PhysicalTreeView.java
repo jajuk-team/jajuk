@@ -544,6 +544,13 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 		}
 	
 	}
+
+	/* (non-Javadoc)
+	 * @see org.jajuk.ui.IView#getViewName()
+	 */
+	public String getViewName() {
+		return "org.jajuk.ui.views.PhysicalTreeView";
+	}
 }
 
 

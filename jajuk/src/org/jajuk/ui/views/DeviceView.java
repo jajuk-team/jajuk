@@ -216,7 +216,7 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.views.IView#getName()
 	 */
-	public String getName() {
+	public String getViewName() {
 		return VIEW_NAME_DEVICES;
 	}
 	

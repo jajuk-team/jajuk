@@ -69,6 +69,8 @@ public class LogicalTableView extends ViewAdapter implements ActionListener{
 	public String getDesc() {
 		return "Logical table view";
 	}
+	
+	
 
 	/** Return singleton */
 	public static LogicalTableView getInstance() {
@@ -177,6 +179,15 @@ public class LogicalTableView extends ViewAdapter implements ActionListener{
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
 	public void actionPerformed(ActionEvent e) {
+	}
+
+
+
+	/* (non-Javadoc)
+	 * @see org.jajuk.ui.IView#getViewName()
+	 */
+	public String getViewName() {
+		return "org.jajuk.ui.views.LogicalTableView";
 	}
 }
 

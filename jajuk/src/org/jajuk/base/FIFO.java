@@ -70,7 +70,7 @@ public class FIFO extends Thread implements ITechnicalStrings{
 	private boolean bGlobalRandom = false;
 	
 	/** Repeated set */
-	private ArrayList alRepeated;
+	private ArrayList alRepeated = new ArrayList(50);
 	
 	/** Repeated set index */
 	private int iRepeatIndex;

@@ -33,14 +33,14 @@ public interface IView {
 	 * Returns the view identifier.
 	 * @return View identifier.
 	 */
-	public abstract String getName();
+	public String getViewName();
 	
 	/**
 	 * Returns the view description.
 	 * @return View description.
 	 */
-	public abstract String getDesc();
-		
+	public String getDesc();
+	
 	/**
 	 * Set the view visible.
 	 * @param pVisible - true to make the view visible; false to make it invisible.

@@ -154,10 +154,18 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
 	 * @return id of last played registered track or null if history is empty
 	 */
 	public synchronized String getLastFile(){
+		HistoryItem hiLast = null;
 		if (alHistory.size() == 0){
 			return null;
 		}
-		HistoryItem hiLast = (HistoryItem)alHistory.get(0); 
+		Iterator it = alHistory.iterator();
+		while (it.hasNext()){
+			hiLast = (HistoryItem)it.next();
+			org.jajuk.base.File file = FileManager.getFile(hiLast.getFileId());
+			if ( file.getDirectory().getDevice().isMounted() && !file.getDirectory().getDevice().isRefreshing()){
+				break;
+			}
+		}
 		return hiLast.getFileId();
 	}
 	

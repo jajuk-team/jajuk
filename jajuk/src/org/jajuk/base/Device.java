@@ -275,7 +275,21 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 		if (bMounted){
 			Messages.showErrorMessage("111");
 		}
-		//TODO perform mount
+		String sOS = (String)System.getProperties().get("os.name");
+		int iExit = 0;
+		if (sOS.trim().toLowerCase().lastIndexOf("windows")==-1 && !getMountPoint().trim().equals("")){  //not a windows
+			try{
+				Process process = Runtime.getRuntime().exec("mount "+getMountPoint());
+				iExit = process.waitFor();
+				if ( iExit != 0){  //0: OK, 1: already mounted or error
+					throw new Exception();
+				}
+			}
+			catch(Exception e){
+				Log.error("011",Integer.toString(iExit),e);	//mount failed
+				Messages.showErrorMessage("011",getName());
+			}
+		}
 		bMounted = true;
 	}
 	
@@ -287,7 +301,25 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 		if (!bMounted){
 			Messages.showErrorMessage("120");
 		}
-		//TODO perform unmount
+		String sOS = (String)System.getProperties().get("os.name");
+		int iExit = 0;
+			if (sOS.trim().toLowerCase().lastIndexOf("windows")==-1 && !getMountPoint().trim().equals("")){  //not a windows
+				try{
+					Process process = Runtime.getRuntime().exec("umount "+getMountPoint());
+					iExit = process.waitFor();
+					if ( iExit == 2){  //not mounted
+						return;
+					}
+					else if ( iExit != 0 ){  //0: OK, 1: already mounted
+						throw new Exception();
+					}
+				}
+				catch(Exception e){
+					Log.error("012",Integer.toString(iExit),e);	//mount failed
+					Messages.showErrorMessage("012",getName());
+					return;
+				}
+			}
 		if (FIFO.getInstance().canUnmount(this)){
 			bMounted = false;
 			ObservationManager.notify(EVENT_DEVICE_UNMOUNT);

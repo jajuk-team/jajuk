@@ -456,6 +456,13 @@ public class LogicalTreeView extends ViewAdapter implements ActionListener{
 			FIFO.getInstance().push(alFilesToPlay,false,false,true);
 		}
 	}
+
+	/* (non-Javadoc)
+	 * @see org.jajuk.ui.IView#getViewName()
+	 */
+	public String getViewName() {
+		return "org.jajuk.ui.views.LogicalTreeView";
+	}
 }
 
 

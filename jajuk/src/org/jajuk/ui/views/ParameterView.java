@@ -489,4 +489,11 @@ public class ParameterView extends ViewAdapter implements ActionListener {
 		jcbUseParentDir.setSelected(Boolean.valueOf(ConfigurationManager.getProperty(CONF_TAGS_USE_PARENT_DIR)).booleanValue());
 	}
 
+	/* (non-Javadoc)
+	 * @see org.jajuk.ui.IView#getViewName()
+	 */
+	public String getViewName() {
+		return "org.jajuk.ui.views.ParameterView";
+	}
+
 }
