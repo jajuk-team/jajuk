@@ -451,7 +451,7 @@ public class FIFO implements ITechnicalStrings,Runnable{
 		CommandJPanel.getInstance().setCurrentPosition(0);
 		InformationJPanel.getInstance().setTotalStatusMessage("00:00:00"); //$NON-NLS-1$
 		InformationJPanel.getInstance().setMessage(Messages.getString("FIFO.16"),InformationJPanel.INFORMATIVE); //$NON-NLS-1$
-		JajukWindow.getInstance().setTooltip(Messages.getString("FIFO.16"));
+		JajukWindow.getInstance().setTooltip(Messages.getString("FIFO.16")); //$NON-NLS-1$
 		InformationJPanel.getInstance().setQuality(""); //$NON-NLS-1$
 		Main.getWindow().setTitle(Messages.getString("FIFO.18")); //$NON-NLS-1$
 	}
