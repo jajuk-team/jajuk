@@ -22,7 +22,7 @@ package org.jajuk.base;
 import java.io.File;
 
 import org.jajuk.i18n.Messages;
-import org.jajuk.tag.*;
+import org.jajuk.tag.ITagImpl;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;

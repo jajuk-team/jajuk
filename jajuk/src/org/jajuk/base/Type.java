@@ -19,8 +19,8 @@
  */
 package org.jajuk.base;
 
-import org.jajuk.players.*;
-import org.jajuk.tag.*;
+import org.jajuk.players.IPlayerImpl;
+import org.jajuk.tag.ITagImpl;
 import org.jajuk.util.Util;
 
 /**
