@@ -64,6 +64,8 @@ public class JajukWindow extends JFrame implements ITechnicalStrings,ComponentLi
 	private static JajukWindow jw;
 	/**Show window at startup?*/
 	private boolean bVisible = true;
+	/**Pause status*/
+	private boolean bPaused = false;
 	//Systray variables
 	SysTrayMenuIcon stmi;
 	SysTrayMenu stm;
@@ -71,6 +73,8 @@ public class JajukWindow extends JFrame implements ITechnicalStrings,ComponentLi
 	SysTrayMenuItem stmiAbout;
 	SysTrayMenuItem stmiShuffle;
 	SysTrayMenuItem stmiBestof;
+	SysTrayMenuItem stmiPause;
+	SysTrayMenuItem stmiStop;
 	SysTrayMenuItem stmiVisible;
 	SysTrayMenuItem stmiHidden;
 	
@@ -117,27 +121,34 @@ public class JajukWindow extends JFrame implements ITechnicalStrings,ComponentLi
 			}
 			stmi = new SysTrayMenuIcon(url);
 			stmi.addSysTrayMenuListener(this);
-			stm = new SysTrayMenu(stmi,"Jajuk advanced jukebox");
-			stmiExit =  new SysTrayMenuItem("Exit");
+			stm = new SysTrayMenu(stmi,Messages.getString("JajukWindow.3")); //$NON-NLS-1$
+			stmiExit =  new SysTrayMenuItem(Messages.getString("JajukWindow.4")); //$NON-NLS-1$
 			stmiExit.addSysTrayMenuListener(this);
-			stmiAbout =  new SysTrayMenuItem("About");
+			stmiAbout =  new SysTrayMenuItem(Messages.getString("JajukWindow.5")); //$NON-NLS-1$
 			stmiAbout.addSysTrayMenuListener(this);
-			stmiShuffle =  new SysTrayMenuItem("Play Shuffle");
+			stmiShuffle =  new SysTrayMenuItem(Messages.getString("JajukWindow.6")); //$NON-NLS-1$
 			stmiShuffle.addSysTrayMenuListener(this);
-			stmiBestof =  new SysTrayMenuItem("Play Best of");
+			stmiBestof =  new SysTrayMenuItem(Messages.getString("JajukWindow.7")); //$NON-NLS-1$
 			stmiBestof.addSysTrayMenuListener(this);
-			stmiVisible =  new SysTrayMenuItem("Show Jajuk at startup");
+			stmiVisible =  new SysTrayMenuItem(Messages.getString("JajukWindow.8")); //$NON-NLS-1$
 			stmiVisible.setEnabled(!bVisible);//if it is already visible, this menu is hidden 
 			stmiVisible.addSysTrayMenuListener(this);
-			stmiHidden =  new SysTrayMenuItem("Hide Jajuk at startup");
+			stmiHidden =  new SysTrayMenuItem(Messages.getString("JajukWindow.9")); //$NON-NLS-1$
 			stmiHidden.setEnabled(bVisible);
 			stmiHidden.addSysTrayMenuListener(this);
+			stmiPause = new SysTrayMenuItem(Messages.getString("JajukWindow.10")); //$NON-NLS-1$
+			stmiPause.addSysTrayMenuListener(this);
+			stmiStop = new SysTrayMenuItem(Messages.getString("JajukWindow.11")); //$NON-NLS-1$
+			stmiStop.addSysTrayMenuListener(this);
 			stm.addItem(stmiExit);
 			stm.addSeparator();
 			stm.addItem(stmiAbout);
 			stm.addSeparator();
 			stm.addItem(stmiShuffle);
 			stm.addItem(stmiBestof);
+			stm.addSeparator();
+			stm.addItem(stmiStop);
+			stm.addItem(stmiPause);
 			stm.addSeparator();
 			stm.addItem(stmiHidden);
 			stm.addItem(stmiVisible);
@@ -238,6 +249,19 @@ public class JajukWindow extends JFrame implements ITechnicalStrings,ComponentLi
 			stmiHidden.setEnabled(false);
 			stmiVisible.setEnabled(true);
 			ConfigurationManager.setProperty(CONF_SHOW_AT_STARTUP,FALSE);
+		}
+		else if (e.getSource() == stmiStop){
+			FIFO.getInstance().stopRequest();
+		}
+		else if (e.getSource() == stmiPause){
+			FIFO.getInstance().pauseRequest();
+			bPaused = !bPaused;
+			if ( bPaused ){
+				stmiPause.setLabel(Messages.getString("JajukWindow.12")); //$NON-NLS-1$
+			}
+			else{
+				stmiPause.setLabel(Messages.getString("JajukWindow.10")); //$NON-NLS-1$
+			}
 		}
 	}
 
