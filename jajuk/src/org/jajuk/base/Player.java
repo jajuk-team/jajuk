@@ -20,7 +20,9 @@
 package org.jajuk.base;
 
 import org.jajuk.i18n.Messages;
+import org.jajuk.players.*;
 import org.jajuk.ui.InformationJPanel;
+import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.log.Log;
 
 /**
@@ -29,12 +31,18 @@ import org.jajuk.util.log.Log;
  * @author     bflorat
  * @created    12 oct. 2003
  */
-public class Player {
+public class Player implements ITechnicalStrings{
 
+	/**Current file read*/
 	private static File fCurrent;
+	/**Current player used*/
 	private static IPlayerImpl pCurrentPlayerImpl;
 	/** Lock to ensure 2 players can be launched*/
 	private static final byte[] bLock = new byte[0];
+	/**Mute flag */
+	private static boolean bMute = false;
+	/**Paused flag*/
+	private static boolean bPaused = false;
 	
 	/**
 	 * Asynchronous play for specified file with specified time interval
@@ -49,7 +57,7 @@ public class Player {
 			public void run() {
 				try {
 					synchronized(bLock){  //ultimate concurrency protection
-						pCurrentPlayerImpl.play(fCurrent,fPosition,length);
+						pCurrentPlayerImpl.play(fCurrent,fPosition,length,bMute,ConfigurationManager.getFloat(CONF_VOLUME));
 					}
 				} catch (Exception e) {
 					Log.error("007",fCurrent.getAbsolutePath(), e); //$NON-NLS-1$
@@ -76,5 +84,96 @@ public class Player {
 			Log.error("008",fCurrent.getName(),e); //$NON-NLS-1$
 		}
 	}
+	
+	/**
+	 * Mute/unmute the player
+	 * @throws Exception
+	 */
+	public static void mute() {
+		try {
+			if (pCurrentPlayerImpl!=null){
+				if (bMute){ //already muted, unmute it by setting the volume previous mute
+					pCurrentPlayerImpl.setVolume(ConfigurationManager.getFloat(CONF_VOLUME));
+				}
+				else{
+					pCurrentPlayerImpl.mute();
+				}
+				bMute = !bMute;
+			}
+		} catch (Exception e) {
+			Log.error(e); 
+		}
+	}
+	
+	/**
+	 * 
+	 * @return whether the player is muted or not
+	 * @throws Exception
+	 */
+	public static boolean isMuted() {
+		return bMute;
+	}
+	
+	
+	/**
+	 * Set the gain
+	 * @param fVolume : gain from 0 to 1
+	 * @throws Exception
+	 */
+	public static void setVolume(float fVolume){
+		try {
+			ConfigurationManager.setProperty(CONF_VOLUME,Float.toString(fVolume));
+			if (pCurrentPlayerImpl!=null){
+				pCurrentPlayerImpl.setVolume(fVolume);
+			}
+		} catch (Exception e) {
+			Log.error(e); 
+		}	
+	}
+	
+	/**
+	 * @return Returns the lTime in ms
+	 */
+	public static long getElapsedTime() {
+		return pCurrentPlayerImpl.getElapsedTime();
+	}
+	
+	/**Pause the player*/
+	public static void pause(){
+		try {
+			pCurrentPlayerImpl.pause();
+			bPaused = true;
+		} catch (Exception e) {
+			Log.error(e); 
+		}
+	}
+	
+	/**resume the player*/
+	public static void resume(){
+		try {
+			pCurrentPlayerImpl.resume();
+			bPaused = false;
+		} catch (Exception e) {
+			Log.error(e); 
+		}
+	}
 
+	/**
+	 * @return whether player is paused
+	 */
+	public static boolean isPaused() {
+		return bPaused;
+	}
+	
+	/**Seek to a given position in %. ex : 0.2 for 20% */
+	public static void seek(float fPosition){
+		pCurrentPlayerImpl.seek(fPosition);
+	}
+	
+	/**
+	 * @return position in track in %
+	 */
+	public static float getCurrentPosition(){
+		return pCurrentPlayerImpl.getCurrentPosition();
+	}
 }

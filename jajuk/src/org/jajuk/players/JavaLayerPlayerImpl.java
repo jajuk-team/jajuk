@@ -19,17 +19,19 @@
  */
 package org.jajuk.players;
 
-import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
+import java.util.Map;
 
-import javazoom.jl.player.advanced.AdvancedPlayer;
-import javazoom.jl.player.advanced.PlaybackEvent;
-import javazoom.jl.player.advanced.PlaybackListener;
+import javazoom.jlgui.basicplayer.BasicController;
+import javazoom.jlgui.basicplayer.BasicPlayer;
+import javazoom.jlgui.basicplayer.BasicPlayerEvent;
+import javazoom.jlgui.basicplayer.BasicPlayerException;
+import javazoom.jlgui.basicplayer.BasicPlayerListener;
 
 import org.jajuk.base.FIFO;
-import org.jajuk.base.IPlayerImpl;
 import org.jajuk.base.ITechnicalStrings;
+import org.jajuk.base.TypeManager;
+import org.jajuk.i18n.Messages;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 
@@ -40,36 +42,91 @@ import org.jajuk.util.log.Log;
  * @created    12 oct. 2003
  */
 public class JavaLayerPlayerImpl implements IPlayerImpl,ITechnicalStrings{
-
-	/**Current player*/
-	private static AdvancedPlayer player;
-	/** Started */
-	private volatile boolean bStarted = false;
 	
+	/**Current player*/
+	public static BasicPlayer player;
+	/**Started */
+	private volatile boolean bStarted = false;
+	/**Time elapsed in secs*/
+	private long lTime = 0;
+	/**Date of last elapsed time update*/
+	private long lDateLastUpdate = System.currentTimeMillis(); 
+	/**current track info*/
+	private Map mInfo;
+	/**Current position in %*/
+	float fPos;
+	/**Length to be played in secs*/
+	long length;
 	
 	/* (non-Javadoc)
 	 * @see org.jajuk.base.IPlayerImpl#play()
 	 */
-	public void play(org.jajuk.base.File file,float fPosition,long length) throws Exception{
+	public void play(org.jajuk.base.File file,float fPosition,final long length,final boolean bMuted,final float fVolume) throws Exception{
 		try{
+			this.length = length;
 			bStarted = false;
-			player = new AdvancedPlayer(new BufferedInputStream(new FileInputStream(new File(file.getAbsolutePath())))); 
-			player.setPlayBackListener(new PlaybackListener() {
-				public void playbackFinished(PlaybackEvent pbe){
-					FIFO.getInstance().finished();
+			player = new BasicPlayer();
+			player.addBasicPlayerListener( new BasicPlayerListener() {
+				public void opened(Object arg0, Map arg1) {
+					mInfo = arg1;
 				}
-				public void playbackStarted(PlaybackEvent pbe){
-					bStarted = true;
-					new Thread(){  //we have to set mute mode and volume for next track asynchronously because line is not already opened in this method and will not until it is executed. setMute et setVolume methods wait until line is opened
-						public void run(){
-							Util.setMute(Util.getMute());  //keep the mute mode between tracks	
-							Util.setVolume(Util.getVolume()); //keep the volume between tracks
-							Util.stopWaiting();
+				public void display(String msg){		
+				}
+				/**
+				 * Called several times by sec
+				 */
+				public void progress(int iBytesread,long lMicroseconds,byte[] bPcmdata,java.util.Map mProperties) {
+					if ( (System.currentTimeMillis()-lDateLastUpdate) > 900 ){ //update every 900 ms
+						//test end of length
+						if ( length != -1 && lMicroseconds/1000 > length){ //length=-1 means there is no max length
+							try {
+								player.stop();
+								FIFO.getInstance().finished();
+							} catch (BasicPlayerException e) {
+								Log.error(e);
+							}
 						}
-					}.start();
+						//computes read time
+						if (mInfo.containsKey("audio.length.bytes")) {
+							int byteslength = ((Integer) mInfo.get("audio.length.bytes")).intValue();
+							fPos = (float)iBytesread / byteslength;
+							lTime = (long)(Util.getTimeLengthEstimation(mInfo)*fPos);
+						}
+						lDateLastUpdate = System.currentTimeMillis();
+					}
+				}
+				
+				public void stateUpdated(BasicPlayerEvent bpe) {
+					switch(bpe.getCode()){
+					case BasicPlayerEvent.EOM:
+						FIFO.getInstance().finished();
+						break;
+					case BasicPlayerEvent.PLAYING:
+						bStarted = true;
+						new Thread(){  //we have to set mute mode and volume for next track asynchronously because line is not already opened in this method and will not until it is executed. setMute et setVolume methods wait until line is opened
+							public void run(){
+								try{
+									if ( bMuted){
+										mute();
+									}
+									else {
+										setVolume(fVolume);
+									}
+								} catch (Exception e) {
+									Log.error(e);
+								}
+								Util.stopWaiting(); //stop the waiting cursor
+							}
+						}.start();
+						break;
+					}
+				}
+				
+				public void setController(BasicController arg0) {
 				}
 			});
-			//FIFO.getInstance().lTrackStart = System.currentTimeMillis();  //time correction ( deleted because of play mode: don't overide old date when launching again )
+			player.open(new File(file.getAbsolutePath())); 
+			
 			Util.stopWaiting();
 			if (fPosition < 0){  //-1 means we want to play entire file
 				player.play();
@@ -77,7 +134,11 @@ public class JavaLayerPlayerImpl implements IPlayerImpl,ITechnicalStrings{
 			else{
 				int iFirstFrame = (int)(file.getTrack().getLength()*fPosition*41.666); // (position*fPosition(%))*1000(ms) /24 because 1 frame =24ms
 				int iLastFrame = (int)(iFirstFrame+(length/24)); //length(ms)/24
-				player.play(iFirstFrame,iLastFrame);
+				//test if this is a audio format supporting seeking
+				if (Boolean.valueOf(TypeManager.getTypeByExtension(Util.getExtension(file.getIO())).getProperty(TYPE_PROPERTY_SEEK_SUPPORTED)).booleanValue()){
+					seek(fPosition);
+				}
+				player.play();
 			}
 		}
 		catch(Exception e){  //in case of error, we must stop waiting cursor and set started to true to avoid deadlock in the stop method
@@ -99,9 +160,74 @@ public class JavaLayerPlayerImpl implements IPlayerImpl,ITechnicalStrings{
 			}
 		}
 		if (player!= null ){
-			player.close();
+			try {
+				player.stop();
+			} catch (BasicPlayerException e) {
+				Log.error(e);
+			}
 		}	
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.jajuk.base.IPlayerImpl#mute()
+	 */
+	public void mute() throws Exception {
+		player.setGain(0.0f);
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.jajuk.base.IPlayerImpl#setVolume(float)
+	 */
+	public void setVolume(float fVolume) throws Exception {
+		player.setGain(fVolume);
+	}
+	
+	
+	/**
+	 * @return Returns the lTime in ms
+	 */
+	public long getElapsedTime() {
+		return lTime;
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.jajuk.players.IPlayerImpl#pause()
+	 */
+	public void pause() throws Exception{
+		player.pause();
+	}
+	
+	public void resume() throws Exception{
+		player.resume();
+	}	
+	
+	/* (non-Javadoc)
+	 * @see org.jajuk.players.IPlayerImpl#seek(float)
+	 * Ogg vorbis seek not yet supported
+	 */
+	public  void seek(float posValue) {
+		try{	
+			if (mInfo.containsKey("audio.type")) {
+				String type = (String)mInfo.get("audio.type");
+				// Seek support for MP3. and WAVE
+				if ((type.equalsIgnoreCase("mp3") || type.equalsIgnoreCase("wave"))&& mInfo.containsKey("audio.length.bytes")) {
+					long skipBytes =	(long) Math.round(((Integer)mInfo.get("audio.length.bytes")).intValue()* posValue);
+					player.seek(skipBytes);
+				}
+				else{
+					Messages.showErrorMessage("126");
+				}
+			}
+		}
+		catch(BasicPlayerException bpe){
+			Log.error(bpe);
+		}
+	}
 
+	
+	public float getCurrentPosition(){
+		return fPos;
+	}
+	
+	
 }

@@ -82,7 +82,7 @@ public class ConfigurationManager implements ITechnicalStrings{
 	public static boolean getBoolean(String pName) {
 		return Boolean.valueOf(properties.getProperty(pName)).booleanValue();
 	}
-
+	
 	/**
 	 * Return the value of a property as a boolean or specified value of the property is not found
 	 * 
@@ -100,6 +100,17 @@ public class ConfigurationManager implements ITechnicalStrings{
 		}
 	}
 
+	
+	/**
+	 * Return the value of a property as a float or 0f if the property is not found
+	 * 
+	 * @param pName Name of the property.
+	 * @return float value of the property named pName.
+	 */
+	public static float getFloat(String pName) {
+		return Float.valueOf(properties.getProperty(pName)).floatValue();
+	}
+	
 	
 	
 	/**
@@ -141,6 +152,7 @@ public class ConfigurationManager implements ITechnicalStrings{
 		properties.put(CONF_FIRST_CON,TRUE);
 		properties.put(CONF_SHOW_AT_STARTUP,TRUE);
 		properties.put(CONF_BESTOF_SIZE,"20"); //$NON-NLS-1$
+		properties.put(CONF_VOLUME,"0.5"); //$NON-NLS-1$
 	}
 	
 	

@@ -28,7 +28,7 @@
     <menu name='Documentation'>
       <item name='README notes' href='./README.html' />
       <item name='FAQ' href='./faq.html' />
-      <item name='Site documentation' href='./jajuk.pdf' />
+      <item name='Site documentation (PDF)' href='./jajuk.pdf' />
       <item name='Installation' href='./installation.html' />
       <item name='Translation howto' href='./translation_howto.html' />
       <item name='Specifications (PDF) ' href='./doc/specs.pdf' />

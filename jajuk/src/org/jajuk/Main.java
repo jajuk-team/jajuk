@@ -44,6 +44,7 @@ import org.jajuk.base.FIFO;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.History;
 import org.jajuk.base.ITechnicalStrings;
+import org.jajuk.base.Type;
 import org.jajuk.base.TypeManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.CommandJPanel;
@@ -99,7 +100,8 @@ public class Main implements ITechnicalStrings {
 			Messages.registerLocal("fr","Language_desc_fr"); //$NON-NLS-1$ //$NON-NLS-2$
 			Messages.registerLocal("de","Language_desc_de"); //$NON-NLS-1$ //$NON-NLS-2$
 			Messages.registerLocal("it","Language_desc_it"); //$NON-NLS-1$ //$NON-NLS-2$
-			
+			Messages.registerLocal("sv","Language_desc_sv"); //$NON-NLS-1$ //$NON-NLS-2$
+						
 			//configuration manager startup
 			org.jajuk.util.ConfigurationManager.getInstance();
 			
@@ -113,11 +115,33 @@ public class Main implements ITechnicalStrings {
 			Log.getInstance();
 			Log.setVerbosity(Log.DEBUG);
 			
-			//registers supported types
+			//registers supported types and default properties
 			try {
-				TypeManager.registerType(Messages.getString("Type.mp3"), EXT_MP3, PLAYER_IMPL_JAVALAYER, TAG_IMPL_MP3INFO, true); //$NON-NLS-1$ //$NON-NLS-2$
-				TypeManager.registerType(Messages.getString("Type.playlist"), EXT_PLAYLIST, PLAYER_IMPL_JAVALAYER, null, false); //$NON-NLS-1$ //$NON-NLS-2$
-				TypeManager.registerType(Messages.getString("Type.ogg"), EXT_OGG, PLAYER_IMPL_JAVALAYER, null, true); //$NON-NLS-1$ //$NON-NLS-2$
+				//mp3
+				Type type = TypeManager.registerType(Messages.getString("Type.mp3"), EXT_MP3, PLAYER_IMPL_JAVALAYER, TAG_IMPL_JLGUI_MP3); //$NON-NLS-1$ //$NON-NLS-2$
+				type.setProperty(TYPE_PROPERTY_IS_MUSIC,"true");
+				type.setProperty(TYPE_PROPERTY_SEEK_SUPPORTED,"true");
+				//playlists
+				type = TypeManager.registerType(Messages.getString("Type.playlist"), EXT_PLAYLIST, PLAYER_IMPL_JAVALAYER, null); //$NON-NLS-1$ //$NON-NLS-2$
+				type.setProperty(TYPE_PROPERTY_IS_MUSIC,"false");
+				type.setProperty(TYPE_PROPERTY_SEEK_SUPPORTED,"false");
+				//Ogg vorbis
+				type = TypeManager.registerType(Messages.getString("Type.ogg"), EXT_OGG, PLAYER_IMPL_JAVALAYER, TAG_IMPL_JLGUI_OGG); //$NON-NLS-1$ //$NON-NLS-2$
+				type.setProperty(TYPE_PROPERTY_IS_MUSIC,"true");
+				type.setProperty(TYPE_PROPERTY_SEEK_SUPPORTED,"false");
+				//Wave
+				type = TypeManager.registerType(Messages.getString("Type.wav"), EXT_WAV, PLAYER_IMPL_JAVALAYER, TAG_IMPL_NO_TAGS); //$NON-NLS-1$ //$NON-NLS-2$
+				type.setProperty(TYPE_PROPERTY_IS_MUSIC,"true");
+				type.setProperty(TYPE_PROPERTY_SEEK_SUPPORTED,"true");
+				//au
+				type = TypeManager.registerType(Messages.getString("Type.au"), EXT_AU, PLAYER_IMPL_JAVALAYER, TAG_IMPL_NO_TAGS); //$NON-NLS-1$ //$NON-NLS-2$
+				type.setProperty(TYPE_PROPERTY_IS_MUSIC,"true");
+				type.setProperty(TYPE_PROPERTY_SEEK_SUPPORTED,"false");
+				//aiff
+				type = TypeManager.registerType(Messages.getString("Type.aiff"), EXT_AIFF, PLAYER_IMPL_JAVALAYER, TAG_IMPL_NO_TAGS); //$NON-NLS-1$ //$NON-NLS-2$
+				type.setProperty(TYPE_PROPERTY_IS_MUSIC,"true");
+				type.setProperty(TYPE_PROPERTY_SEEK_SUPPORTED,"false");
+				
 			} catch (Exception e1) {
 				Log.error("026",e1); //$NON-NLS-1$
 			}

@@ -17,7 +17,9 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  $Revision$
  */
-package org.jajuk.base;
+package org.jajuk.players;
+
+import org.jajuk.base.File;
 
 /**
  *  Minimum methods required for all Player implementations
@@ -32,14 +34,46 @@ public interface IPlayerImpl {
 	 * @param file : jajuk file to be played
 	 * @param fPosition position in % of the file
 	 * @param length length to play in ms
+	 * @param bMuted mute state
+	 * @param fVolume volume
 	 * @throws Exception
 	 */	
-	public void play(File file,float fPosition,long length) throws Exception;
+	public void play(File file,float fPosition,long length,boolean bMuted,float fVolume) throws Exception;
 
 	/**
 	 * Stop current player
 	 * @throws Exception
 	 */
 	public void stop() throws Exception;
-		
+	
+	/**
+	 * mute the player
+	 * @throws Exception
+	 */
+	public void mute() throws Exception;
+	
+	/**
+	 * Set the gain
+	 * @param fVolume : gain from 0 to 1
+	 * @throws Exception
+	 */
+	public void setVolume(float fVolume) throws Exception;	
+	
+	/**
+	 * @return elapsed time (ms) for this player
+	 */
+	public long getElapsedTime();
+	
+	/**Pause the player*/
+	public void pause() throws Exception;
+	
+	/**Resume the player*/
+	public void resume() throws Exception;
+	
+	/**Seek to a given position in %. ex : 0.2 for 20% */
+	public void seek(float fPosition);
+	
+	/**Return track position in %*/
+	public float getCurrentPosition();
+	
 }

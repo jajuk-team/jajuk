@@ -22,6 +22,7 @@ package org.jajuk.base;
 import java.io.File;
 
 import org.jajuk.i18n.Messages;
+import org.jajuk.tag.*;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
@@ -61,6 +62,9 @@ public class Tag implements ITechnicalStrings{
 	public String getTrackName() {
 		//by default, track name is the file name without extension
 		String sTrackName = Util.removeExtension(fio.getName());
+		if (tagImpl == null){  //if the type doesn't support tags ( like wav )
+			return sTrackName;
+		}
 		String sTemp = ""; //$NON-NLS-1$
 		try {
 			sTemp = tagImpl.getTrackName().trim();
@@ -77,6 +81,9 @@ public class Tag implements ITechnicalStrings{
 	 * @return album name
 	 */
 	public String getAlbumName() {
+		if (tagImpl == null){  //if the type doesn't support tags ( like wav )
+			return "unknown_album"; //$NON-NLS-1$
+		}
 		String sAlbumlName = null;
 		String sTemp = ""; //$NON-NLS-1$
 		try {
@@ -107,6 +114,10 @@ public class Tag implements ITechnicalStrings{
 	 */
 	public String getAuthorName() {
 		String sAuthorName = "unknown_author"; //$NON-NLS-1$
+		//if the type doesn't support tags ( like wav )
+		if (tagImpl == null){  
+			return sAuthorName;
+		}
 		String sTemp = ""; //$NON-NLS-1$
 		try {
 			sTemp = tagImpl.getAuthorName().trim();
@@ -129,6 +140,10 @@ public class Tag implements ITechnicalStrings{
 	 */
 	public String getStyleName() {
 		String style = "unknown_style"; //$NON-NLS-1$
+		//if the type doesn't support tags ( like wav )
+		if (tagImpl == null){  
+			return style;
+		}
 		String sTemp = ""; //$NON-NLS-1$
 		try {
 			sTemp = tagImpl.getStyleName().trim();
@@ -153,13 +168,16 @@ public class Tag implements ITechnicalStrings{
 	 */
 	public long getLength() {
 		long length = 0;
+		//if the type doesn't support tags ( like wav )
+		if (tagImpl == null){  
+			return 0;
+		}
 		try {
 			length = tagImpl.getLength();
 		} catch (Exception e) {
 			Log.error("103", fio.getName(),e); //$NON-NLS-1$
 		}
 		return length;
-
 	}
 
 	/**
@@ -167,6 +185,10 @@ public class Tag implements ITechnicalStrings{
 	 */
 	public String getYear() {
 		String sYear = "unknown_year"; //$NON-NLS-1$
+		//if the type doesn't support tags ( like wav )
+		if (tagImpl == null){  
+			return sYear;
+		}
 		String sTemp = ""; //$NON-NLS-1$
 		try {
 			sTemp = tagImpl.getYear();
@@ -185,6 +207,10 @@ public class Tag implements ITechnicalStrings{
 	 */
 	public String getQuality() {
 		String sQuality = "unknown_quality"; //$NON-NLS-1$
+		//if the type doesn't support tags ( like wav )
+		if (tagImpl == null){  
+			return sQuality;
+		}
 		String sTemp = ""; //$NON-NLS-1$
 		try {
 			sTemp = tagImpl.getQuality();

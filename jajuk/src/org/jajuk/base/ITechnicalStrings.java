@@ -31,7 +31,7 @@ import org.jajuk.util.Util;
 public interface ITechnicalStrings {
 	
 	// Jjauk version
-	public static final String JAJUK_VERSION = "0.1.6";
+	public static final String JAJUK_VERSION = "0.2";
 	
 	//About 
 	public static final String ABOUT = "<html>Jajuk version "+JAJUK_VERSION+"</html>";
@@ -131,8 +131,7 @@ public interface ITechnicalStrings {
 	public static final String ICON_CURRENT_PLAYLIST =  PATH_ICONS + "16x16/run.png";
 	public static final String ICON_CLEAR =  PATH_ICONS + "16x16/clear.png";
 	public static final String ICON_SAVE =  PATH_ICONS + "16x16/save.png";
-	
-		
+			
 	//images
 	public static final String IMAGES_SPLASHSCREEN =  PATH_IMAGES + "jajuk-splashscreen.png";
 	public static final String IMAGES_STAT_PAPER =  PATH_IMAGES + "No-Ones-Laughing-3.jpg";
@@ -160,7 +159,9 @@ public interface ITechnicalStrings {
 	public static final String TAG_IMPL_JID3LIB= "org.jajuk.tag.JID3LibTagImpl";
 	public static final String TAG_IMPL_MP3INFO= "org.jajuk.tag.MP3InfoTagImpl";
 	public static final String TAG_IMPL_RABBIT_FARM= "org.jajuk.tag.RabbitFarmTagImpl";
-	
+	public static final String TAG_IMPL_JLGUI_MP3= "org.jajuk.tag.JlGuiMP3TagImpl";
+	public static final String TAG_IMPL_JLGUI_OGG= "org.jajuk.tag.JlGuiOggTagImpl";
+	public static final String TAG_IMPL_NO_TAGS= "org.jajuk.tag.NoTagsTagImpl";
 	
 	//device types
 	public static final String DEVICE_TYPE_DIRECTORY = "Device_type.directory";
@@ -169,7 +170,11 @@ public interface ITechnicalStrings {
 	public static final String DEVICE_TYPE_REMOTE = "Device_type.remote";
 	public static final String DEVICE_TYPE_USBKEY = "Device_type.usbkey";
 	
-	//Devices options
+	//Types properties
+	public static final String TYPE_PROPERTY_IS_MUSIC = "music";  
+	public static final String TYPE_PROPERTY_SEEK_SUPPORTED = "seek";  
+	
+	//Devices properties
 	public static final String DEVICE_OPTION_AUTO_REFRESH = "auto_refresh";
 	public static final String DEVICE_OPTION_AUTO_MOUNT = "auto_mount";
 	public static final String DEVICE_OPTION_SYNCHRO_SOURCE = "synchro_source";
@@ -178,6 +183,7 @@ public interface ITechnicalStrings {
 	public static final String DEVICE_OPTION_SYNCHRO_MODE_UNI = "uni";
 	public static final String DEVICE_OPTION_SYNCHRO_OPT1 = "opt1";
 	
+	//Directories properties
 	public static final String DIRECTORY_OPTION_SYNCHRO_MODE = "sync";  //can be 'y' or 'n'
 	public static final String OPTION_EXPANDED = "exp";  //can be 'y' or 'n'
 	public static final String OPTION_PLAYLIST_INDEX = "plf_index";  //playlist file index
@@ -213,7 +219,10 @@ public interface ITechnicalStrings {
 	public static final String EXT_MP3 = "mp3";
 	public static final String EXT_PLAYLIST = "m3u";
 	public static final String EXT_OGG = "ogg";
-	
+	public static final String EXT_WAV = "wav";
+	public static final String EXT_AU = "au";
+	public static final String EXT_AIFF = "aiff";
+		
 	//event keys
 	public static final String EVENT_EXIT ="exit";
 	public static final String EVENT_OPEN_FILE ="open file";
@@ -239,7 +248,7 @@ public interface ITechnicalStrings {
 	public static final String EVENT_PLAYER_STOP="player stop";
 	public static final String EVENT_PLAYER_PLAY="player play";
 	public static final String EVENT_PLAYER_PAUSE="player pause";
-	public static final String EVENT_PLAYER_UNPAUSE="player unpause";
+	public static final String EVENT_PLAYER_RESUME="player resume";
 	public static final String EVENT_PLAYLIST_REFRESH="playlist refresh";
 	public static final String EVENT_FILE_LAUNCHED="file launched";
 		
@@ -295,6 +304,7 @@ public interface ITechnicalStrings {
 	public static final String CONF_BOOKMARKS= "jajuk.bookmarks"; //contains files id separated by a colon
 	public static final String CONF_SHOW_AT_STARTUP= "jajuk.show_at_startup"; //show jajuk window at startup
 	public static final String CONF_BESTOF_SIZE= "jajuk.bestof_size"; //best of size
+	public static final String CONF_VOLUME= "jajuk.volume"; //gain (float)
 	
 	//miscelanous
 	public static final String TRUE= "true";
@@ -333,9 +343,11 @@ public interface ITechnicalStrings {
 	public static final String XML_PLAYLIST_FILES = "playlist_files";
 	public static final String XML_PLAYLIST_FILE = "playlist_file";
 	public static final String XML_PLAYLISTS = "playlists";
-	public static final String[] XML_RESERVED_ATTRIBUTE_NAMES = {"name","id","extension","player_impl","tag_impl","music",
+	public static final String[] XML_RESERVED_ATTRIBUTE_NAMES = {"name","id","extension","player_impl","tag_impl",
 			"type","url","album","style","author","length","year","added","rate","files","hits","directory","size",
-			"quality","track","playlist_files","hashcode"};
+			"quality","track","playlist_files","hashcode"}; //contains variables names
+	public static final String[] XML_RESERVED_PROPERTIES_NAMES = {"seek","music","mount_point","synchro_source"
+			,"synchro_mode","auto_refresh","auto_mount","exp","sync","plf_index","plf"}; //contains jajuk-reserved properties
 	public static final String XML_ID = "id";
 	public static final String XML_TRACK_NAME = "name";
 	public static final String XML_TRACK_ALBUM = "album";

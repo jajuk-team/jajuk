@@ -338,9 +338,8 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 				if ("".equals(sTag)) { //$NON-NLS-1$
 					sTag = null;
 				}
-				boolean bIsMusic = Boolean.valueOf(attributes.getValue(5)).booleanValue();
-				 type = TypeManager.registerType(sId, sTypeName, sExtension, sPlayer, sTag, bIsMusic);
-				type.populateProperties(attributes, 6);
+				type = TypeManager.registerType(sId, sTypeName, sExtension, sPlayer, sTag);
+				type.populateProperties(attributes, 5);
 			break;	
 		}
 	}

@@ -22,91 +22,97 @@ package org.jajuk.tag;
 
 import java.io.File;
 
+import javazoom.jlgui.player.amp.tag.OggVorbisInfo;
+
 import org.jajuk.util.Util;
 
-import de.ueberdosis.mp3info.ExtendedID3Tag;
-import de.ueberdosis.mp3info.ID3Reader;
-import de.ueberdosis.mp3info.facades.Wamp;
-import de.ueberdosis.mp3info.id3v2.ID3V2Tag;
-import de.ueberdosis.util.OutputCtr;
-
 /**
- *  Tagger implementation using id3/mp3info api
+ *  jlGui Ogg vorbis tager implementation
  *
  * @author     bflorat
- * @created    25 oct. 2003
+ * @created    27 avr. 2004
  */
-public class MP3InfoTagImpl implements ITagImpl {
+public class JlGuiOggTagImpl implements ITagImpl {
 
-	
-	/**Tags reader*/
-	ID3Reader reader;
-	/**Tag itself*/
-	ExtendedID3Tag tag;
-	/*ID3 V2 tag*/
-	ID3V2Tag id3v2tag = null;
-	
-	
-	/**Constructor*/
-	public MP3InfoTagImpl(){
-		OutputCtr.setLevel(0);		
-	}
-	
+	private OggVorbisInfo oggInfo;
 	
 	/* (non-Javadoc)
 	 * @see org.jajuk.base.ITagImpl#getTrackName()
 	 */
 	public String getTrackName() throws Exception {
-		return tag.getTitle();
+		String sOut = oggInfo.getTitle();
+		if ( sOut == null ||  sOut.startsWith("Track")){//$NON-NLS-1$
+			return ""; //doing that, the item wil be the default jajuk unknown string
+		}
+		return sOut;
 	}
 
 	/* (non-Javadoc)
 	 * @see org.jajuk.base.ITagImpl#getAlbumName()
 	 */
 	public String getAlbumName() throws Exception {
-		return tag.getAlbum();
+		String sOut = oggInfo.getAlbum();
+		if (  sOut == null || sOut.equals("title")){//$NON-NLS-1$
+			return ""; //doing that, the item wil be the default jajuk unknown string
+		}
+		return sOut;
 	}
 
 	/* (non-Javadoc)
 	 * @see org.jajuk.base.ITagImpl#getAuthorName()
 	 */
 	public String getAuthorName() throws Exception {
-		return tag.getArtist();
+		String sOut = oggInfo.getArtist();
+		if (  sOut == null || sOut.equals("title")){//$NON-NLS-1$
+			return ""; //doing that, the item wil be the default jajuk unknown string
+		}
+		return sOut;
 	}
 
 	/* (non-Javadoc)
 	 * @see org.jajuk.base.ITagImpl#getStyleName()
 	 */
 	public String getStyleName() throws Exception {
-		if ( id3v2tag == null){
-			return tag.getGenreS();  //v1 tag
+		String sOut = oggInfo.getGenre();
+		if (  sOut == null || sOut.equals("genre")){//$NON-NLS-1$
+			return ""; //doing that, the item wil be the default jajuk unknown string
 		}
-		int iStyle = new Wamp(id3v2tag).getGenre();
-		if ( iStyle < 0){
-			return tag.getGenreS();
+		//Sometimes, the style has this form : (nb)
+		if ( sOut.startsWith("(") && sOut.indexOf(')')!=-1){//$NON-NLS-1$//$NON-NLS-2$
+			sOut = sOut.substring(1,sOut.indexOf(')'));
+			try{
+				sOut = Util.genres[Integer.parseInt(sOut)];
+			}
+			catch(Exception e){
+				return ""; //error, return unknown
+			}
 		}
-		return Util.getStringGenre(iStyle);
+		return sOut;
 	}
 
 	/* (non-Javadoc)
 	 * @see org.jajuk.base.ITagImpl#getLength()
 	 */
 	public long getLength() throws Exception {
-		return tag.getRuntime();
+		return oggInfo.getPlayTime();
 	}
 
 	/* (non-Javadoc)
 	 * @see org.jajuk.base.ITagImpl#getYear()
 	 */
 	public String getYear() throws Exception {
-		return tag.getYear();
+		String sOut = oggInfo.getYear();
+		if ( sOut == null ){//$NON-NLS-1$
+			return ""; //doing that, the item wil be the default jajuk unknown string
+		}
+		return sOut;
 	}
 
 	/* (non-Javadoc)
 	 * @see org.jajuk.base.ITagImpl#getQuality()
 	 */
 	public String getQuality() throws Exception {
-		return tag.getBitrateS();
+		return Integer.toString(oggInfo.getBitRate()/1000);
 	}
 
 	/* (non-Javadoc)
@@ -155,13 +161,8 @@ public class MP3InfoTagImpl implements ITagImpl {
 	 * @see org.jajuk.base.ITagImpl#setFile(java.io.File)
 	 */
 	public void setFile(File fio) throws Exception {
-		//reinit to prevent a new track from using a previous file tags
-		reader = null;
-		tag = null;
-		id3v2tag = null;
-		reader = new ID3Reader(fio.getAbsolutePath());
-		tag = reader.getExtendedID3Tag();
-		id3v2tag = ID3Reader.getV2Tag();
+		oggInfo = new OggVorbisInfo();
+		oggInfo.load(fio);
 	}
 
 }

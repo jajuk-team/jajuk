@@ -98,9 +98,12 @@ public class AboutView extends ViewAdapter {
         jpLicence.add(new JScrollPane(jta));
 		jtp = new JTabbedPane();
 		ArrayList alContribs = new ArrayList(10);
-		alContribs.add(new Contributor("Bertrand Florat","bertrand@florat.net")); //$NON-NLS-1$ //$NON-NLS-2$
+		alContribs.add(new Contributor("Bertrand Florat","bflorat@users.sourceforge.net")); //$NON-NLS-1$ //$NON-NLS-2$
 		alContribs.add(new Contributor("Gerhard Dietrichsteiner","skyreacher@users.sourceforge.net")); //$NON-NLS-1$ //$NON-NLS-2$
-		alContribs.add(new Contributor("Sébastien Gringoire","")); //$NON-NLS-1$ //$NON-NLS-2$
+		alContribs.add(new Contributor("Riccardo Capecchi","ricciocri@users.sourceforge.net")); //$NON-NLS-1$ //$NON-NLS-2$
+		alContribs.add(new Contributor("Oscar Appelgren","oscariot@users.sourceforge.net")); //$NON-NLS-1$ //$NON-NLS-2$
+		alContribs.add(new Contributor("Masiar Farahani","masiar@users.sourceforge.net")); //$NON-NLS-1$ //$NON-NLS-2$
+		alContribs.add(new Contributor("Sébastien Gringoire","sgringoire@users.sourceforge.net")); //$NON-NLS-1$ //$NON-NLS-2$
 		cp = new ContributorsPanel(alContribs);
 		JPanel jpAbout = new JPanel();
 		jpAbout.setLayout(new BoxLayout(jpAbout,BoxLayout.Y_AXIS));

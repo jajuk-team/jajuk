@@ -51,6 +51,13 @@ public interface IPropertyable {
 	public void setProperty(String sKey, String sValue);
 	
 	/**
+	 * Set a property if it doesn't exist yet
+	 * @param sKey
+	 * @param sValue
+	 */
+	public void setDefaultProperty(String sKey, String sValue);
+	
+	/**
 	 * Remove a property
 	 * @param sKey
 	 */

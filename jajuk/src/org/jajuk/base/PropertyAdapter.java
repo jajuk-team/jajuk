@@ -69,14 +69,6 @@ public class PropertyAdapter implements IPropertyable, ITechnicalStrings,Seriali
 		//get property singleton
 		Properties properties = getProperties();
 		//test standard properties
-		 /*PhysicalTableView.7=Track
-		/*PhysicalTableView.8=Album
-		PhysicalTableView.9=Author
-		PhysicalTableView.10=Length
-		PhysicalTableView.11=Style
-		PhysicalTableView.12=Directory
-		PhysicalTableView.13=File
-		PhysicalTableView.14=Rate*/
 		if ( sKey.equals(Messages.getString("PhysicalTableView.7"))){ //Track //$NON-NLS-1$
 			if ( this instanceof File ){
 				return ((File)this).getTrack().getName();
@@ -182,6 +174,15 @@ public class PropertyAdapter implements IPropertyable, ITechnicalStrings,Seriali
 		}
 		properties.put(sKey, sValue);
 	}
+	
+	public void setDefaultProperty(String sKey, String sValue) {
+		Properties properties = getProperties();
+		if ( properties.containsKey(sKey)){
+			return;
+		}
+		setProperty(sKey,sValue);
+	}
+	
 	
 	public String getPropertiesXml() {
 		Properties properties = getProperties();

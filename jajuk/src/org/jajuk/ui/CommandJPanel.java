@@ -44,11 +44,11 @@ import org.jajuk.base.FileManager;
 import org.jajuk.base.History;
 import org.jajuk.base.HistoryItem;
 import org.jajuk.base.ITechnicalStrings;
+import org.jajuk.base.Player;
 import org.jajuk.base.SearchResult;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Util;
-import org.jajuk.util.log.Log;
 
 import com.sun.SwingWorker;
 
@@ -98,8 +98,8 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 	static boolean bIsIntroEnabled = false;
 	/**Forward or rewind jump size in track percentage*/
 	static final float JUMP_SIZE = 0.1f;
-	/**Slider move event filter*/
-	private boolean bPositionChanging = false;
+	/**Position slider moving*/
+	private static boolean bPositionChanging = false;
 	
 	
 	/**
@@ -244,7 +244,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		JPanel jpVolume = new JPanel();
 		jpVolume.setLayout(new BoxLayout(jpVolume,BoxLayout.X_AXIS));
 		jlVolume = new JLabel(Util.getIcon(ICON_VOLUME)); 
-		jsVolume = new JSlider(0,100,50);
+		jsVolume = new JSlider(0,100,(int)(100*ConfigurationManager.getFloat(CONF_VOLUME)));
 		jpVolume.add(jlVolume);
 		jpVolume.add(jsVolume);
 		jsVolume.setToolTipText(Messages.getString("CommandJPanel.14")); //$NON-NLS-1$
@@ -274,7 +274,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		ObservationManager.register(EVENT_PLAYER_PLAY,this);
 		ObservationManager.register(EVENT_PLAYER_STOP,this);
 		ObservationManager.register(EVENT_PLAYER_PAUSE,this);
-		ObservationManager.register(EVENT_PLAYER_UNPAUSE,this);
+		ObservationManager.register(EVENT_PLAYER_RESUME,this);
 		
 	}	
 	
@@ -372,13 +372,21 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 			sw.start();
 		}
 		else if (ae.getSource() == jbMute ){
-			Util.setMute(!Util.getMute());
+			Player.mute();
 		}
 		else if(ae.getSource() == jbStop){
 			FIFO.getInstance().stopRequest();
 		}
 		else if(ae.getSource() == jbPlayPause){
-			FIFO.getInstance().pauseRequest();
+			if ( Player.isPaused()){  //player was paused, resume it
+				Player.resume();
+				ObservationManager.notify(EVENT_PLAYER_RESUME);  //notify of this event
+			}
+			else{ //player is not paused, pause it
+				Player.pause();
+				ObservationManager.notify(EVENT_PLAYER_PAUSE);  //notify of this event
+			}
+			
 		}
 		else if (ae.getSource() == jbPrevious){
 			FIFO.getInstance().playPrevious();
@@ -387,12 +395,12 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 			FIFO.getInstance().playNext();
 		}
 		else if (ae.getSource() == jbRew){
-			float fCurrentPosition = FIFO.getInstance().getCurrentPosition();
-			FIFO.getInstance().setCurrentPosition(fCurrentPosition-JUMP_SIZE);
+			float fCurrentPosition = Player.getCurrentPosition();
+			Player.seek(fCurrentPosition-JUMP_SIZE);
 		}
 		else if (ae.getSource() == jbFwd){
-			float fCurrentPosition = FIFO.getInstance().getCurrentPosition();
-			FIFO.getInstance().setCurrentPosition(fCurrentPosition+JUMP_SIZE);
+			float fCurrentPosition = Player.getCurrentPosition();
+			Player.seek(fCurrentPosition+JUMP_SIZE);
 		}
 		
 	}
@@ -424,35 +432,13 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 	 *  @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
 	 */
 	public void stateChanged(ChangeEvent e) {
-		if ( e.getSource() == jsVolume && !bPositionChanging){
-			bPositionChanging = true;
-			new Thread(){  //set volume asynchonously and after a delay to take only one value when slider is moved
-				public void run(){
-					try{
-						Thread.sleep(500);
-					}
-					catch(InterruptedException ie){
-						Log.error(ie);
-					}
-					Util.setVolume((float)jsVolume.getValue()/100);
-					bPositionChanging = false;
-				}
-			}.start();
+		if ( e.getSource() == jsVolume && !jsVolume.getValueIsAdjusting()){
+			Player.setVolume((float)jsVolume.getValue()/100);
 		}
-		else if (e.getSource() == jsPosition && !bPositionChanging){
+		else if (e.getSource() == jsPosition && !bPositionChanging && !jsPosition.getValueIsAdjusting()){
 			bPositionChanging = true;
-			new Thread(){  //set position asynchonously and after a delay to take only one value when slider is moved
-				public void run(){
-					try{
-						Thread.sleep(500);
-					}
-					catch(InterruptedException ie){
-						Log.error(ie);
-					}
-					FIFO.getInstance().setCurrentPosition((float)jsPosition.getValue()/100);
-					bPositionChanging = false;
-				}
-			}.start();
+			Player.seek((float)jsPosition.getValue()/100);
+			bPositionChanging = false;
 		}
 	}
 	
@@ -492,7 +478,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 			jsPosition.setEnabled(false);
 			jbPlayPause.setIcon(Util.getIcon(ICON_PLAY));
 		}
-		else if ( subject.equals(EVENT_PLAYER_UNPAUSE)){
+		else if ( subject.equals(EVENT_PLAYER_RESUME)){
 			jbRew.setEnabled(true);
 			jbFwd.setEnabled(true);
 			jsPosition.setEnabled(true);

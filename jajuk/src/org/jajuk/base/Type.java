@@ -19,6 +19,8 @@
  */
 package org.jajuk.base;
 
+import org.jajuk.players.*;
+import org.jajuk.tag.*;
 import org.jajuk.util.Util;
 
 /**
@@ -39,11 +41,19 @@ public class Type extends PropertyAdapter{
 	private IPlayerImpl playerImpl;
 	/**Type tag implementation, null if it is not a music type */
 	private ITagImpl tagImpl;
-	/**True if the type is a music files and false if it is a playlist-type file*/
-	private boolean bIsMusic;
-	
-	
-	public Type(String sId, String sName,String sExtension, String sPlayerImpl,String sTagImpl,boolean bIsMusic) throws Exception{
+		
+	/**
+	 * Constructor
+	 * @param sId type id if given
+	 * @param sName type name 
+	 * @param sExtension type file extension (.mp3...)
+	 * @param sPlayerImpl Type player implementation class
+	 * @param sTagImpl Type Tagger implementation class
+	 * @param bIsMusic is this type music ?
+	 * @param bSupportsSeeking does this type supports seeking
+	 * @throws Exception
+	 */
+	public Type(String sId, String sName,String sExtension, String sPlayerImpl,String sTagImpl) throws Exception{
 		this.sExtension = sExtension;
 		this.sName = sName;
 		this.playerImpl = (IPlayerImpl)Class.forName(sPlayerImpl).newInstance();
@@ -51,7 +61,6 @@ public class Type extends PropertyAdapter{
 			this.tagImpl = (ITagImpl)Class.forName(sTagImpl).newInstance();
 		}
 		this.sId = sId;
-		this.bIsMusic = bIsMusic;
 	}
 
 
@@ -94,8 +103,9 @@ public class Type extends PropertyAdapter{
 		sb.append(Util.formatXML(sName)).append("' extension='"); //$NON-NLS-1$
 		sb.append(sExtension).append("' player_impl='"); //$NON-NLS-1$
 		sb.append(playerImpl.getClass().getName()).append("' tag_impl='"); //$NON-NLS-1$
-		sb.append((tagImpl==null)?"":tagImpl.getClass().getName()).append("' music='"); //$NON-NLS-1$ //$NON-NLS-2$
-		sb.append(bIsMusic).append("'/>\n"); //$NON-NLS-1$
+		sb.append((tagImpl==null)?"":tagImpl.getClass().getName()).append("' "); //$NON-NLS-1$ //$NON-NLS-2$
+		sb.append(getPropertiesXml());
+		sb.append("/>\n");//$NON-NLS-1$
 		return sb.toString();
 	}
 
@@ -124,17 +134,10 @@ public class Type extends PropertyAdapter{
 
 
 	/**
-	 * @return Returns the bIsMusic.
-	 */
-	public boolean isMusic() {
-		return bIsMusic;
-	}
-
-	/**
 	 * @return Returns the tagImpl.
 	 */
 	public ITagImpl getTagImpl() {
-		return tagImpl;
+		return this.tagImpl;
 	}
 
 }

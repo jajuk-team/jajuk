@@ -35,11 +35,10 @@ import java.nio.channels.FileChannel;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.BooleanControl;
-import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.Line;
 import javax.sound.sampled.Mixer;
 import javax.swing.ImageIcon;
@@ -105,11 +104,6 @@ public class Util implements ITechnicalStrings {
 			"Black Metal","Crossover","Contemporary C","Christian Rock","Merengue","Salsa","Thrash Metal", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
 			"Anime","JPop","SynthPop"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	
-	/** Mute state*/
-	private static boolean bMute;
-	
-	/** Volume ( master gain )in % : 0.5 for 50%*/ 
-	private static float fVolume = 0.5f;
 	/**
 	 * No constructor
 	 */
@@ -464,47 +458,6 @@ public class Util implements ITechnicalStrings {
 	
 	
 	/**
-	 * Set volume in % ( ex: 0.1 for 10% )
-	 * @param fVolume
-	 */
-	public static void setVolume(float fVolume){
-		try {
-			Line line = getCurrentLine();	
-			if ( line != null){
-				FloatControl  volCtrl = (FloatControl)line.getControl(FloatControl.Type.MASTER_GAIN);
-				float fCurrent = 0.0f; 
-				if ( fVolume<=50){
-					fCurrent = Math.abs(volCtrl.getMinimum()*2*(fVolume)) + volCtrl.getMinimum();
-				}
-				else{
-					fCurrent = volCtrl.getMaximum()*(fVolume);
-				}
-				volCtrl.setValue(fCurrent);
-				Util.fVolume = fVolume;
-			}
-		} catch (Exception e) {
-			Log.error(e);
-		}
-	}
-	
-	/**
-	 * Set mute state
-	 * @param bMute
-	 */
-	public static void setMute(boolean bMute){
-		try{
-			Line line = getCurrentLine();
-			if (line != null){
-				BooleanControl  bc = (BooleanControl)line.getControl(BooleanControl.Type.MUTE);
-				bc.setValue(bMute);
-			}
-			Util.bMute = bMute;
-		} catch (Exception e) {
-			Log.error(e);
-		}
-	}
-	
-	/**
 	 * Get current line. Wait until line appears ( with a time out ) 
 	 * @return waited audio line
 	 */	
@@ -535,24 +488,6 @@ public class Util implements ITechnicalStrings {
 		while(line == null);
 		return line;
 	}
-	
-	
-	
-	/**
-	 * Get mute state
-	 * @return
-	 */
-	public static boolean getMute(){
-		return bMute;
-	}
-	
-	/**
-	 * @return Returns the volume in %
-	 */
-	public static float getVolume() {
-		return fVolume;
-	}
-	
 	
 	
 	/**
@@ -613,4 +548,57 @@ public class Util implements ITechnicalStrings {
 		return false;
 	}
 
+	/**
+	 * Try to compute time length in milliseconds using BasicPlayer API. (code from jlGui 2.3)
+	 */
+	public static long getTimeLengthEstimation(Map properties)
+	{
+		long milliseconds = -1;
+		int byteslength = -1;
+		if (properties != null)
+		{
+			if (properties.containsKey("audio.length.bytes"))
+			{
+				byteslength = ((Integer) properties.get("audio.length.bytes")).intValue();			
+			}
+			if (properties.containsKey("duration"))
+			{
+				milliseconds = (int) (((Long) properties.get("duration")).longValue())/1000;			
+			}
+			else
+			{
+				// Try to compute duration
+				int bitspersample = -1;
+				int channels = -1;
+				float samplerate = -1.0f;
+				int framesize = -1;			 
+				if (properties.containsKey("audio.samplesize.bits"))
+				{
+					bitspersample = ((Integer) properties.get("audio.samplesize.bits")).intValue(); 
+				}
+				if (properties.containsKey("audio.channels"))
+				{
+					channels = ((Integer) properties.get("audio.channels")).intValue(); 
+				}
+				if (properties.containsKey("audio.samplerate.hz"))
+				{
+					samplerate = ((Float) properties.get("audio.samplerate.hz")).floatValue(); 
+				}
+				if (properties.containsKey("audio.framesize.bytes"))
+				{
+					framesize = ((Integer) properties.get("audio.framesize.bytes")).intValue(); 
+				}
+				if (bitspersample > 0)
+				{
+					milliseconds = (int) (1000.0f*byteslength/(samplerate * channels * (bitspersample/8))); 
+				} 
+				else
+				{
+					milliseconds = (int)(1000.0f*byteslength/(samplerate*framesize)); 
+				}			
+			}
+		}
+		return milliseconds;
+	}
+	
 }

@@ -36,6 +36,7 @@ import org.jajuk.Main;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.ITechnicalStrings;
+import org.jajuk.base.Player;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.util.ConfigurationManager;
@@ -267,13 +268,15 @@ public class JajukWindow extends JFrame implements ITechnicalStrings,ComponentLi
 			FIFO.getInstance().stopRequest();
 		}
 		else if (e.getSource() == stmiPause){
-			FIFO.getInstance().pauseRequest();
-			bPaused = !bPaused;
-			if ( bPaused ){
-				stmiPause.setLabel(Messages.getString("JajukWindow.12")); //$NON-NLS-1$
-			}
-			else{
+			if ( Player.isPaused()){  //currently paused, so it's a resume
+				Player.resume();
+				bPaused = false;
 				stmiPause.setLabel(Messages.getString("JajukWindow.10")); //$NON-NLS-1$
+			}
+			else{ //not paused, so it was playing and it will be paused now
+				Player.pause();
+				bPaused = true;
+				stmiPause.setLabel(Messages.getString("JajukWindow.12")); //$NON-NLS-1$
 			}
 		}
 	}

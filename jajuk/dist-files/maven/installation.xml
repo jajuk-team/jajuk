@@ -31,7 +31,7 @@
 					<li><p>Create shortcuts ( only for Windows ) : just click on the 'next' button.</p></li>
 					<li><p>(Optional) Create an automatized installation script if you want to achieve fast installations with the same parameters.</p></li>
 				</ul>
-   			</subsection>
+			</subsection>
    			
 			<subsection name='Launch'>
 				<ul>
@@ -39,6 +39,10 @@
 						${jajuk installation path}/jajuk.sh</span></p></li>
 					<li><p><u>Under Windows</u> : Launch Jajuk by clicking on Jajuk icon : Start / Jajuk / Jajuk</p></li>
    				</ul>
+				<p><u>Note for MS Windows 95/98/Me users</u>: Some users report problems (error window : "Main-window couldn't be created" ). 
+					If this occurs, lauch Jajuk by double-clicking on the file <span style="font-family: monospace;">${Jajuk installation path}/bin/jajuk.jar</span>.
+					See <a href='http://sourceforge.net/tracker/?group_id=91412'>  support request no 938666</a>.
+				</p>
 			</subsection>
    			
    			<subsection name='Upgrade'>

@@ -46,9 +46,9 @@ public class TypeManager {
 	 * Register a type jajuk can read
 	 * @param type
 	 */
-	public static synchronized Type registerType(String sName,String sExtension, String sPlayerImpl,String sTagImpl,boolean bIsMusic) {
+	public static synchronized Type registerType(String sName,String sExtension, String sPlayerImpl,String sTagImpl) {
 		String sId = Integer.toString(hmSupportedTypes.size());
-		return registerType(sId,sName,sExtension,sPlayerImpl,sTagImpl,bIsMusic);
+		return registerType(sId,sName,sExtension,sPlayerImpl,sTagImpl);
 	}
 	
 	
@@ -56,10 +56,13 @@ public class TypeManager {
 	 * Register a type jajuk can read with a known id
 	 * @param type
 	 */
-	public static synchronized Type registerType(String sId,String sName,String sExtension, String sPlayerImpl,String sTagImpl,boolean bIsMusic) {
+	public static synchronized Type registerType(String sId,String sName,String sExtension, String sPlayerImpl,String sTagImpl) {
+		if ( hmSupportedTypes.containsKey(sExtension)){ //if the type is already in memory, use it
+			return (Type)hmSupportedTypes.get(sExtension);
+		}	
 		Type type = null;
 		try{
-			type = new Type(sId,sName,sExtension,sPlayerImpl,sTagImpl,bIsMusic);
+			type = new Type(sId,sName,sExtension,sPlayerImpl,sTagImpl);
 			hmSupportedTypes.put(type.getExtension(), type);
 		}
 		catch(Exception e){

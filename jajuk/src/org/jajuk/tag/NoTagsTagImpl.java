@@ -21,92 +21,93 @@
 package org.jajuk.tag;
 
 import java.io.File;
+import java.util.Map;
+
+import javazoom.jlgui.basicplayer.BasicController;
+import javazoom.jlgui.basicplayer.BasicPlayer;
+import javazoom.jlgui.basicplayer.BasicPlayerEvent;
+import javazoom.jlgui.basicplayer.BasicPlayerListener;
 
 import org.jajuk.util.Util;
 
-import de.ueberdosis.mp3info.ExtendedID3Tag;
-import de.ueberdosis.mp3info.ID3Reader;
-import de.ueberdosis.mp3info.facades.Wamp;
-import de.ueberdosis.mp3info.id3v2.ID3V2Tag;
-import de.ueberdosis.util.OutputCtr;
-
 /**
- *  Tagger implementation using id3/mp3info api
+ *  Tager implementationfor formats without tags and read by BasicPlayer API
  *
  * @author     bflorat
- * @created    25 oct. 2003
+ * @created    27 avr. 2004
  */
-public class MP3InfoTagImpl implements ITagImpl {
+public class NoTagsTagImpl implements ITagImpl {
+	/**Analysed file*/
+	File fio;
+	/**Current file data*/
+	Map mapInfo ;
 
-	
-	/**Tags reader*/
-	ID3Reader reader;
-	/**Tag itself*/
-	ExtendedID3Tag tag;
-	/*ID3 V2 tag*/
-	ID3V2Tag id3v2tag = null;
-	
-	
-	/**Constructor*/
-	public MP3InfoTagImpl(){
-		OutputCtr.setLevel(0);		
-	}
-	
-	
 	/* (non-Javadoc)
 	 * @see org.jajuk.base.ITagImpl#getTrackName()
 	 */
 	public String getTrackName() throws Exception {
-		return tag.getTitle();
+		return ""; //doing that, the item wil be the default jajuk unknown string
 	}
 
 	/* (non-Javadoc)
 	 * @see org.jajuk.base.ITagImpl#getAlbumName()
 	 */
 	public String getAlbumName() throws Exception {
-		return tag.getAlbum();
+		return ""; //doing that, the item wil be the default jajuk unknown string
 	}
 
 	/* (non-Javadoc)
 	 * @see org.jajuk.base.ITagImpl#getAuthorName()
 	 */
 	public String getAuthorName() throws Exception {
-		return tag.getArtist();
+		return ""; //doing that, the item wil be the default jajuk unknown string
 	}
 
 	/* (non-Javadoc)
 	 * @see org.jajuk.base.ITagImpl#getStyleName()
 	 */
 	public String getStyleName() throws Exception {
-		if ( id3v2tag == null){
-			return tag.getGenreS();  //v1 tag
-		}
-		int iStyle = new Wamp(id3v2tag).getGenre();
-		if ( iStyle < 0){
-			return tag.getGenreS();
-		}
-		return Util.getStringGenre(iStyle);
+		return ""; //doing that, the item wil be the default jajuk unknown string
 	}
 
 	/* (non-Javadoc)
 	 * @see org.jajuk.base.ITagImpl#getLength()
 	 */
 	public long getLength() throws Exception {
-		return tag.getRuntime();
+		//we have to open the file to get length
+		BasicPlayer player = new BasicPlayer();
+		player.addBasicPlayerListener( new BasicPlayerListener() {
+			public void opened(Object arg0, Map mProperties) {
+				NoTagsTagImpl.this.mapInfo = mProperties;
+			}
+			public void display(String msg){		
+			}
+			public void progress(int iBytesread,long lMicroseconds,byte[] bPcmdata,java.util.Map mProperties) {
+			}
+			public void stateUpdated(BasicPlayerEvent bpe) {
+			}
+			public void setController(BasicController arg0) {
+			}
+		});
+		if (fio != null){
+			player.open(fio);
+			return Util.getTimeLengthEstimation(mapInfo) /1000;
+		}
+		return 0;
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see org.jajuk.base.ITagImpl#getYear()
 	 */
 	public String getYear() throws Exception {
-		return tag.getYear();
+		return ""; //doing that, the item wil be the default jajuk unknown string
 	}
 
 	/* (non-Javadoc)
 	 * @see org.jajuk.base.ITagImpl#getQuality()
 	 */
 	public String getQuality() throws Exception {
-		return tag.getBitrateS();
+		return "";
 	}
 
 	/* (non-Javadoc)
@@ -155,13 +156,7 @@ public class MP3InfoTagImpl implements ITagImpl {
 	 * @see org.jajuk.base.ITagImpl#setFile(java.io.File)
 	 */
 	public void setFile(File fio) throws Exception {
-		//reinit to prevent a new track from using a previous file tags
-		reader = null;
-		tag = null;
-		id3v2tag = null;
-		reader = new ID3Reader(fio.getAbsolutePath());
-		tag = reader.getExtendedID3Tag();
-		id3v2tag = ID3Reader.getV2Tag();
+		this.fio = fio;
 	}
 
 }
