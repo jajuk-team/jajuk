@@ -143,7 +143,7 @@ public class ConfigurationManager implements ITechnicalStrings{
 		properties.put(CONF_CONFIRMATIONS_DELETE_COVER,TRUE);
 		properties.put(CONF_OPTIONS_HIDE_UNMOUNTED,FALSE);
 		properties.put(CONF_OPTIONS_RESTART,TRUE);
-		properties.put(CONF_OPTIONS_SEARCH_UNMOUNTED,TRUE);
+		properties.put(CONF_OPTIONS_SEARCH_ONLY_MOUNTED,FALSE);
 		properties.put(CONF_OPTIONS_DEFAULT_ACTION_CLICK,FALSE);
 		properties.put(CONF_OPTIONS_DEFAULT_ACTION_DROP,TRUE);
 		properties.put(CONF_OPTIONS_NOVELTIES_AGE,"30"); //$NON-NLS-1$

@@ -810,7 +810,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 					}
 					ConfigurationManager.setProperty(CONF_OPTIONS_HIDE_UNMOUNTED,Boolean.toString(bHiddenState));
 					ConfigurationManager.setProperty(CONF_OPTIONS_RESTART,Boolean.toString(jcbRestart.isSelected()));
-					ConfigurationManager.setProperty(CONF_OPTIONS_SEARCH_UNMOUNTED,Boolean.toString(jcbSearchUnmounted.isSelected()));
+					ConfigurationManager.setProperty(CONF_OPTIONS_SEARCH_ONLY_MOUNTED,Boolean.toString(jcbSearchUnmounted.isSelected()));
 					ConfigurationManager.setProperty(CONF_OPTIONS_DEFAULT_ACTION_CLICK,Boolean.toString(jcbDefaultActionClick.isSelected()));
 					ConfigurationManager.setProperty(CONF_OPTIONS_DEFAULT_ACTION_DROP,Boolean.toString(jcbDefaultActionDrop.isSelected()));
 					ConfigurationManager.setProperty(CONF_OPTIONS_SYNC_TABLE_TREE,Boolean.toString(jcbSyncTableTree.isSelected()));
@@ -1014,7 +1014,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jcbDisplayUnmounted.setSelected(bHidden);
 		this.bHidden = bHidden; 
 		jcbRestart.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_RESTART));
-		jcbSearchUnmounted.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_SEARCH_UNMOUNTED));
+		jcbSearchUnmounted.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_SEARCH_ONLY_MOUNTED));
 		jcbDefaultActionClick.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_DEFAULT_ACTION_CLICK));
 		jcbDefaultActionDrop.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_DEFAULT_ACTION_DROP));
 		jcbSyncTableTree.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE));

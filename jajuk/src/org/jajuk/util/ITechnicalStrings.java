@@ -43,8 +43,8 @@ public interface ITechnicalStrings {
     public static final int MAX_REMOTE_COVERS=10;
     		
 	// Jajuk version
-	public static final String JAJUK_VERSION = "0.3.3 rc2";
-	public static final String JAJUK_VERSION_DATE = "Build 2005-02-18";
+	public static final String JAJUK_VERSION = "0.3.3 rc4";
+	public static final String JAJUK_VERSION_DATE = "Build 2005-02-23";
 	
 	//About 
 	public static final String ABOUT = "<html>Jajuk version "+JAJUK_VERSION+"</html>";
@@ -372,7 +372,7 @@ public interface ITechnicalStrings {
 	public static final String CONF_OPTIONS_LANGUAGE = "jajuk.options.language";
 	public static final String CONF_OPTIONS_INTRO_BEGIN = "jajuk.options.intro.begin";
 	public static final String CONF_OPTIONS_INTRO_LENGTH = "jajuk.options.intro.length";
-	public static final String CONF_OPTIONS_SEARCH_UNMOUNTED = "jajuk.options.search_unmounted";
+	public static final String CONF_OPTIONS_SEARCH_ONLY_MOUNTED = "jajuk.options.search_only_mounted";
 	public static final String CONF_OPTIONS_LNF = "jajuk.options.lnf";
 	public static final String CONF_OPTIONS_NOVELTIES_AGE = "jajuk.options.novelties";
 	public static final String CONF_OPTIONS_VISIBLE_PLANNED = "jajuk.options.visible_planned"; //number of visible planned tracks
