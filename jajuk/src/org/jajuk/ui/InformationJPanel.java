@@ -142,6 +142,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,Obser
         ObservationManager.register(EVENT_HEART_BEAT,this);
         ObservationManager.register(EVENT_ZERO,this);
         ObservationManager.register(EVENT_FILE_LAUNCHED,this);
+        ObservationManager.register(EVENT_PLAY_ERROR,this);
 	}
 
 	/**
@@ -274,7 +275,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,Obser
 	        }
 	    }
 	    else if (EVENT_ZERO.equals(subject)){
-	        setCurrentStatusMessage(Util.formatTime(0)+" / "+Util.formatTime(0)); //$NON-NLS-1$
+	        setCurrentStatusMessage(Util.formatTimeBySec(0,false)+" / "+Util.formatTimeBySec(0,false)); //$NON-NLS-1$
 	        setCurrentStatus(0);
 	        setTotalStatusMessage("00:00:00");//$NON-NLS-1$
 	        setMessage(Messages.getString("JajukWindow.18"),InformationJPanel.INFORMATIVE); //$NON-NLS-1$
@@ -289,6 +290,10 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,Obser
 	            setMessage(sMessage,InformationJPanel.INFORMATIVE); 
 	            setQuality(file.getQuality()+Messages.getString("FIFO.13")); //$NON-NLS-1$
 	        }
+	    }
+	    else if (EVENT_PLAY_ERROR.equals(subject)){
+	        File fCurrent = (File)ObservationManager.getDetail(EVENT_PLAY_ERROR,DETAIL_CURRENT_FILE);
+	        setMessage(Messages.getString("Error.007")+" : "+fCurrent.getAbsolutePath(),InformationJPanel.ERROR);//$NON-NLS-1$ //$NON-NLS-2$
 	    }
 	}
 	

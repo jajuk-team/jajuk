@@ -19,9 +19,9 @@
  */
 package org.jajuk.base;
 
-import org.jajuk.i18n.Messages;
+import java.util.Properties;
+
 import org.jajuk.players.IPlayerImpl;
-import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.ObservationManager;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.log.Log;
@@ -54,7 +54,7 @@ public class Player implements ITechnicalStrings{
 	 * @param position in % of the file length. ex 0.1 for 10%
 	 * @param length in ms 
 	 */
-	public static synchronized void play(File file,final float fPosition,final long length) {
+	public static synchronized void play(final File file,final float fPosition,final long length) {
 		fCurrent = file;
 		pCurrentPlayerImpl = file.getTrack().getType().getPlayerImpl();
 		Thread thread = new Thread() {
@@ -70,11 +70,12 @@ public class Player implements ITechnicalStrings{
 				        }
 				    }
 				} catch (Exception e) {
-				    Log.error("007",fCurrent.getAbsolutePath(), e); //$NON-NLS-1$
-					InformationJPanel.getInstance().setMessage(Messages.getString("Error.007")+" : "+fCurrent.getAbsolutePath(),InformationJPanel.ERROR);//$NON-NLS-1$ //$NON-NLS-2$
+					Properties pDetails = new Properties();
+					pDetails.put(DETAIL_CURRENT_FILE,file);
+				    ObservationManager.notifySync(EVENT_PLAY_ERROR,pDetails); //notify the error 
+					Log.error("007",fCurrent.getAbsolutePath(), e); //$NON-NLS-1$
 					Player.stop();
 					FIFO.getInstance().finished();
-					ObservationManager.notifySync(EVENT_PLAY_ERROR); //notify the error ( synchronously to allow FIFO not to start a new track )
 				}			
 			}
 		};

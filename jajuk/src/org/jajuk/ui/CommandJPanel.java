@@ -273,6 +273,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
                 ObservationManager.register(EVENT_PLAYER_RESUME,CommandJPanel.this);
                 ObservationManager.register(EVENT_HEART_BEAT,CommandJPanel.this);
                 ObservationManager.register(EVENT_ADD_HISTORY_ITEM,CommandJPanel.this);
+                ObservationManager.register(EVENT_PLAY_ERROR,CommandJPanel.this);
                 ObservationManager.register(EVENT_SPECIAL_MODE,CommandJPanel.this);
                 ObservationManager.register(EVENT_ZERO,CommandJPanel.this);
                 
@@ -575,6 +576,21 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
                     if (hi != null ){
                         addHistoryItem(hi);
                     }
+                }
+                else if (EVENT_PLAY_ERROR.equals(subject)){
+                    SwingUtilities.invokeLater(new Runnable() {
+                        public void run() {
+                            if (jcbHistory.getItemCount() > 0){
+                                jcbHistory.removeActionListener(CommandJPanel.this); //stop listening this item when manupulating it
+                                jcbHistory.removeItemAt(0);
+                                //select first row
+                                if (jcbHistory.getItemCount()>0){
+                                    jcbHistory.setSelectedIndex(0);
+                                }
+                                jcbHistory.addActionListener(CommandJPanel.this);
+                            }
+                        }
+                    });
                 }
             }
         });
