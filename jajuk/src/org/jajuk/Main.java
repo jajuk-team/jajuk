@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -78,6 +79,7 @@ public class Main implements ITechnicalStrings {
 		try {
 			//starts ui
 			jframe = new JFrame("Jajuk : Just Another Jukebox"); //$NON-NLS-1$
+			jframe.setIconImage(new ImageIcon(ICON_STYLE).getImage());
 			
 			//Launch splashscreen
 			new Thread(){
