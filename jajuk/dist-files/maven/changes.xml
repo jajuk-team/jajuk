@@ -105,8 +105,11 @@
     	<action dev='bflorat' type='add'>New Look and feel : Metouia</action>  
     	<action dev='bflorat' type='add'>New view : animation</action>  
     	<action dev='bflorat' type='add'>New perspective Player with animation and cover view</action>  
+    	<action dev='bflorat' type='add'>New special button in the command panel : novelties to play recently added tracks</action>  
     	<action dev='bflorat' type='add'>New parameter tab with a button to reset perspectives defaults</action>  
     	<action dev='bflorat' type='add'>New option in parameter view : search in unmounted devices usefull with the search box</action>  
+    	<action dev='bflorat' type='add'>New option in parameter view : novelties age</action>  
+    	<action dev='bflorat' type='add'>Two new startup modes : bestof and novelties</action>  
     	<action dev='bflorat' type='update'>Parameter view now uses tabs</action>
     	<action dev='bflorat' type='update'>Now file choosers try to guess a right root directory</action>
     	<action dev='bflorat' type='update'>New repeat mode button behavior : repeat current track, not next one</action>
