@@ -212,7 +212,7 @@ public class Directory extends PropertyAdapter implements Comparable{
 	 * @param
 	 */
 	public void scan() {
-		java.io.File[] files = getFio().listFiles(JajukFileFilter.getInstance(false, true));
+		java.io.File[] files = getFio().listFiles(new JajukFileFilter(false, true));
 		if (files == null || files.length==0){  //none file, leave
 			return;
 		}

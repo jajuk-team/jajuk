@@ -44,7 +44,8 @@ public class FileManager implements ITechnicalStrings{
 	private static final int NB_BEST_OF_FILES = 20;
 	/**Flag the fact a rate has change for a track, used by bestof view refresh for perfs*/
 	private static boolean bRateHasChanged = false;
-	
+	/**Best of files*/
+	private static ArrayList alBestofFiles;
 	
 	/**
 	 * No constructor available, only static access
@@ -160,27 +161,28 @@ public class FileManager implements ITechnicalStrings{
 	 * @return top files
 	 */
 	public static synchronized ArrayList getBestOfFiles(){
-		ArrayList al = new ArrayList(NB_BEST_OF_FILES);
-		//create a tempory table to remove unmounted files
-		TreeSet tsEligibleFiles = new TreeSet();
-		Iterator it = FileManager.getFiles().iterator();
-		while ( it.hasNext()){
-			File file = (File)it.next();
-			if (file.isReady()){
-				long lRate = file.getTrack().getRate();
-				tsEligibleFiles.add(new FileScore(file,lRate));
+		if (FileManager.hasRateChanged() || alBestofFiles == null){  //test a rate has changed for perfs
+			//clear data
+			alBestofFiles = new ArrayList(NB_BEST_OF_FILES);
+			//create a tempory table to remove unmounted files
+			ArrayList alEligibleFiles = new ArrayList(NB_BEST_OF_FILES);
+			Iterator it = TrackManager.getTracks().iterator();
+			while ( it.hasNext()){
+				Track track = (Track)it.next();
+				File file = track.getPlayeableFile();
+				if (file != null){
+					long lRate = file.getTrack().getRate();
+					alEligibleFiles.add(new FileScore(file,lRate));
+				}
 			}
-		}
-		for (int i=0;i<NB_BEST_OF_FILES;i++){
-			FileScore fileScore = null;
-			if ( tsEligibleFiles.size() == 0){
-				break;			
+			Collections.sort(alEligibleFiles);
+			for (int i=alEligibleFiles.size()-1;i>alEligibleFiles.size()-1-NB_BEST_OF_FILES;i--){
+				File file = ((FileScore)alEligibleFiles.get(i)).getFile();
+				alBestofFiles.add(file);
 			}
-			fileScore = (FileScore)tsEligibleFiles.last();
-			al.add(fileScore.getFile());
-			tsEligibleFiles.remove(fileScore);
+			FileManager.setRateHasChanged(false);
 		}
-		return al;
+		return alBestofFiles;
 	}
 	
 	
@@ -323,7 +325,14 @@ class FileScore implements Comparable{
 		return lScore;
 	}
 	
-
+	/**
+	 * ToString method
+	 * @return a description 
+	 */
+	public String toString(){
+		return new StringBuffer(file.toString()).append(',').append(lScore).toString();
+	}
+	
 	/* (non-Javadoc)
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */

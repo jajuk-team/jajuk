@@ -82,11 +82,10 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 	
 	/** Track selection*/
 	ArrayList alTracks;
-	
+		
 	/** Current selection */
 	TreePath[] paths;
-	
-	
+		
 	JPopupMenu jmenuStyle;
 	JMenuItem jmiStylePlay;
 	JMenuItem jmiStylePush;
@@ -512,39 +511,44 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 	/* (non-Javadoc)
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
-	public void actionPerformed(ActionEvent e) {
-		//compute selection
-		ArrayList alFilesToPlay = new ArrayList(alTracks.size());
-		Iterator it = alTracks.iterator();
-		while ( it.hasNext()){
-			File file = ((Track)it.next()).getPlayeableFile();
-			if ( file != null){
-				alFilesToPlay.add(file);
+	public void actionPerformed(final ActionEvent e) {
+		new Thread(){
+			public void run(){
+				
+				//compute selection
+				ArrayList alFilesToPlay = new ArrayList(alTracks.size());
+				Iterator it = alTracks.iterator();
+				while ( it.hasNext()){
+					File file = ((Track)it.next()).getPlayeableFile();
+					if ( file != null){
+						alFilesToPlay.add(file);
+					}
+				}
+				if ( alTracks.size() > 0  && (e.getSource() == jmiTrackPlay 
+						|| e.getSource() == jmiAlbumPlay
+						|| e.getSource() == jmiAuthorPlay
+						|| e.getSource() == jmiStylePlay )){
+					FIFO.getInstance().push(alFilesToPlay,false);
+					
+				}
+				else if (alTracks.size() > 0  && ( e.getSource() == jmiTrackPush 
+						|| e.getSource() == jmiAlbumPush
+						|| e.getSource() == jmiAuthorPush
+						|| e.getSource() == jmiStylePush) ){
+					FIFO.getInstance().push(alFilesToPlay,true);
+				}
+				else if ( alTracks.size() > 0  && (e.getSource() == jmiAlbumPlayShuffle
+						|| e.getSource() == jmiAuthorPlayShuffle
+						|| e.getSource() == jmiStylePlayShuffle )){
+					FIFO.getInstance().push(Util.randomize(alFilesToPlay),false);
+				}
+				else if (alTracks.size() > 0  && ( e.getSource() == jmiAlbumPlayRepeat
+						|| e.getSource() == jmiAuthorPlayRepeat
+						|| e.getSource() == jmiStylePlayRepeat) ){
+					FIFO.getInstance().push(alFilesToPlay,false,false,true);
+				}
 			}
-		}
-		if ( alTracks.size() > 0  && (e.getSource() == jmiTrackPlay 
-				|| e.getSource() == jmiAlbumPlay
-				|| e.getSource() == jmiAuthorPlay
-				|| e.getSource() == jmiStylePlay )){
-			FIFO.getInstance().push(alFilesToPlay,false);
-			
-		}
-		else if (alTracks.size() > 0  && ( e.getSource() == jmiTrackPush 
-				|| e.getSource() == jmiAlbumPush
-				|| e.getSource() == jmiAuthorPush
-				|| e.getSource() == jmiStylePush) ){
-			FIFO.getInstance().push(alFilesToPlay,true);
-		}
-		else if ( alTracks.size() > 0  && (e.getSource() == jmiAlbumPlayShuffle
-				|| e.getSource() == jmiAuthorPlayShuffle
-				|| e.getSource() == jmiStylePlayShuffle )){
-			FIFO.getInstance().push(Util.randomize(alFilesToPlay),false);
-		}
-		else if (alTracks.size() > 0  && ( e.getSource() == jmiAlbumPlayRepeat
-				|| e.getSource() == jmiAuthorPlayRepeat
-				|| e.getSource() == jmiStylePlayRepeat) ){
-			FIFO.getInstance().push(alFilesToPlay,false,false,true);
-		}
+		}.start();
 	}
 	
 	/* (non-Javadoc)
@@ -624,6 +628,17 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 		}
 	}
 	
+	
+	/**
+	 * @return Returns the alTracks.
+	 */
+	public ArrayList getTrackSelection() {
+		return alTracks;
+	}
+	
+	
+
+
 }
 
 

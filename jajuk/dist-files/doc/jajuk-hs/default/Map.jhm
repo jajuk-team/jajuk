@@ -5,4 +5,5 @@
 
 <map version="1.0">
 	<mapID target="top" url="html/intro.html" />
+	<mapID target="pav" url="html/pav.html" />
 </map>

@@ -34,6 +34,8 @@ import org.jajuk.base.DeviceManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.Util;
 
+import com.sun.SwingWorker;
+
 
 /**
  *Scan CD to build the collection as fast as possible
@@ -43,7 +45,7 @@ import org.jajuk.util.Util;
  * @created   29 dec. 2003
  */
 public class CDScanView extends ViewAdapter implements ActionListener {
-
+	
 	/**Self instance*/
 	private static CDScanView cds;
 	
@@ -75,8 +77,8 @@ public class CDScanView extends ViewAdapter implements ActionListener {
 		float fXSeparator = 0.05f;
 		float fYSeparator = 0.15f;
 		double[][] dSize={
-			{fXSeparator,0.3,fXSeparator,0.5,fXSeparator},
-			{fYSeparator,20,fYSeparator,20,fYSeparator,20,fYSeparator}
+				{fXSeparator,0.3,fXSeparator,0.5,fXSeparator},
+				{fYSeparator,20,fYSeparator,20,fYSeparator,20,fYSeparator}
 		};
 		setLayout(new TableLayout(dSize));
 		jlName = new JLabel(Messages.getString("CDScanView.0")); //$NON-NLS-1$
@@ -97,49 +99,57 @@ public class CDScanView extends ViewAdapter implements ActionListener {
 		add(jbScan,"1,5"); //$NON-NLS-1$
 		
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.IView#getDesc()
 	 */
 	public String getDesc() {
 		return Messages.getString("CDScanView.12");	 //$NON-NLS-1$
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.IView#getViewName()
 	 */
 	public String getViewName() {
 		return "org.jajuk.ui.views.CDScanView"; //$NON-NLS-1$
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
 	public void actionPerformed(ActionEvent e) {
-		if ( !"".equals(jtfName.getText().trim()) && !"".equals(jtfMountPoint.getText().trim())){ //$NON-NLS-1$ //$NON-NLS-2$
-			Device device = DeviceManager.registerDevice(jtfName.getText().trim(),1,jtfMountPoint.getText().trim(),jtfMountPoint.getText().trim());
-			if (device == null){ //means device name is already token
-				Messages.showErrorMessage("019"); //$NON-NLS-1$
-				return;
-			}
-			try{
-				device.mount();
-				device.refresh(true);
-				do{
-					Thread.sleep(500); //sleep to get sure refresh thread is realy started
+		SwingWorker sw = new SwingWorker() {
+			public Object construct() {
+				if ( !"".equals(jtfName.getText().trim()) && !"".equals(jtfMountPoint.getText().trim())){ //$NON-NLS-1$ //$NON-NLS-2$
+					Device device = DeviceManager.registerDevice(jtfName.getText().trim(),1,jtfMountPoint.getText().trim(),jtfMountPoint.getText().trim());
+					if (device == null){ //means device name is already token
+						Messages.showErrorMessage("019"); //$NON-NLS-1$
+						return null;
+					}
+					try{
+						device.mount();
+						device.refresh(true);
+						do{
+							Thread.sleep(500); //sleep to get sure refresh thread is realy started
+						}
+						while(!device.isRefreshing());
+						synchronized(Device.bLock){  //wait refresh is done
+							device.unmount(true);
+						}
+					}
+					catch(Exception ex){
+						DeviceManager.removeDevice(device);
+						Messages.showErrorMessage("016"); //$NON-NLS-1$
+					}
 				}
-				while(!device.isRefreshing());
-				synchronized(Device.bLock){  //wait refresh is done
-					device.unmount(true);
-				}
-				jtfName.setName(""); //$NON-NLS-1$
-				jtfName.requestFocus();
+				return null;
 				
+			}	
+			public void finished() {
+				jtfName.setText(""); //$NON-NLS-1$
+				jtfName.requestFocus();
 			}
-			catch(Exception ex){
-				DeviceManager.removeDevice(device);
-				Messages.showErrorMessage("016"); //$NON-NLS-1$
-			}
-		}
+		};
+		sw.start();
 	}
 }

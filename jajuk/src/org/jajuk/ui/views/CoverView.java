@@ -38,7 +38,6 @@ import org.jajuk.base.FIFO;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.ObservationManager;
 import org.jajuk.ui.Observer;
-import org.jajuk.ui.ViewManager;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;

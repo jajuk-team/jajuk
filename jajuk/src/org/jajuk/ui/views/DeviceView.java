@@ -49,10 +49,8 @@ import org.jajuk.base.DeviceManager;
 import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.DeviceWizard;
-import org.jajuk.ui.IView;
 import org.jajuk.ui.ObservationManager;
 import org.jajuk.ui.Observer;
-import org.jajuk.ui.ViewManager;
 import org.jajuk.util.Util;
 
 /**
@@ -162,7 +160,7 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 		jtbButtons.addSeparator();
 		jtbButtons.add(jbSynchro);
 		jtbButtons.addSeparator();
-	
+		
 		//devices
 		jpDevices = new JPanel();
 		jpDevices.setPreferredSize(new Dimension(200,1000));
@@ -215,8 +213,8 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 		
 		//add  
 		double size[][] =
-		{{0.99},
-		{30,0.99}};
+			{{0.99},
+				{30,0.99}};
 		setLayout(new TableLayout(size));
 		add(jtbButtons,"0,0"); //$NON-NLS-1$
 		add(new JScrollPane(jpDevices),"0,1"); //$NON-NLS-1$
@@ -246,6 +244,7 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 			public void mouseClicked(MouseEvent e) {
 				DeviceWizard dw = new DeviceWizard();
 				dw.updateWidgetsDefault();
+				dw.show();
 			}
 		});
 		//Add devices
@@ -255,46 +254,46 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 			final Device device = (Device)it.next();
 			String sIcon = ICON_DEVICE_DIRECTORY_MOUNTED;
 			switch (device.getDeviceType()){
-				case 0 : 
-					if ( device.isMounted()){
-						sIcon = ICON_DEVICE_DIRECTORY_MOUNTED;
-					}
-					else{
-						sIcon = ICON_DEVICE_DIRECTORY_UNMOUNTED;
-					}
-					break;
-				case 1 : 
-					if ( device.isMounted()){
-						sIcon = ICON_DEVICE_CD_MOUNTED;
-					}
-					else{
-						sIcon = ICON_DEVICE_CD_UNMOUNTED;
-					}
-					break;
-				case 2 : 
-					if ( device.isMounted()){
-						sIcon = ICON_DEVICE_REMOTE_MOUNTED;
-					}
-					else{
-						sIcon = ICON_DEVICE_REMOTE_UNMOUNTED;
-					}
-					break;
-				case 3 : 
-					if ( device.isMounted()){
-						sIcon = ICON_DEVICE_EXT_DD_MOUNTED;
-					}
-					else{
-						sIcon = ICON_DEVICE_EXT_DD_UNMOUNTED;
-					}
-					break;
-				case 4 : 
-					if ( device.isMounted()){
-						sIcon = ICON_DEVICE_PLAYER_MOUNTED;
-					}
-					else{
-						sIcon = ICON_DEVICE_PLAYER_UNMOUNTED;
-					}
-					break;
+			case 0 : 
+				if ( device.isMounted()){
+					sIcon = ICON_DEVICE_DIRECTORY_MOUNTED;
+				}
+				else{
+					sIcon = ICON_DEVICE_DIRECTORY_UNMOUNTED;
+				}
+				break;
+			case 1 : 
+				if ( device.isMounted()){
+					sIcon = ICON_DEVICE_CD_MOUNTED;
+				}
+				else{
+					sIcon = ICON_DEVICE_CD_UNMOUNTED;
+				}
+				break;
+			case 2 : 
+				if ( device.isMounted()){
+					sIcon = ICON_DEVICE_REMOTE_MOUNTED;
+				}
+				else{
+					sIcon = ICON_DEVICE_REMOTE_UNMOUNTED;
+				}
+				break;
+			case 3 : 
+				if ( device.isMounted()){
+					sIcon = ICON_DEVICE_EXT_DD_MOUNTED;
+				}
+				else{
+					sIcon = ICON_DEVICE_EXT_DD_UNMOUNTED;
+				}
+				break;
+			case 4 : 
+				if ( device.isMounted()){
+					sIcon = ICON_DEVICE_PLAYER_MOUNTED;
+				}
+				else{
+					sIcon = ICON_DEVICE_PLAYER_UNMOUNTED;
+				}
+				break;
 			}
 			final DeviceItem di = new DeviceItem(sIcon,device.getName());
 			di.addMouseListener(new MouseAdapter() {
@@ -307,6 +306,7 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 						else {
 							DeviceWizard dw = new DeviceWizard();
 							dw.updateWidgets(dSelected);
+							dw.show();
 						}
 					}
 					//remove old device item border
@@ -342,147 +342,152 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 		}
 	}	
 	
-		
-		/* (non-Javadoc)
-		 * @see org.jajuk.ui.views.IView#setVisible(boolean)
-		 */
-		public void setVisible(boolean pVisible) {
+	
+	/* (non-Javadoc)
+	 * @see org.jajuk.ui.views.IView#setVisible(boolean)
+	 */
+	public void setVisible(boolean pVisible) {
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.jajuk.ui.views.IView#getComponent()
+	 */
+	public Component getComponent() {
+		return this;
+	}
+	
+	/**
+	 * Singleton implementation
+	 * @return
+	 */
+	public static synchronized DeviceView getInstance(){
+		if ( dv == null){
+			dv = new DeviceView();
 		}
-		
-		/* (non-Javadoc)
-		 * @see org.jajuk.ui.views.IView#getComponent()
-		 */
-		public Component getComponent() {
-			return this;
+		return dv;
+	}
+	
+	
+	public void actionPerformed(final ActionEvent ae){
+		if (ae.getActionCommand().equals(EVENT_DEVICE_NEW)){
+			DeviceWizard dw = new DeviceWizard();
+			dw.updateWidgetsDefault();
+			dw.show();
+			return;
 		}
-		
-		/**
-		 * Singleton implementation
-		 * @return
-		 */
-		public static synchronized DeviceView getInstance(){
-			if ( dv == null){
-				dv = new DeviceView();
-			}
-			return dv;
+		if (dSelected == null){  //test a device is selected
+			return;
 		}
-		
-		
-		public void actionPerformed(ActionEvent ae){
-			if (ae.getActionCommand().equals(EVENT_DEVICE_NEW)){
-				DeviceWizard dw = new DeviceWizard();
-				dw.updateWidgetsDefault();
-				return;
-			}
-			if (dSelected == null){  //test a device is selected
-				return;
-			}
-			if (ae.getActionCommand().equals(EVENT_DEVICE_DELETE)){
-				DeviceManager.removeDevice(dSelected);
-				jpDevices.remove(diSelected);
-				dSelected = null;
-				ViewManager.notify(EVENT_VIEW_REFRESH_REQUEST,this);
-			}
-			else if (ae.getActionCommand().equals(EVENT_DEVICE_MOUNT)){
-				try{
-					dSelected.mount();
-				}
-				catch(Exception e){
-					Messages.showErrorMessage("011"); //$NON-NLS-1$
-				}
-			}
-			else if (ae.getActionCommand().equals(EVENT_DEVICE_UNMOUNT)){
-				try{
-					dSelected.unmount();
-				}
-				catch(Exception e){
-					Messages.showErrorMessage("012"); //$NON-NLS-1$
-				}
-			}
-			else if (ae.getActionCommand().equals(EVENT_DEVICE_PROPERTIES)){
-				DeviceWizard dw = new DeviceWizard();
-				dw.updateWidgets(dSelected);
-			}
-			else if (ae.getActionCommand().equals(EVENT_DEVICE_REFRESH)){
-				dSelected.refresh(true);
-			}
-			else if (ae.getActionCommand().equals(EVENT_DEVICE_SYNCHRO)){
-				dSelected.synchronize(true);
-			}
-			else if (ae.getActionCommand().equals(EVENT_DEVICE_TEST)){
-				if (dSelected.test()){
-					Messages.showInfoMessage(Messages.getString("DeviceView.21"),Util.getIcon(ICON_OK)); //$NON-NLS-1$
-				}
-				else{
-					Messages.showInfoMessage(Messages.getString("DeviceView.22"),Util.getIcon(ICON_KO)); //$NON-NLS-1$
-				}
-			}
-		}	
-		
-		
-		/* (non-Javadoc)
-		 * @see org.jajuk.ui.IView#getDesc()
-		 */
-		public String getDesc() {
-			return Messages.getString("DeviceView.23"); //$NON-NLS-1$
+		if (ae.getActionCommand().equals(EVENT_DEVICE_DELETE)){
+			DeviceManager.removeDevice(dSelected);
+			jpDevices.remove(diSelected);
+			dSelected = null;
+			ViewManager.notify(EVENT_VIEW_REFRESH_REQUEST,DeviceView.this);
 		}
-		
-		
-		/* (non-Javadoc)
-		 * @see org.jajuk.ui.Observer#update(java.lang.String)
-		 */
-		public void update(String subject) {
-			if ( EVENT_DEVICE_MOUNT.equals(subject) || EVENT_DEVICE_UNMOUNT.equals(subject) || EVENT_DEVICE_REFRESH.equals(subject)){
-				Util.waiting();
-				refreshDevices();
-				SwingUtilities.updateComponentTreeUI(jpDevices);
-				Util.stopWaiting();
-			
+		else if (ae.getActionCommand().equals(EVENT_DEVICE_MOUNT)){
+			try{
+				dSelected.mount();
+			}
+			catch(Exception e){
+				Messages.showErrorMessage("011"); //$NON-NLS-1$
 			}
 		}
-		
-		
+		else if (ae.getActionCommand().equals(EVENT_DEVICE_UNMOUNT)){
+			try{
+				dSelected.unmount();
+			}
+			catch(Exception e){
+				Messages.showErrorMessage("012"); //$NON-NLS-1$
+			}
+		}
+		else if (ae.getActionCommand().equals(EVENT_DEVICE_PROPERTIES)){
+			DeviceWizard dw = new DeviceWizard();
+			dw.updateWidgets(dSelected);
+			dw.show();
+		}
+		else if (ae.getActionCommand().equals(EVENT_DEVICE_REFRESH)){
+			dSelected.refresh(true);
+		}
+		else if (ae.getActionCommand().equals(EVENT_DEVICE_SYNCHRO)){
+			dSelected.synchronize(true);
+		}
+		else if (ae.getActionCommand().equals(EVENT_DEVICE_TEST)){
+			if (dSelected.test()){
+				Messages.showInfoMessage(Messages.getString("DeviceView.21"),Util.getIcon(ICON_OK)); //$NON-NLS-1$
+			}
+			else{
+				Messages.showInfoMessage(Messages.getString("DeviceView.22"),Util.getIcon(ICON_KO)); //$NON-NLS-1$
+			}
+		}
+	}
+	
+	
+	/* (non-Javadoc)
+	 * @see org.jajuk.ui.IView#getDesc()
+	 */
+	public String getDesc() {
+		return Messages.getString("DeviceView.23"); //$NON-NLS-1$
+	}
+	
+	
+	/* (non-Javadoc)
+	 * @see org.jajuk.ui.Observer#update(java.lang.String)
+	 */
+	public void update(String subject) {
+		if ( EVENT_DEVICE_MOUNT.equals(subject) || EVENT_DEVICE_UNMOUNT.equals(subject) || EVENT_DEVICE_REFRESH.equals(subject)){
+			SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+					Util.waiting();
+					refreshDevices();
+					SwingUtilities.updateComponentTreeUI(jpDevices);
+					Util.stopWaiting();
+				}
+			});
+		}
+	}
+	
+	
+}
+
+
+/**
+ * A device icon + text
+ *  Type description
+ *
+ * @author     bflorat
+ * @created    8 nov. 2003
+ */
+class DeviceItem extends JPanel{
+	
+	/** Associated device */
+	Device device;
+	
+	/**
+	 * Constructor
+	 */
+	DeviceItem(String sIcon,String sName){
+		setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
+		setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+		JLabel jlIcon = new JLabel(Util.getIcon(sIcon)); 
+		add(jlIcon);
+		JLabel jlName = new JLabel(sName);
+		add(jlName);
 	}
 	
 	
 	/**
-	 * A device icon + text
-	 *  Type description
-	 *
-	 * @author     bflorat
-	 * @created    8 nov. 2003
+	 * @return Returns the device.
 	 */
-	class DeviceItem extends JPanel{
-		
-		/** Associated device */
-		Device device;
-		
-		/**
-		 * Constructor
-		 */
-		DeviceItem(String sIcon,String sName){
-			setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
-			setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
-			JLabel jlIcon = new JLabel(Util.getIcon(sIcon)); 
-			add(jlIcon);
-			JLabel jlName = new JLabel(sName);
-			add(jlName);
-		}
-		
-		
-		/**
-		 * @return Returns the device.
-		 */
-		public Device getDevice() {
-			return device;
-		}
-		
-		/**
-		 * @param device The device to set.
-		 */
-		public void setDevice(Device device) {
-			this.device = device;
-		}
-		
-				
+	public Device getDevice() {
+		return device;
 	}
+	
+	/**
+	 * @param device The device to set.
+	 */
+	public void setDevice(Device device) {
+		this.device = device;
+	}
+	
+	
+}

@@ -27,6 +27,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EtchedBorder;
 
 import layout.TableLayout;
@@ -175,23 +176,25 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings{
 	/**
 	 * @param label
 	 */
-	public void setMessage(String sMessage,int iMessageType) {
-		this.sMessage = sMessage;
-		switch(iMessageType){
-			case INFORMATIVE:
+	public void setMessage(final String sMessage,final int iMessageType) {
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				InformationJPanel.this.sMessage = sMessage;
+				switch(iMessageType){
+				case INFORMATIVE:
 					jlMessage.setForeground(Color.BLUE);
-				break;
-			case ERROR:
-				jlMessage.setForeground(Color.RED);
 					break;
-			default:
-				jlMessage.setForeground(Color.BLUE);
-				break;	 
-		}
-		jlMessage.setText(sMessage); 
-		jlMessage.setToolTipText(sMessage);
-		
-		
+				case ERROR:
+					jlMessage.setForeground(Color.RED);
+					break;
+				default:
+					jlMessage.setForeground(Color.BLUE);
+					break;	 
+				}
+				jlMessage.setText(sMessage); 
+				jlMessage.setToolTipText(sMessage);
+			}
+		});
 	}
 
 	/**

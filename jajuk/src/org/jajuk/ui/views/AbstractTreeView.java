@@ -23,6 +23,7 @@ package org.jajuk.ui.views;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
 
+
 /**
  *  An abstract physical or logical tree view. Contains common methods
  *
@@ -36,7 +37,6 @@ public abstract class AbstractTreeView extends ViewAdapter {
 	
 	/** The phyical tree */
 	JTree jtree;
-	
 	
 	
 }

@@ -45,8 +45,7 @@ public class PlaylistManager {
 	 *@param file : playlist file
 	 */	
 	public static synchronized Playlist registerPlaylist(PlaylistFile plFile) {
-		String sId = plFile.getHashcode();
-		return registerPlaylist(sId,plFile);
+		return registerPlaylist(plFile.getHashcode(),plFile);
 	}
 	
 	/**
@@ -59,9 +58,11 @@ public class PlaylistManager {
 			playlist.addFile(plFile);
 			return playlist;
 		}
-		Playlist playlist = new Playlist(sId,plFile);
-		hmPlaylists.put(sId,playlist);
-		return playlist;
+		else { //new playlist
+			Playlist playlist = new Playlist(sId,plFile);
+			hmPlaylists.put(sId,playlist);
+			return playlist;
+		}
 	}
 
 

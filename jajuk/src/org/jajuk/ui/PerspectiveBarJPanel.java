@@ -33,6 +33,8 @@ import javax.swing.JToolBar;
 
 import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.i18n.Messages;
+import org.jajuk.ui.perspectives.IPerspective;
+import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.util.Util;
 
 /**
@@ -43,13 +45,13 @@ import org.jajuk.util.Util;
  * @created		6 oct. 2003
  */
 public class PerspectiveBarJPanel extends JPanel implements ITechnicalStrings{
-
-		// Perspectives tool bar
+	
+	// Perspectives tool bar
 	private JToolBar jtbPerspective = null;
-		/**Self instance*/
-		static private PerspectiveBarJPanel pb = null; 	
-		/**Perspective button*/
-		private ArrayList alButtons = new ArrayList(10); 
+	/**Self instance*/
+	static private PerspectiveBarJPanel pb = null; 	
+	/**Perspective button*/
+	private ArrayList alButtons = new ArrayList(10); 
 	
 	
 	/**
@@ -80,7 +82,7 @@ public class PerspectiveBarJPanel extends JPanel implements ITechnicalStrings{
 		// set default layout and size
 		setLayout(new BoxLayout(this,BoxLayout.Y_AXIS)); //we use a BoxLayout and not a FlowLayout to allow resizing
 		setBorder(BorderFactory.createEtchedBorder());
-			// Perspectives tool bar
+		// Perspectives tool bar
 		jtbPerspective = new JToolBar();
 		jtbPerspective.setFloatable(false);
 		jtbPerspective.addSeparator();
@@ -96,6 +98,7 @@ public class PerspectiveBarJPanel extends JPanel implements ITechnicalStrings{
 			catch(Exception e){};  //ignore tooltip missing
 			jb.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+					//no thread, it causes ugly screen repaint	
 					PerspectiveManager.notify(perspective.getName());
 				}
 			});

@@ -68,14 +68,18 @@ public class ObservationManager {
 	 * @param subject
 	 */
 	public static synchronized void notify(final String subject){
-		ArrayList alComponents =(ArrayList)hmEventComponents.get(subject); 
-		if (alComponents == null){
-			return;
-		}
-		Iterator it = alComponents.iterator();  
-		while (it.hasNext()){
-			((Observer)it.next()).update(subject);
-		}
-		
+		new Thread(){
+			public synchronized void run(){
+				ArrayList alComponents =(ArrayList)hmEventComponents.get(subject); 
+				if (alComponents == null){
+					return;
+				}
+				Iterator it = alComponents.iterator();  
+				while (it.hasNext()){
+					((Observer)it.next()).update(subject);
+				}
+			}
+		}.start();
+				
 	}
 }

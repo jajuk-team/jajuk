@@ -24,7 +24,6 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import org.jajuk.base.ITechnicalStrings;
-import org.jajuk.ui.IView;
 
 /**
  *  Default implementation for views

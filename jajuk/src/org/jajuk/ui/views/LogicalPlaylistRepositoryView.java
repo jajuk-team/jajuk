@@ -95,10 +95,18 @@ public class LogicalPlaylistRepositoryView extends AbstractPlaylistRepositoryVie
 				continue;
 			}
 			PlaylistFileItem plfi = new PlaylistFileItem(PlaylistFileItem.PLAYLIST_TYPE_NORMAL,ICON_PLAYLIST_NORMAL,plf,plf.getName());
+			alPlaylistFileItems.add(plfi);
 			plfi.addMouseListener(ma);
 			plfi.setToolTipText(plf.getName());
 			jpRoot.add(plfi);
 		}
+	}
+
+	/* (non-Javadoc)
+	 * @see org.jajuk.ui.views.AbstractPlaylistRepositoryView#setCurrentPlayListFileInEditor(org.jajuk.ui.PlaylistFileItem)
+	 */
+	void setCurrentPlayListFileInEditor(PlaylistFileItem plfi) {
+		LogicalPlaylistEditorView.getInstance().setCurrentPlayListFile(plfi);
 	}
 
 }

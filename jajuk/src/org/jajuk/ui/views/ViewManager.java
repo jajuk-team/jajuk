@@ -18,7 +18,7 @@
  *  $Revision$
  */
 
-package org.jajuk.ui;
+package org.jajuk.ui.views;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -32,6 +32,8 @@ import javax.swing.event.InternalFrameEvent;
 
 import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.i18n.Messages;
+import org.jajuk.ui.JajukInternalFrame;
+import org.jajuk.ui.JajukJMenuBar;
 import org.jajuk.util.log.Log;
 
 /**
@@ -39,7 +41,6 @@ import org.jajuk.util.log.Log;
  *
  * @author     bflorat
  * @created    16 nov. 2003
- * TODO : TBI : Automatic resizing of views when closing/opening with menu bar
  */
 public class ViewManager implements ITechnicalStrings{
 
@@ -53,7 +54,7 @@ public class ViewManager implements ITechnicalStrings{
 	
 	/**Maintain relation view/perspective, a view can be in only one perspective*/
 	public static void registerView(final IView view){
-		final JInternalFrame ji = new JInternalFrame(view.getDesc(),true,true,true,true);
+		final JajukInternalFrame ji = new JajukInternalFrame(view.getDesc(),true,true,true,true);
 		ji.setContentPane((JComponent)view);
 		ji.setDefaultCloseOperation(JInternalFrame.DO_NOTHING_ON_CLOSE);
 		ji.addInternalFrameListener(new InternalFrameAdapter(){
@@ -88,7 +89,7 @@ public class ViewManager implements ITechnicalStrings{
 	 * @param sEvent
 	 * @param view
 	 */
-	public static void notify(String sEvent,IView view){
+	public static void notify(String sEvent,final IView view){
 		try{
 			if (sEvent.equals(EVENT_VIEW_REFRESH_REQUEST)){
 				view.refresh();

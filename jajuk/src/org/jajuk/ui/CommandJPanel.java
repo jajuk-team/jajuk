@@ -31,6 +31,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JToolBar;
+import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
@@ -49,6 +50,8 @@ import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 
+import com.sun.SwingWorker;
+
 /**
  *  Command panel ( static view )
  *
@@ -61,33 +64,33 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 	static private CommandJPanel command;
 	
 	//widgets declaration
-		 JToolBar jtbSearch;
-			SearchBox  sbSearch;
-		JToolBar jtbHistory;
-			public SteppedComboBox jcbHistory;
-		JToolBar jtbMode;
-			JButton jbRepeat;
-			JButton jbRandom;
-			JButton jbContinue;
-			JButton jbIntro;
-		JToolBar jtbSpecial;
-			JButton jbGlobalRandom;
-			JButton jbBestof;
-			JButton jbMute;
-		JToolBar jtbPlay;
-			JButton jbPrevious;
-			JButton jbNext;
-			JButton jbRew;
-			JButton jbPlayPause;
-			JButton jbStop;
-			JButton jbFwd;
-		JToolBar jtbVolume;
-			JLabel jlVolume;
-			JSlider jsVolume;
-		JToolBar jtbPosition;
-			JLabel jlPosition;
-			JSlider jsPosition;
-			
+	JToolBar jtbSearch;
+	SearchBox  sbSearch;
+	JToolBar jtbHistory;
+	public SteppedComboBox jcbHistory;
+	JToolBar jtbMode;
+	JButton jbRepeat;
+	JButton jbRandom;
+	JButton jbContinue;
+	JButton jbIntro;
+	JToolBar jtbSpecial;
+	JButton jbGlobalRandom;
+	JButton jbBestof;
+	JButton jbMute;
+	JToolBar jtbPlay;
+	JButton jbPrevious;
+	JButton jbNext;
+	JButton jbRew;
+	JButton jbPlayPause;
+	JButton jbStop;
+	JButton jbFwd;
+	JToolBar jtbVolume;
+	JLabel jlVolume;
+	JSlider jsVolume;
+	JToolBar jtbPosition;
+	JLabel jlPosition;
+	JSlider jsPosition;
+	
 	//variables declaration
 	/**Repeat mode flag*/
 	static boolean bIsRepeatEnabled = false;
@@ -101,9 +104,9 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 	static final float JUMP_SIZE = 0.1f;
 	/**Slider move event filter*/
 	private boolean bPositionChanging = false;
-
 	
-		
+	
+	
 	public static synchronized CommandJPanel getInstance(){
 		if (command == null){
 			command = new CommandJPanel();
@@ -118,7 +121,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		int iSeparator = 0;
 		//set default layout and size
 		double[][] size ={{0.20,iSeparator,272,iSeparator,0.13,iSeparator,0.10,iSeparator,0.21,iSeparator,0.16,iSeparator,0.16},
-						{height1}}; //note we can't set a % for history combo box because of popup size
+				{height1}}; //note we can't set a % for history combo box because of popup size
 		setLayout(new TableLayout(size));
 		setBorder(BorderFactory.createEtchedBorder());
 		//search toolbar
@@ -128,7 +131,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		jtbSearch.add(Box.createHorizontalGlue());
 		jtbSearch.add(sbSearch);
 		jtbSearch.add(Box.createHorizontalGlue());
-			
+		
 		//history toolbar
 		jtbHistory = new JToolBar();
 		jcbHistory = new SteppedComboBox(History.getInstance().getHistory().toArray());
@@ -273,7 +276,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		jsPosition.setToolTipText(Messages.getString("CommandJPanel.15")); //$NON-NLS-1$
 		jtbPosition.add(jsPosition);
 		jtbPosition.add(Box.createHorizontalGlue());
-				
+		
 		//add toolbars to main panel
 		add(jtbSearch,"0,0"); //$NON-NLS-1$
 		add(jtbHistory,"2,0"); //$NON-NLS-1$
@@ -314,43 +317,78 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 	 * Clear history bar
 	 */
 	public void clearHistoryBar(){
-		jcbHistory.removeAllItems();
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				jcbHistory.removeAllItems();
+			}
+		});
 	}
-
+	
 	
 	
 	/* (non-Javadoc)
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
-	public void actionPerformed(ActionEvent ae) {
+	public void actionPerformed(final ActionEvent ae) {
 		if ( ae.getSource() == jcbHistory){
-			HistoryItem hi = History.getInstance().getHistoryItem(jcbHistory.getSelectedIndex());
-			if (hi != null){
-				org.jajuk.base.File file = FileManager.getFile(hi.getFileId());
-				if (file!= null && file.isReady()){  //file must be on a mounted device not refreshing
-					FIFO.getInstance().push(file,false);
+			SwingWorker sw = new SwingWorker() {
+				HistoryItem hi = null;
+				public Object construct() {
+					hi = History.getInstance().getHistoryItem(jcbHistory.getSelectedIndex());
+					return null;
 				}
-				else{
-					Messages.showErrorMessage("120",file.getDirectory().getDevice().getName()); //$NON-NLS-1$
-					jcbHistory.setSelectedItem(null);
+				
+				public void finished() {
+					if (hi != null){
+						org.jajuk.base.File file = FileManager.getFile(hi.getFileId());
+						if (file!= null && !file.isScanned()){  //file must be on a mounted device not refreshing
+							FIFO.getInstance().push(file,false);
+						}
+						else{
+							Messages.showErrorMessage("120",file.getDirectory().getDevice().getName()); //$NON-NLS-1$
+							jcbHistory.setSelectedItem(null);
+						}
+					}	
 				}
-			}
+			};
+			sw.start();
+			
 		}
 		if (ae.getSource() == jbGlobalRandom ){
-			org.jajuk.base.File file = FileManager.getShuffleFile();
-			if (file != null){
-				FIFO.getInstance().setBestof(false); //break best of mode if set
-				FIFO.getInstance().setGlobalRandom(true);
-				FIFO.getInstance().push(file,false,true);
-			}
+			SwingWorker sw = new SwingWorker() {
+				org.jajuk.base.File file = null;
+				public Object construct() {
+					file = FileManager.getShuffleFile();
+					return null;
+				}
+				
+				public void finished() {
+					if (file != null){
+						FIFO.getInstance().setBestof(false); //break best of mode if set
+						FIFO.getInstance().setGlobalRandom(true);
+						FIFO.getInstance().push(file,false,true);
+					}
+				}
+			};
+			sw.start();
 		}
 		if (ae.getSource() == jbBestof ){
-			org.jajuk.base.File file = FileManager.getBestOfFile();
-			if (file != null){
-				FIFO.getInstance().setGlobalRandom(false); //break global random mode if set
-				FIFO.getInstance().setBestof(true);
-				FIFO.getInstance().push(file,false,true);
-			}
+			SwingWorker sw = new SwingWorker() {
+				org.jajuk.base.File file = null;
+				public Object construct() {
+					file = FileManager.getBestOfFile();
+					return null;
+				}
+				
+				public void finished() {
+					if (file != null){
+						FIFO.getInstance().setGlobalRandom(false); //break global random mode if set
+						FIFO.getInstance().setBestof(true);
+						FIFO.getInstance().push(file,false,true);
+					}
+				}
+			};
+			sw.start();
 		}
 		else if (ae.getSource() == jbMute ){
 			Util.setMute(!Util.getMute());
@@ -375,22 +413,34 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 			float fCurrentPosition = FIFO.getInstance().getCurrentPosition();
 			FIFO.getInstance().setCurrentPosition(fCurrentPosition+JUMP_SIZE);
 		}
+		
 	}
 	
 	/* (non-Javadoc)
 	 * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.ListSelectionEvent)
 	 */
-	public void valueChanged(ListSelectionEvent e) {
-		if (!e.getValueIsAdjusting()){
-			SearchResult sr = (SearchResult)sbSearch.alResults.get(sbSearch.jlist.getSelectedIndex());
-			FIFO.getInstance().push(sr.getFile(),false);
-			sbSearch.popup.hide();
-			requestFocus();	
-		}
+	public void valueChanged(final ListSelectionEvent e) {
+		SwingWorker sw = new SwingWorker() {
+			public Object construct() {
+				if (!e.getValueIsAdjusting()){
+					SearchResult sr = (SearchResult)sbSearch.alResults.get(sbSearch.jlist.getSelectedIndex());
+					FIFO.getInstance().push(sr.getFile(),false);
+				}
+				return null;
+			}
+			
+			public void finished() {
+				if (!e.getValueIsAdjusting()){
+					sbSearch.popup.hide();
+					requestFocus();	
+				}	
+			}
+		};
+		sw.start();
 	}
 	
-	 /*
-	  *  @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
+	/*
+	 *  @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
 	 */
 	public void stateChanged(ChangeEvent e) {
 		if ( e.getSource() == jsVolume){
@@ -412,19 +462,19 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 			}.start();
 		}
 	}
-
+	
 	/**
 	 * Set Slider position
 	 * @param i percentage of slider
 	 */
-	public void setCurrentPosition(int i){
+	public void setCurrentPosition(final int i){
 		if ( !bPositionChanging ){//don't move slider when user do it himself a	t the same time
 			bPositionChanging = true;  //block events so player is not affected
-			this.jsPosition.setValue(i);
+			CommandJPanel.this.jsPosition.setValue(i);
 			bPositionChanging = false;
 		}
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.Observer#update(java.lang.String)
 	 */
@@ -456,5 +506,5 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 			jbPlayPause.setIcon(Util.getIcon(ICON_PAUSE));
 		}
 	}
-
+	
 }

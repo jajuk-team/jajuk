@@ -20,6 +20,10 @@
 
 package org.jajuk.ui.views;
 
+import java.util.ArrayList;
+
+import org.jajuk.ui.PlaylistFileItem;
+
 
 
 /**
@@ -57,5 +61,21 @@ public class PhysicalPlaylistEditorView extends AbstractPlaylistEditorView{
 	public String getViewName() {
 		return "org.jajuk.ui.views.PhysicalPlaylistEditorView"; //$NON-NLS-1$
 	}
+
+	/* (non-Javadoc)
+	 * @see org.jajuk.ui.views.AbstractPlaylistEditorView#getCurrentPlaylistFileItems()
+	 */
+	ArrayList getCurrentPlaylistFileItems() {
+		return PhysicalPlaylistRepositoryView.getInstance().getPlaylistFileItems();
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.jajuk.ui.views.AbstractPlaylistEditorView#setRepositoryPlayListFileItem(org.jajuk.ui.PlaylistFileItem)
+	 */
+	void setRepositoryPlayListFileItem(PlaylistFileItem plfi) {
+		PhysicalPlaylistRepositoryView.getInstance().selectPlaylistFileItem(plfi);
+	}
+
+
 
 }

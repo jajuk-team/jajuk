@@ -38,16 +38,31 @@ import com.sun.TableSorter;
  * @created    21 févr. 2004
  */
 public class JajukTable extends JTable {
+	
+	/** Table sorter*/
+	TableSorter ts;
 
+	/**
+	 * Constructor
+	 * @param model : model to use
+	 * @param bSortable : is this table sortable
+	 * */
+	public JajukTable(TableModel model,boolean bSortable) {
+		super(new TableSorter(model));
+		if ( bSortable ){
+			ts = (TableSorter)getModel();
+			ts.addMouseListenerToHeaderInTable(this);
+		}
+	}
+	
 	/**
 	 * Constructor
 	 * @param model : model to use
 	 */
 	public JajukTable(TableModel model) {
-		super(new TableSorter(model));
-		TableSorter ts = (TableSorter)getModel();
-		ts.addMouseListenerToHeaderInTable(this);
+		this(model,true);
 	}
+	
 	
 	/**
 	 * add tooltips to each cell
@@ -72,6 +87,13 @@ public class JajukTable extends JTable {
 		return c;
 	}
 	
+	/**
+	 * @return Returns the sorting model.
+	 */
+	public TableSorter getSortingModel() {
+		return ts;
+	}
+
 }
 
 

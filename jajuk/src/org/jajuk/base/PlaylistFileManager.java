@@ -37,7 +37,7 @@ public class PlaylistFileManager {
 	static HashMap hmPlaylistFiles = new HashMap(100);
 	/** Map ids and properties, survives to a refresh, is used to recover old properties after refresh */
 	static HashMap hmIdProperties = new HashMap(100);
-
+	
 	/**
 	 * No constructor available, only static access
 	 */

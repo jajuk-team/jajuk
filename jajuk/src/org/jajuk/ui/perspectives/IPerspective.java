@@ -17,12 +17,15 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  $Revision$
  */
-package org.jajuk.ui;
+package org.jajuk.ui.perspectives;
 
 
 import java.util.ArrayList;
 
 import javax.swing.JDesktopPane;
+
+import org.jajuk.ui.views.IView;
+
 
 
 /**

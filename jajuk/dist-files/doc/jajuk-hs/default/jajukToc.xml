@@ -4,8 +4,7 @@
          "./toc_2_0.dtd">
 <toc version="2.0">
 <tocitem text="Jajuk Help">
-
    <tocitem text="Introduction to Jajuk Help" target="top"/>
-  
+   <tocitem text="Perspectives and views" target="pav"/>
 </tocitem>
 </toc>

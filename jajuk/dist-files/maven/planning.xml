@@ -3,8 +3,7 @@
   <body>
   	<section name="Planning">
   		<section name="0.1">
-	   		<p>Initial version, currently in development. This version will be fully functionnal and offers most of targetted features. 0.2 to 0.5 releases will bring non-mandatory options.</p>
-	   		<p>We hope to publish 0.1 between febrary and april 2004.</p>
+	   		<p>Initial version, offers most of targetted features. 0.2 to 0.5 releases will bring additionnal non-mandatory features.</p>
 	   	</section>
   		<section name="0.2">
 	   		<ul>
@@ -31,7 +30,7 @@
 	   	</section>
 	   	<section name="0.5">
 	   		<ul>
-	   			<li>Views automatic resizing when closing</li>
+	   			<li>Automatic views resizing</li>
 	   			<li>User properties management</li>
 	   			<li>Key shortcuts for track navigation</li>
 	   		</ul>	

@@ -19,6 +19,7 @@
  */
 package org.jajuk.util;
 
+import java.awt.Component;
 import java.awt.Cursor;
 import java.io.BufferedReader;
 import java.io.File;
@@ -42,15 +43,21 @@ import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.Line;
 import javax.sound.sampled.Mixer;
 import javax.swing.ImageIcon;
+import javax.swing.JDesktopPane;
 import javax.swing.SwingUtilities;
 
 import org.jajuk.Main;
 import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.i18n.Messages;
+import org.jajuk.ui.CommandJPanel;
+import org.jajuk.ui.InformationJPanel;
+import org.jajuk.ui.JajukInternalFrame;
+import org.jajuk.ui.PerspectiveBarJPanel;
+import org.jajuk.ui.perspectives.IPerspective;
+import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
-import com.sun.SwingWorker;
 import com.sun.media.sound.MixerSourceLine;
 
 /**
@@ -68,32 +75,32 @@ public class Util implements ITechnicalStrings {
 	 * Genres
 	 */
 	public static final String [] genres = {
-		"Blues","Classic Rock","Country","Dance","Disco","Funk","Grunge", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
-		"Hip-Hop","Jazz","Metal","New Age","Oldies","Other","Pop","R&B", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
-		"Rap","Reggae","Rock","Techno","Industrial","Alternative","Ska", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
-		"Death Metal","Pranks","Soundtrack","Euro-Techno","Ambient", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-		"Trip-Hop","Vocal","Jazz+Funk","Fusion","Trance","Classical", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
-		"Instrumental","Acid","House","Game","Sound Clip","Gospel", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
-		"Noise","AlternRock","Bass","Soul","Punk","Space","Meditative", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
-		"Instrumental Pop","Instrumental Rock","Ethnic","Gothic", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-		"Darkwave","Techno-Industrial","Electronic","Pop-Folk", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-		"Eurodance","Dream","Southern Rock","Comedy","Cult","Gangsta", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
-		"Top 40","Christian Rap","Pop/Funk","Jungle","Native American", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-		"Cabaret","New Wave","Psychedelic","Rave","Showtunes","Trailer", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
-		"Lo-Fi","Tribal","Acid Punk","Acid Jazz","Polka","Retro", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
-		"Musical","Rock & Roll","Hard Rock","Folk","Folk-Rock", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-		"National Folk","Swing","Fast Fusion","Bebob","Latin","Revival", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
-		"Celtic","Bluegrass","Avantgarde","Gothic Rock", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-		"Progressive Rock","Psychedelic Rock","Symphonic Rock", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		"Slow Rock","Big Band","Chorus","Easy Listening","Acoustic", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-		"Humour","Speech","Chanson","Opera","Chamber Music","Sonata", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
-		"Symphony","Booty Brass","Primus","Porn Groove","Satire", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-		"Slow Jam","Club","Tango","Samba","Folklore","Ballad", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
-		"Power Ballad","Rhytmic Soul","Freestyle","Duet","Punk Rock", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-		"Drum Solo","Acapella","Euro-House","Dance Hall", "Goa","Drum & Bass","Club-House","Hardcore", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
-		"Terror","Indie","BritPop","Negerpunk","Polsk Punk","Beat","Christian Gangsta","Heavy Metal", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
-		"Black Metal","Crossover","Contemporary C","Christian Rock","Merengue","Salsa","Thrash Metal", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
-		"Anime","JPop","SynthPop"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			"Blues","Classic Rock","Country","Dance","Disco","Funk","Grunge", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+			"Hip-Hop","Jazz","Metal","New Age","Oldies","Other","Pop","R&B", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
+			"Rap","Reggae","Rock","Techno","Industrial","Alternative","Ska", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+			"Death Metal","Pranks","Soundtrack","Euro-Techno","Ambient", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+			"Trip-Hop","Vocal","Jazz+Funk","Fusion","Trance","Classical", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+			"Instrumental","Acid","House","Game","Sound Clip","Gospel", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+			"Noise","AlternRock","Bass","Soul","Punk","Space","Meditative", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+			"Instrumental Pop","Instrumental Rock","Ethnic","Gothic", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+			"Darkwave","Techno-Industrial","Electronic","Pop-Folk", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+			"Eurodance","Dream","Southern Rock","Comedy","Cult","Gangsta", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+			"Top 40","Christian Rap","Pop/Funk","Jungle","Native American", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+			"Cabaret","New Wave","Psychedelic","Rave","Showtunes","Trailer", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+			"Lo-Fi","Tribal","Acid Punk","Acid Jazz","Polka","Retro", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+			"Musical","Rock & Roll","Hard Rock","Folk","Folk-Rock", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+			"National Folk","Swing","Fast Fusion","Bebob","Latin","Revival", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+			"Celtic","Bluegrass","Avantgarde","Gothic Rock", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+			"Progressive Rock","Psychedelic Rock","Symphonic Rock", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			"Slow Rock","Big Band","Chorus","Easy Listening","Acoustic", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+			"Humour","Speech","Chanson","Opera","Chamber Music","Sonata", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+			"Symphony","Booty Brass","Primus","Porn Groove","Satire", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+			"Slow Jam","Club","Tango","Samba","Folklore","Ballad", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+			"Power Ballad","Rhytmic Soul","Freestyle","Duet","Punk Rock", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+			"Drum Solo","Acapella","Euro-House","Dance Hall", "Goa","Drum & Bass","Club-House","Hardcore", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
+			"Terror","Indie","BritPop","Negerpunk","Polsk Punk","Beat","Christian Gangsta","Heavy Metal", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
+			"Black Metal","Crossover","Contemporary C","Christian Rock","Merengue","Salsa","Thrash Metal", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+			"Anime","JPop","SynthPop"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	
 	/** Mute state*/
 	private static boolean bMute;
@@ -105,7 +112,7 @@ public class Util implements ITechnicalStrings {
 	 */
 	private Util() {
 	}
-
+	
 	/**
 	 * Get a file extension
 	 * 
@@ -121,7 +128,7 @@ public class Util implements ITechnicalStrings {
 		}
 		return sExt.toLowerCase();
 	}
-
+	
 	/**
 	 * Open a file and return a string buffer with the file content.
 	 * 
@@ -146,7 +153,7 @@ public class Util implements ITechnicalStrings {
 			throw te;
 		}
 		BufferedReader input = new BufferedReader(fileReader);
-
+		
 		// Read
 		StringBuffer strColl = new StringBuffer();
 		String line = null;
@@ -158,7 +165,7 @@ public class Util implements ITechnicalStrings {
 			JajukException te = new JajukException("009", path, e); //$NON-NLS-1$
 			throw te;
 		}
-
+		
 		// Close the bufferedReader
 		try {
 			input.close();
@@ -166,7 +173,7 @@ public class Util implements ITechnicalStrings {
 			JajukException te = new JajukException("009", path, e); //$NON-NLS-1$
 			throw te;
 		}
-
+		
 		return strColl;
 	}
 	
@@ -185,23 +192,23 @@ public class Util implements ITechnicalStrings {
 		StringBuffer sb = null;
 		try {
 			is = Main.class.getResourceAsStream(sURL);
-		// Read
-		byte[] b = new byte[200];
-		sb = new StringBuffer();
-		int i=0;
-		do {
-			i = is.read(b,0,b.length);
-			sb.append(new String(b));
-		}
-		while (i > 0);
-		// Close the bufferedReader
-		is.close();
+			// Read
+			byte[] b = new byte[200];
+			sb = new StringBuffer();
+			int i=0;
+			do {
+				i = is.read(b,0,b.length);
+				sb.append(new String(b));
+			}
+			while (i > 0);
+			// Close the bufferedReader
+			is.close();
 		} catch (IOException e) {
 			JajukException te = new JajukException("009", e); //$NON-NLS-1$
 			throw te;
 		}
 		return sb;
-	
+		
 	}
 	
 	
@@ -302,36 +309,65 @@ public class Util implements ITechnicalStrings {
 		return alOut;
 	}
 	
+	/** Waiting cursor thread, stored to avoid construction */
+	private static Thread tWaiting = new Thread(){
+		public void run(){
+			JDesktopPane jdesktop = null;
+			IPerspective perspective = PerspectiveManager.getCurrentPerspective();
+			if ( perspective != null){
+				jdesktop = perspective.getDesktop();
+				int numComp = jdesktop.getComponentCount();
+				Component comp = null;
+				for (int i = 0; i < numComp; i++) {
+					comp = jdesktop.getComponent(i);
+					if (comp instanceof JajukInternalFrame) {
+						((JajukInternalFrame)comp).setWaiting(true);
+					}
+				}
+				jdesktop.setCursor(WAIT_CURSOR);
+				CommandJPanel.getInstance().setCursor(WAIT_CURSOR);
+				InformationJPanel.getInstance().setCursor(WAIT_CURSOR);
+				PerspectiveBarJPanel.getInstance().setCursor(WAIT_CURSOR);
+			}
+		}
+	};
+	
+	/** Default cursor thread, stored to avoid construction */
+	private static Thread tDefault = new Thread(){
+		public void run(){
+			JDesktopPane jdesktop = null;
+			IPerspective perspective = PerspectiveManager.getCurrentPerspective();
+			if ( perspective != null){
+				jdesktop = perspective.getDesktop();
+				int numComp = jdesktop.getComponentCount();
+				Component comp = null;
+				for (int i = 0; i < numComp; i++) {
+					comp = jdesktop.getComponent(i);
+					if (comp instanceof JajukInternalFrame) {
+						((JajukInternalFrame)comp).setWaiting(false);
+					}
+				}
+				jdesktop.setCursor(DEFAULT_CURSOR);
+				CommandJPanel.getInstance().setCursor(DEFAULT_CURSOR);
+				InformationJPanel.getInstance().setCursor(DEFAULT_CURSOR);
+				PerspectiveBarJPanel.getInstance().setCursor(DEFAULT_CURSOR);
+			}
+		}
+	};
+	
+	
 	/**
 	 * Set current cursor as waiting cursor
 	 */
 	public static void waiting(){
-	System.out.println("waiting");	
-	SwingWorker sw = new SwingWorker() {
-		public Object construct() {
-			return null;
-		}
-		public void finished() {
-			SwingUtilities.invokeLater(new Runnable(){  //actually change cursor when last repaint in awt repaint thread fifo is done 
-				public void run(){
-					Main.jframe.setCursor(WAIT_CURSOR);
-				}
-			});
-		}
-	};
-	sw.start();
+		SwingUtilities.invokeLater(tWaiting);
 	}
-
+	
 	/**
 	 * Set current cursor as default cursor
 	 */
 	public static void stopWaiting(){
-	System.out.println("stop waiting");	
-		SwingUtilities.invokeLater(new Runnable(){  //actually change cursor when last repaint in awt repaint thread fifo is done 
-			public void run(){
-				Main.jframe.setCursor(DEFAULT_CURSOR);
-			}
-		});
+		SwingUtilities.invokeLater(tDefault);
 	}
 	
 	/**
@@ -359,10 +395,10 @@ public class Util implements ITechnicalStrings {
 		try{
 			File fileNew = new File(file.getAbsolutePath()+"~"); //$NON-NLS-1$
 			FileChannel fcSrc = new FileInputStream(file).getChannel();
-	        FileChannel fcDest = new FileOutputStream(fileNew).getChannel();
-	        fcDest.transferFrom(fcSrc, 0, fcSrc.size());
-	        fcSrc.close();
-	        fcDest.close();
+			FileChannel fcDest = new FileOutputStream(fileNew).getChannel();
+			fcDest.transferFrom(fcSrc, 0, fcSrc.size());
+			fcSrc.close();
+			fcDest.close();
 		}
 		catch(IOException ie){
 			Log.error(ie);
@@ -385,11 +421,11 @@ public class Util implements ITechnicalStrings {
 			throw new JajukException("024",file.getAbsolutePath(),null); //$NON-NLS-1$
 		}
 		FileChannel fcSrc = new FileInputStream(file).getChannel();
-        FileChannel fcDest = new FileOutputStream(fileNew).getChannel();
-        fcDest.transferFrom(fcSrc, 0, fcSrc.size());
-        fcSrc.close();
-        fcDest.close();
-    }
+		FileChannel fcDest = new FileOutputStream(fileNew).getChannel();
+		fcDest.transferFrom(fcSrc, 0, fcSrc.size());
+		fcSrc.close();
+		fcDest.close();
+	}
 	
 	
 	/**
@@ -415,7 +451,7 @@ public class Util implements ITechnicalStrings {
 			Log.error(e);
 		}
 	}
-
+	
 	/**
 	 * Set mute state
 	 * @param bMute
@@ -432,7 +468,7 @@ public class Util implements ITechnicalStrings {
 			Log.error(e);
 		}
 	}
-
+	
 	/**
 	 * Get current line. Wait until line appears ( with a time out ) 
 	 * @return waited audio line
@@ -465,8 +501,8 @@ public class Util implements ITechnicalStrings {
 		return line;
 	}
 	
-
-
+	
+	
 	/**
 	 * Get mute state
 	 * @return
@@ -484,33 +520,33 @@ public class Util implements ITechnicalStrings {
 	
 	
 	
-	 /**
+	/**
 	 * Return url of jar we are executing 
-     * @return URL of jar we are executing
-     */
-    public static URL getJarLocation (Class cClass)  {
-        return cClass.getProtectionDomain().getCodeSource().getLocation();
-     }
-    
-    /**
-     * Additional file checkusm used to prevent bug 886098. Simply return 10 bytes read at the middle of the file
-     * <p> uses nio api for performances
-     * @return
-     */
-    public static String getFileChecksum(File fio ){
-    	String sOut = ""; //$NON-NLS-1$
-    	try{
-    		FileChannel fc = new FileInputStream(fio).getChannel();
-    		ByteBuffer bb = ByteBuffer.allocate(10);
-    		fc.read(bb,fio.length()/2);
-    		fc.close();
-    		sOut = new String(bb.array());
-    	}
-    	catch(Exception e){
-    		Log.error("000",fio.getAbsolutePath(),e);	 //$NON-NLS-1$
-    	}
-    	return sOut;
-    }
+	 * @return URL of jar we are executing
+	 */
+	public static URL getJarLocation (Class cClass)  {
+		return cClass.getProtectionDomain().getCodeSource().getLocation();
+	}
+	
+	/**
+	 * Additional file checkusm used to prevent bug 886098. Simply return 10 bytes read at the middle of the file
+	 * <p> uses nio api for performances
+	 * @return
+	 */
+	public static String getFileChecksum(File fio ){
+		String sOut = ""; //$NON-NLS-1$
+		try{
+			FileChannel fc = new FileInputStream(fio).getChannel();
+			ByteBuffer bb = ByteBuffer.allocate(10);
+			fc.read(bb,fio.length()/2);
+			fc.close();
+			sOut = new String(bb.array());
+		}
+		catch(Exception e){
+			Log.error("000",fio.getAbsolutePath(),e);	 //$NON-NLS-1$
+		}
+		return sOut;
+	}
 	
 
 }

@@ -157,27 +157,16 @@ public class FIFO implements ITechnicalStrings,Runnable{
 	 */
 	public synchronized void push(ArrayList alFiles, boolean bAppend,boolean bAuto,boolean bForcedRepeat) {
 		this.bForcedRepeat = bForcedRepeat;
-		if (!bAuto){
-			FIFO.getInstance().setBestof(false); //best of mode is broken by any push
-			FIFO.getInstance().setGlobalRandom(false); //global random mode is broken by any push
-			if (TRUE.equals(ConfigurationManager.getProperty(CONF_STATE_REPEAT)) || this.bForcedRepeat){  //repeat is on
-				alRepeated = alFiles;
-				iRepeatIndex = 0;
-			}
-		}
-		if (!bAppend) {
-			Player.stop();
-			bPlaying = false;
-			clear();
-			lTotalTime = 0;
-		}
+		//first try to mount needed devices
 		Iterator it = alFiles.iterator();
+		File file = null;
 		while (it.hasNext()){
-			File file = (File)it.next();
+			file = (File)it.next();
 			if (file == null){
+				it.remove();
 				break;
 			}
-			if ( !file.isReady()){
+			if ( file.getDirectory()!=null && !file.getDirectory().getDevice().isMounted()){  //file is null if it is a BasicFile
 				//not mounted, ok let them a chance to mount it:
 				String sMessage = Messages.getString("Error.025")+" ("+file.getDirectory().getDevice().getName()+Messages.getString("FIFO.4"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				int i = JOptionPane.showConfirmDialog(Main.jframe,sMessage,Messages.getString("Warning"),JOptionPane.OK_CANCEL_OPTION,JOptionPane.WARNING_MESSAGE); //$NON-NLS-1$
@@ -186,15 +175,43 @@ public class FIFO implements ITechnicalStrings,Runnable{
 						file.getDirectory().getDevice().mount();
 					}
 					catch(Exception e){
+						it.remove();
 						Log.error(e);
 						Messages.showErrorMessage("011",file.getDirectory().getDevice().getName()); //$NON-NLS-1$
 						break;
 					}
 				}
 				else{
+					it.remove();
 					break;
 				}
 			}
+		}
+		//test if we have yet some files to play
+		if ( alFiles.size() == 0){
+			return;
+		}
+		//set repeat and other env. 
+		if (!bAuto){
+			FIFO.getInstance().setBestof(false); //best of mode is broken by any push
+			FIFO.getInstance().setGlobalRandom(false); //global random mode is broken by any push
+			if (TRUE.equals(ConfigurationManager.getProperty(CONF_STATE_REPEAT)) || this.bForcedRepeat){  //repeat is on
+				alRepeated = alFiles;
+				iRepeatIndex = 0;
+			}
+		}
+		//ok, stop current track
+		
+		if (!bAppend) {
+			Player.stop();
+			bPlaying = false;
+			clear();
+			lTotalTime = 0;
+		}
+		//add required tracks
+		it = alFiles.iterator();
+		while (it.hasNext()){
+			file = (File)it.next();
 			if ( !bAuto){
 				file.getTrack().setRate(file.getTrack().getRate()+2); //inc rate by 2 because it is explicitely selected to be played by human
 				FileManager.setRateHasChanged(true); //alert bestof playlist something changed
@@ -306,7 +323,6 @@ public class FIFO implements ITechnicalStrings,Runnable{
 				if (bPlaying ){//already playing something
 					long length = fCurrent.getTrack().getLength();
 					if ( i%(REFRESH_TIME/SLEEP_TIME) == 0 && length!=0){  //actual refresh less frequent for cpu
-						ObservationManager.notify(EVENT_PLAYLIST_REFRESH); //alert editors ( queue playlist ) something changed
 						lTime = (System.currentTimeMillis() - lTrackStart) + lOffset - lPauseTime;
 						if ( bIntroEnabled){
 							lTime += (fCurrent.getTrack().getLength()*Integer.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_INTRO_BEGIN))*10);

@@ -50,19 +50,19 @@ import org.jajuk.util.Util;
  * @created 13 dec. 2003
  */
 public abstract class AbstractTableView extends ViewAdapter implements ActionListener,MouseListener{
-
+	
 	/** The logical table */
 	JajukTable jtable;
 	JPanel jpControl;
-		JLabel jlFilter;
-		JComboBox jcbProperty; 
-		JLabel jlEquals;
-		JTextField jtfValue;
-		JToolBar jtbControl;
-			JButton jbApplyFilter;
-			JButton jbClearFilter;
-			JButton jbAdvancedFilter;
-		
+	JLabel jlFilter;
+	JComboBox jcbProperty; 
+	JLabel jlEquals;
+	JTextField jtfValue;
+	JToolBar jtbControl;
+	JButton jbApplyFilter;
+	JButton jbClearFilter;
+	JButton jbAdvancedFilter;
+	
 	/**Table model*/
 	TracksTableModel model;
 	
@@ -87,7 +87,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 		int iXspace = 5;
 		double sizeControl[][] =
 			{{0.15,iXspace,0.4,iXspace,10,iXspace,0.4,2*iXspace,85},
-			{22}};
+				{22}};
 		jpControl.setLayout(new TableLayout(sizeControl));
 		jlFilter = new JLabel(Messages.getString("AbstractTableView.0")); //$NON-NLS-1$
 		//properties combo box, fill with colums names
@@ -141,8 +141,8 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 		
 		//add 
 		double size[][] =
-		{{0.99},
-		{30,0.99}};
+			{{0.99},
+				{30,0.99}};
 		setLayout(new TableLayout(size));
 		add(jpControl,"0,0"); //$NON-NLS-1$
 		jtable = new JajukTable(model);
@@ -153,23 +153,25 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 	
 	/**Fill the tree */
 	abstract public void populate();
-		
+	
 	/* (non-Javadoc)
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(final ActionEvent e) {
+		//not in a thread because it is always called inside a thread created from sub-classes
 		if ( e.getSource() == jbApplyFilter){
 			this.sAppliedFilter = jtfValue.getText();
 			this.sAppliedCriteria = jcbProperty.getSelectedItem().toString();
+			applyFilter(sAppliedCriteria,sAppliedFilter);
 		}
 		else if(e.getSource() == jbClearFilter){ //remove all filters
 			jtfValue.setText(""); //clear value textfield //$NON-NLS-1$
 			this.sAppliedFilter = null;
 			this.sAppliedCriteria = null;
+			applyFilter(sAppliedCriteria,sAppliedFilter);
 		}
-		applyFilter(sAppliedCriteria,sAppliedFilter);
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.IView#getViewName()
 	 */

@@ -156,7 +156,9 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 				device.mount();  
 			}
 			catch(Exception e){
-				Log.error(e);
+				Log.error("011",getName(),e);	//mount failed //$NON-NLS-1$
+				Messages.showErrorMessage("011",getName()); //$NON-NLS-1$
+				return;
 			}
 		}
 		if ( bAsynchronous){
@@ -220,7 +222,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 			//Start actual scan
 			while (iDeep >= 0) {
 				//Log.debug("entering :"+fCurrent);
-				File[] files = fCurrent.listFiles(JajukFileFilter.getInstance(true,false)); //only directories
+				File[] files = fCurrent.listFiles(new JajukFileFilter(true,false)); //only directories
 				if (files== null || files.length == 0 ){  //files is null if fCurrent is a not a directory 
 					indexTab[iDeep] = -1;//re-init for next time we will reach this deep
 					iDeep--; //come up
@@ -269,7 +271,9 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 				device.mount();  
 			}
 			catch(Exception e){
-				Log.error(e);
+				Log.error("011",getName(),e);	//mount failed //$NON-NLS-1$
+				Messages.showErrorMessage("011",getName()); //$NON-NLS-1$
+				return;
 			}
 		}
 		if ( bAsynchronous){
@@ -542,11 +546,8 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 			}
 		}
 		catch(Exception e){
-			Log.error("011",Integer.toString(iExit),e);	//mount failed //$NON-NLS-1$
-			Messages.showErrorMessage("011",getName()); //$NON-NLS-1$
-			return;
+			throw new JajukException("011",getName(),e); //$NON-NLS-1$
 		}
-		
 		bMounted = true;
 		//notify views to refresh
 		ObservationManager.notify(EVENT_DEVICE_MOUNT);
@@ -569,7 +570,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 		//look to see if the device is already mounted ( the unix 'mount' command cannot say that )
 		File file = new File(getMountPoint());
 		if (!bMounted || (file.list()!= null && file.list().length==0) ){
-			Messages.showErrorMessage("111"); //already unmounted //$NON-NLS-1$
+			Messages.showErrorMessage("125"); //already unmounted //$NON-NLS-1$
 			return;
 		}
 		if (!FIFO.canUnmount(this)){ //ask fifo if it doens't use any track from this device

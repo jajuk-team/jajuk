@@ -34,11 +34,23 @@ public class JajukFileChooser extends JFileChooser {
 
 	javax.swing.filechooser.FileFilter filter;
 
-	public JajukFileChooser() {
-		setDialogTitle(Messages.getString("JajukFileChooser.0")); //$NON-NLS-1$
-		setFileFilter( JajukFileFilter.getInstance());
+	/**
+	 * Constructor with specified file filter
+	 * @param jfilter filter to use
+	 */
+	public JajukFileChooser(JajukFileFilter jfilter) {
+		setDialogTitle(Messages.getString("JajukFileChooser.0"));//default title  //$NON-NLS-1$
+		this.filter = jfilter;
+		setFileFilter(jfilter);
 		setMultiSelectionEnabled(true);
-
 	}
 
+	/**
+	 * Default constructor
+	 *
+	 */
+	public JajukFileChooser() {
+		this(new JajukFileFilter());
+	}
+	
 }

@@ -27,6 +27,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
 import org.jajuk.base.FIFO;
+import org.jajuk.base.File;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.i18n.Messages;
@@ -34,8 +35,6 @@ import org.jajuk.ui.ObservationManager;
 import org.jajuk.ui.Observer;
 import org.jajuk.ui.TracksTableModel;
 import org.jajuk.util.Util;
-
-import com.sun.TableMap;
 
 /**
  * Logical table view
@@ -133,16 +132,17 @@ public class LogicalTableView extends AbstractTableView implements Observer{
 		}
 		int iSize = alToShow.size();
 		it = alToShow.iterator();
-		Object[][] oValues = new Object[iSize][iColNum];
+		Object[][] oValues = new Object[iSize][iColNum+1];
 		//Track | Album | Author | Length | Style | Rate	
 		for (int i = 0;it.hasNext();i++){
 			Track track = (Track)it.next(); 
 			oValues[i][0] = track.getName();
 			oValues[i][1] = track.getAlbum().getName2();
 			oValues[i][2] = track.getAuthor().getName2();
-			oValues[i][3] = Long.toString(track.getLength());
+			oValues[i][3] = new Long(track.getLength());
 			oValues[i][4] = track.getStyle().getName2();
-			oValues[i][5] = Long.toString(track.getRate());
+			oValues[i][5] = new Long(track.getRate());
+			oValues[i][6] = track.getId();
 		}
 		//edtiable table  and class 
 		boolean[][] bCellEditable = new boolean[8][iSize];
@@ -153,7 +153,7 @@ public class LogicalTableView extends AbstractTableView implements Observer{
 		}
 		//model creation
 		model = new TracksTableModel(iColNum,bCellEditable,sColName);
-		model.setValues(oValues,alToShow);
+		model.setValues(oValues);
 	}
 	
 	/* (non-Javadoc)
@@ -190,17 +190,21 @@ public class LogicalTableView extends AbstractTableView implements Observer{
 	 */
 	public void mousePressed(MouseEvent e) {
 		if ( e.getClickCount() == 2){ //double clic, can be only one track
-			TracksTableModel ttm = (TracksTableModel)(((TableMap)jtable.getModel()).getModel());
-			ArrayList al = ttm.getValues();
-			Track track = (Track)al.get(jtable.getSelectedRow());
-			FIFO.getInstance().push(track.getPlayeableFile(),false);//launch it
+			Track track = TrackManager.getTrack(jtable.getSortingModel().getValueAt(jtable.getSelectedRow(),jtable.getColumnCount()).toString());
+			File file = track.getPlayeableFile();
+			if ( file != null){
+				FIFO.getInstance().push(file,false);//launch it	
+			}
+			else{
+				Messages.showErrorMessage("010",track.getName()); //$NON-NLS-1$
+			}
 		}		
 		else if ( jtable.getSelectedRowCount() > 0 && e.getClickCount() == 1 && e.getButton()==MouseEvent.BUTTON3){  //right clic on a selected node set
 			if ( jtable.getSelectedRowCount() > 1){
 				jmiTrackProperties.setEnabled(false); //can read a property from one sole track
 			}
 			else{
-				jmiTrackProperties.setEnabled(true);
+				jmiTrackProperties.setEnabled(false); //TBI set to true when managing properties
 			}
 			jmenuTrack.show(jtable,e.getX(),e.getY());
 		}
@@ -216,34 +220,47 @@ public class LogicalTableView extends AbstractTableView implements Observer{
 	/* (non-Javadoc)
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
-	public void actionPerformed(ActionEvent e) {
-		//let super class to test common ( physical/logical ) events 
-		super.actionPerformed(e);
-		//then specifics
-		//computes selected tracks
-		ArrayList alFilesToPlay = new ArrayList(10);
-		int[] indexes = jtable.getSelectedRows();
-		TracksTableModel ttm = (TracksTableModel)(((TableMap)jtable.getModel()).getModel());
-		ArrayList al = ttm.getValues();
-		for (int i=0;i<indexes.length;i++){
-			alFilesToPlay.add(((Track)al.get(indexes[i])).getPlayeableFile());
-		}
-		//simple play
-		if ( e.getSource() == jmiTrackPlay){
-			FIFO.getInstance().push(alFilesToPlay,false);
-		}
-		//push
-		else if ( e.getSource() == jmiTrackPush){
-			FIFO.getInstance().push(alFilesToPlay,true);
-		}
-		//shuffle play
-		else if ( e.getSource() == jmiTrackPlayShuffle){
-			FIFO.getInstance().push(Util.randomize(alFilesToPlay),false);
-		}
-		//repeat play
-		else if ( e.getSource() == jmiTrackPlayRepeat){
-			FIFO.getInstance().push(alFilesToPlay,false,false,true);
-		}
+	public void actionPerformed(final ActionEvent e) {
+		new Thread(){
+			public void run(){
+				//let super class to test common ( physical/logical ) events 
+				if ( e.getSource() == jbApplyFilter || e.getSource() == jbClearFilter){
+					LogicalTableView.super.actionPerformed(e);
+					return;
+				}
+				//then specifics
+				//computes selected tracks
+				ArrayList alFilesToPlay = new ArrayList(10);
+				int[] indexes = jtable.getSelectedRows();
+				for (int i=0;i<indexes.length;i++){
+					Track track = TrackManager.getTrack(jtable.getSortingModel().getValueAt(indexes[i],jtable.getColumnCount()).toString());
+					File file = track.getPlayeableFile();
+					if ( file != null){
+						alFilesToPlay.add(file);
+					}
+				}
+				if ( alFilesToPlay.size() == 0){
+					Messages.showErrorMessage("010"); //$NON-NLS-1$
+					return;
+				}
+				//simple play
+				if ( e.getSource() == jmiTrackPlay){
+					FIFO.getInstance().push(alFilesToPlay,false);
+				}
+				//push
+				else if ( e.getSource() == jmiTrackPush){
+					FIFO.getInstance().push(alFilesToPlay,true);
+				}
+				//shuffle play
+				else if ( e.getSource() == jmiTrackPlayShuffle){
+					FIFO.getInstance().push(Util.randomize(alFilesToPlay),false);
+				}
+				//repeat play
+				else if ( e.getSource() == jmiTrackPlayRepeat){
+					FIFO.getInstance().push(alFilesToPlay,false,false,true);
+				}
+			}
+		}.start();
 	}
 	
 	
@@ -264,7 +281,7 @@ public class LogicalTableView extends AbstractTableView implements Observer{
 		int iSize = alToShow.size();
 		int iColNum = 6 ;
 		it = alToShow.iterator();
-		Object[][] oValues = new Object[iSize][iColNum];
+		Object[][] oValues = new Object[iSize][iColNum+1];
 		//Track | Album | Author | Length | Style | Rate	
 		int i=0;
 		while (it.hasNext()){
@@ -283,12 +300,13 @@ public class LogicalTableView extends AbstractTableView implements Observer{
 			oValues[i][0] = track.getName();
 			oValues[i][1] = track.getAlbum().getName2();
 			oValues[i][2] = track.getAuthor().getName2();
-			oValues[i][3] = Long.toString(track.getLength());
+			oValues[i][3] = new Long(track.getLength());
 			oValues[i][4] = track.getStyle().getName2();
-			oValues[i][5] = Long.toString(track.getRate());
+			oValues[i][5] = new Long(track.getRate());
+			oValues[i][6] = track.getId();
 			i++;
 		}
-		model.setValues(oValues,alToShow);
+		model.setValues(oValues);
 		model.fireTableDataChanged();
 	}
 	

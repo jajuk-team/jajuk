@@ -26,10 +26,9 @@ import javax.swing.JDesktopPane;
 
 import org.jajuk.Main;
 import org.jajuk.base.ITechnicalStrings;
-import org.jajuk.ui.IPerspective;
-import org.jajuk.ui.IView;
-import org.jajuk.ui.ViewManager;
 import org.jajuk.ui.views.CoverView;
+import org.jajuk.ui.views.IView;
+import org.jajuk.ui.views.ViewManager;
 import org.jajuk.util.ConfigurationManager;
 
 /**

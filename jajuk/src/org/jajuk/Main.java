@@ -51,8 +51,8 @@ import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.JajukJMenuBar;
 import org.jajuk.ui.LNFManager;
 import org.jajuk.ui.PerspectiveBarJPanel;
-import org.jajuk.ui.PerspectiveManager;
 import org.jajuk.ui.SplashScreen;
+import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
@@ -81,11 +81,7 @@ public class Main implements ITechnicalStrings {
 			jframe.setIconImage(Util.getIcon(ICON_LOGO).getImage());
 			
 			//Launch splashscreen
-			new Thread(){
-				public void run(){
-					sc = new SplashScreen(jframe);	
-				}
-			}.start();
+			sc = new SplashScreen(jframe);	
 			
 			//Register locals
 			Messages.registerLocal("en","Language_desc_en"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -119,7 +115,7 @@ public class Main implements ITechnicalStrings {
 			LNFManager.register(LNF_WINDOWS,LNF_WINDOWS_CLASS);
 			LNFManager.register(LNF_KUNSTSTOFF,LNF_KUNSTSTOFF_CLASS);
 			LNFManager.register(LNF_LIQUID,LNF_LIQUID_CLASS);
-			
+								
 			//perform initial checkups
 			initialCheckups();
 			
@@ -135,11 +131,14 @@ public class Main implements ITechnicalStrings {
 			//Load user configuration
 			org.jajuk.util.ConfigurationManager.load();
 			
-			//Set actual log verbosity
-			Log.setVerbosity(Integer.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_LOG_LEVEL)));
-			
 			//Set look and feel
 			LNFManager.setLookAndFeel(ConfigurationManager.getProperty(CONF_OPTIONS_LNF));
+		
+			//check for another session
+			checkOtherSession();
+			
+			//Set actual log verbosity
+			Log.setVerbosity(Integer.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_LOG_LEVEL)));
 			
 			//Set local
 			Messages.setLocal(ConfigurationManager.getProperty(CONF_OPTIONS_LANGUAGE));
@@ -170,8 +169,7 @@ public class Main implements ITechnicalStrings {
 			});
 			// Create the information bar panel
 			information = InformationJPanel.getInstance();
-			
-			
+					
 			//Main panel
 			jpDesktop = new JPanel();
 			jpDesktop.setOpaque(true);
@@ -239,29 +237,6 @@ public class Main implements ITechnicalStrings {
 	 * @throws Exception
 	 */
 	private static void initialCheckups() throws Exception {
-		try {
-			//check for a concurrent jajuk session
-			Socket socket = new Socket("127.0.0.1", 62321);  //try to connect to an existing socket server //$NON-NLS-1$
-			ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
-			oos.writeObject(""); //$NON-NLS-1$
-			//	No error? jajuk already started
-			sc.dispose();
-			Log.error(new JajukException("124")); //$NON-NLS-1$
-			Messages.showErrorMessage("124");	 //$NON-NLS-1$
-			System.exit(-1);
-			
-		} catch (IOException e) { //error? looks like Jajuk is not started, lets start the listener 
-			new Thread(){
-				public void run(){
-					try{
-						ServerSocket ss = new ServerSocket(62321);
-						ss.accept();
-					}
-					catch(Exception e){
-					}
-				}
-			}.start();
-		}
 		//check for configuration file presence
 		File fConfig = new File(FILE_CONFIGURATION);
 		if (!fConfig.exists()) { //if config file doesn't exit, create it with default values
@@ -293,6 +268,36 @@ public class Main implements ITechnicalStrings {
 		File fHistory = new File(FILE_HISTORY);
 		if (!fHistory.exists()) { //if history file doesn't exit, create it empty
 			History.commit();
+		}
+	}
+	
+	/**
+	 * check if another session is already started 
+	 *
+	 */
+	private static void checkOtherSession(){
+		try {
+			//check for a concurrent jajuk session
+			Socket socket = new Socket("127.0.0.1", 62321);  //try to connect to an existing socket server //$NON-NLS-1$
+			ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+			oos.writeObject(""); //$NON-NLS-1$
+			//	No error? jajuk already started
+			sc.dispose();
+			Log.error(new JajukException("124")); //$NON-NLS-1$
+			Messages.showErrorMessage("124");	 //$NON-NLS-1$
+			System.exit(-1);
+			
+		} catch (IOException e) { //error? looks like Jajuk is not started, lets start the listener 
+			new Thread(){
+				public void run(){
+					try{
+						ServerSocket ss = new ServerSocket(62321);
+						ss.accept();
+					}
+					catch(Exception e){
+					}
+				}
+			}.start();
 		}
 	}
 	
@@ -367,6 +372,7 @@ public class Main implements ITechnicalStrings {
 				catch(Exception e){
 					Log.error("112",device.getName(),e); //$NON-NLS-1$
 					Messages.showErrorMessage("112",device.getName()); //$NON-NLS-1$
+					continue;
 				}
 			}
 			if (TRUE.equals(device.getProperty(DEVICE_OPTION_AUTO_REFRESH))){

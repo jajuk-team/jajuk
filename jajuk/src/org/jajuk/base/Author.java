@@ -20,6 +20,8 @@
 package org.jajuk.base;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.Util;
@@ -36,7 +38,7 @@ public class Author extends PropertyAdapter implements Comparable{
 	private String sId;
 	/**Author name */
 	private String sName;
-	/**Albums for this album*/
+	/**Albums for this author*/
 	private ArrayList alAlbums = new ArrayList(10);
 	
 	/**
@@ -140,4 +142,20 @@ public class Author extends PropertyAdapter implements Comparable{
 		return  getName2().compareToIgnoreCase(otherAuthor.getName2());
 	}
 	
+	/**
+	 * return tracks associated with this item
+	 * @return tracks associated with this item
+	 */
+	public ArrayList getTracks() {
+		ArrayList alTracks = new ArrayList(100);
+		Iterator it = TrackManager.getTracks().iterator();
+		while ( it.hasNext()){
+			Track track = (Track)it.next();
+			if ( track != null && track.getAuthor().equals(this)){
+				alTracks.add(track);
+			}
+		}
+		Collections.sort(alTracks);
+		return alTracks;
+	}
 }

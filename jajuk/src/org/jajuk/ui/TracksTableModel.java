@@ -20,8 +20,6 @@
 
 package org.jajuk.ui;
 
-import java.util.ArrayList;
-
 import javax.swing.table.AbstractTableModel;
 
 /**
@@ -33,7 +31,7 @@ import javax.swing.table.AbstractTableModel;
 public class TracksTableModel extends AbstractTableModel{
 	
 	/**Columns number*/
-	protected int iColNum = 9;
+	protected int iColNum;
 	
 	/**Rows number*/
 	protected int iRowNum;
@@ -47,9 +45,6 @@ public class TracksTableModel extends AbstractTableModel{
 	/**Columns names table**/
 	protected String[] sColName;
 	
-	/**Contains files or tracks displayed in the model*/ 
-	 ArrayList alValues  = new ArrayList(1000);
-
 	/**
 	 * Model constructor
 	 * @param iColNum number of rows
@@ -75,7 +70,13 @@ public class TracksTableModel extends AbstractTableModel{
 	}
 	
 	public synchronized Class getColumnClass(int columnIndex) {
-		return getValueAt(0,columnIndex).getClass();
+		Object o = getValueAt(0,columnIndex);
+		if ( o != null){
+			return o.getClass();
+		}
+		else{
+			return null;
+		}
 	}
 	
 	public synchronized Object getValueAt(int rowIndex, int columnIndex) {
@@ -89,22 +90,15 @@ public class TracksTableModel extends AbstractTableModel{
 	/**
 	 * Set all values used by this model
 	 * @param oValues : cells values
-	 * @param al : files / tracks arraylist
 	 */
-	public synchronized void setValues(Object[][] oValues,ArrayList al) {
+	public synchronized void setValues(Object[][] oValues) {
 		this.oValues = oValues;
-		this.alValues = al;
-		this.iRowNum = al.size();
+		this.iRowNum = oValues.length;
 	}
 	
 	public String getColumnName(int columnIndex) {
 		return sColName[columnIndex];
 	}
-	/**
-	 * @return Returns the alValues.
-	 */
-	public ArrayList getValues() {
-		return alValues;
-	}
+	
 
 }

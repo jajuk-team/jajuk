@@ -222,13 +222,25 @@ public class File extends PropertyAdapter implements Comparable{
 		return  getAbsolutePath().compareToIgnoreCase(otherFile.getAbsolutePath());
 	}
 	
-	/**Return true the file can be accessed right now 
+	/**Return true if the file can be accessed right now 
 	 * @return true the file can be accessed right now*/
 	public boolean isReady(){
 		if ( getDirectory() == null){ //means it is a basic file
 			return true;
 		}
 		if ( getDirectory().getDevice().isMounted() && !getDirectory().getDevice().isRefreshing() && !getDirectory().getDevice().isSynchronizing()){
+			return true;
+		}
+		return false;
+	}
+	
+	/**Return true if the file is currently refreshed or synchronized 
+	 * @return true if the file is currently refreshed or synchronized*/
+	public boolean isScanned(){
+		if ( getDirectory() == null){ //means it is a basic file
+			return false;
+		}
+		if ( getDirectory().getDevice().isRefreshing() || getDirectory().getDevice().isSynchronizing()){
 			return true;
 		}
 		return false;

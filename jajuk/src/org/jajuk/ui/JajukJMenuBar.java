@@ -32,6 +32,9 @@ import javax.swing.KeyStroke;
 
 import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.i18n.Messages;
+import org.jajuk.ui.perspectives.PerspectiveManager;
+import org.jajuk.ui.views.IView;
+import org.jajuk.ui.views.ViewManager;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Util;
 ;

@@ -28,6 +28,7 @@ import javax.help.HelpSet;
 import javax.help.JHelp;
 import javax.swing.BoxLayout;
 
+import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.log.Log;
 
@@ -89,7 +90,7 @@ public class HelpView extends ViewAdapter{
 	 * @see org.jajuk.ui.IView#getDesc()
 	 */
 	public String getDesc() {
-		return "Help view";	 //$NON-NLS-1$
+		return Messages.getString("HelpView.2");	  //$NON-NLS-1$
 	}
 
 	/* (non-Javadoc)

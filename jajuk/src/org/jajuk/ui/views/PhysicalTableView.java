@@ -36,8 +36,6 @@ import org.jajuk.ui.Observer;
 import org.jajuk.ui.TracksTableModel;
 import org.jajuk.util.Util;
 
-import com.sun.TableMap;
-
 /**
  * Logical table view
  * 
@@ -45,17 +43,17 @@ import com.sun.TableMap;
  * @created 13 dec. 2003
  */
 public class PhysicalTableView extends AbstractTableView implements Observer, MouseListener{
-
+	
 	/** Self instance */
 	private static PhysicalTableView ltv;
 	
 	JPopupMenu jmenuFile;
-		JMenuItem jmiFilePlay;
-		JMenuItem jmiFilePush;
-		JMenuItem jmiFilePlayShuffle;
-		JMenuItem jmiFilePlayRepeat;
-		JMenuItem jmiFileSetProperty;
-		JMenuItem jmiFileProperties;
+	JMenuItem jmiFilePlay;
+	JMenuItem jmiFilePush;
+	JMenuItem jmiFilePlayShuffle;
+	JMenuItem jmiFilePlayRepeat;
+	JMenuItem jmiFileSetProperty;
+	JMenuItem jmiFileProperties;
 	
 	/*
 	 * (non-Javadoc)
@@ -66,7 +64,7 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
 		return Messages.getString("PhysicalTableView.0"); //$NON-NLS-1$
 	}
 	
-
+	
 	/** Return singleton */
 	public static synchronized PhysicalTableView getInstance() {
 		if (ltv == null) {
@@ -74,7 +72,7 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
 		}
 		return ltv;
 	}
-
+	
 	/** Constructor */
 	public PhysicalTableView(){
 		super();
@@ -133,7 +131,7 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
 		int iSize = alToShow.size();
 		int iColNum = 8;
 		it = alToShow.iterator();
-		Object[][] oValues = new Object[iSize][iColNum];
+		Object[][] oValues = new Object[iSize][iColNum+1];
 		//Track | Album | Author |  Length | Style | Device | File name | Rate
 		for (int i = 0;it.hasNext();i++){
 			File file = (File)it.next(); 
@@ -145,6 +143,7 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
 			oValues[i][5] = file.getDirectory().getDevice().getName();
 			oValues[i][6] = file.getName();
 			oValues[i][7] = new Long(file.getTrack().getRate());
+			oValues[i][8] = file.getId();
 		}
 		//edtiable table  and class 
 		boolean[][] bCellEditable = new boolean[iColNum][iSize];
@@ -155,7 +154,7 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
 		}
 		//model creation
 		model = new TracksTableModel(iColNum,bCellEditable,sColName);
-		model.setValues(oValues,alToShow);
+		model.setValues(oValues);
 	}
 	
 	/* (non-Javadoc)
@@ -164,51 +163,54 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
 	public String getViewName() {
 		return "org.jajuk.ui.views.PhysicalTableView"; //$NON-NLS-1$
 	}
-
-
+	
+	
 	/* (non-Javadoc)
 	 * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
 	 */
 	public void mouseClicked(MouseEvent e) {
 	}
-
-
+	
+	
 	/* (non-Javadoc)
 	 * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
 	 */
 	public void mouseEntered(MouseEvent e) {
 	}
-
-
+	
+	
 	/* (non-Javadoc)
 	 * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
 	 */
 	public void mouseExited(MouseEvent e) {
 	}
-
-
+	
+	
 	/* (non-Javadoc)
 	 * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
 	 */
 	public void mousePressed(MouseEvent e) {
 		if ( e.getClickCount() == 2){ //double clic, can be only one file
-			TracksTableModel ttm = (TracksTableModel)(((TableMap)jtable.getModel()).getModel());
-			ArrayList al = ttm.getValues();
-			File file = (File)al.get(jtable.getSelectedRow());
-			FIFO.getInstance().push(file,false);//launch it
+			File file = FileManager.getFile(jtable.getSortingModel().getValueAt(jtable.getSelectedRow(),jtable.getColumnCount()).toString());
+			if (!file.isScanned()){
+				FIFO.getInstance().push(file,false);//launch it
+			}
+			else{
+				Messages.showErrorMessage("120",file.getDirectory().getDevice().getName()); //$NON-NLS-1$
+			}
 		}		
 		else if ( jtable.getSelectedRowCount() > 0 && e.getClickCount() == 1 && e.getButton()==MouseEvent.BUTTON3){  //right clic on a selected node set
 			if ( jtable.getSelectedRowCount() > 1){
 				jmiFileProperties.setEnabled(false); //can read a property from one sole file
 			}
 			else{
-				jmiFileProperties.setEnabled(true);
+				jmiFileProperties.setEnabled(false); //TBI set to true when managing properties
 			}
 			jmenuFile.show(jtable,e.getX(),e.getY());
 		}
 	}
-
-
+	
+	
 	/* (non-Javadoc)
 	 * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
 	 */
@@ -219,37 +221,49 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
 	/* (non-Javadoc)
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
-	public void actionPerformed(ActionEvent e) {
-		//let super class to test common ( physical/logical ) events 
-		super.actionPerformed(e);
-		//then specifics
-		//computes selected files
-		ArrayList alFilesToPlay = new ArrayList(10);
-		int[] indexes = jtable.getSelectedRows();
-		TracksTableModel ttm = (TracksTableModel)(((TableMap)jtable.getModel()).getModel());
-		ArrayList al = ttm.getValues();
-		for (int i=0;i<indexes.length;i++){
-			alFilesToPlay.add((File)al.get(indexes[i]));
-		}
-		//simple play
-		if ( e.getSource() == jmiFilePlay){
-			FIFO.getInstance().push(alFilesToPlay,false);
-		}
-		//push
-		else if ( e.getSource() == jmiFilePush){
-			FIFO.getInstance().push(alFilesToPlay,true);
-		}
-		//shuffle play
-		else if ( e.getSource() == jmiFilePlayShuffle){
-			FIFO.getInstance().push(Util.randomize(alFilesToPlay),false);
-		}
-		//repeat play
-		else if ( e.getSource() == jmiFilePlayRepeat){
-			FIFO.getInstance().push(alFilesToPlay,false,false,true);
-		}
+	public void actionPerformed(final ActionEvent e) {
+		new Thread(){
+			public void run(){
+				//let super class to test common ( physical/logical ) events 
+				if ( e.getSource() == jbApplyFilter || e.getSource() == jbClearFilter){
+					PhysicalTableView.super.actionPerformed(e);
+					return;
+				}
+				//then specifics
+				//computes selected files
+				ArrayList alFilesToPlay = new ArrayList(10);
+				int[] indexes = jtable.getSelectedRows();
+				for (int i=0;i<indexes.length;i++){
+					File file = FileManager.getFile(jtable.getSortingModel().getValueAt(indexes[i],jtable.getColumnCount()).toString());
+					if (!file.isScanned()){
+						alFilesToPlay.add(file);
+					}
+					else{
+						Messages.showErrorMessage("120",file.getDirectory().getDevice().getName()); //$NON-NLS-1$
+						return;  //stop here to avoid error messages 
+					}
+				}
+				//simple play
+				if ( e.getSource() == jmiFilePlay){
+					FIFO.getInstance().push(alFilesToPlay,false);
+				}
+				//push
+				else if ( e.getSource() == jmiFilePush){
+					FIFO.getInstance().push(alFilesToPlay,true);
+				}
+				//shuffle play
+				else if ( e.getSource() == jmiFilePlayShuffle){
+					FIFO.getInstance().push(Util.randomize(alFilesToPlay),false);
+				}
+				//repeat play
+				else if ( e.getSource() == jmiFilePlayRepeat){
+					FIFO.getInstance().push(alFilesToPlay,false,false,true);
+				}
+			}
+		}.start();
 	}
-
-
+	
+	
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.views.AbstractTableView#applyFilter()
 	 */
@@ -267,7 +281,7 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
 		int iSize = alFiles.size();
 		int iColNum = 8;
 		it = alToShow.iterator();
-		Object[][] oValues = new Object[iSize][iColNum];
+		Object[][] oValues = new Object[iSize][iColNum+1];
 		//Track | Album | Author |  Length | Style | Device | File name | Rate
 		int i=0;
 		while (it.hasNext()){
@@ -294,9 +308,10 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
 			oValues[i][5] = file.getDirectory().getDevice().getName();
 			oValues[i][6] = file.getName();
 			oValues[i][7] = new Long(file.getTrack().getRate());
+			oValues[i][8] = file.getId();
 			i++;
 		}
-		model.setValues(oValues,alToShow);
+		model.setValues(oValues);
 		model.fireTableDataChanged();
 	}
 	

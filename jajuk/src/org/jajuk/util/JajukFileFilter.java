@@ -24,6 +24,7 @@ import java.io.File;
 
 import javax.swing.filechooser.FileFilter;
 
+import org.jajuk.base.Type;
 import org.jajuk.base.TypeManager;
 
 /**
@@ -34,46 +35,84 @@ import org.jajuk.base.TypeManager;
  */
 /**
  *  Music oriented file filter ( mp3, ogg.. )
- * <p> Singleton
  *
  * @author     bflorat
  * @created    22 oct. 2003
  */
 public class JajukFileFilter extends FileFilter implements java.io.FileFilter{
-	/**Self instance*/
-	private static JajukFileFilter jff;
 	/**Display directories flag**/
-	private static boolean bDirectories = true;
+	private boolean bDirectories = true;
 	/**Display files flag**/
-	private static boolean bFiles = true;
-
-	public static synchronized JajukFileFilter getInstance(boolean bDirectories,boolean bFiles){
-		JajukFileFilter.bDirectories = bDirectories; 
-		JajukFileFilter.bFiles = bFiles; 
-		if (jff == null){
-			jff = new JajukFileFilter(); 
-		}
-		return jff;
+	private boolean bFiles = true;
+	/**Accepted types**/
+	private Type[] types;
+	
+	/**
+	 * Constructor
+	 * @param bDirectories can we show directories
+	 * @param bFiles can we show files
+	 * @param types which type do we show
+	 */	
+	public JajukFileFilter(boolean bDirectories,Type[] types){
+		this.bDirectories = bDirectories; 
+		this.types = types;
 	}
-	
-	public static synchronized JajukFileFilter getInstance(){
-			return getInstance(true,true);
-		}
-	
-	private JajukFileFilter(){
+
+	/**
+	 * Constructor, no type specified
+	 * @param bDirectories
+	 * @param bFiles
+	 */
+	public  JajukFileFilter(boolean bDirectories,boolean bFiles){
+		this.bDirectories = bDirectories;
+		this.bFiles = bFiles;
+	}
+
+	/**
+	 * Default Constructor, true for files, true for directories
+	 *
+	 */
+	public JajukFileFilter(){
+		this(true,true);
 	}
 
 	/**Tells if a file is selected or not**/
 	public boolean accept(File f) {
-		if ((bFiles && TypeManager.isExtensionSupported(Util.getExtension(f)))
-			|| (bDirectories && f.isDirectory())) {
+		//directories case
+		if ( bDirectories && f.isDirectory()) {				
 			return true;
-		} else {
-			return false;
 		}
+		//file cases
+		if ( types != null){ //one or more types is specified
+			for (int i=0;i<types.length;i++){
+				if ( Util.getExtension(f).equals(types[i].getExtension())){
+					return true;
+				}
+			}
+		}
+		else{
+			if ((bFiles && TypeManager.isExtensionSupported(Util.getExtension(f)))){
+				return true;
+			}
+		}
+		return false;
 	}
+	
+	
 	public String getDescription() {
-		return TypeManager.getTypeListString();
+		String sOut = ""; //$NON-NLS-1$
+		if ( !bFiles ){ //only dirs
+			return sOut;
+		}
+		if ( types == null){ //if no type specified, we considere all Jajuk known files
+			sOut+=TypeManager.getTypeListString();
+		}
+		else{
+			for (int i=0;i<types.length;i++){
+				sOut+=types[i].getExtension()+',';
+			}
+			sOut = sOut.substring(0,sOut.length()-1);
+		}
+		return sOut;
 	}
-
 }

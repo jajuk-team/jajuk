@@ -17,16 +17,16 @@
         Which formats are supported?
       </question>
       <answer>
-        <p>Music files</p>
+        <p><u>Music files</u></p>
         <ul>
          <li>MP3</li>
          <li>Ogg Vorbis will be supported soon (see planning)</li>
         </ul>
-        <p>Playlist files</p>
+        <p><u>Playlist files</u></p>
         <ul>
          <li>M3u</li>
         </ul>
-        <p>Tags</p>
+        <p><u>Tags</u></p>
         <ul>
          <li>ID3 V1</li>
          <li>ID3 V2</li>
@@ -43,7 +43,7 @@
         How do I install Jajuk?
       </question>
       <answer>
-        <p>There is no packaging for the moment, perform a checkout from CVS</p>
+        <p>See <a href="installation.html">Jajuk installation guide</a></p>
       </answer>
     </faq>
   </part>  

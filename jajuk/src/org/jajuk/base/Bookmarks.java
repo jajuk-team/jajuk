@@ -21,6 +21,7 @@
 package org.jajuk.base;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.StringTokenizer;
 
 import org.jajuk.util.ConfigurationManager;
@@ -59,9 +60,24 @@ public class Bookmarks implements ITechnicalStrings {
 			String sId = stFiles.nextToken();
 			File file = FileManager.getFile(sId);
 			if ( file != null){
+				file.setProperty(OPTION_PLAYLIST_INDEX,Integer.toString(alFiles.size()));
 				alFiles.add(file);
 			}
 		}
+	}
+	
+	/**
+	 * Return bookmarks as a colon separeted list of file ids
+	 */
+	public String toString(){
+		Iterator it = alFiles.iterator();
+		StringBuffer sbOut = new StringBuffer();
+		while (it.hasNext()){
+			File file = (File)it.next();
+			sbOut.append(file.getId()).append(',');
+		}
+		int i = sbOut.length();
+		return sbOut.substring(0,i-1);//remove last ','
 	}
 	
 	/** Return bookmarked files*/
@@ -69,17 +85,78 @@ public class Bookmarks implements ITechnicalStrings {
 		return alFiles;	
 	}
 	
-	public void addFile(File file){
-		alFiles.add(file);
-		String sOut ;
-		String sBookmarks = ConfigurationManager.getProperty(CONF_BOOKMARKS);
-		if ( sBookmarks == null || "".equals(sBookmarks.trim())){ //$NON-NLS-1$
-			sOut = file.getId(); 
-		}
-		else{
-			sOut = new StringBuffer(sBookmarks).append(',').append(file.getId()).toString();
-		}
-		ConfigurationManager.setProperty(CONF_BOOKMARKS,sOut);
+	
+	/**
+	 * Clear bookmarks
+	 *
+	 */
+	public void clear(){
+		alFiles.clear();
+		ConfigurationManager.setProperty(CONF_BOOKMARKS,""); //$NON-NLS-1$
 	}
-		
+
+	/**
+	 * Down a track in the playlist
+	 * @param index
+	 */
+	public synchronized void down(int index){
+		if ( index < alFiles.size()-1){ //the last track cannot go depper
+			File file = (File)alFiles.get(index+1); //save n+1 file
+			alFiles.set(index+1,alFiles.get(index));
+			alFiles.set(index,file); //n+1 file becomes nth file
+			ConfigurationManager.setProperty(CONF_BOOKMARKS,toString());
+		}
+	}
+	
+	/**
+	 * Up a track in the playlist
+	 * @param index
+	 */
+	public synchronized void up(int index){
+		if ( index > 0){ //the first track cannot go further
+			File file = (File)alFiles.get(index-1); //save n-1 file
+			alFiles.set(index-1,alFiles.get(index));
+			alFiles.set(index,file); //n-1 file becomes nth file
+			ConfigurationManager.setProperty(CONF_BOOKMARKS,toString());
+		}
+	}
+
+	/**
+	 * Remove a track from the playlist
+	 * @param index
+	 */
+	public synchronized void remove(int index){
+		alFiles.remove(index);
+		ConfigurationManager.setProperty(CONF_BOOKMARKS,toString());
+	}
+	
+	/**
+	 * Add a track from the playlist
+	 * @param index
+	 */
+	public synchronized void addFile(int index,File file){
+		//get max index value for tracks
+		Iterator it = alFiles.iterator();
+		int iMax = -1;
+		while ( it.hasNext()){
+			File fileTest = (File)it.next();
+			int i = Integer.parseInt(fileTest.getProperty(OPTION_PLAYLIST_INDEX));
+			if ( i>iMax){
+				iMax = i;
+			}
+		}
+		file.setProperty(OPTION_PLAYLIST_INDEX,Integer.toString(iMax+1));
+		alFiles.add(index,file);
+		ConfigurationManager.setProperty(CONF_BOOKMARKS,toString());
+	}
+	
+	/**
+	 * Add a file to this playlist
+	 * @param file
+	 */
+	public void addFile(File file){
+		int index = alFiles.size();
+		addFile(index,file);
+	}
+	
 }

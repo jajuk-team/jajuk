@@ -30,9 +30,11 @@ import java.awt.dnd.DragSourceEvent;
 import java.awt.dnd.DragSourceListener;
 import java.awt.dnd.DropTarget;
 import java.awt.dnd.DropTargetDragEvent;
-import java.util.ArrayList;
 
 import javax.swing.JTable;
+
+import org.jajuk.base.FileManager;
+import org.jajuk.base.TrackManager;
 
 import com.sun.TableMap;
 
@@ -119,9 +121,14 @@ public class TableTransferHandler implements DragGestureListener, DragSourceList
 	/* Methods for DragGestureListener */
 	public final void dragGestureRecognized(DragGestureEvent dge) {
 		TracksTableModel ttm = (TracksTableModel)(((TableMap)jtable.getModel()).getModel());
-		ArrayList al = ttm.getValues();
-		Object o = al.get(jtable.getSelectedRow());
-		dragSource.startDrag(dge, DragSource.DefaultMoveNoDrop ,new TransferableTableRow(o), this);
+		//try to find a track for this id
+		Object o = TrackManager.getTrack(ttm.getValueAt(jtable.getSelectedRow(),jtable.getColumnCount()).toString());
+		if ( o  == null){ //no? try to find a file for this id
+			o = FileManager.getFile(ttm.getValueAt(jtable.getSelectedRow(),jtable.getColumnCount()).toString());
+		}
+		if ( o != null){
+			dragSource.startDrag(dge, DragSource.DefaultMoveNoDrop ,new TransferableTableRow(o), this);
+		}
 	}
 	
 	/* Methods for DropTargetListener */

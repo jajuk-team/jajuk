@@ -28,10 +28,16 @@ import javax.swing.JFileChooser;
 
 import org.jajuk.Main;
 import org.jajuk.base.BasicFile;
+import org.jajuk.base.BasicPlaylistFile;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.ITechnicalStrings;
+import org.jajuk.ui.perspectives.PerspectiveManager;
+import org.jajuk.ui.views.IView;
+import org.jajuk.ui.views.ViewManager;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Util;
+import org.jajuk.util.error.JajukException;
+import org.jajuk.util.log.Log;
 
 /**
  *  General UI listener for Jajuk widgets
@@ -59,6 +65,7 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
 	public void actionPerformed(final ActionEvent e) {
+		//no thread, nothing requires long execution time and a SwingWorker is not adapted
 		if (e.getActionCommand().equals(EVENT_EXIT)) {
 			Main.exit(0);
 		}
@@ -70,7 +77,18 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
 				FIFO.getInstance().clear(); //stop all currently played tracks
 				ArrayList alFiles = new ArrayList();
 				for (int i = 0; i < files.length; i++) {
-					alFiles.add(new BasicFile(files[i]));
+					if ( Util.getExtension(files[i]).equals(EXT_PLAYLIST)){ 
+						BasicPlaylistFile bplf = new BasicPlaylistFile(files[i]);
+						try{
+							alFiles.addAll(bplf.getBasicFiles());
+						}
+						catch(JajukException je){
+							Log.error(je);
+						}
+					}
+					else{
+						alFiles.add(new BasicFile(files[i]));	
+					}
 				}
 				FIFO.getInstance().push(alFiles, false);
 			}
@@ -145,5 +163,4 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
 			PerspectiveManager.setCurrentPerspective(PERSPECTIVE_NAME_HELP);		
 		}
 	}
-	
 }

@@ -22,17 +22,25 @@ package org.jajuk.ui.views;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 
-import javax.swing.JMenuItem;
+import javax.swing.JFileChooser;
 
 import org.jajuk.base.PlaylistFile;
 import org.jajuk.base.PlaylistFileManager;
+import org.jajuk.base.Type;
+import org.jajuk.base.TypeManager;
 import org.jajuk.i18n.Messages;
+import org.jajuk.ui.JajukFileChooser;
+import org.jajuk.ui.ObservationManager;
 import org.jajuk.ui.Observer;
 import org.jajuk.ui.PlaylistFileItem;
+import org.jajuk.util.JajukFileFilter;
+import org.jajuk.util.error.JajukException;
+import org.jajuk.util.log.Log;
 
 /**
  * Shows playlist files
@@ -45,9 +53,6 @@ public class PhysicalPlaylistRepositoryView extends AbstractPlaylistRepositoryVi
 	
 	/**Self instance*/
 	static PhysicalPlaylistRepositoryView ppr;
-	
-	/**Selected playlist file item */
-	private static PlaylistFileItem plfiSelected;
 	
 	/**Return self instance*/
 	public static synchronized PhysicalPlaylistRepositoryView getInstance(){
@@ -69,11 +74,6 @@ public class PhysicalPlaylistRepositoryView extends AbstractPlaylistRepositoryVi
 	public void display(){
 		//commons
 		super.display();
-		//specifics
-		jmiSaveAs = new JMenuItem(Messages.getString("PhysicalPlaylistRepositoryView.2"));  //$NON-NLS-1$
-		jmiSaveAs.addActionListener(this);
-		jpmenu.add(jmiSaveAs);
-		
 	}
 	
 	/* (non-Javadoc)
@@ -106,6 +106,7 @@ public class PhysicalPlaylistRepositoryView extends AbstractPlaylistRepositoryVi
 				continue;
 			}
 			PlaylistFileItem plfi = new PlaylistFileItem(PlaylistFileItem.PLAYLIST_TYPE_NORMAL,ICON_PLAYLIST_NORMAL,plf,plf.getName());
+			alPlaylistFileItems.add(plfi);
 			plfi.addMouseListener(ma);
 			plfi.setToolTipText(plf.getName());
 			jpRoot.add(plfi);
@@ -115,10 +116,37 @@ public class PhysicalPlaylistRepositoryView extends AbstractPlaylistRepositoryVi
 	/* (non-Javadoc)
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
-	public void actionPerformed(ActionEvent ae) {
-		super.actionPerformed(ae);
-		if(ae.getSource() == jmiSaveAs){
-			//TBI
-		}
+	public void actionPerformed(final ActionEvent ae) {
+		new Thread(){
+			public void run(){
+				PhysicalPlaylistRepositoryView.super.actionPerformed(ae);
+				if(ae.getSource() == jmiSaveAs){
+					JajukFileChooser jfchooser = new JajukFileChooser(new JajukFileFilter(true,new Type[]{TypeManager.getTypeByExtension(EXT_PLAYLIST)}));
+					int returnVal = jfchooser.showSaveDialog(PhysicalPlaylistRepositoryView.this);
+					if (returnVal == JFileChooser.APPROVE_OPTION) {
+						java.io.File file = jfchooser.getSelectedFile();
+						//add automaticaly the extension
+						file = new File(file.getAbsolutePath()+"."+EXT_PLAYLIST);//$NON-NLS-1$  
+						PlaylistFile plf = plfiSelected.getPlaylistFile();
+						plf.setFio(file); //set new file path ( this playlist is a special playlist, just in memory )
+						try{
+							plf.commit(); //write it on the disk
+							ObservationManager.notify(EVENT_PLAYLIST_REFRESH); //notify playlist repository to refresh
+						}
+						catch(JajukException je){
+							Log.error(je);
+							Messages.showErrorMessage(je.getCode(),je.getMessage());
+						}
+					}
+				}
+			}
+		}.start();
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.jajuk.ui.views.AbstractPlaylistRepositoryView#setCurrentPlayListFileInEditor(org.jajuk.ui.PlaylistFileItem)
+	 */
+	void setCurrentPlayListFileInEditor(PlaylistFileItem plfi) {
+		PhysicalPlaylistEditorView.getInstance().setCurrentPlayListFile(plfi);
 	}
 }

@@ -142,6 +142,15 @@ public class Messages {
 		JOptionPane.showMessageDialog(Main.jframe,sMessage,Messages.getString("Info"),JOptionPane.INFORMATION_MESSAGE); //$NON-NLS-1$
 	}
 	
+	
+	/**
+	 * Show a dialog with specified warning message
+	 * @param sMessage
+	 */
+	public static void showWarningMessage(String sMessage){
+		JOptionPane.showMessageDialog(Main.jframe,sMessage,Messages.getString("Warning"),JOptionPane.WARNING_MESSAGE); //$NON-NLS-1$
+	}
+	
 	/**
 	 * Show a dialog with specified error message and an icon
 	 * @param sMessage

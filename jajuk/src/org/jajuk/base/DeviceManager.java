@@ -64,7 +64,7 @@ public class DeviceManager implements ITechnicalStrings{
 		//check none device already has this name
 		Iterator it = alDevices.iterator();
 		while (it.hasNext()){
-			Device device = ( Device)it.next();
+			Device device = (Device)it.next();
 			if ( sName.equals(device.getName())){
 				return null;
 			}

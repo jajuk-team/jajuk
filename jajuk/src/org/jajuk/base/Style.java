@@ -20,6 +20,7 @@
 package org.jajuk.base;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 
 import org.jajuk.i18n.Messages;
@@ -154,4 +155,23 @@ public class Style extends PropertyAdapter implements Comparable{
 		}
 		return i;
 	}
+	
+	
+	/**
+	 * return tracks associated with this item
+	 * @return tracks associated with this item
+	 */
+	public ArrayList getTracks() {
+		ArrayList alTracks = new ArrayList(100);
+		Iterator it = TrackManager.getTracks().iterator();
+		while ( it.hasNext()){
+			Track track = (Track)it.next();
+			if ( track != null && track.getStyle().equals(this)){
+				alTracks.add(track);
+			}
+		}
+		Collections.sort(alTracks);
+		return alTracks;
+	}
+	
 }

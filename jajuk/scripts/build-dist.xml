@@ -6,10 +6,10 @@
   <property name='libdir' value='lib'/>
   <property name='srcdir' value='src'/>
   <property name='javadocdir' value='dist-files/doc/javadoc'/>
-  <property name='version' value='0.1'/>
+  <property name='version' value='0.1-rc5'/>
   <property name='jarname' value='jajuk.jar'/>
   <property name='helpsetjarname' value='jajuk-help.jar'/>
-  <property name='distjarname' value='jajuk-dist-'/>
+  <property name='distjarname' value='jajuk-install-'/>
   
   
   <target name='all' description='o Create the entire package' depends='izpack'/>
@@ -39,10 +39,6 @@
   	<copy todir='${distdir}' >
      <fileset file='${basedir}/scripts/build.xml'/>
   	</copy>
-  	<mkdir dir='${distdir}/doc'/>
-    <copy todir='${distdir}/doc' >
-     <fileset file='${basedir}/dist-files/doc/about.html'/>
-    </copy>
   	<mkdir dir='${distdir}/dist-files'/>
     <copy todir='${distdir}/dist-files' >
      <fileset dir='${basedir}/dist-files'>
@@ -135,7 +131,7 @@
       </javadoc>
     </target>
    
-  <taskdef name='izpack' classpath='/prog/IzPack3.4.0/lib/compiler.jar'
+  <taskdef name='izpack' classpath='/prog/IzPack/lib/compiler.jar'
          classname='com.izforge.izpack.ant.IzPackTask'/>
       <target name='izpack' depends='jar,helpsetjar' >
         <echo message='Makes the installer using IzPack'/>
@@ -143,7 +139,7 @@
         output='/tmp/${distjarname}${version}.jar'
         basedir='/data/java/workspace/jajuk'
         installerType='standard-kunststoff'
-        izPackDir='/prog/IzPack3.4.0'/>
+        izPackDir='/prog/IzPack'/>
       </target>
   
 </project>

@@ -19,6 +19,9 @@
  */
 package org.jajuk.base;
 
+import org.jajuk.Main;
+import org.jajuk.util.Util;
+
 
 /**
  *  Contains all technical/ non-translatable strings
@@ -35,8 +38,8 @@ public interface ITechnicalStrings {
 	public static final String ABOUT = "<html>Jajuk version "+JAJUK_VERSION+"</html>";
 	
 	// directory path
-	public static final String PATH_CURRENT_JAR = "file:"+System.getProperty("user.dir")+"/jajuk.jar";
-	//public static final String PATH_CURRENT_JAR = Util.getJarLocation(Main.class).toString();
+	public static final String PATH_CURRENT_JAR_OLD = "file:"+System.getProperty("user.dir")+"/jajuk.jar";
+	public static final String PATH_CURRENT_JAR = Util.getJarLocation(Main.class).toString();
 	public static final String PATH_ICONS = "jar:"+PATH_CURRENT_JAR+"!/org/jajuk/icons/";
 	public static final String PATH_IMAGES = "jar:"+PATH_CURRENT_JAR+"!/org/jajuk/images/";
 	public static final String PATH_RELATIVE_DOCS = "docs/";
@@ -178,7 +181,9 @@ public interface ITechnicalStrings {
 	
 	public static final String DIRECTORY_OPTION_SYNCHRO_MODE = "sync";  //can be 'y' or 'n'
 	public static final String OPTION_EXPANDED = "exp";  //can be 'y' or 'n'
-	
+	public static final String OPTION_PLAYLIST_INDEX = "plf_index";  //playlist file index
+	public static final String OPTION_PLAYLIST = "plf";  //associated playlist file
+		
 	//perspectives
 	public static final String PERSPECTIVE_NAME_PHYSICAL = "org.jajuk.ui.perspectives.PhysicalPerspective";
 	public static final String PERSPECTIVE_NAME_LOGICAL = "org.jajuk.ui.perspectives.LogicalPerspective";
@@ -237,6 +242,7 @@ public interface ITechnicalStrings {
 	public static final String EVENT_PLAYER_PAUSE="player pause";
 	public static final String EVENT_PLAYER_UNPAUSE="player unpause";
 	public static final String EVENT_PLAYLIST_REFRESH="playlist refresh";
+	public static final String EVENT_FILE_LAUNCHED="file launched";
 		
 	//Look and feel
 	public static final String LNF_METAL = "Metal";

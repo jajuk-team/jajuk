@@ -17,7 +17,7 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  $Revision$
  */
-package org.jajuk.ui;
+package org.jajuk.ui.perspectives;
 
 import java.awt.BorderLayout;
 import java.io.File;
@@ -26,12 +26,16 @@ import java.util.Iterator;
 
 import javax.swing.JDesktopPane;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import org.jajuk.Main;
 import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.i18n.Messages;
+import org.jajuk.ui.JajukJMenuBar;
+import org.jajuk.ui.PerspectiveBarJPanel;
+import org.jajuk.ui.views.IView;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
@@ -115,32 +119,33 @@ public class PerspectiveManager extends DefaultHandler implements ITechnicalStri
 	/*
 	 * @see org.jajuk.ui.perspectives.IPerspectiveManager#setCurrentPerspective(Perspective)
 	 */
-	public static void setCurrentPerspective(IPerspective perspective) {
+	public static void setCurrentPerspective(final IPerspective perspective) {
 		Util.waiting();
 		/**views display */
-		Iterator it = perspective.getViews().iterator();
-		while ( it.hasNext()){
-			IView view = (IView)it.next();
-			if (!view.isDisplayed()){
-				view.display();
-				view.setIsDisplayed(true);
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				Iterator it = perspective.getViews().iterator();
+				while ( it.hasNext()){
+					final IView view = (IView)it.next();
+					if (!view.isDisplayed()){
+						view.display();
+						view.setIsDisplayed(true);
+					}	
+					currentPerspective = perspective;
+					JDesktopPane desktop = perspective.getDesktop();
+					JPanel jpDesktop = Main.jpDesktop;
+					jpDesktop.removeAll();
+					JPanel jpFrame = Main.jpFrame;
+					jpFrame.remove(Main.jpDesktop);
+					jpFrame.add(jpDesktop,BorderLayout.CENTER);
+					jpDesktop.add(desktop,BorderLayout.CENTER);
+					jpDesktop.repaint();  //this repaint is mandatory to avoid strange paintings
+					PerspectiveBarJPanel.getInstance().setActivated(perspective);
+					JajukJMenuBar.getInstance().refreshViews();
+					Util.stopWaiting();
+				}
 			}
-		}
-		currentPerspective = perspective;
-		JDesktopPane desktop = perspective.getDesktop();
-		//Effacement de l'ancien panel
-		JPanel jpDesktop = Main.jpDesktop;
-		jpDesktop.removeAll();
-		jpDesktop.repaint();
-		JPanel jpFrame = Main.jpFrame;
-		jpFrame.remove(Main.jpDesktop);
-		jpFrame.add(jpDesktop,BorderLayout.CENTER);
-		jpFrame.repaint();
-		jpDesktop.add(desktop,BorderLayout.CENTER);
-		jpDesktop.repaint();
-		PerspectiveBarJPanel.getInstance().setActivated(perspective);
-		JajukJMenuBar.getInstance().refreshViews();
-		Util.stopWaiting();
+		});
 	}
 
 	

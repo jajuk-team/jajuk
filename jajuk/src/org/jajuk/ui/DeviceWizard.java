@@ -33,8 +33,8 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -42,11 +42,12 @@ import javax.swing.JTextField;
 
 import layout.TableLayout;
 
+import org.jajuk.Main;
 import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;
 import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.i18n.Messages;
-import org.jajuk.ui.views.DeviceView;
+import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 
@@ -55,7 +56,7 @@ import org.jajuk.util.log.Log;
  * 
  * @author bflorat @created 9 nov. 2003
  */
-public class DeviceWizard extends JFrame implements ActionListener,ITechnicalStrings {
+public class DeviceWizard extends JDialog implements ActionListener,ITechnicalStrings {
 	JPanel jpMain;
 	JPanel jp1;
 	JLabel jlType;
@@ -95,7 +96,8 @@ public class DeviceWizard extends JFrame implements ActionListener,ITechnicalStr
 	 *
 	 */
 	public DeviceWizard() {
-		super(Messages.getString("DeviceWizard.0")); //$NON-NLS-1$
+		super(Main.jframe,true); //make it modal
+		setTitle(Messages.getString("DeviceWizard.0"));//$NON-NLS-1$
 		setSize(800, 500);
 		setLocation(org.jajuk.Main.jframe.getX()+100,org.jajuk.Main.jframe.getY()+100);
 		jpMain = new JPanel();
@@ -103,7 +105,7 @@ public class DeviceWizard extends JFrame implements ActionListener,ITechnicalStr
 		jp1 = new JPanel();
 		jp1.setBorder(BorderFactory.createEmptyBorder(25, 15, 0, 15));
 		double size1[][] = { { 0.5, 0.45,0.05 }, {
-				20, 20, 20, 20, 20,20,20, 20, 20, 20, 20,20,20 }
+			20, 20, 20, 20, 20,20,20, 20, 20, 20, 20,20,20 }
 		};
 		jp1.setLayout(new TableLayout(size1));
 		jlType = new JLabel(Messages.getString("DeviceWizard.1")); //$NON-NLS-1$
@@ -113,24 +115,32 @@ public class DeviceWizard extends JFrame implements ActionListener,ITechnicalStr
 		}
 		jlName = new JLabel(Messages.getString("DeviceWizard.2")); //$NON-NLS-1$
 		jtfName = new JTextField();
+		jtfName.setToolTipText(Messages.getString("DeviceWizard.45")); //$NON-NLS-1$
 		jlUrl = new JLabel(Messages.getString("DeviceWizard.3")); //$NON-NLS-1$
 		jtfUrl = new JTextField();
+		jtfUrl.setToolTipText(Messages.getString("DeviceWizard.46")); //$NON-NLS-1$
 		jbUrl = new JButton(Util.getIcon(ICON_OPEN_FILE));
+		jbUrl.setToolTipText(Messages.getString("DeviceWizard.43")); //$NON-NLS-1$
 		jbUrl.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
 		jbUrl.addActionListener(this);
 		jlMountPoint = new JLabel(Messages.getString("DeviceWizard.4")); //$NON-NLS-1$
 		jtfMountPoint = new JTextField();
+		jtfMountPoint.setToolTipText(Messages.getString("DeviceWizard.47")); //$NON-NLS-1$
 		String sOS = (String)System.getProperties().get("os.name"); //$NON-NLS-1$
 		if (sOS.trim().toLowerCase().lastIndexOf("windows")!=-1){ //$NON-NLS-1$
 			jlMountPoint.setEnabled(false);
 			jtfMountPoint.setEnabled(false);
 		}
 		jcbRefresh = new JCheckBox(Messages.getString("DeviceWizard.7")); //$NON-NLS-1$
+		jcbRefresh.setToolTipText(Messages.getString("DeviceWizard.48")); //$NON-NLS-1$
 		jcbRefresh.addActionListener(this);
 		jcbAutoMount = new JCheckBox(Messages.getString("DeviceWizard.8")); //$NON-NLS-1$
+		jcbAutoMount.setToolTipText(Messages.getString("DeviceWizard.49")); //$NON-NLS-1$
 		jcbAutoMount.addActionListener(this);
 		jcbAutoRefresh = new JCheckBox(Messages.getString("DeviceWizard.9")); //$NON-NLS-1$
+		jcbAutoRefresh.setToolTipText(Messages.getString("DeviceWizard.50")); //$NON-NLS-1$
 		jcboxSynchronized = new JCheckBox(Messages.getString("DeviceWizard.10")); //$NON-NLS-1$
+		jcboxSynchronized.setToolTipText(Messages.getString("DeviceWizard.51")); //$NON-NLS-1$
 		jcboxSynchronized.addActionListener(this);
 		jcbSynchronized = new JComboBox();
 		//populate combo
@@ -141,6 +151,7 @@ public class DeviceWizard extends JFrame implements ActionListener,ITechnicalStr
 			jcbSynchronized.addItem(device2.getName());
 		}
 		jcbSynchronized.setEnabled(false);
+		jcbSynchronized.setToolTipText(Messages.getString("DeviceWizard.52")); //$NON-NLS-1$
 		//Default automount behavior
 		jcbType.addActionListener(this);
 		bgSynchro = new ButtonGroup();
@@ -205,27 +216,29 @@ public class DeviceWizard extends JFrame implements ActionListener,ITechnicalStr
 		jpMain.add(Box.createVerticalGlue());
 		jpMain.add(jpButtons);
 		setContentPane(jpMain);
-		show();
+		pack();
 	}
+	
 	
 	/**
 	 * Update widgets for default state
 	 */
 	public void updateWidgetsDefault(){
 		jcbRefresh.setSelected(true);
-		jcbAutoRefresh.setEnabled(false);
 		jcbAutoMount.setSelected(true);
+		jcbAutoRefresh.setEnabled(true);
+		jcbAutoRefresh.setSelected(false);
 		jrbUnidirSynchro.setSelected(true);//default synchro mode
 		jrbBidirSynchro.setEnabled(false);
 		jcb1.setEnabled(false);
 		jcb1.setSelected(false);
-		
 	}
+	
 	
 	/**
 	 * Update widgets for device property state 
 	 */
-	public void updateWidgets(Device device){
+	public void updateWidgets(final Device device){
 		bNew = false;
 		this.device = device;
 		jcbSynchronized.removeAllItems();
@@ -238,7 +251,9 @@ public class DeviceWizard extends JFrame implements ActionListener,ITechnicalStr
 				jcbSynchronized.addItem(device2.getName());
 			}
 		}
+		//set default values for widgets
 		updateWidgetsDefault();
+		//then, specifics
 		jcbType.setSelectedItem(device.getDeviceTypeS());
 		jtfName.setText(device.getName());
 		jtfUrl.setText(device.getUrl());
@@ -247,7 +262,7 @@ public class DeviceWizard extends JFrame implements ActionListener,ITechnicalStr
 		jcbRefresh.setSelected(false);
 		if (TRUE.equals(device.getProperty(DEVICE_OPTION_AUTO_MOUNT))){
 			jcbAutoMount.setSelected(true);
-			jcbAutoRefresh.setEnabled(true);
+			jcbAutoRefresh.setEnabled(true); //refresh at startup is only if it is auto-mounted
 		}
 		if (TRUE.equals(device.getProperty(DEVICE_OPTION_AUTO_REFRESH))){
 			jcbAutoRefresh.setEnabled(true);
@@ -286,7 +301,7 @@ public class DeviceWizard extends JFrame implements ActionListener,ITechnicalStr
 	 * 
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(final ActionEvent e) {
 		if (e.getSource() == jcbAutoMount) {
 			if (jcbAutoMount.isSelected()) {
 				jcbAutoRefresh.setEnabled(true);
@@ -321,10 +336,18 @@ public class DeviceWizard extends JFrame implements ActionListener,ITechnicalStr
 			}
 			if (bNew){
 				device = DeviceManager.registerDevice(jtfName.getText(),jcbType.getSelectedIndex(),jtfUrl.getText(),jtfMountPoint.getText());
-				if (device == null){ //means device name is already token
+				if (device == null ){ //means device name is already token
 					Messages.showErrorMessage("019"); //$NON-NLS-1$
-					this.setVisible(true); //display wizzard window whish has been hiden by the error window
+					this.setVisible(true); //display wizzard window which has been hiden by the error window
 					return;
+				}
+				else{  //check device availability
+					if ( !device.test() ){
+						DeviceManager.removeDevice(device);
+						Messages.showErrorMessage("101"); //$NON-NLS-1$
+						this.setVisible(true); //display wizzard window whish has been hiden by the error window
+						return;
+					}
 				}
 			}
 			else{
@@ -355,9 +378,8 @@ public class DeviceWizard extends JFrame implements ActionListener,ITechnicalStr
 				device.removeProperty(DEVICE_OPTION_SYNCHRO_OPT1);
 				device.removeProperty(DEVICE_OPTION_SYNCHRO_SOURCE);
 			}
-			if (jcbRefresh.isSelected()){
+			if (jcbRefresh.isSelected() && bNew ){
 				try{
-					device.mount();
 					device.refresh(true);
 				}
 				catch(Exception e2){
@@ -368,7 +390,7 @@ public class DeviceWizard extends JFrame implements ActionListener,ITechnicalStr
 			else{
 				ObservationManager.notify(EVENT_DEVICE_REFRESH);  //refresh trees with empty device
 			}
-			ViewManager.notify(EVENT_VIEW_REFRESH_REQUEST,DeviceView.getInstance());
+			//ViewManager.notify(EVENT_VIEW_REFRESH_REQUEST,DeviceView.getInstance());
 			dispose();
 			if (bNew){
 				Messages.showInfoMessage(Messages.getString("DeviceWizard.44"));  //$NON-NLS-1$
@@ -378,9 +400,10 @@ public class DeviceWizard extends JFrame implements ActionListener,ITechnicalStr
 			dispose();  //close window
 		}
 		else if (e.getSource() == jbUrl){
-			JFileChooser jfc = new JFileChooser(Messages.getString("DeviceWizard.43")); //$NON-NLS-1$
-			jfc.setMultiSelectionEnabled(false);
+			JajukFileChooser jfc = new JajukFileChooser(new JajukFileFilter(true,false));
 			jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+			jfc.setDialogTitle(Messages.getString("DeviceWizard.43"));//$NON-NLS-1$
+			jfc.setMultiSelectionEnabled(false);
 			int returnVal = jfc.showOpenDialog(this);
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
 				java.io.File file = jfc.getSelectedFile();
@@ -389,22 +412,22 @@ public class DeviceWizard extends JFrame implements ActionListener,ITechnicalStr
 		}
 		else if(e.getSource() == jcbType){
 			switch(jcbType.getSelectedIndex()){
-					case 0: //directory
-						jcbAutoMount.setSelected(true);
-						break;
-					case 1: //file cd
-						jcbAutoMount.setSelected(false);
-						break;
-					case 2: //remote
-						jcbAutoMount.setSelected(false);
-						break;
-					case 3: //ext dd
-						jcbAutoMount.setSelected(false);
-						break;
-					case 4: //player
-						jcbAutoMount.setSelected(false);
-						break;
-				}
+			case 0: //directory
+				jcbAutoMount.setSelected(true);
+				break;
+			case 1: //file cd
+				jcbAutoMount.setSelected(false);
+				break;
+			case 2: //remote
+				jcbAutoMount.setSelected(false);
+				break;
+			case 3: //ext dd
+				jcbAutoMount.setSelected(false);
+				break;
+			case 4: //player
+				jcbAutoMount.setSelected(false);
+				break;
+			}
 		}
 	}
 }

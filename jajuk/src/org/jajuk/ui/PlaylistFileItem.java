@@ -40,7 +40,7 @@ import org.jajuk.util.Util;
 	 * @author     bflorat
 	 * @created    31 dec. 2004	 
 	 */
-	public class PlaylistFileItem extends JPanel{
+	public class PlaylistFileItem extends JPanel {
 		
 		/** Associated playlist file*/
 		PlaylistFile plf;
@@ -56,7 +56,6 @@ import org.jajuk.util.Util;
 		public static final int PLAYLIST_TYPE_BOOKMARK = 2;
 		public static final int PLAYLIST_TYPE_BESTOF = 3;
 		public static final int PLAYLIST_TYPE_QUEUE = 4;
-		
 		
 		/**
 		 * Constructor
@@ -130,5 +129,7 @@ import org.jajuk.util.Util;
 			return sOut;
 		}
 		
-
+		
+	
+		
 	}

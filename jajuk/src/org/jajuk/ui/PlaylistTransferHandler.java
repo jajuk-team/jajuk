@@ -29,16 +29,21 @@ import java.awt.dnd.DropTargetDragEvent;
 import java.awt.dnd.DropTargetDropEvent;
 import java.awt.dnd.DropTargetEvent;
 import java.awt.dnd.DropTargetListener;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 
 import javax.swing.JPanel;
 
+import org.jajuk.base.Album;
+import org.jajuk.base.Author;
 import org.jajuk.base.BasicFile;
 import org.jajuk.base.Bookmarks;
 import org.jajuk.base.Directory;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
+import org.jajuk.base.Style;
+import org.jajuk.base.Track;
 import org.jajuk.util.log.Log;
 
 /**
@@ -113,6 +118,38 @@ public class PlaylistTransferHandler implements DropTargetListener {
 					dtde.dropComplete(false);
 				}
 			}
+			//computes logical selection if any
+			ArrayList alLogicalTracks = null;
+			ArrayList alLogicalFiles = null;
+			if(oData instanceof Style || oData instanceof Author || oData instanceof Album || oData instanceof Track){
+				if( oData instanceof Style ){
+					alLogicalTracks = ((Style)oData).getTracks();
+				}
+				else if( oData instanceof Author ){
+					alLogicalTracks = ((Author)oData).getTracks();
+				}
+				else if(  oData instanceof Album ){
+					alLogicalTracks = ((Album)oData).getTracks();
+				}
+				else if( oData instanceof Track){
+					alLogicalTracks = new ArrayList(100);
+					alLogicalTracks.add(oData);
+				}
+				//prepare files
+				if ( alLogicalTracks != null && alLogicalTracks.size() > 0){
+					alLogicalFiles = new ArrayList(alLogicalTracks.size());
+					Iterator it = alLogicalTracks.iterator();
+					while ( it.hasNext()){
+						Track track = (Track)it.next();
+						File file = track.getPlayeableFile();
+						if ( file == null){ //none mounted file for this track
+							continue;
+						}
+						alLogicalFiles.add(track.getPlayeableFile());
+					}
+				}
+			}
+			//queue case
 			if ( plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE){
 				if (oData instanceof File){
 					FIFO.getInstance().push((File)oData,true);
@@ -120,7 +157,13 @@ public class PlaylistTransferHandler implements DropTargetListener {
 				else if(oData instanceof Directory){
 					FIFO.getInstance().push(((Directory)oData).getFilesRecursively(),true);
 				}
+				else if(oData instanceof Style || oData instanceof Author || oData instanceof Album || oData instanceof Track){
+					if ( alLogicalFiles != null){
+						FIFO.getInstance().push(alLogicalFiles,true);
+					}
+				}		
 			}
+			//bookmark case
 			else if ( plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_BOOKMARK){
 				if (oData instanceof File){
 					Bookmarks.getInstance().addFile((File)oData);
@@ -132,7 +175,17 @@ public class PlaylistTransferHandler implements DropTargetListener {
 						Bookmarks.getInstance().addFile(file);	
 					}
 				}
+				else if(oData instanceof Style || oData instanceof Author || oData instanceof Album || oData instanceof Track){
+					if ( alLogicalFiles != null){
+						Iterator it = alLogicalFiles.iterator();
+						while (it.hasNext()){
+							File file = (File)it.next();
+							Bookmarks.getInstance().addFile(file);	
+						}
+					}
+				}
 			}
+			//normal or new playlist case
 			else if ( plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_NORMAL || plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_NEW){
 				if (oData instanceof File){
 					plfi.getPlaylistFile().addBasicFile(new BasicFile((File)oData));
@@ -144,7 +197,15 @@ public class PlaylistTransferHandler implements DropTargetListener {
 						plfi.getPlaylistFile().addBasicFile(new BasicFile(file));	
 					}
 				}
-			
+				else if(oData instanceof Style || oData instanceof Author || oData instanceof Album || oData instanceof Track){
+					if ( alLogicalFiles != null){
+						Iterator it = alLogicalFiles.iterator();
+						while (it.hasNext()){
+							File file = (File)it.next();
+							plfi.getPlaylistFile().addBasicFile(new BasicFile(file));	
+						}
+					}
+				}
 			}
 		}		
 		catch (Exception e) {	
@@ -153,5 +214,4 @@ public class PlaylistTransferHandler implements DropTargetListener {
 			dtde.dropComplete(false);
 		}
 	}
-	
 }

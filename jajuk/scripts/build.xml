@@ -46,10 +46,6 @@
   	<copy todir="${classdir}/org/jajuk/images" >
      <fileset dir="${distfilesdir}/images"/>
   	</copy>
-  	<copy todir="${classdir}/org/jajuk/docs" >
-     <fileset file="${docdir}/about.html"/>
-  	</copy>
-    
   </target>
 
   <target name='jar' description='o Create the jar' depends='compile'>

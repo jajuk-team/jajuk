@@ -82,8 +82,6 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 	/** Self instance */
 	private static PhysicalTreeView ptv;
 	
-	
-	
 	/** Top tree node */
 	DefaultMutableTreeNode top;
 	
@@ -97,57 +95,57 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 	TreePath[] paths;
 	
 	JPopupMenu jmenuFile;
-		JMenuItem jmiFilePlay;
-		JMenuItem jmiFilePush;
-		JMenuItem jmiFileCopy;
-		JMenuItem jmiFileCut;
-		JMenuItem jmiFilePaste;
-		JMenuItem jmiFileRename;
-		JMenuItem jmiFileDelete;
-		JMenuItem jmiFileSetProperty;
-		JMenuItem jmiFileProperties;
+	JMenuItem jmiFilePlay;
+	JMenuItem jmiFilePush;
+	JMenuItem jmiFileCopy;
+	JMenuItem jmiFileCut;
+	JMenuItem jmiFilePaste;
+	JMenuItem jmiFileRename;
+	JMenuItem jmiFileDelete;
+	JMenuItem jmiFileSetProperty;
+	JMenuItem jmiFileProperties;
 	JPopupMenu jmenuDir;
-		JMenuItem jmiDirPlay;
-		JMenuItem jmiDirPush;
-		JMenuItem jmiDirPlayShuffle;
-		JMenuItem jmiDirPlayRepeat;
-		JMenuItem jmiDirDesynchro;
-		JMenuItem jmiDirResynchro;
-		JMenuItem jmiDirCreatePlaylist;
-		JMenuItem jmiDirCopy;
-		JMenuItem jmiDirCut;
-		JMenuItem jmiDirPaste;
-		JMenuItem jmiDirRename;
-		JMenuItem jmiDirDelete;
-		JMenuItem jmiDirSetProperty;
-		JMenuItem jmiDirProperties;
+	JMenuItem jmiDirPlay;
+	JMenuItem jmiDirPush;
+	JMenuItem jmiDirPlayShuffle;
+	JMenuItem jmiDirPlayRepeat;
+	JMenuItem jmiDirDesynchro;
+	JMenuItem jmiDirResynchro;
+	JMenuItem jmiDirCreatePlaylist;
+	JMenuItem jmiDirCopy;
+	JMenuItem jmiDirCut;
+	JMenuItem jmiDirPaste;
+	JMenuItem jmiDirRename;
+	JMenuItem jmiDirDelete;
+	JMenuItem jmiDirSetProperty;
+	JMenuItem jmiDirProperties;
 	JPopupMenu jmenuDev;
-		JMenuItem jmiDevPlay;
-		JMenuItem jmiDevPush;
-		JMenuItem jmiDevPlayShuffle;
-		JMenuItem jmiDevPlayRepeat;
-		JMenuItem jmiDevCreatePlaylist;
-		JMenuItem jmiDevMount;
-		JMenuItem jmiDevUnmount;
-		JMenuItem jmiDevRefresh;
-		JMenuItem jmiDevSynchronize;
-		JMenuItem jmiDevTest;
-		JMenuItem jmiDevSetProperty;
-		JMenuItem jmiDevProperties;
+	JMenuItem jmiDevPlay;
+	JMenuItem jmiDevPush;
+	JMenuItem jmiDevPlayShuffle;
+	JMenuItem jmiDevPlayRepeat;
+	JMenuItem jmiDevCreatePlaylist;
+	JMenuItem jmiDevMount;
+	JMenuItem jmiDevUnmount;
+	JMenuItem jmiDevRefresh;
+	JMenuItem jmiDevSynchronize;
+	JMenuItem jmiDevTest;
+	JMenuItem jmiDevSetProperty;
+	JMenuItem jmiDevProperties;
 	JPopupMenu jmenuPlaylistFile;
-		JMenuItem jmiPlaylistFilePlay;
-		JMenuItem jmiPlaylistFilePush;
-		JMenuItem jmiPlaylistFilePlayShuffle;
-		JMenuItem jmiPlaylistFilePlayRepeat;
-		JMenuItem jmiPlaylistFileCopy;
-		JMenuItem jmiPlaylistFileCut;
-		JMenuItem jmiPlaylistFilePaste;
-		JMenuItem jmiPlaylistFileRename;
-		JMenuItem jmiPlaylistFileDelete;
-		JMenuItem jmiPlaylistFileSetProperty;
-		JMenuItem jmiPlaylistFileProperties;
-		
-		
+	JMenuItem jmiPlaylistFilePlay;
+	JMenuItem jmiPlaylistFilePush;
+	JMenuItem jmiPlaylistFilePlayShuffle;
+	JMenuItem jmiPlaylistFilePlayRepeat;
+	JMenuItem jmiPlaylistFileCopy;
+	JMenuItem jmiPlaylistFileCut;
+	JMenuItem jmiPlaylistFilePaste;
+	JMenuItem jmiPlaylistFileRename;
+	JMenuItem jmiPlaylistFileDelete;
+	JMenuItem jmiPlaylistFileSetProperty;
+	JMenuItem jmiPlaylistFileProperties;
+	
+	
 	
 	/*
 	 * (non-Javadoc)
@@ -265,7 +263,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 		jmenuDir.add(jmiDirDelete);
 		jmenuDir.add(jmiDirSetProperty);
 		jmenuDir.add(jmiDirProperties);
-
+		
 		//Device menu
 		jmenuDev = new JPopupMenu();
 		jmiDevPlay = new JMenuItem(Messages.getString("PhysicalTreeView.24")); //$NON-NLS-1$
@@ -307,7 +305,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 		jmenuDev.add(jmiDevCreatePlaylist);
 		jmenuDev.add(jmiDevSetProperty);
 		jmenuDev.add(jmiDevProperties);
-					
+		
 		//Playlist file menu
 		//File menu
 		jmenuPlaylistFile = new JPopupMenu();
@@ -380,26 +378,26 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 				else if (value instanceof DeviceNode){
 					Device device = (Device)((DeviceNode)value).getDevice();
 					switch ( device.getDeviceType()){
-						case 0 : 
-							if ( device.isMounted())	setIcon(Util.getIcon(ICON_DEVICE_DIRECTORY_MOUNTED_SMALL));
-							else setIcon(Util.getIcon(ICON_DEVICE_DIRECTORY_UNMOUNTED_SMALL));
-							break;
-						case 1 : 
-							if ( device.isMounted())	setIcon(Util.getIcon(ICON_DEVICE_CD_MOUNTED_SMALL));
-							else setIcon(Util.getIcon(ICON_DEVICE_CD_UNMOUNTED_SMALL));
-							break;
-						case 2 : 
-							if ( device.isMounted())	setIcon(Util.getIcon(ICON_DEVICE_REMOTE_MOUNTED_SMALL));
-							else setIcon(Util.getIcon(ICON_DEVICE_REMOTE_UNMOUNTED_SMALL));
-							break;
-						case 3 : 
-							if ( device.isMounted())	setIcon(Util.getIcon(ICON_DEVICE_EXT_DD_MOUNTED_SMALL));
-							else setIcon(Util.getIcon(ICON_DEVICE_EXT_DD_UNMOUNTED_SMALL));
-							break;
-						case 4 : 
-							if ( device.isMounted())	setIcon(Util.getIcon(ICON_DEVICE_PLAYER_MOUNTED_SMALL));
-							else setIcon(Util.getIcon(ICON_DEVICE_PLAYER_UNMOUNTED_SMALL));
-							break;
+					case 0 : 
+						if ( device.isMounted())	setIcon(Util.getIcon(ICON_DEVICE_DIRECTORY_MOUNTED_SMALL));
+						else setIcon(Util.getIcon(ICON_DEVICE_DIRECTORY_UNMOUNTED_SMALL));
+						break;
+					case 1 : 
+						if ( device.isMounted())	setIcon(Util.getIcon(ICON_DEVICE_CD_MOUNTED_SMALL));
+						else setIcon(Util.getIcon(ICON_DEVICE_CD_UNMOUNTED_SMALL));
+						break;
+					case 2 : 
+						if ( device.isMounted())	setIcon(Util.getIcon(ICON_DEVICE_REMOTE_MOUNTED_SMALL));
+						else setIcon(Util.getIcon(ICON_DEVICE_REMOTE_UNMOUNTED_SMALL));
+						break;
+					case 3 : 
+						if ( device.isMounted())	setIcon(Util.getIcon(ICON_DEVICE_EXT_DD_MOUNTED_SMALL));
+						else setIcon(Util.getIcon(ICON_DEVICE_EXT_DD_UNMOUNTED_SMALL));
+						break;
+					case 4 : 
+						if ( device.isMounted())	setIcon(Util.getIcon(ICON_DEVICE_PLAYER_MOUNTED_SMALL));
+						else setIcon(Util.getIcon(ICON_DEVICE_PLAYER_UNMOUNTED_SMALL));
+						break;
 					}
 				}
 				else if (value instanceof DirectoryNode){
@@ -489,7 +487,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 					Object o = path.getLastPathComponent();
 					if (o instanceof FileNode){
 						File file = ((FileNode)o).getFile();
-						if (file.isReady()){
+						if (!file.isScanned()){
 							FIFO.getInstance().push(file,false);
 						}
 						else{
@@ -534,7 +532,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 							DefaultMutableTreeNode node = (DefaultMutableTreeNode)e2.nextElement();
 							if (node instanceof FileNode){
 								File file = ((FileNode)node).getFile();
-								if (file.isReady()){
+								if (!file.isScanned()){
 									getInstance().alFiles.add(((FileNode)node).getFile());
 								}
 								else{
@@ -590,7 +588,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 					device.removeProperty(OPTION_EXPANDED);
 				}
 			}
-
+			
 			public void treeExpanded(TreeExpansionEvent event) {
 				Object o = event.getPath().getLastPathComponent(); 
 				if (o instanceof DirectoryNode){
@@ -614,7 +612,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 		jtree.setRowHeight(25);
 		//expand all
 		expand();
-			
+		
 	}
 	
 	/**Fill the tree */
@@ -694,113 +692,129 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 	/* (non-Javadoc)
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
-	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == jmiFilePlay && alFiles.size() > 0 ){
-			FIFO.getInstance().push(alFiles,false);
-		}
-		else if (e.getSource() == jmiFilePush  && alFiles.size() > 0){
-			FIFO.getInstance().push(alFiles,true);
-		}
-		else if ( alFiles!= null && alFiles.size() > 0 && (e.getSource() == jmiDirPlay || e.getSource() == jmiDevPlay)){  
-			FIFO.getInstance().push(alFiles,false);
-		}
-		else if (alFiles!= null && alFiles.size() > 0 && (e.getSource() == jmiDirPush || e.getSource() == jmiDevPush)){
-			FIFO.getInstance().push(alFiles,true);
-		}
-		else if (alFiles!= null && alFiles.size() > 0 && (e.getSource() == jmiDirPlayShuffle || e.getSource() == jmiDevPlayShuffle)){
-			FIFO.getInstance().push(Util.randomize(alFiles),false);
-		}
-		else if (alFiles!= null && alFiles.size() > 0 && (e.getSource() == jmiDirPlayRepeat || e.getSource() == jmiDevPlayRepeat)){
-			FIFO.getInstance().push(alFiles,false,false,true);
-		}
-		else if ( e.getSource() == jmiDevMount){
-			for (int i=0;i<paths.length;i++){
-				Device device = ((DeviceNode)(paths[i].getLastPathComponent())).getDevice();
-				try{
-					device.mount();
-				}
-				catch(Exception ex){
-					Messages.showErrorMessage("011"); //$NON-NLS-1$
-				}
-			}
-		}
-		else if ( e.getSource() == jmiDevUnmount){
-			for (int i=0;i<paths.length;i++){
-				Device device = ((DeviceNode)(paths[i].getLastPathComponent())).getDevice();
-				try{
-					device.unmount();
-				}
-				catch(Exception ex){
-					Messages.showErrorMessage("012"); //$NON-NLS-1$
-				}
-			}
-		}
-		else if ( e.getSource() == jmiDevRefresh){
-			Device device = ((DeviceNode)(paths[0].getLastPathComponent())).getDevice();
-			device.refresh(true);
-		}
-		else if ( e.getSource() == jmiDevSynchronize){
-			Device device = ((DeviceNode)(paths[0].getLastPathComponent())).getDevice();
-			device.synchronize(true);
-		}
-		else if (e.getSource() == jmiDevTest){
-			Device device = ((DeviceNode)(paths[0].getLastPathComponent())).getDevice();
-			if (device.test()){
-				Messages.showInfoMessage(Messages.getString("DeviceView.21"),Util.getIcon(ICON_OK)); //$NON-NLS-1$
-			}
-			else{
-				Messages.showInfoMessage(Messages.getString("DeviceView.22"),Util.getIcon(ICON_KO)); //$NON-NLS-1$
-			}
-		}
-		else if ( e.getSource() == jmiDirDesynchro){
-			Iterator it = alDirs.iterator();  //iterate on selected dirs and childs recursively
-			while ( it.hasNext()){
-				Directory dir = (Directory)it.next();
-				dir.removeProperty(DIRECTORY_OPTION_SYNCHRO_MODE);
-				dir.setProperty(DIRECTORY_OPTION_SYNCHRO_MODE,"n"); //$NON-NLS-1$
-			}
-		}
-		else if ( e.getSource() == jmiDirResynchro){
-			Iterator it = alDirs.iterator();  //iterate on selected dirs and childs recursively
-			while ( it.hasNext()){
-				Directory dir = (Directory)it.next();
-				dir.removeProperty(DIRECTORY_OPTION_SYNCHRO_MODE);
-			}
-		}
-		else if ( e.getSource() == jmiPlaylistFilePlay || e.getSource()==jmiPlaylistFilePush || e.getSource() == jmiPlaylistFilePlayShuffle || e.getSource() == jmiPlaylistFilePlayRepeat){
-			PlaylistFile plf = ((PlaylistFileNode)paths[0].getLastPathComponent()).getPlaylistFile();
-			ArrayList alFiles = new ArrayList(10); 
-			try{	
-				alFiles = plf.getBasicFiles();
-			}
-			catch(JajukException je){
-				Log.error("009",plf.getName(),new Exception()); //$NON-NLS-1$
-				Messages.showErrorMessage("009",plf.getName()); //$NON-NLS-1$
-			}
-			if ( alFiles.size() == 0){ //check playlist file contains accessible tracks
-				Messages.showErrorMessage("018"); //$NON-NLS-1$
-			}
-			else{ //specific actions
-				if ( e.getSource() == jmiPlaylistFilePlay ){
+	public void actionPerformed(final ActionEvent e) {
+		new Thread(){
+			public void run(){
+				if (e.getSource() == jmiFilePlay && alFiles.size() > 0 ){
 					FIFO.getInstance().push(alFiles,false);
 				}
-				else if ( e.getSource()==jmiPlaylistFilePush ){
+				else if (e.getSource() == jmiFilePush  && alFiles.size() > 0){
 					FIFO.getInstance().push(alFiles,true);
 				}
-				else if ( e.getSource() == jmiPlaylistFilePlayShuffle ){
+				else if ( alFiles!= null && alFiles.size() > 0 && (e.getSource() == jmiDirPlay || e.getSource() == jmiDevPlay)){  
+					FIFO.getInstance().push(alFiles,false);
+				}
+				else if (alFiles!= null && alFiles.size() > 0 && (e.getSource() == jmiDirPush || e.getSource() == jmiDevPush)){
+					FIFO.getInstance().push(alFiles,true);
+				}
+				else if (alFiles!= null && alFiles.size() > 0 && (e.getSource() == jmiDirPlayShuffle || e.getSource() == jmiDevPlayShuffle)){
 					FIFO.getInstance().push(Util.randomize(alFiles),false);
 				}
-				else if ( e.getSource() == jmiPlaylistFilePlayRepeat){
+				else if (alFiles!= null && alFiles.size() > 0 && (e.getSource() == jmiDirPlayRepeat || e.getSource() == jmiDevPlayRepeat)){
 					FIFO.getInstance().push(alFiles,false,false,true);
 				}
+				else if ( e.getSource() == jmiDevMount){
+					for (int i=0;i<paths.length;i++){
+						Device device = ((DeviceNode)(paths[i].getLastPathComponent())).getDevice();
+						try{
+							device.mount();
+						}
+						catch(Exception ex){
+							Messages.showErrorMessage("011"); //$NON-NLS-1$
+						}
+					}
+				}
+				else if ( e.getSource() == jmiDevUnmount){
+					for (int i=0;i<paths.length;i++){
+						Device device = ((DeviceNode)(paths[i].getLastPathComponent())).getDevice();
+						try{
+							device.unmount();
+						}
+						catch(Exception ex){
+							Messages.showErrorMessage("012"); //$NON-NLS-1$
+						}
+					}
+				}
+				else if ( e.getSource() == jmiDevRefresh){
+					Device device = ((DeviceNode)(paths[0].getLastPathComponent())).getDevice();
+					device.refresh(true);
+				}
+				else if ( e.getSource() == jmiDevSynchronize){
+					Device device = ((DeviceNode)(paths[0].getLastPathComponent())).getDevice();
+					device.synchronize(true);
+				}
+				else if (e.getSource() == jmiDevTest){
+					Device device = ((DeviceNode)(paths[0].getLastPathComponent())).getDevice();
+					if (device.test()){
+						Messages.showInfoMessage(Messages.getString("DeviceView.21"),Util.getIcon(ICON_OK)); //$NON-NLS-1$
+					}
+					else{
+						Messages.showInfoMessage(Messages.getString("DeviceView.22"),Util.getIcon(ICON_KO)); //$NON-NLS-1$
+					}
+				}
+				else if ( e.getSource() == jmiDirDesynchro){
+					Iterator it = alDirs.iterator();  //iterate on selected dirs and childs recursively
+					while ( it.hasNext()){
+						Directory dir = (Directory)it.next();
+						dir.removeProperty(DIRECTORY_OPTION_SYNCHRO_MODE);
+						dir.setProperty(DIRECTORY_OPTION_SYNCHRO_MODE,"n"); //$NON-NLS-1$
+					}
+					SwingUtilities.invokeLater(new Runnable() {
+						public void run() {
+							SwingUtilities.updateComponentTreeUI(jtree);
+							jtree.setRowHeight(25);
+						}
+					});
+				}
+				else if ( e.getSource() == jmiDirResynchro){
+					Iterator it = alDirs.iterator();  //iterate on selected dirs and childs recursively
+					while ( it.hasNext()){
+						Directory dir = (Directory)it.next();
+						dir.removeProperty(DIRECTORY_OPTION_SYNCHRO_MODE);
+					}
+					SwingUtilities.invokeLater(new Runnable() {
+						public void run() {
+							SwingUtilities.updateComponentTreeUI(jtree);
+							jtree.setRowHeight(25);
+						}
+					});
+				}
+				else if ( e.getSource() == jmiPlaylistFilePlay || e.getSource()==jmiPlaylistFilePush || e.getSource() == jmiPlaylistFilePlayShuffle || e.getSource() == jmiPlaylistFilePlayRepeat){
+					PlaylistFile plf = ((PlaylistFileNode)paths[0].getLastPathComponent()).getPlaylistFile();
+					ArrayList alFiles = new ArrayList(10); 
+					try{	
+						alFiles = plf.getBasicFiles();
+					}
+					catch(JajukException je){
+						Log.error("009",plf.getName(),new Exception()); //$NON-NLS-1$
+						Messages.showErrorMessage("009",plf.getName()); //$NON-NLS-1$
+					}
+					if ( alFiles.size() == 0){ //check playlist file contains accessible tracks
+						Messages.showErrorMessage("018"); //$NON-NLS-1$
+					}
+					else{ //specific actions
+						if ( e.getSource() == jmiPlaylistFilePlay ){
+							FIFO.getInstance().push(alFiles,false);
+						}
+						else if ( e.getSource()==jmiPlaylistFilePush ){
+							FIFO.getInstance().push(alFiles,true);
+						}
+						else if ( e.getSource() == jmiPlaylistFilePlayShuffle ){
+							FIFO.getInstance().push(Util.randomize(alFiles),false);
+						}
+						else if ( e.getSource() == jmiPlaylistFilePlayRepeat){
+							FIFO.getInstance().push(alFiles,false,false,true);
+						}
+					}
+				}
+				else if ( e.getSource() == jmiPlaylistFileDelete){
+					PlaylistFile plf = ((PlaylistFileNode)paths[0].getLastPathComponent()).getPlaylistFile();
+					plf.delete();
+				}
 			}
-		}
-		else if ( e.getSource() == jmiPlaylistFileDelete){
-			PlaylistFile plf = ((PlaylistFileNode)paths[0].getLastPathComponent()).getPlaylistFile();
-			plf.delete();
-		}
+		}.start();
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.Observer#update(java.lang.String)
 	 */
@@ -822,7 +836,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 			sw.start();
 		}
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.IView#getViewName()
 	 */
@@ -997,6 +1011,6 @@ class PlaylistFileNode  extends TransferableTreeNode{
 	public PlaylistFile getPlaylistFile() {
 		return (PlaylistFile)getData();
 	}
-		
+	
 }
 
