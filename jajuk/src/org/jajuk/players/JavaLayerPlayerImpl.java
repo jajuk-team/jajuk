@@ -65,7 +65,9 @@ public class JavaLayerPlayerImpl implements IPlayerImpl,ITechnicalStrings{
 	 * @see org.jajuk.base.IPlayerImpl#stop()
 	 */
 	public void stop() {
-		player.close();
+		if (player!= null ){
+			player.close();
+		}
 	}
 	
 

@@ -104,6 +104,10 @@ public interface ITechnicalStrings {
 	public static final String ICON_STYLE =  PATH_ICONS + "16x16/style.png";
 	public static final String ICON_AUTHOR =  PATH_ICONS + "16x16/author.png";
 	public static final String ICON_ALBUM =  PATH_ICONS + "16x16/album.png";
+	public static final String ICON_APPLY_FILTER =  PATH_ICONS + "16x16/filter.png";
+	public static final String ICON_CLEAR_FILTER =  PATH_ICONS + "16x16/clear.png";
+	public static final String ICON_ADVANCED_FILTER =  PATH_ICONS + "16x16/complex_search.png";
+	
 	
 	//images
 	public static final String IMAGES_SPLASHSCREEN =  PATH_IMAGES + "jajuk-slashscreen.png";
@@ -312,6 +316,7 @@ public interface ITechnicalStrings {
 		"\t<perspective class='"+PERSPECTIVE_NAME_LOGICAL+"'>\n"+
 		"\t\t<views>\n"+
 		"\t\t\t<view class='org.jajuk.ui.views.LogicalTreeView' width='30' height='100' x='0' y='0'/>\n"+
+		"\t\t\t<view class='org.jajuk.ui.views.LogicalTableView' width='40' height='100' x='60' y='0'/>\n"+
 	/*	"\t\t\t<view class='org.jajuk.ui.views.NavigationBarView' />\n"+
 		"\t\t\t<view class='org.jajuk.ui.views.TrackListView'/>\n"+
 		"\t\t\t<view class='org.jajuk.ui.views.CoverView'  />\n"+

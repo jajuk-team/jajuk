@@ -157,7 +157,7 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
 		if (alHistory.size() == 0){
 			return null;
 		}
-		HistoryItem hiLast = (HistoryItem)alHistory.get(alHistory.size()); 
+		HistoryItem hiLast = (HistoryItem)alHistory.get(0); 
 		return hiLast.getFileId();
 	}
 	
