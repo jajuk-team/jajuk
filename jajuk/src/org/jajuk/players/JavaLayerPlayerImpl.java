@@ -97,6 +97,9 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
                 TAudioFileReader.m_nMarkLimit = 600000;
                 player.open(new File(file.getAbsolutePath()));
             }
+            else{
+                throw e;
+            }
         }
         
         if (fPosition > 0.0f) {
