@@ -107,7 +107,22 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
 	public synchronized void clear(){
 		alHistory.clear();
 	}
-	
+    
+    /**
+     * Cleanup history of dead items (removed files after a refresh)
+     *
+     */
+    public synchronized void cleanup(){
+        Iterator it = alHistory.iterator();
+        while (it.hasNext()){
+            HistoryItem hi = (HistoryItem)it.next();
+            if (hi.toString() == null){
+                it.remove();
+            }
+        }
+    }
+    
+    
 	/** Clear history for all history items before iDays days*/
 	public synchronized void clear(int iDays){
 		//Begins by clearing deleted files
@@ -277,10 +292,10 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
 	}
 
 	/**
-	 * @return Returns the alHistory.
+	 * @return Returns a copy of the history
 	 */
 	public ArrayList getHistory() {
-		return alHistory;
+		return (ArrayList)alHistory.clone();
 	}
 
     /* (non-Javadoc)
