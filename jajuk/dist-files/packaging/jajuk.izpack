@@ -9,7 +9,13 @@
         </authors>
         <url>http://jajuk.sourceforge.jajuk</url>
     </info>
-    <guiprefs height="600" resizable="yes" width="800"/>
+    <guiprefs height="600" resizable="yes" width="800">
+   	 	<laf name="liquid">
+   	 		<os family="unix" />
+   	 		<os family="windows" />
+   	 		<os family="mac" />
+   	 	</laf>	 
+   	 </guiprefs>
     <locale>
         <langpack iso3="eng"/>
         <langpack iso3="fra"/>

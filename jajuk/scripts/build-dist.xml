@@ -159,7 +159,6 @@
                 <izpack input='/data/java/workspace/jajuk/dist-files/packaging/jajuk.izpack'
         output='/tmp/${distjarname}${version}.jar'
         basedir='/data/java/workspace/jajuk'
-        installerType='standard-kunststoff'
         izPackDir='/prog/IzPack'/>
       </target>
   
