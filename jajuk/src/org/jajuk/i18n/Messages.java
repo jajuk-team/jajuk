@@ -172,7 +172,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings	{
                         String sLine = st.nextToken();
                         if (sLine.length()>0 && !sLine.startsWith("#") && sLine.indexOf('=')!=-1){ //$NON-NLS-1$
                             StringTokenizer stLine = new StringTokenizer(sLine,"="); //$NON-NLS-1$
-                            properties.put(stLine.nextToken(),stLine.nextToken());
+                            properties.put(stLine.nextToken().trim(),stLine.nextToken().trim()); //trim to ignore space at begin end end of lines
                         }
                     }
 			    }
