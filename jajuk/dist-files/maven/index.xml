@@ -34,6 +34,7 @@
 						<img alt='Italian' title='Italian' src='flags/flag_it.png' style='width: 21px; height: 14px;'/>*
 						<img alt='Swedish' title='Swedish' src='flags/flag_sv.png' style='width: 21px; height: 14px;'/>*
 						<img alt='Dutch' title='Dutch' src='flags/flag_nl.png' style='width: 21px; height: 14px;'/>*
+						<img alt='Spanish' title='Spanish' src='flags/flag_sp.png' style='width: 21px; height: 14px;'/>
 					</td>
 				</tr>
 				<tr>
@@ -46,6 +47,7 @@
 						<a  href='./README_swe.html'><img alt='Swedish' title='Swedish' src='http://jajuk.sourceforge.net/flags/flag_sv.png' style='border: 0px solid ; width: 21px; height: 14px;'/></a>
 						<a  href='./README_chn.html'><img alt='Chinese' title='Chinese' src='http://jajuk.sourceforge.net/flags/flag_zh.png' style='border: 0px solid ; width: 21px; height: 14px;'/></a>
 						<a  href='./README_nld.html'><img alt='Dutch' title='Dutch' src='http://jajuk.sourceforge.net/flags/flag_nl.png' style='border: 0px solid ; width: 21px; height: 14px;'/></a>
+						<a  href='./README_esp.html'><img alt='Spanish' title='Spanish' src='http://jajuk.sourceforge.net/flags/flag_sp.png' style='border: 0px solid ; width: 21px; height: 14px;'/></a>
 					</td>
 				</tr>
 				<tr>

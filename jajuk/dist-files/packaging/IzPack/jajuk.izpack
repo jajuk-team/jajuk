@@ -31,9 +31,9 @@
         <langpack iso3='ita'/>
         <langpack iso3='swe'/>
         <langpack iso3='ned'/>
+        <langpack iso3='spa'/>
         <langpack iso3='jpn'/>
         <langpack iso3='rus'/>
-        <langpack iso3='spa'/>
         <langpack iso3='fin'/>
         <langpack iso3='hun'/>
         <langpack iso3='pol'/>
@@ -47,6 +47,7 @@
          <res id='HTMLInfoPanel.info_ita' src='/data/java/workspace/jajuk/dist-files/doc/README_ita.html'/>
          <res id='HTMLInfoPanel.info_swe' src='/data/java/workspace/jajuk/dist-files/doc/README_swe.html'/>
          <res id='HTMLInfoPanel.info_ned' src='/data/java/workspace/jajuk/dist-files/doc/README_nld.html'/>
+         <res id='HTMLInfoPanel.info_esp' src='/data/java/workspace/jajuk/dist-files/doc/README_esp.html'/>
          <res id='LicencePanel.licence' src='/data/java/workspace/jajuk/dist-files/legals/LICENSE.txt'/>
         <res id='shortcutSpec.xml' src='/data/java/workspace/jajuk/dist-files/packaging/IzPack/shortcutSpec.xml'/>
     	<res id='installer.langsel.img' src='/data/java/workspace/jajuk/dist-files/images/jajuk-installer.png' />
