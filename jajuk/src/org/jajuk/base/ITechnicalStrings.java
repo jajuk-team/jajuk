@@ -305,6 +305,8 @@ public interface ITechnicalStrings {
 	public static final String CONF_SHOW_AT_STARTUP= "jajuk.show_at_startup"; //show jajuk window at startup
 	public static final String CONF_BESTOF_SIZE= "jajuk.bestof_size"; //best of size
 	public static final String CONF_VOLUME= "jajuk.volume"; //gain (float)
+	public static final String CONF_REGEXP= "jajuk.regexp"; //use regular expressions ?
+	
 	
 	//miscelanous
 	public static final String TRUE= "true";
