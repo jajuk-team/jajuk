@@ -133,7 +133,6 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 						{height1}}; //note we can't set a % for history combo box because of popup size
 				setLayout(new TableLayout(size));
 				sbSearch = new SearchBox(CommandJPanel.this);
-				setBorder(BorderFactory.createEmptyBorder(0,0,7,0));
 				
 				//history
 				jcbHistory = new SteppedComboBox(History.getInstance().getHistory().toArray());
