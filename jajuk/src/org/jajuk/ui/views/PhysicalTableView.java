@@ -58,8 +58,10 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
 	JMenuItem jmiFilePush;
 	JMenuItem jmiFilePlayShuffle;
 	JMenuItem jmiFilePlayRepeat;
+	JMenuItem jmiFilePlayDirectory;
 	JMenuItem jmiFileSetProperty;
 	JMenuItem jmiFileProperties;
+	
 	
 	/*
 	 * (non-Javadoc)
@@ -93,6 +95,8 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
 		jmiFilePlayShuffle.addActionListener(this);
 		jmiFilePlayRepeat = new JMenuItem(Messages.getString("PhysicalTableView.4")); //$NON-NLS-1$
 		jmiFilePlayRepeat.addActionListener(this);
+		jmiFilePlayDirectory = new JMenuItem(Messages.getString("PhysicalTableView.15")); //$NON-NLS-1$
+		jmiFilePlayDirectory.addActionListener(this);
 		jmiFileSetProperty = new JMenuItem(Messages.getString("PhysicalTableView.5")); //$NON-NLS-1$
 		jmiFileSetProperty.setEnabled(false);
 		jmiFileSetProperty.addActionListener(this);
@@ -103,6 +107,7 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
 		jmenuFile.add(jmiFilePush);
 		jmenuFile.add(jmiFilePlayShuffle);
 		jmenuFile.add(jmiFilePlayRepeat);
+		jmenuFile.add(jmiFilePlayDirectory);
 		jmenuFile.add(jmiFileSetProperty);
 		jmenuFile.add(jmiFileProperties);
 	}
@@ -243,18 +248,32 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
 				//computes selected files
 				ArrayList alFilesToPlay = new ArrayList(10);
 				int[] indexes = jtable.getSelectedRows();
-				for (int i=0;i<indexes.length;i++){
+				for (int i=0;i<indexes.length;i++){ //each selected track
 					File file = FileManager.getFile(jtable.getSortingModel().getValueAt(indexes[i],jtable.getColumnCount()).toString());
-					if (!file.isScanned()){
-						alFilesToPlay.add(file);
+					ArrayList alFilesToPlay2 = new ArrayList(indexes.length);
+					if (e.getSource() == jmiFilePlayDirectory){
+					    alFilesToPlay2.addAll(FileManager.getAllDirectory(file));   
 					}
 					else{
-						Messages.showErrorMessage("120",file.getDirectory().getDevice().getName()); //$NON-NLS-1$
-						return;  //stop here to avoid error messages 
+					    alFilesToPlay2.add(file);    
 					}
+					Iterator it = alFilesToPlay2.iterator();
+					while (it.hasNext()){ //each selected file fromt the same directory 
+					    File file2 = (File)it.next();
+					    if (!file2.isScanned()) {
+							if (!alFilesToPlay.contains(file2)){
+							    alFilesToPlay.add(file2);
+							}
+						}
+						else{
+							Messages.showErrorMessage("120",file2.getDirectory().getDevice().getName()); //$NON-NLS-1$
+							return;  //stop here to avoid error messages 
+						}
+					}    
 				}
+					
 				//simple play
-				if ( e.getSource() == jmiFilePlay){
+				if ( e.getSource() == jmiFilePlay || e.getSource() == jmiFilePlayDirectory){
 						FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFilesToPlay),
 							ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
 				}

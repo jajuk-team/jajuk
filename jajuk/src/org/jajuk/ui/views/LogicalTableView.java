@@ -28,6 +28,8 @@ import java.util.regex.PatternSyntaxException;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
+import org.jajuk.base.Album;
+import org.jajuk.base.Author;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
 import org.jajuk.base.StackItem;
@@ -58,6 +60,8 @@ public class LogicalTableView extends AbstractTableView implements Observer{
 	JMenuItem jmiTrackPush;
 	JMenuItem jmiTrackPlayShuffle;
 	JMenuItem jmiTrackPlayRepeat;
+	JMenuItem jmiTrackPlayAlbum;
+	JMenuItem jmiTrackPlayAuthor;
 	JMenuItem jmiTrackSetProperty;
 	JMenuItem jmiTrackProperties;
 	
@@ -86,24 +90,30 @@ public class LogicalTableView extends AbstractTableView implements Observer{
 		ltv = this;
 	    // Track menu
 		jmenuTrack = new JPopupMenu();
-		jmiTrackPlay = new JMenuItem(Messages.getString("PhysicalTableView.1")); //$NON-NLS-1$
+		jmiTrackPlay = new JMenuItem(Messages.getString("LogicalTableView.7")); //$NON-NLS-1$
 		jmiTrackPlay.addActionListener(this);
-		jmiTrackPush = new JMenuItem(Messages.getString("PhysicalTableView.2")); //$NON-NLS-1$
+		jmiTrackPush = new JMenuItem(Messages.getString("LogicalTableView.8")); //$NON-NLS-1$
 		jmiTrackPush.addActionListener(this);
-		jmiTrackPlayShuffle = new JMenuItem(Messages.getString("PhysicalTableView.3")); //$NON-NLS-1$
+		jmiTrackPlayShuffle = new JMenuItem(Messages.getString("LogicalTableView.9")); //$NON-NLS-1$
 		jmiTrackPlayShuffle.addActionListener(this);
-		jmiTrackPlayRepeat = new JMenuItem(Messages.getString("PhysicalTableView.4")); //$NON-NLS-1$
+		jmiTrackPlayRepeat = new JMenuItem(Messages.getString("LogicalTableView.10")); //$NON-NLS-1$
 		jmiTrackPlayRepeat.addActionListener(this);
-		jmiTrackSetProperty = new JMenuItem(Messages.getString("PhysicalTableView.5")); //$NON-NLS-1$
+		jmiTrackPlayAlbum = new JMenuItem(Messages.getString("LogicalTableView.11")); //$NON-NLS-1$
+		jmiTrackPlayAlbum.addActionListener(this);
+		jmiTrackPlayAuthor = new JMenuItem(Messages.getString("LogicalTableView.12")); //$NON-NLS-1$
+		jmiTrackPlayAuthor.addActionListener(this);
+		jmiTrackSetProperty = new JMenuItem(Messages.getString("LogicalTableView.13")); //$NON-NLS-1$
 		jmiTrackSetProperty.setEnabled(false);
 		jmiTrackSetProperty.addActionListener(this);
-		jmiTrackProperties = new JMenuItem(Messages.getString("PhysicalTableView.6")); //$NON-NLS-1$
+		jmiTrackProperties = new JMenuItem(Messages.getString("LogicalTableView.14")); //$NON-NLS-1$
 		jmiTrackProperties.setEnabled(false);
 		jmiTrackProperties.addActionListener(this);
 		jmenuTrack.add(jmiTrackPlay);
 		jmenuTrack.add(jmiTrackPush);
 		jmenuTrack.add(jmiTrackPlayShuffle);
 		jmenuTrack.add(jmiTrackPlayRepeat);
+		jmenuTrack.add(jmiTrackPlayAlbum);
+		jmenuTrack.add(jmiTrackPlayAuthor);
 		jmenuTrack.add(jmiTrackSetProperty);
 		jmenuTrack.add(jmiTrackProperties);
 	}
@@ -243,11 +253,27 @@ public class LogicalTableView extends AbstractTableView implements Observer{
 				//computes selected tracks
 				ArrayList alFilesToPlay = new ArrayList(10);
 				int[] indexes = jtable.getSelectedRows();
-				for (int i=0;i<indexes.length;i++){
+				for (int i=0;i<indexes.length;i++){ //each track in selection
 					Track track = TrackManager.getTrack(jtable.getSortingModel().getValueAt(indexes[i],jtable.getColumnCount()).toString());
-					File file = track.getPlayeableFile();
-					if ( file != null){
-						alFilesToPlay.add(file);
+					ArrayList alTracks = new ArrayList(indexes.length);
+					if (e.getSource() == jmiTrackPlayAlbum){
+					    Album album = track.getAlbum();
+					    alTracks.addAll(album.getTracks()); //add all tracks from the same album
+					}
+					if (e.getSource() == jmiTrackPlayAuthor){
+					    Author author = track.getAuthor();
+					    alTracks.addAll(author.getTracks()); //add all tracks from the same author
+					}
+					else{
+					    alTracks.add(track);
+					}
+					Iterator it = alTracks.iterator();
+					while (it.hasNext()){ //each selected track and tracks from same album /author if required 
+					    Track track2 = (Track)it.next();
+					    File file = track2.getPlayeableFile();
+						if ( file != null && !alFilesToPlay.contains(file)){
+							alFilesToPlay.add(file);
+						}
 					}
 				}
 				if ( alFilesToPlay.size() == 0){
@@ -255,7 +281,7 @@ public class LogicalTableView extends AbstractTableView implements Observer{
 					return;
 				}
 				//simple play
-				if ( e.getSource() == jmiTrackPlay){
+				if ( e.getSource() == jmiTrackPlay || e.getSource() == jmiTrackPlayAlbum || e.getSource() == jmiTrackPlayAuthor ){
 					FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFilesToPlay),
 							ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
 				}
