@@ -119,6 +119,7 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
 			JajukJMenuBar.getInstance().jcbmiShuffle.setSelected(!b);
 			if (!b == true) { //enabled button
 				CommandJPanel.getInstance().jbRandom.setBorder(BorderFactory.createLoweredBevelBorder());
+				FIFO.getInstance().shuffle(); //shuffle current selection
 			}
 			else {
 				CommandJPanel.getInstance().jbRandom.setBorder(BorderFactory.createRaisedBevelBorder());
