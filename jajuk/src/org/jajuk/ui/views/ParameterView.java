@@ -1033,12 +1033,17 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		//Covers
 		jcbAutoCover.setSelected(ConfigurationManager.getBoolean(CONF_COVERS_AUTO_COVER));
 		jtfMinSize.setText(ConfigurationManager.getProperty(CONF_COVERS_MIN_SIZE));
+		jtfMinSize.setEnabled(ConfigurationManager.getBoolean(CONF_COVERS_AUTO_COVER));
 		jtfMaxSize.setText(ConfigurationManager.getProperty(CONF_COVERS_MAX_SIZE));
+		jtfMaxSize.setEnabled(ConfigurationManager.getBoolean(CONF_COVERS_AUTO_COVER));
 		jcbShuffleCover.setSelected(ConfigurationManager.getBoolean(CONF_COVERS_SHUFFLE));
+		jcbShuffleCover.setEnabled(ConfigurationManager.getBoolean(CONF_COVERS_AUTO_COVER));
 		jcbPreLoad.setSelected(ConfigurationManager.getBoolean(CONF_COVERS_PRELOAD));
+		jcbPreLoad.setEnabled(ConfigurationManager.getBoolean(CONF_COVERS_AUTO_COVER));
 		jcbResize.setSelected(ConfigurationManager.getBoolean(CONF_COVERS_RESIZE));
+		jcbResize.setEnabled(ConfigurationManager.getBoolean(CONF_COVERS_AUTO_COVER));
 		jcbLoadEachTrack.setSelected(ConfigurationManager.getBoolean(CONF_COVERS_CHANGE_AT_EACH_TRACK));
-		jcbLoadEachTrack.setEnabled(jcbShuffleCover.isSelected()); //this mode requires shuffle mode
+		jcbLoadEachTrack.setEnabled(jcbShuffleCover.isSelected() && jcbShuffleCover.isEnabled()); //this mode requires shuffle mode
 	}
 	
 	/* (non-Javadoc)
