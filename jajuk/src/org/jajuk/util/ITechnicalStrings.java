@@ -36,6 +36,12 @@ public interface ITechnicalStrings {
 	public static final int PRECISION = 5;
 	/**Generic border*/
 	public static final int BORDER = 4;
+	/**Maximum size for covers in KB*/
+    public static final int MAX_COVER_SIZE=500;
+    /**Maximum number of remote covers*/
+    public static final int MAX_REMOTE_COVERS=10;
+    
+    
 		
 	// Jajuk version
 	public static final String JAJUK_VERSION = "0.3.1rc6";

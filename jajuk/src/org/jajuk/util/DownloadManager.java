@@ -44,9 +44,7 @@ import org.jajuk.util.log.Log;
  */
 public class DownloadManager implements ITechnicalStrings {
 
-    /**Http client**/
-	private static HttpClient client = null;
-    	
+     	
 		/**
 	 * @param sProxyUser
 	 * @param sProxyPassswd
@@ -121,7 +119,7 @@ public class DownloadManager implements ITechnicalStrings {
 	        for (int i=1;i<strings.length;i++){
 	            int iKPos = strings[i].indexOf('k');
 	            int iSize = Integer.parseInt(strings[i].substring(0,iKPos));
-	            if ( iSize > ConfigurationManager.getInt(CONF_COVERS_MAX_SIZE) || iSize < ConfigurationManager.getInt(CONF_COVERS_MIN_SIZE) ){
+	            if ( iSize > ConfigurationManager.getInt(CONF_COVERS_MAX_SIZE) ||  iSize > MAX_COVER_SIZE || iSize < ConfigurationManager.getInt(CONF_COVERS_MIN_SIZE) ){
 	                alOut.remove(i-(1+iNbRemove));
 	                iNbRemove++;
 	            }
@@ -146,15 +144,14 @@ public class DownloadManager implements ITechnicalStrings {
 	    byte[] bOut = null;
 	    GetMethod get = null;
 	    try{
-	        if ( client == null){
-	            int iConTO = 1000*ConfigurationManager.getInt(CONF_NETWORK_CONNECTION_TO);
-	            int iTraTO =  1000*ConfigurationManager.getInt(CONF_NETWORK_TRANSFERT_TO);
-	            if (ConfigurationManager.getBoolean(CONF_NETWORK_USE_PROXY)){
-	                client = getHTTPClient(ConfigurationManager.getProperty(CONF_NETWORK_PROXY_LOGIN),DownloadManager.getProxyPwd(),iConTO,iTraTO);
-	            }
-	            else{
-	                client = getHTTPClient(iConTO,iTraTO);
-	            }
+	        HttpClient client = null;
+	        int iConTO = 1000*ConfigurationManager.getInt(CONF_NETWORK_CONNECTION_TO);
+	        int iTraTO =  1000*ConfigurationManager.getInt(CONF_NETWORK_TRANSFERT_TO);
+	        if (ConfigurationManager.getBoolean(CONF_NETWORK_USE_PROXY)){
+	            client = getHTTPClient(ConfigurationManager.getProperty(CONF_NETWORK_PROXY_LOGIN),DownloadManager.getProxyPwd(),iConTO,iTraTO);
+	        }
+	        else{
+	            client = getHTTPClient(iConTO,iTraTO);
 	        }
 	        get = new GetMethod(url.toString());
 	        get.addRequestHeader(new Header("User-Agent","Mozilla/4.0 (compatible; MSIE 5.0; Windows 2000) Opera 6.03  [en]")); //$NON-NLS-1$ //$NON-NLS-2$
@@ -163,6 +160,7 @@ public class DownloadManager implements ITechnicalStrings {
 	        bOut = get.getResponseBody();
 	     }
 	    catch(Exception e){
+	        e.printStackTrace();
 	        Log.debug("Time out during cover lookup"); //$NON-NLS-1$
 	    	throw new JajukException("129"); //mainly time outs //$NON-NLS-1$
 	    }

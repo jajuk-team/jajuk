@@ -31,6 +31,7 @@ import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 
 import org.jajuk.Main;
+import org.jajuk.i18n.Messages;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.ObservationManager;
 import org.jajuk.ui.Observer;
@@ -90,6 +91,7 @@ public class AnimationView extends ViewAdapter implements ITechnicalStrings,Obse
 		add(btl1);
 		
 		ObservationManager.register(EVENT_INFORMATION_DISPLAY,this);
+		ObservationManager.register(EVENT_ZERO,this);
 		//check if a track has already been lauched
 		update(EVENT_INFORMATION_DISPLAY);
 	}
@@ -149,6 +151,9 @@ public class AnimationView extends ViewAdapter implements ITechnicalStrings,Obse
 			if (s != null  && !s.trim().equals("")){ //$NON-NLS-1$
 				setText(s);   
 			}
+		}
+		else if (subject.equals(EVENT_ZERO)){
+		    setText(Messages.getString("JajukWindow.18"));
 		}
 	}
 	

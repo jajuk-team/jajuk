@@ -99,13 +99,15 @@
     <mkdir dir='${rpmbuilddir_mdk}/SPECS'/>
     <mkdir dir='${rpmbuilddir_mdk}/BUILD'/>
     <mkdir dir='${rpmdistdir_mdk}'/>
-    <mkdir dir='${rpmdistdir_mdk}/usr/local/bin'/>
+    <mkdir dir='${rpmdistdir_mdk}/usr/bin'/>
     <mkdir dir='${rpmdistdir_mdk}/usr/lib/jajuk/bin'/>
     <mkdir dir='${rpmdistdir_mdk}/usr/lib/jajuk/lib'/>
     <mkdir dir='${rpmdistdir_mdk}/usr/lib/jajuk/native'/>
     <mkdir dir='${rpmdistdir_mdk}/usr/share/applications'/>
-    <mkdir dir='${rpmdistdir_mdk}/usr/share/doc/packages/jajuk'/>
-    <mkdir dir='${rpmdistdir_mdk}/usr/share/pixmaps'/>
+    <mkdir dir='${rpmdistdir_mdk}/usr/share/doc/jajuk'/>
+    <mkdir dir='${rpmdistdir_mdk}/usr/share/icons/mini'/>
+    <mkdir dir='${rpmdistdir_mdk}/usr/share/icons/large'/>
+    <mkdir dir='${rpmdistdir_mdk}/usr/lib/menu'/>
     
     <!-- Copy files -->
     	<!--Suse-->
@@ -130,25 +132,30 @@
     	<fileset file='${basedir}/dist-files/icons/64x64/jajuk-logo.png'/>
     </copy>
         	<!--Mandrake-->
-    <copy todir='${rpmdistdir_mdk}/usr/local/bin' >
+    <copy todir='${rpmdistdir_mdk}/usr/bin' >
     	<fileset file='${basedir}/scripts/jajuk'/>
     </copy>
-    <chmod file='${rpmdistdir_mdk}/usr/local/bin/jajuk' perm='ugo+rx'/>
+    <chmod file='${rpmdistdir_mdk}/usr/bin/jajuk' perm='ugo+rx'/>
     <copy todir='${rpmdistdir_mdk}/usr/lib/jajuk/lib' >
     	<fileset dir='${basedir}/lib'/>
     </copy>
     <copy todir='${rpmdistdir_mdk}/usr/lib/jajuk/native' >
     	<fileset file='${basedir}/native/*.so'/>
     </copy>
-    <copy todir='${rpmdistdir_mdk}/usr/share/applications' >
-    	<fileset file='${basedir}/dist-files/packaging/RPMS/suse/Jajuk.desktop'/>
-    </copy>
-    <chmod file='${rpmdistdir_mdk}/usr/share/applications/Jajuk.desktop' perm='ugo+rwx'/>
-    <copy todir='${rpmdistdir_mdk}/usr/share/doc/packages/jajuk' >
+    <copy todir='${rpmdistdir_mdk}/usr/share/doc/jajuk' >
     	<fileset file='${basedir}/dist-files/doc/README*.html'/>
     </copy>
-    <copy todir='${rpmdistdir_mdk}/usr/share/pixmaps' >
-    	<fileset file='${basedir}/dist-files/icons/64x64/jajuk-logo.png'/>
+    <copy todir='${rpmdistdir_mdk}/usr/share/icons' >
+    	<fileset file='${basedir}/dist-files/packaging/RPMS/mdk/icons/32x32/jajuk-logo.png'/>
+    </copy>
+    <copy todir='${rpmdistdir_mdk}/usr/share/icons/mini' >
+    	<fileset file='${basedir}/dist-files/packaging/RPMS/mdk/icons/16x16/jajuk-logo.png'/>
+    </copy>
+    <copy todir='${rpmdistdir_mdk}/usr/share/icons/large' >
+    	<fileset file='${basedir}/dist-files/packaging/RPMS/mdk/icons/48x48/jajuk-logo.png'/>
+    </copy>
+    <copy todir='${rpmdistdir_mdk}/usr/lib/menu' >
+    	<fileset file='${basedir}/dist-files/packaging/RPMS/mdk/jajuk'/>
     </copy>
         	
   </target>

@@ -306,13 +306,21 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 	 * @param alBasicFilesToAdd : List of File or BasicFiles. Files are transformed to BasicFiles automaticaly
 	 */
 	public synchronized void addBasicFiles(ArrayList alBasicFilesToAdd) throws JajukException{
-		Iterator it = alBasicFilesToAdd.iterator();
-		while (it.hasNext()){
-			org.jajuk.base.File file = (org.jajuk.base.File)it.next();
-			if (!(file instanceof BasicFile)){
-				file = new BasicFile(file);
-			}
-			addBasicFile((BasicFile)file);
+	    try{
+	        Iterator it = alBasicFilesToAdd.iterator();
+	        while (it.hasNext()){
+	            org.jajuk.base.File file = (org.jajuk.base.File)it.next();
+	            if (!(file instanceof BasicFile)){
+	                file = new BasicFile(file);
+	            }
+	            addBasicFile((BasicFile)file);
+	        }
+	    }
+	    catch(Exception e){
+	        Log.error(e);
+	    }
+	    finally{
+	        ObservationManager.notify(EVENT_PLAYLIST_REFRESH); //refresh playlist editor    
 		}
 	}
 	

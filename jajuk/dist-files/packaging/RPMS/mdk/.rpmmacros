@@ -1,6 +1,6 @@
 %packager               Bertrand Florat
-%distribution           Mandrake
-%vendor                 Jajuk team
+%distribution           Mandrake Linux
+%vendor                 MandrakeSoft
 
 %_topdir               /tmp/jajuk-dist/RPMBUILD
 %_tmppath               %{_topdir}/tmp
@@ -12,3 +12,4 @@
 %_rpmdir                %{_topdir}/RPMS
 %_srcrpmdir             %{_topdir}/SRPMS
 %_rpmfilename           %%{NAME}-%%{VERSION}-%%{RELEASE}.rpm
+

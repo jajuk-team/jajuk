@@ -24,8 +24,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 
+import org.jajuk.ui.ObservationManager;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.log.Log;
 
 /**
  *  Manages bookmarks
@@ -153,9 +155,17 @@ public class Bookmarks implements ITechnicalStrings {
 	 * @param alFilesToAdd
 	 */
 	public void addFiles(ArrayList alFilesToAdd){
-		Iterator it = alFilesToAdd.iterator();
-		while ( it.hasNext()){
-			addFile((File)it.next());
-		}
+	    try{
+	        Iterator it = alFilesToAdd.iterator();
+	        while ( it.hasNext()){
+	            addFile((File)it.next());
+	        }
+	    }
+	    catch(Exception e){
+	        Log.error(e);
+	    }
+	    finally{
+	        ObservationManager.notify(EVENT_PLAYLIST_REFRESH); //refresh playlist editor    
+	    }
 	}
 }

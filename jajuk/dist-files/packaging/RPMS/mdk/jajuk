@@ -1,0 +1,4 @@
+?package(jajuk):command="/usr/bin/jajuk" icon="jajuk-logo.png" \
+                needs="X11" section="Multimedia/Sound" title="Jajuk" \
+		longtitle="Jajuk Advanced Jukebox" \
+                mimetypes="audio/mpeg3," accept_url="false" multiple_files="true"

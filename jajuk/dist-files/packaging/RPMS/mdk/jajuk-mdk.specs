@@ -1,10 +1,10 @@
 %define name                     jajuk
-%define version                     0.3.1.rc5
-%define release                     3mdk
+%define version                     0.3.1rc6
+%define release                     1mdk
 
 %define section                  Multimedia/Sound
-%define title                                   Jajuk
-%define longtitle                  Jajuk Advanced Jukebox
+%define title                         Jajuk
+%define longtitle                 Jajuk Advanced Jukebox
 
 
 Summary:                    %{longtitle}
@@ -14,9 +14,8 @@ Release:                     %{release}
 License:                     GPL
 Group:                         Sound
 Url:                         http://%{name}.sourceforge.net
-Source0:                     http://%{name}.sourceforge.net/%{name}-0.3.1.rc5.tar.bz2
-Source1:        icons.tar.gz
-BuildRoot:                     %{_tmppath}/%{name}-%{version}-buildroot
+Source: http://jajuk.sourceforge.net
+BuildRoot: %_topdir/%{name}
 Requires:                     j2re >= 1.4.2
 
 %description
@@ -36,84 +35,50 @@ Jajuk main principles are :
    and provide multiple ways to perform the same operation
    * Only for music: Jajuk will never become a multi-media
    (video, pictures) jukebox
-
-%prep
-rm -rf $RPM_BUILD_ROOT
-
-%setup  -n %{name}-%{version}
-tar xzf %{SOURCE1}
-%install
-
-install -d $RPM_BUILD_ROOT%{_datadir}/doc/packages/%{name}/
-install -d $RPM_BUILD_ROOT%{_datadir}/applications/
-install -d $RPM_BUILD_ROOT%{_datadir}/pixmaps/
-install -d $RPM_BUILD_ROOT%{_bindir}
-install -d $RPM_BUILD_ROOT%{_libdir}/%{name}/bin/
-install -d $RPM_BUILD_ROOT%{_libdir}/%{name}/lib/
-install -d $RPM_BUILD_ROOT%{_libdir}/%{name}/native/
-
-install -m 0755 ./usr/bin/* $RPM_BUILD_ROOT%{_bindir}/
-install -m 0755 ./%{_libdir}/%{name}/bin/*
-$RPM_BUILD_ROOT%{_libdir}/%{name}/bin/
-install -m 0644 ./%{_libdir}/%{name}/lib/*
-$RPM_BUILD_ROOT%{_libdir}/%{name}/lib/
-install -m 0644 ./%{_libdir}/%{name}/native/*
-$RPM_BUILD_ROOT%{_libdir}/%{name}/native/
-install -m 0644 ./%{_datadir}/doc/packages/%{name}/*
-$RPM_BUILD_ROOT%{_datadir}/doc/packages/%{name}/
-install -m 0644 ./%{_datadir}/applications/*
-$RPM_BUILD_ROOT%{_datadir}/applications/
-install -m 0644 ./%{_datadir}/pixmaps/* $RPM_BUILD_ROOT%{_datadir}/pixmaps/
-
-#menu icons
-install -D -m 644 %{name}-logo-16.png %{buildroot}%{_miconsdir}/%{name}.png
-install -D -m 644 %{name}-logo-32.png %{buildroot}%{_iconsdir}/%{name}.png
-install -D -m 644 %{name}-logo-32.png %{buildroot}%{_liconsdir}/%{name}.png
-
-#menu entry
-mkdir -p %{buildroot}%{_menudir}
-cat > %{buildroot}/%{_menudir}/%{name} <<EOF
-?package(%{name}): \
-command="%{_bindir}/%{name}" \
-title="%{title}" \
-longtitle="%{longtitle}" \
-needs="x11" \
-icon="%{name}.png" \
-section="%{section}"
-EOF
-
-
-%clean
-rm -rf $RPM_BUILD_ROOT
+%files
+%defattr(-,root,root)
+  /usr/bin/jajuk
+   /usr/lib/jajuk/bin/jajuk-help.jar
+   /usr/lib/jajuk/bin/jajuk.jar
+   /usr/lib/jajuk/lib/animation-1.1.3.jar
+   /usr/lib/jajuk/lib/basicplayer-2.3.jar
+   /usr/lib/jajuk/lib/commons-httpclient-2.0.1.jar
+   /usr/lib/jajuk/lib/commons-logging-1.0.jar
+   /usr/lib/jajuk/lib/id3-1.6.0d7.jar
+   /usr/lib/jajuk/lib/javalayer-0.4.jar
+   /usr/lib/jajuk/lib/jcommon-0.9.0.jar
+   /usr/lib/jajuk/lib/jfreechart-0.9.15.jar
+   /usr/lib/jajuk/lib/jh-2.0.jar
+   /usr/lib/jajuk/lib/jlGui-2.3.jar
+   /usr/lib/jajuk/lib/jogg-0.0.5.jar
+   /usr/lib/jajuk/lib/jorbis-0.0.12.jar
+   /usr/lib/jajuk/lib/kunststoff-2.0.1.jar
+   /usr/lib/jajuk/lib/liquidlnf-0.2.9-alpha5.jar
+   /usr/lib/jajuk/lib/log4j-1.2.6.jar
+   /usr/lib/jajuk/lib/metouia-1.0b.jar
+   /usr/lib/jajuk/lib/mp3spi-1.9.jar
+   /usr/lib/jajuk/lib/tablelayout-1.0.jar
+   /usr/lib/jajuk/lib/tray-0.1.6.jar
+   /usr/lib/jajuk/lib/tritonus_share-1.0.jar
+   /usr/lib/jajuk/lib/vorbisspi-1.0.jar
+    /usr/lib/jajuk/lib/infonodeDockingWindows-1.1.0.jar
+   /usr/lib/jajuk/native/libtray.so
+   /usr/share/doc/jajuk/README.html
+   /usr/share/doc/jajuk/README_chn.html
+   /usr/share/doc/jajuk/README_deu.html
+   /usr/share/doc/jajuk/README_fra.html
+   /usr/share/doc/jajuk/README_ita.html
+   /usr/share/doc/jajuk/README_nld.html
+   /usr/share/doc/jajuk/README_swe.html
+   /usr/share/icons/jajuk-logo.png
+   /usr/share/icons/mini/jajuk-logo.png
+   /usr/share/icons/large/jajuk-logo.png
+   /usr/lib/menu/jajuk
 
 %post
-%update_menus
+update-menus
 
 %postun
-%clean_menus
-
-%files
-%defattr(0644,root,root)
-%{_datadir}/doc/packages/%{name}/*
-%{_datadir}/applications/*
-%{_datadir}/pixmaps/*
-%{_libdir}/%{name}/lib/*
-%{_libdir}/%{name}/native/*
-%{_menudir}/*
-%{_miconsdir}/*
-%{_iconsdir}/*
-%{_liconsdir}/*
-
-%defattr(0755,root,root)
-%{_bindir}/%{name}
-%{_libdir}/%{name}/bin/*
-
-%Changelog
-* Tue Nov 30 2004 Neoclust <Neoclust@zarb.org> jajuk-0.3.1.rc3-3mdk
-- Cleaning Spec
-
-* Tue Nov 29 2004 Neoclust <Neoclust@zarb.org> jajuk-0.3.1.rc3-2mdk
-- Adding Menu support
-
-* Tue Nov 28 2004 Neoclust <Neoclust@zarb.org> jajuk-0.3.1.rc3-1mdk
-- Initial Release (Thanks Jipe)
+update-menus
+rm -rf /usr/share/doc/jajuk
+rm -rf /usr/lib/jajuk

@@ -99,7 +99,6 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 	JCheckBox jcbBeforeExit;
 	JCheckBox jcbBeforeRemoveDevice;
 	JCheckBox jcbBeforeDeleteCover;
-	JCheckBox jcbCoverTooLarge;
 	JPanel jpOptions;
 	JCheckBox jcbDisplayUnmounted;
 	JCheckBox jcbRestart;
@@ -688,6 +687,10 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 				try{
 					int iValue = Integer.parseInt(sText);
 					if (iValue < 1 ){ //size should be > 0 
+						jbOK.setEnabled(false);
+						return false;
+					}
+					if (iValue > MAX_COVER_SIZE ){ //size should be > 0 
 						jbOK.setEnabled(false);
 						return false;
 					}
