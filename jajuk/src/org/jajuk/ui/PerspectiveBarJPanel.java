@@ -32,10 +32,10 @@ import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 
-import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.perspectives.IPerspective;
 import org.jajuk.ui.perspectives.PerspectiveManager;
+import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 
 /**

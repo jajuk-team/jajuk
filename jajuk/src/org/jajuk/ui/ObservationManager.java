@@ -28,7 +28,7 @@ import java.util.Properties;
 
 import javax.swing.JComponent;
 
-import org.jajuk.base.ITechnicalStrings;
+import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.log.Log;
 
 

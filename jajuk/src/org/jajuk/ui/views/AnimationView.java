@@ -31,10 +31,10 @@ import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 
 import org.jajuk.Main;
-import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.ObservationManager;
 import org.jajuk.ui.Observer;
+import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.log.Log;
 
 import com.jgoodies.animation.Animation;

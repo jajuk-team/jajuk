@@ -37,9 +37,9 @@ import javax.swing.border.EtchedBorder;
 
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
-import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.base.JajukTimer;
 import org.jajuk.i18n.Messages;
+import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 

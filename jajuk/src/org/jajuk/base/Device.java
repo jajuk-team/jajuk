@@ -32,6 +32,7 @@ import org.jajuk.i18n.Messages;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.ObservationManager;
 import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;

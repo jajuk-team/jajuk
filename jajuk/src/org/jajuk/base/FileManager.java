@@ -31,6 +31,7 @@ import java.util.TreeSet;
 
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.log.Log;
 
 /**

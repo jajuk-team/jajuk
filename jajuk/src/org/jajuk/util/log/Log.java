@@ -21,8 +21,8 @@ package org.jajuk.util.log;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.i18n.Messages;
+import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.error.JajukException;
 
 /**

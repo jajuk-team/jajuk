@@ -25,6 +25,7 @@ import java.util.Enumeration;
 import java.util.Properties;
 
 import org.jajuk.i18n.Messages;
+import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.xml.sax.Attributes;
 

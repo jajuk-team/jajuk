@@ -36,6 +36,7 @@ import org.jajuk.i18n.Messages;
 import org.jajuk.ui.ObservationManager;
 import org.jajuk.ui.Observer;
 import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.xml.sax.Attributes;

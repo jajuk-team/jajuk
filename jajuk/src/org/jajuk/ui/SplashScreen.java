@@ -29,8 +29,8 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.i18n.Messages;
+import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 
 /**

@@ -31,7 +31,7 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import org.jajuk.Main;
-import org.jajuk.base.ITechnicalStrings;
+import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 import org.xml.sax.SAXException;

@@ -25,7 +25,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.JTable;
 import javax.swing.table.TableModel;
 
-import org.jajuk.base.ITechnicalStrings;
+import org.jajuk.util.ITechnicalStrings;
 
 import com.sun.TableSorter;
 

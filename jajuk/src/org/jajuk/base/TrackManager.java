@@ -27,6 +27,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.MD5Processor;
 
 /**

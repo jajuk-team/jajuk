@@ -32,7 +32,6 @@ import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.UsernamePasswordCredentials;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.jajuk.Main;
-import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;

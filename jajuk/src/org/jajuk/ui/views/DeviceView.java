@@ -46,11 +46,11 @@ import javax.swing.SwingUtilities;
 
 import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;
-import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.DeviceWizard;
 import org.jajuk.ui.ObservationManager;
 import org.jajuk.ui.Observer;
+import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 
 /**

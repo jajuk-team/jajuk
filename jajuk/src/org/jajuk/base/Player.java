@@ -24,6 +24,7 @@ import java.util.Properties;
 import org.jajuk.players.IPlayerImpl;
 import org.jajuk.ui.ObservationManager;
 import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.log.Log;
 
 /**

@@ -29,9 +29,9 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
-import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 ;
 

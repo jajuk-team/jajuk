@@ -54,7 +54,6 @@ import javax.swing.SwingUtilities;
 
 import org.jajuk.Main;
 import org.jajuk.base.Directory;
-import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.base.StackItem;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.CommandJPanel;

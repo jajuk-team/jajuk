@@ -34,6 +34,7 @@ import javax.xml.parsers.SAXParserFactory;
 
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.xml.sax.Attributes;

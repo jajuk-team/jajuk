@@ -40,9 +40,9 @@ import net.infonode.docking.util.DockingUtil;
 import net.infonode.docking.util.ViewMap;
 import net.infonode.util.Direction;
 
-import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.ui.views.IView;
 import org.jajuk.ui.views.ViewManager;
+import org.jajuk.util.ITechnicalStrings;
 
 /**
  * Perspective adapter, provide default implementation for perspectives

@@ -50,13 +50,13 @@ import org.jajuk.base.FIFO;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.History;
 import org.jajuk.base.HistoryItem;
-import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.base.JajukTimer;
 import org.jajuk.base.Player;
 import org.jajuk.base.SearchResult;
 import org.jajuk.base.StackItem;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 

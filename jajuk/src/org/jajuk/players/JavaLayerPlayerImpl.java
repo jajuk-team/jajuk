@@ -29,9 +29,9 @@ import javazoom.jlgui.basicplayer.BasicPlayerException;
 import javazoom.jlgui.basicplayer.BasicPlayerListener;
 
 import org.jajuk.base.FIFO;
-import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.base.TypeManager;
 import org.jajuk.i18n.Messages;
+import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 

@@ -25,6 +25,7 @@ import java.util.Iterator;
 import java.util.StringTokenizer;
 
 import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.ITechnicalStrings;
 
 /**
  *  Manages bookmarks

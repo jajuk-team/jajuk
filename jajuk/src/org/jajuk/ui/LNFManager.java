@@ -27,8 +27,8 @@ import javax.swing.LookAndFeel;
 import javax.swing.UIManager;
 import javax.swing.plaf.ComboBoxUI;
 
-import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.i18n.Messages;
+import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.log.Log;
 
 /**

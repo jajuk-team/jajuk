@@ -25,7 +25,6 @@ import java.io.IOException;
 import java.util.Properties;
 
 import org.jajuk.Main;
-import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.log.Log;
 

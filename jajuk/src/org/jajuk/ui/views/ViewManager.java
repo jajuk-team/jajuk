@@ -26,10 +26,10 @@ import java.util.Iterator;
 
 import javax.swing.JPanel;
 
-import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.JajukContainer;
 import org.jajuk.ui.perspectives.PerspectiveManager;
+import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 

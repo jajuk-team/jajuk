@@ -25,7 +25,7 @@ import java.awt.event.ComponentEvent;
 
 import javax.swing.JPanel;
 
-import org.jajuk.base.ITechnicalStrings;
+import org.jajuk.util.ITechnicalStrings;
 
 /**
  *  Default implementation for views

@@ -43,12 +43,12 @@ import org.jajuk.base.Device;
 import org.jajuk.base.Directory;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
-import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.base.Style;
 import org.jajuk.base.Track;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.views.AbstractPlaylistEditorView;
 import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 
