@@ -544,7 +544,44 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
             }
             Image img = icon.getImage();
             if (ConfigurationManager.getBoolean(CONF_COVERS_RESIZE)){
-                ImageFilter filter = new AreaAveragingScaleFilter(this.getWidth()-8,this.getHeight()-30);
+                int iDisplayAreaHeight = this.getHeight() - 30; 
+                int iDisplayAreaWidth = this.getWidth() - 8; 
+                //check minimum sizes
+                if (iDisplayAreaHeight < 1 || iDisplayAreaWidth <1){
+                    return;
+                }
+                int iNewWidth;
+                int iNewHeight;
+                float fRatio;
+                if ( iDisplayAreaHeight > iDisplayAreaWidth){
+                    // Width is smaller than height : try to optimize height
+                    iNewHeight = iDisplayAreaHeight; //take all possible height
+                    //we check now if width will be visible entirely with optimized height
+                    float fHeightRatio = (float)iNewHeight/icon.getIconHeight();
+                    if (icon.getIconWidth()*fHeightRatio <= iDisplayAreaWidth){
+                        iNewWidth = (int)(icon.getIconWidth()*fHeightRatio);
+                     }
+                    else{
+                        //no? so we optimize width 
+                        iNewWidth = iDisplayAreaWidth;
+                        iNewHeight = (int)(icon.getIconHeight() * ((float)iNewWidth/icon.getIconWidth())) ;     
+                    }
+                } 
+                else  {
+                    // Height is smaller or equal than width : try to optimize width
+                    iNewWidth = iDisplayAreaWidth; //take all possible width
+                    // we check now if height will be visible entirely with optimized width
+                    float fWidthRatio = (float)iNewWidth/icon.getIconWidth();
+                    if (icon.getIconHeight()*(fWidthRatio) <= iDisplayAreaHeight){
+                        iNewHeight = (int)(icon.getIconHeight()*fWidthRatio);
+                    }
+                    else{
+                        //no? so we optimize width 
+                        iNewHeight = iDisplayAreaHeight;
+                        iNewWidth = (int)(icon.getIconWidth() * ((float)iNewHeight/icon.getIconHeight())) ;     
+                    }
+                }
+                ImageFilter filter = new AreaAveragingScaleFilter(iNewWidth,iNewHeight);
                 img = createImage(new FilteredImageSource(img.getSource(),filter));
                 img.flush();//free image memory
             } 
@@ -561,7 +598,8 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                         Cover cover = (Cover)alCovers.get(index);  //take image at the given index
                         URL url = cover.getURL();
                         //enable delete button only for local covers
-                        if (cover.getType() == Cover.LOCAL_COVER || cover.getType() == Cover.ABSOLUTE_DEFAULT_COVER){
+                        if (cover.getType() == Cover.LOCAL_COVER 
+                                || cover.getType() == Cover.ABSOLUTE_DEFAULT_COVER){
                             jbDelete.setEnabled(true);
                         }
                         else{
