@@ -97,6 +97,7 @@
       	<action dev='bflorat' type='fix'>986301 (regression) Cannot create new devices </action>  
       </release>
       <release version='0.3' date='work in progress' description='Many confort novelties'>
+    	<action dev='bflorat' type='add'>Porwerfull auto-cover grabbing, can be configured in the new Covers tab of parameter view</action>  
     	<action dev='bflorat' type='add'>RFE962688	 save geometry windows</action>  
       	<action dev='bflorat' type='add'>IzPack installer upgrade, now in Liquid look and feel and many look improvments</action>  
     	<action dev='bflorat' type='add'>Advanced tab in parameters view with expert options</action>  
