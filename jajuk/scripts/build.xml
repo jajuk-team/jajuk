@@ -10,7 +10,7 @@
 	<property name="bindir" value="bin" />
 	<property name="javadocdir" value="javadoc" />
 	<property name="jarname" value="jajuk.jar" />
-	<property name="version" value="0.3.2rc2" />
+	<property name="version" value="0.3.2" />
 	<property name="distfilesdir" value="dist-files" />
 	<property name="docdir" value="doc" />
 

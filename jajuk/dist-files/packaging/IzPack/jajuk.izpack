@@ -2,7 +2,7 @@
 <installation version='1.0'>
     <info>
         <appname>jajuk</appname>
-        <appversion>0.3.2rc3</appversion>
+        <appversion>0.3.2</appversion>
         <javaversion>1.4.2</javaversion>
       <url>http://jajuk.sourceforge.net</url>
     </info>
@@ -40,14 +40,13 @@
          <res id='LicencePanel.licence' src='/data/java/workspace/jajuk/dist-files/legals/LICENSE.txt'/>
         <res id='shortcutSpec.xml' src='/data/java/workspace/jajuk/dist-files/packaging/IzPack/shortcutSpec.xml'/>
     	<res id='installer.langsel.img' src='/data/java/workspace/jajuk/dist-files/images/jajuk-installer.png' />
-    	<res id='Installer.image.0' src='/data/java/workspace/jajuk/dist-files/images/border1.png' />
-        <res id='Installer.image.1' src='/data/java/workspace/jajuk/dist-files/images/border2.png' />
-        <res id='Installer.image.2' src='/data/java/workspace/jajuk/dist-files/images/border3.png' />
-        <res id='Installer.image.3' src='/data/java/workspace/jajuk/dist-files/images/border4.png' />
-        <res id='Installer.image.4' src='/data/java/workspace/jajuk/dist-files/images/border5.png' />
-        <res id='Installer.image.5' src='/data/java/workspace/jajuk/dist-files/images/border6.png' />
-        <res id='Installer.image.6' src='/data/java/workspace/jajuk/dist-files/images/border7.png' />
-        <res id='Installer.image.7' src='/data/java/workspace/jajuk/dist-files/images/border8.png' />
+    	<res id='Installer.image.0' src='/data/java/workspace/jajuk/dist-files/images/border2.png' />
+        <res id='Installer.image.1' src='/data/java/workspace/jajuk/dist-files/images/border3.png' />
+        <res id='Installer.image.2' src='/data/java/workspace/jajuk/dist-files/images/border4.png' />
+        <res id='Installer.image.3' src='/data/java/workspace/jajuk/dist-files/images/border5.png' />
+        <res id='Installer.image.4' src='/data/java/workspace/jajuk/dist-files/images/border6.png' />
+        <res id='Installer.image.5' src='/data/java/workspace/jajuk/dist-files/images/border7.png' />
+        <res id='Installer.image.6' src='/data/java/workspace/jajuk/dist-files/images/border8.png' />
        <res id='ImgPacksPanel.img.0' src='/data/java/workspace/jajuk/dist-files/images/core.png'  />
        <res id='ImgPacksPanel.img.1' src='/data/java/workspace/jajuk/dist-files/images/src.png'  />
        <res id='TargetPanel.dir.unix' src='/data/java/workspace/jajuk/dist-files/packaging/IzPack/installDirectory.unix.txt'  parse='yes' type='plain' />

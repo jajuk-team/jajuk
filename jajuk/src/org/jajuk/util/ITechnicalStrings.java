@@ -43,8 +43,8 @@ public interface ITechnicalStrings {
     public static final int MAX_REMOTE_COVERS=10;
     		
 	// Jajuk version
-	public static final String JAJUK_VERSION = "0.3.2rc2";
-	public static final String JAJUK_VERSION_DATE = "Build 2004-01-07";
+	public static final String JAJUK_VERSION = "0.3.2";
+	public static final String JAJUK_VERSION_DATE = "Build 2004-01-09";
 	
 	//About 
 	public static final String ABOUT = "<html>Jajuk version "+JAJUK_VERSION+"</html>";
