@@ -49,6 +49,7 @@
      <fileset dir='${basedir}/dist-files'>
      	  <include name='icons/**'/>
      	  <include name='images/jajuk-splashscreen.png'/>
+     	  <include name='images/jajuk-logo.ico'/>
       </fileset>
      </copy>
      <copy todir='${distdir}' >
@@ -75,8 +76,8 @@
   	<copy todir='${distdir}/${classdir}/org/jajuk/icons' >
      <fileset dir='${basedir}/dist-files/icons'/>
   	</copy>
-  	<copy todir='${distdir}/${classdir}/org/jajuk/images' >
-     <fileset file='${basedir}/dist-files/images/jajuk-splashscreen.png'/>
+  	<copy todir='${distdir}/${classdir}/org/jajuk/images'>
+     <fileset file='${basedir}/dist-files/images/*'/>
    </copy>
   	<copy todir='${distdir}/${classdir}/org/jajuk/docs' >
      <fileset file='${basedir}/dist-files/doc/about.html'/>
