@@ -257,8 +257,11 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 		updateWidgetsDefault();
 		//then, specifics
 		jcbType.setSelectedItem(device.getDeviceTypeS());
+		jcbType.setEnabled(false); //device type cannot be changed
 		jtfName.setText(device.getName());
+		jtfName.setEnabled(false); //device name cannot be changed
 		jtfUrl.setText(device.getUrl());
+		jtfUrl.setEnabled(false); //device url cannot be changed
 		jtfMountPoint.setText(device.getMountPoint());
 		jcbRefresh.setEnabled(false); //no instant refresh for updates
 		jcbRefresh.setSelected(false);
@@ -330,26 +333,17 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 				return;
 			}
 			if (bNew){
+				//check device availibility 
+				String sCode = DeviceManager.checkDeviceAvailablity(jtfName.getText(),jcbType.getSelectedIndex(),jtfUrl.getText(),jtfMountPoint.getText());
+				if (!sCode.equals("0")){
+				    Messages.showErrorMessage(sCode);
+				    this.setVisible(true); //display wizzard window which has been hiden by the error window
+				    return;
+				}
 				device = DeviceManager.registerDevice(jtfName.getText(),jcbType.getSelectedIndex(),jtfUrl.getText(),jtfMountPoint.getText());
-				if (device == null ){ //means device name is already token
-					Messages.showErrorMessage("019"); //$NON-NLS-1$
-					this.setVisible(true); //display wizzard window which has been hiden by the error window
-					return;
-				}
-				else{  //check device availability
-					if ( !device.test() ){
-						DeviceManager.removeDevice(device);
-						Messages.showErrorMessage("101"); //$NON-NLS-1$
-						this.setVisible(true); //display wizzard window whish has been hiden by the error window
-						return;
-					}
-				}
 			}
 			else{
-				device.setDeviceType(jcbType.getSelectedIndex());
-				device.setName(jtfName.getText());
-				device.setUrl(jtfUrl.getText());
-				device.setMountPoint(jtfMountPoint.getText());
+			    DeviceManager.setMountPoint(device,jtfMountPoint.getText());
 			}
 			device.setProperty(DEVICE_OPTION_AUTO_MOUNT,Boolean.toString(jcbAutoMount.isSelected()));
 			device.setProperty(DEVICE_OPTION_AUTO_REFRESH,Boolean.toString(jcbAutoRefresh.isSelected()));

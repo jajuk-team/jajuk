@@ -264,8 +264,9 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 	public void startElement(String sUri, String sName, String sQName, Attributes attributes) throws SAXException {
 		switch(sQName.hashCode()){
 			case HASHCODE_DEVICE : //device case
-				Device device = DeviceManager.registerDevice(attributes.getValue(0), attributes.getValue(1), Integer.parseInt(attributes.getValue(2)), attributes.getValue(3), attributes.getValue(4));
-				device.populateProperties(attributes, 5);
+			    Device device = null;
+			    device = DeviceManager.registerDevice(attributes.getValue(0), attributes.getValue(1), Integer.parseInt(attributes.getValue(2)), attributes.getValue(3), attributes.getValue(4));
+			    device.populateProperties(attributes, 5);
 			break;
 			case HASHCODE_STYLE :
 				Style style = StyleManager.registerStyle(attributes.getValue(0), attributes.getValue(1));

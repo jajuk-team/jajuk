@@ -259,18 +259,22 @@ public class JajukWindow extends JFrame implements ITechnicalStrings,ComponentLi
 		}
 		else if (e.getSource() == stmiStop){
 			FIFO.getInstance().stopRequest();
+			ObservationManager.notify(EVENT_PLAYLIST_REFRESH); //alert playlists editors ( queue playlist ) something changed for him
 		}
 		else if (e.getSource() == stmiPause){
-			if ( Player.isPaused()){  //currently paused, so it's a resume
+		    if ( Player.isPaused()){  //player was paused, resume it
+		        bPaused = false;
 				Player.resume();
-				bPaused = false;
 				stmiPause.setLabel(Messages.getString("JajukWindow.10")); //$NON-NLS-1$
+				ObservationManager.notify(EVENT_PLAYER_RESUME);  //notify of this event
 			}
-			else{ //not paused, so it was playing and it will be paused now
-				Player.pause();
-				bPaused = true;
-				stmiPause.setLabel(Messages.getString("JajukWindow.12")); //$NON-NLS-1$
-			}
+		    else{ //player is not paused, pause it
+		        Player.pause();
+		        bPaused = true;
+		        stmiPause.setLabel(Messages.getString("JajukWindow.12")); //$NON-NLS-1$
+		        ObservationManager.notify(EVENT_PLAYER_PAUSE);  //notify of this event
+		        
+		    }
 		}
 	}
 

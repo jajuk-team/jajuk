@@ -465,6 +465,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 			plfi.getPlaylistFile().clear();
 			if ( plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE){ //if it is the queue playlist, stop the selection
 				FIFO.getInstance().stopRequest();
+				ObservationManager.notify(EVENT_PLAYLIST_REFRESH); //alert playlists editors ( queue playlist ) something changed for him
 			}
 		}
 		else if (ae.getSource() == jbDown || ae.getSource() == jbUp){

@@ -38,6 +38,7 @@ import org.jajuk.util.log.Log;
 
 /**
  *  A device ( music files repository )
+ * <p>Some properties of a device are immuable : name, url and type
  * *<p> Physical item
  * @Author     bflorat
  * @created    17 oct. 2003
@@ -680,33 +681,14 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 		return sMountPoint;
 	}
 	
-	/**
-	 * @param deviceTypes The sDeviceTypes to set.
-	 */
-	public  void setDeviceType(int i) {
-		this.iDeviceType = i;
-	}
 	
 	/**
 	 * @param mountPoint The sMountPoint to set.
 	 */
-	public void setMountPoint(String mountPoint) {
-		sMountPoint = mountPoint;
+	protected void setMountPoint(String sMountPoint) {
+		this.sMountPoint = sMountPoint;
 	}
 	
-	/**
-	 * @param name The sName to set.
-	 */
-	public void setName(String name) {
-		sName = name;
-	}
-	
-	/**
-	 * @param url The sUrl to set.
-	 */
-	public void setUrl(String url) {
-		sUrl = url;
-	}
 	
 	/**
 	 *Alphabetical comparator used to display ordered lists of devices

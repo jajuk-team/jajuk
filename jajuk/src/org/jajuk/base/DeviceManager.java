@@ -20,12 +20,14 @@
 
 package org.jajuk.base;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.ObservationManager;
 import org.jajuk.util.MD5Processor;
+import org.jajuk.util.Util;
 
 /**
  *  Convenient class to manage devices
@@ -52,9 +54,61 @@ public class DeviceManager implements ITechnicalStrings{
 	 *@param sName
 	 *@return device 
 	 */
-	public static synchronized Device  registerDevice(String sName,int iDeviceType,String sUrl,String sMountPoint) {
-		String sId = MD5Processor.hash(sUrl+sName+iDeviceType);
+	public static synchronized Device  registerDevice(String sName,int iDeviceType,String sUrl,String sMountPoint){
+		String sId = processId(sUrl,sName,iDeviceType);
 		return registerDevice(sId,sName,iDeviceType,sUrl,sMountPoint);
+	}
+	
+	/**
+	 * Process to compute a device id
+	 * @param sUrl
+	 * @param sName
+	 * @param iDeviceType
+	 * @return An id
+	 */
+	private static String processId(String sUrl,String sName,int iDeviceType){
+	    return MD5Processor.hash(sUrl+ sName+iDeviceType); //reprocess id;
+	}
+	
+	
+	/**
+	 * Check none device already has this name or is a parent directory
+	 * @param sName
+	 * @param iDeviceType
+	 * @param sUrl
+	 * @param sMountPoint
+	 * @return 0:ok or error code 
+	 */
+	public static String checkDeviceAvailablity(String sName,int iDeviceType,String sUrl,String sMountPoint){
+		//check name and path
+	    Iterator it = alDevices.iterator();
+		while (it.hasNext()){
+		    Device deviceToCheck = (Device)it.next();
+			if ( sName.equals(deviceToCheck.getName())){
+				return "019" ;
+			}
+			String sUrlChecked = deviceToCheck.getUrl();
+			if (sUrl.length() >= sUrlChecked.length() && sUrl.substring(0,sUrlChecked.length()).equals(sUrlChecked)){ //check it is not a sub-directory of an existing device
+			    return "029";
+			}
+		}
+		//check availability
+		if ( iDeviceType != 2 ){ //not a remote device, TBI for remote
+		    //make sure it's mounted if under unix
+		    if (!Util.isUnderWindows() && sMountPoint != null && !sMountPoint.equals("")){
+		       try {
+		           Process process = Runtime.getRuntime().exec("mount "+sMountPoint); //run the actual mount command //$NON-NLS-1$
+		           process.waitFor();
+		       } catch (Exception e) {
+		       }
+		    }
+		    //test directory is available
+		    File file = new File(sUrl);
+		    if ( !file.exists() || !file.canRead()){ //see if the url exists and is readable
+		        return "101";
+		    }
+		}
+		return "0";
 	}
 	
 	/**
@@ -62,15 +116,7 @@ public class DeviceManager implements ITechnicalStrings{
 	 *@param sName
 	 *@return device 
 	 */
-	public static synchronized Device  registerDevice(String sId,String sName,int iDeviceType,String sUrl,String sMountPoint) {
-		//check none device already has this name
-		Iterator it = alDevices.iterator();
-		while (it.hasNext()){
-			Device device = (Device)it.next();
-			if ( sName.equals(device.getName())){
-				return null;
-			}
-		}
+	public static synchronized Device  registerDevice(String sId,String sName,int iDeviceType,String sUrl,String sMountPoint){
 		Device device = new Device(sId,sName,iDeviceType,sUrl,sMountPoint);
 		alDeviceIds.add(sId);
 		alDevices.add(device);
@@ -183,5 +229,14 @@ public class DeviceManager implements ITechnicalStrings{
 	}
 	
 	
+	/**
+	 * Change mount point  for a given device
+	 * @param device to set
+	 * @param mountPoint The sMountPoint to set.
+	 */
+	public static void setMountPoint(Device device,String sMountPoint) {
+		device.setMountPoint(sMountPoint);
+	}
+
 
 }

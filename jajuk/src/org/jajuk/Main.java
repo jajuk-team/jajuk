@@ -52,6 +52,7 @@ import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.JajukJMenuBar;
 import org.jajuk.ui.JajukWindow;
 import org.jajuk.ui.LNFManager;
+import org.jajuk.ui.ObservationManager;
 import org.jajuk.ui.PerspectiveBarJPanel;
 import org.jajuk.ui.SplashScreen;
 import org.jajuk.ui.perspectives.PerspectiveManager;
@@ -390,6 +391,7 @@ public class Main implements ITechnicalStrings {
 		Main.iExitCode = iExitCode;
 		//force sound to stop quickly
 		FIFO.getInstance().stopRequest();  
+		ObservationManager.notify(EVENT_PLAYLIST_REFRESH); //alert playlists editors ( queue playlist ) something changed for him
 		//hide window
 		if (jw!=null) jw.setVisible(false);
 		//check if a confirmation is needed

@@ -45,6 +45,7 @@ import javax.swing.event.ListSelectionListener;
 
 import layout.TableLayout;
 
+import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.History;
 import org.jajuk.base.SearchResult;
@@ -201,7 +202,13 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		//set choosen track in file selection
 		String sFileId = ConfigurationManager.getProperty(CONF_STARTUP_FILE);
 		if ( !"".equals(sFileId)){ //$NON-NLS-1$
-			sbSearch.setText(FileManager.getFile(sFileId).getTrack().getName());
+			File file = FileManager.getFile(sFileId);
+			if (file != null){
+			    sbSearch.setText(file.getTrack().getName());
+			}
+			else{
+			    ConfigurationManager.setProperty(CONF_STARTUP_FILE,""); //the file exists no more, remove its id as startup file
+			}
 		}
 		sbSearch.setToolTipText(Messages.getString("ParameterView.18")); //$NON-NLS-1$
 		bgStart.add(jrbNothing);

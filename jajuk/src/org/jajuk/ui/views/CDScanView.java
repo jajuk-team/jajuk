@@ -131,12 +131,9 @@ public class CDScanView extends ViewAdapter implements ActionListener {
 			SwingWorker sw = new SwingWorker() {
 				public Object construct() {
 					if ( !"".equals(jtfName.getText().trim()) && !"".equals(jtfMountPoint.getText().trim())){ //$NON-NLS-1$ //$NON-NLS-2$
-						Device device = DeviceManager.registerDevice(jtfName.getText().trim(),1,jtfMountPoint.getText().trim(),jtfMountPoint.getText().trim());
-						if (device == null){ //means device name is already token
-							Messages.showErrorMessage("019"); //$NON-NLS-1$
-							return null;
-						}
-						try{
+					    Device device = null;
+					     device = DeviceManager.registerDevice(jtfName.getText().trim(),1,jtfMountPoint.getText().trim(),jtfMountPoint.getText().trim());
+					     try{
 							device.mount();
 							device.refresh(false); //refresh synchronously
 							device.unmount(true);
