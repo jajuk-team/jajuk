@@ -87,7 +87,7 @@ public class Main implements ITechnicalStrings {
 					sc = new SplashScreen(jframe);	
 				}
 			}.start();
-		
+			
 			//Register locals
 			Messages.registerLocal("en","Language_desc_en"); //$NON-NLS-1$ //$NON-NLS-2$
 			Messages.registerLocal("fr","Language_desc_fr"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -265,6 +265,12 @@ public class Main implements ITechnicalStrings {
 		if (!fCollection.exists()) { //if collection file doesn't exit, create it empty
 			Collection.commit();
 		}
+		else{
+			//Save collection
+			long l = System.currentTimeMillis();
+			Util.saveFile(new File(FILE_COLLECTION));
+			Log.debug("Saved collection file in "+(System.currentTimeMillis()-l)+" ms");
+		}
 		//	check for perspectives.xml file
 		File fPerspectives = new File(FILE_PERSPECTIVES_CONF);
 		if (!fPerspectives.exists()) {
@@ -323,7 +329,7 @@ public class Main implements ITechnicalStrings {
 				FIFO.getInstance().push(alFiles,false);
 			}
 			else if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_FILE)){
-				//TODO implements file selection
+				FIFO.getInstance().push(FileManager.getFile(ConfigurationManager.getProperty(CONF_STARTUP_FILE)),false);
 			}
 			else if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_SHUFFLE)){
 				org.jajuk.base.File file = FileManager.getShuffleFile();

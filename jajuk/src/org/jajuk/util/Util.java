@@ -21,9 +21,11 @@ package org.jajuk.util;
 
 import java.awt.Cursor;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
@@ -303,6 +305,30 @@ public class Util implements ITechnicalStrings {
 			Log.error(e);
 		}
 		return ii;
+	}
+	
+	
+	/**
+	 * Save a file in the same directory with name <filename>~
+	 * @param file
+	 */
+	public static void saveFile(File file){
+		try{
+			File fileNew = new File(file.getAbsolutePath()+"~");
+			BufferedReader br = new BufferedReader(new FileReader(file));
+			BufferedWriter bw = new BufferedWriter(new FileWriter(fileNew));
+			String sLine = null;
+			while ((sLine=br.readLine())!=null){
+				bw.write(sLine+"\n");
+			}
+			br.close();
+			bw.flush();
+			bw.close();
+			
+		}
+		catch(IOException ie){
+			Log.error(ie);
+		}
 	}
 	
 }
