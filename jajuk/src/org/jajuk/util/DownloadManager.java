@@ -44,8 +44,10 @@ import org.jajuk.util.log.Log;
  */
 public class DownloadManager implements ITechnicalStrings {
 
+    /**Proxy pwd*/
+    private static String sProxyPwd = null;
      	
-		/**
+	/**
 	 * @param sProxyUser
 	 * @param sProxyPassswd
 	 * @return an HTTP client
@@ -169,14 +171,15 @@ public class DownloadManager implements ITechnicalStrings {
 	    }
 	    return bOut;
 	}
-	
     
 	/**
-	 * 
 	 * @return the required proxy pwd
 	 */
-    public static String getProxyPwd(){
-        return JOptionPane.showInputDialog(Main.getWindow(),Messages.getString("DownloadManager.0"),Messages.getString("DownloadManager.1"),JOptionPane.INFORMATION_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
-    }
+	public static String getProxyPwd(){
+	    if (sProxyPwd == null || sProxyPwd.trim().equals("")){ //$NON-NLS-1$
+	        sProxyPwd = JOptionPane.showInputDialog(Main.getWindow(),Messages.getString("DownloadManager.0"),Messages.getString("DownloadManager.1"),JOptionPane.INFORMATION_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+	    }
+	    return sProxyPwd;
+	}
    
 }
