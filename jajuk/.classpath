@@ -21,5 +21,6 @@
 	<classpathentry kind="lib" path="lib/basicplayer-2.3.jar"/>
 	<classpathentry kind="lib" path="lib/tritonus_share-1.0.jar"/>
 	<classpathentry kind="lib" path="lib/metouia-1.0b.jar"/>
+	<classpathentry kind="lib" path="lib/animation-1.1.3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
