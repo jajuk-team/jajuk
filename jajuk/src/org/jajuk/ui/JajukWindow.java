@@ -103,7 +103,10 @@ public class JajukWindow extends JFrame implements ITechnicalStrings,ComponentLi
 		addComponentListener(this);
 		addWindowListener(new WindowAdapter() {
 			public void windowIconified(WindowEvent arg0) {
-				setVisible(false);
+				//systray, only for window for now
+				if (Util.underWindows()){
+					setVisible(false);
+				}
 			}
 			public void windowClosing(WindowEvent we) {
 				Main.exit(0);
@@ -111,8 +114,7 @@ public class JajukWindow extends JFrame implements ITechnicalStrings,ComponentLi
 			}
 		});
 		//systray, only for window for now
-		String sOS = (String)System.getProperties().get("os.name"); //$NON-NLS-1$;
-		if (sOS.trim().toLowerCase().lastIndexOf("windows")!=-1){ //$NON-NLS-1$
+		if (Util.underWindows()){
 			URL url = null;
 			try {
 				url = new URL(ICON_LOGO_ICO);

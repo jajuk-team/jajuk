@@ -265,7 +265,6 @@ public class Util implements ITechnicalStrings {
 	}
 	
 	
-	
 	/**Return a genre string for a given genre id **/
 	public static String getStringGenre(int i){
 		if (i>= 0 && i<126){
@@ -586,6 +585,18 @@ public class Util implements ITechnicalStrings {
 		else{
 			sExecLocation = Util.getJarLocation(Main.class).toString();
 		}
+	}
+	
+	
+	/**
+	 * @return whether we are under Windows
+	 */
+	public static boolean underWindows(){
+		String sOS = (String)System.getProperties().get("os.name"); //$NON-NLS-1$;
+		if (sOS.trim().toLowerCase().lastIndexOf("windows")!=-1){ //$NON-NLS-1$
+			return true;
+		}
+		return false;
 	}
 
 }
