@@ -1,140 +1,204 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<HTML>
-<HEAD>
-	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=iso-8859-15">
-	<TITLE></TITLE>
-	<META NAME="GENERATOR" CONTENT="OpenOffice.org 1.1.0  (Linux)">
-	<META NAME="CREATED" CONTENT="20040503;23532900">
-	<META NAME="CHANGED" CONTENT="20040505;20571800">
-</HEAD>
-<BODY LANG="fr-FR" DIR="LTR">
-<H2><A NAME="bodyColumn"></A><A NAME="Developer_guide"></A>Developer
-guide</H2>
-<P LANG="en-US">Welcome
-to new Jajuk developers ! Have fun.</P>
-<H2><A NAME="Mailing_List___forum"></A>Mailing List / forum</H2>
-<P><SPAN LANG="en-US">Please subscribe to Jajuk developer mailing
-list ( </SPAN><A HREF="mailto:jajuk-developers@lists.sourceforge.net"><SPAN LANG="en-US">jajuk-developers@lists.sourceforge.net</SPAN></A>
-<SPAN LANG="en-US">) at
-</SPAN><A HREF="http://lists.sourceforge.net/lists/listinfo/jajuk-developers"><SPAN LANG="en-US">http://lists.sourceforge.net/lists/listinfo/jajuk-developers</SPAN></A><SPAN LANG="en-US">.
+<html>
+<head>
+  <meta http-equiv="CONTENT-TYPE"
+ content="text/html; charset=iso-8859-15">
+  <title></title>
+  <meta name="GENERATOR" content="OpenOffice.org 1.1.0  (Linux)">
+  <meta name="CREATED" content="20040503;23532900">
+  <meta name="CHANGED" content="20040505;20571800">
+</head>
+<body lang="fr-FR" dir="ltr">
+<h2><a name="bodyColumn"></a><a name="Developer_guide"></a>Developer
+guide</h2>
+<p lang="en-US">Welcome
+to new Jajuk developers ! Have fun.</p>
+<h2><a name="Mailing_List___forum"></a>Mailing List / forum</h2>
+<p><span lang="en-US">Please subscribe to Jajuk developer mailing
+list ( </span><a href="mailto:jajuk-developers@lists.sourceforge.net"><span
+ lang="en-US">jajuk-developers@lists.sourceforge.net</span></a>
+<span lang="en-US">) at
+</span><a
+ href="http://lists.sourceforge.net/lists/listinfo/jajuk-developers"><span
+ lang="en-US">http://lists.sourceforge.net/lists/listinfo/jajuk-developers</span></a><span
+ lang="en-US">.
 This list is for instant messages. For some more important messages
 like a release process, we use the developer forum (
-</SPAN><A HREF="http://sourceforge.net/forum/forum.php?forum_id=315362"><SPAN LANG="en-US">http://sourceforge.net/forum/forum.php?forum_id=315362
-</SPAN></A><SPAN LANG="en-US">). Please make sure to monitor it. </SPAN>
-</P>
-<H2><A NAME="CVS"></A>CVS</H2>
-<P><SPAN LANG="en-US">I assume you know CVS. If you are not so
+</span><a href="http://sourceforge.net/forum/forum.php?forum_id=315362"><span
+ lang="en-US">http://sourceforge.net/forum/forum.php?forum_id=315362
+</span></a><span lang="en-US">). Please make sure to monitor it. </span>
+</p>
+<h2><a name="CVS"></a>CVS</h2>
+<p><span lang="en-US">I assume you know CVS. If you are not so
 familiar with CVS, please read the CVS :
-</SPAN><A HREF="http://www.cvshome.org/docs/manual/cvs-1.11.15/cvs.html"><SPAN LANG="en-US">http://www.cvshome.org/docs/manual/cvs-1.11.15/cvs.html.</SPAN></A></P>
-<H3><A NAME="Connexion"></A>Connexion</H3>
-<P LANG="en-US">The Connexion String is
-<FONT FACE="monospace">:extssh:bflorat@cvs.sourceforge.net:/cvsroot/jajuk<BR></FONT>Under
-eclipse CVS repository location looks like :<BR><BR><IMG SRC="images/cvs_connexion.png" NAME="Image1" ALIGN=BOTTOM WIDTH=637 HEIGHT=567 BORDER=0><BR><BR><BR>
-</P>
-<H3><A NAME="CVS_rules"></A>CVS rules</H3>
-<UL>
-	<LI><P LANG="en-US">Make sure the whole project yet compiles and is
-	in an acceptable stability state before committing something. if you
-	feel your work not stable enough, keep it on your local workspace
-	for the moment. 
-	</P>
-	<LI><P LANG="en-US">During a release process, please follow freezes
-	(see release process part).</P>
-	<LI><P LANG="en-US">You should work most of the time in the head
-	branch for minor changes.</P>
-	<LI><P LANG="en-US">If you start to code a big feature (like P2P)
-	with a lot of impacts on the project and potentially dangerous for
-	current release, create your own branch for this feature and merge
-	your work into the head when you feel ready and when no release is
-	planned for some days.</P>
-	<LI><P LANG="en-US">Before starting a new major release (0.2 for
-	example is a major release), we create a maintenance branch for
-	previous release (0.1) only to be used for critical bugs fixes. You
-	should continue to work in the Head branch. All new features, fixes,
-	translations... are only done on the head branch.</P>
-</UL>
-<P><BR><BR>
-</P>
-<H2><A NAME="Eclipse_configuration"></A>Eclipse configuration</H2>
-<UL>
-	<LI><P LANG="en-US">In options / &quot;Java&quot; / &quot;Code
-	generation&quot; / &quot;Code and comments&quot;, please import
-	<FONT FACE="monospace">scripts/code_generation.xml</FONT> file. This
-	is a template for new java sources.</P>
-	<LI><P LANG="en-US">When you launch Jajuk from eclipse, you have to
-	specify '<FONT FACE="monospace">-debug</FONT>' as program argument
-	so classes in directories takes images from local <FONT FACE="Courier, monospace">jajuk.jar</FONT>
-	file and doesn't look for images with an url from inside the jar.</P>
-</UL>
-<P><BR><BR>
-</P>
-<H2><A NAME="Release_process"></A>Release process</H2>
-<P LANG="en-US">Jajuk has a 5 days-release process:</P>
-<UL>
-	<LI><P LANG="en-US">The release process is announced with a message
-	in the developer forum, make sure you monitor it.</P>
-</UL>
-<UL>
-	<LI><P LANG="en-US">During all 5 days: development freezes in the
-	repository: commit only fixes. English labels are frozen for
-	translators.</P>
-	<LI><P LANG="en-US">Day 1 and 2: translators upgrade their
-	translation if needed. 
-	</P>
-	<LI><P LANG="en-US">Day 3 and 4: packager releases first snapshots,
-	developers test, report bugs using the SF Issue Tracker, and commit
-	fixes. Packager makes as many snapshots ( rc releases ) as needed
-	until no more bugs are found. If architectural or severe bugs are
-	found, the release could be postponed.</P>
-	<LI><P LANG="en-US">Day 5: release is published in SF. Jajuk
-	Communication Delegate issues the new in Freshmeat and other web
-	sites. 
-	</P>
-</UL>
-<P><BR><BR>
-</P>
-<H2><A NAME="Code_conventions"></A>Code conventions</H2>
-<P LANG="en-US">We mainly follow Sun Java conventions with special
-code standards : 
-</P>
-<H3><A NAME="Code_structure"></A>Code structure</H3>
-<P LANG="en-US"><FONT FACE="monospace">public void myMethod(){ <BR>&nbsp;&nbsp;if
-(size == 0) { <BR>&nbsp;&nbsp;&nbsp;&nbsp;try { <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size
-= (long) inStream.available(); <BR>&nbsp;&nbsp;&nbsp;&nbsp;} catch
-(IOException e) {<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;e.printStackTrace();<BR>&nbsp;&nbsp;&nbsp;&nbsp;}<BR>&nbsp;&nbsp;}
-<BR>&nbsp;&nbsp;else if (size == currentSize) {<BR>&nbsp;&nbsp;&nbsp;&nbsp;++size;
-<BR>&nbsp;&nbsp;} <BR>&nbsp;&nbsp;else {<BR>&nbsp;&nbsp;&nbsp;&nbsp;--size;<BR>&nbsp;&nbsp;}
-<BR>} </FONT>
-</P>
-<H3><A NAME="Variables_and_attributes_names"></A>Variables and
-attributes names</H3>
-<P LANG="en-US">Begin variable name by the first letters of the type
-so the variable is auto-described: <FONT FACE="monospace"><BR><BR>String
-sFoo StringBuffer sbFoo Track track;</FONT> 
-</P>
-<H3><A NAME="Interfaces"></A>Interfaces</H3>
-<P LANG="en-US">Begin interfaces with a upper 'I'. The 'i' is not
-taken into account for variables names:<BR><BR><FONT FACE="monospace">IPerspectiveManager
-pm;</FONT></P>
-<H3><A NAME="XML"></A>XML</H3>
-<UL>
-	<UL>
-		<LI><P>Avoid to use PCDATA values, use attributes instead : it's
-		faster to parse and much easier to code.</P>
-		<LI><P>Use single quotes, not double quotes. 
-		</P>
-	</UL>
-</UL>
-<P><BR><BR>
-</P>
-<H2><A NAME="Comments___Javadoc"></A>Comments / Javadoc</H2>
-<UL>
-	<LI><P LANG="en-US">Please correctly comment all attributes and
-	methods with javadoc norms ( <FONT FACE="Courier, monospace">/**
-	comments */</FONT> ).</P>
-	<LI><P LANG="en-US">Please remove commented old code and move it to
-	some personnal junk classes if you want to keep it.  <BR><BR><BR><BR><BR><BR>
-	</P>
-</UL>
-</BODY>
-</HTML>
+</span><a href="http://www.cvshome.org/docs/manual/cvs-1.11.15/cvs.html"><span
+ lang="en-US">http://www.cvshome.org/docs/manual/cvs-1.11.15/cvs.html.</span></a></p>
+<h3><a name="Connexion"></a>Connexion</h3>
+<p lang="en-US">The Connexion String is
+<font face="monospace">:extssh:bflorat@cvs.sourceforge.net:/cvsroot/jajuk<br>
+</font>Under
+eclipse CVS repository location looks like :<br>
+<br>
+<img src="images/cvs_connexion.png" name="Image1" align="bottom"
+ width="637" height="567" border="0"><br>
+<br>
+<br>
+</p>
+<h3><a name="CVS_rules"></a>CVS rules</h3>
+<ul>
+  <li>
+    <p lang="en-US">Make sure the whole project yet compiles and is in
+an acceptable stability state before committing something. if you feel
+your work not stable enough, keep it on your local workspace for the
+moment. </p>
+  </li>
+  <li>
+    <p lang="en-US">During a release process, please follow freezes
+(see release process part).</p>
+  </li>
+  <li>
+    <p lang="en-US">You should work most of the time in the head branch
+for minor changes.</p>
+  </li>
+  <li>
+    <p lang="en-US">If you start to code a big feature (like P2P) with
+a lot of impacts on the project and potentially dangerous for current
+release, create your own branch for this feature and merge your work
+into the head when you feel ready and when no release is planned for
+some days.</p>
+  </li>
+  <li>
+    <p lang="en-US">Before starting a new major release (0.2 for
+example is a major release), we create a maintenance branch for
+previous release (0.1) only to be used for critical bugs fixes. You
+should continue to work in the Head branch. All new features, fixes,
+translations... are only done on the head branch.</p>
+  </li>
+</ul>
+<p><br>
+<br>
+</p>
+<h2><a name="Eclipse_configuration"></a>Eclipse configuration</h2>
+<ul>
+  <li>
+    <p lang="en-US">In options / "Java" / "Code generation" / "Code and
+comments", please import <font face="monospace">scripts/code_generation.xml</font>
+file. This is a template for new java sources.</p>
+  </li>
+  <li>
+    <p lang="en-US">When you launch Jajuk from eclipse, you have to
+specify '<font face="monospace">-debug</font>' as program argument so
+classes in directories takes images from local <font
+ face="Courier, monospace">jajuk.jar</font> file and doesn't look for
+images with an url from inside the jar.</p>
+  </li>
+  <li>Only use UTF-8 for your source. Use preference screen to set it:</li>
+</ul>
+<img style="width: 637px; height: 585px;" alt=""
+ src="images/eclipse_encoding.png"><br>
+<p><br>
+<br>
+</p>
+<h2><a name="Release_process"></a>Release process</h2>
+<p lang="en-US">Jajuk has a 5 days-release process:</p>
+<ul>
+  <li>
+    <p lang="en-US">The release process is announced with a message in
+the developer forum, make sure you monitor it.</p>
+  </li>
+</ul>
+<ul>
+  <li>
+    <p lang="en-US">During all 5 days: development freezes in the
+repository: commit only fixes. English labels are frozen for
+translators.</p>
+  </li>
+  <li>
+    <p lang="en-US">Day 1 and 2: translators upgrade their translation
+if needed. </p>
+  </li>
+  <li>
+    <p lang="en-US">Day 3 and 4: packager releases first snapshots,
+developers test, report bugs using the SF Issue Tracker, and commit
+fixes. Packager makes as many snapshots ( rc releases ) as needed until
+no more bugs are found. If architectural or severe bugs are found, the
+release could be postponed.</p>
+  </li>
+  <li>
+    <p lang="en-US">Day 5: release is published in SF. Jajuk
+Communication Delegate issues the new in Freshmeat and other web sites.
+    </p>
+  </li>
+</ul>
+<p><br>
+<br>
+</p>
+<h2><a name="Code_conventions"></a>Code conventions</h2>
+<p lang="en-US">We mainly follow Sun Java conventions with special
+code standards : </p>
+<h3><a name="Code_structure"></a>Code structure</h3>
+<p lang="en-US"><font face="monospace">public void myMethod(){ <br>
+&nbsp;&nbsp;if
+(size == 0) { <br>
+&nbsp;&nbsp;&nbsp;&nbsp;try { <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size
+= (long) inStream.available(); <br>
+&nbsp;&nbsp;&nbsp;&nbsp;} catch
+(IOException e) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;e.printStackTrace();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;}
+<br>
+&nbsp;&nbsp;else if (size == currentSize) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;++size;
+<br>
+&nbsp;&nbsp;} <br>
+&nbsp;&nbsp;else {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;--size;<br>
+&nbsp;&nbsp;}
+<br>
+} </font>
+</p>
+<h3><a name="Variables_and_attributes_names"></a>Variables and
+attributes names</h3>
+<p lang="en-US">Begin variable name by the first letters of the type
+so the variable is auto-described: <font face="monospace"><br>
+<br>
+String
+sFoo StringBuffer sbFoo Track track;</font> </p>
+<h3><a name="Interfaces"></a>Interfaces</h3>
+<p lang="en-US">Begin interfaces with a upper 'I'. The 'i' is not
+taken into account for variables names:<br>
+<br>
+<font face="monospace">IPerspectiveManager
+pm;</font></p>
+<h3><a name="XML"></a>XML</h3>
+<ul>
+  <ul>
+    <li>
+      <p>Avoid to use PCDATA values, use attributes instead : it's
+faster to parse and much easier to code.</p>
+    </li>
+    <li>
+      <p>Use single quotes, not double quotes. </p>
+    </li>
+  </ul>
+</ul>
+<h3><a name="Comments___Javadoc"></a>Comments / Javadoc</h3>
+<ul>
+  <li>
+    <p lang="en-US">Please correctly comment all attributes and methods
+with javadoc norms ( <font face="Courier, monospace">/** comments */</font>
+).</p>
+  </li>
+  <li>
+    <p lang="en-US">Please remove commented old code and move it to
+some personnal junk classes if you want to keep it. </p>
+  </li>
+</ul>
+<h3>Language</h3>
+<p>Jajuk code and comments must be only in English natural language.</p>
+<p><br>
+</p>
+</body>
+</html>

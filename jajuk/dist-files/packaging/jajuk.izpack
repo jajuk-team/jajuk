@@ -59,6 +59,10 @@
             <file targetdir="$INSTALL_PATH" src="/tmp/jajuk-dist/jajuk/README.html"/>
             <file targetdir="$INSTALL_PATH" src="/tmp/jajuk-dist/jajuk/README_fra.html"/>
             <file targetdir="$INSTALL_PATH" src="/tmp/jajuk-dist/jajuk/README_deu.html"/>
+            <file targetdir="$INSTALL_PATH" src="/tmp/jajuk-dist/jajuk/README_chn.html"/>
+            <file targetdir="$INSTALL_PATH" src="/tmp/jajuk-dist/jajuk/README_ita.html"/>
+            <file targetdir="$INSTALL_PATH" src="/tmp/jajuk-dist/jajuk/README_nld.html"/>
+            <file targetdir="$INSTALL_PATH" src="/tmp/jajuk-dist/jajuk/README_swe.html"/>
             <file targetdir="$INSTALL_PATH" src="/tmp/jajuk-dist/jajuk/jajuk.bat">
             	<os family='windows'/>
            </file>

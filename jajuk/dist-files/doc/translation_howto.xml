@@ -16,6 +16,7 @@
     				<li>Italian (it)</li>
     				<li>Dutch (nl)</li>
     			</ul>
+    			<p>Note however that an update for one of these languages is welcomed (see  <i>Translation upgrades</i>)</p>
     		</subsection>
 
    			<subsection name='Target'>
@@ -47,11 +48,12 @@
 				<p><span style="font-family: monospace;">#Jajuk ${your language} langpack. <br></br>
 				#Written by : ${your name}<br></br>
 				#Copyright 2003,2004 ${your name}, this is part of Jajuk distributed under the GPL V2 license<br></br>
+				#Encoding : UTF-8<br></br>
 				#FROM ${source language} ${cvs version}<br></br>
 				#$Revision$</span></p>
 				<p>FROM comment gives exact CVS version you translated to allow diffs with newer versions and Revision gives automatically the current CVS version of your file ( do not change this line manually, it will be updated by CVS).</p>
 			</li>
-			
+			<li>Your file should be in written in UTF-8 encoding, especialy if it is a Western Europe or Asian langage. If you don't know how to set the encoding, please send be a mail.</li>
 			<li><p>Look at file structure: It is a simple key=value  format. Example:</p>
 				<p><span style="font-family: monospace;">ParameterView.73=Check this if you allow others people to come read music from your box<br></br>
 				ParameterView.74=Password :<br></br>

@@ -78,6 +78,7 @@
        	<action dev='bflorat' type='update'>Changes in unmount to take in to account Linux 2.6</action>
        	<action dev='bflorat' type='update'>You can now create a void device</action>
        	<action dev='bflorat' type='update'>Display a warning if you want to refresh a void device</action>
+       	<action dev='bflorat' type='update'>Migrated i18n files and sources to UTF-8 encoding. Now UTF-8 is the only accepted encoding</action>
        	<action dev='bflorat' type='fix'>956241	Wrong CD device ejected</action>  
        	<action dev='bflorat' type='fix'>958954	Sometimes, problems maximalizing covers</action>  
        	<action dev='bflorat' type='fix'>971838	Scan fails when finding a directory named mp3 or ogg</action>  
