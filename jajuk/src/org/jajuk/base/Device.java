@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 
+import org.jajuk.Main;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.ObservationManager;
@@ -182,6 +183,10 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	private void refreshCommand(Device device){
 		//lock the synchro
 		synchronized(bLock){
+			//check Jajuk is not exiting because a refresh cannot start in this state
+			if (Main.bExiting){
+				return;
+			}
 			/*Remove all directories, playlist files and files for this device before rescan. 
 			 Note  that logical item ( tracks, styles...) are device independant and connot be cleared.
 			They will be clean up at next jajuk restart and old track data is used to populate device without full tag scan

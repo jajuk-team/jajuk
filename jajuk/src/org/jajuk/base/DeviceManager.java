@@ -116,5 +116,23 @@ public class DeviceManager implements ITechnicalStrings{
 		//refresh views
 		ObservationManager.notify(EVENT_DEVICE_REFRESH);
 	}
+	
+	/**
+	 * @return whether any device is currently refreshing
+	 */
+	public static boolean isAnyDeviceRefreshing(){
+		boolean bOut = false;
+		Iterator it = DeviceManager.getDevices().iterator();
+		while ( it.hasNext()){
+			Device device = (Device)it.next();
+			if ( device.isRefreshing()){
+				bOut = true;
+				break;
+			}
+		}
+		return bOut;
+	}
+	
+	
 
 }
