@@ -97,6 +97,8 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 	JTextField jtfIntroPosition;
 	JLabel jlIntroLength;
 	JTextField jtfIntroLength;
+	JLabel jlBestofSize;
+	JTextField jtfBestofSize;
 	JPanel jpP2P;
 	JCheckBox jcbShare;
 	JLabel jlPasswd;
@@ -217,7 +219,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jpOptions = new JPanel();
 		jpOptions.setBorder(BorderFactory.createTitledBorder(Messages.getString("ParameterView.33"))); //$NON-NLS-1$
 		double sizeOptions[][] = {{0.99},
-				{iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,60+2*iYSeparator,iYSeparator,40+iYSeparator,iYSeparator}};
+				{iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,60+2*iYSeparator,iYSeparator,70,iYSeparator}};
 		jpOptions.setLayout(new TableLayout(sizeOptions));
 		jcbDisplayUnmounted = new JCheckBox(Messages.getString("ParameterView.34")); //$NON-NLS-1$
 		jcbDisplayUnmounted.setToolTipText(Messages.getString("ParameterView.35")); //$NON-NLS-1$
@@ -259,10 +261,12 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jpCombos.add(jcbLAF,"1,2"); //$NON-NLS-1$
 		jpCombos.add(jlLogLevel,"0,4"); //$NON-NLS-1$
 		jpCombos.add(jcbLogLevel,"1,4"); //$NON-NLS-1$
-		JPanel jpIntro = new JPanel();
+		JPanel jp = new JPanel();
 		double sizeIntro[][] = {{0.50,0.50},
-				{20,iYSeparator,20}};
-		jpIntro.setLayout(new TableLayout(sizeIntro));
+				{20,iYSeparator,20,iYSeparator,20,iYSeparator}};
+		jp.setLayout(new TableLayout(sizeIntro));
+		
+		//intro position
 		jlIntroPosition = new JLabel(Messages.getString("ParameterView.59")); //$NON-NLS-1$
 		jtfIntroPosition = new JTextField(3);
 		jtfIntroPosition.setInputVerifier(new InputVerifier(){
@@ -291,8 +295,9 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 				return verify(input);
 			}
 		});
-		
 		jtfIntroPosition.setToolTipText(Messages.getString("ParameterView.60") ); //$NON-NLS-1$
+	
+		//intro length
 		jlIntroLength = new JLabel(Messages.getString("ParameterView.61")); //$NON-NLS-1$
 		jtfIntroLength = new JTextField(3);
 		jtfIntroLength.setInputVerifier(new InputVerifier(){
@@ -318,16 +323,46 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 				return verify(input);
 			}
 		});
-		jtfIntroLength.setToolTipText(Messages.getString("ParameterView.62") ); //$NON-NLS-1$
-		jpIntro.add(jlIntroPosition,"0,0"); //$NON-NLS-1$
-		jpIntro.add(jtfIntroPosition,"1,0"); //$NON-NLS-1$
-		jpIntro.add(jlIntroLength,"0,2"); //$NON-NLS-1$
-		jpIntro.add(jtfIntroLength,"1,2"); //$NON-NLS-1$
+		jtfIntroLength.setToolTipText(Messages.getString("ParameterView.110") ); //$NON-NLS-1$
+		
+		//best of size
+		jlBestofSize = new JLabel(Messages.getString("ParameterView.111")); //$NON-NLS-1$
+		jtfBestofSize = new JTextField(3);
+		jtfBestofSize.setInputVerifier(new InputVerifier(){
+			public boolean verify(JComponent input) {
+				JTextField tf = (JTextField) input;
+				String sText = tf.getText();
+				try{
+					int iValue = Integer.parseInt(sText);
+					if (iValue < 1 || iValue>100){
+						jbOK.setEnabled(false);
+						return false;
+					}
+				}
+				catch(Exception e){
+					return false;
+				}
+				jbOK.setEnabled(true);
+				return true;
+			}
+			
+			public boolean shouldYieldFocus(JComponent input) {
+				return verify(input);
+			}
+		});
+		jtfBestofSize.setToolTipText(Messages.getString("ParameterView.112") ); //$NON-NLS-1$
+		//add panels
+		jp.add(jlIntroPosition,"0,0"); //$NON-NLS-1$
+		jp.add(jtfIntroPosition,"1,0"); //$NON-NLS-1$
+		jp.add(jlIntroLength,"0,2"); //$NON-NLS-1$
+		jp.add(jtfIntroLength,"1,2"); //$NON-NLS-1$
+		jp.add(jlBestofSize,"0,4"); //$NON-NLS-1$
+		jp.add(jtfBestofSize,"1,4"); //$NON-NLS-1$
 		jpOptions.add(jcbDisplayUnmounted,"0,1"); //$NON-NLS-1$
 		jpOptions.add(jcbRestart,"0,3"); //$NON-NLS-1$
 		jpOptions.add(jcbCover,"0,5"); //$NON-NLS-1$
 		jpOptions.add(jpCombos,"0,7"); //$NON-NLS-1$
-		jpOptions.add(jpIntro,"0,9"); //$NON-NLS-1$
+		jpOptions.add(jp,"0,9"); //$NON-NLS-1$
 		//P2P
 		jpP2P = new JPanel();
 		jpP2P.setBorder(BorderFactory.createTitledBorder(Messages.getString("ParameterView.71"))); //$NON-NLS-1$
@@ -377,7 +412,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jpOKCancel.add(jbDefault);
 		//global layout
 		double size[][] = {{0.5,0.5},
-				{0.40,iYSeparator,0.25,iYSeparator,0.20,iYSeparator,0.1}};
+				{0.45,iYSeparator,0.25,iYSeparator,0.20,iYSeparator,0.07}};
 		setLayout(new TableLayout(size));
 		add(jpHistory,"1,0"); //$NON-NLS-1$
 		add(jpStart,"0,2"); //$NON-NLS-1$
@@ -388,7 +423,6 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		add(jpOKCancel,"0,6"); //$NON-NLS-1$
 		//update widgets state
 		updateSelection();
-		
 	}
 	
 	/**
@@ -445,6 +479,10 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 					String sIntroLength = jtfIntroLength.getText();
 					if (!jtfIntroLength.equals("")){ //$NON-NLS-1$
 						ConfigurationManager.setProperty(CONF_OPTIONS_INTRO_LENGTH,sIntroLength);
+					}
+					String sBestofSize = jtfBestofSize.getText();
+					if (!sBestofSize.equals("")){ //$NON-NLS-1$
+						ConfigurationManager.setProperty(CONF_BESTOF_SIZE,sBestofSize);
 					}
 					//startup
 					if (jrbNothing.isSelected()){
@@ -531,6 +569,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jcbLogLevel.setSelectedIndex(Integer.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_LOG_LEVEL)));
 		jtfIntroLength.setText(ConfigurationManager.getProperty(CONF_OPTIONS_INTRO_LENGTH));
 		jtfIntroPosition.setText(ConfigurationManager.getProperty(CONF_OPTIONS_INTRO_BEGIN));
+		jtfBestofSize.setText(ConfigurationManager.getProperty(CONF_BESTOF_SIZE));
 		jcbShare.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_P2P_SHARE));
 		jpfPasswd.setText(ConfigurationManager.getProperty(CONF_OPTIONS_P2P_PASSWORD));
 		jcbAddRemoteProperties.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_P2P_ADD_REMOTE_PROPERTIES));
