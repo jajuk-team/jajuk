@@ -211,6 +211,14 @@ public class DeviceManager implements ITechnicalStrings{
 		PlaylistFileManager.cleanDevice(device.getId());
 		//	Clean the collection up
 		org.jajuk.base.Collection.cleanup();
+		//remove synchronization if another device was synchronized with this device
+		Iterator it = alDevices.iterator();
+		while (it.hasNext()){
+			Device deviceToCheck = (Device)it.next();
+			if (deviceToCheck.getProperty(DEVICE_OPTION_SYNCHRO_SOURCE).equals(device.getId())){
+				deviceToCheck.setProperty(DEVICE_OPTION_SYNCHRO_SOURCE,null);
+			}
+		}
 		//refresh views
 		ObservationManager.notify(EVENT_DEVICE_REFRESH);
 	}
