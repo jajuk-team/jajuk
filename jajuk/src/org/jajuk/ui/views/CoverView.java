@@ -57,6 +57,9 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
 	
 	/**Current directory*/
 	private File fDir;
+	
+	/**Date last resize (used for adjustment management)*/
+	private long lDateLastResize;
 		
 	
 	/**
@@ -189,16 +192,12 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
 	 * @see java.awt.event.ComponentListener#componentResized(java.awt.event.ComponentEvent)
 	 */
 	public void componentResized(ComponentEvent e) {
-		new Thread(){
-			public void run(){
-				try {
-					Thread.sleep(1000); //to avoid to much display during resizing
-					display();
-				} catch (InterruptedException e) {
-					Log.error(e);
-				}
-			}
-		}.start();
+		long lCurrentDate = System.currentTimeMillis();  //adjusting code
+		if ( lCurrentDate - lDateLastResize < 500){  //display image every 500 ms to save CPU
+			lDateLastResize = lCurrentDate;
+			return;
+		}
+		display();
 	}
 
 	/* (non-Javadoc)
