@@ -75,6 +75,8 @@ public class JajukWindow extends JFrame implements ITechnicalStrings,ComponentLi
 	SysTrayMenuItem stmiBestof;
 	SysTrayMenuItem stmiPause;
 	SysTrayMenuItem stmiStop;
+	SysTrayMenuItem stmiPrevious;
+	SysTrayMenuItem stmiNext;
 	SysTrayMenuItem stmiVisible;
 	SysTrayMenuItem stmiHidden;
 	
@@ -142,6 +144,10 @@ public class JajukWindow extends JFrame implements ITechnicalStrings,ComponentLi
 			stmiPause.addSysTrayMenuListener(this);
 			stmiStop = new SysTrayMenuItem(Messages.getString("JajukWindow.11")); //$NON-NLS-1$
 			stmiStop.addSysTrayMenuListener(this);
+			stmiPrevious = new SysTrayMenuItem(Messages.getString("JajukWindow.13")); //$NON-NLS-1$
+			stmiPrevious.addSysTrayMenuListener(this);
+			stmiNext = new SysTrayMenuItem(Messages.getString("JajukWindow.14")); //$NON-NLS-1$
+			stmiNext.addSysTrayMenuListener(this);
 			stm.addItem(stmiExit);
 			stm.addSeparator();
 			stm.addItem(stmiAbout);
@@ -149,6 +155,8 @@ public class JajukWindow extends JFrame implements ITechnicalStrings,ComponentLi
 			stm.addItem(stmiShuffle);
 			stm.addItem(stmiBestof);
 			stm.addSeparator();
+			stm.addItem(stmiNext);
+			stm.addItem(stmiPrevious);
 			stm.addItem(stmiStop);
 			stm.addItem(stmiPause);
 			stm.addSeparator();
@@ -175,11 +183,8 @@ public class JajukWindow extends JFrame implements ITechnicalStrings,ComponentLi
 	 * @see java.awt.event.ComponentListener#componentShown(java.awt.event.ComponentEvent)
 	 */
 	public void componentResized(ComponentEvent e) {
-	
 		int width = getWidth();
 		int height = getHeight();
-		
-		
 		/*Goal here is to fix a bug : when starting, restaure the window ( middle button near close ) set a strange size ( very large * very small ). So if size is too small or too large in front of
 		 * screen size, we set 100% of screen
 		 */
@@ -251,6 +256,12 @@ public class JajukWindow extends JFrame implements ITechnicalStrings,ComponentLi
 			stmiHidden.setEnabled(false);
 			stmiVisible.setEnabled(true);
 			ConfigurationManager.setProperty(CONF_SHOW_AT_STARTUP,FALSE);
+		}
+		else if (e.getSource() == stmiPrevious){
+			FIFO.getInstance().playPrevious();
+		}
+		else if (e.getSource() == stmiNext){
+			FIFO.getInstance().playNext();
 		}
 		else if (e.getSource() == stmiStop){
 			FIFO.getInstance().stopRequest();
