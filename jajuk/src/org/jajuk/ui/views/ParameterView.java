@@ -85,7 +85,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		JCheckBox jcbBeforeExit;
 	JPanel jpOptions;
 		JCheckBox jcbDisplayUnmounted;
-		JCheckBox jcbRestart;//TODO TBI hide unmounted devices
+		JCheckBox jcbRestart;
 		JCheckBox jcbCover;
 		JLabel jlLanguage;
 		JComboBox jcbLanguage;

@@ -405,7 +405,6 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 			}
 			else if (ae.getActionCommand().equals(EVENT_DEVICE_REFRESH)){
 				dSelected.refresh(true);
-				//TODO refresh window with progress bar, infos and OK/Cancel buttons
 			}
 			else if (ae.getActionCommand().equals(EVENT_DEVICE_SYNCHRO)){
 				dSelected.synchronize(true);
