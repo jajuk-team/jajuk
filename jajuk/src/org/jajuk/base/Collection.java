@@ -78,8 +78,8 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 
 	/** Write current collection to collection file for persistence between sessions */
 	public static void commit() throws IOException {
-		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(FILE_COLLECTION), "UTF-16")); //$NON-NLS-1$
-		bw.write("<?xml version='1.0' encoding='UTF-16'?>\n"); //$NON-NLS-1$
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(FILE_COLLECTION), "UTF-8")); //$NON-NLS-1$
+		bw.write("<?xml version='1.0' encoding='UTF-8'?>\n"); //$NON-NLS-1$
 		bw.write("<collection jajuk_version='"+JAJUK_VERSION+"'>\n"); //$NON-NLS-1$ //$NON-NLS-2$
 		//types
 		bw.write("\t<types>\n"); //$NON-NLS-1$
