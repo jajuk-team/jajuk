@@ -16,6 +16,10 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.2  2003/10/10 15:58:26  bflorat
+ * - Set rollover on buttons
+ * - border
+ *
  * Revision 1.1  2003/10/07 21:02:22  bflorat
  * Initial commit
  *
@@ -24,7 +28,6 @@ package org.jajuk.ui;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Insets;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -37,8 +40,8 @@ import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
 
-import org.jajuk.base.*;
-import org.jajuk.i18n.*;
+import org.jajuk.base.TechnicalStrings;
+import org.jajuk.i18n.Messages;
 
 /**
  *  Command panel
@@ -78,7 +81,7 @@ public class CommandJPanel extends JPanel implements TechnicalStrings{
 	public CommandJPanel(){
 		//set default layout and size
 		setLayout(new BoxLayout(this,BoxLayout.X_AXIS)); //we use a BoxLayout and not a FlowLayout to allow resizing
-		
+		setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		//dimensions
 		int height1 = 25;  //buttons, components
 		int height2 = 36; //slider ( at least this height in the gtk+ l&f ) 
@@ -128,6 +131,7 @@ public class CommandJPanel extends JPanel implements TechnicalStrings{
 		
 		//Mode toolbar
 		jtbMode = new JToolBar();
+		jtbMode.setRollover(true);
 		jtbMode.setMinimumSize(d160_2);
 		jtbMode.setPreferredSize(d160_2);
 		jtbMode.setMaximumSize(d160_2);
@@ -149,6 +153,7 @@ public class CommandJPanel extends JPanel implements TechnicalStrings{
 		
 		//Special functions toolbar
 		jtbSpecial = new JToolBar();
+		jtbSpecial.setRollover(true);
 		jtbSpecial.setMinimumSize(d125_2);
 		jtbSpecial.setPreferredSize(d125_2);
 		jtbSpecial.setMaximumSize(d125_2);
@@ -166,6 +171,7 @@ public class CommandJPanel extends JPanel implements TechnicalStrings{
 		
 		//Play toolbar
 		jtbPlay = new JToolBar();
+		jtbPlay.setRollover(true);
 		jtbPlay.setMinimumSize(d200_2);
 		jtbPlay.setPreferredSize(d200_2);
 		jtbPlay.setMaximumSize(d200_2);
@@ -188,8 +194,6 @@ public class CommandJPanel extends JPanel implements TechnicalStrings{
 		jbFwd = new JButton(new ImageIcon(ICON_FWD)); 
 		jbFwd.setToolTipText(Messages.getString("CommandJPanel.Fast_forward_in_current_track_9")); //$NON-NLS-1$
 		jtbPlay.add(jbFwd);
-		
-		//TODO integration seb
 		
 		//Volume toolbar
 		jtbVolume = new JToolBar();
@@ -214,7 +218,7 @@ public class CommandJPanel extends JPanel implements TechnicalStrings{
 		jlPosition = new JLabel(new ImageIcon(ICON_POSITION)); 
 		jtbPosition.add(jlPosition);
 		jtbPosition.addSeparator();
-		jsPosition = new JSlider(0,100,50);
+		jsPosition = new JSlider(0,100,0);
 		jsPosition.setToolTipText(Messages.getString("CommandJPanel.Go_to_this_position_in_the_played_track_2")); //$NON-NLS-1$
 		jsPosition.setMinimumSize(d50_2);
 		jsPosition.setPreferredSize(d200_2);
