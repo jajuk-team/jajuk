@@ -70,6 +70,7 @@
             <description>Main pack</description>
             <file targetdir='$INSTALL_PATH/bin' src='/tmp/jajuk-dist/jajuk/bin/jajuk.jar'/>
             <file targetdir='$INSTALL_PATH/bin' src='/tmp/jajuk-dist/jajuk/bin/jajuk-help.jar'/>
+            <file targetdir='$INSTALL_PATH/bin' src='/tmp/jajuk-dist/jajuk/bin/jajuk-help_fr.jar'/>
             <file targetdir='$INSTALL_PATH/native' src='/tmp/jajuk-dist/jajuk/native/tray.dll'>
             	<os family='windows'/>
            </file>
