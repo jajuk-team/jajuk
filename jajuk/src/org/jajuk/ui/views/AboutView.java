@@ -100,6 +100,7 @@ public class AboutView extends ViewAdapter {
 		jtp = new JTabbedPane();
 		ArrayList alContribs = new ArrayList(10);
 		alContribs.add(new Contributor("Bertrand Florat","bertrand@florat.net")); //$NON-NLS-1$ //$NON-NLS-2$
+		alContribs.add(new Contributor("Gerhard Dietrichsteiner","skyreacher@users.sourceforge.net")); //$NON-NLS-1$ //$NON-NLS-2$
 		alContribs.add(new Contributor("Sébastien Gringoire","")); //$NON-NLS-1$ //$NON-NLS-2$
 		cp = new ContributorsPanel(alContribs);
 		JPanel jpAbout = new JPanel();
