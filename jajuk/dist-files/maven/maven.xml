@@ -8,13 +8,9 @@
   </preGoal>     
   
  <postGoal name="xdoc:register-reports">
-  <attainGoal name="maven-statcvs-plugin:register"/>  
-  <attainGoal name="maven-jdepend-plugin:register"/>  
- </postGoal>
+  </postGoal>
  
-
   <postGoal name="xdoc:register-reports">
-  <attainGoal name="maven-faq-plugin:register"/>  
  </postGoal>
  
   

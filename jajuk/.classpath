@@ -3,9 +3,8 @@
     <classpathentry kind="src" path="src"/>
     <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
     <classpathentry kind="lib" path="lib/log4j-1.2.6.jar"/>
-    <classpathentry kind="lib" path="lib/kunststoff.jar"/>
-    <classpathentry kind="lib" path="lib/tablelayout.jar"/>
-    <classpathentry kind="lib" path="lib/jl030.jar"/>
-    <classpathentry kind="lib" path="lib/id3.jar"/>
+    <classpathentry kind="lib" path="lib/jl-0.30.jar"/>
+    <classpathentry kind="lib" path="lib/tablelayout-1.0.jar"/>
+    <classpathentry kind="lib" path="lib/id3-1.6.0d7.jar"/>
     <classpathentry kind="output" path="bin"/>
 </classpath>

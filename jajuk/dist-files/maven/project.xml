@@ -16,7 +16,7 @@
  
   <inceptionYear>2003</inceptionYear>
  
-  <package>org.jajuk.base</package>
+  <package>jajuk</package>
  
  <shortDescription>Advanced music manager</shortDescription>
  
@@ -58,9 +58,39 @@
   </developers>
 
  <dependencies>
-     
+
+    <dependency>
+	   <groupId>lib</groupId>
+        <artifactId>tablelayout</artifactId>
+        <version>1.0</version> 
+    </dependency>
+    
+    <dependency>
+	   <groupId>lib</groupId>
+        <artifactId>log4j</artifactId>
+        <version>1.2.6</version> 
+    </dependency>
+   
+    <dependency>
+	   <groupId>lib</groupId>
+        <artifactId>id3</artifactId>
+        <version>1.6.0d7</version> 
+    </dependency>
+
+    <dependency>
+	   <groupId>lib</groupId>
+        <artifactId>jl</artifactId>
+        <version>0.30</version> 
+    </dependency>
+   
   </dependencies>
+
   
+  <build>
+
+    <sourceDirectory>jajuk/src</sourceDirectory>
+   
+ </build>  
    <licences>
    <licence>
    <name>GPL</name>
@@ -68,6 +98,23 @@
    <distribution>manual</distribution>
    </licence>
   </licences>
+  
+  <reports>
+    <report>maven-jdepend-plugin</report>
+    <report>maven-checkstyle-plugin</report>
+    <report>maven-javadoc-plugin</report>
+    <report>maven-jxr-plugin</report>
+    <report>maven-junit-report-plugin</report>
+    <report>maven-pmd-plugin</report>
+    <report>maven-tasklist-plugin</report>
+    <report>maven-changes-plugin</report>
+    <report>maven-linkcheck-plugin</report>
+    <report>maven-changelog-plugin</report>
+    <report>maven-developer-activity-plugin</report>
+    <report>maven-file-activity-plugin</report>
+    <report>maven-license-plugin</report>
+    <report>maven-statcvs-plugin</report>
+  </reports>
   
  
 </project> 
