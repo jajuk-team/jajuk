@@ -534,7 +534,9 @@ public class Main implements ITechnicalStrings {
 				try {
 				    //starts ui
 					jw = JajukWindow.getInstance();
-					
+					jw.setExtendedState(Frame.MAXIMIZED_BOTH);  //maximalize
+				    jw.setCursor(Util.WAIT_CURSOR);
+							
 					//Creates the panel
 					jpFrame = (JPanel)jw.getContentPane();
 					jpFrame.setOpaque(true);
@@ -560,38 +562,16 @@ public class Main implements ITechnicalStrings {
 					jpFrame.add(information, BorderLayout.SOUTH);
 					jpTmp = new JPanel(); //we use an empty panel to take west place before actual panel ( perspective bar ). just for a better displaying
 					jpTmp.setPreferredSize(new Dimension(3000,3000));//make sure the temp panel makes screen maximalized
-					jpFrame.add(jpTmp, BorderLayout.WEST);
-					jpFrame.add(jpContentPane, BorderLayout.CENTER);
-					
-					//display window
-					jw.pack();
-					jw.setExtendedState(Frame.MAXIMIZED_BOTH);  //maximalize
-					jw.setVisible(true); //show main window
+					jpFrame.add(jpTmp, BorderLayout.CENTER);
+				
 					sc.toFront();
-
-				} catch (Exception e) { //last chance to catch any error for logging purpose
-					e.printStackTrace();
-					Log.error("106", e); //$NON-NLS-1$
-				}
-			}
-		});
-		
-		Thread.sleep(1000); //wait a while to make sure painting is over to avoid some hugly blinking
-		
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run(){
-				try {
 					//Create the perspective manager 
 					PerspectiveManager.load();
 
 					// Create the perspective tool bar panel
 					perspectiveBar = PerspectiveBarJPanel.getInstance();
-					jpFrame.remove(jpTmp);
 					jpFrame.add(perspectiveBar, BorderLayout.WEST);
-
-					//Initialize perspective manager and load all views
-					PerspectiveManager.init();
-		
+					
 					//Display info message if first session
 					if (ConfigurationManager.getBoolean(CONF_FIRST_CON)){
 						ConfigurationManager.setProperty(CONF_FIRST_CON,FALSE);
@@ -605,17 +585,32 @@ public class Main implements ITechnicalStrings {
 						dw.setVisible(true);
 					}
 					
-					//Close splash screen
-					sc.dispose();
-					
-					bUILauched = true;
-		
+					jw.pack();
+					jw.setVisible(true); //show main window								
+								
 				} catch (Exception e) { //last chance to catch any error for logging purpose
 					e.printStackTrace();
 					Log.error("106", e); //$NON-NLS-1$
 				}
 			}
 		});
+	
+		Thread.sleep(2000);  //make sure static panels are drawed
+		
+		//Initialize perspective manager and load all views
+		//display window
+		SwingUtilities.invokeAndWait(new Runnable() {
+            public void run() {
+                jpFrame.remove(jpTmp);	
+                jpFrame.add(jpContentPane, BorderLayout.CENTER);
+                PerspectiveManager.init();
+                jw.setCursor(Util.DEFAULT_CURSOR);
+            }
+        });
+		
+		//Close splash screen
+		sc.dispose();
+		
         bUILauched = true;
     }
     
