@@ -19,24 +19,24 @@
     		</subsection>
 
    			<subsection name='Target'>
-   			 <p>Anyone can translate Jajuk, no computer science is required. Note : this is a volontary work.
+   			 <p>Anyone can translate Jajuk, no computer science is required. Note this is a <u>volontary work</u>.
 				For any question or comments, please send me a mail : <a href="mailto:bertrand@florat.net">
 				bertrand@florat.net</a>. Translate current Jajuk version takes approximately 3 hours.</p>
     		</subsection>
 
    			<subsection name='README file translation'>
-   			 <p>The README file is displayed during installation and is on the web site. Its name is README_${iso3 code on 3 letters}.html. Get README file of your choice as a source language. Example: use README.html as english source language at 
+   			 <p>The README file is displayed during installation and is on the web site. Its name is <span style="font-family: monospace;">README_${iso3 code on 3 letters}.html</span>. Get README file of your choice as a source language. Example: use <span style="font-family: monospace;">README.html</span> as english source language at 
    			 <a href='http://cvs.sourceforge.net/viewcvs.py/jajuk/jajuk/dist-files/doc/README.html'>http://cvs.sourceforge.net/viewcvs.py/jajuk/jajuk/dist-files/doc/README.html</a>
 					or any other README file in the directory and translate it. List of ISO3 codes is available at : <a href='http://ftp.ics.uci.edu/pub/ietf/http/related/iso3166.txt'>http://ftp.ics.uci.edu/pub/ietf/http/related/iso3166.txt</a>.</p>
     		</subsection>
 
    			<subsection name='Jajuk translation'>
 	   			<p>Jajuk uses the standard Java internationalization (i18n) system based on properties file. Files are:</p>
-				<p>${jajuk installation path}/src/org/jajuk/i18n/<br></br>
+				<p><span style="font-family: monospace;">${jajuk installation path}/src/org/jajuk/i18n/<br></br>
                                           jajuk.properties<br></br>
                                           jajuk_fr.properties<br></br>
-                                          jajuk_${locale}.properties</p>
-        	    <p>${locale} is a ISO language code, see <a href='http://www.ics.uci.edu/pub/ietf/http/related/iso639.txt'>http://www.ics.uci.edu/pub/ietf/http/related/iso639.txt</a>. 
+                                          jajuk_${locale}.properties</span></p>
+        	    <p><span style="font-family: monospace;">${locale}</span> is a ISO language code, see <a href='http://www.ics.uci.edu/pub/ietf/http/related/iso639.txt'>http://www.ics.uci.edu/pub/ietf/http/related/iso639.txt</a>. 
             	jajuk.properties contains default resource bundle (English) and you have a property file for each language.</p>
 				<p>Translation :</p>
 				<ul>

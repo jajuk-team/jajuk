@@ -8,7 +8,7 @@
     </section>
   
 	<section name='Supported languages'>
-		<a href='./translation_howto.html'>Please translate</a>
+		<p><a href='./translation_howto.html'>Please translate</a></p>
 		<table style='width: 100%; text-align: left;' border='0' cellpadding='2' cellspacing='2'>
 			<tbody>
 				<tr>
@@ -17,6 +17,7 @@
 						<img alt=''	src='flags/flag_en.png' style='width: 21px; height: 14px;'/>
 						<img alt=''	src='flags/flag_fr.png' style='width: 21px; height: 14px;'/>
 						<img alt=''	src='flags/flag_de.png' style='width: 21px; height: 14px;'/>
+						<img alt=''	src='flags/flag_it.png' style='width: 21px; height: 14px;'/>
 					</td>
 				</tr>
 				<tr>
@@ -25,6 +26,8 @@
 						<img alt='' src='flags/flag_en.png' style='width: 21px; height: 14px;'/>
 						<img alt='' src='flags/flag_fr.png' style='width: 21px; height: 14px;'/>
 						<img alt='' src='flags/flag_de.png' style='width: 21px; height: 14px;'/>
+						<img alt='' src='flags/flag_it.png' style='width: 21px; height: 14px;'/>
+						<img alt='' src='flags/flag_sv.png' style='width: 21px; height: 14px;'/>
 					</td>
 				</tr>
 				<tr>
@@ -48,12 +51,18 @@
 		<table style='width: 100%; text-align: left;' border='0' cellpadding='2' cellspacing='2'>
 			<tbody>
 				<tr>
+					<td style='vertical-align: top;'><p><b>2004/04/23</b></p>
+					<p><a href='http://sourceforge.net/projects/jajuk/'>Jajuk 0.1.6 released<br></br>Italian translation and some bug fixes</a></p></td>
+					<td style='vertical-align: top;'/>
+					<td style='vertical-align: top;'/>
+				</tr>
+				<tr>
 					<td style='vertical-align: top;'><p><b>2004/04/09</b></p>
-			<p><a href='http://sourceforge.net/projects/jajuk/'>Jajuk 0.1.5 released, German translation and many bug fixes</a></p></td>
+					<p><a href='http://sourceforge.net/projects/jajuk/'>Jajuk 0.1.5 released<br></br>German translation and many bug fixes</a></p></td>
 					<td style='vertical-align: top;'><p><b>2004/04/04</b></p>
-			<p><a href='http://sourceforge.net/projects/jajuk/'>Jajuk hotfix 0.1.4 released</a></p></td>
-					<td style='vertical-align: top;'><p><b>2004/03/21 00:30</b></p>
-			<p><a href='http://sourceforge.net/projects/jajuk/'>Jajuk initial version 0.1 released !</a></p></td>
+					<p><a href='http://sourceforge.net/projects/jajuk/'>Jajuk hotfix 0.1.4 released</a></p></td>
+					<td style='vertical-align: top;'><p><b>2004/03/21</b></p>
+					<p><a href='http://sourceforge.net/projects/jajuk/'>Jajuk initial version 0.1 released !</a></p></td>
 				</tr>
 			</tbody>
 		</table>	

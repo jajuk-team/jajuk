@@ -57,7 +57,7 @@
 	      <id>bflorat</id>
 	      <email>bflorat@users.sourceforge.net</email>
 	      <organization>Jajuk team</organization>
-	      <timezone>2</timezone>
+	      <timezone>+2</timezone>
 	    </developer>
 	    <developer>
 	      <name>Gerhard Dietrichsteiner</name>
@@ -68,7 +68,7 @@
 	     </roles>
 	      <email>skyreacher@users.sourceforge.net</email>
 	      <organization>Jajuk team</organization>
-	      <timezone>2</timezone>
+	      <timezone>+2</timezone>
 	    </developer>
 	    <developer>
 	      <name>Oscar Appelgren</name>
@@ -78,7 +78,7 @@
 	     </roles>
 	      <email>oscariot@users.sourceforge.net</email>
 	      <organization>Jajuk team</organization>
-	      <timezone>2</timezone>
+	      <timezone>+2</timezone>
 	    </developer>
 	    <developer>
 	      <name>Jonathan C.Kresge</name>
@@ -108,7 +108,7 @@
 	      </roles>
 	      <email>sgringoi@users.sourceforge.net</email>
 	      <organization>Jajuk team</organization>
-	      <timezone>2</timezone>
+	      <timezone>+2</timezone>
 	    </developer>
   </developers>
   

@@ -7,7 +7,7 @@
   	<body>
   		<section name='Installation guide'>
    			<subsection name='Targeted platforms'>
-   				<p>This documentation targets : Gnu/Linux, MS Windows, MAC, ...</p>
+   				<p>This documentation targets : Gnu/Linux, MS Windows, MacosX, ...</p>
    			</subsection>
    			
    			<subsection name='Requirements'>
@@ -33,7 +33,7 @@
 				</ul>
    			</subsection>
    			
-			<subsection name='First launch'>
+			<subsection name='Launch'>
 				<ul>
 					<li><p><u>Under Unix</u> : Create a shortcut or launch script : <span style="font-family: monospace;">sh
 						${jajuk installation path}/jajuk.sh</span></p></li>
