@@ -33,6 +33,8 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -739,6 +741,20 @@ public class Util implements ITechnicalStrings {
 		    fParent = fParent.getParentFile();
 		}
 		return bOut;
+    }
+    
+    /**
+     * 
+     * @param alFiles
+     * @return Given list to play with shuffle or others runles applied
+     */
+    public static ArrayList applyPlayOption(ArrayList alFiles){
+        if (ConfigurationManager.getBoolean(CONF_STATE_SHUFFLE)){
+            ArrayList alFilesToPlay = (ArrayList)alFiles.clone();
+            Collections.shuffle(alFilesToPlay);
+            return alFilesToPlay;
+        }
+        return alFiles; 
     }
 	
 }
