@@ -376,6 +376,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		}
 		else if(ae.getSource() == jbStop){
 			FIFO.getInstance().stopRequest();
+			ObservationManager.notify(EVENT_PLAYLIST_REFRESH); //alert playlists editors ( queue playlist ) something changed for him
 		}
 		else if(ae.getSource() == jbPlayPause){
 			if ( Player.isPaused()){  //player was paused, resume it
@@ -386,13 +387,20 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 				Player.pause();
 				ObservationManager.notify(EVENT_PLAYER_PAUSE);  //notify of this event
 			}
-			
 		}
 		else if (ae.getSource() == jbPrevious){
 			FIFO.getInstance().playPrevious();
+			if ( Player.isPaused()){  //player was paused, reset pause button when changing of track
+			    Player.setPaused(false);
+			    ObservationManager.notify(EVENT_PLAYER_RESUME);  //notify of this event
+			}
 		}
 		else if (ae.getSource() == jbNext){
 			FIFO.getInstance().playNext();
+			if ( Player.isPaused()){  //player was paused, reset pause button
+				Player.setPaused(false);
+			    ObservationManager.notify(EVENT_PLAYER_RESUME);  //notify of this event
+			}
 		}
 		else if (ae.getSource() == jbRew){
 			float fCurrentPosition = Player.getCurrentPosition();
@@ -464,6 +472,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 			jbStop.setEnabled(false);
 			jbFwd.setEnabled(false);
 			jsPosition.setEnabled(false);
+			jbPlayPause.setIcon(Util.getIcon(ICON_PAUSE)); //resume any current pause
 		}
 		else if ( subject.equals(EVENT_PLAYER_PLAY)){
 			jbRew.setEnabled(true);

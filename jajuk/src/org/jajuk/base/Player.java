@@ -20,7 +20,7 @@
 package org.jajuk.base;
 
 import org.jajuk.i18n.Messages;
-import org.jajuk.players.*;
+import org.jajuk.players.IPlayerImpl;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.log.Log;
@@ -43,6 +43,9 @@ public class Player implements ITechnicalStrings{
 	private static boolean bMute = false;
 	/**Paused flag*/
 	private static boolean bPaused = false;
+	/**Loading lock, used by pause to wait next track is started*/
+	public static final byte[] bLoading = new byte[0];
+	
 	
 	/**
 	 * Asynchronous play for specified file with specified time interval
@@ -57,7 +60,9 @@ public class Player implements ITechnicalStrings{
 			public void run() {
 				try {
 					synchronized(bLock){  //ultimate concurrency protection
-						pCurrentPlayerImpl.play(fCurrent,fPosition,length,bMute,ConfigurationManager.getFloat(CONF_VOLUME));
+						synchronized(bLoading){
+						    pCurrentPlayerImpl.play(fCurrent,fPosition,length,bMute,ConfigurationManager.getFloat(CONF_VOLUME));
+						}
 					}
 				} catch (Exception e) {
 					Log.error("007",fCurrent.getAbsolutePath(), e); //$NON-NLS-1$
@@ -79,6 +84,7 @@ public class Player implements ITechnicalStrings{
 		try {
 			if (fCurrent!=null){
 				fCurrent.getTrack().getType().getPlayerImpl().stop();
+				setPaused(false); //cancel any current pause
 			}
 		} catch (Exception e) {
 			Log.error("008",fCurrent.getName(),e); //$NON-NLS-1$
@@ -139,9 +145,11 @@ public class Player implements ITechnicalStrings{
 	}
 	
 	/**Pause the player*/
-	public static void pause(){
-		try {
-			pCurrentPlayerImpl.pause();
+	public static void pause() {
+		 try {
+			synchronized(bLoading){ //wait loading is done to really pause
+			    pCurrentPlayerImpl.pause();
+			}
 			bPaused = true;
 		} catch (Exception e) {
 			Log.error(e); 
@@ -163,6 +171,14 @@ public class Player implements ITechnicalStrings{
 	 */
 	public static boolean isPaused() {
 		return bPaused;
+	}
+	
+	/**
+	 * Force the bPaused state to allow to cancel a pause without restarting the current played track (rew for exemple)  
+	 * @param bPaused
+	 */
+	public static void setPaused(boolean bPaused){
+	    Player.bPaused = bPaused;
 	}
 	
 	/**Seek to a given position in %. ex : 0.2 for 20% */

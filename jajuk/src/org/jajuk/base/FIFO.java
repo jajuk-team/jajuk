@@ -194,7 +194,6 @@ public class FIFO implements ITechnicalStrings,Runnable{
 			}
 		}
 		//ok, stop current track
-		
 		if (!bAppend) {
 			Player.stop();
 			bPlaying = false;
@@ -446,7 +445,7 @@ public class FIFO implements ITechnicalStrings,Runnable{
 	 */
 	public synchronized void finished(){
 		bPlaying = false;
-		if ( fCurrent != null){  //I get this case once but I can't reproduce it again
+		if ( fCurrent != null){ 
 			lTotalTime -= fCurrent.getTrack().getLength();
 		}
 		fCurrent = null;
@@ -523,7 +522,6 @@ public class FIFO implements ITechnicalStrings,Runnable{
 	 */
 	public synchronized void stopRequest() {
 		bStop = true;
-		ObservationManager.notify(EVENT_PLAYLIST_REFRESH); //alert playlists editors ( queue playlist ) something changed for him
 	}
 	
 	
