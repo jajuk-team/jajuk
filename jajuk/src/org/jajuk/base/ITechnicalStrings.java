@@ -144,13 +144,8 @@ public interface ITechnicalStrings {
 	public static final String IMAGES_SPLASHSCREEN =  PATH_IMAGES + "jajuk-splashscreen.png";
 	public static final String IMAGES_STAT_PAPER =  PATH_IMAGES + "No-Ones-Laughing-3.jpg";
 	
-	//logs
-	public static final String LOG_PATTERN="%d{yyyy/MM/dd HH:mm:ss} [%p] %m\n";
-	public static final String LOG_FILE_SIZE="1MB";
-
 	//files
 	public static final String FILE_JAJUK_DIR = System.getProperty("user.home")+"/.jajuk";
-	public static final String FILE_LOG = System.getProperty("user.home")+"/.jajuk/jajuk.log";
 	public static final String FILE_COLLECTION = System.getProperty("user.home")+"/.jajuk/collection.xml";
 	public static final String FILE_PERSPECTIVES_CONF = System.getProperty("user.home")+"/.jajuk/perspectives.xml";
 	public static final String FILE_CONFIGURATION = System.getProperty("user.home")+"/.jajuk/conf.properties";
@@ -235,39 +230,38 @@ public interface ITechnicalStrings {
 	public static final String EXT_AIFF = "aiff";
 		
 	//event keys
-	public static final String EVENT_EXIT ="exit";
-	public static final String EVENT_OPEN_FILE ="open file";
-	public static final String EVENT_REPEAT_MODE_STATUS_CHANGED="repeat status changed";
-	public static final String EVENT_SHUFFLE_MODE_STATUS_CHANGED="shuffle status changed";
-	public static final String EVENT_CONTINUE_MODE_STATUS_CHANGED="continue status changed";
-	public static final String EVENT_INTRO_MODE_STATUS_CHANGED="intro status changed";
-	public static final String EVENT_DEVICE_NEW="new device";
-	public static final String EVENT_DEVICE_DELETE="delete device";
-	public static final String EVENT_DEVICE_PROPERTIES="device properties";
-	public static final String EVENT_DEVICE_MOUNT="mount device";
-	public static final String EVENT_DEVICE_UNMOUNT="unmount device";
-	public static final String EVENT_DEVICE_TEST="test device";
-	public static final String EVENT_DEVICE_REFRESH="refresh device";
-	public static final String EVENT_DEVICE_SYNCHRO="synchronize device";
-	public static final String EVENT_VIEW_REFRESH_REQUEST="refresh view";
-	public static final String EVENT_VIEW_CLOSE_REQUEST="close view";
-	public static final String EVENT_VIEW_SHOW_REQUEST="show view";
-	public static final String EVENT_VIEW_SHOW_STATUS_CHANGED_REQUEST="change status view";
+	public static final String EVENT_EXIT ="exit"; //exit has be required
+	public static final String EVENT_OPEN_FILE ="open file"; //opening a file in the command jpanel
+	public static final String EVENT_REPEAT_MODE_STATUS_CHANGED="repeat status changed"; //repeat mode changed
+	public static final String EVENT_SHUFFLE_MODE_STATUS_CHANGED="shuffle status changed"; //shuffle mode changed
+	public static final String EVENT_CONTINUE_MODE_STATUS_CHANGED="continue status changed"; //continue mode changed
+	public static final String EVENT_INTRO_MODE_STATUS_CHANGED="intro status changed"; //intro mode changed
+	public static final String EVENT_DEVICE_NEW="new device"; //new device
+	public static final String EVENT_DEVICE_DELETE="delete device"; //removed device
+	public static final String EVENT_DEVICE_PROPERTIES="device properties"; //device properties display
+	public static final String EVENT_DEVICE_MOUNT="mount device"; //mount device
+	public static final String EVENT_DEVICE_UNMOUNT="unmount device"; //unmount a device
+	public static final String EVENT_DEVICE_TEST="test device"; //test a device
+	public static final String EVENT_DEVICE_REFRESH="refresh device"; //refresh a device
+	public static final String EVENT_DEVICE_SYNCHRO="synchronize device"; //sync. a device
+	public static final String EVENT_VIEW_REFRESH_REQUEST="refresh view"; //refresh a view is required, used in the device view
+	public static final String EVENT_VIEW_CLOSE_REQUEST="close view"; //close a view
+	public static final String EVENT_VIEW_SHOW_REQUEST="show view"; //show a view
+	public static final String EVENT_VIEW_SHOW_STATUS_CHANGED_REQUEST="change status view"; //change 
 	public static final String EVENT_VIEW_COMMAND_SELECT_HISTORY_ITEM="select history item";
-	public static final String EVENT_HELP_REQUIRED="help required";
-	public static final String EVENT_COVER_REFRESH="cover refresh";
-	public static final String EVENT_PLAYER_STOP="player stop";
-	public static final String EVENT_PLAYER_PLAY="player play";
-	public static final String EVENT_PLAYER_PAUSE="player pause";
-	public static final String EVENT_PLAYER_RESUME="player resume";
+	public static final String EVENT_HELP_REQUIRED="help required";//The help should be displayed
+	public static final String EVENT_COVER_REFRESH="cover refresh";//the cover should be refreshed
+	public static final String EVENT_PLAYER_STOP="player stop";//the stop button has been pressed
+	public static final String EVENT_PLAYER_PLAY="player play";  //the play button has been pressed
+	public static final String EVENT_PLAYER_PAUSE="player pause";//the pause button has been pressed
+	public static final String EVENT_PLAYER_RESUME="player resume";//the resume button has been pressed
 	public static final String EVENT_PLAYLIST_REFRESH="playlist refresh";
-	public static final String EVENT_FILE_LAUNCHED="file launched";
-	public static final String EVENT_INFORMATION_DISPLAY="information display";
-	public static final String EVENT_ANIMATION_DISPLAY="animation display";
-	public static final String EVENT_HEART_BEAT="heart beat";
-	public static final String EVENT_ZERO="zero";
-	public static final String EVENT_ADD_HISTORY_ITEM="history item";
-	public static final String EVENT_SPECIAL_MODE_CHANGED="special mode changed";
+	public static final String EVENT_FILE_LAUNCHED="file launched";//a file has been lauched by the fifo
+	public static final String EVENT_INFORMATION_DISPLAY="information display";//the information need to be updated
+	public static final String EVENT_HEART_BEAT="heart beat";//heart beat for geenral use to refresh subscribers every n secs
+	public static final String EVENT_ZERO="zero"; //a reinit has been required
+	public static final String EVENT_ADD_HISTORY_ITEM="history item"; //a new element has been added in the history
+	public static final String EVENT_SPECIAL_MODE_CHANGED="special mode changed"; //special mode (global shuffle, novelties, bestof...) changed
 	
 	//details keys
 	public static final String DETAIL_CURRENT_FILE_ID="current file id";
@@ -341,7 +335,7 @@ public interface ITechnicalStrings {
 	public static final String CONF_REGEXP = "jajuk.regexp"; //use regular expressions ?
 	public static final String CONF_BACKUP_SIZE = "jajuk.backup_size"; //backup size for collection.xml in MB
 	public static final String CONF_COLLECTION_CHARSET = "jajuk.collection_charset";//collection file charset (utf-8 or utf-16)
-	public static final String CONF_LAST_POSITION = "jajuk.startup.last_position";
+	public static final String CONF_STARTUP_LAST_POSITION = "jajuk.startup.last_position";
 	public static final String CONF_STARTUP_KEEP_MODE = "jajuk.startup.keep_mode";
 	public static final String CONF_NETWORK_USE_PROXY = "jajuk.network.use_proxy";
 	public static final String CONF_NETWORK_PROXY_HOSTNAME = "jajuk.network.proxy_hostname";
@@ -351,13 +345,13 @@ public interface ITechnicalStrings {
 	public static final String CONF_COVERS_MIN_SIZE = "jajuk.covers.min_size";
 	public static final String CONF_COVERS_MAX_SIZE = "jajuk.covers.max_size";
 	public static final String CONF_COVERS_ACCURACY = "jajuk.covers.accuracy";
-	
-	
+	public static final String CONF_NETWORK_CONNECTION_TO = "jajuk.network.connection_timeout";
+	public static final String CONF_NETWORK_TRANSFERT_TO = "jajuk.network.transfert_timeout";
+		
 	//miscelanous
 	public static final String TRUE= "true";
 	public static final String FALSE= "false";
-	
-	
+		
 	//views identifiers 
 	/** Identifier of the physical tree view */
 	public static final String VIEW_PHYSICAL_TREE	= "VIEW_PHYSICAL_TREE";

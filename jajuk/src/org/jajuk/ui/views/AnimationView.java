@@ -82,8 +82,7 @@ public class AnimationView extends ViewAdapter implements ITechnicalStrings,Obse
         setBackground(Color.white);
         add(btl1);
         ObservationManager.register(EVENT_INFORMATION_DISPLAY,this);
-        ObservationManager.register(EVENT_ANIMATION_DISPLAY,this);
-   }
+    }
 
 	/**Set the text to be displayed**/
 	public void setText(String sText){

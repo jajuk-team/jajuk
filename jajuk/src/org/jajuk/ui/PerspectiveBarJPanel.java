@@ -142,4 +142,12 @@ public class PerspectiveBarJPanel extends JPanel implements ITechnicalStrings{
 			}
 		}
 	}
+	
+	
+	/**
+	 * ToString() method
+	 */
+	public String toString(){
+	    return getClass().getName();
+	}
 }
