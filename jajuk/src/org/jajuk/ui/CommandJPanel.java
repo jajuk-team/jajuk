@@ -141,48 +141,21 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
                 jtbMode.setFloatable(false);
                 jtbMode.add(Box.createHorizontalGlue());
                 jbRepeat = new JButton(Util.getIcon(ICON_REPEAT_ON)); 
-                if ( ConfigurationManager.getBoolean(CONF_STATE_REPEAT)){
-                    jbRepeat.setBorder(BorderFactory.createLoweredBevelBorder());
-                }
-                else{
-                    jbRepeat.setBorder(BorderFactory.createEmptyBorder(BORDER,BORDER,BORDER,BORDER));
-                }
                 jbRepeat.setActionCommand(EVENT_REPEAT_MODE_STATUS_CHANGED);
                 jbRepeat.setToolTipText(Messages.getString("CommandJPanel.1")); //$NON-NLS-1$
                 jbRepeat.addActionListener(JajukListener.getInstance());
                 jtbMode.add(jbRepeat);
-                
                 jbRandom = new JButton(Util.getIcon(ICON_SHUFFLE_ON));
-                if ( ConfigurationManager.getBoolean(CONF_STATE_SHUFFLE)){
-                    jbRandom.setBorder(BorderFactory.createLoweredBevelBorder());
-                }
-                else{
-                    jbRandom.setBorder(BorderFactory.createEmptyBorder(BORDER,BORDER,BORDER,BORDER));
-                }
                 jbRandom.setToolTipText(Messages.getString("CommandJPanel.2")); //$NON-NLS-1$
                 jbRandom.setActionCommand(EVENT_SHUFFLE_MODE_STATUS_CHANGED);
                 jbRandom.addActionListener(JajukListener.getInstance());
                 jtbMode.add(jbRandom);
-               
                 jbContinue = new JButton(Util.getIcon(ICON_CONTINUE_ON));
-                if ( ConfigurationManager.getBoolean(CONF_STATE_CONTINUE)){
-                    jbContinue.setBorder(BorderFactory.createLoweredBevelBorder());
-                }
-                else{
-                    jbContinue.setBorder(BorderFactory.createEmptyBorder(BORDER,BORDER,BORDER,BORDER));
-                }
                 jbContinue.setToolTipText(Messages.getString("CommandJPanel.3")); //$NON-NLS-1$
                 jbContinue.setActionCommand(EVENT_CONTINUE_MODE_STATUS_CHANGED);
                 jbContinue.addActionListener(JajukListener.getInstance());
                 jtbMode.add(jbContinue);
-                
                 jbIntro = new JButton(Util.getIcon(ICON_INTRO_ON));
-                if ( ConfigurationManager.getBoolean(CONF_STATE_INTRO)){
-                    jbIntro.setBorder(BorderFactory.createLoweredBevelBorder());
-                }
-                else{
-                    jbIntro.setBorder(BorderFactory.createEmptyBorder(BORDER,BORDER,BORDER,BORDER));
-                }
                 jbIntro.setToolTipText(Messages.getString("CommandJPanel.4")); //$NON-NLS-1$
                 jbIntro.setActionCommand(EVENT_INTRO_MODE_STATUS_CHANGED);
                 jbIntro.addActionListener(JajukListener.getInstance());
@@ -201,11 +174,6 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
                 jtbSpecial.add(jbGlobalRandom);
                 jbBestof = new JButton(Util.getIcon(ICON_BESTOF_ON)); 
                 jbBestof.addActionListener(CommandJPanel.this);
-                SwingUtilities.invokeLater(new Runnable() {
-                    public void run() {
-                        jbBestof.setBorder(BorderFactory.createLoweredBevelBorder());
-                    }
-                });
                 jbBestof.setToolTipText(Messages.getString("CommandJPanel.6")); //$NON-NLS-1$
                 jtbSpecial.add(jbBestof);
                 jbNovelties = new JButton(Util.getIcon(ICON_NOVELTIES_ON)); 
@@ -298,7 +266,36 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
                update(EVENT_HEART_BEAT);
             }
         });
-    }	
+        //set buttons borders, must be here for an unknwon reason due to a liquid lnf 
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                if ( ConfigurationManager.getBoolean(CONF_STATE_REPEAT)){
+                    jbRepeat.setBorder(BorderFactory.createLoweredBevelBorder());
+                }
+                else{
+                    jbRepeat.setBorder(BorderFactory.createRaisedBevelBorder());
+                }
+                if ( ConfigurationManager.getBoolean(CONF_STATE_INTRO)){
+                    jbIntro.setBorder(BorderFactory.createLoweredBevelBorder());
+                }
+                else{
+                  jbIntro.setBorder(BorderFactory.createRaisedBevelBorder());
+                }
+                if ( ConfigurationManager.getBoolean(CONF_STATE_SHUFFLE)){
+                    jbRandom.setBorder(BorderFactory.createLoweredBevelBorder());
+                }
+                else{
+                    jbRandom.setBorder(BorderFactory.createRaisedBevelBorder());
+                }
+                if ( ConfigurationManager.getBoolean(CONF_STATE_CONTINUE)){
+                    jbContinue.setBorder(BorderFactory.createLoweredBevelBorder());
+                }
+                else{
+                   jbContinue.setBorder(BorderFactory.createRaisedBevelBorder());
+                }
+            }	
+        });
+    } 
     
     
     /** 

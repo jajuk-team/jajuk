@@ -100,7 +100,7 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
 				//Repeat and continue can't be set together, so deselect repeat mode
 				ConfigurationManager.setProperty(CONF_STATE_CONTINUE, Boolean.toString(!bContinue));
 				JajukJMenuBar.getInstance().jcbmiContinue.setSelected(false);
-				CommandJPanel.getInstance().jbContinue.setBorder(BorderFactory.createEmptyBorder(BORDER,BORDER,BORDER,BORDER));
+				CommandJPanel.getInstance().jbContinue.setBorder(BorderFactory.createRaisedBevelBorder());
 			}
 			boolean b = ConfigurationManager.getBoolean(CONF_STATE_REPEAT);
 			ConfigurationManager.setProperty(CONF_STATE_REPEAT, Boolean.toString(!b));
@@ -110,7 +110,7 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
 				FIFO.getInstance().forceRepeat(FIFO.getInstance().getCurrentFile());
 			}
 			else {
-			    CommandJPanel.getInstance().jbRepeat.setBorder(BorderFactory.createEmptyBorder(BORDER,BORDER,BORDER,BORDER));
+			    CommandJPanel.getInstance().jbRepeat.setBorder(BorderFactory.createRaisedBevelBorder());
 			}
 		}
 		else if (e.getActionCommand().equals(EVENT_SHUFFLE_MODE_STATUS_CHANGED)) {
@@ -121,7 +121,7 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
 				CommandJPanel.getInstance().jbRandom.setBorder(BorderFactory.createLoweredBevelBorder());
 			}
 			else {
-				CommandJPanel.getInstance().jbRandom.setBorder(BorderFactory.createEmptyBorder(BORDER,BORDER,BORDER,BORDER));
+				CommandJPanel.getInstance().jbRandom.setBorder(BorderFactory.createRaisedBevelBorder());
 			}
 		}
 		else if (e.getActionCommand().equals(EVENT_CONTINUE_MODE_STATUS_CHANGED)) {
@@ -130,7 +130,7 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
 				//Repeat and continue can't be set together, so deselect repeat mode
 				ConfigurationManager.setProperty(CONF_STATE_REPEAT, Boolean.toString(!bRepeat));
 				JajukJMenuBar.getInstance().jcbmiRepeat.setSelected(false);
-				CommandJPanel.getInstance().jbRepeat.setBorder(BorderFactory.createEmptyBorder(BORDER,BORDER,BORDER,BORDER)); 
+				CommandJPanel.getInstance().jbRepeat.setBorder(BorderFactory.createRaisedBevelBorder()); 
 			}
 			boolean b = ConfigurationManager.getBoolean(CONF_STATE_CONTINUE);
 			ConfigurationManager.setProperty(CONF_STATE_CONTINUE, Boolean.toString(!b));
@@ -139,7 +139,7 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
 				CommandJPanel.getInstance().jbContinue.setBorder(BorderFactory.createLoweredBevelBorder());
 			}
 			else {
-				CommandJPanel.getInstance().jbContinue.setBorder(BorderFactory.createEmptyBorder(BORDER,BORDER,BORDER,BORDER));
+				CommandJPanel.getInstance().jbContinue.setBorder(BorderFactory.createRaisedBevelBorder());
 			}
 		}
 		else if (e.getActionCommand().equals(EVENT_INTRO_MODE_STATUS_CHANGED)) {
@@ -150,7 +150,7 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
 				CommandJPanel.getInstance().jbIntro.setBorder(BorderFactory.createLoweredBevelBorder());
 			}
 			else {
-				CommandJPanel.getInstance().jbIntro.setBorder(BorderFactory.createEmptyBorder(BORDER,BORDER,BORDER,BORDER));
+				CommandJPanel.getInstance().jbIntro.setBorder(BorderFactory.createRaisedBevelBorder());
 			}
 		}
 		else if (e.getActionCommand().equals(EVENT_VIEW_SHOW_STATUS_CHANGED_REQUEST)) {

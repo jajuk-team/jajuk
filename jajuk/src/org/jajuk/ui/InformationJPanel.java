@@ -137,7 +137,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,Obser
 		add(jpCurrent,"4,0"); //$NON-NLS-1$
 		
 		  //check if some track has been lauched before the view has been displayed
-        update(EVENT_HEART_BEAT);
+        update(EVENT_FILE_LAUNCHED);
         //register for given events
         ObservationManager.register(EVENT_HEART_BEAT,this);
         ObservationManager.register(EVENT_ZERO,this);
