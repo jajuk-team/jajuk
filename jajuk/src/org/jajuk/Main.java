@@ -33,6 +33,8 @@ import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 
 import org.jajuk.base.Collection;
 import org.jajuk.base.Device;
@@ -57,6 +59,9 @@ import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 
 
 /**
@@ -87,7 +92,9 @@ public class Main implements ITechnicalStrings {
 	private static boolean bDebugMode;
 	/**Exiting flag*/
 	public static boolean bExiting = false;
-	
+	/**Perspective release flag used in upgrade method**/
+	private static boolean bPerspectiveReleaseOK = true;
+		
 	
 	/**
 	 * Main entry
@@ -243,10 +250,9 @@ public class Main implements ITechnicalStrings {
 						jw.setVisible(true); //show main window
 						sc.toFront();
 					}
-					
 					//Create the perspective manager 
 					File fPerspectives = new File(FILE_PERSPECTIVES_CONF); //check for perspectives.xml file
-					if (!fPerspectives.exists()) {
+					if (!fPerspectives.exists() || !bPerspectiveReleaseOK) {  //if perspective file doesn't exist or is an old version
 						// Register default perspective configuration (need locale, so cannot be done in initCheckup() )
 						PerspectiveManager.registerDefaultPerspectives();
 					}
@@ -294,6 +300,7 @@ public class Main implements ITechnicalStrings {
 							sc.dispose();
 						}
 					}.start();
+						
 					
 				} catch (JajukException je) { //last chance to catch any error for logging purpose
 					Log.error(je);
@@ -493,15 +500,34 @@ public class Main implements ITechnicalStrings {
 	 * Actions to migrate an existing installation
 	 *
 	 */
-	public static void upgrade(){
-		//For jajuk < 0.2 : remove backup file : collection~.xml
+	public static void upgrade() throws Exception {
+		//--For jajuk < 0.2 : remove backup file : collection~.xml
 		File file = new File(FILE_COLLECTION+"~");
 		if ( file!= null ){
 			file.delete();
 		}
+		//--For jajuk < 0.3, migrate perspective file
+		try{
+			SAXParserFactory spf = SAXParserFactory.newInstance();
+			spf.setValidating(false);
+			SAXParser saxParser = spf.newSAXParser();
+			File frt = new File(FILE_PERSPECTIVES_CONF);
+			saxParser.parse(frt.toURL().toString(),new DefaultHandler(){
+				public void startElement(String sUri, String sName, String sQName, Attributes attributes) throws SAXException {
+					if (sQName.equals("perspectives")) { //$NON-NLS-1$
+						String sRelease = attributes.getValue(attributes.getIndex("jajuk_version")); //$NON-NLS-1$
+						if (sRelease.matches("0.[1-2].*")){ //0.1 or 0.2 release
+							Main.bPerspectiveReleaseOK = false;
+						}
+					}
+				}
+			});
+		} catch (Exception e) {
+			Main.bPerspectiveReleaseOK = false;
+		}
 	}
-	
-	/**
+
+/**
 	 * @return Returns the bDebugMode.
 	 */
 	public static boolean isDebugMode() {
