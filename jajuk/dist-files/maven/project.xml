@@ -272,15 +272,9 @@
         <version>0.9.15</version> 
     </dependency>
     
-    <dependency>
+   <dependency>
 	   <groupId>lib</groupId>
-        <artifactId>tray_linux</artifactId>
-        <version>0.1.6</version> 
-    </dependency>
-    
-    <dependency>
-	   <groupId>lib</groupId>
-        <artifactId>tray_windows</artifactId>
+        <artifactId>tray</artifactId>
         <version>0.1.6</version> 
     </dependency>
 
