@@ -1,5 +1,5 @@
 %define name                     jajuk
-%define version                     0.3.2
+%define version                     0.3.2rc1
 %define release                     1mdk
 
 %define section                  Multimedia/Sound
@@ -35,47 +35,16 @@ Jajuk main principles are :
    and provide multiple ways to perform the same operation
    * Only for music: Jajuk will never become a multi-media
    (video, pictures) jukebox
+
 %files
 %defattr(-,root,root)
   /usr/bin/jajuk
-   /usr/lib/jajuk/bin/jajuk-help.jar
-   /usr/lib/jajuk/bin/jajuk-help_fr.jar
-   /usr/lib/jajuk/bin/jajuk.jar
-   /usr/lib/jajuk/lib/animation-1.1.3.jar
-   /usr/lib/jajuk/lib/basicplayer-2.3.jar
-   /usr/lib/jajuk/lib/commons-httpclient-2.0.1.jar
-   /usr/lib/jajuk/lib/commons-logging-1.0.jar
-   /usr/lib/jajuk/lib/id3-1.6.0d7.jar
-   /usr/lib/jajuk/lib/javalayer-0.4.jar
-   /usr/lib/jajuk/lib/jcommon-0.9.0.jar
-   /usr/lib/jajuk/lib/jfreechart-0.9.15.jar
-   /usr/lib/jajuk/lib/jh-2.0.2.jar
-   /usr/lib/jajuk/lib/jlGui-2.3.jar
-   /usr/lib/jajuk/lib/jogg-0.0.5.jar
-   /usr/lib/jajuk/lib/jorbis-0.0.12.jar
-   /usr/lib/jajuk/lib/kunststoff-2.0.1.jar
-   /usr/lib/jajuk/lib/liquidlnf-0.2.9-alpha5.jar
-   /usr/lib/jajuk/lib/log4j-1.2.6.jar
-   /usr/lib/jajuk/lib/metouia-1.0b.jar
-   /usr/lib/jajuk/lib/mp3spi-1.9.jar
-   /usr/lib/jajuk/lib/tablelayout-1.0.jar
-   /usr/lib/jajuk/lib/tray-0.1.6.jar
-   /usr/lib/jajuk/lib/tritonus_share-1.0.jar
-   /usr/lib/jajuk/lib/vorbisspi-1.0.jar
-    /usr/lib/jajuk/lib/infonodeDockingWindows-1.1.0.jar
-   /usr/lib/jajuk/native/libtray.so
-   /usr/share/doc/jajuk/README.html
-   /usr/share/doc/jajuk/README_chn.html
-   /usr/share/doc/jajuk/README_deu.html
-   /usr/share/doc/jajuk/README_fra.html
-   /usr/share/doc/jajuk/README_ita.html
-   /usr/share/doc/jajuk/README_nld.html
-   /usr/share/doc/jajuk/README_swe.html
-   /usr/share/doc/jajuk/README_esp.html
-   /usr/share/icons/jajuk-logo.png
-   /usr/share/icons/mini/jajuk-logo.png
-   /usr/share/icons/large/jajuk-logo.png
-   /usr/lib/menu/jajuk
+   /usr/lib/jajuk/bin/*
+   /usr/lib/jajuk/lib/*
+   /usr/lib/jajuk/native/*
+   /usr/share/doc/jajuk/*
+   /usr/share/icons/*
+   /usr/lib/menu/*
 
 %post
 update-menus

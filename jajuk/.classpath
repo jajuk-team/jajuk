@@ -25,5 +25,6 @@
 	<classpathentry kind="lib" path="lib/liquidlnf-0.2.9-alpha5.jar"/>
 	<classpathentry kind="lib" path="jajuk-help.jar"/>
 	<classpathentry kind="lib" path="lib/jh-2.0.2.jar"/>
+	<classpathentry kind="lib" path="lib/looks-1.2.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
