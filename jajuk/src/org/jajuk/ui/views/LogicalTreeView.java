@@ -599,14 +599,13 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 					populateTree();
 					return null;
 				}
-				public void finished() {
-					jtree.revalidate();
-					jtree.repaint();
-					expand();
-					int i = jspTree.getVerticalScrollBar().getValue();
-					jspTree.getVerticalScrollBar().setValue(i);
-				}
-			};
+			    public void finished() {
+                    SwingUtilities.updateComponentTreeUI(jtree);
+                    expand();
+                    int i = jspTree.getVerticalScrollBar().getValue();
+                    jspTree.getVerticalScrollBar().setValue(i);
+                }
+           };
 			sw.start();
 		}
 	}
