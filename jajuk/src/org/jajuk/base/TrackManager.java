@@ -98,12 +98,12 @@ public class TrackManager implements ITechnicalStrings {
 				itTracks.remove();
 				continue;
 			}
+			ArrayList alFiles = track.getFiles();
 			Iterator itFiles = track.getFiles().iterator();
 			while (itFiles.hasNext()) {
 				org.jajuk.base.File file = (org.jajuk.base.File) itFiles.next();
 				if (FileManager.getFile(file.getId()) == null) { //test if the file exists in the main file repository
-					track.removeFile(file); //no? remove it from the track
-					itFiles.remove();
+					itFiles.remove();//no? remove it from the track
 				}
 			}
 			if (track.getFiles().size() == 0) { //the track don't map anymore to any physical item, just remove it

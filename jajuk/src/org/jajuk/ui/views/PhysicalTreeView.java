@@ -27,6 +27,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.TreeSet;
@@ -77,13 +78,13 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener{
 	DefaultMutableTreeNode top;
 	
 	/** Files selection*/
-	TreeSet tsFiles;
+	ArrayList alFiles;
 	
 	/** Directories selection*/
-	TreeSet tsDirs;
+	ArrayList alDirs;
 	
 	/** Devices selection*/
-	TreeSet tsDevices;
+	ArrayList alDevices;
 	
 	JPopupMenu jmenuFile;
 		JMenuItem jmiFilePlay;
@@ -110,6 +111,7 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener{
 		JMenuItem jmiDirDelete;
 		JMenuItem jmiDirSetProperty;
 		JMenuItem jmiDirProperties;
+		//TODO TBI devices contextual menus
 		
 
 	/*
@@ -315,56 +317,62 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener{
 					//Only keep files
 					//TODO TBI accept playlists
 					TreePath[] paths = jtree.getSelectionModel().getSelectionPaths();
-					tsFiles = new TreeSet();
-					tsDirs = new TreeSet();
-					tsDevices = new TreeSet();
+					cleanSelection();
+					//test mix between types ( not allowed )
+					String sClass = paths[0].getClass().toString();
+					for (int i=0;i<paths.length;i++){
+						if (!node.getClass().toString().equals(sClass)){
+							return;
+						}	
+					}
+					//get all components recursively
 					Object o = paths[0].getLastPathComponent();
-					//File selection
-					if ( o instanceof FileNode ){
-						for (int i=0;i<paths.length;i++){
-							o = paths[i].getLastPathComponent();
-							if ( o instanceof FileNode ){
-								File file = ((FileNode)o).getFile();
-								if (file.getDirectory().getDevice().isMounted() && !file.getDirectory().getDevice().isRefreshing()){
-									tsFiles.add(((FileNode)o).getFile());
-								}
-								else{
-									Messages.showErrorMessage("120");
-									return; //show only one error message
-								}
+					Enumeration e2 = ((DefaultMutableTreeNode)o).depthFirstEnumeration(); //return all childs nodes recursively
+					while ( e2.hasMoreElements()){
+						DefaultMutableTreeNode node = (DefaultMutableTreeNode)e2.nextElement();
+						//File selection
+						if (node instanceof FileNode){
+							File file = ((FileNode)o).getFile();
+							if (file.getDirectory().getDevice().isMounted() && !file.getDirectory().getDevice().isRefreshing()){
+								alFiles.add(((FileNode)o).getFile());
 							}
 							else{
-								return; //we don't accept different type selections
+								Messages.showErrorMessage("120");
+								return; //show only one error message
 							}
 						}
-						jmenuFile.show(jtree,e.getX(),e.getY());
-					}
-					//directory selection
-					else if ( o instanceof DirectoryNode ){
-						for (int i=0;i<paths.length;i++){
-							o = paths[i].getLastPathComponent();
-							if ( o instanceof DirectoryNode){
-								Directory dir = ((DirectoryNode)o).getDirectory();
-								if (dir.getDevice().isMounted() && !dir.getDevice().isRefreshing()){
-									tsDirs.add(((DirectoryNode)o).getDirectory());
+						//	directory selection
+						else if ( o instanceof DirectoryNode ){
+							for (int i=0;i<paths.length;i++){
+								o = paths[i].getLastPathComponent();
+								if ( o instanceof DirectoryNode){
+									Directory dir = ((DirectoryNode)o).getDirectory();
+									if (dir.getDevice().isMounted() && !dir.getDevice().isRefreshing()){
+										alDirs.add(((DirectoryNode)o).getDirectory());
+									}
+									else{
+										Messages.showErrorMessage("120");
+										return; //show only one error message
+									}
 								}
 								else{
-									Messages.showErrorMessage("120");
-									return; //show only one error message
+									return; //we don't accept different type selections
 								}
 							}
-							else{
-								return; //we don't accept different type selections
-							}
 						}
-						jmenuDir.show(jtree,e.getX(),e.getY());
+						if (alFiles.size() > 0){
+							jmenuFile.show(jtree,e.getX(),e.getY());
+						}
+						else if (alDirs.size() > 0){
+							jmenuDir.show(jtree,e.getX(),e.getY());
+						}
+						if (alDevices.size() > 0){
+							//jmenuFile.show(jtree,e.getX(),e.getY()); //TBI
+						}
 					}
-				}
+				};
+				jtree.addMouseListener(ml);
 				
-			}
-		 };
-		 jtree.addMouseListener(ml);
-		
 		
 		//expand all
 		for (int i=0;i<jtree.getRowCount();i++){
@@ -379,6 +387,16 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener{
 		add(new JScrollPane(jtree));
 	}
 	
+
+	/**
+	 * Clean selection
+	 */
+	private void cleanSelection(){
+		alFiles = new ArrayList(100);
+		alDirs = new ArrayList(100);
+		alDevices = new ArrayList(100);
+	}				
+
 	/**Fill the tree */
 	public void populate(){
 		//add devices

@@ -67,7 +67,7 @@ public interface ITechnicalStrings {
 	public static final String ICON_DELETE=  PATH_ICONS + "16x16/delete.png";
 	public static final String ICON_PROPERTIES=  PATH_ICONS + "16x16/properties.png";
 	public static final String ICON_MOUNT=  PATH_ICONS + "16x16/mount.png";
-	public static final String ICON_UNMOUNT=  PATH_ICONS + "16x16/delete.png";
+	public static final String ICON_UNMOUNT=  PATH_ICONS + "16x16/unmount.png";
 	public static final String ICON_TEST=  PATH_ICONS + "16x16/test.png";
 	public static final String ICON_REFRESH=  PATH_ICONS + "16x16/refresh.png";
 	public static final String ICON_SYNCHRO=  PATH_ICONS + "16x16/synchro.png";

@@ -44,7 +44,7 @@ public class Player {
 	public static void play(File file,final int iPosition,final int iLength) {
 		fCurrent = file;
 		pCurrentPlayerImpl = file.getTrack().getType().getPlayerImpl();
-		new Thread() {
+		Thread thread = new Thread() {
 			public void run() {
 				try {
 					pCurrentPlayerImpl.play(fCurrent,iPosition,iLength);
@@ -55,8 +55,9 @@ public class Player {
 					FIFO.getInstance().finished();
 				}			
 			}
-		}
-		.start();
+		};
+		thread.setPriority(Thread.MAX_PRIORITY);  //set max priority to avoid scrachs
+		thread.start();
 		}
 	
 	/**

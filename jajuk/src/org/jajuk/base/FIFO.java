@@ -45,7 +45,7 @@ public class FIFO extends Thread implements ITechnicalStrings{
 	private volatile boolean bStop = false;
 	
 	/** Deep time**/
-	private final int SLEEP_TIME = 50;
+	private final int SLEEP_TIME = 100;
 	
 	/** Refresh time in ms**/
 	private final int REFRESH_TIME = 1000;
