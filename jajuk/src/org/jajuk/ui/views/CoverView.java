@@ -52,7 +52,7 @@ public class CoverView extends ViewAdapter implements Observer{
 	private static Image image;
 	
 	/**Current directory*/
-	private static File fDir;
+	private File fDir;
 		
 	
 	/**
@@ -85,10 +85,10 @@ public class CoverView extends ViewAdapter implements Observer{
 	public void update(String subject){
 		if ( subject.equals(EVENT_COVER_REFRESH)){
 			java.io.File fDir = new java.io.File(FIFO.getInstance().getCurrentFile().getAbsolutePath()).getParentFile();
-			if ( CoverView.fDir!= null && CoverView.fDir.equals(fDir) ){  //if we are always in the same directory, just leave to save cpu
+			if ( this.fDir!= null && this.fDir.equals(fDir) ){  //if we are always in the same directory, just leave to save cpu
 				return;
 			}
-			CoverView.fDir = fDir;
+			this.fDir = fDir;
 			java.io.File[] files = fDir.listFiles();
 			boolean bFound = false;
 			//first, search for a 'cover.jpg' file
