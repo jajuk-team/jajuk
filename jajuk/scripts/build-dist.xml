@@ -91,7 +91,7 @@
   <target name='helpsetjar' description='o Create the heplset jar'>
     <delete file='${distdir}/bin/${helpsetjarname}'/>
     <apply executable="jhindexer" dir='${basedir}/dist-files/doc/jajuk-hs/default'>
-	 <fileset dir="${basedir}/dist-files/doc/jajuk-hs/fr/html"/>
+	 <fileset dir="${basedir}/dist-files/doc/jajuk-hs/default/html"/>
    </apply>
     <apply executable="jhindexer" dir='${basedir}/dist-files/doc/jajuk-hs/fr'>
 	 <fileset dir="${basedir}/dist-files/doc/jajuk-hs/fr/html"/>
