@@ -176,8 +176,10 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 	 */
 	public void update(Event event) {
 		String subject = event.getSubject();
-		if ( EVENT_DEVICE_MOUNT.equals(subject) || EVENT_DEVICE_UNMOUNT.equals(subject) 
-		        || EVENT_DEVICE_REFRESH.equals(subject)  || EVENT_SYNC_TREE_TABLE.equals(subject)) {
+		if ( EVENT_DEVICE_MOUNT.equals(subject) 
+                || EVENT_DEVICE_UNMOUNT.equals(subject) 
+                || EVENT_DEVICE_REFRESH.equals(subject)  
+                || EVENT_SYNC_TREE_TABLE.equals(subject)) {
 			applyFilter(sAppliedCriteria,sAppliedFilter); //force filter to refresh
 		}	
 	}
