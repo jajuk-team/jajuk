@@ -300,7 +300,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
         double[][] size ={{5*iSeparator,0.15,10*iSeparator,0.17,5*iSeparator,  //search box + history
             0.11,5*iSeparator, //mode buttons
             0.13,10*iSeparator, //special functions buttons
-            0.19,10*iSeparator, //play buttons
+            0.20,10*iSeparator, //play buttons
             0.13,iSeparator,0.11,TableLayout.FILL,20,5*iSeparator},  //position + volume sliders + mute button
             {height1}}; //note we can't set a % for history combo box because of popup size
         setLayout(new TableLayout(size));

@@ -40,6 +40,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
@@ -751,7 +752,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		setLayout(new TableLayout(size));
 		//add main panels
 		jtpMain = new JTabbedPane();
-		jtpMain.addTab(Messages.getString("ParameterView.33"),jpOptions); //$NON-NLS-1$
+		jtpMain.addTab(Messages.getString("ParameterView.33"),new JScrollPane(jpOptions)); //$NON-NLS-1$
 		jtpMain.addTab(Messages.getString("ParameterView.19"),jpStart); //$NON-NLS-1$
 		jtpMain.addTab(Messages.getString("ParameterView.98"),jpTags); //$NON-NLS-1$
 		jtpMain.addTab(Messages.getString("ParameterView.8"),jpHistory); //$NON-NLS-1$
