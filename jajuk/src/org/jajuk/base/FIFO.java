@@ -115,7 +115,7 @@ public class FIFO implements ITechnicalStrings{
      * @param alItems
      * @param bAppend
      */
-    public synchronized void push(final ArrayList alItems, final boolean bAppend) {
+    public void push(final ArrayList alItems, final boolean bAppend) {
         new Thread(){ //do it in a thread to make UI more reactive
             public void run(){
                 try{
@@ -133,7 +133,7 @@ public class FIFO implements ITechnicalStrings{
      * @param item
      * @param bAppend
      */
-    public synchronized void push(final StackItem item, final boolean bAppend) {
+    public void push(final StackItem item, final boolean bAppend) {
         new Thread(){ //do it in a thread to make UI more reactive
             public void run(){
                 try{
@@ -157,6 +157,7 @@ public class FIFO implements ITechnicalStrings{
             return;
         }
         try{
+            Util.waiting();
             bFlag = true;
             //wake up FIFO if stopped
             bStop = false;
@@ -240,6 +241,7 @@ public class FIFO implements ITechnicalStrings{
         finally{
             ObservationManager.notify(EVENT_PLAYLIST_REFRESH); //refresh playlist editor
             bFlag = false;
+            Util.stopWaiting();
         }
     }
     
