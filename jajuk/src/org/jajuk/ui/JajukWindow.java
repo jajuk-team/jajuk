@@ -41,6 +41,7 @@ import org.jajuk.i18n.Messages;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Util;
+import org.jajuk.util.log.Log;
 
 import snoozesoft.systray4j.SysTrayMenu;
 import snoozesoft.systray4j.SysTrayMenuEvent;
@@ -320,8 +321,16 @@ public class JajukWindow extends JFrame implements ITechnicalStrings,ComponentLi
 	 * @param s
 	 */
 	public void setTooltip(String s){
-		if ( stm != null){
-			stm.setToolTip(s.substring(0,63)); //note that the systray tooltip length must be <= 63
+		try{
+			if ( stm != null){
+				if (s.length() > 63){
+					s = s.substring(0,63);
+				}
+				stm.setToolTip(s); //note that the systray tooltip length must be <= 63
+			}
+		}
+		catch(Exception e){
+			Log.error(e);
 		}
 	}
 
