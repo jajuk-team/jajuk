@@ -127,10 +127,10 @@ public class JajukWindow extends JFrame implements ITechnicalStrings,ComponentLi
 			stmiBestof =  new SysTrayMenuItem("Play Best of");
 			stmiBestof.addSysTrayMenuListener(this);
 			stmiVisible =  new SysTrayMenuItem("Show Jajuk at startup");
-			stmiVisible.setEnabled(bVisible);
+			stmiVisible.setEnabled(!bVisible);//if it is already visible, this menu is hidden 
 			stmiVisible.addSysTrayMenuListener(this);
 			stmiHidden =  new SysTrayMenuItem("Hide Jajuk at startup");
-			stmiHidden.setEnabled(!bVisible);
+			stmiHidden.setEnabled(bVisible);
 			stmiHidden.addSysTrayMenuListener(this);
 			stm.addItem(stmiExit);
 			stm.addSeparator();
