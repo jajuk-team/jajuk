@@ -57,10 +57,7 @@ public class FIFO implements ITechnicalStrings,Runnable,Observer{
     /**Sleep time*/
     private final int SLEEP_TIME = 100;
 
-    /**Refresh time in ms*/
-    private final int REFRESH_TIME = 1000;
-
-	/**Self instance*/
+    /**Self instance*/
 	static private FIFO fifo= null; 	
 	
 	/**True if a track is playing */
@@ -69,17 +66,8 @@ public class FIFO implements ITechnicalStrings,Runnable,Observer{
 	/** Forced repeat mode flag*/
 	boolean bForcedRepeat;
 	
-	/** Current track start date*/
-	public long lTrackStart; 
-	
-	/** Total time in fifo (sec)*/
-	private long lTotalTime;
-	
 	/** Offset since begin in ms*/
 	long lOffset;
-	
-	/** Current play time in ms*/
-	long lTime;
 	
 	/** Glocal random enabled ? */
 	private boolean bGlobalRandom = false;
@@ -156,9 +144,8 @@ public class FIFO implements ITechnicalStrings,Runnable,Observer{
 		bStop = false;
 		bPlaying = false;
 		bForcedRepeat = false;
-		lTotalTime = 0;
+		JajukTimer.getInstance().reset();
 		lOffset = 0;
-		lTime = 0;
 		bGlobalRandom = false;
 		bBestOf = false;
 		alRepeated = new ArrayList(50);
@@ -234,7 +221,7 @@ public class FIFO implements ITechnicalStrings,Runnable,Observer{
 			Player.stop();
 			bPlaying = false;
 			clear();
-			lTotalTime = 0;
+			JajukTimer.getInstance().reset();
 		}
 		//add required tracks
 		it = alFiles.iterator();
@@ -245,7 +232,7 @@ public class FIFO implements ITechnicalStrings,Runnable,Observer{
 				FileManager.setRateHasChanged(true); //alert bestof playlist something changed
 			}
 			alFIFO.add(file);
-			lTotalTime += file.getTrack().getLength();
+			JajukTimer.getInstance().addTrackTime(file);
 		}
 	}
 	
@@ -350,7 +337,7 @@ public class FIFO implements ITechnicalStrings,Runnable,Observer{
 			    File file = (File)it.next();
 			    if ( file!=null && file.getTrack().getAlbum().equals(albumCurrent)){
 			        it.remove(); //remove this file because it is in the same album than the current one
-			        lTotalTime -= file.getTrack().getLength();
+		//NBI	        lTotalTime -= file.getTrack().getLength();
 			    }
 			    else{
 			        break; //not the same album? leave
@@ -365,7 +352,6 @@ public class FIFO implements ITechnicalStrings,Runnable,Observer{
 	 */
 	public void run() {
 		try {
-			int i = 0;
 			while (!bStop) {
 				Thread.sleep(SLEEP_TIME); //sleep to save CPU
 				if (bError){
@@ -374,22 +360,6 @@ public class FIFO implements ITechnicalStrings,Runnable,Observer{
 				}
 				if ( Player.isPaused()){
 					continue;
-				}
-				if (bPlaying ){//already playing something
-					long length = fCurrent.getTrack().getLength();
-					if ( i%(REFRESH_TIME/SLEEP_TIME) == 0 ){  //actual refresh less frequent for cpu
-						lTime = Player.getElapsedTime();
-						int iPos = (length!=0)?(int)((lTime/10)/length):0;  //if length=0, pos is always 0 to avoid division by zero
-						ConfigurationManager.setProperty(CONF_STARTUP_LAST_POSITION,Float.toString(((float)iPos)/100)); //store current position
-						//lauch some messages to information and command panels
-						Properties pDetails = new Properties();
-						pDetails.put(DETAIL_CURRENT_POSITION,new Integer(iPos));
-						pDetails.put(DETAIL_TOTAL,Util.formatTimeBySec((int)(lTotalTime-(lTime/1000)),false));
-					    pDetails.put(DETAIL_CURRENT_STATUS_MESSAGE,Util.formatTimeBySec(lTime/1000,false)+" / "+Util.formatTimeBySec(fCurrent.getTrack().getLength(),false)); //$NON-NLS-1$
-						ObservationManager.notify(EVENT_HEART_BEAT,pDetails);
-					}
-					i++;
-					continue; //leave
 				}
 				if  (!bPlaying && alFIFO.size() == 0  ){//empty fifo, lets decide what to do with folowing priorities : global random / repeat / continue
 					//next file choice
@@ -415,12 +385,10 @@ public class FIFO implements ITechnicalStrings,Runnable,Observer{
 					}
 					else{  //fifo empty and nothing planned to be played, lets re-initialize labels
 						if ( !bZero){
-							lTotalTime = 0;
+							JajukTimer.getInstance().reset();
 							ObservationManager.notify(EVENT_ZERO);
 							bZero = true;
 						}
-						i++;
-						continue; //leave
 					}
 				}
 				if (alFIFO.size() == 0){
@@ -439,7 +407,9 @@ public class FIFO implements ITechnicalStrings,Runnable,Observer{
 					int index = 0;
 					lOffset = 0;
 					fCurrent = (File) (alFIFO.get(index));//take the first file in the fifo
-					if ( fLastOne == null || (fLastOne != null && !fLastOne.getDirectory().equals(fCurrent.getDirectory())) ){  //if we are always in the same directory, just leave to save cpu
+					if ( fLastOne == null || //first track, display cover 
+					        (ConfigurationManager.getBoolean(CONF_COVERS_SHUFFLE) && ConfigurationManager.getBoolean(CONF_COVERS_CHANGE_AT_EACH_TRACK)) //change cover at each track in shuffle cover mode ? 
+					        ||(fLastOne != null && !fLastOne.getDirectory().equals(fCurrent.getDirectory())) ){  //if we are always in the same directory, just leave to save cpu
 					    ObservationManager.notify(EVENT_COVER_REFRESH); //request update cover 
 				    }
 					fLastOne = (File)fCurrent.clone(); //save the last played track
@@ -465,7 +435,6 @@ public class FIFO implements ITechnicalStrings,Runnable,Observer{
 						}
 					}
 					bFirstFile = false;
-				   lTrackStart = System.currentTimeMillis();
 					//add hits number
 					fCurrent.getTrack().incHits();  //inc hits number 
 					fCurrent.getTrack().incSessionHits();//inc session hits
@@ -493,7 +462,7 @@ public class FIFO implements ITechnicalStrings,Runnable,Observer{
 	 * Reset all ui indicators ( when stopping for instance )
 	 */
 	private synchronized void reset(){
-		lTotalTime = 0;
+		JajukTimer.getInstance().reset();
 		ObservationManager.notify(EVENT_ZERO);
 	}
 	
@@ -504,7 +473,7 @@ public class FIFO implements ITechnicalStrings,Runnable,Observer{
 	public synchronized void finished(){
 		bPlaying = false;
 		if ( fCurrent != null){ 
-			lTotalTime -= fCurrent.getTrack().getLength();
+			JajukTimer.getInstance().removeTrackTime(fCurrent);
 		}
 		fCurrent = null;
 		//insert a forced repeat track at first FIFO position. Note this mode is special because it allow to repeat over one file even with others tracks in the FIFO
@@ -519,7 +488,7 @@ public class FIFO implements ITechnicalStrings,Runnable,Observer{
 	 *  Get the currently played  file
 	 * @return File
 	 **/
-	public synchronized File getCurrentFile(){
+	public synchronized File getCurrentFile(){ 
 		return fCurrent;
 	}
 	
@@ -616,13 +585,6 @@ public class FIFO implements ITechnicalStrings,Runnable,Observer{
 	}
 	
 	/**
-	 * @return Returns the play time in ms.
-	 */
-	public long getCurrentPlayTime() {
-		return lTime;
-	}
-	
-	/**
 	 * @return Returns the alFIFO.
 	 */
 	public synchronized ArrayList getFIFO() {
@@ -698,7 +660,7 @@ public class FIFO implements ITechnicalStrings,Runnable,Observer{
 	    if (bImmediate) {
 	        Player.stop();
 	        bPlaying = false;
-	        lTotalTime = 0;
+	        JajukTimer.getInstance().reset();
 	    }
 	    //re-add current track if any
 	    if (bKeepLast && fLastOne != null){
@@ -710,7 +672,7 @@ public class FIFO implements ITechnicalStrings,Runnable,Observer{
 	    Iterator it = alFIFO.iterator();
 	    while (it.hasNext()){
 	        file = (File)it.next();
-	        lTotalTime += file.getTrack().getLength();
+	        JajukTimer.getInstance().addTrackTime(file);
 	    }
 	    //add required tracks
 	    it = alFiles.iterator();
@@ -719,7 +681,7 @@ public class FIFO implements ITechnicalStrings,Runnable,Observer{
 	        file = (File)it.next();
 	        alFIFO.add(index+i,file);
 	        index++;
-	        lTotalTime += file.getTrack().getLength();
+	        JajukTimer.getInstance().addTrackTime(file);
 	        i++;
 	    }
 	}
@@ -733,7 +695,7 @@ public class FIFO implements ITechnicalStrings,Runnable,Observer{
 	    for (int i=iStart;i<=iStop;i++){
 	        if (i>0 && i<alFIFO.size()){ //check size
 	            File file = (File)alFIFO.get(i);
-	            lTotalTime -= file.getTrack().getLength();  //recompute total time
+	            JajukTimer.getInstance().removeTrackTime(file); 
 	            alFIFO.remove(i);    //remove this file from fifo
 	        }
 	    }

@@ -258,6 +258,4 @@ public class JavaLayerPlayerImpl implements IPlayerImpl,ITechnicalStrings{
         return bSeeking;
     }
     
-    
-    
 }
