@@ -50,9 +50,6 @@ import org.jajuk.ui.LNFManager;
 import org.jajuk.ui.PerspectiveBarJPanel;
 import org.jajuk.ui.PerspectiveManager;
 import org.jajuk.ui.SplashScreen;
-import org.jajuk.ui.ViewManager;
-import org.jajuk.ui.views.DeviceView;
-import org.jajuk.ui.views.PhysicalTreeView;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
@@ -95,7 +92,6 @@ public class Main implements ITechnicalStrings {
 			
 			//registers supported types
 			try {
-				//TODO get player impl in user-conf.xml
 				TypeManager.registerType(Messages.getString("Main.Mpeg_layer_3_5"), EXT_MP3, PLAYER_IMPL_JAVALAYER, TAG_IMPL_MP3INFO, true); //$NON-NLS-1$ //$NON-NLS-2$
 				TypeManager.registerType(Messages.getString("Main.Playlist_7"), EXT_PLAYLIST, PLAYER_IMPL_JAVALAYER, null, false); //$NON-NLS-1$ //$NON-NLS-2$
 				TypeManager.registerType(Messages.getString("Main.Ogg_vorbis_9"), EXT_OGG, PLAYER_IMPL_JAVALAYER, null, true); //$NON-NLS-1$ //$NON-NLS-2$
@@ -180,12 +176,17 @@ public class Main implements ITechnicalStrings {
 			jframe.setExtendedState(Frame.MAXIMIZED_BOTH);  //maximalize
 			jframe.setVisible(true);
 			
+			//Mount and refresh devices
+			mountAndRefresh();
+			
+			
 			//Create the perspective manager 
 			PerspectiveManager.load();
 						
-			//Initialize perspective manager
+			//Initialize perspective manager and load all views
 			PerspectiveManager.init();
 		
+			
 			//Close splash screen
 			sc.dispose();
 			
@@ -197,14 +198,8 @@ public class Main implements ITechnicalStrings {
 				return;
 			}
 			
-			//Mount and refresh devices
-			mountAndRefresh();
-			
 			//Display a message
 			information.setMessage("Jajuk successfully started", InformationJPanel.INFORMATIVE); //$NON-NLS-1$
-			
-			//Populate trees
-			PhysicalTreeView.getInstance().populate();
 			
 			//Lauch startup track if any
 			launchInitialTrack();
@@ -295,7 +290,7 @@ public class Main implements ITechnicalStrings {
 			if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_LAST)){
 				ArrayList alFiles = new ArrayList(1);
 				alFiles.add(FileManager.getFile(History.getInstance().getLastFile()));
-				FIFO.push(alFiles,false);
+				FIFO.getInstance().push(alFiles,false);
 			}
 			else if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_FILE)){
 				//TODO implements file selection
@@ -303,9 +298,7 @@ public class Main implements ITechnicalStrings {
 			else if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_SHUFFLE)){
 				org.jajuk.base.File file = FileManager.getShuffleFile();
 				if (file != null){
-					ArrayList alFiles = new ArrayList(1);
-					alFiles.add(FileManager.getShuffleFile());
-					FIFO.push(alFiles,false);
+					FIFO.getInstance().push(file,false);
 				}
 			}
 		}
@@ -333,7 +326,5 @@ public class Main implements ITechnicalStrings {
 				device.refresh();
 			}
 		}
-		ViewManager.notify(EVENT_VIEW_REFRESH_REQUEST,DeviceView.getInstance());
-			
 	}
 }

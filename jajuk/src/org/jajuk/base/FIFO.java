@@ -36,19 +36,19 @@ import org.jajuk.util.log.Log;
 public class FIFO extends Thread implements ITechnicalStrings{
 
 	/**Cuurently played track */
-	private static File fCurrent;
+	private File fCurrent;
 	
 	/**Fifo itself, contains jajuk File objects **/
-	private static ArrayList alFIFO = new ArrayList(50);
+	private volatile ArrayList alFIFO = new ArrayList(50);
 	
 	/**Stop flag**/
-	private static volatile boolean bStop = false;
+	private volatile boolean bStop = false;
 	
 	/** Deep time**/
-	private static final int SLEEP_TIME = 50;
+	private final int SLEEP_TIME = 50;
 	
 	/** Refresh time in ms**/
-	private static final int REFRESH_TIME = 1000;
+	private final int REFRESH_TIME = 1000;
 	
 	/**Self instance*/
 	static private FIFO fifo= null; 	
@@ -57,10 +57,10 @@ public class FIFO extends Thread implements ITechnicalStrings{
 	static private boolean bPlaying = false;
 	
 	/** Current track start date*/
-	private static long lTrackStart; 
+	private long lTrackStart; 
 	
 	/** Total time in fifo (ms)*/
-	private static long lTotalTime = 0;
+	private long lTotalTime = 0;
 	
 	/**
 	 * Singleton access
@@ -84,7 +84,7 @@ public class FIFO extends Thread implements ITechnicalStrings{
 	 * @param alFiles, list of files to be played
 	 * @param bAppend keep previous files or stop them to start a new one ?
 	 */
-	public static synchronized void push(ArrayList alFiles, boolean bAppend) {
+	public synchronized void push(ArrayList alFiles, boolean bAppend) {
 		if (!bAppend) {
 			Player.stop();
 			bPlaying = false;
@@ -106,7 +106,7 @@ public class FIFO extends Thread implements ITechnicalStrings{
 	 * @param file, file to be played
 	 * @param bAppend keep previous files or stop them to start a new one ?
 	 */
-	public static synchronized void push(File file, boolean bAppend) {
+	public synchronized void push(File file, boolean bAppend) {
 		ArrayList al = new ArrayList(1);
 		al.add(file);
 		push(al,bAppend);
@@ -117,14 +117,14 @@ public class FIFO extends Thread implements ITechnicalStrings{
 	 * Clears the fifo, for example when we want to add a group of files stopping previous plays
 	 *
 	 */
-	public static synchronized void clear() {
+	public synchronized void clear() {
 		alFIFO.clear();
 	}
 	
 	/* (non-Javadoc)
 	 * @see java.lang.Runnable#run()
 	 */
-	public synchronized void run() {
+	public void run() {
 		try {
 			int i = 0;
 			while (!bStop) {
@@ -139,32 +139,47 @@ public class FIFO extends Thread implements ITechnicalStrings{
 					i++;
 					continue; //leave
 				}
-				if (!bPlaying && alFIFO.size() == 0 && fCurrent!= null && TRUE.equals(ConfigurationManager.getProperty(CONF_STATE_CONTINUE))){ //empty fifo
-					File fileNext = FileManager.getNextFile(fCurrent);
-					if ( fileNext != null ){
-						push(FileManager.getNextFile(fCurrent),true);	
+				if (!bPlaying && alFIFO.size() == 0  ){//empty fifo
+					if ( fCurrent!= null && TRUE.equals(ConfigurationManager.getProperty(CONF_STATE_CONTINUE))){ //continue mode ?
+						File fileNext = FileManager.getNextFile(fCurrent);
+						if ( fileNext != null ){
+							push(FileManager.getNextFile(fCurrent),true);	
+						}
+					}
+					else{  //fifo empty and nothing planned to be played, lets re-initialize lables
+						if ( i%(REFRESH_TIME/SLEEP_TIME) == 0){  //actual refresh less frequent for cpu
+							lTotalTime = 0;
+							long lTime = 0;
+							InformationJPanel.getInstance().setCurrentStatusMessage(Util.formatTime(0)+" / "+Util.formatTime(0));
+							InformationJPanel.getInstance().setCurrentStatus(0);
+							InformationJPanel.getInstance().setTotalStatusMessage("0'");
+						}
+						i++;
+						continue; //leave
 					}
 				}
 				if (alFIFO.size() == 0){
 					continue;
 				}
-				int index = 0;
-				if (ConfigurationManager.getProperty(CONF_STATE_SHUFFLE).equals(TRUE)){
-					index = (int)(Math.random() * alFIFO.size());
-					fCurrent = (File) (alFIFO.get(index));//take the first file in the fifo
+				synchronized(this){  //lock fifo access when lauching
+					int index = 0;
+					if (ConfigurationManager.getProperty(CONF_STATE_SHUFFLE).equals(TRUE)){
+						index = (int)(Math.random() * alFIFO.size());
+						fCurrent = (File) (alFIFO.get(index));//take the first file in the fifo
+					}
+					else{
+						index = 0;
+						fCurrent = (File) (alFIFO.get(index));//take the first file in the fifo
+					}
+					alFIFO.remove(index);//remove it from todo list;
+					Log.debug("Now playing :"+fCurrent); //$NON-NLS-1$
+					bPlaying = true;
+					Player.play(fCurrent);  //play it
+					lTrackStart = System.currentTimeMillis();
+					History.getInstance().addItem(fCurrent.getId(),System.currentTimeMillis());
+					InformationJPanel.getInstance().setMessage("<html>Now Playing : <i>"+fCurrent.getTrack().getAuthor().getName2()+" / "+fCurrent.getTrack().getName()+"</i></html>",InformationJPanel.INFORMATIVE);
+					InformationJPanel.getInstance().setQuality(fCurrent.getQuality()+" kbps");
 				}
-				else{
-					index = 0;
-					fCurrent = (File) (alFIFO.get(index));//take the first file in the fifo
-				}
-				alFIFO.remove(index);//remove it from todo list;
-				Log.debug("Now playing :"+fCurrent); //$NON-NLS-1$
-				bPlaying = true;
-				Player.play(fCurrent);  //play it
-				lTrackStart = System.currentTimeMillis();
-				History.getInstance().addItem(fCurrent.getId(),System.currentTimeMillis());
-				InformationJPanel.getInstance().setMessage("Now Playing : "+fCurrent.getTrack().getAuthor().getName2()+" / "+fCurrent.getTrack().getName(),InformationJPanel.INFORMATIVE);
-				InformationJPanel.getInstance().setQuality(fCurrent.getQuality()+" kbps");
 			}
 		} catch (Exception e) {
 			Log.error("122", e); //$NON-NLS-1$
@@ -175,7 +190,7 @@ public class FIFO extends Thread implements ITechnicalStrings{
 	 * Stopping thread method
 	 *
 	 */
-	public static synchronized void stopFIFO() {
+	public synchronized void stopFIFO() {
 		bStop = true;
 	}
 	
@@ -183,7 +198,7 @@ public class FIFO extends Thread implements ITechnicalStrings{
 	 * Finished method, called by the PlayerImpl when the track is finished
 	 *
 	 */
-	public static synchronized void finished(){
+	public synchronized void finished(){
 		bPlaying = false;
 		lTotalTime -= fCurrent.getTrack().getLength();
 	}
@@ -192,7 +207,7 @@ public class FIFO extends Thread implements ITechnicalStrings{
 	 *  Get the currently played  file
 	 * @return File
 	 **/
-	public static synchronized File getCurrentFile(){
+	public synchronized File getCurrentFile(){
 		return fCurrent;
 	}
 	

@@ -19,6 +19,7 @@
  */
 package org.jajuk.base;
 
+import org.jajuk.i18n.Messages;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.util.log.Log;
 
@@ -43,9 +44,10 @@ public class Player {
 			public void run() {
 				try {
 					pCurrentPlayerImpl.play(fCurrent);
-					InformationJPanel.getInstance().setMessage("",InformationJPanel.INFORMATIVE);//$NON-NLS-1$
 				} catch (Exception e) {
 					Log.error("007",fCurrent.getAbsolutePath(), e); //$NON-NLS-1$
+					InformationJPanel.getInstance().setMessage(Messages.getString("Error.007")+" : "+fCurrent.getAbsolutePath(),InformationJPanel.ERROR);//$NON-NLS-1$
+					FIFO.getInstance().finished();
 				}
 			}
 		}

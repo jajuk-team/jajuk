@@ -104,7 +104,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings{
 		jpTotal.setToolTipText(Messages.getString("InformationJPanel.Total_selection_progression_5")); //$NON-NLS-1$
 		jpTotal.setLayout(new BoxLayout(jpTotal,BoxLayout.X_AXIS));
 		jpTotal.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		jlTotal = new JLabel("0"); 
+		jlTotal = new JLabel(); 
 		jpTotal.add(jlTotal);
 		jpTotal.add(Box.createHorizontalStrut(3));
 		
@@ -120,7 +120,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings{
 		jpCurrent.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		jpbCurrent = new JProgressBar(0,100);
 		jpbCurrent.setStringPainted(true);
-		jlCurrent = new JLabel("00:00:00 / 00:00:00");
+		jlCurrent = new JLabel();
 		jpCurrent.add(jlCurrent);
 		jpCurrent.add(Box.createHorizontalStrut(3));
 		jpCurrent.add(jpbCurrent);

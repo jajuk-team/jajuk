@@ -281,6 +281,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 			org.jajuk.base.File file = FileManager.registerFile(attributes.getValue(0), attributes.getValue(1), dParent, track, lSize, attributes.getValue(5));
 			file.populateProperties(attributes, 6);
 			track.addFile(file);
+			file.getDirectory().addFile(file);
 		} else if (sQName.equals(XML_PLAYLIST_FILE)) {
 			Directory dParent = DirectoryManager.getDirectory(attributes.getValue(3));
 			PlaylistFile plf = PlaylistFileManager.registerPlaylistFile(attributes.getValue(0), attributes.getValue(1), attributes.getValue(2), dParent);

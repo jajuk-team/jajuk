@@ -121,7 +121,7 @@ public class PlaylistFile extends PropertyAdapter {
 	/**
 	 * @return
 	 */
-	public Directory getParentDirectory() {
+	public Directory getDirectory() {
 		return dParentDirectory;
 	}
 

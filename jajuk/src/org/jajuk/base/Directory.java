@@ -173,7 +173,7 @@ public class Directory extends PropertyAdapter {
 		/**
 		 * @param directory
 		 */
-		public void addFile(File file) {
+		public void addFile(org.jajuk.base.File file) {
 			alFiles.add(file);
 		}
 
@@ -206,7 +206,7 @@ public class Directory extends PropertyAdapter {
 					}
 				}
 				if (fileRef!= null && !ConfigurationManager.getBoolean(CONF_TAGS_DEEP_SCAN)){  //read tag data from database, no real read from file for performances reasons if only the deep scan is disable
-					FileManager.registerFile(fileRef.getName(), this, fileRef.getTrack(), fileRef.getSize(),fileRef.getQuality());
+					org.jajuk.base.File file = FileManager.registerFile(fileRef.getName(), this, fileRef.getTrack(), fileRef.getSize(),fileRef.getQuality());
 					continue;
 				}
 				

@@ -67,12 +67,12 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
 			int returnVal = jfchooser.showOpenDialog(Main.jframe);
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
 				java.io.File[] files = jfchooser.getSelectedFiles();
-				FIFO.clear(); //stop all currently played tracks
+				FIFO.getInstance().clear(); //stop all currently played tracks
 				ArrayList alFiles = new ArrayList();
 				for (int i = 0; i < files.length; i++) {
 					alFiles.add(new BasicFile(files[i]));
 				}
-				FIFO.push(alFiles, false);
+				FIFO.getInstance().push(alFiles, false);
 			}
 		}
 		else if (e.getActionCommand().equals(EVENT_REPEAT_MODE_STATUS_CHANGED)) {

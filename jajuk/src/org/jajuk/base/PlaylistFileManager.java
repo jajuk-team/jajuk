@@ -73,7 +73,7 @@ public class PlaylistFileManager {
 		Iterator it = hmPlaylistFiles.values().iterator();
 		while (it.hasNext()) {
 			PlaylistFile plf = (PlaylistFile) it.next();
-			if ( plf.getParentDirectory()== null || plf.getParentDirectory().getDevice().getId().equals(sId)) {
+			if ( plf.getDirectory()== null || plf.getDirectory().getDevice().getId().equals(sId)) {
 				it.remove();
 			}
 		}

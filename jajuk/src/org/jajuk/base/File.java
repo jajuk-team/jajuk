@@ -62,7 +62,7 @@ public class File extends PropertyAdapter{
 	}
 	
 	
-	/**Void constructor*/
+	/**Void constructor, needed by BasicFile*/
 	public File(){
 	}
 	

@@ -83,6 +83,10 @@ public interface ITechnicalStrings {
 	public static final String ICON_DEVICE_REMOTE_UNMOUNTED =  PATH_ICONS + "64x64/remote_unmount.png";
 	public static final String ICON_OK =  PATH_ICONS + "22x22/ok.png";
 	public static final String ICON_KO =  PATH_ICONS + "22x22/ko.png";
+	public static final String ICON_FILE =  PATH_ICONS + "16x16/bestof.png";
+	public static final String ICON_DIRECTORY =  PATH_ICONS + "16x16/continue.png";
+	public static final String ICON_DEVICE =  PATH_ICONS + "16x16/bestof.png";
+	public static final String ICON_PLAYLIST_FILE =  PATH_ICONS + "16x16/refresh.png";
 	
 	//images
 	public static final String IMAGES_SPLASHSCREEN =  PATH_IMAGES + "jajuk-logo.png";
@@ -278,7 +282,7 @@ public interface ITechnicalStrings {
 		 "<perspectives>\n"+
 		"\t<perspective  class='"+PERSPECTIVE_NAME_PHYSICAL+"'>\n"+
 		"\t\t<views>\n"+
-		"\t\t\t<view class='org.jajuk.ui.views.PhysicalTreeView' width='50' height='100' x='0' y='0'/>\n"+/*
+		"\t\t\t<view class='org.jajuk.ui.views.PhysicalTreeView' width='30' height='100' x='0' y='0'/>\n"+/*
 		"\t\t\t<view class='org.jajuk.ui.views.NavigationBarView' />\n"+
 		"\t\t\t<view class='org.jajuk.ui.views.TrackListView' />\n"+
 		"\t\t\t<view class='org.jajuk.ui.views.CoverView'  />\n"+

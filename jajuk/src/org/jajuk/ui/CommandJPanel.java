@@ -271,7 +271,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 			HistoryItem hi = History.getInstance().getHistoryItem(jcbHistory.getSelectedIndex());
 			if (hi != null){
 				org.jajuk.base.File file = FileManager.getFile(hi.getFileId());
-				FIFO.push(file,false);
+				FIFO.getInstance().push(file,false);
 			}
 		}
 	}

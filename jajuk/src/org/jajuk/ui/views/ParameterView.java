@@ -33,7 +33,6 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
@@ -73,7 +72,7 @@ public class ParameterView extends ViewAdapter implements ActionListener {
 		JRadioButton jrbLast;
 		JRadioButton jrbShuffle;
 		JRadioButton jrbFile;
-		JList jlFile;		
+		JTextField jtfFile;		
 	JPanel jpConfirmations;
 		JCheckBox jcbBeforeDelete;
 		JCheckBox jcbBeforeExit;
@@ -174,8 +173,8 @@ public class ParameterView extends ViewAdapter implements ActionListener {
 		jrbShuffle.setToolTipText(Messages.getString("ParameterView.15")); //$NON-NLS-1$
 		jrbFile = new JRadioButton(Messages.getString("ParameterView.16")); //$NON-NLS-1$
 		jrbFile.setToolTipText(Messages.getString("ParameterView.17")); //$NON-NLS-1$
-		jlFile = new JList();	
-		jlFile.setToolTipText(Messages.getString("ParameterView.18")); //$NON-NLS-1$
+		jtfFile = new JTextField();	
+		jtfFile.setToolTipText(Messages.getString("ParameterView.18")); //$NON-NLS-1$
 		bgStart.add(jrbNothing);
 		bgStart.add(jrbLast);
 		bgStart.add(jrbShuffle);
@@ -186,7 +185,7 @@ public class ParameterView extends ViewAdapter implements ActionListener {
 		jpStart.add(jrbLast,"2,2"); //$NON-NLS-1$
 		jpStart.add(jrbShuffle,"2,4"); //$NON-NLS-1$
 		jpStart.add(jrbFile,"2,6"); //$NON-NLS-1$
-		jpStart.add(jlFile,"4,6"); //$NON-NLS-1$
+		jpStart.add(jtfFile,"4,6"); //$NON-NLS-1$
 		//Confirmations
 		jpConfirmations = new JPanel();
 		jpConfirmations.setBorder(BorderFactory.createTitledBorder(Messages.getString("ParameterView.26"))); //$NON-NLS-1$
@@ -338,7 +337,7 @@ public class ParameterView extends ViewAdapter implements ActionListener {
 				{iYSeparator,20,iYSeparator,20,iYSeparator}};
 		jpTags.setLayout(new TableLayout(sizeTags));
 		jcbDeepScan = new JCheckBox("Perform a deep tag scan"); 
-		jcbDeepScan.setToolTipText("Force Jajuk to read the entire files to check length.\nUse it only if you want to get exact track length but be aware that the refresh will be *mush* slower ( up to 15 times )");
+		jcbDeepScan.setToolTipText("<html>Force Jajuk to read the entire files to check length.<p>Use it only if you want to get exact track length but be aware that the refresh will be <b>much</b> slower ( up to 15 times )</html>");
 		jcbUseParentDir = new JCheckBox("Use parent directory as album name"); 
 		jcbUseParentDir.setToolTipText("Tell Jajuk to use parent directory as album name for a track if it can't be get by tags");
 		jpTags.add(jcbDeepScan,"0,1"); //$NON-NLS-1$

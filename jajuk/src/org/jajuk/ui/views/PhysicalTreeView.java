@@ -19,6 +19,10 @@
 package org.jajuk.ui.views;
 
 import java.awt.Component;
+import java.awt.Font;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -26,14 +30,24 @@ import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
+import org.jajuk.base.Device;
+import org.jajuk.base.DeviceManager;
+import org.jajuk.base.Directory;
+import org.jajuk.base.DirectoryManager;
+import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.PlaylistFile;
+import org.jajuk.base.PlaylistFileManager;
+import org.jajuk.i18n.Messages;
 
 /**
  * Physical tree view
@@ -70,61 +84,330 @@ public class PhysicalTreeView extends ViewAdapter {
 
 	/** Constructor */
 	public PhysicalTreeView() {
+		File file = FileManager.getShuffleFile();
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		top = new DefaultMutableTreeNode("top");
-		//top.add(new DefaultMutableTreeNode("toto"));
+		//fill the tree
+		top = new DefaultMutableTreeNode("Collection");
+		populate();
+		
+		
 		jtree = new JTree(top);
 		jtree.putClientProperty("JTree.lineStyle", "Angled");
 		jtree.setRowHeight(25);
-		jtree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+		jtree.getSelectionModel().setSelectionMode(TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
 		jtree.setCellRenderer(new DefaultTreeCellRenderer() {
 			public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) {
 				super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
-				if (value instanceof File ){
-					setIcon(new ImageIcon(ICON_BESTOF));
+				setFont(new Font("Dialog",Font.PLAIN,10));
+				if (value instanceof FileNode ){
+					setIcon(new ImageIcon(ICON_FILE));
 					//TODO set real icons
 				}
-				else if (value instanceof PlaylistFile){
-					setIcon(new ImageIcon(ICON_CONTINUE_ON));
+				else if (value instanceof PlaylistFileNode){
+					setIcon(new ImageIcon(ICON_PLAYLIST_FILE));
+				}
+				else if (value instanceof DeviceNode){
+					switch (((DeviceNode)value).getDevice().getDeviceType()){
+						case 0 : 
+							setIcon(new ImageIcon(ICON_DEVICE_DIRECTORY_MOUNTED));
+							break;
+					case 1 : 
+						setIcon(new ImageIcon(ICON_DEVICE_CD_MOUNTED));
+						break;
+					case 2 : 
+						setIcon(new ImageIcon(ICON_DEVICE_CD_AUDIO_MOUNTED));
+						break;
+					case 3 : 
+						setIcon(new ImageIcon(ICON_DEVICE_REMOTE_MOUNTED));
+						break;
+					case 4 : 
+						setIcon(new ImageIcon(ICON_DEVICE_EXT_DD_MOUNTED));
+						break;
+					case 5 : 
+						setIcon(new ImageIcon(ICON_DEVICE_PLAYER_MOUNTED));
+						break;
+				
+					}
+				}
+				else if (value instanceof DirectoryNode){
+					setIcon(new ImageIcon(ICON_DIRECTORY));
 				}
 				return this;
 			}
 		});
 		DefaultTreeModel treeModel = new DefaultTreeModel(top);
 		treeModel.addTreeModelListener(new TreeModelListener(){
-
+			
 			public void treeNodesChanged(TreeModelEvent e) {
 				DefaultMutableTreeNode node;
-        node = (DefaultMutableTreeNode)
-                 (e.getTreePath().getLastPathComponent());
-
-        try {
-            int index = e.getChildIndices()[0];
-            node = (DefaultMutableTreeNode)
-                   (node.getChildAt(index));
-        } catch (NullPointerException exc) {}
-			
+				node = (DefaultMutableTreeNode)
+				(e.getTreePath().getLastPathComponent());
+				
+				try {
+					int index = e.getChildIndices()[0];
+					node = (DefaultMutableTreeNode)
+					(node.getChildAt(index));
+				} catch (NullPointerException exc) {}
+				
 			}
-
+			
 			public void treeNodesInserted(TreeModelEvent e) {
 			}
-
+			
 			public void treeNodesRemoved(TreeModelEvent e) {
 			}
-
+			
 			public void treeStructureChanged(TreeModelEvent e) {
 			}
-		
+			
 		});
+		
+		jtree.addTreeSelectionListener(new TreeSelectionListener() {
+			public void valueChanged(TreeSelectionEvent e) {
+				TreePath[] paths = e.getPaths();
+				ArrayList alPaths = new ArrayList(10);
+				for (int i=0;i<paths.length;i++){ //keep only new selected nodes
+					if (e.isAddedPath(i)){
+						alPaths.add(paths[i]);
+					}
+				}
+				if (alPaths.size() == 1){ //single selection
+					Object o = alPaths.get(0);
+					if (o instanceof FileNode){
+						File file = ((FileNode)o).getFile();
+						if (file.getDirectory().getDevice().isMounted()){
+							FIFO.getInstance().push(file,false);
+						}
+						else{
+							Messages.showErrorMessage("120",file.getDirectory().getDevice().getName());
+						}
+					}
+				}
+				else{  //multiple selection
+					//Only keep files
+					//TODO accept playlists
+					ArrayList alFiles = new ArrayList(10);
+					Iterator it = alPaths.iterator();
+					while (it.hasNext()){
+						Object o = it.next();
+						if ( o instanceof FileNode ){
+							File file = ((FileNode)o).getFile();
+							if (file.getDirectory().getDevice().isMounted()){
+								alFiles.add(((FileNode)o).getFile());
+							}
+							else{
+								Messages.showErrorMessage("120",file.getDirectory().getDevice().getName());
+							}
+						}
+						FIFO.getInstance().push(alFiles,false);
+					}
+				}
+			}
+		});
+		//expand all
+		for (int i=0;i<jtree.getRowCount();i++){
+			Object o = jtree.getPathForRow(i).getLastPathComponent(); 
+			if ( o instanceof DeviceNode && ((DeviceNode)o).getDevice().isMounted()){
+				jtree.expandRow(i); 
+			}
+			else if (o instanceof DirectoryNode && ((DirectoryNode)o).getDirectory().getFiles().size()==0){
+				jtree.expandRow(i);
+			}
+		}
 		add(new JScrollPane(jtree));
 	}
 	
 	/**Fill the tree */
 	public void populate(){
-		File file = FileManager.getShuffleFile();
-		DefaultMutableTreeNode mtn = new DefaultMutableTreeNode(file);
-		top.add(mtn);
+		//add devices
+		Iterator it1 = DeviceManager.getDevices().iterator();
+		while ( it1.hasNext()){
+			Device device = (Device)it1.next();
+			DefaultMutableTreeNode nodeDevice = new DeviceNode(device);
+			top.add(nodeDevice);
+		}
+		//add directories
+		Iterator it2 = DirectoryManager.getDirectories().iterator();
+		while (it2.hasNext()){
+			Directory directory = (Directory)it2.next();
+			if (!directory.getName().equals("")){ //device root directory, do not display
+				if (directory.getParentDirectory().getName().equals("")){  //parent directory is a device
+					DeviceNode deviceNode = DeviceNode.getDeviceNode(directory.getDevice());
+					if ( deviceNode != null){
+						deviceNode.add(new DirectoryNode(directory));
+					}
+				}
+				else{  //parent directory not root 
+					DirectoryNode parentDirectoryNode = DirectoryNode.getDirectoryNode(directory.getParentDirectory());
+					if (parentDirectoryNode != null){ //paranoia check
+						parentDirectoryNode.add(new DirectoryNode(directory));
+					}
+				}
+			}
+		}
+		//add files
+		Iterator it3 = FileManager.getFiles().iterator();
+		while (it3.hasNext()){
+			File file = (File)it3.next();
+			DirectoryNode directoryNode = DirectoryNode.getDirectoryNode(file.getDirectory());
+			if (directoryNode != null){
+				directoryNode.add(new FileNode(file));
+			}
+		}
+		//add playlist files
+		Iterator it4 = PlaylistFileManager.getPlaylistFiles().iterator();
+		while (it4.hasNext()){
+			PlaylistFile playlistFile = (PlaylistFile)it4.next();
+			DirectoryNode directoryNode = DirectoryNode.getDirectoryNode(playlistFile.getDirectory());
+			if (directoryNode != null){
+				directoryNode.add(new PlaylistFileNode(playlistFile));
+			}
+		}
 		
 	}
+}
 
+
+/**
+ * File node 
+ * @author     bflorat
+ * @created    29 nov. 2003
+ */
+class FileNode extends DefaultMutableTreeNode{
+	
+	/**Associated file*/
+	private File file;
+	
+	/**
+	 * Constructor
+	 * @param file
+	 */
+	public FileNode(File file){
+		this.file = file;
+	}
+	
+	/**
+	 * return a string representation of this file node
+	 */
+	public String toString(){
+		return file.getName();
+	}
+	/**
+	 * @return Returns the file.
+	 */
+	public File getFile() {
+		return file;
+	}
+
+}
+
+/**
+ * Device node 
+ * @author     bflorat
+ * @created    29 nov. 2003
+ */
+class DeviceNode extends DefaultMutableTreeNode{
+	
+	/**Associated device*/
+	private Device device;
+	
+	/**device -> deviceNode hashmap */
+	public static HashMap hmDeviceDeviceNode = new HashMap(100);
+	
+	/**
+	 * Constructor
+	 * @param device
+	 */
+	public DeviceNode(Device device){
+		this.device = device;
+		hmDeviceDeviceNode.put(device,this);
+	}
+	
+	/**Return associated device node */
+	public static DeviceNode getDeviceNode(Device device){
+		return (DeviceNode)hmDeviceDeviceNode.get(device);
+	}
+	
+	/**
+	 * return a string representation of this device node
+	 */
+	public String toString(){
+		return device.getName();
+	}
+	/**
+	 * @return Returns the device.
+	 */
+	public Device getDevice() {
+		return device;
+	}
+
+}
+
+
+/**
+ * Directory node 
+ * @author     bflorat
+ * @created    29 nov. 2003
+ */
+class DirectoryNode  extends DefaultMutableTreeNode{
+	
+	/**Associated Directory*/
+	private Directory directory;
+	
+	/**directory -> directoryNode hashmap */
+	public static HashMap hmDirectoryDirectoryNode = new HashMap(100);
+	
+	/**
+	 * Constructor
+	 * @param Directory
+	 */
+	public DirectoryNode(Directory directory){
+		this.directory = directory;
+		hmDirectoryDirectoryNode.put(directory,this);
+	}
+	
+	/**Return associated directory node */
+	public static DirectoryNode getDirectoryNode(Directory directory){
+		return (DirectoryNode)hmDirectoryDirectoryNode.get(directory);
+	}
+	
+	/**
+	 * return a string representation of this directory node
+	 */
+	public String toString(){
+		return directory.getName();
+	}
+	/**
+	 * @return Returns the directory.
+	 */
+	public Directory getDirectory() {
+		return directory;
+	}
+
+}
+
+/**
+ * PlaylistFile node 
+ * @author     bflorat
+ * @created    29 nov. 2003
+ */
+class PlaylistFileNode  extends DefaultMutableTreeNode{
+	
+	/**Associated PlaylistFile*/
+	private PlaylistFile playlistFile;
+	
+	/**
+	 * Constructor
+	 * @param PlaylistFile
+	 */
+	public PlaylistFileNode(PlaylistFile playlistFile){
+		this.playlistFile = playlistFile;
+	}
+	
+	/**
+	 * return a string representation of this playlistFile node
+	 */
+	public String toString(){
+		return playlistFile.getName();
+	}
 }
