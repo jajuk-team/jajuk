@@ -114,6 +114,8 @@ public class Player implements ITechnicalStrings{
 				    pCurrentPlayerImpl.setVolume(0.0f);
 				}
 				Player.bMute = !Player.bMute;
+				//notify UI
+				ObservationManager.notify(EVENT_MUTE_STATE);
 			}
 		} catch (Exception e) {
 			Log.error(e); 
