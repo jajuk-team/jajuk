@@ -167,8 +167,13 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
 			saxParser.parse(frt.toURL().toString(),getInstance());
 			getInstance().clear(Integer.parseInt(ConfigurationManager.getProperty(CONF_HISTORY))); //delete old history items
 		} catch (Exception e) {
-			Log.error(e);
-			throw new JajukException("119"); //$NON-NLS-1$
+			Log.error(new JajukException("119"));//$NON-NLS-1$
+			try{
+			    commit(); //this history looks corruped, write a void one
+			}
+			catch(Exception e2){
+			    Log.error(e2);
+			}
 		}
 	}
 	
