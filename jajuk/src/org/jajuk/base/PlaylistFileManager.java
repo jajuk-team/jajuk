@@ -9,6 +9,9 @@
  * 
  * You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
  * USA. $Log$
+ * USA. Revision 1.8  2003/11/13 18:56:55  bflorat
+ * USA. 13/11/2003
+ * USA.
  * USA. Revision 1.7  2003/11/07 23:57:45  bflorat
  * USA. 08/11/2003
  * USA.
@@ -91,6 +94,7 @@ public class PlaylistFileManager {
 				it.remove();
 			}
 		}
+		System.gc(); //force garbage collection after cleanup
 	}
 
 	/** Return all registred PlaylistFiles */

@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.8  2003/11/13 18:56:55  bflorat
+ * 13/11/2003
+ *
  * Revision 1.7  2003/11/11 20:35:43  bflorat
  * 11/11/2003
  *
@@ -107,6 +110,11 @@ public class DeviceManager {
 	 */
 	public static synchronized void removeDevice(Device device){
 		hmDevices.remove(device.getId());
+		DirectoryManager.cleanDevice(device.getId());
+		FileManager.cleanDevice(device.getId());
+		PlaylistFileManager.cleanDevice(device.getId());
+		//	Clean the collection up
+		org.jajuk.base.Collection.cleanup();
 	}
 
 }

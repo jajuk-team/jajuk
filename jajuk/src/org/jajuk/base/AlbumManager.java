@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.7  2003/11/13 18:56:55  bflorat
+ * 13/11/2003
+ *
  * Revision 1.6  2003/11/03 06:08:05  bflorat
  * 03/11/2003
  *
@@ -40,6 +43,7 @@ package org.jajuk.base;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import org.jajuk.util.MD5Processor;
 
@@ -68,20 +72,45 @@ public class AlbumManager {
 		return registerAlbum(sId,sName);
 	}
 	
+	/**
+	 * Perform an album cleanup : delete useless items
+	 *  
+	 */
+	public static synchronized void cleanup() {
+		Iterator itAlbums = hmAlbums.values().iterator();
+		ArrayList alTrack = TrackManager.getTracks();
+		Iterator itTracks = null;
+		while (itAlbums.hasNext()) {
+			Album album = (Album) itAlbums.next();
+			boolean bUsed = false;
+			itTracks = alTrack.iterator();
+			while (itTracks.hasNext()) {
+				Track track = (Track) itTracks.next();
+				if (track.getAlbum().equals(album)) {
+					bUsed = true;
+				}
+			}
+			if (!bUsed) { //clean this album
+				itAlbums.remove();
+			}
+		}
+	}
+	
 	
 	/**
-		 * Register an Album with a known id
-		 *@param sName
-		 */
-		public static  synchronized Album registerAlbum(String sId,String sName) {
-			String sIdTest = MD5Processor.hash(sName.trim().toLowerCase());
-			if (hmAlbums.containsKey(sIdTest)){
-				return (Album)hmAlbums.get(sIdTest);
-			}
-			Album album = new Album(sId,sName);
-			hmAlbums.put(sId,album);
-			return album;
+	 * Register an Album with a known id
+	 * 
+	 * @param sName
+	 */
+	public static synchronized Album registerAlbum(String sId, String sName) {
+		String sIdTest = MD5Processor.hash(sName.trim().toLowerCase());
+		if (hmAlbums.containsKey(sIdTest)) {
+			return (Album) hmAlbums.get(sIdTest);
 		}
+		Album album = new Album(sId, sName);
+		hmAlbums.put(sId, album);
+		return album;
+	}
 
 
 	/**Return all registred Albums*/

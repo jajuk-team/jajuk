@@ -9,6 +9,9 @@
  * 
  * You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
  * USA. $Log$
+ * USA. Revision 1.2  2003/11/13 18:56:56  bflorat
+ * USA. 13/11/2003
+ * USA.
  * USA. Revision 1.1  2003/11/11 20:35:43  bflorat
  * USA. 11/11/2003
  * USA.
@@ -57,6 +60,7 @@ public class DeviceWizard extends JFrame implements ActionListener {
 	JTextField jtfName;
 	JLabel jlUrl;
 	JTextField jtfUrl;
+	JCheckBox jcbRefresh;
 	JCheckBox jcbAutoMount;
 	JCheckBox jcbAutoRefresh;
 	JCheckBox jcboxSynchronized;
@@ -75,14 +79,14 @@ public class DeviceWizard extends JFrame implements ActionListener {
 
 	public DeviceWizard() {
 		super("Device wizard");
-		setSize(800, 500);
+		setSize(800, 550);
 		setLocation(org.jajuk.Main.jframe.getX()+100,org.jajuk.Main.jframe.getY()+100);
 		jpMain = new JPanel();
 		jpMain.setLayout(new BoxLayout(jpMain,BoxLayout.Y_AXIS));
 		jp1 = new JPanel();
 		jp1.setBorder(BorderFactory.createEmptyBorder(25, 25, 0, 25));
 		double size1[][] = { { 0.5, 0.50 }, {
-				20, 20, 20, 20, 20, 20, 20, 20, 20 }
+				20, 20, 20, 20, 20, 20, 20, 20, 20,20,20 }
 		};
 		jp1.setLayout(new TableLayout(size1));
 		jlType = new JLabel("Device Type : ");
@@ -94,7 +98,9 @@ public class DeviceWizard extends JFrame implements ActionListener {
 		jtfName = new JTextField();
 		jlUrl = new JLabel("Device url : ");
 		jtfUrl = new JTextField();
-
+		jcbRefresh = new JCheckBox("Perform an immediate refresh");
+		jcbRefresh.setSelected(true);
+		jcbRefresh.addActionListener(this);
 		jcbAutoMount = new JCheckBox("Auto mount at startup");
 		jcbAutoMount.addActionListener(this);
 		jcbAutoRefresh = new JCheckBox("Auto refresh at startup");
@@ -136,10 +142,11 @@ public class DeviceWizard extends JFrame implements ActionListener {
 		jp1.add(jtfName, "1,2");
 		jp1.add(jlUrl, "0,4");
 		jp1.add(jtfUrl, "1,4");
-		jp1.add(jcbAutoMount, "0,6");
-		jp1.add(jcbAutoRefresh, "1,6");
-		jp1.add(jcboxSynchronized, "0,8");
-		jp1.add(jcbSynchronized, "1,8");
+		jp1.add(jcbRefresh, "0,6");
+		jp1.add(jcbAutoMount, "0,8");
+		jp1.add(jcbAutoRefresh, "1,8");
+		jp1.add(jcboxSynchronized, "0,10");
+		jp1.add(jcbSynchronized, "1,10");
 		double size2[][] = { { 0.99 }, {
 				20, 20, 20, 20, 20, 20, 20, 20, 20, 20 }
 		};
@@ -156,6 +163,7 @@ public class DeviceWizard extends JFrame implements ActionListener {
 		jpButtons = new JPanel();
 		jpButtons.setLayout(new FlowLayout(FlowLayout.CENTER));
 		jbOk = new JButton("OK");
+		jbOk.requestFocus();
 		jbOk.addActionListener(this);
 		jbCancel = new JButton("Cancel");
 		jbCancel.addActionListener(this);
@@ -191,9 +199,15 @@ public class DeviceWizard extends JFrame implements ActionListener {
 			} else {
 				jcbSynchronized.setEnabled(false);
 				jrbFullSynchro.setEnabled(false);
-				jrbFullSynchro.setSelected(false);
+				jrbFullSynchro.setSelected(true);
 				jrbPartialSynchro.setEnabled(false);
 				jrbFullSynchro.setSelected(false);
+				jcb1.setEnabled(false);
+				jcb1.setSelected(false);
+				jcb2.setEnabled(false);
+				jcb2.setSelected(false);
+				jcb3.setEnabled(false);
+				jcb3.setSelected(false);
 			}
 		} else if (e.getSource() == jrbFullSynchro) {
 			if (jrbFullSynchro.isSelected()) {
@@ -220,9 +234,12 @@ public class DeviceWizard extends JFrame implements ActionListener {
 			}
 		}
 		else if (e.getSource() == jbOk){
-			DeviceManager.registerDevice(jtfName.getText(),jcbType.getSelectedIndex(),jtfUrl.getText());
-			Messages.showInfoMessage("Device_created");//$NON-NLS-1$
+			Device device = DeviceManager.registerDevice(jtfName.getText(),jcbType.getSelectedIndex(),jtfUrl.getText());
+			if (jcbRefresh.isSelected()){
+				device.refresh();
+			}
 			DeviceView.getInstance().refresh();
+			Messages.showInfoMessage("Device_created");//$NON-NLS-1$
 			dispose();
 		}
 		else if (e.getSource() == jbCancel){

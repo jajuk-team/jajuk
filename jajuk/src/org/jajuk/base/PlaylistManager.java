@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.6  2003/11/13 18:56:55  bflorat
+ * 13/11/2003
+ *
  * Revision 1.5  2003/10/31 13:05:06  bflorat
  * 31/10/2003
  *
@@ -88,6 +91,27 @@ public class PlaylistManager {
 		return new ArrayList(hmPlaylists.values());
 	}
 
+	/**
+		 * Perform a playlist cleanup : delete useless items
+		 *  
+		 */
+		public static synchronized void cleanup() {
+			Iterator itPlaylists = hmPlaylists.values().iterator();
+			while (itPlaylists.hasNext()) {
+				Playlist playlist= (Playlist)itPlaylists.next();
+				Iterator itPlaylistFiles = playlist.getFiles().iterator();
+				while ( itPlaylistFiles.hasNext()){
+					PlaylistFile plf = (PlaylistFile)itPlaylistFiles.next();
+					if (PlaylistFileManager.getPlaylistFile(plf.getId()) == null){
+						itPlaylistFiles.remove();	
+					}
+				}
+				if ( playlist.getFiles().size() == 0){
+					itPlaylists.remove();
+				}
+			}
+		}
+	
 	/**
 	 * Return Playlist by id
 	 * @param sId

@@ -9,8 +9,8 @@
  * 
  * You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
  * USA. $Log$
- * USA. Revision 1.9  2003/11/11 20:35:43  bflorat
- * USA. 11/11/2003
+ * USA. Revision 1.10  2003/11/13 18:56:55  bflorat
+ * USA. 13/11/2003
  * USA.
  */
 package org.jajuk.base;
@@ -179,17 +179,21 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 	}
 
 	/**
-	 * Perform a collection clean up ( delete orphan data )
+	 * Perform a collection clean up for logical items ( delete orphan data )
 	 * 
 	 * @return
 	 */
 	public static synchronized void cleanup() {
+		//	Tracks cleanup
+		TrackManager.cleanup();
 		//Styles cleanup
 		StyleManager.cleanup();
 		// Authors cleanup
 		AuthorManager.cleanup();
-		//	Tracks cleanup
-		TrackManager.cleanup();
+		//albums cleanup
+		AlbumManager.cleanup();
+		//Playlists cleanup
+		PlaylistManager.cleanup();
 		System.gc(); //force garbage collection after cleanup
 
 	}

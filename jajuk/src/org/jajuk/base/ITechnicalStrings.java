@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.9  2003/11/13 18:56:55  bflorat
+ * 13/11/2003
+ *
  * Revision 1.8  2003/11/11 20:35:43  bflorat
  * 11/11/2003
  *
@@ -109,11 +112,20 @@ public interface ITechnicalStrings {
 	public static final String ICON_REFRESH=  PATH_ICONS + "16x16/refresh.png";
 	public static final String ICON_SYNCHRO=  PATH_ICONS + "16x16/synchro.png";
 	public static final String ICON_DEVICE_NEW=  PATH_ICONS + "64x64/new.png";
-	public static final String ICON_DEVICE_CD =  PATH_ICONS + "64x64/cd.png";
-	public static final String ICON_DEVICE_EXT_DD =  PATH_ICONS + "64x64/ext_dd.png";
-	public static final String ICON_DEVICE_DIRECTORY =  PATH_ICONS + "64x64/folder.png";
-	public static final String ICON_DEVICE_PLAYER =  PATH_ICONS + "64x64/player.png";
-	public static final String ICON_DEVICE_REMOTE =  PATH_ICONS + "64x64/remote.png";
+	public static final String ICON_DEVICE_CD_MOUNTED =  PATH_ICONS + "64x64/cdrom_mount.png";
+	public static final String ICON_DEVICE_CD_UNMOUNTED =  PATH_ICONS + "64x64/cdrom_unmount.png";
+	public static final String ICON_DEVICE_CD_AUDIO_MOUNTED =  PATH_ICONS + "64x64/cdaudio_mount.png";
+	public static final String ICON_DEVICE_CD_AUDIO_UNMOUNTED =  PATH_ICONS + "64x64/cdaudio_unmount.png";
+	public static final String ICON_DEVICE_EXT_DD_MOUNTED =  PATH_ICONS + "64x64/ext_dd_mount.png";
+	public static final String ICON_DEVICE_EXT_DD_UNMOUNTED =  PATH_ICONS + "64x64/ext_dd_unmount.png";
+	public static final String ICON_DEVICE_DIRECTORY_MOUNTED =  PATH_ICONS + "64x64/folder_mount.png";
+	public static final String ICON_DEVICE_DIRECTORY_UNMOUNTED =  PATH_ICONS + "64x64/folder_unmount.png";
+	public static final String ICON_DEVICE_PLAYER_MOUNTED =  PATH_ICONS + "64x64/player_mount.png";
+	public static final String ICON_DEVICE_PLAYER_UNMOUNTED =  PATH_ICONS + "64x64/player_unmount.png";
+	public static final String ICON_DEVICE_REMOTE_MOUNTED =  PATH_ICONS + "64x64/remote_mount.png";
+	public static final String ICON_DEVICE_REMOTE_UNMOUNTED =  PATH_ICONS + "64x64/remote_unmount.png";
+	public static final String ICON_OK =  PATH_ICONS + "22x22/ok.png";
+	public static final String ICON_KO =  PATH_ICONS + "22x22/ko.png";
 	
 	//logs
 	public static final String LOG_PATTERN="%d{yyyy/MM/dd HH:mm:ss} [%p] %m\n";

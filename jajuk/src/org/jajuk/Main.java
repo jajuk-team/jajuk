@@ -9,6 +9,9 @@
  * 
  * You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,USA
  * $Log$
+ * Revision 1.15  2003/11/13 18:56:56  bflorat
+ * 13/11/2003
+ *
  * Revision 1.14  2003/11/11 20:34:29  bflorat
  * 11/11/2003
  *
@@ -132,12 +135,14 @@ public class Main implements ITechnicalStrings {
 
 			//add views
 			DeviceView deviceView = DeviceView.getInstance();
-			final JInternalFrame ji = new JInternalFrame("Devices", true, true, true, true);
+			/*final JInternalFrame ji = new JInternalFrame("Devices", true, true, true, true);
 			ji.setContentPane(deviceView);
 			ji.setSize(600, 600);
 			ji.setLocation(600, 0);
-			ji.setVisible(true);
-			desktop.add(ji);
+			ji.setVisible(true);*/
+			desktop.add(deviceView);
+			
+			
 			
 			container.add(desktop);
 
@@ -146,6 +151,11 @@ public class Main implements ITechnicalStrings {
 			jframe.setJMenuBar(JajukJMenuBar.getInstance());
 			Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
 			jframe.show();
+			/*Thread.sleep(10000);
+						deviceView = new DeviceView();
+						ji.setContentPane(deviceView);
+						ji.repaint();*/
+			
 
 		} catch (JajukException je) { //last chance to catch any error for logging purpose
 			Log.error(je);
@@ -156,6 +166,8 @@ public class Main implements ITechnicalStrings {
 		} finally {
 		}
 	}
+	
+	
 
 	/**
 	 * Performs some basic startup tests

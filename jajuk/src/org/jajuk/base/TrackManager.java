@@ -9,6 +9,9 @@
  * 
  * You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
  * USA. $Log$
+ * USA. Revision 1.8  2003/11/13 18:56:55  bflorat
+ * USA. 13/11/2003
+ * USA.
  * USA. Revision 1.7  2003/11/03 06:08:05  bflorat
  * USA. 03/11/2003
  * USA. Place - Suite 330, Boston, MA 02111-1307, USA. Revision 1.6 2003/10/31 13:05:06 bflorat Place - Suite 330, Boston, MA 02111-1307, USA. 31/10/2003 Place - Suite
@@ -91,6 +94,10 @@ public class TrackManager implements ITechnicalStrings {
 		Iterator itTracks = hmTracks.values().iterator();
 		while (itTracks.hasNext()) {
 			Track track = (Track) itTracks.next();
+			if ( track.getFiles().size() == 0){ //no associated file
+				itTracks.remove();
+				continue;
+			}
 			Iterator itFiles = track.getFiles().iterator();
 			while (itFiles.hasNext()) {
 				org.jajuk.base.File file = (org.jajuk.base.File) itFiles.next();

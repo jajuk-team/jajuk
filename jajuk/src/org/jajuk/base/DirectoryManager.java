@@ -9,6 +9,9 @@
  * 
  * You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
  * USA. $Log$
+ * USA. Revision 1.6  2003/11/13 18:56:55  bflorat
+ * USA. 13/11/2003
+ * USA.
  * USA. Revision 1.5  2003/11/03 06:08:05  bflorat
  * USA. 03/11/2003
  * USA. Revision 1.4 2003/10/31 13:05:06 bflorat 31/10/2003
@@ -103,6 +106,7 @@ public class DirectoryManager {
 				alIds.remove(directory.getId());
 			}
 		}
+		System.gc(); //force garbage collection after cleanup
 	}
 
 	/**
