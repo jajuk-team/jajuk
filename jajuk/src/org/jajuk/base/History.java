@@ -27,12 +27,15 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Properties;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.CommandJPanel;
+import org.jajuk.ui.ObservationManager;
+import org.jajuk.ui.Observer;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
@@ -47,7 +50,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * @author bflorat 
  * @created 19 nov. 2003
  */
-public class History extends DefaultHandler implements ITechnicalStrings, ErrorHandler {
+public class History extends DefaultHandler implements ITechnicalStrings, ErrorHandler,Observer {
 	/** Self instance */
 	private static History history;
 	
@@ -67,6 +70,11 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
 
 	/** Hidden constructor */
 	private History() {
+	    ObservationManager.register(EVENT_FILE_LAUNCHED,this);
+	    //check if something has alredy started
+	    if (ObservationManager.getDetails(EVENT_FILE_LAUNCHED) != null){
+	        update(EVENT_FILE_LAUNCHED);
+	    }
 	}
 	
 	/** Add an history item */
@@ -249,6 +257,24 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
 	 */
 	public ArrayList getHistory() {
 		return alHistory;
+	}
+
+    /* (non-Javadoc)
+     * @see org.jajuk.ui.Observer#update(java.lang.String)
+     */
+	public void update(String subject) {
+	    try {
+	        if (subject.equals(EVENT_FILE_LAUNCHED)){
+	            Properties pDetails = ObservationManager.getDetails(subject);
+	            String sFileID = pDetails.getProperty(DETAIL_CURRENT_FILE_ID);
+	            long lDate =( (Long)pDetails.get(DETAIL_CURRENT_DATE)).longValue();
+	            addItem(sFileID,lDate);
+	        }
+	    }
+	    catch(Exception e){
+	        Log.error(e);
+	        return;
+	    }
 	}
 
 }

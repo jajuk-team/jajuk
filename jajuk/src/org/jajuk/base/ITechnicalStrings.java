@@ -30,11 +30,13 @@ import org.jajuk.util.Util;
 public interface ITechnicalStrings {
 	
 	/**Information bar default vertical size in pixels*/
-	public static final int BORDER_Y_SIZE = 108;
+	public static final int BORDER_Y_SIZE = 112;
 	/**Command bar default vertical size in pixels*/
 	public static final int BORDER_X_SIZE = 55;
 	/**panels precisions in percent*/
 	public static final int PRECISION = 5;
+	/**Generic border*/
+	public static final int BORDER = 4;
 		
 	// Jajuk version
 	public static final String JAJUK_VERSION = "0.3";
@@ -268,7 +270,11 @@ public interface ITechnicalStrings {
 	public static final String EVENT_FILE_LAUNCHED="file launched";
 	public static final String EVENT_INFORMATION_DISPLAY="information display";
 	public static final String EVENT_ANIMATION_DISPLAY="animation display";
-		
+	
+	//details keys
+	public static final String DETAIL_CURRENT_FILE_ID="current file id";
+	public static final String DETAIL_CURRENT_DATE="current date";
+			
 	//Look and feel
 	public static final String LNF_METAL = "Metal";
 	public static final String LNF_METAL_CLASS = "javax.swing.plaf.metal.MetalLookAndFeel";

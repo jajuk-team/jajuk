@@ -111,7 +111,10 @@ import org.jajuk.util.Util;
 			String sOut=""; //$NON-NLS-1$
 			switch(iType){
 			case 0:  //regular playlist
-				sOut = getPlaylistFile().getName();
+				PlaylistFile plf = getPlaylistFile();
+				if (plf != null){
+				    sOut = plf.getName();
+				}
 				break;
 			case 1:  //new playlist
 				sOut = Messages.getString("PlaylistFileItem.2"); //$NON-NLS-1$

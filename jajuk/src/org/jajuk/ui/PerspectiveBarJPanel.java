@@ -19,7 +19,6 @@
  */
 package org.jajuk.ui;
 
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -51,7 +50,6 @@ public class PerspectiveBarJPanel extends JPanel implements ITechnicalStrings{
 	static private PerspectiveBarJPanel pb = null; 	
 	/**Perspective button*/
 	private ArrayList alButtons = new ArrayList(10); 
-	
 	
 	 /**
 	 * Singleton access
@@ -86,13 +84,14 @@ public class PerspectiveBarJPanel extends JPanel implements ITechnicalStrings{
 		jtbPerspective.setFloatable(false);
 		jtbPerspective.addSeparator();
 		jtbPerspective.setOrientation(JToolBar.VERTICAL);
-		
+	
 		Iterator it = PerspectiveManager.getPerspectives().iterator();
 		while ( it.hasNext()){
 			final IPerspective perspective = (IPerspective)it.next();
 			JButton jb = new JButton(Util.getIcon("jar:"+Util.getExecLocation()+"!"+perspective.getIconPath())); //$NON-NLS-1$ //$NON-NLS-2$
 			try{
 				jb.setToolTipText(Messages.getString("PerspectiveBarJPanel."+perspective.getID())); //$NON-NLS-1$
+				jb.setBorder(BorderFactory.createLoweredBevelBorder());
 			}
 			catch(Exception e){  //ignore tooltip missing
 			}; 
@@ -123,14 +122,14 @@ public class PerspectiveBarJPanel extends JPanel implements ITechnicalStrings{
 			if ( perspective2.equals(perspective)){  //this perspective is selected 
 				SwingUtilities.invokeLater(new Runnable(){
 					public void run(){
-						jb.setBorder(BorderFactory.createLineBorder(Color.BLACK,4)); //this one is selected, black border, make it in the awt dispatcher thread!
+					    jb.setBorder(BorderFactory.createLoweredBevelBorder()); //this one is selected, black border, make it in the awt dispatcher thread!
 					}
 				});
 			}
 			else{
 				SwingUtilities.invokeLater(new Runnable(){
 					public void run(){
-						jb.setBorder(BorderFactory.createEmptyBorder(4,4,4,4));  //no border
+					    jb.setBorder(BorderFactory.createEmptyBorder(4,4,4,4));  //no border
 					}
 				});
 			}

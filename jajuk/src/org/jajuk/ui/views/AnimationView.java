@@ -22,7 +22,9 @@ package org.jajuk.ui.views;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.util.StringTokenizer;
 
+import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 
 import org.jajuk.base.ITechnicalStrings;
@@ -72,12 +74,11 @@ public class AnimationView extends ViewAdapter implements ITechnicalStrings,Obse
 	 * @see org.jajuk.ui.views.IView#populate()
 	 */
 	public void populate() {
-		Font font = new Font("dialog", Font.BOLD, 12);
+		Font font = new Font("dialog", Font.BOLD, 40);
 		btl1 = new BasicTextLabel(" ");
 		btl1.setFont(font);
-		btl1.setBounds(0, 0, 350, 100);
-        btl1.setOpaque(false);
-		setLayout(null);
+	    btl1.setOpaque(false);
+		setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
         setBackground(Color.white);
         add(btl1);
         ObservationManager.register(EVENT_INFORMATION_DISPLAY,this);
@@ -100,7 +101,18 @@ public class AnimationView extends ViewAdapter implements ITechnicalStrings,Obse
 	 */
 	public void update(String subject) {
 		if (subject.equals(EVENT_INFORMATION_DISPLAY)){
-			setText(InformationJPanel.getInstance().getMessage());
+			String s = InformationJPanel.getInstance().getMessage();
+			if (s != null  && !s.trim().equals("")){
+			    setText(s);   
+			}
 		}
 	}
+	
+	private int getFont(String s){
+	    //FONT 22, 10% = 1/3
+	    StringTokenizer st = new StringTokenizer(s,"\n");
+	    int iLines = st.countTokens();
+	    return 0;
+	}
+	
 }

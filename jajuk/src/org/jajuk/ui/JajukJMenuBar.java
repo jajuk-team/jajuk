@@ -82,9 +82,7 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings{
 		jmiFileExit.getAccessibleContext().setAccessibleDescription("[ALT-X]");  //$NON-NLS-1$
 		file.add(jmiFileOpen);
 		file.add(jmiFileExit);
-		
-		
-		
+				
 		//Properties menu
 		properties = new JMenu(Messages.getString("JajukJMenuBar.5")); //$NON-NLS-1$
 		jmiNewProperty = new JMenuItem(Messages.getString("JajukJMenuBar.6"),Util.getIcon(ICON_NEW)); //$NON-NLS-1$

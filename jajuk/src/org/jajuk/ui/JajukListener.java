@@ -23,6 +23,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import javax.swing.BorderFactory;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFileChooser;
 
@@ -99,17 +100,17 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
 				//Repeat and continue can't be set together, so deselect repeat mode
 				ConfigurationManager.setProperty(CONF_STATE_CONTINUE, Boolean.toString(!bContinue));
 				JajukJMenuBar.getInstance().jcbmiContinue.setSelected(false);
-				CommandJPanel.getInstance().jbContinue.setIcon(Util.getIcon(ICON_CONTINUE_OFF));
+				CommandJPanel.getInstance().jbContinue.setBorder(BorderFactory.createEmptyBorder(BORDER,BORDER,BORDER,BORDER));
 			}
 			boolean b = ConfigurationManager.getBoolean(CONF_STATE_REPEAT);
 			ConfigurationManager.setProperty(CONF_STATE_REPEAT, Boolean.toString(!b));
 			JajukJMenuBar.getInstance().jcbmiRepeat.setSelected(!b);
 			if (!b == true) { //enabled button
-				CommandJPanel.getInstance().jbRepeat.setIcon(Util.getIcon(ICON_REPEAT_ON));
+				CommandJPanel.getInstance().jbRepeat.setBorder(BorderFactory.createLoweredBevelBorder());
 				FIFO.getInstance().forceRepeat(FIFO.getInstance().getCurrentFile());
 			}
 			else {
-				CommandJPanel.getInstance().jbRepeat.setIcon(Util.getIcon(ICON_REPEAT_OFF));
+			    CommandJPanel.getInstance().jbRepeat.setBorder(BorderFactory.createEmptyBorder(BORDER,BORDER,BORDER,BORDER));
 			}
 		}
 		else if (e.getActionCommand().equals(EVENT_SHUFFLE_MODE_STATUS_CHANGED)) {
@@ -117,10 +118,10 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
 			ConfigurationManager.setProperty(CONF_STATE_SHUFFLE, Boolean.toString(!b));
 			JajukJMenuBar.getInstance().jcbmiShuffle.setSelected(!b);
 			if (!b == true) { //enabled button
-				CommandJPanel.getInstance().jbRandom.setIcon(Util.getIcon(ICON_SHUFFLE_ON));
+				CommandJPanel.getInstance().jbRandom.setBorder(BorderFactory.createLoweredBevelBorder());
 			}
 			else {
-				CommandJPanel.getInstance().jbRandom.setIcon(Util.getIcon(ICON_SHUFFLE_OFF));
+				CommandJPanel.getInstance().jbRandom.setBorder(BorderFactory.createEmptyBorder(BORDER,BORDER,BORDER,BORDER));
 			}
 		}
 		else if (e.getActionCommand().equals(EVENT_CONTINUE_MODE_STATUS_CHANGED)) {
@@ -129,16 +130,16 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
 				//Repeat and continue can't be set together, so deselect repeat mode
 				ConfigurationManager.setProperty(CONF_STATE_REPEAT, Boolean.toString(!bRepeat));
 				JajukJMenuBar.getInstance().jcbmiRepeat.setSelected(false);
-				CommandJPanel.getInstance().jbRepeat.setIcon(Util.getIcon(ICON_REPEAT_OFF)); 
+				CommandJPanel.getInstance().jbRepeat.setBorder(BorderFactory.createEmptyBorder(BORDER,BORDER,BORDER,BORDER)); 
 			}
 			boolean b = ConfigurationManager.getBoolean(CONF_STATE_CONTINUE);
 			ConfigurationManager.setProperty(CONF_STATE_CONTINUE, Boolean.toString(!b));
 			JajukJMenuBar.getInstance().jcbmiContinue.setSelected(!b);
 			if (!b == true) { //enabled button
-				CommandJPanel.getInstance().jbContinue.setIcon(Util.getIcon(ICON_CONTINUE_ON));
+				CommandJPanel.getInstance().jbContinue.setBorder(BorderFactory.createLoweredBevelBorder());
 			}
 			else {
-				CommandJPanel.getInstance().jbContinue.setIcon(Util.getIcon(ICON_CONTINUE_OFF));
+				CommandJPanel.getInstance().jbContinue.setBorder(BorderFactory.createEmptyBorder(BORDER,BORDER,BORDER,BORDER));
 			}
 		}
 		else if (e.getActionCommand().equals(EVENT_INTRO_MODE_STATUS_CHANGED)) {
@@ -146,10 +147,10 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
 			ConfigurationManager.setProperty(CONF_STATE_INTRO, Boolean.toString(!b));
 			JajukJMenuBar.getInstance().jcbmiIntro.setSelected(!b);
 			if (!b == true) { //enabled button
-				CommandJPanel.getInstance().jbIntro.setIcon(Util.getIcon(ICON_INTRO_ON));
+				CommandJPanel.getInstance().jbIntro.setBorder(BorderFactory.createLoweredBevelBorder());
 			}
 			else {
-				CommandJPanel.getInstance().jbIntro.setIcon(Util.getIcon(ICON_INTRO_OFF));
+				CommandJPanel.getInstance().jbIntro.setBorder(BorderFactory.createEmptyBorder(BORDER,BORDER,BORDER,BORDER));
 			}
 		}
 		else if (e.getActionCommand().equals(EVENT_VIEW_SHOW_STATUS_CHANGED_REQUEST)) {

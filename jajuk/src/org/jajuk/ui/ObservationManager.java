@@ -22,6 +22,7 @@ package org.jajuk.ui;
 
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.Properties;
 import java.util.Vector;
 
 import javax.swing.JComponent;
@@ -36,18 +37,21 @@ public class ObservationManager {
 	/** one event -> list of components , we use a synchronized collection to avoid unexpected concurrent modifications*/
 	static Hashtable hEventComponents = new Hashtable(10);
 	
+	/**Map a event string with a property containing all event details*/
+	static Hashtable  hEventDetails = new Hashtable(5);
+	
 	/**
 	 * Register a component for a given subject
 	 * @param subject Subject ( event ) to observe
 	 * @param jc component to register
 	 */
-	public static synchronized void register(String subject,JComponent jc){
+	public static synchronized void register(String subject,Object obj){
 		Vector  vComponents = (Vector)hEventComponents.get(subject);
 		if (vComponents == null){
 			vComponents = new Vector(1);
 			hEventComponents.put(subject,vComponents);
 		}
-		vComponents.add(jc);
+		vComponents.add(obj);
 	}
 	
 	/**
@@ -82,4 +86,24 @@ public class ObservationManager {
 		}.start();
 				
 	}
+	
+	/**
+	 * Notify all components having registered for the given subject and giving soem details
+	 * @param subject
+	 * @param pDetails informations about this event
+	 */
+	public static synchronized void notify(final String subject,Properties pDetails){
+	    hEventDetails.put(subject,pDetails);
+	    notify(subject);
+	}
+	
+	/**
+	 * Return the details for an event, or null if there is no details
+	 * @param sEvent
+	 * @return
+	 */
+	public static synchronized Properties getDetails(String sEvent){
+	    return (Properties)hEventDetails.get(sEvent);
+	}
+	
 }

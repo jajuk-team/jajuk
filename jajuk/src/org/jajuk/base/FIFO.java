@@ -21,6 +21,7 @@ package org.jajuk.base;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Properties;
 
 import javax.swing.JOptionPane;
 
@@ -110,7 +111,7 @@ public class FIFO implements ITechnicalStrings,Runnable{
 	
 	/**First file should seek to position flag*/
 	private boolean bSeekFirstFile = false;
-	
+		
 	/**
 	 * Singleton access
 	 * @return
@@ -161,7 +162,11 @@ public class FIFO implements ITechnicalStrings,Runnable{
 	 * @param bForcedRepeat Force repeat mode for selection
 	 */
 	public synchronized void push(ArrayList alFiles, boolean bAppend,boolean bAuto,boolean bForcedRepeat) {
-		this.bForcedRepeat = bForcedRepeat;
+		//if fifo is down, restart it
+	    if (fifo == null){
+	        fifo = getInstance();
+	    }
+	    this.bForcedRepeat = bForcedRepeat;
 		//first try to mount needed devices
 		Iterator it = alFiles.iterator();
 		File file = null;
@@ -419,7 +424,10 @@ public class FIFO implements ITechnicalStrings,Runnable{
 					fCurrent.getTrack().setRate(fCurrent.getTrack().getRate()+1); //inc rate by 1 because it is played
 					FileManager.setRateHasChanged(true);
 					if ( !(fCurrent instanceof BasicFile)){
-						History.getInstance().addItem(fCurrent.getId(),System.currentTimeMillis());
+						Properties pDetails = new Properties();
+						pDetails.put(DETAIL_CURRENT_FILE_ID,fCurrent.getId());
+						pDetails.put(DETAIL_CURRENT_DATE,new Long(System.currentTimeMillis()));
+					    ObservationManager.notify(EVENT_FILE_LAUNCHED,pDetails);
 					}
 					String sMessage = Messages.getString("FIFO.10")+fCurrent.getTrack().getAuthor().getName2()+" / "+fCurrent.getTrack().getAlbum().getName2()+" / "+fCurrent.getTrack().getName();//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 					InformationJPanel.getInstance().setMessage(sMessage,InformationJPanel.INFORMATIVE); 
@@ -435,7 +443,8 @@ public class FIFO implements ITechnicalStrings,Runnable{
 			init();  //reinit all variables
 			ObservationManager.notify(EVENT_PLAYER_STOP);  //notify to devices like commandJPanel to update ui
 		} catch (Exception e) {
-			Log.error("122", e); //$NON-NLS-1$
+		    Log.error("122", e); //$NON-NLS-1$
+		    fifo = null; //delete singleton
 		}
 	}
 	
