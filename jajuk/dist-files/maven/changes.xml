@@ -199,7 +199,7 @@
     	<action dev='bflorat' type='fix'>1099036 Minor UI issue in Playlist editor view with some LAF</action>
     	<action dev='bflorat' type='fix'>Fixed minor UI issues (disable) in parameter view</action>
     </release>
-     <release version='0.3.3' date='work in progress' description='Fixes and Catalan langpack'>
+     <release version='0.3.3' date='work in progress' description='Fixes,performances and Catalan langpack'>
      	<action dev='jespo' type='add'>Catalan translation</action> 
      	<action dev='bflorat' type='add'>Support of Linux menu shortcuts using Java installer</action> 
      	<action dev='bflorat' type='add'>Support for next/previous album from tray with shift or right click on previous/next</action> 
@@ -216,7 +216,6 @@
      	<action dev='bflorat' type='fix' issue='1112671'>Minor bug in I18N system</action>
      	<action dev='bflorat' type='fix' issue='1116459'>Logical items not sync with physical after a refresh</action>
      	<action dev='bflorat' type='fix' issue='1102223'>Delay with pause/resume/stop</action>
-     	<action dev='bflorat' type='fix' issue='1102219'>Cannot play some MP3 files</action>
      	<action dev='bflorat' type='fix' issue='1146035'>Skips using user interface</action>
      	<action dev='bflorat' type='fix' issue='1157408'>Bestof function problem</action>
      	<action dev='bflorat' type='fix' issue='1157305'>Novelties function problem</action>

@@ -1,0 +1,909 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=utf-8">
+	<TITLE>Jajuk qualification tests</TITLE>
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 1.1.3  (Linux)">
+	<META NAME="CREATED" CONTENT="20050401;22034400">
+	<META NAME="CHANGED" CONTENT="20050401;22143800">
+</HEAD>
+<BODY LANG="en-US" DIR="LTR">
+<H1>Release notes</H1>
+<P><U><I>Last update</I></U> <I>: 2005-04-02<BR><BR>Changes:
+</I><A HREF="http://jajuk.sourceforge.net/changes-report.html#0_3_3">http://jajuk.sourceforge.net/changes-report.html#0_3_3</A>
+</P>
+<UL>
+	<LI><P STYLE="margin-bottom: 0cm">[Mandrake and Suse users using the
+	RPM] IMPORTANT NOTE FOR UPGRADE FROM 0.3.1 : due to a bug in 0.3.1
+	packaging, please use&nbsp; <FONT FACE="monospace">rpm -Uvh
+	<B>--nopostun</B></FONT> <FONT FACE="monospace">jajuk-{release}-suse.noarch.rpm</FONT>
+	or uninstall 0.3.1 and install newer release. 
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm">[Mandrake users using the RPM]
+	Jajuk icon should appear in Multimedia/Audio section. It can take a
+	while for the icon to be visible. If you get no icon after one
+	minute, please open a shell and launch <FONT FACE="monospace">menu-updates</FONT>
+	as your regular user. 
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm">[Windows users using exe package]
+	We have changed the Self Extracting tool (we now use 7-ZIP), so this
+	distribution should no more be seen as infected by some anti-virus
+	scanners. 
+	</P>
+	<LI><P>[Windows users using exe package] In some seldom cases, you
+	may encounter a &quot;IzPack launcher failed&quot; message at the
+	end of the installation. Just ignore this message, your install is
+	safe. 
+	</P>
+</UL>
+<P><BR><BR>
+</P>
+<H1>Trakers</H1>
+<P>Bug database:
+<A HREF="http://sourceforge.net/tracker/?group_id=91412&amp;atid=597086">http://sourceforge.net/tracker/?group_id=91412&amp;atid=597086</A><BR>Known
+issues:
+<A HREF="http://sourceforge.net/tracker/?atid=677776&amp;group_id=91412">http://sourceforge.net/tracker/?atid=677776&amp;group_id=91412</A><BR>Wishes/RFE:
+<A HREF="http://sourceforge.net/tracker/?group_id=91412&amp;atid=597089">http://sourceforge.net/tracker/?group_id=91412&amp;atid=597089</A><BR>Support/Help:
+<A HREF="http://sourceforge.net/tracker/?group_id=91412&amp;atid=597087">http://sourceforge.net/tracker/?group_id=91412&amp;atid=597087</A></P>
+<H1>Jajuk qualification tests</H1>
+<TABLE WIDTH=473 BORDER=1 CELLPADDING=2 CELLSPACING=4>
+	<COL WIDTH=90>
+	<COL WIDTH=361>
+	<TR>
+		<TD WIDTH=90 BGCOLOR="#cccccc">
+			<P><B>Date</B></P>
+		</TD>
+		<TD WIDTH=361 BGCOLOR="#cccccc">
+			<P><B>2005/04/02</B></P>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=90 BGCOLOR="#cccccc">
+			<P><B>Tester(s) </B>
+			</P>
+		</TD>
+		<TD WIDTH=361 BGCOLOR="#cccccc">
+			<P><B>Jerome Fortain, Pasi Lehtimaki, Martial Braux, Bertrand
+			Florat</B></P>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=90 BGCOLOR="#cccccc">
+			<P><B>Packager</B></P>
+		</TD>
+		<TD WIDTH=361 BGCOLOR="#cccccc">
+			<P><B>Bertrand Florat </B>
+			</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=90 BGCOLOR="#cccccc">
+			<P><B>Validator</B></P>
+		</TD>
+		<TD WIDTH=361 BGCOLOR="#cccccc">
+			<P><B>Bertrand Florat </B>
+			</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=90 BGCOLOR="#cccccc">
+			<P><B>Release</B></P>
+		</TD>
+		<TD WIDTH=361 BGCOLOR="#cccccc">
+			<P><B>0.3.3</B></P>
+		</TD>
+	</TR>
+</TABLE>
+<P><BR><BR>
+</P>
+<H2>Environments</H2>
+<TABLE BORDER=1 CELLPADDING=2 CELLSPACING=2>
+	<TR>
+		<TD BGCOLOR="#cccccc">
+			<P>Env name</P>
+		</TD>
+		<TD BGCOLOR="#cccccc">
+			<P>OS</P>
+		</TD>
+		<TD BGCOLOR="#cccccc">
+			<P>JRE</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD>
+			<P>env1</P>
+		</TD>
+		<TD>
+			<P>Suse Linux 9.2 kernel 2.6.4</P>
+		</TD>
+		<TD>
+			<P>Sun 1.4.2_04</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD>
+			<P>env2</P>
+		</TD>
+		<TD>
+			<P>Windows 2000 Pro SP3</P>
+		</TD>
+		<TD>
+			<P>Sun 1.4.2_01</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD>
+			<P>env3</P>
+		</TD>
+		<TD>
+			<P><BR>
+			</P>
+		</TD>
+		<TD>
+			<P><BR>
+			</P>
+		</TD>
+	</TR>
+</TABLE>
+<P><BR><BR>
+</P>
+<H2>Applicative impact of this release</H2>
+<TABLE BORDER=1 CELLPADDING=2 CELLSPACING=2>
+	<TR>
+		<TD BGCOLOR="#cccccc">
+			<P>Impact/change</P>
+		</TD>
+		<TD BGCOLOR="#cccccc">
+			<P>Comments</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD>
+			<P><BR>
+			</P>
+		</TD>
+		<TD>
+			<P><BR>
+			</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD>
+			<P><BR>
+			</P>
+		</TD>
+		<TD>
+			<P><BR>
+			</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD>
+			<P><BR>
+			</P>
+		</TD>
+		<TD>
+			<P><BR>
+			</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD>
+			<P><BR>
+			</P>
+		</TD>
+		<TD>
+			<P><BR>
+			</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD>
+			<P><BR>
+			</P>
+		</TD>
+		<TD>
+			<P><BR>
+			</P>
+		</TD>
+	</TR>
+</TABLE>
+<P><BR><BR>
+</P>
+<H2>Scenario-based tests</H2>
+<P><I><U>White</U>: not tested, <U>green</U>: passed, <U>orange</U>:
+passed partially, <U>red</U>: not passed</I></P>
+<TABLE BORDER=1 CELLPADDING=2 CELLSPACING=4>
+	<TR>
+		<TD BGCOLOR="#cccccc">
+			<P>#</P>
+		</TD>
+		<TD BGCOLOR="#cccccc">
+			<P>Description</P>
+		</TD>
+		<TD BGCOLOR="#cccccc">
+			<P>Result env1</P>
+		</TD>
+		<TD BGCOLOR="#cccccc">
+			<P>Result env2</P>
+		</TD>
+		<TD BGCOLOR="#cccccc">
+			<P>Result env3</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD>
+			<P>PKG</P>
+		</TD>
+		<TD>
+			<P>Packaging tests : install Jajuk in several languages. Target
+			directory : /prog/jajuk and c:\Program files\jajuk. Version
+			overwriting tests : install Jajuk on existing release directory,
+			then&nbsp; remove the directory and install it to this unexisting
+			location. Start and close Jajuk at each test.</P>
+		</TD>
+		<TD BGCOLOR="#00ff00">
+			<P><BR>
+			</P>
+		</TD>
+		<TD BGCOLOR="#00ff00">
+			<P><BR>
+			</P>
+		</TD>
+		<TD>
+			<P><BR>
+			</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD>
+			<P>SRT</P>
+		</TD>
+		<TD>
+			<P>Tests with existing collection : start jajuk, lauch some
+			tracks.</P>
+		</TD>
+		<TD BGCOLOR="#00ff00">
+			<P><BR>
+			</P>
+		</TD>
+		<TD BGCOLOR="#00ff00">
+			<P><BR>
+			</P>
+		</TD>
+		<TD>
+			<P><BR>
+			</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD>
+			<P>SCR</P>
+		</TD>
+		<TD>
+			<P>Tests from scratch. Remove .jajuk directory, create a directory
+			device with auto-refresh, lauch some tracks and then quit Jajuk
+			and start it again, launch some tracks, quit and test again.</P>
+		</TD>
+		<TD BGCOLOR="#00ff00">
+			<P><BR>
+			</P>
+		</TD>
+		<TD BGCOLOR="#00ff00">
+			<P><BR>
+			</P>
+		</TD>
+		<TD>
+			<P><BR>
+			</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD>
+			<P>FOR</P>
+		</TD>
+		<TD>
+			<P>Tests on formats : launch at least one mp3, ogg, au, aiff and
+			wav file. 
+			</P>
+		</TD>
+		<TD BGCOLOR="#00ff00">
+			<P><BR>
+			</P>
+		</TD>
+		<TD BGCOLOR="#00ff00">
+			<P><BR>
+			</P>
+		</TD>
+		<TD>
+			<P><BR>
+			</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD>
+			<P>DEV</P>
+		</TD>
+		<TD>
+			<P>Devices tests : create a directory device, refresh it, unmount
+			it, mount it, remove it.</P>
+		</TD>
+		<TD BGCOLOR="#00ff00">
+			<P><BR>
+			</P>
+		</TD>
+		<TD BGCOLOR="#ffffff">
+			<P><BR>
+			</P>
+		</TD>
+		<TD>
+			<P><BR>
+			</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD>
+			<P>SYN</P>
+		</TD>
+		<TD>
+			<P>Device synchronization : test with a directory device and a
+			player device, if possible, try to mix FS : ext3 for directory,
+			FAT32 for player.</P>
+		</TD>
+		<TD BGCOLOR="#ffffff">
+			<P><BR>
+			</P>
+		</TD>
+		<TD BGCOLOR="#ffffff">
+			<P><BR>
+			</P>
+		</TD>
+		<TD>
+			<P><BR>
+			</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD>
+			<P>SRC</P>
+		</TD>
+		<TD>
+			<P>Instant search box : perform some searches and launch tracks.</P>
+		</TD>
+		<TD BGCOLOR="#00ff00">
+			<P><BR>
+			</P>
+		</TD>
+		<TD BGCOLOR="#ffffff">
+			<P><BR>
+			</P>
+		</TD>
+		<TD>
+			<P><BR>
+			</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD>
+			<P>HST</P>
+		</TD>
+		<TD>
+			<P>History : check all launched tracks are OK. Clear history and
+			launch others tracks, check it again.</P>
+		</TD>
+		<TD BGCOLOR="#00ff00">
+			<P><BR>
+			</P>
+		</TD>
+		<TD BGCOLOR="#ffffff">
+			<P><BR>
+			</P>
+		</TD>
+		<TD>
+			<P><BR>
+			</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD>
+			<P>COP 
+			</P>
+		</TD>
+		<TD>
+			<P>Compile and test the installed jajuk sources 
+			</P>
+		</TD>
+		<TD BGCOLOR="#00ff00">
+			<P><BR>
+			</P>
+		</TD>
+		<TD BGCOLOR="#ffffff">
+			<P><BR>
+			</P>
+		</TD>
+		<TD>
+			<P><BR>
+			</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD>
+			<P>SUP</P>
+		</TD>
+		<TD>
+			<P>Startup tests : change startup option and test it.</P>
+		</TD>
+		<TD BGCOLOR="#00ff00">
+			<P><BR>
+			</P>
+		</TD>
+		<TD BGCOLOR="#ffffff">
+			<P><BR>
+			</P>
+		</TD>
+		<TD>
+			<P><BR>
+			</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD>
+			<P>BUP</P>
+		</TD>
+		<TD>
+			<P>Backup tests : change backup options and test them.</P>
+		</TD>
+		<TD BGCOLOR="#ffffff">
+			<P><BR>
+			</P>
+		</TD>
+		<TD BGCOLOR="#ffffff">
+			<P><BR>
+			</P>
+		</TD>
+		<TD>
+			<P><BR>
+			</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD>
+			<P>LNG</P>
+		</TD>
+		<TD>
+			<P>Test Jajuk in English and at least with 2 others langpacks,
+			check translation for untranslated fields if any.</P>
+		</TD>
+		<TD BGCOLOR="#00ff00">
+			<P><BR>
+			</P>
+		</TD>
+		<TD BGCOLOR="#ffffff">
+			<P><BR>
+			</P>
+		</TD>
+		<TD>
+			<P><BR>
+			</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD>
+			<P>LNF</P>
+		</TD>
+		<TD>
+			<P>Change Look and Feel, test it.</P>
+		</TD>
+		<TD BGCOLOR="#00ff00">
+			<P><BR>
+			</P>
+		</TD>
+		<TD BGCOLOR="#00ff00">
+			<P><BR>
+			</P>
+		</TD>
+		<TD>
+			<P><BR>
+			</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD>
+			<P>STA</P>
+		</TD>
+		<TD>
+			<P>Check stats</P>
+		</TD>
+		<TD BGCOLOR="#00ff00">
+			<P><BR>
+			</P>
+		</TD>
+		<TD BGCOLOR="#ffffff">
+			<P><BR>
+			</P>
+		</TD>
+		<TD>
+			<P><BR>
+			</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD>
+			<P>TIM</P>
+		</TD>
+		<TD>
+			<P>Check elapsed / remaining time in information bar</P>
+		</TD>
+		<TD BGCOLOR="#00ff00">
+			<P><BR>
+			</P>
+		</TD>
+		<TD BGCOLOR="#00ff00">
+			<P><BR>
+			</P>
+		</TD>
+		<TD>
+			<P><BR>
+			</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD>
+			<P>DOC</P>
+		</TD>
+		<TD>
+			<P>Check About and online doc in all languages.</P>
+		</TD>
+		<TD BGCOLOR="#00ff00">
+			<P><BR>
+			</P>
+		</TD>
+		<TD BGCOLOR="#00ff00">
+			<P><BR>
+			</P>
+		</TD>
+		<TD>
+			<P><BR>
+			</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD>
+			<P>COM</P>
+		</TD>
+		<TD>
+			<P>Command panel tests : rewind, forward, volume...</P>
+		</TD>
+		<TD BGCOLOR="#00ff00">
+			<P><BR>
+			</P>
+		</TD>
+		<TD BGCOLOR="#00ff00">
+			<P><BR>
+			</P>
+		</TD>
+		<TD>
+			<P><BR>
+			</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD>
+			<P>PLA</P>
+		</TD>
+		<TD>
+			<P>Physical and logical playlists tests.</P>
+		</TD>
+		<TD BGCOLOR="#ffffff">
+			<P><BR>
+			</P>
+		</TD>
+		<TD BGCOLOR="#00ff00">
+			<P><BR>
+			</P>
+		</TD>
+		<TD>
+			<P><BR>
+			</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD>
+			<P>COV</P>
+		</TD>
+		<TD>
+			<P>Tests covers display and manipulation</P>
+		</TD>
+		<TD BGCOLOR="#00ff00">
+			<P><BR>
+			</P>
+		</TD>
+		<TD BGCOLOR="#00ff00">
+			<P><BR>
+			</P>
+		</TD>
+		<TD>
+			<P><BR>
+			</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD>
+			<P>VIE</P>
+		</TD>
+		<TD>
+			<P>Change views size / position, close jajuk and restart, check
+			position is saved. Reload default perspectives in Parameter view /
+			Perspective tab, test.</P>
+		</TD>
+		<TD BGCOLOR="#ffffff">
+			<P><BR>
+			</P>
+		</TD>
+		<TD BGCOLOR="#ffffff">
+			<P><BR>
+			</P>
+		</TD>
+		<TD>
+			<P><BR>
+			</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD>
+			<P>RES</P>
+		</TD>
+		<TD>
+			<P>Change resolution (1024x768 to 1600x1400) and check <SPAN LANG="en-US">everything
+			is</SPAN> OK</P>
+		</TD>
+		<TD BGCOLOR="#00ff00">
+			<P><BR>
+			</P>
+		</TD>
+		<TD BGCOLOR="#00ff00">
+			<P><BR>
+			</P>
+		</TD>
+		<TD>
+			<P><BR>
+			</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD>
+			<P>ERR</P>
+		</TD>
+		<TD>
+			<P>Rename or delete physically some files in your collection
+			without refreshing device to simulate read errors, check behavior
+			(error message in information panel, history bar...)</P>
+		</TD>
+		<TD BGCOLOR="#00ff00">
+			<P><BR>
+			</P>
+		</TD>
+		<TD BGCOLOR="#00ff00">
+			<P><BR>
+			</P>
+		</TD>
+		<TD>
+			<P><BR>
+			</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD>
+			<P>TRA</P>
+		</TD>
+		<TD>
+			<P>Tray tests</P>
+		</TD>
+		<TD BGCOLOR="#00ff00">
+			<P><BR>
+			</P>
+		</TD>
+		<TD BGCOLOR="#00ff00">
+			<P><BR>
+			</P>
+		</TD>
+		<TD>
+			<P><BR>
+			</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD>
+			<P>RAN 
+			</P>
+		</TD>
+		<TD>
+			<P>Random tests, general use tests in every views. 
+			</P>
+		</TD>
+		<TD BGCOLOR="#00ff00">
+			<P><BR>
+			</P>
+		</TD>
+		<TD BGCOLOR="#00ff00">
+			<P><BR>
+			</P>
+		</TD>
+		<TD>
+			<P><BR>
+			</P>
+		</TD>
+	</TR>
+</TABLE>
+<P><BR><BR>
+</P>
+<H2>Non-regression tests</H2>
+<P><I><U>White</U>: not tested, <U>green</U>: passed, <U>orange</U>:
+passed partially, <U>red</U>: not passed</I></P>
+<TABLE BORDER=1 CELLPADDING=2 CELLSPACING=2>
+	<TR>
+		<TD BGCOLOR="#cccccc">
+			<P>Bug number</P>
+		</TD>
+		<TD BGCOLOR="#cccccc">
+			<P>Comments</P>
+		</TD>
+		<TD BGCOLOR="#cccccc">
+			<P>Result</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD>
+			<P><BR>
+			</P>
+		</TD>
+		<TD>
+			<P><BR>
+			</P>
+		</TD>
+		<TD>
+			<P><BR>
+			</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD>
+			<P><BR>
+			</P>
+		</TD>
+		<TD>
+			<P><BR>
+			</P>
+		</TD>
+		<TD>
+			<P><BR>
+			</P>
+		</TD>
+	</TR>
+</TABLE>
+<P><BR><BR>
+</P>
+<H2>Known issues</H2>
+<P>Known issues:
+<A HREF="http://sourceforge.net/tracker/?atid=677776&amp;group_id=91412">http://sourceforge.net/tracker/?atid=677776&amp;group_id=91412</A></P>
+<P><BR><BR>
+</P>
+<H2>Comments</H2>
+<TABLE BORDER=1 CELLPADDING=2 CELLSPACING=2>
+	<TR>
+		<TD>
+			<P>Have fun using Jajuk ! 
+			</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD>
+			<P><BR>
+			</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD>
+			<P><BR>
+			</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD>
+			<P><BR>
+			</P>
+		</TD>
+	</TR>
+</TABLE>
+<P><BR><BR>
+</P>
+<H2>Details</H2>
+<P><pre>
+Final: 05/03/28 : 1 bugs : 10
+o [JF/PL][Official(1175005)][Critical] Freeze when seeking > 99% [10]
+
+rc14: 05/03/28 : 1 bugs : 10
+o [BF][Official thanks mlo][ 1171908 ] drag'n drop from sorted list pushes wrong track to playlist [10]
+
+rc13: 05/03/28 : 3 bugs : 15
+o [MB] Better cover adapting algorithm, use it! [10]
+o [BF] Better player error handling [5]
+o [BF] [web site] Fixed a Maven POM issue that prevented javadoc generation, it will now available from the web site [0]
+
+rc12: 05/03/25 : 1 bugs : 10  
+o [BF] Minor french i18n fix [0]
+o [PL] Tree and table selection with right click behavior problem [10]
+
+rc11: 05/03/ : 1 bugs : 10 
+o [BF] Added Performance tips doc page [0]
+o [MB] [Official BUG] [CHECK THE FIX] Yet others parsing errors with strange year characters, more checkups. [10] 
+
+rc10: 05/03/20 : 0 bugs : 0 
+o [BF] Refactored cover cach system : saves a big amount of memory [0] 
+o [BF] More Readme and translation upgrade from Gerhard [0]
+
+rc9: 05/03/19 : 2 bugs : 16 
+o [BF] Fixed bestof and novelties functions [10] 
+o [BF] Fixed a physical tree refresh after a device refresh [6] 
+o [BF] Readme and translation upgrade from Gerhard & Josep [0]
+
+rc8: 05/03/18 : 2 bugs : 18 
+o [BF] Fixed initial audio volume [10] 
+o [BF] Audio buffer is now a parameter [0]
+o [BF] Fixed more buffer stuffs [8]
+
+rc7: 05/03/16 :  3 bugs :  21
+o [BF] Fixed audio lags when reading MP3 [10] 
+o [BF] Fixes in french manual [1]
+o [BF] Fix on mute and volume at next track [10]
+o [BF] Added replay track with SHIFT+rew button or right click, doc updated
+
+rc6: 05/03/08 :  4 bugs : 29 
+o [BF] Bestof and novelties modes now avoid duplicate items [7]
+o [BF] Option restart off + mode continue on, when we reach end of collection, ui reset missing [5]
+o [BF] Fix on planned tracks when reaching end of collection [5]
+o [CT] Added Christine's doc [5]
+o [BF] French doc search fix [6]
+
+rc5: 05/03/05 : 11 bugs : 89 
+o [BF] Removed remote flags in README files to avoid pbm with IzPack [5]
+o [BF] Fixed bug preventing from waiting 2 secs when encuntering a playing error [5]
+o [BF] [Official BUG] Fixed a bug in FIFO that conducted inderectly to wrong display of command and information status after an error or when having nothing more to play [10]
+o [BF] Fixed a potential bug in continue mode preventing to continue to play after an error [8]
+o [BF] [Official BUG] When continue mode is set in stopped mode, we have to start next track [8]
+o [BF] Observation engine full refactoring to fix a structural issue that leads to some bugs (like in history bar)[8]
+o [BF] Perf / potential UI bugs : no more synchronization in FIFO methods : it freezes AWT dispatcher thread [10]
+o [BF] Fix to remove dead items in history bar after a refresh [5]
+o [BF] [Official BUG] Refactored History engine and fixed several conception problems [10]
+o [BF] [Official BUG] Novelties function always return the same playlist [10]
+o [BF] [Official BUG] Best of fix [10]
+
+rc4: 05/02/27 : 5 bugs : 39 
+o [JF] Added next/previous album support from tray with shift or right clic on next/previous [7]
+o [JF] Playing ogg then previous album : both tracks playing at the same time [10]
+o [JF] Wrong elapsed time for big MP3 [10]
+o [BF] Waiting cursor issue when launching tracks[5]
+o [BF] Search only in mounted devices option was inverted [7]
+o [BF] French translation upgrade [0]
+o [BF] english doc upgrade for previous/next album in tray feature [0]
+
+rc3: 05/02/21 : 2 bugs : 16 
+o [BF] Fixed start in last position startup mode : 8
+o [BF] Fixed skips when loading images and at startup : 8
+
+rc2: 05/02/14 : 1 bugs : 10
+o [BF] Under Windows, pause/resume fatal errors : 10
+o [BF] Player Code cleanup 
+
+rc1 : 05/02/07
+o Reference
+
+Total: 37 bugs, Score : 293
+[JF] : 4 bugs Score: 37
+[BF] : 28 bugs Score: 226
+[MB] : 2 bugs Score: 20 
+[PA] : 2 bugs Score: 20</pre>
+
+</P>
+</BODY>
+</HTML>

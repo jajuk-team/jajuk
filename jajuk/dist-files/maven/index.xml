@@ -35,7 +35,7 @@
 						<img alt='Swedish' title='Swedish' src='flags/flag_sv.png' style='width: 21px; height: 14px;'/>*
 						<img alt='Dutch' title='Dutch' src='flags/flag_nl.png' style='width: 21px; height: 14px;'/>*
 						<img alt='Spanish' title='Spanish' src='flags/flag_sp.png' style='width: 21px; height: 14px;'/>
-				<!--		<img alt='Catalan' title='Catalan' src='flags/flag_ct.png' style='width: 21px; height: 14px;'/> -->
+						<img alt='Catalan' title='Catalan' src='flags/flag_ct.png' style='width: 21px; height: 14px;'/> 
 					</td>
 				</tr>
 				<tr>
@@ -49,7 +49,7 @@
 						<a  href='./README_chn.html'><img alt='Chinese' title='Chinese' src='flags/flag_zh.png' style='border: 0px solid ; width: 21px; height: 14px;'/></a>
 						<a  href='./README_nld.html'><img alt='Dutch' title='Dutch' src='flags/flag_nl.png' style='border: 0px solid ; width: 21px; height: 14px;'/></a>
 						<a  href='./README_esp.html'><img alt='Spanish' title='Spanish' src='flags/flag_sp.png' style='border: 0px solid ; width: 21px; height: 14px;'/></a>
-				<!--		<a  href='./README_cat.html'><img alt='Catalan' title='Catalan' src='flags/flag_ct.png' style='border: 0px solid ; width: 21px; height: 14px;'/></a>-->
+						<a  href='./README_cat.html'><img alt='Catalan' title='Catalan' src='flags/flag_ct.png' style='border: 0px solid ; width: 21px; height: 14px;'/></a>
 					</td>
 				</tr>
 				<tr>
@@ -74,27 +74,29 @@
 		<table style='width: 100%; text-align: left;' border='0' cellpadding='2' cellspacing='2'>
 			<tbody>
 				<tr>
+					<td style='vertical-align: top;'><p><b>2005/04/02</b></p>
+					<p><a href='http://sourceforge.net/projects/jajuk/'>Jajuk 0.3.3 released</a><br></br>Fixes, performances, Catalan langpack<br></br>
+					<a href='./qualification/qualification-0.3.3.html'>Release notes</a> - <a href='./changes-report.html#0_3_3'>Changes</a></p></td>
+
 					<td style='vertical-align: top;'><p><b>2005/01/11</b></p>
 					<p><a href='http://sourceforge.net/projects/jajuk/'>Jajuk 0.3.2 released</a><br></br>Spanish langpack and documentation<br></br>
-					<a href='./qualification/qualification-0.3.2.html'>Release notes</a> - <a href='./changes-report.html#0_3_2'>Changes</a></p>
-					</td>
+					<a href='./qualification/qualification-0.3.2.html'>Release notes</a> - <a href='./changes-report.html#0_3_2'>Changes</a></p></td>
 					
 					<td style='vertical-align: top;'><p><b>2004/12/05</b></p>
 					<p><a href='http://sourceforge.net/projects/jajuk/'>Jajuk 0.3.1 released</a><br></br>Docking and usability<br></br>
 					<a href='./qualification/qualification-0.3.1.html'>Qualification form</a></p></td>
 					
-					<td style='vertical-align: top;'><p><b>2004/10/01</b></p>
-					<p><a href='http://sourceforge.net/projects/jajuk/'>Jajuk 0.3 released</a><br></br>Auto cover and usability<br></br>
-					<a href='./qualification/qualification-0.3.html'>Qualification form</a></p></td>
 					
 				</tr>
 				<tr>
+					<td style='vertical-align: top;'><p><b>2004/10/01</b></p>
+					<p><a href='http://sourceforge.net/projects/jajuk/'>Jajuk 0.3 released</a><br></br>Auto cover and usability<br></br>
+					<a href='./qualification/qualification-0.3.html'>Qualification form</a></p></td>
+			
 					<td style='vertical-align: top;'><p><b>2004/07/02</b></p>
 					<p><a href='http://sourceforge.net/projects/jajuk/'>Jajuk 0.2.1 released<br></br>Maintenance release</a></p></td>
 					<td style='vertical-align: top;'><p><b>2004/05/14</b></p>
 					<p><a href='http://sourceforge.net/projects/jajuk/'>Jajuk 0.2 released<br></br>Ogg Vorbis and others audio formats supported, <br></br>Swedish and Dutch translation</a></p></td>
-					<td style='vertical-align: top;'><p><b>2004/04/23</b></p>
-					<p><a href='http://sourceforge.net/projects/jajuk/'>Jajuk 0.1.6 released<br></br>Italian translation and bug fixes</a></p></td>
 				</tr>
 			</tbody>
 		</table>	
