@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.2  2003/10/17 20:43:56  bflorat
+ * 17/10/2003
+ *
  * Revision 1.1  2003/10/09 21:15:20  bflorat
  * Added log to version control
  *
@@ -27,8 +30,10 @@ import org.apache.log4j.FileAppender;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PatternLayout;
+import org.apache.log4j.RollingFileAppender;
 import org.jajuk.base.TechnicalStrings;
 import org.jajuk.i18n.Messages;
+import org.jajuk.util.error.JajukException;
 
 /**
  * Logging utility class, facade to logging system
@@ -64,7 +69,9 @@ public class Log implements TechnicalStrings{
 				logger = Logger.getLogger("temp.file");  //this logger is a children of the temp logger to get console output by inherance //$NON-NLS-1$
 				logger.setLevel(Level.DEBUG);  
 				//add appenders: display message at the same time in the log file and on the console
-				logger.addAppender(new FileAppender(new PatternLayout(LOG_PATTERN),LOG_FILE,true));
+				RollingFileAppender fileAppender = new RollingFileAppender(new PatternLayout(LOG_PATTERN),FILE_LOG,true);
+				fileAppender.setMaxFileSize(LOG_FILE_SIZE);  //set log file maximum size
+				logger.addAppender(fileAppender);
 				logger.addAppender(new ConsoleAppender(new PatternLayout(LOG_PATTERN)));
 				//message for logging system start
 				Log.info(Messages.getString("Log.new_session")); //$NON-NLS-1$
@@ -119,6 +126,16 @@ public class Log implements TechnicalStrings{
 		public static void error(String sInfosup,Throwable t){
 				logger.error(sInfosup,t);
 		 }
+
+			/**
+			 * Log an error-level  message
+			 * @param sInfosup
+			 * @param t
+			**/
+			public static void error(String sInfosup,JajukException je){
+					logger.error('('+je.getCode()+") " +sInfosup,je);
+			 }
+
 
 		/**
 		 * Log a fatal error message

@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.3  2003/10/17 20:43:56  bflorat
+ * 17/10/2003
+ *
  * Revision 1.2  2003/10/10 15:23:20  sgringoi
  * Gestion d'erreur
  *
@@ -63,7 +66,7 @@ public class ErrorWindow extends JFrame {
 	private void initialize() {
 		this.setSize(300, 200);
 		this.setContentPane(getJContentPane());
-		this.setTitle("Error window");
+		this.setTitle("Error window"); //$NON-NLS-1$
 	}
 	/**
 	 * This method initializes jContentPane
@@ -89,8 +92,8 @@ public class ErrorWindow extends JFrame {
 		
 		if(jButton == null) {
 			jButton = new javax.swing.JButton();
-			jButton.setName("CloseButton");
-			jButton.setText("Close");
+			jButton.setName("CloseButton"); //$NON-NLS-1$
+			jButton.setText("Close"); //$NON-NLS-1$
 			
 			ActionListener al = new ActionListener() {
 				public void actionPerformed(ActionEvent e) {

@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.4  2003/10/17 20:43:55  bflorat
+ * 17/10/2003
+ *
  * Revision 1.3  2003/10/16 15:56:30  sgringoi
  * Rename getIdView() in getId()
  * Add getComponent() method
@@ -36,10 +39,6 @@ import java.awt.Component;
  * @created		5 oct. 2003
  */
 public interface IView {
-	/** Identifier of the physical tree view */
-	public static final String VIEW_PHYSICAL_TREE	= "VIEW_PHYSICAL_TREE";
-	/** Identifier of the track list view */
-	public static final String VIEW_TRACK_LIST		= "VIEW_TRACK_LIST";
 	
 	/**
 	 * Returns the view identifier.

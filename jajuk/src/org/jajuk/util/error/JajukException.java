@@ -16,12 +16,16 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.3  2003/10/17 20:43:56  bflorat
+ * 17/10/2003
+ *
  * Revision 1.2  2003/10/10 15:23:20  sgringoi
  * Gestion d'erreur
  *
  */
 package org.jajuk.util.error;
 
+import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
 
 /**
@@ -36,7 +40,7 @@ public class JajukException extends Exception {
 	private String code = null;
 	/** Error message */
 	private String message = null;
-	
+		
 	/**
 	 * JajukException constructor.
 	 * 
@@ -60,6 +64,11 @@ public class JajukException extends Exception {
 		code = pCode;
 	}
 	
+	
+	public String getCode(){
+		return this.code;
+	}
+	
 	/**
 	 * JajukException constructor.
 	 * 
@@ -69,7 +78,6 @@ public class JajukException extends Exception {
 	 */
 	public JajukException(String pCode, String pMessage, Throwable pCause) {
 		super(pCause);
-		
 		code = pCode;
 		message = pMessage;
 	}
@@ -88,7 +96,7 @@ public class JajukException extends Exception {
 	 * @see java.lang.Throwable#getMessage()
 	 */
 	public String getMessage() {
-		return ConfigurationManager.getErrorMessage(code);
+		return Messages.getErrorMessage(code);
 	}
 	/**
 	 * @see java.lang.Throwable#getLocalizedMessage()

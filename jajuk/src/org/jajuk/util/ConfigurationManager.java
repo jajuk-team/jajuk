@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.3  2003/10/17 20:43:56  bflorat
+ * 17/10/2003
+ *
  * Revision 1.2  2003/10/10 15:23:08  sgringoi
  * Ajout des propriétés d'erreur
  *
@@ -24,6 +27,7 @@ package org.jajuk.util;
 
 import java.util.Properties;
 
+import org.jajuk.base.TechnicalStrings;
 import org.jajuk.i18n.Messages;
 
 /**
@@ -33,7 +37,8 @@ import org.jajuk.i18n.Messages;
  * @version	1.0
  * @created		5 oct. 2003
  */
-public class ConfigurationManager {
+public class ConfigurationManager implements TechnicalStrings{
+	
 	private static Properties properties = null;
 	
 	/**
@@ -46,9 +51,9 @@ public class ConfigurationManager {
 		if (properties == null) {
 			createProperties();
 		}
-		
 		return properties.getProperty(pName);
 	}
+
 
 	/**
 	 * Return the value of a property, or a default value if the property is not found.
@@ -62,32 +67,34 @@ public class ConfigurationManager {
 		if (res == null) {
 			res = pDefault;
 		}
-		
 		return pDefault;
 	}
 	
-	/**
-	 * Return the message display to the user corresponding to the error code.
-	 * 
-	 * @param pCode Error code.
-	 * @return String Message corresponding to the error code.
-	 */
-	public static String getErrorMessage(String pCode) {
-		return getProperty("jajuk.error." + pCode); //$NON-NLS-1$
-	}
+	
 	private static void createProperties() {
 		properties = new Properties();
 		
-			// Default parameters
-		properties.put("jajuk.preference.perspective.physical.views", "org.jajuk.ui.views.PhysicalTreeView");//,org.jajuk.ui.views.TrackListView"); //$NON-NLS-1$ //$NON-NLS-2$
+		// Default parameters
+		properties.put(CONF_VIEW_PHYSICAL, "org.jajuk.ui.views.PhysicalTreeView");//,org.jajuk.ui.views.TrackListView"); //$NON-NLS-1$ //$NON-NLS-2$
 		
-			// User preferences
-		properties.put("jajuk.preference.perspective.default", "org.jajuk.ui.perspectives.PhysicalPerspective"); //$NON-NLS-1$ //$NON-NLS-2$
+		// User preferences
+		properties.put(CONF_PERSPECTIVE_DEFAULT, "org.jajuk.ui.perspectives.PhysicalPerspective"); //$NON-NLS-1$ //$NON-NLS-2$
+	
+		//Modes
+		properties.put(CONF_STATE_REPEAT,"false"); //$NON-NLS-1$
+		properties.put(CONF_ICON_REPEAT,ICON_REPEAT_OFF);  
+		properties.put(CONF_STATE_SHUFFLE,"false"); //$NON-NLS-1$
+		properties.put(CONF_ICON_SHUFFLE,ICON_SHUFFLE_OFF);  
+		properties.put(CONF_STATE_CONTINUE,"true"); //$NON-NLS-1$
+		properties.put(CONF_ICON_CONTINUE,ICON_CONTINUE_ON);  
+		properties.put(CONF_STATE_INTRO,"false"); //$NON-NLS-1$
+		properties.put(CONF_ICON_INTRO,ICON_INTRO_OFF);  
+		//TODO get it from xml property file
 		
-			// Error code
-		properties.put("jajuk.error.jajuk0001", Messages.getString("Error.The_first_perspective_is_not_found._7")); //$NON-NLS-2$ //$NON-NLS-1$
-		properties.put("jajuk.error.jajuk0002", Messages.getString("Error.Can__t_open_the_view__9")); //$NON-NLS-2$ //$NON-NLS-1$
-		properties.put("jajuk.error.jajuk0003", Messages.getString("Error.Can__t_instanciate_the_perspective_named__9")); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
+	
+	public static void setProperty(String sName,String sValue){
+		properties.setProperty(sName,sValue);
+	}
 }

@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.3  2003/10/17 20:43:56  bflorat
+ * 17/10/2003
+ *
  * Revision 1.2  2003/10/10 15:29:57  sgringoi
  * *** empty log message ***
  *
@@ -25,6 +28,7 @@ package org.jajuk.ui.perspectives;
 import java.util.HashMap;
 import java.util.StringTokenizer;
 
+import org.jajuk.base.TechnicalStrings;
 import org.jajuk.ui.views.IView;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.error.JajukException;
@@ -36,7 +40,7 @@ import org.jajuk.util.error.JajukException;
  * @version 1.0
  * @created 6 oct. 03
  */
-public class PhysicalPerspective extends Perspective {
+public class PhysicalPerspective extends Perspective implements TechnicalStrings {
 		// List of views
 	private HashMap viewsList = null;
 	
@@ -49,7 +53,7 @@ public class PhysicalPerspective extends Perspective {
 		viewsList = new HashMap();
 		
 			// List of views
-		StringTokenizer strTok = new StringTokenizer(ConfigurationManager.getProperty("jajuk.preference.perspective.physical.views"), ",");
+		StringTokenizer strTok = new StringTokenizer(ConfigurationManager.getProperty(CONF_VIEW_PHYSICAL), ","); //$NON-NLS-1$
 		while(strTok.hasMoreTokens())
 		{
 			IView view;
@@ -57,11 +61,11 @@ public class PhysicalPerspective extends Perspective {
 			
 			try {
 				view = (IView) Class.forName(viewName).newInstance();
-				viewsList.put(view.getIdView(), view);
+				viewsList.put(view.getId(), view);
 				
 				view.setVisible(true);
 			} catch (Exception e) {
-				JajukException je = new JajukException("jajuk0002", viewName, e);
+				JajukException je = new JajukException("002", viewName, e); //$NON-NLS-1$
 				je.printStackTrace();
 				je.display();
 			}

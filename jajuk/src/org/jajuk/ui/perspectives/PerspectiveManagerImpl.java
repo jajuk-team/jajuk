@@ -3,8 +3,10 @@ package org.jajuk.ui.perspectives;
 import java.awt.BorderLayout;
 import java.awt.Container;
 
+import org.jajuk.base.TechnicalStrings;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.error.JajukException;
+import org.jajuk.util.log.Log;
 
 /**
  * Perspectives Manager
@@ -13,7 +15,7 @@ import org.jajuk.util.error.JajukException;
  * @version 1.0
  * @created 7 oct. 03
  */
-public class PerspectiveManagerImpl implements IPerspectiveManager {
+public class PerspectiveManagerImpl implements IPerspectiveManager,TechnicalStrings {
 	/** Current perspective */
 	private Perspective currentPerspective = null;
 	/** Parent container of the perspective */
@@ -40,11 +42,11 @@ public class PerspectiveManagerImpl implements IPerspectiveManager {
 		if (currentPerspective == null)
 		{
 			// Current perspective creation
-			String perspName = ConfigurationManager.getProperty("jajuk.preference.perspective.default");
+			String perspName = ConfigurationManager.getProperty(CONF_PERSPECTIVE_DEFAULT); //$NON-NLS-1$
 			try {
 				setCurrentPerspective( (Perspective)Class.forName(perspName).newInstance() );
 			} catch (Exception e) {
-				JajukException je = new JajukException("jajuk0003", perspName, e);
+				JajukException je = new JajukException("003", perspName, e); //$NON-NLS-1$
 				throw je;
 			}
 		}
@@ -63,7 +65,7 @@ public class PerspectiveManagerImpl implements IPerspectiveManager {
 	 */
 	public void setCurrentPerspective(Perspective pCurPersp) {
 		currentPerspective = pCurPersp;
-System.out.println("setCurrentPerspective: " + parentContainer.toString() + " - " + currentPerspective.toString());
+	Log.debug("setCurrentPerspective: " + parentContainer.toString() + " - " + currentPerspective.toString()); //$NON-NLS-1$ //$NON-NLS-2$
 		parentContainer.add(currentPerspective, BorderLayout.CENTER);
 	}
 

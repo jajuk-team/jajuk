@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.3  2003/10/17 20:43:55  bflorat
+ * 17/10/2003
+ *
  * Revision 1.2  2003/10/12 21:08:11  bflorat
  * 12/10/2003
  *
@@ -26,26 +29,18 @@
 package org.jajuk.ui;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
-import org.jajuk.Main;
-import org.jajuk.base.FIFO;
-import org.jajuk.base.File;
-import org.jajuk.base.Player;
 import org.jajuk.base.TechnicalStrings;
-import org.jajuk.base.Type;
-import org.jajuk.base.TypesManager;
 import org.jajuk.i18n.Messages;
-import org.jajuk.util.Util;
+import org.jajuk.util.ConfigurationManager;
 ;
 
 /**
@@ -54,17 +49,23 @@ import org.jajuk.util.Util;
  *
  * @author     bflorat
  * @created    4 oct. 2003
- */public class JajukJMenuBar extends JMenuBar implements TechnicalStrings,ActionListener{
+ */public class JajukJMenuBar extends JMenuBar implements TechnicalStrings{
 
 	static JajukJMenuBar jjmb;
-		static JMenu file;
-			static JMenuItem jmiFileOpen;
+		JMenu file;
+			JMenuItem jmiFileOpen;
 				JajukFileChooser jfchooser;
-			static JMenuItem jmiFileExit;
-		static JMenu views;
-		static JMenu properties;
-		static JMenu mode;
-		static JMenu help;
+			JMenuItem jmiFileExit;
+		JMenu views;
+		JMenu properties;
+			JMenuItem jmiNewProperty;
+			JMenuItem jmiDeleteProperty;
+		JMenu mode;
+			 JCheckBoxMenuItem jcbmiRepeat;
+			JCheckBoxMenuItem jcbmiShuffle;	
+			JCheckBoxMenuItem jcbmiContinue;
+			JCheckBoxMenuItem jcbmiIntro;
+		JMenu help;
 		
 	
 	private JajukJMenuBar(){
@@ -72,12 +73,13 @@ import org.jajuk.util.Util;
 		//File menu
 		file = new JMenu(Messages.getString("JajukJMenuBar.File_1")); //$NON-NLS-1$
 		jmiFileOpen = new JMenuItem(Messages.getString("JajukJMenuBar.Open_file_1"),new ImageIcon(ICON_OPEN_FILE)); //$NON-NLS-1$
-		jmiFileOpen.addActionListener(this);
+		jmiFileOpen.addActionListener(JajukListener.getInstance());
+		jmiFileOpen.setActionCommand(EVENT_OPEN_FILE);
 		jmiFileOpen.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, ActionEvent.ALT_MASK));
 		jmiFileOpen.getAccessibleContext().setAccessibleDescription(Messages.getString("JajukJMenuBar.[ALT-F]_2")); //$NON-NLS-1$
 		jmiFileExit = new JMenuItem(Messages.getString("JajukJMenuBar.Exit_3"),new ImageIcon(ICON_EXIT)); //$NON-NLS-1$
-		jmiFileExit.addActionListener(this);
-		jmiFileExit.addActionListener(this);
+		jmiFileExit.addActionListener(JajukListener.getInstance());
+		jmiFileExit.setActionCommand(EVENT_EXIT);
 		jmiFileExit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.ALT_MASK));
 		jmiFileExit.getAccessibleContext().setAccessibleDescription(Messages.getString("JajukJMenuBar.[ALT-X]_4")); //$NON-NLS-1$
 		file.add(jmiFileOpen);
@@ -95,8 +97,8 @@ import org.jajuk.util.Util;
 		
 		//Properties menu
 		properties = new JMenu(Messages.getString("JajukJMenuBar.Properties_3")); //$NON-NLS-1$
-		JMenuItem jmiNewProperty = new JMenuItem(Messages.getString("JajukJMenuBar.New_Property_1"),new ImageIcon(ICON_NEW)); //$NON-NLS-1$
-		JMenuItem jmiDeleteProperty = new JMenuItem(Messages.getString("JajukJMenuBar.Delete_a_Property_9"),new ImageIcon(ICON_DELETE)); //$NON-NLS-1$
+		jmiNewProperty = new JMenuItem(Messages.getString("JajukJMenuBar.New_Property_1"),new ImageIcon(ICON_NEW)); //$NON-NLS-1$
+		jmiDeleteProperty = new JMenuItem(Messages.getString("JajukJMenuBar.Delete_a_Property_9"),new ImageIcon(ICON_DELETE)); //$NON-NLS-1$
 		properties.add(jmiNewProperty);
 		properties.add(jmiDeleteProperty);
 		properties.addSeparator();
@@ -106,10 +108,22 @@ import org.jajuk.util.Util;
 		
 		//Mode menu
 		mode = new JMenu(Messages.getString("JajukJMenuBar.Mode_4")); //$NON-NLS-1$
-		JCheckBoxMenuItem jcbmiRepeat = new JCheckBoxMenuItem(Messages.getString("JajukJMenuBar.Repeat_12"), new ImageIcon(ICON_REPEAT),true); //$NON-NLS-1$
-		JCheckBoxMenuItem jcbmiShuffle = new JCheckBoxMenuItem(Messages.getString("JajukJMenuBar.Shuffle_13"),new ImageIcon(ICON_SHUFFLE),true); //$NON-NLS-1$
-		JCheckBoxMenuItem jcbmiContinue = new JCheckBoxMenuItem(Messages.getString("JajukJMenuBar.Continue_14"),new ImageIcon(ICON_CONTINUE),true); //$NON-NLS-1$
-		JCheckBoxMenuItem jcbmiIntro = new JCheckBoxMenuItem(Messages.getString("JajukJMenuBar.Intro_15"),new ImageIcon(ICON_INTRO),true); //$NON-NLS-1$
+		jcbmiRepeat = new JCheckBoxMenuItem(Messages.getString("JajukJMenuBar.Repeat_12"), new ImageIcon(ICON_REPEAT_ON),true); //$NON-NLS-1$
+		jcbmiRepeat.setSelected(Boolean.valueOf(ConfigurationManager.getProperty(CONF_STATE_REPEAT)).booleanValue());
+		jcbmiRepeat.addActionListener(JajukListener.getInstance());
+		jcbmiRepeat.setActionCommand(EVENT_REPEAT_MODE_STATUS_CHANGED);
+		jcbmiShuffle = new JCheckBoxMenuItem(Messages.getString("JajukJMenuBar.Shuffle_13"),new ImageIcon(ICON_SHUFFLE_ON),true); //$NON-NLS-1$
+		jcbmiShuffle.setSelected(Boolean.valueOf(ConfigurationManager.getProperty(CONF_STATE_SHUFFLE)).booleanValue());
+		jcbmiShuffle.addActionListener(JajukListener.getInstance());
+		jcbmiShuffle.setActionCommand(EVENT_SHUFFLE_MODE_STATUS_CHANGED);
+		jcbmiContinue = new JCheckBoxMenuItem(Messages.getString("JajukJMenuBar.Continue_14"),new ImageIcon(ICON_CONTINUE_ON),true); //$NON-NLS-1$
+		jcbmiContinue.setSelected(Boolean.valueOf(ConfigurationManager.getProperty(CONF_STATE_CONTINUE)).booleanValue());
+		jcbmiContinue.addActionListener(JajukListener.getInstance());
+		jcbmiContinue.setActionCommand(EVENT_CONTINUE_MODE_STATUS_CHANGED);
+		jcbmiIntro = new JCheckBoxMenuItem(Messages.getString("JajukJMenuBar.Intro_15"),new ImageIcon(ICON_INTRO_ON),true); //$NON-NLS-1$
+		jcbmiIntro.setSelected(Boolean.valueOf(ConfigurationManager.getProperty(CONF_STATE_INTRO)).booleanValue());
+		jcbmiIntro.setActionCommand(EVENT_INTRO_MODE_STATUS_CHANGED);
+		jcbmiIntro.addActionListener(JajukListener.getInstance());
 		mode.add(jcbmiRepeat);
 		mode.add(jcbmiShuffle);
 		mode.add(jcbmiContinue);
@@ -136,26 +150,6 @@ import org.jajuk.util.Util;
 		}
 		return jjmb;
 	}
-	/* (non-Javadoc)
-	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-	 */
-	public void actionPerformed(ActionEvent e) {
-		if (e.getSource()==jmiFileExit){
-			Main.exit(0);
-		}
-		else if (e.getSource()==jmiFileOpen){
-			jfchooser = new JajukFileChooser();
-			int returnVal = jfchooser.showOpenDialog(this);
-			if (returnVal == JFileChooser.APPROVE_OPTION) {
-				java.io.File[] files = jfchooser.getSelectedFiles();
-				FIFO.clear();  //stop all currently played tracks
-				for (int i=0;i<files.length;i++){
-					File file = new File(files[i].getAbsolutePath(),TypesManager.getTypeByExtension(Util.getExtension(files[i])));
-					FIFO.push(file);
-				}
-			}
-		}
 
-	}
 
 }

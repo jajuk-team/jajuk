@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.4  2003/10/17 20:43:55  bflorat
+ * 17/10/2003
+ *
  * Revision 1.3  2003/10/16 15:57:10  sgringoi
  * Rename getIdView() in getId()
  * Add getComponent() method
@@ -41,6 +44,8 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeSelectionModel;
 
+import org.jajuk.base.TechnicalStrings;
+
 /**
  * Pysical tree view.
  * 
@@ -48,7 +53,7 @@ import javax.swing.tree.TreeSelectionModel;
  * @version 1.0
  * @created 7 oct. 03
  */
-public class PhysicalTreeView extends JInternalFrame implements IView {
+public class PhysicalTreeView extends JInternalFrame implements IView,TechnicalStrings {
 	private JEditorPane htmlPane;
     //Optionally play with line styles.  Possible values are
     //"Angled", "Horizontal", and "None" (the default).

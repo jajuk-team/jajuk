@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.2  2003/10/17 20:43:56  bflorat
+ * 17/10/2003
+ *
  * Revision 1.1  2003/10/12 21:08:11  bflorat
  * 12/10/2003
  *
@@ -26,7 +29,7 @@ import java.io.File;
 
 import javax.swing.JFileChooser;
 
-import org.jajuk.base.TypesManager;
+import org.jajuk.base.TypeManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.Util;
 
@@ -45,14 +48,14 @@ public class JajukFileChooser extends JFileChooser {
 		filter = new javax.swing.filechooser.FileFilter() {
 			String sExt;
 			public boolean accept(File f) {
-				if (TypesManager.isExtensionSupported(Util.getExtension(f)) ||  f.isDirectory()) {
+				if (TypeManager.isExtensionSupported(Util.getExtension(f)) ||  f.isDirectory()) {
 					return true;
 				} else {
 					return false;
 				}
 			}
 			public String getDescription() {
-				return TypesManager.getTypeListString();
+				return TypeManager.getTypeListString();
 			}
 		};
 		setFileFilter(filter);

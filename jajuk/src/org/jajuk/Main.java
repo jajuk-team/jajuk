@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.5  2003/10/17 20:43:56  bflorat
+ * 17/10/2003
+ *
  * Revision 1.4  2003/10/12 21:08:11  bflorat
  * 12/10/2003
  *
@@ -38,13 +41,15 @@ import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.io.IOException;
+import java.util.Collection;
 
 import javax.swing.JFrame;
 
 import org.jajuk.base.FIFO;
 import org.jajuk.base.TechnicalStrings;
 import org.jajuk.base.Type;
-import org.jajuk.base.TypesManager;
+import org.jajuk.base.TypeManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.CommandJPanel;
 import org.jajuk.ui.InformationJPanel;
@@ -52,6 +57,8 @@ import org.jajuk.ui.JajukJMenuBar;
 import org.jajuk.ui.PerspectiveBarJPanel;
 import org.jajuk.ui.perspectives.IPerspectiveManager;
 import org.jajuk.ui.perspectives.PerspectiveManagerFactory;
+import org.jajuk.util.error.ErrorWindow;
+import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
 /**
@@ -70,6 +77,7 @@ public class Main implements TechnicalStrings{
 
 	public static void main(String[] args) {
 		try {
+			
 			//perform initial checkups
 			initialCheckups();
 
@@ -97,7 +105,7 @@ public class Main implements TechnicalStrings{
 			perspectiveManager.setParentContainer(container);
 
 			//Creates the command panel
-			command = new CommandJPanel();
+			command = CommandJPanel.getInstance();
 
 			// Create the perspective tool bar panel
 			perspectiveBar = new PerspectiveBarJPanel();
@@ -114,9 +122,10 @@ public class Main implements TechnicalStrings{
 			//**************************
 			//registers supported types
 			try {
-				TypesManager.registerType(new Type(Messages.getString("Main.Mpeg_layer_3_5"),EXT_MP3,PLAYER_IMPL_JAVALAYER)); //$NON-NLS-1$ //$NON-NLS-2$
-				TypesManager.registerType(new Type(Messages.getString("Main.Playlist_7"),EXT_PLAYLIST,PLAYER_IMPL_JAVALAYER)); //$NON-NLS-1$ //$NON-NLS-2$
-				TypesManager.registerType(new Type(Messages.getString("Main.Ogg_vorbis_9"),EXT_OGG,PLAYER_IMPL_JAVALAYER)); //$NON-NLS-1$ //$NON-NLS-2$
+				//TODO get player impl in user-conf.xml
+				TypeManager.registerType(new Type(1,Messages.getString("Main.Mpeg_layer_3_5"),EXT_MP3,PLAYER_IMPL_JAVALAYER)); //$NON-NLS-1$ //$NON-NLS-2$
+				TypeManager.registerType(new Type(2,Messages.getString("Main.Playlist_7"),EXT_PLAYLIST,PLAYER_IMPL_JAVALAYER)); //$NON-NLS-1$ //$NON-NLS-2$
+				TypeManager.registerType(new Type(3,Messages.getString("Main.Ogg_vorbis_9"),EXT_OGG,PLAYER_IMPL_JAVALAYER)); //$NON-NLS-1$ //$NON-NLS-2$
 				
 			} catch (Exception e1) {
 				Log.error(Messages.getString("Main.Error_registering_players_11"),e1); //$NON-NLS-1$
@@ -133,6 +142,7 @@ public class Main implements TechnicalStrings{
 			jframe.setJMenuBar(JajukJMenuBar.getInstance());
 			Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
 			jframe.show();
+			
 		} catch (Exception e) { //last chance to catch any error for logging purpose
 			Log.error(Messages.getString("Main.uncatched_exception_2"), e); //$NON-NLS-1$
 			exit(1);
@@ -158,6 +168,12 @@ public class Main implements TechnicalStrings{
 	 * <p>1: unexpected error
 	 */
 	public static void exit(int iExitCode){
+			try {
+				org.jajuk.base.Collection.commit();
+			}
+			catch (IOException e) {
+				Log.error("",e);
+			}
 			System.exit(iExitCode);
 			
 	}

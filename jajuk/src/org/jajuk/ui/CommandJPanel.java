@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.5  2003/10/17 20:43:56  bflorat
+ * 17/10/2003
+ *
  * Revision 1.4  2003/10/12 21:08:11  bflorat
  * 12/10/2003
  *
@@ -33,6 +36,8 @@
 package org.jajuk.ui;
 
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -40,6 +45,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
@@ -47,6 +53,9 @@ import javax.swing.JToolBar;
 
 import org.jajuk.base.TechnicalStrings;
 import org.jajuk.i18n.Messages;
+import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.error.ErrorWindow;
+import org.jajuk.util.error.JajukException;
 
 /**
  *  Command panel ( static view )
@@ -55,8 +64,12 @@ import org.jajuk.i18n.Messages;
  * @created    3 oct. 2003
  */
 public class CommandJPanel extends JPanel implements TechnicalStrings{
+	
+	//singleton
+	static private CommandJPanel command;
+	
 	//widgets declaration
-		JToolBar jtbSearch;
+		 JToolBar jtbSearch;
 			JTextField jtfSearch;
 		JToolBar jtbHistory;
 			JComboBox jcbHistory;
@@ -82,8 +95,26 @@ public class CommandJPanel extends JPanel implements TechnicalStrings{
 		JToolBar jtbPosition;
 			JLabel jlPosition;
 			JSlider jsPosition;
+			
+	//variables declaration
+	/**Repeat mode flag*/
+	static boolean bIsRepeatEnabled = false;
+	/**Shuffle mode flag*/
+	static boolean bIsShuffleEnabled = false;
+	/**Continue mode flag*/
+	static boolean bIsContinueEnabled = true;
+	/**Intro mode flag*/
+	static boolean bIsIntroEnabled = false;
+	
 		
-	public CommandJPanel(){
+	public static CommandJPanel getInstance(){
+		if (command == null){
+			command = new CommandJPanel();
+		}
+		return command;
+	}
+	
+	private CommandJPanel(){
 		//set default layout and size
 		setLayout(new BoxLayout(this,BoxLayout.X_AXIS)); //we use a BoxLayout and not a FlowLayout to allow resizing
 		setBorder(BorderFactory.createEtchedBorder());
@@ -140,20 +171,27 @@ public class CommandJPanel extends JPanel implements TechnicalStrings{
 		jtbMode.setMinimumSize(d160_2);
 		jtbMode.setPreferredSize(d160_2);
 		jtbMode.setMaximumSize(d160_2);
-		jbRepeat = new JButton(new ImageIcon(ICON_REPEAT)); 
-		jbRepeat.setToolTipText(Messages.getString("CommandJPanel.repeat_mode___play_selection_in_a_loop_1")); //$NON-NLS-1$
+		jbRepeat = new JButton(new ImageIcon(ConfigurationManager.getProperty(CONF_ICON_REPEAT))); 
+		jbRepeat.setActionCommand(EVENT_REPEAT_MODE_STATUS_CHANGED);
+		jbRepeat.addActionListener(JajukListener.getInstance());
 		jtbMode.add(jbRepeat);
 		jtbMode.addSeparator();
-		jbRandom = new JButton(new ImageIcon(ICON_SHUFFLE));
+		jbRandom = new JButton(new ImageIcon(ConfigurationManager.getProperty(CONF_ICON_SHUFFLE)));
 		jbRandom.setToolTipText(Messages.getString("CommandJPanel.shuffle_mode___play_a_random_track_from_the_selection_2")); //$NON-NLS-1$
+		jbRandom.setActionCommand(EVENT_SHUFFLE_MODE_STATUS_CHANGED);
+		jbRandom.addActionListener(JajukListener.getInstance());
 		jtbMode.add(jbRandom);
 		jtbMode.addSeparator();
-		jbContinue = new JButton(new ImageIcon(ICON_CONTINUE)); 
+		jbContinue = new JButton(new ImageIcon(ConfigurationManager.getProperty(CONF_ICON_CONTINUE))); 
 		jbContinue.setToolTipText(Messages.getString("CommandJPanel.continue_mode___continue_to_play_next_tracks_when_finished_3")); //$NON-NLS-1$
+		jbContinue.setActionCommand(EVENT_CONTINUE_MODE_STATUS_CHANGED);
+		jbContinue.addActionListener(JajukListener.getInstance());
 		jtbMode.add(jbContinue);
 		jtbMode.addSeparator();
-		jbIntro = new JButton(new ImageIcon(ICON_INTRO)); 
+		jbIntro = new JButton(new ImageIcon(ConfigurationManager.getProperty(CONF_ICON_INTRO))); 
 		jbIntro.setToolTipText(Messages.getString("CommandJPanel.intro_mode___play_just_a_part_of_each_track_offset_and_time_can_be_set_in_the_parameters_view_4")); //$NON-NLS-1$
+		jbIntro.setActionCommand(EVENT_INTRO_MODE_STATUS_CHANGED);
+		jbIntro.addActionListener(JajukListener.getInstance());
 		jtbMode.add(jbIntro);
 		
 		//Special functions toolbar
@@ -236,11 +274,6 @@ public class CommandJPanel extends JPanel implements TechnicalStrings{
 		add(jtbPlay);
 		add(jtbVolume);
 		add(jtbPosition);
-		
-		
 	}
 
-	
-	
-	
 }
