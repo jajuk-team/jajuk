@@ -180,7 +180,8 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
             }
             Color color = null; //default background color
             StackItem itemCurrent = FIFO.getInstance().getCurrentItem();
-            if (itemCurrent != null && itemCurrent.equals(item)){ //if it is the currently played track, change color
+            if (itemCurrent != null && itemCurrent.equals(item)
+             && FIFO.getInstance().getIndex() == rowIndex){ //if it is the currently played track, change color
                 color = Color.ORANGE;
             }
             if( item.isPlanned() ){ //it is a planned file
@@ -278,10 +279,10 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
         jpControl.add(Util.getCentredPanel(jlTitle),"17,0"); //$NON-NLS-1$
         jtable = new JajukTable(model,false);
         jtable.setSelectionMode(DefaultListSelectionModel.MULTIPLE_INTERVAL_SELECTION); //multi-row selection
-        Enumeration enum = jtable.getColumnModel().getColumns();
+        Enumeration enumeration = jtable.getColumnModel().getColumns();
         JajukCellRender jcr = new JajukCellRender();
-        while (enum.hasMoreElements()){
-            TableColumn col = (TableColumn)enum.nextElement();
+        while (enumeration.hasMoreElements()){
+            TableColumn col = (TableColumn)enumeration.nextElement();
             col.setCellRenderer(jcr);
         }
         jtable.getColumnModel().getColumn(0).setPreferredWidth(20); //just an icon
@@ -330,40 +331,17 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
             //set title label
             jlTitle.setText(plfi.getName());
             jlTitle.setToolTipText(plfi.getName());
-            //set buttons
-            if ( iType == PlaylistFileItem.PLAYLIST_TYPE_QUEUE){
-                jbAdd.setEnabled(true); //add at the FIFO end by default even with no selection
-                jbClear.setEnabled(true);
-                jbUp.setEnabled(false); //set it to false just for startup because nothing is selected
-                jbDown.setEnabled(false); //set it to false just for startup because nothing is selected 
-                jbAddShuffle.setEnabled(true);//add at the FIFO end by default even with no selection
-                jbRemove.setEnabled(false); //set it to false just for startup because cursor is over first track and it can't be removed in queue mode
-                jbRun.setEnabled(false);
-            }
-            else if ( iType == PlaylistFileItem.PLAYLIST_TYPE_BESTOF){
-                jbAdd.setEnabled(false);
-                jbClear.setEnabled(false);
-                jbDown.setEnabled(false);
-                jbAddShuffle.setEnabled(false);
-                jbRemove.setEnabled(false);
-                jbRun.setEnabled(true);
-                jbUp.setEnabled(false);
-            }
-            else{
-                jbAdd.setEnabled(true);//add at the FIFO end by default even with no selection
-                jbClear.setEnabled(true);
-                jbDown.setEnabled(false);//set it to false just for startup because nothing is selected
-                jbUp.setEnabled(false);//set it to false just for startup because nothing is selected
-                jbAddShuffle.setEnabled(true);//add at the FIFO end by default even with no selection
-                jbRemove.setEnabled(false);//set it to false just for startup because nothing is selected
-                jbRun.setEnabled(true);
-            }
+            setDefaultButtonState();
             Util.stopWaiting(); //stop waiting
         }
         else if ( EVENT_PLAYLIST_REFRESH.equals(subject)){
             if ( plfi == null ){  //nothing ? leave
                 iRowNum = 0;
             	return;
+            }
+            //when nothing is selected, set default button state
+            if (jtable.getSelectionModel().getMinSelectionIndex() == -1){
+                setDefaultButtonState();
             }
             try{
                 if (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE){
@@ -393,6 +371,40 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
         }
     }
     
+    /**
+     * Set default button state
+     *
+     */
+    private void setDefaultButtonState(){
+        //set buttons
+        if ( iType == PlaylistFileItem.PLAYLIST_TYPE_QUEUE){
+            jbAdd.setEnabled(true); //add at the FIFO end by default even with no selection
+            jbClear.setEnabled(true);
+            jbUp.setEnabled(false); //set it to false just for startup because nothing is selected
+            jbDown.setEnabled(false); //set it to false just for startup because nothing is selected 
+            jbAddShuffle.setEnabled(true);//add at the FIFO end by default even with no selection
+            jbRemove.setEnabled(false); //set it to false just for startup because cursor is over first track and it can't be removed in queue mode
+            jbRun.setEnabled(false);
+        }
+        else if ( iType == PlaylistFileItem.PLAYLIST_TYPE_BESTOF){
+            jbAdd.setEnabled(false);
+            jbClear.setEnabled(false);
+            jbDown.setEnabled(false);
+            jbAddShuffle.setEnabled(false);
+            jbRemove.setEnabled(false);
+            jbRun.setEnabled(true);
+            jbUp.setEnabled(false);
+        }
+        else{
+            jbAdd.setEnabled(true);//add at the FIFO end by default even with no selection
+            jbClear.setEnabled(true);
+            jbDown.setEnabled(false);//set it to false just for startup because nothing is selected
+            jbUp.setEnabled(false);//set it to false just for startup because nothing is selected
+            jbAddShuffle.setEnabled(true);//add at the FIFO end by default even with no selection
+            jbRemove.setEnabled(false);//set it to false just for startup because nothing is selected
+            jbRun.setEnabled(true);
+        }
+    }
     
     /* (non-Javadoc)
      * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
@@ -551,7 +563,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
         else if (ae.getSource() == jbAdd || ae.getSource() == jbAddShuffle){
         	int iRow = jtable.getSelectedRow();
         	if ( iRow < 0 ){ //no row is selected, take fifo last position as a default
-        		iRow = FIFO.getInstance().getFIFO().size()-1; 
+        		iRow = FIFO.getInstance().getFIFO().size(); 
         	}
         	File file = null;
         	if (ae.getSource() == jbAdd){
@@ -613,8 +625,9 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
            //add button
            if (bPlanned //no add for planned track
                    || plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_BESTOF  //neither for bestof playlist
-                   || lsm.getMinSelectionIndex() != lsm.getMaxSelectionIndex() ){ //multiple selection not supported
-                   jbAdd.setEnabled(false);
+                   || lsm.getMinSelectionIndex() != lsm.getMaxSelectionIndex()  //multiple selection not supported
+               		|| (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE && lsm.getMinSelectionIndex() == 0 )){ //can't add track at current track position
+               jbAdd.setEnabled(false);
            }
            else{
                jbAdd.setEnabled(true);
@@ -636,7 +649,8 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
            //Add shuffle button
            if (bPlanned //not for planned track
                    || plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_BESTOF  //neither for bestof playlist
-                   || lsm.getMinSelectionIndex() != lsm.getMaxSelectionIndex() ){ //multiple selection not supported
+                   || lsm.getMinSelectionIndex() != lsm.getMaxSelectionIndex() //multiple selection not supported
+       				|| (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE && lsm.getMinSelectionIndex() == 0 )){ //can't add track at current track position
                jbAddShuffle.setEnabled(false);
            }
            else{

@@ -638,7 +638,7 @@ public class FIFO implements ITechnicalStrings{
 	 * @param iPos
 	 */
 	public synchronized void insert(ArrayList alFiles,int iPos){
-		if (iPos < alFIFO.size()){  //add in the FIFO
+		if (iPos <= alFIFO.size()){  //add in the FIFO, accept a file at size() position to allow increasing FIFO at the end
 			alFIFO.addAll(iPos,alFiles);
 			JajukTimer.getInstance().addTrackTime(alFiles);
 		}
