@@ -186,12 +186,13 @@ public class Main implements ITechnicalStrings {
 			//Set locale
 			Messages.getInstance().setLocal(ConfigurationManager.getProperty(CONF_OPTIONS_LANGUAGE));
 		
-			//			Set look and feel, needs local to be set for error messages
-			LNFManager.setLookAndFeel(ConfigurationManager.getProperty(CONF_OPTIONS_LNF));
-			
-			//  start the tray
+			//		  start the tray
 			launchTray();
 
+			//	Set look and feel, needs local to be set for error messages
+			LNFManager.setLookAndFeel(ConfigurationManager.getProperty(CONF_OPTIONS_LNF));
+            			
+			
 	    	
 			//Launch splashscreen 
 			SwingUtilities.invokeAndWait(new Runnable() {
