@@ -78,7 +78,7 @@ public class PerspectiveManager extends DefaultHandler implements ITechnicalStri
 			
 		} catch (Exception e) {
 			Log.error(e);
-			throw new JajukException("115");
+			throw new JajukException("115"); //$NON-NLS-1$
 		}
 	}
 
@@ -181,7 +181,7 @@ public class PerspectiveManager extends DefaultHandler implements ITechnicalStri
 	 * @exception SAXException
 	 */
 	public void warning(SAXParseException spe) throws SAXException {
-		throw new SAXException(Messages.getErrorMessage("115") + " / " + spe.getSystemId() + "/" + spe.getLineNumber() + "/" + spe.getColumnNumber() + " : " + spe.getMessage());
+		throw new SAXException(Messages.getErrorMessage("115") + " / " + spe.getSystemId() + "/" + spe.getLineNumber() + "/" + spe.getColumnNumber() + " : " + spe.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 	}
 
 	/**
@@ -191,7 +191,7 @@ public class PerspectiveManager extends DefaultHandler implements ITechnicalStri
 	 * @exception SAXException
 	 */
 	public void error(SAXParseException spe) throws SAXException {
-		throw new SAXException(Messages.getErrorMessage("115") + " / " + spe.getSystemId() + "/" + spe.getLineNumber() + "/" + spe.getColumnNumber() + " : " + spe.getMessage());
+		throw new SAXException(Messages.getErrorMessage("115") + " / " + spe.getSystemId() + "/" + spe.getLineNumber() + "/" + spe.getColumnNumber() + " : " + spe.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 	}
 
 	/**
@@ -201,21 +201,21 @@ public class PerspectiveManager extends DefaultHandler implements ITechnicalStri
 	 * @exception SAXException
 	 */
 	public void fatalError(SAXParseException spe) throws SAXException {
-		throw new SAXException(Messages.getErrorMessage("115") + " / " + spe.getSystemId() + "/" + spe.getLineNumber() + "/" + spe.getColumnNumber() + " : " + spe.getMessage());
+		throw new SAXException(Messages.getErrorMessage("115") + " / " + spe.getSystemId() + "/" + spe.getLineNumber() + "/" + spe.getColumnNumber() + " : " + spe.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 	}
 
 	/**
 	 * Called at parsing start
 	 */
 	public void startDocument() {
-		Log.debug("Starting perspective file parsing...");
+		Log.debug("Starting perspective file parsing..."); //$NON-NLS-1$
 	}
 
 	/**
 	 * Called at parsing end
 	 */
 	public void endDocument() {
-		Log.debug("Perspective file parsing done.");
+		Log.debug("Perspective file parsing done."); //$NON-NLS-1$
 	}
 
 	/**
@@ -224,12 +224,12 @@ public class PerspectiveManager extends DefaultHandler implements ITechnicalStri
 	public void startElement(String sUri, String sName, String sQName, Attributes attributes) throws SAXException {
 		String sClassName = null;
 		String sIconPath = null;
-		if (sQName.equals("perspective")) {
+		if (sQName.equals("perspective")) { //$NON-NLS-1$
 			try {
 				lTime = System.currentTimeMillis();
 				pCurrent = null;
-				sClassName = attributes.getValue(attributes.getIndex("class"));
-				sIconPath = attributes.getValue(attributes.getIndex("icon"));
+				sClassName = attributes.getValue(attributes.getIndex("class")); //$NON-NLS-1$
+				sIconPath = attributes.getValue(attributes.getIndex("icon")); //$NON-NLS-1$
 				sPerspectiveName = sClassName; //stored to be used during views parsing 
 				IPerspective perspective = (IPerspective) Class.forName(sClassName).newInstance();
 				perspective.setName(sClassName);
@@ -238,9 +238,9 @@ public class PerspectiveManager extends DefaultHandler implements ITechnicalStri
 				alPerspectives.add(perspective);
 				pCurrent = perspective;
 			} catch (Exception e) {
-				Log.error("116", sClassName, e);
+				Log.error("116", sClassName, e); //$NON-NLS-1$
 			}
-		} else if (sQName.equals("view")) {
+		} else if (sQName.equals("view")) { //$NON-NLS-1$
 			if (pCurrent != null) {
 				IView view = null;
 				int iWidth = 0;
@@ -249,18 +249,18 @@ public class PerspectiveManager extends DefaultHandler implements ITechnicalStri
 				int iY = 0;
 				long l = System.currentTimeMillis();
 				try {
-					sClassName = attributes.getValue(attributes.getIndex("class")); 
-					iWidth = Integer.parseInt(attributes.getValue(attributes.getIndex("width")));
-					iHeight = Integer.parseInt(attributes.getValue(attributes.getIndex("height")));
-					iX = Integer.parseInt(attributes.getValue(attributes.getIndex("x")));
-					iY = Integer.parseInt(attributes.getValue(attributes.getIndex("y")));
+					sClassName = attributes.getValue(attributes.getIndex("class"));  //$NON-NLS-1$
+					iWidth = Integer.parseInt(attributes.getValue(attributes.getIndex("width"))); //$NON-NLS-1$
+					iHeight = Integer.parseInt(attributes.getValue(attributes.getIndex("height"))); //$NON-NLS-1$
+					iX = Integer.parseInt(attributes.getValue(attributes.getIndex("x"))); //$NON-NLS-1$
+					iY = Integer.parseInt(attributes.getValue(attributes.getIndex("y"))); //$NON-NLS-1$
 					view = (IView) Class.forName(sClassName).newInstance();
 				} catch (Exception e) {
-					Log.error("116", sClassName, e);
+					Log.error("116", sClassName, e); //$NON-NLS-1$
 					return;
 				}
 				pCurrent.addView(view,iWidth,iHeight,iX,iY);
-				Log.debug(new StringBuffer("Registered view: ").append(attributes.getValue(0)).append(" in ").append(System.currentTimeMillis()-l).append(" ms").toString());
+				Log.debug(new StringBuffer("Registered view: ").append(attributes.getValue(0)).append(" in ").append(System.currentTimeMillis()-l).append(" ms").toString()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			}
 		}
 	}
@@ -269,9 +269,9 @@ public class PerspectiveManager extends DefaultHandler implements ITechnicalStri
 	 * End of an element
 	 */
 	public void endElement(String uri, String localName, String qName) {
-		if (qName.equals("perspective")) {
+		if (qName.equals("perspective")) { //$NON-NLS-1$
 			pCurrent = null;
-			Log.debug(new StringBuffer("Registered perspective: ").append(sPerspectiveName).append(" in: ").append(System.currentTimeMillis()-lTime).append(" ms").toString());
+			Log.debug(new StringBuffer("Registered perspective: ").append(sPerspectiveName).append(" in: ").append(System.currentTimeMillis()-lTime).append(" ms").toString()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
 	}
 

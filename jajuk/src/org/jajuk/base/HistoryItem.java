@@ -23,6 +23,8 @@ package org.jajuk.base;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.jajuk.i18n.Messages;
+
 /**
  * An history item
  *
@@ -77,7 +79,7 @@ public class HistoryItem{
 			return null;
 		}
 		StringBuffer sbAuthor = new StringBuffer(file.getTrack().getAuthor().getName2());
-		String sDate = new SimpleDateFormat("dd/MM/yy HH:mm").format(new Date(getDate()));
-		return sbAuthor.append(" / ").append(file.getTrack().getName()).append(" [").append(sDate).append("]").toString();
+		String sDate = new SimpleDateFormat(Messages.getString("HistoryItem.0")).format(new Date(getDate())); //$NON-NLS-1$
+		return sbAuthor.append(" / ").append(file.getTrack().getName()).append(" [").append(sDate).append("]").toString(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 }

@@ -21,13 +21,6 @@
 package org.jajuk.ui;
 
 import java.awt.Component;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.Transferable;
-import java.awt.datatransfer.UnsupportedFlavorException;
-import java.awt.dnd.DnDConstants;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 import javax.swing.JComponent;
 import javax.swing.JTable;
@@ -65,7 +58,7 @@ public class JajukTable extends JTable {
 		if (c instanceof JComponent) {
 			JComponent jc = (JComponent)c;
 			Object o = getValueAt(rowIndex, vColIndex);
-			String s ="";
+			String s =""; //$NON-NLS-1$
 			if ( !(o instanceof String) ){
 				if ( o instanceof Long){
 					s = o.toString();

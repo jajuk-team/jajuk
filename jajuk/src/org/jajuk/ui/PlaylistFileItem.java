@@ -31,6 +31,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.jajuk.base.PlaylistFile;
+import org.jajuk.i18n.Messages;
 import org.jajuk.util.Util;
 
 	/**
@@ -76,7 +77,7 @@ import org.jajuk.util.Util;
 			jpIcon.add(Box.createGlue());
 			add(jpIcon);
 			JLabel jlName = new JLabel(sName);
-			jlName.setFont(new Font("Dialog",Font.PLAIN,10));
+			jlName.setFont(new Font("Dialog",Font.PLAIN,10)); //$NON-NLS-1$
 			JPanel jpName  = new JPanel();
 			jpName.setLayout(new BoxLayout(jpName,BoxLayout.X_AXIS));
 			jpName.add(Box.createGlue());
@@ -108,22 +109,22 @@ import org.jajuk.util.Util;
 		 * @return playlist file item name ( playlist name or label for special ones )
 		 */
 		public String getName(){
-			String sOut="";
+			String sOut=""; //$NON-NLS-1$
 			switch(iType){
 			case 0:  //regular playlist
 				sOut = getPlaylistFile().getName();
 				break;
 			case 1:  //new playlist
-				sOut = "New playlist";
+				sOut = Messages.getString("PlaylistFileItem.2"); //$NON-NLS-1$
 				break;
 			case 2:  //bookmarks
-				sOut = "Bookmarks";
+				sOut = Messages.getString("PlaylistFileItem.3"); //$NON-NLS-1$
 				break;
 			case 3:  //bestof
-				sOut = "Best of";
+				sOut = Messages.getString("PlaylistFileItem.4"); //$NON-NLS-1$
 				break;
 			case 4:  //queue
-				sOut = "Current Queue";
+				sOut = Messages.getString("PlaylistFileItem.5"); //$NON-NLS-1$
 				break;
 			}
 			return sOut;

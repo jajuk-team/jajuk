@@ -108,43 +108,43 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 		jbNew = new JButton(Util.getIcon(ICON_NEW));
 		jbNew.setActionCommand(EVENT_DEVICE_NEW);
 		jbNew.addActionListener(this);
-		jbNew.setToolTipText("Add a device");
+		jbNew.setToolTipText(Messages.getString("DeviceView.0")); //$NON-NLS-1$
 		
 		jbDelete = new JButton(Util.getIcon(ICON_DELETE));
 		jbDelete.setActionCommand(EVENT_DEVICE_DELETE);
 		jbDelete.addActionListener(this);
-		jbDelete.setToolTipText("Remove a device");
+		jbDelete.setToolTipText(Messages.getString("DeviceView.1")); //$NON-NLS-1$
 		jbDelete.setEnabled(false); //false by default, cannot delete mounted device
 		
 		jbProperties = new JButton(Util.getIcon(ICON_PROPERTIES));
 		jbProperties.setActionCommand(EVENT_DEVICE_PROPERTIES);
 		jbProperties.addActionListener(this);
-		jbProperties.setToolTipText("Selected device properties");
+		jbProperties.setToolTipText(Messages.getString("DeviceView.2")); //$NON-NLS-1$
 		
 		jbMount = new JButton(Util.getIcon(ICON_MOUNT));
 		jbMount.setActionCommand(EVENT_DEVICE_MOUNT);
 		jbMount.addActionListener(this);
-		jbMount.setToolTipText("Mount selected device");
+		jbMount.setToolTipText(Messages.getString("DeviceView.3")); //$NON-NLS-1$
 		
 		jbUnmount = new JButton(Util.getIcon(ICON_UNMOUNT));
 		jbUnmount.setActionCommand(EVENT_DEVICE_UNMOUNT);
 		jbUnmount.addActionListener(this);
-		jbUnmount.setToolTipText("Unmount selected device");
+		jbUnmount.setToolTipText(Messages.getString("DeviceView.4")); //$NON-NLS-1$
 		
 		jbTest = new JButton(Util.getIcon(ICON_TEST));
 		jbTest.setActionCommand(EVENT_DEVICE_TEST);
 		jbTest.addActionListener(this);
-		jbTest.setToolTipText("Test selected device availability");
+		jbTest.setToolTipText(Messages.getString("DeviceView.5")); //$NON-NLS-1$
 		
 		jbRefresh = new JButton(Util.getIcon(ICON_REFRESH));
 		jbRefresh.setActionCommand(EVENT_DEVICE_REFRESH);
 		jbRefresh.addActionListener(this);
-		jbRefresh.setToolTipText("Refresh selected device");
+		jbRefresh.setToolTipText(Messages.getString("DeviceView.6")); //$NON-NLS-1$
 		
 		jbSynchro = new JButton(Util.getIcon(ICON_SYNCHRO));
 		jbSynchro.setActionCommand(EVENT_DEVICE_SYNCHRO);
 		jbSynchro.addActionListener(this);
-		jbSynchro.setToolTipText("Synchronize selected device");
+		jbSynchro.setToolTipText(Messages.getString("DeviceView.7")); //$NON-NLS-1$
 		
 		jtbButtons.add(jbNew);
 		jtbButtons.addSeparator();
@@ -172,39 +172,39 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 		//Popup menus
 		jpmenu =  new JPopupMenu();
 		
-		jmiMount = new JMenuItem("Mount",Util.getIcon(ICON_MOUNT)); 
+		jmiMount = new JMenuItem(Messages.getString("DeviceView.8"),Util.getIcon(ICON_MOUNT));  //$NON-NLS-1$
 		jmiMount.addActionListener(this);
 		jmiMount.setActionCommand(EVENT_DEVICE_MOUNT);
 		jpmenu.add(jmiMount);
 		
-		jmiUnmount = new JMenuItem("Unmount",Util.getIcon(ICON_UNMOUNT)); 
+		jmiUnmount = new JMenuItem(Messages.getString("DeviceView.9"),Util.getIcon(ICON_UNMOUNT));  //$NON-NLS-1$
 		jmiUnmount.addActionListener(this);
 		jmiUnmount.setActionCommand(EVENT_DEVICE_UNMOUNT);
 		jpmenu.add(jmiUnmount);
 		
-		jmiTest = new JMenuItem("Test",Util.getIcon(ICON_TEST));
+		jmiTest = new JMenuItem(Messages.getString("DeviceView.10"),Util.getIcon(ICON_TEST)); //$NON-NLS-1$
 		jmiTest.addActionListener(this);
 		jmiTest.setActionCommand(EVENT_DEVICE_TEST);
 		jpmenu.add(jmiTest);
 		
-		jmiRefresh =new JMenuItem("Refresh",Util.getIcon(ICON_REFRESH)); 
+		jmiRefresh =new JMenuItem(Messages.getString("DeviceView.11"),Util.getIcon(ICON_REFRESH));  //$NON-NLS-1$
 		jmiRefresh.addActionListener(this);
 		jmiRefresh.setActionCommand(EVENT_DEVICE_REFRESH);
 		jpmenu.add(jmiRefresh);
 		
-		jmiSynchronize =new JMenuItem("Synchronize",Util.getIcon(ICON_SYNCHRO)); 
+		jmiSynchronize =new JMenuItem(Messages.getString("DeviceView.12"),Util.getIcon(ICON_SYNCHRO));  //$NON-NLS-1$
 		jmiSynchronize.addActionListener(this);
 		jmiSynchronize.setActionCommand(EVENT_DEVICE_SYNCHRO);
 		jpmenu.add(jmiSynchronize);
 		
-		jmiDelete = new JMenuItem("Delete device",Util.getIcon(ICON_DELETE));
+		jmiDelete = new JMenuItem(Messages.getString("DeviceView.13"),Util.getIcon(ICON_DELETE)); //$NON-NLS-1$
 		jmiDelete.addActionListener(this);
 		jmiDelete.setActionCommand(EVENT_DEVICE_DELETE);
 		jmiDelete.setEnabled(false); //false by default, cannot delete mounted device
 		jpmenu.add(jmiDelete);
 		
 		
-		jmiProperties = new JMenuItem("Get properties",Util.getIcon(ICON_PROPERTIES));
+		jmiProperties = new JMenuItem(Messages.getString("DeviceView.14"),Util.getIcon(ICON_PROPERTIES)); //$NON-NLS-1$
 		jmiProperties.addActionListener(this);
 		jmiProperties.setActionCommand(EVENT_DEVICE_PROPERTIES);
 		jpmenu.add(jmiProperties);
@@ -218,8 +218,8 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 		{{0.99},
 		{30,0.99}};
 		setLayout(new TableLayout(size));
-		add(jtbButtons,"0,0");
-		add(new JScrollPane(jpDevices),"0,1");
+		add(jtbButtons,"0,0"); //$NON-NLS-1$
+		add(new JScrollPane(jpDevices),"0,1"); //$NON-NLS-1$
 		//Register on the list for subject we are interrested in
 		ObservationManager.register(EVENT_DEVICE_MOUNT,this);
 		ObservationManager.register(EVENT_DEVICE_UNMOUNT,this);
@@ -239,8 +239,8 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 		//remove all devices
 		jpDevices.removeAll();
 		//New device
-		DeviceItem diNew = new DeviceItem(ICON_DEVICE_NEW,"New");
-		diNew.setToolTipText("Add a device");
+		DeviceItem diNew = new DeviceItem(ICON_DEVICE_NEW,Messages.getString("DeviceView.17")); //$NON-NLS-1$
+		diNew.setToolTipText(Messages.getString("DeviceView.18")); //$NON-NLS-1$
 		jpDevices.add(diNew);
 		diNew.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
@@ -388,7 +388,7 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 					dSelected.mount();
 				}
 				catch(Exception e){
-					Messages.showErrorMessage("011");
+					Messages.showErrorMessage("011"); //$NON-NLS-1$
 				}
 				ObservationManager.notify(EVENT_DEVICE_MOUNT);
 				
@@ -398,7 +398,7 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 					dSelected.unmount();
 				}
 				catch(Exception e){
-					Messages.showErrorMessage("012");
+					Messages.showErrorMessage("012"); //$NON-NLS-1$
 				}
 			}
 			else if (ae.getActionCommand().equals(EVENT_DEVICE_PROPERTIES)){
@@ -414,10 +414,10 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 			}
 			else if (ae.getActionCommand().equals(EVENT_DEVICE_TEST)){
 				if (dSelected.test()){
-					Messages.showInfoMessage("Test_OK",Util.getIcon(ICON_OK));
+					Messages.showInfoMessage(Messages.getString("DeviceView.21"),Util.getIcon(ICON_OK)); //$NON-NLS-1$
 				}
 				else{
-					Messages.showInfoMessage("Test_NO",Util.getIcon(ICON_KO));
+					Messages.showInfoMessage(Messages.getString("DeviceView.22"),Util.getIcon(ICON_KO)); //$NON-NLS-1$
 				}
 			}
 		}	
@@ -427,7 +427,7 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 		 * @see org.jajuk.ui.IView#getDesc()
 		 */
 		public String getDesc() {
-			return Messages.getString("View_Description_Devices");
+			return Messages.getString("DeviceView.23"); //$NON-NLS-1$
 		}
 		
 		

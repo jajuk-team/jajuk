@@ -157,7 +157,7 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 	 * @see org.jajuk.ui.IView#getDesc()
 	 */
 	public String getDesc() {
-		return "Physical tree view";
+		return Messages.getString("PhysicalTreeView.0"); //$NON-NLS-1$
 	}
 	
 	/** Return singleton */
@@ -180,29 +180,29 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 		//**Menu items**
 		//File menu
 		jmenuFile = new JPopupMenu();
-		jmiFilePlay = new JMenuItem("Play");
+		jmiFilePlay = new JMenuItem(Messages.getString("PhysicalTreeView.1")); //$NON-NLS-1$
 		jmiFilePlay.addActionListener(this);
-		jmiFilePush = new JMenuItem("Push");
+		jmiFilePush = new JMenuItem(Messages.getString("PhysicalTreeView.2")); //$NON-NLS-1$
 		jmiFilePush.addActionListener(this);
-		jmiFileCopy = new JMenuItem("Copy");
+		jmiFileCopy = new JMenuItem(Messages.getString("PhysicalTreeView.3")); //$NON-NLS-1$
 		jmiFileCopy.setEnabled(false);
 		jmiFileCopy.addActionListener(this);
-		jmiFileCut = new JMenuItem("Cut");
+		jmiFileCut = new JMenuItem(Messages.getString("PhysicalTreeView.4")); //$NON-NLS-1$
 		jmiFileCut.setEnabled(false);
 		jmiFileCut.addActionListener(this);
-		jmiFilePaste = new JMenuItem("Paste");
+		jmiFilePaste = new JMenuItem(Messages.getString("PhysicalTreeView.5")); //$NON-NLS-1$
 		jmiFilePaste.setEnabled(false);
 		jmiFilePaste.addActionListener(this);
-		jmiFileRename = new JMenuItem("Rename");
+		jmiFileRename = new JMenuItem(Messages.getString("PhysicalTreeView.6")); //$NON-NLS-1$
 		jmiFileRename.setEnabled(false);
 		jmiFileRename.addActionListener(this);
-		jmiFileDelete = new JMenuItem("Delete");
+		jmiFileDelete = new JMenuItem(Messages.getString("PhysicalTreeView.7")); //$NON-NLS-1$
 		jmiFileDelete.setEnabled(false);
 		jmiFileDelete.addActionListener(this);
-		jmiFileSetProperty = new JMenuItem("Set a property");
+		jmiFileSetProperty = new JMenuItem(Messages.getString("PhysicalTreeView.8")); //$NON-NLS-1$
 		jmiFileSetProperty.setEnabled(false);
 		jmiFileSetProperty.addActionListener(this);
-		jmiFileProperties = new JMenuItem("Properties");
+		jmiFileProperties = new JMenuItem(Messages.getString("PhysicalTreeView.9")); //$NON-NLS-1$
 		jmiFileProperties.setEnabled(false);
 		jmiFileProperties.addActionListener(this);
 		jmenuFile.add(jmiFilePlay);
@@ -217,40 +217,40 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 		
 		//Directory menu
 		jmenuDir = new JPopupMenu();
-		jmiDirPlay = new JMenuItem("Play");
+		jmiDirPlay = new JMenuItem(Messages.getString("PhysicalTreeView.10")); //$NON-NLS-1$
 		jmiDirPlay.addActionListener(this);
-		jmiDirPush = new JMenuItem("Push");
+		jmiDirPush = new JMenuItem(Messages.getString("PhysicalTreeView.11")); //$NON-NLS-1$
 		jmiDirPush.addActionListener(this);
-		jmiDirPlayShuffle = new JMenuItem("Play Shuffle");
+		jmiDirPlayShuffle = new JMenuItem(Messages.getString("PhysicalTreeView.12")); //$NON-NLS-1$
 		jmiDirPlayShuffle.addActionListener(this);
-		jmiDirPlayRepeat = new JMenuItem("Play repeat");
+		jmiDirPlayRepeat = new JMenuItem(Messages.getString("PhysicalTreeView.13")); //$NON-NLS-1$
 		jmiDirPlayRepeat.addActionListener(this);
-		jmiDirDesynchro = new JMenuItem("Desynchronize");
+		jmiDirDesynchro = new JMenuItem(Messages.getString("PhysicalTreeView.14")); //$NON-NLS-1$
 		jmiDirDesynchro.addActionListener(this);
-		jmiDirResynchro = new JMenuItem("Resynchronize");
+		jmiDirResynchro = new JMenuItem(Messages.getString("PhysicalTreeView.15")); //$NON-NLS-1$
 		jmiDirResynchro.addActionListener(this);
-		jmiDirCreatePlaylist = new JMenuItem("Create playlist");
+		jmiDirCreatePlaylist = new JMenuItem(Messages.getString("PhysicalTreeView.16")); //$NON-NLS-1$
 		jmiDirCreatePlaylist.setEnabled(false);
 		jmiDirCreatePlaylist.addActionListener(this);
-		jmiDirCopy = new JMenuItem("Copy");
+		jmiDirCopy = new JMenuItem(Messages.getString("PhysicalTreeView.17")); //$NON-NLS-1$
 		jmiDirCopy.setEnabled(false);
 		jmiDirCopy.addActionListener(this);
-		jmiDirCut = new JMenuItem("Cut");
+		jmiDirCut = new JMenuItem(Messages.getString("PhysicalTreeView.18")); //$NON-NLS-1$
 		jmiDirCut.setEnabled(false);
 		jmiDirCut.addActionListener(this);
-		jmiDirPaste = new JMenuItem("Paste");
+		jmiDirPaste = new JMenuItem(Messages.getString("PhysicalTreeView.19")); //$NON-NLS-1$
 		jmiDirPaste.setEnabled(false);
 		jmiDirPaste.addActionListener(this);
-		jmiDirRename = new JMenuItem("Rename");
+		jmiDirRename = new JMenuItem(Messages.getString("PhysicalTreeView.20")); //$NON-NLS-1$
 		jmiDirRename.setEnabled(false);
 		jmiDirRename.addActionListener(this);
-		jmiDirDelete = new JMenuItem("Delete");
+		jmiDirDelete = new JMenuItem(Messages.getString("PhysicalTreeView.21")); //$NON-NLS-1$
 		jmiDirDelete.setEnabled(false);
 		jmiDirDelete.addActionListener(this);
-		jmiDirSetProperty = new JMenuItem("Set a property");
+		jmiDirSetProperty = new JMenuItem(Messages.getString("PhysicalTreeView.22")); //$NON-NLS-1$
 		jmiDirSetProperty.setEnabled(false);
 		jmiDirSetProperty.addActionListener(this);
-		jmiDirProperties = new JMenuItem("Properties");
+		jmiDirProperties = new JMenuItem(Messages.getString("PhysicalTreeView.23")); //$NON-NLS-1$
 		jmiDirProperties.setEnabled(false);
 		jmiDirProperties.addActionListener(this);
 		jmenuDir.add(jmiDirPlay);
@@ -270,31 +270,31 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 
 		//Device menu
 		jmenuDev = new JPopupMenu();
-		jmiDevPlay = new JMenuItem("Play");
+		jmiDevPlay = new JMenuItem(Messages.getString("PhysicalTreeView.24")); //$NON-NLS-1$
 		jmiDevPlay.addActionListener(this);
-		jmiDevPush = new JMenuItem("Push");
+		jmiDevPush = new JMenuItem(Messages.getString("PhysicalTreeView.25")); //$NON-NLS-1$
 		jmiDevPush.addActionListener(this);
-		jmiDevPlayShuffle = new JMenuItem("Play Shuffle");
+		jmiDevPlayShuffle = new JMenuItem(Messages.getString("PhysicalTreeView.26")); //$NON-NLS-1$
 		jmiDevPlayShuffle.addActionListener(this);
-		jmiDevPlayRepeat = new JMenuItem("Play repeat");
+		jmiDevPlayRepeat = new JMenuItem(Messages.getString("PhysicalTreeView.27")); //$NON-NLS-1$
 		jmiDevPlayRepeat.addActionListener(this);
-		jmiDevMount = new JMenuItem("Mount");
+		jmiDevMount = new JMenuItem(Messages.getString("PhysicalTreeView.28")); //$NON-NLS-1$
 		jmiDevMount.addActionListener(this);
-		jmiDevUnmount = new JMenuItem("Unmount");
+		jmiDevUnmount = new JMenuItem(Messages.getString("PhysicalTreeView.29")); //$NON-NLS-1$
 		jmiDevUnmount.addActionListener(this);
-		jmiDevRefresh = new JMenuItem("Refresh");
+		jmiDevRefresh = new JMenuItem(Messages.getString("PhysicalTreeView.30")); //$NON-NLS-1$
 		jmiDevRefresh.addActionListener(this);
-		jmiDevSynchronize = new JMenuItem("Synchronize");
+		jmiDevSynchronize = new JMenuItem(Messages.getString("PhysicalTreeView.31")); //$NON-NLS-1$
 		jmiDevSynchronize.addActionListener(this);
-		jmiDevTest = new JMenuItem("Test");
+		jmiDevTest = new JMenuItem(Messages.getString("PhysicalTreeView.32")); //$NON-NLS-1$
 		jmiDevTest.addActionListener(this);
-		jmiDevCreatePlaylist = new JMenuItem("Create playlists");
+		jmiDevCreatePlaylist = new JMenuItem(Messages.getString("PhysicalTreeView.33")); //$NON-NLS-1$
 		jmiDevCreatePlaylist.setEnabled(false);
 		jmiDevCreatePlaylist.addActionListener(this);
-		jmiDevSetProperty = new JMenuItem("Set a property");
+		jmiDevSetProperty = new JMenuItem(Messages.getString("PhysicalTreeView.34")); //$NON-NLS-1$
 		jmiDevSetProperty.setEnabled(false);
 		jmiDevSetProperty.addActionListener(this);
-		jmiDevProperties = new JMenuItem("Properties");
+		jmiDevProperties = new JMenuItem(Messages.getString("PhysicalTreeView.35")); //$NON-NLS-1$
 		jmiDevProperties.setEnabled(false);
 		jmiDevProperties.addActionListener(this);
 		jmenuDev.add(jmiDevPlay);
@@ -313,32 +313,32 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 		//Playlist file menu
 		//File menu
 		jmenuPlaylistFile = new JPopupMenu();
-		jmiPlaylistFilePlay = new JMenuItem("Play");
+		jmiPlaylistFilePlay = new JMenuItem(Messages.getString("PhysicalTreeView.36")); //$NON-NLS-1$
 		jmiPlaylistFilePlay.addActionListener(this);
-		jmiPlaylistFilePush = new JMenuItem("Push");
+		jmiPlaylistFilePush = new JMenuItem(Messages.getString("PhysicalTreeView.37")); //$NON-NLS-1$
 		jmiPlaylistFilePush.addActionListener(this);
-		jmiPlaylistFilePlayShuffle = new JMenuItem("Play Shuffle");
+		jmiPlaylistFilePlayShuffle = new JMenuItem(Messages.getString("PhysicalTreeView.38")); //$NON-NLS-1$
 		jmiPlaylistFilePlayShuffle.addActionListener(this);
-		jmiPlaylistFilePlayRepeat = new JMenuItem("Play Repeat");
+		jmiPlaylistFilePlayRepeat = new JMenuItem(Messages.getString("PhysicalTreeView.39")); //$NON-NLS-1$
 		jmiPlaylistFilePlayRepeat.addActionListener(this);
-		jmiPlaylistFileCopy = new JMenuItem("Copy");
+		jmiPlaylistFileCopy = new JMenuItem(Messages.getString("PhysicalTreeView.40")); //$NON-NLS-1$
 		jmiPlaylistFileCopy.setEnabled(false);
 		jmiPlaylistFileCopy.addActionListener(this);
-		jmiPlaylistFileCut = new JMenuItem("Cut");
+		jmiPlaylistFileCut = new JMenuItem(Messages.getString("PhysicalTreeView.41")); //$NON-NLS-1$
 		jmiPlaylistFileCut.setEnabled(false);
 		jmiPlaylistFileCut.addActionListener(this);
-		jmiPlaylistFilePaste = new JMenuItem("Paste");
+		jmiPlaylistFilePaste = new JMenuItem(Messages.getString("PhysicalTreeView.42")); //$NON-NLS-1$
 		jmiPlaylistFilePaste.setEnabled(false);
 		jmiPlaylistFilePaste.addActionListener(this);
-		jmiPlaylistFileRename = new JMenuItem("Rename");
+		jmiPlaylistFileRename = new JMenuItem(Messages.getString("PhysicalTreeView.43")); //$NON-NLS-1$
 		jmiPlaylistFileRename.setEnabled(false);
 		jmiPlaylistFileRename.addActionListener(this);
-		jmiPlaylistFileDelete = new JMenuItem("Delete");
+		jmiPlaylistFileDelete = new JMenuItem(Messages.getString("PhysicalTreeView.44")); //$NON-NLS-1$
 		jmiPlaylistFileDelete.addActionListener(this);
-		jmiPlaylistFileSetProperty = new JMenuItem("Set a property");
+		jmiPlaylistFileSetProperty = new JMenuItem(Messages.getString("PhysicalTreeView.45")); //$NON-NLS-1$
 		jmiPlaylistFileSetProperty.setEnabled(false);
 		jmiPlaylistFileSetProperty.addActionListener(this);
-		jmiPlaylistFileProperties = new JMenuItem("Properties");
+		jmiPlaylistFileProperties = new JMenuItem(Messages.getString("PhysicalTreeView.46")); //$NON-NLS-1$
 		jmiPlaylistFileProperties.setEnabled(false);
 		jmiPlaylistFileProperties.addActionListener(this);
 		jmenuPlaylistFile.add(jmiPlaylistFilePlay);
@@ -356,7 +356,7 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 		
 		
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		top = new DefaultMutableTreeNode("Collection");
+		top = new DefaultMutableTreeNode(Messages.getString("PhysicalTreeView.47")); //$NON-NLS-1$
 		//Register on the list for subject we are interrested in
 		ObservationManager.register(EVENT_DEVICE_MOUNT,this);
 		ObservationManager.register(EVENT_DEVICE_UNMOUNT,this);
@@ -367,12 +367,12 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 		
 		//create tree
 		jtree = new JTree(top);
-		jtree.putClientProperty("JTree.lineStyle", "Angled");
+		jtree.putClientProperty("JTree.lineStyle", "Angled"); //$NON-NLS-1$ //$NON-NLS-2$
 		jtree.getSelectionModel().setSelectionMode(TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
 		jtree.setCellRenderer(new DefaultTreeCellRenderer() {
 			public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) {
 				super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
-				setFont(new Font("Dialog",Font.PLAIN,10));
+				setFont(new Font("Dialog",Font.PLAIN,10)); //$NON-NLS-1$
 				if (value instanceof FileNode ){
 					setIcon(Util.getIcon(ICON_FILE));
 				}
@@ -407,7 +407,7 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 				else if (value instanceof DirectoryNode){
 					Directory dir = ((DirectoryNode)value).getDirectory();
 					String synchro = dir.getProperty(DIRECTORY_OPTION_SYNCHRO_MODE);
-					if ( synchro == null || "y".equals(synchro)){  //means this device is not synchronized
+					if ( synchro == null || "y".equals(synchro)){  //means this device is not synchronized //$NON-NLS-1$
 						setIcon(Util.getIcon(ICON_DIRECTORY_SYNCHRO));
 					}
 					else{
@@ -473,12 +473,12 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 					}
 				}
 				lSize /= 1048576; //set size in MB
-				StringBuffer sbOut = new StringBuffer().append(items).append(" files : ");
+				StringBuffer sbOut = new StringBuffer().append(items).append(Messages.getString("PhysicalTreeView.52")); //$NON-NLS-1$
 				if ( lSize>1024){ //more than 1024 MB -> in GB
-					sbOut.append(lSize/1024).append('.').append(lSize%1024).append(" GB");
+					sbOut.append(lSize/1024).append('.').append(lSize%1024).append(Messages.getString("PhysicalTreeView.53")); //$NON-NLS-1$
 				}
 				else{
-					sbOut.append(lSize).append(" MB");
+					sbOut.append(lSize).append(Messages.getString("PhysicalTreeView.54")); //$NON-NLS-1$
 				}
 				InformationJPanel.getInstance().setSelection(sbOut.toString());
 			}
@@ -495,14 +495,14 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 							FIFO.getInstance().push(file,false);
 						}
 						else{
-							Messages.showErrorMessage("120",file.getDirectory().getDevice().getName());
+							Messages.showErrorMessage("120",file.getDirectory().getDevice().getName()); //$NON-NLS-1$
 						}
 					}
 					else if (o instanceof PlaylistFileNode){  //double clic on a playlist file
 						PlaylistFile plf = ((PlaylistFileNode)o).getPlaylistFile();
 						ArrayList alFiles = plf.getBasicFiles();
 						if ( alFiles.size() == 0){ //check playlist file contains accessible tracks
-							Messages.showErrorMessage("018");	
+							Messages.showErrorMessage("018");	 //$NON-NLS-1$
 						}
 						else{
 							FIFO.getInstance().push(alFiles,false);
@@ -534,7 +534,7 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 								}
 								else{
 									if (!(o instanceof DeviceNode)){
-										Messages.showErrorMessage("120");
+										Messages.showErrorMessage("120"); //$NON-NLS-1$
 										return; //show only one error message
 									}
 								}
@@ -591,11 +591,11 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 				if (o instanceof DirectoryNode){
 					Directory dir = ((DirectoryNode)o).getDirectory(); 
 					dir.removeProperty(OPTION_EXPANDED);
-					dir.setProperty(OPTION_EXPANDED,"y");
+					dir.setProperty(OPTION_EXPANDED,"y"); //$NON-NLS-1$
 				}
 				else if (o instanceof DeviceNode){
 					Device device = ((DeviceNode)o).getDevice();
-					device.setProperty(OPTION_EXPANDED,"y");
+					device.setProperty(OPTION_EXPANDED,"y"); //$NON-NLS-1$
 				}
 				
 			}
@@ -631,8 +631,8 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 		Iterator it2 = alDirectories.iterator();
 		while (it2.hasNext()){
 			Directory directory = (Directory)it2.next();
-			if (!directory.getName().equals("")){ //device root directory, do not display
-				if (directory.getParentDirectory().getName().equals("")){  //parent directory is a device
+			if (!directory.getName().equals("")){ //device root directory, do not display //$NON-NLS-1$
+				if (directory.getParentDirectory().getName().equals("")){  //parent directory is a device //$NON-NLS-1$
 					DeviceNode deviceNode = DeviceNode.getDeviceNode(directory.getDevice());
 					if ( deviceNode != null){
 						deviceNode.add(new DirectoryNode(directory));
@@ -707,7 +707,7 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 					ObservationManager.notify(EVENT_DEVICE_MOUNT);
 				}
 				catch(Exception ex){
-					Messages.showErrorMessage("011");
+					Messages.showErrorMessage("011"); //$NON-NLS-1$
 				}
 			}
 		}
@@ -718,7 +718,7 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 					device.unmount();
 				}
 				catch(Exception ex){
-					Messages.showErrorMessage("012");
+					Messages.showErrorMessage("012"); //$NON-NLS-1$
 				}
 			}
 		}
@@ -736,7 +736,7 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 			while ( it.hasNext()){
 				Directory dir = (Directory)it.next();
 				dir.removeProperty(DIRECTORY_OPTION_SYNCHRO_MODE);
-				dir.setProperty(DIRECTORY_OPTION_SYNCHRO_MODE,"n");
+				dir.setProperty(DIRECTORY_OPTION_SYNCHRO_MODE,"n"); //$NON-NLS-1$
 			}
 		}
 		else if ( e.getSource() == jmiDirResynchro){
@@ -750,7 +750,7 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 			PlaylistFile plf = ((PlaylistFileNode)paths[0].getLastPathComponent()).getPlaylistFile();
 			ArrayList alFiles = plf.getBasicFiles();
 			if ( alFiles.size() == 0){ //check playlist file contains accessible tracks
-				Messages.showErrorMessage("018");
+				Messages.showErrorMessage("018"); //$NON-NLS-1$
 			}
 			else{
 				FIFO.getInstance().push(alFiles,false);
@@ -760,7 +760,7 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 			PlaylistFile plf = ((PlaylistFileNode)paths[0].getLastPathComponent()).getPlaylistFile();
 			ArrayList alFiles = plf.getBasicFiles();
 			if ( alFiles.size() == 0){ //check playlist file contains accessible tracks
-				Messages.showErrorMessage("018");
+				Messages.showErrorMessage("018"); //$NON-NLS-1$
 			}
 			else{
 				FIFO.getInstance().push(alFiles,true);
@@ -770,7 +770,7 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 			PlaylistFile plf = ((PlaylistFileNode)paths[0].getLastPathComponent()).getPlaylistFile();
 			ArrayList alFiles = plf.getBasicFiles();
 			if ( alFiles.size() == 0){ //check playlist file contains accessible tracks
-				Messages.showErrorMessage("018");
+				Messages.showErrorMessage("018"); //$NON-NLS-1$
 			}
 			else{
 				FIFO.getInstance().push(Util.randomize(alFiles),false);
@@ -780,7 +780,7 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 			PlaylistFile plf = ((PlaylistFileNode)paths[0].getLastPathComponent()).getPlaylistFile();
 			ArrayList alFiles = plf.getBasicFiles();
 			if ( alFiles.size() == 0){ //check playlist file contains accessible tracks
-				Messages.showErrorMessage("018");
+				Messages.showErrorMessage("018"); //$NON-NLS-1$
 			}
 			else{
 				FIFO.getInstance().push(alFiles,false,false,true);
@@ -818,7 +818,7 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 	 * @see org.jajuk.ui.IView#getViewName()
 	 */
 	public String getViewName() {
-		return "org.jajuk.ui.views.PhysicalTreeView";
+		return "org.jajuk.ui.views.PhysicalTreeView"; //$NON-NLS-1$
 	}
 	
 	/**
@@ -832,14 +832,14 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 					&& !((DeviceNode)o).getDevice().isSynchronizing() ){
 				Device device = ((DeviceNode)o).getDevice();
 				String sExp = device.getProperty(OPTION_EXPANDED); 
-				if ( "y".equals(sExp)){
+				if ( "y".equals(sExp)){ //$NON-NLS-1$
 					jtree.expandRow(i);	
 				}
 			}
 			else if ( o instanceof DirectoryNode){
 				Directory dir = ((DirectoryNode)o).getDirectory();
 				String sExp = dir.getProperty(OPTION_EXPANDED); 
-				if ( "y".equals(sExp)){
+				if ( "y".equals(sExp)){ //$NON-NLS-1$
 					jtree.expandRow(i);	
 				}
 			}

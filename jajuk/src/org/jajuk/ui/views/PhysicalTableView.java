@@ -30,6 +30,7 @@ import javax.swing.JPopupMenu;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
+import org.jajuk.i18n.Messages;
 import org.jajuk.ui.ObservationManager;
 import org.jajuk.ui.Observer;
 import org.jajuk.util.Util;
@@ -62,7 +63,7 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
 	 * @see org.jajuk.ui.IView#getDesc()
 	 */
 	public String getDesc() {
-		return "Physical table view";
+		return Messages.getString("PhysicalTableView.0"); //$NON-NLS-1$
 	}
 	
 
@@ -80,18 +81,18 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
 		ltv = this;
 		//File menu
 		jmenuFile = new JPopupMenu();
-		jmiFilePlay = new JMenuItem("Play");
+		jmiFilePlay = new JMenuItem(Messages.getString("PhysicalTableView.1")); //$NON-NLS-1$
 		jmiFilePlay.addActionListener(this);
-		jmiFilePush = new JMenuItem("Push");
+		jmiFilePush = new JMenuItem(Messages.getString("PhysicalTableView.2")); //$NON-NLS-1$
 		jmiFilePush.addActionListener(this);
-		jmiFilePlayShuffle = new JMenuItem("Play shuffle");
+		jmiFilePlayShuffle = new JMenuItem(Messages.getString("PhysicalTableView.3")); //$NON-NLS-1$
 		jmiFilePlayShuffle.addActionListener(this);
-		jmiFilePlayRepeat = new JMenuItem("Play repeat");
+		jmiFilePlayRepeat = new JMenuItem(Messages.getString("PhysicalTableView.4")); //$NON-NLS-1$
 		jmiFilePlayRepeat.addActionListener(this);
-		jmiFileSetProperty = new JMenuItem("Set a property");
+		jmiFileSetProperty = new JMenuItem(Messages.getString("PhysicalTableView.5")); //$NON-NLS-1$
 		jmiFileSetProperty.setEnabled(false);
 		jmiFileSetProperty.addActionListener(this);
-		jmiFileProperties = new JMenuItem("Properties");
+		jmiFileProperties = new JMenuItem(Messages.getString("PhysicalTableView.6")); //$NON-NLS-1$
 		jmiFileProperties.setEnabled(false);
 		jmiFileProperties.addActionListener(this);
 		jmenuFile.add(jmiFilePlay);
@@ -118,7 +119,7 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
 	/**Fill the tree */
 	public void populate(){
 		//Columns names
-		sColName = new String[]{"Track","Album","Author","Length","Style","Directory","File","Rate"};
+		sColName = new String[]{Messages.getString("PhysicalTableView.7"),Messages.getString("PhysicalTableView.8"),Messages.getString("PhysicalTableView.9"),Messages.getString("PhysicalTableView.10"),Messages.getString("PhysicalTableView.11"),Messages.getString("PhysicalTableView.12"),Messages.getString("PhysicalTableView.13"),Messages.getString("PhysicalTableView.14")}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
 		//Values
 		alFiles = FileManager.getSortedFiles();
 		int iSize = alFiles.size();
@@ -151,7 +152,7 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
 	 * @see org.jajuk.ui.IView#getViewName()
 	 */
 	public String getViewName() {
-		return "org.jajuk.ui.views.PhysicalTableView";
+		return "org.jajuk.ui.views.PhysicalTableView"; //$NON-NLS-1$
 	}
 
 

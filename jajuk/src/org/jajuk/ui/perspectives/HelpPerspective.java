@@ -42,7 +42,7 @@ public class HelpPerspective extends PerspectiveAdapter{
 	 * @see org.jajuk.ui.IPerspective#getDesc()
 	 */
 	public String getDesc() {
-		return Messages.getString("Perspective_Description_Help");
+		return Messages.getString("Perspective_Description_Help"); //$NON-NLS-1$
 	}
 
 }

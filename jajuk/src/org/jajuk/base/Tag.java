@@ -51,7 +51,7 @@ public class Tag implements ITechnicalStrings{
 			tagImpl.setFile(fio);
 		}
 		catch(Exception e){
-			Log.error("103",fio.getName(),e);
+			Log.error("103",fio.getName(),e); //$NON-NLS-1$
 		}
 		this.fio = fio;
 	}
@@ -60,15 +60,15 @@ public class Tag implements ITechnicalStrings{
 	 * @return track name as defined in tags are file name otherwise
 	 */
 	public String getTrackName() {
-		String sTrackName = new StringTokenizer(Util.formatTag(fio.getName()),".").nextToken().toString();
-		String sTemp = "";
+		String sTrackName = new StringTokenizer(Util.formatTag(fio.getName()),".").nextToken().toString(); //$NON-NLS-1$
+		String sTemp = ""; //$NON-NLS-1$
 		try {
 			sTemp = tagImpl.getTrackName().trim();
-			if (!"".equals(sTemp)){
+			if (!"".equals(sTemp)){ //$NON-NLS-1$
 				sTrackName = Util.formatTag(sTemp);  //remove the extension
 			}
 		} catch (Exception e) {
-			Log.error("103", fio.getName(),e);
+			Log.error("103", fio.getName(),e); //$NON-NLS-1$
 		}
 		return sTrackName;
 	}
@@ -78,24 +78,24 @@ public class Tag implements ITechnicalStrings{
 	 */
 	public String getAlbumName() {
 		String sAlbumlName = null;
-		String sTemp = "";
+		String sTemp = ""; //$NON-NLS-1$
 		try {
 			sTemp = tagImpl.getAlbumName().trim();
-			if (Messages.getString("unknown_album").equals(sTemp)){  //it is done to avoid duplicates unknown albums if the tag is the real string "unknown" in the current language 
-					sAlbumlName = "unknown_album";
+			if (Messages.getString("unknown_album").equals(sTemp)){  //it is done to avoid duplicates unknown albums if the tag is the real string "unknown" in the current language  //$NON-NLS-1$
+					sAlbumlName = "unknown_album"; //$NON-NLS-1$
 			}
-			else if (!"".equals(sTemp)){
+			else if (!"".equals(sTemp)){ //$NON-NLS-1$
 				sAlbumlName = sTemp;
 			}
 		} catch (Exception e) {
-			Log.error("103",fio.getName(), e);
+			Log.error("103",fio.getName(), e); //$NON-NLS-1$
 		}
 		if (sAlbumlName == null){  //album tag cannot be found
 			if (Boolean.valueOf(ConfigurationManager.getProperty(CONF_TAGS_USE_PARENT_DIR)).booleanValue()){
 				sAlbumlName = fio.getParentFile().getName(); //if album is not found, take current dirtectory as album name
 			}
 			else{
-				sAlbumlName = Messages.getString("unknown_album");  //album inconnu
+				sAlbumlName = Messages.getString("unknown_album");  //album inconnu //$NON-NLS-1$
 			}
 		}
 		sAlbumlName = Util.formatTag(sAlbumlName);
@@ -106,18 +106,18 @@ public class Tag implements ITechnicalStrings{
 	 * @return author name
 	 */
 	public String getAuthorName() {
-		String sAuthorName = "unknown_author";
-		String sTemp = "";
+		String sAuthorName = "unknown_author"; //$NON-NLS-1$
+		String sTemp = ""; //$NON-NLS-1$
 		try {
 			sTemp = tagImpl.getAuthorName().trim();
-			if (Messages.getString("unknown_author").equals(sTemp)){  //it is done to avoid duplicates unknown authors if the tag is the real string "unknown" in the current language 
-				sAuthorName = "unknown_author";
+			if (Messages.getString("unknown_author").equals(sTemp)){  //it is done to avoid duplicates unknown authors if the tag is the real string "unknown" in the current language  //$NON-NLS-1$
+				sAuthorName = "unknown_author"; //$NON-NLS-1$
 			}
-			else if (!"".equals(sTemp)){
+			else if (!"".equals(sTemp)){ //$NON-NLS-1$
 				sAuthorName = Util.formatTag(sTemp);
 			}
 		} catch (Exception e) {
-			Log.error("103", fio.getName(),e);
+			Log.error("103", fio.getName(),e); //$NON-NLS-1$
 		}
 		return sAuthorName;
 
@@ -128,21 +128,21 @@ public class Tag implements ITechnicalStrings{
 	 * @return style name
 	 */
 	public String getStyleName() {
-		String style = "unknown_style";
-		String sTemp = "";
+		String style = "unknown_style"; //$NON-NLS-1$
+		String sTemp = ""; //$NON-NLS-1$
 		try {
 			sTemp = tagImpl.getStyleName().trim();
-			if (Messages.getString("unknown_style").equals(sTemp)){  //it is done to avoid duplicates unknown styles if the tag is the real string "unknown" in the current language 
-				style = "unknown_style";
+			if (Messages.getString("unknown_style").equals(sTemp)){  //it is done to avoid duplicates unknown styles if the tag is the real string "unknown" in the current language  //$NON-NLS-1$
+				style = "unknown_style"; //$NON-NLS-1$
 			}
-			else if (!"".equals(sTemp)){
-				if( sTemp.equals("unknown")){
+			else if (!"".equals(sTemp)){ //$NON-NLS-1$
+				if( sTemp.equals("unknown")){ //$NON-NLS-1$
 					sTemp = style;
 				}
 				style = Util.formatTag(sTemp);
 			}
 		} catch (Exception e) {
-			Log.error("103", fio.getName(),e);
+			Log.error("103", fio.getName(),e); //$NON-NLS-1$
 		}
 		return style;
 
@@ -156,7 +156,7 @@ public class Tag implements ITechnicalStrings{
 		try {
 			length = tagImpl.getLength();
 		} catch (Exception e) {
-			Log.error("103", fio.getName(),e);
+			Log.error("103", fio.getName(),e); //$NON-NLS-1$
 		}
 		return length;
 
@@ -166,15 +166,15 @@ public class Tag implements ITechnicalStrings{
 	 * @return creation year
 	 */
 	public String getYear() {
-		String sYear = "unknown_year";
-		String sTemp = "";
+		String sYear = "unknown_year"; //$NON-NLS-1$
+		String sTemp = ""; //$NON-NLS-1$
 		try {
 			sTemp = tagImpl.getYear();
-			if (sTemp != null && !sTemp.equals("")&& !sTemp.equals("0")){
+			if (sTemp != null && !sTemp.equals("")&& !sTemp.equals("0")){ //$NON-NLS-1$ //$NON-NLS-2$
 				sYear = Util.formatTag(sTemp);
 			}
 		} catch (Exception e) {
-			Log.error("103", fio.getName(),e);
+			Log.error("103", fio.getName(),e); //$NON-NLS-1$
 		}
 		return sYear;
 
@@ -184,15 +184,15 @@ public class Tag implements ITechnicalStrings{
 	 * @return quality
 	 */
 	public String getQuality() {
-		String sQuality = "unknown_quality";
-		String sTemp = "";
+		String sQuality = "unknown_quality"; //$NON-NLS-1$
+		String sTemp = ""; //$NON-NLS-1$
 		try {
 			sTemp = tagImpl.getQuality();
-			if (sTemp != null && !sTemp.equals("")){
+			if (sTemp != null && !sTemp.equals("")){ //$NON-NLS-1$
 				sQuality = Util.formatTag(sTemp);
 			}
 		} catch (Exception e) {
-			Log.error("103",fio.getName(), e);
+			Log.error("103",fio.getName(), e); //$NON-NLS-1$
 		}
 		return sQuality;
 
@@ -205,7 +205,7 @@ public class Tag implements ITechnicalStrings{
 		try {
 			tagImpl.setTrackName(sTrackName);
 		} catch (Exception e) {
-			Log.error("104",fio.getName(), e);
+			Log.error("104",fio.getName(), e); //$NON-NLS-1$
 		}
 	}
 
@@ -216,7 +216,7 @@ public class Tag implements ITechnicalStrings{
 		try {
 			tagImpl.setAlbumName(sAlbumName);
 		} catch (Exception e) {
-			Log.error("104", fio.getName(),e);
+			Log.error("104", fio.getName(),e); //$NON-NLS-1$
 		}
 
 	}
@@ -228,7 +228,7 @@ public class Tag implements ITechnicalStrings{
 		try {
 			tagImpl.setAuthorName(sAuthorName);
 		} catch (Exception e) {
-			Log.error("104", fio.getName(),e);
+			Log.error("104", fio.getName(),e); //$NON-NLS-1$
 		}
 
 	}
@@ -240,7 +240,7 @@ public class Tag implements ITechnicalStrings{
 		try {
 			tagImpl.setStyleName(style);
 		} catch (Exception e) {
-			Log.error("104", fio.getName(),e);
+			Log.error("104", fio.getName(),e); //$NON-NLS-1$
 		}
 
 	}
@@ -252,7 +252,7 @@ public class Tag implements ITechnicalStrings{
 		try {
 			tagImpl.setLength(length);
 		} catch (Exception e) {
-			Log.error("104", fio.getName(),e);
+			Log.error("104", fio.getName(),e); //$NON-NLS-1$
 		}
 
 	}
@@ -264,7 +264,7 @@ public class Tag implements ITechnicalStrings{
 		try {
 			tagImpl.setTrackName(sYear);
 		} catch (Exception e) {
-			Log.error("104", e);
+			Log.error("104", e); //$NON-NLS-1$
 		}
 
 	}
@@ -276,7 +276,7 @@ public class Tag implements ITechnicalStrings{
 		try {
 			tagImpl.setTrackName(sQuality);
 		} catch (Exception e) {
-			Log.error("104", fio.getName(),e);
+			Log.error("104", fio.getName(),e); //$NON-NLS-1$
 		}
 
 	}

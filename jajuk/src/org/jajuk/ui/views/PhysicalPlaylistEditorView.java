@@ -54,7 +54,7 @@ public class PhysicalPlaylistEditorView extends AbstractPlaylistEditorView{
 	 * @see org.jajuk.ui.IView#getViewName()
 	 */
 	public String getViewName() {
-		return "org.jajuk.ui.views.PhysicalPlaylistEditorView";
+		return "org.jajuk.ui.views.PhysicalPlaylistEditorView"; //$NON-NLS-1$
 	}
 
 }

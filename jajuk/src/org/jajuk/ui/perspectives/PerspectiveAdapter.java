@@ -108,7 +108,7 @@ public abstract class PerspectiveAdapter implements IPerspective,ITechnicalStrin
 	 * toString method
 	 */
 	public String toString(){
-		return "Perspective[name="+getName()+" description='"+getDesc()+"]";
+		return "Perspective[name="+getName()+" description='"+getDesc()+"]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 	
 	/* (non-Javadoc)

@@ -40,6 +40,7 @@ import org.jajuk.base.Bookmarks;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
+import org.jajuk.i18n.Messages;
 import org.jajuk.ui.JajukTable;
 import org.jajuk.ui.ObservationManager;
 import org.jajuk.ui.Observer;
@@ -91,7 +92,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 	protected ArrayList alFiles = new ArrayList(10);
 	
 	/**Columns names table**/
-	protected String[] sColName = new String[]{"Track","Location"};
+	protected String[] sColName = new String[]{Messages.getString("AbstractPlaylistEditorView.0"),Messages.getString("AbstractPlaylistEditorView.1")}; //$NON-NLS-1$ //$NON-NLS-2$
 
 	/**Model for table*/
 	class PlayListEditorTableModel extends AbstractTableModel {
@@ -160,22 +161,22 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 			{25,0.99}};
 		jpControl.setLayout(new TableLayout(sizeControl));
 		jbRun = new JButton(Util.getIcon(ICON_RUN));
-		jbRun.setToolTipText("Run this playlist");
+		jbRun.setToolTipText(Messages.getString("AbstractPlaylistEditorView.2")); //$NON-NLS-1$
 		jbSave = new JButton(Util.getIcon(ICON_SAVE));
-		jbSave.setToolTipText("Save this playlist");
+		jbSave.setToolTipText(Messages.getString("AbstractPlaylistEditorView.3")); //$NON-NLS-1$
 		jbAdd = new JButton(Util.getIcon(ICON_ADD));
-		jbAdd.setToolTipText("Add an item to this playlist");
+		jbAdd.setToolTipText(Messages.getString("AbstractPlaylistEditorView.4")); //$NON-NLS-1$
 		jbRemove = new JButton(Util.getIcon(ICON_REMOVE));
-		jbRemove.setToolTipText("Remove an item from this playlist");
+		jbRemove.setToolTipText(Messages.getString("AbstractPlaylistEditorView.5")); //$NON-NLS-1$
 		jbUp = new JButton(Util.getIcon(ICON_UP));
-		jbUp.setToolTipText("Set item position higher");
+		jbUp.setToolTipText(Messages.getString("AbstractPlaylistEditorView.6")); //$NON-NLS-1$
 		jbDown = new JButton(Util.getIcon(ICON_DOWN));
-		jbDown.setToolTipText("Set item position lower");
+		jbDown.setToolTipText(Messages.getString("AbstractPlaylistEditorView.7")); //$NON-NLS-1$
 		jbCurrent = new JButton(Util.getIcon(ICON_CURRENT_PLAYLIST));
-		jbCurrent.setToolTipText("Display current played playlist");
+		jbCurrent.setToolTipText(Messages.getString("AbstractPlaylistEditorView.8")); //$NON-NLS-1$
 		jbClear = new JButton(Util.getIcon(ICON_CLEAR));
-		jbClear.setToolTipText("Clear this playlist");
-		jlTitle = new JLabel("");
+		jbClear.setToolTipText(Messages.getString("AbstractPlaylistEditorView.9")); //$NON-NLS-1$
+		jlTitle = new JLabel(""); //$NON-NLS-1$
 		jtb.add(jbRun);
 		jtb.add(jbSave);
 		jtb.add(jbAdd);
@@ -185,8 +186,8 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 		jtb.add(jbCurrent);
 		jtb.add(jbClear);
 		
-		jpControl.add(jtb,"1,0");
-		jpControl.add(jlTitle,"2,0");
+		jpControl.add(jtb,"1,0"); //$NON-NLS-1$
+		jpControl.add(jlTitle,"2,0"); //$NON-NLS-1$
 		
 		jtable = new JajukTable(model);
 		jtable.addMouseListener(this);
@@ -194,8 +195,8 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 		{{0.99},
 		{30,0.99}};
 		setLayout(new TableLayout(size));
-		add(jpControl,"0,0");
-		add(new JScrollPane(jtable),"0,1");
+		add(jpControl,"0,0"); //$NON-NLS-1$
+		add(new JScrollPane(jtable),"0,1"); //$NON-NLS-1$
 		ObservationManager.register(EVENT_PLAYLIST_REFRESH,this);
 	}
 
@@ -203,7 +204,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 	 * @see org.jajuk.ui.IView#getDesc()
 	 */
 	public String getDesc() {
-		return "Playlist editor view";	
+		return Messages.getString("AbstractPlaylistEditorView.15");	 //$NON-NLS-1$
 	}
 
 	/* (non-Javadoc)

@@ -62,11 +62,11 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	
 	/**Device types strings . ex:directory, remote...*/
 	public static String[] sDeviceTypes = {
-			Messages.getString("Device_type.directory"),
-			Messages.getString("Device_type.file_cd"),
-			Messages.getString("Device_type.remote"),
-			Messages.getString("Device_type.extdd"),
-			Messages.getString("Device_type.player"),
+			Messages.getString("Device_type.directory"), //$NON-NLS-1$
+			Messages.getString("Device_type.file_cd"), //$NON-NLS-1$
+			Messages.getString("Device_type.remote"), //$NON-NLS-1$
+			Messages.getString("Device_type.extdd"), //$NON-NLS-1$
+			Messages.getString("Device_type.player"), //$NON-NLS-1$
 	};
 
 	/**Convenient lock */
@@ -104,7 +104,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	 * toString method
 	 */
 	public String toString() {
-		return "Device[ID=" + sId + " Name=" + sName + " Type=" + sDeviceTypes[iDeviceType] + " URL=" + sUrl+ " Mount point="+sMountPoint + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$
+		return "Device[ID=" + sId + " Name=" + sName + " Type=" + sDeviceTypes[iDeviceType] + " URL=" + sUrl+ " Mount point="+sMountPoint + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$ //$NON-NLS-6$
 	}
 	
 	
@@ -113,17 +113,17 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	 * @return
 	 */
 	public String toXml() {
-		StringBuffer sb = new StringBuffer("\t\t<device id='" + sId);
-		sb.append("' name='");
+		StringBuffer sb = new StringBuffer("\t\t<device id='" + sId); //$NON-NLS-1$
+		sb.append("' name='"); //$NON-NLS-1$
 		sb.append(Util.formatXML(sName));
-		sb.append("' type='");
+		sb.append("' type='"); //$NON-NLS-1$
 		sb.append(getDeviceType());
-		sb.append("' url='");
+		sb.append("' url='"); //$NON-NLS-1$
 		sb.append(sUrl);
-		sb.append("' mount_point='");
-		sb.append(getMountPoint()).append("' ");
+		sb.append("' mount_point='"); //$NON-NLS-1$
+		sb.append(getMountPoint()).append("' "); //$NON-NLS-1$
 		sb.append(getPropertiesXml());
-		sb.append("/>\n");
+		sb.append("/>\n"); //$NON-NLS-1$
 		return sb.toString();
 	}
 
@@ -190,15 +190,15 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 			DirectoryManager.cleanDevice(device.getId());
 			long lTime = System.currentTimeMillis();
 			if (bAlreadyRefreshing){
-				Messages.showErrorMessage("107");
+				Messages.showErrorMessage("107"); //$NON-NLS-1$
 				return;
 			}
 			bAlreadyRefreshing = true;
-			Log.debug("Starting refresh of device : "+device);
+			Log.debug("Starting refresh of device : "+device); //$NON-NLS-1$
 			
 			File fTop = new File(device.sUrl);
 			if (!fTop.exists()) {
-				Messages.showErrorMessage("101");
+				Messages.showErrorMessage("101"); //$NON-NLS-1$
 				return;
 			}
 			
@@ -231,7 +231,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 						indexTab[iDeep]++; //inc index for next time we will reach this deep
 						fCurrent = files[indexTab[iDeep]];
 						dParent = DirectoryManager.registerDirectory(fCurrent.getName(),dParent,device);
-						InformationJPanel.getInstance().setMessage(new StringBuffer("Refreshing [").append(device.getName()).append("]  Entering [").append(dParent.getRelativePath()).append("]").toString(),InformationJPanel.INFORMATIVE);
+						InformationJPanel.getInstance().setMessage(new StringBuffer(Messages.getString("Device.21")).append(device.getName()).append(Messages.getString("Device.22")).append(dParent.getRelativePath()).append("]").toString(),InformationJPanel.INFORMATIVE); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 						dParent.scan();
 						iDeep++;
 					}
@@ -245,10 +245,10 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 					}
 				}					
 			}
-			InformationJPanel.getInstance().setMessage(new StringBuffer("[").append(device.getName()).append("] refreshed in ").append((int)((System.currentTimeMillis()-lTime)/1000)).
-					append(" sec - ").append(iNbNewFiles).append(" new files - ").
-					append(FileManager.getFiles().size()-iNbFilesBeforeRefresh-iNbNewFiles).append(" erased references").toString(),InformationJPanel.INFORMATIVE);
-			Log.debug("Refresh done in "+(int)((System.currentTimeMillis()-lTime)/1000)+" sec");
+			InformationJPanel.getInstance().setMessage(new StringBuffer("[").append(device.getName()).append(Messages.getString("Device.25")).append((int)((System.currentTimeMillis()-lTime)/1000)). //$NON-NLS-1$ //$NON-NLS-2$
+					append(Messages.getString("Device.26")).append(iNbNewFiles).append(Messages.getString("Device.27")). //$NON-NLS-1$ //$NON-NLS-2$
+					append(FileManager.getFiles().size()-iNbFilesBeforeRefresh-iNbNewFiles).append(Messages.getString("Device.28")).toString(),InformationJPanel.INFORMATIVE); //$NON-NLS-1$
+			Log.debug(Messages.getString("Device.29")+(int)((System.currentTimeMillis()-lTime)/1000)+Messages.getString("Device.30")); //$NON-NLS-1$ //$NON-NLS-2$
 			bAlreadyRefreshing = false;
 			//notify views to refresh
 			ObservationManager.notify(EVENT_DEVICE_REFRESH);		
@@ -304,8 +304,8 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 		Device dSrc = DeviceManager.getDevice(sIdSrc);
 		dSrc.refresh(false);
 		//start message
-		InformationJPanel.getInstance().setMessage(new StringBuffer("Sync. [").
-				append(dSrc.getName()).append(',').append(this.getName()).append("]").
+		InformationJPanel.getInstance().setMessage(new StringBuffer(Messages.getString("Device.31")). //$NON-NLS-1$
+				append(dSrc.getName()).append(',').append(this.getName()).append("]"). //$NON-NLS-1$
 				toString(),InformationJPanel.INFORMATIVE);
 		//in both cases ( bi or uni-directional ), make an unidirectional sync from source device to this one
 		iNbCreatedFilesDest = synchronizeUnidirectonal(dSrc,this);
@@ -320,9 +320,9 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 			}
 		}
 		//end message
-		String sOut = new StringBuffer("Synchronation done in ").append((System.currentTimeMillis()-lTime)/1000)
-			.append(" sec - ").append(iNbCreatedFilesSrc+iNbCreatedFilesDest).append(" created files (").
-			append(lVolume/1048576).append(" MB) ").toString();
+		String sOut = new StringBuffer(Messages.getString("Device.33")).append((System.currentTimeMillis()-lTime)/1000) //$NON-NLS-1$
+			.append(Messages.getString("Device.34")).append(iNbCreatedFilesSrc+iNbCreatedFilesDest).append(Messages.getString("Device.35")). //$NON-NLS-1$ //$NON-NLS-2$
+			append(lVolume/1048576).append(Messages.getString("Device.36")).toString(); //$NON-NLS-1$
 		InformationJPanel.getInstance().setMessage(sOut,InformationJPanel.INFORMATIVE);
 		Log.debug(sOut);
 	}
@@ -342,7 +342,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 		while ( it.hasNext()){
 			Directory dir = (Directory)it.next();
 			if ( dir.getDevice().equals(dSrc)){
-				if (  "n".equals(dir.getProperty(DIRECTORY_OPTION_SYNCHRO_MODE))){  //don't take desynchronized dirs into account
+				if (  "n".equals(dir.getProperty(DIRECTORY_OPTION_SYNCHRO_MODE))){  //don't take desynchronized dirs into account //$NON-NLS-1$
 					hsDesynchroPaths.add(dir.getRelativePath());
 				}
 				else{
@@ -355,7 +355,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 		while ( it.hasNext()){
 			Directory dir = (Directory)it.next();
 			if ( dir.getDevice().equals(dest)){
-				if (  "n".equals(dir.getProperty(DIRECTORY_OPTION_SYNCHRO_MODE))){  //don't take desynchronized dirs into account
+				if (  "n".equals(dir.getProperty(DIRECTORY_OPTION_SYNCHRO_MODE))){  //don't take desynchronized dirs into account //$NON-NLS-1$
 					hsDesynchroPaths.add(dir.getRelativePath());
 				}
 				else{
@@ -391,7 +391,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 			FileFilter filter = new FileFilter() {
 				public boolean accept(File file) {
 					String sExt = Util.getExtension(file).toLowerCase();
-					if (TypeManager.isExtensionSupported(sExt) || "jpg".equals(sExt) || "gif".equals(sExt)){ 
+					if (TypeManager.isExtensionSupported(sExt) || "jpg".equals(sExt) || "gif".equals(sExt)){  //$NON-NLS-1$ //$NON-NLS-2$
 						return true;
 					}
 					return false;
@@ -415,16 +415,16 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 							Util.copy(fSrcFiles[i],fileNewDir);
 							iNbCreatedFiles ++;
 							lVolume += fSrcFiles[i].length();
-							InformationJPanel.getInstance().setMessage(new StringBuffer("Sync. [").
-									append(dSrc.getName()).append(',').append(dest.getName()).append("]  Creating [")
-									.append(fSrcFiles[i].getAbsolutePath()).append("]").
+							InformationJPanel.getInstance().setMessage(new StringBuffer(Messages.getString("Device.41")). //$NON-NLS-1$
+									append(dSrc.getName()).append(',').append(dest.getName()).append(Messages.getString("Device.42")) //$NON-NLS-1$
+									.append(fSrcFiles[i].getAbsolutePath()).append("]"). //$NON-NLS-1$
 									toString(),InformationJPanel.INFORMATIVE);
 						}
 						catch(JajukException je){
 							Messages.showErrorMessage(je.getCode(),new StringBuffer(dest.getUrl()).append(sPath).toString());
 						}
 						catch(Exception e){
-							Messages.showErrorMessage("020",new StringBuffer(dest.getUrl()).append(sPath).toString().toString());
+							Messages.showErrorMessage("020",new StringBuffer(dest.getUrl()).append(sPath).toString().toString()); //$NON-NLS-1$
 						}
 					}
 				}
@@ -511,16 +511,16 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	 */
 	public  void mount() throws Exception{
 		if (bMounted){
-			Messages.showErrorMessage("111");
+			Messages.showErrorMessage("111"); //$NON-NLS-1$
 		}
-		String sOS = (String)System.getProperties().get("os.name");
+		String sOS = (String)System.getProperties().get("os.name"); //$NON-NLS-1$
 		int iExit = 0;
-		if (sOS.trim().toLowerCase().lastIndexOf("windows")==-1 && !getMountPoint().trim().equals("")){  //not a windows
+		if (sOS.trim().toLowerCase().lastIndexOf("windows")==-1 && !getMountPoint().trim().equals("")){  //not a windows //$NON-NLS-1$ //$NON-NLS-2$
 			try{
 				//look to see if the device is already mounted ( the mount command cannot say that )
 				File file = new File(getMountPoint());
 				if ( file.exists() && file.list().length == 0){
-					Process process = Runtime.getRuntime().exec("mount "+getMountPoint());//run the actual mount command
+					Process process = Runtime.getRuntime().exec("mount "+getMountPoint());//run the actual mount command //$NON-NLS-1$
 					iExit = process.waitFor();
 					if ( iExit != 0){  //0: OK, 1:  error
 						throw new Exception();
@@ -528,8 +528,8 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 				}
 			}
 			catch(Exception e){
-				Log.error("011",Integer.toString(iExit),e);	//mount failed
-				Messages.showErrorMessage("011",getName());
+				Log.error("011",Integer.toString(iExit),e);	//mount failed //$NON-NLS-1$
+				Messages.showErrorMessage("011",getName()); //$NON-NLS-1$
 				return;
 			}
 		}
@@ -555,30 +555,30 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 		//look to see if the device is already mounted ( the unix 'mount' command cannot say that )
 		File file = new File(getMountPoint());
 		if (!bMounted || (file.list()!= null && file.list().length==0) ){
-			Messages.showErrorMessage("111"); //already unmounted
+			Messages.showErrorMessage("111"); //already unmounted //$NON-NLS-1$
 			return;
 		}
 		if (!FIFO.canUnmount(this)){ //ask fifo if it doens't use any track from this device
-			Messages.showErrorMessage("121");
+			Messages.showErrorMessage("121"); //$NON-NLS-1$
 			return;
 		}
-		String sOS = (String)System.getProperties().get("os.name");
+		String sOS = (String)System.getProperties().get("os.name"); //$NON-NLS-1$
 		int iExit = 0;
-		if (sOS.trim().toLowerCase().lastIndexOf("windows")==-1 && !getMountPoint().trim().equals("")){  //not a windows
+		if (sOS.trim().toLowerCase().lastIndexOf("windows")==-1 && !getMountPoint().trim().equals("")){  //not a windows //$NON-NLS-1$ //$NON-NLS-2$
 			try{
-				Process process = Runtime.getRuntime().exec("umount "+getMountPoint());
+				Process process = Runtime.getRuntime().exec("umount "+getMountPoint()); //$NON-NLS-1$
 				iExit = process.waitFor();
 				if ( iExit != 0 ){  //0: OK, 1: already mounted
 					throw new Exception();
 				}
 				if ( bEjection){  //jection if required
-					process = Runtime.getRuntime().exec("eject");
+					process = Runtime.getRuntime().exec("eject"); //$NON-NLS-1$
 					process.waitFor();
 				}
 			}
 			catch(Exception e){
-				Log.error("012",Integer.toString(iExit),e);	//mount failed
-				Messages.showErrorMessage("012",getName());
+				Log.error("012",Integer.toString(iExit),e);	//mount failed //$NON-NLS-1$
+				Messages.showErrorMessage("012",getName()); //$NON-NLS-1$
 				return;
 			}
 		}
@@ -600,7 +600,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 			}
 		}
 		catch(Exception e){
-			Messages.showErrorMessage("112");
+			Messages.showErrorMessage("112"); //$NON-NLS-1$
 			return false;
 		}
 		if ( iDeviceType == 0 || iDeviceType == 1 || iDeviceType == 4){  //dir, file cd, ext dd

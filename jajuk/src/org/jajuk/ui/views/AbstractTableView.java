@@ -35,6 +35,7 @@ import javax.swing.table.AbstractTableModel;
 
 import layout.TableLayout;
 
+import org.jajuk.i18n.Messages;
 import org.jajuk.ui.JajukTable;
 import org.jajuk.util.Util;
 
@@ -107,16 +108,6 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 			
 			
 	
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.jajuk.ui.IView#getDesc()
-	 */
-	public String getDesc() {
-		return "Logical table view";
-	}
-	
-	
 	/** Constructor */
 	public AbstractTableView(){
 	}
@@ -133,15 +124,15 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 			{{0.15,iXspace,0.4,iXspace,10,iXspace,0.4,2*iXspace,80},
 			{22}};
 		jpControl.setLayout(new TableLayout(sizeControl));
-		jlFilter = new JLabel("Filter: ");
+		jlFilter = new JLabel(Messages.getString("AbstractTableView.0")); //$NON-NLS-1$
 		jcbProperty = new JComboBox();
-		jcbProperty.setToolTipText("Property to filter");
+		jcbProperty.setToolTipText(Messages.getString("AbstractTableView.1")); //$NON-NLS-1$
 		jcbProperty.setMinimumSize(new Dimension(150,20));
 		jcbProperty.setPreferredSize(new Dimension(200,20));
 		jcbProperty.setMaximumSize(new Dimension(200,20));
-		jlEquals = new JLabel("=");
+		jlEquals = new JLabel("="); //$NON-NLS-1$
 		jtfValue = new JTextField();
-		jtfValue.setToolTipText("Value to be used by the filter");
+		jtfValue.setToolTipText(Messages.getString("AbstractTableView.3")); //$NON-NLS-1$
 		jtfValue.setMinimumSize(new Dimension(150,20));
 		jtfValue.setPreferredSize(new Dimension(200,20));
 		jtfValue.setMaximumSize(new Dimension(200,20));
@@ -152,19 +143,19 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 		jbApplyFilter = new JButton(Util.getIcon(ICON_APPLY_FILTER));
 		jbClearFilter = new JButton(Util.getIcon(ICON_CLEAR_FILTER));
 		jbAdvancedFilter = new JButton(Util.getIcon(ICON_ADVANCED_FILTER));
-		jbApplyFilter.setToolTipText("Apply filter");
-		jbClearFilter.setToolTipText("Clear the filter");
-		jbAdvancedFilter.setToolTipText("Apply an advanced filter");
+		jbApplyFilter.setToolTipText(Messages.getString("AbstractTableView.4")); //$NON-NLS-1$
+		jbClearFilter.setToolTipText(Messages.getString("AbstractTableView.5")); //$NON-NLS-1$
+		jbAdvancedFilter.setToolTipText(Messages.getString("AbstractTableView.6")); //$NON-NLS-1$
 		jbAdvancedFilter.setEnabled(false);  //TBI
 		jtbControl.add(jbApplyFilter);
 		jtbControl.add(jbClearFilter);
 		jtbControl.add(jbAdvancedFilter);
 		
-		jpControl.add(jlFilter,"0,0");
-		jpControl.add(jcbProperty,"2,0");
-		jpControl.add(jlEquals,"4,0");
-		jpControl.add(jtfValue,"6,0");
-		jpControl.add(jtbControl,"8,0");
+		jpControl.add(jlFilter,"0,0"); //$NON-NLS-1$
+		jpControl.add(jcbProperty,"2,0"); //$NON-NLS-1$
+		jpControl.add(jlEquals,"4,0"); //$NON-NLS-1$
+		jpControl.add(jtfValue,"6,0"); //$NON-NLS-1$
+		jpControl.add(jtbControl,"8,0"); //$NON-NLS-1$
 		
 		
 		//add 
@@ -172,7 +163,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 		{{0.99},
 		{30,0.99}};
 		setLayout(new TableLayout(size));
-		add(jpControl,"0,0");
+		add(jpControl,"0,0"); //$NON-NLS-1$
 	}	
 	
 	/**Fill the tree */
@@ -203,7 +194,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 		//table
 		TracksTableModel model = new TracksTableModel();
 		jtable = new JajukTable(model);
-		add(new JScrollPane(jtable),"0,1");
+		add(new JScrollPane(jtable),"0,1"); //$NON-NLS-1$
 		jtable.addMouseListener(this);
 	}
 }

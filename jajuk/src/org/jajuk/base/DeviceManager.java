@@ -103,7 +103,7 @@ public class DeviceManager implements ITechnicalStrings{
 	 */
 	public static synchronized void removeDevice(Device device){
 		if (device.isMounted() || device.isRefreshing()){
-			Messages.showErrorMessage("013");
+			Messages.showErrorMessage("013"); //$NON-NLS-1$
 			return;
 		}
 		alDevices.remove(device);

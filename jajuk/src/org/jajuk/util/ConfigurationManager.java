@@ -100,23 +100,23 @@ public class ConfigurationManager implements ITechnicalStrings{
 		properties.put(CONF_OPTIONS_HIDE_UNMOUNTED,FALSE);
 		properties.put(CONF_OPTIONS_RESTART,TRUE);
 		properties.put(CONF_OPTIONS_COVER,TRUE);
-		String sLanguage = System.getProperty("user.language");
+		String sLanguage = System.getProperty("user.language"); //$NON-NLS-1$
 		if (Messages.getLocals().contains(sLanguage)){
 			properties.put(CONF_OPTIONS_LANGUAGE,sLanguage);
 		}
 		else{
-			properties.put(CONF_OPTIONS_LANGUAGE,"en");
+			properties.put(CONF_OPTIONS_LANGUAGE,"en"); //$NON-NLS-1$
 		}
 		properties.put(CONF_OPTIONS_LNF,LNF_LIQUID);
 		properties.put(CONF_OPTIONS_LOG_LEVEL,Integer.toString(Log.WARNING));
-		properties.put(CONF_OPTIONS_INTRO_BEGIN,"0");
-		properties.put(CONF_OPTIONS_INTRO_LENGTH,"20");
+		properties.put(CONF_OPTIONS_INTRO_BEGIN,"0"); //$NON-NLS-1$
+		properties.put(CONF_OPTIONS_INTRO_LENGTH,"20"); //$NON-NLS-1$
 		properties.put(CONF_STARTUP_MODE,STARTUP_MODE_LAST);
 		properties.put(CONF_OPTIONS_P2P_SHARE,FALSE);
 		properties.put(CONF_OPTIONS_P2P_ADD_REMOTE_PROPERTIES,FALSE);
 		properties.put(CONF_OPTIONS_P2P_HIDE_LOCAL_PROPERTIES,TRUE);
-		properties.put(CONF_HISTORY,"-1");
-		properties.put(CONF_OPTIONS_P2P_PASSWORD,"");
+		properties.put(CONF_HISTORY,"-1"); //$NON-NLS-1$
+		properties.put(CONF_OPTIONS_P2P_PASSWORD,""); //$NON-NLS-1$
 		properties.put(CONF_TAGS_DEEP_SCAN,FALSE);
 		properties.put(CONF_TAGS_USE_PARENT_DIR,TRUE);
 		properties.put(CONF_FIRST_CON,TRUE);
@@ -135,10 +135,10 @@ public class ConfigurationManager implements ITechnicalStrings{
 	/** Commit properties in a file */
 	public static void commit(){
 		try {
-			properties.store(new FileOutputStream(FILE_CONFIGURATION),"User configuration");
+			properties.store(new FileOutputStream(FILE_CONFIGURATION),"User configuration"); //$NON-NLS-1$
 		} catch (IOException e) {
-			Log.error("113",e);
-			Messages.showErrorMessage("113");
+			Log.error("113",e); //$NON-NLS-1$
+			Messages.showErrorMessage("113"); //$NON-NLS-1$
 		}
 		
 	}
@@ -148,8 +148,8 @@ public class ConfigurationManager implements ITechnicalStrings{
 		try {
 			properties.load(new FileInputStream(FILE_CONFIGURATION));
 		} catch (IOException e) {
-			Log.error("114", e);
-			Messages.showErrorMessage("114");
+			Log.error("114", e); //$NON-NLS-1$
+			Messages.showErrorMessage("114"); //$NON-NLS-1$
 		}
 
 	}

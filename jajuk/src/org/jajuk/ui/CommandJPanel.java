@@ -137,7 +137,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		jcbHistory.setMinimumSize(new Dimension(100,20));
 		jcbHistory.setPreferredSize(new Dimension(270,20));
 		jcbHistory.setPopupWidth(1000);
-		jcbHistory.setToolTipText(Messages.getString("CommandJPanel.play_history_1")); //$NON-NLS-1$
+		jcbHistory.setToolTipText(Messages.getString("CommandJPanel.0")); //$NON-NLS-1$
 		jcbHistory.addActionListener(this);
 		jtbHistory.add(jcbHistory);
 		jtbHistory.add(Box.createHorizontalGlue());
@@ -156,7 +156,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		}
 		jbRepeat = new JButton(ii); 
 		jbRepeat.setActionCommand(EVENT_REPEAT_MODE_STATUS_CHANGED);
-		jbRepeat.setToolTipText("Repeat mode : play tracks in a loop");
+		jbRepeat.setToolTipText(Messages.getString("CommandJPanel.1")); //$NON-NLS-1$
 		jbRepeat.addActionListener(JajukListener.getInstance());
 		jtbMode.add(jbRepeat);
 		if ( ConfigurationManager.getBoolean(CONF_STATE_SHUFFLE)){
@@ -166,7 +166,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 			ii = Util.getIcon(ICON_SHUFFLE_OFF);
 		}
 		jbRandom = new JButton(ii);
-		jbRandom.setToolTipText(Messages.getString("CommandJPanel.shuffle_mode___play_a_random_track_from_the_selection_2")); //$NON-NLS-1$
+		jbRandom.setToolTipText(Messages.getString("CommandJPanel.2")); //$NON-NLS-1$
 		jbRandom.setActionCommand(EVENT_SHUFFLE_MODE_STATUS_CHANGED);
 		jbRandom.addActionListener(JajukListener.getInstance());
 		jtbMode.add(jbRandom);
@@ -177,7 +177,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 			ii = Util.getIcon(ICON_CONTINUE_OFF);
 		}
 		jbContinue = new JButton(ii); 
-		jbContinue.setToolTipText(Messages.getString("CommandJPanel.continue_mode___continue_to_play_next_tracks_when_finished_3")); //$NON-NLS-1$
+		jbContinue.setToolTipText(Messages.getString("CommandJPanel.3")); //$NON-NLS-1$
 		jbContinue.setActionCommand(EVENT_CONTINUE_MODE_STATUS_CHANGED);
 		jbContinue.addActionListener(JajukListener.getInstance());
 		jtbMode.add(jbContinue);
@@ -188,7 +188,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 			ii = Util.getIcon(ICON_INTRO_OFF);
 		}
 		jbIntro = new JButton(ii); 
-		jbIntro.setToolTipText(Messages.getString("CommandJPanel.intro_mode___play_just_a_part_of_each_track_offset_and_time_can_be_set_in_the_parameters_view_4")); //$NON-NLS-1$
+		jbIntro.setToolTipText(Messages.getString("CommandJPanel.4")); //$NON-NLS-1$
 		jbIntro.setActionCommand(EVENT_INTRO_MODE_STATUS_CHANGED);
 		jbIntro.addActionListener(JajukListener.getInstance());
 		jtbMode.add(jbIntro);
@@ -201,15 +201,15 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		jtbSpecial.setRollover(true);
 		jbGlobalRandom = new JButton(Util.getIcon(ICON_ROLL)); 
 		jbGlobalRandom.addActionListener(this);
-		jbGlobalRandom.setToolTipText(Messages.getString("CommandJPanel.Play_a_shuffle_selection_from_the_entire_collection_1")); //$NON-NLS-1$
+		jbGlobalRandom.setToolTipText(Messages.getString("CommandJPanel.5")); //$NON-NLS-1$
 		jtbSpecial.add(jbGlobalRandom);
 		jbBestof = new JButton(Util.getIcon(ICON_BESTOF)); 
 		jbBestof.addActionListener(this);
-		jbBestof.setToolTipText(Messages.getString("CommandJPanel.Play_your_own_favorite_tracks_2")); //$NON-NLS-1$
+		jbBestof.setToolTipText(Messages.getString("CommandJPanel.6")); //$NON-NLS-1$
 		jtbSpecial.add(jbBestof);
 		jbMute = new JButton(Util.getIcon(ICON_MUTE)); 
 		jbMute.addActionListener(this);
-		jbMute.setToolTipText(Messages.getString("CommandJPanel.Turn_sound_off_3")); //$NON-NLS-1$
+		jbMute.setToolTipText(Messages.getString("CommandJPanel.7")); //$NON-NLS-1$
 		jtbSpecial.add(jbMute);
 		jtbSpecial.add(Box.createHorizontalGlue());
 		
@@ -219,31 +219,31 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		jtbPlay.setFloatable(false);
 		jtbPlay.add(Box.createHorizontalGlue());
 		jbPrevious = new JButton(Util.getIcon(ICON_PREVIOUS)); 
-		jbPrevious.setToolTipText(Messages.getString("CommandJPanel.Play_previous_track_in_current_selection_4")); //$NON-NLS-1$
+		jbPrevious.setToolTipText(Messages.getString("CommandJPanel.8")); //$NON-NLS-1$
 		jbPrevious.addActionListener(this);
 		jtbPlay.add(jbPrevious);
 		jbNext = new JButton(Util.getIcon(ICON_NEXT)); 
-		jbNext.setToolTipText(Messages.getString("CommandJPanel.Play_next_track_in_current_selection_5")); //$NON-NLS-1$
+		jbNext.setToolTipText(Messages.getString("CommandJPanel.9")); //$NON-NLS-1$
 		jbNext.addActionListener(this);
 		jtbPlay.add(jbNext);
 		jtbPlay.addSeparator();
 		jbRew = new JButton(Util.getIcon(ICON_REW)); 
 		jbRew.setEnabled(false);
-		jbRew.setToolTipText(Messages.getString("CommandJPanel.Fast_rewind_in_current_track_6")); //$NON-NLS-1$
+		jbRew.setToolTipText(Messages.getString("CommandJPanel.10")); //$NON-NLS-1$
 		jbRew.addActionListener(this);
 		jtbPlay.add(jbRew);
 		jbPlayPause = new JButton(Util.getIcon(ICON_PAUSE)); 
-		jbPlayPause.setToolTipText(Messages.getString("CommandJPanel.Play/pause_current_track_7")); //$NON-NLS-1$
+		jbPlayPause.setToolTipText(Messages.getString("CommandJPanel.11")); //$NON-NLS-1$
 		jbPlayPause.setEnabled(false);
 		jbPlayPause.addActionListener(this);
 		jtbPlay.add(jbPlayPause);
 		jbStop = new JButton(Util.getIcon(ICON_STOP)); 
-		jbStop.setToolTipText(Messages.getString("CommandJPanel.Stop_current_track_8")); //$NON-NLS-1$
+		jbStop.setToolTipText(Messages.getString("CommandJPanel.12")); //$NON-NLS-1$
 		jbStop.addActionListener(this);
 		jbStop.setEnabled(false);
 		jtbPlay.add(jbStop);
 		jbFwd = new JButton(Util.getIcon(ICON_FWD)); 
-		jbFwd.setToolTipText(Messages.getString("CommandJPanel.Fast_forward_in_current_track_9")); //$NON-NLS-1$
+		jbFwd.setToolTipText(Messages.getString("CommandJPanel.13")); //$NON-NLS-1$
 		jbFwd.setEnabled(false);
 		jbFwd.addActionListener(this);
 		jtbPlay.add(jbFwd);
@@ -256,7 +256,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		jlVolume = new JLabel(Util.getIcon(ICON_VOLUME)); 
 		jtbVolume.add(jlVolume);
 		jsVolume = new JSlider(0,100,50);
-		jsVolume.setToolTipText(Messages.getString("CommandJPanel.Volume_1")); //$NON-NLS-1$
+		jsVolume.setToolTipText(Messages.getString("CommandJPanel.14")); //$NON-NLS-1$
 		jsVolume.addChangeListener(this);
 		jtbVolume.add(jsVolume);
 		jtbVolume.add(Box.createHorizontalGlue());
@@ -270,18 +270,18 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		jsPosition = new JSlider(0,100,0);
 		jsPosition.addChangeListener(this);
 		jsPosition.setEnabled(false);
-		jsPosition.setToolTipText(Messages.getString("CommandJPanel.Go_to_this_position_in_the_played_track_2")); //$NON-NLS-1$
+		jsPosition.setToolTipText(Messages.getString("CommandJPanel.15")); //$NON-NLS-1$
 		jtbPosition.add(jsPosition);
 		jtbPosition.add(Box.createHorizontalGlue());
 				
 		//add toolbars to main panel
-		add(jtbSearch,"0,0");
-		add(jtbHistory,"2,0");
-		add(jtbMode,"4,0");
-		add(jtbSpecial,"6,0");
-		add(jtbPlay,"8,0");
-		add(jtbVolume,"10,0");
-		add(jtbPosition,"12,0");
+		add(jtbSearch,"0,0"); //$NON-NLS-1$
+		add(jtbHistory,"2,0"); //$NON-NLS-1$
+		add(jtbMode,"4,0"); //$NON-NLS-1$
+		add(jtbSpecial,"6,0"); //$NON-NLS-1$
+		add(jtbPlay,"8,0"); //$NON-NLS-1$
+		add(jtbVolume,"10,0"); //$NON-NLS-1$
+		add(jtbPosition,"12,0"); //$NON-NLS-1$
 		
 		//register to player events
 		ObservationManager.register(EVENT_PLAYER_PLAY,this);
@@ -331,7 +331,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 					FIFO.getInstance().push(file,false);
 				}
 				else{
-					Messages.showErrorMessage("120",file.getDirectory().getDevice().getName());
+					Messages.showErrorMessage("120",file.getDirectory().getDevice().getName()); //$NON-NLS-1$
 					jcbHistory.setSelectedItem(null);
 				}
 			}

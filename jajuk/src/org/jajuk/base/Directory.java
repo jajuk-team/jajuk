@@ -77,7 +77,7 @@ public class Directory extends PropertyAdapter implements Comparable{
 	 * toString method
 	 */
 	public String toString() {
-		return "Directory[ID=" + sId + " Name=" + getRelativePath() + " Parent ID=" + (dParent == null ? "null" : dParent.getId()) + " Device=" + device.getName() + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$
+		return "Directory[ID=" + sId + " Name=" + getRelativePath() + " Parent ID=" + (dParent == null ? "null" : dParent.getId()) + " Device=" + device.getName() + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$ //$NON-NLS-6$
 	}
 
 	/**
@@ -86,19 +86,19 @@ public class Directory extends PropertyAdapter implements Comparable{
 	 * @return
 	 */
 	public String toXml() {
-		StringBuffer sb = new StringBuffer("\t\t<directory id='" + sId);
-		sb.append("' name='");
+		StringBuffer sb = new StringBuffer("\t\t<directory id='" + sId); //$NON-NLS-1$
+		sb.append("' name='"); //$NON-NLS-1$
 		sb.append(Util.formatXML(sName));
-		sb.append("' parent='");
-		String sParent = "-1";
+		sb.append("' parent='"); //$NON-NLS-1$
+		String sParent = "-1"; //$NON-NLS-1$
 		if (dParent!=null){
 			sParent = dParent.getId();
 		}
 		sb.append(sParent);
-		sb.append("' device='");
-		sb.append(device.getId()).append("' ");
+		sb.append("' device='"); //$NON-NLS-1$
+		sb.append(device.getId()).append("' "); //$NON-NLS-1$
 		sb.append(getPropertiesXml());
-		sb.append("/>\n");
+		sb.append("/>\n"); //$NON-NLS-1$
 		return sb.toString();
 	}
 
@@ -274,8 +274,8 @@ public class Directory extends PropertyAdapter implements Comparable{
 		if (sAbs!=null){
 			return sAbs;
 		}
-		if (getName().equals("")){  //if this directory is a root device directory
-			sAbs = "";
+		if (getName().equals("")){  //if this directory is a root device directory //$NON-NLS-1$
+			sAbs = ""; //$NON-NLS-1$
 			return sAbs;
 		}
 		StringBuffer sbOut = new StringBuffer().append(java.io.File.separatorChar).append(getName());
@@ -283,7 +283,7 @@ public class Directory extends PropertyAdapter implements Comparable{
 		Directory dCurrent = this;
 		while (!bTop) {
 			dCurrent = dCurrent.getParentDirectory();
-			if (dCurrent != null && !dCurrent.getName().equals("")) { //if it is the root directory, no parent
+			if (dCurrent != null && !dCurrent.getName().equals("")) { //if it is the root directory, no parent //$NON-NLS-1$
 				sbOut.insert(0, java.io.File.separatorChar).insert(1, dCurrent.getName());
 			} else {
 				bTop = true;

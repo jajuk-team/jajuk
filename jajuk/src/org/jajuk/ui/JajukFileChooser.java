@@ -35,7 +35,7 @@ public class JajukFileChooser extends JFileChooser {
 	javax.swing.filechooser.FileFilter filter;
 
 	public JajukFileChooser() {
-		setDialogTitle(Messages.getString("JajukFileChooser.Please_choose_track(s)_to_play_1")); //$NON-NLS-1$
+		setDialogTitle(Messages.getString("JajukFileChooser.0")); //$NON-NLS-1$
 		setFileFilter( JajukFileFilter.getInstance());
 		setMultiSelectionEnabled(true);
 

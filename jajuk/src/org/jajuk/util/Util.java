@@ -67,32 +67,32 @@ public class Util implements ITechnicalStrings {
 	 * Genres
 	 */
 	public static final String [] genres = {
-		"Blues","Classic Rock","Country","Dance","Disco","Funk","Grunge",
-		"Hip-Hop","Jazz","Metal","New Age","Oldies","Other","Pop","R&B",
-		"Rap","Reggae","Rock","Techno","Industrial","Alternative","Ska",
-		"Death Metal","Pranks","Soundtrack","Euro-Techno","Ambient",
-		"Trip-Hop","Vocal","Jazz+Funk","Fusion","Trance","Classical",
-		"Instrumental","Acid","House","Game","Sound Clip","Gospel",
-		"Noise","AlternRock","Bass","Soul","Punk","Space","Meditative",
-		"Instrumental Pop","Instrumental Rock","Ethnic","Gothic",
-		"Darkwave","Techno-Industrial","Electronic","Pop-Folk",
-		"Eurodance","Dream","Southern Rock","Comedy","Cult","Gangsta",
-		"Top 40","Christian Rap","Pop/Funk","Jungle","Native American",
-		"Cabaret","New Wave","Psychedelic","Rave","Showtunes","Trailer",
-		"Lo-Fi","Tribal","Acid Punk","Acid Jazz","Polka","Retro",
-		"Musical","Rock & Roll","Hard Rock","Folk","Folk-Rock",
-		"National Folk","Swing","Fast Fusion","Bebob","Latin","Revival",
-		"Celtic","Bluegrass","Avantgarde","Gothic Rock",
-		"Progressive Rock","Psychedelic Rock","Symphonic Rock",
-		"Slow Rock","Big Band","Chorus","Easy Listening","Acoustic",
-		"Humour","Speech","Chanson","Opera","Chamber Music","Sonata",
-		"Symphony","Booty Brass","Primus","Porn Groove","Satire",
-		"Slow Jam","Club","Tango","Samba","Folklore","Ballad",
-		"Power Ballad","Rhytmic Soul","Freestyle","Duet","Punk Rock",
-		"Drum Solo","Acapella","Euro-House","Dance Hall", "Goa","Drum & Bass","Club-House","Hardcore",
-		"Terror","Indie","BritPop","Negerpunk","Polsk Punk","Beat","Christian Gangsta","Heavy Metal",
-		"Black Metal","Crossover","Contemporary C","Christian Rock","Merengue","Salsa","Thrash Metal",
-		"Anime","JPop","SynthPop"};
+		"Blues","Classic Rock","Country","Dance","Disco","Funk","Grunge", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+		"Hip-Hop","Jazz","Metal","New Age","Oldies","Other","Pop","R&B", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
+		"Rap","Reggae","Rock","Techno","Industrial","Alternative","Ska", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+		"Death Metal","Pranks","Soundtrack","Euro-Techno","Ambient", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		"Trip-Hop","Vocal","Jazz+Funk","Fusion","Trance","Classical", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+		"Instrumental","Acid","House","Game","Sound Clip","Gospel", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+		"Noise","AlternRock","Bass","Soul","Punk","Space","Meditative", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+		"Instrumental Pop","Instrumental Rock","Ethnic","Gothic", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		"Darkwave","Techno-Industrial","Electronic","Pop-Folk", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		"Eurodance","Dream","Southern Rock","Comedy","Cult","Gangsta", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+		"Top 40","Christian Rap","Pop/Funk","Jungle","Native American", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		"Cabaret","New Wave","Psychedelic","Rave","Showtunes","Trailer", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+		"Lo-Fi","Tribal","Acid Punk","Acid Jazz","Polka","Retro", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+		"Musical","Rock & Roll","Hard Rock","Folk","Folk-Rock", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		"National Folk","Swing","Fast Fusion","Bebob","Latin","Revival", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+		"Celtic","Bluegrass","Avantgarde","Gothic Rock", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		"Progressive Rock","Psychedelic Rock","Symphonic Rock", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		"Slow Rock","Big Band","Chorus","Easy Listening","Acoustic", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		"Humour","Speech","Chanson","Opera","Chamber Music","Sonata", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+		"Symphony","Booty Brass","Primus","Porn Groove","Satire", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		"Slow Jam","Club","Tango","Samba","Folklore","Ballad", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+		"Power Ballad","Rhytmic Soul","Freestyle","Duet","Punk Rock", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		"Drum Solo","Acapella","Euro-House","Dance Hall", "Goa","Drum & Bass","Club-House","Hardcore", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
+		"Terror","Indie","BritPop","Negerpunk","Polsk Punk","Beat","Christian Gangsta","Heavy Metal", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
+		"Black Metal","Crossover","Contemporary C","Christian Rock","Merengue","Salsa","Thrash Metal", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+		"Anime","JPop","SynthPop"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	
 	/** Mute state*/
 	private static boolean bMute;
@@ -135,13 +135,13 @@ public class Util implements ITechnicalStrings {
 			new File(path);
 		}
 		catch(Exception e){
-			throw new JajukException("009",e);
+			throw new JajukException("009",e); //$NON-NLS-1$
 		}
 		FileReader fileReader;
 		try {
 			fileReader = new FileReader(file);
 		} catch (FileNotFoundException e) {
-			JajukException te = new JajukException("009", path, e);
+			JajukException te = new JajukException("009", path, e); //$NON-NLS-1$
 			throw te;
 		}
 		BufferedReader input = new BufferedReader(fileReader);
@@ -154,7 +154,7 @@ public class Util implements ITechnicalStrings {
 				strColl.append(line);
 			}
 		} catch (IOException e) {
-			JajukException te = new JajukException("009", path, e);
+			JajukException te = new JajukException("009", path, e); //$NON-NLS-1$
 			throw te;
 		}
 
@@ -162,7 +162,7 @@ public class Util implements ITechnicalStrings {
 		try {
 			input.close();
 		} catch (IOException e) {
-			JajukException te = new JajukException("009", path, e);
+			JajukException te = new JajukException("009", path, e); //$NON-NLS-1$
 			throw te;
 		}
 
@@ -196,7 +196,7 @@ public class Util implements ITechnicalStrings {
 		// Close the bufferedReader
 		is.close();
 		} catch (IOException e) {
-			JajukException te = new JajukException("009", e);
+			JajukException te = new JajukException("009", e); //$NON-NLS-1$
 			throw te;
 		}
 		return sb;
@@ -217,11 +217,11 @@ public class Util implements ITechnicalStrings {
 	 * @return
 	 */
 	public static String formatXML(String s){
-		String sOut = s.replaceAll("&","&amp;");
-		sOut = sOut.replaceAll("\'","&apos;");
-		sOut = sOut.replaceAll("\"","&quot;");
-		sOut = sOut.replaceAll("<","&lt;");
-		sOut = sOut.replaceAll(">","&qt;");
+		String sOut = s.replaceAll("&","&amp;"); //$NON-NLS-1$ //$NON-NLS-2$
+		sOut = sOut.replaceAll("\'","&apos;"); //$NON-NLS-1$ //$NON-NLS-2$
+		sOut = sOut.replaceAll("\"","&quot;"); //$NON-NLS-1$ //$NON-NLS-2$
+		sOut = sOut.replaceAll("<","&lt;"); //$NON-NLS-1$ //$NON-NLS-2$
+		sOut = sOut.replaceAll(">","&qt;"); //$NON-NLS-1$ //$NON-NLS-2$
 		return sOut;
 	}
 	
@@ -242,13 +242,13 @@ public class Util implements ITechnicalStrings {
 			return genres[i];
 		}
 		else{
-			return Messages.getString("Track_unknown_style");
+			return Messages.getString("unknown_style"); //$NON-NLS-1$
 		}
 	}	
 	
 	/**Format a time (ms) to a human readable format*/
 	public static String formatTime(long l){
-		String sOut = new SimpleDateFormat("HH:mm:ss").format(new Date(l+82800000));
+		String sOut = new SimpleDateFormat("HH:mm:ss").format(new Date(l+82800000)); //$NON-NLS-1$
 		return sOut;
 	}
 	
@@ -344,7 +344,7 @@ public class Util implements ITechnicalStrings {
 	 */
 	public static void saveFile(File file){
 		try{
-			File fileNew = new File(file.getAbsolutePath()+"~");
+			File fileNew = new File(file.getAbsolutePath()+"~"); //$NON-NLS-1$
 			FileChannel fcSrc = new FileInputStream(file).getChannel();
 	        FileChannel fcDest = new FileOutputStream(fileNew).getChannel();
 	        fcDest.transferFrom(fcSrc, 0, fcSrc.size());
@@ -363,13 +363,13 @@ public class Util implements ITechnicalStrings {
 	 * @param directory : destination directory
 	 */
 	public static void copy(File file,File directory) throws Exception{
-		Log.debug("Copying: "+file.getAbsolutePath() +"  to : "+directory.getAbsolutePath());
-		File fileNew = new File(new StringBuffer(directory.getAbsolutePath()).append("/").append(file.getName()).toString());
+		Log.debug("Copying: "+file.getAbsolutePath() +"  to : "+directory.getAbsolutePath()); //$NON-NLS-1$ //$NON-NLS-2$
+		File fileNew = new File(new StringBuffer(directory.getAbsolutePath()).append("/").append(file.getName()).toString()); //$NON-NLS-1$
 		if ( !file.exists() || !file.canRead() ){
-			throw new JajukException("023",file.getAbsolutePath(),null);
+			throw new JajukException("023",file.getAbsolutePath(),null); //$NON-NLS-1$
 		}
 		if (  !fileNew.getParentFile().canWrite() ){
-			throw new JajukException("024",file.getAbsolutePath(),null);
+			throw new JajukException("024",file.getAbsolutePath(),null); //$NON-NLS-1$
 		}
 		FileChannel fcSrc = new FileInputStream(file).getChannel();
         FileChannel fcDest = new FileOutputStream(fileNew).getChannel();
@@ -485,7 +485,7 @@ public class Util implements ITechnicalStrings {
      * @return
      */
     public static String getFileChecksum(File fio ){
-    	String sOut = "";
+    	String sOut = ""; //$NON-NLS-1$
     	try{
     		FileChannel fc = new FileInputStream(fio).getChannel();
     		ByteBuffer bb = ByteBuffer.allocate(10);
@@ -494,7 +494,7 @@ public class Util implements ITechnicalStrings {
     		sOut = new String(bb.array());
     	}
     	catch(Exception e){
-    		Log.error("000",fio.getAbsolutePath(),e);	
+    		Log.error("000",fio.getAbsolutePath(),e);	 //$NON-NLS-1$
     	}
     	return sOut;
     }

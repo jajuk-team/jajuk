@@ -58,9 +58,9 @@ public class Log implements ITechnicalStrings{
 	Log () {
 		try {
 			//--create console+file logger
-			logger = Logger.getLogger("norm"); 
+			logger = Logger.getLogger("norm");  //$NON-NLS-1$
 			logger.setLevel(Level.INFO);  
-			loggerDebug = Logger.getLogger("debug");
+			loggerDebug = Logger.getLogger("debug"); //$NON-NLS-1$
 			loggerDebug.setLevel(Level.DEBUG);
 			loggerDebug.addAppender(new ConsoleAppender(new PatternLayout(LOG_PATTERN)));
 			//add appenders: display message at the same time in the log file and on the console
@@ -69,11 +69,11 @@ public class Log implements ITechnicalStrings{
 			logger.addAppender(fileAppender);
 			logger.addAppender(new ConsoleAppender(new PatternLayout(LOG_PATTERN)));
 			//message for logging system start
-			Log.info(Messages.getString("Log.new_session")); //$NON-NLS-1$
-			Log.info(Messages.getString("Log.Logging_system_correctly_started_4")); //$NON-NLS-1$
+			Log.info(Messages.getString("Log.2")); //$NON-NLS-1$
+			Log.info(Messages.getString("Log.3")); //$NON-NLS-1$
 		} catch (Exception e) {
 			Log.stack(e);
-			System.out.println(Messages.getString("Log.Error_during_logging_system_startup_5")); //$NON-NLS-1$
+			System.out.println(Messages.getString("Log.4")); //$NON-NLS-1$
 		}
 	}
 	
@@ -117,7 +117,7 @@ public class Log implements ITechnicalStrings{
 	 * @param t the exception itself
 	 **/
 	public static void error(String sCode,String sInfosup,Throwable t){
-		logger.error('('+sCode+") "+Messages.getErrorMessage(sCode)+ ((sInfosup==null)?"":":"+sInfosup),t);
+		logger.error('('+sCode+") "+Messages.getErrorMessage(sCode)+ ((sInfosup==null)?"":":"+sInfosup),t); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 	
 	/**
@@ -125,7 +125,7 @@ public class Log implements ITechnicalStrings{
 	 * @param t the exception itself
 	 **/
 	public static void error(Throwable t){
-		logger.error("",t);
+		logger.error("",t); //$NON-NLS-1$
 	}
 	
 	/**

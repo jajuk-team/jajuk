@@ -98,7 +98,7 @@ public class Track extends PropertyAdapter implements Comparable{
 	 * toString method
 	 */
 	public String toString() {
-		String sOut = "Track[ID="+sId+" Name=" + getName() + " "+album+" "+style+" "+author+" Length="+length+" Year="+sYear+" Rate="+lRate+" "+type+" Hits="+iHits+" Addition date="+sAdditionDate+"]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		String sOut = "Track[ID="+sId+" Name=" + getName() + " "+album+" "+style+" "+author+" Length="+length+" Year="+sYear+" Rate="+lRate+" "+type+" Hits="+iHits+" Addition date="+sAdditionDate+"]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$ //$NON-NLS-12$
 		for (int i=0;i<alFiles.size();i++){
 			sOut += '\n'+alFiles.get(i).toString();
 		}

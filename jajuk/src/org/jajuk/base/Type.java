@@ -81,7 +81,7 @@ public class Type extends PropertyAdapter{
 	 * toString method
 	 */
 	public String toString(){
-			return "Type[ID="+sId+" Name="+getName()+ " ; Extension="+sExtension+"]";	 //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			return "Type[ID="+sId+" Name="+getName()+ " ; Extension="+sExtension+"]";	 //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 	}
 	
 	/**
@@ -89,13 +89,13 @@ public class Type extends PropertyAdapter{
 	 * @return
 	 */
 	public String toXml(){
-		StringBuffer sb = new StringBuffer("\t\t<type id='" +sId);
-		sb.append("' name='");
-		sb.append(Util.formatXML(sName)).append("' extension='");
-		sb.append(sExtension).append("' player_impl='");
-		sb.append(playerImpl.getClass().getName()).append("' tag_impl='");
-		sb.append((tagImpl==null)?"":tagImpl.getClass().getName()).append("' music='");
-		sb.append(bIsMusic).append("'/>\n");
+		StringBuffer sb = new StringBuffer("\t\t<type id='" +sId); //$NON-NLS-1$
+		sb.append("' name='"); //$NON-NLS-1$
+		sb.append(Util.formatXML(sName)).append("' extension='"); //$NON-NLS-1$
+		sb.append(sExtension).append("' player_impl='"); //$NON-NLS-1$
+		sb.append(playerImpl.getClass().getName()).append("' tag_impl='"); //$NON-NLS-1$
+		sb.append((tagImpl==null)?"":tagImpl.getClass().getName()).append("' music='"); //$NON-NLS-1$ //$NON-NLS-2$
+		sb.append(bIsMusic).append("'/>\n"); //$NON-NLS-1$
 		return sb.toString();
 	}
 

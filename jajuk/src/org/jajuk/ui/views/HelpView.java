@@ -74,7 +74,7 @@ public class HelpView extends ViewAdapter{
 		try{
 			setLayout(new BoxLayout(this,BoxLayout.X_AXIS));
 			ClassLoader cl = HelpView.class.getClassLoader();
-			URL url = HelpSet.findHelpSet(cl,"jajuk.hs",new Locale(ConfigurationManager.getProperty(CONF_OPTIONS_LANGUAGE)));
+			URL url = HelpSet.findHelpSet(cl,"jajuk.hs",new Locale(ConfigurationManager.getProperty(CONF_OPTIONS_LANGUAGE))); //$NON-NLS-1$
 			hs= new HelpSet(null,url);
 			hb = hs.createHelpBroker();
 			jhelp = new JHelp(hs);
@@ -89,14 +89,14 @@ public class HelpView extends ViewAdapter{
 	 * @see org.jajuk.ui.IView#getDesc()
 	 */
 	public String getDesc() {
-		return "Help view";	
+		return "Help view";	 //$NON-NLS-1$
 	}
 
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.IView#getViewName()
 	 */
 	public String getViewName() {
-		return "org.jajuk.ui.views.HelpView";
+		return "org.jajuk.ui.views.HelpView"; //$NON-NLS-1$
 	}
 
 	

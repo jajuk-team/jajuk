@@ -31,6 +31,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 
+import org.jajuk.i18n.Messages;
 import org.jajuk.util.Util;
 import org.jfree.ui.about.AboutPanel;
 import org.jfree.ui.about.Contributor;
@@ -66,7 +67,7 @@ public class AboutView extends ViewAdapter {
 	private JTabbedPane jtp;
 	
 	/**Additional informations */
-	private static final String INFOS = "http://jajuk.sourceforge.net";
+	private static final String INFOS = "http://jajuk.sourceforge.net"; //$NON-NLS-1$
 	
 	/**Return self instance*/
 	public static AboutView getInstance(){
@@ -98,21 +99,21 @@ public class AboutView extends ViewAdapter {
         jpLicence.add(new JScrollPane(jta));
 		jtp = new JTabbedPane();
 		ArrayList alContribs = new ArrayList(10);
-		alContribs.add(new Contributor("Bertrand Florat","bertrand@florat.net"));
-		alContribs.add(new Contributor("Sébastien Gringoire",""));
+		alContribs.add(new Contributor("Bertrand Florat","bertrand@florat.net")); //$NON-NLS-1$ //$NON-NLS-2$
+		alContribs.add(new Contributor("Sébastien Gringoire","")); //$NON-NLS-1$ //$NON-NLS-2$
 		cp = new ContributorsPanel(alContribs);
 		JPanel jpAbout = new JPanel();
 		jpAbout.setLayout(new BoxLayout(jpAbout,BoxLayout.Y_AXIS));
-		ap = new AboutPanel("Jajuk",JAJUK_VERSION,"Copyright 2003,2004 Bertrand Florat & Jajuk team",INFOS,Util.getIcon(ICON_LOGO).getImage());
+		ap = new AboutPanel("Jajuk",JAJUK_VERSION,"Copyright 2003,2004 Bertrand Florat & Jajuk team",INFOS,Util.getIcon(ICON_LOGO).getImage()); //$NON-NLS-1$ //$NON-NLS-2$
 		ap.setPreferredSize(new Dimension(1000,150));
 		ap.setMaximumSize(new Dimension(1000,150));
 		jpAbout.add(ap);
 		jpAbout.add(cp);
 		jpAbout.add(Box.createVerticalGlue());
 		spp = new SystemPropertiesPanel();
-		jtp.addTab("About",jpAbout);
-		jtp.addTab("Licence",jpLicence);
-		jtp.addTab("System",spp);
+		jtp.addTab(Messages.getString("AboutView.7"),jpAbout); //$NON-NLS-1$
+		jtp.addTab(Messages.getString("AboutView.8"),jpLicence); //$NON-NLS-1$
+		jtp.addTab(Messages.getString("AboutView.9"),spp); //$NON-NLS-1$
 		add(jtp);
 	}
 
@@ -120,14 +121,14 @@ public class AboutView extends ViewAdapter {
 	 * @see org.jajuk.ui.IView#getDesc()
 	 */
 	public String getDesc() {
-		return "About view";	
+		return Messages.getString("AboutView.10");	 //$NON-NLS-1$
 	}
 
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.IView#getViewName()
 	 */
 	public String getViewName() {
-		return "org.jajuk.ui.views.AboutView";
+		return "org.jajuk.ui.views.AboutView"; //$NON-NLS-1$
 	}
 
 }

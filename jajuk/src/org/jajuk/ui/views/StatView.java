@@ -39,6 +39,7 @@ import org.jajuk.base.Style;
 import org.jajuk.base.StyleManager;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
+import org.jajuk.i18n.Messages;
 import org.jajuk.ui.ObservationManager;
 import org.jajuk.ui.Observer;
 import org.jajuk.util.Util;
@@ -134,15 +135,15 @@ public class StatView extends ViewAdapter implements Observer{
 				}
 			}
 			if ( iTotal>0 && dOthers > 0){
-				pdata.setValue("Others",new Double(dOthers/iTotal));
+				pdata.setValue(Messages.getString("StatView.0"),new Double(dOthers/iTotal)); //$NON-NLS-1$
 			}
 			//chart
-			jfchart = ChartFactory.createPie3DChart("Styles repartition",pdata,false,true,true);
+			jfchart = ChartFactory.createPie3DChart(Messages.getString("StatView.1"),pdata,false,true,true); //$NON-NLS-1$
 			// set the background color for the chart...
 			jfchart.setBackgroundPaint(Color.BLUE);
 			PiePlot plot = (PiePlot) jfchart.getPlot();
 			plot.setSectionLabelType(PiePlot.NAME_AND_PERCENT_LABELS);
-			plot.setNoDataMessage("No data available");
+			plot.setNoDataMessage(Messages.getString("StatView.2")); //$NON-NLS-1$
 			plot.setForegroundAlpha(0.5f);
 			plot.setBackgroundAlpha(0.5f);
 			//plot.setBackgroundImage(Util.getIcon(IMAGES_STAT_PAPER).getImage());
@@ -188,15 +189,15 @@ public class StatView extends ViewAdapter implements Observer{
 				}
 			}
 			if ( dOthers > 0){
-				pdata.setValue("Others",new Double(dOthers/1073741824));
+				pdata.setValue(Messages.getString("StatView.3"),new Double(dOthers/1073741824)); //$NON-NLS-1$
 			}
 			//chart
-			jfchart = ChartFactory.createPie3DChart("Size by device (Gb)",pdata,false,true,true);
+			jfchart = ChartFactory.createPie3DChart(Messages.getString("StatView.4"),pdata,false,true,true); //$NON-NLS-1$
 			// set the background color for the chart...
 			jfchart.setBackgroundPaint(Color.BLUE);
 			PiePlot plot = (PiePlot) jfchart.getPlot();
 			plot.setSectionLabelType(PiePlot.NAME_AND_VALUE_LABELS);
-			plot.setNoDataMessage("No data available");
+			plot.setNoDataMessage(Messages.getString("StatView.5")); //$NON-NLS-1$
 			plot.setForegroundAlpha(0.5f);
 			plot.setBackgroundAlpha(0.5f);
 			//plot.setBackgroundImage(Util.getIcon(IMAGES_STAT_PAPER).getImage());
@@ -235,12 +236,12 @@ public class StatView extends ViewAdapter implements Observer{
 			for (int i = 0;i<iMounthsNumber+1;i++){
 				data[0][i] = (double)lSizeByMounth[i]/1073741824;
 			}
-			cdata = DatasetUtilities.createCategoryDataset(new String[]{""},getMountsLabels(iMounthsNumber), data);
+			cdata = DatasetUtilities.createCategoryDataset(new String[]{""},getMountsLabels(iMounthsNumber), data); //$NON-NLS-1$
 			//chart
 			jfchart = ChartFactory.createBarChart3D(
-					"Collection size by mounth",      // chart title
-					"Mounths",               // domain axis label
-					"Size (Gb)",                  // range axis label
+					Messages.getString("StatView.7"),      // chart title //$NON-NLS-1$
+					Messages.getString("StatView.8"),               // domain axis label //$NON-NLS-1$
+					Messages.getString("StatView.9"),                  // range axis label //$NON-NLS-1$
 					cdata,                  // data
 					PlotOrientation.VERTICAL, // orientation
 					false,                     // include legend
@@ -257,7 +258,7 @@ public class StatView extends ViewAdapter implements Observer{
 			
 			// set the background color for the chart...
 			jfchart.setBackgroundPaint(Color.BLUE);
-			plot.setNoDataMessage("No data available");
+			plot.setNoDataMessage(Messages.getString("StatView.10")); //$NON-NLS-1$
 			plot.setForegroundAlpha(0.5f);
 			plot.setBackgroundAlpha(0.5f);
 			//plot.setBackgroundImage(Util.getIcon(IMAGES_STAT_PAPER).getImage());
@@ -296,13 +297,13 @@ public class StatView extends ViewAdapter implements Observer{
 			for (int i = 0;i<iMounthsNumber+1;i++){
 				data[0][i] = (double)iTracksByMounth[i];
 			}
-			cdata = DatasetUtilities.createCategoryDataset(new String[]{""},getMountsLabels(iMounthsNumber), data);
+			cdata = DatasetUtilities.createCategoryDataset(new String[]{""},getMountsLabels(iMounthsNumber), data); //$NON-NLS-1$
 			
 			//chart
 			jfchart = ChartFactory.createBarChart3D(
-					"Total number of tracks by mounth",      // chart title
-					"Mounths",               // domain axis label
-					"Track number",                  // range axis label
+					Messages.getString("StatView.12"),      // chart title //$NON-NLS-1$
+					Messages.getString("StatView.13"),               // domain axis label //$NON-NLS-1$
+					Messages.getString("StatView.14"),                  // range axis label //$NON-NLS-1$
 					cdata,                  // data
 					PlotOrientation.VERTICAL, // orientation
 					false,                     // include legend
@@ -318,7 +319,7 @@ public class StatView extends ViewAdapter implements Observer{
 			
 			// set the background color for the chart...
 			jfchart.setBackgroundPaint(Color.BLUE);
-			plot.setNoDataMessage("No data available");
+			plot.setNoDataMessage(Messages.getString("StatView.15")); //$NON-NLS-1$
 			plot.setForegroundAlpha(0.5f);
 			plot.setBackgroundAlpha(0.5f);
 			//plot.setBackgroundImage(Util.getIcon(IMAGES_STAT_PAPER).getImage());
@@ -336,7 +337,7 @@ public class StatView extends ViewAdapter implements Observer{
 	 * @see org.jajuk.ui.IView#getDesc()
 	 */
 	public String getDesc() {
-		return "Statistics view";	
+		return Messages.getString("StatView.16");	 //$NON-NLS-1$
 	}
 
 	/* (non-Javadoc)
@@ -354,13 +355,13 @@ public class StatView extends ViewAdapter implements Observer{
 			Util.waiting();
 			removeAll();
 			ChartPanel cp1 = createStyleRepartition(); 
-			if ( cp1!= null) add(cp1,"0,0");
+			if ( cp1!= null) add(cp1,"0,0"); //$NON-NLS-1$
 			ChartPanel cp2 = createCollectionSize(); 
-			if ( cp2!= null) add(cp2,"0,1");
+			if ( cp2!= null) add(cp2,"0,1"); //$NON-NLS-1$
 			ChartPanel cp3 = createTrackNumber(); 
-			if ( cp3!= null) add(cp3,"1,1");
+			if ( cp3!= null) add(cp3,"1,1"); //$NON-NLS-1$
 			ChartPanel cp4 = createDeviceRepartition(); 
-			if ( cp4!= null) add(cp4,"1,0");
+			if ( cp4!= null) add(cp4,"1,0"); //$NON-NLS-1$
 			SwingUtilities.updateComponentTreeUI(StatView.getInstance());
 			Util.stopWaiting();
 		}
@@ -377,14 +378,14 @@ public class StatView extends ViewAdapter implements Observer{
 			int iYear = iNow/100;
 			int iMounth = Integer.parseInt(Integer.toString(iNow).substring(4,6));
 			for (int k=0;k<iMounthsNumber;k++){
-				sMounths[iMounthsNumber-k] = new StringBuffer().append((iMounth/10==0)?"0":"").append(Integer.toString(iMounth)).append('/').append(Integer.toString(iYear)).toString();
+				sMounths[iMounthsNumber-k] = new StringBuffer().append((iMounth/10==0)?"0":"").append(Integer.toString(iMounth)).append('/').append(Integer.toString(iYear)).toString(); //$NON-NLS-1$ //$NON-NLS-2$
 				iMounth--;
 				if (iMounth == 0){
 					iMounth = 12;
 					iYear --;
 				}
 			}
-			sMounths[0]="before";
+			sMounths[0]=Messages.getString("StatView.24"); //$NON-NLS-1$
 			return sMounths;
 	}
 	

@@ -63,7 +63,7 @@ public class TypeManager {
 			hmSupportedTypes.put(type.getExtension(), type);
 		}
 		catch(Exception e){
-			Log.error("109","sPlayerImpl="+sPlayerImpl+" sTagImpl="+sTagImpl,e );
+			Log.error("109","sPlayerImpl="+sPlayerImpl+" sTagImpl="+sTagImpl,e ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
 		return type;
 	}

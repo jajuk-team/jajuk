@@ -20,6 +20,7 @@
 
 package org.jajuk.ui.views;
 
+import org.jajuk.i18n.Messages;
 import org.jajuk.ui.Observer;
 
 /**
@@ -59,14 +60,14 @@ public class LogicalPlaylistRepositoryView extends ViewAdapter implements Observ
 	 * @see org.jajuk.ui.IView#getDesc()
 	 */
 	public String getDesc() {
-		return "Playlists view";	
+		return Messages.getString("LogicalPlaylistRepositoryView.0");	 //$NON-NLS-1$
 	}
 
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.IView#getViewName()
 	 */
 	public String getViewName() {
-		return "org.jajuk.ui.views.LogicalPlaylistRepositoryView";
+		return "org.jajuk.ui.views.LogicalPlaylistRepositoryView"; //$NON-NLS-1$
 	}
 
 	/* (non-Javadoc)

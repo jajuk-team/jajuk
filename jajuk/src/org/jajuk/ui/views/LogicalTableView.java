@@ -25,6 +25,7 @@ import java.util.Iterator;
 
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
+import org.jajuk.i18n.Messages;
 import org.jajuk.ui.ObservationManager;
 import org.jajuk.ui.Observer;
 
@@ -46,7 +47,7 @@ public class LogicalTableView extends AbstractTableView implements Observer{
 	 * @see org.jajuk.ui.IView#getDesc()
 	 */
 	public String getDesc() {
-		return "Logical table view";
+		return Messages.getString("LogicalTableView.0"); //$NON-NLS-1$
 	}
 	
 
@@ -83,7 +84,7 @@ public class LogicalTableView extends AbstractTableView implements Observer{
 		//col number
 		iColNum = 6;
 		//Columns names
-		sColName = new String[]{"Track","Album","Author","Length","Style","Rate"};
+		sColName = new String[]{Messages.getString("LogicalTableView.1"),Messages.getString("LogicalTableView.2"),Messages.getString("LogicalTableView.3"),Messages.getString("LogicalTableView.4"),Messages.getString("LogicalTableView.5"),Messages.getString("LogicalTableView.6")}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
 		//Values
 		ArrayList alTracks = TrackManager.getSortedTracks();
 		int iSize = alTracks.size();
@@ -114,7 +115,7 @@ public class LogicalTableView extends AbstractTableView implements Observer{
 	 * @see org.jajuk.ui.IView#getViewName()
 	 */
 	public String getViewName() {
-		return "org.jajuk.ui.views.LogicalTableView";
+		return "org.jajuk.ui.views.LogicalTableView"; //$NON-NLS-1$
 	}
 
 

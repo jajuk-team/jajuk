@@ -70,7 +70,7 @@ public class DirectoryManager {
 	 */
 	public static synchronized Directory registerDirectory(Device device) {
 		String sId = device.getId();
-		return registerDirectory(sId, "", null, device);
+		return registerDirectory(sId, "", null, device); //$NON-NLS-1$
 	}
 
 	/**

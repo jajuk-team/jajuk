@@ -60,15 +60,15 @@ public class Playlist extends PropertyAdapter {
 	 * @return
 	 */
 	public String toXml() {
-		StringBuffer sb = new StringBuffer("\t\t<playlist id='" + sId);
-		sb.append("' playlist_files='");
+		StringBuffer sb = new StringBuffer("\t\t<playlist id='" + sId); //$NON-NLS-1$
+		sb.append("' playlist_files='"); //$NON-NLS-1$
 		for (int i=0;i<alFiles.size();i++){
 			sb.append(((PlaylistFile)alFiles.get(i)).getId()).append(',');
 		}
 		sb.deleteCharAt(sb.length()-1); //remove the last ','
-		sb.append("' ");
+		sb.append("' "); //$NON-NLS-1$
 		sb.append(getPropertiesXml());
-		sb.append("/>\n");
+		sb.append("/>\n"); //$NON-NLS-1$
 		return sb.toString();
 	}
 
@@ -143,7 +143,7 @@ public class Playlist extends PropertyAdapter {
 	 * @return playlist name
 	 */
 	public String getName(){
-		String sOut = "";
+		String sOut = ""; //$NON-NLS-1$
 		if ( alFiles.size() > 0){
 			sOut =((PlaylistFile)alFiles.get(0)).getName(); 
 		}

@@ -100,7 +100,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings{
 		
 		//total progress bar
 		jpTotal = new JPanel();
-		jpTotal.setToolTipText(Messages.getString("InformationJPanel.Total_selection_progression_5")); //$NON-NLS-1$
+		jpTotal.setToolTipText(Messages.getString("InformationJPanel.5")); //$NON-NLS-1$
 		jpTotal.setLayout(new BoxLayout(jpTotal,BoxLayout.X_AXIS));
 		jpTotal.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		jlTotal = new JLabel(); 
@@ -109,12 +109,12 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings{
 		
 		//Quality
 		jlQuality = new JLabel();
-		jlQuality.setToolTipText("Track bitrate");
+		jlQuality.setToolTipText(Messages.getString("InformationJPanel.6")); //$NON-NLS-1$
 		jlQuality.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		
 		//current progress bar
 		jpCurrent = new JPanel();
-		jpCurrent.setToolTipText(Messages.getString("InformationJPanel.Current_track_progression_6")); //$NON-NLS-1$
+		jpCurrent.setToolTipText(Messages.getString("InformationJPanel.7")); //$NON-NLS-1$
 		jpCurrent.setLayout(new BoxLayout(jpCurrent,BoxLayout.X_AXIS));
 		jpCurrent.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		jpbCurrent = new JProgressBar(0,100);

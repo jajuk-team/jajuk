@@ -74,7 +74,7 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 		this.sName = sName;
 		this.sHashcode = sHashcode;
 		this.dParentDirectory = dParentDirectory;
-		this.fio = new File(getDirectory().getDevice().getUrl()+getDirectory().getRelativePath()+"/"+getName());
+		this.fio = new File(getDirectory().getDevice().getUrl()+getDirectory().getRelativePath()+"/"+getName()); //$NON-NLS-1$
 		if ( fio.exists() && fio.canRead()){  //check device is mounted
 			load(); //populate playlist
 		}
@@ -93,15 +93,15 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 	 * @return
 	 */
 	public String toXml() {
-		StringBuffer sb = new StringBuffer("\t\t<playlist_file id='" + sId);
-		sb.append("' name='");
+		StringBuffer sb = new StringBuffer("\t\t<playlist_file id='" + sId); //$NON-NLS-1$
+		sb.append("' name='"); //$NON-NLS-1$
 		sb.append(Util.formatXML(sName));
-		sb.append("' hashcode='");
+		sb.append("' hashcode='"); //$NON-NLS-1$
 		sb.append(sHashcode);
-		sb.append("' directory='");
-		sb.append(dParentDirectory.getId()).append("' ");
+		sb.append("' directory='"); //$NON-NLS-1$
+		sb.append(dParentDirectory.getId()).append("' "); //$NON-NLS-1$
 		sb.append(getPropertiesXml());
-		sb.append("/>\n");
+		sb.append("/>\n"); //$NON-NLS-1$
 		return sb.toString();
 	}
 
@@ -185,15 +185,15 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 		if ( bModified){
 			try {
 				bw = new BufferedWriter(new FileWriter(fio));
-				bw.write(PLAYLIST_NOTE+"\n");
+				bw.write(PLAYLIST_NOTE+"\n"); //$NON-NLS-1$
 				Iterator it = alBasicFiles.iterator();
 				while ( it.hasNext()){
 					BasicFile bfile = (BasicFile)it.next();
-					bw.write(bfile.getAbsolutePath()+"\n");
+					bw.write(bfile.getAbsolutePath()+"\n"); //$NON-NLS-1$
 				}
 			}
 			catch(Exception e){
-				Log.error("017",getName(),e);
+				Log.error("017",getName(),e); //$NON-NLS-1$
 			}
 			finally{
 				if ( bw != null){
@@ -245,7 +245,7 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 			}
 		}
 		catch(Exception e){
-			Log.error("017",getName(),e);
+			Log.error("017",getName(),e); //$NON-NLS-1$
 		}
 		finally{
 			if ( br != null){
@@ -265,9 +265,9 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 	 */
 	public void delete(){
 		if ( ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_DELETE_FILE)){  //file delete confirmation
-			String sFileToDelete = getDirectory().getFio().getAbsoluteFile()+"/"+getName();
-			String sMessage = Messages.getString("Confirmation_delete")+"\n"+sFileToDelete;
-			int i = JOptionPane.showConfirmDialog(Main.jframe,sMessage,Messages.getString("Warning"),JOptionPane.OK_CANCEL_OPTION,JOptionPane.WARNING_MESSAGE);
+			String sFileToDelete = getDirectory().getFio().getAbsoluteFile()+"/"+getName(); //$NON-NLS-1$
+			String sMessage = Messages.getString("Confirmation_delete")+"\n"+sFileToDelete; //$NON-NLS-1$ //$NON-NLS-2$
+			int i = JOptionPane.showConfirmDialog(Main.jframe,sMessage,Messages.getString("Warning"),JOptionPane.OK_CANCEL_OPTION,JOptionPane.WARNING_MESSAGE); //$NON-NLS-1$
 			if ( i == JOptionPane.OK_OPTION){
 				File fileToDelete = new File(sFileToDelete);
 				if ( fileToDelete.exists()){

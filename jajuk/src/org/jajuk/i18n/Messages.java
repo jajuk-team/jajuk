@@ -60,10 +60,10 @@ public class Messages {
 	public static String getString(String key) {
 		String sOut = key;
 		try{
-			sOut = rb.getString(key); //$NON-NLS-1$
+			sOut = rb.getString(key); 
 		}
 		catch(Exception e){
-			Log.error("105","key: "+key,e);
+			Log.error("105","key: "+key,e); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		return sOut;
 	}
@@ -100,8 +100,8 @@ public class Messages {
 	 */
 	public static void setLocal(String sLocal){
 		Messages.sLocal = sLocal;
-		if ( sLocal.equals("en")){ //take english as an exception because it uses the base properties file
-			rb = ResourceBundle.getBundle(BUNDLE_NAME,new Locale(""));	
+		if ( sLocal.equals("en")){ //take english as an exception because it uses the base properties file //$NON-NLS-1$
+			rb = ResourceBundle.getBundle(BUNDLE_NAME,new Locale(""));	 //$NON-NLS-1$
 		}
 		else{
 			rb = ResourceBundle.getBundle(BUNDLE_NAME,new Locale(sLocal));
@@ -120,7 +120,7 @@ public class Messages {
 			sOut = rb.getString("Error." + pCode); //$NON-NLS-1$
 		}
 		catch(Exception e){
-			Log.error("105","code: "+pCode,e);
+			Log.error("105","code: "+pCode,e); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		return sOut;
 	}
@@ -131,7 +131,7 @@ public class Messages {
 	 * @param sCode
 	 */
 	public static void showErrorMessage(String sCode){
-		JOptionPane.showMessageDialog(Main.jframe,Messages.getErrorMessage(sCode),Messages.getErrorMessage("102"),JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(Main.jframe,Messages.getErrorMessage(sCode),Messages.getErrorMessage("102"),JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$
 	}
 	
 	/**
@@ -139,7 +139,7 @@ public class Messages {
 	 * @param sMessage
 	 */
 	public static void showInfoMessage(String sMessage){
-		JOptionPane.showMessageDialog(Main.jframe,Messages.getString(sMessage),Messages.getString("Info"),JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(Main.jframe,sMessage,Messages.getString("Info"),JOptionPane.INFORMATION_MESSAGE); //$NON-NLS-1$
 	}
 	
 	/**
@@ -147,7 +147,7 @@ public class Messages {
 	 * @param sMessage
 	 */
 	public static void showInfoMessage(String sMessage,Icon icon){
-		JOptionPane.showMessageDialog(Main.jframe,Messages.getString(sMessage),Messages.getString("Info"),JOptionPane.INFORMATION_MESSAGE,icon);
+		JOptionPane.showMessageDialog(Main.jframe,sMessage,Messages.getString("Info"),JOptionPane.INFORMATION_MESSAGE,icon); //$NON-NLS-1$
 	}
 	
 	/**
@@ -156,7 +156,7 @@ public class Messages {
 	 * @param sInfoSup
 	 */
 	public static void showErrorMessage(String sCode,String sInfoSup){
-		JOptionPane.showMessageDialog(Main.jframe,Messages.getErrorMessage(sCode)+" : "+sInfoSup,Messages.getErrorMessage("102"),JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(Main.jframe,Messages.getErrorMessage(sCode)+" : "+sInfoSup,Messages.getErrorMessage("102"),JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
 	/**
@@ -165,7 +165,7 @@ public class Messages {
 	 * @param sInfoSup
 	 */
 	public static void showInfoMessage(String sMessage,String sInfoSup){
-		JOptionPane.showMessageDialog(Main.jframe,Messages.getString(sMessage)+" : "+sInfoSup,Messages.getString("Info"),JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(Main.jframe,Messages.getString(sMessage)+" : "+sInfoSup,Messages.getString("Info"),JOptionPane.INFORMATION_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
 	

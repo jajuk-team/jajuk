@@ -87,7 +87,7 @@ public class SearchBox extends JTextField implements KeyListener{
 			}
 		}.start();
 		addKeyListener(this);
-		setToolTipText(Messages.getString("CommandJPanel.search_1")); //$NON-NLS-1$
+		setToolTipText(Messages.getString("SearchBox.0")); //$NON-NLS-1$
 		setMinimumSize(new Dimension(100,20));
 		setPreferredSize(new Dimension(300,20));
 		setMaximumSize(new Dimension(300,20));

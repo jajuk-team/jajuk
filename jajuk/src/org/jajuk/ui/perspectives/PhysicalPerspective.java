@@ -42,7 +42,7 @@ public class PhysicalPerspective extends PerspectiveAdapter{
 	 * @see org.jajuk.ui.IPerspective#getDesc()
 	 */
 	public String getDesc() {
-		return Messages.getString("Perspective_Description_Physical");
+		return Messages.getString("Perspective_Description_Physical"); //$NON-NLS-1$
 	}
 
 }

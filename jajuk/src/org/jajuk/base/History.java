@@ -71,7 +71,7 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
 	
 	/** Add an history item */
 	public synchronized void addItem(String sFileId,long lDate){
-		if ( ConfigurationManager.getProperty(CONF_HISTORY).equals("0")){  //no history
+		if ( ConfigurationManager.getProperty(CONF_HISTORY).equals("0")){  //no history //$NON-NLS-1$
 			return ;
 		}
 		HistoryItem hi = new HistoryItem(sFileId,lDate);
@@ -118,15 +118,15 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
 		if ( lDateStart == 0) {
 			lDateStart = System.currentTimeMillis();
 		}
-		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(FILE_HISTORY), "UTF-8"));
-		bw.write("<?xml version='1.0' encoding='UTF-8'?>\n");
-		bw.write("<history jajuk_version='"+JAJUK_VERSION+"' begin_date='"+Long.toString(lDateStart)+"'>\n");
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(FILE_HISTORY), "UTF-8")); //$NON-NLS-1$
+		bw.write("<?xml version='1.0' encoding='UTF-8'?>\n"); //$NON-NLS-1$
+		bw.write("<history jajuk_version='"+JAJUK_VERSION+"' begin_date='"+Long.toString(lDateStart)+"'>\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		Iterator it = alHistory.iterator();
 		while ( it.hasNext()){
 			HistoryItem hi = (HistoryItem)it.next();
-			bw.write("\t<play file='"+hi.getFileId()+"' date='"+hi.getDate()+"'/>\n");
+			bw.write("\t<play file='"+hi.getFileId()+"' date='"+hi.getDate()+"'/>\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
-		bw.write("</history>");
+		bw.write("</history>"); //$NON-NLS-1$
 		bw.flush();
 		bw.close();
 	}
@@ -145,7 +145,7 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
 			getInstance().clear(Integer.parseInt(ConfigurationManager.getProperty(CONF_HISTORY))); //delete old history items
 		} catch (Exception e) {
 			Log.error(e);
-			throw new JajukException("119");
+			throw new JajukException("119"); //$NON-NLS-1$
 		}
 	}
 	
@@ -186,7 +186,7 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
 	 * @exception SAXException
 	 */
 	public void warning(SAXParseException spe) throws SAXException {
-		throw new SAXException(Messages.getErrorMessage("119") + " / " + spe.getSystemId() + "/" + spe.getLineNumber() + "/" + spe.getColumnNumber() + " : " + spe.getMessage());
+		throw new SAXException(Messages.getErrorMessage("119") + " / " + spe.getSystemId() + "/" + spe.getLineNumber() + "/" + spe.getColumnNumber() + " : " + spe.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 	}
 
 	/**
@@ -196,7 +196,7 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
 	 * @exception SAXException
 	 */
 	public void error(SAXParseException spe) throws SAXException {
-		throw new SAXException(Messages.getErrorMessage("119") + " / " + spe.getSystemId() + "/" + spe.getLineNumber() + "/" + spe.getColumnNumber() + " : " + spe.getMessage());
+		throw new SAXException(Messages.getErrorMessage("119") + " / " + spe.getSystemId() + "/" + spe.getLineNumber() + "/" + spe.getColumnNumber() + " : " + spe.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 	}
 
 	/**
@@ -206,21 +206,21 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
 	 * @exception SAXException
 	 */
 	public void fatalError(SAXParseException spe) throws SAXException {
-		throw new SAXException(Messages.getErrorMessage("119") + " / " + spe.getSystemId() + "/" + spe.getLineNumber() + "/" + spe.getColumnNumber() + " : " + spe.getMessage());
+		throw new SAXException(Messages.getErrorMessage("119") + " / " + spe.getSystemId() + "/" + spe.getLineNumber() + "/" + spe.getColumnNumber() + " : " + spe.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 	}
 
 	/**
 	 * Called at parsing start
 	 */
 	public void startDocument() {
-		Log.debug("Starting history file parsing...");
+		Log.debug("Starting history file parsing..."); //$NON-NLS-1$
 	}
 
 	/**
 	 * Called at parsing end
 	 */
 	public void endDocument() {
-		Log.debug("History file parsing done");
+		Log.debug("History file parsing done"); //$NON-NLS-1$
 	}
 
 	/**
@@ -228,11 +228,11 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
 	 *  
 	 */
 	public void startElement(String sUri, String sName, String sQName, Attributes attributes) throws SAXException {
-		if (sQName.equals("history")){
-			History.lDateStart = Long.parseLong(attributes.getValue(attributes.getIndex("begin_date")));
+		if (sQName.equals("history")){ //$NON-NLS-1$
+			History.lDateStart = Long.parseLong(attributes.getValue(attributes.getIndex("begin_date"))); //$NON-NLS-1$
 		}
-		else if (sQName.equals("play")){
-			HistoryItem hi = new HistoryItem(attributes.getValue(attributes.getIndex("file")),Long.parseLong(attributes.getValue(attributes.getIndex("date"))));
+		else if (sQName.equals("play")){ //$NON-NLS-1$
+			HistoryItem hi = new HistoryItem(attributes.getValue(attributes.getIndex("file")),Long.parseLong(attributes.getValue(attributes.getIndex("date")))); //$NON-NLS-1$ //$NON-NLS-2$
 			alHistory.add(hi);
 		}
 	}

@@ -55,7 +55,7 @@ public class PlaylistFileManager {
 		if ( !hmPlaylistFiles.containsKey(sId)){
 			hmPlaylistFiles.put(sId, playlistFile);
 			if ( dParentDirectory.getDevice().isRefreshing()){
-				Log.debug("Registered new playlist file: "+ playlistFile);
+				Log.debug("Registered new playlist file: "+ playlistFile); //$NON-NLS-1$
 			}
 			Properties properties = (Properties)hmIdProperties.get(sId); 
 			if ( properties  == null){  //new file

@@ -67,7 +67,7 @@ public class File extends PropertyAdapter implements Comparable{
 	
 	/**Void constructor, needed by BasicFile*/
 	public File(java.io.File fio){
-		this.sId = "-1";
+		this.sId = "-1"; //$NON-NLS-1$
 		Tag tag = new Tag(fio);
 		String sTrackName = tag.getTrackName();
 		String sAlbumName = tag.getAlbumName();
@@ -95,7 +95,7 @@ public class File extends PropertyAdapter implements Comparable{
 	 */
 	public String toStringSearch() {
 		StringBuffer sb = new StringBuffer(track.getStyle().getName2()).append('/').append(track.getAuthor().getName2()).append('/').
-			append(track.getAlbum().getName2()).append('/').append(track.getName()).append(" [").append(directory.getName()).append('/').append(this.sName).append(']');
+			append(track.getAlbum().getName2()).append('/').append(track.getName()).append(" [").append(directory.getName()).append('/').append(this.sName).append(']'); //$NON-NLS-1$
 		return sb.toString();
 	}
 	

@@ -132,7 +132,6 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 										 {20,13*iYSeparator,25}};
 		jpHistory.setLayout(new TableLayout(sizeHistory));
 		jlHistory = new JLabel(Messages.getString("ParameterView.0")); //$NON-NLS-1$
-		jlHistory.setToolTipText(Messages.getString("ParameterView.1")); //$NON-NLS-1$
 		jtfHistory = new JTextField();
 		jtfHistory.setInputVerifier(new InputVerifier(){
 			 public boolean verify(JComponent input) {
@@ -183,7 +182,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		sbSearch = new SearchBox(this);
 		if (STARTUP_MODE_FILE.equals(ConfigurationManager.getProperty(CONF_STARTUP_MODE))){
 			String sFileId = ConfigurationManager.getProperty(CONF_STARTUP_FILE);
-			if ( !"".equals(sFileId)){
+			if ( !"".equals(sFileId)){ //$NON-NLS-1$
 				sbSearch.setText(FileManager.getFile(sFileId).getTrack().getName());
 			}
 		}
@@ -221,8 +220,8 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jcbDisplayUnmounted.setToolTipText(Messages.getString("ParameterView.35")); //$NON-NLS-1$
 		jcbRestart = new JCheckBox(Messages.getString("ParameterView.36")); //$NON-NLS-1$
 		jcbRestart.setToolTipText(Messages.getString("ParameterView.37")); //$NON-NLS-1$
-		jcbCover = new JCheckBox("Show cover when available");
-		jcbCover.setToolTipText("Show the album cover in physical and logical perspectives. The taken cover is 'cover.jpg' or the first image found in the album directory");
+		jcbCover = new JCheckBox(Messages.getString("ParameterView.96")); //$NON-NLS-1$
+		jcbCover.setToolTipText(Messages.getString("ParameterView.97")); //$NON-NLS-1$
 		JPanel jpCombos = new JPanel();
 		double sizeCombos[][] = {{0.50,0.50},
 																 {20,iYSeparator,20,iYSeparator,20}};
@@ -348,14 +347,14 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jpP2P.add(jcbHideProperties,"0,7"); //$NON-NLS-1$
 		//Tags
 		jpTags = new JPanel();
-		jpTags.setBorder(BorderFactory.createTitledBorder("Tags")); 
+		jpTags.setBorder(BorderFactory.createTitledBorder(Messages.getString("ParameterView.98")));  //$NON-NLS-1$
 		double sizeTags[][] = {{0.99},
 				{iYSeparator,20,iYSeparator,20,iYSeparator}};
 		jpTags.setLayout(new TableLayout(sizeTags));
-		jcbDeepScan = new JCheckBox("Perform a deep tag scan"); 
-		jcbDeepScan.setToolTipText("<html>Force Jajuk to re-read the actual id3 tags.<p>This can be usefull to refresh tags you changed with another program</html>");
-		jcbUseParentDir = new JCheckBox("Use parent directory as album name"); 
-		jcbUseParentDir.setToolTipText("Tell Jajuk to use parent directory as album name for a track if it can't be get by tags");
+		jcbDeepScan = new JCheckBox(Messages.getString("ParameterView.99"));  //$NON-NLS-1$
+		jcbDeepScan.setToolTipText(Messages.getString("ParameterView.100")); //$NON-NLS-1$
+		jcbUseParentDir = new JCheckBox(Messages.getString("ParameterView.101"));  //$NON-NLS-1$
+		jcbUseParentDir.setToolTipText(Messages.getString("ParameterView.102")); //$NON-NLS-1$
 		jpTags.add(jcbDeepScan,"0,1"); //$NON-NLS-1$
 		jpTags.add(jcbUseParentDir,"0,3"); //$NON-NLS-1$
 		
@@ -395,7 +394,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 	 * @see org.jajuk.ui.IView#getDesc()
 	 */
 	public String getDesc() {
-		return Messages.getString("View_Description_Parameters"); //$NON-NLS-1$
+		return Messages.getString("ParameterView.87"); //$NON-NLS-1$
 	}
 
 	/* (non-Javadoc)
@@ -414,43 +413,43 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 			ConfigurationManager.setProperty(CONF_OPTIONS_COVER,Boolean.toString(jcbCover.isSelected()));
 			String sLocal = (String)Messages.getLocals().get(jcbLanguage.getSelectedIndex());
 			if (!Messages.getLocal().equals(sLocal)){  //local has changed
-				Messages.showInfoMessage("Language_updated");
+				Messages.showInfoMessage(Messages.getString("ParameterView.103")); //$NON-NLS-1$
 			}
 			ConfigurationManager.setProperty(CONF_OPTIONS_LANGUAGE,sLocal);
 			ConfigurationManager.setProperty(CONF_OPTIONS_LNF,(String)jcbLAF.getSelectedItem());
 			if (!LNFManager.getCurrent().equals((String)jcbLAF.getSelectedItem())){  //Lnf has changed
-				Messages.showInfoMessage("Lnf_updated");
+				Messages.showInfoMessage(Messages.getString("ParameterView.104")); //$NON-NLS-1$
 			}
 			int iLogLevel = jcbLogLevel.getSelectedIndex(); 
 			Log.setVerbosity(iLogLevel);
 			ConfigurationManager.setProperty(CONF_OPTIONS_LOG_LEVEL,Integer.toString(iLogLevel));
 			String sIntroPosition = jtfIntroPosition.getText();
-			if (!jtfIntroPosition.equals("")){
+			if (!jtfIntroPosition.equals("")){ //$NON-NLS-1$
 				ConfigurationManager.setProperty(CONF_OPTIONS_INTRO_BEGIN,sIntroPosition);
 			}
 			String sIntroLength = jtfIntroLength.getText();
-			if (!jtfIntroLength.equals("")){
+			if (!jtfIntroLength.equals("")){ //$NON-NLS-1$
 				ConfigurationManager.setProperty(CONF_OPTIONS_INTRO_LENGTH,sIntroLength);
 			}
 			//startup
 			if (jrbNothing.isSelected()){
-				ConfigurationManager.setProperty(CONF_STARTUP_MODE,STARTUP_MODE_NOTHING);//$NON-NLS-1$
+				ConfigurationManager.setProperty(CONF_STARTUP_MODE,STARTUP_MODE_NOTHING);
 			}
 			else if (jrbLast.isSelected()){
-				ConfigurationManager.setProperty(CONF_STARTUP_MODE,STARTUP_MODE_LAST);//$NON-NLS-1$
+				ConfigurationManager.setProperty(CONF_STARTUP_MODE,STARTUP_MODE_LAST);
 			}
 			else if (jrbShuffle.isSelected()){
-				ConfigurationManager.setProperty(CONF_STARTUP_MODE,STARTUP_MODE_SHUFFLE);//$NON-NLS-1$
+				ConfigurationManager.setProperty(CONF_STARTUP_MODE,STARTUP_MODE_SHUFFLE);
 			}
 			else if (jrbFile.isSelected()){
-				ConfigurationManager.setProperty(CONF_STARTUP_MODE,STARTUP_MODE_FILE);//$NON-NLS-1$
+				ConfigurationManager.setProperty(CONF_STARTUP_MODE,STARTUP_MODE_FILE);
 			}
 			//Confirmations
 			ConfigurationManager.setProperty(CONF_CONFIRMATIONS_DELETE_FILE,Boolean.toString(jcbBeforeDelete.isSelected()));
 			ConfigurationManager.setProperty(CONF_CONFIRMATIONS_EXIT,Boolean.toString(jcbBeforeExit.isSelected()));
 			//history
 			String sHistoryDuration = jtfHistory.getText();
-			if (!sHistoryDuration.equals("")){
+			if (!sHistoryDuration.equals("")){ //$NON-NLS-1$
 				ConfigurationManager.setProperty(CONF_HISTORY,sHistoryDuration);
 			}
 			//P2P
@@ -458,7 +457,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 			ConfigurationManager.setProperty(CONF_OPTIONS_P2P_ADD_REMOTE_PROPERTIES,Boolean.toString(jcbAddRemoteProperties.isSelected()));
 			ConfigurationManager.setProperty(CONF_OPTIONS_P2P_HIDE_LOCAL_PROPERTIES,Boolean.toString(jcbHideProperties.isSelected()));
 			String sPass = jpfPasswd.getSelectedText();
-			if (sPass!=null && !sPass.equals("")){
+			if (sPass!=null && !sPass.equals("")){ //$NON-NLS-1$
 				ConfigurationManager.setProperty(CONF_OPTIONS_P2P_PASSWORD,MD5Processor.hash(sPass));
 			}
 			//tags
@@ -472,7 +471,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 			else{
 				ViewManager.notify(EVENT_VIEW_CLOSE_REQUEST,CoverView.class);
 			}
-			InformationJPanel.getInstance().setMessage("Options saved",InformationJPanel.INFORMATIVE);
+			InformationJPanel.getInstance().setMessage(Messages.getString("ParameterView.109"),InformationJPanel.INFORMATIVE); //$NON-NLS-1$
 			ConfigurationManager.commit();
 			
 		}
@@ -480,7 +479,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 			ConfigurationManager.setDefaultProperties();
 			ConfigurationManager.setProperty(CONF_FIRST_CON,FALSE);
 			updateSelection();
-			InformationJPanel.getInstance().setMessage("Options set to default",InformationJPanel.INFORMATIVE);
+			InformationJPanel.getInstance().setMessage(Messages.getString("ParameterView.110"),InformationJPanel.INFORMATIVE); //$NON-NLS-1$
 			ConfigurationManager.commit();
 		}
 		
@@ -525,7 +524,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 	 * @see org.jajuk.ui.IView#getViewName()
 	 */
 	public String getViewName() {
-		return "org.jajuk.ui.views.ParameterView";
+		return "org.jajuk.ui.views.ParameterView"; //$NON-NLS-1$
 	}
 	
 	/* (non-Javadoc)

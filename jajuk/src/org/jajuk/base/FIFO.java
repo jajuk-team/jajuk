@@ -181,15 +181,15 @@ public class FIFO implements ITechnicalStrings,Runnable{
 			}
 			if ( !file.isReady()){
 				//not mounted, ok let them a chance to mount it:
-				String sMessage = Messages.getString("Error.025")+" ("+file.getDirectory().getDevice().getName()+"). Do you want to try to mount it ?";
-				int i = JOptionPane.showConfirmDialog(Main.jframe,sMessage,Messages.getString("Warning"),JOptionPane.OK_CANCEL_OPTION,JOptionPane.WARNING_MESSAGE);
+				String sMessage = Messages.getString("Error.025")+" ("+file.getDirectory().getDevice().getName()+Messages.getString("FIFO.4"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				int i = JOptionPane.showConfirmDialog(Main.jframe,sMessage,Messages.getString("Warning"),JOptionPane.OK_CANCEL_OPTION,JOptionPane.WARNING_MESSAGE); //$NON-NLS-1$
 				if ( i == JOptionPane.OK_OPTION){
 					try{
 						file.getDirectory().getDevice().mount();
 					}
 					catch(Exception e){
 						Log.error(e);
-						Messages.showErrorMessage("011",file.getDirectory().getDevice().getName());
+						Messages.showErrorMessage("011",file.getDirectory().getDevice().getName()); //$NON-NLS-1$
 						break;
 					}
 				}
@@ -313,7 +313,7 @@ public class FIFO implements ITechnicalStrings,Runnable{
 						if ( bIntroEnabled){
 							lTime += (fCurrent.getTrack().getLength()*Integer.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_INTRO_BEGIN))*10);
 						}
-						InformationJPanel.getInstance().setCurrentStatusMessage(Util.formatTime(lTime)+" / "+Util.formatTime(fCurrent.getTrack().getLength()*1000));
+						InformationJPanel.getInstance().setCurrentStatusMessage(Util.formatTime(lTime)+" / "+Util.formatTime(fCurrent.getTrack().getLength()*1000)); //$NON-NLS-1$
 						int iPos = (int)((lTime/10)/length);
 						InformationJPanel.getInstance().setCurrentStatus(iPos);
 						CommandJPanel.getInstance().setCurrentPosition(iPos);
@@ -353,10 +353,10 @@ public class FIFO implements ITechnicalStrings,Runnable{
 					else{  //fifo empty and nothing planned to be played, lets re-initialize labels
 						if ( i%(REFRESH_TIME/SLEEP_TIME) == 0){  //actual refresh less frequent for cpu
 							lTotalTime = 0;
-							InformationJPanel.getInstance().setCurrentStatusMessage(Util.formatTime(0)+" / "+Util.formatTime(0));
+							InformationJPanel.getInstance().setCurrentStatusMessage(Util.formatTime(0)+" / "+Util.formatTime(0)); //$NON-NLS-1$
 							InformationJPanel.getInstance().setCurrentStatus(0);
 							CommandJPanel.getInstance().setCurrentPosition(0);
-							InformationJPanel.getInstance().setTotalStatusMessage("00:00:00");
+							InformationJPanel.getInstance().setTotalStatusMessage("00:00:00"); //$NON-NLS-1$
 						}
 						i++;
 						continue; //leave
@@ -399,9 +399,9 @@ public class FIFO implements ITechnicalStrings,Runnable{
 					if ( !(fCurrent instanceof BasicFile)){
 						History.getInstance().addItem(fCurrent.getId(),System.currentTimeMillis());
 					}
-					InformationJPanel.getInstance().setMessage("Now Playing : "+fCurrent.getTrack().getAuthor().getName2()+" / "+fCurrent.getTrack().getAlbum().getName2()+" / "+fCurrent.getTrack().getName(),InformationJPanel.INFORMATIVE);
+					InformationJPanel.getInstance().setMessage(Messages.getString("FIFO.10")+fCurrent.getTrack().getAuthor().getName2()+" / "+fCurrent.getTrack().getAlbum().getName2()+" / "+fCurrent.getTrack().getName(),InformationJPanel.INFORMATIVE); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 					Main.jframe.setTitle(fCurrent.getTrack().getName());
-					InformationJPanel.getInstance().setQuality(fCurrent.getQuality()+" kbps");
+					InformationJPanel.getInstance().setQuality(fCurrent.getQuality()+Messages.getString("FIFO.13")); //$NON-NLS-1$
 				}
 			}
 			//fifo is over ( stop request ) , reinit labels in information panel before exiting
@@ -428,13 +428,13 @@ public class FIFO implements ITechnicalStrings,Runnable{
 	 */
 	private synchronized void reset(){
 		lTotalTime = 0;
-		InformationJPanel.getInstance().setCurrentStatusMessage(Util.formatTime(0)+" / "+Util.formatTime(0));
+		InformationJPanel.getInstance().setCurrentStatusMessage(Util.formatTime(0)+" / "+Util.formatTime(0)); //$NON-NLS-1$
 		InformationJPanel.getInstance().setCurrentStatus(0);
 		CommandJPanel.getInstance().setCurrentPosition(0);
-		InformationJPanel.getInstance().setTotalStatusMessage("00:00:00");
-		InformationJPanel.getInstance().setMessage("Ready to play",InformationJPanel.INFORMATIVE);
-		InformationJPanel.getInstance().setQuality("");
-		Main.jframe.setTitle("Jajuk : Just Another Jukebox | Java Jukebox");
+		InformationJPanel.getInstance().setTotalStatusMessage("00:00:00"); //$NON-NLS-1$
+		InformationJPanel.getInstance().setMessage(Messages.getString("FIFO.16"),InformationJPanel.INFORMATIVE); //$NON-NLS-1$
+		InformationJPanel.getInstance().setQuality(""); //$NON-NLS-1$
+		Main.jframe.setTitle(Messages.getString("FIFO.18")); //$NON-NLS-1$
 	}
 	
 	/**

@@ -65,8 +65,8 @@ public class Style extends PropertyAdapter implements Comparable{
 	 */
 	public String getName2() {
 		String sOut = getName();
-		if (sOut.equals("unknown_style")){
-			sOut = Messages.getString("unknown_style");
+		if (sOut.equals("unknown_style")){ //$NON-NLS-1$
+			sOut = Messages.getString("unknown_style"); //$NON-NLS-1$
 		}
 		return sOut;
 	}
@@ -84,9 +84,9 @@ public class Style extends PropertyAdapter implements Comparable{
 	 * @return
 	 */
 	public String toXml() {
-		StringBuffer sb = new StringBuffer("\t\t<style id='" + sId);
-		sb.append("' name='");
-		sb.append(Util.formatXML(sName)).append("' ")
+		StringBuffer sb = new StringBuffer("\t\t<style id='" + sId); //$NON-NLS-1$
+		sb.append("' name='"); //$NON-NLS-1$
+		sb.append(Util.formatXML(sName)).append("' ") //$NON-NLS-1$
 			.append(getPropertiesXml()).append("/>\n");//$NON-NLS-1$;
 		return sb.toString();
 	}

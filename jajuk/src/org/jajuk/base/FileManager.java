@@ -66,7 +66,7 @@ public class FileManager implements ITechnicalStrings{
 			alFiles.add(file);
 			tsSortedFiles.add(file);
 			if ( directory.getDevice().isRefreshing()){
-				Log.debug("registrated new file: "+ file);
+				Log.debug("registrated new file: "+ file); //$NON-NLS-1$
 			}
 			Properties properties = (Properties)hmIdProperties.get(sId); 
 			if ( properties  == null){  //new file

@@ -36,7 +36,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
  * @created    13 févr. 2004
  */
 public class TransferableTableRow extends DefaultMutableTreeNode implements Transferable{
-	public static final DataFlavor ROW_FLAVOR = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType, "Row");
+	public static final DataFlavor ROW_FLAVOR = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType, "Row"); //$NON-NLS-1$
 	private Object oData;
 	
 	public TransferableTableRow(Object oData){

@@ -53,7 +53,7 @@ public class LogicalPlaylistEditorView extends AbstractPlaylistEditorView{
 	 * @see org.jajuk.ui.IView#getViewName()
 	 */
 	public String getViewName() {
-		return "org.jajuk.ui.views.LogicalPlaylistEditorView";
+		return "org.jajuk.ui.views.LogicalPlaylistEditorView"; //$NON-NLS-1$
 	}
 	
 }

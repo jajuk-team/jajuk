@@ -100,8 +100,8 @@ public class ViewManager implements ITechnicalStrings{
 				setVisible(view,true);
 			}
 		}catch(Exception e){
-			Log.error("118",sEvent,e);
-			Messages.showErrorMessage("118",sEvent);
+			Log.error("118",sEvent,e); //$NON-NLS-1$
+			Messages.showErrorMessage("118",sEvent); //$NON-NLS-1$
 		}
 	}
 	

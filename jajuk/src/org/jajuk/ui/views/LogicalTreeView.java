@@ -133,7 +133,7 @@ public class LogicalTreeView extends ViewAdapter implements ActionListener,Obser
 	 * @see org.jajuk.ui.IView#getDesc()
 	 */
 	public String getDesc() {
-		return "Logical tree view";
+		return Messages.getString("LogicalTreeView.0"); //$NON-NLS-1$
 	}
 	
 	/** Return singleton */
@@ -158,21 +158,21 @@ public class LogicalTreeView extends ViewAdapter implements ActionListener,Obser
 		
 		//Style menu
 		jmenuStyle = new JPopupMenu();
-		jmiStylePlay = new JMenuItem("Play");
+		jmiStylePlay = new JMenuItem(Messages.getString("LogicalTreeView.1")); //$NON-NLS-1$
 		jmiStylePlay.addActionListener(this);
-		jmiStylePush = new JMenuItem("Push");
+		jmiStylePush = new JMenuItem(Messages.getString("LogicalTreeView.2")); //$NON-NLS-1$
 		jmiStylePush.addActionListener(this);
-		jmiStylePlayShuffle = new JMenuItem("Play shuffle");
+		jmiStylePlayShuffle = new JMenuItem(Messages.getString("LogicalTreeView.3")); //$NON-NLS-1$
 		jmiStylePlayShuffle.addActionListener(this);
-		jmiStylePlayRepeat = new JMenuItem("Play repeat");
+		jmiStylePlayRepeat = new JMenuItem(Messages.getString("LogicalTreeView.4")); //$NON-NLS-1$
 		jmiStylePlayRepeat.addActionListener(this);
-		jmiStyleDelete = new JMenuItem("Delete");
+		jmiStyleDelete = new JMenuItem(Messages.getString("LogicalTreeView.5")); //$NON-NLS-1$
 		jmiStyleDelete.setEnabled(false);
 		jmiStyleDelete.addActionListener(this);
-		jmiStyleSetProperty = new JMenuItem("Set a property");
+		jmiStyleSetProperty = new JMenuItem(Messages.getString("LogicalTreeView.6")); //$NON-NLS-1$
 		jmiStyleSetProperty.setEnabled(false);
 		jmiStyleSetProperty.addActionListener(this);
-		jmiStyleProperties = new JMenuItem("Properties");
+		jmiStyleProperties = new JMenuItem(Messages.getString("LogicalTreeView.7")); //$NON-NLS-1$
 		jmiStyleProperties.setEnabled(false);
 		jmiStyleProperties.addActionListener(this);
 		jmenuStyle.add(jmiStylePlay);
@@ -185,21 +185,21 @@ public class LogicalTreeView extends ViewAdapter implements ActionListener,Obser
 		
 		//Author menu
 		jmenuAuthor = new JPopupMenu();
-		jmiAuthorPlay = new JMenuItem("Play");
+		jmiAuthorPlay = new JMenuItem(Messages.getString("LogicalTreeView.8")); //$NON-NLS-1$
 		jmiAuthorPlay.addActionListener(this);
-		jmiAuthorPush = new JMenuItem("Push");
+		jmiAuthorPush = new JMenuItem(Messages.getString("LogicalTreeView.9")); //$NON-NLS-1$
 		jmiAuthorPush.addActionListener(this);
-		jmiAuthorPlayShuffle = new JMenuItem("Play shuffle");
+		jmiAuthorPlayShuffle = new JMenuItem(Messages.getString("LogicalTreeView.10")); //$NON-NLS-1$
 		jmiAuthorPlayShuffle.addActionListener(this);
-		jmiAuthorPlayRepeat = new JMenuItem("Play repeat");
+		jmiAuthorPlayRepeat = new JMenuItem(Messages.getString("LogicalTreeView.11")); //$NON-NLS-1$
 		jmiAuthorPlayRepeat.addActionListener(this);
-		jmiAuthorDelete = new JMenuItem("Delete");
+		jmiAuthorDelete = new JMenuItem(Messages.getString("LogicalTreeView.12")); //$NON-NLS-1$
 		jmiAuthorDelete.setEnabled(false);
 		jmiAuthorDelete.addActionListener(this);
-		jmiAuthorSetProperty = new JMenuItem("Set a property");
+		jmiAuthorSetProperty = new JMenuItem(Messages.getString("LogicalTreeView.13")); //$NON-NLS-1$
 		jmiAuthorSetProperty.setEnabled(false);
 		jmiAuthorSetProperty.addActionListener(this);
-		jmiAuthorProperties = new JMenuItem("Properties");
+		jmiAuthorProperties = new JMenuItem(Messages.getString("LogicalTreeView.14")); //$NON-NLS-1$
 		jmiAuthorProperties.setEnabled(false);
 		jmiAuthorProperties.addActionListener(this);
 		jmenuAuthor.add(jmiAuthorPlay);
@@ -212,21 +212,21 @@ public class LogicalTreeView extends ViewAdapter implements ActionListener,Obser
 		
 		//Album menu
 		jmenuAlbum = new JPopupMenu();
-		jmiAlbumPlay = new JMenuItem("Play");
+		jmiAlbumPlay = new JMenuItem(Messages.getString("LogicalTreeView.15")); //$NON-NLS-1$
 		jmiAlbumPlay.addActionListener(this);
-		jmiAlbumPush = new JMenuItem("Push");
+		jmiAlbumPush = new JMenuItem(Messages.getString("LogicalTreeView.16")); //$NON-NLS-1$
 		jmiAlbumPush.addActionListener(this);
-		jmiAlbumPlayShuffle = new JMenuItem("Play shuffle");
+		jmiAlbumPlayShuffle = new JMenuItem(Messages.getString("LogicalTreeView.17")); //$NON-NLS-1$
 		jmiAlbumPlayShuffle.addActionListener(this);
-		jmiAlbumPlayRepeat = new JMenuItem("Play repeat");
+		jmiAlbumPlayRepeat = new JMenuItem(Messages.getString("LogicalTreeView.18")); //$NON-NLS-1$
 		jmiAlbumPlayRepeat.addActionListener(this);
-		jmiAlbumDelete = new JMenuItem("Delete");
+		jmiAlbumDelete = new JMenuItem(Messages.getString("LogicalTreeView.19")); //$NON-NLS-1$
 		jmiAlbumDelete.setEnabled(false);
 		jmiAlbumDelete.addActionListener(this);
-		jmiAlbumSetProperty = new JMenuItem("Set a property");
+		jmiAlbumSetProperty = new JMenuItem(Messages.getString("LogicalTreeView.20")); //$NON-NLS-1$
 		jmiAlbumSetProperty.setEnabled(false);
 		jmiAlbumSetProperty.addActionListener(this);
-		jmiAlbumProperties = new JMenuItem("Properties");
+		jmiAlbumProperties = new JMenuItem(Messages.getString("LogicalTreeView.21")); //$NON-NLS-1$
 		jmiAlbumProperties.setEnabled(false);
 		jmiAlbumProperties.addActionListener(this);
 		jmenuAlbum.add(jmiAlbumPlay);
@@ -239,17 +239,17 @@ public class LogicalTreeView extends ViewAdapter implements ActionListener,Obser
 		
 		//Track menu
 		jmenuTrack = new JPopupMenu();
-		jmiTrackPlay = new JMenuItem("Play");
+		jmiTrackPlay = new JMenuItem(Messages.getString("LogicalTreeView.22")); //$NON-NLS-1$
 		jmiTrackPlay.addActionListener(this);
-		jmiTrackPush = new JMenuItem("Push");
+		jmiTrackPush = new JMenuItem(Messages.getString("LogicalTreeView.23")); //$NON-NLS-1$
 		jmiTrackPush.addActionListener(this);
-		jmiTrackDelete = new JMenuItem("Delete");
+		jmiTrackDelete = new JMenuItem(Messages.getString("LogicalTreeView.24")); //$NON-NLS-1$
 		jmiTrackDelete.setEnabled(false);
 		jmiTrackDelete.addActionListener(this);
-		jmiTrackSetProperty = new JMenuItem("Set a property");
+		jmiTrackSetProperty = new JMenuItem(Messages.getString("LogicalTreeView.25")); //$NON-NLS-1$
 		jmiTrackSetProperty.setEnabled(false);
 		jmiTrackSetProperty.addActionListener(this);
-		jmiTrackProperties = new JMenuItem("Properties");
+		jmiTrackProperties = new JMenuItem(Messages.getString("LogicalTreeView.26")); //$NON-NLS-1$
 		jmiTrackProperties.setEnabled(false);
 		jmiTrackProperties.addActionListener(this);
 		jmenuTrack.add(jmiTrackPlay);
@@ -260,7 +260,7 @@ public class LogicalTreeView extends ViewAdapter implements ActionListener,Obser
 		
 		
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		top = new DefaultMutableTreeNode("Collection");
+		top = new DefaultMutableTreeNode(Messages.getString("LogicalTreeView.27")); //$NON-NLS-1$
 		
 		//Register on the list for subject we are interrested in
 		ObservationManager.register(EVENT_DEVICE_MOUNT,this);
@@ -270,13 +270,13 @@ public class LogicalTreeView extends ViewAdapter implements ActionListener,Obser
 		populate();
 		//tree itself
 		jtree = new JTree(top);
-		jtree.putClientProperty("JTree.lineStyle", "Angled");
+		jtree.putClientProperty("JTree.lineStyle", "Angled"); //$NON-NLS-1$ //$NON-NLS-2$
 		jtree.setRowHeight(25);
 		jtree.getSelectionModel().setSelectionMode(TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
 		jtree.setCellRenderer(new DefaultTreeCellRenderer() {
 			public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) {
 				super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
-				setFont(new Font("Dialog",Font.PLAIN,10));
+				setFont(new Font("Dialog",Font.PLAIN,10)); //$NON-NLS-1$
 				if (value instanceof StyleNode ){
 					setIcon(Util.getIcon(ICON_STYLE));
 				}
@@ -342,7 +342,7 @@ public class LogicalTreeView extends ViewAdapter implements ActionListener,Obser
 						}
 					}
 				}
-				StringBuffer sbOut = new StringBuffer().append(items).append(" tracks");
+				StringBuffer sbOut = new StringBuffer().append(items).append(Messages.getString("LogicalTreeView.31")); //$NON-NLS-1$
 				InformationJPanel.getInstance().setSelection(sbOut.toString());
 			}
 		});
@@ -359,7 +359,7 @@ public class LogicalTreeView extends ViewAdapter implements ActionListener,Obser
 							FIFO.getInstance().push(file,false);
 						}
 						else{
-							Messages.showErrorMessage("010",track.getName());
+							Messages.showErrorMessage("010",track.getName()); //$NON-NLS-1$
 						}
 					}
 				}
@@ -426,15 +426,15 @@ public class LogicalTreeView extends ViewAdapter implements ActionListener,Obser
 				Object o = event.getPath().getLastPathComponent(); 
 				if (o instanceof StyleNode){
 					Style style = ((StyleNode)o).getStyle();
-					style.setProperty(OPTION_EXPANDED,"y");
+					style.setProperty(OPTION_EXPANDED,"y"); //$NON-NLS-1$
 				}
 				else if (o instanceof AuthorNode){
 					Author author = ((AuthorNode)o).getAuthor();
-					author.setProperty(OPTION_EXPANDED,"y");
+					author.setProperty(OPTION_EXPANDED,"y"); //$NON-NLS-1$
 				}
 				else if (o instanceof AlbumNode){
 					Album album = ((AlbumNode)o).getAlbum();
-					album.setProperty(OPTION_EXPANDED,"y");
+					album.setProperty(OPTION_EXPANDED,"y"); //$NON-NLS-1$
 				}
 			}
 		});
@@ -552,7 +552,7 @@ public class LogicalTreeView extends ViewAdapter implements ActionListener,Obser
 	 * @see org.jajuk.ui.IView#getViewName()
 	 */
 	public String getViewName() {
-		return "org.jajuk.ui.views.LogicalTreeView";
+		return "org.jajuk.ui.views.LogicalTreeView"; //$NON-NLS-1$
 	}
 	
 	/* (non-Javadoc)
@@ -603,21 +603,21 @@ public class LogicalTreeView extends ViewAdapter implements ActionListener,Obser
 			if ( o instanceof StyleNode){
 				Style style = ((StyleNode)o).getStyle();
 				String sExp = style.getProperty(OPTION_EXPANDED); 
-				if ( "y".equals(sExp)){
+				if ( "y".equals(sExp)){ //$NON-NLS-1$
 					jtree.expandRow(i);	
 				}
 			}
 			else if ( o instanceof AuthorNode){
 				Author author = ((AuthorNode)o).getAuthor();
 				String sExp = author.getProperty(OPTION_EXPANDED); 
-				if ( "y".equals(sExp)){
+				if ( "y".equals(sExp)){ //$NON-NLS-1$
 					jtree.expandRow(i);	
 				}
 			}
 			else if ( o instanceof AlbumNode){
 				Album album = ((AlbumNode)o).getAlbum();
 				String sExp = album.getProperty(OPTION_EXPANDED); 
-				if ( "y".equals(sExp)){
+				if ( "y".equals(sExp)){ //$NON-NLS-1$
 					jtree.expandRow(i);	
 				}
 			}

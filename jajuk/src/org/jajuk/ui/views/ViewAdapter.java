@@ -49,7 +49,7 @@ public abstract class ViewAdapter extends JPanel implements IView,ITechnicalStri
 	 * toString method
 	 */
 	public String toString(){
-		return "View[name="+getViewName()+" description='"+getDesc()+"]";
+		return "View[name="+getViewName()+" description='"+getDesc()+"]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 
 

@@ -39,7 +39,7 @@ public class LNFManager implements ITechnicalStrings{
 	/** Contains look and feel displayed name and associated class name*/
 	private static HashMap hmNameClass = new HashMap(5);
 	/**Current Look and feel*/
-	private static String sCurrent = "";
+	private static String sCurrent = ""; //$NON-NLS-1$
 	
 	/**
 	 * Set current look and feel
@@ -54,7 +54,7 @@ public class LNFManager implements ITechnicalStrings{
 			UIManager.setLookAndFeel((String)hmNameClass.get(sCurrent));	
 		}
 		catch(Exception e){
-			Log.error("123",sCurrent,e);
+			Log.error("123",sCurrent,e); //$NON-NLS-1$
 		}
 	}
 	

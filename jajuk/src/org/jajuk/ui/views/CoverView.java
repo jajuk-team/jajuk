@@ -35,6 +35,7 @@ import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 
 import org.jajuk.base.FIFO;
+import org.jajuk.i18n.Messages;
 import org.jajuk.ui.ObservationManager;
 import org.jajuk.ui.Observer;
 import org.jajuk.ui.ViewManager;
@@ -110,7 +111,7 @@ public class CoverView extends ViewAdapter implements Observer{
 			if (!bFound){  //no cover file, take the first image we find
 				for (int i=0;i<files.length;i++){
 					String sExt = Util.getExtension(files[i]);
-					if (sExt.equalsIgnoreCase("jpg") || sExt.equalsIgnoreCase("png") || sExt.equalsIgnoreCase("gif")){
+					if (sExt.equalsIgnoreCase("jpg") || sExt.equalsIgnoreCase("png") || sExt.equalsIgnoreCase("gif")){ //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 						image = java.awt.Toolkit.getDefaultToolkit().getImage(files[i].getAbsolutePath());
 						bFound = true;
 						break;
@@ -140,14 +141,14 @@ public class CoverView extends ViewAdapter implements Observer{
 	 * @see org.jajuk.ui.IView#getDesc()
 	 */
 	public String getDesc() {
-		return "Cover view";	
+		return Messages.getString("CoverView.3");	 //$NON-NLS-1$
 	}
 
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.IView#getViewName()
 	 */
 	public String getViewName() {
-		return "org.jajuk.ui.views.CoverView";
+		return "org.jajuk.ui.views.CoverView"; //$NON-NLS-1$
 	}
 
 

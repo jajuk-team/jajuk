@@ -77,7 +77,7 @@ public class Main implements ITechnicalStrings {
 	public static void main(String[] args) {
 		try {
 			//starts ui
-			jframe = new JFrame("Jajuk : Just Another Jukebox | Java Jukebox"); 
+			jframe = new JFrame(Messages.getString("Main.10"));  //$NON-NLS-1$
 			jframe.setIconImage(Util.getIcon(ICON_LOGO).getImage());
 			
 			//Launch splashscreen
@@ -106,20 +106,20 @@ public class Main implements ITechnicalStrings {
 			
 			//registers supported types
 			try {
-				TypeManager.registerType(Messages.getString("Main.Mpeg_layer_3_5"), EXT_MP3, PLAYER_IMPL_JAVALAYER, TAG_IMPL_MP3INFO, true); //$NON-NLS-1$ //$NON-NLS-2$
-				TypeManager.registerType(Messages.getString("Main.Playlist_7"), EXT_PLAYLIST, PLAYER_IMPL_JAVALAYER, null, false); //$NON-NLS-1$ //$NON-NLS-2$
-				TypeManager.registerType(Messages.getString("Main.Ogg_vorbis_9"), EXT_OGG, PLAYER_IMPL_JAVALAYER, null, true); //$NON-NLS-1$ //$NON-NLS-2$
+				TypeManager.registerType(Messages.getString("Type.mp3"), EXT_MP3, PLAYER_IMPL_JAVALAYER, TAG_IMPL_MP3INFO, true); //$NON-NLS-1$ //$NON-NLS-2$
+				TypeManager.registerType(Messages.getString("Type.playlist"), EXT_PLAYLIST, PLAYER_IMPL_JAVALAYER, null, false); //$NON-NLS-1$ //$NON-NLS-2$
+				TypeManager.registerType(Messages.getString("Type.ogg"), EXT_OGG, PLAYER_IMPL_JAVALAYER, null, true); //$NON-NLS-1$ //$NON-NLS-2$
 			} catch (Exception e1) {
-				Log.error(Messages.getString("Main.Error_registering_players_11"), e1); //$NON-NLS-1$
+				Log.error("026",e1); //$NON-NLS-1$
 			}
 	
 			//Registers supported look and feels
-			LNFManager.register(LNF_METAL,LNF_METAL_CLASS); //$NON-NLS-1$
-			LNFManager.register(LNF_GTK,LNF_GTK_CLASS); //$NON-NLS-1$
-			LNFManager.register(LNF_WINDOWS,LNF_WINDOWS_CLASS);//$NON-NLS-1$
-			LNFManager.register(LNF_KUNSTSTOFF,LNF_KUNSTSTOFF_CLASS);//$NON-NLS-1$
-			LNFManager.register(LNF_LIQUID,LNF_LIQUID_CLASS);//$NON-NLS-1$
-			
+			LNFManager.register(LNF_METAL,LNF_METAL_CLASS); 
+			LNFManager.register(LNF_GTK,LNF_GTK_CLASS); 
+			LNFManager.register(LNF_WINDOWS,LNF_WINDOWS_CLASS);
+			LNFManager.register(LNF_KUNSTSTOFF,LNF_KUNSTSTOFF_CLASS);
+			LNFManager.register(LNF_LIQUID,LNF_LIQUID_CLASS);
+						
 			//perform initial checkups
 			initialCheckups();
 			
@@ -210,13 +210,13 @@ public class Main implements ITechnicalStrings {
 			//Display info message if first session
 			if (TRUE.equals(ConfigurationManager.getProperty(CONF_FIRST_CON))){
 				ConfigurationManager.setProperty(CONF_FIRST_CON,FALSE);
-				Messages.showInfoMessage("Main_first_connection");
+				Messages.showInfoMessage(Messages.getString("Main.12")); //$NON-NLS-1$
 				PerspectiveManager.setCurrentPerspective(PERSPECTIVE_NAME_CONFIGURATION);
 				return;
 			}
 			
 			//Display a message
-			information.setMessage("Jajuk successfully started", InformationJPanel.INFORMATIVE); //$NON-NLS-1$
+			information.setMessage(Messages.getString("Main.13"), InformationJPanel.INFORMATIVE);  //$NON-NLS-1$
 			
 			//Lauch startup track if any
 			launchInitialTrack();
@@ -238,13 +238,13 @@ public class Main implements ITechnicalStrings {
 	private static void initialCheckups() throws Exception {
 		try {
 			//check for a concurrent jajuk session
-			Socket socket = new Socket("127.0.0.1", 62321);  //try to connect to an existing socket server
+			Socket socket = new Socket("127.0.0.1", 62321);  //try to connect to an existing socket server //$NON-NLS-1$
 			ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
-			oos.writeObject("");
+			oos.writeObject(""); //$NON-NLS-1$
 			//	No error? jajuk already started
 			sc.dispose();
-			Log.error(new JajukException("124"));
-			Messages.showErrorMessage("124");	
+			Log.error(new JajukException("124")); //$NON-NLS-1$
+			Messages.showErrorMessage("124");	 //$NON-NLS-1$
 			System.exit(-1);
 			
 		} catch (IOException e) { //error? looks like Jajuk is not started, lets start the listener 
@@ -275,7 +275,7 @@ public class Main implements ITechnicalStrings {
 				public void run(){
 					long l = System.currentTimeMillis();
 					Util.saveFile(new File(FILE_COLLECTION));
-					Log.debug("Saved collection file in "+(System.currentTimeMillis()-l)+" ms");
+					Log.debug("Saved collection file in "+(System.currentTimeMillis()-l)+" ms"); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 			}.start();
 		}
@@ -305,7 +305,7 @@ public class Main implements ITechnicalStrings {
 	public static void exit(int iExitCode) {
 		try {
 			if (Boolean.valueOf(ConfigurationManager.getProperty(CONF_CONFIRMATIONS_EXIT)).booleanValue()){
-				int iResu = JOptionPane.showConfirmDialog(jframe,Messages.getString("Confirmation_exit"),Messages.getString("Main.16"),JOptionPane.YES_NO_OPTION); //$NON-NLS-1$ //$NON-NLS-2$
+				int iResu = JOptionPane.showConfirmDialog(jframe,Messages.getString("Confirmation_exit"),Messages.getString("Main.21"),JOptionPane.YES_NO_OPTION);  //$NON-NLS-1$ //$NON-NLS-2$
 				if (iResu == JOptionPane.NO_OPTION){
 					return;
 				}
@@ -362,8 +362,8 @@ public class Main implements ITechnicalStrings {
 					device.mount();
 				}
 				catch(Exception e){
-					Log.error("112",device.getName(),e);
-					Messages.showErrorMessage("112",device.getName());
+					Log.error("112",device.getName(),e); //$NON-NLS-1$
+					Messages.showErrorMessage("112",device.getName()); //$NON-NLS-1$
 				}
 			}
 			if (TRUE.equals(device.getProperty(DEVICE_OPTION_AUTO_REFRESH))){

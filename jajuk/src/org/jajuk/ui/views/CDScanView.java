@@ -80,21 +80,21 @@ public class CDScanView extends ViewAdapter implements ActionListener {
 			{fYSeparator,20,fYSeparator,20,fYSeparator,20,fYSeparator}
 		};
 		setLayout(new TableLayout(dSize));
-		jlName = new JLabel("CD label : ");
-		jlName.setToolTipText("Enter CD label. Ex: CD1, ROCK...");
+		jlName = new JLabel(Messages.getString("CDScanView.0")); //$NON-NLS-1$
+		jlName.setToolTipText(Messages.getString("CDScanView.1")); //$NON-NLS-1$
 		jtfName =  new JTextField(10);
-		jtfName.setToolTipText("Enter CD label. Ex: CD1, ROCK...");
-		jlMountPoint = new JLabel("Mount point : ");
-		jlMountPoint.setToolTipText("Mount point where CD can be found. Ex: /cdrom on unix, e: on MS Windows...");
+		jtfName.setToolTipText(Messages.getString("CDScanView.2")); //$NON-NLS-1$
+		jlMountPoint = new JLabel(Messages.getString("CDScanView.3")); //$NON-NLS-1$
+		jlMountPoint.setToolTipText(Messages.getString("CDScanView.4")); //$NON-NLS-1$
 		jtfMountPoint = new JTextField(10);
-		jtfMountPoint.setToolTipText("Mount point where CD can be found. Ex: /cdrom on unix, e: on MS Windows...");
-		jbScan = new JButton("Scan",Util.getIcon(ICON_REFRESH));
+		jtfMountPoint.setToolTipText(Messages.getString("CDScanView.5")); //$NON-NLS-1$
+		jbScan = new JButton(Messages.getString("CDScanView.6"),Util.getIcon(ICON_REFRESH)); //$NON-NLS-1$
 		jbScan.addActionListener(this);
-		add(jlName,"1,1");
-		add(jtfName,"3,1");
-		add(jlMountPoint,"1,3");
-		add(jtfMountPoint,"3,3");
-		add(jbScan,"1,5");
+		add(jlName,"1,1"); //$NON-NLS-1$
+		add(jtfName,"3,1"); //$NON-NLS-1$
+		add(jlMountPoint,"1,3"); //$NON-NLS-1$
+		add(jtfMountPoint,"3,3"); //$NON-NLS-1$
+		add(jbScan,"1,5"); //$NON-NLS-1$
 		
 	}
 
@@ -102,7 +102,7 @@ public class CDScanView extends ViewAdapter implements ActionListener {
 	 * @see org.jajuk.ui.IView#getDesc()
 	 */
 	public String getDesc() {
-		return "CD Scan view";	
+		return Messages.getString("CDScanView.12");	 //$NON-NLS-1$
 	}
 
 	/* (non-Javadoc)
@@ -116,10 +116,10 @@ public class CDScanView extends ViewAdapter implements ActionListener {
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
 	public void actionPerformed(ActionEvent e) {
-		if ( !"".equals(jtfName.getText().trim()) && !"".equals(jtfMountPoint.getText().trim())){
+		if ( !"".equals(jtfName.getText().trim()) && !"".equals(jtfMountPoint.getText().trim())){ //$NON-NLS-1$ //$NON-NLS-2$
 			Device device = DeviceManager.registerDevice(jtfName.getText().trim(),1,jtfMountPoint.getText().trim(),jtfMountPoint.getText().trim());
 			if (device == null){ //means device name is already token
-				Messages.showErrorMessage("019");
+				Messages.showErrorMessage("019"); //$NON-NLS-1$
 				return;
 			}
 			try{
@@ -134,14 +134,14 @@ public class CDScanView extends ViewAdapter implements ActionListener {
 				synchronized(Device.bLock){  //wait refresh is done
 					device.unmount(true);
 				}
-				jtfName.setName("");
+				jtfName.setName(""); //$NON-NLS-1$
 				jtfName.requestFocus();
 				ObservationManager.notify(EVENT_DEVICE_UNMOUNT);
 				
 			}
 			catch(Exception ex){
 				DeviceManager.removeDevice(device);
-				Messages.showErrorMessage("016");
+				Messages.showErrorMessage("016"); //$NON-NLS-1$
 			}
 		}
 	}

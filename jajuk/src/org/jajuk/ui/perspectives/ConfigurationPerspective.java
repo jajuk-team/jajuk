@@ -42,7 +42,7 @@ public class ConfigurationPerspective extends PerspectiveAdapter{
 	 * @see org.jajuk.ui.IPerspective#getDesc()
 	 */
 	public String getDesc() {
-		return Messages.getString("Perspective_Description_Configuration");
+		return Messages.getString("Perspective_Description_Configuration"); //$NON-NLS-1$
 	}
 
 }

@@ -116,23 +116,23 @@ public class PhysicalPlaylistRepositoryView extends ViewAdapter implements Obser
 		//Popup menus
 		jpmenu =  new JPopupMenu();
 	
-		jmiPlay = new JMenuItem("Play"); 
+		jmiPlay = new JMenuItem(Messages.getString("PhysicalPlaylistRepositoryView.0"));  //$NON-NLS-1$
 		jmiPlay.addActionListener(this);
 		jpmenu.add(jmiPlay);
 		
-		jmiEdit = new JMenuItem("Edit"); 
+		jmiEdit = new JMenuItem(Messages.getString("PhysicalPlaylistRepositoryView.1"));  //$NON-NLS-1$
 		jmiEdit.addActionListener(this);
 		jpmenu.add(jmiEdit);
 
-		jmiSaveAs = new JMenuItem("Save as"); 
+		jmiSaveAs = new JMenuItem(Messages.getString("PhysicalPlaylistRepositoryView.2"));  //$NON-NLS-1$
 		jmiSaveAs.addActionListener(this);
 		jpmenu.add(jmiSaveAs);
 	
-		jmiDelete = new JMenuItem("Delete"); 
+		jmiDelete = new JMenuItem(Messages.getString("PhysicalPlaylistRepositoryView.3"));  //$NON-NLS-1$
 		jmiDelete.addActionListener(this);
 		jpmenu.add(jmiDelete);
 
-		jmiProperties = new JMenuItem("Properties"); 
+		jmiProperties = new JMenuItem(Messages.getString("PhysicalPlaylistRepositoryView.4"));  //$NON-NLS-1$
 		jmiProperties.addActionListener(this);
 		jmiProperties.setEnabled(false);
 		jpmenu.add(jmiProperties);
@@ -164,7 +164,7 @@ public class PhysicalPlaylistRepositoryView extends ViewAdapter implements Obser
 						if ( plfi != null){
 							ArrayList alFiles =  plfi.getPlaylistFile().getBasicFiles();
 							if ( alFiles.size() == 0){
-								Messages.showErrorMessage("018");	
+								Messages.showErrorMessage("018");	 //$NON-NLS-1$
 							}
 							else{
 								FIFO.getInstance().push(alFiles,false);
@@ -205,14 +205,14 @@ public class PhysicalPlaylistRepositoryView extends ViewAdapter implements Obser
 	 * @see org.jajuk.ui.IView#getDesc()
 	 */
 	public String getDesc() {
-		return "Playlists view";	
+		return Messages.getString("PhysicalPlaylistRepositoryView.6");	 //$NON-NLS-1$
 	}
 
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.IView#getViewName()
 	 */
 	public String getViewName() {
-		return "org.jajuk.ui.views.PhysicalPlaylistRepositoryView";
+		return "org.jajuk.ui.views.PhysicalPlaylistRepositoryView"; //$NON-NLS-1$
 	}
 
 	/* (non-Javadoc)
@@ -245,26 +245,26 @@ public class PhysicalPlaylistRepositoryView extends ViewAdapter implements Obser
 	private void populate(){
 		//special playlists
 		JPanel jpSpecials = new JPanel();
-		jpSpecials.setBorder(BorderFactory.createTitledBorder("Specials"));
+		jpSpecials.setBorder(BorderFactory.createTitledBorder(Messages.getString("PhysicalPlaylistRepositoryView.8"))); //$NON-NLS-1$
 		jpSpecials.setLayout(new BoxLayout(jpSpecials,BoxLayout.Y_AXIS));
 		//queue
-		plfiQueue = new PlaylistFileItem(PlaylistFileItem.PLAYLIST_TYPE_QUEUE,ICON_PLAYLIST_QUEUE,null,"Queue");
-		plfiQueue.setToolTipText("Current queue : drag and drop into for playing");
+		plfiQueue = new PlaylistFileItem(PlaylistFileItem.PLAYLIST_TYPE_QUEUE,ICON_PLAYLIST_QUEUE,null,Messages.getString("PhysicalPlaylistRepositoryView.9")); //$NON-NLS-1$
+		plfiQueue.setToolTipText(Messages.getString("PhysicalPlaylistRepositoryView.10")); //$NON-NLS-1$
 		plfiQueue.addMouseListener(ma);
 		jpSpecials.add(plfiQueue);
 		//new
-		plfiNew = new PlaylistFileItem(PlaylistFileItem.PLAYLIST_TYPE_NEW,ICON_PLAYLIST_NEW,null,"New");
-		plfiNew.setToolTipText("New playlist : drag and drop into for adding files");
+		plfiNew = new PlaylistFileItem(PlaylistFileItem.PLAYLIST_TYPE_NEW,ICON_PLAYLIST_NEW,null,Messages.getString("PhysicalPlaylistRepositoryView.11")); //$NON-NLS-1$
+		plfiNew.setToolTipText(Messages.getString("PhysicalPlaylistRepositoryView.12")); //$NON-NLS-1$
 		plfiNew.addMouseListener(ma);
 		jpSpecials.add(plfiNew);
 		//bookmark
-		plfiBookmarks = new PlaylistFileItem(PlaylistFileItem.PLAYLIST_TYPE_BOOKMARK,ICON_PLAYLIST_BOOKMARK,null,"Bookmarks");
-		plfiBookmarks.setToolTipText("Bookmark playlist : drag and drop into for keeping trace");
+		plfiBookmarks = new PlaylistFileItem(PlaylistFileItem.PLAYLIST_TYPE_BOOKMARK,ICON_PLAYLIST_BOOKMARK,null,Messages.getString("PhysicalPlaylistRepositoryView.13")); //$NON-NLS-1$
+		plfiBookmarks.setToolTipText(Messages.getString("PhysicalPlaylistRepositoryView.14")); //$NON-NLS-1$
 		plfiBookmarks.addMouseListener(ma);
 		jpSpecials.add(plfiBookmarks);
 		//Best of
-		plfiBestof = new PlaylistFileItem(PlaylistFileItem.PLAYLIST_TYPE_BESTOF,ICON_PLAYLIST_BESTOF,null,"Best of");
-		plfiBestof.setToolTipText("Best of playlist : contains top tracks");
+		plfiBestof = new PlaylistFileItem(PlaylistFileItem.PLAYLIST_TYPE_BESTOF,ICON_PLAYLIST_BESTOF,null,Messages.getString("PhysicalPlaylistRepositoryView.15")); //$NON-NLS-1$
+		plfiBestof.setToolTipText(Messages.getString("PhysicalPlaylistRepositoryView.16")); //$NON-NLS-1$
 		plfiBestof.addMouseListener(ma);
 		jpSpecials.add(plfiBestof);
 		
@@ -308,7 +308,7 @@ public class PhysicalPlaylistRepositoryView extends ViewAdapter implements Obser
 				alFiles = plfiSelected.getPlaylistFile().getBasicFiles();
 			}
 			if ( alFiles.size() == 0){
-				Messages.showErrorMessage("018");	
+				Messages.showErrorMessage("018");	 //$NON-NLS-1$
 			}
 			else{
 				FIFO.getInstance().push(alFiles,false);

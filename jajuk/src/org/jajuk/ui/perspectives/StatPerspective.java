@@ -42,7 +42,7 @@ public class StatPerspective extends PerspectiveAdapter{
 	 * @see org.jajuk.ui.IPerspective#getDesc()
 	 */
 	public String getDesc() {
-		return Messages.getString("Perspective_Description_Statistics");
+		return Messages.getString("Perspective_Description_Statistics"); //$NON-NLS-1$
 	}
 
 }

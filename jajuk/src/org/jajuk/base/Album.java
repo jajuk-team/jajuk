@@ -64,8 +64,8 @@ public class Album extends PropertyAdapter implements Comparable{
 	 */
 	public String getName2() {
 		String sOut = getName();
-		if (sOut.equals("unknown_album")){
-			sOut = Messages.getString("unknown_album");
+		if (sOut.equals("unknown_album")){ //$NON-NLS-1$
+			sOut = Messages.getString("unknown_album"); //$NON-NLS-1$
 		}
 		return sOut;
 	}

@@ -75,7 +75,7 @@ public class PropertyAdapter implements IPropertyable, ITechnicalStrings,Seriali
 		//Using standard attributes is forbidden
 		for (int i=0;i<XML_RESERVED_ATTRIBUTE_NAMES.length;i++){
 			if (sKey.equals(XML_RESERVED_ATTRIBUTE_NAMES[i])){
-				Messages.showErrorMessage("110")	;
+				Messages.showErrorMessage("110")	; //$NON-NLS-1$
 				return;
 			}
 		}
@@ -84,11 +84,11 @@ public class PropertyAdapter implements IPropertyable, ITechnicalStrings,Seriali
 
 	public String getPropertiesXml() {
 		Enumeration e = properties.propertyNames();
-		StringBuffer sb = new StringBuffer("");
+		StringBuffer sb = new StringBuffer(""); //$NON-NLS-1$
 		while (e.hasMoreElements()) {
 			String sKey = (String) e.nextElement();
 			String sValue = Util.formatXML(properties.getProperty(sKey));
-			sb.append(" "+sKey + "='" + sValue + "'");
+			sb.append(" "+sKey + "='" + sValue + "'"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
 		return sb.toString();
 	}

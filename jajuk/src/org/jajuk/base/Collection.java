@@ -78,51 +78,51 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 
 	/** Write current collection to collection file for persistence between sessions */
 	public static void commit() throws IOException {
-		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(FILE_COLLECTION), "UTF-8"));
-		bw.write("<?xml version='1.0' encoding='UTF-8'?>\n");
-		bw.write("<collection jajuk_version='"+JAJUK_VERSION+"'>\n");
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(FILE_COLLECTION), "UTF-8")); //$NON-NLS-1$
+		bw.write("<?xml version='1.0' encoding='UTF-8'?>\n"); //$NON-NLS-1$
+		bw.write("<collection jajuk_version='"+JAJUK_VERSION+"'>\n"); //$NON-NLS-1$ //$NON-NLS-2$
 		//types
-		bw.write("\t<types>\n");
+		bw.write("\t<types>\n"); //$NON-NLS-1$
 		Iterator it = TypeManager.getTypes().iterator();
 		while (it.hasNext()) {
 			Type type = (Type) it.next();
 			bw.write(type.toXml());
 		}
-		bw.write("\t</types>\n");
+		bw.write("\t</types>\n"); //$NON-NLS-1$
 		//devices
-		bw.write("\t<devices>\n");
+		bw.write("\t<devices>\n"); //$NON-NLS-1$
 		it = DeviceManager.getDevices().iterator();
 		while (it.hasNext()) {
 			Device device = (Device) it.next();
 			bw.write(device.toXml());
 		}
-		bw.write("\t</devices>\n");
+		bw.write("\t</devices>\n"); //$NON-NLS-1$
 		//styles
-		bw.write("\t<styles>\n");
+		bw.write("\t<styles>\n"); //$NON-NLS-1$
 		it = StyleManager.getStyles().iterator();
 		while (it.hasNext()) {
 			Style style = (Style) it.next();
 			bw.write(style.toXml());
 		}
-		bw.write("\t</styles>\n");
+		bw.write("\t</styles>\n"); //$NON-NLS-1$
 		//authors
-		bw.write("\t<authors>\n");
+		bw.write("\t<authors>\n"); //$NON-NLS-1$
 		it = AuthorManager.getAuthors().iterator();
 		while (it.hasNext()) {
 			Author author = (Author) it.next();
 			bw.write(author.toXml());
 		}
-		bw.write("\t</authors>\n");
+		bw.write("\t</authors>\n"); //$NON-NLS-1$
 		//albums
-		bw.write("\t<albums>\n");
+		bw.write("\t<albums>\n"); //$NON-NLS-1$
 		it = AlbumManager.getAlbums().iterator();
 		while (it.hasNext()) {
 			Album album = (Album) it.next();
 			bw.write(album.toXml());
 		}
-		bw.write("\t</albums>\n");
+		bw.write("\t</albums>\n"); //$NON-NLS-1$
 		//tracks
-		bw.write("\t<tracks>\n");
+		bw.write("\t<tracks>\n"); //$NON-NLS-1$
 		it = TrackManager.getTracks().iterator();
 		while (it.hasNext()) {
 			Track track = (Track) it.next();
@@ -130,33 +130,33 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 				bw.write(track.toXml());
 			}
 		}
-		bw.write("\t</tracks>\n");
+		bw.write("\t</tracks>\n"); //$NON-NLS-1$
 		//directories
-		bw.write("\t<directories>\n");
+		bw.write("\t<directories>\n"); //$NON-NLS-1$
 		it = DirectoryManager.getDirectories().iterator();
 		while (it.hasNext()) {
 			Directory directory = (Directory) it.next();
 			bw.write(directory.toXml());
 		}
-		bw.write("\t</directories>\n");
+		bw.write("\t</directories>\n"); //$NON-NLS-1$
 		//files
-		bw.write("\t<files>\n");
+		bw.write("\t<files>\n"); //$NON-NLS-1$
 		it = FileManager.getFiles().iterator();
 		while (it.hasNext()) {
 			org.jajuk.base.File file = (org.jajuk.base.File) it.next();
 			bw.write(file.toXml());
 		}
-		bw.write("\t</files>\n");
+		bw.write("\t</files>\n"); //$NON-NLS-1$
 		//playlist files
-		bw.write("\t<playlist_files>\n");
+		bw.write("\t<playlist_files>\n"); //$NON-NLS-1$
 		it = PlaylistFileManager.getPlaylistFiles().iterator();
 		while (it.hasNext()) {
 			PlaylistFile playlistFile = (PlaylistFile) it.next();
 			bw.write(playlistFile.toXml());
 		}
-		bw.write("\t</playlist_files>\n");
+		bw.write("\t</playlist_files>\n"); //$NON-NLS-1$
 		//playlist
-		bw.write("\t<playlists>\n");
+		bw.write("\t<playlists>\n"); //$NON-NLS-1$
 		it = PlaylistManager.getPlaylists().iterator();
 		while (it.hasNext()) {
 			Playlist playlist = (Playlist) it.next();
@@ -164,8 +164,8 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 				bw.write(playlist.toXml());
 			}
 		}
-		bw.write("\t</playlists>\n");
-		bw.write("</collection>\n");
+		bw.write("\t</playlists>\n"); //$NON-NLS-1$
+		bw.write("</collection>\n"); //$NON-NLS-1$
 		bw.flush();
 		bw.close();
 		
@@ -186,7 +186,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 			saxParser.parse(frt.toURL().toString(),getInstance());
 		} catch (Exception e) {
 			Log.error(e);
-			throw new JajukException("005");
+			throw new JajukException("005"); //$NON-NLS-1$
 		}
 	}
 
@@ -218,7 +218,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 	 * @exception SAXException
 	 */
 	public void warning(SAXParseException spe) throws SAXException {
-		throw new SAXException(Messages.getErrorMessage("004") + " / " + spe.getSystemId() + "/" + spe.getLineNumber() + "/" + spe.getColumnNumber() + " : " + spe.getMessage());
+		throw new SAXException(Messages.getErrorMessage("004") + " / " + spe.getSystemId() + "/" + spe.getLineNumber() + "/" + spe.getColumnNumber() + " : " + spe.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 	}
 
 	/**
@@ -228,7 +228,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 	 * @exception SAXException
 	 */
 	public void error(SAXParseException spe) throws SAXException {
-		throw new SAXException(Messages.getErrorMessage("005") + " / " + spe.getSystemId() + "/" + spe.getLineNumber() + "/" + spe.getColumnNumber() + " : " + spe.getMessage());
+		throw new SAXException(Messages.getErrorMessage("005") + " / " + spe.getSystemId() + "/" + spe.getLineNumber() + "/" + spe.getColumnNumber() + " : " + spe.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 	}
 
 	/**
@@ -238,21 +238,21 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 	 * @exception SAXException
 	 */
 	public void fatalError(SAXParseException spe) throws SAXException {
-		throw new SAXException(Messages.getErrorMessage("006") + " / " + spe.getSystemId() + "/" + spe.getLineNumber() + "/" + spe.getColumnNumber() + " : " + spe.getMessage());
+		throw new SAXException(Messages.getErrorMessage("006") + " / " + spe.getSystemId() + "/" + spe.getLineNumber() + "/" + spe.getColumnNumber() + " : " + spe.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 	}
 
 	/**
 	 * Called at parsing start
 	 */
 	public void startDocument() {
-		Log.debug("Starting collection file parsing...");
+		Log.debug("Starting collection file parsing..."); //$NON-NLS-1$
 	}
 
 	/**
 	 * Called at parsing end
 	 */
 	public void endDocument() {
-		Log.debug("Collection file parsing done : " + (System.currentTimeMillis() - lTime) + " ms");
+		Log.debug("Collection file parsing done : " + (System.currentTimeMillis() - lTime) + " ms"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/**
@@ -295,7 +295,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 			case HASHCODE_DIRECTORY:
 				Directory dParent = null;
 				String sParentId = attributes.getValue(2);
-				if (!"-1".equals(sParentId)) {
+				if (!"-1".equals(sParentId)) { //$NON-NLS-1$
 					dParent = DirectoryManager.getDirectory(sParentId); //We know the parent directory is already referenced because of order conservation
 				}
 				device = DeviceManager.getDevice(attributes.getValue(3));
@@ -317,7 +317,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 				plf.populateProperties(attributes, 4);
 			break;
 			case HASHCODE_PLAYLIST:
-				StringTokenizer st = new StringTokenizer(attributes.getValue(1), ","); //playlist file list with ','
+				StringTokenizer st = new StringTokenizer(attributes.getValue(1), ","); //playlist file list with ',' //$NON-NLS-1$
 				Playlist playlist = null;
 				if (st.hasMoreTokens()) { //if none mapped file, ignore it so it will be removed at next commit
 					do{
@@ -336,7 +336,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 				String sExtension = attributes.getValue(2);
 				String sPlayer = attributes.getValue(3);
 				String sTag = attributes.getValue(4);
-				if ("".equals(sTag)) {
+				if ("".equals(sTag)) { //$NON-NLS-1$
 					sTag = null;
 				}
 				boolean bIsMusic = Boolean.valueOf(attributes.getValue(5)).booleanValue();
