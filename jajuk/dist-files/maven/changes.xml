@@ -137,7 +137,7 @@
     	<action dev='bflorat' type='fix'>1002831 Physical tree collapse when device tested</action>
     	<action dev='bflorat' type='fix'>Many fixes for bugs discovered during 0.3 qualification and not referenced in SF tracker</action>
      </release>
-     <release version='0.3.1' date='work in progress' description='Many new features'>
+     <release version='0.3.1' date='2004-12-04' description='Docking and many new features'>
      	<action dev='fdutron' type='add'>Advanced docking for views</action>  
      	<action dev='bflorat' type='add'>[Packaging] RPM provided for Linux users</action>  
      	<action dev='bflorat' type='add'>[Packaging] Self-extracting executable provided for Windows users</action>  
@@ -170,6 +170,7 @@
     	<action dev='bflorat' type='fix'>1039576	Auto-cover blocked</action>
     	<action dev='bflorat' type='fix'>1038487	Window toFront</action>
     	<action dev='bflorat' type='fix'>1038486	Repeat mode bug</action>
+	   	<action dev='bflorat' type='fix'>1013891	Cover maximalization problem</action>
      </release>
  
   </body>

@@ -1,5 +1,5 @@
 %define name                     jajuk
-%define version                     0.3.1rc6
+%define version                     0.3.1
 %define release                     1mdk
 
 %define section                  Multimedia/Sound
