@@ -40,7 +40,7 @@
 					<li><p><u>Under Windows</u> : Launch Jajuk by clicking on Jajuk icon : Start / Jajuk / Jajuk</p></li>
    				</ul>
 				<p><u>Note for MS Windows 95/98/Me users</u>: Some users report problems (error window : "Main-window couldn't be created" ). 
-					If this occurs, lauch Jajuk by double-clicking on the file <span style="font-family: monospace;">${Jajuk installation path}/bin/jajuk.jar</span>.
+					If this occurs, launch Jajuk by double-clicking on the file <span style="font-family: monospace;">${Jajuk installation path}/bin/jajuk.jar</span>.
 					See <a href='http://sourceforge.net/tracker/?group_id=91412'>  support request no 938666</a>.
 				</p>
 			</subsection>
@@ -58,6 +58,7 @@
 				<ul>
 					<li><p><u>Under Unix</u> : launch : <span style="font-family: monospace;">java -jar ${jajuk installation path}/Unistaller/uninstaller.jar</span></p></li>
 					<li><p><u>Under Windows</u> : Launch uninstaller by clicking on 'Uninstall' icon next to 'Jajuk ' one</p></li>
+					<li><p><u>Under Unix and Windows</u> : Remove ${user home}/.jajuk directory for each user you want to uninstall.</p></li>
    				</ul>
    			</subsection>
    		</section>

@@ -62,14 +62,14 @@
 				ParameterView.75=Fixez un mot de passe � votre machine. Tant que le mot de passe n'est pas fix�, personne ne peut s'y connecter</span></p>
 			</li>
 			
-			<li><p>Translate even lines like <span style="font-family: monospace;">Language_desc_*=*</span> (other languages names) and add a new line with your own language name.</p></li>
+			<li><p>Translate even lines like <span style="font-family: monospace;">Language_desc_*=*</span> (other languages names) and <u>add a new line with your own language name.</u></p></li>
 			
 			<li><p>Send me (  <a href='bertrand@florat.net'>bertrand@florat.net</a>) your work as a property file with your local ( ex: jajuk_ru.properties for russian ). It could be nice you send also a message in the forum: 
 			<a href='http://sourceforge.net/forum/forum.php?forum_id=315360'>http://sourceforge.net/forum/forum.php?forum_id=315360</a>. Contact me if you have a developer profile so I will create a 
 			CVS account for you. Then you will be able to commit and maintain your translation files directly in the repository.</p>
 			</li>
 
-			<li><p>(Optional) If you want to test your work ( needs ant to be installed ):</p></li>
+			<li><p>(Optional) If you want to test your work (<i>ant</i> must be installed):</p></li>
 				<ul>
 					<li><p>Edit  <span style="font-family: monospace;">${jajuk installation path}/src/org/jajuk/Main.java</span> file.and search for line :</p></li>
 					<p><span style="font-family: monospace;">Messages.registerLocal("fr","Language_desc_fr"); //$NON-NLS-1$ //$NON-NLS-2$</span></p>
@@ -90,7 +90,7 @@
   			is not critical. The hard work is the first translation : upgrade a translation requires only few minutes. You can upgrade your translation whenever you want.
   			What you have to do when upgrading a translation is :</p>
   			<ul>
-  				<li><p>If your source language is NOT English, make sure it is up to date before upgrading it.</p></li>
+  				<li><p>If your source (FROM) language is NOT English, make sure it is up to date before upgrading it.</p></li>
   				<li><p>Check your #FROM comment at the beginning of your file, it should contain CVS release version of your last upgrade.</p></li>
   				<li><p>Perform a 'diff' between this release and the latest in CVS repository. To achieve that, you can either use ViewCVS interface accessible from Jajuk web site (<a href='http://cvs.sourceforge.net/viewcvs.py/jajuk/jajuk/src/org/jajuk/i18n/'>CVS Web repository</a>) or a CVS client like Eclipse if you have one.</p></li>
   				<li><p>Remove old labels, modify and add new ones.</p></li>
