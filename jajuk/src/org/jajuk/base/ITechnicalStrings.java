@@ -345,7 +345,6 @@ public interface ITechnicalStrings {
 	public static final String CONF_BACKUP_SIZE = "jajuk.backup_size"; //backup size for collection.xml in MB
 	public static final String CONF_COLLECTION_CHARSET = "jajuk.collection_charset";//collection file charset (utf-8 or utf-16)
 	public static final String CONF_STARTUP_LAST_POSITION = "jajuk.startup.last_position";
-	public static final String CONF_STARTUP_KEEP_MODE = "jajuk.startup.keep_mode";
 	public static final String CONF_NETWORK_USE_PROXY = "jajuk.network.use_proxy";
 	public static final String CONF_NETWORK_PROXY_HOSTNAME = "jajuk.network.proxy_hostname";
 	public static final String CONF_NETWORK_PROXY_PORT = "jajuk.network.proxy_port";
