@@ -23,6 +23,7 @@ package org.jajuk.base;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Properties;
 
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.log.Log;
@@ -35,6 +36,8 @@ import org.jajuk.util.log.Log;
 public class PlaylistFileManager {
 	/** PlaylistFiles collection* */
 	static HashMap hmPlaylistFiles = new HashMap(100);
+	/** Map ids and properties, survives to a refresh, is used to recover old properties after refresh */
+	static HashMap hmIdProperties = new HashMap(100);
 
 	/**
 	 * No constructor available, only static access
@@ -64,6 +67,13 @@ public class PlaylistFileManager {
 			hmPlaylistFiles.put(sId, playlistFile);
 			if ( dParentDirectory.getDevice().isRefreshing()){
 				Log.debug("Registered new playlist file: "+ playlistFile);
+			}
+			Properties properties = (Properties)hmIdProperties.get(sId); 
+			if ( properties  == null){  //new file
+				hmIdProperties.put(sId,playlistFile.getProperties());
+			}
+			else{
+				playlistFile.setProperties(properties);
 			}
 		}
 		return playlistFile;
@@ -107,6 +117,15 @@ public class PlaylistFileManager {
 	 */
 	public static synchronized void delete(String sId){
 		hmPlaylistFiles.remove(sId);
+	}
+	
+	/**
+	 * Return properties assiated to an id
+	 * @param sId the id
+	 * @return
+	 */
+	public static synchronized Properties getProperties(String sId){
+		return (Properties)hmIdProperties.get(sId);
 	}
 
 }

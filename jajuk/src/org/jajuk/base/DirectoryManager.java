@@ -22,7 +22,9 @@ package org.jajuk.base;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Properties;
 
 import org.jajuk.util.MD5Processor;
 
@@ -36,6 +38,8 @@ public class DirectoryManager {
 	static ArrayList alDirectories = new ArrayList(100);
 	/** Directories collection ID */
 	static ArrayList alIds = new ArrayList(100);
+	/** Map ids and properties, survives to a refresh, is used to recover old properties after refresh */
+	static HashMap hmIdProperties = new HashMap(100);
 
 	/**
 	 * No constructor available, only static access
@@ -81,6 +85,13 @@ public class DirectoryManager {
 		}
 		alDirectories.add(directory);
 		alIds.add(sId);
+		Properties properties = (Properties)hmIdProperties.get(sId); 
+		if ( properties  == null){  //new file
+			hmIdProperties.put(sId,directory.getProperties());
+		}
+		else{
+			directory.setProperties(properties);
+		}
 		return directory;
 	}
 
@@ -141,6 +152,15 @@ public class DirectoryManager {
 			return null;
 		}
 		return (Directory) alDirectories.get(alIds.indexOf(sId));
+	}
+	
+	/**
+	 * Return properties assiated to an id
+	 * @param sId the id
+	 * @return
+	 */
+	public static synchronized Properties getProperties(String sId){
+		return (Properties)hmIdProperties.get(sId);
 	}
 
 }

@@ -20,6 +20,7 @@
 package org.jajuk.base;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -72,8 +73,16 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	public static byte[] bLock = new byte[0];
 	/** Number of files in this device before refresh ( for refresh stats ) */
 	public int iNbFilesBeforeRefresh;
-	/** Number of new files found during refresh ( for refresh stats ) */
+	/** Number of new files found during refresh for stats ) */
 	public int iNbNewFiles;
+	/** Number of created files on source device during synchro ( for stats ) */
+	public int iNbCreatedFilesSrc;
+	/** Number of created files on destination device during synchro ( for stats ) */
+	public int iNbCreatedFilesDest;
+	/** Number of deleted files during a synchro ( for stats ) */
+	int iNbDeletedFiles = 0;
+	/**Volume of created files during synchro */
+	long lVolume = 0;
 	
 
 	/**
@@ -154,13 +163,13 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 			//current reference to the inner thread class
 			new Thread() {
 				public void  run() {
-					refreshAction(device);
+					refreshCommand(device);
 				}
 			}
 			.start();
 		}
 		else{
-			refreshAction(device);
+			refreshCommand(device);
 		}
 	}
 	
@@ -169,7 +178,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	 * The refresh itself
 	 * @param device device to refresh
 	 */
-	private void refreshAction(Device device){
+	private void refreshCommand(Device device){
 		//lock the synchro
 		synchronized(bLock){
 			/*Remove all directories, playlist files and files for this device before rescan. 
@@ -224,7 +233,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 						indexTab[iDeep]++; //inc index for next time we will reach this deep
 						fCurrent = files[indexTab[iDeep]];
 						dParent = DirectoryManager.registerDirectory(fCurrent.getName(),dParent,device);
-						InformationJPanel.getInstance().setMessage(new StringBuffer("Refreshing device : [").append(device.getName()).append("]  Entering: [").append(dParent.getAbsolutePath()).append("]").toString(),InformationJPanel.INFORMATIVE);
+						InformationJPanel.getInstance().setMessage(new StringBuffer("Refreshing [").append(device.getName()).append("]  Entering [").append(dParent.getAbsolutePath()).append("]").toString(),InformationJPanel.INFORMATIVE);
 						dParent.scan();
 						iDeep++;
 					}
@@ -268,13 +277,13 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 			//current reference to the inner thread class
 			new Thread() {
 				public void  run() {
-					synchronizeAction();
+					synchronizeCommand();
 				}
 			}
 			.start();
 		}
 		else{
-			synchronizeAction();
+			synchronizeCommand();
 		}
 	}
 	
@@ -283,7 +292,12 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	 * Synchronize action itself
 	 *@param device : device to synchronize
 	 */
-	public void synchronizeAction(){
+	public void synchronizeCommand(){
+		long lTime = System.currentTimeMillis();				
+		iNbCreatedFilesDest = 0;
+		iNbCreatedFilesSrc = 0;
+		iNbDeletedFiles = 0;
+		lVolume = 0;
 		//check this device is synchronized
 		String sIdSrc = getProperty(DEVICE_OPTION_SYNCHRO_SOURCE); 
 		if ( sIdSrc == null || sIdSrc.equals(getId())){  //cannot synchro with itself
@@ -293,31 +307,76 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 		refresh(false);
 		Device dSrc = DeviceManager.getDevice(sIdSrc);
 		dSrc.refresh(false);
-		//in both cases ( bi or uni-directional ), copy all new files from source to this device
+		//start message
+		InformationJPanel.getInstance().setMessage(new StringBuffer("Sync. [").
+				append(dSrc.getName()).append(',').append(this.getName()).append("]").
+				toString(),InformationJPanel.INFORMATIVE);
+		//in both cases ( bi or uni-directional ), make an unidirectional sync from source device to this one
+		iNbCreatedFilesDest = synchronizeUnidirectonal(dSrc,this);
+		if ( iNbCreatedFilesDest > 0 ){
+			refresh(false); //refresh this device if needed
+		}
+		//if it is bidirectional, make an additional sync from this device to the source one
+		if ( DEVICE_OPTION_SYNCHRO_MODE_BI.equals(getProperty(DEVICE_OPTION_SYNCHRO_MODE))){
+			iNbCreatedFilesSrc = synchronizeUnidirectonal(this,dSrc);
+			if ( iNbCreatedFilesSrc > 0){
+				dSrc.refresh(false);  //refresh source device if needed
+			}
+		}
+		//end message
+		String sOut = new StringBuffer("Synchronation done in ").append((System.currentTimeMillis()-lTime)/1000)
+			.append(" sec - ").append(iNbCreatedFilesSrc+iNbCreatedFilesDest).append(" created files (").
+			append(lVolume/1048576).append(" MB) ").toString();
+		InformationJPanel.getInstance().setMessage(sOut,InformationJPanel.INFORMATIVE);
+		Log.debug(sOut);
+	}
+	
+	
+		/**
+		 * Synchronize a device with another one ( unidirectional )
+		 *@param device : device to synchronize
+		 *@return nb of created files
+		 */
+	private int synchronizeUnidirectonal(Device dSrc,Device dest){
+		int iNbCreatedFiles = 0;
 		//copy new directories from source device
 		HashSet hsSourceDirs = new HashSet(100);
+		HashSet hsDesynchroPaths = new HashSet(10); //contains paths ( relative to device) of desynchronized dirs
 		Iterator it = DirectoryManager.getDirectories().iterator();
 		while ( it.hasNext()){
 			Directory dir = (Directory)it.next();
 			if ( dir.getDevice().equals(dSrc)){
-				hsSourceDirs.add(dir);
+				if (  "n".equals(dir.getProperty(DIRECTORY_OPTION_SYNCHRO_MODE))){  //don't take desynchronized dirs into account
+					hsDesynchroPaths.add(dir.getAbsolutePath());
+				}
+				else{
+					hsSourceDirs.add(dir);	
+				}
 			}
 		}
 		HashSet hsDestDirs = new HashSet(100);
 		it = DirectoryManager.getDirectories().iterator();
 		while ( it.hasNext()){
 			Directory dir = (Directory)it.next();
-			if ( dir.getDevice().equals(this)){
-				hsDestDirs.add(dir);
+			if ( dir.getDevice().equals(dest)){
+				if (  "n".equals(dir.getProperty(DIRECTORY_OPTION_SYNCHRO_MODE))){  //don't take desynchronized dirs into account
+					hsDesynchroPaths.add(dir.getAbsolutePath());
+				}
+				else{
+					hsDestDirs.add(dir);
+				}
 			}
 		}
 		it = hsSourceDirs.iterator();
 		Iterator it2;
-		boolean bNeedCreate = false;
 		while ( it.hasNext()){
-			bNeedCreate = true;
+			boolean bNeedCreate = true;
 			Directory dir = (Directory)it.next();
 			String sPath = dir.getAbsolutePath();
+			//check the directory on source is not desynchronized. If it is, leave without checking files
+			if ( hsDesynchroPaths.contains(sPath)){
+				continue;
+			}
 			it2 = hsDestDirs.iterator(); 
 			while ( it2.hasNext()){
 				Directory dir2 = (Directory)it2.next();
@@ -326,59 +385,58 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 					break;
 				}
 			}
-		 	//create it if needed
-			if ( bNeedCreate){
-				new File(new StringBuffer(getUrl()).append(sPath).toString()).mkdirs();
-			}
-		}
-		//OK, now do the same with files
-		HashSet hsSourceFiles = new HashSet(100);
-		it = FileManager.getFiles().iterator();
-		org.jajuk.base.File file = null;
-		org.jajuk.base.File file2 = null;
-		while ( it.hasNext()){
-			file = (org.jajuk.base.File)it.next();
-			if ( file.getDirectory().getDevice().equals(dSrc)){
-				hsSourceFiles.add(file);
- 			}
-		}
-		HashSet hsDestFiles = new HashSet(100);
-		it = FileManager.getFiles().iterator();
-		while ( it.hasNext()){
-			file = (org.jajuk.base.File)it.next();
-			if ( file.getDirectory().getDevice().equals(this)){
-				hsDestFiles.add(file);
-			}
-		}
-		it = hsSourceFiles.iterator();
-		while ( it.hasNext()){
-			bNeedCreate = true;
-			file = (org.jajuk.base.File)it.next();
-			String sPath = file.getAbsolutePath();
-			it2 = hsDestFiles.iterator(); 
-			while ( it2.hasNext()){
-				file2 = (org.jajuk.base.File)it2.next();
-				if ( file2.getAbsolutePath().equals(sPath)){  //direcotry already exists on this device
-					bNeedCreate = false;
-					break;
-				}
-			}
 			//create it if needed
-			if ( bNeedCreate){
-				try {
-					Util.copy(new File(sPath),new File(new StringBuffer(getUrl()).append(file.getDirectory().getAbsolutePath()).toString()));
+			File fileNewDir  = new File(new StringBuffer(dest.getUrl()).append(sPath).toString());
+			if ( bNeedCreate ){ 
+				fileNewDir.mkdirs();
+			}
+			//sycnhronize files 
+			File fileSrc = new File(new StringBuffer(dSrc.getUrl()).append(sPath).toString());
+			FileFilter filter = new FileFilter() {
+				public boolean accept(File file) {
+					String sExt = Util.getExtension(file).toLowerCase();
+					if (TypeManager.isExtensionSupported(sExt) || "jpg".equals(sExt) || "gif".equals(sExt)){ 
+						return true;
+					}
+					return false;
 				}
-				catch(JajukException je){
-					Messages.showErrorMessage(je.getCode(),new StringBuffer(getUrl()).append(sPath).toString());
-				}
-				catch(Exception e){
-					Messages.showErrorMessage("020",new StringBuffer(getUrl()).append(sPath).toString().toString());
+			};
+			File[] fSrcFiles = fileSrc.listFiles(filter);
+			if ( fSrcFiles != null){
+				for (int i=0; i<fSrcFiles.length; i++){
+					File[] files = fileNewDir.listFiles(filter);
+					if ( files == null){
+						continue;
+					}
+					boolean bNeedCopy = true;
+					for (int j=0;j<files.length;j++){
+						if ( fSrcFiles[i].getName().equalsIgnoreCase(files[j].getName())){
+							bNeedCopy = false;
+						}
+					}
+					if ( bNeedCopy) {
+						try{
+							Util.copy(fSrcFiles[i],fileNewDir);
+							iNbCreatedFiles ++;
+							lVolume += fSrcFiles[i].length();
+							InformationJPanel.getInstance().setMessage(new StringBuffer("Sync. [").
+									append(dSrc.getName()).append(',').append(dest.getName()).append("]  Creating [")
+									.append(fSrcFiles[i].getAbsolutePath()).append("]").
+									toString(),InformationJPanel.INFORMATIVE);
+						}
+						catch(JajukException je){
+							Messages.showErrorMessage(je.getCode(),new StringBuffer(dest.getUrl()).append(sPath).toString());
+						}
+						catch(Exception e){
+							Messages.showErrorMessage("020",new StringBuffer(dest.getUrl()).append(sPath).toString().toString());
+						}
+					}
 				}
 			}
 		}
+		return iNbCreatedFiles;
 	}
-	
-	
+			
 	
 	/**
 	 * @return

@@ -28,8 +28,8 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.RandomAccessFile;
 import java.net.URL;
+import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -363,7 +363,7 @@ public class Util implements ITechnicalStrings {
 	 * @param directory : destination directory
 	 */
 	public static void copy(File file,File directory) throws Exception{
-		Log.debug("Copying: "+file.getAbsolutePath());
+		Log.debug("Copying: "+file.getAbsolutePath() +"  to : "+directory.getAbsolutePath());
 		File fileNew = new File(new StringBuffer(directory.getAbsolutePath()).append("/").append(file.getName()).toString());
 		if ( !file.exists() || !file.canRead() ){
 			throw new JajukException("023",file.getAbsolutePath(),null);
@@ -481,17 +481,17 @@ public class Util implements ITechnicalStrings {
     
     /**
      * Additional file checkusm used to prevent bug 886098. Simply return 10 bytes read at the middle of the file
+     * <p> uses nio api for performances
      * @return
      */
     public static String getFileChecksum(File fio ){
     	String sOut = "";
     	try{
-    		byte[] bytes = new byte[10];
-    		RandomAccessFile raf = new RandomAccessFile(fio,"r");
-    		raf.seek(fio.length()/2);
-    		raf.read(bytes,0,10);
-    		raf.close();
-    		sOut = new String(bytes);
+    		FileChannel fc = new FileInputStream(fio).getChannel();
+    		ByteBuffer bb = ByteBuffer.allocate(10);
+    		fc.read(bb,fio.length()/2);
+    		fc.close();
+    		sOut = new String(bb.array());
     	}
     	catch(Exception e){
     		Log.error("000",fio.getAbsolutePath(),e);	

@@ -141,15 +141,15 @@ public class DeviceWizard extends JFrame implements ActionListener,ITechnicalStr
 		//Default automount behavior
 		jcbType.addActionListener(this);
 		bgSynchro = new ButtonGroup();
-		jrbBidirSynchro = new JRadioButton("Unidirectional synchronization");
-		jrbBidirSynchro.setToolTipText("All new files found on the source device are copied into this device. Nothing will be written to source device");
-		jrbBidirSynchro.setBorder(BorderFactory.createEmptyBorder(0, 25, 0, 0));
-		jrbBidirSynchro.addActionListener(this);
-		jrbUnidirSynchro = new JRadioButton("Bidirectional synchronization");
-		jrbUnidirSynchro.setToolTipText("All new files found on the one device are copied to the other one");
+		jrbUnidirSynchro = new JRadioButton("Unidirectional synchronization");
+		jrbUnidirSynchro.setToolTipText("All new files found on the source device are copied into this device. Nothing will be written to source device");
 		jrbUnidirSynchro.setBorder(BorderFactory.createEmptyBorder(0, 25, 0, 0));
-		jrbUnidirSynchro.setEnabled(false);
 		jrbUnidirSynchro.addActionListener(this);
+		jrbBidirSynchro = new JRadioButton("Bidirectional synchronization");
+		jrbBidirSynchro.setToolTipText("All new files found on the one device are copied to the other one");
+		jrbBidirSynchro.setBorder(BorderFactory.createEmptyBorder(0, 25, 0, 0));
+		jrbBidirSynchro.setEnabled(false);
+		jrbBidirSynchro.addActionListener(this);
 		bgSynchro.add(jrbBidirSynchro);
 		bgSynchro.add(jrbUnidirSynchro);
 		jcb1 = new JCheckBox("If a track is desynchronized from source device, delete it from this device (USE WITH CARE) ");
@@ -176,9 +176,9 @@ public class DeviceWizard extends JFrame implements ActionListener,ITechnicalStr
 		jp2 = new JPanel();
 		jp2.setLayout(new TableLayout(size2));
 		jp2.setBorder(BorderFactory.createEmptyBorder(0, 15, 0, 15));
-		jp2.add(jrbBidirSynchro, "0,1");
-		jp2.add(jrbUnidirSynchro, "0,3");
-		jp2.add(jcb1, "0,5");
+		jp2.add(jrbUnidirSynchro, "0,1");
+		jp2.add(jrbBidirSynchro, "0,3");
+		//jp2.add(jcb1, "0,5");   //not featured for the moment
 		if (jcbSynchronized.getItemCount()==0){
 			jcboxSynchronized.setEnabled(false);
 			jcbSynchronized.setEnabled(false);
@@ -211,7 +211,7 @@ public class DeviceWizard extends JFrame implements ActionListener,ITechnicalStr
 		jcbRefresh.setSelected(true);
 		jcbAutoRefresh.setEnabled(false);
 		jcbAutoMount.setSelected(true);
-		jrbBidirSynchro.setSelected(true);//default synchro mode
+		jrbUnidirSynchro.setSelected(true);//default synchro mode
 		jrbBidirSynchro.setEnabled(false);
 		jcb1.setEnabled(false);
 		jcb1.setSelected(false);

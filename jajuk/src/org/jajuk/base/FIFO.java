@@ -290,7 +290,6 @@ public class FIFO implements ITechnicalStrings,Runnable{
 						InformationJPanel.getInstance().setCurrentStatusMessage(Util.formatTime(lTime)+" / "+Util.formatTime(fCurrent.getTrack().getLength()*1000));
 						int iPos = (int)((lTime/10)/length);
 						InformationJPanel.getInstance().setCurrentStatus(iPos);
-						Log.debug("test spliter: "+iPos);  //temp
 						CommandJPanel.getInstance().setCurrentPosition(iPos);
 						InformationJPanel.getInstance().setTotalStatusMessage(Util.formatTimeBySec((int)(lTotalTime-(lTime/1000))));
 					}

@@ -407,9 +407,6 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 				else if (value instanceof DirectoryNode){
 					Directory dir = ((DirectoryNode)value).getDirectory();
 					String synchro = dir.getProperty(DIRECTORY_OPTION_SYNCHRO_MODE);
-					if ( dir.getDevice().getProperty(DEVICE_OPTION_SYNCHRO_SOURCE) == null){ //if the device is not synchronized
-						synchro = null;
-					}
 					if ( synchro == null || "y".equals(synchro)){  //means this device is not synchronized
 						setIcon(Util.getIcon(ICON_DIRECTORY_SYNCHRO));
 					}

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <installation version="1.0">
     <info>
-        <appname>Jajuk</appname>
+        <appname>jajuk</appname>
         <appversion>0.1</appversion>
         <authors>
             <author email="bertrand@florat.net" name="Bertrand FLORAT"/>

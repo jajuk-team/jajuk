@@ -21,7 +21,9 @@
 package org.jajuk.base;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Properties;
 import java.util.TreeSet;
 
 import org.jajuk.util.ConfigurationManager;
@@ -39,6 +41,8 @@ public class FileManager implements ITechnicalStrings{
 	private static ArrayList alFiles = new ArrayList(1000);
 	/** Sorted fiel collection ( for performances ) */
 	private static TreeSet tsSortedFiles = new TreeSet();
+	/** Map ids and properties, survives to a refresh, is used to recover old properties after refresh */
+	private static HashMap hmIdProperties = new HashMap(100);
 	
 	
 	/**
@@ -61,6 +65,13 @@ public class FileManager implements ITechnicalStrings{
 			tsSortedFiles.add(file);
 			if ( directory.getDevice().isRefreshing()){
 				Log.debug("registrated new file: "+ file);
+			}
+			Properties properties = (Properties)hmIdProperties.get(sId); 
+			if ( properties  == null){  //new file
+				hmIdProperties.put(sId,file.getProperties());
+			}
+			else{
+				file.setProperties(properties);
 			}
 		}
 		return file;
@@ -255,6 +266,16 @@ public class FileManager implements ITechnicalStrings{
 	 	}
 	 	return tsResu;
 	}
+	
+	
+	/**
+	 * Return properties assiated to an id
+	 * @param sId the id
+	 * @return
+	 */
+	public static synchronized Properties getProperties(String sId){
+		return (Properties)hmIdProperties.get(sId);
+	}
 
 }
 
@@ -303,5 +324,7 @@ class FileScore implements Comparable{
 		}
 		return 0;
 	}
+	
+	
 
 }
