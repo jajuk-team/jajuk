@@ -282,6 +282,11 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
 		int iColNum = 8;
 		it = alToShow.iterator();
 		//Track | Album | Author |  Length | Style | Device | File name | Rate
+		if ( !ConfigurationManager.getBoolean(CONF_REGEXP)){ //do we use regular expression or not? if not, we allow user to use '*'
+		    sPropertyValue = sPropertyValue.replaceAll("\\*",".*");
+		    sPropertyValue = ".*"+sPropertyValue+".*";
+		}	
+	
 		while (it.hasNext()){
 			File file = (File)it.next();
 			if ( sPropertyName != null && sPropertyValue != null ){ //if name or value is null, means there is no filter
@@ -290,14 +295,9 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
 					continue;
 				}
 				else { 
-					boolean bMatch = false;	
-					try{  //test using regular expressions
-						if ( ConfigurationManager.getBoolean(CONF_REGEXP)){
+				    boolean bMatch = false;
+				    try{  //test using regular expressions
 							bMatch = sValue.toLowerCase().matches(sPropertyValue.toLowerCase());  // test if the file property contains this property value (ignore case)
-						}
-						else{ //test without regular expressions
-							bMatch = (sValue.toLowerCase().indexOf(sPropertyValue.toLowerCase())!=-1);  // test if the file property contains this property value (ignore case)
-						}
 					}
 					catch(PatternSyntaxException pse){ //wrong pattern syntax
 						bMatch = false;

@@ -283,8 +283,12 @@ public class LogicalTableView extends AbstractTableView implements Observer{
 		int iSize = alToShow.size();
 		int iColNum = 6 ;
 		it = alToShow.iterator();
-		//Track | Album | Author | Length | Style | Rate	
-		while (it.hasNext()){
+		//Track | Album | Author | Length | Style | Rate
+		if ( !ConfigurationManager.getBoolean(CONF_REGEXP)){ //do we use regular expression or not? if not, we allow user to use '*'
+		    sPropertyValue = sPropertyValue.replaceAll("\\*",".*");
+		    sPropertyValue = ".*"+sPropertyValue+".*";
+		}	
+	    while (it.hasNext()){
 			Track track = (Track)it.next();
 			if ( sPropertyName != null && sPropertyValue!= null){ //if name or value are null, means there is no filter
 				String sValue = track.getProperty(sPropertyName);
@@ -292,14 +296,9 @@ public class LogicalTableView extends AbstractTableView implements Observer{
 					continue;
 				}
 				else { 
-					boolean bMatch = false;	
-					try{  //test using regular expressions
-						if ( ConfigurationManager.getBoolean(CONF_REGEXP)){
+					boolean bMatch = false;
+				    try{  //test using regular expressions
 							bMatch = sValue.toLowerCase().matches(sPropertyValue.toLowerCase());  // test if the file property contains this property value (ignore case)
-						}
-						else{ //test without regular expressions
-							bMatch = (sValue.toLowerCase().indexOf(sPropertyValue.toLowerCase())!=-1);  // test if the file property contains this property value (ignore case)
-						}
 					}
 					catch(PatternSyntaxException pse){ //wrong pattern syntax
 						bMatch = false;
