@@ -96,10 +96,10 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 	 *
 	 */
 	public DeviceWizard() {
-		super(Main.jframe,true); //make it modal
+		super(Main.getWindow(),true); //make it modal
 		setTitle(Messages.getString("DeviceWizard.0"));//$NON-NLS-1$
 		setSize(800, 500);
-		setLocation(org.jajuk.Main.jframe.getX()+100,org.jajuk.Main.jframe.getY()+100);
+		setLocation(org.jajuk.Main.getWindow().getX()+100,org.jajuk.Main.getWindow().getY()+100);
 		jpMain = new JPanel();
 		jpMain.setLayout(new BoxLayout(jpMain,BoxLayout.Y_AXIS));
 		jp1 = new JPanel();

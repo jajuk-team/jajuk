@@ -443,8 +443,20 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 	 *  @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
 	 */
 	public void stateChanged(ChangeEvent e) {
-		if ( e.getSource() == jsVolume){
-			Util.setVolume((float)jsVolume.getValue()/100);
+		if ( e.getSource() == jsVolume && !bPositionChanging){
+			bPositionChanging = true;
+			new Thread(){  //set volume asynchonously and after a delay to take only one value when slider is moved
+				public void run(){
+					try{
+						Thread.sleep(500);
+					}
+					catch(InterruptedException ie){
+						Log.error(ie);
+					}
+					Util.setVolume((float)jsVolume.getValue()/100);
+					bPositionChanging = false;
+				}
+			}.start();
 		}
 		else if (e.getSource() == jsPosition && !bPositionChanging){
 			bPositionChanging = true;

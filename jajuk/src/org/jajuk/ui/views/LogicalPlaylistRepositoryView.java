@@ -108,5 +108,5 @@ public class LogicalPlaylistRepositoryView extends AbstractPlaylistRepositoryVie
 	void setCurrentPlayListFileInEditor(PlaylistFileItem plfi) {
 		LogicalPlaylistEditorView.getInstance().setCurrentPlayListFile(plfi);
 	}
-
+	
 }

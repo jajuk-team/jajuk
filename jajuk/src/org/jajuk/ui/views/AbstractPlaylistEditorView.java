@@ -306,7 +306,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 					if ( iType == PlaylistFileItem.PLAYLIST_TYPE_QUEUE){
 						jtable.getSelectionModel().setSelectionInterval(0,0); //in the queue, it is always the first track which is selected
 						jbAdd.setEnabled(false);
-						jbClear.setEnabled(false);
+						jbClear.setEnabled(true);
 						jbDown.setEnabled(false);
 						jbRemove.setEnabled(false);
 						jbRun.setEnabled(false);
@@ -328,14 +328,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 						jbRun.setEnabled(true);
 						jbUp.setEnabled(true);
 					}
-					if ( iType != PlaylistFileItem.PLAYLIST_TYPE_NORMAL){ //save is only for regular playlists
-						jbSave.setEnabled(false);
-					}
-					else{
-						jbSave.setEnabled(true);
-					}
 				}
-				
 			};
 			sw.start();
 			
@@ -406,43 +399,48 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 			plfi.getPlaylistFile().play();
 		}
 		else if (ae.getSource() == jbSave){
-			if ( this instanceof LogicalPlaylistEditorView){ //if logical editor, warning message
-				StringBuffer sbOut = new StringBuffer(Messages.getString("AbstractPlaylistEditorView.17")); //$NON-NLS-1$
-				Playlist pl = PlaylistManager.getPlaylist(plfi.getPlaylistFile().getHashcode());
-				if ( pl != null){
-					ArrayList alPlaylistFiles = pl.getPlaylistFiles(); 
-					Iterator it = alPlaylistFiles.iterator();
-					while ( it.hasNext()){
-						PlaylistFile plf = (PlaylistFile)it.next();
-						sbOut.append('\n').append(plf.getAbsolutePath());
-					}
-					int i = JOptionPane.showConfirmDialog(Main.jframe,sbOut.toString(),Messages.getString("Warning"),JOptionPane.OK_CANCEL_OPTION,JOptionPane.WARNING_MESSAGE); //$NON-NLS-1$
-					if ( i == JOptionPane.OK_OPTION){
-						it = alPlaylistFiles.iterator();
+			//normal playlist
+			if ( plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_NORMAL){
+				if ( this instanceof LogicalPlaylistEditorView){ //if logical editor, warning message
+					StringBuffer sbOut = new StringBuffer(Messages.getString("AbstractPlaylistEditorView.17")); //$NON-NLS-1$
+					Playlist pl = PlaylistManager.getPlaylist(plfi.getPlaylistFile().getHashcode());
+					if ( pl != null){
+						ArrayList alPlaylistFiles = pl.getPlaylistFiles(); 
+						Iterator it = alPlaylistFiles.iterator();
 						while ( it.hasNext()){
 							PlaylistFile plf = (PlaylistFile)it.next();
-							plf.setModified(true);
-							try{
-								plf.setBasicFiles(plfi.getPlaylistFile().getBasicFiles()); //set same files for all playlist files
-								plf.commit();
-							}
-							catch(JajukException je){
-								Log.error(je);
+							sbOut.append('\n').append(plf.getAbsolutePath());
+						}
+						int i = JOptionPane.showConfirmDialog(Main.getWindow(),sbOut.toString(),Messages.getString("Warning"),JOptionPane.OK_CANCEL_OPTION,JOptionPane.WARNING_MESSAGE); //$NON-NLS-1$
+						if ( i == JOptionPane.OK_OPTION){
+							it = alPlaylistFiles.iterator();
+							while ( it.hasNext()){
+								PlaylistFile plf = (PlaylistFile)it.next();
+								plf.setModified(true);
+								try{
+									plf.setBasicFiles(plfi.getPlaylistFile().getBasicFiles()); //set same files for all playlist files
+									plf.commit();
+								}
+								catch(JajukException je){
+									Log.error(je);
+								}
 							}
 						}
 					}
 				}
-			}
-			else{ //in physical perspective
-				try{
-					plfi.getPlaylistFile().commit();
+				else{ //in physical perspective
+					try{
+						plfi.getPlaylistFile().commit();
+					}
+					catch(JajukException je){
+						Log.error(je);
+						Messages.showErrorMessage(je.getCode(),je.getMessage());
+					}
 				}
-				catch(JajukException je){
-					Log.error(je);
-					Messages.showErrorMessage(je.getCode(),je.getMessage());
-				}
 			}
-			
+			else{  //specfial playlist, same behavior than a save as
+				plfi.getPlaylistFile().saveAs();
+			}
 		}
 		else if (ae.getSource() == jbCurrent){
 			Iterator it = getCurrentPlaylistFileItems().iterator();
@@ -461,6 +459,9 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 		}
 		else if (ae.getSource() == jbClear){
 			plfi.getPlaylistFile().clear();
+			if ( plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE){ //if it is the queue playlist, stop the selection
+				FIFO.getInstance().stopRequest();
+			}
 		}
 		else if (ae.getSource() == jbDown || ae.getSource() == jbUp){
 			int iRow = jtable.getSelectedRow();

@@ -91,7 +91,7 @@ public class PerspectiveBarJPanel extends JPanel implements ITechnicalStrings{
 		Iterator it = PerspectiveManager.getPerspectives().iterator();
 		while ( it.hasNext()){
 			final IPerspective perspective = (IPerspective)it.next();
-			JButton jb = new JButton(Util.getIcon("jar:"+PATH_CURRENT_JAR+"!"+perspective.getIconPath())); //$NON-NLS-1$ //$NON-NLS-2$
+			JButton jb = new JButton(Util.getIcon("jar:"+Util.getExecLocation()+"!"+perspective.getIconPath())); //$NON-NLS-1$ //$NON-NLS-2$
 			try{
 				jb.setToolTipText(Messages.getString("PerspectiveBarJPanel."+perspective.getName())); //$NON-NLS-1$
 			}

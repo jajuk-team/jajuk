@@ -71,7 +71,7 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
 		}
 		else if (e.getActionCommand().equals(EVENT_OPEN_FILE)) {
 			JajukFileChooser jfchooser = new JajukFileChooser();
-			int returnVal = jfchooser.showOpenDialog(Main.jframe);
+			int returnVal = jfchooser.showOpenDialog(Main.getWindow());
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
 				java.io.File[] files = jfchooser.getSelectedFiles();
 				FIFO.getInstance().clear(); //stop all currently played tracks

@@ -27,6 +27,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -86,7 +88,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 		jpControl.setBorder(BorderFactory.createEtchedBorder());
 		int iXspace = 5;
 		double sizeControl[][] =
-			{{0.15,iXspace,0.4,iXspace,10,iXspace,0.4,2*iXspace,85},
+			{{0.15,iXspace,0.35,iXspace,0.1,iXspace,0.35,2*iXspace,85},
 				{22}};
 		jpControl.setLayout(new TableLayout(sizeControl));
 		jlFilter = new JLabel(Messages.getString("AbstractTableView.0")); //$NON-NLS-1$
@@ -99,7 +101,12 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 		jcbProperty.setMinimumSize(new Dimension(150,20));
 		jcbProperty.setPreferredSize(new Dimension(200,20));
 		jcbProperty.setMaximumSize(new Dimension(200,20));
-		jlEquals = new JLabel("="); //$NON-NLS-1$
+		JPanel jpEquals = new JPanel();
+		jpEquals.setLayout(new BoxLayout(jpEquals,BoxLayout.X_AXIS));
+		jlEquals = new JLabel(Messages.getString("AbstractTableView.7")); //$NON-NLS-1$
+		jpEquals.add(Box.createHorizontalGlue());
+		jpEquals.add(jlEquals);
+		jpEquals.add(Box.createHorizontalGlue());
 		jtfValue = new JTextField();
 		jtfValue.addKeyListener(new KeyAdapter() {
 			public void keyReleased(KeyEvent e) {
@@ -134,7 +141,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 		
 		jpControl.add(jlFilter,"0,0"); //$NON-NLS-1$
 		jpControl.add(jcbProperty,"2,0"); //$NON-NLS-1$
-		jpControl.add(jlEquals,"4,0"); //$NON-NLS-1$
+		jpControl.add(jpEquals,"4,0"); //$NON-NLS-1$
 		jpControl.add(jtfValue,"6,0"); //$NON-NLS-1$
 		jpControl.add(jtbControl,"8,0"); //$NON-NLS-1$
 		

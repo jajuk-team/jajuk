@@ -28,13 +28,16 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 import org.jajuk.Main;
 import org.jajuk.i18n.Messages;
+import org.jajuk.ui.JajukFileChooser;
 import org.jajuk.ui.ObservationManager;
 import org.jajuk.ui.PlaylistFileItem;
 import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
@@ -451,7 +454,7 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 		if ( ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_DELETE_FILE)){  //file delete confirmation
 			String sFileToDelete = getDirectory().getFio().getAbsoluteFile()+"/"+getName(); //$NON-NLS-1$
 			String sMessage = Messages.getString("Confirmation_delete")+"\n"+sFileToDelete; //$NON-NLS-1$ //$NON-NLS-2$
-			int i = JOptionPane.showConfirmDialog(Main.jframe,sMessage,Messages.getString("Warning"),JOptionPane.OK_CANCEL_OPTION,JOptionPane.WARNING_MESSAGE); //$NON-NLS-1$
+			int i = JOptionPane.showConfirmDialog(Main.getWindow(),sMessage,Messages.getString("Warning"),JOptionPane.OK_CANCEL_OPTION,JOptionPane.WARNING_MESSAGE); //$NON-NLS-1$
 			if ( i == JOptionPane.OK_OPTION){
 				File fileToDelete = new File(sFileToDelete);
 				if ( fileToDelete.exists()){
@@ -556,6 +559,28 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 	 */
 	public void setBasicFiles(ArrayList alBasicFiles) {
 		this.alBasicFiles = alBasicFiles;
+	}
+	
+	/**
+	 * Save as... the playlist file 
+	 */
+	public void saveAs(){
+		JajukFileChooser jfchooser = new JajukFileChooser(new JajukFileFilter(true,new Type[]{TypeManager.getTypeByExtension(EXT_PLAYLIST)}));
+		int returnVal = jfchooser.showSaveDialog(Main.getWindow());
+		if (returnVal == JFileChooser.APPROVE_OPTION) {
+			java.io.File file = jfchooser.getSelectedFile();
+			//add automaticaly the extension
+			file = new File(file.getAbsolutePath()+"."+EXT_PLAYLIST);//$NON-NLS-1$  
+			this.setFio(file); //set new file path ( this playlist is a special playlist, just in memory )
+			try{
+				this.commit(); //write it on the disk
+				ObservationManager.notify(EVENT_PLAYLIST_REFRESH); //notify playlist repository to refresh
+			}
+			catch(JajukException je){
+				Log.error(je);
+				Messages.showErrorMessage(je.getCode(),je.getMessage());
+			}
+		}
 	}
 
 }

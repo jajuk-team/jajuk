@@ -19,7 +19,6 @@
  */
 package org.jajuk.base;
 
-import org.jajuk.Main;
 import org.jajuk.util.Util;
 
 
@@ -32,18 +31,16 @@ import org.jajuk.util.Util;
 public interface ITechnicalStrings {
 	
 	// Jjauk version
-	public static final String JAJUK_VERSION = "0.1";
+	public static final String JAJUK_VERSION = "0.1.2";
 	
 	//About 
 	public static final String ABOUT = "<html>Jajuk version "+JAJUK_VERSION+"</html>";
 	
 	// directory path
-	public static final String PATH_CURRENT_JAR_OLD = "file:"+System.getProperty("user.dir")+"/jajuk.jar";
-	public static final String PATH_CURRENT_JAR = Util.getJarLocation(Main.class).toString();
-	public static final String PATH_ICONS = "jar:"+PATH_CURRENT_JAR+"!/org/jajuk/icons/";
-	public static final String PATH_IMAGES = "jar:"+PATH_CURRENT_JAR+"!/org/jajuk/images/";
+	public static final String PATH_ICONS = "jar:"+Util.getExecLocation()+"!/org/jajuk/icons/";
+	public static final String PATH_IMAGES = "jar:"+Util.getExecLocation()+"!/org/jajuk/images/";
 	public static final String PATH_RELATIVE_DOCS = "docs/";
-	public static final String PATH_DOCS = "jar:"+PATH_CURRENT_JAR+"!/org/jajuk/"+PATH_RELATIVE_DOCS;
+	public static final String PATH_DOCS = "jar:"+Util.getExecLocation()+"!/org/jajuk/"+PATH_RELATIVE_DOCS;
 		
 		// paths to icons
 	public static final String ICON_LOGO = PATH_ICONS + "64x64/jajuk-logo.png";

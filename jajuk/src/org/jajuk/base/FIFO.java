@@ -173,7 +173,7 @@ public class FIFO implements ITechnicalStrings,Runnable{
 			if ( file.getDirectory()!=null && !file.getDirectory().getDevice().isMounted()){  //file is null if it is a BasicFile
 				//not mounted, ok let them a chance to mount it:
 				String sMessage = Messages.getString("Error.025")+" ("+file.getDirectory().getDevice().getName()+Messages.getString("FIFO.4"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-				int i = JOptionPane.showConfirmDialog(Main.jframe,sMessage,Messages.getString("Warning"),JOptionPane.OK_CANCEL_OPTION,JOptionPane.WARNING_MESSAGE); //$NON-NLS-1$
+				int i = JOptionPane.showConfirmDialog(Main.getWindow(),sMessage,Messages.getString("Warning"),JOptionPane.OK_CANCEL_OPTION,JOptionPane.WARNING_MESSAGE); //$NON-NLS-1$
 				if ( i == JOptionPane.OK_OPTION){
 					try{
 						file.getDirectory().getDevice().mount();
@@ -415,7 +415,7 @@ public class FIFO implements ITechnicalStrings,Runnable{
 						History.getInstance().addItem(fCurrent.getId(),System.currentTimeMillis());
 					}
 					InformationJPanel.getInstance().setMessage(Messages.getString("FIFO.10")+fCurrent.getTrack().getAuthor().getName2()+" / "+fCurrent.getTrack().getAlbum().getName2()+" / "+fCurrent.getTrack().getName(),InformationJPanel.INFORMATIVE); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-					Main.jframe.setTitle(fCurrent.getTrack().getName());
+					Main.getWindow().setTitle(fCurrent.getTrack().getName());
 					InformationJPanel.getInstance().setQuality(fCurrent.getQuality()+Messages.getString("FIFO.13")); //$NON-NLS-1$
 				}
 			}
@@ -449,7 +449,7 @@ public class FIFO implements ITechnicalStrings,Runnable{
 		InformationJPanel.getInstance().setTotalStatusMessage("00:00:00"); //$NON-NLS-1$
 		InformationJPanel.getInstance().setMessage(Messages.getString("FIFO.16"),InformationJPanel.INFORMATIVE); //$NON-NLS-1$
 		InformationJPanel.getInstance().setQuality(""); //$NON-NLS-1$
-		Main.jframe.setTitle(Messages.getString("FIFO.18")); //$NON-NLS-1$
+		Main.getWindow().setTitle(Messages.getString("FIFO.18")); //$NON-NLS-1$
 	}
 	
 	/**

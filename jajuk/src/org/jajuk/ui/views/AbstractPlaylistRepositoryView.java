@@ -283,18 +283,24 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
 	public void actionPerformed(final ActionEvent ae) {
-		//no thread, this is always called from a sub-class thread 
-		if ( ae.getSource() == jmiDelete){
-			plfiSelected.getPlaylistFile().delete();
-		}
-		else if(ae.getSource() == jmiPlay){
-			plfiSelected.getPlaylistFile().play();
-		}
-		else if(ae.getSource() == jmiProperties){
-			//TBI
-		}
-		
+		new Thread(){
+			public void run(){
+				if ( ae.getSource() == jmiDelete){
+					plfiSelected.getPlaylistFile().delete();
+				}
+				else if(ae.getSource() == jmiPlay){
+					plfiSelected.getPlaylistFile().play();
+				}
+				else if(ae.getSource() == jmiProperties){
+					//TBI
+				}
+				else if(ae.getSource() == jmiSaveAs){ //save as
+					plfiSelected.getPlaylistFile().saveAs();
+				}
+			}
+		}.start();
 	}
+	
 	
 	
 	/**
