@@ -23,6 +23,8 @@ package org.jajuk.ui.tray;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -39,6 +41,7 @@ import org.jajuk.base.FileManager;
 import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.base.Player;
 import org.jajuk.i18n.Messages;
+import org.jajuk.ui.CommandJPanel;
 import org.jajuk.ui.JajukWindow;
 import org.jajuk.ui.ObservationManager;
 import org.jajuk.ui.Observer;
@@ -55,7 +58,7 @@ import org.jdesktop.jdic.tray.TrayIcon;
  * @author     Administrateur
  * @created    22 sept. 2004
  */
-public class JajukSystray implements ITechnicalStrings,Observer,ActionListener{
+public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,MouseWheelListener{
 	//Systray variables
 	SystemTray stray = SystemTray.getDefaultSystemTray();;
 	TrayIcon trayIcon;
@@ -83,7 +86,7 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener{
 	 * 
 	 * @return singleton
 	 */
-	public static JajukSystray getInstance(){
+	public static JajukSystray getInstance() {
 		if (jsystray == null){
 			jsystray = new JajukSystray();
 		}
@@ -102,28 +105,28 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener{
 				Log.error(e);
 			}
 			jmenu = new JPopupMenu(Messages.getString("JajukWindow.3")); //$NON-NLS-1$
-			jmiExit =  new JMenuItem(Messages.getString("JajukWindow.4")); //$NON-NLS-1$
+			jmiExit =  new JMenuItem(Messages.getString("JajukWindow.4"),Util.getIcon(ICON_EXIT)); //$NON-NLS-1$
 			jmiExit.addActionListener(this);
-			jmiAbout =  new JMenuItem(Messages.getString("JajukWindow.5")); //$NON-NLS-1$
+			jmiAbout =  new JMenuItem(Messages.getString("JajukWindow.5"),Util.getIcon(ICON_INFO)); //$NON-NLS-1$
 			jmiAbout.addActionListener(this);
-			jmiShuffle =  new JMenuItem(Messages.getString("JajukWindow.6")); //$NON-NLS-1$
+			jmiShuffle =  new JMenuItem(Messages.getString("JajukWindow.6"),Util.getIcon(ICON_SHUFFLE_GLOBAL_ON)); //$NON-NLS-1$
 			jmiShuffle.addActionListener(this);
-			jmiBestof =  new JMenuItem(Messages.getString("JajukWindow.7")); //$NON-NLS-1$
+			jmiBestof =  new JMenuItem(Messages.getString("JajukWindow.7"),Util.getIcon(ICON_BESTOF_ON)); //$NON-NLS-1$
 			jmiBestof.addActionListener(this);
-			jmiNorm =  new JMenuItem(Messages.getString("JajukWindow.16")); //$NON-NLS-1$
+			jmiNorm =  new JMenuItem(Messages.getString("JajukWindow.16"),Util.getIcon(ICON_MODE_NORMAL)); //$NON-NLS-1$
 			jmiNorm.addActionListener(this);
-			jmiNovelties =  new JMenuItem(Messages.getString("JajukWindow.15")); //$NON-NLS-1$
+			jmiNovelties =  new JMenuItem(Messages.getString("JajukWindow.15"),Util.getIcon(ICON_NOVELTIES_ON)); //$NON-NLS-1$
 			jmiNovelties.addActionListener(this);
 			jcbmiVisible =  new JCheckBoxMenuItem(Messages.getString("JajukWindow.8")); //$NON-NLS-1$
 			jcbmiVisible.setState(JajukWindow.getInstance().isVisible()); 
 			jcbmiVisible.addActionListener(this);
-			jmiPause = new JMenuItem(Messages.getString("JajukWindow.10")); //$NON-NLS-1$
+			jmiPause = new JMenuItem(Messages.getString("JajukWindow.10"),Util.getIcon(ICON_PAUSE)); //$NON-NLS-1$
 			jmiPause.addActionListener(this);
-			jmiStop = new JMenuItem(Messages.getString("JajukWindow.11")); //$NON-NLS-1$
+			jmiStop = new JMenuItem(Messages.getString("JajukWindow.11"),Util.getIcon(ICON_STOP)); //$NON-NLS-1$
 			jmiStop.addActionListener(this);
-			jmiPrevious = new JMenuItem(Messages.getString("JajukWindow.13")); //$NON-NLS-1$
+			jmiPrevious = new JMenuItem(Messages.getString("JajukWindow.13"),Util.getIcon(ICON_PREVIOUS)); //$NON-NLS-1$
 			jmiPrevious.addActionListener(this);
-			jmiNext = new JMenuItem(Messages.getString("JajukWindow.14")); //$NON-NLS-1$
+			jmiNext = new JMenuItem(Messages.getString("JajukWindow.14"),Util.getIcon(ICON_NEXT)); //$NON-NLS-1$
 			jmiNext.addActionListener(this);
 			jmiOut = new JMenuItem(" "); //$NON-NLS-1$
 			
@@ -146,6 +149,7 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener{
 			jmenu.add(jmiOut);
 			
 			trayIcon = new TrayIcon(Util.getIcon(ICON_LOGO_TRAY),Messages.getString("JajukWindow.18"),jmenu); //$NON-NLS-1$);
+			jmenu.addMouseWheelListener(this);
 			trayIcon.setIconAutoSize(true);
 			trayIcon.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent arg0) {
@@ -287,6 +291,7 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener{
             jmiStop.setEnabled(false);
             jmiNext.setEnabled(false);
             jmiPrevious.setEnabled(false);
+            jmiPause.setIcon(Util.getIcon(ICON_PAUSE));
             jmiPause.setText(Messages.getString("JajukWindow.10")); //$NON-NLS-1$
         }
         else if ( EVENT_PLAYER_PLAY.equals(subject)){
@@ -298,9 +303,11 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener{
          }
         else if ( EVENT_PLAYER_PAUSE.equals(subject)){
             jmiPause.setText(Messages.getString("JajukWindow.12")); //$NON-NLS-1$
+            jmiPause.setIcon(Util.getIcon(ICON_PLAY));
         }
         else if ( EVENT_PLAYER_RESUME.equals(subject)){
             jmiPause.setText(Messages.getString("JajukWindow.10")); //$NON-NLS-1$
+            jmiPause.setIcon(Util.getIcon(ICON_PAUSE));
         }
    }
 	
@@ -313,5 +320,20 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener{
 			stray.removeTrayIcon(trayIcon);
 		}
 	}
+
+    /* (non-Javadoc)
+     * @see java.awt.event.MouseWheelListener#mouseWheelMoved(java.awt.event.MouseWheelEvent)
+     */
+    public void mouseWheelMoved(MouseWheelEvent e) {
+        int iOld = CommandJPanel.getInstance().getCurrentVolume();
+        int iNew = iOld - (e.getUnitsToScroll()*3);
+        if ( iNew<0){
+            iNew = 0;
+        }
+        else if (iNew>99){
+            iNew = 99;
+        }
+        CommandJPanel.getInstance().setCurrentVolume(iNew);
+    }
 
 }
