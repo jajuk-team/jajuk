@@ -7,7 +7,7 @@
  
   <id>jajuk</id>
  
-  <currentVersion>0.3</currentVersion>
+  <currentVersion>0.3.1</currentVersion>
  
   <organization>
     <name>Jajuk team</name>
@@ -158,6 +158,17 @@
 		      <role>Developer</role>
 	      </roles>
 	      <email>fdutron@users.sourceforge.net</email>
+	      <organization>Jajuk team</organization>
+	      <timezone>+2</timezone>
+	    </developer>
+
+	   <developer>
+	      <name>Neoclust</name>
+	      <id>neoclust</id>
+    	  <roles>
+		      <role>Packaging</role>
+	      </roles>
+	      <email>neoclust@users.sourceforge.net</email>
 	      <organization>Jajuk team</organization>
 	      <timezone>+2</timezone>
 	    </developer>
