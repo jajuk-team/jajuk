@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.9  2003/11/11 20:35:43  bflorat
+ * 11/11/2003
+ *
  * Revision 1.8  2003/11/07 23:57:45  bflorat
  * 08/11/2003
  *
@@ -65,8 +68,8 @@ public class Device extends PropertyAdapter implements ITechnicalStrings{
 	private String sId;
 	/**Device name*/
 	private String sName;
-	/**Device type. ex:directory, remote...*/
-	private String sDeviceType;
+	/**Device type id*/
+	int iDeviceType;
 	/**Device url**/
 	private String sUrl;
 	/**Mounted device flag*/
@@ -75,18 +78,26 @@ public class Device extends PropertyAdapter implements ITechnicalStrings{
 	private ArrayList alDirectories = new ArrayList(20);
 	/**Already refreshing flag*/
 	private static boolean bAlreadyRefreshing = false;
+	/**Device types strings . ex:directory, remote...*/
+	public static String[] sDeviceTypes = {
+			Messages.getString("Device_type.directory"),
+			Messages.getString("Device_type.file_cd"),
+			Messages.getString("Device_type.audio_cd"),
+			Messages.getString("Device_type.remote"),
+			Messages.getString("Device_type.extdd")};
+
 
 	/**
 	 * Device constructor
 	 * @param sId
 	 * @param sName
-	 * @param sDeviceType
+	 * @param iDeviceType
 	 * @param sUrl
 	 */
-	public Device(String sId, String sName, String sDeviceType, String sUrl) {
+	public Device(String sId, String sName, int iDeviceType, String sUrl) {
 		this.sId = sId;
 		this.sName = sName;
-		this.sDeviceType = sDeviceType;
+		this.iDeviceType = iDeviceType;
 		this.sUrl = sUrl;
 	}
 
@@ -94,7 +105,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings{
 	 * toString method
 	 */
 	public String toString() {
-		return "Device[ID=" + sId + " Name=" + sName + " Type=" + sDeviceType + " URL=" + sUrl + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$
+		return "Device[ID=" + sId + " Name=" + sName + " Type=" + sDeviceTypes[iDeviceType] + " URL=" + sUrl + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$
 	}
 
 	/**
@@ -106,7 +117,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings{
 		sb.append("' name='");
 		sb.append(Util.formatXML(sName));
 		sb.append("' type='");
-		sb.append(sDeviceType);
+		sb.append(getDeviceType());
 		sb.append("' url='");
 		sb.append(sUrl).append("' ");
 		sb.append(getPropertiesXml());
@@ -128,7 +139,6 @@ public class Device extends PropertyAdapter implements ITechnicalStrings{
 	 * @return
 	 */
 	public void refresh() {
-		org.jajuk.base.Collection.setModified(true); //note the change so the collection will be persisted as XML file
 		final Device device = this;
 		//current reference to the inner thread class
 		new Thread() {
@@ -166,7 +176,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings{
 				Directory dParent = null;
 				
 				//Create a directory for device itself and scan files to allow files at the root of the device
-				if (!device.getDeviceType().equals(DEVICE_TYPE_REMOTE) || !device.getDeviceType().equals(DEVICE_TYPE_AUDIO_CD)){
+				if (!device.getDeviceTypeS().equals(DEVICE_TYPE_REMOTE) || !device.getDeviceTypeS().equals(DEVICE_TYPE_AUDIO_CD)){
 					Directory d = DirectoryManager.registerDirectory(device);
 					dParent = d;
 					d.scan();
@@ -220,9 +230,17 @@ public class Device extends PropertyAdapter implements ITechnicalStrings{
 	/**
 	 * @return
 	 */
-	public String getDeviceType() {
-		return sDeviceType;
+	public String getDeviceTypeS() {
+		return sDeviceTypes[iDeviceType];
 	}
+	
+	/**
+		 * @return
+		 */
+		public int getDeviceType() {
+			return iDeviceType;
+		}
+	
 
 	/**
 	 * @return
@@ -263,6 +281,49 @@ public class Device extends PropertyAdapter implements ITechnicalStrings{
 	 */
 	public static boolean isRefreshing(){
 		return bAlreadyRefreshing;
+	}
+	
+	/**
+	 * Mount the device
+	 *
+	 */
+	public  void mount() throws Exception{
+		if (bMounted){
+			Messages.showErrorMessage("111");
+		}
+		//TODO perform mount
+		bMounted = true;
+	}
+	
+	/**
+	 * Synchronize
+	 *
+	 */
+	public void synchronize(){
+	}
+	
+	/**
+	 * Synchronize
+	 *@return true if the device is available
+	 */
+	public boolean test(){
+		boolean bOK = false;
+		try{
+			if (!bMounted){
+				mount();  //try to mount
+			}
+		}
+		catch(Exception e){
+			Messages.showErrorMessage("112");
+			return false;
+		}
+		if ( iDeviceType == 0 || iDeviceType == 1 || iDeviceType == 4){  //dir, file cd, ext dd
+			File file = new File(sUrl);
+			if ( file.exists() && file.canRead()){
+				bOK = true;
+			}
+		}
+		return bOK;
 	}
 
 }

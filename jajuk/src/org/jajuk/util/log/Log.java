@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.7  2003/11/11 20:35:54  bflorat
+ * 11/11/2003
+ *
  * Revision 1.6  2003/10/31 13:05:58  bflorat
  * 31/10/2003
  *
@@ -203,22 +206,26 @@ public class Log implements ITechnicalStrings{
 		 */
 		public static void setVerbosity(int newVerbosity) {
 			verbosity = newVerbosity;
-			//associate log4j level with AMI int levels (1 to 5 )
 			switch(newVerbosity){
 				case DEBUG:
 						logger.setLevel(Level.DEBUG);
+						loggerDebug.setLevel(Level.DEBUG);
 					break;
 				case INFO:
 						logger.setLevel(Level.INFO);
+						loggerDebug.setLevel(Level.INFO);
 					break;
 				case WARNING:
 						logger.setLevel(Level.WARN);
+						loggerDebug.setLevel(Level.WARN);
 					break;
 				case ERROR:
 						logger.setLevel(Level.ERROR);
+						loggerDebug.setLevel(Level.ERROR);
 					break;
 				case FATAL:
 						logger.setLevel(Level.FATAL);
+						loggerDebug.setLevel(Level.FATAL);
 					break;
 			}
 		}

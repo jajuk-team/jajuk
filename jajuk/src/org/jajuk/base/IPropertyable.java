@@ -16,8 +16,8 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
- * Revision 1.2  2003/11/03 06:08:05  bflorat
- * 03/11/2003
+ * Revision 1.3  2003/11/11 20:35:43  bflorat
+ * 11/11/2003
  *
  */
 package org.jajuk.base;
@@ -52,6 +52,20 @@ public interface IPropertyable {
 	 * @param sValue
 	 */
 	public void setProperty(String sKey, String sValue);
+	
+	/**
+	 * Remove a property
+	 * @param sKey
+	 */
+	public void removeProperty(String sKey);
+	
+	/**
+	 * Display a frame with item properties
+	 *
+	 */
+	public void displayProperties();
+	
+	
 	
 	
 }

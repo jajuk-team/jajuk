@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.8  2003/11/11 20:35:43  bflorat
+ * 11/11/2003
+ *
  * Revision 1.7  2003/11/07 23:57:45  bflorat
  * 08/11/2003
  *
@@ -100,7 +103,18 @@ public interface ITechnicalStrings {
 	public static final String ICON_EXIT=  PATH_ICONS + "16x16/exit.png";
 	public static final String ICON_NEW=  PATH_ICONS + "16x16/new.png";
 	public static final String ICON_DELETE=  PATH_ICONS + "16x16/delete.png";
-
+	public static final String ICON_PROPERTIES=  PATH_ICONS + "16x16/properties.png";
+	public static final String ICON_MOUNT=  PATH_ICONS + "16x16/mount.png";
+	public static final String ICON_TEST=  PATH_ICONS + "16x16/test.png";
+	public static final String ICON_REFRESH=  PATH_ICONS + "16x16/refresh.png";
+	public static final String ICON_SYNCHRO=  PATH_ICONS + "16x16/synchro.png";
+	public static final String ICON_DEVICE_NEW=  PATH_ICONS + "64x64/new.png";
+	public static final String ICON_DEVICE_CD =  PATH_ICONS + "64x64/cd.png";
+	public static final String ICON_DEVICE_EXT_DD =  PATH_ICONS + "64x64/ext_dd.png";
+	public static final String ICON_DEVICE_DIRECTORY =  PATH_ICONS + "64x64/folder.png";
+	public static final String ICON_DEVICE_PLAYER =  PATH_ICONS + "64x64/player.png";
+	public static final String ICON_DEVICE_REMOTE =  PATH_ICONS + "64x64/remote.png";
+	
 	//logs
 	public static final String LOG_PATTERN="%d{yyyy/MM/dd HH:mm:ss} [%p] %m\n";
 	public static final String LOG_FILE_SIZE="1MB";
@@ -140,7 +154,14 @@ public interface ITechnicalStrings {
 	public static final String EVENT_SHUFFLE_MODE_STATUS_CHANGED="shuffle status changed";
 	public static final String EVENT_CONTINUE_MODE_STATUS_CHANGED="continue status changed";
 	public static final String EVENT_INTRO_MODE_STATUS_CHANGED="intro status changed";
-	
+	public static final String EVENT_DEVICE_NEW="new device";
+	public static final String EVENT_DEVICE_DELETE="delete device";
+	public static final String EVENT_DEVICE_PROPERTIES="device properties";
+	public static final String EVENT_DEVICE_MOUNT="mount device";
+	public static final String EVENT_DEVICE_TEST="test device";
+	public static final String EVENT_DEVICE_REFRESH="refresh device";
+	public static final String EVENT_DEVICE_SYNCHRO="synchronize device";
+		
 	//	configuration keys
 	 public static final String CONF_VIEW_PHYSICAL="jajuk.preference.perspective.physical.views";
 	 public static final String CONF_PERSPECTIVE_DEFAULT="jajuk.preference.perspective.default";

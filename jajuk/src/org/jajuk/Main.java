@@ -9,6 +9,9 @@
  * 
  * You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,USA
  * $Log$
+ * Revision 1.14  2003/11/11 20:34:29  bflorat
+ * 11/11/2003
+ *
  * Revision 1.13  2003/11/07 23:57:01  bflorat
  * 08/11/2003
  *
@@ -26,20 +29,14 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.RandomAccessFile;
-import java.util.RandomAccess;
 
+import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
-import javax.swing.UIManager;
+import javax.swing.JInternalFrame;
 
-import org.jajuk.base.Author;
-import org.jajuk.base.AuthorManager;
 import org.jajuk.base.Collection;
-import org.jajuk.base.Device;
-import org.jajuk.base.DeviceManager;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.ITechnicalStrings;
-import org.jajuk.base.Type;
 import org.jajuk.base.TypeManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.CommandJPanel;
@@ -48,13 +45,9 @@ import org.jajuk.ui.JajukJMenuBar;
 import org.jajuk.ui.PerspectiveBarJPanel;
 import org.jajuk.ui.perspectives.IPerspectiveManager;
 import org.jajuk.ui.perspectives.PerspectiveManagerFactory;
-import org.jajuk.util.MD5Processor;
+import org.jajuk.ui.views.DeviceView;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
-
-import de.ueberdosis.mp3info.ExtendedID3Tag;
-import de.ueberdosis.mp3info.ID3Reader;
-import de.ueberdosis.util.OutputCtr;
 
 /**
  * Jajuk lauching class
@@ -132,7 +125,23 @@ public class Main implements ITechnicalStrings {
 			container.add(command, BorderLayout.NORTH);
 			container.add(perspectiveBar, BorderLayout.WEST);
 			container.add(information, BorderLayout.SOUTH);
+			
+			//Create desktop pane
+			final JDesktopPane desktop = new JDesktopPane();
+			//	desktop.setDragMode(JDesktopPane.OUTLINE_DRAG_MODE);
 
+			//add views
+			DeviceView deviceView = DeviceView.getInstance();
+			final JInternalFrame ji = new JInternalFrame("Devices", true, true, true, true);
+			ji.setContentPane(deviceView);
+			ji.setSize(600, 600);
+			ji.setLocation(600, 0);
+			ji.setVisible(true);
+			desktop.add(ji);
+			
+			container.add(desktop);
+
+			
 			//Set menu bar to the frame
 			jframe.setJMenuBar(JajukJMenuBar.getInstance());
 			Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
@@ -184,9 +193,7 @@ public class Main implements ITechnicalStrings {
 	 */
 	public static void exit(int iExitCode) {
 		try {
-			if (Collection.isModified()) {
-				org.jajuk.base.Collection.commit();
-			}
+			org.jajuk.base.Collection.commit();
 		} catch (IOException e) {
 			Log.error("", e);
 		}

@@ -9,8 +9,8 @@
  * 
  * You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
  * USA. $Log$
- * USA. Revision 1.8  2003/11/07 23:57:45  bflorat
- * USA. 08/11/2003
+ * USA. Revision 1.9  2003/11/11 20:35:43  bflorat
+ * USA. 11/11/2003
  * USA.
  */
 package org.jajuk.base;
@@ -48,8 +48,6 @@ import org.xml.sax.helpers.DefaultHandler;
 public class Collection extends DefaultHandler implements ITechnicalStrings, ErrorHandler {
 	/** Self instance */
 	private static Collection collection;
-	/** Modification flag, if false, the XML output file is not writted again on the disk */
-	private static boolean bModified = false;
 	private static long lTime;
 
 	/** Instance getter */
@@ -196,20 +194,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 
 	}
 
-	/**
-	 * @return
-	 */
-	public static boolean isModified() {
-		return bModified;
-	}
-
-	/**
-	 * @param b
-	 */
-	public static void setModified(boolean b) {
-		bModified = b;
-	}
-
+	
 	/**
 	 * parsing warning
 	 * 
@@ -260,7 +245,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 	 */
 	public void startElement(String sUri, String sName, String sQName, Attributes attributes) throws SAXException {
 		if (sQName.equals(XML_DEVICE)) { //device case
-			Device device = DeviceManager.registerDevice(attributes.getValue(0), attributes.getValue(1), attributes.getValue(2), attributes.getValue(3));
+			Device device = DeviceManager.registerDevice(attributes.getValue(0), attributes.getValue(1), Integer.parseInt(attributes.getValue(2)), attributes.getValue(3));
 			device.populateProperties(attributes, 4);
 		} else if (sQName.equals(XML_STYLE)) {
 			Style style = StyleManager.registerStyle(attributes.getValue(0), attributes.getValue(1));

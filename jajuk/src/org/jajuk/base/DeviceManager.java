@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.7  2003/11/11 20:35:43  bflorat
+ * 11/11/2003
+ *
  * Revision 1.6  2003/11/03 06:08:05  bflorat
  * 03/11/2003
  *
@@ -43,6 +46,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import org.jajuk.i18n.Messages;
 import org.jajuk.util.MD5Processor;
 
 /**
@@ -53,8 +57,8 @@ import org.jajuk.util.MD5Processor;
 public class DeviceManager {
 	/**Device collection**/
 	static HashMap hmDevices = new HashMap(100);
-
-	/**
+	
+/**
 	 * No constructor available, only static access
 	 */
 	private DeviceManager() {
@@ -66,9 +70,9 @@ public class DeviceManager {
 	 *@param sName
 	 *@return device 
 	 */
-	public static synchronized Device  registerDevice(String sName,String sDeviceType,String sUrl) {
-		String sId = MD5Processor.hash(sUrl+sName+sDeviceType);
-		return registerDevice(sId,sName,sDeviceType,sUrl);
+	public static synchronized Device  registerDevice(String sName,int iDeviceType,String sUrl) {
+		String sId = MD5Processor.hash(sUrl+sName+iDeviceType);
+		return registerDevice(sId,sName,iDeviceType,sUrl);
 	}
 	
 	/**
@@ -76,8 +80,8 @@ public class DeviceManager {
 		 *@param sName
 		 *@return device 
 		 */
-		public static synchronized Device  registerDevice(String sId,String sName,String sDeviceType,String sUrl) {
-			Device device = new Device(sId,sName,sDeviceType,sUrl);
+		public static synchronized Device  registerDevice(String sId,String sName,int iDeviceType,String sUrl) {
+			Device device = new Device(sId,sName,iDeviceType,sUrl);
 			hmDevices.put(sId,device);
 			return device;
 		}
@@ -95,6 +99,14 @@ public class DeviceManager {
 	 */
 	public static synchronized Device getDevice(String sId) {
 		return (Device) hmDevices.get(sId);
+	}
+	
+	/**
+	 * Remove a device
+	 * @param device
+	 */
+	public static synchronized void removeDevice(Device device){
+		hmDevices.remove(device.getId());
 	}
 
 }

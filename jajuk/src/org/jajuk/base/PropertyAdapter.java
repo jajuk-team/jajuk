@@ -9,8 +9,8 @@
  * 
  * You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
  * USA. $Log$
- * USA. Revision 1.5  2003/11/03 06:08:05  bflorat
- * USA. 03/11/2003
+ * USA. Revision 1.6  2003/11/11 20:35:43  bflorat
+ * USA. 11/11/2003
  * USA.
  */
 
@@ -71,7 +71,6 @@ public class PropertyAdapter implements IPropertyable, ITechnicalStrings {
 				return;
 			}
 		}
-		Collection.setModified(true);
 		properties.put(sKey, sValue);
 	}
 
@@ -108,5 +107,20 @@ public class PropertyAdapter implements IPropertyable, ITechnicalStrings {
 	public void setProperties(Properties properties) {
 		this.properties = properties;
 	}
+
+	/* (non-Javadoc)
+	 * @see org.jajuk.base.IPropertyable#removeProperty(java.lang.String)
+	 */
+	public void removeProperty(String sKey) {
+		properties.remove(sKey);
+	}
+
+	/* (non-Javadoc)
+	 * @see org.jajuk.base.IPropertyable#displayProperty()
+	 */
+	public void displayProperties() {
+	}
+	
+	
 
 }
