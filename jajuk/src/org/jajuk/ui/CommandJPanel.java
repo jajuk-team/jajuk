@@ -69,7 +69,7 @@ import com.sun.SwingWorker;
 
 /**
  *  Command panel ( static view )
- *
+ * <p>Singleton</p>
  * @author     Bertrand Florat
  * @created    3 oct. 2003
  */
