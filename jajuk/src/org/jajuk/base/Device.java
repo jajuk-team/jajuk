@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 
+import javax.swing.JOptionPane;
+
 import org.jajuk.Main;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.InformationJPanel;
@@ -193,6 +195,15 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 			//check Jajuk is not exiting because a refresh cannot start in this state
 			if (Main.bExiting){
 				return;
+			}
+			/*check target directory is not void because it could mean that the device is not actually system-mounted and
+			 	then a refresh would clear the device, display a warning message*/
+			File file = new File(getUrl());
+			if ( file.exists() && (file.list() == null || file.list().length==0)){
+				int i = JOptionPane.showConfirmDialog(Main.getWindow(),Messages.getString("Confirmation_void_refresh"),Messages.getString("Warning"),JOptionPane.OK_CANCEL_OPTION,JOptionPane.WARNING_MESSAGE); //$NON-NLS-1$
+				if ( i != JOptionPane.OK_OPTION){
+					return;
+				}
 			}
 			/*Remove all directories, playlist files and files for this device before rescan. 
 			 Note  that logical item ( tracks, styles...) are device independant and connot be cleared.
@@ -394,7 +405,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 			it2 = hsDestDirs.iterator(); 
 			while ( it2.hasNext()){
 				Directory dir2 = (Directory)it2.next();
-				if ( dir2.getRelativePath().equals(sPath)){  //direcotry already exists on this device
+				if ( dir2.getRelativePath().equals(sPath)){  //directory already exists on this device
 					bNeedCreate = false;
 					break;
 				}
@@ -404,7 +415,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 			if ( bNeedCreate ){ 
 				fileNewDir.mkdirs();
 			}
-			//sycnhronize files 
+			//synchronize files 
 			File fileSrc = new File(new StringBuffer(dSrc.getUrl()).append(sPath).toString());
 			FileFilter filter = new FileFilter() {
 				public boolean accept(File file) {
@@ -540,20 +551,17 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 		String sOS = (String)System.getProperties().get("os.name"); //$NON-NLS-1$
 		int iExit = 0;
 		try{
-			if (sOS.trim().toLowerCase().lastIndexOf("windows")==-1 && !getMountPoint().trim().equals("")){  //not a windows //$NON-NLS-1$ //$NON-NLS-2$
+			if ( !Util.isUnderWindows() && !getMountPoint().trim().equals("")){  //not under windows //$NON-NLS-1$ //$NON-NLS-2$
 				//look to see if the device is already mounted ( the mount command cannot say that )
 				File file = new File(getMountPoint());
-				if ( file.exists() && file.list().length == 0){
+				if ( file.exists() && file.list().length == 0){//if none file in this directory, it probably means device is not mounted, try to mount it
 					Process process = Runtime.getRuntime().exec("mount "+getMountPoint());//run the actual mount command //$NON-NLS-1$
-					iExit = process.waitFor();
-					if ( iExit != 0){  //0: OK, 1:  error
-						throw new Exception();
-					}
+					iExit = process.waitFor(); //just make a try, do not report error if it fails (linux 2.6 doesn't require anymore to mount devices)
 				}
 			}
-			else{  //windows mount point or mount point not given, check if path exists and contains some files 
+			else{  //windows mount point or mount point not given, check if path exists 
 				File file = new File(getUrl());
-				if ( !file.exists() || file.list().length == 0){
+				if ( !file.exists() ){
 					throw new Exception();
 				}
 			}
@@ -582,7 +590,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	public  void unmount(boolean bEjection) throws Exception{
 		//look to see if the device is already mounted ( the unix 'mount' command cannot say that )
 		File file = new File(getMountPoint());
-		if (!bMounted || (file.list()!= null && file.list().length==0) ){
+		if (!bMounted ){
 			Messages.showErrorMessage("125"); //already unmounted //$NON-NLS-1$
 			return;
 		}
@@ -595,11 +603,9 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 		int iExit = 0;
 		if (sOS.trim().toLowerCase().lastIndexOf("windows")==-1 && !getMountPoint().trim().equals("")){  //not a windows //$NON-NLS-1$ //$NON-NLS-2$
 			try{
+				//we try to unmount the device if under Unix. Note that this is useless most of the time with Linux 2.6+, so it's just a try and we don't check exit code anymore
 				Process process = Runtime.getRuntime().exec("umount "+getMountPoint()); //$NON-NLS-1$
 				iExit = process.waitFor();
-				if ( iExit != 0 ){  //0: OK, 1: already mounted
-					throw new Exception();
-				}
 				if ( bEjection){  //jection if required
 					process = Runtime.getRuntime().exec("eject "+getMountPoint()); //$NON-NLS-1$
 					process.waitFor();
