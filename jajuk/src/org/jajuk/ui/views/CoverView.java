@@ -234,7 +234,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                         DownloadManager.setConcurrentConnection(true);
                     }
                     else{
-                        new Thread(){ //start search asynchronously
+                        Thread t = new Thread(){ //start search asynchronously
                             public void run() {
                                 synchronized(alCovers){
                                     int iCoversBeforeSearch = alCovers.size(); //stores number of covers before web search
@@ -277,7 +277,9 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                                     }
                                 }
                             }
-                        }.start();
+                        };
+                        t.setPriority(Thread.MIN_PRIORITY); //low priority
+                        t.start();
                     }
                 } 
             }
