@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.3  2003/10/21 20:37:54  bflorat
+ * 21/10/2003
+ *
  * Revision 1.2  2003/10/17 20:36:45  bflorat
  * 17/10/2003
  *
@@ -28,6 +31,7 @@ package org.jajuk.base;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.log.Log;
 
 /**
@@ -36,7 +40,7 @@ import org.jajuk.util.log.Log;
  * @author     bflorat
  * @created    12 oct. 2003
  */
-public class FIFO extends Thread {
+public class FIFO extends Thread implements TechnicalStrings{
 
 	/**Cuurently played track */
 	private static File fCurrent;
@@ -58,18 +62,16 @@ public class FIFO extends Thread {
 
 	/**
 	 * Push some files in the fifo
-	 * @param files
+	 * @param alFiles, list of files to be played
 	 * @param bAppend keep previous files or stop them to start a new one ?
 	 */
-	public static synchronized void push(File[] files, boolean bAppend) {
+	public static synchronized void push(ArrayList alFiles, boolean bAppend) {
 		if (!bAppend) {
 			Player.stop();
 			fCurrent = null;
 			clear();
 		}
-		for (int i = 0; i < files.length; i++) {
-			alFIFO.add(files[i]);
-		}
+		alFIFO.addAll(alFiles);
 	}
 
 	/**
@@ -91,8 +93,16 @@ public class FIFO extends Thread {
 					|| alFIFO.size() == 0) {//already playing something or empty fifo
 					continue; //leave
 				}
-				fCurrent = (File) (alFIFO.get(0));//take the first file in the fifo
-				alFIFO.remove(0); //remove it from todo list
+				int index = 0;
+				if (ConfigurationManager.getProperty(CONF_STATE_SHUFFLE).equals("true")){
+					index = (int)(Math.random() * alFIFO.size());
+					fCurrent = (File) (alFIFO.get(index));//take the first file in the fifo
+				}
+				else{
+					index = 0;
+					fCurrent = (File) (alFIFO.get(index));//take the first file in the fifo
+				}
+				alFIFO.remove(index);//remove it from todo list;
 				Log.debug("Now playing :"+fCurrent); //$NON-NLS-1$
 				Player.play(fCurrent);  //play it
 			}

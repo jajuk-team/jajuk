@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.4  2003/10/21 20:37:54  bflorat
+ * 21/10/2003
+ *
  * Revision 1.3  2003/10/21 17:51:43  bflorat
  * 21/10/2003
  *
@@ -45,7 +48,7 @@ public class File extends PropertyAdapter{
 	/**Associated track */
 	private Track track;
 	/**File size in bytes*/
-	private String size;
+	private long lSize;
 	/**File quality. Ex: 192 for 192kb/s*/
 	private String sQuality;
 	
@@ -56,15 +59,15 @@ public class File extends PropertyAdapter{
 	 * @param sName
 	 * @param directory
 	 * @param track
-	 * @param size
+	 * @param lSize
 	 * @param sQuality
 	 */
-	public File(String sId,String sName,Directory directory,Track track,String size,String sQuality) {
+	public File(String sId,String sName,Directory directory,Track track,long lSize,String sQuality) {
 		this.sId = sId;
 		this.sName = sName;
 		this.directory = directory;
 		this.track = track;
-		this.size = size;
+		this.lSize = lSize;
 		this.sQuality = sQuality;
 	}
 
@@ -73,7 +76,7 @@ public class File extends PropertyAdapter{
 		 * toString method
 		 */
 		public String toString() {
-			return "File[ID="+sId+" Name=" + sName + " Dir="+directory+" Size="+size+" Quality="+sQuality+"]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$//$NON-NLS-6$//$NON-NLS-7$
+			return "File[ID="+sId+" Name=" + sName + " Dir="+directory+" Size="+lSize+" Quality="+sQuality+"]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$//$NON-NLS-6$//$NON-NLS-7$
 		}
 
 		/**
@@ -89,7 +92,7 @@ public class File extends PropertyAdapter{
 			sb.append("' track=' ");//$NON-NLS-1$
 			sb.append(track.getId()).append("' ");//$NON-NLS-1$
 			sb.append("' size=' ");//$NON-NLS-1$
-			sb.append(size).append("' ");//$NON-NLS-1$
+			sb.append(lSize).append("' ");//$NON-NLS-1$
 			sb.append("' quality=' ");//$NON-NLS-1$
 			sb.append(sQuality).append("' ");//$NON-NLS-1$
 			sb.append(getPropertiesXml());
@@ -107,8 +110,8 @@ public class File extends PropertyAdapter{
 	/**
 	 * @return
 	 */
-	public String getSize() {
-		return size;
+	public long getSize() {
+		return lSize;
 	}
 
 	/**
