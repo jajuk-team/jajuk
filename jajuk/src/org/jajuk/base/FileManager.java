@@ -346,6 +346,57 @@ public class FileManager implements ITechnicalStrings{
 	}
 	
 	/**
+	 * 
+	 * @param file
+	 * @return All files in the same directory than the given one
+	 */
+	public static ArrayList getAllDirectory(File file){
+	    if (file == null){
+	        return null;
+	    }
+	    ArrayList alResu = new ArrayList(10);
+	    Directory dir = file.getDirectory();
+	    Iterator it = getSortedFiles().iterator();
+	    while ( it.hasNext()){
+	        File f = (File)it.next();
+	        Directory d = f.getDirectory();
+	        if (d.equals(dir)){
+	            alResu.add(f);
+	        }
+	    }
+	    return alResu;
+	}
+	
+	/**
+	 * 
+	 * @param file
+	 * @return All files in the same directory from the given one (includes the one)
+	 */
+	public static ArrayList getAllDirectoryFrom(File file){
+	    if (file == null){
+	        return null;
+	    }
+	    ArrayList alResu = new ArrayList(10);
+	    Directory dir = file.getDirectory();
+	    Iterator it = getSortedFiles().iterator();
+	    boolean bSeenTheOne = false;
+	    while ( it.hasNext()){
+	        File f = (File)it.next();
+	        if (f.equals(file)){
+	            bSeenTheOne = true;
+	            alResu.add(f);
+	        }
+	        else{
+	            Directory d = f.getDirectory();
+		        if (d.equals(dir) && bSeenTheOne){
+		            alResu.add(f);
+		        }    
+	        }
+	    }
+	    return alResu;
+	}
+	
+	/**
 	 * Perform a search in all files names with given criteria
 	 * @param sCriteria
 	 * @return

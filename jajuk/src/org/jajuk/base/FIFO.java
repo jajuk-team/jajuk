@@ -336,6 +336,29 @@ public class FIFO implements ITechnicalStrings,Runnable,Observer{
 		}
    }
 	
+	/**
+	 * Play next album in selection
+	 */
+	public synchronized void playNextAlbum(){
+        bNext = true;
+	    if ( fCurrent != null){  //if stopped, nothing to stop
+	        Album albumCurrent = fCurrent.getTrack().getAlbum(); //get current track album
+	  	  	Player.stop();
+			//remove next files in the same album
+			Iterator it = alFIFO.iterator();
+			while (it.hasNext() ){
+			    File file = (File)it.next();
+			    if ( file!=null && file.getTrack().getAlbum().equals(albumCurrent)){
+			        it.remove(); //remove this file because it is in the same album than the current one
+			        lTotalTime -= file.getTrack().getLength();
+			    }
+			    else{
+			        break; //not the same album? leave
+			    }
+			}
+		    finished(); //stop current track and let the FIFO to choose the next one
+		}
+   }
 	
 	/* (non-Javadoc)
 	 * @see java.lang.Runnable#run()
@@ -387,7 +410,7 @@ public class FIFO implements ITechnicalStrings,Runnable,Observer{
 					    bNext = false;
 					    File fileNext = FileManager.getNextFile(fLastOne);
 						if ( fileNext != null ){
-							push(fileNext,true);	
+							push(FileManager.getAllDirectoryFrom(fileNext),true);	
 						}
 					}
 					else{  //fifo empty and nothing planned to be played, lets re-initialize labels
@@ -699,5 +722,19 @@ public class FIFO implements ITechnicalStrings,Runnable,Observer{
 	    }
 	}
 	
+	/**
+	 * Remove files in FIFO at specified positions
+	 * @param start index
+	 * @param stop index
+	 */
+	public synchronized void remove(int iStart,int iStop){
+	    for (int i=iStart;i<=iStop;i++){
+	        if (i>0 && i<alFIFO.size()){ //check size
+	            File file = (File)alFIFO.get(i);
+	            lTotalTime -= file.getTrack().getLength();  //recompute total time
+	            alFIFO.remove(i);    //remove this file from fifo
+	        }
+	    }
+	}
 	
 }
