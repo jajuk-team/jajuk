@@ -140,7 +140,7 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
 			oValues[i][0] = file.getTrack().getName();
 			oValues[i][1] = file.getTrack().getAlbum().getName2();
 			oValues[i][2] = file.getTrack().getAuthor().getName2();
-			oValues[i][3] = new Long(file.getTrack().getLength());
+			oValues[i][3] = Util.formatTimeBySec(file.getTrack().getLength(),true);
 			oValues[i][4] = file.getTrack().getStyle().getName2();
 			oValues[i][5] = file.getDirectory().getDevice().getName();
 			oValues[i][6] = file.getName();
@@ -316,7 +316,7 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
 			oValues[i][0] = file.getTrack().getName();
 			oValues[i][1] = file.getTrack().getAlbum().getName2();
 			oValues[i][2] = file.getTrack().getAuthor().getName2();
-			oValues[i][3] = new Long(file.getTrack().getLength());
+			oValues[i][3] = Util.formatTimeBySec(file.getTrack().getLength(),true);
 			oValues[i][4] = file.getTrack().getStyle().getName2();
 			oValues[i][5] = file.getDirectory().getDevice().getName();
 			oValues[i][6] = file.getName();

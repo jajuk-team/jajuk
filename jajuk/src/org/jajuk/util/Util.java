@@ -290,17 +290,20 @@ public class Util implements ITechnicalStrings {
 	}
 	
 	/**Format a time from secs to a human readable format*/
-	public static String formatTimeBySec(long l){
+	public static String formatTimeBySec(long l, boolean bTrimZeros){
 		long lHours = l/3600;
 		long lMins = l/60-(lHours*60);
 		long lSecs = l-(lHours*3600)-(lMins*60);
 		StringBuffer sbHours = new StringBuffer(Long.toString(lHours));
-		if ( sbHours.length() == 1) sbHours.insert(0,'0');
+		if ( sbHours.length() == 1 && !bTrimZeros) sbHours.insert(0,'0');
 		StringBuffer sbMins = new StringBuffer(Long.toString(lMins));
-		if ( sbMins.length() == 1) sbMins.insert(0,'0');
+		if ( sbMins.length() == 1 && !bTrimZeros) sbMins.insert(0,'0');
 		StringBuffer sbSecs = new StringBuffer(Long.toString(lSecs));
 		if ( sbSecs.length() == 1) sbSecs.insert(0,'0');
-		return sbHours.append(':').append(sbMins).append(':').append(sbSecs).toString();
+
+	    StringBuffer sbResult = new StringBuffer();
+	    if (lHours > 0) sbResult.append(sbHours).append(":");
+	    return sbResult.append(sbMins).append(":").append(sbSecs).toString();
 	}
 	
 	

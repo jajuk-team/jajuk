@@ -320,7 +320,7 @@ public class FIFO implements ITechnicalStrings,Runnable{
 						int iPos = (length!=0)?(int)((lTime/10)/length):0;  //if length=0, pos is always 0 to avoid division by zero
 						InformationJPanel.getInstance().setCurrentStatus(iPos);
 						CommandJPanel.getInstance().setCurrentPosition(iPos);
-						InformationJPanel.getInstance().setTotalStatusMessage(Util.formatTimeBySec((int)(lTotalTime-(lTime/1000))));
+						InformationJPanel.getInstance().setTotalStatusMessage(Util.formatTimeBySec((int)(lTotalTime-(lTime/1000)),false));
 					}
 					i++;
 					continue; //leave
