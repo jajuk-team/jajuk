@@ -22,6 +22,7 @@ package org.jajuk.ui;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -30,18 +31,18 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
+import javax.swing.SwingUtilities;
 
 import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.perspectives.IPerspective;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.util.Util;
+import org.jajuk.util.log.Log;
 
 /**
  * Menu bar used to choose the current perspective.
- * 
  * @author		bflorat
- * @version	1.0
  * @created		6 oct. 2003
  */
 public class PerspectiveBarJPanel extends JPanel implements ITechnicalStrings{
@@ -54,13 +55,25 @@ public class PerspectiveBarJPanel extends JPanel implements ITechnicalStrings{
 	private ArrayList alButtons = new ArrayList(10); 
 	
 	
-	/**
+	 /**
 	 * Singleton access
 	 * @return
 	 */
 	public static synchronized PerspectiveBarJPanel getInstance(){
 		if (pb == null){
-			pb = new PerspectiveBarJPanel();
+			try {
+				/*starts perspective bar instanciation and display, must be synchonous
+				 * because the pb is used in the main class and has not to be null */
+				SwingUtilities.invokeAndWait(new Runnable(){
+					public void run(){
+						pb = new PerspectiveBarJPanel();
+					}
+				});
+			} catch (InterruptedException e) {
+				Log.error(e);
+			} catch (InvocationTargetException e) {
+				Log.error(e);
+			}
 		}
 		return pb;
 	}
@@ -81,7 +94,7 @@ public class PerspectiveBarJPanel extends JPanel implements ITechnicalStrings{
 	public void update(){
 		// set default layout and size
 		setLayout(new BoxLayout(this,BoxLayout.Y_AXIS)); //we use a BoxLayout and not a FlowLayout to allow resizing
-		setBorder(BorderFactory.createEtchedBorder());
+		setBorder(BorderFactory.createEmptyBorder(4,4,4,4));
 		// Perspectives tool bar
 		jtbPerspective = new JToolBar();
 		jtbPerspective.setFloatable(false);
@@ -118,13 +131,21 @@ public class PerspectiveBarJPanel extends JPanel implements ITechnicalStrings{
 		Iterator it = alButtons.iterator();
 		Iterator it2 = alPerspectives.iterator();
 		while ( it.hasNext()){
-			JButton jb = (JButton)it.next();
+			final JButton jb = (JButton)it.next();
 			IPerspective perspective2 = (IPerspective)it2.next();
 			if ( perspective2.equals(perspective)){  //this perspective is selected 
-				jb.setBorder(BorderFactory.createLineBorder(Color.BLACK,4));
+				SwingUtilities.invokeLater(new Runnable(){
+					public void run(){
+						jb.setBorder(BorderFactory.createLineBorder(Color.BLACK,4)); //this one is selected, black border, make it in the awt dispatcher thread!
+					}
+				});
 			}
 			else{
-				jb.setBorder(BorderFactory.createEtchedBorder());
+				SwingUtilities.invokeLater(new Runnable(){
+					public void run(){
+						jb.setBorder(BorderFactory.createEmptyBorder(4,4,4,4));  //no border
+					}
+				});
 			}
 		}
 	}
