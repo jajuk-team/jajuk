@@ -110,7 +110,8 @@ public class Player implements ITechnicalStrings{
 					pCurrentPlayerImpl.setVolume(ConfigurationManager.getFloat(CONF_VOLUME));
 				}
 				else{
-					pCurrentPlayerImpl.setVolume(0.0f);
+				    pCurrentPlayerImpl.setVolume(0.01f);//do that to avoid strange sound 
+				    pCurrentPlayerImpl.setVolume(0.0f);
 				}
 				Player.bMute = !Player.bMute;
 			}
