@@ -194,6 +194,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
         ObservationManager.register(EVENT_COVER_REFRESH,this);
         ObservationManager.register(EVENT_PLAYER_STOP,this);
         ObservationManager.register(EVENT_ZERO,this);
+        ObservationManager.register(EVENT_COVER_CHANGE,this);
         try {
             //instanciate default cover
             if (coverDefault == null){
@@ -357,6 +358,10 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                     index = 0;
                     displayCurrentCover();
                     fDir = null;
+                }
+                else if ( EVENT_COVER_CHANGE.equals(subject)){
+                    index = (int)(Math.random()*alCovers.size()-1); //choose a random cover
+                    displayCurrentCover();
                 }
             }
             catch(Exception e){

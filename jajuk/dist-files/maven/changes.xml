@@ -204,6 +204,7 @@
      	<action dev='bflorat' type='add'>Support of Linux menu shortcuts using Java installer</action> 
      	<action dev='bflorat' type='add'>Support for next/previous album from tray with shift or right click on previous/next</action> 
      	<action dev='bflorat' type='update'>[Perf] Refresh much faster;  less CPU load; many improvments</action> 
+     	<action dev='bflorat' type='update'>[Perf] Better cover caching saves a lot of memory</action> 
      	<action dev='bflorat' type='update'>Better handling of of history or collection corruption</action> 
      	<action dev='bflorat' type='remove'>RPM dependencies on JRE</action> 
      	<action dev='bflorat' type='remove'>Xmx and Xss JVM settings</action> 

@@ -48,7 +48,7 @@ public interface ITechnicalStrings {
     
     		
 	// Jajuk version
-	public static final String JAJUK_VERSION = "0.3.3 rc9";
+	public static final String JAJUK_VERSION = "0.3.3 rc10";
 	public static final String JAJUK_VERSION_DATE = "Build 2005-03-19";
 	
 	//About 
@@ -289,7 +289,8 @@ public interface ITechnicalStrings {
 	public static final String EVENT_VIEW_COMMAND_SELECT_HISTORY_ITEM="select history item";
 	public static final String EVENT_HELP_REQUIRED="help required";//The help should be displayed
 	public static final String EVENT_COVER_REFRESH="cover refresh";//the cover should be refreshed
-	public static final String EVENT_PLAYER_STOP="player stop";//the stop button has been pressed
+	public static final String EVENT_COVER_CHANGE="cover change";//Request for a cover change
+    public static final String EVENT_PLAYER_STOP="player stop";//the stop button has been pressed
 	public static final String EVENT_PLAYER_PLAY="player play";  //the play button has been pressed
 	public static final String EVENT_PLAYER_PAUSE="player pause";//the pause button has been pressed
 	public static final String EVENT_PLAYER_RESUME="player resume";//the resume button has been pressed

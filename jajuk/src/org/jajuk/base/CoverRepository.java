@@ -23,6 +23,7 @@ package org.jajuk.base;
 import java.awt.MediaTracker;
 import java.io.File;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.swing.ImageIcon;
@@ -40,15 +41,18 @@ import org.jajuk.util.log.Log;
  * @created    20 mars 2005
  */
 public class CoverRepository implements Observer,ITechnicalStrings {
-
+    
     /**URL-> image objects mapping */
     private HashMap hmUrlImages = new HashMap(30);
     
     /**URL-> image size (in KB) mapping */
     private HashMap hmUrlSize = new HashMap(30);
-        
+    
     /**Self instance*/
     static CoverRepository cr;
+    
+    /**Contains list of urls currently loading*/
+    private ArrayList alLoading = new ArrayList(10);
     
     /**
      * Constructor
@@ -93,32 +97,56 @@ public class CoverRepository implements Observer,ITechnicalStrings {
         if (hmUrlImages.containsKey(url)){
             return (ImageIcon)hmUrlImages.get(url);
         }
-        //no? lets download it
-        long l = System.currentTimeMillis();
-        ImageIcon image = null;
-        byte[] bData = null;
-        if ( iType == Cover.LOCAL_COVER 
-                || iType == Cover.DEFAULT_COVER  
-                || iType == Cover.ABSOLUTE_DEFAULT_COVER){
-            image = new ImageIcon(url);
-            if ( image.getImageLoadStatus() != MediaTracker.COMPLETE){
+        //no? check if another thread is not already downloading it
+        if (alLoading.contains(url)){
+            while (alLoading.contains(url)){
+                //another thread is downloading this url, wait until it's finished or in error
+                try {
+                    Thread.sleep(100);
+                }
+                catch (InterruptedException e) {
+                    Log.error(e);
+                }
+            }
+            if (hmUrlImages.containsKey(url)){
+                return (ImageIcon)hmUrlImages.get(url);
+            }
+            else{
                 throw new JajukException("129"); //$NON-NLS-1$
             }
-            hmUrlSize.put(url,Integer.toString((int)(Math.ceil((double)new File(url.getFile()).length()/1024))));
         }
-        else if (iType == Cover.REMOTE_COVER){
-            bData = DownloadManager.download(url);
-            image = new ImageIcon(bData); 
-            if ( image.getImageLoadStatus() != MediaTracker.COMPLETE){
-                throw new JajukException("129"); //$NON-NLS-1$
+        try{
+            //tells others that we are downloading this URL
+            alLoading.add(url);
+            long l = System.currentTimeMillis();
+            ImageIcon image = null;
+            byte[] bData = null;
+            if ( iType == Cover.LOCAL_COVER 
+                    || iType == Cover.DEFAULT_COVER  
+                    || iType == Cover.ABSOLUTE_DEFAULT_COVER){
+                image = new ImageIcon(url);
+                if ( image.getImageLoadStatus() != MediaTracker.COMPLETE){
+                    throw new JajukException("129"); //$NON-NLS-1$
+                }
+                hmUrlSize.put(url,Integer.toString((int)(Math.ceil((double)new File(url.getFile()).length()/1024))));
             }
-            hmUrlSize.put(url,Integer.toString((int)(Math.ceil((double)bData.length/1024))));
+            else if (iType == Cover.REMOTE_COVER){
+                bData = DownloadManager.download(url);
+                image = new ImageIcon(bData); 
+                if ( image.getImageLoadStatus() != MediaTracker.COMPLETE){
+                    throw new JajukException("129"); //$NON-NLS-1$
+                }
+                hmUrlSize.put(url,Integer.toString((int)(Math.ceil((double)bData.length/1024))));
+            }
+            Log.debug("Loaded "+url.toString()+" in  "+(System.currentTimeMillis()-l)+" ms"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            hmUrlImages.put(url,image); //store the image in the repository
+            return image;
         }
-        Log.debug("Loaded "+url.toString()+" in  "+(System.currentTimeMillis()-l)+" ms"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        hmUrlImages.put(url,image); //store the image in the repository
-        return image; 
+        finally{ //make sure to unlock others
+            alLoading.remove(url);
+        }
     }
- 
+    
     /**
      * Return image size for a given URL
      * @param url

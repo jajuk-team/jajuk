@@ -327,13 +327,17 @@ public class FIFO implements ITechnicalStrings {
             ConfigurationManager.setProperty(CONF_STATE_WAS_PLAYING, TRUE); // set was playing state
             long lOffset = 0; // track offset in secs
             File fCurrent = getCurrentFile();
+            //all cases for a cover full refresh
             if ((fCurrent.getDirectory() == null) // basic file
                     || itemLast == null // first track, display cover
                     || itemLast.getFile().getDirectory() == null // previous file was a basic file
-                    || (ConfigurationManager.getBoolean(CONF_COVERS_SHUFFLE) && ConfigurationManager
-                            .getBoolean(CONF_COVERS_CHANGE_AT_EACH_TRACK)) // change cover at each track in shuffle cover mode ?
                     || (!itemLast.getFile().getDirectory().equals(fCurrent.getDirectory()))) { // if we are always in the same directory, just leave to save cpu
                 ObservationManager.notify(new Event(EVENT_COVER_REFRESH)); // request update cover
+            }
+            //case just for a cover change without reload
+            else if ((ConfigurationManager.getBoolean(CONF_COVERS_SHUFFLE) 
+                    && ConfigurationManager.getBoolean(CONF_COVERS_CHANGE_AT_EACH_TRACK))){ // change cover at each track in shuffle cover mode ?) 
+                ObservationManager.notify(new Event(EVENT_COVER_CHANGE)); // request update cover
             }
             itemLast = (StackItem) getCurrentItem().clone(); // save the last played track
             Log.debug("Now playing :" + fCurrent); //$NON-NLS-1$
