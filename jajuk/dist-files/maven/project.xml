@@ -7,7 +7,7 @@
  
   <id>jajuk</id>
  
-  <currentVersion>0.2.1</currentVersion>
+  <currentVersion>0.2</currentVersion>
  
   <organization>
     <name>Jajuk team</name>
@@ -319,6 +319,7 @@
     <report>maven-file-activity-plugin</report>
     <report>maven-license-plugin</report>
     <report>maven-statcvs-plugin</report>
+    <report>maven-doxygen-plugin</report>
   </reports>
    
 </project> 
