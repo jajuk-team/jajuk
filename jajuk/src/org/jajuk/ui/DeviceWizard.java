@@ -93,8 +93,7 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 	ArrayList alDevices = new ArrayList(10);
 	
 	/**
-	 * Constructor
-	 *
+	 * Device wizard by default, is used for void configuration
 	 */
 	public DeviceWizard() {
 		super(Main.getWindow(),true); //make it modal
@@ -242,6 +241,7 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 	 */
 	public void updateWidgets(final Device device){
 		bNew = false;
+		setTitle(Messages.getString("DeviceWizard.0")+" : "+device.getName());//$NON-NLS-1$
 		this.device = device;
 		jcbSynchronized.removeAllItems();
 		alDevices.clear();
