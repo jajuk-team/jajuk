@@ -19,6 +19,7 @@
  */
 package org.jajuk.ui;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -28,11 +29,15 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
+import javax.swing.JTextField;
 import javax.swing.JToolBar;
+import javax.swing.ListCellRenderer;
 
 import layout.TableLayout;
 
@@ -54,14 +59,14 @@ import org.jajuk.util.log.Log;
  * @author     bflorat
  * @created    3 oct. 2003
  */
-public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionListener,KeyListener{
+public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionListener{
 	
 	//singleton
 	static private CommandJPanel command;
 	
 	//widgets declaration
 		 JToolBar jtbSearch;
-			SteppedComboBox scbSearch;
+			SearchBox  sbSearch;
 		JToolBar jtbHistory;
 			public SteppedComboBox jcbHistory;
 		JToolBar jtbMode;
@@ -96,10 +101,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 	static boolean bIsContinueEnabled = true;
 	/**Intro mode flag*/
 	static boolean bIsIntroEnabled = false;
-	/**Do search panel need a search*/
-	private boolean bNeedSearch = false;
-	/**Default time in ms before lauching a search automaticaly*/
-	private static final int WAIT_TIME = 2000; 
+
 	
 		
 	public static CommandJPanel getInstance(){
@@ -122,16 +124,8 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		//search toolbar
 		jtbSearch = new JToolBar();
 		jtbSearch.setFloatable(false);
-		scbSearch = new SteppedComboBox();
-		scbSearch.setEditable(true);
-		scbSearch.getEditor().getEditorComponent().addKeyListener(this);
-		scbSearch.addActionListener(this);
-		scbSearch.setToolTipText(Messages.getString("CommandJPanel.search_1")); //$NON-NLS-1$
-		scbSearch.setMinimumSize(new Dimension(150,20));
-		scbSearch.setPreferredSize(new Dimension(300,20));
-		scbSearch.setMaximumSize(new Dimension(300,20));
-		scbSearch.setPopupWidth(1000);
-		jtbSearch.add(scbSearch);
+		sbSearch = new SearchBox();
+		jtbSearch.add(sbSearch);
 			
 		//history toolbar
 		jtbHistory = new JToolBar();
@@ -239,24 +233,8 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		add(jtbPlay,"8,0");
 		add(jtbVolume,"10,0");
 		add(jtbPosition,"12,0");
-		
-		// lauches a thread used to perform dynamic search chen user is typing
-		new Thread(){
-			public void run(){
-				while (true){
-					try{
-						Thread.sleep(WAIT_TIME);
-					}
-					catch(InterruptedException ie){
-						Log.error(ie);
-					}
-					if ( bNeedSearch){
-						search();
-					}
-				}
-			}
-		}.start();
-	}
+	}	
+	
 	
 	/** 
 	 * Add an history item in the history combo box
@@ -273,22 +251,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		jcbHistory.addActionListener(this);
 	}
 	
-	/** Perform a search when user stop to type in the search combo for 2 sec or pressed enter*/
-	private void search(){
-System.out.println("search");
-		String sIn =(String)scbSearch.getEditor().getItem();
-		if (sIn.length()>4){
-			HashSet hsResu = FileManager.search(sIn);
-			if (hsResu.size() > 0){
-				scbSearch.removeAllItems();
-				Iterator it = hsResu.iterator();
-				while (it.hasNext()){
-					scbSearch.addItem(((File)it.next()).getName());
-				}
-			}
-			bNeedSearch = false;
-		}
-	}
+	
 	
 	
 	/**
@@ -327,30 +290,8 @@ System.out.println("search");
 		else if (ae.getSource() == jbNext){
 			FIFO.getInstance().playNext();
 		}
-		else if  (ae.getSource() == scbSearch){
-			bNeedSearch = true;
-		}
+		
 	}
 
-	/* (non-Javadoc)
-	 * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
-	 */
-	public void keyPressed(KeyEvent e) {
-	}
-	
 
-	/* (non-Javadoc)
-	 * @see java.awt.event.KeyListener#keyReleased(java.awt.event.KeyEvent)
-	 */
-	public void keyReleased(KeyEvent e) {
-		if (((String)scbSearch.getEditor().getItem()).length()>4){ //perform automatic search only when user provide more than 5 letters 
-			bNeedSearch = true;
-		}
-	}
-
-	/* (non-Javadoc)
-	 * @see java.awt.event.KeyListener#keyTyped(java.awt.event.KeyEvent)
-	 */
-	public void keyTyped(KeyEvent e) {
-	}
 }

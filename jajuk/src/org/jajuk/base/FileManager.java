@@ -202,17 +202,21 @@ public class FileManager implements ITechnicalStrings{
 	 * @param sCriteria
 	 * @return
 	 */
-	public static synchronized HashSet search(String sCriteria){
-	 	HashSet hsResu = new HashSet();
-	 	sCriteria = sCriteria.toLowerCase();
+	public static synchronized TreeSet search(String sCriteria){
+	 	TreeSet tsResu = new TreeSet(); 
+		sCriteria = sCriteria.toLowerCase();
 	 	Iterator it = alFiles.iterator();
 	 	while ( it.hasNext()){
 	 		File file = (File)it.next();
-	 		if ( new StringBuffer(file.getName().toLowerCase()).lastIndexOf(sCriteria) != -1 ){
-	 			hsResu.add(file);
+	 		if ( !file.getDirectory().getDevice().isMounted() || file.getDirectory().getDevice().isRefreshing()){
+	 			continue;
+	 		}
+	 		String sResu = file.toStringSearch();
+	 		if ( new StringBuffer(sResu.toLowerCase()).lastIndexOf(sCriteria) != -1 ){
+	 			tsResu.add(new SearchResult(file,sResu));
 	 		}
 	 	}
-	 	return hsResu;
+	 	return tsResu;
 	}
 
 }

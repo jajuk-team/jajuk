@@ -91,6 +91,15 @@ public class File extends PropertyAdapter implements Comparable{
 	}
 	
 	/**
+	 * String representation as displayed in a search result 
+	 */
+	public String toStringSearch() {
+		StringBuffer sb = new StringBuffer(track.getStyle().getName2()).append('/').append(track.getAuthor().getName2()).append('/').
+			append(track.getAlbum().getName2()).append('/').append(track.getName()).append(" [").append(directory.getName()).append('/').append(this.sName).append(']');
+		return sb.toString();
+	}
+	
+	/**
 	 * Return an XML representation of this item  
 	 * @return
 	 */
