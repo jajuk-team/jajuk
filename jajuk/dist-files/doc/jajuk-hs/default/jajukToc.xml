@@ -21,14 +21,14 @@
 			<tocitem text="Contextual  views"  expand="true">
 				<tocitem text="Physical perspective"  expand="true">
 					<tocitem text="The Physical Tree view" target="view_physical_tree"/>
-					<tocitem text="The Physical Table view" target="view_physical_table"/>
+					<tocitem text="The Physical Table view" target="view_table"/>
 					<tocitem text="The Playlist Repository view" target="view_playlist_repository"/>
 					<tocitem text="The  Playlist Editor view" target="view_playlist_editor"/>
 					<tocitem text="The Cover view" target="view_cover"/>
 				</tocitem> 	
 				<tocitem text="Logical perspective"  expand="true">
 					<tocitem text="The Logical Tree view" target="view_logical_tree"/>
-					<tocitem text="The Logical Table view" target="view_logical_table"/>
+					<tocitem text="The Logical Table view" target="view_table"/>
 					<tocitem text="The Playlist Repository view" target="view_playlist_repository"/>
 					<tocitem text="The  Playlist Editor view" target="view_playlist_editor"/>
 					<tocitem text="The Cover view" target="view_cover"/>
