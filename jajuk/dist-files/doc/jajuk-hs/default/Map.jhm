@@ -6,6 +6,7 @@
 <map version="1.0">
 	<mapID target="top" url="html/intro.html" />
 	<mapID target="pav" url="html/pav.html" />
+	<mapID target="devices" url="html/devices.html" />
 	<mapID target="pm" url="html/pm.html" />
 	<mapID target="up" url="html/up.html" />
 	<mapID target="tray" url="html/tray.html" />
