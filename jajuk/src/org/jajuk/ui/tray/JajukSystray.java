@@ -217,42 +217,42 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
     /**
      * ActionListener
      */
-    public void actionPerformed(ActionEvent e) {
-        try{
-            if (e.getSource() == jmiExit){
-                Main.exit(0);
-            }
-            else if (e.getSource() == jmiAbout){
-                //set default perspective to show if UIi is not yet started
-                if (Main.isUILauched()){
-                    PerspectiveManager.setCurrentPerspective(PERSPECTIVE_NAME_HELP);    
-                }
-                else{
-                    Main.setDefaultPerspective(PERSPECTIVE_NAME_HELP);
-                }
-                //make frame visible
-                if ( !JajukWindow.getInstance().isVisible()){
-                    JajukWindow.getInstance().setShown(true);
-                }
-            }
-            else if (e.getSource() == jmiShuffle){
-                ArrayList alToPlay = FileManager.getGlobalShufflePlaylist();
-                FIFO.getInstance().push(Util.createStackItems(alToPlay,
-                        ConfigurationManager.getBoolean(CONF_STATE_REPEAT),false),false);
-            }
-            else if (e.getSource() == jmiBestof){
-                ArrayList alToPlay = FileManager.getGlobalBestofPlaylist();
-                FIFO.getInstance().push(Util.createStackItems(alToPlay,
-                        ConfigurationManager.getBoolean(CONF_STATE_REPEAT),false),false);
-            }
-            else if (e.getSource() == jmiNovelties){
-                ArrayList alToPlay = FileManager.getGlobalNoveltiesPlaylist();
-                FIFO.getInstance().push(Util.createStackItems(alToPlay,
-                        ConfigurationManager.getBoolean(CONF_STATE_REPEAT),false),false);
-            }
-            else if (e.getSource() == jmiNorm){
-                new Thread(){
-                    public void run(){
+    public void actionPerformed(final ActionEvent e) {
+        new Thread(){
+            public void run(){
+                try{
+                    if (e.getSource() == jmiExit){
+                        Main.exit(0);
+                    }
+                    else if (e.getSource() == jmiAbout){
+                        //set default perspective to show if UIi is not yet started
+                        if (Main.isUILauched()){
+                            PerspectiveManager.setCurrentPerspective(PERSPECTIVE_NAME_HELP);    
+                        }
+                        else{
+                            Main.setDefaultPerspective(PERSPECTIVE_NAME_HELP);
+                        }
+                        //make frame visible
+                        if ( !JajukWindow.getInstance().isVisible()){
+                            JajukWindow.getInstance().setShown(true);
+                        }
+                    }
+                    else if (e.getSource() == jmiShuffle){
+                        ArrayList alToPlay = FileManager.getGlobalShufflePlaylist();
+                        FIFO.getInstance().push(Util.createStackItems(alToPlay,
+                                ConfigurationManager.getBoolean(CONF_STATE_REPEAT),false),false);
+                    }
+                    else if (e.getSource() == jmiBestof){
+                        ArrayList alToPlay = FileManager.getGlobalBestofPlaylist();
+                        FIFO.getInstance().push(Util.createStackItems(alToPlay,
+                                ConfigurationManager.getBoolean(CONF_STATE_REPEAT),false),false);
+                    }
+                    else if (e.getSource() == jmiNovelties){
+                        ArrayList alToPlay = FileManager.getGlobalNoveltiesPlaylist();
+                        FIFO.getInstance().push(Util.createStackItems(alToPlay,
+                                ConfigurationManager.getBoolean(CONF_STATE_REPEAT),false),false);
+                    }
+                    else if (e.getSource() == jmiNorm){
                         StackItem item = FIFO.getInstance().getCurrentItem();//stores current item
                         FIFO.getInstance().clear(); //clear fifo 
                         FIFO.getInstance().push(item,true); //then re-add current item
@@ -261,50 +261,45 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
                         properties.put(DETAIL_ORIGIN,DETAIL_SPECIAL_MODE_NORMAL);
                         ObservationManager.notify(EVENT_SPECIAL_MODE,properties);
                     }
-                }.start();
-            }
-            else if (e.getSource() == jcbmiVisible){
-                ConfigurationManager.setProperty(CONF_SHOW_AT_STARTUP,Boolean.toString(jcbmiVisible.getState()));
-            }
-            else if (e.getSource() == jmiPrevious){
-                FIFO.getInstance().playPrevious();
-            }
-            else if (e.getSource() == jmiNext){
-                FIFO.getInstance().playNext();
-            }
-            else if (e.getSource() == jmiStop){
-                new Thread(){
-                    public void run(){
+                    else if (e.getSource() == jcbmiVisible){
+                        ConfigurationManager.setProperty(CONF_SHOW_AT_STARTUP,Boolean.toString(jcbmiVisible.getState()));
+                    }
+                    else if (e.getSource() == jmiPrevious){
+                        FIFO.getInstance().playPrevious();
+                    }
+                    else if (e.getSource() == jmiNext){
+                        FIFO.getInstance().playNext();
+                    }
+                    else if (e.getSource() == jmiStop){
                         FIFO.getInstance().stopRequest();
                         ObservationManager.notify(EVENT_PLAYLIST_REFRESH); //alert playlists editors ( queue playlist ) something changed for him
                     }
-                }.start();
-            }
-            else if (e.getSource() == jmiMute){
-                Player.mute();  //change mute state 
-            }
-            else if (e.getSource() == jmiPause){
-                if ( Player.isPaused()){  //player was paused, resume it
-                    bPaused = false;
-                    Player.resume();
-                    jmiPause.setText(Messages.getString("JajukWindow.10")); //$NON-NLS-1$
-                    ObservationManager.notify(EVENT_PLAYER_RESUME);  //notify of this event
+                    else if (e.getSource() == jmiMute){
+                        Player.mute();  //change mute state 
+                    }
+                    else if (e.getSource() == jmiPause){
+                        if ( Player.isPaused()){  //player was paused, resume it
+                            bPaused = false;
+                            Player.resume();
+                            jmiPause.setText(Messages.getString("JajukWindow.10")); //$NON-NLS-1$
+                            ObservationManager.notify(EVENT_PLAYER_RESUME);  //notify of this event
+                        }
+                        else{ //player is not paused, pause it
+                            Player.pause();
+                            bPaused = true;
+                            jmiPause.setText(Messages.getString("JajukWindow.12")); //$NON-NLS-1$
+                            ObservationManager.notify(EVENT_PLAYER_PAUSE);  //notify of this event
+                        }
+                    }
                 }
-                else{ //player is not paused, pause it
-                    Player.pause();
-                    bPaused = true;
-                    jmiPause.setText(Messages.getString("JajukWindow.12")); //$NON-NLS-1$
-                    ObservationManager.notify(EVENT_PLAYER_PAUSE);  //notify of this event
+                catch(Exception e2){
+                    Log.error(e2);
                 }
+                finally{
+                   ObservationManager.notify(EVENT_PLAYLIST_REFRESH); //refresh playlist editor
+               }
             }
-        }
-        catch(Exception e2){
-            Log.error(e2);
-        }
-        finally{
-            ObservationManager.notify(EVENT_PLAYLIST_REFRESH); //refresh playlist editor
-        }
-        
+        }.start();
     }
     
     
