@@ -20,34 +20,77 @@
 
 package org.jajuk.ui;
 
+import java.awt.Frame;
 import java.awt.Toolkit;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 
 import org.jajuk.Main;
+import org.jajuk.base.FIFO;
+import org.jajuk.base.FileManager;
 import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.i18n.Messages;
+import org.jajuk.ui.perspectives.PerspectiveManager;
+import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Util;
+
+import snoozesoft.systray4j.SysTrayMenu;
+import snoozesoft.systray4j.SysTrayMenuEvent;
+import snoozesoft.systray4j.SysTrayMenuIcon;
+import snoozesoft.systray4j.SysTrayMenuItem;
+import snoozesoft.systray4j.SysTrayMenuListener;
 
 /**
  *  Jajuk main window
+ * <p>Singleton
  *
  * @author     bflorat
  * @created    23 mars 2004
  */
-public class JajukWindow extends JFrame implements ITechnicalStrings,ComponentListener {
+public class JajukWindow extends JFrame implements ITechnicalStrings,ComponentListener,SysTrayMenuListener {
 	
 	/**Initial width at startup*/
 	private int iWidth ; 
 	/**Initial height at startup*/
 	private int iHeight;
+	/**Self instance*/
+	private static JajukWindow jw;
+	/**Show window at startup?*/
+	private boolean bVisible = true;
+	//Systray variables
+	SysTrayMenuIcon stmi;
+	SysTrayMenu stm;
+	SysTrayMenuItem stmiExit;
+	SysTrayMenuItem stmiAbout;
+	SysTrayMenuItem stmiShuffle;
+	SysTrayMenuItem stmiBestof;
+	SysTrayMenuItem stmiVisible;
+	SysTrayMenuItem stmiHidden;
 	
-	/**Constructor*/
+	/**
+	 * Get instance
+	 * @return
+	 */
+	public static JajukWindow getInstance(){
+		if ( jw == null){
+			jw = new JajukWindow();
+		}
+		return jw;
+	}
+	
+	/**
+	 * Constructor
+	 */
 	public JajukWindow(){
+		jw = this;
+		bVisible = ConfigurationManager.getBoolean(CONF_SHOW_AT_STARTUP);
 		iWidth = (int)(Toolkit.getDefaultToolkit().getScreenSize().getWidth());
 		iHeight = (int)(Toolkit.getDefaultToolkit().getScreenSize().getHeight());
 		setTitle(Messages.getString("Main.10"));  //$NON-NLS-1$
@@ -55,11 +98,50 @@ public class JajukWindow extends JFrame implements ITechnicalStrings,ComponentLi
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		addComponentListener(this);
 		addWindowListener(new WindowAdapter() {
+			public void windowIconified(WindowEvent arg0) {
+				setVisible(false);
+			}
 			public void windowClosing(WindowEvent we) {
 				Main.exit(0);
 				return; 
 			}
 		});
+		//systray, only for window for now
+		String sOS = (String)System.getProperties().get("os.name"); //$NON-NLS-1$;
+		if (sOS.trim().toLowerCase().lastIndexOf("windows")!=-1){ //$NON-NLS-1$
+			URL url = null;
+			try {
+				url = new URL(ICON_LOGO_ICO);
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+			}
+			stmi = new SysTrayMenuIcon(url);
+			stmi.addSysTrayMenuListener(this);
+			stm = new SysTrayMenu(stmi,"Jajuk advanced jukebox");
+			stmiExit =  new SysTrayMenuItem("Exit");
+			stmiExit.addSysTrayMenuListener(this);
+			stmiAbout =  new SysTrayMenuItem("About");
+			stmiAbout.addSysTrayMenuListener(this);
+			stmiShuffle =  new SysTrayMenuItem("Play Shuffle");
+			stmiShuffle.addSysTrayMenuListener(this);
+			stmiBestof =  new SysTrayMenuItem("Play Best of");
+			stmiBestof.addSysTrayMenuListener(this);
+			stmiVisible =  new SysTrayMenuItem("Show Jajuk at startup");
+			stmiVisible.setEnabled(bVisible);
+			stmiVisible.addSysTrayMenuListener(this);
+			stmiHidden =  new SysTrayMenuItem("Hide Jajuk at startup");
+			stmiHidden.setEnabled(!bVisible);
+			stmiHidden.addSysTrayMenuListener(this);
+			stm.addItem(stmiExit);
+			stm.addSeparator();
+			stm.addItem(stmiAbout);
+			stm.addSeparator();
+			stm.addItem(stmiShuffle);
+			stm.addItem(stmiBestof);
+			stm.addSeparator();
+			stm.addItem(stmiHidden);
+			stm.addItem(stmiVisible);
+		}
 	}
 	
 	
@@ -110,5 +192,98 @@ public class JajukWindow extends JFrame implements ITechnicalStrings,ComponentLi
 	 */
 	public void componentShown(ComponentEvent e) {
 	}
+
+
+	/* (non-Javadoc)
+	 * @see snoozesoft.systray4j.SysTrayMenuListener#menuItemSelected(snoozesoft.systray4j.SysTrayMenuEvent)
+	 */
+	public void menuItemSelected(SysTrayMenuEvent e) {
+		if (e.getSource() == stmiExit){
+			Main.exit(0);
+		}
+		else if (e.getSource() == stmiAbout){
+			//make frame visible
+			if ( !isVisible()){
+				setVisible(true);
+				setState(Frame.NORMAL);
+				SwingUtilities.updateComponentTreeUI(this);
+			}
+			//set help perspectievb to show "about" view
+			PerspectiveManager.setCurrentPerspective(PERSPECTIVE_NAME_HELP);
+		}
+		else if (e.getSource() == stmiShuffle){
+			org.jajuk.base.File file = null;
+			file = FileManager.getShuffleFile();
+			if (file != null){
+				FIFO.getInstance().setBestof(false); //break best of mode if set
+				FIFO.getInstance().setGlobalRandom(true);
+				FIFO.getInstance().push(file,false,true);
+			}
+		}
+		else if (e.getSource() == stmiBestof){
+			org.jajuk.base.File file = null;
+			file = FileManager.getBestOfFile();
+			if (file != null){
+				FIFO.getInstance().setGlobalRandom(false); //break global random mode if set
+				FIFO.getInstance().setBestof(true);
+				FIFO.getInstance().push(file,false,true);
+			}
+		}
+		else if (e.getSource() == stmiVisible){
+			stmiVisible.setEnabled(false);
+			stmiHidden.setEnabled(true);
+			ConfigurationManager.setProperty(CONF_SHOW_AT_STARTUP,TRUE);
+		}
+		else if (e.getSource() == stmiHidden){
+			stmiHidden.setEnabled(false);
+			stmiVisible.setEnabled(true);
+			ConfigurationManager.setProperty(CONF_SHOW_AT_STARTUP,FALSE);
+		}
+	}
+
+
+	/* (non-Javadoc)
+	 * @see snoozesoft.systray4j.SysTrayMenuListener#iconLeftClicked(snoozesoft.systray4j.SysTrayMenuEvent)
+	 */
+	public void iconLeftClicked(SysTrayMenuEvent e) {
+		if ( e.getSource() == stmi){
+			if ( !isVisible()){
+				setVisible(true);
+				setState(Frame.NORMAL);
+				SwingUtilities.updateComponentTreeUI(this);
+			}
+			else{
+				setVisible(false);
+			}
+		}
+	}
+
+
+	/* (non-Javadoc)
+	 * @see snoozesoft.systray4j.SysTrayMenuListener#iconLeftDoubleClicked(snoozesoft.systray4j.SysTrayMenuEvent)
+	 */
+	public void iconLeftDoubleClicked(SysTrayMenuEvent arg0) {
+	}
+	
+	/**
+	 * Hide systray 
+	 *
+	 */
+	public void closeSystray(){
+		if ( stm != null ){
+			stm.hideIcon();
+		}
+	}
+	
+	/**
+	 * Set systray tooltip
+	 * @param s
+	 */
+	public void setTooltip(String s){
+		if ( stm != null){
+			stm.setToolTip(s);
+		}
+	}
+
 	
 }

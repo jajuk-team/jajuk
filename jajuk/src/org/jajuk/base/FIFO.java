@@ -28,6 +28,7 @@ import org.jajuk.Main;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.CommandJPanel;
 import org.jajuk.ui.InformationJPanel;
+import org.jajuk.ui.JajukWindow;
 import org.jajuk.ui.ObservationManager;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Util;
@@ -375,9 +376,9 @@ public class FIFO implements ITechnicalStrings,Runnable{
 				if (alFIFO.size() == 0){
 					continue;
 				}
-				synchronized(this){  //lock fifo access when lauching
+				synchronized(this){  //lock fifo access when launching
 					Util.waiting();
-					//intro workaround : intro mode is only read at track lauch and can't be set during the play
+					//intro workaround : intro mode is only read at track launch and can't be set during the play
 					bIntroEnabled = ConfigurationManager.getBoolean(CONF_STATE_INTRO); //re-read intro mode
 					if ( !bPlaying){  //test this to avoid notifying at each launch
 						ObservationManager.notify(EVENT_PLAYER_PLAY);  //notify to devices like commandJPanel to update ui
@@ -414,7 +415,9 @@ public class FIFO implements ITechnicalStrings,Runnable{
 					if ( !(fCurrent instanceof BasicFile)){
 						History.getInstance().addItem(fCurrent.getId(),System.currentTimeMillis());
 					}
-					InformationJPanel.getInstance().setMessage(Messages.getString("FIFO.10")+fCurrent.getTrack().getAuthor().getName2()+" / "+fCurrent.getTrack().getAlbum().getName2()+" / "+fCurrent.getTrack().getName(),InformationJPanel.INFORMATIVE); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					String sMessage = Messages.getString("FIFO.10")+fCurrent.getTrack().getAuthor().getName2()+" / "+fCurrent.getTrack().getAlbum().getName2()+" / "+fCurrent.getTrack().getName();//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					InformationJPanel.getInstance().setMessage(sMessage,InformationJPanel.INFORMATIVE); 
+					JajukWindow.getInstance().setTooltip(sMessage);
 					Main.getWindow().setTitle(fCurrent.getTrack().getName());
 					InformationJPanel.getInstance().setQuality(fCurrent.getQuality()+Messages.getString("FIFO.13")); //$NON-NLS-1$
 				}
@@ -448,6 +451,7 @@ public class FIFO implements ITechnicalStrings,Runnable{
 		CommandJPanel.getInstance().setCurrentPosition(0);
 		InformationJPanel.getInstance().setTotalStatusMessage("00:00:00"); //$NON-NLS-1$
 		InformationJPanel.getInstance().setMessage(Messages.getString("FIFO.16"),InformationJPanel.INFORMATIVE); //$NON-NLS-1$
+		JajukWindow.getInstance().setTooltip(Messages.getString("FIFO.16"));
 		InformationJPanel.getInstance().setQuality(""); //$NON-NLS-1$
 		Main.getWindow().setTitle(Messages.getString("FIFO.18")); //$NON-NLS-1$
 	}

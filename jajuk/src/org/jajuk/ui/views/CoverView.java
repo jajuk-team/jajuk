@@ -126,6 +126,15 @@ public class CoverView extends ViewAdapter implements Observer{
 					break;
 				}
 			}
+			if (!bFound){  //no cover file, search for a 'front.jpg' file
+				for (int i=0;i<files.length;i++){
+					if (files[i].getName().equalsIgnoreCase(FILE_DEFAULT_COVER_2)){
+						image = java.awt.Toolkit.getDefaultToolkit().getImage(files[i].getAbsolutePath());
+						bFound = true;
+						break;
+					}
+				}
+			}
 			if (!bFound){  //no cover file, take the first image we find
 				for (int i=0;i<files.length;i++){
 					String sExt = Util.getExtension(files[i]);

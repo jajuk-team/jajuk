@@ -120,6 +120,7 @@ public class ConfigurationManager implements ITechnicalStrings{
 		properties.put(CONF_TAGS_DEEP_SCAN,FALSE);
 		properties.put(CONF_TAGS_USE_PARENT_DIR,TRUE);
 		properties.put(CONF_FIRST_CON,TRUE);
+		properties.put(CONF_SHOW_AT_STARTUP,TRUE);
 	}
 	
 	

@@ -171,6 +171,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 		else{
 			refreshCommand(device);
 		}
+		
 	}
 	
 	

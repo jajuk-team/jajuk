@@ -376,7 +376,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 	 * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
 	 */
 	public void mousePressed(MouseEvent e) {
-		if ( e.getClickCount() == 2){ //double clic, lauche selected track and all after
+		if ( e.getClickCount() == 2){ //double clic, launches selected track and all after
 			ArrayList alFilesToPlay = new ArrayList(alFiles.subList(jtable.getSelectedRow(),alFiles.size()));
 			FIFO.getInstance().push(alFilesToPlay,false);
 		}
@@ -446,7 +446,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 			Iterator it = getCurrentPlaylistFileItems().iterator();
 			File file = FIFO.getInstance().getCurrentFile(); //look at current file playlist property
 			String sId = file.getProperty(OPTION_PLAYLIST);
-			if ( sId != null){ //if null, it means this file has not been lauched from a playlist
+			if ( sId != null){ //if null, it means this file has not been launched from a playlist
 				while ( it.hasNext()){
 					PlaylistFileItem plfi = (PlaylistFileItem)it.next();
 					if ( sId.equals(plfi.getPlaylistFile().getId())){ //if the id for this playlist is the same, match

@@ -28,7 +28,7 @@ package org.jajuk.base;
 public interface IPlayerImpl {
 		
 	/**
-	 * Lauches player
+	 * Launches player
 	 * @param file : jajuk file to be played
 	 * @param fPosition position in % of the file
 	 * @param length length to play in ms

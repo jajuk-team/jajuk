@@ -31,7 +31,7 @@ import org.jajuk.util.Util;
 public interface ITechnicalStrings {
 	
 	// Jjauk version
-	public static final String JAJUK_VERSION = "0.1.2";
+	public static final String JAJUK_VERSION = "0.1.3";
 	
 	//About 
 	public static final String ABOUT = "<html>Jajuk version "+JAJUK_VERSION+"</html>";
@@ -44,6 +44,7 @@ public interface ITechnicalStrings {
 		
 		// paths to icons
 	public static final String ICON_LOGO = PATH_ICONS + "64x64/jajuk-logo.png";
+	public static final String ICON_LOGO_ICO = PATH_IMAGES + "jajuk-logo.ico";
 	public static final String ICON_REPEAT_ON = PATH_ICONS + "16x16/repeat.png";
 	public static final String ICON_REPEAT_OFF = PATH_ICONS + "16x16/repeat_off.png";
 	public static final String ICON_SHUFFLE_ON = PATH_ICONS + "16x16/shuffle.png"; 
@@ -150,6 +151,7 @@ public interface ITechnicalStrings {
 	public static final String FILE_LOCK = System.getProperty("user.home")+"/.jajuk/.lock";
 	public static final String FILE_ABOUT = "about.html";
 	public static final String FILE_DEFAULT_COVER = "cover.jpg";
+	public static final String FILE_DEFAULT_COVER_2 = "front.jpg";
 	
 	//players impls
 	public static final String PLAYER_IMPL_JAVALAYER= "org.jajuk.players.JavaLayerPlayerImpl";
@@ -291,6 +293,8 @@ public interface ITechnicalStrings {
 	public static final String CONF_TAGS_DEEP_SCAN= "jajuk.tags.deep_scan";
 	public static final String CONF_TAGS_USE_PARENT_DIR= "jajuk.tags.use_parent_dir";
 	public static final String CONF_BOOKMARKS= "jajuk.bookmarks"; //contains files id separated by a colon
+	public static final String CONF_SHOW_AT_STARTUP= "jajuk.show"; //show jajuk window at startup
+	
 	
 	//miscelanous
 	public static final String TRUE= "true";

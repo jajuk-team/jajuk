@@ -33,7 +33,7 @@ public class Player {
 
 	private static File fCurrent;
 	private static IPlayerImpl pCurrentPlayerImpl;
-	/** Lock to ensure 2 players can be lauched*/
+	/** Lock to ensure 2 players can be launched*/
 	private static final byte[] bLock = new byte[0];
 	
 	/**

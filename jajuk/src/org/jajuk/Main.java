@@ -60,7 +60,7 @@ import org.jajuk.util.log.Log;
 
 
 /**
- * Jajuk lauching class
+ * Jajuk launching class
  * 
  * @author bflorat @created 3 oct. 2003
  */
@@ -185,8 +185,10 @@ public class Main implements ITechnicalStrings {
 			//display window
 			jw.pack();
 			jw.setExtendedState(Frame.MAXIMIZED_BOTH);  //maximalize
-			jw.setVisible(true);
-			
+			//show window if set in the systray conf
+			if ( ConfigurationManager.getBoolean(CONF_SHOW_AT_STARTUP)){
+				jw.setVisible(true);
+			}
 			//Mount and refresh devices
 			mountAndRefresh();
 			
@@ -215,7 +217,7 @@ public class Main implements ITechnicalStrings {
 			//Display a message
 			information.setMessage(Messages.getString("Main.13"), InformationJPanel.INFORMATIVE);  //$NON-NLS-1$
 			
-			//Lauch startup track if any
+			//Launch startup track if any
 			launchInitialTrack();
 		} catch (JajukException je) { //last chance to catch any error for logging purpose
 			Log.error(je);
@@ -308,13 +310,17 @@ public class Main implements ITechnicalStrings {
 	 */
 	public static void exit(int iExitCode) {
 		try {
+			//check if a confirmation is needed
 			if (Boolean.valueOf(ConfigurationManager.getProperty(CONF_CONFIRMATIONS_EXIT)).booleanValue()){
 				int iResu = JOptionPane.showConfirmDialog(jw,Messages.getString("Confirmation_exit"),Messages.getString("Main.21"),JOptionPane.YES_NO_OPTION);  //$NON-NLS-1$ //$NON-NLS-2$
 				if (iResu == JOptionPane.NO_OPTION){
 					return;
 				}
 			}
-			Log.debug("Exit with code: "+iExitCode); //$NON-NLS-1$
+			 //hide systray
+             jw.closeSystray();
+			//display a message
+             Log.debug("Exit with code: "+iExitCode); //$NON-NLS-1$
 			if (iExitCode == 0){ //commit only if exit is safe to avoid commiting empty collection
 				//commit configuration
 				org.jajuk.util.ConfigurationManager.commit();

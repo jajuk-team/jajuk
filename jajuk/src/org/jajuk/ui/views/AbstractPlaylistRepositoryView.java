@@ -123,7 +123,7 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 						showMenu(plfi,e);
 						return;
 					}
-					else { //left button again lauch it 
+					else { //left button again launch it 
 						plfi.getPlaylistFile().play();
 					}
 				}

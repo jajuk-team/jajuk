@@ -419,7 +419,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 					//**Read all parameters**
 					//Options
 					boolean bHiddenState = jcbDisplayUnmounted.isSelected(); 
-					if ( bHiddenState != bHidden){ //check if this option changed to lauch a refresh if needed
+					if ( bHiddenState != bHidden){ //check if this option changed to launch a refresh if needed
 						bHidden = bHiddenState;
 						ObservationManager.notify(EVENT_DEVICE_REFRESH);
 					}

@@ -69,7 +69,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl,ITechnicalStrings{
 					}.start();
 				}
 			});
-			//FIFO.getInstance().lTrackStart = System.currentTimeMillis();  //time correction ( deleted because of play mode: don't overide old date when lauching again )
+			//FIFO.getInstance().lTrackStart = System.currentTimeMillis();  //time correction ( deleted because of play mode: don't overide old date when launching again )
 			Util.stopWaiting();
 			if (fPosition < 0){  //-1 means we want to play entire file
 				player.play();
