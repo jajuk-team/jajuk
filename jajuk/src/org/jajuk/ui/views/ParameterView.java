@@ -55,7 +55,6 @@ import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.LNFManager;
 import org.jajuk.ui.ObservationManager;
 import org.jajuk.ui.SearchBox;
-import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.Util;
@@ -127,9 +126,6 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 	JLabel jlCollectionEncoding;
 	JComboBox jcbCollectionEncoding;
 	JCheckBox jcbRegexp;
-	JPanel jpPerspectives;
-	JLabel jlPerspectivesReinit;
-	JButton jbPerspectivesReinit;
 	JPanel jpNetwork;
 	JCheckBox jcbProxy;
 	JLabel jlProxyHostname;
@@ -533,20 +529,6 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jpAdvanced.add(jlCollectionEncoding,"0,7");//$NON-NLS-1$
 		jpAdvanced.add(jcbCollectionEncoding,"1,7");//$NON-NLS-1$
 		
-		//- Perspectives
-		jpPerspectives = new JPanel();
-		jpPerspectives.setBorder(BorderFactory.createTitledBorder(Messages.getString("ParameterView.122")));  //$NON-NLS-1$
-		double sizePerspectives[][] = {{0.5,0.45},
-				{iYSeparator,20,iYSeparator}};
-		jpPerspectives.setLayout(new TableLayout(sizeAdvanced));
-		jlPerspectivesReinit = new JLabel(Messages.getString("ParameterView.123")); //$NON-NLS-1$
-		jlPerspectivesReinit.setToolTipText(Messages.getString("ParameterView.124")); //$NON-NLS-1$
-		jbPerspectivesReinit = new JButton(Messages.getString("ParameterView.125"),Util.getIcon(ICON_REFRESH)); //$NON-NLS-1$
-		jbPerspectivesReinit.setToolTipText(Messages.getString("ParameterView.124")); //$NON-NLS-1$
-		jbPerspectivesReinit.addActionListener(this);
-		jpPerspectives.add(jlPerspectivesReinit,"0,1"); //$NON-NLS-1$
-		jpPerspectives.add(jbPerspectivesReinit,"1,1"); //$NON-NLS-1$
-		
 		//- Network
 		jpNetwork = new JPanel();
 		jpNetwork.setBorder(BorderFactory.createTitledBorder(Messages.getString("ParameterView.139")));  //$NON-NLS-1$
@@ -717,7 +699,6 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jtpMain.addTab(Messages.getString("ParameterView.71"),jpP2P); //$NON-NLS-1$
 		jtpMain.addTab(Messages.getString("ParameterView.159"),jpCovers); //$NON-NLS-1$
 		jtpMain.addTab(Messages.getString("ParameterView.26"),jpConfirmations); //$NON-NLS-1$
-		jtpMain.addTab(Messages.getString("ParameterView.122"),jpPerspectives); //$NON-NLS-1$
 		jtpMain.addTab(Messages.getString("ParameterView.139"),jpNetwork); //$NON-NLS-1$
 		jtpMain.addTab(Messages.getString("ParameterView.115"),jpAdvanced); //$NON-NLS-1$
 		add(jtpMain,"0,0"); //$NON-NLS-1$
@@ -749,23 +730,6 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 				if (e.getSource() == jbClearHistory){
 					History.getInstance().clear();
 					CommandJPanel.getInstance().clearHistoryBar();
-				}
-				//reinit perspectives button
-				else if(e.getSource() == jbPerspectivesReinit){
-				    PerspectiveManager.bShouldCommit = true;
-				    //show an information message : conf will be reinit at next startup 
-				    Messages.showInfoMessage(Messages.getString("ParameterView.126")); //$NON-NLS-1$
-				    //Set default conf
-				    PerspectiveManager.registerDefaultPerspectives();
-				    try{
-				        //commit immediatly with default conf
-				        PerspectiveManager.commit();
-				    }
-				    catch(Exception e){
-				        Log.error(e);
-				    }
-				    //tell manager not to commit at next shutdown
-				    PerspectiveManager.bShouldCommit = false;
 				}
 				else if (e.getSource() == jbOK){
 					//**Read all parameters**
