@@ -114,6 +114,9 @@ public class FIFO implements ITechnicalStrings,Runnable,Observer{
 	/**UI reinit flag for perfs, avoid to reinit at each heart beat*/
 	private boolean bZero = false;
 	
+	/**Forced track to repeat*/
+	private File fForcedRepeat = null;
+	
 	
 	/**
 	 * Singleton access
@@ -156,6 +159,7 @@ public class FIFO implements ITechnicalStrings,Runnable,Observer{
 		bIntroEnabled = false;
 		fCurrent = null;
 		fLastOne = null;
+		fForcedRepeat = null;
 		//register needed events
 		ObservationManager.register(EVENT_SPECIAL_MODE,this);
 	}
@@ -353,7 +357,7 @@ public class FIFO implements ITechnicalStrings,Runnable,Observer{
 					i++;
 					continue; //leave
 				}
-				if (!bPlaying && alFIFO.size() == 0  ){//empty fifo, lets decide what to do with folowing priorities : global random / repeat / continue
+				if  (!bPlaying && alFIFO.size() == 0  ){//empty fifo, lets decide what to do with folowing priorities : global random / repeat / continue
 					//next file choice
 					if ( bGlobalRandom){ //Global random mode
 						push(FileManager.getShuffleFile(),false,true);
@@ -424,12 +428,10 @@ public class FIFO implements ITechnicalStrings,Runnable,Observer{
 					fCurrent.getTrack().incSessionHits();//inc session hits
 					fCurrent.getTrack().setRate(fCurrent.getTrack().getRate()+1); //inc rate by 1 because it is played
 					FileManager.setRateHasChanged(true);
-					if ( !(fCurrent instanceof BasicFile)){
-						Properties pDetails = new Properties();
-						pDetails.put(DETAIL_CURRENT_FILE_ID,fCurrent.getId());
-						pDetails.put(DETAIL_CURRENT_DATE,new Long(System.currentTimeMillis()));
-					    ObservationManager.notify(EVENT_FILE_LAUNCHED,pDetails);
-					}
+					Properties pDetails = new Properties();
+					pDetails.put(DETAIL_CURRENT_FILE_ID,fCurrent.getId());
+					pDetails.put(DETAIL_CURRENT_DATE,new Long(System.currentTimeMillis()));
+				    ObservationManager.notify(EVENT_FILE_LAUNCHED,pDetails);
 				}
 			}
 			//fifo is over ( stop request ) , reinit labels in information panel before exiting
@@ -470,6 +472,12 @@ public class FIFO implements ITechnicalStrings,Runnable,Observer{
 			lTotalTime -= fCurrent.getTrack().getLength();
 		}
 		fCurrent = null;
+		//insert a forced repeat track at first FIFO position. Note this mode is special because it allow to repeat over one file even with others tracks in the FIFO
+		if (fForcedRepeat != null){
+		    ArrayList alForcedRepeat = new ArrayList(1);
+		    alForcedRepeat.add(fForcedRepeat);
+		    insert(alForcedRepeat,0,false);
+		};
 	}
 	
 	/**
@@ -556,8 +564,7 @@ public class FIFO implements ITechnicalStrings,Runnable,Observer{
 	 * @param file file to loop on
 	 */
 	public void forceRepeat(File file){
-	    alRepeated.clear();
-	    alRepeated.add(file);
+	   fForcedRepeat = file;
 	}
 	/**
 	 * Stop request. Void the fifo
@@ -565,8 +572,7 @@ public class FIFO implements ITechnicalStrings,Runnable,Observer{
 	public synchronized void stopRequest() {
 		bStop = true;
 	}
-	
-	
+		
 	/**
 	 * @return Returns the bStop.
 	 */
@@ -654,8 +660,10 @@ public class FIFO implements ITechnicalStrings,Runnable,Observer{
 	        bPlaying = false;
 	        lTotalTime = 0;
 	    }
-	    //re-add current track
-	    alFIFO.add(0,fCurrent);
+	    //re-add current track if any
+	    if (fCurrent != null){
+	        alFIFO.add(0,fCurrent);
+	    }
 	    File file = null;
 	    int index = 0;
 	    //reset total time
