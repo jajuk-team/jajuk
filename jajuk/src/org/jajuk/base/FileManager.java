@@ -255,7 +255,8 @@ public class FileManager implements ITechnicalStrings{
 	 	Iterator it = hmIdFile.values().iterator();
 	 	while ( it.hasNext()){
 	 		File file = (File)it.next();
-	 		if ( !file.getDirectory().getDevice().isMounted() || file.getDirectory().getDevice().isRefreshing()){
+	 		if ( !ConfigurationManager.getBoolean(CONF_OPTIONS_SEARCH_UNMOUNTED) && //if the search in unmounted devices is anabled, take this file
+	 		        (!file.getDirectory().getDevice().isMounted() || file.getDirectory().getDevice().isRefreshing())){
 	 			continue;
 	 		}
 	 		String sResu = file.toStringSearch();

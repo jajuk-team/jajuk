@@ -162,7 +162,7 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
 		while (it.hasNext()){
 			hiLast = (HistoryItem)it.next();
 			org.jajuk.base.File file = FileManager.getFile(hiLast.getFileId());
-			if ( file!= null && file.isReady()){
+			if ( file!= null ){
 				break;
 			}
 		}
