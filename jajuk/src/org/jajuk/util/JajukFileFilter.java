@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.2  2003/10/24 15:44:53  bflorat
+ * 24/10/2003
+ *
  * Revision 1.1  2003/10/23 22:07:41  bflorat
  * 23/10/2003
  *
@@ -45,21 +48,31 @@ import org.jajuk.base.TypeManager;
 public class JajukFileFilter extends FileFilter implements java.io.FileFilter{
 	/**Self instance*/
 	private static JajukFileFilter jff;
+	/**Display directories flag**/
+	private static boolean bDirectories = true;
+	/**Display files flag**/
+	private static boolean bFiles = true;
 
-	public static JajukFileFilter getInstance(){
+	public static JajukFileFilter getInstance(boolean bDirectories,boolean bFiles){
+		JajukFileFilter.bDirectories = bDirectories; 
+		JajukFileFilter.bFiles = bFiles; 
 		if (jff == null){
 			jff = new JajukFileFilter(); 
 		}
 		return jff;
 	}
 	
+	public static JajukFileFilter getInstance(){
+			return getInstance(true,true);
+		}
+	
 	private JajukFileFilter(){
 	}
 
 	/**Tells if a file is selected or not**/
 	public boolean accept(File f) {
-		if (TypeManager.isExtensionSupported(Util.getExtension(f))
-			|| f.isDirectory()) {
+		if ((bFiles && TypeManager.isExtensionSupported(Util.getExtension(f)))
+			|| (bDirectories && f.isDirectory())) {
 			return true;
 		} else {
 			return false;

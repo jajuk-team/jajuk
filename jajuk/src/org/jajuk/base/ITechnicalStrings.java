@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.2  2003/10/24 15:44:25  bflorat
+ * 24/10/2003
+ *
  * Revision 1.1  2003/10/21 20:43:06  bflorat
  * TechnicalStrings to ITechnicalStrings according to coding convention
  *
@@ -39,6 +42,8 @@
  *
  */
 package org.jajuk.base;
+
+import java.util.Locale;
 
 /**
  *  Contains all technical/ non-translatable strings
@@ -125,6 +130,8 @@ public interface ITechnicalStrings {
 	/** Identifier of the track list view */
 	public static final String VIEW_TRACK_LIST		= "VIEW_TRACK_LIST";
 	
+	//Date format
+	public static final String DATE_FILE = "dd/MM/yyyy";
 	
 	//XML tags
 	public static final String XML_TYPES = "types";

@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.6  2003/10/24 15:44:25  bflorat
+ * 24/10/2003
+ *
  * Revision 1.5  2003/10/23 22:07:40  bflorat
  * 23/10/2003
  *
@@ -164,12 +167,11 @@ public class File extends PropertyAdapter{
 		
 	/**
 		 * Return full file path name
-		 * @param file
 		 * @return String
 		 */
 		public String getAbsolutePath(){
 			Directory dCurrent = getDirectory();
-			StringBuffer sbOut = new StringBuffer(dCurrent.getDevice().getName());
+			StringBuffer sbOut = new StringBuffer(dCurrent.getDevice().getUrl());
 			sbOut.append(java.io.File.separatorChar).append(dCurrent.getName());
 			boolean bTop = false;
 			while (!bTop){

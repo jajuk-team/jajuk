@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.3  2003/10/24 15:44:53  bflorat
+ * 24/10/2003
+ *
  * Revision 1.2  2003/10/24 12:46:58  sgringoi
  * Add readFile() method
  *
@@ -34,8 +37,10 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.text.SimpleDateFormat;
 import java.util.StringTokenizer;
 
+import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.util.error.JajukException;
 
 /**
@@ -44,13 +49,16 @@ import org.jajuk.util.error.JajukException;
  * @author     bflorat
  * @created    12 oct. 2003
  */
-public class Util {
+public class Util implements ITechnicalStrings{
+	
 	
 	/**
 	 * No constructor
 	 */
 	private Util(){
 	}
+	
+	
 	
 	/**
 	 * Get a file extension

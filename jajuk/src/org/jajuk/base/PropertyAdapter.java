@@ -16,8 +16,8 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
- * Revision 1.2  2003/10/21 17:51:43  bflorat
- * 21/10/2003
+ * Revision 1.3  2003/10/24 15:44:25  bflorat
+ * 24/10/2003
  *
  */
 
@@ -32,7 +32,7 @@ import java.util.Properties;
  * @author     bflorat
  * @created    17 oct. 2003
  */
-public class PropertyAdapter implements IPropertyable {
+public class PropertyAdapter implements IPropertyable,ITechnicalStrings {
 
 	/**Item properties*/
 	private Properties properties;

@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.3  2003/10/24 15:44:25  bflorat
+ * 24/10/2003
+ *
  * Revision 1.2  2003/10/23 22:07:40  bflorat
  * 23/10/2003
  *
@@ -71,13 +74,10 @@ public class Track extends PropertyAdapter {
 	 * @param author
 	 * @param length
 	 * @param sYear
-	 * @param lRate
 	 * @param type
-	 * @param files
-	 * @param iHits
 	 * @param sAdditionDate
 	 */
-	public Track(String sId, String sName,Album album,Style style,Author author,long length,String sYear,long lRate,Type type,int iHits,String sAdditionDate) {
+	public Track(String sId, String sName,Album album,Style style,Author author,long length,String sYear,Type type,String sAdditionDate) {
 		this.sId = sId;
 		this.sName = sName;
 		this.album = album;
@@ -85,9 +85,7 @@ public class Track extends PropertyAdapter {
 		this.author = author;
 		this.length = length;
 		this.sYear = sYear;
-		this.lRate = lRate; 
 		this.type = type;
-		this.iHits = iHits;
 		this.sAdditionDate=sAdditionDate;
 	}
 	
@@ -247,6 +245,20 @@ public class Track extends PropertyAdapter {
 	 */
 	public void addFile(File file){
 		alFiles.add(file);	
+	}
+
+	/**
+	 * @param hits The iHits to set.
+	 */
+	public void setHits(int hits) {
+		iHits = hits;
+	}
+
+	/**
+	 * @param rate The lRate to set.
+	 */
+	public void setRate(long rate) {
+		lRate = rate;
 	}
 
 }
