@@ -269,6 +269,13 @@ public class DeviceManager implements ITechnicalStrings{
 	 * Clean all devices
 	 */
 	public static synchronized void cleanAllDevices() {
+	    Iterator it = alDevices.iterator();
+	    while (it.hasNext()){
+	        Device device = (Device)it.next();
+	        FileManager.cleanDevice(device.getName());
+	        DirectoryManager.cleanDevice(device.getName());
+	        PlaylistFileManager.cleanDevice(device.getName());
+	    }
 	    alDevices.clear();
 	}
 
