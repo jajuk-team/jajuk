@@ -112,7 +112,6 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 		jbDelete.setActionCommand(EVENT_DEVICE_DELETE);
 		jbDelete.addActionListener(this);
 		jbDelete.setToolTipText(Messages.getString("DeviceView.1")); //$NON-NLS-1$
-		jbDelete.setEnabled(false); //false by default, cannot delete mounted device
 		jbProperties = new JButton(Util.getIcon(ICON_PROPERTIES));
 		jbProperties.setActionCommand(EVENT_DEVICE_PROPERTIES);
 		jbProperties.addActionListener(this);
@@ -197,7 +196,6 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 		jmiDelete = new JMenuItem(Messages.getString("DeviceView.13"),Util.getIcon(ICON_DELETE)); //$NON-NLS-1$
 		jmiDelete.addActionListener(this);
 		jmiDelete.setActionCommand(EVENT_DEVICE_DELETE);
-		jmiDelete.setEnabled(false); //false by default, cannot delete mounted device
 		jpmenu.add(jmiDelete);
 		
 		
@@ -316,15 +314,6 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 					diSelected = di;
 					dSelected = device;
 					diSelected.setBorder(BorderFactory.createLineBorder(Color.BLACK,5));
-					//remove options for unmounted devices
-					if (dSelected.isMounted()){
-						jbDelete.setEnabled(false);
-						jmiDelete.setEnabled(false);
-					}
-					else{
-						jbDelete.setEnabled(true);
-						jmiDelete.setEnabled(true);
-					}
 					//remove options for non synchronized devices
 					if (dSelected.getProperty(DEVICE_OPTION_SYNCHRO_SOURCE) == null){
 						jbSynchro.setEnabled(false);
@@ -444,8 +433,6 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 			});
 		}
 	}
-	
-	
 }
 
 
