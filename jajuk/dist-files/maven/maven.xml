@@ -1,17 +1,18 @@
 <project
-  default="site"
-  xmlns:j="jelly:core"
-  xmlns:u="jelly:util">
+  default='site'
+  xmlns:j='jelly:core'
+  xmlns:u='jelly:util'>
 
-  <preGoal name="xdoc:jelly-transform">
-    <attainGoal name="faq"/>
-    <attainGoal name="html2xdoc"/>
+  <preGoal name='xdoc:jelly-transform'>
+    <attainGoal name='faq'/>
+    <attainGoal name='html2xdoc'/>
+    <attainGoal name='announcement'/>
   </preGoal>     
   
- <postGoal name="xdoc:register-reports">
+ <postGoal name='xdoc:register-reports'>
   </postGoal>
  
-  <postGoal name="xdoc:register-reports">
+  <postGoal name='xdoc:register-reports'>
  </postGoal>
   
 </project>
