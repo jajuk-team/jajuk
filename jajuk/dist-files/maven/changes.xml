@@ -48,8 +48,8 @@
      <release version='0.1.6' date='work in progress' description=''>
        <action dev='ricciocri' type='add'>Italian translation (Jajuk and Readme file)</action>  
        <action dev='bflorat' type='add'>Added Previous and Next in systray</action>  
-       <action dev='bflorat' type='fix'>Logical perspective not visible</action>  
-       <action dev='bflorat' type='fix'>Systray menu not in the selected locale</action>  
+       <action dev='bflorat' type='fix'>930002 Logical perspective not visible</action>  
+       <action dev='bflorat' type='fix'>938407 Systray menu not in the selected locale</action>  
      </release>
   </body>
 </document>

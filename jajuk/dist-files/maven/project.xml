@@ -133,6 +133,10 @@
 			<name>Aurélien Pedron</name>
 			<roles><role>Bug reports, tests</role></roles>
 		</contributor>
+		<contributor>
+			<name>darsa</name>
+			<roles><role>Bug reports</role></roles>
+		</contributor>
 	</contributors>
 	
  <dependencies>
