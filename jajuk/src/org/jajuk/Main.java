@@ -215,9 +215,6 @@ public class Main implements ITechnicalStrings {
 			//Load history
 			History.load();
 			
-			//Starts the FIFO
-			FIFO.getInstance();
-			
 			//start exit hook
 			Runtime.getRuntime().addShutdownHook(new Thread() {
 				public void run() {
