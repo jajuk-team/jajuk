@@ -16,8 +16,8 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
- * Revision 1.1  2003/10/07 21:02:18  bflorat
- * Initial commit
+ * Revision 1.2  2003/10/10 15:23:08  sgringoi
+ * Ajout des propriétés d'erreur
  *
  */
 package org.jajuk.util;
@@ -73,20 +73,21 @@ public class ConfigurationManager {
 	 * @return String Message corresponding to the error code.
 	 */
 	public static String getErrorMessage(String pCode) {
-		return getProperty("jajuk.error." + pCode);
+		return getProperty("jajuk.error." + pCode); //$NON-NLS-1$
 	}
 	private static void createProperties() {
 		properties = new Properties();
 		
 			// Default parameters
-		properties.put("jajuk.preference.perspective.physical.views", "org.jajuk.ui.views.PhysicalTreeView,org.jajuk.ui.views.TrackListView");
+		properties.put("jajuk.preference.perspective.physical.views", "org.jajuk.ui.views.PhysicalTreeView");//,org.jajuk.ui.views.TrackListView"); //$NON-NLS-1$ //$NON-NLS-2$
 		
 			// User preferences
-		properties.put("jajuk.preference.perspective.default", "org.jajuk.ui.perspectives.PhysicalPerspective");
+		properties.put("jajuk.preference.perspective.default", "org.jajuk.ui.perspectives.PhysicalPerspective"); //$NON-NLS-1$ //$NON-NLS-2$
 		
 			// Error code
-		properties.put("jajuk.error.jajuk0001", Messages.getString("ConfigurationManager.The_first_perspective_is_not_found._7")); //$NON-NLS-2$
-		properties.put("jajuk.error.jajuk0002", Messages.getString("ConfigurationManager.Can__t_open_the_view__9")); //$NON-NLS-2$
+		properties.put("jajuk.error.jajuk0001", Messages.getString("Error.The_first_perspective_is_not_found._7")); //$NON-NLS-2$ //$NON-NLS-1$
+		properties.put("jajuk.error.jajuk0002", Messages.getString("Error.Can__t_open_the_view__9")); //$NON-NLS-2$ //$NON-NLS-1$
+		properties.put("jajuk.error.jajuk0003", Messages.getString("Error.Can__t_instanciate_the_perspective_named__9")); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
 }
