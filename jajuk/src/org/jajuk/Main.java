@@ -195,7 +195,7 @@ public class Main implements ITechnicalStrings {
 			jw.pack();
 			jw.setExtendedState(Frame.MAXIMIZED_BOTH);  //maximalize
 			//show window if set in the systray conf
-			if ( ConfigurationManager.getBoolean(CONF_SHOW_AT_STARTUP)){
+			if ( ConfigurationManager.getBoolean(CONF_SHOW_AT_STARTUP) || !Util.underWindows()){
 				jw.setVisible(true);
 			}
 			//Mount and refresh devices
