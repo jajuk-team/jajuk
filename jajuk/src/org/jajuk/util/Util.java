@@ -133,6 +133,16 @@ public class Util implements ITechnicalStrings {
 	}
 	
 	/**
+	 * Remove an extension from a file name
+	 * @param filename
+	 * @return filename without extension
+	 */
+	public static String removeExtension(String sFilename) {
+		return sFilename.substring(0,sFilename.lastIndexOf('.'));
+	}
+	
+	
+	/**
 	 * Open a file and return a string buffer with the file content.
 	 * 
 	 * @param path -File path

@@ -20,7 +20,6 @@
 package org.jajuk.base;
 
 import java.io.File;
-import java.util.StringTokenizer;
 
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
@@ -60,7 +59,8 @@ public class Tag implements ITechnicalStrings{
 	 * @return track name as defined in tags are file name otherwise
 	 */
 	public String getTrackName() {
-		String sTrackName = new StringTokenizer(Util.formatTag(fio.getName()),".").nextToken().toString(); //$NON-NLS-1$
+		//by default, track name is the file name without extension
+		String sTrackName = Util.removeExtension(fio.getName());
 		String sTemp = ""; //$NON-NLS-1$
 		try {
 			sTemp = tagImpl.getTrackName().trim();
