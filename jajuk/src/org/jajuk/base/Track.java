@@ -56,6 +56,8 @@ public class Track extends PropertyAdapter implements Comparable{
 	private String sAdditionDate;
 	/**Track associated files*/
 	private ArrayList alFiles = new ArrayList(1);
+	/**Track compare hash for perfs*/
+	private String sHashCompare;
 	
 	
 	
@@ -80,6 +82,7 @@ public class Track extends PropertyAdapter implements Comparable{
 		this.length = length;
 		this.sYear = sYear;
 		this.type = type;
+		this.sHashCompare = new StringBuffer(style.getName2()).append(author.getName2()).append(album.getName2()).append(sName).toString();
 	}
 	
 	/**
@@ -153,9 +156,7 @@ public class Track extends PropertyAdapter implements Comparable{
 	 */
 	public int compareTo(Object o){
 		Track otherTrack = (Track)o;
-		StringBuffer sbCuurent = new StringBuffer(style.getName2()).append(author.getName2()).append(album.getName2()).append(sName);
-		StringBuffer sbOther = new StringBuffer(otherTrack.getStyle().getName2()).append(otherTrack.getAuthor().getName2()).append(otherTrack.getAlbum().getName2()).append(otherTrack.getName());
-		return  sbCuurent.toString().compareToIgnoreCase(sbOther.toString());
+		return  sHashCompare.compareToIgnoreCase(otherTrack.getHashCompare());
 	}
 	
 	/**
@@ -331,5 +332,12 @@ public class Track extends PropertyAdapter implements Comparable{
 	}
 
 	
+
+	/**
+	 * @return Returns the sHashCompare.
+	 */
+	public String getHashCompare() {
+		return sHashCompare;
+	}
 
 }

@@ -34,22 +34,8 @@ public class BasicFile extends org.jajuk.base.File {
 	java.io.File fio;
 	
 	public BasicFile(java.io.File fio){
-		this.sId = "-1";
-		this.sName = fio.getName();
-		this.directory = null;
-		this.lSize = fio.length();
-		this.sQuality = null;
+		super(fio);
 		this.fio = fio;
-		//track creation
-		String sTrackId = "1";
-		String sTrackName = "";
-		Album album = null;
-		Style style = null;
-		Author author = null;
-		long length = 0;
-		String sYear = ""; 
-		Type type = TypeManager.getTypeByExtension(Util.getExtension(fio));
-		this.track = new Track(sTrackId,sTrackName,album,style,author,length,sYear,type);
 	}
 	
 		/**

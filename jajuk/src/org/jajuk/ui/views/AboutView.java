@@ -20,9 +20,6 @@
 
 package org.jajuk.ui.views;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-
 import javax.swing.JEditorPane;
 import javax.swing.JScrollPane;
 

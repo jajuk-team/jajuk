@@ -54,8 +54,6 @@ import org.jajuk.ui.LNFManager;
 import org.jajuk.ui.PerspectiveBarJPanel;
 import org.jajuk.ui.PerspectiveManager;
 import org.jajuk.ui.SplashScreen;
-import org.jajuk.ui.views.HelpView;
-import org.jajuk.ui.views.PhysicalTreeView;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
@@ -82,7 +80,11 @@ public class Main implements ITechnicalStrings {
 			jframe = new JFrame("Jajuk : Just Another Jukebox"); //$NON-NLS-1$
 			
 			//Launch splashscreen
-			sc = new SplashScreen(jframe);
+			new Thread(){
+				public void run(){
+					sc = new SplashScreen(jframe);	
+				}
+			}.start();
 		
 			//Register locals
 			Messages.registerLocal("en","Language_desc_en"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -125,7 +127,7 @@ public class Main implements ITechnicalStrings {
 			
 			//Load collection
 			Collection.load();
-			
+		
 			//	Clean the collection up
 			org.jajuk.base.Collection.cleanup();
 								

@@ -495,7 +495,7 @@ public class LogicalTreeView extends ViewAdapter implements ActionListener,Obser
 	 */
 	public void update(String subject) {
 		System.out.println(subject);
-		if ( subject.equals(EVENT_DEVICE_UNMOUNT) || subject.equals(EVENT_DEVICE_UNMOUNT)){
+		if ( subject.equals(EVENT_DEVICE_MOUNT) || subject.equals(EVENT_DEVICE_UNMOUNT)){
 			SwingUtilities.updateComponentTreeUI(this.getRootPane());
 			jtree.setRowHeight(25);
 		}

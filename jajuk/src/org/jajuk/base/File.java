@@ -41,6 +41,9 @@ public class File extends PropertyAdapter implements Comparable{
 	protected long lSize;
 	/**File quality. Ex: 192 for 192kb/s*/
 	protected String sQuality;
+	/** pre-calculated absolute path for perf*/
+	private String sAbs = null;
+
 	
 	
 	/**
@@ -63,7 +66,21 @@ public class File extends PropertyAdapter implements Comparable{
 	
 	
 	/**Void constructor, needed by BasicFile*/
-	public File(){
+	public File(java.io.File fio){
+		this.sId = "-1";
+		Tag tag = new Tag(fio);
+		String sTrackName = tag.getTrackName();
+		String sAlbumName = tag.getAlbumName();
+		String sAuthorName = tag.getAuthorName();
+		String sStyle = tag.getStyleName();
+		long length = tag.getLength(); //length in sec
+		String sYear = tag.getYear();
+		String sQuality = tag.getQuality();
+		Album album = AlbumManager.registerAlbum(sAlbumName);
+		Style style = StyleManager.registerStyle(sStyle);
+		Author author = AuthorManager.registerAuthor(sAuthorName);
+		Type type = TypeManager.getTypeByExtension(Util.getExtension(fio));
+		this.track = new Track(sId,sTrackName,album,style,author,length,sYear,type);
 	}
 	
 	/**
@@ -175,20 +192,14 @@ public class File extends PropertyAdapter implements Comparable{
 	 * @return String
 	 */
 	public String getAbsolutePath(){
-		Directory dCurrent = getDirectory();
-		StringBuffer sbOut = new StringBuffer(this.getName());
-		do{
-			if (dCurrent == null || dCurrent.getName().equals("")){  //if it is the root directory, no parent
-				break;
-			}
-			sbOut.insert(0,'/');
-			sbOut.insert(0,dCurrent.getName());
-			dCurrent = dCurrent.getParentDirectory();
+		if (sAbs!=null){
+			return sAbs;
 		}
-		while(true);
-		sbOut.insert(0,'/');
-		sbOut.insert(0,getDirectory().getDevice().getUrl());
-		return sbOut.toString();
+		Directory dCurrent = getDirectory();
+		StringBuffer sbOut = new StringBuffer(getDirectory().getDevice().getUrl())
+			.append(dCurrent.getAbsolutePath()).append('/').append(this.getName());
+		sAbs = sbOut.toString();
+		return sAbs;
 	}
 	
 	/**

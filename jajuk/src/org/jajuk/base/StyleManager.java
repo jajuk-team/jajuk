@@ -22,6 +22,7 @@ package org.jajuk.base;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 
 import org.jajuk.util.MD5Processor;
@@ -83,24 +84,20 @@ public class StyleManager {
 	 *
 	 */
 	public static synchronized void cleanup(){
-		Iterator itStyles;
-		Iterator itTracks;
-		ArrayList alTrack = TrackManager.getTracks();
-		itStyles = hmStyles.values().iterator();
+		HashSet hs = new HashSet(100);
+		Iterator itTracks = TrackManager.getTracks().iterator();
+		while (itTracks.hasNext()) {
+			Track track = (Track) itTracks.next();
+			Style style = track.getStyle();
+			hs.add(style);
+		}
+		Iterator itStyles = hmStyles.values().iterator();
 		while (itStyles.hasNext()) {
 			Style style = (Style) itStyles.next();
-			boolean bUsed = false;
-			itTracks = alTrack.iterator();
-			while (itTracks.hasNext()) {
-					Track track = (Track) itTracks.next();
-					if (track.getStyle().equals(style)) {
-						bUsed = true;
-					}
-				}
-				if (!bUsed) { //clean this style
-					itStyles.remove();
-				}
+			if ( !hs.contains(style)){
+				itStyles.remove();
 			}
+		}
 	}
 
 	/**

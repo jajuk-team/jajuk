@@ -20,28 +20,13 @@
 
 package org.jajuk.ui.views;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.net.URL;
-import java.util.Map;
 
-import javax.help.CSH;
 import javax.help.HelpBroker;
 import javax.help.HelpSet;
 import javax.help.JHelp;
 import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JEditorPane;
-import javax.swing.JInternalFrame;
-import javax.swing.JScrollPane;
 
-import org.jajuk.Main;
-import org.jajuk.ui.CommandJPanel;
-import org.jajuk.ui.Observer;
-import org.jajuk.ui.ViewManager;
-import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 
 /**

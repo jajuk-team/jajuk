@@ -82,8 +82,6 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 			JLabel jlPosition;
 			JSlider jsPosition;
 			
-		boolean bSelect = false;
-			
 	//variables declaration
 	/**Repeat mode flag*/
 	static boolean bIsRepeatEnabled = false;
@@ -236,10 +234,10 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		if (sOut == null){
 			return;
 		}
+		jcbHistory.removeActionListener(this); //stop listening this item when manupulating it
 		jcbHistory.insertItemAt(sOut,0);
-		bSelect = false;
 		jcbHistory.setSelectedIndex(0);
-		bSelect = true;
+		jcbHistory.addActionListener(this);
 	}
 	
 	
@@ -256,7 +254,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
 	public void actionPerformed(ActionEvent ae) {
-		if ( bSelect && ae.getSource() == jcbHistory){
+		if ( ae.getSource() == jcbHistory){
 			HistoryItem hi = History.getInstance().getHistoryItem(jcbHistory.getSelectedIndex());
 			if (hi != null){
 				org.jajuk.base.File file = FileManager.getFile(hi.getFileId());

@@ -63,8 +63,6 @@ public class DeviceManager implements ITechnicalStrings{
 		Device device = new Device(sId,sName,iDeviceType,sUrl,sMountPoint);
 		alDeviceIds.add(sId);
 		alDevices.add(device);
-		//	Clean the collection up
-		org.jajuk.base.Collection.cleanup();
 		return device;
 	}
 	

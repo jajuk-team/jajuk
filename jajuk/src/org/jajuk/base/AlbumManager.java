@@ -23,6 +23,7 @@ package org.jajuk.base;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 
 import org.jajuk.util.MD5Processor;
@@ -57,20 +58,17 @@ public class AlbumManager {
 	 *  
 	 */
 	public static synchronized void cleanup() {
+		Iterator itTracks = TrackManager.getTracks().iterator();
+		HashSet hs = new HashSet(100);
+		while (itTracks.hasNext()) {
+			Track track = (Track) itTracks.next();
+			Album album = track.getAlbum();
+			hs.add(album);
+		}
 		Iterator itAlbums = hmAlbums.values().iterator();
-		ArrayList alTrack = TrackManager.getTracks();
-		Iterator itTracks = null;
 		while (itAlbums.hasNext()) {
 			Album album = (Album) itAlbums.next();
-			boolean bUsed = false;
-			itTracks = alTrack.iterator();
-			while (itTracks.hasNext()) {
-				Track track = (Track) itTracks.next();
-				if (track.getAlbum().equals(album)) {
-					bUsed = true;
-				}
-			}
-			if (!bUsed) { //clean this album
+			if ( !hs.contains(album)){
 				itAlbums.remove();
 			}
 		}

@@ -19,7 +19,6 @@
 package org.jajuk.ui.views;
 
 import java.awt.Component;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -556,7 +555,7 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 	 */
 	public void update(String subject) {
 	System.out.println(subject);
-		if ( subject.equals(EVENT_DEVICE_UNMOUNT) || subject.equals(EVENT_DEVICE_UNMOUNT) || subject.equals(EVENT_DEVICE_REFRESH) ) {
+		if ( subject.equals(EVENT_DEVICE_MOUNT) || subject.equals(EVENT_DEVICE_UNMOUNT) || subject.equals(EVENT_DEVICE_REFRESH) ) {
 			populate();
 			SwingUtilities.updateComponentTreeUI(this.getRootPane());
 			jtree.setRowHeight(25);

@@ -31,7 +31,6 @@ import org.jajuk.Main;
 import org.jajuk.base.BasicFile;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.ITechnicalStrings;
-import org.jajuk.ui.perspectives.HelpPerspective;
 import org.jajuk.util.ConfigurationManager;
 
 /**

@@ -22,6 +22,7 @@ package org.jajuk.base;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 
 import org.jajuk.util.MD5Processor;
@@ -72,23 +73,20 @@ public class AuthorManager {
 		 *
 		 */
 	public static synchronized void cleanup(){
+		HashSet hs = new HashSet(100);
+		Iterator itTracks = TrackManager.getTracks().iterator();
+		while (itTracks.hasNext()) {
+			Track track = (Track) itTracks.next();
+			Author author = track.getAuthor();
+			hs.add(author);
+		}
 		Iterator itAuthors = hmAuthors.values().iterator();
-		ArrayList alTrack = TrackManager.getTracks();
-		Iterator itTracks = null;
-			while (itAuthors.hasNext()) {
-				Author author = (Author) itAuthors.next();
-				boolean bUsed = false;
-				itTracks = alTrack.iterator();
-				while (itTracks.hasNext()) {
-					Track track = (Track) itTracks.next();
-					if (track.getAuthor().equals(author)) {
-						bUsed = true;
-					}
-				}
-				if (!bUsed) { //clean this author
-					itAuthors.remove();
-				}
+		while (itAuthors.hasNext()) {
+			Author author = (Author) itAuthors.next();
+			if ( !hs.contains(author)){
+				itAuthors.remove();
 			}
+		}
 	}
 
 	/**

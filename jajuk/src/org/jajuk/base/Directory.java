@@ -54,6 +54,8 @@ public class Directory extends PropertyAdapter implements Comparable{
 	private ArrayList alFiles = new ArrayList(20);
 	/** IO file for optimizations* */
 	private java.io.File fio;
+	/** pre-calculated absolute path for perf*/
+	private String sAbs = null;
 
 	/**
 	 * Direcotry constructor
@@ -265,8 +267,12 @@ public class Directory extends PropertyAdapter implements Comparable{
 	 * @return String
 	 */
 	public String getAbsolutePath() {
+		if (sAbs!=null){
+			return sAbs;
+		}
 		if (getName().equals("")){  //if this directory is a root device directory
-			return "";
+			sAbs = "";
+			return sAbs;
 		}
 		StringBuffer sbOut = new StringBuffer().append(java.io.File.separatorChar).append(getName());
 		boolean bTop = false;
@@ -279,7 +285,8 @@ public class Directory extends PropertyAdapter implements Comparable{
 				bTop = true;
 			}
 		}
-		return sbOut.toString();
+		sAbs = sbOut.toString();
+		return sAbs;
 	}
 
 	/**

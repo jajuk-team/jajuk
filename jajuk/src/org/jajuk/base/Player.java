@@ -56,8 +56,9 @@ public class Player {
 				}			
 			}
 		};
+		thread.setPriority(Thread.MAX_PRIORITY);
 		thread.start();
-		}
+	}
 	
 	/**
 	 * Stop the played track

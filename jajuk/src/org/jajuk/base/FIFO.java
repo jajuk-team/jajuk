@@ -206,13 +206,14 @@ public class FIFO extends Thread implements ITechnicalStrings{
 			while (!bStop) {
 				Thread.sleep(SLEEP_TIME); //sleep to save CPU
 				if (bPlaying ){//already playing something
-					if ( i%(REFRESH_TIME/SLEEP_TIME) == 0){  //actual refresh less frequent for cpu
+					long length = fCurrent.getTrack().getLength();;
+					if ( i%(REFRESH_TIME/SLEEP_TIME) == 0 && length!=0){  //actual refresh less frequent for cpu
 						long lTime = System.currentTimeMillis() - lTrackStart;
 						if ( bIntroEnabled){
 							lTime += (fCurrent.getTrack().getLength()*Integer.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_INTRO_BEGIN))*10);
 						}
 						InformationJPanel.getInstance().setCurrentStatusMessage(Util.formatTime(lTime)+" / "+Util.formatTime(fCurrent.getTrack().getLength()*1000));
-						InformationJPanel.getInstance().setCurrentStatus((int)((lTime/10)/fCurrent.getTrack().getLength()));
+						InformationJPanel.getInstance().setCurrentStatus((int)((lTime/10)/length));
 						InformationJPanel.getInstance().setTotalStatusMessage(Integer.toString((int)(lTotalTime-(lTime/1000)))+"'");
 					}
 					i++;
@@ -279,7 +280,9 @@ public class FIFO extends Thread implements ITechnicalStrings{
 						Player.play(fCurrent,-1,-1);  //play it
 					}
 					lTrackStart = System.currentTimeMillis();
-					History.getInstance().addItem(fCurrent.getId(),System.currentTimeMillis());
+					if ( !(fCurrent instanceof BasicFile)){
+						History.getInstance().addItem(fCurrent.getId(),System.currentTimeMillis());
+					}
 					InformationJPanel.getInstance().setMessage("Now Playing : "+fCurrent.getTrack().getAuthor().getName2()+" / "+fCurrent.getTrack().getAlbum().getName2()+" / "+fCurrent.getTrack().getName(),InformationJPanel.INFORMATIVE);
 					InformationJPanel.getInstance().setQuality(fCurrent.getQuality()+" kbps");
 				}

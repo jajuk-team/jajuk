@@ -21,8 +21,6 @@ package org.jajuk.ui.views;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.Iterator;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -34,14 +32,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
-import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
 import layout.TableLayout;
-
-import org.jajuk.base.File;
-import org.jajuk.base.FileManager;
 
 /**
  * Abstract table view : common implementation for both physical and logical table views 

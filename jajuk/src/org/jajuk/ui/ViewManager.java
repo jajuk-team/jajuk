@@ -25,6 +25,9 @@ import java.util.HashMap;
 import javax.swing.JComponent;
 import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
+import javax.swing.event.InternalFrameAdapter;
+import javax.swing.event.InternalFrameEvent;
+import javax.swing.event.InternalFrameListener;
 
 import org.jajuk.Main;
 import org.jajuk.base.ITechnicalStrings;
@@ -52,10 +55,17 @@ public class ViewManager implements ITechnicalStrings{
 	
 	
 	/**Maintain relation view/perspective, a view can be in only one perspective*/
-	public static void registerView(IView view,IPerspective perspective){
+	public static void registerView(final IView view,IPerspective perspective){
 		hmViewPerspective.put(view.getViewName(),perspective);
 		JInternalFrame ji = new JInternalFrame(view.getDesc(),true,true,true,true);
 		ji.setContentPane((JComponent)view);
+		ji.setDefaultCloseOperation(JInternalFrame.DO_NOTHING_ON_CLOSE);
+		ji.addInternalFrameListener(new InternalFrameAdapter(){
+			public void internalFrameClosing(InternalFrameEvent e) {
+				ViewManager.notify(EVENT_VIEW_CLOSE_REQUEST,view);
+				JajukJMenuBar.getInstance().refreshViews();
+			}
+		});
 		hmViewContainer.put(view.getViewName(),ji);
 	}
 	
