@@ -1,11 +1,11 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <HTML>
 <HEAD>
-	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=windows-1252">
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=utf-8">
 	<TITLE></TITLE>
-	<META NAME="GENERATOR" CONTENT="OpenOffice.org 1.1.0  (Win32)">
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 1.1.3  (Linux)">
 	<META NAME="CREATED" CONTENT="20040503;23532900">
-	<META NAME="CHANGED" CONTENT="20050225;12014616">
+	<META NAME="CHANGED" CONTENT="20050312;12301800">
 </HEAD>
 <BODY LANG="fr-FR" DIR="LTR">
 <H2><A NAME="bodyColumn"></A><A NAME="Developer_guide"></A>Developer
@@ -100,26 +100,26 @@ under Eclipse environment. Two ant scripts are found in the tree:</P>
 <H2><A NAME="Release_process"></A>Release process</H2>
 <P>The Jajuk release process usually takes from 2 to 4 weeks.</P>
 <UL>
-	<LI><P><SPAN LANG="en-US">The release process is announced with a
-	message in the developer mailing list (make sure you subscribed to
-	this list). Obviously, all developments are frozen in the
-	repository. English labels are frozen to allow translators to begin
-	there work.</SPAN></P>
+	<LI><P LANG="en-US">The release process is announced with a message
+	in the developer mailing list (make sure you subscribed to this
+	list). Obviously, all developments are frozen in the repository.
+	English labels are frozen to allow translators to begin there work.</P>
 </UL>
 <UL>
-	<LI><P LANG="en-US">Translators can complete there translations
-	during the entire process but the soonest would be the best to allow testers to use up-to-date translated
-	releases. Note that translators can translate current releases even
-	outside release process periods. <A HREF="translation_howto.html">Translator
-	guide is available here</A>.</P>
-	<LI><P LANG="en-US">Testers qualify and developers fixes bugs
+	<LI><P><SPAN LANG="en-US">Translators can complete there
+	translations during the entire process but the soonest would be the
+	best to allow testers to use up-to-date translated releases. Note
+	that translators can translate current releases even outside release
+	process periods. <A HREF="translation_howto.html">Translator guide
+	is available here</A>.</SPAN></P>
+	<LI><P><SPAN LANG="en-US">Testers qualify and developers fixes bugs
 	discovered during this period. We try to release a release candidate
 	(rc) every 2 or 3 days during this period. Note these bugs and
 	release are internal only and you should use to public bug tracker
 	to report them but use developer list instead. All these rc are
 	internal only and should not be distributed to public. Testers can
 	base their works on this <A HREF="qualification/qualification-model.html">qualification
-	form</A>. A mail is send on developer list at each rc publication.</P>
+	form</A>. A mail is send on developer list at each rc publication.</SPAN></P>
 	<LI><P LANG="en-US">When we estimate that the last rc is stable
 	enough, packager releases it on SourceForge as stable release. The
 	communication delegate issues the new in Freshmeat and other web
@@ -133,6 +133,9 @@ under Eclipse environment. Two ant scripts are found in the tree:</P>
 code standards : 
 </P>
 <H3><A NAME="Code_structure"></A>Code structure</H3>
+<P>Please import the scripts/fomatter.xml description file in
+Window-&gt;Preferences. Then use Right click-&gt;Source-&gt;Fomat to
+format your code according to Jajuk standards.</P>
 <P LANG="en-US"><FONT FACE="monospace">public void myMethod(){ <BR>&nbsp;&nbsp;if
 (size == 0) { <BR>&nbsp;&nbsp;&nbsp;&nbsp;try { <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size
 = (long) inStream.available(); <BR>&nbsp;&nbsp;&nbsp;&nbsp;} catch

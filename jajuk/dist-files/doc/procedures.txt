@@ -1,0 +1,40 @@
+NEW LANGUAGE PROCEDURE
+- Add register in Main.java
+- Add a notice in changelog
+- Add a language in translation_howto/ already translated
+- Add a ligne in jajuk.properties
+- Check the language has a auto-description
+- Add a flag in all README files 
+- Add a langpack in jajuk.izpack
+- Add flags in the index.xml
+- Create a link on README file in /data/projects/jajuk/maven_rep/target/docs
+- Change Natural languages in SF and Freshmeat
+- Update translation howto
+
+
+NEW RELEASE PROCEDURE
+- Change version in ITechnicalStrings and build-dist.xml and RPM spec files (perform a search)
+- String externalization
+- Search for debug System.out
+- Make required translations (fr)
+- Generate install jar
+- Test it under several OS
+- Commit all changes
+- Tag as version
+- Save dist file in the releases dir
+- Modify index.xml and change.xml maven files
+- Generate and upload maven site
+- Close bugs, known issues and RFE at SF
+- Release file on SF, ( preserve my preformated text in notes )
+- Make a news at SF
+- Make a release at freshmeat,framasoft,telecharger.com
+- Send a message in the developer forum
+- Clean snapshots directory
+
+NEW API/version PROCEDURE
+- Change MANIFEST (check new versions)
+- Change project.xml maven file for dependencies
+
+NEW CONTRIBUTOR PROCEDURE
+- Add in AboutView.java
+- Add in project.xml file 

@@ -309,7 +309,7 @@
     
      <dependency>
 	   <groupId>lib</groupId>
-        <artifactId>tritonus_share</artifactId>
+        <artifactId>tritonus_share-jajuk</artifactId>
         <version>0.3.6</version> 
     </dependency>
     
