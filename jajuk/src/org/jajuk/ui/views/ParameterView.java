@@ -433,7 +433,7 @@ public class ParameterView extends ViewAdapter implements ActionListener {
 			ConfigurationManager.setProperty(CONF_OPTIONS_P2P_SHARE,Boolean.toString(jcbShare.isSelected()));
 			ConfigurationManager.setProperty(CONF_OPTIONS_P2P_ADD_REMOTE_PROPERTIES,Boolean.toString(jcbAddRemoteProperties.isSelected()));
 			ConfigurationManager.setProperty(CONF_OPTIONS_P2P_HIDE_LOCAL_PROPERTIES,Boolean.toString(jcbHideProperties.isSelected()));
-			String sPass = jpfPasswd.getText();
+			String sPass = jpfPasswd.getSelectedText();
 			if (!sPass.equals("")){
 				ConfigurationManager.setProperty(CONF_OPTIONS_P2P_PASSWORD,MD5Processor.hash(sPass));
 			}
