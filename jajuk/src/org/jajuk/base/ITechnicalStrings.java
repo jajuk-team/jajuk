@@ -308,6 +308,7 @@ public interface ITechnicalStrings {
 	public static final String CONF_OPTIONS_LANGUAGE= "jajuk.options.language";
 	public static final String CONF_OPTIONS_INTRO_BEGIN= "jajuk.options.intro.begin";
 	public static final String CONF_OPTIONS_INTRO_LENGTH= "jajuk.options.intro.length";
+	public static final String CONF_OPTIONS_SEARCH_UNMOUNTED= "jajuk.options.search_unmounted";
 	public static final String CONF_OPTIONS_LNF= "jajuk.options.lnf";
 	public static final String CONF_OPTIONS_P2P_SHARE= "jajuk.options.p2p.share";
 	public static final String CONF_OPTIONS_P2P_ADD_REMOTE_PROPERTIES= "jajuk.options.p2p.add_remote_properties";

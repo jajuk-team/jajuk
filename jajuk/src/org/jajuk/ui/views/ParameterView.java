@@ -92,6 +92,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 	JPanel jpOptions;
 	JCheckBox jcbDisplayUnmounted;
 	JCheckBox jcbRestart;
+	JCheckBox jcbSearchUnmounted;
 	JLabel jlLanguage;
 	JComboBox jcbLanguage;
 	JLabel jlLAF;
@@ -113,13 +114,13 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 	JPanel jpTags;
 	JCheckBox jcbDeepScan;
 	JCheckBox jcbUseParentDir;
-	JCheckBox jcbRegexp;
 	JPanel jpAdvanced;
 	JCheckBox jcbBackup;
 	JLabel jlBackupSize;
 	JTextField jtfBackupSize;
 	JLabel jlCollectionEncoding;
 	JComboBox jcbCollectionEncoding;
+	JCheckBox jcbRegexp;
 	JPanel jpPerspectives;
 	JLabel jlPerspectivesReinit;
 	JButton jbPerspectivesReinit;
@@ -244,12 +245,14 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jpOptions = new JPanel();
 		jpOptions.setBorder(BorderFactory.createTitledBorder(Messages.getString("ParameterView.33"))); //$NON-NLS-1$
 		double sizeOptions[][] = {{0.99},
-				{iYSeparator,20,iYSeparator,20,iYSeparator,60+2*iYSeparator,iYSeparator,70,iYSeparator}};
+				{iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,60+2*iYSeparator,iYSeparator,70,iYSeparator}};
 		jpOptions.setLayout(new TableLayout(sizeOptions));
 		jcbDisplayUnmounted = new JCheckBox(Messages.getString("ParameterView.34")); //$NON-NLS-1$
 		jcbDisplayUnmounted.setToolTipText(Messages.getString("ParameterView.35")); //$NON-NLS-1$
 		jcbRestart = new JCheckBox(Messages.getString("ParameterView.36")); //$NON-NLS-1$
 		jcbRestart.setToolTipText(Messages.getString("ParameterView.37")); //$NON-NLS-1$
+		jcbSearchUnmounted = new JCheckBox(Messages.getString("ParameterView.127")); //$NON-NLS-1$
+		jcbSearchUnmounted.setToolTipText(Messages.getString("ParameterView.128")); //$NON-NLS-1$
 		JPanel jpCombos = new JPanel();
 		double sizeCombos[][] = {{0.50,0.50},
 				{20,iYSeparator,20,iYSeparator,20}};
@@ -381,8 +384,9 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jp.add(jtfBestofSize,"1,4"); //$NON-NLS-1$
 		jpOptions.add(jcbDisplayUnmounted,"0,1"); //$NON-NLS-1$
 		jpOptions.add(jcbRestart,"0,3"); //$NON-NLS-1$
-		jpOptions.add(jpCombos,"0,5"); //$NON-NLS-1$
-		jpOptions.add(jp,"0,7"); //$NON-NLS-1$
+		jpOptions.add(jcbSearchUnmounted,"0,5"); //$NON-NLS-1$
+		jpOptions.add(jpCombos,"0,7"); //$NON-NLS-1$
+		jpOptions.add(jp,"0,9"); //$NON-NLS-1$
 				
 		//--P2P
 		jpP2P = new JPanel();
@@ -414,24 +418,20 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jpTags = new JPanel();
 		jpTags.setBorder(BorderFactory.createTitledBorder(Messages.getString("ParameterView.98")));  //$NON-NLS-1$
 		double sizeTags[][] = {{0.99},
-				{iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator}};
+				{iYSeparator,20,iYSeparator,20,iYSeparator}};
 		jpTags.setLayout(new TableLayout(sizeTags));
 		jcbDeepScan = new JCheckBox(Messages.getString("ParameterView.99"));  //$NON-NLS-1$
 		jcbDeepScan.setToolTipText(Messages.getString("ParameterView.100")); //$NON-NLS-1$
 		jcbUseParentDir = new JCheckBox(Messages.getString("ParameterView.101"));  //$NON-NLS-1$
-		jcbRegexp = new JCheckBox(Messages.getString("ParameterView.113")); //$NON-NLS-1$
-		jcbRegexp.setSelected(ConfigurationManager.getBoolean(CONF_REGEXP));//$NON-NLS-1$
-		jcbRegexp.setToolTipText(Messages.getString("ParameterView.114")); //$NON-NLS-1$
 		jcbUseParentDir.setToolTipText(Messages.getString("ParameterView.102")); //$NON-NLS-1$
 		jpTags.add(jcbDeepScan,"0,1"); //$NON-NLS-1$
 		jpTags.add(jcbUseParentDir,"0,3"); //$NON-NLS-1$
-		jpTags.add(jcbRegexp,"0,5");//$NON-NLS-1$
 		
 		//--Advanced
 		jpAdvanced = new JPanel();
 		jpAdvanced.setBorder(BorderFactory.createTitledBorder(Messages.getString("ParameterView.115")));  //$NON-NLS-1$
 		double sizeAdvanced[][] = {{0.5,0.5},
-				{iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator}};
+				{iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator}};
 		jpAdvanced.setLayout(new TableLayout(sizeAdvanced));
 		jcbBackup = new JCheckBox(Messages.getString("ParameterView.116"));  //$NON-NLS-1$
 		jcbBackup.addActionListener(this);
@@ -444,13 +444,17 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jlCollectionEncoding.setToolTipText(Messages.getString("ParameterView.121")); //$NON-NLS-1$
 		jcbCollectionEncoding = new JComboBox();
 		jcbCollectionEncoding.setToolTipText(Messages.getString("ParameterView.121")); //$NON-NLS-1$
+		jcbRegexp = new JCheckBox(Messages.getString("ParameterView.113")); //$NON-NLS-1$
+		jcbRegexp.setSelected(ConfigurationManager.getBoolean(CONF_REGEXP));//$NON-NLS-1$
+		jcbRegexp.setToolTipText(Messages.getString("ParameterView.114")); //$NON-NLS-1$
 		jcbCollectionEncoding.addItem("UTF-8");
 		jcbCollectionEncoding.addItem("UTF-16");
 		jpAdvanced.add(jcbBackup,"0,1");//$NON-NLS-1$
-		jpAdvanced.add(jlBackupSize,"0,3");//$NON-NLS-1$
-		jpAdvanced.add(jtfBackupSize,"1,3");//$NON-NLS-1$
-		jpAdvanced.add(jlCollectionEncoding,"0,5");//$NON-NLS-1$
-		jpAdvanced.add(jcbCollectionEncoding,"1,5");//$NON-NLS-1$
+		jpAdvanced.add(jcbRegexp,"0,3");//$NON-NLS-1$
+		jpAdvanced.add(jlBackupSize,"0,5");//$NON-NLS-1$
+		jpAdvanced.add(jtfBackupSize,"1,5");//$NON-NLS-1$
+		jpAdvanced.add(jlCollectionEncoding,"0,7");//$NON-NLS-1$
+		jpAdvanced.add(jcbCollectionEncoding,"1,7");//$NON-NLS-1$
 		
 		//- Perspectives
 		jpPerspectives = new JPanel();
@@ -546,6 +550,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 					}
 					ConfigurationManager.setProperty(CONF_OPTIONS_HIDE_UNMOUNTED,Boolean.toString(bHiddenState));
 					ConfigurationManager.setProperty(CONF_OPTIONS_RESTART,Boolean.toString(jcbRestart.isSelected()));
+					ConfigurationManager.setProperty(CONF_OPTIONS_SEARCH_UNMOUNTED,Boolean.toString(jcbSearchUnmounted.isSelected()));
 					String sLocal = (String)Messages.getInstance().getLocals().get(jcbLanguage.getSelectedIndex());
 					if (!Messages.getInstance().getLocal().equals(sLocal)){  //local has changed
 						Messages.showInfoMessage(Messages.getString("ParameterView.103")); //$NON-NLS-1$
@@ -657,6 +662,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jcbDisplayUnmounted.setSelected(bHidden);
 		this.bHidden = bHidden; 
 		jcbRestart.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_RESTART));
+		jcbSearchUnmounted.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_SEARCH_UNMOUNTED));
 		jcbLanguage.setSelectedIndex(Messages.getInstance().getLocals().indexOf(ConfigurationManager.getProperty(CONF_OPTIONS_LANGUAGE)));
 		jcbLAF.setSelectedItem(ConfigurationManager.getProperty(CONF_OPTIONS_LNF));
 		jcbLogLevel.setSelectedIndex(Integer.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_LOG_LEVEL)));
