@@ -7,7 +7,7 @@
    	<tocitem text="Introduction" target="top"/>
 	<tocitem text="Formats supportés" target="formats"/>
    	<tocitem text="Notions générales" expand="true">
-		<tocitem text="Perspectives et vues" target="pav"/>
+		<tocitem text="Vues et perspectives" target="pav"/>
    		<tocitem text="Utiliser les supports" target="devices"/>
 		<tocitem text="Jouer de la musique" target="pm"/>
    		<tocitem text="Utiliser les playlistes" target="up"/>
