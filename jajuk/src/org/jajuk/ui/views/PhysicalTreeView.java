@@ -30,7 +30,6 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.TreeSet;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -67,10 +66,10 @@ import org.jajuk.util.Util;
  * @created 28 nov. 2003
  */
 public class PhysicalTreeView extends ViewAdapter implements ActionListener{
-
+	
 	/** Self instance */
 	private static PhysicalTreeView ptv;
-
+	
 	/** The phyical tree */
 	JTree jtree;
 	
@@ -80,40 +79,34 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener{
 	/** Files selection*/
 	ArrayList alFiles;
 	
-	/** Directories selection*/
-	ArrayList alDirs;
-	
-	/** Devices selection*/
-	ArrayList alDevices;
-	
 	JPopupMenu jmenuFile;
-		JMenuItem jmiFilePlay;
-		JMenuItem jmiFilePush;
-		JMenuItem jmiFileCopy;
-		JMenuItem jmiFileCut;
-		JMenuItem jmiFilePaste;
-		JMenuItem jmiFileRename;
-		JMenuItem jmiFileDelete;
-		JMenuItem jmiFileSetProperty;
-		JMenuItem jmiFileProperties;
+	JMenuItem jmiFilePlay;
+	JMenuItem jmiFilePush;
+	JMenuItem jmiFileCopy;
+	JMenuItem jmiFileCut;
+	JMenuItem jmiFilePaste;
+	JMenuItem jmiFileRename;
+	JMenuItem jmiFileDelete;
+	JMenuItem jmiFileSetProperty;
+	JMenuItem jmiFileProperties;
 	JPopupMenu jmenuDir;
-		JMenuItem jmiDirPlay;
-		JMenuItem jmiDirPush;
-		JMenuItem jmiDirPlayShuffle;
-		JMenuItem jmiDirPlayRepeat;
-		JMenuItem jmiDirDesynchro;
-		JMenuItem jmiDirResynchro;
-		JMenuItem jmiDirCreatePlaylist;
-		JMenuItem jmiDirCopy;
-		JMenuItem jmiDirCut;
-		JMenuItem jmiDirPaste;
-		JMenuItem jmiDirRename;
-		JMenuItem jmiDirDelete;
-		JMenuItem jmiDirSetProperty;
-		JMenuItem jmiDirProperties;
-		//TODO TBI devices contextual menus
-		
-
+	JMenuItem jmiDirPlay;
+	JMenuItem jmiDirPush;
+	JMenuItem jmiDirPlayShuffle;
+	JMenuItem jmiDirPlayRepeat;
+	JMenuItem jmiDirDesynchro;
+	JMenuItem jmiDirResynchro;
+	JMenuItem jmiDirCreatePlaylist;
+	JMenuItem jmiDirCopy;
+	JMenuItem jmiDirCut;
+	JMenuItem jmiDirPaste;
+	JMenuItem jmiDirRename;
+	JMenuItem jmiDirDelete;
+	JMenuItem jmiDirSetProperty;
+	JMenuItem jmiDirProperties;
+	//TODO TBI devices contextual menus
+	
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -122,7 +115,7 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener{
 	public String getDesc() {
 		return "Physical tree view";
 	}
-
+	
 	/** Return singleton */
 	public static PhysicalTreeView getInstance() {
 		if (ptv == null) {
@@ -130,7 +123,7 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener{
 		}
 		return ptv;
 	}
-
+	
 	/** Constructor */
 	public PhysicalTreeView(){
 		//**Menu items**
@@ -239,7 +232,7 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener{
 						case 1 : 
 							if ( device.isMounted())	setIcon(new ImageIcon(ICON_DEVICE_CD_MOUNTED_SMALL));
 							else setIcon(new ImageIcon(ICON_DEVICE_CD_UNMOUNTED_SMALL));
-						break;
+							break;
 						case 2 : 
 							if ( device.isMounted())	setIcon(new ImageIcon(ICON_DEVICE_CD_AUDIO_MOUNTED_SMALL));
 							else setIcon(new ImageIcon(ICON_DEVICE_CD_AUDIO_UNMOUNTED_SMALL));
@@ -317,62 +310,47 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener{
 					//Only keep files
 					//TODO TBI accept playlists
 					TreePath[] paths = jtree.getSelectionModel().getSelectionPaths();
-					cleanSelection();
+					alFiles = new ArrayList(100);
 					//test mix between types ( not allowed )
-					String sClass = paths[0].getClass().toString();
+					String sClass = paths[0].getLastPathComponent().getClass().toString();
 					for (int i=0;i<paths.length;i++){
-						if (!node.getClass().toString().equals(sClass)){
+						if (!paths[i].getLastPathComponent().getClass().toString().equals(sClass)){
 							return;
 						}	
 					}
 					//get all components recursively
-					Object o = paths[0].getLastPathComponent();
-					Enumeration e2 = ((DefaultMutableTreeNode)o).depthFirstEnumeration(); //return all childs nodes recursively
-					while ( e2.hasMoreElements()){
-						DefaultMutableTreeNode node = (DefaultMutableTreeNode)e2.nextElement();
-						//File selection
-						if (node instanceof FileNode){
-							File file = ((FileNode)o).getFile();
-							if (file.getDirectory().getDevice().isMounted() && !file.getDirectory().getDevice().isRefreshing()){
-								alFiles.add(((FileNode)o).getFile());
-							}
-							else{
-								Messages.showErrorMessage("120");
-								return; //show only one error message
-							}
-						}
-						//	directory selection
-						else if ( o instanceof DirectoryNode ){
-							for (int i=0;i<paths.length;i++){
-								o = paths[i].getLastPathComponent();
-								if ( o instanceof DirectoryNode){
-									Directory dir = ((DirectoryNode)o).getDirectory();
-									if (dir.getDevice().isMounted() && !dir.getDevice().isRefreshing()){
-										alDirs.add(((DirectoryNode)o).getDirectory());
-									}
-									else{
-										Messages.showErrorMessage("120");
-										return; //show only one error message
-									}
+					for (int i=0;i<paths.length;i++){
+						Object o = paths[i].getLastPathComponent();
+						Enumeration e2 = ((DefaultMutableTreeNode)o).depthFirstEnumeration(); //return all childs nodes recursively
+						while ( e2.hasMoreElements()){
+							DefaultMutableTreeNode node = (DefaultMutableTreeNode)e2.nextElement();
+							if (node instanceof FileNode){
+								File file = ((FileNode)node).getFile();
+								if (file.getDirectory().getDevice().isMounted() && !file.getDirectory().getDevice().isRefreshing()){
+									alFiles.add(((FileNode)node).getFile());
 								}
 								else{
-									return; //we don't accept different type selections
+									Messages.showErrorMessage("120");
+									return; //show only one error message
 								}
 							}
 						}
-						if (alFiles.size() > 0){
-							jmenuFile.show(jtree,e.getX(),e.getY());
-						}
-						else if (alDirs.size() > 0){
-							jmenuDir.show(jtree,e.getX(),e.getY());
-						}
-						if (alDevices.size() > 0){
-							//jmenuFile.show(jtree,e.getX(),e.getY()); //TBI
-						}
 					}
-				};
-				jtree.addMouseListener(ml);
-				
+					//display menus according node type
+					if (paths[0].getLastPathComponent() instanceof FileNode ){
+						jmenuFile.show(jtree,e.getX(),e.getY());
+					}
+					else if (paths[0].getLastPathComponent() instanceof DirectoryNode){
+						jmenuDir.show(jtree,e.getX(),e.getY());
+					}
+					if (paths[0].getLastPathComponent() instanceof DeviceNode){
+						//jmenuFile.show(jtree,e.getX(),e.getY()); //TBI
+					}
+				}
+			}
+		};
+		jtree.addMouseListener(ml);
+		
 		
 		//expand all
 		for (int i=0;i<jtree.getRowCount();i++){
@@ -387,16 +365,6 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener{
 		add(new JScrollPane(jtree));
 	}
 	
-
-	/**
-	 * Clean selection
-	 */
-	private void cleanSelection(){
-		alFiles = new ArrayList(100);
-		alDirs = new ArrayList(100);
-		alDevices = new ArrayList(100);
-	}				
-
 	/**Fill the tree */
 	public void populate(){
 		//add devices
@@ -453,49 +421,32 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener{
 		}
 		
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == jmiFilePlay ){
-			FIFO.getInstance().push(new ArrayList(tsFiles),false);
+			FIFO.getInstance().push(new ArrayList(alFiles),false);
 		}
 		else if (e.getSource() == jmiFilePush ){
-			FIFO.getInstance().push(new ArrayList(tsFiles),true);
+			FIFO.getInstance().push(new ArrayList(alFiles),true);
 		}
 		else if (e.getSource() == jmiDirPlay  || e.getSource() == jmiDirPush || e.getSource() == jmiDirPlayShuffle || e.getSource() == jmiDirPlayRepeat){
-			ArrayList alFilesToPlay = new ArrayList(); //files to be played
-			Iterator it = tsDirs.iterator();
-			while (it.hasNext()){
-				Directory dir = (Directory)it.next();
-				ArrayList alFiles = FileManager.getFiles();
-				Collections.sort(alFiles);
-				Iterator it2  = alFiles.iterator();
-				while (it2.hasNext()){
-					File file = (File)it2.next();
-					if ( file.getDirectory().getDevice().isMounted() && !file.getDirectory().getDevice().isRefreshing() && file.hasAncestor(dir)){  //mount test is only for performance reasons, nop on a device during refreshing 
-						alFilesToPlay.add(file);
-					}
-				}
-			}
 			if (e.getSource() == jmiDirPlay){
-				FIFO.getInstance().push(alFilesToPlay,false);
+				FIFO.getInstance().push(alFiles,false);
 			}
 			else if (e.getSource() == jmiDirPush){
-				FIFO.getInstance().push(alFilesToPlay,true);
+				FIFO.getInstance().push(alFiles,true);
 			}
 			else if (e.getSource() == jmiDirPlayShuffle){
-				FIFO.getInstance().push(Util.randomize(alFilesToPlay),false);
+				FIFO.getInstance().push(Util.randomize(alFiles),false);
 			}
 			else if (e.getSource() == jmiDirPlayRepeat){
-				FIFO.getInstance().push(alFilesToPlay,false,false,true);
+				FIFO.getInstance().push(alFiles,false,false,true);
 			}
 		}
 	}
-
-	
-
 }
 
 
@@ -529,7 +480,7 @@ class FileNode extends DefaultMutableTreeNode{
 	public File getFile() {
 		return file;
 	}
-
+	
 }
 
 /**
@@ -571,7 +522,7 @@ class DeviceNode extends DefaultMutableTreeNode{
 	public Device getDevice() {
 		return device;
 	}
-
+	
 }
 
 
@@ -614,7 +565,7 @@ class DirectoryNode  extends DefaultMutableTreeNode{
 	public Directory getDirectory() {
 		return directory;
 	}
-
+	
 }
 
 /**
