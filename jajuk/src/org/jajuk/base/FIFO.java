@@ -439,13 +439,17 @@ public class FIFO implements ITechnicalStrings,Runnable,Observer{
 					int index = 0;
 					lOffset = 0;
 					fCurrent = (File) (alFIFO.get(index));//take the first file in the fifo
+					if ( fLastOne != null && !fLastOne.getDirectory().equals(fCurrent.getDirectory()) ){  //if we are always in the same directory, just leave to save cpu
+					    ObservationManager.notify(EVENT_COVER_REFRESH); //request update cover 
+				    }
 					fLastOne = (File)fCurrent.clone(); //save the last played track
 					bPrevious = false; //allow insert to be done with right previous file
 					alFIFO.remove(index);//remove it from todo list;
 					Log.debug("Now playing :"+fCurrent); //$NON-NLS-1$
 					bPlaying = true;
 					Player.stop();  //for security, make sure no other track is playing
-					ObservationManager.notify(EVENT_COVER_REFRESH); //request update cover 
+					 
+					
 					Properties pDetails = new Properties();
 					pDetails.put(DETAIL_CURRENT_FILE_ID,fCurrent.getId());
 					pDetails.put(DETAIL_CURRENT_DATE,new Long(System.currentTimeMillis()));
