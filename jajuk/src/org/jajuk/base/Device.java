@@ -245,10 +245,11 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 					}
 				}					
 			}
-			InformationJPanel.getInstance().setMessage(new StringBuffer("[").append(device.getName()).append(Messages.getString("Device.25")).append((int)((System.currentTimeMillis()-lTime)/1000)). //$NON-NLS-1$ //$NON-NLS-2$
+			String sOut = new StringBuffer("[").append(device.getName()).append(Messages.getString("Device.25")).append((int)((System.currentTimeMillis()-lTime)/1000)). //$NON-NLS-1$ //$NON-NLS-2$
 					append(Messages.getString("Device.26")).append(iNbNewFiles).append(Messages.getString("Device.27")). //$NON-NLS-1$ //$NON-NLS-2$
-					append(FileManager.getFiles().size()-iNbFilesBeforeRefresh-iNbNewFiles).append(Messages.getString("Device.28")).toString(),InformationJPanel.INFORMATIVE); //$NON-NLS-1$
-			Log.debug(Messages.getString("Device.29")+(int)((System.currentTimeMillis()-lTime)/1000)+Messages.getString("Device.30")); //$NON-NLS-1$ //$NON-NLS-2$
+					append(iNbFilesBeforeRefresh - (FileManager.getFiles().size()-iNbNewFiles)).append(Messages.getString("Device.28")).toString();
+			InformationJPanel.getInstance().setMessage(sOut,InformationJPanel.INFORMATIVE); //$NON-NLS-1$
+			Log.debug(sOut); 
 			bAlreadyRefreshing = false;
 			//notify views to refresh
 			ObservationManager.notify(EVENT_DEVICE_REFRESH);		
@@ -401,7 +402,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 			if ( fSrcFiles != null){
 				for (int i=0; i<fSrcFiles.length; i++){
 					File[] files = fileNewDir.listFiles(filter);
-					if ( files == null){
+					if ( files == null){  //fileNewDir is not a directory or an error occured ( read/write right ? )
 						continue;
 					}
 					boolean bNeedCopy = true;
@@ -421,10 +422,16 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 									toString(),InformationJPanel.INFORMATIVE);
 						}
 						catch(JajukException je){
-							Messages.showErrorMessage(je.getCode(),new StringBuffer(dest.getUrl()).append(sPath).toString());
+							Messages.showErrorMessage(je.getCode(),fSrcFiles[i].getAbsolutePath());
+							Messages.showErrorMessage("027");
+							Log.error(je);
+							return iNbCreatedFiles;
 						}
 						catch(Exception e){
-							Messages.showErrorMessage("020",new StringBuffer(dest.getUrl()).append(sPath).toString().toString()); //$NON-NLS-1$
+							Messages.showErrorMessage("020",fSrcFiles[i].getAbsolutePath()); //$NON-NLS-1$
+							Messages.showErrorMessage("027");
+							Log.error("020",fSrcFiles[i].getAbsolutePath(),e);
+							return iNbCreatedFiles;
 						}
 					}
 				}

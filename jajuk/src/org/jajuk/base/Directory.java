@@ -23,6 +23,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 
 import org.jajuk.util.ConfigurationManager;
@@ -39,7 +40,7 @@ import org.jajuk.util.log.Log;
  * @Author bflorat @created 17 oct. 2003
  */
 public class Directory extends PropertyAdapter implements Comparable{
-
+	
 	/** ID. Ex:1,2,3... */
 	private String sId;
 	/** directory name. Ex: rock */
@@ -56,7 +57,7 @@ public class Directory extends PropertyAdapter implements Comparable{
 	private java.io.File fio;
 	/** pre-calculated absolute path for perf*/
 	private String sAbs = null;
-
+	
 	/**
 	 * Direcotry constructor
 	 * 
@@ -72,14 +73,14 @@ public class Directory extends PropertyAdapter implements Comparable{
 		this.device = device;
 		this.fio = new File(device.getUrl() + getRelativePath());
 	}
-
+	
 	/**
 	 * toString method
 	 */
 	public String toString() {
 		return "Directory[ID=" + sId + " Name=" + getRelativePath() + " Parent ID=" + (dParent == null ? "null" : dParent.getId()) + " Device=" + device.getName() + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$ //$NON-NLS-6$
 	}
-
+	
 	/**
 	 * Return an XML representation of this item
 	 * 
@@ -101,7 +102,7 @@ public class Directory extends PropertyAdapter implements Comparable{
 		sb.append("/>\n"); //$NON-NLS-1$
 		return sb.toString();
 	}
-
+	
 	/**
 	 * Equal method to check two directories are identical
 	 * 
@@ -118,43 +119,43 @@ public class Directory extends PropertyAdapter implements Comparable{
 	public int hashCode(){
 		return getId().hashCode();
 	}
-
-
+	
+	
 	/**
 	 * @return
 	 */
 	public Device getDevice() {
 		return device;
 	}
-
+	
 	/**
 	 * @return
 	 */
 	public String getId() {
 		return sId;
 	}
-
+	
 	/**
 	 * @return
 	 */
 	public String getName() {
 		return sName;
 	}
-
+	
 	/**
 	 * @return
 	 */
 	public Directory getParentDirectory() {
 		return dParent;
 	}
-
+	
 	/**
 	 * @return
 	 */
 	public ArrayList getDirectories() {
 		return alDirectories;
 	}
-
+	
 	/**
 	 * Add a child directory in local refences
 	 * @param directory
@@ -173,20 +174,38 @@ public class Directory extends PropertyAdapter implements Comparable{
 	
 	
 	/**
-		 * @return
-		 */
-		public ArrayList getFiles() {
-			return alFiles;
+	 * return child files
+	 * @return child files
+	 */
+	public ArrayList getFiles() {
+		return alFiles;
+	}
+	
+	/**
+	 * return child files recursively
+	 * @return child files recursively
+	 */
+	public ArrayList getFilesRecursively() {
+		ArrayList alFiles = new ArrayList(100);
+		Iterator it = FileManager.getFiles().iterator();
+		while ( it.hasNext()){
+			org.jajuk.base.File file = (org.jajuk.base.File)it.next();
+			if ( file.hasAncestor(this)){
+				alFiles.add(file);
+			}
 		}
-
-		/**
-		 * @param directory
-		 */
-		public void addFile(org.jajuk.base.File file) {
-			alFiles.add(file);
-		}
-
-
+		Collections.sort(alFiles);
+		return alFiles;
+	}
+	
+	/**
+	 * @param directory
+	 */
+	public void addFile(org.jajuk.base.File file) {
+		alFiles.add(file);
+	}
+	
+	
 	/**
 	 * Scan all files in a directory
 	 * 3ilf7eahh59rj5lr5cousdphr
@@ -264,7 +283,7 @@ public class Directory extends PropertyAdapter implements Comparable{
 			}
 		}
 	}
-
+	
 	/**
 	 * Return full directory path name relative to device url
 	 * 
@@ -292,7 +311,7 @@ public class Directory extends PropertyAdapter implements Comparable{
 		sAbs = sbOut.toString();
 		return sAbs;
 	}
-
+	
 	/**
 	 * @return Returns the IO file reference to this directory.
 	 */
@@ -310,5 +329,17 @@ public class Directory extends PropertyAdapter implements Comparable{
 		Directory otherDirectory = (Directory)o;
 		return  getRelativePath().compareToIgnoreCase(otherDirectory.getRelativePath());
 	}
-
+	
+	/**
+	 * Return whether this item should be hidden with hide option
+	 * @return whether this item should be hidden with hide option
+	 */
+	public boolean shouldBeHidden(){
+		if (getDevice().isMounted() ||
+				ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED) == false){ //option "only display mounted devices "
+			return false;
+		}
+		return true;
+	}
+	
 }

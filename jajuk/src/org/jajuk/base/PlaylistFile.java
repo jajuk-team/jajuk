@@ -54,8 +54,8 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 	private String  sHashcode;
 	/**Playlist parent directory*/
 	private Directory dParentDirectory;
-	/**Basic Files list*/
-	private ArrayList alBasicFiles = new ArrayList(10);
+	/**Basic Files list, singletton*/
+	private ArrayList alBasicFiles;
 	/**Modification flag*/
 	private boolean bModified = false;
 	/**Associated physical file*/
@@ -75,9 +75,6 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 		this.sHashcode = sHashcode;
 		this.dParentDirectory = dParentDirectory;
 		this.fio = new File(getDirectory().getDevice().getUrl()+getDirectory().getRelativePath()+"/"+getName()); //$NON-NLS-1$
-		if ( fio.exists() && fio.canRead()){  //check device is mounted
-			load(); //populate playlist
-		}
 	}
 
 	
@@ -163,7 +160,17 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 	/**
 	 * @return Returns the list of basic files this playlist maps to
 	 */
-	public ArrayList getBasicFiles() {
+	public synchronized ArrayList getBasicFiles() {
+		if ( alBasicFiles == null){
+			if ( fio.exists() && fio.canRead()){  //check device is mounted
+				alBasicFiles = new ArrayList(10);
+				load(); //populate playlist
+			}
+			else{  //error accessing playlist file
+				Log.error("009",fio.getAbsolutePath(),new Exception());
+				Messages.showErrorMessage("009",fio.getAbsolutePath());
+			}
+		}
 		return alBasicFiles;
 	}
 	
@@ -172,7 +179,8 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 	 * @param bf
 	 */
 	public void addBasicFile(BasicFile bf){
-		alBasicFiles.add(bf);
+		ArrayList al = getBasicFiles(); 
+		al.add(bf);
 		bModified = true;
 	}
 	
@@ -186,7 +194,7 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 			try {
 				bw = new BufferedWriter(new FileWriter(fio));
 				bw.write(PLAYLIST_NOTE+"\n"); //$NON-NLS-1$
-				Iterator it = alBasicFiles.iterator();
+				Iterator it = getBasicFiles().iterator();
 				while ( it.hasNext()){
 					BasicFile bfile = (BasicFile)it.next();
 					bw.write(bfile.getAbsolutePath()+"\n"); //$NON-NLS-1$
@@ -246,6 +254,7 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 		}
 		catch(Exception e){
 			Log.error("017",getName(),e); //$NON-NLS-1$
+			Messages.showErrorMessage("017",fio.getAbsolutePath());
 		}
 		finally{
 			if ( br != null){
@@ -253,6 +262,7 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 					br.close();
 				} catch (IOException e1) {
 					Log.error(e1);
+					Messages.showErrorMessage("017",fio.getAbsolutePath());
 				}
 			}
 		}
@@ -288,5 +298,17 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 		return false;
 	}
 	
+	
+	/**
+	 * Return whether this item should be hidden with hide option
+	 * @return whether this item should be hidden with hide option
+	 */
+	public boolean shouldBeHidden(){
+		if (getDirectory().getDevice().isMounted() ||
+				ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED) == false){ //option "only display mounted devices "
+			return false;
+		}
+		return true;
+	}
 
 }

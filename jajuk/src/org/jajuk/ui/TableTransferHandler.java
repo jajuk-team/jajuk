@@ -20,8 +20,6 @@
 
 package org.jajuk.ui;
 
-import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DragGestureEvent;
 import java.awt.dnd.DragGestureListener;
@@ -32,16 +30,11 @@ import java.awt.dnd.DragSourceEvent;
 import java.awt.dnd.DragSourceListener;
 import java.awt.dnd.DropTarget;
 import java.awt.dnd.DropTargetDragEvent;
-import java.awt.dnd.DropTargetDropEvent;
-import java.awt.dnd.DropTargetEvent;
-import java.awt.dnd.DropTargetListener;
-import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 import javax.swing.JTable;
-import javax.swing.JTree;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreePath;
+
+import com.sun.TableMap;
 
 /**
  *  Type description
@@ -56,21 +49,16 @@ import javax.swing.tree.TreePath;
  * @author     bflorat
  * @created    13 févr. 2004
  */
-public class TableTransferHandler implements DragGestureListener, DragSourceListener, DropTargetListener {
+public class TableTransferHandler implements DragGestureListener, DragSourceListener {
 	
 	private JTable jtable;
 	private DragSource dragSource; // dragsource
 	private DropTarget dropTarget; //droptarget
-	private static BufferedImage image = null; //buff image
-	private Rectangle rect2D = new Rectangle();
-	private boolean drawImage;
 	
-	public TableTransferHandler(JTable jtable, int action, boolean drawIcon) {
+	public TableTransferHandler(JTable jtable, int action) {
 		this.jtable = jtable;
-		drawImage = drawIcon;
 		dragSource = new DragSource();
 		dragSource.createDefaultDragGestureRecognizer(jtable, action, this);
-		dropTarget = new DropTarget(jtable, action, this);
 	}
 	
 	/* Methods for DragSourceListener */
@@ -78,6 +66,7 @@ public class TableTransferHandler implements DragGestureListener, DragSourceList
 		if (dsde.getDropSuccess() && dsde.getDropAction()==DnDConstants.ACTION_MOVE ) {
 		}
 	}
+	
 	public final void dragEnter(DragSourceDragEvent dsde)  {
 		int action = dsde.getDropAction();
 		if (action == DnDConstants.ACTION_COPY)  {
@@ -92,6 +81,7 @@ public class TableTransferHandler implements DragGestureListener, DragSourceList
 			}
 		}
 	}
+	
 	public final void dragOver(DragSourceDragEvent dsde) {
 		int action = dsde.getDropAction();
 		if (action == DnDConstants.ACTION_COPY) {
@@ -106,6 +96,7 @@ public class TableTransferHandler implements DragGestureListener, DragSourceList
 			}
 		}
 	}
+	
 	public final void dropActionChanged(DragSourceDragEvent dsde)  {
 		int action = dsde.getDropAction();
 		if (action == DnDConstants.ACTION_COPY) {
@@ -120,76 +111,29 @@ public class TableTransferHandler implements DragGestureListener, DragSourceList
 			}
 		}
 	}
+	
 	public final void dragExit(DragSourceEvent dse) {
 		dse.getDragSourceContext().setCursor(DragSource.DefaultMoveNoDrop);
 	}	
 	
 	/* Methods for DragGestureListener */
 	public final void dragGestureRecognized(DragGestureEvent dge) {
-	/*	Object[][] oValues = (Object[][])((TracksTableModel)jtable.getModel()).getData();
-		Object o = oValuesjtable.getSelectedRow();
-		dragSource.startDrag(dge, DragSource.DefaultMoveNoDrop , image, new Point(0,0), new TransferableTableRow(((JajukTable)draggedNode).getData()), this);*/			
+		TracksTableModel ttm = (TracksTableModel)(((TableMap)jtable.getModel()).getModel());
+		ArrayList al = ttm.getValues();
+		Object o = al.get(jtable.getSelectedRow());
+		dragSource.startDrag(dge, DragSource.DefaultMoveNoDrop ,new TransferableTableRow(o), this);
 	}
 	
 	/* Methods for DropTargetListener */
 	
 	public final void dragEnter(DropTargetDragEvent dtde) {
-		Point pt = dtde.getLocation();
 		int action = dtde.getDropAction();
-		if (drawImage) {
-			paintImage(pt);
-		}
 		dtde.acceptDrag(action);			
-	}
-	
-	public final void dragExit(DropTargetEvent dte) {
-		if (drawImage) {
-			clearImage();
-		}
 	}
 	
 	public final void dragOver(DropTargetDragEvent dtde) {
-		Point pt = dtde.getLocation();
 		int action = dtde.getDropAction();
-		if (drawImage) {
-			paintImage(pt);
-		}
 		dtde.acceptDrag(action);			
 	}
 	
-	public final void dropActionChanged(DropTargetDragEvent dtde) {
-		Point pt = dtde.getLocation();
-		int action = dtde.getDropAction();
-		if (drawImage) {
-			paintImage(pt);
-		}
-		dtde.acceptDrag(action);			
-	}
-	
-	public final void drop(DropTargetDropEvent dtde) {
-	}
-	
-	private final void paintImage(Point pt) {
-	/*	tree.paintImmediately(rect2D.getBounds());
-		rect2D.setRect((int) pt.getX(),(int) pt.getY(),image.getWidth(),image.getHeight());
-		tree.getGraphics().drawImage(image,(int) pt.getX(),(int) pt.getY(),tree);*/
-	}
-	
-	private final void clearImage() {
-	//	tree.paintImmediately(rect2D.getBounds());
-	}
-	
-	
-	
-	public boolean executeDrop(JTree target, DefaultMutableTreeNode draggedNode, DefaultMutableTreeNode newParentNode, int action) { 
-		if (action == DnDConstants.ACTION_MOVE) {
-			draggedNode.removeFromParent();
-			((DefaultTreeModel)target.getModel()).insertNodeInto(draggedNode,newParentNode,newParentNode.getChildCount());
-			TreePath treePath = new TreePath(draggedNode.getPath());
-			target.scrollPathToVisible(treePath);
-			target.setSelectionPath(treePath);
-			return(true);
-		}
-		return(false);
-	}
 }

@@ -19,8 +19,11 @@
 package org.jajuk.ui.views;
 
 import java.awt.Dimension;
+import java.awt.dnd.DnDConstants;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.BorderFactory;
@@ -31,12 +34,13 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
-import javax.swing.table.AbstractTableModel;
 
 import layout.TableLayout;
 
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.JajukTable;
+import org.jajuk.ui.TableTransferHandler;
+import org.jajuk.ui.TracksTableModel;
 import org.jajuk.util.Util;
 
 /**
@@ -47,52 +51,6 @@ import org.jajuk.util.Util;
  */
 public abstract class AbstractTableView extends ViewAdapter implements ActionListener,MouseListener{
 
-	/**Columns number*/
-	protected int iColNum = 9;
-	
-	/**Rows number*/
-	protected int iRowNum;
-	
-	/**Cell editable table**/
-	protected boolean[][] bCellEditable;
-	
-	/**Values table**/
-	protected Object[][] oValues;
-	
-	/**Columns names table**/
-	protected String[] sColName;
-	
-	
-	class TracksTableModel extends AbstractTableModel{
-		public int getColumnCount() {
-			return iColNum;
-		}
-		
-		public int getRowCount() {
-			return iRowNum;
-		}
-		
-		public boolean isCellEditable(int rowIndex, int columnIndex) {
-			return bCellEditable[columnIndex][rowIndex];
-		}
-		
-		public Class getColumnClass(int columnIndex) {
-			return getValueAt(0,columnIndex).getClass();
-		}
-		
-		public Object getValueAt(int rowIndex, int columnIndex) {
-			return oValues[rowIndex][columnIndex];
-		}
-		
-		public void setValueAt(Object oValue, int rowIndex, int columnIndex) {
-			oValues[rowIndex][columnIndex] = oValue;
-		}
-		
-		public String getColumnName(int columnIndex) {
-			return sColName[columnIndex];
-		}
-	}
-	
 	/** The logical table */
 	JajukTable jtable;
 	JPanel jpControl;
@@ -105,9 +63,9 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 			JButton jbClearFilter;
 			JButton jbAdvancedFilter;
 		
-			
-			
-	
+	/*Table model*/
+	TracksTableModel model;
+		
 	/** Constructor */
 	public AbstractTableView(){
 	}
@@ -125,13 +83,24 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 			{22}};
 		jpControl.setLayout(new TableLayout(sizeControl));
 		jlFilter = new JLabel(Messages.getString("AbstractTableView.0")); //$NON-NLS-1$
+		//properties combo box, fill with colums names
 		jcbProperty = new JComboBox();
+		for (int i=0;i<model.getColumnCount();i++){
+			jcbProperty.addItem(model.getColumnName(i));	
+		}
 		jcbProperty.setToolTipText(Messages.getString("AbstractTableView.1")); //$NON-NLS-1$
 		jcbProperty.setMinimumSize(new Dimension(150,20));
 		jcbProperty.setPreferredSize(new Dimension(200,20));
 		jcbProperty.setMaximumSize(new Dimension(200,20));
 		jlEquals = new JLabel("="); //$NON-NLS-1$
 		jtfValue = new JTextField();
+		jtfValue.addKeyListener(new KeyAdapter() {
+			public void keyReleased(KeyEvent e) {
+				if (e.getKeyChar()==KeyEvent.VK_ENTER){ //user typed enter
+					applyFilter(jcbProperty.getSelectedItem().toString(),jtfValue.getText());
+				}
+			}
+		});
 		jtfValue.setToolTipText(Messages.getString("AbstractTableView.3")); //$NON-NLS-1$
 		jtfValue.setMinimumSize(new Dimension(150,20));
 		jtfValue.setPreferredSize(new Dimension(200,20));
@@ -141,8 +110,11 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 		jtbControl.setRollover(true);
 		jtbControl.setFloatable(false);
 		jbApplyFilter = new JButton(Util.getIcon(ICON_APPLY_FILTER));
+		jbApplyFilter.addActionListener(this);
 		jbClearFilter = new JButton(Util.getIcon(ICON_CLEAR_FILTER));
+		jbClearFilter.addActionListener(this);
 		jbAdvancedFilter = new JButton(Util.getIcon(ICON_ADVANCED_FILTER));
+		jbAdvancedFilter.addActionListener(this);
 		jbApplyFilter.setToolTipText(Messages.getString("AbstractTableView.4")); //$NON-NLS-1$
 		jbClearFilter.setToolTipText(Messages.getString("AbstractTableView.5")); //$NON-NLS-1$
 		jbAdvancedFilter.setToolTipText(Messages.getString("AbstractTableView.6")); //$NON-NLS-1$
@@ -164,6 +136,10 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 		{30,0.99}};
 		setLayout(new TableLayout(size));
 		add(jpControl,"0,0"); //$NON-NLS-1$
+		jtable = new JajukTable(model);
+		add(new JScrollPane(jtable),"0,1"); //$NON-NLS-1$
+		new TableTransferHandler(jtable, DnDConstants.ACTION_COPY_OR_MOVE);
+		jtable.addMouseListener(this);
 	}	
 	
 	/**Fill the tree */
@@ -173,6 +149,13 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
 	public void actionPerformed(ActionEvent e) {
+		if ( e.getSource() == jbApplyFilter){
+			applyFilter(jcbProperty.getSelectedItem().toString(),jtfValue.getText());
+		}
+		else if(e.getSource() == jbClearFilter){ //remove all filters
+			jtfValue.setText(""); //clear value textfield
+			applyFilter(null,null);
+		}
 	}
 
 	/* (non-Javadoc)
@@ -180,22 +163,18 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 	 */
 	abstract public String getViewName();
 	
+	/**
+	 * Apply a filter, to be implemented by physical and logical tables, alter the model
+	 */
+	abstract public void applyFilter(String sPropertyName,String sPropertyValue) ;
+	
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.Observer#update(java.lang.String)
 	 */
 	public void update(String subject) {
 		if ( subject.equals(EVENT_DEVICE_MOUNT) || subject.equals(EVENT_DEVICE_UNMOUNT) || subject.equals(EVENT_DEVICE_REFRESH) ) {
-			populate();
-		}
-		if ( jtable != null){
-			remove(jtable);
-		}
-		populate();
-		//table
-		TracksTableModel model = new TracksTableModel();
-		jtable = new JajukTable(model);
-		add(new JScrollPane(jtable),"0,1"); //$NON-NLS-1$
-		jtable.addMouseListener(this);
+			//TODO tbi
+		}	
 	}
 }
 

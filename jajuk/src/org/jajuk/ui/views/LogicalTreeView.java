@@ -20,6 +20,7 @@ package org.jajuk.ui.views;
 
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.dnd.DnDConstants;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -27,7 +28,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 
@@ -60,6 +60,8 @@ import org.jajuk.i18n.Messages;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.ObservationManager;
 import org.jajuk.ui.Observer;
+import org.jajuk.ui.TransferableTreeNode;
+import org.jajuk.ui.TreeTransferHandler;
 import org.jajuk.util.Util;
 
 import com.sun.SwingWorker;
@@ -438,7 +440,9 @@ public class LogicalTreeView extends ViewAdapter implements ActionListener,Obser
 				}
 			}
 		});
-	
+		jtree.setAutoscrolls(true);
+		//DND support
+		new TreeTransferHandler(jtree, DnDConstants.ACTION_COPY_OR_MOVE,true);
 		jspTree = new JScrollPane(jtree);
 		add(jspTree);
 		expand();
@@ -632,32 +636,28 @@ public class LogicalTreeView extends ViewAdapter implements ActionListener,Obser
  * @author     bflorat
  * @created    29 nov. 2003
  */
-class StyleNode extends DefaultMutableTreeNode{
-	
-	/**Associated style*/
-	private Style style;
+class StyleNode extends TransferableTreeNode{
 	
 	/**
 	 * Constructor
-	 * @param file
+	 * @param track
 	 */
-	public StyleNode(Style style){
-		this.style = style;
+	public StyleNode(Style track){
+		super(track);
 	}
 	
 	/**
-	 * return a string representation of this style node
+	 * return a string representation of this track node
 	 */
 	public String toString(){
-		return style.getName2();
+		return ((Style)super.getData()).getName2();
 	}
 	/**
-	 * @return Returns the style
+	 * @return Returns the track.
 	 */
 	public Style getStyle() {
-		return style;
+		return (Style)super.getData();
 	}
-	
 }
 
 /**
@@ -665,39 +665,27 @@ class StyleNode extends DefaultMutableTreeNode{
  * @author     bflorat
  * @created    29 nov. 2003
  */
-class AuthorNode extends DefaultMutableTreeNode{
-	
-	/**Associated device*/
-	private Author author;
-	
-	/**device -> deviceNode hashmap */
-	public static HashMap hmAuthorAuthorNode = new HashMap(100);
+class AuthorNode extends TransferableTreeNode{
 	
 	/**
 	 * Constructor
-	 * @param device
+	 * @param author
 	 */
 	public AuthorNode(Author author){
-		this.author = author;
-		hmAuthorAuthorNode.put(author,this);
-	}
-	
-	/**Return associated device node */
-	public static AuthorNode getAuthorNode(Author device){
-		return (AuthorNode)hmAuthorAuthorNode.get(device);
+		super(author);
 	}
 	
 	/**
-	 * return a string representation of this device node
+	 * return a string representation of this author node
 	 */
 	public String toString(){
-		return author.getName2();
+		return ((Author)super.getData()).getName2();
 	}
 	/**
-	 * @return Returns the device.
+	 * @return Returns the author.
 	 */
 	public Author getAuthor() {
-		return author;
+		return (Author)super.getData();
 	}
 	
 }
@@ -708,41 +696,28 @@ class AuthorNode extends DefaultMutableTreeNode{
  * @author     bflorat
  * @created    29 nov. 2003
  */
-class AlbumNode  extends DefaultMutableTreeNode{
-	
-	/**Associated Album*/
-	private Album album;
-	
-	/**album -> albumNode hashmap */
-	public static HashMap hmAlbumAlbumNode = new HashMap(100);
-	
+class AlbumNode  extends TransferableTreeNode{
+
 	/**
 	 * Constructor
-	 * @param Album
+	 * @param album
 	 */
 	public AlbumNode(Album album){
-		this.album = album;
-		hmAlbumAlbumNode.put(album,this);
-	}
-	
-	/**Return associated album node */
-	public static AlbumNode getAlbumNode(Album album){
-		return (AlbumNode)hmAlbumAlbumNode.get(album);
+		super(album);
 	}
 	
 	/**
 	 * return a string representation of this album node
 	 */
 	public String toString(){
-		return album.getName2();
+		return ((Album)super.getData()).getName2();
 	}
 	/**
 	 * @return Returns the album.
 	 */
 	public Album getAlbum() {
-		return album;
+		return (Album)super.getData();
 	}
-	
 }
 
 /**
@@ -750,41 +725,28 @@ class AlbumNode  extends DefaultMutableTreeNode{
  * @author     bflorat
  * @created    29 nov. 2003
  */
-class TrackNode  extends DefaultMutableTreeNode{
-	
-	/**Associated Track*/
-	private Track track;
-	
-	/**track -> trackNode hashmap */
-	public static HashMap hmTrackTrackNode = new HashMap(100);
+class TrackNode  extends TransferableTreeNode{
 	
 	/**
 	 * Constructor
-	 * @param Track
+	 * @param track
 	 */
 	public TrackNode(Track track){
-		this.track = track;
-		hmTrackTrackNode.put(track,this);
-	}
-	
-	/**Return associated track node */
-	public static TrackNode getTrackNode(Track track){
-		return (TrackNode)hmTrackTrackNode.get(track);
+		super(track);
 	}
 	
 	/**
 	 * return a string representation of this track node
 	 */
 	public String toString(){
-		return track.getName();
+		return ((Track)super.getData()).getName();
 	}
 	/**
 	 * @return Returns the track.
 	 */
 	public Track getTrack() {
-		return track;
+		return (Track)super.getData();
 	}
-	
 }
 
 

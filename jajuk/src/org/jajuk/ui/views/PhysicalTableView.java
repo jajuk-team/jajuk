@@ -33,7 +33,10 @@ import org.jajuk.base.FileManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.ObservationManager;
 import org.jajuk.ui.Observer;
+import org.jajuk.ui.TracksTableModel;
 import org.jajuk.util.Util;
+
+import com.sun.TableMap;
 
 /**
  * Logical table view
@@ -54,9 +57,6 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
 		JMenuItem jmiFileSetProperty;
 		JMenuItem jmiFileProperties;
 	
-	/**Contains files displayed in the model*/ 
-	 ArrayList alFiles  = new ArrayList(1000);
-		
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -101,31 +101,32 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
 		jmenuFile.add(jmiFilePlayRepeat);
 		jmenuFile.add(jmiFileSetProperty);
 		jmenuFile.add(jmiFileProperties);
+		
 	}
 	
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.IView#display()
 	 */
 	public void display(){
-		super.display();
 		populate();
+		super.display();
 		//Register on the list for subject we are interrested in
 		ObservationManager.register(EVENT_DEVICE_MOUNT,this);
 		ObservationManager.register(EVENT_DEVICE_UNMOUNT,this);
 		ObservationManager.register(EVENT_DEVICE_REFRESH,this);
-		update(EVENT_DEVICE_REFRESH);  //force the first refresh
 	}	
 	
-	/**Fill the tree */
+	/**populate the table */
 	public void populate(){
 		//Columns names
-		sColName = new String[]{Messages.getString("PhysicalTableView.7"),Messages.getString("PhysicalTableView.8"),Messages.getString("PhysicalTableView.9"),Messages.getString("PhysicalTableView.10"),Messages.getString("PhysicalTableView.11"),"Device",Messages.getString("PhysicalTableView.12"),Messages.getString("PhysicalTableView.13"),Messages.getString("PhysicalTableView.14")}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
+		String[] sColName = new String[]{Messages.getString("PhysicalTableView.7"),Messages.getString("PhysicalTableView.8"),Messages.getString("PhysicalTableView.9"),Messages.getString("PhysicalTableView.10"),Messages.getString("PhysicalTableView.11"),Messages.getString("PhysicalTableView.12"),Messages.getString("PhysicalTableView.13"),Messages.getString("PhysicalTableView.14")}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
 		//Values
-		alFiles = FileManager.getSortedFiles();
+		ArrayList alFiles = FileManager.getSortedFiles();
 		int iSize = alFiles.size();
+		int iColNum = 8;
 		Iterator it = alFiles.iterator();
-		oValues = new Object[iSize][iColNum];
-		//Track | Album | Author |  Length | Style | Device | Directory | File name | Rate
+		Object[][] oValues = new Object[iSize][iColNum];
+		//Track | Album | Author |  Length | Style | Device | File name | Rate
 		for (int i = 0;it.hasNext();i++){
 			File file = (File)it.next(); 
 			oValues[i][0] = file.getTrack().getName();
@@ -134,19 +135,19 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
 			oValues[i][3] = new Long(file.getTrack().getLength());
 			oValues[i][4] = file.getTrack().getStyle().getName2();
 			oValues[i][5] = file.getDirectory().getDevice().getName();
-			oValues[i][6] = file.getDirectory().getName();
-			oValues[i][7] = file.getName();
-			oValues[i][8] = new Long(file.getTrack().getRate());
+			oValues[i][6] = file.getName();
+			oValues[i][7] = new Long(file.getTrack().getRate());
 		}
-		//row num
-		iRowNum = iSize;
 		//edtiable table  and class 
-		bCellEditable = new boolean[8][iSize];
-		for (int i =0;i<8;i++){
+		boolean[][] bCellEditable = new boolean[iColNum][iSize];
+		for (int i =0;i<iColNum;i++){
 			for (int j=0;j<iSize;j++){
 				bCellEditable[i][j]=false;
 			}
 		}
+		//model creation
+		model = new TracksTableModel(iColNum,bCellEditable,sColName);
+		model.setValues(oValues,alFiles);
 	}
 	
 	/* (non-Javadoc)
@@ -183,7 +184,9 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
 	 */
 	public void mousePressed(MouseEvent e) {
 		if ( e.getClickCount() == 2){ //double clic, can be only one file
-			File file = (File)alFiles.get(jtable.getSelectedRow());
+			TracksTableModel ttm = (TracksTableModel)(((TableMap)jtable.getModel()).getModel());
+			ArrayList al = ttm.getValues();
+			File file = (File)al.get(jtable.getSelectedRow());
 			FIFO.getInstance().push(file,false);//launch it
 		}		
 		else if ( jtable.getSelectedRowCount() > 0 && e.getClickCount() == 1 && e.getButton()==MouseEvent.BUTTON3){  //right clic on a selected node set
@@ -215,8 +218,10 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
 		//computes selected files
 		ArrayList alFilesToPlay = new ArrayList(10);
 		int[] indexes = jtable.getSelectedRows();
+		TracksTableModel ttm = (TracksTableModel)(((TableMap)jtable.getModel()).getModel());
+		ArrayList al = ttm.getValues();
 		for (int i=0;i<indexes.length;i++){
-			alFilesToPlay.add((File)alFiles.get(indexes[i]));
+			alFilesToPlay.add((File)al.get(indexes[i]));
 		}
 		//simple play
 		if ( e.getSource() == jmiFilePlay){
@@ -234,6 +239,46 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
 		else if ( e.getSource() == jmiFilePlayRepeat){
 			FIFO.getInstance().push(alFilesToPlay,false,false,true);
 		}
+	}
+
+
+	/* (non-Javadoc)
+	 * @see org.jajuk.ui.views.AbstractTableView#applyFilter()
+	 */
+	public void applyFilter(String sPropertyName,String sPropertyValue) {
+		//Values
+		ArrayList alFiles = FileManager.getSortedFiles();
+		int iSize = alFiles.size();
+		int iColNum = 8;
+		Iterator it = alFiles.iterator();
+		Object[][] oValues = new Object[iSize][iColNum];
+		//Track | Album | Author |  Length | Style | Device | File name | Rate
+		int i=0;
+		while (it.hasNext()){
+			File file = (File)it.next();
+			if ( sPropertyName != null && sPropertyValue != null ){ //if name or value is null, means there is no filter
+				String sValue = file.getProperty(sPropertyName);
+				if ( sValue == null){ //try to filter on a unknown property, don't take this file
+					continue;
+				}
+				if ( sValue.toLowerCase().indexOf(sPropertyValue.toLowerCase()) == -1){  // test if the file porperty contains this property value ( ignore case )
+					it.remove(); //no? remove it
+					continue;
+				}
+			}
+			//else, populate this values
+			oValues[i][0] = file.getTrack().getName();
+			oValues[i][1] = file.getTrack().getAlbum().getName2();
+			oValues[i][2] = file.getTrack().getAuthor().getName2();
+			oValues[i][3] = new Long(file.getTrack().getLength());
+			oValues[i][4] = file.getTrack().getStyle().getName2();
+			oValues[i][5] = file.getDirectory().getDevice().getName();
+			oValues[i][6] = file.getName();
+			oValues[i][7] = new Long(file.getTrack().getRate());
+			i++;
+		}
+		model.setValues(oValues,alFiles);
+		model.fireTableDataChanged();
 	}
 	
 	

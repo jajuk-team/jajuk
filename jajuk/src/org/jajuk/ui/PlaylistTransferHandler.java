@@ -20,6 +20,7 @@
 
 package org.jajuk.ui;
 
+import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.dnd.DragSource;
 import java.awt.dnd.DragSourceEvent;
@@ -28,11 +29,14 @@ import java.awt.dnd.DropTargetDragEvent;
 import java.awt.dnd.DropTargetDropEvent;
 import java.awt.dnd.DropTargetEvent;
 import java.awt.dnd.DropTargetListener;
+import java.util.Arrays;
+import java.util.Iterator;
 
 import javax.swing.JPanel;
 
 import org.jajuk.base.BasicFile;
 import org.jajuk.base.Bookmarks;
+import org.jajuk.base.Directory;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
 import org.jajuk.util.log.Log;
@@ -73,6 +77,10 @@ public class PlaylistTransferHandler implements DropTargetListener {
 	}
 	
 	public final void dragOver(DropTargetDragEvent dtde) {
+		PlaylistFileItem plfi = (PlaylistFileItem)(((DropTarget)dtde.getSource()).getComponent());
+		if ( plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_BESTOF){ //no dnd to best of playlist
+				dtde.rejectDrag();
+		}	
 	}
 	
 	public final void dropActionChanged(DropTargetDragEvent dtde) {
@@ -84,26 +92,55 @@ public class PlaylistTransferHandler implements DropTargetListener {
 		try {
 			int action = dtde.getDropAction();
 			Transferable transferable = dtde.getTransferable();
-			if (transferable.isDataFlavorSupported(TransferableTreeNode.NODE_FLAVOR)) {
-				dtde.acceptDrop(action);				
-				dtde.dropComplete(true);
-				TransferableTreeNode ttn = (TransferableTreeNode)transferable.getTransferData(TransferableTreeNode.NODE_FLAVOR);
-				PlaylistFileItem plfi = (PlaylistFileItem)(((DropTarget)dtde.getSource()).getComponent());
-				Object oData = ttn.getData();
-				if ( plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE){
-					if (oData instanceof File){
-						FIFO.getInstance().push((File)oData,true);
+			PlaylistFileItem plfi = (PlaylistFileItem)(((DropTarget)dtde.getSource()).getComponent());
+			Object oData = null;
+			if (transferable.isDataFlavorSupported(TransferableTreeNode.NODE_FLAVOR) || transferable.isDataFlavorSupported(TransferableTableRow.ROW_FLAVOR)) {
+				String sFlavor  = ((DataFlavor)Arrays.asList(transferable.getTransferDataFlavors()).get(0)).getHumanPresentableName(); 
+				if ( sFlavor.equals("Node")){
+					dtde.acceptDrop(action);				
+					dtde.dropComplete(true);
+					TransferableTreeNode ttn = (TransferableTreeNode)transferable.getTransferData(TransferableTreeNode.NODE_FLAVOR);
+					oData = ttn.getData();	
+				}
+				else if ( sFlavor.equals("Row") ){
+					dtde.acceptDrop(action);				
+					dtde.dropComplete(true);
+					TransferableTableRow ttr = (TransferableTableRow)transferable.getTransferData(TransferableTableRow.ROW_FLAVOR);
+					oData = ttr.getData();
+				} 
+				else{
+					dtde.rejectDrop();
+					dtde.dropComplete(false);
+				}
+			}
+			if ( plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE){
+				if (oData instanceof File){
+					FIFO.getInstance().push((File)oData,true);
+				}
+				else if(oData instanceof Directory){
+					FIFO.getInstance().push(((Directory)oData).getFilesRecursively(),true);
+				}
+			}
+			else if ( plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_BOOKMARK){
+				if (oData instanceof File){
+					Bookmarks.getInstance().addFile((File)oData);
+				}
+				else if(oData instanceof Directory){
+					Iterator it = ((Directory)oData).getFilesRecursively().iterator();
+					while (it.hasNext()){
+						File file = (File)it.next();
+						Bookmarks.getInstance().addFile(file);	
 					}
 				}
-				else if ( plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_BOOKMARK){
-					if (oData instanceof File){
-						Bookmarks.getInstance().addFile((File)oData);
-					}
+			}
+			else if ( plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_NEW){
+				if (oData instanceof File){
+				//TODO tbi
 				}
-				else if ( plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_NORMAL){
-					if (oData instanceof File){
-						plfi.getPlaylistFile().addBasicFile(new BasicFile((File)oData));
-					}
+			}
+			else if ( plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_NORMAL){
+				if (oData instanceof File){
+					plfi.getPlaylistFile().addBasicFile(new BasicFile((File)oData));
 				}
 			}
 		}		
@@ -111,7 +148,7 @@ public class PlaylistTransferHandler implements DropTargetListener {
 			Log.error(e);
 			dtde.rejectDrop();
 			dtde.dropComplete(false);
-		}	
+		}
 	}
-
+	
 }

@@ -199,6 +199,7 @@ public class FIFO implements ITechnicalStrings,Runnable{
 			}
 			if ( !bAuto){
 				file.getTrack().setRate(file.getTrack().getRate()+2); //inc rate by 2 because it is explicitely selected to be played by human
+				FileManager.setRateHasChanged(true); //alert bestof playlist something changed
 			}
 			alFIFO.add(file);
 			lTotalTime += file.getTrack().getLength();
@@ -396,6 +397,7 @@ public class FIFO implements ITechnicalStrings,Runnable{
 					fCurrent.getTrack().incHits();  //inc hits number 
 					fCurrent.getTrack().incSessionHits();//inc session hits
 					fCurrent.getTrack().setRate(fCurrent.getTrack().getRate()+1); //inc rate by 1 because it is played
+					FileManager.setRateHasChanged(true);
 					if ( !(fCurrent instanceof BasicFile)){
 						History.getInstance().addItem(fCurrent.getId(),System.currentTimeMillis());
 					}

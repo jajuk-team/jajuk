@@ -106,16 +106,6 @@ public class Track extends PropertyAdapter implements Comparable{
 	}
 	
 	
-	public Object clone(){
-		Track track = new Track(sId,sName,album,style,author,length,sYear,type);
-		track.setAdditionDate(sAdditionDate);
-		track.setRate(lRate);
-		track.setHits(iHits);
-		track.setProperties(getProperties());
-		track.alFiles = (ArrayList)alFiles.clone();
-		return track;
-	}
-
 	/**
 	 * Return an XML representation of this item  
 	 * @return

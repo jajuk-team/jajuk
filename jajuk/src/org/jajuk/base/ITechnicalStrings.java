@@ -50,8 +50,8 @@ public interface ITechnicalStrings {
 	public static final String ICON_SHUFFLE_OFF = PATH_ICONS + "16x16/shuffle_off.png"; 
 	public static final String ICON_CONTINUE_ON = PATH_ICONS + "16x16/continue.png";
 	public static final String ICON_CONTINUE_OFF = PATH_ICONS + "16x16/continue_off.png";
-	public static final String ICON_INTRO_ON = PATH_ICONS + "16x16/filter.png";
-	public static final String ICON_INTRO_OFF = PATH_ICONS + "16x16/filter_off.png";
+	public static final String ICON_INTRO_ON = PATH_ICONS + "16x16/intro.png";
+	public static final String ICON_INTRO_OFF = PATH_ICONS + "16x16/intro_off.png";
 	public static final String ICON_ROLL = PATH_ICONS + "16x16/roll.png";
 	public static final String ICON_BESTOF = PATH_ICONS + "16x16/bestof.png";
 	public static final String ICON_MUTE = PATH_ICONS + "16x16/mute.png";

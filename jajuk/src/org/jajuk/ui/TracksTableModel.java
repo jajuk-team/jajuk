@@ -1,0 +1,110 @@
+/*
+ *  Jajuk
+ *  Copyright (C) 2003 bflorat
+ *
+ *  This program is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  as published by the Free Software Foundation; either version 2
+ *  of the License, or any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ * $Release$
+ */
+
+package org.jajuk.ui;
+
+import java.util.ArrayList;
+
+import javax.swing.table.AbstractTableModel;
+
+/**
+ *  Table model used for physical and logical table views
+ *
+ * @author     bflorat
+ * @created    29 févr. 2004
+ */
+public class TracksTableModel extends AbstractTableModel{
+	
+	/**Columns number*/
+	protected int iColNum = 9;
+	
+	/**Rows number*/
+	protected int iRowNum;
+	
+	/**Cell editable table**/
+	protected boolean[][] bCellEditable;
+	
+	/**Values table**/
+	protected Object[][] oValues;
+	
+	/**Columns names table**/
+	protected String[] sColName;
+	
+	/**Contains files or tracks displayed in the model*/ 
+	 ArrayList alValues  = new ArrayList(1000);
+
+	/**
+	 * Model constructor
+	 * @param iColNum number of rows
+	 * @param bCellEditable cell editability
+	 * @param sColName columns names
+	 */
+	public TracksTableModel(int iColNum,boolean[][] bCellEditable,String[] sColName){
+		this.iColNum = iColNum;
+		this.bCellEditable = bCellEditable;
+		this.sColName = sColName;
+	}
+	
+	public synchronized int getColumnCount() {
+		return iColNum;
+	}
+	
+	public synchronized int getRowCount() {
+		return iRowNum;
+	}
+	
+	public synchronized boolean isCellEditable(int rowIndex, int columnIndex) {
+		return bCellEditable[columnIndex][rowIndex];
+	}
+	
+	public synchronized Class getColumnClass(int columnIndex) {
+		return getValueAt(0,columnIndex).getClass();
+	}
+	
+	public synchronized Object getValueAt(int rowIndex, int columnIndex) {
+		return oValues[rowIndex][columnIndex];
+	}
+	
+	public  synchronized void setValueAt(Object oValue, int rowIndex, int columnIndex) {
+		oValues[rowIndex][columnIndex] = oValue;
+	}
+	
+	/**
+	 * Set all values used by this model
+	 * @param oValues : cells values
+	 * @param al : files / tracks arraylist
+	 */
+	public synchronized void setValues(Object[][] oValues,ArrayList al) {
+		this.oValues = oValues;
+		this.alValues = al;
+		this.iRowNum = al.size();
+	}
+	
+	public String getColumnName(int columnIndex) {
+		return sColName[columnIndex];
+	}
+	/**
+	 * @return Returns the alValues.
+	 */
+	public ArrayList getValues() {
+		return alValues;
+	}
+
+}

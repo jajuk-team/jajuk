@@ -94,13 +94,13 @@ public class SearchBox extends JTextField implements KeyListener{
 	}
 	
 	
-		/* (non-Javadoc)
+	/* (non-Javadoc)
 	 * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
 	 */
 	public void keyPressed(KeyEvent e) {
 	}
 	
-
+	
 	/* (non-Javadoc)
 	 * @see java.awt.event.KeyListener#keyReleased(java.awt.event.KeyEvent)
 	 */
@@ -124,7 +124,7 @@ public class SearchBox extends JTextField implements KeyListener{
 			popup.hide();
 		}
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see java.awt.event.KeyListener#keyTyped(java.awt.event.KeyEvent)
 	 */
@@ -137,34 +137,32 @@ public class SearchBox extends JTextField implements KeyListener{
 		bNeedSearch = false;
 		setEnabled(false); //no typing during search
 		if ( sTyped.length() >= MIN_CRITERIA_LENGTH){  //second test to get sure user didn't typed before entering this method
-			synchronized(FileManager.class){  //get sure collection is not accessed during search
-				TreeSet tsResu = FileManager.search(sTyped.toString());
-				if (tsResu.size() > 0){
-					DefaultListModel model = new DefaultListModel();
-					alResults = new ArrayList();
-					alResults.addAll(tsResu);
-					Iterator it = tsResu.iterator();
-					while (it.hasNext()){
-						model.addElement(((SearchResult)it.next()).getResu());
-					}
-					jlist = new JList(model);
-					PopupFactory factory = PopupFactory.getSharedInstance();
-					JScrollPane jsp = new JScrollPane(jlist);
-					jlist.setSelectionMode(0);
-					jlist.addListSelectionListener(lsl);
-					jsp.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-					if (popup!=null){
-						popup.hide();
-					}
-					Point point = new Point(0,0);  //take upper-left point relative to the textfield 
-					SwingUtilities.convertPointToScreen(point,this); //take absolute coordonates in the screen ( popups works only on absolute coordonates in oposition to swing widgets)
-					popup = factory.getPopup(this,jsp, (int)point.getX(), (int)point.getY()+25);
-					popup.show();
+			TreeSet tsResu = FileManager.search(sTyped.toString());
+			if (tsResu.size() > 0){
+				DefaultListModel model = new DefaultListModel();
+				alResults = new ArrayList();
+				alResults.addAll(tsResu);
+				Iterator it = tsResu.iterator();
+				while (it.hasNext()){
+					model.addElement(((SearchResult)it.next()).getResu());
 				}
-				else{
-					if (popup!=null){
-						popup.hide();
-					}
+				jlist = new JList(model);
+				PopupFactory factory = PopupFactory.getSharedInstance();
+				JScrollPane jsp = new JScrollPane(jlist);
+				jlist.setSelectionMode(0);
+				jlist.addListSelectionListener(lsl);
+				jsp.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+				if (popup!=null){
+					popup.hide();
+				}
+				Point point = new Point(0,0);  //take upper-left point relative to the textfield 
+				SwingUtilities.convertPointToScreen(point,this); //take absolute coordonates in the screen ( popups works only on absolute coordonates in oposition to swing widgets)
+				popup = factory.getPopup(this,jsp, (int)point.getX(), (int)point.getY()+25);
+				popup.show();
+			}
+			else{
+				if (popup!=null){
+					popup.hide();
 				}
 			}
 		}

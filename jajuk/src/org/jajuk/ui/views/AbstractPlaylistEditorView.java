@@ -218,6 +218,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 	 */
 	private void populate(){
 		//clean data
+		ArrayList alPrevious = (ArrayList)alFiles.clone();
 		alFiles = new ArrayList(10);
 		switch(iType){
 			case PlaylistFileItem.PLAYLIST_TYPE_NORMAL:  //regular playlist
@@ -233,10 +234,16 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 				}
 				break;
 			case PlaylistFileItem.PLAYLIST_TYPE_BESTOF:  //bestof
-				ArrayList alBestof = FileManager.getBestOfFiles(); 
-				it = alBestof.iterator();
-				while (it.hasNext()){
-					alFiles.add(new BasicFile((File)it.next()));
+				if ( FileManager.hasRateChanged()){
+					ArrayList alBestof = FileManager.getBestOfFiles(); 
+					it = alBestof.iterator();
+					while (it.hasNext()){
+						alFiles.add(new BasicFile((File)it.next()));
+					}
+					FileManager.setRateHasChanged(false);
+				}
+				else{
+					alFiles = alPrevious;
 				}
 				break;
 			case PlaylistFileItem.PLAYLIST_TYPE_QUEUE:  //queue
@@ -272,7 +279,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 				jlTitle.setToolTipText(plfi.getName());
 				alFiles = new ArrayList(10);
 				populate();
-				//check if a refresh is need
+				//check if a refresh is really needed
 				iRowNum = alFiles.size();
 				boolean bNeedRefresh = false;
 				if ( iRowNum != alPrevious.size() || iRowNum == 0){

@@ -146,7 +146,7 @@ public class TreeTransferHandler implements DragGestureListener, DragSourceListe
 				lbl.paint(graphics); //painting the graphics to label
 				graphics.dispose();				
 			}
-			dragSource.startDrag(dge, DragSource.DefaultMoveNoDrop , image, new Point(0,0), new TransferableTreeNode(((TransferableTreeNode)draggedNode).getData()), this);			
+			dragSource.startDrag(dge, DragSource.DefaultMoveNoDrop , image, new Point(0,0),(TransferableTreeNode)draggedNode, this);			
 		}	 
 	}
 	

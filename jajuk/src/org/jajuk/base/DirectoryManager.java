@@ -34,7 +34,7 @@ import org.jajuk.util.MD5Processor;
  * @Author bflorat @created 17 oct. 2003
  */
 public class DirectoryManager {
-	/** Directories collection stored in a arraylist to conserve creation order* */
+	/** Directories collection stored in a arraylist to conserve creation order when parsing at startup* */
 	static ArrayList alDirectories = new ArrayList(100);
 	/** Directories collection ID */
 	static ArrayList alIds = new ArrayList(100);
@@ -54,12 +54,12 @@ public class DirectoryManager {
 	 * @param sName
 	 */
 	public static synchronized Directory registerDirectory(String sName, Directory dParent, Device device) {
-		String sAbs = device.getUrl();
+		StringBuffer sbAbs = new StringBuffer(device.getUrl());
 		if (dParent != null) {
-			sAbs += dParent.getRelativePath();
+			sbAbs.append(dParent.getRelativePath());
 		}
-		sAbs += File.separatorChar + sName;
-		String sId = MD5Processor.hash(device.getName()+sAbs);
+		sbAbs.append(File.separatorChar).append(sName);
+		String sId = MD5Processor.hash(sbAbs.insert(0,device.getName()).toString());
 		return registerDirectory(sId, sName, dParent, device);
 	}
 

@@ -19,6 +19,7 @@
  */
 package org.jajuk.base;
 
+import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Util;
 
 
@@ -224,6 +225,9 @@ public class File extends PropertyAdapter implements Comparable{
 	/**Return true the file can be accessed right now 
 	 * @return true the file can be accessed right now*/
 	public boolean isReady(){
+		if ( getDirectory() == null){ //means it is a basic file
+			return true;
+		}
 		if ( getDirectory().getDevice().isMounted() && !getDirectory().getDevice().isRefreshing() && !getDirectory().getDevice().isSynchronizing()){
 			return true;
 		}
@@ -239,6 +243,18 @@ public class File extends PropertyAdapter implements Comparable{
 			fio = new java.io.File(getAbsolutePath());
 		}
 		return fio;
+	}
+	
+	/**
+	 * Return whether this item should be hidden with hide option
+	 * @return whether this item should be hidden with hide option
+	 */
+	public boolean shouldBeHidden(){
+		if (getDirectory().getDevice().isMounted() ||
+				ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED) == false){ //option "only display mounted devices "
+			return false;
+		}
+		return true;
 	}
 	
 

@@ -58,6 +58,8 @@ import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
+import com.sun.SwingWorker;
+
 
 /**
  * Jajuk lauching class
@@ -65,7 +67,7 @@ import org.jajuk.util.log.Log;
  * @author bflorat @created 3 oct. 2003
  */
 public class Main implements ITechnicalStrings {
-
+	
 	public static JFrame jframe;
 	public static CommandJPanel command;
 	public static PerspectiveBarJPanel perspectiveBar;
@@ -73,7 +75,7 @@ public class Main implements ITechnicalStrings {
 	public static JPanel jpDesktop;
 	public static JPanel jpFrame;
 	public static SplashScreen sc;
-
+	
 	public static void main(String[] args) {
 		try {
 			//starts ui
@@ -93,7 +95,7 @@ public class Main implements ITechnicalStrings {
 			
 			//configuration manager startup
 			org.jajuk.util.ConfigurationManager.getInstance();
-					
+			
 			//check for jajuk home directory presence
 			File fJajukDir = new File(FILE_JAJUK_DIR);
 			if (!fJajukDir.exists() || !fJajukDir.isDirectory()) {
@@ -112,14 +114,14 @@ public class Main implements ITechnicalStrings {
 			} catch (Exception e1) {
 				Log.error("026",e1); //$NON-NLS-1$
 			}
-	
+			
 			//Registers supported look and feels
 			LNFManager.register(LNF_METAL,LNF_METAL_CLASS); 
 			LNFManager.register(LNF_GTK,LNF_GTK_CLASS); 
 			LNFManager.register(LNF_WINDOWS,LNF_WINDOWS_CLASS);
 			LNFManager.register(LNF_KUNSTSTOFF,LNF_KUNSTSTOFF_CLASS);
 			LNFManager.register(LNF_LIQUID,LNF_LIQUID_CLASS);
-						
+			
 			//perform initial checkups
 			initialCheckups();
 			
@@ -131,7 +133,7 @@ public class Main implements ITechnicalStrings {
 			
 			//	Clean the collection up
 			org.jajuk.base.Collection.cleanup();
-								
+			
 			//Load user configuration
 			org.jajuk.util.ConfigurationManager.load();
 			
@@ -163,60 +165,74 @@ public class Main implements ITechnicalStrings {
 			jpFrame.setOpaque(true);
 			
 			//Creates the command panel
-			command = CommandJPanel.getInstance();
-	
-			// Create the information bar panel
-			information = InformationJPanel.getInstance();
-			
+			SwingWorker sw = new SwingWorker() {
+				public Object construct() {
+					return null;
+				}
+			  //use a SwingWorker to avoid a strange bug on JButtons and JSliders 
+				public void finished() {
+					try{
+						command = CommandJPanel.getInstance();
+						// Create the information bar panel
+						information = InformationJPanel.getInstance();
 						
-			//Main panel
-			jpDesktop = new JPanel();
-			jpDesktop.setOpaque(true);
-			jpDesktop.setBorder(BorderFactory.createEtchedBorder());
-			jpDesktop.setLayout(new BorderLayout());
-		
-			//Add static panels
-			jpFrame.add(command, BorderLayout.NORTH);
-			jpFrame.add(information, BorderLayout.SOUTH);
-			jpFrame.add(jpDesktop, BorderLayout.CENTER);
-			JPanel jp = new JPanel(); //we use an empty panel to take west place before actual panel ( perspective bar ). just for a better displaying
-			jpFrame.add(jp, BorderLayout.WEST);
-			
-			//Set menu bar to the frame
-			jframe.setJMenuBar(JajukJMenuBar.getInstance());
-			
-			//display window
-			jframe.pack();
-			jframe.setExtendedState(Frame.MAXIMIZED_BOTH);  //maximalize
-			jframe.setVisible(true);
-		
-			//Mount and refresh devices
-			mountAndRefresh();
 						
-			//Create the perspective manager 
-			PerspectiveManager.load();
-			
-			// Create the perspective tool bar panel
-			perspectiveBar = PerspectiveBarJPanel.getInstance();
-			jpFrame.remove(jp);
-			jpFrame.add(perspectiveBar, BorderLayout.WEST);
-		
-			//Initialize perspective manager and load all views
-			PerspectiveManager.init();
-			
-			//Close splash screen
-			sc.dispose();
-			
-			//Display info message if first session
-			if (TRUE.equals(ConfigurationManager.getProperty(CONF_FIRST_CON))){
-				ConfigurationManager.setProperty(CONF_FIRST_CON,FALSE);
-				Messages.showInfoMessage(Messages.getString("Main.12")); //$NON-NLS-1$
-				PerspectiveManager.setCurrentPerspective(PERSPECTIVE_NAME_CONFIGURATION);
-				return;
-			}
-			
-			//Display a message
-			information.setMessage(Messages.getString("Main.13"), InformationJPanel.INFORMATIVE);  //$NON-NLS-1$
+						//Main panel
+						jpDesktop = new JPanel();
+						jpDesktop.setOpaque(true);
+						jpDesktop.setBorder(BorderFactory.createEtchedBorder());
+						jpDesktop.setLayout(new BorderLayout());
+						
+						//Add static panels
+						jpFrame.add(command, BorderLayout.NORTH);
+						jpFrame.add(information, BorderLayout.SOUTH);
+						jpFrame.add(jpDesktop, BorderLayout.CENTER);
+						JPanel jp = new JPanel(); //we use an empty panel to take west place before actual panel ( perspective bar ). just for a better displaying
+						jpFrame.add(jp, BorderLayout.WEST);
+						
+						//Set menu bar to the frame
+						jframe.setJMenuBar(JajukJMenuBar.getInstance());
+						
+						//display window
+						jframe.pack();
+						jframe.setExtendedState(Frame.MAXIMIZED_BOTH);  //maximalize
+						jframe.setVisible(true);
+						//Mount and refresh devices
+						mountAndRefresh();
+						
+						//Create the perspective manager 
+						PerspectiveManager.load();
+						
+						// Create the perspective tool bar panel
+						perspectiveBar = PerspectiveBarJPanel.getInstance();
+						jpFrame.remove(jp);
+						jpFrame.add(perspectiveBar, BorderLayout.WEST);
+						
+						//Initialize perspective manager and load all views
+						PerspectiveManager.init();
+						
+						//Close splash screen
+						sc.dispose();
+						
+						//Display info message if first session
+						if (TRUE.equals(ConfigurationManager.getProperty(CONF_FIRST_CON))){
+							ConfigurationManager.setProperty(CONF_FIRST_CON,FALSE);
+							Messages.showInfoMessage(Messages.getString("Main.12")); //$NON-NLS-1$
+							PerspectiveManager.setCurrentPerspective(PERSPECTIVE_NAME_CONFIGURATION);
+							return;
+						}
+						
+						//Display a message
+						information.setMessage(Messages.getString("Main.13"), InformationJPanel.INFORMATIVE);  //$NON-NLS-1$
+						return;
+					} catch (JajukException je) { //last chance to catch any error for logging purpose
+						Log.error(je);
+						exit(1);
+						return;
+					}
+				}
+			};
+			sw.start();
 			
 			//Lauch startup track if any
 			launchInitialTrack();
@@ -292,7 +308,7 @@ public class Main implements ITechnicalStrings {
 			History.commit();
 		}
 	}
-
+	
 	/**
 	 * Exit code, used to perform saves...
 	 * 

@@ -631,6 +631,9 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 		Iterator it2 = alDirectories.iterator();
 		while (it2.hasNext()){
 			Directory directory = (Directory)it2.next();
+			if (directory.shouldBeHidden()){
+				continue;
+			}
 			if (!directory.getName().equals("")){ //device root directory, do not display //$NON-NLS-1$
 				if (directory.getParentDirectory().getName().equals("")){  //parent directory is a device //$NON-NLS-1$
 					DeviceNode deviceNode = DeviceNode.getDeviceNode(directory.getDevice());
@@ -659,6 +662,9 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 		Iterator it3 = alFiles.iterator();
 		while (it3.hasNext()){
 			File file = (File)it3.next();
+			if ( file.shouldBeHidden()){ //should be hiden by option
+				continue;
+			}
 			DirectoryNode directoryNode = DirectoryNode.getDirectoryNode(file.getDirectory());
 			if (directoryNode != null){
 				directoryNode.add(new FileNode(file));
@@ -670,6 +676,9 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 		Iterator it4 = alPlaylistFiles.iterator();
 		while (it4.hasNext()){
 			PlaylistFile playlistFile = (PlaylistFile)it4.next();
+			if ( playlistFile.shouldBeHidden()){ //should be hiden by option
+				continue;
+			}
 			DirectoryNode directoryNode = DirectoryNode.getDirectoryNode(playlistFile.getDirectory());
 			if (directoryNode != null){
 				directoryNode.add(new PlaylistFileNode(playlistFile));

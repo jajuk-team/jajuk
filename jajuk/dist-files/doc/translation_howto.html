@@ -9,7 +9,7 @@
 <h1>Jajuk translation howto</h1>
 <br>
 <h2>Target</h2>
-Anyone can translate Jajuk, no computer science is required at all.
+Anyone can translate Jajuk, no computer science is required.
 For any question or comments, please send me a mail : <a
  href="mailto:bertrand@florat.net">bertrand@florat.net</a><br>
 Translate current Jajuk version takes approximatly 2 hours.<br>
@@ -19,13 +19,22 @@ Translate current Jajuk version takes approximatly 2 hours.<br>
 Jajuk uses the standard Java internationalization (i18n) system based
 on properties file. Files are:<br>
 <span style="font-family: monospace;">&lt;jajuk installation path
-&gt;/src/org/jajuk/i18n</span><br style="font-family: monospace;">
-<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&gt;/src/org/jajuk/i18n/</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp;
 &nbsp;&nbsp; jajuk.properties</span><br style="font-family: monospace;">
-<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+<span style="font-family: monospace;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp;
 &nbsp;&nbsp; jajuk_fr.properties</span><br
  style="font-family: monospace;">
-<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+<span style="font-family: monospace;">&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;
+&nbsp;&nbsp; &nbsp;&nbsp;
 &nbsp;&nbsp; jajuk_&lt;any local&gt;.properties</span><br>
 <span style="font-family: monospace;">jajuk.properties</span> contains
 default resource bunddle (english) and you
@@ -71,19 +80,23 @@ fix&eacute;, personne ne peut s'y connecter</span><br>
 3- Send me (&nbsp; <a href="mailto:bertrand@florat.net">bertrand@florat.net</a>
 ) your work as a property file with your local ( ex:
 <span style="font-family: monospace;">jajuk_ru.properties</span> for
-russian ). You can also add a message for the
-community on the forum:<br>
+russian ). It could be nice you send also a message in the forum: <a
+ href="http://sourceforge.net/forum/forum.php?forum_id=315360">http://sourceforge.net/forum/forum.php?forum_id=315360</a><br>
 <br>
 4- ( Optional )If you want to test your work ( need ant to be
 installed ):<br>
+<br>
 - Edit&nbsp; <span style="font-family: monospace;">&lt;jajuk
 installation path &gt;/src/org/jajuk/Main.java file.</span><span
  style="font-family: monospace;"></span>and search for line :<br>
-<span style="font-family: monospace;">Messages.registerLocal("fr","Language_desc_fr");
+<span style="font-family: monospace;"><br>
+Messages.registerLocal("fr","Language_desc_fr");
 //$NON-NLS-1$
 //$NON-NLS-2$</span><br>
+<br>
 Add after this line your own local. Example : <br>
-<span style="font-family: monospace;">Messages.registerLocal("ru","Language_desc_ru");
+<span style="font-family: monospace;"><br>
+Messages.registerLocal("ru","Language_desc_ru");
 //$NON-NLS-1$
 //$NON-NLS-2$</span><br>
 <br>
@@ -92,7 +105,8 @@ Add after this line your own local. Example : <br>
 &gt;/src/org/jajuk/i18n directory<br>
 </span><br>
 - Go in the &lt;jajuk installation path &gt;
-directory<br>
+directory where you can find the <span style="font-family: monospace;">build.xml</span>
+file<br>
 <br>
 - Rebuild Jajuk typing
 <span style="font-family: monospace;">'ant'<br>

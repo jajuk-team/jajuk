@@ -21,6 +21,7 @@
 package org.jajuk.base;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Properties;
@@ -35,16 +36,14 @@ import org.jajuk.util.log.Log;
  * @Author bflorat @created 17 oct. 2003
  */
 public class FileManager implements ITechnicalStrings{
-	/** Files collection* */
-	private static ArrayList alFilesId = new ArrayList(1000);
-	/** Files collection* */
-	private static ArrayList alFiles = new ArrayList(1000);
-	/** Sorted fiel collection ( for performances ) */
-	private static TreeSet tsSortedFiles = new TreeSet();
+	/** Files collection : id-> file*/ 
+	private static HashMap hmIdFile = new HashMap(1000);
 	/** Map ids and properties, survives to a refresh, is used to recover old properties after refresh */
-	private static HashMap hmIdProperties = new HashMap(100);
+	private static HashMap hmIdProperties = new HashMap(1000);
 	/** Number of tracks in the best of */
 	private static final int NB_BEST_OF_FILES = 20;
+	/**Flag the fact a rate has change for a track, used by bestof view refresh for perfs*/
+	private static boolean bRateHasChanged = false;
 	
 	
 	/**
@@ -61,18 +60,16 @@ public class FileManager implements ITechnicalStrings{
 	 */
 	public static synchronized File registerFile(String sId, String sName, Directory directory, Track track, long lSize, String sQuality) {
 		File file = new File(sId, sName, directory, track, lSize, sQuality);
-		if ( !alFilesId.contains(sId)){
-			alFilesId.add(sId);
-			alFiles.add(file);
-			tsSortedFiles.add(file);
-			if ( directory.getDevice().isRefreshing()){
+		if ( !hmIdFile.containsKey(sId)){
+			hmIdFile.put(sId,file);
+			if ( directory.getDevice().isRefreshing() && Log.isDebugEnabled()){
 				Log.debug("registrated new file: "+ file); //$NON-NLS-1$
 			}
 			Properties properties = (Properties)hmIdProperties.get(sId); 
 			if ( properties  == null){  //new file
 				hmIdProperties.put(sId,file.getProperties());
 			}
-			else{
+			else{  //reset properties before refresh
 				file.setProperties(properties);
 			}
 		}
@@ -85,13 +82,11 @@ public class FileManager implements ITechnicalStrings{
 	 */
 	public static synchronized void cleanDevice(String sId) {
 		//we have to create a new list because we can't iterate on a moving size list
-		Iterator it = alFiles.iterator();
+		Iterator it = hmIdFile.values().iterator();
 		while (it.hasNext()) {
 			File file = (File) it.next();
 			if (file.getDirectory()==null || file.getDirectory().getDevice().getId().equals(sId)) {
-				it.remove();
-				alFilesId.remove(file.getId());
-				tsSortedFiles.remove(file);
+				it.remove();  //this is the right way to remove entry in the hashmap
 			}
 		}
 		System.gc(); //force garbage collection after cleanup
@@ -99,12 +94,14 @@ public class FileManager implements ITechnicalStrings{
 
 	/** Return all registred files */
 	public static synchronized ArrayList getFiles() {
-		return new ArrayList(alFiles);
+		return new ArrayList(hmIdFile.values());
 	} 
 	
 	/** Return sorted registred files*/
 	public static synchronized ArrayList getSortedFiles() {
-		return new ArrayList(tsSortedFiles);
+		ArrayList al = getFiles();
+		Collections.sort(al);
+		return al;
 	} 
 
 	
@@ -115,8 +112,7 @@ public class FileManager implements ITechnicalStrings{
 	   * @return
 	   */
 	public static synchronized File getFile(String sId) {
-		int index = alFilesId.indexOf(sId);
-		return (index==-1)?null:(File) alFiles.get(index);
+		return (File)hmIdFile.get(sId);
 	}
 	
 	/**
@@ -126,7 +122,7 @@ public class FileManager implements ITechnicalStrings{
 	public static synchronized File getShuffleFile(){
 		//create a tempory table to remove unmounted files
 		ArrayList alEligibleFiles = new ArrayList(1000);
-		Iterator it = alFiles.iterator();
+		Iterator it = hmIdFile.values().iterator();
 		while ( it.hasNext()){
 			File file = (File)it.next();
 			if (file.isReady()){
@@ -146,7 +142,7 @@ public class FileManager implements ITechnicalStrings{
 	public static synchronized File getBestOfFile(){
 		//create a tempory table to remove unmounted files
 		TreeSet tsEligibleFiles = new TreeSet();
-		Iterator it = alFiles.iterator();
+		Iterator it = hmIdFile.values().iterator();
 		while ( it.hasNext()){
 			File file = (File)it.next();
 			if (file.isReady()){
@@ -255,7 +251,7 @@ public class FileManager implements ITechnicalStrings{
 	public static synchronized TreeSet search(String sCriteria){
 	 	TreeSet tsResu = new TreeSet(); 
 		sCriteria = sCriteria.toLowerCase();
-	 	Iterator it = alFiles.iterator();
+	 	Iterator it = hmIdFile.values().iterator();
 	 	while ( it.hasNext()){
 	 		File file = (File)it.next();
 	 		if ( !file.getDirectory().getDevice().isMounted() || file.getDirectory().getDevice().isRefreshing()){
@@ -277,6 +273,20 @@ public class FileManager implements ITechnicalStrings{
 	 */
 	public static synchronized Properties getProperties(String sId){
 		return (Properties)hmIdProperties.get(sId);
+	}
+
+	/**
+	 * @return Returns the bRateHasChanged.
+	 */
+	public static boolean hasRateChanged() {
+		return bRateHasChanged;
+	}
+
+	/**
+	 * @param rateHasChanged The bRateHasChanged to set.
+	 */
+	public static void setRateHasChanged(boolean rateHasChanged) {
+		bRateHasChanged = rateHasChanged;
 	}
 
 }
@@ -312,6 +322,7 @@ class FileScore implements Comparable{
 	public long getLScore() {
 		return lScore;
 	}
+	
 
 	/* (non-Javadoc)
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)

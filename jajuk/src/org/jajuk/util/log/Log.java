@@ -210,6 +210,17 @@ public class Log implements ITechnicalStrings{
 		e.printStackTrace();
 		System.out.println();
 	}
+	
+	/**
+	 * Return whether Log are in debug mode
+	 * @return
+	 */
+	public static boolean isDebugEnabled(){
+		if ( verbosity == Log.DEBUG ){
+			return true;
+		}
+		return false;
+	}
 }
 
 

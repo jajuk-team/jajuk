@@ -34,44 +34,145 @@ import org.xml.sax.Attributes;
  * @author bflorat @created 17 oct. 2003
  */
 public class PropertyAdapter implements IPropertyable, ITechnicalStrings,Serializable {
-
-	/** Item properties */
-	private Properties properties = new Properties();
-
+	
+	/** Item properties, singleton */
+	private Properties properties;
+	
 	/**
 	 * Property adapter constructor
 	 */
 	public PropertyAdapter() {
 		super();
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see org.jajuk.base.Propertyable#getProperties()
 	 */
 	public Properties getProperties() {
+		if ( properties == null){
+			properties = new Properties();
+		}
 		return properties;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see org.jajuk.base.Propertyable#getProperty(java.lang.String)
 	 */
 	public String getProperty(String sKey) {
-		if ( !properties.containsKey(sKey)){
+		if ( sKey == null ){
 			return null;
 		}
-		return (String) properties.get(sKey);
+		//get property singleton
+		Properties properties = getProperties();
+		//test standard properties
+		 /*PhysicalTableView.7=Track
+		/*PhysicalTableView.8=Album
+		PhysicalTableView.9=Author
+		PhysicalTableView.10=Length
+		PhysicalTableView.11=Style
+		PhysicalTableView.12=Directory
+		PhysicalTableView.13=File
+		PhysicalTableView.14=Rate*/
+		if ( sKey.equals(Messages.getString("PhysicalTableView.7"))){ //Track
+			if ( this instanceof File ){
+				return ((File)this).getTrack().getName();
+			}
+			else if (this instanceof Track){ 
+				return ((Track)this).getName();
+			}
+			else{
+				return null;
+			}
+		}
+		else if ( sKey.equals(Messages.getString("PhysicalTableView.8"))){ //Album
+			if ( this instanceof File ){
+				return ((File)this).getTrack().getAlbum().getName2();
+			}
+			else if (this instanceof Track){ 
+				return ((Track)this).getAlbum().getName2();
+			}
+			else{
+				return null;
+			}
+		}
+		else if ( sKey.equals(Messages.getString("PhysicalTableView.9"))){ //Author
+			if ( this instanceof File ){
+				return ((File)this).getTrack().getAuthor().getName2();
+			}
+			else if (this instanceof Track){ 
+				return ((Track)this).getAuthor().getName2();
+			}
+			else{
+				return null;
+			}
+		}
+		else if ( sKey.equals(Messages.getString("PhysicalTableView.10"))){ //Length
+			if ( this instanceof File ){
+				return Long.toString(((File)this).getTrack().getLength());
+			}
+			else if (this instanceof Track){ 
+				return Long.toString(((Track)this).getLength());
+			}
+			else{
+				return null;
+			}
+		}
+		else if ( sKey.equals(Messages.getString("PhysicalTableView.11"))){ //Style
+			if ( this instanceof File ){
+				return ((File)this).getTrack().getStyle().getName2();
+			}
+			else if (this instanceof Track){ 
+				return ((Track)this).getStyle().getName2();
+			}
+			else{
+				return null;
+			}
+		}
+		else if ( sKey.equals(Messages.getString("PhysicalTableView.12"))){ //Directory, only physical 
+			if ( this instanceof File ){
+				return ((File)this).getDirectory().getName();
+			}
+			else{
+				return null;
+			}
+		}
+		else if ( sKey.equals(Messages.getString("PhysicalTableView.13"))){ //File, only physical 
+			if ( this instanceof File ){
+				return ((File)this).getName();
+			}
+			else{
+				return null;
+			}
+		}
+		else if ( sKey.equals(Messages.getString("PhysicalTableView.14"))){ //Rate
+			if ( this instanceof File ){
+				return Long.toString(((File)this).getTrack().getRate());
+			}
+			else if (this instanceof Track){ 
+				return Long.toString(((Track)this).getRate());
+			}
+			else{
+				return null;
+			}
+		}
+		//must be a property
+		if ( !properties.containsKey(sKey)){ //no more? return null
+			return null;
+		}
+		return (String) properties.get(sKey); //return property value
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see org.jajuk.base.Propertyable#setProperty(java.lang.String, java.lang.String)
 	 */
 	public void setProperty(String sKey, String sValue) {
+		Properties properties = getProperties();
 		//Using standard attributes is forbidden
 		for (int i=0;i<XML_RESERVED_ATTRIBUTE_NAMES.length;i++){
 			if (sKey.equals(XML_RESERVED_ATTRIBUTE_NAMES[i])){
@@ -81,8 +182,9 @@ public class PropertyAdapter implements IPropertyable, ITechnicalStrings,Seriali
 		}
 		properties.put(sKey, sValue);
 	}
-
+	
 	public String getPropertiesXml() {
+		Properties properties = getProperties();
 		Enumeration e = properties.propertyNames();
 		StringBuffer sb = new StringBuffer(""); //$NON-NLS-1$
 		while (e.hasMoreElements()) {
@@ -92,7 +194,7 @@ public class PropertyAdapter implements IPropertyable, ITechnicalStrings,Seriali
 		}
 		return sb.toString();
 	}
-
+	
 	/**
 	 * Set all personnal properties of an XML file for an item
 	 * 
@@ -108,23 +210,24 @@ public class PropertyAdapter implements IPropertyable, ITechnicalStrings,Seriali
 			}
 		}
 	}
-
+	
 	/**
 	 * @param properties The properties to set.
 	 */
 	public void setProperties(Properties properties) {
 		this.properties = properties;
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see org.jajuk.base.IPropertyable#removeProperty(java.lang.String)
 	 */
 	public void removeProperty(String sKey) {
+		Properties properties = getProperties();
 		if (properties.containsKey(sKey)){
 			properties.remove(sKey);
 		}
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see org.jajuk.base.IPropertyable#displayProperty()
 	 */
@@ -132,5 +235,5 @@ public class PropertyAdapter implements IPropertyable, ITechnicalStrings,Seriali
 	}
 	
 	
-
+	
 }
