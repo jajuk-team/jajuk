@@ -52,6 +52,8 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import org.jajuk.Main;
+import org.jajuk.base.Album;
+import org.jajuk.base.Author;
 import org.jajuk.base.Directory;
 import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.base.Track;
@@ -686,43 +688,50 @@ public class Util implements ITechnicalStrings {
         String sQuery = ""; //$NON-NLS-1$
         int iAccuracy = ConfigurationManager.getInt(CONF_COVERS_ACCURACY);
         Track track = file.getTrack();
-        String sAuthor = track.getAuthor().getName();
-        String sAlbum = track.getAlbum().getName();
-        if (!sAuthor.equals("unknown_author")){ //$NON-NLS-1$
-            switch(iAccuracy){
-            case 0: //low, default
-                sQuery += sAuthor + " "; //$NON-NLS-1$
-                break;
-            case 1: //medium
-                sQuery += "\""+sAuthor + "\" "; //put "" around it //$NON-NLS-1$ //$NON-NLS-2$
-                break;
-            case 2: //high 
-                sQuery += "+\""+sAuthor + "\" "; //put +"" around it //$NON-NLS-1$ //$NON-NLS-2$
-                break;
-            case 3: //author 
-                sQuery += sAuthor; 
-                break;
-            default :
-                break;
-            }
-        }
-        //add the album name if not in author accuracy
-        if (!sAlbum.equals("unknown_album")){ //$NON-NLS-1$
-            switch(iAccuracy){
-            case 0: //low, default
-                sQuery += sAlbum;
-                break;
-            case 1: //medium
-                sQuery += "\""+sAlbum + "\""; //put "" around it //$NON-NLS-1$ //$NON-NLS-2$
-                break;
-            case 2: //high
-                sQuery += "+\""+sAlbum + "\""; //put "" around it //$NON-NLS-1$ //$NON-NLS-2$
-                break;
-            default :
-                break;
-            }
-        }
-        return sQuery;
+        Author author = track.getAuthor();
+        Album album = track.getAlbum();
+        switch(iAccuracy){
+        	case 0: //low, default
+        	    if (!author.isUnknown()){
+        	        sQuery += author.getName() + " "; //$NON-NLS-1$    
+        	    }
+        	    if (!album.isUnknown()){
+        	        sQuery += album.getName() + " "; //$NON-NLS-1$    
+        	    }
+        	    break;
+        	 case 1: //medium
+        	     if (!author.isUnknown()){
+              	     sQuery += "\"" +author.getName() + "\" "; //put "" around it //$NON-NLS-1$ //$NON-NLS-2$
+        	     }
+        	     if (!album.isUnknown()){
+         	        sQuery += "\""+ album.getName() + "\" "; //$NON-NLS-1$    
+         	    }
+              	 break;
+        	 case 2: //high 
+        	     if (!author.isUnknown()){
+              	     sQuery += "+\"" +author.getName() + "\" "; //put "" around it //$NON-NLS-1$ //$NON-NLS-2$
+        	     }
+        	     if (!album.isUnknown()){
+         	        sQuery += "+\""+ album.getName() + "\" "; //$NON-NLS-1$    
+         	    }
+                 break;
+             case 3: //by author 
+                 if (!author.isUnknown()){
+         	        sQuery += author.getName() + " "; //$NON-NLS-1$    
+         	    } 
+                 break;
+             case 4: //by album 
+                 if (!album.isUnknown()){
+         	        sQuery += album.getName() + " "; //$NON-NLS-1$    
+         	    } 
+                 break;
+             case 5: //by track name 
+                 sQuery += track.getName() ; 
+                 break;
+             default :
+                 break;
+             }
+            return sQuery;
     }
     
     /**

@@ -61,6 +61,8 @@ import org.jajuk.i18n.Messages;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.ObservationManager;
 import org.jajuk.ui.Observer;
+import org.jajuk.ui.perspectives.PerspectiveManager;
+import org.jajuk.ui.perspectives.PlayerPerspective;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.DownloadManager;
 import org.jajuk.util.Util;
@@ -162,7 +164,9 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
         jcbAccuracy.addItem(Messages.getString("ParameterView.156")); //$NON-NLS-1$
         jcbAccuracy.addItem(Messages.getString("ParameterView.157")); //$NON-NLS-1$
         jcbAccuracy.addItem(Messages.getString("ParameterView.158")); //$NON-NLS-1$
-        jcbAccuracy.addItem(Messages.getString("ParameterView.168")); //$NON-NLS-1$ TBI
+        jcbAccuracy.addItem(Messages.getString("ParameterView.168")); //$NON-NLS-1$
+        jcbAccuracy.addItem(Messages.getString("CoverView.12")); //$NON-NLS-1$
+        jcbAccuracy.addItem(Messages.getString("CoverView.13")); //$NON-NLS-1$
         jcbAccuracy.setSelectedIndex(Integer.parseInt(ConfigurationManager.getProperty(CONF_COVERS_ACCURACY)));
         jcbAccuracy.addActionListener(this);
         
@@ -176,8 +180,6 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
         jpControl.add(Util.getCentredPanel(jlFound,BoxLayout.X_AXIS),"14,0");//$NON-NLS-1$
         jpControl.add(Util.getCentredPanel(jcbAccuracy,BoxLayout.X_AXIS),"16,0");//$NON-NLS-1$
         jpControl.add(Util.getCentredPanel(jlSearching,BoxLayout.X_AXIS),"18,0");//$NON-NLS-1$
-        addComponentListener(this);
-        
         ObservationManager.register(EVENT_COVER_REFRESH,this);
         ObservationManager.register(EVENT_PLAYER_STOP,this);
         ObservationManager.register(EVENT_ZERO,this);
@@ -192,6 +194,8 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
             alCovers.add(coverDefault); //add the default cover
         }
         update(EVENT_COVER_REFRESH);
+        this.addComponentListener(this);
+        
     }
     
     
@@ -252,7 +256,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                     //display local or default cover without wait
                     Collections.sort(alCovers); //sort the list
                     Log.debug("Local cover list: "+alCovers); //$NON-NLS-1$
-                    if (ConfigurationManager.getBoolean(CONF_COVERS_SHUFFLE)){
+                    if (ConfigurationManager.getBoolean(CONF_COVERS_SHUFFLE) || PerspectiveManager.getCurrentPerspective() instanceof PlayerPerspective){ //in player perspective, always show shuffle covers
                         index = (int)(Math.random()*alCovers.size()); //choose a random cover
                     }
                     else{
@@ -296,7 +300,10 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                                             //refresh number of found covers
                                             setFoundText();
                                             //display the best found cover if no one was found before
-                                            if (ConfigurationManager.getBoolean(CONF_COVERS_SHUFFLE) || (iCoversBeforeSearch == 1 && alCovers.size() >1)){ //force new cover display if the cover shuffle is activated or if nothing was displayed before
+                                            // force new cover display if the cover shuffle is activated or if nothing was displayed before
+                                            if (ConfigurationManager.getBoolean(CONF_COVERS_SHUFFLE) //explicit shuffle
+                                                    || (iCoversBeforeSearch == 1 && alCovers.size() >1)  //nothing before
+                                                    || PerspectiveManager.getCurrentPerspective() instanceof PlayerPerspective){ //player perspective 
                                                 if (ConfigurationManager.getBoolean(CONF_COVERS_SHUFFLE)){
                                                     index = (int)(Math.random()*alCovers.size()); //choose a random cover
                                                 }
@@ -417,6 +424,9 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
      */
     public void componentResized(ComponentEvent e) {
         Log.debug("Cover resized"); //$NON-NLS-1$
+        if (!ConfigurationManager.getBoolean(CONF_COVERS_RESIZE)){ //if user didn't check resize option, just leave
+            return;
+        }
         long lCurrentDate = System.currentTimeMillis();  //adjusting code
         if ( lCurrentDate - lDateLastResize < 500){  //display image every 500 ms to save CPU
             lDateLastResize = lCurrentDate;
@@ -425,7 +435,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
         new Thread(){
             public void run(){
                 displayCurrentCover();
-                SwingUtilities.updateComponentTreeUI(CoverView.this);  //make sure the image is repainted
+               CoverView.this.repaint();  //make sure the image is repainted
             }
         }.start();
     }
@@ -524,7 +534,9 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                         jbNext.setToolTipText("<html>"+Messages.getString("CoverView.5")+"<br>"+urlNext.toString()+"</html>"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
                     }
                     setCursor(Util.WAIT_CURSOR);
-                    removeAll();
+                    if (getComponentCount() > 0){
+                        removeAll();
+                    }
                     add(jpControl,"0,0");//$NON-NLS-1$
                     add(jl,"0,1");//$NON-NLS-1$
                     setCursor(Util.DEFAULT_CURSOR);
@@ -637,7 +649,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                         FileFilter filter = new FileFilter() {
                             public boolean accept(File file) {
                                 String sExt =Util.getExtension(file); 
-                                if (sExt.equals("gif") || sExt.equals("png") || sExt.equals("jpg")){ //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                if (sExt.equals("gif") || sExt.equals("png") || sExt.equals("jpg") ){ //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                                     return true;
                                 }
                                 return false;

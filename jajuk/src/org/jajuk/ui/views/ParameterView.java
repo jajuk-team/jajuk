@@ -149,6 +149,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 	JCheckBox jcbAutoCover;
 	JCheckBox jcbShuffleCover;
 	JCheckBox jcbPreLoad;
+	JCheckBox jcbResize;
 	JLabel jlMinSize;
 	JTextField jtfMinSize;
 	JLabel jlMaxSize;
@@ -632,7 +633,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jpCovers = new JPanel();
 		jpCovers.setBorder(BorderFactory.createTitledBorder(Messages.getString("ParameterView.159")));  //$NON-NLS-1$
 		double sizeCover[][] = {{0.5,0.45},
-				{iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator}};
+				{iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator}};
 		jpCovers.setLayout(new TableLayout(sizeCover));
 		jcbAutoCover = new JCheckBox(Messages.getString("ParameterView.148")); //$NON-NLS-1$
 		jcbAutoCover.setToolTipText(Messages.getString("ParameterView.149")); //$NON-NLS-1$
@@ -641,6 +642,8 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jcbShuffleCover.setToolTipText(Messages.getString("ParameterView.167")); //$NON-NLS-1$
 		jcbPreLoad = new JCheckBox(Messages.getString("ParameterView.169")); //$NON-NLS-1$
 		jcbPreLoad.setToolTipText(Messages.getString("ParameterView.170")); //$NON-NLS-1$
+		jcbResize = new JCheckBox(Messages.getString("ParameterView.173")); //$NON-NLS-1$
+		jcbResize.setToolTipText(Messages.getString("ParameterView.174")); //$NON-NLS-1$
 		InputVerifier iverifier = new InputVerifier(){
 			public boolean verify(JComponent input) {
 				JTextField tf = (JTextField) input;
@@ -676,10 +679,11 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jpCovers.add(jcbAutoCover,"0,1"); //$NON-NLS-1$
 		jpCovers.add(jcbShuffleCover,"0,3"); //$NON-NLS-1$
 		jpCovers.add(jcbPreLoad,"0,5"); //$NON-NLS-1$
-		jpCovers.add(jlMinSize,"0,7"); //$NON-NLS-1$
-		jpCovers.add(jtfMinSize,"1,7"); //$NON-NLS-1$
-		jpCovers.add(jlMaxSize,"0,9"); //$NON-NLS-1$
-		jpCovers.add(jtfMaxSize,"1,9"); //$NON-NLS-1$
+		jpCovers.add(jcbResize,"0,7"); //$NON-NLS-1$
+		jpCovers.add(jlMinSize,"0,9"); //$NON-NLS-1$
+		jpCovers.add(jtfMinSize,"1,9"); //$NON-NLS-1$
+		jpCovers.add(jlMaxSize,"0,11"); //$NON-NLS-1$
+		jpCovers.add(jtfMaxSize,"1,11"); //$NON-NLS-1$
 				
 		//--OK/cancel panel
 		jpOKCancel = new JPanel();
@@ -761,7 +765,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
                                 Main.getWindow().setShown(false);
         						LNFManager.setLookAndFeel(ConfigurationManager.getProperty(CONF_OPTIONS_LNF));
         						PerspectiveBarJPanel.getInstance().setActivated(PerspectiveManager. getCurrentPerspective());  //force the perspective panel to refresh
-        						SwingUtilities.updateComponentTreeUI(Main.getWindow());
+        						SwingUtilities.updateComponentTreeUI(Main.getWindow());  //repaint all the application with the right LAF
         						Main.getWindow().setShown(true);
         					}
                         });
@@ -846,6 +850,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 					ConfigurationManager.setProperty(CONF_COVERS_AUTO_COVER,Boolean.toString(jcbAutoCover.isSelected()));
 					ConfigurationManager.setProperty(CONF_COVERS_SHUFFLE,Boolean.toString(jcbShuffleCover.isSelected()));
 					ConfigurationManager.setProperty(CONF_COVERS_PRELOAD,Boolean.toString(jcbPreLoad.isSelected()));
+					ConfigurationManager.setProperty(CONF_COVERS_RESIZE,Boolean.toString(jcbResize.isSelected()));
 					ConfigurationManager.setProperty(CONF_COVERS_MIN_SIZE,jtfMinSize.getText());
 					ConfigurationManager.setProperty(CONF_COVERS_MAX_SIZE,jtfMaxSize.getText());
 				}
@@ -974,6 +979,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jtfMaxSize.setText(ConfigurationManager.getProperty(CONF_COVERS_MAX_SIZE));
 		jcbShuffleCover.setSelected(ConfigurationManager.getBoolean(CONF_COVERS_SHUFFLE));
 		jcbPreLoad.setSelected(ConfigurationManager.getBoolean(CONF_COVERS_PRELOAD));
+		jcbResize.setSelected(ConfigurationManager.getBoolean(CONF_COVERS_RESIZE));
 	}
 	
 	/* (non-Javadoc)
