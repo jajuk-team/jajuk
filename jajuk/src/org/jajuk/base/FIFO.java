@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-* $Revision$
+ *  $Revision$
  */
 package org.jajuk.base;
 
@@ -59,7 +59,7 @@ public class FIFO extends Thread implements ITechnicalStrings{
 	/** Current track start date*/
 	private long lTrackStart; 
 	
-	/** Total time in fifo (ms)*/
+	/** Total time in fifo (sec)*/
 	private long lTotalTime = 0;
 	
 	/** Glocal random enabled ? */
@@ -70,6 +70,9 @@ public class FIFO extends Thread implements ITechnicalStrings{
 	
 	/** Repeated set index */
 	private int iRepeatIndex;
+	
+	/**Current file intro status*/
+	private boolean bIntroEnabled = false;
 	
 	/**
 	 * Singleton access
@@ -97,10 +100,10 @@ public class FIFO extends Thread implements ITechnicalStrings{
 	public synchronized void push(ArrayList alFiles, boolean bAppend,boolean bAuto) {
 		if (!bAuto){
 			FIFO.getInstance().setGlobalRandom(false); //global random mode is broken by any push
-		}
-		if (TRUE.equals(ConfigurationManager.getProperty(CONF_STATE_REPEAT))){  //repeat is on
-			alRepeated = alFiles;
-			iRepeatIndex = 0;
+			if (TRUE.equals(ConfigurationManager.getProperty(CONF_STATE_REPEAT))){  //repeat is on
+				alRepeated = alFiles;
+				iRepeatIndex = 0;
+			}
 		}
 		if (!bAppend) {
 			Player.stop();
@@ -171,6 +174,9 @@ public class FIFO extends Thread implements ITechnicalStrings{
 				if (bPlaying ){//already playing something
 					if ( i%(REFRESH_TIME/SLEEP_TIME) == 0){  //actual refresh less frequent for cpu
 						long lTime = System.currentTimeMillis() - lTrackStart;
+						if ( bIntroEnabled){
+							lTime += (fCurrent.getTrack().getLength()*Integer.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_INTRO_BEGIN))*10);
+						}
 						InformationJPanel.getInstance().setCurrentStatusMessage(Util.formatTime(lTime)+" / "+Util.formatTime(fCurrent.getTrack().getLength()*1000));
 						InformationJPanel.getInstance().setCurrentStatus((int)((lTime/10)/fCurrent.getTrack().getLength()));
 						InformationJPanel.getInstance().setTotalStatusMessage(Integer.toString((int)(lTotalTime-(lTime/1000)))+"'");
@@ -179,15 +185,23 @@ public class FIFO extends Thread implements ITechnicalStrings{
 					continue; //leave
 				}
 				if (!bPlaying && alFIFO.size() == 0  ){//empty fifo, lets decide what to do with folowing priorities : global random / repeat / continue
+					//intro workaround : intro mode is only read at track lauch and can't be set during the play
+					if (ConfigurationManager.getBoolean(CONF_STATE_INTRO)){ //intro mode enabled
+						bIntroEnabled = true;
+					}
+					else{
+						bIntroEnabled = false;
+					}
+					//next file choice
 					if ( bGlobalRandom){ //Global random mode
 						push(FileManager.getShuffleFile(),false,true);
 					}
 					else if ( fCurrent!= null && TRUE.equals(ConfigurationManager.getProperty(CONF_STATE_REPEAT))){ //repeat mode ?
-						iRepeatIndex ++;
-						if (iRepeatIndex >= alRepeated.size()){
+						if (iRepeatIndex == alRepeated.size()){
 							iRepeatIndex = 0;
 						}
-						push((File)alRepeated.get(iRepeatIndex),false);
+						push((File)alRepeated.get(iRepeatIndex),false,true);
+						iRepeatIndex ++;
 					}
 					else if ( fCurrent!= null && TRUE.equals(ConfigurationManager.getProperty(CONF_STATE_CONTINUE))){ //continue mode ?
 						File fileNext = FileManager.getNextFile(fCurrent);
@@ -223,7 +237,12 @@ public class FIFO extends Thread implements ITechnicalStrings{
 					alFIFO.remove(index);//remove it from todo list;
 					Log.debug("Now playing :"+fCurrent); //$NON-NLS-1$
 					bPlaying = true;
-					Player.play(fCurrent);  //play it
+					if (ConfigurationManager.getBoolean(CONF_STATE_INTRO)){ //intro mode enabled
+						Player.play(fCurrent,Integer.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_INTRO_BEGIN)),Integer.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_INTRO_LENGTH)));
+					}
+					else{
+						Player.play(fCurrent,-1,-1);  //play it
+					}
 					lTrackStart = System.currentTimeMillis();
 					History.getInstance().addItem(fCurrent.getId(),System.currentTimeMillis());
 					InformationJPanel.getInstance().setMessage("<html>Now Playing : <i>"+fCurrent.getTrack().getAuthor().getName2()+" / "+fCurrent.getTrack().getName()+"</i></html>",InformationJPanel.INFORMATIVE);
@@ -273,5 +292,7 @@ public class FIFO extends Thread implements ITechnicalStrings{
 	public void setGlobalRandom(boolean globalRandom) {
 		bGlobalRandom = globalRandom;
 	}
+
+	
 
 }

@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- * $Revision$
+ *  $Revision$
  */
 package org.jajuk.base;
 
@@ -33,17 +33,21 @@ public class Player {
 
 	private static File fCurrent;
 	private static IPlayerImpl pCurrentPlayerImpl;
+	
+	
 	/**
-	 * Asynchronous play for specified file
-	 * @param file
+	 * Asynchronous play for specified file with specified time interval
+	 * @param file to play
+	 * @param position in % of the file length
+	 * @param length in sec 
 	 */
-	public static void play(File file) {
+	public static void play(File file,final int iPosition,final int iLength) {
 		fCurrent = file;
 		pCurrentPlayerImpl = file.getTrack().getType().getPlayerImpl();
 		new Thread() {
 			public void run() {
 				try {
-					pCurrentPlayerImpl.play(fCurrent);
+					pCurrentPlayerImpl.play(fCurrent,iPosition,iLength);
 				} catch (Exception e) {
 					Log.error("007",fCurrent.getAbsolutePath(), e); //$NON-NLS-1$
 					InformationJPanel.getInstance().setMessage(Messages.getString("Error.007")+" : "+fCurrent.getAbsolutePath(),InformationJPanel.ERROR);//$NON-NLS-1$
@@ -52,8 +56,8 @@ public class Player {
 			}
 		}
 		.start();
-	}
-
+		}
+	
 	/**
 	 * Stop the played track
 	 * @param type

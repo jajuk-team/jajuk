@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- * $Revision$
+ *  $Revision$
  */
 
 package org.jajuk.ui.views;
@@ -380,7 +380,7 @@ public class ParameterView extends ViewAdapter implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == jbClearHistory){
 			History.getInstance().clear();
-			CommandJPanel.getInstance().populateHistoryBar();
+			CommandJPanel.getInstance().clearHistoryBar();
 		}
 		else if (e.getSource() == jbOK){
 			//**Read all parameters**
@@ -429,8 +429,6 @@ public class ParameterView extends ViewAdapter implements ActionListener {
 			if (!sHistoryDuration.equals("")){
 				ConfigurationManager.setProperty(CONF_HISTORY,sHistoryDuration);
 			}
-			//refresh history bar
-			CommandJPanel.getInstance().populateHistoryBar();
 			//P2P
 			ConfigurationManager.setProperty(CONF_OPTIONS_P2P_SHARE,Boolean.toString(jcbShare.isSelected()));
 			ConfigurationManager.setProperty(CONF_OPTIONS_P2P_ADD_REMOTE_PROPERTIES,Boolean.toString(jcbAddRemoteProperties.isSelected()));

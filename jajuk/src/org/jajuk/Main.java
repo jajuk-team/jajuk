@@ -18,7 +18,6 @@
  */
 package org.jajuk;
 
-//TODO Verif bug lors validation options-> delete history bar
 
 import java.awt.BorderLayout;
 import java.awt.Frame;
@@ -125,7 +124,6 @@ public class Main implements ITechnicalStrings {
 			
 			//Set look and feel
 			LNFManager.setLookAndFeel(ConfigurationManager.getProperty(CONF_OPTIONS_LNF));
-						
 			
 			//Set local
 			Messages.setLocal(ConfigurationManager.getProperty(CONF_OPTIONS_LANGUAGE));
@@ -177,7 +175,7 @@ public class Main implements ITechnicalStrings {
 			jframe.pack();
 			jframe.setExtendedState(Frame.MAXIMIZED_BOTH);  //maximalize
 			jframe.setVisible(true);
-			
+		
 			//Mount and refresh devices
 			mountAndRefresh();
 			
@@ -281,7 +279,6 @@ public class Main implements ITechnicalStrings {
 			Log.error("", e); //$NON-NLS-1$
 		}
 		System.exit(iExitCode);
-
 	}
 	
 	/**

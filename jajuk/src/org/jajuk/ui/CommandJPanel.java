@@ -16,7 +16,6 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Revision$
- *
  */
 package org.jajuk.ui;
 
@@ -121,7 +120,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 			
 		//history toolbar
 		jtbHistory = new JToolBar();
-		populateHistoryBar();
+		jcbHistory = new SteppedComboBox(History.getInstance().getHistory().toArray());
 		jtbHistory.setFloatable(false);
 		jcbHistory.setMinimumSize(new Dimension(150,20));
 		jcbHistory.setPreferredSize(new Dimension(300,20));
@@ -237,19 +236,16 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		jcbHistory.setSelectedIndex(0);
 		bSelect = true;
 	}
-
+	
 	
 	/**
-	 * Fill the history bar
+	 * Clear history bar
 	 */
-	public void populateHistoryBar(){
-		if ( jcbHistory != null){
-			jcbHistory.removeAllItems();
-		}
-		History.getInstance().clear(Integer.parseInt(ConfigurationManager.getProperty(CONF_HISTORY))); //delete old history items
-		jcbHistory = new SteppedComboBox(History.getInstance().getHistory().toArray());
-		
+	public void clearHistoryBar(){
+		jcbHistory.removeAllItems();
 	}
+
+	
 	
 	/* (non-Javadoc)
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)

@@ -15,8 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- * $Revision$
- *
+ *  $Revision$
  */
 
 package org.jajuk.ui.views;
@@ -159,11 +158,6 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 		
 		//Popup menus
 		jpmenu =  new JPopupMenu();
-			
-		jmiProperties = new JMenuItem("Get properties",new ImageIcon(ICON_PROPERTIES));
-		jmiProperties.addActionListener(this);
-		jmiProperties.setActionCommand(EVENT_DEVICE_PROPERTIES);
-		jpmenu.add(jmiProperties);
 	
 		jmiMount = new JMenuItem("Mount",new ImageIcon(ICON_MOUNT)); 
 		jmiMount.addActionListener(this);
@@ -195,6 +189,10 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 		jmiDelete.setActionCommand(EVENT_DEVICE_DELETE);
 		jpmenu.add(jmiDelete);
 	
+		jmiProperties = new JMenuItem("Get properties",new ImageIcon(ICON_PROPERTIES));
+		jmiProperties.addActionListener(this);
+		jmiProperties.setActionCommand(EVENT_DEVICE_PROPERTIES);
+		jpmenu.add(jmiProperties);
 		
 		//New device
 		DeviceItem diNew = new DeviceItem(ICON_DEVICE_NEW,"New");

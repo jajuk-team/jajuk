@@ -1,14 +1,21 @@
 /*
- * Jajuk Copyright (C) 2003 bflorat
- * 
- * This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the
- * License, or any later version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
- * $Revision$
+ *  Jajuk
+ *  Copyright (C) 2003 bflorat
+ *
+ *  This program is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  as published by the Free Software Foundation; either version 2
+ *  of the License, or any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ *  $Revision$
  **/
 
 package org.jajuk.base;
@@ -126,6 +133,7 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
 			SAXParser saxParser = spf.newSAXParser();
 			File frt = new File(FILE_HISTORY);
 			saxParser.parse(frt.toURL().toString(),getInstance());
+			getInstance().clear(Integer.parseInt(ConfigurationManager.getProperty(CONF_HISTORY))); //delete old history items
 		} catch (Exception e) {
 			Log.error(e);
 			throw new JajukException("119");
