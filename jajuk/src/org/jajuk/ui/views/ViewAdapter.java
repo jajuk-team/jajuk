@@ -37,16 +37,6 @@ public abstract class ViewAdapter extends JPanel implements IView,ITechnicalStri
 	
 	/**Displayed state */
 	private boolean bIsPopulated = false;
-	/**View width*/	
-	private int iLogicalWidth;
-	/**View height*/
-	private int iLogicalHeight;
-	/**View X coordonate*/
-	private int iLogicalX;
-	/**View Y coordonate*/
-	private int iLogicalY;
-	/**Should be shown option for this view*/
-	private boolean bShouldBeShown = true;
 	private static final Dimension d = new Dimension(0,0);
 	/**
 	 * Constructor
@@ -89,70 +79,6 @@ public abstract class ViewAdapter extends JPanel implements IView,ITechnicalStri
 		this.repaint();
 	}
 	
-	/**
-	 * @return Returns the iHeight.
-	 */
-	public int getLogicalHeight() {
-		return iLogicalHeight;
-	}
-	/**
-	 * @param height The iHeight to set.
-	 */
-	public void setLogicalHeight(int height) {
-		iLogicalHeight = height;
-	}
-	/**
-	 * @return Returns the iWidth.
-	 */
-	public int getLogicalWidth() {
-		return iLogicalWidth;
-	}
-	/**
-	 * @param width The iWidth to set.
-	 */
-	public void setLogicalWidth(int width) {
-		iLogicalWidth = width;
-	}
-	/**
-	 * @return Returns the iX.
-	 */
-	public int getLogicalX() {
-		return iLogicalX;
-	}
-	/**
-	 * @param ix The iX to set.
-	 */
-	public void setLogicalX(int ix) {
-		iLogicalX = ix;
-	}
-	/**
-	 * @return Returns the iY.
-	 */
-	public int getLogicalY() {
-		return iLogicalY;
-	}
-	/**
-	 * @param iy The iY to set.
-	 */
-	public void setLogicalY(int iy) {
-		iLogicalY = iy;
-	}
-	
-	/**
-	 * Set all view coordonates
-	 * @param iWidth
-	 * @param iHeight
-	 * @param iX
-	 * @param iY
-	 * @return view itself
-	 */
-	public IView setLogicalCoord(int iWidth,int iHeight,int iX,int iY){
-		setLogicalWidth(iWidth);
-		setLogicalHeight(iHeight);
-		setLogicalX(iX);
-		setLogicalY(iY);
-		return this;
-	}
 	
 	/* (non-Javadoc)
      * @see java.awt.event.ComponentListener#componentHidden(java.awt.event.ComponentEvent)

@@ -63,56 +63,6 @@ public interface IView extends ComponentListener{
 	 * View refresh
 	 */
 	public void refresh();
-	
-	/**
-     * @return Returns the iHeight.
-     */
-    public int getLogicalHeight();
-   
-    /**
-     * @param height The iHeight to set.
-     */
-    public void setLogicalHeight(int height);
-    
-    /**
-     * @return Returns the iWidth.
-     */
-    public int getLogicalWidth();
-    
-    /**
-     * @param width The iWidth to set.
-     */
-    public void setLogicalWidth(int width) ;
-    
-    /**
-     * @return Returns the iX.
-     */
-    public int getLogicalX();
-    
-    /**
-     * @param ix The iX to set.
-     */
-    public void setLogicalX(int ix);
-    
-    /**
-     * @return Returns the iY.
-     */
-    public int getLogicalY() ;
-    
-    /**
-     * @param iy The iY to set.
-     */
-    public void setLogicalY(int iy) ;
-
-    /**
-     * Set all view coordonates
-     * @param iWidth
-     * @param iHeight
-     * @param iX
-     * @param iY
-     * @return view itself
-     */
-    public IView setLogicalCoord(int iWidth,int iHeight,int iX,int iY);
-    
+	   
     
 }
