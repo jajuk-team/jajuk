@@ -31,9 +31,13 @@ public interface ITechnicalStrings {
 	// Jjauk version
 	public static final String JAJUK_VERSION = "0.1";
 	
+	//About 
+	public static final String ABOUT = "<html>Jajuk version "+JAJUK_VERSION+"</html>";
+	
 	// directory path
 	public static final String PATH_ICONS = System.getProperty("user.dir")+"/dist-files/icons/";
 	public static final String PATH_IMAGES = System.getProperty("user.dir")+"/dist-files/images/";
+	public static final String PATH_DOCS = System.getProperty("user.dir")+"/dist-files/doc/";
 		
 		// paths to icons
 	public static final String ICON_REPEAT_ON = PATH_ICONS + "16x16/repeat.png";
@@ -125,7 +129,7 @@ public interface ITechnicalStrings {
 	public static final String FILE_CONFIGURATION = System.getProperty("user.home")+"/.jajuk/conf.properties";
 	public static final String FILE_HISTORY = System.getProperty("user.home")+"/.jajuk/history.xml";
 	public static final String FILE_LOCK = System.getProperty("user.home")+"/.jajuk/.lock";
-	
+	public static final String FILE_ABOUT = PATH_DOCS+"about.html";
 	
 	//players impls
 	public static final String PLAYER_IMPL_JAVALAYER= "org.jajuk.players.JavaLayerPlayerImpl";
@@ -165,6 +169,11 @@ public interface ITechnicalStrings {
 	 //views
 	public static final String VIEW_NAME_DEVICES = "org.jajuk.ui.views.DeviceView";
 	public static final String VIEW_NAME_PARAMETERS = "org.jajuk.ui.views.ParameterView";
+	public static final String VIEW_NAME_PHYSICAL_TREE = "org.jajuk.ui.views.PhysicalTreeView";
+	public static final String VIEW_NAME_PHYSICAL_TABLE = "org.jajuk.ui.views.PhysicalTableView";
+	public static final String VIEW_NAME_LOGICAL_TREE = "org.jajuk.ui.views.LogicalTreeView";
+	public static final String VIEW_NAME_LOGICAL_TABLE = "org.jajuk.ui.views.LogicalTableView";
+	public static final String VIEW_NAME_ABOUT = "org.jajuk.ui.views.AboutView";
 	 	
 	//extensions
 	public static final String EXT_MP3 = "mp3";
@@ -305,8 +314,8 @@ public interface ITechnicalStrings {
 		 "<perspectives jajuk_version='"+JAJUK_VERSION+"'>\n"+
 		"\t<perspective  class='"+PERSPECTIVE_NAME_PHYSICAL+"'>\n"+
 		"\t\t<views>\n"+
-		"\t\t\t<view class='org.jajuk.ui.views.PhysicalTreeView' width='30' height='100' x='0' y='0'/>\n"+
-		"\t\t\t<view class='org.jajuk.ui.views.PhysicalTableView' width='40' height='100' x='60' y='0'/>\n"+
+		"\t\t\t<view class='"+VIEW_NAME_PHYSICAL_TREE+"' width='30' height='100' x='0' y='0'/>\n"+
+		"\t\t\t<view class='"+VIEW_NAME_PHYSICAL_TABLE+"' width='40' height='100' x='60' y='0'/>\n"+
 		/*"\t\t\t<view class='org.jajuk.ui.views.NavigationBarView' />\n"+
 		"\t\t\t<view class='org.jajuk.ui.views.TrackListView' />\n"+
 		"\t\t\t<view class='org.jajuk.ui.views.CoverView'  />\n"+
@@ -316,8 +325,8 @@ public interface ITechnicalStrings {
 		"\t\t</perspective>\n"+
 		"\t<perspective class='"+PERSPECTIVE_NAME_LOGICAL+"'>\n"+
 		"\t\t<views>\n"+
-		"\t\t\t<view class='org.jajuk.ui.views.LogicalTreeView' width='30' height='100' x='0' y='0'/>\n"+
-		"\t\t\t<view class='org.jajuk.ui.views.LogicalTableView' width='40' height='100' x='60' y='0'/>\n"+
+		"\t\t\t<view class='"+VIEW_NAME_LOGICAL_TREE+"' width='30' height='100' x='0' y='0'/>\n"+
+		"\t\t\t<view class='"+VIEW_NAME_LOGICAL_TABLE+"' width='40' height='100' x='60' y='0'/>\n"+
 	/*	"\t\t\t<view class='org.jajuk.ui.views.NavigationBarView' />\n"+
 		"\t\t\t<view class='org.jajuk.ui.views.TrackListView'/>\n"+
 		"\t\t\t<view class='org.jajuk.ui.views.CoverView'  />\n"+
@@ -339,8 +348,8 @@ public interface ITechnicalStrings {
 		"\t</perspective>\n"+
 		"\t<perspective  class='"+PERSPECTIVE_NAME_HELP+"'>\n"+
 		"\t\t<views>\n"+
-		/*"\t\t\t<view class='org.jajuk.ui.views.HelpView'/>\n"+
-		"\t\t\t<view class='org.jajuk.ui.views.AboutView' />\n"+*/
+		/*"\t\t\t<view class='org.jajuk.ui.views.HelpView'/>\n"+*/
+		"\t\t\t<view class='"+VIEW_NAME_ABOUT+"' width='30' height='100' x='70' y='0' />\n"+
 		"\t\t</views>\n"+
 		"\t</perspective>\n"+
 		"</perspectives>";

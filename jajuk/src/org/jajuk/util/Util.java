@@ -102,18 +102,6 @@ public class Util implements ITechnicalStrings {
 	 *                  access.
 	 */
 	public static StringBuffer readFile(String path) throws JajukException {
-		/*
-		 * URL url; try { url = new URL(path); } catch (MalformedURLException e) {
-		 * JajukException te = new JajukException("jajuk0004", path, e); throw
-		 * te; } URLConnection urlConn; try { urlConn = url.openConnection(); }
-		 * catch (IOException e) { JajukException te = new
-		 * JajukException("jajuk0005", path, e); throw te; }
-		 *  // Use cache if (urlConn != null) { urlConn.setUseCaches(true); }
-		 *  // Read BufferedReader input; try { input = new BufferedReader(new
-		 * InputStreamReader(urlConn.getInputStream())); } catch (IOException e) {
-		 * JajukException te = new JajukException("jajuk0006", path, e); throw
-		 * te; }
-		 */
 		// Read
 		File file = new File(path);
 		FileReader fileReader;
