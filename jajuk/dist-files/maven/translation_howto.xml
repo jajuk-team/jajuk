@@ -47,7 +47,7 @@
 				#Written by : ${your name}<br></br>
 				#Copyright 2003,2004 ${your name}, this is part of Jajuk distributed under the GPL V2 license<br></br>
 				#FROM ${source language} ${cvs version}<br></br>
-				#$$Revision$$</span></p>
+				#$Revision$</span></p>
 				<p>FROM comment gives exact CVS version you translated to allow diffs with newer versions and Revision gives current CVS version of your file.</p>
 			</li>
 			
