@@ -360,7 +360,7 @@ public class Main implements ITechnicalStrings {
         } catch (IOException e) { //error? looks like Jajuk is already started 
             sc.dispose();
             Log.error(new JajukException("124")); //$NON-NLS-1$
-            Messages.showErrorMessage("124");	 //$NON-NLS-1$
+            Messages.getChoice(Messages.getErrorMessage("124"),JOptionPane.OK_CANCEL_OPTION);	 //$NON-NLS-1$
             System.exit(-1);
         }
 	    //start listening
@@ -459,7 +459,7 @@ public class Main implements ITechnicalStrings {
 			else if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_NOVELTIES)){
 			    alToPlay = FileManager.getGlobalNoveltiesPlaylist();
 			}
-			//launch selected file
+			//launch selected file synchronously to avoid startup issues
 			if (alToPlay  != null && alToPlay.size() >0){
 				FIFO.getInstance().pushCommand(Util.createStackItems(alToPlay,
 						ConfigurationManager.getBoolean(CONF_STATE_REPEAT),false),false);
@@ -482,8 +482,9 @@ public class Main implements ITechnicalStrings {
 				}
 				catch(Exception e){
 					Log.error("112",device.getName(),e); //$NON-NLS-1$
-					//show a confirm dialog if the device can't be mounted, we can't use regular Messages.showErrprMessage because main window is not yet displayed
-					Messages.showErrorMessage("112",device.getName()); //$NON-NLS-1$
+					//show a confirm dialog if the device can't be mounted, we can't use regular Messages.showErrorMessage because main window is not yet displayed
+					String sError = Messages.getErrorMessage("112") + " : " + device.getName();
+					Messages.getChoice(sError,JOptionPane.OK_CANCEL_OPTION); //$NON-NLS-1$
 					continue;
 				}
 			}
