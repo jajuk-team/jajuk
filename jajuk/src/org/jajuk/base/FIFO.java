@@ -373,6 +373,7 @@ public class FIFO implements ITechnicalStrings{
             FileManager.setRateHasChanged(true);
         } catch (Exception e) {
             Log.error("122", e); //$NON-NLS-1$
+            Util.stopWaiting(); //stop the waiting cursor
         }
     }
     
@@ -664,10 +665,7 @@ public class FIFO implements ITechnicalStrings{
             ObservationManager.notify(EVENT_PLAYLIST_REFRESH); //refresh playlist editor
         }
     }
-    
-   
-    
-    
+        
     /**
      *  Get the currently played  file
      * @return File
