@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- * $Release$
+ * $Revision$
  */
 
 package org.jajuk.ui;
@@ -43,6 +43,7 @@ import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 
+import snoozesoft.systray4j.CheckableMenuItem;
 import snoozesoft.systray4j.SysTrayMenu;
 import snoozesoft.systray4j.SysTrayMenuEvent;
 import snoozesoft.systray4j.SysTrayMenuIcon;
@@ -79,8 +80,8 @@ public class JajukWindow extends JFrame implements ITechnicalStrings,ComponentLi
 	SysTrayMenuItem stmiStop;
 	SysTrayMenuItem stmiPrevious;
 	SysTrayMenuItem stmiNext;
-	SysTrayMenuItem stmiVisible;
-	SysTrayMenuItem stmiHidden;
+	/**Visible at startup?*/
+	CheckableMenuItem cmiVisible;
 	
 	/**
 	 * Get instance
@@ -125,7 +126,7 @@ public class JajukWindow extends JFrame implements ITechnicalStrings,ComponentLi
 			try {
 				url = new URL(ICON_LOGO_ICO);
 			} catch (MalformedURLException e) {
-				e.printStackTrace();
+				Log.error(e);
 			}
 			stmi = new SysTrayMenuIcon(url);
 			stmi.addSysTrayMenuListener(this);
@@ -138,12 +139,9 @@ public class JajukWindow extends JFrame implements ITechnicalStrings,ComponentLi
 			stmiShuffle.addSysTrayMenuListener(this);
 			stmiBestof =  new SysTrayMenuItem(Messages.getString("JajukWindow.7")); //$NON-NLS-1$
 			stmiBestof.addSysTrayMenuListener(this);
-			stmiVisible =  new SysTrayMenuItem(Messages.getString("JajukWindow.8")); //$NON-NLS-1$
-			stmiVisible.setEnabled(!bVisible);//if it is already visible, this menu is hidden 
-			stmiVisible.addSysTrayMenuListener(this);
-			stmiHidden =  new SysTrayMenuItem(Messages.getString("JajukWindow.9")); //$NON-NLS-1$
-			stmiHidden.setEnabled(bVisible);
-			stmiHidden.addSysTrayMenuListener(this);
+			cmiVisible =  new CheckableMenuItem(Messages.getString("JajukWindow.8")); //$NON-NLS-1$
+			cmiVisible.setState(bVisible); 
+			cmiVisible.addSysTrayMenuListener(this);
 			stmiPause = new SysTrayMenuItem(Messages.getString("JajukWindow.10")); //$NON-NLS-1$
 			stmiPause.addSysTrayMenuListener(this);
 			stmiStop = new SysTrayMenuItem(Messages.getString("JajukWindow.11")); //$NON-NLS-1$
@@ -164,8 +162,7 @@ public class JajukWindow extends JFrame implements ITechnicalStrings,ComponentLi
 			stm.addItem(stmiStop);
 			stm.addItem(stmiPause);
 			stm.addSeparator();
-			stm.addItem(stmiHidden);
-			stm.addItem(stmiVisible);
+			stm.addItem(cmiVisible);
 		}
 	}
 	
@@ -251,15 +248,8 @@ public class JajukWindow extends JFrame implements ITechnicalStrings,ComponentLi
 				FIFO.getInstance().push(file,false,true);
 			}
 		}
-		else if (e.getSource() == stmiVisible){
-			stmiVisible.setEnabled(false);
-			stmiHidden.setEnabled(true);
-			ConfigurationManager.setProperty(CONF_SHOW_AT_STARTUP,TRUE);
-		}
-		else if (e.getSource() == stmiHidden){
-			stmiHidden.setEnabled(false);
-			stmiVisible.setEnabled(true);
-			ConfigurationManager.setProperty(CONF_SHOW_AT_STARTUP,FALSE);
+		else if (e.getSource() == cmiVisible){
+			ConfigurationManager.setProperty(CONF_SHOW_AT_STARTUP,Boolean.toString(cmiVisible.getState()));
 		}
 		else if (e.getSource() == stmiPrevious){
 			FIFO.getInstance().playPrevious();
@@ -293,7 +283,6 @@ public class JajukWindow extends JFrame implements ITechnicalStrings,ComponentLi
 			if ( !isVisible()){
 				setVisible(true);
 				setState(Frame.NORMAL);
-				SwingUtilities.updateComponentTreeUI(this);
 			}
 			else{
 				setVisible(false);
