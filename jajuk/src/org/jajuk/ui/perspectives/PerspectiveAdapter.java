@@ -206,13 +206,6 @@ public abstract class PerspectiveAdapter implements IPerspective,ITechnicalStrin
 		rootWindow.getRootWindowProperties().addSuperObject(SlimFlatDockingTheme.createRootWindowProperties());
 		rootWindow.getWindowBar(Direction.DOWN).setEnabled(true);
 		jpPerspectiveContentPane.add(rootWindow);
-		//jpPerspectiveContentPane.add(rootWindow);
-		/*
-		JFrame jf = new JFrame("test");
-		jf.setSize(400,400);
-		jf.setContentPane(rootWindow);
-		jf.pack();
-		jf.setVisible(true);*/
-    }
+	}
 	
 }
