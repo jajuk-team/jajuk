@@ -1,0 +1,5 @@
+Manifest-Version: 2.0
+Main-Class: org.jajuk.Main
+Created-By: Bertrand Florat
+Class-Path: ./jajuk-help-0.1.jar
+Specification-Title: Jajuk

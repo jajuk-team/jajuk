@@ -55,7 +55,8 @@ public interface ITechnicalStrings {
 	public static final String ICON_PREVIOUS = PATH_ICONS + "16x16/previous.png";
 	public static final String ICON_NEXT = PATH_ICONS + "16x16/next.png";
 	public static final String ICON_REW = PATH_ICONS + "16x16/player_rew.png";
-	public static final String ICON_PLAY = PATH_ICONS + "16x16/player_end.png";
+	public static final String ICON_PLAY = PATH_ICONS + "16x16/player_play.png";
+	public static final String ICON_PAUSE = PATH_ICONS + "16x16/player_pause.png";
 	public static final String ICON_STOP = PATH_ICONS + "16x16/player_stop.png";
 	public static final String ICON_FWD = PATH_ICONS + "16x16/player_fwd.png";
 	public static final String ICON_VOLUME = PATH_ICONS + "16x16/volume.png";
@@ -130,7 +131,7 @@ public interface ITechnicalStrings {
 	public static final String FILE_CONFIGURATION = System.getProperty("user.home")+"/.jajuk/conf.properties";
 	public static final String FILE_HISTORY = System.getProperty("user.home")+"/.jajuk/history.xml";
 	public static final String FILE_LOCK = System.getProperty("user.home")+"/.jajuk/.lock";
-	public static final String FILE_ABOUT = PATH_DOCS+"about.html";
+	public static final String FILE_ABOUT = "about.html";
 	public static final String FILE_DEFAULT_COVER = "cover.jpg";
 	
 	//players impls

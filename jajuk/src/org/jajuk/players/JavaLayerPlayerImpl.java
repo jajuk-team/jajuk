@@ -68,14 +68,14 @@ public class JavaLayerPlayerImpl implements IPlayerImpl,ITechnicalStrings{
 					}.start();
 				}
 			});
-			FIFO.getInstance().lTrackStart = System.currentTimeMillis();  //time correction
+			//FIFO.getInstance().lTrackStart = System.currentTimeMillis();  //time correction ( deleted because of play mode: don't overide old date when lauching again )
 			Util.stopWaiting();
 			if (fPosition < 0){  //-1 means we want to play entire file
 				player.play();
 			}
 			else{
 				int iFirstFrame = (int)(file.getTrack().getLength()*fPosition*0.41666); // (position*fPosition/100(%)) *1000(ms) /24 because 1 frame =24ms
-				int iLastFrame = (int)(iFirstFrame+(length*41.666)); //length*1000(ms)/24
+				int iLastFrame = (int)(iFirstFrame+(length*0.41666)); //length(ms)/24
 				player.play(iFirstFrame,iLastFrame);
 			}
 		}

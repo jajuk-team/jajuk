@@ -326,17 +326,24 @@ public class Main implements ITechnicalStrings {
 	 * Launch initial track at startup
 	 */
 	private static void launchInitialTrack(){
+		org.jajuk.base.File file = null;
 		if (!ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_NOTHING)){
 			if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_LAST)){
-				ArrayList alFiles = new ArrayList(1);
-				alFiles.add(FileManager.getFile(History.getInstance().getLastFile()));
-				FIFO.getInstance().push(alFiles,false);
+				file = FileManager.getFile(History.getInstance().getLastFile());
+				if ( file != null){
+					ArrayList alFiles = new ArrayList(1);
+					alFiles.add(file);
+					FIFO.getInstance().push(alFiles,false);
+				}
 			}
 			else if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_FILE)){
-				FIFO.getInstance().push(FileManager.getFile(ConfigurationManager.getProperty(CONF_STARTUP_FILE)),false);
+				file = FileManager.getFile(ConfigurationManager.getProperty(CONF_STARTUP_FILE));
+				if ( file != null){
+					FIFO.getInstance().push(file,false);
+				}
 			}
 			else if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_SHUFFLE)){
-				org.jajuk.base.File file = FileManager.getShuffleFile();
+				file = FileManager.getShuffleFile();
 				if (file != null){
 					FIFO.getInstance().push(file,false);
 				}

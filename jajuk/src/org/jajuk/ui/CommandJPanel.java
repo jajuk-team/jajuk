@@ -196,7 +196,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		jbRew.setToolTipText(Messages.getString("CommandJPanel.Fast_rewind_in_current_track_6")); //$NON-NLS-1$
 		jbRew.addActionListener(this);
 		jtbPlay.add(jbRew);
-		jbPlayPause = new JButton(Util.getIcon(ICON_PLAY)); 
+		jbPlayPause = new JButton(Util.getIcon(ICON_PAUSE)); 
 		jbPlayPause.setToolTipText(Messages.getString("CommandJPanel.Play/pause_current_track_7")); //$NON-NLS-1$
 		jbPlayPause.addActionListener(this);
 		jtbPlay.add(jbPlayPause);
@@ -302,6 +302,12 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		}
 		else if(ae.getSource() == jbPlayPause){
 			FIFO.getInstance().pauseRequest();
+			if ( FIFO.getInstance().isPaused()){
+				jbPlayPause.setIcon(Util.getIcon(ICON_PLAY));
+			}
+			else{
+				jbPlayPause.setIcon(Util.getIcon(ICON_PAUSE));
+			}
 		}
 		else if (ae.getSource() == jbPrevious){
 			FIFO.getInstance().playPrevious();
@@ -310,13 +316,13 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 			FIFO.getInstance().playNext();
 		}
 		else if (ae.getSource() == jbRew){
-			int iCurrentPosition = FIFO.getInstance().getCurrentPosition();
+			int iCurrentPosition = FIFO.getInstance().getCurrentPosition()/1000;
 			int iTrackLength = (int)(FIFO.getInstance().getCurrentFile().getTrack().getLength());
 			float fCurrentPercent = 100*(float)iCurrentPosition/iTrackLength;
 			FIFO.getInstance().setCurrentPosition(fCurrentPercent-JUMP_SIZE);
 		}
 		else if (ae.getSource() == jbFwd){
-			int iCurrentPosition = FIFO.getInstance().getCurrentPosition();
+			int iCurrentPosition = FIFO.getInstance().getCurrentPosition()/1000;
 			int iTrackLength = (int)(FIFO.getInstance().getCurrentFile().getTrack().getLength());
 			float fCurrentPercent = 100*(float)iCurrentPosition/iTrackLength;
 			FIFO.getInstance().setCurrentPosition(fCurrentPercent+JUMP_SIZE);

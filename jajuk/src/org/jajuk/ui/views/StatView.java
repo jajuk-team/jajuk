@@ -120,22 +120,19 @@ public class StatView extends ViewAdapter implements Observer{
 				iTotal += iCount;
 				tm.put(style.getName2(),new Integer(iCount));
 			}
-			if ( iTotal == 0){ //no data, leave empty
-				return null;
-			}
 			it = tm.keySet().iterator();
 			while (it.hasNext()){
 				String sName = (String)it.next();
 				Integer i = (Integer)tm.get(sName);
 				double d = i.doubleValue();
-				if ( d/iTotal < 0.05){ //less than 5% -> go to others
+				if ( iTotal>0 && d/iTotal < 0.05){ //less than 5% -> go to others
 					dOthers += d;
 				}
 				else{
 					pdata.setValue(sName,new Double(d/iTotal));
 				}
 			}
-			if ( dOthers > 0){
+			if ( iTotal>0 && dOthers > 0){
 				pdata.setValue("Others",new Double(dOthers/iTotal));
 			}
 			//chart
@@ -160,7 +157,7 @@ public class StatView extends ViewAdapter implements Observer{
 	/** Device size pie
 	 * @return the chart
 	 * */
-	private ChartPanel createDeviceSize(){
+	private ChartPanel createDeviceRepartition(){
 		ChartPanel cpanel = null;
 		try{
 			DefaultPieDataset pdata = null;
@@ -178,14 +175,11 @@ public class StatView extends ViewAdapter implements Observer{
 				lTotalSize += file.getSize();
 				lSizes[alDevices.indexOf(file.getDirectory().getDevice())] += file.getSize();
 			}
-			if ( lTotalSize == 0){ //no data, leave empty
-				return null;
-			}
 			Iterator itDevices = alDevices.iterator();
 			while (itDevices.hasNext()){
 				Device device = (Device)itDevices.next();
 				long lSize = lSizes[alDevices.indexOf(device)];
-				if ( (double)lSize/lTotalSize < 0.05){ //less than 5% -> go to others
+				if ( lTotalSize >0 && (double)lSize/lTotalSize < 0.05){ //less than 5% -> go to others
 					dOthers += lSize;
 				}
 				else{
@@ -363,7 +357,7 @@ public class StatView extends ViewAdapter implements Observer{
 			if ( cp2!= null) add(cp2,"0,1");
 			ChartPanel cp3 = createTrackNumber(); 
 			if ( cp3!= null) add(cp3,"1,1");
-			ChartPanel cp4 = createDeviceSize(); 
+			ChartPanel cp4 = createDeviceRepartition(); 
 			if ( cp4!= null) add(cp4,"1,0");
 			SwingUtilities.updateComponentTreeUI(StatView.getInstance());
 		}

@@ -589,7 +589,7 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 	public void update(String subject) {
 		if ( subject.equals(EVENT_DEVICE_MOUNT) || subject.equals(EVENT_DEVICE_UNMOUNT) || subject.equals(EVENT_DEVICE_REFRESH) ) {
 			populate();
-			SwingUtilities.updateComponentTreeUI(this.getRootPane());
+			SwingUtilities.updateComponentTreeUI(jtree);
 			jtree.setRowHeight(25);
 		}
 	}

@@ -91,11 +91,14 @@ public class FIFO implements ITechnicalStrings,Runnable{
 	/** Current file position (%) used for pause */
 	private int iPosition;
 	
-	/** Date when paused was required ( ms ) */
-	private long lPauseDate;
-	
 	/** Pause boolean */
 	private boolean bPaused;
+	
+	/** Cumative time (ms) spent in pause mode for current track*/
+	long lPauseTime;
+	
+	/** Date last time a pause was required */
+	long lPauseDate;
 	
 	/**
 	 * Singleton access
@@ -118,6 +121,8 @@ public class FIFO implements ITechnicalStrings,Runnable{
 		bForcedRepeat = false;
 		lTotalTime = 0;
 		lOffset = 0;
+		lPauseDate = 0;
+		lPauseTime = 0;
 		bGlobalRandom = false;
 		bBestOf = false;
 		alRepeated = new ArrayList(50);
@@ -135,7 +140,7 @@ public class FIFO implements ITechnicalStrings,Runnable{
 	 * @param bForcedRepeat Force repeat mode for selection
 	 */
 	public synchronized void push(ArrayList alFiles, boolean bAppend,boolean bAuto,boolean bForcedRepeat) {
-		Util.waiting();
+	//	Util.waiting();
 		this.bForcedRepeat = bForcedRepeat;
 		if (!bAuto){
 			FIFO.getInstance().setBestof(false); //best of mode is broken by any push
@@ -248,7 +253,7 @@ public class FIFO implements ITechnicalStrings,Runnable{
 				if (bPlaying ){//already playing something
 					long length = fCurrent.getTrack().getLength();;
 					if ( i%(REFRESH_TIME/SLEEP_TIME) == 0 && length!=0){  //actual refresh less frequent for cpu
-						long lTime = (System.currentTimeMillis() - lTrackStart) + lOffset;
+						long lTime = (System.currentTimeMillis() - lTrackStart) + lOffset - lPauseTime;
 						if ( bIntroEnabled){
 							lTime += (fCurrent.getTrack().getLength()*Integer.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_INTRO_BEGIN))*10);
 						}
@@ -307,6 +312,7 @@ public class FIFO implements ITechnicalStrings,Runnable{
 				synchronized(this){  //lock fifo access when lauching
 					int index = 0;
 					lOffset = 0;
+					lPauseTime = 0;
 					if (ConfigurationManager.getProperty(CONF_STATE_SHUFFLE).equals(TRUE)){
 						index = (int)(Math.random() * alFIFO.size());
 						fCurrent = (File) (alFIFO.get(index));//take the first file in the fifo
@@ -321,16 +327,16 @@ public class FIFO implements ITechnicalStrings,Runnable{
 					Player.stop();  //for security, make sure no other track is playing
 					ObservationManager.notify(EVENT_COVER_REFRESH); //request update cover 
 					if (ConfigurationManager.getBoolean(CONF_STATE_INTRO)){ //intro mode enabled
-						Player.play(fCurrent,Integer.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_INTRO_BEGIN)),Integer.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_INTRO_LENGTH)));
+						Player.play(fCurrent,Integer.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_INTRO_BEGIN)),1000*Integer.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_INTRO_LENGTH)));
 					}
 					else{
 						Player.play(fCurrent,-1,-1);  //play it
 					}
+					lTrackStart = System.currentTimeMillis();
 					//add hits number
 					fCurrent.getTrack().incHits();  //inc hits number 
 					fCurrent.getTrack().incSessionHits();//inc session hits
 					fCurrent.getTrack().setRate(fCurrent.getTrack().getRate()+1); //inc rate by 1 because it is played
-					lTrackStart = System.currentTimeMillis();
 					if ( !(fCurrent instanceof BasicFile)){
 						History.getInstance().addItem(fCurrent.getId(),System.currentTimeMillis());
 					}
@@ -430,18 +436,18 @@ public class FIFO implements ITechnicalStrings,Runnable{
 	}
 	
 	/**
-	 * Get current track position
-	 * @return position in sec
+	 * Get current track position in ms
+	 * @return position in ms
 	 */
-	public int getCurrentPosition(){
-		return (int)((System.currentTimeMillis() + lOffset - lTrackStart)/1000);
+	public synchronized int getCurrentPosition(){
+		return (int)(System.currentTimeMillis() + lOffset - lTrackStart -lPauseTime);
 	}
 	
 	/**
 	 * Move inside a track
 	 * @param fPosition position in % of track length
 	 */
-	public void setCurrentPosition(float fPosition){
+	public synchronized void setCurrentPosition(float fPosition){
 		long lTrackLength = fCurrent.getTrack().getLength();  //in sec
 		if (ConfigurationManager.getBoolean(CONF_STATE_INTRO) ){  //intro mode enabled
 			int iBegin = Integer.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_INTRO_BEGIN));
@@ -462,7 +468,7 @@ public class FIFO implements ITechnicalStrings,Runnable{
 	/**
 	 * Stop request. Void the fifo
 	 */
-	public void stopRequest() {
+	public synchronized void stopRequest() {
 		Player.stop();
 		fifo = null;
 		bStop = true;
@@ -471,25 +477,34 @@ public class FIFO implements ITechnicalStrings,Runnable{
 	/**
 	 * Pause request. 
 	 */
-	public void pauseRequest() {
+	public synchronized void pauseRequest() {
 		if ( !bPaused ){
 			bPaused = true;
+			lPauseDate = System.currentTimeMillis();
 			Player.stop();
-			lPauseDate = System.currentTimeMillis(); //store pause date to compute time
 		}
 		else{
-			bPaused = false;
-			lTrackStart+=(System.currentTimeMillis()-lPauseDate); //offset start date to take pauyse into account
-		/*	//restart paused track
+			lPauseTime+=(System.currentTimeMillis()-lPauseDate);
+			System.out.println("pause time:"+lPauseTime);
+			//restart paused track
+			float fPosition = (float)getCurrentPosition()/(fCurrent.getTrack().getLength()*1000); //position in %
 			if (ConfigurationManager.getBoolean(CONF_STATE_INTRO)){ //intro mode enabled
-				Player.play(fCurrent,iInteger.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_INTRO_BEGIN)),Integer.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_INTRO_LENGTH)));
+				Player.play(fCurrent,100*fPosition,(long)(1000*(1-(fPosition*Integer.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_INTRO_LENGTH))))));
 			}
 			else{
-				Player.play(fCurrent,-1,-1);  //play it
-			}*/
+				Player.play(fCurrent,100*fPosition,1000*fCurrent.getTrack().getLength());  //play it
+			}
+			bPaused = false;
 		}
 	}
 
 	
+
+	/**
+	 * @return Returns the bPaused.
+	 */
+	public synchronized boolean isPaused() {
+		return bPaused;
+	}
 
 }

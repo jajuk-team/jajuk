@@ -2,7 +2,7 @@
 <!--Ant script for packagers only-->
 
 <project default="all" name="jajuk" basedir="..">
-  <property name="distdir" value="/tmp/jajuk">
+  <property name="distdir" value="/tmp/jajuk-dist/jajuk">
   </property>
   <property name="libdir" value="lib">
   </property>
@@ -72,6 +72,23 @@
   <target name="jar" description="o Create the jar" depends="compile">
     <jar jarfile="${distdir}/bin/jajuk-${version}.jar" excludes="**/package.html" basedir="${distdir}/classes" manifest="${basedir}/dist-files/packaging/MANIFEST.MF"/>
   </target>
+  
+  <target name="static_jar" description="o Create the static jar" depends="compile">
+      <unzip dest="${distdir}/classes">
+	      <fileset dir="${distdir}/lib">
+	          <include name="*.jar">
+	          </include>
+	        </fileset>
+	        </unzip>
+	         <delete dir="${distdir}/classes/META-INF">
+		    </delete>
+     <jar jarfile="${distdir}/bin/jajuk-${version}.jar" excludes="**/package.html" basedir="${distdir}/classes" manifest="${basedir}/dist-files/packaging/MANIFEST_static.MF"/>
+  </target>
+  
+  <target name="dist-zip" description="o Create a zip distribution" depends="jar">
+      <zip destfile="/tmp/jajuk-dist-${version}.zip" basedir="${distdir}/.."/>
+  </target>
+  
   
    <target name="javadoc" description="o Generate javadoc" depends="jar">
     <mkdir dir="${javadocdir}">

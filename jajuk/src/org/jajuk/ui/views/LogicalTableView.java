@@ -97,7 +97,7 @@ public class LogicalTableView extends AbstractTableView{
 		//edtiable table  and class 
 		bCellEditable = new boolean[8][iSize];
 		for (int i =0;i<8;i++){
-			for (int j=0;j<bCellEditable.length;j++){
+			for (int j=0;j<iSize;j++){
 				bCellEditable[i][j]=false;
 			}
 		}

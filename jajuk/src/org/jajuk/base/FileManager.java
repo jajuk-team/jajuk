@@ -148,7 +148,8 @@ public class FileManager implements ITechnicalStrings{
 		while ( it.hasNext()){
 			File file = (File)it.next();
 			if (file.getDirectory().getDevice().isMounted() && !file.getDirectory().getDevice().isRefreshing()){
-				long lScore = (long)(Math.random()*(100/(file.getTrack().getSessionHits()+1))*Math.log(file.getTrack().getRate()));  //computes score for each file ( part of shuffleness, part of hits weight )
+				long lRate = file.getTrack().getRate();
+				long lScore = (long)(Math.random()*(100/(file.getTrack().getSessionHits()+1))*Math.log(lRate));  //computes score for each file ( part of shuffleness, part of hits weight )
 				tsEligibleFiles.add(new FileScore(file,lScore));
 			}
 		}
