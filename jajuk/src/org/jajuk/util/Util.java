@@ -461,6 +461,28 @@ public class Util implements ITechnicalStrings {
 		fcDest.close();
 	}
 	
+	/**
+	 * Rename a file
+	 * @param file : file to rename
+	 * @param sNewName : file new name
+	 */
+	public static void copy(File file,String sNewName) throws Exception{
+		Log.debug("Renaming: "+file.getAbsolutePath() +"  to : "+sNewName); //$NON-NLS-1$ //$NON-NLS-2$
+		File fileNew = new File(new StringBuffer(file.getParentFile().getAbsolutePath()).append('/').append(sNewName).toString()); //$NON-NLS-1$
+		if ( !file.exists() || !file.canRead() ){
+			throw new JajukException("023",file.getAbsolutePath(),null); //$NON-NLS-1$
+		}
+		if (  !fileNew.getParentFile().canWrite() ){
+			throw new JajukException("024",file.getAbsolutePath(),null); //$NON-NLS-1$
+		}
+		FileChannel fcSrc = new FileInputStream(file).getChannel();
+		FileChannel fcDest = new FileOutputStream(fileNew).getChannel();
+		fcDest.transferFrom(fcSrc, 0, fcSrc.size());
+		fcSrc.close();
+		fcDest.close();
+	}
+
+	
 	
 	/**
 	 * Get current line. Wait until line appears ( with a time out ) 
