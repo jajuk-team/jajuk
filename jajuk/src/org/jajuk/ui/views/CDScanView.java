@@ -22,6 +22,7 @@ package org.jajuk.ui.views;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -160,6 +161,10 @@ public class CDScanView extends ViewAdapter implements ActionListener {
 			jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 			jfc.setDialogTitle(Messages.getString("DeviceWizard.43"));//$NON-NLS-1$
 			jfc.setMultiSelectionEnabled(false);
+			String sMountPoint = jtfMountPoint.getText(); 
+			if (!sMountPoint.equals("")){  //if url is already set, use it as root directory
+			    jfc.setCurrentDirectory(new File(sMountPoint));
+			}
 			int returnVal = jfc.showOpenDialog(this);
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
 				java.io.File file = jfc.getSelectedFile();

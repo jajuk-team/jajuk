@@ -23,6 +23,7 @@ package org.jajuk.ui;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -391,6 +392,10 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 			jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 			jfc.setDialogTitle(Messages.getString("DeviceWizard.43"));//$NON-NLS-1$
 			jfc.setMultiSelectionEnabled(false);
+			String sUrl =jtfUrl.getText(); 
+			if (!sUrl.equals("")){  //if url is already set, use it as root directory
+			    jfc.setCurrentDirectory(new File(sUrl));
+			}
 			int returnVal = jfc.showOpenDialog(this);
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
 				java.io.File file = jfc.getSelectedFile();
@@ -402,6 +407,10 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 			jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 			jfc.setDialogTitle(Messages.getString("DeviceWizard.47"));//$NON-NLS-1$
 			jfc.setMultiSelectionEnabled(false);
+			String sMountPoint = jtfMountPoint.getText(); 
+			if (!sMountPoint.equals("")){  //if url is already set, use it as root directory
+			    jfc.setCurrentDirectory(new File(sMountPoint));
+			}
 			int returnVal = jfc.showOpenDialog(this);
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
 				java.io.File file = jfc.getSelectedFile();
