@@ -457,7 +457,8 @@ public class Main implements ITechnicalStrings {
 			}
 			//launch selected file
 			if (alToPlay  != null && alToPlay.size() >0){
-				FIFO.getInstance().push(Util.createStackItems(alToPlay,false,false),false);
+				FIFO.getInstance().push(Util.createStackItems(alToPlay,
+						ConfigurationManager.getBoolean(CONF_STATE_REPEAT),false),false);
 			}
 		}
 	}
@@ -537,7 +538,6 @@ public class Main implements ITechnicalStrings {
 				try {
 				    //starts ui
 					jw = JajukWindow.getInstance();
-					jw.setExtendedState(Frame.MAXIMIZED_BOTH);  //maximalize
 				    jw.setCursor(Util.WAIT_CURSOR);
 							
 					//Creates the panel
@@ -567,7 +567,6 @@ public class Main implements ITechnicalStrings {
 					jpTmp.setPreferredSize(new Dimension(3000,3000));//make sure the temp panel makes screen maximalized
 					jpFrame.add(jpTmp, BorderLayout.CENTER);
 				
-					sc.toFront();
 					//Create the perspective manager 
 					PerspectiveManager.load();
 
@@ -575,8 +574,11 @@ public class Main implements ITechnicalStrings {
 					perspectiveBar = PerspectiveBarJPanel.getInstance();
 					jpFrame.add(perspectiveBar, BorderLayout.WEST);
 					
+					//display window
 					jw.pack();
-					jw.setVisible(true); //show main window							
+					jw.setExtendedState(Frame.MAXIMIZED_BOTH);  //maximalize
+					jw.setVisible(true); //show main window
+					sc.toFront();
 					
 					//Display info message if first session
 					if (ConfigurationManager.getBoolean(CONF_FIRST_CON)){
