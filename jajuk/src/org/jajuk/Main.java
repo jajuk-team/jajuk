@@ -249,8 +249,12 @@ public class Main implements ITechnicalStrings {
 			
 			//lauch systray if needed, only for linux and windows, not mac for the moment
 		    if (Util.isUnderLinux() || Util.isUnderWindows()){
-		        Thread.sleep(1000); //wait for a while to avoid tray disparition under windows
-		        jsystray = JajukSystray.getInstance();
+		    	new Thread(){  //do it in a thread to avoid tray disparition under windows
+		    		public void run(){
+		    			jsystray = JajukSystray.getInstance();	
+		    		}
+		    	}.start();
+			    
 		    }
 		
 		} catch (JajukException je) { //last chance to catch any error for logging purpose
