@@ -21,7 +21,7 @@
 package org.jajuk.ui;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Iterator;
 
 import javax.swing.JComponent;
@@ -33,8 +33,8 @@ import javax.swing.JComponent;
  */
 public class ObservationManager {
 
-	/** one event -> list of components */
-	static HashMap hmEventComponents = new HashMap(10);
+	/** one event -> list of components , we use a synchronized collection to avoid unexpected concurrent modifications*/
+	static Hashtable hEventComponents = new Hashtable(10);
 	
 	/**
 	 * Register a component for a given subject
@@ -42,10 +42,10 @@ public class ObservationManager {
 	 * @param jc component to register
 	 */
 	public static synchronized void register(String subject,JComponent jc){
-		ArrayList alComponents = (ArrayList)hmEventComponents.get(subject);
+		ArrayList alComponents = (ArrayList)hEventComponents.get(subject);
 		if (alComponents == null){
 			alComponents = new ArrayList(1);
-			hmEventComponents.put(subject,alComponents);
+			hEventComponents.put(subject,alComponents);
 		}
 		alComponents.add(jc);
 	}
@@ -56,7 +56,7 @@ public class ObservationManager {
 	 * @param jc component to deregister
 	 */
 	public static synchronized void deregister(String subject,JComponent jc){
-		ArrayList alComponents = (ArrayList)hmEventComponents.get(subject);
+		ArrayList alComponents = (ArrayList)hEventComponents.get(subject);
 		if (alComponents == null){
 			alComponents.remove(jc);
 		}
@@ -69,13 +69,14 @@ public class ObservationManager {
 	public static synchronized void notify(final String subject){
 		new Thread(){
 			public synchronized void run(){
-				ArrayList alComponents =(ArrayList)hmEventComponents.get(subject); 
+				ArrayList alComponents =(ArrayList)hEventComponents.get(subject); 
 				if (alComponents == null){
 					return;
 				}
 				Iterator it = alComponents.iterator();  
 				while (it.hasNext()){
-					((Observer)it.next()).update(subject);
+					Observer obs = (Observer)it.next();
+					obs.update(subject);
 				}
 			}
 		}.start();
