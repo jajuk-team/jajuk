@@ -798,6 +798,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 					if (!sBestofSize.equals("")){ //$NON-NLS-1$
 						ConfigurationManager.setProperty(CONF_BESTOF_SIZE,sBestofSize);
 					}
+					FileManager.setRateHasChanged(true); //force refresh of bestof files
 					String sNoveltiesAge = jtfNoveltiesAge.getText();
 					if (!sNoveltiesAge.equals("")){ //$NON-NLS-1$
 						ConfigurationManager.setProperty(CONF_OPTIONS_NOVELTIES_AGE,sNoveltiesAge);

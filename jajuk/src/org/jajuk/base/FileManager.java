@@ -44,9 +44,9 @@ public class FileManager implements ITechnicalStrings{
 	/** Map ids and properties, survives to a refresh, is used to recover old properties after refresh */
 	private static HashMap hmIdProperties = new HashMap(1000);
 	/**Flag the fact a rate has change for a track, used by bestof view refresh for perfs*/
-	private static boolean bRateHasChanged = false;
+	private static boolean bRateHasChanged = true;
 	/**Best of files*/
-	private static ArrayList alBestofFiles;
+	private static ArrayList alBestofFiles = new ArrayList(20);
 	
 	/**
 	 * No constructor available, only static access
@@ -248,8 +248,8 @@ public class FileManager implements ITechnicalStrings{
 	public static synchronized ArrayList getBestOfFiles(){
 		if (FileManager.hasRateChanged() || alBestofFiles == null){  //test a rate has changed for perfs
 			//clear data
-			int iNbBestofFiles = Integer.parseInt(ConfigurationManager.getProperty(CONF_BESTOF_SIZE));
-			alBestofFiles = new ArrayList(iNbBestofFiles);
+			alBestofFiles.clear();
+		    int iNbBestofFiles = Integer.parseInt(ConfigurationManager.getProperty(CONF_BESTOF_SIZE));
 			//create a tempory table to remove unmounted files
 			ArrayList alEligibleFiles = new ArrayList(iNbBestofFiles);
 			Iterator it = TrackManager.getTracks().iterator();
@@ -262,10 +262,13 @@ public class FileManager implements ITechnicalStrings{
 				}
 			}
 			Collections.sort(alEligibleFiles);
-			for (int i=alEligibleFiles.size()-1;i>alEligibleFiles.size()-1-iNbBestofFiles;i--){
-				File file = ((FileScore)alEligibleFiles.get(i)).getFile();
-				alBestofFiles.add(file);
+			int i = 0;
+			while (i<alEligibleFiles.size() && i<iNbBestofFiles){
+			    File file = ((FileScore)alEligibleFiles.get(i)).getFile();
+			    alBestofFiles.add(file);
+			    i++;
 			}
+			Collections.reverse(alBestofFiles); //reserve for score
 			FileManager.setRateHasChanged(false);
 		}
 		return alBestofFiles;
