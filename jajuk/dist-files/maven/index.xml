@@ -15,6 +15,7 @@
 					<td style='vertical-align: top;'>
 						<img alt=''	src='flags/flag_en.png' style='width: 21px; height: 14px;'/>
 						<img alt=''	src='flags/flag_fr.png' style='width: 21px; height: 14px;'/>
+						<img alt=''	src='flags/flag_de.png' style='width: 21px; height: 14px;'/>
 					</td>
 				</tr>
 				<tr>
@@ -22,6 +23,7 @@
 					<td style='vertical-align: top;'>
 						<img alt='' src='flags/flag_en.png' style='width: 21px; height: 14px;'/>
 						<img alt='' src='flags/flag_fr.png' style='width: 21px; height: 14px;'/>
+						<img alt='' src='flags/flag_de.png' style='width: 21px; height: 14px;'/>
 					</td>
 				</tr>
 				<tr>
@@ -41,9 +43,18 @@
 		</table>
 	</section>  
 
-	<section name='News'>
-		<p><b>2004/03/21 00:30</b></p>
-			<p><a href='http://sourceforge.net/projects/jajuk/'>Jajuk initial version 0.1 released !</a></p>
+	<section name='Latest news'>
+		<table style='width: 100%; text-align: left;' border='0' cellpadding='2' cellspacing='2'>
+			<tbody>
+				<tr>
+					<td style='vertical-align: top;'><p><b>2004/04/04</b></p>
+			<p><a href='http://sourceforge.net/projects/jajuk/'>Jajuk hotfix 0.1.4 released</a></p></td>
+					<td style='vertical-align: top;'><p><b>2004/03/21 00:30</b></p>
+			<p><a href='http://sourceforge.net/projects/jajuk/'>Jajuk initial version 0.1 released !</a></p></td>
+				</tr>
+			</tbody>
+		</table>	
+		
 	</section>  
 
   	<section name='Features'>
@@ -138,8 +149,8 @@
     </tr>
     <tr>
       <td style='vertical-align: top;'>
-      <h2>Configuration perspective</h2>
-      <p>Configure devices, system options, perform a quick CD scanning ...</p>
+      <h2>Configuration perspective </h2>
+      <p>Configure devices, system options, perform a quick CD scanning ... (french, macos X thanks Romain Herault)</p>
       <img alt='' src='./screenshots/screenshot_perspective_configuration.jpg'></img>
  </td>
       <td style='vertical-align: top;'><span style='font-weight: bold;'>Views</span>:

@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version='1.0' encoding='ISO-8859-15'?>
 <project>
  
   <pomVersion>3</pomVersion>
@@ -49,12 +49,34 @@
   </versions>
   
     <developers>
-    <developer>
-      <name>Bertrand Florat</name>
-      <id>bflorat</id>
-      <email>bertrand@florat.net</email>
-      <organization>Jajuk team</organization>
-    </developer>
+	    <developer>
+	      <name>Bertrand Florat</name>
+	      <roles>
+		      <role>Main conceptor and developer</role>
+	      </roles>
+	      <id>bflorat</id>
+	      <email>bertrand@florat.net</email>
+	      <organization>Jajuk team</organization>
+	    </developer>
+	    <developer>
+	      <name>Gerhard Dietrichsteiner</name>
+	      <id>skyreacher</id>
+	     <roles>
+			<role>German translator</role>
+	     </roles>
+	      <email>skyreacher@users.sourceforge.net</email>
+	      <organization>Jajuk team</organization>
+	    </developer>
+	    <developer>
+	      <name>Sébastien Gringoire</name>
+	      <id>sgringoi</id>
+    	  <roles>
+		      <role>Design, some early developments</role>
+	      </roles>
+	      <email></email>
+	      <organization>Jajuk team</organization>
+	    </developer>
+	    
   </developers>
 
  <dependencies>
