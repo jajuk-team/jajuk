@@ -137,14 +137,8 @@ public class CDScanView extends ViewAdapter implements ActionListener {
 						}
 						try{
 							device.mount();
-							device.refresh(true);
-							do{
-								Thread.sleep(500); //sleep to get sure refresh thread is realy started
-							}
-							while(!device.isRefreshing());
-							synchronized(Device.bLock){  //wait refresh is done
-								device.unmount(true);
-							}
+							device.refresh(false); //refresh synchronously
+							device.unmount(true);
 						}
 						catch(Exception ex){
 							DeviceManager.removeDevice(device);
