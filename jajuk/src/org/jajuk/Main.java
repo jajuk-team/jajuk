@@ -480,7 +480,7 @@ public class Main implements ITechnicalStrings {
 				}
 				else {  //last file from begining or last file keep position
 				    if (ConfigurationManager.getBoolean(CONF_STATE_WAS_PLAYING) && History.getInstance().getHistory().size()>0){  //make sure user didn't exit jajuk in the stopped state and that history is not void
-				        fileToPlay = FileManager.getFile(History.getInstance().getLastFile());
+				        fileToPlay = FileManager.getFile(History.getInstance().getLastFile()); //last file can be null (return null in this case)
 				    }
 				    else{ //do not try to lauch anything, stay in stop state
 				        return;
