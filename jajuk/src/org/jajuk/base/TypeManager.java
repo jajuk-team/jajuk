@@ -109,6 +109,22 @@ public class TypeManager implements ITechnicalStrings{
 	}
 	
 	/**
+	 * Return type for a given technical description
+	 * @param sTechDesc
+	 * @return associated type or null if none found
+	 */
+	public static synchronized Type getTypeByTechDesc(String sTechDesc) {
+		Iterator it = hmSupportedTypes.values().iterator();
+		while (it.hasNext()){
+			Type type = (Type)it.next();
+			if (type.getProperty(TYPE_PROPERTY_TECH_DESC).equalsIgnoreCase(sTechDesc)){
+				return type;
+			}
+		}
+		return null;
+	}
+	
+	/**
 	 * Return all music types
 	 * @return
 	 */

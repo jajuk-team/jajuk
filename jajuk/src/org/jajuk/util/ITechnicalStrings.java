@@ -43,8 +43,8 @@ public interface ITechnicalStrings {
     public static final int MAX_REMOTE_COVERS=10;
     		
 	// Jajuk version
-	public static final String JAJUK_VERSION = "0.3.3";
-	public static final String JAJUK_VERSION_DATE = "Build 2005-02-04";
+	public static final String JAJUK_VERSION = "0.3.3 rc2";
+	public static final String JAJUK_VERSION_DATE = "Build 2005-02-18";
 	
 	//About 
 	public static final String ABOUT = "<html>Jajuk version "+JAJUK_VERSION+"</html>";
@@ -204,7 +204,14 @@ public interface ITechnicalStrings {
 	//Types properties
 	public static final String TYPE_PROPERTY_IS_MUSIC = "music";  
 	public static final String TYPE_PROPERTY_SEEK_SUPPORTED = "seek";  
-	
+	public static final String TYPE_PROPERTY_TECH_DESC = "tech_desc"; //type description as given in the steam 
+	public static final String TYPE_PROPERTY_TECH_DESC_MP3 = "mp3"; 
+	public static final String TYPE_PROPERTY_TECH_DESC_OGG = "ogg"; 
+	public static final String TYPE_PROPERTY_TECH_DESC_AIFF = "aiff"; 
+	public static final String TYPE_PROPERTY_TECH_DESC_WAVE = "wave"; 
+	public static final String TYPE_PROPERTY_TECH_DESC_AU = "au"; 
+	public static final String TYPE_PROPERTY_TECH_DESC_SPEEX = "speex"; 
+		
 	//Devices properties
 	public static final String DEVICE_OPTION_AUTO_REFRESH = "auto_refresh";
 	public static final String DEVICE_OPTION_AUTO_MOUNT = "auto_mount";
