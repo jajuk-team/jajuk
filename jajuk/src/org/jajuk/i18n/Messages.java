@@ -217,6 +217,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings	{
 	
 	/**
 	 * Show a dialog waiting for a user decision
+	 * <p>CAUTION! the thread which calls this method musn't have locks on ressources : otherwise it can conduct to GUI freeze</p>
 	 * @param sText : dialog text
 	 * @param iType : dialof type : can be JOptionPane.ERROR_MESSAGE, WARNING_MESSAGE
 	 */
@@ -245,13 +246,13 @@ public class Messages extends DefaultHandler implements ITechnicalStrings	{
 	static private String getTitleForType(int iType){
 	    switch(iType){
 	    	case JOptionPane.ERROR_MESSAGE:
-	    	    	return Messages.getString("Error");
+	    	    	return Messages.getString("Error"); //$NON-NLS-1$
 	    	case JOptionPane.WARNING_MESSAGE:
-	    	    return Messages.getString("Warning");
+	    	    return Messages.getString("Warning"); //$NON-NLS-1$
 	    	case JOptionPane.INFORMATION_MESSAGE:
-	    	    return Messages.getString("Info");
+	    	    return Messages.getString("Info"); //$NON-NLS-1$
 	    }
-	    return "";
+	    return ""; //$NON-NLS-1$
 	}
 	
 	
@@ -265,14 +266,8 @@ public class Messages extends DefaultHandler implements ITechnicalStrings	{
 	        message.run();
 	    }
 	    else{ //not in the awt dispatcher thread
-	        try {
-                SwingUtilities.invokeAndWait(message);
-            } catch (InterruptedException e) {
-                Log.error(e);
-            } catch (InvocationTargetException e) {
-                Log.error(e);
-            }
-	    }
+	            SwingUtilities.invokeLater(message);
+        }
 	}
 	
 	/**
@@ -285,14 +280,8 @@ public class Messages extends DefaultHandler implements ITechnicalStrings	{
 	        message.run();
 	    }
 	    else{ //not in the awt dispatcher thread
-	        try {
-                SwingUtilities.invokeAndWait(message);
-            } catch (InterruptedException e) {
-                Log.error(e);
-            } catch (InvocationTargetException e) {
-                Log.error(e);
-            }
-	    }
+	            SwingUtilities.invokeLater(message);
+        }
 	}
 	
 	/**
@@ -301,19 +290,13 @@ public class Messages extends DefaultHandler implements ITechnicalStrings	{
 	 * @param sInfoSup
 	 */
 	public static void showErrorMessage(final String sCode,final String sInfoSup){
-	    MessageDialog message = new MessageDialog(Messages.getErrorMessage(sCode)+" : "+sInfoSup,getTitleForType(JOptionPane.ERROR_MESSAGE),JOptionPane.ERROR_MESSAGE);
+	    MessageDialog message = new MessageDialog(Messages.getErrorMessage(sCode)+" : "+sInfoSup,getTitleForType(JOptionPane.ERROR_MESSAGE),JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$
 	    if (SwingUtilities.isEventDispatchThread()){ //in the dispatcher thread, no need to use invokeLatter
 	        message.run();
 	    }
 	    else{ //not in the awt dispatcher thread
-	        try {
-                SwingUtilities.invokeAndWait(message);
-            } catch (InterruptedException e) {
-                Log.error(e);
-            } catch (InvocationTargetException e) {
-                Log.error(e);
-            }
-	    }
+	            SwingUtilities.invokeLater(message);
+        }
 	}
 	
 	/**
@@ -322,19 +305,13 @@ public class Messages extends DefaultHandler implements ITechnicalStrings	{
 	 * @param sInfoSup
 	 */
 	public static void showInfoMessage(final String sMessage,final String sInfoSup){
-	    MessageDialog message = new MessageDialog(sMessage+" : "+sInfoSup,getTitleForType(JOptionPane.INFORMATION_MESSAGE),JOptionPane.INFORMATION_MESSAGE);
+	    MessageDialog message = new MessageDialog(sMessage+" : "+sInfoSup,getTitleForType(JOptionPane.INFORMATION_MESSAGE),JOptionPane.INFORMATION_MESSAGE); //$NON-NLS-1$
 	    if (SwingUtilities.isEventDispatchThread()){ //in the dispatcher thread, no need to use invokeLatter
 	        message.run();
 	    }
 	    else{ //not in the awt dispatcher thread
-	        try {
-                SwingUtilities.invokeAndWait(message);
-            } catch (InterruptedException e) {
-                Log.error(e);
-            } catch (InvocationTargetException e) {
-                Log.error(e);
-            }
-	    }
+	            SwingUtilities.invokeLater(message);
+         }
 	}
 
 	/**
@@ -347,14 +324,8 @@ public class Messages extends DefaultHandler implements ITechnicalStrings	{
 	        message.run();
 	    }
 	    else{ //not in the awt dispatcher thread
-	        try {
-                SwingUtilities.invokeAndWait(message);
-            } catch (InterruptedException e) {
-                Log.error(e);
-            } catch (InvocationTargetException e) {
-                Log.error(e);
-            }
-	    }
+	            SwingUtilities.invokeLater(message);
+         }
 	}
 	
 	/**
