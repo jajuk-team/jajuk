@@ -86,7 +86,7 @@ public class AboutView extends ViewAdapter {
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.IView#display()
 	 */
-	public void display(){
+	public void populate(){
 		setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
 		//licence panel
 		jpLicence = new JPanel(new BorderLayout());
@@ -123,13 +123,13 @@ public class AboutView extends ViewAdapter {
 	 * @see org.jajuk.ui.IView#getDesc()
 	 */
 	public String getDesc() {
-		return Messages.getString("AboutView.10");	 //$NON-NLS-1$
+		return "AboutView.10";	 //$NON-NLS-1$
 	}
 
 	/* (non-Javadoc)
-	 * @see org.jajuk.ui.IView#getViewName()
+	 * @see org.jajuk.ui.IView#getID()
 	 */
-	public String getViewName() {
+	public String getID() {
 		return "org.jajuk.ui.views.AboutView"; //$NON-NLS-1$
 	}
 

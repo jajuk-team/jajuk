@@ -152,7 +152,7 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings{
 		Iterator it = PerspectiveManager.getCurrentPerspective().getViews().iterator();
 		while (it.hasNext()){
 			IView view = (IView)it.next();
-			JCheckBoxMenuItem jcbmi = new JCheckBoxMenuItem(view.getDesc(), ViewManager.isVisible(view));
+			JCheckBoxMenuItem jcbmi = new JCheckBoxMenuItem(Messages.getString(view.getDesc()), ViewManager.isVisible(view));
 			jcbmi.addActionListener(JajukListener.getInstance());
 			jcbmi.setActionCommand(EVENT_VIEW_SHOW_STATUS_CHANGED_REQUEST);
 			hmCheckboxView.put(jcbmi,view);

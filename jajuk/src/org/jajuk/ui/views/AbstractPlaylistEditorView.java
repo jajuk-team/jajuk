@@ -184,7 +184,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.IView#display()
 	 */
-	public void display(){
+	public void populate(){
 		//pre-compute column name for perfs
 		if (sColName == null){
 			sColName = new String[]{Messages.getString("AbstractPlaylistEditorView.0"),Messages.getString("AbstractPlaylistEditorView.1")}; //$NON-NLS-1$ //$NON-NLS-2$
@@ -258,15 +258,10 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 	 * @see org.jajuk.ui.IView#getDesc()
 	 */
 	public String getDesc() {
-		return Messages.getString("AbstractPlaylistEditorView.15");	 //$NON-NLS-1$
+		return "AbstractPlaylistEditorView.15";	 //$NON-NLS-1$
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.jajuk.ui.IView#getViewName()
-	 */
-	public abstract String getViewName();
-	
-	
+		
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.Observer#update(java.lang.String)
 	 */

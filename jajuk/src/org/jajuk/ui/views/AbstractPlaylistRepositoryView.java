@@ -87,7 +87,7 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.IView#display()
 	 */
-	public void display(){
+	public void populate(){
 		setLayout(new BoxLayout(this,BoxLayout.X_AXIS));
 		
 		//root pane
@@ -138,7 +138,7 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 			}
 		};
 		//refresh
-		populate();
+		populatePlaylists();
 		jpRoot.add(Box.createVerticalStrut(500));  //make sure playlists items are packed to the top
 		JScrollPane jsp = new JScrollPane(jpRoot);
 		add(jsp);
@@ -207,7 +207,7 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 	 * @see org.jajuk.ui.IView#getDesc()
 	 */
 	public String getDesc() {
-		return Messages.getString("PhysicalPlaylistRepositoryView.6");	 //$NON-NLS-1$
+		return "PhysicalPlaylistRepositoryView.6";	 //$NON-NLS-1$
 	}
 	
 	/* (non-Javadoc)
@@ -225,7 +225,7 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 			SwingWorker sw = new SwingWorker() {
 				public Object  construct(){
 					jpRoot.removeAll();
-					populate();
+					populatePlaylists();
 					return null;
 				}
 				public void finished() {
@@ -243,7 +243,7 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 	/**
 	 * Create playlists from collection 
 	 */
-	void populate(){
+	void populatePlaylists(){
 		alPlaylistFileItems.clear();
 		//special playlists
 		JPanel jpSpecials = new JPanel();

@@ -20,9 +20,8 @@
 package org.jajuk.ui.perspectives;
 
 
+import java.awt.Container;
 import java.util.ArrayList;
-
-import javax.swing.JDesktopPane;
 
 import org.jajuk.ui.views.IView;
 /**
@@ -36,20 +35,10 @@ public interface IPerspective {
 	
 	/**
 	 * Add a view to the perspective.
-	 * @param view View to add to the perspective.
-	 * @param iWidthPer desktop width percentile required y the view 
-	 * @param iHeightPer desktop height percentile required y the view
-	 * @param iXPer desktop X coordonate for the upper-left point of the view
-	 * @param iYPer desktop Y coordonate for the upper-left point of the view
+	 *  @param view View to add to the perspective.
 	 */
-	public void addView(IView view,int iWidthPer,int iHeightPer,int iXPer,int iYPer);
-	/**
-		 * 
-		 * 
-		 * @param view 
-		 * @return void 
-		 */
-		
+	public void addView(IView view);
+	
 	
 	/**
 	 * Remove a view from the perspective.
@@ -60,15 +49,15 @@ public interface IPerspective {
 	public void removeView(IView view);
 		
 	/**
-	 * @return the perspective's name.
+	 * @return the perspective's id
 	 */
-	public String getName();
+	public String getID();
 	
 	/**
-	 * Set name ( class ) of the perspective
-	 * @param sName name ( class ) of the perspective
+	 * Set id ( class ) of the perspective
+	 * @param sID ( class ) of the perspective
 	 */
-	public void setName(String sName);
+	public void setID(String sID);
 	
 	/**
 	 *  Type description
@@ -99,6 +88,6 @@ public interface IPerspective {
 	/**
 	 * @return Returns the desktop.
 	 */
-	public JDesktopPane getDesktop() ;
-
+	public Container getDesktop() ;
+		
 }

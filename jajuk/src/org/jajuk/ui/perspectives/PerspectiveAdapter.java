@@ -20,16 +20,15 @@
 
 package org.jajuk.ui.perspectives;
 
+import java.awt.Container;
 import java.util.ArrayList;
 
 import javax.swing.JDesktopPane;
 
 import org.jajuk.Main;
 import org.jajuk.base.ITechnicalStrings;
-import org.jajuk.ui.views.CoverView;
 import org.jajuk.ui.views.IView;
 import org.jajuk.ui.views.ViewManager;
-import org.jajuk.util.ConfigurationManager;
 
 /**
  * Perspective adapter, provide default implementation for perspectives
@@ -38,8 +37,8 @@ import org.jajuk.util.ConfigurationManager;
  * @created    15 nov. 2003
  */
 public abstract class PerspectiveAdapter implements IPerspective,ITechnicalStrings {
-	/** Perspective name*/
-	private String sName;
+	/** Perspective id (class)*/
+	private String sID;
 	/** Perspective icon path*/
 	private String sIconPath;
 	/** Perspective views list*/
@@ -60,21 +59,22 @@ public abstract class PerspectiveAdapter implements IPerspective,ITechnicalStrin
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.perspectives.IPerspective#addView(org.jajuk.ui.views.IView)
 	 */
-	public void addView(IView view,int iWidth,int iHeight,int iX,int iY) {
-		//test the unique cover case : don't register the view if the option is disabled  
-		if ((view instanceof CoverView) && !ConfigurationManager.getBoolean(CONF_OPTIONS_COVER) ){
-			return;
-		}
+	public void addView(IView view) {
 		alViews.add(view);
 		ViewManager.registerView(view);
-		int iCommandYSize = 108;
-		int iCommandXSize = 45;
-		ViewManager.setSize(view,(Main.getWindow().getWidth()-iCommandXSize)*iWidth/100,(Main.getWindow().getHeight()-iCommandYSize)*iHeight/100);
-		ViewManager.setLocation(view,(Main.getWindow().getWidth()-iCommandXSize)*iX/100,(Main.getWindow().getHeight()-iCommandYSize)*iY/100);
-		ViewManager.setVisible(view,true);
+		int iMainWidth = Main.getWindow().getWidth()- BORDER_X_SIZE; //desktop pane size in pixels
+		int iMainHeight = Main.getWindow().getHeight()- BORDER_Y_SIZE; //desktop pane size in pixels
+		int iWidth = iMainWidth*view.getLogicalWidth()/100;
+		int iHeight = iMainHeight*view.getLogicalHeight()/100;
+		int iX = iMainWidth*view.getLogicalX()/100;
+		int iY = iMainHeight*view.getLogicalY()/100;
+		ViewManager.setVisible(view,view.isShouldBeShown());
+		ViewManager.setSize(view,iWidth,iHeight);
+		ViewManager.setLocation(view,iX,iY);
 		getDesktop().add(ViewManager.getFrame(view));
 	}
-
+	
+	
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.perspectives.IPerspective#removeView(org.jajuk.ui.views.IView)
 	 */
@@ -83,10 +83,10 @@ public abstract class PerspectiveAdapter implements IPerspective,ITechnicalStrin
 	}
 
 	/* (non-Javadoc)
-	 * @see org.jajuk.ui.perspectives.IPerspective#getName()
+	 * @see org.jajuk.ui.perspectives.IPerspective#getID()
 	 */
-	public String getName() {
-		return sName;
+	public String getID() {
+		return sID;
 	}
 
 	/* (non-Javadoc)
@@ -99,7 +99,7 @@ public abstract class PerspectiveAdapter implements IPerspective,ITechnicalStrin
 	/**
 	 * @return Returns the desktop.
 	 */
-	public JDesktopPane getDesktop() {
+	public Container getDesktop() {
 		return desktop;
 	}
 	
@@ -107,7 +107,7 @@ public abstract class PerspectiveAdapter implements IPerspective,ITechnicalStrin
 	 * toString method
 	 */
 	public String toString(){
-		return "Perspective[name="+getName()+" description='"+getDesc()+"]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		return "Perspective[name="+getID()+" description='"+getDesc()+"]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 	
 	/* (non-Javadoc)
@@ -125,10 +125,10 @@ public abstract class PerspectiveAdapter implements IPerspective,ITechnicalStrin
 	}
 
 	/* (non-Javadoc)
-	 * @see org.jajuk.ui.IPerspective#setName(java.lang.String)
+	 * @see org.jajuk.ui.IPerspective#setID(java.lang.String)
 	 */
-	public void setName(String sName) {
-		this.sName = sName;
+	public void setID(String sID) {
+		this.sID = sID;
 	}
 
 }

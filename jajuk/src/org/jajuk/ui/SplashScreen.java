@@ -25,7 +25,7 @@ import java.awt.Frame;
 import java.awt.Toolkit;
 
 import javax.swing.BoxLayout;
-import javax.swing.JFrame;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -38,7 +38,7 @@ import org.jajuk.util.Util;
  * @author     bflorat
  * @created    20 nov. 2003
  */
-public class SplashScreen extends JFrame implements ITechnicalStrings
+public class SplashScreen extends JDialog implements ITechnicalStrings
 {
 	public SplashScreen(Frame f)
 	{

@@ -22,7 +22,6 @@ package org.jajuk.ui;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -38,7 +37,6 @@ import org.jajuk.i18n.Messages;
 import org.jajuk.ui.perspectives.IPerspective;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.util.Util;
-import org.jajuk.util.log.Log;
 
 /**
  * Menu bar used to choose the current perspective.
@@ -61,19 +59,7 @@ public class PerspectiveBarJPanel extends JPanel implements ITechnicalStrings{
 	 */
 	public static synchronized PerspectiveBarJPanel getInstance(){
 		if (pb == null){
-			try {
-				/*starts perspective bar instanciation and display, must be synchonous
-				 * because the pb is used in the main class and has not to be null */
-				SwingUtilities.invokeAndWait(new Runnable(){
-					public void run(){
-						pb = new PerspectiveBarJPanel();
-					}
-				});
-			} catch (InterruptedException e) {
-				Log.error(e);
-			} catch (InvocationTargetException e) {
-				Log.error(e);
-			}
+				pb = new PerspectiveBarJPanel();
 		}
 		return pb;
 	}
@@ -106,13 +92,14 @@ public class PerspectiveBarJPanel extends JPanel implements ITechnicalStrings{
 			final IPerspective perspective = (IPerspective)it.next();
 			JButton jb = new JButton(Util.getIcon("jar:"+Util.getExecLocation()+"!"+perspective.getIconPath())); //$NON-NLS-1$ //$NON-NLS-2$
 			try{
-				jb.setToolTipText(Messages.getString("PerspectiveBarJPanel."+perspective.getName())); //$NON-NLS-1$
+				jb.setToolTipText(Messages.getString("PerspectiveBarJPanel."+perspective.getID())); //$NON-NLS-1$
 			}
-			catch(Exception e){};  //ignore tooltip missing
+			catch(Exception e){  //ignore tooltip missing
+			}; 
 			jb.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					//no thread, it causes ugly screen repaint	
-					PerspectiveManager.notify(perspective.getName());
+					PerspectiveManager.notify(perspective.getID());
 				}
 			});
 			jtbPerspective.add(jb);

@@ -346,7 +346,7 @@ public class Util implements ITechnicalStrings {
 			JDesktopPane jdesktop = null;
 			IPerspective perspective = PerspectiveManager.getCurrentPerspective();
 			if ( perspective != null){
-				jdesktop = perspective.getDesktop();
+				jdesktop = (JDesktopPane)perspective.getDesktop();
 				int numComp = jdesktop.getComponentCount();
 				Component comp = null;
 				for (int i = 0; i < numComp; i++) {
@@ -369,7 +369,7 @@ public class Util implements ITechnicalStrings {
 			JDesktopPane jdesktop = null;
 			IPerspective perspective = PerspectiveManager.getCurrentPerspective();
 			if ( perspective != null){
-				jdesktop = perspective.getDesktop();
+				jdesktop = (JDesktopPane)perspective.getDesktop();
 				int numComp = jdesktop.getComponentCount();
 				Component comp = null;
 				for (int i = 0; i < numComp; i++) {
