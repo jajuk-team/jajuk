@@ -19,12 +19,12 @@
  */
 package org.jajuk.ui;
 
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -64,9 +64,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 	static private CommandJPanel command;
 	
 	//widgets declaration
-	JToolBar jtbSearch;
 	SearchBox  sbSearch;
-	JToolBar jtbHistory;
 	public SteppedComboBox jcbHistory;
 	JToolBar jtbMode;
 	JButton jbRepeat;
@@ -84,10 +82,8 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 	JButton jbPlayPause;
 	JButton jbStop;
 	JButton jbFwd;
-	JToolBar jtbVolume;
 	JLabel jlVolume;
 	JSlider jsVolume;
-	JToolBar jtbPosition;
 	JLabel jlPosition;
 	JSlider jsPosition;
 	
@@ -118,32 +114,19 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		//dimensions
 		int height1 = 25;  //buttons, components
 		//int height2 = 36; //slider ( at least this height in the gtk+ l&f ) 
-		int iSeparator = 0;
+		int iSeparator = 1;
 		//set default layout and size
-		double[][] size ={{0.20,iSeparator,272,iSeparator,0.13,iSeparator,0.10,iSeparator,0.21,iSeparator,0.16,iSeparator,0.16},
+		double[][] size ={{0.17,3*iSeparator,0.17,iSeparator,0.11,iSeparator,0.09,iSeparator,0.18,iSeparator,0.12,iSeparator,0.15},
 				{height1}}; //note we can't set a % for history combo box because of popup size
 		setLayout(new TableLayout(size));
 		setBorder(BorderFactory.createEtchedBorder());
-		//search toolbar
-		jtbSearch = new JToolBar();
-		jtbSearch.setFloatable(false);
 		sbSearch = new SearchBox(this);
-		jtbSearch.add(Box.createHorizontalGlue());
-		jtbSearch.add(sbSearch);
-		jtbSearch.add(Box.createHorizontalGlue());
 		
-		//history toolbar
-		jtbHistory = new JToolBar();
+		//history
 		jcbHistory = new SteppedComboBox(History.getInstance().getHistory().toArray());
-		jtbHistory.setFloatable(false);
-		jtbHistory.add(Box.createHorizontalGlue());;
-		jcbHistory.setMinimumSize(new Dimension(100,20));
-		jcbHistory.setPreferredSize(new Dimension(270,20));
 		jcbHistory.setPopupWidth(1000);
 		jcbHistory.setToolTipText(Messages.getString("CommandJPanel.0")); //$NON-NLS-1$
 		jcbHistory.addActionListener(this);
-		jtbHistory.add(jcbHistory);
-		jtbHistory.add(Box.createHorizontalGlue());
 		
 		//Mode toolbar
 		jtbMode = new JToolBar();
@@ -252,39 +235,35 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		jtbPlay.add(jbFwd);
 		jtbPlay.add(Box.createHorizontalGlue());
 		
-		//Volume toolbar
-		jtbVolume = new JToolBar();
-		jtbVolume.setFloatable(false);
-		jtbVolume.add(Box.createHorizontalGlue());
+		//Volume
+		JPanel jpVolume = new JPanel();
+		jpVolume.setLayout(new BoxLayout(jpVolume,BoxLayout.X_AXIS));
 		jlVolume = new JLabel(Util.getIcon(ICON_VOLUME)); 
-		jtbVolume.add(jlVolume);
 		jsVolume = new JSlider(0,100,50);
+		jpVolume.add(jlVolume);
+		jpVolume.add(jsVolume);
 		jsVolume.setToolTipText(Messages.getString("CommandJPanel.14")); //$NON-NLS-1$
 		jsVolume.addChangeListener(this);
-		jtbVolume.add(jsVolume);
-		jtbVolume.add(Box.createHorizontalGlue());
 		
-		//Position toolbar
-		jtbPosition = new JToolBar();
-		jtbPosition.setFloatable(false);
-		jtbPosition.add(Box.createHorizontalGlue());
+		//Position
+		JPanel jpPosition = new JPanel();
+		jpPosition.setLayout(new BoxLayout(jpPosition,BoxLayout.X_AXIS));
 		jlPosition = new JLabel(Util.getIcon(ICON_POSITION)); 
-		jtbPosition.add(jlPosition);
 		jsPosition = new JSlider(0,100,0);
+		jpPosition.add(jlPosition);
+		jpPosition.add(jsPosition);
 		jsPosition.addChangeListener(this);
 		jsPosition.setEnabled(false);
 		jsPosition.setToolTipText(Messages.getString("CommandJPanel.15")); //$NON-NLS-1$
-		jtbPosition.add(jsPosition);
-		jtbPosition.add(Box.createHorizontalGlue());
 		
 		//add toolbars to main panel
-		add(jtbSearch,"0,0"); //$NON-NLS-1$
-		add(jtbHistory,"2,0"); //$NON-NLS-1$
+		add(sbSearch,"0,0"); //$NON-NLS-1$
+		add(jcbHistory,"2,0"); //$NON-NLS-1$
 		add(jtbMode,"4,0"); //$NON-NLS-1$
 		add(jtbSpecial,"6,0"); //$NON-NLS-1$
 		add(jtbPlay,"8,0"); //$NON-NLS-1$
-		add(jtbVolume,"10,0"); //$NON-NLS-1$
-		add(jtbPosition,"12,0"); //$NON-NLS-1$
+		add(jpVolume,"10,0"); //$NON-NLS-1$
+		add(jpPosition,"12,0"); //$NON-NLS-1$
 		
 		//register to player events
 		ObservationManager.register(EVENT_PLAYER_PLAY,this);

@@ -21,7 +21,6 @@
 package org.jajuk.ui.views;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.util.ArrayList;
 
 import javax.swing.Box;
@@ -67,7 +66,7 @@ public class AboutView extends ViewAdapter {
 	private JTabbedPane jtp;
 	
 	/**Additional informations */
-	private static final String INFOS = "http://jajuk.sourceforge.net"; //$NON-NLS-1$
+	private static final String INFOS = "<html><a href='http://jajuk.sourceforge.net'>http://jajuk.sourceforge.net</a></html>"; //$NON-NLS-1$
 	
 	/**Return self instance*/
 	public static synchronized AboutView getInstance(){
@@ -105,9 +104,7 @@ public class AboutView extends ViewAdapter {
 		cp = new ContributorsPanel(alContribs);
 		JPanel jpAbout = new JPanel();
 		jpAbout.setLayout(new BoxLayout(jpAbout,BoxLayout.Y_AXIS));
-		ap = new AboutPanel("Jajuk",JAJUK_VERSION,"Copyright 2003,2004 Bertrand Florat & Jajuk team",INFOS,Util.getIcon(ICON_LOGO).getImage()); //$NON-NLS-1$ //$NON-NLS-2$
-		ap.setPreferredSize(new Dimension(1000,150));
-		ap.setMaximumSize(new Dimension(1000,150));
+		ap = new AboutPanel("Jajuk",JAJUK_VERSION,"<html>Copyright 2003,2004<br>Bertrand Florat & Jajuk team</html>",INFOS,Util.getIcon(ICON_LOGO).getImage()); //$NON-NLS-1$ //$NON-NLS-2$
 		jpAbout.add(ap);
 		jpAbout.add(cp);
 		jpAbout.add(Box.createVerticalGlue());

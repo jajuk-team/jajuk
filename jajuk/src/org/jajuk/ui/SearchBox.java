@@ -21,7 +21,6 @@
 package org.jajuk.ui;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -88,9 +87,6 @@ public class SearchBox extends JTextField implements KeyListener{
 		}.start();
 		addKeyListener(this);
 		setToolTipText(Messages.getString("SearchBox.0")); //$NON-NLS-1$
-		setMinimumSize(new Dimension(100,20));
-		setPreferredSize(new Dimension(300,20));
-		setMaximumSize(new Dimension(300,20));
 	}
 	
 	

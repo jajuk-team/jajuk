@@ -18,7 +18,6 @@
 
 package org.jajuk.ui.views;
 
-import java.awt.Dimension;
 import java.awt.dnd.DnDConstants;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -98,9 +97,6 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 			jcbProperty.addItem(model.getColumnName(i));	
 		}
 		jcbProperty.setToolTipText(Messages.getString("AbstractTableView.1")); //$NON-NLS-1$
-		jcbProperty.setMinimumSize(new Dimension(150,20));
-		jcbProperty.setPreferredSize(new Dimension(200,20));
-		jcbProperty.setMaximumSize(new Dimension(200,20));
 		JPanel jpEquals = new JPanel();
 		jpEquals.setLayout(new BoxLayout(jpEquals,BoxLayout.X_AXIS));
 		jlEquals = new JLabel(Messages.getString("AbstractTableView.7")); //$NON-NLS-1$
@@ -118,9 +114,6 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 			}
 		});
 		jtfValue.setToolTipText(Messages.getString("AbstractTableView.3")); //$NON-NLS-1$
-		jtfValue.setMinimumSize(new Dimension(150,20));
-		jtfValue.setPreferredSize(new Dimension(200,20));
-		jtfValue.setMaximumSize(new Dimension(200,20));
 		//buttons
 		jtbControl = new JToolBar();
 		jtbControl.setRollover(true);

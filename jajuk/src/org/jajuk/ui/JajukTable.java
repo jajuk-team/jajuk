@@ -20,11 +20,9 @@
 
 package org.jajuk.ui;
 
-import java.awt.Component;
+import java.awt.event.MouseEvent;
 
-import javax.swing.JComponent;
 import javax.swing.JTable;
-import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 
 import com.sun.TableSorter;
@@ -67,24 +65,15 @@ public class JajukTable extends JTable {
 	/**
 	 * add tooltips to each cell
 	*/
-	public Component prepareRenderer(TableCellRenderer renderer,
-			int rowIndex, int vColIndex) {
-		Component c = super.prepareRenderer(renderer, rowIndex, vColIndex);
-		if (c instanceof JComponent) {
-			JComponent jc = (JComponent)c;
-			Object o = getValueAt(rowIndex, vColIndex);
-			String s =""; //$NON-NLS-1$
-			if ( !(o instanceof String) ){
-				if ( o instanceof Long){
-					s = o.toString();
-				}
-			}
-			else{
-				s = (String)o;
-			}
-			jc.setToolTipText(s);
-		}
-		return c;
+	public String getToolTipText(MouseEvent e) {
+		String tip = null;
+		java.awt.Point p = e.getPoint();
+		int rowIndex = rowAtPoint(p);
+		int colIndex = columnAtPoint(p);
+		int realColumnIndex = convertColumnIndexToModel(colIndex);
+		TableModel model = getModel();
+		String sTip = model.getValueAt(rowIndex,colIndex).toString();
+		return sTip;
 	}
 	
 	/**
