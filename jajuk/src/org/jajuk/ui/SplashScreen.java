@@ -59,12 +59,12 @@ public class SplashScreen extends JDialog implements ITechnicalStrings{
 		        							{TableLayout.FILL,20}	};
 		jpContent.setLayout(new TableLayout(dSize));
 		jlImage = new JLabel(Util.getIcon(IMAGES_SPLASHSCREEN));
-		jlRelease = new JLabel("Jajuk "+JAJUK_VERSION+" "+JAJUK_VERSION_DATE);
-		jlRelease.setFont(new Font("Dialog",Font.PLAIN,12));
+		jlRelease = new JLabel("Jajuk "+JAJUK_VERSION+" "+JAJUK_VERSION_DATE); //$NON-NLS-1$ //$NON-NLS-2$
+		jlRelease.setFont(new Font("Dialog",Font.PLAIN,12)); //$NON-NLS-1$
 		setTitle(Messages.getString("JajukWindow.17"));  //$NON-NLS-1$
-		jpContent.add(jlImage,"0,0");
+		jpContent.add(jlImage,"0,0"); //$NON-NLS-1$
 		jpRelease = Util.getCentredPanel(jlRelease); //centred horizontaly
-		jpContent.add(jpRelease,"0,1");
+		jpContent.add(jpRelease,"0,1"); //$NON-NLS-1$
 		pack();
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		Dimension labelSize = jlImage.getPreferredSize();

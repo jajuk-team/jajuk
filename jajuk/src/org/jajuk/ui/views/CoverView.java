@@ -527,7 +527,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
             catch(Exception e){ //this cover cannot be loaded
                 setCursor(Util.DEFAULT_CURSOR);
                 searching(false);
-                throw new JajukException("000");
+                throw new JajukException("000"); //$NON-NLS-1$
             }
             Image img = icon.getImage();
             if (ConfigurationManager.getBoolean(CONF_COVERS_RESIZE)){

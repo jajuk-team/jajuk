@@ -23,6 +23,7 @@ package org.jajuk.ui.views;
 import info.clearthought.layout.TableLayout;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.dnd.DnDConstants;
 import java.awt.event.ActionEvent;
@@ -282,6 +283,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
         }
         jtable.getColumnModel().getColumn(0).setPreferredWidth(20); //just an icon
         jtable.getColumnModel().getColumn(0).setMaxWidth(20);
+        jtable.getTableHeader().setPreferredSize(new Dimension(0,20));
         jtable.addMouseListener(this);
         //selection listener to hide some buttons to planned tracks
         ListSelectionModel lsm = jtable.getSelectionModel();
