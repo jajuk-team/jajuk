@@ -66,7 +66,7 @@ public class HelpPerspective extends PerspectiveAdapter{
 	    net.infonode.docking.View dockingAboutView = addView(view);
 		viewMap.addView(3,dockingAboutView);
 	    
-	    SplitWindow verMainSplit = new SplitWindow(true,0.5f,dockingHelpView,dockingAboutView);
+	    SplitWindow verMainSplit = new SplitWindow(true,0.7f,dockingHelpView,dockingAboutView);
 		
 	    setRootWindow(viewMap,verMainSplit);
         
