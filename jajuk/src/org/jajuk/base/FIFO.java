@@ -20,6 +20,7 @@
 package org.jajuk.base;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.Properties;
 
@@ -296,23 +297,23 @@ public class FIFO implements ITechnicalStrings,Runnable,Observer{
 	}
 	
 	/**
-	 * Play previous track
+	 * Play previous track in the album (even if the selection should be shuffle) 
 	 */
 	public synchronized void playPrevious(){
-		if ( fLastOne != null){
-			push(FileManager.getPreviousFile(fLastOne),false);	
-		}
-		else{
-			File file = FileManager.getFile(History.getInstance().getLastFile());
-			file = FileManager.getPreviousFile(file);
-			if ( file != null && file.isReady()){
-				FIFO.getInstance().push(file,false);
-			}
+		//search in the history previous track
+		ArrayList alHistory = History.getInstance().getHistory();
+		HistoryItem hiPrevious = (HistoryItem)alHistory.get(alHistory.size()-2);
+		File file = FileManager.getFile(hiPrevious.getFileId());
+		ArrayList alFilesToPlay = new ArrayList();
+		alFilesToPlay.add(file);
+		if ( file != null && file.isReady()){
+			FIFO.getInstance().insert(alFilesToPlay,0,true);
 		}
 	}
 	
+	
 	/**
-	 * Play next track
+	 * Play next track in selection
 	 */
 	public synchronized void playNext(){
 		if ( fCurrent != null){  //if stopped, nothing to stop
@@ -381,6 +382,7 @@ public class FIFO implements ITechnicalStrings,Runnable,Observer{
 					else{  //fifo empty and nothing planned to be played, lets re-initialize labels
 						if ( i%(REFRESH_TIME/SLEEP_TIME) == 0){  //actual refresh less frequent for cpu
 							lTotalTime = 0;
+							ObservationManager.notify(EVENT_ZERO);
 						}
 						i++;
 						continue; //leave
@@ -398,14 +400,7 @@ public class FIFO implements ITechnicalStrings,Runnable,Observer{
 					}
 					int index = 0;
 					lOffset = 0;
-					if (ConfigurationManager.getProperty(CONF_STATE_SHUFFLE).equals(TRUE)){
-						index = (int)(Math.random() * alFIFO.size());
-						fCurrent = (File) (alFIFO.get(index));//take the first file in the fifo
-					}
-					else{
-						index = 0;
-						fCurrent = (File) (alFIFO.get(index));//take the first file in the fifo
-					}
+					fCurrent = (File) (alFIFO.get(index));//take the first file in the fifo
 					fLastOne = (File)fCurrent.clone(); //save the last played track
 					alFIFO.remove(index);//remove it from todo list;
 					Log.debug("Now playing :"+fCurrent); //$NON-NLS-1$
@@ -641,5 +636,43 @@ public class FIFO implements ITechnicalStrings,Runnable,Observer{
 			}
 		}
 	}
+	
+	/**
+	 * Shuffle the FIFO, used when user select the Random mode
+	 */
+	public synchronized void shuffle(){
+		Collections.shuffle(alFIFO);
+	}
+	
+	/**
+	 * Insert a file to play in FIFO at specified position
+	 * @param file
+	 * @param iPos
+	 */
+	public synchronized void insert(ArrayList alFiles,int iPos,boolean bImmediate){
+		//ok, stop current track
+		if (bImmediate) {
+			Player.stop();
+			bPlaying = false;
+			clear();
+			lTotalTime = 0;
+		}
+		File file = null;
+		//add required tracks
+		Iterator it = alFiles.iterator();
+		while (it.hasNext()){
+			file = (File)it.next();
+			alFIFO.add(file);
+			lTotalTime += file.getTrack().getLength();
+		}
+		//re-add previous tracks
+		it = alFIFO.iterator();
+		while (it.hasNext()){
+			file = (File)it.next();
+			alFIFO.add(file);
+			lTotalTime += file.getTrack().getLength();
+		}
+	}
+	
 	
 }
