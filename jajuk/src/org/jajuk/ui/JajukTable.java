@@ -73,12 +73,19 @@ public class JajukTable extends JTable implements ITechnicalStrings{
 		int colIndex = columnAtPoint(p);
 		int realColumnIndex = convertColumnIndexToModel(colIndex);
 		TableModel model = getModel();
+		if (rowIndex < 0 || colIndex < 0){
+			return null;
+		}
 		Object o = model.getValueAt(rowIndex,colIndex);
 		if (o == null){
 		    return null;
 		}
-		String sTip = o.toString();
-		return sTip;
+		else if(o instanceof IconLabel){
+		    return ((IconLabel)o).getTooltip(); 
+		}
+		else{
+		    return o.toString();
+		}
 	}
 	
 	/**

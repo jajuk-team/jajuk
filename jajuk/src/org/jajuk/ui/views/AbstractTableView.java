@@ -18,6 +18,8 @@
 
 package org.jajuk.ui.views;
 
+import info.clearthought.layout.TableLayout;
+
 import java.awt.Dimension;
 import java.awt.dnd.DnDConstants;
 import java.awt.event.ActionEvent;
@@ -27,17 +29,12 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-import javax.swing.JToolBar;
-
-import layout.TableLayout;
 
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.JajukTable;
@@ -60,7 +57,6 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 	JComboBox jcbProperty; 
 	JLabel jlEquals;
 	JTextField jtfValue;
-	JToolBar jtbControl;
 	JButton jbApplyFilter;
 	JButton jbClearFilter;
 	JButton jbAdvancedFilter;
@@ -86,11 +82,6 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 		//Control panel
 		jpControl = new JPanel();
 		jpControl.setBorder(BorderFactory.createEtchedBorder());
-		int iXspace = 5;
-		double sizeControl[][] =
-			{{0.2,iXspace,0.2,iXspace,0.3,iXspace,0.2,2*iXspace,85},
-				{22}};
-		jpControl.setLayout(new TableLayout(sizeControl));
 		jlFilter = new JLabel(Messages.getString("AbstractTableView.0")); //$NON-NLS-1$
 		//properties combo box, fill with colums names
 		jcbProperty = new JComboBox();
@@ -98,12 +89,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 			jcbProperty.addItem(model.getColumnName(i));	
 		}
 		jcbProperty.setToolTipText(Messages.getString("AbstractTableView.1")); //$NON-NLS-1$
-		JPanel jpEquals = new JPanel();
-		jpEquals.setLayout(new BoxLayout(jpEquals,BoxLayout.X_AXIS));
 		jlEquals = new JLabel(Messages.getString("AbstractTableView.7")); //$NON-NLS-1$
-		jpEquals.add(Box.createHorizontalGlue());
-		jpEquals.add(jlEquals);
-		jpEquals.add(Box.createHorizontalGlue());
 		jtfValue = new JTextField();
 		jtfValue.addKeyListener(new KeyAdapter() {
 			public void keyReleased(KeyEvent e) {
@@ -116,9 +102,6 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 		});
 		jtfValue.setToolTipText(Messages.getString("AbstractTableView.3")); //$NON-NLS-1$
 		//buttons
-		jtbControl = new JToolBar();
-		jtbControl.setRollover(true);
-		jtbControl.setFloatable(false);
 		jbApplyFilter = new JButton(Util.getIcon(ICON_APPLY_FILTER));
 		jbApplyFilter.addActionListener(this);
 		jbClearFilter = new JButton(Util.getIcon(ICON_CLEAR_FILTER));
@@ -129,16 +112,23 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 		jbClearFilter.setToolTipText(Messages.getString("AbstractTableView.5")); //$NON-NLS-1$
 		jbAdvancedFilter.setToolTipText(Messages.getString("AbstractTableView.6")); //$NON-NLS-1$
 		jbAdvancedFilter.setEnabled(false);  //TBI
-		jtbControl.add(jbApplyFilter);
-		jtbControl.add(jbClearFilter);
-		jtbControl.add(jbAdvancedFilter);
 		
-		jpControl.add(jlFilter,"0,0"); //$NON-NLS-1$
-		jpControl.add(jcbProperty,"2,0"); //$NON-NLS-1$
-		jpControl.add(jpEquals,"4,0"); //$NON-NLS-1$
-		jpControl.add(jtfValue,"6,0"); //$NON-NLS-1$
-		jpControl.add(jtbControl,"8,0"); //$NON-NLS-1$
+		int iXspace = 5;
+		double sizeControl[][] =
+			{{iXspace,TableLayout.FILL,iXspace,0.3,TableLayout.FILL,TableLayout.FILL,iXspace,0.3,iXspace,20,iXspace,20,iXspace,20,iXspace},
+				{22}};
+		jpControl.setLayout(new TableLayout(sizeControl));
+	
+		jpControl.add(jlFilter,"1,0"); //$NON-NLS-1$
+		jpControl.add(jcbProperty,"3,0"); //$NON-NLS-1$
+		jpControl.add(jlEquals,"5,0"); //$NON-NLS-1$
+		jpControl.add(jtfValue,"7,0"); //$NON-NLS-1$
+		jpControl.add(jbApplyFilter,"9,0"); //$NON-NLS-1$
+		jpControl.add(jbClearFilter,"11,0"); //$NON-NLS-1$
+		jpControl.add(jbAdvancedFilter,"13,0"); //$NON-NLS-1$
 		jpControl.setMinimumSize(new Dimension(0,0)); //allow resing with info node
+		
+	
 		
 		//add 
 		double size[][] =

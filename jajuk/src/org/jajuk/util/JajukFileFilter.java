@@ -21,6 +21,8 @@
 package org.jajuk.util;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.swing.filechooser.FileFilter;
 
@@ -39,7 +41,7 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter{
 	/**Display files flag**/
 	private boolean bFiles = true;
 	/**Accepted types**/
-	private Type[] types;
+	private ArrayList alTypes;
 	
 	/**
 	 * Constructor
@@ -47,9 +49,9 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter{
 	 * @param bFiles can we show files
 	 * @param types which type do we show
 	 */	
-	public JajukFileFilter(boolean bDirectories,Type[] types){
+	public JajukFileFilter(boolean bDirectories,ArrayList alTypes){
 		this.bDirectories = bDirectories; 
-		this.types = types;
+		this.alTypes = alTypes;
 	}
 
 	/**
@@ -77,9 +79,11 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter{
 			return true;
 		}
 		//file cases
-		if ( types != null){ //one or more types is specified
-			for (int i=0;i<types.length;i++){
-				if ( Util.getExtension(f).equals(types[i].getExtension())){
+		if ( alTypes != null){ //one or more types is specified
+			Iterator it = alTypes.iterator();
+			while (it.hasNext()){
+				Type type = (Type)it.next();
+				if ( Util.getExtension(f).equals(type.getExtension())){
 					return true;
 				}
 			}
@@ -98,12 +102,14 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter{
 		if ( !bFiles ){ //only dirs
 			return sOut;
 		}
-		if ( types == null){ //if no type specified, we considere all Jajuk known files
+		if ( alTypes == null){ //if no type specified, we considere all Jajuk known files
 			sOut+=TypeManager.getTypeListString();
 		}
 		else{
-			for (int i=0;i<types.length;i++){
-				sOut+=types[i].getExtension()+',';
+			Iterator it = alTypes.iterator();
+			while(it.hasNext()){
+				Type type = (Type)it.next();
+				sOut += type.getExtension()+',';
 			}
 			sOut = sOut.substring(0,sOut.length()-1);
 		}

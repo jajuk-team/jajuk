@@ -197,7 +197,7 @@ public class LogicalTableView extends AbstractTableView implements Observer{
 			Track track = TrackManager.getTrack(jtable.getSortingModel().getValueAt(jtable.getSelectedRow(),jtable.getColumnCount()).toString());
 			File file = track.getPlayeableFile();
 			if ( file != null){
-				FIFO.getInstance().push(new StackItem(file,true),false);//launch it	
+				FIFO.getInstance().push(new StackItem(file,ConfigurationManager.getBoolean(CONF_STATE_REPEAT)),false);//launch it	
 			}
 			else{
 				Messages.showErrorMessage("010",track.getName()); //$NON-NLS-1$
@@ -249,20 +249,23 @@ public class LogicalTableView extends AbstractTableView implements Observer{
 				}
 				//simple play
 				if ( e.getSource() == jmiTrackPlay){
-					FIFO.getInstance().push(Util.applyPlayOption(alFilesToPlay),false);
+					FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFilesToPlay),
+							ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
 				}
 				//push
 				else if ( e.getSource() == jmiTrackPush){
-					FIFO.getInstance().push(Util.applyPlayOption(alFilesToPlay),true);
+					FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFilesToPlay),
+							ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),true);
 				}
 				//shuffle play
 				else if ( e.getSource() == jmiTrackPlayShuffle){
 				    Collections.shuffle(alFilesToPlay);
-					FIFO.getInstance().push(alFilesToPlay,false);
+					FIFO.getInstance().push(Util.createStackItems(alFilesToPlay,
+						ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
 				}
 				//repeat play
 				else if ( e.getSource() == jmiTrackPlayRepeat){
-					FIFO.getInstance().push(Util.applyPlayOption(alFilesToPlay),false);
+					FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFilesToPlay),true,true),false);
 				}
 			}
 		}.start();

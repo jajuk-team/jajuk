@@ -48,6 +48,8 @@ public class IconLabel {
     /**Font*/
     private Font font;
     
+    /**Tooltip*/
+    private String sTooltip;
     
     /**
      * Constructor
@@ -57,12 +59,13 @@ public class IconLabel {
      * @param cForeground
      * @param font
      */
-    public IconLabel(ImageIcon icon,String sText,Color cBackground,Color cForeground,Font font){
+    public IconLabel(ImageIcon icon,String sText,Color cBackground,Color cForeground,Font font,String sTooltip){
         this.icon = icon;
         this.sText = sText;
         this.cBackground = cBackground;
         this.cForeground = cForeground;
         this.font = font;
+        this.sTooltip = sTooltip;
     }
    
     public IconLabel(ImageIcon icon,String sText){
@@ -108,5 +111,11 @@ public class IconLabel {
      */
     public String toString(){
         return sText;
+    }
+    /**
+     * @return Returns the sTooltip.
+     */
+    public String getTooltip() {
+        return sTooltip;
     }
 }

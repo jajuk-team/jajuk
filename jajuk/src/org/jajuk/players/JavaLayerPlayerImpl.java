@@ -126,17 +126,17 @@ public class JavaLayerPlayerImpl implements IPlayerImpl,ITechnicalStrings{
                     break;
                     case BasicPlayerEvent.PLAYING:
                         bStopped = false;
-                    bSeeking = false;
-                    bStarted = true;
-                    try{
-                        if (player!=null){ //can be null if user try to lauch many tracks by next, next...
-                            player.setGain(JavaLayerPlayerImpl.this.fVolume);
-                        }
-                    } catch (Exception e) {
-                        Log.error(e);
-                    }
-                    Util.stopWaiting(); //stop the waiting cursor
-                    break;
+	                    bSeeking = false;
+	                    bStarted = true;
+	                    try{
+	                        if (player != null){ //can be null if user try to lauch many tracks by next, next...
+	                            player.setGain(JavaLayerPlayerImpl.this.fVolume);
+	                        }
+	                    } catch (Exception e) {
+	                        //do nothing, sometimes throws null pointer exception for unknown reason
+	                    }
+	                    Util.stopWaiting(); //stop the waiting cursor
+	                    break;
                     }
                 }
                 
@@ -164,6 +164,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl,ITechnicalStrings{
             }
         }
         catch(Exception e){  //in case of error, we must stop waiting cursor and set started to true to avoid deadlock in the stop method
+            Log.error(e);
             bStarted = true;
             Util.stopWaiting();
             throw e;  //propagate to Player
@@ -206,8 +207,8 @@ public class JavaLayerPlayerImpl implements IPlayerImpl,ITechnicalStrings{
      */
     public synchronized void pause() throws Exception{
         if (player!=null){
-           player.setGain(0.01f); //set this to avoid starnge sound
-           player.pause();
+            player.setGain(0.01f); //set this to avoid starnge sound
+            player.pause();
         }
     }
     

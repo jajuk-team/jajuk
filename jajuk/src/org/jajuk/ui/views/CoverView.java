@@ -20,6 +20,8 @@
 
 package org.jajuk.ui.views;
 
+import info.clearthought.layout.TableLayout;
+
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -48,8 +50,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileFilter;
-
-import layout.TableLayout;
 
 import org.jajuk.Main;
 import org.jajuk.base.Album;
@@ -118,15 +118,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
     
     /**ID*/
     public String sID;
-    
-    
-    
-    
-    
-    
-    
-    
-    
+        
     /**
      * Constructor
      * @param sID ID used to store independently parameters of views
@@ -147,7 +139,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
         //Control panel
         jpControl = new JPanel();
         jpControl.setBorder(BorderFactory.createEtchedBorder());
-        int iXspace = 5;
+        int iXspace = 1;
         double sizeControl[][] =
         {{20,iXspace,20,2*iXspace,20,iXspace,20,iXspace,20,iXspace,20,iXspace,0.30,iXspace,0.30,2*iXspace,0.40,2*iXspace,20},
                 {25}};

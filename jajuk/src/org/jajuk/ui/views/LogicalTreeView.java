@@ -64,6 +64,7 @@ import org.jajuk.ui.ObservationManager;
 import org.jajuk.ui.Observer;
 import org.jajuk.ui.TransferableTreeNode;
 import org.jajuk.ui.TreeTransferHandler;
+import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Util;
 
 import com.sun.SwingWorker;
@@ -351,7 +352,7 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 						Track track = ((TrackNode)o).getTrack();
 						File file = track.getPlayeableFile();
 						if (file != null){
-							FIFO.getInstance().push(new StackItem(file,true),false);
+							FIFO.getInstance().push(new StackItem(file,ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
 						}
 						else{
 							Messages.showErrorMessage("010",track.getName()); //$NON-NLS-1$
@@ -533,25 +534,27 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 						|| e.getSource() == jmiAlbumPlay
 						|| e.getSource() == jmiAuthorPlay
 						|| e.getSource() == jmiStylePlay )){
-					FIFO.getInstance().push(Util.applyPlayOption(alFilesToPlay),false);
-					
+					FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFilesToPlay),
+							ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
 				}
 				else if (alTracks.size() > 0  && ( e.getSource() == jmiTrackPush 
 						|| e.getSource() == jmiAlbumPush
 						|| e.getSource() == jmiAuthorPush
 						|| e.getSource() == jmiStylePush) ){
-					FIFO.getInstance().push(Util.applyPlayOption(alFilesToPlay),true);
+					FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFilesToPlay),
+							ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),true);
 				}
 				else if ( alTracks.size() > 0  && (e.getSource() == jmiAlbumPlayShuffle
 						|| e.getSource() == jmiAuthorPlayShuffle
 						|| e.getSource() == jmiStylePlayShuffle )){
 				    Collections.shuffle(alFilesToPlay);
-					FIFO.getInstance().push(alFilesToPlay,false);
+					FIFO.getInstance().push(Util.createStackItems(alFilesToPlay,
+							ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
 				}
 				else if (alTracks.size() > 0  && ( e.getSource() == jmiAlbumPlayRepeat
 						|| e.getSource() == jmiAuthorPlayRepeat
 						|| e.getSource() == jmiStylePlayRepeat) ){
-					FIFO.getInstance().push(Util.applyPlayOption(alFilesToPlay),false);
+					FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFilesToPlay),true,true),false);
 				}
 			}
 		}.start();

@@ -93,7 +93,8 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
 						alFiles.add(new BasicFile(files[i]));	
 					}
 				}
-				FIFO.getInstance().push(alFiles, false);
+				FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFiles),
+						ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
 			}
 		}
 		else if (e.getActionCommand().equals(EVENT_REPEAT_MODE_STATUS_CHANGED)) {
@@ -126,6 +127,10 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
 			if (!b == true) { //enabled button
 				CommandJPanel.getInstance().jbRandom.setBorder(BorderFactory.createLoweredBevelBorder());
 				FIFO.getInstance().shuffle(); //shuffle current selection
+				//now make sure we can't have a single repeated file after a non-repeated file (by design)
+				if (FIFO.getInstance().containsRepeat() && !FIFO.getInstance().containsOnlyRepeat()){
+					FIFO.getInstance().setRepeatModeToAll(false); //yes? un-repeat all
+				}
 			}
 			else {
 				CommandJPanel.getInstance().jbRandom.setBorder(BorderFactory.createRaisedBevelBorder());

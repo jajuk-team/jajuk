@@ -19,6 +19,8 @@
  */
 package org.jajuk.ui;
 
+import info.clearthought.layout.TableLayout;
+
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -32,8 +34,6 @@ import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.border.EtchedBorder;
-
-import layout.TableLayout;
 
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;

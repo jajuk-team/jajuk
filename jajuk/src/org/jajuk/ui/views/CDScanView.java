@@ -20,6 +20,8 @@
 
 package org.jajuk.ui.views;
 
+import info.clearthought.layout.TableLayout;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -28,8 +30,6 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
-
-import layout.TableLayout;
 
 import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;

@@ -66,6 +66,7 @@ import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.ObservationManager;
 import org.jajuk.ui.TransferableTreeNode;
 import org.jajuk.ui.TreeTransferHandler;
+import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
@@ -490,7 +491,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 					if (o instanceof FileNode){
 						File file = ((FileNode)o).getFile();
 						if (!file.isScanned()){
-							FIFO.getInstance().push(new StackItem(file,true),false);
+							FIFO.getInstance().push(new StackItem(file,ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
 						}
 						else{
 							Messages.showErrorMessage("120",file.getDirectory().getDevice().getName()); //$NON-NLS-1$
@@ -510,7 +511,8 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 							Messages.showErrorMessage("018");	 //$NON-NLS-1$
 						}
 						else{
-							FIFO.getInstance().push(alFiles,false);
+							FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFiles),
+									ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
 						}
 					}
 				}
@@ -697,23 +699,28 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 		new Thread(){
 			public void run(){
 				if (e.getSource() == jmiFilePlay && alFiles.size() > 0 ){
-					FIFO.getInstance().push(Util.createStackItems(alFiles,false,true),false);
+					FIFO.getInstance().push(Util.createStackItems(alFiles,
+							ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
 				}
 				else if (e.getSource() == jmiFilePush  && alFiles.size() > 0){
-					FIFO.getInstance().push(Util.createStackItems(alFiles,false,true),true);
+					FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFiles),
+							ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),true);
 				}
 				else if ( alFiles!= null && alFiles.size() > 0 && (e.getSource() == jmiDirPlay || e.getSource() == jmiDevPlay)){  
-					FIFO.getInstance().push(Util.createStackItems(alFiles,false,true),false);
+					FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFiles),
+							ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
 				}
 				else if (alFiles!= null && alFiles.size() > 0 && (e.getSource() == jmiDirPush || e.getSource() == jmiDevPush)){
-					FIFO.getInstance().push(Util.createStackItems(alFiles,false,true),true);
+					FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFiles),
+							ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),true);
 				}
 				else if (alFiles!= null && alFiles.size() > 0 && (e.getSource() == jmiDirPlayShuffle || e.getSource() == jmiDevPlayShuffle)){
 				    Collections.shuffle(alFiles);
-					FIFO.getInstance().push(Util.createStackItems(alFiles,false,true),false);
+					FIFO.getInstance().push(Util.createStackItems(alFiles,
+							ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
 				}
 				else if (alFiles!= null && alFiles.size() > 0 && (e.getSource() == jmiDirPlayRepeat || e.getSource() == jmiDevPlayRepeat)){
-					FIFO.getInstance().push(Util.createStackItems(alFiles,true,true),false);
+					FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFiles),true,true),false);
 				}
 				else if ( e.getSource() == jmiDevMount){
 					for (int i=0;i<paths.length;i++){
@@ -788,16 +795,21 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 					}
 					else{ //specific actions
 						if ( e.getSource() == jmiPlaylistFilePlay ){
-							FIFO.getInstance().push(alFiles,false);
+							FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFiles),
+									ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
 						}
 						else if ( e.getSource()==jmiPlaylistFilePush ){
-							FIFO.getInstance().push(alFiles,true);
+							FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFiles),
+									ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),true);
 						}
 						else if ( e.getSource() == jmiPlaylistFilePlayShuffle ){
-							FIFO.getInstance().push(alFiles,false);
+							Collections.shuffle(alFiles);
+							FIFO.getInstance().push(Util.createStackItems(alFiles,
+									ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
 						}
 						else if ( e.getSource() == jmiPlaylistFilePlayRepeat){
-							FIFO.getInstance().push(alFiles,false);
+							FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFiles),
+									true,true),false);
 						}
 					}
 				}

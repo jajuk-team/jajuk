@@ -20,6 +20,8 @@
 
 package org.jajuk.ui.views;
 
+import info.clearthought.layout.TableLayout;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -41,8 +43,6 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
-
-import layout.TableLayout;
 
 import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;

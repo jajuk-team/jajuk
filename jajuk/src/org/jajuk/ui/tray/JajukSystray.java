@@ -210,15 +210,18 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
 		}
 		else if (e.getSource() == jmiShuffle){
 			ArrayList alToPlay = FileManager.getGlobalShufflePlaylist();
-			FIFO.getInstance().push(Util.createStackItems(alToPlay,false,false),false);
+			FIFO.getInstance().push(Util.createStackItems(alToPlay,
+					ConfigurationManager.getBoolean(CONF_STATE_REPEAT),false),false);
 		}
 		else if (e.getSource() == jmiBestof){
 			ArrayList alToPlay = FileManager.getGlobalBestofPlaylist();
-			FIFO.getInstance().push(Util.createStackItems(alToPlay,false,false),false);
+			FIFO.getInstance().push(Util.createStackItems(alToPlay,
+					ConfigurationManager.getBoolean(CONF_STATE_REPEAT),false),false);
 		}
 		else if (e.getSource() == jmiNovelties){
 			ArrayList alToPlay = FileManager.getGlobalNoveltiesPlaylist();
-			FIFO.getInstance().push(Util.createStackItems(alToPlay,false,false),false);
+			FIFO.getInstance().push(Util.createStackItems(alToPlay,
+					ConfigurationManager.getBoolean(CONF_STATE_REPEAT),false),false);
 		}
 		else if (e.getSource() == jmiNorm){
 		    FIFO.getInstance().clear();

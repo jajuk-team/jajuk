@@ -19,6 +19,9 @@
  */
 package org.jajuk.ui;
 
+import info.clearthought.layout.TableLayout;
+
+import java.awt.Component;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -36,15 +39,12 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
-import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-
-import layout.TableLayout;
 
 import org.jajuk.base.FIFO;
 import org.jajuk.base.FileManager;
@@ -76,18 +76,17 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
     //widgets declaration
     SearchBox sbSearch;
     SteppedComboBox jcbHistory;
-    JToolBar jtbMode;
+    JPanel jpMode;
     JButton jbRepeat;
     JButton jbRandom;
     JButton jbContinue;
     JButton jbIntro;
-    JToolBar jtbSpecial;
+    JPanel jpSpecial;
     JButton jbGlobalRandom;
     JButton jbBestof;
     JButton jbNovelties;
     JButton jbNorm;
-    JButton jbMute;
-    JToolBar jtbPlay;
+    JPanel jpPlay;
     JButton jbPrevious;
     JButton jbNext;
     JButton jbRew;
@@ -98,6 +97,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
     JSlider jsVolume;
     JLabel jlPosition;
     JSlider jsPosition;
+    JButton jbMute;
     
     
     //variables declaration
@@ -140,16 +140,8 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
      * Constructor
      */
     private CommandJPanel(){
-        //dimensions
-        int height1 = 25;  //buttons, components
-        //int height2 = 36; //slider ( at least this height in the gtk+ l&f ) 
-        int iSeparator = 1;
-        //set default layout and size
-        double[][] size ={{5*iSeparator,0.15,10*iSeparator,0.17,iSeparator,0.11,iSeparator,
-            0.11,iSeparator,0.18,iSeparator,0.12,iSeparator,0.15,10*iSeparator,20},
-            {height1}}; //note we can't set a % for history combo box because of popup size
-        setLayout(new TableLayout(size));
-        sbSearch = new SearchBox(CommandJPanel.this);
+        
+    	sbSearch = new SearchBox(CommandJPanel.this);
         
         //history
         jcbHistory = new SteppedComboBox(History.getInstance().getHistory().toArray());
@@ -159,97 +151,117 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
         jcbHistory.addActionListener(CommandJPanel.this);
         
         //Mode toolbar
-        jtbMode = new JToolBar();
-        jtbMode.setRollover(true);
-        jtbMode.setFloatable(false);
-        jtbMode.add(Box.createHorizontalGlue());
+        jpMode = new JPanel();
+        jpMode.setLayout(new BoxLayout(jpMode,BoxLayout.X_AXIS));
         jbRepeat = new JButton(Util.getIcon(ICON_REPEAT)); 
         jbRepeat.setActionCommand(EVENT_REPEAT_MODE_STATUS_CHANGED);
         jbRepeat.setToolTipText(Messages.getString("CommandJPanel.1")); //$NON-NLS-1$
         jbRepeat.addActionListener(JajukListener.getInstance());
-        jtbMode.add(jbRepeat);
+        if ( ConfigurationManager.getBoolean(CONF_STATE_REPEAT)){
+            jbRepeat.setBorder(BorderFactory.createLoweredBevelBorder());
+        }
+        else{
+            jbRepeat.setBorder(BorderFactory.createRaisedBevelBorder());
+        }
         jbRandom = new JButton(Util.getIcon(ICON_SHUFFLE));
         jbRandom.setToolTipText(Messages.getString("CommandJPanel.2")); //$NON-NLS-1$
         jbRandom.setActionCommand(EVENT_SHUFFLE_MODE_STATUS_CHANGED);
         jbRandom.addActionListener(JajukListener.getInstance());
-        jtbMode.add(jbRandom);
+        if ( ConfigurationManager.getBoolean(CONF_STATE_SHUFFLE)){
+            jbRandom.setBorder(BorderFactory.createLoweredBevelBorder());
+        }
+        else{
+            jbRandom.setBorder(BorderFactory.createRaisedBevelBorder());
+        }
         jbContinue = new JButton(Util.getIcon(ICON_CONTINUE));
         jbContinue.setToolTipText(Messages.getString("CommandJPanel.3")); //$NON-NLS-1$
         jbContinue.setActionCommand(EVENT_CONTINUE_MODE_STATUS_CHANGED);
         jbContinue.addActionListener(JajukListener.getInstance());
-        jtbMode.add(jbContinue);
+        if ( ConfigurationManager.getBoolean(CONF_STATE_CONTINUE)){
+            jbContinue.setBorder(BorderFactory.createLoweredBevelBorder());
+        }
+        else{
+            jbContinue.setBorder(BorderFactory.createRaisedBevelBorder());
+        }
         jbIntro = new JButton(Util.getIcon(ICON_INTRO));
         jbIntro.setToolTipText(Messages.getString("CommandJPanel.4")); //$NON-NLS-1$
         jbIntro.setActionCommand(EVENT_INTRO_MODE_STATUS_CHANGED);
         jbIntro.addActionListener(JajukListener.getInstance());
-        jtbMode.add(jbIntro);
-        jtbMode.add(Box.createHorizontalGlue());
+        if ( ConfigurationManager.getBoolean(CONF_STATE_INTRO)){
+            jbIntro.setBorder(BorderFactory.createLoweredBevelBorder());
+        }
+        else{
+            jbIntro.setBorder(BorderFactory.createRaisedBevelBorder());
+        }
+        jpMode.add(jbRepeat);
+        jpMode.add(jbRandom);
+        jpMode.add(jbContinue);
+        jpMode.add(jbIntro);
         
         //Special functions toolbar
-        jtbSpecial = new JToolBar();
-        jtbSpecial.setOrientation(JToolBar.HORIZONTAL);
-        jtbSpecial.add(Box.createHorizontalGlue());
-        jtbSpecial.setFloatable(false);
-        jtbSpecial.setRollover(true);
+        jpSpecial = new JPanel();
+        jpSpecial.setLayout(new BoxLayout(jpSpecial,BoxLayout.X_AXIS));
         jbGlobalRandom = new JButton(Util.getIcon(ICON_SHUFFLE_GLOBAL));
+        jbGlobalRandom.setBorder(BorderFactory.createEmptyBorder(4,4,4,4));
         jbGlobalRandom.addActionListener(CommandJPanel.this);
         jbGlobalRandom.setToolTipText(Messages.getString("CommandJPanel.5")); //$NON-NLS-1$
-        jtbSpecial.add(jbGlobalRandom);
         jbBestof = new JButton(Util.getIcon(ICON_BESTOF)); 
+        jbBestof.setBorder(BorderFactory.createEmptyBorder(4,4,4,4));
         jbBestof.addActionListener(CommandJPanel.this);
         jbBestof.setToolTipText(Messages.getString("CommandJPanel.6")); //$NON-NLS-1$
-        jtbSpecial.add(jbBestof);
         jbNovelties = new JButton(Util.getIcon(ICON_NOVELTIES)); 
+        jbNovelties.setBorder(BorderFactory.createEmptyBorder(4,4,4,4));
         jbNovelties.addActionListener(CommandJPanel.this);
         jbNovelties.setToolTipText(Messages.getString("CommandJPanel.16")); //$NON-NLS-1$
-        jtbSpecial.add(jbNovelties);
         jbNorm = new JButton(Util.getIcon(ICON_MODE_NORMAL)); 
+        jbNorm.setBorder(BorderFactory.createEmptyBorder(4,4,4,4));
         jbNorm.addActionListener(CommandJPanel.this);
         jbNorm.setToolTipText(Messages.getString("CommandJPanel.17")); //$NON-NLS-1$
-        jtbSpecial.add(jbNorm);
-        
-        jtbSpecial.add(Box.createHorizontalGlue());
-        
+        jpSpecial.add(jbGlobalRandom);
+        jpSpecial.add(jbBestof);
+        jpSpecial.add(jbNovelties);
+        jpSpecial.add(jbNorm);
+    
         //Play toolbar
-        jtbPlay = new JToolBar();
-        jtbPlay.setRollover(true);
-        jtbPlay.setFloatable(false);
-        jtbPlay.add(Box.createHorizontalGlue());
+        jpPlay = new JPanel();
+        jpPlay.setLayout(new BoxLayout(jpPlay,BoxLayout.X_AXIS));
         jbPrevious = new JButton(Util.getIcon(ICON_PREVIOUS)); 
+        jbPrevious.setBorder(BorderFactory.createEmptyBorder(4,4,4,4));
         jbPrevious.setToolTipText(Messages.getString("CommandJPanel.8")); //$NON-NLS-1$
         jbPrevious.addMouseListener(CommandJPanel.this);
-        jtbPlay.add(jbPrevious);
         jbNext = new JButton(Util.getIcon(ICON_NEXT)); 
+        jbNext.setBorder(BorderFactory.createEmptyBorder(4,4,4,4));
         jbNext.setToolTipText(Messages.getString("CommandJPanel.9")); //$NON-NLS-1$
         jbNext.addMouseListener(CommandJPanel.this);
-        jtbPlay.add(jbNext);
-        jtbPlay.addSeparator();
         jbRew = new JButton(Util.getIcon(ICON_REW)); 
+        jbRew.setBorder(BorderFactory.createEmptyBorder(4,4,4,4));
         jbRew.setEnabled(false);
         jbRew.setToolTipText(Messages.getString("CommandJPanel.10")); //$NON-NLS-1$
         jbRew.addActionListener(CommandJPanel.this);
-        jtbPlay.add(jbRew);
         jbPlayPause = new JButton(Util.getIcon(ICON_PAUSE)); 
+        jbPlayPause.setBorder(BorderFactory.createEmptyBorder(4,4,4,4));
         jbPlayPause.setToolTipText(Messages.getString("CommandJPanel.11")); //$NON-NLS-1$
         jbPlayPause.setEnabled(false);
         jbPlayPause.addActionListener(CommandJPanel.this);
-        jtbPlay.add(jbPlayPause);
         jbStop = new JButton(Util.getIcon(ICON_STOP)); 
+        jbStop.setBorder(BorderFactory.createEmptyBorder(4,4,4,4));
         jbStop.setToolTipText(Messages.getString("CommandJPanel.12")); //$NON-NLS-1$
         jbStop.addActionListener(CommandJPanel.this);
         jbStop.setEnabled(false);
-        jtbPlay.add(jbStop);
         jbFwd = new JButton(Util.getIcon(ICON_FWD)); 
+        jbFwd.setBorder(BorderFactory.createEmptyBorder(4,4,4,4));
         jbFwd.setToolTipText(Messages.getString("CommandJPanel.13")); //$NON-NLS-1$
         jbFwd.setEnabled(false);
         jbFwd.addActionListener(CommandJPanel.this);
-        jtbPlay.add(jbFwd);
-        jtbPlay.add(Box.createHorizontalGlue());
+        jpPlay.add(jbPrevious);
+        jpPlay.add(jbNext);
+        jpPlay.add(Box.createHorizontalGlue());
+        jpPlay.add(jbRew);
+        jpPlay.add(jbPlayPause);
+        jpPlay.add(jbStop);
+        jpPlay.add(jbFwd);
         
         //Volume
-        jbMute = new JButton(Util.getIcon(ICON_MUTE)); 
-        jbMute.addActionListener(CommandJPanel.this);
-        jbMute.setToolTipText(Messages.getString("CommandJPanel.7")); //$NON-NLS-1$
         JPanel jpVolume = new JPanel();
         jpVolume.setLayout(new BoxLayout(jpVolume,BoxLayout.X_AXIS));
         jlVolume = new JLabel(Util.getIcon(ICON_VOLUME)); 
@@ -272,14 +284,36 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
         jsPosition.setToolTipText(Messages.getString("CommandJPanel.15")); //$NON-NLS-1$
         jsPosition.addMouseWheelListener(CommandJPanel.this);
         
+        //mute
+        jbMute = new JButton(Util.getIcon(ICON_MUTE)); 
+        jbMute.addActionListener(CommandJPanel.this);
+        jbMute.setToolTipText(Messages.getString("CommandJPanel.7")); //$NON-NLS-1$
+        jbMute.setBorder(BorderFactory.createRaisedBevelBorder());
+        
+        
+        //dimensions
+        int height1 = 25;  //buttons, components
+        //int height2 = 36; //slider ( at least this height in the gtk+ l&f ) 
+        int iSeparator = 1;
+        //set default layout and size
+        double[][] size ={{5*iSeparator,0.15,10*iSeparator,0.17,5*iSeparator,  //search box + history
+        	0.11,5*iSeparator, //mode buttons
+			0.13,10*iSeparator, //special functions buttons
+			0.19,10*iSeparator, //play buttons
+			0.13,iSeparator,0.11,TableLayout.FILL,20,5*iSeparator},  //position + volume sliders + mute button
+            {height1}}; //note we can't set a % for history combo box because of popup size
+        setLayout(new TableLayout(size));
+        TableLayout tl = new TableLayout();
+        setAlignmentY(Component.CENTER_ALIGNMENT);
+        
         //add toolbars to main panel
         add(sbSearch,"1,0"); //$NON-NLS-1$
         add(jcbHistory,"3,0"); //$NON-NLS-1$
-        add(jtbMode,"5,0"); //$NON-NLS-1$
-        add(jtbSpecial,"7,0"); //$NON-NLS-1$
-        add(jtbPlay,"9,0"); //$NON-NLS-1$
-        add(jpPosition,"11,0"); //$NON-NLS-1$
-        add(jpVolume,"13,0"); //$NON-NLS-1$
+        add(Util.getCentredPanel(Util.getCentredPanel(jpMode),BoxLayout.Y_AXIS),"5,0"); 
+        add(Util.getCentredPanel(Util.getCentredPanel(jpSpecial),BoxLayout.Y_AXIS),"7,0"); //$NON-NLS-1$
+        add(Util.getCentredPanel(jpPlay),"9,0"); //$NON-NLS-1$
+        add(jsPosition,"11,0"); //$NON-NLS-1$
+        add(jsVolume,"13,0"); //$NON-NLS-1$
         add(jbMute,"15,0"); //$NON-NLS-1$
         
         //register to player events
@@ -304,32 +338,6 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
         
         //start timer
         timer.start();
-        //set buttons borders, must be here for an unknwon reason due to a liquid lnf 
-        if ( ConfigurationManager.getBoolean(CONF_STATE_REPEAT)){
-            jbRepeat.setBorder(BorderFactory.createLoweredBevelBorder());
-        }
-        else{
-            jbRepeat.setBorder(BorderFactory.createRaisedBevelBorder());
-        }
-        if ( ConfigurationManager.getBoolean(CONF_STATE_INTRO)){
-            jbIntro.setBorder(BorderFactory.createLoweredBevelBorder());
-        }
-        else{
-            jbIntro.setBorder(BorderFactory.createRaisedBevelBorder());
-        }
-        if ( ConfigurationManager.getBoolean(CONF_STATE_SHUFFLE)){
-            jbRandom.setBorder(BorderFactory.createLoweredBevelBorder());
-        }
-        else{
-            jbRandom.setBorder(BorderFactory.createRaisedBevelBorder());
-        }
-        if ( ConfigurationManager.getBoolean(CONF_STATE_CONTINUE)){
-            jbContinue.setBorder(BorderFactory.createLoweredBevelBorder());
-        }
-        else{
-            jbContinue.setBorder(BorderFactory.createRaisedBevelBorder());
-        }
-        jbMute.setBorder(BorderFactory.createRaisedBevelBorder());
     }	
     
     /** 
@@ -378,7 +386,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
                             if (hi != null){
                                 org.jajuk.base.File file = FileManager.getFile(hi.getFileId());
                                 if (file!= null && !file.isScanned()){  //file must be on a mounted device not refreshing
-                                    FIFO.getInstance().push(new StackItem(file,true),false);
+                                    FIFO.getInstance().push(new StackItem(file,ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
                                 }
                                 else{
                                     Messages.showErrorMessage("120",file.getDirectory().getDevice().getName()); //$NON-NLS-1$
@@ -392,8 +400,9 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
                 if (ae.getSource() == jbBestof ){
                     ArrayList alToPlay = FileManager.getGlobalBestofPlaylist();
                     if ( alToPlay.size() > 0){
-                        FIFO.getInstance().push(Util.createStackItems(alToPlay,false,false),false);
-                    }
+                       	FIFO.getInstance().push(Util.createStackItems(alToPlay,
+							ConfigurationManager.getBoolean(CONF_STATE_REPEAT),false),false);
+				    }
                     Properties properties = new Properties();
                     properties.put(DETAIL_ORIGIN,DETAIL_SPECIAL_MODE_BESTOF);
                     ObservationManager.notify(EVENT_SPECIAL_MODE,properties);
@@ -401,8 +410,9 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
                 if (ae.getSource() == jbGlobalRandom ){
                     ArrayList alToPlay = FileManager.getGlobalShufflePlaylist();
                     if ( alToPlay.size() > 0){
-                        FIFO.getInstance().push(Util.createStackItems(alToPlay,false,false),false);
-                    }
+                       	FIFO.getInstance().push(Util.createStackItems(alToPlay,
+							ConfigurationManager.getBoolean(CONF_STATE_REPEAT),false),false);
+				    }
                     Properties properties = new Properties();
                     properties.put(DETAIL_ORIGIN,DETAIL_SPECIAL_MODE_SHUFFLE);
                     ObservationManager.notify(EVENT_SPECIAL_MODE,properties);
@@ -410,8 +420,9 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
                 if (ae.getSource() == jbNovelties ){
                     ArrayList alToPlay  = FileManager.getGlobalNoveltiesPlaylist();
                     if ( alToPlay.size() > 0){
-                        FIFO.getInstance().push(Util.createStackItems(alToPlay,false,false),false);
-                        Properties properties = new Properties();
+                        FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alToPlay),
+							ConfigurationManager.getBoolean(CONF_STATE_REPEAT),false),false);
+				        Properties properties = new Properties();
                         properties.put(DETAIL_ORIGIN,DETAIL_SPECIAL_MODE_NOVELTIES);
                         ObservationManager.notify(EVENT_SPECIAL_MODE,properties);
                     }
@@ -467,7 +478,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
             public Object construct() {
                 if (!e.getValueIsAdjusting()){
                     SearchResult sr = (SearchResult)sbSearch.alResults.get(sbSearch.jlist.getSelectedIndex());
-                    FIFO.getInstance().push(new StackItem(sr.getFile(),true),false);
+                    FIFO.getInstance().push(new StackItem(sr.getFile(),ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
                 }
                 return null;
             }

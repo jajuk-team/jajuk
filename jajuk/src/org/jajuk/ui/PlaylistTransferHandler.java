@@ -43,10 +43,12 @@ import org.jajuk.base.Device;
 import org.jajuk.base.Directory;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
+import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.base.Style;
 import org.jajuk.base.Track;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.views.AbstractPlaylistEditorView;
+import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 
@@ -55,7 +57,7 @@ import org.jajuk.util.log.Log;
  * @author     bflorat
  * @created    13 feb. 2004
  */
-public class PlaylistTransferHandler implements DropTargetListener {
+public class PlaylistTransferHandler implements DropTargetListener,ITechnicalStrings {
 	
 	private Component jpanel;
 	private DropTarget dropTarget; //droptarget
@@ -190,7 +192,9 @@ public class PlaylistTransferHandler implements DropTargetListener {
 			}
 			//queue case
 			if ( plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE){
-				FIFO.getInstance().push(Util.createStackItems(alSelectedFiles,false,true),true);
+				FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alSelectedFiles),
+						ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),true);
+				
 			}
 			//bookmark case
 			else if ( plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_BOOKMARK){

@@ -133,7 +133,7 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 					Properties properties = new Properties();
 					properties.put(DETAIL_SELECTION,plfi);
 					properties.put(DETAIL_ORIGIN,this);
-					ObservationManager.notify(EVENT_PLAYLIST_CHANGED,properties);
+					ObservationManager.notify(EVENT_PLAYLIST_CHANGED,properties); 
 					if (e.getButton() == MouseEvent.BUTTON3){  //right button
 						showMenu(plfi,e);
 					}

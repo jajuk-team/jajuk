@@ -196,7 +196,7 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
 		if ( e.getClickCount() == 2){ //double clic, can be only one file
 			File file = FileManager.getFile(jtable.getSortingModel().getValueAt(jtable.getSelectedRow(),jtable.getColumnCount()).toString());
 			if (!file.isScanned()){
-				FIFO.getInstance().push(new StackItem(file,true),false);//launch it
+				FIFO.getInstance().push(new StackItem(file,ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);//launch it
 			}
 			else{
 				Messages.showErrorMessage("120",file.getDirectory().getDevice().getName()); //$NON-NLS-1$
@@ -248,20 +248,24 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
 				}
 				//simple play
 				if ( e.getSource() == jmiFilePlay){
-					FIFO.getInstance().push(Util.applyPlayOption(alFilesToPlay),false);
+						FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFilesToPlay),
+							ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
 				}
 				//push
 				else if ( e.getSource() == jmiFilePush){
-					FIFO.getInstance().push(Util.applyPlayOption(alFilesToPlay),true);
+					FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFilesToPlay),
+							ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),true);
 				}
 				//shuffle play
 				else if ( e.getSource() == jmiFilePlayShuffle){
 				    Collections.shuffle(alFilesToPlay);
-					FIFO.getInstance().push(alFilesToPlay,false);
+					FIFO.getInstance().push(Util.createStackItems(alFilesToPlay,
+							ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
 				}
 				//repeat play
 				else if ( e.getSource() == jmiFilePlayRepeat){
-					FIFO.getInstance().push(Util.applyPlayOption(alFilesToPlay),false);
+					FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFilesToPlay),
+							true,true),false);
 				}
 			}
 		}.start();

@@ -20,14 +20,14 @@
 
 package org.jajuk.ui.views;
 
+import info.clearthought.layout.TableLayout;
+
 import java.awt.Color;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.TreeMap;
-
-import layout.TableLayout;
 
 import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;

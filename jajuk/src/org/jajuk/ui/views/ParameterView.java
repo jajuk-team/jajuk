@@ -20,6 +20,8 @@
 
 package org.jajuk.ui.views;
 
+import info.clearthought.layout.TableLayout;
+
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -45,8 +47,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-
-import layout.TableLayout;
 
 import org.jajuk.Main;
 import org.jajuk.base.File;
@@ -462,8 +462,8 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 			}
 		});
 		//number of visible tracks
-		jlVisiblePlanned = new JLabel(Messages.getString("ParameterView.178")); //$NON-NLS-1$
-		jlVisiblePlanned.setToolTipText(Messages.getString("ParameterView.179")); //$NON-NLS-1$
+		jlVisiblePlanned = new JLabel(Messages.getString("ParameterView.177")); //$NON-NLS-1$
+		jlVisiblePlanned.setToolTipText(Messages.getString("ParameterView.178")); //$NON-NLS-1$
 		jtfVisiblePlanned = new JTextField(3);
 		jtfVisiblePlanned.setToolTipText(Messages.getString("ParameterView.130")); //$NON-NLS-1$
 		jtfVisiblePlanned.setInputVerifier(new InputVerifier(){
