@@ -37,9 +37,11 @@
        <action dev='bflorat' type='add'>Path selection button for Unix mount points in device wizzard</action>  
        <action dev='bflorat' type='add'>Added best of size parameter</action>  
        <action dev='bflorat' type='add'>Macosx menu support thanks to Romain Herault</action>  
+       <action dev='bflorat' type='fix'>929994 Collection not saved (critical)</action>  
        <action dev='bflorat' type='fix'>930598 Issues in online doc</action>  
        <action dev='bflorat' type='fix'>929372 Physical/logical table views : errors when filtering with no results</action>  
        <action dev='bflorat' type='fix'>921441 New changes to solve this issue that one user reported again in 0.1.4</action>  
+       <action dev='bflorat' type='fix'>932234 Seldom error when fetching last track at startup</action>  
        <action dev='bflorat' type='update'>Made some Swing optimizations according to 'Duglan Bob' advices</action>  
        <action dev='bflorat' type='update'>Collection file is now stored in UTF-16 to support more language character sets than UTF-8</action>  
      </release>
