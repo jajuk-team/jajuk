@@ -22,13 +22,11 @@ package org.jajuk.ui;
 
 import info.clearthought.layout.TableLayout;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Toolkit;
 
-import javax.swing.BorderFactory;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -66,7 +64,6 @@ public class SplashScreen extends JDialog implements ITechnicalStrings{
 		setTitle(Messages.getString("JajukWindow.17"));  //$NON-NLS-1$
 		jpContent.add(jlImage,"0,0");
 		jpRelease = Util.getCentredPanel(jlRelease); //centred horizontaly
-		jpRelease.setBorder(BorderFactory.createMatteBorder(0,5,5,5,Color.BLACK));
 		jpContent.add(jpRelease,"0,1");
 		pack();
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
