@@ -49,7 +49,7 @@ public class ObservationManager implements ITechnicalStrings{
 	 * @param jc component to register
 	 */
 	public static void register(String subject,Object obj){
-		Log.debug("Register: "+subject+" by: "+obj);
+		Log.debug("Register: "+subject+" by: "+obj); //$NON-NLS-1$ //$NON-NLS-2$
 		ArrayList alComponents = (ArrayList)hEventComponents.get(subject);
 		if (alComponents == null){
 			alComponents = new ArrayList(1);
@@ -86,7 +86,7 @@ public class ObservationManager implements ITechnicalStrings{
 	 */
 	public static void notifySync(final String subject){
 		if (!subject.equals(EVENT_HEART_BEAT)){ //do not show this heart beat 
-		    Log.debug("Notify: "+subject);
+		    Log.debug("Notify: "+subject); //$NON-NLS-1$
 		}
 		ArrayList alComponents =(ArrayList)hEventComponents.get(subject); 
 		if (alComponents == null){

@@ -67,15 +67,15 @@ public class AnimationView extends ViewAdapter implements ITechnicalStrings,Obse
 	 * @see org.jajuk.ui.views.IView#getDesc()
 	 */
 	public String getDesc() {
-		return "AnimationView.0";
+		return "AnimationView.0"; //$NON-NLS-1$
 	}
 
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.views.IView#populate()
 	 */
 	public void populate() {
-		Font font = new Font("dialog", Font.BOLD, 40);
-		btl1 = new BasicTextLabel(" ");
+		Font font = new Font("dialog", Font.BOLD, 40); //$NON-NLS-1$
+		btl1 = new BasicTextLabel(" "); //$NON-NLS-1$
 		btl1.setFont(font);
 	    btl1.setOpaque(false);
 		setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
@@ -101,7 +101,7 @@ public class AnimationView extends ViewAdapter implements ITechnicalStrings,Obse
 	public synchronized void update(String subject) {
 		if (subject.equals(EVENT_INFORMATION_DISPLAY)){
 			String s = InformationJPanel.getInstance().getMessage();
-			if (s != null  && !s.trim().equals("")){
+			if (s != null  && !s.trim().equals("")){ //$NON-NLS-1$
 			    setText(s);   
 			}
 		}
@@ -109,7 +109,7 @@ public class AnimationView extends ViewAdapter implements ITechnicalStrings,Obse
 	
 	private int getFont(String s){
 	    //FONT 22, 10% = 1/3
-	    StringTokenizer st = new StringTokenizer(s,"\n");
+	    StringTokenizer st = new StringTokenizer(s,"\n"); //$NON-NLS-1$
 	    int iLines = st.countTokens();
 	    return 0;
 	}

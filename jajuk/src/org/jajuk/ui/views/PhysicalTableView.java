@@ -285,8 +285,8 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
 		it = alToShow.iterator();
 		//Track | Album | Author |  Length | Style | Device | File name | Rate
 		if ( !ConfigurationManager.getBoolean(CONF_REGEXP) && sPropertyValue != null){ //do we use regular expression or not? if not, we allow user to use '*'
-		    sPropertyValue = sPropertyValue.replaceAll("\\*",".*");
-		    sPropertyValue = ".*"+sPropertyValue+".*";
+		    sPropertyValue = sPropertyValue.replaceAll("\\*",".*"); //$NON-NLS-1$ //$NON-NLS-2$
+		    sPropertyValue = ".*"+sPropertyValue+".*"; //$NON-NLS-1$ //$NON-NLS-2$
 		}	
 	
 		while (it.hasNext()){

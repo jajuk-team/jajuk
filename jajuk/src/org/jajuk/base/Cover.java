@@ -150,10 +150,10 @@ public class Cover implements Comparable,ITechnicalStrings {
                 bData = DownloadManager.download(url);
                 this.image = new ImageIcon(bData); 
                 if ( image.getImageLoadStatus() != MediaTracker.COMPLETE){
-                    throw new JajukException("129");
+                    throw new JajukException("129"); //$NON-NLS-1$
                 }
             }
-            Log.debug("Loaded "+url.toString()+" in  "+(System.currentTimeMillis()-l)+" ms");
+            Log.debug("Loaded "+url.toString()+" in  "+(System.currentTimeMillis()-l)+" ms"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         }
         return image;
     }
@@ -162,7 +162,7 @@ public class Cover implements Comparable,ITechnicalStrings {
      * toString method
      */
     public String toString(){
-        return "Type="+iType +" URL="+url;
+        return "Type="+iType +" URL="+url; //$NON-NLS-1$ //$NON-NLS-2$
     }
     
     /**

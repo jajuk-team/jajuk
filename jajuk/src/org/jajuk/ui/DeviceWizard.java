@@ -241,7 +241,7 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 	 */
 	public void updateWidgets(final Device device){
 		bNew = false;
-		setTitle(Messages.getString("DeviceWizard.0")+" : "+device.getName());//$NON-NLS-1$
+		setTitle(Messages.getString("DeviceWizard.0")+" : "+device.getName());//$NON-NLS-1$ //$NON-NLS-2$
 		this.device = device;
 		jcbSynchronized.removeAllItems();
 		alDevices.clear();
@@ -335,7 +335,7 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 			if (bNew){
 				//check device availibility 
 				String sCode = DeviceManager.checkDeviceAvailablity(jtfName.getText(),jcbType.getSelectedIndex(),jtfUrl.getText(),jtfMountPoint.getText());
-				if (!sCode.equals("0")){
+				if (!sCode.equals("0")){ //$NON-NLS-1$
 				    Messages.showErrorMessage(sCode);
 				    this.setVisible(true); //display wizzard window which has been hiden by the error window
 				    return;
@@ -387,7 +387,7 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 			jfc.setDialogTitle(Messages.getString("DeviceWizard.43"));//$NON-NLS-1$
 			jfc.setMultiSelectionEnabled(false);
 			String sUrl =jtfUrl.getText(); 
-			if (!sUrl.equals("")){  //if url is already set, use it as root directory
+			if (!sUrl.equals("")){  //if url is already set, use it as root directory //$NON-NLS-1$
 			    jfc.setCurrentDirectory(new File(sUrl));
 			}
 			int returnVal = jfc.showOpenDialog(this);
@@ -402,7 +402,7 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 			jfc.setDialogTitle(Messages.getString("DeviceWizard.47"));//$NON-NLS-1$
 			jfc.setMultiSelectionEnabled(false);
 			String sMountPoint = jtfMountPoint.getText(); 
-			if (!sMountPoint.equals("")){  //if url is already set, use it as root directory
+			if (!sMountPoint.equals("")){  //if url is already set, use it as root directory //$NON-NLS-1$
 			    jfc.setCurrentDirectory(new File(sMountPoint));
 			}
 			int returnVal = jfc.showOpenDialog(this);

@@ -66,7 +66,7 @@ public class DownloadManager implements ITechnicalStrings {
 		client.setTimeout(iDataTimeout); //data receptino timeout
 		client.getState().setAuthenticationPreemptive(true);
 		if (sProxyUser!= null && sProxyPassswd!= null){
-			client.getState().setProxyCredentials(null,"proxy", new UsernamePasswordCredentials(sProxyUser,sProxyPassswd)  );
+			client.getState().setProxyCredentials(null,"proxy", new UsernamePasswordCredentials(sProxyUser,sProxyPassswd)  ); //$NON-NLS-1$
 		}
 		return client;
 	}
@@ -110,22 +110,22 @@ public class DownloadManager implements ITechnicalStrings {
 	    ArrayList alOut = new ArrayList(20); //URL list   
 	    try{
 	        bActiveConnection = true;
-	        String sSearchUrl = "http://images.google.com/images?q="+URLEncoder.encode(search, "ISO-8859-1")+"&ie=ISO-8859-1&hl=en&btnG=Google+Search";
-	        Log.debug("Search URL: "+sSearchUrl);
+	        String sSearchUrl = "http://images.google.com/images?q="+URLEncoder.encode(search, "ISO-8859-1")+"&ie=ISO-8859-1&hl=en&btnG=Google+Search"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+	        Log.debug("Search URL: "+sSearchUrl); //$NON-NLS-1$
 	        byte[] bRes = download(new URL(sSearchUrl));
 	        if (bRes == null || bRes.length==0){
 	            return alOut;
 	        }
 	        String sRes = new String(bRes);
 	        //get urls
-	        String[] strings = sRes.split("imgurl=");
+	        String[] strings = sRes.split("imgurl="); //$NON-NLS-1$
 	        for (int i=1;i<strings.length;i++){
 	            String s = strings[i].substring(0,strings[i].indexOf('&')); 
-	            s = s.replaceAll("%2520","%20");
+	            s = s.replaceAll("%2520","%20"); //$NON-NLS-1$ //$NON-NLS-2$
 	            alOut.add(new URL(s));
 	        }
 	        //get sizes
-	        strings = sRes.split("pixels - ");
+	        strings = sRes.split("pixels - "); //$NON-NLS-1$
 	        int iNbRemove = 0; //removes number used to compute new index
 	        for (int i=1;i<strings.length;i++){
 	            int iKPos = strings[i].indexOf('k');
@@ -166,16 +166,16 @@ public class DownloadManager implements ITechnicalStrings {
 	            }
 	        }
 	        get = new GetMethod(url.toString());
-	        get.addRequestHeader(new Header("User-Agent","Mozilla/4.0 (compatible; MSIE 5.0; Windows 2000) Opera 6.03  [en]"));
+	        get.addRequestHeader(new Header("User-Agent","Mozilla/4.0 (compatible; MSIE 5.0; Windows 2000) Opera 6.03  [en]")); //$NON-NLS-1$ //$NON-NLS-2$
 	        get.setDoAuthentication( true );
 	        int status = client.executeMethod(getHostConfiguration(url.getHost()), get );
 	        bOut = get.getResponseBody();
 	        if ( bConcurrentConnection){ //if another session has tried to download another url, this one shouls be trashed
-	            throw new JajukException("129");
+	            throw new JajukException("129"); //$NON-NLS-1$
 	        }
 	     }
 	    catch(Exception e){
-	        throw new JajukException("129"); //mainly time outs
+	        throw new JajukException("129"); //mainly time outs //$NON-NLS-1$
 	    }
 	    finally{
 	        get.releaseConnection();

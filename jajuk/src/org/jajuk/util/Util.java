@@ -410,7 +410,8 @@ public class Util implements ITechnicalStrings {
 					}
 				}
 				if ( lUsedMB/1048576 > iMB){  //too much backup files, leave
-					new File(Util.removeExtension(file.getAbsolutePath())+"-backup-1."+Util.getExtension(file)).delete(); //delete older backup $NON-NLS-1$//$NON-NLS-2$
+				    // delete older backup
+				    new File(Util.removeExtension(file.getAbsolutePath())+"-backup-1."+Util.getExtension(file)).delete(); //$NON-NLS-1$
 					//change all backup names ( 2 becomes 1, 3 becomes 2...)
 					for ( int i=2;i<index;i++){
 						File fBefore = new File(Util.removeExtension(file.getAbsolutePath())+"-backup-"+Integer.toString(i)+"."+Util.getExtension(file)); //$NON-NLS-1$//$NON-NLS-2$
@@ -494,7 +495,7 @@ public class Util implements ITechnicalStrings {
 	 * @return whether the given filename is a standard cover or not
 	 */
 	public static boolean isStandardCover(String sFileName){
-	    return sFileName.toLowerCase().matches(".*"+FILE_DEFAULT_COVER+".*") || sFileName.toLowerCase().matches(".*"+FILE_DEFAULT_COVER_2+".*");
+	    return sFileName.toLowerCase().matches(".*"+FILE_DEFAULT_COVER+".*") || sFileName.toLowerCase().matches(".*"+FILE_DEFAULT_COVER_2+".*"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 	}
 	
 	/**
@@ -503,7 +504,7 @@ public class Util implements ITechnicalStrings {
 	 * @return whether the given filename is an absolute default cover
 	 */
 	public static boolean isAbsoluteDefaultCover(String sFileName){
-	    return sFileName.toLowerCase().matches(".*"+FILE_ABSOLUTE_DEFAULT_COVER+".*");
+	    return sFileName.toLowerCase().matches(".*"+FILE_ABSOLUTE_DEFAULT_COVER+".*"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
 	
@@ -635,36 +636,36 @@ public class Util implements ITechnicalStrings {
      * @return an accurate  google search query for a file
      */
     public  static String createQuery(org.jajuk.base.File file){
-        String sQuery = "";
+        String sQuery = ""; //$NON-NLS-1$
         int iAccuracy = ConfigurationManager.getInt(CONF_COVERS_ACCURACY);
         Track track = file.getTrack();
         String sAuthor = track.getAuthor().getName();
         String sAlbum = track.getAlbum().getName();
-        if (!sAuthor.equals("unknown_author")){
+        if (!sAuthor.equals("unknown_author")){ //$NON-NLS-1$
             switch(iAccuracy){
             case 0: //low, default
-                sQuery += sAuthor + " ";
+                sQuery += sAuthor + " "; //$NON-NLS-1$
                 break;
             case 1: //medium
-                sQuery += "\""+sAuthor + "\" "; //put "" around it
+                sQuery += "\""+sAuthor + "\" "; //put "" around it //$NON-NLS-1$ //$NON-NLS-2$
                 break;
             case 2: //high 
-                sQuery += "+\""+sAuthor + "\" "; //put +"" around it
+                sQuery += "+\""+sAuthor + "\" "; //put +"" around it //$NON-NLS-1$ //$NON-NLS-2$
                 break;
             default :
                 break;
             }
         }
-        if (!sAlbum.equals("unknown_album")){
+        if (!sAlbum.equals("unknown_album")){ //$NON-NLS-1$
             switch(iAccuracy){
             case 0: //low, default
                 sQuery += sAlbum;
                 break;
             case 1: //medium
-                sQuery += "\""+sAlbum + "\""; //put "" around it
+                sQuery += "\""+sAlbum + "\""; //put "" around it //$NON-NLS-1$ //$NON-NLS-2$
                 break;
             case 2: //high
-                sQuery += "+\""+sAlbum + "\""; //put "" around it
+                sQuery += "+\""+sAlbum + "\""; //put "" around it //$NON-NLS-1$ //$NON-NLS-2$
                 break;
             default :
                 break;

@@ -63,7 +63,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings	{
 	 */
 	private Messages() {
 	    try{
-	        propertiesEn = parseLangpack("en");
+	        propertiesEn = parseLangpack("en"); //$NON-NLS-1$
 	    }
 	    catch(Exception e){
 	        Log.error(e);
@@ -142,16 +142,16 @@ public class Messages extends DefaultHandler implements ITechnicalStrings	{
 	    final Properties properties = new Properties();
 	    //	  Choose right jajuk_<lang>.properties file to load
 		StringBuffer sbFilename = new StringBuffer(FILE_LANGPACK_PART1);
-		if (!sLocal.equals("en")){ //for english, properties file is simply jajuk.properties
+		if (!sLocal.equals("en")){ //for english, properties file is simply jajuk.properties //$NON-NLS-1$
 		    sbFilename.append('_').append(sLocal);
 		}
 		sbFilename.append(FILE_LANGPACK_PART2);
 		String sUrl; //property file URL, either in the jajuk.jar jar (normal execution) or found as regular file if in development debug mode
 		if (Main.isDebugMode()){
-		    sUrl = "file:"+System.getProperty("user.dir")+"/src/org/jajuk/i18n/"+ sbFilename.toString();
+		    sUrl = "file:"+System.getProperty("user.dir")+"/src/org/jajuk/i18n/"+ sbFilename.toString(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
 		else{
-		    sUrl = "jar:"+Util.getExecLocation()+"!/org/jajuk/i18n/"+ sbFilename.toString();
+		    sUrl = "jar:"+Util.getExecLocation()+"!/org/jajuk/i18n/"+ sbFilename.toString(); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		//parse it, actually it is a big properties file as CDATA in an XML file 
 		try {
@@ -169,11 +169,11 @@ public class Messages extends DefaultHandler implements ITechnicalStrings	{
 			    public void endElement(String uri, String localName, String qName) throws SAXException {
 			        String sWhole = sb.toString();
                     //ok, parse it ( comments start with #)
-                    StringTokenizer st = new StringTokenizer(sWhole,"\n");
+                    StringTokenizer st = new StringTokenizer(sWhole,"\n"); //$NON-NLS-1$
                     while (st.hasMoreTokens()){
                         String sLine = st.nextToken();
-                        if (sLine.length()>0 && !sLine.startsWith("#") && sLine.indexOf('=')!=-1){
-                            StringTokenizer stLine = new StringTokenizer(sLine,"=");
+                        if (sLine.length()>0 && !sLine.startsWith("#") && sLine.indexOf('=')!=-1){ //$NON-NLS-1$
+                            StringTokenizer stLine = new StringTokenizer(sLine,"="); //$NON-NLS-1$
                             properties.put(stLine.nextToken(),stLine.nextToken());
                         }
                     }

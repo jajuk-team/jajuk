@@ -260,7 +260,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 				add(jtbPlay,"9,0"); //$NON-NLS-1$
 				add(jpPosition,"11,0"); //$NON-NLS-1$
 				add(jpVolume,"13,0"); //$NON-NLS-1$
-				add(jbMute,"15,0");
+				add(jbMute,"15,0"); //$NON-NLS-1$
 				
 				//register to player events
 				ObservationManager.register(EVENT_PLAYER_PLAY,CommandJPanel.this);
@@ -513,7 +513,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 					jsPosition.setValue(0);
 					jsPosition.addChangeListener(CommandJPanel.this);
 					jbPlayPause.setIcon(Util.getIcon(ICON_PAUSE)); //resume any current pause
-					ConfigurationManager.setProperty(CONF_STARTUP_LAST_POSITION,"0");//reset startup position
+					ConfigurationManager.setProperty(CONF_STARTUP_LAST_POSITION,"0");//reset startup position //$NON-NLS-1$
 				}
 				else if ( EVENT_PLAYER_PLAY.equals(subject)){
 					jbRew.setEnabled(true);

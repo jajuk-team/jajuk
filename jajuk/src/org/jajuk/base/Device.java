@@ -189,7 +189,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 			 	then a refresh would clear the device, display a warning message*/
 			File file = new File(getUrl());
 			if ( file.exists() && (file.list() == null || file.list().length==0)){
-				int i = JOptionPane.showConfirmDialog(Main.getWindow(),Messages.getString("Confirmation_void_refresh"),Messages.getString("Warning"),JOptionPane.OK_CANCEL_OPTION,JOptionPane.WARNING_MESSAGE); //$NON-NLS-1$
+				int i = JOptionPane.showConfirmDialog(Main.getWindow(),Messages.getString("Confirmation_void_refresh"),Messages.getString("Warning"),JOptionPane.OK_CANCEL_OPTION,JOptionPane.WARNING_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
 				if ( i != JOptionPane.OK_OPTION){
 					return;
 				}

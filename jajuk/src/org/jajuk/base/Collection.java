@@ -83,7 +83,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 	public static void commit() throws IOException {
 	    String sCharset = ConfigurationManager.getProperty(CONF_COLLECTION_CHARSET);
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(FILE_COLLECTION), sCharset)); //$NON-NLS-1$
-		bw.write("<?xml version='1.0' encoding='"+sCharset+"'?>\n"); //$NON-NLS-1$
+		bw.write("<?xml version='1.0' encoding='"+sCharset+"'?>\n"); //$NON-NLS-1$ //$NON-NLS-2$
 		bw.write("<collection jajuk_version='"+JAJUK_VERSION+"'>\n"); //$NON-NLS-1$ //$NON-NLS-2$
 		//types
 		bw.write("\t<types>\n"); //$NON-NLS-1$

@@ -85,20 +85,20 @@ public class DeviceManager implements ITechnicalStrings{
 		while (it.hasNext()){
 		    Device deviceToCheck = (Device)it.next();
 			if ( sName.equals(deviceToCheck.getName())){
-				return "019" ;
+				return "019" ; //$NON-NLS-1$
 			}
 			String sUrlChecked = deviceToCheck.getUrl();
 			//check it is not a sub-directory of an existing device
 			File fNew = new File(sUrl);
 			File fChecked = new File(sUrlChecked);
 			if (fNew.equals(fChecked) || Util.isDescendant(fNew,fChecked) || Util.isAncestor(fNew,fChecked)){
-			    return "029";
+			    return "029"; //$NON-NLS-1$
 			}
 		}
 		//check availability
 		if ( iDeviceType != 2 ){ //not a remote device, TBI for remote
 		    //make sure it's mounted if under unix
-		    if (!Util.isUnderWindows() && sMountPoint != null && !sMountPoint.equals("")){
+		    if (!Util.isUnderWindows() && sMountPoint != null && !sMountPoint.equals("")){ //$NON-NLS-1$
 		       try {
 		           Process process = Runtime.getRuntime().exec("mount "+sMountPoint); //run the actual mount command //$NON-NLS-1$
 		           process.waitFor();
@@ -108,10 +108,10 @@ public class DeviceManager implements ITechnicalStrings{
 		    //test directory is available
 		    File file = new File(sUrl);
 		    if ( !file.exists() || !file.canRead()){ //see if the url exists and is readable
-		        return "101";
+		        return "101"; //$NON-NLS-1$
 		    }
 		}
-		return "0";
+		return "0"; //$NON-NLS-1$
 	}
 	
 	/**

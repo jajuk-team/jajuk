@@ -159,7 +159,7 @@ public class CDScanView extends ViewAdapter implements ActionListener {
 			jfc.setDialogTitle(Messages.getString("DeviceWizard.43"));//$NON-NLS-1$
 			jfc.setMultiSelectionEnabled(false);
 			String sMountPoint = jtfMountPoint.getText(); 
-			if (!sMountPoint.equals("")){  //if url is already set, use it as root directory
+			if (!sMountPoint.equals("")){  //if url is already set, use it as root directory //$NON-NLS-1$
 			    jfc.setCurrentDirectory(new File(sMountPoint));
 			}
 			int returnVal = jfc.showOpenDialog(this);

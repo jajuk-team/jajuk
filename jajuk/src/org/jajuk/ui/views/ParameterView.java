@@ -252,7 +252,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 			    sbSearch.setText(file.getTrack().getName());
 			}
 			else{
-			    ConfigurationManager.setProperty(CONF_STARTUP_FILE,""); //the file exists no more, remove its id as startup file
+			    ConfigurationManager.setProperty(CONF_STARTUP_FILE,""); //the file exists no more, remove its id as startup file //$NON-NLS-1$
 			}
 		}
 		sbSearch.setToolTipText(Messages.getString("ParameterView.18")); //$NON-NLS-1$
@@ -524,8 +524,8 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jcbRegexp = new JCheckBox(Messages.getString("ParameterView.113")); //$NON-NLS-1$
 		jcbRegexp.setSelected(ConfigurationManager.getBoolean(CONF_REGEXP));//$NON-NLS-1$
 		jcbRegexp.setToolTipText(Messages.getString("ParameterView.114")); //$NON-NLS-1$
-		jcbCollectionEncoding.addItem("UTF-8");
-		jcbCollectionEncoding.addItem("UTF-16");
+		jcbCollectionEncoding.addItem("UTF-8"); //$NON-NLS-1$
+		jcbCollectionEncoding.addItem("UTF-16"); //$NON-NLS-1$
 		jpAdvanced.add(jcbBackup,"0,1");//$NON-NLS-1$
 		jpAdvanced.add(jcbRegexp,"0,3");//$NON-NLS-1$
 		jpAdvanced.add(jlBackupSize,"0,5");//$NON-NLS-1$
@@ -624,17 +624,17 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jtfTransfertTO.setToolTipText(Messages.getString("ParameterView.163"));  //$NON-NLS-1$)
 		jtfTransfertTO.addActionListener(this);
 		jtfTransfertTO.setInputVerifier(verifier);
-		jpNetwork.add(jcbProxy,"0,1");
-		jpNetwork.add(jlProxyHostname,"0,3");
-		jpNetwork.add(jtfProxyHostname,"1,3");
-		jpNetwork.add(jlProxyPort,"0,5");
-		jpNetwork.add(jtfProxyPort,"1,5");
-		jpNetwork.add(jlProxyLogin,"0,7");
-		jpNetwork.add(jtfProxyLogin,"1,7");
-		jpNetwork.add(jlConnectionTO,"0,9");
-		jpNetwork.add(jtfConnectionTO,"1,9");
-		jpNetwork.add(jlTransfertTO,"0,11");
-		jpNetwork.add(jtfTransfertTO,"1,11");
+		jpNetwork.add(jcbProxy,"0,1"); //$NON-NLS-1$
+		jpNetwork.add(jlProxyHostname,"0,3"); //$NON-NLS-1$
+		jpNetwork.add(jtfProxyHostname,"1,3"); //$NON-NLS-1$
+		jpNetwork.add(jlProxyPort,"0,5"); //$NON-NLS-1$
+		jpNetwork.add(jtfProxyPort,"1,5"); //$NON-NLS-1$
+		jpNetwork.add(jlProxyLogin,"0,7"); //$NON-NLS-1$
+		jpNetwork.add(jtfProxyLogin,"1,7"); //$NON-NLS-1$
+		jpNetwork.add(jlConnectionTO,"0,9"); //$NON-NLS-1$
+		jpNetwork.add(jtfConnectionTO,"1,9"); //$NON-NLS-1$
+		jpNetwork.add(jlTransfertTO,"0,11"); //$NON-NLS-1$
+		jpNetwork.add(jtfTransfertTO,"1,11"); //$NON-NLS-1$
 				
 		//- Cover
 		jpCovers = new JPanel();
@@ -684,13 +684,13 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jcbSearchAccuracy.addItem(Messages.getString("ParameterView.156")); //$NON-NLS-1$
 		jcbSearchAccuracy.addItem(Messages.getString("ParameterView.157")); //$NON-NLS-1$
 		jcbSearchAccuracy.addItem(Messages.getString("ParameterView.158")); //$NON-NLS-1$
-		jpCovers.add(jcbAutoCover,"0,1");
-		jpCovers.add(jlMinSize,"0,3");
-		jpCovers.add(jtfMinSize,"1,3");
-		jpCovers.add(jlMaxSize,"0,5");
-		jpCovers.add(jtfMaxSize,"1,5");
-		jpCovers.add(jlSearchAccuracy,"0,7");
-		jpCovers.add(jcbSearchAccuracy,"1,7");
+		jpCovers.add(jcbAutoCover,"0,1"); //$NON-NLS-1$
+		jpCovers.add(jlMinSize,"0,3"); //$NON-NLS-1$
+		jpCovers.add(jtfMinSize,"1,3"); //$NON-NLS-1$
+		jpCovers.add(jlMaxSize,"0,5"); //$NON-NLS-1$
+		jpCovers.add(jtfMaxSize,"1,5"); //$NON-NLS-1$
+		jpCovers.add(jlSearchAccuracy,"0,7"); //$NON-NLS-1$
+		jpCovers.add(jcbSearchAccuracy,"1,7"); //$NON-NLS-1$
 		
 		
 		//--OK/cancel panel
@@ -719,7 +719,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jtpMain.addTab(Messages.getString("ParameterView.122"),jpPerspectives); //$NON-NLS-1$
 		jtpMain.addTab(Messages.getString("ParameterView.139"),jpNetwork); //$NON-NLS-1$
 		jtpMain.addTab(Messages.getString("ParameterView.115"),jpAdvanced); //$NON-NLS-1$
-		add(jtpMain,"0,0");
+		add(jtpMain,"0,0"); //$NON-NLS-1$
 		add(jpOKCancel,"0,1"); //$NON-NLS-1$
 		//update widgets state
 		updateSelection();
@@ -880,7 +880,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 				    }
 				    else{
 				        jtfBackupSize.setEnabled(false);
-				        jtfBackupSize.setText("0");
+				        jtfBackupSize.setText("0"); //$NON-NLS-1$
 				    }
 				}
 				else if (e.getSource() == jcbProxy){

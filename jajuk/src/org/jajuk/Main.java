@@ -105,7 +105,7 @@ public class Main implements ITechnicalStrings {
 		//non ui init
 		try{
 			//set exec location path ( normal or debug )
-			bDebugMode = (args.length>0 && args[0].equals("-debug"));
+			bDebugMode = (args.length>0 && args[0].equals("-debug")); //$NON-NLS-1$
 			Util.setExecLocation(bDebugMode);//$NON-NLS-1$ 
 			
 			//check for jajuk home directory presence, needed by log
@@ -314,8 +314,8 @@ public class Main implements ITechnicalStrings {
 			});
 		} catch (JajukException je) { //last chance to catch any error for logging purpose
 			Log.error(je);
-			if ( je.getCode().equals("005")){
-				Messages.showErrorMessage("005");
+			if ( je.getCode().equals("005")){ //$NON-NLS-1$
+				Messages.showErrorMessage("005"); //$NON-NLS-1$
 			}
 			exit(1);
 		} catch (Exception e) { //last chance to catch any error for logging purpose
@@ -523,7 +523,7 @@ public class Main implements ITechnicalStrings {
 	 */
 	public static void upgrade() throws Exception {
 		//--For jajuk < 0.2 : remove backup file : collection~.xml
-		File file = new File(FILE_COLLECTION+"~");
+		File file = new File(FILE_COLLECTION+"~"); //$NON-NLS-1$
 		if ( file!= null ){
 			file.delete();
 		}
@@ -537,7 +537,7 @@ public class Main implements ITechnicalStrings {
 				public void startElement(String sUri, String sName, String sQName, Attributes attributes) throws SAXException {
 					if (sQName.equals("perspectives")) { //$NON-NLS-1$
 						String sRelease = attributes.getValue(attributes.getIndex("jajuk_version")); //$NON-NLS-1$
-						if (sRelease.matches("0.[1-2].*")){ //0.1 or 0.2 release
+						if (sRelease.matches("0.[1-2].*")){ //0.1 or 0.2 release //$NON-NLS-1$
 							Main.bPerspectiveReleaseOK = false;
 						}
 					}

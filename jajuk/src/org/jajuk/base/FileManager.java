@@ -318,7 +318,7 @@ public class FileManager implements ITechnicalStrings{
 		ArrayList alSortedFiles = getSortedFiles();
 		//test if this file is the very first one
 		if (alSortedFiles.indexOf(file) == 0){
-		    Messages.showErrorMessage("128");
+		    Messages.showErrorMessage("128"); //$NON-NLS-1$
 		    return null;
 		}
 		//look for a correct file from index to collection begin

@@ -133,16 +133,16 @@ public class ConfigurationManager implements ITechnicalStrings{
 		properties.put(CONF_STATE_SHUFFLE,FALSE); 
 		properties.put(CONF_STATE_CONTINUE,TRUE);
 		properties.put(CONF_STATE_INTRO,FALSE); 
-		properties.put(CONF_STARTUP_FILE,""); //no startup file by default 
+		properties.put(CONF_STARTUP_FILE,""); //no startup file by default  //$NON-NLS-1$
 		properties.put(CONF_STARTUP_MODE,STARTUP_MODE_LAST_KEEP_POS);
 		properties.put(CONF_STARTUP_KEEP_MODE,TRUE);
-		properties.put(CONF_STARTUP_LAST_POSITION,"0");
+		properties.put(CONF_STARTUP_LAST_POSITION,"0"); //$NON-NLS-1$
 		properties.put(CONF_CONFIRMATIONS_DELETE_FILE,TRUE);
 		properties.put(CONF_CONFIRMATIONS_EXIT,FALSE);
 		properties.put(CONF_OPTIONS_HIDE_UNMOUNTED,FALSE);
 		properties.put(CONF_OPTIONS_RESTART,TRUE);
 		properties.put(CONF_OPTIONS_SEARCH_UNMOUNTED,TRUE);
-		properties.put(CONF_OPTIONS_NOVELTIES_AGE,"30");
+		properties.put(CONF_OPTIONS_NOVELTIES_AGE,"30"); //$NON-NLS-1$
 		properties.put(CONF_OPTIONS_LOG_LEVEL,Integer.toString(Log.WARNING));
 		//set default language without properties file available (normaly only at install)
 		String sLanguage = System.getProperty("user.language"); //$NON-NLS-1$
@@ -163,7 +163,7 @@ public class ConfigurationManager implements ITechnicalStrings{
 		properties.put(CONF_FIRST_CON,TRUE);
 		properties.put(CONF_TAGS_DEEP_SCAN,FALSE);
 		properties.put(CONF_TAGS_USE_PARENT_DIR,TRUE);
-		properties.put(CONF_BOOKMARKS,"");
+		properties.put(CONF_BOOKMARKS,""); //$NON-NLS-1$
 		properties.put(CONF_SHOW_AT_STARTUP,TRUE);
 		properties.put(CONF_BESTOF_SIZE,"20"); //$NON-NLS-1$
 		properties.put(CONF_VOLUME,"0.5"); //$NON-NLS-1$
@@ -171,15 +171,15 @@ public class ConfigurationManager implements ITechnicalStrings{
 		properties.put(CONF_BACKUP_SIZE,"30");//$NON-NLS-1$
 		properties.put(CONF_COLLECTION_CHARSET,"UTF-8");//$NON-NLS-1$
 		properties.put(CONF_NETWORK_USE_PROXY,FALSE);
-		properties.put(CONF_NETWORK_PROXY_HOSTNAME,"proxy");//default proxy name, just a guess
-		properties.put(CONF_NETWORK_PROXY_PORT,"3128");
-		properties.put(CONF_NETWORK_PROXY_LOGIN,"");
-		properties.put(CONF_NETWORK_CONNECTION_TO,"5");
-		properties.put(CONF_NETWORK_TRANSFERT_TO,"20");
+		properties.put(CONF_NETWORK_PROXY_HOSTNAME,"proxy");//default proxy name, just a guess //$NON-NLS-1$
+		properties.put(CONF_NETWORK_PROXY_PORT,"3128"); //$NON-NLS-1$
+		properties.put(CONF_NETWORK_PROXY_LOGIN,""); //$NON-NLS-1$
+		properties.put(CONF_NETWORK_CONNECTION_TO,"5"); //$NON-NLS-1$
+		properties.put(CONF_NETWORK_TRANSFERT_TO,"20"); //$NON-NLS-1$
 		properties.put(CONF_COVERS_AUTO_COVER,TRUE);
-		properties.put(CONF_COVERS_MIN_SIZE,"5");
-		properties.put(CONF_COVERS_MAX_SIZE,"100");
-		properties.put(CONF_COVERS_ACCURACY,"0"); //low accuracy
+		properties.put(CONF_COVERS_MIN_SIZE,"5"); //$NON-NLS-1$
+		properties.put(CONF_COVERS_MAX_SIZE,"100"); //$NON-NLS-1$
+		properties.put(CONF_COVERS_ACCURACY,"0"); //low accuracy //$NON-NLS-1$
 		
 	}
 	

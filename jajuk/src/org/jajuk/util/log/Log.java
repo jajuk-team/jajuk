@@ -55,7 +55,7 @@ public class Log  implements ITechnicalStrings{
      */
     private   Log () {
         try {
-           loggerHttp = Logger.getLogger("org.apache.commons.httpclient");
+           loggerHttp = Logger.getLogger("org.apache.commons.httpclient"); //$NON-NLS-1$
             //message for logging system start
             Log.info("******************JAJUK******************"); //$NON-NLS-1$
             Log.info("Version: "+JAJUK_VERSION);  //$NON-NLS-1$
