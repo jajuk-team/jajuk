@@ -330,7 +330,6 @@ public interface ITechnicalStrings {
 	public static final String CONF_OPTIONS_P2P_HIDE_LOCAL_PROPERTIES = "jajuk.options.p2p.hide_local_properties";
 	public static final String CONF_OPTIONS_P2P_PASSWORD = "jajuk.options.p2p.password";
 	public static final String CONF_OPTIONS_NOVELTIES_AGE = "jajuk.options.novelties";
-	public static final String CONF_OPTIONS_AUTO_COVER = "jajuk.options.auto_cover";
 	public static final String CONF_HISTORY = "jajuk.options.history";
 	public static final String CONF_FIRST_CON = "jajuk.first_con";
 	public static final String CONF_TAGS_DEEP_SCAN = "jajuk.tags.deep_scan";
@@ -348,6 +347,11 @@ public interface ITechnicalStrings {
 	public static final String CONF_NETWORK_PROXY_HOSTNAME = "jajuk.network.proxy_hostname";
 	public static final String CONF_NETWORK_PROXY_PORT = "jajuk.network.proxy_port";
 	public static final String CONF_NETWORK_PROXY_LOGIN = "jajuk.network.proxy_login";
+	public static final String CONF_COVERS_AUTO_COVER = "jajuk.covers.auto_cover";
+	public static final String CONF_COVERS_MIN_SIZE = "jajuk.covers.min_size";
+	public static final String CONF_COVERS_MAX_SIZE = "jajuk.covers.max_size";
+	public static final String CONF_COVERS_ACCURACY = "jajuk.covers.accuracy";
+	
 	
 	//miscelanous
 	public static final String TRUE= "true";

@@ -174,7 +174,11 @@ public class ConfigurationManager implements ITechnicalStrings{
 		properties.put(CONF_NETWORK_PROXY_HOSTNAME,"proxy");//default proxy name, just a guess
 		properties.put(CONF_NETWORK_PROXY_PORT,"3128");
 		properties.put(CONF_NETWORK_PROXY_LOGIN,"");
-		properties.put(CONF_OPTIONS_AUTO_COVER,TRUE);
+		properties.put(CONF_COVERS_AUTO_COVER,TRUE);
+		properties.put(CONF_COVERS_MIN_SIZE,"5");
+		properties.put(CONF_COVERS_MAX_SIZE,"100");
+		properties.put(CONF_COVERS_ACCURACY,"1"); //medium accuracy
+		
 	}
 	
 	

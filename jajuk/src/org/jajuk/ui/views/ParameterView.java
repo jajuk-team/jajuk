@@ -97,7 +97,6 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 	JCheckBox jcbDisplayUnmounted;
 	JCheckBox jcbRestart;
 	JCheckBox jcbSearchUnmounted;
-	JCheckBox jcbAutoCover;
 	JLabel jlLanguage;
 	JComboBox jcbLanguage;
 	JLabel jlLAF;
@@ -139,6 +138,14 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 	JTextField jtfProxyPort;
 	JLabel jlProxyLogin;
 	JTextField jtfProxyLogin;
+	JPanel jpCovers;
+	JCheckBox jcbAutoCover;
+	JLabel jlMinSize;
+	JTextField jtfMinSize;
+	JLabel jlMaxSize;
+	JTextField jtfMaxSize;
+	JLabel jlSearchAccuracy;
+	JComboBox jcbSearchAccuracy;
 	JPanel jpOKCancel;
 	JButton jbOK;
 	JButton jbDefault;
@@ -281,7 +288,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jpOptions = new JPanel();
 		jpOptions.setBorder(BorderFactory.createTitledBorder(Messages.getString("ParameterView.33"))); //$NON-NLS-1$
 		double sizeOptions[][] = {{0.99},
-				{iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,60+2*iYSeparator,iYSeparator,110,iYSeparator}};
+				{iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,60+2*iYSeparator,iYSeparator,110,iYSeparator}};
 		jpOptions.setLayout(new TableLayout(sizeOptions));
 		jcbDisplayUnmounted = new JCheckBox(Messages.getString("ParameterView.34")); //$NON-NLS-1$
 		jcbDisplayUnmounted.setToolTipText(Messages.getString("ParameterView.35")); //$NON-NLS-1$
@@ -289,8 +296,6 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jcbRestart.setToolTipText(Messages.getString("ParameterView.37")); //$NON-NLS-1$
 		jcbSearchUnmounted = new JCheckBox(Messages.getString("ParameterView.127")); //$NON-NLS-1$
 		jcbSearchUnmounted.setToolTipText(Messages.getString("ParameterView.128")); //$NON-NLS-1$
-		jcbAutoCover = new JCheckBox(Messages.getString("ParameterView.148")); //$NON-NLS-1$
-		jcbAutoCover.setToolTipText(Messages.getString("ParameterView.149")); //$NON-NLS-1$
 		JPanel jpCombos = new JPanel();
 		double sizeCombos[][] = {{0.50,0.50},
 				{20,iYSeparator,20,iYSeparator,20}};
@@ -453,9 +458,8 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jpOptions.add(jcbDisplayUnmounted,"0,1"); //$NON-NLS-1$
 		jpOptions.add(jcbRestart,"0,3"); //$NON-NLS-1$
 		jpOptions.add(jcbSearchUnmounted,"0,5"); //$NON-NLS-1$
-		jpOptions.add(jcbAutoCover,"0,7"); //$NON-NLS-1$
-		jpOptions.add(jpCombos,"0,9"); //$NON-NLS-1$
-		jpOptions.add(jp,"0,11"); //$NON-NLS-1$
+		jpOptions.add(jpCombos,"0,7"); //$NON-NLS-1$
+		jpOptions.add(jp,"0,9"); //$NON-NLS-1$
 				
 		//--P2P
 		jpP2P = new JPanel();
@@ -590,6 +594,63 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jpNetwork.add(jlProxyLogin,"0,7");
 		jpNetwork.add(jtfProxyLogin,"1,7");
 				
+		//- Cover
+		jpCovers = new JPanel();
+		jpCovers.setBorder(BorderFactory.createTitledBorder(Messages.getString("ParameterView.159")));  //$NON-NLS-1$
+		double sizeCover[][] = {{0.5,0.45},
+				{iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator}};
+		jpCovers.setLayout(new TableLayout(sizeCover));
+		jcbAutoCover = new JCheckBox(Messages.getString("ParameterView.148")); //$NON-NLS-1$
+		jcbAutoCover.setToolTipText(Messages.getString("ParameterView.149")); //$NON-NLS-1$
+		jcbAutoCover.addActionListener(this);
+		InputVerifier iverifier = new InputVerifier(){
+			public boolean verify(JComponent input) {
+				JTextField tf = (JTextField) input;
+				String sText = tf.getText();
+				try{
+					int iValue = Integer.parseInt(sText);
+					if (iValue < 1 ){ //size should be > 0 
+						jbOK.setEnabled(false);
+						return false;
+					}
+				}
+				catch(Exception e){
+					return false;
+				}
+				jbOK.setEnabled(true);
+				return true;
+			}
+			
+			public boolean shouldYieldFocus(JComponent input) {
+				return verify(input);
+			}
+		};
+		jlMinSize = new JLabel(Messages.getString("ParameterView.150")); //$NON-NLS-1$
+		jlMinSize.setToolTipText(Messages.getString("ParameterView.151")); //$NON-NLS-1$
+		jtfMinSize = new JTextField();
+		jtfMinSize.setInputVerifier(iverifier);
+		jtfMinSize.setToolTipText(Messages.getString("ParameterView.151")); //$NON-NLS-1$
+		jlMaxSize = new JLabel(Messages.getString("ParameterView.152")); //$NON-NLS-1$
+		jlMaxSize.setToolTipText(Messages.getString("ParameterView.153")); //$NON-NLS-1$
+		jtfMaxSize = new JTextField();
+		jtfMaxSize.setToolTipText(Messages.getString("ParameterView.153")); //$NON-NLS-1$
+		jtfMaxSize.setInputVerifier(iverifier);
+		jlSearchAccuracy = new JLabel(Messages.getString("ParameterView.154")); //$NON-NLS-1$
+		jlSearchAccuracy.setToolTipText(Messages.getString("ParameterView.155")); //$NON-NLS-1$
+		jcbSearchAccuracy = new JComboBox();
+		jcbSearchAccuracy.setToolTipText(Messages.getString("ParameterView.155")); //$NON-NLS-1$
+		jcbSearchAccuracy.addItem(Messages.getString("ParameterView.156")); //$NON-NLS-1$
+		jcbSearchAccuracy.addItem(Messages.getString("ParameterView.157")); //$NON-NLS-1$
+		jcbSearchAccuracy.addItem(Messages.getString("ParameterView.158")); //$NON-NLS-1$
+		jpCovers.add(jcbAutoCover,"0,1");
+		jpCovers.add(jlMinSize,"0,3");
+		jpCovers.add(jtfMinSize,"1,3");
+		jpCovers.add(jlMaxSize,"0,5");
+		jpCovers.add(jtfMaxSize,"1,5");
+		jpCovers.add(jlSearchAccuracy,"0,7");
+		jpCovers.add(jcbSearchAccuracy,"1,7");
+		
+		
 		//--OK/cancel panel
 		jpOKCancel = new JPanel();
 		jpOKCancel.setLayout(new FlowLayout());
@@ -611,6 +672,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jtpMain.addTab(Messages.getString("ParameterView.98"),jpTags); //$NON-NLS-1$
 		jtpMain.addTab(Messages.getString("ParameterView.8"),jpHistory); //$NON-NLS-1$
 		jtpMain.addTab(Messages.getString("ParameterView.71"),jpP2P); //$NON-NLS-1$
+		jtpMain.addTab(Messages.getString("ParameterView.159"),jpCovers); //$NON-NLS-1$
 		jtpMain.addTab(Messages.getString("ParameterView.26"),jpConfirmations); //$NON-NLS-1$
 		jtpMain.addTab(Messages.getString("ParameterView.122"),jpPerspectives); //$NON-NLS-1$
 		jtpMain.addTab(Messages.getString("ParameterView.139"),jpNetwork); //$NON-NLS-1$
@@ -672,7 +734,6 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 					ConfigurationManager.setProperty(CONF_OPTIONS_HIDE_UNMOUNTED,Boolean.toString(bHiddenState));
 					ConfigurationManager.setProperty(CONF_OPTIONS_RESTART,Boolean.toString(jcbRestart.isSelected()));
 					ConfigurationManager.setProperty(CONF_OPTIONS_SEARCH_UNMOUNTED,Boolean.toString(jcbSearchUnmounted.isSelected()));
-					ConfigurationManager.setProperty(CONF_OPTIONS_AUTO_COVER,Boolean.toString(jcbAutoCover.isSelected()));
 					String sLocal = (String)Messages.getInstance().getLocals().get(jcbLanguage.getSelectedIndex());
 					if (!Messages.getInstance().getLocal().equals(sLocal)){  //local has changed
 						Messages.showInfoMessage(Messages.getString("ParameterView.103")); //$NON-NLS-1$
@@ -749,11 +810,18 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 					ConfigurationManager.setProperty(CONF_COLLECTION_CHARSET,jcbCollectionEncoding.getSelectedItem().toString());
 					InformationJPanel.getInstance().setMessage(Messages.getString("ParameterView.109"),InformationJPanel.INFORMATIVE); //$NON-NLS-1$
 					ConfigurationManager.commit();
-					//network
+					//Network
 					ConfigurationManager.setProperty(CONF_NETWORK_USE_PROXY,Boolean.toString(jcbProxy.isSelected()));
 					ConfigurationManager.setProperty(CONF_NETWORK_PROXY_HOSTNAME,jtfProxyHostname.getText());
 					ConfigurationManager.setProperty(CONF_NETWORK_PROXY_PORT,jtfProxyPort.getText());
 					ConfigurationManager.setProperty(CONF_NETWORK_PROXY_LOGIN,jtfProxyLogin.getText());
+					//Covers
+					ConfigurationManager.setProperty(CONF_COVERS_AUTO_COVER,Boolean.toString(jcbAutoCover.isSelected()));
+					ConfigurationManager.setProperty(CONF_COVERS_MIN_SIZE,jtfMinSize.getText());
+					ConfigurationManager.setProperty(CONF_COVERS_MAX_SIZE,jtfMaxSize.getText());
+					ConfigurationManager.setProperty(CONF_COVERS_ACCURACY,Integer.toString(jcbSearchAccuracy.getSelectedIndex()));
+					
+					
 				}
 				else if (e.getSource() == jbDefault){
 					ConfigurationManager.setDefaultProperties();
@@ -782,6 +850,18 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 				        jtfProxyHostname.setEnabled(false);
 				        jtfProxyPort.setEnabled(false);
 				        jtfProxyLogin.setEnabled(false);
+				    }
+				}
+				else if (e.getSource() == jcbAutoCover){
+				    if ( jcbAutoCover.isSelected()){
+				        jtfMinSize.setEnabled(true);
+				        jtfMaxSize.setEnabled(true);
+				        jcbSearchAccuracy.setEnabled(true);
+				    }
+				    else{
+				        jtfMinSize.setEnabled(false);
+				        jtfMaxSize.setEnabled(false);
+				        jcbSearchAccuracy.setEnabled(false);
 				    }
 				}
 			}
@@ -825,7 +905,6 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		this.bHidden = bHidden; 
 		jcbRestart.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_RESTART));
 		jcbSearchUnmounted.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_SEARCH_UNMOUNTED));
-		jcbAutoCover.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_AUTO_COVER));
 		jcbLanguage.setSelectedIndex(Messages.getInstance().getLocals().indexOf(ConfigurationManager.getProperty(CONF_OPTIONS_LANGUAGE)));
 		jcbLAF.setSelectedItem(ConfigurationManager.getProperty(CONF_OPTIONS_LNF));
 		jcbLogLevel.setSelectedIndex(Integer.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_LOG_LEVEL)));
@@ -861,6 +940,11 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jtfProxyPort.setEnabled(bUseProxy);
 		jtfProxyLogin.setText(ConfigurationManager.getProperty(CONF_NETWORK_PROXY_LOGIN));
 		jtfProxyLogin.setEnabled(bUseProxy);
+		//Covers
+		jcbAutoCover.setSelected(ConfigurationManager.getBoolean(CONF_COVERS_AUTO_COVER));
+		jtfMinSize.setText(ConfigurationManager.getProperty(CONF_COVERS_MIN_SIZE));
+		jtfMaxSize.setText(ConfigurationManager.getProperty(CONF_COVERS_MAX_SIZE));
+		jcbSearchAccuracy.setSelectedIndex(Integer.parseInt(ConfigurationManager.getProperty(CONF_COVERS_ACCURACY)));
 	}
 	
 	/* (non-Javadoc)
