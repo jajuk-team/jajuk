@@ -183,7 +183,7 @@ public class JajukWindow extends JFrame implements ITechnicalStrings,ComponentLi
 		}
 		//hide
 		else{
-		    if (!Main.isForcedTaskBar()){  
+		    if (!Main.isNoTaskBar()){ //hide the window only if it is explicitely required 
 		        super.setVisible(false);
 		    }
 		 }

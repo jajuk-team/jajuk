@@ -106,8 +106,8 @@ public class Main implements ITechnicalStrings {
 	private static JajukSystray jsystray;
 	/**UI lauched flag*/
 	private static boolean bUILauched = false;
-	/**Force taskbar presence flag to ensure jajuk is always visible even when systray disapeares*/
-	private static boolean bForceTaskBar = true;
+	/**No taskbar presence flag when window is minimized (only tray)*/
+	private static boolean bNoTaskBar = false;
 	
 	/**
 	 * Main entry
@@ -122,7 +122,7 @@ public class Main implements ITechnicalStrings {
 		            bDebugMode = true;
 		        }
 		        if (args[i].equals("-notaskbar")){//$NON-NLS-1$
-		            bForceTaskBar = false;
+		            bNoTaskBar = true;
 		        }
 		    }
 		    
@@ -646,7 +646,7 @@ public class Main implements ITechnicalStrings {
     /**
      * @return Returns the bForceTaskBar.
      */
-    public static boolean isForcedTaskBar() {
-        return bForceTaskBar;
+    public static boolean isNoTaskBar() {
+        return bNoTaskBar;
     }
 }
