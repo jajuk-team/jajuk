@@ -14,7 +14,7 @@
   <property name='srcdir' value='src'/>
   <property name='classdir' value='classes'/>
   <property name='javadocdir' value='dist-files/doc/javadoc'/>
-  <property name='version' value='0.3.1rc3'/>
+  <property name='version' value='0.3.1rc4'/>
   <property name='jarname' value='jajuk.jar'/>
   <property name='helpsetjarname' value='jajuk-help.jar'/>
   <property name='distjarname' value='jajuk-install-'/>
@@ -99,7 +99,7 @@
     <mkdir dir='${rpmbuilddir_mdk}/SPECS'/>
     <mkdir dir='${rpmbuilddir_mdk}/BUILD'/>
     <mkdir dir='${rpmdistdir_mdk}'/>
-    <mkdir dir='${rpmdistdir_mdk}/usr/bin'/>
+    <mkdir dir='${rpmdistdir_mdk}/usr/local/bin'/>
     <mkdir dir='${rpmdistdir_mdk}/usr/lib/jajuk/bin'/>
     <mkdir dir='${rpmdistdir_mdk}/usr/lib/jajuk/lib'/>
     <mkdir dir='${rpmdistdir_mdk}/usr/lib/jajuk/native'/>
@@ -130,10 +130,10 @@
     	<fileset file='${basedir}/dist-files/icons/64x64/jajuk-logo.png'/>
     </copy>
         	<!--Mandrake-->
-    <copy todir='${rpmdistdir_mdk}/usr/bin' >
+    <copy todir='${rpmdistdir_mdk}/usr/local/bin' >
     	<fileset file='${basedir}/scripts/jajuk'/>
     </copy>
-    <chmod file='${rpmdistdir_mdk}/usr/bin/jajuk' perm='ugo+rx'/>
+    <chmod file='${rpmdistdir_mdk}/usr/local/bin/jajuk' perm='ugo+rx'/>
     <copy todir='${rpmdistdir_mdk}/usr/lib/jajuk/lib' >
     	<fileset dir='${basedir}/lib'/>
     </copy>

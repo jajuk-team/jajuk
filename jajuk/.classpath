@@ -20,10 +20,10 @@
 	<classpathentry kind="lib" path="lib/tritonus_share-1.0.jar"/>
 	<classpathentry kind="lib" path="lib/metouia-1.0b.jar"/>
 	<classpathentry kind="lib" path="lib/animation-1.1.3.jar"/>
-	<classpathentry kind="lib" path="lib/liquidlnf-0.2.8.jar"/>
 	<classpathentry sourcepath="/prog/api/commons-httpclient-2.0.1/src/commons-httpclient-2.0.1/src" kind="lib" path="lib/commons-httpclient-2.0.1.jar"/>
 	<classpathentry sourcepath="/prog/api/commons-logging-1.0.4/src" kind="lib" path="lib/commons-logging-1.0.jar"/>
 	<classpathentry kind="lib" path="lib/tray-0.1.6.jar"/>
 	<classpathentry kind="lib" path="lib/infonodeDockingWindows-1.1.0.jar"/>
+	<classpathentry kind="lib" path="lib/liquidlnf-0.2.9-alpha5.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
