@@ -63,6 +63,8 @@ public class JavaLayerPlayerImpl implements IPlayerImpl,ITechnicalStrings{
     float fVolume;
     /**Seeking flag*/
     boolean bSeeking = false;
+    /**Listener*/
+    BasicPlayerListener bpListener;
     
     /* (non-Javadoc)
      * @see org.jajuk.base.IPlayerImpl#play()
@@ -76,65 +78,72 @@ public class JavaLayerPlayerImpl implements IPlayerImpl,ITechnicalStrings{
             if (player == null){
                 player = new BasicPlayer();
                 BasicPlayer.EXTERNAL_BUFFER_SIZE = 16*4000; //set a large buffer to avoid blanks
-                player.addBasicPlayerListener( new BasicPlayerListener() {
-                    public void opened(Object arg0, Map arg1) {
-                        mInfo = arg1;
-                    }
-                    public void display(String msg){		
-                    }
-                    /**
-                     * Called several times by sec
-                     */
-                    public void progress(int iBytesread,long lMicroseconds,byte[] bPcmdata,java.util.Map mProperties) {
-                        if ( (System.currentTimeMillis()-lDateLastUpdate) > 900 ){ //update every 900 ms
-                            //test end of length
-                            if ( length != -1 && lMicroseconds/1000 > length && player != null){ //length=-1 means there is no max length
-                                try {
-                                    player.stop();
-                                    FIFO.getInstance().finished();
-                                } catch (BasicPlayerException e) {
-                                    Log.error(e);
-                                }
-                            }
-                            //computes read time
-                            if (mInfo.containsKey("audio.length.bytes")) { //$NON-NLS-1$
-                                int byteslength = ((Integer) mInfo.get("audio.length.bytes")).intValue(); //$NON-NLS-1$
-                                fPos = (float)iBytesread / byteslength;
-                                lTime = (long)(Util.getTimeLengthEstimation(mInfo)*fPos);
-                            }
-                            lDateLastUpdate = System.currentTimeMillis();
-                        }
-                    }
-                    
-                    public void stateUpdated(BasicPlayerEvent bpe) {
-                        Log.debug("Player state changed: "+bpe); //$NON-NLS-1$
-                        switch(bpe.getCode()){
-                        case BasicPlayerEvent.EOM:
-                            FIFO.getInstance().finished();
-                        break;
-                        case BasicPlayerEvent.STOPPED:
-                            bStopped = true;
-                        break;
-                        case BasicPlayerEvent.PLAYING:
-                            bStopped = false;
-                        	bSeeking = false;
-                        bStarted = true;
-                        try{
-                            if (player!=null){ //can be null if user try to lauch many tracks by next, next...
-                                player.setGain(JavaLayerPlayerImpl.this.fVolume);
-                            }
-                        } catch (Exception e) {
-                            Log.error(e);
-                        }
-                        Util.stopWaiting(); //stop the waiting cursor
-                        break;
-                        }
-                    }
-                    
-                    public void setController(BasicController arg0) {
-                    }
-                });
             }
+            //set listener
+            //remove old listener to avoid duplicate events
+            if (bpListener != null){
+                player.removeBasicPlayerListener(bpListener);
+            }
+            //instanciate BasicPlayerListener at each use! caution : if you do it only once, it will not reread actual varibles ( fVolume...) values
+            bpListener = new BasicPlayerListener(){
+                public void opened(Object arg0, Map arg1) {
+                    mInfo = arg1;
+                }
+                public void display(String msg){		
+                }
+                /**
+                 * Called several times by sec
+                 */
+                public void progress(int iBytesread,long lMicroseconds,byte[] bPcmdata,java.util.Map mProperties) {
+                    if ( (System.currentTimeMillis()-lDateLastUpdate) > 900 ){ //update every 900 ms
+                        //test end of length
+                        if ( length != -1 && lMicroseconds/1000 > length && player != null){ //length=-1 means there is no max length
+                            try {
+                                player.stop();
+                                FIFO.getInstance().finished();
+                            } catch (BasicPlayerException e) {
+                                Log.error(e);
+                            }
+                        }
+                        //computes read time
+                        if (mInfo.containsKey("audio.length.bytes")) { //$NON-NLS-1$
+                            int byteslength = ((Integer) mInfo.get("audio.length.bytes")).intValue(); //$NON-NLS-1$
+                            fPos = (float)iBytesread / byteslength;
+                            lTime = (long)(Util.getTimeLengthEstimation(mInfo)*fPos);
+                        }
+                        lDateLastUpdate = System.currentTimeMillis();
+                    }
+                }
+                
+                public void stateUpdated(BasicPlayerEvent bpe) {
+                    Log.debug("Player state changed: "+bpe); //$NON-NLS-1$
+                    switch(bpe.getCode()){
+                    case BasicPlayerEvent.EOM:
+                        FIFO.getInstance().finished();
+                    break;
+                    case BasicPlayerEvent.STOPPED:
+                        bStopped = true;
+                    break;
+                    case BasicPlayerEvent.PLAYING:
+                        bStopped = false;
+                    bSeeking = false;
+                    bStarted = true;
+                    try{
+                        if (player!=null){ //can be null if user try to lauch many tracks by next, next...
+                            player.setGain(JavaLayerPlayerImpl.this.fVolume);
+                        }
+                    } catch (Exception e) {
+                        Log.error(e);
+                    }
+                    Util.stopWaiting(); //stop the waiting cursor
+                    break;
+                    }
+                }
+                
+                public void setController(BasicController arg0) {
+                }
+            };
+            player.addBasicPlayerListener(bpListener);
             player.open(new File(file.getAbsolutePath())); 
             //make sure to stop any current player
             if (!bStopped && player!=null){
@@ -174,7 +183,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl,ITechnicalStrings{
         }	
     }
     
-      /* (non-Javadoc)
+    /* (non-Javadoc)
      * @see org.jajuk.base.IPlayerImpl#setVolume(float)
      */
     public synchronized void setVolume(float fVolume) throws Exception {
