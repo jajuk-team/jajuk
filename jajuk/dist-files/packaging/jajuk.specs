@@ -37,6 +37,7 @@ Jajuk Advanced Jukebox
    /usr/lib/jajuk/lib/tray-0.1.6.jar
    /usr/lib/jajuk/lib/tritonus_share-1.0.jar
    /usr/lib/jajuk/lib/vorbisspi-1.0.jar
+    /usr/lib/jajuk/lib/idw-gpl.jar
    /usr/lib/jajuk/native/libtray.so
    /usr/share/applications/Jajuk.desktop
    /usr/share/doc/packages/jajuk/README.html

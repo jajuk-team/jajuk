@@ -16,7 +16,7 @@
   <property name='helpsetjarname' value='jajuk-help.jar'/>
   <property name='distjarname' value='jajuk-install-'/>
     
-  <target name='all' description='o Create the entire package' depends='izpack'/>
+  <target name='all' description='o Create the entire package' depends='izpack,rpm'/>
   
   <target name='clean' description='o Clean up the distribution'>
     <delete dir='${distdir}'/>
@@ -83,7 +83,7 @@
     <copy todir='${rpmdistdir}/usr/bin' >
     	<fileset file='${basedir}/scripts/jajuk'/>
     </copy>
-    <chmod file="${rpmdistdir}/usr/bin/jajuk" perm="ugo+rx"/>
+    <chmod file='${rpmdistdir}/usr/bin/jajuk' perm='ugo+rx'/>
     <copy todir='${rpmdistdir}/usr/lib/jajuk/lib' >
     	<fileset dir='${basedir}/lib'/>
     </copy>
@@ -93,7 +93,7 @@
     <copy todir='${rpmdistdir}/usr/share/applications' >
     	<fileset file='${basedir}/dist-files/packaging/Jajuk.desktop'/>
     </copy>
-    <chmod file="${rpmdistdir}/usr/share/applications/Jajuk.desktop" perm="ugo+rwx"/>
+    <chmod file='${rpmdistdir}/usr/share/applications/Jajuk.desktop' perm='ugo+rwx'/>
     <copy todir='${rpmdistdir}/usr/share/doc/packages/jajuk' >
     	<fileset file='${basedir}/dist-files/doc/README*.html'/>
     </copy>
@@ -103,7 +103,7 @@
   </target>
  
  
- <target name='compile' description='o Compile the code' depends='mkdist_izpack'>
+ <target name='compile' description='o Compile the code' depends='mkdist_izpack,mkdist_rpm'>
     <javac destdir='${distdir}/${classdir}' deprecation='true' debug='true' optimize='true' excludes='**/package.html'>
       <src>
         <pathelement path='${distdir}/${srcdir}'>
@@ -144,24 +144,34 @@
   <target name='jar' description='o Create the jar' depends='compile'>
     <jar jarfile='${distdir}/bin/${jarname}' excludes='**/package.html' basedir='${distdir}/${classdir}' manifest='${basedir}/dist-files/packaging/MANIFEST.MF'/>
     <delete dir='${distdir}/${classdir}'/>
+	<!-- Copy jajuk jar in the workspace -->
     <copy todir='${basedir}' >
      <fileset file='${distdir}/bin/${jarname}'/>
   	</copy>
+  	<!-- Copy jajuk jar in the RPM distdir -->
+  	<copy todir='${rpmdistdir}/usr/lib/jajuk/bin' >
+    	<fileset file='${distdir}/bin/${jarname}'/>
+    </copy>
   </target>
 
   
   <target name='helpsetjar' description='o Create the heplset jar' depends='mkdist_izpack'>
     <delete file='${distdir}/bin/${helpsetjarname}'/>
-    <exec executable="jhindexer" dir='${basedir}/dist-files/doc/jajuk-hs/default'>
-	 <arg line="html"/>
+    <exec executable='jhindexer' dir='${basedir}/dist-files/doc/jajuk-hs/default'>
+	 <arg line='html'/>
    </exec>
-    <exec executable="jhindexer" dir='${basedir}/dist-files/doc/jajuk-hs/fr'>
-	 <arg line="html"/>
+    <exec executable='jhindexer' dir='${basedir}/dist-files/doc/jajuk-hs/fr'>
+	 <arg line='html'/>
    </exec>
    <jar jarfile='${distdir}/bin/${helpsetjarname}' basedir='${basedir}/dist-files/doc/jajuk-hs' />
-   <copy todir='${basedir}' >
+   <!-- Copy jajuk heplset jar in the workspace -->
+    <copy todir='${basedir}' >
      <fileset file='${distdir}/bin/${helpsetjarname}'/>
   	</copy>
+  	<!-- Copy jajuk helpset jar in the RPM distdir -->
+  	<copy todir='${rpmdistdir}/usr/lib/jajuk/bin' >
+		<fileset file='${distdir}/bin/${helpsetjarname}'/>
+    </copy>
    </target>
  
    <target name='static_jar' description='o Create the static jar' depends='compile'>
@@ -200,6 +210,11 @@
          <pathelement location='target/${final.name}.jar'/>
        </classpath>
       </javadoc>
+    </target>
+    
+    <target name='rpm' depends='jar,helpsetjar'>
+    	<copy todir='${rpmbuilddir}/SPECS' file='${basedir}/dist-files/packaging/jajuk.specs'/>
+    	<rpm specFile='jajuk.specs' topDir='${rpmbuilddir}' cleanBuildDir='yes' removeSpec='no' command='-bb' />
     </target>
    
   <taskdef name='izpack' classpath='/prog/IzPack/lib/compiler.jar'
