@@ -148,6 +148,8 @@ public class ConfigurationManager implements ITechnicalStrings{
 		properties.put(CONF_OPTIONS_DEFAULT_ACTION_DROP,TRUE);
 		properties.put(CONF_OPTIONS_NOVELTIES_AGE,"30"); //$NON-NLS-1$
 		properties.put(CONF_OPTIONS_VISIBLE_PLANNED,"10"); //$NON-NLS-1$
+        properties.put(CONF_BUFFER_SIZE,"128000"); //$NON-NLS-1$
+                
 		//set default trace level, debug in debug mode and warning in normal mode
 		if (Main.isDebugMode()){
 		    properties.put(CONF_OPTIONS_LOG_LEVEL,Integer.toString(Log.DEBUG));

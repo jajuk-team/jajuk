@@ -69,7 +69,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl,ITechnicalStrings,BasicP
 		//instanciate player is needed
 		if (player == null){
 			player = new BasicPlayer();
-			BasicPlayer.EXTERNAL_BUFFER_SIZE = 256000;
+			BasicPlayer.EXTERNAL_BUFFER_SIZE = ConfigurationManager.getInt(CONF_BUFFER_SIZE);
 			player.addBasicPlayerListener(this); //set listener
 		}
 		//make sure to stop any current player
