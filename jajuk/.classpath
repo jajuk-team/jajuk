@@ -24,6 +24,6 @@
 	<classpathentry sourcepath="/prog/api/commons-httpclient-2.0.1/src/commons-httpclient-2.0.1/src" kind="lib" path="lib/commons-httpclient-2.0.1.jar"/>
 	<classpathentry sourcepath="/prog/api/commons-logging-1.0.4/src" kind="lib" path="lib/commons-logging-1.0.jar"/>
 	<classpathentry kind="lib" path="lib/tray-0.1.6.jar"/>
-	<classpathentry kind="lib" path="lib/idw-gpl.jar"/>
+	<classpathentry kind="lib" path="lib/infonodeDockingWindows-1.1.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
