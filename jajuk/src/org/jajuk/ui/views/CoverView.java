@@ -486,11 +486,9 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                     setFoundText(); 
                     index  --; //look at next cover    
                 }
-                finally{
-                    searching(false);
-                }
             }
             if (icon == null){ //none available cover
+                searching(false);
                 return;
             }
             Image img = icon.getImage();
@@ -505,6 +503,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
             SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
                     if(alCovers.size() == 0){ //just a check
+                        searching(false);
                         return;
                     }
                     Cover cover = (Cover)alCovers.get(index);  //take image at the given index
@@ -555,9 +554,10 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                     add(jpControl,"0,0");//$NON-NLS-1$
                     add(jl,"0,1");//$NON-NLS-1$
                     setCursor(Util.DEFAULT_CURSOR);
+                    searching(false);
+                    System.gc();//suggest JVM to perform a memory cleanup        
                 }
             });
-            System.gc();//suggest JVM to perform a memory cleanup
         }
     }
     
