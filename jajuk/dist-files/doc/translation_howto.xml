@@ -106,7 +106,7 @@
    			
   		<subsection name='Tips'>
   			<ul>
-	   			<li><p>Off course, do not modify keys but only values.</p></li>
+	   			<li><p>Of course, do not modify keys but only values.</p></li>
 				<li><p>If a value contains a '\ ', do not drop it, it means there is a space at line start or end.</p></li>
 				<li><p>Keep &lt;html&gt; and &lt;/html&gt; strings.</p></li>
 				<li><p>Keep all punctuation and specials characters like '[','.' and so on...</p></li>

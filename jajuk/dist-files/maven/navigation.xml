@@ -13,13 +13,13 @@
       <item name='Home' href='./index.html' />      
       <item name='Team' href='./team-list.html' />
       <item name='Download' href='http://sourceforge.net/project/showfiles.php?group_id=91412' />
-      <item name='Support/Help' href='http://sourceforge.net/project/showfiles.php?group_id=91412' />
+      <item name='Support/Help' href='http://sourceforge.net/tracker/?group_id=91412&amp;atid=597087' />
       <item name='Latest news' href='./index.html#News' />
       <item name='Features' href='./index.html#Features' />
       <item name='Screenshots' href='./index.html#Screenshots' />
       <item name='Changelog' href='./changes-report.html' />
       <item name='Dependencies' href='./jajuk_dependencies.html' />
-      <item name='Bug report / Wishes' ref='http://sourceforge.net/tracker/?group_id=91412' />
+      <item name='Bug report / Wishes' href='http://sourceforge.net/tracker/?group_id=91412' />
       <item name='CVS web repository' href='http://cvs.sourceforge.net/viewcvs.py/jajuk/' />
       <item name='Mailing list' href='./mail-lists.html' />
       <item name='Jajuk on the Web' href='./references.html' />
