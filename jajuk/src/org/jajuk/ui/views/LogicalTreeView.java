@@ -37,6 +37,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
+import javax.swing.SwingUtilities;
 import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeExpansionListener;
 import javax.swing.event.TreeModelEvent;
@@ -573,8 +574,7 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 					return null;
 				}
 				public void finished() {
-					jtree.revalidate();
-					jtree.repaint();
+				    SwingUtilities.updateComponentTreeUI(jtree);
 				    expand();
 					int i = jspTree.getVerticalScrollBar().getValue();
 					jspTree.getVerticalScrollBar().setValue(i);

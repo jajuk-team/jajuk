@@ -99,6 +99,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 	JCheckBox jcbBeforeExit;
 	JCheckBox jcbBeforeRemoveDevice;
 	JCheckBox jcbBeforeDeleteCover;
+	JCheckBox jcbCoverTooLarge;
 	JPanel jpOptions;
 	JCheckBox jcbDisplayUnmounted;
 	JCheckBox jcbRestart;
@@ -150,6 +151,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 	JCheckBox jcbShuffleCover;
 	JCheckBox jcbPreLoad;
 	JCheckBox jcbResize;
+	JCheckBox jcbLoadEachTrack;
 	JLabel jlMinSize;
 	JTextField jtfMinSize;
 	JLabel jlMaxSize;
@@ -640,10 +642,13 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jcbAutoCover.addActionListener(this);
 		jcbShuffleCover = new JCheckBox(Messages.getString("ParameterView.166")); //$NON-NLS-1$
 		jcbShuffleCover.setToolTipText(Messages.getString("ParameterView.167")); //$NON-NLS-1$
+		jcbShuffleCover.addActionListener(this);
 		jcbPreLoad = new JCheckBox(Messages.getString("ParameterView.169")); //$NON-NLS-1$
 		jcbPreLoad.setToolTipText(Messages.getString("ParameterView.170")); //$NON-NLS-1$
 		jcbResize = new JCheckBox(Messages.getString("ParameterView.173")); //$NON-NLS-1$
 		jcbResize.setToolTipText(Messages.getString("ParameterView.174")); //$NON-NLS-1$
+		jcbLoadEachTrack = new JCheckBox(Messages.getString("ParameterView.175")); //$NON-NLS-1$
+		jcbLoadEachTrack.setToolTipText(Messages.getString("ParameterView.176")); //$NON-NLS-1$
 		InputVerifier iverifier = new InputVerifier(){
 			public boolean verify(JComponent input) {
 				JTextField tf = (JTextField) input;
@@ -678,6 +683,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jtfMaxSize.setInputVerifier(iverifier);
 		jpCovers.add(jcbAutoCover,"0,1"); //$NON-NLS-1$
 		jpCovers.add(jcbShuffleCover,"0,3"); //$NON-NLS-1$
+		jpCovers.add(jcbLoadEachTrack,"1,3"); //$NON-NLS-1$
 		jpCovers.add(jcbPreLoad,"0,5"); //$NON-NLS-1$
 		jpCovers.add(jcbResize,"0,7"); //$NON-NLS-1$
 		jpCovers.add(jlMinSize,"0,9"); //$NON-NLS-1$
@@ -741,6 +747,9 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 				if (e.getSource() == jbClearHistory){
 					History.getInstance().clear();
 					CommandJPanel.getInstance().clearHistoryBar();
+				}
+				else if (e.getSource() == jcbShuffleCover){
+					jcbLoadEachTrack.setEnabled(jcbShuffleCover.isSelected());
 				}
 				else if (e.getSource() == jbOK){
 					//**Read all parameters**
@@ -851,6 +860,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 					ConfigurationManager.setProperty(CONF_COVERS_SHUFFLE,Boolean.toString(jcbShuffleCover.isSelected()));
 					ConfigurationManager.setProperty(CONF_COVERS_PRELOAD,Boolean.toString(jcbPreLoad.isSelected()));
 					ConfigurationManager.setProperty(CONF_COVERS_RESIZE,Boolean.toString(jcbResize.isSelected()));
+					ConfigurationManager.setProperty(CONF_COVERS_CHANGE_AT_EACH_TRACK,Boolean.toString(jcbLoadEachTrack.isSelected()));
 					ConfigurationManager.setProperty(CONF_COVERS_MIN_SIZE,jtfMinSize.getText());
 					ConfigurationManager.setProperty(CONF_COVERS_MAX_SIZE,jtfMaxSize.getText());
 				}
@@ -887,10 +897,20 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 				    if ( jcbAutoCover.isSelected()){
 				        jtfMinSize.setEnabled(true);
 				        jtfMaxSize.setEnabled(true);
+				        jcbResize.setEnabled(true);
+				        jcbShuffleCover.setEnabled(true);
+				        if (jcbShuffleCover.isSelected()){
+				            jcbLoadEachTrack.setEnabled(true);
+				        }
+				        jcbPreLoad.setEnabled(true);
 				    }
 				    else{
 				        jtfMinSize.setEnabled(false);
 				        jtfMaxSize.setEnabled(false);
+				        jcbResize.setEnabled(false);
+				        jcbShuffleCover.setEnabled(false);
+				        jcbLoadEachTrack.setEnabled(false);
+				        jcbPreLoad.setEnabled(false);
 				    }
 				}
 			}
@@ -980,6 +1000,8 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jcbShuffleCover.setSelected(ConfigurationManager.getBoolean(CONF_COVERS_SHUFFLE));
 		jcbPreLoad.setSelected(ConfigurationManager.getBoolean(CONF_COVERS_PRELOAD));
 		jcbResize.setSelected(ConfigurationManager.getBoolean(CONF_COVERS_RESIZE));
+		jcbLoadEachTrack.setSelected(ConfigurationManager.getBoolean(CONF_COVERS_CHANGE_AT_EACH_TRACK));
+		jcbLoadEachTrack.setEnabled(jcbShuffleCover.isSelected()); //this mode requires shuffle mode
 	}
 	
 	/* (non-Javadoc)
