@@ -48,8 +48,8 @@ public interface ITechnicalStrings {
     
     		
 	// Jajuk version
-	public static final String JAJUK_VERSION = "0.3.3 rc8";
-	public static final String JAJUK_VERSION_DATE = "Build 2005-03-dd";
+	public static final String JAJUK_VERSION = "0.3.3 rc9";
+	public static final String JAJUK_VERSION_DATE = "Build 2005-03-19";
 	
 	//About 
 	public static final String ABOUT = "<html>Jajuk version "+JAJUK_VERSION+"</html>";
