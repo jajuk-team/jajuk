@@ -77,7 +77,8 @@ public class Util implements ITechnicalStrings {
 	public static final Cursor DEFAULT_CURSOR = new Cursor(Cursor.DEFAULT_CURSOR);
 	/**Contains execution location ( jar or directory )*/
 	public static String sExecLocation;
-	
+	/**Waiting flag for perfs*/
+	private static boolean bWaiting = false;
 	
 	/**
 	 * Genres
@@ -291,7 +292,7 @@ public class Util implements ITechnicalStrings {
 	
 	/**Format a time (ms) to a human readable format*/
 	public static String formatTime(long l){
-		String sOut = new SimpleDateFormat("HH:mm:ss").format(new Date(l+82800000)); //$NON-NLS-1$
+		String sOut = new SimpleDateFormat("HH:mm:ss").format(new Date(l)); //$NON-NLS-1$
 		return sOut;
 	}
 	
@@ -363,15 +364,21 @@ public class Util implements ITechnicalStrings {
 	/**
 	 * Set current cursor as waiting cursor
 	 */
-	public static void waiting(){
-		SwingUtilities.invokeLater(tWaiting);
+	public static synchronized void waiting(){
+		if (!bWaiting){
+		    bWaiting = true;
+		    SwingUtilities.invokeLater(tWaiting);    
+		}
 	}
 	
 	/**
 	 * Set current cursor as default cursor
 	 */
-	public static void stopWaiting(){
-		SwingUtilities.invokeLater(tDefault);
+	public static synchronized void stopWaiting(){
+	    if (bWaiting){
+	        bWaiting = false;
+			SwingUtilities.invokeLater(tDefault); 
+		}
 	}
 	
 	/**
