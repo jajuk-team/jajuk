@@ -48,11 +48,6 @@ public class PhysicalPlaylistEditorView extends AbstractPlaylistEditorView{
 		ppe = this;
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.jajuk.ui.IView#display()
-	 */
-	public void display(){
-	}
 
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.IView#getViewName()

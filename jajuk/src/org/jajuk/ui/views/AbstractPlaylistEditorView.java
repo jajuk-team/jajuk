@@ -20,6 +20,17 @@
 
 package org.jajuk.ui.views;
 
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JToolBar;
+
+import layout.TableLayout;
+
+import org.jajuk.util.Util;
+
 
 /**
  * Adapter for playlists editors 
@@ -29,6 +40,18 @@ package org.jajuk.ui.views;
  */
 public abstract class AbstractPlaylistEditorView extends ViewAdapter {
 
+	
+	JPanel jpControl;
+		JToolBar jtb;
+			JButton jbRun;
+			JButton jbSave;
+			JButton jbAdd;
+			JButton jbRemove;
+			JButton jbUp;
+			JButton jbDown;
+			JButton jbCurrent;
+			JButton jbClear;
+	JTable jtable;
 	
 	/**
 	 * Constructor
@@ -40,6 +63,49 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter {
 	 * @see org.jajuk.ui.IView#display()
 	 */
 	public void display(){
+		//Control panel
+		jpControl = new JPanel();
+		jtb = new JToolBar();
+		jtb.setFloatable(false);
+		jpControl.setBorder(BorderFactory.createEtchedBorder());
+		int iXspace = 0;
+		double sizeControl[][] =
+			{{iXspace,0.50,iXspace},
+			{25,0.99}};
+		jpControl.setLayout(new TableLayout(sizeControl));
+		jbRun = new JButton(Util.getIcon(ICON_RUN));
+		jbRun.setToolTipText("Run this playlist");
+		jbSave = new JButton(Util.getIcon(ICON_SAVE));
+		jbSave.setToolTipText("Save this playlist");
+		jbAdd = new JButton(Util.getIcon(ICON_ADD));
+		jbAdd.setToolTipText("Add an item to this playlist");
+		jbRemove = new JButton(Util.getIcon(ICON_REMOVE));
+		jbRemove.setToolTipText("Remove an item from this playlist");
+		jbUp = new JButton(Util.getIcon(ICON_UP));
+		jbUp.setToolTipText("Set item position higher");
+		jbDown = new JButton(Util.getIcon(ICON_DOWN));
+		jbDown.setToolTipText("Set item position lower");
+		jbCurrent = new JButton(Util.getIcon(ICON_CURRENT_PLAYLIST));
+		jbCurrent.setToolTipText("Display current played playlist");
+		jbClear = new JButton(Util.getIcon(ICON_CLEAR));
+		jbClear.setToolTipText("Clear this playlist");
+		jtb.add(jbRun);
+		jtb.add(jbSave);
+		jtb.add(jbAdd);
+		jtb.add(jbRemove);
+		jtb.add(jbUp);
+		jtb.add(jbDown);
+		jtb.add(jbCurrent);
+		jtb.add(jbClear);
+		jpControl.add(jtb,"1,0");
+		//table
+		jtable = new JTable();
+		double size[][] =
+		{{0.99},
+		{30,0.99}};
+		setLayout(new TableLayout(size));
+		add(jpControl,"0,0");
+		add(new JScrollPane(jtable),"0,1");
 	}
 
 	/* (non-Javadoc)

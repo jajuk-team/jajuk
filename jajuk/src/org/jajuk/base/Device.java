@@ -135,6 +135,14 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	 */
 	public void refresh() {
 		final Device device = this;
+		if ( !device.isMounted()){
+			try{
+				device.mount();  
+			}
+			catch(Exception e){
+				Log.error(e);
+			}
+		}
 		//current reference to the inner thread class
 		new Thread() {
 			public void  run() {
@@ -320,10 +328,19 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	 *
 	 */
 	public  void unmount() throws Exception{
+		unmount(false);
+	}
+	
+	
+	/**
+	 * Unmount the device with ejection 
+	 *
+	 */
+	public  void unmount(boolean bEjection) throws Exception{
 		//look to see if the device is already mounted ( the unix 'mount' command cannot say that )
 		File file = new File(getMountPoint());
 		if (!bMounted || (file.list()!= null && file.list().length==0) ){
-			Messages.showErrorMessage("014");
+			Messages.showErrorMessage("111"); //already unmounted
 			return;
 		}
 		if (!FIFO.canUnmount(this)){ //ask fifo if it doens't use any track from this device
@@ -338,6 +355,10 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 				iExit = process.waitFor();
 				if ( iExit != 0 ){  //0: OK, 1: already mounted
 					throw new Exception();
+				}
+				if ( bEjection){  //jection if required
+					process = Runtime.getRuntime().exec("eject");
+					process.waitFor();
 				}
 			}
 			catch(Exception e){

@@ -117,6 +117,15 @@ public interface ITechnicalStrings {
 	public static final String ICON_PLAYLIST_NEW =  PATH_ICONS + "40x40/playlist_new.png";
 	public static final String ICON_PLAYLIST_BOOKMARK =  PATH_ICONS + "40x40/playlist_bookmark.png";
 	public static final String ICON_PLAYLIST_BESTOF =  PATH_ICONS + "40x40/playlist_bestof.png";
+	public static final String ICON_RUN =  PATH_ICONS + "16x16/run.png";
+	public static final String ICON_ADD =  PATH_ICONS + "16x16/add.png";
+	public static final String ICON_REMOVE =  PATH_ICONS + "16x16/remove.png";
+	public static final String ICON_UP =  PATH_ICONS + "16x16/up.png";
+	public static final String ICON_DOWN =  PATH_ICONS + "16x16/down.png";
+	public static final String ICON_CURRENT_PLAYLIST =  PATH_ICONS + "16x16/player_play.png";
+	public static final String ICON_CLEAR =  PATH_ICONS + "16x16/new.png";
+	public static final String ICON_SAVE =  PATH_ICONS + "16x16/save.png";
+	
 		
 	//images
 	public static final String IMAGES_SPLASHSCREEN =  PATH_IMAGES + "jajuk-slashscreen.png";

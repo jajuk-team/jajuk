@@ -222,6 +222,8 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 		//Register on the list for subject we are interrested in
 		ObservationManager.register(EVENT_DEVICE_MOUNT,this);
 		ObservationManager.register(EVENT_DEVICE_UNMOUNT,this);
+		ObservationManager.register(EVENT_DEVICE_NEW,this);
+		ObservationManager.register(EVENT_DEVICE_REFRESH,this);
 	}
 	
 	/* (non-Javadoc)
@@ -422,9 +424,9 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 		 * @see org.jajuk.ui.Observer#update(java.lang.String)
 		 */
 		public void update(String subject) {
-			if ( subject.equals(EVENT_DEVICE_MOUNT) || subject.equals(EVENT_DEVICE_UNMOUNT)){
+			if ( EVENT_DEVICE_MOUNT.equals(subject) || EVENT_DEVICE_UNMOUNT.equals(subject) || EVENT_DEVICE_REFRESH.equals(subject)){
 				refreshDevices();
-				SwingUtilities.updateComponentTreeUI(this);
+				SwingUtilities.updateComponentTreeUI(jpDevices);
 			}
 		}
 		

@@ -55,7 +55,7 @@ public class FileManager implements ITechnicalStrings{
 	 * @param sName
 	 */
 	public static synchronized File registerFile(String sName, Directory directory, Track track, long lSize, String sQuality) {
-		String sId = MD5Processor.hash(directory.getDevice().getUrl() + directory.getAbsolutePath() + sName);
+		String sId = MD5Processor.hash(directory.getDevice().getName() + directory.getDevice().getUrl() + directory.getAbsolutePath() + sName);
 		return registerFile(sId, sName, directory, track, lSize, sQuality);
 	}
 

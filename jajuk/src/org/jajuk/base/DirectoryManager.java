@@ -55,7 +55,7 @@ public class DirectoryManager {
 			sAbs += dParent.getAbsolutePath();
 		}
 		sAbs += File.separatorChar + sName;
-		String sId = MD5Processor.hash(sAbs);
+		String sId = MD5Processor.hash(device.getName()+sAbs);
 		return registerDirectory(sId, sName, dParent, device);
 	}
 

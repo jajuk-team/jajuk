@@ -20,6 +20,7 @@
 
 package org.jajuk.ui.views;
 
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -79,7 +80,7 @@ public class PhysicalPlaylistRepositoryView extends ViewAdapter implements Obser
 	 * @see org.jajuk.ui.IView#display()
 	 */
 	public void display(){
-		setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
+		setLayout(new BoxLayout(this,BoxLayout.X_AXIS));
 		
 		//root pane
 		jpRoot = new JPanel();
@@ -114,7 +115,9 @@ public class PhysicalPlaylistRepositoryView extends ViewAdapter implements Obser
 		
 		//refresh
 		populate();
-		add(new JScrollPane(jpRoot));
+		jpRoot.add(Box.createVerticalGlue());
+		JScrollPane jsp = new JScrollPane(jpRoot);
+		add(jsp);
 	}
 
 	/* (non-Javadoc)
@@ -206,7 +209,10 @@ public class PhysicalPlaylistRepositoryView extends ViewAdapter implements Obser
 			jpName.add(Box.createGlue());
 			jpName.add(jlName);
 			jpName.add(Box.createGlue());
+			jpName.setPreferredSize(new Dimension(40,5));
 			add(jpName);
+			add(Box.createVerticalGlue());
+			setToolTipText(sName);
 		}
 				
 		/**

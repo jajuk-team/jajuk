@@ -121,6 +121,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 		jbApplyFilter.setToolTipText("Apply filter");
 		jbClearFilter.setToolTipText("Clear the filter");
 		jbAdvancedFilter.setToolTipText("Apply an advanced filter");
+		jbAdvancedFilter.setEnabled(false);  //TBI
 		jtbControl.add(jbApplyFilter);
 		jtbControl.add(jbClearFilter);
 		jtbControl.add(jbAdvancedFilter);

@@ -49,12 +49,6 @@ public class LogicalPlaylistEditorView extends AbstractPlaylistEditorView{
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.jajuk.ui.IView#display()
-	 */
-	public void display(){
-	}
-
-	/* (non-Javadoc)
 	 * @see org.jajuk.ui.IView#getViewName()
 	 */
 	public String getViewName() {

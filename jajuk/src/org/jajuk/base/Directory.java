@@ -201,7 +201,7 @@ public class Directory extends PropertyAdapter implements Comparable{
 			if (TypeManager.getTypeByExtension(Util.getExtension(files[i])).isMusic()) {
 				//check the file is not already known in old database
 				org.jajuk.base.File fileRef = null;
-				String sId = MD5Processor.hash(getDevice().getUrl() + getAbsolutePath() + files[i].getName());
+				String sId = MD5Processor.hash(getDevice().getName() + getDevice().getUrl() + getAbsolutePath() + files[i].getName());
 				Iterator it = TrackManager.getTracks().iterator();
 				while (it.hasNext() && fileRef == null){
 					Track track = (Track)it.next();
