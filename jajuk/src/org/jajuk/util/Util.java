@@ -20,20 +20,17 @@
 package org.jajuk.util;
 
 import java.awt.Cursor;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.RandomAccessFile;
 import java.net.URL;
+import java.nio.channels.FileChannel;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -348,16 +345,11 @@ public class Util implements ITechnicalStrings {
 	public static void saveFile(File file){
 		try{
 			File fileNew = new File(file.getAbsolutePath()+"~");
-			BufferedReader br = new BufferedReader(new FileReader(file));
-			BufferedWriter bw = new BufferedWriter(new FileWriter(fileNew));
-			String sLine = null;
-			while ((sLine=br.readLine())!=null){
-				bw.write(sLine+"\n");
-			}
-			br.close();
-			bw.flush();
-			bw.close();
-			
+			FileChannel fcSrc = new FileInputStream(file).getChannel();
+	        FileChannel fcDest = new FileOutputStream(fileNew).getChannel();
+	        fcDest.transferFrom(fcSrc, 0, fcSrc.size());
+	        fcSrc.close();
+	        fcDest.close();
 		}
 		catch(IOException ie){
 			Log.error(ie);
@@ -371,6 +363,7 @@ public class Util implements ITechnicalStrings {
 	 * @param directory : destination directory
 	 */
 	public static void copy(File file,File directory) throws Exception{
+		Log.debug("Copying: "+file.getAbsolutePath());
 		File fileNew = new File(new StringBuffer(directory.getAbsolutePath()).append("/").append(file.getName()).toString());
 		if ( !file.exists() || !file.canRead() ){
 			throw new JajukException("023",file.getAbsolutePath(),null);
@@ -378,16 +371,12 @@ public class Util implements ITechnicalStrings {
 		if (  !fileNew.getParentFile().canWrite() ){
 			throw new JajukException("024",file.getAbsolutePath(),null);
 		}
-		BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
-		BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(fileNew));
-		byte[] b = new byte[10000];
-		while ( bis.read(b)!= 0 ){
-			bos.write(b);
-		}
-		bis.close();
-		bos.flush();
-		bos.close();
-	}
+		FileChannel fcSrc = new FileInputStream(file).getChannel();
+        FileChannel fcDest = new FileOutputStream(fileNew).getChannel();
+        fcDest.transferFrom(fcSrc, 0, fcSrc.size());
+        fcSrc.close();
+        fcDest.close();
+    }
 	
 	
 	/**
