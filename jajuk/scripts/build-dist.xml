@@ -6,8 +6,6 @@
   </property>
   <property name="libdir" value="lib">
   </property>
-  <property name="classesdir" value="bin">
-  </property>
   <property name="srcdir" value="src">
   </property>
   <property name="javadocdir" value="dist-files/doc/api">
@@ -30,16 +28,56 @@
      <fileset dir="${libdir}"/>
   	</copy>
   	<mkdir dir="${distdir}/bin"/>
+    <mkdir dir="${distdir}/classes"/>
     <copy todir="${distdir}/src" >
      <fileset dir="${srcdir}"/>
   	</copy>
+  	<copy todir="${distdir}" >
+     <fileset file="${basedir}/dist-files/legals/LICENSE.txt"/>
+  	</copy>
   </target>
  
-  <target name="jar" description="o Create the jar" depends="mkdist">
-    <jar jarfile="target/${final.name}.jar" excludes="**/package.html" basedir="${classesdir}">
-    </jar>
+ <target name="compile" description="o Compile the code" depends="mkdist">
+    <javac destdir="${distdir}/classes" deprecation="true" debug="true" optimize="false" excludes="**/package.html">
+      <src>
+        <pathelement path="${distdir}/${srcdir}">
+        </pathelement>
+      </src>
+      <classpath>
+        <fileset dir="${distdir}/lib">
+          <include name="*.jar">
+          </include>
+        </fileset>
+      </classpath>
+    </javac>
+    <copy todir="${distdir}/classes/org/jajuk/i18n" >
+     <fileset file="${distdir}/src/org/jajuk/i18n/*.properties"/>
+  	</copy>
+    <mkdir dir="${distdir}/classes/org/jajuk/icons"/>
+    <mkdir dir="${distdir}/classes/org/jajuk/images"/>
+  	<mkdir dir="${distdir}/classes/org/jajuk/docs"/>
+  	<copy todir="${distdir}/classes/org/jajuk/icons" >
+     <fileset dir="${basedir}/dist-files/icons"/>
+  	</copy>
+  	<copy todir="${distdir}/classes/org/jajuk/images" >
+     <fileset dir="${basedir}/dist-files/images"/>
+  	</copy>
+  	<copy todir="${distdir}/classes/org/jajuk/docs" >
+     <fileset file="${basedir}/dist-files/doc/about.html"/>
+  	</copy>
+  </target>
+ 
+
+  <target name="jar" description="o Create the jar" depends="compile">
+    <jar jarfile="${distdir}/bin/jajuk-${version}.jar" excludes="**/package.html" basedir="${distdir}/classes" manifest="${basedir}/dist-files/packaging/MANIFEST.MF"/>
   </target>
   
+  <target name="help" description="o Create the help jar">
+    <jar jarfile="${distdir}/bin/jajuk-help-${version}.jar" basedir="${basedir}/dist-files/doc/jajuk-hs"/>
+  </target>
+
+
+
    <target name="javadoc" description="o Generate javadoc" depends="jar">
     <mkdir dir="${javadocdir}">
     </mkdir>

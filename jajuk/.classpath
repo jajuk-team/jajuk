@@ -11,6 +11,6 @@
 	<classpathentry sourcepath="/prog/api/jh2.0/src" kind="lib" path="lib/jh-2.0.jar"/>
 	<classpathentry kind="lib" path="lib/jfreechart-0.9.15.jar"/>
 	<classpathentry kind="lib" path="lib/jcommon-0.9.0.jar"/>
-	<classpathentry kind="lib" path="dist-files/doc/jajuk-hs/en"/>
+	<classpathentry kind="lib" path="jajuk-help-0.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
