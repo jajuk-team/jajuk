@@ -410,9 +410,6 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
                             FIFO.getInstance().push(Util.createStackItems(alToPlay,
                                     ConfigurationManager.getBoolean(CONF_STATE_REPEAT),false),false);
                         }
-                        Properties properties = new Properties();
-                        properties.put(DETAIL_ORIGIN,DETAIL_SPECIAL_MODE_BESTOF);
-                        ObservationManager.notify(EVENT_SPECIAL_MODE,properties);
                     }
                     if (ae.getSource() == jbGlobalRandom ){
                         ArrayList alToPlay = FileManager.getGlobalShufflePlaylist();
@@ -420,18 +417,12 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
                             FIFO.getInstance().push(Util.createStackItems(alToPlay,
                                     ConfigurationManager.getBoolean(CONF_STATE_REPEAT),false),false);
                         }
-                        Properties properties = new Properties();
-                        properties.put(DETAIL_ORIGIN,DETAIL_SPECIAL_MODE_SHUFFLE);
-                        ObservationManager.notify(EVENT_SPECIAL_MODE,properties);
                     }
                     if (ae.getSource() == jbNovelties ){
                         ArrayList alToPlay  = FileManager.getGlobalNoveltiesPlaylist();
                         if ( alToPlay.size() > 0){
                             FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alToPlay),
                                     ConfigurationManager.getBoolean(CONF_STATE_REPEAT),false),false);
-                            Properties properties = new Properties();
-                            properties.put(DETAIL_ORIGIN,DETAIL_SPECIAL_MODE_NOVELTIES);
-                            ObservationManager.notify(EVENT_SPECIAL_MODE,properties);
                         }
                         else{ //none novelty found
                             Messages.showErrorMessage("127"); //$NON-NLS-1$
