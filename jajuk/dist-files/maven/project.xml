@@ -76,9 +76,23 @@
 	      <email></email>
 	      <organization>Jajuk team</organization>
 	    </developer>
-	    
   </developers>
-
+  
+	<contributors>
+		<contributor>
+			<name>Romain Herault</name>
+			<roles><role>Mac integration code</role></roles>
+		</contributor>
+		<contributor>
+			<name>Dugland Bob</name>
+			<roles><role>Swing optimization tips</role></roles>
+		</contributor>
+		<contributor>
+			<name>nico-de-nantes</name>
+			<roles><role>Bug reports, RFE, news reporting</role></roles>
+		</contributor>
+	</contributors>
+	
  <dependencies>
 
     <dependency>

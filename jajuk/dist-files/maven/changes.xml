@@ -32,10 +32,15 @@
       <action dev='bflorat' type='add'>README file (in installation dialog and from site) now available in french</action>  
       <action dev='bflorat' type='fix'>928979 Window disapears when minimized under GNU/Linux</action>  
      </release>
-     <release version='0.1.5' date='work in progress' description='work in progress'>
+     <release version='0.1.5' date='2003-04-09' description='German translation'>
+       <action dev='skyreacher' type='add'>German translation (Jajuk and Readme file)</action>  
        <action dev='bflorat' type='add'>Path selection button for Unix mount points in device wizzard</action>  
+       <action dev='bflorat' type='add'>Added best of size parameter</action>  
        <action dev='bflorat' type='fix'>930598 Issues in online doc</action>  
        <action dev='bflorat' type='fix'>929372 Physical/logical table views : errors when filtering with no results</action>  
+       <action dev='bflorat' type='fix'>921441 New changes to solve this issue that one user reported again in 0.1.4</action>  
+       <action dev='bflorat' type='update'>Made some Swing optimizations according to 'Duglan Bob' advices</action>  
+       <action dev='bflorat' type='update'>Collection file is now stored in UTF-16 to support more language character sets than UTF-8</action>  
      </release>
   </body>
 </document>

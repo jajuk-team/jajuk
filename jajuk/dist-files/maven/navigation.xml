@@ -11,7 +11,7 @@
       <item name="Bertrand Florat Home Page" href="http://www.florat.net" />
     </links>
     <menu name="Overview">
-      <item name="Authors" href="./team-list.html" />
+      <item name="Team" href="./team-list.html" />
       <item name="Download" href="http://sourceforge.net/projects/jajuk/" />
       <item name="Latest news" href="/index.html#News" />
       <item name="Features" href="/index.html#Features" />

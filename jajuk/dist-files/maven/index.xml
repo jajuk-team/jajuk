@@ -8,6 +8,7 @@
     </section>
   
 	<section name='Supported languages'>
+		<a href='./translation_howto.html'>Please translate</a>
 		<table style='width: 100%; text-align: left;' border='0' cellpadding='2' cellspacing='2'>
 			<tbody>
 				<tr>
@@ -134,7 +135,7 @@
     <tr>
       <td style='vertical-align: top;'>
       <h2>Logical perspective</h2>
-      <p>Navigate into styles, albums, authors and tracks</p>
+      <p>Navigate into styles, albums, authors and tracks (macos X by Romain Herault)</p>
       <img src='./screenshots/screenshot_perspective_logical.jpg' alt=''></img>
       </td>
       <td style='vertical-align: top;'><span style='font-weight: bold;'>Views</span>:
@@ -150,7 +151,7 @@
     <tr>
       <td style='vertical-align: top;'>
       <h2>Configuration perspective </h2>
-      <p>Configure devices, system options, perform a quick CD scanning ... (french, macos X thanks Romain Herault)</p>
+      <p>Configure devices, system options, perform a quick CD scanning ... </p>
       <img alt='' src='./screenshots/screenshot_perspective_configuration.jpg'></img>
  </td>
       <td style='vertical-align: top;'><span style='font-weight: bold;'>Views</span>:
