@@ -215,7 +215,8 @@ public class DeviceManager implements ITechnicalStrings{
 		Iterator it = alDevices.iterator();
 		while (it.hasNext()){
 			Device deviceToCheck = (Device)it.next();
-			if (deviceToCheck.getProperty(DEVICE_OPTION_SYNCHRO_SOURCE).equals(device.getId())){
+			String sSyncSource = deviceToCheck.getProperty(DEVICE_OPTION_SYNCHRO_SOURCE);
+			if ( sSyncSource != null && sSyncSource.equals(device.getId())){
 				deviceToCheck.setProperty(DEVICE_OPTION_SYNCHRO_SOURCE,null);
 			}
 		}
