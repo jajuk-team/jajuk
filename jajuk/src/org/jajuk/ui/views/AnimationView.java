@@ -82,6 +82,8 @@ public class AnimationView extends ViewAdapter implements ITechnicalStrings,Obse
         setBackground(Color.white);
         add(btl1);
         ObservationManager.register(EVENT_INFORMATION_DISPLAY,this);
+        //check if a track has already been lauched
+        update(EVENT_INFORMATION_DISPLAY);
     }
 
 	/**Set the text to be displayed**/
