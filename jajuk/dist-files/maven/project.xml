@@ -179,7 +179,7 @@
 			<email>nico-de-nantes@users.sourceforge.net</email>
 		</contributor>
 		<contributor>
-			<name>kournikola</name>
+			<name>Nicolas Richard (kournikola)</name>
 			<roles><role>Bug reports, RFE, news reporting</role></roles>
 			<email>kournikola@users.sourceforge.net</email>
 		</contributor>
@@ -262,13 +262,13 @@
     </dependency>
     
     <dependency>
-	   <groupId>native</groupId>
+	   <groupId>lib</groupId>
         <artifactId>tray_linux</artifactId>
         <version>0.1.6</version> 
     </dependency>
     
     <dependency>
-	   <groupId>native</groupId>
+	   <groupId>lib</groupId>
         <artifactId>tray_windows</artifactId>
         <version>0.1.6</version> 
     </dependency>

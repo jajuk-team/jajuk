@@ -118,6 +118,7 @@
 	   			<li>Multi-language and easy to translate, see <a href='translation_howto.html'>translation howto</a>.</li>
 	   			<li>Fast collection builder : a cd scanner allows you to create a jajuk collection of tens of CDs in only few minutes.</li>
 	   			<li>Eclipse-like graphical interface : Jajuk windows are divided into perspectives and views for a good functionnal separation.</li>
+	   			<li>Tray support under windows and Linux</li>
 	   			<li>Full-featured online help</li>
 	   			<li>Automatic rate support</li>
 	   			<li>7 Startup modes: none, last one, last one keep position, specified, shuffle, novelties, bestof</li>
