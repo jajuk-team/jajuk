@@ -19,6 +19,7 @@
  */
 package org.jajuk.ui;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -43,13 +44,19 @@ import org.jajuk.util.Util;
  * @created		6 oct. 2003
  */
 public class PerspectiveBarJPanel extends JPanel implements ITechnicalStrings{
-	
-	// Perspectives tool bar
-	private JToolBar jtbPerspective = null;
+
+    /** Perspectives tool bar**/
+    private JToolBar jtbPerspective = null;
+
 	/**Self instance*/
-	static private PerspectiveBarJPanel pb = null; 	
-	/**Perspective button*/
-	private ArrayList alButtons = new ArrayList(10); 
+	static private PerspectiveBarJPanel pb = null;
+
+    /**
+     * Perspective button
+     */
+    private ArrayList alButtons = new ArrayList(10);
+
+ 
 	
 	 /**
 	 * Singleton access
@@ -122,7 +129,7 @@ public class PerspectiveBarJPanel extends JPanel implements ITechnicalStrings{
 			if ( perspective2.equals(perspective)){  //this perspective is selected 
 				SwingUtilities.invokeLater(new Runnable(){
 					public void run(){
-					    jb.setBorder(BorderFactory.createLoweredBevelBorder()); //this one is selected, black border, make it in the awt dispatcher thread!
+					    jb.setBorder(BorderFactory.createLineBorder(Color.BLACK,4)); //this one is selected, black border, make it in the awt dispatcher thread!
 					}
 				});
 			}
