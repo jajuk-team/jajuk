@@ -20,9 +20,9 @@ package org.jajuk;
 
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.Frame;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.Toolkit;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -33,7 +33,6 @@ import java.net.Socket;
 import java.util.Iterator;
 
 import javax.swing.BorderFactory;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -49,6 +48,7 @@ import org.jajuk.i18n.Messages;
 import org.jajuk.ui.CommandJPanel;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.JajukJMenuBar;
+import org.jajuk.ui.JajukWindow;
 import org.jajuk.ui.LNFManager;
 import org.jajuk.ui.PerspectiveBarJPanel;
 import org.jajuk.ui.SplashScreen;
@@ -66,7 +66,7 @@ import org.jajuk.util.log.Log;
  */
 public class Main implements ITechnicalStrings {
 	
-	public static JFrame jframe;
+	private static JajukWindow jw;
 	public static CommandJPanel command;
 	public static PerspectiveBarJPanel perspectiveBar;
 	public static InformationJPanel information;
@@ -74,14 +74,16 @@ public class Main implements ITechnicalStrings {
 	public static JPanel jpFrame;
 	public static SplashScreen sc;
 	
-	public static void main(String[] args) {
+	public static void main(String[] args)  {
 		try {
+			//set exec location path ( normal or debug )
+			Util.setExecLocation((args.length>0 && args[0].equals("-debug")));//$NON-NLS-1$ 
+			
 			//starts ui
-			jframe = new JFrame(Messages.getString("Main.10"));  //$NON-NLS-1$
-			jframe.setIconImage(Util.getIcon(ICON_LOGO).getImage());
+			jw = new JajukWindow(); 
 			
 			//Launch splashscreen
-			sc = new SplashScreen(jframe);	
+			sc = new SplashScreen(jw);	
 			
 			//Register locals
 			Messages.registerLocal("en","Language_desc_en"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -149,17 +151,10 @@ public class Main implements ITechnicalStrings {
 			//Starts the FIFO
 			FIFO.getInstance();
 			
-			//Creates the command panel
-			jframe.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-			jframe.addWindowListener(new WindowAdapter() {
-				public void windowClosing(WindowEvent we) {
-					exit(0);
-					return; 
-				}
-			});
-			jpFrame = (JPanel)jframe.getContentPane();
-			jpFrame.setLayout(new BorderLayout());
+			//Creates the panel
+			jpFrame = (JPanel)jw.getContentPane();
 			jpFrame.setOpaque(true);
+			jpFrame.setLayout(new BorderLayout());
 			
 			//create the command bar
 			javax.swing.SwingUtilities.invokeAndWait(new Runnable() { //use invoke and wait to fix bug 910376 
@@ -181,15 +176,16 @@ public class Main implements ITechnicalStrings {
 			jpFrame.add(information, BorderLayout.SOUTH);
 			jpFrame.add(jpDesktop, BorderLayout.CENTER);
 			JPanel jp = new JPanel(); //we use an empty panel to take west place before actual panel ( perspective bar ). just for a better displaying
+			jp.setPreferredSize(new Dimension(700,(int)(0.78*Toolkit.getDefaultToolkit().getScreenSize().getHeight())));
 			jpFrame.add(jp, BorderLayout.WEST);
 			
 			//Set menu bar to the frame
-			jframe.setJMenuBar(JajukJMenuBar.getInstance());
+			jw.setJMenuBar(JajukJMenuBar.getInstance());
 			
 			//display window
-			jframe.pack();
-			jframe.setExtendedState(Frame.MAXIMIZED_BOTH);  //maximalize
-			jframe.setVisible(true);
+			jw.pack();
+			jw.setExtendedState(Frame.MAXIMIZED_BOTH);  //maximalize
+			jw.setVisible(true);
 			
 			//Mount and refresh devices
 			mountAndRefresh();
@@ -313,7 +309,7 @@ public class Main implements ITechnicalStrings {
 	public static void exit(int iExitCode) {
 		try {
 			if (Boolean.valueOf(ConfigurationManager.getProperty(CONF_CONFIRMATIONS_EXIT)).booleanValue()){
-				int iResu = JOptionPane.showConfirmDialog(jframe,Messages.getString("Confirmation_exit"),Messages.getString("Main.21"),JOptionPane.YES_NO_OPTION);  //$NON-NLS-1$ //$NON-NLS-2$
+				int iResu = JOptionPane.showConfirmDialog(jw,Messages.getString("Confirmation_exit"),Messages.getString("Main.21"),JOptionPane.YES_NO_OPTION);  //$NON-NLS-1$ //$NON-NLS-2$
 				if (iResu == JOptionPane.NO_OPTION){
 					return;
 				}
@@ -380,4 +376,11 @@ public class Main implements ITechnicalStrings {
 			}
 		}
 	}
+	/**
+	 * @return Returns the jw.
+	 */
+	public static JajukWindow getWindow() {
+		return jw;
+	}
+
 }
