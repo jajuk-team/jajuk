@@ -21,6 +21,7 @@ package org.jajuk.util;
 
 
 
+
 /**
  *  Contains all technical/ non-translatable strings
  * @author     Bertrand Florat
@@ -42,8 +43,8 @@ public interface ITechnicalStrings {
     public static final int MAX_REMOTE_COVERS=10;
     		
 	// Jajuk version
-	public static final String JAJUK_VERSION = "0.3.2";
-	public static final String JAJUK_VERSION_DATE = "Build 2004-12-12";
+	public static final String JAJUK_VERSION = "0.3.2rc1";
+	public static final String JAJUK_VERSION_DATE = "Build 2004-01-07";
 	
 	//About 
 	public static final String ABOUT = "<html>Jajuk version "+JAJUK_VERSION+"</html>";
@@ -327,7 +328,15 @@ public interface ITechnicalStrings {
 	public static final String LNF_METOUIA_CLASS = "net.sourceforge.mlf.metouia.MetouiaLookAndFeel";
 	public static final String LNF_COMPIERE = "Compiere";
 	public static final String LNF_COMPIERE_CLASS = "org.compiere.plaf.CompiereLookAndFeel";
-			
+	public static final String LNF_NAPKIN = "Napkin";
+	public static final String LNF_NAPKIN_CLASS = "napkin.NapkinLookAndFeel";
+	public static final String LNF_PLASTIC = "Plastic";
+	public static final String LNF_PLASTIC_CLASS = "com.jgoodies.plaf.plastic.PlasticLookAndFeel";
+	public static final String LNF_PLASTICXP = "Plastic XP";
+	public static final String LNF_PLASTICXP_CLASS = "com.jgoodies.plaf.plastic.PlasticXPLookAndFeel";
+	public static final String LNF_PLASTIC3D = "Plastic 3D";
+	public static final String LNF_PLASTIC3D_CLASS = "com.jgoodies.plaf.plastic.Plastic3DLookAndFeel";
+		
 	//statup mode
 	public static final String STARTUP_MODE_NOTHING = "nothing";
 	public static final String STARTUP_MODE_SHUFFLE = "shuffle";
