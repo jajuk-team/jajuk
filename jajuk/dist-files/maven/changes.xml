@@ -199,6 +199,11 @@
     	<action dev='bflorat' type='fix'>1099036 Minor UI issue in Playlist editor view with some LAF</action>
     	<action dev='bflorat' type='fix'>Fixed minor UI issues (disable) in parameter view</action>
     </release>
+     <release version='0.3.3' date='2005' description='Catalan translation and fixes'>
+     	<action dev='jespo' type='add'>Catalan translation</action> 
+     	<action dev='bflorat' type='update'>Do not block anymore on history or collection if corrupted</action> 
+     	<action dev='bflorat' type='fix'>Error playing some special MP3</action> 
+    </release>
           
   </body>
 </document>

@@ -189,9 +189,10 @@ public class Main implements ITechnicalStrings {
 			//			Set look and feel, needs local to be set for error messages
 			LNFManager.setLookAndFeel(ConfigurationManager.getProperty(CONF_OPTIONS_LNF));
 			
-			//start the tray
+			//  start the tray
 			launchTray();
-			
+
+	    	
 			//Launch splashscreen 
 			SwingUtilities.invokeAndWait(new Runnable() {
                 public void run() {
@@ -614,17 +615,14 @@ public class Main implements ITechnicalStrings {
             }
         });
 		
-		//Close splash screen
-		sc.dispose();
-		
         bUILauched = true;
    }
     
     /**Lauch tray, only for linux and windows, not mac for the moment*/
     private static void launchTray() {
     	if (Util.isUnderLinux() || Util.isUnderWindows()){
-			jsystray = JajukSystray.getInstance();	
-		}
+		    jsystray = JajukSystray.getInstance();	
+    	}
     }
     
     /**

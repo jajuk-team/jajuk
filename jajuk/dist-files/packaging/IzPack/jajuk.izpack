@@ -21,6 +21,8 @@
         <langpack iso3='swe'/>
         <langpack iso3='ned'/>
         <langpack iso3='spa'/>
+        <langpack iso3='cat'/>
+        <langpack iso3='chn'/>
         <langpack iso3='jpn'/>
         <langpack iso3='rus'/>
         <langpack iso3='fin'/>
@@ -36,10 +38,13 @@
          <res id='HTMLInfoPanel.info_ita' src='/data/java/workspace/jajuk/dist-files/doc/README_ita.html'/>
          <res id='HTMLInfoPanel.info_swe' src='/data/java/workspace/jajuk/dist-files/doc/README_swe.html'/>
          <res id='HTMLInfoPanel.info_ned' src='/data/java/workspace/jajuk/dist-files/doc/README_nld.html'/>
-         <res id='HTMLInfoPanel.info_esp' src='/data/java/workspace/jajuk/dist-files/doc/README_esp.html'/>
+         <res id='HTMLInfoPanel.info_spa' src='/data/java/workspace/jajuk/dist-files/doc/README_esp.html'/>
+         <res id='HTMLInfoPanel.info_cat' src='/data/java/workspace/jajuk/dist-files/doc/README_cat.html'/>
+         <res id='HTMLInfoPanel.info_chn' src='/data/java/workspace/jajuk/dist-files/doc/README_chn.html'/>
          <res id='LicencePanel.licence' src='/data/java/workspace/jajuk/dist-files/legals/LICENSE.txt'/>
-        <res id='shortcutSpec.xml' src='/data/java/workspace/jajuk/dist-files/packaging/IzPack/shortcutSpec.xml'/>
-    	<res id='installer.langsel.img' src='/data/java/workspace/jajuk/dist-files/images/jajuk-installer.png' />
+        <res id='shortcutSpec.xml' src='/data/java/workspace/jajuk/dist-files/packaging/IzPack/shortcutSpec_win.xml' />
+        <res id='Unix_shortcutSpec.xml' src='/data/java/workspace/jajuk/dist-files/packaging/IzPack/shortcutSpec_unix.xml' />
+        <res id='installer.langsel.img' src='/data/java/workspace/jajuk/dist-files/images/jajuk-installer.png' />
     	<res id='Installer.image.0' src='/data/java/workspace/jajuk/dist-files/images/border2.png' />
         <res id='Installer.image.1' src='/data/java/workspace/jajuk/dist-files/images/border3.png' />
         <res id='Installer.image.2' src='/data/java/workspace/jajuk/dist-files/images/border4.png' />
@@ -84,6 +89,7 @@
             <file targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/README_nld.html'/>
             <file targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/README_swe.html'/>
             <file targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/README_esp.html'/>
+            <file targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/README_cat.html'/>
             <file targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/jajuk.bat'>
             	<os family='windows'/>
            </file>

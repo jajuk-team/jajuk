@@ -1,1 +1,1 @@
-/opt/jajuk
+/usr/local/jajuk

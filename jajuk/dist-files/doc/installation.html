@@ -13,7 +13,9 @@ MacosX.
 <h2>Requirements</h2>
 Java Runtime environment (JRE) 1.4.2 and above. If needed, you can get
 it for free at <a href="http://www.java.com">http://www.java.com</a>.<br>
-<span style="font-weight: bold;">Under Linux</span><br>
+We encourage you to use JRE 1.5 that is significally faster than 1.4.2
+executing Jajuk.
+<p><span style="font-weight: bold;">Install JRE under Linux</span></p>
 Download the JRE RPM version (.rpm.bin file).
 <ul>
   <li>Lauch installer :<span style="font-family: monospace;"> sh
@@ -47,17 +49,19 @@ jajuk-install-${version}.jar</span></li>
   <li>Read carefully the provided README file</li>
   <li>Read and accept GPL license.</li>
   <li>Select installation target :
-Example: <span style="font-family: monospace;">/opt/jajuk</span> under
+Example: <span style="font-family: monospace;">/usr/local/jajuk</span>
+under
 Unix,&nbsp; <span style="font-family: monospace;">c:\Program
 Files\jajuk</span>
 under Windows.</li>
-  <li>Create shortcuts ( only for
-Windows ) : just click on the 'Next' button.</li>
+  <li>Create shortcuts (if your OS is supported) : just click on the
+'Next' button.</li>
 </ol>
 <span style="font-weight: bold;">Under Linux only</span><br>
 We provide two packages for Linux : Suse RPM (<span
- style="font-family: monospace;">jajuk-${version}-suse.rpm</span>) and
-Mandrake RPM (<span style="font-family: monospace;">jajuk-${version}-mdk.rpm</span>).
+ style="font-family: monospace;">jajuk-${version}-suse.noarch.rpm</span>)
+and
+Mandrake RPM (<span style="font-family: monospace;">jajuk-${version}-1mdk.noarch.rpm</span>).
 Suse and Mandrake RPM should work with most others Linux&nbsp;
 distributions even if&nbsp; you may encounter menu icons creation and
 dependencies issues on JRE with others distributions. To install, use
@@ -75,7 +79,13 @@ java --version</span>), force installation :<span
 in menu.</li>
   <li>Under Suse, shortcut is created in "Multimedia" menu section.</li>
   <li>Under Mandrake, shortcut is created in "Multimedia/Sound" menu
-section.<br>
+section.</li>
+  <li>Check your path points to your 1.4.2 JRE (type <span
+ style="font-family: monospace;">java --version</span> in case of
+problem) and not to gcj or others JVM than are not supported by Jajuk,
+it is a common issue, especially for Fedora, take a look in <a
+ href="http://sourceforge.net/project/stats/?group_id=91412">support</a>
+database.<br>
   </li>
 </ul>
 <span style="font-family: monospace;"></span><span
@@ -89,14 +99,19 @@ before.<span style="font-weight: bold;"><br>
 <h2>Launch</h2>
 <span style="font-weight: bold;">Under Linux/Unix</span><br>
 <ul>
-  <li>If you used the IzPack Java installer, you will have to create
-your own shortcuts if you need them. You can launch Jajuk with script <span
- style="font-family: monospace;">sh {jajuk installation path}/jajuk.sh</span></li>
+  <li>(Optional) If you used the IzPack Java installer and that your
+Unix OS is
+not supported by IzPack (Linux is supported), you will have to create
+your own shortcuts if you need them. <br>
+  </li>
   <li>If you installed using RPM, you should get a shortcut in
 Applications/Audio under Suse and Multimedia/Sound under Mandrake. You
 can also launch Jajuk with <span style="font-family: monospace;">jajuk</span>
 (in <span style="font-family: monospace;">/usr/bin</span>)<span
- style="font-family: monospace;">.</span> </li>
+ style="font-family: monospace;">.</span> It can take a while for
+shortcuts to appear.</li>
+  <li>Using command line, launch Jajuk with:&nbsp; <span
+ style="font-family: monospace;">sh {jajuk installation path}/jajuk.sh</span></li>
 </ul>
 <span style="font-family: monospace;"></span><span
  style="text-decoration: underline;"></span><span
@@ -127,8 +142,6 @@ If you already have an installed Jajuk release:
 uninstalling, Jajuk supports backwards compatibility. Your collection
 and configuration is kept and is stored under <span
  style="font-family: monospace;">{your home directory}/.jajuk</span></li>
-</ul>
-<ul>
   <li>However Jajuk doesn't support downwards compatibility: A Jajuk
 release may not work with a collection built by a newer release than
 the one you use.</li>
@@ -157,12 +170,12 @@ path}/Unistaller/uninstaller.jar</span></li>
 your favorite graphical tool (Yast, Drake...) or log as root and
 launch: <span style="font-family: monospace;">rpm -e jajuk-{version}</span></li>
 </ul>
-<span style="font-weight: bold;">Under Windows</span><br>
+<b>Under Windows</b>
 Launch uninstaller by clicking on 'Uninstall' icon next to 'Jajuk ' one<br>
-<span style="font-weight: bold;">Under Unix and Windows</span><span
- style="text-decoration: underline;"><br>
-</span>Remove <span style="font-family: monospace;">{user home}/.jajuk</span>
-directory for each user you want to uninstall.<br>
+<p><b>Under Unix and Windows</b></p>
+Remove <span style="font-family: monospace;">{user home}/.jajuk</span>
+directory for each user you want to uninstall.
+<br>
 <br>
 </body>
 </html>

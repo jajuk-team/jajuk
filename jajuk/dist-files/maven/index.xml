@@ -7,10 +7,10 @@
    		 users with large or scattered music collections. Jajuk supports MP3, OGG Vorbis, AU, AIFF, WAV and SPEEX audio formats. Jajuk is a Free Software published under GPL license.</p>
 		<p>Jajuk main principles are :
 			<ul>
-				<li>Maximum portability: 100% pure Java when possible</li>
 				<li>Maximum features: Jajuk is made firstly for advanced users looking for powerful functionalities</li>
-				<li>Maximum usability: Jajuk is designed to be simple, fast and provide multiple ways to perform the same operation</li>
-				<li>Only for music: Jajuk will never become a multi-media (video, pictures) jukebox</li>
+				<li>Maximum portability and integration: 100% pure Java but native packaging and features like tray</li>
+				<li>Maximum usability: Jajuk is designed to be intuitive, fast and provide multiple ways to perform the same operation</li>
+				<li>Only for music: Jajuk will never become a multi-media (video, pictures...) jukebox</li>
 			</ul>	
 		</p>
 		
@@ -35,6 +35,7 @@
 						<img alt='Swedish' title='Swedish' src='flags/flag_sv.png' style='width: 21px; height: 14px;'/>*
 						<img alt='Dutch' title='Dutch' src='flags/flag_nl.png' style='width: 21px; height: 14px;'/>*
 						<img alt='Spanish' title='Spanish' src='flags/flag_sp.png' style='width: 21px; height: 14px;'/>
+						<img alt='Catalan' title='Catalan' src='flags/flag_ct.png' style='width: 21px; height: 14px;'/>
 					</td>
 				</tr>
 				<tr>
@@ -48,13 +49,14 @@
 						<a  href='./README_chn.html'><img alt='Chinese' title='Chinese' src='http://jajuk.sourceforge.net/flags/flag_zh.png' style='border: 0px solid ; width: 21px; height: 14px;'/></a>
 						<a  href='./README_nld.html'><img alt='Dutch' title='Dutch' src='http://jajuk.sourceforge.net/flags/flag_nl.png' style='border: 0px solid ; width: 21px; height: 14px;'/></a>
 						<a  href='./README_esp.html'><img alt='Spanish' title='Spanish' src='http://jajuk.sourceforge.net/flags/flag_sp.png' style='border: 0px solid ; width: 21px; height: 14px;'/></a>
+						<a  href='./README_cat.html'><img alt='Catalan' title='Catalan' src='http://jajuk.sourceforge.net/flags/flag_ct.png' style='border: 0px solid ; width: 21px; height: 14px;'/></a>
 					</td>
 				</tr>
 				<tr>
 					<td style='vertical-align: top;'>Online Documentation ( Help perspective )</td>
 					<td style='vertical-align: top;'>
 						<img alt='English' title='English' src='flags/flag_en.png' style='width: 21px; height: 14px;'/>
-						<img alt='French' title='French' src='flags/flag_fr.png' style='width: 21px; height: 14px;'/>
+						<img alt='French' title='French' src='flags/flag_fr.png' style='width: 21px; height: 14px;'/>*
 					</td>
 				</tr>
 				<tr>
