@@ -163,7 +163,7 @@ public class DownloadManager implements ITechnicalStrings {
 	        bOut = get.getResponseBody();
 	     }
 	    catch(Exception e){
-	        Log.debug("Time out during cover lookup");
+	        Log.debug("Time out during cover lookup"); //$NON-NLS-1$
 	    	throw new JajukException("129"); //mainly time outs //$NON-NLS-1$
 	    }
 	    finally{

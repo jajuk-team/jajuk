@@ -92,7 +92,7 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings{
 		
 		//View menu
 		views = new JMenu(Messages.getString("JajukJMenuBar.8")); //$NON-NLS-1$
-		jmiRestoreDefaultViews = new JMenuItem(Messages.getString("JajukJMenuBar.17"),null);
+		jmiRestoreDefaultViews = new JMenuItem(Messages.getString("JajukJMenuBar.17"),null); //$NON-NLS-1$
 		jmiRestoreDefaultViews.addActionListener(JajukListener.getInstance());
 		jmiRestoreDefaultViews.setActionCommand(EVENT_VIEW_RESTORE_DEFAULTS);
 		views.add(jmiRestoreDefaultViews);

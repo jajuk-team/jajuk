@@ -59,7 +59,7 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 	private String  sHashcode;
 	/**Playlist parent directory*/
 	private Directory dParentDirectory;
-	/**Basic Files list, singletton*/
+	/**Basic Files list, singleton*/
 	private ArrayList alBasicFiles;
 	/**Modification flag*/
 	private boolean bModified = false;
@@ -259,11 +259,6 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 				}
 			}
 		}
-		for (int i =0;i<alBasicFiles.size();i++){
-			BasicFile bfile = (BasicFile)alBasicFiles.get(i);
-			//set associated playlist for " go to current playlist" function
-			bfile.setProperty(OPTION_PLAYLIST,this.getId());
-		}
 		return alBasicFiles;
 	}
 	
@@ -277,7 +272,17 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 			Bookmarks.getInstance().addFile(index,bf);
 		}
 		if ( iType == PlaylistFileItem.PLAYLIST_TYPE_QUEUE){
-			FIFO.getInstance().insert(new StackItem(bf),index); //insert this track in the fifo
+			//set repeat mode : if previous item is repeated, repeat as well
+		    StackItem item = new StackItem(bf);
+			StackItem itemPrevious = FIFO.getInstance().getItem(index-1);
+		    if (itemPrevious != null && itemPrevious.isRepeat()){
+			    item.setRepeat(true);
+			}
+			else{
+			    item.setRepeat(false);
+			}
+		    item.setUserLaunch(false);
+		    FIFO.getInstance().insert(item,index); //insert this track in the fifo
 		}
 		else {
 			getBasicFiles().add(index,bf);

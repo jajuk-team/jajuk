@@ -383,11 +383,11 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 			}
 		}
 		catch(RuntimeException re){
-			String sAttributes = "";
+			String sAttributes = ""; //$NON-NLS-1$
 			for (int i=0;i<attributes.getLength();i++){
-				sAttributes += "\n"+attributes.getQName(i)+"="+attributes.getValue(i);
+				sAttributes += "\n"+attributes.getQName(i)+"="+attributes.getValue(i); //$NON-NLS-1$ //$NON-NLS-2$
 			}
-			Log.error("005",sAttributes,re);
+			Log.error("005",sAttributes,re); //$NON-NLS-1$
 			throw re;
 		}
 	}

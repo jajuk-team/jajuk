@@ -113,9 +113,9 @@ public class Main implements ITechnicalStrings {
 		//non ui init
 		try{
 		   //check JVM version
-		    String sJVM = System.getProperty("java.vm.version");
-		    if (sJVM.startsWith("1.0") || sJVM.startsWith("1.1") || sJVM.startsWith("1.2") || sJVM.startsWith("1.3") || sJVM.startsWith("1.4.0") || sJVM.startsWith("1.4.1") ){
-		        System.out.println("Java Runtime Environment 1.4.2 minimum required. You use a JVM "+sJVM);
+		    String sJVM = System.getProperty("java.vm.version"); //$NON-NLS-1$
+		    if (sJVM.startsWith("1.0") || sJVM.startsWith("1.1") || sJVM.startsWith("1.2") || sJVM.startsWith("1.3") || sJVM.startsWith("1.4.0") || sJVM.startsWith("1.4.1") ){ //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+		        System.out.println("Java Runtime Environment 1.4.2 minimum required. You use a JVM "+sJVM); //$NON-NLS-1$
 		        System.exit(2); //error code 2 : wrong JVM
 		    }
 		    

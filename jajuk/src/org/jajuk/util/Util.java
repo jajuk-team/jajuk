@@ -295,7 +295,7 @@ public class Util implements ITechnicalStrings {
 	/**Format a time from secs to a human readable format*/
 	public static String formatTimeBySec(long l, boolean bTrimZeros){
 		if (l == -1){ //means we are in repeat mode
-		    return "--:--";
+		    return "--:--"; //$NON-NLS-1$
 		}
 	    if (l<0) l =0;  //make sure to to get negative values
 	    long lHours = l/3600;

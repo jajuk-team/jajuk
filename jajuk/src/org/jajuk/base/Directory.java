@@ -208,7 +208,6 @@ public class Directory extends PropertyAdapter implements Comparable{
 	
 	/**
 	 * Scan all files in a directory
-	 * 3ilf7eahh59rj5lr5cousdphr
 	 * @param
 	 */
 	public void scan() {

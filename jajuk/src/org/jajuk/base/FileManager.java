@@ -67,6 +67,7 @@ public class FileManager implements ITechnicalStrings{
 		File file = new File(sId, sName, directory, track, lSize, sQuality);
 		if ( !hmIdFile.containsKey(sId)){
 			hmIdFile.put(sId,file);
+			alSortedFiles.add(file);
 			if ( directory.getDevice().isRefreshing() && Log.isDebugEnabled()){
 				Log.debug("registrated new file: "+ file); //$NON-NLS-1$
 			}
@@ -94,6 +95,14 @@ public class FileManager implements ITechnicalStrings{
 				it.remove();  //this is the right way to remove entry in the hashmap
 			}
 		}
+		//cleanup sorted array
+		it = alSortedFiles.iterator();
+		while (it.hasNext()){
+			File file = (File) it.next();
+			if (file.getDirectory() == null || file.getDirectory().getDevice().getId().equals(sId)) {
+				it.remove();  //this is the right way to remove entry 
+			}
+		}
 		System.gc(); //force garbage collection after cleanup
 	}
 
@@ -109,7 +118,7 @@ public class FileManager implements ITechnicalStrings{
 	/** Sorts collection*/
 	public static synchronized void sortFiles() {
 		Collections.sort(alSortedFiles);
-		Log.debug("Collection sorted");
+		Log.debug("Collection sorted"); //$NON-NLS-1$
 	} 
 
 	

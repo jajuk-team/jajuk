@@ -43,7 +43,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
-import javax.swing.Timer;
+import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
@@ -120,9 +120,6 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
     /**Values planned*/
     private ArrayList alPlanned = new ArrayList(10);
     
-    /** Refresh time in ms**/
-    private final int REFRESH_TIME = 1500;
-    
     /**Columns names table**/
     protected String[] sColName = null;
     
@@ -131,14 +128,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
     
     /**Last selected directory using add button*/
     private java.io.File fileLast;
-   
-    /**Refresh timer*/
-    private Timer timer = new Timer(REFRESH_TIME,new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-            update(EVENT_PLAYLIST_REFRESH);
-        }
-    });
-   
+    
     /*Cashed icons*/
     private static final ImageIcon iconNormal = Util.getIcon(ICON_TRACK_FIFO_NORM);
     private static final ImageIcon iconRepeat  = Util.getIcon(ICON_TRACK_FIFO_REPEAT);
@@ -168,7 +158,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
         }
         
         public Object getValueAt(int rowIndex, int columnIndex) {
-           //check if fifo is void, so there is nothing to do
+            //check if fifo is void, so there is nothing to do
             if ( alItems.size() == 0 ){
                 return null;
             }
@@ -181,30 +171,30 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
             Color color = null; //default background color
             StackItem itemCurrent = FIFO.getInstance().getCurrentItem();
             if (itemCurrent != null && itemCurrent.equals(item)
-             && FIFO.getInstance().getIndex() == rowIndex){ //if it is the currently played track, change color
+                    && FIFO.getInstance().getIndex() == rowIndex){ //if it is the currently played track, change color
                 color = Color.ORANGE;
             }
             if( item.isPlanned() ){ //it is a planned file
                 bPlanned = true;
-                font = new Font("serif",Font.ITALIC,12); //font for planned items
+                font = new Font("serif",Font.ITALIC,12); //font for planned items //$NON-NLS-1$
             }
             File bf = (File)item.getFile();
             if ( columnIndex == 0){
                 if (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE){
                     if (bPlanned){
-                        return new IconLabel(iconPlanned,"",color,null,font,Messages.getString("AbstractPlaylistEditorView.20"));
+                        return new IconLabel(iconPlanned,"",color,null,font,Messages.getString("AbstractPlaylistEditorView.20")); //$NON-NLS-1$ //$NON-NLS-2$
                     }
                     else {
                         if (item.isRepeat()){
-                            return new IconLabel(iconRepeat,"",color,null,font,Messages.getString("AbstractPlaylistEditorView.19")); //normal file, repeated
+                            return new IconLabel(iconRepeat,"",color,null,font,Messages.getString("AbstractPlaylistEditorView.19")); //normal file, repeated //$NON-NLS-1$ //$NON-NLS-2$
                         }
                         else{ 
-                            return new IconLabel(iconNormal,"",color,null,font,Messages.getString("AbstractPlaylistEditorView.18")); //normal file, not repeated
+                            return new IconLabel(iconNormal,"",color,null,font,Messages.getString("AbstractPlaylistEditorView.18")); //normal file, not repeated //$NON-NLS-1$ //$NON-NLS-2$
                         }
                     }
                 }
                 else{
-                    return new IconLabel(iconPlaylist,"",color,null,font,Messages.getString("AbstractPlaylistEditorView.21"));
+                    return new IconLabel(iconPlaylist,"",color,null,font,Messages.getString("AbstractPlaylistEditorView.21")); //$NON-NLS-1$ //$NON-NLS-2$
                 }
             }
             else if ( columnIndex == 1){
@@ -232,7 +222,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
     public void populate(){
         //pre-compute column name for perfs
         if (sColName == null){
-            sColName = new String[]{"",Messages.getString("AbstractPlaylistEditorView.0"),Messages.getString("AbstractPlaylistEditorView.1")}; //$NON-NLS-1$ //$NON-NLS-2$
+            sColName = new String[]{"",Messages.getString("AbstractPlaylistEditorView.0"),Messages.getString("AbstractPlaylistEditorView.1")}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         }
         //Control panel
         jpControl = new JPanel();
@@ -268,14 +258,14 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
         jbClear.setToolTipText(Messages.getString("AbstractPlaylistEditorView.9")); //$NON-NLS-1$
         jbClear.addActionListener(this);
         jlTitle = new JLabel(""); //$NON-NLS-1$
-        jpControl.add(jbRun,"1,0");
-        jpControl.add(jbSave,"3,0");
-        jpControl.add(jbAdd,"5,0");
-        jpControl.add(jbRemove,"7,0");
-        jpControl.add(jbAddShuffle,"9,0");
-        jpControl.add(jbUp,"11,0");
-        jpControl.add(jbDown,"13,0");
-        jpControl.add(jbClear,"15,0");
+        jpControl.add(jbRun,"1,0"); //$NON-NLS-1$
+        jpControl.add(jbSave,"3,0"); //$NON-NLS-1$
+        jpControl.add(jbAdd,"5,0"); //$NON-NLS-1$
+        jpControl.add(jbRemove,"7,0"); //$NON-NLS-1$
+        jpControl.add(jbAddShuffle,"9,0"); //$NON-NLS-1$
+        jpControl.add(jbUp,"11,0"); //$NON-NLS-1$
+        jpControl.add(jbDown,"13,0"); //$NON-NLS-1$
+        jpControl.add(jbClear,"15,0"); //$NON-NLS-1$
         jpControl.add(Util.getCentredPanel(jlTitle),"17,0"); //$NON-NLS-1$
         jtable = new JajukTable(model,false);
         jtable.setSelectionMode(DefaultListSelectionModel.MULTIPLE_INTERVAL_SELECTION); //multi-row selection
@@ -288,7 +278,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
         jtable.getColumnModel().getColumn(0).setPreferredWidth(20); //just an icon
         jtable.getColumnModel().getColumn(0).setMaxWidth(20);
         jtable.addMouseListener(this);
-       //selection listener to hide some buttons to planned tracks
+        //selection listener to hide some buttons to planned tracks
         ListSelectionModel lsm = jtable.getSelectionModel();
         lsm.addListSelectionListener(this);
         double size[][] =
@@ -301,11 +291,10 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
         ObservationManager.register(EVENT_PLAYER_STOP,this);
         ObservationManager.register(EVENT_FILE_LAUNCHED,this);
         ObservationManager.register(EVENT_PLAYLIST_CHANGED,this);
-        timer.start();  //start own heartbeat system, we don't use fifo one to continue to work during stops
         //DND
         new PlaylistTransferHandler(this,DnDConstants.ACTION_COPY_OR_MOVE);
         new PlaylistTransferHandler(jtable,DnDConstants.ACTION_COPY_OR_MOVE);
-        //force refresh
+        //force a refresh
         update(EVENT_PLAYLIST_CHANGED);
     }
     
@@ -322,48 +311,54 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
      */
     public void update(String subject) {
         if (EVENT_PLAYLIST_CHANGED.equals(subject)){
-         	//clear planned
-        	alPlanned = new ArrayList(0);  //make sure planned is voided if not in Queue
-         	jtable.getSelectionModel().clearSelection(); //remove selection 
-        	PlaylistFileItem plfi = (PlaylistFileItem)ObservationManager.getDetail(subject,DETAIL_SELECTION);
+            //clear planned
+            alPlanned = new ArrayList(0);  //make sure planned is voided if not in Queue
+            jtable.getSelectionModel().clearSelection(); //remove selection 
+            PlaylistFileItem plfi = (PlaylistFileItem)ObservationManager.getDetail(subject,DETAIL_SELECTION);
             this.iType = plfi.getType();
             this.plfi =plfi;
             //set title label
             jlTitle.setText(plfi.getName());
             jlTitle.setToolTipText(plfi.getName());
             setDefaultButtonState();
+            update(EVENT_PLAYLIST_REFRESH); //force refresh
             Util.stopWaiting(); //stop waiting
         }
         else if ( EVENT_PLAYLIST_REFRESH.equals(subject)){
-            if ( plfi == null ){  //nothing ? leave
-                iRowNum = 0;
-            	return;
-            }
-            //when nothing is selected, set default button state
-            if (jtable.getSelectionModel().getMinSelectionIndex() == -1){
-                setDefaultButtonState();
-            }
-            try{
-                if (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE){
-                    alItems = FIFO.getInstance().getFIFO();
-                    alPlanned = FIFO.getInstance().getPlanned();
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                    if ( plfi == null ){  //nothing ? leave
+                        iRowNum = 0;
+                        return;
+                    }
+                    //when nothing is selected, set default button state
+                    if (jtable.getSelectionModel().getMinSelectionIndex() == -1){
+                        setDefaultButtonState();
+                    }
+                    try{
+                        if (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE){
+                            alItems = FIFO.getInstance().getFIFO();
+                            alPlanned = FIFO.getInstance().getPlanned();
+                        }
+                        else{
+                            alItems = Util.createStackItems(plfi.getPlaylistFile().getBasicFiles(),
+                                    ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true); //PERF
+                        }
+                        iRowNum = alItems.size() + alPlanned.size();
+                    }
+                    catch(JajukException je){ //don't trace because it is called in a loop
+                    } 
+                    int[] rows = jtable.getSelectedRows();  //save selection
+                    model.fireTableDataChanged();//refresh
+                    if (rows.length > 0) {
+                        bSettingSelection = true;
+                        jtable.getSelectionModel().setSelectionInterval(rows[0],rows[rows.length-1]); //set saved selection after a refresh
+                        bSettingSelection = false;
+                    }
                 }
-                else{
-                    alItems = Util.createStackItems(plfi.getPlaylistFile().getBasicFiles(),
-                            ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true); //PERF
-                }
-                iRowNum = alItems.size() + alPlanned.size();
-            }
-            catch(JajukException je){ //don't trace because it is called in a loop
-            } 
-            int[] rows = jtable.getSelectedRows();  //save selection
-            model.fireTableDataChanged();//refresh
-            if (rows.length > 0) {
-                bSettingSelection = true;
-                jtable.getSelectionModel().setSelectionInterval(rows[0],rows[rows.length-1]); //set saved selection after a refresh
-                bSettingSelection = false;
-            }
+            });
         }
+        
         else if ( EVENT_PLAYER_STOP.equals(subject)){
             alItems.clear();
             alPlanned.clear();
@@ -484,113 +479,121 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
     
     
     public void actionPerformed(ActionEvent ae){
-        if ( ae.getSource() == jbRun){
-            plfi.getPlaylistFile().play();
-        }
-        else if (ae.getSource() == jbSave){
-            //normal playlist
-            if ( plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_NORMAL){
-                if ( this instanceof LogicalPlaylistEditorView){ //if logical editor, warning message
-                    StringBuffer sbOut = new StringBuffer(Messages.getString("AbstractPlaylistEditorView.17")); //$NON-NLS-1$
-                    Playlist pl = PlaylistManager.getPlaylist(plfi.getPlaylistFile().getHashcode());
-                    if ( pl != null){
-                        ArrayList alPlaylistFiles = pl.getPlaylistFiles(); 
-                        Iterator it = alPlaylistFiles.iterator();
-                        while ( it.hasNext()){
-                            PlaylistFile plf = (PlaylistFile)it.next();
-                            sbOut.append('\n').append(plf.getAbsolutePath());
-                        }
-                        int i = JOptionPane.showConfirmDialog(Main.getWindow(),sbOut.toString(),Messages.getString("Warning"),JOptionPane.OK_CANCEL_OPTION,JOptionPane.WARNING_MESSAGE); //$NON-NLS-1$
-                        if ( i == JOptionPane.OK_OPTION){
-                            it = alPlaylistFiles.iterator();
+        try{
+            if ( ae.getSource() == jbRun){
+                plfi.getPlaylistFile().play();
+            }
+            else if (ae.getSource() == jbSave){
+                //normal playlist
+                if ( plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_NORMAL){
+                    if ( this instanceof LogicalPlaylistEditorView){ //if logical editor, warning message
+                        StringBuffer sbOut = new StringBuffer(Messages.getString("AbstractPlaylistEditorView.17")); //$NON-NLS-1$
+                        Playlist pl = PlaylistManager.getPlaylist(plfi.getPlaylistFile().getHashcode());
+                        if ( pl != null){
+                            ArrayList alPlaylistFiles = pl.getPlaylistFiles(); 
+                            Iterator it = alPlaylistFiles.iterator();
                             while ( it.hasNext()){
                                 PlaylistFile plf = (PlaylistFile)it.next();
-                                plf.setModified(true);
-                                try{
-                                    plf.setBasicFiles(plfi.getPlaylistFile().getBasicFiles()); //set same files for all playlist files
-                                    plf.commit();
-                                }
-                                catch(JajukException je){
-                                    Log.error(je);
+                                sbOut.append('\n').append(plf.getAbsolutePath());
+                            }
+                            int i = JOptionPane.showConfirmDialog(Main.getWindow(),sbOut.toString(),Messages.getString("Warning"),JOptionPane.OK_CANCEL_OPTION,JOptionPane.WARNING_MESSAGE); //$NON-NLS-1$
+                            if ( i == JOptionPane.OK_OPTION){
+                                it = alPlaylistFiles.iterator();
+                                while ( it.hasNext()){
+                                    PlaylistFile plf = (PlaylistFile)it.next();
+                                    plf.setModified(true);
+                                    try{
+                                        plf.setBasicFiles(plfi.getPlaylistFile().getBasicFiles()); //set same files for all playlist files
+                                        plf.commit();
+                                    }
+                                    catch(JajukException je){
+                                        Log.error(je);
+                                    }
                                 }
                             }
                         }
                     }
-                }
-                else{ //in physical perspective
-                    try{
-                        plfi.getPlaylistFile().commit();
+                    else{ //in physical perspective
+                        try{
+                            plfi.getPlaylistFile().commit();
+                        }
+                        catch(JajukException je){
+                            Log.error(je);
+                            Messages.showErrorMessage(je.getCode(),je.getMessage());
+                        }
                     }
-                    catch(JajukException je){
-                        Log.error(je);
-                        Messages.showErrorMessage(je.getCode(),je.getMessage());
+                }
+                else{  //specfial playlist, same behavior than a save as
+                    plfi.getPlaylistFile().saveAs();
+                }
+            }
+            else if (ae.getSource() == jbClear){
+                plfi.getPlaylistFile().clear();
+                if ( plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE){ //if it is the queue playlist, stop the selection
+                    FIFO.getInstance().stopRequest();
+                }
+            }
+            else if (ae.getSource() == jbDown || ae.getSource() == jbUp){
+                int iRow = jtable.getSelectedRow();
+                if ( iRow != -1 ){ //-1 means nothing is selected
+                    if ( ae.getSource() == jbDown){
+                        plfi.getPlaylistFile().down(iRow);
+                        if (iRow < iRowNum-1){
+                            update(EVENT_PLAYLIST_REFRESH); //force immediate table refresh
+                            jtable.getSelectionModel().setSelectionInterval(iRow+1,iRow+1);
+                        }
+                    }
+                    else if ( ae.getSource() == jbUp){
+                        plfi.getPlaylistFile().up(iRow);
+                        if (iRow > 0){
+                            update(EVENT_PLAYLIST_REFRESH); //force immediate table refresh
+                            jtable.getSelectionModel().setSelectionInterval(iRow-1,iRow-1);
+                        }
                     }
                 }
             }
-            else{  //specfial playlist, same behavior than a save as
-                plfi.getPlaylistFile().saveAs();
-            }
-        }
-        else if (ae.getSource() == jbClear){
-            plfi.getPlaylistFile().clear();
-            if ( plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE){ //if it is the queue playlist, stop the selection
-                FIFO.getInstance().stopRequest();
-            }
-        }
-        else if (ae.getSource() == jbDown || ae.getSource() == jbUp){
-            int iRow = jtable.getSelectedRow();
-            if ( iRow != -1 ){ //-1 means nothing is selected
-                if ( ae.getSource() == jbDown){
-                    plfi.getPlaylistFile().down(iRow);
-                    if (iRow < iRowNum-1){
-                        update(EVENT_PLAYLIST_REFRESH); //force immediate table refresh
-                        jtable.getSelectionModel().setSelectionInterval(iRow+1,iRow+1);
-                    }
-                }
-                else if ( ae.getSource() == jbUp){
-                    plfi.getPlaylistFile().up(iRow);
-                    if (iRow > 0){
-                        update(EVENT_PLAYLIST_REFRESH); //force immediate table refresh
-                        jtable.getSelectionModel().setSelectionInterval(iRow-1,iRow-1);
-                    }
+            else if (ae.getSource() == jbRemove){
+                int[] iRows = jtable.getSelectedRows();
+                for (int i=0;i<iRows.length;i++){
+                    plfi.getPlaylistFile().remove(iRows[i]);
+                    iRowNum --;
                 }
             }
+            else if (ae.getSource() == jbAdd || ae.getSource() == jbAddShuffle){
+                int iRow = jtable.getSelectedRow();
+                if ( iRow < 0 ){ //no row is selected, take fifo last position as a default
+                    iRow = FIFO.getInstance().getFIFO().size(); 
+                }
+                File file = null;
+                if (ae.getSource() == jbAdd){
+                    JajukFileChooser jfchooser = new JajukFileChooser(new JajukFileFilter(true,TypeManager.getAllMusicTypes())); 
+                    if (fileLast != null){//restore last selected directory
+                        jfchooser.setCurrentDirectory(fileLast.getParentFile());
+                    }
+                    int returnVal = jfchooser.showOpenDialog(this);
+                    if (returnVal == JFileChooser.APPROVE_OPTION) {
+                        file = new BasicFile(jfchooser.getSelectedFile());
+                        fileLast = jfchooser.getSelectedFile(); //store current file
+                    }
+                }
+                else if (ae.getSource() == jbAddShuffle){
+                    file = FileManager.getShuffleFile(); 
+                }
+                try{
+                    plfi.getPlaylistFile().addBasicFile(iRow,new BasicFile(file));
+                    iRowNum ++;	
+                }
+                catch(JajukException je){
+                    Messages.showErrorMessage(je.getCode());
+                    Log.error(je);
+                }
+            }
         }
-        else if (ae.getSource() == jbRemove){
-            int[] iRows = jtable.getSelectedRows();
-        	for (int i=0;i<iRows.length;i++){
-        		plfi.getPlaylistFile().remove(iRows[i]);
-        		iRowNum --;
-        	}
+        catch(Exception e2){
+            Log.error(e2);
         }
-        else if (ae.getSource() == jbAdd || ae.getSource() == jbAddShuffle){
-        	int iRow = jtable.getSelectedRow();
-        	if ( iRow < 0 ){ //no row is selected, take fifo last position as a default
-        		iRow = FIFO.getInstance().getFIFO().size(); 
-        	}
-        	File file = null;
-        	if (ae.getSource() == jbAdd){
-        		JajukFileChooser jfchooser = new JajukFileChooser(new JajukFileFilter(true,TypeManager.getAllMusicTypes())); 
-        		if (fileLast != null){//restore last selected directory
-        			jfchooser.setCurrentDirectory(fileLast.getParentFile());
-        		}
-        		int returnVal = jfchooser.showOpenDialog(this);
-        		if (returnVal == JFileChooser.APPROVE_OPTION) {
-        			file = new BasicFile(jfchooser.getSelectedFile());
-        			fileLast = jfchooser.getSelectedFile(); //store current file
-        		}
-        	}
-        	else if (ae.getSource() == jbAddShuffle){
-        		file = FileManager.getShuffleFile(); 
-        	}
-        	try{
-        		plfi.getPlaylistFile().addBasicFile(iRow,new BasicFile(file));
-        		iRowNum ++;	
-        	}
-        	catch(JajukException je){
-        		Messages.showErrorMessage(je.getCode());
-        		Log.error(je);
-        	}
+        finally{
+            ObservationManager.notify(EVENT_PLAYLIST_REFRESH); //refresh playlist editor
         }
     }
     
@@ -624,93 +627,93 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
             if (selectedRow > alItems.size()-1){ //means it is a planned track
                 bPlanned = true;
             }
-           //now analyze each button
-           //add button
-           if (bPlanned //no add for planned track
-                   || plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_BESTOF  //neither for bestof playlist
-                   || lsm.getMinSelectionIndex() != lsm.getMaxSelectionIndex()  //multiple selection not supported
-               		|| (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE && lsm.getMinSelectionIndex() == 0 )){ //can't add track at current track position
-               jbAdd.setEnabled(false);
-           }
-           else{
-               jbAdd.setEnabled(true);
-           }
-           //Remove button
-           if (bPlanned ){//not for planned track
-               jbRemove.setEnabled(true);
-           }
-           else{
-               //check for first row remove case : we can't remove currently played track
-               if ( plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE && lsm.getMinSelectionIndex() == 0
-                   || plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_BESTOF ){ //neither for bestof playlist
-                   jbRemove.setEnabled(false);
-               }
-               else{
-                   jbRemove.setEnabled(true);
-               }
-           }
-           //Add shuffle button
-           if (bPlanned //not for planned track
-                   || plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_BESTOF  //neither for bestof playlist
-                   || lsm.getMinSelectionIndex() != lsm.getMaxSelectionIndex() //multiple selection not supported
-       				|| (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE && lsm.getMinSelectionIndex() == 0 )){ //can't add track at current track position
-               jbAddShuffle.setEnabled(false);
-           }
-           else{
-               jbAddShuffle.setEnabled(true);
-           }
-           //Up button
-           if (lsm.getMinSelectionIndex() != lsm.getMaxSelectionIndex() //check if several rows have been selected : doesn't supported yet 
-                   || (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE && FIFO.getInstance().containsRepeat()) //check if we are in the queue with repeated tracks : not supported yet
-                   || plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_BESTOF ){ //neither for bestof playlist
-               jbUp.setEnabled(false);
-           }
-           else{ //yet here ?
-               if (bPlanned){
-	               if (lsm.getMaxSelectionIndex() > alItems.size()){ //a planned track can't go to normal files stack
-	                   jbUp.setEnabled(true);    
-	               }
-	               else{
-	                   jbUp.setEnabled(false);
-	               }
-               }
-	           else{ //normal item
-	               if (lsm.getMinSelectionIndex() == 0
-	                       || (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE && lsm.getMinSelectionIndex() == 1)){//check if we selected second track just after current tracks
-	                   jbUp.setEnabled(false);  //already at the top
-	               }
-	               else{
-	                   jbUp.setEnabled(true);
-	               }
-	           }
-           }
-           //Down button
-           if (lsm.getMinSelectionIndex() != lsm.getMaxSelectionIndex() //check if several rows have been selected : doesn't supported yet 
-                   || (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE && FIFO.getInstance().containsRepeat()) //check if we are in the queue with repeated tracks : not supported yet
-                   || plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_BESTOF ){ //neither for bestof playlist
-               jbDown.setEnabled(false);
-           }
-           else{ //yet here ?
-               if (bPlanned){
-	               if (lsm.getMaxSelectionIndex() < alItems.size()+alPlanned.size()-1){ //can't go further
-	                   jbDown.setEnabled(true);    
-	               }
-	               else{
-	                   jbDown.setEnabled(false);
-	               }
-               }
-	           else{ //normal item
-	               if (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE && lsm.getMaxSelectionIndex() == 0){ //current track can't go down
-	                   jbDown.setEnabled(false);
-	               }
-	               else if ( lsm.getMaxSelectionIndex() < alItems.size()-1){ //a normal item can't go in the planned items
-	                   jbDown.setEnabled(true);    
-	               }
-	               else{
-	                   jbDown.setEnabled(false);
-	               }
-	           }
-           }
-	    }     
+            //now analyze each button
+            //add button
+            if ( plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_BESTOF  //neither for bestof playlist
+                    || lsm.getMinSelectionIndex() != lsm.getMaxSelectionIndex()  //multiple selection not supported
+                    || selectedRow > FIFO.getInstance().getFIFO().size()  //no add for planned track but user can add over first planned track to extand FIFO
+                    || (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE && lsm.getMinSelectionIndex() == 0 )){ //can't add track at current track position
+                jbAdd.setEnabled(false);
+            }
+            else{
+                jbAdd.setEnabled(true);
+            }
+            //Remove button
+            if (bPlanned ){//not for planned track
+                jbRemove.setEnabled(true);
+            }
+            else{
+                //check for first row remove case : we can't remove currently played track
+                if ( plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE && lsm.getMinSelectionIndex() == 0
+                        || plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_BESTOF ){ //neither for bestof playlist
+                    jbRemove.setEnabled(false);
+                }
+                else{
+                    jbRemove.setEnabled(true);
+                }
+            }
+            //Add shuffle button
+            if ( plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_BESTOF  //neither for bestof playlist
+                    || lsm.getMinSelectionIndex() != lsm.getMaxSelectionIndex() //multiple selection not supported
+                    || selectedRow > FIFO.getInstance().getFIFO().size()  //no add for planned track but user can add over first planned track to extand FIFO
+                    || (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE && lsm.getMinSelectionIndex() == 0 )){ //can't add track at current track position
+                jbAddShuffle.setEnabled(false);
+            }
+            else{
+                jbAddShuffle.setEnabled(true);
+            }
+            //Up button
+            if (lsm.getMinSelectionIndex() != lsm.getMaxSelectionIndex() //check if several rows have been selected : doesn't supported yet 
+                    || (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE && FIFO.getInstance().containsRepeat()) //check if we are in the queue with repeated tracks : not supported yet
+                    || plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_BESTOF ){ //neither for bestof playlist
+                jbUp.setEnabled(false);
+            }
+            else{ //yet here ?
+                if (bPlanned){
+                    if (lsm.getMaxSelectionIndex() > alItems.size()){ //a planned track can't go to normal files stack
+                        jbUp.setEnabled(true);    
+                    }
+                    else{
+                        jbUp.setEnabled(false);
+                    }
+                }
+                else{ //normal item
+                    if (lsm.getMinSelectionIndex() == 0
+                            || (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE && lsm.getMinSelectionIndex() == 1)){//check if we selected second track just after current tracks
+                        jbUp.setEnabled(false);  //already at the top
+                    }
+                    else{
+                        jbUp.setEnabled(true);
+                    }
+                }
+            }
+            //Down button
+            if (lsm.getMinSelectionIndex() != lsm.getMaxSelectionIndex() //check if several rows have been selected : doesn't supported yet 
+                    || (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE && FIFO.getInstance().containsRepeat()) //check if we are in the queue with repeated tracks : not supported yet
+                    || plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_BESTOF ){ //neither for bestof playlist
+                jbDown.setEnabled(false);
+            }
+            else{ //yet here ?
+                if (bPlanned){
+                    if (lsm.getMaxSelectionIndex() < alItems.size()+alPlanned.size()-1){ //can't go further
+                        jbDown.setEnabled(true);    
+                    }
+                    else{
+                        jbDown.setEnabled(false);
+                    }
+                }
+                else{ //normal item
+                    if (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE && lsm.getMaxSelectionIndex() == 0){ //current track can't go down
+                        jbDown.setEnabled(false);
+                    }
+                    else if ( lsm.getMaxSelectionIndex() < alItems.size()-1){ //a normal item can't go in the planned items
+                        jbDown.setEnabled(true);    
+                    }
+                    else{
+                        jbDown.setEnabled(false);
+                    }
+                }
+            }
+        }     
     }
 }

@@ -163,6 +163,6 @@ public class AnimationView extends ViewAdapter implements ITechnicalStrings,Obse
 				update(EVENT_INFORMATION_DISPLAY);//force redisplay
 			}
 		});
-		Log.debug("View resized, new width="+iSize);
+		Log.debug("View resized, new width="+iSize); //$NON-NLS-1$
 	}
 }

@@ -77,7 +77,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl,ITechnicalStrings{
             //create the player if needed
             if (player == null){
                 player = new BasicPlayer();
-                BasicPlayer.EXTERNAL_BUFFER_SIZE = 16*4000; //set a large buffer to avoid blanks
+                BasicPlayer.EXTERNAL_BUFFER_SIZE =  32*4000; //set a large buffer to avoid blanks
             }
             //set listener
             //remove old listener to avoid duplicate events

@@ -176,7 +176,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
         jcbAccuracy.addItem(Messages.getString("ParameterView.168")); //$NON-NLS-1$
         jcbAccuracy.addItem(Messages.getString("CoverView.12")); //$NON-NLS-1$
         jcbAccuracy.addItem(Messages.getString("CoverView.13")); //$NON-NLS-1$
-        jcbAccuracy.setSelectedIndex(Integer.parseInt(ConfigurationManager.getProperty(CONF_COVERS_ACCURACY+"_"+sID)));
+        jcbAccuracy.setSelectedIndex(Integer.parseInt(ConfigurationManager.getProperty(CONF_COVERS_ACCURACY+"_"+sID))); //$NON-NLS-1$
         jcbAccuracy.addActionListener(this);
         
         jpControl.add(jbPrevious,"0,0");//$NON-NLS-1$
@@ -302,7 +302,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                                             alCovers.add(new Cover(url,Cover.REMOTE_COVER));//create a cover with given url ( image will be really downloaded when required)
                                         }
                                         if (bStop){
-                                            Log.debug("Download stopped");
+                                            Log.debug("Download stopped"); //$NON-NLS-1$
                                             return;
                                         }
                                         index += alUrls.size(); //reset index
@@ -566,7 +566,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
      */
     public void actionPerformed(final ActionEvent e) {
         if (e.getSource() == jcbAccuracy){
-            ConfigurationManager.setProperty(CONF_COVERS_ACCURACY+"_"+sID,Integer.toString(jcbAccuracy.getSelectedIndex()));
+            ConfigurationManager.setProperty(CONF_COVERS_ACCURACY+"_"+sID,Integer.toString(jcbAccuracy.getSelectedIndex())); //$NON-NLS-1$
             SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
                     update(EVENT_COVER_REFRESH); //force refreshing
@@ -611,18 +611,18 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                     file.delete();
                 }
                 else{  //not a file, must have a problem
-                    throw new Exception("");
+                    throw new Exception(""); //$NON-NLS-1$
                 }
             }
             catch(Exception ioe){
-                Log.error("131",ioe);
-                Messages.showErrorMessage("131");
+                Log.error("131",ioe); //$NON-NLS-1$
+                Messages.showErrorMessage("131"); //$NON-NLS-1$
                 return;
             }
             //If this was the absolute cover, remove the reference in the collection
             if (cover.getType() == Cover.ABSOLUTE_DEFAULT_COVER){
                 Directory dir = FIFO.getInstance().getCurrentFile().getDirectory(); 
-                dir.removeProperty("default_cover");
+                dir.removeProperty("default_cover"); //$NON-NLS-1$
             }
             // reorganize covers
             alCovers.remove(index);
@@ -646,7 +646,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
             }
             //then make it the default cover in this directory
             Directory dir = FIFO.getInstance().getCurrentFile().getDirectory(); 
-            dir.setProperty("default_cover",sFilename);
+            dir.setProperty("default_cover",sFilename); //$NON-NLS-1$
         }
         else if(e.getSource() == jbSave || e.getSource() == jbSaveAs ){ //save a save with its original name
             SwingUtilities.invokeLater(new Runnable() {
@@ -738,7 +738,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
      */
     public  String createQuery(org.jajuk.base.File file){
         String sQuery = ""; //$NON-NLS-1$
-        int iAccuracy = ConfigurationManager.getInt(CONF_COVERS_ACCURACY+"_"+sID);
+        int iAccuracy = ConfigurationManager.getInt(CONF_COVERS_ACCURACY+"_"+sID); //$NON-NLS-1$
         Track track = file.getTrack();
         Author author = track.getAuthor();
         Album album = track.getAlbum();
@@ -756,7 +756,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                 sQuery += "\"" +author.getName() + "\" "; //put "" around it //$NON-NLS-1$ //$NON-NLS-2$
             }
             if (!album.isUnknown()){
-                sQuery += "\""+ album.getName() + "\" "; //$NON-NLS-1$    
+                sQuery += "\""+ album.getName() + "\" "; //$NON-NLS-1$ //$NON-NLS-2$    
             }
             break;
         case 2: //high 
@@ -764,7 +764,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                 sQuery += "+\"" +author.getName() + "\" "; //put "" around it //$NON-NLS-1$ //$NON-NLS-2$
             }
             if (!album.isUnknown()){
-                sQuery += "+\""+ album.getName() + "\" "; //$NON-NLS-1$    
+                sQuery += "+\""+ album.getName() + "\" "; //$NON-NLS-1$ //$NON-NLS-2$    
             }
             break;
         case 3: //by author 
