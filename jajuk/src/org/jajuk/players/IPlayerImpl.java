@@ -38,7 +38,7 @@ public interface IPlayerImpl {
 	 * @param fVolume volume
 	 * @throws Exception
 	 */	
-	public void play(File file,float fPosition,long length,boolean bMuted,float fVolume) throws Exception;
+	public void play(File file,float fPosition,long length,float fVolume) throws Exception;
 
 	/**
 	 * Stop current player
@@ -46,11 +46,6 @@ public interface IPlayerImpl {
 	 */
 	public void stop() throws Exception;
 	
-	/**
-	 * mute the player
-	 * @throws Exception
-	 */
-	public void mute() throws Exception;
 	
 	/**
 	 * Set the gain
@@ -71,9 +66,11 @@ public interface IPlayerImpl {
 	public void resume() throws Exception;
 	
 	/**Seek to a given position in %. ex : 0.2 for 20% */
-	public void seek(float fPosition,boolean bMuted);
+	public void seek(float fPosition);
 	
 	/**Return track position in %*/
 	public float getCurrentPosition();
 	
+	/**Return whether player is seeking */
+	public boolean isSeeking();
 }
