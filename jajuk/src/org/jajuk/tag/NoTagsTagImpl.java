@@ -46,28 +46,28 @@ public class NoTagsTagImpl implements ITagImpl {
 	 * @see org.jajuk.base.ITagImpl#getTrackName()
 	 */
 	public String getTrackName() throws Exception {
-		return ""; //doing that, the item wil be the default jajuk unknown string
+		return ""; //doing that, the item wil be the default jajuk unknown string //$NON-NLS-1$
 	}
 
 	/* (non-Javadoc)
 	 * @see org.jajuk.base.ITagImpl#getAlbumName()
 	 */
 	public String getAlbumName() throws Exception {
-		return ""; //doing that, the item wil be the default jajuk unknown string
+		return ""; //doing that, the item wil be the default jajuk unknown string //$NON-NLS-1$
 	}
 
 	/* (non-Javadoc)
 	 * @see org.jajuk.base.ITagImpl#getAuthorName()
 	 */
 	public String getAuthorName() throws Exception {
-		return ""; //doing that, the item wil be the default jajuk unknown string
+		return ""; //doing that, the item wil be the default jajuk unknown string //$NON-NLS-1$
 	}
 
 	/* (non-Javadoc)
 	 * @see org.jajuk.base.ITagImpl#getStyleName()
 	 */
 	public String getStyleName() throws Exception {
-		return ""; //doing that, the item wil be the default jajuk unknown string
+		return ""; //doing that, the item wil be the default jajuk unknown string //$NON-NLS-1$
 	}
 
 	/* (non-Javadoc)
@@ -100,14 +100,14 @@ public class NoTagsTagImpl implements ITagImpl {
 	 * @see org.jajuk.base.ITagImpl#getYear()
 	 */
 	public String getYear() throws Exception {
-		return ""; //doing that, the item wil be the default jajuk unknown string
+		return ""; //doing that, the item wil be the default jajuk unknown string //$NON-NLS-1$
 	}
 
 	/* (non-Javadoc)
 	 * @see org.jajuk.base.ITagImpl#getQuality()
 	 */
 	public String getQuality() throws Exception {
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 
 	/* (non-Javadoc)

@@ -302,8 +302,8 @@ public class Util implements ITechnicalStrings {
 		if ( sbSecs.length() == 1) sbSecs.insert(0,'0');
 
 	    StringBuffer sbResult = new StringBuffer();
-	    if (lHours > 0) sbResult.append(sbHours).append(":");
-	    return sbResult.append(sbMins).append(":").append(sbSecs).toString();
+	    if (lHours > 0) sbResult.append(sbHours).append(":"); //$NON-NLS-1$
+	    return sbResult.append(sbMins).append(":").append(sbSecs).toString(); //$NON-NLS-1$
 	}
 	
 	
@@ -560,13 +560,13 @@ public class Util implements ITechnicalStrings {
 		int byteslength = -1;
 		if (properties != null)
 		{
-			if (properties.containsKey("audio.length.bytes"))
+			if (properties.containsKey("audio.length.bytes")) //$NON-NLS-1$
 			{
-				byteslength = ((Integer) properties.get("audio.length.bytes")).intValue();			
+				byteslength = ((Integer) properties.get("audio.length.bytes")).intValue();			 //$NON-NLS-1$
 			}
-			if (properties.containsKey("duration"))
+			if (properties.containsKey("duration")) //$NON-NLS-1$
 			{
-				milliseconds = (int) (((Long) properties.get("duration")).longValue())/1000;			
+				milliseconds = (int) (((Long) properties.get("duration")).longValue())/1000;			 //$NON-NLS-1$
 			}
 			else
 			{
@@ -575,21 +575,21 @@ public class Util implements ITechnicalStrings {
 				int channels = -1;
 				float samplerate = -1.0f;
 				int framesize = -1;			 
-				if (properties.containsKey("audio.samplesize.bits"))
+				if (properties.containsKey("audio.samplesize.bits")) //$NON-NLS-1$
 				{
-					bitspersample = ((Integer) properties.get("audio.samplesize.bits")).intValue(); 
+					bitspersample = ((Integer) properties.get("audio.samplesize.bits")).intValue();  //$NON-NLS-1$
 				}
-				if (properties.containsKey("audio.channels"))
+				if (properties.containsKey("audio.channels")) //$NON-NLS-1$
 				{
-					channels = ((Integer) properties.get("audio.channels")).intValue(); 
+					channels = ((Integer) properties.get("audio.channels")).intValue();  //$NON-NLS-1$
 				}
-				if (properties.containsKey("audio.samplerate.hz"))
+				if (properties.containsKey("audio.samplerate.hz")) //$NON-NLS-1$
 				{
-					samplerate = ((Float) properties.get("audio.samplerate.hz")).floatValue(); 
+					samplerate = ((Float) properties.get("audio.samplerate.hz")).floatValue();  //$NON-NLS-1$
 				}
-				if (properties.containsKey("audio.framesize.bytes"))
+				if (properties.containsKey("audio.framesize.bytes")) //$NON-NLS-1$
 				{
-					framesize = ((Integer) properties.get("audio.framesize.bytes")).intValue(); 
+					framesize = ((Integer) properties.get("audio.framesize.bytes")).intValue();  //$NON-NLS-1$
 				}
 				if (bitspersample > 0)
 				{

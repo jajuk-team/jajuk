@@ -87,8 +87,8 @@ public class JavaLayerPlayerImpl implements IPlayerImpl,ITechnicalStrings{
 							}
 						}
 						//computes read time
-						if (mInfo.containsKey("audio.length.bytes")) {
-							int byteslength = ((Integer) mInfo.get("audio.length.bytes")).intValue();
+						if (mInfo.containsKey("audio.length.bytes")) { //$NON-NLS-1$
+							int byteslength = ((Integer) mInfo.get("audio.length.bytes")).intValue(); //$NON-NLS-1$
 							fPos = (float)iBytesread / byteslength;
 							lTime = (long)(Util.getTimeLengthEstimation(mInfo)*fPos);
 						}
@@ -207,15 +207,15 @@ public class JavaLayerPlayerImpl implements IPlayerImpl,ITechnicalStrings{
 	 */
 	public  void seek(float posValue) {
 		try{	
-			if (mInfo.containsKey("audio.type")) {
-				String type = (String)mInfo.get("audio.type");
+			if (mInfo.containsKey("audio.type")) { //$NON-NLS-1$
+				String type = (String)mInfo.get("audio.type"); //$NON-NLS-1$
 				// Seek support for MP3. and WAVE
-				if ((type.equalsIgnoreCase("mp3") || type.equalsIgnoreCase("wave"))&& mInfo.containsKey("audio.length.bytes")) {
-					long skipBytes =	(long) Math.round(((Integer)mInfo.get("audio.length.bytes")).intValue()* posValue);
+				if ((type.equalsIgnoreCase("mp3") || type.equalsIgnoreCase("wave"))&& mInfo.containsKey("audio.length.bytes")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					long skipBytes =	(long) Math.round(((Integer)mInfo.get("audio.length.bytes")).intValue()* posValue); //$NON-NLS-1$
 					player.seek(skipBytes);
 				}
 				else{
-					Messages.showErrorMessage("126");
+					Messages.showErrorMessage("126"); //$NON-NLS-1$
 				}
 			}
 		}

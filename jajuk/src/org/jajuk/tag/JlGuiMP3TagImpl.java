@@ -42,7 +42,7 @@ public class JlGuiMP3TagImpl implements ITagImpl {
 	public String getTrackName() throws Exception {
 		String sOut = mpgInfo.getTitle();
 		if ( sOut == null || sOut.startsWith("Track")){//$NON-NLS-1$
-			return ""; //doing that, the item wil be the default jajuk unknown string
+			return ""; //doing that, the item wil be the default jajuk unknown string //$NON-NLS-1$
 		}
 		return sOut;
 	}
@@ -53,7 +53,7 @@ public class JlGuiMP3TagImpl implements ITagImpl {
 	public String getAlbumName() throws Exception {
 		String sOut = mpgInfo.getAlbum();
 		if ( sOut == null || sOut.equals("title")){//$NON-NLS-1$
-			return ""; //doing that, the item wil be the default jajuk unknown string
+			return ""; //doing that, the item wil be the default jajuk unknown string //$NON-NLS-1$
 		}
 		return sOut;
 	}
@@ -64,7 +64,7 @@ public class JlGuiMP3TagImpl implements ITagImpl {
 	public String getAuthorName() throws Exception {
 		String sOut = mpgInfo.getArtist();
 		if ( sOut == null || sOut.equals("title")){//$NON-NLS-1$
-			return ""; //doing that, the item wil be the default jajuk unknown string
+			return ""; //doing that, the item wil be the default jajuk unknown string //$NON-NLS-1$
 		}
 		return sOut;
 	}
@@ -75,7 +75,7 @@ public class JlGuiMP3TagImpl implements ITagImpl {
 	public String getStyleName() throws Exception {
 		String sOut = mpgInfo.getGenre();
 		if ( sOut==null || sOut.equals("genre")){//$NON-NLS-1$
-			return ""; //doing that, the item wil be the default jajuk unknown string
+			return ""; //doing that, the item wil be the default jajuk unknown string //$NON-NLS-1$
 		}
 		//Sometimes, the style has this form : (nb)
 		if ( sOut.startsWith("(") && sOut.indexOf(')')!=-1){//$NON-NLS-1$//$NON-NLS-2$
@@ -84,7 +84,7 @@ public class JlGuiMP3TagImpl implements ITagImpl {
 				sOut = Util.genres[Integer.parseInt(sOut)];
 			}
 			catch(Exception e){
-				return ""; //error, return unknown
+				return ""; //error, return unknown //$NON-NLS-1$
 			}
 		}
 		return sOut;
@@ -103,7 +103,7 @@ public class JlGuiMP3TagImpl implements ITagImpl {
 	public String getYear() throws Exception {
 		String sOut = mpgInfo.getYear();
 		if ( sOut == null ){//$NON-NLS-1$
-			return ""; //doing that, the item wil be the default jajuk unknown string
+			return ""; //doing that, the item wil be the default jajuk unknown string //$NON-NLS-1$
 		}
 		return sOut;
 	}

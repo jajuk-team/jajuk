@@ -121,28 +121,28 @@ public class Main implements ITechnicalStrings {
 			try {
 				//mp3
 				Type type = TypeManager.registerType(Messages.getString("Type.mp3"), EXT_MP3, PLAYER_IMPL_JAVALAYER, TAG_IMPL_JLGUI_MP3); //$NON-NLS-1$ //$NON-NLS-2$
-				type.setProperty(TYPE_PROPERTY_IS_MUSIC,"true");
-				type.setProperty(TYPE_PROPERTY_SEEK_SUPPORTED,"true");
+				type.setProperty(TYPE_PROPERTY_IS_MUSIC,"true"); //$NON-NLS-1$
+				type.setProperty(TYPE_PROPERTY_SEEK_SUPPORTED,"true"); //$NON-NLS-1$
 				//playlists
 				type = TypeManager.registerType(Messages.getString("Type.playlist"), EXT_PLAYLIST, PLAYER_IMPL_JAVALAYER, null); //$NON-NLS-1$ //$NON-NLS-2$
-				type.setProperty(TYPE_PROPERTY_IS_MUSIC,"false");
-				type.setProperty(TYPE_PROPERTY_SEEK_SUPPORTED,"false");
+				type.setProperty(TYPE_PROPERTY_IS_MUSIC,"false"); //$NON-NLS-1$
+				type.setProperty(TYPE_PROPERTY_SEEK_SUPPORTED,"false"); //$NON-NLS-1$
 				//Ogg vorbis
 				type = TypeManager.registerType(Messages.getString("Type.ogg"), EXT_OGG, PLAYER_IMPL_JAVALAYER, TAG_IMPL_JLGUI_OGG); //$NON-NLS-1$ //$NON-NLS-2$
-				type.setProperty(TYPE_PROPERTY_IS_MUSIC,"true");
-				type.setProperty(TYPE_PROPERTY_SEEK_SUPPORTED,"false");
+				type.setProperty(TYPE_PROPERTY_IS_MUSIC,"true"); //$NON-NLS-1$
+				type.setProperty(TYPE_PROPERTY_SEEK_SUPPORTED,"false"); //$NON-NLS-1$
 				//Wave
 				type = TypeManager.registerType(Messages.getString("Type.wav"), EXT_WAV, PLAYER_IMPL_JAVALAYER, TAG_IMPL_NO_TAGS); //$NON-NLS-1$ //$NON-NLS-2$
-				type.setProperty(TYPE_PROPERTY_IS_MUSIC,"true");
-				type.setProperty(TYPE_PROPERTY_SEEK_SUPPORTED,"true");
+				type.setProperty(TYPE_PROPERTY_IS_MUSIC,"true"); //$NON-NLS-1$
+				type.setProperty(TYPE_PROPERTY_SEEK_SUPPORTED,"true"); //$NON-NLS-1$
 				//au
 				type = TypeManager.registerType(Messages.getString("Type.au"), EXT_AU, PLAYER_IMPL_JAVALAYER, TAG_IMPL_NO_TAGS); //$NON-NLS-1$ //$NON-NLS-2$
-				type.setProperty(TYPE_PROPERTY_IS_MUSIC,"true");
-				type.setProperty(TYPE_PROPERTY_SEEK_SUPPORTED,"false");
+				type.setProperty(TYPE_PROPERTY_IS_MUSIC,"true"); //$NON-NLS-1$
+				type.setProperty(TYPE_PROPERTY_SEEK_SUPPORTED,"false"); //$NON-NLS-1$
 				//aiff
 				type = TypeManager.registerType(Messages.getString("Type.aiff"), EXT_AIFF, PLAYER_IMPL_JAVALAYER, TAG_IMPL_NO_TAGS); //$NON-NLS-1$ //$NON-NLS-2$
-				type.setProperty(TYPE_PROPERTY_IS_MUSIC,"true");
-				type.setProperty(TYPE_PROPERTY_SEEK_SUPPORTED,"false");
+				type.setProperty(TYPE_PROPERTY_IS_MUSIC,"true"); //$NON-NLS-1$
+				type.setProperty(TYPE_PROPERTY_SEEK_SUPPORTED,"false"); //$NON-NLS-1$
 				
 			} catch (Exception e1) {
 				Log.error("026",e1); //$NON-NLS-1$
