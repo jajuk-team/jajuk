@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.6  2003/11/16 17:57:18  bflorat
+ * 16/11/2003
+ *
  * Revision 1.5  2003/10/21 20:43:06  bflorat
  * TechnicalStrings to ITechnicalStrings according to coding convention
  *
@@ -31,6 +34,10 @@
  */
 package org.jajuk.ui;
 
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -44,13 +51,13 @@ import org.jajuk.i18n.Messages;
 /**
  * Menu bar used to choose the current perspective.
  * 
- * @author		sgringoi
+ * @author		bflorat
  * @version	1.0
  * @created		6 oct. 2003
  */
 public class PerspectiveBarJPanel
 	extends JPanel
-	implements ITechnicalStrings
+	implements ITechnicalStrings,ActionListener
 {
 
 		// Perspectives tool bar
@@ -61,11 +68,26 @@ public class PerspectiveBarJPanel
 		private JButton jbConfiguration= null;
 		private JButton jbHelp			= null;
 		private JButton jbStatistics	= null;
+		
+		/**Self instance*/
+		static private PerspectiveBarJPanel pb = null; 	
+	
+	
+	/**
+	 * Singleton access
+	 * @return
+	 */
+	public static PerspectiveBarJPanel getInstance(){
+		if (pb == null){
+			pb = new PerspectiveBarJPanel();
+		}
+		return pb;
+	}
 	
 	/**
 	 * Constructor for PerspectiveBarJPanel.
 	 */
-	public PerspectiveBarJPanel() {
+	private PerspectiveBarJPanel() {
 		super();
 		
 			// set default layout and size
@@ -77,30 +99,88 @@ public class PerspectiveBarJPanel
 		
 			// Physical perspective access button
 		jbPhysical = new JButton(new ImageIcon(ICON_PERSPECTIVE_PHYSICAL)); 
+		jbPhysical.addActionListener(this);
 		jbPhysical.setToolTipText(Messages.getString("PerspectiveBarJPanel.Show_the_physical_perspective")); //$NON-NLS-1$
 		jtbPerspective.add(jbPhysical);
 			// Logical perspective access button
 		jbLogical = new JButton(new ImageIcon(ICON_PERSPECTIVE_LOGICAL)); 
+		jbLogical.addActionListener(this);
 		jbLogical.setToolTipText(Messages.getString("PerspectiveBarJPanel.Show_the_logical_perspective")); //$NON-NLS-1$
 		jtbPerspective.addSeparator();
 		jtbPerspective.add(jbLogical);
 			// Configuration perspective access button
 		jbConfiguration = new JButton(new ImageIcon(ICON_PERSPECTIVE_CONFIGURATION)); 
+		jbConfiguration.addActionListener(this);
 		jbConfiguration.setToolTipText(Messages.getString("PerspectiveBarJPanel.Show_the_configuration_perspective")); //$NON-NLS-1$
 		jtbPerspective.addSeparator();
 		jtbPerspective.add(jbConfiguration);
 			// Statistics perspective access button
 		jbStatistics = new JButton(new ImageIcon(ICON_PERSPECTIVE_STATISTICS)); 
+		jbStatistics.addActionListener(this);
 		jbStatistics.setToolTipText(Messages.getString("PerspectiveBarJPanel.Show_the_statistics_perspective")); //$NON-NLS-1$
 		jtbPerspective.addSeparator();
 		jtbPerspective.add(jbStatistics);
 			// Help perspective access button
 		jbHelp = new JButton(new ImageIcon(ICON_INFO)); 
+		jbHelp.addActionListener(this);
 		jbHelp.setToolTipText(Messages.getString("PerspectiveBarJPanel.Show_the_help_perspective")); //$NON-NLS-1$
 		jtbPerspective.addSeparator();
 		jtbPerspective.add(jbHelp);
 		
 		add(jtbPerspective);
 	}
+	
+	
+	/**
+	 * Show selected perspective
+	 * @param perspective
+	 */
+	public void setActivated(IPerspective perspective){
+		//remove all borders
+		jbPhysical.setBorder(BorderFactory.createEtchedBorder());
+		jbLogical.setBorder(BorderFactory.createEtchedBorder());
+		jbConfiguration.setBorder(BorderFactory.createEtchedBorder());
+		jbStatistics.setBorder(BorderFactory.createEtchedBorder());
+		jbHelp.setBorder(BorderFactory.createEtchedBorder());
+		if (perspective.getName().equals(PERSPECTIVE_NAME_PHYSICAL)){
+			jbPhysical.setBorder(BorderFactory.createLineBorder(Color.BLACK,4));
+		}
+		else if (perspective.getName().equals(PERSPECTIVE_NAME_LOGICAL)){
+			jbLogical.setBorder(BorderFactory.createLineBorder(Color.BLACK,4));
+		}
+		else if (perspective.getName().equals(PERSPECTIVE_NAME_CONFIGURATION)){
+			jbConfiguration.setBorder(BorderFactory.createLineBorder(Color.BLACK,4));
+		}
+		else if (perspective.getName().equals(PERSPECTIVE_NAME_STATISTICS)){
+			jbStatistics.setBorder(BorderFactory.createLineBorder(Color.BLACK,4));
+		}
+		else if (perspective.getName().equals(PERSPECTIVE_NAME_HELP)){
+			jbHelp.setBorder(BorderFactory.createLineBorder(Color.BLACK,4));
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 */
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == jbPhysical){
+			PerspectiveManager.getInstance().notify(PERSPECTIVE_NAME_PHYSICAL);
+		}
+		else if (e.getSource() == jbLogical){
+			PerspectiveManager.getInstance().notify(PERSPECTIVE_NAME_LOGICAL);
+		}
+		if (e.getSource() == jbConfiguration){
+			PerspectiveManager.getInstance().notify(PERSPECTIVE_NAME_CONFIGURATION);
+		}
+		if (e.getSource() == jbStatistics){
+			PerspectiveManager.getInstance().notify(PERSPECTIVE_NAME_STATISTICS);
+		}
+		if (e.getSource() == jbHelp){
+			PerspectiveManager.getInstance().notify(PERSPECTIVE_NAME_HELP);
+		}
+		
+	}
+	
+	
 
 }

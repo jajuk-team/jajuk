@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.11  2003/11/16 17:57:18  bflorat
+ * 16/11/2003
+ *
  * Revision 1.10  2003/11/13 18:56:55  bflorat
  * 13/11/2003
  *
@@ -75,6 +78,8 @@ public class Device extends PropertyAdapter implements ITechnicalStrings{
 	int iDeviceType;
 	/**Device url**/
 	private String sUrl;
+	/**Device mount point**/
+	private String sMountPoint;
 	/**Mounted device flag*/
 	private boolean bMounted;
 	/**directories*/
@@ -99,18 +104,27 @@ public class Device extends PropertyAdapter implements ITechnicalStrings{
 	 * @param iDeviceType
 	 * @param sUrl
 	 */
-	public Device(String sId, String sName, int iDeviceType, String sUrl) {
+	public Device(String sId, String sName, int iDeviceType, String sUrl, String sMountPoint) {
 		this.sId = sId;
 		this.sName = sName;
 		this.iDeviceType = iDeviceType;
 		this.sUrl = sUrl;
+		this.sMountPoint = sMountPoint;
 	}
 
 	/**
 	 * toString method
 	 */
 	public String toString() {
-		return "Device[ID=" + sId + " Name=" + sName + " Type=" + sDeviceTypes[iDeviceType] + " URL=" + sUrl + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$
+		return "Device[ID=" + sId + " Name=" + sName + " Type=" + sDeviceTypes[iDeviceType] + " URL=" + sUrl+ " Mount point="+sMountPoint + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$
+	}
+	
+	/**
+	 * Return Unix mount point 
+	 * @return
+	 */
+	public String getDeviceMountPoint(){
+		return sMountPoint;			
 	}
 
 	/**
@@ -124,7 +138,9 @@ public class Device extends PropertyAdapter implements ITechnicalStrings{
 		sb.append("' type='");
 		sb.append(getDeviceType());
 		sb.append("' url='");
-		sb.append(sUrl).append("' ");
+		sb.append(sUrl);
+		sb.append("' mount_point='");
+		sb.append(getDeviceMountPoint()).append("' ");
 		sb.append(getPropertiesXml());
 		sb.append("/>\n");
 		return sb.toString();

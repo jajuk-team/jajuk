@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.3  2003/11/16 17:57:18  bflorat
+ * 16/11/2003
+ *
  * Revision 1.2  2003/10/21 20:43:06  bflorat
  * TechnicalStrings to ITechnicalStrings according to coding convention
  *
@@ -52,6 +55,20 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings{
 	public static final int INFORMATIVE = 0;
 	/** Informative message type ( displayed in red )**/
 	public static final int ERROR = 1;
+	/**Self instance*/
+	static private InformationJPanel ijp = null; 	
+	
+	
+	/**
+	 * Singleton access
+	 * @return
+	 */
+	public static InformationJPanel getInstance(){
+		if (ijp == null){
+			ijp = new InformationJPanel();
+		}
+		return ijp;
+	}
 	 
 	
 	//widgets declaration
@@ -73,7 +90,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings{
 	
 	
 	
-	public InformationJPanel(){
+	private InformationJPanel(){
 		//dimensions
 		//set current jpanel properties
 		setBorder(BorderFactory.createEtchedBorder());

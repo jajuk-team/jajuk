@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.11  2003/11/16 17:57:18  bflorat
+ * 16/11/2003
+ *
  * Revision 1.10  2003/11/14 11:02:17  bflorat
  * - Added user configuration persistence
  *
@@ -100,11 +103,12 @@ public interface ITechnicalStrings {
 	public static final String ICON_FWD = PATH_ICONS + "16x16/player_fwd.png";
 	public static final String ICON_VOLUME = PATH_ICONS + "16x16/volume.png";
 	public static final String ICON_POSITION = PATH_ICONS + "16x16/bottom.png";
+	public static final String ICON_INFO	= PATH_ICONS + "16x16/info.png";
 	public static final String ICON_PERSPECTIVE_PHYSICAL			= PATH_ICONS + "16x16/physical_perspective.png";
 	public static final String ICON_PERSPECTIVE_LOGICAL			= PATH_ICONS + "16x16/logical_perspective.png";
-	public static final String ICON_INFO	= PATH_ICONS + "16x16/info.png";
 	public static final String ICON_PERSPECTIVE_STATISTICS		= PATH_ICONS + "16x16/percent.png";
 	public static final String ICON_PERSPECTIVE_CONFIGURATION	= PATH_ICONS + "16x16/configure.png";
+	public static final String ICON_PERSPECTIVE_HELP	= PATH_ICONS + "16x16/info.png";
 	public static final String ICON_OPEN_FILE	= PATH_ICONS + "16x16/fileopen.png";
 	public static final String ICON_EXIT=  PATH_ICONS + "16x16/exit.png";
 	public static final String ICON_NEW=  PATH_ICONS + "16x16/new.png";
@@ -157,7 +161,16 @@ public interface ITechnicalStrings {
 	public static final String DEVICE_TYPE_REMOTE = "Device_type.remote";
 	public static final String DEVICE_TYPE_USBKEY = "Device_type.usbkey";
 	
+	//perspectives
+	public static final String PERSPECTIVE_NAME_PHYSICAL = "org.jajuk.ui.perspectives.PhysicalPerspective";
+	public static final String PERSPECTIVE_NAME_LOGICAL = "org.jajuk.ui.perspectives.LogicalPerspective";
+	public static final String PERSPECTIVE_NAME_CONFIGURATION = "org.jajuk.ui.perspectives.ConfigurationPerspective";
+	public static final String PERSPECTIVE_NAME_STATISTICS = "org.jajuk.ui.perspectives.StatPerspective";
+	public static final String PERSPECTIVE_NAME_HELP = "org.jajuk.ui.perspectives.HelpPerspective";
 	
+	 //views
+	 public static final String VIEW_NAME_DEVICES = "org.jajuk.ui.views.DeviceView";
+	 	
 	//extensions
 	public static final String EXT_MP3 = "mp3";
 	public static final String EXT_PLAYLIST = "m3u";
@@ -177,9 +190,10 @@ public interface ITechnicalStrings {
 	public static final String EVENT_DEVICE_TEST="test device";
 	public static final String EVENT_DEVICE_REFRESH="refresh device";
 	public static final String EVENT_DEVICE_SYNCHRO="synchronize device";
+	public static final String EVENT_VIEW_REFRESH_REQUEST="refresh view";
+	
 		
 	//	configuration keys
-	 public static final String CONF_VIEW_PHYSICAL="jajuk.preference.perspective.physical.views";
 	 public static final String CONF_PERSPECTIVE_DEFAULT="jajuk.preference.perspective.default";
 	 public static final String CONF_STATE_REPEAT="jajuk.state.mode.repeat";
 	public static final String CONF_STATE_SHUFFLE="jajuk.state.mode.shuffle";
@@ -228,43 +242,43 @@ public interface ITechnicalStrings {
 	public static final String XML_PLAYLIST = "playlist";
 	public static final String XML_PERSPECTIVES_CONF = 
 		"<?xml version='1.0' encoding='UTF-8'?>\n"+
-		 "<perspectives default='physical' >\n"+
-		"\t<perspective  name='physical' class='org.jajuk.ui.perspectives.PhysicalPerspective'>\n"+
+		 "<perspectives>\n"+
+		"\t<perspective  class='"+PERSPECTIVE_NAME_PHYSICAL+"'>\n"+
 		"\t\t<views>\n"+
-		"\t\t\t<view name='logical tree' class='org.jajuk.ui.views.PhysicalTreeView' />\n"+
-		"\t\t\t<view name='logical tree' class='org.jajuk.ui.views.NavigationBarView' />\n"+
-		"\t\t\t<view name='logical tree' class='org.jajuk.ui.views.TrackListView' />\n"+
-		"\t\t\t<view name='logical tree' class='org.jajuk.ui.views.CoverView'  />\n"+
-		"\t\t\t<view name='logical tree' class='org.jajuk.ui.views.PlaylistRepositoryView'/>\n"+
-		"\t\t\t<view name='logical tree' class='org.jajuk.ui.views.PlaylistEditorView'  />\n"+
+	/*	"\t\t\t<view class='org.jajuk.ui.views.PhysicalTreeView' />\n"+
+		"\t\t\t<view class='org.jajuk.ui.views.NavigationBarView' />\n"+
+		"\t\t\t<view class='org.jajuk.ui.views.TrackListView' />\n"+
+		"\t\t\t<view class='org.jajuk.ui.views.CoverView'  />\n"+
+		"\t\t\t<view class='org.jajuk.ui.views.PlaylistRepositoryView'/>\n"+
+		"\t\t\t<view class='org.jajuk.ui.views.PlaylistEditorView'  />\n"+*/
 		"\t\t</views>\n"+
 		"\t\t</perspective>\n"+
-		"\t<perspective name='logical' class='org.jajuk.ui.perspectives.LogicalPerspective'>\n"+
+		"\t<perspective class='"+PERSPECTIVE_NAME_LOGICAL+"'>\n"+
 		"\t\t<views>\n"+
-		"\t\t\t<view name='logical tree' class='org.jajuk.ui.views.LogicalTreeView'/>\n"+
-		"\t\t\t<view name='logical tree' class='org.jajuk.ui.views.NavigationBarView' />\n"+
-		"\t\t\t<view name='logical tree' class='org.jajuk.ui.views.TrackListView'/>\n"+
-		"\t\t\t<view name='logical tree' class='org.jajuk.ui.views.CoverView'  />\n"+
-		"\t\t\t<view name='logical tree' class='org.jajuk.ui.views.PlaylistRepositoryView'/>\n"+
-		"\t\t\t<view name='logical tree' class='org.jajuk.ui.views.PlaylistEditorView'  />\n"+
+	/*	"\t\t\t<view class='org.jajuk.ui.views.LogicalTreeView'/>\n"+
+		"\t\t\t<view class='org.jajuk.ui.views.NavigationBarView' />\n"+
+		"\t\t\t<view class='org.jajuk.ui.views.TrackListView'/>\n"+
+		"\t\t\t<view class='org.jajuk.ui.views.CoverView'  />\n"+
+		"\t\t\t<view class='org.jajuk.ui.views.PlaylistRepositoryView'/>\n"+
+		"\t\t\t<view class='org.jajuk.ui.views.PlaylistEditorView'  />\n"+*/
 		"\t\t</views>\n"+
 		"\t</perspective>\n"+
-		"\t<perspective name='configuration' class='org.jajuk.ui.perspectives.ConfigurationPerspective'>\n"+
+		"\t<perspective class='"+PERSPECTIVE_NAME_CONFIGURATION+"'>\n"+
 		"\t\t<views>\n"+
-		"\t\t\t<view name='logical tree' class='org.jajuk.ui.views.ParametersView'/>\n"+
-		"\t\t\t<view name='logical tree' class='org.jajuk.ui.views.DeviceView'  />\n"+
-		"\t\t\t<view name='logical tree' class='org.jajuk.ui.views.CdScanView'/>\n"+
+	//	"\t\t\t<view class='org.jajuk.ui.views.ParametersView'/>\n"+
+		"\t\t\t<view class='"+VIEW_NAME_DEVICES+"' width='50' height='50' x='50' y='0' />\n"+
+	//	"\t\t\t<view class='org.jajuk.ui.views.CdScanView'/>\n"+
 		"\t\t</views>\n"+
 		"\t</perspective>\n"+
-		"\t<perspective name='stat' class='org.jajuk.ui.perspectives.StatPerspective'>\n"+
+		"\t<perspective class='"+PERSPECTIVE_NAME_STATISTICS+"'>\n"+
 		"\t\t<views>\n"+
-		"\t\t\t<view name='logical tree' class='org.jajuk.ui.views.StatView'/>\n"+
+/*		"\t\t\t<view class='org.jajuk.ui.views.StatView'/>\n"+*/
 		"\t\t</views>\n"+
 		"\t</perspective>\n"+
-		"\t<perspective  name='help' class='org.jajuk.ui.perspectives.HelpPerspective'>\n"+
+		"\t<perspective  class='"+PERSPECTIVE_NAME_HELP+"'>\n"+
 		"\t\t<views>\n"+
-		"\t\t\t<view name='logical tree' class='org.jajuk.ui.views.HelpView'/>\n"+
-		"\t\t\t<view name='logical tree' class='org.jajuk.ui.views.AboutView' />\n"+
+		/*"\t\t\t<view class='org.jajuk.ui.views.HelpView'/>\n"+
+		"\t\t\t<view class='org.jajuk.ui.views.AboutView' />\n"+*/
 		"\t\t</views>\n"+
 		"\t</perspective>\n"+
 		"</perspectives>";

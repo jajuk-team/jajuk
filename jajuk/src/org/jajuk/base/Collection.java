@@ -9,8 +9,8 @@
  * 
  * You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
  * USA. $Log$
- * USA. Revision 1.10  2003/11/13 18:56:55  bflorat
- * USA. 13/11/2003
+ * USA. Revision 1.11  2003/11/16 17:57:18  bflorat
+ * USA. 16/11/2003
  * USA.
  */
 package org.jajuk.base;
@@ -249,7 +249,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 	 */
 	public void startElement(String sUri, String sName, String sQName, Attributes attributes) throws SAXException {
 		if (sQName.equals(XML_DEVICE)) { //device case
-			Device device = DeviceManager.registerDevice(attributes.getValue(0), attributes.getValue(1), Integer.parseInt(attributes.getValue(2)), attributes.getValue(3));
+			Device device = DeviceManager.registerDevice(attributes.getValue(0), attributes.getValue(1), Integer.parseInt(attributes.getValue(2)), attributes.getValue(3), attributes.getValue(4));
 			device.populateProperties(attributes, 4);
 		} else if (sQName.equals(XML_STYLE)) {
 			Style style = StyleManager.registerStyle(attributes.getValue(0), attributes.getValue(1));

@@ -16,36 +16,41 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
- * Revision 1.6  2003/11/16 17:57:18  bflorat
+ * Revision 1.1  2003/11/16 17:57:18  bflorat
  * 16/11/2003
  *
  */
 
-package org.jajuk.ui.perspectives;
+package org.jajuk.ui.views;
 
-import org.jajuk.i18n.Messages;
+import java.awt.Component;
+
+import javax.swing.JPanel;
+
+import org.jajuk.ui.IView;
 
 /**
- * Physical perspective
+ *  Default implementation for views
  *
  * @author     bflorat
  * @created    15 nov. 2003
  */
-public class PhysicalPerspective extends PerspectiveAdapter{
-	
+public abstract class ViewAdapter extends JPanel implements IView {
+
 	/**
-	 * Constructor
-	 *
+	 * 
 	 */
-	public PhysicalPerspective(){
-		super(PERSPECTIVE_NAME_PHYSICAL,ICON_PERSPECTIVE_PHYSICAL);
+	public ViewAdapter() {
+		super();
 	}
 
-	/* (non-Javadoc)
-	 * @see org.jajuk.ui.IPerspective#getDesc()
+
+	/**
+	 * toString method
 	 */
-	public String getDesc() {
-		return Messages.getString("Perspective_Description_Physical");
+	public String toString(){
+		return "View[name="+getName()+" description='"+getDesc()+"]";
 	}
+
 
 }

@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.10  2003/11/16 17:57:18  bflorat
+ * 16/11/2003
+ *
  * Revision 1.9  2003/11/14 11:02:18  bflorat
  * - Added user configuration persistence
  *
@@ -98,11 +101,8 @@ public class ConfigurationManager implements ITechnicalStrings{
 	 *
 	 */
 	private static void setDefaultProperties() {
-		// Default parameters
-		properties.put(CONF_VIEW_PHYSICAL, "org.jajuk.ui.views.PhysicalTreeView");//,org.jajuk.ui.views.TrackListView"); //$NON-NLS-1$ //$NON-NLS-2$
-		
 		// User preferences
-		properties.put(CONF_PERSPECTIVE_DEFAULT, "org.jajuk.ui.perspectives.PhysicalPerspective"); //$NON-NLS-1$ //$NON-NLS-2$
+		properties.put(CONF_PERSPECTIVE_DEFAULT,PERSPECTIVE_NAME_PHYSICAL); //$NON-NLS-1$ //$NON-NLS-2$
 	
 		//Modes
 		properties.put(CONF_STATE_REPEAT,"false"); //$NON-NLS-1$

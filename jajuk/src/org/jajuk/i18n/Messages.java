@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.8  2003/11/16 17:57:18  bflorat
+ * 16/11/2003
+ *
  * Revision 1.7  2003/11/13 18:56:55  bflorat
  * 13/11/2003
  *
@@ -133,5 +136,24 @@ public class Messages {
 		public static void showInfoMessage(String sMessage,Icon icon){
 			JOptionPane.showMessageDialog(Main.jframe,Messages.getString(sMessage),Messages.getString("Info"),JOptionPane.INFORMATION_MESSAGE,icon);
 		}
+		
+		/**
+		 * Show a dialog with specified error message and infosup
+		 * @param sCode
+		 * @param sInfoSup
+		 */
+		public static void showErrorMessage(String sCode,String sInfoSup){
+			JOptionPane.showMessageDialog(Main.jframe,Messages.getErrorMessage(sCode)+" : "+sInfoSup,Messages.getErrorMessage("102"),JOptionPane.ERROR_MESSAGE);
+		}
+		
+		/**
+		 * Show a dialog with specified error message with infos up
+		 * @param sMessage
+		 * @param sInfoSup
+		 */
+		public static void showInfoMessage(String sMessage,String sInfoSup){
+			JOptionPane.showMessageDialog(Main.jframe,Messages.getString(sMessage)+" : "+sInfoSup,Messages.getString("Info"),JOptionPane.INFORMATION_MESSAGE);
+		}
+	
 
 }

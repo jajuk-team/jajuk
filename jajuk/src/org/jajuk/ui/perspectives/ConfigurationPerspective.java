@@ -16,36 +16,39 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
- * Revision 1.3  2003/10/24 12:43:07  sgringoi
- * Use the PerspectiveManagerJTabbedPane to manage the perspectives
- *
- * Revision 1.2  2003/10/10 15:29:57  sgringoi
- * *** empty log message ***
+ * Revision 1.1  2003/11/16 17:57:18  bflorat
+ * 16/11/2003
  *
  */
+
 package org.jajuk.ui.perspectives;
 
+import javax.swing.JInternalFrame;
+
+import org.jajuk.i18n.Messages;
+import org.jajuk.ui.views.DeviceView;
+
 /**
- * Factory of the perspective manager.
- * 
- * @author		sgringoi
- * @version	1.0
- * @created		5 oct. 2003
+ * Configuration perspective
+ *
+ * @author     bflorat
+ * @created    15 nov. 2003
  */
-public class PerspectiveManagerFactory {
-	private static IPerspectiveManager perspManager = null;
+public class ConfigurationPerspective extends PerspectiveAdapter{
 	
 	/**
-	 * Return the current perspective manager in use.
-	 * 
-	 * @return IPerspectiveManager Return the current perspective manager in use.
+	 * Constructor
+	 *
 	 */
-	public static IPerspectiveManager getPerspectiveManager() {
-		if (perspManager == null)
-		{
-			perspManager = new PerspectiveManagerJTabbedPane();
-		}
-		return perspManager;
+	public ConfigurationPerspective(){
+		super(PERSPECTIVE_NAME_CONFIGURATION,ICON_PERSPECTIVE_CONFIGURATION);
 	}
-}
 
+	/* (non-Javadoc)
+	 * @see org.jajuk.ui.IPerspective#getDesc()
+	 */
+	public String getDesc() {
+		return Messages.getString("Perspective_Description_Configuration");
+	}
+
+}

@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.5  2003/11/16 17:57:18  bflorat
+ * 16/11/2003
+ *
  * Revision 1.4  2003/10/21 20:43:06  bflorat
  * TechnicalStrings to ITechnicalStrings according to coding convention
  *
@@ -56,11 +59,26 @@ public class FIFO extends Thread implements ITechnicalStrings{
 
 	/** Deep time**/
 	private static final int SLEEP_TIME = 50;
+	
+	/**Self instance*/
+		static private FIFO fifo= null; 	
+	
+	
+		/**
+		 * Singleton access
+		 * @return
+		 */
+		public static FIFO getInstance(){
+			if (fifo == null){
+				fifo = new FIFO();
+			}
+			return fifo;
+		}
 
 	/**
 	 * constructor
 	 */
-	public FIFO() {
+	private FIFO() {
 	}
 
 	/**

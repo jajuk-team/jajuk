@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.3  2003/11/16 17:57:18  bflorat
+ * 16/11/2003
+ *
  * Revision 1.2  2003/11/13 18:56:55  bflorat
  * 13/11/2003
  *
@@ -58,7 +61,9 @@ import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;
 import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.i18n.Messages;
+import org.jajuk.ui.*;
 import org.jajuk.ui.DeviceWizard;
+import org.jajuk.ui.perspectives.PerspectiveAdapter;
 import org.jajuk.util.ConfigurationManager;
 
 /**
@@ -68,11 +73,10 @@ import org.jajuk.util.ConfigurationManager;
  * @author     bflorat
  * @created    8 nov. 2003
  */
-public class DeviceView extends JInternalFrame implements IView,ITechnicalStrings,ActionListener {
+public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,ActionListener {
 
 	static private DeviceView dv; //self instance
 	
-	JPanel jpContent;
 	JToolBar jtbButtons;
 		JButton jbNew;
 		JButton jbDelete;
@@ -95,213 +99,203 @@ public class DeviceView extends JInternalFrame implements IView,ITechnicalString
 	DeviceItem diSelected;
 	
 	public DeviceView(){
-		super("Devices", true, true, true, true);
-		setSize(600, 600);
-		setLocation(600, 0);
-		refresh();
+		//buttons
+		jtbButtons = new JToolBar();
+		jtbButtons.setRollover(true);
+		jtbButtons.setBorder(BorderFactory.createEtchedBorder());
+		
+		jbNew = new JButton(new ImageIcon(ICON_NEW));
+		jbNew.setActionCommand(EVENT_DEVICE_NEW);
+		jbNew.addActionListener(this);
+		jbNew.setToolTipText("Add a device");
+		
+		jbDelete = new JButton(new ImageIcon(ICON_DELETE));
+		jbDelete.setActionCommand(EVENT_DEVICE_DELETE);
+		jbDelete.addActionListener(this);
+		jbDelete.setToolTipText("Remove a device");
+		
+		jbProperties = new JButton(new ImageIcon(ICON_PROPERTIES));
+		jbProperties.setActionCommand(EVENT_DEVICE_PROPERTIES);
+		jbProperties.addActionListener(this);
+		jbProperties.setToolTipText("Selected device properties");
+		
+		jbMount = new JButton(new ImageIcon(ICON_MOUNT));
+		jbMount.setActionCommand(EVENT_DEVICE_MOUNT);
+		jbMount.addActionListener(this);
+		jbMount.setToolTipText("Mount selected device");
+		
+		jbTest = new JButton(new ImageIcon(ICON_TEST));
+		jbTest.setActionCommand(EVENT_DEVICE_TEST);
+		jbTest.addActionListener(this);
+		jbTest.setToolTipText("Test selected device availability");
+		
+		jbRefresh = new JButton(new ImageIcon(ICON_REFRESH));
+		jbRefresh.setActionCommand(EVENT_DEVICE_REFRESH);
+		jbRefresh.addActionListener(this);
+		jbRefresh.setToolTipText("Refresh selected device");
+		
+		jbSynchro = new JButton(new ImageIcon(ICON_SYNCHRO));
+		jbSynchro.setActionCommand(EVENT_DEVICE_SYNCHRO);
+		jbSynchro.addActionListener(this);
+		jbSynchro.setToolTipText("Synchronize selected device");
+		
+		jtbButtons.add(jbNew);
+		jtbButtons.addSeparator();
+		jtbButtons.add(jbDelete);
+		jtbButtons.addSeparator();
+		jtbButtons.add(jbProperties);
+		jtbButtons.addSeparator();
+		jtbButtons.add(jbMount);
+		jtbButtons.addSeparator();
+		jtbButtons.add(jbTest);
+		jtbButtons.addSeparator();
+		jtbButtons.add(jbRefresh);
+		jtbButtons.addSeparator();
+		jtbButtons.add(jbSynchro);
+		jtbButtons.addSeparator();
+		//devices
+		jpDevices = new JPanel();
+		jpDevices.setPreferredSize(new Dimension(200,1000));
+		jpDevices.setLayout(new FlowLayout(FlowLayout.LEFT));
+		jpDevices.setBorder(BorderFactory.createEtchedBorder());
+		
+		//Popup menus
+		jpmenu =  new JPopupMenu();
+			
+		jmiDelete = new JMenuItem("Delete device",new ImageIcon(ICON_DELETE));
+		jmiDelete.addActionListener(this);
+		jmiDelete.setActionCommand(EVENT_DEVICE_DELETE);
+		jpmenu.add(jmiDelete);
+	
+		jmiProperties = new JMenuItem("Get properties",new ImageIcon(ICON_PROPERTIES));
+		jmiProperties.addActionListener(this);
+		jmiProperties.setActionCommand(EVENT_DEVICE_PROPERTIES);
+		jpmenu.add(jmiProperties);
+	
+		jmiMount = new JMenuItem("Mount",new ImageIcon(ICON_MOUNT)); 
+		jmiMount.addActionListener(this);
+		jmiMount.setActionCommand(EVENT_DEVICE_MOUNT);
+		jpmenu.add(jmiMount);
+		
+		jmiTest = new JMenuItem("Test",new ImageIcon(ICON_TEST));
+		jmiTest.addActionListener(this);
+		jmiTest.setActionCommand(EVENT_DEVICE_TEST);
+		jpmenu.add(jmiTest);
+		
+		jmiRefresh =new JMenuItem("Refresh",new ImageIcon(ICON_REFRESH)); 
+		jmiRefresh.addActionListener(this);
+		jmiRefresh.setActionCommand(EVENT_DEVICE_REFRESH);
+		jpmenu.add(jmiRefresh);
+		
+		jmiSynchronize =new JMenuItem("Synchronize",new ImageIcon(ICON_SYNCHRO)); 
+		jmiSynchronize.addActionListener(this);
+		jmiSynchronize.setActionCommand(EVENT_DEVICE_SYNCHRO);
+		jpmenu.add(jmiSynchronize);
+				
+		//New device
+		DeviceItem diNew = new DeviceItem(ICON_DEVICE_NEW,"New");
+		diNew.setToolTipText("Add a device");
+		jpDevices.add(diNew);
+		diNew.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				new DeviceWizard();
+			}
+		});
+		
+		//Add devices
+		ArrayList alDevices = DeviceManager.getDevices();
+		Iterator it = alDevices.iterator();
+		while (it.hasNext()){
+			final Device device = (Device)it.next();
+			String sIcon = ICON_DEVICE_DIRECTORY_MOUNTED;
+			switch (device.getDeviceType()){
+				case 0 : 
+					if ( device.isMounted()){
+						sIcon = ICON_DEVICE_DIRECTORY_MOUNTED;
+					}
+					else{
+						sIcon = ICON_DEVICE_DIRECTORY_UNMOUNTED;
+					}
+					break;
+				case 1 : 
+					if ( device.isMounted()){
+						sIcon = ICON_DEVICE_CD_MOUNTED;
+					}
+					else{
+						sIcon = ICON_DEVICE_CD_UNMOUNTED;
+					}
+					break;
+				case 2 : 
+					if ( device.isMounted()){
+						sIcon = ICON_DEVICE_CD_AUDIO_MOUNTED;
+					}
+					else{
+						sIcon = ICON_DEVICE_CD_AUDIO_UNMOUNTED;
+					}
+				break;
+				case 3 : 
+					if ( device.isMounted()){
+						sIcon = ICON_DEVICE_REMOTE_MOUNTED;
+					}
+					else{
+						sIcon = ICON_DEVICE_REMOTE_UNMOUNTED;
+					}
+				break;
+				case 4 : 
+					if ( device.isMounted()){
+						sIcon = ICON_DEVICE_EXT_DD_MOUNTED;
+					}
+					else{
+						sIcon = ICON_DEVICE_EXT_DD_UNMOUNTED;
+					}
+					break;
+				case 5 : 
+					if ( device.isMounted()){
+						sIcon = ICON_DEVICE_PLAYER_MOUNTED;
+					}
+					else{
+						sIcon = ICON_DEVICE_PLAYER_UNMOUNTED;
+					}
+					break;
+			}
+			final DeviceItem di = new DeviceItem(sIcon,device.getName());
+			di.addMouseListener(new MouseAdapter() {
+				public void mouseClicked(MouseEvent e) {
+					if (di == diSelected){
+						jpmenu.show(e.getComponent(),e.getX(),e.getY());
+						return;
+					}
+					//remove old device item border
+					if (diSelected!=null){
+						diSelected.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+					}
+					//set new device item
+					diSelected = di;
+					dSelected = device;
+					diSelected.setBorder(BorderFactory.createLineBorder(Color.BLACK,5));
+				}
+			});
+			di.setToolTipText(device.getDeviceTypeS());
+			jpDevices.add(di);
+		}
+		
+		//add 
+	double size[][] =
+							{{0.99},
+							 {30,0.99}};
+		setLayout(new TableLayout(size));
+		add(jtbButtons,"0,0");
+		add(new JScrollPane(jpDevices),"0,1");
 	}
 	
 	
 	/* (non-Javadoc)
-	 * @see org.jajuk.ui.views.IView#getId()
+	 * @see org.jajuk.ui.views.IView#getName()
 	 */
-	public String getId() {
-		return null;
+	public String getName() {
+		return VIEW_NAME_DEVICES;
 	}
 	
-	public void refresh(){
-		//buttons
-			jtbButtons = new JToolBar();
-			jtbButtons.setRollover(true);
-			jtbButtons.setBorder(BorderFactory.createEtchedBorder());
-		
-			jbNew = new JButton(new ImageIcon(ICON_NEW));
-			jbNew.setActionCommand(EVENT_DEVICE_NEW);
-			jbNew.addActionListener(this);
-			jbNew.setToolTipText("Add a device");
-		
-			jbDelete = new JButton(new ImageIcon(ICON_DELETE));
-			jbDelete.setActionCommand(EVENT_DEVICE_DELETE);
-			jbDelete.addActionListener(this);
-			jbDelete.setToolTipText("Remove a device");
-		
-			jbProperties = new JButton(new ImageIcon(ICON_PROPERTIES));
-			jbProperties.setActionCommand(EVENT_DEVICE_PROPERTIES);
-			jbProperties.addActionListener(this);
-			jbProperties.setToolTipText("Selected device properties");
-		
-			jbMount = new JButton(new ImageIcon(ICON_MOUNT));
-			jbMount.setActionCommand(EVENT_DEVICE_MOUNT);
-			jbMount.addActionListener(this);
-			jbMount.setToolTipText("Mount selected device");
-		
-			jbTest = new JButton(new ImageIcon(ICON_TEST));
-			jbTest.setActionCommand(EVENT_DEVICE_TEST);
-			jbTest.addActionListener(this);
-			jbTest.setToolTipText("Test selected device availability");
-		
-			jbRefresh = new JButton(new ImageIcon(ICON_REFRESH));
-			jbRefresh.setActionCommand(EVENT_DEVICE_REFRESH);
-			jbRefresh.addActionListener(this);
-			jbRefresh.setToolTipText("Refresh selected device");
-		
-			jbSynchro = new JButton(new ImageIcon(ICON_SYNCHRO));
-			jbSynchro.setActionCommand(EVENT_DEVICE_SYNCHRO);
-			jbSynchro.addActionListener(this);
-			jbSynchro.setToolTipText("Synchronize selected device");
-		
-			jtbButtons.add(jbNew);
-			jtbButtons.addSeparator();
-			jtbButtons.add(jbDelete);
-			jtbButtons.addSeparator();
-			jtbButtons.add(jbProperties);
-			jtbButtons.addSeparator();
-			jtbButtons.add(jbMount);
-			jtbButtons.addSeparator();
-			jtbButtons.add(jbTest);
-			jtbButtons.addSeparator();
-			jtbButtons.add(jbRefresh);
-			jtbButtons.addSeparator();
-			jtbButtons.add(jbSynchro);
-			jtbButtons.addSeparator();
-			//devices
-			jpDevices = new JPanel();
-			jpDevices.setPreferredSize(new Dimension(200,1000));
-			jpDevices.setLayout(new FlowLayout(FlowLayout.LEFT));
-			jpDevices.setBorder(BorderFactory.createEtchedBorder());
-		
-			//Popup menus
-			jpmenu =  new JPopupMenu();
-			
-			jmiDelete = new JMenuItem("Delete device",new ImageIcon(ICON_DELETE));
-			jmiDelete.addActionListener(this);
-			jmiDelete.setActionCommand(EVENT_DEVICE_DELETE);
-			jpmenu.add(jmiDelete);
-	
-			jmiProperties = new JMenuItem("Get properties",new ImageIcon(ICON_PROPERTIES));
-			jmiProperties.addActionListener(this);
-			jmiProperties.setActionCommand(EVENT_DEVICE_PROPERTIES);
-			jpmenu.add(jmiProperties);
-	
-			jmiMount = new JMenuItem("Mount",new ImageIcon(ICON_MOUNT)); 
-			jmiMount.addActionListener(this);
-			jmiMount.setActionCommand(EVENT_DEVICE_MOUNT);
-			jpmenu.add(jmiMount);
-		
-			jmiTest = new JMenuItem("Test",new ImageIcon(ICON_TEST));
-			jmiTest.addActionListener(this);
-			jmiTest.setActionCommand(EVENT_DEVICE_TEST);
-			jpmenu.add(jmiTest);
-		
-			jmiRefresh =new JMenuItem("Refresh",new ImageIcon(ICON_REFRESH)); 
-			jmiRefresh.addActionListener(this);
-			jmiRefresh.setActionCommand(EVENT_DEVICE_REFRESH);
-			jpmenu.add(jmiRefresh);
-		
-			jmiSynchronize =new JMenuItem("Synchronize",new ImageIcon(ICON_SYNCHRO)); 
-			jmiSynchronize.addActionListener(this);
-			jmiSynchronize.setActionCommand(EVENT_DEVICE_SYNCHRO);
-			jpmenu.add(jmiSynchronize);
-				
-			//New device
-			DeviceItem diNew = new DeviceItem(ICON_DEVICE_NEW,"New");
-			diNew.setToolTipText("Add a device");
-			jpDevices.add(diNew);
-			diNew.addMouseListener(new MouseAdapter() {
-				public void mouseClicked(MouseEvent e) {
-					new DeviceWizard();
-				}
-			});
-		
-			//Add devices
-			ArrayList alDevices = DeviceManager.getDevices();
-			Iterator it = alDevices.iterator();
-			while (it.hasNext()){
-				final Device device = (Device)it.next();
-				String sIcon = ICON_DEVICE_DIRECTORY_MOUNTED;
-				switch (device.getDeviceType()){
-					case 0 : 
-						if ( device.isMounted()){
-							sIcon = ICON_DEVICE_DIRECTORY_MOUNTED;
-						}
-						else{
-							sIcon = ICON_DEVICE_DIRECTORY_UNMOUNTED;
-						}
-						break;
-					case 1 : 
-						if ( device.isMounted()){
-							sIcon = ICON_DEVICE_CD_MOUNTED;
-						}
-						else{
-							sIcon = ICON_DEVICE_CD_UNMOUNTED;
-						}
-						break;
-					case 2 : 
-						if ( device.isMounted()){
-							sIcon = ICON_DEVICE_CD_AUDIO_MOUNTED;
-						}
-						else{
-							sIcon = ICON_DEVICE_CD_AUDIO_UNMOUNTED;
-						}
-					break;
-					case 3 : 
-						if ( device.isMounted()){
-							sIcon = ICON_DEVICE_REMOTE_MOUNTED;
-						}
-						else{
-							sIcon = ICON_DEVICE_REMOTE_UNMOUNTED;
-						}
-					break;
-					case 4 : 
-						if ( device.isMounted()){
-							sIcon = ICON_DEVICE_EXT_DD_MOUNTED;
-						}
-						else{
-							sIcon = ICON_DEVICE_EXT_DD_UNMOUNTED;
-						}
-						break;
-					case 5 : 
-						if ( device.isMounted()){
-							sIcon = ICON_DEVICE_PLAYER_MOUNTED;
-						}
-						else{
-							sIcon = ICON_DEVICE_PLAYER_UNMOUNTED;
-						}
-						break;
-				}
-				final DeviceItem di = new DeviceItem(sIcon,device.getName());
-				di.addMouseListener(new MouseAdapter() {
-					public void mouseClicked(MouseEvent e) {
-						if (di == diSelected){
-							jpmenu.show(e.getComponent(),e.getX(),e.getY());
-							return;
-						}
-						//remove old device item border
-						if (diSelected!=null){
-							diSelected.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
-						}
-						//set new device item
-						diSelected = di;
-						dSelected = device;
-						diSelected.setBorder(BorderFactory.createLineBorder(Color.BLACK,5));
-					}
-				});
-				di.setToolTipText(device.getDeviceTypeS());
-				jpDevices.add(di);
-			}
-		
-			//add 
-			jpContent = new JPanel();
-			double size[][] =
-								{{0.99},
-								 {0.07,0.93}};
-			jpContent.setLayout(new TableLayout(size));
-			jpContent.add(jtbButtons,"0,0");
-			jpContent.add(new JScrollPane(jpDevices),"0,1");
-			setContentPane(jpContent);
-			setVisible(true);
-
-	}
 
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.views.IView#setVisible(boolean)
@@ -336,12 +330,12 @@ public class DeviceView extends JInternalFrame implements IView,ITechnicalString
 			DeviceManager.removeDevice(dSelected);
 			jpDevices.remove(diSelected);
 			dSelected = null;
-			refresh();
+			ViewManager.notify(EVENT_VIEW_REFRESH_REQUEST,this);
 		}
 		else if (ae.getActionCommand().equals(EVENT_DEVICE_MOUNT)){
 			try{
 				dSelected.mount();
-				refresh();
+				ViewManager.notify(EVENT_VIEW_REFRESH_REQUEST,this);
 			}
 			catch(Exception e){
 				Messages.showErrorMessage("112");
@@ -365,7 +359,14 @@ public class DeviceView extends JInternalFrame implements IView,ITechnicalString
 				Messages.showInfoMessage("Test_NO",new ImageIcon(ICON_KO));
 			}
 		}
+	}	
 
+
+	/* (non-Javadoc)
+	 * @see org.jajuk.ui.IView#getDesc()
+	 */
+	public String getDesc() {
+		return Messages.getString("View_Description_Devices");
 	}
 	
 		

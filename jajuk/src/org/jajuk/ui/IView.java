@@ -16,36 +16,50 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
- * Revision 1.6  2003/11/16 17:57:18  bflorat
+ * Revision 1.1  2003/11/16 17:57:18  bflorat
  * 16/11/2003
  *
+ * Revision 1.4  2003/10/17 20:43:55  bflorat
+ * 17/10/2003
+ *
+ * Revision 1.3  2003/10/16 15:56:30  sgringoi
+ * Rename getIdView() in getId()
+ * Add getComponent() method
+ *
+ * Revision 1.2  2003/10/10 15:29:57  sgringoi
+ * *** empty log message ***
+ *
  */
+package org.jajuk.ui;
 
-package org.jajuk.ui.perspectives;
-
-import org.jajuk.i18n.Messages;
+import java.awt.Component;
 
 /**
- * Physical perspective
- *
- * @author     bflorat
- * @created    15 nov. 2003
+ * View
+ * 
+ * @author		sgringoi
+ * @version	1.0
+ * @created		5 oct. 2003
  */
-public class PhysicalPerspective extends PerspectiveAdapter{
+public interface IView {
 	
 	/**
-	 * Constructor
-	 *
+	 * Returns the view identifier.
+	 * @return View identifier.
 	 */
-	public PhysicalPerspective(){
-		super(PERSPECTIVE_NAME_PHYSICAL,ICON_PERSPECTIVE_PHYSICAL);
-	}
-
-	/* (non-Javadoc)
-	 * @see org.jajuk.ui.IPerspective#getDesc()
+	public abstract String getName();
+	
+	/**
+	 * Returns the view description.
+	 * @return View description.
 	 */
-	public String getDesc() {
-		return Messages.getString("Perspective_Description_Physical");
-	}
+	public abstract String getDesc();
+		
+	/**
+	 * Set the view visible.
+	 * @param pVisible - true to make the view visible; false to make it invisible.
+	 */
+	public void setVisible(boolean pVisible);
+	
 
 }

@@ -9,6 +9,9 @@
  * 
  * You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
  * USA. $Log$
+ * USA. Revision 1.3  2003/11/16 17:57:18  bflorat
+ * USA. 16/11/2003
+ * USA.
  * USA. Revision 1.2  2003/11/13 18:56:56  bflorat
  * USA. 13/11/2003
  * USA.
@@ -29,9 +32,11 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -41,8 +46,10 @@ import javax.swing.JTextField;
 import org.apache.log4j.chainsaw.Main;
 import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;
+import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.views.DeviceView;
+import org.jajuk.util.JajukFileFilter;
 
 import layout.TableLayout;
 
@@ -51,7 +58,7 @@ import layout.TableLayout;
  * 
  * @author bflorat @created 9 nov. 2003
  */
-public class DeviceWizard extends JFrame implements ActionListener {
+public class DeviceWizard extends JFrame implements ActionListener,ITechnicalStrings {
 	JPanel jpMain;
 	JPanel jp1;
 	JLabel jlType;
@@ -60,6 +67,9 @@ public class DeviceWizard extends JFrame implements ActionListener {
 	JTextField jtfName;
 	JLabel jlUrl;
 	JTextField jtfUrl;
+	JButton jbUrl;
+	JLabel jlMountPoint;
+	JTextField jtfMountPoint;
 	JCheckBox jcbRefresh;
 	JCheckBox jcbAutoMount;
 	JCheckBox jcbAutoRefresh;
@@ -79,14 +89,14 @@ public class DeviceWizard extends JFrame implements ActionListener {
 
 	public DeviceWizard() {
 		super("Device wizard");
-		setSize(800, 550);
+		setSize(800, 600);
 		setLocation(org.jajuk.Main.jframe.getX()+100,org.jajuk.Main.jframe.getY()+100);
 		jpMain = new JPanel();
 		jpMain.setLayout(new BoxLayout(jpMain,BoxLayout.Y_AXIS));
 		jp1 = new JPanel();
-		jp1.setBorder(BorderFactory.createEmptyBorder(25, 25, 0, 25));
-		double size1[][] = { { 0.5, 0.50 }, {
-				20, 20, 20, 20, 20, 20, 20, 20, 20,20,20 }
+		jp1.setBorder(BorderFactory.createEmptyBorder(25, 15, 0, 15));
+		double size1[][] = { { 0.5, 0.45,0.05 }, {
+				20, 20, 20, 20, 20,20,20, 20, 20, 20, 20,20,20 }
 		};
 		jp1.setLayout(new TableLayout(size1));
 		jlType = new JLabel("Device Type : ");
@@ -98,6 +108,15 @@ public class DeviceWizard extends JFrame implements ActionListener {
 		jtfName = new JTextField();
 		jlUrl = new JLabel("Device url : ");
 		jtfUrl = new JTextField();
+		jbUrl = new JButton(new ImageIcon(ICON_OPEN_FILE));
+		jbUrl.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+		jbUrl.addActionListener(this);
+		jlMountPoint = new JLabel("Unix mount Point : ");
+		jtfMountPoint = new JTextField();
+		if (System.getProperties().get("os.name").equals("windows")){
+			jlMountPoint.setEnabled(false);
+			jtfMountPoint.setEnabled(false);
+		}
 		jcbRefresh = new JCheckBox("Perform an immediate refresh");
 		jcbRefresh.setSelected(true);
 		jcbRefresh.addActionListener(this);
@@ -142,17 +161,20 @@ public class DeviceWizard extends JFrame implements ActionListener {
 		jp1.add(jtfName, "1,2");
 		jp1.add(jlUrl, "0,4");
 		jp1.add(jtfUrl, "1,4");
-		jp1.add(jcbRefresh, "0,6");
-		jp1.add(jcbAutoMount, "0,8");
-		jp1.add(jcbAutoRefresh, "1,8");
-		jp1.add(jcboxSynchronized, "0,10");
-		jp1.add(jcbSynchronized, "1,10");
+		jp1.add(jbUrl, "2,4");
+		jp1.add(jlMountPoint, "0,6");
+		jp1.add(jtfMountPoint, "1,6");
+		jp1.add(jcbRefresh, "0,8");
+		jp1.add(jcbAutoMount, "0,10");
+		jp1.add(jcbAutoRefresh, "1,10");
+		jp1.add(jcboxSynchronized, "0,12");
+		jp1.add(jcbSynchronized, "1,12");
 		double size2[][] = { { 0.99 }, {
 				20, 20, 20, 20, 20, 20, 20, 20, 20, 20 }
 		};
 		jp2 = new JPanel();
 		jp2.setLayout(new TableLayout(size2));
-		jp2.setBorder(BorderFactory.createEmptyBorder(0, 25, 25, 25));
+		jp2.setBorder(BorderFactory.createEmptyBorder(0, 15, 25, 15));
 		jp2.add(jrbFullSynchro, "0,1");
 		jp2.add(jrbPartialSynchro, "0,3");
 		jp2.add(jcb1, "0,5");
@@ -234,18 +256,30 @@ public class DeviceWizard extends JFrame implements ActionListener {
 			}
 		}
 		else if (e.getSource() == jbOk){
-			Device device = DeviceManager.registerDevice(jtfName.getText(),jcbType.getSelectedIndex(),jtfUrl.getText());
+			Device device = DeviceManager.registerDevice(jtfName.getText(),jcbType.getSelectedIndex(),jtfUrl.getText(),jtfMountPoint.getText());
 			if (jcbRefresh.isSelected()){
 				device.refresh();
 			}
-			DeviceView.getInstance().refresh();
+			ViewManager.notify(EVENT_VIEW_REFRESH_REQUEST,DeviceView.getInstance());
 			Messages.showInfoMessage("Device_created");//$NON-NLS-1$
 			dispose();
 		}
 		else if (e.getSource() == jbCancel){
 			dispose();  //close window
 		}
-
+		else if (e.getSource() == jbUrl){
+			JFileChooser jfc = new JFileChooser("Please choose a directory");
+			jfc.setMultiSelectionEnabled(false);
+			jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+			int returnVal = jfc.showOpenDialog(this);
+			if (returnVal == JFileChooser.APPROVE_OPTION) {
+				java.io.File file = jfc.getSelectedFile();
+				jtfUrl.setText(file.getAbsolutePath());	
+				if (jtfMountPoint.isEnabled()){
+					jtfMountPoint.setText(file.getAbsolutePath());
+				}
+			}
+		
+		}
 	}
-	
 }

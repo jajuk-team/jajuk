@@ -9,6 +9,9 @@
  * 
  * You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,USA
  * $Log$
+ * Revision 1.17  2003/11/16 17:57:18  bflorat
+ * 16/11/2003
+ *
  * Revision 1.16  2003/11/14 11:02:14  bflorat
  * - Added user configuration persistence
  *
@@ -38,9 +41,7 @@ import java.io.IOException;
 
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
-import javax.swing.JInternalFrame;
 
-import org.apache.log4j.lf5.viewer.configure.ConfigurationManager;
 import org.jajuk.base.Collection;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.ITechnicalStrings;
@@ -50,8 +51,7 @@ import org.jajuk.ui.CommandJPanel;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.JajukJMenuBar;
 import org.jajuk.ui.PerspectiveBarJPanel;
-import org.jajuk.ui.perspectives.IPerspectiveManager;
-import org.jajuk.ui.perspectives.PerspectiveManagerFactory;
+import org.jajuk.ui.PerspectiveManager;
 import org.jajuk.ui.views.DeviceView;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
@@ -77,7 +77,6 @@ public class Main implements ITechnicalStrings {
 			Log.getInstance();
 			Log.setVerbosity(Log.DEBUG);
 			
-			
 			//registers supported types
 			try {
 				//TODO get player impl in user-conf.xml
@@ -90,13 +89,10 @@ public class Main implements ITechnicalStrings {
 
 			//perform initial checkups
 			initialCheckups();
-
-			//Load user configuration
-			org.jajuk.util.ConfigurationManager.load();
 			
 			//Display user configuration
 			Log.debug(System.getProperties().toString());
-
+			
 			//starts ui
 			jframe = new JFrame("Jajuk : Just Another Jukebox"); //$NON-NLS-1$
 			Dimension dScreenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -108,18 +104,14 @@ public class Main implements ITechnicalStrings {
 				}
 			});
 			Container container = jframe.getContentPane();
-			// Create the perspective manager
-			IPerspectiveManager perspectiveManager = PerspectiveManagerFactory.getPerspectiveManager();
-			perspectiveManager.setParentContainer(container);
-
+			
 			//Creates the command panel
 			command = CommandJPanel.getInstance();
 
 			// Create the perspective tool bar panel
-			perspectiveBar = new PerspectiveBarJPanel();
-
+			perspectiveBar = PerspectiveBarJPanel.getInstance();
 			// Create the information bar panel
-			information = new InformationJPanel();
+			information = InformationJPanel.getInstance();
 			//****temp
 			information.setMessage("Now playing foo track...", InformationJPanel.INFORMATIVE); //temp //$NON-NLS-1$
 			information.setSelection("124 items : 4.5Mo"); //temp //$NON-NLS-1$
@@ -131,42 +123,31 @@ public class Main implements ITechnicalStrings {
 
 			//Load collection
 			Collection.load();
-
+			
+			//Create the perspective manager ( before user conf load because some part can be overwritten )
+			PerspectiveManager.getInstance().load();
+			
+			//Load user configuration
+			org.jajuk.util.ConfigurationManager.load();
+			
 			//Starts the FIFO
-			new FIFO().start();
+			FIFO.getInstance().start();
 
 			//Add static panels
 			container.add(command, BorderLayout.NORTH);
 			container.add(perspectiveBar, BorderLayout.WEST);
 			container.add(information, BorderLayout.SOUTH);
 			
-			//Create desktop pane
-			final JDesktopPane desktop = new JDesktopPane();
-			//	desktop.setDragMode(JDesktopPane.OUTLINE_DRAG_MODE);
-
-			//add views
-			DeviceView deviceView = DeviceView.getInstance();
-			/*final JInternalFrame ji = new JInternalFrame("Devices", true, true, true, true);
-			ji.setContentPane(deviceView);
-			ji.setSize(600, 600);
-			ji.setLocation(600, 0);
-			ji.setVisible(true);*/
-			desktop.add(deviceView);
-			
-			
-			
-			container.add(desktop);
-
-			
 			//Set menu bar to the frame
 			jframe.setJMenuBar(JajukJMenuBar.getInstance());
 			Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
+		
+			//Initialize perspective manager
+			PerspectiveManager.getInstance().init();
+
+			//show frame
 			jframe.show();
-			/*Thread.sleep(10000);
-						deviceView = new DeviceView();
-						ji.setContentPane(deviceView);
-						ji.repaint();*/
-			
+
 
 		} catch (JajukException je) { //last chance to catch any error for logging purpose
 			Log.error(je);
@@ -221,10 +202,13 @@ public class Main implements ITechnicalStrings {
 	 */
 	public static void exit(int iExitCode) {
 		try {
-			//commit configuration
-			org.jajuk.util.ConfigurationManager.commit();
-			//commit collection
-			org.jajuk.base.Collection.commit();
+			Log.debug("Exiting with code : "+iExitCode);
+			if (iExitCode == 0){ //commit only if exit is safe to avoid commiting empty collection
+				//commit configuration
+				org.jajuk.util.ConfigurationManager.commit();
+				//commit collection
+				org.jajuk.base.Collection.commit();
+			}
 		} catch (IOException e) {
 			Log.error("", e);
 		}
