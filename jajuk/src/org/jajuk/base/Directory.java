@@ -9,6 +9,9 @@
  * 
  * You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
  * USA. $Log$
+ * USA. Revision 1.8  2003/11/07 23:57:45  bflorat
+ * USA. 08/11/2003
+ * USA.
  * USA. Revision 1.7  2003/11/03 06:08:05  bflorat
  * USA. 03/11/2003
  * USA.
@@ -234,7 +237,6 @@ public class Directory extends PropertyAdapter {
 				Type type = TypeManager.getTypeByExtension(Util.getExtension(files[i]));
 				Track track = TrackManager.registerTrack(sTrackName, album, style, author, length, sYear, type);
 				org.jajuk.base.File newFile = FileManager.registerFile(files[i].getName(), this, track, files[i].length(), sQuality);
-				Log.debug("Found File: "+ newFile);
 				TrackManager.getTrack(track.getId()).addFile(newFile);
 			}
 			else{  //playlist file
@@ -251,7 +253,6 @@ public class Directory extends PropertyAdapter {
 					String sHashcode =MD5Processor.hash(sbContent.toString()); 
 					PlaylistFile plFile = PlaylistFileManager.registerPlaylistFile(sName,sHashcode,this);
 					PlaylistManager.registerPlaylist(plFile);
-					Log.debug("Found Playlist file: "+ plFile);
 				}
 				catch(Exception e){
 					Log.error(e);

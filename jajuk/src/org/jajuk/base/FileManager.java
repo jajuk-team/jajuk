@@ -9,6 +9,9 @@
  * 
  * You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
  * USA. $Log$
+ * USA. Revision 1.8  2003/11/07 23:57:45  bflorat
+ * USA. 08/11/2003
+ * USA.
  * USA. Revision 1.7  2003/11/03 06:08:05  bflorat
  * USA. 03/11/2003
  * USA. Revision 1.6 2003/10/31 13:05:06 bflorat 31/10/2003
@@ -32,6 +35,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import org.jajuk.util.MD5Processor;
+import org.jajuk.util.log.Log;
 
 /**
  * Convenient class to manage files
@@ -66,7 +70,12 @@ public class FileManager {
 	 */
 	public static File registerFile(String sId, String sName, Directory directory, Track track, long lSize, String sQuality) {
 		File file = new File(sId, sName, directory, track, lSize, sQuality);
-		hmFiles.put(sId, file);
+		if ( !hmFiles.containsKey(sId)){
+			hmFiles.put(sId, file);
+			if ( Device.isRefreshing()){
+				Log.debug("registrated new file: "+ file);
+			}
+		}
 		return file;
 	}
 

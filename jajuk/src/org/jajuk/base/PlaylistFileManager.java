@@ -9,6 +9,9 @@
  * 
  * You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
  * USA. $Log$
+ * USA. Revision 1.7  2003/11/07 23:57:45  bflorat
+ * USA. 08/11/2003
+ * USA.
  * USA. Revision 1.6  2003/11/03 06:08:05  bflorat
  * USA. 03/11/2003
  * USA. Revision 1.5 2003/10/31 13:05:06 bflorat 31/10/2003
@@ -30,6 +33,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import org.jajuk.util.MD5Processor;
+import org.jajuk.util.log.Log;
 
 /**
  * Convenient class to manage playlists files
@@ -64,7 +68,12 @@ public class PlaylistFileManager {
 	 */
 	public static synchronized PlaylistFile registerPlaylistFile(String sId, String sName, String sHashcode, Directory dParentDirectory) {
 		PlaylistFile playlistFile = new PlaylistFile(sId, sName, sHashcode, dParentDirectory);
-		hmPlaylistFiles.put(sId, playlistFile);
+		if ( !hmPlaylistFiles.containsKey(sId)){
+			hmPlaylistFiles.put(sId, playlistFile);
+			if ( Device.isRefreshing()){
+				Log.debug("Registered new playlist file: "+ playlistFile);
+			}
+		}
 		return playlistFile;
 	}
 

@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.8  2003/11/07 23:57:45  bflorat
+ * 08/11/2003
+ *
  * Revision 1.7  2003/11/03 06:08:05  bflorat
  * 03/11/2003
  *
@@ -71,7 +74,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings{
 	/**directories*/
 	private ArrayList alDirectories = new ArrayList(20);
 	/**Already refreshing flag*/
-	private boolean bAlreadyRefreshing = false;
+	private static boolean bAlreadyRefreshing = false;
 
 	/**
 	 * Device constructor
@@ -172,7 +175,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings{
 				while (iDeep >= 0) {
 					//Log.debug("entering :"+fCurrent);
 					File[] files = fCurrent.listFiles(JajukFileFilter.getInstance(true,false)); //only directories
-					if (files.length == 0 ){
+					if (files== null || files.length == 0 ){  //files is null if fCurrent is a not a directory 
 						indexTab[iDeep] = -1;//re-init for next time we will reach this deep
 						iDeep--; //come up
 						fCurrent = fCurrent.getParentFile();
@@ -254,6 +257,12 @@ public class Device extends PropertyAdapter implements ITechnicalStrings{
 	 */
 	public void addDirectory(Directory directory) {
 		alDirectories.add(directory);
+	}
+	
+	/** Tells if a device is refreshing
+	 */
+	public static boolean isRefreshing(){
+		return bAlreadyRefreshing;
 	}
 
 }

@@ -7,28 +7,11 @@
  * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
  * 
- * You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
- * USA. $Log$
- * USA. Revision 1.12  2003/11/03 06:08:06  bflorat
- * USA. 03/11/2003
- * USA. USA. Revision 1.11 2003/10/31 13:04:16 bflorat USA. 31/10/2003 USA. USA. Revision 1.10 2003/10/28 21:34:12 bflorat USA. - Added perspectives.xml creation USA. Revision 1.9
- * 2003/10/26 21:28:49 bflorat 26/10/2003
- * 
- * Revision 1.8 2003/10/23 22:07:40 bflorat 23/10/2003
- * 
- * Revision 1.7 2003/10/21 20:43:06 bflorat TechnicalStrings to ITechnicalStrings according to coding convention
- * 
- * Revision 1.6 2003/10/21 17:51:43 bflorat 21/10/2003
- * 
- * Revision 1.5 2003/10/17 20:43:56 bflorat 17/10/2003
- * 
- * Revision 1.4 2003/10/12 21:08:11 bflorat 12/10/2003
- * 
- * Revision 1.3 2003/10/10 15:53:30 bflorat Clean up, tests are now in tests/bflorat
- * 
- * Revision 1.2 2003/10/09 21:15:29 bflorat *** empty log message ***
- * 
- * Revision 1.1 2003/10/07 21:02:23 bflorat Initial commit
+ * You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,USA
+ * $Log$
+ * Revision 1.13  2003/11/07 23:57:01  bflorat
+ * 08/11/2003
+ *
  *  
  */
 package org.jajuk;

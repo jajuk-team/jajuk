@@ -16,7 +16,7 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
- * Revision 1.2  2003/11/07 23:58:14  bflorat
+ * Revision 1.1  2003/11/07 23:58:14  bflorat
  * 08/11/2003
  *
  * Revision 1.1  2003/10/26 21:28:49  bflorat
@@ -29,16 +29,13 @@ package org.jajuk.tag;
 import java.io.File;
 import java.io.PrintStream;
 
-import org.farng.mp3.id3.FrameBodyTCON;
 import org.jajuk.base.ITagImpl;
 import org.jajuk.i18n.Messages;
-import org.jajuk.util.Util;
 
 import de.ueberdosis.mp3info.ExtendedID3Tag;
 import de.ueberdosis.mp3info.ID3Reader;
-import de.ueberdosis.mp3info.facades.Wamp;
-import de.ueberdosis.mp3info.id3v2.ID3V2Tag;
 import de.ueberdosis.util.OutputCtr;
+import de.vdheide.mp3.MP3File;
 
 /**
  *  Type description
@@ -46,70 +43,59 @@ import de.ueberdosis.util.OutputCtr;
  * @author     bflorat
  * @created    25 oct. 2003
  */
-public class MP3InfoTagImpl implements ITagImpl {
+public class RabbitFarmTagImpl implements ITagImpl {
 
 	
-	/**Tags reader*/
-	ID3Reader reader;
-	/**Tag itself*/
-	ExtendedID3Tag tag;
-	/*ID3 V2 tag*/
-	ID3V2Tag id3v2tag = null;
+	/*MP3 file*/
+	MP3File mp3file;
 	
 	/* (non-Javadoc)
 	 * @see org.jajuk.base.ITagImpl#getTrackName()
 	 */
 	public String getTrackName() throws Exception {
-		return tag.getTitle();
+		return mp3file.getTitle().getTextContent();
 	}
 
 	/* (non-Javadoc)
 	 * @see org.jajuk.base.ITagImpl#getAlbumName()
 	 */
 	public String getAlbumName() throws Exception {
-		return tag.getAlbum();
+		return mp3file.getAlbum().getTextContent();
 	}
 
 	/* (non-Javadoc)
 	 * @see org.jajuk.base.ITagImpl#getAuthorName()
 	 */
 	public String getAuthorName() throws Exception {
-		return tag.getArtist();
+		return mp3file.getArtist().getTextContent();
 	}
 
 	/* (non-Javadoc)
 	 * @see org.jajuk.base.ITagImpl#getStyleName()
 	 */
 	public String getStyleName() throws Exception {
-		if ( id3v2tag == null){
-			return tag.getGenreS();  //v1 tag
-		}
-		int iStyle = new Wamp(id3v2tag).getGenre();
-		if ( iStyle < 0){
-			return tag.getGenreS();
-		}
-		return Util.getStringGenre(iStyle);
+		return mp3file.getGenre().getTextContent();
 	}
 
 	/* (non-Javadoc)
 	 * @see org.jajuk.base.ITagImpl#getLength()
 	 */
 	public long getLength() throws Exception {
-		return tag.getRuntime();
+		return mp3file.getLength();
 	}
 
 	/* (non-Javadoc)
 	 * @see org.jajuk.base.ITagImpl#getYear()
 	 */
 	public String getYear() throws Exception {
-		return tag.getYear();
+		return mp3file.getYear().getTextContent();
 	}
 
 	/* (non-Javadoc)
 	 * @see org.jajuk.base.ITagImpl#getQuality()
 	 */
 	public String getQuality() throws Exception {
-		return tag.getBitrateS();
+		return Integer.toString(mp3file.getBitrate());
 	}
 
 	/* (non-Javadoc)
@@ -158,10 +144,7 @@ public class MP3InfoTagImpl implements ITagImpl {
 	 * @see org.jajuk.base.ITagImpl#setFile(java.io.File)
 	 */
 	public void setFile(File fio) throws Exception {
-		OutputCtr.setLevel(0);
-		reader = new ID3Reader(fio.getAbsolutePath());
-		tag = reader.getExtendedID3Tag();
-		id3v2tag = ID3Reader.getV2Tag();
+		mp3file = new MP3File(fio.getAbsolutePath());
 	}
-
+	
 }

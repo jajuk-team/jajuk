@@ -9,8 +9,8 @@
  * 
  * You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
  * USA. $Log$
- * USA. Revision 1.7  2003/11/03 06:08:05  bflorat
- * USA. 03/11/2003
+ * USA. Revision 1.8  2003/11/07 23:57:45  bflorat
+ * USA. 08/11/2003
  * USA.
  */
 package org.jajuk.base;
@@ -50,7 +50,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 	private static Collection collection;
 	/** Modification flag, if false, the XML output file is not writted again on the disk */
 	private static boolean bModified = false;
-	private long lTime;
+	private static long lTime;
 
 	/** Instance getter */
 	public static Collection getInstance() {
@@ -164,6 +164,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 	 */
 	public static void load() throws JajukException {
 		try {
+			lTime = System.currentTimeMillis();
 			SAXParserFactory spf = SAXParserFactory.newInstance();
 			spf.setValidating(false);
 			XMLReader xmlr;
@@ -243,7 +244,6 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 	 * Called at parsing start
 	 */
 	public void startDocument() {
-		lTime = System.currentTimeMillis();
 		Log.debug("Starting collection file parsing...");
 	}
 
@@ -251,7 +251,6 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 	 * Called at parsing end
 	 */
 	public void endDocument() {
-		lTime = System.currentTimeMillis();
 		Log.debug("Collection file parsing done : " + (System.currentTimeMillis() - lTime) + " ms");
 	}
 

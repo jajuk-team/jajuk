@@ -13,6 +13,9 @@
  * You should have received a copy of the GNU General Public License along with
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA. $Log$
+ * Place - Suite 330, Boston, MA 02111-1307, USA. Revision 1.6  2003/11/07 23:58:37  bflorat
+ * Place - Suite 330, Boston, MA 02111-1307, USA. 08/11/2003
+ * Place - Suite 330, Boston, MA 02111-1307, USA.
  * Place - Suite 330, Boston, MA 02111-1307, USA. Revision 1.5  2003/10/31 13:05:39  bflorat
  * Place - Suite 330, Boston, MA 02111-1307, USA. 31/10/2003
  * Place - Suite 330, Boston, MA 02111-1307, USA.
@@ -52,6 +55,7 @@ import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.base.Type;
 import org.jajuk.base.TypeManager;
+import org.jajuk.i18n.Messages;
 import org.jajuk.util.error.JajukException;
 
 /**
@@ -60,7 +64,36 @@ import org.jajuk.util.error.JajukException;
  * @author bflorat @created 12 oct. 2003
  */
 public class Util implements ITechnicalStrings {
-
+	
+	
+	public static final String [] genres = {
+		"Blues","Classic Rock","Country","Dance","Disco","Funk","Grunge",
+		"Hip-Hop","Jazz","Metal","New Age","Oldies","Other","Pop","R&B",
+		"Rap","Reggae","Rock","Techno","Industrial","Alternative","Ska",
+		"Death Metal","Pranks","Soundtrack","Euro-Techno","Ambient",
+		"Trip-Hop","Vocal","Jazz+Funk","Fusion","Trance","Classical",
+		"Instrumental","Acid","House","Game","Sound Clip","Gospel",
+		"Noise","AlternRock","Bass","Soul","Punk","Space","Meditative",
+		"Instrumental Pop","Instrumental Rock","Ethnic","Gothic",
+		"Darkwave","Techno-Industrial","Electronic","Pop-Folk",
+		"Eurodance","Dream","Southern Rock","Comedy","Cult","Gangsta",
+		"Top 40","Christian Rap","Pop/Funk","Jungle","Native American",
+		"Cabaret","New Wave","Psychedelic","Rave","Showtunes","Trailer",
+		"Lo-Fi","Tribal","Acid Punk","Acid Jazz","Polka","Retro",
+		"Musical","Rock & Roll","Hard Rock","Folk","Folk-Rock",
+		"National Folk","Swing","Fast Fusion","Bebob","Latin","Revival",
+		"Celtic","Bluegrass","Avantgarde","Gothic Rock",
+		"Progressive Rock","Psychedelic Rock","Symphonic Rock",
+		"Slow Rock","Big Band","Chorus","Easy Listening","Acoustic",
+		"Humour","Speech","Chanson","Opera","Chamber Music","Sonata",
+		"Symphony","Booty Brass","Primus","Porn Groove","Satire",
+		"Slow Jam","Club","Tango","Samba","Folklore","Ballad",
+		"Power Ballad","Rhytmic Soul","Freestyle","Duet","Punk Rock",
+		"Drum Solo","Acapella","Euro-House","Dance Hall", "Goa","Drum & Bass","Club-House","Hardcore",
+		"Terror","Indie","BritPop","Negerpunk","Polsk Punk","Beat","Christian Gangsta","Heavy Metal",
+		"Black Metal","Crossover","Contemporary C","Christian Rock","Merengue","Salsa","Thrash Metal",
+		"Anime","JPop","SynthPop"};
+	
 	/**
 	 * No constructor
 	 */
@@ -169,4 +202,17 @@ public class Util implements ITechnicalStrings {
 	public static String formatTag(String s){
 		return s.replace('\u0000',' ').trim();
 	}
+	
+	
+	
+	/**Return a genre string for a given genre id **/
+	public static String getStringGenre(int i){
+		if (i>= 0 && i<126){
+			return genres[i];
+		}
+		else{
+			return Messages.getString("Track_unknown_style");
+		}
+	}		
+	
 }

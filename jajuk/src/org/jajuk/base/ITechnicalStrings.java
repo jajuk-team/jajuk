@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.7  2003/11/07 23:57:45  bflorat
+ * 08/11/2003
+ *
  * Revision 1.6  2003/11/03 06:08:05  bflorat
  * 03/11/2003
  *
@@ -114,6 +117,8 @@ public interface ITechnicalStrings {
 	//tag impls
 	public static final String TAG_IMPL_JID3LIB= "org.jajuk.tag.JID3LibTagImpl";
 	public static final String TAG_IMPL_MP3INFO= "org.jajuk.tag.MP3InfoTagImpl";
+	public static final String TAG_IMPL_RABBIT_FARM= "org.jajuk.tag.RabbitFarmTagImpl";
+	
 	
 	//device types
 	public static final String DEVICE_TYPE_DIRECTORY = "Device_type.directory";

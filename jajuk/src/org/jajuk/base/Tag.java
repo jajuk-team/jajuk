@@ -9,6 +9,9 @@
  * 
  * You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
  * USA. $Log$
+ * USA. Revision 1.3  2003/11/07 23:57:45  bflorat
+ * USA. 08/11/2003
+ * USA.
  * USA. Revision 1.2  2003/10/31 13:05:06  bflorat
  * USA. 31/10/2003
  * USA.
@@ -54,7 +57,7 @@ public class Tag {
 			tagImpl.setFile(fio);
 		}
 		catch(Exception e){
-		//	Log.error("103",e);
+			Log.error("103",fio.getName(),e);
 		}
 		this.fio = fio;
 	}
@@ -64,13 +67,14 @@ public class Tag {
 	 */
 	public String getTrackName() {
 		String sTrackName = fio.getName();
+		String sTemp = "";
 		try {
-			sTrackName = Util.formatTag(tagImpl.getTrackName());
-			if (sTrackName == null || sTrackName.equals("")){
-				sTrackName = fio.getName();
+			sTemp = tagImpl.getTrackName();
+			if (sTemp != null && !sTemp.equals("")){
+				sTrackName = Util.formatTag(sTemp);
 			}
 		} catch (Exception e) {
-			Log.error("103", e);
+			Log.error("103", fio.getName(),e);
 		}
 		return sTrackName;
 	}
@@ -80,13 +84,15 @@ public class Tag {
 	 */
 	public String getAlbumName() {
 		String sAlbumlName = fio.getParentFile().getName(); //if album is not found, take current dirtectory as album name
+		//TODO make it an option
+		String sTemp = "";
 		try {
-			sAlbumlName = Util.formatTag(tagImpl.getAlbumName());
-			if (sAlbumlName.equals("")){
-					sAlbumlName = fio.getParentFile().getName();
+			sTemp = tagImpl.getAlbumName();
+			if (sTemp != null && !sTemp.equals("")){
+				sAlbumlName = Util.formatTag(sTemp);
 			}
 		} catch (Exception e) {
-			Log.error("103", e);
+			Log.error("103",fio.getName(), e);
 		}
 		return sAlbumlName;
 	}
@@ -96,13 +102,14 @@ public class Tag {
 	 */
 	public String getAuthorName() {
 		String sAuthorName = Messages.getString("Track_unknown_author");
+		String sTemp = "";
 		try {
-			sAuthorName = Util.formatTag(tagImpl.getAuthorName());
-			if (sAuthorName.equals("")) {
-				sAuthorName = Messages.getString("Track_unknown_author");
+			sTemp = tagImpl.getAuthorName();
+			if (sTemp != null && !sTemp.equals("")){
+				sAuthorName = Util.formatTag(sTemp);
 			}
 		} catch (Exception e) {
-			Log.error("103", e);
+			Log.error("103", fio.getName(),e);
 		}
 		return sAuthorName;
 
@@ -113,13 +120,17 @@ public class Tag {
 	 */
 	public String getStyleName() {
 		String style = Messages.getString("Track_unknown_style");
+		String sTemp = "";
 		try {
-			style = Util.formatTag(tagImpl.getStyleName());
-			if (style.toLowerCase().equals("unknown")){
-				style = Messages.getString("Track_unknown_style");
+			sTemp = tagImpl.getStyleName();
+			if (sTemp != null && !sTemp.equals("")){
+				if(sTemp.equals("unknown")){
+					sTemp = style;
+				}
+				style = Util.formatTag(sTemp);
 			}
 		} catch (Exception e) {
-			Log.error("103", e);
+			Log.error("103", fio.getName(),e);
 		}
 		return style;
 
@@ -133,7 +144,7 @@ public class Tag {
 		try {
 			length = tagImpl.getLength();
 		} catch (Exception e) {
-			Log.error("103", e);
+			Log.error("103", fio.getName(),e);
 		}
 		return length;
 
@@ -144,13 +155,14 @@ public class Tag {
 	 */
 	public String getYear() {
 		String sYear = Messages.getString("Track_unknown_year");
+		String sTemp = "";
 		try {
-			sYear = Util.formatTag(tagImpl.getYear());
-			if (sYear.equals("0") || sYear.equals("")){
-				sYear = Messages.getString("Track_unknown_year");
+			sTemp = tagImpl.getYear();
+			if (sTemp != null && !sTemp.equals("")&& !sTemp.equals("0")){
+				sYear = Util.formatTag(sTemp);
 			}
 		} catch (Exception e) {
-			Log.error("103", e);
+			Log.error("103", fio.getName(),e);
 		}
 		return sYear;
 
@@ -161,10 +173,14 @@ public class Tag {
 	 */
 	public String getQuality() {
 		String sQuality = Messages.getString("Track_unknown_quality");
+		String sTemp = "";
 		try {
-			sQuality = Util.formatTag(tagImpl.getQuality());
+			sTemp = tagImpl.getQuality();
+			if (sTemp != null && !sTemp.equals("")){
+				sQuality = Util.formatTag(sTemp);
+			}
 		} catch (Exception e) {
-			Log.error("103", e);
+			Log.error("103",fio.getName(), e);
 		}
 		return sQuality;
 
@@ -177,7 +193,7 @@ public class Tag {
 		try {
 			tagImpl.setTrackName(sTrackName);
 		} catch (Exception e) {
-			Log.error("104", e);
+			Log.error("104",fio.getName(), e);
 		}
 	}
 
@@ -188,7 +204,7 @@ public class Tag {
 		try {
 			tagImpl.setAlbumName(sAlbumName);
 		} catch (Exception e) {
-			Log.error("104", e);
+			Log.error("104", fio.getName(),e);
 		}
 
 	}
@@ -200,7 +216,7 @@ public class Tag {
 		try {
 			tagImpl.setAuthorName(sAuthorName);
 		} catch (Exception e) {
-			Log.error("104", e);
+			Log.error("104", fio.getName(),e);
 		}
 
 	}
@@ -212,7 +228,7 @@ public class Tag {
 		try {
 			tagImpl.setStyleName(style);
 		} catch (Exception e) {
-			Log.error("104", e);
+			Log.error("104", fio.getName(),e);
 		}
 
 	}
@@ -224,7 +240,7 @@ public class Tag {
 		try {
 			tagImpl.setLength(length);
 		} catch (Exception e) {
-			Log.error("104", e);
+			Log.error("104", fio.getName(),e);
 		}
 
 	}
@@ -248,7 +264,7 @@ public class Tag {
 		try {
 			tagImpl.setTrackName(sQuality);
 		} catch (Exception e) {
-			Log.error("104", e);
+			Log.error("104", fio.getName(),e);
 		}
 
 	}
