@@ -580,6 +580,17 @@ public class Util implements ITechnicalStrings {
 		}
 		return false;
 	}
+	
+	/**
+	 * @return whether we are under Linux
+	 */
+	public static boolean isUnderLinux(){
+		String sOS = (String)System.getProperties().get("os.name"); //$NON-NLS-1$;
+		if (sOS.trim().toLowerCase().lastIndexOf("linux")!=-1){ //$NON-NLS-1$
+			return true;
+		}
+		return false;
+	}
 
 	/**
 	 * Try to compute time length in milliseconds using BasicPlayer API. (code from jlGui 2.3)
