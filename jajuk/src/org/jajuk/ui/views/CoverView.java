@@ -604,8 +604,8 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
             Cover cover = (Cover)alCovers.get(index);
             //show confirmation message if required
             if ( ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_DELETE_COVER)){
-                int iResu = JOptionPane.showConfirmDialog(Main.getWindow(),Messages.getString("Confirmation_delete_cover")+" : "+cover.getURL().toString(),Messages.getString("Main.21"),JOptionPane.YES_NO_OPTION);  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                if (iResu == JOptionPane.NO_OPTION){
+                int iResu = Messages.getChoice(Messages.getString("Confirmation_delete_cover")+" : "+cover.getURL().toString(),JOptionPane.WARNING_MESSAGE);  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                if (iResu != JOptionPane.YES_OPTION){
                     return;
                 }
             }

@@ -380,6 +380,13 @@ public class Main implements ITechnicalStrings {
 	 *                <p>1: unexpected error
 	 */
 	public static void exit(int iExitCode) {
+		//check if a confirmation is needed
+		if (Boolean.valueOf(ConfigurationManager.getProperty(CONF_CONFIRMATIONS_EXIT)).booleanValue()){
+			int iResu = Messages.getChoice(Messages.getString("Confirmation_exit"),JOptionPane.INFORMATION_MESSAGE);  //$NON-NLS-1$ //$NON-NLS-2$
+			if (iResu != JOptionPane.YES_OPTION){
+				return;
+			}
+		}
 		//stop sound to avoid strange crash when stopping
 	    Player.mute(true);
 	    //set exiting flag
@@ -391,13 +398,6 @@ public class Main implements ITechnicalStrings {
 		ObservationManager.notify(EVENT_PLAYLIST_REFRESH); //alert playlists editors ( queue playlist ) something changed for him
 		//hide window
 		if (jw!=null) jw.setShown(false);
-		//check if a confirmation is needed
-		if (Boolean.valueOf(ConfigurationManager.getProperty(CONF_CONFIRMATIONS_EXIT)).booleanValue()){
-			int iResu = JOptionPane.showConfirmDialog(jw,Messages.getString("Confirmation_exit"),Messages.getString("Main.21"),JOptionPane.YES_NO_OPTION);  //$NON-NLS-1$ //$NON-NLS-2$
-			if (iResu == JOptionPane.NO_OPTION){
-				return;
-			}
-		}
 		//hide systray
 		if (jsystray != null) jsystray.closeSystray();
 		//display a message
@@ -478,8 +478,7 @@ public class Main implements ITechnicalStrings {
 				catch(Exception e){
 					Log.error("112",device.getName(),e); //$NON-NLS-1$
 					//show a confirm dialog if the device can't be mounted, we can't use regular Messages.showErrprMessage because main window is not yet displayed
-					String sMessage = Messages.getErrorMessage("112")+" : "+device.getName(); //$NON-NLS-1$ //$NON-NLS-2$ 
-					JOptionPane.showMessageDialog(null,sMessage,Messages.getString("Error"),JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$
+					Messages.showErrorMessage("112",device.getName()); //$NON-NLS-1$
 					continue;
 				}
 			}

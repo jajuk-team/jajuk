@@ -26,7 +26,6 @@ import java.util.Iterator;
 
 import javax.swing.JOptionPane;
 
-import org.jajuk.Main;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.ObservationManager;
 import org.jajuk.util.ConfigurationManager;
@@ -191,8 +190,8 @@ public class DeviceManager implements ITechnicalStrings{
 	public static synchronized void removeDevice(Device device){
 		//show confirmation message if required
 	    if ( ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_REMOVE_DEVICE)){
-	        int iResu = JOptionPane.showConfirmDialog(Main.getWindow(),Messages.getString("Confirmation_remove_device"),Messages.getString("Main.21"),JOptionPane.YES_NO_OPTION);  //$NON-NLS-1$ //$NON-NLS-2$
-			if (iResu == JOptionPane.NO_OPTION){
+	        int iResu = Messages.getChoice(Messages.getString("Confirmation_remove_device"),JOptionPane.WARNING_MESSAGE);  //$NON-NLS-1$ //$NON-NLS-2$
+			if (iResu != JOptionPane.YES_OPTION){
 				return;
 			}
 	    }

@@ -227,8 +227,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings	{
 	    }
 	    else{ //not in the awt dispatcher thread, OK, call it in an invokeAndWait to block ui until we get user decision
 	        try {
-                System.out.println("hopppppppppppp");
-	            SwingUtilities.invokeAndWait(confirm);
+                SwingUtilities.invokeAndWait(confirm);
             } catch (InterruptedException e) {
                 Log.error(e);
             } catch (InvocationTargetException e) {
@@ -302,7 +301,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings	{
 	 * @param sInfoSup
 	 */
 	public static void showErrorMessage(final String sCode,final String sInfoSup){
-	    MessageDialog message = new MessageDialog(Messages.getErrorMessage(sCode),getTitleForType(JOptionPane.ERROR_MESSAGE),JOptionPane.ERROR_MESSAGE);
+	    MessageDialog message = new MessageDialog(Messages.getErrorMessage(sCode)+" : "+sInfoSup,getTitleForType(JOptionPane.ERROR_MESSAGE),JOptionPane.ERROR_MESSAGE);
 	    if (SwingUtilities.isEventDispatchThread()){ //in the dispatcher thread, no need to use invokeLatter
 	        message.run();
 	    }

@@ -49,7 +49,6 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
 
-import org.jajuk.Main;
 import org.jajuk.base.BasicFile;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
@@ -496,7 +495,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
                                 PlaylistFile plf = (PlaylistFile)it.next();
                                 sbOut.append('\n').append(plf.getAbsolutePath());
                             }
-                            int i = JOptionPane.showConfirmDialog(Main.getWindow(),sbOut.toString(),Messages.getString("Warning"),JOptionPane.OK_CANCEL_OPTION,JOptionPane.WARNING_MESSAGE); //$NON-NLS-1$
+                            int i = Messages.getChoice(sbOut.toString(),JOptionPane.WARNING_MESSAGE); //$NON-NLS-1$
                             if ( i == JOptionPane.OK_OPTION){
                                 it = alPlaylistFiles.iterator();
                                 while ( it.hasNext()){
