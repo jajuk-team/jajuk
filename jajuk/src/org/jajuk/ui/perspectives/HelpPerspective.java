@@ -20,8 +20,15 @@
 
 package org.jajuk.ui.perspectives;
 
-import org.jajuk.i18n.Messages;
+import java.io.IOException;
 
+import net.infonode.docking.SplitWindow;
+import net.infonode.docking.util.ViewMap;
+
+import org.jajuk.i18n.Messages;
+import org.jajuk.ui.views.AboutView;
+import org.jajuk.ui.views.HelpView;
+import org.jajuk.ui.views.IView;
 /**
  * Help perspective
  *
@@ -44,5 +51,44 @@ public class HelpPerspective extends PerspectiveAdapter{
 	public String getDesc() {
 		return Messages.getString("Perspective_Description_Help"); //$NON-NLS-1$
 	}
+	
+	/* (non-Javadoc)
+     * @see org.jajuk.ui.perspectives.PerspectiveAdapter#setDefaultViews()
+     */
+    public void setDefaultViews() {
+        ViewMap viewMap = new ViewMap();
+	
+		IView view = new HelpView();
+		view.setShouldBeShown(true);
+		net.infonode.docking.View dockingHelpView = addView(view);
+		viewMap.addView(0,dockingHelpView);
+		
+		
+	    
+	    view = new AboutView();
+		view.setShouldBeShown(true);
+	    net.infonode.docking.View dockingAboutView = addView(view);
+		viewMap.addView(3,dockingAboutView);
+	    
+	    SplitWindow verMainSplit = new SplitWindow(true,0.5f,dockingHelpView,dockingAboutView);
+		
+	    setRootWindow(viewMap,verMainSplit);
+        
+        
+	}
+	
+    /* (non-Javadoc)
+	 * @see org.jajuk.ui.perspectives.IPerspective#commit()
+	 */
+	public void commit() throws IOException{
+	    commit(FILE_HELP_PERSPECTIVE);
+	}
+	
+	/* (non-Javadoc)
+     * @see org.jajuk.ui.perspectives.IPerspective#load()
+     */
+    public void load() throws IOException {
+        load(FILE_HELP_PERSPECTIVE);
+    }
 
 }

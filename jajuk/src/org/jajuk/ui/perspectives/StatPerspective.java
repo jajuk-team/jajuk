@@ -20,7 +20,16 @@
 
 package org.jajuk.ui.perspectives;
 
+import java.awt.BorderLayout;
+
+import net.infonode.docking.SplitWindow;
+import net.infonode.docking.util.ViewMap;
+
 import org.jajuk.i18n.Messages;
+import org.jajuk.ui.views.AnimationView;
+import org.jajuk.ui.views.CoverView;
+import org.jajuk.ui.views.IView;
+import org.jajuk.ui.views.StatView;
 
 /**
  * Statistics perspective
@@ -44,5 +53,20 @@ public class StatPerspective extends PerspectiveAdapter{
 	public String getDesc() {
 		return Messages.getString("Perspective_Description_Statistics"); //$NON-NLS-1$
 	}
+	/* (non-Javadoc)
+     * @see org.jajuk.ui.perspectives.PerspectiveAdapter#setDefaultViews()
+     */
+    public void setDefaultViews() {
+        ViewMap viewMap = new ViewMap();
+		
+        IView view = new StatView();
+        view.setShouldBeShown(true);
+		net.infonode.docking.View dockingStatView = addView(view);
+		viewMap.addView(0,dockingStatView);
+		
+		
+		
+        setRootWindow(viewMap,dockingStatView);
+    }
 
 }

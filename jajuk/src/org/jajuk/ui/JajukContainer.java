@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 bflorat
+ *  Copyright (C) 2003 fdutron
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -20,23 +20,27 @@
 
 package org.jajuk.ui;
 
+import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Cursor;
 
-import javax.swing.JInternalFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
+import org.jajuk.ui.views.IView;
 import org.jajuk.util.Util;
 
 /**
- *  Jajuk internal frame. Extends JInternal frames to bring:
- * <p>Fixes JRE 1.4.2 bug : 4705698
+ *  Jajuk container. Extends JPanel
  *
- * @author     bflorat
- * @created    10 mars 2004
+ * @author     fdutron
+ * @created    07 octobre 2004
  */
-public class JajukInternalFrame extends JInternalFrame {
+public class JajukContainer extends JPanel{
 	
 	/**Waiting state*/
 	private boolean bWaiting = false;
+	
 	
 	/**fixes JRE 1.4.2 bug : 4705698
 	 * @return cursor
@@ -50,17 +54,18 @@ public class JajukInternalFrame extends JInternalFrame {
 		}
 	}
 	
+	public void setView(IView c){
+	    removeAll();
+	    add(new JScrollPane((Component)c),BorderLayout.CENTER);
+	}
+	
 	/** Constructor
 	 * 
-	 * @param title
-	 * @param resizable
-	 * @param closable
-	 * @param maximizable
-	 * @param iconifiable
+	 * @param view
 	 */
-	public JajukInternalFrame(String title, boolean resizable, boolean closable, 
-			boolean maximizable, boolean iconifiable) {
-		super(title,resizable,closable,maximizable,iconifiable);
+	public JajukContainer(IView c) {
+		super(new BorderLayout());
+		setView(c);
 	}
 	
 	/**
@@ -78,5 +83,6 @@ public class JajukInternalFrame extends JInternalFrame {
 	public boolean getWaiting(){
 		return bWaiting;
 	}
+
 	
 }

@@ -20,6 +20,7 @@
 
 package org.jajuk.ui.views;
 
+import java.awt.Container;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -385,7 +386,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
             if (icon == null){ //none available cover
                 return;
             }
-            JInternalFrame ji = ViewManager.getFrame(this);
+            Container ji =  ViewManager.getContainer(CoverView.this);
             ImageFilter filter = new AreaAveragingScaleFilter(ji.getWidth()-8,ji.getHeight()-60);
             Image img = createImage(new FilteredImageSource(icon.getImage().getSource(),filter));
             jl = new JLabel(new ImageIcon(img));

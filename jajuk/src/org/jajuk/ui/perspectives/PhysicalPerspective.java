@@ -19,8 +19,19 @@
  */
 
 package org.jajuk.ui.perspectives;
+import java.io.IOException;
+
+
+import net.infonode.docking.SplitWindow;
+import net.infonode.docking.util.ViewMap;
 
 import org.jajuk.i18n.Messages;
+import org.jajuk.ui.views.CoverView;
+import org.jajuk.ui.views.IView;
+import org.jajuk.ui.views.PhysicalPlaylistEditorView;
+import org.jajuk.ui.views.PhysicalPlaylistRepositoryView;
+import org.jajuk.ui.views.PhysicalTableView;
+import org.jajuk.ui.views.PhysicalTreeView;
 
 /**
  * Physical perspective
@@ -37,7 +48,55 @@ public class PhysicalPerspective extends PerspectiveAdapter{
 	public PhysicalPerspective(){
 		super();
 	}
+	public void setDefaultViews(){
+	    ViewMap viewMap = new ViewMap();
+	    
+		IView view = new PhysicalTreeView();
+		view.setShouldBeShown(true);
+		net.infonode.docking.View dockingPhysicalTreeView = addView(view);
+		viewMap.addView(0,dockingPhysicalTreeView);
 
+        view = new PhysicalTableView();
+		view.setShouldBeShown(true);
+        net.infonode.docking.View dockingPhysicalTableView = addView(view);
+		viewMap.addView(1,dockingPhysicalTableView);
+        
+        view = new CoverView();
+		view.setShouldBeShown(true);
+        net.infonode.docking.View dockingCoverView = addView(view);
+		viewMap.addView(2,dockingCoverView);
+        
+        view = new PhysicalPlaylistRepositoryView();
+		view.setShouldBeShown(true);
+        net.infonode.docking.View dockingPhysicalPlaylistRepository = addView(view);
+		viewMap.addView(3,dockingPhysicalPlaylistRepository);
+        
+        view = new PhysicalPlaylistEditorView();
+		view.setShouldBeShown(true);
+        net.infonode.docking.View dockingPlaylistEditorView = addView(view);
+		viewMap.addView(4,dockingPlaylistEditorView);
+        
+        SplitWindow vertPlaylistCoverSplit = new SplitWindow(true,0.7f,dockingPlaylistEditorView,dockingCoverView);
+        SplitWindow horTableCoverSplit = new SplitWindow(false,0.7f,dockingPhysicalTableView,vertPlaylistCoverSplit);
+        SplitWindow verTreeRepositorySplit = new SplitWindow(true,0.7f,dockingPhysicalTreeView,dockingPhysicalPlaylistRepository);
+        SplitWindow verMainSplit = new SplitWindow(true,0.4f,verTreeRepositorySplit,horTableCoverSplit);
+		
+        setRootWindow(viewMap,verMainSplit);  
+	}
+	
+    /* (non-Javadoc)
+	 * @see org.jajuk.ui.perspectives.IPerspective#commit()
+	 */
+	public void commit() throws IOException{
+	    commit(FILE_PHYSICAL_PERSPECTIVE);
+	}
+	
+	/* (non-Javadoc)
+     * @see org.jajuk.ui.perspectives.IPerspective#load()
+     */
+    public void load() throws IOException {
+        load(FILE_PHYSICAL_PERSPECTIVE);
+    }
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.IPerspective#getDesc()
 	 */

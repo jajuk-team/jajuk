@@ -21,7 +21,10 @@ package org.jajuk.ui.perspectives;
 
 
 import java.awt.Container;
+import java.io.IOException;
 import java.util.ArrayList;
+
+import javax.swing.JPanel;
 
 import org.jajuk.ui.views.IView;
 /**
@@ -32,12 +35,18 @@ import org.jajuk.ui.views.IView;
 
 public interface IPerspective {
 
+	public void setDefaultViews();
+	/**
+	 * Add a view to the perspective but don't place it.
+	 *  @param view View to add to the perspective.
+	 */
+	public net.infonode.docking.View addView(IView view);
 	
 	/**
 	 * Add a view to the perspective.
 	 *  @param view View to add to the perspective.
 	 */
-	public void addView(IView view);
+	public net.infonode.docking.View addViewAndPlaceIt(IView view);
 	
 	/**
 	 * Remove a view from the perspective.
@@ -46,7 +55,14 @@ public interface IPerspective {
 	 * @return void 
 	 */
 	public void removeView(IView view);
-		
+	
+	/**
+	 * Remove all views from the perspective.
+	 * 
+	 * @return void 
+	 */
+	public void removeAllView();
+	
 	/**
 	 * @return the perspective's id
 	 */
@@ -88,5 +104,15 @@ public interface IPerspective {
 	 * @return Returns the desktop.
 	 */
 	public Container getDesktop() ;
+	
+	/**
+	 * Serialize the perspective
+	 */
+	public void commit()throws IOException;
+	
+	/**
+	 * Deserialize the perspective
+	 */
+	public void load()throws IOException;
 		
 }

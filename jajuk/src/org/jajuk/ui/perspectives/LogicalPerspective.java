@@ -20,7 +20,29 @@
 
 package org.jajuk.ui.perspectives;
 
+import java.awt.BorderLayout;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
+import net.infonode.docking.RootWindow;
+import net.infonode.docking.SplitWindow;
+import net.infonode.docking.theme.SlimFlatDockingTheme;
+import net.infonode.docking.util.ViewMap;
+import net.infonode.util.Direction;
+
 import org.jajuk.i18n.Messages;
+import org.jajuk.ui.views.CoverView;
+import org.jajuk.ui.views.IView;
+import org.jajuk.ui.views.LogicalPlaylistEditorView;
+import org.jajuk.ui.views.LogicalPlaylistRepositoryView;
+import org.jajuk.ui.views.LogicalTableView;
+import org.jajuk.ui.views.LogicalTreeView;
 
 /**
  * Logical perspective
@@ -38,6 +60,62 @@ public class LogicalPerspective extends PerspectiveAdapter{
 		super();
 	}
 
+	/* (non-Javadoc)
+     * @see org.jajuk.ui.perspectives.PerspectiveAdapter#setDefaultViews()
+     */
+    public void setDefaultViews() {
+        ViewMap viewMap = new ViewMap();
+		
+		
+		
+		IView view = new LogicalTreeView();
+		view.setShouldBeShown(true);
+		net.infonode.docking.View dockingLogicalTreeView = addView(view);
+		viewMap.addView(0,dockingLogicalTreeView);
+
+        view = new LogicalTableView();
+		view.setShouldBeShown(true);
+        net.infonode.docking.View dockingLogicalTableView = addView(view);
+		viewMap.addView(1,dockingLogicalTableView);
+        
+        view = new CoverView();
+		view.setShouldBeShown(true);
+        net.infonode.docking.View dockingCoverView = addView(view);
+		viewMap.addView(2,dockingCoverView);
+        
+        view = new LogicalPlaylistRepositoryView();
+		view.setShouldBeShown(true);
+        net.infonode.docking.View dockingLogicalPlaylistRepository = addView(view);
+		viewMap.addView(3,dockingLogicalPlaylistRepository);
+        
+        view = new LogicalPlaylistEditorView();
+		view.setShouldBeShown(true);
+        net.infonode.docking.View dockingPlaylistEditorView = addView(view);
+		viewMap.addView(4,dockingPlaylistEditorView);
+        
+        SplitWindow vertPlaylistCoverSplit = new SplitWindow(true,0.7f,dockingPlaylistEditorView,dockingCoverView);
+        SplitWindow horTableCoverSplit = new SplitWindow(false,0.7f,dockingLogicalTableView,vertPlaylistCoverSplit);
+        SplitWindow verTreeRepositorySplit = new SplitWindow(true,0.7f,dockingLogicalTreeView,dockingLogicalPlaylistRepository);
+        SplitWindow verMainSplit = new SplitWindow(true,0.4f,verTreeRepositorySplit,horTableCoverSplit);
+		
+        setRootWindow(viewMap,verMainSplit);
+        
+        
+	}
+	
+    /* (non-Javadoc)
+	 * @see org.jajuk.ui.perspectives.IPerspective#commit()
+	 */
+	public void commit() throws IOException{
+	    commit(FILE_LOGICAL_PERSPECTIVE);
+	}
+	
+	/* (non-Javadoc)
+     * @see org.jajuk.ui.perspectives.IPerspective#load()
+     */
+    public void load() throws IOException {
+        load(FILE_LOGICAL_PERSPECTIVE);
+    }
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.IPerspective#getDesc()
 	 */

@@ -21,23 +21,21 @@
 package org.jajuk.ui.views;
 
 import java.awt.Container;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import javax.swing.JInternalFrame;
-import javax.swing.event.InternalFrameAdapter;
-import javax.swing.event.InternalFrameEvent;
+import javax.swing.JPanel;
 
-import org.jajuk.Main;
+
+import net.infonode.docking.DockingWindow;
+import net.infonode.docking.DockingWindowAdapter;
+
 import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.i18n.Messages;
-import org.jajuk.ui.JajukInternalFrame;
+import org.jajuk.ui.JajukContainer;
 import org.jajuk.ui.JajukJMenuBar;
+import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.util.log.Log;
 
 /**
@@ -46,13 +44,10 @@ import org.jajuk.util.log.Log;
  * @author     bflorat
  * @created    16 nov. 2003
  */
-public class ViewManager implements ITechnicalStrings,ComponentListener{
+public class ViewManager implements ITechnicalStrings{
 
 	/**View -> is visible ( Boolean ) */
 	static HashMap hmViewIsVisible = new HashMap(20);
-	
-	/**Self instance*/
-	static ViewManager vm = new ViewManager();
 	
 	/**Views*/
 	static ArrayList alViews = new ArrayList(20);
@@ -60,42 +55,61 @@ public class ViewManager implements ITechnicalStrings,ComponentListener{
 	/**containers hashmap */
 	static ArrayList alContainers = new ArrayList(20);
 	
+	/**DockingViews */
+	static ArrayList alDockingViews = new ArrayList(20);
+	
 	/**Private constructor*/
 	private ViewManager(){
 	}
 	
-	
+	public static void removeView(final IView view){
+	    alContainers.remove(getContainer(view));
+	    alViews.remove(view);
+	    alDockingViews.remove(getDockingView(view));
+	}
 	/**Maintain relation view/perspective, a view can be in only one perspective*/
-	public static void registerView(final IView view){
-		final JajukInternalFrame ji = new JajukInternalFrame(Messages.getString(view.getDesc()),true,true,true,true);
-		ji.addComponentListener(vm);
-		ji.setContentPane((ViewAdapter)view);
-		ji.setDefaultCloseOperation(JInternalFrame.DO_NOTHING_ON_CLOSE);
-		ji.addInternalFrameListener(new InternalFrameAdapter(){
-			public void internalFrameClosing(InternalFrameEvent e) {
-				ViewManager.notify(EVENT_VIEW_CLOSE_REQUEST,view);
+	public static net.infonode.docking.View registerView(final IView view){
+	    
+		final JajukContainer jc = new JajukContainer(view);
+	    final net.infonode.docking.View dockingView = makeDockingView(view);
+
+	    /*dockingView.addListener(new DockingWindowAdapter(){
+		    
+			public void windowClosed(DockingWindow dockingWindow){
+			    System.out.println("windowClosed");
+			    net.infonode.docking.View dockingView = (net.infonode.docking.View)dockingWindow;
+				ViewManager.notify(EVENT_VIEW_CLOSE_REQUEST,ViewManager.getViewByDockingView(dockingView));
 				JajukJMenuBar.getInstance().refreshViews();
 			}
-		});
-		//auto-selection behavior
-		ji.getGlassPane().addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e) {
-			}
-
-			public void mouseEntered(MouseEvent e) {
-				try {
-					if ( !ji.isSelected()){
-						ji.setSelected(true);
-				
-					} 
-				}catch (Exception e1) {
-					e1.printStackTrace();
-				}
-			}
-		});
-		ji.addComponentListener(view);
+		});*/
+	    
 		alViews.add(view);
-		alContainers.add(ji);
+		alContainers.add(jc);
+		alDockingViews.add(dockingView);
+		
+		return dockingView;
+	}
+	private static void addViewToPerspective(IView view){
+	    if (!view.isPopulated()){
+		    view.populate();
+		}
+		PerspectiveManager.getCurrentPerspective().addViewAndPlaceIt(view);  
+	}
+	public static net.infonode.docking.View makeDockingView(final IView view){
+	    final JajukContainer jc = new JajukContainer(view);
+	    final net.infonode.docking.View dockingView = 
+			new net.infonode.docking.View(Messages.getString(view.getDesc()),null,jc);
+
+	  /*  dockingView.addListener(new DockingWindowAdapter(){
+		    
+			public void windowClosed(DockingWindow dockingWindow){
+			    System.out.println("windowClosed");
+			    net.infonode.docking.View dockingView = (net.infonode.docking.View)dockingWindow;
+				ViewManager.notify(EVENT_VIEW_CLOSE_REQUEST,ViewManager.getViewByDockingView(dockingView));
+				JajukJMenuBar.getInstance().refreshViews();
+			}
+		});*/
+	    return dockingView;
 	}
 			
 	/**
@@ -112,13 +126,10 @@ public class ViewManager implements ITechnicalStrings,ComponentListener{
 				view.refresh();
 			}
 			else if (sEvent.equals(EVENT_VIEW_CLOSE_REQUEST)){
-			    setVisible(view,false);
+			    //setVisible(view,false);
 			}
 			else if (sEvent.equals(EVENT_VIEW_SHOW_REQUEST)){
-				if (!view.isPopulated()){
-				    view.populate();
-				}
-				setVisible(view,true);
+				addViewToPerspective(view);
 			}
 		}catch(Exception e){
 			Log.error("118",sEvent,e); //$NON-NLS-1$
@@ -141,29 +152,6 @@ public class ViewManager implements ITechnicalStrings,ComponentListener{
 		}
 	}
 		
-	/**
-	 * Set size for a view
-	 * @param view
-	 * @param iWidth
-	 * @param iHeight
-	 */
-	public static void setSize(IView view,int iWidth,int iHeight){
-		int index = alViews.indexOf(view);
-		JInternalFrame frame = (JInternalFrame)alContainers.get(index);
-		frame.setSize(iWidth,iHeight);
-	}
-	
-	/**
-	 * Set location for a view
-	 * @param view
-	 * @param iX
-	 * @param iY
-	 */
-	public static void setLocation(IView view,int iX,int iY){
-		int index = alViews.indexOf(view);
-		JInternalFrame frame = (JInternalFrame)alContainers.get(index);
-		frame.setLocation(iX,iY);
-	}
 	
 	/**
 	 *Return visible state for a view
@@ -181,76 +169,61 @@ public class ViewManager implements ITechnicalStrings,ComponentListener{
 	 */
 	public static void setVisible(IView view,boolean b){
 		int index = alViews.indexOf(view);
-		JInternalFrame frame = (JInternalFrame)alContainers.get(index);
-		frame.setVisible(b);
+		JPanel panel = (JPanel)alContainers.get(index);
+		//net.infonode.docking.View dockingView = (net.infonode.docking.View)alDockingViews.get(index);
+		panel.setVisible(b);
+	    view.setVisible(b);
 		hmViewIsVisible.put(view,new Boolean(b));
 	}
+	
 	
 	/**
 	 * Get the UI asscoiated with a view
 	 * @param view
 	 * @return
 	 */
-	public static JInternalFrame getFrame(IView view){
+	public static JPanel getContainer(IView view){
 		int index = alViews.indexOf(view);
-		return (JInternalFrame)alContainers.get(index);
+		if(index <0)
+		    return null;
+		return (JPanel)alContainers.get(index);
 	}
-	
-	 /* (non-Javadoc)
-	 * @see java.awt.event.ComponentListener#componentHidden(java.awt.event.ComponentEvent)
+	/**
+	 * Get the docking view asscoiated with a view
+	 * @param view
+	 * @return
 	 */
-	public void componentHidden(ComponentEvent e) {
-		IView view = getViewByContainer((Container)e.getComponent());
-		if (view != null){
-			view.setShouldBeShown(false);
-		}
+	public static net.infonode.docking.View getDockingView(IView view){
+		int index = alViews.indexOf(view);
+		if(index <0)
+		    return null;
+		return (net.infonode.docking.View)alDockingViews.get(index);
 	}
-	
-	/* (non-Javadoc)
-	 * @see java.awt.event.ComponentListener#componentShown(java.awt.event.ComponentEvent)
+	/**
+	 * Get a view for a given container
+	 * @param c
+	 * @return
 	 */
-	public void componentShown(ComponentEvent e) {
-		IView view = getViewByContainer((Container)e.getComponent());
-		if (view != null){
-			view.setShouldBeShown(true);
-		}
-	}
-
-	
-	
-	/* (non-Javadoc)
-	 * @see java.awt.event.ComponentListener#componentMoved(java.awt.event.ComponentEvent)
-	 */
-	public void componentMoved(ComponentEvent e) {
-		int iMainWidth = Main.getWindow().getWidth()- BORDER_X_SIZE; //desktop pane size in pixels
-		int iMainHeight = Main.getWindow().getHeight()- BORDER_Y_SIZE; //desktop pane size in pixels
-		int index = alContainers.indexOf(e.getComponent());
+	public static IView getViewByContainer(Container c){
+		int index = alContainers.indexOf(c);
 		if (index < 0){
-			return;
+			return null;
 		}
-		IView view = getViewByContainer((Container)e.getComponent());
-		if (view != null){
-			int iLogicalX = bound((int)(100*(float)e.getComponent().getX()/iMainWidth),PRECISION,true);
-			int iLogicalY = bound((int)(100*(float)e.getComponent().getY()/iMainHeight),PRECISION,true);
-			view.setLogicalX(iLogicalX);
-			view.setLogicalY(iLogicalY);
-		}
+		IView view = (IView)alViews.get(index);
+		return view;
 	}
-	
-	
-	/* (non-Javadoc)
-	 * @see java.awt.event.ComponentListener#componentShown(java.awt.event.ComponentEvent)
+	/**
+	 * Get a view for a given docking view
+	 * @param c
+	 * @return
 	 */
-	public void componentResized(ComponentEvent e) {
-		int iMainWidth = Main.getWindow().getWidth()- BORDER_X_SIZE; //desktop pane size in pixels
-		int iMainHeight = Main.getWindow().getHeight()- BORDER_Y_SIZE; //desktop pane size in pixels
-		IView view = getViewByContainer((Container)e.getComponent());
-		if (view != null){
-			int iLogicalWidth = bound((int)(100*(float)e.getComponent().getWidth()/iMainWidth),PRECISION,false);
-			int iLogicalHeight = bound((int)(100*(float)e.getComponent().getHeight()/iMainHeight),PRECISION,false);
-			view.setLogicalWidth(iLogicalWidth);
-			view.setLogicalHeight(iLogicalHeight);
+	public static IView getViewByDockingView(net.infonode.docking.View dockingView){
+		int index = alDockingViews.indexOf(dockingView);
+		if (index < 0){
+			return null;
 		}
+		IView view = (IView)alViews.get(index);
+		return view;
 	}
 	
 	/**
@@ -260,7 +233,7 @@ public class ViewManager implements ITechnicalStrings,ComponentListener{
 	 *  @param bAllowZero
 	 * @return
 	 */
-	private int bound(int i,int iPrecision,boolean bAllowZero){
+	/*private int bound(int i,int iPrecision,boolean bAllowZero){
 		//if dimension is too large, floor it
 	    if ( i> 100 ){
 			i=100;
@@ -281,20 +254,8 @@ public class ViewManager implements ITechnicalStrings,ComponentListener{
 		    i = iPrecision;
 		}
 		return i;
-	}
+	}*/
 	
-	/**
-	 * Get a view for a given container
-	 * @param c
-	 * @return
-	 */
-	public IView getViewByContainer(Container c){
-		int index = alContainers.indexOf(c);
-		if (index < 0){
-			return null;
-		}
-		IView view = (IView)alViews.get(index);
-		return view;
-	}
+	
 				
 }

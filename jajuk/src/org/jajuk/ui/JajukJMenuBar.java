@@ -53,6 +53,7 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings{
 				JajukFileChooser jfchooser;
 			JMenuItem jmiFileExit;
 		JMenu views;
+			JMenuItem jmiRestoreDefaultViews;
 		JMenu properties;
 			JMenuItem jmiNewProperty;
 			JMenuItem jmiDeleteProperty;
@@ -93,8 +94,12 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings{
 		properties.add(jmiDeleteProperty);
 		properties.addSeparator();
 		
-		//Views menu
+		//View menu
 		views = new JMenu(Messages.getString("JajukJMenuBar.8")); //$NON-NLS-1$
+		jmiRestoreDefaultViews = new JMenuItem(Messages.getString("JajukJMenuBar.17"),null);
+		jmiRestoreDefaultViews.addActionListener(JajukListener.getInstance());
+		jmiRestoreDefaultViews.setActionCommand(EVENT_VIEW_RESTORE_DEFAULTS);
+		views.add(jmiRestoreDefaultViews);
 		
 		//Mode menu
 		mode = new JMenu(Messages.getString("JajukJMenuBar.9")); //$NON-NLS-1$

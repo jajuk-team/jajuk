@@ -20,6 +20,7 @@
 package org.jajuk.util;
 
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Cursor;
 import java.io.BufferedReader;
 import java.io.File;
@@ -56,7 +57,7 @@ import org.jajuk.base.Track;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.CommandJPanel;
 import org.jajuk.ui.InformationJPanel;
-import org.jajuk.ui.JajukInternalFrame;
+import org.jajuk.ui.JajukContainer;
 import org.jajuk.ui.PerspectiveBarJPanel;
 import org.jajuk.ui.perspectives.IPerspective;
 import org.jajuk.ui.perspectives.PerspectiveManager;
@@ -311,19 +312,19 @@ public class Util implements ITechnicalStrings {
 	/** Waiting cursor thread, stored to avoid construction */
 	private static Thread tWaiting = new Thread(){
 		public void run(){
-			JDesktopPane jdesktop = null;
+			Container container = null;
 			IPerspective perspective = PerspectiveManager.getCurrentPerspective();
 			if ( perspective != null){
-				jdesktop = (JDesktopPane)perspective.getDesktop();
-				int numComp = jdesktop.getComponentCount();
+				container = (Container)perspective.getDesktop();
+				int numComp = container.getComponentCount();
 				Component comp = null;
 				for (int i = 0; i < numComp; i++) {
-					comp = jdesktop.getComponent(i);
-					if (comp instanceof JajukInternalFrame) {
-						((JajukInternalFrame)comp).setWaiting(true);
+					comp = container.getComponent(i);
+					if (comp instanceof JajukContainer) {// ?
+						((JajukContainer)comp).setWaiting(true);
 					}
 				}
-				jdesktop.setCursor(WAIT_CURSOR);
+				container.setCursor(WAIT_CURSOR);
 				CommandJPanel.getInstance().setCursor(WAIT_CURSOR);
 				InformationJPanel.getInstance().setCursor(WAIT_CURSOR);
 				PerspectiveBarJPanel.getInstance().setCursor(WAIT_CURSOR);
@@ -334,19 +335,19 @@ public class Util implements ITechnicalStrings {
 	/** Default cursor thread, stored to avoid construction */
 	private static Thread tDefault = new Thread(){
 		public void run(){
-			JDesktopPane jdesktop = null;
+			Container container = null;
 			IPerspective perspective = PerspectiveManager.getCurrentPerspective();
 			if ( perspective != null){
-				jdesktop = (JDesktopPane)perspective.getDesktop();
-				int numComp = jdesktop.getComponentCount();
+			    container = (Container)perspective.getDesktop();
+				int numComp = container.getComponentCount();
 				Component comp = null;
 				for (int i = 0; i < numComp; i++) {
-					comp = jdesktop.getComponent(i);
-					if (comp instanceof JajukInternalFrame) {
-						((JajukInternalFrame)comp).setWaiting(false);
+					comp = container.getComponent(i);
+					if (comp instanceof JajukContainer) {// ?
+						((JajukContainer)comp).setWaiting(true);
 					}
 				}
-				jdesktop.setCursor(DEFAULT_CURSOR);
+				container.setCursor(DEFAULT_CURSOR);
 				CommandJPanel.getInstance().setCursor(DEFAULT_CURSOR);
 				InformationJPanel.getInstance().setCursor(DEFAULT_CURSOR);
 				PerspectiveBarJPanel.getInstance().setCursor(DEFAULT_CURSOR);

@@ -155,6 +155,12 @@ public interface ITechnicalStrings {
 	public static final String FILE_JAJUK_DIR = System.getProperty("user.home")+"/.jajuk";
 	public static final String FILE_COLLECTION = System.getProperty("user.home")+"/.jajuk/collection.xml";
 	public static final String FILE_PERSPECTIVES_CONF = System.getProperty("user.home")+"/.jajuk/perspectives.xml";
+	public static final String FILE_PHYSICAL_PERSPECTIVE = System.getProperty("user.home")+"/.jajuk/physicalPerspectives.ser";
+	public static final String FILE_LOGICAL_PERSPECTIVE = System.getProperty("user.home")+"/.jajuk/logicalPerspectives.ser";
+	public static final String FILE_PLAYER_PERSPECTIVE = System.getProperty("user.home")+"/.jajuk/playerPerspectives.ser";
+	public static final String FILE_STAT_PERSPECTIVE = System.getProperty("user.home")+"/.jajuk/statPerspectives.ser";
+	public static final String FILE_HELP_PERSPECTIVE = System.getProperty("user.home")+"/.jajuk/helpPerspectives.ser";
+	public static final String FILE_CONFIGURATION_PERSPECTIVE = System.getProperty("user.home")+"/.jajuk/configurationPerspectives.ser";
 	public static final String FILE_CONFIGURATION = System.getProperty("user.home")+"/.jajuk/conf.properties";
 	public static final String FILE_HISTORY = System.getProperty("user.home")+"/.jajuk/history.xml";
 	public static final String FILE_LOCK = System.getProperty("user.home")+"/.jajuk/.lock";
@@ -256,6 +262,7 @@ public interface ITechnicalStrings {
 	public static final String EVENT_VIEW_CLOSE_REQUEST="close view"; //close a view
 	public static final String EVENT_VIEW_SHOW_REQUEST="show view"; //show a view
 	public static final String EVENT_VIEW_SHOW_STATUS_CHANGED_REQUEST="change status view"; //change 
+	public static final String EVENT_VIEW_RESTORE_DEFAULTS="restore default views";
 	public static final String EVENT_VIEW_COMMAND_SELECT_HISTORY_ITEM="select history item";
 	public static final String EVENT_HELP_REQUIRED="help required";//The help should be displayed
 	public static final String EVENT_COVER_REFRESH="cover refresh";//the cover should be refreshed

@@ -20,15 +20,36 @@
 
 package org.jajuk.ui.perspectives;
 
+import java.awt.BorderLayout;
 import java.awt.Container;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Iterator;
 
-import javax.swing.JDesktopPane;
+import javax.swing.JPanel;
 
-import org.jajuk.Main;
+import net.infonode.docking.DockingWindow;
+import net.infonode.docking.DockingWindowAdapter;
+import net.infonode.docking.RootWindow;
+import net.infonode.docking.theme.SlimFlatDockingTheme;
+import net.infonode.docking.util.DockingUtil;
+import net.infonode.docking.util.ViewMap;
+import net.infonode.util.Direction;
+
 import org.jajuk.base.ITechnicalStrings;
+import org.jajuk.ui.JajukContainer;
+import org.jajuk.ui.JajukJMenuBar;
+import org.jajuk.ui.views.AnimationView;
 import org.jajuk.ui.views.IView;
 import org.jajuk.ui.views.ViewManager;
+import org.jajuk.util.log.Log;
 
 /**
  * Perspective adapter, provide default implementation for perspectives
@@ -44,7 +65,10 @@ public abstract class PerspectiveAdapter implements IPerspective,ITechnicalStrin
 	/** Perspective views list*/
 	private ArrayList alViews = new ArrayList(10);
 	/**Associated desktop pane*/
-	private JDesktopPane desktop;
+	protected JPanel desktop;
+	/**Contained by desktop pane*/
+    public RootWindow rootWindow;
+	
 	
 	
 	/**
@@ -53,34 +77,53 @@ public abstract class PerspectiveAdapter implements IPerspective,ITechnicalStrin
 	 * @param sIconName
 	 */
 	public PerspectiveAdapter(){
-		this.desktop = new JDesktopPane();
+		this.desktop = new JPanel();
+		this.desktop.setLayout(new BorderLayout());
 	}
-	
+	public void setDefaultViews(){
+		
+	}
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.perspectives.IPerspective#addView(org.jajuk.ui.views.IView)
 	 */
-	public void addView(IView view) {
+	public net.infonode.docking.View addView(IView view) {
 		alViews.add(view);
-		ViewManager.registerView(view);
-		int iMainWidth = Main.getWindow().getWidth()- BORDER_X_SIZE; //desktop pane size in pixels
-		int iMainHeight = Main.getWindow().getHeight()- BORDER_Y_SIZE; //desktop pane size in pixels
-		int iWidth = iMainWidth*view.getLogicalWidth()/100;
-		int iHeight = iMainHeight*view.getLogicalHeight()/100;
-		int iX = iMainWidth*view.getLogicalX()/100;
-		int iY = iMainHeight*view.getLogicalY()/100;
+		net.infonode.docking.View dockingView = ViewManager.registerView(view);
 		ViewManager.setVisible(view,view.isShouldBeShown());
-		ViewManager.setSize(view,iWidth,iHeight);
-		ViewManager.setLocation(view,iX,iY);
-		getDesktop().add(ViewManager.getFrame(view));
+		
+		return dockingView;
 	}
-	
+	/**
+	 * @param viewMap
+	 * @param add a view 
+	 */
+	public net.infonode.docking.View addViewAndPlaceIt(IView view){
+	    net.infonode.docking.View dockingView = addView(view);
+		DockingUtil.addWindow(dockingView,rootWindow);
+		
+		return dockingView;
+    
+    }
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.perspectives.IPerspective#removeView(org.jajuk.ui.views.IView)
 	 */
 	public void removeView(IView view) {
+	 	ViewManager.removeView(view); // ?
 		alViews.remove(view);
 	}
 
+	/* (non-Javadoc)
+     * @see org.jajuk.ui.perspectives.IPerspective#removeAllView()
+     */
+    public void removeAllView() {
+        Iterator iterator = alViews.iterator();
+        while(iterator.hasNext()){
+            IView currentView = (IView)iterator.next();
+            ViewManager.removeView(currentView);
+        }
+       alViews.clear();
+       getDesktop().removeAll();
+    }
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.perspectives.IPerspective#getID()
 	 */
@@ -129,5 +172,62 @@ public abstract class PerspectiveAdapter implements IPerspective,ITechnicalStrin
 	public void setID(String sID) {
 		this.sID = sID;
 	}
+	
+    /* (non-Javadoc)
+     * @see org.jajuk.ui.perspectives.IPerspective#commit()
+     */
+    public void commit() throws IOException {
+    }
+    /* (non-Javadoc)
+     * @see org.jajuk.ui.perspectives.IPerspective#load()
+     */
+    public void load() throws IOException {
+    }
+    
+    
+	/**
+	 * @param strFile
+	 * @throws IOException Serialise the perspective
+	 */
+	protected  void commit(String strFile) throws IOException{
+	    ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(strFile));
+		rootWindow.write(out);
+		out.close();
+	}
+	
+	
+	/**
+	 * @param strFile
+	 * @throws IOException Unserialise the perspective
+	 */
+	protected  void load(String strFile) throws IOException {
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		File f = new File(strFile);
+		if(f.exists()){
+			FileInputStream fis = new FileInputStream(f);
+			byte[] tab = new byte[fis.available()];
+			fis.read(tab);
+			bos.write(tab);
+			rootWindow.read(new ObjectInputStream(new ByteArrayInputStream(bos.toByteArray())));
+			
+		}
+    }
+    
+	/**
+	 * @param viewMap
+	 * @param dockingWindow create the root window and add it to desktop
+	 */
+	protected void setRootWindow(ViewMap viewMap,DockingWindow dockingWindow){
+
+		rootWindow = new RootWindow(viewMap,dockingWindow);
+		rootWindow.getRootWindowProperties().addSuperObject(SlimFlatDockingTheme.createRootWindowProperties());
+		rootWindow.getWindowBar(Direction.DOWN).setEnabled(true);
+		
+		
+		getDesktop().add(rootWindow,BorderLayout.CENTER);
+    
+    }
+	
+	
 
 }

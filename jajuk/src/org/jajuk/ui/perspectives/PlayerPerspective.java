@@ -20,7 +20,16 @@
 
 package org.jajuk.ui.perspectives;
 
+import java.awt.BorderLayout;
+import java.io.IOException;
+
 import org.jajuk.i18n.Messages;
+import org.jajuk.ui.views.AnimationView;
+import org.jajuk.ui.views.CoverView;
+import org.jajuk.ui.views.IView;
+
+import net.infonode.docking.SplitWindow;
+import net.infonode.docking.util.ViewMap;
 
 /**
  *  Player perspective, contains view usefull to be displayed duriong playing
@@ -30,6 +39,47 @@ import org.jajuk.i18n.Messages;
  */
 public class PlayerPerspective extends PerspectiveAdapter {
     
+    
+    /* (non-Javadoc)
+     * @see org.jajuk.ui.perspectives.PerspectiveAdapter#setDefaultViews()
+     */
+    public void setDefaultViews() {
+        ViewMap viewMap = new ViewMap();
+		
+		IView view = new AnimationView();
+		view.setShouldBeShown(true);
+		net.infonode.docking.View dockingAnimationView = addView(view);
+		viewMap.addView(0,dockingAnimationView);
+		
+		
+        
+        view = new CoverView();
+		view.setShouldBeShown(true);
+        net.infonode.docking.View dockingCoverView = addView(view);
+		viewMap.addView(3,dockingCoverView);
+        
+        SplitWindow horMainSplit = new SplitWindow(false,0.2f,dockingAnimationView,dockingCoverView);
+		
+		
+		
+        setRootWindow(viewMap,horMainSplit);
+        
+        
+	}
+	
+    /* (non-Javadoc)
+	 * @see org.jajuk.ui.perspectives.IPerspective#commit()
+	 */
+	public void commit() throws IOException{
+	    commit(FILE_PLAYER_PERSPECTIVE);
+	}
+	
+	/* (non-Javadoc)
+     * @see org.jajuk.ui.perspectives.IPerspective#load()
+     */
+    public void load() throws IOException {
+        load(FILE_PLAYER_PERSPECTIVE);
+    }
     /* (non-Javadoc)
      * @see org.jajuk.ui.perspectives.IPerspective#getDesc()
      */

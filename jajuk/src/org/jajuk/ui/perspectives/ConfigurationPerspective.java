@@ -20,7 +20,19 @@
 
 package org.jajuk.ui.perspectives;
 
+import java.io.IOException;
+
+import net.infonode.docking.RootWindow;
+import net.infonode.docking.SplitWindow;
+import net.infonode.docking.theme.SlimFlatDockingTheme;
+import net.infonode.docking.util.ViewMap;
+import net.infonode.util.Direction;
+
 import org.jajuk.i18n.Messages;
+import org.jajuk.ui.views.CDScanView;
+import org.jajuk.ui.views.DeviceView;
+import org.jajuk.ui.views.IView;
+import org.jajuk.ui.views.ParameterView;
 
 /**
  * Configuration perspective
@@ -44,5 +56,51 @@ public class ConfigurationPerspective extends PerspectiveAdapter{
 	public String getDesc() {
 		return Messages.getString("Perspective_Description_Configuration"); //$NON-NLS-1$
 	}
+	
+	/* (non-Javadoc)
+     * @see org.jajuk.ui.perspectives.PerspectiveAdapter#setDefaultViews()
+     */
+    public void setDefaultViews() {
+		ViewMap viewMap = new ViewMap();
+		
+		IView view = new ParameterView();
+		view.setShouldBeShown(true);
+		net.infonode.docking.View dockingParameterView = addView(view);
+		viewMap.addView(0,dockingParameterView);
+		
+		view = new DeviceView();
+		view.setShouldBeShown(true);
+		net.infonode.docking.View dockingDeviceView = addView(view);
+		viewMap.addView(1,dockingDeviceView);
+
+        view = new CDScanView();
+		view.setShouldBeShown(true);
+        net.infonode.docking.View dockingCDScanView = addView(view);
+		viewMap.addView(2,dockingCDScanView);
+        
+        
+        
+        SplitWindow horDeviceCDScan = new SplitWindow(false,0.7f,dockingDeviceView,dockingCDScanView);
+        SplitWindow verMainSplit = new SplitWindow(true,0.4f,horDeviceCDScan,dockingParameterView);
+		
+		
+		setRootWindow(viewMap,verMainSplit);
+        
+        
+	}
+	
+    /* (non-Javadoc)
+	 * @see org.jajuk.ui.perspectives.IPerspective#commit()
+	 */
+	public void commit() throws IOException{
+	    commit(FILE_CONFIGURATION_PERSPECTIVE);
+	}
+	
+	/* (non-Javadoc)
+     * @see org.jajuk.ui.perspectives.IPerspective#load()
+     */
+    public void load() throws IOException {
+        load(FILE_CONFIGURATION_PERSPECTIVE);
+    }
 
 }

@@ -32,6 +32,7 @@ import org.jajuk.base.BasicFile;
 import org.jajuk.base.BasicPlaylistFile;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.ITechnicalStrings;
+import org.jajuk.ui.perspectives.IPerspective;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.ui.views.IView;
 import org.jajuk.ui.views.ViewManager;
@@ -164,6 +165,12 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
 			else{
 				ViewManager.notify(EVENT_VIEW_CLOSE_REQUEST,(IView)JajukJMenuBar.getInstance().hmCheckboxView.get(e.getSource()));
 			}
+		}else if (e.getActionCommand().equals(EVENT_VIEW_RESTORE_DEFAULTS)) {
+		    System.out.println("Restore defaults");
+		    IPerspective perspective = PerspectiveManager.getCurrentPerspective();
+		    perspective.removeAllView();
+		    perspective.setDefaultViews();
+		    PerspectiveManager.setCurrentPerspective(perspective.getID());
 		}
 		else if (EVENT_HELP_REQUIRED.equals(e.getActionCommand())){
 			PerspectiveManager.setCurrentPerspective(PERSPECTIVE_NAME_HELP);		
