@@ -607,7 +607,6 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 		//tree itself
 		jspTree = new JScrollPane(jtree);
 		add(jspTree);
-		jtree.setRowHeight(25);
 		//expand all
 		expand();
 		
@@ -761,7 +760,6 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 					SwingUtilities.invokeLater(new Runnable() {
 						public void run() {
 							SwingUtilities.updateComponentTreeUI(jtree);
-							jtree.setRowHeight(25);
 						}
 					});
 				}
@@ -774,7 +772,6 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 					SwingUtilities.invokeLater(new Runnable() {
 						public void run() {
 							SwingUtilities.updateComponentTreeUI(jtree);
-							jtree.setRowHeight(25);
 						}
 					});
 				}
@@ -826,7 +823,6 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 				}
 				public void finished() {
 					SwingUtilities.updateComponentTreeUI(jtree);
-					jtree.setRowHeight(25);
 					expand();
 					int i = jspTree.getVerticalScrollBar().getValue();
 					jspTree.getVerticalScrollBar().setValue(i);

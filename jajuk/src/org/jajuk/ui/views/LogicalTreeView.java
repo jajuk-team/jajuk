@@ -266,7 +266,6 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 		//tree itself
 		jtree = new JTree(top);
 		jtree.putClientProperty("JTree.lineStyle", "Angled"); //$NON-NLS-1$ //$NON-NLS-2$
-		jtree.setRowHeight(25);
 		jtree.getSelectionModel().setSelectionMode(TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
 		jtree.setCellRenderer(new DefaultTreeCellRenderer() {
 			public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) {
@@ -576,7 +575,6 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 				}
 				public void finished() {
 					SwingUtilities.updateComponentTreeUI(jtree);
-					jtree.setRowHeight(25);
 					expand();
 					int i = jspTree.getVerticalScrollBar().getValue();
 					jspTree.getVerticalScrollBar().setValue(i);
@@ -592,7 +590,6 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 				}
 				public void finished() {
 					SwingUtilities.updateComponentTreeUI(jtree);
-					jtree.setRowHeight(25);
 					expand();
 					int i = jspTree.getVerticalScrollBar().getValue();
 					jspTree.getVerticalScrollBar().setValue(i);
