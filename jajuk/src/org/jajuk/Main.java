@@ -264,12 +264,14 @@ public class Main implements ITechnicalStrings {
 						if (iExitCode == 0){ //commit only if exit is safe to avoid commiting empty collection
 							//commit configuration
 							org.jajuk.util.ConfigurationManager.commit();
+							//commit history
+							History.commit();
 							//commit collection if not refreshing ( fix for 939816 )
 							if ( !DeviceManager.isAnyDeviceRefreshing()){
 								org.jajuk.base.Collection.commit();
+								//backup this file
+								Util.backupFile(new File(FILE_COLLECTION),Util.BACKUP_SIZE);
 							}
-							//commit history
-							History.commit();
 						}
 					} catch (IOException e) {
 						Log.error("", e); //$NON-NLS-1$
@@ -311,16 +313,6 @@ public class Main implements ITechnicalStrings {
 		File fCollection = new File(FILE_COLLECTION);
 		if (!fCollection.exists()) { //if collection file doesn't exit, create it empty
 			Collection.commit();
-		}
-		else{
-			//Save collection asynchronously
-			new Thread(){
-				public void run(){
-					long l = System.currentTimeMillis();
-					Util.saveFile(new File(FILE_COLLECTION));
-					Log.debug("Saved collection file in "+(System.currentTimeMillis()-l)+" ms"); //$NON-NLS-1$ //$NON-NLS-2$
-				}
-			}.start();
 		}
 		//	check for perspectives.xml file
 		File fPerspectives = new File(FILE_PERSPECTIVES_CONF);

@@ -69,6 +69,8 @@ public class Util implements ITechnicalStrings {
 	/*Cursors*/
 	public static final Cursor WAIT_CURSOR = new Cursor(Cursor.WAIT_CURSOR);
 	public static final Cursor DEFAULT_CURSOR = new Cursor(Cursor.DEFAULT_CURSOR);
+	/**Backup size in MB*/
+	public static final int BACKUP_SIZE = 30;
 	
 	/**Contains execution location ( jar or directory )*/
 	public static String sExecLocation;
@@ -420,12 +422,35 @@ public class Util implements ITechnicalStrings {
 	
 	
 	/**
-	 * Save a file in the same directory with name <filename>~
+	 * Save a file in the same directory with name <filename>_YYYYmmddHHMM.xml and with a given maximum Mb size for the file and its backup files
 	 * @param file
 	 */
-	public static void saveFile(File file){
+	public static void backupFile(File file,int iMB){
 		try{
-			File fileNew = new File(file.getAbsolutePath()+"~"); //$NON-NLS-1$
+			//calculates total size in MB for the file to backup and its backup files
+			int iUsedMB = 0;
+			int index = 0;//backup index
+			File[] files = new File(file.getAbsolutePath()).getParentFile().listFiles();
+			if ( files != null){
+				for ( int i=0;i<files.length;i++){
+					if ( files[i].getName().indexOf(removeExtension(file.getName()))!= -1){ //if the file contains the file name without extension
+						index ++;
+						iUsedMB += files[i].length() / 1048576;
+					}
+				}
+				if ( iUsedMB > iMB){  //too much backup files, leave
+					new File(Util.removeExtension(file.getAbsolutePath())+"-backup-1."+Util.getExtension(file)).delete(); //delete older backup $NON-NLS-1$//$NON-NLS-2$
+					//change all backup names ( 2 becomes 1, 3 becomes 2...)
+					for ( int i=2;i<index;i++){
+						File fBefore = new File(Util.removeExtension(file.getAbsolutePath())+"-backup-"+Integer.toString(i)+"."+Util.getExtension(file)); //$NON-NLS-1$//$NON-NLS-2$
+						File fAfter = new File(Util.removeExtension(file.getAbsolutePath())+"-backup-"+Integer.toString(i-1)+"."+Util.getExtension(file)); //$NON-NLS-1$//$NON-NLS-2$
+						fBefore.renameTo(fAfter);  //rename file
+					}	
+					index --;
+				}
+			}
+			//backup itself using nio
+			File fileNew = new File(Util.removeExtension(file.getAbsolutePath())+"-backup-"+Integer.toString(index)+"."+Util.getExtension(file)); //$NON-NLS-1$//$NON-NLS-2$
 			FileChannel fcSrc = new FileInputStream(file).getChannel();
 			FileChannel fcDest = new FileOutputStream(fileNew).getChannel();
 			fcDest.transferFrom(fcSrc, 0, fcSrc.size());
