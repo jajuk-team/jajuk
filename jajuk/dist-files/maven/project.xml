@@ -61,7 +61,7 @@
 	    <developer>
 	      <name>Bertrand Florat</name>
 	      <roles>
-		      <role>Main conceptor and developer</role>
+		      <role>Conceptor/administrator</role>
 	      </roles>
 	      <id>bflorat</id>
 	      <email>bflorat@users.sourceforge.net</email>
@@ -140,7 +140,7 @@
 	      <name>Marc-Siebren Kwadijk</name>
 	      <id>marcsiebren@users.sourceforge.net</id>
     	  <roles>
-		      <role>Dutch translation</role>
+		      <role>Dutch translator</role>
 	      </roles>
 	      <email>marcsiebren@users.sourceforge.net</email>
 	      <organization>Jajuk team</organization>
@@ -172,10 +172,12 @@
 		<contributor>
 			<name>nico-de-nantes</name>
 			<roles><role>Bug reports, RFE, news reporting</role></roles>
+			<email>nico-de-nantes@users.sourceforge.net</email>
 		</contributor>
 		<contributor>
 			<name>kournikola</name>
 			<roles><role>Bug reports, RFE, news reporting</role></roles>
+			<email>kournikola@users.sourceforge.net</email>
 		</contributor>
 		<contributor>
 			<name>Aurélien Pedron</name>
@@ -183,6 +185,7 @@
 		</contributor>
 		<contributor>
 			<name>darsa</name>
+			 <email>darsa@users.sourceforge.net</email>
 			<roles><role>Bug reports</role></roles>
 		</contributor>
 	</contributors>

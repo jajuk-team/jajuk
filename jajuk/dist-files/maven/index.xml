@@ -4,9 +4,9 @@
   	<section name='Jajuk Home Page'>
   		 <p>Jajuk is a Java music organizer for all platforms. The main goal 
    		 of this project is to provide a fully-featured application to advanced 
-   		 users with large or scattered music collections.</p>
+   		 users with large or scattered music collections. Jajuk supports MP3, OGG Vorbis, AU, AIFF, WAV and SPEEX audio formats.</p>
    		 <p><a href='http://sourceforge.net/people/?group_id=91412'><b>We are looking for a Jajuk promoter (communication deleguate)</b></a></p>
-   		 <p><a href='./todo_list.html'>Developers : code new features</a></p>
+   		 <p><a href='./todo_list.html'><b>Developers : code new features</b></a></p>
    		 <p><a href='http://swpat.ffii.org/'><img alt='NO E-PATENT' src='images/logos/noepatents_liberty.png'/></a></p>
     </section>
   
@@ -17,33 +17,37 @@
 				<tr>
 					<td style='vertical-align: top;'><b>Jajuk</b> ( buttons, labels, tooltips... )</td>
 					<td style='vertical-align: top;'>
-						<img alt=''	src='flags/flag_en.png' style='width: 21px; height: 14px;'/>
-						<img alt=''	src='flags/flag_fr.png' style='width: 21px; height: 14px;'/>
-						<img alt=''	src='flags/flag_de.png' style='width: 21px; height: 14px;'/>
-						<img alt=''	src='flags/flag_it.png' style='width: 21px; height: 14px;'/>
+						<img alt='en' src='flags/flag_en.png' style='width: 21px; height: 14px;'/>
+						<img alt='fr' src='flags/flag_fr.png' style='width: 21px; height: 14px;'/>
+						<img alt='de' src='flags/flag_de.png' style='width: 21px; height: 14px;'/>
+						<img alt='it' src='flags/flag_it.png' style='width: 21px; height: 14px;'/>
+						<img alt='sv' src='flags/flag_sv.png' style='width: 21px; height: 14px;'/>
+						<img alt='nl' src='flags/flag_nl.png' style='width: 21px; height: 14px;'/>
 					</td>
 				</tr>
 				<tr>
-					<td style='vertical-align: top;'>Readme file at install</td>
+					<td style='vertical-align: top;'>Readme file at install and on web site</td>
 					<td style='vertical-align: top;'>
-						<img alt='' src='flags/flag_en.png' style='width: 21px; height: 14px;'/>
-						<img alt='' src='flags/flag_fr.png' style='width: 21px; height: 14px;'/>
-						<img alt='' src='flags/flag_de.png' style='width: 21px; height: 14px;'/>
-						<img alt='' src='flags/flag_it.png' style='width: 21px; height: 14px;'/>
-						<img alt='' src='flags/flag_sv.png' style='width: 21px; height: 14px;'/>
+						<img alt='en' src='flags/flag_en.png' style='width: 21px; height: 14px;'/>
+						<img alt='fr' src='flags/flag_fr.png' style='width: 21px; height: 14px;'/>
+						<img alt='de' src='flags/flag_de.png' style='width: 21px; height: 14px;'/>
+						<img alt='it' src='flags/flag_it.png' style='width: 21px; height: 14px;'/>
+						<img alt='sv' src='flags/flag_sv.png' style='width: 21px; height: 14px;'/>
+						<img alt='nl' src='flags/flag_nl.png' style='width: 21px; height: 14px;'/>
+						<img alt='zh' src='flags/flag_zh.png' style='width: 21px; height: 14px;'/>
 					</td>
 				</tr>
 				<tr>
 					<td style='vertical-align: top;'>Online Documentation ( Help perspective )</td>
 					<td style='vertical-align: top;'>
-						<img alt='' src='flags/flag_en.png' style='width: 21px; height: 14px;'/>
-						<img alt='' src='flags/flag_fr.png' style='width: 21px; height: 14px;'/>
+						<img alt='en' src='flags/flag_en.png' style='width: 21px; height: 14px;'/>
+						<img alt='fr' src='flags/flag_fr.png' style='width: 21px; height: 14px;'/>
 					</td>
 				</tr>
 				<tr>
-					<td style='vertical-align: top;'>Site ( <a href='http://jajuk.sourceforge.net'>http://jajuk.sourceforge.net</a> )</td>
+					<td style='vertical-align: top;'>Web site ( <a href='http://jajuk.sourceforge.net'>http://jajuk.sourceforge.net</a> )</td>
 					<td style='vertical-align: top;'>
-						<img alt='' src='flags/flag_en.png' style='width: 21px; height: 14px;'/>
+						<img alt='en' src='flags/flag_en.png' style='width: 21px; height: 14px;'/>
 					</td>
 				</tr>
 			</tbody>
@@ -54,9 +58,10 @@
 		<table style='width: 100%; text-align: left;' border='0' cellpadding='2' cellspacing='2'>
 			<tbody>
 				<tr>
+					<td style='vertical-align: top;'><p><b>2004/05/14</b></p>
+					<p><a href='http://sourceforge.net/projects/jajuk/'>Jajuk 0.2 released<br></br>Ogg Vorbis and others formats supported, <br></br>Swedish and Dutch translation</a></p></td>
 					<td style='vertical-align: top;'><p><b>2004/04/23</b></p>
 					<p><a href='http://sourceforge.net/projects/jajuk/'>Jajuk 0.1.6 released<br></br>Italian translation and bug fixes</a></p></td>
-					<td style='vertical-align: top;'/>
 					<td style='vertical-align: top;'/>
 				</tr>
 				<tr>
@@ -75,7 +80,6 @@
   	<section name='Features'>
 		<p><b>Current features</b></p>
   	   		<ul>
-	   			<li>MP3 files support</li>
 	   			<li>Standard player functions: repeat, shuffle, intro, fast forward/rewind, mute, volume, position in track...</li>
 	   			<li>Advanced player functions : </li>
 	   			<ul>
@@ -115,12 +119,10 @@
 	<p><b>Near futur features</b></p>
  		<p>See <a href='/planning.html'>roadmap</a> for more details</p>
  		<ul>
-  			<li>Ogg Vorbis support</li>
-   			<li>Playlist editor</li>
-	   		<li>Meta-properties support : you will be able to create a property of your own ( a rate or localisation system for exemple ) that you can set on tracks or any item</li>
+  			<li>Playlist editor</li>
+	   		<li>Custom properties support : you will be able to create a property of your own ( a rate or localisation system for exemple ) that you can set on tracks or any item</li>
    			<li>Peer to Peer device-type support</li>
-   			<li>New online help contents</li>
-  		</ul>
+   		</ul>
    </section>
 
  

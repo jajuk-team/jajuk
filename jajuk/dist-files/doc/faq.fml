@@ -3,15 +3,15 @@
 
   <part id="general">
     <title>General</title>
-   
     <faq id="whats-Jajuk">
       <question>
         What is Jajuk?
       </question>
       <answer>
-        <p>Jajuk is an advance Jukebox used to manage big music collections</p>
+        <p>Jajuk is an advance Jukebox used to manage large or scattered music collections for advanced users.</p>
       </answer>
      </faq>
+    
     <faq id="formats">
      <question>
         Which formats are supported?
@@ -20,7 +20,11 @@
         <p><u>Music files</u></p>
         <ul>
          <li>MP3</li>
-         <li>Ogg Vorbis will be supported soon (see roadmap)</li>
+         <li>Ogg Vorbis</li>
+         <li>Wave</li>
+         <li>Au (Sun Audio)</li>
+         <li>Aiff (Apple Audio Interchange)</li>
+         <li>SPEEX</li>
         </ul>
         <p><u>Playlist files</u></p>
         <ul>
@@ -30,21 +34,75 @@
         <ul>
          <li>ID3 V1</li>
          <li>ID3 V2</li>
+         <li>Ogg Vorbis tags</li>
         </ul>
       </answer>
     </faq>
-</part>
     
-  <part id="install">
-    <title>Installation</title>
-   
-    <faq id="how-install">
-      <question>
-        How do I install Jajuk?
+    <faq id="wma">
+     <question>
+        Is the WMA supported, is it planned to be supported ?
       </question>
       <answer>
-        <p>See <a href="installation.html">Jajuk installation guide</a></p>
+        <p>WMA is a proprietary format from Microsoft that we don't support. We only use 100% pure Java APIs (from javazoom) and this format 
+        is not yet available by any Java API. Anyway, we don't want to encourage the use of WMA to avoid even more dependence to Microsoft. Prefer Ogg Vorbis, a free, open and better
+        sound format if you look for a MP3 replacement.</p>
       </answer>
     </faq>
-  </part>  
+     
+     <faq id="tagedit">
+     <question>
+        Can we edit tags with Jajuk ?
+      </question>
+      <answer>
+        <p>Not presently. Jajuk will soon provide new features for tracks edition : id3 and ogg edition, custom properties and CDDB retagging.</p>
+      </answer>
+    </faq>
+      
+	</part>
+
+    
+	<part id="install">
+    	<title>Installation</title>
+   	    <faq id="how-install">
+    	  <question>How do I install Jajuk?</question>
+      	  <answer>
+        	<p>See <a href="installation.html">Jajuk installation guide</a></p>
+      	  </answer>
+    	</faq>
+  	</part>  
+  
+   <part id="technical">
+    <title>Technical</title>
+      <faq id="perfs">
+     <question>
+        How much resources takes Jajuk ?
+      </question>
+      <answer>
+        <p><li>On a PC/P4M 1.8Ghz, Jajuk uses about 9%CPU to read mp3 and 3% to read Ogg Vorbis.</li></p>
+        <p><li>Performances are better (by about 10%) with JRE 1.5 in comparison with JRE 1.4.2.</li></p>
+        <p><li>Performances are a bit better under Microsoft Windows than GNU/Linux.</li></p>
+      </answer>
+    </faq>
+    
+    <faq id="native">
+     <question>
+        Do you plan to use native API for jajuk ?
+      </question>
+      <answer>
+       	Not for the moment and it is very unlikely.
+      </answer>
+    </faq>
+  
+    <faq id="media">
+     <question>
+        Do you plan to read video and pictures etc... with Jajuk and make it a media center ?
+      </question>
+      <answer>
+       	It is very unlikely. We want to make a jukebox with as many features as we can for advanced users. We want to manage Music and make it right. 
+       	Note however that we plan to externalize the indexer engine to be used by others project (like <a href='http://japo.sourceforge.net'>Japo</a>, a picture organizer).
+      </answer>
+    </faq>
+  </part>
+  
 </faqs>
