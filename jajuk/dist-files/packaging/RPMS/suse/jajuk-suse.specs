@@ -1,6 +1,6 @@
 Summary: Jajuk Advanced Jukebox
 Name: jajuk
-Version: 0.3.1rc3
+Version: 0.3.1rc4
 Release: suse
 Group: Applications/Audio
 Copyright: Copyright Bertrand Florat & Jajuk team 2003 - 2004
@@ -15,7 +15,7 @@ Requires: java2 >= 1.4.2
 Jajuk Advanced Jukebox
 %files
 %defattr(-,root,root)
-  /usr/bin/jajuk
+  /usr/local/bin/jajuk
    /usr/lib/jajuk/bin/jajuk-help.jar
    /usr/lib/jajuk/bin/jajuk.jar
    /usr/lib/jajuk/lib/animation-1.1.3.jar
@@ -31,7 +31,7 @@ Jajuk Advanced Jukebox
    /usr/lib/jajuk/lib/jogg-0.0.5.jar
    /usr/lib/jajuk/lib/jorbis-0.0.12.jar
    /usr/lib/jajuk/lib/kunststoff-2.0.1.jar
-   /usr/lib/jajuk/lib/liquidlnf-0.2.8.jar
+   /usr/lib/jajuk/lib/liquidlnf-0.2.9-alpha5.jar
    /usr/lib/jajuk/lib/log4j-1.2.6.jar
    /usr/lib/jajuk/lib/metouia-1.0b.jar
    /usr/lib/jajuk/lib/mp3spi-1.9.jar
