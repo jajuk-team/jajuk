@@ -30,12 +30,12 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Properties;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -129,9 +129,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		}
 	});
 	
-	
-	
-	/**
+    /**
 	 * @return singleton
 	 */
 	public static synchronized CommandJPanel getInstance(){
@@ -149,7 +147,10 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		sbSearch = new SearchBox(CommandJPanel.this);
 		
 		//history
-		jcbHistory = new SteppedComboBox(History.getInstance().getHistory().toArray());
+		jcbHistory = new SteppedComboBox();
+        //we use a combobox model to make sure we get good performances after rebuilding the entire model like after a refresh
+        jcbHistory.setModel(new DefaultComboBoxModel(History.getInstance().getHistory()));
+                
 		int iWidth = (int)(Toolkit.getDefaultToolkit().getScreenSize().getWidth()/2);
 		jcbHistory.setPopupWidth(iWidth);
 		jcbHistory.setToolTipText(Messages.getString("CommandJPanel.0")); //$NON-NLS-1$
@@ -294,8 +295,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		jbMute.addActionListener(CommandJPanel.this);
 		jbMute.setToolTipText(Messages.getString("CommandJPanel.7")); //$NON-NLS-1$
 		jbMute.setBorder(BorderFactory.createRaisedBevelBorder());
-		
-		
+			
 		//dimensions
 		int height1 = 25;  //buttons, components
 		//int height2 = 36; //slider ( at least this height in the gtk+ l&f ) 
@@ -331,10 +331,9 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		ObservationManager.register(EVENT_ZERO,CommandJPanel.this);
 		ObservationManager.register(EVENT_MUTE_STATE,CommandJPanel.this);
 		ObservationManager.register(EVENT_REPEAT_MODE_STATUS_CHANGED,CommandJPanel.this);
-		ObservationManager.register(EVENT_DEVICE_REFRESH,CommandJPanel.this);
-	    ObservationManager.register(EVENT_FILE_LAUNCHED,this);
-	    
-		//if a track is playing, display right state
+		ObservationManager.register(EVENT_FILE_LAUNCHED,this);
+        ObservationManager.register(EVENT_CLEAR_HISTORY,this);
+      //if a track is playing, display right state
 		if ( FIFO.getInstance().getCurrentFile() != null){
 			//update initial state 
 			update(new Event(EVENT_PLAYER_PLAY,ObservationManager.getDetailsLastOccurence(EVENT_PLAYER_PLAY)));
@@ -346,47 +345,6 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		timer.start();
 	}	
 	
-	/** 
-	 * Add an history item in the history combo box
-	 * @param file
-	 */
-	public void addHistoryItem(HistoryItem hi){
-		String sOut = hi.toString();
-		if (sOut == null){
-			return;
-		}
-		jcbHistory.removeActionListener(this); //stop listening this item when manupulating it
-		jcbHistory.insertItemAt(sOut,0);
-		jcbHistory.setSelectedIndex(0);
-		jcbHistory.addActionListener(this);
-    }
-	
-	
-	/**
-	 * Clear history bar
-	 */
-	public void clearHistoryBar(){
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				jcbHistory.removeAllItems();
-			}
-		});
-	}
-    
-    /**Refresh history bar*/
-    public void refreshHistoryBar(){
-        jcbHistory.removeActionListener(this); //stop listening this item when manupulating it
-        jcbHistory.removeAllItems();
-        Iterator it = History.getInstance().getHistory().iterator();
-        while (it.hasNext()){
-            HistoryItem hi = (HistoryItem)it.next();
-            jcbHistory.addItem(hi.toString());
-        }
-        jcbHistory.setSelectedIndex(0);
-        jcbHistory.addActionListener(this);
-    }
-	
-	
 	/* (non-Javadoc)
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
@@ -394,36 +352,27 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		//do not run this in a separate thread because Player actions would die with the thread
 		try{
 			if ( ae.getSource() == jcbHistory){
-				SwingWorker sw = new SwingWorker() {
-					HistoryItem hi = null;
-					public Object construct() {
-						hi = History.getInstance().getHistoryItem(jcbHistory.getSelectedIndex());
-						return null;
-					}
-					
-					public void finished() {
-						if (hi != null){
-							org.jajuk.base.File file = FileManager.getFile(hi.getFileId());
-							if (file!= null && !file.isScanned()){  //file must be on a mounted device not refreshing
-								try{
-									FIFO.getInstance().push(new StackItem(file,ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
-								}
-								catch(JajukException je){  //can be thrown if file is null
-									return;
-								}
-							}
-							else{
-								Messages.showErrorMessage("120",file.getDirectory().getDevice().getName()); //$NON-NLS-1$
-								jcbHistory.setSelectedItem(null);
-							}
-						}	
-					}
-				};
-				sw.start();
+			    HistoryItem hi = null;
+			    hi = History.getInstance().getHistoryItem(jcbHistory.getSelectedIndex());
+			    if (hi != null){
+			        org.jajuk.base.File file = FileManager.getFile(hi.getFileId());
+			        if (file != null && !file.isScanned()){  //file must be on a device not refreshing
+			            try{
+			                FIFO.getInstance().push(new StackItem(file,ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
+			            }
+			            catch(JajukException je){  //can be thrown if file is null
+			                return;
+			            }
+			        }
+			        else{
+			            Messages.showErrorMessage("120",file.getDirectory().getDevice().getName()); //$NON-NLS-1$
+			            jcbHistory.setSelectedItem(null);
+			        }
+			    }	
 			}
 			if (ae.getSource() == jbBestof ){
-				ArrayList alToPlay = FileManager.getGlobalBestofPlaylist();
-				if ( alToPlay.size() > 0){
+			    ArrayList alToPlay = FileManager.getGlobalBestofPlaylist();
+			    if ( alToPlay.size() > 0){
 					FIFO.getInstance().push(Util.createStackItems(alToPlay,
 							ConfigurationManager.getBoolean(CONF_STATE_REPEAT),false),false);
 				}
@@ -654,14 +603,13 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 						CommandJPanel.getInstance().jbRepeat.setBorder(BorderFactory.createRaisedBevelBorder());    
 					}
 				}
-                else if(EVENT_DEVICE_REFRESH.equals(subject)){
-                   History.getInstance().cleanup();
-                   refreshHistoryBar();
-                }
                 else if (EVENT_FILE_LAUNCHED.equals(subject)){
-                	String sFileID = (String)ObservationManager.getDetail(event,DETAIL_CURRENT_FILE_ID);
-                	long lDate =( (Long)ObservationManager.getDetail(event,DETAIL_CURRENT_DATE)).longValue();
-                	addHistoryItem(new HistoryItem(sFileID,lDate));
+                    jcbHistory.removeActionListener(CommandJPanel.this);
+                    jcbHistory.setSelectedIndex(0);
+                    jcbHistory.addActionListener(CommandJPanel.this);
+                }
+                else if(EVENT_CLEAR_HISTORY.equals(event.getSubject())){
+                  jcbHistory.setSelectedItem(null); //clear selection bar (data itself is clear from the model by History class)  
                 }
 			}
 		});

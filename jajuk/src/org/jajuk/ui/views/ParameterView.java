@@ -53,11 +53,9 @@ import org.jajuk.Main;
 import org.jajuk.base.Event;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
-import org.jajuk.base.History;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.base.SearchResult;
 import org.jajuk.i18n.Messages;
-import org.jajuk.ui.CommandJPanel;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.LNFManager;
 import org.jajuk.ui.PerspectiveBarJPanel;
@@ -795,8 +793,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		new Thread(){
 			public void run(){
 				if (e.getSource() == jbClearHistory){
-					History.getInstance().clear();
-					CommandJPanel.getInstance().clearHistoryBar();
+                    ObservationManager.notify(new Event(EVENT_CLEAR_HISTORY));
 				}
 				else if (e.getSource() == jcbShuffleCover){
 					jcbLoadEachTrack.setEnabled(jcbShuffleCover.isSelected());

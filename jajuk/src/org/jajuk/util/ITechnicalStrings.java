@@ -301,7 +301,8 @@ public interface ITechnicalStrings {
 	public static final String EVENT_PLAY_ERROR="error"; //an error occured during a play
 	public static final String EVENT_MUTE_STATE="mute_state"; //mute state changed
 	public static final String EVENT_SYNC_TREE_TABLE="sync_tree_table"; //sync table and tree views
-	
+    public static final String EVENT_CLEAR_HISTORY="clear history"; //clear history
+    
 	//details keys
 	public static final String DETAIL_CURRENT_FILE_ID="current file id";
 	public static final String DETAIL_CURRENT_FILE="current file";
