@@ -134,6 +134,7 @@ public class ConfigurationManager implements ITechnicalStrings{
 		properties.put(CONF_STATE_SHUFFLE,FALSE); 
 		properties.put(CONF_STATE_CONTINUE,TRUE);
 		properties.put(CONF_STATE_INTRO,FALSE); 
+		properties.put(CONF_STATE_WAS_PLAYING,TRUE); 
 		properties.put(CONF_STARTUP_FILE,""); //no startup file by default  //$NON-NLS-1$
 		properties.put(CONF_STARTUP_MODE,STARTUP_MODE_LAST_KEEP_POS);
 		properties.put(CONF_STARTUP_LAST_POSITION,"0"); //$NON-NLS-1$

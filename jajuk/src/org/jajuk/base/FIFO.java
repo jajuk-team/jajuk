@@ -407,6 +407,8 @@ public class FIFO implements ITechnicalStrings,Runnable,Observer{
 					bIntroEnabled = ConfigurationManager.getBoolean(CONF_STATE_INTRO); //re-read intro mode
 					if ( !bPlaying){  //test this to avoid notifying at each launch
 						ObservationManager.notify(EVENT_PLAYER_PLAY);  //notify to devices like commandJPanel to update ui when the play button has been pressed
+						//	set was playing state
+						ConfigurationManager.setProperty(CONF_STATE_WAS_PLAYING,TRUE);
 					}
 					int index = 0;
 					lOffset = 0;
@@ -444,6 +446,10 @@ public class FIFO implements ITechnicalStrings,Runnable,Observer{
 				}
 			}
 			//fifo is over ( stop request ) , reinit labels in information panel before exiting
+			//	set was playing state if it is not a stop called by jajuk exit 
+			if (!Main.isExiting()){
+			    ConfigurationManager.setProperty(CONF_STATE_WAS_PLAYING,FALSE);
+			}
 			reset();  //reset ui
 			Player.stop();  //stop player
 			fifo = null; //delete singleton
@@ -453,14 +459,6 @@ public class FIFO implements ITechnicalStrings,Runnable,Observer{
 		    Log.error("122", e); //$NON-NLS-1$
 		    fifo = null; //delete singleton
 		}
-	}
-	
-	/**
-	 * Stopping thread method
-	 *
-	 */
-	public synchronized void stopFIFO() {
-		bStop = true;
 	}
 	
 	/** 
