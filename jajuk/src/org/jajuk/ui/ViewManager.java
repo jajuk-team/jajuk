@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.4  2003/11/21 15:00:48  bflorat
+ * Corrected various display bugs when changing current perspective
+ *
  * Revision 1.3  2003/11/18 21:50:56  bflorat
  * 18/11/2003
  *
@@ -36,6 +39,7 @@ import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import org.jajuk.Main;
 import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.log.Log;
@@ -74,14 +78,24 @@ public class ViewManager implements ITechnicalStrings{
 				JInternalFrame ji = (JInternalFrame)hmViewContainer.get(view.getName());
 				IView newView = (IView)view.getClass().newInstance();  //reinstanciate the view, needed to avoid many repaint problems
 				ji.setContentPane((JPanel)newView); //reset content pane. A repaint() inside the JPanel doesn't work.
+				ji.setOpaque(true);
+				ji.repaint();
+				IPerspective perspective = (IPerspective)hmViewPerspective.get(view.getName());
+				perspective.getDesktop().repaint();
+				Main.jframe.repaint();
 			}
 			else if (sEvent.equals(EVENT_VIEW_CLOSE_REQUEST)){
-					JInternalFrame ji = (JInternalFrame)hmViewContainer.get(view.getName());
-					ji.setVisible(false);
+				JInternalFrame ji = (JInternalFrame)hmViewContainer.get(view.getName());
+				IPerspective perspective = (IPerspective)hmViewPerspective.get(view.getName());
+				ji.setVisible(false);
+				perspective.getDesktop().repaint();
 			}
 			else if (sEvent.equals(EVENT_VIEW_SHOW_REQUEST)){
 				JInternalFrame ji = (JInternalFrame)hmViewContainer.get(view.getName());
 				ji.setVisible(true);
+				IPerspective perspective = (IPerspective)hmViewPerspective.get(view.getName());
+				perspective.getDesktop().repaint();
+				Main.jframe.repaint();
 			}
 		}catch(Exception e){
 			Log.error("118",sEvent,e);

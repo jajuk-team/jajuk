@@ -9,6 +9,9 @@
  * 
  * You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,USA
  * $Log$
+ * Revision 1.23  2003/11/21 15:00:39  bflorat
+ * Corrected various display bugs when changing current perspective
+ *
  * Revision 1.22  2003/11/21 10:28:18  bflorat
  * Corrected perspective/views repaint problems
  *
@@ -20,7 +23,6 @@
 package org.jajuk;
 
 import java.awt.BorderLayout;
-import java.awt.Container;
 import java.awt.Frame;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -29,7 +31,9 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 import org.jajuk.base.Collection;
 import org.jajuk.base.FIFO;
@@ -58,6 +62,9 @@ public class Main implements ITechnicalStrings {
 	public static CommandJPanel command;
 	public static PerspectiveBarJPanel perspectiveBar;
 	public static InformationJPanel information;
+	public static JPanel jpDesktop;
+	public static JPanel jpFrame;
+	
 
 	public static void main(String[] args) {
 		try {
@@ -111,7 +118,9 @@ public class Main implements ITechnicalStrings {
 					exit(0);
 				}
 			});
-			Container container = jframe.getContentPane();
+			jpFrame = (JPanel)jframe.getContentPane();
+			jpFrame.setLayout(new BorderLayout());
+			jpFrame.setOpaque(true);
 			
 			//Creates the command panel
 			command = CommandJPanel.getInstance();
@@ -129,17 +138,23 @@ public class Main implements ITechnicalStrings {
 			information.setCurrentStatus(76);
 			//**************************
 	
+			//Main panel
+			jpDesktop = new JPanel();
+			jpDesktop.setOpaque(true);
+			jpDesktop.setBorder(BorderFactory.createEtchedBorder());
+			jpDesktop.setLayout(new BorderLayout());
 		
+			
 			//Add static panels
-			container.add(command, BorderLayout.NORTH);
-			container.add(perspectiveBar, BorderLayout.WEST);
-			container.add(information, BorderLayout.SOUTH);
+			jpFrame.add(command, BorderLayout.NORTH);
+			jpFrame.add(perspectiveBar, BorderLayout.WEST);
+			jpFrame.add(information, BorderLayout.SOUTH);
+			jpFrame.add(jpDesktop, BorderLayout.CENTER);
+				
 			
 			//Set menu bar to the frame
 			jframe.setJMenuBar(JajukJMenuBar.getInstance());
 			
-			//Close splash screen
-			sc.dispose();
 		
 			//display window
 			jframe.pack();
@@ -151,13 +166,11 @@ public class Main implements ITechnicalStrings {
 						
 			//Initialize perspective manager
 			PerspectiveManager.init();
-			
-			//Update current view 
-			JajukJMenuBar.getInstance().refreshViews();
 		
-	
-			
-			
+			//Close splash screen
+			sc.dispose();
+		
+				
 		} catch (JajukException je) { //last chance to catch any error for logging purpose
 			Log.error(je);
 			exit(1);
