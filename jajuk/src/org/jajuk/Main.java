@@ -18,6 +18,8 @@
  */
 package org.jajuk;
 
+//TODO Verif bug lors validation options-> delete history bar
+
 import java.awt.BorderLayout;
 import java.awt.Frame;
 import java.awt.event.WindowAdapter;

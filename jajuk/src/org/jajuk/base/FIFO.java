@@ -62,6 +62,15 @@ public class FIFO extends Thread implements ITechnicalStrings{
 	/** Total time in fifo (ms)*/
 	private long lTotalTime = 0;
 	
+	/** Glocal random enabled ? */
+	private boolean bGlobalRandom = false;
+	
+	/** Repeated set */
+	private ArrayList alRepeated;
+	
+	/** Repeated set index */
+	private int iRepeatIndex;
+	
 	/**
 	 * Singleton access
 	 * @return
@@ -83,8 +92,16 @@ public class FIFO extends Thread implements ITechnicalStrings{
 	 * Push some files in the fifo
 	 * @param alFiles, list of files to be played
 	 * @param bAppend keep previous files or stop them to start a new one ?
+	 * @param bAuto file is added by the system, not by a user action
 	 */
-	public synchronized void push(ArrayList alFiles, boolean bAppend) {
+	public synchronized void push(ArrayList alFiles, boolean bAppend,boolean bAuto) {
+		if (!bAuto){
+			FIFO.getInstance().setGlobalRandom(false); //global random mode is broken by any push
+		}
+		if (TRUE.equals(ConfigurationManager.getProperty(CONF_STATE_REPEAT))){  //repeat is on
+			alRepeated = alFiles;
+			iRepeatIndex = 0;
+		}
 		if (!bAppend) {
 			Player.stop();
 			bPlaying = false;
@@ -102,6 +119,28 @@ public class FIFO extends Thread implements ITechnicalStrings{
 	}
 	
 	/**
+	 * Push some files in the fifo
+	 * @param alFiles, list of files to be played
+	 * @param bAppend keep previous files or stop them to start a new one ?
+	 */
+	public synchronized void push(ArrayList alFiles, boolean bAppend) {
+		push(alFiles,bAppend,false);
+	}
+	
+	/**
+	 * Push some files in the fifo
+	 * @param file, file to be played
+	 * @param bAppend keep previous files or stop them to start a new one ?
+	 */
+	public synchronized void push(File file, boolean bAppend, boolean bAuto) {
+		ArrayList alFiles = new ArrayList(1);
+		alFiles.add(file);
+		push(alFiles,bAppend,bAuto);
+	}
+
+	
+	
+	/**
 	 * Push one file in the fifo
 	 * @param file, file to be played
 	 * @param bAppend keep previous files or stop them to start a new one ?
@@ -109,7 +148,7 @@ public class FIFO extends Thread implements ITechnicalStrings{
 	public synchronized void push(File file, boolean bAppend) {
 		ArrayList al = new ArrayList(1);
 		al.add(file);
-		push(al,bAppend);
+		push(al,bAppend,false);
 	}
 	
 	
@@ -139,14 +178,24 @@ public class FIFO extends Thread implements ITechnicalStrings{
 					i++;
 					continue; //leave
 				}
-				if (!bPlaying && alFIFO.size() == 0  ){//empty fifo
-					if ( fCurrent!= null && TRUE.equals(ConfigurationManager.getProperty(CONF_STATE_CONTINUE))){ //continue mode ?
+				if (!bPlaying && alFIFO.size() == 0  ){//empty fifo, lets decide what to do with folowing priorities : global random / repeat / continue
+					if ( bGlobalRandom){ //Global random mode
+						push(FileManager.getShuffleFile(),false,true);
+					}
+					else if ( fCurrent!= null && TRUE.equals(ConfigurationManager.getProperty(CONF_STATE_REPEAT))){ //repeat mode ?
+						iRepeatIndex ++;
+						if (iRepeatIndex >= alRepeated.size()){
+							iRepeatIndex = 0;
+						}
+						push((File)alRepeated.get(iRepeatIndex),false);
+					}
+					else if ( fCurrent!= null && TRUE.equals(ConfigurationManager.getProperty(CONF_STATE_CONTINUE))){ //continue mode ?
 						File fileNext = FileManager.getNextFile(fCurrent);
 						if ( fileNext != null ){
-							push(FileManager.getNextFile(fCurrent),true);	
+							push(fileNext,true);	
 						}
 					}
-					else{  //fifo empty and nothing planned to be played, lets re-initialize lables
+					else{  //fifo empty and nothing planned to be played, lets re-initialize labels
 						if ( i%(REFRESH_TIME/SLEEP_TIME) == 0){  //actual refresh less frequent for cpu
 							lTotalTime = 0;
 							long lTime = 0;
@@ -211,4 +260,18 @@ public class FIFO extends Thread implements ITechnicalStrings{
 		return fCurrent;
 	}
 	
+	/**
+	 * @return Returns the bGlobalRandom.
+	 */
+	public boolean isGlobalRandom() {
+		return bGlobalRandom;
+	}
+
+	/**
+	 * @param globalRandom The bGlobalRandom to set.
+	 */
+	public void setGlobalRandom(boolean globalRandom) {
+		bGlobalRandom = globalRandom;
+	}
+
 }

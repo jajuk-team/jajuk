@@ -26,6 +26,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.StringTokenizer;
 
@@ -194,6 +195,39 @@ public class Util implements ITechnicalStrings {
 	public static String formatTime(long l){
 		String sOut = new SimpleDateFormat("HH:mm:ss").format(new Date(l+82800000));
 		return sOut;
+	}
+	
+	/**
+	 * Shake a list and return a randomized new list
+	 * @param alIn
+	 * @return
+	 */
+	public static ArrayList randomize(ArrayList alIn){
+		int[] iNewIndexes = new int[alIn.size()];
+		int size = alIn.size();
+		for (int i=0;i<size;i++){
+			iNewIndexes[i]= -1;
+		}
+		for (int i=0;i<size;i++){
+			int newIndex = 0;
+			boolean bOK = false;
+			while (!bOK){
+				newIndex = (int)(Math.random()*size);
+				iNewIndexes[i]=newIndex;
+				bOK = true;
+				for (int j=0;j<size;j++){ //check this index is not already token
+					if ( j!= i && iNewIndexes[j] == newIndex){
+						bOK = false;
+						break;
+					}
+				}
+			}
+		}			
+		ArrayList alOut = (ArrayList)alIn.clone();
+		for (int i =0;i<size;i++){
+			alOut.set(i,alIn.get(iNewIndexes[i]));
+		}
+		return alOut;
 	}
 	
 }

@@ -20,6 +20,9 @@
 
 package org.jajuk.base;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * An history item
  *
@@ -66,4 +69,15 @@ public class HistoryItem{
 		sFileId = fileId;
 	}
 
+	/** Human readable representation of this history item as read in the history bar
+	 *@return String*/
+	public String toString(){
+		File file = FileManager.getFile(getFileId());
+		if (file == null){
+			return null;
+		}
+		StringBuffer sbAuthor = new StringBuffer(file.getTrack().getAuthor().getName2());
+		String sDate = new SimpleDateFormat("dd/MM/yy HH:mm").format(new Date(getDate()));
+		return sbAuthor.append(" / ").append(file.getTrack().getName()).append(" [").append(sDate).append("]").toString();
+	}
 }

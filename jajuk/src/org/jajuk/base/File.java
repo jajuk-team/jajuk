@@ -91,6 +91,26 @@ public class File extends PropertyAdapter{
 	}
 	
 	/**
+	 * Return true is the specified directory is an ancestor for this file
+	 * @param directory
+	 * @return
+	 */
+	public boolean hasAncestor(Directory directory){
+		Directory dirTested = getDirectory();
+		while (true){
+			if ( dirTested.equals(directory)){
+				return true;
+			}
+			else{
+				dirTested = dirTested.getParentDirectory();
+				if (dirTested == null ){
+					return false;
+				}
+			}
+		}
+	}
+	
+	/**
 	 * @return
 	 */
 	public String getId() {

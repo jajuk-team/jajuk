@@ -84,7 +84,7 @@ public interface ITechnicalStrings {
 	public static final String ICON_OK =  PATH_ICONS + "22x22/ok.png";
 	public static final String ICON_KO =  PATH_ICONS + "22x22/ko.png";
 	public static final String ICON_FILE =  PATH_ICONS + "16x16/bestof.png";
-	public static final String ICON_DIRECTORY =  PATH_ICONS + "16x16/continue.png";
+	public static final String ICON_DIRECTORY =  PATH_ICONS + "16x16/fileopen.png";
 	public static final String ICON_DEVICE =  PATH_ICONS + "16x16/bestof.png";
 	public static final String ICON_PLAYLIST_FILE =  PATH_ICONS + "16x16/refresh.png";
 	

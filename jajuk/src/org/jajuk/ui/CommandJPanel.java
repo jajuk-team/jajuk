@@ -23,10 +23,6 @@ package org.jajuk.ui;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -40,7 +36,6 @@ import javax.swing.JToolBar;
 import layout.TableLayout;
 
 import org.jajuk.base.FIFO;
-import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.History;
 import org.jajuk.base.HistoryItem;
@@ -126,14 +121,13 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 			
 		//history toolbar
 		jtbHistory = new JToolBar();
+		populateHistoryBar();
 		jtbHistory.setFloatable(false);
-		jcbHistory = new SteppedComboBox(new Vector());
 		jcbHistory.setMinimumSize(new Dimension(150,20));
 		jcbHistory.setPreferredSize(new Dimension(300,20));
 		jcbHistory.setMaximumSize(new Dimension(300,20));
 		jcbHistory.setPopupWidth(1000);
 		jcbHistory.setToolTipText(Messages.getString("CommandJPanel.play_history_1")); //$NON-NLS-1$
-		populateHistoryBar();
 		jcbHistory.addActionListener(this);
 		jtbHistory.add(jcbHistory);
 		
@@ -167,6 +161,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		jtbSpecial.setFloatable(false);
 		jtbSpecial.setRollover(true);
 		jbGlobalRandom = new JButton(new ImageIcon(ICON_ROLL)); 
+		jbGlobalRandom.addActionListener(this);
 		jbGlobalRandom.setToolTipText(Messages.getString("CommandJPanel.Play_a_shuffle_selection_from_the_entire_collection_1")); //$NON-NLS-1$
 		jtbSpecial.add(jbGlobalRandom);
 		jbBestof = new JButton(new ImageIcon(ICON_BESTOF)); 
@@ -233,46 +228,47 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 	 * @param file
 	 */
 	public void addHistoryItem(HistoryItem hi){
-		File file = FileManager.getFile(hi.getFileId());
-		if (file == null){
+		String sOut = hi.toString();
+		if (sOut == null){
 			return;
 		}
-		String sAuthor = file.getTrack().getAuthor().getName2();
-		sAuthor +=" / ";
-		String sDate = new SimpleDateFormat("dd/MM/yy HH:mm").format(new Date(hi.getDate()));
-		String sOut = sAuthor+file.getTrack().getName()+" ["+sDate+"]";
 		jcbHistory.insertItemAt(sOut,0);
 		bSelect = false;
 		jcbHistory.setSelectedIndex(0);
 		bSelect = true;
 	}
 
-
-
 	
 	/**
 	 * Fill the history bar
 	 */
 	public void populateHistoryBar(){
-		jcbHistory.removeAllItems();
-		History.getInstance().clear(Integer.parseInt(ConfigurationManager.getProperty(CONF_HISTORY)));
-		Iterator it1 = History.getInstance().getHistory().iterator();
-		while (it1.hasNext()){
-			HistoryItem hi = (HistoryItem)it1.next();
-			addHistoryItem(hi);
+		if ( jcbHistory != null){
+			jcbHistory.removeAllItems();
 		}
+		History.getInstance().clear(Integer.parseInt(ConfigurationManager.getProperty(CONF_HISTORY))); //delete old history items
+		jcbHistory = new SteppedComboBox(History.getInstance().getHistory().toArray());
+		
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
 	public void actionPerformed(ActionEvent ae) {
-			if ( bSelect && ae.getSource() == jcbHistory){
+		if ( bSelect && ae.getSource() == jcbHistory){
 			HistoryItem hi = History.getInstance().getHistoryItem(jcbHistory.getSelectedIndex());
 			if (hi != null){
 				org.jajuk.base.File file = FileManager.getFile(hi.getFileId());
 				FIFO.getInstance().push(file,false);
 			}
+		}
+		if (ae.getSource() == jbGlobalRandom ){
+			org.jajuk.base.File file = FileManager.getShuffleFile();
+			if (file != null){
+				FIFO.getInstance().setGlobalRandom(true);
+				FIFO.getInstance().push(file,false,true);
+			}
+			
 		}
 	}
 }
