@@ -82,6 +82,10 @@ public class AlbumManager {
 	 */
 	public static synchronized Album registerAlbum(String sId, String sName) {
 		String sIdTest = MD5Processor.hash(sName.trim().toLowerCase());
+        //Hash checkup
+        if (!sId.equals(sIdTest)){ //collection corruption, ignore this entry
+                return null;
+        }
 		if (hmAlbums.containsKey(sIdTest)) {
 			return (Album) hmAlbums.get(sIdTest);
 		}

@@ -60,6 +60,10 @@ public class StyleManager {
 	 */
 	public static synchronized Style registerStyle(String sId, String sName) {
 		String sIdTest = MD5Processor.hash(sName.trim().toLowerCase());
+		 //Hash checkup
+        if (!sId.equals(sIdTest)){ //collection corruption, ignore this entry
+                return null;
+        }
 		if (hmStyles.containsKey(sIdTest)) {
 			return (Style) hmStyles.get(sIdTest);
 		}
