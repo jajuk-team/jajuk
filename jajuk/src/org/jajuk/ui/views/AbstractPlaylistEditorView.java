@@ -536,9 +536,15 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
             if ( iRow != -1 ){ //-1 means nothing is selected
                 if ( ae.getSource() == jbDown){
                     plfi.getPlaylistFile().down(iRow);
+                    if (iRow < iRowNum-1){
+                        jtable.getSelectionModel().setSelectionInterval(iRow+1,iRow+1);
+                    }
                 }
                 else if ( ae.getSource() == jbUp){
                     plfi.getPlaylistFile().up(iRow);
+                    if (iRow > 0){
+                        jtable.getSelectionModel().setSelectionInterval(iRow-1,iRow-1);
+                    }
                 }
             }
         }
