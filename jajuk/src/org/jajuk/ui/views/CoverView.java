@@ -21,6 +21,8 @@
 package org.jajuk.ui.views;
 
 import java.awt.Image;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.image.AreaAveragingScaleFilter;
 import java.awt.image.FilteredImageSource;
 import java.awt.image.ImageFilter;
@@ -48,7 +50,7 @@ import org.jajuk.util.log.Log;
  * @author     bflorat
  * @created   28 dec. 2003
  */
-public class CoverView extends ViewAdapter implements Observer{
+public class CoverView extends ViewAdapter implements Observer,ComponentListener{
 
 	/**Current Image*/
 	private static Image image;
@@ -61,6 +63,7 @@ public class CoverView extends ViewAdapter implements Observer{
 	 * Constructor
 	 */
 	public CoverView() {
+		addComponentListener(this);
 		setLayout(new BoxLayout(this,BoxLayout.X_AXIS));
 		try {
 			image = java.awt.Toolkit.getDefaultToolkit().getImage(new URL(IMAGES_SPLASHSCREEN));
@@ -168,6 +171,40 @@ public class CoverView extends ViewAdapter implements Observer{
 	 */
 	public String getViewName() {
 		return "org.jajuk.ui.views.CoverView"; //$NON-NLS-1$
+	}
+
+	/* (non-Javadoc)
+	 * @see java.awt.event.ComponentListener#componentHidden(java.awt.event.ComponentEvent)
+	 */
+	public void componentHidden(ComponentEvent e) {
+	}
+
+	/* (non-Javadoc)
+	 * @see java.awt.event.ComponentListener#componentMoved(java.awt.event.ComponentEvent)
+	 */
+	public void componentMoved(ComponentEvent e) {
+	}
+
+	/* (non-Javadoc)
+	 * @see java.awt.event.ComponentListener#componentResized(java.awt.event.ComponentEvent)
+	 */
+	public void componentResized(ComponentEvent e) {
+		new Thread(){
+			public void run(){
+				try {
+					Thread.sleep(1000); //to avoid to much display during resizing
+					display();
+				} catch (InterruptedException e) {
+					Log.error(e);
+				}
+			}
+		}.start();
+	}
+
+	/* (non-Javadoc)
+	 * @see java.awt.event.ComponentListener#componentShown(java.awt.event.ComponentEvent)
+	 */
+	public void componentShown(ComponentEvent e) {
 	}
 
 
