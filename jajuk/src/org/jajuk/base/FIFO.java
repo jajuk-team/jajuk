@@ -61,7 +61,7 @@ public class FIFO extends Thread implements ITechnicalStrings{
 	
 	
 	/** Current track start date*/
-	private long lTrackStart; 
+	public long lTrackStart; 
 	
 	/** Total time in fifo (sec)*/
 	private long lTotalTime = 0;

@@ -19,6 +19,7 @@
  */
 package org.jajuk.players;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 
@@ -45,12 +46,13 @@ public class JavaLayerPlayerImpl implements IPlayerImpl,ITechnicalStrings{
 	 * @see org.jajuk.base.IPlayerImpl#play()
 	 */
 	public void play(org.jajuk.base.File file,int iPosition,int iLength) throws Exception{
-		player = new AdvancedPlayer(new FileInputStream(new File(file.getAbsolutePath()))); //$NON-NLS-1$
+		player = new AdvancedPlayer(new BufferedInputStream(new FileInputStream(new File(file.getAbsolutePath())))); //$NON-NLS-1$
 		player.setPlayBackListener(new PlaybackListener() {
 			public void playbackFinished(PlaybackEvent pbe){
 				FIFO.getInstance().finished();
 			}
 		});
+		FIFO.getInstance().lTrackStart = System.currentTimeMillis();  //time correction
 		if (iPosition < 0){
 			player.play();
 		}
