@@ -103,8 +103,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 	JLabel jlPosition;
 	JSlider jsPosition;
 	JButton jbMute;
-	
-	
+		
 	//variables declaration
 	/**Repeat mode flag*/
 	static boolean bIsRepeatEnabled = false;
@@ -243,7 +242,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		jbRew.setBorder(BorderFactory.createEmptyBorder(4,4,4,4));
 		jbRew.setEnabled(false);
 		jbRew.setToolTipText(Messages.getString("CommandJPanel.10")); //$NON-NLS-1$
-		jbRew.addActionListener(CommandJPanel.this);
+		jbRew.addMouseListener(CommandJPanel.this);
 		jbPlayPause = new JButton(Util.getIcon(ICON_PAUSE)); 
 		jbPlayPause.setBorder(BorderFactory.createEmptyBorder(4,4,4,4));
 		jbPlayPause.setToolTipText(Messages.getString("CommandJPanel.11")); //$NON-NLS-1$
@@ -418,10 +417,6 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 					Player.pause();
 					ObservationManager.notify(new Event(EVENT_PLAYER_PAUSE));  //notify of this event
 				}
-			}
-			else if (ae.getSource() == jbRew){
-				float fCurrentPosition = Player.getCurrentPosition();
-				Player.seek(fCurrentPosition-JUMP_SIZE);
 			}
 			else if (ae.getSource() == jbFwd){
 				float fCurrentPosition = Player.getCurrentPosition();
@@ -665,6 +660,10 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 					}
 				}
 			}
+            else if (e.getSource() == jbRew){
+                 float fCurrentPosition = Player.getCurrentPosition();
+                  Player.seek(fCurrentPosition-JUMP_SIZE);
+            }
 		}
 		//right click or shift+left click
 		else if (e.getButton() == MouseEvent.BUTTON3 || ((e.getModifiersEx() & MouseEvent.SHIFT_DOWN_MASK) == MouseEvent.SHIFT_DOWN_MASK)){
@@ -699,6 +698,10 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 						ObservationManager.notify(new Event(EVENT_PLAYER_RESUME));  //notify of this event
 					}
 				}
+			}
+			else if (e.getSource() == jbRew){
+			    //replay the entire file
+			    Player.seek(0);
 			}
 		}
 	}
