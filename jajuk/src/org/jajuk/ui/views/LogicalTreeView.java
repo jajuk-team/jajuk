@@ -525,18 +525,22 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 						alFilesToPlay.add(file);
 					}
 				}
+				if ( alFilesToPlay.size() == 0){
+					Messages.showErrorMessage("018"); //$NON-NLS-1$
+					return;
+				}
 				if ( alTracks.size() > 0  && (e.getSource() == jmiTrackPlay 
 						|| e.getSource() == jmiAlbumPlay
 						|| e.getSource() == jmiAuthorPlay
 						|| e.getSource() == jmiStylePlay )){
-					FIFO.getInstance().push(alFilesToPlay,false);
+					FIFO.getInstance().push(Util.applyPlayOption(alFilesToPlay),false);
 					
 				}
 				else if (alTracks.size() > 0  && ( e.getSource() == jmiTrackPush 
 						|| e.getSource() == jmiAlbumPush
 						|| e.getSource() == jmiAuthorPush
 						|| e.getSource() == jmiStylePush) ){
-					FIFO.getInstance().push(alFilesToPlay,true);
+					FIFO.getInstance().push(Util.applyPlayOption(alFilesToPlay),true);
 				}
 				else if ( alTracks.size() > 0  && (e.getSource() == jmiAlbumPlayShuffle
 						|| e.getSource() == jmiAuthorPlayShuffle
@@ -547,7 +551,7 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 				else if (alTracks.size() > 0  && ( e.getSource() == jmiAlbumPlayRepeat
 						|| e.getSource() == jmiAuthorPlayRepeat
 						|| e.getSource() == jmiStylePlayRepeat) ){
-					FIFO.getInstance().push(alFilesToPlay,false,false,true);
+					FIFO.getInstance().push(Util.applyPlayOption(alFilesToPlay),false,false,true);
 				}
 			}
 		}.start();
@@ -563,7 +567,7 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.Observer#update(java.lang.String)
 	 */
-	public synchronized void update(String subject) {
+	public void update(String subject) {
 		if ( subject.equals(EVENT_DEVICE_MOUNT) || subject.equals(EVENT_DEVICE_UNMOUNT)){
 			SwingWorker sw = new SwingWorker() {
 				public Object  construct(){

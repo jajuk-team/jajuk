@@ -220,7 +220,7 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.Observer#update(java.lang.String)
 	 */
-	public synchronized void update(String subject) {
+	public void update(String subject) {
 		if ( subject.equals(EVENT_DEVICE_MOUNT) || subject.equals(EVENT_DEVICE_UNMOUNT) || subject.equals(EVENT_DEVICE_REFRESH) ) {
 			SwingWorker sw = new SwingWorker() {
 				public Object  construct(){

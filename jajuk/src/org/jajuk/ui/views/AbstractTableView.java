@@ -181,7 +181,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.Observer#update(java.lang.String)
 	 */
-	public synchronized void update(String subject) {
+	public void update(String subject) {
 		if ( subject.equals(EVENT_DEVICE_MOUNT) || subject.equals(EVENT_DEVICE_UNMOUNT) || subject.equals(EVENT_DEVICE_REFRESH) ) {
 			applyFilter(sAppliedCriteria,sAppliedFilter); //force filter to refresh
 		}	

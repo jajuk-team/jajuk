@@ -247,11 +247,11 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
 				}
 				//simple play
 				if ( e.getSource() == jmiFilePlay){
-					FIFO.getInstance().push(alFilesToPlay,false);
+					FIFO.getInstance().push(Util.applyPlayOption(alFilesToPlay),false);
 				}
 				//push
 				else if ( e.getSource() == jmiFilePush){
-					FIFO.getInstance().push(alFilesToPlay,true);
+					FIFO.getInstance().push(Util.applyPlayOption(alFilesToPlay),true);
 				}
 				//shuffle play
 				else if ( e.getSource() == jmiFilePlayShuffle){
@@ -260,7 +260,7 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
 				}
 				//repeat play
 				else if ( e.getSource() == jmiFilePlayRepeat){
-					FIFO.getInstance().push(alFilesToPlay,false,false,true);
+					FIFO.getInstance().push(Util.applyPlayOption(alFilesToPlay),false,false,true);
 				}
 			}
 		}.start();

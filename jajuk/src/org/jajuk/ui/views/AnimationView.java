@@ -98,7 +98,7 @@ public class AnimationView extends ViewAdapter implements ITechnicalStrings,Obse
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.Observer#update(java.lang.String)
 	 */
-	public synchronized void update(String subject) {
+	public void update(String subject) {
 		if (subject.equals(EVENT_INFORMATION_DISPLAY)){
 			String s = InformationJPanel.getInstance().getMessage();
 			if (s != null  && !s.trim().equals("")){ //$NON-NLS-1$

@@ -174,7 +174,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
     /* (non-Javadoc)
      * @see org.jajuk.ui.Observer#update(java.lang.String)
      */
-    public synchronized void update(String subject){
+    public void update(String subject){
         if (bAlreadyRefreshing){ //another refreshing is probably blocked until time out by a web search
             return;
         }

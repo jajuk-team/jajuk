@@ -429,7 +429,7 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.Observer#update(java.lang.String)
 	 */
-	public synchronized void update(String subject) {
+	public void update(String subject) {
 		if ( EVENT_DEVICE_MOUNT.equals(subject) || EVENT_DEVICE_UNMOUNT.equals(subject) || EVENT_DEVICE_REFRESH.equals(subject)){
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {

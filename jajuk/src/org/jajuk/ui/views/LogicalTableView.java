@@ -243,16 +243,16 @@ public class LogicalTableView extends AbstractTableView implements Observer{
 					}
 				}
 				if ( alFilesToPlay.size() == 0){
-					Messages.showErrorMessage("010"); //$NON-NLS-1$
+					Messages.showErrorMessage("018"); //$NON-NLS-1$
 					return;
 				}
 				//simple play
 				if ( e.getSource() == jmiTrackPlay){
-					FIFO.getInstance().push(alFilesToPlay,false);
+					FIFO.getInstance().push(Util.applyPlayOption(alFilesToPlay),false);
 				}
 				//push
 				else if ( e.getSource() == jmiTrackPush){
-					FIFO.getInstance().push(alFilesToPlay,true);
+					FIFO.getInstance().push(Util.applyPlayOption(alFilesToPlay),true);
 				}
 				//shuffle play
 				else if ( e.getSource() == jmiTrackPlayShuffle){
@@ -261,7 +261,7 @@ public class LogicalTableView extends AbstractTableView implements Observer{
 				}
 				//repeat play
 				else if ( e.getSource() == jmiTrackPlayRepeat){
-					FIFO.getInstance().push(alFilesToPlay,false,false,true);
+					FIFO.getInstance().push(Util.applyPlayOption(alFilesToPlay),false,false,true);
 				}
 			}
 		}.start();

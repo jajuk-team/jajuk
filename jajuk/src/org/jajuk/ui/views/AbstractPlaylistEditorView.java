@@ -265,7 +265,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.Observer#update(java.lang.String)
 	 */
-	public synchronized void update(String subject) {
+	public void update(String subject) {
 		if ( EVENT_PLAYLIST_REFRESH.equals(subject)){
 			if ( plfi == null ){
 				return;

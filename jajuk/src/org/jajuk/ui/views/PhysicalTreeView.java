@@ -349,8 +349,6 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 		jmenuPlaylistFile.add(jmiPlaylistFileSetProperty);
 		jmenuPlaylistFile.add(jmiPlaylistFileProperties);
 		
-		
-		
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		top = new DefaultMutableTreeNode(Messages.getString("PhysicalTreeView.47")); //$NON-NLS-1$
 		//Register on the list for subject we are interrested in
@@ -481,7 +479,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 		});
 		//Listen for double clic
 		MouseListener ml = new MouseAdapter() {
-			public void mousePressed(MouseEvent e) {
+			public void mousePressed(final MouseEvent e) {
 				TreePath path = jtree.getPathForLocation(e.getX(), e.getY());
 				if ( e.getClickCount() == 2){
 					Object o = path.getLastPathComponent();
@@ -548,13 +546,13 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 							}
 						}
 					}
-					//display menus according node type
+						//display menus according node type
 					if (paths[0].getLastPathComponent() instanceof FileNode ){
 						jmenuFile.show(jtree,e.getX(),e.getY());
 					}
 					else if (paths[0].getLastPathComponent() instanceof DirectoryNode){
-						jmenuDir.show(jtree,e.getX(),e.getY());
-					}
+				        jmenuDir.show(jtree,e.getX(),e.getY());
+        			}
 					else if (paths[0].getLastPathComponent() instanceof PlaylistFileNode){
 						jmenuPlaylistFile.show(jtree,e.getX(),e.getY());
 					}
@@ -696,23 +694,23 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 		new Thread(){
 			public void run(){
 				if (e.getSource() == jmiFilePlay && alFiles.size() > 0 ){
-					FIFO.getInstance().push(alFiles,false);
+					FIFO.getInstance().push(Util.applyPlayOption(alFiles),false);
 				}
 				else if (e.getSource() == jmiFilePush  && alFiles.size() > 0){
-					FIFO.getInstance().push(alFiles,true);
+					FIFO.getInstance().push(Util.applyPlayOption(alFiles),true);
 				}
 				else if ( alFiles!= null && alFiles.size() > 0 && (e.getSource() == jmiDirPlay || e.getSource() == jmiDevPlay)){  
-					FIFO.getInstance().push(alFiles,false);
+					FIFO.getInstance().push(Util.applyPlayOption(alFiles),false);
 				}
 				else if (alFiles!= null && alFiles.size() > 0 && (e.getSource() == jmiDirPush || e.getSource() == jmiDevPush)){
-					FIFO.getInstance().push(alFiles,true);
+					FIFO.getInstance().push(Util.applyPlayOption(alFiles),true);
 				}
 				else if (alFiles!= null && alFiles.size() > 0 && (e.getSource() == jmiDirPlayShuffle || e.getSource() == jmiDevPlayShuffle)){
 				    Collections.shuffle(alFiles);
 					FIFO.getInstance().push(alFiles,false);
 				}
 				else if (alFiles!= null && alFiles.size() > 0 && (e.getSource() == jmiDirPlayRepeat || e.getSource() == jmiDevPlayRepeat)){
-					FIFO.getInstance().push(alFiles,false,false,true);
+					FIFO.getInstance().push(Util.applyPlayOption(alFiles),false,false,true);
 				}
 				else if ( e.getSource() == jmiDevMount){
 					for (int i=0;i<paths.length;i++){
@@ -819,7 +817,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.Observer#update(java.lang.String)
 	 */
-	public synchronized void update(String subject) {
+	public void update(String subject) {
 		if ( subject.equals(EVENT_DEVICE_MOUNT) || subject.equals(EVENT_DEVICE_UNMOUNT) || subject.equals(EVENT_DEVICE_REFRESH) ) {
 			SwingWorker sw = new SwingWorker() {
 				public Object  construct(){
