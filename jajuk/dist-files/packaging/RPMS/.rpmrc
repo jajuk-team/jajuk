@@ -1,0 +1,4 @@
+buildarchtranslate: i386: noarch
+buildarchtranslate: i486: noarch
+buildarchtranslate: i586: noarch
+buildarchtranslate: i686: noarch

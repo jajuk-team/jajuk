@@ -1,6 +1,7 @@
-%define name                     jajuk
-%define version                     0.3.2
-%define release                     1mdk
+%define name jajuk
+%define version 0.3.2
+%define release 1mdk
+%define arch noarch
 
 %define section                  Multimedia/Sound
 %define title                         Jajuk

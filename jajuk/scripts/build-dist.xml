@@ -321,8 +321,8 @@
   	 <mkdir dir='${uploaddir}'/>
       <copy todir='${uploaddir}' >
       	<fileset file='${sourcesdist}'/>
-     	<fileset file='${rpmbuilddir_mdk}/RPMS/i586/*'/>
-     	<fileset file='${rpmbuilddir_suse}/RPMS/i586/*'/>
+     	<fileset file='${rpmbuilddir_mdk}/RPMS/noarch/*'/>
+     	<fileset file='${rpmbuilddir_suse}/RPMS/noarch/*'/>
      	 <fileset file='${windowsdir}/jajuk-${version}.exe'/>
      	 <fileset file='${izpackdir}/jajuk-install-${version}.jar'/>
      </copy>
