@@ -71,7 +71,6 @@ public class StatView extends ViewAdapter implements Observer{
 	/**Self instance*/
 	private static StatView sv;
 	
-		
 	/**Return self instance*/
 	public static StatView getInstance(){
 		if (sv == null){
@@ -180,7 +179,6 @@ public class StatView extends ViewAdapter implements Observer{
 				lTotalSize += file.getSize();
 				lSizes[alDevices.indexOf(file.getDirectory().getDevice())] += file.getSize();
 			}
-		
 			if ( lTotalSize == 0){ //no data, leave empty
 				return null;
 			}
@@ -229,26 +227,22 @@ public class StatView extends ViewAdapter implements Observer{
 			long lSizeByMounth[] = new long[iMounthsNumber+1]; //contains size ( in Go ) for each mounth, first cell is before
 			int iNow = Integer.parseInt(new SimpleDateFormat(DATE_FILE).format(new Date()))/100; //reference mounth
 			//data
+			int[] iMounts = getMounts(iMounthsNumber);
 			Iterator it = TrackManager.getTracks().iterator();
 			while ( it.hasNext()){
 				Track track = (Track)it.next();
 				int i = Integer.parseInt(track.getAdditionDate())/100;
 				for (int j=0;j<iMounthsNumber+1;j++){
-					if ( i <= (iNow - j)){
-						lSizeByMounth[iMounthsNumber-j] += track.getTotalSize();
+					if ( i <= iMounts[j]){
+						lSizeByMounth[j] += track.getTotalSize();
 					}
 				}
 			}
-			
 			double[][] data = new double[1][iMounthsNumber+1];
-			String[] sLabel = new String[iMounthsNumber+1];
 			for (int i = 0;i<iMounthsNumber+1;i++){
 				data[0][i] = (double)lSizeByMounth[i]/1073741824;
-				String sMounth = Integer.toString(iNow- ( iMounthsNumber - i));
-				sLabel[i] =  new StringBuffer(sMounth.substring(4,6)).append('/').append(sMounth.substring(0,4)).toString(); 
 			}
-			sLabel[0] = "before";
-			cdata = DatasetUtilities.createCategoryDataset(new String[]{""},sLabel, data);
+			cdata = DatasetUtilities.createCategoryDataset(new String[]{""},getMountsLabels(iMounthsNumber), data);
 			//chart
 			jfchart = ChartFactory.createBarChart3D(
 					"Collection size by mounth",      // chart title
@@ -291,29 +285,27 @@ public class StatView extends ViewAdapter implements Observer{
 		try {
 			CategoryDataset cdata = null;
 			JFreeChart jfchart = null;
-			int iMounthsNumber = 10; //number of mounts we show, mounts before are set together in 'before'
-			int iTracksByMounth[] = new int[iMounthsNumber+1]; //contains number of tracks for each mounth, first cell is before
 			int iNow = Integer.parseInt(new SimpleDateFormat(DATE_FILE).format(new Date()))/100; //reference mounth
+			int iMounthsNumber = 10; //number of mounts we show, mounts before are set together in 'before'
+			String[] sMounths = getMountsLabels(iMounthsNumber);
+			int iTracksByMounth[] = new int[iMounthsNumber+1]; //contains number of tracks for each mounth, first cell is 'before'
 			//data
+			int[] iMounts = getMounts(iMounthsNumber);
 			Iterator it = TrackManager.getTracks().iterator();
 			while ( it.hasNext()){
 				Track track = (Track)it.next();
 				int i = Integer.parseInt(track.getAdditionDate())/100;
 				for (int j=0;j<iMounthsNumber+1;j++){
-					if ( i <= (iNow - j)){
-						iTracksByMounth[iMounthsNumber-j] ++;
+					if ( i <= iMounts[j]){
+						iTracksByMounth[j] ++;
 					}
 				}
 			}
 			double[][] data = new double[1][iMounthsNumber+1];
-			String[] sLabel = new String[iMounthsNumber+1];
 			for (int i = 0;i<iMounthsNumber+1;i++){
 				data[0][i] = (double)iTracksByMounth[i];
-				String sMounth = Integer.toString(iNow- ( iMounthsNumber - i));
-				sLabel[i] =  new StringBuffer(sMounth.substring(4,6)).append('/').append(sMounth.substring(0,4)).toString(); 
 			}
-			sLabel[0] = "before";
-			cdata = DatasetUtilities.createCategoryDataset(new String[]{""},sLabel, data);
+			cdata = DatasetUtilities.createCategoryDataset(new String[]{""},getMountsLabels(iMounthsNumber), data);
 			
 			//chart
 			jfchart = ChartFactory.createBarChart3D(
@@ -381,5 +373,42 @@ public class StatView extends ViewAdapter implements Observer{
 		}
 		
 	}
+	
+	/**
+	 * Computes mounts labels
+	 * @param iMounthsNumber : number of mounts ( without 'before' ) you want
+	 * @return the mounts labels
+	 */
+	private String[] getMountsLabels(int iMounthsNumber){
+			int iNow = Integer.parseInt(new SimpleDateFormat(DATE_FILE).format(new Date()))/100; //reference mounth
+			String sMounths[] = new String[iMounthsNumber+1]; //contains number of tracks for each mounth, first cell is 'before'
+			int iYear = iNow/100;
+			int iMounth = Integer.parseInt(Integer.toString(iNow).substring(4,6));
+			for (int k=0;k<iMounthsNumber;k++){
+				sMounths[iMounthsNumber-k] = new StringBuffer().append((iMounth/10==0)?"0":"").append(Integer.toString(iMounth)).append('/').append(Integer.toString(iYear)).toString();
+				iMounth--;
+				if (iMounth == 0){
+					iMounth = 12;
+					iYear --;
+				}
+			}
+			sMounths[0]="before";
+			return sMounths;
+	}
+	
+	/**
+	 * Get mounths as integers
+	 * @param iMounthsNumber
+	 * @return
+	 */
+	private int[] getMounts(int iMounthsNumber){
+		int[] iMounths = new int[iMounthsNumber+1];	
+		String[] sMounths = getMountsLabels(iMounthsNumber+1);
+		for (int i=0;i<iMounthsNumber+1;i++){
+			iMounths[i] = Integer.parseInt(sMounths[i+1].substring(3,7)+sMounths[i+1].substring(0,2));
+		}
+		return iMounths;
+	}
+
 
 }
