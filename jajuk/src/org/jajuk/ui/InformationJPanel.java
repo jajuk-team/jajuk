@@ -38,6 +38,7 @@ import javax.swing.border.EtchedBorder;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
 import org.jajuk.base.JajukTimer;
+import org.jajuk.base.Player;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
@@ -270,11 +271,11 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,Obser
      * @see org.jajuk.ui.Observer#update(java.lang.String)
      */
 	public synchronized void update(String subject) {  //we synchronize this method to make error message is visible all 2 secs
-	    if (EVENT_HEART_BEAT.equals(subject) &&!FIFO.isStopped()){
+	    if (EVENT_HEART_BEAT.equals(subject) &&!FIFO.isStopped() && !Player.isPaused()){
 	        long length = JajukTimer.getInstance().getCurrentTrackTotalTime(); 
             long lTime = JajukTimer.getInstance().getCurrentTrackEllapsedTime();
         	long lTotalTime = JajukTimer.getInstance().getTotalTimeToPlay();
-            int iPos = (length!=0)?(int)(100*lTime/length):0;  //if length=0, pos is always 0 to avoid division by zero
+            int iPos = (int)(100*JajukTimer.getInstance().getCurrentTrackPosition()); 
 	        setCurrentStatus(iPos);
 	        String sCurrentTotalMessage =  Util.formatTimeBySec(JajukTimer.getInstance().getTotalTimeToPlay(),false);
 	        setTotalStatusMessage(sCurrentTotalMessage);
