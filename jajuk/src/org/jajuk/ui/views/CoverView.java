@@ -27,6 +27,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.image.AreaAveragingScaleFilter;
 import java.awt.image.FilteredImageSource;
 import java.awt.image.ImageFilter;
@@ -43,6 +45,7 @@ import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -69,7 +72,7 @@ import org.jajuk.util.log.Log;
  * @author     bflorat
  * @created   28 dec. 2003
  */
-public class CoverView extends ViewAdapter implements Observer,ComponentListener,ActionListener{
+public class CoverView extends ViewAdapter implements Observer,ComponentListener,ActionListener,ItemListener{
     
     /**Current directory used as a cache for perfs*/
     private File fDir;
@@ -86,6 +89,8 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
     JButton jbDefault;
     JLabel jlSize;
     JLabel jlFound;
+    JLabel jlSearching;
+    JComboBox jcbAccuracy;
     
     /**Date last resize (used for adjustment management)*/
     private long lDateLastResize;
@@ -127,7 +132,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
         jpControl.setBorder(BorderFactory.createEtchedBorder());
         int iXspace = 5;
         double sizeControl[][] =
-        {{20,iXspace,20,2*iXspace,20,iXspace,20,2*iXspace,20,2*iXspace,0.50,2*iXspace,0.50},
+        {{20,iXspace,20,2*iXspace,20,iXspace,20,2*iXspace,20,2*iXspace,0.30,2*iXspace,0.30,2*iXspace,0.30,2*iXspace,20},
                 {25}};
         jpControl.setLayout(new TableLayout(sizeControl));
         jbPrevious = new JButton(Util.getIcon(ICON_PREVIOUS));
@@ -147,6 +152,16 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
         jbDefault.setToolTipText(Messages.getString("CoverView.8")); //$NON-NLS-1$
         jlSize = new JLabel(""); //$NON-NLS-1$
         jlFound = new JLabel(""); //$NON-NLS-1$
+        jlSearching = new JLabel("",Util.getIcon(ICON_NET_SEARCH),JLabel.CENTER); //$NON-NLS-1$
+        jcbAccuracy = new JComboBox();
+        jcbAccuracy.setToolTipText(Messages.getString("ParameterView.155")); //$NON-NLS-1$
+        jcbAccuracy.addItem(Messages.getString("ParameterView.156")); //$NON-NLS-1$
+        jcbAccuracy.addItem(Messages.getString("ParameterView.157")); //$NON-NLS-1$
+        jcbAccuracy.addItem(Messages.getString("ParameterView.158")); //$NON-NLS-1$
+        jcbAccuracy.addItem(Messages.getString("ParameterView.168")); //$NON-NLS-1$ TBI
+        jcbAccuracy.setSelectedIndex(Integer.parseInt(ConfigurationManager.getProperty(CONF_COVERS_ACCURACY)));
+        jcbAccuracy.addItemListener(this);
+        
         jpControl.add(jbPrevious,"0,0");//$NON-NLS-1$
         jpControl.add(jbNext,"2,0");//$NON-NLS-1$
         jpControl.add(jbSave,"4,0");//$NON-NLS-1$
@@ -154,6 +169,8 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
         jpControl.add(jbDefault,"8,0");//$NON-NLS-1$
         jpControl.add(Util.getCentredPanel(jlSize,BoxLayout.X_AXIS),"10,0");//$NON-NLS-1$
         jpControl.add(Util.getCentredPanel(jlFound,BoxLayout.X_AXIS),"12,0");//$NON-NLS-1$
+        jpControl.add(Util.getCentredPanel(jcbAccuracy,BoxLayout.X_AXIS),"14,0");//$NON-NLS-1$
+        jpControl.add(Util.getCentredPanel(jlSearching,BoxLayout.X_AXIS),"16,0");//$NON-NLS-1$
         addComponentListener(this);
         
         ObservationManager.register(EVENT_COVER_REFRESH,this);
@@ -186,14 +203,10 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                 final org.jajuk.base.File fCurrent = FIFO.getInstance().getCurrentFile();
                 //if current file is null ( probably a file cannot be read ) 
                 if ( fCurrent == null){
-                    displayCurrentCover(); //do nothing
+                    displayCurrentCover(); 
                     return; 
                 }
-                java.io.File fDir = new java.io.File(fCurrent.getAbsolutePath()).getParentFile();
-                if ( !fDir.exists() || (this.fDir!= null && this.fDir.equals(fDir)) ){  //if we are always in the same directory, just leave to save cpu
-                    return;
-                }
-                this.fDir = fDir; //store this dir
+                this.fDir = new java.io.File(fCurrent.getAbsolutePath()).getParentFile(); //store this dir
                 synchronized(alCovers){
                     alCovers.clear();
                     //search for local covers
@@ -216,18 +229,19 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                             }
                         }
                     }
-                   if (alCovers.size() == 0){//add the default cover if none other cover has been found
-                       alCovers.add(coverDefault); 
-                   }
+                    if (alCovers.size() == 0){//add the default cover if none other cover has been found
+                        alCovers.add(coverDefault); 
+                    }
                     //display local or default cover without wait
                     Collections.sort(alCovers); //sort the list
                     Log.debug("Local cover list: "+alCovers); //$NON-NLS-1$
-                    index = alCovers.size()-1;  //current index points to the best available cover
-                    SwingUtilities.invokeLater(new Runnable() {
-                        public void run() {
-                            jlFound.setText(getCoverNumber()+" "+Messages.getString("CoverView.9")); //$NON-NLS-1$ //$NON-NLS-2$
-                        }
-                    });
+                    if (ConfigurationManager.getBoolean(CONF_COVERS_SHUFFLE)){
+                        index = (int)(Math.random()*(alCovers.size()-1)); //choose a random cover
+                    }
+                    else{
+                        index = alCovers.size()-1;  //current index points to the best available cover
+                    }
+                    setFoundText(); //update found text 
                 }
                 displayCurrentCover(); //display in advance without waiting for web search to accelerate local covers display
                 //then we search for web covers asynchronously
@@ -245,11 +259,15 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                                     if (!sQuery.equals("")){ //there is not enough information in tags for a web search //$NON-NLS-1$
                                         final ArrayList alUrls;
                                         try{
+                                            searching(true);  //display searching icon
                                             alUrls = DownloadManager.getRemoteCoversList(sQuery);
                                             Collections.reverse(alUrls); //set best results to be displayed  first
                                         }
                                         catch(Exception e){
                                             return; //no web covers found, just leave
+                                        }
+                                        finally{
+                                            searching(false); //hide searching icon
                                         }
                                         //remove default cover if some remote cover have been found
                                         if ( alUrls.size() > 0 && alCovers.size()>0 && ((Cover)alCovers.get(0)).getType() == Cover.DEFAULT_COVER){
@@ -266,14 +284,15 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                                         index +=alUrls.size(); //reset index
                                         Collections.sort(alCovers); //sort the list again with new covers
                                         //refresh number of found covers
-                                        SwingUtilities.invokeLater(new Runnable() {
-                                            public void run() {
-                                                jlFound.setText(getCoverNumber()+" "+Messages.getString("CoverView.9")); //$NON-NLS-1$ //$NON-NLS-2$
-                                            }
-                                        });
+                                        setFoundText();
                                         //display the best found cover if no one was found before
                                         if (iCoversBeforeSearch == 1 && alCovers.size() >1){
-                                            index = alCovers.size()-1;  //current index points to the best available cover
+                                            if (ConfigurationManager.getBoolean(CONF_COVERS_SHUFFLE)){
+                                                index = (int)(Math.random()*(alCovers.size()-1)); //choose a random cover
+                                            }
+                                            else{
+                                                index = alCovers.size()-1;  //current index points to the best available cover
+                                            }
                                             displayCurrentCover();    
                                         }
                                     }
@@ -286,7 +305,8 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                 } 
             }
             else if ( EVENT_PLAYER_STOP.equals(subject) || EVENT_ZERO.equals(subject)){
-                clearFoundCover();
+                setFoundText("");  //$NON-NLS-1$ 
+                setSizeText("");//$NON-NLS-1$
                 synchronized(alCovers){
                     alCovers.clear();
                     alCovers.add(coverDefault); //add the default cover
@@ -304,15 +324,62 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
         }
     }
     
-    /**Clear the found covers label*/
-    private void clearFoundCover(){
+    /**
+     * Set the cover Found text
+     */
+    private void setFoundText(){
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                jlFound.setText(""); //$NON-NLS-1$
-                jlSize.setText(""); //$NON-NLS-1$
+                jlFound.setText((getCoverNumber()-index)+"/"+getCoverNumber()+" "+Messages.getString("CoverView.9")); //$NON-NLS-1$//$NON-NLS-2$
             }
         });
     }
+    
+    /**
+     * Set the cover Found text
+     * @param sFound specified text
+     */
+    private void setFoundText(final String sFound){
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                if ( sFound!=null){   
+                    jlFound.setText(sFound); //$NON-NLS-1$//$NON-NLS-2$
+                }
+            }
+        });
+    }
+    
+    /**
+     * Display or hide search icon
+     * @param bSearching
+     */
+    private void searching(final boolean bSearching){
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                if (bSearching){
+                    jlSearching.setIcon(Util.getIcon(ICON_NET_SEARCH));
+                }
+                else{
+                    jlSearching.setIcon(null);  
+                }
+            }
+        });
+    }
+    
+    /**
+     * Set the cover size text
+     * @param sFound
+     */
+    private void setSizeText(final String sSize){
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                if (sSize != null){
+                    jlSize.setText(sSize); //$NON-NLS-1$
+                }
+            }
+        });
+    }
+    
     
     /* (non-Javadoc)
      * @see org.jajuk.ui.IView#getDesc()
@@ -353,15 +420,16 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
         if ( alCovers.size() == 0 ){
             return;
         }
-         synchronized(bLock){
+        synchronized(bLock){
             Log.debug("display index: "+index); //$NON-NLS-1$
             //find next OK cover
             ImageIcon icon = null;
             Cover cover = null; 
             while ( index >= 0){//there are some more covers after
                 try{
-                    setCursor(Util.WAIT_CURSOR);
-                    cover = (Cover)alCovers.get(index); 
+                    searching(true); //lookup icon
+                    setCursor(Util.WAIT_CURSOR); //waiting cursor
+                    cover = (Cover)alCovers.get(index);  //take image at the given index
                     icon = cover.getImage();
                     icon.getImage().flush();      //free image memory             
                     setCursor(Util.DEFAULT_CURSOR);
@@ -377,12 +445,11 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                         Log.debug("Removed cover: "+cover); //$NON-NLS-1$
                     }
                     //refresh number of found covers
-                    SwingUtilities.invokeLater(new Runnable() {
-                        public void run() {
-                            jlFound.setText(getCoverNumber()+" "+Messages.getString("CoverView.9")); //$NON-NLS-1$ //$NON-NLS-2$
-                        }
-                    });
+                    setFoundText(); 
                     index  --; //look at next cover    
+                }
+                finally{
+                    searching(false);
                 }
             }
             if (icon == null){ //none available cover
@@ -409,7 +476,8 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                             iSize = (int)(Math.ceil((double)new File(url.getFile()).length()/1024));
                         }
                         jl.setToolTipText("<html>"+url.toString()+"<br>"+iSize+"K"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                        jlSize.setText(iSize+"K"+sType); //$NON-NLS-1$
+                        setSizeText(iSize+"K"+sType); //$NON-NLS-1$
+                        setFoundText();
                     }
                     //set tooltip for previous and next track
                     int indexPrevious  = index+1;
@@ -525,11 +593,11 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
             });
         }
     }
-   
-   /**
-    * 
-    * @return number of real covers ( not default) covers found
-    */ 
+    
+    /**
+     * 
+     * @return number of real covers ( not default) covers found
+     */ 
     private int getCoverNumber(){
         if (alCovers.size()>0 && ((Cover)alCovers.get(0)).getType() == Cover.DEFAULT_COVER){
             return alCovers.size() -1;
@@ -539,4 +607,14 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
         }
     }
     
+    /* (non-Javadoc)
+     * @see java.awt.event.ItemListener#itemStateChanged(java.awt.event.ItemEvent)
+     */
+    public void itemStateChanged(ItemEvent e) {
+        if (e.getSource() == jcbAccuracy){
+            ConfigurationManager.setProperty(CONF_COVERS_ACCURACY,Integer.toString(jcbAccuracy.getSelectedIndex()));
+            update(EVENT_COVER_REFRESH); //force refreshing
+        }
+    }
+   
 }
