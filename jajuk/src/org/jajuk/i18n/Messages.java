@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.3  2003/10/17 20:37:18  bflorat
+ * 17/10/2003
+ *
  * Revision 1.2  2003/10/10 17:37:21  bflorat
  * *** empty log message ***
  *
@@ -66,6 +69,16 @@ public class Messages {
 		Messages.sLocal = sLocal;
 		rb = ResourceBundle.getBundle(BUNDLE_NAME,new Locale(sLocal));
 	}
+	
+	/**
+		 * Return the message display to the user corresponding to the error code.
+		 * 
+		 * @param pCode Error code.
+		 * @return String Message corresponding to the error code.
+		 */
+		public static String getErrorMessage(String pCode) {
+			return rb.getString("Error." + pCode); //$NON-NLS-1$
+		}
 	
 
 }

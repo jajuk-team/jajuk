@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.2  2003/10/17 20:37:18  bflorat
+ * 17/10/2003
+ *
  * Revision 1.1  2003/10/12 21:08:11  bflorat
  * 12/10/2003
  *
@@ -26,7 +29,11 @@ import java.io.File;
 import java.io.FileInputStream;
 
 import javazoom.jl.player.Player;
+import javazoom.jl.player.advanced.AdvancedPlayer;
+import javazoom.jl.player.advanced.PlaybackEvent;
+import javazoom.jl.player.advanced.PlaybackListener;
 
+import org.jajuk.base.FIFO;
 import org.jajuk.base.IPlayerImpl;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.log.Log;
@@ -39,14 +46,20 @@ import org.jajuk.util.log.Log;
  */
 public class JavaLayerPlayerImpl implements IPlayerImpl{
 
-	Player player;
+	/**Current player*/
+	private AdvancedPlayer player;
 	
 	/* (non-Javadoc)
 	 * @see org.jajuk.base.IPlayerImpl#play()
 	 */
-	public void play(String sReference) throws Exception{
-		player = new Player(new FileInputStream(new File(sReference))); //$NON-NLS-1$
-		player.play();		
+	public void play(org.jajuk.base.File file) throws Exception{
+		player = new AdvancedPlayer(new FileInputStream(new File(file.getPath()))); //$NON-NLS-1$
+		player.setPlayBackListener(new PlaybackListener() {
+			public void playbackFinished(PlaybackEvent pbe){
+				FIFO.finished();
+			}
+		});
+		player.play();
 	}
 
 	/* (non-Javadoc)
@@ -56,8 +69,5 @@ public class JavaLayerPlayerImpl implements IPlayerImpl{
 		player.close();
 	}
 	
-	public boolean isComplete(){
-		return player.isComplete(); 
-	}
 
 }

@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.2  2003/10/17 20:36:45  bflorat
+ * 17/10/2003
+ *
  * Revision 1.1  2003/10/12 21:08:11  bflorat
  * 12/10/2003
  *
@@ -35,9 +38,11 @@ import org.jajuk.util.log.Log;
  */
 public class FIFO extends Thread {
 
+	/**Cuurently played track */
+	private static File fCurrent;
+
 	/**Fifo itself, contains jajuk File objects **/
 	private static ArrayList alFIFO = new ArrayList(50);
-	//TODO implements jajuk file class
 
 	/**Stop flag**/
 	private static volatile boolean bStop = false;
@@ -52,14 +57,21 @@ public class FIFO extends Thread {
 	}
 
 	/**
-	 * Push a file
-	 * @param file
+	 * Push some files in the fifo
+	 * @param files
 	 * @param bAppend keep previous files or stop them to start a new one ?
 	 */
-	public static synchronized void push(File file) {
-		alFIFO.add(file);
+	public static synchronized void push(File[] files, boolean bAppend) {
+		if (!bAppend) {
+			Player.stop();
+			fCurrent = null;
+			clear();
+		}
+		for (int i = 0; i < files.length; i++) {
+			alFIFO.add(files[i]);
+		}
 	}
-	
+
 	/**
 	 * Clears the fifo, for example when we want to add a group of files stopping previous plays
 	 *
@@ -67,36 +79,51 @@ public class FIFO extends Thread {
 	public static synchronized void clear() {
 		alFIFO.clear();
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see java.lang.Runnable#run()
 	 */
-	public void run() {
+	public synchronized void run() {
 		try {
 			while (!bStop) {
 				Thread.sleep(SLEEP_TIME); //sleep to save CPU
-				if (alFIFO.size()==0){
-					continue;
+				if (fCurrent != null
+					|| alFIFO.size() == 0) {//already playing something or empty fifo
+					continue; //leave
 				}
-				File fileLast = (File) (alFIFO.get(alFIFO.size() - 1));
-				if (Player.isComplete(fileLast.getType())) {
-					Log.debug("finished: "+fileLast);
-					//OK, finished, lets start a new track
-					alFIFO.remove(alFIFO.size() - 1); //remove the ended track 
-					if ( alFIFO.size()>0){
-						fileLast = (File) (alFIFO.get(alFIFO.size() - 1));
-						Log.debug("launches : "+fileLast);
-						Player.play(fileLast);
-					}
-				}
+				fCurrent = (File) (alFIFO.get(0));//take the first file in the fifo
+				alFIFO.remove(0); //remove it from todo list
+				Log.debug("Now playing :"+fCurrent); //$NON-NLS-1$
+				Player.play(fCurrent);  //play it
 			}
 		} catch (Exception e) {
-			Log.error("", e);
+			Log.error("", e); //$NON-NLS-1$
 		}
 	}
 
+	/**
+	 * Stopping thread method
+	 *
+	 */
 	public static synchronized void stopFIFO() {
 		bStop = true;
+	}
+	
+	/**
+	 * Finished method, called by the PlayerImpl when the track is finished
+	 *
+	 */
+	public static synchronized void finished(){
+		Log.debug(fCurrent+ " is finished"); //$NON-NLS-1$
+		fCurrent = null;
+	}
+	
+	/**
+	 *  Get the currently played  file
+	 * @return File
+	 **/
+	public static synchronized File getCurrentFile(){
+		return fCurrent;
 	}
 
 }

@@ -16,59 +16,57 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
- * Revision 1.2  2003/10/17 20:36:45  bflorat
+ * Revision 1.1  2003/10/17 20:36:45  bflorat
  * 17/10/2003
  *
- * Revision 1.1  2003/10/12 21:08:11  bflorat
- * 12/10/2003
- *
  */
+
 package org.jajuk.base;
 
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.Properties;
+import java.util.Iterator;
 
 /**
- *  A music file to be played
- *
+ *  Convenient class to manage styles
+ * <p> Singleton
  * @author     bflorat
- * @created    12 oct. 2003
+ * @created    17 oct. 2003
  */
-public class File extends PropertyAdapter{
-	/**File type ( mp3,ogg...)*/
-	private Type type;
-	/**File full path with file name*/
-	private String sPath;
-	/**File size in bytes*/
-	private long lSize;
+public class StyleManager {
+	/**Styles collection**/
+	static HashMap hmStyles = new HashMap(10);
+
+	/**
+	 * No constructor available, only static access
+	 */
+	private StyleManager() {
+		super();
+	}
+
+	/**
+	 * Register a style
+	 *@param sName
+	 */
+	public static void registerStyle(String sName) {
+		Style style = new Style(hmStyles.size(),sName);
+		hmStyles.put(sName,style);
+	}
+
+
+	/**Return all registred styles*/
+	public static Collection getStyles() {
+		return hmStyles.values();
+	}
+
+	/**
+	 * Return style by name
+	 * @param sName
+	 * @return
+	 */
+	public static Style getStyle(String sName) {
+		return (Style) hmStyles.get(sName);
+	}
+
 	
-	/**
-	 * File instanciation 
-	 * @param sPath
-	 * @param type
-	 */
-	public File(String sPath, Type type) {
-		this.type = type;
-		this.sPath = sPath;
-	}
-
-	/**
-	 * @return
-	 */
-	public String getPath() {
-		return sPath;
-	}
-
-	/**
-	 * @return
-	 */
-	public Type getType() {
-		return type;
-	}
-
-
-	public String toString(){
-		return "File[Path="+sPath+" ; Type="+type+"]";	 //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-	}
 }

@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.5  2003/10/17 20:36:45  bflorat
+ * 17/10/2003
+ *
  * Revision 1.4  2003/10/12 21:08:11  bflorat
  * 12/10/2003
  *
@@ -40,38 +43,47 @@ package org.jajuk.base;
 public interface TechnicalStrings {
 	
 		// directory path
-	public static final String ICON_PATH = System.getProperty("user.dir")+"/dist-files/icons/";
+	public static final String PATH_ICONS = System.getProperty("user.dir")+"/dist-files/icons/";
 	
 		// paths to icons
-	public static final String ICON_REPEAT = ICON_PATH + "16x16/repeat.png";
-	public static final String ICON_SHUFFLE = ICON_PATH + "16x16/shuffle.png"; 
-	public static final String ICON_CONTINUE = ICON_PATH + "16x16/continue.png";
-	public static final String ICON_INTRO = ICON_PATH + "16x16/filter.png";
-	public static final String ICON_ROLL = ICON_PATH + "16x16/roll.png";
-	public static final String ICON_BESTOF = ICON_PATH + "16x16/bestof.png";
-	public static final String ICON_MUTE = ICON_PATH + "16x16/mute.png";
-	public static final String ICON_UP = ICON_PATH + "16x16/up.png";
-	public static final String ICON_DOWN = ICON_PATH + "16x16/down.png";
-	public static final String ICON_REW = ICON_PATH + "16x16/player_rew.png";
-	public static final String ICON_PLAY = ICON_PATH + "16x16/player_end.png";
-	public static final String ICON_STOP = ICON_PATH + "16x16/player_stop.png";
-	public static final String ICON_FWD = ICON_PATH + "16x16/player_fwd.png";
-	public static final String ICON_VOLUME = ICON_PATH + "16x16/volume.png";
-	public static final String ICON_POSITION = ICON_PATH + "16x16/bottom.png";
-	public static final String ICON_PERSPECTIVE_PHYSICAL			= ICON_PATH + "16x16/physical_perspective.png";
-	public static final String ICON_PERSPECTIVE_LOGICAL			= ICON_PATH + "16x16/logical_perspective.png";
-	public static final String ICON_INFO				= ICON_PATH + "16x16/info.png";
-	public static final String ICON_PERSPECTIVE_STATISTICS		= ICON_PATH + "16x16/percent.png";
-	public static final String ICON_PERSPECTIVE_CONFIGURATION	= ICON_PATH + "16x16/configure.png";
-	public static final String ICON_OPEN_FILE	= ICON_PATH + "16x16/fileopen.png";
-	public static final String ICON_EXIT=  ICON_PATH + "16x16/exit.png";
-	public static final String ICON_NEW=  ICON_PATH + "16x16/new.png";
-	public static final String ICON_DELETE=  ICON_PATH + "16x16/delete.png";
+	public static final String ICON_REPEAT_ON = PATH_ICONS + "16x16/repeat.png";
+	public static final String ICON_REPEAT_OFF = PATH_ICONS + "16x16/repeat_off.png";
+	public static final String ICON_SHUFFLE_ON = PATH_ICONS + "16x16/shuffle.png"; 
+	public static final String ICON_SHUFFLE_OFF = PATH_ICONS + "16x16/shuffle_off.png"; 
+	public static final String ICON_CONTINUE_ON = PATH_ICONS + "16x16/continue.png";
+	public static final String ICON_CONTINUE_OFF = PATH_ICONS + "16x16/continue_off.png";
+	public static final String ICON_INTRO_ON = PATH_ICONS + "16x16/filter.png";
+	public static final String ICON_INTRO_OFF = PATH_ICONS + "16x16/filter_off.png";
+	public static final String ICON_ROLL = PATH_ICONS + "16x16/roll.png";
+	public static final String ICON_BESTOF = PATH_ICONS + "16x16/bestof.png";
+	public static final String ICON_MUTE = PATH_ICONS + "16x16/mute.png";
+	public static final String ICON_UP = PATH_ICONS + "16x16/up.png";
+	public static final String ICON_DOWN = PATH_ICONS + "16x16/down.png";
+	public static final String ICON_REW = PATH_ICONS + "16x16/player_rew.png";
+	public static final String ICON_PLAY = PATH_ICONS + "16x16/player_end.png";
+	public static final String ICON_STOP = PATH_ICONS + "16x16/player_stop.png";
+	public static final String ICON_FWD = PATH_ICONS + "16x16/player_fwd.png";
+	public static final String ICON_VOLUME = PATH_ICONS + "16x16/volume.png";
+	public static final String ICON_POSITION = PATH_ICONS + "16x16/bottom.png";
+	public static final String ICON_PERSPECTIVE_PHYSICAL			= PATH_ICONS + "16x16/physical_perspective.png";
+	public static final String ICON_PERSPECTIVE_LOGICAL			= PATH_ICONS + "16x16/logical_perspective.png";
+	public static final String ICON_INFO	= PATH_ICONS + "16x16/info.png";
+	public static final String ICON_PERSPECTIVE_STATISTICS		= PATH_ICONS + "16x16/percent.png";
+	public static final String ICON_PERSPECTIVE_CONFIGURATION	= PATH_ICONS + "16x16/configure.png";
+	public static final String ICON_OPEN_FILE	= PATH_ICONS + "16x16/fileopen.png";
+	public static final String ICON_EXIT=  PATH_ICONS + "16x16/exit.png";
+	public static final String ICON_NEW=  PATH_ICONS + "16x16/new.png";
+	public static final String ICON_DELETE=  PATH_ICONS + "16x16/delete.png";
 
 	//logs
-	public static final String LOG_FILE = System.getProperty("user.home")+"/.jajuk/jajuk.log";
 	public static final String LOG_PATTERN="%d{HH:mm:ss} [%p] %m\n";
+	public static final String LOG_FILE_SIZE="1MB";
 
+	//files
+	public static final String FILE_LOG = System.getProperty("user.home")+"/.jajuk/jajuk.log";
+	public static final String FILE_COLLECTION = System.getProperty("user.home")+"/.jajuk/collection.xml";
+	
+	
 	//players impls
 	public static final String PLAYER_IMPL_JAVALAYER= "org.jajuk.players.JavaLayerPlayerImpl";
 	
@@ -80,5 +92,30 @@ public interface TechnicalStrings {
 	public static final String EXT_PLAYLIST = "m3u";
 	public static final String EXT_OGG = "ogg";
 	
-
+	//event keys
+	public static final String EVENT_EXIT ="exit";
+	public static final String EVENT_OPEN_FILE ="open file";
+	public static final String EVENT_REPEAT_MODE_STATUS_CHANGED="repeat status changed";
+	public static final String EVENT_SHUFFLE_MODE_STATUS_CHANGED="shuffle status changed";
+	public static final String EVENT_CONTINUE_MODE_STATUS_CHANGED="continue status changed";
+	public static final String EVENT_INTRO_MODE_STATUS_CHANGED="intro status changed";
+	
+	//	configuration keys
+	 public static final String CONF_VIEW_PHYSICAL="jajuk.preference.perspective.physical.views";
+	 public static final String CONF_PERSPECTIVE_DEFAULT="jajuk.preference.perspective.default";
+	 public static final String CONF_STATE_REPEAT="jajuk.state.mode.repeat";
+	public static final String CONF_STATE_SHUFFLE="jajuk.state.mode.shuffle";
+	public static final String CONF_STATE_CONTINUE="jajuk.state.mode.continue";
+	public static final String CONF_STATE_INTRO="jajuk.state.mode.intro";
+	 public static final String CONF_ICON_REPEAT= "jajuk.state.ui.icon.repeat";
+ 	public static final String CONF_ICON_SHUFFLE= "jajuk.state.ui.icon.shuffle";
+ 	public static final String CONF_ICON_CONTINUE= "jajuk.state.ui.icon.continue";
+ 	public static final String CONF_ICON_INTRO= "jajuk.state.ui.icon.intro";
+	
+	//views identifiers 
+	/** Identifier of the physical tree view */
+	public static final String VIEW_PHYSICAL_TREE	= "VIEW_PHYSICAL_TREE";
+	/** Identifier of the track list view */
+	public static final String VIEW_TRACK_LIST		= "VIEW_TRACK_LIST";
+	
 }

@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.2  2003/10/17 20:36:45  bflorat
+ * 17/10/2003
+ *
  * Revision 1.1  2003/10/12 21:08:11  bflorat
  * 12/10/2003
  *
@@ -32,33 +35,40 @@ import org.jajuk.util.log.Log;
  * @created    12 oct. 2003
  */
 public class Player {
-	/** Implémentation class**/
-	Object oImplPlayer;
 
-	public Player(String sImplClass) throws Exception {
-		oImplPlayer = Class.forName(sImplClass).newInstance();
-	}
-
-	public static void play(File file){
-		try {
-			IPlayerImpl playerImpl = file.getType().getPlayerImpl();
-			playerImpl.play(file.getPath());
-		} catch (Exception e) {
-			Log.error(Messages.getString("Player.Error_playing____1") + file.getPath(), e); //$NON-NLS-1$
-		}
-	}
-
-	public static void stop(Type type) {
-		try {
-				IPlayerImpl playerImpl = type.getPlayerImpl();
-				playerImpl.stop();
-			} catch (Exception e) {
-				Log.error(Messages.getString("Player.Error_stoping____2") , e); //$NON-NLS-1$
+	private static File fCurrent;
+	private static IPlayerImpl pCurrentPlayerImpl;
+	/**
+	 * Asynchronous play for specified file
+	 * @param file
+	 */
+	public static void play(File file) {
+		fCurrent = file;
+		pCurrentPlayerImpl = file.getType().getPlayerImpl();
+		new Thread() {
+			public void run() {
+				try {
+					pCurrentPlayerImpl.play(fCurrent);
+				} catch (Exception e) {
+					Log.error(Messages.getString("Player.Error_playing____1") + fCurrent.getPath(), e); //$NON-NLS-1$
+				}
 			}
+		}
+		.start();
 	}
 
-	public static boolean isComplete(Type type) {
-		return true;
+	/**
+	 * Stop the played track
+	 * @param type
+	 */
+	public static void stop() {
+		try {
+			if (fCurrent!=null){
+				fCurrent.getType().getPlayerImpl().stop();
+			}
+		} catch (Exception e) {
+			Log.error(Messages.getString("Player.Error_stoping____2"), e); //$NON-NLS-1$
+		}
 	}
 
 }

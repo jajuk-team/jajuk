@@ -16,49 +16,37 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
- * Revision 1.2  2003/10/17 20:36:45  bflorat
+ * Revision 1.1  2003/10/17 20:36:45  bflorat
  * 17/10/2003
- *
- * Revision 1.1  2003/10/12 21:08:11  bflorat
- * 12/10/2003
  *
  */
 package org.jajuk.base;
 
+import java.util.Properties;
+
 /**
- * Music type 
+ *  A music style ( jazz, rock...)
  *
  * @author     bflorat
- * @created    12 oct. 2003
+ * @created    17 oct. 2003
  */
-public class Type {
-	
+public class Style extends PropertyAdapter {
+
+	/** Style ID. Ex:1,2,3...*/
 	private int id;
+	/**Style name upper case. ex:ROCK, JAZZ */
 	private String sName;
-	private String sExtension;
-	private IPlayerImpl playerImpl;
-	
-	
-	public Type(int id, String sName,String sExtension, String sPlayerImpl) throws Exception{
-		this.sExtension = sExtension;
-		this.sName = sName;
-		this.playerImpl = (IPlayerImpl)Class.forName(sPlayerImpl).newInstance();
+
+	/**
+	 * Style constructor
+	 * @param id
+	 * @param sName
+	 */
+	//TODO: see javadoc/arguments auto
+	public Style(int id, String sName) {
+		super();
 		this.id = id;
-	}
-
-
-	/**
-	 * @return
-	 */
-	public IPlayerImpl getPlayerImpl() {
-		return playerImpl;
-	}
-
-	/**
-	 * @return
-	 */
-	public String getExtension() {
-		return sExtension;
+		this.sName = sName;
 	}
 
 	/**
@@ -68,32 +56,29 @@ public class Type {
 		return sName;
 	}
 
-		
 	/**
 	 * toString method
 	 */
-	public String toString(){
-			return "Type[Name="+getName()+ " ; Extension="+sExtension+"]";	 //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+	public String toString() {
+		return "Style[Name=" + getName() + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
-	
-	/**
+
+		/**
 	 * Return an XML representation of this item  
 	 * @return
 	 */
-	public String toXml(){
-		StringBuffer sb = new StringBuffer("\t\t<type id='" +id);
+	public String toXml() {
+		StringBuffer sb = new StringBuffer("\t\t<type id='" + id);
 		sb.append("' name='");
-		sb.append(sName).append("' extension='");
-		sb.append(sExtension).append("'/>\n");
+		sb.append(sName).append("'/>\n");
 		return sb.toString();
 	}
 
 	/**
-	 * @return
+	* @return
 	 */
 	public int getId() {
 		return id;
 	}
-
 
 }

@@ -16,25 +16,53 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
- * Revision 1.2  2003/10/17 20:36:45  bflorat
+ * Revision 1.1  2003/10/17 20:36:45  bflorat
  * 17/10/2003
  *
- * Revision 1.1  2003/10/12 21:08:11  bflorat
- * 12/10/2003
- *
  */
+
 package org.jajuk.base;
 
-/**
- *  Minimum methods required for all Player implementations
- *
- * @author     bflorat
- * @created    12 oct. 2003
- */
-public interface IPlayerImpl {
-		
-		public void play(File file) throws Exception;
+import java.util.Properties;
 
-		public void stop() throws Exception;
-		
+/**
+ * Generic property handler 
+ * 
+ * @author     bflorat
+ * @created    17 oct. 2003
+ */
+public class PropertyAdapter implements IPropertyable {
+
+	/**Item properties*/
+	private Properties properties;
+	
+
+	/**
+	 *Property adapter constructor 
+	 */
+	public PropertyAdapter() {
+		super();
+	}
+
+	/* (non-Javadoc)
+	 * @see org.jajuk.base.Propertyable#getProperties()
+	 */
+	public Properties getProperties() {
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.jajuk.base.Propertyable#getProperty(java.lang.String)
+	 */
+	public String getProperty(String sKey) {
+		return (String)properties.get(sKey);
+	}
+
+	/* (non-Javadoc)
+	 * @see org.jajuk.base.Propertyable#setProperty(java.lang.String, java.lang.String)
+	 */
+	public void setProperty(String sKey, String sValue) {
+		properties.put(sKey,sValue);
+	}
+
 }

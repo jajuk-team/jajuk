@@ -16,25 +16,40 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
- * Revision 1.2  2003/10/17 20:36:45  bflorat
+ * Revision 1.1  2003/10/17 20:36:45  bflorat
  * 17/10/2003
- *
- * Revision 1.1  2003/10/12 21:08:11  bflorat
- * 12/10/2003
  *
  */
 package org.jajuk.base;
 
+import java.util.Properties;
+
 /**
- *  Minimum methods required for all Player implementations
+ *  Interface for all items using properties ( files, tracks...) 
  *
  * @author     bflorat
- * @created    12 oct. 2003
+ * @created    16 oct. 2003
  */
-public interface IPlayerImpl {
-		
-		public void play(File file) throws Exception;
+public interface IPropertyable {
 
-		public void stop() throws Exception;
-		
+	/**
+	 * Get all properties for this item
+	 **/
+	public Properties getProperties();
+	
+	/**
+	 * Get a property
+	 * @param sKey
+	 * @return
+	 */
+	public String getProperty(String sKey);
+	
+	/**
+	 * Set a property
+	 * @param sKey
+	 * @param sValue
+	 */
+	public void setProperty(String sKey, String sValue);
+	
+	
 }

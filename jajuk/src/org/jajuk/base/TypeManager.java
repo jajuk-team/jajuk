@@ -16,30 +16,34 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.1  2003/10/17 20:36:45  bflorat
+ * 17/10/2003
+ *
  * Revision 1.1  2003/10/12 21:08:11  bflorat
  * 12/10/2003
  *
  */
 package org.jajuk.base;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 
 /**
  *  Manages types ( mp3, ogg...) supported by jajuk
- * <p> singletton
+ * <p> static class
  *
  * @author     bflorat
  * @created    12 oct. 2003
  */
-public class TypesManager {
+public class TypeManager {
 
 	static HashMap hmSupportedTypes = new HashMap(5);
 
 	/**
 	 * No constructor available, only static access
 	 */
-	private TypesManager() {
+	private TypeManager() {
 	}
 
 	/**
@@ -51,12 +55,17 @@ public class TypesManager {
 	}
 
 	/**
-	 * Says if the type is supported
+	 * Tells if the type is supported
 	 * @param type
 	 * @return
 	 */
 	public static boolean isExtensionSupported(String sExt) {
 		return hmSupportedTypes.containsKey(sExt);
+	}
+
+	/**Return all registred types*/
+	public static Collection getTypes() {
+		return hmSupportedTypes.values();
 	}
 
 	/**
@@ -83,4 +92,4 @@ public class TypesManager {
 		return sb.toString();
 	}
 
-	}
+}
