@@ -50,6 +50,18 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 	/** Self instance */
 	private static Collection collection;
 	private static long lTime;
+	/* XML tags hashcodes */
+	private static final int HASHCODE_TYPE = 3575610;
+	private static final int HASHCODE_DEVICE =  -1335157162;
+	private static final int HASHCODE_STYLE = 109780401;
+	private static final int HASHCODE_AUTHOR = -1406328437;
+	private static final int HASHCODE_ALBUM = 92896879;
+	private static final int HASHCODE_TRACK = 110621003;
+	private static final int HASHCODE_DIRECTORY =  -962584979;
+	private static final int HASHCODE_FILE = 3143036;
+	private static final int HASHCODE_PLAYLIST_FILE = 816218057;
+	private static final int HASHCODE_PLAYLIST = 1879474642;
+	
 
 	/** Instance getter */
 	public static Collection getInstance() {
@@ -246,86 +258,89 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 	 *  
 	 */
 	public void startElement(String sUri, String sName, String sQName, Attributes attributes) throws SAXException {
-		if (sQName.equals(XML_DEVICE)) { //device case
-			Device device = DeviceManager.registerDevice(attributes.getValue(0), attributes.getValue(1), Integer.parseInt(attributes.getValue(2)), attributes.getValue(3), attributes.getValue(4));
-			device.populateProperties(attributes, 5);
-		} else if (sQName.equals(XML_STYLE)) {
-			Style style = StyleManager.registerStyle(attributes.getValue(0), attributes.getValue(1));
-			style.populateProperties(attributes, 2);
-		} else if (sQName.equals(XML_AUTHOR)) {
-			Author author = AuthorManager.registerAuthor(attributes.getValue(0), attributes.getValue(1));
-			author.populateProperties(attributes, 2);
-		} else if (sQName.equals(XML_ALBUM)) {
-			Album album = AlbumManager.registerAlbum(attributes.getValue(0), attributes.getValue(1));
-			album.populateProperties(attributes, 2);
-		} else if (sQName.equals(XML_TRACK)) {
-			String sId = attributes.getValue(attributes.getIndex(XML_ID));
-			String sTrackName = attributes.getValue(attributes.getIndex(XML_TRACK_NAME));
-			Album album = AlbumManager.getAlbum(attributes.getValue(attributes.getIndex(XML_TRACK_ALBUM)));
-			Style style = StyleManager.getStyle(attributes.getValue(attributes.getIndex(XML_TRACK_STYLE)));
-			Author author = AuthorManager.getAuthor(attributes.getValue(attributes.getIndex(XML_TRACK_AUTHOR)));
-			long length = Long.parseLong(attributes.getValue(attributes.getIndex(XML_TRACK_LENGTH)));
-			String sYear = attributes.getValue(attributes.getIndex(XML_TRACK_YEAR));
-			Type type = TypeManager.getType(attributes.getValue(attributes.getIndex(XML_TRACK_TYPE)));
-			Track track = TrackManager.registerTrack(sId, sTrackName, album, style, author, length, sYear, type);
-			track.setRate(Long.parseLong(attributes.getValue(attributes.getIndex(XML_TRACK_RATE))));
-			track.setHits(Integer.parseInt(attributes.getValue(attributes.getIndex(XML_TRACK_HITS))));
-			track.setAdditionDate(attributes.getValue(attributes.getIndex(XML_TRACK_ADDED)));
-			track.populateProperties(attributes, 12);
-		} else if (sQName.equals(XML_DIRECTORY)) {
-			Directory dParent = null;
-			String sParentId = attributes.getValue(2);
-			if (!sParentId.equals("-1")) {
-				dParent = DirectoryManager.getDirectory(sParentId); //We know the parent directory is already referenced because of order conservation
-			}
-			Device device = DeviceManager.getDevice(attributes.getValue(3));
-			Directory directory = DirectoryManager.registerDirectory(attributes.getValue(0), attributes.getValue(1), dParent, device);
-			directory.populateProperties(attributes, 4);
-		} else if (sQName.equals(XML_FILE)) {
-			Directory dParent = DirectoryManager.getDirectory(attributes.getValue(2));
-			Track track = TrackManager.getTrack(attributes.getValue(3));
-			long lSize = Long.parseLong(attributes.getValue(4));
-			org.jajuk.base.File file = FileManager.registerFile(attributes.getValue(0), attributes.getValue(1), dParent, track, lSize, attributes.getValue(5));
-			file.populateProperties(attributes, 6);
-			track.addFile(file);
-			file.getDirectory().addFile(file);
-		} else if (sQName.equals(XML_PLAYLIST_FILE)) {
-			Directory dParent = DirectoryManager.getDirectory(attributes.getValue(3));
-			PlaylistFile plf = PlaylistFileManager.registerPlaylistFile(attributes.getValue(0), attributes.getValue(1), attributes.getValue(2), dParent);
-			plf.populateProperties(attributes, 4);
-		} else if (sQName.equals(XML_PLAYLIST)) {
-			StringTokenizer st = new StringTokenizer(attributes.getValue(1), ","); //playlist file list with ','
-			Playlist playlist = null;
-			if (st.hasMoreTokens()) { //if none mapped file, ignore it so it will be removed at next commit
-				do{
-					PlaylistFile plFile = PlaylistFileManager.getPlaylistFile((String) st.nextElement());
-					if (plFile != null){
-						PlaylistManager.registerPlaylist(plFile);
-					}
+		switch(sQName.hashCode()){
+			case HASHCODE_DEVICE : //device case
+				Device device = DeviceManager.registerDevice(attributes.getValue(0), attributes.getValue(1), Integer.parseInt(attributes.getValue(2)), attributes.getValue(3), attributes.getValue(4));
+				device.populateProperties(attributes, 5);
+			break;
+			case HASHCODE_STYLE :
+				Style style = StyleManager.registerStyle(attributes.getValue(0), attributes.getValue(1));
+				style.populateProperties(attributes, 2);
+			break; 
+			case HASHCODE_AUTHOR: 
+				Author author = AuthorManager.registerAuthor(attributes.getValue(0), attributes.getValue(1));
+				author.populateProperties(attributes, 2);
+			break;
+			case HASHCODE_ALBUM:
+				Album album = AlbumManager.registerAlbum(attributes.getValue(0), attributes.getValue(1));
+				album.populateProperties(attributes, 2);
+			break;
+			case HASHCODE_TRACK :
+				String sId = attributes.getValue(0);
+				String sTrackName = attributes.getValue(1);
+				album = AlbumManager.getAlbum(attributes.getValue(2));
+				style = StyleManager.getStyle(attributes.getValue(3));
+				author = AuthorManager.getAuthor(attributes.getValue(4));
+				long length = Long.parseLong(attributes.getValue(5));
+				Type type = TypeManager.getType(attributes.getValue(6));
+				String sYear = attributes.getValue(7);
+				Track track = TrackManager.registerTrack(sId, sTrackName, album, style, author, length, sYear, type);
+				track.setRate(Long.parseLong(attributes.getValue(8)));
+				track.setHits(Integer.parseInt(attributes.getValue(10)));
+				track.setAdditionDate(attributes.getValue(11));
+				track.populateProperties(attributes, 12);
+			break;
+			case HASHCODE_DIRECTORY:
+				Directory dParent = null;
+				String sParentId = attributes.getValue(2);
+				if (!"-1".equals(sParentId)) {
+					dParent = DirectoryManager.getDirectory(sParentId); //We know the parent directory is already referenced because of order conservation
 				}
-				while (st.hasMoreTokens());
-				if ( playlist != null ) playlist.populateProperties(attributes, 2);
-			}
-		} else if (sQName.equals(XML_TYPE)) {
-			String sId = attributes.getValue(0);
-			String sTypeName = attributes.getValue(1);
-			String sExtension = attributes.getValue(2);
-			String sPlayer = attributes.getValue(3);
-			String sTag = attributes.getValue(4);
-			if (sTag.equals("")) {
-				sTag = null;
-			}
-			boolean bIsMusic = Boolean.valueOf(attributes.getValue(5)).booleanValue();
-			Type type = TypeManager.registerType(sId, sTypeName, sExtension, sPlayer, sTag, bIsMusic);
-			type.populateProperties(attributes, 6);
+				device = DeviceManager.getDevice(attributes.getValue(3));
+				Directory directory = DirectoryManager.registerDirectory(attributes.getValue(0), attributes.getValue(1), dParent, device);
+				directory.populateProperties(attributes, 4);
+			break;
+			case HASHCODE_FILE:
+				dParent = DirectoryManager.getDirectory(attributes.getValue(2));
+				track = TrackManager.getTrack(attributes.getValue(3));
+				long lSize = Long.parseLong(attributes.getValue(4));
+				org.jajuk.base.File file = FileManager.registerFile(attributes.getValue(0), attributes.getValue(1), dParent, track, lSize, attributes.getValue(5));
+				file.populateProperties(attributes, 6);
+				track.addFile(file);
+				file.getDirectory().addFile(file);
+			break;
+			case HASHCODE_PLAYLIST_FILE:
+				dParent = DirectoryManager.getDirectory(attributes.getValue(3));
+				PlaylistFile plf = PlaylistFileManager.registerPlaylistFile(attributes.getValue(0), attributes.getValue(1), attributes.getValue(2), dParent);
+				plf.populateProperties(attributes, 4);
+			break;
+			case HASHCODE_PLAYLIST:
+				StringTokenizer st = new StringTokenizer(attributes.getValue(1), ","); //playlist file list with ','
+				Playlist playlist = null;
+				if (st.hasMoreTokens()) { //if none mapped file, ignore it so it will be removed at next commit
+					do{
+						PlaylistFile plFile = PlaylistFileManager.getPlaylistFile((String) st.nextElement());
+						if (plFile != null){
+							PlaylistManager.registerPlaylist(plFile);
+						}
+					}
+					while (st.hasMoreTokens());
+					if ( playlist != null ) playlist.populateProperties(attributes, 2);
+				}
+			break;
+			case HASHCODE_TYPE:
+				sId = attributes.getValue(0);
+				String sTypeName = attributes.getValue(1);
+				String sExtension = attributes.getValue(2);
+				String sPlayer = attributes.getValue(3);
+				String sTag = attributes.getValue(4);
+				if ("".equals(sTag)) {
+					sTag = null;
+				}
+				boolean bIsMusic = Boolean.valueOf(attributes.getValue(5)).booleanValue();
+				 type = TypeManager.registerType(sId, sTypeName, sExtension, sPlayer, sTag, bIsMusic);
+				type.populateProperties(attributes, 6);
+			break;	
 		}
 	}
-
-	/**
-	 * Called when we reach the end of an element
-	 */
-	public void endElement(String sUri, String sName, String sQName) throws SAXException {
-
-	}
-
 }

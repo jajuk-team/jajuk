@@ -22,18 +22,22 @@ package org.jajuk.ui;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.util.HashSet;
+import java.util.Iterator;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
-import javax.swing.JTextField;
 import javax.swing.JToolBar;
 
 import layout.TableLayout;
 
 import org.jajuk.base.FIFO;
+import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.History;
 import org.jajuk.base.HistoryItem;
@@ -42,6 +46,7 @@ import org.jajuk.base.Player;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Util;
+import org.jajuk.util.log.Log;
 
 /**
  *  Command panel ( static view )
@@ -49,14 +54,14 @@ import org.jajuk.util.Util;
  * @author     bflorat
  * @created    3 oct. 2003
  */
-public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionListener{
+public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionListener,KeyListener{
 	
 	//singleton
 	static private CommandJPanel command;
 	
 	//widgets declaration
 		 JToolBar jtbSearch;
-			JTextField jtfSearch;
+			SteppedComboBox scbSearch;
 		JToolBar jtbHistory;
 			public SteppedComboBox jcbHistory;
 		JToolBar jtbMode;
@@ -91,6 +96,10 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 	static boolean bIsContinueEnabled = true;
 	/**Intro mode flag*/
 	static boolean bIsIntroEnabled = false;
+	/**Do search panel need a search*/
+	private boolean bNeedSearch = false;
+	/**Default time in ms before lauching a search automaticaly*/
+	private static final int WAIT_TIME = 2000; 
 	
 		
 	public static CommandJPanel getInstance(){
@@ -113,9 +122,16 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		//search toolbar
 		jtbSearch = new JToolBar();
 		jtbSearch.setFloatable(false);
-		jtfSearch = new JTextField();
-		jtfSearch.setToolTipText(Messages.getString("CommandJPanel.search_1")); //$NON-NLS-1$
-		jtbSearch.add(jtfSearch);
+		scbSearch = new SteppedComboBox();
+		scbSearch.setEditable(true);
+		scbSearch.getEditor().getEditorComponent().addKeyListener(this);
+		scbSearch.addActionListener(this);
+		scbSearch.setToolTipText(Messages.getString("CommandJPanel.search_1")); //$NON-NLS-1$
+		scbSearch.setMinimumSize(new Dimension(150,20));
+		scbSearch.setPreferredSize(new Dimension(300,20));
+		scbSearch.setMaximumSize(new Dimension(300,20));
+		scbSearch.setPopupWidth(1000);
+		jtbSearch.add(scbSearch);
 			
 		//history toolbar
 		jtbHistory = new JToolBar();
@@ -223,6 +239,23 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		add(jtbPlay,"8,0");
 		add(jtbVolume,"10,0");
 		add(jtbPosition,"12,0");
+		
+		// lauches a thread used to perform dynamic search chen user is typing
+		new Thread(){
+			public void run(){
+				while (true){
+					try{
+						Thread.sleep(WAIT_TIME);
+					}
+					catch(InterruptedException ie){
+						Log.error(ie);
+					}
+					if ( bNeedSearch){
+						search();
+					}
+				}
+			}
+		}.start();
 	}
 	
 	/** 
@@ -238,6 +271,23 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		jcbHistory.insertItemAt(sOut,0);
 		jcbHistory.setSelectedIndex(0);
 		jcbHistory.addActionListener(this);
+	}
+	
+	/** Perform a search when user stop to type in the search combo for 2 sec or pressed enter*/
+	private void search(){
+System.out.println("search");
+		String sIn =(String)scbSearch.getEditor().getItem();
+		if (sIn.length()>4){
+			HashSet hsResu = FileManager.search(sIn);
+			if (hsResu.size() > 0){
+				scbSearch.removeAllItems();
+				Iterator it = hsResu.iterator();
+				while (it.hasNext()){
+					scbSearch.addItem(((File)it.next()).getName());
+				}
+			}
+			bNeedSearch = false;
+		}
 	}
 	
 	
@@ -277,5 +327,30 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		else if (ae.getSource() == jbNext){
 			FIFO.getInstance().playNext();
 		}
+		else if  (ae.getSource() == scbSearch){
+			bNeedSearch = true;
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
+	 */
+	public void keyPressed(KeyEvent e) {
+	}
+	
+
+	/* (non-Javadoc)
+	 * @see java.awt.event.KeyListener#keyReleased(java.awt.event.KeyEvent)
+	 */
+	public void keyReleased(KeyEvent e) {
+		if (((String)scbSearch.getEditor().getItem()).length()>4){ //perform automatic search only when user provide more than 5 letters 
+			bNeedSearch = true;
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see java.awt.event.KeyListener#keyTyped(java.awt.event.KeyEvent)
+	 */
+	public void keyTyped(KeyEvent e) {
 	}
 }

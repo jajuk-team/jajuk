@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 
 import javax.swing.BoxLayout;
@@ -44,6 +45,7 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
@@ -57,6 +59,7 @@ import org.jajuk.base.FileManager;
 import org.jajuk.base.PlaylistFile;
 import org.jajuk.base.PlaylistFileManager;
 import org.jajuk.i18n.Messages;
+import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.ObservationManager;
 import org.jajuk.util.Util;
 
@@ -412,6 +415,38 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 		//Tree selection listener to detect a selection
 		jtree.addTreeSelectionListener(new TreeSelectionListener() {
 			public void valueChanged(TreeSelectionEvent e) {
+				Util.waiting();
+				TreePath[] tpSelected = jtree.getSelectionModel().getSelectionPaths();
+				HashSet hsSelectedFiles = new HashSet(100);
+				int items = 0;
+				long lSize = 0;
+				//get all components recursively
+				for (int i=0;i<tpSelected.length;i++){
+					Object o = tpSelected[i].getLastPathComponent();
+					Enumeration e2 = ((DefaultMutableTreeNode)o).depthFirstEnumeration(); //return all childs nodes recursively
+					while ( e2.hasMoreElements()){
+						DefaultMutableTreeNode node = (DefaultMutableTreeNode)e2.nextElement();
+						if (node instanceof FileNode){
+							File file = ((FileNode)node).getFile();
+							if (hsSelectedFiles.contains(file)){ //don't count the same file several time if user select directory and then files inside
+								continue;
+							}
+							lSize += file.getSize();
+							items ++;
+							hsSelectedFiles.add(file);
+						}
+					}
+				}
+				lSize /= 1048576; //set size in MB
+				StringBuffer sbOut = new StringBuffer().append(items).append(" files : ");
+				if ( lSize>1024){ //more than 1024 MB -> in GB
+					sbOut.append(lSize/1024).append('.').append(lSize%1024).append(" GB");
+				}
+				else{
+					sbOut.append(lSize).append(" MB");
+				}
+				InformationJPanel.getInstance().setSelection(sbOut.toString());
+				Util.stopWaiting();
 			}
 		});
 		//Listen for double clic

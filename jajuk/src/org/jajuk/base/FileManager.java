@@ -21,6 +21,7 @@
 package org.jajuk.base;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.TreeSet;
 
@@ -196,5 +197,22 @@ public class FileManager implements ITechnicalStrings{
 		return null;
 	}
 	
+	/**
+	 * Perform a search in all files names with given criteria
+	 * @param sCriteria
+	 * @return
+	 */
+	public static synchronized HashSet search(String sCriteria){
+	 	HashSet hsResu = new HashSet();
+	 	sCriteria = sCriteria.toLowerCase();
+	 	Iterator it = alFiles.iterator();
+	 	while ( it.hasNext()){
+	 		File file = (File)it.next();
+	 		if ( new StringBuffer(file.getName().toLowerCase()).lastIndexOf(sCriteria) != -1 ){
+	 			hsResu.add(file);
+	 		}
+	 	}
+	 	return hsResu;
+	}
 
 }

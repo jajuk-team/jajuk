@@ -169,10 +169,7 @@ public class Main implements ITechnicalStrings {
 			perspectiveBar = PerspectiveBarJPanel.getInstance();
 			// Create the information bar panel
 			information = InformationJPanel.getInstance();
-			//****temp
-			information.setSelection("124 items : 4.5Mo"); //temp //$NON-NLS-1$
-			//**************************
-	
+		
 			//Main panel
 			jpDesktop = new JPanel();
 			jpDesktop.setOpaque(true);

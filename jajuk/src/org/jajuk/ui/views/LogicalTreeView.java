@@ -28,6 +28,7 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 
 import javax.swing.BoxLayout;
@@ -54,6 +55,7 @@ import org.jajuk.base.Style;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.i18n.Messages;
+import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.ObservationManager;
 import org.jajuk.ui.Observer;
 import org.jajuk.util.Util;
@@ -368,9 +370,33 @@ public class LogicalTreeView extends ViewAdapter implements ActionListener,Obser
 			
 		});
 		
-		//Tree selection listener to detect a selectionr
+		//Tree selection listener to detect a selection
 		jtree.addTreeSelectionListener(new TreeSelectionListener() {
 			public void valueChanged(TreeSelectionEvent e) {
+				Util.waiting();
+				TreePath[] tpSelected = jtree.getSelectionModel().getSelectionPaths();
+				HashSet hsSelectedTracks = new HashSet(100);
+				int items = 0;
+				//get all components recursively
+				for (int i=0;i<tpSelected.length;i++){
+					Object o = tpSelected[i].getLastPathComponent();
+					Enumeration e2 = ((DefaultMutableTreeNode)o).depthFirstEnumeration(); //return all childs nodes recursively
+					while ( e2.hasMoreElements()){
+						DefaultMutableTreeNode node = (DefaultMutableTreeNode)e2.nextElement();
+						if (node instanceof TrackNode){
+							Track track = ((TrackNode)node).getTrack();
+							if (hsSelectedTracks.contains(track)){ //don't count the same track several time if user select directory and then tracks inside
+								continue;
+							}
+							items ++;
+							hsSelectedTracks.add(track);
+						}
+					}
+				}
+				StringBuffer sbOut = new StringBuffer().append(items).append(" tracks");
+				InformationJPanel.getInstance().setSelection(sbOut.toString());
+				Util.stopWaiting();
+				
 			}
 		});
 		//Listen for double clic

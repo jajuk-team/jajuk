@@ -25,6 +25,8 @@ import java.awt.image.AreaAveragingScaleFilter;
 import java.awt.image.FilteredImageSource;
 import java.awt.image.ImageFilter;
 import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -59,7 +61,11 @@ public class CoverView extends ViewAdapter implements Observer{
 	 */
 	public CoverView() {
 		setLayout(new BoxLayout(this,BoxLayout.X_AXIS));
-		image = java.awt.Toolkit.getDefaultToolkit().getImage(IMAGES_SPLASHSCREEN);
+		try {
+			image = java.awt.Toolkit.getDefaultToolkit().getImage(new URL(IMAGES_SPLASHSCREEN));
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
 		ObservationManager.register(EVENT_COVER_REFRESH,this);
 	}
 	
@@ -109,7 +115,11 @@ public class CoverView extends ViewAdapter implements Observer{
 				}
 			}
 			if ( !bFound){
-				image = java.awt.Toolkit.getDefaultToolkit().getImage(IMAGES_SPLASHSCREEN);
+				try {
+					image = java.awt.Toolkit.getDefaultToolkit().getImage(new URL(IMAGES_SPLASHSCREEN));
+				} catch (MalformedURLException e) {
+					e.printStackTrace();
+				}
 			}
 			display();
 		}

@@ -65,6 +65,7 @@
   	<copy todir="${distdir}/classes/org/jajuk/docs" >
      <fileset file="${basedir}/dist-files/doc/about.html"/>
   	</copy>
+    <jar jarfile="${distdir}/bin/jajuk-help-${version}.jar" basedir="${basedir}/dist-files/doc/jajuk-hs"/>
   </target>
  
 
@@ -72,12 +73,6 @@
     <jar jarfile="${distdir}/bin/jajuk-${version}.jar" excludes="**/package.html" basedir="${distdir}/classes" manifest="${basedir}/dist-files/packaging/MANIFEST.MF"/>
   </target>
   
-  <target name="help" description="o Create the help jar">
-    <jar jarfile="${distdir}/bin/jajuk-help-${version}.jar" basedir="${basedir}/dist-files/doc/jajuk-hs"/>
-  </target>
-
-
-
    <target name="javadoc" description="o Generate javadoc" depends="jar">
     <mkdir dir="${javadocdir}">
     </mkdir>
