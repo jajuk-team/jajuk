@@ -516,6 +516,15 @@ public class Util implements ITechnicalStrings {
 		while(line == null);
 		return line;
 	}
+
+	/**
+	 * 
+	 * @param sFileName
+	 * @return whether the given filename is a standard cover or not
+	 */
+	public static boolean isStandardCover(String sFileName){
+	    return sFileName.toLowerCase().matches(".*"+FILE_DEFAULT_COVER+".*") || sFileName.toLowerCase().matches(".*"+FILE_DEFAULT_COVER_2+".*");
+	}
 	
 	
 	/**
@@ -544,6 +553,15 @@ public class Util implements ITechnicalStrings {
 			Log.error("000",fio.getAbsolutePath(),e);	 //$NON-NLS-1$
 		}
 		return sOut;
+	}
+	
+	/**
+	 * Return only the name of a file from a complete URL 
+	 * @param sPath
+	 * @return
+	 */
+	public static String getOnlyFile(String sPath){
+	    return new File(sPath).getName();
 	}
 
 	/**Return exec location*/

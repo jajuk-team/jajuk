@@ -137,7 +137,8 @@ public interface ITechnicalStrings {
 	public static final String ICON_CURRENT_PLAYLIST =  PATH_ICONS + "16x16/run.png";
 	public static final String ICON_CLEAR =  PATH_ICONS + "16x16/clear.png";
 	public static final String ICON_SAVE =  PATH_ICONS + "16x16/save.png";
-	public static final String ICON_SAVE_AS =  PATH_ICONS + "16x16/filesaveas.png";
+	public static final String ICON_SAVE_AS =  PATH_ICONS + "16x16/saveas.png";
+	public static final String ICON_DEFAULT_COVER =  PATH_ICONS + "16x16/ok.png";
 			
 	//images
 	public static final String IMAGES_SPLASHSCREEN =  PATH_IMAGES + "jajuk-splashscreen.png";
@@ -156,7 +157,7 @@ public interface ITechnicalStrings {
 	public static final String FILE_HISTORY = System.getProperty("user.home")+"/.jajuk/history.xml";
 	public static final String FILE_LOCK = System.getProperty("user.home")+"/.jajuk/.lock";
 	public static final String FILE_ABOUT = "about.html";
-	public static final String FILE_DEFAULT_COVER = "cover.jpg";
+	public static final String FILE_DEFAULT_COVER = "cover";
 	public static final String FILE_DEFAULT_COVER_2 = "front";
 	public static final String FILE_LANGPACK_PART1 = "jajuk"; //langpack name : jajuk_<locale>.properties
 	public static final String FILE_LANGPACK_PART2 = ".properties"; //langpack name : jajuk_<locale>.properties

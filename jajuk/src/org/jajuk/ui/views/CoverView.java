@@ -21,14 +21,17 @@
 package org.jajuk.ui.views;
 
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.image.AreaAveragingScaleFilter;
 import java.awt.image.FilteredImageSource;
 import java.awt.image.ImageFilter;
 import java.io.File;
-import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -40,6 +43,7 @@ import javax.swing.SwingUtilities;
 
 import layout.TableLayout;
 
+import org.jajuk.base.Cover;
 import org.jajuk.base.FIFO;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.ObservationManager;
@@ -53,13 +57,13 @@ import org.jajuk.util.log.Log;
  * @author     bflorat
  * @created   28 dec. 2003
  */
-public class CoverView extends ViewAdapter implements Observer,ComponentListener{
+public class CoverView extends ViewAdapter implements Observer,ComponentListener,ActionListener{
 
-	/**Current Image*/
-	private static Image image;
-	
-	/**Current directory*/
+	/**Current directory used as a cache for perfs*/
 	private File fDir;
+	
+	/**List of available covers for the current file*/
+	ArrayList alCovers = new ArrayList(20);
 	
 	//control panel
 	JPanel jpControl;
@@ -68,8 +72,18 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
 	JButton jbSave;
 	JButton jbSaveAs;
 	JButton jbDefault;
+
+	/**Date last resize (used for adjustment management)*/
+	private long lDateLastResize;
+	
+	/**Disk covers*/
+	ArrayList alFiles = new ArrayList(10);
 	
 	JLabel jl;
+	
+	/**Used Cover index*/
+	int index = 0;
+	
 	/**
 	 * Constructor
 	 */
@@ -94,14 +108,19 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
 				{25}};
 		jpControl.setLayout(new TableLayout(sizeControl));
 		jbPrevious = new JButton(Util.getIcon(ICON_PREVIOUS));
+		jbPrevious.addActionListener(this);
 		jbPrevious.setToolTipText(Messages.getString("CoverView.4")); //$NON-NLS-1$
 		jbNext = new JButton(Util.getIcon(ICON_NEXT));
+		jbNext.addActionListener(this);
 		jbNext.setToolTipText(Messages.getString("CoverView.5")); //$NON-NLS-1$
 		jbSave = new JButton(Util.getIcon(ICON_SAVE));
+		jbSave.addActionListener(this);
 		jbSave.setToolTipText(Messages.getString("CoverView.6")); //$NON-NLS-1$
 		jbSaveAs = new JButton(Util.getIcon(ICON_SAVE_AS));
+		jbSaveAs.addActionListener(this);
 		jbSaveAs.setToolTipText(Messages.getString("CoverView.7")); //$NON-NLS-1$
-		jbDefault = new JButton(Util.getIcon(ICON_OK));
+		jbDefault = new JButton(Util.getIcon(ICON_DEFAULT_COVER));
+		jbDefault.addActionListener(this);
 		jbDefault.setToolTipText(Messages.getString("CoverView.8")); //$NON-NLS-1$
 		jpControl.add(jbPrevious,"0,0");//$NON-NLS-1$
 		jpControl.add(jbNext,"2,0");//$NON-NLS-1$
@@ -109,12 +128,6 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
 		jpControl.add(jbSaveAs,"6,0");//$NON-NLS-1$
 		jpControl.add(jbDefault,"8,0");//$NON-NLS-1$
 		
-		addComponentListener(this);
-		try {
-			image = java.awt.Toolkit.getDefaultToolkit().getImage(new URL(IMAGES_SPLASHSCREEN));
-		} catch (MalformedURLException e) {
-			Log.error(e);
-		}
 		ObservationManager.register(EVENT_COVER_REFRESH,this);
 		ObservationManager.register(EVENT_PLAYER_STOP,this);
 	
@@ -122,73 +135,50 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
 		update(EVENT_COVER_REFRESH);
 	}
 	
-	/**
-	 * Display the default Cover
-	 */
-	public void displayDefault(){
-		try {
-			image = java.awt.Toolkit.getDefaultToolkit().getImage(new URL(IMAGES_SPLASHSCREEN));
-		} catch (MalformedURLException e) {
-			Log.error(e);
-			return;
-		}
-		displayCurrentCover();
-	}
 	
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.Observer#update(java.lang.String)
 	 */
 	public synchronized void update(String subject){
-		if ( EVENT_COVER_REFRESH.equals(subject)){
-			org.jajuk.base.File fCurrent = FIFO.getInstance().getCurrentFile();
-			//if current file is null ( probably a file cannot be read ) 
-			if ( fCurrent == null){
-				displayDefault();
-				return;
-			}
-			java.io.File fDir = new java.io.File(fCurrent.getAbsolutePath()).getParentFile();
-			if ( !fDir.exists() || (this.fDir!= null && this.fDir.equals(fDir)) ){  //if we are always in the same directory, just leave to save cpu
-				return;
-			}
-			this.fDir = fDir;
-			java.io.File[] files = fDir.listFiles();
-			boolean bFound = false;
-			//first, search for a 'cover.jpg' file
-			for (int i=0;i<files.length;i++){
-				if (files[i].getName().equalsIgnoreCase(FILE_DEFAULT_COVER)){
-					image = java.awt.Toolkit.getDefaultToolkit().getImage(files[i].getAbsolutePath());
-					bFound = true;
-					break;
-				}
-			}
-			if (!bFound){  //no cover file, search for a file name containing 'front'
-				for (int i=0;i<files.length;i++){
-					if (files[i].getName().toLowerCase().indexOf(FILE_DEFAULT_COVER_2) != -1){
-						image = java.awt.Toolkit.getDefaultToolkit().getImage(files[i].getAbsolutePath());
-						bFound = true;
-						break;
-					}
-				}
-			}
-			if (!bFound){  //no cover file, take the first image we find
-				for (int i=0;i<files.length;i++){
-					String sExt = Util.getExtension(files[i]);
-					if (sExt.equalsIgnoreCase("jpg") || sExt.equalsIgnoreCase("png") || sExt.equalsIgnoreCase("gif")){ //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-						image = java.awt.Toolkit.getDefaultToolkit().getImage(files[i].getAbsolutePath());
-						bFound = true;
-						break;
-					}
-				}
-			}
-			if ( !bFound){
-				displayDefault();
-				return;
-			}
-			displayCurrentCover();
-		}
-		else if ( EVENT_PLAYER_STOP.equals(subject)){
-			displayDefault();
-		}
+	    try{
+	        if ( EVENT_COVER_REFRESH.equals(subject)){
+	            org.jajuk.base.File fCurrent = FIFO.getInstance().getCurrentFile();
+	            //if current file is null ( probably a file cannot be read ) 
+	            if ( fCurrent == null){
+	                displayCurrentCover();
+	                return;
+	            }
+	            java.io.File fDir = new java.io.File(fCurrent.getAbsolutePath()).getParentFile();
+	            if ( !fDir.exists() || (this.fDir!= null && this.fDir.equals(fDir)) ){  //if we are always in the same directory, just leave to save cpu
+	                return;
+	            }
+	            alCovers.clear();
+	            java.io.File[] files = fDir.listFiles();
+	            for (int i=0;i<files.length;i++){
+	                String sExt = Util.getExtension(files[i]);
+	                if (sExt.equalsIgnoreCase("jpg") || sExt.equalsIgnoreCase("png") || sExt.equalsIgnoreCase("gif")){ //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+	                    alCovers.add(new Cover(files[i].toURL(),Cover.LOCAL_COVER));
+	                }
+	            }
+	            if (alCovers.size() == 0){
+	                alCovers.add(new Cover()); //add the default cover
+		        }
+	            else{
+	                Collections.sort(alCovers); //sort the list 
+		        }
+	            index = alCovers.size()-1;  //current index points to the best available cover
+	            displayCurrentCover();
+	        }
+	        else if ( EVENT_PLAYER_STOP.equals(subject)){
+	            alCovers.clear();
+	            alCovers.add(new Cover()); //add the default cover
+	            index = 0;
+	            displayCurrentCover();
+	        }
+	    }
+	    catch(Exception e){
+	        Log.error(e);
+	    }
 	}
 
 	/* (non-Javadoc)
@@ -205,29 +195,17 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
 	    return "org.jajuk.ui.views.CoverView"; //$NON-NLS-1$
 	}
 
-	/* (non-Javadoc)
-	 * @see java.awt.event.ComponentListener#componentHidden(java.awt.event.ComponentEvent)
-	 */
-	public void componentHidden(ComponentEvent e) {
-	}
-
-	/* (non-Javadoc)
-	 * @see java.awt.event.ComponentListener#componentMoved(java.awt.event.ComponentEvent)
-	 */
-	public void componentMoved(ComponentEvent e) {
-	}
-
-	/* (non-Javadoc)
+		/* (non-Javadoc)
 	 * @see java.awt.event.ComponentListener#componentResized(java.awt.event.ComponentEvent)
 	 */
 	public void componentResized(ComponentEvent e) {
-		displayCurrentCover();
-	}
-
-	/* (non-Javadoc)
-	 * @see java.awt.event.ComponentListener#componentShown(java.awt.event.ComponentEvent)
-	 */
-	public void componentShown(ComponentEvent e) {
+	    Log.debug("Cover resized");
+	    long lCurrentDate = System.currentTimeMillis();  //adjusting code
+		if ( lCurrentDate - lDateLastResize < 500){  //display image every 500 ms to save CPU
+			lDateLastResize = lCurrentDate;
+			return;
+		}
+	    displayCurrentCover();
 	}
 
 	/**
@@ -235,19 +213,46 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
 	 *
 	 */
 	private void displayCurrentCover(){
+	    if ( alCovers.size() == 0 ){
+	        return;
+	    }
+	    Cover cover = (Cover)alCovers.get(index); 
 	    JInternalFrame ji = ViewManager.getFrame(this);
-	    ImageFilter filter = new AreaAveragingScaleFilter(ji.getWidth()-8,ji.getHeight()-30);
-	    Image img = createImage(new FilteredImageSource(image.getSource(),filter));
+	    Log.debug("Cover size: "+(ji.getWidth()-8)+"/"+(ji.getHeight()-60));
+	    ImageFilter filter = new AreaAveragingScaleFilter(ji.getWidth()-8,ji.getHeight()-60);
+	    Image img = createImage(new FilteredImageSource(cover.getImage().getSource(),filter));
 	    jl = new JLabel(new ImageIcon(img));
-		SwingUtilities.invokeLater(new Runnable() {
+	    URL url = cover.getURL();
+	    if (url != null){
+	        jl.setToolTipText(url.toString());
+	    }
+	    SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				removeAll();
 				add(jpControl,"0,0");//$NON-NLS-1$
 				add(jl,"0,1");//$NON-NLS-1$
 				SwingUtilities.updateComponentTreeUI(CoverView.this.getRootPane());//refresh
 			}
-			
 		});
-		
 	}
+
+    /* (non-Javadoc)
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
+    public void actionPerformed(ActionEvent e) {
+        if(e.getSource() == jbPrevious){  //previous : show a better cover
+            index = index+1;
+            if (index > alCovers.size()-1){
+                index = 0;
+            }
+            displayCurrentCover();
+        }
+        else if(e.getSource() == jbNext){ //next : show a worse cover
+            index = index-1;
+            if (index < 0){
+                index = alCovers.size()-1;
+            }
+            displayCurrentCover();
+        }
+    }
 }
