@@ -29,7 +29,6 @@ import javax.swing.JOptionPane;
 import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HostConfiguration;
 import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.UsernamePasswordCredentials;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.jajuk.Main;
@@ -118,11 +117,23 @@ public class DownloadManager implements ITechnicalStrings {
 	            return alOut;
 	        }
 	        String sRes = new String(bRes);
+	        //get urls
 	        String[] strings = sRes.split("imgurl=");
 	        for (int i=1;i<strings.length;i++){
-	            String s = strings[i].substring(0,strings[i].indexOf('&'));
+	            String s = strings[i].substring(0,strings[i].indexOf('&')); 
 	            s = s.replaceAll("%2520","%20");
 	            alOut.add(new URL(s));
+	        }
+	        //get sizes
+	        strings = sRes.split("pixels - ");
+	        int iNbRemove = 0; //removes number used to compute new index
+	        for (int i=1;i<strings.length;i++){
+	            int iKPos = strings[i].indexOf('k');
+	            int iSize = Integer.parseInt(strings[i].substring(0,iKPos));
+	            if ( iSize > ConfigurationManager.getInt(CONF_COVERS_MAX_SIZE) || iSize < ConfigurationManager.getInt(CONF_COVERS_MIN_SIZE) ){
+	                alOut.remove(i-(1+iNbRemove));
+	                iNbRemove++;
+	            }
 	        }
 	    }
 	    catch(JajukException je){  //concurrent exception 
@@ -138,7 +149,7 @@ public class DownloadManager implements ITechnicalStrings {
 	 * Download the resource at the given url
 	 * @param url to download
 	 * @throws JajukException if a concurrent connection is alive
-	 * @return
+	 * @return result as an array of bytes, null if a problem occured
 	 */
 	public static byte[] download(URL url) throws JajukException{
 	    byte[] bOut = null;
@@ -158,9 +169,6 @@ public class DownloadManager implements ITechnicalStrings {
 	        get.addRequestHeader(new Header("User-Agent","Mozilla/4.0 (compatible; MSIE 5.0; Windows 2000) Opera 6.03  [en]"));
 	        get.setDoAuthentication( true );
 	        int status = client.executeMethod(getHostConfiguration(url.getHost()), get );
-	        if (status != HttpStatus.SC_OK){ //should be 200
-	            return null;
-	        }
 	        bOut = get.getResponseBody();
 	        if ( bConcurrentConnection){ //if another session has tried to download another url, this one shouls be trashed
 	            throw new JajukException("129");

@@ -103,6 +103,9 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
     /**Used Cover index*/
     int index = 0;
     
+    /**Thread lock for displayer*/
+    byte[] bLock = new byte[0];
+    
     /**
      * Constructor
      */
@@ -212,9 +215,8 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                         }
                     }
                     //display local or default cover without wait
-                    long lTime = System.currentTimeMillis();
                     Collections.sort(alCovers); //sort the list
-                    Log.debug("Local cover list: "+alCovers+" sorted in: "+(System.currentTimeMillis()-lTime));
+                    Log.debug("Local cover list: "+alCovers);
                     index = alCovers.size()-1;  //current index points to the best available cover
                     SwingUtilities.invokeLater(new Runnable() {
                         public void run() {
@@ -239,6 +241,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                                         final ArrayList alUrls;
                                         try{
                                             alUrls = DownloadManager.getRemoteCoversList(sQuery);
+                                            Collections.reverse(alUrls); //set best results to be displayed  first
                                         }
                                         catch(Exception e){
                                             return; //no web covers found, just leave
@@ -326,7 +329,11 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
             lDateLastResize = lCurrentDate;
             return;
         }
-        displayCurrentCover();
+        new Thread(){
+            public void run(){
+                displayCurrentCover();
+            }
+        }.start();
     }
     
     /**
@@ -337,86 +344,95 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
         if ( alCovers.size() == 0 ){
             return;
         }
-        Log.debug("display index: "+index);
-        //find next OK cover
-        ImageIcon icon = null;
-        Cover cover = null; 
-        while ( index >= 0){//there are some more covers after
-            try{
-                cover = (Cover)alCovers.get(index); 
-                icon = cover.getImage();
-                break;
-            }
-            catch(Exception e){ //this cover cannot be loaded
-                synchronized(alCovers){
-                    alCovers.remove(index);
+        synchronized(bLock){
+            Log.debug("display index: "+index);
+            //find next OK cover
+            ImageIcon icon = null;
+            Cover cover = null; 
+            while ( index >= 0){//there are some more covers after
+                try{
+                    setCursor(Util.WAIT_CURSOR);
+                    cover = (Cover)alCovers.get(index); 
+                    icon = cover.getImage();
+                    setCursor(Util.DEFAULT_CURSOR);
+                    break;
                 }
-                //refresh number of found covers
+                catch(Exception e){ //this cover cannot be loaded
+                    synchronized(alCovers){
+                        alCovers.remove(index);
+                        Log.debug("Removed cover: "+cover);
+                    }
+                    //refresh number of found covers
+                    SwingUtilities.invokeLater(new Runnable() {
+                        public void run() {
+                            jlFound.setText(alCovers.size()-1+" "+Messages.getString("CoverView.9"));
+                        }
+                    });
+                    index  --; //look at next cover    
+                }
+            }
+            if (icon == null){ //none available cover
+                return;
+            }
+            JInternalFrame ji = ViewManager.getFrame(this);
+            ImageFilter filter = new AreaAveragingScaleFilter(ji.getWidth()-8,ji.getHeight()-60);
+            Image img = createImage(new FilteredImageSource(icon.getImage().getSource(),filter));
+            jl = new JLabel(new ImageIcon(img));
+            final URL url = cover.getURL();
+            final byte[] bData = cover.getData();
+            if (url != null){
                 SwingUtilities.invokeLater(new Runnable() {
                     public void run() {
-                        jlFound.setText(alCovers.size()-1+" "+Messages.getString("CoverView.9"));
+                        int iSize = 0;
+                        String sType = " (L)"; //local cover
+                        if (bData != null){
+                            sType = " (@)"; //Web cover
+                            iSize = (int)(Math.ceil((double)bData.length/1024));
+                        }
+                        else{
+                            iSize = (int)(Math.ceil((double)new File(url.getFile()).length()/1024));
+                        }
+                        jl.setToolTipText("<html>"+url.toString()+"<br>"+iSize+"K");
+                        jlSize.setText(iSize+"K"+sType);
                     }
                 });
-                index  --; //look at next cover    
             }
-        }
-        if (icon == null){ //none available cover
-            return;
-        }
-        JInternalFrame ji = ViewManager.getFrame(this);
-        ImageFilter filter = new AreaAveragingScaleFilter(ji.getWidth()-8,ji.getHeight()-60);
-        Image img = createImage(new FilteredImageSource(icon.getImage().getSource(),filter));
-        jl = new JLabel(new ImageIcon(img));
-        final URL url = cover.getURL();
-        final byte[] bData = cover.getData();
-        if (url != null){
-            SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    int iSize = 0;
-                    if (bData != null){
-                        iSize = bData.length/1024;
-                    }
-                    else{
-                        iSize = (int)(new File(url.getFile()).length()/1024);
-                    }
-                    jl.setToolTipText("<html>"+url.toString()+"<br>"+iSize+"K");
-                    jlSize.setText(iSize+"K");
-                }
-            });
-        }
-        //set tooltip for previous and next track
-        int indexPrevious  = index+1;
-        if (indexPrevious > alCovers.size()-1){
-            indexPrevious = 0;
-        }
-        final URL urlPrevious = ((Cover)alCovers.get(indexPrevious)).getURL();
-        if (urlPrevious != null){
-            SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    jbPrevious.setToolTipText("<html>"+Messages.getString("CoverView.4")+"<br>"+urlPrevious.toString()+"</html>"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-                }
-            });
-        }
-        int indexNext = index-1;
-        if (indexNext < 0){
-            indexNext = alCovers.size()-1;
-        }
-        final URL urlNext = ((Cover)alCovers.get(indexNext)).getURL();
-        if (urlNext != null){
-            SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    jbNext.setToolTipText("<html>"+Messages.getString("CoverView.5")+"<br>"+urlNext.toString()+"</html>"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-                }
-            });
-        }
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                removeAll();
-                add(jpControl,"0,0");//$NON-NLS-1$
-                add(jl,"0,1");//$NON-NLS-1$
-                SwingUtilities.updateComponentTreeUI(CoverView.this.getRootPane());//refresh
+            //set tooltip for previous and next track
+            int indexPrevious  = index+1;
+            if (indexPrevious > alCovers.size()-1){
+                indexPrevious = 0;
             }
-        });
+            final URL urlPrevious = ((Cover)alCovers.get(indexPrevious)).getURL();
+            if (urlPrevious != null){
+                SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
+                        jbPrevious.setToolTipText("<html>"+Messages.getString("CoverView.4")+"<br>"+urlPrevious.toString()+"</html>"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+                    }
+                });
+            }
+            int indexNext = index-1;
+            if (indexNext < 0){
+                indexNext = alCovers.size()-1;
+            }
+            final URL urlNext = ((Cover)alCovers.get(indexNext)).getURL();
+            if (urlNext != null){
+                SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
+                        jbNext.setToolTipText("<html>"+Messages.getString("CoverView.5")+"<br>"+urlNext.toString()+"</html>"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+                    }
+                });
+            }
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                    setCursor(Util.WAIT_CURSOR);
+                    removeAll();
+                    add(jpControl,"0,0");//$NON-NLS-1$
+                    add(jl,"0,1");//$NON-NLS-1$
+                    SwingUtilities.updateComponentTreeUI(CoverView.this.getRootPane());//refresh
+                    setCursor(Util.DEFAULT_CURSOR);
+                }
+            });
+        }
     }
     
     /* (non-Javadoc)
@@ -424,30 +440,26 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
      */
     public void actionPerformed(final ActionEvent e) {
         if(e.getSource() == jbPrevious){  //previous : show a better cover
-            Util.waiting();
             index++;
             if (index > alCovers.size()-1){
                 index = 0;
             }
-            SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
+            new Thread(){
+                public void run(){
                     displayCurrentCover();
-                    Util.stopWaiting();
                 }
-            });
+            }.start();
         }
         else if(e.getSource() == jbNext){ //next : show a worse cover
-            Util.waiting();
             index--;
             if (index < 0){
                 index = alCovers.size()-1;
             }
-            SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
+            new Thread(){
+                public void run(){
                     displayCurrentCover();
-                    Util.stopWaiting();
                 }
-            });
+            }.start();
         }
         else if(e.getSource() == jbSave || e.getSource() == jbSaveAs || e.getSource() == jbDefault){ //save a save with its original name
             SwingUtilities.invokeLater(new Runnable() {
