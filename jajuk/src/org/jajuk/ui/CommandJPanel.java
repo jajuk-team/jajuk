@@ -22,6 +22,10 @@ package org.jajuk.ui;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.util.ArrayList;
 import java.util.Properties;
 
@@ -60,7 +64,7 @@ import com.sun.SwingWorker;
  * @author     bflorat
  * @created    3 oct. 2003
  */
-public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionListener,ListSelectionListener,ChangeListener,Observer{
+public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionListener,ListSelectionListener,ChangeListener,Observer,MouseListener,MouseWheelListener{
     
     //singleton
     static private CommandJPanel command;
@@ -205,11 +209,11 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
                 jtbPlay.add(Box.createHorizontalGlue());
                 jbPrevious = new JButton(Util.getIcon(ICON_PREVIOUS)); 
                 jbPrevious.setToolTipText(Messages.getString("CommandJPanel.8")); //$NON-NLS-1$
-                jbPrevious.addActionListener(CommandJPanel.this);
+                jbPrevious.addMouseListener(CommandJPanel.this);
                 jtbPlay.add(jbPrevious);
                 jbNext = new JButton(Util.getIcon(ICON_NEXT)); 
                 jbNext.setToolTipText(Messages.getString("CommandJPanel.9")); //$NON-NLS-1$
-                jbNext.addActionListener(CommandJPanel.this);
+                jbNext.addMouseListener(CommandJPanel.this);
                 jtbPlay.add(jbNext);
                 jtbPlay.addSeparator();
                 jbRew = new JButton(Util.getIcon(ICON_REW)); 
@@ -246,6 +250,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
                 jpVolume.add(jsVolume);
                 jsVolume.setToolTipText(Messages.getString("CommandJPanel.14")); //$NON-NLS-1$
                 jsVolume.addChangeListener(CommandJPanel.this);
+                jsVolume.addMouseWheelListener(CommandJPanel.this);
                 
                 //Position
                 JPanel jpPosition = new JPanel();
@@ -257,6 +262,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
                 jsPosition.addChangeListener(CommandJPanel.this);
                 jsPosition.setEnabled(false);
                 jsPosition.setToolTipText(Messages.getString("CommandJPanel.15")); //$NON-NLS-1$
+                jsPosition.addMouseWheelListener(CommandJPanel.this);
                 
                 //add toolbars to main panel
                 add(sbSearch,"1,0"); //$NON-NLS-1$
@@ -436,24 +442,6 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
                         ObservationManager.notify(EVENT_PLAYER_PAUSE);  //notify of this event
                     }
                 }
-                else if (ae.getSource() == jbPrevious){
-                    synchronized(bLock){
-                        FIFO.getInstance().playPrevious();
-                        if ( Player.isPaused()){  //player was paused, reset pause button when changing of track
-                            Player.setPaused(false);
-                            ObservationManager.notify(EVENT_PLAYER_RESUME);  //notify of this event
-                        }
-                    }
-                }
-                else if (ae.getSource() == jbNext){
-                    synchronized(bLock){
-                        FIFO.getInstance().playNext();
-                        if ( Player.isPaused()){  //player was paused, reset pause button
-                            Player.setPaused(false);
-                            ObservationManager.notify(EVENT_PLAYER_RESUME);  //notify of this event
-                        }
-                    }
-                }
                 else if (ae.getSource() == jbRew){
                     float fCurrentPosition = Player.getCurrentPosition();
                     Player.seek(fCurrentPosition-JUMP_SIZE);
@@ -530,6 +518,31 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
             bPositionChanging = false;
         }
     }
+    
+    /**
+     * @return Position value
+     */
+    public int getCurrentPosition(){
+        return this.jsPosition.getValue();
+    }
+    
+
+    /**
+     * @return Volume value
+     */
+    public int getCurrentVolume(){
+        return this.jsVolume.getValue();
+    }
+
+    
+    /**
+     * Set Volume
+     * @param volume
+     */
+    public void setCurrentVolume(int iValue){
+        this.jsVolume.setValue(iValue);
+    }
+
     
     /* (non-Javadoc)
      * @see org.jajuk.ui.Observer#update(java.lang.String)
@@ -608,6 +621,106 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
      */
     public String toString(){
         return getClass().getName();
+    }
+
+    /* (non-Javadoc)
+     * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
+     */
+    public void mouseClicked(MouseEvent e) {
+        //left button :track level
+        if (e.getButton() == MouseEvent.BUTTON1){
+             if (e.getSource() == jbPrevious){
+                 synchronized(bLock){
+                     FIFO.getInstance().playPrevious();
+                     if ( Player.isPaused()){  //player was paused, reset pause button when changing of track
+                         Player.setPaused(false);
+                         ObservationManager.notify(EVENT_PLAYER_RESUME);  //notify of this event
+                     }
+                 }
+             }
+             else if (e.getSource() == jbNext){
+                 synchronized(bLock){
+                     FIFO.getInstance().playNext();
+                     if ( Player.isPaused()){  //player was paused, reset pause button
+                         Player.setPaused(false);
+                         ObservationManager.notify(EVENT_PLAYER_RESUME);  //notify of this event
+                     }
+                 }
+             }
+        }
+        //right button : album level
+        else if (e.getButton() == MouseEvent.BUTTON3){
+            if (e.getSource() == jbPrevious){
+                synchronized(bLock){
+                    FIFO.getInstance().playPrevious();
+                    if ( Player.isPaused()){  //player was paused, reset pause button when changing of track
+                        Player.setPaused(false);
+                        ObservationManager.notify(EVENT_PLAYER_RESUME);  //notify of this event
+                    }
+                }
+            }
+            else if (e.getSource() == jbNext){
+                synchronized(bLock){
+                    FIFO.getInstance().playNextAlbum();
+                    if ( Player.isPaused()){  //player was paused, reset pause button
+                        Player.setPaused(false);
+                        ObservationManager.notify(EVENT_PLAYER_RESUME);  //notify of this event
+                    }
+                }
+            }
+         }
+    }
+
+    /* (non-Javadoc)
+     * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
+     */
+    public void mousePressed(MouseEvent e) {
+     }
+
+    /* (non-Javadoc)
+     * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
+     */
+    public void mouseReleased(MouseEvent e) {
+     }
+
+    /* (non-Javadoc)
+     * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
+     */
+    public void mouseEntered(MouseEvent e) {
+     }
+
+    /* (non-Javadoc)
+     * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
+     */
+    public void mouseExited(MouseEvent e) {
+     }
+
+    /* (non-Javadoc)
+     * @see java.awt.event.MouseWheelListener#mouseWheelMoved(java.awt.event.MouseWheelEvent)
+     */
+    public void mouseWheelMoved(MouseWheelEvent e) {
+        if (e.getSource() == jsPosition){
+           int iOld = jsPosition.getValue();
+           int iNew = iOld - (e.getUnitsToScroll()*3);
+           if ( iNew<0){
+               iNew = 0;
+           }
+           else if (iNew>99){
+               iNew = 99;
+           }
+           jsPosition.setValue(iNew);
+        }
+        else if (e.getSource() == jsVolume){
+            int iOld = jsVolume.getValue();
+            int iNew = iOld - (e.getUnitsToScroll()*3);
+            if ( iNew<0){
+                iNew = 0;
+            }
+            else if (iNew>99){
+                iNew = 99;
+            }
+            jsVolume.setValue(iNew);
+        }
     }
     
 }
