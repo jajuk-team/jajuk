@@ -185,8 +185,8 @@ public class FileManager implements ITechnicalStrings{
 	    ArrayList alEligibleFiles = new ArrayList(1000);
         Iterator it = TrackManager.getTracks().iterator(); //search in tracks, not files to avoid duplicates items
 		while ( it.hasNext()){
-            File file = ((Track)it.next()).getPlayeableFile();
-			if (!file.isReady()){
+            File file = ((Track)it.next()).getPlayeableFile(); //can return null
+			if (file!= null && !file.isReady()){//test if file is null!
 			    continue;
 			}
 			int iTrackAge = 0;
@@ -230,8 +230,8 @@ public class FileManager implements ITechnicalStrings{
 		TreeSet tsEligibleFiles = new TreeSet();
 		Iterator it = TrackManager.getTracks().iterator(); //search in tracks, not files to avoid duplicates items
 		while ( it.hasNext()){
-			File file = ((Track)it.next()).getPlayeableFile();
-			if (file.isReady()){
+			File file = ((Track)it.next()).getPlayeableFile(); //can return null
+			if (file!= null && file.isReady()){ //test if file is null!
 				long lRate = file.getTrack().getRate();
 				long lScore = (long)(Math.random()*(100/(file.getTrack().getSessionHits()+1))*Math.log(lRate));  //computes score for each file ( part of shuffleness, part of hits weight )
 				tsEligibleFiles.add(new FileScore(file,lScore));
