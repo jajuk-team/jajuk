@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.3  2003/10/24 12:43:07  sgringoi
+ * Use the PerspectiveManagerJTabbedPane to manage the perspectives
+ *
  * Revision 1.2  2003/10/10 15:29:57  sgringoi
  * *** empty log message ***
  *
@@ -30,7 +33,7 @@ package org.jajuk.ui.perspectives;
  * @created		5 oct. 2003
  */
 public class PerspectiveManagerFactory {
-	private static PerspectiveManagerImpl perspManager = null;
+	private static IPerspectiveManager perspManager = null;
 	
 	/**
 	 * Return the current perspective manager in use.
@@ -40,8 +43,9 @@ public class PerspectiveManagerFactory {
 	public static IPerspectiveManager getPerspectiveManager() {
 		if (perspManager == null)
 		{
-			perspManager = new PerspectiveManagerImpl();
+			perspManager = new PerspectiveManagerJTabbedPane();
 		}
 		return perspManager;
 	}
 }
+
