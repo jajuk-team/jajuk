@@ -172,6 +172,7 @@
     	<action dev='bflorat' type='fix'>1038486	Repeat mode bug</action>
 	   	<action dev='bflorat' type='fix'>1013891	Cover maximalization problem</action>
      </release>
- 
+     <release version='0.3.2' date='Work in progress' description=''>
+     </release>
   </body>
 </document>

@@ -44,7 +44,8 @@ public interface ITechnicalStrings {
     
 		
 	// Jajuk version
-	public static final String JAJUK_VERSION = "0.3.1";
+	public static final String JAJUK_VERSION = "0.3.2";
+	public static final String JAJUK_VERSION_DATE = "Build 2004-12-12";
 	
 	//About 
 	public static final String ABOUT = "<html>Jajuk version "+JAJUK_VERSION+"</html>";
@@ -83,14 +84,14 @@ public interface ITechnicalStrings {
 	public static final String ICON_STOP = PATH_ICONS + "16x16/player_stop.png";
 	public static final String ICON_FWD = PATH_ICONS + "16x16/player_fwd.png";
 	public static final String ICON_VOLUME = PATH_ICONS + "16x16/volume.png";
-	public static final String ICON_POSITION = PATH_ICONS + "16x16/bottom.png";
+	public static final String ICON_POSITION = PATH_ICONS + "16x16/position.png";
 	public static final String ICON_INFO	= PATH_ICONS + "16x16/info.png";
 	public static final String ICON_PERSPECTIVE_PHYSICAL = "/org/jajuk/icons/16x16/physical_perspective.png"; //path inside jar file
 	public static final String ICON_PERSPECTIVE_LOGICAL	= "/org/jajuk/icons/16x16/logical_perspective.png";
-	public static final String ICON_PERSPECTIVE_STATISTICS	= "/org/jajuk/icons/16x16/percent.png";
-	public static final String ICON_PERSPECTIVE_CONFIGURATION	= "/org/jajuk/icons/16x16/configure.png";
+	public static final String ICON_PERSPECTIVE_STATISTICS	= "/org/jajuk/icons/16x16/statistics_perspective.png";
+	public static final String ICON_PERSPECTIVE_CONFIGURATION	= "/org/jajuk/icons/16x16/configuration_perspective.png";
 	public static final String ICON_PERSPECTIVE_PLAYER	= "/org/jajuk/icons/16x16/player_perspective.png";
-	public static final String ICON_PERSPECTIVE_HELP	= "/org/jajuk/icons/16x16/info.png";
+	public static final String ICON_PERSPECTIVE_HELP	= "/org/jajuk/icons/16x16/help_perspective.png";
 	public static final String ICON_OPEN_FILE	= PATH_ICONS + "16x16/fileopen.png";
 	public static final String ICON_EXIT=  PATH_ICONS + "16x16/exit.png";
 	public static final String ICON_NEW=  PATH_ICONS + "16x16/new.png";
@@ -284,7 +285,6 @@ public interface ITechnicalStrings {
 	public static final String EVENT_PLAYLIST_REFRESH="playlist refresh";
 	public static final String EVENT_PLAYLIST_CHANGED="playlist changed";
 	public static final String EVENT_FILE_LAUNCHED="file launched";//a file has been lauched by the fifo
-	public static final String EVENT_INFORMATION_DISPLAY="information display";//the information need to be updated
 	public static final String EVENT_HEART_BEAT="heart beat";//heart beat for geenral use to refresh subscribers every n secs
 	public static final String EVENT_ZERO="zero"; //a reinit has been required
 	public static final String EVENT_ADD_HISTORY_ITEM="add history item"; //a new element has been added in the history
