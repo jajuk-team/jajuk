@@ -6,7 +6,7 @@
   <property name='libdir' value='lib'/>
   <property name='srcdir' value='src'/>
   <property name='javadocdir' value='dist-files/doc/javadoc'/>
-  <property name='version' value='0.1.6'/>
+  <property name='version' value='0.2'/>
   <property name='jarname' value='jajuk.jar'/>
   <property name='helpsetjarname' value='jajuk-help.jar'/>
   <property name='distjarname' value='jajuk-install-'/>
@@ -37,6 +37,10 @@
       <fileset file='${basedir}/dist-files/doc/README.html'/>
       <fileset file='${basedir}/dist-files/doc/README_fra.html'/>
       <fileset file='${basedir}/dist-files/doc/README_deu.html'/>
+      <fileset file='${basedir}/dist-files/doc/README_ita.html'/>
+      <fileset file='${basedir}/dist-files/doc/README_nld.html'/>
+      <fileset file='${basedir}/dist-files/doc/README_chn.html'/>
+      <fileset file='${basedir}/dist-files/doc/README_swe.html'/>
    </copy>
   	<copy todir='${distdir}/src' >
      <fileset file='${basedir}/dist-files/packaging/MANIFEST.MF'/>
