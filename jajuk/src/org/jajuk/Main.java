@@ -130,6 +130,7 @@ public class Main implements ITechnicalStrings {
 			LNFManager.register(LNF_WINDOWS,LNF_WINDOWS_CLASS);
 			LNFManager.register(LNF_KUNSTSTOFF,LNF_KUNSTSTOFF_CLASS);
 			LNFManager.register(LNF_LIQUID,LNF_LIQUID_CLASS);
+			LNFManager.register(LNF_METOUIA,LNF_METOUIA_CLASS);
 								
 			//perform initial checkups
 			initialCheckups();
