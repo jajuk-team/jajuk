@@ -22,7 +22,7 @@ package org.jajuk.ui;
 
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
-import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Properties;
 
@@ -30,6 +30,7 @@ import javax.swing.JComponent;
 
 import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.util.log.Log;
+
 
 /**
  *  This is a mediator managing relationships between subjets and observers 
@@ -39,17 +40,17 @@ import org.jajuk.util.log.Log;
 public class ObservationManager implements ITechnicalStrings{
 	
 	/** one event -> list of components*/
-	static HashMap hEventComponents = new HashMap(10);
+	static Hashtable hEventComponents = new Hashtable(10);
 	
 	/**Map a event string with a property containing all event details*/
-	static HashMap hEventDetails = new HashMap(5);
+	static Hashtable hEventDetails = new Hashtable(5);
 	
 	/**
 	 * Register a component for a given subject
 	 * @param subject Subject ( event ) to observe
 	 * @param jc component to register
 	 */
-	public static synchronized void register(String subject,Object obj){
+	public static void register(String subject,Object obj){
 		Log.debug("Register: \""+subject+"\" by: "+obj); //$NON-NLS-1$ //$NON-NLS-2$
 		ArrayList alComponents = (ArrayList)hEventComponents.get(subject);
 		if (alComponents == null){
@@ -64,12 +65,10 @@ public class ObservationManager implements ITechnicalStrings{
 	 * @param subject Subject ( event ) to observe
 	 * @param jc component to deregister
 	 */
-	public static synchronized void unregister(String subject,JComponent jc){
+	public static void unregister(String subject,JComponent jc){
 		ArrayList alComponents = (ArrayList)hEventComponents.get(subject);
 		if (alComponents == null){
-			synchronized(alComponents){
-				alComponents.remove(jc);
-			}
+			alComponents.remove(jc);
 		}
 	}
 	
@@ -77,7 +76,7 @@ public class ObservationManager implements ITechnicalStrings{
 	 * Notify all components having registered for the given subject
 	 * @param subject
 	 */
-	public static synchronized void notify(final String subject){
+	public static void notify(final String subject){
 		notify(subject,false); //asynchronous notification by default to avoid exception throw in the register current thread
 	}
 	
@@ -85,14 +84,16 @@ public class ObservationManager implements ITechnicalStrings{
 	 * Notify synchronously all components having registered for the given subject
 	 * @param subject
 	 */
-	public static synchronized void notifySync(final String subject){
+	public static void notifySync(final String subject){
 	    if (!subject.equals(EVENT_HEART_BEAT)){ //do not show this heart beat 
 	        Log.debug("Notify: "+subject); //$NON-NLS-1$
 	    }
 	    ArrayList alComponents =(ArrayList)hEventComponents.get(subject);
+	    alComponents = (ArrayList)alComponents.clone(); //try to avoid duplicate key exceptions
 	    if (alComponents == null){
 	        return;
 	    }
+	    
 	    Iterator it = alComponents.iterator();  
 	    while (it.hasNext()){
 	        Observer obs = null;
@@ -121,7 +122,7 @@ public class ObservationManager implements ITechnicalStrings{
 	 * @param subject
 	 * @param whether the notification is synchronous or not
 	 */
-	public static synchronized void notify(final String subject, boolean bSync){
+	public static void notify(final String subject, boolean bSync){
 		if (bSync){
 			ObservationManager.notifySync(subject);
 		}
@@ -140,7 +141,7 @@ public class ObservationManager implements ITechnicalStrings{
 	 * @param subject
 	 * @param pDetails informations about this event
 	 */
-	public static synchronized void notify(final String subject,Properties pDetails){
+	public static void notify(final String subject,Properties pDetails){
 		hEventDetails.put(subject,pDetails);
 		notify(subject);
 	}
@@ -162,7 +163,7 @@ public class ObservationManager implements ITechnicalStrings{
 	 * @param sDetail Detail name
 	 * @return the detail as an object or null if the event or the detail doesn't exist
 	 */
-	public static synchronized Object getDetail(String sEvent,String sDetailName){
+	public static Object getDetail(String sEvent,String sDetailName){
 		Properties pDetails = (Properties)hEventDetails.get(sEvent);
 		if (pDetails != null){
 			return pDetails.get(sDetailName);
@@ -175,7 +176,7 @@ public class ObservationManager implements ITechnicalStrings{
 	 * @param sEvent event name
 	 * @return the detaisl or null there are not details
 	 */
-	public static synchronized Object getDetails(String sEvent){
+	public static Object getDetails(String sEvent){
 		return (Properties)hEventDetails.get(sEvent);
 	}
 	
