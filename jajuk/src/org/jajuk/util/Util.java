@@ -95,6 +95,8 @@ public class Util implements ITechnicalStrings {
 	/** Mute state*/
 	private static boolean bMute;
 	
+	/** Volume ( master gain )*/ 
+	private static float fVolume = 50.0f;
 	/**
 	 * No constructor
 	 */
@@ -340,32 +342,21 @@ public class Util implements ITechnicalStrings {
 	}
 	
 	/**
-	 * Set volume in %
+	 * Set volume in % ( ex: 10.0 )
 	 * @param fVolume
 	 */
 	public static void setVolume(float fVolume){
 		try {
-			Mixer mixer = AudioSystem.getMixer(null);
-			Line[] lines = mixer.getSourceLines();
-			Line line = null;
-			for (int i=0;i<lines.length;i++){
-				if ( lines[i] instanceof MixerSourceLine ){
-					line = lines[i];
-					break;
-				}
-			}
-			if ( line == null){
-				return;
-			}
-			FloatControl  volCtrl = (FloatControl)line.getControl(FloatControl.Type.MASTER_GAIN);
+			Line line = getCurrentLine();	FloatControl  volCtrl = (FloatControl)line.getControl(FloatControl.Type.MASTER_GAIN);
 			float fCurrent = 0.0f; 
-			if ( fVolume<=0.5){
-				fCurrent = Math.abs(volCtrl.getMinimum()*2*fVolume) + volCtrl.getMinimum();
+			if ( fVolume<=50){
+				fCurrent = Math.abs(volCtrl.getMinimum()*2*(fVolume/100)) + volCtrl.getMinimum();
 			}
 			else{
-				fCurrent = volCtrl.getMaximum()*fVolume;
+				fCurrent = volCtrl.getMaximum()*(fVolume/100);
 			}
 			volCtrl.setValue(fCurrent);
+			Util.fVolume = fVolume;
 		} catch (Exception e) {
 			Log.error(e);
 		}
@@ -376,10 +367,25 @@ public class Util implements ITechnicalStrings {
 	 * @param bMute
 	 */
 	public static void setMute(boolean bMute){
-		try {
+		try{
+			Line line = getCurrentLine();
+			BooleanControl  bc = (BooleanControl)line.getControl(BooleanControl.Type.MUTE);
+			bc.setValue(bMute);
 			Util.bMute = bMute;
-			Mixer mixer = AudioSystem.getMixer(null);
-			Line line = null;
+		} catch (Exception e) {
+			Log.error(e);
+		}
+	}
+
+	/**
+	 * Get current line. Wait until line appears ( with a time out ) 
+	 * @return waited audio line
+	 */	
+	private static Line getCurrentLine(){
+		Mixer mixer = AudioSystem.getMixer(null);
+		Line line = null;
+		int iTimeOut = 200;  //time out to exit line waiting and kill a calling thread 
+		do{
 			Line[] lines = mixer.getSourceLines();
 			for (int i=0;i<lines.length;i++){
 				if ( lines[i] instanceof MixerSourceLine ){
@@ -387,15 +393,23 @@ public class Util implements ITechnicalStrings {
 					break;
 				}
 			}
-			if ( line == null){
-				return;
+			if ( iTimeOut > 0){
+				try {
+					Thread.sleep(20);
+				} catch (InterruptedException e) {
+					Log.error(e);
+				}
+				iTimeOut --;
 			}
-			BooleanControl  bc = (BooleanControl)line.getControl(BooleanControl.Type.MUTE);
-			bc.setValue(bMute);
-		} catch (Exception e) {
-			Log.error(e);
+			else{
+				return null;  //time out reached, leave 
+			}
 		}
+		while(line == null);
+		return line;
 	}
+	
+
 
 	/**
 	 * Get mute state
@@ -405,4 +419,11 @@ public class Util implements ITechnicalStrings {
 		return bMute;
 	}
 	
+	/**
+	 * @return Returns the volume in %
+	 */
+	public static float getVolume() {
+		return fVolume;
+	}
+
 }

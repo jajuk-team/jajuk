@@ -149,7 +149,7 @@ public class Main implements ITechnicalStrings {
 			History.load();
 			
 			//Starts the FIFO
-			FIFO.getInstance().start();
+			FIFO.getInstance();
 			
 			jframe.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 			jframe.addWindowListener(new WindowAdapter() {

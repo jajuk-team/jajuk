@@ -41,7 +41,6 @@ import org.jajuk.base.FileManager;
 import org.jajuk.base.History;
 import org.jajuk.base.HistoryItem;
 import org.jajuk.base.ITechnicalStrings;
-import org.jajuk.base.Player;
 import org.jajuk.base.SearchResult;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
@@ -299,7 +298,10 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 			Util.setMute(!Util.getMute());
 		}
 		else if(ae.getSource() == jbStop){
-			Player.stop();
+			FIFO.getInstance().stopRequest();
+		}
+		else if(ae.getSource() == jbPlayPause){
+			FIFO.getInstance().pauseRequest();
 		}
 		else if (ae.getSource() == jbPrevious){
 			FIFO.getInstance().playPrevious();
@@ -338,7 +340,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 	 */
 	public void stateChanged(ChangeEvent e) {
 		if ( e.getSource() == jsVolume){
-			Util.setVolume((float)jsVolume.getValue()/100);
+			Util.setVolume((float)jsVolume.getValue());
 		}
 		else if (e.getSource() == jsPosition && !bPositionChanging){
 			bPositionChanging = true;

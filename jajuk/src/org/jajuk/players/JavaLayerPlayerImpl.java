@@ -56,11 +56,16 @@ public class JavaLayerPlayerImpl implements IPlayerImpl,ITechnicalStrings{
 			player = new AdvancedPlayer(new BufferedInputStream(new FileInputStream(new File(file.getAbsolutePath())))); 
 			player.setPlayBackListener(new PlaybackListener() {
 				public void playbackFinished(PlaybackEvent pbe){
-					System.out.println("finished");
 					FIFO.getInstance().finished();
 				}
 				public void playbackStarted(PlaybackEvent pbe){
 					bStarted = true;
+					new Thread(){  //we have to set mute mode and volume for next track asynchronously because line is not already opened in this method and will not until it is executed. setMute et setVolume methods wait until line is opened
+						public void run(){
+							Util.setMute(Util.getMute());  //keep the mute mode between tracks	
+							Util.setVolume(Util.getVolume()); //keep the volume between tracks
+						}
+					}.start();
 				}
 			});
 			FIFO.getInstance().lTrackStart = System.currentTimeMillis();  //time correction
@@ -71,7 +76,6 @@ public class JavaLayerPlayerImpl implements IPlayerImpl,ITechnicalStrings{
 			else{
 				int iFirstFrame = (int)(file.getTrack().getLength()*fPosition*0.41666); // (position*fPosition/100(%)) *1000(ms) /24 because 1 frame =24ms
 				int iLastFrame = (int)(iFirstFrame+(length*41.666)); //length*1000(ms)/24
-				System.out.println("playing: position= "+fPosition+ " length= "+length);
 				player.play(iFirstFrame,iLastFrame);
 			}
 		}

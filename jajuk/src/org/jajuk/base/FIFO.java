@@ -35,16 +35,16 @@ import org.jajuk.util.log.Log;
  * @author     bflorat
  * @created    12 oct. 2003
  */
-public class FIFO extends Thread implements ITechnicalStrings{
+public class FIFO implements ITechnicalStrings,Runnable{
 
 	/**Cuurently played track */
 	private File fCurrent;
 	
 	/**Fifo itself, contains jajuk File objects **/
-	private volatile ArrayList alFIFO = new ArrayList(50);
+	private volatile ArrayList alFIFO;
 	
 	/**Stop flag**/
-	private volatile boolean bStop = false;
+	private volatile boolean bStop;
 	
 	/** Deep time**/
 	private final int SLEEP_TIME = 100;
@@ -56,35 +56,46 @@ public class FIFO extends Thread implements ITechnicalStrings{
 	static private FIFO fifo= null; 	
 	
 	/**True is a track is playing */
-	static private boolean bPlaying = false;
+	static private boolean bPlaying;
 	
 	/** Forced repeat mode flag*/
-	boolean bForcedRepeat = false;
-	
-	
+	boolean bForcedRepeat;
+		
 	/** Current track start date*/
 	public long lTrackStart; 
 	
 	/** Total time in fifo (sec)*/
-	private long lTotalTime = 0;
+	private long lTotalTime;
 	
 	/** Offset since begin in ms*/
-	long lOffset = 0;
+	long lOffset;
 	
 	/** Glocal random enabled ? */
-	private boolean bGlobalRandom = false;
+	private boolean bGlobalRandom;
 	
 	/** Best of enabled ? */
-	private boolean bBestOf = false;
+	private boolean bBestOf;
 	
 	/** Repeated set */
-	private ArrayList alRepeated = new ArrayList(50);
+	private ArrayList alRepeated;
 	
 	/** Repeated set index */
 	private int iRepeatIndex;
 	
 	/**Current file intro status*/
-	private boolean bIntroEnabled = false;
+	private boolean bIntroEnabled;
+	
+	/**Starter thread*/
+	private Thread tStarter;
+	
+	/** Current file position (%) used for pause */
+	private int iPosition;
+	
+	/** Date when paused was required ( ms ) */
+	private long lPauseDate;
+	
+	/** Pause boolean */
+	private boolean bPaused;
 	
 	/**
 	 * Singleton access
@@ -101,6 +112,19 @@ public class FIFO extends Thread implements ITechnicalStrings{
 	 * constructor
 	 */
 	private FIFO() {
+		alFIFO = new ArrayList(50);
+		bStop = false;
+		bPlaying = false;
+		bForcedRepeat = false;
+		lTotalTime = 0;
+		lOffset = 0;
+		bGlobalRandom = false;
+		bBestOf = false;
+		alRepeated = new ArrayList(50);
+		bIntroEnabled = false;
+		bPaused = false;
+		tStarter = new Thread(this);
+		tStarter.start();
 	}
 	
 	/**
@@ -218,6 +242,9 @@ public class FIFO extends Thread implements ITechnicalStrings{
 			int i = 0;
 			while (!bStop) {
 				Thread.sleep(SLEEP_TIME); //sleep to save CPU
+				if ( bPaused){
+					continue;
+				}
 				if (bPlaying ){//already playing something
 					long length = fCurrent.getTrack().getLength();;
 					if ( i%(REFRESH_TIME/SLEEP_TIME) == 0 && length!=0){  //actual refresh less frequent for cpu
@@ -311,6 +338,13 @@ public class FIFO extends Thread implements ITechnicalStrings{
 					InformationJPanel.getInstance().setQuality(fCurrent.getQuality()+" kbps");
 				}
 			}
+			//fifo is over ( stop request ) , reinit labels in information panel before exiting
+			InformationJPanel.getInstance().setCurrentStatusMessage(Util.formatTime(0)+" / "+Util.formatTime(0));
+			InformationJPanel.getInstance().setCurrentStatus(0);
+			CommandJPanel.getInstance().setCurrentPosition(0);
+			InformationJPanel.getInstance().setTotalStatusMessage("0'");
+			InformationJPanel.getInstance().setMessage("Ready to play",InformationJPanel.INFORMATIVE);
+			InformationJPanel.getInstance().setQuality("");
 		} catch (Exception e) {
 			Log.error("122", e); //$NON-NLS-1$
 		}
@@ -408,24 +442,52 @@ public class FIFO extends Thread implements ITechnicalStrings{
 	 * @param fPosition position in % of track length
 	 */
 	public void setCurrentPosition(float fPosition){
-		/*commun tests : position in track bounds?
-		if ( iPosition<0 || iPosition>= fCurrent.getTrack().getLength()){
-			return;
-		}
+		long lTrackLength = fCurrent.getTrack().getLength();  //in sec
 		if (ConfigurationManager.getBoolean(CONF_STATE_INTRO) ){  //intro mode enabled
 			int iBegin = Integer.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_INTRO_BEGIN));
 			int iLength = Integer.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_INTRO_LENGTH));
-			if (iPosition<iLength && iPosition>iBegin){ //check position is compatible with intro bounds options
+			if ((fPosition/100)*lTrackLength<iLength && fPosition>iBegin){ //check position is compatible with intro bounds options
 				Player.stop();
-				Player.play(fCurrent,iPosition,iLength-iPosition);
-				lOffset =  fCurrent.getTrack().getLength()*iPosition*10;
+				Player.play(fCurrent,fPosition,(long)(1000*(iLength+(fPosition*lTrackLength))));
+				lOffset =  (long)(fCurrent.getTrack().getLength()*fPosition*10);
 			}
 		}
-		else{//intro mode enabled*/
+		else{//intro mode enabled
 			Player.stop();
 			Player.play(fCurrent,fPosition,1000*fCurrent.getTrack().getLength());
 			lOffset = (long)(fCurrent.getTrack().getLength()*fPosition*10);
-		//}
+		}
+	}
+
+	/**
+	 * Stop request. Void the fifo
+	 */
+	public void stopRequest() {
+		Player.stop();
+		fifo = null;
+		bStop = true;
+	}
+	
+	/**
+	 * Pause request. 
+	 */
+	public void pauseRequest() {
+		if ( !bPaused ){
+			bPaused = true;
+			Player.stop();
+			lPauseDate = System.currentTimeMillis(); //store pause date to compute time
+		}
+		else{
+			bPaused = false;
+			lTrackStart+=(System.currentTimeMillis()-lPauseDate); //offset start date to take pauyse into account
+		/*	//restart paused track
+			if (ConfigurationManager.getBoolean(CONF_STATE_INTRO)){ //intro mode enabled
+				Player.play(fCurrent,iInteger.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_INTRO_BEGIN)),Integer.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_INTRO_LENGTH)));
+			}
+			else{
+				Player.play(fCurrent,-1,-1);  //play it
+			}*/
+		}
 	}
 
 	

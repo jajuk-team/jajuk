@@ -2,39 +2,44 @@
 <document>
   <body>
   	<section name="Planning">
+  		<section name="0.1">
+	   		<p>Initial version, currently in development. This version will be fully functionnal and offers most of targetted features. 0.2 to 0.5 releases will bring non-mandatory options.</p>
+	   		<p>We hope to publish 0.1 between febrary and april 2004.</p>
+	   	</section>
   		<section name="0.2">
 	   		<ul>
-	   			<li>Ogg Vorbis support
-	   			<li>Network-type device ( P2P )
-	   			<li>Online help part 1/3
+	   			<li>Java web start support</li>
+	   			<li>Ogg Vorbis support</li>
+	   			<li>Network-type device ( P2P )</li>
+	   			<li>Online help part 1/3</li>
 	   		</ul>	
 	   	</section>
 	   	<section name="0.3">
 	   		<ul>
-	   			<li>Alter functions ( cut/copy/paste, delete, rename... )
-	   			<li>New statristics, sorted by theme ( tabbed pane )
-	   			<li>Online help part 2/3
+	   			<li>Alter functions ( cut/copy/paste, delete, rename... )</li>
+	   			<li>New statristics, sorted by theme ( tabbed pane )</li>
+	   			<li>Online help part 2/3</li>
 	   		</ul>	
 	   	</section>
 	   	<section name="0.4">
 	   		<ul>
-	   			<li>Disk Jokey magic function ( makes an automatic programmation based on user preferences )
-	   			<li>Online help part 3/3
-	   			<li>Tips of the day
+	   			<li>Disk Jokey magic function ( makes an automatic programmation based on user preferences )</li>
+	   			<li>Online help part 3/3</li>
+	   			<li>Tips of the day</li>
 	   		</ul>	
 	   	</section>
 	   	<section name="0.5">
 	   		<ul>
-	   			<li>New perspective : edtions to get collection reports and print them
+	   			<li>New perspective : edtions to get collection reports and print them</li>
 	   		</ul>	
 	   	</section>
 	   	<section name="science fiction">
 	   		<ul>
-	   			<li>Audio CDs support
-	   			<li>Eyes candies animations when playing in a new persperctive
-	   			<li>Equilizers in a new perspective
-	   			<li>CDDB based on mp3 ( even possibled ? )
-	   			<li>Covers lookup on the web ( even possibled ? )
+	   			<li>Audio CDs support</li>
+	   			<li>Eye candies animations when playing in a new persperctive</li>
+	   			<li>Equilizers in a new perspective</li>
+	   			<li>CDDB based on mp3 ( even possible ? )</li>
+	   			<li>Covers lookup on the web ( even possible ? )</li>
 	   		</ul>	
 	   	</section>
   	</section>
