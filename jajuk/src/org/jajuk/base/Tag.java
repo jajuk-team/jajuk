@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 bflorat
+ *  Copyright (C) 2003 Bertrand Florat
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -30,7 +30,7 @@ import org.jajuk.util.log.Log;
 
 /**
  * abstract tag, independent from real implementation
- * @author bflorat 
+ * @author Bertrand Florat 
  * @created 25 oct. 2003
  */
 public class Tag implements ITechnicalStrings{
@@ -207,7 +207,7 @@ public class Tag implements ITechnicalStrings{
 	 * @return quality
 	 */
 	public String getQuality() {
-		String sQuality = "unknown_quality"; //$NON-NLS-1$
+		String sQuality = UNKNOWN_QUALITY;
 		//if the type doesn't support tags ( like wav )
 		if (tagImpl == null){  
 			return sQuality;

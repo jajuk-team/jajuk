@@ -1,5 +1,5 @@
 /*
- * Jajuk Copyright (C) 2003 bflorat
+ * Jajuk Copyright (C) 2003 Bertrand Florat
  * 
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the Free
@@ -76,7 +76,7 @@ import com.sun.SwingWorker;
 /**
  * Physical tree view
  * 
- * @author bflorat 
+ * @author Bertrand Florat 
  * @created 28 nov. 2003
  */
 public class PhysicalTreeView extends AbstractTreeView implements ActionListener,org.jajuk.ui.Observer{
@@ -491,7 +491,12 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 					if (o instanceof FileNode){
 						File file = ((FileNode)o).getFile();
 						if (!file.isScanned()){
-							FIFO.getInstance().push(new StackItem(file,ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
+							try{
+							    FIFO.getInstance().push(new StackItem(file,ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
+							}
+							catch(JajukException je){
+							    Log.error(je);
+							}
 						}
 						else{
 							Messages.showErrorMessage("120",file.getDirectory().getDevice().getName()); //$NON-NLS-1$
@@ -664,7 +669,9 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 		}
 		//add files
 		ArrayList alFiles = FileManager.getFiles();
-		Collections.sort(alFiles);
+		if (alFiles != null && alFiles.size() > 0){
+		    Collections.sort(alFiles);
+		}
 		Iterator it3 = alFiles.iterator();
 		while (it3.hasNext()){
 			File file = (File)it3.next();
@@ -880,7 +887,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 
 /**
  * File node 
- * @author     bflorat
+ * @author     Bertrand Florat
  * @created    29 nov. 2003
  */
 class FileNode extends TransferableTreeNode{
@@ -911,7 +918,7 @@ class FileNode extends TransferableTreeNode{
 
 /**
  * Device node 
- * @author     bflorat
+ * @author     Bertrand Florat
  * @created    29 nov. 2003
  */
 class DeviceNode extends TransferableTreeNode{
@@ -951,7 +958,7 @@ class DeviceNode extends TransferableTreeNode{
 
 /**
  * Directory node 
- * @author     bflorat
+ * @author     Bertrand Florat
  * @created    29 nov. 2003
  */
 class DirectoryNode  extends TransferableTreeNode{
@@ -990,7 +997,7 @@ class DirectoryNode  extends TransferableTreeNode{
 
 /**
  * PlaylistFile node 
- * @author     bflorat
+ * @author     Bertrand Florat
  * @created    29 nov. 2003
  */
 class PlaylistFileNode  extends TransferableTreeNode{

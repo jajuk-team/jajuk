@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 bflorat
+ *  Copyright (C) 2003 Bertrand Florat
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -25,7 +25,7 @@ import javax.swing.plaf.basic.ComboPopup;
 /**
  * combobox ui for liquid laf
  * 
- * @author bflorat 
+ * @author Bertrand Florat 
  * @created 28 nov. 2003
  */
 public class LiquidComboBoxUI extends com.birosoft.liquid.LiquidComboBoxUI {

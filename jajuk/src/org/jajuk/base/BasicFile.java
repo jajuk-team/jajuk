@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 bflorat
+ *  Copyright (C) 2003 Bertrand Florat
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -22,7 +22,7 @@ package org.jajuk.base;
 
 /**
  *  File not managed in collection ( selected by file/open or in a playlist file )
- * @author     bflorat
+ * @author     Bertrand Florat
  * @created    21 oct. 2003
  */
 public class BasicFile extends org.jajuk.base.File {

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 bflorat
+ *  Copyright (C) 2003 Bertrand Florat
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -50,7 +50,7 @@ import javax.swing.tree.TreePath;
 
 /**
  *  DND handler thanks  Denis Cau and its post on Java Forum : http://forum.java.sun.com/thread.jsp?forum=57&thread=296255
- * @author     bflorat
+ * @author     Bertrand Florat
  * @created    13 feb. 2004
  */
 public class TreeTransferHandler implements DragGestureListener, DragSourceListener, DropTargetListener,TreeWillExpandListener {

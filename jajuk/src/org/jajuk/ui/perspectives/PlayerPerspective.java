@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 bflorat
+ *  Copyright (C) 2003 Bertrand Florat
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -33,7 +33,7 @@ import org.jajuk.ui.views.IView;
 /**
  *  Player perspective, contains view usefull to be displayed duriong playing
  *
- * @author     bflorat
+ * @author     Bertrand Florat
  * @created    13 août 2004
  */
 public class PlayerPerspective extends PerspectiveAdapter {

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 bflorat
+ *  Copyright (C) 2003 Bertrand Florat
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -48,7 +48,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * <p>
  * Singletton
  * 
- * @author bflorat 
+ * @author Bertrand Florat 
  * @created 16 oct. 2003
  */
 public class Collection extends DefaultHandler implements ITechnicalStrings, ErrorHandler,Serializable {
@@ -202,18 +202,17 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 	 * @return
 	 */
 	public static synchronized void cleanup() {
-		//	Tracks cleanup
+		//Tracks cleanup
 		TrackManager.cleanup();
 		//Styles cleanup
 		StyleManager.cleanup();
-		// Authors cleanup
+		//Authors cleanup
 		AuthorManager.cleanup();
 		//albums cleanup
 		AlbumManager.cleanup();
 		//Playlists cleanup
 		PlaylistManager.cleanup();
 		System.gc(); //force garbage collection after cleanup
-
 	}
 
 	
@@ -316,7 +315,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 				Directory dParent = null;
 				String sParentId = attributes.getValue(2);
 				if (!"-1".equals(sParentId)) { //$NON-NLS-1$
-					dParent = DirectoryManager.getDirectory(sParentId); //We know the parent directory is already referenced because of order conservation
+					dParent = DirectoryManager.getDirectory(sParentId); //Parent directory should be already referenced because of order conservation
 					if (dParent == null){ //check directory is exists
 						break;
 					}				

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 bflorat
+ *  Copyright (C) 2003 Bertrand Florat
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -28,7 +28,7 @@ import javax.swing.plaf.ComboBoxUI;
 
 /**
 *  Stepped combo box allowing to display a long text in the history bar
-* @Author    bflorat
+* @Author    Bertrand Florat
 * @created    17 oct. 2003
 */
 

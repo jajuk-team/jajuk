@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 bflorat
+ *  Copyright (C) 2003 Bertrand Florat
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -39,7 +39,7 @@ import org.jajuk.util.log.Log;
 /**
  *  Manages network downloads
  *
- * @author     bflorat
+ * @author     Bertrand Florat
  * @created    29 août 2004
  */
 public class DownloadManager implements ITechnicalStrings {

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 bflorat
+ *  Copyright (C) 2003 Bertrand Florat
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -23,7 +23,7 @@ package org.jajuk.util;
 
 /**
  *  Contains all technical/ non-translatable strings
- * @author     bflorat
+ * @author     Bertrand Florat
  * @created    5 oct. 2003
  */
 public interface ITechnicalStrings {
@@ -38,7 +38,7 @@ public interface ITechnicalStrings {
 	public static final int BORDER = 4;
 		
 	// Jajuk version
-	public static final String JAJUK_VERSION = "0.3.1rc3";
+	public static final String JAJUK_VERSION = "0.3.1rc4";
 	
 	//About 
 	public static final String ABOUT = "<html>Jajuk version "+JAJUK_VERSION+"</html>";
@@ -53,6 +53,7 @@ public interface ITechnicalStrings {
 	public static final String UNKNOWN_AUTHOR = "unknown_author";
 	public static final String UNKNOWN_ALBUM = "unknown_album";
 	public static final String UNKNOWN_STYLE = "unknown_style";
+	public static final String UNKNOWN_QUALITY = "unknown_quality";
 	
 	// icons
 	public static final String ICON_LOGO = PATH_ICONS + "64x64/jajuk-logo.png";

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 bflorat
+ *  Copyright (C) 2003 Bertrand Florat
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -19,17 +19,19 @@
  */
 package org.jajuk.base;
 
+import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 
 
 /**
  *  A music file to be played
  *<p> Physical item
- * @author     bflorat
+ * @author     Bertrand Florat
  * @created    12 oct. 2003
  */
-public class File extends PropertyAdapter implements Comparable{
+public class File extends PropertyAdapter implements Comparable,ITechnicalStrings{
 	/** author ID. Ex:1,2,3...*/
 	protected String sId;
 	/**File name */
@@ -174,6 +176,15 @@ public class File extends PropertyAdapter implements Comparable{
 		return sQuality;
 	}
 	
+	/**
+	 * @return user-formatted quality string
+	 */
+	public String getQuality2() {
+		if (UNKNOWN_QUALITY.equals(sQuality)){
+		    return Messages.getString(UNKNOWN_QUALITY);
+		}
+	    return sQuality;
+	}
 	/**
 	 * @return
 	 */

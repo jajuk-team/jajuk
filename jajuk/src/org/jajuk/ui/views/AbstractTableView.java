@@ -1,5 +1,5 @@
 /*
- * Jajuk Copyright (C) 2003 bflorat
+ * Jajuk Copyright (C) 2003 Bertrand Florat
  * 
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the Free
@@ -45,7 +45,7 @@ import org.jajuk.util.Util;
 /**
  * Abstract table view : common implementation for both physical and logical table views 
  * 
- * @author bflorat 
+ * @author Bertrand Florat 
  * @created 13 dec. 2003
  */
 public abstract class AbstractTableView extends ViewAdapter implements ActionListener,MouseListener{

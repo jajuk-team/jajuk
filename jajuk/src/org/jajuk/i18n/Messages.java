@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 bflorat
+ *  Copyright (C) 2003 Bertrand Florat
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -40,7 +40,7 @@ import org.xml.sax.helpers.DefaultHandler;
 /**
  * Utility class to get strings from localized property files
  *<p>Singleton</p>
- * @author     bflorat
+ * @author     Bertrand Florat
  * @created    5 oct. 2003
  */
 public class Messages extends DefaultHandler implements ITechnicalStrings	{
@@ -208,35 +208,51 @@ public class Messages extends DefaultHandler implements ITechnicalStrings	{
 	 * @param sCode
 	 */
 	public static void showErrorMessage(final String sCode){
-		Runnable run = new Runnable() {
-			public void run() {
-				JOptionPane.showMessageDialog(Main.getWindow(),Messages.getErrorMessage(sCode),Messages.getErrorMessage("102"),JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$	}
-			}
-		};
-		if ( SwingUtilities.isEventDispatchThread()){
-			SwingUtilities.invokeLater(run);
-		}
-		else{
-			try {
-				SwingUtilities.invokeAndWait(run);
-			} catch (InterruptedException e) {
-				Log.error(e);
-			} catch (InvocationTargetException e) {
-				Log.error(e);
-			}
-		}
+	    SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+              JOptionPane.showMessageDialog(Main.getWindow(),Messages.getErrorMessage(sCode),Messages.getErrorMessage("102"),JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$	}
+    		}
+        });
 	}
 	
 	/**
-	 * Show a dialog with specified error message
-	 * @param sMessage
+	 * Show a dialog waiting for a user decision
+	 * @param sText : dialog text
+	 * @param iType : dialof type : can be JOptionPane.ERROR_MESSAGE, WARNING_MESSAGE
 	 */
-	public static void showInfoMessage(final String sMessage){
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				JOptionPane.showMessageDialog(Main.getWindow(),sMessage,Messages.getString("Info"),JOptionPane.INFORMATION_MESSAGE); //$NON-NLS-1$
-			}
-		});
+	public static int getChoice(String sText,int iType){
+	    ConfirmDialog confirm = new ConfirmDialog(sText,getTitleForType(iType),iType);
+	    if (SwingUtilities.isEventDispatchThread()){ //in the dispatcher thread, no need to use invokeLatter
+	        confirm.run();
+	    }
+	    else{ //not in the awt dispatcher thread, OK, call it in an invokeAndWait to block ui until we get user decision
+	        try {
+                System.out.println("hopppppppppppp");
+	            SwingUtilities.invokeAndWait(confirm);
+            } catch (InterruptedException e) {
+                Log.error(e);
+            } catch (InvocationTargetException e) {
+                Log.error(e);
+            }
+	    }
+	    return confirm.getResu();
+	}
+	
+	/**
+	 * 
+	 * @param iType
+	 * @return String for given JOptionPane message type
+	 */
+	static private String getTitleForType(int iType){
+	    switch(iType){
+	    	case JOptionPane.ERROR_MESSAGE:
+	    	    	return Messages.getString("Error");
+	    	case JOptionPane.WARNING_MESSAGE:
+	    	    return Messages.getString("Warning");
+	    	case JOptionPane.INFORMATION_MESSAGE:
+	    	    return Messages.getString("Info");
+	    }
+	    return "";
 	}
 	
 	
@@ -245,12 +261,19 @@ public class Messages extends DefaultHandler implements ITechnicalStrings	{
 	 * @param sMessage
 	 */
 	public static void showWarningMessage(final String sMessage){
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				JOptionPane.showMessageDialog(Main.getWindow(),sMessage,Messages.getString("Warning"),JOptionPane.WARNING_MESSAGE); //$NON-NLS-1$
-			}
-		});
-		
+	    MessageDialog message = new MessageDialog(sMessage,getTitleForType(JOptionPane.WARNING_MESSAGE),JOptionPane.WARNING_MESSAGE);
+	    if (SwingUtilities.isEventDispatchThread()){ //in the dispatcher thread, no need to use invokeLatter
+	        message.run();
+	    }
+	    else{ //not in the awt dispatcher thread
+	        try {
+                SwingUtilities.invokeAndWait(message);
+            } catch (InterruptedException e) {
+                Log.error(e);
+            } catch (InvocationTargetException e) {
+                Log.error(e);
+            }
+	    }
 	}
 	
 	/**
@@ -258,11 +281,19 @@ public class Messages extends DefaultHandler implements ITechnicalStrings	{
 	 * @param sMessage
 	 */
 	public static void showInfoMessage(final String sMessage,final Icon icon){
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				JOptionPane.showMessageDialog(Main.getWindow(),sMessage,Messages.getString("Info"),JOptionPane.INFORMATION_MESSAGE,icon); //$NON-NLS-1$
-			}
-		});
+	    MessageDialog message = new MessageDialog(sMessage,getTitleForType(JOptionPane.INFORMATION_MESSAGE),JOptionPane.INFORMATION_MESSAGE);
+	    if (SwingUtilities.isEventDispatchThread()){ //in the dispatcher thread, no need to use invokeLatter
+	        message.run();
+	    }
+	    else{ //not in the awt dispatcher thread
+	        try {
+                SwingUtilities.invokeAndWait(message);
+            } catch (InterruptedException e) {
+                Log.error(e);
+            } catch (InvocationTargetException e) {
+                Log.error(e);
+            }
+	    }
 	}
 	
 	/**
@@ -271,11 +302,19 @@ public class Messages extends DefaultHandler implements ITechnicalStrings	{
 	 * @param sInfoSup
 	 */
 	public static void showErrorMessage(final String sCode,final String sInfoSup){
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				JOptionPane.showMessageDialog(Main.getWindow(),Messages.getErrorMessage(sCode)+" : "+sInfoSup,Messages.getErrorMessage("102"),JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
-			}
-		});
+	    MessageDialog message = new MessageDialog(Messages.getErrorMessage(sCode),getTitleForType(JOptionPane.ERROR_MESSAGE),JOptionPane.ERROR_MESSAGE);
+	    if (SwingUtilities.isEventDispatchThread()){ //in the dispatcher thread, no need to use invokeLatter
+	        message.run();
+	    }
+	    else{ //not in the awt dispatcher thread
+	        try {
+                SwingUtilities.invokeAndWait(message);
+            } catch (InterruptedException e) {
+                Log.error(e);
+            } catch (InvocationTargetException e) {
+                Log.error(e);
+            }
+	    }
 	}
 	
 	/**
@@ -284,13 +323,40 @@ public class Messages extends DefaultHandler implements ITechnicalStrings	{
 	 * @param sInfoSup
 	 */
 	public static void showInfoMessage(final String sMessage,final String sInfoSup){
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				JOptionPane.showMessageDialog(Main.getWindow(),Messages.getString(sMessage)+" : "+sInfoSup,Messages.getString("Info"),JOptionPane.INFORMATION_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
-			}
-		});
+	    MessageDialog message = new MessageDialog(sMessage+" : "+sInfoSup,getTitleForType(JOptionPane.INFORMATION_MESSAGE),JOptionPane.INFORMATION_MESSAGE);
+	    if (SwingUtilities.isEventDispatchThread()){ //in the dispatcher thread, no need to use invokeLatter
+	        message.run();
+	    }
+	    else{ //not in the awt dispatcher thread
+	        try {
+                SwingUtilities.invokeAndWait(message);
+            } catch (InterruptedException e) {
+                Log.error(e);
+            } catch (InvocationTargetException e) {
+                Log.error(e);
+            }
+	    }
 	}
-	
+
+	/**
+	 * Show a dialog with specified error message
+	 * @param sMessage
+	 */
+	public static void showInfoMessage(final String sMessage){
+	    MessageDialog message = new MessageDialog(Messages.getString(sMessage),getTitleForType(JOptionPane.INFORMATION_MESSAGE),JOptionPane.INFORMATION_MESSAGE);
+	    if (SwingUtilities.isEventDispatchThread()){ //in the dispatcher thread, no need to use invokeLatter
+	        message.run();
+	    }
+	    else{ //not in the awt dispatcher thread
+	        try {
+                SwingUtilities.invokeAndWait(message);
+            } catch (InterruptedException e) {
+                Log.error(e);
+            } catch (InvocationTargetException e) {
+                Log.error(e);
+            }
+	    }
+	}
 	
 	/**
 	 * @return Returns the sLocal.
@@ -314,7 +380,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings	{
         if (this.properties == null){
             this.properties = parseLangpack(this.sLocal);
         }
-        return this.properties;
+        return this.properties; 
     }
     
     /**
@@ -326,4 +392,88 @@ public class Messages extends DefaultHandler implements ITechnicalStrings	{
         }
         return this.propertiesEn;
     }
+}
+
+/**
+ * Confirmation Dialog
+ * @author     Bertrand Florat
+ * @created    28 nov. 2004
+ */
+class ConfirmDialog implements Runnable{
+
+    /**Dialog output*/
+    private int iResu = -2;
+    
+    /**Dialog text*/
+    private String sText;
+    
+    /**Dialog title*/
+    private String sTitle;
+    
+    /**dialog type*/
+    private int iType;
+        
+    /**
+     * Confirm dialog constructor
+     * @param sText
+     * @param sTitle
+     * @param iType
+     */
+    ConfirmDialog(String sText,String sTitle,int iType){
+        this.iType = iType;
+        this.sText = sText;
+        this.sTitle = sTitle;
+    }
+    
+    /* (non-Javadoc)
+     * @see java.lang.Runnable#run()
+     */
+    public void run() {
+        iResu = JOptionPane.showConfirmDialog (null, sText,sTitle, iType);
+    }
+        
+    /**
+     * 
+     * @return the user option
+     */
+    public int getResu() {
+        return iResu;
+    }
+}
+
+/**
+ * Message Dialog
+ * @author     Bertrand Florat
+ * @created    28 nov. 2004
+ */
+class MessageDialog implements Runnable{
+
+     /**Dialog text*/
+    private String sText;
+    
+    /**Dialog title*/
+    private String sTitle;
+    
+    /**dialog type*/
+    private int iType;
+        
+    /**
+     * Message dialog constructor
+     * @param sText
+     * @param sTitle
+     * @param iType
+     */
+    MessageDialog(String sText,String sTitle,int iType){
+        this.iType = iType;
+        this.sText = sText;
+        this.sTitle = sTitle;
+    }
+    
+    /* (non-Javadoc)
+     * @see java.lang.Runnable#run()
+     */
+    public void run() {
+        JOptionPane.showMessageDialog(null, sText,sTitle, iType);
+    }
+   
 }

@@ -1,5 +1,5 @@
 /*
- * Jajuk Copyright (C) 2003 bflorat
+ * Jajuk Copyright (C) 2003 Bertrand Florat
  * 
  * This program is free software; you can redistribute 
  * it and/or modify it under the terms of the GNU General Public License
@@ -64,7 +64,7 @@ import org.jajuk.util.log.Log;
 /**
  * Jajuk launching class
  * 
- * @author bflorat 
+ * @author Bertrand Florat 
  * @created 3 oct. 2003
  */
 public class Main implements ITechnicalStrings {
@@ -216,7 +216,7 @@ public class Main implements ITechnicalStrings {
 			History.load();
 			
 			//start exit hook
-			Runtime.getRuntime().addShutdownHook(new Thread() {
+			Thread tHook = new Thread() {
 				public void run() {
 					try{
 						if (iExitCode == 0){ //commit only if exit is safe (to avoid commiting empty collection)
@@ -237,7 +237,9 @@ public class Main implements ITechnicalStrings {
 						Log.error("", e); //$NON-NLS-1$
 					}
 				}
-			});
+			};
+			tHook.setPriority(Thread.MAX_PRIORITY); //give max chances to this thread to complete
+			Runtime.getRuntime().addShutdownHook(tHook);
 					
 			//Mount and refresh devices
 			mountAndRefresh();
@@ -262,9 +264,9 @@ public class Main implements ITechnicalStrings {
 		} catch (JajukException je) { //last chance to catch any error for logging purpose
 			Log.error(je);
 			if ( je.getCode().equals("005")){ //$NON-NLS-1$
-				Messages.showErrorMessage("005"); //$NON-NLS-1$
-			}
-			exit(1);
+			   Messages.getChoice(Messages.getErrorMessage("005"),JOptionPane.ERROR_MESSAGE);
+			    exit(1);
+        	}
 		} catch (Exception e) { //last chance to catch any error for logging purpose
 			e.printStackTrace();
 			Log.error("106", e); //$NON-NLS-1$
@@ -454,7 +456,7 @@ public class Main implements ITechnicalStrings {
 			}
 			//launch selected file
 			if (alToPlay  != null && alToPlay.size() >0){
-				FIFO.getInstance().push(Util.createStackItems(alToPlay,
+				FIFO.getInstance().pushCommand(Util.createStackItems(alToPlay,
 						ConfigurationManager.getBoolean(CONF_STATE_REPEAT),false),false);
 			}
 		}

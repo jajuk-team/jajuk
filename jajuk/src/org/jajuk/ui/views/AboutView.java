@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 bflorat
+ *  Copyright (C) 2003 Bertrand Florat
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -42,7 +42,7 @@ import org.jfree.ui.about.SystemPropertiesPanel;
  *  View used to show the Jajuk about and contributors. 
  * <p>Help perspective
  *  * <p>Singleton
- * @author     bflorat
+ * @author     Bertrand Florat
  * @created   22 dec. 2003
  */
 public class AboutView extends ViewAdapter {
@@ -98,7 +98,7 @@ public class AboutView extends ViewAdapter {
         jpLicence.add(new JScrollPane(jta));
 		jtp = new JTabbedPane();
 		ArrayList alContribs = new ArrayList(10);
-		alContribs.add(new Contributor("Bertrand Florat","bflorat@users.sourceforge.net")); //$NON-NLS-1$ //$NON-NLS-2$
+		alContribs.add(new Contributor("Bertrand Florat","Bertrand Florat@users.sourceforge.net")); //$NON-NLS-1$ //$NON-NLS-2$
 		alContribs.add(new Contributor("Gerhard Dietrichsteiner","skyreacher@users.sourceforge.net")); //$NON-NLS-1$ //$NON-NLS-2$
 		alContribs.add(new Contributor("Riccardo Capecchi","ricciocri@users.sourceforge.net")); //$NON-NLS-1$ //$NON-NLS-2$
 		alContribs.add(new Contributor("Oscar Appelgren","oscariot@users.sourceforge.net")); //$NON-NLS-1$ //$NON-NLS-2$

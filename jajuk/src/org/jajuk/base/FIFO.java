@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 bflorat
+ *  Copyright (C) 2003 Bertrand Florat
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -32,12 +32,13 @@ import org.jajuk.ui.ObservationManager;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
+import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
 /**
  *  Manages playing sequences
  *
- * @author     bflorat
+ * @author     Bertrand Florat
  * @created    12 oct. 2003
  */
 public class FIFO implements ITechnicalStrings{
@@ -60,17 +61,14 @@ public class FIFO implements ITechnicalStrings{
     /**Self instance*/
     static private FIFO fifo= null; 	
     
-    /** Current file position (%) used for pause */
-    private int iPosition;
-    
     /** First played file flag**/
     private static boolean bFirstFile = true;
     
     /**First file should seek to position flag*/
     private boolean bSeekFirstFile = false;
     
-    /**UI reinit flag for perfs, avoid to reinit at each heart beat*/
-    private boolean bZero = false;
+    /**Temp*/
+    private int i = -2;
     
     /**
      * Singleton access
@@ -99,12 +97,10 @@ public class FIFO implements ITechnicalStrings{
         JajukTimer.getInstance().reset();
         index = 0;
         itemLast = null;
-        //register needed events
-        ObservationManager.notify(EVENT_ZERO);
     }
     
     /**
-     * Set given repeat mode to all
+     * Set given repeat mode to all in FIFO
      * @param bRepeat
      */
     public synchronized void setRepeatModeToAll(boolean bRepeat){
@@ -157,7 +153,7 @@ public class FIFO implements ITechnicalStrings{
      * @param alItems, list of items  to be played
      * @param bAppend keep previous files or stop them to start a new one ?
      */
-    private synchronized void pushCommand( ArrayList alItems,  boolean bAppend) {
+    public synchronized void pushCommand( ArrayList alItems,  boolean bAppend) {
         try{
             //wake up FIFO if stopped
             bStop = false;
@@ -172,8 +168,8 @@ public class FIFO implements ITechnicalStrings{
                 }
                 if ( item.getFile().getDirectory()!=null && !item.getFile().getDirectory().getDevice().isMounted()){  //file is null if it is a BasicFile
                     //not mounted, ok let them a chance to mount it:
-                    String sMessage = Messages.getString("Error.025")+" ("+item.getFile().getDirectory().getDevice().getName()+Messages.getString("FIFO.4"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                    int i = JOptionPane.showConfirmDialog(Main.getWindow(),sMessage,Messages.getString("Warning"),JOptionPane.YES_NO_CANCEL_OPTION,JOptionPane.WARNING_MESSAGE); //$NON-NLS-1$
+                    final String sMessage = Messages.getString("Error.025")+" ("+item.getFile().getDirectory().getDevice().getName()+Messages.getString("FIFO.4"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                    i = Messages.getChoice(sMessage,JOptionPane.INFORMATION_MESSAGE);
                     if ( i == JOptionPane.YES_OPTION){
                         try{
                             item.getFile().getDirectory().getDevice().mount();
@@ -249,7 +245,7 @@ public class FIFO implements ITechnicalStrings{
      * @param item, item to be played
      * @param bAppend keep previous files or stop them to start a new one ?
      */
-    private synchronized void pushCommand(StackItem item, boolean bAppend) {
+    public synchronized void pushCommand(StackItem item, boolean bAppend) {
         ArrayList alFiles = new ArrayList(1);
         alFiles.add(item);
         pushCommand(alFiles,bAppend);
@@ -331,6 +327,12 @@ public class FIFO implements ITechnicalStrings{
             ConfigurationManager.setProperty(CONF_STATE_WAS_PLAYING,TRUE);  //	set was playing state
             long lOffset = 0; //track offset in secs
             File fCurrent = getCurrentFile();
+            //check the required track is not null
+            if (fCurrent == null){
+                alFIFO.remove(index);
+                Util.stopWaiting(); //stop the waiting cursor
+                return;
+            }
             if ( itemLast == null || //first track, display cover 
                     (ConfigurationManager.getBoolean(CONF_COVERS_SHUFFLE) && ConfigurationManager.getBoolean(CONF_COVERS_CHANGE_AT_EACH_TRACK)) //change cover at each track in shuffle cover mode ? 
                     ||(itemLast != null && !itemLast.getFile().getDirectory().equals(fCurrent.getDirectory())) ){  //if we are always in the same directory, just leave to save cpu
@@ -402,18 +404,24 @@ public class FIFO implements ITechnicalStrings{
             else if (alFIFO.size() > 0){ // if fifo contains yet some tracks to play
                 siLast = (StackItem)alFIFO.get(alFIFO.size()-1); //last one
             }
-            //if random mode, add shuffle tracks
-            if (ConfigurationManager.getBoolean(CONF_STATE_SHUFFLE)){
-                item = new StackItem(FileManager.getShuffleFile(),false);
+            try{
+                //if random mode, add shuffle tracks
+                if (ConfigurationManager.getBoolean(CONF_STATE_SHUFFLE)){
+                    item = new StackItem(FileManager.getShuffleFile(),false);
+                }
+                else{
+                    //if fifo contains yet some tracks to play
+                    if ( siLast != null){
+                        item = new StackItem(FileManager.getNextFile(siLast.getFile()),false);  
+                    }
+                    else{ //nothing in fifo, take first files in collection
+                        item = new StackItem((File)FileManager.getFiles().get(i),false);
+                    }
+                }
             }
-            else{
-                //if fifo contains yet some tracks to play
-                if ( siLast != null){
-                    item = new StackItem(FileManager.getNextFile(siLast.getFile()),false);  
-                }
-                else{ //nothing in fifo, take first files in collection
-                    item = new StackItem((File)FileManager.getFiles().get(i),false);
-                }
+            catch(JajukException je){ //can be thrown if FileManager return a null file
+                Log.error(je);
+                continue;
             }
             //Tell it is a planned item
             item.setPlanned(true);
@@ -469,27 +477,35 @@ public class FIFO implements ITechnicalStrings{
      * Play previous track
      */
     public synchronized void playPrevious(){
-        StackItem itemFirst = getItem(0);
-        if ( itemFirst != null){
-            if (index > 0){ //if we have some repeat files
-                index --;
-                launch(index);
-            }
-            else{ //we are at the first position
-                if (itemFirst.isRepeat()){ //restart last repeated item in the loop
-                    index = getLastRepeatedItem();
+        try{
+            StackItem itemFirst = getItem(0);
+            if ( itemFirst != null){
+                if (index > 0){ //if we have some repeat files
+                    index --;
                     launch(index);
                 }
-                else{ //first is not repeated, just insert previous file from collection 
-                    StackItem item = new StackItem(FileManager.getPreviousFile(itemLast.getFile()),
-                            ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true);
-                    Player.stop();
-                    JajukTimer.getInstance().reset();
-                    alFIFO.add(0,item);
-                    JajukTimer.getInstance().addTrackTime(alFIFO);
-                    launch(0);
+                else{ //we are at the first position
+                    if (itemFirst.isRepeat()){ //restart last repeated item in the loop
+                        index = getLastRepeatedItem();
+                        launch(index);
+                    }
+                    else{ //first is not repeated, just insert previous file from collection 
+                        StackItem item = new StackItem(FileManager.getPreviousFile(itemLast.getFile()),
+                                ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true);
+                        Player.stop();
+                        JajukTimer.getInstance().reset();
+                        alFIFO.add(0,item);
+                        JajukTimer.getInstance().addTrackTime(alFIFO);
+                        launch(0);
+                    }
                 }
             }
+        }
+        catch(Exception e){
+            Log.error(e);
+        }
+        finally{
+            ObservationManager.notify(EVENT_PLAYLIST_REFRESH); //refresh playlist editor
         }
     }
     
@@ -497,20 +513,28 @@ public class FIFO implements ITechnicalStrings{
      * Play next track in selection
      */
     public synchronized void playNext(){
-        //if playing, stop current
-        if ( Player.isPlaying()){
-            Player.stop();
+        try{
+            //if playing, stop current
+            if ( Player.isPlaying()){
+                Player.stop();
+            }
+            //force a finish to current track if any
+            if ( getCurrentFile() != null){  //if stopped, nothing to stop
+                finished(); //stop current track 
+            }
+            else if (itemLast !=null ){ //try to launch any previous file
+                pushCommand(itemLast,false);
+            }
+            else{ //really nothing? play a shuffle track from collection
+                pushCommand(new StackItem(FileManager.getShuffleFile(),
+                        ConfigurationManager.getBoolean(CONF_STATE_REPEAT),false),false);
+            }
         }
-        //force a finish to current track if any
-        if ( getCurrentFile() != null){  //if stopped, nothing to stop
-            finished(); //stop current track 
+        catch(Exception e){
+            Log.error(e);
         }
-        else if (itemLast !=null ){ //try to launch any previous file
-            pushCommand(itemLast,false);
-        }
-        else{ //really nothing? play a shuffle track from collection
-            pushCommand(new StackItem(FileManager.getShuffleFile(),
-                    ConfigurationManager.getBoolean(CONF_STATE_REPEAT),false),false);
+        finally{
+            ObservationManager.notify(EVENT_PLAYLIST_REFRESH); //refresh playlist editor
         }
     }
     
@@ -707,25 +731,33 @@ public class FIFO implements ITechnicalStrings{
      * @param index
      */
     public synchronized void goTo(int index){
-        if (containsRepeat()){
-            // if there are some tracks in repeat, mode
-            if (getItem(index).isRepeat()){ //the selected line is in repeat mode, ok, keep repeat mode and just change index
-                this.index = index;
+        try{
+            if (containsRepeat()){
+                // if there are some tracks in repeat, mode
+                if (getItem(index).isRepeat()){ //the selected line is in repeat mode, ok, keep repeat mode and just change index
+                    this.index = index;
+                }
+                else{ //the selected line was not a repeated item, take it as a which to reset repeat mode
+                    setRepeatModeToAll(false);
+                    Properties properties = new Properties();
+                    properties.put(DETAIL_SELECTION,FALSE);
+                    ObservationManager.notify(EVENT_REPEAT_MODE_STATUS_CHANGED,properties);
+                    remove(0,index-1);
+                    index = 0;
+                }
             }
-            else{ //the selected line was not a repeated item, take it as a which to reset repeat mode
-                setRepeatModeToAll(false);
-                Properties properties = new Properties();
-                properties.put(DETAIL_SELECTION,FALSE);
-                ObservationManager.notify(EVENT_REPEAT_MODE_STATUS_CHANGED,properties);
+            else{
                 remove(0,index-1);
                 index = 0;
             }
+            launch(index);
         }
-        else{
-            remove(0,index-1);
-            index = 0;
+        catch(Exception e){
+            Log.error(e);
         }
-        launch(index);
+        finally{
+            ObservationManager.notify(EVENT_PLAYLIST_REFRESH); //refresh playlist editor
+        }
     }
     
     /**

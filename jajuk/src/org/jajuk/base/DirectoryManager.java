@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 bflorat
+ *  Copyright (C) 2003 Bertrand Florat
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -30,7 +30,7 @@ import org.jajuk.util.MD5Processor;
 
 /**
  * Convenient class to manage directories
- * @Author bflorat 
+ * @Author Bertrand Florat 
  * @created 17 oct. 2003
  */
 public class DirectoryManager {

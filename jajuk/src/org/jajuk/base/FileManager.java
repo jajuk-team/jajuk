@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 bflorat
+ *  Copyright (C) 2003 Bertrand Florat
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -36,7 +36,7 @@ import org.jajuk.util.log.Log;
 
 /**
  * Convenient class to manage files
- * @Author bflorat 
+ * @Author Bertrand Florat 
  * @created 17 oct. 2003
  */
 public class FileManager implements ITechnicalStrings{
@@ -316,8 +316,9 @@ public class FileManager implements ITechnicalStrings{
 			return null;
 		}
 		//ok, if we are in restart collection mode, restart from collection begin to file index
-		for (int index=0;index<alSortedFiles.indexOf(file);index++){
-			fileNext = (File)alSortedFiles.get(index);
+		int indexFile = alSortedFiles.indexOf(file);
+		for (int index=0; index<indexFile; index++){
+		    fileNext = (File)alSortedFiles.get(index);
 			if (fileNext.isReady()){  //file must be on a mounted device not refreshing
 				bOk = true;
 				break;

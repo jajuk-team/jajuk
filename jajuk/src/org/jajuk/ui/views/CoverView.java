@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 bflorat
+ *  Copyright (C) 2003 Bertrand Florat
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -72,7 +72,7 @@ import org.jajuk.util.log.Log;
 /**
  *  Cover view. Displays an image for the current album
  * <p>Physical and logical perspectives
- * @author     bflorat
+ * @author     Bertrand Florat
  * @created   28 dec. 2003
  */
 public class CoverView extends ViewAdapter implements Observer,ComponentListener,ActionListener{
@@ -497,7 +497,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                 img = createImage(new FilteredImageSource(img.getSource(),filter));
                 img.flush();//free image memory
             } 
-           ImageIcon ii = new ImageIcon(img);
+            ImageIcon ii = new ImageIcon(img);
             jl = new JLabel(ii);
             jl.setMinimumSize(new Dimension(0,0)); //required for info node resizing
             SwingUtilities.invokeLater(new Runnable() {
@@ -531,21 +531,26 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                         setFoundText();
                     }
                     //set tooltip for previous and next track
-                    int indexPrevious  = index+1;
-                    if (indexPrevious > alCovers.size()-1){
-                        indexPrevious = 0;
+                    try{
+                        int indexPrevious  = index+1;
+                        if (indexPrevious > alCovers.size()-1){
+                            indexPrevious = 0;
+                        }
+                        URL urlPrevious = ((Cover)alCovers.get(indexPrevious)).getURL();
+                        if (urlPrevious != null){
+                            jbPrevious.setToolTipText("<html>"+Messages.getString("CoverView.4")+"<br>"+urlPrevious.toString()+"</html>"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+                        }
+                        int indexNext = index-1;
+                        if (indexNext < 0){
+                            indexNext = alCovers.size()-1;
+                        }
+                        final URL urlNext = ((Cover)alCovers.get(indexNext)).getURL();
+                        if (urlNext != null){
+                            jbNext.setToolTipText("<html>"+Messages.getString("CoverView.5")+"<br>"+urlNext.toString()+"</html>"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+                        }
                     }
-                    URL urlPrevious = ((Cover)alCovers.get(indexPrevious)).getURL();
-                    if (urlPrevious != null){
-                        jbPrevious.setToolTipText("<html>"+Messages.getString("CoverView.4")+"<br>"+urlPrevious.toString()+"</html>"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-                    }
-                    int indexNext = index-1;
-                    if (indexNext < 0){
-                        indexNext = alCovers.size()-1;
-                    }
-                    final URL urlNext = ((Cover)alCovers.get(indexNext)).getURL();
-                    if (urlNext != null){
-                        jbNext.setToolTipText("<html>"+Messages.getString("CoverView.5")+"<br>"+urlNext.toString()+"</html>"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+                    catch(Exception e){  //the url code can throw out of bounds exception for unkwown reasons so check it
+                        Log.error(e);
                     }
                     setCursor(Util.WAIT_CURSOR);
                     if (getComponentCount() > 0){

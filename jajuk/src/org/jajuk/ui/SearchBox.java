@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 bflorat
+ *  Copyright (C) 2003 Bertrand Florat
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -46,7 +46,7 @@ import org.jajuk.util.log.Log;
 /**
  *  Search combo box. Editable combo with search features
  *
- * @author     bflorat
+ * @author     Bertrand Florat
  * @created    15 janv. 2004
  */
 public class SearchBox extends JTextField implements KeyListener{

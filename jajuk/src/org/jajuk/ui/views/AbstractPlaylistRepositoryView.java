@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 bflorat
+ *  Copyright (C) 2003 Bertrand Florat
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -49,7 +49,7 @@ import com.sun.SwingWorker;
  * Shows playlist files
  * <p>Physical perspective
  *  * <p>Singleton
- * @author     bflorat
+ * @author     Bertrand Florat
  * @created   29 dec. 2003
  */
 abstract public class AbstractPlaylistRepositoryView extends ViewAdapter implements Observer,ActionListener{

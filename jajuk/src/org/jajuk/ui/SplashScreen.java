@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 bflorat
+ *  Copyright (C) 2003 Bertrand Florat
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -36,7 +36,7 @@ import org.jajuk.util.Util;
 /**
  *  Jajuk Splashscreen
  *
- * @author     bflorat
+ * @author     Bertrand Florat
  * @created    20 nov. 2003
  */
 public class SplashScreen extends JDialog implements ITechnicalStrings

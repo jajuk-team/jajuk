@@ -26,7 +26,7 @@ import java.util.Iterator;
 /**
  *  This class is a convenient timer class, mainly for UI
  *
- * @author     bflorat
+ * @author     Bertrand Florat
  * @created    3 nov. 2004
  * <p>Singleton</p>
  */
@@ -59,7 +59,9 @@ public class JajukTimer {
      * @param file
      */
     public void addTrackTime(File file){
-        lTimeToPlay += file.getTrack().getLength();
+       if (file != null){
+           lTimeToPlay += file.getTrack().getLength();
+       }
     }
     
     /**
@@ -70,7 +72,7 @@ public class JajukTimer {
         Iterator it = alFiles.iterator();
         while ( it.hasNext()){
             Object o = it.next();
-            if (o instanceof File){
+            if (o != null && o instanceof File){
             	addTrackTime((File)o);
             }
             else{
@@ -85,7 +87,9 @@ public class JajukTimer {
      * @param file
      */
     public void removeTrackTime(File file){
-        lTimeToPlay -= file.getTrack().getLength();
+        if (file != null){
+             lTimeToPlay -= file.getTrack().getLength();
+        }
     }
     
     /**
@@ -95,7 +99,10 @@ public class JajukTimer {
     public void removeTrackTime(ArrayList alFiles){
         Iterator it = alFiles.iterator();
         while ( it.hasNext()){
-            removeTrackTime((File)it.next());
+            File file = (File)it.next();
+            if (file != null){
+                removeTrackTime((File)it.next());
+            }
         }
     }
     

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 bflorat
+ *  Copyright (C) 2003 Bertrand Florat
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -38,7 +38,7 @@ import org.jajuk.util.log.Log;
 /**
  * Perspectives Manager
  * 
- * @author bflorat
+ * @author Bertrand Florat
  * @version 1.0 @created 14 nov. 03
  */
 public class PerspectiveManager  implements ITechnicalStrings {

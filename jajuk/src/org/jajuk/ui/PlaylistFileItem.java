@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 bflorat
+ *  Copyright (C) 2003 Bertrand Florat
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -37,7 +37,7 @@ import org.jajuk.util.Util;
 	/**
 	 * A physical playlist icon + text
 	 *
-	 * @author     bflorat
+	 * @author     Bertrand Florat
 	 * @created    31 dec. 2004	 
 	 */
 	public class PlaylistFileItem extends JPanel {

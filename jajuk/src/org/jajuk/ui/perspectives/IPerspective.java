@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 bflorat
+ *  Copyright (C) 2003 Bertrand Florat
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import org.jajuk.ui.views.IView;
 /**
  * Representation of a perspective
- * @author		bflorat
+ * @author		Bertrand Florat
  * @created		15 nov. 2003
  */
 
@@ -75,7 +75,7 @@ public interface IPerspective {
 	/**
 	 *  Type description
 	 *
-	 * @author     bflorat
+	 * @author     Bertrand Florat
 	 * @created    15 nov. 2003
 	 */
 	public abstract String getDesc();

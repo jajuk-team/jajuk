@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 bflorat
+ *  Copyright (C) 2003 Bertrand Florat
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -47,7 +47,7 @@ import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * Stores all files user read. Only for tracks inside collection ( not for basic files )
- * @author bflorat 
+ * @author Bertrand Florat 
  * @created 19 nov. 2003
  */
 public class History extends DefaultHandler implements ITechnicalStrings, ErrorHandler,Observer {

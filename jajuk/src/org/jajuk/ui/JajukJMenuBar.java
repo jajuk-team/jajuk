@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 bflorat
+ *  Copyright (C) 2003 Bertrand Florat
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -38,7 +38,7 @@ import org.jajuk.util.Util;
 /**
  *  Jajuk menu bar
  * <p>Singleton
- * @author     bflorat
+ * @author     Bertrand Florat
  * @created    4 oct. 2003
  */
 public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings{

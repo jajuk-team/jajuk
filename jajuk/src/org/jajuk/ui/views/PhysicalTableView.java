@@ -1,5 +1,5 @@
 /*
- * Jajuk Copyright (C) 2003 bflorat
+ * Jajuk Copyright (C) 2003 Bertrand Florat
  * 
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the Free
@@ -39,11 +39,13 @@ import org.jajuk.ui.Observer;
 import org.jajuk.ui.TracksTableModel;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Util;
+import org.jajuk.util.error.JajukException;
+import org.jajuk.util.log.Log;
 
 /**
  * Logical table view
  * 
- * @author bflorat 
+ * @author Bertrand Florat 
  * @created 13 dec. 2003
  */
 public class PhysicalTableView extends AbstractTableView implements Observer, MouseListener{
@@ -196,7 +198,12 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
 		if ( e.getClickCount() == 2){ //double clic, can be only one file
 			File file = FileManager.getFile(jtable.getSortingModel().getValueAt(jtable.getSelectedRow(),jtable.getColumnCount()).toString());
 			if (!file.isScanned()){
-				FIFO.getInstance().push(new StackItem(file,ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);//launch it
+				try{
+				    FIFO.getInstance().push(new StackItem(file,ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);//launch it
+				}
+				catch(JajukException je){
+				    Log.error(je);
+				}
 			}
 			else{
 				Messages.showErrorMessage("120",file.getDirectory().getDevice().getName()); //$NON-NLS-1$

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 bflorat
+ *  Copyright (C) 2003 Bertrand Florat
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -30,7 +30,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 /**
  *  Transferable tree node ( for DND )
- * @author     bflorat
+ * @author     Bertrand Florat
  * @created    13 feb.. 2004
  */
 public class TransferableTreeNode extends DefaultMutableTreeNode implements Transferable{

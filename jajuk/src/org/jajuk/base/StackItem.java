@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2004 bflorat
+ *  Copyright (C) 2004 Bertrand Florat
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -20,10 +20,13 @@
 
 package org.jajuk.base;
 
+import org.jajuk.util.error.JajukException;
+import org.jajuk.util.log.Log;
+
 /**
  *  A FIFO item
  *
- * @author     bflorat
+ * @author     Bertrand Florat
  * @created    9 nov. 2004
  */
 public class StackItem {
@@ -45,8 +48,11 @@ public class StackItem {
      * Constructor
      * @param file associated file
      */ 
-    public StackItem(File file){
-         this.file =file; 
+    public StackItem(File file) throws JajukException{
+        if (file == null){
+            throw new JajukException("000");
+        }
+        this.file =file; 
      }
     
     
@@ -55,8 +61,8 @@ public class StackItem {
      * @param file
      * @param bUserLauched
      */
-    public StackItem(File file,boolean bUserLauched){
-         this(file,false,bUserLauched);
+    public StackItem(File file,boolean bUserLauched)  throws JajukException{
+        this(file,false,bUserLauched);
      }
     
     /**
@@ -64,8 +70,11 @@ public class StackItem {
      * @param file
      * @param bUserLauched
      */
-    public StackItem(File file,boolean bRepeat,boolean bUserLauched){
-         this.file =file; 
+    public StackItem(File file,boolean bRepeat,boolean bUserLauched) throws JajukException{
+        if (file == null){
+            throw new JajukException("000");
+        }
+        this.file =file; 
          this.bRepeat = bRepeat;
          this.bUserLaunch = bUserLauched;
          this.bPlanned = false;
@@ -123,8 +132,15 @@ public class StackItem {
 	 * @return a clonned stack item
 	 */
 	public Object clone(){
-		StackItem item = new StackItem(file,bRepeat,bUserLaunch);
-		item.setPlanned(bPlanned);
+	    StackItem item = null;
+	    try{
+	        item = new StackItem(file,bRepeat,bUserLaunch);
+	        item.setPlanned(bPlanned);
+	    }
+	    catch(JajukException je){ //can be thrown if FileManager return a null file
+		    Log.error(je);
+	        item = null;
+		}
 		return item;
 	}
 	
@@ -133,11 +149,22 @@ public class StackItem {
 	 * @return whether both items are equals. Condition : file is the same and planned flag is the same
 	 */
 	public boolean equals(Object o){
-	    if (!(o instanceof StackItem)){
+	    if (!(o instanceof StackItem) || o == null ){
 	        return false;
 	    }
 	    StackItem itemOther = (StackItem)o;
-	    return (itemOther.getFile().equals(file) && itemOther.isPlanned() == isPlanned());
+	    File fOther = itemOther.getFile();
+	    if (fOther == null || file == null){
+	        return false;
+	    }
+	    return (fOther.equals(file) && itemOther.isPlanned() == isPlanned());
+	}
+
+	/**
+	* toString method
+	*/
+	public String toString(){
+		return file.toString();
 	}
 	
 }

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 bflorat
+ *  Copyright (C) 2003 Bertrand Florat
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -46,7 +46,7 @@ import org.jajuk.util.log.Log;
  *  General UI listener for Jajuk widgets
  * <p>Singleton
  *
- * @author     bflorat
+ * @author     Bertrand Florat
  * @created    15 oct. 2003
  */
 public class JajukListener implements ActionListener, ITechnicalStrings {

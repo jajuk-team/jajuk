@@ -1,5 +1,5 @@
 /*
- * Jajuk Copyright (C) 2003 bflorat
+ * Jajuk Copyright (C) 2003 Bertrand Florat
  * 
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the Free
@@ -66,13 +66,15 @@ import org.jajuk.ui.TransferableTreeNode;
 import org.jajuk.ui.TreeTransferHandler;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Util;
+import org.jajuk.util.error.JajukException;
+import org.jajuk.util.log.Log;
 
 import com.sun.SwingWorker;
 
 /**
  * Logical tree view
  * 
- * @author bflorat 
+ * @author Bertrand Florat 
  * @created 28 nov. 2003
  */
 public class LogicalTreeView extends AbstractTreeView implements ActionListener,Observer{
@@ -352,7 +354,12 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 						Track track = ((TrackNode)o).getTrack();
 						File file = track.getPlayeableFile();
 						if (file != null){
-							FIFO.getInstance().push(new StackItem(file,ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
+							try{
+							    FIFO.getInstance().push(new StackItem(file,ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
+							}
+							catch(JajukException je){
+							    Log.error(je);
+							}
 						}
 						else{
 							Messages.showErrorMessage("010",track.getName()); //$NON-NLS-1$
@@ -652,7 +659,7 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 
 /**
  * Style node 
- * @author     bflorat
+ * @author     Bertrand Florat
  * @created    29 nov. 2003
  */
 class StyleNode extends TransferableTreeNode{
@@ -681,7 +688,7 @@ class StyleNode extends TransferableTreeNode{
 
 /**
  * Author node 
- * @author     bflorat
+ * @author     Bertrand Florat
  * @created    29 nov. 2003
  */
 class AuthorNode extends TransferableTreeNode{
@@ -712,7 +719,7 @@ class AuthorNode extends TransferableTreeNode{
 
 /**
  * Album node 
- * @author     bflorat
+ * @author     Bertrand Florat
  * @created    29 nov. 2003
  */
 class AlbumNode  extends TransferableTreeNode{
@@ -741,7 +748,7 @@ class AlbumNode  extends TransferableTreeNode{
 
 /**
  * Track node 
- * @author     bflorat
+ * @author     Bertrand Florat
  * @created    29 nov. 2003
  */
 class TrackNode  extends TransferableTreeNode{

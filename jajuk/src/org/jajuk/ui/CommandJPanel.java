@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 bflorat
+ *  Copyright (C) 2003 Bertrand Florat
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -58,6 +58,7 @@ import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
+import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
 import com.sun.SwingWorker;
@@ -65,7 +66,7 @@ import com.sun.SwingWorker;
 /**
  *  Command panel ( static view )
  *
- * @author     bflorat
+ * @author     Bertrand Florat
  * @created    3 oct. 2003
  */
 public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionListener,ListSelectionListener,ChangeListener,Observer,MouseListener,MouseWheelListener{
@@ -387,7 +388,12 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
                                 if (hi != null){
                                     org.jajuk.base.File file = FileManager.getFile(hi.getFileId());
                                     if (file!= null && !file.isScanned()){  //file must be on a mounted device not refreshing
-                                        FIFO.getInstance().push(new StackItem(file,ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
+                                        try{
+                                            FIFO.getInstance().push(new StackItem(file,ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
+                                        }
+                                        catch(JajukException je){  //can be thrown if file is null
+                                            return;
+                                        }
                                     }
                                     else{
                                         Messages.showErrorMessage("120",file.getDirectory().getDevice().getName()); //$NON-NLS-1$
@@ -485,7 +491,12 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
             public Object construct() {
                 if (!e.getValueIsAdjusting()){
                     SearchResult sr = (SearchResult)sbSearch.alResults.get(sbSearch.jlist.getSelectedIndex());
-                    FIFO.getInstance().push(new StackItem(sr.getFile(),ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
+                    try {
+                        FIFO.getInstance().push(new StackItem(sr.getFile(),ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
+                    }
+                    catch(JajukException je){
+                        Log.error(je);
+                    }
                 }
                 return null;
             }
@@ -726,7 +737,6 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
      * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
      */
     public void mouseReleased(MouseEvent e) {
-        ObservationManager.notify(EVENT_PLAYLIST_REFRESH); 
     }
     
     /* (non-Javadoc)

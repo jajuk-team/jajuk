@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 bflorat
+ *  Copyright (C) 2003 Bertrand Florat
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -40,7 +40,7 @@ import org.jajuk.util.Util;
 
 /**
  * Menu bar used to choose the current perspective.
- * @author		bflorat
+ * @author		Bertrand Florat
  * @created		6 oct. 2003
  */
 public class PerspectiveBarJPanel extends JPanel implements ITechnicalStrings{

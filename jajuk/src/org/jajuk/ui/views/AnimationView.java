@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 bflorat
+ *  Copyright (C) 2003 Bertrand Florat
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -46,7 +46,7 @@ import com.jgoodies.animation.components.BasicTextLabel;
 /**
  *  Animation-based view 
  *
- * @author     bflorat
+ * @author     Bertrand Florat
  * @created    13 août 2004
  */
 public class AnimationView extends ViewAdapter implements ITechnicalStrings,Observer,ComponentListener {

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 bflorat
+ *  Copyright (C) 2003 Bertrand Florat
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -27,7 +27,7 @@ import javax.swing.JTree;
 /**
  *  An abstract physical or logical tree view. Contains common methods
  *
- * @author     bflorat
+ * @author     Bertrand Florat
  * @created    6 mar 2004
  */
 public abstract class AbstractTreeView extends ViewAdapter {

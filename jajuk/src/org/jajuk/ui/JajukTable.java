@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 bflorat
+ *  Copyright (C) 2003 Bertrand Florat
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -33,7 +33,7 @@ import com.sun.TableSorter;
  *  JTable with followinf features: 
  * <p>Sortable
  * <p>Tooltips on each cell
- * @author     bflorat
+ * @author     Bertrand Florat
  * @created    21 feb. 2004
  */
 public class JajukTable extends JTable implements ITechnicalStrings{

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 bflorat
+ *  Copyright (C) 2003 Bertrand Florat
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -46,7 +46,7 @@ import org.jajuk.util.log.Log;
 /**
  *  Status / information panel ( static view )
  *
- * @author     bflorat
+ * @author     Bertrand Florat
  * @created    11 oct. 2003
  */
 public class InformationJPanel extends JPanel implements ITechnicalStrings,Observer{
@@ -296,7 +296,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,Obser
 	            		+" / "+file.getTrack().getAlbum().getName2()+" / " //$NON-NLS-1$ //$NON-NLS-2$
 	            		+file.getTrack().getName();//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	            setMessage(sMessage,InformationJPanel.INFORMATIVE); 
-	            setQuality(file.getQuality()+Messages.getString("FIFO.13")); //$NON-NLS-1$
+	            setQuality(file.getQuality2()+Messages.getString("FIFO.13")); //$NON-NLS-1$
 	        }
 	    }
 	    else if (EVENT_PLAY_ERROR.equals(subject)){

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 bflorat
+ *  Copyright (C) 2003 Bertrand Florat
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -69,7 +69,7 @@ import com.sun.media.sound.MixerSourceLine;
 
 /**
  * General use utilities methods
- * @author bflorat 
+ * @author Bertrand Florat 
  * @created 12 oct. 2003
  */
 public class Util implements ITechnicalStrings {
@@ -775,10 +775,15 @@ public class Util implements ITechnicalStrings {
         Iterator it = alFiles.iterator();
         while (it.hasNext()){
             org.jajuk.base.File file = (org.jajuk.base.File)it.next();
-            StackItem item = new StackItem(file);
-            item.setRepeat(bRepeat);
-            item.setUserLaunch(bUserLauched);
-            alOut.add(item);
+            try{
+                StackItem item = new StackItem(file);
+                item.setRepeat(bRepeat);
+                item.setUserLaunch(bUserLauched);
+                alOut.add(item);
+            }
+            catch(JajukException je){
+                Log.error(je);
+            }
         }
         return alOut;
     }

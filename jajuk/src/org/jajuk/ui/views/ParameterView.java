@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 bflorat
+ *  Copyright (C) 2003 Bertrand Florat
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -70,7 +70,7 @@ import org.jajuk.util.log.Log;
  *  View used to set Jajuk paramers. 
  * <p>Configuration perspective
  *  * <p>Singleton
- * @author     bflorat
+ * @author     Bertrand Florat
  * @created    17 nov. 2003
  */
 public class ParameterView extends ViewAdapter implements ActionListener,ListSelectionListener,ItemListener,ChangeListener {

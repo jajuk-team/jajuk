@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 bflorat
+ *  Copyright (C) 2003 Bertrand Florat
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -24,7 +24,7 @@ import org.jajuk.base.File;
 /**
  *  Minimum methods required for all Player implementations
  *
- * @author     bflorat
+ * @author     Bertrand Florat
  * @created    12 oct. 2003
  */
 public interface IPlayerImpl {

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 bflorat
+ *  Copyright (C) 2003 Bertrand Florat
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -25,7 +25,7 @@ import java.util.Iterator;
 /**
  *  A playlist
  *<p> Logical item
- * @Playlist     bflorat
+ * @Playlist     Bertrand Florat
  * @created    17 oct. 2003
  */
 public class Playlist extends PropertyAdapter implements Comparable{
