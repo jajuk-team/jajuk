@@ -140,6 +140,7 @@ public class ConfigurationManager implements ITechnicalStrings{
 		properties.put(CONF_STARTUP_LAST_POSITION,"0"); //$NON-NLS-1$
 		properties.put(CONF_CONFIRMATIONS_DELETE_FILE,TRUE);
 		properties.put(CONF_CONFIRMATIONS_EXIT,FALSE);
+		properties.put(CONF_CONFIRMATIONS_REMOVE_DEVICE,TRUE);
 		properties.put(CONF_OPTIONS_HIDE_UNMOUNTED,FALSE);
 		properties.put(CONF_OPTIONS_RESTART,TRUE);
 		properties.put(CONF_OPTIONS_SEARCH_UNMOUNTED,TRUE);

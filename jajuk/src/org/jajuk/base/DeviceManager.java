@@ -24,8 +24,12 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import javax.swing.JOptionPane;
+
+import org.jajuk.Main;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.ObservationManager;
+import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.Util;
 
@@ -184,7 +188,15 @@ public class DeviceManager implements ITechnicalStrings{
 	 * @param device
 	 */
 	public static synchronized void removeDevice(Device device){
-		//if device is refreshing or synchronizing, just leave
+		//show confirmation message if required
+	    if ( ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_REMOVE_DEVICE)){
+	        int iResu = JOptionPane.showConfirmDialog(Main.getWindow(),Messages.getString("Confirmation_remove_device"),Messages.getString("Main.21"),JOptionPane.YES_NO_OPTION);  //$NON-NLS-1$ //$NON-NLS-2$
+			if (iResu == JOptionPane.NO_OPTION){
+				return;
+			}
+	    }
+	    
+	    //if device is refreshing or synchronizing, just leave
 		if (device.isSynchronizing() || device.isRefreshing()){
 			Messages.showErrorMessage("013"); //$NON-NLS-1$
 			return;

@@ -50,6 +50,11 @@ public interface ITechnicalStrings {
 	public static final String PATH_RELATIVE_DOCS = "docs/";
 	public static final String PATH_DOCS = "jar:"+Util.getExecLocation()+"!/org/jajuk/"+PATH_RELATIVE_DOCS;
 			
+	//Unkwnown
+	public static final String UNKNOWN_AUTHOR = "unknown_author";
+	public static final String UNKNOWN_ALBUM = "unknown_album";
+	public static final String UNKNOWN_STYLE = "unknown_style";
+	
 	// icons
 	public static final String ICON_LOGO = PATH_ICONS + "64x64/jajuk-logo.png";
 	public static final String ICON_LOGO_TRAY = PATH_ICONS + "22x22/jajuk-logo.png";
@@ -324,6 +329,7 @@ public interface ITechnicalStrings {
 	public static final String CONF_STARTUP_MODE = "jajuk.startup.mode";
 	public static final String CONF_CONFIRMATIONS_DELETE_FILE = "jajuk.confirmations.delete_file";
 	public static final String CONF_CONFIRMATIONS_EXIT = "jajuk.confirmations.exit";
+	public static final String CONF_CONFIRMATIONS_REMOVE_DEVICE = "jajuk.confirmations.remove_device";
 	public static final String CONF_OPTIONS_HIDE_UNMOUNTED = "jajuk.options.hide_unmounted";
 	public static final String CONF_OPTIONS_RESTART = "jajuk.options.restart";
 	public static final String CONF_OPTIONS_LOG_LEVEL = "jajuk.options.log_level";
