@@ -475,8 +475,13 @@ public class Main implements ITechnicalStrings {
 			    if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_FILE)){
 				    fileToPlay = FileManager.getFile(ConfigurationManager.getProperty(CONF_STARTUP_FILE));
 				}
-				else{
-				    fileToPlay = FileManager.getFile(History.getInstance().getLastFile());    
+				else {  //last file from begining or last file keep position
+				    if (ConfigurationManager.getBoolean(CONF_STATE_WAS_PLAYING)){  //make sure user didn't exit jajuk in the stopped state
+				        fileToPlay = FileManager.getFile(History.getInstance().getLastFile());
+				    }
+				    else{ //do not try to lauch anything, stay in stop state
+				        return;
+				    }
 				}
 			   if (fileToPlay != null){
 				    if ( fileToPlay.isScanned() ){ //device is refreshng or synchronizing
@@ -487,10 +492,13 @@ public class Main implements ITechnicalStrings {
 				    }
 				}
 				else{ //file no more exists
-		            Messages.showErrorMessage("009",fileToPlay.getDirectory().getDevice().getName()); //$NON-NLS-1$
+		            String sup = null;
+		            if (fileToPlay != null){
+		                sup =fileToPlay.getDirectory().getDevice().getName();
+		            }
+				    Messages.showErrorMessage("009",sup); //$NON-NLS-1$
 				}
 			}
-			
 			else if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_SHUFFLE)){
 				alToPlay = FileManager.getGlobalShufflePlaylist();
 			}
@@ -580,4 +588,10 @@ public class Main implements ITechnicalStrings {
 		return bDebugMode;
 	}
 	
+    /**
+     * @return Returns whether jajuk is in exiting state
+     */
+    public static boolean isExiting() {
+        return bExiting;
+    }
 }
