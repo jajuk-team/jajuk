@@ -19,6 +19,7 @@
  */
 package org.jajuk.i18n;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -132,11 +133,23 @@ public class Messages {
 	 * @param sCode
 	 */
 	public static void showErrorMessage(final String sCode){
-		SwingUtilities.invokeLater(new Runnable() {
+		Runnable run = new Runnable() {
 			public void run() {
 				JOptionPane.showMessageDialog(Main.getWindow(),Messages.getErrorMessage(sCode),Messages.getErrorMessage("102"),JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$	}
 			}
-		});
+		};
+		if ( SwingUtilities.isEventDispatchThread()){
+			SwingUtilities.invokeLater(run);
+		}
+		else{
+			try {
+				SwingUtilities.invokeAndWait(run);
+			} catch (InterruptedException e) {
+				Log.error(e);
+			} catch (InvocationTargetException e) {
+				Log.error(e);
+			}
+		}
 	}
 	
 	/**
