@@ -509,7 +509,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
      * @param i percentage of slider
      */
     public void setCurrentPosition(final int i){
-        if ( !bPositionChanging ){//don't move slider when user do it himself a	t the same time
+        if ( !bPositionChanging ){//don't move slider when user do it himself at the same time
             bPositionChanging = true;  //block events so player is not affected
             //wait 3 secs after end of last move to avoid slider to come back to previous position
             if (System.currentTimeMillis() - lDateLastPosMove > 3000){
