@@ -238,6 +238,8 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,Obser
 	}
 
 	/**
+	 * 
+	 * Set the current status for current track ex : 01:01:01/02:02:02
 	 * @param string
 	 */
 	public void setCurrentStatusMessage(String string) {
