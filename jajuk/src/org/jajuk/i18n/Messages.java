@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.2  2003/10/10 17:37:21  bflorat
+ * *** empty log message ***
+ *
  * Revision 1.1  2003/10/07 21:02:21  bflorat
  * Initial commit
  *
@@ -27,7 +30,7 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 /**
- *  My class description
+ * Utility class to get strings from localized property files
  *
  * @author     bflorat
  * @created    5 oct. 2003
