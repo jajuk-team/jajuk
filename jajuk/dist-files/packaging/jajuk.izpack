@@ -28,6 +28,7 @@
     <resources>
          <res id='HTMLInfoPanel.info' src='/data/java/workspace/jajuk/dist-files/doc/README.html'/>
          <res id='HTMLInfoPanel.info_fra' src='/data/java/workspace/jajuk/dist-files/doc/README_fra.html'/>
+         <res id='HTMLInfoPanel.info_deu' src='/data/java/workspace/jajuk/dist-files/doc/README_deu.html'/>
          <res id='LicencePanel.licence' src='/data/java/workspace/jajuk/dist-files/legals/LICENSE.txt'/>
         <res id='shortcutSpec.xml' src='/data/java/workspace/jajuk/dist-files/packaging/shortcutSpec.xml'/>
     	<res id='Installer.image' src='/data/java/workspace/jajuk/dist-files/images/jajuk-installer.png' />
@@ -54,6 +55,7 @@
             <file targetdir="$INSTALL_PATH" src="/tmp/jajuk-dist/jajuk/LICENSE.txt"/>
             <file targetdir="$INSTALL_PATH" src="/tmp/jajuk-dist/jajuk/README.html"/>
             <file targetdir="$INSTALL_PATH" src="/tmp/jajuk-dist/jajuk/README_fra.html"/>
+            <file targetdir="$INSTALL_PATH" src="/tmp/jajuk-dist/jajuk/README_deu.html"/>
             <file targetdir="$INSTALL_PATH" src="/tmp/jajuk-dist/jajuk/jajuk.bat">
             	<os family='windows'/>
            </file>

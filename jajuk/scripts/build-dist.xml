@@ -36,6 +36,7 @@
      <fileset file='${basedir}/dist-files/legals/LICENSE.txt'/>
       <fileset file='${basedir}/dist-files/doc/README.html'/>
       <fileset file='${basedir}/dist-files/doc/README_fra.html'/>
+      <fileset file='${basedir}/dist-files/doc/README_deu.html'/>
    </copy>
   	<copy todir='${distdir}/src' >
      <fileset file='${basedir}/dist-files/packaging/MANIFEST.MF'/>
@@ -95,7 +96,7 @@
   	</copy>
   </target>
   
-  <target name='helpsetjar' description='o Create the heplset jar'>
+  <target name='helpsetjar' description='o Create the heplset jar' depends='mkdist'>
     <delete file='${distdir}/bin/${helpsetjarname}'/>
     <apply executable="jhindexer" dir='${basedir}/dist-files/doc/jajuk-hs/default'>
 	 <fileset dir="${basedir}/dist-files/doc/jajuk-hs/default/html"/>
