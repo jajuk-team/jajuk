@@ -373,16 +373,23 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 						}
 					}
 				}
-				else if ( jtree.getSelectionCount() > 0 && e.getClickCount() == 1 && e.getButton()==MouseEvent.BUTTON3){  //right clic on a selected node set
-					paths = jtree.getSelectionModel().getSelectionPaths();
-					getInstance().alTracks = new ArrayList(100);
-					//test mix between types ( not allowed )
-					String sClass = paths[0].getLastPathComponent().getClass().toString();
-					for (int i=0;i<paths.length;i++){
-						if (!paths[i].getLastPathComponent().getClass().toString().equals(sClass)){
-							return;
-						}	
-					}
+				else if ( e.getClickCount() == 1 
+				        && e.getButton()==MouseEvent.BUTTON3){  //right clic on a selected node set
+				    //Right clic behavior identical to konqueror tree:
+				    //if none or 1 node is selected, a right click on another node select it
+				    //if more than 1, we keep selection and display a popup for them
+				    if (jtree.getSelectionCount() < 2){
+				        jtree.getSelectionModel().setSelectionPath(path);
+				    }
+				    paths = jtree.getSelectionModel().getSelectionPaths();
+				    getInstance().alTracks = new ArrayList(100);
+				    //test mix between types ( not allowed )
+				    String sClass = paths[0].getLastPathComponent().getClass().toString();
+				    for (int i=0;i<paths.length;i++){
+				        if (!paths[i].getLastPathComponent().getClass().toString().equals(sClass)){
+				            return;
+				        }	
+				    }
 					//get all components recursively
 					for (int i=0;i<paths.length;i++){
 						Object o = paths[i].getLastPathComponent();

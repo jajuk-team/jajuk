@@ -528,7 +528,14 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
                         }
                     }
                 }
-                else if ( jtree.getSelectionCount() > 0 && e.getClickCount() == 1 && e.getButton()==MouseEvent.BUTTON3){  //right clic on a selected node set
+                else if (  e.getClickCount() == 1 
+                        && e.getButton()==MouseEvent.BUTTON3){  //right clic on a selected node set
+                    //Right clic behavior identical to konqueror tree:
+                    //if none or 1 node is selected, a right click on another node select it
+                    //if more than 1, we keep selection and display a popup for them
+                    if (jtree.getSelectionCount() < 2){
+                        jtree.getSelectionModel().setSelectionPath(path);
+                    }
                     paths = jtree.getSelectionModel().getSelectionPaths();
                     getInstance().alFiles = new ArrayList(100);
                     getInstance().alDirs = new ArrayList(10);

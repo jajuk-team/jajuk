@@ -216,8 +216,15 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
 				Messages.showErrorMessage("120",file.getDirectory().getDevice().getName()); //$NON-NLS-1$
 			}
 		}		
-		else if ( jtable.getSelectedRowCount() > 0 && e.getClickCount() == 1 && e.getButton()==MouseEvent.BUTTON3){  //right clic on a selected node set
-			if ( jtable.getSelectedRowCount() > 1){
+		else if ( e.getClickCount() == 1 
+                && e.getButton()==MouseEvent.BUTTON3){  //right clic on a selected node set
+		    // if none or 1 node is selected, a right click on another node select it
+            //if more than 1, we keep selection and display a popup for them
+            if (jtable.getSelectedRowCount() < 2){
+                int iSelection = jtable.rowAtPoint(e.getPoint());
+                jtable.getSelectionModel().setSelectionInterval(iSelection,iSelection);
+            }
+            if ( jtable.getSelectedRowCount() > 1){
 				jmiFileProperties.setEnabled(false); //can read a property from one sole file
 			}
 			else{
