@@ -20,6 +20,7 @@ package org.jajuk;
 
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.Frame;
 import java.io.File;
 import java.io.IOException;
@@ -82,6 +83,8 @@ public class Main implements ITechnicalStrings {
 	public static JPanel jpFrame;
 	/**Jajuk slashscreen*/
 	public static SplashScreen sc;
+	/**Temporary panel*/
+	private static JPanel jpTmp;
 	/**Exit code*/
 	private static int iExitCode = 0;
 	/**Debug mode*/
@@ -149,6 +152,7 @@ public class Main implements ITechnicalStrings {
 			Messages.getInstance().registerLocal("it","Language_desc_it"); //$NON-NLS-1$ //$NON-NLS-2$
 			Messages.getInstance().registerLocal("sv","Language_desc_sv"); //$NON-NLS-1$ //$NON-NLS-2$
 			Messages.getInstance().registerLocal("nl","Language_desc_nl"); //$NON-NLS-1$ //$NON-NLS-2$
+			Messages.getInstance().registerLocal("zh","Language_desc_zh"); //$NON-NLS-1$ //$NON-NLS-2$
 			
 			//configuration manager startup
 			org.jajuk.util.ConfigurationManager.getInstance();
@@ -554,6 +558,9 @@ public class Main implements ITechnicalStrings {
 					//Add static panels
 					jpFrame.add(command, BorderLayout.NORTH);
 					jpFrame.add(information, BorderLayout.SOUTH);
+					jpTmp = new JPanel(); //we use an empty panel to take west place before actual panel ( perspective bar ). just for a better displaying
+					jpTmp.setPreferredSize(new Dimension(3000,3000));//make sure the temp panel makes screen maximalized
+					jpFrame.add(jpTmp, BorderLayout.WEST);
 					jpFrame.add(jpContentPane, BorderLayout.CENTER);
 					
 					//display window
@@ -579,6 +586,7 @@ public class Main implements ITechnicalStrings {
 
 					// Create the perspective tool bar panel
 					perspectiveBar = PerspectiveBarJPanel.getInstance();
+					jpFrame.remove(jpTmp);
 					jpFrame.add(perspectiveBar, BorderLayout.WEST);
 
 					//Initialize perspective manager and load all views
