@@ -144,23 +144,33 @@ public class FileManager implements ITechnicalStrings{
 	public static synchronized File getNextFile(File file){
 		File fileNext = null;
 		ArrayList alSortedFiles = getSortedFiles();
-		int index = alSortedFiles.indexOf(file) + 1;
-		if (index >= alSortedFiles.size()){  //problem or we reach end of collection
-			if (ConfigurationManager.getBoolean(CONF_OPTIONS_RESTART)){  //restart collection
-				index = 0;
-			}
-			else{
-				return null;
-			}
-		}
-		while ( index < alSortedFiles.size()){
+		//look for a correct file from index to collection end
+		boolean bOk = false;
+		for (int index=alSortedFiles.indexOf(file)+1;index<alSortedFiles.size();index++){
 			fileNext = (File)alSortedFiles.get(index);
-			index ++;
 			if (fileNext.getDirectory().getDevice().isMounted() && !fileNext.getDirectory().getDevice().isRefreshing()){  //file must be on a mounted device not refreshing
+				bOk = true;
 				break;
 			}
 		}
-		return fileNext;
+		if ( bOk){
+			return fileNext;
+		}
+		else if (!ConfigurationManager.getBoolean(CONF_OPTIONS_RESTART)){
+			return null;
+		}
+		//ok, if we are in restart collection mode, restart from collection begin to file index
+		for (int index=0;index<alSortedFiles.indexOf(file);index++){
+			fileNext = (File)alSortedFiles.get(index);
+			if (fileNext.getDirectory().getDevice().isMounted() && !fileNext.getDirectory().getDevice().isRefreshing()){  //file must be on a mounted device not refreshing
+				bOk = true;
+				break;
+			}
+		}
+		if ( bOk){
+			return fileNext;
+		}
+		return null;
 	}
 	
 	
@@ -171,23 +181,19 @@ public class FileManager implements ITechnicalStrings{
 	public static synchronized File getPreviousFile(File file){
 		File filePrevious = null;
 		ArrayList alSortedFiles = getSortedFiles();
-		int index = alSortedFiles.indexOf(file) - 1;
-		if (index < 0 ){  //problem or we reach begin of collection
-			if (ConfigurationManager.getBoolean(CONF_OPTIONS_RESTART)){  //restart collection
-				index = alSortedFiles.size() -1;
-			}
-			else{
-				return null;
-			}
-		}
-		while ( index >= 0){
+		//look for a correct file from index to collection begin
+		boolean bOk = false;
+		for (int index=alSortedFiles.indexOf(file)-1;index>=0;index--){
 			filePrevious = (File)alSortedFiles.get(index);
-			index --;
 			if (filePrevious.getDirectory().getDevice().isMounted() && !filePrevious.getDirectory().getDevice().isRefreshing()){  //file must be on a mounted device not refreshing
+				bOk = true;
 				break;
 			}
 		}
-		return filePrevious;
+		if ( bOk){
+			return filePrevious;
+		}
+		return null;
 	}
 	
 

@@ -85,7 +85,7 @@ public class CoverView extends ViewAdapter implements Observer{
 	public void update(String subject){
 		if ( subject.equals(EVENT_COVER_REFRESH)){
 			java.io.File fDir = new java.io.File(FIFO.getInstance().getCurrentFile().getAbsolutePath()).getParentFile();
-			if ( this.fDir!= null && this.fDir.equals(fDir) ){  //if we are always in the same directory, just leave to save cpu
+			if ( !fDir.exists() || (this.fDir!= null && this.fDir.equals(fDir)) ){  //if we are always in the same directory, just leave to save cpu
 				return;
 			}
 			this.fDir = fDir;
