@@ -550,6 +550,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
                     jbStop.setEnabled(true);
                     jbFwd.setEnabled(true);
                     jsPosition.setEnabled(true);
+                    jbPlayPause.setIcon(Util.getIcon(ICON_PAUSE)); //resume any current pause
                 }
                 else if ( EVENT_PLAYER_PAUSE.equals(subject)){
                     jbRew.setEnabled(false);
