@@ -243,11 +243,6 @@ public class Main implements ITechnicalStrings {
 			
 			//Launch startup track if any
 			launchInitialTrack();        
-		
-			//show window if set in the systray conf
-			if ( ConfigurationManager.getBoolean(CONF_SHOW_AT_STARTUP) ){
-			    lauchUI();
-			}
 			
 			//lauch systray if needed, only for linux and windows, not mac for the moment
 		    if (Util.isUnderLinux() || Util.isUnderWindows()){
@@ -256,9 +251,13 @@ public class Main implements ITechnicalStrings {
 		    			jsystray = JajukSystray.getInstance();	
 		    		}
 		    	}.start();
-			    
 		    }
-		
+			
+			//show window if set in the systray conf
+			if ( ConfigurationManager.getBoolean(CONF_SHOW_AT_STARTUP) ){
+			    lauchUI();
+			}
+					
 		} catch (JajukException je) { //last chance to catch any error for logging purpose
 			Log.error(je);
 			if ( je.getCode().equals("005")){ //$NON-NLS-1$
@@ -572,6 +571,9 @@ public class Main implements ITechnicalStrings {
 					perspectiveBar = PerspectiveBarJPanel.getInstance();
 					jpFrame.add(perspectiveBar, BorderLayout.WEST);
 					
+					jw.pack();
+					jw.setVisible(true); //show main window							
+					
 					//Display info message if first session
 					if (ConfigurationManager.getBoolean(CONF_FIRST_CON)){
 						ConfigurationManager.setProperty(CONF_FIRST_CON,FALSE);
@@ -584,10 +586,7 @@ public class Main implements ITechnicalStrings {
 						dw.pack();
 						dw.setVisible(true);
 					}
-					
-					jw.pack();
-					jw.setVisible(true); //show main window								
-								
+							
 				} catch (Exception e) { //last chance to catch any error for logging purpose
 					e.printStackTrace();
 					Log.error("106", e); //$NON-NLS-1$

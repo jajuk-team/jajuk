@@ -502,12 +502,12 @@ public class FIFO implements ITechnicalStrings{
         }
         Iterator it = getInstance().alFIFO.iterator(); //are next tracks in fifo on this device?
         while (it.hasNext()){
-            File file = (File)it.next();
+            StackItem item = (StackItem)it.next();
+            File file = item.getFile();
             if ( file.getDirectory().getDevice().equals(device)){
                 return false;
             }
         }
-        //REFACTOR check both FIFO and Planned  
         return true;
     }
     

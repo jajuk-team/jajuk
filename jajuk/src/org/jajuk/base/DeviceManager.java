@@ -195,7 +195,6 @@ public class DeviceManager implements ITechnicalStrings{
 				return;
 			}
 	    }
-	    
 	    //if device is refreshing or synchronizing, just leave
 		if (device.isSynchronizing() || device.isRefreshing()){
 			Messages.showErrorMessage("013"); //$NON-NLS-1$
