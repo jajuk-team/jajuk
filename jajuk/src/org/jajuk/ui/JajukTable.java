@@ -25,6 +25,8 @@ import java.awt.event.MouseEvent;
 import javax.swing.JTable;
 import javax.swing.table.TableModel;
 
+import org.jajuk.base.ITechnicalStrings;
+
 import com.sun.TableSorter;
 
 /**
@@ -34,7 +36,7 @@ import com.sun.TableSorter;
  * @author     bflorat
  * @created    21 feb. 2004
  */
-public class JajukTable extends JTable {
+public class JajukTable extends JTable implements ITechnicalStrings{
 	
 	/** Table sorter*/
 	TableSorter ts;
@@ -81,7 +83,7 @@ public class JajukTable extends JTable {
 	public TableSorter getSortingModel() {
 		return ts;
 	}
-
+	
 }
 
 
