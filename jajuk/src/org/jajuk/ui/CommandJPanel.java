@@ -106,6 +106,8 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 	private static boolean bPositionChanging = false;
 	/**Last slider manual move date*/
 	private static long lDateLastPosMove;
+	/**Lock to avoid multiple next/previous*/
+	private static byte[] bLock = new byte[0];
 	
 	
 	
@@ -404,7 +406,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 			ObservationManager.notify(EVENT_SPECIAL_MODE,pDetail);
 		}
 		else if (ae.getSource() == jbMute ){
-			Player.mute();
+			Player.mute(); //change mute state
 			if ( Player.isMuted()){
 				jbMute.setBorder(BorderFactory.createLoweredBevelBorder());
 			}
@@ -427,18 +429,22 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 			}
 		}
 		else if (ae.getSource() == jbPrevious){
-			FIFO.getInstance().playPrevious();
-			if ( Player.isPaused()){  //player was paused, reset pause button when changing of track
-				Player.setPaused(false);
-				ObservationManager.notify(EVENT_PLAYER_RESUME);  //notify of this event
-			}
+		    synchronized(bLock){
+		        FIFO.getInstance().playPrevious();
+		        if ( Player.isPaused()){  //player was paused, reset pause button when changing of track
+		            Player.setPaused(false);
+		            ObservationManager.notify(EVENT_PLAYER_RESUME);  //notify of this event
+		        }
+		    }
 		}
 		else if (ae.getSource() == jbNext){
-			FIFO.getInstance().playNext();
-			if ( Player.isPaused()){  //player was paused, reset pause button
-				Player.setPaused(false);
-				ObservationManager.notify(EVENT_PLAYER_RESUME);  //notify of this event
-			}
+		    synchronized(bLock){
+		         FIFO.getInstance().playNext();
+		        if ( Player.isPaused()){  //player was paused, reset pause button
+		            Player.setPaused(false);
+		            ObservationManager.notify(EVENT_PLAYER_RESUME);  //notify of this event
+		        }
+		    }
 		}
 		else if (ae.getSource() == jbRew){
 			float fCurrentPosition = Player.getCurrentPosition();
@@ -478,8 +484,11 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 	 *  @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
 	 */
 	public void stateChanged(ChangeEvent e) {
-		if ( e.getSource() == jsVolume && !jsVolume.getValueIsAdjusting()){
+		if ( e.getSource() == jsVolume ){
 			Player.setVolume((float)jsVolume.getValue()/100);
+			//if user move the volume slider, unmute
+			Player.mute(false);
+			jbMute.setBorder(BorderFactory.createRaisedBevelBorder());
 		}
 		else if (e.getSource() == jsPosition && !bPositionChanging && !jsPosition.getValueIsAdjusting()){
 			bPositionChanging = true;
