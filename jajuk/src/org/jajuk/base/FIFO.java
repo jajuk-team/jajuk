@@ -288,6 +288,11 @@ public class FIFO implements ITechnicalStrings{
                     if ( file != null){
                         pushCommand(new StackItem(file),false); //push it, it will be played
                     }
+                    else{ //probably end of collection option "restart" off
+                        JajukTimer.getInstance().reset();
+                        bStop = true;
+                        ObservationManager.notify(new Event(EVENT_ZERO));
+                        }
                 }
                 else{ //no ? just reset UI and leave
                     JajukTimer.getInstance().reset();
@@ -419,9 +424,8 @@ public class FIFO implements ITechnicalStrings{
                     }
                 }
             }
-            catch(JajukException je){ //can be thrown if FileManager return a null file
-                Log.error(je);
-                continue;
+            catch(JajukException je){ //can be thrown if FileManager return a null file (like when reaching end of collection)
+                break;
             }
             //Tell it is a planned item
             item.setPlanned(true);
