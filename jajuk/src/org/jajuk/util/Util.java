@@ -244,8 +244,8 @@ public class Util implements ITechnicalStrings {
 				sbOut.deleteCharAt(i); //remove this char, it will be replaced by the XML format &#x?; or by a space if it is invalid
 				if ( (c =='\u0009'  ||   (c>='\u0020' && c<='\uD7FF') || (c>='\uE000' && c<='\uFFFD')) && (c!='\uFFFE' && c!='\uFFFF')){
 					//some unicode described in XML specs like xA, xD and x10000 and over are not tested because java can't handle them, so we can't get these chars in the incoming string
-					sbOut.insert(i,"&#x");
-					sbOut.insert(i+3,Integer.toHexString((int)c)+";");
+					sbOut.insert(i,"&#x"); //$NON-NLS-1$
+					sbOut.insert(i+3,Integer.toHexString((int)c)+";"); //$NON-NLS-1$
 				}
 				else{
 					sbOut.insert(i,' '); //replace invalid character by a space
@@ -581,7 +581,7 @@ public class Util implements ITechnicalStrings {
 	 */
 	public static void setExecLocation(boolean bDebug){
 		if ( bDebug){
-			sExecLocation = "file:"+System.getProperty("user.dir")+"/jajuk.jar";
+			sExecLocation = "file:"+System.getProperty("user.dir")+"/jajuk.jar"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
 		else{
 			sExecLocation = Util.getJarLocation(Main.class).toString();
