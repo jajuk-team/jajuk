@@ -135,6 +135,7 @@ public class ConfigurationManager implements ITechnicalStrings{
 		properties.put(CONF_STATE_INTRO,FALSE); 
 		properties.put(CONF_STARTUP_FILE,""); //no startup file by default 
 		properties.put(CONF_STARTUP_MODE,STARTUP_MODE_LAST_KEEP_POS);
+		properties.put(CONF_STARTUP_KEEP_MODE,TRUE);
 		properties.put(CONF_CONFIRMATIONS_DELETE_FILE,TRUE);
 		properties.put(CONF_CONFIRMATIONS_EXIT,FALSE);
 		properties.put(CONF_OPTIONS_HIDE_UNMOUNTED,FALSE);

@@ -88,6 +88,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 	JRadioButton jrbBestof;
 	JRadioButton jrbNovelties;
 	JRadioButton jrbFile;
+	JCheckBox jcbKeepMode;
 	SearchBox sbSearch;		
 	JPanel jpConfirmations;
 	JCheckBox jcbBeforeDelete;
@@ -194,27 +195,35 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		//--Startup
 		jpStart = new JPanel();
 		double sizeStart[][] = {{0.15,iXSeparator,0.4,iXSeparator,0.3,iXSeparator},
-				{20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20}};
+				{20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,7*iYSeparator,20}};
 		jpStart.setLayout(new TableLayout(sizeStart));
 		jlStart = new JLabel(Messages.getString("ParameterView.9")); //$NON-NLS-1$
 		bgStart = new ButtonGroup();
 		jrbNothing = new JRadioButton(Messages.getString("ParameterView.10")); //$NON-NLS-1$
 		jrbNothing.setToolTipText(Messages.getString("ParameterView.11")); //$NON-NLS-1$
+		jrbNothing.addItemListener(this);
 		jrbLast = new JRadioButton(Messages.getString("ParameterView.12")); //$NON-NLS-1$
 		jrbLast.setToolTipText(Messages.getString("ParameterView.13")); //$NON-NLS-1$
+		jrbLast.addItemListener(this);
 		jrbLastKeepPos = new JRadioButton(Messages.getString("ParameterView.135")); //$NON-NLS-1$
 		jrbLastKeepPos.setToolTipText(Messages.getString("ParameterView.136")); //$NON-NLS-1$
+		jrbLastKeepPos.addItemListener(this);
 		jrbShuffle = new JRadioButton(Messages.getString("ParameterView.14")); //$NON-NLS-1$
 		jrbShuffle.setToolTipText(Messages.getString("ParameterView.15")); //$NON-NLS-1$
+		jrbShuffle.addItemListener(this);
 		jrbBestof = new JRadioButton(Messages.getString("ParameterView.131")); //$NON-NLS-1$
 		jrbBestof.setToolTipText(Messages.getString("ParameterView.132")); //$NON-NLS-1$
+		jrbBestof.addItemListener(this);
 		jrbNovelties = new JRadioButton(Messages.getString("ParameterView.133")); //$NON-NLS-1$
 		jrbNovelties.setToolTipText(Messages.getString("ParameterView.134")); //$NON-NLS-1$
+		jrbNovelties.addItemListener(this);
 		jrbFile = new JRadioButton(Messages.getString("ParameterView.16")); //$NON-NLS-1$
 		jrbFile.setToolTipText(Messages.getString("ParameterView.17")); //$NON-NLS-1$
 		jrbFile.addItemListener(this);
 		sbSearch = new SearchBox(this);
 		sbSearch.setEnabled(false); //disabled by default, is enabled only if jrbFile is enabled
+		jcbKeepMode = new JCheckBox(Messages.getString("ParameterView.137")); //$NON-NLS-1$
+		jcbKeepMode.setToolTipText(Messages.getString("ParameterView.138")); //$NON-NLS-1$
 		//set choosen track in file selection
 		String sFileId = ConfigurationManager.getProperty(CONF_STARTUP_FILE);
 		if ( !"".equals(sFileId)){ //$NON-NLS-1$
@@ -244,6 +253,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jpStart.add(jrbNovelties,"2,10"); //$NON-NLS-1$
 		jpStart.add(jrbFile,"2,12"); //$NON-NLS-1$
 		jpStart.add(sbSearch,"4,12"); //$NON-NLS-1$
+		jpStart.add(jcbKeepMode,"2,14"); //$NON-NLS-1$
 		
 		//--Confirmations
 		jpConfirmations = new JPanel();
@@ -648,6 +658,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 					else if (jrbNovelties.isSelected()){
 						ConfigurationManager.setProperty(CONF_STARTUP_MODE,STARTUP_MODE_NOVELTIES);
 					}
+					ConfigurationManager.setProperty(CONF_STARTUP_KEEP_MODE,Boolean.toString(jcbKeepMode.isSelected()));
 					//Confirmations
 					ConfigurationManager.setProperty(CONF_CONFIRMATIONS_DELETE_FILE,Boolean.toString(jcbBeforeDelete.isSelected()));
 					ConfigurationManager.setProperty(CONF_CONFIRMATIONS_EXIT,Boolean.toString(jcbBeforeExit.isSelected()));
@@ -725,6 +736,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		else if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_NOVELTIES)){
 			jrbNovelties.setSelected(true);
 		}
+		jcbKeepMode.setSelected(ConfigurationManager.getBoolean(CONF_STARTUP_KEEP_MODE));
 		jcbBeforeDelete.setSelected(ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_DELETE_FILE));
 		jcbBeforeExit.setSelected(ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_EXIT));
 		boolean bHidden = ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED);
@@ -782,10 +794,18 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
      * @see java.awt.event.ItemListener#itemStateChanged(java.awt.event.ItemEvent)
      */
     public void itemStateChanged(ItemEvent e) {
-        if (e.getSource() == jrbFile){  //jrbFile has been selected or deselected
-            sbSearch.setEnabled(jrbFile.isSelected());
+        if (e.getSource() == jrbLast //if any non-special mode
+                || e.getSource() == jrbNothing
+            	|| e.getSource() == jrbFile
+            	|| e.getSource() == jrbLastKeepPos){
+            if (e.getSource() == jrbFile){  //jrbFile has been selected or deselected
+                sbSearch.setEnabled(jrbFile.isSelected());
+            }
+            jcbKeepMode.setEnabled(false); //no meaning for non-special startup modes
+        }
+        else{ //any special mode: global shuffle, bestof, novelties...
+            jcbKeepMode.setEnabled(true);
         }
     }
-	
 	
 }
