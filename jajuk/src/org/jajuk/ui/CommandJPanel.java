@@ -276,6 +276,9 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		ObservationManager.register(EVENT_PLAYER_PAUSE,this);
 		ObservationManager.register(EVENT_PLAYER_RESUME,this);
 		
+		//update initial state because the FIFO could have send a play notification at startup before this view being created
+		update(EVENT_PLAYER_PLAY);
+		
 	}	
 	
 	
