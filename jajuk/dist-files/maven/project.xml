@@ -109,6 +109,16 @@
 	      <organization>Jajuk team</organization>
 	      <timezone>+2</timezone>
 	    </developer>
+		<developer>
+	      <name>Kevin Tangning</name>
+	      <id>kavent</id>
+	     <roles>
+			<role>Chinese translator</role>
+	     </roles>
+	      <email>kavent@users.sourceforge.net</email>
+	      <organization>Jajuk team</organization>
+	      <timezone>+8</timezone>
+	    </developer>
 	    <developer>
 	      <name>Sébastien Gringoire</name>
 	      <id>sgringoi</id>
