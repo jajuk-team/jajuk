@@ -69,9 +69,6 @@ public class Util implements ITechnicalStrings {
 	/*Cursors*/
 	public static final Cursor WAIT_CURSOR = new Cursor(Cursor.WAIT_CURSOR);
 	public static final Cursor DEFAULT_CURSOR = new Cursor(Cursor.DEFAULT_CURSOR);
-	/**Backup size in MB*/
-	public static final int BACKUP_SIZE = 30;
-	
 	/**Contains execution location ( jar or directory )*/
 	public static String sExecLocation;
 	
@@ -428,17 +425,17 @@ public class Util implements ITechnicalStrings {
 	public static void backupFile(File file,int iMB){
 		try{
 			//calculates total size in MB for the file to backup and its backup files
-			int iUsedMB = 0;
+			long lUsedMB = 0;
 			int index = 0;//backup index
 			File[] files = new File(file.getAbsolutePath()).getParentFile().listFiles();
 			if ( files != null){
 				for ( int i=0;i<files.length;i++){
 					if ( files[i].getName().indexOf(removeExtension(file.getName()))!= -1){ //if the file contains the file name without extension
 						index ++;
-						iUsedMB += files[i].length() / 1048576;
+						lUsedMB += files[i].length();
 					}
 				}
-				if ( iUsedMB > iMB){  //too much backup files, leave
+				if ( lUsedMB/1048576 > iMB){  //too much backup files, leave
 					new File(Util.removeExtension(file.getAbsolutePath())+"-backup-1."+Util.getExtension(file)).delete(); //delete older backup $NON-NLS-1$//$NON-NLS-2$
 					//change all backup names ( 2 becomes 1, 3 becomes 2...)
 					for ( int i=2;i<index;i++){

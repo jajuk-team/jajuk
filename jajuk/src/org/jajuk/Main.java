@@ -102,8 +102,7 @@ public class Main implements ITechnicalStrings {
 			Messages.registerLocal("it","Language_desc_it"); //$NON-NLS-1$ //$NON-NLS-2$
 			Messages.registerLocal("sv","Language_desc_sv"); //$NON-NLS-1$ //$NON-NLS-2$
 			Messages.registerLocal("nl","Language_desc_nl"); //$NON-NLS-1$ //$NON-NLS-2$
-			
-						
+									
 			//configuration manager startup
 			org.jajuk.util.ConfigurationManager.getInstance();
 			
@@ -116,6 +115,9 @@ public class Main implements ITechnicalStrings {
 			//log startup
 			Log.getInstance();
 			Log.setVerbosity(Log.DEBUG);
+			
+			//Upgrade configuration from previous releases
+			upgrade();
 			
 			//registers supported types and default properties
 			try {
@@ -270,7 +272,7 @@ public class Main implements ITechnicalStrings {
 							if ( !DeviceManager.isAnyDeviceRefreshing()){
 								org.jajuk.base.Collection.commit();
 								//backup this file
-								Util.backupFile(new File(FILE_COLLECTION),Util.BACKUP_SIZE);
+								Util.backupFile(new File(FILE_COLLECTION),ConfigurationManager.getInt(CONF_BACKUP_SIZE));
 							}
 						}
 					} catch (IOException e) {
@@ -287,6 +289,7 @@ public class Main implements ITechnicalStrings {
 			
 			//Close splash screen
 			sc.dispose();
+			
 			
 		} catch (JajukException je) { //last chance to catch any error for logging purpose
 			Log.error(je);
@@ -441,6 +444,18 @@ public class Main implements ITechnicalStrings {
 	 */
 	public static JajukWindow getWindow() {
 		return jw;
+	}
+	
+	/**
+	 * Actions to migrate an existing installation
+	 *
+	 */
+	public static void upgrade(){
+		//For jajuk < 0.2 : remove backup file : collection~.xml
+		File file = new File(FILE_COLLECTION+"~");
+		if ( file!= null ){
+			file.delete();
+		}
 	}
 
 }

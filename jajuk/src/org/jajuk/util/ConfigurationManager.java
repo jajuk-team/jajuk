@@ -111,6 +111,15 @@ public class ConfigurationManager implements ITechnicalStrings{
 		return Float.valueOf(properties.getProperty(pName)).floatValue();
 	}
 	
+	/**
+	 * Return the value of a property as an integer or 0 if the property is not found
+	 * 
+	 * @param pName Name of the property.
+	 * @return int value of the property named pName.
+	 */
+	public static int getInt(String pName) {
+		return Integer.valueOf(properties.getProperty(pName)).intValue();
+	}
 	
 	
 	/**
@@ -154,6 +163,7 @@ public class ConfigurationManager implements ITechnicalStrings{
 		properties.put(CONF_BESTOF_SIZE,"20"); //$NON-NLS-1$
 		properties.put(CONF_VOLUME,"0.5"); //$NON-NLS-1$
 		properties.put(CONF_REGEXP,FALSE); //$NON-NLS-1$
+		properties.put(CONF_BACKUP_SIZE,"30");//$NON-NLS-1$
 	}
 	
 	

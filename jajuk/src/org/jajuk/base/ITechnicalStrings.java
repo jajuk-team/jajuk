@@ -306,7 +306,8 @@ public interface ITechnicalStrings {
 	public static final String CONF_BESTOF_SIZE= "jajuk.bestof_size"; //best of size
 	public static final String CONF_VOLUME= "jajuk.volume"; //gain (float)
 	public static final String CONF_REGEXP= "jajuk.regexp"; //use regular expressions ?
-	
+	public static final String CONF_BACKUP_SIZE= "jajuk.backup_size"; //backup size for collection.xml in MB
+		
 	
 	//miscelanous
 	public static final String TRUE= "true";
