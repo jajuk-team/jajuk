@@ -45,7 +45,7 @@ import org.xml.sax.helpers.DefaultHandler;
  */
 public class Messages extends DefaultHandler implements ITechnicalStrings	{
 	/**Local ( language) to be used, default is english */
-	private String sLocal;
+	private String sLocal = "en";  //$NON-NLS-1$
 	/**Supported Locals*/
 	public ArrayList alLocals = new ArrayList(10);
 	/**Locals description */
@@ -62,12 +62,6 @@ public class Messages extends DefaultHandler implements ITechnicalStrings	{
 	 * Private Constructor
 	 */
 	private Messages() {
-	    try{
-	        propertiesEn = parseLangpack("en"); //$NON-NLS-1$
-	    }
-	    catch(Exception e){
-	        Log.error(e);
-	    }
 	}
 	
 	/**
@@ -85,17 +79,21 @@ public class Messages extends DefaultHandler implements ITechnicalStrings	{
 	 * @return
 	 */
 	public static String getString(String key) {
-		String sOut = key;
-		sOut = getInstance().properties.getProperty(key); 
-		if (sOut == null){ //this property is unknown for this local, try in english
-		    sOut = getInstance().propertiesEn.getProperty(key);
-		}
-		//at least, returned property is the key name but we trace an error to show it
-		if (sOut == null){
-		    Log.error("105","key: "+key,new Exception()); //$NON-NLS-1$ //$NON-NLS-2$
-		    sOut = key;
-		}
-		return sOut;
+	    String sOut = key;
+	    try{
+	        sOut = getInstance().getProperties().getProperty(key); 
+	        if (sOut == null){ //this property is unknown for this local, try in english
+	            sOut = getInstance().getPropertiesEn().getProperty(key);
+	        }
+	        //at least, returned property is the key name but we trace an error to show it
+	        if (sOut == null){
+	            Log.error("105","key: "+key,new Exception()); //$NON-NLS-1$ //$NON-NLS-2$
+	            sOut = key;
+	        }
+	    }catch(Exception e){ //system error
+	        Log.error(e);
+	    }
+	    return sOut;
 	}
 	
 	/**
@@ -130,8 +128,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings	{
 	 */
 	public void setLocal(String sLocal) throws Exception{
   		this.sLocal = sLocal;
-  		this.properties = parseLangpack(sLocal);	
-	}
+  	}
 	
 	/**Parse a factice properties file inside an XML file as CDATA*
 	 * @param sLocal
@@ -309,4 +306,23 @@ public class Messages extends DefaultHandler implements ITechnicalStrings	{
 	    return !(mesg == null);
 	}
 		
+    /**
+     * @return Returns the properties.
+     */
+    public Properties getProperties() throws Exception {
+        if (this.properties == null){
+            this.properties = parseLangpack(this.sLocal);
+        }
+        return this.properties;
+    }
+    
+    /**
+     * @return Returns the propertiesEn.
+     */
+    public Properties getPropertiesEn() throws Exception{
+        if (this.propertiesEn == null){
+            this.propertiesEn = parseLangpack("en");  //$NON-NLS-1$
+        }
+        return this.propertiesEn;
+    }
 }
