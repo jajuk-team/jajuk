@@ -74,11 +74,9 @@ public class DeviceWizard extends JFrame implements ActionListener,ITechnicalStr
 	JComboBox jcbSynchronized;
 	JPanel jp2;
 	ButtonGroup bgSynchro;
-	JRadioButton jrbFullSynchro;
-	JRadioButton jrbPartialSynchro;
+	JRadioButton jrbBidirSynchro;
+	JRadioButton jrbUnidirSynchro;
 	JCheckBox jcb1;
-	JCheckBox jcb2;
-	JCheckBox jcb3;
 	JPanel jpButtons;
 	JButton jbOk;
 	JButton jbCancel;
@@ -92,7 +90,7 @@ public class DeviceWizard extends JFrame implements ActionListener,ITechnicalStr
 	
 	public DeviceWizard() {
 		super("Device wizard");
-		setSize(800, 600);
+		setSize(800, 500);
 		setLocation(org.jajuk.Main.jframe.getX()+100,org.jajuk.Main.jframe.getY()+100);
 		jpMain = new JPanel();
 		jpMain.setLayout(new BoxLayout(jpMain,BoxLayout.Y_AXIS));
@@ -139,24 +137,18 @@ public class DeviceWizard extends JFrame implements ActionListener,ITechnicalStr
 		//Default automount behavior
 		jcbType.addActionListener(this);
 		bgSynchro = new ButtonGroup();
-		jrbFullSynchro = new JRadioButton("Full synchronization");
-		jrbFullSynchro.setBorder(BorderFactory.createEmptyBorder(0, 25, 0, 0));
-		jrbFullSynchro.addActionListener(this);
-		jrbPartialSynchro = new JRadioButton("Partial synchronization");
-		jrbPartialSynchro.setBorder(BorderFactory.createEmptyBorder(0, 25, 0, 0));
-		jrbPartialSynchro.setEnabled(false);
-		jrbPartialSynchro.addActionListener(this);
-		bgSynchro.add(jrbFullSynchro);
-		bgSynchro.add(jrbPartialSynchro);
-		jcb1 = new JCheckBox("If a track is deleted from this device, delete it from source device");
-		jcb1.setBorder(BorderFactory.createEmptyBorder(0, 50, 0, 0));
+		jrbBidirSynchro = new JRadioButton("Unidirectional synchronization");
+		jrbBidirSynchro.setBorder(BorderFactory.createEmptyBorder(0, 25, 0, 0));
+		jrbBidirSynchro.addActionListener(this);
+		jrbUnidirSynchro = new JRadioButton("Bidirectional synchronization");
+		jrbUnidirSynchro.setBorder(BorderFactory.createEmptyBorder(0, 25, 0, 0));
+		jrbUnidirSynchro.setEnabled(false);
+		jrbUnidirSynchro.addActionListener(this);
+		bgSynchro.add(jrbBidirSynchro);
+		bgSynchro.add(jrbUnidirSynchro);
+		jcb1 = new JCheckBox("If a track is desynchronized from source device, delete it from this device (USE WITH CARE) ");
 		jcb1.setEnabled(false);
-		jcb2 = new JCheckBox("If a track is deleted from source device, delete it from this device");
-		jcb2.setBorder(BorderFactory.createEmptyBorder(0, 50, 0, 0));
-		jcb2.setEnabled(false);
-		jcb3 = new JCheckBox("If a track is desynchronized from source device, delete it from this device");
-		jcb3.setBorder(BorderFactory.createEmptyBorder(0, 50, 0, 0));
-		jcb3.setEnabled(false);
+		jcb1.setBorder(BorderFactory.createEmptyBorder(0, 25, 0, 0));
 		jp1.add(jlType, "0,0");
 		jp1.add(jcbType, "1,0");
 		jp1.add(jlName, "0,2");
@@ -172,20 +164,18 @@ public class DeviceWizard extends JFrame implements ActionListener,ITechnicalStr
 		jp1.add(jcboxSynchronized, "0,12");
 		jp1.add(jcbSynchronized, "1,12");
 		double size2[][] = { { 0.99 }, {
-			20, 20, 20, 20, 20, 20, 20, 20, 20, 20 }
+			20, 20, 20, 20, 20, 20, 20 }
 		};
 		jp2 = new JPanel();
 		jp2.setLayout(new TableLayout(size2));
-		jp2.setBorder(BorderFactory.createEmptyBorder(0, 15, 25, 15));
-		jp2.add(jrbFullSynchro, "0,1");
-		jp2.add(jrbPartialSynchro, "0,3");
+		jp2.setBorder(BorderFactory.createEmptyBorder(0, 15, 0, 15));
+		jp2.add(jrbBidirSynchro, "0,1");
+		jp2.add(jrbUnidirSynchro, "0,3");
 		jp2.add(jcb1, "0,5");
-		jp2.add(jcb2, "0,7");
-		jp2.add(jcb3, "0,9");
 		if (jcbSynchronized.getItemCount()==0){
 			jcboxSynchronized.setEnabled(false);
 			jcbSynchronized.setEnabled(false);
-			jrbFullSynchro.setEnabled(false);
+			jrbBidirSynchro.setEnabled(false);
 		}
 		
 		//buttons
@@ -214,8 +204,11 @@ public class DeviceWizard extends JFrame implements ActionListener,ITechnicalStr
 		jcbRefresh.setSelected(true);
 		jcbAutoRefresh.setEnabled(false);
 		jcbAutoMount.setSelected(true);
-		jrbFullSynchro.setSelected(true);//default synchro mode
-		jrbFullSynchro.setEnabled(false);
+		jrbBidirSynchro.setSelected(true);//default synchro mode
+		jrbBidirSynchro.setEnabled(false);
+		jcb1.setEnabled(false);
+		jcb1.setSelected(false);
+		
 	}
 	
 	/**
@@ -243,33 +236,26 @@ public class DeviceWizard extends JFrame implements ActionListener,ITechnicalStr
 		if (jcbSynchronized.getItemCount()==0){
 			jcboxSynchronized.setEnabled(false);
 			jcbSynchronized.setEnabled(false);
-			jrbFullSynchro.setEnabled(false);
+			jrbBidirSynchro.setEnabled(false);
+			jcb1.setEnabled(false);
 		}
 		String sSynchroSource = device.getProperty(DEVICE_OPTION_SYNCHRO_SOURCE); 
 		if ( sSynchroSource != null){
-			jrbFullSynchro.setEnabled(true);
-			jrbPartialSynchro.setEnabled(true);
+			jrbBidirSynchro.setEnabled(true);
+			jrbUnidirSynchro.setEnabled(true);
+			jcb1.setEnabled(true);
 			jcboxSynchronized.setSelected(true);
 			jcboxSynchronized.setEnabled(true);
 			jcbSynchronized.setEnabled(true);
 			jcbSynchronized.setSelectedIndex(DeviceManager.getDevices().indexOf(DeviceManager.getDevice(sSynchroSource)));
-			if (DEVICE_OPTION_SYNCHRO_MODE_FULL.equals(device.getProperty(DEVICE_OPTION_SYNCHRO_MODE))){
-				jrbFullSynchro.setSelected(true);
+			if (DEVICE_OPTION_SYNCHRO_MODE_BI.equals(device.getProperty(DEVICE_OPTION_SYNCHRO_MODE))){
+				jrbBidirSynchro.setSelected(true);
 			}
 			else{
-				jrbPartialSynchro.setSelected(true);
-				if (TRUE.equals(device.getProperty(DEVICE_OPTION_SYNCHRO_OPT1))){
-					jcb1.setSelected(true);
-					jcb1.setEnabled(true);
-				}
-				if (TRUE.equals(device.getProperty(DEVICE_OPTION_SYNCHRO_OPT2))){
-					jcb2.setSelected(true);
-					jcb2.setEnabled(true);
-				}	
-				if (TRUE.equals(device.getProperty(DEVICE_OPTION_SYNCHRO_OPT3))){
-					jcb3.setSelected(true);
-					jcb3.setEnabled(true);
-				}	
+				jrbUnidirSynchro.setSelected(true);
+			}
+			if (TRUE.equals(device.getProperty(DEVICE_OPTION_SYNCHRO_OPT1))){
+				jcb1.setSelected(true);
 			}
 		}
 	}
@@ -291,45 +277,16 @@ public class DeviceWizard extends JFrame implements ActionListener,ITechnicalStr
 		} else if (e.getSource() == jcboxSynchronized) {
 			if (jcboxSynchronized.isSelected()) {
 				jcbSynchronized.setEnabled(true);
-				jrbFullSynchro.setEnabled(true);
-				jrbPartialSynchro.setEnabled(true);
+				jrbBidirSynchro.setEnabled(true);
+				jrbUnidirSynchro.setEnabled(true);
+				jcb1.setEnabled(true);
 			} else {
 				jcbSynchronized.setEnabled(false);
-				jrbFullSynchro.setEnabled(false);
-				jrbFullSynchro.setSelected(true);
-				jrbPartialSynchro.setEnabled(false);
-				jrbFullSynchro.setSelected(false);
+				jrbBidirSynchro.setEnabled(false);
+				jrbUnidirSynchro.setEnabled(false);
 				jcb1.setEnabled(false);
-				jcb1.setSelected(false);
-				jcb2.setEnabled(false);
-				jcb2.setSelected(false);
-				jcb3.setEnabled(false);
-				jcb3.setSelected(false);
 			}
-		} else if (e.getSource() == jrbFullSynchro) {
-			if (jrbFullSynchro.isSelected()) {
-				jcb1.setEnabled(false);
-				jcb1.setSelected(false);
-				jcb2.setEnabled(false);
-				jcb2.setSelected(false);
-				jcb3.setEnabled(false);
-				jcb3.setSelected(false);
-			}
-		}
-		else if (e.getSource() == jrbPartialSynchro) {
-			if (jrbPartialSynchro.isSelected()) {
-				jcb1.setEnabled(true);
-				jcb2.setEnabled(true);
-				jcb3.setEnabled(true);
-			} else {
-				jcb1.setEnabled(false);
-				jcb1.setSelected(false);
-				jcb2.setEnabled(false);
-				jcb2.setSelected(false);
-				jcb3.setEnabled(false);
-				jcb3.setSelected(false);
-			}
-		}
+		} 
 		else if (e.getSource() == jbOk){
 			if (bNew){
 				device = DeviceManager.registerDevice(jtfName.getText(),jcbType.getSelectedIndex(),jtfUrl.getText(),jtfMountPoint.getText());
@@ -349,36 +306,22 @@ public class DeviceWizard extends JFrame implements ActionListener,ITechnicalStr
 			device.setProperty(DEVICE_OPTION_AUTO_REFRESH,Boolean.toString(jcbAutoRefresh.isSelected()));
 			if (jcbSynchronized.isEnabled() && jcbSynchronized.getSelectedItem() != null){
 				device.setProperty(DEVICE_OPTION_SYNCHRO_SOURCE,((Device)DeviceManager.getDevices().get(jcbSynchronized.getSelectedIndex())).getId());
-				if (jrbFullSynchro.isSelected()){
-					device.setProperty(DEVICE_OPTION_SYNCHRO_MODE,DEVICE_OPTION_SYNCHRO_MODE_FULL);
+				if (jrbBidirSynchro.isSelected()){
+					device.setProperty(DEVICE_OPTION_SYNCHRO_MODE,DEVICE_OPTION_SYNCHRO_MODE_BI);
 				}
 				else{
-					device.setProperty(DEVICE_OPTION_SYNCHRO_MODE,DEVICE_OPTION_SYNCHRO_MODE_PARTIAL);
+					device.setProperty(DEVICE_OPTION_SYNCHRO_MODE,DEVICE_OPTION_SYNCHRO_MODE_UNI);
 					if (jcb1.isSelected()){
 						device.setProperty(DEVICE_OPTION_SYNCHRO_OPT1,TRUE);
 					}
 					else{
 						device.setProperty(DEVICE_OPTION_SYNCHRO_OPT1,FALSE);
 					}
-					if (jcb2.isSelected()){
-						device.setProperty(DEVICE_OPTION_SYNCHRO_OPT2,TRUE);
-					}
-					else{
-						device.setProperty(DEVICE_OPTION_SYNCHRO_OPT2,FALSE);
-					}
-					if (jcb3.isSelected()){
-						device.setProperty(DEVICE_OPTION_SYNCHRO_OPT3,TRUE);
-					}
-					else{
-						device.setProperty(DEVICE_OPTION_SYNCHRO_OPT3,FALSE);
-					}
 				}
 			}
 			else{  //no synchro
 				device.removeProperty(DEVICE_OPTION_SYNCHRO_MODE);
 				device.removeProperty(DEVICE_OPTION_SYNCHRO_OPT1);
-				device.removeProperty(DEVICE_OPTION_SYNCHRO_OPT2);
-				device.removeProperty(DEVICE_OPTION_SYNCHRO_OPT3);
 				device.removeProperty(DEVICE_OPTION_SYNCHRO_SOURCE);
 			}
 			if (jcbRefresh.isSelected()){

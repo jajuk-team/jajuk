@@ -222,6 +222,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 					//notify views to refresh
 					ObservationManager.notify(EVENT_DEVICE_REFRESH);
 				}
+				notify();
 			}
 		}
 		.start();
@@ -375,7 +376,27 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	 * Synchronize
 	 *
 	 */
-	public void synchronize(){
+	public synchronized void synchronize(){
+		//check this device is synchronized
+		String sIdSrc = getProperty(DEVICE_OPTION_SYNCHRO_SOURCE); 
+		if ( sIdSrc == null){
+			return;
+		}
+		//force a refresh of this device and src device before any sync
+		refresh();
+		try{
+			wait();
+		}
+		catch(InterruptedException ie){
+			ie.printStackTrace();
+		}
+		Messages.showInfoMessage("maintenant!");
+		Device dSrc = DeviceManager.getDevice(sIdSrc);
+		dSrc.refresh();
+		synchronized(bLock){}; //wait devices refresh is over
+		//in both cases ( bi or uni-directional ), copy all new files from source to this device
+		
+	
 	}
 	
 	/**

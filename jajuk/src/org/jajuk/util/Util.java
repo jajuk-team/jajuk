@@ -20,14 +20,17 @@
 package org.jajuk.util;
 
 import java.awt.Cursor;
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.RandomAccessFile;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -466,14 +469,15 @@ public class Util implements ITechnicalStrings {
     public static String getFileChecksum(File fio ){
     	String sOut = "";
     	try{
-    		char[] c = new char[10];
-    		BufferedReader br = new BufferedReader(new FileReader(fio));
-    		br.read(c,(int)(fio.length()/2),10);
-    		br.close();
-    		sOut = new String(c);
+    		byte[] bytes = new byte[10];
+    		RandomAccessFile raf = new RandomAccessFile(fio,"r");
+    		raf.seek(fio.length()/2);
+    		raf.read(bytes,0,10);
+    		raf.close();
+    		sOut = new String(bytes);
     	}
     	catch(Exception e){
-    		Log.error(e);	
+    		Log.error("000",fio.getAbsolutePath(),e);	
     	}
     	return sOut;
     }

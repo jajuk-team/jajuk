@@ -88,6 +88,9 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 	/** Files selection*/
 	ArrayList alFiles;
 	
+	/** Directories selection*/
+	ArrayList alDirs;
+	
 	/** Current selection */
 	TreePath[] paths;
 	
@@ -207,10 +210,8 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 		jmiDirPlayRepeat = new JMenuItem("Play repeat");
 		jmiDirPlayRepeat.addActionListener(this);
 		jmiDirDesynchro = new JMenuItem("Desynchronize");
-		jmiDirDesynchro.setEnabled(false);
 		jmiDirDesynchro.addActionListener(this);
 		jmiDirResynchro = new JMenuItem("Resynchronize");
-		jmiDirResynchro.setEnabled(false);
 		jmiDirResynchro.addActionListener(this);
 		jmiDirCreatePlaylist = new JMenuItem("Create playlist");
 		jmiDirCreatePlaylist.setEnabled(false);
@@ -241,6 +242,7 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 		jmenuDir.add(jmiDirPlayShuffle);
 		jmenuDir.add(jmiDirPlayRepeat);
 		jmenuDir.add(jmiDirDesynchro);
+		jmenuDir.add(jmiDirResynchro);
 		jmenuDir.add(jmiDirCreatePlaylist);
 		jmenuDir.add(jmiDirCopy);
 		jmenuDir.add(jmiDirCut);
@@ -267,7 +269,6 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 		jmiDevRefresh = new JMenuItem("Refresh");
 		jmiDevRefresh.addActionListener(this);
 		jmiDevSynchronize = new JMenuItem("Synchronize");
-		jmiDevSynchronize.setEnabled(false);
 		jmiDevSynchronize.addActionListener(this);
 		jmiDevTest = new JMenuItem("Test");
 		jmiDevTest.addActionListener(this);
@@ -404,7 +405,17 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 					}
 				}
 				else if (value instanceof DirectoryNode){
-					setIcon(Util.getIcon(ICON_DIRECTORY));
+					Directory dir = ((DirectoryNode)value).getDirectory();
+					String synchro = dir.getProperty(DIRECTORY_OPTION_SYNCHRO_MODE);
+					if ( dir.getDevice().getProperty(DEVICE_OPTION_SYNCHRO_SOURCE) == null){ //if the device is not synchronized
+						synchro = null;
+					}
+					if ( synchro == null || "y".equals(synchro)){  //means this device is not synchronized
+						setIcon(Util.getIcon(ICON_DIRECTORY_SYNCHRO));
+					}
+					else{
+						setIcon(Util.getIcon(ICON_DIRECTORY_DESYNCHRO));
+					}
 				}
 				return this;
 			}
@@ -498,6 +509,7 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 					//TODO TBI accept playlists
 					paths = jtree.getSelectionModel().getSelectionPaths();
 					getInstance().alFiles = new ArrayList(100);
+					getInstance().alDirs = new ArrayList(10);
 					//test mix between types ( not allowed )
 					String sClass = paths[0].getLastPathComponent().getClass().toString();
 					for (int i=0;i<paths.length;i++){
@@ -523,6 +535,10 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 									}
 								}
 							}
+							else if (node instanceof DirectoryNode){
+								Directory dir = ((DirectoryNode)node).getDirectory();
+								getInstance().alDirs.add(dir);
+							}
 						}
 					}
 					//display menus according node type
@@ -533,6 +549,16 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 						jmenuDir.show(jtree,e.getX(),e.getY());
 					}
 					else if (paths[0].getLastPathComponent() instanceof DeviceNode){
+						if ( paths.length>1){ //operations on devices are mono-target
+							return;
+						}
+						Device device =  ((DeviceNode)paths[0].getLastPathComponent()).getDevice();	
+						if ( device.getProperty(DEVICE_OPTION_SYNCHRO_SOURCE) == null){ //if the device is not synchronized
+							jmiDevSynchronize.setEnabled(false);
+						}
+						else{
+							jmiDevSynchronize.setEnabled(true);
+						}
 						jmenuDev.show(jtree,e.getX(),e.getY()); 
 					}
 				}
@@ -607,13 +633,30 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 			}
 		}
 		else if ( e.getSource() == jmiDevRefresh){
-			for (int i=0;i<paths.length;i++){
-				Device device = ((DeviceNode)(paths[i].getLastPathComponent())).getDevice();
-				device.refresh();
-				ObservationManager.notify(EVENT_DEVICE_REFRESH);
+			Device device = ((DeviceNode)(paths[0].getLastPathComponent())).getDevice();
+			device.refresh();
+			ObservationManager.notify(EVENT_DEVICE_REFRESH);
+		}
+		else if ( e.getSource() == jmiDevSynchronize){
+			Device device = ((DeviceNode)(paths[0].getLastPathComponent())).getDevice();
+			device.synchronize();
+			ObservationManager.notify(EVENT_DEVICE_REFRESH);
+		}
+		else if ( e.getSource() == jmiDirDesynchro){
+			Iterator it = alDirs.iterator();  //iterate on selected dirs and childs recursively
+			while ( it.hasNext()){
+				Directory dir = (Directory)it.next();
+				dir.removeProperty(DIRECTORY_OPTION_SYNCHRO_MODE);
+				dir.setProperty(DIRECTORY_OPTION_SYNCHRO_MODE,"n");
 			}
 		}
-		
+		else if ( e.getSource() == jmiDirResynchro){
+			Iterator it = alDirs.iterator();  //iterate on selected dirs and childs recursively
+			while ( it.hasNext()){
+				Directory dir = (Directory)it.next();
+				dir.removeProperty(DIRECTORY_OPTION_SYNCHRO_MODE);
+			}
+		}
 	}
 
 	/* (non-Javadoc)

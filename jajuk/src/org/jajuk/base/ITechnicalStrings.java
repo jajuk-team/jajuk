@@ -19,8 +19,6 @@
  */
 package org.jajuk.base;
 
-import org.jajuk.Main;
-import org.jajuk.util.Util;
 
 /**
  *  Contains all technical/ non-translatable strings
@@ -37,8 +35,8 @@ public interface ITechnicalStrings {
 	public static final String ABOUT = "<html>Jajuk version "+JAJUK_VERSION+"</html>";
 	
 	// directory path
-	//public static final String PATH_CURRENT_JAR = "file:"+System.getProperty("user.dir")+"/jajuk.jar";
-	public static final String PATH_CURRENT_JAR = Util.getJarLocation(Main.class).toString();
+	public static final String PATH_CURRENT_JAR = "file:"+System.getProperty("user.dir")+"/jajuk.jar";
+	//public static final String PATH_CURRENT_JAR = Util.getJarLocation(Main.class).toString();
 	public static final String PATH_ICONS = "jar:"+PATH_CURRENT_JAR+"!/org/jajuk/icons/";
 	public static final String PATH_IMAGES = "jar:"+PATH_CURRENT_JAR+"!/org/jajuk/images/";
 	public static final String PATH_RELATIVE_DOCS = "docs/";
@@ -110,7 +108,8 @@ public interface ITechnicalStrings {
 	public static final String ICON_OK =  PATH_ICONS + "22x22/ok.png";
 	public static final String ICON_KO =  PATH_ICONS + "22x22/ko.png";
 	public static final String ICON_FILE =  PATH_ICONS + "16x16/track.png";
-	public static final String ICON_DIRECTORY =  PATH_ICONS + "16x16/fileopen.png";
+	public static final String ICON_DIRECTORY_SYNCHRO =  PATH_ICONS + "16x16/dir_synchro.png";
+	public static final String ICON_DIRECTORY_DESYNCHRO =  PATH_ICONS + "16x16/dir_desynchro.png";
 	public static final String ICON_PLAYLIST_FILE =  PATH_ICONS + "16x16/playlist.png";
 	public static final String ICON_STYLE =  PATH_ICONS + "16x16/style.png";
 	public static final String ICON_AUTHOR =  PATH_ICONS + "16x16/author.png";
@@ -172,12 +171,10 @@ public interface ITechnicalStrings {
 	public static final String DEVICE_OPTION_AUTO_MOUNT = "auto_mount";
 	public static final String DEVICE_OPTION_SYNCHRO_SOURCE = "synchro_source";
 	public static final String DEVICE_OPTION_SYNCHRO_MODE = "synchro_mode";
-	public static final String DEVICE_OPTION_SYNCHRO_MODE_FULL = "full";
-	public static final String DEVICE_OPTION_SYNCHRO_MODE_PARTIAL = "partial";
+	public static final String DEVICE_OPTION_SYNCHRO_MODE_BI = "bi";
+	public static final String DEVICE_OPTION_SYNCHRO_MODE_UNI = "uni";
 	public static final String DEVICE_OPTION_SYNCHRO_OPT1 = "opt1";
-	public static final String DEVICE_OPTION_SYNCHRO_OPT2 = "opt2";
-	public static final String DEVICE_OPTION_SYNCHRO_OPT3 = "opt3";
-	
+	public static final String DIRECTORY_OPTION_SYNCHRO_MODE = "sync";  //can be 'y' or 'n'
 	
 	//perspectives
 	public static final String PERSPECTIVE_NAME_PHYSICAL = "org.jajuk.ui.perspectives.PhysicalPerspective";
