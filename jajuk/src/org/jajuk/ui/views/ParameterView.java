@@ -318,7 +318,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jcbDefaultActionDrop = new JCheckBox(Messages.getString("ParameterView.181")); //$NON-NLS-1$
 		jcbDefaultActionDrop.setToolTipText(Messages.getString("ParameterView.182")); //$NON-NLS-1$
 		JPanel jpCombos = new JPanel();
-		double sizeCombos[][] = {{0.50,0.50},
+		double sizeCombos[][] = {{0.50,0.45},
 				{20,iYSeparator,20,iYSeparator,20}};
 		jpCombos.setLayout(new TableLayout(sizeCombos));
 		jlLanguage = new JLabel(Messages.getString("ParameterView.38")); //$NON-NLS-1$
@@ -353,7 +353,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jpCombos.add(jcbLogLevel,"1,4"); //$NON-NLS-1$
 		//Intro
 		JPanel jp = new JPanel();
-		double sizeIntro[][] = {{0.50,0.50},
+		double sizeIntro[][] = {{0.50,0.45},
 				{20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator}};
 		jp.setLayout(new TableLayout(sizeIntro));
 		//intro position
