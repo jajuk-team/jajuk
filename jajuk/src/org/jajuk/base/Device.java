@@ -119,7 +119,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 		sb.append("' type='"); //$NON-NLS-1$
 		sb.append(getDeviceType());
 		sb.append("' url='"); //$NON-NLS-1$
-		sb.append(sUrl);
+		sb.append(Util.formatXML(sUrl));
 		sb.append("' mount_point='"); //$NON-NLS-1$
 		sb.append(getMountPoint()).append("' "); //$NON-NLS-1$
 		sb.append(getPropertiesXml());
