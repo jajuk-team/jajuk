@@ -86,11 +86,11 @@ public class JajukWindow extends JFrame implements ITechnicalStrings,ComponentLi
 		ObservationManager.register(EVENT_ZERO,this);
 		
 		addWindowListener(new WindowAdapter() {
-			public void windowIconified(WindowEvent arg0) {
-				//systray, only for window for now
-				if (Util.isUnderWindows()){
-					setVisible(false);
-				}
+            public void windowDeiconified(WindowEvent arg0) {
+        	    setVisible(true);
+    	    }
+        	public void windowIconified(WindowEvent arg0) {
+				    setVisible(false);
 			}
 			public void windowClosing(WindowEvent we) {
 				Main.exit(0);
@@ -172,10 +172,21 @@ public class JajukWindow extends JFrame implements ITechnicalStrings,ComponentLi
 	 * @param visible The bVisible to set.
 	 */
 	public void setVisible(boolean visible) {
-		bVisible = visible;
-		super.setVisible(visible);
+		//store state
+	    bVisible = visible;
+		//show 
 		if (visible){
 			setState(Frame.NORMAL);
+			super.setVisible(true);
+		}
+		//hide
+		else{
+		    if (!Main.isForcedTaskBar()){  
+		        super.setVisible(false);
+		    }
+		    else{
+		        setState(Frame.ICONIFIED);//if the foced taskbar option is set, never hide
+		    }
 		}
 	}
 }

@@ -58,6 +58,7 @@ import org.jajuk.ui.ObservationManager;
 import org.jajuk.ui.PerspectiveBarJPanel;
 import org.jajuk.ui.SplashScreen;
 import org.jajuk.ui.perspectives.PerspectiveManager;
+import org.jajuk.ui.tray.JajukSystray;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
@@ -92,7 +93,7 @@ public class Main implements ITechnicalStrings {
 	/**Exit code*/
 	private static int iExitCode = 0;
 	/**Debug mode*/
-	private static boolean bDebugMode;
+	private static boolean bDebugMode = false;
 	/**Exiting flag*/
 	public static boolean bExiting = false;
 	/**Perspective release flag used in upgrade method**/
@@ -101,6 +102,12 @@ public class Main implements ITechnicalStrings {
 	private static byte[] bLock = new byte[0];
 	/**List of auto-refreshed devices */
 	private static ArrayList alAutoRefreshedDevices = new ArrayList(4);
+	/**Systray*/
+	private static JajukSystray jsystray;
+	/**UI lauched flag*/
+	private static boolean bUILauched = false;
+	/**Force taskbar presence flag to ensure jajuk is always visible even when systray disapeares*/
+	private static boolean bForceTaskBar = true;
 	
 	/**
 	 * Main entry
@@ -109,8 +116,17 @@ public class Main implements ITechnicalStrings {
 	public static void main(final String[] args){
 		//non ui init
 		try{
-			//set exec location path ( normal or debug )
-			bDebugMode = (args.length>0 && args[0].equals("-debug")); //$NON-NLS-1$
+		    //set command line options
+		    for (int i=0;i<args.length;i++){
+		        if (args[i].equals("-debug")){//$NON-NLS-1$
+		            bDebugMode = true;
+		        }
+		        if (args[i].equals("-notaskbar")){//$NON-NLS-1$
+		            bForceTaskBar = false;
+		        }
+		    }
+		    
+		    //set exec location path ( normal or debug )
 			Util.setExecLocation(bDebugMode);//$NON-NLS-1$ 
 			
 			//check for jajuk home directory presence, needed by log
@@ -153,7 +169,7 @@ public class Main implements ITechnicalStrings {
 			
 			//Load user configuration
 			org.jajuk.util.ConfigurationManager.load();
-			
+		
 			//Set actual log verbosity
 			Log.setVerbosity(Integer.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_LOG_LEVEL)));
 
@@ -217,110 +233,22 @@ public class Main implements ITechnicalStrings {
 					}
 				}
 			});
-			
+					
 			//Mount and refresh devices
 			mountAndRefresh();
 			
 			//Launch startup track if any
-			launchInitialTrack();
+			launchInitialTrack();        
 			
-			//ui init 
-			SwingUtilities.invokeAndWait(new Runnable() { //use invokeAndWait to get a better progressive ui display
-			    public void run(){
-					try {
-						//starts ui
-						jw = new JajukWindow();
-												
-						//Creates the panel
-						jpFrame = (JPanel)jw.getContentPane();
-						jpFrame.setOpaque(true);
-						jpFrame.setLayout(new BorderLayout());
-						
-						//Set menu bar to the frame
-						jw.setJMenuBar(JajukJMenuBar.getInstance());
-			
-						//create the command bar
-						command = CommandJPanel.getInstance();
-						
-						// Create the information bar panel
-						information = InformationJPanel.getInstance();
-						
-						//Main panel
-						jpDesktop = new JPanel();
-						jpDesktop.setOpaque(true);
-						jpDesktop.setBorder(BorderFactory.createEtchedBorder());
-						jpDesktop.setLayout(new BorderLayout());
-						
-						//Add static panels
-						jpFrame.add(command, BorderLayout.NORTH);
-						jpFrame.add(information, BorderLayout.SOUTH);
-						jpFrame.add(jpDesktop, BorderLayout.CENTER);
-						JPanel jp = new JPanel(); //we use an empty panel to take west place before actual panel ( perspective bar ). just for a better displaying
-						jp.setPreferredSize(new Dimension(3000,3000));//make sure the temp panel makes screen maximalized
-						jpFrame.add(jp, BorderLayout.WEST);
-						
-						//display window
-						jw.pack();
-						jw.setExtendedState(Frame.MAXIMIZED_BOTH);  //maximalize
-						
-						//show window if set in the systray conf
-						if ( ConfigurationManager.getBoolean(CONF_SHOW_AT_STARTUP) || !Util.isUnderWindows()){
-							jw.setVisible(true); //show main window
-							sc.toFront();
-						}
-						//Create the perspective manager 
-						File fPerspectives = new File(FILE_PERSPECTIVES_CONF); //check for perspectives.xml file
-						if (!fPerspectives.exists() || !bPerspectiveReleaseOK) {  //if perspective file doesn't exist or is an old version
-							// Register default perspective configuration (need locale, so cannot be done in initCheckup() )
-							PerspectiveManager.registerDefaultPerspectives();
-						}
-						else{
-								PerspectiveManager.load();
-						}
-						// Create the perspective tool bar panel
-						perspectiveBar = PerspectiveBarJPanel.getInstance();
-						jpFrame.remove(jp);
-						jpFrame.add(perspectiveBar, BorderLayout.WEST);
-						
-					} catch (Exception e) { //last chance to catch any error for logging purpose
-						e.printStackTrace();
-						Log.error("106", e); //$NON-NLS-1$
-						exit(1);
-					}
-				}
-			});
-			
-			Thread.sleep(1000); //wait a while to make sure painting is over to avoid some hugly blinking
-			
-			SwingUtilities.invokeLater(new Runnable() {
-				public void run(){
-					try {
-						//Initialize perspective manager and load all views
-						PerspectiveManager.init();
-						
-						//Display info message if first session
-						if (TRUE.equals(ConfigurationManager.getProperty(CONF_FIRST_CON))){
-							ConfigurationManager.setProperty(CONF_FIRST_CON,FALSE);
-							Messages.showInfoMessage(Messages.getString("Main.12")); //$NON-NLS-1$
-							//set parameter perspective
-							PerspectiveManager.setCurrentPerspective(PERSPECTIVE_NAME_CONFIGURATION);
-							//show device creation wizard
-							DeviceWizard dw = new DeviceWizard();
-							dw.updateWidgetsDefault();
-							dw.pack();
-							dw.setVisible(true);
-						}
-						
-						//Close splash screen
-						sc.dispose();
-				
-					} catch (Exception e) { //last chance to catch any error for logging purpose
-						e.printStackTrace();
-						Log.error("106", e); //$NON-NLS-1$
-						exit(1);
-					}
-				}
-			});
+			//lauch systray if needed, only for linux and windows, not mac for the moment
+		    if (Util.isUnderLinux() || Util.isUnderWindows()){
+		        jsystray = JajukSystray.getInstance();
+		    }
+		    
+			//show window if set in the systray conf
+			if ( ConfigurationManager.getBoolean(CONF_SHOW_AT_STARTUP) ){
+			    lauchUI();
+			}
 		} catch (JajukException je) { //last chance to catch any error for logging purpose
 			Log.error(je);
 			if ( je.getCode().equals("005")){ //$NON-NLS-1$
@@ -331,6 +259,10 @@ public class Main implements ITechnicalStrings {
 			e.printStackTrace();
 			Log.error("106", e); //$NON-NLS-1$
 			exit(1);
+		} catch (Error error) { //last chance to catch any error for logging purpose
+		    error.printStackTrace();
+		    Log.error("106", error); //$NON-NLS-1$
+		    exit(1);
 		}
 		finally{  //make sure to close splashscreen in all cases
 		    if (sc != null){
@@ -458,7 +390,7 @@ public class Main implements ITechnicalStrings {
 			}
 		}
 		//hide systray
-		if (jw!=null) jw.closeSystray();
+		if (jsystray != null) jsystray.closeSystray();
 		//display a message
 		Log.debug("Exit with code: "+iExitCode); //$NON-NLS-1$
 		System.exit(iExitCode);
@@ -480,7 +412,7 @@ public class Main implements ITechnicalStrings {
 				}
 				else {  //last file from begining or last file keep position
 				    if (ConfigurationManager.getBoolean(CONF_STATE_WAS_PLAYING) && History.getInstance().getHistory().size()>0){  //make sure user didn't exit jajuk in the stopped state and that history is not void
-				        fileToPlay = FileManager.getFile(History.getInstance().getLastFile()); //last file can be null (return null in this case)
+				        fileToPlay = FileManager.getFile(History.getInstance().getLastFile());
 				    }
 				    else{ //do not try to lauch anything, stay in stop state
 				        return;
@@ -599,5 +531,124 @@ public class Main implements ITechnicalStrings {
      */
     public static boolean isExiting() {
         return bExiting;
+    }
+    
+    /**
+     * Lauch UI
+     *
+     */
+    public static void lauchUI() throws Exception{
+        if (bUILauched){
+            return;
+        }
+        //ui init 
+		SwingUtilities.invokeAndWait(new Runnable() { //use invokeAndWait to get a better progressive ui display
+		    public void run(){
+				try {
+					//starts ui
+					jw = new JajukWindow();
+					
+					//Creates the panel
+					jpFrame = (JPanel)jw.getContentPane();
+					jpFrame.setOpaque(true);
+					jpFrame.setLayout(new BorderLayout());
+					
+					//Set menu bar to the frame
+					jw.setJMenuBar(JajukJMenuBar.getInstance());
+		
+					//create the command bar
+					command = CommandJPanel.getInstance();
+					
+					// Create the information bar panel
+					information = InformationJPanel.getInstance();
+					
+					//Main panel
+					jpDesktop = new JPanel();
+					jpDesktop.setOpaque(true);
+					jpDesktop.setBorder(BorderFactory.createEtchedBorder());
+					jpDesktop.setLayout(new BorderLayout());
+					
+					//Add static panels
+					jpFrame.add(command, BorderLayout.NORTH);
+					jpFrame.add(information, BorderLayout.SOUTH);
+					jpFrame.add(jpDesktop, BorderLayout.CENTER);
+					JPanel jp = new JPanel(); //we use an empty panel to take west place before actual panel ( perspective bar ). just for a better displaying
+					jp.setPreferredSize(new Dimension(3000,3000));//make sure the temp panel makes screen maximalized
+					jpFrame.add(jp, BorderLayout.WEST);
+					
+					//display window
+					jw.pack();
+					jw.setExtendedState(Frame.MAXIMIZED_BOTH);  //maximalize
+					jw.setVisible(true); //show main window
+					sc.toFront();
+				
+					//Create the perspective manager 
+					File fPerspectives = new File(FILE_PERSPECTIVES_CONF); //check for perspectives.xml file
+					if (!fPerspectives.exists() || !bPerspectiveReleaseOK) {  //if perspective file doesn't exist or is an old version
+						// Register default perspective configuration (need locale, so cannot be done in initCheckup() )
+						PerspectiveManager.registerDefaultPerspectives();
+					}
+					else{
+							PerspectiveManager.load();
+					}
+					// Create the perspective tool bar panel
+					perspectiveBar = PerspectiveBarJPanel.getInstance();
+					jpFrame.remove(jp);
+					jpFrame.add(perspectiveBar, BorderLayout.WEST);
+					
+				} catch (Exception e) { //last chance to catch any error for logging purpose
+					e.printStackTrace();
+					Log.error("106", e); //$NON-NLS-1$
+					exit(1);
+				}
+			}
+		});
+		
+		Thread.sleep(1000); //wait a while to make sure painting is over to avoid some hugly blinking
+		
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run(){
+				try {
+					//Initialize perspective manager and load all views
+					PerspectiveManager.init();
+		
+					//Display info message if first session
+					if (TRUE.equals(ConfigurationManager.getProperty(CONF_FIRST_CON))){
+						ConfigurationManager.setProperty(CONF_FIRST_CON,FALSE);
+						Messages.showInfoMessage(Messages.getString("Main.12")); //$NON-NLS-1$
+						//set parameter perspective
+						PerspectiveManager.setCurrentPerspective(PERSPECTIVE_NAME_CONFIGURATION);
+						//show device creation wizard
+						DeviceWizard dw = new DeviceWizard();
+						dw.updateWidgetsDefault();
+						dw.pack();
+						dw.setVisible(true);
+					}
+					
+					//Close splash screen
+					sc.dispose();
+			
+				} catch (Exception e) { //last chance to catch any error for logging purpose
+					e.printStackTrace();
+					Log.error("106", e); //$NON-NLS-1$
+					exit(1);
+				}
+			}
+		});
+        bUILauched = true;
+    }
+    
+    /**
+     * @return Returns the bUILauched.
+     */
+    public static boolean isUILauched() {
+        return bUILauched;
+    }
+    
+    /**
+     * @return Returns the bForceTaskBar.
+     */
+    public static boolean isForcedTaskBar() {
+        return bForceTaskBar;
     }
 }

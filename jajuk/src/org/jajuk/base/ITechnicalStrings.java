@@ -39,7 +39,7 @@ public interface ITechnicalStrings {
 	public static final int BORDER = 4;
 		
 	// Jajuk version
-	public static final String JAJUK_VERSION = "0.3";
+	public static final String JAJUK_VERSION = "0.3 rc10";
 	
 	//About 
 	public static final String ABOUT = "<html>Jajuk version "+JAJUK_VERSION+"</html>";
@@ -52,6 +52,7 @@ public interface ITechnicalStrings {
 			
 	// icons
 	public static final String ICON_LOGO = PATH_ICONS + "64x64/jajuk-logo.png";
+	public static final String ICON_LOGO_TRAY = PATH_ICONS + "22x22/jajuk-logo.png";
 	public static final String ICON_LOGO_ICO = PATH_IMAGES + "jajuk-logo.ico";
 	public static final String ICON_REPEAT_ON = PATH_ICONS + "16x16/repeat.png";
 	public static final String ICON_SHUFFLE_ON = PATH_ICONS + "16x16/shuffle.png"; 

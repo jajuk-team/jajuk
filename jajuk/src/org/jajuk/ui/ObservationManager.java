@@ -21,6 +21,7 @@
 package org.jajuk.ui;
 
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Properties;
@@ -96,14 +97,22 @@ public class ObservationManager implements ITechnicalStrings{
 			synchronized(alComponents){
 				Iterator it = alComponents.iterator();  
 				while (it.hasNext()){
-					Observer obs = (Observer)it.next();
-					if (obs != null){
-						try{
-							obs.update(subject);
-						}
-						catch(Exception e){
-							Log.error(e);
-						}
+				    Observer obs = null;
+				    try{
+					    obs = (Observer)it.next();
+					    if (obs != null){
+					        try{
+					            obs.update(subject);
+					        }
+					        catch(Exception e){
+					            Log.error(e);
+					        }
+					    }
+					}
+					//Concurrent exceptions can occur for unknown reasons 
+					catch(ConcurrentModificationException ce){
+					    ce.printStackTrace(); 
+					    Log.debug("Concurrent exception for subject: "+subject+ " on observer: "+obs);//$NON-NLS-1$ //$NON-NLS-2$ 
 					}
 				}
 			}

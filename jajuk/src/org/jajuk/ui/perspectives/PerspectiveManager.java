@@ -151,6 +151,10 @@ public class PerspectiveManager  implements ITechnicalStrings {
                  */
                 public void endDocument() {
                     Log.debug("Perspective file parsing done."); //$NON-NLS-1$
+                    //complementary checkup
+                    if (alNames.size() == 0){ //in some cases of JVM crash, this could be null, so take default perspectives
+                        PerspectiveManager.registerDefaultPerspectives();  
+                    }
                 }
                 
                 /**
