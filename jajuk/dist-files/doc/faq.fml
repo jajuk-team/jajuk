@@ -59,6 +59,15 @@
       </answer>
     </faq>
       
+    <faq id="collection_corruption">
+     <question>
+        What can I do if my collection file (${user home}/.jajuk/collection.xml file contains the Jajuk index to your music files) is corrupted ? 
+      </question>
+      <answer>
+        <p>Note this is very unlikely to append but in this case, you can avoid to re-create all your devices by renaming the last backup file (collection-backup-${nb}.xml) as collection.xml.</p>
+      </answer>
+    </faq>
+
 	</part>
 
     

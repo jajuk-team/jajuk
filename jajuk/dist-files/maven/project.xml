@@ -21,10 +21,8 @@
  <shortDescription>Advanced music manager</shortDescription>
  
  <description>
-    Jajuk is a music organizer written in Java/Swing. 
-    The main goal of this project is to provide a fully-featured application for advanced users in order to help 
-    them to manage big music collections.
-  </description>
+    Jajuk is a Java music organizer for all platforms. The main goal of this project is to provide a fully-featured application to advanced users with large or scattered music collections. Jajuk supports MP3, OGG Vorbis, AU, AIFF, WAV and SPEEX audio formats.
+ </description>
  
  <url>http://jajuk.sourceforge.net/</url>
  
