@@ -6,6 +6,7 @@
   <property name='distdir' value='${rootdir}/jajuk'/>
   <property name='rpmbuilddir' value='${rootdir}/RPMBUILD/'/>
   <property name='rpmdistdir' value='${rpmbuilddir}/jajuk'/>
+  <property name='finaldistdir' value='${rootdir}/dist'/>
   <property name='libdir' value='lib'/>
   <property name='nativedir' value='native'/>
   <property name='srcdir' value='src'/>
@@ -55,10 +56,16 @@
      	  <include name='icons/**'/>
      	  <include name='images/jajuk-splashscreen.png'/>
      	  <include name='images/jajuk-logo.ico'/>
+     	  <include name='images/jajuk-uninstall.ico'/>
       </fileset>
      </copy>
      <copy todir='${distdir}' >
      	<fileset file='${basedir}/dist-files/icons/64x64/jajuk-logo.png'/>
+     </copy>
+      <!-- Native installer-->
+     <copy todir='${finaldistdir}' >
+     	<fileset file='${basedir}/dist-files/packaging/native_launcher/launcher.ini'/>
+     	<fileset file='${basedir}/dist-files/packaging/native_launcher/jajuk.stm'/>
      </copy>
   </target>
   
@@ -222,7 +229,7 @@
       <target name='izpack' depends='jar,helpsetjar' >
         <echo message='Makes the installer using IzPack'/>
                 <izpack input='/data/java/workspace/jajuk/dist-files/packaging/IzPack/jajuk.izpack'
-        output='/tmp/${distjarname}${version}.jar'
+        output='${finaldistdir}/${distjarname}${version}.jar'
         basedir='/data/java/workspace/jajuk'
         izPackDir='/prog/IzPack'/>
       </target>
