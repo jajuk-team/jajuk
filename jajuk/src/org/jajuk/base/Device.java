@@ -50,6 +50,8 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	int iDeviceType;
 	/**Device url**/
 	private String sUrl;
+	/** IO file for optimizations* */
+	private java.io.File fio;
 	/**Device mount point**/
 	private String sMountPoint;
 	/**Mounted device flag*/
@@ -99,6 +101,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 		this.iDeviceType = iDeviceType;
 		this.sUrl = sUrl;
 		this.sMountPoint = sMountPoint;
+		this.fio = new File(getUrl());
 	}
 	
 	/**
@@ -680,6 +683,44 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	public int compareTo(Object o){
 		Device otherDevice = (Device)o;
 		return  getName().compareToIgnoreCase(otherDevice.getName());
+	}
+	
+	/**
+	 * return child files recursively
+	 * @return child files recursively
+	 */
+	public ArrayList getFilesRecursively() {
+		//looks for the root directory for this device
+		Directory dirRoot = null;
+		ArrayList alDirs = DirectoryManager.getDirectories();
+		Iterator it = alDirs.iterator();
+		while (it.hasNext()){
+			Directory dir = (Directory)it.next();
+			if ( dir.getDevice().equals(this) && dir.getFio().equals(fio)){
+				dirRoot = dir;
+			}
+		}
+		ArrayList alFiles = new ArrayList(100);
+		if (dirRoot != null){
+			alFiles = dirRoot.getFilesRecursively();
+		}
+		return alFiles;
+	}
+	
+	/**Return true if the device can be accessed right now 
+	 * @return true the file can be accessed right now*/
+	public boolean isReady(){
+		if ( this.isMounted() && !this.isRefreshing() && !this.isSynchronizing()){
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * @return Returns the IO file reference to this directory.
+	 */
+	public File getFio() {
+		return fio;
 	}
 	
 }

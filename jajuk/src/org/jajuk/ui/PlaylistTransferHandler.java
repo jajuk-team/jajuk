@@ -40,6 +40,7 @@ import org.jajuk.base.Album;
 import org.jajuk.base.Author;
 import org.jajuk.base.BasicFile;
 import org.jajuk.base.Bookmarks;
+import org.jajuk.base.Device;
 import org.jajuk.base.Directory;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
@@ -178,6 +179,12 @@ public class PlaylistTransferHandler implements DropTargetListener {
 				}
 				else if(oData instanceof Directory){
 					FIFO.getInstance().push(((Directory)oData).getFilesRecursively(),true);
+				}
+				if (oData instanceof Device){
+					Device device = (Device)oData;
+					if (device.isReady()){ //mounted...
+						FIFO.getInstance().push(device.getFilesRecursively(),true);
+					}
 				}
 				else if(oData instanceof Style || oData instanceof Author || oData instanceof Album || oData instanceof Track){
 					if ( alLogicalFiles != null){
