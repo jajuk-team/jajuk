@@ -262,16 +262,26 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 		jtfName.setEnabled(false); //device name cannot be changed
 		jtfUrl.setText(device.getUrl());
 		jtfUrl.setEnabled(false); //device url cannot be changed
+		jbUrl.setEnabled(false);//device url cannot be changed
 		jtfMountPoint.setText(device.getMountPoint());
+		jtfMountPoint.setEnabled(false); //mount point cannot be changed
+		jbUrlMountPoint.setEnabled(false);//mount point cannot be changed
 		jcbRefresh.setEnabled(false); //no instant refresh for updates
 		jcbRefresh.setSelected(false);
+		jcbAutoMount.setSelected(true);
 		if (TRUE.equals(device.getProperty(DEVICE_OPTION_AUTO_MOUNT))){
 			jcbAutoMount.setSelected(true);
 			jcbAutoRefresh.setEnabled(true); //refresh at startup is only if it is auto-mounted
 		}
+		else{
+		    jcbAutoMount.setSelected(false);
+			jcbAutoRefresh.setEnabled(false); //refresh at startup is only if it is auto-mounted
+		}
 		if (TRUE.equals(device.getProperty(DEVICE_OPTION_AUTO_REFRESH))){
-			jcbAutoRefresh.setEnabled(true);
 			jcbAutoRefresh.setSelected(true);
+		}
+		else{
+		    jcbAutoRefresh.setSelected(false);
 		}
 		if (jcbSynchronized.getItemCount()==0){
 			jcboxSynchronized.setEnabled(false);
@@ -341,9 +351,6 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 				    return;
 				}
 				device = DeviceManager.registerDevice(jtfName.getText(),jcbType.getSelectedIndex(),jtfUrl.getText(),jtfMountPoint.getText());
-			}
-			else{
-			    DeviceManager.setMountPoint(device,jtfMountPoint.getText());
 			}
 			device.setProperty(DEVICE_OPTION_AUTO_MOUNT,Boolean.toString(jcbAutoMount.isSelected()));
 			device.setProperty(DEVICE_OPTION_AUTO_REFRESH,Boolean.toString(jcbAutoRefresh.isSelected()));
