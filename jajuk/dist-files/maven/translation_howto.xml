@@ -13,9 +13,7 @@
     				<li>French (fr)</li>
     				<li>German (de)</li>
     				<li>Swedish (sv)</li>
-    				<li>Spanish (sp)</li>
     				<li>Italian (it)</li>
-    				<li>Chinese (zh)</li>
     				<li>Dutch (nl)</li>
     			</ul>
     		</subsection>
@@ -59,9 +57,9 @@
 				ParameterView.74=Password :<br></br>
 				ParameterView.75=Set password access to your box. If no password is set, no one can read from it</span></p>
 				<p>Simply translate each value, Previous example in French:</p>
-				<p><span style="font-family: monospace;">ParameterView.73=Accepter que d'autres utilisateurs lise la musique située sur votre machine<br></br>
+				<p><span style="font-family: monospace;">ParameterView.73=Accepter que d'autres utilisateurs lise la musique situï¿½e sur votre machine<br></br>
 				ParameterView.74=Mot de passe :<br></br>
-				ParameterView.75=Fixez un mot de passe à votre machine. Tant que le mot de passe n'est pas fixé, personne ne peut s'y connecter</span></p>
+				ParameterView.75=Fixez un mot de passe ï¿½ votre machine. Tant que le mot de passe n'est pas fixï¿½, personne ne peut s'y connecter</span></p>
 			</li>
 			
 			<li><p>Translate even lines like <span style="font-family: monospace;">Language_desc_*=*</span> (other languages names) and add a new line with your own language name.</p></li>
