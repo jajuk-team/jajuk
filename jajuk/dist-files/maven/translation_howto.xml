@@ -19,7 +19,7 @@
     		</subsection>
 
    			<subsection name='Target'>
-   			 <p>Anyone can translate Jajuk, no computer science is required.
+   			 <p>Anyone can translate Jajuk, no computer science is required. Note : this is a volontary work.
 				For any question or comments, please send me a mail : <a href="mailto:bertrand@florat.net">
 				bertrand@florat.net</a>. Translate current Jajuk version takes approximately 3 hours.</p>
     		</subsection>
@@ -106,6 +106,7 @@
 				<li><p>Keep all punctuation and specials characters like '[','.' and so on...</p></li>
 				<li><p>Set date format according your locale, ex: DD/MM/YYYY in French, YYYY-MM-DD in English</p></li>
 				<li><p>Try to keep values length near from source ones so labels will not be too long and stay visible.</p></li>
+				<li><p>Use a spelling corrector.</p></li>
 				</ul>
     		</subsection>
     	</section>
