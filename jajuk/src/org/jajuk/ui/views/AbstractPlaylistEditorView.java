@@ -169,9 +169,15 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
             }
             Color color = null; //default background color
             StackItem itemCurrent = FIFO.getInstance().getCurrentItem();
-            if (itemCurrent != null && itemCurrent.equals(item)
-                    && FIFO.getInstance().getIndex() == rowIndex){ //if it is the currently played track, change color
-                color = Color.ORANGE;
+            if (itemCurrent != null  && itemCurrent.equals(item)){ //if it is the currently played track, change color
+                if (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE){ //for queue playlist, only highlight real current track
+                    if ( FIFO.getInstance().getIndex() == rowIndex){
+                        color = Color.ORANGE;
+                    }
+                }
+                else{ //for others, we can't guess whish one to highlight if several times the same EVO
+                    color = Color.ORANGE;    
+                }
             }
             if( item.isPlanned() ){ //it is a planned file
                 bPlanned = true;

@@ -862,7 +862,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 					ConfigurationManager.setProperty(CONF_CONFIRMATIONS_EXIT,Boolean.toString(jcbBeforeExit.isSelected()));
 					ConfigurationManager.setProperty(CONF_CONFIRMATIONS_REMOVE_DEVICE,Boolean.toString(jcbBeforeRemoveDevice.isSelected()));
 					ConfigurationManager.setProperty(CONF_CONFIRMATIONS_DELETE_COVER,Boolean.toString(jcbBeforeDeleteCover.isSelected()));
-					//history
+					//History
 					String sHistoryDuration = jtfHistory.getText();
 					if (!sHistoryDuration.equals("")){ //$NON-NLS-1$
 						ConfigurationManager.setProperty(CONF_HISTORY,sHistoryDuration);
@@ -951,7 +951,6 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 				}
 			}
 		}.start();
-		
 	}
 	
 	/**

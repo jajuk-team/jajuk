@@ -62,12 +62,11 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,Obser
 	 /** Swing Timer to refresh the component*/ 
     private Timer timer = new Timer(JajukTimer.DEFAULT_HEARTBEAT,new ActionListener() {
         public void actionPerformed(ActionEvent e) {
-             update(EVENT_HEART_BEAT);
+           	update(EVENT_HEART_BEAT);
         }
     });
 	
-	
-	/**
+    /**
 	 * Singleton access
 	 * @return
 	 */
@@ -278,7 +277,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,Obser
 	/* (non-Javadoc)
      * @see org.jajuk.ui.Observer#update(java.lang.String)
      */
-	public void update(String subject) {
+	public synchronized void update(String subject) {  //we synchronize this method to make error message is visible all 2 secs
 	    if (EVENT_HEART_BEAT.equals(subject) &&!FIFO.isStopped()){
 	        long length = JajukTimer.getInstance().getCurrentTrackTotalTime(); 
             long lTime = JajukTimer.getInstance().getCurrentTrackEllapsedTime();
@@ -286,7 +285,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,Obser
             int iPos = (length!=0)?(int)(100*lTime/length):0;  //if length=0, pos is always 0 to avoid division by zero
 	        setCurrentStatus(iPos);
 	        String sCurrentTotalMessage =  Util.formatTimeBySec(JajukTimer.getInstance().getTotalTimeToPlay(),false);
-	         setTotalStatusMessage(sCurrentTotalMessage);
+	        setTotalStatusMessage(sCurrentTotalMessage);
 	        setCurrentStatusMessage(Util.formatTimeBySec(lTime,false)+" / "+Util.formatTimeBySec(length,false)); //$NON-NLS-1$);
 	    }
 	    else if (EVENT_ZERO.equals(subject)){
@@ -307,13 +306,13 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,Obser
 	        }
 	    }
 	    else if (EVENT_PLAY_ERROR.equals(subject)){
-	        File fCurrent = (File)ObservationManager.getDetail(EVENT_PLAY_ERROR,DETAIL_CURRENT_FILE);
-	        setMessage(Messages.getString("Error.007")+" : "+fCurrent.getAbsolutePath(),InformationJPanel.ERROR);//$NON-NLS-1$ //$NON-NLS-2$
-	        try {
-                Thread.sleep(2000); //make sure user has time to see this error message
-            } catch (InterruptedException e) {
-                Log.error(e);
-            }
+	    	try{
+	    		File fCurrent = (File)ObservationManager.getDetail(EVENT_PLAY_ERROR,DETAIL_CURRENT_FILE);
+	    		setMessage(Messages.getString("Error.007")+" : "+fCurrent.getAbsolutePath(),InformationJPanel.ERROR);//$NON-NLS-1$ //$NON-NLS-2$
+	    		Thread.sleep(2000); //make sure user has time to see this error message
+	    	} catch (Exception e) {
+	    		Log.error(e);
+	    	}
 	    }
 	}
 	
