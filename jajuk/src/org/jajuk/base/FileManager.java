@@ -102,7 +102,6 @@ public class FileManager implements ITechnicalStrings{
 				it.remove();  //this is the right way to remove entry 
 			}
 		}
-		System.gc(); //force garbage collection after cleanup
 	}
 
 	/** Return all registred files */
@@ -435,7 +434,7 @@ public class FileManager implements ITechnicalStrings{
 	 	Iterator it = hmIdFile.values().iterator();
 	 	while ( it.hasNext()){
 	 		File file = (File)it.next();
-	 		if ( !ConfigurationManager.getBoolean(CONF_OPTIONS_SEARCH_UNMOUNTED) && //if the search in unmounted devices is anabled, take this file
+	 		if ( ConfigurationManager.getBoolean(CONF_OPTIONS_SEARCH_ONLY_MOUNTED) && //if  search in only in mounted devices
 	 		        (!file.getDirectory().getDevice().isMounted() || file.getDirectory().getDevice().isRefreshing())){
 	 			continue;
 	 		}
