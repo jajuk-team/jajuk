@@ -37,6 +37,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
+import javax.swing.Timer;
 import javax.swing.table.AbstractTableModel;
 
 import layout.TableLayout;
@@ -117,6 +118,14 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
     
     /**Columns names table**/
     protected String[] sColName = null;
+   
+    /**Refresh timer*/
+    private Timer timer = new Timer(REFRESH_TIME,new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+            update(EVENT_PLAYLIST_REFRESH);
+        }
+    });
+   
     
     /**Model for table*/
     class PlayListEditorTableModel extends AbstractTableModel {
@@ -163,21 +172,6 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
     }
     
     PlayListEditorTableModel model = new PlayListEditorTableModel();
-    
-    /** Display thread*/
-    Thread tRefresh = new Thread() {
-        public void run() {
-            while (true){
-                try {
-                    Thread.sleep(REFRESH_TIME);
-                } catch (InterruptedException e) {
-                    Log.error(e);
-                }
-                update(EVENT_PLAYLIST_REFRESH);
-            }
-        }
-    };
-    
     
     /* (non-Javadoc)
      * @see org.jajuk.ui.IView#display()
@@ -246,7 +240,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
         ObservationManager.register(EVENT_PLAYLIST_REFRESH,this);
         ObservationManager.register(EVENT_PLAYER_STOP,this);
         ObservationManager.register(EVENT_FILE_LAUNCHED,this);
-        tRefresh.start();  //start own heartbeat system, we don't use fifo one to continue to work during stops
+        timer.start();  //start own heartbeat system, we don't use fifo one to continue to work during stops
         //DND
         new PlaylistTransferHandler(this,DnDConstants.ACTION_COPY_OR_MOVE);
         new PlaylistTransferHandler(jtable,DnDConstants.ACTION_COPY_OR_MOVE);
