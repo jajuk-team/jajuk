@@ -441,6 +441,7 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 			});
 		}
 	}
+    
 }
 
 

@@ -68,6 +68,7 @@ public class ViewManager implements ITechnicalStrings,ComponentListener{
 	/**Maintain relation view/perspective, a view can be in only one perspective*/
 	public static void registerView(final IView view){
 		final JajukInternalFrame ji = new JajukInternalFrame(Messages.getString(view.getDesc()),true,true,true,true);
+		ji.addComponentListener(vm);
 		ji.setContentPane((ViewAdapter)view);
 		ji.setDefaultCloseOperation(JInternalFrame.DO_NOTHING_ON_CLOSE);
 		ji.addInternalFrameListener(new InternalFrameAdapter(){
@@ -92,9 +93,9 @@ public class ViewManager implements ITechnicalStrings,ComponentListener{
 				}
 			}
 		});
+		ji.addComponentListener(view);
 		alViews.add(view);
 		alContainers.add(ji);
-		ji.addComponentListener(vm);
 	}
 			
 	/**

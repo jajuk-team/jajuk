@@ -20,6 +20,8 @@
 
 package org.jajuk.ui.views;
 
+import java.awt.event.ComponentEvent;
+
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
@@ -164,5 +166,32 @@ public abstract class ViewAdapter extends JPanel implements IView,ITechnicalStri
 	public boolean isShouldBeShown(){
 		return bShouldBeShown;
 	}
+	
+	/* (non-Javadoc)
+     * @see java.awt.event.ComponentListener#componentHidden(java.awt.event.ComponentEvent)
+     */
+    public void componentHidden(ComponentEvent e) {
+    }
+
+
+    /* (non-Javadoc)
+     * @see java.awt.event.ComponentListener#componentMoved(java.awt.event.ComponentEvent)
+     */
+    public void componentMoved(ComponentEvent e) {
+    }
+
+
+    /* (non-Javadoc)
+     * @see java.awt.event.ComponentListener#componentResized(java.awt.event.ComponentEvent)
+     */
+    public void componentResized(ComponentEvent e) {
+    }
+
+
+    /* (non-Javadoc)
+     * @see java.awt.event.ComponentListener#componentShown(java.awt.event.ComponentEvent)
+     */
+    public void componentShown(ComponentEvent e) {
+    }
 	
 }

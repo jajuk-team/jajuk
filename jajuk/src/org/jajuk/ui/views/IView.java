@@ -19,6 +19,8 @@
  */
 package org.jajuk.ui.views;
 
+import java.awt.event.ComponentListener;
+
 
 /**
  * View
@@ -27,7 +29,7 @@ package org.jajuk.ui.views;
  * @version	1.0
  * @created		5 oct. 2003
  */
-public interface IView {
+public interface IView extends ComponentListener{
 	
 	/**
 	 * Returns the view identifier.
