@@ -1,5 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!--Jajuk Ant script for end users-->
+<!-- This ant script is written to be executed from command line in a standard jajuk installation, not from the IDE-->
 
 <project default='jar' name='jajuk' basedir='.'>
   <property name='libdir' value='lib' />
@@ -34,9 +35,12 @@
         </fileset>
       </classpath>
     </javac>
-    <copy todir="${classdir}/org/jajuk/i18n" >
-     <fileset file="${srcdir}/org/jajuk/i18n/*.properties"/>
-  	</copy>
+	<mkdir dir='${classdir}/org/jajuk/i18n_temp'/>
+  	<copy todir='${classdir}/org/jajuk/i18n_temp' >
+     <fileset file='${srcdir}/org/jajuk/i18n/*.properties'/>
+	</copy>
+	<native2ascii encoding='UTF-8' src='${classdir}/org/jajuk/i18n_temp' dest='${classdir}/org/jajuk/i18n' includes='*.properties' />     
+    <delete dir='${distdir}/classes/org/jajuk/i18n_temp'/>
     <mkdir dir="${classdir}/org/jajuk/icons"/>
     <mkdir dir="${classdir}/org/jajuk/images"/>
   	<mkdir dir="${classdir}/org/jajuk/docs"/>

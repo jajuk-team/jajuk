@@ -6,7 +6,7 @@
   <property name='libdir' value='lib'/>
   <property name='srcdir' value='src'/>
   <property name='javadocdir' value='dist-files/doc/javadoc'/>
-  <property name='version' value='0.2.1-rc2'/>
+  <property name='version' value='0.2.1-rc3'/>
   <property name='jarname' value='jajuk.jar'/>
   <property name='helpsetjarname' value='jajuk-help.jar'/>
   <property name='distjarname' value='jajuk-install-'/>
@@ -15,8 +15,7 @@
   <target name='all' description='o Create the entire package' depends='izpack'/>
   
   <target name='clean' description='o Clean up the distribution'>
-    <delete dir='${distdir}'>
-    </delete>
+    <delete dir='${distdir}'/>
    </target>
   
   <target name='mkdist' description='o Create the distribution structure' depends='clean'>
@@ -70,10 +69,14 @@
         </fileset>
       </classpath>
     </javac>
-    <copy todir='${distdir}/classes/org/jajuk/i18n' >
+    <!--Transformation from UTF-8 to Latin1 -->
+    <mkdir dir='${distdir}/classes/org/jajuk/i18n_temp'/>
+  	<copy todir='${distdir}/classes/org/jajuk/i18n_temp' >
      <fileset file='${distdir}/src/org/jajuk/i18n/*.properties'/>
-  	</copy>
-    <mkdir dir='${distdir}/classes/org/jajuk/icons'/>
+	</copy>
+	<native2ascii encoding='UTF-8' src='${distdir}/classes/org/jajuk/i18n_temp' dest='${distdir}/classes/org/jajuk/i18n' includes='*.properties' />     
+    <delete dir='${distdir}/classes/org/jajuk/i18n_temp'/>
+   <mkdir dir='${distdir}/classes/org/jajuk/icons'/>
     <mkdir dir='${distdir}/classes/org/jajuk/images'/>
   	<mkdir dir='${distdir}/classes/org/jajuk/docs'/>
   	<copy todir='${distdir}/classes/org/jajuk/icons' >
