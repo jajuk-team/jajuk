@@ -28,7 +28,7 @@ import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Toolkit;
 
-import javax.swing.BoxLayout;
+import javax.swing.BorderFactory;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -47,6 +47,7 @@ public class SplashScreen extends JDialog implements ITechnicalStrings{
 	
     private JPanel jpContent;
     private JLabel jlImage;
+    private JPanel jpRelease; 
     private JLabel jlRelease;
     
     /**
@@ -57,15 +58,16 @@ public class SplashScreen extends JDialog implements ITechnicalStrings{
 		setUndecorated(true);
 		jpContent = (JPanel)getContentPane();
 		double[][] dSize = { {TableLayout.FILL},
-		        							{TableLayout.FILL,10}	};
-		jpContent.setLayout(new BoxLayout(jpContent,BoxLayout.Y_AXIS));
+		        							{TableLayout.FILL,20}	};
+		jpContent.setLayout(new TableLayout(dSize));
 		jlImage = new JLabel(Util.getIcon(IMAGES_SPLASHSCREEN));
 		jlRelease = new JLabel("Jajuk "+JAJUK_VERSION+" "+JAJUK_VERSION_DATE);
-		jpContent.setBackground(Color.WHITE);
 		jlRelease.setFont(new Font("Dialog",Font.PLAIN,12));
 		setTitle(Messages.getString("JajukWindow.17"));  //$NON-NLS-1$
 		jpContent.add(jlImage,"0,0");
-		jpContent.add(jlRelease,"0,1");
+		jpRelease = Util.getCentredPanel(jlRelease); //centred horizontaly
+		jpRelease.setBorder(BorderFactory.createMatteBorder(0,5,5,5,Color.BLACK));
+		jpContent.add(jpRelease,"0,1");
 		pack();
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		Dimension labelSize = jlImage.getPreferredSize();
