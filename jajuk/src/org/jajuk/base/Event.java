@@ -77,6 +77,6 @@ public class Event {
 	 * ToString method
 	 */
 	public String toString(){
-		return subject+" "+pDetails.toString();
+		return subject+" "+pDetails.toString(); //$NON-NLS-1$
 	}
 }

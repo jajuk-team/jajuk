@@ -93,7 +93,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
             player.open(new File(file.getAbsolutePath()));
         }
         catch(Exception e){
-            if (e instanceof BasicPlayerException && e.getCause().getMessage().equals("Resetting to invalid mark")){
+            if (e instanceof BasicPlayerException && e.getCause().getMessage().equals("Resetting to invalid mark")){ //$NON-NLS-1$
                 TAudioFileReader.m_nMarkLimit = 600000;
                 player.open(new File(file.getAbsolutePath()));
             }

@@ -157,7 +157,7 @@ public class CoverRepository implements Observer,ITechnicalStrings {
             return (String)hmUrlSize.get(url);
         }
         else{
-            return "0";
+            return "0"; //$NON-NLS-1$
         }
     }
 }
