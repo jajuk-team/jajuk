@@ -86,6 +86,14 @@ public class Style extends PropertyAdapter {
 	public boolean equals(Object otherStyle) {
 		return this.getId().equals(((Style)otherStyle).getId());
 	}
+	
+	/**
+	 * hashcode ( used by the equals method )
+	 */
+	public int hashCode(){
+		return getId().hashCode();
+	}
+
 
 	/**
 	 * @return

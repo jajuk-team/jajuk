@@ -14,7 +14,6 @@
 package org.jajuk.base;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 
 import org.jajuk.util.MD5Processor;

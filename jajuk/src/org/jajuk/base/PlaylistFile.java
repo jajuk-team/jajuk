@@ -89,7 +89,13 @@ public class PlaylistFile extends PropertyAdapter {
 	public boolean equals(Object otherPlaylistFile){
 		return this.getHashcode().equals(((PlaylistFile)otherPlaylistFile).getHashcode());
 	}	
-
+	
+	/**
+	 * hashcode ( used by the equals method )
+	 */
+	public int hashCode(){
+		return getId().hashCode();
+	}
 
 	/**
 	 * @return

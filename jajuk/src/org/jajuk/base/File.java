@@ -60,35 +60,35 @@ public class File extends PropertyAdapter{
 		this.lSize = lSize;
 		this.sQuality = sQuality;
 	}
-
-
+	
+	
 	/**Void constructor*/
 	public File(){
 	}
 	
 	/**
-		 * toString method
-		 */
-		public String toString() {
-			return "File[ID="+sId+" Name=" + sName + " Dir="+directory+" Size="+lSize+" Quality="+sQuality+"]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$//$NON-NLS-6$//$NON-NLS-7$
-		}
-
-		/**
-		 * Return an XML representation of this item  
-		 * @return
-		 */
-		public String toXml() {
-			StringBuffer sb = new StringBuffer("\t\t<file id='" + sId);//$NON-NLS-1$
-			sb.append("' name='");//$NON-NLS-1$
-			sb.append(Util.formatXML(sName)).append("' directory='");//$NON-NLS-1$
-			sb.append(directory.getId()).append("' track='");//$NON-NLS-1$
-			sb.append(track.getId()).append("' size='");//$NON-NLS-1$
-			sb.append(lSize).append("' quality='");//$NON-NLS-1$
-			sb.append(sQuality).append("' ");//$NON-NLS-1$
-			sb.append(getPropertiesXml());
-			sb.append("/>\n");//$NON-NLS-1$
-			return sb.toString();
-		}
+	 * toString method
+	 */
+	public String toString() {
+		return "File[ID="+sId+" Name=" + sName + " Dir="+directory+" Size="+lSize+" Quality="+sQuality+"]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$//$NON-NLS-6$//$NON-NLS-7$
+	}
+	
+	/**
+	 * Return an XML representation of this item  
+	 * @return
+	 */
+	public String toXml() {
+		StringBuffer sb = new StringBuffer("\t\t<file id='" + sId);//$NON-NLS-1$
+		sb.append("' name='");//$NON-NLS-1$
+		sb.append(Util.formatXML(sName)).append("' directory='");//$NON-NLS-1$
+		sb.append(directory.getId()).append("' track='");//$NON-NLS-1$
+		sb.append(track.getId()).append("' size='");//$NON-NLS-1$
+		sb.append(lSize).append("' quality='");//$NON-NLS-1$
+		sb.append(sQuality).append("' ");//$NON-NLS-1$
+		sb.append(getPropertiesXml());
+		sb.append("/>\n");//$NON-NLS-1$
+		return sb.toString();
+	}
 	
 	/**
 	 * @return
@@ -96,35 +96,35 @@ public class File extends PropertyAdapter{
 	public String getId() {
 		return sId;
 	}
-
+	
 	/**
 	 * @return
 	 */
 	public long getSize() {
 		return lSize;
 	}
-
+	
 	/**
 	 * @return
 	 */
 	public String getName() {
 		return sName;
 	}
-
+	
 	/**
 	 * @return
 	 */
 	public Directory getDirectory() {
 		return directory;
 	}
-
+	
 	/**
 	 * @return
 	 */
 	public String getQuality() {
 		return sQuality;
 	}
-
+	
 	/**
 	 * @return
 	 */
@@ -133,34 +133,43 @@ public class File extends PropertyAdapter{
 	}
 	
 	/**
-		 * Equal method to check two files are identical
-		 * @param otherFile
-		 * @return
-		 */
-		public boolean equals(Object otherFile){
-			return this.getId().equals(((File)otherFile).getId() );
-		}	
-		
+	 * Equal method to check two files are identical
+	 * @param otherFile
+	 * @return
+	 */
+	public boolean equals(Object otherFile){
+		return this.getId().equals(((File)otherFile).getId() );
+	}	
+	
+	
 	/**
-		 * Return full file path name
-		 * @return String
-		 */
-		public String getAbsolutePath(){
-			Directory dCurrent = getDirectory();
-			StringBuffer sbOut = new StringBuffer(dCurrent.getDevice().getUrl());
-			sbOut.append(java.io.File.separatorChar).append(dCurrent.getName());
-			boolean bTop = false;
-			while (!bTop){
-				dCurrent = dCurrent.getParentDirectory();
-				if (dCurrent != null){  //if it is the root directory, no parent
-					sbOut.append(java.io.File.separatorChar).append(dCurrent.getName());
-				}
-				else{
-					bTop = true;
-				}
+	 * hashcode ( used by the equals method )
+	 */
+	public int hashCode(){
+		return getId().hashCode();
+	}
+	
+	
+	/**
+	 * Return full file path name
+	 * @return String
+	 */
+	public String getAbsolutePath(){
+		Directory dCurrent = getDirectory();
+		StringBuffer sbOut = new StringBuffer(dCurrent.getDevice().getUrl());
+		sbOut.append(java.io.File.separatorChar).append(dCurrent.getName());
+		boolean bTop = false;
+		while (!bTop){
+			dCurrent = dCurrent.getParentDirectory();
+			if (dCurrent != null){  //if it is the root directory, no parent
+				sbOut.append(java.io.File.separatorChar).append(dCurrent.getName());
 			}
-			return sbOut.toString();
+			else{
+				bTop = true;
+			}
 		}
-		
+		return sbOut.toString();
+	}
+	
 	
 }

@@ -31,7 +31,6 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
-import javax.swing.text.View;
 
 import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.i18n.Messages;

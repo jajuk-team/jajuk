@@ -20,7 +20,6 @@
 
 package org.jajuk.ui.views;
 
-import java.awt.Checkbox;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -28,22 +27,21 @@ import java.util.Iterator;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
-import javax.swing.ButtonModel;
 import javax.swing.ImageIcon;
+import javax.swing.InputVerifier;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
-import javax.swing.text.MaskFormatter;
 
 import layout.TableLayout;
 
-import org.apache.log4j.chainsaw.Main;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.JajukFileChooser;
@@ -102,8 +100,8 @@ public class ParameterView extends ViewAdapter implements ActionListener {
 		JButton jbOK;
 		JButton jbDefault;
 		
-		
 	
+		
 	/**Return self instance*/
 	public static ParameterView getInstance(){
 		if (pv == null){
@@ -122,11 +120,33 @@ public class ParameterView extends ViewAdapter implements ActionListener {
 		//History
 		jpHistory = new JPanel();
 		double sizeHistory[][] = {{0.6,iXSeparator,0.3},
-										 {20,iYSeparator,25}};
+										 {20,13*iYSeparator,25}};
 		jpHistory.setLayout(new TableLayout(sizeHistory));
 		jlHistory = new JLabel(Messages.getString("ParameterView.0")); //$NON-NLS-1$
 		jlHistory.setToolTipText(Messages.getString("ParameterView.1")); //$NON-NLS-1$
 		jtfHistory = new JTextField();
+		jtfHistory.setInputVerifier(new InputVerifier(){
+			 public boolean verify(JComponent input) {
+			 	JTextField tf = (JTextField) input;
+			 	jbOK.setEnabled(false);
+			 	String sText = tf.getText();
+			 	try{
+			 		int iValue = Integer.parseInt(sText);
+			 		if (iValue < -1 ){
+			 			return false;
+			 		}
+			 	}
+			 	catch(Exception e){
+			 		return false;
+			 	}
+			 	jbOK.setEnabled(true);
+			 	return true;
+			 }
+			 
+			  public boolean shouldYieldFocus(JComponent input) {
+			  	return verify(input);
+			  }
+		});
 		jtfHistory.setToolTipText(Messages.getString("ParameterView.2")); //$NON-NLS-1$
 		jbClearHistory = new JButton(Messages.getString("ParameterView.3")); //$NON-NLS-1$
 		jbClearHistory.setToolTipText(Messages.getString("ParameterView.4")); //$NON-NLS-1$
@@ -207,7 +227,6 @@ public class ParameterView extends ViewAdapter implements ActionListener {
 			jcbLAF.addItem(it.next());
 		}
 		jcbLAF.setToolTipText(Messages.getString("ParameterView.45")); //$NON-NLS-1$
-		//TODO implements l&f : use a property with ',' separator
 		jlLogLevel = new JLabel(Messages.getString("ParameterView.46")); //$NON-NLS-1$
 		jcbLogLevel = new JComboBox();
 		jcbLogLevel.addItem(Messages.getString("ParameterView.47")); //$NON-NLS-1$
@@ -228,10 +247,57 @@ public class ParameterView extends ViewAdapter implements ActionListener {
 		jpIntro.setLayout(new TableLayout(sizeIntro));
 		jlIntroPosition = new JLabel(Messages.getString("ParameterView.59")); //$NON-NLS-1$
 		jtfIntroPosition = new JTextField(3);
-		//TODO set a mask formatter for integer, idem for history
+		jtfIntroPosition.setInputVerifier(new InputVerifier(){
+			 public boolean verify(JComponent input) {
+			 	JTextField tf = (JTextField) input;
+			 	jbOK.setEnabled(false);
+			 	String sText = tf.getText();
+			 	if (sText.length()<1 || sText.length()>2){
+			 		return false;
+			 	}
+			 	try{
+			 		int iValue = Integer.parseInt(sText);
+			 		if (iValue < 0 || iValue>99){
+			 			return false;
+			 		}
+			 	}
+			 	catch(Exception e){
+			 		return false;
+			 	}
+			 	jbOK.setEnabled(true);
+			 	return true;
+			 }
+			 
+			  public boolean shouldYieldFocus(JComponent input) {
+			  	return verify(input);
+			  }
+		});
+		
 		jtfIntroPosition.setToolTipText(Messages.getString("ParameterView.60") ); //$NON-NLS-1$
 		jlIntroLength = new JLabel(Messages.getString("ParameterView.61")); //$NON-NLS-1$
 		jtfIntroLength = new JTextField(3);
+		jtfIntroLength.setInputVerifier(new InputVerifier(){
+			 public boolean verify(JComponent input) {
+			 	JTextField tf = (JTextField) input;
+			 	jbOK.setEnabled(false);
+			 	String sText = tf.getText();
+			 	try{
+			 		int iValue = Integer.parseInt(sText);
+			 		if (iValue <= 0 ){
+			 			return false;
+			 		}
+			 	}
+			 	catch(Exception e){
+			 		return false;
+			 	}
+			 	jbOK.setEnabled(true);
+			 	return true;
+			 }
+			 
+			  public boolean shouldYieldFocus(JComponent input) {
+			  	return verify(input);
+			  }
+		});
 		jtfIntroLength.setToolTipText(Messages.getString("ParameterView.62") ); //$NON-NLS-1$
 		jpIntro.add(jlIntroPosition,"0,0"); //$NON-NLS-1$
 		jpIntro.add(jtfIntroPosition,"1,0"); //$NON-NLS-1$
@@ -297,7 +363,7 @@ public class ParameterView extends ViewAdapter implements ActionListener {
 	 */
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == jbClearHistory){
-			
+			//clear
 		}
 		else if (e.getSource() == jbFile){
 			jrbFile.setSelected(true);
@@ -317,11 +383,13 @@ public class ParameterView extends ViewAdapter implements ActionListener {
 			String sLocal = (String)Messages.getLocals().get(jcbLanguage.getSelectedIndex());
 			if (!Messages.getLocal().equals(sLocal)){  //local has changed
 				Messages.setLocal(sLocal);
-				Messages.showInfoMessage("Language change will be effective at next Jajuk start");
+				Messages.showInfoMessage("Language_updated");
 			}
 			ConfigurationManager.setProperty(CONF_OPTIONS_LANGUAGE,sLocal);
-			LNFManager.setLookAndFeel((String)jcbLAF.getSelectedItem());
 			ConfigurationManager.setProperty(CONF_OPTIONS_LNF,(String)jcbLAF.getSelectedItem());
+			if (!LNFManager.getCurrent().equals((String)jcbLAF.getSelectedItem())){  //Lnf has changed
+				Messages.showInfoMessage("Lnf_updated");
+			}
 			int iLogLevel = jcbLogLevel.getSelectedIndex(); 
 			Log.setVerbosity(iLogLevel);
 			ConfigurationManager.setProperty(CONF_OPTIONS_LOG_LEVEL,Integer.toString(iLogLevel));
@@ -404,7 +472,6 @@ public class ParameterView extends ViewAdapter implements ActionListener {
 		jpfPasswd.setText(ConfigurationManager.getProperty(CONF_OPTIONS_P2P_PASSWORD));
 		jcbAddRemoteProperties.setSelected(Boolean.valueOf(ConfigurationManager.getProperty(CONF_OPTIONS_P2P_ADD_REMOTE_PROPERTIES)).booleanValue());
 		jcbHideProperties.setSelected(Boolean.valueOf(ConfigurationManager.getProperty(CONF_OPTIONS_P2P_HIDE_LOCAL_PROPERTIES)).booleanValue());
-		
 	}
 
 }

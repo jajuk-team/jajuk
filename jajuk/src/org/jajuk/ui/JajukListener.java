@@ -24,7 +24,6 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
-import javax.swing.JCheckBox;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFileChooser;
 
@@ -70,7 +69,6 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
 				java.io.File[] files = jfchooser.getSelectedFiles();
 				FIFO.clear(); //stop all currently played tracks
-				File[] filestoPlay = new File[files.length];
 				ArrayList alFiles = new ArrayList();
 				for (int i = 0; i < files.length; i++) {
 					alFiles.add(new BasicFile(files[i]));
@@ -82,13 +80,13 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
 			boolean bContinue = Boolean.valueOf(ConfigurationManager.getProperty(CONF_STATE_CONTINUE)).booleanValue();
 			if (bContinue){
 				//Repeat and continue can't be set together, so deselect repeat mode
-				ConfigurationManager.setProperty(CONF_STATE_CONTINUE, new Boolean(!bContinue).toString());
+				ConfigurationManager.setProperty(CONF_STATE_CONTINUE, Boolean.toString(!bContinue));
 				JajukJMenuBar.getInstance().jcbmiContinue.setSelected(false);
 				CommandJPanel.getInstance().jbContinue.setIcon(new ImageIcon(ICON_CONTINUE_OFF));
 				ConfigurationManager.setProperty(CONF_ICON_CONTINUE,ICON_CONTINUE_OFF);
 			}
 			boolean b = Boolean.valueOf(ConfigurationManager.getProperty(CONF_STATE_REPEAT)).booleanValue();
-			ConfigurationManager.setProperty(CONF_STATE_REPEAT, new Boolean(!b).toString());
+			ConfigurationManager.setProperty(CONF_STATE_REPEAT, Boolean.toString(!b));
 			JajukJMenuBar.getInstance().jcbmiRepeat.setSelected(!b);
 			if (!b == true) { //enabled button
 				ConfigurationManager.setProperty(CONF_ICON_REPEAT,ICON_REPEAT_ON);
@@ -101,7 +99,7 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
 		}
 		else if (e.getActionCommand().equals(EVENT_SHUFFLE_MODE_STATUS_CHANGED)) {
 			boolean b = Boolean.valueOf(ConfigurationManager.getProperty(CONF_STATE_SHUFFLE)).booleanValue();
-			ConfigurationManager.setProperty(CONF_STATE_SHUFFLE, new Boolean(!b).toString());
+			ConfigurationManager.setProperty(CONF_STATE_SHUFFLE, Boolean.toString(!b));
 			JajukJMenuBar.getInstance().jcbmiShuffle.setSelected(!b);
 			if (!b == true) { //enabled button
 				ConfigurationManager.setProperty(CONF_ICON_SHUFFLE,ICON_SHUFFLE_ON);
@@ -116,13 +114,13 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
 			boolean bRepeat = Boolean.valueOf(ConfigurationManager.getProperty(CONF_STATE_REPEAT)).booleanValue();
 			if (bRepeat){
 				//Repeat and continue can't be set together, so deselect repeat mode
-				ConfigurationManager.setProperty(CONF_STATE_REPEAT, new Boolean(!bRepeat).toString());
+				ConfigurationManager.setProperty(CONF_STATE_REPEAT, Boolean.toString(!bRepeat));
 				JajukJMenuBar.getInstance().jcbmiRepeat.setSelected(false);
 				CommandJPanel.getInstance().jbRepeat.setIcon(new ImageIcon(ICON_REPEAT_OFF)); 
 				ConfigurationManager.setProperty(CONF_ICON_REPEAT,ICON_REPEAT_OFF);
 			}
 			boolean b = Boolean.valueOf(ConfigurationManager.getProperty(CONF_STATE_CONTINUE)).booleanValue();
-			ConfigurationManager.setProperty(CONF_STATE_CONTINUE, new Boolean(!b).toString());
+			ConfigurationManager.setProperty(CONF_STATE_CONTINUE, Boolean.toString(!b));
 			JajukJMenuBar.getInstance().jcbmiContinue.setSelected(!b);
 			if (!b == true) { //enabled button
 				ConfigurationManager.setProperty(CONF_ICON_CONTINUE,ICON_CONTINUE_ON);
@@ -135,7 +133,7 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
 		}
 		else if (e.getActionCommand().equals(EVENT_INTRO_MODE_STATUS_CHANGED)) {
 			boolean b = Boolean.valueOf(ConfigurationManager.getProperty(CONF_STATE_INTRO)).booleanValue();
-			ConfigurationManager.setProperty(CONF_STATE_INTRO, new Boolean(!b).toString());
+			ConfigurationManager.setProperty(CONF_STATE_INTRO, Boolean.toString(!b));
 			JajukJMenuBar.getInstance().jcbmiIntro.setSelected(!b);
 			if (!b == true) { //enabled button
 				ConfigurationManager.setProperty(CONF_ICON_INTRO,ICON_INTRO_ON);

@@ -84,14 +84,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings{
 		return "Device[ID=" + sId + " Name=" + sName + " Type=" + sDeviceTypes[iDeviceType] + " URL=" + sUrl+ " Mount point="+sMountPoint + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$
 	}
 	
-	/**
-	 * Return Unix mount point 
-	 * @return
-	 */
-	public String getDeviceMountPoint(){
-		return sMountPoint;			
-	}
-
+	
 	/**
 	 * Return an XML representation of this item  
 	 * @return
@@ -105,7 +98,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings{
 		sb.append("' url='");
 		sb.append(sUrl);
 		sb.append("' mount_point='");
-		sb.append(getDeviceMountPoint()).append("' ");
+		sb.append(getMountPoint()).append("' ");
 		sb.append(getPropertiesXml());
 		sb.append("/>\n");
 		return sb.toString();
@@ -120,6 +113,14 @@ public class Device extends PropertyAdapter implements ITechnicalStrings{
 		return this.getId().equals(((Device)otherDevice).getId() );
 	}
 
+	/**
+	 * hashcode ( used by the equals method )
+	 */
+	public int hashCode(){
+		return getId().hashCode();
+	}
+
+	
 	/**
 	 * Refresh : scan asynchronously the device to find tracks
 	 * @return
@@ -322,6 +323,41 @@ public class Device extends PropertyAdapter implements ITechnicalStrings{
 			}
 		}
 		return bOK;
+	}
+
+	/**
+	 * @return Returns the unix mount point.
+	 */
+	public String getMountPoint() {
+		return sMountPoint;
+	}
+
+	/**
+	 * @param deviceTypes The sDeviceTypes to set.
+	 */
+	public  void setDeviceType(int i) {
+		this.iDeviceType = i;
+	}
+
+	/**
+	 * @param mountPoint The sMountPoint to set.
+	 */
+	public void setMountPoint(String mountPoint) {
+		sMountPoint = mountPoint;
+	}
+
+	/**
+	 * @param name The sName to set.
+	 */
+	public void setName(String name) {
+		sName = name;
+	}
+
+	/**
+	 * @param url The sUrl to set.
+	 */
+	public void setUrl(String url) {
+		sUrl = url;
 	}
 
 }

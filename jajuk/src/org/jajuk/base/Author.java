@@ -37,7 +37,7 @@ public class Author extends PropertyAdapter {
 	private String sName;
 	/**Albums for this album*/
 	private ArrayList alAlbums = new ArrayList(10);
-
+	
 	/**
 	 * Author constructor
 	 * @param id
@@ -48,21 +48,21 @@ public class Author extends PropertyAdapter {
 		this.sId = sId;
 		this.sName = sName;
 	}
-
+	
 	/**
 	 * @return
 	 */
 	public String getName() {
 		return sName;
 	}
-
+	
 	/**
 	 * toString method
 	 */
 	public String toString() {
 		return "Author[ID="+sId+" Name=" + sName + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
-
+	
 	/**
 	 * Return an XML representation of this item  
 	 * @return
@@ -75,9 +75,9 @@ public class Author extends PropertyAdapter {
 		sb.append("/>\n");//$NON-NLS-1$
 		return sb.toString();
 	}
-
+	
 	/**
-	* @return
+	 * @return
 	 */
 	public String getId() {
 		return sId;
@@ -92,19 +92,28 @@ public class Author extends PropertyAdapter {
 	public boolean equals(Object otherAuthor){
 		return this.getId().equals(((Author)otherAuthor).getId() );
 	}	
-
-		/**
-		 * @return
-		 */
-		public ArrayList getAlbums() {
-			return alAlbums;
-		}
-
-		/**
-		 * @param album
-		 */
-		public void addAlbum(Album album) {
-			alAlbums.add(album);
-		}
-
+	
+	
+	/**
+	 * hashcode ( used by the equals method )
+	 */
+	public int hashCode(){
+		return getId().hashCode();
+	}
+	
+	
+	/**
+	 * @return
+	 */
+	public ArrayList getAlbums() {
+		return alAlbums;
+	}
+	
+	/**
+	 * @param album
+	 */
+	public void addAlbum(Album album) {
+		alAlbums.add(album);
+	}
+	
 }

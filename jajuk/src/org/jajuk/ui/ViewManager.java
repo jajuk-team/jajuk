@@ -25,7 +25,6 @@ import java.util.HashMap;
 import javax.swing.JComponent;
 import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 
 import org.jajuk.Main;
 import org.jajuk.base.ITechnicalStrings;

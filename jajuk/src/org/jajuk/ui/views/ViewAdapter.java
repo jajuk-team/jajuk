@@ -22,7 +22,6 @@
 package org.jajuk.ui.views;
 
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 
 import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.ui.IView;

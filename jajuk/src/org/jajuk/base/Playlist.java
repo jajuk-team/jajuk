@@ -83,6 +83,14 @@ public class Playlist extends PropertyAdapter {
 		return this.getId().equals(((Playlist)otherPlaylist).getId());
 	}	
 
+	
+	/**
+	 * hashcode ( used by the equals method )
+	 */
+	public int hashCode(){
+		return getId().hashCode();
+	}
+
 
 	/**
 	 *  Add a playlist file 

@@ -20,8 +20,6 @@
 package org.jajuk.i18n;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.Locale;
 import java.util.ResourceBundle;
 

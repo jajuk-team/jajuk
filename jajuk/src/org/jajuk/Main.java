@@ -93,7 +93,9 @@ public class Main implements ITechnicalStrings {
 	
 			//Registers supported look and feels
 			LNFManager.register(LNF_METAL,"javax.swing.plaf.metal.MetalLookAndFeel"); //$NON-NLS-1$
-			
+			LNFManager.register(LNF_GTK,"com.sun.java.swing.plaf.gtk.GTKLookAndFeel"); //$NON-NLS-1$
+			LNFManager.register(LNF_WINDOWS,"com.sun.java.swing.plaf.windows.WindowsLookAndFeel");//$NON-NLS-1$
+			LNFManager.register(LNF_KUNSTSTOFF,"com.incors.plaf.kunststoff.KunststoffLookAndFeel");//$NON-NLS-1$
 			//perform initial checkups
 			initialCheckups();
 			
@@ -107,6 +109,9 @@ public class Main implements ITechnicalStrings {
 			//Load user configuration
 			org.jajuk.util.ConfigurationManager.load();
 			
+			//Set look and feel
+			LNFManager.setLookAndFeel(ConfigurationManager.getProperty(CONF_OPTIONS_LNF));
+						
 			//Set local
 			Messages.setLocal(ConfigurationManager.getProperty(CONF_OPTIONS_LANGUAGE));
 			
@@ -182,7 +187,6 @@ public class Main implements ITechnicalStrings {
 		} catch (Exception e) { //last chance to catch any error for logging purpose
 			Log.error("106", e); //$NON-NLS-1$
 			exit(1);
-		} finally {
 		}
 	}
 	

@@ -23,9 +23,10 @@ package org.jajuk.ui;
 import java.util.Collection;
 import java.util.HashMap;
 
-import javax.swing.LookAndFeel;
+import javax.swing.UIManager;
 
 import org.jajuk.base.ITechnicalStrings;
+import org.jajuk.util.log.Log;
 
 /**
  *  Manages Look and Feel 
@@ -37,18 +38,23 @@ public class LNFManager implements ITechnicalStrings{
 	/** Contains look and feel displayed name and associated class name*/
 	private static HashMap hmNameClass = new HashMap(5);
 	/**Current Look and feel*/
-	private static String sCurrent = LNF_METAL;
+	private static String sCurrent = "";
 	
 	/**
 	 * Set current look and feel
 	 * @param sLaf
 	 */
 	public static void setLookAndFeel(String sLaf){
-		if (sLaf.equals(sCurrent)){
-			//TODO set look and feel for sLaf	
-			sCurrent = sLaf;
+		if (sLaf.equals(LNFManager.sCurrent)){
+			return;
 		}
-		
+		sCurrent = sLaf;
+		try{
+			UIManager.setLookAndFeel((String)hmNameClass.get(sCurrent));	
+		}
+		catch(Exception e){
+			Log.error("123",sCurrent,e);
+		}
 	}
 	
 	/**Return list of available fool and feels
@@ -67,4 +73,11 @@ public class LNFManager implements ITechnicalStrings{
 		hmNameClass.put(sName,sClass);
 	}
 	
+	/**
+	 * @return Returns the current look and feel.
+	 */
+	public static String getCurrent() {
+		return sCurrent;
+	}
+
 }

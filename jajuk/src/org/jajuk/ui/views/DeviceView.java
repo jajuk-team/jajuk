@@ -159,11 +159,6 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 		//Popup menus
 		jpmenu =  new JPopupMenu();
 			
-		jmiDelete = new JMenuItem("Delete device",new ImageIcon(ICON_DELETE));
-		jmiDelete.addActionListener(this);
-		jmiDelete.setActionCommand(EVENT_DEVICE_DELETE);
-		jpmenu.add(jmiDelete);
-	
 		jmiProperties = new JMenuItem("Get properties",new ImageIcon(ICON_PROPERTIES));
 		jmiProperties.addActionListener(this);
 		jmiProperties.setActionCommand(EVENT_DEVICE_PROPERTIES);
@@ -193,14 +188,20 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 		jmiSynchronize.addActionListener(this);
 		jmiSynchronize.setActionCommand(EVENT_DEVICE_SYNCHRO);
 		jpmenu.add(jmiSynchronize);
-				
+		
+		jmiDelete = new JMenuItem("Delete device",new ImageIcon(ICON_DELETE));
+		jmiDelete.addActionListener(this);
+		jmiDelete.setActionCommand(EVENT_DEVICE_DELETE);
+		jpmenu.add(jmiDelete);
+	
+		
 		//New device
 		DeviceItem diNew = new DeviceItem(ICON_DEVICE_NEW,"New");
 		diNew.setToolTipText("Add a device");
 		jpDevices.add(diNew);
 		diNew.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-				new DeviceWizard();
+					new DeviceWizard();
 			}
 		});
 		
@@ -264,8 +265,14 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 			di.addMouseListener(new MouseAdapter() {
 				public void mouseClicked(MouseEvent e) {
 					if (di == diSelected){
-						jpmenu.show(e.getComponent(),e.getX(),e.getY());
-						return;
+						if (e.getButton() == 3){  //left button
+							jpmenu.show(e.getComponent(),e.getX(),e.getY());
+							return;
+						}
+						else {
+							DeviceWizard dw = new DeviceWizard();
+							dw.updateWidgets(dSelected);
+						}
 					}
 					//remove old device item border
 					if (diSelected!=null){
@@ -326,7 +333,8 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 	
 	public void actionPerformed(ActionEvent ae){
 		if (ae.getActionCommand().equals(EVENT_DEVICE_NEW)){
-			new DeviceWizard();
+			DeviceWizard dw = new DeviceWizard();
+			dw.updateWidgetsDefault();
 		}
 		else if (ae.getActionCommand().equals(EVENT_DEVICE_DELETE)){
 			DeviceManager.removeDevice(dSelected);
@@ -353,7 +361,8 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 			}
 		}
 		else if (ae.getActionCommand().equals(EVENT_DEVICE_PROPERTIES)){
-			new DeviceWizard(dSelected);
+			DeviceWizard dw = new DeviceWizard();
+			dw.updateWidgets(dSelected);
 		}
 		else if (ae.getActionCommand().equals(EVENT_DEVICE_REFRESH)){
 			dSelected.refresh();

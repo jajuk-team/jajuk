@@ -93,6 +93,13 @@ public class Album extends PropertyAdapter {
 	public boolean equals(Object otherAlbum){
 		return this.getId().equals(((Album)otherAlbum).getId() );
 	}
+	
+	/**
+	 * Album hashcode ( used by the equals method )
+	 */
+	public int hashCode(){
+		return getId().hashCode();
+	}
 
 	/**
 	 * @return

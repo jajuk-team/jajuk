@@ -19,7 +19,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 
 import javax.xml.parsers.SAXParser;
@@ -102,7 +101,6 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
 		try{
 			SAXParserFactory spf = SAXParserFactory.newInstance();
 			spf.setValidating(false);
-			XMLReader xmlr;
 			SAXParser saxParser = spf.newSAXParser();
 			File frt = new File(FILE_HISTORY);
 			saxParser.parse(frt.toURL().toString(),getInstance());

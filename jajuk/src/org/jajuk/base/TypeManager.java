@@ -48,7 +48,7 @@ public class TypeManager {
 	 * @param type
 	 */
 	public static synchronized Type registerType(String sName,String sExtension, String sPlayerImpl,String sTagImpl,boolean bIsMusic) {
-		String sId = new Integer(hmSupportedTypes.size()).toString();
+		String sId = Integer.toString(hmSupportedTypes.size());
 		return registerType(sId,sName,sExtension,sPlayerImpl,sTagImpl,bIsMusic);
 	}
 	

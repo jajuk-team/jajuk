@@ -21,19 +21,10 @@
 package org.jajuk.ui;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Container;
-import java.awt.FlowLayout;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
 
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
 import javax.swing.JDesktopPane;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -76,7 +67,6 @@ public class PerspectiveManager extends DefaultHandler implements ITechnicalStri
 		try{
 			SAXParserFactory spf = SAXParserFactory.newInstance();
 			spf.setValidating(false);
-			XMLReader xmlr;
 			SAXParser saxParser = spf.newSAXParser();
 			File frt = new File(FILE_PERSPECTIVES_CONF);
 			saxParser.parse(frt.toURL().toString(),getInstance());
@@ -198,8 +188,7 @@ public class PerspectiveManager extends DefaultHandler implements ITechnicalStri
  	*/
 	public void startElement(String sUri, String sName, String sQName, Attributes attributes) throws SAXException {
 		String sClassName = null;
-		if (sQName.equals("perspectives")) {
-		} else if (sQName.equals("perspective")) {
+		if (sQName.equals("perspective")) {
 			try {
 				pCurrent = null;
 				 sClassName = attributes.getValue(attributes.getIndex("class")); 

@@ -21,7 +21,6 @@
 package org.jajuk.base;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import org.jajuk.util.MD5Processor;
 
@@ -32,9 +31,11 @@ import org.jajuk.util.MD5Processor;
  */
 public class DeviceManager {
 	/**Device collection**/
-	static HashMap hmDevices = new HashMap(100);
+	static ArrayList alDevices = new ArrayList(100);
+	/**Device ids*/
+	static ArrayList alDeviceIds = new ArrayList(100);
 	
-/**
+	/**
 	 * No constructor available, only static access
 	 */
 	private DeviceManager() {
@@ -52,37 +53,46 @@ public class DeviceManager {
 	}
 	
 	/**
-		 * Register a device with a known id
-		 *@param sName
-		 *@return device 
-		 */
-		public static synchronized Device  registerDevice(String sId,String sName,int iDeviceType,String sUrl,String sMountPoint) {
-			Device device = new Device(sId,sName,iDeviceType,sUrl,sMountPoint);
-			hmDevices.put(sId,device);
-			return device;
-		}
-
-
+	 * Register a device with a known id
+	 *@param sName
+	 *@return device 
+	 */
+	public static synchronized Device  registerDevice(String sId,String sName,int iDeviceType,String sUrl,String sMountPoint) {
+		Device device = new Device(sId,sName,iDeviceType,sUrl,sMountPoint);
+		alDeviceIds.add(sId);
+		alDevices.add(device);
+		return device;
+	}
+	
+	
 	/**Return all registred devices*/
 	public static synchronized ArrayList getDevices() {
-		return new ArrayList(hmDevices.values());
+		return alDevices;
 	}
-
+	
 	/**
 	 * Return device by id
 	 * @param sName
 	 * @return
 	 */
 	public static synchronized Device getDevice(String sId) {
-		return (Device) hmDevices.get(sId);
+		Device device = null;
+		int index = alDeviceIds.indexOf(sId);
+		if (index != -1){
+			device = (Device) alDevices.get(index);
+		}
+		return device;
 	}
+	
+	
 	
 	/**
 	 * Remove a device
 	 * @param device
 	 */
 	public static synchronized void removeDevice(Device device){
-		hmDevices.remove(device.getId());
+		alDevices.remove(device);
+		alDeviceIds.remove(device.getId());
 		DirectoryManager.cleanDevice(device.getId());
 		FileManager.cleanDevice(device.getId());
 		PlaylistFileManager.cleanDevice(device.getId());

@@ -53,6 +53,9 @@ public class PropertyAdapter implements IPropertyable, ITechnicalStrings {
 	 * @see org.jajuk.base.Propertyable#getProperty(java.lang.String)
 	 */
 	public String getProperty(String sKey) {
+		if ( !properties.containsKey(sKey)){
+			return null;
+		}
 		return (String) properties.get(sKey);
 	}
 
@@ -110,7 +113,9 @@ public class PropertyAdapter implements IPropertyable, ITechnicalStrings {
 	 * @see org.jajuk.base.IPropertyable#removeProperty(java.lang.String)
 	 */
 	public void removeProperty(String sKey) {
-		properties.remove(sKey);
+		if (properties.containsKey(sKey)){
+			properties.remove(sKey);
+		}
 	}
 
 	/* (non-Javadoc)

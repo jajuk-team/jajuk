@@ -101,6 +101,14 @@ public class Directory extends PropertyAdapter {
 	public boolean equals(Object otherDirectory) {
 		return this.getId().equals(((Directory)otherDirectory).getId() );
 	}
+	
+	/**
+	 * hashcode ( used by the equals method )
+	 */
+	public int hashCode(){
+		return getId().hashCode();
+	}
+
 
 	/**
 	 * @return
@@ -197,7 +205,7 @@ public class Directory extends PropertyAdapter {
 					}
 				}
 				if (fileRef!= null){  //read tag data from database, no real read from file for performances reasons
-					org.jajuk.base.File newFile = FileManager.registerFile(fileRef.getName(), this, fileRef.getTrack(), fileRef.getSize(),fileRef.getQuality());
+					FileManager.registerFile(fileRef.getName(), this, fileRef.getTrack(), fileRef.getSize(),fileRef.getQuality());
 					continue;
 				}
 				

@@ -211,6 +211,13 @@ public class Track extends PropertyAdapter {
 		return this.getId().equals(((Track)otherTrack).getId() );
 	}	
 	
+	/**
+	 * Track hashcode ( used by the equals method )
+	 */
+	public int hashCode(){
+		return getId().hashCode();
+	}
+	
 	
 	/**
 	 * @return

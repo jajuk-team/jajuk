@@ -75,7 +75,13 @@ public class DeviceWizard extends JFrame implements ActionListener,ITechnicalStr
 	JButton jbOk;
 	JButton jbCancel;
 	
-
+	/**New device flag*/
+	private boolean bNew = true;
+	
+	/**Current device*/
+	Device device;
+	
+	
 	public DeviceWizard() {
 		super("Device wizard");
 		setSize(800, 600);
@@ -107,7 +113,7 @@ public class DeviceWizard extends JFrame implements ActionListener,ITechnicalStr
 			jlMountPoint.setEnabled(false);
 			jtfMountPoint.setEnabled(false);
 		}
-		jcbRefresh = new JCheckBox("Perform an immediate refresh");
+		jcbRefresh = new JCheckBox("Perform an instant refresh");
 		jcbRefresh.addActionListener(this);
 		jcbAutoMount = new JCheckBox("Auto mount at startup");
 		jcbAutoMount.addActionListener(this);
@@ -121,6 +127,10 @@ public class DeviceWizard extends JFrame implements ActionListener,ITechnicalStr
 		while (it.hasNext()) {
 			Device device = (Device) it.next();
 			jcbSynchronized.addItem(device.getName());
+		}
+		if (jcbSynchronized.getItemCount()==0){
+			jcboxSynchronized.setEnabled(false);
+			jcbSynchronized.setEnabled(false);
 		}
 		bgSynchro = new ButtonGroup();
 		jrbFullSynchro = new JRadioButton("Full synchronization");
@@ -156,7 +166,7 @@ public class DeviceWizard extends JFrame implements ActionListener,ITechnicalStr
 		jp1.add(jcboxSynchronized, "0,12");
 		jp1.add(jcbSynchronized, "1,12");
 		double size2[][] = { { 0.99 }, {
-				20, 20, 20, 20, 20, 20, 20, 20, 20, 20 }
+			20, 20, 20, 20, 20, 20, 20, 20, 20, 20 }
 		};
 		jp2 = new JPanel();
 		jp2.setLayout(new TableLayout(size2));
@@ -166,7 +176,7 @@ public class DeviceWizard extends JFrame implements ActionListener,ITechnicalStr
 		jp2.add(jcb1, "0,5");
 		jp2.add(jcb2, "0,7");
 		jp2.add(jcb3, "0,9");
-
+		
 		//buttons
 		jpButtons = new JPanel();
 		jpButtons.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -184,34 +194,74 @@ public class DeviceWizard extends JFrame implements ActionListener,ITechnicalStr
 		jpMain.add(jpButtons);
 		setContentPane(jpMain);
 		show();
-		updateWidgetsDefault();
-	}
-
-	/**
-	 * Display device wizzard
-	 * @param device
-	 */
-	public DeviceWizard(Device device) {
-		
-	
 	}
 	
 	/**
 	 * Update widgets for default state
 	 */
-	private void updateWidgetsDefault(){
+	public void updateWidgetsDefault(){
 		jcbRefresh.setSelected(true);
 		jcbAutoRefresh.setEnabled(false);
 		jrbFullSynchro.setSelected(true);//default synchro mode
+		jrbFullSynchro.setEnabled(false);
 	}
 	
 	/**
 	 * Update widgets for device property state 
 	 */
-	private void updateWidgets(){
-		jcbRefresh.setSelected(true);
-		jcbAutoRefresh.setEnabled(false);
-		jrbFullSynchro.setSelected(true);//default synchro mode
+	public void updateWidgets(Device device){
+		bNew = false;
+		this.device = device;
+		
+		//no instant refresh for updates
+		jcbRefresh.setEnabled(false);
+		jcbRefresh.setSelected(false);
+		updateWidgetsDefault();
+		jcbType.setSelectedItem(device.getDeviceTypeS());
+		jtfName.setText(device.getName());
+		jtfUrl.setText(device.getUrl());
+		jtfMountPoint.setText(device.getMountPoint());
+		jcbRefresh.setSelected(false);
+		if (TRUE.equals(device.getProperty(DEVICE_OPTION_AUTO_MOUNT))){
+			jcbAutoMount.setSelected(true);
+			jcbAutoRefresh.setEnabled(true);
+		}
+		if (TRUE.equals(device.getProperty(DEVICE_OPTION_AUTO_REFRESH))){
+			jcbAutoRefresh.setEnabled(true);
+			jcbAutoRefresh.setSelected(true);
+		}
+		jcbSynchronized.removeItemAt(DeviceManager.getDevices().indexOf(device));//do not propose to synchronize a device with itself
+		if (jcbSynchronized.getItemCount()==0){
+			jcboxSynchronized.setEnabled(false);
+			jcbSynchronized.setEnabled(false);
+		}
+		String sSynchroSource = device.getProperty(DEVICE_OPTION_SYNCHRO_SOURCE); 
+		if ( sSynchroSource != null){
+			jrbFullSynchro.setEnabled(true);
+			jrbPartialSynchro.setEnabled(true);
+			jcboxSynchronized.setSelected(true);
+			jcboxSynchronized.setEnabled(true);
+			jcbSynchronized.setEnabled(true);
+			jcbSynchronized.setSelectedIndex(DeviceManager.getDevices().indexOf(DeviceManager.getDevice(sSynchroSource)));
+			if (DEVICE_OPTION_SYNCHRO_MODE_FULL.equals(device.getProperty(DEVICE_OPTION_SYNCHRO_MODE))){
+				jrbFullSynchro.setSelected(true);
+			}
+			else{
+				jrbPartialSynchro.setSelected(true);
+				if (TRUE.equals(device.getProperty(DEVICE_OPTION_SYNCHRO_OPT1))){
+					jcb1.setSelected(true);
+					jcb1.setEnabled(true);
+				}
+				if (TRUE.equals(device.getProperty(DEVICE_OPTION_SYNCHRO_OPT2))){
+					jcb2.setSelected(true);
+					jcb2.setEnabled(true);
+				}	
+				if (TRUE.equals(device.getProperty(DEVICE_OPTION_SYNCHRO_OPT3))){
+					jcb3.setSelected(true);
+					jcb3.setEnabled(true);
+				}	
+			}
+		}
 	}
 	
 	
@@ -271,15 +321,60 @@ public class DeviceWizard extends JFrame implements ActionListener,ITechnicalStr
 			}
 		}
 		else if (e.getSource() == jbOk){
-			Device device = DeviceManager.registerDevice(jtfName.getText(),jcbType.getSelectedIndex(),jtfUrl.getText(),jtfMountPoint.getText());
+			if (bNew){
+				device = DeviceManager.registerDevice(jtfName.getText(),jcbType.getSelectedIndex(),jtfUrl.getText(),jtfMountPoint.getText());
+			}
+			else{
+				device.setDeviceType(jcbType.getSelectedIndex());
+				device.setName(jtfName.getText());
+				device.setUrl(jtfUrl.getText());
+				device.setMountPoint(jtfMountPoint.getText());
+			}
+			
 			device.setProperty(DEVICE_OPTION_AUTO_MOUNT,Boolean.toString(jcbAutoMount.isSelected()));
 			device.setProperty(DEVICE_OPTION_AUTO_REFRESH,Boolean.toString(jcbAutoRefresh.isSelected()));
+			if (jcbSynchronized.isEnabled() && jcbSynchronized.getSelectedItem() != null){
+				device.setProperty(DEVICE_OPTION_SYNCHRO_SOURCE,((Device)DeviceManager.getDevices().get(jcbSynchronized.getSelectedIndex())).getId());
+				if (jrbFullSynchro.isSelected()){
+					device.setProperty(DEVICE_OPTION_SYNCHRO_MODE,DEVICE_OPTION_SYNCHRO_MODE_FULL);
+				}
+				else{
+					device.setProperty(DEVICE_OPTION_SYNCHRO_MODE,DEVICE_OPTION_SYNCHRO_MODE_PARTIAL);
+					if (jcb1.isSelected()){
+						device.setProperty(DEVICE_OPTION_SYNCHRO_OPT1,TRUE);
+					}
+					else{
+						device.setProperty(DEVICE_OPTION_SYNCHRO_OPT1,FALSE);
+					}
+					if (jcb2.isSelected()){
+						device.setProperty(DEVICE_OPTION_SYNCHRO_OPT2,TRUE);
+					}
+					else{
+						device.setProperty(DEVICE_OPTION_SYNCHRO_OPT2,FALSE);
+					}
+					if (jcb3.isSelected()){
+						device.setProperty(DEVICE_OPTION_SYNCHRO_OPT3,TRUE);
+					}
+					else{
+						device.setProperty(DEVICE_OPTION_SYNCHRO_OPT3,FALSE);
+					}
+				}
+			}
+			else{  //no synchro
+				device.removeProperty(DEVICE_OPTION_SYNCHRO_MODE);
+				device.removeProperty(DEVICE_OPTION_SYNCHRO_OPT1);
+				device.removeProperty(DEVICE_OPTION_SYNCHRO_OPT2);
+				device.removeProperty(DEVICE_OPTION_SYNCHRO_OPT3);
+				device.removeProperty(DEVICE_OPTION_SYNCHRO_SOURCE);
+			}
 			if (jcbRefresh.isSelected()){
 				device.refresh();
 			}
 			ViewManager.notify(EVENT_VIEW_REFRESH_REQUEST,DeviceView.getInstance());
-			Messages.showInfoMessage("Device_created");//$NON-NLS-1$
 			dispose();
+			if (bNew){
+				Messages.showInfoMessage("Device_created");//$NON-NLS-1$
+			}
 		}
 		else if (e.getSource() == jbCancel){
 			dispose();  //close window
@@ -296,7 +391,7 @@ public class DeviceWizard extends JFrame implements ActionListener,ITechnicalStr
 					jtfMountPoint.setText(file.getAbsolutePath());
 				}
 			}
-		
+			
 		}
 	}
 }

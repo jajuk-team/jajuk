@@ -31,9 +31,7 @@ public interface ITechnicalStrings {
 		// directory path
 	public static final String PATH_ICONS = System.getProperty("user.dir")+"/dist-files/icons/";
 	public static final String PATH_IMAGES = System.getProperty("user.dir")+"/dist-files/images/";
-	
-	
-	
+		
 		// paths to icons
 	public static final String ICON_REPEAT_ON = PATH_ICONS + "16x16/repeat.png";
 	public static final String ICON_REPEAT_OFF = PATH_ICONS + "16x16/repeat_off.png";
@@ -121,6 +119,13 @@ public interface ITechnicalStrings {
 	//Devices options
 	public static final String DEVICE_OPTION_AUTO_REFRESH = "auto_refresh";
 	public static final String DEVICE_OPTION_AUTO_MOUNT = "auto_mount";
+	public static final String DEVICE_OPTION_SYNCHRO_SOURCE = "synchro_source";
+	public static final String DEVICE_OPTION_SYNCHRO_MODE = "synchro_mode";
+	public static final String DEVICE_OPTION_SYNCHRO_MODE_FULL = "full";
+	public static final String DEVICE_OPTION_SYNCHRO_MODE_PARTIAL = "partial";
+	public static final String DEVICE_OPTION_SYNCHRO_OPT1 = "opt1";
+	public static final String DEVICE_OPTION_SYNCHRO_OPT2 = "opt2";
+	public static final String DEVICE_OPTION_SYNCHRO_OPT3 = "opt3";
 	
 	
 	//perspectives
@@ -131,7 +136,7 @@ public interface ITechnicalStrings {
 	public static final String PERSPECTIVE_NAME_HELP = "org.jajuk.ui.perspectives.HelpPerspective";
 	
 	 //views
-	 public static final String VIEW_NAME_DEVICES = "org.jajuk.ui.views.DeviceView";
+	public static final String VIEW_NAME_DEVICES = "org.jajuk.ui.views.DeviceView";
 	public static final String VIEW_NAME_PARAMETERS = "org.jajuk.ui.views.ParameterView";
 	 	
 	//extensions
@@ -161,15 +166,17 @@ public interface ITechnicalStrings {
 	
 	//Look and feel
 	public static final String LNF_METAL = "Metal";
+	public static final String LNF_GTK = "Gtk";
+	public static final String LNF_WINDOWS = "Windows";
+	public static final String LNF_KUNSTSTOFF = "Kunststoff";
 	
+		
 	//statup mode
 	public static final String STARTUP_MODE_NOTHING = "nothing";
 	public static final String STARTUP_MODE_SHUFFLE = "shuffle";
 	public static final String STARTUP_MODE_FILE = "file";
 	public static final String STARTUP_MODE_LAST = "last";
 	
-	
-		
 	//	configuration keys
 	public static final String CONF_PERSPECTIVE_DEFAULT="jajuk.preference.perspective.default";
 	public static final String CONF_STATE_REPEAT="jajuk.state.mode.repeat";

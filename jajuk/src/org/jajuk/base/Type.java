@@ -114,7 +114,15 @@ public class Type extends PropertyAdapter{
 	 */
 	public boolean equals(Object otherType){
 		return this.getId().equals(((Type)otherType).getId() );
-	}	
+	}
+	
+	/**
+	 * hashcode ( used by the equals method )
+	 */
+	public int hashCode(){
+		return getId().hashCode();
+	}
+
 
 	/**
 	 * @return Returns the bIsMusic.
