@@ -213,7 +213,7 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
 		try{
 			if (e.getSource() == jmiExit){
 				Main.exit(0);
-			}
+            }
 			else if (e.getSource() == jmiAbout){
 				//set default perspective to show if UIi is not yet started
 				if (Main.isUILauched()){
@@ -255,10 +255,20 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
 				ConfigurationManager.setProperty(CONF_SHOW_AT_STARTUP,Boolean.toString(jcbmiVisible.getState()));
 			}
 			else if (e.getSource() == jmiPrevious){
-				FIFO.getInstance().playPrevious();
+                if ( (e.getModifiers() & 4) !=4  && (e.getModifiers() & ActionEvent.SHIFT_MASK) != ActionEvent.SHIFT_MASK ){ //not right clic and shift not selected
+                       FIFO.getInstance().playPrevious();
+			    }
+			    else { //shift selected
+			        FIFO.getInstance().playPreviousAlbum();
+			    }
 			}
 			else if (e.getSource() == jmiNext){
-				FIFO.getInstance().playNext();
+                if ( (e.getModifiers() & 4) !=4  && (e.getModifiers() & ActionEvent.SHIFT_MASK) != ActionEvent.SHIFT_MASK ){ //not right clic and shift not selected
+                        FIFO.getInstance().playNext();
+			    }
+			    else {
+			        FIFO.getInstance().playNextAlbum();
+			    }
 			}
 			else if (e.getSource() == jmiStop){
 				FIFO.getInstance().stopRequest();
