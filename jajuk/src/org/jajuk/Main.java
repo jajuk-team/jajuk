@@ -220,19 +220,20 @@ public class Main implements ITechnicalStrings {
 			launchInitialTrack();
 			
 			//ui init 
-			
-			SwingUtilities.invokeAndWait(new Runnable() {
-				public void run(){
+			SwingUtilities.invokeAndWait(new Runnable() { //use invokeAndWait to get a better progressive ui display
+			    public void run(){
 					try {
 						//starts ui
 						jw = new JajukWindow();
-					
 												
 						//Creates the panel
 						jpFrame = (JPanel)jw.getContentPane();
 						jpFrame.setOpaque(true);
 						jpFrame.setLayout(new BorderLayout());
 						
+						//Set menu bar to the frame
+						jw.setJMenuBar(JajukJMenuBar.getInstance());
+			
 						//create the command bar
 						command = CommandJPanel.getInstance();
 						
@@ -252,9 +253,6 @@ public class Main implements ITechnicalStrings {
 						JPanel jp = new JPanel(); //we use an empty panel to take west place before actual panel ( perspective bar ). just for a better displaying
 						jp.setPreferredSize(new Dimension(3000,3000));//make sure the temp panel makes screen maximalized
 						jpFrame.add(jp, BorderLayout.WEST);
-						
-						//Set menu bar to the frame
-						jw.setJMenuBar(JajukJMenuBar.getInstance());
 						
 						//display window
 						jw.pack();
@@ -499,7 +497,9 @@ public class Main implements ITechnicalStrings {
 				}
 				catch(Exception e){
 					Log.error("112",device.getName(),e); //$NON-NLS-1$
-					Messages.showErrorMessage("112",device.getName()); //$NON-NLS-1$
+					//show a confirm dialog if the device can't be mounted, we can't use regular Messages.showErrprMessage because main window is not yet displayed
+					String sMessage = Messages.getErrorMessage("112")+" : "+device.getName(); //$NON-NLS-1$ 
+					JOptionPane.showMessageDialog(null,sMessage,Messages.getString("Error"),JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$
 					continue;
 				}
 			}
