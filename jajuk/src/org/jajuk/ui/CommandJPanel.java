@@ -686,8 +686,8 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
      * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
      */
     public void mouseClicked(MouseEvent e) {
-        //left button :track level
-        if (e.getButton() == MouseEvent.BUTTON1){
+        //left button and no shift pressed :track level
+        if (e.getButton() == MouseEvent.BUTTON1 && ((e.getModifiersEx() & MouseEvent.SHIFT_DOWN_MASK) != MouseEvent.SHIFT_DOWN_MASK)){
             if (e.getSource() == jbPrevious){
                 synchronized(bLock){
                     new Thread(){
@@ -719,6 +719,41 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
                         }
                     }.start();
                     if ( Player.isPaused()){  //player was paused, reset pause button
+                        Player.setPaused(false);
+                        ObservationManager.notify(EVENT_PLAYER_RESUME);  //notify of this event
+                    }
+                }
+            }
+        }
+        //right click or shift+left click
+        else if (e.getButton() == MouseEvent.BUTTON3 || ((e.getModifiersEx() & MouseEvent.SHIFT_DOWN_MASK) == MouseEvent.SHIFT_DOWN_MASK)){
+            if (e.getSource() == jbNext){
+                synchronized(bLock){
+                    new Thread(){
+                        public void run(){
+                            try{
+                                FIFO.getInstance().playNextAlbum();
+                            }
+                            catch(Exception e){
+                                Log.error(e);
+                            }
+                        }
+                    }.start();
+                }
+            }
+            else if (e.getSource() == jbPrevious){
+                synchronized(bLock){
+                    new Thread(){
+                        public void run(){
+                            try{
+                                FIFO.getInstance().playPreviousAlbum();
+                            }
+                            catch(Exception e){
+                                Log.error(e);
+                            }
+                        }
+                    }.start();
+                    if ( Player.isPaused()){  //player was paused, reset pause button when changing of track
                         Player.setPaused(false);
                         ObservationManager.notify(EVENT_PLAYER_RESUME);  //notify of this event
                     }

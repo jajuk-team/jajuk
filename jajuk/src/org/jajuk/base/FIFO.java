@@ -340,9 +340,9 @@ public class FIFO implements ITechnicalStrings{
                 return;
             }
             if (  (fCurrent != null && fCurrent.getDirectory() == null )  //basic file
-                   || itemLast == null  //first track, display cover
-                   || itemLast.getFile().getDirectory() == null //previous file was a basic file
-                   || (ConfigurationManager.getBoolean(CONF_COVERS_SHUFFLE) && ConfigurationManager.getBoolean(CONF_COVERS_CHANGE_AT_EACH_TRACK)) //change cover at each track in shuffle cover mode ? 
+                    || itemLast == null  //first track, display cover
+                    || itemLast.getFile().getDirectory() == null //previous file was a basic file
+                    || (ConfigurationManager.getBoolean(CONF_COVERS_SHUFFLE) && ConfigurationManager.getBoolean(CONF_COVERS_CHANGE_AT_EACH_TRACK)) //change cover at each track in shuffle cover mode ? 
                     ||( !itemLast.getFile().getDirectory().equals(fCurrent.getDirectory())) ){  //if we are always in the same directory, just leave to save cpu
                 ObservationManager.notify(EVENT_COVER_REFRESH); //request update cover 
             }
@@ -482,32 +482,40 @@ public class FIFO implements ITechnicalStrings{
     }
     
     /**
+     * Get previous track, can add item in first index of FIFO
+     * @return new index of current file
+     * @throws Exception
+     */
+    private int getPrevious() throws Exception{
+        StackItem itemFirst = getItem(0);
+        if ( itemFirst != null){
+            if (index > 0){ //if we have some repeat files
+                index --;
+            }
+            else{ //we are at the first position
+                if (itemFirst.isRepeat()){ //restart last repeated item in the loop
+                    index = getLastRepeatedItem();
+                }
+                else{ //first is not repeated, just insert previous file from collection 
+                    StackItem item = new StackItem(FileManager.getPreviousFile(((StackItem)alFIFO.get(0)).getFile()),
+                            ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true);
+                    alFIFO.add(0,item);
+                    index = 0;
+                }
+            }
+        }
+        return index;
+    }
+    
+    /**
      * Play previous track
      */
     public synchronized void playPrevious(){
         try{
-            StackItem itemFirst = getItem(0);
-            if ( itemFirst != null){
-                if (index > 0){ //if we have some repeat files
-                    index --;
-                    launch(index);
-                }
-                else{ //we are at the first position
-                    if (itemFirst.isRepeat()){ //restart last repeated item in the loop
-                        index = getLastRepeatedItem();
-                        launch(index);
-                    }
-                    else{ //first is not repeated, just insert previous file from collection 
-                        StackItem item = new StackItem(FileManager.getPreviousFile(itemLast.getFile()),
-                                ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true);
-                        Player.stop();
-                        JajukTimer.getInstance().reset();
-                        alFIFO.add(0,item);
-                        JajukTimer.getInstance().addTrackTime(alFIFO);
-                        launch(0);
-                    }
-                }
-            }
+            // Player.stop();
+            JajukTimer.getInstance().reset();
+            JajukTimer.getInstance().addTrackTime(alFIFO);
+            launch(getPrevious());
         }
         catch(Exception e){
             Log.error(e);
@@ -516,6 +524,56 @@ public class FIFO implements ITechnicalStrings{
             ObservationManager.notify(EVENT_PLAYLIST_REFRESH); //refresh playlist editor
         }
     }
+    
+    /**
+     * Play previous album
+     */
+    public synchronized void playPreviousAlbum(){
+        try{
+            //we don't support album navigation inseide repeated tracks
+            if (((StackItem)getItem(0)).isRepeat()){
+                playPrevious();  
+                return;
+            }
+            boolean bOK = false;
+            Directory dir = null;
+            if (getCurrentFile() != null){
+                dir = getCurrentFile().getDirectory();
+            }
+            else{//nothing in FIFO? just leave
+                return;
+            }
+            while(!bOK){
+                int index = getPrevious();
+                Directory dirTested = null;
+                if (alFIFO.get(index) == null ){
+                    return;
+                }
+                else{
+                    File file = ((StackItem)alFIFO.get(index)).getFile();
+                    dirTested = file.getDirectory();
+                    if (dir.equals(dirTested)){ //yet in the same album
+                        continue;
+                    }
+                    else{ //OK, previous is not in the same directory than current track, now check if it is the FIRST track from this new directory
+                        if (FileManager.isVeryfirstFile(file) ||  //this was the very first file from collection
+                                (FileManager.getPreviousFile(file) != null && FileManager.getPreviousFile(file).getDirectory() != file.getDirectory())){ //if true, it was the first track from the dir
+                            bOK = true;
+                        }
+                    }
+                }
+            }
+            launch(index);
+        }
+        catch(Exception e){
+            Log.error(e);
+        }
+        finally{
+            ObservationManager.notify(EVENT_PLAYLIST_REFRESH); //refresh playlist editor
+        }
+        
+    }
+    
     
     /**
      * Play next track in selection
@@ -530,7 +588,7 @@ public class FIFO implements ITechnicalStrings{
             if ( getCurrentFile() != null){  //if stopped, nothing to stop
                 finished(); //stop current track 
             }
-            else if (itemLast !=null ){ //try to launch any previous file
+            else if (itemLast  != null ){ //try to launch any previous file
                 pushCommand(itemLast,false);
             }
             else{ //really nothing? play a shuffle track from collection
@@ -546,6 +604,68 @@ public class FIFO implements ITechnicalStrings{
         }
     }
     
+    
+    /**
+     * Play next track in selection
+     */
+    public synchronized void playNextAlbum(){
+        try{
+            // we don't support album navigation inside repeated tracks
+            if (((StackItem)getItem(0)).isRepeat()){
+                playNext();  
+                return;
+            }
+            //if playing, stop current
+            if ( Player.isPlaying()){
+                Player.stop();
+            }
+            //force a finish to current track if any
+            if ( getCurrentFile() != null){  //if stopped, nothing to stop
+                Directory dir = getCurrentFile().getDirectory(); //ref directory
+                //scan current fifo and try to launch the first track not from this album
+                boolean bOK = false;
+                while ( !bOK && alFIFO.size() > 0 ){
+                   	File file = getItem(0).getFile();
+                   	if (file.getDirectory().equals(dir)){
+                   	    remove(0,0); //remove this file from FIFO, it is from the same album 
+                   	    continue;
+                   	}
+                   	else{
+                   	    bOK = true;
+                   	}
+               }
+                if (bOK){
+                    finished(); //stop current track and start the new one
+                }
+                else{
+                    File fileNext = itemLast.getFile();
+                    do{
+                        fileNext = FileManager.getNextFile(fileNext);
+                       if ( fileNext != null && !fileNext.getDirectory().equals(dir)){ //look for next different album
+                            pushCommand(new StackItem(fileNext,ConfigurationManager.getBoolean(CONF_STATE_REPEAT),false),false); //play it
+                            return;
+                        }
+                    }
+                    while (fileNext != null);
+                }
+            }
+            else if (itemLast  != null ){ //try to launch any previous file
+                pushCommand(itemLast,false);
+            }
+            else{ //really nothing? play a shuffle track from collection
+                pushCommand(new StackItem(FileManager.getShuffleFile(),
+                        ConfigurationManager.getBoolean(CONF_STATE_REPEAT),false),false);
+            }
+        }
+        catch(Exception e){
+            Log.error(e);
+        }
+        finally{
+            ObservationManager.notify(EVENT_PLAYLIST_REFRESH); //refresh playlist editor
+        }
+    }
+    
+   
     
     
     /**

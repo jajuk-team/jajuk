@@ -361,6 +361,19 @@ public class FileManager implements ITechnicalStrings{
 		return null;
 	}
 	
+	
+	/**
+	 * Return whether the given file is the very first file from collection
+	 * @param file
+	 * @return
+	 */
+	public static boolean isVeryfirstFile(File file){
+	    if (file == null){
+	        return false;
+	    }
+	    return  (alSortedFiles.indexOf(file) == 0);
+	}
+	
 	/**
 	 * 
 	 * @param file
