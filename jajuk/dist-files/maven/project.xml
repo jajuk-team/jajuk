@@ -161,6 +161,17 @@
 	      <organization>Jajuk team</organization>
 	      <timezone>+2</timezone>
 	    </developer>
+	
+	   <developer>
+	      <name>Fabrice Dutron</name>
+	      <id>fdutron</id>
+    	  <roles>
+		      <role>Developer</role>
+	      </roles>
+	      <email>fdutron@users.sourceforge.net</email>
+	      <organization>Jajuk team</organization>
+	      <timezone>+2</timezone>
+	    </developer>
 		    
   </developers>
   

@@ -41,7 +41,7 @@ Fabrice Dutron, Nicolas Richard, Bertrand Florat</td>
     <tr>
       <td style="vertical-align: top;">Fixes during qualification<br>
       </td>
-      <td style="vertical-align: top;">76<br>
+      <td style="vertical-align: top;">86<br>
       </td>
     </tr>
   </tbody>
@@ -534,7 +534,8 @@ bar...)<br>
       <td style="vertical-align: top;">RAN </td>
       <td style="vertical-align: top;">Random tests,
 general use tests in every views. </td>
-      <td style="vertical-align: top;"><br>
+      <td
+ style="vertical-align: top; background-color: rgb(153, 255, 153);"><br>
       </td>
       <td style="vertical-align: top;"><br>
       </td>
@@ -725,6 +726,163 @@ It will probably be fixed with next JDIC releases. </td>
     </tr>
   </tbody>
 </table>
+<br>
+<br>
+<h2>Details</h2>
+rc1:<br>
+- [BF] Bug : perspective.xml 0.2 -&gt; 0.3 [OK]<br>
+- [BF] Key PlayerView [OK]<br>
+- [BF] Readme DE [OK]<br>
+- [BF] New lang NDL [OK]<br>
+- [BF] Bug startup list [OK]<br>
+- [BF] sync : Don(t keep device [OK]<br>
+- [BF] No cover if more than 1 cover [OK]<br>
+- [BF] Wrong error message during device creation [OK]<br>
+- [BF] Devices conception problem, do not check ancestor directory [OK]<br>
+- [FD] Wrong default language [OK]<br>
+- [BF] Log startup problem [OK]<br>
+- [BF] Test 0 coverview [OK]<br>
+- [BF] Splashscreen speeling [OK]<br>
+- [BF] CoverView bug [OK]<br>
+- [BF] Display jlFound [OK]<br>
+<br>
+rc2:<br>
+- [BF] Remove Sync source if device removed [OK]<br>
+- [BF] ZERO message [OK]<br>
+- [BF] Existing shuffle list bug [OK]<br>
+- [BF] Previous now keeps selection [OK]<br>
+- [BF] Repeat display by bloc [OK]<br>
+- [BF] No continue, stop music next + overwrites non-continue [OK]<br>
+- [BF] Default cover if ZERO event [OK]<br>
+- [BF] Perf : zero only if needed [OK]<br>
+- [BF] Bug commandjpanel ZERO, buttons state [OK]<br>
+<br>
+rc3:<br>
+- [BF] Removed useless stay in special mode [OK] <br>
+- [BF] File startup wrong, last was taken [OK]<br>
+- [BF] Check null remove device [OK]<br>
+<br>
+rc4:<br>
+- [BF] Error message must be modal device mount [OK]<br>
+- [BF] Message warning if none accessible track [OK]<br>
+- [BF] Play and push shuffle [OK]<br>
+- [NR] Problem remanence tree [OK]<br>
+- [NR] Repeat with queue : current must be repeated [OK]<br>
+- [BF] Freeze after 2 pushes stop right clic [OK]<br>
+- [BF] Slider frozen at 100% [OK]<br>
+- [BF] Canceled mute in position set [OK]<br>
+- [BF] Volume not kept with seek [OK]<br>
+- [BF] Slidebar position comes back to 0% [OK] <br>
+- [BF] Information panel : not right track [OK]<br>
+<br>
+rc5:<br>
+- [BF] Fix a bug allowing to start several player at the same time [OK]<br>
+- [BF] Several Next&nbsp; fix [OK]<br>
+- [BF] Several prev fix [OK]<br>
+- [BF] Potential bug insert several files [OK]<br>
+- [BF] Display error playing 2 sec [OK]<br>
+- [BF] Build ant script was fooled [OK]<br>
+- [GD] Dynamic volume [OK]<br>
+<br>
+rc6:<br>
+- [BF] Backup refactoring [OK]<br>
+- [GD] Fix look look and feel message [OK]<br>
+- [BF] Fix messages out of memory error [OK]<br>
+- [NR] Cover Thread to min priority to avoid blanks [OK]<br>
+- [JF] Display device wizard at first session [OK]<br>
+- [BF] Various fixes/refactoring on mute [OK]<br>
+<br>
+rc7<br>
+- [BF] Rew/for bugs : freeze &agrave; +100%, sound pbm [OK]<br>
+- [BF] Label perspective player [OK]<br>
+- [BF] Startup support not mounted [OK]<br>
+- [BF] Action performed command panel in async [OK]<br>
+- [GD] Device view scollpane [OK]<br>
+- [NR] Blanks (test Xms and buffer variable) [OK] AV<br>
+- [JF] Very low accuracy on author alone [OK]<br>
+<br>
+rc8<br>
+- [FD] CRITICAL : if history is void, can't start jajuk anymore<br>
+- [FD] 15 as hour in information panel if in am/pm date format<br>
+- [JF] bug repeat mode + next add several times the same track <br>
+- [JF] strange and huge traces (from httpclient) -&gt; dropped these
+traces<br>
+- [JF] bug pause + lauch another track -&gt; play icon stay in resume
+mode <br>
+- [FD] After a stop and exit, at next restart we should have nothing in
+last file or last file keep position startup mode.<br>
+- [BF] Perfs : I made some changed whish could reduce CPU usage, PLEASE
+TELL ME...<br>
+<br>
+rc9:<br>
+- [BF] [REGRESSION] Yet another fix for elapsed time bug [OK]<br>
+- [BF] Elapsed time 1 hour more&nbsp; [OK]<br>
+- [FD] Do not propose inexisting LaF [OK]<br>
+- [BF] At startup, a track on a n auto-refreshed device shouldn't be
+lauched, modif: now, we ignore startup files on auto-refreshed device
+and we lock devices to be refreshed as refreshing all together [OK]<br>
+- [BF] Displays a useless error message "cannot read file null" when
+history is void&nbsp; [OK]<br>
+- [BF] If a track can't be read, it shouldn't go in history [OK]<br>
+- [BF] Lauch a track by history, if it is in error, not message in
+information panel&nbsp; [OK]<br>
+- [BF] For some tracks, wrong elapsed time and no sound [OK]<br>
+<br>
+rc10:<br>
+- [BF] Bug in bestof playlist if total number of tracks in collection
+&lt; BESTOF_SIZE and others various fixes on that [OK]<br>
+- [BF] Auto-refresh mode, If a track no more exit in history, we get a
+blanck line in the history bar [OK]<br>
+- [JF] History bar scroolbar not visible in 1024x768 [OK]<br>
+- [JF] Jajuk version doesn't include rc details (for developers) [OK]<br>
+- [BF] In some raw JVM crash cases, perspectives.xml can be voided and
+then Jajuk is no more useable until you remove perspectives.xml file in
+order to make jajuk create a new one [OK]<br>
+- [GD][FD] JVM crash caused by systray4j with autorefresh and some
+others conditions [OK]<br>
+<br>
+rc11:<br>
+- [GD] Strange sound when stopping/exiting [Partially OK]<br>
+- [BF] Window iconified when closing [OK]<br>
+- [BF] Window title not updated at startup with first track name [OK]<br>
+- [BF] [Critical] In some seldom cases, ObservationManager goes into
+infinite loop with ConcurrentException [OK]<br>
+- [BF] Error parsing playlist if it contains a void line [OK]<br>
+- [BF] Fwd and Rew when stopped has no effect even in continue mode [OK]<br>
+<br>
+rc12:<br>
+- [BF] Play in continue mode / then lauch in repeat mode with play :
+bad bahavior [OK]<br>
+- [BF] [REGRESSION] Wrong notaskbar behavior&nbsp; [OK]
+<br>
+- [BF] Various bugs when using do not show jajuk at startup mode&nbsp;
+[OK]<br>
+- [BF] Small window when About on systray in notaskbar mode&nbsp; [OK]<br>
+<br>
+Non reproductable:<br>
+- [FD] Playlist editor : cannot remove a track after an add<br>
+- [FD] Playlist save bug<br>
+- [JF] None track displayed in playlist editor (continue mode)<br>
+- [FD] Unexpected History voiding<br>
+- [BF] Views position/size bug <br>
+- [JF] auto-cover bugs, gray cover<br>
+<br>
+Really a Bug ? :<br>
+<br>
+Cannot be fixed :<br>
+- [BF] Strange sound when pausing<br>
+- [BF] JDIC bug : tray disapears under windows with -notaskbar option<br>
+- [BF] Tray disapears under Windows<br>
+<br>
+Later:<br>
+- [BF] If Track 1 -&gt; track 2 [error] and next track is track1 -&gt;
+2 times track1 in history<br>
+- [JF] Wrong default installation path under linux<br>
+- [FD] Multiple selection in playlist editor<br>
+- [BF] Current playlist bug<br>
+- [BF] Lauch startup track after auto-refresh or display an error
+message ?<br>
+<br>
 <br>
 </body>
 </html>
