@@ -277,7 +277,10 @@ public class FileManager implements ITechnicalStrings{
 	 * @return next file from entire collection
 	 */
 	public static synchronized File getNextFile(File file){
-		File fileNext = null;
+	    if (file  == null){
+		    return null;
+		}
+	    File fileNext = null;
 		ArrayList alSortedFiles = getSortedFiles();
 		//look for a correct file from index to collection end
 		boolean bOk = false;
@@ -314,7 +317,10 @@ public class FileManager implements ITechnicalStrings{
 	 * @return previous file from entire collection
 	 */
 	public static synchronized File getPreviousFile(File file){
-		File filePrevious = null;
+		if (file  == null){
+		    return null;
+		}
+	    File filePrevious = null;
 		ArrayList alSortedFiles = getSortedFiles();
 		//test if this file is the very first one
 		if (alSortedFiles.indexOf(file) == 0){

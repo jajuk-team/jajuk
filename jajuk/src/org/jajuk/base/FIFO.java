@@ -45,31 +45,22 @@ public class FIFO implements ITechnicalStrings,Runnable,Observer{
     /** Currently played track*/
     private File fCurrent;
 
-    /**
-     * Last played track
-     */
+    /**Last played track*/
     private File fLastOne;
 
-    /**
-     * Fifo itself, contains jajuk File objects
-     */
+    /**Fifo itself, contains jajuk File objects */
     private volatile ArrayList alFIFO;
-
 	
 	/**Stop flag**/
 	private static volatile boolean bStop;
 
-    /**
-     * Deep time
-     */
+    /**Deep time*/
     private final int SLEEP_TIME = 100;
 
-    /**
-     * Refresh time in ms
-     */
+    /**Refresh time in ms*/
     private final int REFRESH_TIME = 1000;
 
-		/**Self instance*/
+	/**Self instance*/
 	static private FIFO fifo= null; 	
 	
 	/**True if a track is playing */
@@ -101,10 +92,6 @@ public class FIFO implements ITechnicalStrings,Runnable,Observer{
 
     /**Repeated set  */
     private ArrayList alRepeated;
-
-	
-	/** Repeated set index */
-	private int iRepeatIndex;
 	
 	/**Current file intro status*/
 	private boolean bIntroEnabled;
@@ -120,7 +107,14 @@ public class FIFO implements ITechnicalStrings,Runnable,Observer{
 	
 	/**First file should seek to position flag*/
 	private boolean bSeekFirstFile = false;
-		
+	
+	/**Has next been pressed?*/
+	private boolean bNext = false;
+	
+	/**UI reinit flag for perfs, avoid to reinit at each heart beat*/
+	private boolean bZero = false;
+	
+	
 	/**
 	 * Singleton access
 	 * @return
@@ -219,7 +213,6 @@ public class FIFO implements ITechnicalStrings,Runnable,Observer{
 			FIFO.getInstance().setGlobalRandom(false); //global random mode is broken by any push
 			if (TRUE.equals(ConfigurationManager.getProperty(CONF_STATE_REPEAT)) || this.bForcedRepeat){  //repeat is on
 				alRepeated = alFiles;
-				iRepeatIndex = 0;
 			}
 		}
 		//ok, stop current track
@@ -297,27 +290,32 @@ public class FIFO implements ITechnicalStrings,Runnable,Observer{
 	}
 	
 	/**
-	 * Play previous track in the album (even if the selection should be shuffle) 
+	 * Play previous track
 	 */
 	public synchronized void playPrevious(){
-		//search in the history previous track
-		ArrayList alHistory = History.getInstance().getHistory();
-		HistoryItem hiPrevious = (HistoryItem)alHistory.get(alHistory.size()-2);
-		File file = FileManager.getFile(hiPrevious.getFileId());
-		ArrayList alFilesToPlay = new ArrayList();
-		alFilesToPlay.add(file);
-		if ( file != null && file.isReady()){
-			FIFO.getInstance().insert(alFilesToPlay,0,true);
+		File file = null;
+	    ArrayList alToPlay = new ArrayList(1);
+		if ( fLastOne != null){
+			file = FileManager.getPreviousFile(fLastOne);
 		}
+		else{
+			file = FileManager.getFile(History.getInstance().getLastFile());
+			file = FileManager.getPreviousFile(file);
+		}
+		if ( file != null && file.isReady()){
+		    alToPlay.add(file);
+		}
+		FIFO.getInstance().insert(alToPlay,0,true);
 	}
-	
-	
+		
 	/**
 	 * Play next track in selection
 	 */
 	public synchronized void playNext(){
-		if ( fCurrent != null){  //if stopped, nothing to stop
-			finished();
+		bNext = true;
+	    if ( fCurrent != null){  //if stopped, nothing to stop
+			Player.stop();
+		    finished();
 		}
 		else{
 			File file = FileManager.getNextFile(fLastOne);
@@ -367,22 +365,21 @@ public class FIFO implements ITechnicalStrings,Runnable,Observer{
 						push(FileManager.getNoveltyFile(),false,true);
 					}
 					else if ( fLastOne!= null && alRepeated.size()>0 && ( TRUE.equals(ConfigurationManager.getProperty(CONF_STATE_REPEAT)) || bForcedRepeat)){ //repeat mode ?
-						if (iRepeatIndex == alRepeated.size()){
-							iRepeatIndex = 0;
-						}
-						push((File)alRepeated.get(iRepeatIndex),false,true,bForcedRepeat);
-						iRepeatIndex ++;
+					    push(alRepeated,false,true,bForcedRepeat);
 					}
-					else if ( fLastOne!= null && TRUE.equals(ConfigurationManager.getProperty(CONF_STATE_CONTINUE))){ //continue mode ?
-						File fileNext = FileManager.getNextFile(fLastOne);
+					else if ( fLastOne!= null && (TRUE.equals(ConfigurationManager.getProperty(CONF_STATE_CONTINUE)) || bNext )){ //continue mode ?
+						//a next button overwrites a non-continue mode
+					    bNext = false;
+					    File fileNext = FileManager.getNextFile(fLastOne);
 						if ( fileNext != null ){
 							push(fileNext,true);	
 						}
 					}
 					else{  //fifo empty and nothing planned to be played, lets re-initialize labels
-						if ( i%(REFRESH_TIME/SLEEP_TIME) == 0){  //actual refresh less frequent for cpu
+						if ( !bZero){
 							lTotalTime = 0;
 							ObservationManager.notify(EVENT_ZERO);
+							bZero = true;
 						}
 						i++;
 						continue; //leave
@@ -392,7 +389,8 @@ public class FIFO implements ITechnicalStrings,Runnable,Observer{
 					continue;
 				}
 				synchronized(this){  //lock fifo access when launching
-					Util.waiting();
+					bZero = false;
+				    Util.waiting();
 					//intro workaround : intro mode is only read at track launch and can't be set during the play
 					bIntroEnabled = ConfigurationManager.getBoolean(CONF_STATE_INTRO); //re-read intro mode
 					if ( !bPlaying){  //test this to avoid notifying at each launch
@@ -650,28 +648,30 @@ public class FIFO implements ITechnicalStrings,Runnable,Observer{
 	 * @param iPos
 	 */
 	public synchronized void insert(ArrayList alFiles,int iPos,boolean bImmediate){
-		//ok, stop current track
-		if (bImmediate) {
-			Player.stop();
-			bPlaying = false;
-			clear();
-			lTotalTime = 0;
-		}
-		File file = null;
-		//add required tracks
-		Iterator it = alFiles.iterator();
-		while (it.hasNext()){
-			file = (File)it.next();
-			alFIFO.add(file);
-			lTotalTime += file.getTrack().getLength();
-		}
-		//re-add previous tracks
-		it = alFIFO.iterator();
-		while (it.hasNext()){
-			file = (File)it.next();
-			alFIFO.add(file);
-			lTotalTime += file.getTrack().getLength();
-		}
+	    //	  ok, stop current track
+	    if (bImmediate) {
+	        Player.stop();
+	        bPlaying = false;
+	        lTotalTime = 0;
+	    }
+	    //re-add current track
+	    alFIFO.add(0,fCurrent);
+	    File file = null;
+	    int index = 0;
+	    //reset total time
+	    Iterator it = alFIFO.iterator();
+	    while (it.hasNext()){
+	        file = (File)it.next();
+	        lTotalTime += file.getTrack().getLength();
+	    }
+	    //add required tracks
+	    it = alFiles.iterator();
+	    while (it.hasNext()){
+	        file = (File)it.next();
+	        alFIFO.add(index,file);
+	        index++;
+	        lTotalTime += file.getTrack().getLength();
+	    }
 	}
 	
 	
