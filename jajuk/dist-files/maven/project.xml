@@ -96,18 +96,7 @@
 	      <timezone>+2</timezone>
 	    </developer>
 
-	    <developer>
-	      <name>Jonathan C.Kresge</name>
-	      <id>jonathankresge</id>
-	     <roles>
-			<role>Doc writer</role>
-	     </roles>
-	      <email>jonathankresge@users.sourceforge.net</email>
-	      <organization>Jajuk team</organization>
-	      <timezone>-4</timezone>
-	    </developer>
-
-	    <developer>
+	   <developer>
 	      <name>Riccardo Capecchi</name>
 	      <id>ricciocri</id>
 	     <roles>

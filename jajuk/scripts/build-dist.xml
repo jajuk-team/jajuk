@@ -2,7 +2,10 @@
 <!--Ant script for packagers only-->
 
 <project default='all' name='jajuk' basedir='..'>
-  <property name='distdir' value='/tmp/jajuk-dist/jajuk'/>
+  <property name='rootdir' value='/tmp/jajuk-dist'/>
+  <property name='distdir' value='${rootdir}/jajuk'/>
+  <property name='rpmbuilddir' value='${rootdir}/RPMBUILD/'/>
+  <property name='rpmdistdir' value='${rpmbuilddir}/jajuk'/>
   <property name='libdir' value='lib'/>
   <property name='nativedir' value='native'/>
   <property name='srcdir' value='src'/>
@@ -17,9 +20,11 @@
   
   <target name='clean' description='o Clean up the distribution'>
     <delete dir='${distdir}'/>
-   </target>
+    <delete dir='${rpmbuilddir}'/>
+    </target>
   
-  <target name='mkdist' description='o Create the distribution structure' depends='clean'>
+  <target name='mkdist_izpack' description='o Create the IzPack distribution structure' depends='clean'>
+    <mkdir dir='${rootdir}'/>
     <mkdir dir='${distdir}'/>
     <copy todir='${distdir}/lib' >
      <fileset dir='${libdir}'/>
@@ -57,7 +62,48 @@
      </copy>
   </target>
   
- <target name='compile' description='o Compile the code' depends='mkdist'>
+ <target name='mkdist_rpm' description='o Create the RPM distribution structure' depends='clean'>
+    <!-- Create structure-->
+    <mkdir dir='${rootdir}'/>
+    <mkdir dir='${rpmbuilddir}'/>
+    <mkdir dir='${rpmbuilddir}/tmp'/>
+    <mkdir dir='${rpmbuilddir}/SRMPS'/>
+    <mkdir dir='${rpmbuilddir}/RPMS'/>
+    <mkdir dir='${rpmbuilddir}/SPECS'/>
+    <mkdir dir='${rpmdistdir}'/>
+    <mkdir dir='${rpmdistdir}/usr/bin'/>
+    <mkdir dir='${rpmdistdir}/usr/lib/jajuk/bin'/>
+    <mkdir dir='${rpmdistdir}/usr/lib/jajuk/lib'/>
+    <mkdir dir='${rpmdistdir}/usr/lib/jajuk/native'/>
+    <mkdir dir='${rpmdistdir}/usr/share/applications'/>
+    <mkdir dir='${rpmdistdir}/usr/share/doc/packages/jajuk'/>
+    <mkdir dir='${rpmdistdir}/usr/share/pixmaps'/>
+    
+    <!-- Copy files -->
+    <copy todir='${rpmdistdir}/usr/bin' >
+    	<fileset file='${basedir}/scripts/jajuk'/>
+    </copy>
+    <chmod file="${rpmdistdir}/usr/bin/jajuk" perm="ugo+rx"/>
+    <copy todir='${rpmdistdir}/usr/lib/jajuk/lib' >
+    	<fileset dir='${basedir}/lib'/>
+    </copy>
+    <copy todir='${rpmdistdir}/usr/lib/jajuk/native' >
+    	<fileset file='${basedir}/native/*.so'/>
+    </copy>
+    <copy todir='${rpmdistdir}/usr/share/applications' >
+    	<fileset file='${basedir}/dist-files/packaging/Jajuk.desktop'/>
+    </copy>
+    <chmod file="${rpmdistdir}/usr/share/applications/Jajuk.desktop" perm="ugo+rwx"/>
+    <copy todir='${rpmdistdir}/usr/share/doc/packages/jajuk' >
+    	<fileset file='${basedir}/dist-files/doc/README*.html'/>
+    </copy>
+    <copy todir='${rpmdistdir}/usr/share/pixmaps' >
+    	<fileset file='${basedir}/dist-files/icons/64x64/jajuk-logo.png'/>
+    </copy>
+  </target>
+ 
+ 
+ <target name='compile' description='o Compile the code' depends='mkdist_izpack'>
     <javac destdir='${distdir}/${classdir}' deprecation='true' debug='true' optimize='true' excludes='**/package.html'>
       <src>
         <pathelement path='${distdir}/${srcdir}'>
@@ -104,7 +150,7 @@
   </target>
 
   
-  <target name='helpsetjar' description='o Create the heplset jar' depends='mkdist'>
+  <target name='helpsetjar' description='o Create the heplset jar' depends='mkdist_izpack'>
     <delete file='${distdir}/bin/${helpsetjarname}'/>
     <exec executable="jhindexer" dir='${basedir}/dist-files/doc/jajuk-hs/default'>
 	 <arg line="html"/>

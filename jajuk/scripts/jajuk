@@ -1,0 +1,12 @@
+#!/bin/sh
+#Jajuk launching script for unix in RPM install, assumes javaw program is in the PATH env. variable
+
+#Go in the right environment directory
+cd /usr/lib/jajuk/bin
+
+#Set right JAVA_HOME variable according to JRE runtime
+export JAVA_HOME=`java -cp /usr/lib/jajuk/bin/jajuk.jar org.jajuk.SystemAnalyser`
+echo JAVA_HOME=$JAVA_HOME
+
+#Launch jajuk
+java -client -Xms25M -Djava.library.path=../native -jar jajuk.jar -notaskbar
