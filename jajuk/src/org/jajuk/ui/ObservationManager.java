@@ -126,7 +126,7 @@ public class ObservationManager implements ITechnicalStrings{
 	}
 	
 	/**
-	 * Notify all components having registered for the given subject and giving soem details
+	 * Notify all components having registered for the given subject and giving some details
 	 * @param subject
 	 * @param pDetails informations about this event
 	 */
@@ -134,6 +134,17 @@ public class ObservationManager implements ITechnicalStrings{
 		hEventDetails.put(subject,pDetails);
 		notify(subject);
 	}
+	
+	/**
+	 * Notify all components synchronously having registered for the given subject and giving some details
+	 * @param subject
+	 * @param pDetails informations about this event
+	 */
+	public static void notifySync(final String subject,Properties pDetails){
+		hEventDetails.put(subject,pDetails);
+		notifySync(subject);
+	}
+	
 	
 	/**
 	 * Return the details for an event, or null if there is no details
