@@ -32,6 +32,7 @@ import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -48,6 +49,8 @@ import org.jajuk.base.FIFO;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.ObservationManager;
 import org.jajuk.ui.Observer;
+import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.DownloadManager;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 
@@ -80,6 +83,9 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
 	ArrayList alFiles = new ArrayList(10);
 	
 	JLabel jl;
+	
+	/**Concurency flag to avoid several refreshs blocked by the cover search*/
+	static boolean bAlreadyRefreshing = false;
 	
 	/**Used Cover index*/
 	int index = 0;
@@ -140,18 +146,23 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
 	 * @see org.jajuk.ui.Observer#update(java.lang.String)
 	 */
 	public synchronized void update(String subject){
+	    if (bAlreadyRefreshing){ //another refreshing is probably blocked until time out by a web search
+	           return;
+	    }
+	    bAlreadyRefreshing = true;
 	    try{
 	        if ( EVENT_COVER_REFRESH.equals(subject)){
 	            org.jajuk.base.File fCurrent = FIFO.getInstance().getCurrentFile();
 	            //if current file is null ( probably a file cannot be read ) 
 	            if ( fCurrent == null){
-	                displayCurrentCover();
-	                return;
+	                displayCurrentCover(); //do nothing
+	                return; 
 	            }
 	            java.io.File fDir = new java.io.File(fCurrent.getAbsolutePath()).getParentFile();
 	            if ( !fDir.exists() || (this.fDir!= null && this.fDir.equals(fDir)) ){  //if we are always in the same directory, just leave to save cpu
 	                return;
 	            }
+	            this.fDir = fDir; //store this dir
 	            alCovers.clear();
 	            java.io.File[] files = fDir.listFiles();
 	            for (int i=0;i<files.length;i++){
@@ -161,7 +172,29 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
 	                }
 	            }
 	            if (alCovers.size() == 0){
-	                alCovers.add(new Cover()); //add the default cover
+	                if (ConfigurationManager.getBoolean(CONF_COVERS_AUTO_COVER)){
+	                    String sQuery = Util.createQuery(fCurrent);
+	                    if (sQuery.equals("")){
+	                        alCovers.add(new Cover(new URL(IMAGES_SPLASHSCREEN),Cover.DEFAULT_COVER)); //add the default cover
+	    	            }
+	                    ArrayList alUrls = DownloadManager.getRemoteCoversList(sQuery);
+	                    if (alUrls.size() == 0){
+	                        alCovers.add(new Cover(new URL(IMAGES_SPLASHSCREEN),Cover.DEFAULT_COVER)); //add the default cover
+	                    }
+	                    Iterator it = alUrls.iterator();
+	                    while ( it.hasNext()){
+	                        URL url = (URL)it.next();
+	                        Log.debug("Found Cover: "+url.toString());
+	                        Cover cover = null;
+	                        try{
+	                            cover = new Cover(url,Cover.REMOTE_COVER);
+	                            alCovers.add(cover);
+	                        }
+	                        catch(Exception e){
+	                            Log.debug("Wrong url: "+url.toString());
+	                        }
+	                    }
+	                }
 		        }
 	            else{
 	                Collections.sort(alCovers); //sort the list 
@@ -171,13 +204,16 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
 	        }
 	        else if ( EVENT_PLAYER_STOP.equals(subject)){
 	            alCovers.clear();
-	            alCovers.add(new Cover()); //add the default cover
+	            alCovers.add(new Cover(new URL(IMAGES_SPLASHSCREEN),Cover.DEFAULT_COVER)); //add the default cover
 	            index = 0;
 	            displayCurrentCover();
 	        }
 	    }
 	    catch(Exception e){
 	        Log.error(e);
+	    }
+	    finally{
+	        bAlreadyRefreshing = false;  //unlock
 	    }
 	}
 
@@ -216,11 +252,26 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
 	    if ( alCovers.size() == 0 ){
 	        return;
 	    }
-	    Cover cover = (Cover)alCovers.get(index); 
+	    //find next OK cover
+	    ImageIcon icon = null;
+	    Cover cover = null; 
+	    while ( index >= 0){//there are some more covers after
+	        try{
+	            cover = (Cover)alCovers.get(index); 
+	            icon = cover.getImage();
+	            break;
+	        }
+	        catch(Exception e){ //this cover cannot be loaded
+	            alCovers.remove(index);
+	            index  --; //look at next cover    
+	        }
+	    }
+	    if (icon == null){ //none available cover
+	        return;
+	    }
 	    JInternalFrame ji = ViewManager.getFrame(this);
-	    Log.debug("Cover size: "+(ji.getWidth()-8)+"/"+(ji.getHeight()-60));
 	    ImageFilter filter = new AreaAveragingScaleFilter(ji.getWidth()-8,ji.getHeight()-60);
-	    Image img = createImage(new FilteredImageSource(cover.getImage().getSource(),filter));
+	    Image img = createImage(new FilteredImageSource(icon.getImage().getSource(),filter));
 	    jl = new JLabel(new ImageIcon(img));
 	    URL url = cover.getURL();
 	    if (url != null){
@@ -255,4 +306,6 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
             displayCurrentCover();
         }
     }
+    
+    
 }

@@ -20,9 +20,10 @@
 
 package org.jajuk.base;
 
-import java.awt.Image;
-import java.net.MalformedURLException;
+import java.awt.MediaTracker;
 import java.net.URL;
+
+import javax.swing.ImageIcon;
 
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
@@ -47,7 +48,7 @@ public class Cover implements Comparable,ITechnicalStrings {
     private int iType;
     
     /**Image*/
-    private Image image;
+    private ImageIcon image;
      
    /**
    * Constructor
@@ -55,25 +56,12 @@ public class Cover implements Comparable,ITechnicalStrings {
     * @param iType
     */
     public Cover(URL url, int iType) {
+        long l = System.currentTimeMillis();
         this.url = url;
         this.iType = iType;
-        this.image = java.awt.Toolkit.getDefaultToolkit().getImage(url);
     }
     
-   /**
-    * Default cover
-    */
-    public Cover(){
-        try {
-            image = java.awt.Toolkit.getDefaultToolkit().getImage(new URL(IMAGES_SPLASHSCREEN));
-            iType = DEFAULT_COVER;
-        } catch (MalformedURLException e) {
-            Log.error(e);
-        }
-    }
-    
-    
-    
+       
     /* (non-Javadoc)
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
@@ -138,7 +126,13 @@ public class Cover implements Comparable,ITechnicalStrings {
     /**
      * @return Returns the image.
      */
-    public Image getImage() {
+    public ImageIcon getImage() throws Exception {
+        long l = System.currentTimeMillis();
+        this.image = new ImageIcon(java.awt.Toolkit.getDefaultToolkit().getImage(url));
+        if (image.getImageLoadStatus() != MediaTracker.COMPLETE ){
+            throw new Exception(); //the cover can't be displayed, must be a no-more existing page 
+        }
+        Log.debug("Loading "+url.toString()+" in  "+(System.currentTimeMillis()-l)+" ms");
         return image;
     }
     

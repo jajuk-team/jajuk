@@ -33,7 +33,6 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -47,6 +46,7 @@ import javax.swing.SwingUtilities;
 
 import org.jajuk.Main;
 import org.jajuk.base.ITechnicalStrings;
+import org.jajuk.base.Track;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.CommandJPanel;
 import org.jajuk.ui.InformationJPanel;
@@ -71,6 +71,7 @@ public class Util implements ITechnicalStrings {
 	public static final Cursor DEFAULT_CURSOR = new Cursor(Cursor.DEFAULT_CURSOR);
 	/**Contains execution location ( jar or directory )*/
 	public static String sExecLocation;
+	
 	
 	/**
 	 * Genres
@@ -305,41 +306,7 @@ public class Util implements ITechnicalStrings {
 	    return sbResult.append(sbMins).append(":").append(sbSecs).toString(); //$NON-NLS-1$
 	}
 	
-	
-	
-	/**
-	 * Shake a list and return a randomized new list
-	 * @param alIn
-	 * @return
-	 */
-	public static ArrayList randomize(ArrayList alIn){
-		int[] iNewIndexes = new int[alIn.size()];
-		int size = alIn.size();
-		for (int i=0;i<size;i++){
-			iNewIndexes[i]= -1;
-		}
-		for (int i=0;i<size;i++){
-			int newIndex = 0;
-			boolean bOK = false;
-			while (!bOK){
-				newIndex = (int)(Math.random()*size);
-				iNewIndexes[i]=newIndex;
-				bOK = true;
-				for (int j=0;j<size;j++){ //check this index is not already token
-					if ( j!= i && iNewIndexes[j] == newIndex){
-						bOK = false;
-						break;
-					}
-				}
-			}
-		}			
-		ArrayList alOut = (ArrayList)alIn.clone();
-		for (int i =0;i<size;i++){
-			alOut.set(i,alIn.get(iNewIndexes[i]));
-		}
-		return alOut;
-	}
-	
+		
 	/** Waiting cursor thread, stored to avoid construction */
 	private static Thread tWaiting = new Thread(){
 		public void run(){
@@ -646,5 +613,25 @@ public class Util implements ITechnicalStrings {
 		}
 		return milliseconds;
 	}
+	
+	
+	  /**
+     * 
+     * @param file
+     * @return an accurate  google search query for a file
+     */
+    public  static String createQuery(org.jajuk.base.File file){
+        String sQuery = "";
+        Track track = file.getTrack();
+        String sAuthor = track.getAuthor().getName();
+        String sAlbum = track.getAlbum().getName();
+        if (!sAuthor.equals("unknown_author")){
+            sQuery = "+\""+sAuthor+"\"";
+        }
+        if (!sAlbum.equals("unknown_album")){
+            sQuery += sAlbum;
+        }
+        return sQuery;
+    }
 	
 }
