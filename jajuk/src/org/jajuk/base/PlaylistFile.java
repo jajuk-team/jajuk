@@ -161,8 +161,11 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 		if ( iType == PlaylistFileItem.PLAYLIST_TYPE_BOOKMARK){ //bookmark playlist
 			Bookmarks.getInstance().clear();
 		}
+		else if (getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE){ 
+			FIFO.getInstance().clear();
+		}
 		else{
-			alBasicFiles.clear();
+		    alBasicFiles.clear();
 		}
 		setModified(true);
 	}

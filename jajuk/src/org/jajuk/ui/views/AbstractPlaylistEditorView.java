@@ -331,10 +331,10 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
             if ( iType == PlaylistFileItem.PLAYLIST_TYPE_QUEUE){
                 jbAdd.setEnabled(true);
                 jbClear.setEnabled(true);
-                jbUp.setEnabled(true);
-                 jbDown.setEnabled(true);
+                jbUp.setEnabled(false); //set it to false just for startup because cursor is over first track 
+                 jbDown.setEnabled(false); //set it to false just for startup because cursor is over first track 
                 jbAddShuffle.setEnabled(true);
-                jbRemove.setEnabled(true);
+                jbRemove.setEnabled(false); //set it to false just for startup because cursor is over first track and it can't be removed in queue mode
                 jbRun.setEnabled(false);
             }
             else if ( iType == PlaylistFileItem.PLAYLIST_TYPE_BESTOF){
@@ -529,7 +529,6 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
             plfi.getPlaylistFile().clear();
             if ( plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE){ //if it is the queue playlist, stop the selection
                 FIFO.getInstance().stopRequest();
-                ObservationManager.notify(EVENT_PLAYLIST_REFRESH); //alert playlists editors ( queue playlist ) something changed for him
             }
         }
         else if (ae.getSource() == jbDown || ae.getSource() == jbUp){
@@ -537,19 +536,24 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
             if ( iRow != -1 ){ //-1 means nothing is selected
                 if ( ae.getSource() == jbDown){
                     plfi.getPlaylistFile().down(iRow);
-                    iSelectedRow = iSelectedRow+1; //keep selection on moving track
+                    iSelectedRow ++; //keep selection on moving track
                 }
                 else if ( ae.getSource() == jbUp){
                     plfi.getPlaylistFile().up(iRow);
-                    iSelectedRow = iSelectedRow-1; //keep selection on moving track
+                    iSelectedRow --; //keep selection on moving track
                 }
             }
         }
         else if (ae.getSource() == jbRemove){
             int iRow = jtable.getSelectedRow();
-            plfi.getPlaylistFile().remove(iRow);
+            if (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE){
+                FIFO.getInstance().remove(iSelectedRow,iSelectedRow);
+            }
+            else{
+                plfi.getPlaylistFile().remove(iRow);
+            }
             if ( iSelectedRow - 1 >= 0){
-                iSelectedRow = iSelectedRow-1; //keep selection on moving track
+                iSelectedRow --; //keep selection on moving track
             }
             iRowNum --;
         }
@@ -624,10 +628,18 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
             }
             else{
                 jbAdd.setEnabled(true);
-                jbRemove.setEnabled(true);
-                jbUp.setEnabled(true);
-                jbDown.setEnabled(true);
                 jbAddShuffle.setEnabled(true);
+                //check for first row remove case : we can't remove currently played track
+                if ( plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE && lsm.getMinSelectionIndex() == 0){
+                    jbRemove.setEnabled(false);
+                    jbUp.setEnabled(false);
+                    jbDown.setEnabled(false);
+                }
+                else{
+                    jbRemove.setEnabled(true);
+                    jbUp.setEnabled(true);
+                    jbDown.setEnabled(true);
+                }
             }
         }
     }
