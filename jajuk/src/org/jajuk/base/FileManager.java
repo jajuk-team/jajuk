@@ -22,6 +22,8 @@ package org.jajuk.base;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Properties;
@@ -125,6 +127,37 @@ public class FileManager implements ITechnicalStrings{
 		while ( it.hasNext()){
 			File file = (File)it.next();
 			if (file.isReady()){
+				alEligibleFiles.add(file);
+			}
+		}
+		if (alEligibleFiles.size() ==0 ){
+			return null;
+		}
+		return (File)alEligibleFiles.get((int)(Math.random()*alEligibleFiles.size()));
+	}
+	
+	/**
+	 * Return a shuffle mounted file from the noveties
+	 * @return
+	 */
+	public static synchronized File getNoveltyFile(){
+		//create a tempory table to remove unmounted files
+		ArrayList alEligibleFiles = new ArrayList(1000);
+		Iterator it = hmIdFile.values().iterator();
+		while ( it.hasNext()){
+			File file = (File)it.next();
+			int iTrackAge = 0;
+			try{
+				int iYear = Integer.parseInt(file.getTrack().getAdditionDate().substring(0,4));
+				int iMounth = Integer.parseInt(file.getTrack().getAdditionDate().substring(4,6))-1; //mounth is zero based : jan=0
+				int iDay = Integer.parseInt(file.getTrack().getAdditionDate().substring(6,8));
+				GregorianCalendar gc = new GregorianCalendar(iYear,iMounth,iDay);
+				iTrackAge = (int)((new Date().getTime()-gc.getTime().getTime())/86400000); //)/1000/60/60/24;
+			}
+			catch(Exception e){ //error like a wrong added date 
+			    continue;
+			}
+			if (file.isReady() && iTrackAge <= ConfigurationManager.getInt(CONF_OPTIONS_NOVELTIES_AGE)){
 				alEligibleFiles.add(file);
 			}
 		}

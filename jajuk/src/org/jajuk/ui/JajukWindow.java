@@ -76,6 +76,7 @@ public class JajukWindow extends JFrame implements ITechnicalStrings,ComponentLi
 	SysTrayMenuItem stmiAbout;
 	SysTrayMenuItem stmiShuffle;
 	SysTrayMenuItem stmiBestof;
+	SysTrayMenuItem stmiNovelties;
 	SysTrayMenuItem stmiPause;
 	SysTrayMenuItem stmiStop;
 	SysTrayMenuItem stmiPrevious;
@@ -139,6 +140,8 @@ public class JajukWindow extends JFrame implements ITechnicalStrings,ComponentLi
 			stmiShuffle.addSysTrayMenuListener(this);
 			stmiBestof =  new SysTrayMenuItem(Messages.getString("JajukWindow.7")); //$NON-NLS-1$
 			stmiBestof.addSysTrayMenuListener(this);
+			stmiNovelties =  new SysTrayMenuItem(Messages.getString("JajukWindow.15")); //$NON-NLS-1$
+			stmiNovelties.addSysTrayMenuListener(this);
 			cmiVisible =  new CheckableMenuItem(Messages.getString("JajukWindow.8")); //$NON-NLS-1$
 			cmiVisible.setState(bVisible); 
 			cmiVisible.addSysTrayMenuListener(this);
@@ -235,6 +238,7 @@ public class JajukWindow extends JFrame implements ITechnicalStrings,ComponentLi
 			file = FileManager.getShuffleFile();
 			if (file != null){
 				FIFO.getInstance().setBestof(false); //break best of mode if set
+				FIFO.getInstance().setNovelties(false); //break novelties mode if set
 				FIFO.getInstance().setGlobalRandom(true);
 				FIFO.getInstance().push(file,false,true);
 			}
@@ -244,7 +248,18 @@ public class JajukWindow extends JFrame implements ITechnicalStrings,ComponentLi
 			file = FileManager.getBestOfFile();
 			if (file != null){
 				FIFO.getInstance().setGlobalRandom(false); //break global random mode if set
+				FIFO.getInstance().setNovelties(false); //break novelties mode if set
 				FIFO.getInstance().setBestof(true);
+				FIFO.getInstance().push(file,false,true);
+			}
+		}
+		else if (e.getSource() == stmiNovelties){
+			org.jajuk.base.File file = null;
+			file = FileManager.getNoveltyFile();
+			if (file != null){
+				FIFO.getInstance().setGlobalRandom(false); //break global random mode if set
+				FIFO.getInstance().setBestof(false); //break best of mode if set
+				FIFO.getInstance().setNovelties(true);
 				FIFO.getInstance().push(file,false,true);
 			}
 		}

@@ -138,7 +138,7 @@ public interface ITechnicalStrings {
 	public static final String ICON_CURRENT_PLAYLIST =  PATH_ICONS + "16x16/run.png";
 	public static final String ICON_CLEAR =  PATH_ICONS + "16x16/clear.png";
 	public static final String ICON_SAVE =  PATH_ICONS + "16x16/save.png";
-	
+	public static final String ICON_NOVELTIES =  PATH_ICONS + "16x16/novelties.png";
 			
 	//images
 	public static final String IMAGES_SPLASHSCREEN =  PATH_IMAGES + "jajuk-splashscreen.png";
@@ -291,6 +291,8 @@ public interface ITechnicalStrings {
 	public static final String STARTUP_MODE_SHUFFLE = "shuffle";
 	public static final String STARTUP_MODE_FILE = "file";
 	public static final String STARTUP_MODE_LAST = "last";
+	public static final String STARTUP_MODE_BESTOF = "bestof";
+	public static final String STARTUP_MODE_NOVELTIES = "novelties";
 	
 	//	configuration keys
 	public static final String CONF_PERSPECTIVE_DEFAULT="jajuk.preference.perspective.default";
@@ -314,6 +316,7 @@ public interface ITechnicalStrings {
 	public static final String CONF_OPTIONS_P2P_ADD_REMOTE_PROPERTIES= "jajuk.options.p2p.add_remote_properties";
 	public static final String CONF_OPTIONS_P2P_HIDE_LOCAL_PROPERTIES= "jajuk.options.p2p.hide_local_properties";
 	public static final String CONF_OPTIONS_P2P_PASSWORD= "jajuk.options.p2p.password";
+	public static final String CONF_OPTIONS_NOVELTIES_AGE= "jajuk.options.novelties";
 	public static final String CONF_HISTORY= "jajuk.options.history";
 	public static final String CONF_FIRST_CON= "jajuk.first_con";
 	public static final String CONF_TAGS_DEEP_SCAN= "jajuk.tags.deep_scan";
@@ -325,7 +328,6 @@ public interface ITechnicalStrings {
 	public static final String CONF_REGEXP= "jajuk.regexp"; //use regular expressions ?
 	public static final String CONF_BACKUP_SIZE= "jajuk.backup_size"; //backup size for collection.xml in MB
 	public static final String CONF_COLLECTION_CHARSET= "jajuk.collection_charset";//collection file charset (utf-8 or utf-16)
-	
 	
 	//miscelanous
 	public static final String TRUE= "true";
@@ -380,8 +382,7 @@ public interface ITechnicalStrings {
 	public static final String XML_TRACK_RATE = "rate";
 	public static final String XML_TRACK_HITS = "hits";
 	public static final String XML_TRACK_ADDED = "added";
-	
-		
+			
 	public static final String XML_PLAYLIST = "playlist";
 	
 }

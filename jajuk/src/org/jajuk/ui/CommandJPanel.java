@@ -74,6 +74,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 	JToolBar jtbSpecial;
 	JButton jbGlobalRandom;
 	JButton jbBestof;
+	JButton jbNovelties;
 	JButton jbMute;
 	JToolBar jtbPlay;
 	JButton jbPrevious;
@@ -198,6 +199,10 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		jbBestof.addActionListener(this);
 		jbBestof.setToolTipText(Messages.getString("CommandJPanel.6")); //$NON-NLS-1$
 		jtbSpecial.add(jbBestof);
+		jbNovelties = new JButton(Util.getIcon(ICON_NOVELTIES)); 
+		jbNovelties.addActionListener(this);
+		jbNovelties.setToolTipText(Messages.getString("CommandJPanel.16")); //$NON-NLS-1$
+		jtbSpecial.add(jbNovelties);
 		jbMute = new JButton(Util.getIcon(ICON_MUTE)); 
 		jbMute.addActionListener(this);
 		jbMute.setToolTipText(Messages.getString("CommandJPanel.7")); //$NON-NLS-1$
@@ -349,6 +354,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 				public void finished() {
 					if (file != null){
 						FIFO.getInstance().setBestof(false); //break best of mode if set
+						FIFO.getInstance().setNovelties(false); //break novelties mode if set
 						FIFO.getInstance().setGlobalRandom(true);
 						FIFO.getInstance().push(file,false,true);
 					}
@@ -367,7 +373,27 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 				public void finished() {
 					if (file != null){
 						FIFO.getInstance().setGlobalRandom(false); //break global random mode if set
+						FIFO.getInstance().setNovelties(false); //break novelties mode if set
 						FIFO.getInstance().setBestof(true);
+						FIFO.getInstance().push(file,false,true);
+					}
+				}
+			};
+			sw.start();
+		}
+		if (ae.getSource() == jbNovelties ){
+			SwingWorker sw = new SwingWorker() {
+				org.jajuk.base.File file = null;
+				public Object construct() {
+					file = FileManager.getNoveltyFile();
+					return null;
+				}
+				
+				public void finished() {
+					if (file != null){
+						FIFO.getInstance().setGlobalRandom(false); //break global random mode if set
+						FIFO.getInstance().setBestof(false); //break best of mode if set
+						FIFO.getInstance().setNovelties(true);
 						FIFO.getInstance().push(file,false,true);
 					}
 				}

@@ -87,6 +87,9 @@ public class FIFO implements ITechnicalStrings,Runnable{
 	/** Best of enabled ? */
 	private boolean bBestOf;
 	
+	/** Novelties enabled ? */
+	private boolean bNovelties;
+	
 	/** Repeated set */
 	private ArrayList alRepeated;
 	
@@ -332,6 +335,9 @@ public class FIFO implements ITechnicalStrings,Runnable{
 					else if ( bBestOf){ //Best of mode
 						push(FileManager.getBestOfFile(),false,true);
 					}
+					else if ( bBestOf){ //Novelties mode
+						push(FileManager.getNoveltyFile(),false,true);
+					}
 					else if ( fLastOne!= null && alRepeated.size()>0 && ( TRUE.equals(ConfigurationManager.getProperty(CONF_STATE_REPEAT)) || bForcedRepeat)){ //repeat mode ?
 						if (iRepeatIndex == alRepeated.size()){
 							iRepeatIndex = 0;
@@ -503,15 +509,17 @@ public class FIFO implements ITechnicalStrings,Runnable{
 	}
 	
 	/**
+	 * @return Returns the novelties mode.
+	 */
+	public boolean isNovelties() {
+		return bNovelties;
+	}
+	
+	/**
 	 * @param globalRandom The bGlobalRandom to set.
 	 */
 	public void setGlobalRandom(boolean globalRandom) {
 		bGlobalRandom = globalRandom;
-	}
-	
-	public void forceRepeat(File file){
-	    alRepeated.clear();
-	    alRepeated.add(file);
 	}
 	
 	/**
@@ -521,7 +529,21 @@ public class FIFO implements ITechnicalStrings,Runnable{
 		this.bBestOf = bBestOf;
 	}
 	
+	/**
+	 * @param bestof The novelties mode set.
+	 */
+	public void setNovelties(boolean bNovelties){
+		this.bNovelties = bNovelties;
+	}
 	
+	/**
+	 * Force the repeat mode without using push, used to loop on the current track
+	 * @param file file to loop on
+	 */
+	public void forceRepeat(File file){
+	    alRepeated.clear();
+	    alRepeated.add(file);
+	}
 	/**
 	 * Stop request. Void the fifo
 	 */

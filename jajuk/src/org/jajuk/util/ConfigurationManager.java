@@ -140,6 +140,7 @@ public class ConfigurationManager implements ITechnicalStrings{
 		properties.put(CONF_OPTIONS_HIDE_UNMOUNTED,FALSE);
 		properties.put(CONF_OPTIONS_RESTART,TRUE);
 		properties.put(CONF_OPTIONS_SEARCH_UNMOUNTED,TRUE);
+		properties.put(CONF_OPTIONS_NOVELTIES_AGE,"30");
 		properties.put(CONF_OPTIONS_LOG_LEVEL,Integer.toString(Log.WARNING));
 		//set default language without properties file available (normaly only at install)
 		String sLanguage = System.getProperty("user.language"); //$NON-NLS-1$

@@ -84,6 +84,8 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 	JRadioButton jrbNothing;
 	JRadioButton jrbLast;
 	JRadioButton jrbShuffle;
+	JRadioButton jrbBestof;
+	JRadioButton jrbNovelties;
 	JRadioButton jrbFile;
 	SearchBox sbSearch;		
 	JPanel jpConfirmations;
@@ -105,6 +107,8 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 	JTextField jtfIntroLength;
 	JLabel jlBestofSize;
 	JTextField jtfBestofSize;
+	JLabel jlNoveltiesAge;
+	JTextField jtfNoveltiesAge;
 	JPanel jpP2P;
 	JCheckBox jcbShare;
 	JLabel jlPasswd;
@@ -189,7 +193,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		//--Startup
 		jpStart = new JPanel();
 		double sizeStart[][] = {{0.15,iXSeparator,0.4,iXSeparator,0.3,iXSeparator},
-				{20,iYSeparator,20,iYSeparator,20,iYSeparator,20}};
+				{20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20}};
 		jpStart.setLayout(new TableLayout(sizeStart));
 		jlStart = new JLabel(Messages.getString("ParameterView.9")); //$NON-NLS-1$
 		bgStart = new ButtonGroup();
@@ -199,6 +203,10 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jrbLast.setToolTipText(Messages.getString("ParameterView.13")); //$NON-NLS-1$
 		jrbShuffle = new JRadioButton(Messages.getString("ParameterView.14")); //$NON-NLS-1$
 		jrbShuffle.setToolTipText(Messages.getString("ParameterView.15")); //$NON-NLS-1$
+		jrbBestof = new JRadioButton(Messages.getString("ParameterView.131")); //$NON-NLS-1$
+		jrbBestof.setToolTipText(Messages.getString("ParameterView.132")); //$NON-NLS-1$
+		jrbNovelties = new JRadioButton(Messages.getString("ParameterView.133")); //$NON-NLS-1$
+		jrbNovelties.setToolTipText(Messages.getString("ParameterView.134")); //$NON-NLS-1$
 		jrbFile = new JRadioButton(Messages.getString("ParameterView.16")); //$NON-NLS-1$
 		jrbFile.setToolTipText(Messages.getString("ParameterView.17")); //$NON-NLS-1$
 		jrbFile.addItemListener(this);
@@ -219,14 +227,18 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		bgStart.add(jrbNothing);
 		bgStart.add(jrbLast);
 		bgStart.add(jrbShuffle);
+		bgStart.add(jrbBestof);
+		bgStart.add(jrbNovelties);
 		bgStart.add(jrbFile);
 		jpStart.setBorder(BorderFactory.createTitledBorder(Messages.getString("ParameterView.19"))); //$NON-NLS-1$
 		jpStart.add(jlStart,"0,2"); //$NON-NLS-1$
 		jpStart.add(jrbNothing,"2,0"); //$NON-NLS-1$
 		jpStart.add(jrbLast,"2,2"); //$NON-NLS-1$
 		jpStart.add(jrbShuffle,"2,4"); //$NON-NLS-1$
-		jpStart.add(jrbFile,"2,6"); //$NON-NLS-1$
-		jpStart.add(sbSearch,"4,6"); //$NON-NLS-1$
+		jpStart.add(jrbBestof,"2,6"); //$NON-NLS-1$
+		jpStart.add(jrbNovelties,"2,8"); //$NON-NLS-1$
+		jpStart.add(jrbFile,"2,10"); //$NON-NLS-1$
+		jpStart.add(sbSearch,"4,10"); //$NON-NLS-1$
 		
 		//--Confirmations
 		jpConfirmations = new JPanel();
@@ -245,7 +257,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jpOptions = new JPanel();
 		jpOptions.setBorder(BorderFactory.createTitledBorder(Messages.getString("ParameterView.33"))); //$NON-NLS-1$
 		double sizeOptions[][] = {{0.99},
-				{iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,60+2*iYSeparator,iYSeparator,70,iYSeparator}};
+				{iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,60+2*iYSeparator,iYSeparator,110,iYSeparator}};
 		jpOptions.setLayout(new TableLayout(sizeOptions));
 		jcbDisplayUnmounted = new JCheckBox(Messages.getString("ParameterView.34")); //$NON-NLS-1$
 		jcbDisplayUnmounted.setToolTipText(Messages.getString("ParameterView.35")); //$NON-NLS-1$
@@ -290,7 +302,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		//Intro
 		JPanel jp = new JPanel();
 		double sizeIntro[][] = {{0.50,0.50},
-				{20,iYSeparator,20,iYSeparator,20,iYSeparator}};
+				{20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator}};
 		jp.setLayout(new TableLayout(sizeIntro));
 		//intro position
 		jlIntroPosition = new JLabel(Messages.getString("ParameterView.59")); //$NON-NLS-1$
@@ -351,7 +363,9 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jtfIntroLength.setToolTipText(Messages.getString("ParameterView.110") ); //$NON-NLS-1$
 		//best of size
 		jlBestofSize = new JLabel(Messages.getString("ParameterView.111")); //$NON-NLS-1$
+		jlBestofSize.setToolTipText(Messages.getString("ParameterView.112") ); //$NON-NLS-1$
 		jtfBestofSize = new JTextField(3);
+		jtfBestofSize.setToolTipText(Messages.getString("ParameterView.112") ); //$NON-NLS-1$
 		jtfBestofSize.setInputVerifier(new InputVerifier(){
 			public boolean verify(JComponent input) {
 				JTextField tf = (JTextField) input;
@@ -374,7 +388,33 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 				return verify(input);
 			}
 		});
-		jtfBestofSize.setToolTipText(Messages.getString("ParameterView.112") ); //$NON-NLS-1$
+		//novelties age
+		jlNoveltiesAge = new JLabel(Messages.getString("ParameterView.129")); //$NON-NLS-1$
+		jlNoveltiesAge.setToolTipText(Messages.getString("ParameterView.130")); //$NON-NLS-1$
+		jtfNoveltiesAge = new JTextField(3);
+		jtfNoveltiesAge.setToolTipText(Messages.getString("ParameterView.130")); //$NON-NLS-1$
+		jtfNoveltiesAge.setInputVerifier(new InputVerifier(){
+			public boolean verify(JComponent input) {
+				JTextField tf = (JTextField) input;
+				String sText = tf.getText();
+				try{
+					int iValue = Integer.parseInt(sText);
+					if (iValue < 0){ //if adding age =0, it mean today, no max limit 
+						jbOK.setEnabled(false);
+						return false;
+					}
+				}
+				catch(Exception e){
+					return false;
+				}
+				jbOK.setEnabled(true);
+				return true;
+			}
+			
+			public boolean shouldYieldFocus(JComponent input) {
+				return verify(input);
+			}
+		});
 		//add panels
 		jp.add(jlIntroPosition,"0,0"); //$NON-NLS-1$
 		jp.add(jtfIntroPosition,"1,0"); //$NON-NLS-1$
@@ -382,6 +422,8 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jp.add(jtfIntroLength,"1,2"); //$NON-NLS-1$
 		jp.add(jlBestofSize,"0,4"); //$NON-NLS-1$
 		jp.add(jtfBestofSize,"1,4"); //$NON-NLS-1$
+		jp.add(jlNoveltiesAge,"0,6"); //$NON-NLS-1$
+		jp.add(jtfNoveltiesAge,"1,6"); //$NON-NLS-1$
 		jpOptions.add(jcbDisplayUnmounted,"0,1"); //$NON-NLS-1$
 		jpOptions.add(jcbRestart,"0,3"); //$NON-NLS-1$
 		jpOptions.add(jcbSearchUnmounted,"0,5"); //$NON-NLS-1$
@@ -575,6 +617,10 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 					if (!sBestofSize.equals("")){ //$NON-NLS-1$
 						ConfigurationManager.setProperty(CONF_BESTOF_SIZE,sBestofSize);
 					}
+					String sNoveltiesAge = jtfNoveltiesAge.getText();
+					if (!sNoveltiesAge.equals("")){ //$NON-NLS-1$
+						ConfigurationManager.setProperty(CONF_OPTIONS_NOVELTIES_AGE,sNoveltiesAge);
+					}
 					//startup
 					if (jrbNothing.isSelected()){
 						ConfigurationManager.setProperty(CONF_STARTUP_MODE,STARTUP_MODE_NOTHING);
@@ -587,6 +633,12 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 					}
 					else if (jrbFile.isSelected()){
 						ConfigurationManager.setProperty(CONF_STARTUP_MODE,STARTUP_MODE_FILE);
+					}
+					else if (jrbBestof.isSelected()){
+						ConfigurationManager.setProperty(CONF_STARTUP_MODE,STARTUP_MODE_BESTOF);
+					}
+					else if (jrbNovelties.isSelected()){
+						ConfigurationManager.setProperty(CONF_STARTUP_MODE,STARTUP_MODE_NOVELTIES);
 					}
 					//Confirmations
 					ConfigurationManager.setProperty(CONF_CONFIRMATIONS_DELETE_FILE,Boolean.toString(jcbBeforeDelete.isSelected()));
@@ -656,6 +708,12 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		else if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_SHUFFLE)){
 			jrbShuffle.setSelected(true);
 		}
+		else if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_BESTOF)){
+			jrbBestof.setSelected(true);
+		}
+		else if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_NOVELTIES)){
+			jrbNovelties.setSelected(true);
+		}
 		jcbBeforeDelete.setSelected(ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_DELETE_FILE));
 		jcbBeforeExit.setSelected(ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_EXIT));
 		boolean bHidden = ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED);
@@ -669,6 +727,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jtfIntroLength.setText(ConfigurationManager.getProperty(CONF_OPTIONS_INTRO_LENGTH));
 		jtfIntroPosition.setText(ConfigurationManager.getProperty(CONF_OPTIONS_INTRO_BEGIN));
 		jtfBestofSize.setText(ConfigurationManager.getProperty(CONF_BESTOF_SIZE));
+		jtfNoveltiesAge.setText(ConfigurationManager.getProperty(CONF_OPTIONS_NOVELTIES_AGE));
 		jcbShare.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_P2P_SHARE));
 		jpfPasswd.setText(ConfigurationManager.getProperty(CONF_OPTIONS_P2P_PASSWORD));
 		jcbAddRemoteProperties.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_P2P_ADD_REMOTE_PROPERTIES));
