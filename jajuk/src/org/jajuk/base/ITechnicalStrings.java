@@ -341,6 +341,7 @@ public interface ITechnicalStrings {
 	public static final String CONF_CONFIRMATIONS_DELETE_FILE = "jajuk.confirmations.delete_file";
 	public static final String CONF_CONFIRMATIONS_EXIT = "jajuk.confirmations.exit";
 	public static final String CONF_CONFIRMATIONS_REMOVE_DEVICE = "jajuk.confirmations.remove_device";
+	public static final String CONF_CONFIRMATIONS_DELETE_COVER = "jajuk.confirmations.delete_cover";
 	public static final String CONF_OPTIONS_HIDE_UNMOUNTED = "jajuk.options.hide_unmounted";
 	public static final String CONF_OPTIONS_RESTART = "jajuk.options.restart";
 	public static final String CONF_OPTIONS_LOG_LEVEL = "jajuk.options.log_level";
