@@ -716,9 +716,9 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jtfMaxSize = new JTextField();
 		jtfMaxSize.setToolTipText(Messages.getString("ParameterView.153")); //$NON-NLS-1$
 		jtfMaxSize.setInputVerifier(iverifier);
-		jpCovers.add(jcbAutoCover,"0,1"); //$NON-NLS-1$
-		jpCovers.add(jcbShuffleCover,"0,3"); //$NON-NLS-1$
-		jpCovers.add(jcbLoadEachTrack,"1,3"); //$NON-NLS-1$
+		jpCovers.add(jcbShuffleCover,"0,1"); //$NON-NLS-1$
+		jpCovers.add(jcbLoadEachTrack,"1,1"); //$NON-NLS-1$
+		jpCovers.add(jcbAutoCover,"0,3"); //$NON-NLS-1$
 		jpCovers.add(jcbPreLoad,"0,5"); //$NON-NLS-1$
 		jpCovers.add(jcbResize,"0,7"); //$NON-NLS-1$
 		jpCovers.add(jlMinSize,"0,9"); //$NON-NLS-1$
@@ -937,18 +937,12 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 				        jtfMinSize.setEnabled(true);
 				        jtfMaxSize.setEnabled(true);
 				        jcbResize.setEnabled(true);
-				        jcbShuffleCover.setEnabled(true);
-				        if (jcbShuffleCover.isSelected()){
-				            jcbLoadEachTrack.setEnabled(true);
-				        }
 				        jcbPreLoad.setEnabled(true);
 				    }
 				    else{
 				        jtfMinSize.setEnabled(false);
 				        jtfMaxSize.setEnabled(false);
 				        jcbResize.setEnabled(false);
-				        jcbShuffleCover.setEnabled(false);
-				        jcbLoadEachTrack.setEnabled(false);
 				        jcbPreLoad.setEnabled(false);
 				    }
 				}
@@ -1039,7 +1033,6 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jtfMaxSize.setText(ConfigurationManager.getProperty(CONF_COVERS_MAX_SIZE));
 		jtfMaxSize.setEnabled(ConfigurationManager.getBoolean(CONF_COVERS_AUTO_COVER));
 		jcbShuffleCover.setSelected(ConfigurationManager.getBoolean(CONF_COVERS_SHUFFLE));
-		jcbShuffleCover.setEnabled(ConfigurationManager.getBoolean(CONF_COVERS_AUTO_COVER));
 		jcbPreLoad.setSelected(ConfigurationManager.getBoolean(CONF_COVERS_PRELOAD));
 		jcbPreLoad.setEnabled(ConfigurationManager.getBoolean(CONF_COVERS_AUTO_COVER));
 		jcbResize.setSelected(ConfigurationManager.getBoolean(CONF_COVERS_RESIZE));
