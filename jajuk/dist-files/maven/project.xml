@@ -7,7 +7,7 @@
  
   <id>jajuk</id>
  
-  <currentVersion>0.1</currentVersion>
+  <currentVersion>0.2</currentVersion>
  
   <organization>
     <name>Jajuk team</name>
@@ -38,7 +38,7 @@
  
  <repository>
     <connection>
-      scm:cvs:pserver:anonymous@cvs.jajuk.sourceforge.net:/cvsroot/jajuk:jajuk
+      scm:cvs:pserver:anonymous@cvs.sourceforge.net:/cvsroot/jajuk:jajuk
     </connection>
     <url>
       http://cvs.sourceforge.net/viewcvs.py/jajuk/
@@ -68,6 +68,7 @@
 	      <organization>Jajuk team</organization>
 	      <timezone>+2</timezone>
 	    </developer>
+
 	    <developer>
 	      <name>Gerhard Dietrichsteiner</name>
 	      <id>skyreacher</id>
@@ -79,6 +80,7 @@
 	      <organization>Jajuk team</organization>
 	      <timezone>+2</timezone>
 	    </developer>
+
 	    <developer>
 	      <name>Oscar Appelgren</name>
 	      <id>oscariot</id>
@@ -89,6 +91,7 @@
 	      <organization>Jajuk team</organization>
 	      <timezone>+2</timezone>
 	    </developer>
+
 	    <developer>
 	      <name>Jonathan C.Kresge</name>
 	      <id>jonathankresge</id>
@@ -99,6 +102,7 @@
 	      <organization>Jajuk team</organization>
 	      <timezone>-4</timezone>
 	    </developer>
+
 	    <developer>
 	      <name>Riccardo Capecchi</name>
 	      <id>ricciocri</id>
@@ -109,6 +113,7 @@
 	      <organization>Jajuk team</organization>
 	      <timezone>+2</timezone>
 	    </developer>
+
 		<developer>
 	      <name>Kevin Tangning</name>
 	      <id>kavent</id>
@@ -119,6 +124,18 @@
 	      <organization>Jajuk team</organization>
 	      <timezone>+8</timezone>
 	    </developer>
+
+		<developer>
+	     <name>Masiar Farahani (masiar)</name>
+	      <id>masiar</id>
+	     <roles>
+			<role>Developer</role>
+	     </roles>
+	      <email>masiar@users.sourceforge.net</email>
+	      <organization>Jajuk team</organization>
+	      <timezone>+2</timezone>
+	    </developer>
+	    
 	    <developer>
 	      <name>Sébastien Gringoire</name>
 	      <id>sgringoi</id>
@@ -156,10 +173,6 @@
 			<name>darsa</name>
 			<roles><role>Bug reports</role></roles>
 		</contributor>
-		<contributor>
-			<name>Masiar Farahani (masiar)</name>
-			<roles><role>Bug reports</role></roles>
-		</contributor>
 	</contributors>
 	
  <dependencies>
@@ -191,7 +204,7 @@
    <dependency>
 	   <groupId>lib</groupId>
         <artifactId>LiquidLnF</artifactId>
-        <version>0.2.0</version> 
+        <version>0.2.3</version> 
     </dependency>
 
    <dependency>
@@ -222,6 +235,48 @@
 	   <groupId>lib</groupId>
         <artifactId>systray4j</artifactId>
         <version>2.4.1</version> 
+    </dependency>
+    
+     <dependency>
+	   <groupId>lib</groupId>
+        <artifactId>jogg</artifactId>
+        <version>0.0.5</version> 
+    </dependency>
+    
+     <dependency>
+	   <groupId>lib</groupId>
+        <artifactId>jorbis</artifactId>
+        <version>0.0.12</version> 
+    </dependency>
+    
+     <dependency>
+	   <groupId>lib</groupId>
+        <artifactId>mp3spi</artifactId>
+        <version>1.9</version> 
+    </dependency>
+    
+     <dependency>
+	   <groupId>lib</groupId>
+        <artifactId>tritonus_share</artifactId>
+        <version>1.0</version> 
+    </dependency>
+    
+     <dependency>
+	   <groupId>lib</groupId>
+        <artifactId>vorbisspi</artifactId>
+        <version>1.0</version> 
+    </dependency>
+
+     <dependency>
+	   <groupId>lib</groupId>
+        <artifactId>jlGui</artifactId>
+        <version>2.3</version> 
+    </dependency>
+
+     <dependency>
+	   <groupId>lib</groupId>
+        <artifactId>basicplayer</artifactId>
+        <version>2.3</version> 
     </dependency>
    
   </dependencies>
