@@ -109,7 +109,7 @@ public class JajukWindow extends JFrame implements ITechnicalStrings,ComponentLi
 		bVisible = ConfigurationManager.getBoolean(CONF_SHOW_AT_STARTUP,true);
 		iWidth = (int)(Toolkit.getDefaultToolkit().getScreenSize().getWidth());
 		iHeight = (int)(Toolkit.getDefaultToolkit().getScreenSize().getHeight());
-		setTitle(Messages.getString("Main.10"));  //$NON-NLS-1$
+		setTitle(Messages.getString("JajukWindow.17"));  //$NON-NLS-1$
 		setIconImage(Util.getIcon(ICON_LOGO).getImage());
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		addComponentListener(this);
@@ -359,14 +359,12 @@ public class JajukWindow extends JFrame implements ITechnicalStrings,ComponentLi
         if (subject.equals(EVENT_FILE_LAUNCHED)){
             File file = FIFO.getInstance().getCurrentFile();
             if (file != null){
-                String sMessage = Messages.getString("FIFO.10")+file.getTrack().getAuthor().getName2()+" / "+file.getTrack().getAlbum().getName2()+" / "+file.getTrack().getName();//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                setTooltip(sMessage);
                 setTitle(file.getTrack().getName());
             }
          }
         else  if (subject.equals(EVENT_ZERO)){
-            setTooltip(Messages.getString("FIFO.16")); //$NON-NLS-1$
-            setTitle(Messages.getString("FIFO.18")); //$NON-NLS-1$
+            setTooltip(Messages.getString("JajukWindow.18")); //$NON-NLS-1$
+            setTitle(Messages.getString("JajukWindow.17")); //$NON-NLS-1$
         }
     
     }
