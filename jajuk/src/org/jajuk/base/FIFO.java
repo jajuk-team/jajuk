@@ -67,9 +67,8 @@ public class FIFO implements ITechnicalStrings{
     /**First file should seek to position flag*/
     private boolean bSeekFirstFile = false;
     
-    /**Temp*/
-    private int i = -2;
-    
+    /**Concurency flag*/
+    private static boolean bFlag = false;
     /**
      * Singleton access
      * @return
@@ -116,7 +115,7 @@ public class FIFO implements ITechnicalStrings{
      * @param alItems
      * @param bAppend
      */
-    public void push(final ArrayList alItems, final boolean bAppend) {
+    public synchronized void push(final ArrayList alItems, final boolean bAppend) {
         new Thread(){ //do it in a thread to make UI more reactive
             public void run(){
                 try{
@@ -134,7 +133,7 @@ public class FIFO implements ITechnicalStrings{
      * @param item
      * @param bAppend
      */
-    public void push(final StackItem item, final boolean bAppend) {
+    public synchronized void push(final StackItem item, final boolean bAppend) {
         new Thread(){ //do it in a thread to make UI more reactive
             public void run(){
                 try{
@@ -153,8 +152,12 @@ public class FIFO implements ITechnicalStrings{
      * @param alItems, list of items  to be played
      * @param bAppend keep previous files or stop them to start a new one ?
      */
-    public synchronized void pushCommand( ArrayList alItems,  boolean bAppend) {
+    public  void pushCommand( ArrayList alItems,  boolean bAppend) {
+        if (bFlag){  //soft concurency check : we can't synchronize this method because it can call an invokeAndWait and conduct to GUI freeze
+            return;
+        }
         try{
+            bFlag = true;
             //wake up FIFO if stopped
             bStop = false;
             //first try to mount needed devices
@@ -169,7 +172,7 @@ public class FIFO implements ITechnicalStrings{
                 if ( item.getFile().getDirectory()!=null && !item.getFile().getDirectory().getDevice().isMounted()){  //file is null if it is a BasicFile
                     //not mounted, ok let them a chance to mount it:
                     final String sMessage = Messages.getString("Error.025")+" ("+item.getFile().getDirectory().getDevice().getName()+Messages.getString("FIFO.4"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                    i = Messages.getChoice(sMessage,JOptionPane.INFORMATION_MESSAGE);
+                    int i = Messages.getChoice(sMessage,JOptionPane.INFORMATION_MESSAGE);
                     if ( i == JOptionPane.YES_OPTION){
                         try{
                             item.getFile().getDirectory().getDevice().mount();
@@ -236,6 +239,7 @@ public class FIFO implements ITechnicalStrings{
         }
         finally{
             ObservationManager.notify(EVENT_PLAYLIST_REFRESH); //refresh playlist editor
+            bFlag = false;
         }
     }
     
@@ -245,7 +249,7 @@ public class FIFO implements ITechnicalStrings{
      * @param item, item to be played
      * @param bAppend keep previous files or stop them to start a new one ?
      */
-    public synchronized void pushCommand(StackItem item, boolean bAppend) {
+    public void pushCommand(StackItem item, boolean bAppend) {
         ArrayList alFiles = new ArrayList(1);
         alFiles.add(item);
         pushCommand(alFiles,bAppend);
@@ -636,6 +640,7 @@ public class FIFO implements ITechnicalStrings{
         Player.stop();  //stop player
         reset();  //reinit all variables
         ObservationManager.notify(EVENT_PLAYER_STOP);  //notify to devices like commandJPanel to update ui
+        ObservationManager.notify(EVENT_ZERO);  //ask reset
     }
     
     /**
