@@ -134,6 +134,7 @@
     	<action dev='bflorat' type='fix'>984868 Should ignore pause between 2 tracks</action>
     	<action dev='bflorat' type='fix'>1004106 Systray pause not taken into account in main window</action>
     	<action dev='bflorat' type='fix'>1002831 Physical tree collapse when device tested</action>
+    	<action dev='bflorat' type='fix'>Many minor bugs not referenced and discovered during 0.3 qualification</action>
      </release>
 
   </body>
