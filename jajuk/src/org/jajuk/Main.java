@@ -266,10 +266,14 @@ public class Main implements ITechnicalStrings {
 			Collection.commit();
 		}
 		else{
-			//Save collection
-			long l = System.currentTimeMillis();
-			Util.saveFile(new File(FILE_COLLECTION));
-			Log.debug("Saved collection file in "+(System.currentTimeMillis()-l)+" ms");
+			//Save collection asynchronously
+			new Thread(){
+				public void run(){
+					long l = System.currentTimeMillis();
+					Util.saveFile(new File(FILE_COLLECTION));
+					Log.debug("Saved collection file in "+(System.currentTimeMillis()-l)+" ms");
+				}
+			}.start();
 		}
 		//	check for perspectives.xml file
 		File fPerspectives = new File(FILE_PERSPECTIVES_CONF);
