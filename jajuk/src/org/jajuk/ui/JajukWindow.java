@@ -110,6 +110,10 @@ public class JajukWindow extends JFrame implements ITechnicalStrings,ComponentLi
 		setIconImage(Util.getIcon(ICON_LOGO).getImage());
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		addComponentListener(this);
+		//register for given events
+		ObservationManager.register(EVENT_FILE_LAUNCHED,this);
+		ObservationManager.register(EVENT_ZERO,this);
+		
 		addWindowListener(new WindowAdapter() {
 			public void windowIconified(WindowEvent arg0) {
 				//systray, only for window for now
