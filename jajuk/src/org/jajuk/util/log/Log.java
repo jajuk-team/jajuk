@@ -19,11 +19,8 @@
  */
 package org.jajuk.util.log;
 
-import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import org.apache.log4j.PatternLayout;
-import org.apache.log4j.RollingFileAppender;
 import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.error.JajukException;
@@ -34,199 +31,189 @@ import org.jajuk.util.error.JajukException;
  * @author     bflorat
  * @created    8 oct. 2003
  */
-public class Log implements ITechnicalStrings{
-	/** logger for persistent events ( output in a file )*/
-	private static Logger logger;	
-	/** logger for debug events ( just console )*/
-	private static Logger loggerDebug;	
-	//verbosity consts
-	public static final int FATAL = 0;
-	public static final int ERROR = 1;
-	public static final int WARNING = 2;
-	public static final int INFO = 3;
-	public static final int DEBUG = 4;
-	/**Verbosity level of the logger( between 1 and 5 )
-	 * <p>Default used at statup  is INFO  */				
-	private static int verbosity = INFO;  
-	/**Self instance used for signleton pattern */
-	private static Log log = null;
-	
-	
-	/**
-	 *  Constructor for the Log object
-	 */
-	private Log () {
-		try {
-			//--create console+file logger
-			logger = Logger.getLogger("norm");  //$NON-NLS-1$
-			logger.setLevel(Level.INFO);  
-			loggerDebug = Logger.getLogger("debug"); //$NON-NLS-1$
-			loggerDebug.setLevel(Level.DEBUG);
-			loggerDebug.addAppender(new ConsoleAppender(new PatternLayout(LOG_PATTERN)));
-			//add appenders: display message at the same time in the log file and on the console
-			RollingFileAppender fileAppender = new RollingFileAppender(new PatternLayout(LOG_PATTERN),FILE_LOG,true);
-			fileAppender.setMaxFileSize(LOG_FILE_SIZE);  //set log file maximum size
-			logger.addAppender(fileAppender);
-			logger.addAppender(new ConsoleAppender(new PatternLayout(LOG_PATTERN)));
-			//message for logging system start
-			Log.info("******************JAJUK******************"); //$NON-NLS-1$
-			Log.info("Version: "+JAJUK_VERSION);  //$NON-NLS-1$
-		} catch (Exception e) {
-			Log.stack(e);
-		}
-	}
-	
-	/**
-	 * Return a self instance
-	 * <p>Implementation of the singleton pattern
-	 */
-	public static synchronized Log getInstance(){
-		if ( Log.log == null){
-			Log.log = new Log();     	
-		}	
-		return Log.log;
-	}
-	
-	
-	/**
-	 * Log a debug-level  message
-	 */
-	public static void debug(String s){
-		loggerDebug.debug(s);
-	}
-	
-	/**
-	 * Log a info-level  message
-	 */
-	public static void info(String s){
-		logger.info(s);
-	}
-	
-	/**
-	 * Log a warning-level  message
-	 */
-	public static void warn(String s){
-		logger.warn(s);
-	}
-	
-	/**
-	 * Log an error-level  message
-	 * @param sCode error code
-	 * @param sInfosup : error context information
-	 * @param t the exception itself
-	 **/
-	public static void error(String sCode,String sInfosup,Throwable t){
-		String sOut;
-		if ( Messages.isInitialized()){
-		    sOut = '('+sCode+") "+Messages.getErrorMessage(sCode)+ ((sInfosup==null)?"":":"+sInfosup); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		}
-		else{
-		    sOut = '('+sCode+") "+ ((sInfosup==null)?"":":"+sInfosup); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		}
-	    logger.error(sOut);
-	    t.printStackTrace();
-	}
-	
-	/**
-	 * Log an error-level  message
-	 * @param t the exception itself
-	 **/
-	public static void error(Throwable t){
-		logger.error("",t); //$NON-NLS-1$
-	}
-	
-	/**
-	 * Log an error-level  message
-	 * @param sInfosup
-	 * @param t
-	 **/
-	public static void error(String sCode,Throwable t){
-		error(sCode,null,t);
-	}
-	
-	
-	/**
-	 * Log an error-level  message
-	 * @param sInfosup
-	 * @param je
-	 **/
-	public static void error(String sInfosup,JajukException je){
-		error(je.getCode(),sInfosup,je);
-	}
-	
-	/**
-	 * Log an error-level  message
-	 * @param je
-	 **/
-	public static void error(JajukException je){
-		error(je.getCode(),null,je);
-	}
-	
-	/**
-	 * Log a fatal error message
-	 */
-	public  static void fatal(String s){
-		logger.fatal(s);
-	}
-	
-	
-	/**
-	 * Returns the verbosity.
-	 * @return int
-	 */
-	public int getVerbosity() {
-		return verbosity;
-	}
-	
-	/**
-	 * Sets the verbosity.
-	 * @param verbosity The verbosity to set
-	 */
-	public static void setVerbosity(int newVerbosity) {
-		verbosity = newVerbosity;
-		switch(newVerbosity){
-			case DEBUG:
-				logger.setLevel(Level.DEBUG);
-				loggerDebug.setLevel(Level.DEBUG);
-				break;
-			case INFO:
-				logger.setLevel(Level.INFO);
-				loggerDebug.setLevel(Level.INFO);
-				break;
-			case WARNING:
-				logger.setLevel(Level.WARN);
-				loggerDebug.setLevel(Level.WARN);
-				break;
-			case ERROR:
-				logger.setLevel(Level.ERROR);
-				loggerDebug.setLevel(Level.ERROR);
-				break;
-			case FATAL:
-				logger.setLevel(Level.FATAL);
-				loggerDebug.setLevel(Level.FATAL);
-				break;
-		}
-	}
-	
-	
-	/**
-	 * Convenient method to display stacks properly
-	 */
-	public static void stack(Exception e){
-		e.printStackTrace();
-		System.out.println();
-	}
-	
-	/**
-	 * Return whether Log are in debug mode
-	 * @return
-	 */
-	public static boolean isDebugEnabled(){
-		if ( verbosity == Log.DEBUG ){
-			return true;
-		}
-		return false;
-	}
-}
+public class Log  implements ITechnicalStrings{
+    //verbosity consts
+    public static final int FATAL = 0;
+    public static final int ERROR = 1;
+    public static final int WARNING = 2;
+    public static final int INFO = 3;
+    public static final int DEBUG = 4;
+    /**Verbosity level of the logger( between 1 and 5 )
+     * <p>Default used at statup  is INFO  */				
+    private static int verbosity = INFO;  
+    /**Self instance used for signleton pattern */
+    private static Log log = null;
+    //Root logger
+    private static Logger logger = Logger.getRootLogger();
+    //Http client logger
+    private static Logger loggerHttp;
+    
+    /**
+     *  Constructor for the Log object
+     */
+    private   Log () {
+        try {
+           loggerHttp = Logger.getLogger("org.apache.commons.httpclient");
+            
+            //message for logging system start
+            Log.info("******************JAJUK******************"); //$NON-NLS-1$
+            Log.info("Version: "+JAJUK_VERSION);  //$NON-NLS-1$
+        } catch (Exception e) {
+            Log.stack(e);
+        }
+    }
+    
+    /**
+     * Return a self instance
+     * <p>Implementation of the singleton pattern
+     */
+    public static synchronized Log getInstance(){
+        if ( Log.log == null){
+            Log.log = new Log();     	
+        }	
+        return Log.log;
+    }
+    
+    
+    /**
+     * Log a debug-level  message
+     */
+    public static void debug(String s){
+        logger.debug(s);
+    }
+    
+    /**
+     * Log a info-level  message
+     */
+    public static void info(String s){
+        logger.info(s);
+    }
+    
+    /**
+     * Log a warning-level  message
+     */
+    public static void warn(String s){
+        logger.warn(s);
+    }
+    
+    /**
+     * Log an error-level  message
+     * @param sCode error code
+     * @param sInfosup : error context information
+     * @param t the exception itself
+     **/
+    public static void error(String sCode,String sInfosup,Throwable t){
+        String sOut;
+        if ( Messages.isInitialized()){
+            sOut = '('+sCode+") "+Messages.getErrorMessage(sCode)+ ((sInfosup==null)?"":":"+sInfosup); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        }
+        else{
+            sOut = '('+sCode+") "+ ((sInfosup==null)?"":":"+sInfosup); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        }
+        logger.error(sOut);
+    }
+    
+    /**
+     * Log an error-level  message
+     * @param t the exception itself
+     **/
+    public static void error(Throwable t){
+        logger.error("",t); //$NON-NLS-1$
+    }
+    
+    /**
+     * Log an error-level  message
+     * @param sInfosup
+     * @param t
+     **/
+    public static void error(String sCode,Throwable t){
+        error(sCode,null,t);
+    }
+    
+    
+    /**
+     * Log an error-level  message
+     * @param sInfosup
+     * @param je
+     **/
+    public static void error(String sInfosup,JajukException je){
+        error(je.getCode(),sInfosup,je);
+    }
+    
+    /**
+     * Log an error-level  message
+     * @param je
+     **/
+    public static void error(JajukException je){
+        error(je.getCode(),null,je);
+    }
+    
+    /**
+     * Log a fatal error message
+     */
+    public  static void fatal(String s){
+        logger.fatal(s);
+    }
+    
+    
+    /**
+     * Returns the verbosity.
+     * @return int
+     */
+    public int getVerbosity() {
+        return verbosity;
+    }
+    
+    /**
+     * Sets the verbosity.
+     * @param verbosity The verbosity to set
+     */
+    public static void setVerbosity(int newVerbosity) {
+        verbosity = newVerbosity;
+        switch(newVerbosity){
+        case DEBUG:
+            logger.setLevel(Level.DEBUG);
+            loggerHttp.setLevel(Level.DEBUG);
+            break;
+        case INFO:
+            logger.setLevel(Level.INFO);
+            loggerHttp.setLevel(Level.INFO);
+            break;
+        case WARNING:
+            logger.setLevel(Level.WARN);
+            loggerHttp.setLevel(Level.WARN);
+            break;
+        case ERROR:
+            logger.setLevel(Level.ERROR);
+            loggerHttp.setLevel(Level.ERROR);
+            break;
+        case FATAL:
+           logger.setLevel(Level.FATAL);
+           loggerHttp.setLevel(Level.FATAL);
+            break;
+        }
+    }
+    
+    
+    /**
+     * Convenient method to display stacks properly
+     */
+    public static void stack(Exception e){
+        e.printStackTrace();
+        System.out.println();
+    }
+    
+    /**
+     * Return whether Log are in debug mode
+     * @return
+     */
+    public static boolean isDebugEnabled(){
+        if ( verbosity == Log.DEBUG ){
+            return true;
+        }
+        return false;
+    }
+}	
+
 
 

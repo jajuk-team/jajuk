@@ -89,6 +89,9 @@
   	<copy todir='${distdir}/${classdir}/org/jajuk/i18n' >
      <fileset file='${basedir}/src/org/jajuk/i18n/*.properties'/>
   	</copy>
+  	<copy todir='${distdir}/${classdir}' >
+     <fileset file='${basedir}/src/log4j.properties'/>
+  	</copy>
   </target>
  
 

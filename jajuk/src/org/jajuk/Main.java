@@ -151,6 +151,9 @@ public class Main implements ITechnicalStrings {
 			//Load user configuration
 			org.jajuk.util.ConfigurationManager.load();
 			
+			//Set actual log verbosity
+			Log.setVerbosity(Integer.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_LOG_LEVEL)));
+			
 			//Set look and feel
 			LNFManager.setLookAndFeel(ConfigurationManager.getProperty(CONF_OPTIONS_LNF));
 					
@@ -176,8 +179,6 @@ public class Main implements ITechnicalStrings {
 			//check for another session
 			checkOtherSession();
 			
-			//Set actual log verbosity
-			Log.setVerbosity(Integer.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_LOG_LEVEL)));
 			
 			//Load history
 			History.load();
