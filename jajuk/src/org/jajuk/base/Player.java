@@ -39,7 +39,7 @@ public class Player {
 	/**
 	 * Asynchronous play for specified file with specified time interval
 	 * @param file to play
-	 * @param position in % of the file length ex:10
+	 * @param position in % of the file length. ex 0.1 for 10%
 	 * @param length in ms 
 	 */
 	public static synchronized void play(File file,final float fPosition,final long length) {

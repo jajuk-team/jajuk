@@ -95,8 +95,8 @@ public class Util implements ITechnicalStrings {
 	/** Mute state*/
 	private static boolean bMute;
 	
-	/** Volume ( master gain )*/ 
-	private static float fVolume = 50.0f;
+	/** Volume ( master gain )in % : 0.5 for 50%*/ 
+	private static float fVolume = 0.5f;
 	/**
 	 * No constructor
 	 */
@@ -342,7 +342,7 @@ public class Util implements ITechnicalStrings {
 	}
 	
 	/**
-	 * Set volume in % ( ex: 10.0 )
+	 * Set volume in % ( ex: 0.1 for 10% )
 	 * @param fVolume
 	 */
 	public static void setVolume(float fVolume){
@@ -352,10 +352,10 @@ public class Util implements ITechnicalStrings {
 				FloatControl  volCtrl = (FloatControl)line.getControl(FloatControl.Type.MASTER_GAIN);
 				float fCurrent = 0.0f; 
 				if ( fVolume<=50){
-					fCurrent = Math.abs(volCtrl.getMinimum()*2*(fVolume/100)) + volCtrl.getMinimum();
+					fCurrent = Math.abs(volCtrl.getMinimum()*2*(fVolume)) + volCtrl.getMinimum();
 				}
 				else{
-					fCurrent = volCtrl.getMaximum()*(fVolume/100);
+					fCurrent = volCtrl.getMaximum()*(fVolume);
 				}
 				volCtrl.setValue(fCurrent);
 				Util.fVolume = fVolume;

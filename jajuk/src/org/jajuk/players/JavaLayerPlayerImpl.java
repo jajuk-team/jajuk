@@ -74,7 +74,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl,ITechnicalStrings{
 				player.play();
 			}
 			else{
-				int iFirstFrame = (int)(file.getTrack().getLength()*fPosition*0.41666); // (position*fPosition/100(%)) *1000(ms) /24 because 1 frame =24ms
+				int iFirstFrame = (int)(file.getTrack().getLength()*fPosition*41.666); // (position*fPosition(%))*1000(ms) /24 because 1 frame =24ms
 				int iLastFrame = (int)(iFirstFrame+(length*0.41666)); //length(ms)/24
 				player.play(iFirstFrame,iLastFrame);
 			}

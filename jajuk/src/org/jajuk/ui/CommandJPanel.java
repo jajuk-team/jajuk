@@ -96,7 +96,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 	/**Intro mode flag*/
 	static boolean bIsIntroEnabled = false;
 	/**Forward or rewind jump size in track percentage*/
-	static final int JUMP_SIZE = 10;
+	static final float JUMP_SIZE = 0.1f;
 	/**Slider move event filter*/
 	private boolean bPositionChanging = false;
 
@@ -316,16 +316,12 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 			FIFO.getInstance().playNext();
 		}
 		else if (ae.getSource() == jbRew){
-			int iCurrentPosition = FIFO.getInstance().getCurrentPosition()/1000;
-			int iTrackLength = (int)(FIFO.getInstance().getCurrentFile().getTrack().getLength());
-			float fCurrentPercent = 100*(float)iCurrentPosition/iTrackLength;
-			FIFO.getInstance().setCurrentPosition(fCurrentPercent-JUMP_SIZE);
+			float fCurrentPosition = FIFO.getInstance().getCurrentPosition();
+			FIFO.getInstance().setCurrentPosition(fCurrentPosition-JUMP_SIZE);
 		}
 		else if (ae.getSource() == jbFwd){
-			int iCurrentPosition = FIFO.getInstance().getCurrentPosition()/1000;
-			int iTrackLength = (int)(FIFO.getInstance().getCurrentFile().getTrack().getLength());
-			float fCurrentPercent = 100*(float)iCurrentPosition/iTrackLength;
-			FIFO.getInstance().setCurrentPosition(fCurrentPercent+JUMP_SIZE);
+			float fCurrentPosition = FIFO.getInstance().getCurrentPosition();
+			FIFO.getInstance().setCurrentPosition(fCurrentPosition+JUMP_SIZE);
 		}
 	}
 	
@@ -346,7 +342,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 	 */
 	public void stateChanged(ChangeEvent e) {
 		if ( e.getSource() == jsVolume){
-			Util.setVolume((float)jsVolume.getValue());
+			Util.setVolume((float)jsVolume.getValue()/100);
 		}
 		else if (e.getSource() == jsPosition && !bPositionChanging){
 			bPositionChanging = true;
@@ -358,7 +354,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 					catch(InterruptedException ie){
 						Log.error(ie);
 					}
-					FIFO.getInstance().setCurrentPosition(jsPosition.getValue());
+					FIFO.getInstance().setCurrentPosition((float)jsPosition.getValue()/100);
 					bPositionChanging = false;
 				}
 			}.start();

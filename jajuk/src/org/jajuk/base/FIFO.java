@@ -70,6 +70,9 @@ public class FIFO implements ITechnicalStrings,Runnable{
 	/** Offset since begin in ms*/
 	long lOffset;
 	
+	/** Current play time in ms*/
+	long lTime;
+	
 	/** Glocal random enabled ? */
 	private boolean bGlobalRandom;
 	
@@ -132,6 +135,7 @@ public class FIFO implements ITechnicalStrings,Runnable{
 		lOffset = 0;
 		lPauseDate = 0;
 		lPauseTime = 0;
+		lTime = 0;
 		bGlobalRandom = false;
 		bBestOf = false;
 		alRepeated = new ArrayList(50);
@@ -260,7 +264,8 @@ public class FIFO implements ITechnicalStrings,Runnable{
 				if (bPlaying ){//already playing something
 					long length = fCurrent.getTrack().getLength();;
 					if ( i%(REFRESH_TIME/SLEEP_TIME) == 0 && length!=0){  //actual refresh less frequent for cpu
-						long lTime = (System.currentTimeMillis() - lTrackStart) + lOffset - lPauseTime;
+						lTime = (System.currentTimeMillis() - lTrackStart) + lOffset - lPauseTime;
+	//System.out.println("core: "+lTime);
 						if ( bIntroEnabled){
 							lTime += (fCurrent.getTrack().getLength()*Integer.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_INTRO_BEGIN))*10);
 						}
@@ -445,34 +450,38 @@ public class FIFO implements ITechnicalStrings,Runnable{
 		this.bBestOf = bBestOf;
 	}
 	
+	
+	
+	
+	
 	/**
-	 * Get current track position in ms
-	 * @return position in ms
+	 * Get current position in %
+	 * @return position in % ( ex: 0.1 for 10%)
 	 */
-	public synchronized int getCurrentPosition(){
-		return (int)(System.currentTimeMillis() + lOffset - lTrackStart -lPauseTime);
+	public synchronized float getCurrentPosition(){
+		return (float)lTime/(1000*fCurrent.getTrack().getLength());
 	}
 	
 	/**
 	 * Move inside a track
-	 * @param fPosition position in % of track length
+	 * @param fPosition position in % of track length. ex: 0.2 for 20%
 	 */
 	public synchronized void setCurrentPosition(float fPosition){
+		float fCurrentPosition = getCurrentPosition();
 		long lTrackLength = fCurrent.getTrack().getLength();  //in sec
 		if (ConfigurationManager.getBoolean(CONF_STATE_INTRO) ){  //intro mode enabled
-			int iBegin = Integer.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_INTRO_BEGIN));
-			int iLength = Integer.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_INTRO_LENGTH));
-			if ((fPosition/100)*lTrackLength<iLength && fPosition>iBegin){ //check position is compatible with intro bounds options
+			float fBegin = Float.parseFloat(ConfigurationManager.getProperty(CONF_OPTIONS_INTRO_BEGIN));
+			long length = 1000*Integer.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_INTRO_LENGTH));
+			if (fPosition*lTrackLength<length && fPosition>fBegin){ //check position is compatible with intro bounds options
 				Player.stop();
-				Player.play(fCurrent,fPosition,(long)(1000*(iLength+(fPosition*lTrackLength))));
-				lOffset =  (long)(fCurrent.getTrack().getLength()*fPosition*10);
+				Player.play(fCurrent,fPosition,(long)(length+(fPosition*lTrackLength)));
 			}
 		}
 		else{//intro mode enabled
 			Player.stop();
 			Player.play(fCurrent,fPosition,1000*fCurrent.getTrack().getLength());
-			lOffset = (long)(fCurrent.getTrack().getLength()*fPosition*10);
 		}
+		lOffset +=  fCurrent.getTrack().getLength()*1000*(fPosition - fCurrentPosition);
 	}
 
 	/**
@@ -496,14 +505,13 @@ public class FIFO implements ITechnicalStrings,Runnable{
 		}
 		else{
 			lPauseTime+=(System.currentTimeMillis()-lPauseDate);
-			System.out.println("pause time:"+lPauseTime);
+	System.out.println("pause time:"+lPauseTime);
 			//restart paused track
-			float fPosition = (float)getCurrentPosition()/(fCurrent.getTrack().getLength()*1000); //position in %
 			if (ConfigurationManager.getBoolean(CONF_STATE_INTRO)){ //intro mode enabled
-				Player.play(fCurrent,100*fPosition,(long)(1000*(1-(fPosition*Integer.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_INTRO_LENGTH))))));
+				Player.play(fCurrent,getCurrentPosition(),(long)(1000*(1-getCurrentPosition())*Integer.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_INTRO_LENGTH))));
 			}
 			else{
-				Player.play(fCurrent,100*fPosition,1000*fCurrent.getTrack().getLength());  //play it
+				Player.play(fCurrent,getCurrentPosition(),1000*fCurrent.getTrack().getLength());  //play it
 			}
 			bPaused = false;
 		}
@@ -523,6 +531,13 @@ public class FIFO implements ITechnicalStrings,Runnable{
 	 */
 	public boolean isStopped() {
 		return bStop;
+	}
+
+	/**
+	 * @return Returns the play time in ms.
+	 */
+	public long getCurrentPlayTime() {
+		return lTime;
 	}
 
 }

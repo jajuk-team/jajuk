@@ -37,6 +37,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import org.jajuk.base.Collection;
 import org.jajuk.base.Device;
@@ -198,7 +199,7 @@ public class Main implements ITechnicalStrings {
 						
 			//Initialize perspective manager and load all views
 			PerspectiveManager.init();
-					
+			
 			//Close splash screen
 			sc.dispose();
 			
@@ -212,6 +213,9 @@ public class Main implements ITechnicalStrings {
 			
 			//Display a message
 			information.setMessage("Jajuk successfully started", InformationJPanel.INFORMATIVE); //$NON-NLS-1$
+			
+			//refresh command bar ( workaround for bug 887609 )
+			SwingUtilities.updateComponentTreeUI(CommandJPanel.getInstance());
 			
 			//Lauch startup track if any
 			launchInitialTrack();
