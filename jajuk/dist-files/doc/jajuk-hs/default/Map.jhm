@@ -21,7 +21,7 @@
 	<mapID target="view_help" url="html/view_help.html" />
 	<mapID target="view_about" url="html/view_about.html" />
 	<mapID target="view_physical_table" url="html/view_physical_table.html" />
-	<mapID target="view_logical_table" url="html/view_physical_table.html" />
+	<mapID target="view_logical_table" url="html/view_logical_table.html" />
 	<mapID target="view_playlist_repository" url="html/view_playlist_repository.html" />
 	<mapID target="view_playlist_editor" url="html/view_playlist_editor.html" />
 	<mapID target="view_parameter" url="html/view_parameter.html" />

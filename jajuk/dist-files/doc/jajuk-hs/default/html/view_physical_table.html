@@ -2,16 +2,41 @@
 <head>
   <meta content="text/html; charset=ISO-8859-1"
  http-equiv="content-type">
-  <title>The statistics view</title>
+  <title>The Physical Table view</title>
 </head>
 <body>
-<h1>The Statistics view</h1>
-<p>This view displays various facts about your collection. For the moment, it features:</p>
+<h1>The Physical Table view</h1>
+<p>This view shows all files from your collection in a table and allows to perform contuextual operations and filtering. 
+	For the moment, columns (track name, directory...) are static but in Jajuk future releases, you will be able to add new custom ones.</p>
+<p><u>Notes</u>: 
+			<ul>
+				<li>Rate is related to the track, not to a single file. It is computed this way: +1 when a track is added in queue and +2 when it is played.</li>
+				<li>As usual, you can limit to files from mounted devices using the "show only mounted devices" option in Parameter view/ Option tab.</li>
+			</ul>
+</p>
+<h2>Drag and Drop</h2>
+<p>At any time, you can drag  a single track from the table to any Playlist in the Playlist repository view or to the current Playlist Editor.</p>
+<h2>Contextual menu</h2>
+<p>File contextual menu features:</p>
 <ul>
-  <li>The style repartition (it is reliable only if your collection is well tagged). It allow you to know which style you own the most.</li>
-  <li>The size repartition by devices. It allows you to know what are your device sizes in comparaison.</li>
-  <li>Your entire collection size per mounth (a same track can map several files). It allow you get your collection size evolution: it can be useful to know if some cleanups are required for exemple.</li>
-  <li>Your entire collection number of tracks per mounth. It allow you to know how many actual different tracks you have, independently of the number of redondant files you have in your collection.</li>
+  <li>Play: Stop current track and play file</li>
+  <li>Push: Don't stop current track but simply add the selection in
+the queue (see Queue playlist)</li>
+  <li>Play shuffle: Stop current track and play selection randomly
+(note that this mode is automaticaly taken when playing a track if you
+used Shuffle mode in command view)</li>
+  <li>Play repeat: Stop current track and play selection in loop (note
+that this mode is automaticaly taken when playing a track if you used
+Repeat mode in command view)</li>
+  <li>Set a property (not yet implemented). Set a property to this item</li>
+  <li>Properties (not yet implemented). Show item properties.</li>
 </ul>
+<h2>Filtering panel</h2>
+<p>To filter tracks following some criterias, select the criteria using the combo box (track name, author and so on), then type the filter value in the text field and type [enter]. If filter value is void, all files will be displayed.</p>
+<p>o Filter type combo box: select the criteria you want to filter on.
+<p>o Filter value text field: type value you want to filter on.
+<p><img alt="" src="../icons/16x16/filter.png" style="width: 16px; height: 16px;"> Use the filter (you can also type [Enter])</p>
+<p><img alt="" src="../icons/16x16/clear.png" style="width: 16px; height: 16px;"> Clear filter and show all files</p>
+<p><img alt="" src="../icons/16x16/complex_search.png" style="width: 16px; height: 16px;"> Use complexe filter (not yet implemented)</p>
 </body>
 </html>
