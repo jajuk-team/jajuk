@@ -24,6 +24,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
 
+import org.jajuk.Main;
 import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.log.Log;
@@ -142,7 +143,13 @@ public class ConfigurationManager implements ITechnicalStrings{
 		properties.put(CONF_OPTIONS_RESTART,TRUE);
 		properties.put(CONF_OPTIONS_SEARCH_UNMOUNTED,TRUE);
 		properties.put(CONF_OPTIONS_NOVELTIES_AGE,"30"); //$NON-NLS-1$
-		properties.put(CONF_OPTIONS_LOG_LEVEL,Integer.toString(Log.WARNING));
+		//set default trace level, debug in debug mode and warning in normal mode
+		if (Main.isDebugMode()){
+		    properties.put(CONF_OPTIONS_LOG_LEVEL,Integer.toString(Log.DEBUG));
+		}
+		else{
+		    properties.put(CONF_OPTIONS_LOG_LEVEL,Integer.toString(Log.WARNING));    
+		}
 		//set default language without properties file available (normaly only at install)
 		String sLanguage = System.getProperty("user.language"); //$NON-NLS-1$
 		if (Messages.getInstance().getLocals().contains(sLanguage)){ //user language exists in jajuk, take it as default
@@ -167,7 +174,7 @@ public class ConfigurationManager implements ITechnicalStrings{
 		properties.put(CONF_BESTOF_SIZE,"20"); //$NON-NLS-1$
 		properties.put(CONF_VOLUME,"0.5"); //$NON-NLS-1$
 		properties.put(CONF_REGEXP,FALSE); //$NON-NLS-1$
-		properties.put(CONF_BACKUP_SIZE,"30");//$NON-NLS-1$
+		properties.put(CONF_BACKUP_SIZE,"20");//$NON-NLS-1$
 		properties.put(CONF_COLLECTION_CHARSET,"UTF-8");//$NON-NLS-1$
 		properties.put(CONF_NETWORK_USE_PROXY,FALSE);
 		properties.put(CONF_NETWORK_PROXY_HOSTNAME,"proxy");//default proxy name, just a guess //$NON-NLS-1$
