@@ -240,20 +240,24 @@ public class Util implements ITechnicalStrings {
 		any Unicode character, excluding the surrogate blocks, FFFE, and FFFF. */
 		for (int i=0;i<sbOut.length();i++){
 			char c = sbOut.charAt(i);
-			if (c!='&' && c!='.' && c!='_' && c!='-' && c!=';' && c!='#' && c!=' ' && !Character.isLetterOrDigit(c)){ //tranform all special charcters but some very current ones like "." to gain space
+			if ( !isChar(c)){
 				sbOut.deleteCharAt(i); //remove this char, it will be replaced by the XML format &#x?; or by a space if it is invalid
-				if ( (c =='\u0009'  ||   (c>='\u0020' && c<='\uD7FF') || (c>='\uE000' && c<='\uFFFD')) && (c!='\uFFFE' && c!='\uFFFF')){
-					//some unicode described in XML specs like xA, xD and x10000 and over are not tested because java can't handle them, so we can't get these chars in the incoming string
-					sbOut.insert(i,"&#x"); //$NON-NLS-1$
-					sbOut.insert(i+3,Integer.toHexString((int)c)+";"); //$NON-NLS-1$
-				}
-				else{
-					sbOut.insert(i,' '); //replace invalid character by a space
-				}
+				sbOut.insert(i,' '); //replace invalid character by a space
 			}
 		}
 		return sbOut.toString();
 	}
+	
+	/**
+	 * @param ucs4char char to test
+	 * @return whether the char is valid, code taken from Apache sax implementation
+	 */
+	public static boolean isChar(int ucs4char)
+	{
+		return ucs4char >= 32 && ucs4char <= 55295 || ucs4char == 10 || ucs4char == 9 || ucs4char == 13 
+		|| ucs4char >= 57344 && ucs4char <= 65533 || ucs4char >= 0x10000 && ucs4char<= 0x10ffff;
+	}
+	
 	
 	/**
 	 * Performs some cleanups for strings comming from tag libs 
