@@ -98,7 +98,8 @@
       </release>
       <release version='0.3' date='work in progress' description='Auto-cover and many novelties'>
     	<action dev='bflorat' type='add'>Auto-cover grabbing from Web, can be configured in the Parameter View / Covers tab</action>  
-    	<action dev='bflorat' type='add'>RFE962688 Save geometry windows</action>  
+    	<action dev='bflorat' type='add'>RFE 962688 Save geometry windows</action>  
+    	<action dev='bflorat' type='add'>RFE 966736 Tray for both Windows and Linux</action>  
     	<action dev='bflorat' type='add'>New special function in the command panel : Novelties  plays recently added tracks, can be configured in the Parameter View / Option tab</action>  
     	<action dev='bflorat' type='add'>New special function in the command panel : Continue in the current album to stop shuffle and listen a complete album</action>  
     	<action dev='bflorat' type='add'>New perspective: Player with cover view and some more views in next releases</action>  

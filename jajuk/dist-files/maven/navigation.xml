@@ -16,8 +16,8 @@
       <item name='Latest news' href='./index.html#News' />
       <item name='Features' href='./index.html#Features' />
       <item name='Screenshots' href='./index.html#Screenshots' />
-      <item name='Dependencies' href='./README.html#Dependencies' />
       <item name='Changelog' href='./changes-report.html' />
+      <item name='Dependencies' href='./jajuk_dependencies.html' />
       <item name='Report bugs/requests' href='http://sourceforge.net/tracker/?group_id=91412' />
       <item name='CVS web repository' href='http://cvs.sourceforge.net/viewcvs.py/jajuk/' />
       <item name='Mailing list' href='./mail-lists.html' />

@@ -262,11 +262,17 @@
     </dependency>
     
     <dependency>
-	   <groupId>lib</groupId>
-        <artifactId>systray4j</artifactId>
-        <version>2.4.1</version> 
+	   <groupId>native</groupId>
+        <artifactId>tray_linux</artifactId>
+        <version>0.1.6</version> 
     </dependency>
     
+    <dependency>
+	   <groupId>native</groupId>
+        <artifactId>tray_windows</artifactId>
+        <version>0.1.6</version> 
+    </dependency>
+
      <dependency>
 	   <groupId>lib</groupId>
         <artifactId>jogg</artifactId>
