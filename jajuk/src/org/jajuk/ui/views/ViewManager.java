@@ -63,17 +63,6 @@ public class ViewManager implements ITechnicalStrings{
 	public static net.infonode.docking.View registerView(final IView view){
 	    final JajukContainer jc = new JajukContainer(view);
 	    final net.infonode.docking.View dockingView = makeDockingView(view);
-
-	    /*dockingView.addListener(new DockingWindowAdapter(){
-		    
-			public void windowClosed(DockingWindow dockingWindow){
-			    System.out.println("windowClosed");
-			    net.infonode.docking.View dockingView = (net.infonode.docking.View)dockingWindow;
-				ViewManager.notify(EVENT_VIEW_CLOSE_REQUEST,ViewManager.getViewByDockingView(dockingView));
-				JajukJMenuBar.getInstance().refreshViews();
-			}
-		});*/
-	    
 		alViews.add(view);
 		alContainers.add(jc);
 		alDockingViews.add(dockingView);
@@ -89,17 +78,7 @@ public class ViewManager implements ITechnicalStrings{
 	public static net.infonode.docking.View makeDockingView(final IView view){
 	    final JajukContainer jc = new JajukContainer(view);
 	    final net.infonode.docking.View dockingView = 
-			new net.infonode.docking.View(Messages.getString(view.getDesc()),Util.getIcon(ICON_LOGO_TRAY),jc);
-
-	  /*  dockingView.addListener(new DockingWindowAdapter(){
-		    
-			public void windowClosed(DockingWindow dockingWindow){
-			    System.out.println("windowClosed");
-			    net.infonode.docking.View dockingView = (net.infonode.docking.View)dockingWindow;
-				ViewManager.notify(EVENT_VIEW_CLOSE_REQUEST,ViewManager.getViewByDockingView(dockingView));
-				JajukJMenuBar.getInstance().refreshViews();
-			}
-		});*/
+			new net.infonode.docking.View(Messages.getString(view.getDesc()),Util.getIcon(ICON_LOGO_FRAME),jc);
 	    return dockingView;
 	}
 			
@@ -191,37 +170,5 @@ public class ViewManager implements ITechnicalStrings{
 		IView view = (IView)alViews.get(index);
 		return view;
 	}
-	
-	/**
-	 * Computes a dimension in screen percent for a precision of given percents 
-	 * @param i value to compute
-	 * @param iPrecision 
-	 *  @param bAllowZero
-	 * @return
-	 */
-	/*private int bound(int i,int iPrecision,boolean bAllowZero){
-		//if dimension is too large, floor it
-	    if ( i> 100 ){
-			i=100;
-		}
-	    //ceil it
-		else if (i<0){
-			i = 0;
-		}
-		//computes value upon a given precision
-	    if (i%10 < 5){
-			i -= i%iPrecision;
-		}
-		else{
-			i += (iPrecision-(i%iPrecision));
-		}
-	    //don't allow zero for a dimension, at least the precision
-		if ( !bAllowZero && i < iPrecision ){
-		    i = iPrecision;
-		}
-		return i;
-	}*/
-	
-	
 				
 }

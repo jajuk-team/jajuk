@@ -18,6 +18,7 @@
 
 package org.jajuk.ui.views;
 
+import java.awt.Dimension;
 import java.awt.dnd.DnDConstants;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -87,7 +88,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 		jpControl.setBorder(BorderFactory.createEtchedBorder());
 		int iXspace = 5;
 		double sizeControl[][] =
-			{{0.15,iXspace,0.35,iXspace,0.1,iXspace,0.35,2*iXspace,85},
+			{{0.2,iXspace,0.2,iXspace,0.3,iXspace,0.2,2*iXspace,85},
 				{22}};
 		jpControl.setLayout(new TableLayout(sizeControl));
 		jlFilter = new JLabel(Messages.getString("AbstractTableView.0")); //$NON-NLS-1$
@@ -137,7 +138,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 		jpControl.add(jpEquals,"4,0"); //$NON-NLS-1$
 		jpControl.add(jtfValue,"6,0"); //$NON-NLS-1$
 		jpControl.add(jtbControl,"8,0"); //$NON-NLS-1$
-		
+		jpControl.setMinimumSize(new Dimension(0,0)); //allow resing with info node
 		
 		//add 
 		double size[][] =

@@ -40,6 +40,8 @@ import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -67,7 +69,7 @@ import org.jajuk.util.log.Log;
  * @author     bflorat
  * @created    17 nov. 2003
  */
-public class ParameterView extends ViewAdapter implements ActionListener,ListSelectionListener,ItemListener {
+public class ParameterView extends ViewAdapter implements ActionListener,ListSelectionListener,ItemListener,ChangeListener {
 	
 	/**Self instance*/
 	private static ParameterView pv;
@@ -141,6 +143,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 	JPanel jpCovers;
 	JCheckBox jcbAutoCover;
 	JCheckBox jcbShuffleCover;
+	JCheckBox jcbPreLoad;
 	JLabel jlMinSize;
 	JTextField jtfMinSize;
 	JLabel jlMaxSize;
@@ -621,15 +624,15 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jpCovers = new JPanel();
 		jpCovers.setBorder(BorderFactory.createTitledBorder(Messages.getString("ParameterView.159")));  //$NON-NLS-1$
 		double sizeCover[][] = {{0.5,0.45},
-				{iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator}};
+				{iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator}};
 		jpCovers.setLayout(new TableLayout(sizeCover));
 		jcbAutoCover = new JCheckBox(Messages.getString("ParameterView.148")); //$NON-NLS-1$
-		jcbAutoCover.setSelected(ConfigurationManager.getBoolean(CONF_COVERS_AUTO_COVER));
 		jcbAutoCover.setToolTipText(Messages.getString("ParameterView.149")); //$NON-NLS-1$
 		jcbAutoCover.addActionListener(this);
 		jcbShuffleCover = new JCheckBox(Messages.getString("ParameterView.166")); //$NON-NLS-1$
-		jcbShuffleCover.setSelected(ConfigurationManager.getBoolean(CONF_COVERS_SHUFFLE));
 		jcbShuffleCover.setToolTipText(Messages.getString("ParameterView.167")); //$NON-NLS-1$
+		jcbPreLoad = new JCheckBox(Messages.getString("ParameterView.169")); //$NON-NLS-1$
+		jcbPreLoad.setToolTipText(Messages.getString("ParameterView.170")); //$NON-NLS-1$
 		InputVerifier iverifier = new InputVerifier(){
 			public boolean verify(JComponent input) {
 				JTextField tf = (JTextField) input;
@@ -664,10 +667,11 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jtfMaxSize.setInputVerifier(iverifier);
 		jpCovers.add(jcbAutoCover,"0,1"); //$NON-NLS-1$
 		jpCovers.add(jcbShuffleCover,"0,3"); //$NON-NLS-1$
-		jpCovers.add(jlMinSize,"0,5"); //$NON-NLS-1$
-		jpCovers.add(jtfMinSize,"1,5"); //$NON-NLS-1$
-		jpCovers.add(jlMaxSize,"0,7"); //$NON-NLS-1$
-		jpCovers.add(jtfMaxSize,"1,7"); //$NON-NLS-1$
+		jpCovers.add(jcbPreLoad,"0,5"); //$NON-NLS-1$
+		jpCovers.add(jlMinSize,"0,7"); //$NON-NLS-1$
+		jpCovers.add(jtfMinSize,"1,7"); //$NON-NLS-1$
+		jpCovers.add(jlMaxSize,"0,9"); //$NON-NLS-1$
+		jpCovers.add(jtfMaxSize,"1,9"); //$NON-NLS-1$
 				
 		//--OK/cancel panel
 		jpOKCancel = new JPanel();
@@ -694,6 +698,8 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jtpMain.addTab(Messages.getString("ParameterView.26"),jpConfirmations); //$NON-NLS-1$
 		jtpMain.addTab(Messages.getString("ParameterView.139"),jpNetwork); //$NON-NLS-1$
 		jtpMain.addTab(Messages.getString("ParameterView.115"),jpAdvanced); //$NON-NLS-1$
+		jtpMain.setSelectedIndex(ConfigurationManager.getInt(CONF_OPTIONS_TAB));  //Reload stored selected index
+		jtpMain.addChangeListener(this);
 		add(jtpMain,"0,0"); //$NON-NLS-1$
 		add(jpOKCancel,"0,1"); //$NON-NLS-1$
 		//update widgets state
@@ -822,6 +828,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 					//Covers
 					ConfigurationManager.setProperty(CONF_COVERS_AUTO_COVER,Boolean.toString(jcbAutoCover.isSelected()));
 					ConfigurationManager.setProperty(CONF_COVERS_SHUFFLE,Boolean.toString(jcbShuffleCover.isSelected()));
+					ConfigurationManager.setProperty(CONF_COVERS_PRELOAD,Boolean.toString(jcbPreLoad.isSelected()));
 					ConfigurationManager.setProperty(CONF_COVERS_MIN_SIZE,jtfMinSize.getText());
 					ConfigurationManager.setProperty(CONF_COVERS_MAX_SIZE,jtfMaxSize.getText());
 				}
@@ -947,6 +954,8 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jcbAutoCover.setSelected(ConfigurationManager.getBoolean(CONF_COVERS_AUTO_COVER));
 		jtfMinSize.setText(ConfigurationManager.getProperty(CONF_COVERS_MIN_SIZE));
 		jtfMaxSize.setText(ConfigurationManager.getProperty(CONF_COVERS_MAX_SIZE));
+		jcbShuffleCover.setSelected(ConfigurationManager.getBoolean(CONF_COVERS_SHUFFLE));
+		jcbPreLoad.setSelected(ConfigurationManager.getBoolean(CONF_COVERS_PRELOAD));
 	}
 	
 	/* (non-Javadoc)
@@ -976,5 +985,13 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 	        sbSearch.setEnabled(jrbFile.isSelected());
 	    }  
 	}
+
+    /* (non-Javadoc)
+     * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
+     */
+    public void stateChanged(ChangeEvent e) {
+       //when changing tab, store it for futur jajuk sessions
+        ConfigurationManager.setProperty(CONF_OPTIONS_TAB,Integer.toString(jtpMain.getSelectedIndex()));
+    }
 	
 }

@@ -188,7 +188,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
         jpControl.setBorder(BorderFactory.createEtchedBorder());
         int iXspace = 0;
         double sizeControl[][] =
-        {{iXspace,0.50,0.50,iXspace},
+        {{iXspace,200,0.50,iXspace},
                 {25,0.99}};
         jpControl.setLayout(new TableLayout(sizeControl));
         jbRun = new JButton(Util.getIcon(ICON_RUN));
