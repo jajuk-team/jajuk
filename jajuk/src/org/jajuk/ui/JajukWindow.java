@@ -97,6 +97,8 @@ public class JajukWindow extends JFrame implements ITechnicalStrings,ComponentLi
 	 * Constructor
 	 */
 	public JajukWindow(){
+		//mac integration 
+		System.setProperty( "apple.laf.useScreenMenuBar", "true");//$NON-NLS-1$ //$NON-NLS-2$ 
 		jw = this;
 		bVisible = ConfigurationManager.getBoolean(CONF_SHOW_AT_STARTUP,true);
 		iWidth = (int)(Toolkit.getDefaultToolkit().getScreenSize().getWidth());
@@ -108,7 +110,7 @@ public class JajukWindow extends JFrame implements ITechnicalStrings,ComponentLi
 		addWindowListener(new WindowAdapter() {
 			public void windowIconified(WindowEvent arg0) {
 				//systray, only for window for now
-				if (Util.underWindows()){
+				if (Util.isUnderWindows()){
 					setVisible(false);
 				}
 			}
@@ -118,7 +120,7 @@ public class JajukWindow extends JFrame implements ITechnicalStrings,ComponentLi
 			}
 		});
 		//systray, only for window for now
-		if (Util.underWindows()){
+		if (Util.isUnderWindows()){
 			URL url = null;
 			try {
 				url = new URL(ICON_LOGO_ICO);

@@ -565,7 +565,7 @@ public class Util implements ITechnicalStrings {
 	/**
 	 * @return whether we are under Windows
 	 */
-	public static boolean underWindows(){
+	public static boolean isUnderWindows(){
 		String sOS = (String)System.getProperties().get("os.name"); //$NON-NLS-1$;
 		if (sOS.trim().toLowerCase().lastIndexOf("windows")!=-1){ //$NON-NLS-1$
 			return true;

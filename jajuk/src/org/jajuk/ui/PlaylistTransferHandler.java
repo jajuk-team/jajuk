@@ -38,7 +38,6 @@ import javax.swing.JTable;
 
 import org.jajuk.base.Album;
 import org.jajuk.base.Author;
-import org.jajuk.base.BasicFile;
 import org.jajuk.base.Bookmarks;
 import org.jajuk.base.Device;
 import org.jajuk.base.Directory;
@@ -54,7 +53,7 @@ import org.jajuk.util.log.Log;
  *  DND handler for playlists
  *
  * @author     bflorat
- * @created    13 févr. 2004
+ * @created    13 fï¿½vr. 2004
  */
 public class PlaylistTransferHandler implements DropTargetListener {
 	
@@ -141,9 +140,10 @@ public class PlaylistTransferHandler implements DropTargetListener {
 					dtde.dropComplete(false);
 				}
 			}
+			//computes selection
+			ArrayList alSelectedFiles = new ArrayList(100);
 			//computes logical selection if any
 			ArrayList alLogicalTracks = null;
-			ArrayList alLogicalFiles = null;
 			if(oData instanceof Style || oData instanceof Author || oData instanceof Album || oData instanceof Track){
 				if( oData instanceof Style ){
 					alLogicalTracks = ((Style)oData).getTracks();
@@ -160,7 +160,6 @@ public class PlaylistTransferHandler implements DropTargetListener {
 				}
 				//prepare files
 				if ( alLogicalTracks != null && alLogicalTracks.size() > 0){
-					alLogicalFiles = new ArrayList(alLogicalTracks.size());
 					Iterator it = alLogicalTracks.iterator();
 					while ( it.hasNext()){
 						Track track = (Track)it.next();
@@ -168,73 +167,33 @@ public class PlaylistTransferHandler implements DropTargetListener {
 						if ( file == null){ //none mounted file for this track
 							continue;
 						}
-						alLogicalFiles.add(track.getPlayeableFile());
+						alSelectedFiles.add(file);
 					}
+				}
+			}
+			//computes physical selection if any
+			else if(oData instanceof File || oData instanceof Directory || oData instanceof Device){
+				if( oData instanceof File ){
+					alSelectedFiles.add(oData);
+				}
+				else if( oData instanceof Directory ){
+					alSelectedFiles = ((Directory)oData).getFilesRecursively();
+				}
+				else if( oData instanceof Device ){
+					alSelectedFiles = ((Device)oData).getFilesRecursively();
 				}
 			}
 			//queue case
 			if ( plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE){
-				if (oData instanceof File){
-					FIFO.getInstance().push((File)oData,true);
-				}
-				else if(oData instanceof Directory){
-					FIFO.getInstance().push(((Directory)oData).getFilesRecursively(),true);
-				}
-				if (oData instanceof Device){
-					Device device = (Device)oData;
-					if (device.isReady()){ //mounted...
-						FIFO.getInstance().push(device.getFilesRecursively(),true);
-					}
-				}
-				else if(oData instanceof Style || oData instanceof Author || oData instanceof Album || oData instanceof Track){
-					if ( alLogicalFiles != null){
-						FIFO.getInstance().push(alLogicalFiles,true);
-					}
-				}		
+				FIFO.getInstance().push(alSelectedFiles,true);
 			}
 			//bookmark case
 			else if ( plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_BOOKMARK){
-				if (oData instanceof File){
-					Bookmarks.getInstance().addFile((File)oData);
-				}
-				else if(oData instanceof Directory){
-					Iterator it = ((Directory)oData).getFilesRecursively().iterator();
-					while (it.hasNext()){
-						File file = (File)it.next();
-						Bookmarks.getInstance().addFile(file);	
-					}
-				}
-				else if(oData instanceof Style || oData instanceof Author || oData instanceof Album || oData instanceof Track){
-					if ( alLogicalFiles != null){
-						Iterator it = alLogicalFiles.iterator();
-						while (it.hasNext()){
-							File file = (File)it.next();
-							Bookmarks.getInstance().addFile(file);	
-						}
-					}
-				}
+				Bookmarks.getInstance().addFiles(alSelectedFiles);
 			}
 			//normal or new playlist case
 			else if ( plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_NORMAL || plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_NEW){
-				if (oData instanceof File){
-					plfi.getPlaylistFile().addBasicFile(new BasicFile((File)oData));
-				}
-				else if(oData instanceof Directory){
-					Iterator it = ((Directory)oData).getFilesRecursively().iterator();
-					while (it.hasNext()){
-						File file = (File)it.next();
-						plfi.getPlaylistFile().addBasicFile(new BasicFile(file));	
-					}
-				}
-				else if(oData instanceof Style || oData instanceof Author || oData instanceof Album || oData instanceof Track){
-					if ( alLogicalFiles != null){
-						Iterator it = alLogicalFiles.iterator();
-						while (it.hasNext()){
-							File file = (File)it.next();
-							plfi.getPlaylistFile().addBasicFile(new BasicFile(file));	
-						}
-					}
-				}
+				plfi.getPlaylistFile().addBasicFiles(alSelectedFiles);
 			}
 		}		
 		catch (Exception e) {	

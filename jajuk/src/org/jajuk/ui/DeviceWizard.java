@@ -132,7 +132,7 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 		jtfMountPoint = new JTextField();
 		jtfMountPoint.setToolTipText(Messages.getString("DeviceWizard.47")); //$NON-NLS-1$
 		//mount point notion is unknown under Windows
-		if (Util.underWindows()){
+		if (Util.isUnderWindows()){
 			jlMountPoint.setEnabled(false);
 			jtfMountPoint.setEnabled(false);
 			jbUrlMountPoint.setEnabled(false);
