@@ -254,22 +254,7 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener{
 		    }
 		}
 	}
-	
-	
-	/**
-	 * Set systray tooltip
-	 * @param s
-	 */
-	public void setTooltip(String s){
-		try{
-			if ( trayIcon != null){
-				trayIcon.setToolTip(s);
-			}
-		}
-		catch(Exception e){
-			Log.error(e);
-		}
-	}
+
 	
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.Observer#update(java.lang.String)
@@ -282,12 +267,19 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener{
 		    File file  = FileManager.getFile((String)ObservationManager.getDetail(EVENT_FILE_LAUNCHED,DETAIL_CURRENT_FILE_ID));
 		    String sOut = ""; //$NON-NLS-1$
 		    if (file != null ){
-		        sOut = file.getTrack().getName(); 
+		        String sAuthor = file.getTrack().getAuthor().getName();
+		        if (!sAuthor.equals(UNKNOWN_AUTHOR)){
+		            sOut += sAuthor+" / ";
+		        }
+		        String sAlbum = file.getTrack().getAlbum().getName();
+		        if (!sAlbum.equals(UNKNOWN_ALBUM)){
+		            sOut += sAlbum+" / ";
+		        }
+		        sOut += file.getTrack().getName(); 
 		    }
 		    else{
 		        sOut = Messages.getString("JajukWindow.18"); //$NON-NLS-1$
 		    }
-		    
 		    trayIcon.setToolTip(sOut);
 		}
         else if( EVENT_PLAYER_STOP.equals(subject) || EVENT_ZERO.equals(subject)){
