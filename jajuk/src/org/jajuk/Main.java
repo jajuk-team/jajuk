@@ -293,6 +293,9 @@ public class Main implements ITechnicalStrings {
 			
 		} catch (JajukException je) { //last chance to catch any error for logging purpose
 			Log.error(je);
+			if ( je.getCode().equals("005")){
+				Messages.showErrorMessage("005");
+			}
 			exit(1);
 		} catch (Exception e) { //last chance to catch any error for logging purpose
 			Log.error("106", e); //$NON-NLS-1$
@@ -373,12 +376,12 @@ public class Main implements ITechnicalStrings {
 	public static void exit(int iExitCode) {
 		//set exiting flag
 		bExiting = true;
+		//store exit code to be read by the system hook
+		Main.iExitCode = iExitCode;
 		//force sound to stop quickly
 		FIFO.getInstance().stopRequest();  
 		//hide window
-		jw.setVisible(false);
-		//store exit code to be read by the system hook
-		Main.iExitCode = iExitCode;
+		if (jw!=null) jw.setVisible(false);
 		//check if a confirmation is needed
 		if (Boolean.valueOf(ConfigurationManager.getProperty(CONF_CONFIRMATIONS_EXIT)).booleanValue()){
 			int iResu = JOptionPane.showConfirmDialog(jw,Messages.getString("Confirmation_exit"),Messages.getString("Main.21"),JOptionPane.YES_NO_OPTION);  //$NON-NLS-1$ //$NON-NLS-2$
@@ -387,7 +390,7 @@ public class Main implements ITechnicalStrings {
 			}
 		}
 		//hide systray
-		jw.closeSystray();
+		if (jw!=null) jw.closeSystray();
 		//display a message
 		Log.debug("Exit with code: "+iExitCode); //$NON-NLS-1$
 		System.exit(iExitCode);
