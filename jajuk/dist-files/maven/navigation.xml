@@ -11,8 +11,7 @@
       <item name='Bertrand Florat Home Page' href='http://www.florat.net' />
     </links>
     <menu name='Overview'>
-      <item name='Home' href='./index.html' />
-      <item name='Team' href='./team-list.html' />
+      <item name='Home' href='./index.html' />      <item name='Team' href='./team-list.html' />
       <item name='Download' href='http://sourceforge.net/projects/jajuk/' />
       <item name='Latest news' href='./index.html#News' />
       <item name='Features' href='./index.html#Features' />
@@ -38,7 +37,8 @@
     <menu name='Developers'>
       <item name='Translation howto' href='./translation_howto.html' />
       <item name='Developer guide' href='./developer_guide.html' />
-      <item name='Specifications (PDF) ' href='./doc/specs.pdf' />
+      <item name='Specifications (PDF) ' href='./specs.pdf' />
+      <item name='Qualification forms' href='./main_qualification.html' />
     </menu>
    </body>
 </project>
