@@ -626,7 +626,7 @@ public class Util implements ITechnicalStrings {
         String sAuthor = track.getAuthor().getName();
         String sAlbum = track.getAlbum().getName();
         if (!sAuthor.equals("unknown_author")){
-            sQuery = "+\""+sAuthor+"\"";
+            sQuery += sAuthor + " ";
         }
         if (!sAlbum.equals("unknown_album")){
             sQuery += sAlbum;
