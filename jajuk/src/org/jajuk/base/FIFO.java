@@ -68,7 +68,7 @@ public class FIFO implements ITechnicalStrings{
     private boolean bSeekFirstFile = false;
     
     /**Concurency flag*/
-    private static boolean bFlag = false;
+    private static volatile boolean bFlag = false;
     /**
      * Singleton access
      * @return
@@ -156,9 +156,9 @@ public class FIFO implements ITechnicalStrings{
         if (bFlag){  //soft concurency check : we can't synchronize this method because it can call an invokeAndWait and conduct to GUI freeze
             return;
         }
+        bFlag = true;
         try{
             Util.waiting();
-            bFlag = true;
             //wake up FIFO if stopped
             bStop = false;
             //first try to mount needed devices
