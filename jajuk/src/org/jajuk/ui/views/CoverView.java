@@ -541,7 +541,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
             SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
                     synchronized(bLock){
-                        if(alCovers.size() == 0){ //just a check
+                        if(alCovers.size() == 0 || index >= alCovers.size()){ //just a check
                             searching(false);
                             return;
                         }
