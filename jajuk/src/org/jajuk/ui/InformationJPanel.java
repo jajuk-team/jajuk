@@ -280,7 +280,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,Obser
             try{
                 File fCurrent = (File)ObservationManager.getDetail(event,DETAIL_CURRENT_FILE);
                 setMessage(Messages.getString("Error.007")+": "+fCurrent.getAbsolutePath(),InformationJPanel.ERROR);//$NON-NLS-1$ //$NON-NLS-2$
-                Thread.sleep(2000); //make sure user has time to see this error message
+                Thread.sleep(WAIT_AFTER_ERROR); //make sure user has time to see this error message
             } catch (Exception e) {
                 Log.error(e);
             }

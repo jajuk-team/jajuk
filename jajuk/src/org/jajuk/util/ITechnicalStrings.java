@@ -43,6 +43,8 @@ public interface ITechnicalStrings {
     public static final int MAX_REMOTE_COVERS=10;
     /**Special length for player meaning end of file*/
     public static final long TO_THE_END=-1;
+    /**Time we wait after an error in ms*/
+    public static final int WAIT_AFTER_ERROR= 2000;
     
     		
 	// Jajuk version
