@@ -88,7 +88,10 @@ public class DeviceManager implements ITechnicalStrings{
 				return "019" ;
 			}
 			String sUrlChecked = deviceToCheck.getUrl();
-			if (sUrl.length() >= sUrlChecked.length() && sUrl.substring(0,sUrlChecked.length()).equals(sUrlChecked)){ //check it is not a sub-directory of an existing device
+			//check it is not a sub-directory of an existing device
+			File fNew = new File(sUrl);
+			File fChecked = new File(sUrlChecked);
+			if (fNew.equals(fChecked) || Util.isDescendant(fNew,fChecked) || Util.isAncestor(fNew,fChecked)){
 			    return "029";
 			}
 		}
