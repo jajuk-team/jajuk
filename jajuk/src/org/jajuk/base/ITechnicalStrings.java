@@ -139,6 +139,7 @@ public interface ITechnicalStrings {
 	public static final String ICON_SAVE =  PATH_ICONS + "16x16/save.png";
 	public static final String ICON_SAVE_AS =  PATH_ICONS + "16x16/saveas.png";
 	public static final String ICON_DEFAULT_COVER =  PATH_ICONS + "16x16/ok.png";
+	public static final String ICON_MODE_NORMAL =  PATH_ICONS + "16x16/norm.png";
 			
 	//images
 	public static final String IMAGES_SPLASHSCREEN =  PATH_IMAGES + "jajuk-splashscreen.png";
@@ -154,6 +155,7 @@ public interface ITechnicalStrings {
 	public static final String FILE_ABOUT = "about.html";
 	public static final String FILE_DEFAULT_COVER = "cover";
 	public static final String FILE_DEFAULT_COVER_2 = "front";
+	public static final String FILE_ABSOLUTE_DEFAULT_COVER = "jajuk-default-cover.";
 	public static final String FILE_LANGPACK_PART1 = "jajuk"; //langpack name : jajuk_<locale>.properties
 	public static final String FILE_LANGPACK_PART2 = ".properties"; //langpack name : jajuk_<locale>.properties
 	

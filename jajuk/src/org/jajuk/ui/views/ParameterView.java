@@ -751,6 +751,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 				}
 				//reinit perspectives button
 				else if(e.getSource() == jbPerspectivesReinit){
+				    PerspectiveManager.bShouldCommit = true;
 				    //show an information message : conf will be reinit at next startup 
 				    Messages.showInfoMessage(Messages.getString("ParameterView.126")); //$NON-NLS-1$
 				    //Set default conf

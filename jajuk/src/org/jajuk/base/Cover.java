@@ -42,6 +42,7 @@ public class Cover implements Comparable,ITechnicalStrings {
     public static final int LOCAL_COVER = 0;
     public static final int REMOTE_COVER = 1;
     public static final int DEFAULT_COVER = 2;
+    public static final int ABSOLUTE_DEFAULT_COVER = 3;
     
     /**Cover URL**/
     private URL url;
@@ -51,6 +52,9 @@ public class Cover implements Comparable,ITechnicalStrings {
     
     /**Image*/
     private ImageIcon image;
+    
+    /**Image data*/
+    private byte[] bData;
      
    /**
    * Constructor
@@ -69,8 +73,16 @@ public class Cover implements Comparable,ITechnicalStrings {
      */
     public int compareTo(Object o) {
         Cover cOther = (Cover)o;
-        if (cOther.equals(this)){
+        //check if the 2 covers are identical
+       if (cOther.equals(this)){
             return 0;
+        }
+        //check absolute covers
+        if (getType() == ABSOLUTE_DEFAULT_COVER){
+            return 1;
+        }
+        else if (cOther.getType() == ABSOLUTE_DEFAULT_COVER){
+            return -1;
         }
         //Default cover is the less prioritory
         if (getType() == DEFAULT_COVER){
@@ -129,17 +141,20 @@ public class Cover implements Comparable,ITechnicalStrings {
      * @return Returns the image.
      */
     public ImageIcon getImage() throws Exception {
-        long l = System.currentTimeMillis();
-        if ( iType == LOCAL_COVER || iType == DEFAULT_COVER){
-            this.image = new ImageIcon(url);
-        }
-        else if (iType == REMOTE_COVER){
-            this.image = new ImageIcon(DownloadManager.download(url)); 
-            if ( image.getImageLoadStatus() != MediaTracker.COMPLETE){
-                throw new JajukException("129");
+        if (image == null){ //do nothing if the image is already loaded
+            long l = System.currentTimeMillis();
+            if ( iType == LOCAL_COVER || iType == DEFAULT_COVER  || iType == ABSOLUTE_DEFAULT_COVER){
+                this.image = new ImageIcon(url);
             }
+            else if (iType == REMOTE_COVER){
+                bData = DownloadManager.download(url);
+                this.image = new ImageIcon(bData); 
+                if ( image.getImageLoadStatus() != MediaTracker.COMPLETE){
+                    throw new JajukException("129");
+                }
+            }
+            Log.debug("Loaded "+url.toString()+" in  "+(System.currentTimeMillis()-l)+" ms");
         }
-        Log.debug("Loaded "+url.toString()+" in  "+(System.currentTimeMillis()-l)+" ms");
         return image;
     }
     
@@ -154,12 +169,17 @@ public class Cover implements Comparable,ITechnicalStrings {
      * Equals needed for consitency for sorting
      */
     public boolean equals(Object o){
-       Cover cOther = (Cover)o;
+       boolean bOut = false;
+        Cover cOther = (Cover)o;
        if (getType() == 2 || cOther.getType()==2){
            return  (cOther.getType() == getType()); //either both are default cover, either one is not and so, they are unequal
        }
        //here, all url are not null
-       return url.equals(cOther.getURL());
+       bOut = url.getFile().equals(cOther.getURL().getFile());
+       return bOut;
     }
     
+    public byte[] getData() {
+        return bData;
+    }
 }
