@@ -20,9 +20,9 @@
 
 package org.jajuk.ui;
 
-import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.Vector;
 
 import javax.swing.JComponent;
 
@@ -42,12 +42,12 @@ public class ObservationManager {
 	 * @param jc component to register
 	 */
 	public static synchronized void register(String subject,JComponent jc){
-		ArrayList alComponents = (ArrayList)hEventComponents.get(subject);
-		if (alComponents == null){
-			alComponents = new ArrayList(1);
-			hEventComponents.put(subject,alComponents);
+		Vector  vComponents = (Vector)hEventComponents.get(subject);
+		if (vComponents == null){
+			vComponents = new Vector(1);
+			hEventComponents.put(subject,vComponents);
 		}
-		alComponents.add(jc);
+		vComponents.add(jc);
 	}
 	
 	/**
@@ -56,9 +56,9 @@ public class ObservationManager {
 	 * @param jc component to deregister
 	 */
 	public static synchronized void deregister(String subject,JComponent jc){
-		ArrayList alComponents = (ArrayList)hEventComponents.get(subject);
-		if (alComponents == null){
-			alComponents.remove(jc);
+		Vector vComponents = (Vector)hEventComponents.get(subject);
+		if (vComponents == null){
+			vComponents.remove(jc);
 		}
 	}
 
@@ -69,11 +69,11 @@ public class ObservationManager {
 	public static synchronized void notify(final String subject){
 		new Thread(){
 			public synchronized void run(){
-				ArrayList alComponents =(ArrayList)hEventComponents.get(subject); 
-				if (alComponents == null){
+				Vector vComponents =(Vector)hEventComponents.get(subject); 
+				if (vComponents == null){
 					return;
 				}
-				Iterator it = alComponents.iterator();  
+				Iterator it = vComponents.iterator();  
 				while (it.hasNext()){
 					Observer obs = (Observer)it.next();
 					obs.update(subject);
