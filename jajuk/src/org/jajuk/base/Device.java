@@ -239,7 +239,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	            }
 	            //Start actual scan
 	            while (iDeep >= 0) {
-	                Log.debug("Entering: "+fCurrent);
+	                Log.debug("Entering: "+fCurrent); //$NON-NLS-1$
 	                File[] files = fCurrent.listFiles(new JajukFileFilter(true,false)); //only directories
 	                if (files== null || files.length == 0 ){  //files is null if fCurrent is a not a directory 
 	                    indexTab[iDeep] = -1;//re-init for next time we will reach this deep
