@@ -140,6 +140,7 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
 			JajukJMenuBar.getInstance().jcbmiContinue.setSelected(!b);
 			if (!b == true) { //enabled button
 				CommandJPanel.getInstance().jbContinue.setBorder(BorderFactory.createLoweredBevelBorder());
+				FIFO.getInstance().forceRepeat(null);//remove forced repeat mode if any
 			}
 			else {
 				CommandJPanel.getInstance().jbContinue.setBorder(BorderFactory.createRaisedBevelBorder());
