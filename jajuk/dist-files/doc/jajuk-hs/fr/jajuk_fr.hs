@@ -11,7 +11,7 @@
   <!-- maps -->
   <maps>
      <homeID>top</homeID>
-     <mapref location="fr/Map.jhm"/>
+     <mapref location="Map.jhm"/>
   </maps>
 
   <!-- views -->
@@ -19,7 +19,7 @@
     <name>TOC</name>
     <label>Sommaire</label>
     <type>javax.help.TOCView</type>
-    <data>fr/jajukToc.xml</data>
+    <data>jajukToc.xml</data>
   </view>
 
    <view>

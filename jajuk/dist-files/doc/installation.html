@@ -68,10 +68,17 @@ installed (check it with command<span style="font-family: monospace;">
 java --version</span>), force installation :<span
  style="font-family: monospace;"> </span><span
  style="font-family: monospace;">rpm -ivh --nodeps jajuk-${version}.rpm<br>
-</span><span style="text-decoration: underline;">Note</span> : Under
-Mandrake, it takes a while for shortcut to appear in menu.<span
- style="font-family: monospace;"><br>
-</span><span style="font-weight: bold;"><br>
+</span><span style="text-decoration: underline;">Note</span>s : <br>
+<ul>
+  <li>In both distributions, it can take a while for shortcut to appear
+in menu.</li>
+  <li>Under Suse, shortcut is created in "Multimedia" menu section.</li>
+  <li>Under Mandrake, shortcut is created in "Multimedia/Sound" menu
+section.<br>
+  </li>
+</ul>
+<span style="font-family: monospace;"></span><span
+ style="font-weight: bold;"><br>
 Under Windows only<br>
 </span>We provide a self-extracting Windows archive (<span
  style="font-family: monospace;">Jajuk-${version}.exe</span>). Double
@@ -111,6 +118,8 @@ path}/bin/jajuk.jar file. (Please contact us if you have better
 packaging proposals)<br>
 </p>
 <h2>Upgrade</h2>
+<span style="font-weight: bold;">Under all systems</span><br>
+<br>
 If you already have an installed Jajuk release:
 <ul>
   <li>It is safe to install the new release over previous one without
@@ -121,8 +130,21 @@ and configuration is kept and is stored under <span
 <ul>
   <li>However Jajuk doesn't support downwards compatibility: A Jajuk
 release may not work with a collection built by a newer release than
-the one you use. </li>
+the one you use.</li>
 </ul>
+<span style="font-weight: bold;">Under Linux only<br>
+</span>
+<ul>
+  <li>To upgrade Jajuk, log as root and launch <span
+ style="font-family: monospace;">rpm -Uvh jajuk-${version}-suse.rpm</span></li>
+</ul>
+IMPORTANT NOTE FOR UPGRADE FROM 0.3.1 TO 0.3.2 : due to a bug in 0.3.1
+packaging, please use&nbsp; <span style="font-family: monospace;"><span
+ style="font-family: monospace;">rpm -Uvh </span><span
+ style="font-weight: bold; font-family: monospace;">--nopostun</span>
+jajuk-${version}-suse.rpm or unsinstall 0.3.1 and install 0.3.2.</span><br>
+<span style="font-weight: bold;"><br>
+</span>
 <h2>Uninstallation</h2>
 <span style="font-weight: bold;">Under Unix</span>
 <ul>
