@@ -9,6 +9,9 @@
  * 
  * You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
  * USA. $Log$
+ * USA. Revision 1.6  2003/10/31 13:05:06  bflorat
+ * USA. 31/10/2003
+ * USA.
  * USA. Revision 1.5  2003/10/28 21:34:37  bflorat
  * USA. 28/10/2003
  * USA.
@@ -229,18 +232,20 @@ public class Directory extends PropertyAdapter {
 	}
 
 	/**
-	 * Return full directory path name
+	 * Return full directory path name relative to device url
 	 * 
 	 * @return String
 	 */
 	public String getAbsolutePath() {
+		if (getName().equals("")){  //if this directory is a root device directory
+			return "";
+		}
 		StringBuffer sbOut = new StringBuffer().append(java.io.File.separatorChar).append(getName());
 		boolean bTop = false;
 		Directory dCurrent = this;
 		while (!bTop) {
 			dCurrent = dCurrent.getParentDirectory();
-			if (dCurrent != null) { //if it is the root directory, no
-				// parent
+			if (dCurrent != null && !dCurrent.getName().equals("")) { //if it is the root directory, no parent
 				sbOut.insert(0, java.io.File.separatorChar).insert(1, dCurrent.getName());
 			} else {
 				bTop = true;

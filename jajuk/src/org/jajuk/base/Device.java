@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.6  2003/10/31 13:05:06  bflorat
+ * 31/10/2003
+ *
  * Revision 1.5  2003/10/28 21:34:37  bflorat
  * 28/10/2003
  *
@@ -49,7 +52,7 @@ import org.jajuk.util.log.Log;
  * @Author     bflorat
  * @created    17 oct. 2003
  */
-public class Device extends PropertyAdapter {
+public class Device extends PropertyAdapter implements ITechnicalStrings{
 
 	/** ID. Ex:1,2,3...*/
 	private String sId;
@@ -123,6 +126,7 @@ public class Device extends PropertyAdapter {
 		//current reference to the inner thread class
 		new Thread() {
 			public void run() {
+				long lTime = System.currentTimeMillis();
 				if (bAlreadyRefreshing){
 					Messages.showErrorMessage("107");
 					return;
@@ -134,13 +138,13 @@ public class Device extends PropertyAdapter {
 				Iterator it = alNewFiles.iterator();
 				//TODO see refresh method
 				
-				//Start actual scan
 				File fTop = new File(device.sUrl);
 				if (!fTop.exists()) {
 					Messages.showErrorMessage("101");
 					return;
 				}
-				//scanDirectory(fTop);
+				
+				//index init
 				File fCurrent = fTop;
 				int[] indexTab = new int[100]; //directory index  
 				for (int i = 0; i < 100; i++) { //init
@@ -148,6 +152,14 @@ public class Device extends PropertyAdapter {
 				}
 				int iDeep = 0; //deep
 				Directory dParent = null;
+				
+				//Create a directory for device itself and scan files to allow files at the root of the device
+				if (!device.getDeviceType().equals(DEVICE_TYPE_REMOTE) || !device.getDeviceType().equals(DEVICE_TYPE_AUDIO_CD)){
+					Directory d = DirectoryManager.registerDirectory(device);
+					dParent = d;
+					d.scan();
+				}
+				//Start actual scan
 				while (iDeep >= 0) {
 					//Log.debug("entering :"+fCurrent);
 					File[] files = fCurrent.listFiles(JajukFileFilter.getInstance(true,false)); //only directories
@@ -175,14 +187,9 @@ public class Device extends PropertyAdapter {
 						}
 					}					
 				}
-				Log.debug("Refresh done. Found : "+FileManager.getFiles().size()+" files");
+				Log.debug("Refresh done. Found : "+FileManager.getFiles().size()+" files in "+(int)((System.currentTimeMillis()-lTime)/1000)+" sec");
 				bAlreadyRefreshing = false;
-				/*Collection col = FileManager.getFiles();
-				Iterator it = col.iterator();
-				while (it.hasNext()){
-					org.jajuk.base.File file = (org.jajuk.base.File)it.next();
-					System.out.println(file);
-				}*/
+				
 			}
 		}
 		.start();

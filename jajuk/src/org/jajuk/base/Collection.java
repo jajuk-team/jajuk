@@ -9,18 +9,21 @@
  * 
  * You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
  * USA. $Log$
- * USA. Revision 1.5  2003/10/26 21:28:49  bflorat
- * USA. 26/10/2003
+ * USA. Revision 1.6  2003/10/31 13:05:06  bflorat
+ * USA. 31/10/2003
  * USA.
  */
 package org.jajuk.base;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.StringTokenizer;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -47,6 +50,9 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 	private static Collection collection;
 	/** Modification flag, if false, the XML output file is not writted again on the disk */
 	private static boolean bModified = false;
+	private long lTime;
+	
+	
 	/** Instance getter */
 	public static Collection getInstance() {
 		if (collection == null) {
@@ -61,7 +67,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 
 	/** Write current collection to collection file for persistence between sessions */
 	public static void commit() throws IOException {
-		BufferedWriter bw = new BufferedWriter(new FileWriter(new File(FILE_COLLECTION)));
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(FILE_COLLECTION),"UTF-8"));
 		bw.write("<?xml version='1.0' encoding='UTF-8'?>\n");
 		bw.write("<collection>\n");
 		//types
@@ -139,7 +145,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 		}
 		bw.write("\t</playlist_files>\n");
 		//playlist
-		bw.write("\t<playlist>\n");
+		bw.write("\t<playlists>\n");
 		it = PlaylistManager.getPlaylists().iterator();
 		while (it.hasNext()) {
 			Playlist playlist = (Playlist) it.next();
@@ -147,7 +153,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 				bw.write(playlist.toXml());
 			}
 		}
-		bw.write("\t</playlist>\n");
+		bw.write("\t</playlists>\n");
 		bw.write("</collection>\n");
 		bw.flush();
 		bw.close();
@@ -273,43 +279,132 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 	 * Called at parsing start
 	 */
 	public void startDocument() {
+		lTime = System.currentTimeMillis();
 		Log.debug("Starting collection file parsing...");
 	}
+	
+	/**
+		 * Called at parsing end
+		 */
+		public void endDocument() {
+			lTime = System.currentTimeMillis();
+			Log.debug("Collection file parsing done : "+(System.currentTimeMillis()-lTime)+" ms");
+		}
 
 	/**
 	 * Called when we start an element
-	 */
+	
+ <types>
+  <type id='1' name='mp3' extension='mp3'/>
+  <type id='2' name='playlist' extension='m3u'/>
+  <type id='3' name='ogg vorbis' extension='ogg'/>
+ </types>
+
+ <devices>
+  <device id='2' name='cd jazz' type='directory' url='/home/foo/music'  myproperty_on_device='1234'/>
+ </devices>
+
+ <styles>
+  <style id='0' name='ROCK' myproperty_on_style='foo'/>
+ </styles>
+
+ <authors>
+  <author id='4' name='my author' myproperty_on_author='false'/>
+ </authors>
+
+ <albums>
+  <album id='12' name='my rock album'  myproperty='good'/>
+ </albums>
+ <tracks>
+  <track id='162' name='my rock track'  album='12' style='0' author='4' 
+   length='345' year='2004' rate='10' type='1' files='2,56,566' hits='2' 
+   added='20041203' myproperty_on_track='good'/>
+ </tracks>
+ <directories>
+  <directory id='1' name='rock' parent='-1' device='2' myproperty_on_directory='foo'/>
+  <directory id='3' name='MyAuthor' parent='1' myproperty_on_directory='1234'/>
+ </directories>
+
+ <files>
+  <file id='56'  name='mytrack.mp3' directory='3' track='162' 
+  size='342435' quality='192'  myproperty_on_file='good'/>
+ </files>
+
+	 *
+	 *  */
 	public void startElement(String sUri, String sName, String sQName, Attributes attributes) throws SAXException {
-	/*	if (sQName.equals(XML_DEVICE)) { //device case
-			DeviceManager.registerDevice(attributes.getValue(0), attributes.getValue(1), attributes.getValue(2));
+		if (sQName.equals(XML_DEVICE)) { //device case
+			DeviceManager.registerDevice(attributes.getValue(0), attributes.getValue(1), attributes.getValue(2),attributes.getValue(3));
 		}
-		else if (sQName.equals(XML_ALBUM)) { 
-					AlbumManager.registerAlbum(attributes.getValue(0), attributes.getValue(1), attributes.getValue(2));
+		else if (sQName.equals(XML_STYLE)) { 
+					StyleManager.registerStyle(attributes.getValue(0), attributes.getValue(1));
 		}
 		else if (sQName.equals(XML_AUTHOR)) { 
-					AlbumManager.registerAlbum(attributes.getValue(0), attributes.getValue(1), attributes.getValue(2));
+					AuthorManager.registerAuthor(attributes.getValue(0), attributes.getValue(1));
 		}
+		else if (sQName.equals(XML_ALBUM)) { 
+			AlbumManager.registerAlbum(attributes.getValue(0), attributes.getValue(1));
+		}
+		/*<track id='162' name='my rock track'  album='12' style='0' author='4' 
+   length='345' year='2004' rate='10' type='1' files='2,56,566' hits='2' 
+   added='20041203' myproperty_on_track='good'/>*/
+		
 		else if (sQName.equals(XML_TRACK)) { 
-					AlbumManager.registerAlbum(attributes.getValue(0), attributes.getValue(1), attributes.getValue(2));
+			String sId = attributes.getValue(0);
+			String sTrackName = attributes.getValue(1);
+			Album album = AlbumManager.getAlbum(attributes.getValue(2));
+			Style style = StyleManager.getStyle(attributes.getValue(3));
+			Author author = AuthorManager.getAuthor(attributes.getValue(4));
+			long length = Long.parseLong(attributes.getValue(5));
+			String sYear = attributes.getValue(6);
+			Type type = TypeManager.getType(attributes.getValue(8));
+			Track track = TrackManager.registerTrack(sId,sTrackName,album,style,author,length,sYear,type);
+			track.setRate(Long.parseLong(attributes.getValue(7)));
+			track.setHits(Integer.parseInt(attributes.getValue(9)));
+			track.setAdditionDate(attributes.getValue(10));
 		}
 		else if (sQName.equals(XML_DIRECTORY)) { 
-					AlbumManager.registerAlbum(attributes.getValue(0), attributes.getValue(1), attributes.getValue(2));
+			Directory dParent = null;
+			String sParentId = attributes.getValue(2);
+			if (!sParentId.equals("-1")){
+				dParent = DirectoryManager.getDirectory(sParentId); //We know the parent directory is already referenced because of order conservation	
+			}
+			Device device = DeviceManager.getDevice(attributes.getValue(3));
+			DirectoryManager.registerDirectory(attributes.getValue(0), attributes.getValue(1), dParent,device);
 		}
-		else if (sQName.equals(XML_ALBUM)) { 
-					AlbumManager.registerAlbum(attributes.getValue(0), attributes.getValue(1), attributes.getValue(2));
+		else if (sQName.equals(XML_FILE)) { 
+			Directory dParent = DirectoryManager.getDirectory(attributes.getValue(2)); 
+			Track track = TrackManager.getTrack(attributes.getValue(3)); 
+			long lSize = Long.parseLong(attributes.getValue(4));
+			org.jajuk.base.File file = FileManager.registerFile(attributes.getValue(0), attributes.getValue(1), dParent,track,lSize,attributes.getValue(5));
+			track.addFile(file);
 		}
-		else if (sQName.equals(XML_ALBUM)) { 
-					AlbumManager.registerAlbum(attributes.getValue(0), attributes.getValue(1), attributes.getValue(2));
+		else if (sQName.equals(XML_PLAYLIST_FILE)) { 
+			Directory dParent = DirectoryManager.getDirectory(attributes.getValue(3));
+			PlaylistFileManager.registerPlaylistFile(attributes.getValue(0), attributes.getValue(1), attributes.getValue(2),dParent);
 		}
-		else if (sQName.equals(XML_ALBUM)) { 
-					AlbumManager.registerAlbum(attributes.getValue(0), attributes.getValue(1), attributes.getValue(2));
+		else if (sQName.equals(XML_PLAYLIST)) { 
+			StringTokenizer st = new StringTokenizer(attributes.getValue(1),","); //playlist file list with ','
+			if (st.hasMoreTokens()){
+				PlaylistFile plFile = PlaylistFileManager.getPlaylistFile((String)st.nextElement());	
+				Playlist playlist = PlaylistManager.registerPlaylist(attributes.getValue(0), plFile);
+				while (st.hasMoreTokens()){
+					playlist.addFile(PlaylistFileManager.getPlaylistFile((String)st.nextElement()));
+				}
+			}
 		}
-		else if (sQName.equals(XML_ALBUM)) { 
-					AlbumManager.registerAlbum(attributes.getValue(0), attributes.getValue(1), attributes.getValue(2));
+		else if (sQName.equals(XML_TYPE)) { 
+			String sId = 	attributes.getValue(0);
+			String sTypeName = attributes.getValue(1);
+			String sExtension = attributes.getValue(2);
+			String sPlayer= attributes.getValue(3);
+			String sTag = attributes.getValue(4);
+			if (sTag.equals("")){
+				sTag = null;
+			}
+			boolean bIsMusic = Boolean.valueOf(attributes.getValue(5)).booleanValue();
+			TypeManager.registerType(sId,sTypeName,sExtension,sPlayer,sTag,bIsMusic);
 		}
-		else if (sQName.equals(XML_ALBUM)) { 
-					AlbumManager.registerAlbum(attributes.getValue(0), attributes.getValue(1), attributes.getValue(2));
-		}*/
 	}
 
 	/**

@@ -13,6 +13,9 @@
  * You should have received a copy of the GNU General Public License along with
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA. $Log$
+ * Place - Suite 330, Boston, MA 02111-1307, USA. Revision 1.5  2003/10/31 13:05:39  bflorat
+ * Place - Suite 330, Boston, MA 02111-1307, USA. 31/10/2003
+ * Place - Suite 330, Boston, MA 02111-1307, USA.
  * Place - Suite 330, Boston, MA 02111-1307, USA. Revision 1.4  2003/10/26 21:28:49  bflorat
  * Place - Suite 330, Boston, MA 02111-1307, USA. 26/10/2003
  * Place - Suite 330, Boston, MA 02111-1307, USA. Revision
@@ -140,7 +143,8 @@ public class Util implements ITechnicalStrings {
 /**
 	 * Format a string before XML write
 	 * <p>see http://www.w3.org/TR/2000/REC-xml-20001006
-	 * <p> substrings ' to &apos;
+	 * <p> substrings 
+	 * <p>' to &apos;
 	 * <p>" to &quot;
 	 * <p>< to &lt;
 	 * <p>> to &gt;
@@ -149,13 +153,20 @@ public class Util implements ITechnicalStrings {
 	 * @return
 	 */
 	public static String formatXML(String s){
-		String sOut = s.replaceAll("\'","&apos;");
+		String sOut = s.replaceAll("&","&amp;");
+		sOut = sOut.replaceAll("\'","&apos;");
 		sOut = sOut.replaceAll("\"","&quot;");
 		sOut = sOut.replaceAll("<","&lt;");
 		sOut = sOut.replaceAll(">","&qt;");
-		sOut = sOut.replaceAll("&","&amp;");
 		return sOut;
 	}
-
 	
+	/**
+	 * Performs some cleanups for strings comming from tag libs 
+	 * @param s
+	 * @return
+	 */
+	public static String formatTag(String s){
+		return s.replace('\u0000',' ').trim();
+	}
 }

@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.4  2003/10/31 13:05:06  bflorat
+ * 31/10/2003
+ *
  * Revision 1.3  2003/10/26 21:28:49  bflorat
  * 26/10/2003
  *
@@ -29,8 +32,8 @@
 
 package org.jajuk.base;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 
 import org.jajuk.util.MD5Processor;
 
@@ -40,8 +43,10 @@ import org.jajuk.util.MD5Processor;
  * @created    17 oct. 2003
  */
 public class DirectoryManager {
-	/**Albums collection**/
-	static HashMap hmDirectories = new HashMap(100);
+	/**Directories collection stored in a arraylist to conserve creation order**/
+	static ArrayList alDirectories = new ArrayList(100);
+	/**Directories collection ID */
+	static ArrayList alIds = new ArrayList(100);
 
 	/**
 	 * No constructor available, only static access
@@ -55,21 +60,39 @@ public class DirectoryManager {
 	 *@param sName
 	 */
 	public static Directory registerDirectory(String sName,Directory dParent,Device device) {
-		String sAbs ="";
+		String sAbs = device.getUrl();
 		if (dParent != null){
 			sAbs = dParent.getAbsolutePath();
 		}
 		sAbs += sName;
 		String sId = MD5Processor.hash(sAbs);
-		Directory directory = new Directory(sId,sName,dParent,device);
-		hmDirectories.put(sId,directory);
-		return directory;
+		return registerDirectory(sId,sName,dParent,device);
 	}
+	
+	/**
+		 * Register a root device directory
+		 *@param device
+		 */
+		public static Directory registerDirectory(Device device) {
+			String sId = device.getId();
+			return registerDirectory(sId,"",null,device);
+		}
+	
+	/**
+		 * Register a directory with a known id
+		 *@param sName
+		 */
+		public static Directory registerDirectory(String sId,String sName,Directory dParent,Device device) {
+			Directory directory = new Directory(sId,sName,dParent,device);
+			alDirectories.add(directory);
+			alIds.add(sId);
+			return directory;
+		}
 
 
 	/**Return all registred directories*/
-	public static Collection getDirectories() {
-		return hmDirectories.values();
+	public static ArrayList getDirectories() {
+		return alDirectories;
 	}
 
 	/**
@@ -78,7 +101,7 @@ public class DirectoryManager {
 	 * @return
 	 */
 	public static Directory getDirectory(String sId) {
-		return (Directory) hmDirectories.get(sId);
+		return (Directory) alDirectories.get(alIds.indexOf(sId));
 	}
 	
 }

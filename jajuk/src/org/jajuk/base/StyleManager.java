@@ -16,8 +16,8 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
- * Revision 1.4  2003/10/26 21:28:49  bflorat
- * 26/10/2003
+ * Revision 1.5  2003/10/31 13:05:06  bflorat
+ * 31/10/2003
  *
  */
 
@@ -50,6 +50,14 @@ public class StyleManager {
 	 */
 	public static Style registerStyle(String sName) {
 		String sId = MD5Processor.hash(sName);
+		return registerStyle(sId,sName);
+	}
+	
+	/**
+	 * Register a style with a known id
+	 *@param sName
+	 */
+	public static Style registerStyle(String sId,String sName) {
 		Style style = new Style(sId, sName);
 		hmStyles.put(sId, style);
 		return style;

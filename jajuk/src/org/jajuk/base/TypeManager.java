@@ -16,8 +16,8 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
- * Revision 1.3  2003/10/26 21:28:49  bflorat
- * 26/10/2003
+ * Revision 1.4  2003/10/31 13:05:06  bflorat
+ * 31/10/2003
  *
  * Revision 1.1  2003/10/12 21:08:11  bflorat
  * 12/10/2003
@@ -28,6 +28,8 @@ package org.jajuk.base;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+
+import org.jajuk.util.log.Log;
 
 /**
  *  Manages types ( mp3, ogg...) supported by jajuk
@@ -50,12 +52,28 @@ public class TypeManager {
 	 * Register a type jajuk can read
 	 * @param type
 	 */
-	public static Type registerType(String sName,String sExtension, String sPlayerImpl,String sTagImpl,boolean bIsMusic)throws Exception {
+	public static Type registerType(String sName,String sExtension, String sPlayerImpl,String sTagImpl,boolean bIsMusic) {
 		String sId = new Integer(hmSupportedTypes.size()).toString();
-		Type type = new Type(sId,sName,sExtension,sPlayerImpl,sTagImpl,bIsMusic);
-		hmSupportedTypes.put(type.getExtension(), type);
+		return registerType(sId,sName,sExtension,sPlayerImpl,sTagImpl,bIsMusic);
+	}
+	
+	
+	/**
+	 * Register a type jajuk can read with a known id
+	 * @param type
+	 */
+	public static Type registerType(String sId,String sName,String sExtension, String sPlayerImpl,String sTagImpl,boolean bIsMusic) {
+		Type type = null;
+		try{
+			type = new Type(sId,sName,sExtension,sPlayerImpl,sTagImpl,bIsMusic);
+			hmSupportedTypes.put(type.getExtension(), type);
+		}
+		catch(Exception e){
+			Log.error("109","sPlayerImpl="+sPlayerImpl+" sTagImpl="+sTagImpl,e );
+		}
 		return type;
 	}
+
 
 	/**
 	 * Tells if the type is supported
@@ -70,6 +88,18 @@ public class TypeManager {
 	public static ArrayList getTypes() {
 		return new ArrayList(hmSupportedTypes.values());
 	}
+	
+	/**Return a registred type by its id*/
+		public static Type getType(String sId) {
+			Iterator it = hmSupportedTypes.values().iterator();
+			while (it.hasNext()){
+				Type type = (Type)it.next();
+				if (type.getId().equals(sId)){
+					return type;
+				}
+			}
+			return null;
+		}
 
 	/**
 	 * Return type for a given extension

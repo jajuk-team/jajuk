@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.6  2003/10/31 13:05:06  bflorat
+ * 31/10/2003
+ *
  * Revision 1.5  2003/10/28 21:34:37  bflorat
  * 28/10/2003
  *
@@ -33,6 +36,8 @@
  *
  */
 package org.jajuk.base;
+
+import javax.swing.plaf.SplitPaneUI;
 
 import org.jajuk.util.Util;
 
@@ -62,7 +67,7 @@ public class Type {
 		this.sExtension = sExtension;
 		this.sName = sName;
 		this.playerImpl = (IPlayerImpl)Class.forName(sPlayerImpl).newInstance();
-		if (sTagImpl != null){
+		if (sTagImpl != null){  //can be null for playlists
 			this.tagImpl = (ITagImpl)Class.forName(sTagImpl).newInstance();
 		}
 		this.sId = sId;
@@ -107,7 +112,10 @@ public class Type {
 		StringBuffer sb = new StringBuffer("\t\t<type id='" +sId);
 		sb.append("' name='");
 		sb.append(Util.formatXML(sName)).append("' extension='");
-		sb.append(sExtension).append("'/>\n");
+		sb.append(sExtension).append("' player_impl='");
+		sb.append(playerImpl.getClass().getName()).append("' tag_impl='");
+		sb.append((tagImpl==null)?"":tagImpl.getClass().getName()).append("' music='");
+		sb.append(bIsMusic).append("'/>\n");
 		return sb.toString();
 	}
 

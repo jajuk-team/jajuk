@@ -9,6 +9,9 @@
  * 
  * You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
  * USA. $Log$
+ * USA. Revision 1.2  2003/10/31 13:05:06  bflorat
+ * USA. 31/10/2003
+ * USA.
  * USA. Revision 1.1  2003/10/26 21:28:49  bflorat
  * USA. 26/10/2003
  * USA. Revision 1.3 2003/10/21 17:51:43 bflorat 21/10/2003
@@ -21,6 +24,7 @@
 package org.jajuk.base;
 
 import java.io.File;
+import java.lang.reflect.Array;
 
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.Util;
@@ -61,8 +65,8 @@ public class Tag {
 	public String getTrackName() {
 		String sTrackName = fio.getName();
 		try {
-			sTrackName = tagImpl.getTrackName();
-			if (sTrackName.trim().equals("")){
+			sTrackName = Util.formatTag(tagImpl.getTrackName());
+			if (sTrackName == null || sTrackName.equals("")){
 				sTrackName = fio.getName();
 			}
 		} catch (Exception e) {
@@ -77,8 +81,8 @@ public class Tag {
 	public String getAlbumName() {
 		String sAlbumlName = fio.getParentFile().getName(); //if album is not found, take current dirtectory as album name
 		try {
-			sAlbumlName = tagImpl.getAlbumName();
-			if (sAlbumlName.trim().equals("")){
+			sAlbumlName = Util.formatTag(tagImpl.getAlbumName());
+			if (sAlbumlName.equals("")){
 					sAlbumlName = fio.getParentFile().getName();
 			}
 		} catch (Exception e) {
@@ -93,8 +97,8 @@ public class Tag {
 	public String getAuthorName() {
 		String sAuthorName = Messages.getString("Track_unknown_author");
 		try {
-			sAuthorName = tagImpl.getAuthorName();
-			if (sAuthorName.trim().equals("")) {
+			sAuthorName = Util.formatTag(tagImpl.getAuthorName());
+			if (sAuthorName.equals("")) {
 				sAuthorName = Messages.getString("Track_unknown_author");
 			}
 		} catch (Exception e) {
@@ -110,7 +114,7 @@ public class Tag {
 	public String getStyleName() {
 		String style = Messages.getString("Track_unknown_style");
 		try {
-			style = tagImpl.getStyleName();
+			style = Util.formatTag(tagImpl.getStyleName());
 			if (style.toLowerCase().equals("unknown")){
 				style = Messages.getString("Track_unknown_style");
 			}
@@ -141,8 +145,8 @@ public class Tag {
 	public String getYear() {
 		String sYear = Messages.getString("Track_unknown_year");
 		try {
-			sYear = tagImpl.getYear();
-			if (sYear.equals("0") || sYear.trim().equals("")){
+			sYear = Util.formatTag(tagImpl.getYear());
+			if (sYear.equals("0") || sYear.equals("")){
 				sYear = Messages.getString("Track_unknown_year");
 			}
 		} catch (Exception e) {
@@ -158,7 +162,7 @@ public class Tag {
 	public String getQuality() {
 		String sQuality = Messages.getString("Track_unknown_quality");
 		try {
-			sQuality = tagImpl.getQuality();
+			sQuality = Util.formatTag(tagImpl.getQuality());
 		} catch (Exception e) {
 			Log.error("103", e);
 		}

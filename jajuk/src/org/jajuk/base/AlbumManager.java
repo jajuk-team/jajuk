@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.5  2003/10/31 13:05:06  bflorat
+ * 31/10/2003
+ *
  * Revision 1.4  2003/10/26 21:28:49  bflorat
  * 26/10/2003
  *
@@ -58,20 +61,21 @@ public class AlbumManager {
 	 *@param sName
 	 */
 	public static Album registerAlbum(String sName) {
-		ArrayList al = new ArrayList(hmAlbums.values());
-		Album album = null;
-		int index = al.indexOf(new Album("",sName));
-			if (index == -1){  //new album
-				String sId = MD5Processor.hash(sName);
-				album = new Album(sId,sName);
-				//TODO format
-				hmAlbums.put(sId,album);
-			}
-			else{//album already exists, return it
-				album = (Album)al.get(index);
-			}
-		return album;
+		String sId = MD5Processor.hash(sName);
+		return registerAlbum(sId,sName);
 	}
+	
+	
+	/**
+		 * Register an Album with a known id
+		 *@param sName
+		 */
+		public static Album registerAlbum(String sId,String sName) {
+			Album album = new Album(sId,sName);
+			//TODO format
+			hmAlbums.put(sId,album);
+			return album;
+		}
 
 
 	/**Return all registred Albums*/

@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.4  2003/10/31 13:05:06  bflorat
+ * 31/10/2003
+ *
  * Revision 1.3  2003/10/26 21:28:49  bflorat
  * 26/10/2003
  *
@@ -56,11 +59,19 @@ public class AuthorManager {
 	 */
 	public static Author registerAuthor(String sName) {
 		String sId = MD5Processor.hash(sName);
-		Author author = new Author(sId, sName);
-		//TODO  format
-		hmAuthors.put(sId, author);
-		return author;
+		return registerAuthor(sId,sName);
 	}
+	
+	/**
+		 * Register an author with a known id
+		 *@param sName
+		 */
+		public static Author registerAuthor(String sId,String sName) {
+			Author author = new Author(sId, sName);
+			//TODO  format
+			hmAuthors.put(sId, author);
+			return author;
+		}
 	
 	/**
 			 * Remove an author

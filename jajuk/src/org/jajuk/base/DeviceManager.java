@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.5  2003/10/31 13:05:06  bflorat
+ * 31/10/2003
+ *
  * Revision 1.4  2003/10/28 21:34:37  bflorat
  * 28/10/2003
  *
@@ -62,10 +65,19 @@ public class DeviceManager {
 	 */
 	public static Device  registerDevice(String sName,String sDeviceType,String sUrl) {
 		String sId = MD5Processor.hash(sUrl+sName+sDeviceType);
-		Device device = new Device(sId,sName,sDeviceType,sUrl);
-		hmDevices.put(sId,device);
-		return device;
+		return registerDevice(sId,sName,sDeviceType,sUrl);
 	}
+	
+	/**
+		 * Register a device with a known id
+		 *@param sName
+		 *@return device 
+		 */
+		public static Device  registerDevice(String sId,String sName,String sDeviceType,String sUrl) {
+			Device device = new Device(sId,sName,sDeviceType,sUrl);
+			hmDevices.put(sId,device);
+			return device;
+		}
 
 
 	/**Return all registred devices*/

@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.5  2003/10/31 13:05:06  bflorat
+ * 31/10/2003
+ *
  * Revision 1.4  2003/10/28 21:34:37  bflorat
  * 28/10/2003
  *
@@ -108,6 +111,14 @@ public interface ITechnicalStrings {
 	//tag impls
 	public static final String TAG_IMPL_JID3LIB= "org.jajuk.tag.JID3LibTagImpl";
 	public static final String TAG_IMPL_MP3INFO= "org.jajuk.tag.MP3InfoTagImpl";
+	
+	//device types
+	public static final String DEVICE_TYPE_DIRECTORY = "Device_type.directory";
+	public static final String DEVICE_TYPE_FILE_CD = "Device_type.file_cd";
+	public static final String DEVICE_TYPE_AUDIO_CD = "Device_type.audio_cd";
+	public static final String DEVICE_TYPE_REMOTE = "Device_type.remote";
+	public static final String DEVICE_TYPE_USBKEY = "Device_type.usbkey";
+	
 	
 	//extensions
 	public static final String EXT_MP3 = "mp3";

@@ -13,6 +13,9 @@
  * You should have received a copy of the GNU General Public License along with
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA. $Log$
+ * Place - Suite 330, Boston, MA 02111-1307, USA. Revision 1.6  2003/10/31 13:05:06  bflorat
+ * Place - Suite 330, Boston, MA 02111-1307, USA. 31/10/2003
+ * Place - Suite 330, Boston, MA 02111-1307, USA.
  * Place - Suite 330, Boston, MA 02111-1307, USA. Revision 1.5  2003/10/28 21:34:37  bflorat
  * Place - Suite 330, Boston, MA 02111-1307, USA. 28/10/2003
  * Place - Suite 330, Boston, MA 02111-1307, USA.
@@ -59,8 +62,17 @@ public class TrackManager implements ITechnicalStrings{
 	 * @param sName
 	 */
 	public static Track registerTrack(String sName, Album album, Style style, Author author, long length, String sYear, Type type) {
-		Track track = null;
 		String sId = MD5Processor.hash(style.getName()+author.getName()+sYear+length+type.getName()+sName);
+		return registerTrack(sId,sName,album,style,author,length,sYear,type);
+	}
+	
+	/**
+	 * Register an Track with a known id
+	 * 
+	 * @param sName
+	 */
+	public static Track registerTrack(String sId,String sName, Album album, Style style, Author author, long length, String sYear, Type type) {
+		Track track = null;
 		if ( !hmTracks.containsKey(sId)){
 			String sAdditionDate = new SimpleDateFormat(DATE_FILE).format(new Date());
 			track = new Track(sId,sName, album, style, author, length, sYear, type, sAdditionDate);
@@ -69,6 +81,7 @@ public class TrackManager implements ITechnicalStrings{
 		}
 		return (Track)hmTracks.get(sId);
 	}
+
 
 	/** Return all registred Tracks */
 	public static ArrayList getTracks() {

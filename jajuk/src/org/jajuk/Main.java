@@ -9,6 +9,9 @@
  * 
  * You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
  * USA. $Log$
+ * USA. Revision 1.11  2003/10/31 13:04:16  bflorat
+ * USA. 31/10/2003
+ * USA.
  * USA. Revision 1.10  2003/10/28 21:34:12  bflorat
  * USA. - Added perspectives.xml creation
  * USA. Revision 1.9 2003/10/26 21:28:49 bflorat 26/10/2003
@@ -83,13 +86,22 @@ public class Main implements ITechnicalStrings {
 
 	public static void main(String[] args) {
 		try {
-
-			//perform initial checkups
-			initialCheckups();
-
-			//log startup
+			//	log startup
 			Log.getInstance();
 			Log.setVerbosity(Log.DEBUG);
+			
+			//registers supported types
+		try {
+			  //TODO get player impl in user-conf.xml
+			  TypeManager.registerType(Messages.getString("Main.Mpeg_layer_3_5"), EXT_MP3, PLAYER_IMPL_JAVALAYER, TAG_IMPL_MP3INFO, true); //$NON-NLS-1$ //$NON-NLS-2$
+			  TypeManager.registerType(Messages.getString("Main.Playlist_7"), EXT_PLAYLIST, PLAYER_IMPL_JAVALAYER, null, false); //$NON-NLS-1$ //$NON-NLS-2$
+			  TypeManager.registerType(Messages.getString("Main.Ogg_vorbis_9"), EXT_OGG, PLAYER_IMPL_JAVALAYER, null, true); //$NON-NLS-1$ //$NON-NLS-2$
+		  } catch (Exception e1) {
+				  Log.error(Messages.getString("Main.Error_registering_players_11"), e1); //$NON-NLS-1$
+		  }
+			
+			//perform initial checkups
+			initialCheckups();
 
 			//Display user configuration
 			Log.debug(System.getProperties().toString());
@@ -106,8 +118,8 @@ public class Main implements ITechnicalStrings {
 			});
 			Container container = jframe.getContentPane();
 			// Create the perspective manager
-			IPerspectiveManager perspectiveManager = PerspectiveManagerFactory.getPerspectiveManager();
-			perspectiveManager.setParentContainer(container);
+			//IPerspectiveManager perspectiveManager = PerspectiveManagerFactory.getPerspectiveManager();
+			//perspectiveManager.setParentContainer(container);
 
 			//Creates the command panel
 			command = CommandJPanel.getInstance();
@@ -125,16 +137,7 @@ public class Main implements ITechnicalStrings {
 			information.setTotalStatusMessage("00:23:23/01:34:56"); //$NON-NLS-1$
 			information.setCurrentStatus(76);
 			//**************************
-			//registers supported types
-			try {
-				//TODO get player impl in user-conf.xml
-				TypeManager.registerType(Messages.getString("Main.Mpeg_layer_3_5"), EXT_MP3, PLAYER_IMPL_JAVALAYER, TAG_IMPL_MP3INFO, true); //$NON-NLS-1$ //$NON-NLS-2$
-				TypeManager.registerType(Messages.getString("Main.Playlist_7"), EXT_PLAYLIST, PLAYER_IMPL_JAVALAYER, null, false); //$NON-NLS-1$ //$NON-NLS-2$
-				TypeManager.registerType(Messages.getString("Main.Ogg_vorbis_9"), EXT_OGG, PLAYER_IMPL_JAVALAYER, null, true); //$NON-NLS-1$ //$NON-NLS-2$
-
-			} catch (Exception e1) {
-				Log.error(Messages.getString("Main.Error_registering_players_11"), e1); //$NON-NLS-1$
-			}
+			
 			//Load collection
 			Collection.load();
 
@@ -156,7 +159,8 @@ public class Main implements ITechnicalStrings {
 			jframe.show();
 
 			//tests en bouchonné
-			//DeviceManager.registerDevice("portable","directory","/data/mp3/GRAVER").refresh(); //perform a refresh
+			//DeviceManager.registerDevice("portable","directory","/data/mp3/Massive Attack_Mezzanine_256kbps_SmokeALot").refresh(); //perform a refresh
+			//DeviceManager.registerDevice("portable","directory","/data/mp3").refresh(); //perform a refresh
 			//DeviceManager.registerDevice("extdd","directory","/media/sda1/mp3").refresh(); //perform a refresh
 
 		} catch (JajukException je) { //last chance to catch any error for logging purpose

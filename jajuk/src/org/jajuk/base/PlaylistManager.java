@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.5  2003/10/31 13:05:06  bflorat
+ * 31/10/2003
+ *
  * Revision 1.4  2003/10/28 21:34:37  bflorat
  * 28/10/2003
  *
@@ -61,6 +64,14 @@ public class PlaylistManager {
 	 */	
 	public static Playlist registerPlaylist(PlaylistFile plFile) {
 		String sId = plFile.getHashcode();
+		return registerPlaylist(sId,plFile);
+	}
+	
+	/**
+	 * Register an Playlist with a known id
+	 *@param file : playlist file
+	 */	
+	public static Playlist registerPlaylist(String sId,PlaylistFile plFile) {
 		if (hmPlaylists.containsKey(sId)){ //playlist already exist, add a file
 			Playlist playlist = (Playlist)hmPlaylists.get(sId);
 			playlist.addFile(plFile);

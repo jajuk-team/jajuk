@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.6  2003/10/31 13:05:06  bflorat
+ * 31/10/2003
+ *
  * Revision 1.5  2003/10/28 21:34:37  bflorat
  * 28/10/2003
  *
@@ -244,12 +247,26 @@ public class Track extends PropertyAdapter {
 	public void setHits(int hits) {
 		iHits = hits;
 	}
+	
+		public void incHits() {
+			iHits++;
+		}
+
 
 	/**
 	 * @param rate The lRate to set.
 	 */
 	public void setRate(long rate) {
 		lRate = rate;
+	}
+
+	
+
+	/**
+	 * @param additionDate The sAdditionDate to set.
+	 */
+	public void setAdditionDate(String additionDate) {
+		sAdditionDate = additionDate;
 	}
 
 }
