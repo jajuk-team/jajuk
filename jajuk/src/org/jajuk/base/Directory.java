@@ -9,6 +9,9 @@
  * 
  * You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
  * USA. $Log$
+ * USA. Revision 1.9  2003/11/18 18:58:07  bflorat
+ * USA. 18/11/2003
+ * USA.
  * USA. Revision 1.8  2003/11/07 23:57:45  bflorat
  * USA. 08/11/2003
  * USA.
@@ -35,9 +38,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.Iterator;
-import java.util.Vector;
 
 import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.MD5Processor;

@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.11  2003/11/18 18:58:07  bflorat
+ * 18/11/2003
+ *
  * Revision 1.10  2003/11/16 17:57:18  bflorat
  * 16/11/2003
  *
@@ -42,9 +45,7 @@ package org.jajuk.util;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.Properties;
 
 import org.jajuk.base.ITechnicalStrings;

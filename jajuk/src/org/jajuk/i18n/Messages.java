@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.9  2003/11/18 18:58:07  bflorat
+ * 18/11/2003
+ *
  * Revision 1.8  2003/11/16 17:57:18  bflorat
  * 16/11/2003
  *
@@ -43,9 +46,7 @@
  */
 package org.jajuk.i18n;
 
-import java.awt.Label;
 import java.util.Locale;
-import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 import javax.swing.Icon;

@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.2  2003/11/18 18:58:07  bflorat
+ * 18/11/2003
+ *
  * Revision 1.1  2003/11/16 17:57:18  bflorat
  * 16/11/2003
  *
@@ -32,7 +35,6 @@ import javax.xml.parsers.SAXParserFactory;
 import org.jajuk.Main;
 import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.i18n.Messages;
-import org.jajuk.ui.*;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
@@ -51,26 +53,20 @@ import org.xml.sax.helpers.DefaultHandler;
  */
 public class PerspectiveManager extends DefaultHandler implements ITechnicalStrings, ErrorHandler {
 	/** Current perspective */
-	private IPerspective currentPerspective = null;
+	private static IPerspective currentPerspective = null;
 	/** Perspective name -> perspective hashtable */
-	private HashMap hmPerspectives = new HashMap(5);
+	private static HashMap hmPerspectives = new HashMap(5);
 	/** Self instance */
 	private static PerspectiveManager pm = null;
 	/** Parsing temporary variable */
-	private IPerspective pCurrent = null;
+	private static IPerspective pCurrent = null;
 
-	/**
-	 * Constructor for PerspectiveManagerImpl.
-	 */
-	private PerspectiveManager(){
-	}
-	
 	
 	/**
 	 * Load configuration file
 	 * @throws JajukException
 	 */
-	public void load() throws JajukException{
+	public static void load() throws JajukException{
 		try{
 			SAXParserFactory spf = SAXParserFactory.newInstance();
 			spf.setValidating(false);
@@ -90,7 +86,7 @@ public class PerspectiveManager extends DefaultHandler implements ITechnicalStri
 		/**
 		 * Begins management
 		 */
-		public void init() {
+		public static void init() {
 			IPerspective perspective = (IPerspective)hmPerspectives.get(ConfigurationManager.getProperty(CONF_PERSPECTIVE_DEFAULT));
 			setCurrentPerspective(perspective);
 		}
@@ -108,56 +104,34 @@ public class PerspectiveManager extends DefaultHandler implements ITechnicalStri
 		return pm;
 	}
 
-	/*
-	 * @see org.jajuk.ui.perspectives.IPerspectiveManager#getPerspectives()
-	 */
-	public ArrayList getPerspectives() {
-		return null;
-	}
-
+	
 	/*
 	 * @see org.jajuk.ui.perspectives.IPerspectiveManager#getCurrentPerspective()
 	 */
-	public IPerspective getCurrentPerspective() throws JajukException {
-		if (currentPerspective == null) {
-			// Current perspective creation
-			String perspName = ConfigurationManager.getProperty(CONF_PERSPECTIVE_DEFAULT); //$NON-NLS-1$
-			try {
-				setCurrentPerspective((IPerspective) Class.forName(perspName).newInstance());
-			} catch (Exception e) {
-				JajukException je = new JajukException("003", perspName, e); //$NON-NLS-1$
-				throw je;
-			}
-		}
-
-		return currentPerspective;
+	public static IPerspective getCurrentPerspective()  {
+			return currentPerspective;
 	}
 
 	/*
 	 * @see org.jajuk.ui.perspectives.IPerspectiveManager#setCurrentPerspective(Perspective)
 	 */
-	public void setCurrentPerspective(IPerspective perspective) {
+	public static void setCurrentPerspective(IPerspective perspective) {
 		currentPerspective = perspective;
 		Main.jframe.getContentPane().add(perspective.getDesktop());
 		perspective.getDesktop().repaint();
 		PerspectiveBarJPanel.getInstance().setActivated(perspective);
 	}
 
-	/*
-	 * @see org.jajuk.ui.perspectives.IPerspectiveManager#getPerspective(String)
-	 */
-	public IPerspective getPerspective(String pName) {
-		return null;
-	}
 	
 	/**
 	 * Notify the manager for  a perspective change request
 	 * @param sPerspectiveName
 	 */
-	public void notify(String sPerspectiveName){
+	public static void notify(String sPerspectiveName){
 		IPerspective perspective = (IPerspective)hmPerspectives.get(sPerspectiveName);
 		if (perspective != null){
 			setCurrentPerspective(perspective);
+			JajukJMenuBar.getInstance().refreshViews();
 		}
 	}
 

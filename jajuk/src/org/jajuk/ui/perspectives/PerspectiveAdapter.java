@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.2  2003/11/18 18:58:07  bflorat
+ * 18/11/2003
+ *
  * Revision 1.1  2003/11/16 17:57:18  bflorat
  * 16/11/2003
  *
@@ -26,16 +29,12 @@ package org.jajuk.ui.perspectives;
 import java.util.ArrayList;
 
 import javax.swing.JDesktopPane;
-import javax.swing.JInternalFrame;
-import javax.swing.JPanel;
 
 import org.jajuk.Main;
 import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.ui.IPerspective;
 import org.jajuk.ui.IView;
 import org.jajuk.ui.ViewManager;
-import org.jajuk.ui.views.DeviceView;
-import org.jajuk.ui.views.ViewAdapter;
 
 /**
  * Perspective adapter, provide default implementation for perspectives

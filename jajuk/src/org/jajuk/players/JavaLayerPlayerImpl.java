@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.4  2003/11/18 18:58:07  bflorat
+ * 18/11/2003
+ *
  * Revision 1.3  2003/10/21 17:51:43  bflorat
  * 21/10/2003
  *
@@ -31,16 +34,12 @@ package org.jajuk.players;
 import java.io.File;
 import java.io.FileInputStream;
 
-import javazoom.jl.player.Player;
 import javazoom.jl.player.advanced.AdvancedPlayer;
 import javazoom.jl.player.advanced.PlaybackEvent;
 import javazoom.jl.player.advanced.PlaybackListener;
 
 import org.jajuk.base.FIFO;
-import org.jajuk.base.FileManager;
 import org.jajuk.base.IPlayerImpl;
-import org.jajuk.i18n.Messages;
-import org.jajuk.util.log.Log;
 
 /**
  *  My class description

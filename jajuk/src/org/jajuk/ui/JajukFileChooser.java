@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.4  2003/11/18 18:58:07  bflorat
+ * 18/11/2003
+ *
  * Revision 1.3  2003/10/23 22:07:41  bflorat
  * 23/10/2003
  *
@@ -28,14 +31,10 @@
  */
 package org.jajuk.ui;
 
-import java.io.File;
-
 import javax.swing.JFileChooser;
 
-import org.jajuk.base.TypeManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.JajukFileFilter;
-import org.jajuk.util.Util;
 
 /**
  *  Music-oriented file chooser 

@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.6  2003/11/18 18:58:07  bflorat
+ * 18/11/2003
+ *
  * Revision 1.5  2003/11/13 18:56:55  bflorat
  * 13/11/2003
  *
@@ -35,7 +38,6 @@
 package org.jajuk.base;
 
 import java.util.ArrayList;
-import java.util.Properties;
 
 /**
  *  A playlist

@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.7  2003/11/18 18:58:07  bflorat
+ * 18/11/2003
+ *
  * Revision 1.6  2003/11/16 17:57:18  bflorat
  * 16/11/2003
  *
@@ -164,19 +167,19 @@ public class PerspectiveBarJPanel
 	 */
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == jbPhysical){
-			PerspectiveManager.getInstance().notify(PERSPECTIVE_NAME_PHYSICAL);
+			PerspectiveManager.notify(PERSPECTIVE_NAME_PHYSICAL);
 		}
 		else if (e.getSource() == jbLogical){
-			PerspectiveManager.getInstance().notify(PERSPECTIVE_NAME_LOGICAL);
+			PerspectiveManager.notify(PERSPECTIVE_NAME_LOGICAL);
 		}
 		if (e.getSource() == jbConfiguration){
-			PerspectiveManager.getInstance().notify(PERSPECTIVE_NAME_CONFIGURATION);
+			PerspectiveManager.notify(PERSPECTIVE_NAME_CONFIGURATION);
 		}
 		if (e.getSource() == jbStatistics){
-			PerspectiveManager.getInstance().notify(PERSPECTIVE_NAME_STATISTICS);
+			PerspectiveManager.notify(PERSPECTIVE_NAME_STATISTICS);
 		}
 		if (e.getSource() == jbHelp){
-			PerspectiveManager.getInstance().notify(PERSPECTIVE_NAME_HELP);
+			PerspectiveManager.notify(PERSPECTIVE_NAME_HELP);
 		}
 		
 	}

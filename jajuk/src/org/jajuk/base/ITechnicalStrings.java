@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.12  2003/11/18 18:58:07  bflorat
+ * 18/11/2003
+ *
  * Revision 1.11  2003/11/16 17:57:18  bflorat
  * 16/11/2003
  *
@@ -70,7 +73,6 @@
  */
 package org.jajuk.base;
 
-import java.util.Locale;
 
 /**
  *  Contains all technical/ non-translatable strings
@@ -170,6 +172,7 @@ public interface ITechnicalStrings {
 	
 	 //views
 	 public static final String VIEW_NAME_DEVICES = "org.jajuk.ui.views.DeviceView";
+	public static final String VIEW_NAME_PARAMETERS = "org.jajuk.ui.views.ParameterView";
 	 	
 	//extensions
 	public static final String EXT_MP3 = "mp3";
@@ -191,6 +194,10 @@ public interface ITechnicalStrings {
 	public static final String EVENT_DEVICE_REFRESH="refresh device";
 	public static final String EVENT_DEVICE_SYNCHRO="synchronize device";
 	public static final String EVENT_VIEW_REFRESH_REQUEST="refresh view";
+	public static final String EVENT_VIEW_CLOSE_REQUEST="close view";
+	public static final String EVENT_VIEW_SHOW_REQUEST="show view";
+	public static final String EVENT_VIEW_SHOW_STATUS_CHANGED_REQUEST="change status view";
+	
 	
 		
 	//	configuration keys
@@ -265,7 +272,7 @@ public interface ITechnicalStrings {
 		"\t</perspective>\n"+
 		"\t<perspective class='"+PERSPECTIVE_NAME_CONFIGURATION+"'>\n"+
 		"\t\t<views>\n"+
-	//	"\t\t\t<view class='org.jajuk.ui.views.ParametersView'/>\n"+
+		"\t\t\t<view class='"+VIEW_NAME_PARAMETERS+"' width='50' height='100' x='0' y='0' />\n"+
 		"\t\t\t<view class='"+VIEW_NAME_DEVICES+"' width='50' height='50' x='50' y='0' />\n"+
 	//	"\t\t\t<view class='org.jajuk.ui.views.CdScanView'/>\n"+
 		"\t\t</views>\n"+

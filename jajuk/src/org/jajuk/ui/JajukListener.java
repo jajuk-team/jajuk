@@ -16,8 +16,8 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
- * Revision 1.5  2003/11/14 11:19:03  bflorat
- * - Corrected command icon bug
+ * Revision 1.6  2003/11/18 18:58:07  bflorat
+ * 18/11/2003
  *
  */
 package org.jajuk.ui;
@@ -27,6 +27,8 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
+import javax.swing.JCheckBox;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFileChooser;
 
 import org.jajuk.Main;
@@ -147,7 +149,14 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
 				CommandJPanel.getInstance().jbIntro.setIcon(new ImageIcon(ICON_INTRO_OFF));
 			}
 		}
-
+		else if (e.getActionCommand().equals(EVENT_VIEW_SHOW_STATUS_CHANGED_REQUEST)) {
+			if (((JCheckBoxMenuItem)e.getSource()).isSelected()){  //show view request
+				ViewManager.notify(EVENT_VIEW_SHOW_REQUEST,(IView)JajukJMenuBar.getInstance().hmCheckboxView.get(e.getSource()));
+			}
+			else{
+				ViewManager.notify(EVENT_VIEW_CLOSE_REQUEST,(IView)JajukJMenuBar.getInstance().hmCheckboxView.get(e.getSource()));
+			}
+		}
 	}
 
 }

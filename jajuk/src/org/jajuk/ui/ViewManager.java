@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.2  2003/11/18 18:58:07  bflorat
+ * 18/11/2003
+ *
  * Revision 1.1  2003/11/16 17:57:18  bflorat
  * 16/11/2003
  *
@@ -62,11 +65,19 @@ public class ViewManager implements ITechnicalStrings{
 	 */
 	public static void notify(String sEvent,IView view){
 		try{
-		if (sEvent.equals(EVENT_VIEW_REFRESH_REQUEST)){
-			JInternalFrame ji = (JInternalFrame)hmViewContainer.get(view.getName());
-			IView newView = (IView)view.getClass().newInstance();  //reinstanciate the view, needed to avoid many repaint problems
-			ji.setContentPane((JPanel)newView); //reset content pane. A repaint() inside the JPanel doesn't work.
-		}
+			if (sEvent.equals(EVENT_VIEW_REFRESH_REQUEST)){
+				JInternalFrame ji = (JInternalFrame)hmViewContainer.get(view.getName());
+				IView newView = (IView)view.getClass().newInstance();  //reinstanciate the view, needed to avoid many repaint problems
+				ji.setContentPane((JPanel)newView); //reset content pane. A repaint() inside the JPanel doesn't work.
+			}
+			else if (sEvent.equals(EVENT_VIEW_CLOSE_REQUEST)){
+					JInternalFrame ji = (JInternalFrame)hmViewContainer.get(view.getName());
+					ji.setVisible(false);
+			}
+			else if (sEvent.equals(EVENT_VIEW_SHOW_REQUEST)){
+				JInternalFrame ji = (JInternalFrame)hmViewContainer.get(view.getName());
+				ji.setVisible(true);
+			}
 		}catch(Exception e){
 			Log.error("118",sEvent,e);
 			Messages.showErrorMessage("118",sEvent);

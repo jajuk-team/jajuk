@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.4  2003/11/18 18:58:06  bflorat
+ * 18/11/2003
+ *
  * Revision 1.3  2003/11/16 17:57:18  bflorat
  * 16/11/2003
  *
@@ -41,13 +44,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.swing.BorderFactory;
-import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
@@ -56,18 +56,17 @@ import javax.swing.JToolBar;
 
 import layout.TableLayout;
 
-import org.jajuk.base.Collection;
 import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;
 import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.i18n.Messages;
-import org.jajuk.ui.*;
 import org.jajuk.ui.DeviceWizard;
-import org.jajuk.ui.perspectives.PerspectiveAdapter;
-import org.jajuk.util.ConfigurationManager;
+import org.jajuk.ui.IView;
+import org.jajuk.ui.ViewManager;
 
 /**
- *  Device view
+ *  Device view used to create and modify Jajuk devices
+ * <p>Configuration perspective
  * <p>Singleton
  *
  * @author     bflorat

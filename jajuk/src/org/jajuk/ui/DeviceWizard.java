@@ -9,6 +9,9 @@
  * 
  * You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
  * USA. $Log$
+ * USA. Revision 1.4  2003/11/18 18:58:07  bflorat
+ * USA. 18/11/2003
+ * USA.
  * USA. Revision 1.3  2003/11/16 17:57:18  bflorat
  * USA. 16/11/2003
  * USA.
@@ -43,15 +46,13 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
-import org.apache.log4j.chainsaw.Main;
+import layout.TableLayout;
+
 import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;
 import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.views.DeviceView;
-import org.jajuk.util.JajukFileFilter;
-
-import layout.TableLayout;
 
 /**
  * Device creation wizzard

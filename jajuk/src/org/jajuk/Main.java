@@ -9,6 +9,9 @@
  * 
  * You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,USA
  * $Log$
+ * Revision 1.18  2003/11/18 18:58:07  bflorat
+ * 18/11/2003
+ *
  * Revision 1.17  2003/11/16 17:57:18  bflorat
  * 16/11/2003
  *
@@ -39,7 +42,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 
 import org.jajuk.base.Collection;
@@ -52,7 +54,6 @@ import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.JajukJMenuBar;
 import org.jajuk.ui.PerspectiveBarJPanel;
 import org.jajuk.ui.PerspectiveManager;
-import org.jajuk.ui.views.DeviceView;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
@@ -125,7 +126,7 @@ public class Main implements ITechnicalStrings {
 			Collection.load();
 			
 			//Create the perspective manager ( before user conf load because some part can be overwritten )
-			PerspectiveManager.getInstance().load();
+			PerspectiveManager.load();
 			
 			//Load user configuration
 			org.jajuk.util.ConfigurationManager.load();
@@ -138,13 +139,13 @@ public class Main implements ITechnicalStrings {
 			container.add(perspectiveBar, BorderLayout.WEST);
 			container.add(information, BorderLayout.SOUTH);
 			
+			//Initialize perspective manager
+			PerspectiveManager.init();
+
 			//Set menu bar to the frame
 			jframe.setJMenuBar(JajukJMenuBar.getInstance());
 			Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-		
-			//Initialize perspective manager
-			PerspectiveManager.getInstance().init();
-
+			
 			//show frame
 			jframe.show();
 

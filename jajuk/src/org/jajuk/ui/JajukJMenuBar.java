@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.6  2003/11/18 18:58:07  bflorat
+ * 18/11/2003
+ *
  * Revision 1.5  2003/10/21 20:43:06  bflorat
  * TechnicalStrings to ITechnicalStrings according to coding convention
  *
@@ -36,6 +39,8 @@ package org.jajuk.ui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.util.HashMap;
+import java.util.Iterator;
 
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBoxMenuItem;
@@ -43,6 +48,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
+import javax.swing.text.View;
 
 import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.i18n.Messages;
@@ -73,6 +79,8 @@ import org.jajuk.util.ConfigurationManager;
 			JCheckBoxMenuItem jcbmiIntro;
 		JMenu help;
 		
+		/**Hashmap JCheckBoxMenuItem -> associated view*/
+		public HashMap hmCheckboxView = new HashMap(10);
 	
 	private JajukJMenuBar(){
 		setAlignmentX(0.0f);
@@ -91,15 +99,7 @@ import org.jajuk.util.ConfigurationManager;
 		file.add(jmiFileOpen);
 		file.add(jmiFileExit);
 		
-		//Views menu
-		views = new JMenu(Messages.getString("JajukJMenuBar.Views_2")); //$NON-NLS-1$
-		//TODO remplace this code with an enumeration of available views for this perspective
-		JCheckBoxMenuItem jcbmiPhysicalTree = new JCheckBoxMenuItem("Physical tree", true); //$NON-NLS-1$
-		JCheckBoxMenuItem jcbmiNavigationBar = new JCheckBoxMenuItem("Navigation bar",true); //$NON-NLS-1$
-		JCheckBoxMenuItem jcbmiPlaylistRepository = new JCheckBoxMenuItem("Playlist repository",true); //$NON-NLS-1$
-		views.add(jcbmiPhysicalTree);
-		views.add(jcbmiNavigationBar);
-		views.add(jcbmiPlaylistRepository);
+		
 		
 		//Properties menu
 		properties = new JMenu(Messages.getString("JajukJMenuBar.Properties_3")); //$NON-NLS-1$
@@ -111,6 +111,9 @@ import org.jajuk.util.ConfigurationManager;
 		properties.add(new JMenuItem("property1")); //temp //$NON-NLS-1$
 		properties.add(new JMenuItem("property2")); //temp //$NON-NLS-1$
 		
+		//Views menu
+		views = new JMenu(Messages.getString("JajukJMenuBar.Views_2")); //$NON-NLS-1$
+		refreshViews();
 		
 		//Mode menu
 		mode = new JMenu(Messages.getString("JajukJMenuBar.Mode_4")); //$NON-NLS-1$
@@ -152,6 +155,22 @@ import org.jajuk.util.ConfigurationManager;
 		add(properties);
 		add(mode);
 		add(help);
+	}
+	
+	
+	/** Refresh views checjboxs for new perspective*/
+	public void refreshViews(){
+		views.removeAll();
+		//		Views menu
+		Iterator it = PerspectiveManager.getCurrentPerspective().getViews().iterator();
+		while (it.hasNext()){
+			IView view = (IView)it.next();
+			JCheckBoxMenuItem jcbmi = new JCheckBoxMenuItem(view.getDesc(), true);
+			jcbmi.addActionListener(JajukListener.getInstance());
+			jcbmi.setActionCommand(EVENT_VIEW_SHOW_STATUS_CHANGED_REQUEST);
+			hmCheckboxView.put(jcbmi,view);
+			views.add(jcbmi);
+		}
 	}
 	
 	static public JajukJMenuBar getInstance(){
