@@ -27,13 +27,13 @@
 				<tr>
 					<td style='vertical-align: top;'>Readme file at install and on the web site</td>
 					<td style='vertical-align: top;'>
-						<img alt='English' title='English' src='flags/flag_en.png' style='width: 21px; height: 14px;'/>
-						<img alt='French' title='French' src='flags/flag_fr.png' style='width: 21px; height: 14px;'/>
-						<img alt='German' title='German' src='flags/flag_de.png' style='width: 21px; height: 14px;'/>
-						<img alt='Italian' title='Italian' src='flags/flag_it.png' style='width: 21px; height: 14px;'/>
-						<img alt='Swedish' title='Swedish' src='flags/flag_sv.png' style='width: 21px; height: 14px;'/>
-						<img alt='Dutch' title='Dutch' src='flags/flag_nl.png' style='width: 21px; height: 14px;'/>						
-						<img alt='Chinese' title='Chinese' src='flags/flag_zh.png' style='width: 21px; height: 14px;'/>
+						<a href='./README.html'><img alt='English' title='English' src='http://jajuk.sourceforge.net/flags/flag_en.png'  style='border: 0px solid ; width: 21px; height: 14px;'/></a>
+						<a  href='./README_fra.html'><img alt='French' title='French' src='http://jajuk.sourceforge.net/flags/flag_fr.png' style='border: 0px solid ; width: 21px; height: 14px;'/></a>
+						<a  href='./README_deu.html'><img alt='German' title='German' src='http://jajuk.sourceforge.net/flags/flag_de.png' style='border: 0px solid ; width: 21px; height: 14px;'/></a>
+						<a  href='./README_ita.html'><img alt='Italian' title='Italian' src='http://jajuk.sourceforge.net/flags/flag_it.png' style='border: 0px solid ; width: 21px; height: 14px;'/></a>
+						<a  href='./README_swe.html'><img alt='Swedish' title='Swedish' src='http://jajuk.sourceforge.net/flags/flag_sv.png' style='border: 0px solid ; width: 21px; height: 14px;'/></a>
+						<a  href='./README_chn.html'><img alt='Chinese' title='Chinese' src='http://jajuk.sourceforge.net/flags/flag_zh.png' style='border: 0px solid ; width: 21px; height: 14px;'/></a>
+						<a  href='./README_nld.html'><img alt='Dutch' title='Dutch' src='http://jajuk.sourceforge.net/flags/flag_nl.png' style='border: 0px solid ; width: 21px; height: 14px;'/></a>
 					</td>
 				</tr>
 				<tr>
@@ -57,11 +57,12 @@
 		<table style='width: 100%; text-align: left;' border='0' cellpadding='2' cellspacing='2'>
 			<tbody>
 				<tr>
+					<td style='vertical-align: top;'><p><b>2004/06/25</b></p>
+					<p><a href='http://sourceforge.net/projects/jajuk/'>Jajuk 0.2.1 released<br></br>Maintenance release</a></p></td>
 					<td style='vertical-align: top;'><p><b>2004/05/14</b></p>
 					<p><a href='http://sourceforge.net/projects/jajuk/'>Jajuk 0.2 released<br></br>Ogg Vorbis and others audio formats supported, <br></br>Swedish and Dutch translation</a></p></td>
 					<td style='vertical-align: top;'><p><b>2004/04/23</b></p>
 					<p><a href='http://sourceforge.net/projects/jajuk/'>Jajuk 0.1.6 released<br></br>Italian translation and bug fixes</a></p></td>
-					<td style='vertical-align: top;'/>
 				</tr>
 				<tr>
 					<td style='vertical-align: top;'><p><b>2004/04/09</b></p>
