@@ -32,7 +32,7 @@
       <action dev='bflorat' type='add'>README file (in installation dialog and from site) now available in french</action>  
       <action dev='bflorat' type='fix'>928979 Window disapears when minimized under GNU/Linux</action>  
      </release>
-     <release version='0.1.5' date='in work' description='in work'>
+     <release version='0.1.5' date='work in progress' description='work in progress'>
       <action dev='bflorat' type='add'>Path selection button for Unix mount points in device wizzard</action>  
      </release>
   </body>
