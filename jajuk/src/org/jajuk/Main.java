@@ -73,7 +73,6 @@ public class Main implements ITechnicalStrings {
 
 	public static void main(String[] args) {
 		try {
-		
 			//starts ui
 			jframe = new JFrame("Jajuk : Just Another Jukebox"); //$NON-NLS-1$
 			
@@ -132,8 +131,10 @@ public class Main implements ITechnicalStrings {
 			History.load();
 			
 			//Starts the FIFO
-			FIFO.getInstance().start();
-						
+			Thread thread = FIFO.getInstance();
+			thread.setPriority(Thread.MIN_PRIORITY); //min priority : preserve player
+			thread.start();
+			
 			jframe.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 			jframe.addWindowListener(new WindowAdapter() {
 				public void windowClosing(WindowEvent we) {

@@ -23,6 +23,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 import org.jajuk.i18n.Messages;
+import org.jajuk.ui.ObservationManager;
 import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
@@ -287,7 +288,13 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 			Messages.showErrorMessage("120");
 		}
 		//TODO perform unmount
-		bMounted = false;
+		if (FIFO.getInstance().canUnmount(this)){
+			bMounted = false;
+			ObservationManager.notify(EVENT_DEVICE_UNMOUNT);
+		}
+		else{
+			Messages.showErrorMessage("121");
+		}
 	}
 	
 	/**

@@ -45,7 +45,7 @@ public class FIFO extends Thread implements ITechnicalStrings{
 	private volatile boolean bStop = false;
 	
 	/** Deep time**/
-	private final int SLEEP_TIME = 100;
+	private final int SLEEP_TIME = 200;
 	
 	/** Refresh time in ms**/
 	private final int REFRESH_TIME = 1000;
@@ -256,7 +256,7 @@ public class FIFO extends Thread implements ITechnicalStrings{
 					alFIFO.remove(index);//remove it from todo list;
 					Log.debug("Now playing :"+fCurrent); //$NON-NLS-1$
 					bPlaying = true;
-					Player.stop();  //for security
+					Player.stop();  //for security, make sure no other track is playing
 					if (ConfigurationManager.getBoolean(CONF_STATE_INTRO)){ //intro mode enabled
 						Player.play(fCurrent,Integer.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_INTRO_BEGIN)),Integer.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_INTRO_LENGTH)));
 					}
@@ -297,6 +297,32 @@ public class FIFO extends Thread implements ITechnicalStrings{
 	 **/
 	public synchronized File getCurrentFile(){
 		return fCurrent;
+	}
+	
+	/**
+	 * Return true if none file is playing or planned to play for the given device
+	 * @param device device to unmount
+	 * @return
+	 */
+	public synchronized boolean canUnmount(Device device){
+		if (fCurrent.getDirectory().getDevice().equals(device)){
+			return false;
+		}
+		Iterator it = alFIFO.iterator();
+		while (it.hasNext()){
+			File file = (File)it.next();
+			if ( file.getDirectory().getDevice().equals(device)){
+				return false;
+			}
+		}
+		it = alRepeated.iterator();
+		while (it.hasNext()){
+			File file = (File)it.next();
+			if ( file.getDirectory().getDevice().equals(device)){
+				return false;
+			}
+		}
+		return true;
 	}
 	
 	/**
