@@ -24,6 +24,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
@@ -32,6 +33,8 @@ import layout.TableLayout;
 import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;
 import org.jajuk.i18n.Messages;
+import org.jajuk.ui.JajukFileChooser;
+import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.Util;
 
 import com.sun.SwingWorker;
@@ -54,6 +57,7 @@ public class CDScanView extends ViewAdapter implements ActionListener {
 	JLabel jlMountPoint;
 	JTextField jtfMountPoint;
 	JButton jbScan;
+	JButton jbUrl;
 	
 	/**Return self instance*/
 	public static synchronized CDScanView getInstance(){
@@ -77,7 +81,7 @@ public class CDScanView extends ViewAdapter implements ActionListener {
 		float fXSeparator = 0.05f;
 		float fYSeparator = 0.15f;
 		double[][] dSize={
-				{fXSeparator,0.3,fXSeparator,0.5,fXSeparator},
+				{fXSeparator,0.25,fXSeparator,0.5,fXSeparator,40,fXSeparator},
 				{fYSeparator,20,fYSeparator,20,fYSeparator,20,fYSeparator}
 		};
 		setLayout(new TableLayout(dSize));
@@ -92,12 +96,16 @@ public class CDScanView extends ViewAdapter implements ActionListener {
 		jbScan = new JButton(Messages.getString("CDScanView.6"),Util.getIcon(ICON_REFRESH)); //$NON-NLS-1$
 		jbScan.setToolTipText(Messages.getString("CDScanView.18")); //$NON-NLS-1$
 		jbScan.addActionListener(this);
+		jbUrl = new JButton(Util.getIcon(ICON_OPEN_FILE)); //$NON-NLS-1$
+		jbUrl.setToolTipText(Messages.getString("CDScanView.19")); //$NON-NLS-1$
+		jbUrl.addActionListener(this);
 		add(jlName,"1,1"); //$NON-NLS-1$
+		
 		add(jtfName,"3,1"); //$NON-NLS-1$
 		add(jlMountPoint,"1,3"); //$NON-NLS-1$
 		add(jtfMountPoint,"3,3"); //$NON-NLS-1$
 		add(jbScan,"1,5"); //$NON-NLS-1$
-		
+		add(jbUrl,"5,3"); //$NON-NLS-1$
 	}
 	
 	/* (non-Javadoc)
@@ -118,38 +126,51 @@ public class CDScanView extends ViewAdapter implements ActionListener {
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
 	public void actionPerformed(ActionEvent e) {
-		SwingWorker sw = new SwingWorker() {
-			public Object construct() {
-				if ( !"".equals(jtfName.getText().trim()) && !"".equals(jtfMountPoint.getText().trim())){ //$NON-NLS-1$ //$NON-NLS-2$
-					Device device = DeviceManager.registerDevice(jtfName.getText().trim(),1,jtfMountPoint.getText().trim(),jtfMountPoint.getText().trim());
-					if (device == null){ //means device name is already token
-						Messages.showErrorMessage("019"); //$NON-NLS-1$
-						return null;
-					}
-					try{
-						device.mount();
-						device.refresh(true);
-						do{
-							Thread.sleep(500); //sleep to get sure refresh thread is realy started
+		if (e.getSource() == jbScan){
+			SwingWorker sw = new SwingWorker() {
+				public Object construct() {
+					if ( !"".equals(jtfName.getText().trim()) && !"".equals(jtfMountPoint.getText().trim())){ //$NON-NLS-1$ //$NON-NLS-2$
+						Device device = DeviceManager.registerDevice(jtfName.getText().trim(),1,jtfMountPoint.getText().trim(),jtfMountPoint.getText().trim());
+						if (device == null){ //means device name is already token
+							Messages.showErrorMessage("019"); //$NON-NLS-1$
+							return null;
 						}
-						while(!device.isRefreshing());
-						synchronized(Device.bLock){  //wait refresh is done
-							device.unmount(true);
+						try{
+							device.mount();
+							device.refresh(true);
+							do{
+								Thread.sleep(500); //sleep to get sure refresh thread is realy started
+							}
+							while(!device.isRefreshing());
+							synchronized(Device.bLock){  //wait refresh is done
+								device.unmount(true);
+							}
+						}
+						catch(Exception ex){
+							DeviceManager.removeDevice(device);
+							Messages.showErrorMessage("016"); //$NON-NLS-1$
 						}
 					}
-					catch(Exception ex){
-						DeviceManager.removeDevice(device);
-						Messages.showErrorMessage("016"); //$NON-NLS-1$
-					}
+					return null;
+					
+				}	
+				public void finished() {
+					jtfName.setText(""); //$NON-NLS-1$
+					jtfName.requestFocus();
 				}
-				return null;
-				
-			}	
-			public void finished() {
-				jtfName.setText(""); //$NON-NLS-1$
-				jtfName.requestFocus();
+			};
+			sw.start();
+		}
+		else if (e.getSource() == jbUrl){
+			JajukFileChooser jfc = new JajukFileChooser(new JajukFileFilter(true,false));
+			jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+			jfc.setDialogTitle(Messages.getString("DeviceWizard.43"));//$NON-NLS-1$
+			jfc.setMultiSelectionEnabled(false);
+			int returnVal = jfc.showOpenDialog(this);
+			if (returnVal == JFileChooser.APPROVE_OPTION) {
+				java.io.File file = jfc.getSelectedFile();
+				jtfMountPoint.setText(file.getAbsolutePath());	
 			}
-		};
-		sw.start();
+		}
 	}
 }

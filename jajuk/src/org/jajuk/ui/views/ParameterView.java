@@ -521,7 +521,9 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		}
 		jcbBeforeDelete.setSelected(ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_DELETE_FILE));
 		jcbBeforeExit.setSelected(ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_EXIT));
-		jcbDisplayUnmounted.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED));
+		boolean bHidden = ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED);
+		jcbDisplayUnmounted.setSelected(bHidden);
+		this.bHidden = bHidden; 
 		jcbRestart.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_RESTART));
 		jcbCover.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_COVER));
 		jcbLanguage.setSelectedIndex(Messages.getLocals().indexOf(ConfigurationManager.getProperty(CONF_OPTIONS_LANGUAGE)));

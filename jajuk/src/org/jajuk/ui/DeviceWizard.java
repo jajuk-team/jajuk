@@ -104,7 +104,8 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 		jpMain.setLayout(new BoxLayout(jpMain,BoxLayout.Y_AXIS));
 		jp1 = new JPanel();
 		jp1.setBorder(BorderFactory.createEmptyBorder(25, 15, 0, 15));
-		double size1[][] = { { 0.5, 0.45,0.05 }, {
+		int iX_SEPARATOR = 5;
+		double size1[][] = { { 0.5,iX_SEPARATOR,0.45,iX_SEPARATOR,40 }, {
 			20, 20, 20, 20, 20,20,20, 20, 20, 20, 20,20,20 }
 		};
 		jp1.setLayout(new TableLayout(size1));
@@ -172,19 +173,19 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 		jcb1.setEnabled(false);
 		jcb1.setBorder(BorderFactory.createEmptyBorder(0, 25, 0, 0));
 		jp1.add(jlType, "0,0"); //$NON-NLS-1$
-		jp1.add(jcbType, "1,0"); //$NON-NLS-1$
+		jp1.add(jcbType, "2,0"); //$NON-NLS-1$
 		jp1.add(jlName, "0,2"); //$NON-NLS-1$
-		jp1.add(jtfName, "1,2"); //$NON-NLS-1$
+		jp1.add(jtfName, "2,2"); //$NON-NLS-1$
 		jp1.add(jlUrl, "0,4"); //$NON-NLS-1$
-		jp1.add(jtfUrl, "1,4"); //$NON-NLS-1$
-		jp1.add(jbUrl, "2,4"); //$NON-NLS-1$
+		jp1.add(jtfUrl, "2,4"); //$NON-NLS-1$
+		jp1.add(jbUrl, "4,4"); //$NON-NLS-1$
 		jp1.add(jlMountPoint, "0,6"); //$NON-NLS-1$
-		jp1.add(jtfMountPoint, "1,6"); //$NON-NLS-1$
+		jp1.add(jtfMountPoint, "2,6"); //$NON-NLS-1$
 		jp1.add(jcbRefresh, "0,8"); //$NON-NLS-1$
 		jp1.add(jcbAutoMount, "0,10"); //$NON-NLS-1$
-		jp1.add(jcbAutoRefresh, "1,10"); //$NON-NLS-1$
+		jp1.add(jcbAutoRefresh, "2,10"); //$NON-NLS-1$
 		jp1.add(jcboxSynchronized, "0,12"); //$NON-NLS-1$
-		jp1.add(jcbSynchronized, "1,12"); //$NON-NLS-1$
+		jp1.add(jcbSynchronized, "2,12"); //$NON-NLS-1$
 		double size2[][] = { { 0.99 }, {
 			20, 20, 20, 20, 20, 20, 20 }
 		};

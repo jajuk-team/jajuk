@@ -370,7 +370,7 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 				}
 			}
 			catch(Exception e){
-				throw new JajukException("028",getName(),e);
+				throw new JajukException("028",getName(),e); //$NON-NLS-1$
 			}
 			finally{
 				if ( bw != null){
@@ -378,7 +378,7 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 						bw.flush();
 						bw.close();
 					} catch (IOException e1) {
-						throw new JajukException("028",getName(),e1);
+						throw new JajukException("028",getName(),e1); //$NON-NLS-1$
 					}
 				}
 			}

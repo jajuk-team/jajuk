@@ -459,7 +459,10 @@ public class FIFO implements ITechnicalStrings,Runnable{
 	 */
 	public synchronized void finished(){
 		bPlaying = false;
-		lTotalTime -= fCurrent.getTrack().getLength();
+		if ( fCurrent != null){  //I get this case once but I can't reproduce it again
+			lTotalTime -= fCurrent.getTrack().getLength();
+		}
+		fCurrent = null;
 	}
 	
 	/**

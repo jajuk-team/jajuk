@@ -113,7 +113,6 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 		jbDelete.addActionListener(this);
 		jbDelete.setToolTipText(Messages.getString("DeviceView.1")); //$NON-NLS-1$
 		jbDelete.setEnabled(false); //false by default, cannot delete mounted device
-		
 		jbProperties = new JButton(Util.getIcon(ICON_PROPERTIES));
 		jbProperties.setActionCommand(EVENT_DEVICE_PROPERTIES);
 		jbProperties.addActionListener(this);

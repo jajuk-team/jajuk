@@ -87,12 +87,31 @@ public class CoverView extends ViewAdapter implements Observer{
 		}
 	}
 	
+	/**
+	 * Display the default Cover
+	 */
+	public void displayDefault(){
+		try {
+			image = java.awt.Toolkit.getDefaultToolkit().getImage(new URL(IMAGES_SPLASHSCREEN));
+		} catch (MalformedURLException e) {
+			Log.error(e);
+			return;
+		}
+		display();
+	}
+	
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.Observer#update(java.lang.String)
 	 */
 	public void update(String subject){
 		if ( EVENT_COVER_REFRESH.equals(subject)){
-			java.io.File fDir = new java.io.File(FIFO.getInstance().getCurrentFile().getAbsolutePath()).getParentFile();
+			org.jajuk.base.File fCurrent = FIFO.getInstance().getCurrentFile();
+			//if current file is null ( probably a file cannot be read ) 
+			if ( fCurrent == null){
+				displayDefault();
+				return;
+			}
+			java.io.File fDir = new java.io.File(fCurrent.getAbsolutePath()).getParentFile();
 			if ( !fDir.exists() || (this.fDir!= null && this.fDir.equals(fDir)) ){  //if we are always in the same directory, just leave to save cpu
 				return;
 			}
@@ -118,21 +137,13 @@ public class CoverView extends ViewAdapter implements Observer{
 				}
 			}
 			if ( !bFound){
-				try {
-					image = java.awt.Toolkit.getDefaultToolkit().getImage(new URL(IMAGES_SPLASHSCREEN));
-				} catch (MalformedURLException e) {
-					Log.error(e);
-				}
+				displayDefault();
+				return;
 			}
 			display();
 		}
 		else if ( EVENT_PLAYER_STOP.equals(subject)){
-			try {
-				image = java.awt.Toolkit.getDefaultToolkit().getImage(new URL(IMAGES_SPLASHSCREEN));
-			} catch (MalformedURLException e) {
-				Log.error(e);
-			}
-			display();
+			displayDefault();
 		}
 	}
 
