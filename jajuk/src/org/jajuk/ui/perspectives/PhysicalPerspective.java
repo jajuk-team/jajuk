@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.5  2003/10/24 14:57:07  sgringoi
+ * add the getIconName() method
+ *
  * Revision 1.4  2003/10/21 20:43:06  bflorat
  * TechnicalStrings to ITechnicalStrings according to coding convention
  *
@@ -74,4 +77,11 @@ public class PhysicalPerspective extends Perspective implements ITechnicalString
 			}
 		}
 	}
+	/* (non-Javadoc)
+	 * @see org.jajuk.ui.perspectives.Perspective#getIconName()
+	 */
+	public String getIconName() {
+		return PerspectivesConfiguration.getPerspectiveIconName(getName());
+	}
+
 }
