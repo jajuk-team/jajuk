@@ -3,7 +3,7 @@
  
   <pomVersion>3</pomVersion>
  
-  <name>jajuk</name>
+  <name>org</name>
  
   <id>jajuk</id>
  
@@ -16,7 +16,7 @@
  
   <inceptionYear>2003</inceptionYear>
  
-  <package>jajuk</package>
+  <package></package>
  
  <shortDescription>Advanced music manager</shortDescription>
  
@@ -183,7 +183,40 @@
 	      <organization>Jajuk team</organization>
 	      <timezone>+2</timezone>
 	    </developer>
-		    
+	    
+	    <developer>
+	      <name>Josep Carles Collazos</name>
+	      <id>jespo</id>
+    	  <roles>
+		      <role>Spanish translator / developer</role>
+	      </roles>
+	      <email>jespo@users.sourceforge.net</email>
+	      <organization>Jajuk team</organization>
+	      <timezone>+2</timezone>
+	    </developer>
+	    
+		 <developer>
+	      <name>Christine Thel</name>
+	      <id>thel</id>
+    	  <roles>
+		      <role>Doc translator</role>
+	      </roles>
+	      <email></email>
+	      <organization>Jajuk team</organization>
+	      <timezone>+2</timezone>
+	    </developer>
+	    
+	    <developer>
+	      <name>Martial Braux</name>
+	      <id>mbraux</id>
+    	  <roles>
+		      <role>Developer</role>
+	      </roles>
+	      <email></email>
+	      <organization>Jajuk team</organization>
+	      <timezone>+2</timezone>
+	    </developer>
+	    
   </developers>
   
 	<contributors>
@@ -218,6 +251,11 @@
 			<name>Jérome Fortain</name>
 			 <email>jf_sourceforge@khiplus.fr</email>
 			<roles><role>Bug reports, qualification</role></roles>
+		</contributor>
+		<contributor>
+			<name>Alexandre Lucazeau</name>
+			 <email>mornik@users.sourceforge.net</email>
+			<roles><role>Doc translation</role></roles>
 		</contributor>
 	</contributors>
 	
@@ -298,7 +336,7 @@
      <dependency>
 	   <groupId>lib</groupId>
         <artifactId>mp3spi</artifactId>
-        <version>1.9.2.1</version> 
+        <version>1.9.2</version> 
     </dependency>
     
      <dependency>
@@ -370,6 +408,7 @@
   </licences>
   
   <reports>
+    <report>maven-javadoc-plugin</report>
     <report>maven-jdepend-plugin</report>
     <report>maven-javadoc-plugin</report>
     <report>maven-jxr-plugin</report>

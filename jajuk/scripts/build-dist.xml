@@ -288,8 +288,7 @@
  		<copy todir='/home/bflorat' >
     		<fileset file='${basedir}/dist-files/packaging/RPMS/suse/.rpmmacros'/>
     	</copy>
-    	
-    </target>
+   </target>
    
    
    <!--IzPack package creation -->

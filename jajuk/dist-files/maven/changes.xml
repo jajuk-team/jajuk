@@ -206,6 +206,7 @@
      	<action dev='bflorat' type='update'>[Perf] Refresh much faster;  less CPU load; many improvments</action> 
      	<action dev='bflorat' type='update'>[Perf] Better cover caching saves a lot of memory</action> 
      	<action dev='bflorat' type='update'>Better handling of of history or collection corruption</action> 
+     	<action dev='mbraux' type='update'>Better covers adapting</action> 
      	<action dev='bflorat' type='remove'>RPM dependencies on JRE</action> 
      	<action dev='bflorat' type='remove'>Xmx and Xss JVM settings</action> 
      	<action dev='bflorat' type='fix' issue='1102189'>Freeze with proxy pwd frame</action> 
