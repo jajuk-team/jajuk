@@ -216,7 +216,8 @@ public class Main implements ITechnicalStrings {
 			launchInitialTrack();
 			
 			//ui init 
-			SwingUtilities.invokeLater(new Runnable() {
+			
+			SwingUtilities.invokeAndWait(new Runnable() {
 				public void run(){
 					try {
 						//starts ui
@@ -279,6 +280,19 @@ public class Main implements ITechnicalStrings {
 						jpFrame.remove(jp);
 						jpFrame.add(perspectiveBar, BorderLayout.WEST);
 						
+					} catch (Exception e) { //last chance to catch any error for logging purpose
+						e.printStackTrace();
+						Log.error("106", e); //$NON-NLS-1$
+						exit(1);
+					}
+				}
+			});
+			
+			Thread.sleep(1000); //wait a while to make sure painting is over to avoid some hugly blinking
+			
+			SwingUtilities.invokeLater(new Runnable() {
+				public void run(){
+					try {
 						//Initialize perspective manager and load all views
 						PerspectiveManager.init();
 						
@@ -294,14 +308,14 @@ public class Main implements ITechnicalStrings {
 						
 						//Close splash screen
 						sc.dispose();
-						
+				
 					} catch (Exception e) { //last chance to catch any error for logging purpose
 						e.printStackTrace();
 						Log.error("106", e); //$NON-NLS-1$
 						exit(1);
 					}
 				}
-			});	
+			});
 		} catch (JajukException je) { //last chance to catch any error for logging purpose
 			Log.error(je);
 			if ( je.getCode().equals("005")){
