@@ -2,20 +2,9 @@
 <installation version='1.0'>
     <info>
         <appname>jajuk</appname>
-        <appversion>0.3.2</appversion>
+        <appversion>0.3.2rc2</appversion>
         <javaversion>1.4.2</javaversion>
-        <authors>
-            <author email='bflorat@users.sourceforge.net' name='Bertrand FLORAT'/>
-            <author email='skyreacher@users.sourceforge.net' name='Gerhard Dietrichsteiner'/>
-            <author email='ricciocri@users.sourceforge.net' name='Riccardo Capecchi'/>
-            <author email='oscariot@users.sourceforge.net' name='Oscar Appelgren'/>
-            <author email='masiar@users.sourceforge.net' name='Masiar Farahani'/>
-            <author email='marcsiebren@users.sourceforge.net' name='Marc-Siebren Kwadijk'/>
-            <author email='sgringoire@users.sourceforge.net' name='Sébastien Gringoire'/>
-            <author email='fdutron@users.sourceforge.net' name='Fabrice Dutron'/>
-		   <author email='kavent@users.sourceforge.net' name='Kevin Tangning'/>
-        </authors>
-        <url>http://jajuk.sourceforge.net</url>
+      <url>http://jajuk.sourceforge.net</url>
     </info>
     <guiprefs height='600' resizable='yes' width='800'>
    	 	<laf name='liquid'>
@@ -61,10 +50,10 @@
         <res id='Installer.image.7' src='/data/java/workspace/jajuk/dist-files/images/border8.png' />
        <res id='ImgPacksPanel.img.0' src='/data/java/workspace/jajuk/dist-files/images/core.png'  />
        <res id='ImgPacksPanel.img.1' src='/data/java/workspace/jajuk/dist-files/images/src.png'  />
+       <res id='TargetPanel.dir.unix' src='/data/java/workspace/jajuk/dist-files/packaging/IzPack/installDirectory.unix.txt'  parse='yes' type='plain' />
     </resources>
     <panels>
-		<panel classname='HelloPanel'/>
-        <panel classname='HTMLInfoPanel'/>
+	    <panel classname='HTMLInfoPanel'/>
         <panel classname='LicencePanel'/>
         <panel classname='ImgPacksPanel'/>
         <panel classname='TargetPanel'/>

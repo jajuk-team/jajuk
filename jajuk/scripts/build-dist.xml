@@ -16,7 +16,7 @@
   <property name='srcdir' value='src'/>
   <property name='classdir' value='classes'/>
   <property name='javadocdir' value='dist-files/doc/javadoc'/>
-  <property name='version' value='0.3.2rc1'/>
+  <property name='version' value='0.3.2rc2'/>
   <property name='jarname' value='jajuk.jar'/>
   <property name='helpsetjarname' value='jajuk-help'/>
   <property name='distjarname' value='jajuk-install-'/>
@@ -324,6 +324,7 @@
      	<fileset file='${rpmbuilddir_mdk}/RPMS/i586/*'/>
      	<fileset file='${rpmbuilddir_suse}/RPMS/i586/*'/>
      	 <fileset file='${windowsdir}/jajuk-${version}.exe'/>
+     	 <fileset file='${izpackdir}/jajuk-install-${version}.jar'/>
      </copy>
  	</target>      
   
