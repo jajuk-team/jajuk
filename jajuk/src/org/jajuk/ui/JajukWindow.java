@@ -190,7 +190,7 @@ public class JajukWindow extends JFrame implements ITechnicalStrings,ComponentLi
 	            Thread t = new Thread(){ 
 	                public void run(){
 	                    try {
-	                        Main.lauchUI();
+	                        Main.launchUI();
 	                    } catch (Exception e) {
 	                        Log.error(e);
 	                    }
@@ -200,7 +200,7 @@ public class JajukWindow extends JFrame implements ITechnicalStrings,ComponentLi
 	        }
 	        else{
 	            try {
-	                Main.lauchUI();
+	                Main.launchUI();
 	            } catch (Exception e) {
 	                Log.error(e);
 	            }

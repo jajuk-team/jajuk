@@ -140,13 +140,6 @@ public class Main implements ITechnicalStrings {
 			Log.getInstance();
 			Log.setVerbosity(Log.DEBUG);
 			
-			//Launch splashscreen 
-			SwingUtilities.invokeAndWait(new Runnable() {
-                public void run() {
-                    sc = new SplashScreen(jw);
-                  }
-            });
-				
 			//Register locals, needed by ConfigurationManager to choose default language
 			Messages.getInstance().registerLocal("en","Language_desc_en"); //$NON-NLS-1$ //$NON-NLS-2$
 			Messages.getInstance().registerLocal("fr","Language_desc_fr"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -189,6 +182,16 @@ public class Main implements ITechnicalStrings {
 			//Set locale
 			Messages.getInstance().setLocal(ConfigurationManager.getProperty(CONF_OPTIONS_LANGUAGE));
 		
+			//start the tray
+			launchTray();
+			
+			//Launch splashscreen 
+			SwingUtilities.invokeAndWait(new Runnable() {
+                public void run() {
+                    sc = new SplashScreen(jw);
+                  }
+            });
+			
 			//Set look and feel, needs local to be set for error messages
 			LNFManager.setLookAndFeel(ConfigurationManager.getProperty(CONF_OPTIONS_LNF));
 			
@@ -249,23 +252,9 @@ public class Main implements ITechnicalStrings {
 			//Auto refresh devices
 			autoRefresh();
 			
-			//lauch systray if needed, only for linux and windows, not mac for the moment
-			if (Util.isUnderLinux() || Util.isUnderWindows()){
-				new Thread(){//do it in a thread to avoid tray disparition under windows
-					public void run(){
-						try {
-							Thread.sleep(2000); //required to avoid icon disparition under windows dor unknwon reasons
-						} catch (InterruptedException e) {
-							Log.error(e);
-						}
-						jsystray = JajukSystray.getInstance();	
-					}
-				}.start();
-			}
-			
 			//show window if set in the systray conf
 			if ( ConfigurationManager.getBoolean(CONF_SHOW_AT_STARTUP) ){
-			    lauchUI();
+			    launchUI();
 			}
 					
 		} catch (JajukException je) { //last chance to catch any error for logging purpose
@@ -534,7 +523,7 @@ public class Main implements ITechnicalStrings {
     /**
      * Lauch UI
      */
-    public static void lauchUI() throws Exception{
+    public static void launchUI() throws Exception{
         if (bUILauched){
             return;
         }
@@ -623,6 +612,13 @@ public class Main implements ITechnicalStrings {
 		sc.dispose();
 		
         bUILauched = true;
+   }
+    
+    /**Lauch tray, only for linux and windows, not mac for the moment*/
+    private static void launchTray() {
+    	if (Util.isUnderLinux() || Util.isUnderWindows()){
+			jsystray = JajukSystray.getInstance();	
+		}
     }
     
     /**
