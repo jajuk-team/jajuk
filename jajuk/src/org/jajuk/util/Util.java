@@ -246,19 +246,18 @@ public class Util implements ITechnicalStrings {
 		sOut = sOut.replaceAll("\"","&quot;"); //$NON-NLS-1$ //$NON-NLS-2$
 		sOut = sOut.replaceAll("<","&lt;"); //$NON-NLS-1$ //$NON-NLS-2$
 		sOut = sOut.replaceAll(">","&gt;"); //$NON-NLS-1$ //$NON-NLS-2$
-		StringBuffer sbOut = new StringBuffer(sOut);
+		StringBuffer sbOut = new StringBuffer(sOut.length());
 		/* Transform String to XML-valid characters. XML 1.0 specs ; 
 		 * Character Range
 		[2]     Char    ::=     #x9 | #xA | #xD | [#x20-#xD7FF] | [#xE000-#xFFFD] | [#x10000-#x10FFFF]  
 		any Unicode character, excluding the surrogate blocks, FFFE, and FFFF. */
-		for (int i=0;i<sbOut.length();i++){
-			char c = sbOut.charAt(i);
-			if ( !isChar(c)){
-				sbOut.deleteCharAt(i); //remove this char, it will be replaced by the XML format &#x?; or by a space if it is invalid
-				sbOut.insert(i,' '); //replace invalid character by a space
+		for (int i=0;i<sOut.length();i++){
+			char c = sOut.charAt(i);
+			if ( isChar(c)){
+				sbOut.append(c); 
 			}
 		}
-		return sbOut.toString();
+		return sbOut.toString().trim();
 	}
 	
 	/**
@@ -278,7 +277,17 @@ public class Util implements ITechnicalStrings {
 	 * @return
 	 */
 	public static String formatTag(String s){
-		return s.replace('\u0000',' ').trim();
+		//we delete all non char characters to avoid parsing errors 
+        char c;
+        StringBuffer sb = new StringBuffer(s.length());
+        for (int i=0;i<s.length();i++){
+            c = s.charAt(i);
+            if (isChar(c)){
+                sb.append(c);
+            }
+        }
+        String sOut =  sb.toString().trim();
+        return sOut;
 	}
 	
 	
