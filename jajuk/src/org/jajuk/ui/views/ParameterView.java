@@ -142,7 +142,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		int iXSeparator = 5;
 		int iYSeparator = 5;
 		
-		//History
+		//--History
 		jpHistory = new JPanel();
 		double sizeHistory[][] = {{0.6,iXSeparator,0.3},
 				{20,13*iYSeparator,25}};
@@ -180,7 +180,8 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jpHistory.add(jtfHistory,"2,0"); //$NON-NLS-1$
 		jpHistory.add(jbClearHistory,"0,2"); //$NON-NLS-1$
 		jpHistory.setBorder(BorderFactory.createTitledBorder(Messages.getString("ParameterView.8"))); //$NON-NLS-1$
-		//Startup
+		
+		//--Startup
 		jpStart = new JPanel();
 		double sizeStart[][] = {{0.15,iXSeparator,0.4,iXSeparator,0.3,iXSeparator},
 				{20,iYSeparator,20,iYSeparator,20,iYSeparator,20}};
@@ -221,7 +222,8 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jpStart.add(jrbShuffle,"2,4"); //$NON-NLS-1$
 		jpStart.add(jrbFile,"2,6"); //$NON-NLS-1$
 		jpStart.add(sbSearch,"4,6"); //$NON-NLS-1$
-		//Confirmations
+		
+		//--Confirmations
 		jpConfirmations = new JPanel();
 		jpConfirmations.setBorder(BorderFactory.createTitledBorder(Messages.getString("ParameterView.26"))); //$NON-NLS-1$
 		double sizeConfirmations[][] = {{0.99},
@@ -233,11 +235,12 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jcbBeforeExit.setToolTipText(Messages.getString("ParameterView.30")); //$NON-NLS-1$
 		jpConfirmations.add(jcbBeforeDelete,"0,1"); //$NON-NLS-1$
 		jpConfirmations.add(jcbBeforeExit,"0,3"); //$NON-NLS-1$
-		//Options
+		
+		//--Options
 		jpOptions = new JPanel();
 		jpOptions.setBorder(BorderFactory.createTitledBorder(Messages.getString("ParameterView.33"))); //$NON-NLS-1$
 		double sizeOptions[][] = {{0.99},
-				{iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,60+2*iYSeparator,iYSeparator,70,iYSeparator}};
+				{iYSeparator,20,iYSeparator,20,iYSeparator,60+2*iYSeparator,iYSeparator,70,iYSeparator}};
 		jpOptions.setLayout(new TableLayout(sizeOptions));
 		jcbDisplayUnmounted = new JCheckBox(Messages.getString("ParameterView.34")); //$NON-NLS-1$
 		jcbDisplayUnmounted.setToolTipText(Messages.getString("ParameterView.35")); //$NON-NLS-1$
@@ -277,11 +280,11 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jpCombos.add(jcbLAF,"1,2"); //$NON-NLS-1$
 		jpCombos.add(jlLogLevel,"0,4"); //$NON-NLS-1$
 		jpCombos.add(jcbLogLevel,"1,4"); //$NON-NLS-1$
+		//Intro
 		JPanel jp = new JPanel();
 		double sizeIntro[][] = {{0.50,0.50},
 				{20,iYSeparator,20,iYSeparator,20,iYSeparator}};
 		jp.setLayout(new TableLayout(sizeIntro));
-		
 		//intro position
 		jlIntroPosition = new JLabel(Messages.getString("ParameterView.59")); //$NON-NLS-1$
 		jtfIntroPosition = new JTextField(3);
@@ -312,7 +315,6 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 			}
 		});
 		jtfIntroPosition.setToolTipText(Messages.getString("ParameterView.60") ); //$NON-NLS-1$
-	
 		//intro length
 		jlIntroLength = new JLabel(Messages.getString("ParameterView.61")); //$NON-NLS-1$
 		jtfIntroLength = new JTextField(3);
@@ -340,7 +342,6 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 			}
 		});
 		jtfIntroLength.setToolTipText(Messages.getString("ParameterView.110") ); //$NON-NLS-1$
-		
 		//best of size
 		jlBestofSize = new JLabel(Messages.getString("ParameterView.111")); //$NON-NLS-1$
 		jtfBestofSize = new JTextField(3);
@@ -378,7 +379,8 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jpOptions.add(jcbRestart,"0,3"); //$NON-NLS-1$
 		jpOptions.add(jpCombos,"0,5"); //$NON-NLS-1$
 		jpOptions.add(jp,"0,7"); //$NON-NLS-1$
-		//P2P
+				
+		//--P2P
 		jpP2P = new JPanel();
 		jpP2P.setBorder(BorderFactory.createTitledBorder(Messages.getString("ParameterView.71"))); //$NON-NLS-1$
 		double sizeP2P[][] = {{0.6,0.3,0.1},
@@ -403,7 +405,8 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jpP2P.add(jpfPasswd,"1,3"); //$NON-NLS-1$
 		jpP2P.add(jcbAddRemoteProperties,"0,5"); //$NON-NLS-1$
 		jpP2P.add(jcbHideProperties,"0,7"); //$NON-NLS-1$
-		//Tags
+		
+		//--Tags
 		jpTags = new JPanel();
 		jpTags.setBorder(BorderFactory.createTitledBorder(Messages.getString("ParameterView.98")));  //$NON-NLS-1$
 		double sizeTags[][] = {{0.99},
@@ -419,7 +422,8 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jpTags.add(jcbDeepScan,"0,1"); //$NON-NLS-1$
 		jpTags.add(jcbUseParentDir,"0,3"); //$NON-NLS-1$
 		jpTags.add(jcbRegexp,"0,5");//$NON-NLS-1$
-		//Advanced
+		
+		//--Advanced
 		jpAdvanced = new JPanel();
 		jpAdvanced.setBorder(BorderFactory.createTitledBorder(Messages.getString("ParameterView.115")));  //$NON-NLS-1$
 		double sizeAdvanced[][] = {{0.5,0.5},
@@ -443,7 +447,8 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jpAdvanced.add(jtfBackupSize,"1,3");//$NON-NLS-1$
 		jpAdvanced.add(jlCollectionEncoding,"0,5");//$NON-NLS-1$
 		jpAdvanced.add(jcbCollectionEncoding,"1,5");//$NON-NLS-1$
-		//OK
+		
+		//--OK/cancel panel
 		jpOKCancel = new JPanel();
 		jpOKCancel.setLayout(new FlowLayout());
 		jbOK = new JButton(Messages.getString("ParameterView.85")); //$NON-NLS-1$
@@ -452,7 +457,8 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jbDefault = new JButton(Messages.getString("ParameterView.86")); //$NON-NLS-1$
 		jbDefault.addActionListener(this);
 		jpOKCancel.add(jbDefault);
-		//global layout
+		
+		//--Global layout
 		double size[][] = {{0.99},
 				{0.9,0.10}};
 		setLayout(new TableLayout(size));
