@@ -319,7 +319,7 @@ public class FIFO implements ITechnicalStrings,Runnable,Observer{
 	   if ( file != null && file.isReady()){
 		    alToPlay.add(file);
 		}
-		FIFO.getInstance().insert(alToPlay,0,true);
+		FIFO.getInstance().insert(alToPlay,0,true,true);
 	}
 		
 	/**
@@ -485,7 +485,7 @@ public class FIFO implements ITechnicalStrings,Runnable,Observer{
 		if (fForcedRepeat != null){
 		    ArrayList alForcedRepeat = new ArrayList(1);
 		    alForcedRepeat.add(fForcedRepeat);
-		    insert(alForcedRepeat,0,false);
+		    insert(alForcedRepeat,0,false,false);
 		};
 	}
 	
@@ -664,8 +664,10 @@ public class FIFO implements ITechnicalStrings,Runnable,Observer{
 	 * Insert a file to play in FIFO at specified position
 	 * @param file
 	 * @param iPos
+	 * @param bImmediate immediate play ?
+	 * @param bKeepLast add again the last track ?
 	 */
-	public synchronized void insert(ArrayList alFiles,int iPos,boolean bImmediate){
+	public synchronized void insert(ArrayList alFiles,int iPos,boolean bImmediate,boolean bKeepLast){
 	    //	  ok, stop current track
 	    if (bImmediate) {
 	        Player.stop();
@@ -673,7 +675,7 @@ public class FIFO implements ITechnicalStrings,Runnable,Observer{
 	        lTotalTime = 0;
 	    }
 	    //re-add current track if any
-	    if (fLastOne != null){
+	    if (bKeepLast && fLastOne != null){
 	        alFIFO.add(0,fLastOne);
 	    }
 	    File file = null;
