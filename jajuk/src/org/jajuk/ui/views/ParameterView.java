@@ -419,10 +419,10 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 			//Options
 			boolean bHiddenState = jcbDisplayUnmounted.isSelected(); 
 			if ( bHiddenState != bHidden){ //check if this option changed to lauch a refresh if needed
-				ConfigurationManager.setProperty(CONF_OPTIONS_HIDE_UNMOUNTED,Boolean.toString(bHiddenState));
 				bHidden = bHiddenState;
 				ObservationManager.notify(EVENT_DEVICE_REFRESH);
 			}
+			ConfigurationManager.setProperty(CONF_OPTIONS_HIDE_UNMOUNTED,Boolean.toString(bHiddenState));
 			ConfigurationManager.setProperty(CONF_OPTIONS_RESTART,Boolean.toString(jcbRestart.isSelected()));
 			ConfigurationManager.setProperty(CONF_OPTIONS_COVER,Boolean.toString(jcbCover.isSelected()));
 			String sLocal = (String)Messages.getLocals().get(jcbLanguage.getSelectedIndex());

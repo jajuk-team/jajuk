@@ -123,8 +123,16 @@ public class LogicalTableView extends AbstractTableView implements Observer{
 		String[] sColName = new String[]{Messages.getString("LogicalTableView.1"),Messages.getString("LogicalTableView.2"),Messages.getString("LogicalTableView.3"),Messages.getString("LogicalTableView.4"),Messages.getString("LogicalTableView.5"),Messages.getString("LogicalTableView.6")}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
 		//Values
 		ArrayList alTracks = TrackManager.getSortedTracks();
-		int iSize = alTracks.size();
+		ArrayList alToShow = new ArrayList(alTracks.size());
 		Iterator it = alTracks.iterator();
+		while ( it.hasNext()){
+			Track track = (Track)it.next(); 
+			if ( !track.shouldBeHidden()){
+				alToShow.add(track);
+			}
+		}
+		int iSize = alToShow.size();
+		it = alToShow.iterator();
 		Object[][] oValues = new Object[iSize][iColNum];
 		//Track | Album | Author | Length | Style | Rate	
 		for (int i = 0;it.hasNext();i++){
@@ -145,7 +153,7 @@ public class LogicalTableView extends AbstractTableView implements Observer{
 		}
 		//model creation
 		model = new TracksTableModel(iColNum,bCellEditable,sColName);
-		model.setValues(oValues,alTracks);
+		model.setValues(oValues,alToShow);
 	}
 	
 	/* (non-Javadoc)
@@ -245,9 +253,17 @@ public class LogicalTableView extends AbstractTableView implements Observer{
 	public void applyFilter(String sPropertyName,String sPropertyValue) {
 		//Values
 		ArrayList alTracks = TrackManager.getSortedTracks();
-		int iSize = alTracks.size();
-		int iColNum = 6 ;
+		ArrayList alToShow = new ArrayList(alTracks.size());
 		Iterator it = alTracks.iterator();
+		while ( it.hasNext()){
+			Track track = (Track)it.next(); 
+			if ( !track.shouldBeHidden()){
+				alToShow.add(track);
+			}
+		}
+		int iSize = alToShow.size();
+		int iColNum = 6 ;
+		it = alToShow.iterator();
 		Object[][] oValues = new Object[iSize][iColNum];
 		//Track | Album | Author | Length | Style | Rate	
 		int i=0;
@@ -272,7 +288,7 @@ public class LogicalTableView extends AbstractTableView implements Observer{
 			oValues[i][5] = Long.toString(track.getRate());
 			i++;
 		}
-		model.setValues(oValues,alTracks);
+		model.setValues(oValues,alToShow);
 		model.fireTableDataChanged();
 	}
 	

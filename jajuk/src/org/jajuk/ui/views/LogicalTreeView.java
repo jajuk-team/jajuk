@@ -423,7 +423,7 @@ public class LogicalTreeView extends ViewAdapter implements ActionListener,Obser
 					album.removeProperty(OPTION_EXPANDED);
 				}
 			}
-
+			
 			public void treeExpanded(TreeExpansionEvent event) {
 				Object o = event.getPath().getLastPathComponent(); 
 				if (o instanceof StyleNode){
@@ -456,62 +456,64 @@ public class LogicalTreeView extends ViewAdapter implements ActionListener,Obser
 		Iterator it1 = alTracks.iterator();
 		while ( it1.hasNext()){
 			Track track = (Track)it1.next();
-			StyleNode styleNode = null;
-			Style style=track.getStyle();
-			AuthorNode authorNode = null;
-			Author author = track.getAuthor();
-			AlbumNode albumNode = null;
-			Album album = track.getAlbum();
-			
-			//create style
-			Enumeration e = top.children();
-			boolean b = false;
-			while (e.hasMoreElements()){  //check the style doesn't already exist
-				StyleNode sn = (StyleNode)e.nextElement();
-				if ( sn.getStyle().equals(style)){
-					b = true;
-					styleNode = sn;
-					break;
-				}
-			}
-			if ( !b){
-				styleNode = new StyleNode(style);
-				top.add(styleNode);
-			}
-			//create author
-			e = styleNode.children();
-			b = false;
-			while (e.hasMoreElements()){  //check if the author doesn't already exist
-				AuthorNode an = (AuthorNode)e.nextElement();
-				if ( an.getAuthor().equals(author)){
-					b = true;
-					authorNode = an;
-					break;
-				}
-			}
-			if ( !b){
-				authorNode = new AuthorNode(author);
-				styleNode.add(authorNode);
-			}
-			//create album
-			e = authorNode.children();
-			b = false;
-			while (e.hasMoreElements()){  //check if the album doesn't already exist
-				AlbumNode an = (AlbumNode)e.nextElement();
-				if ( an.getAlbum().equals(album)){
-					b = true;
-					albumNode = an;
-					break;
-				}
-			}
-			if ( !b){
-				albumNode = new AlbumNode(album);
-				authorNode.add(albumNode);
-			}
-			//create track
-			albumNode.add(new TrackNode(track));
-		}
+			if ( !track.shouldBeHidden()){
 				
+				StyleNode styleNode = null;
+				Style style=track.getStyle();
+				AuthorNode authorNode = null;
+				Author author = track.getAuthor();
+				AlbumNode albumNode = null;
+				Album album = track.getAlbum();
+				
+				//create style
+				Enumeration e = top.children();
+				boolean b = false;
+				while (e.hasMoreElements()){  //check the style doesn't already exist
+					StyleNode sn = (StyleNode)e.nextElement();
+					if ( sn.getStyle().equals(style)){
+						b = true;
+						styleNode = sn;
+						break;
+					}
+				}
+				if ( !b){
+					styleNode = new StyleNode(style);
+					top.add(styleNode);
+				}
+				//create author
+				e = styleNode.children();
+				b = false;
+				while (e.hasMoreElements()){  //check if the author doesn't already exist
+					AuthorNode an = (AuthorNode)e.nextElement();
+					if ( an.getAuthor().equals(author)){
+						b = true;
+						authorNode = an;
+						break;
+					}
+				}
+				if ( !b){
+					authorNode = new AuthorNode(author);
+					styleNode.add(authorNode);
+				}
+				//create album
+				e = authorNode.children();
+				b = false;
+				while (e.hasMoreElements()){  //check if the album doesn't already exist
+					AlbumNode an = (AlbumNode)e.nextElement();
+					if ( an.getAlbum().equals(album)){
+						b = true;
+						albumNode = an;
+						break;
+					}
+				}
+				if ( !b){
+					albumNode = new AlbumNode(album);
+					authorNode.add(albumNode);
+				}
+				//create track
+				albumNode.add(new TrackNode(track));
+			}
+		}
 	}
 	
 	/* (non-Javadoc)
@@ -528,26 +530,26 @@ public class LogicalTreeView extends ViewAdapter implements ActionListener,Obser
 			}
 		}
 		if ( alTracks.size() > 0  && (e.getSource() == jmiTrackPlay 
-						|| e.getSource() == jmiAlbumPlay
-						|| e.getSource() == jmiAuthorPlay
-						|| e.getSource() == jmiStylePlay )){
+				|| e.getSource() == jmiAlbumPlay
+				|| e.getSource() == jmiAuthorPlay
+				|| e.getSource() == jmiStylePlay )){
 			FIFO.getInstance().push(alFilesToPlay,false);
 			
 		}
 		else if (alTracks.size() > 0  && ( e.getSource() == jmiTrackPush 
-							|| e.getSource() == jmiAlbumPush
-							|| e.getSource() == jmiAuthorPush
-							|| e.getSource() == jmiStylePush) ){
+				|| e.getSource() == jmiAlbumPush
+				|| e.getSource() == jmiAuthorPush
+				|| e.getSource() == jmiStylePush) ){
 			FIFO.getInstance().push(alFilesToPlay,true);
 		}
 		else if ( alTracks.size() > 0  && (e.getSource() == jmiAlbumPlayShuffle
-							|| e.getSource() == jmiAuthorPlayShuffle
-							|| e.getSource() == jmiStylePlayShuffle )){
+				|| e.getSource() == jmiAuthorPlayShuffle
+				|| e.getSource() == jmiStylePlayShuffle )){
 			FIFO.getInstance().push(Util.randomize(alFilesToPlay),false);
 		}
 		else if (alTracks.size() > 0  && ( e.getSource() == jmiAlbumPlayRepeat
-							|| e.getSource() == jmiAuthorPlayRepeat
-							|| e.getSource() == jmiStylePlayRepeat) ){
+				|| e.getSource() == jmiAuthorPlayRepeat
+				|| e.getSource() == jmiStylePlayRepeat) ){
 			FIFO.getInstance().push(alFilesToPlay,false,false,true);
 		}
 	}
@@ -566,6 +568,7 @@ public class LogicalTreeView extends ViewAdapter implements ActionListener,Obser
 		if ( subject.equals(EVENT_DEVICE_MOUNT) || subject.equals(EVENT_DEVICE_UNMOUNT)){
 			SwingWorker sw = new SwingWorker() {
 				public Object  construct(){
+					populate();
 					return null;
 				}
 				public void finished() {
@@ -697,7 +700,7 @@ class AuthorNode extends TransferableTreeNode{
  * @created    29 nov. 2003
  */
 class AlbumNode  extends TransferableTreeNode{
-
+	
 	/**
 	 * Constructor
 	 * @param album

@@ -63,9 +63,16 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 			JButton jbClearFilter;
 			JButton jbAdvancedFilter;
 		
-	/*Table model*/
+	/**Table model*/
 	TracksTableModel model;
-		
+	
+	/** Currently applied filter*/
+	String sAppliedFilter;
+	
+	/** Currently applied criteria*/
+	String sAppliedCriteria;
+	
+	
 	/** Constructor */
 	public AbstractTableView(){
 	}
@@ -97,7 +104,9 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 		jtfValue.addKeyListener(new KeyAdapter() {
 			public void keyReleased(KeyEvent e) {
 				if (e.getKeyChar()==KeyEvent.VK_ENTER){ //user typed enter
-					applyFilter(jcbProperty.getSelectedItem().toString(),jtfValue.getText());
+					sAppliedFilter = jtfValue.getText();
+					sAppliedCriteria = jcbProperty.getSelectedItem().toString();
+					applyFilter(sAppliedCriteria,sAppliedFilter);
 				}
 			}
 		});
@@ -150,12 +159,15 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 	 */
 	public void actionPerformed(ActionEvent e) {
 		if ( e.getSource() == jbApplyFilter){
-			applyFilter(jcbProperty.getSelectedItem().toString(),jtfValue.getText());
+			this.sAppliedFilter = jtfValue.getText();
+			this.sAppliedCriteria = jcbProperty.getSelectedItem().toString();
 		}
 		else if(e.getSource() == jbClearFilter){ //remove all filters
 			jtfValue.setText(""); //clear value textfield //$NON-NLS-1$
-			applyFilter(null,null);
+			this.sAppliedFilter = null;
+			this.sAppliedCriteria = null;
 		}
+		applyFilter(sAppliedCriteria,sAppliedFilter);
 	}
 
 	/* (non-Javadoc)
@@ -173,7 +185,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 	 */
 	public void update(String subject) {
 		if ( subject.equals(EVENT_DEVICE_MOUNT) || subject.equals(EVENT_DEVICE_UNMOUNT) || subject.equals(EVENT_DEVICE_REFRESH) ) {
-			//TODO tbi
+			applyFilter(sAppliedCriteria,sAppliedFilter); //force filter to refresh
 		}	
 	}
 }

@@ -303,6 +303,14 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 					}
 					model.fireTableRowsInserted(0,alFiles.size()-1);				
 				}
+				//select currently played track
+				Iterator it = alFiles.iterator();
+				for (int i=0;it.hasNext();i++){
+					File file = (File)it.next();
+					if ( file.equals(FIFO.getInstance().getCurrentFile())){
+						jtable.getSelectionModel().setSelectionInterval(i,i);
+					}
+				}
 				//set colunm size
 				int iTrackColWidth = jtable.getColumnModel().getColumn(0).getPreferredWidth();
 				int iLocationColWidth = jtable.getColumnModel().getColumn(0).getPreferredWidth();

@@ -22,6 +22,7 @@ package org.jajuk.base;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Util;
 
 /**
@@ -344,6 +345,18 @@ public class Track extends PropertyAdapter implements Comparable{
 	 */
 	public void incSessionHits() {
 		iSessionHits ++;
+	}
+	
+	/**
+	 * Return whether this item should be hidden with hide option
+	 * @return whether this item should be hidden with hide option
+	 */
+	public boolean shouldBeHidden(){
+		if (getPlayeableFile() != null
+			 ||ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED) == false){ //option "only display mounted devices "
+			return false;
+		}
+		return true;
 	}
 
 }

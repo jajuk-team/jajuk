@@ -26,7 +26,7 @@
 		   			<li>Bookmarks playlist</li>
 		   		</ul>	
 	   			<li>Devices synchronization : unidirectional or bidirectional </li>
-	   			<li>Collection stats : get charts describing your collection : style repartition, size by device, history etc...</li>
+	   			<li>Collection stats : get charts for your collection : style repartition, size by device, history etc...</li>
 	   			<li>Physical / logical separation : you can navigate into physical directories and files or into logical styles, authors, albums, tracks</li>
 	   			<li>Indexing method : Jajuk doesn't read id3 tags or directory structure at each startup but save them in a XML database. It allows a fast startup even for very large collections (bench:10 sec to start a 140Go collection on a P4 1.8Ghz)</li>
 	   			<li>Unmounted devices support : you can navigate into unmounted devices ( CDs for exemple ). So you get a full view of your collection at any time. Nice feature if you have plenty of music CDs. This behavior can be disabled</li>

@@ -29,7 +29,7 @@ package org.jajuk.base;
  * @created    21 oct. 2003
  */
 public class BasicFile extends org.jajuk.base.File {
-
+	
 	/**Physical file*/
 	java.io.File fio;
 	
@@ -50,14 +50,28 @@ public class BasicFile extends org.jajuk.base.File {
 		super(file.getId(),file.getName(),file.getDirectory(),file.getTrack(),file.getSize(),file.getQuality());
 		this.fio = file.getIO();
 	}
-
+	
 	/**
-		 * Return full file path name
-		 * @param file
-		 * @return String
-		 */
-		public String getAbsolutePath(){
-			return fio.getAbsolutePath();
+	 * Return full file path name
+	 * @param file
+	 * @return String
+	 */
+	public String getAbsolutePath(){
+		return fio.getAbsolutePath();
+	}
+	
+	/**
+	 * Equals method
+	 * @return true wheter two basic files have same path
+	 */
+	public boolean equals(Object o){
+		if ( o instanceof BasicFile){
+			BasicFile bfile = (BasicFile)o;
+			if ( bfile.getAbsolutePath().equals(getAbsolutePath())){
+				return true;
+			}
 		}
-
+		return false;
+	}
+	
 }

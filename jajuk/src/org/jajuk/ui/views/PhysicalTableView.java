@@ -122,9 +122,17 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
 		String[] sColName = new String[]{Messages.getString("PhysicalTableView.7"),Messages.getString("PhysicalTableView.8"),Messages.getString("PhysicalTableView.9"),Messages.getString("PhysicalTableView.10"),Messages.getString("PhysicalTableView.11"),Messages.getString("PhysicalTableView.12"),Messages.getString("PhysicalTableView.13"),Messages.getString("PhysicalTableView.14")}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
 		//Values
 		ArrayList alFiles = FileManager.getSortedFiles();
-		int iSize = alFiles.size();
-		int iColNum = 8;
+		ArrayList alToShow = new ArrayList(alFiles.size());
 		Iterator it = alFiles.iterator();
+		while ( it.hasNext()){
+			File file = (File)it.next(); 
+			if ( !file.shouldBeHidden()){
+				alToShow.add(file);
+			}
+		}
+		int iSize = alToShow.size();
+		int iColNum = 8;
+		it = alToShow.iterator();
 		Object[][] oValues = new Object[iSize][iColNum];
 		//Track | Album | Author |  Length | Style | Device | File name | Rate
 		for (int i = 0;it.hasNext();i++){
@@ -147,7 +155,7 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
 		}
 		//model creation
 		model = new TracksTableModel(iColNum,bCellEditable,sColName);
-		model.setValues(oValues,alFiles);
+		model.setValues(oValues,alToShow);
 	}
 	
 	/* (non-Javadoc)
@@ -248,14 +256,25 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
 	public void applyFilter(String sPropertyName,String sPropertyValue) {
 		//Values
 		ArrayList alFiles = FileManager.getSortedFiles();
+		ArrayList alToShow = new ArrayList(alFiles.size());
+		Iterator it = alFiles.iterator();
+		while ( it.hasNext()){
+			File file = (File)it.next(); 
+			if ( !file.shouldBeHidden()){
+				alToShow.add(file);
+			}
+		}
 		int iSize = alFiles.size();
 		int iColNum = 8;
-		Iterator it = alFiles.iterator();
+		it = alToShow.iterator();
 		Object[][] oValues = new Object[iSize][iColNum];
 		//Track | Album | Author |  Length | Style | Device | File name | Rate
 		int i=0;
 		while (it.hasNext()){
 			File file = (File)it.next();
+			if ( file.shouldBeHidden()){
+				continue;
+			}
 			if ( sPropertyName != null && sPropertyValue != null ){ //if name or value is null, means there is no filter
 				String sValue = file.getProperty(sPropertyName);
 				if ( sValue == null){ //try to filter on a unknown property, don't take this file
@@ -277,7 +296,7 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
 			oValues[i][7] = new Long(file.getTrack().getRate());
 			i++;
 		}
-		model.setValues(oValues,alFiles);
+		model.setValues(oValues,alToShow);
 		model.fireTableDataChanged();
 	}
 	

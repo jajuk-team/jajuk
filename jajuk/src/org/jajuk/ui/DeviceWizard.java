@@ -90,7 +90,10 @@ public class DeviceWizard extends JFrame implements ActionListener,ITechnicalStr
 	/** All devices expect itself */
 	ArrayList alDevices = new ArrayList(10);
 	
-	
+	/**
+	 * Constructor
+	 *
+	 */
 	public DeviceWizard() {
 		super(Messages.getString("DeviceWizard.0")); //$NON-NLS-1$
 		setSize(800, 500);
@@ -144,6 +147,7 @@ public class DeviceWizard extends JFrame implements ActionListener,ITechnicalStr
 		jrbUnidirSynchro = new JRadioButton(Messages.getString("DeviceWizard.11")); //$NON-NLS-1$
 		jrbUnidirSynchro.setToolTipText(Messages.getString("DeviceWizard.12")); //$NON-NLS-1$
 		jrbUnidirSynchro.setBorder(BorderFactory.createEmptyBorder(0, 25, 0, 0));
+		jrbUnidirSynchro.setEnabled(false);
 		jrbUnidirSynchro.addActionListener(this);
 		jrbBidirSynchro = new JRadioButton(Messages.getString("DeviceWizard.13")); //$NON-NLS-1$
 		jrbBidirSynchro.setToolTipText(Messages.getString("DeviceWizard.14")); //$NON-NLS-1$
