@@ -72,6 +72,7 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
 	/** Clear history */
 	public synchronized void clear(){
 		alHistory.clear();
+		CommandJPanel.getInstance().jcbHistory.removeAllItems();
 	}
 	
 	/**
@@ -130,7 +131,8 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
 	 * @return
 	 */
 	public synchronized HistoryItem getHistoryItem(int index){
-		return (HistoryItem)alHistory.get(alHistory.size()-1-index);
+		int indexHistory = alHistory.size()-1-index;
+		return (indexHistory < alHistory.size())?(HistoryItem)alHistory.get(indexHistory):null;
 	}
 	
 	

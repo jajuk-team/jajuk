@@ -63,7 +63,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ItemListe
 		 JToolBar jtbSearch;
 			JTextField jtfSearch;
 		JToolBar jtbHistory;
-			SteppedComboBox jcbHistory;
+			public SteppedComboBox jcbHistory;
 		JToolBar jtbMode;
 			JButton jbRepeat;
 			JButton jbRandom;
@@ -231,13 +231,14 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ItemListe
 	 */
 	public void addHistoryItem(HistoryItem hi){
 		File file = FileManager.getFile(hi.getFileId());
+		if (file == null){
+			return;
+		}
 		String sAuthor = file.getTrack().getAuthor().getName();
-		if (sAuthor.equals(Messages.getString("Track_unknown_author"))){
-			sAuthor = "";
+		if (sAuthor.equals("unknown_author")){
+			sAuthor = Messages.getString("unknown_author");
 		}
-		else{
-			sAuthor +=" / ";
-		}
+		sAuthor +=" / ";
 		String sDate = new SimpleDateFormat("dd/MM/yy HH:mm").format(new Date(hi.getDate()));
 		String sOut = "["+sDate+"] "+sAuthor+file.getTrack().getName();
 		jcbHistory.insertItemAt(sOut,0);
@@ -254,8 +255,10 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ItemListe
 	public void itemStateChanged(ItemEvent arg0) {
 		if ( bSelect && arg0.getSource() == jcbHistory){
 			HistoryItem hi = History.getInstance().getHistoryItem(jcbHistory.getSelectedIndex());
-			System.out.println(FileManager.getFile(hi.getFileId()));
-			FIFO.push(FileManager.getFile(hi.getFileId()),false);
+			if (hi != null){
+				org.jajuk.base.File file = FileManager.getFile(hi.getFileId());
+				FIFO.push(file,false);
+			}
 		}
 	
 	}

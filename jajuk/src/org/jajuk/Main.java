@@ -127,6 +127,7 @@ public class Main implements ITechnicalStrings {
 			//Set look and feel
 			LNFManager.setLookAndFeel(ConfigurationManager.getProperty(CONF_OPTIONS_LNF));
 						
+			
 			//Set local
 			Messages.setLocal(ConfigurationManager.getProperty(CONF_OPTIONS_LANGUAGE));
 			

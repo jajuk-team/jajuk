@@ -10,6 +10,8 @@ import javax.swing.plaf.basic.BasicComboPopup;
 import javax.swing.plaf.basic.ComboPopup;
 import javax.swing.plaf.metal.MetalComboBoxUI;
 
+import com.birosoft.liquid.LiquidComboBoxUI;
+
 public class SteppedComboBox extends JComboBox {
   protected int popupWidth;
 
@@ -49,7 +51,7 @@ public class SteppedComboBox extends JComboBox {
   }
 }
 
-class SteppedComboBoxUI extends MetalComboBoxUI {
+class SteppedComboBoxUI extends LiquidComboBoxUI {
   protected ComboPopup createPopup() {
     BasicComboPopup popup = new BasicComboPopup( comboBox ) {
 

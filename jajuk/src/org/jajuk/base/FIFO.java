@@ -20,6 +20,7 @@
 package org.jajuk.base;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.util.ConfigurationManager;
@@ -79,7 +80,13 @@ public class FIFO extends Thread implements ITechnicalStrings{
 			bPlaying = false;
 			clear();
 		}
-		alFIFO.addAll(alFiles);
+		Iterator it = alFiles.iterator();
+		while (it.hasNext()){
+			File file = (File)it.next();
+			if (file != null){
+				alFIFO.add(file);	
+			}
+		}
 	}
 	
 	/**
@@ -88,12 +95,9 @@ public class FIFO extends Thread implements ITechnicalStrings{
 	 * @param bAppend keep previous files or stop them to start a new one ?
 	 */
 	public static synchronized void push(File file, boolean bAppend) {
-		if (!bAppend) {
-			Player.stop();
-			bPlaying = false;
-			clear();
-		}
-		alFIFO.add(file);
+		ArrayList al = new ArrayList(1);
+		al.add(file);
+		push(al,bAppend);
 	}
 	
 	

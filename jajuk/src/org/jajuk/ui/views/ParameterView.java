@@ -41,6 +41,7 @@ import javax.swing.JTextField;
 
 import layout.TableLayout;
 
+import org.jajuk.base.History;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.LNFManager;
@@ -359,7 +360,7 @@ public class ParameterView extends ViewAdapter implements ActionListener {
 	 */
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == jbClearHistory){
-			//clear
+			History.getInstance().clear();
 		}
 		else if (e.getSource() == jbOK){
 			//**Read all parameters**

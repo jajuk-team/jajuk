@@ -15,7 +15,6 @@ package org.jajuk.base;
 import java.io.File;
 import java.util.StringTokenizer;
 
-import org.jajuk.i18n.Messages;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 
@@ -87,7 +86,7 @@ public class Tag {
 	 * @return author name
 	 */
 	public String getAuthorName() {
-		String sAuthorName = Messages.getString("Track_unknown_author");
+		String sAuthorName = "unknown_author";
 		String sTemp = "";
 		try {
 			sTemp = tagImpl.getAuthorName();
@@ -105,7 +104,7 @@ public class Tag {
 	 * @return style name
 	 */
 	public String getStyleName() {
-		String style = Messages.getString("Track_unknown_style");
+		String style = "unknown_style";
 		String sTemp = "";
 		try {
 			sTemp = tagImpl.getStyleName();
@@ -140,7 +139,7 @@ public class Tag {
 	 * @return creation year
 	 */
 	public String getYear() {
-		String sYear = Messages.getString("Track_unknown_year");
+		String sYear = "unknown_year";
 		String sTemp = "";
 		try {
 			sTemp = tagImpl.getYear();
@@ -158,7 +157,7 @@ public class Tag {
 	 * @return quality
 	 */
 	public String getQuality() {
-		String sQuality = Messages.getString("Track_unknown_quality");
+		String sQuality = "unknown_quality";
 		String sTemp = "";
 		try {
 			sTemp = tagImpl.getQuality();

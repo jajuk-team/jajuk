@@ -93,7 +93,8 @@ public class FileManager {
 	   * @return
 	   */
 	public static synchronized File getFile(String sId) {
-		return (File) alFiles.get(alFilesId.indexOf(sId));
+		int index = alFilesId.indexOf(sId);
+		return (index==-1)?null:(File) alFiles.get(index);
 	}
 	
 	/**
