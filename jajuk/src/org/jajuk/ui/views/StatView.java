@@ -73,7 +73,7 @@ public class StatView extends ViewAdapter implements Observer{
 	private static StatView sv;
 	
 	/**Return self instance*/
-	public static StatView getInstance(){
+	public static synchronized StatView getInstance(){
 		if (sv == null){
 			sv = new StatView();
 		}

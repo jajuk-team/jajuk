@@ -360,7 +360,7 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 		 * Singleton implementation
 		 * @return
 		 */
-		public static DeviceView getInstance(){
+		public static synchronized DeviceView getInstance(){
 			if ( dv == null){
 				dv = new DeviceView();
 			}

@@ -54,7 +54,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings{
 	 * Singleton access
 	 * @return
 	 */
-	public static InformationJPanel getInstance(){
+	public static synchronized InformationJPanel getInstance(){
 		if (ijp == null){
 			ijp = new InformationJPanel();
 		}

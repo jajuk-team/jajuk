@@ -97,7 +97,7 @@ public class PerspectiveManager extends DefaultHandler implements ITechnicalStri
 	 * 
 	 * @return
 	 */
-	public static PerspectiveManager getInstance() {
+	public static synchronized PerspectiveManager getInstance() {
 		if (pm == null) {
 			pm = new PerspectiveManager();
 		}

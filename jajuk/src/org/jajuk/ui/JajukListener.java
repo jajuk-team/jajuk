@@ -41,24 +41,24 @@ import org.jajuk.util.Util;
  * @created    15 oct. 2003
  */
 public class JajukListener implements ActionListener, ITechnicalStrings {
-
+	
 	/**Self instance*/
 	private static JajukListener jlistener;
-
+	
 	private JajukListener() {
 	}
-
-	public static JajukListener getInstance() {
+	
+	public static synchronized JajukListener getInstance() {
 		if (jlistener == null) {
 			jlistener = new JajukListener();
 		}
 		return jlistener;
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(final ActionEvent e) {
 		if (e.getActionCommand().equals(EVENT_EXIT)) {
 			Main.exit(0);
 		}
@@ -145,5 +145,5 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
 			PerspectiveManager.setCurrentPerspective(PERSPECTIVE_NAME_HELP);		
 		}
 	}
-
+	
 }

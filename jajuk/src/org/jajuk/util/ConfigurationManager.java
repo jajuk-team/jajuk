@@ -45,7 +45,7 @@ public class ConfigurationManager implements ITechnicalStrings{
 	
 	
 	/**Singleton accessor */
-	public static ConfigurationManager getInstance(){
+	public static synchronized ConfigurationManager getInstance(){
 		if (cm == null){
 			cm = new ConfigurationManager();
 		}

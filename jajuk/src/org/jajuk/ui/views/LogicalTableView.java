@@ -68,7 +68,7 @@ public class LogicalTableView extends AbstractTableView implements Observer{
 	
 	
 	/** Return singleton */
-	public static LogicalTableView getInstance() {
+	public static synchronized LogicalTableView getInstance() {
 		if (ltv == null) {
 			ltv = new LogicalTableView();
 		}

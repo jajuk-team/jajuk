@@ -68,7 +68,7 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
 	
 
 	/** Return singleton */
-	public static PhysicalTableView getInstance() {
+	public static synchronized PhysicalTableView getInstance() {
 		if (ltv == null) {
 			ltv = new PhysicalTableView();
 		}

@@ -56,7 +56,7 @@ public class PerspectiveBarJPanel extends JPanel implements ITechnicalStrings{
 	 * Singleton access
 	 * @return
 	 */
-	public static PerspectiveBarJPanel getInstance(){
+	public static synchronized PerspectiveBarJPanel getInstance(){
 		if (pb == null){
 			pb = new PerspectiveBarJPanel();
 		}

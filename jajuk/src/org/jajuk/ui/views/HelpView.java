@@ -53,7 +53,7 @@ public class HelpView extends ViewAdapter{
 	JHelp jhelp;
 	
 	/**Return self instance*/
-	public static HelpView getInstance(){
+	public static synchronized HelpView getInstance(){
 		if (hv == null){
 			hv = new HelpView();
 		}

@@ -41,7 +41,7 @@ public class Bookmarks implements ITechnicalStrings {
 	
 	/** Singleton accessor
 	 * @return the singleton*/
-	public static Bookmarks getInstance(){
+	public static synchronized Bookmarks getInstance(){
 		if ( bookmarks == null){
 			bookmarks = new Bookmarks();
 		}

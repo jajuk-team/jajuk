@@ -79,7 +79,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 		jpControl.setBorder(BorderFactory.createEtchedBorder());
 		int iXspace = 5;
 		double sizeControl[][] =
-			{{0.15,iXspace,0.4,iXspace,10,iXspace,0.4,2*iXspace,80},
+			{{0.15,iXspace,0.4,iXspace,10,iXspace,0.4,2*iXspace,85},
 			{22}};
 		jpControl.setLayout(new TableLayout(sizeControl));
 		jlFilter = new JLabel(Messages.getString("AbstractTableView.0")); //$NON-NLS-1$

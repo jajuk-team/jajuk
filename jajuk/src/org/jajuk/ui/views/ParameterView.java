@@ -49,6 +49,7 @@ import org.jajuk.i18n.Messages;
 import org.jajuk.ui.CommandJPanel;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.LNFManager;
+import org.jajuk.ui.ObservationManager;
 import org.jajuk.ui.SearchBox;
 import org.jajuk.ui.ViewManager;
 import org.jajuk.util.ConfigurationManager;
@@ -109,10 +110,12 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		JButton jbOK;
 		JButton jbDefault;
 		
-	
+	/** Previous value for hidden option, used to check if a refresh is need*/
+	boolean bHidden;
+		
 		
 	/**Return self instance*/
-	public static ParameterView getInstance(){
+	public static synchronized ParameterView getInstance(){
 		if (pv == null){
 			pv = new ParameterView();
 		}
@@ -408,7 +411,12 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		else if (e.getSource() == jbOK){
 			//**Read all parameters**
 			//Options
-			ConfigurationManager.setProperty(CONF_OPTIONS_HIDE_UNMOUNTED,Boolean.toString(jcbHideProperties.isSelected()));
+			boolean bHiddenState = jcbDisplayUnmounted.isSelected(); 
+			if ( bHiddenState != bHidden){ //check if this option changed to lauch a refresh if needed
+				ConfigurationManager.setProperty(CONF_OPTIONS_HIDE_UNMOUNTED,Boolean.toString(bHiddenState));
+				bHidden = bHiddenState;
+				ObservationManager.notify(EVENT_DEVICE_REFRESH);
+			}
 			ConfigurationManager.setProperty(CONF_OPTIONS_RESTART,Boolean.toString(jcbRestart.isSelected()));
 			ConfigurationManager.setProperty(CONF_OPTIONS_COVER,Boolean.toString(jcbCover.isSelected()));
 			String sLocal = (String)Messages.getLocals().get(jcbLanguage.getSelectedIndex());
@@ -515,7 +523,8 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jcbShare.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_P2P_SHARE));
 		jpfPasswd.setText(ConfigurationManager.getProperty(CONF_OPTIONS_P2P_PASSWORD));
 		jcbAddRemoteProperties.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_P2P_ADD_REMOTE_PROPERTIES));
-		jcbHideProperties.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_P2P_HIDE_LOCAL_PROPERTIES));
+		bHidden = ConfigurationManager.getBoolean(CONF_OPTIONS_P2P_HIDE_LOCAL_PROPERTIES);
+		jcbHideProperties.setSelected(bHidden);
 		jcbDeepScan.setSelected(ConfigurationManager.getBoolean(CONF_TAGS_DEEP_SCAN));
 		jcbUseParentDir.setSelected(ConfigurationManager.getBoolean(CONF_TAGS_USE_PARENT_DIR));
 	}

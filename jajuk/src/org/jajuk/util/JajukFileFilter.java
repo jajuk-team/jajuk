@@ -47,7 +47,7 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter{
 	/**Display files flag**/
 	private static boolean bFiles = true;
 
-	public static JajukFileFilter getInstance(boolean bDirectories,boolean bFiles){
+	public static synchronized JajukFileFilter getInstance(boolean bDirectories,boolean bFiles){
 		JajukFileFilter.bDirectories = bDirectories; 
 		JajukFileFilter.bFiles = bFiles; 
 		if (jff == null){
@@ -56,7 +56,7 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter{
 		return jff;
 	}
 	
-	public static JajukFileFilter getInstance(){
+	public static synchronized JajukFileFilter getInstance(){
 			return getInstance(true,true);
 		}
 	

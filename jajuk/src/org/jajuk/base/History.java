@@ -58,7 +58,7 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
 	private static  long lDateStart;
 	
 	/** Instance getter */
-	public static History getInstance() {
+	public static synchronized History getInstance() {
 		if (history == null) {
 			history = new History();
 		}

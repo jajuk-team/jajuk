@@ -35,7 +35,7 @@ public class PhysicalPlaylistEditorView extends AbstractPlaylistEditorView{
 	private static PhysicalPlaylistEditorView ppe;
 	
 	/**Return self instance*/
-	public static PhysicalPlaylistEditorView getInstance(){
+	public static synchronized PhysicalPlaylistEditorView getInstance(){
 		if (ppe == null){
 			ppe = new PhysicalPlaylistEditorView();
 		}

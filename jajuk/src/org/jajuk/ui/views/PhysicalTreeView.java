@@ -161,7 +161,7 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 	}
 	
 	/** Return singleton */
-	public static PhysicalTreeView getInstance() {
+	public static synchronized PhysicalTreeView getInstance() {
 		if (ptv == null) {
 			ptv = new PhysicalTreeView();
 		}

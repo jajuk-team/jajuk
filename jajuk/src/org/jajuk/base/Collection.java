@@ -65,7 +65,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 	
 
 	/** Instance getter */
-	public static Collection getInstance() {
+	public static synchronized Collection getInstance() {
 		if (collection == null) {
 			collection = new Collection();
 		}

@@ -35,7 +35,7 @@ public class LogicalPlaylistEditorView extends AbstractPlaylistEditorView{
 	private static LogicalPlaylistEditorView lpe;
 	
 	/**Return self instance*/
-	public static LogicalPlaylistEditorView getInstance(){
+	public static synchronized LogicalPlaylistEditorView getInstance(){
 		if (lpe == null){
 			lpe = new LogicalPlaylistEditorView();
 		}

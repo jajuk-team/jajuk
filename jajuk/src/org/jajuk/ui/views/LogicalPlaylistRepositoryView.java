@@ -36,7 +36,7 @@ public class LogicalPlaylistRepositoryView extends ViewAdapter implements Observ
 	private static LogicalPlaylistRepositoryView lpr;
 	
 	/**Return self instance*/
-	public static LogicalPlaylistRepositoryView getInstance(){
+	public static synchronized LogicalPlaylistRepositoryView getInstance(){
 		if (lpr == null){
 			lpr = new LogicalPlaylistRepositoryView();
 		}

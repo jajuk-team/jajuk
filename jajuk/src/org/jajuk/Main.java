@@ -161,7 +161,13 @@ public class Main implements ITechnicalStrings {
 			jpFrame = (JPanel)jframe.getContentPane();
 			jpFrame.setLayout(new BorderLayout());
 			jpFrame.setOpaque(true);
-			command = CommandJPanel.getInstance();
+			
+			//create the command bar
+			javax.swing.SwingUtilities.invokeAndWait(new Runnable() { //use invoke and wait to fix bug 910376 
+				public void run() {
+					command = CommandJPanel.getInstance();
+				}
+			});
 			// Create the information bar panel
 			information = InformationJPanel.getInstance();
 			

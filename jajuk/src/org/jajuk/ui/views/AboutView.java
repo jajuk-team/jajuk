@@ -70,7 +70,7 @@ public class AboutView extends ViewAdapter {
 	private static final String INFOS = "http://jajuk.sourceforge.net"; //$NON-NLS-1$
 	
 	/**Return self instance*/
-	public static AboutView getInstance(){
+	public static synchronized AboutView getInstance(){
 		if (av == null){
 			av = new AboutView();
 		}

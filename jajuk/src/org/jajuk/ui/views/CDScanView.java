@@ -54,7 +54,7 @@ public class CDScanView extends ViewAdapter implements ActionListener {
 	JButton jbScan;
 	
 	/**Return self instance*/
-	public static CDScanView getInstance(){
+	public static synchronized CDScanView getInstance(){
 		if (cds == null){
 			cds = new CDScanView();
 		}

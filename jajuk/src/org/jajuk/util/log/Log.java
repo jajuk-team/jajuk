@@ -81,7 +81,7 @@ public class Log implements ITechnicalStrings{
 	 * Return a self instance
 	 * <p>Implementation of the singleton pattern
 	 */
-	public static Log getInstance(){
+	public static synchronized Log getInstance(){
 		if ( Log.log == null){
 			Log.log = new Log();     	
 		}	

@@ -104,7 +104,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 
 	
 		
-	public static CommandJPanel getInstance(){
+	public static synchronized CommandJPanel getInstance(){
 		if (command == null){
 			command = new CommandJPanel();
 		}

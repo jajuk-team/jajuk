@@ -89,7 +89,7 @@ public class PhysicalPlaylistRepositoryView extends ViewAdapter implements Obser
 	MouseAdapter ma;
 		
 	/**Return self instance*/
-	public static PhysicalPlaylistRepositoryView getInstance(){
+	public static synchronized PhysicalPlaylistRepositoryView getInstance(){
 		if (ppr == null){
 			ppr = new PhysicalPlaylistRepositoryView();
 		}

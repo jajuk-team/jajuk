@@ -157,7 +157,7 @@ import org.jajuk.util.Util;
 		}
 	}
 	
-	static public JajukJMenuBar getInstance(){
+	static public synchronized JajukJMenuBar getInstance(){
 		if (jjmb == null){
 			jjmb = new JajukJMenuBar();
 		}

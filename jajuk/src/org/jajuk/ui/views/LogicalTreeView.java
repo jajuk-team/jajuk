@@ -139,7 +139,7 @@ public class LogicalTreeView extends ViewAdapter implements ActionListener,Obser
 	}
 	
 	/** Return singleton */
-	public static LogicalTreeView getInstance() {
+	public static synchronized LogicalTreeView getInstance() {
 		if (ltv == null) {
 			ltv = new LogicalTreeView();
 		}
