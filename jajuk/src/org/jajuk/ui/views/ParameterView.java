@@ -677,10 +677,10 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jlSearchAccuracy.setToolTipText(Messages.getString("ParameterView.155")); //$NON-NLS-1$
 		jcbSearchAccuracy = new JComboBox();
 		jcbSearchAccuracy.setToolTipText(Messages.getString("ParameterView.155")); //$NON-NLS-1$
-		jcbSearchAccuracy.addItem(Messages.getString("LogicalTableView.3")); //$NON-NLS-1$ TBI
 		jcbSearchAccuracy.addItem(Messages.getString("ParameterView.156")); //$NON-NLS-1$
 		jcbSearchAccuracy.addItem(Messages.getString("ParameterView.157")); //$NON-NLS-1$
 		jcbSearchAccuracy.addItem(Messages.getString("ParameterView.158")); //$NON-NLS-1$
+		jcbSearchAccuracy.addItem(Messages.getString("LogicalTableView.3")); //$NON-NLS-1$ TBI
 		jpCovers.add(jcbAutoCover,"0,1"); //$NON-NLS-1$
 		jpCovers.add(jlMinSize,"0,3"); //$NON-NLS-1$
 		jpCovers.add(jtfMinSize,"1,3"); //$NON-NLS-1$
