@@ -36,7 +36,6 @@ import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
-import org.tritonus.share.sampled.file.TAudioFileReader;
 
 
 /**
@@ -88,20 +87,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
         if (player.getStatus() != BasicPlayer.STOPPED) {
             player.stop();
         }
-        try{
-            TAudioFileReader.m_nMarkLimit = 64001;
-            player.open(new File(file.getAbsolutePath()));
-        }
-        catch(Exception e){
-            if (e instanceof BasicPlayerException && e.getCause().getMessage().equals("Resetting to invalid mark")){ //$NON-NLS-1$
-                TAudioFileReader.m_nMarkLimit = 600000;
-                player.open(new File(file.getAbsolutePath()));
-            }
-            else{
-                throw e;
-            }
-        }
-        
+        player.open(new File(file.getAbsolutePath()));
         if (fPosition > 0.0f) {
             // if we don't start at the begining of file, seek to this point
             int iFirstFrame = (int) (file.getTrack().getLength() * fPosition * 41.666);
