@@ -581,7 +581,8 @@ public class Main implements ITechnicalStrings {
 					
 					//Display info message if first session
 					if (ConfigurationManager.getBoolean(CONF_FIRST_CON)){
-						ConfigurationManager.setProperty(CONF_FIRST_CON,FALSE);
+					    sc.dispose(); //make sure to hide splashscreen
+					    ConfigurationManager.setProperty(CONF_FIRST_CON,FALSE);
 						Messages.showInfoMessage(Messages.getString("Main.12")); //$NON-NLS-1$
 						//set parameter perspective
 					    PerspectiveManager.setCurrentPerspective(PERSPECTIVE_NAME_CONFIGURATION);
