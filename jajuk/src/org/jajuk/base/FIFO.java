@@ -111,11 +111,17 @@ public class FIFO implements ITechnicalStrings,Runnable,Observer{
 	/**Has next been pressed?*/
 	private boolean bNext = false;
 	
+	/**Has previous  been pressed?*/
+	private boolean bPrevious = false;
+	
 	/**UI reinit flag for perfs, avoid to reinit at each heart beat*/
 	private boolean bZero = false;
 	
 	/**Forced track to repeat*/
 	private File fForcedRepeat = null;
+	
+	/**Play error flag, used to make a pause*/
+	private boolean bError = false;
 	
 	
 	/**
@@ -162,6 +168,7 @@ public class FIFO implements ITechnicalStrings,Runnable,Observer{
 		fForcedRepeat = null;
 		//register needed events
 		ObservationManager.register(EVENT_SPECIAL_MODE,this);
+		ObservationManager.register(EVENT_PLAY_ERROR,this);
 	}
 	
 	/**
@@ -297,16 +304,19 @@ public class FIFO implements ITechnicalStrings,Runnable,Observer{
 	 * Play previous track
 	 */
 	public synchronized void playPrevious(){
-		File file = null;
+		if (bPrevious){
+		    return;
+		}
+	    bPrevious = true;
+	    File file = null;
 	    ArrayList alToPlay = new ArrayList(1);
 		if ( fLastOne != null){
 			file = FileManager.getPreviousFile(fLastOne);
 		}
-		else{
+		else{ //called at startup with nothing, then user presses previous
 			file = FileManager.getFile(History.getInstance().getLastFile());
-			file = FileManager.getPreviousFile(file);
 		}
-		if ( file != null && file.isReady()){
+	   if ( file != null && file.isReady()){
 		    alToPlay.add(file);
 		}
 		FIFO.getInstance().insert(alToPlay,0,true);
@@ -316,18 +326,12 @@ public class FIFO implements ITechnicalStrings,Runnable,Observer{
 	 * Play next track in selection
 	 */
 	public synchronized void playNext(){
-		bNext = true;
+        bNext = true;
 	    if ( fCurrent != null){  //if stopped, nothing to stop
 			Player.stop();
-		    finished();
+		    finished(); //stop current track and let the FIFO to choose the next one
 		}
-		else{
-			File file = FileManager.getNextFile(fLastOne);
-			if ( file != null && file.isReady()){
-				FIFO.getInstance().push(file,false);
-			}
-		}
-	}
+   }
 	
 	
 	/* (non-Javadoc)
@@ -338,6 +342,10 @@ public class FIFO implements ITechnicalStrings,Runnable,Observer{
 			int i = 0;
 			while (!bStop) {
 				Thread.sleep(SLEEP_TIME); //sleep to save CPU
+				if (bError){
+				    Thread.sleep(2000); //sleep to let user to read error message
+				    bError = false;
+				}
 				if ( Player.isPaused()){
 					continue;
 				}
@@ -404,6 +412,7 @@ public class FIFO implements ITechnicalStrings,Runnable,Observer{
 					lOffset = 0;
 					fCurrent = (File) (alFIFO.get(index));//take the first file in the fifo
 					fLastOne = (File)fCurrent.clone(); //save the last played track
+					bPrevious = false; //allow insert to be done with right previous file
 					alFIFO.remove(index);//remove it from todo list;
 					Log.debug("Now playing :"+fCurrent); //$NON-NLS-1$
 					bPlaying = true;
@@ -639,6 +648,9 @@ public class FIFO implements ITechnicalStrings,Runnable,Observer{
 				clear();
 			}
 		}
+		else if (subject.equals(EVENT_PLAY_ERROR)){
+		    bError = true;
+		}	
 	}
 	
 	/**
@@ -661,8 +673,8 @@ public class FIFO implements ITechnicalStrings,Runnable,Observer{
 	        lTotalTime = 0;
 	    }
 	    //re-add current track if any
-	    if (fCurrent != null){
-	        alFIFO.add(0,fCurrent);
+	    if (fLastOne != null){
+	        alFIFO.add(0,fLastOne);
 	    }
 	    File file = null;
 	    int index = 0;
@@ -674,11 +686,13 @@ public class FIFO implements ITechnicalStrings,Runnable,Observer{
 	    }
 	    //add required tracks
 	    it = alFiles.iterator();
+	    int i = 0;
 	    while (it.hasNext()){
 	        file = (File)it.next();
-	        alFIFO.add(index,file);
+	        alFIFO.add(index+i,file);
 	        index++;
 	        lTotalTime += file.getTrack().getLength();
+	        i++;
 	    }
 	}
 	
