@@ -636,14 +636,39 @@ public class Util implements ITechnicalStrings {
      */
     public  static String createQuery(org.jajuk.base.File file){
         String sQuery = "";
+        int iAccuracy = ConfigurationManager.getInt(CONF_COVERS_ACCURACY);
         Track track = file.getTrack();
         String sAuthor = track.getAuthor().getName();
         String sAlbum = track.getAlbum().getName();
         if (!sAuthor.equals("unknown_author")){
-            sQuery += sAuthor + " ";
+            switch(iAccuracy){
+            case 0: //low, default
+                sQuery += sAuthor + " ";
+                break;
+            case 1: //medium
+                sQuery += "\""+sAuthor + "\" "; //put "" around it
+                break;
+            case 2: //high 
+                sQuery += "+\""+sAuthor + "\" "; //put +"" around it
+                break;
+            default :
+                break;
+            }
         }
         if (!sAlbum.equals("unknown_album")){
-            sQuery += sAlbum;
+            switch(iAccuracy){
+            case 0: //low, default
+                sQuery += sAlbum;
+                break;
+            case 1: //medium
+                sQuery += "\""+sAlbum + "\""; //put "" around it
+                break;
+            case 2: //high
+                sQuery += "+\""+sAlbum + "\""; //put "" around it
+                break;
+            default :
+                break;
+            }
         }
         return sQuery;
     }
@@ -668,6 +693,51 @@ public class Util implements ITechnicalStrings {
             jpOut.add(Box.createVerticalGlue());
         }
         return jpOut;
+    }
+    
+    /**
+     * 
+     * @param jc
+     * @return an horizontaly  centred panel
+     */
+    public static JPanel getCentredPanel(JComponent jc){
+        return getCentredPanel(jc,BoxLayout.X_AXIS);
+    }
+    
+    /**
+     * @param file1 
+     * @param file2
+     * @return whether file1 is a file2 descendant
+     */
+    public static boolean isDescendant(File file1,File file2){
+        File fParent = file1.getParentFile();
+		boolean bOut = false;
+		while (fParent != null){
+		    if (fParent.equals(file2)){
+		        bOut =true;
+		        break;
+		    }
+		    fParent = fParent.getParentFile();
+		}
+		return bOut;
+    }
+	
+    /**
+     * @param file1 
+     * @param file2
+     * @return whether file1 is a file2 ancestor
+     */
+    public static boolean isAncestor(File file1,File file2){
+        File fParent = file2.getParentFile();
+		boolean bOut = false;
+		while (fParent != null){
+		    if (fParent.equals(file1)){
+		        bOut = true;
+		        break;
+		    }
+		    fParent = fParent.getParentFile();
+		}
+		return bOut;
     }
 	
 }
