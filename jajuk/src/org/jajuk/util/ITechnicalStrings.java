@@ -48,8 +48,8 @@ public interface ITechnicalStrings {
     
     		
 	// Jajuk version
-	public static final String JAJUK_VERSION = "0.3.3 rc7";
-	public static final String JAJUK_VERSION_DATE = "Build 2005-03-10";
+	public static final String JAJUK_VERSION = "0.3.3 rc8";
+	public static final String JAJUK_VERSION_DATE = "Build 2005-03-dd";
 	
 	//About 
 	public static final String ABOUT = "<html>Jajuk version "+JAJUK_VERSION+"</html>";
@@ -416,8 +416,9 @@ public interface ITechnicalStrings {
 	public static final String CONF_NETWORK_CONNECTION_TO = "jajuk.network.connection_timeout";
 	public static final String CONF_NETWORK_TRANSFERT_TO = "jajuk.network.transfert_timeout";
 	public static final String CONF_OPTIONS_TAB = "jajuk.options.tab"; //Last Option selected tab 
-    public static final String CONF_BUFFER_SIZE = "jajuk.buffer_size"; //Audio buffer size in bytes
-		
+    public static final String CONF_BUFFER_SIZE = "jajuk.buffer_size"; //data buffer size in bytes
+    public static final String CONF_AUDIO_BUFFER_SIZE = "jajuk.audio_buffer_size"; //Audio buffer size in bytes
+    	
 	//Accuracy levels
 	public static final String ACCURACY_LOW = "low";
 	public static final String ACCURACY_NORMAL = "normal";
