@@ -1,0 +1,269 @@
+<!DOCTYPE UI><UI version="3.1" stdsetdef="1">
+<class>Form1</class>
+<widget class="QMainWindow">
+    <property name="name">
+        <cstring>Form1</cstring>
+    </property>
+    <property name="geometry">
+        <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>946</width>
+            <height>865</height>
+        </rect>
+    </property>
+    <property name="caption">
+        <string>Form1</string>
+    </property>
+    <widget class="KPushButton">
+        <property name="name">
+            <cstring>kPushButton3</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>40</x>
+                <y>90</y>
+                <width>41</width>
+                <height>450</height>
+            </rect>
+        </property>
+        <property name="paletteBackgroundColor">
+            <color>
+                <red>255</red>
+                <green>170</green>
+                <blue>0</blue>
+            </color>
+        </property>
+        <property name="text">
+            <string>P
+e
+r
+s
+p
+e
+c
+t
+i
+v
+e</string>
+        </property>
+    </widget>
+    <widget class="KPushButton">
+        <property name="name">
+            <cstring>kPushButton4</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>80</x>
+                <y>90</y>
+                <width>100</width>
+                <height>451</height>
+            </rect>
+        </property>
+        <property name="paletteBackgroundColor">
+            <color>
+                <red>170</red>
+                <green>170</green>
+                <blue>255</blue>
+            </color>
+        </property>
+        <property name="text">
+            <string>N
+a
+v
+i
+g
+a
+t
+i
+o
+n
+
+b
+a
+r</string>
+        </property>
+    </widget>
+    <widget class="KPushButton">
+        <property name="name">
+            <cstring>kPushButton4_3</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>360</x>
+                <y>90</y>
+                <width>100</width>
+                <height>451</height>
+            </rect>
+        </property>
+        <property name="paletteBackgroundColor">
+            <color>
+                <red>170</red>
+                <green>170</green>
+                <blue>255</blue>
+            </color>
+        </property>
+        <property name="text">
+            <string>Play
+list
+
+repo-
+sitory</string>
+        </property>
+    </widget>
+    <widget class="KPushButton">
+        <property name="name">
+            <cstring>kPushButton4_3_2</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>460</x>
+                <y>90</y>
+                <width>440</width>
+                <height>220</height>
+            </rect>
+        </property>
+        <property name="paletteBackgroundColor">
+            <color>
+                <red>170</red>
+                <green>170</green>
+                <blue>255</blue>
+            </color>
+        </property>
+        <property name="text">
+            <string>Track list</string>
+        </property>
+    </widget>
+    <widget class="KPushButton">
+        <property name="name">
+            <cstring>kPushButton4_3_2_2</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>670</x>
+                <y>310</y>
+                <width>230</width>
+                <height>120</height>
+            </rect>
+        </property>
+        <property name="paletteBackgroundColor">
+            <color>
+                <red>170</red>
+                <green>255</green>
+                <blue>127</blue>
+            </color>
+        </property>
+        <property name="text">
+            <string>Cover</string>
+        </property>
+    </widget>
+    <widget class="KPushButton">
+        <property name="name">
+            <cstring>kPushButton4_3_2_3</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>460</x>
+                <y>430</y>
+                <width>440</width>
+                <height>110</height>
+            </rect>
+        </property>
+        <property name="paletteBackgroundColor">
+            <color>
+                <red>170</red>
+                <green>170</green>
+                <blue>255</blue>
+            </color>
+        </property>
+        <property name="text">
+            <string>Playlist
+editor</string>
+        </property>
+    </widget>
+    <widget class="KPushButton">
+        <property name="name">
+            <cstring>kPushButton1_2</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>40</x>
+                <y>540</y>
+                <width>860</width>
+                <height>55</height>
+            </rect>
+        </property>
+        <property name="paletteBackgroundColor">
+            <color>
+                <red>255</red>
+                <green>170</green>
+                <blue>0</blue>
+            </color>
+        </property>
+        <property name="text">
+            <string>Information</string>
+        </property>
+    </widget>
+    <widget class="KPushButton">
+        <property name="name">
+            <cstring>kPushButton1</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>40</x>
+                <y>30</y>
+                <width>860</width>
+                <height>55</height>
+            </rect>
+        </property>
+        <property name="paletteBackgroundColor">
+            <color>
+                <red>255</red>
+                <green>170</green>
+                <blue>0</blue>
+            </color>
+        </property>
+        <property name="text">
+            <string>Command</string>
+        </property>
+    </widget>
+    <widget class="KPushButton">
+        <property name="name">
+            <cstring>kPushButton4_2</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>180</x>
+                <y>90</y>
+                <width>180</width>
+                <height>451</height>
+            </rect>
+        </property>
+        <property name="paletteBackgroundColor">
+            <color>
+                <red>170</red>
+                <green>170</green>
+                <blue>255</blue>
+            </color>
+        </property>
+        <property name="text">
+            <string>Logical
+tree</string>
+        </property>
+    </widget>
+</widget>
+<toolbars>
+</toolbars>
+<layoutdefaults spacing="6" margin="11"/>
+<includehints>
+    <includehint>kpushbutton.h</includehint>
+    <includehint>kpushbutton.h</includehint>
+    <includehint>kpushbutton.h</includehint>
+    <includehint>kpushbutton.h</includehint>
+    <includehint>kpushbutton.h</includehint>
+    <includehint>kpushbutton.h</includehint>
+    <includehint>kpushbutton.h</includehint>
+    <includehint>kpushbutton.h</includehint>
+    <includehint>kpushbutton.h</includehint>
+</includehints>
+</UI>

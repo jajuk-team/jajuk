@@ -1,0 +1,150 @@
+<!DOCTYPE UI><UI version="3.1" stdsetdef="1">
+<class>Form3</class>
+<widget class="QMainWindow">
+    <property name="name">
+        <cstring>Form3</cstring>
+    </property>
+    <property name="geometry">
+        <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>786</width>
+            <height>652</height>
+        </rect>
+    </property>
+    <property name="caption">
+        <string>Form3</string>
+    </property>
+    <widget class="QFrame">
+        <property name="name">
+            <cstring>frame10</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>234</x>
+                <y>162</y>
+                <width>621</width>
+                <height>445</height>
+            </rect>
+        </property>
+        <property name="frameShape">
+            <enum>StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+            <enum>Raised</enum>
+        </property>
+        <widget class="QLabel">
+            <property name="name">
+                <cstring>textLabel2</cstring>
+            </property>
+            <property name="geometry">
+                <rect>
+                    <x>171</x>
+                    <y>11</y>
+                    <width>153</width>
+                    <height>47</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>&lt;b&gt;Device refresh&lt;font size="+1"&gt;&lt;/font&gt;&lt;/b&gt;</string>
+            </property>
+        </widget>
+        <widget class="QProgressBar">
+            <property name="name">
+                <cstring>progressBar1</cstring>
+            </property>
+            <property name="geometry">
+                <rect>
+                    <x>48</x>
+                    <y>128</y>
+                    <width>509</width>
+                    <height>29</height>
+                </rect>
+            </property>
+        </widget>
+        <widget class="QLabel">
+            <property name="name">
+                <cstring>textLabel6</cstring>
+            </property>
+            <property name="geometry">
+                <rect>
+                    <x>50</x>
+                    <y>80</y>
+                    <width>421</width>
+                    <height>27</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>Device name : &lt;b&gt;/home/foo/dir1&lt;/b&gt;</string>
+            </property>
+        </widget>
+        <widget class="QLabel">
+            <property name="name">
+                <cstring>textLabel6_2</cstring>
+            </property>
+            <property name="geometry">
+                <rect>
+                    <x>49</x>
+                    <y>189</y>
+                    <width>541</width>
+                    <height>27</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>Number of new tracks in collection : &lt;b&gt;16&lt;/b&gt;</string>
+            </property>
+        </widget>
+        <widget class="QLabel">
+            <property name="name">
+                <cstring>textLabel6_3</cstring>
+            </property>
+            <property name="geometry">
+                <rect>
+                    <x>49</x>
+                    <y>231</y>
+                    <width>529</width>
+                    <height>27</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>Number of removed tracks from collection : &lt;b&gt;4&lt;/b&gt;</string>
+            </property>
+        </widget>
+        <widget class="QPushButton">
+            <property name="name">
+                <cstring>pushButton1_2</cstring>
+            </property>
+            <property name="geometry">
+                <rect>
+                    <x>165</x>
+                    <y>319</y>
+                    <width>82</width>
+                    <height>35</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>OK</string>
+            </property>
+        </widget>
+        <widget class="QPushButton">
+            <property name="name">
+                <cstring>pushButton1_2_2</cstring>
+            </property>
+            <property name="geometry">
+                <rect>
+                    <x>270</x>
+                    <y>320</y>
+                    <width>82</width>
+                    <height>35</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>Cancel</string>
+            </property>
+        </widget>
+    </widget>
+</widget>
+<toolbars>
+</toolbars>
+<layoutdefaults spacing="6" margin="11"/>
+</UI>

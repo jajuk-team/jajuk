@@ -1,0 +1,688 @@
+<!DOCTYPE UI><UI version="3.1" stdsetdef="1">
+<class>Form2</class>
+<widget class="QMainWindow">
+    <property name="name">
+        <cstring>Form2</cstring>
+    </property>
+    <property name="geometry">
+        <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>968</width>
+            <height>600</height>
+        </rect>
+    </property>
+    <property name="caption">
+        <string>Form2</string>
+    </property>
+    <widget class="QFrame">
+        <property name="name">
+            <cstring>frame6</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>76</x>
+                <y>48</y>
+                <width>125</width>
+                <height>427</height>
+            </rect>
+        </property>
+        <property name="frameShape">
+            <enum>StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+            <enum>Raised</enum>
+        </property>
+        <widget class="QLabel">
+            <property name="name">
+                <cstring>pixmapLabel2</cstring>
+            </property>
+            <property name="geometry">
+                <rect>
+                    <x>44</x>
+                    <y>17</y>
+                    <width>40</width>
+                    <height>32</height>
+                </rect>
+            </property>
+            <property name="pixmap">
+                <pixmap>image0</pixmap>
+            </property>
+            <property name="scaledContents">
+                <bool>true</bool>
+            </property>
+        </widget>
+        <widget class="QLabel">
+            <property name="name">
+                <cstring>textLabel1</cstring>
+            </property>
+            <property name="geometry">
+                <rect>
+                    <x>44</x>
+                    <y>49</y>
+                    <width>37</width>
+                    <height>23</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>New</string>
+            </property>
+        </widget>
+        <widget class="QLabel">
+            <property name="name">
+                <cstring>textLabel1_2</cstring>
+            </property>
+            <property name="geometry">
+                <rect>
+                    <x>35</x>
+                    <y>192</y>
+                    <width>75</width>
+                    <height>23</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>Playlist1</string>
+            </property>
+        </widget>
+        <widget class="QLabel">
+            <property name="name">
+                <cstring>pixmapLabel2_4</cstring>
+            </property>
+            <property name="geometry">
+                <rect>
+                    <x>41</x>
+                    <y>82</y>
+                    <width>40</width>
+                    <height>32</height>
+                </rect>
+            </property>
+            <property name="pixmap">
+                <pixmap>image1</pixmap>
+            </property>
+            <property name="scaledContents">
+                <bool>true</bool>
+            </property>
+        </widget>
+        <widget class="QLabel">
+            <property name="name">
+                <cstring>pixmapLabel2_2</cstring>
+            </property>
+            <property name="geometry">
+                <rect>
+                    <x>39</x>
+                    <y>156</y>
+                    <width>40</width>
+                    <height>32</height>
+                </rect>
+            </property>
+            <property name="pixmap">
+                <pixmap>image2</pixmap>
+            </property>
+            <property name="scaledContents">
+                <bool>true</bool>
+            </property>
+        </widget>
+        <widget class="QLabel">
+            <property name="name">
+                <cstring>pixmapLabel2_3</cstring>
+            </property>
+            <property name="geometry">
+                <rect>
+                    <x>43</x>
+                    <y>230</y>
+                    <width>40</width>
+                    <height>32</height>
+                </rect>
+            </property>
+            <property name="pixmap">
+                <pixmap>image2</pixmap>
+            </property>
+            <property name="scaledContents">
+                <bool>true</bool>
+            </property>
+        </widget>
+        <widget class="QLabel">
+            <property name="name">
+                <cstring>textLabel1_3</cstring>
+            </property>
+            <property name="geometry">
+                <rect>
+                    <x>33</x>
+                    <y>267</y>
+                    <width>78</width>
+                    <height>23</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>Playlist2</string>
+            </property>
+        </widget>
+        <widget class="QLabel">
+            <property name="name">
+                <cstring>textLabel1_4</cstring>
+            </property>
+            <property name="geometry">
+                <rect>
+                    <x>11</x>
+                    <y>115</y>
+                    <width>106</width>
+                    <height>23</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>Bookmarks</string>
+            </property>
+        </widget>
+    </widget>
+    <widget class="QFrame">
+        <property name="name">
+            <cstring>frame5</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>235</x>
+                <y>49</y>
+                <width>681</width>
+                <height>419</height>
+            </rect>
+        </property>
+        <property name="frameShape">
+            <enum>StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+            <enum>Raised</enum>
+        </property>
+        <widget class="Line">
+            <property name="name">
+                <cstring>line1</cstring>
+            </property>
+            <property name="geometry">
+                <rect>
+                    <x>0</x>
+                    <y>42</y>
+                    <width>681</width>
+                    <height>2</height>
+                </rect>
+            </property>
+            <property name="frameShape">
+                <enum>HLine</enum>
+            </property>
+            <property name="frameShadow">
+                <enum>Sunken</enum>
+            </property>
+            <property name="orientation">
+                <enum>Horizontal</enum>
+            </property>
+        </widget>
+        <widget class="QLabel">
+            <property name="name">
+                <cstring>pixmapLabel3_2</cstring>
+            </property>
+            <property name="geometry">
+                <rect>
+                    <x>94</x>
+                    <y>231</y>
+                    <width>30</width>
+                    <height>24</height>
+                </rect>
+            </property>
+            <property name="pixmap">
+                <pixmap>image3</pixmap>
+            </property>
+            <property name="scaledContents">
+                <bool>true</bool>
+            </property>
+        </widget>
+        <widget class="QLabel">
+            <property name="name">
+                <cstring>pixmapLabel3_2_2</cstring>
+            </property>
+            <property name="geometry">
+                <rect>
+                    <x>144</x>
+                    <y>230</y>
+                    <width>30</width>
+                    <height>24</height>
+                </rect>
+            </property>
+            <property name="pixmap">
+                <pixmap>image4</pixmap>
+            </property>
+            <property name="scaledContents">
+                <bool>true</bool>
+            </property>
+        </widget>
+        <widget class="QLabel">
+            <property name="name">
+                <cstring>pixmapLabel3_2_3</cstring>
+            </property>
+            <property name="geometry">
+                <rect>
+                    <x>320</x>
+                    <y>230</y>
+                    <width>30</width>
+                    <height>24</height>
+                </rect>
+            </property>
+            <property name="pixmap">
+                <pixmap>image5</pixmap>
+            </property>
+            <property name="scaledContents">
+                <bool>true</bool>
+            </property>
+        </widget>
+        <widget class="QLabel">
+            <property name="name">
+                <cstring>pixmapLabel3_2_3_3</cstring>
+            </property>
+            <property name="geometry">
+                <rect>
+                    <x>225</x>
+                    <y>232</y>
+                    <width>30</width>
+                    <height>24</height>
+                </rect>
+            </property>
+            <property name="pixmap">
+                <pixmap>image6</pixmap>
+            </property>
+            <property name="scaledContents">
+                <bool>true</bool>
+            </property>
+        </widget>
+        <widget class="QLabel">
+            <property name="name">
+                <cstring>pixmapLabel3_2_3_2_2</cstring>
+            </property>
+            <property name="geometry">
+                <rect>
+                    <x>186</x>
+                    <y>231</y>
+                    <width>30</width>
+                    <height>24</height>
+                </rect>
+            </property>
+            <property name="pixmap">
+                <pixmap>image7</pixmap>
+            </property>
+            <property name="scaledContents">
+                <bool>true</bool>
+            </property>
+        </widget>
+        <widget class="QLabel">
+            <property name="name">
+                <cstring>pixmapLabel3_2_3_2</cstring>
+            </property>
+            <property name="geometry">
+                <rect>
+                    <x>271</x>
+                    <y>230</y>
+                    <width>30</width>
+                    <height>24</height>
+                </rect>
+            </property>
+            <property name="pixmap">
+                <pixmap>image8</pixmap>
+            </property>
+            <property name="scaledContents">
+                <bool>true</bool>
+            </property>
+        </widget>
+        <widget class="KIconButton">
+            <property name="name">
+                <cstring>kIconButton10</cstring>
+            </property>
+            <property name="geometry">
+                <rect>
+                    <x>8</x>
+                    <y>6</y>
+                    <width>45</width>
+                    <height>31</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string></string>
+            </property>
+            <property name="pixmap">
+                <pixmap>image9</pixmap>
+            </property>
+        </widget>
+        <widget class="KIconButton">
+            <property name="name">
+                <cstring>kIconButton10_2</cstring>
+            </property>
+            <property name="geometry">
+                <rect>
+                    <x>62</x>
+                    <y>7</y>
+                    <width>45</width>
+                    <height>31</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string></string>
+            </property>
+            <property name="pixmap">
+                <pixmap>image3</pixmap>
+            </property>
+        </widget>
+        <widget class="KIconButton">
+            <property name="name">
+                <cstring>kIconButton10_3</cstring>
+            </property>
+            <property name="geometry">
+                <rect>
+                    <x>116</x>
+                    <y>5</y>
+                    <width>45</width>
+                    <height>31</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string></string>
+            </property>
+            <property name="pixmap">
+                <pixmap>image4</pixmap>
+            </property>
+        </widget>
+        <widget class="KIconButton">
+            <property name="name">
+                <cstring>kIconButton10_4</cstring>
+            </property>
+            <property name="geometry">
+                <rect>
+                    <x>174</x>
+                    <y>5</y>
+                    <width>45</width>
+                    <height>31</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string></string>
+            </property>
+            <property name="pixmap">
+                <pixmap>image10</pixmap>
+            </property>
+        </widget>
+        <widget class="KIconButton">
+            <property name="name">
+                <cstring>kIconButton10_5</cstring>
+            </property>
+            <property name="geometry">
+                <rect>
+                    <x>232</x>
+                    <y>6</y>
+                    <width>45</width>
+                    <height>31</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string></string>
+            </property>
+            <property name="pixmap">
+                <pixmap>image11</pixmap>
+            </property>
+        </widget>
+        <widget class="KIconButton">
+            <property name="name">
+                <cstring>kIconButton10_6</cstring>
+            </property>
+            <property name="geometry">
+                <rect>
+                    <x>289</x>
+                    <y>6</y>
+                    <width>45</width>
+                    <height>31</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string></string>
+            </property>
+            <property name="pixmap">
+                <pixmap>image12</pixmap>
+            </property>
+        </widget>
+        <widget class="KIconButton">
+            <property name="name">
+                <cstring>kIconButton10_6_2</cstring>
+            </property>
+            <property name="geometry">
+                <rect>
+                    <x>347</x>
+                    <y>6</y>
+                    <width>45</width>
+                    <height>31</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string></string>
+            </property>
+            <property name="pixmap">
+                <pixmap>image13</pixmap>
+            </property>
+        </widget>
+        <widget class="QTable">
+            <column>
+                <property name="text">
+                    <string>Order</string>
+                </property>
+                <property name="pixmap">
+                    <pixmap></pixmap>
+                </property>
+            </column>
+            <column>
+                <property name="text">
+                    <string>Track</string>
+                </property>
+                <property name="pixmap">
+                    <pixmap></pixmap>
+                </property>
+            </column>
+            <row>
+                <property name="text">
+                    <string>1</string>
+                </property>
+                <property name="pixmap">
+                    <pixmap></pixmap>
+                </property>
+            </row>
+            <row>
+                <property name="text">
+                    <string>2</string>
+                </property>
+                <property name="pixmap">
+                    <pixmap></pixmap>
+                </property>
+            </row>
+            <row>
+                <property name="text">
+                    <string>3</string>
+                </property>
+                <property name="pixmap">
+                    <pixmap></pixmap>
+                </property>
+            </row>
+            <row>
+                <property name="text">
+                    <string>4</string>
+                </property>
+                <property name="pixmap">
+                    <pixmap></pixmap>
+                </property>
+            </row>
+            <row>
+                <property name="text">
+                    <string>5</string>
+                </property>
+                <property name="pixmap">
+                    <pixmap></pixmap>
+                </property>
+            </row>
+            <row>
+                <property name="text">
+                    <string>6</string>
+                </property>
+                <property name="pixmap">
+                    <pixmap></pixmap>
+                </property>
+            </row>
+            <row>
+                <property name="text">
+                    <string>7</string>
+                </property>
+                <property name="pixmap">
+                    <pixmap></pixmap>
+                </property>
+            </row>
+            <row>
+                <property name="text">
+                    <string>8</string>
+                </property>
+                <property name="pixmap">
+                    <pixmap></pixmap>
+                </property>
+            </row>
+            <row>
+                <property name="text">
+                    <string>9</string>
+                </property>
+                <property name="pixmap">
+                    <pixmap></pixmap>
+                </property>
+            </row>
+            <row>
+                <property name="text">
+                    <string>10</string>
+                </property>
+                <property name="pixmap">
+                    <pixmap></pixmap>
+                </property>
+            </row>
+            <row>
+                <property name="text">
+                    <string>11</string>
+                </property>
+                <property name="pixmap">
+                    <pixmap></pixmap>
+                </property>
+            </row>
+            <row>
+                <property name="text">
+                    <string>12</string>
+                </property>
+                <property name="pixmap">
+                    <pixmap></pixmap>
+                </property>
+            </row>
+            <row>
+                <property name="text">
+                    <string>13</string>
+                </property>
+                <property name="pixmap">
+                    <pixmap></pixmap>
+                </property>
+            </row>
+            <row>
+                <property name="text">
+                    <string>14</string>
+                </property>
+                <property name="pixmap">
+                    <pixmap></pixmap>
+                </property>
+            </row>
+            <row>
+                <property name="text">
+                    <string>15</string>
+                </property>
+                <property name="pixmap">
+                    <pixmap></pixmap>
+                </property>
+            </row>
+            <row>
+                <property name="text">
+                    <string>16</string>
+                </property>
+                <property name="pixmap">
+                    <pixmap></pixmap>
+                </property>
+            </row>
+            <property name="name">
+                <cstring>table1</cstring>
+            </property>
+            <property name="geometry">
+                <rect>
+                    <x>16</x>
+                    <y>51</y>
+                    <width>641</width>
+                    <height>329</height>
+                </rect>
+            </property>
+            <property name="numRows">
+                <number>16</number>
+            </property>
+            <property name="numCols">
+                <number>2</number>
+            </property>
+        </widget>
+    </widget>
+</widget>
+<toolbars>
+</toolbars>
+<images>
+    <image name="image0">
+        <data format="XPM.GZ" length="1260">789ccdd2494f02311407f03b9f62023762945961623c008ae302b22626c643a78ba00202832cc6ef2eedff0d268cf1e0c9660efdb5eff5bda67352b4eedb4dab78925b242c19718b0fd9dc2a8ae578bc79783cfbc8e59d92b5fbbcd0b2f347b93cb3b8d59a4ea49ec7bb79a164866621a5529ac7a052e050d30d6d8ee091a6673b1ef8ace9339738d08c855b01ef34b9ef51a1069182df8814dc3314e96e9f48bb2f60683b865d4de1fb2176d77b56342fc080383594810f763465b0a3c9bd250ab0bda7099e8065611bb60c65d946f015910a3d1129f71aac84c83d07990fae88d2093585a60ad25c0e56a8d0cd9e66b749a41b4922b5710932db354f3f263214da18aaf4e42d18fab6e18c1882111833b04a94b8c21ce40c851451baa6501d14019eac4664e07b4a042f40e98009914e5e822a005f890ac1c7059619e6c72ec4bb594ce37b9da53888cf9ef2b7f57fd10fe7e2c77ea47acaf6331c3dbfbc8e27d3b7837e66f345b24cde57eb83f337db6aad5e3fbf681cd6bd9c455174d5c8f4732d6f6e9badbbcc7abbd365bdfee0977b7d9ee6be00953a4907</data>
+    </image>
+    <image name="image1">
+        <data format="XPM.GZ" length="2750">789c95d5596fe3361007f0f77c0a23f31614b33a289942d187dc979dd8b993a20f1229c54ee29c76ae45bf7b29fe87dac56e0f746781e0078e86d748feb2d2bb180d7b2b5f965ee6e57c6a7a66523ef756ec6236fbf8fd8fdfbe2e2dc7bad7fe4f542f59fe6569793cef99dec1c37ddd826b078afc3fef673855a5f1be6c1d47918eb4f7bab74e4da95ad356eb248a14c6e9148e5d789f79179d47706a0ad4ff80fb718df5f87a699c1775eebdef5dc426c1fa3ee12eff5d6c1be4bfc13a8cdbd62a2ee2a6f12ec59978d3bbec5b99ef15d6a15e04bbe7e183ce789ec4528f92d65912eb18e711c36994c63eff10d685ac6f01bbe751ff4a5cc09479974924fbdf80b595e7e77061653db77019d6fbd219e3c3d679124c7efebceccef7062e4bc99f8a6bf16aebbebb108bf9277095c8f8b53817fbfdf72b6d6de6fd049799acbf81ab30df5a6b9dba7c8c3fc26e3d380f7f7eba4a15ce9348ac15cef70176eb41bedf4fa15c7ee1c7efe16ebe9958f647e7dea6bbaf3bd8c87e286d5daac4c8f8365c5863bd07b009f54ebc4d6a647d06b6e1bc2a71a8effbad528992fbd883f342577e5c795b37eef7436338ec9f7c3f9b2cec97fcfb6333a564fc03d6994ebdf76053e37e6817b6b9d8f797ad1323f35dc0ddf988f3a28f7a33b88cf17d60ff3ed4b98e0b7c2fde61d7beb89f1db84ec4beffeb3a56f2bdb88443ffd3140ef3d33dac22d91f8b952afdfc23b8ac0dfaef18ae4a31e6afbbf5bcc1ee01df7f74d4bac9c37dd08158cb795470bfe8fbfbe15dd8e4e807da869bd08f77e25cecd7d334ddf7620877f537c4e1fc3fe16eff2fe270df13b1160fc446bc0e77e765c4a13f9ec51ae747ab62235e83b322839fc456fc109cfb1f1bb2701e8bafc5598efc4771017321b6e8274ee17e2cfd558bc3792b58cbfbc1e77021fdc65a6cf17b434db0f46706bb0f1e7c06577985f7b92f2ec56371e8a71c3689f8482cf7cfa7b04de4fb77220efdf60a37e1fdbf15cbf7894a71038fe7ff1dff378f89cb36fe3dcf65542e8c0bcbf53fe5b95a15377ccd139ef28d7b466ae3ef7779d6e54d5cdcb8b8e53b9ef13d3fb87874f1c4cfed0cf8bd76f3a1d60bcf79c1affcc6effcc19fbcca6bbcce35cbefbccb9bfa5a216b8337798bb7798777798ff7258f78e0f286aeda820ff890473ce6233ee6133ee5333ee70bbe947a035feb8a238e39e19415679cbbe8b3e6829808eba36f5191214bb5aba2a96145d734a129dda09ee4dcd21dcde8de653ed023a7f4484ff44c2f34a705d62759aff446eff4419fb44a6b3e56699d366893b6ba7a77b4edb2766897f668dfcd357055d7dddf211dd0a1ecb77667f95dd088c6aee6d0c5111dd3099d76793f049dd1395dd0255d51447177ce3fe5f9dc8452529441d22f7f9bf92ddcfdfef9ebd25f743c81ac</data>
+    </image>
+    <image name="image2">
+        <data format="XPM.GZ" length="584">789cd3d7528808f055d0d2e72a2e492cc94c5648ce482c52d04a29cdcdad8c8eb5ade6523232500022130543251d2e253d856405bffcbc54103b09c856360003103711c64d4b03719521dcb43408570f0b2020ae9c885d3c313109482641019239600ef1e68fba875aeea9b5e60200305172a2</data>
+    </image>
+    <image name="image3">
+        <data format="XPM.GZ" length="2070">789c7d94d96eda401486eff31456ce5d54fdc12b58552fb23649b3ef49d58bc14b80841d12a0eabb773ce78c8b2d358c2cf171fe393bdede721e2fcf9caded8de94ccdba899374d4c4d94ae7fdfef2e7af6fbf3736ddc8714327f61d6ff3cbc6e6d5cc499cf3e1202b008f6b404b0d948441a3d130bc28380dc3981969c159d6748555c179d4b4f68961fd69a7e6fe4ec1edc00fc4dfbbb91f45a1f0ccc44b8396f054e2891d7df16ff9a9162f628e43b765f88ae3b7243f5a99f8a99f087f18ff5998cafd8ee46379ccf5b5acbfac1a8f885965816bec97d22fa90f87c2520fa896ef54f2b3fc5dd8c63fa8dea784f389438fedf36a7d9855fdd150fa67e737a8f5f38deb2de7d795fc243ecdabf5d0a4d6af7de6287599253f9d0ff7abcdfe743ecc0f057b8d729f4cbf7dd7e687fb8243af197bb1e13bcbbee92fa1e0a6df565c3f997c5bedccf3591f161c079927f3d8e37aed7e2160ce731598fb23c9dfeec7b836ff0be94f2cf3df11b6f5ee966cecd4e7fa233bcfa6fc3f6c3f7be53eb17d24f38c659ecfb57e5d0bdb7c3ecafd665e54f79dde6afb9e97fbc0fedecbfd62fd0b736cf5af25b33d130ee5fe8059c9fe512aacc47e249cf1fc88e79fb723c937b72cf37db12cf355c24af4317362ef374ae6782d6125ec32a791f4d313967dc1b9701628c3b7cc99cde7c632e783a5b012fdca72c82cfdcabdd0bc49716c3962ee0947a2ff21acc4ff69c91cffccb2c43bb12cfe87f67d2a7adf729ef39b7cfd8040d55fea1a28b49120fd549321c70b3a9f6abae8e1156fffd7a08f0186fa8c30c6645d83296698e31d1f586069342bec60177bd8c7010ef9bd88231ce3449f1f382d9f33cde7b8c025c7c215ae7183dbb573a7cfbd7e1ef068f3c1139ed1800b4f9e3bf80810ae6bb42a42132dc4f2dc170a425543846752fab44d9cbb52f3b0a649704d296594d30b75b422a0ae1e0b2a9a1ebdd21bf56940431a6955588f85098db57d4253fdfd916634a70e2bfe69e85ddffda085d1ebdf69492b3cd08ed1fcf9baf117838be106</data>
+    </image>
+    <image name="image4">
+        <data format="XPM.GZ" length="2235">789c6dd4db4e1b3b1406e07b9e2262dda1ea6f66327632dada1790702c5068a0d06ef5c2339e2109e4400ee450f5ddebc30aca98cd20a40fff632f3bcbf97c507bbcb9aa1d7cde9bcdd5bc9fd7f29e9ad60ef462385cfff7ebdfdf7bfb91acd9df7a548bf73fededd3732daf5d8f4785c5ed7c07746e4075f7e33c08dc0e7c14b813f82cf071e0d7c0a781e7814f021f069e548d27eb3469e934712ead5b594bb432e7a973636b1a07f36d022facb3248b33371fad83f159e069500f59e7228f73e1c657d68da8516f446ebc08ea553e9f153e8f9eb52eb4d4eef3c20f97cf539de6cedabf9f0a7edf9d6fb3d18c9a0de7ccd7af0a5f3f726b952ba1fcfbd755d3d23a89927ae2eb739fb750420be57c551da7113be1fca3b332f6f90776cb9b4a76cee3976efe58d485eb5408b660b779fdd4af4ffda09ec45ac63292bed373b6f046cb59492d7dfe8b3f1fa9f97cbe57cf8bc0163ceefaad999971df2f3db6f046839df2f81b5bb333df6f4dddf2f36db8ff22f6e4bd1ffdfac3a05f6376cabe606bf6786bfefc65d04f6bee8f88bd0afae5fcddbe1f46dc5f5bdfb353f659b5ffc8f5af4a52adfc7c436f15b13b6cc18e82fe3b652bf6925db0ef82feed56ef235ed892dd74d6c6dab9ce56ec6776c13ed99aefdb5b70ff7e56ef2fbeb225df67b77eae8dfd7c0bb662bbef532df242fbfc93b78ebd31634bf64df5be93662bbeffaeff0b59c48574e38a2dbdf1cdb92854e1f3b7ecc29bdcf75129cbb8f4f9395bb253e7d2b8743e6697deb773fb80a09021874681124ffebff6f119f4d0c700cf78c110238c31c12ba6bb19cc30c7026f26b3349915d6d8e0104768ef643a3836991333cb29ce708e0b93f9824b5ced64aef11537b8c537f377812eee708fef78c0e34ee6077ea26e66592232a36bc46820c11544a56689a64935cdaaf726b141cbacf410ecebc5549d9a556c3d235c10fe27d32532f5d8ccd0ac255dcd1f33ca9cd09dc9b87a28a31c971f32da9c52171d2acc2cae662a3f649ecc39fb7d494ca8477d3cd0809eedf39e7931e7dcf5fba2a1399d368d684c137aa5c1366376de75f3ac6c35fe94696a9e19f15ab430fb89dcae46d8d01bf569492b5ad3860ee9883376dd01b5a943c734a713f39cd299519bce4d3d7ffed9fb0b7acafca1</data>
+    </image>
+    <image name="image5">
+        <data format="XPM.GZ" length="1055">789c5dd24b6fe2301000e03bbf222237b4a22d2259a2d51e80044a5b28ed69a5d51efc248f8600061a5aed7fdf8cc793a28da3c8df783cb623dff4bc5feba5d7bbe998233b66c213293b783d792acbcbef3f3f3f3bddbbd06bde61f3ed7eeb74fb9ef056d55641bf6cfafe773e0a2201fc20b221903b46c87720139c09093c00f990281c1592116500f42da51820f78e21f20c148160d2ee6ae6a8904f9692b824aa10b846ca018e268e218ec64019105347867c6969e7be5a2a1add39ba85b29636b940aa01b202aa6619e485a8eddc8d23436a4b45cc1d15f204d421718bd403ad8147475759b5b4a3c65247c1ed2db0768c9013a408915347869448cdb0d4d851df8d808fc48001e7c47000bc278e38f08118d99bb320727b375644bc2acf44bc0c6f44dc46bf797c868d377d8a89e6dfeb4d9a09fe15f3a554f9a6c87c9f7fe5bd2995e75956f2925fe76df36a97ee0f25c58c39aafc541467f68e79a6eed7469a3abf6467dfffb07f773c31e3b1998e4d9ccc667b9737bf5f2c1e1eeb2c4de2a7a5ab67a6abe78929b2348de3f575debc866012ff576f97256d1eacab4d5d14e94b1c5fedafaa8a62f7dad68373e41a826d3d88c139a975fffee8fc0371b41110</data>
+    </image>
+    <image name="image6">
+        <data format="XPM.GZ" length="1352">789ccdd24b4fe3301007f07b3f45d4dc2a0479d8492cb487be78b6a5e521adb4da83633bb4943e68d39482f6bbaf67c62016f5b8424c72c84fff8c33b672d4f07e0efb5ee3a8b62e6539519e1acb95d7d09bd96cf7ebf78fd75a3d8a3c7b33e185f5835afdd053de603137f06c5ff6fc000b281d19d1476696193077cc880b47456c01c3205021f68e887001af1d195103a3205411d200e3300e629cf0c291119b481167b100ce812c6401c3b4404aa69804de0179c4398f8033a4b4c4f4c55110278e9af8084c22ae13ec9d129390f8e0c889e7486989bd634741dc396ae21098c6894e63e02d31e5c47b649e8a340756c02cce7886e906995b627ae62888578e9ab8050a2642c180278e9c582295a5022e1d0571eda8899740c98496d8db25ca90d877e4c401525962ef333067799463ba724c88a7486da9811da0e22a521cd8734c88374083057c0216893145026c23b1f0dfde5bdf25f1a52f7345a57d2bf59698e27e3c7998da9a4c1f67c5dc2cde5733cba7d5badc6caa6df9bc7b69b63e7cc794ed4e775b5527a767e717ad7f263097ed5ebf2c0757c3e6e8d36c36ea74fbd5d8051fa736cb76af1a36aff7ecc70c6e6ee7a3bd3b35cbbbf7e0d31998d6ff38b72f48fe1cd7fe0244361c70</data>
+    </image>
+    <image name="image7">
+        <data format="XPM.GZ" length="1307">789ccdd2494fe3301407f07b3f4554df2a04599cc51a71602f4b4be184349a8337baa4e992b6947634df1dbff74c1052e78e9d837ffabfbf143939e9042f835ed03969add6723dd6811ec93ae8984d55ed7eff39fddb6ac771e01e9e0551fba8d53e0e74d09fcf2c9c993bb31017f01959843c2c804f9e0571008cc2504738fc48840dec230bd8c01e300e61031f3c39f11e29e22216c03b4f4dec02932809137ce15b4f4e3c430a471c569e9af80ae451a2390edf10794894c054a62695400dcce2d46431f01a982799c913e015318f88d633255e20552e7205bc0416496e0a4c67447719c895674a9c239523764b4f41ac3c0d710214bc308203474411116ba4164268e0ded3109740c98591387c4e94297187d4d24a1c1e03159756613a25aa98b8401a2595011aa04e75a653e016691c317df794c421d066c6da0cf846b431718d7499c57f72e36989c707d74f4b18fb4fc2a4620713773df6951d48981c8ec6b6697d254c0f27e564dab49ac435aa7236af9ad667e21a8b655daee64dcb274cae376fdbf7ddbeaeea3db52839d35bb3984ecf97a3f2e2d25e5ddfb0cfa47bdbeddedd3ff4fafdc7c1d333638cfdbcaff02df9f7abf501939a1135</data>
+    </image>
+    <image name="image8">
+        <data format="XPM.GZ" length="3246">789c9dd6596fe3361007f0f77c0a23f31614b3d669098b3ee4be133ba793a20f1429c5399cc376cea2df7d873323edca4db78b2ed7807f11ff1c8aa4947c59ea0cfbfb9da52f0bd399995ddb8e1d994967c93d8fc7ef7ffcf9fb5f0b8b61dca1ff411876c2c5df161607b38eed1c3cdc971e0804e8f23ff6bb77d0f58d7daf8ed53376e61b3b565bf59977d86dae3bb16fec5375ac36ec9c9cb377d4997ac33b0a421b05ec0f71d4555fb3f3288ba4ff8dda8a21f2a6c9677a7fcfe2c8c6922fc571576dd5b17ac43664c37e5567ea17b5552f7b27616c135e6c5c1727893a649bc076657db6c5894b380f81771a86ba1f70aecef47ea7e2c4a532debe380dd44fea440c03b6a9d70b761bcb7a3d88a9bfccff519d8b81d7b71735f37952c7eabeba5edfa0b1dcdf9bb817f422ee2f2eeafe50887b79afe0fee76a27864bef2c8aeafaddc63c3e4cc5f5fe4028eeb98cebe1444cc751eaafb28ba6ff9d5af70bac387399d4bff0cee348f70b86b5f579e88a9344d7d789ebf58489380ff298fb1fa81331f0f3905b1a5fc64bc5cd78cb62ea6fd987defe38eafa1e894d60643c3e4fc6c6f5faa2988e9f8c7f29eed5e77120aef378a84ed4776a63b83e8ed5a518f8f92ce2a4de8f5775a2f7d313e7b9ac27ae88eb3caed52ea4deaeb808c570c27649aee31fab9dfab1b6ec071c8953a7e77b4fdc8c77a63685e3eb91ba1403ef0f2d573dfe489ce97ac19e38afcfeb95d88636e1ebfcbc5b97269a7f51e73abffdc6727d4b9c05fabeb915dbd4ca7c6ed446cdcfab4bb240df6f6bea44f27025ce037d9f3cab737d1f6c8a4da9e7c9886de964fe1f62178a71a84ed539bb2c8c9e8f63315d97df27276aa32ed4a518f8f74999d20b409eaf99d8a6baffab62579629bb1297a118c4a5d5f30863b14b65fd31115342eaf7d5460c2bea52af67de15d5d3fb2fc565a8f37d57d7f95b7559c97c405c85ea1d752a467e7f54557d1d37d5a6aad85bea4a3c98b51b42bbcd5fff9e69f53358a045f779aa95299b448557d44678fd59aacef0959b26718b7738a68fc5fb7fa65a99b2a9f1808ff8449f094e71369f6a659ea9f91a165ff0953f237c23bdb753adcc07d718e132aee02aadc21aa55ea9e6a83d43c990d6718313bec698129bb8d5a4b6dbb578bffcf71d4aac718d5dfae613fe53e11ea7f6e94a93d28cdf8f03ae71c889efad8f83f95af27711cde9886b1ce1712be1db89ceb0a9a5754e696e67788e43ae728197d8c50043fedec78856fd83468e5b73f36d46bb31c484faa5d8c30c73404a6d018081823230773fbe39b034b33e6e8283122ab882115c93006e68069f6780566108b7d4eb0ec6700f0ff0084fbc0ac73099cfd4671afcdc7c9d29cce0195ee015de48eff0f163e6873df59965aab342bd56e95ed6601d367c66bece5c66a2f733854dd8a2cc36bcc1cecfeb34f7b30b7bb00f077008fd5fa823f733802338861338f56bf01f75267006064fe01c86700197d0858074433f0dff35f39306d17ce65752ff3fc3cfdcdf5f17be01cf54cd1e</data>
+    </image>
+    <image name="image9">
+        <data format="XPM.GZ" length="2170">789c85955b53e2401085dff91529f3666db5262113525bfbe0fd7ec1bb6cedc3981045051489d7daffbe3dd3dd132e2e1843f8ecd3674e7a022e2d7a57c707dee252ed65a8879dcccbeef4c05bcccb6ef7e3f79f5f5fb58530f4f057255eb8f0a3b600375ee61df67b6d03cde1088046f0955ec61fcbbee12472fc6638cb1d9f3a6e58de339cc7aebeeb98ea17cc75ae1f3ba6fabee5b6ebbf724cf54bc3854a8228b59c10a739e97d4d5c14dc3fb05c38bf1dc7e4d7170ea8bec62cf9ce991bcc9bc471ceeb3f10ab200a2caf3aa6fa2773ccf513c754ef09d7a9fec29c86542f85b97fc331d5d785b97f9939e7fe7b61ee3f204e24ef9163d2bf13a7528f9863beffa130fb67c2ac6f3ba6ba624e797fc031cdff5a98e7df140e896f1d93df9630afd760e6fd875098fd5684b9ff4398fb1f1d533d10e679a6c43a60ff2761eeef30c79cf7993853b1b69c336b45fc2a9c4496ef98db5cdf16e6fa99e31bcb87c479487adf272e14cfb3ceac396f8b593e0fb163d277850b65b9705cd097c3fc037cd0e6143ddcf0dfbfb95a650639b4c19fef8fea026ee10e3a704ffe73bc1fe0113bbad0837e956786f7133ce36b0103f09bc359f951fd0243ab2d51dd055de927e760cf02eff095bddf8c9af4ce53e3f10e1f388b12df7dc28ad5aec21abe6a5ab3f247c53a6a4ad8c043c3266cc1b6d5efc02e798b3fabf7f0d8c7750ff07d89de87f63ae25de947329bf308ef52d4c795f7547e9a490f9ab83b1a4e30c9a97518a98fcf8777fecc769dc3055e2fa7fdc7e6aeadb7497285d70decd6a3f509ff6b6859d500ef5de3f3b20cc1fff2430811aaeb10db7d30c9de70f6d9f7f941a13ac6a305d726954db68f2bf9e34f94d327d0406d0b9478d91de9499a89f92b4831490a910f23b3da1bcf5ee507e5fbe88f6b545e66e7a69f59fafe35392449e5ffdd2782fe7fa2f78ccfd858febf3f6bff000df235a6</data>
+    </image>
+    <image name="image10">
+        <data format="XPM.GZ" length="2084">789c8dd45953db301000e0f7fc0a0f79633a8b6f5bd3e903f715ee9b4e1f644924818433e19cfef7ae568b1198641a458e3f6bb5b224c773b3c1e9ee56303bd77a18c9515f05aa27ef83593d1e0e5f7efff9f5d69a89e300bf7916c4333f5a332003156cdf5c1bc2858fae8fca87f1d1f3b1e443fbb8f6b037f25b840fe5a3f471e9a3ede3ca47dfc7c0431bfc96c2c710d10ee943cec965988625396397ecd43a0a4315b9f8c4d916724c2e6d2147d671680b3964a7ec73b288cb5890cfd88a7d629d44499844e45376cade250bb48bbf652bb65dee761a252a75f1c7ce69c8beb1ce64a63349beb3cee34ce7ee1939b22e925c1709f9d0b988d80fec8cbd4fae0a5154e403eb322974e9da179c71799cd7d8197b915ca15dff17b660cfb335fbd95aa4a51629f9d15944ec55b2124228f20e5bb357ac652ab474f17bce32636f939534d2c53f5957a934956b7f75ae62f6325957b2d2e47b6b95a95c65e40e59a35dfb165bb2c7d626d7c6e4e44d6713b3d7c9d86adcf3bbc13686ff5ed006f96da940d5e7da1edd3ba051cc84fe92f3375b2e26c74fca3525be82eee7eb386655ab87b50f9753f357df5e7d8fbffa7475807588a557cfbdffbe821c7ffd25cf106ee0168fd3e73ba8a3efe01e1e60c43d0613e23f728fe1119eb047630cf7fe05bb7b977cdf7718fd0c2f585f798c2ef0ee7eca6feadcf318bd008bf8db1883e397eafb1ec332acc02af658c31e1f63a8467e9b7b1d3660133ab005dbb083bde6b1eef863b8973c9eed62ee0eaeca32667c853d1ce311c7d887038c3e842338763ddc0b1ecf4ee014eb099cc1398410418c25811432c869ef865ebcbbff255a9fa29edb153fd55d28bfcc5734f6d1460af8e67ff09ebf0d9cbf59fa746caeff7f158e17f51e48bee7aff9273f3fd3f3fffdd9fa07721efac0</data>
+    </image>
+    <image name="image11">
+        <data format="XPM.GZ" length="2249">789c95d5596fda401000e0777e85c5be45d5c4f7a1aa0fb9084913729f551fec35044208392057d5ffded9d94918831bb56cacf0798e5d2f2b585e72cef7779da5e5c6e3249f0cb4a3fbf983b3544e47a3d71f3fbffd6a347ddfc1bf2471fce69746f360e268a733beed1a404f4069192964440262896b8948d694124399369011d9405d497425e44241b68640a6f5252af380aca92c474e0a4a427683502297ad2b3572d550d9d13142b9f4228fd821fb869ca253f22d3b65afb035bb63ecb9aef66cbd6f6d06396187ec3b63dff5b46f7d6f1c78811b78e45376c8de2567411a64e437e3d00bddd0c61fc879a8c39cb6c1ec898afc288ae8a0c12b3947531c76d8197bca2ed92fc6b11f95b1ad7fb68e3df6133b629f9073b4ad9fb033f67776c9f68c93202e93809c592711fb915c24595290dbc6699046a98d6f920bb48d1fb333b6cb2ed95bc659987959483e6447ec1659a33579959db137d825fbcc380fb332b7f507d6b9c7be6047ec4bb246dbfa6de3222cfcc2c6d7d931fb885ca24bf2beb18eb4af23f2393b66a7c65d7a91d78c7b71b7db8bc97b647ad92f9e7f1f361f145ef9ec2e14e2bd5eccffeffe39947875eb326cfff7d9ed57c3424e0faf2bfbbfbe3fcd81fda1ff5133b0d9706d2a653e0cf1ee0d8ce8ba857165dce15d1b1b7fe49b99efe1011e6102537882671e53bc5ee015236f185fa9ee0fde59853558870d68c1268e366ce1bb6df80e3bb00b9df9f553450bf6601f0e30b38de3108ee0184ee0143aefcf20faf7a8e20c2bcee1022b5b70092e78d8db9f7bde00334388687f6c8599e3026798986c884dfc6f9f2f3d8799a34dbd93bafde7ccee47c525a490e1aed04a14cce72bb53887cae5bae73edf6125db3e4747d12955da9c2155cef255cd39537af19ee81fa8b993a5d4ac42e1deabbe1ad4efcfe7c3fe6cd5ace7fab3f5cc8fc5735fedaf86f551e8cdcebe5d45f3f7d7c61fe56a5e80</data>
+    </image>
+    <image name="image12">
+        <data format="XPM.GZ" length="3317">789c5d96d94eeb481086ef798ae8d41d1ad5b11ddbb1359a0b084bc802841d467351b11d0859c9466034ef3e9daa6a0bf7c991e0e3ff6be9ea8a93df87b5a7eb5eedf0f7c16a4deb5156cbde68593bcc37d3e9d7dffffcf5efc12f3faef1ffb416fcfae3e0577f5dcb6a97f359b107a49f30fa09f013ce0c80c7fff60c9b2ad3d0e19ec363879d7c78eae8e70e3b3a341cbdebf06bc909e77f634ebc5098264efd65d54f8593efd389df3afddc3b1c3bf9571a9ff812df74f45039f4a5de89936fedf473ece8ef0ef37c7dcff702e1adc3edb21fa97fa39c497f58387e67fe98977aca3a56e707bdea79e161cf753fc8429ffb6f71bc51ebc29b6a7ddad978ad7fe1e89d6aff74a4fd84eabfab327ded394883a42efd8e44f732f50fb49f4c757b5f56bf94feeb6144cc91339f71793ed691f5c0a8caefb6bec4e340f3799a2f731898d3baf59fd87c11bf8721d9734c719e0cf87cbcdf1145795267ffabea691ab29ff725a43069887f6aebc59c0f3f9cf8b5ad1f4bfd5bdbbffacf9533e54d998ffdc4fb11faa1d7907c43cd9f4abf983af3a8efb93168a4c4fdd252e34389a7959dbfe4077e3f2683241d887f5dcd47cebce1a59a1fae343ed7f8b6ed57ce0fb77a7ead8f7d8eafc7799ab1cee74fc3d4cf22e623dbafc6b784eb99cc1bb3aa4ebccf511079723ff4adf5d44f1f76fe521fba3abf48fc9838f5deecfdeafdc525733e9857ebc1f39e2923cab97f627d900f2ccfec7d69bd6d753ed82a59ce37aed6c3f27ccacfd5fa78a7ace781bc649e2f4ecafac253bb9fca9fbadf91dc273ed97d579e952cf7b5b0ef17d577729f0d5ff58e65d90728745f22d1b161f747749c2bebfe203f5f927a62e31f4bce995f75df2261fc2ef757f8a5dc47e147cbb25f7824fb66193eecfe69fe66751f919f57699646ca57caa9f2a264a9c7fb4f21f9c2f06459f6014e745f22f5f7ecfe285f57f7097de54299fb1b8486e5fbc4b1f02050dd2b9975f8568e751f47258bbed47db53cb15cc49cefbedc67d153655b9f3f8fb2c83278960b665a0867da0f762d6bfe8eb2d6037ebe6579c93b6512262c59ea4d950bd5f75fc3208f72cd0f5f258b7fa61c2bf3bcf3c23281b2e6c7c0f250f271fec24c4bd9172e02e5be72acccf16618966f94351f65cac570c8cc9f67c378180843a81c2bf3f37d381c92707f2d2f04241c6086391638c4577c93bf573c237cc7314e708a339ce3023f70f9d3832b5ce306b7f8893bfcc26f3cc2636ce2099ee259e939c7165e601b3bd8c51e5ee2155e9b571f6f7ee4b9c53bbcc7077cc4277cc617f4d037ee00eb188a07238c4dd43d3630c11410c0381eb00384d720cfd90c72286008aff0062378c75318c304a63033959b3097671f2ce00396e6e70ad6b0812d7cc20ebee0dbd4dcc1917c5e9bdf9a70826338edafe10cce8d4e3035679b420b2ed8d3868e39471bbad0834bb8328e6be8c30dcee116eee09e3d0ff0084fa6bb677801cf387c08a00ea1e92f82181af25d029e60695e2921cc088868409939fd15997522b9df577a438f4626c3cc4ce4d8f4f16266bcc019bd9bc7ea58e643139ad28ce6267e61f4097dd09256b4a60d6dadc7b83e69475fa6f326eee89b8ee8989a74621ca73fef9dcee89c5a74416deac03d750d9f518feffdbf3f0ffe07d610ddc8</data>
+    </image>
+    <image name="image13">
+        <data format="XPM.GZ" length="1115">789c5dd24b6fa3301000e07b7e050ab7689536a8b041ab3da4b4249047d3f74aab3dd8060381404b20755aed7fdf8cc7466881c37ce3f1d8802f46c6afedda185d0c0e0d693266b094d4c6286af7fbd3ef3f3fbf06c389639c1f7b624c86df06c3c860c6a62a6388e35efcd68bf7bd98f5e2712faecfb1f99d4e6d97016f35c915902abac86b206194b008f801a4579a5c314612cdc8069a9211b3904745073903329b9148ee6aa91823ef2523cd07cdd8013e23230b47434507470360646be68a04f9d251ce7d958cf568aba8162a3acae20a195bc806189f9741de68723977a748909964ac592ac6c84f2077340f486e710e3c29aace6947392a24b96b5f5e023d451739473207b95024c804c909b6f215f9640adc6ada04b8d2742ce05a734a81779aae3c391b4d2acfc6a3261e95274d3c0cef9ab88df1f93209de94e14f861c4fd234dbe505a7e37d57972469b9ab0ad3a46f5ddd7b9a966551d4b4a6fdba43d9b4f9f1a3d639214e69f9595533728d75c21b7b22115e7953cc4cf3567e5d7f2e7c5f2c7c1184cbe551d5add69bcdddd62bf230b87f50fdc4e2f1692eaa22cf83e0b95fb7f2201906fff56b8bb0ab837533e15555fe1204bdfd354d55b5af5d3f788f328364d70f72f09efa1efefd31f8074b6a20d7</data>
+    </image>
+</images>
+<tabstops>
+    <tabstop>table1</tabstop>
+</tabstops>
+<layoutdefaults spacing="6" margin="11"/>
+<includehints>
+    <includehint>kicondialog.h</includehint>
+    <includehint>kicondialog.h</includehint>
+    <includehint>kicondialog.h</includehint>
+    <includehint>kicondialog.h</includehint>
+    <includehint>kicondialog.h</includehint>
+    <includehint>kicondialog.h</includehint>
+    <includehint>kicondialog.h</includehint>
+</includehints>
+</UI>

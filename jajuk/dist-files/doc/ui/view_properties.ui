@@ -1,0 +1,351 @@
+<!DOCTYPE UI><UI version="3.1" stdsetdef="1">
+<class>Form1</class>
+<widget class="QMainWindow">
+    <property name="name">
+        <cstring>Form1</cstring>
+    </property>
+    <property name="geometry">
+        <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>994</width>
+            <height>758</height>
+        </rect>
+    </property>
+    <property name="caption">
+        <string>Form1</string>
+    </property>
+    <widget class="QFrame">
+        <property name="name">
+            <cstring>frame4</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>162</x>
+                <y>41</y>
+                <width>429</width>
+                <height>277</height>
+            </rect>
+        </property>
+        <property name="frameShape">
+            <enum>StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+            <enum>Raised</enum>
+        </property>
+        <widget class="QLabel">
+            <property name="name">
+                <cstring>textLabel1</cstring>
+            </property>
+            <property name="geometry">
+                <rect>
+                    <x>26</x>
+                    <y>8</y>
+                    <width>347</width>
+                    <height>33</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>&lt;u&gt;Add a personal property&lt;/u&gt;</string>
+            </property>
+        </widget>
+        <widget class="QPushButton">
+            <property name="name">
+                <cstring>pushButton4_2</cstring>
+            </property>
+            <property name="geometry">
+                <rect>
+                    <x>187</x>
+                    <y>235</y>
+                    <width>95</width>
+                    <height>29</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>Cancel</string>
+            </property>
+        </widget>
+        <widget class="QPushButton">
+            <property name="name">
+                <cstring>pushButton4</cstring>
+            </property>
+            <property name="geometry">
+                <rect>
+                    <x>72</x>
+                    <y>234</y>
+                    <width>95</width>
+                    <height>29</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>Add</string>
+            </property>
+        </widget>
+        <widget class="QLineEdit">
+            <property name="name">
+                <cstring>lineEdit8</cstring>
+            </property>
+            <property name="geometry">
+                <rect>
+                    <x>161</x>
+                    <y>83</y>
+                    <width>199</width>
+                    <height>31</height>
+                </rect>
+            </property>
+        </widget>
+        <widget class="QLabel">
+            <property name="name">
+                <cstring>textLabel1_2</cstring>
+            </property>
+            <property name="geometry">
+                <rect>
+                    <x>21</x>
+                    <y>83</y>
+                    <width>143</width>
+                    <height>33</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>Property name : </string>
+            </property>
+        </widget>
+    </widget>
+    <widget class="QFrame">
+        <property name="name">
+            <cstring>frame4_2_2</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>93</x>
+                <y>365</y>
+                <width>429</width>
+                <height>277</height>
+            </rect>
+        </property>
+        <property name="frameShape">
+            <enum>StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+            <enum>Raised</enum>
+        </property>
+        <widget class="QPushButton">
+            <property name="name">
+                <cstring>pushButton4_2_2_2</cstring>
+            </property>
+            <property name="geometry">
+                <rect>
+                    <x>221</x>
+                    <y>223</y>
+                    <width>95</width>
+                    <height>29</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>Cancel</string>
+            </property>
+        </widget>
+        <widget class="QLabel">
+            <property name="name">
+                <cstring>textLabel1_3_2</cstring>
+            </property>
+            <property name="geometry">
+                <rect>
+                    <x>36</x>
+                    <y>8</y>
+                    <width>347</width>
+                    <height>33</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>&lt;u&gt;Set a personnal property&lt;/u&gt;</string>
+            </property>
+        </widget>
+        <widget class="QLabel">
+            <property name="name">
+                <cstring>textLabel1_2_2_2</cstring>
+            </property>
+            <property name="geometry">
+                <rect>
+                    <x>31</x>
+                    <y>83</y>
+                    <width>109</width>
+                    <height>33</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>Property :</string>
+            </property>
+        </widget>
+        <widget class="QComboBox">
+            <property name="name">
+                <cstring>comboBox2_2</cstring>
+            </property>
+            <property name="geometry">
+                <rect>
+                    <x>194</x>
+                    <y>83</y>
+                    <width>183</width>
+                    <height>29</height>
+                </rect>
+            </property>
+        </widget>
+        <widget class="QLabel">
+            <property name="name">
+                <cstring>textLabel1_2_3</cstring>
+            </property>
+            <property name="geometry">
+                <rect>
+                    <x>32</x>
+                    <y>134</y>
+                    <width>143</width>
+                    <height>33</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>Value :</string>
+            </property>
+        </widget>
+        <widget class="QLineEdit">
+            <property name="name">
+                <cstring>lineEdit8_2</cstring>
+            </property>
+            <property name="geometry">
+                <rect>
+                    <x>195</x>
+                    <y>131</y>
+                    <width>176</width>
+                    <height>31</height>
+                </rect>
+            </property>
+        </widget>
+        <widget class="QPushButton">
+            <property name="name">
+                <cstring>pushButton4_3_2</cstring>
+            </property>
+            <property name="geometry">
+                <rect>
+                    <x>105</x>
+                    <y>223</y>
+                    <width>95</width>
+                    <height>29</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>OK</string>
+            </property>
+        </widget>
+    </widget>
+    <widget class="QFrame">
+        <property name="name">
+            <cstring>frame4_2</cstring>
+        </property>
+        <property name="geometry">
+            <rect>
+                <x>500</x>
+                <y>34</y>
+                <width>429</width>
+                <height>277</height>
+            </rect>
+        </property>
+        <property name="frameShape">
+            <enum>StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+            <enum>Raised</enum>
+        </property>
+        <widget class="QPushButton">
+            <property name="name">
+                <cstring>pushButton4_2_2</cstring>
+            </property>
+            <property name="geometry">
+                <rect>
+                    <x>221</x>
+                    <y>223</y>
+                    <width>95</width>
+                    <height>29</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>Cancel</string>
+            </property>
+        </widget>
+        <widget class="QLabel">
+            <property name="name">
+                <cstring>textLabel1_2_2</cstring>
+            </property>
+            <property name="geometry">
+                <rect>
+                    <x>31</x>
+                    <y>83</y>
+                    <width>109</width>
+                    <height>33</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>Property :</string>
+            </property>
+        </widget>
+        <widget class="QComboBox">
+            <property name="name">
+                <cstring>comboBox2</cstring>
+            </property>
+            <property name="geometry">
+                <rect>
+                    <x>167</x>
+                    <y>86</y>
+                    <width>183</width>
+                    <height>29</height>
+                </rect>
+            </property>
+        </widget>
+        <widget class="QPushButton">
+            <property name="name">
+                <cstring>pushButton4_3</cstring>
+            </property>
+            <property name="geometry">
+                <rect>
+                    <x>106</x>
+                    <y>222</y>
+                    <width>95</width>
+                    <height>29</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>Delete</string>
+            </property>
+        </widget>
+        <widget class="QLabel">
+            <property name="name">
+                <cstring>textLabel1_3</cstring>
+            </property>
+            <property name="geometry">
+                <rect>
+                    <x>36</x>
+                    <y>8</y>
+                    <width>347</width>
+                    <height>33</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>&lt;u&gt;Remove a personal property&lt;/u&gt;</string>
+            </property>
+        </widget>
+    </widget>
+</widget>
+<toolbars>
+</toolbars>
+<tabstops>
+    <tabstop>comboBox2_2</tabstop>
+    <tabstop>lineEdit8_2</tabstop>
+    <tabstop>pushButton4_3_2</tabstop>
+    <tabstop>pushButton4_2_2_2</tabstop>
+    <tabstop>pushButton4_2_2</tabstop>
+    <tabstop>comboBox2</tabstop>
+    <tabstop>pushButton4_3</tabstop>
+    <tabstop>pushButton4_2</tabstop>
+    <tabstop>lineEdit8</tabstop>
+    <tabstop>pushButton4</tabstop>
+</tabstops>
+<layoutdefaults spacing="6" margin="11"/>
+</UI>
