@@ -40,8 +40,12 @@ import java.util.StringTokenizer;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Line;
 import javax.sound.sampled.Mixer;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
+import javax.swing.JComponent;
 import javax.swing.JDesktopPane;
+import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import org.jajuk.Main;
@@ -493,6 +497,16 @@ public class Util implements ITechnicalStrings {
 	    return sFileName.toLowerCase().matches(".*"+FILE_DEFAULT_COVER+".*") || sFileName.toLowerCase().matches(".*"+FILE_DEFAULT_COVER_2+".*");
 	}
 	
+	/**
+	 * 
+	 * @param sFileName
+	 * @return whether the given filename is an absolute default cover
+	 */
+	public static boolean isAbsoluteDefaultCover(String sFileName){
+	    return sFileName.toLowerCase().matches(".*"+FILE_ABSOLUTE_DEFAULT_COVER+".*");
+	}
+	
+	
 	
 	/**
 	 * Return url of jar we are executing 
@@ -632,6 +646,28 @@ public class Util implements ITechnicalStrings {
             sQuery += sAlbum;
         }
         return sQuery;
+    }
+    
+    /**
+     * 
+     * @param jc
+     * @param iOrientation : vertical or horizontal orientation, use BoxLayout.X_AXIS or BoxLayout.Y_AXIS
+     * @return a centred panel
+     */
+    public static JPanel getCentredPanel(JComponent jc,int iOrientation){
+        JPanel jpOut = new JPanel();
+        jpOut.setLayout(new BoxLayout(jpOut,iOrientation));
+        if (iOrientation == BoxLayout.X_AXIS){
+            jpOut.add(Box.createHorizontalGlue());
+            jpOut.add(jc);
+            jpOut.add(Box.createHorizontalGlue());
+        }
+        else{
+            jpOut.add(Box.createVerticalGlue());
+            jpOut.add(jc);
+            jpOut.add(Box.createVerticalGlue());
+        }
+        return jpOut;
     }
 	
 }
