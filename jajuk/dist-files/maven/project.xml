@@ -45,6 +45,15 @@
     </url>
   </repository>
   
+   <mailingLists>
+        <mailingList>
+            <name>Jajuk General</name>
+            <subscribe>http://lists.sourceforge.net/lists/listinfo/jajuk-general</subscribe>
+            <unsubscribe>http://lists.sourceforge.net/lists/listinfo/jajuk-general</unsubscribe>
+            <archive>http://sourceforge.net/mailarchive/forum.php?forum=jajuk-general</archive>
+        </mailingList>
+    </mailingLists>
+  
   <versions>
   </versions>
   
