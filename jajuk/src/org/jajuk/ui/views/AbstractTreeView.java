@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- * $Release$
+ * $Revision$
  */
 
 package org.jajuk.ui.views;
@@ -28,7 +28,7 @@ import javax.swing.JTree;
  *  An abstract physical or logical tree view. Contains common methods
  *
  * @author     bflorat
- * @created    6 mars 2004
+ * @created    6 mar 2004
  */
 public abstract class AbstractTreeView extends ViewAdapter {
 	

@@ -22,10 +22,9 @@ package org.jajuk.util;
 import java.math.BigInteger;
 
 /**
- * This classes provides some hashing code. It contains mainly an implementation of MD5 algorithm and some other trivial hashing methods. The implementation follows RFC 1321 and passes all RFC 1321
- * tests.
- * 
- * @Author bflorat @created 26 oct. 2003
+ * This classes provides some hashing code. It contains mainly an implementation of MD5 algorithm and some other trivial hashing methods. The implementation follows RFC 1321 and passes all RFC 1321 tests.
+ * @Author bflorat 
+ * @created 26 oct. 2003
  */
 
 public class MD5Processor {

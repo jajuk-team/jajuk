@@ -27,7 +27,6 @@ import org.jajuk.i18n.Messages;
 
 /**
  * An history item
- *
  * @author     bflorat
  * @created    19 nov. 2003
  */

@@ -61,8 +61,8 @@ import com.sun.media.sound.MixerSourceLine;
 
 /**
  * General use utilities methods
- * 
- * @author bflorat @created 12 oct. 2003
+ * @author bflorat 
+ * @created 12 oct. 2003
  */
 public class Util implements ITechnicalStrings {
 	

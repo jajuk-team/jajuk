@@ -30,8 +30,8 @@ import org.jajuk.util.MD5Processor;
 
 /**
  * Convenient class to manage directories
- * 
- * @Author bflorat @created 17 oct. 2003
+ * @Author bflorat 
+ * @created 17 oct. 2003
  */
 public class DirectoryManager {
 	/** Directories collection stored in a arraylist to conserve creation order when parsing at startup* */

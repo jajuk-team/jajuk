@@ -29,8 +29,8 @@ import org.jajuk.util.log.Log;
 
 /**
  * abstract tag, independent from real implementation
- * 
- * @author bflorat @created 25 oct. 2003
+ * @author bflorat 
+ * @created 25 oct. 2003
  */
 public class Tag implements ITechnicalStrings{
 

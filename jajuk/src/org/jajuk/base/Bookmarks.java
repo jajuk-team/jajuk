@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- * $Release$
+ * $Revision$
  */
 
 package org.jajuk.base;
@@ -30,7 +30,7 @@ import org.jajuk.util.ConfigurationManager;
  *  Manages bookmarks
  *
  * @author     bflorat
- * @created    21 f�vr. 2004
+ * @created    21 feb. 2004
  */
 public class Bookmarks implements ITechnicalStrings {
 

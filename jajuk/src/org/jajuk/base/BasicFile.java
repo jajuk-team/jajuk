@@ -20,11 +20,8 @@
 
 package org.jajuk.base;
 
-
-
 /**
  *  File not managed in collection ( selected by file/open or in a playlist file )
- *
  * @author     bflorat
  * @created    21 oct. 2003
  */

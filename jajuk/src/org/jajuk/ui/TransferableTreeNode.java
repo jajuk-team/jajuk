@@ -29,11 +29,9 @@ import java.util.Arrays;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 /**
- * 
  *  Transferable tree node ( for DND )
- *
  * @author     bflorat
- * @created    13 févr. 2004
+ * @created    13 feb.. 2004
  */
 public class TransferableTreeNode extends DefaultMutableTreeNode implements Transferable{
 	public static final DataFlavor NODE_FLAVOR = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType, "Node"); //$NON-NLS-1$

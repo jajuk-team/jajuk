@@ -29,8 +29,8 @@ import org.jajuk.util.log.Log;
 
 /**
  * Convenient class to manage playlists files
- * 
- * @Author bflorat @created 17 oct. 2003
+ * @Author bflorat 
+ * @created 17 oct. 2003
  */
 public class PlaylistFileManager {
 	/** PlaylistFiles collection* */

@@ -28,9 +28,8 @@ import javax.swing.JComponent;
 
 /**
  *  This is a mediator managing relationships between subjets and observers 
- *
  * @author     bflorat
- * @created    12 déc. 2003
+ * @created    12 dec. 2003
  */
 public class ObservationManager {
 

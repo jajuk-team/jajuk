@@ -49,11 +49,9 @@ import org.jajuk.ui.views.AbstractPlaylistEditorView;
 import org.jajuk.util.log.Log;
 
 /**
- * 
  *  DND handler for playlists
- *
  * @author     bflorat
- * @created    13 f�vr. 2004
+ * @created    13 feb. 2004
  */
 public class PlaylistTransferHandler implements DropTargetListener {
 	

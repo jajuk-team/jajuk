@@ -30,8 +30,8 @@ import org.xml.sax.Attributes;
 
 /**
  * Generic property handler
- * 
- * @author bflorat @created 17 oct. 2003
+ * @author bflorat 
+ * @created 17 oct. 2003
  */
 public class PropertyAdapter implements IPropertyable, ITechnicalStrings,Serializable {
 	

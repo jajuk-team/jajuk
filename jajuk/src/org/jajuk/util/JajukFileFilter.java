@@ -28,17 +28,11 @@ import org.jajuk.base.Type;
 import org.jajuk.base.TypeManager;
 
 /**
- *  Type description
- *
- * @author     bflorat
- * @created    22 oct. 2003
- */
-/**
  *  Music oriented file filter ( mp3, ogg.. )
- *
  * @author     bflorat
  * @created    22 oct. 2003
  */
+
 public class JajukFileFilter extends FileFilter implements java.io.FileFilter{
 	/**Display directories flag**/
 	private boolean bDirectories = true;

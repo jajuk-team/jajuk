@@ -24,8 +24,6 @@ import java.util.ArrayList;
 
 import org.jajuk.ui.PlaylistFileItem;
 
-
-
 /**
  * Playlist editor/manager
  * <p>Physical perspective

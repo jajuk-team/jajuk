@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- * $Release$
+ * $Revision$
  */
 
 package org.jajuk.ui;
@@ -31,9 +31,8 @@ import com.sun.TableSorter;
  *  JTable with followinf features: 
  * <p>Sortable
  * <p>Tooltips on each cell
- *
  * @author     bflorat
- * @created    21 févr. 2004
+ * @created    21 feb. 2004
  */
 public class JajukTable extends JTable {
 	

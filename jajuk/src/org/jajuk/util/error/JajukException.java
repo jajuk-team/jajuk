@@ -22,9 +22,7 @@ package org.jajuk.util.error;
 
 /**
  * JajukException
- * 
  * @author		sgringoi
- * @version	1.0
  * @created		5 oct. 2003
  */
 public class JajukException extends Exception {

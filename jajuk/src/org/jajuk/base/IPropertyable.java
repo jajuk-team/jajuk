@@ -23,7 +23,6 @@ import java.util.Properties;
 
 /**
  *  Interface for all items using properties ( files, tracks...) 
- *
  * @author     bflorat
  * @created    16 oct. 2003
  */

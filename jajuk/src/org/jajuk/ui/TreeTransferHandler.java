@@ -49,17 +49,9 @@ import javax.swing.tree.ExpandVetoException;
 import javax.swing.tree.TreePath;
 
 /**
- *  Type description
- *
- * @author     bflorat
- * @created    13 févr. 2004
- */
-/**
- * 
  *  DND handler thanks  Denis Cau and its post on Java Forum : http://forum.java.sun.com/thread.jsp?forum=57&thread=296255
- *
  * @author     bflorat
- * @created    13 févr. 2004
+ * @created    13 feb. 2004
  */
 public class TreeTransferHandler implements DragGestureListener, DragSourceListener, DropTargetListener,TreeWillExpandListener {
 	

@@ -29,8 +29,8 @@ import org.jajuk.util.MD5Processor;
 
 /**
  * Convenient class to manage authors
- * 
- * @author bflorat @created 17 oct. 2003
+ * @author bflorat 
+ * @created 17 oct. 2003
  */
 public class AuthorManager {
 	/** Authors collection* */

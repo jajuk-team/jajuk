@@ -64,7 +64,8 @@ import org.jajuk.util.log.Log;
 /**
  * Jajuk launching class
  * 
- * @author bflorat @created 3 oct. 2003
+ * @author bflorat 
+ * @created 3 oct. 2003
  */
 public class Main implements ITechnicalStrings {
 	

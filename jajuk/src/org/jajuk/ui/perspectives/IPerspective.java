@@ -25,18 +25,14 @@ import java.util.ArrayList;
 import javax.swing.JDesktopPane;
 
 import org.jajuk.ui.views.IView;
-
-
-
 /**
  * Representation of a perspective
- * 
  * @author		bflorat
- * @version	1.0
  * @created		15 nov. 2003
  */
+
 public interface IPerspective {
-	
+
 	
 	/**
 	 * Add a view to the perspective.

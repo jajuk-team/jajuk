@@ -22,8 +22,8 @@ package org.jajuk.tag;
 
 /**
  * Mandatory methods required for all tag implementations
- * 
- * @author bflorat @created 25 oct. 2003
+ * @author bflorat 
+ * @created 25 oct. 2003
  */
 public interface ITagImpl {
 

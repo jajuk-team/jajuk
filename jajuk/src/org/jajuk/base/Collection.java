@@ -45,7 +45,8 @@ import org.xml.sax.helpers.DefaultHandler;
  * <p>
  * Singletton
  * 
- * @author bflorat @created 16 oct. 2003
+ * @author bflorat 
+ * @created 16 oct. 2003
  */
 public class Collection extends DefaultHandler implements ITechnicalStrings, ErrorHandler,Serializable {
 	/** Self instance */

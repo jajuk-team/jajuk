@@ -30,8 +30,8 @@ import org.jajuk.util.Util;
  * A music style ( jazz, rock...)
  * <p>
  * Logical item
- * 
- * @author bflorat @created 17 oct. 2003
+ * @author bflorat 
+ * @created 17 oct. 2003
  */
 public class Style extends PropertyAdapter implements Comparable{
 

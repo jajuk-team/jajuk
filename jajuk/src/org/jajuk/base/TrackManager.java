@@ -31,8 +31,8 @@ import org.jajuk.util.MD5Processor;
 
 /**
  * Convenient class to manage Tracks
- * 
- * @author bflorat @created 17 oct. 2003
+ * @author bflorat 
+ * @created 17 oct. 2003
  */
 public class TrackManager implements ITechnicalStrings {
 	/** Tracks collection maps: ID -> track* */

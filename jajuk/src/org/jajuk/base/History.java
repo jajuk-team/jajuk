@@ -44,8 +44,8 @@ import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * Stores all files user read. Only for tracks inside collection ( not for basic files )
- * 
- * @author bflorat @created 19 nov. 2003
+ * @author bflorat 
+ * @created 19 nov. 2003
  */
 public class History extends DefaultHandler implements ITechnicalStrings, ErrorHandler {
 	/** Self instance */

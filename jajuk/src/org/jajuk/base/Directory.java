@@ -36,8 +36,8 @@ import org.jajuk.util.log.Log;
  * A physical directory
  * <p>
  * Physical item
- * 
- * @Author bflorat @created 17 oct. 2003
+ * @Author bflorat 
+ * @created 17 oct. 2003
  */
 public class Directory extends PropertyAdapter implements Comparable{
 	

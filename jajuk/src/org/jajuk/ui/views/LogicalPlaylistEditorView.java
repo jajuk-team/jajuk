@@ -27,7 +27,7 @@ import org.jajuk.ui.PlaylistFileItem;
 
 
 /**
- * Playliost editor/manager 
+ * Playlist editor/manager 
  * <p>Logical perspective
  *  * <p>Singleton
  * @author     bflorat

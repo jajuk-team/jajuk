@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- * $Release$
+ * $Revision$
  */
 
 package org.jajuk.ui;
@@ -24,9 +24,8 @@ import javax.swing.table.AbstractTableModel;
 
 /**
  *  Table model used for physical and logical table views
- *
  * @author     bflorat
- * @created    29 févr. 2004
+ * @created    29 feb. 2004
  */
 public class TracksTableModel extends AbstractTableModel{
 	

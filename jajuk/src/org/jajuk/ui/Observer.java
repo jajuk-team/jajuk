@@ -22,9 +22,8 @@ package org.jajuk.ui;
 
 /**
  *  GoF Observer pattern Observer 
- *
  * @author     bflorat
- * @created    12 déc. 2003
+ * @created    12 dec. 2003
  */
 public interface Observer {
 

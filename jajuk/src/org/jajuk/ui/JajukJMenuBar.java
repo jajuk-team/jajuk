@@ -42,10 +42,10 @@ import org.jajuk.util.Util;
 /**
  *  Jajuk menu bar
  * <p>Singleton
- *
  * @author     bflorat
  * @created    4 oct. 2003
- */public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings{
+ */
+public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings{
 
 	static JajukJMenuBar jjmb;
 		JMenu file;

@@ -29,11 +29,9 @@ import java.util.Arrays;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 /**
- * 
  *  Transferable table row ( for DND )
- *
  * @author     bflorat
- * @created    13 févr. 2004
+ * @created    13 feb. 2004
  */
 public class TransferableTableRow extends DefaultMutableTreeNode implements Transferable{
 	public static final DataFlavor ROW_FLAVOR = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType, "Row"); //$NON-NLS-1$

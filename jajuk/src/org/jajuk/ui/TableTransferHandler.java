@@ -39,19 +39,12 @@ import org.jajuk.base.TrackManager;
 import com.sun.TableMap;
 
 /**
- *  Type description
- *
- * @author     bflorat
- * @created    13 févr. 2004
- */
-/**
- * 
  *  DND handler for table
- *
  * @author     bflorat
- * @created    13 févr. 2004
+ * @created    13 feb. 2004
  */
-public class TableTransferHandler implements DragGestureListener, DragSourceListener {
+ 
+ public class TableTransferHandler implements DragGestureListener, DragSourceListener {
 	
 	private JTable jtable;
 	private DragSource dragSource; // dragsource

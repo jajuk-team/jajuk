@@ -24,7 +24,6 @@ import org.jajuk.util.Util;
 
 /**
  *  Contains all technical/ non-translatable strings
- *
  * @author     bflorat
  * @created    5 oct. 2003
  */
