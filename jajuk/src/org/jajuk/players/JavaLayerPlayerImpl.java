@@ -169,6 +169,10 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
      * @see org.jajuk.players.IPlayerImpl#seek(float) Ogg vorbis seek not yet supported
      */
     public void seek(float posValue) {
+        //Do not seek to a position too near from the end : it can cause freeze. MAX=98%
+        if (posValue>0.98f){
+            posValue = 0.98f;
+        }
         // leave if already seeking
         if (player != null && getState() == BasicPlayer.SEEKING) {
             Log.debug("Already seeking, leaving"); //$NON-NLS-1$
@@ -179,8 +183,8 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
             // Seek support for MP3. and WAVE
             if (Boolean.valueOf(type.getProperty(TYPE_PROPERTY_SEEK_SUPPORTED)).booleanValue()
                     && mPlayingData.containsKey("audio.length.bytes")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                long skipBytes = (long) Math.round(((Integer) mPlayingData
-                        .get("audio.length.bytes")).intValue() * posValue); //$NON-NLS-1$
+                int iAudioLength = ((Integer) mPlayingData.get("audio.length.bytes")).intValue(); //$NON-NLS-1$
+                long skipBytes = (long) Math.round(iAudioLength * posValue); //$NON-NLS-1$
                 try {
                     player.seek(skipBytes);
                 } catch (BasicPlayerException e) {
