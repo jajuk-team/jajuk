@@ -16,16 +16,14 @@
 	<classpathentry sourcepath="/prog/api/commons-logging-1.0.4/src" kind="lib" path="lib/commons-logging-1.0.jar"/>
 	<classpathentry kind="lib" path="lib/infonodeDockingWindows-1.1.0.jar"/>
 	<classpathentry kind="lib" path="lib/liquidlnf-0.2.9-alpha5.jar"/>
-	<classpathentry kind="lib" path="jajuk-help.jar"/>
 	<classpathentry kind="lib" path="lib/jh-2.0.2.jar"/>
 	<classpathentry kind="lib" path="lib/looks-1.2.2.jar"/>
-	<classpathentry kind="lib" path="jajuk-help_fr.jar"/>
 	<classpathentry kind="lib" path="lib/jlayer-1.0.jar"/>
 	<classpathentry kind="lib" path="lib/vorbisspi-1.0.1.jar"/>
 	<classpathentry kind="lib" path="lib/tritonus_share-0.3.6.jar"/>
-	<classpathentry kind="src" path="/BasicPlayer2.3"/>
 	<classpathentry kind="lib" path="lib/tray-0.1.6.jar"/>
 	<classpathentry kind="lib" path="lib/mp3spi-1.9.2.1.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/basicplayer-2.3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
