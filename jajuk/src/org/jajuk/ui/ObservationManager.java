@@ -89,10 +89,10 @@ public class ObservationManager implements ITechnicalStrings{
 	        Log.debug("Notify: "+subject); //$NON-NLS-1$
 	    }
 	    ArrayList alComponents =(ArrayList)hEventComponents.get(subject);
-	    alComponents = (ArrayList)alComponents.clone(); //try to avoid duplicate key exceptions
 	    if (alComponents == null){
 	        return;
 	    }
+	    alComponents = (ArrayList)alComponents.clone(); //try to avoid duplicate key exceptions
 	    
 	    Iterator it = alComponents.iterator();  
 	    while (it.hasNext()){
