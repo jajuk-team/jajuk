@@ -4,4 +4,5 @@ Name=Jajuk
 Exec=jajuk
 GenericName=Jajuk Advanced Jukebox
 Icon=/usr/share/pixmaps/jajuk-logo.png
-Categories=Multimedia
+MimeType=audio/x-mp3;audio/x-wav;application/x-ogg;
+Categories=X-SuSE-Core-Multimedia
