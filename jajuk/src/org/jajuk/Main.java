@@ -142,9 +142,13 @@ public class Main implements ITechnicalStrings {
 			Log.getInstance();
 			Log.setVerbosity(Log.DEBUG);
 			
-			//Launch splashscreen, can't be in the dispatcher to be immediatly displayed 
-			sc = new SplashScreen(jw);	
-			
+			//Launch splashscreen 
+			SwingUtilities.invokeAndWait(new Runnable() {
+                public void run() {
+                    sc = new SplashScreen(jw);
+                  }
+            });
+				
 			//Register locals, needed by ConfigurationManager to choose default language
 			Messages.getInstance().registerLocal("en","Language_desc_en"); //$NON-NLS-1$ //$NON-NLS-2$
 			Messages.getInstance().registerLocal("fr","Language_desc_fr"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -598,7 +602,7 @@ public class Main implements ITechnicalStrings {
 		
 		//Initialize perspective manager and load all views
 		//display window
-		SwingUtilities.invokeAndWait(new Runnable() {
+		SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 jpFrame.remove(jpTmp);	
                 jpFrame.add(jpContentPane, BorderLayout.CENTER);
