@@ -41,10 +41,13 @@ public interface ITechnicalStrings {
     public static final int MAX_COVER_SIZE=500;
     /**Maximum number of remote covers*/
     public static final int MAX_REMOTE_COVERS=10;
+    /**Special length for player meaning end of file*/
+    public static final long TO_THE_END=-1;
+    
     		
 	// Jajuk version
 	public static final String JAJUK_VERSION = "0.3.3 rc4";
-	public static final String JAJUK_VERSION_DATE = "Build 2005-02-23";
+	public static final String JAJUK_VERSION_DATE = "Build 2005-02-27";
 	
 	//About 
 	public static final String ABOUT = "<html>Jajuk version "+JAJUK_VERSION+"</html>";

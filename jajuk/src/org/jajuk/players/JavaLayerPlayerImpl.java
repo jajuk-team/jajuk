@@ -60,10 +60,10 @@ public class JavaLayerPlayerImpl implements IPlayerImpl,ITechnicalStrings,BasicP
 	/**Stored Volume*/
 	private float fVolume;
 	
-	/* (non-Javadoc)
-	 * @see org.jajuk.base.IPlayerImpl#play()
-	 */
-	public synchronized void play(org.jajuk.base.File file,float fPosition,long length,float fVolume) throws Exception{
+    /* (non-Javadoc)
+     * @see org.jajuk.players.IPlayerImpl#play(org.jajuk.base.File, float, long, float)
+     */
+    public synchronized void play(org.jajuk.base.File file,float fPosition,long length,float fVolume) throws Exception{
 		this.fVolume = fVolume;
 		this.length = length;
 		//instanciate player is needed
@@ -77,19 +77,15 @@ public class JavaLayerPlayerImpl implements IPlayerImpl,ITechnicalStrings,BasicP
 			player.stop();	
 		}
 		player.open(new File(file.getAbsolutePath())); 
-		if (fPosition < 0 && player!=null){  //-1 means we want to play entire file
-			player.play();
-		}
-		else if(player != null){
-			int iFirstFrame = (int)(file.getTrack().getLength()*fPosition*41.666); // (position*fPosition(%))*1000(ms) /24 because 1 frame =24ms
-			int iLastFrame = (int)(iFirstFrame+(length/24)); //length(ms)/24
-			//test if this is a audio format supporting seeking
-			if (Boolean.valueOf(TypeManager.getTypeByExtension(Util.getExtension(file.getIO())).getProperty(TYPE_PROPERTY_SEEK_SUPPORTED)).booleanValue()){
-				seek(fPosition);
-			}
-			player.play();
-		}
-	}
+		if (fPosition > 0.0f ){ //if we don't start at the begining of file, seek to this point
+	       int iFirstFrame = (int)(file.getTrack().getLength()*fPosition*41.666); // (position*fPosition(%))*1000(ms) /24 because 1 frame =24ms
+            //test if this is a audio format supporting seeking
+            if (Boolean.valueOf(TypeManager.getTypeByExtension(Util.getExtension(file.getIO())).getProperty(TYPE_PROPERTY_SEEK_SUPPORTED)).booleanValue()){
+                seek(fPosition);
+            }
+    	}
+        player.play();
+   }
 	
 	/* (non-Javadoc)
 	 * @see org.jajuk.base.IPlayerImpl#stop()
@@ -198,7 +194,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl,ITechnicalStrings,BasicP
 				lTime = (long)(Util.getTimeLengthEstimation(mPlayingData)*fPos);
 			}
 			//test end of length
-			if ( length != -1 && lMicroseconds/1000 >length){ //length=-1 means there is no max length
+			if ( length != TO_THE_END && lMicroseconds/1000 >length){ //length=-1 means there is no max length
 				try {
 					player.stop();
 					FIFO.getInstance().finished();

@@ -33,7 +33,7 @@ public interface IPlayerImpl {
 	 * Launches player
 	 * @param file : jajuk file to be played
 	 * @param fPosition position in % of the file
-	 * @param length length to play in ms
+	 * @param length length to play in ms or TO_THE_END of you want to play to the end of the current file
 	 * @param bMuted mute state
 	 * @param fVolume volume
 	 * @throws Exception

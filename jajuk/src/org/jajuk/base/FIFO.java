@@ -353,12 +353,12 @@ public class FIFO implements ITechnicalStrings{
                 Player.play(fCurrent,Float.parseFloat(ConfigurationManager.getProperty(CONF_OPTIONS_INTRO_BEGIN))/100,1000*Integer.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_INTRO_LENGTH)));
             }
             else{
-                if (bFirstFile && ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_LAST_KEEP_POS)){ //if it is the first played file and we are in startup mode keep position
+                if (bFirstFile && ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_LAST_KEEP_POS)){ //if it is the first played file of the session and we are in startup mode keep position  
                     float fPos = ConfigurationManager.getFloat(CONF_STARTUP_LAST_POSITION);
-                    Player.play(fCurrent,fPos,-1);  //play it
+                    Player.play(fCurrent,fPos,TO_THE_END);  //play it
                 }
                 else{
-                    Player.play(fCurrent,-1,-1);  //play it
+                    Player.play(fCurrent,0.0f,TO_THE_END);  //play it
                 }
             }
             bFirstFile = false;
