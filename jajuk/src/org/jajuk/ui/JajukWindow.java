@@ -97,6 +97,8 @@ public class JajukWindow extends JFrame implements ITechnicalStrings,ComponentLi
 				return; 
 			}
 		});
+		//display correct title if a track is lauched at startup
+		update(EVENT_FILE_LAUNCHED);
 	}
 	
 	
@@ -184,9 +186,6 @@ public class JajukWindow extends JFrame implements ITechnicalStrings,ComponentLi
 		    if (!Main.isForcedTaskBar()){  
 		        super.setVisible(false);
 		    }
-		    else{
-		        setState(Frame.ICONIFIED);//if the foced taskbar option is set, never hide
-		    }
-		}
+		 }
 	}
 }
