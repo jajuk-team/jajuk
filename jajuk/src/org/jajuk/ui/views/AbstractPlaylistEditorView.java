@@ -437,7 +437,10 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
                 //For the queue
                 if (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE){
                     if ( item.isPlanned()){ //we can't lauch a planned track, leave
-                        return;
+                        item.setPlanned(false);
+                        item.setRepeat(ConfigurationManager.getBoolean(CONF_STATE_REPEAT));
+                        item.setUserLaunch(true);
+                        FIFO.getInstance().push(item,false);
                     }
                     else{ //normal item
                         FIFO.getInstance().goTo(jtable.getSelectedRow());
