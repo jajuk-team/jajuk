@@ -41,9 +41,12 @@ import org.jajuk.util.log.Log;
  */
 public class FIFO implements ITechnicalStrings,Runnable{
 	
-	/**Cuurently played track */
+	/**Currently played track */
 	private File fCurrent;
 	
+	/**Last played track */
+	private File fLastOne;
+		
 	/**Fifo itself, contains jajuk File objects **/
 	private volatile ArrayList alFIFO;
 	
@@ -146,6 +149,7 @@ public class FIFO implements ITechnicalStrings,Runnable{
 		bIntroEnabled = false;
 		bPaused = false;
 		fCurrent = null;
+		fLastOne = null;
 	}
 	
 	/**
@@ -280,8 +284,8 @@ public class FIFO implements ITechnicalStrings,Runnable{
 	 * Play previous track
 	 */
 	public synchronized void playPrevious(){
-		if ( fCurrent != null){
-			push(FileManager.getPreviousFile(fCurrent),false);	
+		if ( fLastOne != null){
+			push(FileManager.getPreviousFile(fLastOne),false);	
 		}
 		else{
 			File file = FileManager.getFile(History.getInstance().getLastFile());
@@ -300,8 +304,7 @@ public class FIFO implements ITechnicalStrings,Runnable{
 			finished();
 		}
 		else{
-			File file = FileManager.getFile(History.getInstance().getLastFile());
-			file = FileManager.getNextFile(file);
+			File file = FileManager.getNextFile(fLastOne);
 			if ( file != null && file.isReady()){
 				FIFO.getInstance().push(file,false);
 			}
@@ -344,15 +347,15 @@ public class FIFO implements ITechnicalStrings,Runnable{
 					else if ( bBestOf){ //Best of mode
 						push(FileManager.getBestOfFile(),false,true);
 					}
-					else if ( fCurrent!= null && alRepeated.size()>0 && ( TRUE.equals(ConfigurationManager.getProperty(CONF_STATE_REPEAT)) || bForcedRepeat)){ //repeat mode ?
+					else if ( fLastOne!= null && alRepeated.size()>0 && ( TRUE.equals(ConfigurationManager.getProperty(CONF_STATE_REPEAT)) || bForcedRepeat)){ //repeat mode ?
 						if (iRepeatIndex == alRepeated.size()){
 							iRepeatIndex = 0;
 						}
 						push((File)alRepeated.get(iRepeatIndex),false,true,bForcedRepeat);
 						iRepeatIndex ++;
 					}
-					else if ( fCurrent!= null && TRUE.equals(ConfigurationManager.getProperty(CONF_STATE_CONTINUE))){ //continue mode ?
-						File fileNext = FileManager.getNextFile(fCurrent);
+					else if ( fLastOne!= null && TRUE.equals(ConfigurationManager.getProperty(CONF_STATE_CONTINUE))){ //continue mode ?
+						File fileNext = FileManager.getNextFile(fLastOne);
 						if ( fileNext != null ){
 							push(fileNext,true);	
 						}
@@ -390,6 +393,7 @@ public class FIFO implements ITechnicalStrings,Runnable{
 						index = 0;
 						fCurrent = (File) (alFIFO.get(index));//take the first file in the fifo
 					}
+					fLastOne = (File)fCurrent.clone(); //save the last played track
 					alFIFO.remove(index);//remove it from todo list;
 					Log.debug("Now playing :"+fCurrent); //$NON-NLS-1$
 					bPlaying = true;
@@ -474,7 +478,7 @@ public class FIFO implements ITechnicalStrings,Runnable{
 	 * @return
 	 */
 	public static boolean canUnmount(Device device){
-		if ( fifo== null || !bPlaying){ //currently stopped
+		if ( fifo == null || !bPlaying || getInstance().fCurrent == null){ //currently stopped
 			return true;
 		}
 		if (getInstance().fCurrent.getDirectory().getDevice().equals(device)){

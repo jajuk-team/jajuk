@@ -6,7 +6,7 @@
   <property name='libdir' value='lib'/>
   <property name='srcdir' value='src'/>
   <property name='javadocdir' value='dist-files/doc/javadoc'/>
-  <property name='version' value='0.1-rc5'/>
+  <property name='version' value='0.1'/>
   <property name='jarname' value='jajuk.jar'/>
   <property name='helpsetjarname' value='jajuk-help.jar'/>
   <property name='distjarname' value='jajuk-install-'/>
@@ -90,6 +90,12 @@
   
   <target name='helpsetjar' description='o Create the heplset jar'>
     <delete file='${distdir}/bin/${helpsetjarname}'/>
+    <apply executable="jhindexer" dir='${basedir}/dist-files/doc/jajuk-hs/default'>
+	 <fileset dir="${basedir}/dist-files/doc/jajuk-hs/fr/html"/>
+   </apply>
+    <apply executable="jhindexer" dir='${basedir}/dist-files/doc/jajuk-hs/fr'>
+	 <fileset dir="${basedir}/dist-files/doc/jajuk-hs/fr/html"/>
+   </apply>
    <jar jarfile='${distdir}/bin/${helpsetjarname}' basedir='${basedir}/dist-files/doc/jajuk-hs' />
    </target>
  

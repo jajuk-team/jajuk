@@ -573,7 +573,8 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 			Messages.showErrorMessage("125"); //already unmounted //$NON-NLS-1$
 			return;
 		}
-		if (!FIFO.canUnmount(this)){ //ask fifo if it doens't use any track from this device
+		//ask fifo if it doens't use any track from this device
+		if (!FIFO.canUnmount(this)){ 
 			Messages.showErrorMessage("121"); //$NON-NLS-1$
 			return;
 		}

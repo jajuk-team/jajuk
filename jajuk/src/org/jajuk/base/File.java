@@ -269,5 +269,16 @@ public class File extends PropertyAdapter implements Comparable{
 		return true;
 	}
 	
+	/**
+	 * Clone method
+	 * @return a clonned file
+	 */
+	public Object clone(){
+		File fClone = new File(sId,sName,directory,track,lSize,sQuality);
+		fClone.fio = fio;
+		fClone.sAbs = sAbs;
+		return fClone;
+	}
+	
 
 }

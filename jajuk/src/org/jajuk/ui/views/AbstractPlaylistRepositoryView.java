@@ -119,28 +119,11 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 			public void mouseClicked(final MouseEvent e) {
 				PlaylistFileItem plfi = (PlaylistFileItem)e.getComponent();
 				if (plfi == plfiSelected){
-					if (e.getButton() == 3){  //left button
-						if (plfi.getType() != PlaylistFileItem.PLAYLIST_TYPE_NORMAL){
-							//cannot delete special playlists
-							jmiDelete.setEnabled(false); 
-							//Save as is only for special playlists
-							jmiSaveAs.setEnabled(true);
-						}
-						else{
-							jmiDelete.setEnabled(true);
-							jmiSaveAs.setEnabled(false);
-						}
-						//cannot play the queue playlist : nonsense
-						if ( plfiSelected.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE){
-							jmiPlay.setEnabled(false);  
-						}
-						else{
-							jmiPlay.setEnabled(true);
-						}
-						jpmenu.show(e.getComponent(),e.getX(),e.getY());
+					if (e.getButton() == MouseEvent.BUTTON3){  //right button
+						showMenu(plfi,e);
 						return;
 					}
-					else { //right button again lauch it 
+					else { //left button again lauch it 
 						plfi.getPlaylistFile().play();
 					}
 				}
@@ -148,6 +131,9 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 					Util.waiting();
 					selectPlaylistFileItem(plfi);
 					setCurrentPlayListFileInEditor(plfi);
+					if (e.getButton() == MouseEvent.BUTTON3){  //right button
+						showMenu(plfi,e);
+					}
 				}		
 			}
 		};
@@ -163,6 +149,34 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 		//set queue playlist as default in playlist editor
 		selectPlaylistFileItem(plfiQueue);	
 		setCurrentPlayListFileInEditor(plfiQueue);
+	}
+	
+	
+	/**
+	 * Display the playlist menu
+	 * @param plfi
+	 * @param e
+	 */
+	private void showMenu(PlaylistFileItem plfi,MouseEvent e){
+		if (plfi.getType() != PlaylistFileItem.PLAYLIST_TYPE_NORMAL){
+			//cannot delete special playlists
+			jmiDelete.setEnabled(false); 
+			//Save as is only for special playlists
+			jmiSaveAs.setEnabled(true);
+		}
+		else{
+			jmiDelete.setEnabled(true);
+			jmiSaveAs.setEnabled(false);
+		}
+		//cannot play the queue playlist : nonsense
+		if ( plfiSelected.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE){
+			jmiPlay.setEnabled(false);  
+		}
+		else{
+			jmiPlay.setEnabled(true);
+		}
+		jpmenu.show(e.getComponent(),e.getX(),e.getY());
+		
 	}
 	
 	/**
@@ -186,7 +200,7 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 		this.plfiSelected = plfi;
 		
 	}
-				
+	
 	
 	
 	/* (non-Javadoc)
@@ -289,14 +303,14 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 	public ArrayList getPlaylistFileItems() {
 		return alPlaylistFileItems;
 	}
-
+	
 	/**
 	 * @return Returns the plfiQueue.
 	 */
 	public PlaylistFileItem getQueue() {
 		return plfiQueue;
 	}
-
+	
 }
 
 
