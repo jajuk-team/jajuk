@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <title>Jajuk translation howto</title>
+</head>
+<body>
+<h1>Jajuk translation howto</h1>
+<br>
+<h2>Target</h2>
+Anyone can translate Jajuk, no computer science is required at all.
+For any question or comments, please send me a mail : <a
+ href="mailto:bertrand@florat.net">bertrand@florat.net</a><br>
+Translate current Jajuk version takes approximatly 2 hours.<br>
+<br>
+<h2>How it works</h2>
+<br>
+Jajuk uses the standard Java internationalization (i18n) system based
+on properties file. Files are:<br>
+<span style="font-family: monospace;">&lt;jajuk installation path
+&gt;/src/org/jajuk/i18n</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; jajuk.properties</span><br style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; jajuk_fr.properties</span><br
+ style="font-family: monospace;">
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+&nbsp;&nbsp; jajuk_&lt;any local&gt;.properties</span><br>
+<span style="font-family: monospace;">jajuk.properties</span> contains
+default resource bunddle (english) and you
+have a property file for each language.<br>
+<br>
+<br>
+<h2>How to translate</h2>
+<br>
+Please translate last online Jajuk version.<br>
+<br>
+1- Get&nbsp; property file of your choice as a source language.
+Example: use
+<span style="font-family: monospace;">jajuk.properties</span> as
+english source language. You can find CVS latest
+version at :<br>
+<a
+ href="http://cvs.sourceforge.net/viewcvs.py/jajuk/jajuk/src/org/jajuk/i18n/jajuk.properties">http://cvs.sourceforge.net/viewcvs.py/jajuk/jajuk/src/org/jajuk/i18n/jajuk.properties</a><br>
+or any other property file in the directory.<br>
+<br>
+2- Look at file structure<br>
+It is a simple key=value&nbsp; format. Example:<br>
+<br>
+<span style="font-family: monospace;">ParameterView.73=Check this if
+you allow others people to come read music from your box</span><br
+ style="font-family: monospace;">
+<span style="font-family: monospace;">ParameterView.74=Password : </span><br
+ style="font-family: monospace;">
+<span style="font-family: monospace;">ParameterView.75=Set password
+access to your box. If no password is set, no one can read from it</span><br>
+<br>
+Simply translate each value<br>
+<br>
+Previous example in french:<br>
+<span style="font-family: monospace;">ParameterView.73=Accepter que
+d'autres utilisateurs lise la musique situ&eacute;e sur votre machine</span><br
+ style="font-family: monospace;">
+<span style="font-family: monospace;">ParameterView.74=Mot de passe : </span><br
+ style="font-family: monospace;">
+<span style="font-family: monospace;">ParameterView.75=Fixez un mot de
+passe &agrave; votre machine. Tant que le mot de passe n'est pas
+fix&eacute;, personne ne peut s'y connecter</span><br>
+<br>
+3- Send me (&nbsp; <a href="mailto:bertrand@florat.net">bertrand@florat.net</a>
+) your work as a property file with your local ( ex:
+<span style="font-family: monospace;">jajuk_ru.properties</span> for
+russian ). You can also add a message for the
+community on the forum:<br>
+<br>
+4- ( Optional )If you want to test your work ( need ant to be
+installed ):<br>
+- Edit&nbsp; <span style="font-family: monospace;">&lt;jajuk
+installation path &gt;/src/org/jajuk/Main.java file.</span><span
+ style="font-family: monospace;"></span>and search for line :<br>
+<span style="font-family: monospace;">Messages.registerLocal("fr","Language_desc_fr");
+//$NON-NLS-1$
+//$NON-NLS-2$</span><br>
+Add after this line your own local. Example : <br>
+<span style="font-family: monospace;">Messages.registerLocal("ru","Language_desc_ru");
+//$NON-NLS-1$
+//$NON-NLS-2$</span><br>
+<br>
+- Copy your properties file in the <span
+ style="font-family: monospace;">&lt;jajuk installation path
+&gt;/src/org/jajuk/i18n directory<br>
+</span><br>
+- Go in the &lt;jajuk installation path &gt;
+directory<br>
+<br>
+- Rebuild Jajuk typing
+<span style="font-family: monospace;">'ant'<br>
+</span><br>
+- Relaunch Jajuk and set language in the parameter view of the
+configuration perspective.<br>
+<br>
+- Check your work.<br>
+<h2>Tips</h2>
+<ul>
+  <li>Off course, do not modify keys but only values.</li>
+  <li>If a value contains a \, do not drop it, it means there is a
+space.</li>
+  <li>Keep all punctuation and specials characters like '[','.' etc</li>
+  <li>Try to keep value length near from english's one so labels will
+not be too long and not be visible with regular size.<br>
+  </li>
+</ul>
+<br>
+<br>
+<br>
+<br>
+<br>
+</body>
+</html>
