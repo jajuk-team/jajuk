@@ -101,6 +101,8 @@ public class Main implements ITechnicalStrings {
 			Messages.registerLocal("de","Language_desc_de"); //$NON-NLS-1$ //$NON-NLS-2$
 			Messages.registerLocal("it","Language_desc_it"); //$NON-NLS-1$ //$NON-NLS-2$
 			Messages.registerLocal("sv","Language_desc_sv"); //$NON-NLS-1$ //$NON-NLS-2$
+			Messages.registerLocal("nl","Language_desc_nl"); //$NON-NLS-1$ //$NON-NLS-2$
+			
 						
 			//configuration manager startup
 			org.jajuk.util.ConfigurationManager.getInstance();
