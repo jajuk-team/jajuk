@@ -39,6 +39,12 @@ public interface IPerspective {
 	 */
 	public void addView(IView view);
 	
+	/**
+	 * Add a view to the perspective offline (change will be effective at next startup), used to reset
+	 *  @param view View to add to the perspective.
+	 */
+	public void addViewOffline(IView view);
+	
 	
 	/**
 	 * Remove a view from the perspective.
