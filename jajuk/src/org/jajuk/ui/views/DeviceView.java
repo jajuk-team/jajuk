@@ -161,7 +161,7 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 		
 		//devices
 		jpDevices = new JPanel();
-		jpDevices.setPreferredSize(new Dimension(200,1000));
+		jpDevices.setPreferredSize(new Dimension(getWidth(),getHeight()));
 		jpDevices.setLayout(new FlowLayout(FlowLayout.LEFT));
 		jpDevices.setBorder(BorderFactory.createEtchedBorder());
 		
