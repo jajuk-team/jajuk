@@ -134,7 +134,7 @@ public class Messages {
 	public static void showErrorMessage(final String sCode){
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				JOptionPane.showMessageDialog(Main.jframe,Messages.getErrorMessage(sCode),Messages.getErrorMessage("102"),JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$	}
+				JOptionPane.showMessageDialog(Main.getWindow(),Messages.getErrorMessage(sCode),Messages.getErrorMessage("102"),JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$	}
 			}
 		});
 	}
@@ -146,7 +146,7 @@ public class Messages {
 	public static void showInfoMessage(final String sMessage){
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				JOptionPane.showMessageDialog(Main.jframe,sMessage,Messages.getString("Info"),JOptionPane.INFORMATION_MESSAGE); //$NON-NLS-1$
+				JOptionPane.showMessageDialog(Main.getWindow(),sMessage,Messages.getString("Info"),JOptionPane.INFORMATION_MESSAGE); //$NON-NLS-1$
 			}
 		});
 	}
@@ -159,7 +159,7 @@ public class Messages {
 	public static void showWarningMessage(final String sMessage){
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				JOptionPane.showMessageDialog(Main.jframe,sMessage,Messages.getString("Warning"),JOptionPane.WARNING_MESSAGE); //$NON-NLS-1$
+				JOptionPane.showMessageDialog(Main.getWindow(),sMessage,Messages.getString("Warning"),JOptionPane.WARNING_MESSAGE); //$NON-NLS-1$
 			}
 		});
 		
@@ -172,7 +172,7 @@ public class Messages {
 	public static void showInfoMessage(final String sMessage,final Icon icon){
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				JOptionPane.showMessageDialog(Main.jframe,sMessage,Messages.getString("Info"),JOptionPane.INFORMATION_MESSAGE,icon); //$NON-NLS-1$
+				JOptionPane.showMessageDialog(Main.getWindow(),sMessage,Messages.getString("Info"),JOptionPane.INFORMATION_MESSAGE,icon); //$NON-NLS-1$
 			}
 		});
 	}
@@ -185,7 +185,7 @@ public class Messages {
 	public static void showErrorMessage(final String sCode,final String sInfoSup){
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				JOptionPane.showMessageDialog(Main.jframe,Messages.getErrorMessage(sCode)+" : "+sInfoSup,Messages.getErrorMessage("102"),JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+				JOptionPane.showMessageDialog(Main.getWindow(),Messages.getErrorMessage(sCode)+" : "+sInfoSup,Messages.getErrorMessage("102"),JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		});
 	}
@@ -198,7 +198,7 @@ public class Messages {
 	public static void showInfoMessage(final String sMessage,final String sInfoSup){
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				JOptionPane.showMessageDialog(Main.jframe,Messages.getString(sMessage)+" : "+sInfoSup,Messages.getString("Info"),JOptionPane.INFORMATION_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+				JOptionPane.showMessageDialog(Main.getWindow(),Messages.getString(sMessage)+" : "+sInfoSup,Messages.getString("Info"),JOptionPane.INFORMATION_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		});
 	}
