@@ -28,14 +28,13 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.TableModel;
 
 import layout.TableLayout;
 
+import org.jajuk.ui.JajukTable;
 import org.jajuk.util.Util;
 
 /**
@@ -61,8 +60,39 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 	/**Columns names table**/
 	protected String[] sColName;
 	
+	
+	class TracksTableModel extends AbstractTableModel{
+		public int getColumnCount() {
+			return iColNum;
+		}
+		
+		public int getRowCount() {
+			return iRowNum;
+		}
+		
+		public boolean isCellEditable(int rowIndex, int columnIndex) {
+			return bCellEditable[columnIndex][rowIndex];
+		}
+		
+		public Class getColumnClass(int columnIndex) {
+			return getValueAt(0,columnIndex).getClass();
+		}
+		
+		public Object getValueAt(int rowIndex, int columnIndex) {
+			return oValues[rowIndex][columnIndex];
+		}
+		
+		public void setValueAt(Object oValue, int rowIndex, int columnIndex) {
+			oValues[rowIndex][columnIndex] = oValue;
+		}
+		
+		public String getColumnName(int columnIndex) {
+			return sColName[columnIndex];
+		}
+	}
+	
 	/** The logical table */
-	JTable jtable;
+	JajukTable jtable;
 	JPanel jpControl;
 		JLabel jlFilter;
 		JComboBox jcbProperty; 
@@ -73,6 +103,9 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 			JButton jbClearFilter;
 			JButton jbAdvancedFilter;
 		
+			
+			
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -133,14 +166,12 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 		jpControl.add(jtbControl,"8,0");
 		
 		
-		jtable = new JTable();
 		//add 
 		double size[][] =
 		{{0.99},
 		{30,0.99}};
 		setLayout(new TableLayout(size));
 		add(jpControl,"0,0");
-		add(new JScrollPane(jtable),"0,1");
 	}	
 	
 	/**Fill the tree */
@@ -152,46 +183,27 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 	public void actionPerformed(ActionEvent e) {
 	}
 
-	/**Set model to table*/
-	void setModel(final AbstractTableView atv){
-		//table
-		TableModel model = new AbstractTableModel() {
-			public int getColumnCount() {
-				return atv.iColNum;
-			}
-
-			public int getRowCount() {
-				return atv.iRowNum;
-			}
-
-			public boolean isCellEditable(int rowIndex, int columnIndex) {
-				return atv.bCellEditable[columnIndex][rowIndex];
-			}
-
-			public Class getColumnClass(int columnIndex) {
-				return getValueAt(0,columnIndex).getClass();
-			}
-
-			public Object getValueAt(int rowIndex, int columnIndex) {
-				return atv.oValues[rowIndex][columnIndex];
-			}
-
-			public void setValueAt(Object oValue, int rowIndex, int columnIndex) {
-				oValues[rowIndex][columnIndex] = oValue;
-			}
-
-			public String getColumnName(int columnIndex) {
-				return atv.sColName[columnIndex];
-			}
-		};
-		jtable.setModel(model);
-	}
-
-
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.IView#getViewName()
 	 */
 	abstract public String getViewName();
+	
+	/* (non-Javadoc)
+	 * @see org.jajuk.ui.Observer#update(java.lang.String)
+	 */
+	public void update(String subject) {
+		if ( subject.equals(EVENT_DEVICE_MOUNT) || subject.equals(EVENT_DEVICE_UNMOUNT) || subject.equals(EVENT_DEVICE_REFRESH) ) {
+			populate();
+		}
+		if ( jtable != null){
+			remove(jtable);
+		}
+		populate();
+		//table
+		TracksTableModel model = new TracksTableModel();
+		jtable = new JajukTable(model);
+		add(new JScrollPane(jtable),"0,1");
+	}
 }
 
 

@@ -31,6 +31,7 @@ import java.awt.dnd.DropTargetListener;
 
 import javax.swing.JPanel;
 
+import org.jajuk.base.BasicFile;
 import org.jajuk.base.Bookmarks;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
@@ -91,6 +92,7 @@ public class PlaylistTransferHandler implements DropTargetListener {
 				Object oData = ttn.getData();
 				if ( plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_NEW){
 					if (oData instanceof File){
+						plfi.getPlaylistFile().addBasicFile(new BasicFile((File)oData));
 						FIFO.getInstance().push((File)oData,true);
 					}
 				}

@@ -43,6 +43,8 @@ public class File extends PropertyAdapter implements Comparable{
 	protected String sQuality;
 	/** pre-calculated absolute path for perf*/
 	private String sAbs = null;
+	/** IO file associated with this file*/
+	private java.io.File fio;
 
 	/**
 	 * File instanciation 
@@ -195,7 +197,7 @@ public class File extends PropertyAdapter implements Comparable{
 	
 	
 	/**
-	 * Return full file path name
+	 * Return absolute file path name
 	 * @return String
 	 */
 	public String getAbsolutePath(){
@@ -226,6 +228,17 @@ public class File extends PropertyAdapter implements Comparable{
 			return true;
 		}
 		return false;
+	}
+	
+	/**
+	 * Return Io file associated with this file
+	 * @return
+	 */
+	public java.io.File getIO(){
+		if ( fio == null){
+			fio = new java.io.File(getAbsolutePath());
+		}
+		return fio;
 	}
 	
 

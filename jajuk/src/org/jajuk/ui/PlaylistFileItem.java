@@ -102,5 +102,32 @@ import org.jajuk.util.Util;
 		public int getType() {
 			return iType;
 		}
+		
+		/**
+		 * Get a name for this playlist file item
+		 * @return playlist file item name ( playlist name or label for special ones )
+		 */
+		public String getName(){
+			String sOut="";
+			switch(iType){
+			case 0:  //regular playlist
+				sOut = getPlaylistFile().getName();
+				break;
+			case 1:  //new playlist
+				sOut = "New playlist";
+				break;
+			case 2:  //bookmarks
+				sOut = "Bookmarks";
+				break;
+			case 3:  //bestof
+				sOut = "Best of";
+				break;
+			case 4:  //queue
+				sOut = "Current Queue";
+				break;
+			}
+			return sOut;
+		}
+		
 
 	}

@@ -21,8 +21,6 @@ package org.jajuk.ui.views;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import javax.swing.SwingUtilities;
-
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.ui.ObservationManager;
@@ -70,13 +68,11 @@ public class LogicalTableView extends AbstractTableView implements Observer{
 	public void display(){
 		super.display();
 		populate();
-		setModel(this);
-		populate();
-		setModel(this);
 		//Register on the list for subject we are interrested in
 		ObservationManager.register(EVENT_DEVICE_MOUNT,this);
 		ObservationManager.register(EVENT_DEVICE_UNMOUNT,this);
 		ObservationManager.register(EVENT_DEVICE_REFRESH,this);
+		update(EVENT_DEVICE_REFRESH);  //force the first refresh
 
 	}
 	
@@ -119,16 +115,6 @@ public class LogicalTableView extends AbstractTableView implements Observer{
 		return "org.jajuk.ui.views.LogicalTableView";
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.jajuk.ui.Observer#update(java.lang.String)
-	 */
-	public void update(String subject) {
-		if ( subject.equals(EVENT_DEVICE_MOUNT) || subject.equals(EVENT_DEVICE_UNMOUNT) || subject.equals(EVENT_DEVICE_REFRESH) ) {
-			populate();
-			SwingUtilities.updateComponentTreeUI(jtable);
-		}
-	}
-
 }
 
 

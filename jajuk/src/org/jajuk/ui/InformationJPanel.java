@@ -86,7 +86,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings{
 		//set current jpanel properties
 		setBorder(BorderFactory.createEtchedBorder());
 		double size[][] =
-			{{0.42, 0.13,0.05,0.05,0.35},
+			{{0.42, 0.13,0.05,0.07,0.33},
 			 {20}};
 		 setLayout(new TableLayout(size));
 		

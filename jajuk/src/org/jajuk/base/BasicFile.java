@@ -21,6 +21,7 @@
 package org.jajuk.base;
 
 
+
 /**
  *  File not managed in collection ( selected by file/open or in a playlist file )
  *
@@ -32,12 +33,25 @@ public class BasicFile extends org.jajuk.base.File {
 	/**Physical file*/
 	java.io.File fio;
 	
+	/**
+	 * Basic file constructor
+	 * @param fio : system file 
+	 */
 	public BasicFile(java.io.File fio){
 		super(fio);
 		this.fio = fio;
 	}
 	
-		/**
+	/**
+	 * Basic file constructor
+	 * @param file : regular file  
+	 */
+	public BasicFile(org.jajuk.base.File file){
+		super(file.getIO());
+		this.fio = file.getIO();
+	}
+
+	/**
 		 * Return full file path name
 		 * @param file
 		 * @return String

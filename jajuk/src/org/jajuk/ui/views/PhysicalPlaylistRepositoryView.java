@@ -67,6 +67,19 @@ public class PhysicalPlaylistRepositoryView extends ViewAdapter implements Obser
 	/**Selected playlist file item */
 	private static PlaylistFileItem plfiSelected;
 	
+	/**Queue playlist*/
+	PlaylistFileItem plfiQueue;
+	
+	/**New playlist*/
+	PlaylistFileItem plfiNew;
+	
+	/**Queue playlist*/
+	PlaylistFileItem plfiBookmarks;
+	
+	/**Bestof playlist*/
+	PlaylistFileItem plfiBestof;
+	
+	
 	JPanel jpRoot;
 	JPopupMenu jpmenu;
 		JMenuItem jmiPlay;
@@ -140,16 +153,27 @@ public class PhysicalPlaylistRepositoryView extends ViewAdapter implements Obser
 						else{
 							jmiDelete.setEnabled(true);
 						}
+						if ( plfiSelected.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE){
+							jmiPlay.setEnabled(false);
+						}
+						else{
+							jmiPlay.setEnabled(true);
+						}
 						jpmenu.show(e.getComponent(),e.getX(),e.getY());
 						return;
 					}
 					else { //right button again lauch it 
-						ArrayList alFiles =  plfi.getPlaylistFile().getBasicFiles();
-						if ( alFiles.size() == 0){
-							Messages.showErrorMessage("018");	
+						if ( plfi != null){
+							ArrayList alFiles =  plfi.getPlaylistFile().getBasicFiles();
+							if ( alFiles.size() == 0){
+								Messages.showErrorMessage("018");	
+							}
+							else{
+								FIFO.getInstance().push(alFiles,false);
+							}
 						}
 						else{
-							FIFO.getInstance().push(alFiles,false);
+							return;
 						}
 					}
 				}
@@ -160,7 +184,7 @@ public class PhysicalPlaylistRepositoryView extends ViewAdapter implements Obser
 				//set new item
 				plfiSelected = plfi;
 				plfiSelected.setBorder(BorderFactory.createLineBorder(Color.BLACK,5));
-				PhysicalPlaylistEditorView.getInstance().setCurrentPlayListFile(plfiSelected.getPlaylistFile());
+				PhysicalPlaylistEditorView.getInstance().setCurrentPlayListFile(plfiSelected);
 			}
 		};
 		
@@ -173,6 +197,10 @@ public class PhysicalPlaylistRepositoryView extends ViewAdapter implements Obser
 		ObservationManager.register(EVENT_DEVICE_MOUNT,this);
 		ObservationManager.register(EVENT_DEVICE_UNMOUNT,this);
 		ObservationManager.register(EVENT_DEVICE_REFRESH,this);
+		//set queue playlist as default in playlist editor
+		plfiSelected = plfiQueue;
+		PhysicalPlaylistEditorView.getInstance().setCurrentPlayListFile(plfiQueue);
+		plfiQueue.setBorder(BorderFactory.createLineBorder(Color.BLACK,5));
 	}
 
 	/* (non-Javadoc)
@@ -207,25 +235,25 @@ public class PhysicalPlaylistRepositoryView extends ViewAdapter implements Obser
 	private void populate(){
 		//special playlists
 		//queue
-		PlaylistFileItem plfi = new PlaylistFileItem(PlaylistFileItem.PLAYLIST_TYPE_QUEUE,ICON_PLAYLIST_QUEUE,null,"Queue");
-		plfi.setToolTipText("Current queue : drag and drop into for playing");
-		plfi.addMouseListener(ma);
-		jpRoot.add(plfi);
+		plfiQueue = new PlaylistFileItem(PlaylistFileItem.PLAYLIST_TYPE_QUEUE,ICON_PLAYLIST_QUEUE,null,"Queue");
+		plfiQueue.setToolTipText("Current queue : drag and drop into for playing");
+		plfiQueue.addMouseListener(ma);
+		jpRoot.add(plfiQueue);
 		//new
-		plfi = new PlaylistFileItem(PlaylistFileItem.PLAYLIST_TYPE_NEW,ICON_PLAYLIST_NEW,null,"New");
-		plfi.setToolTipText("New playlist : drag and drop into for adding files");
-		plfi.addMouseListener(ma);
-		jpRoot.add(plfi);
+		plfiNew = new PlaylistFileItem(PlaylistFileItem.PLAYLIST_TYPE_NEW,ICON_PLAYLIST_NEW,null,"New");
+		plfiNew.setToolTipText("New playlist : drag and drop into for adding files");
+		plfiNew.addMouseListener(ma);
+		jpRoot.add(plfiNew);
 		//bookmark
-		plfi = new PlaylistFileItem(PlaylistFileItem.PLAYLIST_TYPE_BOOKMARK,ICON_PLAYLIST_BOOKMARK,null,"Bookmarks");
-		plfi.setToolTipText("Bookmark playlist : drag and drop into for keeping trace");
-		plfi.addMouseListener(ma);
-		jpRoot.add(plfi);
+		plfiBookmarks = new PlaylistFileItem(PlaylistFileItem.PLAYLIST_TYPE_BOOKMARK,ICON_PLAYLIST_BOOKMARK,null,"Bookmarks");
+		plfiBookmarks.setToolTipText("Bookmark playlist : drag and drop into for keeping trace");
+		plfiBookmarks.addMouseListener(ma);
+		jpRoot.add(plfiBookmarks);
 		//Best of
-		plfi = new PlaylistFileItem(PlaylistFileItem.PLAYLIST_TYPE_BESTOF,ICON_PLAYLIST_BESTOF,null,"Best of");
-		plfi.setToolTipText("Best of playlist : contains top tracks");
-		plfi.addMouseListener(ma);
-		jpRoot.add(plfi);
+		plfiBestof = new PlaylistFileItem(PlaylistFileItem.PLAYLIST_TYPE_BESTOF,ICON_PLAYLIST_BESTOF,null,"Best of");
+		plfiBestof.setToolTipText("Best of playlist : contains top tracks");
+		plfiBestof.addMouseListener(ma);
+		jpRoot.add(plfiBestof);
 		
 		jpRoot.add(Box.createVerticalStrut(20));
 	
@@ -235,7 +263,7 @@ public class PhysicalPlaylistRepositoryView extends ViewAdapter implements Obser
 		Iterator it = al.iterator();
 		while ( it.hasNext()){
 			PlaylistFile plf = (PlaylistFile)it.next();
-			plfi = new PlaylistFileItem(PlaylistFileItem.PLAYLIST_TYPE_NORMAL,ICON_PLAYLIST_NORMAL,plf,plf.getName());
+			PlaylistFileItem plfi = new PlaylistFileItem(PlaylistFileItem.PLAYLIST_TYPE_NORMAL,ICON_PLAYLIST_NORMAL,plf,plf.getName());
 			plfi.addMouseListener(ma);
 			plfi.setToolTipText(plf.getName());
 			jpRoot.add(plfi);
@@ -262,7 +290,7 @@ public class PhysicalPlaylistRepositoryView extends ViewAdapter implements Obser
 			}
 		}
 		else if(ae.getSource() == jmiEdit){
-			PhysicalPlaylistEditorView.getInstance().setCurrentPlayListFile(plfiSelected.getPlaylistFile());
+			PhysicalPlaylistEditorView.getInstance().setCurrentPlayListFile(plfiSelected);
 		}
 		else if(ae.getSource() == jmiPlay){
 			ArrayList alFiles = null;

@@ -152,7 +152,6 @@ public class FIFO implements ITechnicalStrings,Runnable{
 	 * @param bForcedRepeat Force repeat mode for selection
 	 */
 	public synchronized void push(ArrayList alFiles, boolean bAppend,boolean bAuto,boolean bForcedRepeat) {
-	//	Util.waiting();
 		this.bForcedRepeat = bForcedRepeat;
 		if (!bAuto){
 			FIFO.getInstance().setBestof(false); //best of mode is broken by any push
@@ -175,7 +174,8 @@ public class FIFO implements ITechnicalStrings,Runnable{
 				if ( !bAuto){
 					file.getTrack().setRate(file.getTrack().getRate()+2); //inc rate by 2 because it is explicitely selected to be played by human
 				}
-				alFIFO.add(file);	
+				alFIFO.add(file);
+				ObservationManager.notify(EVENT_PLAYLIST_REFRESH); //alert playlists editors ( queue playlist ) something changed for him
 				lTotalTime += file.getTrack().getLength();
 			}
 		}
@@ -281,7 +281,7 @@ public class FIFO implements ITechnicalStrings,Runnable{
 					continue;
 				}
 				if (bPlaying ){//already playing something
-					long length = fCurrent.getTrack().getLength();;
+					long length = fCurrent.getTrack().getLength();
 					if ( i%(REFRESH_TIME/SLEEP_TIME) == 0 && length!=0){  //actual refresh less frequent for cpu
 						lTime = (System.currentTimeMillis() - lTrackStart) + lOffset - lPauseTime;
 						if ( bIntroEnabled){
@@ -359,6 +359,7 @@ public class FIFO implements ITechnicalStrings,Runnable{
 					bPlaying = true;
 					Player.stop();  //for security, make sure no other track is playing
 					ObservationManager.notify(EVENT_COVER_REFRESH); //request update cover 
+					ObservationManager.notify(EVENT_PLAYLIST_REFRESH); //alert playlists editors ( queue playlist ) something changed for him
 					if (ConfigurationManager.getBoolean(CONF_STATE_INTRO)){ //intro mode enabled
 						Player.play(fCurrent,Float.parseFloat(ConfigurationManager.getProperty(CONF_OPTIONS_INTRO_BEGIN))/100,1000*Integer.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_INTRO_LENGTH)));
 					}
@@ -571,6 +572,13 @@ public class FIFO implements ITechnicalStrings,Runnable{
 	 */
 	public long getCurrentPlayTime() {
 		return lTime;
+	}
+
+	/**
+	 * @return Returns the alFIFO.
+	 */
+	public ArrayList getFIFO() {
+		return alFIFO;
 	}
 
 }
