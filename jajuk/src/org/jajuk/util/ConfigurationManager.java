@@ -133,12 +133,14 @@ public class ConfigurationManager implements ITechnicalStrings{
 		properties.put(CONF_STATE_SHUFFLE,FALSE); 
 		properties.put(CONF_STATE_CONTINUE,TRUE);
 		properties.put(CONF_STATE_INTRO,FALSE); 
+		properties.put(CONF_STARTUP_FILE,""); //no startup file by default 
+		properties.put(CONF_STARTUP_MODE,STARTUP_MODE_LAST);
 		properties.put(CONF_CONFIRMATIONS_DELETE_FILE,TRUE);
 		properties.put(CONF_CONFIRMATIONS_EXIT,FALSE);
-		
 		properties.put(CONF_OPTIONS_HIDE_UNMOUNTED,FALSE);
 		properties.put(CONF_OPTIONS_RESTART,TRUE);
 		properties.put(CONF_OPTIONS_COVER,TRUE);
+		properties.put(CONF_OPTIONS_LOG_LEVEL,Integer.toString(Log.WARNING));
 		//set default language without properties file available (normaly only at install)
 		String sLanguage = System.getProperty("user.language"); //$NON-NLS-1$
 		if (Messages.getInstance().getLocals().contains(sLanguage)){ //user language exists in jajuk, take it as default
@@ -147,19 +149,18 @@ public class ConfigurationManager implements ITechnicalStrings{
 		else{ //user language is unknown, take english as a default, user will be able to change it later anyway
 			properties.put(CONF_OPTIONS_LANGUAGE,"en"); //$NON-NLS-1$
 		}
-		properties.put(CONF_OPTIONS_LNF,LNF_LIQUID);
-		properties.put(CONF_OPTIONS_LOG_LEVEL,Integer.toString(Log.WARNING));
 		properties.put(CONF_OPTIONS_INTRO_BEGIN,"0"); //$NON-NLS-1$
 		properties.put(CONF_OPTIONS_INTRO_LENGTH,"20"); //$NON-NLS-1$
-		properties.put(CONF_STARTUP_MODE,STARTUP_MODE_LAST);
+		properties.put(CONF_OPTIONS_LNF,LNF_LIQUID);
 		properties.put(CONF_OPTIONS_P2P_SHARE,FALSE);
 		properties.put(CONF_OPTIONS_P2P_ADD_REMOTE_PROPERTIES,FALSE);
 		properties.put(CONF_OPTIONS_P2P_HIDE_LOCAL_PROPERTIES,TRUE);
-		properties.put(CONF_HISTORY,"-1"); //$NON-NLS-1$
 		properties.put(CONF_OPTIONS_P2P_PASSWORD,""); //$NON-NLS-1$
+		properties.put(CONF_HISTORY,"-1"); //$NON-NLS-1$
+		properties.put(CONF_FIRST_CON,TRUE);
 		properties.put(CONF_TAGS_DEEP_SCAN,FALSE);
 		properties.put(CONF_TAGS_USE_PARENT_DIR,TRUE);
-		properties.put(CONF_FIRST_CON,TRUE);
+		properties.put(CONF_BOOKMARKS,"");
 		properties.put(CONF_SHOW_AT_STARTUP,TRUE);
 		properties.put(CONF_BESTOF_SIZE,"20"); //$NON-NLS-1$
 		properties.put(CONF_VOLUME,"0.5"); //$NON-NLS-1$
