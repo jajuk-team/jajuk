@@ -70,6 +70,7 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
 	/** Hidden constructor */
 	private History() {
 	    ObservationManager.register(EVENT_FILE_LAUNCHED,this);
+	    ObservationManager.register(EVENT_PLAY_ERROR,this);
 	    //check if something has alredy started
 	    if (ObservationManager.getDetail(EVENT_FILE_LAUNCHED,DETAIL_CURRENT_FILE_ID) != null &&
 	            ObservationManager.getDetail(EVENT_FILE_LAUNCHED,DETAIL_CURRENT_DATE) != null){
@@ -82,6 +83,11 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
 		if ( ConfigurationManager.getProperty(CONF_HISTORY).equals("0")){  //no history //$NON-NLS-1$
 			return ;
 		}
+		//check the ID maps an existing file
+		if (FileManager.getFile(sFileId) == null){
+		    return;
+		}
+		//OK, begin to add the new history item
 		HistoryItem hi = new HistoryItem(sFileId,lDate);
 		//check if previous history item is not the same, otherwise, leave
 		if (alHistory.size() > 0){
@@ -248,8 +254,12 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
 			History.lDateStart = Long.parseLong(attributes.getValue(attributes.getIndex("begin_date"))); //$NON-NLS-1$
 		}
 		else if (sQName.equals("play")){ //$NON-NLS-1$
-			HistoryItem hi = new HistoryItem(attributes.getValue(attributes.getIndex("file")),Long.parseLong(attributes.getValue(attributes.getIndex("date")))); //$NON-NLS-1$ //$NON-NLS-2$
-			alHistory.add(hi);
+			String sID = attributes.getValue(attributes.getIndex("file"));
+			//test if this fiel is still kwown int the collection
+			if (FileManager.getFile(sID) != null){
+			    HistoryItem hi = new HistoryItem(sID,Long.parseLong(attributes.getValue(attributes.getIndex("date")))); //$NON-NLS-1$ //$NON-NLS-2$
+			    alHistory.add(hi);
+			}
 		}
 	}
 
@@ -276,6 +286,11 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
 	            String sFileID = (String)ObservationManager.getDetail(EVENT_FILE_LAUNCHED,DETAIL_CURRENT_FILE_ID);
 	            long lDate =( (Long)ObservationManager.getDetail(EVENT_FILE_LAUNCHED,DETAIL_CURRENT_DATE)).longValue();
 	            addItem(sFileID,lDate);
+	        }
+	        else if (subject.equals(EVENT_PLAY_ERROR)){
+	            if (alHistory.size()>0){
+	                alHistory.remove(0);
+	            }
 	        }
 	    }
 	    catch(Exception e){
