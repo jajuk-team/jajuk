@@ -64,6 +64,7 @@ public class PhysicalTableView extends AbstractTableView{
 	 * @see org.jajuk.ui.IView#display()
 	 */
 	public void display(){
+		super.display();
 		populate();
 		setModel(this);
 	}	

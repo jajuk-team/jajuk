@@ -178,6 +178,13 @@ public interface ITechnicalStrings {
 	public static final String VIEW_NAME_HELP = "org.jajuk.ui.views.HelpView";
 	public static final String VIEW_NAME_STAT = "org.jajuk.ui.views.StatView";
 	public static final String VIEW_NAME_COVER = "org.jajuk.ui.views.CoverView";
+	public static final String VIEW_NAME_PHYSICAL_PLAYLIST_REPOSITORY = "org.jajuk.ui.views.PhysicalPlaylistRepositoryView";
+	public static final String VIEW_NAME_PHYSICAL_PLAYLIST_EDITOR = "org.jajuk.ui.views.PhysicalPlaylistEditorView";
+	public static final String VIEW_NAME_PHYSICAL_NAVIGATION_BAR = "org.jajuk.ui.views.PhysicalNavigationBarView";
+	public static final String VIEW_NAME_LOGICAL_PLAYLIST_REPOSITORY = "org.jajuk.ui.views.LogicalPlaylistRepositoryView";
+	public static final String VIEW_NAME_LOGICAL_PLAYLIST_EDITOR = "org.jajuk.ui.views.LogicalPlaylistEditorView";
+	public static final String VIEW_NAME_LOGICAL_NAVIGATION_BAR = "org.jajuk.ui.views.LogicalNavigationBarView";
+	public static final String VIEW_NAME_CD_SCAN = "org.jajuk.ui.views.CDScanView";
 	 	
 	//extensions
 	public static final String EXT_MP3 = "mp3";
@@ -322,29 +329,29 @@ public interface ITechnicalStrings {
 		 "<perspectives jajuk_version='"+JAJUK_VERSION+"'>\n"+
 		"\t<perspective  class='"+PERSPECTIVE_NAME_PHYSICAL+"'>\n"+
 		"\t\t<views>\n"+
-		"\t\t\t<view class='"+VIEW_NAME_PHYSICAL_TREE+"' width='30' height='100' x='0' y='0'/>\n"+
-		"\t\t\t<view class='"+VIEW_NAME_PHYSICAL_TABLE+"' width='40' height='100' x='60' y='0'/>\n"+
-		"\t\t\t<view class='"+VIEW_NAME_COVER+"' width='20' height='30' x='40' y='70'/>\n"+
-		/*"\t\t\t<view class='org.jajuk.ui.views.NavigationBarView' />\n"+
-		"\t\t\t<view class='org.jajuk.ui.views.PlaylistRepositoryView'/>\n"+
-		"\t\t\t<view class='org.jajuk.ui.views.PlaylistEditorView'  />\n"+*/
+		"\t\t\t<view class='"+VIEW_NAME_PHYSICAL_TREE+"' width='30' height='100' x='20' y='0'/>\n"+
+		"\t\t\t<view class='"+VIEW_NAME_PHYSICAL_TABLE+"' width='40' height='60' x='60' y='0'/>\n"+
+		"\t\t\t<view class='"+VIEW_NAME_COVER+"' width='20' height='30' x='0' y='70'/>\n"+
+		"\t\t\t<view class='"+VIEW_NAME_PHYSICAL_NAVIGATION_BAR+"' width='20' height='70' x='0' y='0'/>\n"+
+		"\t\t\t<view class='"+VIEW_NAME_PHYSICAL_PLAYLIST_REPOSITORY+"' width='10' height='100' x='50' y='0'/>\n"+
+		"\t\t\t<view class='"+VIEW_NAME_PHYSICAL_PLAYLIST_EDITOR+"' width='40' height='40' x='60' y='60'/>\n"+
 		"\t\t</views>\n"+
 		"\t\t</perspective>\n"+
 		"\t<perspective class='"+PERSPECTIVE_NAME_LOGICAL+"'>\n"+
 		"\t\t<views>\n"+
-		"\t\t\t<view class='"+VIEW_NAME_LOGICAL_TREE+"' width='30' height='100' x='0' y='0'/>\n"+
-		"\t\t\t<view class='"+VIEW_NAME_LOGICAL_TABLE+"' width='40' height='100' x='60' y='0'/>\n"+
-		"\t\t\t<view class='"+VIEW_NAME_COVER+"' width='20' height='30' x='40' y='70'/>\n"+
-	/*	"\t\t\t<view class='org.jajuk.ui.views.NavigationBarView' />\n"+
-		"\t\t\t<view class='org.jajuk.ui.views.PlaylistRepositoryView'/>\n"+
-		"\t\t\t<view class='org.jajuk.ui.views.PlaylistEditorView'  />\n"+*/
+		"\t\t\t<view class='"+VIEW_NAME_LOGICAL_TREE+"' width='30' height='100' x='20' y='0'/>\n"+
+		"\t\t\t<view class='"+VIEW_NAME_LOGICAL_TABLE+"' width='40' height='60' x='60' y='0'/>\n"+
+		"\t\t\t<view class='"+VIEW_NAME_COVER+"' width='20' height='30' x='0' y='70'/>\n"+
+		"\t\t\t<view class='"+VIEW_NAME_LOGICAL_NAVIGATION_BAR+"' width='20' height='70' x='0' y='0'/>\n"+
+		"\t\t\t<view class='"+VIEW_NAME_LOGICAL_PLAYLIST_REPOSITORY+"' width='10' height='100' x='50' y='0'/>\n"+
+		"\t\t\t<view class='"+VIEW_NAME_LOGICAL_PLAYLIST_EDITOR+"' width='40' height='40' x='60' y='60'/>\n"+
 		"\t\t</views>\n"+
 		"\t</perspective>\n"+
 		"\t<perspective class='"+PERSPECTIVE_NAME_CONFIGURATION+"'>\n"+
 		"\t\t<views>\n"+
 		"\t\t\t<view class='"+VIEW_NAME_PARAMETERS+"' width='50' height='100' x='0' y='0' />\n"+
-		"\t\t\t<view class='"+VIEW_NAME_DEVICES+"' width='50' height='50' x='50' y='0' />\n"+
-	//	"\t\t\t<view class='org.jajuk.ui.views.CdScanView'/>\n"+
+		"\t\t\t<view class='"+VIEW_NAME_DEVICES+"' width='50' height='70' x='50' y='0' />\n"+
+		"\t\t\t<view class='"+VIEW_NAME_CD_SCAN+"' width='50' height='30' x='50' y='70' />\n"+
 		"\t\t</views>\n"+
 		"\t</perspective>\n"+
 		"\t<perspective class='"+PERSPECTIVE_NAME_STATISTICS+"'>\n"+

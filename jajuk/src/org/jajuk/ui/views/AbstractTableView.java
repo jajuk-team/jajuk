@@ -84,6 +84,12 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 	
 	/** Constructor */
 	public AbstractTableView(){
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.jajuk.ui.IView#display()
+	 */
+	public void display(){
 		//Control panel
 		jpControl = new JPanel();
 		jpControl.setBorder(BorderFactory.createEtchedBorder());
@@ -134,7 +140,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 		setLayout(new TableLayout(size));
 		add(jpControl,"0,0");
 		add(new JScrollPane(jtable),"0,1");
-	}
+	}	
 	
 	/**Fill the tree */
 	abstract public void populate();
