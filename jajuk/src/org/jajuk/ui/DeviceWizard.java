@@ -30,7 +30,6 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -48,6 +47,7 @@ import org.jajuk.base.DeviceManager;
 import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.views.DeviceView;
+import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 
 /**
@@ -111,7 +111,7 @@ public class DeviceWizard extends JFrame implements ActionListener,ITechnicalStr
 		jtfName = new JTextField();
 		jlUrl = new JLabel("Device url : ");
 		jtfUrl = new JTextField();
-		jbUrl = new JButton(new ImageIcon(ICON_OPEN_FILE));
+		jbUrl = new JButton(Util.getIcon(ICON_OPEN_FILE));
 		jbUrl.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
 		jbUrl.addActionListener(this);
 		jlMountPoint = new JLabel("Unix mount Point : ");

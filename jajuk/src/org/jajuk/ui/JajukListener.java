@@ -23,7 +23,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-import javax.swing.ImageIcon;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFileChooser;
 
@@ -32,6 +31,7 @@ import org.jajuk.base.BasicFile;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.Util;
 
 /**
  *  General UI listener for Jajuk widgets
@@ -81,7 +81,7 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
 				//Repeat and continue can't be set together, so deselect repeat mode
 				ConfigurationManager.setProperty(CONF_STATE_CONTINUE, Boolean.toString(!bContinue));
 				JajukJMenuBar.getInstance().jcbmiContinue.setSelected(false);
-				CommandJPanel.getInstance().jbContinue.setIcon(new ImageIcon(ICON_CONTINUE_OFF));
+				CommandJPanel.getInstance().jbContinue.setIcon(Util.getIcon(ICON_CONTINUE_OFF));
 				ConfigurationManager.setProperty(CONF_ICON_CONTINUE,ICON_CONTINUE_OFF);
 			}
 			boolean b = ConfigurationManager.getBoolean(CONF_STATE_REPEAT);
@@ -89,11 +89,11 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
 			JajukJMenuBar.getInstance().jcbmiRepeat.setSelected(!b);
 			if (!b == true) { //enabled button
 				ConfigurationManager.setProperty(CONF_ICON_REPEAT,ICON_REPEAT_ON);
-				CommandJPanel.getInstance().jbRepeat.setIcon(new ImageIcon(ICON_REPEAT_ON));
+				CommandJPanel.getInstance().jbRepeat.setIcon(Util.getIcon(ICON_REPEAT_ON));
 			}
 			else {
 				ConfigurationManager.setProperty(CONF_ICON_REPEAT,ICON_REPEAT_OFF);
-				CommandJPanel.getInstance().jbRepeat.setIcon(new ImageIcon(ICON_REPEAT_OFF));
+				CommandJPanel.getInstance().jbRepeat.setIcon(Util.getIcon(ICON_REPEAT_OFF));
 			}
 		}
 		else if (e.getActionCommand().equals(EVENT_SHUFFLE_MODE_STATUS_CHANGED)) {
@@ -102,11 +102,11 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
 			JajukJMenuBar.getInstance().jcbmiShuffle.setSelected(!b);
 			if (!b == true) { //enabled button
 				ConfigurationManager.setProperty(CONF_ICON_SHUFFLE,ICON_SHUFFLE_ON);
-				CommandJPanel.getInstance().jbRandom.setIcon(new ImageIcon(ICON_SHUFFLE_ON));
+				CommandJPanel.getInstance().jbRandom.setIcon(Util.getIcon(ICON_SHUFFLE_ON));
 			}
 			else {
 				ConfigurationManager.setProperty(CONF_ICON_SHUFFLE,ICON_SHUFFLE_OFF);
-				CommandJPanel.getInstance().jbRandom.setIcon(new ImageIcon(ICON_SHUFFLE_OFF));
+				CommandJPanel.getInstance().jbRandom.setIcon(Util.getIcon(ICON_SHUFFLE_OFF));
 			}
 		}
 		else if (e.getActionCommand().equals(EVENT_CONTINUE_MODE_STATUS_CHANGED)) {
@@ -115,7 +115,7 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
 				//Repeat and continue can't be set together, so deselect repeat mode
 				ConfigurationManager.setProperty(CONF_STATE_REPEAT, Boolean.toString(!bRepeat));
 				JajukJMenuBar.getInstance().jcbmiRepeat.setSelected(false);
-				CommandJPanel.getInstance().jbRepeat.setIcon(new ImageIcon(ICON_REPEAT_OFF)); 
+				CommandJPanel.getInstance().jbRepeat.setIcon(Util.getIcon(ICON_REPEAT_OFF)); 
 				ConfigurationManager.setProperty(CONF_ICON_REPEAT,ICON_REPEAT_OFF);
 			}
 			boolean b = ConfigurationManager.getBoolean(CONF_STATE_CONTINUE);
@@ -123,11 +123,11 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
 			JajukJMenuBar.getInstance().jcbmiContinue.setSelected(!b);
 			if (!b == true) { //enabled button
 				ConfigurationManager.setProperty(CONF_ICON_CONTINUE,ICON_CONTINUE_ON);
-				CommandJPanel.getInstance().jbContinue.setIcon(new ImageIcon(ICON_CONTINUE_ON));
+				CommandJPanel.getInstance().jbContinue.setIcon(Util.getIcon(ICON_CONTINUE_ON));
 			}
 			else {
 				ConfigurationManager.setProperty(CONF_ICON_CONTINUE,ICON_CONTINUE_OFF);
-				CommandJPanel.getInstance().jbContinue.setIcon(new ImageIcon(ICON_CONTINUE_OFF));
+				CommandJPanel.getInstance().jbContinue.setIcon(Util.getIcon(ICON_CONTINUE_OFF));
 			}
 		}
 		else if (e.getActionCommand().equals(EVENT_INTRO_MODE_STATUS_CHANGED)) {
@@ -136,11 +136,11 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
 			JajukJMenuBar.getInstance().jcbmiIntro.setSelected(!b);
 			if (!b == true) { //enabled button
 				ConfigurationManager.setProperty(CONF_ICON_INTRO,ICON_INTRO_ON);
-				CommandJPanel.getInstance().jbIntro.setIcon(new ImageIcon(ICON_INTRO_ON));
+				CommandJPanel.getInstance().jbIntro.setIcon(Util.getIcon(ICON_INTRO_ON));
 			}
 			else {
 				ConfigurationManager.setProperty(CONF_ICON_INTRO,ICON_INTRO_OFF);
-				CommandJPanel.getInstance().jbIntro.setIcon(new ImageIcon(ICON_INTRO_OFF));
+				CommandJPanel.getInstance().jbIntro.setIcon(Util.getIcon(ICON_INTRO_OFF));
 			}
 		}
 		else if (e.getActionCommand().equals(EVENT_VIEW_SHOW_STATUS_CHANGED_REQUEST)) {

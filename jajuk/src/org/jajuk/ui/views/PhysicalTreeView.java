@@ -32,7 +32,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
@@ -346,38 +345,38 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 				super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
 				setFont(new Font("Dialog",Font.PLAIN,10));
 				if (value instanceof FileNode ){
-					setIcon(new ImageIcon(ICON_FILE));
+					setIcon(Util.getIcon(ICON_FILE));
 				}
 				else if (value instanceof PlaylistFileNode){
-					setIcon(new ImageIcon(ICON_PLAYLIST_FILE));
+					setIcon(Util.getIcon(ICON_PLAYLIST_FILE));
 				}
 				else if (value instanceof DeviceNode){
 					Device device = (Device)((DeviceNode)value).getDevice();
 					switch ( device.getDeviceType()){
 						case 0 : 
-							if ( device.isMounted())	setIcon(new ImageIcon(ICON_DEVICE_DIRECTORY_MOUNTED_SMALL));
-							else setIcon(new ImageIcon(ICON_DEVICE_DIRECTORY_UNMOUNTED_SMALL));
+							if ( device.isMounted())	setIcon(Util.getIcon(ICON_DEVICE_DIRECTORY_MOUNTED_SMALL));
+							else setIcon(Util.getIcon(ICON_DEVICE_DIRECTORY_UNMOUNTED_SMALL));
 							break;
 						case 1 : 
-							if ( device.isMounted())	setIcon(new ImageIcon(ICON_DEVICE_CD_MOUNTED_SMALL));
-							else setIcon(new ImageIcon(ICON_DEVICE_CD_UNMOUNTED_SMALL));
+							if ( device.isMounted())	setIcon(Util.getIcon(ICON_DEVICE_CD_MOUNTED_SMALL));
+							else setIcon(Util.getIcon(ICON_DEVICE_CD_UNMOUNTED_SMALL));
 							break;
 						case 2 : 
-							if ( device.isMounted())	setIcon(new ImageIcon(ICON_DEVICE_REMOTE_MOUNTED_SMALL));
-							else setIcon(new ImageIcon(ICON_DEVICE_REMOTE_UNMOUNTED_SMALL));
+							if ( device.isMounted())	setIcon(Util.getIcon(ICON_DEVICE_REMOTE_MOUNTED_SMALL));
+							else setIcon(Util.getIcon(ICON_DEVICE_REMOTE_UNMOUNTED_SMALL));
 							break;
 						case 3 : 
-							if ( device.isMounted())	setIcon(new ImageIcon(ICON_DEVICE_EXT_DD_MOUNTED_SMALL));
-							else setIcon(new ImageIcon(ICON_DEVICE_EXT_DD_UNMOUNTED_SMALL));
+							if ( device.isMounted())	setIcon(Util.getIcon(ICON_DEVICE_EXT_DD_MOUNTED_SMALL));
+							else setIcon(Util.getIcon(ICON_DEVICE_EXT_DD_UNMOUNTED_SMALL));
 							break;
 						case 4 : 
-							if ( device.isMounted())	setIcon(new ImageIcon(ICON_DEVICE_PLAYER_MOUNTED_SMALL));
-							else setIcon(new ImageIcon(ICON_DEVICE_PLAYER_UNMOUNTED_SMALL));
+							if ( device.isMounted())	setIcon(Util.getIcon(ICON_DEVICE_PLAYER_MOUNTED_SMALL));
+							else setIcon(Util.getIcon(ICON_DEVICE_PLAYER_UNMOUNTED_SMALL));
 							break;
 					}
 				}
 				else if (value instanceof DirectoryNode){
-					setIcon(new ImageIcon(ICON_DIRECTORY));
+					setIcon(Util.getIcon(ICON_DIRECTORY));
 				}
 				return this;
 			}
@@ -554,7 +553,6 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 	 * @see org.jajuk.ui.Observer#update(java.lang.String)
 	 */
 	public void update(String subject) {
-	System.out.println(subject);
 		if ( subject.equals(EVENT_DEVICE_MOUNT) || subject.equals(EVENT_DEVICE_UNMOUNT) || subject.equals(EVENT_DEVICE_REFRESH) ) {
 			populate();
 			SwingUtilities.updateComponentTreeUI(this.getRootPane());

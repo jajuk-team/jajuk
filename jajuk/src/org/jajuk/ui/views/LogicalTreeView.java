@@ -31,7 +31,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
@@ -327,16 +326,16 @@ public class LogicalTreeView extends ViewAdapter implements ActionListener,Obser
 				super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
 				setFont(new Font("Dialog",Font.PLAIN,10));
 				if (value instanceof StyleNode ){
-					setIcon(new ImageIcon(ICON_STYLE));
+					setIcon(Util.getIcon(ICON_STYLE));
 				}
 				else if (value instanceof AuthorNode){
-					setIcon(new ImageIcon(ICON_AUTHOR));
+					setIcon(Util.getIcon(ICON_AUTHOR));
 				}
 				else if (value instanceof AlbumNode){
-					setIcon(new ImageIcon(ICON_ALBUM));
+					setIcon(Util.getIcon(ICON_ALBUM));
 				}
 				else if (value instanceof TrackNode){
-					setIcon(new ImageIcon(ICON_FILE));
+					setIcon(Util.getIcon(ICON_FILE));
 				}
 				return this;
 			}
@@ -494,7 +493,6 @@ public class LogicalTreeView extends ViewAdapter implements ActionListener,Obser
 	 * @see org.jajuk.ui.Observer#update(java.lang.String)
 	 */
 	public void update(String subject) {
-		System.out.println(subject);
 		if ( subject.equals(EVENT_DEVICE_MOUNT) || subject.equals(EVENT_DEVICE_UNMOUNT)){
 			SwingUtilities.updateComponentTreeUI(this.getRootPane());
 			jtree.setRowHeight(25);

@@ -25,12 +25,12 @@ import java.awt.Frame;
 import java.awt.Toolkit;
 
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JWindow;
 
 import org.jajuk.base.ITechnicalStrings;
+import org.jajuk.util.Util;
 
 /**
  *  Jajuk Splashscreen
@@ -45,7 +45,7 @@ public class SplashScreen extends JWindow implements ITechnicalStrings
 		super(f);
 		JPanel jpContent = (JPanel)getContentPane();
 		jpContent.setLayout(new BoxLayout(jpContent,BoxLayout.Y_AXIS));
-		JLabel l = new JLabel(new ImageIcon(IMAGES_SPLASHSCREEN));
+		JLabel l = new JLabel(Util.getIcon(IMAGES_SPLASHSCREEN));
 		/*JPanel jpVersion = new JPanel();
 		jpVersion.setLayout(new BoxLayout(jpVersion,BoxLayout.X_AXIS));
 		JLabel jlVersion = new JLabel("Release : "+JAJUK_VERSION);

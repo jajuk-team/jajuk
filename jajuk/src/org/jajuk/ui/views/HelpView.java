@@ -21,12 +21,14 @@
 package org.jajuk.ui.views;
 
 import java.net.URL;
+import java.util.Locale;
 
 import javax.help.HelpBroker;
 import javax.help.HelpSet;
 import javax.help.JHelp;
 import javax.swing.BoxLayout;
 
+import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.log.Log;
 
 /**
@@ -72,7 +74,7 @@ public class HelpView extends ViewAdapter{
 		try{
 			setLayout(new BoxLayout(this,BoxLayout.X_AXIS));
 			ClassLoader cl = HelpView.class.getClassLoader();
-			URL url = HelpSet.findHelpSet(cl,"jajuk.hs");
+			URL url = HelpSet.findHelpSet(cl,"jajuk.hs",new Locale(ConfigurationManager.getProperty(CONF_OPTIONS_LANGUAGE)));
 			hs= new HelpSet(null,url);
 			hb = hs.createHelpBroker();
 			jhelp = new JHelp(hs);

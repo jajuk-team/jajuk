@@ -25,13 +25,13 @@ import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 
 import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.i18n.Messages;
+import org.jajuk.util.Util;
 
 /**
  * Menu bar used to choose the current perspective.
@@ -84,30 +84,30 @@ public class PerspectiveBarJPanel
 		jtbPerspective.setOrientation(JToolBar.VERTICAL);
 		
 			// Physical perspective access button
-		jbPhysical = new JButton(new ImageIcon(ICON_PERSPECTIVE_PHYSICAL)); 
+		jbPhysical = new JButton(Util.getIcon(ICON_PERSPECTIVE_PHYSICAL)); 
 		jbPhysical.addActionListener(this);
 		jbPhysical.setToolTipText(Messages.getString("PerspectiveBarJPanel.Show_the_physical_perspective")); //$NON-NLS-1$
 		jtbPerspective.add(jbPhysical);
 		// Logical perspective access button
-		jbLogical = new JButton(new ImageIcon(ICON_PERSPECTIVE_LOGICAL)); 
+		jbLogical = new JButton(Util.getIcon(ICON_PERSPECTIVE_LOGICAL)); 
 		jbLogical.addActionListener(this);
 		jbLogical.setToolTipText(Messages.getString("PerspectiveBarJPanel.Show_the_logical_perspective")); //$NON-NLS-1$
 		jtbPerspective.addSeparator();
 		jtbPerspective.add(jbLogical);
 			// Configuration perspective access button
-		jbConfiguration = new JButton(new ImageIcon(ICON_PERSPECTIVE_CONFIGURATION)); 
+		jbConfiguration = new JButton(Util.getIcon(ICON_PERSPECTIVE_CONFIGURATION)); 
 		jbConfiguration.addActionListener(this);
 		jbConfiguration.setToolTipText(Messages.getString("PerspectiveBarJPanel.Show_the_configuration_perspective")); //$NON-NLS-1$
 		jtbPerspective.addSeparator();
 		jtbPerspective.add(jbConfiguration);
 			// Statistics perspective access button
-		jbStatistics = new JButton(new ImageIcon(ICON_PERSPECTIVE_STATISTICS)); 
+		jbStatistics = new JButton(Util.getIcon(ICON_PERSPECTIVE_STATISTICS)); 
 		jbStatistics.addActionListener(this);
 		jbStatistics.setToolTipText(Messages.getString("PerspectiveBarJPanel.Show_the_statistics_perspective")); //$NON-NLS-1$
 		jtbPerspective.addSeparator();
 		jtbPerspective.add(jbStatistics);
 			// Help perspective access button
-		jbHelp = new JButton(new ImageIcon(ICON_INFO)); 
+		jbHelp = new JButton(Util.getIcon(ICON_INFO)); 
 		jbHelp.addActionListener(this);
 		jbHelp.setToolTipText(Messages.getString("PerspectiveBarJPanel.Show_the_help_perspective")); //$NON-NLS-1$
 		jtbPerspective.addSeparator();

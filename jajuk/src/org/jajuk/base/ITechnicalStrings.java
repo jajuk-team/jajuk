@@ -35,9 +35,9 @@ public interface ITechnicalStrings {
 	public static final String ABOUT = "<html>Jajuk version "+JAJUK_VERSION+"</html>";
 	
 	// directory path
-	public static final String PATH_ICONS = System.getProperty("user.dir")+"/dist-files/icons/";
-	public static final String PATH_IMAGES = System.getProperty("user.dir")+"/dist-files/images/";
-	public static final String PATH_DOCS = System.getProperty("user.dir")+"/dist-files/doc/";
+	public static final String PATH_ICONS = "jar:file:"+System.getProperty("user.dir")+"/jajuk-"+JAJUK_VERSION+".jar!/org/jajuk/icons/";
+	public static final String PATH_IMAGES = "jar:file:"+System.getProperty("user.dir")+"/jajuk-"+JAJUK_VERSION+".jar!/org/jajuk/images/";
+	public static final String PATH_DOCS = "jar:file:"+System.getProperty("user.dir")+"/jajuk-"+JAJUK_VERSION+".jar!/org/jajuk/docs/";
 		
 		// paths to icons
 	public static final String ICON_REPEAT_ON = PATH_ICONS + "16x16/repeat.png";

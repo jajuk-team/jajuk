@@ -25,15 +25,22 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.StringTokenizer;
 
+import javax.swing.ImageIcon;
+import javax.swing.SwingUtilities;
+
 import org.jajuk.Main;
 import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.error.JajukException;
+import org.jajuk.util.log.Log;
 
 /**
  * General use utilities methods
@@ -102,21 +109,24 @@ public class Util implements ITechnicalStrings {
 	/**
 	 * Open a file and return a string buffer with the file content.
 	 * 
-	 * @param path -
-	 *                 File path
+	 * @param path -File path
 	 * @return StringBuffer - File content.
-	 * @throws JajukException -
-	 *                  Throws a JajukException if a problem occurs during the file
-	 *                  access.
+	 * @throws JajukException - Throws a JajukException if a problem occurs during the file  access.
 	 */
 	public static StringBuffer readFile(String path) throws JajukException {
 		// Read
-		File file = new File(path);
+		File file = null;
+		try{
+			new File(path);
+		}
+		catch(Exception e){
+			throw new JajukException("009",e);
+		}
 		FileReader fileReader;
 		try {
 			fileReader = new FileReader(file);
 		} catch (FileNotFoundException e) {
-			JajukException te = new JajukException("jajuk0006", path, e);
+			JajukException te = new JajukException("009", path, e);
 			throw te;
 		}
 		BufferedReader input = new BufferedReader(fileReader);
@@ -129,7 +139,7 @@ public class Util implements ITechnicalStrings {
 				strColl.append(line);
 			}
 		} catch (IOException e) {
-			JajukException te = new JajukException("jajuk0006", path, e);
+			JajukException te = new JajukException("009", path, e);
 			throw te;
 		}
 
@@ -137,12 +147,48 @@ public class Util implements ITechnicalStrings {
 		try {
 			input.close();
 		} catch (IOException e) {
-			JajukException te = new JajukException("jajuk0007", path, e);
+			JajukException te = new JajukException("009", path, e);
 			throw te;
 		}
 
 		return strColl;
 	}
+	
+	
+	
+	/**
+	 * Open a file and return a string buffer with the file content.
+	 * 
+	 * @param url : file uri
+	 * @return StringBuffer - File content.
+	 * @throws JajukException -Throws a JajukException if a problem occurs during the file  access.
+	 */
+	public static StringBuffer readFile(URL url) throws JajukException {
+		// Read
+		String s;
+		InputStream is;
+		StringBuffer sb = null;
+		try {
+			is = Main.class.getResourceAsStream("docs/about.html");
+		// Read
+		byte[] b = new byte[200];
+		sb = new StringBuffer();
+		int i=0;
+		do {
+			i = is.read(b,0,b.length);
+			sb.append(new String(b));
+		}
+		while (i > 0);
+		// Close the bufferedReader
+		is.close();
+		} catch (IOException e) {
+			JajukException te = new JajukException("009", e);
+			throw te;
+		}
+		return sb;
+	
+	}
+	
 	
 	/**
 	 * Format a string before XML write
@@ -236,6 +282,27 @@ public class Util implements ITechnicalStrings {
 	 * Set current cursor as default cursor
 	 */
 	public static void stopWaiting(){
-		Main.jframe.setCursor(DEFAULT_CURSOR);
+		SwingUtilities.invokeLater(new Runnable(){  //actually change cursor when last repaint in awt repaint thread fifo is done 
+			public void run(){
+				Main.jframe.setCursor(DEFAULT_CURSOR);
+			}
+		});
 	}
+	
+	/**
+	 * Get required icon or image with specified url
+	 * @param sURL
+	 * @return the image
+	 */
+	public static ImageIcon getIcon(String sURL){
+		ImageIcon ii = null;
+		try{
+			ii = new ImageIcon(new URL(sURL));
+		}
+		catch(Exception e){
+			Log.error(e);
+		}
+		return ii;
+	}
+	
 }

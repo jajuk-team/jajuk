@@ -26,6 +26,8 @@ import java.util.Iterator;
 
 import javax.swing.JComponent;
 
+import org.jajuk.util.Util;
+
 /**
  *  This is a mediator managing relationships between subjets and observers 
  *
@@ -68,13 +70,15 @@ public class ObservationManager {
 	 * @param subject
 	 */
 	public static synchronized void notify(String subject){
+		Util.waiting();
 		ArrayList alComponents =(ArrayList)hmEventComponents.get(subject); 
 		if (alComponents == null){
 			return;
 		}
 		Iterator it = alComponents.iterator();  
 		while (it.hasNext()){
-			((Observer)it.next()).update(subject);
-		}
+	        ((Observer)it.next()).update(subject);
+        }
+    	Util.stopWaiting();
 	}
 }

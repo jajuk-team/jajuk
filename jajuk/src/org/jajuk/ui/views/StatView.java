@@ -27,7 +27,6 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.TreeMap;
 
-import javax.swing.ImageIcon;
 import javax.swing.SwingUtilities;
 
 import layout.TableLayout;
@@ -148,7 +147,7 @@ public class StatView extends ViewAdapter implements Observer{
 			plot.setNoDataMessage("No data available");
 			plot.setForegroundAlpha(0.5f);
 			plot.setBackgroundAlpha(0.5f);
-			plot.setBackgroundImage(new ImageIcon(IMAGES_STAT_PAPER).getImage());
+			//plot.setBackgroundImage(Util.getIcon(IMAGES_STAT_PAPER).getImage());
 			plot.setItemLabelGenerator(new StandardPieItemLabelGenerator());
 			cpanel = new ChartPanel(jfchart);
 		}
@@ -205,7 +204,7 @@ public class StatView extends ViewAdapter implements Observer{
 			plot.setNoDataMessage("No data available");
 			plot.setForegroundAlpha(0.5f);
 			plot.setBackgroundAlpha(0.5f);
-			plot.setBackgroundImage(new ImageIcon(IMAGES_STAT_PAPER).getImage());
+			//plot.setBackgroundImage(Util.getIcon(IMAGES_STAT_PAPER).getImage());
 			plot.setItemLabelGenerator(new StandardPieItemLabelGenerator());
 			cpanel = new ChartPanel(jfchart);
 		}
@@ -267,7 +266,7 @@ public class StatView extends ViewAdapter implements Observer{
 			plot.setNoDataMessage("No data available");
 			plot.setForegroundAlpha(0.5f);
 			plot.setBackgroundAlpha(0.5f);
-			plot.setBackgroundImage(new ImageIcon(IMAGES_STAT_PAPER).getImage());
+			//plot.setBackgroundImage(Util.getIcon(IMAGES_STAT_PAPER).getImage());
 			cpanel = new ChartPanel(jfchart);
 		}
 		catch(Exception e){
@@ -330,7 +329,7 @@ public class StatView extends ViewAdapter implements Observer{
 			plot.setNoDataMessage("No data available");
 			plot.setForegroundAlpha(0.5f);
 			plot.setBackgroundAlpha(0.5f);
-			plot.setBackgroundImage(new ImageIcon(IMAGES_STAT_PAPER).getImage());
+			//plot.setBackgroundImage(Util.getIcon(IMAGES_STAT_PAPER).getImage());
 			cpanel = new ChartPanel(jfchart);
 		}
 		catch(Exception e){
@@ -358,7 +357,7 @@ public class StatView extends ViewAdapter implements Observer{
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.Observer#update(java.lang.String)
 	 */
-	public void update(String subject) {
+	public void update(final String subject) {
 		if (EVENT_DEVICE_REFRESH.equals(subject) || EVENT_DEVICE_DELETE.equals(subject)){
 			removeAll();
 			ChartPanel cp1 = createStyleRepartition(); 
@@ -369,11 +368,10 @@ public class StatView extends ViewAdapter implements Observer{
 			if ( cp3!= null) add(cp3,"1,1");
 			ChartPanel cp4 = createDeviceSize(); 
 			if ( cp4!= null) add(cp4,"1,0");
-			SwingUtilities.updateComponentTreeUI(this);
+			SwingUtilities.updateComponentTreeUI(StatView.getInstance());
 		}
-		
 	}
-	
+
 	/**
 	 * Computes mounts labels
 	 * @param iMounthsNumber : number of mounts ( without 'before' ) you want

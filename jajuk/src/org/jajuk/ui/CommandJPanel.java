@@ -24,7 +24,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -42,6 +41,7 @@ import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.base.Player;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.Util;
 
 /**
  *  Command panel ( static view )
@@ -133,22 +133,22 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		jtbMode = new JToolBar();
 		jtbMode.setRollover(true);
 		jtbMode.setFloatable(false);
-		jbRepeat = new JButton(new ImageIcon(ConfigurationManager.getProperty(CONF_ICON_REPEAT))); 
+		jbRepeat = new JButton(Util.getIcon(ConfigurationManager.getProperty(CONF_ICON_REPEAT))); 
 		jbRepeat.setActionCommand(EVENT_REPEAT_MODE_STATUS_CHANGED);
 		jbRepeat.setToolTipText("Repeat mode : play tracks in a loop");
 		jbRepeat.addActionListener(JajukListener.getInstance());
 		jtbMode.add(jbRepeat);
-		jbRandom = new JButton(new ImageIcon(ConfigurationManager.getProperty(CONF_ICON_SHUFFLE)));
+		jbRandom = new JButton(Util.getIcon(ConfigurationManager.getProperty(CONF_ICON_SHUFFLE)));
 		jbRandom.setToolTipText(Messages.getString("CommandJPanel.shuffle_mode___play_a_random_track_from_the_selection_2")); //$NON-NLS-1$
 		jbRandom.setActionCommand(EVENT_SHUFFLE_MODE_STATUS_CHANGED);
 		jbRandom.addActionListener(JajukListener.getInstance());
 		jtbMode.add(jbRandom);
-		jbContinue = new JButton(new ImageIcon(ConfigurationManager.getProperty(CONF_ICON_CONTINUE))); 
+		jbContinue = new JButton(Util.getIcon(ConfigurationManager.getProperty(CONF_ICON_CONTINUE))); 
 		jbContinue.setToolTipText(Messages.getString("CommandJPanel.continue_mode___continue_to_play_next_tracks_when_finished_3")); //$NON-NLS-1$
 		jbContinue.setActionCommand(EVENT_CONTINUE_MODE_STATUS_CHANGED);
 		jbContinue.addActionListener(JajukListener.getInstance());
 		jtbMode.add(jbContinue);
-		jbIntro = new JButton(new ImageIcon(ConfigurationManager.getProperty(CONF_ICON_INTRO))); 
+		jbIntro = new JButton(Util.getIcon(ConfigurationManager.getProperty(CONF_ICON_INTRO))); 
 		jbIntro.setToolTipText(Messages.getString("CommandJPanel.intro_mode___play_just_a_part_of_each_track_offset_and_time_can_be_set_in_the_parameters_view_4")); //$NON-NLS-1$
 		jbIntro.setActionCommand(EVENT_INTRO_MODE_STATUS_CHANGED);
 		jbIntro.addActionListener(JajukListener.getInstance());
@@ -158,14 +158,14 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		jtbSpecial = new JToolBar();
 		jtbSpecial.setFloatable(false);
 		jtbSpecial.setRollover(true);
-		jbGlobalRandom = new JButton(new ImageIcon(ICON_ROLL)); 
+		jbGlobalRandom = new JButton(Util.getIcon(ICON_ROLL)); 
 		jbGlobalRandom.addActionListener(this);
 		jbGlobalRandom.setToolTipText(Messages.getString("CommandJPanel.Play_a_shuffle_selection_from_the_entire_collection_1")); //$NON-NLS-1$
 		jtbSpecial.add(jbGlobalRandom);
-		jbBestof = new JButton(new ImageIcon(ICON_BESTOF)); 
+		jbBestof = new JButton(Util.getIcon(ICON_BESTOF)); 
 		jbBestof.setToolTipText(Messages.getString("CommandJPanel.Play_your_own_favorite_tracks_2")); //$NON-NLS-1$
 		jtbSpecial.add(jbBestof);
-		jbMute = new JButton(new ImageIcon(ICON_MUTE)); 
+		jbMute = new JButton(Util.getIcon(ICON_MUTE)); 
 		jbMute.setToolTipText(Messages.getString("CommandJPanel.Turn_sound_off_3")); //$NON-NLS-1$
 		jtbSpecial.add(jbMute);
 		
@@ -173,34 +173,34 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		jtbPlay = new JToolBar();
 		jtbPlay.setRollover(true);
 		jtbPlay.setFloatable(false);
-		jbPrevious = new JButton(new ImageIcon(ICON_PREVIOUS)); 
+		jbPrevious = new JButton(Util.getIcon(ICON_PREVIOUS)); 
 		jbPrevious.setToolTipText(Messages.getString("CommandJPanel.Play_previous_track_in_current_selection_4")); //$NON-NLS-1$
 		jbPrevious.addActionListener(this);
 		jtbPlay.add(jbPrevious);
-		jbNext = new JButton(new ImageIcon(ICON_NEXT)); 
+		jbNext = new JButton(Util.getIcon(ICON_NEXT)); 
 		jbNext.setToolTipText(Messages.getString("CommandJPanel.Play_next_track_in_current_selection_5")); //$NON-NLS-1$
 		jbNext.addActionListener(this);
 		jtbPlay.add(jbNext);
 		jtbPlay.addSeparator();
-		jbRew = new JButton(new ImageIcon(ICON_REW)); 
+		jbRew = new JButton(Util.getIcon(ICON_REW)); 
 		jbRew.setToolTipText(Messages.getString("CommandJPanel.Fast_rewind_in_current_track_6")); //$NON-NLS-1$
 		jtbPlay.add(jbRew);
-		jbPlayPause = new JButton(new ImageIcon(ICON_PLAY)); 
+		jbPlayPause = new JButton(Util.getIcon(ICON_PLAY)); 
 		jbPlayPause.setToolTipText(Messages.getString("CommandJPanel.Play/pause_current_track_7")); //$NON-NLS-1$
 		jbPlayPause.addActionListener(this);
 		jtbPlay.add(jbPlayPause);
-		jbStop = new JButton(new ImageIcon(ICON_STOP)); 
+		jbStop = new JButton(Util.getIcon(ICON_STOP)); 
 		jbStop.setToolTipText(Messages.getString("CommandJPanel.Stop_current_track_8")); //$NON-NLS-1$
 		jbStop.addActionListener(this);
 		jtbPlay.add(jbStop);
-		jbFwd = new JButton(new ImageIcon(ICON_FWD)); 
+		jbFwd = new JButton(Util.getIcon(ICON_FWD)); 
 		jbFwd.setToolTipText(Messages.getString("CommandJPanel.Fast_forward_in_current_track_9")); //$NON-NLS-1$
 		jtbPlay.add(jbFwd);
 		
 		//Volume toolbar
 		jtbVolume = new JToolBar();
 		jtbVolume.setFloatable(false);
-		jlVolume = new JLabel(new ImageIcon(ICON_VOLUME)); 
+		jlVolume = new JLabel(Util.getIcon(ICON_VOLUME)); 
 		jtbVolume.add(jlVolume);
 		jsVolume = new JSlider(0,100,50);
 		jsVolume.setToolTipText(Messages.getString("CommandJPanel.Volume_1")); //$NON-NLS-1$
@@ -209,7 +209,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		//Position toolbar
 		jtbPosition = new JToolBar();
 		jtbPosition.setFloatable(false);
-		jlPosition = new JLabel(new ImageIcon(ICON_POSITION)); 
+		jlPosition = new JLabel(Util.getIcon(ICON_POSITION)); 
 		jtbPosition.add(jlPosition);
 		jsPosition = new JSlider(0,100,0);
 		jsPosition.setToolTipText(Messages.getString("CommandJPanel.Go_to_this_position_in_the_played_track_2")); //$NON-NLS-1$

@@ -23,7 +23,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -36,6 +35,8 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
 import layout.TableLayout;
+
+import org.jajuk.util.Util;
 
 /**
  * Abstract table view : common implementation for both physical and logical table views 
@@ -89,7 +90,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.IView#display()
 	 */
-	public void display(){
+	public void display() {
 		//Control panel
 		jpControl = new JPanel();
 		jpControl.setBorder(BorderFactory.createEtchedBorder());
@@ -114,11 +115,11 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 		jtbControl = new JToolBar();
 		jtbControl.setRollover(true);
 		jtbControl.setFloatable(false);
-		jbApplyFilter = new JButton(new ImageIcon(ICON_APPLY_FILTER));
+		jbApplyFilter = new JButton(Util.getIcon(ICON_APPLY_FILTER));
+		jbClearFilter = new JButton(Util.getIcon(ICON_CLEAR_FILTER));
+		jbAdvancedFilter = new JButton(Util.getIcon(ICON_ADVANCED_FILTER));
 		jbApplyFilter.setToolTipText("Apply filter");
-		jbClearFilter = new JButton(new ImageIcon(ICON_CLEAR_FILTER));
 		jbClearFilter.setToolTipText("Clear the filter");
-		jbAdvancedFilter = new JButton(new ImageIcon(ICON_ADVANCED_FILTER));
 		jbAdvancedFilter.setToolTipText("Apply an advanced filter");
 		jtbControl.add(jbApplyFilter);
 		jtbControl.add(jbClearFilter);

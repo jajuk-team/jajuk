@@ -34,7 +34,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -56,6 +55,7 @@ import org.jajuk.ui.PerspectiveBarJPanel;
 import org.jajuk.ui.PerspectiveManager;
 import org.jajuk.ui.SplashScreen;
 import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
@@ -79,7 +79,7 @@ public class Main implements ITechnicalStrings {
 		try {
 			//starts ui
 			jframe = new JFrame("Jajuk : Just Another Jukebox"); //$NON-NLS-1$
-			jframe.setIconImage(new ImageIcon(ICON_STYLE).getImage());
+			jframe.setIconImage(Util.getIcon(ICON_STYLE).getImage());
 			
 			//Launch splashscreen
 			new Thread(){
