@@ -78,7 +78,7 @@ public class ObservationManager implements ITechnicalStrings{
 	 * Notify all components having registered for the given subject
 	 * @param subject
 	 */
-	public static void notify(final Event event){
+	public static void notify(Event event){
 		notify(event,false); //asynchronous notification by default to avoid exception throw in the register current thread
 	}
 	
@@ -86,7 +86,7 @@ public class ObservationManager implements ITechnicalStrings{
 	 * Notify synchronously all components having registered for the given subject
 	 * @param subject
 	 */
-	public static void notifySync(final Event event){
+	public static void notifySync(Event event){
 	    String subject = event.getSubject();
 		Log.debug("Notify: "+subject); //$NON-NLS-1$
 	    //save last event
