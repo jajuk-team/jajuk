@@ -160,6 +160,11 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 				return;
 			}
 		}
+		if (bAlreadyRefreshing){
+			Messages.showErrorMessage("107"); //$NON-NLS-1$
+			return;
+		}
+		bAlreadyRefreshing = true; //set ths flag outside the lock scope to maek it as refreshing even if the refresh didn't actually started and is locked by another refresh
 		if ( bAsynchronous){
 			new Thread(){
 				public void run(){
@@ -204,11 +209,6 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 			PlaylistFileManager.cleanDevice(device.getId());
 			DirectoryManager.cleanDevice(device.getId());
 			long lTime = System.currentTimeMillis();
-			if (bAlreadyRefreshing){
-				Messages.showErrorMessage("107"); //$NON-NLS-1$
-				return;
-			}
-			bAlreadyRefreshing = true;
 			Log.debug("Starting refresh of device : "+device); //$NON-NLS-1$
 			
 			File fTop = new File(device.sUrl);
