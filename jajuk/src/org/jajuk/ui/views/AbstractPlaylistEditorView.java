@@ -46,6 +46,7 @@ import org.jajuk.Main;
 import org.jajuk.base.BasicFile;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
+import org.jajuk.base.FileManager;
 import org.jajuk.base.Playlist;
 import org.jajuk.base.PlaylistFile;
 import org.jajuk.base.PlaylistManager;
@@ -81,6 +82,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
     JButton jbRemove;
     JButton jbUp;
     JButton jbDown;
+    JButton jbAddShuffle;
     JButton jbCurrent;
     JButton jbClear;
     JLabel jlTitle;
@@ -209,6 +211,9 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
         jbDown = new JButton(Util.getIcon(ICON_DOWN));
         jbDown.setToolTipText(Messages.getString("AbstractPlaylistEditorView.7")); //$NON-NLS-1$
         jbDown.addActionListener(this);
+        jbAddShuffle = new JButton(Util.getIcon(ICON_ADD_SHUFFLE));
+        jbAddShuffle.setToolTipText(Messages.getString("AbstractPlaylistEditorView.10")); //$NON-NLS-1$
+        jbAddShuffle.addActionListener(this);
         jbCurrent = new JButton(Util.getIcon(ICON_CURRENT_PLAYLIST));
         jbCurrent.setToolTipText(Messages.getString("AbstractPlaylistEditorView.8")); //$NON-NLS-1$
         jbCurrent.addActionListener(this);
@@ -220,6 +225,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
         jtb.add(jbSave);
         jtb.add(jbAdd);
         jtb.add(jbRemove);
+        jtb.add(jbAddShuffle);
         jtb.add(jbUp);
         jtb.add(jbDown);
         jtb.add(jbCurrent);
@@ -293,6 +299,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
                 jbAdd.setEnabled(false);
                 jbClear.setEnabled(true);
                 jbDown.setEnabled(false);
+                jbAddShuffle.setEnabled(false);
                 jbRemove.setEnabled(false);
                 jbRun.setEnabled(false);
                 jbUp.setEnabled(false);
@@ -301,6 +308,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
                 jbAdd.setEnabled(false);
                 jbClear.setEnabled(false);
                 jbDown.setEnabled(false);
+                jbAddShuffle.setEnabled(false);
                 jbRemove.setEnabled(false);
                 jbRun.setEnabled(true);
                 jbUp.setEnabled(false);
@@ -309,6 +317,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
                 jbAdd.setEnabled(true);
                 jbClear.setEnabled(true);
                 jbDown.setEnabled(true);
+                jbAddShuffle.setEnabled(true);
                 jbRemove.setEnabled(true);
                 jbRun.setEnabled(true);
                 jbUp.setEnabled(true);
@@ -484,6 +493,21 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
                     Log.error(je);
                 }
             }
+        }
+        else if (ae.getSource() == jbAddShuffle){
+            int iRow = jtable.getSelectedRow();
+            if ( iRow < 0 ){ //no row is selected
+                iRow = jtable.getRowCount();
+            }
+           File file = FileManager.getShuffleFile();
+           try{
+               plfi.getPlaylistFile().addBasicFile(iRow,new BasicFile(file));
+               iRowNum ++;	
+           }
+           catch(JajukException je){
+               Messages.showErrorMessage(je.getCode());
+               Log.error(je);
+           }
         }
     }
     
