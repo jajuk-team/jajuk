@@ -127,6 +127,8 @@
     	<action dev='bflorat' type='update'>Better handling of errors (able to restart FIFO)</action>
     	<action dev='bflorat' type='update'>The history doesn't show any more several times the same track successively</action>
     	<action dev='bflorat' type='update'>More debug traces, logging classes refactored</action>
+    	<action dev='bflorat' type='update'>Now a Previous in command bar keeps previous selection</action>
+    	<action dev='bflorat' type='update'>Now repeat selection is correctly displayed in queue playlist editor</action>
     	<action dev='bflorat' type='fix'>1001432 We shouldn't be able to choose a startup file in parameter view if this mode is not selected</action>  
     	<action dev='bflorat' type='fix'>1003760 A rewind or a forward should resume a paused track</action>  
     	<action dev='bflorat' type='fix'>1003759 Cannot start tracks after stopping the player during a pause</action>  
