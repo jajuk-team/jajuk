@@ -1,112 +1,115 @@
-<html>
-<head>
-  <meta content="text/html; charset=ISO-8859-1"
- http-equiv="content-type">
-  <title>The command view</title>
-</head>
-<body>
-<h1>The command view</h1>
-<p>The command view is located at the top of Jajuk window. It is a static
-view that is always visible in all perspectives. It is used to control
-the player and perform searches.</p>
-<img alt="" src="../images/command_01.jpg"
- style="width: 1149px; height: 51px;"><br>
-<i>Fig. 01: Command view</i><br>
-<h2>Menu</h2>
-<p>File</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp; File -&gt; Open File (Alt-f): Allows opening one or more tracks 
-(we call them basic tracks because they may not be indexed in collection). You can choose
-any music files from your disks, not only those from your devices. Note
-however that this function is not recommended because basic tracks will
-show less information and will not be added in the history bar. When
-opened, the tracks are played immediately, not pushed.</p>
-<p>&nbsp;&nbsp;&nbsp;&nbsp; File -&gt; Exit (Alt-x): Quit Jajuk. Note you can also exit Jajuk
-by simply closing the Window or using the tray.</p>
-<p>Views -&gt; Restore defaults: Reorganize views as shipped by authors.</p>
-<p>Properties -&gt; Not yet implemented, will be used to create and manage custom properties</p>
-<p>Mode -&gt; Controls for modes ( repeat, shuffle, continue, intro). Same as two-states buttons
-bellow.</p>
-<p>Help</p>
-<p>&nbsp;&nbsp;&nbsp; Help -&gt; Contents: show Help view.</p>
-<p>&nbsp;&nbsp;&nbsp; Help -&gt; About: show <a href='view_about.html'>the About view</a> with credentials and system information.</p>
-<h2>Search box and history bar<br>
-</h2>
-<img src="../images/pm06.jpg" name="Image6" align="bottom" border="0"
- height="250" width="539"><br>
-<i>Fig.
-02: Selecting a track with command view</i><br>
-<p><b>Using search box(1):</b><br>
-<p>The search box can be used to find any file, track,
-style, author, album... for a given text. A result popup appears.
-Then launch the track by clicking on the list: the track will be
-played immediately.</p>
-<p><b>Using history bar(2):</b>
-<p>The history bar shows all tracks you
-played (can be cleared and configured in the Parameter view). Click
-on one track to launch it again. Note that tracks in the history bar may
-be on devices that are no more mounted. In this case, Jajuk will ask
-you to mount them if available.</p>
-<h2>Modes</h2>
-<p>Modes set the player behavior when selected before and during the play.
-All combinations of modes are allowed. Note that you can see which
-tracks are repeated thanks special icons in the playlist editor view.</p>
-<p><img alt="" src="../icons/16x16/repeat.png"
- style="width: 16px; height: 16px;"> Repeat mode [default=off]):
-When checked, next launched selection will be played in a loop. If it
-is checked during a play, only current track will repeat.</p>
-<p><img alt="" src="../icons/16x16/shuffle.png"
- style="width: 16px; height: 16px;"> Shuffle mode [default=off]:
-When checked, next launched selection will
-be played randomly. If it is checked during a play, current selection
-will randomize.</p>
-<p><img alt="" src="../icons/16x16/continue.png"
- style="width: 16px; height: 16px;"> Continue mode [default=on]: When checked, player will not stop when
-selection is played but will continue to play next albums or tracks.</p>
-<p><img alt="" src="../icons/16x16/intro.png"
- style="width: 16px; height: 16px;"> Intro mode [default=off]:
-When checked, only a part of each track will be played
-(begin position and play time can bet set in the Parameter
-view/Options tab)</p>
-<h2>Special functions</h2>
-<p>To avoid selecting tracks, you can use these high-level special
-functions:</p>
-<p><img src="../icons/16x16/shuffle_global.png" name="Image5"
- align="bottom" border="0" height="16" width="16">&nbsp;Play shuffle: launch a shuffle track from the entire collection (only
-from mounted and ready devices).</p>
-<p><img src="../icons/16x16/bestof.png" name="Image6" align="bottom"
- border="0" height="16" width="16">&nbsp;Play best of: launch one of your favorite track (learned with dynamic
-rate) and with a bit of random.</p>
-<p><img src="../icons/16x16/novelties.png" name="Image7" align="bottom"
- border="0" height="16" width="16">&nbsp;Play novelties: launch one of newest tracks from your collection with
-a bit of random.</p>
-<p><img src="../icons/16x16/norm.png" name="Image8" align="bottom"
- border="0" height="16" width="16">&nbsp;Continue album: Useful when using shuffle mode and you find an album
-that you want to play completely.</p>
-<h2>Controlling player ( play, pause, volume...)</h2>
-<p><img alt="" src="../icons/16x16/mute.png"
- style="width: 16px; height: 16px;">&nbsp;Mute: stop/start the sound</p>
-<p><img alt="" src="../icons/16x16/previous.png"
- style="width: 16px; height: 16px;">&nbsp;Previous
-Track: Listen previous track in collection. Right click or Shift + left click to play previous album</p>
-<p><img alt="" src="../icons/16x16/next.png"
- style="width: 16px; height: 16px;">&nbsp;Next track:
-Listen next track in selection. Right click or Shift + left click to play next album</p>
-<p><img alt="" src="../icons/16x16/player_rew.png"
- style="width: 16px; height: 16px;">&nbsp;Fast rewind in current track</p>
-<p><img alt="" src="../icons/16x16/player_play.png"
- style="width: 16px; height: 16px;">&nbsp;Play / Pause current track</p>
-<p><img alt="" src="../icons/16x16/player_stop.png"
- style="width: 16px; height: 16px;">&nbsp;Stop playing. Playing queue is then voided</p>
-<p><img alt="" src="../icons/16x16/player_fwd.png"
- style="width: 16px; height: 16px;">&nbsp;Fast forward in current track</p>
-<p><img alt="" src="../icons/16x16/volume.png"
- style="width: 16px; height: 16px;">&nbsp;Volume (slider). Note that
-volume is saved and reset automatically at next Jajuk startup. You can
-change volume with the mouse wheel over tray popup as well.</p>
-<p><img alt="" src="../icons/16x16/position.png"
- style="width: 16px; height: 16px;">&nbsp;Position in current track
-(slider). Note that current track position is saved and startup track
-can restart from this position if you check the "Last track at last
-position" startup mode in <a href='view_parameter.html'>'the Parameter View</a> / startup.</p>
-</body>
-</html>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=utf-8">
+	<TITLE>The command view</TITLE>
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 1.1.3  (Linux)">
+	<META NAME="CREATED" CONTENT="20050308;19372900">
+	<META NAME="CHANGED" CONTENT="20050308;19415000">
+</HEAD>
+<BODY LANG="en-US" DIR="LTR">
+<H1>The command view</H1>
+<P>The command view is located at the top of Jajuk window. It is a
+static view that is always visible in all perspectives. It is used to
+control the player and perform searches.</P>
+<P><IMG SRC="../images/command_01.jpg" NAME="Image1" ALIGN=BOTTOM WIDTH=1149 HEIGHT=51 BORDER=0><BR><I>Fig.
+01: Command view</I></P>
+<H2>Menu</H2>
+<P>File</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp; File -&gt; Open File (Alt-f): Allows
+opening one or more tracks (we call them basic tracks because they
+may not be indexed in collection). You can choose any music files
+from your disks, not only those from your devices. Note however that
+this function is not recommended because basic tracks will show less
+information and will not be added in the history bar. When opened,
+the tracks are played immediately, not pushed.</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp; File -&gt; Exit (Alt-x): Quit Jajuk. Note
+you can also exit Jajuk by simply closing the Window or using the
+tray.</P>
+<P>Views -&gt; Restore defaults: Reorganize views as shipped by
+authors.</P>
+<P>Properties -&gt; Not yet implemented, will be used to create and
+manage custom properties</P>
+<P>Mode -&gt; Controls for modes ( repeat, shuffle, continue, intro).
+Same as two-states buttons bellow.</P>
+<P>Help</P>
+<P>&nbsp;&nbsp;&nbsp; Help -&gt; Contents: show Help view.</P>
+<P>&nbsp;&nbsp;&nbsp; Help -&gt; About: show <A HREF="view_about.html">the
+About view</A> with credentials and system information.</P>
+<H2>Search box and history bar</H2>
+<P><IMG SRC="../images/pm06.jpg" NAME="Image6" ALIGN=BOTTOM WIDTH=539 HEIGHT=250 BORDER=0><BR><I>Fig.
+02: Selecting a track with command view</I></P>
+<P><B>Using search box(1):</B></P>
+<P>The search box can be used to find any file, track, style, author,
+album... for a given text. A result popup appears. Then launch the
+track by clicking on the list: the track will be played immediately.</P>
+<P><B>Using history bar(2):</B> 
+</P>
+<P>The history bar shows all tracks you played (can be cleared and
+configured in the Parameter view). Click on one track to launch it
+again. Note that tracks in the history bar may be on devices that are
+no more mounted. In this case, Jajuk will ask you to mount them if
+available.</P>
+<H2>Modes</H2>
+<P>Modes set the player behavior when selected before and during the
+play. All combinations of modes are allowed. Note that you can see
+which tracks are repeated thanks special icons in the playlist editor
+view.</P>
+<P><IMG SRC="../icons/16x16/repeat.png" NAME="Image2" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=0>
+Repeat mode [default=off]): When checked, next launched selection
+will be played in a loop. If it is checked during a play, only
+current track will repeat.</P>
+<P><IMG SRC="../icons/16x16/shuffle.png" NAME="Image3" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=0>
+Shuffle mode [default=off]: When checked, next launched selection
+will be played randomly. If it is checked during a play, current
+selection will randomize.</P>
+<P><IMG SRC="../icons/16x16/continue.png" NAME="Image4" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=0>
+Continue mode [default=on]: When checked, player will not stop when
+selection is played but will continue to play next albums or tracks.</P>
+<P><IMG SRC="../icons/16x16/intro.png" NAME="Image5" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=0>
+Intro mode [default=off]: When checked, only a part of each track
+will be played (begin position and play time can bet set in the
+Parameter view/Options tab)</P>
+<H2>Special functions</H2>
+<P>To avoid selecting tracks, you can use these high-level special
+functions:</P>
+<P><IMG SRC="../icons/16x16/shuffle_global.png" NAME="Image5" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=0>&nbsp;Play
+shuffle: launch a shuffle track from the entire collection (only from
+mounted and ready devices).</P>
+<P><IMG SRC="../icons/16x16/bestof.png" NAME="Image6" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=0>&nbsp;Play
+best of: launch one of your favorite track (learned with dynamic
+rate) and with a bit of random.</P>
+<P><IMG SRC="../icons/16x16/novelties.png" NAME="Image7" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=0>&nbsp;Play
+novelties: launch one of newest tracks from your collection with a
+bit of random.</P>
+<P><IMG SRC="../icons/16x16/norm.png" NAME="Image8" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=0>&nbsp;Continue
+album: Useful when using shuffle mode and you find an album that you
+want to play completely.</P>
+<H2>Controlling player ( play, pause, volume...)</H2>
+<P><IMG SRC="../icons/16x16/mute.png" NAME="Image9" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=0>&nbsp;Mute:
+stop/start the sound</P>
+<P><IMG SRC="../icons/16x16/previous.png" NAME="Image10" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=0>&nbsp;Previous
+Track: Listen previous track in collection. Right click or Shift +
+left click to play previous album</P>
+<P><IMG SRC="../icons/16x16/next.png" NAME="Image11" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=0>&nbsp;Next
+track: Listen next track in selection. Right click or Shift + left
+click to play next album</P>
+<P><IMG SRC="../icons/16x16/player_rew.png" NAME="Image12" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=0>&nbsp;Fast
+rewind in current track</P>
+<P><IMG SRC="../icons/16x16/player_play.png" NAME="Image13" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=0>&nbsp;Play
+/ Pause current track</P>
+<P><IMG SRC="../icons/16x16/player_stop.png" NAME="Image14" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=0>&nbsp;Stop
+playing. Playing queue is then voided</P>
+<P><IMG SRC="../icons/16x16/player_fwd.png" NAME="Image15" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=0>&nbsp;Fast
+forward in current track</P>
+<P><IMG SRC="../icons/16x16/volume.png" NAME="Image16" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=0>&nbsp;Volume
+(slider). Note that volume is saved and reset automatically at next
+Jajuk startup. You can change volume with the mouse wheel over tray
+popup as well.</P>
+<P><IMG SRC="../icons/16x16/position.png" NAME="Image17" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=0>&nbsp;Position
+in current track (slider). Note that current track position is saved
+and startup track can restart from this position if you check the
+&quot;Last track at last position&quot; startup mode in <A HREF="view_parameter.html">'the
+Parameter View</A> / startup.</P>
+</BODY>
+</HTML>
