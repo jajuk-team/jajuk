@@ -319,7 +319,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings	{
 	 * @param sMessage
 	 */
 	public static void showInfoMessage(final String sMessage){
-	    MessageDialog message = new MessageDialog(Messages.getString(sMessage),getTitleForType(JOptionPane.INFORMATION_MESSAGE),JOptionPane.INFORMATION_MESSAGE);
+	    MessageDialog message = new MessageDialog(sMessage,getTitleForType(JOptionPane.INFORMATION_MESSAGE),JOptionPane.INFORMATION_MESSAGE);
 	    if (SwingUtilities.isEventDispatchThread()){ //in the dispatcher thread, no need to use invokeLatter
 	        message.run();
 	    }
