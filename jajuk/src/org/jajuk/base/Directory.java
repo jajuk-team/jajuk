@@ -237,7 +237,7 @@ public class Directory extends PropertyAdapter implements Comparable{
 				Author author = AuthorManager.registerAuthor(sAuthorName);
 				Type type = TypeManager.getTypeByExtension(Util.getExtension(files[i]));
 				Track track = TrackManager.registerTrack(sTrackName, album, style, author, length, sYear, type);
-				org.jajuk.base.File newFile = FileManager.registerFile(files[i].getName(), this, track, files[i].length(), sQuality);
+				org.jajuk.base.File newFile = FileManager.registerFile(sId,files[i].getName(), this, track, files[i].length(), sQuality);
 				addFile(newFile);
 				track.addFile(newFile);
 			}

@@ -25,7 +25,6 @@ import java.util.Iterator;
 import java.util.TreeSet;
 
 import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.MD5Processor;
 import org.jajuk.util.log.Log;
 
 /**
@@ -47,16 +46,6 @@ public class FileManager implements ITechnicalStrings{
 	 */
 	private FileManager() {
 		super();
-	}
-
-	/**
-	 * Register an File
-	 * 
-	 * @param sName
-	 */
-	public static synchronized File registerFile(String sName, Directory directory, Track track, long lSize, String sQuality) {
-		String sId = MD5Processor.hash(directory.getDevice().getName() + directory.getDevice().getUrl() + directory.getAbsolutePath() + sName);
-		return registerFile(sId, sName, directory, track, lSize, sQuality);
 	}
 
 	/**
