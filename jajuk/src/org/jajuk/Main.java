@@ -88,13 +88,11 @@ public class Main implements ITechnicalStrings {
 	/**Exit code*/
 	private static int iExitCode = 0;
 	/**Debug mode*/
-	private static boolean bDebugMode = true;
+	private static boolean bDebugMode = false;
 	/**Exiting flag*/
 	public static boolean bExiting = false;
 	/**General use lock used for synchronization*/
 	private static byte[] bLock = new byte[0];
-	/**List of auto-refreshed devices */
-	private static ArrayList alAutoRefreshedDevices = new ArrayList(4);
 	/**Systray*/
 	private static JajukSystray jsystray;
 	/**UI lauched flag*/
@@ -242,11 +240,14 @@ public class Main implements ITechnicalStrings {
 			tHook.setPriority(Thread.MAX_PRIORITY); //give max chances to this thread to complete
 			Runtime.getRuntime().addShutdownHook(tHook);
 					
-			//Mount and refresh devices
-			mountAndRefresh();
+			//Auto mount devices
+			autoMount();
 			
 			//Launch startup track if any
 			launchInitialTrack();        
+			
+			//Auto refresh devices
+			autoRefresh();
 			
 			//lauch systray if needed, only for linux and windows, not mac for the moment
 			if (Util.isUnderLinux() || Util.isUnderWindows()){
@@ -434,21 +435,10 @@ public class Main implements ITechnicalStrings {
 				    }
 				}
 			   if (fileToPlay != null){
-				    //if the required track is in a refreshed device, do not lauch anything, leave without boring error message 
-				    if (alAutoRefreshedDevices.contains(fileToPlay.getDirectory().getDevice())){
-				        Log.debug("Startup file is in an auto-refreshed device, leave"); //$NON-NLS-1$
-				        return;
-				    }
-				    else{
 				        alToPlay.add(fileToPlay);    
-				    }
 				}
 				else{ //file no more exists
-		            String sup = null;
-		            if (fileToPlay != null){
-		                sup =fileToPlay.getDirectory().getDevice().getName();
-		            }
-				    Messages.showErrorMessage("009",sup); //$NON-NLS-1$
+		     	    Messages.getChoice(Messages.getErrorMessage("023"),JOptionPane.OK_CANCEL_OPTION); //$NON-NLS-1$
 				}
 			}
 			else if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_SHUFFLE)){
@@ -470,10 +460,10 @@ public class Main implements ITechnicalStrings {
 	
 	
 	/**
-	 * Auto-Mount and auto-refresh required devices
+	 * Auto-Mount required devices
 	 *
 	 */
-	private static void mountAndRefresh(){
+	private static void autoMount(){
 		Iterator it = DeviceManager.getDevices().iterator();
 		while (it.hasNext()){
 			Device device = (Device)it.next();
@@ -489,12 +479,23 @@ public class Main implements ITechnicalStrings {
 					continue;
 				}
 			}
-			if (TRUE.equals(device.getProperty(DEVICE_OPTION_AUTO_REFRESH))){
-				alAutoRefreshedDevices.add(device);
+		}
+	}
+	
+	/**
+	 * Auto-refresh required devices
+	 *
+	 */
+	private static void autoRefresh(){
+		Iterator it = DeviceManager.getDevices().iterator();
+		while (it.hasNext()){
+			Device device = (Device)it.next();
+			if (TRUE.equals(device.getProperty(DEVICE_OPTION_AUTO_REFRESH)) && device.isMounted()){
 			    device.refresh(true);
 			}
 		}
 	}
+	
 	
 	
 	/**
