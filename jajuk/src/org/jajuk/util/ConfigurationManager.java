@@ -136,6 +136,7 @@ public class ConfigurationManager implements ITechnicalStrings{
 		properties.put(CONF_STARTUP_FILE,""); //no startup file by default 
 		properties.put(CONF_STARTUP_MODE,STARTUP_MODE_LAST_KEEP_POS);
 		properties.put(CONF_STARTUP_KEEP_MODE,TRUE);
+		properties.put(CONF_STARTUP_LAST_POSITION,"0");
 		properties.put(CONF_CONFIRMATIONS_DELETE_FILE,TRUE);
 		properties.put(CONF_CONFIRMATIONS_EXIT,FALSE);
 		properties.put(CONF_OPTIONS_HIDE_UNMOUNTED,FALSE);
@@ -169,11 +170,12 @@ public class ConfigurationManager implements ITechnicalStrings{
 		properties.put(CONF_REGEXP,FALSE); //$NON-NLS-1$
 		properties.put(CONF_BACKUP_SIZE,"30");//$NON-NLS-1$
 		properties.put(CONF_COLLECTION_CHARSET,"UTF-8");//$NON-NLS-1$
-		properties.put(CONF_LAST_POSITION,"0");
 		properties.put(CONF_NETWORK_USE_PROXY,FALSE);
 		properties.put(CONF_NETWORK_PROXY_HOSTNAME,"proxy");//default proxy name, just a guess
 		properties.put(CONF_NETWORK_PROXY_PORT,"3128");
 		properties.put(CONF_NETWORK_PROXY_LOGIN,"");
+		properties.put(CONF_NETWORK_CONNECTION_TO,"5");
+		properties.put(CONF_NETWORK_TRANSFERT_TO,"20");
 		properties.put(CONF_COVERS_AUTO_COVER,TRUE);
 		properties.put(CONF_COVERS_MIN_SIZE,"5");
 		properties.put(CONF_COVERS_MAX_SIZE,"100");
@@ -206,6 +208,7 @@ public class ConfigurationManager implements ITechnicalStrings{
 	public static void load() {
 		try {
 			properties.load(new FileInputStream(FILE_CONFIGURATION));
+			Log.debug(properties.toString());
 		} catch (IOException e) {
 			Log.error("114", e); //$NON-NLS-1$
 			Messages.showErrorMessage("114"); //$NON-NLS-1$

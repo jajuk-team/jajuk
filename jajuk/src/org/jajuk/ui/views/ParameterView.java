@@ -138,6 +138,10 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 	JTextField jtfProxyPort;
 	JLabel jlProxyLogin;
 	JTextField jtfProxyLogin;
+	JLabel jlConnectionTO;
+	JTextField jtfConnectionTO;
+	JLabel jlTransfertTO;
+	JTextField jtfTransfertTO;
 	JPanel jpCovers;
 	JCheckBox jcbAutoCover;
 	JLabel jlMinSize;
@@ -547,7 +551,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jpNetwork = new JPanel();
 		jpNetwork.setBorder(BorderFactory.createTitledBorder(Messages.getString("ParameterView.139")));  //$NON-NLS-1$
 		double sizeNetwork[][] = {{0.5,0.45},
-				{iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator}};
+				{iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator}};
 		jpNetwork.setLayout(new TableLayout(sizeNetwork));
 		jcbProxy = new JCheckBox(Messages.getString("ParameterView.140"));  //$NON-NLS-1$
 		jcbProxy.setToolTipText(Messages.getString("ParameterView.141"));  //$NON-NLS-1$
@@ -586,6 +590,40 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jlProxyLogin.setToolTipText(Messages.getString("ParameterView.143"));  //$NON-NLS-1$
 		jtfProxyLogin = new JTextField();
 		jtfProxyLogin.setToolTipText(Messages.getString("ParameterView.143"));  //$NON-NLS-1$
+		InputVerifier verifier = new InputVerifier(){ //verifier for TO
+			public boolean verify(JComponent input) {
+				JTextField tf = (JTextField) input;
+				String sText = tf.getText();
+				try{
+					int iValue = Integer.parseInt(sText);
+					if (iValue <= 0 ){ //time out must be > 0 
+						jbOK.setEnabled(false);
+						return false;
+					}
+				}
+				catch(Exception e){
+					return false;
+				}
+				jbOK.setEnabled(true);
+				return true;
+			}
+			
+			public boolean shouldYieldFocus(JComponent input) {
+				return verify(input);
+			}
+		};
+		jlConnectionTO = new JLabel(Messages.getString("ParameterView.160"));  //$NON-NLS-1$
+		jlConnectionTO.setToolTipText(Messages.getString("ParameterView.160"));  //$NON-NLS-1$
+		jtfConnectionTO = new JTextField();
+		jtfConnectionTO.setToolTipText(Messages.getString("ParameterView.161"));  //$NON-NLS-1$)
+		jtfConnectionTO.addActionListener(this);
+		jtfConnectionTO.setInputVerifier(verifier);
+		jlTransfertTO = new JLabel(Messages.getString("ParameterView.162"));  //$NON-NLS-1$
+		jlTransfertTO.setToolTipText(Messages.getString("ParameterView.163"));  //$NON-NLS-1$
+		jtfTransfertTO = new JTextField();
+		jtfTransfertTO.setToolTipText(Messages.getString("ParameterView.163"));  //$NON-NLS-1$)
+		jtfTransfertTO.addActionListener(this);
+		jtfTransfertTO.setInputVerifier(verifier);
 		jpNetwork.add(jcbProxy,"0,1");
 		jpNetwork.add(jlProxyHostname,"0,3");
 		jpNetwork.add(jtfProxyHostname,"1,3");
@@ -593,6 +631,10 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jpNetwork.add(jtfProxyPort,"1,5");
 		jpNetwork.add(jlProxyLogin,"0,7");
 		jpNetwork.add(jtfProxyLogin,"1,7");
+		jpNetwork.add(jlConnectionTO,"0,9");
+		jpNetwork.add(jtfConnectionTO,"1,9");
+		jpNetwork.add(jlTransfertTO,"0,11");
+		jpNetwork.add(jtfTransfertTO,"1,11");
 				
 		//- Cover
 		jpCovers = new JPanel();
@@ -815,13 +857,13 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 					ConfigurationManager.setProperty(CONF_NETWORK_PROXY_HOSTNAME,jtfProxyHostname.getText());
 					ConfigurationManager.setProperty(CONF_NETWORK_PROXY_PORT,jtfProxyPort.getText());
 					ConfigurationManager.setProperty(CONF_NETWORK_PROXY_LOGIN,jtfProxyLogin.getText());
+					ConfigurationManager.setProperty(CONF_NETWORK_CONNECTION_TO,jtfConnectionTO.getText());
+					ConfigurationManager.setProperty(CONF_NETWORK_TRANSFERT_TO,jtfTransfertTO.getText());
 					//Covers
 					ConfigurationManager.setProperty(CONF_COVERS_AUTO_COVER,Boolean.toString(jcbAutoCover.isSelected()));
 					ConfigurationManager.setProperty(CONF_COVERS_MIN_SIZE,jtfMinSize.getText());
 					ConfigurationManager.setProperty(CONF_COVERS_MAX_SIZE,jtfMaxSize.getText());
 					ConfigurationManager.setProperty(CONF_COVERS_ACCURACY,Integer.toString(jcbSearchAccuracy.getSelectedIndex()));
-					
-					
 				}
 				else if (e.getSource() == jbDefault){
 					ConfigurationManager.setDefaultProperties();
@@ -940,6 +982,8 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jtfProxyPort.setEnabled(bUseProxy);
 		jtfProxyLogin.setText(ConfigurationManager.getProperty(CONF_NETWORK_PROXY_LOGIN));
 		jtfProxyLogin.setEnabled(bUseProxy);
+		jtfConnectionTO.setText(ConfigurationManager.getProperty(CONF_NETWORK_CONNECTION_TO));
+		jtfTransfertTO.setText(ConfigurationManager.getProperty(CONF_NETWORK_TRANSFERT_TO));
 		//Covers
 		jcbAutoCover.setSelected(ConfigurationManager.getBoolean(CONF_COVERS_AUTO_COVER));
 		jtfMinSize.setText(ConfigurationManager.getProperty(CONF_COVERS_MIN_SIZE));
