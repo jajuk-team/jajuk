@@ -30,9 +30,7 @@
   	</copy>
     <mkdir dir='${distdir}/${classdir}'/>
     <copy todir='${distdir}/src' >
-     <fileset dir='${srcdir}' >
-     	<exclude name='**/*latin1*'/> 
-     </fileset>
+     <fileset dir='${srcdir}' />
   	</copy>
   	<copy todir='${distdir}' >
      <fileset file='${basedir}/dist-files/legals/LICENSE.txt'/>
@@ -58,20 +56,7 @@
      </copy>
   </target>
   
-  <target name='native2ascii' description='Transform i18n resourses bundle to be correctly displayed under eclipse environment' depends='mkdist'>
-	<native2ascii encoding='UTF-8' src='${srcdir}/org/jajuk/i18n' dest='${distdir}/${srcdir}/org/jajuk/i18n' includes='*.properties' ext='.tmp'/>     
-  	<move file='${distdir}/${srcdir}/org/jajuk/i18n/jajuk.tmp' tofile='${distdir}/${classdir}/org/jajuk/i18n/jajuk-latin1.properties'/>
-  	<move file='${distdir}/${srcdir}/org/jajuk/i18n/jajuk_de.tmp' tofile='${distdir}/${classdir}/org/jajuk/i18n/jajuk-latin1_de.properties'/>
-  	<move file='${distdir}/${srcdir}/org/jajuk/i18n/jajuk_fr.tmp' tofile='${distdir}/${classdir}/org/jajuk/i18n/jajuk-latin1_fr.properties'/>
-  	<move file='${distdir}/${srcdir}/org/jajuk/i18n/jajuk_it.tmp' tofile='${distdir}/${classdir}/org/jajuk/i18n/jajuk-latin1_it.properties'/>
-  	<move file='${distdir}/${srcdir}/org/jajuk/i18n/jajuk_nl.tmp' tofile='${distdir}/${classdir}/org/jajuk/i18n/jajuk-latin1_nl.properties'/>
-  	<move file='${distdir}/${srcdir}/org/jajuk/i18n/jajuk_sv.tmp' tofile='${distdir}/${classdir}/org/jajuk/i18n/jajuk-latin1_sv.properties'/>
-	<delete>
-  	 <fileset dir='${distdir}/${srcdir}/org/jajuk/i18n' includes='**/*latin1*,**/*.tmp'/>
-    </delete>
-  </target>
- 
- <target name='compile' description='o Compile the code' depends='native2ascii'>
+ <target name='compile' description='o Compile the code' depends='mkdist'>
     <javac destdir='${distdir}/${classdir}' deprecation='true' debug='false' optimize='true' excludes='**/package.html'>
       <src>
         <pathelement path='${distdir}/${srcdir}'>
@@ -99,6 +84,9 @@
   	<copy todir='${distdir}' >
      <fileset file='${basedir}/scripts/jajuk.sh'/>
      <fileset file='${basedir}/scripts/jajuk.bat'/>
+  	</copy>
+  	<copy todir='${distdir}/${classdir}/org/jajuk/i18n' >
+     <fileset file='${basedir}/src/org/jajuk/i18n/*.properties'/>
   	</copy>
   </target>
  
