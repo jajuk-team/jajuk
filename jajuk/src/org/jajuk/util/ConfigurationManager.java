@@ -144,6 +144,8 @@ public class ConfigurationManager implements ITechnicalStrings{
 		properties.put(CONF_OPTIONS_HIDE_UNMOUNTED,FALSE);
 		properties.put(CONF_OPTIONS_RESTART,TRUE);
 		properties.put(CONF_OPTIONS_SEARCH_UNMOUNTED,TRUE);
+		properties.put(CONF_OPTIONS_DEFAULT_ACTION_CLICK,FALSE);
+		properties.put(CONF_OPTIONS_DEFAULT_ACTION_DROP,TRUE);
 		properties.put(CONF_OPTIONS_NOVELTIES_AGE,"30"); //$NON-NLS-1$
 		properties.put(CONF_OPTIONS_VISIBLE_PLANNED,"10"); //$NON-NLS-1$
 		//set default trace level, debug in debug mode and warning in normal mode
@@ -165,10 +167,10 @@ public class ConfigurationManager implements ITechnicalStrings{
 		properties.put(CONF_OPTIONS_INTRO_BEGIN,"0"); //$NON-NLS-1$
 		properties.put(CONF_OPTIONS_INTRO_LENGTH,"20"); //$NON-NLS-1$
 		properties.put(CONF_OPTIONS_LNF,LNF_LIQUID);
-		properties.put(CONF_OPTIONS_P2P_SHARE,FALSE);
-		properties.put(CONF_OPTIONS_P2P_ADD_REMOTE_PROPERTIES,FALSE);
-		properties.put(CONF_OPTIONS_P2P_HIDE_LOCAL_PROPERTIES,TRUE);
-		properties.put(CONF_OPTIONS_P2P_PASSWORD,""); //$NON-NLS-1$
+		properties.put(CONF_P2P_SHARE,FALSE);
+		properties.put(CONF_P2P_ADD_REMOTE_PROPERTIES,FALSE);
+		properties.put(CONF_P2P_HIDE_LOCAL_PROPERTIES,TRUE);
+		properties.put(CONF_P2P_PASSWORD,""); //$NON-NLS-1$
 		properties.put(CONF_HISTORY,"-1"); //$NON-NLS-1$
 		properties.put(CONF_FIRST_CON,TRUE);
 		properties.put(CONF_TAGS_DEEP_SCAN,FALSE);

@@ -119,6 +119,8 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 	JTextField jtfNoveltiesAge;
 	JLabel jlVisiblePlanned;
 	JTextField jtfVisiblePlanned;
+	JCheckBox jcbDefaultActionClick;
+	JCheckBox jcbDefaultActionDrop;
 	JPanel jpP2P;
 	JCheckBox jcbShare;
 	JLabel jlPasswd;
@@ -301,15 +303,16 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		//--Options
 		jpOptions = new JPanel();
 		jpOptions.setBorder(BorderFactory.createTitledBorder(Messages.getString("ParameterView.33"))); //$NON-NLS-1$
-		double sizeOptions[][] = {{0.99},
-				{iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,60+2*iYSeparator,iYSeparator,130,iYSeparator}};
-		jpOptions.setLayout(new TableLayout(sizeOptions));
 		jcbDisplayUnmounted = new JCheckBox(Messages.getString("ParameterView.34")); //$NON-NLS-1$
 		jcbDisplayUnmounted.setToolTipText(Messages.getString("ParameterView.35")); //$NON-NLS-1$
 		jcbRestart = new JCheckBox(Messages.getString("ParameterView.36")); //$NON-NLS-1$
 		jcbRestart.setToolTipText(Messages.getString("ParameterView.37")); //$NON-NLS-1$
 		jcbSearchUnmounted = new JCheckBox(Messages.getString("ParameterView.127")); //$NON-NLS-1$
 		jcbSearchUnmounted.setToolTipText(Messages.getString("ParameterView.128")); //$NON-NLS-1$
+		jcbDefaultActionClick = new JCheckBox(Messages.getString("ParameterView.179")); //$NON-NLS-1$
+		jcbDefaultActionClick.setToolTipText(Messages.getString("ParameterView.180")); //$NON-NLS-1$
+		jcbDefaultActionDrop = new JCheckBox(Messages.getString("ParameterView.181")); //$NON-NLS-1$
+		jcbDefaultActionDrop.setToolTipText(Messages.getString("ParameterView.182")); //$NON-NLS-1$
 		JPanel jpCombos = new JPanel();
 		double sizeCombos[][] = {{0.50,0.50},
 				{20,iYSeparator,20,iYSeparator,20}};
@@ -498,12 +501,18 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jp.add(jtfNoveltiesAge,"1,6"); //$NON-NLS-1$
 		jp.add(jlVisiblePlanned,"0,8"); //$NON-NLS-1$
 		jp.add(jtfVisiblePlanned,"1,8"); //$NON-NLS-1$
-		
+	
+		double sizeOptions[][] = {{0.99},
+				{iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,60+2*iYSeparator,iYSeparator,130,iYSeparator}};
+		jpOptions.setLayout(new TableLayout(sizeOptions));
+	
 		jpOptions.add(jcbDisplayUnmounted,"0,1"); //$NON-NLS-1$
 		jpOptions.add(jcbRestart,"0,3"); //$NON-NLS-1$
 		jpOptions.add(jcbSearchUnmounted,"0,5"); //$NON-NLS-1$
-		jpOptions.add(jpCombos,"0,7"); //$NON-NLS-1$
-		jpOptions.add(jp,"0,9"); //$NON-NLS-1$
+		jpOptions.add(jcbDefaultActionClick,"0,7"); //$NON-NLS-1$
+		jpOptions.add(jcbDefaultActionDrop,"0,9"); //$NON-NLS-1$
+		jpOptions.add(jpCombos,"0,11"); //$NON-NLS-1$
+		jpOptions.add(jp,"0,13"); //$NON-NLS-1$
 				
 		//--P2P
 		jpP2P = new JPanel();
@@ -797,6 +806,8 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 					ConfigurationManager.setProperty(CONF_OPTIONS_HIDE_UNMOUNTED,Boolean.toString(bHiddenState));
 					ConfigurationManager.setProperty(CONF_OPTIONS_RESTART,Boolean.toString(jcbRestart.isSelected()));
 					ConfigurationManager.setProperty(CONF_OPTIONS_SEARCH_UNMOUNTED,Boolean.toString(jcbSearchUnmounted.isSelected()));
+					ConfigurationManager.setProperty(CONF_OPTIONS_DEFAULT_ACTION_CLICK,Boolean.toString(jcbDefaultActionClick.isSelected()));
+					ConfigurationManager.setProperty(CONF_OPTIONS_DEFAULT_ACTION_DROP,Boolean.toString(jcbDefaultActionDrop.isSelected()));
 					String sLocal = (String)Messages.getInstance().getLocals().get(jcbLanguage.getSelectedIndex());
 					if (!Messages.getInstance().getLocal().equals(sLocal)){  //local has changed
 						Messages.showInfoMessage(Messages.getString("ParameterView.103")); //$NON-NLS-1$
@@ -871,12 +882,12 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 						ConfigurationManager.setProperty(CONF_HISTORY,sHistoryDuration);
 					}
 					//P2P
-					ConfigurationManager.setProperty(CONF_OPTIONS_P2P_SHARE,Boolean.toString(jcbShare.isSelected()));
-					ConfigurationManager.setProperty(CONF_OPTIONS_P2P_ADD_REMOTE_PROPERTIES,Boolean.toString(jcbAddRemoteProperties.isSelected()));
-					ConfigurationManager.setProperty(CONF_OPTIONS_P2P_HIDE_LOCAL_PROPERTIES,Boolean.toString(jcbHideProperties.isSelected()));
+					ConfigurationManager.setProperty(CONF_P2P_SHARE,Boolean.toString(jcbShare.isSelected()));
+					ConfigurationManager.setProperty(CONF_P2P_ADD_REMOTE_PROPERTIES,Boolean.toString(jcbAddRemoteProperties.isSelected()));
+					ConfigurationManager.setProperty(CONF_P2P_HIDE_LOCAL_PROPERTIES,Boolean.toString(jcbHideProperties.isSelected()));
 					String sPass = jpfPasswd.getSelectedText();
 					if (sPass!=null && !sPass.equals("")){ //$NON-NLS-1$
-						ConfigurationManager.setProperty(CONF_OPTIONS_P2P_PASSWORD,MD5Processor.hash(sPass));
+						ConfigurationManager.setProperty(CONF_P2P_PASSWORD,MD5Processor.hash(sPass));
 					}
 					//tags
 					ConfigurationManager.setProperty(CONF_TAGS_DEEP_SCAN,Boolean.toString(jcbDeepScan.isSelected()));
@@ -998,6 +1009,8 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		this.bHidden = bHidden; 
 		jcbRestart.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_RESTART));
 		jcbSearchUnmounted.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_SEARCH_UNMOUNTED));
+		jcbDefaultActionClick.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_DEFAULT_ACTION_CLICK));
+		jcbDefaultActionDrop.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_DEFAULT_ACTION_DROP));
 		jcbLanguage.setSelectedIndex(Messages.getInstance().getLocals().indexOf(ConfigurationManager.getProperty(CONF_OPTIONS_LANGUAGE)));
 		jcbLAF.setSelectedItem(ConfigurationManager.getProperty(CONF_OPTIONS_LNF));
 		jcbLogLevel.setSelectedIndex(Integer.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_LOG_LEVEL)));
@@ -1006,10 +1019,10 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jtfBestofSize.setText(ConfigurationManager.getProperty(CONF_BESTOF_SIZE));
 		jtfNoveltiesAge.setText(ConfigurationManager.getProperty(CONF_OPTIONS_NOVELTIES_AGE));
 		jtfVisiblePlanned.setText(ConfigurationManager.getProperty(CONF_OPTIONS_VISIBLE_PLANNED));
-		jcbShare.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_P2P_SHARE));
-		jpfPasswd.setText(ConfigurationManager.getProperty(CONF_OPTIONS_P2P_PASSWORD));
-		jcbAddRemoteProperties.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_P2P_ADD_REMOTE_PROPERTIES));
-		bHidden = ConfigurationManager.getBoolean(CONF_OPTIONS_P2P_HIDE_LOCAL_PROPERTIES);
+		jcbShare.setSelected(ConfigurationManager.getBoolean(CONF_P2P_SHARE));
+		jpfPasswd.setText(ConfigurationManager.getProperty(CONF_P2P_PASSWORD));
+		jcbAddRemoteProperties.setSelected(ConfigurationManager.getBoolean(CONF_P2P_ADD_REMOTE_PROPERTIES));
+		bHidden = ConfigurationManager.getBoolean(CONF_P2P_HIDE_LOCAL_PROPERTIES);
 		jcbHideProperties.setSelected(bHidden);
 		jcbDeepScan.setSelected(ConfigurationManager.getBoolean(CONF_TAGS_DEEP_SCAN));
 		jcbUseParentDir.setSelected(ConfigurationManager.getBoolean(CONF_TAGS_USE_PARENT_DIR));

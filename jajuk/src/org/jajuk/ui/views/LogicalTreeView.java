@@ -355,7 +355,7 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 						File file = track.getPlayeableFile();
 						if (file != null){
 							try{
-							    FIFO.getInstance().push(new StackItem(file,ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
+							    FIFO.getInstance().push(new StackItem(file,ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),ConfigurationManager.getBoolean(CONF_OPTIONS_DEFAULT_ACTION_CLICK));
 							}
 							catch(JajukException je){
 							    Log.error(je);

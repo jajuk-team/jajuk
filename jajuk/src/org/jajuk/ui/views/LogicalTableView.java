@@ -200,7 +200,7 @@ public class LogicalTableView extends AbstractTableView implements Observer{
 			File file = track.getPlayeableFile();
 			if ( file != null){
 				try{
-				    FIFO.getInstance().push(new StackItem(file,ConfigurationManager.getBoolean(CONF_STATE_REPEAT)),false);//launch it
+				    FIFO.getInstance().push(new StackItem(file,ConfigurationManager.getBoolean(CONF_STATE_REPEAT)),ConfigurationManager.getBoolean(CONF_OPTIONS_DEFAULT_ACTION_CLICK));//launch it
 				}
 				catch(JajukException je){
 				    Log.error(je);

@@ -199,7 +199,7 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
 			File file = FileManager.getFile(jtable.getSortingModel().getValueAt(jtable.getSelectedRow(),jtable.getColumnCount()).toString());
 			if (!file.isScanned()){
 				try{
-				    FIFO.getInstance().push(new StackItem(file,ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);//launch it
+				    FIFO.getInstance().push(new StackItem(file,ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),ConfigurationManager.getBoolean(CONF_OPTIONS_DEFAULT_ACTION_CLICK));//launch it
 				}
 				catch(JajukException je){
 				    Log.error(je);

@@ -490,9 +490,9 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
                     Object o = path.getLastPathComponent();
                     if (o instanceof FileNode){
                         File file = ((FileNode)o).getFile();
-                        if (!file.isScanned()){
+                        if (!file.isScanned()){ //don't test if it is mounted to let FIFO ask user for mounting
                             try{
-                                FIFO.getInstance().push(new StackItem(file,ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
+                                FIFO.getInstance().push(new StackItem(file,ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),ConfigurationManager.getBoolean(CONF_OPTIONS_DEFAULT_ACTION_CLICK));
                             }
                             catch(JajukException je){
                                 Log.error(je);
