@@ -88,7 +88,7 @@ public class Main implements ITechnicalStrings {
 	/**Exit code*/
 	private static int iExitCode = 0;
 	/**Debug mode*/
-	private static boolean bDebugMode = false;
+	private static boolean bDebugMode = true;
 	/**Exiting flag*/
 	public static boolean bExiting = false;
 	/**General use lock used for synchronization*/
@@ -157,6 +157,7 @@ public class Main implements ITechnicalStrings {
 			Messages.getInstance().registerLocal("sv","Language_desc_sv"); //$NON-NLS-1$ //$NON-NLS-2$
 			Messages.getInstance().registerLocal("nl","Language_desc_nl"); //$NON-NLS-1$ //$NON-NLS-2$
 			Messages.getInstance().registerLocal("zh","Language_desc_zh"); //$NON-NLS-1$ //$NON-NLS-2$
+			Messages.getInstance().registerLocal("es","Language_desc_es"); //$NON-NLS-1$ //$NON-NLS-2$
 			
 			//configuration manager startup
 			org.jajuk.util.ConfigurationManager.getInstance();
