@@ -1,0 +1,21 @@
+<project
+  default="site"
+  xmlns:j="jelly:core"
+  xmlns:u="jelly:util">
+
+  <preGoal name="xdoc:jelly-transform">
+    <attainGoal name="faq"/>
+  </preGoal>     
+  
+ <postGoal name="xdoc:register-reports">
+  <attainGoal name="maven-statcvs-plugin:register"/>  
+  <attainGoal name="maven-jdepend-plugin:register"/>  
+ </postGoal>
+ 
+
+  <postGoal name="xdoc:register-reports">
+  <attainGoal name="maven-faq-plugin:register"/>  
+ </postGoal>
+ 
+  
+</project>

@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<project>
+ 
+  <pomVersion>3</pomVersion>
+ 
+  <name>jajuk</name>
+ 
+  <id>jajuk</id>
+ 
+  <currentVersion>pre-alpha-build20031114</currentVersion>
+ 
+  <organization>
+    <name>Jajuk team</name>
+    <url>http://jajuk.sourceforge.net/</url>
+  </organization>
+ 
+  <inceptionYear>2003</inceptionYear>
+ 
+  <package>org.jajuk.base</package>
+ 
+ <shortDescription>Advanced music manager</shortDescription>
+ 
+ <description>
+    Jajuk is a music organizer written in Java/Swing. 
+    The main goal of this project is to provide a fully-featured application for advances users in order to help 
+    them to manage big music collections.
+  </description>
+ 
+ <url>http://jajuk.sourceforge.net/</url>
+ 
+ <logo>/images/logos/jajuk-logo.png</logo>
+ 
+ <issueTrackingUrl>http://sourceforge.net/tracker/?group_id=91412</issueTrackingUrl>
+ 
+  <siteAddress>http://jajuk.sourceforge.net</siteAddress>
+ 
+  <siteDirectory>/</siteDirectory>
+ 
+ <repository>
+    <connection>
+      scm:cvs:pserver:anonymous@cvs.jajuk.sourceforge.net:/cvsroot/jajuk:jajuk
+    </connection>
+    <url>
+      http://cvs.sourceforge.net/viewcvs.py/jajuk/
+    </url>
+  </repository>
+  
+  <versions>
+  </versions>
+  
+    <developers>
+    <developer>
+      <name>Bertrand Florat</name>
+      <id>bflorat</id>
+      <email>bertrand@florat.net</email>
+      <organization>Jajuk team</organization>
+    </developer>
+  </developers>
+
+ <dependencies>
+     
+  </dependencies>
+  
+   <licences>
+   <licence>
+   <name>GPL</name>
+   <url>http://www.gnu.org/licenses/gpl.html</url>
+   <distribution>manual</distribution>
+   </licence>
+  </licences>
+  
+ 
+</project> 

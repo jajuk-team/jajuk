@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="Jajuk">
+  <title>Jajuk Project Home Page</title>
+  <body>
+    <!-- footer will be placed above the (c) -->
+    <footer>
+      <A href="http://sourceforge.net"> <IMG src="http://sourceforge.net/sflogo.php?group_id=91412&amp;type=5" width="210" height="62" border="0" alt="SourceForge.net Logo" /></A>
+    </footer>
+    <links>
+      <item name="Sourceforge Jajuk page" href="http://sourceforge.net/projects/jajuk/" />
+      <item name="Bertrand Florat Home Page" href="http://www.florat.net" />
+    </links>
+    <menu name="Overview">
+      <item name="FAQ" href="/faq.html" />
+      <item name="Status" href="/status.html" />
+    </menu>
+    <search/>
+    <menu name="Documentation">
+      <item name="Specifications (PDF) " href="/doc/specs.pdf" />
+      <item name="Programming manual (PDF)" href="/doc/codeConventions.pdf" />
+      <item name="Conception document (PDF)" href="/doc/conception.pdf" />
+    </menu>
+  </body>
+</project>

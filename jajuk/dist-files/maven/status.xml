@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<document>
+  <body>
+  	<section name="Project status">
+   <p>
+   Jajuk is in heavy development. No version is yet available. 
+   We plan to provide packaged milestones for the beginning of 2004. 
+   Note you can checkout and use CVS version which should be functional most of the time : 
+   </p><A href="cvs-usage.html"> CVS repository</A>
+  	</section>
+  </body>
+</document>

@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<document>
+  <properties>
+    <title>Changes</title>
+    <author email="bertrand@florat.net">Bertrand Florat</author>
+  </properties>
+  <body>
+    <release version="1.0" date="14/11/2003">
+      <action dev="bflorat" type="add" >
+        Initial site release, first contact with Maven ;-)
+      </action>
+    </release>
+  </body>
+</document>

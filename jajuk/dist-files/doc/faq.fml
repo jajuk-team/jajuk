@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faqs title="Frequently Asked Questions">
+
+  <part id="general">
+    <title>General</title>
+   
+    <faq id="whats-Jajuk">
+      <question>
+        What is Jajuk?
+      </question>
+      <answer>
+        <p>Jajuk is an advance Jukebox used to manage big music collections</p>
+      </answer>
+     </faq>
+    <faq id="formats">
+     <question>
+        Whish formats are supported?
+      </question>
+      <answer>
+        <p>Music files</p>
+        <ul>
+         <li>MP3</li>
+         <li>Ogg Vorbis</li>
+        </ul>
+        <p>Playlist files</p>
+        <ul>
+         <li>M3u</li>
+        </ul>
+        <p>Tags</p>
+        <ul>
+         <li>ID3 V1</li>
+         <li>ID3 V2</li>
+        </ul>
+      </answer>
+    </faq>
+</part>
+    
+  <part id="install">
+    <title>Installation</title>
+   
+    <faq id="how-install">
+      <question>
+        How do I install Jajuk?
+      </question>
+      <answer>
+        <p>There is no packaging for the moment, perform a checkout from CVS</p>
+      </answer>
+    </faq>
+  </part>  
+</faqs>
