@@ -222,7 +222,6 @@ public class Main implements ITechnicalStrings {
 				ConfigurationManager.setProperty(CONF_FIRST_CON,FALSE);
 				Messages.showInfoMessage(Messages.getString("Main.12")); //$NON-NLS-1$
 				PerspectiveManager.setCurrentPerspective(PERSPECTIVE_NAME_CONFIGURATION);
-				return;
 			}
 			
 			//start exit hook
