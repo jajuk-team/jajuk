@@ -319,7 +319,6 @@
     <report>maven-file-activity-plugin</report>
     <report>maven-license-plugin</report>
     <report>maven-statcvs-plugin</report>
-    <report>maven-doxygen-plugin</report>
-  </reports>
+ </reports>
    
 </project> 
