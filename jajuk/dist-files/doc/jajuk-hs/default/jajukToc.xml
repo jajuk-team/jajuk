@@ -51,5 +51,6 @@
 				</tocitem> 	
 			</tocitem> 	
 		</tocitem>
+		<tocitem text="Performance tips" target="perfs"/>
 	</tocitem>
 </toc>
