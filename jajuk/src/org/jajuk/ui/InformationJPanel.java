@@ -275,7 +275,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,Obser
 	        setCurrentStatusMessage(Util.formatTime(0)+" / "+Util.formatTime(0)); //$NON-NLS-1$
 	        setCurrentStatus(0);
 	        setTotalStatusMessage("00:00:00");//$NON-NLS-1$
-	        setMessage(Messages.getString("JajukWindow.17"),InformationJPanel.INFORMATIVE); //$NON-NLS-1$
+	        setMessage(Messages.getString("JajukWindow.18"),InformationJPanel.INFORMATIVE); //$NON-NLS-1$
 	        setQuality(""); //$NON-NLS-1$
 	     }
 	    else if (EVENT_FILE_LAUNCHED.equals(subject)){
