@@ -7,22 +7,9 @@
  * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
  * 
- * You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
- * USA. $Log$
- * USA. Revision 1.6  2003/11/13 18:56:55  bflorat
- * USA. 13/11/2003
- * USA.
- * USA. Revision 1.5  2003/11/03 06:08:05  bflorat
- * USA. 03/11/2003
- * USA. Revision 1.4 2003/10/31 13:05:06 bflorat 31/10/2003
- * 
- * Revision 1.3 2003/10/26 21:28:49 bflorat 26/10/2003
- * 
- * Revision 1.2 2003/10/23 22:07:40 bflorat 23/10/2003
- * 
- * Revision 1.1 2003/10/21 17:51:43 bflorat 21/10/2003
- *  
- */
+ * You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
+ * $Revision$
+ **/
 
 package org.jajuk.base;
 

@@ -8,20 +8,7 @@
  * General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,USA
- * $Log$
- * Revision 1.24  2003/11/21 15:52:06  bflorat
- * Exit confirmation
- *
- * Revision 1.23  2003/11/21 15:00:39  bflorat
- * Corrected various display bugs when changing current perspective
- *
- * Revision 1.22  2003/11/21 10:28:18  bflorat
- * Corrected perspective/views repaint problems
- *
- * Revision 1.21  2003/11/20 21:40:30  bflorat
- * 20/11/2003
- *
- *  
+ * $Revision$
  */
 package org.jajuk;
 
@@ -33,6 +20,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
@@ -41,6 +29,7 @@ import javax.swing.JPanel;
 
 import org.jajuk.base.Collection;
 import org.jajuk.base.FIFO;
+import org.jajuk.base.FileManager;
 import org.jajuk.base.History;
 import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.base.TypeManager;
@@ -48,6 +37,7 @@ import org.jajuk.i18n.Messages;
 import org.jajuk.ui.CommandJPanel;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.JajukJMenuBar;
+import org.jajuk.ui.LNFManager;
 import org.jajuk.ui.PerspectiveBarJPanel;
 import org.jajuk.ui.PerspectiveManager;
 import org.jajuk.ui.SplashScreen;
@@ -80,6 +70,10 @@ public class Main implements ITechnicalStrings {
 			//Launch splashscreen
 			SplashScreen sc = new SplashScreen(jframe);
 		
+			//Register locals
+			Messages.registerLocal("en","Language_desc_en"); //$NON-NLS-1$ //$NON-NLS-2$
+			Messages.registerLocal("fr","Language_desc_fr"); //$NON-NLS-1$ //$NON-NLS-2$
+			
 			//configuration manager startup
 			org.jajuk.util.ConfigurationManager.getInstance();
 					
@@ -97,6 +91,8 @@ public class Main implements ITechnicalStrings {
 				Log.error(Messages.getString("Main.Error_registering_players_11"), e1); //$NON-NLS-1$
 			}
 	
+			//Registers supported look and feels
+			LNFManager.register(LNF_METAL,"javax.swing.plaf.metal.MetalLookAndFeel"); //$NON-NLS-1$
 			
 			//perform initial checkups
 			initialCheckups();
@@ -110,6 +106,10 @@ public class Main implements ITechnicalStrings {
 						
 			//Load user configuration
 			org.jajuk.util.ConfigurationManager.load();
+			
+			//Set local
+			Messages.setLocal(ConfigurationManager.getProperty(CONF_OPTIONS_LANGUAGE));
+			
 			
 			//Load history
 			History.load();
@@ -173,6 +173,8 @@ public class Main implements ITechnicalStrings {
 			//Close splash screen
 			sc.dispose();
 		
+			//Lauch startup track if any
+			launchInitialTrack();
 				
 		} catch (JajukException je) { //last chance to catch any error for logging purpose
 			Log.error(je);
@@ -232,12 +234,12 @@ public class Main implements ITechnicalStrings {
 	public static void exit(int iExitCode) {
 		try {
 			if (Boolean.valueOf(ConfigurationManager.getProperty(CONF_CONFIRMATIONS_EXIT)).booleanValue()){
-				int iResu = JOptionPane.showConfirmDialog(jframe,Messages.getString("Confirmation_exit"),"Confirmation",JOptionPane.YES_NO_OPTION);
+				int iResu = JOptionPane.showConfirmDialog(jframe,Messages.getString("Confirmation_exit"),Messages.getString("Main.16"),JOptionPane.YES_NO_OPTION); //$NON-NLS-1$ //$NON-NLS-2$
 				if (iResu == JOptionPane.NO_OPTION){
 					return;
 				}
 			}
-			Log.debug("Exiting with code : "+iExitCode);
+			Log.debug("Exit with code: "+iExitCode); //$NON-NLS-1$
 			if (iExitCode == 0){ //commit only if exit is safe to avoid commiting empty collection
 				//commit configuration
 				org.jajuk.util.ConfigurationManager.commit();
@@ -247,10 +249,35 @@ public class Main implements ITechnicalStrings {
 				History.commit();
 			}
 		} catch (IOException e) {
-			Log.error("", e);
+			Log.error("", e); //$NON-NLS-1$
 		}
 		System.exit(iExitCode);
 
 	}
-
+	
+	/**
+	 * Launch initial track at startup
+	 */
+	private static void launchInitialTrack(){
+		if (!ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_NOTHING)){
+			if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_LAST)){
+				ArrayList alFiles = new ArrayList(1);
+				alFiles.add(FileManager.getFile(History.getInstance().getLastFile()));
+				FIFO.push(alFiles,false);
+			}
+			else if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_FILE)){
+				ArrayList alFiles = new ArrayList(1);
+				alFiles.add(FileManager.getFile(ConfigurationManager.getProperty(CONF_STARTUP_FILE)));
+				FIFO.push(alFiles,false);
+			}
+			else if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_SHUFFLE)){
+				org.jajuk.base.File file = FileManager.getShuffleFile();
+				if (file != null){
+					ArrayList alFiles = new ArrayList(1);
+					alFiles.add(FileManager.getShuffleFile());
+					FIFO.push(alFiles,false);
+				}
+			}
+		}
+	}
 }

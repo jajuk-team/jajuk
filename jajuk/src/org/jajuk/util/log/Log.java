@@ -15,30 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- * $Log$
- * Revision 1.8  2003/11/18 18:58:07  bflorat
- * 18/11/2003
- *
- * Revision 1.7  2003/11/11 20:35:54  bflorat
- * 11/11/2003
- *
- * Revision 1.6  2003/10/31 13:05:58  bflorat
- * 31/10/2003
- *
- * Revision 1.5  2003/10/28 21:35:10  bflorat
- * 28/10/2003
- *
- * Revision 1.4  2003/10/26 21:28:49  bflorat
- * 26/10/2003
- *
- * Revision 1.3  2003/10/21 20:43:07  bflorat
- * TechnicalStrings to ITechnicalStrings according to coding convention
- *
- * Revision 1.2  2003/10/17 20:43:56  bflorat
- * 17/10/2003
- *
- * Revision 1.1  2003/10/09 21:15:20  bflorat
- * Added log to version control
+ * $Revision$
  *
  */
 package org.jajuk.util.log;
@@ -77,8 +54,8 @@ public class Log implements ITechnicalStrings{
 		private static int verbosity = INFO;  
 		 /**Self instance used for signleton pattern */
 		private static Log log = null;
-	
-
+		
+		
 		/**
 		 *  Constructor for the Log object
 		 */
@@ -103,97 +80,97 @@ public class Log implements ITechnicalStrings{
 				System.out.println(Messages.getString("Log.Error_during_logging_system_startup_5")); //$NON-NLS-1$
 			}
 		}
-
+		
 		/**
-		* Return a self instance
-		* <p>Implementation of the singleton pattern
-		*/
+		 * Return a self instance
+		 * <p>Implementation of the singleton pattern
+		 */
 		public static Log getInstance(){
-			 if ( Log.log != null){
+			if ( Log.log != null){
 				return Log.log;
-			 }
-			 else{
-					Log.log = new Log();     	
-					return Log.log;
-			 }
+			}
+			else{
+				Log.log = new Log();     	
+				return Log.log;
+			}
 		}
-
-    
+		
+		
 		/**
 		 * Log a debug-level  message
 		 */
 		public static void debug(String s){
-				loggerDebug.debug(s);
+			loggerDebug.debug(s);
 		}
-    
+		
 		/**
 		 * Log a info-level  message
 		 */
 		public static void info(String s){
-				logger.info(s);
+			logger.info(s);
 		}
-
+		
 		/**
 		 * Log a warning-level  message
 		 */
 		public static void warn(String s){
-				logger.warn(s);
-		 }
-
+			logger.warn(s);
+		}
+		
 		/**
 		 * Log an error-level  message
 		 * @param sCode error code
 		 * @param sInfosup : error context information
 		 * @param t the exception itself
-		**/
+		 **/
 		public static void error(String sCode,String sInfosup,Throwable t){
-			logger.error('('+sCode+") "+Messages.getErrorMessage(sCode)+ ":"+sInfosup,t);
-		 }
+			logger.error('('+sCode+") "+Messages.getErrorMessage(sCode)+ ((sInfosup==null)?"":":"+sInfosup),t);
+		}
 		
-	/**
+		/**
 		 * Log an error-level  message
 		 * @param t the exception itself
-		**/
+		 **/
 		public static void error(Throwable t){
 			logger.error("",t);
-		 }
-
-		/**
-			 * Log an error-level  message
-			 * @param sInfosup
-			 * @param t
-			**/
-			public static void error(String sCode,Throwable t){
-					error(sCode,"",t);
-			 }
-
+		}
 		
 		/**
-			 * Log an error-level  message
-			 * @param sInfosup
-			 * @param je
-			**/
-			public static void error(String sInfosup,JajukException je){
-					error(je.getCode(),sInfosup,je);
-			 }
-
-			/**
-				 * Log an error-level  message
-				 * @param je
-				**/
-				public static void error(JajukException je){
-						error(je.getCode(),"",je);
-				 }
-
+		 * Log an error-level  message
+		 * @param sInfosup
+		 * @param t
+		 **/
+		public static void error(String sCode,Throwable t){
+			error(sCode,null,t);
+		}
+		
+		
+		/**
+		 * Log an error-level  message
+		 * @param sInfosup
+		 * @param je
+		 **/
+		public static void error(String sInfosup,JajukException je){
+			error(je.getCode(),sInfosup,je);
+		}
+		
+		/**
+		 * Log an error-level  message
+		 * @param je
+		 **/
+		public static void error(JajukException je){
+			error(je.getCode(),null,je);
+		}
+		
 		/**
 		 * Log a fatal error message
 		 */
-	   public  static void fatal(String s){
-				logger.fatal(s);
+		public  static void fatal(String s){
+			logger.fatal(s);
 		}
-
-    
-
+		
+		
+		
 		/**
 		 * Returns the verbosity.
 		 * @return int
@@ -201,7 +178,7 @@ public class Log implements ITechnicalStrings{
 		public int getVerbosity() {
 			return verbosity;
 		}
-
+		
 		/**
 		 * Sets the verbosity.
 		 * @param verbosity The verbosity to set
@@ -210,29 +187,29 @@ public class Log implements ITechnicalStrings{
 			verbosity = newVerbosity;
 			switch(newVerbosity){
 				case DEBUG:
-						logger.setLevel(Level.DEBUG);
-						loggerDebug.setLevel(Level.DEBUG);
+					logger.setLevel(Level.DEBUG);
+					loggerDebug.setLevel(Level.DEBUG);
 					break;
 				case INFO:
-						logger.setLevel(Level.INFO);
-						loggerDebug.setLevel(Level.INFO);
+					logger.setLevel(Level.INFO);
+					loggerDebug.setLevel(Level.INFO);
 					break;
 				case WARNING:
-						logger.setLevel(Level.WARN);
-						loggerDebug.setLevel(Level.WARN);
+					logger.setLevel(Level.WARN);
+					loggerDebug.setLevel(Level.WARN);
 					break;
 				case ERROR:
-						logger.setLevel(Level.ERROR);
-						loggerDebug.setLevel(Level.ERROR);
+					logger.setLevel(Level.ERROR);
+					loggerDebug.setLevel(Level.ERROR);
 					break;
 				case FATAL:
-						logger.setLevel(Level.FATAL);
-						loggerDebug.setLevel(Level.FATAL);
+					logger.setLevel(Level.FATAL);
+					loggerDebug.setLevel(Level.FATAL);
 					break;
 			}
 		}
-	
-	
+		
+		
 		/**
 		 * Convenient method to display stacks properly
 		 */

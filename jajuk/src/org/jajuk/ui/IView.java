@@ -15,22 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- * $Log$
- * Revision 1.2  2003/11/18 18:58:07  bflorat
- * 18/11/2003
- *
- * Revision 1.1  2003/11/16 17:57:18  bflorat
- * 16/11/2003
- *
- * Revision 1.4  2003/10/17 20:43:55  bflorat
- * 17/10/2003
- *
- * Revision 1.3  2003/10/16 15:56:30  sgringoi
- * Rename getIdView() in getId()
- * Add getComponent() method
- *
- * Revision 1.2  2003/10/10 15:29:57  sgringoi
- * *** empty log message ***
+ * $Revision$
  *
  */
 package org.jajuk.ui;

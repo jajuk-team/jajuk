@@ -15,25 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- * $Log$
- * Revision 1.6  2003/11/18 18:58:07  bflorat
- * 18/11/2003
- *
- * Revision 1.5  2003/11/16 17:57:18  bflorat
- * 16/11/2003
- *
- * Revision 1.4  2003/10/21 20:43:06  bflorat
- * TechnicalStrings to ITechnicalStrings according to coding convention
- *
- * Revision 1.3  2003/10/21 20:37:54  bflorat
- * 21/10/2003
- *
- * Revision 1.2  2003/10/17 20:36:45  bflorat
- * 17/10/2003
- *
- * Revision 1.1  2003/10/12 21:08:11  bflorat
- * 12/10/2003
- *
+* $Revision$
  */
 package org.jajuk.base;
 
@@ -52,37 +34,39 @@ public class FIFO extends Thread implements ITechnicalStrings{
 
 	/**Cuurently played track */
 	private static File fCurrent;
-
+	
 	/**Fifo itself, contains jajuk File objects **/
 	private static ArrayList alFIFO = new ArrayList(50);
-
+	
 	/**Stop flag**/
 	private static volatile boolean bStop = false;
-
+	
 	/** Deep time**/
 	private static final int SLEEP_TIME = 50;
 	
 	/**Self instance*/
-		static private FIFO fifo= null; 	
+	static private FIFO fifo= null; 	
 	
+	/**True is a track is playing */
+	static private boolean bPlaying = false;
 	
-		/**
-		 * Singleton access
-		 * @return
-		 */
-		public static FIFO getInstance(){
-			if (fifo == null){
-				fifo = new FIFO();
-			}
-			return fifo;
+	/**
+	 * Singleton access
+	 * @return
+	 */
+	public static FIFO getInstance(){
+		if (fifo == null){
+			fifo = new FIFO();
 		}
-
+		return fifo;
+	}
+	
 	/**
 	 * constructor
 	 */
 	private FIFO() {
 	}
-
+	
 	/**
 	 * Push some files in the fifo
 	 * @param alFiles, list of files to be played
@@ -91,12 +75,12 @@ public class FIFO extends Thread implements ITechnicalStrings{
 	public static synchronized void push(ArrayList alFiles, boolean bAppend) {
 		if (!bAppend) {
 			Player.stop();
-			fCurrent = null;
+			bPlaying = false;
 			clear();
 		}
 		alFIFO.addAll(alFiles);
 	}
-
+	
 	/**
 	 * Clears the fifo, for example when we want to add a group of files stopping previous plays
 	 *
@@ -104,7 +88,7 @@ public class FIFO extends Thread implements ITechnicalStrings{
 	public static synchronized void clear() {
 		alFIFO.clear();
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see java.lang.Runnable#run()
 	 */
@@ -112,9 +96,17 @@ public class FIFO extends Thread implements ITechnicalStrings{
 		try {
 			while (!bStop) {
 				Thread.sleep(SLEEP_TIME); //sleep to save CPU
-				if (fCurrent != null
-					|| alFIFO.size() == 0) {//already playing something or empty fifo
+				if (bPlaying ){//already playing something
 					continue; //leave
+				}
+				if (!bPlaying && alFIFO.size() == 0 && fCurrent!= null && ConfigurationManager.getProperty(CONF_STATE_CONTINUE).equals("true")){ //empty fifo
+					File fileNext = FileManager.getNextFile(fCurrent);
+					if ( fileNext != null ){
+						alFIFO.add(FileManager.getNextFile(fCurrent));	
+					}
+				}
+				if (alFIFO.size() == 0){
+					continue;
 				}
 				int index = 0;
 				if (ConfigurationManager.getProperty(CONF_STATE_SHUFFLE).equals("true")){
@@ -127,13 +119,14 @@ public class FIFO extends Thread implements ITechnicalStrings{
 				}
 				alFIFO.remove(index);//remove it from todo list;
 				Log.debug("Now playing :"+fCurrent); //$NON-NLS-1$
+				bPlaying = true;
 				Player.play(fCurrent);  //play it
 			}
 		} catch (Exception e) {
-			Log.error("", e); //$NON-NLS-1$
+			Log.error("122", e); //$NON-NLS-1$
 		}
 	}
-
+	
 	/**
 	 * Stopping thread method
 	 *
@@ -148,7 +141,7 @@ public class FIFO extends Thread implements ITechnicalStrings{
 	 */
 	public static synchronized void finished(){
 		Log.debug(fCurrent+ " is finished"); //$NON-NLS-1$
-		fCurrent = null;
+		bPlaying = false;
 	}
 	
 	/**
@@ -158,5 +151,5 @@ public class FIFO extends Thread implements ITechnicalStrings{
 	public static synchronized File getCurrentFile(){
 		return fCurrent;
 	}
-
+	
 }

@@ -7,21 +7,9 @@
  * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
  * 
- * You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
- * USA. $Log$
- * USA. Revision 1.4  2003/11/18 18:58:07  bflorat
- * USA. 18/11/2003
- * USA.
- * USA. Revision 1.3  2003/11/16 17:57:18  bflorat
- * USA. 16/11/2003
- * USA.
- * USA. Revision 1.2  2003/11/13 18:56:56  bflorat
- * USA. 13/11/2003
- * USA.
- * USA. Revision 1.1  2003/11/11 20:35:43  bflorat
- * USA. 11/11/2003
- * USA.
- */
+ * You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
+ * $Revision$
+ **/
 
 package org.jajuk.ui;
 
@@ -114,17 +102,16 @@ public class DeviceWizard extends JFrame implements ActionListener,ITechnicalStr
 		jbUrl.addActionListener(this);
 		jlMountPoint = new JLabel("Unix mount Point : ");
 		jtfMountPoint = new JTextField();
-		if (System.getProperties().get("os.name").equals("windows")){
+		String sOS = (String)System.getProperties().get("os.name");
+		if (sOS.trim().toLowerCase().lastIndexOf("windows")!=-1){
 			jlMountPoint.setEnabled(false);
 			jtfMountPoint.setEnabled(false);
 		}
 		jcbRefresh = new JCheckBox("Perform an immediate refresh");
-		jcbRefresh.setSelected(true);
 		jcbRefresh.addActionListener(this);
 		jcbAutoMount = new JCheckBox("Auto mount at startup");
 		jcbAutoMount.addActionListener(this);
 		jcbAutoRefresh = new JCheckBox("Auto refresh at startup");
-		jcbAutoRefresh.setEnabled(false);
 		jcboxSynchronized = new JCheckBox("Synchronized with : ");
 		jcboxSynchronized.addActionListener(this);
 		jcbSynchronized = new JComboBox();
@@ -138,8 +125,6 @@ public class DeviceWizard extends JFrame implements ActionListener,ITechnicalStr
 		bgSynchro = new ButtonGroup();
 		jrbFullSynchro = new JRadioButton("Full synchronization");
 		jrbFullSynchro.setBorder(BorderFactory.createEmptyBorder(0, 25, 0, 0));
-		jrbFullSynchro.setEnabled(false);  
-		jrbFullSynchro.setSelected(true);//default synchro mode
 		jrbFullSynchro.addActionListener(this);
 		jrbPartialSynchro = new JRadioButton("Partial synchronization");
 		jrbPartialSynchro.setBorder(BorderFactory.createEmptyBorder(0, 25, 0, 0));
@@ -199,8 +184,37 @@ public class DeviceWizard extends JFrame implements ActionListener,ITechnicalStr
 		jpMain.add(jpButtons);
 		setContentPane(jpMain);
 		show();
+		updateWidgetsDefault();
 	}
 
+	/**
+	 * Display device wizzard
+	 * @param device
+	 */
+	public DeviceWizard(Device device) {
+		
+	
+	}
+	
+	/**
+	 * Update widgets for default state
+	 */
+	private void updateWidgetsDefault(){
+		jcbRefresh.setSelected(true);
+		jcbAutoRefresh.setEnabled(false);
+		jrbFullSynchro.setSelected(true);//default synchro mode
+	}
+	
+	/**
+	 * Update widgets for device property state 
+	 */
+	private void updateWidgets(){
+		jcbRefresh.setSelected(true);
+		jcbAutoRefresh.setEnabled(false);
+		jrbFullSynchro.setSelected(true);//default synchro mode
+	}
+	
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -258,6 +272,8 @@ public class DeviceWizard extends JFrame implements ActionListener,ITechnicalStr
 		}
 		else if (e.getSource() == jbOk){
 			Device device = DeviceManager.registerDevice(jtfName.getText(),jcbType.getSelectedIndex(),jtfUrl.getText(),jtfMountPoint.getText());
+			device.setProperty(DEVICE_OPTION_AUTO_MOUNT,Boolean.toString(jcbAutoMount.isSelected()));
+			device.setProperty(DEVICE_OPTION_AUTO_REFRESH,Boolean.toString(jcbAutoRefresh.isSelected()));
 			if (jcbRefresh.isSelected()){
 				device.refresh();
 			}

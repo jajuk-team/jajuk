@@ -7,12 +7,9 @@
  * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
  * 
- * You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
- * USA. $Log$
- * USA. Revision 1.1  2003/11/20 19:12:19  bflorat
- * USA. 20/11/2003
- * USA.
- */
+ * You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
+ * $Revision$
+ **/
 
 package org.jajuk.base;
 
@@ -113,6 +110,18 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
 			Log.error(e);
 			throw new JajukException("119");
 		}
+	}
+	
+	/**
+	 * 
+	 * @return id of last played registered track or null if history is empty
+	 */
+	public String getLastFile(){
+		if (alHistory.size() == 0){
+			return null;
+		}
+		HistoryItem hiLast = (HistoryItem)alHistory.get(alHistory.size()); 
+		return hiLast.getFileId();
 	}
 	
 	

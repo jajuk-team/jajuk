@@ -15,45 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- * $Log$
- * Revision 1.16  2003/11/22 15:40:28  bflorat
- * 22/11/2003
- *
- * Revision 1.15  2003/11/21 15:52:08  bflorat
- * Exit confirmation
- *
- * Revision 1.14  2003/11/20 21:40:30  bflorat
- * 20/11/2003
- *
- * Revision 1.13  2003/11/20 19:12:22  bflorat
- * 20/11/2003
- *
- * Revision 1.12  2003/11/18 21:50:56  bflorat
- * 18/11/2003
- *
- * Revision 1.11  2003/11/18 18:58:07  bflorat
- * 18/11/2003
- *
- * Revision 1.10  2003/11/16 17:57:18  bflorat
- * 16/11/2003
- *
- * Revision 1.9  2003/11/14 11:02:18  bflorat
- * - Added user configuration persistence
- *
- * Revision 1.8  2003/11/13 18:56:56  bflorat
- * 13/11/2003
- *
- * Revision 1.6  2003/10/26 21:28:49  bflorat
- * 26/10/2003
- *
- * Revision 1.4  2003/10/21 20:43:06  bflorat
- * TechnicalStrings to ITechnicalStrings according to coding convention
- *
- * Revision 1.3  2003/10/17 20:43:56  bflorat
- * 17/10/2003
- *
- * Revision 1.2  2003/10/10 15:23:08  sgringoi
- * Ajout des propriétés d'erreur
+ * $Revision$
  *
  */
 package org.jajuk.util;
@@ -77,7 +39,7 @@ import org.jajuk.util.log.Log;
 public class ConfigurationManager implements ITechnicalStrings{
 	
 	/**Properties in memory */
-	private static Properties properties = null;
+	private static Properties properties = new Properties();
 	
 	/**Self instance**/
 	static private ConfigurationManager cm;
@@ -96,8 +58,8 @@ public class ConfigurationManager implements ITechnicalStrings{
 	 *
 	 */
 	private ConfigurationManager(){
-		properties = new Properties();
 		setDefaultProperties();
+		properties = (Properties)properties.clone();
 	}
 	
 	
@@ -111,15 +73,13 @@ public class ConfigurationManager implements ITechnicalStrings{
 		return properties.getProperty(pName);
 	}
 
-
 	/**
 	 * Set default values
 	 *
 	 */
-	private static void setDefaultProperties() {
+	public static void setDefaultProperties() {
 		// User preferences
 		properties.put(CONF_PERSPECTIVE_DEFAULT,PERSPECTIVE_NAME_CONFIGURATION); //$NON-NLS-1$ //$NON-NLS-2$
-	
 		properties.put(CONF_STATE_REPEAT,FALSE); //$NON-NLS-1$
 		properties.put(CONF_ICON_REPEAT,ICON_REPEAT_OFF);  
 		properties.put(CONF_STATE_SHUFFLE,FALSE); //$NON-NLS-1$
@@ -130,13 +90,26 @@ public class ConfigurationManager implements ITechnicalStrings{
 		properties.put(CONF_ICON_INTRO,ICON_INTRO_OFF);  
 		properties.put(CONF_CONFIRMATIONS_DELETE_FILE,TRUE);
 		properties.put(CONF_CONFIRMATIONS_EXIT,FALSE);
+		
 		properties.put(CONF_OPTIONS_HIDE_UNMOUNTED,FALSE);
 		properties.put(CONF_OPTIONS_RESTART,TRUE);
-		properties.put(CONF_OPTIONS_LANGUAGE,Messages.getString("options_language_default"));
-		properties.put(CONF_OPTIONS_LOG_LEVEL,"WARNING");
+		String sLanguage = System.getProperty("user.language");
+		if (Messages.getLocals().contains(sLanguage)){
+			properties.put(CONF_OPTIONS_LANGUAGE,sLanguage);
+		}
+		else{
+			properties.put(CONF_OPTIONS_LANGUAGE,"en");
+		}
+		properties.put(CONF_OPTIONS_LNF,LNF_METAL);
+		properties.put(CONF_OPTIONS_LOG_LEVEL,Integer.toString(Log.WARNING));
+		properties.put(CONF_OPTIONS_INTRO_BEGIN,"0");
+		properties.put(CONF_OPTIONS_INTRO_LENGTH,"20");
+		properties.put(CONF_STARTUP_MODE,STARTUP_MODE_SHUFFLE);
 		properties.put(CONF_OPTIONS_P2P_SHARE,FALSE);
 		properties.put(CONF_OPTIONS_P2P_ADD_REMOTE_PROPERTIES,FALSE);
 		properties.put(CONF_OPTIONS_P2P_HIDE_LOCAL_PROPERTIES,TRUE);
+		properties.put(CONF_HISTORY,"-1");
+		properties.put(CONF_OPTIONS_P2P_PASSWORD,"");
 	}
 	
 	

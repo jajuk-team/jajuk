@@ -15,15 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- * $Log$
- * Revision 1.3  2003/11/14 00:07:15  bflorat
- * 13/11/2003
- *
- * Revision 1.2  2003/11/07 23:58:14  bflorat
- * 08/11/2003
- *
- * Revision 1.1  2003/10/26 21:28:49  bflorat
- * 26/10/2003
+ * $Revision$
  *
  */
 

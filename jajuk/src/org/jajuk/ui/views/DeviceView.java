@@ -15,18 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- * $Log$
- * Revision 1.4  2003/11/18 18:58:06  bflorat
- * 18/11/2003
- *
- * Revision 1.3  2003/11/16 17:57:18  bflorat
- * 16/11/2003
- *
- * Revision 1.2  2003/11/13 18:56:55  bflorat
- * 13/11/2003
- *
- * Revision 1.1  2003/11/11 20:35:43  bflorat
- * 11/11/2003
+ * $Revision$
  *
  */
 
@@ -81,6 +70,7 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 		JButton jbDelete;
 		JButton jbProperties;
 		JButton jbMount;
+		JButton jbUnmount;
 		JButton jbTest;
 		JButton jbRefresh;
 		JButton jbSynchro;
@@ -90,6 +80,7 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 	JMenuItem jmiDelete;
 	JMenuItem jmiProperties;
 	JMenuItem jmiMount;
+	JMenuItem jmiUnmount;
 	JMenuItem jmiTest;
 	JMenuItem jmiRefresh;
 	JMenuItem jmiSynchronize;
@@ -123,6 +114,11 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 		jbMount.addActionListener(this);
 		jbMount.setToolTipText("Mount selected device");
 		
+		jbUnmount = new JButton(new ImageIcon(ICON_UNMOUNT));
+		jbUnmount.setActionCommand(EVENT_DEVICE_UNMOUNT);
+		jbUnmount.addActionListener(this);
+		jbUnmount.setToolTipText("Unmount selected device");
+			
 		jbTest = new JButton(new ImageIcon(ICON_TEST));
 		jbTest.setActionCommand(EVENT_DEVICE_TEST);
 		jbTest.addActionListener(this);
@@ -145,6 +141,8 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 		jtbButtons.add(jbProperties);
 		jtbButtons.addSeparator();
 		jtbButtons.add(jbMount);
+		jtbButtons.addSeparator();
+		jtbButtons.add(jbUnmount);
 		jtbButtons.addSeparator();
 		jtbButtons.add(jbTest);
 		jtbButtons.addSeparator();
@@ -175,6 +173,11 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 		jmiMount.addActionListener(this);
 		jmiMount.setActionCommand(EVENT_DEVICE_MOUNT);
 		jpmenu.add(jmiMount);
+		
+		jmiUnmount = new JMenuItem("Unmount",new ImageIcon(ICON_UNMOUNT)); 
+		jmiUnmount.addActionListener(this);
+		jmiUnmount.setActionCommand(EVENT_DEVICE_UNMOUNT);
+		jpmenu.add(jmiUnmount);
 		
 		jmiTest = new JMenuItem("Test",new ImageIcon(ICON_TEST));
 		jmiTest.addActionListener(this);
@@ -340,8 +343,17 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 				Messages.showErrorMessage("112");
 			}
 		}
+		else if (ae.getActionCommand().equals(EVENT_DEVICE_UNMOUNT)){
+			try{
+				dSelected.unmount();
+				ViewManager.notify(EVENT_VIEW_REFRESH_REQUEST,this);
+			}
+			catch(Exception e){
+				Messages.showErrorMessage("121");
+			}
+		}
 		else if (ae.getActionCommand().equals(EVENT_DEVICE_PROPERTIES)){
-			dSelected.displayProperties();
+			new DeviceWizard(dSelected);
 		}
 		else if (ae.getActionCommand().equals(EVENT_DEVICE_REFRESH)){
 			dSelected.refresh();

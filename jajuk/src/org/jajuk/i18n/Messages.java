@@ -15,37 +15,13 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- * $Log$
- * Revision 1.9  2003/11/18 18:58:07  bflorat
- * 18/11/2003
- *
- * Revision 1.8  2003/11/16 17:57:18  bflorat
- * 16/11/2003
- *
- * Revision 1.7  2003/11/13 18:56:55  bflorat
- * 13/11/2003
- *
- * Revision 1.6  2003/11/11 20:35:43  bflorat
- * 11/11/2003
- *
- * Revision 1.5  2003/10/26 21:28:49  bflorat
- * 26/10/2003
- *
- * Revision 1.4  2003/10/23 22:07:40  bflorat
- * 23/10/2003
- *
- * Revision 1.3  2003/10/17 20:37:18  bflorat
- * 17/10/2003
- *
- * Revision 1.2  2003/10/10 17:37:21  bflorat
- * *** empty log message ***
- *
- * Revision 1.1  2003/10/07 21:02:21  bflorat
- * Initial commit
- *
+ * $Revision$
  */
 package org.jajuk.i18n;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -66,95 +42,135 @@ public class Messages {
 	private static final String BUNDLE_NAME = "org.jajuk.i18n.jajuk"; //$NON-NLS-1$
 	/**Local ( language) to be used, default is english */
 	private static String sLocal;
-
-	private static ResourceBundle rb =
-		ResourceBundle.getBundle(BUNDLE_NAME);
+	/**Supported Locals*/
+	public static ArrayList alLocals = new ArrayList(10);
+	/**Locals description */
+	public static ArrayList alDescs = new ArrayList(10);
+	/**Used ressource bundle*/
+	private static ResourceBundle rb = ResourceBundle.getBundle(BUNDLE_NAME);
 
 	/**
-	 * 
+	 * Private Constructor
 	 */
 	private Messages() {
 	}
+
 	/**
 	 * @param key
 	 * @return
 	 */
 	public static String getString(String key) {
 		String sOut = key;
-			try{
-				sOut = rb.getString(key); //$NON-NLS-1$
-			}
-			catch(Exception e){
-				Log.error("105","key: "+key,e);
-			}
-			return sOut;
+		try{
+			sOut = rb.getString(key); //$NON-NLS-1$
+		}
+		catch(Exception e){
+			Log.error("105","key: "+key,e);
+		}
+		return sOut;
 	}
-
-
+	
+	/**
+	 * Register a local
+	 * @param sName : local name like "english"
+	 * @param sLocal : local name like "en"
+	 */
+	public static void registerLocal(String sLocal ,String sDesc){
+		alLocals.add(sLocal);
+		alDescs.add(sDesc);
+	}
+	
+	/**
+	 * Return list of available locals
+	 * @return
+	 */
+	public static ArrayList getLocals(){
+		return alLocals;
+	}
+	
+	/**
+	 * Return list of available locals
+	 * @return
+	 */
+	public static ArrayList getDescs(){
+		return alDescs;
+	}
+	
+	/**
+	 * Change current local
+	 * @param sLocal
+	 */
 	public static void setLocal(String sLocal){
 		Messages.sLocal = sLocal;
 		rb = ResourceBundle.getBundle(BUNDLE_NAME,new Locale(sLocal));
 	}
 	
 	/**
-		 * Return the message display to the user corresponding to the error code.
-		 * 
-		 * @param pCode Error code.
-		 * @return String Message corresponding to the error code.
-		 */
-		public static String getErrorMessage(String pCode) {
-			String sOut = pCode;
-			try{
-				sOut = rb.getString("Error." + pCode); //$NON-NLS-1$
-			}
-			catch(Exception e){
-				Log.error("105","code: "+pCode,e);
-			}
-			return sOut;
+	 * Return the message display to the user corresponding to the error code.
+	 * 
+	 * @param pCode Error code.
+	 * @return String Message corresponding to the error code.
+	 */
+	public static String getErrorMessage(String pCode) {
+		String sOut = pCode;
+		try{
+			sOut = rb.getString("Error." + pCode); //$NON-NLS-1$
 		}
-		
-		
-		/**
-		 * Show a dialog with specified error message
-		 * @param sCode
-		 */
-		public static void showErrorMessage(String sCode){
-			JOptionPane.showMessageDialog(Main.jframe,Messages.getErrorMessage(sCode),Messages.getErrorMessage("102"),JOptionPane.ERROR_MESSAGE);
+		catch(Exception e){
+			Log.error("105","code: "+pCode,e);
 		}
-		
-		/**
-		 * Show a dialog with specified error message
-		 * @param sMessage
-		 */
-		public static void showInfoMessage(String sMessage){
-			JOptionPane.showMessageDialog(Main.jframe,Messages.getString(sMessage),Messages.getString("Info"),JOptionPane.INFORMATION_MESSAGE);
-		}
+		return sOut;
+	}
 	
-		/**
-		 * Show a dialog with specified error message and an icon
-		 * @param sMessage
-		 */
-		public static void showInfoMessage(String sMessage,Icon icon){
-			JOptionPane.showMessageDialog(Main.jframe,Messages.getString(sMessage),Messages.getString("Info"),JOptionPane.INFORMATION_MESSAGE,icon);
-		}
-		
-		/**
-		 * Show a dialog with specified error message and infosup
-		 * @param sCode
-		 * @param sInfoSup
-		 */
-		public static void showErrorMessage(String sCode,String sInfoSup){
-			JOptionPane.showMessageDialog(Main.jframe,Messages.getErrorMessage(sCode)+" : "+sInfoSup,Messages.getErrorMessage("102"),JOptionPane.ERROR_MESSAGE);
-		}
-		
-		/**
-		 * Show a dialog with specified error message with infos up
-		 * @param sMessage
-		 * @param sInfoSup
-		 */
-		public static void showInfoMessage(String sMessage,String sInfoSup){
-			JOptionPane.showMessageDialog(Main.jframe,Messages.getString(sMessage)+" : "+sInfoSup,Messages.getString("Info"),JOptionPane.INFORMATION_MESSAGE);
-		}
 	
+	/**
+	 * Show a dialog with specified error message
+	 * @param sCode
+	 */
+	public static void showErrorMessage(String sCode){
+		JOptionPane.showMessageDialog(Main.jframe,Messages.getErrorMessage(sCode),Messages.getErrorMessage("102"),JOptionPane.ERROR_MESSAGE);
+	}
+	
+	/**
+	 * Show a dialog with specified error message
+	 * @param sMessage
+	 */
+	public static void showInfoMessage(String sMessage){
+		JOptionPane.showMessageDialog(Main.jframe,Messages.getString(sMessage),Messages.getString("Info"),JOptionPane.INFORMATION_MESSAGE);
+	}
+	
+	/**
+	 * Show a dialog with specified error message and an icon
+	 * @param sMessage
+	 */
+	public static void showInfoMessage(String sMessage,Icon icon){
+		JOptionPane.showMessageDialog(Main.jframe,Messages.getString(sMessage),Messages.getString("Info"),JOptionPane.INFORMATION_MESSAGE,icon);
+	}
+	
+	/**
+	 * Show a dialog with specified error message and infosup
+	 * @param sCode
+	 * @param sInfoSup
+	 */
+	public static void showErrorMessage(String sCode,String sInfoSup){
+		JOptionPane.showMessageDialog(Main.jframe,Messages.getErrorMessage(sCode)+" : "+sInfoSup,Messages.getErrorMessage("102"),JOptionPane.ERROR_MESSAGE);
+	}
+	
+	/**
+	 * Show a dialog with specified error message with infos up
+	 * @param sMessage
+	 * @param sInfoSup
+	 */
+	public static void showInfoMessage(String sMessage,String sInfoSup){
+		JOptionPane.showMessageDialog(Main.jframe,Messages.getString(sMessage)+" : "+sInfoSup,Messages.getString("Info"),JOptionPane.INFORMATION_MESSAGE);
+	}
+	
+	
+	/**
+	 * @return Returns the sLocal.
+	 */
+	public static String getLocal() {
+		return sLocal;
+	}
 
 }

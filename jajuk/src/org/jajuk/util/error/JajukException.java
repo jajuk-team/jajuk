@@ -15,15 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- * $Log$
- * Revision 1.4  2003/11/18 18:58:07  bflorat
- * 18/11/2003
- *
- * Revision 1.3  2003/10/17 20:43:56  bflorat
- * 17/10/2003
- *
- * Revision 1.2  2003/10/10 15:23:20  sgringoi
- * Gestion d'erreur
+ * $Revision$
  *
  */
 package org.jajuk.util.error;
@@ -84,22 +76,8 @@ public class JajukException extends Exception {
 		message = pMessage;
 	}
 	
-	/**
-	 * Display the error to the user.
-	 * 
-	 * @return void 
-	 */
-	public void display() {
-		ErrorWindow e = new ErrorWindow(this);
-		e.setVisible(true);
-	}
+		
 	
-	/*
-	 * @see java.lang.Throwable#getMessage()
-	 */
-	public String getMessage() {
-		return Messages.getErrorMessage(code);
-	}
 	/**
 	 * @see java.lang.Throwable#getLocalizedMessage()
 	 */

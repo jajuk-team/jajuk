@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- * $Release$
+ * $Revision$
 */
 package org.jajuk.base;
 
@@ -66,6 +66,7 @@ public interface ITechnicalStrings {
 	public static final String ICON_DELETE=  PATH_ICONS + "16x16/delete.png";
 	public static final String ICON_PROPERTIES=  PATH_ICONS + "16x16/properties.png";
 	public static final String ICON_MOUNT=  PATH_ICONS + "16x16/mount.png";
+	public static final String ICON_UNMOUNT=  PATH_ICONS + "16x16/delete.png";
 	public static final String ICON_TEST=  PATH_ICONS + "16x16/test.png";
 	public static final String ICON_REFRESH=  PATH_ICONS + "16x16/refresh.png";
 	public static final String ICON_SYNCHRO=  PATH_ICONS + "16x16/synchro.png";
@@ -117,6 +118,11 @@ public interface ITechnicalStrings {
 	public static final String DEVICE_TYPE_REMOTE = "Device_type.remote";
 	public static final String DEVICE_TYPE_USBKEY = "Device_type.usbkey";
 	
+	//Devices options
+	public static final String DEVICE_OPTION_AUTO_REFRESH = "auto_refresh";
+	public static final String DEVICE_OPTION_AUTO_MOUNT = "auto_mount";
+	
+	
 	//perspectives
 	public static final String PERSPECTIVE_NAME_PHYSICAL = "org.jajuk.ui.perspectives.PhysicalPerspective";
 	public static final String PERSPECTIVE_NAME_LOGICAL = "org.jajuk.ui.perspectives.LogicalPerspective";
@@ -144,6 +150,7 @@ public interface ITechnicalStrings {
 	public static final String EVENT_DEVICE_DELETE="delete device";
 	public static final String EVENT_DEVICE_PROPERTIES="device properties";
 	public static final String EVENT_DEVICE_MOUNT="mount device";
+	public static final String EVENT_DEVICE_UNMOUNT="unmount device";
 	public static final String EVENT_DEVICE_TEST="test device";
 	public static final String EVENT_DEVICE_REFRESH="refresh device";
 	public static final String EVENT_DEVICE_SYNCHRO="synchronize device";
@@ -152,11 +159,20 @@ public interface ITechnicalStrings {
 	public static final String EVENT_VIEW_SHOW_REQUEST="show view";
 	public static final String EVENT_VIEW_SHOW_STATUS_CHANGED_REQUEST="change status view";
 	
+	//Look and feel
+	public static final String LNF_METAL = "Metal";
+	
+	//statup mode
+	public static final String STARTUP_MODE_NOTHING = "nothing";
+	public static final String STARTUP_MODE_SHUFFLE = "shuffle";
+	public static final String STARTUP_MODE_FILE = "file";
+	public static final String STARTUP_MODE_LAST = "last";
+	
 	
 		
 	//	configuration keys
-	 public static final String CONF_PERSPECTIVE_DEFAULT="jajuk.preference.perspective.default";
-	 public static final String CONF_STATE_REPEAT="jajuk.state.mode.repeat";
+	public static final String CONF_PERSPECTIVE_DEFAULT="jajuk.preference.perspective.default";
+	public static final String CONF_STATE_REPEAT="jajuk.state.mode.repeat";
 	public static final String CONF_STATE_SHUFFLE="jajuk.state.mode.shuffle";
 	public static final String CONF_STATE_CONTINUE="jajuk.state.mode.continue";
 	public static final String CONF_STATE_INTRO="jajuk.state.mode.intro";
@@ -172,9 +188,14 @@ public interface ITechnicalStrings {
 	public static final String CONF_OPTIONS_RESTART= "jajuk.options.restart";
 	public static final String CONF_OPTIONS_LOG_LEVEL= "jajuk.options.log_level";
 	public static final String CONF_OPTIONS_LANGUAGE= "jajuk.options.language";
+	public static final String CONF_OPTIONS_INTRO_BEGIN= "jajuk.options.intro.begin";
+	public static final String CONF_OPTIONS_INTRO_LENGTH= "jajuk.options.intro.length";
+	public static final String CONF_OPTIONS_LNF= "jajuk.options.lnf";
 	public static final String CONF_OPTIONS_P2P_SHARE= "jajuk.options.p2p.share";
 	public static final String CONF_OPTIONS_P2P_ADD_REMOTE_PROPERTIES= "jajuk.options.p2p.add_remote_properties";
 	public static final String CONF_OPTIONS_P2P_HIDE_LOCAL_PROPERTIES= "jajuk.options.p2p.hide_local_properties";
+	public static final String CONF_OPTIONS_P2P_PASSWORD= "jajuk.options.p2p.password";
+	public static final String CONF_HISTORY= "jajuk.options.history";
 	
  	
 	//miscelanous

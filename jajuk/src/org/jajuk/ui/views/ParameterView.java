@@ -15,22 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- * $Log$
- * Revision 1.5  2003/11/22 15:40:28  bflorat
- * 22/11/2003
- *
- * Revision 1.4  2003/11/21 15:52:08  bflorat
- * Exit confirmation
- *
- * Revision 1.3  2003/11/20 19:12:22  bflorat
- * 20/11/2003
- *
- * Revision 1.2  2003/11/18 21:50:56  bflorat
- * 18/11/2003
- *
- * Revision 1.1  2003/11/18 18:58:06  bflorat
- * 18/11/2003
- *
+ * $Revision$
  */
 
 package org.jajuk.ui.views;
@@ -39,9 +24,11 @@ import java.awt.Checkbox;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Iterator;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
+import javax.swing.ButtonModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -52,12 +39,18 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+import javax.swing.text.MaskFormatter;
 
 import layout.TableLayout;
 
+import org.apache.log4j.chainsaw.Main;
 import org.jajuk.i18n.Messages;
+import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.JajukFileChooser;
+import org.jajuk.ui.LNFManager;
 import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.MD5Processor;
+import org.jajuk.util.log.Log;
 
 /**
  *  View used to set Jajuk paramers. 
@@ -131,173 +124,172 @@ public class ParameterView extends ViewAdapter implements ActionListener {
 		double sizeHistory[][] = {{0.6,iXSeparator,0.3},
 										 {20,iYSeparator,25}};
 		jpHistory.setLayout(new TableLayout(sizeHistory));
-		jlHistory = new JLabel("History duration: ");
-		jlHistory.setToolTipText("Set here time in days you want to keep traces of listened tracks. Set to -1 if you don't want any history and 0 if you want permanent history");
+		jlHistory = new JLabel(Messages.getString("ParameterView.0")); //$NON-NLS-1$
+		jlHistory.setToolTipText(Messages.getString("ParameterView.1")); //$NON-NLS-1$
 		jtfHistory = new JTextField();
-		jtfHistory.setToolTipText("Set here time in days you want to keep traces of listened tracks. Set to -1 if you don't want any history and 0 if you want permanent history");
-		jbClearHistory = new JButton("Clear history");
-		jbClearHistory.setToolTipText("Clear history");
+		jtfHistory.setToolTipText(Messages.getString("ParameterView.2")); //$NON-NLS-1$
+		jbClearHistory = new JButton(Messages.getString("ParameterView.3")); //$NON-NLS-1$
+		jbClearHistory.setToolTipText(Messages.getString("ParameterView.4")); //$NON-NLS-1$
 		jbClearHistory.addActionListener(this);
-		jpHistory.add(jlHistory,"0,0");
-		jpHistory.add(jtfHistory,"2,0");
-		jpHistory.add(jbClearHistory,"0,2");
-		jpHistory.setBorder(BorderFactory.createTitledBorder("History"));
+		jpHistory.add(jlHistory,"0,0"); //$NON-NLS-1$
+		jpHistory.add(jtfHistory,"2,0"); //$NON-NLS-1$
+		jpHistory.add(jbClearHistory,"0,2"); //$NON-NLS-1$
+		jpHistory.setBorder(BorderFactory.createTitledBorder(Messages.getString("ParameterView.8"))); //$NON-NLS-1$
 		//Start
 		jpStart = new JPanel();
 		double sizeStart[][] = {{0.15,iXSeparator,0.6,iXSeparator,0.1,iXSeparator},
 												 {20,iYSeparator,20,iYSeparator,20,iYSeparator,20}};
 		jpStart.setLayout(new TableLayout(sizeStart));
-		jlStart = new JLabel("Play :");
+		jlStart = new JLabel(Messages.getString("ParameterView.9")); //$NON-NLS-1$
 		bgStart = new ButtonGroup();
-		jrbNothing = new JRadioButton("Nothing");
-		jrbNothing.setToolTipText("No music at all at startup");
-		jrbLast = new JRadioButton("Last one");
-		jrbLast.setToolTipText("Play the last track played during previous session");
-		jrbShuffle = new JRadioButton("Shuffle track");
-		jrbShuffle.setToolTipText("Play a random track from the entire collection");
-		jrbShuffle.setSelected(true);
-		jrbFile = new JRadioButton("Specified file : ");
-		jrbFile.setToolTipText("Select a file to played at startup");
+		jrbNothing = new JRadioButton(Messages.getString("ParameterView.10")); //$NON-NLS-1$
+		jrbNothing.setToolTipText(Messages.getString("ParameterView.11")); //$NON-NLS-1$
+		jrbLast = new JRadioButton(Messages.getString("ParameterView.12")); //$NON-NLS-1$
+		jrbLast.setToolTipText(Messages.getString("ParameterView.13")); //$NON-NLS-1$
+		jrbShuffle = new JRadioButton(Messages.getString("ParameterView.14")); //$NON-NLS-1$
+		jrbShuffle.setToolTipText(Messages.getString("ParameterView.15")); //$NON-NLS-1$
+		jrbFile = new JRadioButton(Messages.getString("ParameterView.16")); //$NON-NLS-1$
+		jrbFile.setToolTipText(Messages.getString("ParameterView.17")); //$NON-NLS-1$
 		jbFile = new JButton(new ImageIcon(ICON_OPEN_FILE));		
 		jbFile.addActionListener(this);
-		jbFile.setToolTipText("Select a file to played at startup");
+		jbFile.setToolTipText(Messages.getString("ParameterView.18")); //$NON-NLS-1$
 		bgStart.add(jrbNothing);
 		bgStart.add(jrbLast);
 		bgStart.add(jrbShuffle);
 		bgStart.add(jrbFile);
 		jbFile.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));	
-		jpStart.setBorder(BorderFactory.createTitledBorder("Startup"));
-		jpStart.add(jlStart,"0,2");
-		jpStart.add(jrbNothing,"2,0");
-		jpStart.add(jrbLast,"2,2");
-		jpStart.add(jrbShuffle,"2,4");
-		jpStart.add(jrbFile,"2,6");
-		jpStart.add(jbFile,"4,6");
+		jpStart.setBorder(BorderFactory.createTitledBorder(Messages.getString("ParameterView.19"))); //$NON-NLS-1$
+		jpStart.add(jlStart,"0,2"); //$NON-NLS-1$
+		jpStart.add(jrbNothing,"2,0"); //$NON-NLS-1$
+		jpStart.add(jrbLast,"2,2"); //$NON-NLS-1$
+		jpStart.add(jrbShuffle,"2,4"); //$NON-NLS-1$
+		jpStart.add(jrbFile,"2,6"); //$NON-NLS-1$
+		jpStart.add(jbFile,"4,6"); //$NON-NLS-1$
 		//Confirmations
 		jpConfirmations = new JPanel();
-		jpConfirmations.setBorder(BorderFactory.createTitledBorder("Confirmations"));
+		jpConfirmations.setBorder(BorderFactory.createTitledBorder(Messages.getString("ParameterView.26"))); //$NON-NLS-1$
 		double sizeConfirmations[][] = {{0.99},
 										 {iYSeparator,20,iYSeparator,20,iYSeparator}};
 		jpConfirmations.setLayout(new TableLayout(sizeConfirmations));
-		jcbBeforeDelete = new JCheckBox("Before physically delete a file");
-		jcbBeforeDelete.setToolTipText("Ask before physically delete a file");
-		jcbBeforeDelete.setSelected(Boolean.valueOf(ConfigurationManager.getProperty(CONF_CONFIRMATIONS_DELETE_FILE)).booleanValue());
-		jcbBeforeExit = new JCheckBox("Before exiting Jajuk");
-		jcbBeforeExit.setToolTipText("Ask before exiting Jajuk");
-		jcbBeforeExit.setSelected(Boolean.valueOf(ConfigurationManager.getProperty(CONF_CONFIRMATIONS_EXIT)).booleanValue());
-		jpConfirmations.add(jcbBeforeDelete,"0,1");
-		jpConfirmations.add(jcbBeforeExit,"0,3");
+		jcbBeforeDelete = new JCheckBox(Messages.getString("ParameterView.27")); //$NON-NLS-1$
+		jcbBeforeDelete.setToolTipText(Messages.getString("ParameterView.28")); //$NON-NLS-1$
+		jcbBeforeExit = new JCheckBox(Messages.getString("ParameterView.29")); //$NON-NLS-1$
+		jcbBeforeExit.setToolTipText(Messages.getString("ParameterView.30")); //$NON-NLS-1$
+		jpConfirmations.add(jcbBeforeDelete,"0,1"); //$NON-NLS-1$
+		jpConfirmations.add(jcbBeforeExit,"0,3"); //$NON-NLS-1$
 		//Options
 		jpOptions = new JPanel();
-		jpOptions.setBorder(BorderFactory.createTitledBorder("Options"));
+		jpOptions.setBorder(BorderFactory.createTitledBorder(Messages.getString("ParameterView.33"))); //$NON-NLS-1$
 		double sizeOptions[][] = {{0.99},
 														 {iYSeparator,20,iYSeparator,20,iYSeparator,60+2*iYSeparator,iYSeparator,40+iYSeparator,iYSeparator}};
 		jpOptions.setLayout(new TableLayout(sizeOptions));
-		jcbDisplayUnmounted = new JCheckBox("Only display mounted devices");
-		jcbDisplayUnmounted.setSelected(Boolean.valueOf(ConfigurationManager.getProperty(CONF_OPTIONS_HIDE_UNMOUNTED)).booleanValue());
-		jcbDisplayUnmounted.setToolTipText("Hides tracks located in unmounted devices");
-		jcbRestart = new JCheckBox("Restart when reaching end of collection");
-		jcbRestart.setSelected(Boolean.valueOf(ConfigurationManager.getProperty(CONF_OPTIONS_RESTART)).booleanValue());
-		jcbRestart.setToolTipText("Restart the entire collection when reaching the very end in continue mode");
+		jcbDisplayUnmounted = new JCheckBox(Messages.getString("ParameterView.34")); //$NON-NLS-1$
+		jcbDisplayUnmounted.setToolTipText(Messages.getString("ParameterView.35")); //$NON-NLS-1$
+		jcbRestart = new JCheckBox(Messages.getString("ParameterView.36")); //$NON-NLS-1$
+		jcbRestart.setToolTipText(Messages.getString("ParameterView.37")); //$NON-NLS-1$
 		JPanel jpCombos = new JPanel();
 		double sizeCombos[][] = {{0.50,0.50},
 																 {20,iYSeparator,20,iYSeparator,20}};
 		jpCombos.setLayout(new TableLayout(sizeCombos));
-		jlLanguage = new JLabel("Language : ");
+		jlLanguage = new JLabel(Messages.getString("ParameterView.38")); //$NON-NLS-1$
 		jcbLanguage = new JComboBox();
-		jcbLanguage.addItem(Messages.getString("options_language_default"));
-		jcbLanguage.addItem("English (en)");
-		jcbLanguage.addItem("French (fr)");
-		jcbLanguage.setSelectedItem(ConfigurationManager.getProperty(CONF_OPTIONS_LANGUAGE));
-		jcbLanguage.setToolTipText("Interface language setting");
-		jlLAF = new JLabel("Look and Feel : ");
-		jlLAF.setToolTipText("Look and feel setting");
+		Iterator itDescs = Messages.getDescs().iterator();
+		while (itDescs.hasNext()){
+			String sDesc = (String)itDescs.next();
+			jcbLanguage.addItem(Messages.getString(sDesc));
+		}
+		jcbLanguage.setToolTipText(Messages.getString("ParameterView.42")); //$NON-NLS-1$
+		jlLAF = new JLabel(Messages.getString("ParameterView.43")); //$NON-NLS-1$
+		jlLAF.setToolTipText(Messages.getString("ParameterView.44")); //$NON-NLS-1$
 		jcbLAF = new JComboBox();
-		jcbLAF.setToolTipText("Look and feel setting");
+		Iterator it = LNFManager.getSupportedLNF().iterator();
+		while (it.hasNext()){
+			jcbLAF.addItem(it.next());
+		}
+		jcbLAF.setToolTipText(Messages.getString("ParameterView.45")); //$NON-NLS-1$
 		//TODO implements l&f : use a property with ',' separator
-		jlLogLevel = new JLabel("Log level : ");
+		jlLogLevel = new JLabel(Messages.getString("ParameterView.46")); //$NON-NLS-1$
 		jcbLogLevel = new JComboBox();
-		jcbLogLevel.addItem("FATAL");
-		jcbLogLevel.addItem("ERROR");
-		jcbLogLevel.addItem("WARNING");
-		jcbLogLevel.addItem("INFO");
-		jcbLogLevel.addItem("DEBUG");
-		jcbLogLevel.setSelectedItem(ConfigurationManager.getProperty(CONF_OPTIONS_LOG_LEVEL));
-		jcbLogLevel.setToolTipText("Jajuk verbosity : FATAL:display only critical erros, ERROR:+display errors, WARNING:+display warnings, DEBUG: all messages");
-		jpCombos.add(jlLanguage,"0,0");
-		jpCombos.add(jcbLanguage,"1,0");
-		jpCombos.add(jlLAF,"0,2");
-		jpCombos.add(jcbLAF,"1,2");
-		jpCombos.add(jlLogLevel,"0,4");
-		jpCombos.add(jcbLogLevel,"1,4");
+		jcbLogLevel.addItem(Messages.getString("ParameterView.47")); //$NON-NLS-1$
+		jcbLogLevel.addItem(Messages.getString("ParameterView.48")); //$NON-NLS-1$
+		jcbLogLevel.addItem(Messages.getString("ParameterView.49")); //$NON-NLS-1$
+		jcbLogLevel.addItem(Messages.getString("ParameterView.50")); //$NON-NLS-1$
+		jcbLogLevel.addItem(Messages.getString("ParameterView.51")); //$NON-NLS-1$
+		jcbLogLevel.setToolTipText(Messages.getString("ParameterView.52")); //$NON-NLS-1$
+		jpCombos.add(jlLanguage,"0,0"); //$NON-NLS-1$
+		jpCombos.add(jcbLanguage,"1,0"); //$NON-NLS-1$
+		jpCombos.add(jlLAF,"0,2"); //$NON-NLS-1$
+		jpCombos.add(jcbLAF,"1,2"); //$NON-NLS-1$
+		jpCombos.add(jlLogLevel,"0,4"); //$NON-NLS-1$
+		jpCombos.add(jcbLogLevel,"1,4"); //$NON-NLS-1$
 		JPanel jpIntro = new JPanel();
 		double sizeIntro[][] = {{0.50,0.50},
 							 {20,iYSeparator,20}};
 		jpIntro.setLayout(new TableLayout(sizeIntro));
-		jlIntroPosition = new JLabel("Intro begin position (%) : ");
+		jlIntroPosition = new JLabel(Messages.getString("ParameterView.59")); //$NON-NLS-1$
 		jtfIntroPosition = new JTextField(3);
-		jtfIntroPosition.setToolTipText("Introduction position inside track in %, from 0 ( begining of the file) to 99 ( end of the track )" );
-		jlIntroLength = new JLabel("Intro length (sec) : ");
+		//TODO set a mask formatter for integer, idem for history
+		jtfIntroPosition.setToolTipText(Messages.getString("ParameterView.60") ); //$NON-NLS-1$
+		jlIntroLength = new JLabel(Messages.getString("ParameterView.61")); //$NON-NLS-1$
 		jtfIntroLength = new JTextField(3);
-		jtfIntroLength.setToolTipText("Introduction length in seconds" );
-		jpIntro.add(jlIntroPosition,"0,0");
-		jpIntro.add(jtfIntroPosition,"1,0");
-		jpIntro.add(jlIntroLength,"0,2");
-		jpIntro.add(jtfIntroLength,"1,2");
-		jpOptions.add(jcbDisplayUnmounted,"0,1");
-		jpOptions.add(jcbRestart,"0,3");
-		jpOptions.add(jpCombos,"0,5");
-		jpOptions.add(jpIntro,"0,7");
+		jtfIntroLength.setToolTipText(Messages.getString("ParameterView.62") ); //$NON-NLS-1$
+		jpIntro.add(jlIntroPosition,"0,0"); //$NON-NLS-1$
+		jpIntro.add(jtfIntroPosition,"1,0"); //$NON-NLS-1$
+		jpIntro.add(jlIntroLength,"0,2"); //$NON-NLS-1$
+		jpIntro.add(jtfIntroLength,"1,2"); //$NON-NLS-1$
+		jpOptions.add(jcbDisplayUnmounted,"0,1"); //$NON-NLS-1$
+		jpOptions.add(jcbRestart,"0,3"); //$NON-NLS-1$
+		jpOptions.add(jpCombos,"0,5"); //$NON-NLS-1$
+		jpOptions.add(jpIntro,"0,7"); //$NON-NLS-1$
 		//P2P
 		jpP2P = new JPanel();
-		jpP2P.setBorder(BorderFactory.createTitledBorder("P2P"));
+		jpP2P.setBorder(BorderFactory.createTitledBorder(Messages.getString("ParameterView.71"))); //$NON-NLS-1$
 		double sizeP2P[][] = {{0.6,0.3,0.1},
 				{iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator}};
 		jpP2P.setLayout(new TableLayout(sizeP2P));
-		jcbShare = new JCheckBox("Share tracks ?");
-		jcbShare.setToolTipText("Check this if you allow others people to come read music from your box");
-		jcbShare.setSelected(Boolean.valueOf(ConfigurationManager.getProperty(CONF_OPTIONS_P2P_SHARE)).booleanValue());
-		jlPasswd = new JLabel("Password : ");
+		jcbShare = new JCheckBox(Messages.getString("ParameterView.72")); //$NON-NLS-1$
+		jcbShare.setToolTipText(Messages.getString("ParameterView.73")); //$NON-NLS-1$
+		jlPasswd = new JLabel(Messages.getString("ParameterView.74")); //$NON-NLS-1$
 		jpfPasswd = new JPasswordField();
-		jpfPasswd.setToolTipText("Set password access to your box. If no password is set, no one can read from it.");
-		jcbAddRemoteProperties = new JCheckBox("Add Remote properties");
-		jcbAddRemoteProperties.setToolTipText("If check, you will get personnal remote properties about tracks you read from others boxes.");
-		jcbAddRemoteProperties.setSelected(Boolean.valueOf(ConfigurationManager.getProperty(CONF_OPTIONS_P2P_ADD_REMOTE_PROPERTIES)).booleanValue());
-		jcbHideProperties = new JCheckBox("Hide local properties");
-		jcbHideProperties.setToolTipText("If check, others people will not see your personnal properties on tracks.");
-		jcbHideProperties.setSelected(Boolean.valueOf(ConfigurationManager.getProperty(CONF_OPTIONS_P2P_HIDE_LOCAL_PROPERTIES)).booleanValue());
-		jpP2P.add(jcbShare,"0,1");
-		jpP2P.add(jlPasswd,"0,3");
-		jpP2P.add(jpfPasswd,"1,3");
-		jpP2P.add(jcbAddRemoteProperties,"0,5");
-		jpP2P.add(jcbHideProperties,"0,7");
+		jpfPasswd.setToolTipText(Messages.getString("ParameterView.75")); //$NON-NLS-1$
+		jcbAddRemoteProperties = new JCheckBox(Messages.getString("ParameterView.76")); //$NON-NLS-1$
+		jcbAddRemoteProperties.setToolTipText(Messages.getString("ParameterView.77")); //$NON-NLS-1$
+		jcbHideProperties = new JCheckBox(Messages.getString("ParameterView.78")); //$NON-NLS-1$
+		jcbHideProperties.setToolTipText(Messages.getString("ParameterView.79")); //$NON-NLS-1$
+		jpP2P.add(jcbShare,"0,1"); //$NON-NLS-1$
+		jpP2P.add(jlPasswd,"0,3"); //$NON-NLS-1$
+		jpP2P.add(jpfPasswd,"1,3"); //$NON-NLS-1$
+		jpP2P.add(jcbAddRemoteProperties,"0,5"); //$NON-NLS-1$
+		jpP2P.add(jcbHideProperties,"0,7"); //$NON-NLS-1$
 		
 		//OK
 		jpOKCancel = new JPanel();
 		jpOKCancel.setLayout(new FlowLayout());
-		jbOK = new JButton("OK");
+		jbOK = new JButton(Messages.getString("ParameterView.85")); //$NON-NLS-1$
 		jbOK.addActionListener(this);
 		jpOKCancel.add(jbOK);
-		jbDefault = new JButton("Default");
+		jbDefault = new JButton(Messages.getString("ParameterView.86")); //$NON-NLS-1$
 		jbDefault.addActionListener(this);
 		jpOKCancel.add(jbDefault);
 		//global layout
 		double size[][] = {{0.5,0.5},
-					{0.40,iYSeparator,0.30,iYSeparator,0.25,iYSeparator,0.05}};
+					{0.35,iYSeparator,0.25,iYSeparator,0.20,iYSeparator,0.1}};
 		setLayout(new TableLayout(size));
-		add(jpHistory,"1,0");
-		add(jpStart,"0,2");
-		add(jpConfirmations,"0,4");
-		add(jpOptions,"0,0");
-		add(jpP2P,"1,2");
-		add(jpOKCancel,"0,6");
+		add(jpHistory,"1,0"); //$NON-NLS-1$
+		add(jpStart,"0,2"); //$NON-NLS-1$
+		add(jpConfirmations,"0,4"); //$NON-NLS-1$
+		add(jpOptions,"0,0"); //$NON-NLS-1$
+		add(jpP2P,"1,2"); //$NON-NLS-1$
+		add(jpOKCancel,"0,6"); //$NON-NLS-1$
+		//update widgets state
+		updateSelection();
 	}
 
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.IView#getDesc()
 	 */
 	public String getDesc() {
-		return Messages.getString("View_Description_Parameters");
+		return Messages.getString("View_Description_Parameters"); //$NON-NLS-1$
 	}
 
 	/* (non-Javadoc)
@@ -318,11 +310,100 @@ public class ParameterView extends ViewAdapter implements ActionListener {
 			}
 		}
 		else if (e.getSource() == jbOK){
-			//Read all parameters
+			//**Read all parameters**
+			//Options
+			ConfigurationManager.setProperty(CONF_OPTIONS_HIDE_UNMOUNTED,Boolean.toString(jcbHideProperties.isSelected()));
+			ConfigurationManager.setProperty(CONF_OPTIONS_RESTART,Boolean.toString(jcbRestart.isSelected()));
+			String sLocal = (String)Messages.getLocals().get(jcbLanguage.getSelectedIndex());
+			if (!Messages.getLocal().equals(sLocal)){  //local has changed
+				Messages.setLocal(sLocal);
+				Messages.showInfoMessage("Language change will be effective at next Jajuk start");
+			}
+			ConfigurationManager.setProperty(CONF_OPTIONS_LANGUAGE,sLocal);
+			LNFManager.setLookAndFeel((String)jcbLAF.getSelectedItem());
+			ConfigurationManager.setProperty(CONF_OPTIONS_LNF,(String)jcbLAF.getSelectedItem());
+			int iLogLevel = jcbLogLevel.getSelectedIndex(); 
+			Log.setVerbosity(iLogLevel);
+			ConfigurationManager.setProperty(CONF_OPTIONS_LOG_LEVEL,Integer.toString(iLogLevel));
+			String sIntroPosition = jtfIntroPosition.getText();
+			if (!jtfIntroPosition.equals("")){
+				ConfigurationManager.setProperty(CONF_OPTIONS_INTRO_BEGIN,sIntroPosition);
+			}
+			String sIntroLength = jtfIntroLength.getText();
+			if (!jtfIntroLength.equals("")){
+				ConfigurationManager.setProperty(CONF_OPTIONS_INTRO_LENGTH,sIntroLength);
+			}
+			//startup
+			if (jrbNothing.isSelected()){
+				ConfigurationManager.setProperty(CONF_STARTUP_MODE,STARTUP_MODE_NOTHING);//$NON-NLS-1$
+			}
+			else if (jrbLast.isSelected()){
+				ConfigurationManager.setProperty(CONF_STARTUP_MODE,STARTUP_MODE_LAST);//$NON-NLS-1$
+			}
+			else if (jrbShuffle.isSelected()){
+				ConfigurationManager.setProperty(CONF_STARTUP_MODE,STARTUP_MODE_SHUFFLE);//$NON-NLS-1$
+			}
+			else if (jrbFile.isSelected()){
+				ConfigurationManager.setProperty(CONF_STARTUP_MODE,STARTUP_MODE_FILE);//$NON-NLS-1$
+			}
 			//Confirmations
 			ConfigurationManager.setProperty(CONF_CONFIRMATIONS_DELETE_FILE,Boolean.toString(jcbBeforeDelete.isSelected()));
 			ConfigurationManager.setProperty(CONF_CONFIRMATIONS_EXIT,Boolean.toString(jcbBeforeExit.isSelected()));
+			//history
+			String sHistoryDuration = jtfHistory.getText();
+			if (!sHistoryDuration.equals("")){
+				ConfigurationManager.setProperty(CONF_HISTORY,sHistoryDuration);
+			}
+			//P2P
+			ConfigurationManager.setProperty(CONF_OPTIONS_P2P_SHARE,Boolean.toString(jcbShare.isSelected()));
+			ConfigurationManager.setProperty(CONF_OPTIONS_P2P_ADD_REMOTE_PROPERTIES,Boolean.toString(jcbAddRemoteProperties.isSelected()));
+			ConfigurationManager.setProperty(CONF_OPTIONS_P2P_HIDE_LOCAL_PROPERTIES,Boolean.toString(jcbHideProperties.isSelected()));
+			String sPass = jpfPasswd.getText();
+			if (!sPass.equals("")){
+				ConfigurationManager.setProperty(CONF_OPTIONS_P2P_PASSWORD,MD5Processor.hash(sPass));
+			}
+			InformationJPanel.getInstance().setMessage("Options saved",InformationJPanel.INFORMATIVE);
+			ConfigurationManager.commit();
 		}
+		else if (e.getSource() == jbDefault){
+			ConfigurationManager.setDefaultProperties();
+			updateSelection();
+			InformationJPanel.getInstance().setMessage("Options set to default",InformationJPanel.INFORMATIVE);
+			ConfigurationManager.commit();
+		}
+		
+	}
+	
+	/**
+	 * Set widgets to specified value
+	 */
+	private void updateSelection(){
+		jtfHistory.setText(ConfigurationManager.getProperty(CONF_HISTORY));
+		if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_FILE)){
+			jrbFile.setSelected(true);
+		}
+		else if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_LAST)){
+			jrbLast.setSelected(true);
+		}
+		else if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_NOTHING)){
+			jrbNothing.setSelected(true);
+		}
+		else if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_SHUFFLE)){
+			jrbShuffle.setSelected(true);
+		}
+		jcbBeforeDelete.setSelected(Boolean.valueOf(ConfigurationManager.getProperty(CONF_CONFIRMATIONS_DELETE_FILE)).booleanValue());
+		jcbBeforeExit.setSelected(Boolean.valueOf(ConfigurationManager.getProperty(CONF_CONFIRMATIONS_EXIT)).booleanValue());
+		jcbDisplayUnmounted.setSelected(Boolean.valueOf(ConfigurationManager.getProperty(CONF_OPTIONS_HIDE_UNMOUNTED)).booleanValue());
+		jcbRestart.setSelected(Boolean.valueOf(ConfigurationManager.getProperty(CONF_OPTIONS_RESTART)).booleanValue());
+		jcbLanguage.setSelectedIndex(Messages.getLocals().indexOf(ConfigurationManager.getProperty(CONF_OPTIONS_LANGUAGE)));
+		jcbLAF.setSelectedItem(ConfigurationManager.getProperty(CONF_OPTIONS_LNF));
+		jcbLogLevel.setSelectedIndex(Integer.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_LOG_LEVEL)));
+		jtfIntroLength.setText(ConfigurationManager.getProperty(CONF_OPTIONS_INTRO_LENGTH));
+		jtfIntroPosition.setText(ConfigurationManager.getProperty(CONF_OPTIONS_INTRO_BEGIN));
+		jcbShare.setSelected(Boolean.valueOf(ConfigurationManager.getProperty(CONF_OPTIONS_P2P_SHARE)).booleanValue());
+		jpfPasswd.setText(ConfigurationManager.getProperty(CONF_OPTIONS_P2P_PASSWORD));
+		jcbAddRemoteProperties.setSelected(Boolean.valueOf(ConfigurationManager.getProperty(CONF_OPTIONS_P2P_ADD_REMOTE_PROPERTIES)).booleanValue());
+		jcbHideProperties.setSelected(Boolean.valueOf(ConfigurationManager.getProperty(CONF_OPTIONS_P2P_HIDE_LOCAL_PROPERTIES)).booleanValue());
 		
 	}
 

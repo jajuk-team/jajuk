@@ -15,27 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- * $Log$
- * Revision 1.7  2003/11/21 15:00:48  bflorat
- * Corrected various display bugs when changing current perspective
- *
- * Revision 1.6  2003/11/21 10:28:21  bflorat
- * Corrected perspective/views repaint problems
- *
- * Revision 1.5  2003/11/20 21:40:30  bflorat
- * 20/11/2003
- *
- * Revision 1.4  2003/11/20 19:12:22  bflorat
- * 20/11/2003
- *
- * Revision 1.3  2003/11/18 21:50:56  bflorat
- * 18/11/2003
- *
- * Revision 1.2  2003/11/18 18:58:07  bflorat
- * 18/11/2003
- *
- * Revision 1.1  2003/11/16 17:57:18  bflorat
- * 16/11/2003
+ * $Revision$
  *
   */
 package org.jajuk.ui;
