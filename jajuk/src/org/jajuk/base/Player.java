@@ -90,7 +90,6 @@ public class Player implements ITechnicalStrings{
 	public static synchronized void stop() {
 		try {
 			if (fCurrent!=null){
-			    pCurrentPlayerImpl.setVolume(0.0f);
 			    fCurrent.getTrack().getType().getPlayerImpl().stop();
 				setPaused(false); //cancel any current pause
 				bPlaying = false;

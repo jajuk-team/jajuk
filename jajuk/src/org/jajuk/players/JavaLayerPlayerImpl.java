@@ -176,8 +176,9 @@ public class JavaLayerPlayerImpl implements IPlayerImpl,ITechnicalStrings{
     public synchronized void stop() {
         if (player!= null ){
             try {
-                player.stop();
-            } catch (BasicPlayerException e) {
+                player.setGain(0.01f); //set this to avoid starnge sound
+    		    player.stop();
+            } catch (Exception e) {
                 Log.error(e);
             }
         }	
@@ -206,12 +207,14 @@ public class JavaLayerPlayerImpl implements IPlayerImpl,ITechnicalStrings{
      */
     public synchronized void pause() throws Exception{
         if (player!=null){
-            player.pause();
+           player.setGain(0.01f); //set this to avoid starnge sound
+           player.pause();
         }
     }
     
     public synchronized void resume() throws Exception{
         if (player!=null){
+            setVolume(fVolume); //reset right volume
             player.resume();
         }
     }	
