@@ -65,8 +65,8 @@ public class Author extends PropertyAdapter implements Comparable{
 	 */
 	public String getName2() {
 		String sOut = getName();
-		if (sOut.equals("unknown_author")){ //$NON-NLS-1$
-			sOut = Messages.getString("unknown_author"); //$NON-NLS-1$
+		if (sOut.equals(UNKNOWN_AUTHOR)){ 
+			sOut = Messages.getString(UNKNOWN_AUTHOR);
 		}
 		return sOut;
 	}

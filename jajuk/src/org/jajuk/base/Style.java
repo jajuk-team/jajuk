@@ -66,8 +66,8 @@ public class Style extends PropertyAdapter implements Comparable{
 	 */
 	public String getName2() {
 		String sOut = getName();
-		if (sOut.equals("unknown_style")){ //$NON-NLS-1$
-			sOut = Messages.getString("unknown_style"); //$NON-NLS-1$
+		if (sOut.equals(UNKNOWN_STYLE)){ 
+			sOut = Messages.getString(UNKNOWN_STYLE);
 		}
 		return sOut;
 	}
