@@ -321,7 +321,7 @@ public class JajukWindow extends JFrame implements ITechnicalStrings,ComponentLi
 	 */
 	public void setTooltip(String s){
 		if ( stm != null){
-			stm.setToolTip(s);
+			stm.setToolTip(s.substring(0,63)); //note that the systray tooltip length must be <= 63
 		}
 	}
 
