@@ -31,8 +31,9 @@
 				<p><span style="font-family: monospace;">#Jajuk ${your language} langpack. <br></br>
 				#Written by : ${your name}<br></br>
 				#Copyright 2003,2004 ${your name}, this is part of Jajuk distributed under the GPL V2 license<br></br>
-				#FROM ${source language} ${cvs version}</span></p>
-				<p>FROM comment gives exact CVS version you translated to allow diffs with newer versions</p>
+				#FROM ${source language} ${cvs version}<br></br>
+				#$Revision$</span></p>
+				<p>FROM comment gives exact CVS version you translated to allow diffs with newer versions and Revision gives current CVS version of your file.</p>
 			</li>
 			
 			<li><p>Look at file structure: It is a simple key=value  format. Example:</p>

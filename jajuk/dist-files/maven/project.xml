@@ -64,10 +64,31 @@
 	      <id>skyreacher</id>
 	     <roles>
 			<role>German translator</role>
+	    	<role>Developer</role>
 	     </roles>
 	      <email>skyreacher@users.sourceforge.net</email>
 	      <organization>Jajuk team</organization>
 	      <timezone>2</timezone>
+	    </developer>
+	    <developer>
+	      <name>Oscar Appelgren</name>
+	      <id>oscariot</id>
+	     <roles>
+			<role>Swedish translator</role>
+	     </roles>
+	      <email>oscariot@users.sourceforge.net</email>
+	      <organization>Jajuk team</organization>
+	      <timezone>2</timezone>
+	    </developer>
+	    <developer>
+	      <name>Jonathan C.Kresge</name>
+	      <id>jonathankresge</id>
+	     <roles>
+			<role>Doc writer</role>
+	     </roles>
+	      <email>jonathankresge@users.sourceforge.net</email>
+	      <organization>Jajuk team</organization>
+	      <timezone>-4</timezone>
 	    </developer>
 	    <developer>
 	      <name>Sébastien Gringoire</name>
@@ -75,7 +96,7 @@
     	  <roles>
 		      <role>Design, some early developments</role>
 	      </roles>
-	      <email></email>
+	      <email>sgringoi@users.sourceforge.net</email>
 	      <organization>Jajuk team</organization>
 	      <timezone>2</timezone>
 	    </developer>
