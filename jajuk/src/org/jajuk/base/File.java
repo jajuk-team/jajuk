@@ -206,7 +206,7 @@ public class File extends PropertyAdapter implements Comparable{
 		}
 		Directory dCurrent = getDirectory();
 		StringBuffer sbOut = new StringBuffer(getDirectory().getDevice().getUrl())
-			.append(dCurrent.getAbsolutePath()).append('/').append(this.getName());
+			.append(dCurrent.getRelativePath()).append('/').append(this.getName());
 		sAbs = sbOut.toString();
 		return sAbs;
 	}

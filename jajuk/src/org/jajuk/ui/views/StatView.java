@@ -41,6 +41,7 @@ import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.ui.ObservationManager;
 import org.jajuk.ui.Observer;
+import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -350,6 +351,7 @@ public class StatView extends ViewAdapter implements Observer{
 	 */
 	public void update(final String subject) {
 		if (EVENT_DEVICE_REFRESH.equals(subject) || EVENT_DEVICE_DELETE.equals(subject)){
+			Util.waiting();
 			removeAll();
 			ChartPanel cp1 = createStyleRepartition(); 
 			if ( cp1!= null) add(cp1,"0,0");
@@ -360,6 +362,7 @@ public class StatView extends ViewAdapter implements Observer{
 			ChartPanel cp4 = createDeviceRepartition(); 
 			if ( cp4!= null) add(cp4,"1,0");
 			SwingUtilities.updateComponentTreeUI(StatView.getInstance());
+			Util.stopWaiting();
 		}
 	}
 

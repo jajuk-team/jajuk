@@ -67,6 +67,8 @@ import org.jajuk.ui.TransferableTreeNode;
 import org.jajuk.ui.TreeTransferHandler;
 import org.jajuk.util.Util;
 
+import com.sun.SwingWorker;
+
 /**
  * Physical tree view
  * 
@@ -134,6 +136,18 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 		JMenuItem jmiDevTest;
 		JMenuItem jmiDevSetProperty;
 		JMenuItem jmiDevProperties;
+	JPopupMenu jmenuPlaylistFile;
+		JMenuItem jmiPlaylistFilePlay;
+		JMenuItem jmiPlaylistFilePush;
+		JMenuItem jmiPlaylistFilePlayShuffle;
+		JMenuItem jmiPlaylistFilePlayRepeat;
+		JMenuItem jmiPlaylistFileCopy;
+		JMenuItem jmiPlaylistFileCut;
+		JMenuItem jmiPlaylistFilePaste;
+		JMenuItem jmiPlaylistFileRename;
+		JMenuItem jmiPlaylistFileDelete;
+		JMenuItem jmiPlaylistFileSetProperty;
+		JMenuItem jmiPlaylistFileProperties;
 		
 		
 	
@@ -295,6 +309,50 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 		jmenuDev.add(jmiDevCreatePlaylist);
 		jmenuDev.add(jmiDevSetProperty);
 		jmenuDev.add(jmiDevProperties);
+					
+		//Playlist file menu
+		//File menu
+		jmenuPlaylistFile = new JPopupMenu();
+		jmiPlaylistFilePlay = new JMenuItem("Play");
+		jmiPlaylistFilePlay.addActionListener(this);
+		jmiPlaylistFilePush = new JMenuItem("Push");
+		jmiPlaylistFilePush.addActionListener(this);
+		jmiPlaylistFilePlayShuffle = new JMenuItem("Play Shuffle");
+		jmiPlaylistFilePlayShuffle.addActionListener(this);
+		jmiPlaylistFilePlayRepeat = new JMenuItem("Play Repeat");
+		jmiPlaylistFilePlayRepeat.addActionListener(this);
+		jmiPlaylistFileCopy = new JMenuItem("Copy");
+		jmiPlaylistFileCopy.setEnabled(false);
+		jmiPlaylistFileCopy.addActionListener(this);
+		jmiPlaylistFileCut = new JMenuItem("Cut");
+		jmiPlaylistFileCut.setEnabled(false);
+		jmiPlaylistFileCut.addActionListener(this);
+		jmiPlaylistFilePaste = new JMenuItem("Paste");
+		jmiPlaylistFilePaste.setEnabled(false);
+		jmiPlaylistFilePaste.addActionListener(this);
+		jmiPlaylistFileRename = new JMenuItem("Rename");
+		jmiPlaylistFileRename.setEnabled(false);
+		jmiPlaylistFileRename.addActionListener(this);
+		jmiPlaylistFileDelete = new JMenuItem("Delete");
+		jmiPlaylistFileDelete.addActionListener(this);
+		jmiPlaylistFileSetProperty = new JMenuItem("Set a property");
+		jmiPlaylistFileSetProperty.setEnabled(false);
+		jmiPlaylistFileSetProperty.addActionListener(this);
+		jmiPlaylistFileProperties = new JMenuItem("Properties");
+		jmiPlaylistFileProperties.setEnabled(false);
+		jmiPlaylistFileProperties.addActionListener(this);
+		jmenuPlaylistFile.add(jmiPlaylistFilePlay);
+		jmenuPlaylistFile.add(jmiPlaylistFilePush);
+		jmenuPlaylistFile.add(jmiPlaylistFilePlayShuffle);
+		jmenuPlaylistFile.add(jmiPlaylistFilePlayRepeat);
+		jmenuPlaylistFile.add(jmiPlaylistFileCopy);
+		jmenuPlaylistFile.add(jmiPlaylistFileCut);
+		jmenuPlaylistFile.add(jmiPlaylistFilePaste);
+		jmenuPlaylistFile.add(jmiPlaylistFileRename);
+		jmenuPlaylistFile.add(jmiPlaylistFileDelete);
+		jmenuPlaylistFile.add(jmiPlaylistFileSetProperty);
+		jmenuPlaylistFile.add(jmiPlaylistFileProperties);
+		
 		
 		
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -306,67 +364,7 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 		
 		//fill the tree
 		populate();
-	}
-	
-	/**Fill the tree */
-	public void populate(){
-		//delete previous tree
-		this.transferFocus();
-		removeAll();
-		top.removeAllChildren();
-	//	SwingUtilities.updateComponentTreeUI(this);
-		//add devices
-		ArrayList alDevices = DeviceManager.getDevices();
-		Collections.sort(alDevices);
-		Iterator it1 = alDevices.iterator();
-		while ( it1.hasNext()){
-			Device device = (Device)it1.next();
-			DefaultMutableTreeNode nodeDevice = new DeviceNode(device);
-			top.add(nodeDevice);
-		}
-		//add directories
-		ArrayList alDirectories = DirectoryManager.getDirectories();
-		Collections.sort(alDirectories);
-		Iterator it2 = alDirectories.iterator();
-		while (it2.hasNext()){
-			Directory directory = (Directory)it2.next();
-			if (!directory.getName().equals("")){ //device root directory, do not display
-				if (directory.getParentDirectory().getName().equals("")){  //parent directory is a device
-					DeviceNode deviceNode = DeviceNode.getDeviceNode(directory.getDevice());
-					if ( deviceNode != null){
-						deviceNode.add(new DirectoryNode(directory));
-					}
-				}
-				else{  //parent directory not root 
-					DirectoryNode parentDirectoryNode = DirectoryNode.getDirectoryNode(directory.getParentDirectory());
-					if (parentDirectoryNode != null){ //paranoia check
-						parentDirectoryNode.add(new DirectoryNode(directory));
-					}
-				}
-			}
-		}
-		//add files
-		ArrayList alFiles = FileManager.getFiles();
-		Collections.sort(alFiles);
-		Iterator it3 = alFiles.iterator();
-		while (it3.hasNext()){
-			File file = (File)it3.next();
-			DirectoryNode directoryNode = DirectoryNode.getDirectoryNode(file.getDirectory());
-			if (directoryNode != null){
-				directoryNode.add(new FileNode(file));
-			}
-		}
-		//add playlist files
-		ArrayList alPlaylistFiles = PlaylistFileManager.getPlaylistFiles();
-		Collections.sort(alPlaylistFiles);
-		Iterator it4 = alPlaylistFiles.iterator();
-		while (it4.hasNext()){
-			PlaylistFile playlistFile = (PlaylistFile)it4.next();
-			DirectoryNode directoryNode = DirectoryNode.getDirectoryNode(playlistFile.getDirectory());
-			if (directoryNode != null){
-				directoryNode.add(new PlaylistFileNode(playlistFile));
-			}
-		}
+		
 		//create tree
 		jtree = new JTree(top);
 		jtree.putClientProperty("JTree.lineStyle", "Angled");
@@ -500,10 +498,19 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 							Messages.showErrorMessage("120",file.getDirectory().getDevice().getName());
 						}
 					}
+					else if (o instanceof PlaylistFileNode){  //double clic on a playlist file
+						PlaylistFile plf = ((PlaylistFileNode)o).getPlaylistFile();
+						ArrayList alFiles = plf.getBasicFiles();
+						if ( alFiles.size() == 0){ //check playlist file contains accessible tracks
+							Messages.showErrorMessage("018");	
+						}
+						else{
+							FIFO.getInstance().push(alFiles,false);
+						}
+					}
 				}
 				else if ( jtree.getSelectionCount() > 0 && e.getClickCount() == 1 && e.getButton()==MouseEvent.BUTTON3){  //right clic on a selected node set
 					//Only keep files
-					//TODO TBI accept playlists
 					paths = jtree.getSelectionModel().getSelectionPaths();
 					getInstance().alFiles = new ArrayList(100);
 					getInstance().alDirs = new ArrayList(10);
@@ -544,6 +551,9 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 					}
 					else if (paths[0].getLastPathComponent() instanceof DirectoryNode){
 						jmenuDir.show(jtree,e.getX(),e.getY());
+					}
+					else if (paths[0].getLastPathComponent() instanceof PlaylistFileNode){
+						jmenuPlaylistFile.show(jtree,e.getX(),e.getY());
 					}
 					else if (paths[0].getLastPathComponent() instanceof DeviceNode){
 						if ( paths.length>1){ //operations on devices are mono-target
@@ -593,32 +603,78 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 		jtree.setAutoscrolls(true);
 		//DND support
 		new TreeTransferHandler(jtree, DnDConstants.ACTION_COPY_OR_MOVE,true);
-		
-		
-		//expand all
-		for (int i=0;i<jtree.getRowCount();i++){
-			Object o = jtree.getPathForRow(i).getLastPathComponent(); 
-			if ( o instanceof DeviceNode && ((DeviceNode)o).getDevice().isMounted()  && !((DeviceNode)o).getDevice().isRefreshing() 
-					&& !((DeviceNode)o).getDevice().isSynchronizing() ){
-				Device device = ((DeviceNode)o).getDevice();
-				String sExp = device.getProperty(OPTION_EXPANDED); 
-				if ( "y".equals(sExp)){
-					jtree.expandRow(i);	
-				}
-			}
-			else if ( o instanceof DirectoryNode){
-				Directory dir = ((DirectoryNode)o).getDirectory();
-				String sExp = dir.getProperty(OPTION_EXPANDED); 
-				if ( "y".equals(sExp)){
-					jtree.expandRow(i);	
-				}
-			}
-		}
+		//tree itself
 		jspTree = new JScrollPane(jtree);
 		add(jspTree);
 		jtree.setRowHeight(25);
+		//expand all
+		expand();
+			
+	}
 	
-		
+	/**Fill the tree */
+	public void populate(){
+		this.transferFocus();
+		top.removeAllChildren();
+		//add devices
+		ArrayList alDevices = DeviceManager.getDevices();
+		Collections.sort(alDevices);
+		Iterator it1 = alDevices.iterator();
+		while ( it1.hasNext()){
+			Device device = (Device)it1.next();
+			DefaultMutableTreeNode nodeDevice = new DeviceNode(device);
+			top.add(nodeDevice);
+		}
+		//add directories
+		ArrayList alDirectories = DirectoryManager.getDirectories();
+		Collections.sort(alDirectories);
+		Iterator it2 = alDirectories.iterator();
+		while (it2.hasNext()){
+			Directory directory = (Directory)it2.next();
+			if (!directory.getName().equals("")){ //device root directory, do not display
+				if (directory.getParentDirectory().getName().equals("")){  //parent directory is a device
+					DeviceNode deviceNode = DeviceNode.getDeviceNode(directory.getDevice());
+					if ( deviceNode != null){
+						deviceNode.add(new DirectoryNode(directory));
+					}
+				}
+				else{  //parent directory not root 
+					DirectoryNode parentDirectoryNode = DirectoryNode.getDirectoryNode(directory.getParentDirectory());
+					if (parentDirectoryNode != null){ //paranoia check
+						parentDirectoryNode.add(new DirectoryNode(directory));
+					}
+				}
+			}
+			else{  //add file at the device root
+				DeviceNode deviceNode = DeviceNode.getDeviceNode(directory.getDevice());
+				Iterator it = directory.getFiles().iterator();
+				while (it.hasNext()){
+					deviceNode.add(new FileNode((File)it.next()));
+				}
+			}
+		}
+		//add files
+		ArrayList alFiles = FileManager.getFiles();
+		Collections.sort(alFiles);
+		Iterator it3 = alFiles.iterator();
+		while (it3.hasNext()){
+			File file = (File)it3.next();
+			DirectoryNode directoryNode = DirectoryNode.getDirectoryNode(file.getDirectory());
+			if (directoryNode != null){
+				directoryNode.add(new FileNode(file));
+			}
+		}
+		//add playlist files
+		ArrayList alPlaylistFiles = PlaylistFileManager.getPlaylistFiles();
+		Collections.sort(alPlaylistFiles);
+		Iterator it4 = alPlaylistFiles.iterator();
+		while (it4.hasNext()){
+			PlaylistFile playlistFile = (PlaylistFile)it4.next();
+			DirectoryNode directoryNode = DirectoryNode.getDirectoryNode(playlistFile.getDirectory());
+			if (directoryNode != null){
+				directoryNode.add(new PlaylistFileNode(playlistFile));
+			}
+		}
 	}
 	
 	/* (non-Javadoc)
@@ -669,7 +725,6 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 		else if ( e.getSource() == jmiDevRefresh){
 			Device device = ((DeviceNode)(paths[0].getLastPathComponent())).getDevice();
 			device.refresh(true);
-			ObservationManager.notify(EVENT_DEVICE_REFRESH);
 		}
 		else if ( e.getSource() == jmiDevSynchronize){
 			Device device = ((DeviceNode)(paths[0].getLastPathComponent())).getDevice();
@@ -691,6 +746,50 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 				dir.removeProperty(DIRECTORY_OPTION_SYNCHRO_MODE);
 			}
 		}
+		else if ( e.getSource() == jmiPlaylistFilePlay){
+			PlaylistFile plf = ((PlaylistFileNode)paths[0].getLastPathComponent()).getPlaylistFile();
+			ArrayList alFiles = plf.getBasicFiles();
+			if ( alFiles.size() == 0){ //check playlist file contains accessible tracks
+				Messages.showErrorMessage("018");
+			}
+			else{
+				FIFO.getInstance().push(alFiles,false);
+			}
+		}
+		else if ( e.getSource() == jmiPlaylistFilePush){
+			PlaylistFile plf = ((PlaylistFileNode)paths[0].getLastPathComponent()).getPlaylistFile();
+			ArrayList alFiles = plf.getBasicFiles();
+			if ( alFiles.size() == 0){ //check playlist file contains accessible tracks
+				Messages.showErrorMessage("018");
+			}
+			else{
+				FIFO.getInstance().push(alFiles,true);
+			}
+		}
+		else if ( e.getSource() == jmiPlaylistFilePlayShuffle){
+			PlaylistFile plf = ((PlaylistFileNode)paths[0].getLastPathComponent()).getPlaylistFile();
+			ArrayList alFiles = plf.getBasicFiles();
+			if ( alFiles.size() == 0){ //check playlist file contains accessible tracks
+				Messages.showErrorMessage("018");
+			}
+			else{
+				FIFO.getInstance().push(Util.randomize(alFiles),false);
+			}
+		}
+		else if ( e.getSource() == jmiPlaylistFilePlayRepeat){
+			PlaylistFile plf = ((PlaylistFileNode)paths[0].getLastPathComponent()).getPlaylistFile();
+			ArrayList alFiles = plf.getBasicFiles();
+			if ( alFiles.size() == 0){ //check playlist file contains accessible tracks
+				Messages.showErrorMessage("018");
+			}
+			else{
+				FIFO.getInstance().push(alFiles,false,false,true);
+			}
+		}
+		else if ( e.getSource() == jmiPlaylistFileDelete){
+			PlaylistFile plf = ((PlaylistFileNode)paths[0].getLastPathComponent()).getPlaylistFile();
+			plf.delete();
+		}
 	}
 
 	/* (non-Javadoc)
@@ -698,11 +797,20 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 	 */
 	public void update(String subject) {
 		if ( subject.equals(EVENT_DEVICE_MOUNT) || subject.equals(EVENT_DEVICE_UNMOUNT) || subject.equals(EVENT_DEVICE_REFRESH) ) {
-			populate();
-			int i = jspTree.getVerticalScrollBar().getValue();
-			SwingUtilities.updateComponentTreeUI(jtree);
-			jtree.setRowHeight(25);
-			jspTree.getVerticalScrollBar().setValue(i);
+			SwingWorker sw = new SwingWorker() {
+				public Object  construct(){
+					populate();
+					return null;
+				}
+				public void finished() {
+					SwingUtilities.updateComponentTreeUI(jtree);
+					jtree.setRowHeight(25);
+					expand();
+					int i = jspTree.getVerticalScrollBar().getValue();
+					jspTree.getVerticalScrollBar().setValue(i);
+				}
+			};
+			sw.start();
 		}
 	}
 
@@ -712,6 +820,33 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 	public String getViewName() {
 		return "org.jajuk.ui.views.PhysicalTreeView";
 	}
+	
+	/**
+	 * Manages auto-expand 
+	 *
+	 */
+	private void expand(){
+		for (int i=0;i<jtree.getRowCount();i++){
+			Object o = jtree.getPathForRow(i).getLastPathComponent(); 
+			if ( o instanceof DeviceNode && ((DeviceNode)o).getDevice().isMounted()  && !((DeviceNode)o).getDevice().isRefreshing() 
+					&& !((DeviceNode)o).getDevice().isSynchronizing() ){
+				Device device = ((DeviceNode)o).getDevice();
+				String sExp = device.getProperty(OPTION_EXPANDED); 
+				if ( "y".equals(sExp)){
+					jtree.expandRow(i);	
+				}
+			}
+			else if ( o instanceof DirectoryNode){
+				Directory dir = ((DirectoryNode)o).getDirectory();
+				String sExp = dir.getProperty(OPTION_EXPANDED); 
+				if ( "y".equals(sExp)){
+					jtree.expandRow(i);	
+				}
+			}
+		}
+	}
+	
+	
 }
 
 
@@ -850,7 +985,7 @@ class PlaylistFileNode  extends TransferableTreeNode{
 	/**
 	 * @return Returns the playlist file node.
 	 */
-	public PlaylistFile getDirectory() {
+	public PlaylistFile getPlaylistFile() {
 		return (PlaylistFile)getData();
 	}
 		

@@ -70,14 +70,14 @@ public class Directory extends PropertyAdapter implements Comparable{
 		this.sName = sName;
 		this.dParent = dParent;
 		this.device = device;
-		this.fio = new File(device.getUrl() + getAbsolutePath());
+		this.fio = new File(device.getUrl() + getRelativePath());
 	}
 
 	/**
 	 * toString method
 	 */
 	public String toString() {
-		return "Directory[ID=" + sId + " Name=" + getAbsolutePath() + " Parent ID=" + (dParent == null ? "null" : dParent.getId()) + " Device=" + device.getName() + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$
+		return "Directory[ID=" + sId + " Name=" + getRelativePath() + " Parent ID=" + (dParent == null ? "null" : dParent.getId()) + " Device=" + device.getName() + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$
 	}
 
 	/**
@@ -201,7 +201,7 @@ public class Directory extends PropertyAdapter implements Comparable{
 			if (TypeManager.getTypeByExtension(Util.getExtension(files[i])).isMusic()) {
 				//check the file is not already known in old database
 				org.jajuk.base.File fileRef = null;
-				String sId = MD5Processor.hash(getDevice().getName() + getDevice().getUrl() + getAbsolutePath() + files[i].getName() + Util.getFileChecksum(files[i]));
+				String sId = MD5Processor.hash(getDevice().getName() + getDevice().getUrl() + getRelativePath() + files[i].getName() + Util.getFileChecksum(files[i]));
 				Iterator it = TrackManager.getTracks().iterator();
 				while (it.hasNext() && fileRef == null){
 					Track track = (Track)it.next();
@@ -244,6 +244,7 @@ public class Directory extends PropertyAdapter implements Comparable{
 			else{  //playlist file
 				try{
 					String sName = files[i].getName();
+					String sId = MD5Processor.hash(new StringBuffer(this.getDevice().getUrl()).append(this.	getRelativePath()).append(sName).toString());
 					BufferedReader br = new BufferedReader(new FileReader(files[i]));
 					StringBuffer sbContent = new StringBuffer();
 					String sTemp;
@@ -253,7 +254,7 @@ public class Directory extends PropertyAdapter implements Comparable{
 					}
 					while ( sTemp != null);
 					String sHashcode =MD5Processor.hash(sbContent.toString()); 
-					PlaylistFile plFile = PlaylistFileManager.registerPlaylistFile(sName,sHashcode,this);
+					PlaylistFile plFile = PlaylistFileManager.registerPlaylistFile(sId,sName,sHashcode,this);
 					PlaylistManager.registerPlaylist(plFile);
 				}
 				catch(Exception e){
@@ -269,7 +270,7 @@ public class Directory extends PropertyAdapter implements Comparable{
 	 * 
 	 * @return String
 	 */
-	public String getAbsolutePath() {
+	public String getRelativePath() {
 		if (sAbs!=null){
 			return sAbs;
 		}
@@ -307,7 +308,7 @@ public class Directory extends PropertyAdapter implements Comparable{
 	 */
 	public int compareTo(Object o){
 		Directory otherDirectory = (Directory)o;
-		return  getAbsolutePath().compareToIgnoreCase(otherDirectory.getAbsolutePath());
+		return  getRelativePath().compareToIgnoreCase(otherDirectory.getRelativePath());
 	}
 
 }

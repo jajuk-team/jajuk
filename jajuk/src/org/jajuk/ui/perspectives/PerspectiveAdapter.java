@@ -41,8 +41,8 @@ import org.jajuk.util.ConfigurationManager;
 public abstract class PerspectiveAdapter implements IPerspective,ITechnicalStrings {
 	/** Perspective name*/
 	private String sName;
-	/** Perspective icon name*/
-	private String sIconName;
+	/** Perspective icon path*/
+	private String sIconPath;
 	/** Perspective views list*/
 	private ArrayList alViews = new ArrayList(10);
 	/**Associated desktop pane*/
@@ -54,9 +54,7 @@ public abstract class PerspectiveAdapter implements IPerspective,ITechnicalStrin
 	 * @param sName
 	 * @param sIconName
 	 */
-	public PerspectiveAdapter(String sName,String sIconName){
-		this.sName = sName;
-		this.sIconName = sIconName;
+	public PerspectiveAdapter(){
 		this.desktop = new JDesktopPane();
 	}
 	
@@ -93,13 +91,6 @@ public abstract class PerspectiveAdapter implements IPerspective,ITechnicalStrin
 	}
 
 	/* (non-Javadoc)
-	 * @see org.jajuk.ui.perspectives.IPerspective#getIconName()
-	 */
-	public String getIconName() {
-		return sIconName;
-	}
-
-	/* (non-Javadoc)
 	 * @see org.jajuk.ui.perspectives.IPerspective#getViews()
 	 */
 	public ArrayList getViews() {
@@ -118,6 +109,27 @@ public abstract class PerspectiveAdapter implements IPerspective,ITechnicalStrin
 	 */
 	public String toString(){
 		return "Perspective[name="+getName()+" description='"+getDesc()+"]";
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.jajuk.ui.IPerspective#getIconPath()
+	 */
+	public String getIconPath() {
+		return sIconPath;
+	}
+	
+	/**
+	 * Set icon path
+	 */
+	public void setIconPath(String sIconPath) {
+		this.sIconPath = sIconPath;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.jajuk.ui.IPerspective#setName(java.lang.String)
+	 */
+	public void setName(String sName) {
+		this.sName = sName;
 	}
 
 }

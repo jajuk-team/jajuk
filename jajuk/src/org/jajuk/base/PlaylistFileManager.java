@@ -25,7 +25,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Properties;
 
-import org.jajuk.util.MD5Processor;
 import org.jajuk.util.log.Log;
 
 /**
@@ -44,16 +43,6 @@ public class PlaylistFileManager {
 	 */
 	private PlaylistFileManager() {
 		super();
-	}
-
-	/**
-	 * Register an PlaylistFile
-	 * 
-	 * @param sName
-	 */
-	public static synchronized PlaylistFile registerPlaylistFile(String sName, String sHashcode, Directory dParentDirectory) {
-		String sId = MD5Processor.hash(dParentDirectory.getAbsolutePath() + sName);
-		return registerPlaylistFile(sId, sName, sHashcode, dParentDirectory);
 	}
 
 	/**

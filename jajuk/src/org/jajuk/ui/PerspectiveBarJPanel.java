@@ -22,6 +22,8 @@ package org.jajuk.ui;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -40,22 +42,14 @@ import org.jajuk.util.Util;
  * @version	1.0
  * @created		6 oct. 2003
  */
-public class PerspectiveBarJPanel
-	extends JPanel
-	implements ITechnicalStrings,ActionListener
-{
+public class PerspectiveBarJPanel extends JPanel implements ITechnicalStrings{
 
 		// Perspectives tool bar
 	private JToolBar jtbPerspective = null;
-			// Perspectives access buttons
-		private JButton jbPhysical		= null;
-		private JButton jbLogical		= null;
-		private JButton jbConfiguration= null;
-		private JButton jbHelp			= null;
-		private JButton jbStatistics	= null;
-		
 		/**Self instance*/
 		static private PerspectiveBarJPanel pb = null; 	
+		/**Perspective button*/
+		private ArrayList alButtons = new ArrayList(10); 
 	
 	
 	/**
@@ -74,8 +68,16 @@ public class PerspectiveBarJPanel
 	 */
 	private PerspectiveBarJPanel() {
 		super();
-		
-			// set default layout and size
+		update();
+	}
+	
+	
+	/**
+	 * update contents
+	 *
+	 */
+	public void update(){
+		// set default layout and size
 		setLayout(new BoxLayout(this,BoxLayout.Y_AXIS)); //we use a BoxLayout and not a FlowLayout to allow resizing
 		setBorder(BorderFactory.createEtchedBorder());
 			// Perspectives tool bar
@@ -84,90 +86,43 @@ public class PerspectiveBarJPanel
 		jtbPerspective.addSeparator();
 		jtbPerspective.setOrientation(JToolBar.VERTICAL);
 		
-			// Physical perspective access button
-		jbPhysical = new JButton(Util.getIcon(ICON_PERSPECTIVE_PHYSICAL)); 
-		jbPhysical.addActionListener(this);
-		jbPhysical.setToolTipText(Messages.getString("PerspectiveBarJPanel.Show_the_physical_perspective")); //$NON-NLS-1$
-		jtbPerspective.add(jbPhysical);
-		// Logical perspective access button
-		jbLogical = new JButton(Util.getIcon(ICON_PERSPECTIVE_LOGICAL)); 
-		jbLogical.addActionListener(this);
-		jbLogical.setToolTipText(Messages.getString("PerspectiveBarJPanel.Show_the_logical_perspective")); //$NON-NLS-1$
-		jtbPerspective.addSeparator();
-		jtbPerspective.add(jbLogical);
-			// Configuration perspective access button
-		jbConfiguration = new JButton(Util.getIcon(ICON_PERSPECTIVE_CONFIGURATION)); 
-		jbConfiguration.addActionListener(this);
-		jbConfiguration.setToolTipText(Messages.getString("PerspectiveBarJPanel.Show_the_configuration_perspective")); //$NON-NLS-1$
-		jtbPerspective.addSeparator();
-		jtbPerspective.add(jbConfiguration);
-			// Statistics perspective access button
-		jbStatistics = new JButton(Util.getIcon(ICON_PERSPECTIVE_STATISTICS)); 
-		jbStatistics.addActionListener(this);
-		jbStatistics.setToolTipText(Messages.getString("PerspectiveBarJPanel.Show_the_statistics_perspective")); //$NON-NLS-1$
-		jtbPerspective.addSeparator();
-		jtbPerspective.add(jbStatistics);
-			// Help perspective access button
-		jbHelp = new JButton(Util.getIcon(ICON_INFO)); 
-		jbHelp.addActionListener(this);
-		jbHelp.setToolTipText(Messages.getString("PerspectiveBarJPanel.Show_the_help_perspective")); //$NON-NLS-1$
-		jtbPerspective.addSeparator();
-		jtbPerspective.add(jbHelp);
-		
+		Iterator it = PerspectiveManager.getPerspectives().iterator();
+		while ( it.hasNext()){
+			final IPerspective perspective = (IPerspective)it.next();
+			JButton jb = new JButton(Util.getIcon("jar:"+PATH_CURRENT_JAR+"!"+perspective.getIconPath()));
+			try{
+				jb.setToolTipText(Messages.getString("PerspectiveBarJPanel."+perspective.getName())); //$NON-NLS-1$
+			}
+			catch(Exception e){};  //ignore tooltip missing
+			jb.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					PerspectiveManager.notify(perspective.getName());
+				}
+			});
+			jtbPerspective.add(jb);
+			jtbPerspective.addSeparator();
+			alButtons.add(jb);
+		}
 		add(jtbPerspective);
 	}
-	
 	
 	/**
 	 * Show selected perspective
 	 * @param perspective
 	 */
 	public void setActivated(IPerspective perspective){
-		//remove all borders
-		jbPhysical.setBorder(BorderFactory.createEtchedBorder());
-		jbLogical.setBorder(BorderFactory.createEtchedBorder());
-		jbConfiguration.setBorder(BorderFactory.createEtchedBorder());
-		jbStatistics.setBorder(BorderFactory.createEtchedBorder());
-		jbHelp.setBorder(BorderFactory.createEtchedBorder());
-		if (perspective.getName().equals(PERSPECTIVE_NAME_PHYSICAL)){
-			jbPhysical.setBorder(BorderFactory.createLineBorder(Color.BLACK,4));
-		}
-		else if (perspective.getName().equals(PERSPECTIVE_NAME_LOGICAL)){
-			jbLogical.setBorder(BorderFactory.createLineBorder(Color.BLACK,4));
-		}
-		else if (perspective.getName().equals(PERSPECTIVE_NAME_CONFIGURATION)){
-			jbConfiguration.setBorder(BorderFactory.createLineBorder(Color.BLACK,4));
-		}
-		else if (perspective.getName().equals(PERSPECTIVE_NAME_STATISTICS)){
-			jbStatistics.setBorder(BorderFactory.createLineBorder(Color.BLACK,4));
-		}
-		else if (perspective.getName().equals(PERSPECTIVE_NAME_HELP)){
-			jbHelp.setBorder(BorderFactory.createLineBorder(Color.BLACK,4));
+		ArrayList alPerspectives = PerspectiveManager.getPerspectives();
+		Iterator it = alButtons.iterator();
+		Iterator it2 = alPerspectives.iterator();
+		while ( it.hasNext()){
+			JButton jb = (JButton)it.next();
+			IPerspective perspective2 = (IPerspective)it2.next();
+			if ( perspective2.equals(perspective)){  //this perspective is selected 
+				jb.setBorder(BorderFactory.createLineBorder(Color.BLACK,4));
+			}
+			else{
+				jb.setBorder(BorderFactory.createEtchedBorder());
+			}
 		}
 	}
-
-	/* (non-Javadoc)
-	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-	 */
-	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == jbPhysical){
-			PerspectiveManager.notify(PERSPECTIVE_NAME_PHYSICAL);
-		}
-		else if (e.getSource() == jbLogical){
-			PerspectiveManager.notify(PERSPECTIVE_NAME_LOGICAL);
-		}
-		if (e.getSource() == jbConfiguration){
-			PerspectiveManager.notify(PERSPECTIVE_NAME_CONFIGURATION);
-		}
-		if (e.getSource() == jbStatistics){
-			PerspectiveManager.notify(PERSPECTIVE_NAME_STATISTICS);
-		}
-		if (e.getSource() == jbHelp){
-			PerspectiveManager.notify(PERSPECTIVE_NAME_HELP);
-		}
-		
-	}
-	
-	
-
 }

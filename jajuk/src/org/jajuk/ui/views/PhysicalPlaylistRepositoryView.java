@@ -25,7 +25,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -34,13 +33,11 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
-import org.jajuk.Main;
 import org.jajuk.base.Bookmarks;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.FileManager;
@@ -50,7 +47,8 @@ import org.jajuk.i18n.Messages;
 import org.jajuk.ui.ObservationManager;
 import org.jajuk.ui.Observer;
 import org.jajuk.ui.PlaylistFileItem;
-import org.jajuk.util.ConfigurationManager;
+
+import com.sun.SwingWorker;
 
 /**
  * Shows playlist files
@@ -222,10 +220,22 @@ public class PhysicalPlaylistRepositoryView extends ViewAdapter implements Obser
 	 */
 	public void update(String subject) {
 		if ( subject.equals(EVENT_DEVICE_MOUNT) || subject.equals(EVENT_DEVICE_UNMOUNT) || subject.equals(EVENT_DEVICE_REFRESH) ) {
-			jpRoot.removeAll();
-			populate();
-			jpRoot.add(Box.createVerticalStrut(500));
-			SwingUtilities.updateComponentTreeUI(this);
+			SwingWorker sw = new SwingWorker() {
+				public Object  construct(){
+					jpRoot.removeAll();
+					populate();
+					jpRoot.add(Box.createVerticalStrut(500));  //make sure specials playlists are paked to the top
+					//set queue playlist as default in playlist editor
+					plfiSelected = plfiQueue; //reset queue as default queue, we can't assume playlist before refresh yet exists
+					PhysicalPlaylistEditorView.getInstance().setCurrentPlayListFile(plfiQueue);
+					plfiQueue.setBorder(BorderFactory.createLineBorder(Color.BLACK,5));
+					return null;
+				}
+				public void finished() {
+					SwingUtilities.updateComponentTreeUI(PhysicalPlaylistRepositoryView.this);
+				}
+			};
+			sw.start();
 		}
 	}
 	
@@ -234,28 +244,31 @@ public class PhysicalPlaylistRepositoryView extends ViewAdapter implements Obser
 	 */
 	private void populate(){
 		//special playlists
+		JPanel jpSpecials = new JPanel();
+		jpSpecials.setBorder(BorderFactory.createTitledBorder("Specials"));
+		jpSpecials.setLayout(new BoxLayout(jpSpecials,BoxLayout.Y_AXIS));
 		//queue
 		plfiQueue = new PlaylistFileItem(PlaylistFileItem.PLAYLIST_TYPE_QUEUE,ICON_PLAYLIST_QUEUE,null,"Queue");
 		plfiQueue.setToolTipText("Current queue : drag and drop into for playing");
 		plfiQueue.addMouseListener(ma);
-		jpRoot.add(plfiQueue);
+		jpSpecials.add(plfiQueue);
 		//new
 		plfiNew = new PlaylistFileItem(PlaylistFileItem.PLAYLIST_TYPE_NEW,ICON_PLAYLIST_NEW,null,"New");
 		plfiNew.setToolTipText("New playlist : drag and drop into for adding files");
 		plfiNew.addMouseListener(ma);
-		jpRoot.add(plfiNew);
+		jpSpecials.add(plfiNew);
 		//bookmark
 		plfiBookmarks = new PlaylistFileItem(PlaylistFileItem.PLAYLIST_TYPE_BOOKMARK,ICON_PLAYLIST_BOOKMARK,null,"Bookmarks");
 		plfiBookmarks.setToolTipText("Bookmark playlist : drag and drop into for keeping trace");
 		plfiBookmarks.addMouseListener(ma);
-		jpRoot.add(plfiBookmarks);
+		jpSpecials.add(plfiBookmarks);
 		//Best of
 		plfiBestof = new PlaylistFileItem(PlaylistFileItem.PLAYLIST_TYPE_BESTOF,ICON_PLAYLIST_BESTOF,null,"Best of");
 		plfiBestof.setToolTipText("Best of playlist : contains top tracks");
 		plfiBestof.addMouseListener(ma);
-		jpRoot.add(plfiBestof);
+		jpSpecials.add(plfiBestof);
 		
-		jpRoot.add(Box.createVerticalStrut(20));
+		jpRoot.add(jpSpecials);
 	
 		//normal playlists
 		ArrayList al = PlaylistFileManager.getPlaylistFiles();
@@ -263,6 +276,9 @@ public class PhysicalPlaylistRepositoryView extends ViewAdapter implements Obser
 		Iterator it = al.iterator();
 		while ( it.hasNext()){
 			PlaylistFile plf = (PlaylistFile)it.next();
+			if ( !plf.isReady()){  //don't show playlist files on unmounted devices
+				continue;
+			}
 			PlaylistFileItem plfi = new PlaylistFileItem(PlaylistFileItem.PLAYLIST_TYPE_NORMAL,ICON_PLAYLIST_NORMAL,plf,plf.getName());
 			plfi.addMouseListener(ma);
 			plfi.setToolTipText(plf.getName());
@@ -275,19 +291,7 @@ public class PhysicalPlaylistRepositoryView extends ViewAdapter implements Obser
 	 */
 	public void actionPerformed(ActionEvent ae) {
 		if ( ae.getSource() == jmiDelete){
-			if ( ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_DELETE_FILE)){  //file delete confirmation
-				String sFileToDelete = plfiSelected.getPlaylistFile().getDirectory().getFio().getAbsoluteFile()+"/"+plfiSelected.getPlaylistFile().getName();
-				String sMessage = Messages.getString("Confirmation_delete")+"\n"+sFileToDelete;
-				int i = JOptionPane.showConfirmDialog(Main.jframe,sMessage,Messages.getString("Warning"),JOptionPane.OK_CANCEL_OPTION,JOptionPane.WARNING_MESSAGE);
-				if ( i == JOptionPane.OK_OPTION){
-					File fileToDelete = new File(sFileToDelete);
-					if ( fileToDelete.exists()){
-						fileToDelete.delete();
-						PlaylistFileManager.delete(plfiSelected.getPlaylistFile().getId());
-						ObservationManager.notify(EVENT_DEVICE_REFRESH);  //requires device refresh
-					}
-				}
-			}
+			plfiSelected.getPlaylistFile().delete();
 		}
 		else if(ae.getSource() == jmiEdit){
 			PhysicalPlaylistEditorView.getInstance().setCurrentPlayListFile(plfiSelected);

@@ -35,7 +35,7 @@ public class PhysicalPerspective extends PerspectiveAdapter{
 	 *
 	 */
 	public PhysicalPerspective(){
-		super(PERSPECTIVE_NAME_PHYSICAL,ICON_PERSPECTIVE_PHYSICAL);
+		super();
 	}
 
 	/* (non-Javadoc)

@@ -35,7 +35,7 @@ public class HelpPerspective extends PerspectiveAdapter{
 	 *
 	 */
 	public HelpPerspective(){
-		super(PERSPECTIVE_NAME_HELP,ICON_PERSPECTIVE_HELP);
+		super();
 	}
 
 	/* (non-Javadoc)

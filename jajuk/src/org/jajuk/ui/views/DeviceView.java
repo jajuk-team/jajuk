@@ -436,8 +436,11 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 		 */
 		public void update(String subject) {
 			if ( EVENT_DEVICE_MOUNT.equals(subject) || EVENT_DEVICE_UNMOUNT.equals(subject) || EVENT_DEVICE_REFRESH.equals(subject)){
+				Util.waiting();
 				refreshDevices();
 				SwingUtilities.updateComponentTreeUI(jpDevices);
+				Util.stopWaiting();
+			
 			}
 		}
 		

@@ -65,11 +65,11 @@ public interface ITechnicalStrings {
 	public static final String ICON_VOLUME = PATH_ICONS + "16x16/volume.png";
 	public static final String ICON_POSITION = PATH_ICONS + "16x16/bottom.png";
 	public static final String ICON_INFO	= PATH_ICONS + "16x16/info.png";
-	public static final String ICON_PERSPECTIVE_PHYSICAL			= PATH_ICONS + "16x16/physical_perspective.png";
-	public static final String ICON_PERSPECTIVE_LOGICAL			= PATH_ICONS + "16x16/logical_perspective.png";
-	public static final String ICON_PERSPECTIVE_STATISTICS		= PATH_ICONS + "16x16/percent.png";
-	public static final String ICON_PERSPECTIVE_CONFIGURATION	= PATH_ICONS + "16x16/configure.png";
-	public static final String ICON_PERSPECTIVE_HELP	= PATH_ICONS + "16x16/info.png";
+	public static final String ICON_PERSPECTIVE_PHYSICAL = "/org/jajuk/icons/16x16/physical_perspective.png"; //path inside jar file
+	public static final String ICON_PERSPECTIVE_LOGICAL	= "/org/jajuk/icons/16x16/logical_perspective.png";
+	public static final String ICON_PERSPECTIVE_STATISTICS	= "/org/jajuk/icons/16x16/percent.png";
+	public static final String ICON_PERSPECTIVE_CONFIGURATION	= "/org/jajuk/icons/16x16/configure.png";
+	public static final String ICON_PERSPECTIVE_HELP	= "/org/jajuk/icons/16x16/info.png";
 	public static final String ICON_OPEN_FILE	= PATH_ICONS + "16x16/fileopen.png";
 	public static final String ICON_EXIT=  PATH_ICONS + "16x16/exit.png";
 	public static final String ICON_NEW=  PATH_ICONS + "16x16/new.png";
@@ -237,9 +237,7 @@ public interface ITechnicalStrings {
 	public static final String EVENT_PLAYER_PAUSE="player pause";
 	public static final String EVENT_PLAYER_UNPAUSE="player unpause";
 	public static final String EVENT_PLAYLIST_REFRESH="playlist refresh";
-	
-	
-	
+		
 	//Look and feel
 	public static final String LNF_METAL = "Metal";
 	public static final String LNF_METAL_CLASS = "javax.swing.plaf.metal.MetalLookAndFeel";
@@ -256,8 +254,7 @@ public interface ITechnicalStrings {
 	public static final String LNF_LIQUID = "Liquid";
 	public static final String LNF_LIQUID_CLASS = "com.birosoft.liquid.LiquidLookAndFeel";
 	public static final String LNF_LIQUID_CBUI = "org.jajuk.ui.laf.LiquidComboBoxUI";
-	
-		
+			
 	//statup mode
 	public static final String STARTUP_MODE_NOTHING = "nothing";
 	public static final String STARTUP_MODE_SHUFFLE = "shuffle";
@@ -349,7 +346,7 @@ public interface ITechnicalStrings {
 	public static final String XML_PERSPECTIVES_CONF = 
 		"<?xml version='1.0' encoding='UTF-8'?>\n"+
 		 "<perspectives jajuk_version='"+JAJUK_VERSION+"'>\n"+
-		"\t<perspective  class='"+PERSPECTIVE_NAME_PHYSICAL+"'>\n"+
+		"\t<perspective  class='"+PERSPECTIVE_NAME_PHYSICAL+"' icon='"+ICON_PERSPECTIVE_PHYSICAL+"'>\n"+
 		"\t\t<views>\n"+
 		"\t\t\t<view class='"+VIEW_NAME_PHYSICAL_TREE+"' width='30' height='100' x='0' y='0'/>\n"+
 		"\t\t\t<view class='"+VIEW_NAME_PHYSICAL_TABLE+"' width='60' height='70' x='40' y='0'/>\n"+
@@ -358,7 +355,7 @@ public interface ITechnicalStrings {
 		"\t\t\t<view class='"+VIEW_NAME_PHYSICAL_PLAYLIST_EDITOR+"' width='40' height='30' x='40' y='70'/>\n"+
 		"\t\t</views>\n"+
 		"\t\t</perspective>\n"+
-		"\t<perspective class='"+PERSPECTIVE_NAME_LOGICAL+"'>\n"+
+		"\t<perspective class='"+PERSPECTIVE_NAME_LOGICAL+"' icon='"+ICON_PERSPECTIVE_LOGICAL+"'>\n"+
 		"\t\t<views>\n"+
 		"\t\t\t<view class='"+VIEW_NAME_LOGICAL_TREE+"' width='30' height='100' x='0' y='0'/>\n"+
 		"\t\t\t<view class='"+VIEW_NAME_LOGICAL_TABLE+"' width='60' height='70' x='40' y='0'/>\n"+
@@ -367,19 +364,19 @@ public interface ITechnicalStrings {
 		"\t\t\t<view class='"+VIEW_NAME_LOGICAL_PLAYLIST_EDITOR+"' width='40' height='30' x='40' y='70'/>\n"+
 		"\t\t</views>\n"+
 		"\t</perspective>\n"+
-		"\t<perspective class='"+PERSPECTIVE_NAME_CONFIGURATION+"'>\n"+
+		"\t<perspective class='"+PERSPECTIVE_NAME_CONFIGURATION+"' icon='"+ICON_PERSPECTIVE_CONFIGURATION+"'>\n"+
 		"\t\t<views>\n"+
 		"\t\t\t<view class='"+VIEW_NAME_PARAMETERS+"' width='50' height='100' x='0' y='0' />\n"+
 		"\t\t\t<view class='"+VIEW_NAME_DEVICES+"' width='50' height='70' x='50' y='0' />\n"+
 		"\t\t\t<view class='"+VIEW_NAME_CD_SCAN+"' width='50' height='30' x='50' y='70' />\n"+
 		"\t\t</views>\n"+
 		"\t</perspective>\n"+
-		"\t<perspective class='"+PERSPECTIVE_NAME_STATISTICS+"'>\n"+
+		"\t<perspective class='"+PERSPECTIVE_NAME_STATISTICS+"' icon='"+ICON_PERSPECTIVE_STATISTICS+"'>\n"+
 		"\t\t<views>\n"+
 		"\t\t\t<view class='"+VIEW_NAME_STAT+"' width='100' height='100' x='0' y='0' />\n"+
 		"\t\t</views>\n"+
 		"\t</perspective>\n"+
-		"\t<perspective  class='"+PERSPECTIVE_NAME_HELP+"'>\n"+
+		"\t<perspective  class='"+PERSPECTIVE_NAME_HELP+"' icon='"+ICON_PERSPECTIVE_HELP+"'>\n"+
 		"\t\t<views>\n"+
 		"\t\t\t<view class='"+VIEW_NAME_HELP+"' width='70' height='100' x='0' y='0' />\n"+
 		"\t\t\t<view class='"+VIEW_NAME_ABOUT+"' width='30' height='100' x='70' y='0' />\n"+

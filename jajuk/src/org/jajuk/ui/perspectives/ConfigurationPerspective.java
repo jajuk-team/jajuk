@@ -35,7 +35,7 @@ public class ConfigurationPerspective extends PerspectiveAdapter{
 	 *
 	 */
 	public ConfigurationPerspective(){
-		super(PERSPECTIVE_NAME_CONFIGURATION,ICON_PERSPECTIVE_CONFIGURATION);
+		super();
 	}
 
 	/* (non-Javadoc)

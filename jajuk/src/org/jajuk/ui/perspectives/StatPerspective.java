@@ -35,7 +35,7 @@ public class StatPerspective extends PerspectiveAdapter{
 	 *
 	 */
 	public StatPerspective(){
-		super(PERSPECTIVE_NAME_STATISTICS,ICON_PERSPECTIVE_STATISTICS);
+		super();
 	}
 
 	/* (non-Javadoc)

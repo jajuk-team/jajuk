@@ -35,7 +35,7 @@ public class LogicalPerspective extends PerspectiveAdapter{
 	 *
 	 */
 	public LogicalPerspective(){
-		super(PERSPECTIVE_NAME_LOGICAL,ICON_PERSPECTIVE_LOGICAL);
+		super();
 	}
 
 	/* (non-Javadoc)

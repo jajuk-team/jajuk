@@ -20,6 +20,8 @@
 
 package org.jajuk.ui.views;
 
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -28,8 +30,8 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JToolBar;
-import javax.swing.SwingUtilities;
 import javax.swing.table.AbstractTableModel;
 
 import layout.TableLayout;
@@ -52,7 +54,7 @@ import org.jajuk.util.Util;
  * @author     bflorat
  * @created   29 dec. 2003
  */
-public abstract class AbstractPlaylistEditorView extends ViewAdapter implements Observer {
+public abstract class AbstractPlaylistEditorView extends ViewAdapter implements Observer,MouseListener {
 
 	
 	JPanel jpControl;
@@ -107,10 +109,17 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 		}
 		
 	 	public Class getColumnClass(int columnIndex) {
-			return getValueAt(0, columnIndex).getClass();
+			Object o =getValueAt(0, columnIndex);
+			if ( o == null){
+				return String.class;
+			}
+	 		return o.getClass();
 		}
 		
 		public Object getValueAt(int rowIndex, int columnIndex) {
+			if ( alFiles.size() == 0){
+				return null;
+			}
 			BasicFile bf = (BasicFile)alFiles.get(rowIndex);
 			if ( columnIndex == 0){
 				return bf.getTrack().getName();
@@ -127,9 +136,8 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 		public String getColumnName(int columnIndex) {
 			return sColName[columnIndex];
 		}
-	
 	}
-	
+	PlayListEditorTableModel model = new PlayListEditorTableModel();
 	
 	
 	/**
@@ -180,11 +188,16 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 		
 		jpControl.add(jtb,"1,0");
 		jpControl.add(jlTitle,"2,0");
+		
+		jtable = new JajukTable(model);
+		jtable.addMouseListener(this);
+		jtable.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
 		double size[][] =
 		{{0.99},
 		{30,0.99}};
 		setLayout(new TableLayout(size));
 		add(jpControl,"0,0");
+		add(new JScrollPane(jtable),"0,1");
 		ObservationManager.register(EVENT_PLAYLIST_REFRESH,this);
 	}
 
@@ -227,21 +240,22 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 				}
 				break;
 			case 4:  //queue
+				if ( FIFO.isStopped()){
+					break;
+				}
 				//add currently played file
 				File file = FIFO.getInstance().getCurrentFile();
 				if ( file != null){
 					alFiles.add(new BasicFile(file));  
 				}
 				//next files
-				ArrayList alQueue = FIFO.getInstance().getFIFO(); 
+				ArrayList alQueue = (ArrayList)FIFO.getInstance().getFIFO().clone();
 				it = alQueue.iterator();
 				while (it.hasNext()){
 					alFiles.add(new BasicFile((File)it.next()));
 				}
 				break;
 		}
-		iRowNum = alFiles.size();
-				
 	}
 	
 	
@@ -252,23 +266,24 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 	 */
 	public void update(String subject) {
 		if ( EVENT_PLAYLIST_REFRESH.equals(subject)){
+			//remove old rows
+			if (alFiles != null && alFiles.size()>0){
+				alFiles = new ArrayList(10);
+			 	model.fireTableRowsDeleted(0,alFiles.size()-1);
+			}
 			if ( plfi != null){
-				if ( jtable != null){
-					remove(jtable);
-				}
 				jlTitle.setText(plfi.getName());
 				jlTitle.setToolTipText(plfi.getName());
 				populate();
-				//table
-				PlayListEditorTableModel model = new PlayListEditorTableModel();
-				jtable = new JajukTable(model);
+				iRowNum = alFiles.size();
+				if ( alFiles.size() > 0){
+					model.fireTableRowsInserted(0,alFiles.size()-1);				
+				}
 				//set colunm size
-				int iTrackColWidth = jtable.getColumnModel().getColumn(0).getPreferredWidth();
+				/*int iTrackColWidth = jtable.getColumnModel().getColumn(0).getPreferredWidth();
 				int iLocationColWidth = jtable.getColumnModel().getColumn(0).getPreferredWidth();
 				jtable.getColumnModel().getColumn(0).setPreferredWidth((int)((iTrackColWidth+iLocationColWidth)*0.2)); // track name
-				jtable.getColumnModel().getColumn(1).setPreferredWidth((int)((iTrackColWidth+iLocationColWidth)*0.8)); //location
-				add(new JScrollPane(jtable),"0,1");
-				SwingUtilities.updateComponentTreeUI(jtable);
+				jtable.getColumnModel().getColumn(1).setPreferredWidth((int)((iTrackColWidth+iLocationColWidth)*0.8)); //location*/
 				//set buttons
 				if ( iType == PlaylistFileItem.PLAYLIST_TYPE_QUEUE){
 					jbAdd.setEnabled(false);
@@ -276,6 +291,14 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 					jbDown.setEnabled(false);
 					jbRemove.setEnabled(false);
 					jbRun.setEnabled(false);
+					jbUp.setEnabled(false);
+				}
+				else if ( iType == PlaylistFileItem.PLAYLIST_TYPE_BESTOF){
+					jbAdd.setEnabled(false);
+					jbClear.setEnabled(false);
+					jbDown.setEnabled(false);
+					jbRemove.setEnabled(false);
+					jbRun.setEnabled(true);
 					jbUp.setEnabled(false);
 				}
 				else{
@@ -300,7 +323,45 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 	public void setCurrentPlayListFile(PlaylistFileItem plfi){
 		this.iType = plfi.getType();
 		this.plfi = plfi;
-		ObservationManager.notify(EVENT_PLAYLIST_REFRESH);
+	}
+	
+	
+	/* (non-Javadoc)
+	 * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
+	 */
+	public void mouseClicked(MouseEvent e) {
+	}
+
+
+	/* (non-Javadoc)
+	 * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
+	 */
+	public void mouseEntered(MouseEvent e) {
+	}
+
+
+	/* (non-Javadoc)
+	 * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
+	 */
+	public void mouseExited(MouseEvent e) {
+	}
+
+
+	/* (non-Javadoc)
+	 * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
+	 */
+	public void mousePressed(MouseEvent e) {
+		if ( e.getClickCount() == 2){ //double clic, lauche selected track and all after
+			ArrayList alFilesToPlay = new ArrayList(alFiles.subList(jtable.getSelectedRow(),alFiles.size()));
+			FIFO.getInstance().push(alFilesToPlay,false);
+		}
+	}
+
+
+	/* (non-Javadoc)
+	 * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
+	 */
+	public void mouseReleased(MouseEvent e) {
 	}
 	
 	

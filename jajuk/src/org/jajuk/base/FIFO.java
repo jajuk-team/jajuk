@@ -26,6 +26,8 @@ import org.jajuk.Main;
 import org.jajuk.ui.CommandJPanel;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.ObservationManager;
+import org.jajuk.ui.views.LogicalPlaylistRepositoryView;
+import org.jajuk.ui.views.PhysicalPlaylistEditorView;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
@@ -45,7 +47,7 @@ public class FIFO implements ITechnicalStrings,Runnable{
 	private volatile ArrayList alFIFO;
 	
 	/**Stop flag**/
-	private volatile boolean bStop;
+	private static volatile boolean bStop;
 	
 	/** Deep time**/
 	private final int SLEEP_TIME = 100;
@@ -142,6 +144,7 @@ public class FIFO implements ITechnicalStrings,Runnable{
 		alRepeated = new ArrayList(50);
 		bIntroEnabled = false;
 		bPaused = false;
+		fCurrent = null;
 	}
 	
 	/**
@@ -175,7 +178,6 @@ public class FIFO implements ITechnicalStrings,Runnable{
 					file.getTrack().setRate(file.getTrack().getRate()+2); //inc rate by 2 because it is explicitely selected to be played by human
 				}
 				alFIFO.add(file);
-				ObservationManager.notify(EVENT_PLAYLIST_REFRESH); //alert playlists editors ( queue playlist ) something changed for him
 				lTotalTime += file.getTrack().getLength();
 			}
 		}
@@ -227,7 +229,7 @@ public class FIFO implements ITechnicalStrings,Runnable{
 		push(file,bAppend,false);
 	}
 	
-	
+		
 	/**
 	 * Clears the fifo, for example when we want to add a group of files stopping previous plays
 	 *
@@ -283,6 +285,8 @@ public class FIFO implements ITechnicalStrings,Runnable{
 				if (bPlaying ){//already playing something
 					long length = fCurrent.getTrack().getLength();
 					if ( i%(REFRESH_TIME/SLEEP_TIME) == 0 && length!=0){  //actual refresh less frequent for cpu
+						PhysicalPlaylistEditorView.getInstance().update(EVENT_PLAYLIST_REFRESH); //alert playlists editors ( queue playlist ) something changed for him
+						LogicalPlaylistRepositoryView.getInstance().update(EVENT_PLAYLIST_REFRESH); //alert playlists editors ( queue playlist ) something changed for him
 						lTime = (System.currentTimeMillis() - lTrackStart) + lOffset - lPauseTime;
 						if ( bIntroEnabled){
 							lTime += (fCurrent.getTrack().getLength()*Integer.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_INTRO_BEGIN))*10);
@@ -359,7 +363,6 @@ public class FIFO implements ITechnicalStrings,Runnable{
 					bPlaying = true;
 					Player.stop();  //for security, make sure no other track is playing
 					ObservationManager.notify(EVENT_COVER_REFRESH); //request update cover 
-					ObservationManager.notify(EVENT_PLAYLIST_REFRESH); //alert playlists editors ( queue playlist ) something changed for him
 					if (ConfigurationManager.getBoolean(CONF_STATE_INTRO)){ //intro mode enabled
 						Player.play(fCurrent,Float.parseFloat(ConfigurationManager.getProperty(CONF_OPTIONS_INTRO_BEGIN))/100,1000*Integer.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_INTRO_LENGTH)));
 					}
@@ -485,10 +488,7 @@ public class FIFO implements ITechnicalStrings,Runnable{
 	public void setBestof(boolean bBestOf) {
 		this.bBestOf = bBestOf;
 	}
-	
-	
-	
-	
+		
 	
 	/**
 	 * Get current position in %
@@ -525,6 +525,7 @@ public class FIFO implements ITechnicalStrings,Runnable{
 	 */
 	public synchronized void stopRequest() {
 		bStop = true;
+		ObservationManager.notify(EVENT_PLAYLIST_REFRESH); //alert playlists editors ( queue playlist ) something changed for him
 	}
 	
 	/**
@@ -563,7 +564,7 @@ public class FIFO implements ITechnicalStrings,Runnable{
 	/**
 	 * @return Returns the bStop.
 	 */
-	public boolean isStopped() {
+	public static boolean isStopped() {
 		return bStop;
 	}
 
@@ -577,7 +578,7 @@ public class FIFO implements ITechnicalStrings,Runnable{
 	/**
 	 * @return Returns the alFIFO.
 	 */
-	public ArrayList getFIFO() {
+	public synchronized ArrayList getFIFO() {
 		return alFIFO;
 	}
 

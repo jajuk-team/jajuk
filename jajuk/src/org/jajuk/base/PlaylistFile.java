@@ -28,6 +28,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import javax.swing.JOptionPane;
+
+import org.jajuk.Main;
+import org.jajuk.i18n.Messages;
+import org.jajuk.ui.ObservationManager;
+import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 
@@ -68,8 +74,10 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 		this.sName = sName;
 		this.sHashcode = sHashcode;
 		this.dParentDirectory = dParentDirectory;
-		this.fio = new File(getDirectory().getDevice().getUrl()+getDirectory().getAbsolutePath()+"/"+getName());
-		load(); //populate playlist
+		this.fio = new File(getDirectory().getDevice().getUrl()+getDirectory().getRelativePath()+"/"+getName());
+		if ( fio.exists() && fio.canRead()){  //check device is mounted
+			load(); //populate playlist
+		}
 	}
 
 	
@@ -219,7 +227,7 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 				}
 				else{
 					File fileTrack = null;
-					StringBuffer sbFileDir = new StringBuffer(getDirectory().getDevice().getUrl()).append(getDirectory().getAbsolutePath());
+					StringBuffer sbFileDir = new StringBuffer(getDirectory().getDevice().getUrl()).append(getDirectory().getRelativePath());
 					if ( sLine.charAt(0)!='/'){
 						sb.insert(0,'/');
 					}
@@ -248,6 +256,36 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 				}
 			}
 		}
+	}
+	
+	
+	/**
+	 * Delete this playlist file
+	 *
+	 */
+	public void delete(){
+		if ( ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_DELETE_FILE)){  //file delete confirmation
+			String sFileToDelete = getDirectory().getFio().getAbsoluteFile()+"/"+getName();
+			String sMessage = Messages.getString("Confirmation_delete")+"\n"+sFileToDelete;
+			int i = JOptionPane.showConfirmDialog(Main.jframe,sMessage,Messages.getString("Warning"),JOptionPane.OK_CANCEL_OPTION,JOptionPane.WARNING_MESSAGE);
+			if ( i == JOptionPane.OK_OPTION){
+				File fileToDelete = new File(sFileToDelete);
+				if ( fileToDelete.exists()){
+					fileToDelete.delete();
+					PlaylistFileManager.delete(getId());
+					ObservationManager.notify(EVENT_DEVICE_REFRESH);  //requires device refresh
+				}
+			}
+		}
+	}
+	
+	/**Return true the file can be accessed right now 
+	 * @return true the file can be accessed right now*/
+	public boolean isReady(){
+		if ( getDirectory().getDevice().isMounted() && !getDirectory().getDevice().isRefreshing() && !getDirectory().getDevice().isSynchronizing()){
+			return true;
+		}
+		return false;
 	}
 	
 

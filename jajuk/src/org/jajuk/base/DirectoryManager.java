@@ -56,7 +56,7 @@ public class DirectoryManager {
 	public static synchronized Directory registerDirectory(String sName, Directory dParent, Device device) {
 		String sAbs = device.getUrl();
 		if (dParent != null) {
-			sAbs += dParent.getAbsolutePath();
+			sAbs += dParent.getRelativePath();
 		}
 		sAbs += File.separatorChar + sName;
 		String sId = MD5Processor.hash(device.getName()+sAbs);

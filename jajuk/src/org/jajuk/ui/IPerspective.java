@@ -66,6 +66,12 @@ public interface IPerspective {
 	public String getName();
 	
 	/**
+	 * Set name ( class ) of the perspective
+	 * @param sName name ( class ) of the perspective
+	 */
+	public void setName(String sName);
+	
+	/**
 	 *  Type description
 	 *
 	 * @author     bflorat
@@ -74,11 +80,17 @@ public interface IPerspective {
 	public abstract String getDesc();
 	
 	/**
-	 * Return the icon's name of the perspective. 
-	 * @return String Icon's name representing the perspective.
+	 * Return the icon's jar path   
+	 * @return String Icon's jar path representing the perspective.
 	 */
-	public abstract String getIconName();
+	public abstract String getIconPath();
 	
+
+	/**
+	 * Set icon path inside jar
+	 * @param sIconPath icon path inside jar
+	 */
+	public void setIconPath(String sIconPath);
 	
 	/**
 	 * @return Arraylist views registered in the perspective.
@@ -86,8 +98,8 @@ public interface IPerspective {
 	public ArrayList getViews();
 	
 	/**
-		 * @return Returns the desktop.
-		 */
-		public JDesktopPane getDesktop() ;
+	 * @return Returns the desktop.
+	 */
+	public JDesktopPane getDesktop() ;
 
 }

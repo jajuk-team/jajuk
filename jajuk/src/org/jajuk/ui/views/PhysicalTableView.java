@@ -18,13 +18,21 @@
 
 package org.jajuk.ui.views;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
+
+import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.ui.ObservationManager;
 import org.jajuk.ui.Observer;
+import org.jajuk.util.Util;
 
 /**
  * Logical table view
@@ -32,11 +40,21 @@ import org.jajuk.ui.Observer;
  * @author bflorat 
  * @created 13 dec. 2003
  */
-public class PhysicalTableView extends AbstractTableView implements Observer{
+public class PhysicalTableView extends AbstractTableView implements Observer, MouseListener{
 
 	/** Self instance */
 	private static PhysicalTableView ltv;
-
+	
+	JPopupMenu jmenuFile;
+		JMenuItem jmiFilePlay;
+		JMenuItem jmiFilePush;
+		JMenuItem jmiFilePlayShuffle;
+		JMenuItem jmiFilePlayRepeat;
+		JMenuItem jmiFileSetProperty;
+		JMenuItem jmiFileProperties;
+	
+	/**Contains files displayed in the model*/ 
+	 ArrayList alFiles  = new ArrayList(1000);
 		
 	/*
 	 * (non-Javadoc)
@@ -60,6 +78,28 @@ public class PhysicalTableView extends AbstractTableView implements Observer{
 	public PhysicalTableView(){
 		super();
 		ltv = this;
+		//File menu
+		jmenuFile = new JPopupMenu();
+		jmiFilePlay = new JMenuItem("Play");
+		jmiFilePlay.addActionListener(this);
+		jmiFilePush = new JMenuItem("Push");
+		jmiFilePush.addActionListener(this);
+		jmiFilePlayShuffle = new JMenuItem("Play shuffle");
+		jmiFilePlayShuffle.addActionListener(this);
+		jmiFilePlayRepeat = new JMenuItem("Play repeat");
+		jmiFilePlayRepeat.addActionListener(this);
+		jmiFileSetProperty = new JMenuItem("Set a property");
+		jmiFileSetProperty.setEnabled(false);
+		jmiFileSetProperty.addActionListener(this);
+		jmiFileProperties = new JMenuItem("Properties");
+		jmiFileProperties.setEnabled(false);
+		jmiFileProperties.addActionListener(this);
+		jmenuFile.add(jmiFilePlay);
+		jmenuFile.add(jmiFilePush);
+		jmenuFile.add(jmiFilePlayShuffle);
+		jmenuFile.add(jmiFilePlayRepeat);
+		jmenuFile.add(jmiFileSetProperty);
+		jmenuFile.add(jmiFileProperties);
 	}
 	
 	/* (non-Javadoc)
@@ -80,7 +120,7 @@ public class PhysicalTableView extends AbstractTableView implements Observer{
 		//Columns names
 		sColName = new String[]{"Track","Album","Author","Length","Style","Directory","File","Rate"};
 		//Values
-		ArrayList alFiles = FileManager.getSortedFiles();
+		alFiles = FileManager.getSortedFiles();
 		int iSize = alFiles.size();
 		Iterator it = alFiles.iterator();
 		oValues = new Object[iSize][iColNum];
@@ -113,6 +153,87 @@ public class PhysicalTableView extends AbstractTableView implements Observer{
 	public String getViewName() {
 		return "org.jajuk.ui.views.PhysicalTableView";
 	}
+
+
+	/* (non-Javadoc)
+	 * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
+	 */
+	public void mouseClicked(MouseEvent e) {
+	}
+
+
+	/* (non-Javadoc)
+	 * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
+	 */
+	public void mouseEntered(MouseEvent e) {
+	}
+
+
+	/* (non-Javadoc)
+	 * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
+	 */
+	public void mouseExited(MouseEvent e) {
+	}
+
+
+	/* (non-Javadoc)
+	 * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
+	 */
+	public void mousePressed(MouseEvent e) {
+		if ( e.getClickCount() == 2){ //double clic, can be only one file
+			File file = (File)alFiles.get(jtable.getSelectedRow());
+			FIFO.getInstance().push(file,false);//launch it
+		}		
+		else if ( jtable.getSelectedRowCount() > 0 && e.getClickCount() == 1 && e.getButton()==MouseEvent.BUTTON3){  //right clic on a selected node set
+			if ( jtable.getSelectedRowCount() > 1){
+				jmiFileProperties.setEnabled(false); //can read a property from one sole file
+			}
+			else{
+				jmiFileProperties.setEnabled(true);
+			}
+			jmenuFile.show(jtable,e.getX(),e.getY());
+		}
+	}
+
+
+	/* (non-Javadoc)
+	 * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
+	 */
+	public void mouseReleased(MouseEvent e) {
+	}
+	
+	
+	/* (non-Javadoc)
+	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 */
+	public void actionPerformed(ActionEvent e) {
+		//let super class to test common ( physical/logical ) events 
+		super.actionPerformed(e);
+		//then specifics
+		//computes selected files
+		ArrayList alFilesToPlay = new ArrayList(10);
+		int[] indexes = jtable.getSelectedRows();
+		for (int i=0;i<indexes.length;i++){
+			alFilesToPlay.add((File)alFiles.get(indexes[i]));
+		}
+		//simple play
+		if ( e.getSource() == jmiFilePlay){
+			FIFO.getInstance().push(alFilesToPlay,false);
+		}
+		//push
+		else if ( e.getSource() == jmiFilePush){
+			FIFO.getInstance().push(alFilesToPlay,true);
+		}
+		//shuffle play
+		else if ( e.getSource() == jmiFilePlayShuffle){
+			FIFO.getInstance().push(Util.randomize(alFilesToPlay),false);
+		}
+		//repeat play
+		else if ( e.getSource() == jmiFilePlayRepeat){
+			FIFO.getInstance().push(alFilesToPlay,false,false,true);
+		}
+	}
+	
 	
 }
 

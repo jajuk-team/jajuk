@@ -160,13 +160,11 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 			}
 		}
 		if ( bAsynchronous){
-			//current reference to the inner thread class
-			new Thread() {
-				public void  run() {
+			new Thread(){
+				public void run(){
 					refreshCommand(device);
 				}
-			}
-			.start();
+			}.start();
 		}
 		else{
 			refreshCommand(device);
@@ -233,7 +231,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 						indexTab[iDeep]++; //inc index for next time we will reach this deep
 						fCurrent = files[indexTab[iDeep]];
 						dParent = DirectoryManager.registerDirectory(fCurrent.getName(),dParent,device);
-						InformationJPanel.getInstance().setMessage(new StringBuffer("Refreshing [").append(device.getName()).append("]  Entering [").append(dParent.getAbsolutePath()).append("]").toString(),InformationJPanel.INFORMATIVE);
+						InformationJPanel.getInstance().setMessage(new StringBuffer("Refreshing [").append(device.getName()).append("]  Entering [").append(dParent.getRelativePath()).append("]").toString(),InformationJPanel.INFORMATIVE);
 						dParent.scan();
 						iDeep++;
 					}
@@ -253,7 +251,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 			Log.debug("Refresh done in "+(int)((System.currentTimeMillis()-lTime)/1000)+" sec");
 			bAlreadyRefreshing = false;
 			//notify views to refresh
-			ObservationManager.notify(EVENT_DEVICE_REFRESH);
+			ObservationManager.notify(EVENT_DEVICE_REFRESH);		
 		}
 	}
 
@@ -274,13 +272,11 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 			}
 		}
 		if ( bAsynchronous){
-			//current reference to the inner thread class
-			new Thread() {
+			new Thread(){
 				public void  run() {
 					synchronizeCommand();
 				}
-			}
-			.start();
+			}.start();
 		}
 		else{
 			synchronizeCommand();
@@ -347,7 +343,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 			Directory dir = (Directory)it.next();
 			if ( dir.getDevice().equals(dSrc)){
 				if (  "n".equals(dir.getProperty(DIRECTORY_OPTION_SYNCHRO_MODE))){  //don't take desynchronized dirs into account
-					hsDesynchroPaths.add(dir.getAbsolutePath());
+					hsDesynchroPaths.add(dir.getRelativePath());
 				}
 				else{
 					hsSourceDirs.add(dir);	
@@ -360,7 +356,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 			Directory dir = (Directory)it.next();
 			if ( dir.getDevice().equals(dest)){
 				if (  "n".equals(dir.getProperty(DIRECTORY_OPTION_SYNCHRO_MODE))){  //don't take desynchronized dirs into account
-					hsDesynchroPaths.add(dir.getAbsolutePath());
+					hsDesynchroPaths.add(dir.getRelativePath());
 				}
 				else{
 					hsDestDirs.add(dir);
@@ -372,7 +368,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 		while ( it.hasNext()){
 			boolean bNeedCreate = true;
 			Directory dir = (Directory)it.next();
-			String sPath = dir.getAbsolutePath();
+			String sPath = dir.getRelativePath();
 			//check the directory on source is not desynchronized. If it is, leave without checking files
 			if ( hsDesynchroPaths.contains(sPath)){
 				continue;
@@ -380,7 +376,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 			it2 = hsDestDirs.iterator(); 
 			while ( it2.hasNext()){
 				Directory dir2 = (Directory)it2.next();
-				if ( dir2.getAbsolutePath().equals(sPath)){  //direcotry already exists on this device
+				if ( dir2.getRelativePath().equals(sPath)){  //direcotry already exists on this device
 					bNeedCreate = false;
 					break;
 				}

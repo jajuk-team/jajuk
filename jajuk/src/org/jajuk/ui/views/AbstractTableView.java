@@ -21,6 +21,7 @@ package org.jajuk.ui.views;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -43,7 +44,7 @@ import org.jajuk.util.Util;
  * @author bflorat 
  * @created 13 dec. 2003
  */
-public abstract class AbstractTableView extends ViewAdapter implements ActionListener{
+public abstract class AbstractTableView extends ViewAdapter implements ActionListener,MouseListener{
 
 	/**Columns number*/
 	protected int iColNum = 8;
@@ -203,6 +204,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 		TracksTableModel model = new TracksTableModel();
 		jtable = new JajukTable(model);
 		add(new JScrollPane(jtable),"0,1");
+		jtable.addMouseListener(this);
 	}
 }
 

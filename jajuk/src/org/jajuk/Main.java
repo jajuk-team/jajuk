@@ -165,11 +165,10 @@ public class Main implements ITechnicalStrings {
 			//Creates the command panel
 			command = CommandJPanel.getInstance();
 	
-			// Create the perspective tool bar panel
-			perspectiveBar = PerspectiveBarJPanel.getInstance();
 			// Create the information bar panel
 			information = InformationJPanel.getInstance();
-		
+			
+						
 			//Main panel
 			jpDesktop = new JPanel();
 			jpDesktop.setOpaque(true);
@@ -178,10 +177,11 @@ public class Main implements ITechnicalStrings {
 		
 			//Add static panels
 			jpFrame.add(command, BorderLayout.NORTH);
-			jpFrame.add(perspectiveBar, BorderLayout.WEST);
 			jpFrame.add(information, BorderLayout.SOUTH);
 			jpFrame.add(jpDesktop, BorderLayout.CENTER);
-				
+			JPanel jp = new JPanel(); //we use an empty panel to take west place before actual panel ( perspective bar ). just for a better displaying
+			jpFrame.add(jp, BorderLayout.WEST);
+			
 			//Set menu bar to the frame
 			jframe.setJMenuBar(JajukJMenuBar.getInstance());
 			
@@ -192,10 +192,15 @@ public class Main implements ITechnicalStrings {
 		
 			//Mount and refresh devices
 			mountAndRefresh();
-					
+						
 			//Create the perspective manager 
 			PerspectiveManager.load();
-						
+			
+			// Create the perspective tool bar panel
+			perspectiveBar = PerspectiveBarJPanel.getInstance();
+			jpFrame.remove(jp);
+			jpFrame.add(perspectiveBar, BorderLayout.WEST);
+		
 			//Initialize perspective manager and load all views
 			PerspectiveManager.init();
 			

@@ -47,7 +47,7 @@ public class BasicFile extends org.jajuk.base.File {
 	 * @param file : regular file  
 	 */
 	public BasicFile(org.jajuk.base.File file){
-		super(file.getIO());
+		super(file.getId(),file.getName(),file.getDirectory(),file.getTrack(),file.getSize(),file.getQuality());
 		this.fio = file.getIO();
 	}
 

@@ -62,6 +62,8 @@ import org.jajuk.ui.ObservationManager;
 import org.jajuk.ui.Observer;
 import org.jajuk.util.Util;
 
+import com.sun.SwingWorker;
+
 /**
  * Logical tree view
  * 
@@ -266,74 +268,7 @@ public class LogicalTreeView extends ViewAdapter implements ActionListener,Obser
 		ObservationManager.register(EVENT_DEVICE_REFRESH,this);
 		//fill the tree
 		populate();
-		
-	}
-	
-	/**Fill the tree */
-	public void populate(){
-		//delete previous tree
-		removeAll();
-		top.removeAllChildren();
-		SwingUtilities.updateComponentTreeUI(this); //needed to avoid stange dedoubling of trees
-		ArrayList alTracks = TrackManager.getSortedTracks();
-		Iterator it1 = alTracks.iterator();
-		while ( it1.hasNext()){
-			Track track = (Track)it1.next();
-			StyleNode styleNode = null;
-			Style style=track.getStyle();
-			AuthorNode authorNode = null;
-			Author author = track.getAuthor();
-			AlbumNode albumNode = null;
-			Album album = track.getAlbum();
-			
-			//create style
-			Enumeration e = top.children();
-			boolean b = false;
-			while (e.hasMoreElements()){  //check the style doesn't already exist
-				StyleNode sn = (StyleNode)e.nextElement();
-				if ( sn.getStyle().equals(style)){
-					b = true;
-					styleNode = sn;
-					break;
-				}
-			}
-			if ( !b){
-				styleNode = new StyleNode(style);
-				top.add(styleNode);
-			}
-			//create author
-			e = styleNode.children();
-			b = false;
-			while (e.hasMoreElements()){  //check if the author doesn't already exist
-				AuthorNode an = (AuthorNode)e.nextElement();
-				if ( an.getAuthor().equals(author)){
-					b = true;
-					authorNode = an;
-					break;
-				}
-			}
-			if ( !b){
-				authorNode = new AuthorNode(author);
-				styleNode.add(authorNode);
-			}
-			//create album
-			e = authorNode.children();
-			b = false;
-			while (e.hasMoreElements()){  //check if the album doesn't already exist
-				AlbumNode an = (AlbumNode)e.nextElement();
-				if ( an.getAlbum().equals(album)){
-					b = true;
-					albumNode = an;
-					break;
-				}
-			}
-			if ( !b){
-				albumNode = new AlbumNode(album);
-				authorNode.add(albumNode);
-			}
-			//create track
-			albumNode.add(new TrackNode(track));
-		}
+		//tree itself
 		jtree = new JTree(top);
 		jtree.putClientProperty("JTree.lineStyle", "Angled");
 		jtree.setRowHeight(25);
@@ -503,35 +438,76 @@ public class LogicalTreeView extends ViewAdapter implements ActionListener,Obser
 				}
 			}
 		});
-		
-		//expand all
-		for (int i=0;i<jtree.getRowCount();i++){
-			Object o = jtree.getPathForRow(i).getLastPathComponent(); 
-			if ( o instanceof StyleNode){
-				Style style = ((StyleNode)o).getStyle();
-				String sExp = style.getProperty(OPTION_EXPANDED); 
-				if ( "y".equals(sExp)){
-					jtree.expandRow(i);	
-				}
-			}
-			else if ( o instanceof AuthorNode){
-				Author author = ((AuthorNode)o).getAuthor();
-				String sExp = author.getProperty(OPTION_EXPANDED); 
-				if ( "y".equals(sExp)){
-					jtree.expandRow(i);	
-				}
-			}
-			else if ( o instanceof AlbumNode){
-				Album album = ((AlbumNode)o).getAlbum();
-				String sExp = album.getProperty(OPTION_EXPANDED); 
-				if ( "y".equals(sExp)){
-					jtree.expandRow(i);	
-				}
-			}
-		}
+	
 		jspTree = new JScrollPane(jtree);
 		add(jspTree);
-		
+		expand();
+	}
+	
+	/**Fill the tree */
+	public void populate(){
+		//delete previous tree
+		top.removeAllChildren();
+		ArrayList alTracks = TrackManager.getSortedTracks();
+		Iterator it1 = alTracks.iterator();
+		while ( it1.hasNext()){
+			Track track = (Track)it1.next();
+			StyleNode styleNode = null;
+			Style style=track.getStyle();
+			AuthorNode authorNode = null;
+			Author author = track.getAuthor();
+			AlbumNode albumNode = null;
+			Album album = track.getAlbum();
+			
+			//create style
+			Enumeration e = top.children();
+			boolean b = false;
+			while (e.hasMoreElements()){  //check the style doesn't already exist
+				StyleNode sn = (StyleNode)e.nextElement();
+				if ( sn.getStyle().equals(style)){
+					b = true;
+					styleNode = sn;
+					break;
+				}
+			}
+			if ( !b){
+				styleNode = new StyleNode(style);
+				top.add(styleNode);
+			}
+			//create author
+			e = styleNode.children();
+			b = false;
+			while (e.hasMoreElements()){  //check if the author doesn't already exist
+				AuthorNode an = (AuthorNode)e.nextElement();
+				if ( an.getAuthor().equals(author)){
+					b = true;
+					authorNode = an;
+					break;
+				}
+			}
+			if ( !b){
+				authorNode = new AuthorNode(author);
+				styleNode.add(authorNode);
+			}
+			//create album
+			e = authorNode.children();
+			b = false;
+			while (e.hasMoreElements()){  //check if the album doesn't already exist
+				AlbumNode an = (AlbumNode)e.nextElement();
+				if ( an.getAlbum().equals(album)){
+					b = true;
+					albumNode = an;
+					break;
+				}
+			}
+			if ( !b){
+				albumNode = new AlbumNode(album);
+				authorNode.add(albumNode);
+			}
+			//create track
+			albumNode.add(new TrackNode(track));
+		}
+				
 	}
 	
 	/* (non-Javadoc)
@@ -584,13 +560,67 @@ public class LogicalTreeView extends ViewAdapter implements ActionListener,Obser
 	 */
 	public void update(String subject) {
 		if ( subject.equals(EVENT_DEVICE_MOUNT) || subject.equals(EVENT_DEVICE_UNMOUNT)){
-			SwingUtilities.updateComponentTreeUI(jtree);
-			jtree.setRowHeight(25);
+			SwingWorker sw = new SwingWorker() {
+				public Object  construct(){
+					return null;
+				}
+				public void finished() {
+					SwingUtilities.updateComponentTreeUI(jtree);
+					jtree.setRowHeight(25);
+					expand();
+					int i = jspTree.getVerticalScrollBar().getValue();
+					jspTree.getVerticalScrollBar().setValue(i);
+				}
+			};
+			sw.start();
 		}
 		else if( subject.equals(EVENT_DEVICE_REFRESH)){
-			populate();
-			SwingUtilities.updateComponentTreeUI(jtree);
-			jtree.setRowHeight(25);
+			SwingWorker sw = new SwingWorker() {
+				public Object  construct(){
+					populate();
+					return null;
+				}
+				public void finished() {
+					SwingUtilities.updateComponentTreeUI(jtree);
+					jtree.setRowHeight(25);
+					expand();
+					int i = jspTree.getVerticalScrollBar().getValue();
+					jspTree.getVerticalScrollBar().setValue(i);
+				}
+			};
+			sw.start();
+		}
+	}
+	
+	/**
+	 * Manages auto-expand
+	 *
+	 */
+	public void expand(){
+		//expand all
+		for (int i=0;i<jtree.getRowCount();i++){
+			Object o = jtree.getPathForRow(i).getLastPathComponent(); 
+			if ( o instanceof StyleNode){
+				Style style = ((StyleNode)o).getStyle();
+				String sExp = style.getProperty(OPTION_EXPANDED); 
+				if ( "y".equals(sExp)){
+					jtree.expandRow(i);	
+				}
+			}
+			else if ( o instanceof AuthorNode){
+				Author author = ((AuthorNode)o).getAuthor();
+				String sExp = author.getProperty(OPTION_EXPANDED); 
+				if ( "y".equals(sExp)){
+					jtree.expandRow(i);	
+				}
+			}
+			else if ( o instanceof AlbumNode){
+				Album album = ((AlbumNode)o).getAlbum();
+				String sExp = album.getProperty(OPTION_EXPANDED); 
+				if ( "y".equals(sExp)){
+					jtree.expandRow(i);	
+				}
+			}
 		}
 	}
 	

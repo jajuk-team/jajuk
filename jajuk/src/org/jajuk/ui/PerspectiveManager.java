@@ -21,7 +21,7 @@ package org.jajuk.ui;
 
 import java.awt.BorderLayout;
 import java.io.File;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.swing.JDesktopPane;
@@ -51,8 +51,10 @@ import org.xml.sax.helpers.DefaultHandler;
 public class PerspectiveManager extends DefaultHandler implements ITechnicalStrings, ErrorHandler {
 	/** Current perspective */
 	private static IPerspective currentPerspective = null;
-	/** Perspective name -> perspective hashtable */
-	private static HashMap hmPerspectives = new HashMap(5);
+	/** Perspective name*/
+	private static ArrayList alNames = new ArrayList(10);
+	/**perspective  */
+	private static ArrayList alPerspectives = new ArrayList(10);
 	/** Self instance */
 	private static PerspectiveManager pm = null;
 	/** Parsing temporary variable */
@@ -84,7 +86,8 @@ public class PerspectiveManager extends DefaultHandler implements ITechnicalStri
 		 * Begins management
 		 */
 		public static void init() {
-			IPerspective perspective = (IPerspective)hmPerspectives.get(ConfigurationManager.getProperty(CONF_PERSPECTIVE_DEFAULT));
+			int index = alNames.indexOf(ConfigurationManager.getProperty(CONF_PERSPECTIVE_DEFAULT));
+			IPerspective perspective = (IPerspective)alPerspectives.get(index);
 			setCurrentPerspective(perspective);
 		}
 	
@@ -146,7 +149,8 @@ public class PerspectiveManager extends DefaultHandler implements ITechnicalStri
 	 * @param sPerspectiveName
 	 */
 	public static void setCurrentPerspective(String sPerspectiveName) {
-		setCurrentPerspective((IPerspective)hmPerspectives.get(sPerspectiveName));
+		int index = alNames.indexOf(sPerspectiveName);
+		setCurrentPerspective((IPerspective)alPerspectives.get(index));
 	}
 	
 	/**
@@ -154,11 +158,20 @@ public class PerspectiveManager extends DefaultHandler implements ITechnicalStri
 	 * @param sPerspectiveName
 	 */
 	public static void notify(String sPerspectiveName){
-		IPerspective perspective = (IPerspective)hmPerspectives.get(sPerspectiveName);
+		int index = alNames.indexOf(sPerspectiveName);
+		IPerspective perspective = (IPerspective)alPerspectives.get(index);
 		if (perspective != null){
 			setCurrentPerspective(perspective);
 			ConfigurationManager.setProperty(CONF_PERSPECTIVE_DEFAULT,perspective.getName());
 		}
+	}
+	
+	/**
+	 * Get all perspectives
+	 * @return all perspectives as a collection
+	 */
+	public static ArrayList getPerspectives(){
+		return alPerspectives;
 	}
 
 	/**
@@ -210,14 +223,19 @@ public class PerspectiveManager extends DefaultHandler implements ITechnicalStri
  	*/
 	public void startElement(String sUri, String sName, String sQName, Attributes attributes) throws SAXException {
 		String sClassName = null;
+		String sIconPath = null;
 		if (sQName.equals("perspective")) {
 			try {
 				lTime = System.currentTimeMillis();
 				pCurrent = null;
-				sClassName = attributes.getValue(attributes.getIndex("class")); 
-				sPerspectiveName = sClassName; 
+				sClassName = attributes.getValue(attributes.getIndex("class"));
+				sIconPath = attributes.getValue(attributes.getIndex("icon"));
+				sPerspectiveName = sClassName; //stored to be used during views parsing 
 				IPerspective perspective = (IPerspective) Class.forName(sClassName).newInstance();
-				hmPerspectives.put(sClassName, perspective);
+				perspective.setName(sClassName);
+				perspective.setIconPath(sIconPath);
+				alNames.add(sClassName);
+				alPerspectives.add(perspective);
 				pCurrent = perspective;
 			} catch (Exception e) {
 				Log.error("116", sClassName, e);
