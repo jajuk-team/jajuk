@@ -191,17 +191,14 @@ public class Main implements ITechnicalStrings {
 
 			//	Set look and feel, needs local to be set for error messages
 			LNFManager.setLookAndFeel(ConfigurationManager.getProperty(CONF_OPTIONS_LNF));
-            			
-			
-	    	
+            				    	
 			//Launch splashscreen 
 			SwingUtilities.invokeAndWait(new Runnable() {
                 public void run() {
                     sc = new SplashScreen(jw);
                   }
             });
-			
-			
+						
 			//Register device types
 			DeviceManager.registerDeviceType(Messages.getString("Device_type.directory"));//$NON-NLS-1$
 			DeviceManager.registerDeviceType(Messages.getString("Device_type.file_cd"));//$NON-NLS-1$

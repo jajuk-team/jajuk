@@ -203,7 +203,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	                }
 	            }
 	            /*Remove all directories, playlist files and files for this device before rescan. 
-	             Note  that logical item ( tracks, styles...) are device independant and connot be cleared.
+	             Note  that logical item ( tracks, styles...) are device independant and cannot be cleared.
 	             They will be clean up at next jajuk restart and old track data is used to populate device without full tag scan
 	             */ 
 	            iNbFilesBeforeRefresh = FileManager.getFiles().size();
@@ -211,6 +211,8 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	            FileManager.cleanDevice(device.getId());
 	            PlaylistFileManager.cleanDevice(device.getId());
 	            DirectoryManager.cleanDevice(device.getId());
+                /*Note : even after this cleanup, files are yet in memory when mapped by tracks and files have references to directories, it is usefull to keep properties like
+                 * desyncrhonization and to optimize scaning */ 
 	            long lTime = System.currentTimeMillis();
 	            Log.debug("Starting refresh of device : "+device); //$NON-NLS-1$
 	            
@@ -237,7 +239,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	            }
 	            //Start actual scan
 	            while (iDeep >= 0) {
-	                //Log.debug("entering :"+fCurrent);
+	                Log.debug("Entering: "+fCurrent);
 	                File[] files = fCurrent.listFiles(new JajukFileFilter(true,false)); //only directories
 	                if (files== null || files.length == 0 ){  //files is null if fCurrent is a not a directory 
 	                    indexTab[iDeep] = -1;//re-init for next time we will reach this deep

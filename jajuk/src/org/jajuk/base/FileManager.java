@@ -87,7 +87,6 @@ public class FileManager implements ITechnicalStrings{
 	 * @param sId : Device id
 	 */
 	public static synchronized void cleanDevice(String sId) {
-		//we have to create a new list because we can't iterate on a moving size list
 		Iterator it = hmIdFile.values().iterator();
 		while (it.hasNext()) {
 			File file = (File) it.next();
