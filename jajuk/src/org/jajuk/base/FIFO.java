@@ -275,17 +275,17 @@ public class FIFO implements ITechnicalStrings{
 			alFIFO.remove(index);    //remove this file from fifo
 		}
 		if ( alFIFO.size() == 0){ //nothing more to play
-			if ( ConfigurationManager.getBoolean(CONF_STATE_CONTINUE) && itemLast != null){ //check if we are in continue mode
+		    if ( ConfigurationManager.getBoolean(CONF_STATE_CONTINUE) && itemLast != null){ //check if we are in continue mode
 				File file = null;
 				if (alPlanned.size() != 0){ //if some tracks are planned (can be 0 if planned size=0)
 					file = ((StackItem)alPlanned.get(0)).getFile();
 					alPlanned.remove(0); //remove the planned track
 				}
 				else{ //otherwise, take next track from file manager
-					file = FileManager.getNextFile(itemLast.getFile());  //take next availble file	
+					file = FileManager.getNextFile(itemLast.getFile());  //take next availble file
 				}
 				if ( file != null){
-					push(new StackItem(file),false); //push it, it will be played
+					pushCommand(new StackItem(file),false); //push it, it will be played
 				}
 			}
 			else{ //no ? just reset UI and leave
@@ -305,9 +305,9 @@ public class FIFO implements ITechnicalStrings{
 	 * Lauch track at given index in the fifo
 	 * @param int index
 	 */
-	private void launch(int index){
+	private synchronized void launch(int index){
 		try{
-			Util.waiting();
+		    Util.waiting();
 			//intro workaround : intro mode is only read at track launch and can't be set during the play
 			boolean bIntroEnabled = ConfigurationManager.getBoolean(CONF_STATE_INTRO); //re-read intro mode
 			ObservationManager.notify(EVENT_PLAYER_PLAY);  //notify to devices like commandJPanel to update ui when the play button has been pressed
@@ -488,34 +488,15 @@ public class FIFO implements ITechnicalStrings{
 		if ( getCurrentFile() != null){  //if stopped, nothing to stop
 			finished(); //stop current track 
 		}
+		else if (itemLast !=null ){ //try to launch any previous file
+		    pushCommand(itemLast,false);
+		}
+		else{ //really nothing? play a shuffle track from collection
+		    pushCommand(new StackItem(FileManager.getShuffleFile(),
+		            ConfigurationManager.getBoolean(CONF_STATE_REPEAT),false),false);
+		}
 	}
 	
-	
-	/**
-	 * Play next album in selection
-	 
-	 
-	 REFACTOR / TBI
-	 public synchronized void playNextAlbum(){
-	 bNext = true;
-	 if ( fCurrent != null){  //if stopped, nothing to stop
-	 Album albumCurrent = fCurrent.getTrack().getAlbum(); //get current track album
-	 Player.stop();
-	 //remove next files in the same album
-	  Iterator it = alFIFO.iterator();
-	  while (it.hasNext() ){
-	  File file = (File)it.next();
-	  if ( file!=null && file.getTrack().getAlbum().equals(albumCurrent)){
-	  it.remove(); //remove this file because it is in the same album than the current one
-	  //NBI	        lTotalTime -= file.getTrack().getLength();
-	   }
-	   else{
-	   break; //not the same album? leave
-	   }
-	   }
-	   finished(); //stop current track and let the FIFO to choose the next one
-	   }
-	   }*/
 	
 	
 	/**
@@ -648,36 +629,7 @@ public class FIFO implements ITechnicalStrings{
 		alStack.add(item);
 		insert(alStack,iPos);
 	}
-	
-	/**
-	 * Insert a file in FIFO at specified position
-	 * @param file
-	 * @param iPos
-	 * @param bImmediate immediate play ?
-	 * @param bKeepLast add again the last track ?
-	 public void insert(ArrayList alFiles,int iPos,boolean bImmediate,boolean bKeepLast){
-	 // stop current track if required
-	  if (bImmediate) {
-	  Player.stop();
-	  JajukTimer.getInstance().removeTrackTime(getItem(iPos).getFile()); 
-	  alFIFO.remove(iPos);    //remove this file from fifo
-	  }
-	  //Re-add last item is required
-	   if (bKeepLast){
-	   alFIFO.add(0,itemLast);
-	   JajukTimer.getInstance().addTrackTime(itemLast.getFile());
-	   }
-	   if (iPos < alFIFO.size()){  //add in the FIFO
-	   alFIFO.addAll(iPos,alFiles);
-	   JajukTimer.getInstance().addTrackTime(alFiles);
-	   }
-	   else{ //planned track
-	   alPlanned.addAll(iPos-alFIFO.size(),alFiles);
-	   }
-	   if (bImmediate) {
-	   launch(index);
-	   }
-	   }*/
+
 	
 	/**
 	 * Insert a file at specified position

@@ -693,35 +693,13 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 					new Thread(){
 						public void run(){
 							try{
-								FIFO.getInstance().playNext();
+							    FIFO.getInstance().playNext();
 							}
 							catch(Exception e){
 								Log.error(e);
 							}
 						}
 					}.start();
-					
-					if ( Player.isPaused()){  //player was paused, reset pause button
-						Player.setPaused(false);
-						ObservationManager.notify(EVENT_PLAYER_RESUME);  //notify of this event
-					}
-				}
-			}
-		}
-		//right button : album level
-		else if (e.getButton() == MouseEvent.BUTTON3){
-			if (e.getSource() == jbPrevious){
-				synchronized(bLock){
-					FIFO.getInstance().playPrevious();
-					if ( Player.isPaused()){  //player was paused, reset pause button when changing of track
-						Player.setPaused(false);
-						ObservationManager.notify(EVENT_PLAYER_RESUME);  //notify of this event
-					}
-				}
-			}
-			else if (e.getSource() == jbNext){
-				synchronized(bLock){
-					//                  REFACTOR / TBI FIFO.getInstance().playNextAlbum();/
 					if ( Player.isPaused()){  //player was paused, reset pause button
 						Player.setPaused(false);
 						ObservationManager.notify(EVENT_PLAYER_RESUME);  //notify of this event

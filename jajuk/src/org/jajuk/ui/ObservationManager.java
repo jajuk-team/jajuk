@@ -51,7 +51,7 @@ public class ObservationManager implements ITechnicalStrings{
 	 * @param subject Subject ( event ) to observe
 	 * @param jc component to register
 	 */
-	public static void register(String subject,Object obj){
+	public static synchronized  void register(String subject,Object obj){
 		Log.debug("Register: \""+subject+"\" by: "+obj); //$NON-NLS-1$ //$NON-NLS-2$
 		ArrayList alComponents = (ArrayList)hEventComponents.get(subject);
 		if (alComponents == null){
@@ -77,7 +77,7 @@ public class ObservationManager implements ITechnicalStrings{
 	 * Notify all components having registered for the given subject
 	 * @param subject
 	 */
-	public static synchronized void notify(final String subject){
+	public static void notify(final String subject){
 		notify(subject,false); //asynchronous notification by default to avoid exception throw in the register current thread
 	}
 	
@@ -85,14 +85,13 @@ public class ObservationManager implements ITechnicalStrings{
 	 * Notify synchronously all components having registered for the given subject
 	 * @param subject
 	 */
-	public static synchronized void notifySync(final String subject){
+	public static void notifySync(final String subject){
 	    Log.debug("Notify: "+subject); //$NON-NLS-1$
 	    ArrayList alComponents =(ArrayList)hEventComponents.get(subject);
 	    if (alComponents == null){
 	        return;
 	    }
 	    alComponents = (ArrayList)alComponents.clone(); //try to avoid duplicate key exceptions
-	    
 	    Iterator it = alComponents.iterator();  
 	    while (it.hasNext()){
 	        Observer obs = null;
@@ -121,7 +120,7 @@ public class ObservationManager implements ITechnicalStrings{
 	 * @param subject
 	 * @param whether the notification is synchronous or not
 	 */
-	public static synchronized void notify(final String subject, boolean bSync){
+	public static void notify(final String subject, boolean bSync){
 		if (bSync){
 			ObservationManager.notifySync(subject);
 		}
@@ -140,7 +139,7 @@ public class ObservationManager implements ITechnicalStrings{
 	 * @param subject
 	 * @param pDetails informations about this event
 	 */
-	public static synchronized void notify(final String subject,Properties pDetails){
+	public static void notify(final String subject,Properties pDetails){
 		hEventDetails.put(subject,pDetails);
 		notify(subject);
 	}
@@ -150,7 +149,7 @@ public class ObservationManager implements ITechnicalStrings{
 	 * @param subject
 	 * @param pDetails informations about this event
 	 */
-	public static synchronized void notifySync(final String subject,Properties pDetails){
+	public static void notifySync(final String subject,Properties pDetails){
 		hEventDetails.put(subject,pDetails);
 		notifySync(subject);
 	}
