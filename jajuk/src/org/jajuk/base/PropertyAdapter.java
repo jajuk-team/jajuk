@@ -20,6 +20,7 @@
 
 package org.jajuk.base;
 
+import java.io.Serializable;
 import java.util.Enumeration;
 import java.util.Properties;
 
@@ -32,7 +33,7 @@ import org.xml.sax.Attributes;
  * 
  * @author bflorat @created 17 oct. 2003
  */
-public class PropertyAdapter implements IPropertyable, ITechnicalStrings {
+public class PropertyAdapter implements IPropertyable, ITechnicalStrings,Serializable {
 
 	/** Item properties */
 	private Properties properties = new Properties();

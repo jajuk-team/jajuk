@@ -21,6 +21,7 @@
 package org.jajuk.base;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.ObservationManager;
@@ -60,6 +61,14 @@ public class DeviceManager implements ITechnicalStrings{
 	 *@return device 
 	 */
 	public static synchronized Device  registerDevice(String sId,String sName,int iDeviceType,String sUrl,String sMountPoint) {
+		//check none device already has this name
+		Iterator it = alDevices.iterator();
+		while (it.hasNext()){
+			Device device = ( Device)it.next();
+			if ( sName.equals(device.getName())){
+				return null;
+			}
+		}
 		Device device = new Device(sId,sName,iDeviceType,sUrl,sMountPoint);
 		alDeviceIds.add(sId);
 		alDevices.add(device);

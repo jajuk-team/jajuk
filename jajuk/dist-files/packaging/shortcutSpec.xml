@@ -1,20 +1,36 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <shortcuts>
-  <programGroup defaultName="Jajuk" location="applications"/>
+   <programGroup defaultName='Jajuk' location='applications'/>
   <shortcut
-     name="Jajuk"
-     programGroup="yes"
-     desktop="no"
-     applications="no"
-     startMenu="no"
-     startup="no"
-     target="javaw"
-     commandLine="-Xms16M -Xss16K -cp &quot;$INSTALL_PATH\ami\lib\crimson.jar;$INSTALL_PATH\ami\lib\jaxp.jar;$INSTALL_PATH\ami\lib\log4j.jar;$INSTALL_PATH\ami\lib\ami.jar&quot; ami.AMIMain"
-     workingDirectory="$INSTALL_PATH\ami"
-     description="AMI Engine - Graphical"
-     iconIndex="0"
-     iconFile="$INSTALL_PATH\ami\dist\ami-32x32.bmp" 
-     initialState="minimized">
-     <createForPack name="main pack"/>
+     name='Jajuk'
+     programGroup='yes'
+     desktop='yes'
+     applications='no'
+     startMenu='no'
+     startup='no'
+     target='javaw'
+     commandLine='-Xms25M -Xss16K -jar "$INSTALL_PATH/bin/jajuk.jar"'
+     workingDirectory='$INSTALL_PATH/bin'
+     description='Jajuk advanced JukeBox'
+     iconIndex='0'
+     iconFile='$INSTALL_PATH/dist-files/images/jajuk-logo2.bmp'
+     initialState='noShow'>
+     <createForPack name='main pack'/>
    </shortcut>
-</shortcuts>
+    <shortcut
+     name='Uninstall'
+     programGroup='yes'
+     desktop='no'
+     applications='no'
+     startMenu='no'
+     startup='no'
+     target='javaw'
+     commandLine='-jar "$INSTALL_PATH/Uninstaller/uninstaller.jar"'
+     workingDirectory='$INSTALL_PATH/Uninstaller'
+     description='Uninstall Jajuk'
+     iconIndex='0'
+     iconFile='$INSTALL_PATH/dist-files/images/jajuk-delete.bmp'
+     initialState='noShow'>
+     <createForPack name='main pack'/>
+   </shortcut>
+  </shortcuts>

@@ -20,6 +20,9 @@
 
 package org.jajuk.ui;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.beans.PropertyVetoException;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -51,13 +54,23 @@ public class ViewManager implements ITechnicalStrings{
 	
 	/**Maintain relation view/perspective, a view can be in only one perspective*/
 	public static void registerView(final IView view){
-		JInternalFrame ji = new JInternalFrame(view.getDesc(),true,true,true,true);
+		final JInternalFrame ji = new JInternalFrame(view.getDesc(),true,true,true,true);
 		ji.setContentPane((JComponent)view);
 		ji.setDefaultCloseOperation(JInternalFrame.DO_NOTHING_ON_CLOSE);
 		ji.addInternalFrameListener(new InternalFrameAdapter(){
 			public void internalFrameClosing(InternalFrameEvent e) {
 				ViewManager.notify(EVENT_VIEW_CLOSE_REQUEST,view);
 				JajukJMenuBar.getInstance().refreshViews();
+			}
+		});
+		//auto-selection behavior
+		ji.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent e) {
+				try {
+					ji.setSelected(true);
+				} catch (PropertyVetoException e1) {
+					Log.error(e1);
+				}
 			}
 		});
 		hmViewContainer.put(view,ji);

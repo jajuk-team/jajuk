@@ -128,7 +128,7 @@ public class Main implements ITechnicalStrings {
 			
 			//Load collection
 			Collection.load();
-		
+			
 			//	Clean the collection up
 			org.jajuk.base.Collection.cleanup();
 								
@@ -149,6 +149,7 @@ public class Main implements ITechnicalStrings {
 			
 			//Starts the FIFO
 			FIFO.getInstance();
+			
 			
 			jframe.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 			jframe.addWindowListener(new WindowAdapter() {
@@ -214,7 +215,6 @@ public class Main implements ITechnicalStrings {
 			
 			//Lauch startup track if any
 			launchInitialTrack();
-				
 		} catch (JajukException je) { //last chance to catch any error for logging purpose
 			Log.error(je);
 			exit(1);

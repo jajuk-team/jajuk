@@ -414,7 +414,6 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 			ConfigurationManager.setProperty(CONF_OPTIONS_COVER,Boolean.toString(jcbCover.isSelected()));
 			String sLocal = (String)Messages.getLocals().get(jcbLanguage.getSelectedIndex());
 			if (!Messages.getLocal().equals(sLocal)){  //local has changed
-				Messages.setLocal(sLocal);
 				Messages.showInfoMessage("Language_updated");
 			}
 			ConfigurationManager.setProperty(CONF_OPTIONS_LANGUAGE,sLocal);

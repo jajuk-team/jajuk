@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 
@@ -46,7 +47,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * 
  * @author bflorat @created 16 oct. 2003
  */
-public class Collection extends DefaultHandler implements ITechnicalStrings, ErrorHandler {
+public class Collection extends DefaultHandler implements ITechnicalStrings, ErrorHandler,Serializable {
 	/** Self instance */
 	private static Collection collection;
 	private static long lTime;
@@ -167,6 +168,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 		bw.write("</collection>\n");
 		bw.flush();
 		bw.close();
+		
 	}
 
 	/**

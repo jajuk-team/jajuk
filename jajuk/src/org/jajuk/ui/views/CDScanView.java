@@ -27,13 +27,13 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
+import layout.TableLayout;
+
 import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.ObservationManager;
 import org.jajuk.util.Util;
-
-import layout.TableLayout;
 
 
 /**
@@ -118,6 +118,10 @@ public class CDScanView extends ViewAdapter implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if ( !"".equals(jtfName.getText().trim()) && !"".equals(jtfMountPoint.getText().trim())){
 			Device device = DeviceManager.registerDevice(jtfName.getText().trim(),1,jtfMountPoint.getText().trim(),jtfMountPoint.getText().trim());
+			if (device == null){ //means device name is already token
+				Messages.showErrorMessage("019");
+				return;
+			}
 			try{
 				device.mount();
 				ObservationManager.notify(EVENT_DEVICE_MOUNT);

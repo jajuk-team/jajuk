@@ -290,7 +290,7 @@ public class FIFO implements ITechnicalStrings,Runnable{
 						int iPos = (int)((lTime/10)/length);
 						InformationJPanel.getInstance().setCurrentStatus(iPos);
 						CommandJPanel.getInstance().setCurrentPosition(iPos);
-						InformationJPanel.getInstance().setTotalStatusMessage(Integer.toString((int)(lTotalTime-(lTime/1000)))+"'");
+						InformationJPanel.getInstance().setTotalStatusMessage(Util.formatTimeBySec((int)(lTotalTime-(lTime/1000))));
 					}
 					i++;
 					continue; //leave
@@ -329,7 +329,7 @@ public class FIFO implements ITechnicalStrings,Runnable{
 							InformationJPanel.getInstance().setCurrentStatusMessage(Util.formatTime(0)+" / "+Util.formatTime(0));
 							InformationJPanel.getInstance().setCurrentStatus(0);
 							CommandJPanel.getInstance().setCurrentPosition(0);
-							InformationJPanel.getInstance().setTotalStatusMessage("0'");
+							InformationJPanel.getInstance().setTotalStatusMessage("00:00:00");
 						}
 						i++;
 						continue; //leave
@@ -359,7 +359,7 @@ public class FIFO implements ITechnicalStrings,Runnable{
 					Player.stop();  //for security, make sure no other track is playing
 					ObservationManager.notify(EVENT_COVER_REFRESH); //request update cover 
 					if (ConfigurationManager.getBoolean(CONF_STATE_INTRO)){ //intro mode enabled
-						Player.play(fCurrent,Integer.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_INTRO_BEGIN)),1000*Integer.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_INTRO_LENGTH)));
+						Player.play(fCurrent,Float.parseFloat(ConfigurationManager.getProperty(CONF_OPTIONS_INTRO_BEGIN))/100,1000*Integer.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_INTRO_LENGTH)));
 					}
 					else{
 						Player.play(fCurrent,-1,-1);  //play it
@@ -403,7 +403,7 @@ public class FIFO implements ITechnicalStrings,Runnable{
 		InformationJPanel.getInstance().setCurrentStatusMessage(Util.formatTime(0)+" / "+Util.formatTime(0));
 		InformationJPanel.getInstance().setCurrentStatus(0);
 		CommandJPanel.getInstance().setCurrentPosition(0);
-		InformationJPanel.getInstance().setTotalStatusMessage("0'");
+		InformationJPanel.getInstance().setTotalStatusMessage("00:00:00");
 		InformationJPanel.getInstance().setMessage("Ready to play",InformationJPanel.INFORMATIVE);
 		InformationJPanel.getInstance().setQuality("");
 	}

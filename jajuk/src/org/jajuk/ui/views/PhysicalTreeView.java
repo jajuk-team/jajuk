@@ -33,11 +33,13 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 import javax.swing.BoxLayout;
+import javax.swing.JComponent;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.SwingUtilities;
+import javax.swing.TransferHandler;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 import javax.swing.event.TreeSelectionEvent;
@@ -362,6 +364,9 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 		}
 		//create tree
 		jtree = new JTree(top);
+		//drag and drop support
+		jtree.setDragEnabled(true);
+		jtree.setTransferHandler(new TransferHandler("text"));
 		jtree.putClientProperty("JTree.lineStyle", "Angled");
 		jtree.getSelectionModel().setSelectionMode(TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
 		jtree.setCellRenderer(new DefaultTreeCellRenderer() {
@@ -473,6 +478,11 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 		//Listen for double clic
 		MouseListener ml = new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
+				//DND support
+				JComponent c = (JComponent)e.getSource();
+				TransferHandler handler = c.getTransferHandler();
+				handler.exportAsDrag(c, e, TransferHandler.COPY);
+				
 				TreePath path = jtree.getPathForLocation(e.getX(), e.getY());
 				if ( e.getClickCount() == 2){
 					Object o = path.getLastPathComponent();

@@ -35,10 +35,10 @@ public interface ITechnicalStrings {
 	public static final String ABOUT = "<html>Jajuk version "+JAJUK_VERSION+"</html>";
 	
 	// directory path
-	public static final String PATH_ICONS = "jar:file:"+System.getProperty("user.dir")+"/jajuk-"+JAJUK_VERSION+".jar!/org/jajuk/icons/";
-	public static final String PATH_IMAGES = "jar:file:"+System.getProperty("user.dir")+"/jajuk-"+JAJUK_VERSION+".jar!/org/jajuk/images/";
+	public static final String PATH_ICONS = "jar:file:"+System.getProperty("user.dir")+"/jajuk.jar!/org/jajuk/icons/";
+	public static final String PATH_IMAGES = "jar:file:"+System.getProperty("user.dir")+"/jajuk.jar!/org/jajuk/images/";
 	public static final String PATH_RELATIVE_DOCS = "docs/";
-	public static final String PATH_DOCS = "jar:file:"+System.getProperty("user.dir")+"/jajuk-"+JAJUK_VERSION+".jar!/org/jajuk/"+PATH_RELATIVE_DOCS;
+	public static final String PATH_DOCS = "jar:file:"+System.getProperty("user.dir")+"/jajuk.jar!/org/jajuk/"+PATH_RELATIVE_DOCS;
 		
 		// paths to icons
 	public static final String ICON_REPEAT_ON = PATH_ICONS + "16x16/repeat.png";
@@ -128,7 +128,7 @@ public interface ITechnicalStrings {
 	
 		
 	//images
-	public static final String IMAGES_SPLASHSCREEN =  PATH_IMAGES + "jajuk-slashscreen.png";
+	public static final String IMAGES_SPLASHSCREEN =  PATH_IMAGES + "jajuk-splashscreen.png";
 	public static final String IMAGES_STAT_PAPER =  PATH_IMAGES + "No-Ones-Laughing-3.jpg";
 	
 	//logs

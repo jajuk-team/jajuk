@@ -333,6 +333,11 @@ public class DeviceWizard extends JFrame implements ActionListener,ITechnicalStr
 		else if (e.getSource() == jbOk){
 			if (bNew){
 				device = DeviceManager.registerDevice(jtfName.getText(),jcbType.getSelectedIndex(),jtfUrl.getText(),jtfMountPoint.getText());
+				if (device == null){ //means device name is already token
+					Messages.showErrorMessage("019");
+					this.setVisible(true); //display wizzard window whish has been hiden by the error window
+					return;
+				}
 			}
 			else{
 				device.setDeviceType(jcbType.getSelectedIndex());
@@ -340,7 +345,6 @@ public class DeviceWizard extends JFrame implements ActionListener,ITechnicalStr
 				device.setUrl(jtfUrl.getText());
 				device.setMountPoint(jtfMountPoint.getText());
 			}
-			
 			device.setProperty(DEVICE_OPTION_AUTO_MOUNT,Boolean.toString(jcbAutoMount.isSelected()));
 			device.setProperty(DEVICE_OPTION_AUTO_REFRESH,Boolean.toString(jcbAutoRefresh.isSelected()));
 			if (jcbSynchronized.isEnabled() && jcbSynchronized.getSelectedItem() != null){

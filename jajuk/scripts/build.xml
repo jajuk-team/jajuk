@@ -1,88 +1,80 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--Ant script for packagers only-->
+<?xml version='1.0' encoding='UTF-8'?>
+<!--Jajuk Ant script for end users-->
 
-<project default="jar" name="jajuk" basedir="..">
-  <property name="defaulttargetdir" value="target">
-  </property>
-  <property name="libdir" value="lib">
-  </property>
-  <property name="classesdir" value="bin">
-  </property>
-  <property name="srcdir" value="src">
-  </property>
-  <property name="distdir" value="dist">
-  </property>
-  <property name="javadocdir" value="dist-files/doc/api">
-  </property>
-  <property name="final.name" value="jajuk-pre-alpha-build20031114">
-  </property>
-  <target name="compile" description="o Compile the code" >
-    <mkdir dir="${classesdir}">
+<project default='jar' name='jajuk' basedir='.'>
+  <property name='libdir' value='lib' />
+  <property name='classdir' value='classes'/>
+  <property name='srcdir' value='src'/>
+  <property name='bindir' value='bin'/>
+  <property name='javadocdir' value='doc/javadoc'/>
+  <property name='jarname' value='jajuk.jar'/>
+  <property name='version' value='0.1'/>
+  <property name='distfilesdir' value='dist-files'/>
+  <property name='docdir' value='doc'/>
+  
+  <target name='clean' description='o Clean up the generated directories'>
+    <delete dir='${classdir}'>
+    </delete>
+    <delete file='${bindir}/${jarname}'>
+    </delete>
+  </target>
+ 
+  <target name='compile' description='o Compile the code' depends='clean' >
+    <mkdir dir='${classdir}'>
     </mkdir>
-    <javac destdir="${classesdir}" deprecation="true" debug="true" optimize="false" excludes="**/package.html">
+    <javac destdir='${classdir}' deprecation='true' debug='false' optimize='true' excludes='**/package.html'>
       <src>
-        <pathelement path="${srcdir}">
+        <pathelement path='${srcdir}'>
         </pathelement>
       </src>
       <classpath>
-        <fileset dir="${libdir}">
-          <include name="*.jar">
+        <fileset dir='${libdir}'>
+          <include name='*.jar'>
           </include>
         </fileset>
       </classpath>
     </javac>
+    <copy todir="${classdir}/org/jajuk/i18n" >
+     <fileset file="${srcdir}/org/jajuk/i18n/*.properties"/>
+  	</copy>
+    <mkdir dir="${classdir}/org/jajuk/icons"/>
+    <mkdir dir="${classdir}/org/jajuk/images"/>
+  	<mkdir dir="${classdir}/org/jajuk/docs"/>
+  	<copy todir="${classdir}/org/jajuk/icons" >
+     <fileset dir="${distfilesdir}/icons"/>
+  	</copy>
+  	<copy todir="${classdir}/org/jajuk/images" >
+     <fileset dir="${distfilesdir}/images"/>
+  	</copy>
+  	<copy todir="${classdir}/org/jajuk/docs" >
+     <fileset file="${docdir}/about.html"/>
+  	</copy>
+    
   </target>
-  <target name="jar" description="o Create the jar" depends="compile">
-    <jar jarfile="target/${final.name}.jar" excludes="**/package.html" basedir="${classesdir}">
-    </jar>
+
+  <target name='jar' description='o Create the jar' depends='compile'>
+    <jar jarfile='${bindir}/${jarname}' excludes='**/package.html' basedir='${classdir}' manifest="${srcdir}/MANIFEST.MF" />
   </target>
-  <target name="clean" description="o Clean up the generated directories">
-    <delete dir="${defaulttargetdir}">
-    </delete>
-    <delete dir="${distdir}">
-    </delete>
-  </target>
-  <target name="dist" description="o Create a distribution" depends="jar, javadoc">
-    <mkdir dir="dist">
-    </mkdir>
-    <copy todir="dist">
-      <fileset dir="${defaulttargetdir}" includes="*.jar">
-      </fileset>
-      <fileset dir="${basedir}" includes="LICENSE*, README*">
-      </fileset>
-    </copy>
-  </target>
-   <target name="javadoc" description="o Generate javadoc" depends="jar">
-    <mkdir dir="${javadocdir}">
-    </mkdir>
-    <tstamp>
-      <format pattern="2003-yyyy" property="year">
-      </format>
-    </tstamp>
-    <property name="copyright" value="Copyright &amp;copy;  Jajuk team. All Rights Reserved.">
-    </property>
-    <property name="title" value="jajuk pre-alpha-build20031114 API">
-    </property>
-    <javadoc use="true" private="true" destdir="${javadocdir}" author="true" version="true" packagenames="org.jajuk.base.*">
-      <classpath>
-        <fileset dir="${libdir}">
-          <include name="*.jar">
-          </include>
-        </fileset>
-        <pathelement location="target/${final.name}.jar">
-        </pathelement>
-      </classpath>
-    </javadoc>
-  </target>
-  <taskdef name="izpack" classpath="/prog/IzPack3.4.0/lib/compiler.jar"
-         classname="com.izforge.izpack.ant.IzPackTask"/>
-      <target name='izpack' >
-        <echo message="Makes the installer using IzPack"/>
-                <izpack input="./dist-files/packaging/jajuk.izpack"
-        output='./dist-files/packaging/${final.name}.jar'
-        basedir="/"
-        installerType="standard-kunststoff"
-        izPackDir="/prog/IzPack3.4.0"/>
-      </target>
-  
+
+ <target name='javadoc'>
+   	  <delete dir='${javadocdir}'/>
+   	  <mkdir dir='${javadocdir}'/>
+     <property name='copyright' value='Copyright &amp;copy;  Jajuk team. All Rights Reserved.'/>
+     <javadoc destdir='${javadocdir}' access='private' use='true'
+            notree='false' nonavbar='false' noindex='false'
+            splitindex='true' author='true' version='true'
+            nodeprecatedlist='false' nodeprecated='false'
+            packagenames='org.jajuk.base,org.jajuk.ui.views,org.jajuk,org.jajuk.i18n,org.jajuk.ui.perspectives,org.jajuk.util.log,org.jajuk.ui,org.jajuk.util,org.jajuk.util.error,org.jajuk.players'
+            sourcepath='src'
+            Windowtitle='Jajuk ${version} API'   >
+		<classpath>
+         <fileset dir='${libdir}'>
+           <include name='*.jar'>
+           </include>
+         </fileset>
+         <pathelement location='${bindir}/${jarname}'/>
+       </classpath>
+      </javadoc>
+    </target>
+ 
 </project>

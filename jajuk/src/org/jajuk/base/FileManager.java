@@ -157,6 +157,34 @@ public class FileManager implements ITechnicalStrings{
 		return fsBestOne.getFile(); //return highest score file
 	}
 	
+	/**
+	 * Return top files
+	 * @return top files
+	 */
+	public static synchronized ArrayList getBestOfFiles(){
+		ArrayList al = new ArrayList(20);
+		//create a tempory table to remove unmounted files
+		TreeSet tsEligibleFiles = new TreeSet();
+		Iterator it = FileManager.getFiles().iterator();
+		while ( it.hasNext()){
+			File file = (File)it.next();
+			if (file.isReady()){
+				long lRate = file.getTrack().getRate();
+				tsEligibleFiles.add(new FileScore(file,lRate));
+			}
+		}
+		for (int i=0;i<20;i++){
+			FileScore fileScore = null;
+			if ( tsEligibleFiles.size() == 0){
+				break;			
+			}
+			fileScore = (FileScore)tsEligibleFiles.last();
+			al.add(fileScore.getFile());
+			tsEligibleFiles.remove(fileScore);
+		}
+		return al;
+	}
+	
 	
 	/** Return next mounted file ( used in continue mode )
 	 * @param file : a file

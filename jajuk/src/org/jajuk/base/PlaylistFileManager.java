@@ -100,5 +100,13 @@ public class PlaylistFileManager {
 	public static synchronized PlaylistFile getPlaylistFile(String sId) {
 		return (PlaylistFile) hmPlaylistFiles.get(sId);
 	}
+	
+	/**
+	 * Delete a playlist file from collection
+	 * @param sId
+	 */
+	public static synchronized void delete(String sId){
+		hmPlaylistFiles.remove(sId);
+	}
 
 }

@@ -12,6 +12,7 @@
     </links>
     <menu name="Overview">
       <item name="FAQ" href="/faq.html" />
+      <item name="Features" href="/features.html" />
       <item name="Status" href="/status.html" />
       <item name="Planning" href="/planning.html" />
       <item name="Javadoc" href="apidocs/index.html" />

@@ -100,7 +100,12 @@ public class Messages {
 	 */
 	public static void setLocal(String sLocal){
 		Messages.sLocal = sLocal;
-		rb = ResourceBundle.getBundle(BUNDLE_NAME,new Locale(sLocal));
+		if ( sLocal.equals("en")){ //take english as an exception because it uses the base properties file
+			rb = ResourceBundle.getBundle(BUNDLE_NAME,new Locale(""));	
+		}
+		else{
+			rb = ResourceBundle.getBundle(BUNDLE_NAME,new Locale(sLocal));
+		}
 	}
 	
 	/**
