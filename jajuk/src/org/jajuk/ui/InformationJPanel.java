@@ -256,8 +256,8 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,Obser
 	/* (non-Javadoc)
      * @see org.jajuk.ui.Observer#update(java.lang.String)
      */
-	public void update(String subject) {
-	    if (subject.equals(EVENT_HEART_BEAT)){
+	public synchronized void update(String subject) {
+	    if (EVENT_HEART_BEAT.equals(subject)){
 	        String sCurrentStatusMessage =  (String)ObservationManager.getDetail(EVENT_HEART_BEAT,DETAIL_CURRENT_STATUS_MESSAGE);
 	        if (sCurrentStatusMessage != null){
 	            setCurrentStatusMessage(sCurrentStatusMessage);
@@ -271,14 +271,14 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,Obser
 	            setTotalStatusMessage(sCurrentTotalMessage);
 	        }
 	    }
-	    else  if (subject.equals(EVENT_ZERO)){
+	    else if (EVENT_ZERO.equals(subject)){
 	        setCurrentStatusMessage(Util.formatTime(0)+" / "+Util.formatTime(0)); //$NON-NLS-1$
 	        setCurrentStatus(0);
 	        setTotalStatusMessage("00:00:00");//$NON-NLS-1$
 	        setMessage(Messages.getString("FIFO.16"),InformationJPanel.INFORMATIVE); //$NON-NLS-1$
 	        setQuality(""); //$NON-NLS-1$
 	     }
-	    else if (subject.equals(EVENT_FILE_LAUNCHED)){
+	    else if (EVENT_FILE_LAUNCHED.equals(subject)){
 	        File file = FIFO.getInstance().getCurrentFile();
 	        if (file != null){
 	            String sMessage = Messages.getString("FIFO.10")+file.getTrack().getAuthor().getName2()

@@ -20,12 +20,14 @@
 
 package org.jajuk.ui;
 
-import java.util.Hashtable;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Properties;
-import java.util.Vector;
 
 import javax.swing.JComponent;
+
+import org.jajuk.util.log.Log;
 
 /**
  *  This is a mediator managing relationships between subjets and observers 
@@ -33,25 +35,26 @@ import javax.swing.JComponent;
  * @created    12 dec. 2003
  */
 public class ObservationManager {
-
-	/** one event -> list of components , we use a synchronized collection to avoid unexpected concurrent modifications*/
-	static Hashtable hEventComponents = new Hashtable(10);
+	
+	/** one event -> list of components*/
+	static HashMap hEventComponents = new HashMap(10);
 	
 	/**Map a event string with a property containing all event details*/
-	static Hashtable  hEventDetails = new Hashtable(5);
+	static HashMap hEventDetails = new HashMap(5);
 	
 	/**
 	 * Register a component for a given subject
 	 * @param subject Subject ( event ) to observe
 	 * @param jc component to register
 	 */
-	public static synchronized void register(String subject,Object obj){
-		Vector  vComponents = (Vector)hEventComponents.get(subject);
-		if (vComponents == null){
-			vComponents = new Vector(1);
-			hEventComponents.put(subject,vComponents);
+	public static void register(String subject,Object obj){
+		Log.debug("Register: "+subject+" by: "+obj);
+		ArrayList alComponents = (ArrayList)hEventComponents.get(subject);
+		if (alComponents == null){
+			alComponents = new ArrayList(1);
+			hEventComponents.put(subject,alComponents);
 		}
-		vComponents.add(obj);
+		alComponents.add(obj);
 	}
 	
 	/**
@@ -59,32 +62,64 @@ public class ObservationManager {
 	 * @param subject Subject ( event ) to observe
 	 * @param jc component to deregister
 	 */
-	public static synchronized void unregister(String subject,JComponent jc){
-		Vector vComponents = (Vector)hEventComponents.get(subject);
-		if (vComponents == null){
-			vComponents.remove(jc);
+	public static void unregister(String subject,JComponent jc){
+		ArrayList alComponents = (ArrayList)hEventComponents.get(subject);
+		if (alComponents == null){
+			synchronized(alComponents){
+				alComponents.remove(jc);
+			}
 		}
 	}
-
+	
 	/**
 	 * Notify all components having registered for the given subject
 	 * @param subject
 	 */
-	public static synchronized void notify(final String subject){
-		new Thread(){
-			public synchronized void run(){
-				Vector vComponents =(Vector)hEventComponents.get(subject); 
-				if (vComponents == null){
-					return;
-				}
-				Iterator it = vComponents.iterator();  
-				while (it.hasNext()){
-					Observer obs = (Observer)it.next();
+	public static void notify(final String subject){
+		notify(subject,false); //asynchronous notification by default to avoid exception throw in the register current thread
+	}
+	
+	/**
+	 * Notify synchronously all components having registered for the given subject
+	 * @param subject
+	 */
+	public static void notifySync(final String subject){
+		Log.debug("Notify: "+subject);
+		ArrayList alComponents =(ArrayList)hEventComponents.get(subject); 
+		if (alComponents == null){
+			return;
+		}
+		synchronized(alComponents){
+			Iterator it = alComponents.iterator();  
+			while (it.hasNext()){
+				Observer obs = (Observer)it.next();
+				try{
 					obs.update(subject);
 				}
+				catch(Exception e){
+					Log.error(e);
+				}
 			}
-		}.start();
-				
+		}
+	}
+	
+	
+	/**
+	 * Notify all components having registered for the given subject asynchronously
+	 * @param subject
+	 * @param whether the notification is synchronous or not
+	 */
+	public static void notify(final String subject, boolean bSync){
+		if (bSync){
+			ObservationManager.notifySync(subject);
+		}
+		else{
+			new Thread(){
+				public void run(){
+					ObservationManager.notifySync(subject);
+				}
+			}.start();
+		}
 	}
 	
 	/**
@@ -92,9 +127,9 @@ public class ObservationManager {
 	 * @param subject
 	 * @param pDetails informations about this event
 	 */
-	public static synchronized void notify(final String subject,Properties pDetails){
-	    hEventDetails.put(subject,pDetails);
-	    notify(subject);
+	public static void notify(final String subject,Properties pDetails){
+		hEventDetails.put(subject,pDetails);
+		notify(subject);
 	}
 	
 	/**
@@ -103,12 +138,12 @@ public class ObservationManager {
 	 * @param sDetail Detail name
 	 * @return the detail as an object or null if the event or the detail doesn't exist
 	 */
-	public static synchronized Object getDetail(String sEvent,String sDetailName){
-	    Properties pDetails = (Properties)hEventDetails.get(sEvent);
-	    if (pDetails != null){
-	        return pDetails.get(sDetailName);
-	    }
-	    return null;
+	public static Object getDetail(String sEvent,String sDetailName){
+		Properties pDetails = (Properties)hEventDetails.get(sEvent);
+		if (pDetails != null){
+			return pDetails.get(sDetailName);
+		}
+		return null;
 	}
 	
 	/**
@@ -116,8 +151,8 @@ public class ObservationManager {
 	 * @param sEvent event name
 	 * @return the detaisl or null there are not details
 	 */
-	public static synchronized Object getDetails(String sEvent){
-	    return (Properties)hEventDetails.get(sEvent);
+	public static Object getDetails(String sEvent){
+		return (Properties)hEventDetails.get(sEvent);
 	}
 	
 }

@@ -264,7 +264,7 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
     /* (non-Javadoc)
      * @see org.jajuk.ui.Observer#update(java.lang.String)
      */
-	public void update(String subject) {
+	public synchronized void update(String subject) {
 	    try {
 	        if (subject.equals(EVENT_FILE_LAUNCHED)){
 	            String sFileID = (String)ObservationManager.getDetail(EVENT_FILE_LAUNCHED,DETAIL_CURRENT_FILE_ID);

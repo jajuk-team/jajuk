@@ -158,8 +158,9 @@ public class JajukWindow extends JFrame implements ITechnicalStrings,ComponentLi
 			stm.addSeparator();
 			stm.addItem(stmiAbout);
 			stm.addSeparator();
-			stm.addItem(stmiShuffle);
+			stm.addItem(stmiNovelties);
 			stm.addItem(stmiBestof);
+			stm.addItem(stmiShuffle);
 			stm.addSeparator();
 			stm.addItem(stmiNext);
 			stm.addItem(stmiPrevious);
@@ -348,7 +349,7 @@ public class JajukWindow extends JFrame implements ITechnicalStrings,ComponentLi
     /* (non-Javadoc)
      * @see org.jajuk.ui.Observer#update(java.lang.String)
      */
-    public void update(String subject) {
+    public synchronized void update(String subject) {
         if (subject.equals(EVENT_FILE_LAUNCHED)){
             File file = FIFO.getInstance().getCurrentFile();
             if (file != null){

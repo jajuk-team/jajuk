@@ -561,7 +561,7 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.Observer#update(java.lang.String)
 	 */
-	public void update(String subject) {
+	public synchronized void update(String subject) {
 		if ( subject.equals(EVENT_DEVICE_MOUNT) || subject.equals(EVENT_DEVICE_UNMOUNT)){
 			SwingWorker sw = new SwingWorker() {
 				public Object  construct(){

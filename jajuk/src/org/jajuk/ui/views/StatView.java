@@ -350,7 +350,7 @@ public class StatView extends ViewAdapter implements Observer{
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.Observer#update(java.lang.String)
 	 */
-	public void update(final String subject) {
+	public synchronized  void update(final String subject) {
 		if (EVENT_DEVICE_REFRESH.equals(subject) || EVENT_DEVICE_DELETE.equals(subject)){
 			Util.waiting();
 			removeAll();
