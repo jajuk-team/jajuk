@@ -112,10 +112,10 @@ public class ParameterView extends ViewAdapter implements ActionListener {
 		return pv;
 	}
 	
-	/**
-	 * 
+	/* (non-Javadoc)
+	 * @see org.jajuk.ui.IView#display()
 	 */
-	public ParameterView() {
+	public void display(){
 		int iXSeparator = 5;
 		int iYSeparator = 5;
 		
@@ -365,6 +365,14 @@ public class ParameterView extends ViewAdapter implements ActionListener {
 		add(jpOKCancel,"0,6"); //$NON-NLS-1$
 		//update widgets state
 		updateSelection();
+
+	}
+	
+	/**
+	 * 
+	 */
+	public ParameterView() {
+		pv = this;
 	}
 
 	/* (non-Javadoc)

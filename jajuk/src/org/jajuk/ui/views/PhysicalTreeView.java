@@ -149,6 +149,12 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 	/** Constructor */
 	public PhysicalTreeView(){
 		ptv = this;
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.jajuk.ui.IView#display()
+	 */
+	public void display(){
 		//**Menu items**
 		//File menu
 		jmenuFile = new JPopupMenu();

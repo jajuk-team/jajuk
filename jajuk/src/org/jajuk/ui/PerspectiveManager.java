@@ -22,6 +22,7 @@ package org.jajuk.ui;
 import java.awt.BorderLayout;
 import java.io.File;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import javax.swing.JDesktopPane;
 import javax.swing.JPanel;
@@ -55,7 +56,10 @@ public class PerspectiveManager extends DefaultHandler implements ITechnicalStri
 	private static PerspectiveManager pm = null;
 	/** Parsing temporary variable */
 	private static IPerspective pCurrent = null;
+	
+	private long lTime;
 
+	private String sPerspectiveName;
 	
 	/**
 	 * Load configuration file
@@ -108,6 +112,15 @@ public class PerspectiveManager extends DefaultHandler implements ITechnicalStri
 	 * @see org.jajuk.ui.perspectives.IPerspectiveManager#setCurrentPerspective(Perspective)
 	 */
 	public static void setCurrentPerspective(IPerspective perspective) {
+		/**views display */
+		Iterator it = perspective.getViews().iterator();
+		while ( it.hasNext()){
+			IView view = (IView)it.next();
+			if (!view.isDisplayed()){
+				view.display();
+				view.setIsDisplayed(true);
+			}
+		}
 		currentPerspective = perspective;
 		JDesktopPane desktop = perspective.getDesktop();
 		//Effacement de l'ancien panel
@@ -196,11 +209,12 @@ public class PerspectiveManager extends DefaultHandler implements ITechnicalStri
 		String sClassName = null;
 		if (sQName.equals("perspective")) {
 			try {
+				lTime = System.currentTimeMillis();
 				pCurrent = null;
-				 sClassName = attributes.getValue(attributes.getIndex("class")); 
+				sClassName = attributes.getValue(attributes.getIndex("class")); 
+				sPerspectiveName = sClassName; 
 				IPerspective perspective = (IPerspective) Class.forName(sClassName).newInstance();
 				hmPerspectives.put(sClassName, perspective);
-				Log.debug("Registered perspective: "+sClassName);
 				pCurrent = perspective;
 			} catch (Exception e) {
 				Log.error("116", sClassName, e);
@@ -227,7 +241,6 @@ public class PerspectiveManager extends DefaultHandler implements ITechnicalStri
 				pCurrent.addView(view,iWidth,iHeight,iX,iY);
 				Log.debug(new StringBuffer("Registered view: ").append(attributes.getValue(0)).append(" in ").append(System.currentTimeMillis()-l).append(" ms").toString());
 			}
-
 		}
 	}
 
@@ -237,8 +250,8 @@ public class PerspectiveManager extends DefaultHandler implements ITechnicalStri
 	public void endElement(String uri, String localName, String qName) {
 		if (qName.equals("perspective")) {
 			pCurrent = null;
+			Log.debug(new StringBuffer("Registered perspective: ").append(sPerspectiveName).append(" in: ").append(System.currentTimeMillis()-lTime).append(" ms").toString());
 		}
-
 	}
 
 }

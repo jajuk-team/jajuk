@@ -47,5 +47,20 @@ public interface IView {
 	 */
 	public void setVisible(boolean pVisible);
 	
+	/**
+	 * Display the view 
+	 */
+	public void display();
+	
+	/**
+	 * Get displayed state
+	 * @return displayed state
+	 */
+	public boolean isDisplayed();
+	/**
+	 * @param isDisplayed The bIsDisplayed to set.
+	 */
+	public void setIsDisplayed(boolean isDisplayed) ;
+	
 
 }

@@ -58,10 +58,16 @@ public class PhysicalTableView extends AbstractTableView{
 	/** Constructor */
 	public PhysicalTableView(){
 		super();
-		populate();
-		setModel(this);
 		ltv = this;
 	}
+	
+	/* (non-Javadoc)
+	 * @see org.jajuk.ui.IView#display()
+	 */
+	public void display(){
+		populate();
+		setModel(this);
+	}	
 	
 	/**Fill the tree */
 	public void populate(){

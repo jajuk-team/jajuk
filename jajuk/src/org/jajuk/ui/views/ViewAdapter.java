@@ -33,6 +33,9 @@ import org.jajuk.ui.IView;
  */
 public abstract class ViewAdapter extends JPanel implements IView,ITechnicalStrings {
 
+	/**Displayed state */
+	private boolean bIsDisplayed = false;
+	
 	/**
 	 * 
 	 */
@@ -48,5 +51,19 @@ public abstract class ViewAdapter extends JPanel implements IView,ITechnicalStri
 		return "View[name="+getViewName()+" description='"+getDesc()+"]";
 	}
 
+
+	/**
+	 * @return Returns the bIsDisplayed.
+	 */
+	public boolean isDisplayed() {
+		return bIsDisplayed;
+	}
+
+	/**
+	 * @param isDisplayed The bIsDisplayed to set.
+	 */
+	public void setIsDisplayed(boolean isDisplayed) {
+		bIsDisplayed = isDisplayed;
+	}
 
 }

@@ -57,9 +57,17 @@ public class LogicalTableView extends AbstractTableView{
 	/** Constructor */
 	public LogicalTableView(){
 		super();
+		ltv = this;
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.jajuk.ui.IView#display()
+	 */
+	public void display(){
 		populate();
 		setModel(this);
-		ltv = this;
+		populate();
+		setModel(this);
 	}
 	
 	/**Fill the tree */

@@ -78,6 +78,12 @@ public class HelpView extends ViewAdapter{
 	 */
 	public HelpView() {
 		hv = this;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.jajuk.ui.IView#display()
+	 */
+	public void display(){
 		try{
 			setLayout(new BoxLayout(this,BoxLayout.X_AXIS));
 			ClassLoader cl = HelpView.class.getClassLoader();
@@ -91,7 +97,7 @@ public class HelpView extends ViewAdapter{
 			Log.error(e); 
 		}
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.IView#getDesc()
 	 */

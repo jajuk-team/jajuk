@@ -141,6 +141,14 @@ public class LogicalTreeView extends ViewAdapter implements ActionListener,Obser
 	
 	/** Constructor */
 	public LogicalTreeView(){
+		ltv = this;
+	}
+	
+	
+	/* (non-Javadoc)
+	 * @see org.jajuk.ui.IView#display()
+	 */
+	public void display(){
 		//**Menu items**
 		//Style menu
 		jmenuStyle = new JPopupMenu();
@@ -243,7 +251,6 @@ public class LogicalTreeView extends ViewAdapter implements ActionListener,Obser
 		//fill the tree
 		populate();
 		
-		ltv = this;
 	}
 	
 	/**Fill the tree */

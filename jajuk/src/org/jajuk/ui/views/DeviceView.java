@@ -91,6 +91,14 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 	DeviceItem diSelected;
 	
 	public DeviceView(){
+		dv = this;
+	}
+	
+	
+	/* (non-Javadoc)
+	 * @see org.jajuk.ui.IView#display()
+	 */
+	public void display(){
 		//buttons
 		jtbButtons = new JToolBar();
 		jtbButtons.setRollover(true);
@@ -214,7 +222,6 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 		ObservationManager.register(EVENT_DEVICE_MOUNT,this);
 		ObservationManager.register(EVENT_DEVICE_UNMOUNT,this);
 	}
-	
 	
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.views.IView#getName()

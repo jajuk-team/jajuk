@@ -58,6 +58,12 @@ public class AboutView extends ViewAdapter {
 	 */
 	public AboutView() {
 		av = this;
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.jajuk.ui.IView#display()
+	 */
+	public void display(){
 		try{
 			jep = new JEditorPane("text/html",Util.readFile(FILE_ABOUT).toString());
 		}
@@ -65,6 +71,7 @@ public class AboutView extends ViewAdapter {
 			Log.error(e);
 		}
 		add(new JScrollPane(jep));
+		
 	}
 
 	/* (non-Javadoc)
