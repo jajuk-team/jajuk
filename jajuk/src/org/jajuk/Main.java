@@ -142,6 +142,9 @@ public class Main implements ITechnicalStrings {
 			//Load user configuration
 			org.jajuk.util.ConfigurationManager.load();
 		
+			//Set locale
+			Messages.setLocal(ConfigurationManager.getProperty(CONF_OPTIONS_LANGUAGE));
+			
 			//starts ui
 			System.setProperty( "apple.laf.useScreenMenuBar", "true"); //mac integration //$NON-NLS-1$ //$NON-NLS-2$
 			jw = new JajukWindow(); 
@@ -154,10 +157,7 @@ public class Main implements ITechnicalStrings {
 			
 			//Set actual log verbosity
 			Log.setVerbosity(Integer.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_LOG_LEVEL)));
-			
-			//Set local
-			Messages.setLocal(ConfigurationManager.getProperty(CONF_OPTIONS_LANGUAGE));
-			
+						
 			//Load history
 			History.load();
 			
@@ -203,7 +203,7 @@ public class Main implements ITechnicalStrings {
 				jw.setVisible(true); //show main window
 				SwingUtilities.invokeLater(new Runnable() { //force screenshot to be upper main window
 					public void run() {
-						sc.show();
+						sc.toFront();
 					}
 				});
 			}
