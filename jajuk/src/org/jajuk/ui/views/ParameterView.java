@@ -566,12 +566,12 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jcbRegexp.setToolTipText(Messages.getString("ParameterView.114")); //$NON-NLS-1$
 		jcbCollectionEncoding.addItem("UTF-8"); //$NON-NLS-1$
 		jcbCollectionEncoding.addItem("UTF-16"); //$NON-NLS-1$
-		jpAdvanced.add(jcbBackup,"0,1");//$NON-NLS-1$
-		jpAdvanced.add(jcbRegexp,"0,3");//$NON-NLS-1$
-		jpAdvanced.add(jlBackupSize,"0,5");//$NON-NLS-1$
-		jpAdvanced.add(jtfBackupSize,"1,5");//$NON-NLS-1$
-		jpAdvanced.add(jlCollectionEncoding,"0,7");//$NON-NLS-1$
-		jpAdvanced.add(jcbCollectionEncoding,"1,7");//$NON-NLS-1$
+		jpAdvanced.add(jcbRegexp,"0,1");//$NON-NLS-1$
+		jpAdvanced.add(jlCollectionEncoding,"0,3");//$NON-NLS-1$
+		jpAdvanced.add(jcbCollectionEncoding,"1,3");//$NON-NLS-1$
+		jpAdvanced.add(jcbBackup,"0,5");//$NON-NLS-1$
+		jpAdvanced.add(jlBackupSize,"0,7");//$NON-NLS-1$
+		jpAdvanced.add(jtfBackupSize,"1,7");//$NON-NLS-1$
 		
 		//- Network
 		jpNetwork = new JPanel();
@@ -650,17 +650,17 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jtfTransfertTO.setToolTipText(Messages.getString("ParameterView.163"));  //$NON-NLS-1$)
 		jtfTransfertTO.addActionListener(this);
 		jtfTransfertTO.setInputVerifier(verifier);
-		jpNetwork.add(jcbProxy,"0,1"); //$NON-NLS-1$
-		jpNetwork.add(jlProxyHostname,"0,3"); //$NON-NLS-1$
-		jpNetwork.add(jtfProxyHostname,"1,3"); //$NON-NLS-1$
-		jpNetwork.add(jlProxyPort,"0,5"); //$NON-NLS-1$
-		jpNetwork.add(jtfProxyPort,"1,5"); //$NON-NLS-1$
-		jpNetwork.add(jlProxyLogin,"0,7"); //$NON-NLS-1$
-		jpNetwork.add(jtfProxyLogin,"1,7"); //$NON-NLS-1$
-		jpNetwork.add(jlConnectionTO,"0,9"); //$NON-NLS-1$
-		jpNetwork.add(jtfConnectionTO,"1,9"); //$NON-NLS-1$
-		jpNetwork.add(jlTransfertTO,"0,11"); //$NON-NLS-1$
-		jpNetwork.add(jtfTransfertTO,"1,11"); //$NON-NLS-1$
+		jpNetwork.add(jlConnectionTO,"0,1"); //$NON-NLS-1$
+		jpNetwork.add(jtfConnectionTO,"1,1"); //$NON-NLS-1$
+		jpNetwork.add(jlTransfertTO,"0,3"); //$NON-NLS-1$
+		jpNetwork.add(jtfTransfertTO,"1,3"); //$NON-NLS-1$
+		jpNetwork.add(jcbProxy,"0,5"); //$NON-NLS-1$
+		jpNetwork.add(jlProxyHostname,"0,7"); //$NON-NLS-1$
+		jpNetwork.add(jtfProxyHostname,"1,7"); //$NON-NLS-1$
+		jpNetwork.add(jlProxyPort,"0,9"); //$NON-NLS-1$
+		jpNetwork.add(jtfProxyPort,"1,9"); //$NON-NLS-1$
+		jpNetwork.add(jlProxyLogin,"0,11"); //$NON-NLS-1$
+		jpNetwork.add(jtfProxyLogin,"1,11"); //$NON-NLS-1$
 				
 		//- Cover
 		jpCovers = new JPanel();
@@ -718,9 +718,9 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jtfMaxSize.setInputVerifier(iverifier);
 		jpCovers.add(jcbShuffleCover,"0,1"); //$NON-NLS-1$
 		jpCovers.add(jcbLoadEachTrack,"1,1"); //$NON-NLS-1$
-		jpCovers.add(jcbAutoCover,"0,3"); //$NON-NLS-1$
-		jpCovers.add(jcbPreLoad,"0,5"); //$NON-NLS-1$
-		jpCovers.add(jcbResize,"0,7"); //$NON-NLS-1$
+		jpCovers.add(jcbResize,"0,3"); //$NON-NLS-1$
+		jpCovers.add(jcbAutoCover,"0,5"); //$NON-NLS-1$
+		jpCovers.add(jcbPreLoad,"0,7"); //$NON-NLS-1$
 		jpCovers.add(jlMinSize,"0,9"); //$NON-NLS-1$
 		jpCovers.add(jtfMinSize,"1,9"); //$NON-NLS-1$
 		jpCovers.add(jlMaxSize,"0,11"); //$NON-NLS-1$
@@ -913,10 +913,12 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 				else if (e.getSource() == jcbBackup){ //if backup option is unchecked, reset backup size
 				    if ( jcbBackup.isSelected()){
 				        jtfBackupSize.setEnabled(true);
+				        jlBackupSize.setEnabled(true);
 				        jtfBackupSize.setText(ConfigurationManager.getProperty(CONF_BACKUP_SIZE));
 				    }
 				    else{
 				        jtfBackupSize.setEnabled(false);
+				        jlBackupSize.setEnabled(false);
 				        jtfBackupSize.setText("0"); //$NON-NLS-1$
 				    }
 				}
@@ -925,24 +927,32 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 				        jtfProxyHostname.setEnabled(true);
 				        jtfProxyPort.setEnabled(true);
 				        jtfProxyLogin.setEnabled(true);
+				        jlProxyHostname.setEnabled(true);
+				        jlProxyPort.setEnabled(true);
+				        jlProxyLogin.setEnabled(true);
 				    }
 				    else{
 				        jtfProxyHostname.setEnabled(false);
 				        jtfProxyPort.setEnabled(false);
 				        jtfProxyLogin.setEnabled(false);
+				        jlProxyHostname.setEnabled(false);
+				        jlProxyPort.setEnabled(false);
+				        jlProxyLogin.setEnabled(false);
 				    }
 				}
 				else if (e.getSource() == jcbAutoCover){
 				    if ( jcbAutoCover.isSelected()){
 				        jtfMinSize.setEnabled(true);
+				        jlMinSize.setEnabled(true);
 				        jtfMaxSize.setEnabled(true);
-				        jcbResize.setEnabled(true);
+				        jlMaxSize.setEnabled(true);
 				        jcbPreLoad.setEnabled(true);
 				    }
 				    else{
 				        jtfMinSize.setEnabled(false);
+				        jlMinSize.setEnabled(false);
 				        jtfMaxSize.setEnabled(false);
-				        jcbResize.setEnabled(false);
+				        jlMaxSize.setEnabled(false);
 				        jcbPreLoad.setEnabled(false);
 				    }
 				}
@@ -1008,10 +1018,12 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		if (iBackupSize<=0){ //backup size =0 means no backup
 		    jcbBackup.setSelected(false);   
 		    jtfBackupSize.setEnabled(false);
+		    jlBackupSize.setEnabled(false);
 		}
 		else{
 		    jcbBackup.setSelected(true);
 		    jtfBackupSize.setEnabled(true);
+		    jlBackupSize.setEnabled(true);
 		}
 		jtfBackupSize.setText(Integer.toString(iBackupSize));
 		jcbCollectionEncoding.setSelectedItem(ConfigurationManager.getProperty(CONF_COLLECTION_CHARSET)); 
@@ -1020,23 +1032,27 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jcbProxy.setSelected(bUseProxy);
 		jtfProxyHostname.setText(ConfigurationManager.getProperty(CONF_NETWORK_PROXY_HOSTNAME));
 		jtfProxyHostname.setEnabled(bUseProxy);
+		jlProxyHostname.setEnabled(bUseProxy);
 		jtfProxyPort.setText(ConfigurationManager.getProperty(CONF_NETWORK_PROXY_PORT));
 		jtfProxyPort.setEnabled(bUseProxy);
+		jlProxyPort.setEnabled(bUseProxy);
 		jtfProxyLogin.setText(ConfigurationManager.getProperty(CONF_NETWORK_PROXY_LOGIN));
 		jtfProxyLogin.setEnabled(bUseProxy);
+		jlProxyLogin.setEnabled(bUseProxy);
 		jtfConnectionTO.setText(ConfigurationManager.getProperty(CONF_NETWORK_CONNECTION_TO));
 		jtfTransfertTO.setText(ConfigurationManager.getProperty(CONF_NETWORK_TRANSFERT_TO));
 		//Covers
 		jcbAutoCover.setSelected(ConfigurationManager.getBoolean(CONF_COVERS_AUTO_COVER));
 		jtfMinSize.setText(ConfigurationManager.getProperty(CONF_COVERS_MIN_SIZE));
+		jlMinSize.setEnabled(ConfigurationManager.getBoolean(CONF_COVERS_AUTO_COVER));
 		jtfMinSize.setEnabled(ConfigurationManager.getBoolean(CONF_COVERS_AUTO_COVER));
 		jtfMaxSize.setText(ConfigurationManager.getProperty(CONF_COVERS_MAX_SIZE));
 		jtfMaxSize.setEnabled(ConfigurationManager.getBoolean(CONF_COVERS_AUTO_COVER));
+		jlMaxSize.setEnabled(ConfigurationManager.getBoolean(CONF_COVERS_AUTO_COVER));
 		jcbShuffleCover.setSelected(ConfigurationManager.getBoolean(CONF_COVERS_SHUFFLE));
 		jcbPreLoad.setSelected(ConfigurationManager.getBoolean(CONF_COVERS_PRELOAD));
 		jcbPreLoad.setEnabled(ConfigurationManager.getBoolean(CONF_COVERS_AUTO_COVER));
 		jcbResize.setSelected(ConfigurationManager.getBoolean(CONF_COVERS_RESIZE));
-		jcbResize.setEnabled(ConfigurationManager.getBoolean(CONF_COVERS_AUTO_COVER));
 		jcbLoadEachTrack.setSelected(ConfigurationManager.getBoolean(CONF_COVERS_CHANGE_AT_EACH_TRACK));
 		jcbLoadEachTrack.setEnabled(jcbShuffleCover.isSelected() && jcbShuffleCover.isEnabled()); //this mode requires shuffle mode
 	}
