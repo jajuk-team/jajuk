@@ -185,93 +185,103 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	 * @param device device to refresh
 	 */
 	private void refreshCommand(Device device){
-		//lock the synchro
-		synchronized(bLock){
-			//check Jajuk is not exiting because a refresh cannot start in this state
-			if (Main.bExiting){
-				return;
-			}
-			/*check target directory is not void because it could mean that the device is not actually system-mounted and
-			 	then a refresh would clear the device, display a warning message*/
-			File file = new File(getUrl());
-			if ( file.exists() && (file.list() == null || file.list().length==0)){
-				int i = JOptionPane.showConfirmDialog(Main.getWindow(),Messages.getString("Confirmation_void_refresh"),Messages.getString("Warning"),JOptionPane.OK_CANCEL_OPTION,JOptionPane.WARNING_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
-				if ( i != JOptionPane.OK_OPTION){
-					return;
-				}
-			}
-			/*Remove all directories, playlist files and files for this device before rescan. 
-			 Note  that logical item ( tracks, styles...) are device independant and connot be cleared.
-			They will be clean up at next jajuk restart and old track data is used to populate device without full tag scan
-			*/ 
-			iNbFilesBeforeRefresh = FileManager.getFiles().size();
-			iNbNewFiles = 0;
-			FileManager.cleanDevice(device.getId());
-			PlaylistFileManager.cleanDevice(device.getId());
-			DirectoryManager.cleanDevice(device.getId());
-			long lTime = System.currentTimeMillis();
-			Log.debug("Starting refresh of device : "+device); //$NON-NLS-1$
-			
-			File fTop = new File(device.sUrl);
-			if (!fTop.exists()) {
-				Messages.showErrorMessage("101"); //$NON-NLS-1$
-				return;
-			}
-			
-			//index init
-			File fCurrent = fTop;
-			int[] indexTab = new int[100]; //directory index  
-			for (int i = 0; i < 100; i++) { //init
-				indexTab[i] = -1;
-			}
-			int iDeep = 0; //deep
-			Directory dParent = null;
-			
-			//Create a directory for device itself and scan files to allow files at the root of the device
-			if (!device.getDeviceTypeS().equals(DEVICE_TYPE_REMOTE) || !device.getDeviceTypeS().equals(DEVICE_TYPE_AUDIO_CD)){
-				Directory d = DirectoryManager.registerDirectory(device);
-				dParent = d;
-				d.scan();
-			}
-			//Start actual scan
-			while (iDeep >= 0) {
-				//Log.debug("entering :"+fCurrent);
-				File[] files = fCurrent.listFiles(new JajukFileFilter(true,false)); //only directories
-				if (files== null || files.length == 0 ){  //files is null if fCurrent is a not a directory 
-					indexTab[iDeep] = -1;//re-init for next time we will reach this deep
-					iDeep--; //come up
-					fCurrent = fCurrent.getParentFile();
-					dParent = dParent.getParentDirectory();
-				} else {
-					if (indexTab[iDeep] < files.length-1 ){  //enter sub-directory
-						indexTab[iDeep]++; //inc index for next time we will reach this deep
-						fCurrent = files[indexTab[iDeep]];
-						dParent = DirectoryManager.registerDirectory(fCurrent.getName(),dParent,device);
-						InformationJPanel.getInstance().setMessage(new StringBuffer(Messages.getString("Device.21")).append(device.getName()).append(Messages.getString("Device.22")).append(dParent.getRelativePath()).append("]").toString(),InformationJPanel.INFORMATIVE); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-						dParent.scan();
-						iDeep++;
-					}
-					else{
-						indexTab[iDeep] = -1;
-						iDeep --;
-						fCurrent = fCurrent.getParentFile();
-						if (dParent!=null){
-							dParent = dParent.getParentDirectory();
-						}
-					}
-				}					
-			}
-			String sOut = new StringBuffer("[").append(device.getName()).append(Messages.getString("Device.25")).append((int)((System.currentTimeMillis()-lTime)/1000)). //$NON-NLS-1$ //$NON-NLS-2$
-			append(Messages.getString("Device.26")).append(iNbNewFiles).append(Messages.getString("Device.27")). //$NON-NLS-1$ //$NON-NLS-2$
-			append(iNbFilesBeforeRefresh - (FileManager.getFiles().size()-iNbNewFiles)).append(Messages.getString("Device.28")).toString(); //$NON-NLS-1$
-			InformationJPanel.getInstance().setMessage(sOut,InformationJPanel.INFORMATIVE); //$NON-NLS-1$
-			Log.debug(sOut); 
-			//clear history to remove olf files referenced in it
-			History.getInstance().clear(Integer.parseInt(ConfigurationManager.getProperty(CONF_HISTORY))); //delete old history items
-			bAlreadyRefreshing = false;
-			//notify views to refresh
-			ObservationManager.notify(EVENT_DEVICE_REFRESH);		
-		}
+	    try{
+	        //lock the synchro
+	        synchronized(bLock){
+	            //check Jajuk is not exiting because a refresh cannot start in this state
+	            if (Main.bExiting){
+	                return;
+	            }
+	            /*check target directory is not void because it could mean that the device is not actually system-mounted and
+	             then a refresh would clear the device, display a warning message*/
+	            File file = new File(getUrl());
+	            if ( file.exists() && (file.list() == null || file.list().length==0)){
+	                int i = JOptionPane.showConfirmDialog(Main.getWindow(),Messages.getString("Confirmation_void_refresh"),Messages.getString("Warning"),JOptionPane.OK_CANCEL_OPTION,JOptionPane.WARNING_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+	                if ( i != JOptionPane.OK_OPTION){
+	                    return;
+	                }
+	            }
+	            /*Remove all directories, playlist files and files for this device before rescan. 
+	             Note  that logical item ( tracks, styles...) are device independant and connot be cleared.
+	             They will be clean up at next jajuk restart and old track data is used to populate device without full tag scan
+	             */ 
+	            iNbFilesBeforeRefresh = FileManager.getFiles().size();
+	            iNbNewFiles = 0;
+	            FileManager.cleanDevice(device.getId());
+	            PlaylistFileManager.cleanDevice(device.getId());
+	            DirectoryManager.cleanDevice(device.getId());
+	            long lTime = System.currentTimeMillis();
+	            Log.debug("Starting refresh of device : "+device); //$NON-NLS-1$
+	            
+	            File fTop = new File(device.sUrl);
+	            if (!fTop.exists()) {
+	                Messages.showErrorMessage("101"); //$NON-NLS-1$
+	                return;
+	            }
+	            
+	            //index init
+	            File fCurrent = fTop;
+	            int[] indexTab = new int[100]; //directory index  
+	            for (int i = 0; i < 100; i++) { //init
+	                indexTab[i] = -1;
+	            }
+	            int iDeep = 0; //deep
+	            Directory dParent = null;
+	            
+	            //Create a directory for device itself and scan files to allow files at the root of the device
+	            if (!device.getDeviceTypeS().equals(DEVICE_TYPE_REMOTE) || !device.getDeviceTypeS().equals(DEVICE_TYPE_AUDIO_CD)){
+	                Directory d = DirectoryManager.registerDirectory(device);
+	                dParent = d;
+	                d.scan();
+	            }
+	            //Start actual scan
+	            while (iDeep >= 0) {
+	                //Log.debug("entering :"+fCurrent);
+	                File[] files = fCurrent.listFiles(new JajukFileFilter(true,false)); //only directories
+	                if (files== null || files.length == 0 ){  //files is null if fCurrent is a not a directory 
+	                    indexTab[iDeep] = -1;//re-init for next time we will reach this deep
+	                    iDeep--; //come up
+	                    fCurrent = fCurrent.getParentFile();
+	                    dParent = dParent.getParentDirectory();
+	                } else {
+	                    if (indexTab[iDeep] < files.length-1 ){  //enter sub-directory
+	                        indexTab[iDeep]++; //inc index for next time we will reach this deep
+	                        fCurrent = files[indexTab[iDeep]];
+	                        dParent = DirectoryManager.registerDirectory(fCurrent.getName(),dParent,device);
+	                        InformationJPanel.getInstance().setMessage(new StringBuffer(Messages.getString("Device.21")).append(device.getName()).append(Messages.getString("Device.22")).append(dParent.getRelativePath()).append("]").toString(),InformationJPanel.INFORMATIVE); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+	                        dParent.scan();
+	                        iDeep++;
+	                    }
+	                    else{
+	                        indexTab[iDeep] = -1;
+	                        iDeep --;
+	                        fCurrent = fCurrent.getParentFile();
+	                        if (dParent!=null){
+	                            dParent = dParent.getParentDirectory();
+	                        }
+	                    }
+	                }					
+	            }
+	            String sOut = new StringBuffer("[").append(device.getName()).append(Messages.getString("Device.25")).append((int)((System.currentTimeMillis()-lTime)/1000)). //$NON-NLS-1$ //$NON-NLS-2$
+	            append(Messages.getString("Device.26")).append(iNbNewFiles).append(Messages.getString("Device.27")). //$NON-NLS-1$ //$NON-NLS-2$
+	            append(iNbFilesBeforeRefresh - (FileManager.getFiles().size()-iNbNewFiles)).append(Messages.getString("Device.28")).toString(); //$NON-NLS-1$
+	            InformationJPanel.getInstance().setMessage(sOut,InformationJPanel.INFORMATIVE); //$NON-NLS-1$
+	            Log.debug(sOut); 
+	            //clear history to remove olf files referenced in it
+	            History.getInstance().clear(Integer.parseInt(ConfigurationManager.getProperty(CONF_HISTORY))); //delete old history items
+	            //notify views to refresh
+	            ObservationManager.notify(EVENT_DEVICE_REFRESH);		
+	        }
+	    }
+	    catch(RuntimeException re){ //runtime error are thrown
+	        throw re;
+	    }
+	    catch(Exception e){ //and regular ones logged
+	        Log.error(e);
+	    }
+	    finally{  //make sure to unlock refreshing even if an error occured
+	        bAlreadyRefreshing = false;
+	    }
 	}
 	
 	
@@ -292,6 +302,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 				return;
 			}
 		}
+		bAlreadySynchronizing = true;
 		if ( bAsynchronous){
 			new Thread(){
 				public void  run() {
@@ -310,42 +321,53 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	 *@param device : device to synchronize
 	 */
 	public void synchronizeCommand(){
-		long lTime = System.currentTimeMillis();				
-		iNbCreatedFilesDest = 0;
-		iNbCreatedFilesSrc = 0;
-		iNbDeletedFiles = 0;
-		lVolume = 0;
-		//check this device is synchronized
-		String sIdSrc = getProperty(DEVICE_OPTION_SYNCHRO_SOURCE); 
-		if ( sIdSrc == null || sIdSrc.equals(getId())){  //cannot synchro with itself
-			return;
-		}
-		//force a refresh of this device and src device before any sync
-		refresh(false);
-		Device dSrc = DeviceManager.getDevice(sIdSrc);
-		dSrc.refresh(false);
-		//start message
-		InformationJPanel.getInstance().setMessage(new StringBuffer(Messages.getString("Device.31")). //$NON-NLS-1$
-				append(dSrc.getName()).append(',').append(this.getName()).append("]"). //$NON-NLS-1$
-				toString(),InformationJPanel.INFORMATIVE);
-		//in both cases ( bi or uni-directional ), make an unidirectional sync from source device to this one
-		iNbCreatedFilesDest = synchronizeUnidirectonal(dSrc,this);
-		if ( iNbCreatedFilesDest > 0 ){
-			refresh(false); //refresh this device if needed
-		}
-		//if it is bidirectional, make an additional sync from this device to the source one
-		if ( DEVICE_OPTION_SYNCHRO_MODE_BI.equals(getProperty(DEVICE_OPTION_SYNCHRO_MODE))){
-			iNbCreatedFilesSrc = synchronizeUnidirectonal(this,dSrc);
-			if ( iNbCreatedFilesSrc > 0){
-				dSrc.refresh(false);  //refresh source device if needed
-			}
-		}
-		//end message
-		String sOut = new StringBuffer(Messages.getString("Device.33")).append((System.currentTimeMillis()-lTime)/1000) //$NON-NLS-1$
-		.append(Messages.getString("Device.34")).append(iNbCreatedFilesSrc+iNbCreatedFilesDest).append(Messages.getString("Device.35")). //$NON-NLS-1$ //$NON-NLS-2$
-		append(lVolume/1048576).append(Messages.getString("Device.36")).toString(); //$NON-NLS-1$
-		InformationJPanel.getInstance().setMessage(sOut,InformationJPanel.INFORMATIVE);
-		Log.debug(sOut);
+	    try{
+	        long lTime = System.currentTimeMillis();				
+	        iNbCreatedFilesDest = 0;
+	        iNbCreatedFilesSrc = 0;
+	        iNbDeletedFiles = 0;
+	        lVolume = 0;
+	        //check this device is synchronized
+	        String sIdSrc = getProperty(DEVICE_OPTION_SYNCHRO_SOURCE); 
+	        if ( sIdSrc == null || sIdSrc.equals(getId())){  //cannot synchro with itself
+	            return;
+	        }
+	        //force a refresh of this device and src device before any sync
+	        refresh(false);
+	        Device dSrc = DeviceManager.getDevice(sIdSrc);
+	        dSrc.refresh(false);
+	        //start message
+	        InformationJPanel.getInstance().setMessage(new StringBuffer(Messages.getString("Device.31")). //$NON-NLS-1$
+	                append(dSrc.getName()).append(',').append(this.getName()).append("]"). //$NON-NLS-1$
+	                toString(),InformationJPanel.INFORMATIVE);
+	        //in both cases ( bi or uni-directional ), make an unidirectional sync from source device to this one
+	        iNbCreatedFilesDest = synchronizeUnidirectonal(dSrc,this);
+	        if ( iNbCreatedFilesDest > 0 ){
+	            refresh(false); //refresh this device if needed
+	        }
+	        //if it is bidirectional, make an additional sync from this device to the source one
+	        if ( DEVICE_OPTION_SYNCHRO_MODE_BI.equals(getProperty(DEVICE_OPTION_SYNCHRO_MODE))){
+	            iNbCreatedFilesSrc = synchronizeUnidirectonal(this,dSrc);
+	            if ( iNbCreatedFilesSrc > 0){
+	                dSrc.refresh(false);  //refresh source device if needed
+	            }
+	        }
+	        //end message
+	        String sOut = new StringBuffer(Messages.getString("Device.33")).append((System.currentTimeMillis()-lTime)/1000) //$NON-NLS-1$
+	        .append(Messages.getString("Device.34")).append(iNbCreatedFilesSrc+iNbCreatedFilesDest).append(Messages.getString("Device.35")). //$NON-NLS-1$ //$NON-NLS-2$
+	        append(lVolume/1048576).append(Messages.getString("Device.36")).toString(); //$NON-NLS-1$
+	        InformationJPanel.getInstance().setMessage(sOut,InformationJPanel.INFORMATIVE);
+	        Log.debug(sOut);
+	    }
+	    catch(RuntimeException re){ //runtime error are thrown
+	        throw re;
+	    }
+	    catch(Exception e){ //and regular ones logged
+	        Log.error(e);
+	    }
+	    finally{  //make sure to unlock sychronizing even if an error occured
+	        bAlreadySynchronizing = false;
+	    }
 	}
 	
 	
