@@ -40,7 +40,14 @@
          <res id='HTMLInfoPanel.info_swe' src='/data/java/workspace/jajuk/dist-files/doc/README_swe.html'/>
          <res id='LicencePanel.licence' src='/data/java/workspace/jajuk/dist-files/legals/LICENSE.txt'/>
         <res id='shortcutSpec.xml' src='/data/java/workspace/jajuk/dist-files/packaging/shortcutSpec.xml'/>
-    	<res id='Installer.image' src='/data/java/workspace/jajuk/dist-files/images/jajuk-installer.png' />
+    	<res id='installer.langsel.img' src='/data/java/workspace/jajuk/dist-files/images/jajuk-installer.png' />
+    	<res id="Installer.image.0" src="/data/java/workspace/jajuk/dist-files/images/border2.png" />
+        <res id="Installer.image.1" src="/data/java/workspace/jajuk/dist-files/images/border3.png" />
+        <res id="Installer.image.2" src="/data/java/workspace/jajuk/dist-files/images/border5.png" />
+        <res id="Installer.image.3" src="/data/java/workspace/jajuk/dist-files/images/border6.png" />
+        <res id="Installer.image.4" src="/data/java/workspace/jajuk/dist-files/images/border7.png" />
+        <res id="Installer.image.5" src="/data/java/workspace/jajuk/dist-files/images/border8.png" />
+       
     </resources>
     <panels>
         <panel classname="HTMLInfoPanel"/>
