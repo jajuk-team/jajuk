@@ -20,7 +20,11 @@
 
 package org.jajuk.ui;
 
+import info.clearthought.layout.TableLayout;
+
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Toolkit;
 
@@ -39,19 +43,32 @@ import org.jajuk.util.Util;
  * @author     Bertrand Florat
  * @created    20 nov. 2003
  */
-public class SplashScreen extends JDialog implements ITechnicalStrings
-{
-	public SplashScreen(Frame f)
-	{
+public class SplashScreen extends JDialog implements ITechnicalStrings{
+	
+    private JPanel jpContent;
+    private JLabel jlImage;
+    private JLabel jlRelease;
+    
+    /**
+     * Constructor
+     * @param f
+     */
+    public SplashScreen(Frame f){
 		setUndecorated(true);
-		JPanel jpContent = (JPanel)getContentPane();
+		jpContent = (JPanel)getContentPane();
+		double[][] dSize = { {TableLayout.FILL},
+		        							{TableLayout.FILL,10}	};
 		jpContent.setLayout(new BoxLayout(jpContent,BoxLayout.Y_AXIS));
-		JLabel l = new JLabel(Util.getIcon(IMAGES_SPLASHSCREEN));
+		jlImage = new JLabel(Util.getIcon(IMAGES_SPLASHSCREEN));
+		jlRelease = new JLabel("Jajuk "+JAJUK_VERSION+" "+JAJUK_VERSION_DATE);
+		jpContent.setBackground(Color.WHITE);
+		jlRelease.setFont(new Font("Dialog",Font.PLAIN,12));
 		setTitle(Messages.getString("JajukWindow.17"));  //$NON-NLS-1$
-		jpContent.add(l);
+		jpContent.add(jlImage,"0,0");
+		jpContent.add(jlRelease,"0,1");
 		pack();
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		Dimension labelSize = l.getPreferredSize();
+		Dimension labelSize = jlImage.getPreferredSize();
 		setLocation(screenSize.width/2 - (labelSize.width/2),screenSize.height/2 - (labelSize.height/2));
 		setVisible(true);
 	}
