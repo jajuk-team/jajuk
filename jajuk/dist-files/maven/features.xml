@@ -17,33 +17,36 @@
 	   			<ul>
 		   			<li>Web navigator-like history bar</li>
 		   			<li>Instant search box : perform instant search on style/author/track name... when typing</li>
+		   			<li>Table filter : you can filter tracks with any criteria</li>
 		   		</ul>	
 	   			<li>Playlist support:</li>
 	   			<ul>
-		   			<li>Playlist editor</li>
 		   			<li>Dynamic playlist creation by drag and drop</li>
 		   			<li>Top n tracks playlist</li>
 		   			<li>Bookmarks playlist</li>
 		   		</ul>	
-	   			<li>Devices synchronization ( full or partial )</li>
+	   			<li>Devices synchronization : unidirectional or bidirectional </li>
+	   			<li>Collection stats : get charts describing your collection : style repartition, size by device, history etc...</li>
 	   			<li>Physical / logical separation : you can navigate into physical directories and files or into logical styles, authors, albums, tracks</li>
-	   			<li>Indexing method : Jajuk doesn't read id3 tags or directory structure at each startup but save them in a XML database. It allows a fast startup even for very large collections</li>
-	   			<li>Non-mounted devices support : with jajuk, you can 'see' tracks on unmounted devices ( CDs for exemple ). So you get a full view of your collection at any time</li>
-	   			<li>Look and feel support</li>
-	   			<li>Multilanguage ( English and French langpacks are already provided )</li>
+	   			<li>Indexing method : Jajuk doesn't read id3 tags or directory structure at each startup but save them in a XML database. It allows a fast startup even for very large collections (bench:10 sec to start a 140Go collection on a P4 1.8Ghz)</li>
+	   			<li>Unmounted devices support : you can navigate into unmounted devices ( CDs for exemple ). So you get a full view of your collection at any time. Nice feature if you have plenty of music CDs. This behavior can be disabled</li>
+	   			<li>Several Look and feel supported : Liquid, Metal, Windows, GTK, Kunststoff</li>
+	   			<li>Multilanguage ( English and French langpacks provided in 0.1)</li>
 	   			<li>Fast collection builder : a cd scanner allows you to create a jajuk collection of tens of CDs in only few minutes</li>
 	   			<li>Eclipse-like graphical interface : Jajuk windows are divided into perspectives and views for a good functionnal separation. Views can be hidden or resized</li>
-	   			<li>Full-featured online  help</li>
+	   			<li>Full-featured online  help (not yet written)</li>
 	   			<li>Covers support</li>
 	   			<li>Automatic rate support</li>
 	   			<li>Startup track: none, last one, specified, shuffle</li>
 	   		</ul>	
 	</section>
 	<section name="Near futur features">
+   			<p>See <a href="/planning.html">planning</a> for more details</p>
    			<ul>
 	   			<li>Ogg Vorbis support</li>
 	   			<li>Java Web Start support</li>
-	   			<li>Meta-properties support : you will be able to create a property of your own ( a rate or localisation system for exemple ) that you can set on tracks or any item</li>
+	   			<li>Playlist editor</li>
+		   		<li>Meta-properties support : you will be able to create a property of your own ( a rate or localisation system for exemple ) that you can set on tracks or any item</li>
 	   			<li>Peer to Peer device-type support</li>
 	   			<li>New online help contents</li>
 	  		</ul>
