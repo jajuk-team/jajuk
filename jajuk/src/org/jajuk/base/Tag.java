@@ -195,6 +195,7 @@ public class Tag implements ITechnicalStrings{
 			sTemp = tagImpl.getYear();
 			if (sTemp != null && !sTemp.equals("")&& !sTemp.equals("0")){ //$NON-NLS-1$ //$NON-NLS-2$
 				sYear = Util.formatTag(sTemp);
+                Integer.parseInt(sYear); //check it is an integer
 			}
 		} catch (Exception e) {
 			Log.error("103", fio.getName(),e); //$NON-NLS-1$
