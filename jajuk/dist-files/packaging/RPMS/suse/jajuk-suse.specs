@@ -1,6 +1,6 @@
 Summary: Jajuk Advanced Jukebox
 Name: jajuk
-Version: 0.3.1rc4
+Version: 0.3.1rc5
 Release: suse
 Group: Applications/Audio
 Copyright: Copyright Bertrand Florat & Jajuk team 2003 - 2004
@@ -12,10 +12,25 @@ BuildArch: i386
 Requires: java2 >= 1.4.2
 
 %description
-Jajuk Advanced Jukebox
+Jajuk is a Java music organizer for all platforms.
+The main goal of this project is to provide a fully-featured
+application to advanced users with large or scattered music
+collections. Jajuk supports MP3, OGG Vorbis, AU, AIFF, WAV
+and SPEEX audio formats. Jajuk is a Free Software published
+under GPL license.
+
+Jajuk main principles are :
+
+   * Maximum portability: 100% pure Java when possible
+   * Maximum features: Jajuk is made firstly for advanced
+   users looking for powerful functionalities
+   * Maximum usability: Jajuk is designed to be simple, fast
+   and provide multiple ways to perform the same operation
+   * Only for music: Jajuk will never become a multi-media
+   (video, pictures) jukebox
 %files
 %defattr(-,root,root)
-  /usr/local/bin/jajuk
+  /usr/bin/jajuk
    /usr/lib/jajuk/bin/jajuk-help.jar
    /usr/lib/jajuk/bin/jajuk.jar
    /usr/lib/jajuk/lib/animation-1.1.3.jar

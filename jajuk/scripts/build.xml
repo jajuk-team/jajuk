@@ -10,7 +10,7 @@
 	<property name="bindir" value="bin" />
 	<property name="javadocdir" value="javadoc" />
 	<property name="jarname" value="jajuk.jar" />
-	<property name="version" value="0.2" />
+	<property name="version" value="0.3.1rc5" />
 	<property name="distfilesdir" value="dist-files" />
 	<property name="docdir" value="doc" />
 
@@ -24,7 +24,7 @@
 	<target name="compile" description="o Compile the code" depends="clean">
 		<mkdir dir="${classdir}">
 		</mkdir>
-		<javac destdir="${classdir}" deprecation="true" debug="true" optimize="true" excludes="**/package.html">
+		<javac destdir="${classdir}" deprecation="false" nowarn='true' debug="true" optimize="true" excludes="**/package.html">
 			<src>
 				<pathelement path="${srcdir}">
 				</pathelement>
