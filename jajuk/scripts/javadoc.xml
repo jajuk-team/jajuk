@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="jajuk" default="javadoc">
+    <target name="javadoc">
+        <javadoc destdir="../doc" access="private" use="true"
+            notree="false" nonavbar="false" noindex="false"
+            splitindex="true" author="true" version="true"
+            nodeprecatedlist="false" nodeprecated="false"
+            packagenames="org.jajuk.base,org.jajuk.ui.views,org.jajuk,org.jajuk.i18n,org.jajuk.ui.perspectives,org.jajuk.util.log,org.jajuk.ui,org.jajuk.util,org.jajuk.util.error,org.jajuk.players"
+            sourcepath="../src:../tests/bflorat:../tests/sgringoire"
+            classpath="../bin:../lib/jl030.jar:../lib/log4j-1.2.6.jar:../lib/kunststoff.jar:../lib/tablelayout.jar" doctitle="Jajuk API">
+            <link href="file:/prog/j2sdk1.4.2_01/docs/"/>
+            <link href="file:/prog/j2sdk1.4.2_01/docs/"/>
+            <link href="file:/prog/j2sdk1.4.2_01/docs/"/>
+            <link href="file:/prog/j2sdk1.4.2_01/docs/"/>
+            <link href="file:/prog/j2sdk1.4.2_01/docs/"/>
+            <link href="file:/prog/j2sdk1.4.2_01/docs/"/>
+            <link href="file:/prog/j2sdk1.4.2_01/docs/"/>
+            <link href="file:/prog/j2sdk1.4.2_01/docs/"/>
+            <link href="file:/prog/j2sdk1.4.2_01/docs/"/>
+        </javadoc>
+    </target>
+</project>
