@@ -21,6 +21,7 @@
 package org.jajuk.ui.views;
 
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -153,6 +154,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
         jpControl.add(jbDefault,"8,0");//$NON-NLS-1$
         jpControl.add(Util.getCentredPanel(jlSize,BoxLayout.X_AXIS),"10,0");//$NON-NLS-1$
         jpControl.add(Util.getCentredPanel(jlFound,BoxLayout.X_AXIS),"12,0");//$NON-NLS-1$
+        addComponentListener(this);
         
         ObservationManager.register(EVENT_COVER_REFRESH,this);
         ObservationManager.register(EVENT_PLAYER_STOP,this);
@@ -386,9 +388,10 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                 return;
             }
             Container ji =  ViewManager.getContainer(CoverView.this);
-            ImageFilter filter = new AreaAveragingScaleFilter(ji.getWidth()-8,ji.getHeight()-60);
+            ImageFilter filter = new AreaAveragingScaleFilter(this.getWidth()-8,this.getHeight()-30);
             Image img = createImage(new FilteredImageSource(icon.getImage().getSource(),filter));
             jl = new JLabel(new ImageIcon(img));
+            jl.setMinimumSize(new Dimension(0,0));
             final URL url = cover.getURL();
             final byte[] bData = cover.getData();
             if (url != null){
