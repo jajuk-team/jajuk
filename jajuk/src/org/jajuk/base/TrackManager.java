@@ -38,7 +38,6 @@ import org.jajuk.util.MD5Processor;
 public class TrackManager implements ITechnicalStrings {
 	/** Tracks collection maps: ID -> track* */
 	static HashMap hmTracks = new HashMap(100);
-
 	
 	/**
 	 * No constructor available, only static access
