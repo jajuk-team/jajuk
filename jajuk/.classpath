@@ -17,10 +17,10 @@
 	<classpathentry kind="lib" path="lib/mp3spi-1.9.jar"/>
 	<classpathentry kind="lib" path="lib/vorbisspi-1.0.jar"/>
 	<classpathentry kind="lib" path="lib/jlGui-2.3.jar"/>
-	<classpathentry kind="lib" path="lib/LiquidLnF-0.2.3.jar"/>
 	<classpathentry kind="lib" path="lib/basicplayer-2.3.jar"/>
 	<classpathentry kind="lib" path="lib/tritonus_share-1.0.jar"/>
 	<classpathentry kind="lib" path="lib/metouia-1.0b.jar"/>
 	<classpathentry kind="lib" path="lib/animation-1.1.3.jar"/>
+	<classpathentry kind="lib" path="lib/liquidlnf-0.2.8.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
