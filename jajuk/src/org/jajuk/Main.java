@@ -83,6 +83,8 @@ public class Main implements ITechnicalStrings {
 	public static SplashScreen sc;
 	/**Exit code*/
 	private static int iExitCode = 0;
+	/**Exiting flag*/
+	public static boolean bExiting = false;
 	
 	public static void main(String[] args)  {
 		try {
@@ -200,9 +202,9 @@ public class Main implements ITechnicalStrings {
 			jw.setExtendedState(Frame.MAXIMIZED_BOTH);  //maximalize
 			//show window if set in the systray conf
 			if ( ConfigurationManager.getBoolean(CONF_SHOW_AT_STARTUP) || !Util.underWindows()){
-				jw.setVisible(true); //show main window
 				SwingUtilities.invokeLater(new Runnable() { //force screenshot to be upper main window
 					public void run() {
+						jw.setVisible(true); //show main window
 						sc.toFront();
 					}
 				});
@@ -236,8 +238,10 @@ public class Main implements ITechnicalStrings {
 						if (iExitCode == 0){ //commit only if exit is safe to avoid commiting empty collection
 							//commit configuration
 							org.jajuk.util.ConfigurationManager.commit();
-							//commit collection
-							org.jajuk.base.Collection.commit();
+							//commit collection if not refreshing ( fix for 939816 )
+							if ( !DeviceManager.isAnyDeviceRefreshing()){
+								org.jajuk.base.Collection.commit();
+							}
 							//commit history
 							History.commit();
 						}
@@ -346,6 +350,8 @@ public class Main implements ITechnicalStrings {
 	 *                <p>1: unexpected error
 	 */
 	public static void exit(int iExitCode) {
+		//set exiting flag
+		bExiting = true;
 		//force sound to stop quickly
 		FIFO.getInstance().stopRequest();  
 		//hide window
