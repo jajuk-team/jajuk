@@ -102,12 +102,12 @@
   
   <target name='helpsetjar' description='o Create the heplset jar' depends='mkdist'>
     <delete file='${distdir}/bin/${helpsetjarname}'/>
-    <apply executable="jhindexer" dir='${basedir}/dist-files/doc/jajuk-hs/default'>
-	 <fileset dir="${basedir}/dist-files/doc/jajuk-hs/default/html"/>
-   </apply>
-    <apply executable="jhindexer" dir='${basedir}/dist-files/doc/jajuk-hs/fr'>
-	 <fileset dir="${basedir}/dist-files/doc/jajuk-hs/fr/html"/>
-   </apply>
+    <exec executable="jhindexer" dir='${basedir}/dist-files/doc/jajuk-hs/default'>
+	 <arg line="html"/>
+   </exec>
+    <exec executable="jhindexer" dir='${basedir}/dist-files/doc/jajuk-hs/fr'>
+	 <arg line="html"/>
+   </exec>
    <jar jarfile='${distdir}/bin/${helpsetjarname}' basedir='${basedir}/dist-files/doc/jajuk-hs' />
    <copy todir='${basedir}' >
      <fileset file='${distdir}/bin/${helpsetjarname}'/>
