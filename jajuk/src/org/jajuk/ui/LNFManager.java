@@ -92,6 +92,9 @@ public class LNFManager implements ITechnicalStrings{
 			else if(getCurrent().equals(LNF_METAL)){
 				return (ComboBoxUI)Class.forName(LNF_METAL_CBUI).newInstance();
 			}
+			else{ //default
+			  	return (ComboBoxUI)Class.forName(LNF_METAL_CBUI).newInstance();
+			}
 		}
 		catch(Exception e){
 			e.printStackTrace();
