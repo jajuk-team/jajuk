@@ -30,7 +30,7 @@ import org.jajuk.util.ConfigurationManager;
  *  Manages bookmarks
  *
  * @author     bflorat
- * @created    21 févr. 2004
+ * @created    21 fï¿½vr. 2004
  */
 public class Bookmarks implements ITechnicalStrings {
 
@@ -159,4 +159,14 @@ public class Bookmarks implements ITechnicalStrings {
 		addFile(index,file);
 	}
 	
+	/**
+	 * Add files to this playlist
+	 * @param alFilesToAdd
+	 */
+	public void addFiles(ArrayList alFilesToAdd){
+		Iterator it = alFilesToAdd.iterator();
+		while ( it.hasNext()){
+			addFile((File)it.next());
+		}
+	}
 }
