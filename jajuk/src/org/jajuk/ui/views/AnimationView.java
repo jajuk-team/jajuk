@@ -153,7 +153,7 @@ public class AnimationView extends ViewAdapter implements ITechnicalStrings,Obse
 			}
 		}
 		else if (subject.equals(EVENT_ZERO)){
-		    setText(Messages.getString("JajukWindow.18"));
+		    setText(Messages.getString("JajukWindow.18")); //$NON-NLS-1$
 		}
 	}
 	
