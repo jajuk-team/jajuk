@@ -150,7 +150,7 @@ public class AnimationView extends ViewAdapter implements ITechnicalStrings,Obse
 		if (subject.equals(EVENT_FILE_LAUNCHED)){
 		    File file = FIFO.getInstance().getCurrentFile();
 		    if (file != null){
-		        String s = Messages.getString("FIFO.10")+file.getTrack().getAuthor().getName2() //$NON-NLS-1$
+		        String s = Messages.getString("FIFO.10")+" "+file.getTrack().getAuthor().getName2() //$NON-NLS-1$
 		        +" / "+file.getTrack().getAlbum().getName2()+" / " //$NON-NLS-1$ //$NON-NLS-2$
 		        +file.getTrack().getName();//$NON-NLS-1$ //$N
 		        if (s != null  && !s.trim().equals("")){ //$NON-NLS-1$
