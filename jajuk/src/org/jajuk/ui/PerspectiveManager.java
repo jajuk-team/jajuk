@@ -33,6 +33,7 @@ import org.jajuk.Main;
 import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.xml.sax.Attributes;
@@ -112,6 +113,7 @@ public class PerspectiveManager extends DefaultHandler implements ITechnicalStri
 	 * @see org.jajuk.ui.perspectives.IPerspectiveManager#setCurrentPerspective(Perspective)
 	 */
 	public static void setCurrentPerspective(IPerspective perspective) {
+		Util.waiting();
 		/**views display */
 		Iterator it = perspective.getViews().iterator();
 		while ( it.hasNext()){
@@ -135,6 +137,7 @@ public class PerspectiveManager extends DefaultHandler implements ITechnicalStri
 		jpDesktop.repaint();
 		PerspectiveBarJPanel.getInstance().setActivated(perspective);
 		JajukJMenuBar.getInstance().refreshViews();
+		Util.stopWaiting();
 	}
 
 	

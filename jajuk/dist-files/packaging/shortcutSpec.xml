@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<shortcuts>
+  <programGroup defaultName="Jajuk" location="applications"/>
+  <shortcut
+     name="Jajuk"
+     programGroup="yes"
+     desktop="no"
+     applications="no"
+     startMenu="no"
+     startup="no"
+     target="javaw"
+     commandLine="-Xms16M -Xss16K -cp &quot;$INSTALL_PATH\ami\lib\crimson.jar;$INSTALL_PATH\ami\lib\jaxp.jar;$INSTALL_PATH\ami\lib\log4j.jar;$INSTALL_PATH\ami\lib\ami.jar&quot; ami.AMIMain"
+     workingDirectory="$INSTALL_PATH\ami"
+     description="AMI Engine - Graphical"
+     iconIndex="0"
+     iconFile="$INSTALL_PATH\ami\dist\ami-32x32.bmp" 
+     initialState="minimized">
+     <createForPack name="main pack"/>
+   </shortcut>
+</shortcuts>

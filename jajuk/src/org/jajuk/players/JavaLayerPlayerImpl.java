@@ -30,6 +30,7 @@ import javazoom.jl.player.advanced.PlaybackListener;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.IPlayerImpl;
 import org.jajuk.base.ITechnicalStrings;
+import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 
 /**
@@ -42,8 +43,6 @@ public class JavaLayerPlayerImpl implements IPlayerImpl,ITechnicalStrings{
 
 	/**Current player*/
 	private static AdvancedPlayer player;
-	/** Lock to ensure 2 players can be lauched*/
-	private static final byte[] bLock = new byte[0];
 	/** Started */
 	private volatile boolean bStarted = false;
 	
@@ -52,6 +51,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl,ITechnicalStrings{
 	 * @see org.jajuk.base.IPlayerImpl#play()
 	 */
 	public void play(org.jajuk.base.File file,int iPosition,int iLength) throws Exception{
+		try{
 			bStarted = false;
 			player = new AdvancedPlayer(new BufferedInputStream(new FileInputStream(new File(file.getAbsolutePath())))); 
 			player.setPlayBackListener(new PlaybackListener() {
@@ -63,13 +63,20 @@ public class JavaLayerPlayerImpl implements IPlayerImpl,ITechnicalStrings{
 				}
 			});
 			FIFO.getInstance().lTrackStart = System.currentTimeMillis();  //time correction
-		if (iPosition < 0){
-			player.play();
+			Util.stopWaiting();
+			if (iPosition < 0){
+				player.play();
+			}
+			else{
+				int iFirstFrame = (int)(file.getTrack().getLength()*iPosition*0.41666); // position/100 (%) /1000 (ms) *24 because 1 frame =24ms
+				int iLastFrame = (int)(iFirstFrame+(iLength*41.6666));
+				player.play(iFirstFrame,iLastFrame);
+			}
 		}
-		else{
-			int iFirstFrame = (int)(file.getTrack().getLength()*iPosition*0.41666); // position/100 (%) /1000 (ms) *24 because 1 frame =24ms
-			int iLastFrame = (int)(iFirstFrame+(iLength*41.6666));
-			player.play(iFirstFrame,iLastFrame);
+		catch(Exception e){  //in case of error, we must stop waiting cursor and set started to true to avoid deadlock in the stop method
+			bStarted = true;
+			Util.stopWaiting();
+			throw e;  //propagate to Player
 		}
 	}
 	

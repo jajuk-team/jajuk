@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Ant script for packagers only-->
+
+<project default="all" name="jajuk" basedir="..">
+  <property name="distdir" value="/tmp/jajuk">
+  </property>
+  <property name="libdir" value="lib">
+  </property>
+  <property name="classesdir" value="bin">
+  </property>
+  <property name="srcdir" value="src">
+  </property>
+  <property name="javadocdir" value="dist-files/doc/api">
+  </property>
+  <property name="version" value="0.1">
+  </property>
+  <property name="jarname" value="jajuk-">
+  </property>
+  
+  <target name="all" description="o Create the entire package" depends="izpack"/>
+  
+  <target name="clean" description="o Clean up the distribution">
+    <delete dir="${distdir}">
+    </delete>
+   </target>
+  
+  <target name="mkdist" description="o Create the distribution structure" depends='clean'>
+    <mkdir dir="${distdir}"/>
+    <copy todir="${distdir}/lib" >
+     <fileset dir="${libdir}"/>
+  	</copy>
+  	<mkdir dir="${distdir}/bin"/>
+    <copy todir="${distdir}/src" >
+     <fileset dir="${srcdir}"/>
+  	</copy>
+  </target>
+ 
+  <target name="jar" description="o Create the jar" depends="mkdist">
+    <jar jarfile="target/${final.name}.jar" excludes="**/package.html" basedir="${classesdir}">
+    </jar>
+  </target>
+  
+   <target name="javadoc" description="o Generate javadoc" depends="jar">
+    <mkdir dir="${javadocdir}">
+    </mkdir>
+    <tstamp>
+      <format pattern="2003-yyyy" property="year">
+      </format>
+    </tstamp>
+    <property name="copyright" value="Copyright &amp;copy;  Jajuk team. All Rights Reserved.">
+    </property>
+    <property name="title" value="jajuk pre-alpha-build20031114 API">
+    </property>
+    <javadoc use="true" private="true" destdir="${javadocdir}" author="true" version="true" packagenames="org.jajuk.base.*">
+      <classpath>
+        <fileset dir="${libdir}">
+          <include name="*.jar">
+          </include>
+        </fileset>
+        <pathelement location="target/${final.name}.jar">
+        </pathelement>
+      </classpath>
+    </javadoc>
+  </target>
+
+  <taskdef name="izpack" classpath="/prog/IzPack3.4.0/lib/compiler.jar"
+         classname="com.izforge.izpack.ant.IzPackTask"/>
+      <target name='izpack' >
+        <echo message="Makes the installer using IzPack"/>
+                <izpack input="./dist-files/packaging/jajuk.izpack"
+        output='./dist-files/packaging/${final.name}.jar'
+        basedir="/"
+        installerType="standard-kunststoff"
+        izPackDir="/prog/IzPack3.4.0"/>
+      </target>
+  
+</project>

@@ -104,6 +104,7 @@ public class FIFO extends Thread implements ITechnicalStrings{
 	 * @param bForcedRepeat Force repeat mode for selection
 	 */
 	public synchronized void push(ArrayList alFiles, boolean bAppend,boolean bAuto,boolean bForcedRepeat) {
+		Util.waiting();
 		this.bForcedRepeat = bForcedRepeat;
 		if (!bAuto){
 			FIFO.getInstance().setGlobalRandom(false); //global random mode is broken by any push

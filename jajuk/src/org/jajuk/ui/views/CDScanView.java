@@ -20,11 +20,6 @@
 
 package org.jajuk.ui.views;
 
-import javax.swing.JEditorPane;
-import javax.swing.JScrollPane;
-
-import org.jajuk.util.Util;
-import org.jajuk.util.log.Log;
 
 /**
  *Scan CD to build the collection as fast as possible

@@ -19,6 +19,7 @@
  */
 package org.jajuk.util;
 
+import java.awt.Cursor;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -29,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.StringTokenizer;
 
+import org.jajuk.Main;
 import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.error.JajukException;
@@ -40,7 +42,13 @@ import org.jajuk.util.error.JajukException;
  */
 public class Util implements ITechnicalStrings {
 	
+	/*Cursors*/
+	public static final Cursor WAIT_CURSOR = new Cursor(Cursor.WAIT_CURSOR);
+	public static final Cursor DEFAULT_CURSOR = new Cursor(Cursor.DEFAULT_CURSOR);
 	
+	/**
+	 * Genres
+	 */
 	public static final String [] genres = {
 		"Blues","Classic Rock","Country","Dance","Disco","Funk","Grunge",
 		"Hip-Hop","Jazz","Metal","New Age","Oldies","Other","Pop","R&B",
@@ -217,4 +225,17 @@ public class Util implements ITechnicalStrings {
 		return alOut;
 	}
 	
+	/**
+	 * Set current cursor as waiting cursor
+	 */
+	public static void waiting(){
+		Main.jframe.setCursor(WAIT_CURSOR);
+	}
+
+	/**
+	 * Set current cursor as default cursor
+	 */
+	public static void stopWaiting(){
+		Main.jframe.setCursor(DEFAULT_CURSOR);
+	}
 }

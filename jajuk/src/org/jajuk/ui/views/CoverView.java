@@ -32,7 +32,6 @@ import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 
-import org.jajuk.base.Directory;
 import org.jajuk.base.FIFO;
 import org.jajuk.ui.ObservationManager;
 import org.jajuk.ui.Observer;

@@ -20,12 +20,7 @@
 
 package org.jajuk.ui.views;
 
-import javax.swing.JEditorPane;
-import javax.swing.JScrollPane;
-
 import org.jajuk.ui.Observer;
-import org.jajuk.util.Util;
-import org.jajuk.util.log.Log;
 
 /**
  * Allows  to navigate in collection with buttons 

@@ -1,0 +1,45 @@
+<installation version="1.0">
+    <info>
+        <appname>Jajuk</appname>
+        <appversion>0.1</appversion>
+        <authors>
+            <author email="bertrand@florat.net" name="Bertrand Florat"/>
+        </authors>
+        <url>http://sourceforge.jajuk.net</url>
+    </info>
+    <guiprefs height="480" resizable="yes" width="640"/>
+    <locale>
+        <langpack iso3="eng"/>
+        <langpack iso3="fra"/>
+        <langpack iso3="deu"/>
+        <langpack iso3="jpn"/>
+        <langpack iso3="rus"/>
+        <langpack iso3="spa"/>
+        <langpack iso3="fin"/>
+        <langpack iso3="swe"/>
+        <langpack iso3="ned"/>
+        <langpack iso3="hun"/>
+        <langpack iso3="pol"/>
+        <langpack iso3="por"/>
+    </locale>
+    <native name="ShellLink.dll" type="izpack"/>
+    <resources>
+        <res src="/data/java/workspace/jajuk/dist-files/doc/about.html" id="HTMLInfoPanel.info"/>
+        <res src="/data/java/workspace/jajuk/dist-files/legals/LICENCE.txt" id="LicencePanel.licence"/>
+        <res src="/data/java/workspace/jajuk/dist-files/packaging/shortcutSpec.xml" id="shortcutSpec.xml"/>
+    </resources>
+    <panels>
+        <panel classname="HTMLInfoPanel"/>
+        <panel classname="LicencePanel"/>
+        <panel classname="TargetPanel"/>
+        <panel classname="InstallPanel"/>
+        <panel classname="ShortcutPanel"/> 
+        <panel classname="FinishPanel"/>
+    </panels>
+    <packs>
+        <pack name="main pack" required="yes">
+            <description>Main pack</description>
+            <file targetdir="$INSTALL_PATH" src="/data/java/workspace/jajuk"/>
+        </pack>
+    </packs>
+</installation>

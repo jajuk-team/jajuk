@@ -166,6 +166,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 			lTime = System.currentTimeMillis();
 			SAXParserFactory spf = SAXParserFactory.newInstance();
 			spf.setValidating(false);
+			spf.setNamespaceAware(false);
 			SAXParser saxParser = spf.newSAXParser();
 			File frt = new File(FILE_COLLECTION);
 			saxParser.parse(frt.toURL().toString(),getInstance());
