@@ -23,6 +23,7 @@ package org.jajuk.ui;
 import java.util.Collection;
 import java.util.HashMap;
 
+import javax.swing.LookAndFeel;
 import javax.swing.UIManager;
 import javax.swing.plaf.ComboBoxUI;
 
@@ -74,8 +75,16 @@ public class LNFManager implements ITechnicalStrings{
 	 * @param sClass
 	 */
 	public static void register(String sName,String sClass){
-		hmNameClass.put(sName,sClass);
-	}
+		try {
+            LookAndFeel laf = (LookAndFeel)Class.forName(sClass).newInstance(); //try to load the look and fell to make sure it exists in this system
+            if (laf.isSupportedLookAndFeel()){
+                hmNameClass.put(sName,sClass);
+                return;
+            }
+		} catch (Exception e) {
+        }
+        Log.debug("Unsupported Look And Feel: "+sClass);
+    }
 	
 	/**
 	 * @return Returns the current look and feel.
@@ -84,6 +93,10 @@ public class LNFManager implements ITechnicalStrings{
 		return sCurrent;
 	}
 	
+	/**
+	 * 
+	 * @return A comboBoxUI used to get a navigator-like history bar 
+	 */
 	public static ComboBoxUI getSteppedComboBoxClass(){
 		try{
 			if (getCurrent().equals(LNF_LIQUID)){
