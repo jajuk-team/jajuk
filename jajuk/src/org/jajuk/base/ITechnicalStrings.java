@@ -202,6 +202,8 @@ public interface ITechnicalStrings {
 	public static final String EVENT_VIEW_SHOW_REQUEST="show view";
 	public static final String EVENT_VIEW_SHOW_STATUS_CHANGED_REQUEST="change status view";
 	public static final String EVENT_VIEW_COMMAND_SELECT_HISTORY_ITEM="select history item";
+	public static final String EVENT_HELP_REQUIRED="help required";
+	
 	
 	
 	//Look and feel

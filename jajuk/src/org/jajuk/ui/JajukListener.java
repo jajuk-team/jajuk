@@ -31,6 +31,7 @@ import org.jajuk.Main;
 import org.jajuk.base.BasicFile;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.ITechnicalStrings;
+import org.jajuk.ui.perspectives.HelpPerspective;
 import org.jajuk.util.ConfigurationManager;
 
 /**
@@ -150,6 +151,9 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
 			else{
 				ViewManager.notify(EVENT_VIEW_CLOSE_REQUEST,(IView)JajukJMenuBar.getInstance().hmCheckboxView.get(e.getSource()));
 			}
+		}
+		else if (EVENT_HELP_REQUIRED.equals(e.getActionCommand())){
+			PerspectiveManager.setCurrentPerspective(PERSPECTIVE_NAME_HELP);		
 		}
 	}
 

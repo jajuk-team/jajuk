@@ -125,7 +125,11 @@ import org.jajuk.util.ConfigurationManager;
 		//Help menu
 		help = new JMenu(Messages.getString("JajukJMenuBar.Help_5")); //$NON-NLS-1$
 		JMenuItem jmiHelp = new JMenuItem(Messages.getString("JajukJMenuBar.Help_contents_16"),new ImageIcon(ICON_INFO)); //$NON-NLS-1$
+		jmiHelp.addActionListener(JajukListener.getInstance());
+		jmiHelp.setActionCommand(EVENT_HELP_REQUIRED);
 		JMenuItem jmiAbout = new JMenuItem(Messages.getString("JajukJMenuBar.About_jajuk_17"),new ImageIcon(ICON_INFO)); //$NON-NLS-1$
+		jmiAbout.addActionListener(JajukListener.getInstance());
+		jmiAbout.setActionCommand(EVENT_HELP_REQUIRED);
 		help.add(jmiHelp);
 		help.add(jmiAbout);
 		

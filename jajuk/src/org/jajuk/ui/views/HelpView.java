@@ -20,18 +20,27 @@
 
 package org.jajuk.ui.views;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.net.URL;
+import java.util.Map;
 
 import javax.help.CSH;
 import javax.help.HelpBroker;
 import javax.help.HelpSet;
+import javax.help.JHelp;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JEditorPane;
+import javax.swing.JInternalFrame;
 import javax.swing.JScrollPane;
 
+import org.jajuk.Main;
 import org.jajuk.ui.CommandJPanel;
+import org.jajuk.ui.Observer;
+import org.jajuk.ui.ViewManager;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 
@@ -42,7 +51,7 @@ import org.jajuk.util.log.Log;
  * @author     bflorat
  * @created   22 dec. 2003
  */
-public class HelpView extends ViewAdapter {
+public class HelpView extends ViewAdapter{
 
 	/**Self instance*/
 	private static HelpView hv;
@@ -52,6 +61,9 @@ public class HelpView extends ViewAdapter {
 	
 	/**Help broker*/
 	HelpBroker hb;
+	
+	/** Help component*/
+	JHelp jhelp;
 	
 	/**Return self instance*/
 	public static HelpView getInstance(){
@@ -67,15 +79,13 @@ public class HelpView extends ViewAdapter {
 	public HelpView() {
 		hv = this;
 		try{
+			setLayout(new BoxLayout(this,BoxLayout.X_AXIS));
 			ClassLoader cl = HelpView.class.getClassLoader();
-			URL url = HelpSet.findHelpSet(cl,"Master.hs");
+			URL url = HelpSet.findHelpSet(cl,"jajuk.hs");
 			hs= new HelpSet(null,url);
 			hb = hs.createHelpBroker();
-			/*JButton jbHelp = new JButton("help!");
-			jbHelp.addActionListener(new CSH.DisplayHelpFromSource(hb));
-			add(jbHelp);*/
-			//CSH.setHelpIDString(this.getRootPane(),"main");
-			//hb.showID("main");
+			jhelp = new JHelp(hs);
+			add(jhelp);
 		}
 		catch(Exception e){
 			Log.error(e); 
@@ -96,4 +106,5 @@ public class HelpView extends ViewAdapter {
 		return "org.jajuk.ui.views.HelpView";
 	}
 
+	
 }
