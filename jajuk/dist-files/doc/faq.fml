@@ -73,7 +73,7 @@
         What can I do if my collection file (${user home}/.jajuk/collection.xml file contains the Jajuk index to your music files) is corrupted ? 
       </question>
       <answer>
-        <p>Note this is very unlikely to append but in this case, you can avoid to re-create all your devices by renaming the last backup file (collection-backup-${nb}.xml) as collection.xml.</p>
+        <p>Note this is very unlikely to append but in this case, you can avoid to re-create all your devices by renaming (Jajuk closed) the last backup file (collection-backup-${date}.xml) as collection.xml.</p>
       </answer>
     </faq>
 
@@ -98,7 +98,8 @@
       </question>
       <answer>
         <p><li>On a PC/P4M 1.8Ghz, Jajuk uses about 9%CPU to read mp3 and 3% to read Ogg Vorbis.</li></p>
-        <p><li>Performances are better (by 10% to 30%) with JRE 1.5 rc in comparison with JRE 1.4.2.</li></p>
+        <p><li>Performances are better (by 50%) with Ogg Vorbis than MP3.</li></p>
+        <p><li>Performances are better (by 10% to 30%) with JRE 1.5 in comparaison with JRE 1.4.2.</li></p>
         <p><li>Performances are a bit better under Microsoft Windows than GNU/Linux.</li></p>
       </answer>
     </faq>
