@@ -15,68 +15,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- * $Log$
- * Revision 1.14  2003/11/20 19:12:18  bflorat
- * 20/11/2003
- *
- * Revision 1.13  2003/11/18 21:50:56  bflorat
- * 18/11/2003
- *
- * Revision 1.12  2003/11/18 18:58:07  bflorat
- * 18/11/2003
- *
- * Revision 1.11  2003/11/16 17:57:18  bflorat
- * 16/11/2003
- *
- * Revision 1.10  2003/11/14 11:02:17  bflorat
- * - Added user configuration persistence
- *
- * Revision 1.9  2003/11/13 18:56:55  bflorat
- * 13/11/2003
- *
- * Revision 1.8  2003/11/11 20:35:43  bflorat
- * 11/11/2003
- *
- * Revision 1.7  2003/11/07 23:57:45  bflorat
- * 08/11/2003
- *
- * Revision 1.6  2003/11/03 06:08:05  bflorat
- * 03/11/2003
- *
- * Revision 1.5  2003/10/31 13:05:06  bflorat
- * 31/10/2003
- *
- * Revision 1.4  2003/10/28 21:34:37  bflorat
- * 28/10/2003
- *
- * Revision 1.3  2003/10/26 21:28:49  bflorat
- * 26/10/2003
- *
- * Revision 1.2  2003/10/24 15:44:25  bflorat
- * 24/10/2003
- *
- * Revision 1.1  2003/10/21 20:43:06  bflorat
- * TechnicalStrings to ITechnicalStrings according to coding convention
- *
- * Revision 1.6  2003/10/21 17:51:43  bflorat
- * 21/10/2003
- *
- * Revision 1.5  2003/10/17 20:36:45  bflorat
- * 17/10/2003
- *
- * Revision 1.4  2003/10/12 21:08:11  bflorat
- * 12/10/2003
- *
- * Revision 1.3  2003/10/10 22:32:13  bflorat
- * *** empty log message ***
- *
- * Revision 1.2  2003/10/09 21:14:13  bflorat
- * new keys and suppressed hard path
- *
- * Revision 1.1  2003/10/07 21:02:22  bflorat
- * Initial commit
- *
- */
+ * $Release$
+*/
 package org.jajuk.base;
 
 
@@ -90,6 +30,9 @@ public interface ITechnicalStrings {
 	
 		// directory path
 	public static final String PATH_ICONS = System.getProperty("user.dir")+"/dist-files/icons/";
+	public static final String PATH_IMAGES = System.getProperty("user.dir")+"/dist-files/images/";
+	
+	
 	
 		// paths to icons
 	public static final String ICON_REPEAT_ON = PATH_ICONS + "16x16/repeat.png";
@@ -141,6 +84,10 @@ public interface ITechnicalStrings {
 	public static final String ICON_DEVICE_REMOTE_UNMOUNTED =  PATH_ICONS + "64x64/remote_unmount.png";
 	public static final String ICON_OK =  PATH_ICONS + "22x22/ok.png";
 	public static final String ICON_KO =  PATH_ICONS + "22x22/ko.png";
+	
+	//images
+	public static final String IMAGES_SPLASHSCREEN =  PATH_IMAGES + "jajuk-logo.png";
+	
 	
 	//logs
 	public static final String LOG_PATTERN="%d{yyyy/MM/dd HH:mm:ss} [%p] %m\n";

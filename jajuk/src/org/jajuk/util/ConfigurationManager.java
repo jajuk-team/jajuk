@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.14  2003/11/20 21:40:30  bflorat
+ * 20/11/2003
+ *
  * Revision 1.13  2003/11/20 19:12:22  bflorat
  * 20/11/2003
  *
@@ -109,7 +112,7 @@ public class ConfigurationManager implements ITechnicalStrings{
 	 */
 	private static void setDefaultProperties() {
 		// User preferences
-		properties.put(CONF_PERSPECTIVE_DEFAULT,PERSPECTIVE_NAME_PHYSICAL); //$NON-NLS-1$ //$NON-NLS-2$
+		properties.put(CONF_PERSPECTIVE_DEFAULT,PERSPECTIVE_NAME_CONFIGURATION); //$NON-NLS-1$ //$NON-NLS-2$
 	
 		//Modes
 		properties.put(CONF_STATE_REPEAT,FALSE); //$NON-NLS-1$

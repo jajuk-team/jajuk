@@ -9,29 +9,8 @@
  * 
  * You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,USA
  * $Log$
- * Revision 1.20  2003/11/20 19:12:22  bflorat
+ * Revision 1.21  2003/11/20 21:40:30  bflorat
  * 20/11/2003
- *
- * Revision 1.19  2003/11/18 21:50:56  bflorat
- * 18/11/2003
- *
- * Revision 1.18  2003/11/18 18:58:07  bflorat
- * 18/11/2003
- *
- * Revision 1.17  2003/11/16 17:57:18  bflorat
- * 16/11/2003
- *
- * Revision 1.16  2003/11/14 11:02:14  bflorat
- * - Added user configuration persistence
- *
- * Revision 1.15  2003/11/13 18:56:56  bflorat
- * 13/11/2003
- *
- * Revision 1.14  2003/11/11 20:34:29  bflorat
- * 11/11/2003
- *
- * Revision 1.13  2003/11/07 23:57:01  bflorat
- * 08/11/2003
  *
  *  
  */
@@ -60,8 +39,10 @@ import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.JajukJMenuBar;
 import org.jajuk.ui.PerspectiveBarJPanel;
 import org.jajuk.ui.PerspectiveManager;
+import org.jajuk.ui.SplashScreen;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
+
 
 /**
  * Jajuk lauching class
@@ -77,6 +58,13 @@ public class Main implements ITechnicalStrings {
 
 	public static void main(String[] args) {
 		try {
+			
+			//starts ui
+			jframe = new JFrame("Jajuk : Just Another Jukebox"); //$NON-NLS-1$
+			
+			//Launch splashscreen
+			SplashScreen sc = new SplashScreen(jframe);
+		
 			//configuration manager startup
 			org.jajuk.util.ConfigurationManager.getInstance();
 					
@@ -100,14 +88,29 @@ public class Main implements ITechnicalStrings {
 			//Display user configuration
 			Log.debug(System.getProperties().toString());
 			
-			//starts ui
-			jframe = new JFrame("Jajuk : Just Another Jukebox"); //$NON-NLS-1$
+			//Load collection
+			Collection.load();
+			
+			//Create the perspective manager ( before user conf load because some part can be overwritten )
+			PerspectiveManager.load();
+			
+			//Load user configuration
+			org.jajuk.util.ConfigurationManager.load();
+			
+			//Load history
+			History.load();
+			
+			//Starts the FIFO
+			FIFO.getInstance().start();
+			
+			
+			//Close splash screen
+			sc.dispose();
+		
 			jframe.pack();
 			jframe.setExtendedState(Frame.MAXIMIZED_BOTH);  //maximalize
 			jframe.setVisible(true);
 			
-		//	jframe.setSize((int) (0.9 * dScreenSize.getWidth()), (int) (0.9 * dScreenSize.getHeight()));
-			//TODO see for automatic maximalize
 			jframe.addWindowListener(new WindowAdapter() {
 				public void windowClosing(WindowEvent we) {
 					exit(0);
@@ -131,21 +134,7 @@ public class Main implements ITechnicalStrings {
 			information.setCurrentStatus(76);
 			//**************************
 	
-			//Load collection
-			Collection.load();
-			
-			//Create the perspective manager ( before user conf load because some part can be overwritten )
-			PerspectiveManager.load();
-			
-			//Load user configuration
-			org.jajuk.util.ConfigurationManager.load();
-			
-			//Load history
-			History.load();
-			
-			//Starts the FIFO
-			FIFO.getInstance().start();
-	
+		
 			//Add static panels
 			container.add(command, BorderLayout.NORTH);
 			container.add(perspectiveBar, BorderLayout.WEST);
@@ -157,8 +146,7 @@ public class Main implements ITechnicalStrings {
 			//Set menu bar to the frame
 			jframe.setJMenuBar(JajukJMenuBar.getInstance());
 			
-			History.getInstance().addItem("1233",System.currentTimeMillis());		
-		
+			
 		} catch (JajukException je) { //last chance to catch any error for logging purpose
 			Log.error(je);
 			exit(1);

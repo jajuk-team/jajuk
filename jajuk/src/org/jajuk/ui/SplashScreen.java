@@ -1,0 +1,55 @@
+/*
+ *  Jajuk
+ *  Copyright (C) 2003 bflorat
+ *
+ *  This program is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  as published by the Free Software Foundation; either version 2
+ *  of the License, or any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ * $Release$
+ */
+
+package org.jajuk.ui;
+
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Frame;
+import java.awt.Toolkit;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JWindow;
+
+import org.jajuk.base.ITechnicalStrings;
+
+/**
+ *  Jajuk Splashscreen
+ *
+ * @author     bflorat
+ * @created    20 nov. 2003
+ */
+public class SplashScreen extends JWindow implements ITechnicalStrings
+{
+	public SplashScreen(Frame f)
+	{
+		super(f);
+		JLabel l = new JLabel(new ImageIcon(IMAGES_SPLASHSCREEN));
+		getContentPane().add(l, BorderLayout.CENTER);
+		pack();
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		Dimension labelSize = l.getPreferredSize();
+		setLocation(screenSize.width/2 - (labelSize.width/2),screenSize.height/2 - (labelSize.height/2));
+		setVisible(true);
+	}
+}
