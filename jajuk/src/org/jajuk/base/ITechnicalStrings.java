@@ -142,6 +142,7 @@ public interface ITechnicalStrings {
 	public static final String ICON_REMOVE =  PATH_ICONS + "16x16/remove.png";
 	public static final String ICON_UP =  PATH_ICONS + "16x16/up.png";
 	public static final String ICON_DOWN =  PATH_ICONS + "16x16/down.png";
+	public static final String ICON_ADD_SHUFFLE =  PATH_ICONS + "16x16/add_shuffle.png";
 	public static final String ICON_CURRENT_PLAYLIST =  PATH_ICONS + "16x16/run.png";
 	public static final String ICON_CLEAR =  PATH_ICONS + "16x16/clear.png";
 	public static final String ICON_SAVE =  PATH_ICONS + "16x16/save.png";
@@ -289,7 +290,6 @@ public interface ITechnicalStrings {
 	public static final String DETAIL_CURRENT_DATE="current date";
 	public static final String DETAIL_CURRENT_POSITION="current position";
 	public static final String DETAIL_TOTAL="total time";
-	public static final String DETAIL_CURRENT_STATUS_MESSAGE="current status message";
 	public static final String DETAIL_HISTORY_ITEM="history item";
 	public static final String DETAIL_SPECIAL_MODE="special mode";
 	public static final String DETAIL_SPECIAL_MODE_SHUFFLE="shuffle";
@@ -378,6 +378,7 @@ public interface ITechnicalStrings {
 	public static final String CONF_COVERS_MIN_SIZE = "jajuk.covers.min_size";
 	public static final String CONF_COVERS_MAX_SIZE = "jajuk.covers.max_size";
 	public static final String CONF_COVERS_ACCURACY = "jajuk.covers.accuracy";
+	public static final String CONF_COVERS_CHANGE_AT_EACH_TRACK = "jajuk.covers.change_on_each_track"; //Load cover at each track 
 	public static final String CONF_NETWORK_CONNECTION_TO = "jajuk.network.connection_timeout";
 	public static final String CONF_NETWORK_TRANSFERT_TO = "jajuk.network.transfert_timeout";
 	public static final String CONF_OPTIONS_TAB = "jajuk.options.tab"; //Last Option selected tab 
