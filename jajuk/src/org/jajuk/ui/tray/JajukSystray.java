@@ -28,6 +28,7 @@ import java.awt.event.MouseWheelListener;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Properties;
 
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenuItem;
@@ -38,6 +39,7 @@ import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.Player;
+import org.jajuk.base.StackItem;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.CommandJPanel;
 import org.jajuk.ui.JajukWindow;
@@ -224,7 +226,13 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
 					ConfigurationManager.getBoolean(CONF_STATE_REPEAT),false),false);
 		}
 		else if (e.getSource() == jmiNorm){
-		    FIFO.getInstance().clear();
+		    StackItem item = FIFO.getInstance().getCurrentItem();//stores current item
+			FIFO.getInstance().clear(); //clear fifo 
+			FIFO.getInstance().push(item,true); //then re-add current item
+			FIFO.getInstance().computesPlanned(true); //update planned list
+			Properties properties = new Properties();
+			properties.put(DETAIL_ORIGIN,DETAIL_SPECIAL_MODE_NORMAL);
+			ObservationManager.notify(EVENT_SPECIAL_MODE,properties);
 		}
 		else if (e.getSource() == jcbmiVisible){
 			ConfigurationManager.setProperty(CONF_SHOW_AT_STARTUP,Boolean.toString(jcbmiVisible.getState()));
