@@ -237,12 +237,6 @@
    
     <dependency>
 	   <groupId>lib</groupId>
-        <artifactId>id3</artifactId>
-        <version>1.6.0d7</version> 
-    </dependency>
-
-    <dependency>
-	   <groupId>lib</groupId>
         <artifactId>jlayer</artifactId>
         <version>1.0</version> 
     </dependency>
