@@ -192,7 +192,7 @@ env1</td>
 env1</td>
     </tr>
     <tr>
-      <td style="vertical-align: top; width: 5%;">1<br>
+      <td style="vertical-align: top; width: 5%;">PKG<br>
       </td>
       <td style="vertical-align: top; width: 80%;">Packaging tests :
 install Jajuk in several languages. Target directory : /prog/jajuk and
@@ -208,7 +208,7 @@ it to this unexisting location. Start and close Jajuk at each test.<br>
       </td>
     </tr>
     <tr>
-      <td style="vertical-align: top; width: 5%;">2<br>
+      <td style="vertical-align: top; width: 5%;">SRT<br>
       </td>
       <td style="vertical-align: top; width: 80%;">Tests with existing
 collection : start jajuk, lauch some tracks.<br>
@@ -221,10 +221,10 @@ collection : start jajuk, lauch some tracks.<br>
       </td>
     </tr>
     <tr>
-      <td style="vertical-align: top; width: 5%;">3<br>
+      <td style="vertical-align: top; width: 5%;">SCR<br>
       </td>
       <td style="vertical-align: top; width: 80%;">Tests from scratch.
-Remove any existing&nbsp; collection, create a directory device with
+Remove .jajuk directory, create a directory device with
 auto-refresh, lauch some tracks and then quit Jajuk and start it again,
 lauch some tracks, quit and test again.<br>
       </td>
@@ -236,7 +236,7 @@ lauch some tracks, quit and test again.<br>
       </td>
     </tr>
     <tr>
-      <td style="vertical-align: top; width: 5%;">4<br>
+      <td style="vertical-align: top; width: 5%;">FOR<br>
       </td>
       <td style="vertical-align: top; width: 80%;">Tests on formats :
 lauch at least one mp3, ogg, au, aiff and wav file. <br>
@@ -249,7 +249,7 @@ lauch at least one mp3, ogg, au, aiff and wav file. <br>
       </td>
     </tr>
     <tr>
-      <td style="vertical-align: top; width: 5%;">5<br>
+      <td style="vertical-align: top; width: 5%;">DEV<br>
       </td>
       <td style="vertical-align: top; width: 80%;">Devices tests :
 create a directory device, refresh it, unmount it, mount it, remove it.<br>
@@ -262,7 +262,7 @@ create a directory device, refresh it, unmount it, mount it, remove it.<br>
       </td>
     </tr>
     <tr>
-      <td style="vertical-align: top; width: 5%;">6<br>
+      <td style="vertical-align: top; width: 5%;">SYN<br>
       </td>
       <td style="vertical-align: top; width: 80%;">Device
 synchronization : test with a directory device and a player device, if
@@ -276,7 +276,7 @@ possible, try to mix FS : ext3 for directory, FAT32 for player.<br>
       </td>
     </tr>
     <tr>
-      <td style="vertical-align: top; width: 5%;">7<br>
+      <td style="vertical-align: top; width: 5%;">SRC<br>
       </td>
       <td style="vertical-align: top; width: 80%;">Instant search box :
 perform some searchs and lauch tracks.<br>
@@ -289,7 +289,7 @@ perform some searchs and lauch tracks.<br>
       </td>
     </tr>
     <tr>
-      <td style="vertical-align: top; width: 5%;">8<br>
+      <td style="vertical-align: top; width: 5%;">HST<br>
       </td>
       <td style="vertical-align: top; width: 80%;">History : check all
 lauched tracks are OK. Clear hisstory and lauch others tracks, check it
@@ -303,33 +303,23 @@ again.<br>
       </td>
     </tr>
     <tr>
-      <td style="vertical-align: top; width: 5%;">9<br>
+      <td style="vertical-align: top; width: 5%;">RAN<br>
       </td>
-      <td style="vertical-align: top; width: 80%;">Random tests<br>
+      <td style="vertical-align: top; width: 80%;">Random tests,
+general use tests in every views.<br>
+      </td>
+      <td style="vertical-align: top; width: 5%;"><br>
       </td>
       <td style="vertical-align: top; width: 5%;"><br>
       </td>
       <td style="vertical-align: top; width: 5%;"><br>
       </td>
-      <td style="vertical-align: top; width: 5%;"><br>
-      </td>
     </tr>
     <tr>
-      <td style="vertical-align: top;"><br>
+      <td style="vertical-align: top;">SUP<br>
       </td>
-      <td style="vertical-align: top;"><br>
-      </td>
-      <td style="vertical-align: top;"><br>
-      </td>
-      <td style="vertical-align: top;"><br>
-      </td>
-      <td style="vertical-align: top;"><br>
-      </td>
-    </tr>
-    <tr>
-      <td style="vertical-align: top;"><br>
-      </td>
-      <td style="vertical-align: top;"><br>
+      <td style="vertical-align: top;">Startup tests : change startup
+option and test it.<br>
       </td>
       <td style="vertical-align: top;"><br>
       </td>
@@ -339,21 +329,10 @@ again.<br>
       </td>
     </tr>
     <tr>
-      <td style="vertical-align: top;"><br>
+      <td style="vertical-align: top;">BUP<br>
       </td>
-      <td style="vertical-align: top;"><br>
-      </td>
-      <td style="vertical-align: top;"><br>
-      </td>
-      <td style="vertical-align: top;"><br>
-      </td>
-      <td style="vertical-align: top;"><br>
-      </td>
-    </tr>
-    <tr>
-      <td style="vertical-align: top;"><br>
-      </td>
-      <td style="vertical-align: top;"><br>
+      <td style="vertical-align: top;">Backup tests : change backup
+options and test them.<br>
       </td>
       <td style="vertical-align: top;"><br>
       </td>
@@ -363,21 +342,11 @@ again.<br>
       </td>
     </tr>
     <tr>
-      <td style="vertical-align: top;"><br>
+      <td style="vertical-align: top;">LNG<br>
       </td>
-      <td style="vertical-align: top;"><br>
-      </td>
-      <td style="vertical-align: top;"><br>
-      </td>
-      <td style="vertical-align: top;"><br>
-      </td>
-      <td style="vertical-align: top;"><br>
-      </td>
-    </tr>
-    <tr>
-      <td style="vertical-align: top;"><br>
-      </td>
-      <td style="vertical-align: top;"><br>
+      <td style="vertical-align: top;">Test Jajuk en english and at
+least with 2 others langpacks, check translation for untranslated
+fields if any.<br>
       </td>
       <td style="vertical-align: top;"><br>
       </td>
@@ -387,21 +356,9 @@ again.<br>
       </td>
     </tr>
     <tr>
-      <td style="vertical-align: top;"><br>
+      <td style="vertical-align: top;">LNF<br>
       </td>
-      <td style="vertical-align: top;"><br>
-      </td>
-      <td style="vertical-align: top;"><br>
-      </td>
-      <td style="vertical-align: top;"><br>
-      </td>
-      <td style="vertical-align: top;"><br>
-      </td>
-    </tr>
-    <tr>
-      <td style="vertical-align: top;"><br>
-      </td>
-      <td style="vertical-align: top;"><br>
+      <td style="vertical-align: top;">Change Look and Feel, test it.<br>
       </td>
       <td style="vertical-align: top;"><br>
       </td>
@@ -411,9 +368,61 @@ again.<br>
       </td>
     </tr>
     <tr>
+      <td style="vertical-align: top;">STA<br>
+      </td>
+      <td style="vertical-align: top;">Check stats<br>
+      </td>
       <td style="vertical-align: top;"><br>
       </td>
       <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">DOC<br>
+      </td>
+      <td style="vertical-align: top;">Check About and online doc in
+all languages.<br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">COM<br>
+      </td>
+      <td style="vertical-align: top;">Command panel tests : rewind,
+forward, volume...<br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">PLA<br>
+      </td>
+      <td style="vertical-align: top;">Physical and logical playlists
+tests.<br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">COV<br>
+      </td>
+      <td style="vertical-align: top;">Tests covers display and
+manipulation<br>
       </td>
       <td style="vertical-align: top;"><br>
       </td>

@@ -226,6 +226,12 @@
         <version>2.0.1</version> 
     </dependency>
 
+   <dependency>
+	   <groupId>lib</groupId>
+        <artifactId>metouia</artifactId>
+        <version>1.0b</version> 
+    </dependency>
+
   <dependency>
 	   <groupId>lib</groupId>
         <artifactId>jh</artifactId>
