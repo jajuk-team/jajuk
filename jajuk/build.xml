@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!--Jajuk Ant script for developers, to be used under eclipse or another IDE-->
 
-<project default='native2ascii' name='jajuk' basedir='.'>
+<project default='jar' name='jajuk' basedir='.'>
   <property name='libdir' value='lib' />
   <property name='classdir' value='classes'/>
   <property name='srcdir' value='src'/>
@@ -27,7 +27,7 @@
   </target>
   
   
-  <target name='compile' description='o Compile the code' >
+  <target name='compile' description='o Compile the code' depends='native2ascii' >
     <mkdir dir='${classdir}'>
     </mkdir>
     <javac destdir='${classdir}' deprecation='true' debug='false' optimize='true' excludes='**/package.html'>
@@ -42,13 +42,7 @@
         </fileset>
       </classpath>
     </javac>
-	<mkdir dir='${classdir}/org/jajuk/i18n_temp'/>
-  	<copy todir='${classdir}/org/jajuk/i18n_temp' >
-     <fileset file='${srcdir}/org/jajuk/i18n/*.properties'/>
-	</copy>
-	<native2ascii encoding='UTF-8' src='${classdir}/org/jajuk/i18n_temp' dest='${classdir}/org/jajuk/i18n' includes='*.properties' />     
-    <delete dir='${distdir}/classes/org/jajuk/i18n_temp'/>
-    <mkdir dir="${classdir}/org/jajuk/icons"/>
+	<mkdir dir="${classdir}/org/jajuk/icons"/>
     <mkdir dir="${classdir}/org/jajuk/images"/>
   	<mkdir dir="${classdir}/org/jajuk/docs"/>
   	<copy todir="${classdir}/org/jajuk/icons" >
@@ -60,7 +54,8 @@
   </target>
 
   <target name='jar' description='o Create the jar' depends='compile'>
-    <jar jarfile='/${jarname}' excludes='**/package.html' basedir='${classdir}' manifest="${distfilesdir}/packaging/MANIFEST.MF" />
+    <jar jarfile='${jarname}' excludes='**/package.html' basedir='${classdir}' manifest="${distfilesdir}/packaging/MANIFEST.MF" />
+  	<delete dir='${classdir}'/>
   </target>
 
  <target name='javadoc'>

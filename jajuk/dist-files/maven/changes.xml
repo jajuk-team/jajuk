@@ -73,13 +73,13 @@
      </release>
      <release version='0.2.1' date='2004-07-02' description='Maintenance release'>
      	<action dev='bflorat' type='add'>Now possible to add an entire device in playlist editor with drag and drop</action>  
-		<action dev='bflorat' type='update'>RFE 973052 Remove an unmounted device</action>
+		<action dev='bflorat' type='update'>RFE 973052 Automaticaly unmount a device for remove</action>
     	<action dev='bflorat' type='update'>Come back to UTF-8 to store collection file</action>
-       	<action dev='bflorat' type='update'>Changes in unmount to take in to account Linux 2.6</action>
+       	<action dev='bflorat' type='update'>[Linux] Changes in unmount to take in to account Linux 2.6</action>
        	<action dev='bflorat' type='update'>You can now create a void device</action>
        	<action dev='bflorat' type='update'>Display a warning if you want to refresh a void device</action>
        	<action dev='bflorat' type='update'>Migrated i18n files and sources to UTF-8 encoding. Now UTF-8 is the only accepted encoding</action>
-       	<action dev='bflorat' type='update'>[Windows] the display jajuk at startup option in systray now uses a checkable menu item</action>
+       	<action dev='bflorat' type='update'>[Windows] The display jajuk at startup option in systray now uses a checkable menu item</action>
        	<action dev='bflorat' type='fix'>956241	Wrong CD device ejected</action>  
        	<action dev='bflorat' type='fix'>958954	Sometimes, problems maximalizing covers</action>  
        	<action dev='bflorat' type='fix'>971838	Scan fails when finding a directory named mp3 or ogg</action>  
@@ -87,6 +87,8 @@
        	<action dev='bflorat' type='fix'>976281	Filter on devices names</action>  
        	<action dev='bflorat' type='fix'>956271 CD scan bug</action>  
        	<action dev='bflorat' type='fix'>981130	Perspective chooser refresh</action>  
+       	<action dev='bflorat' type='fix'>982810	Cannot cancel play of multiple selection in table view</action>  
+       	<action dev='bflorat' type='fix'>983762	Testing a device should keep it unmounted if it was not</action>  
      </release>
      
   </body>

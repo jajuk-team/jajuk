@@ -57,11 +57,8 @@
 		<table style='width: 100%; text-align: left;' border='0' cellpadding='2' cellspacing='2'>
 			<tbody>
 				<tr>
-					<!--
 					<td style='vertical-align: top;'><p><b>2004/06/25</b></p>
 					<p><a href='http://sourceforge.net/projects/jajuk/'>Jajuk 0.2.1 released<br></br>Maintenance release</a></p></td>
-					-->
-					<td style='vertical-align: top;'></td>
 					<td style='vertical-align: top;'><p><b>2004/05/14</b></p>
 					<p><a href='http://sourceforge.net/projects/jajuk/'>Jajuk 0.2 released<br></br>Ogg Vorbis and others audio formats supported, <br></br>Swedish and Dutch translation</a></p></td>
 					<td style='vertical-align: top;'><p><b>2004/04/23</b></p>

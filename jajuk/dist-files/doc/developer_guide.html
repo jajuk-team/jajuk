@@ -96,7 +96,9 @@ images with an url from inside the jar.</p>
 </ul>
 <img style="width: 637px; height: 585px;" alt=""
  src="images/eclipse_encoding.png"><br>
- <p>Check your .properties file uses correct encoding (especialy under Eclipse 3.0 final) by selecting file/properties/info. If the file is in ISO8859-1, set UTF-8.</p>
+<p>Check your .properties file uses correct encoding (especialy under
+Eclipse 3.0 final) by selecting file/properties/info. If the file is in
+ISO8859-1, set UTF-8.</p>
 <h2><br>
 </h2>
 <h2>ant scripts and i18n</h2>
@@ -107,10 +109,11 @@ environment. Three ant scripts are found in the tree:</p>
 <ul>
   <li>
     <p>At root, <span style="font-style: italic;">build.xml</span>
-[default target: native2ascii]: this ant
+[default target: jar]: this ant
 script is used by developpers translating Jajuk to refresh latin1
-version of their properties langpack files. Others targets are useless
-for now.</p>
+version of their properties langpack files. Use jar target to make sure
+your properties file will be updated. Do not commit you jajuk.jar file.<br>
+    </p>
   </li>
   <li>
     <p><span style="font-style: italic;">scripts/build.xml</span> :
