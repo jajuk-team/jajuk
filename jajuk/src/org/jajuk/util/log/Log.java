@@ -124,6 +124,7 @@ public class Log implements ITechnicalStrings{
 		    sOut = '('+sCode+") "+ ((sInfosup==null)?"":":"+sInfosup); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
 	    logger.error(sOut);
+	    t.printStackTrace();
 	}
 	
 	/**
