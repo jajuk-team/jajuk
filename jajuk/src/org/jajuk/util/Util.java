@@ -647,28 +647,32 @@ public class Util implements ITechnicalStrings {
         String sAlbum = track.getAlbum().getName();
         if (!sAuthor.equals("unknown_author")){ //$NON-NLS-1$
             switch(iAccuracy){
-            case 0: //low, default
+            case 0: //author
                 sQuery += sAuthor + " "; //$NON-NLS-1$
                 break;
-            case 1: //medium
+            case 1: //low, default
+                sQuery += sAuthor + " "; //$NON-NLS-1$
+                break;
+            case 2: //medium
                 sQuery += "\""+sAuthor + "\" "; //put "" around it //$NON-NLS-1$ //$NON-NLS-2$
                 break;
-            case 2: //high 
+            case 3: //high 
                 sQuery += "+\""+sAuthor + "\" "; //put +"" around it //$NON-NLS-1$ //$NON-NLS-2$
                 break;
             default :
                 break;
             }
         }
+        //add the album name if not in author accuracy
         if (!sAlbum.equals("unknown_album")){ //$NON-NLS-1$
             switch(iAccuracy){
-            case 0: //low, default
+            case 1: //low, default
                 sQuery += sAlbum;
                 break;
-            case 1: //medium
+            case 2: //medium
                 sQuery += "\""+sAlbum + "\""; //put "" around it //$NON-NLS-1$ //$NON-NLS-2$
                 break;
-            case 2: //high
+            case 3: //high
                 sQuery += "+\""+sAlbum + "\""; //put "" around it //$NON-NLS-1$ //$NON-NLS-2$
                 break;
             default :
