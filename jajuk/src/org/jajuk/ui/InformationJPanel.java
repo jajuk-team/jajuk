@@ -41,6 +41,7 @@ import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.base.JajukTimer;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.Util;
+import org.jajuk.util.log.Log;
 
 /**
  *  Status / information panel ( static view )
@@ -301,6 +302,11 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,Obser
 	    else if (EVENT_PLAY_ERROR.equals(subject)){
 	        File fCurrent = (File)ObservationManager.getDetail(EVENT_PLAY_ERROR,DETAIL_CURRENT_FILE);
 	        setMessage(Messages.getString("Error.007")+" : "+fCurrent.getAbsolutePath(),InformationJPanel.ERROR);//$NON-NLS-1$ //$NON-NLS-2$
+	        try {
+                Thread.sleep(2000); //make sure user has time to see this error message
+            } catch (InterruptedException e) {
+                Log.error(e);
+            }
 	    }
 	}
 	

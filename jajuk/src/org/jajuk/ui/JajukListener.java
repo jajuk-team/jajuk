@@ -104,7 +104,7 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
 				CommandJPanel.getInstance().jbRepeat.setBorder(BorderFactory.createLoweredBevelBorder());
 				//if FIFO is not void, repeat over current item
 				StackItem item = FIFO.getInstance().getCurrentItem();
-				if ( item != null){
+				if ( item != null && FIFO.getInstance().getIndex() == 0){ //only non-repeated items need to be set and in this case, index =0 or bug
 				    item.setRepeat(true);    
 				}
 			}
@@ -117,7 +117,7 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
 			    FIFO.getInstance().setIndex(0); //select first track
 			}
 			//computes planned tracks
-			FIFO.getInstance().computesPlanned();
+			FIFO.getInstance().computesPlanned(false);
 		}
 		else if (e.getActionCommand().equals(EVENT_SHUFFLE_MODE_STATUS_CHANGED)) {
 			boolean b = ConfigurationManager.getBoolean(CONF_STATE_SHUFFLE);
@@ -131,7 +131,7 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
 				CommandJPanel.getInstance().jbRandom.setBorder(BorderFactory.createRaisedBevelBorder());
 			}
 			//computes planned tracks
-			FIFO.getInstance().computesPlanned();
+			FIFO.getInstance().computesPlanned(true);
 		}
 		else if (e.getActionCommand().equals(EVENT_CONTINUE_MODE_STATUS_CHANGED)) {
 			boolean b = ConfigurationManager.getBoolean(CONF_STATE_CONTINUE);
@@ -144,7 +144,7 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
 				CommandJPanel.getInstance().jbContinue.setBorder(BorderFactory.createRaisedBevelBorder());
 			}
 			//computes planned tracks
-			FIFO.getInstance().computesPlanned();
+			FIFO.getInstance().computesPlanned(false);
 		}
 		else if (e.getActionCommand().equals(EVENT_INTRO_MODE_STATUS_CHANGED)) {
 			boolean b = Boolean.valueOf(ConfigurationManager.getProperty(CONF_STATE_INTRO)).booleanValue();

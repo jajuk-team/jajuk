@@ -141,7 +141,6 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings{
 		add(properties);
 		add(mode);
 		add(help);
-		
 	}
 	
 	static public synchronized JajukJMenuBar getInstance(){

@@ -421,8 +421,13 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
                 if ( item.isPlanned()){ //we can't lauch a planned track, leave
                     return;
                 }
-                else{
-                    FIFO.getInstance().push((StackItem)alItems.get(jtable.getSelectedRow()),false);
+                else{ //normal item
+                    FIFO.getInstance().goTo(jtable.getSelectedRow());
+                    //remove selection for planned tracks
+                    ListSelectionModel lsm = jtable.getSelectionModel();
+                    bSettingSelection = true;
+                    jtable.getSelectionModel().removeSelectionInterval(lsm.getMinSelectionIndex(),lsm.getMaxSelectionIndex());
+                    bSettingSelection = false;
                 }
             }
         }
@@ -612,7 +617,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
             int selectedRow = lsm.getMaxSelectionIndex();
             if (selectedRow > alItems.size()-1){ //means it is a planned track
                 jbAdd.setEnabled(false);
-                jbRemove.setEnabled(false);
+                jbRemove.setEnabled(true);
                 jbUp.setEnabled(false);
                 jbDown.setEnabled(false);
                 jbAddShuffle.setEnabled(false);

@@ -30,6 +30,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.jajuk.base.ITechnicalStrings;
+import org.jajuk.i18n.Messages;
 import org.jajuk.util.Util;
 
 /**
@@ -46,6 +47,7 @@ public class SplashScreen extends JDialog implements ITechnicalStrings
 		JPanel jpContent = (JPanel)getContentPane();
 		jpContent.setLayout(new BoxLayout(jpContent,BoxLayout.Y_AXIS));
 		JLabel l = new JLabel(Util.getIcon(IMAGES_SPLASHSCREEN));
+		setTitle(Messages.getString("JajukWindow.17"));  //$NON-NLS-1$
 		jpContent.add(l);
 		pack();
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
