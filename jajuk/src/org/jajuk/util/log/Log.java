@@ -43,8 +43,10 @@ public class Log  implements ITechnicalStrings{
     private static int verbosity = INFO;  
     /**Self instance used for signleton pattern */
     private static Log log = null;
-    //Root logger
-    private static Logger logger = Logger.getRootLogger();
+    // Root logger
+    private static Logger loggerRoot = Logger.getRootLogger();
+    //Jajuk logger
+    private static Logger logger = Logger.getLogger(Log.class.getName());
     //Http client logger
     private static Logger loggerHttp;
     
@@ -54,7 +56,6 @@ public class Log  implements ITechnicalStrings{
     private   Log () {
         try {
            loggerHttp = Logger.getLogger("org.apache.commons.httpclient");
-            
             //message for logging system start
             Log.info("******************JAJUK******************"); //$NON-NLS-1$
             Log.info("Version: "+JAJUK_VERSION);  //$NON-NLS-1$
@@ -174,22 +175,27 @@ public class Log  implements ITechnicalStrings{
         case DEBUG:
             logger.setLevel(Level.DEBUG);
             loggerHttp.setLevel(Level.DEBUG);
+            loggerRoot.setLevel(Level.DEBUG);
             break;
         case INFO:
             logger.setLevel(Level.INFO);
             loggerHttp.setLevel(Level.INFO);
+            loggerRoot.setLevel(Level.INFO);
             break;
         case WARNING:
             logger.setLevel(Level.WARN);
             loggerHttp.setLevel(Level.WARN);
+            loggerRoot.setLevel(Level.WARN);
             break;
         case ERROR:
             logger.setLevel(Level.ERROR);
             loggerHttp.setLevel(Level.ERROR);
+            loggerRoot.setLevel(Level.ERROR);
             break;
         case FATAL:
            logger.setLevel(Level.FATAL);
            loggerHttp.setLevel(Level.FATAL);
+           loggerRoot.setLevel(Level.FATAL);
             break;
         }
     }
