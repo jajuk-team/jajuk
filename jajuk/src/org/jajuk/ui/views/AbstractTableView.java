@@ -48,7 +48,7 @@ import org.jajuk.util.Util;
 public abstract class AbstractTableView extends ViewAdapter implements ActionListener,MouseListener{
 
 	/**Columns number*/
-	protected int iColNum = 8;
+	protected int iColNum = 9;
 	
 	/**Rows number*/
 	protected int iRowNum;

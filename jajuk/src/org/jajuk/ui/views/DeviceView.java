@@ -390,8 +390,6 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 				catch(Exception e){
 					Messages.showErrorMessage("011"); //$NON-NLS-1$
 				}
-				ObservationManager.notify(EVENT_DEVICE_MOUNT);
-				
 			}
 			else if (ae.getActionCommand().equals(EVENT_DEVICE_UNMOUNT)){
 				try{

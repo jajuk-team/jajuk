@@ -198,6 +198,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 		add(jpControl,"0,0"); //$NON-NLS-1$
 		add(new JScrollPane(jtable),"0,1"); //$NON-NLS-1$
 		ObservationManager.register(EVENT_PLAYLIST_REFRESH,this);
+		ObservationManager.register(EVENT_PLAYER_STOP,this);
 	}
 
 	/* (non-Javadoc)
@@ -327,8 +328,11 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 				}
 			}
 		}
+		else if ( EVENT_PLAYER_STOP.equals(subject)){
+			alFiles = new ArrayList(0);
+			model.fireTableDataChanged();
+		}
 	}
-	
 	
 	
 	/**

@@ -23,6 +23,7 @@
     </menu>
     <search/>
     <menu name="Documentation">
+      <item name="Translation howto" href="/translation_howto.html" />
       <item name="Specifications (PDF) " href="/doc/specs.pdf" />
       <item name="Programming manual (PDF)" href="/doc/codeConventions.pdf" />
       <item name="Conception document (PDF)" href="/doc/conception.pdf" />

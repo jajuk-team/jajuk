@@ -119,13 +119,13 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
 	/**Fill the tree */
 	public void populate(){
 		//Columns names
-		sColName = new String[]{Messages.getString("PhysicalTableView.7"),Messages.getString("PhysicalTableView.8"),Messages.getString("PhysicalTableView.9"),Messages.getString("PhysicalTableView.10"),Messages.getString("PhysicalTableView.11"),Messages.getString("PhysicalTableView.12"),Messages.getString("PhysicalTableView.13"),Messages.getString("PhysicalTableView.14")}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
+		sColName = new String[]{Messages.getString("PhysicalTableView.7"),Messages.getString("PhysicalTableView.8"),Messages.getString("PhysicalTableView.9"),Messages.getString("PhysicalTableView.10"),Messages.getString("PhysicalTableView.11"),"Device",Messages.getString("PhysicalTableView.12"),Messages.getString("PhysicalTableView.13"),Messages.getString("PhysicalTableView.14")}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
 		//Values
 		alFiles = FileManager.getSortedFiles();
 		int iSize = alFiles.size();
 		Iterator it = alFiles.iterator();
 		oValues = new Object[iSize][iColNum];
-		//Track | Album | Author |  Length | Style | Directory | File name | Rate
+		//Track | Album | Author |  Length | Style | Device | Directory | File name | Rate
 		for (int i = 0;it.hasNext();i++){
 			File file = (File)it.next(); 
 			oValues[i][0] = file.getTrack().getName();
@@ -133,9 +133,10 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
 			oValues[i][2] = file.getTrack().getAuthor().getName2();
 			oValues[i][3] = new Long(file.getTrack().getLength());
 			oValues[i][4] = file.getTrack().getStyle().getName2();
-			oValues[i][5] = file.getDirectory().getName();
-			oValues[i][6] = file.getName();
-			oValues[i][7] = new Long(file.getTrack().getRate());
+			oValues[i][5] = file.getDirectory().getDevice().getName();
+			oValues[i][6] = file.getDirectory().getName();
+			oValues[i][7] = file.getName();
+			oValues[i][8] = new Long(file.getTrack().getRate());
 		}
 		//row num
 		iRowNum = iSize;

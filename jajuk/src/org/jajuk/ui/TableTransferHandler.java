@@ -126,9 +126,9 @@ public class TableTransferHandler implements DragGestureListener, DragSourceList
 	
 	/* Methods for DragGestureListener */
 	public final void dragGestureRecognized(DragGestureEvent dge) {
-		Object[][] oValues = (Object[][])((TracksTableModel)jtable.getModel()).getData();
+	/*	Object[][] oValues = (Object[][])((TracksTableModel)jtable.getModel()).getData();
 		Object o = oValuesjtable.getSelectedRow();
-		dragSource.startDrag(dge, DragSource.DefaultMoveNoDrop , image, new Point(0,0), new TransferableTableRow(((JajukTable)draggedNode).getData()), this);			
+		dragSource.startDrag(dge, DragSource.DefaultMoveNoDrop , image, new Point(0,0), new TransferableTableRow(((JajukTable)draggedNode).getData()), this);*/			
 	}
 	
 	/* Methods for DropTargetListener */
@@ -170,13 +170,13 @@ public class TableTransferHandler implements DragGestureListener, DragSourceList
 	}
 	
 	private final void paintImage(Point pt) {
-		tree.paintImmediately(rect2D.getBounds());
+	/*	tree.paintImmediately(rect2D.getBounds());
 		rect2D.setRect((int) pt.getX(),(int) pt.getY(),image.getWidth(),image.getHeight());
-		tree.getGraphics().drawImage(image,(int) pt.getX(),(int) pt.getY(),tree);
+		tree.getGraphics().drawImage(image,(int) pt.getX(),(int) pt.getY(),tree);*/
 	}
 	
 	private final void clearImage() {
-		tree.paintImmediately(rect2D.getBounds());
+	//	tree.paintImmediately(rect2D.getBounds());
 	}
 	
 	

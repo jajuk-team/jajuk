@@ -704,7 +704,6 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 				Device device = ((DeviceNode)(paths[i].getLastPathComponent())).getDevice();
 				try{
 					device.mount();
-					ObservationManager.notify(EVENT_DEVICE_MOUNT);
 				}
 				catch(Exception ex){
 					Messages.showErrorMessage("011"); //$NON-NLS-1$
@@ -729,7 +728,6 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 		else if ( e.getSource() == jmiDevSynchronize){
 			Device device = ((DeviceNode)(paths[0].getLastPathComponent())).getDevice();
 			device.synchronize(true);
-			ObservationManager.notify(EVENT_DEVICE_REFRESH);
 		}
 		else if ( e.getSource() == jmiDirDesynchro){
 			Iterator it = alDirs.iterator();  //iterate on selected dirs and childs recursively

@@ -32,7 +32,6 @@ import layout.TableLayout;
 import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;
 import org.jajuk.i18n.Messages;
-import org.jajuk.ui.ObservationManager;
 import org.jajuk.util.Util;
 
 
@@ -124,9 +123,7 @@ public class CDScanView extends ViewAdapter implements ActionListener {
 			}
 			try{
 				device.mount();
-				ObservationManager.notify(EVENT_DEVICE_MOUNT);
 				device.refresh(true);
-				ObservationManager.notify(EVENT_DEVICE_REFRESH);
 				do{
 					Thread.sleep(500); //sleep to get sure refresh thread is realy started
 				}
@@ -136,7 +133,6 @@ public class CDScanView extends ViewAdapter implements ActionListener {
 				}
 				jtfName.setName(""); //$NON-NLS-1$
 				jtfName.requestFocus();
-				ObservationManager.notify(EVENT_DEVICE_UNMOUNT);
 				
 			}
 			catch(Exception ex){
