@@ -115,7 +115,7 @@ public class FIFO implements ITechnicalStrings {
      * @param bAppend
      */
     public void push(final ArrayList alItems, final boolean bAppend) {
-        new Thread() { // do it in a thread to make UI more reactive
+        Thread t = new Thread() { // do it in a thread to make UI more reactive
             public void run() {
                 try {
                     pushCommand(alItems, bAppend);
@@ -123,7 +123,9 @@ public class FIFO implements ITechnicalStrings {
                     Log.error(e);
                 }
             }
-        }.start();
+        };
+        t.setPriority(Thread.MAX_PRIORITY);
+        t.start();
     }
 
     /**
@@ -256,6 +258,9 @@ public class FIFO implements ITechnicalStrings {
      */
     public void finished() {
         try {
+            if (getCurrentItem() == null){
+                return;
+            }
             if (getCurrentItem().isRepeat()) { // if the track was in repeat mode, don't remove it from the fifo, just inc index
                 // find the next item is repeat mode if any
                 if (index + 1 < alFIFO.size()) {
