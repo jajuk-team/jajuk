@@ -108,6 +108,8 @@ public class Main implements ITechnicalStrings {
 	private static boolean bUILauched = false;
 	/**No taskbar presence flag when window is minimized (only tray)*/
 	private static boolean bNoTaskBar = false;
+	/**default perspective to shoose, if null, we take the configuration one*/
+	private static String sPerspective;
 	
 	/**
 	 * Main entry
@@ -239,16 +241,18 @@ public class Main implements ITechnicalStrings {
 			
 			//Launch startup track if any
 			launchInitialTrack();        
-			
-			//lauch systray if needed, only for linux and windows, not mac for the moment
-		    if (Util.isUnderLinux() || Util.isUnderWindows()){
-		        jsystray = JajukSystray.getInstance();
-		    }
-		    
+		
 			//show window if set in the systray conf
 			if ( ConfigurationManager.getBoolean(CONF_SHOW_AT_STARTUP) ){
 			    lauchUI();
 			}
+			
+			//lauch systray if needed, only for linux and windows, not mac for the moment
+		    if (Util.isUnderLinux() || Util.isUnderWindows()){
+		        Thread.sleep(1000); //wait for a while to avoid tray disparition under windows
+		        jsystray = JajukSystray.getInstance();
+		    }
+		
 		} catch (JajukException je) { //last chance to catch any error for logging purpose
 			Log.error(je);
 			if ( je.getCode().equals("005")){ //$NON-NLS-1$
@@ -381,7 +385,7 @@ public class Main implements ITechnicalStrings {
 		FIFO.getInstance().stopRequest();  
 		ObservationManager.notify(EVENT_PLAYLIST_REFRESH); //alert playlists editors ( queue playlist ) something changed for him
 		//hide window
-		if (jw!=null) jw.setVisible(false);
+		if (jw!=null) jw.setShown(false);
 		//check if a confirmation is needed
 		if (Boolean.valueOf(ConfigurationManager.getProperty(CONF_CONFIRMATIONS_EXIT)).booleanValue()){
 			int iResu = JOptionPane.showConfirmDialog(jw,Messages.getString("Confirmation_exit"),Messages.getString("Main.21"),JOptionPane.YES_NO_OPTION);  //$NON-NLS-1$ //$NON-NLS-2$
@@ -535,7 +539,6 @@ public class Main implements ITechnicalStrings {
     
     /**
      * Lauch UI
-     *
      */
     public static void lauchUI() throws Exception{
         if (bUILauched){
@@ -545,8 +548,8 @@ public class Main implements ITechnicalStrings {
 		SwingUtilities.invokeAndWait(new Runnable() { //use invokeAndWait to get a better progressive ui display
 		    public void run(){
 				try {
-					//starts ui
-					jw = new JajukWindow();
+				    //starts ui
+					jw = JajukWindow.getInstance();
 					
 					//Creates the panel
 					jpFrame = (JPanel)jw.getContentPane();
@@ -612,11 +615,11 @@ public class Main implements ITechnicalStrings {
 					PerspectiveManager.init();
 		
 					//Display info message if first session
-					if (TRUE.equals(ConfigurationManager.getProperty(CONF_FIRST_CON))){
+					if (ConfigurationManager.getBoolean(CONF_FIRST_CON)){
 						ConfigurationManager.setProperty(CONF_FIRST_CON,FALSE);
 						Messages.showInfoMessage(Messages.getString("Main.12")); //$NON-NLS-1$
 						//set parameter perspective
-						PerspectiveManager.setCurrentPerspective(PERSPECTIVE_NAME_CONFIGURATION);
+					    PerspectiveManager.setCurrentPerspective(PERSPECTIVE_NAME_CONFIGURATION);
 						//show device creation wizard
 						DeviceWizard dw = new DeviceWizard();
 						dw.updateWidgetsDefault();
@@ -648,5 +651,17 @@ public class Main implements ITechnicalStrings {
      */
     public static boolean isNoTaskBar() {
         return bNoTaskBar;
+    }
+    /**
+     * @return Returns the sPerspective.
+     */
+    public static String getDefaultPerspective() {
+        return sPerspective;
+    }
+    /**
+     * @param perspective The sPerspective to set.
+     */
+    public static void setDefaultPerspective(String perspective) {
+        sPerspective = perspective;
     }
 }
