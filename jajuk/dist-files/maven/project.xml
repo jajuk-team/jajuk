@@ -126,7 +126,7 @@
 	    </developer>
 
 		<developer>
-	     <name>Masiar Farahani (masiar)</name>
+	     <name>Masiar Farahani</name>
 	      <id>masiar</id>
 	     <roles>
 			<role>Developer</role>
@@ -136,6 +136,17 @@
 	      <timezone>+2</timezone>
 	    </developer>
 	   
+	   <developer>
+	      <name>Marc-Siebren Kwadijk</name>
+	      <id>marcsiebren@users.sourceforge.net</id>
+    	  <roles>
+		      <role>Dutch translation</role>
+	      </roles>
+	      <email>marcsiebren@users.sourceforge.net</email>
+	      <organization>Jajuk team</organization>
+	      <timezone>+2</timezone>
+	    </developer>
+	    
 	    <developer>
 	      <name>Sébastien Gringoire</name>
 	      <id>sgringoi</id>
@@ -146,6 +157,7 @@
 	      <organization>Jajuk team</organization>
 	      <timezone>+2</timezone>
 	    </developer>
+		    
   </developers>
   
 	<contributors>
@@ -173,11 +185,6 @@
 			<name>darsa</name>
 			<roles><role>Bug reports</role></roles>
 		</contributor>
-		<contributor>
-		 	<name>Marc-Siebren Kwadijk</name>
-	    	<roles><role>Dutch translation</role></roles>
-		</contributor>
-
 	</contributors>
 	
  <dependencies>

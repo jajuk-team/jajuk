@@ -2,36 +2,38 @@
 <HTML>
 <HEAD>
 	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=iso-8859-15">
-	<TITLE>Jajuk developer guide</TITLE>
+	<TITLE></TITLE>
 	<META NAME="GENERATOR" CONTENT="OpenOffice.org 1.1.0  (Linux)">
-	<META NAME="CREATED" CONTENT="20040501;19483400">
-	<META NAME="CHANGED" CONTENT="20040501;21185000">
+	<META NAME="CREATED" CONTENT="20040503;23532900">
+	<META NAME="CHANGED" CONTENT="20040504;21600">
 </HEAD>
 <BODY LANG="fr-FR" DIR="LTR">
-<H1 LANG="en-US">Developer guide</H1>
+<H2><A NAME="bodyColumn"></A><A NAME="Developer_guide"></A>Developer
+guide</H2>
 <P LANG="en-US"><FONT COLOR="#ff0000">Please make this manual alive.
 Add your own notes in <FONT FACE="monospace">developer_guide.html</FONT>
-file in the CVS repository : <FONT FACE="monospace">dist-files/doc/</FONT>.</FONT><BR><BR>Welcome
+file in the CVS repository : <FONT FACE="monospace">dist-files/doc/</FONT>.</FONT><BR>Welcome
 to new Jajuk developers ! Have fun.</P>
-<H1 LANG="en-US">Mailing List / forum</H1>
-<P><SPAN LANG="en-US"><BR>Please subscribe to Jajuk developer mailing
-list ( </SPAN><A HREF="mailto:jajuk-developers@lists.sourceforge.net"><SPAN LANG="en-US">jajuk-developers@lists.sourceforge.net</SPAN></A><SPAN LANG="en-US">
-) at </SPAN><A HREF="http://lists.sourceforge.net/lists/listinfo/jajuk-developers"><SPAN LANG="en-US">http://lists.sourceforge.net/lists/listinfo/jajuk-developers</SPAN></A><SPAN LANG="en-US">.
+<H2><A NAME="Mailing_List___forum"></A>Mailing List / forum</H2>
+<P><SPAN LANG="en-US">Please subscribe to Jajuk developer mailing
+list ( </SPAN><A HREF="mailto:jajuk-developers@lists.sourceforge.net"><SPAN LANG="en-US">jajuk-developers@lists.sourceforge.net</SPAN></A>
+<SPAN LANG="en-US">) at
+</SPAN><A HREF="http://lists.sourceforge.net/lists/listinfo/jajuk-developers"><SPAN LANG="en-US">http://lists.sourceforge.net/lists/listinfo/jajuk-developers</SPAN></A><SPAN LANG="en-US">.
 This list is for instant messages. For some more important messages
 like a release process, we use the developer forum (
 </SPAN><A HREF="http://sourceforge.net/forum/forum.php?forum_id=315362"><SPAN LANG="en-US">http://sourceforge.net/forum/forum.php?forum_id=315362
 </SPAN></A><SPAN LANG="en-US">). Please make sure to monitor it. </SPAN>
 </P>
-<H1 LANG="en-US">CVS</H1>
+<H2><A NAME="CVS"></A>CVS</H2>
 <P><SPAN LANG="en-US">I assume you know CVS. If you are not so
 familiar with CVS, please read the CVS :
 </SPAN><A HREF="http://www.cvshome.org/docs/manual/cvs-1.11.15/cvs.html"><SPAN LANG="en-US">http://www.cvshome.org/docs/manual/cvs-1.11.15/cvs.html.</SPAN></A></P>
-<H2 LANG="en-US">Connexion</H2>
+<H3><A NAME="Connexion"></A>Connexion</H3>
 <P LANG="en-US">The Connexion String is
-<FONT FACE="monospace">:extssh:bflorat@cvs.sourceforge.net:/cvsroot/jajuk<BR><BR></FONT>Under
+<FONT FACE="monospace">:extssh:bflorat@cvs.sourceforge.net:/cvsroot/jajuk<BR></FONT>Under
 eclipse CVS repository location looks like :<BR><BR><IMG SRC="images/cvs_connexion.png" NAME="Image1" ALIGN=BOTTOM WIDTH=637 HEIGHT=567 BORDER=0><BR><BR><BR>
 </P>
-<H2 LANG="en-US">CVS rules</H2>
+<H3><A NAME="CVS_rules"></A>CVS rules</H3>
 <UL>
 	<LI><P LANG="en-US">Make sure the whole project yet compiles and is
 	in an acceptable stability state before committing something. if you
@@ -55,7 +57,7 @@ eclipse CVS repository location looks like :<BR><BR><IMG SRC="images/cvs_connexi
 </UL>
 <P LANG="en-US"><BR><BR>
 </P>
-<H1 LANG="en-US">Eclipse configuration</H1>
+<H2><A NAME="Eclipse_configuration"></A>Eclipse configuration</H2>
 <UL>
 	<LI><P LANG="en-US">In options / &quot;Java&quot; / &quot;Code
 	generation&quot; / &quot;Code and comments&quot;, please import
@@ -68,7 +70,7 @@ eclipse CVS repository location looks like :<BR><BR><IMG SRC="images/cvs_connexi
 </UL>
 <P LANG="en-US"><BR><BR>
 </P>
-<H1 LANG="en-US">Release process</H1>
+<H2><A NAME="Release_process"></A>Release process</H2>
 <P LANG="en-US">Jajuk has a 5 days-release process:</P>
 <UL>
 	<LI><P LANG="en-US">The release process is announced with a message
@@ -93,11 +95,11 @@ eclipse CVS repository location looks like :<BR><BR><IMG SRC="images/cvs_connexi
 </UL>
 <P LANG="en-US"><BR><BR>
 </P>
-<H1 LANG="en-US">Code conventions</H1>
+<H2><A NAME="Code_conventions"></A>Code conventions</H2>
 <P LANG="en-US">We mainly follow Sun Java conventions with special
 code standards : 
 </P>
-<H3 LANG="en-US"><B>Code structure</B></H3>
+<H3><A NAME="Code_structure"></A>Code structure</H3>
 <P LANG="en-US"><FONT FACE="monospace">public void myMethod(){ <BR>&nbsp;&nbsp;if
 (size == 0) { <BR>&nbsp;&nbsp;&nbsp;&nbsp;try { <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size
 = (long) inStream.available(); <BR>&nbsp;&nbsp;&nbsp;&nbsp;} catch
@@ -106,16 +108,17 @@ code standards :
 <BR>&nbsp;&nbsp;} <BR>&nbsp;&nbsp;else {<BR>&nbsp;&nbsp;&nbsp;&nbsp;--size;<BR>&nbsp;&nbsp;}
 <BR>} </FONT>
 </P>
-<H3 LANG="en-US"><B>Variables and attributes names</B></H3>
+<H3><A NAME="Variables_and_attributes_names"></A>Variables and
+attributes names</H3>
 <P LANG="en-US">Begin variable name by the first letters of the type
-so the variable is auto-described: <FONT FACE="monospace"><BR>String
+so the variable is auto-described: <FONT FACE="monospace"><BR><BR>String
 sFoo StringBuffer sbFoo Track track;</FONT> 
 </P>
-<H3 LANG="en-US"><B>Interfaces</B></H3>
+<H3><A NAME="Interfaces"></A>Interfaces</H3>
 <P LANG="en-US">Begin interfaces with a upper 'I'. The 'i' is not
-taken into account for variables names:<BR><FONT FACE="monospace">IPerspectiveManager
+taken into account for variables names:<BR><BR><FONT FACE="monospace">IPerspectiveManager
 pm;</FONT></P>
-<H3>XML</H3>
+<H3><A NAME="XML"></A>XML</H3>
 <UL>
 	<UL>
 		<LI><P>Avoid to use PCDATA values, use attributes instead : it's
@@ -126,11 +129,10 @@ pm;</FONT></P>
 </UL>
 <P LANG="en-US"><BR><BR>
 </P>
-<H1 LANG="en-US">Comments / Javadoc 
-</H1>
+<H2><A NAME="Comments___Javadoc"></A>Comments / Javadoc</H2>
 <P LANG="en-US">Please correctly comment all attributes and methods
 with javadoc norms ( <FONT FACE="Courier, monospace">/** comments */</FONT>
-).<BR><BR><BR><BR><BR>
+).<BR><BR><BR><BR><BR><BR>
 </P>
 </BODY>
 </HTML>

@@ -5,6 +5,7 @@
 
   <preGoal name="xdoc:jelly-transform">
     <attainGoal name="faq"/>
+    <attainGoal name="html2xdoc"/>
   </preGoal>     
   
  <postGoal name="xdoc:register-reports">
@@ -12,6 +13,5 @@
  
   <postGoal name="xdoc:register-reports">
  </postGoal>
- 
   
 </project>
