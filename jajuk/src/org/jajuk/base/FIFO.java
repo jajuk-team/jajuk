@@ -372,8 +372,7 @@ public class FIFO implements ITechnicalStrings{
             Util.stopWaiting(); //stop the waiting cursor
         }
     }
-    
-    
+        
     /**
      * Set current index
      * @param index
@@ -381,9 +380,7 @@ public class FIFO implements ITechnicalStrings{
     public void setIndex(int index){
         this.index =  index;
     }
-    
-    
-    
+        
     /**
      * Computes planned tracks
      *@param bClear : clear planned tracks stack  
@@ -444,7 +441,6 @@ public class FIFO implements ITechnicalStrings{
     }
     
     /**
-     * 
      * @return whether the FIFO contains at least one track in repeat mode
      */
     public  boolean containsRepeat(){
@@ -458,8 +454,7 @@ public class FIFO implements ITechnicalStrings{
         }
         return bRepeat;
     }
-    
-    
+        
     /**
      * 
      * @return whether the FIFO contains only repeated files
