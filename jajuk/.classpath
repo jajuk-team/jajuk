@@ -15,10 +15,16 @@
 	<classpathentry kind="lib" path="lib/jogg-0.0.5.jar"/>
 	<classpathentry kind="lib" path="lib/jorbis-0.0.12.jar"/>
 	<classpathentry kind="lib" path="lib/mp3spi-1.9.jar"/>
-	<classpathentry kind="lib" path="lib/tritonus_share.jar"/>
 	<classpathentry kind="lib" path="lib/vorbisspi-1.0.jar"/>
 	<classpathentry kind="lib" path="lib/jlGui-2.3.jar"/>
 	<classpathentry kind="lib" path="lib/LiquidLnF-0.2.3.jar"/>
 	<classpathentry kind="lib" path="lib/basicplayer-2.3.jar"/>
+	<classpathentry kind="lib" path="lib/tritonus_share-1.0.jar"/>
+	<classpathentry kind="lib" path="/prog/api/entagged-0.09/entagged/bin/tageditor.jar"/>
+	<classpathentry kind="lib" path="/prog/api/entagged-0.09/entagged/lib/entagged-libraries.jar"/>
+	<classpathentry kind="lib" path="/prog/api/entagged-0.09/entagged/plugins/audioformats/flac.jar"/>
+	<classpathentry kind="lib" path="/prog/api/entagged-0.09/entagged/plugins/audioformats/mp3.jar"/>
+	<classpathentry kind="lib" path="/prog/api/entagged-0.09/entagged/plugins/audioformats/ogg.jar"/>
+	<classpathentry kind="lib" path="/prog/api/entagged-0.09/entagged/plugins/audioformats/wav.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
