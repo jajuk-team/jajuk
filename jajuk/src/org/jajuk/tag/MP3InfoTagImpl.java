@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.3  2003/11/14 00:07:15  bflorat
+ * 13/11/2003
+ *
  * Revision 1.2  2003/11/07 23:58:14  bflorat
  * 08/11/2003
  *
@@ -27,11 +30,8 @@
 package org.jajuk.tag;
 
 import java.io.File;
-import java.io.PrintStream;
 
-import org.farng.mp3.id3.FrameBodyTCON;
 import org.jajuk.base.ITagImpl;
-import org.jajuk.i18n.Messages;
 import org.jajuk.util.Util;
 
 import de.ueberdosis.mp3info.ExtendedID3Tag;

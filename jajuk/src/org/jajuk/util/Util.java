@@ -13,6 +13,9 @@
  * You should have received a copy of the GNU General Public License along with
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA. $Log$
+ * Place - Suite 330, Boston, MA 02111-1307, USA. Revision 1.7  2003/11/14 00:07:15  bflorat
+ * Place - Suite 330, Boston, MA 02111-1307, USA. 13/11/2003
+ * Place - Suite 330, Boston, MA 02111-1307, USA.
  * Place - Suite 330, Boston, MA 02111-1307, USA. Revision 1.6  2003/11/07 23:58:37  bflorat
  * Place - Suite 330, Boston, MA 02111-1307, USA. 08/11/2003
  * Place - Suite 330, Boston, MA 02111-1307, USA.
@@ -36,25 +39,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.StringTokenizer;
 
-import org.farng.mp3.MP3File;
-import org.farng.mp3.TagException;
-import org.farng.mp3.id3.ID3v1;
-import org.jajuk.base.Album;
-import org.jajuk.base.AlbumManager;
-import org.jajuk.base.Author;
-import org.jajuk.base.AuthorManager;
-import org.jajuk.base.FileManager;
 import org.jajuk.base.ITechnicalStrings;
-import org.jajuk.base.Style;
-import org.jajuk.base.StyleManager;
-import org.jajuk.base.Track;
-import org.jajuk.base.TrackManager;
-import org.jajuk.base.Type;
-import org.jajuk.base.TypeManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.error.JajukException;
 
