@@ -106,12 +106,18 @@ public class ViewManager implements ITechnicalStrings,ComponentListener{
 	public static void notify(String sEvent,final IView view){
 		try{
 			if (sEvent.equals(EVENT_VIEW_REFRESH_REQUEST)){
+				if (!view.isPopulated()){
+				    view.populate();
+				}
 				view.refresh();
 			}
 			else if (sEvent.equals(EVENT_VIEW_CLOSE_REQUEST)){
-				setVisible(view,false);
+			    setVisible(view,false);
 			}
 			else if (sEvent.equals(EVENT_VIEW_SHOW_REQUEST)){
+				if (!view.isPopulated()){
+				    view.populate();
+				}
 				setVisible(view,true);
 			}
 		}catch(Exception e){

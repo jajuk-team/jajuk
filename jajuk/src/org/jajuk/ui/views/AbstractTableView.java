@@ -68,7 +68,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 	TracksTableModel model;
 	
 	/** Currently applied filter*/
-	String sAppliedFilter;
+	String sAppliedFilter = "";
 	
 	/** Currently applied criteria*/
 	String sAppliedCriteria;
