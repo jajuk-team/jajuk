@@ -264,6 +264,7 @@ public interface ITechnicalStrings {
 	public static final String EVENT_ZERO="zero"; //a reinit has been required
 	public static final String EVENT_ADD_HISTORY_ITEM="history item"; //a new element has been added in the history
 	public static final String EVENT_SPECIAL_MODE="special mode changed"; //special mode (global shuffle, novelties, bestof...) changed
+	public static final String EVENT_PLAY_ERROR="error"; //an error occured during a play
 	
 	//details keys
 	public static final String DETAIL_CURRENT_FILE_ID="current file id";
