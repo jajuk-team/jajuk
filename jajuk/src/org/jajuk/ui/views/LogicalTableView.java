@@ -22,6 +22,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.regex.PatternSyntaxException;
 
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
@@ -34,6 +35,7 @@ import org.jajuk.i18n.Messages;
 import org.jajuk.ui.ObservationManager;
 import org.jajuk.ui.Observer;
 import org.jajuk.ui.TracksTableModel;
+import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Util;
 
 /**
@@ -289,9 +291,23 @@ public class LogicalTableView extends AbstractTableView implements Observer{
 				if ( sValue == null){ //try to filter on a unknown property, don't take this file
 					continue;
 				}
-				else if ( sValue.toLowerCase().indexOf(sPropertyValue.toLowerCase()) == -1){  // test if the property contains this property value ( ignore case )
-					it.remove(); //no? remove it
-				}
+				else { 
+					boolean bMatch = false;	
+					try{  //test using regular expressions
+						if ( ConfigurationManager.getBoolean(CONF_REGEXP)){
+							bMatch = sValue.toLowerCase().matches(sPropertyValue.toLowerCase());  // test if the file property contains this property value (ignore case)
+						}
+						else{ //test without regular expressions
+							bMatch = (sValue.toLowerCase().indexOf(sPropertyValue.toLowerCase())!=-1);  // test if the file property contains this property value (ignore case)
+						}
+					}
+					catch(PatternSyntaxException pse){ //wrong pattern syntax
+						bMatch = false;
+					}
+					if (!bMatch){
+						it.remove(); //no? remove it
+					}
+				}	
 			}
 		}
 		//populate this values
