@@ -115,6 +115,15 @@ public class FIFO implements ITechnicalStrings,Runnable{
 	 * constructor
 	 */
 	private FIFO() {
+		init();
+		tStarter = new Thread(this);
+		tStarter.start();
+	}
+	
+	/**
+	 * Initialisation
+	 */
+	private void init(){
 		alFIFO = new ArrayList(50);
 		bStop = false;
 		bPlaying = false;
@@ -128,8 +137,6 @@ public class FIFO implements ITechnicalStrings,Runnable{
 		alRepeated = new ArrayList(50);
 		bIntroEnabled = false;
 		bPaused = false;
-		tStarter = new Thread(this);
-		tStarter.start();
 	}
 	
 	/**
@@ -386,18 +393,21 @@ public class FIFO implements ITechnicalStrings,Runnable{
 	 * @param device device to unmount
 	 * @return
 	 */
-	public synchronized boolean canUnmount(Device device){
-		if (fCurrent.getDirectory().getDevice().equals(device)){
+	public static boolean canUnmount(Device device){
+		if ( fifo== null){ //currently stopped
+			return true;
+		}
+		if (getInstance().fCurrent.getDirectory().getDevice().equals(device)){
 			return false;
 		}
-		Iterator it = alFIFO.iterator();
+		Iterator it = getInstance().alFIFO.iterator();
 		while (it.hasNext()){
 			File file = (File)it.next();
 			if ( file.getDirectory().getDevice().equals(device)){
 				return false;
 			}
 		}
-		it = alRepeated.iterator();
+		it = getInstance().alRepeated.iterator();
 		while (it.hasNext()){
 			File file = (File)it.next();
 			if ( file.getDirectory().getDevice().equals(device)){
@@ -472,6 +482,7 @@ public class FIFO implements ITechnicalStrings,Runnable{
 		bStop = true;
 		Player.stop();
 		fifo = null;
+		init();
 	}
 	
 	/**

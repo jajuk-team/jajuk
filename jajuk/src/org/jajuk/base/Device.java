@@ -309,13 +309,13 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	 *
 	 */
 	public  void unmount() throws Exception{
-		//look to see if the device is already mounted ( the mount command cannot say that )
+		//look to see if the device is already mounted ( the unix 'mount' command cannot say that )
 		File file = new File(getMountPoint());
-		if (!bMounted || file.list().length==0 ){
+		if (!bMounted || (file.list()!= null && file.list().length==0) ){
 			Messages.showErrorMessage("014");
 			return;
 		}
-		if (!FIFO.getInstance().canUnmount(this)){ //ask fifo if it doens't use any track from this device
+		if (!FIFO.canUnmount(this)){ //ask fifo if it doens't use any track from this device
 			Messages.showErrorMessage("121");
 			return;
 		}
