@@ -33,10 +33,10 @@ import javax.swing.JPopupMenu;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
+import org.jajuk.base.ObservationManager;
+import org.jajuk.base.Observer;
 import org.jajuk.base.StackItem;
 import org.jajuk.i18n.Messages;
-import org.jajuk.ui.ObservationManager;
-import org.jajuk.ui.Observer;
 import org.jajuk.ui.TracksTableModel;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Util;
@@ -309,7 +309,7 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
 		ArrayList alToShow = new ArrayList(alFiles.size());
 		Iterator it = alFiles.iterator();
 		boolean bShowWithTree = true;
-		HashSet hs = (HashSet)ObservationManager.getDetail(EVENT_SYNC_TREE_TABLE,DETAIL_SELECTION);//look at selection
+		HashSet hs = (HashSet)ObservationManager.getDetailLastOccurence(EVENT_SYNC_TREE_TABLE,DETAIL_SELECTION);//look at selection
 		boolean bSyncWithTreeOption = ConfigurationManager.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE);
 		while ( it.hasNext()){
 		    File file = (File)it.next(); 

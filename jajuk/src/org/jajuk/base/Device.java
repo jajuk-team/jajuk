@@ -30,7 +30,6 @@ import javax.swing.JOptionPane;
 import org.jajuk.Main;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.InformationJPanel;
-import org.jajuk.ui.ObservationManager;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.JajukFileFilter;
@@ -275,7 +274,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	            //Sort collection
 	    		FileManager.sortFiles();//resort collection in case of
 	            //notify views to refresh
-	            ObservationManager.notify(EVENT_DEVICE_REFRESH);		
+	            ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH));		
 	        }
 	    }
 	    catch(RuntimeException re){ //runtime error are thrown
@@ -604,7 +603,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 		bMounted = true;
 		//notify views to refresh if needed
 		if ( bUIRefresh ){
-		    ObservationManager.notify(EVENT_DEVICE_MOUNT);
+		    ObservationManager.notify(new Event(EVENT_DEVICE_MOUNT));
 		}
 	}
 	
@@ -654,7 +653,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 		}
 		bMounted = false;
 		if (bUIRefresh) {
-		    ObservationManager.notify(EVENT_DEVICE_UNMOUNT);
+		    ObservationManager.notify(new Event(EVENT_DEVICE_UNMOUNT));
 		}
 	}
 	

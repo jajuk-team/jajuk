@@ -24,10 +24,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 
+import org.jajuk.base.Observer;
 import org.jajuk.base.Playlist;
 import org.jajuk.base.PlaylistFile;
 import org.jajuk.base.PlaylistManager;
-import org.jajuk.ui.Observer;
 import org.jajuk.ui.PlaylistFileItem;
 
 /**

@@ -47,11 +47,14 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import org.jajuk.base.Event;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.History;
 import org.jajuk.base.HistoryItem;
 import org.jajuk.base.JajukTimer;
+import org.jajuk.base.ObservationManager;
+import org.jajuk.base.Observer;
 import org.jajuk.base.Player;
 import org.jajuk.base.SearchResult;
 import org.jajuk.base.StackItem;
@@ -122,7 +125,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 	/** Swing Timer to refresh the component*/ 
 	private Timer timer = new Timer(JajukTimer.DEFAULT_HEARTBEAT,new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
-			update(EVENT_HEART_BEAT);
+			update(new Event(EVENT_HEART_BEAT));
 		}
 	});
 	
@@ -323,20 +326,20 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		ObservationManager.register(EVENT_PLAYER_STOP,CommandJPanel.this);
 		ObservationManager.register(EVENT_PLAYER_PAUSE,CommandJPanel.this);
 		ObservationManager.register(EVENT_PLAYER_RESUME,CommandJPanel.this);
-		ObservationManager.register(EVENT_ADD_HISTORY_ITEM,CommandJPanel.this);
 		ObservationManager.register(EVENT_PLAY_ERROR,CommandJPanel.this);
 		ObservationManager.register(EVENT_SPECIAL_MODE,CommandJPanel.this);
 		ObservationManager.register(EVENT_ZERO,CommandJPanel.this);
 		ObservationManager.register(EVENT_MUTE_STATE,CommandJPanel.this);
 		ObservationManager.register(EVENT_REPEAT_MODE_STATUS_CHANGED,CommandJPanel.this);
 		ObservationManager.register(EVENT_DEVICE_REFRESH,CommandJPanel.this);
-        
+	    ObservationManager.register(EVENT_FILE_LAUNCHED,this);
+	    
 		//if a track is playing, display right state
 		if ( FIFO.getInstance().getCurrentFile() != null){
 			//update initial state 
-			update(EVENT_PLAYER_PLAY);
+			update(new Event(EVENT_PLAYER_PLAY,ObservationManager.getDetailsLastOccurence(EVENT_PLAYER_PLAY)));
 			//check if some track has been lauched before the view has been displayed
-			update(EVENT_HEART_BEAT);
+			update(new Event(EVENT_HEART_BEAT));
 		}
 		
 		//start timer
@@ -449,7 +452,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 				FIFO.getInstance().computesPlanned(true); //update planned list
 				Properties properties = new Properties();
 				properties.put(DETAIL_ORIGIN,DETAIL_SPECIAL_MODE_NORMAL);
-				ObservationManager.notify(EVENT_SPECIAL_MODE,properties);
+				ObservationManager.notify(new Event(EVENT_SPECIAL_MODE,properties));
 			}
 			else if (ae.getSource() == jbMute ){
 				Player.mute(); //change mute state
@@ -460,11 +463,11 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 			else if(ae.getSource() == jbPlayPause){
 				if ( Player.isPaused()){  //player was paused, resume it
 					Player.resume();
-					ObservationManager.notify(EVENT_PLAYER_RESUME);  //notify of this event
+					ObservationManager.notify(new Event(EVENT_PLAYER_RESUME));  //notify of this event
 				}
 				else{ //player is not paused, pause it
 					Player.pause();
-					ObservationManager.notify(EVENT_PLAYER_PAUSE);  //notify of this event
+					ObservationManager.notify(new Event(EVENT_PLAYER_PAUSE));  //notify of this event
 				}
 			}
 			else if (ae.getSource() == jbRew){
@@ -480,7 +483,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 			Log.error(e);
 		}
 		finally{
-			ObservationManager.notify(EVENT_PLAYLIST_REFRESH); //refresh playlist editor
+			ObservationManager.notify(new Event(EVENT_PLAYLIST_REFRESH)); //refresh playlist editor
 		}
 	}
 	
@@ -581,10 +584,11 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.Observer#update(java.lang.String)
 	 */
-	public void update(final String subject) {
+	public void update(final Event event) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				if( EVENT_PLAYER_STOP.equals(subject) || EVENT_ZERO.equals(subject)){
+				String subject = event.getSubject();
+				if(EVENT_PLAYER_STOP.equals(subject) || EVENT_ZERO.equals(subject)){
 					jbRew.setEnabled(false);
 					jbPlayPause.setEnabled(false);
 					jbStop.setEnabled(false);
@@ -596,7 +600,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 					jbPlayPause.setIcon(Util.getIcon(ICON_PAUSE)); //resume any current pause
 					ConfigurationManager.setProperty(CONF_STARTUP_LAST_POSITION,"0");//reset startup position //$NON-NLS-1$
 				}
-				else if ( EVENT_PLAYER_PLAY.equals(subject)){
+				else if (EVENT_PLAYER_PLAY.equals(subject)){
 					jbRew.setEnabled(true);
 					jbPlayPause.setEnabled(true);
 					jbStop.setEnabled(true);
@@ -606,13 +610,13 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 					jsPosition.setEnabled(true);
 					jbPlayPause.setIcon(Util.getIcon(ICON_PAUSE)); //resume any current pause
 				}
-				else if ( EVENT_PLAYER_PAUSE.equals(subject)){
+				else if (EVENT_PLAYER_PAUSE.equals(subject)){
 					jbRew.setEnabled(false);
 					jbFwd.setEnabled(false);
 					jsPosition.setEnabled(false);
 					jbPlayPause.setIcon(Util.getIcon(ICON_PLAY));
 				}
-				else if ( EVENT_PLAYER_RESUME.equals(subject)){
+				else if (EVENT_PLAYER_RESUME.equals(subject)){
 					jbRew.setEnabled(true);
 					jbFwd.setEnabled(true);
 					jsPosition.setEnabled(true);
@@ -632,25 +636,8 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 						jbMute.setBorder(BorderFactory.createRaisedBevelBorder());
 					}
 				}      
-				else if (EVENT_ADD_HISTORY_ITEM.equals(subject)){
-					HistoryItem hi = (HistoryItem)ObservationManager.getDetail(EVENT_ADD_HISTORY_ITEM,DETAIL_HISTORY_ITEM);
-					if (hi != null ){
-						addHistoryItem(hi);
-					}
-				}
-			/*	else if (EVENT_PLAY_ERROR.equals(subject)){
-				    if (jcbHistory.getItemCount() > 0){
-				        jcbHistory.removeActionListener(CommandJPanel.this); //stop listening this item when manupulating it
-				        jcbHistory.removeItemAt(0);
-				        //select first row
-				        if (jcbHistory.getItemCount()>0){
-				            jcbHistory.setSelectedIndex(0);
-				        }
-				        jcbHistory.addActionListener(CommandJPanel.this);
-				    }
-				}*/
 				else if(EVENT_SPECIAL_MODE.equals(subject)){
-				    if (ObservationManager.getDetail(EVENT_SPECIAL_MODE,DETAIL_ORIGIN).equals(DETAIL_SPECIAL_MODE_NORMAL)){
+				    if (ObservationManager.getDetail(event,DETAIL_ORIGIN).equals(DETAIL_SPECIAL_MODE_NORMAL)){
 						// deselect shuffle mode
 						ConfigurationManager.setProperty(CONF_STATE_SHUFFLE, FALSE);
 						JajukJMenuBar.getInstance().jcbmiShuffle.setSelected(false);
@@ -660,7 +647,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 					}
 				}
 				else if(EVENT_REPEAT_MODE_STATUS_CHANGED.equals(subject)){
-					if (ObservationManager.getDetail(EVENT_REPEAT_MODE_STATUS_CHANGED,DETAIL_SELECTION).equals(FALSE)){
+					if (ObservationManager.getDetail(event,DETAIL_SELECTION).equals(FALSE)){
 						//    deselect repeat mode
 						ConfigurationManager.setProperty(CONF_STATE_REPEAT, FALSE);
 						JajukJMenuBar.getInstance().jcbmiRepeat.setSelected(false);
@@ -670,6 +657,11 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
                 else if(EVENT_DEVICE_REFRESH.equals(subject)){
                    History.getInstance().cleanup();
                    refreshHistoryBar();
+                }
+                else if (EVENT_FILE_LAUNCHED.equals(subject)){
+                	String sFileID = (String)ObservationManager.getDetail(event,DETAIL_CURRENT_FILE_ID);
+                	long lDate =( (Long)ObservationManager.getDetail(event,DETAIL_CURRENT_DATE)).longValue();
+                	addHistoryItem(new HistoryItem(sFileID,lDate));
                 }
 			}
 		});
@@ -703,7 +695,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 					}.start();
 					if ( Player.isPaused()){  //player was paused, reset pause button when changing of track
 						Player.setPaused(false);
-						ObservationManager.notify(EVENT_PLAYER_RESUME);  //notify of this event
+						ObservationManager.notify(new Event(EVENT_PLAYER_RESUME));  //notify of this event
 					}
 				}
 			}
@@ -721,7 +713,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 					}.start();
 					if ( Player.isPaused()){  //player was paused, reset pause button
 						Player.setPaused(false);
-						ObservationManager.notify(EVENT_PLAYER_RESUME);  //notify of this event
+						ObservationManager.notify(new Event(EVENT_PLAYER_RESUME));  //notify of this event
 					}
 				}
 			}
@@ -756,7 +748,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 					}.start();
 					if ( Player.isPaused()){  //player was paused, reset pause button when changing of track
 						Player.setPaused(false);
-						ObservationManager.notify(EVENT_PLAYER_RESUME);  //notify of this event
+						ObservationManager.notify(new Event(EVENT_PLAYER_RESUME));  //notify of this event
 					}
 				}
 			}

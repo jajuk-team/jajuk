@@ -27,7 +27,6 @@ import java.util.Iterator;
 import javax.swing.JOptionPane;
 
 import org.jajuk.i18n.Messages;
-import org.jajuk.ui.ObservationManager;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.MD5Processor;
@@ -235,7 +234,7 @@ public class DeviceManager implements ITechnicalStrings{
 		FileManager.sortFiles();//resort collection in case of
 		
 		//refresh views
-		ObservationManager.notify(EVENT_DEVICE_REFRESH);
+		ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH));
 	}
 	
 	/**

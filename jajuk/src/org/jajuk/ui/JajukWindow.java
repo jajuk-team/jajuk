@@ -33,8 +33,11 @@ import javax.swing.SwingUtilities;
 
 import org.jajuk.Main;
 import org.jajuk.base.DeviceManager;
+import org.jajuk.base.Event;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
+import org.jajuk.base.ObservationManager;
+import org.jajuk.base.Observer;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
@@ -108,7 +111,8 @@ public class JajukWindow extends JFrame implements ITechnicalStrings,ComponentLi
 			}
 		});
 		//display correct title if a track is lauched at startup
-		update(EVENT_FILE_LAUNCHED);
+		update(new Event(EVENT_FILE_LAUNCHED,ObservationManager.getDetailsLastOccurence(EVENT_FILE_LAUNCHED)));
+        
 	}
 	
 	
@@ -161,7 +165,8 @@ public class JajukWindow extends JFrame implements ITechnicalStrings,ComponentLi
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.Observer#update(java.lang.String)
 	 */
-	public void update(String subject) {
+	public void update(Event event) {
+		String subject = event.getSubject();
 		if (subject.equals(EVENT_FILE_LAUNCHED)){
 			File file = FIFO.getInstance().getCurrentFile();
 			if (file != null){

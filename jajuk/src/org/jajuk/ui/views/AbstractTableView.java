@@ -36,6 +36,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
+import org.jajuk.base.Event;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.JajukTable;
 import org.jajuk.ui.TableTransferHandler;
@@ -173,7 +174,8 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.Observer#update(java.lang.String)
 	 */
-	public void update(String subject) {
+	public void update(Event event) {
+		String subject = event.getSubject();
 		if ( EVENT_DEVICE_MOUNT.equals(subject) || EVENT_DEVICE_UNMOUNT.equals(subject) 
 		        || EVENT_DEVICE_REFRESH.equals(subject)  || EVENT_SYNC_TREE_TABLE.equals(subject)) {
 			applyFilter(sAppliedCriteria,sAppliedFilter); //force filter to refresh

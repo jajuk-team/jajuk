@@ -34,7 +34,6 @@ import javax.swing.JOptionPane;
 import org.jajuk.Main;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.JajukFileChooser;
-import org.jajuk.ui.ObservationManager;
 import org.jajuk.ui.PlaylistFileItem;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.JajukFileFilter;
@@ -320,7 +319,7 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 	        Log.error(e);
 	    }
 	    finally{
-	        ObservationManager.notify(EVENT_PLAYLIST_REFRESH); //refresh playlist editor    
+	        ObservationManager.notify(new Event(EVENT_PLAYLIST_REFRESH)); //refresh playlist editor    
 		}
 	}
 	
@@ -488,7 +487,7 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 				if ( fileToDelete.exists()){
 					fileToDelete.delete();
 					PlaylistFileManager.delete(getId());
-					ObservationManager.notify(EVENT_DEVICE_REFRESH);  //requires device refresh
+					ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH));  //requires device refresh
 				}
 			}
 		}
@@ -605,7 +604,7 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 			this.setFio(file); //set new file path ( this playlist is a special playlist, just in memory )
 			try{
 				this.commit(); //write it on the disk
-				ObservationManager.notify(EVENT_PLAYLIST_REFRESH); //notify playlist repository to refresh
+				ObservationManager.notify(new Event(EVENT_PLAYLIST_REFRESH)); //notify playlist repository to refresh
 			}
 			catch(JajukException je){
 				Log.error(je);

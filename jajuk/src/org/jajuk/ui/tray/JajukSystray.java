@@ -33,16 +33,17 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
 import org.jajuk.Main;
+import org.jajuk.base.Event;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
+import org.jajuk.base.ObservationManager;
+import org.jajuk.base.Observer;
 import org.jajuk.base.Player;
 import org.jajuk.base.StackItem;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.CommandJPanel;
 import org.jajuk.ui.JajukWindow;
-import org.jajuk.ui.ObservationManager;
-import org.jajuk.ui.Observer;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
@@ -198,10 +199,10 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
 		
 		//check if a fiel has been already started
 		if (FIFO.getInstance().getCurrentFile() == null){
-			update(EVENT_PLAYER_STOP);    
-		}
+			update(new Event(EVENT_PLAYER_STOP,ObservationManager.getDetailsLastOccurence(EVENT_PLAYER_STOP)));
+        }
 		else{
-			update(EVENT_FILE_LAUNCHED);    
+			update(new Event(EVENT_FILE_LAUNCHED,ObservationManager.getDetailsLastOccurence(EVENT_FILE_LAUNCHED)));    
 		}
 	}
 	
@@ -249,7 +250,7 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
 				FIFO.getInstance().computesPlanned(true); //update planned list
 				Properties properties = new Properties();
 				properties.put(DETAIL_ORIGIN,DETAIL_SPECIAL_MODE_NORMAL);
-				ObservationManager.notify(EVENT_SPECIAL_MODE,properties);
+				ObservationManager.notify(new Event(EVENT_SPECIAL_MODE,properties));
 			}
 			else if (e.getSource() == jcbmiVisible){
 				ConfigurationManager.setProperty(CONF_SHOW_AT_STARTUP,Boolean.toString(jcbmiVisible.getState()));
@@ -272,7 +273,7 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
 			}
 			else if (e.getSource() == jmiStop){
 				FIFO.getInstance().stopRequest();
-				ObservationManager.notify(EVENT_PLAYLIST_REFRESH); //alert playlists editors ( queue playlist ) something changed for him
+				ObservationManager.notify(new Event(EVENT_PLAYLIST_REFRESH)); //alert playlists editors ( queue playlist ) something changed for him
 			}
 			else if (e.getSource() == jmiMute){
 				Player.mute();  //change mute state 
@@ -281,12 +282,12 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
 				if ( Player.isPaused()){  //player was paused, resume it
 					Player.resume();
 					jmiPause.setText(Messages.getString("JajukWindow.10")); //$NON-NLS-1$
-					ObservationManager.notify(EVENT_PLAYER_RESUME);  //notify of this event
+					ObservationManager.notify(new Event(EVENT_PLAYER_RESUME));  //notify of this event
 				}
 				else{ //player is not paused, pause it
 					Player.pause();
 					jmiPause.setText(Messages.getString("JajukWindow.12")); //$NON-NLS-1$
-					ObservationManager.notify(EVENT_PLAYER_PAUSE);  //notify of this event
+					ObservationManager.notify(new Event(EVENT_PLAYER_PAUSE));  //notify of this event
 				}
 			}
 		}
@@ -294,7 +295,7 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
 			Log.error(e2);
 		}
 		finally{
-			ObservationManager.notify(EVENT_PLAYLIST_REFRESH); //refresh playlist editor
+			ObservationManager.notify(new Event(EVENT_PLAYLIST_REFRESH)); //refresh playlist editor
 		}
 	}
 	
@@ -302,7 +303,8 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.Observer#update(java.lang.String)
 	 */
-	public void update(String subject) {
+	public void update(Event event) {
+		String subject = event.getSubject();
 		if (EVENT_ZERO.equals(subject)){
 			trayIcon.setToolTip(Messages.getString("JajukWindow.18")); //$NON-NLS-1$
 		}
@@ -317,7 +319,7 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
 			}	
 		}
 		else if (EVENT_FILE_LAUNCHED.equals(subject)){
-			File file  = FileManager.getFile((String)ObservationManager.getDetail(EVENT_FILE_LAUNCHED,DETAIL_CURRENT_FILE_ID));
+			File file  = FileManager.getFile((String)ObservationManager.getDetail(event,DETAIL_CURRENT_FILE_ID));
 			String sOut = ""; //$NON-NLS-1$
 			if (file != null ){
 				String sAuthor = file.getTrack().getAuthor().getName();

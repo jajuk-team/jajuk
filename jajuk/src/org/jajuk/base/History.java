@@ -27,14 +27,11 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Properties;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import org.jajuk.i18n.Messages;
-import org.jajuk.ui.ObservationManager;
-import org.jajuk.ui.Observer;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.error.JajukException;
@@ -71,11 +68,10 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
 	/** Hidden constructor */
 	private History() {
 	    ObservationManager.register(EVENT_FILE_LAUNCHED,this);
-	    ObservationManager.register(EVENT_PLAY_ERROR,this);
-	    //check if something has alredy started
-	    if (ObservationManager.getDetail(EVENT_FILE_LAUNCHED,DETAIL_CURRENT_FILE_ID) != null &&
-	            ObservationManager.getDetail(EVENT_FILE_LAUNCHED,DETAIL_CURRENT_DATE) != null){
-	        update(EVENT_FILE_LAUNCHED);
+	    //check if something has already started
+	    if (ObservationManager.getDetailLastOccurence(EVENT_FILE_LAUNCHED,DETAIL_CURRENT_FILE_ID) != null &&
+	            ObservationManager.getDetailLastOccurence(EVENT_FILE_LAUNCHED,DETAIL_CURRENT_DATE) != null){
+	        update(new Event(EVENT_FILE_LAUNCHED,ObservationManager.getDetailsLastOccurence(EVENT_FILE_LAUNCHED)));
 	    }
 	}
 	
@@ -98,9 +94,6 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
 		    }
 		}
 		alHistory.add(0,hi);
-		Properties pDetails = new Properties();
-		pDetails.put(DETAIL_HISTORY_ITEM,hi);
-		ObservationManager.notify(EVENT_ADD_HISTORY_ITEM,pDetails);
 	}
 	
 	/** Clear history */
@@ -301,17 +294,12 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
     /* (non-Javadoc)
      * @see org.jajuk.ui.Observer#update(java.lang.String)
      */
-	public void update(String subject) {
+	public void update(Event event) {
 	    try {
-	        if (subject.equals(EVENT_FILE_LAUNCHED)){
-	            String sFileID = (String)ObservationManager.getDetail(EVENT_FILE_LAUNCHED,DETAIL_CURRENT_FILE_ID);
-	            long lDate =( (Long)ObservationManager.getDetail(EVENT_FILE_LAUNCHED,DETAIL_CURRENT_DATE)).longValue();
+	        if (EVENT_FILE_LAUNCHED.equals(event.getSubject())){
+	            String sFileID = (String)ObservationManager.getDetail(event,DETAIL_CURRENT_FILE_ID);
+	            long lDate =( (Long)ObservationManager.getDetail(event,DETAIL_CURRENT_DATE)).longValue();
 	            addItem(sFileID,lDate);
-	        }
-	        else if (subject.equals(EVENT_PLAY_ERROR)){
-	            if (alHistory.size()>0){
-	                alHistory.remove(0);
-	            }
 	        }
 	    }
 	    catch(Exception e){

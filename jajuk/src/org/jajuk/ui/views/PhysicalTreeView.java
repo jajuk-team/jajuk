@@ -56,15 +56,16 @@ import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;
 import org.jajuk.base.Directory;
 import org.jajuk.base.DirectoryManager;
+import org.jajuk.base.Event;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
+import org.jajuk.base.ObservationManager;
 import org.jajuk.base.PlaylistFile;
 import org.jajuk.base.PlaylistFileManager;
 import org.jajuk.base.StackItem;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.InformationJPanel;
-import org.jajuk.ui.ObservationManager;
 import org.jajuk.ui.TransferableTreeNode;
 import org.jajuk.ui.TreeTransferHandler;
 import org.jajuk.util.ConfigurationManager;
@@ -80,7 +81,7 @@ import com.sun.SwingWorker;
  * @author Bertrand Florat 
  * @created 28 nov. 2003
  */
-public class PhysicalTreeView extends AbstractTreeView implements ActionListener,org.jajuk.ui.Observer{
+public class PhysicalTreeView extends AbstractTreeView implements ActionListener,org.jajuk.base.Observer{
     
     /** Self instance */
     private static PhysicalTreeView ptv;
@@ -481,7 +482,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
                 if (ConfigurationManager.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE)){ //if table is synchronized with tree, notify the selection change
 	                Properties properties = new Properties();
 	                properties.put(DETAIL_SELECTION,hsSelectedFiles);
-	                ObservationManager.notify(EVENT_SYNC_TREE_TABLE,properties);
+	                ObservationManager.notify(new Event(EVENT_SYNC_TREE_TABLE,properties));
 	             }
             }
         });
@@ -836,8 +837,9 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
     /* (non-Javadoc)
      * @see org.jajuk.ui.Observer#update(java.lang.String)
      */
-    public void update(String subject) {
-        if ( subject.equals(EVENT_DEVICE_MOUNT) || subject.equals(EVENT_DEVICE_UNMOUNT) || subject.equals(EVENT_DEVICE_REFRESH) ) {
+    public void update(Event event) {
+        String subject = event.getSubject();
+    	if ( subject.equals(EVENT_DEVICE_MOUNT) || subject.equals(EVENT_DEVICE_UNMOUNT) || subject.equals(EVENT_DEVICE_REFRESH) ) {
             SwingWorker sw = new SwingWorker() {
                 public Object  construct(){
                     populateTree();

@@ -31,15 +31,16 @@ import java.util.TreeMap;
 
 import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;
+import org.jajuk.base.Event;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
+import org.jajuk.base.ObservationManager;
+import org.jajuk.base.Observer;
 import org.jajuk.base.Style;
 import org.jajuk.base.StyleManager;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.i18n.Messages;
-import org.jajuk.ui.ObservationManager;
-import org.jajuk.ui.Observer;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 import org.jfree.chart.ChartFactory;
@@ -97,7 +98,7 @@ public class StatView extends ViewAdapter implements Observer{
 		setLayout(new TableLayout(size));
 		ObservationManager.register(EVENT_DEVICE_DELETE,this);
 		ObservationManager.register(EVENT_DEVICE_REFRESH,this);
-		update(EVENT_DEVICE_REFRESH);	
+		update(new Event(EVENT_DEVICE_REFRESH,ObservationManager.getDetailsLastOccurence(EVENT_DEVICE_REFRESH)));	
 	}
 	
 	/** Style repartition pie
@@ -348,7 +349,8 @@ public class StatView extends ViewAdapter implements Observer{
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.Observer#update(java.lang.String)
 	 */
-	public synchronized  void update(final String subject) {
+	public synchronized  void update(Event event) {
+		String subject = event.getSubject();
 		if (EVENT_DEVICE_REFRESH.equals(subject) || EVENT_DEVICE_DELETE.equals(subject)){
 			Util.waiting();
 			if (getComponentCount() > 0){

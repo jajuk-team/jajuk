@@ -36,10 +36,11 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 
+import org.jajuk.base.Event;
+import org.jajuk.base.ObservationManager;
+import org.jajuk.base.Observer;
 import org.jajuk.base.PlaylistFile;
 import org.jajuk.i18n.Messages;
-import org.jajuk.ui.ObservationManager;
-import org.jajuk.ui.Observer;
 import org.jajuk.ui.PlaylistFileItem;
 import org.jajuk.util.Util;
 
@@ -133,7 +134,7 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 					Properties properties = new Properties();
 					properties.put(DETAIL_SELECTION,plfi);
 					properties.put(DETAIL_ORIGIN,this);
-					ObservationManager.notify(EVENT_PLAYLIST_CHANGED,properties); 
+					ObservationManager.notify(new Event(EVENT_PLAYLIST_CHANGED,properties)); 
 					if (e.getButton() == MouseEvent.BUTTON3){  //right button
 						showMenu(plfi,e);
 					}
@@ -154,7 +155,7 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 		Properties properties = new Properties();
 		properties.put(DETAIL_SELECTION,plfiQueue);
 		properties.put(DETAIL_ORIGIN,this);
-		ObservationManager.notify(EVENT_PLAYLIST_CHANGED,properties);
+		ObservationManager.notify(new Event(EVENT_PLAYLIST_CHANGED,properties));
 	}
 	
 	
@@ -219,7 +220,8 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.Observer#update(java.lang.String)
 	 */
-	public void update(String subject) {
+	public void update(Event event) {
+		String subject = event.getSubject();
 		if ( subject.equals(EVENT_DEVICE_MOUNT) || subject.equals(EVENT_DEVICE_UNMOUNT) || subject.equals(EVENT_DEVICE_REFRESH) ) {
 			SwingWorker sw = new SwingWorker() {
 				public Object  construct(){
@@ -236,7 +238,7 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 					Properties properties = new Properties();
 					properties.put(DETAIL_SELECTION,plfiQueue);
 					properties.put(DETAIL_ORIGIN,this);
-					ObservationManager.notify(EVENT_PLAYLIST_CHANGED,properties);
+					ObservationManager.notify(new Event(EVENT_PLAYLIST_CHANGED,properties));
 					AbstractPlaylistRepositoryView.this.revalidate();
 					AbstractPlaylistRepositoryView.this.repaint();
 				}

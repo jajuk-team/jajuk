@@ -46,6 +46,8 @@ import javax.swing.JTextField;
 import org.jajuk.Main;
 import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;
+import org.jajuk.base.Event;
+import org.jajuk.base.ObservationManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.JajukFileFilter;
@@ -378,7 +380,7 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 				}
 			}
 			else{
-				ObservationManager.notify(EVENT_DEVICE_REFRESH);  //refresh trees with empty device
+				ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH));  //refresh trees with empty device
 			}
 			dispose();
 			if (bNew){

@@ -50,15 +50,16 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import org.jajuk.Main;
+import org.jajuk.base.Event;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.History;
+import org.jajuk.base.ObservationManager;
 import org.jajuk.base.SearchResult;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.CommandJPanel;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.LNFManager;
-import org.jajuk.ui.ObservationManager;
 import org.jajuk.ui.PerspectiveBarJPanel;
 import org.jajuk.ui.SearchBox;
 import org.jajuk.ui.perspectives.PerspectiveManager;
@@ -806,7 +807,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 					boolean bHiddenState = jcbDisplayUnmounted.isSelected(); 
 					if ( bHiddenState != bHidden){ //check if this option changed to launch a refresh if needed
 						bHidden = bHiddenState;
-						ObservationManager.notify(EVENT_DEVICE_REFRESH);
+						ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH));
 					}
 					ConfigurationManager.setProperty(CONF_OPTIONS_HIDE_UNMOUNTED,Boolean.toString(bHiddenState));
 					ConfigurationManager.setProperty(CONF_OPTIONS_RESTART,Boolean.toString(jcbRestart.isSelected()));

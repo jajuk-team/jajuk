@@ -35,9 +35,12 @@ import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.border.EtchedBorder;
 
+import org.jajuk.base.Event;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
 import org.jajuk.base.JajukTimer;
+import org.jajuk.base.ObservationManager;
+import org.jajuk.base.Observer;
 import org.jajuk.base.Player;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ITechnicalStrings;
@@ -61,7 +64,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,Obser
     /** Swing Timer to refresh the component*/ 
     private Timer timer = new Timer(JajukTimer.DEFAULT_HEARTBEAT,new ActionListener() {
         public void actionPerformed(ActionEvent e) {
-            update(EVENT_HEART_BEAT);
+            update(new Event(EVENT_HEART_BEAT));
         }
     });
     
@@ -148,7 +151,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,Obser
         add(jpCurrent,"4,0"); //$NON-NLS-1$
         
         //check if some track has been lauched before the view has been displayed
-        update(EVENT_FILE_LAUNCHED);
+        update(new Event(EVENT_FILE_LAUNCHED,ObservationManager.getDetailsLastOccurence(EVENT_FILE_LAUNCHED)));
         //register for given events
         ObservationManager.register(EVENT_ZERO,this);
         ObservationManager.register(EVENT_FILE_LAUNCHED,this);
@@ -270,11 +273,12 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,Obser
     /* (non-Javadoc)
      * @see org.jajuk.ui.Observer#update(java.lang.String)
      */
-    public synchronized void update(final String subject) {  //we synchronize this method to make error message is visible all 2 secs
-        //do not insert this subject inside the invokeLater because we have to leave the awt dispatcher called inside the setMessage and THEN, sleep for 2 secs.
+    public synchronized void update(final Event event) {  //we synchronize this method to make error message is visible all 2 secs
+        final String subject = event.getSubject();
+    	//do not insert this subject inside the invokeLater because we have to leave the awt dispatcher called inside the setMessage and THEN, sleep for 2 secs.
         if (EVENT_PLAY_ERROR.equals(subject)){
             try{
-                File fCurrent = (File)ObservationManager.getDetail(EVENT_PLAY_ERROR,DETAIL_CURRENT_FILE);
+                File fCurrent = (File)ObservationManager.getDetail(event,DETAIL_CURRENT_FILE);
                 setMessage(Messages.getString("Error.007")+": "+fCurrent.getAbsolutePath(),InformationJPanel.ERROR);//$NON-NLS-1$ //$NON-NLS-2$
                 Thread.sleep(2000); //make sure user has time to see this error message
             } catch (Exception e) {
@@ -313,7 +317,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,Obser
                     }
                     else if (EVENT_PLAY_ERROR.equals(subject)){
                         try{
-                            File fCurrent = (File)ObservationManager.getDetail(EVENT_PLAY_ERROR,DETAIL_CURRENT_FILE);
+                            File fCurrent = (File)ObservationManager.getDetail(event,DETAIL_CURRENT_FILE);
                             setMessage(Messages.getString("Error.007")+": "+fCurrent.getAbsolutePath(),InformationJPanel.ERROR);//$NON-NLS-1$ //$NON-NLS-2$
                             Thread.sleep(2000); //make sure user has time to see this error message
                         } catch (Exception e) {

@@ -36,9 +36,11 @@ import javax.swing.SwingUtilities;
 import org.jajuk.base.Collection;
 import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;
+import org.jajuk.base.Event;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.History;
+import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Player;
 import org.jajuk.base.Type;
 import org.jajuk.base.TypeManager;
@@ -49,7 +51,6 @@ import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.JajukJMenuBar;
 import org.jajuk.ui.JajukWindow;
 import org.jajuk.ui.LNFManager;
-import org.jajuk.ui.ObservationManager;
 import org.jajuk.ui.PerspectiveBarJPanel;
 import org.jajuk.ui.SplashScreen;
 import org.jajuk.ui.perspectives.PerspectiveManager;
@@ -399,7 +400,7 @@ public class Main implements ITechnicalStrings {
 		Main.iExitCode = iExitCode;
 		//force sound to stop quickly
 		FIFO.getInstance().stopRequest();  
-		ObservationManager.notify(EVENT_PLAYLIST_REFRESH); //alert playlists editors ( queue playlist ) something changed for him
+		ObservationManager.notify(new Event(EVENT_PLAYLIST_REFRESH)); //alert playlists editors ( queue playlist ) something changed for him
 		//hide window
 		if (jw!=null) jw.setShown(false);
 		//hide systray

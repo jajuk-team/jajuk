@@ -31,11 +31,12 @@ import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 
 import org.jajuk.Main;
+import org.jajuk.base.Event;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
+import org.jajuk.base.ObservationManager;
+import org.jajuk.base.Observer;
 import org.jajuk.i18n.Messages;
-import org.jajuk.ui.ObservationManager;
-import org.jajuk.ui.Observer;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.log.Log;
 
@@ -94,7 +95,8 @@ public class AnimationView extends ViewAdapter implements ITechnicalStrings,Obse
 		ObservationManager.register(EVENT_FILE_LAUNCHED,this);
 		ObservationManager.register(EVENT_ZERO,this);
 		//check if a track has already been lauched
-		update(EVENT_FILE_LAUNCHED);
+		update(new Event(EVENT_FILE_LAUNCHED,ObservationManager.getDetailsLastOccurence(EVENT_FILE_LAUNCHED))); //force immediate table refresh
+                            
 	}
 	
 	/**Set the text to be displayed**/
@@ -146,7 +148,8 @@ public class AnimationView extends ViewAdapter implements ITechnicalStrings,Obse
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.Observer#update(java.lang.String)
 	 */
-	public void update(String subject) {
+	public void update(Event event) {
+		String subject = event.getSubject();
 		if (subject.equals(EVENT_FILE_LAUNCHED)){
 		    File file = FIFO.getInstance().getCurrentFile();
 		    if (file != null){
@@ -171,7 +174,7 @@ public class AnimationView extends ViewAdapter implements ITechnicalStrings,Obse
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				iSize = SwingUtilities.getRootPane(AnimationView.this).getWidth(); //current  width
-				update(EVENT_FILE_LAUNCHED);//force redisplay
+				update(new Event(EVENT_FILE_LAUNCHED,ObservationManager.getDetailsLastOccurence(EVENT_FILE_LAUNCHED)));//force redisplay
 			}
 		});
 		Log.debug("View resized, new width="+iSize); //$NON-NLS-1$

@@ -18,7 +18,7 @@
  *  $Revision$
  */
 
-package org.jajuk.ui;
+package org.jajuk.base;
 
 /**
  *  GoF Observer pattern Observer 
@@ -27,6 +27,10 @@ package org.jajuk.ui;
  */
 public interface Observer {
 
-	public void update(String subject);
+	/**
+	 * Action to be done when receiving an event with this ID
+	 * @param lEventID Event ID, maps a subject and details
+	 */
+	public void update(Event event);
 	
 }

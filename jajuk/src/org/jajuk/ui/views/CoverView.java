@@ -56,12 +56,13 @@ import org.jajuk.base.Album;
 import org.jajuk.base.Author;
 import org.jajuk.base.Cover;
 import org.jajuk.base.Directory;
+import org.jajuk.base.Event;
 import org.jajuk.base.FIFO;
+import org.jajuk.base.ObservationManager;
+import org.jajuk.base.Observer;
 import org.jajuk.base.Track;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.InformationJPanel;
-import org.jajuk.ui.ObservationManager;
-import org.jajuk.ui.Observer;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.ui.perspectives.PlayerPerspective;
 import org.jajuk.util.ConfigurationManager;
@@ -198,7 +199,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
         } catch (Exception e) {
             Log.error(e);
         }
-        update(EVENT_COVER_REFRESH);
+        update(new Event(EVENT_COVER_REFRESH,ObservationManager.getDetailsLastOccurence(EVENT_COVER_REFRESH)));
         this.addComponentListener(this); //listen for resize
     }
     
@@ -206,8 +207,9 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
     /* (non-Javadoc)
      * @see org.jajuk.ui.Observer#update(java.lang.String)
      */
-    public void update(String subject){
-        //stop any other thread downloading covers
+    public void update(Event event){
+        String subject = event.getSubject();
+    	//stop any other thread downloading covers
         bStop = true;
         synchronized(bLock){
             try{
@@ -614,7 +616,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                 ConfigurationManager.setProperty(CONF_COVERS_ACCURACY+"_"+sID,Integer.toString(jcbAccuracy.getSelectedIndex())); //$NON-NLS-1$
                 new Thread(){
                     public void run(){
-                        update(EVENT_COVER_REFRESH); //force refreshing
+                        update(new Event(EVENT_COVER_REFRESH,ObservationManager.getDetailsLastOccurence(EVENT_COVER_REFRESH))); //force refreshing
                     }
                 }.start();
             }

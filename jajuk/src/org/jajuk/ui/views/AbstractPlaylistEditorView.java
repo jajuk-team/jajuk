@@ -51,9 +51,12 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
 
 import org.jajuk.base.BasicFile;
+import org.jajuk.base.Event;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
+import org.jajuk.base.ObservationManager;
+import org.jajuk.base.Observer;
 import org.jajuk.base.Playlist;
 import org.jajuk.base.PlaylistFile;
 import org.jajuk.base.PlaylistManager;
@@ -64,8 +67,6 @@ import org.jajuk.ui.IconLabel;
 import org.jajuk.ui.JajukCellRender;
 import org.jajuk.ui.JajukFileChooser;
 import org.jajuk.ui.JajukTable;
-import org.jajuk.ui.ObservationManager;
-import org.jajuk.ui.Observer;
 import org.jajuk.ui.PlaylistFileItem;
 import org.jajuk.ui.PlaylistTransferHandler;
 import org.jajuk.util.ConfigurationManager;
@@ -302,7 +303,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
         new PlaylistTransferHandler(this,DnDConstants.ACTION_COPY_OR_MOVE);
         new PlaylistTransferHandler(jtable,DnDConstants.ACTION_COPY_OR_MOVE);
         //force a refresh
-        update(EVENT_PLAYLIST_CHANGED);
+        update(new Event(EVENT_PLAYLIST_CHANGED,ObservationManager.getDetailsLastOccurence(EVENT_PLAYLIST_CHANGED)));
     }
     
     /* (non-Javadoc)
@@ -316,19 +317,20 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
     /* (non-Javadoc)
      * @see org.jajuk.ui.Observer#update(java.lang.String)
      */
-    public void update(String subject) {
-        if (EVENT_PLAYLIST_CHANGED.equals(subject)){
-            //clear planned
+    public void update(Event event) {
+        String subject = event.getSubject();
+    	if (EVENT_PLAYLIST_CHANGED.equals(subject) && event.getDetails() != null){
+          //clear planned
             alPlanned = new ArrayList(0);  //make sure planned is voided if not in Queue
             jtable.getSelectionModel().clearSelection(); //remove selection 
-            PlaylistFileItem plfi = (PlaylistFileItem)ObservationManager.getDetail(subject,DETAIL_SELECTION);
+            PlaylistFileItem plfi = (PlaylistFileItem)ObservationManager.getDetail(event,DETAIL_SELECTION);
             this.iType = plfi.getType();
             this.plfi =plfi;
             //set title label
             jlTitle.setText(plfi.getName());
             jlTitle.setToolTipText(plfi.getName());
             setDefaultButtonState();
-            update(EVENT_PLAYLIST_REFRESH); //force refresh
+            update(new Event(EVENT_PLAYLIST_REFRESH,ObservationManager.getDetailsLastOccurence(EVENT_PLAYLIST_REFRESH))); //force refresh
             Util.stopWaiting(); //stop waiting
         }
         else if ( EVENT_PLAYLIST_REFRESH.equals(subject)){
@@ -546,14 +548,14 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
                     if ( ae.getSource() == jbDown){
                         plfi.getPlaylistFile().down(iRow);
                         if (iRow < iRowNum-1){
-                            update(EVENT_PLAYLIST_REFRESH); //force immediate table refresh
+                            update(new Event(EVENT_PLAYLIST_REFRESH,ObservationManager.getDetailsLastOccurence(EVENT_PLAYLIST_REFRESH))); //force immediate table refresh
                             jtable.getSelectionModel().setSelectionInterval(iRow+1,iRow+1);
                         }
                     }
                     else if ( ae.getSource() == jbUp){
                         plfi.getPlaylistFile().up(iRow);
                         if (iRow > 0){
-                            update(EVENT_PLAYLIST_REFRESH); //force immediate table refresh
+                            update(new Event(EVENT_PLAYLIST_REFRESH,ObservationManager.getDetailsLastOccurence(EVENT_PLAYLIST_REFRESH))); //force immediate table refresh
                             jtable.getSelectionModel().setSelectionInterval(iRow-1,iRow-1);
                         }
                     }
@@ -600,7 +602,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
             Log.error(e2);
         }
         finally{
-            ObservationManager.notify(EVENT_PLAYLIST_REFRESH); //refresh playlist editor
+            ObservationManager.notify(new Event(EVENT_PLAYLIST_REFRESH)); //refresh playlist editor
         }
     }
     

@@ -46,10 +46,11 @@ import javax.swing.SwingUtilities;
 
 import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;
+import org.jajuk.base.Event;
+import org.jajuk.base.ObservationManager;
+import org.jajuk.base.Observer;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.DeviceWizard;
-import org.jajuk.ui.ObservationManager;
-import org.jajuk.ui.Observer;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 
@@ -431,7 +432,8 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.Observer#update(java.lang.String)
 	 */
-	public void update(String subject) {
+	public void update(Event event) {
+		String subject = event.getSubject();
 		if ( EVENT_DEVICE_MOUNT.equals(subject) || EVENT_DEVICE_UNMOUNT.equals(subject) || EVENT_DEVICE_REFRESH.equals(subject)){
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {

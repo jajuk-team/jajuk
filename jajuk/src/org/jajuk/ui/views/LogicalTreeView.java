@@ -53,16 +53,17 @@ import javax.swing.tree.TreeSelectionModel;
 
 import org.jajuk.base.Album;
 import org.jajuk.base.Author;
+import org.jajuk.base.Event;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
+import org.jajuk.base.ObservationManager;
+import org.jajuk.base.Observer;
 import org.jajuk.base.StackItem;
 import org.jajuk.base.Style;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.InformationJPanel;
-import org.jajuk.ui.ObservationManager;
-import org.jajuk.ui.Observer;
 import org.jajuk.ui.TransferableTreeNode;
 import org.jajuk.ui.TreeTransferHandler;
 import org.jajuk.util.ConfigurationManager;
@@ -346,7 +347,7 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 				if (ConfigurationManager.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE)){ //if table is synchronized with tree, notify the selection change
 				    Properties properties = new Properties();
 				    properties.put(DETAIL_SELECTION,hsSelectedTracks);
-				    ObservationManager.notify(EVENT_SYNC_TREE_TABLE,properties);
+				    ObservationManager.notify(new Event(EVENT_SYNC_TREE_TABLE,properties));
 				}
 			}
 		});
@@ -583,7 +584,8 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.Observer#update(java.lang.String)
 	 */
-	public void update(String subject) {
+	public void update(Event event) {
+		String subject = event.getSubject();
 		if ( subject.equals(EVENT_DEVICE_MOUNT) || subject.equals(EVENT_DEVICE_UNMOUNT)){
 			SwingWorker sw = new SwingWorker() {
 				public Object  construct(){

@@ -30,8 +30,10 @@ import javax.swing.JFileChooser;
 import org.jajuk.Main;
 import org.jajuk.base.BasicFile;
 import org.jajuk.base.BasicPlaylistFile;
+import org.jajuk.base.Event;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.FileManager;
+import org.jajuk.base.ObservationManager;
 import org.jajuk.base.StackItem;
 import org.jajuk.ui.perspectives.IPerspective;
 import org.jajuk.ui.perspectives.PerspectiveManager;
@@ -198,7 +200,7 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
 			Log.error(e2);
 		}
 		finally{
-			ObservationManager.notify(EVENT_PLAYLIST_REFRESH); //refresh playlist editor
+			ObservationManager.notify(new Event(EVENT_PLAYLIST_REFRESH)); //refresh playlist editor
 		}
 	}
 	
