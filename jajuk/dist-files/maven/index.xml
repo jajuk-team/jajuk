@@ -35,21 +35,21 @@
 						<img alt='Swedish' title='Swedish' src='flags/flag_sv.png' style='width: 21px; height: 14px;'/>*
 						<img alt='Dutch' title='Dutch' src='flags/flag_nl.png' style='width: 21px; height: 14px;'/>*
 						<img alt='Spanish' title='Spanish' src='flags/flag_sp.png' style='width: 21px; height: 14px;'/>
-						<img alt='Catalan' title='Catalan' src='flags/flag_ct.png' style='width: 21px; height: 14px;'/>
+				<!--		<img alt='Catalan' title='Catalan' src='flags/flag_ct.png' style='width: 21px; height: 14px;'/> -->
 					</td>
 				</tr>
 				<tr>
 					<td style='vertical-align: top;'>Readme file at install and on the web site</td>
 					<td style='vertical-align: top;'>
-						<a href='./README.html'><img alt='English' title='English' src='http://jajuk.sourceforge.net/flags/flag_en.png'  style='border: 0px solid ; width: 21px; height: 14px;'/></a>
-						<a  href='./README_fra.html'><img alt='French' title='French' src='http://jajuk.sourceforge.net/flags/flag_fr.png' style='border: 0px solid ; width: 21px; height: 14px;'/></a>
-						<a  href='./README_deu.html'><img alt='German' title='German' src='http://jajuk.sourceforge.net/flags/flag_de.png' style='border: 0px solid ; width: 21px; height: 14px;'/></a>
-						<a  href='./README_ita.html'><img alt='Italian' title='Italian' src='http://jajuk.sourceforge.net/flags/flag_it.png' style='border: 0px solid ; width: 21px; height: 14px;'/></a>
-						<a  href='./README_swe.html'><img alt='Swedish' title='Swedish' src='http://jajuk.sourceforge.net/flags/flag_sv.png' style='border: 0px solid ; width: 21px; height: 14px;'/></a>
-						<a  href='./README_chn.html'><img alt='Chinese' title='Chinese' src='http://jajuk.sourceforge.net/flags/flag_zh.png' style='border: 0px solid ; width: 21px; height: 14px;'/></a>
-						<a  href='./README_nld.html'><img alt='Dutch' title='Dutch' src='http://jajuk.sourceforge.net/flags/flag_nl.png' style='border: 0px solid ; width: 21px; height: 14px;'/></a>
-						<a  href='./README_esp.html'><img alt='Spanish' title='Spanish' src='http://jajuk.sourceforge.net/flags/flag_sp.png' style='border: 0px solid ; width: 21px; height: 14px;'/></a>
-						<a  href='./README_cat.html'><img alt='Catalan' title='Catalan' src='http://jajuk.sourceforge.net/flags/flag_ct.png' style='border: 0px solid ; width: 21px; height: 14px;'/></a>
+						<a href='./README.html'><img alt='English' title='English' src='flags/flag_en.png'  style='border: 0px solid ; width: 21px; height: 14px;'/></a>
+						<a  href='./README_fra.html'><img alt='French' title='French' src='flags/flag_fr.png' style='border: 0px solid ; width: 21px; height: 14px;'/></a>
+						<a  href='./README_deu.html'><img alt='German' title='German' src='flags/flag_de.png' style='border: 0px solid ; width: 21px; height: 14px;'/></a>
+						<a  href='./README_ita.html'><img alt='Italian' title='Italian' src='flags/flag_it.png' style='border: 0px solid ; width: 21px; height: 14px;'/></a>
+						<a  href='./README_swe.html'><img alt='Swedish' title='Swedish' src='flags/flag_sv.png' style='border: 0px solid ; width: 21px; height: 14px;'/></a>
+						<a  href='./README_chn.html'><img alt='Chinese' title='Chinese' src='flags/flag_zh.png' style='border: 0px solid ; width: 21px; height: 14px;'/></a>
+						<a  href='./README_nld.html'><img alt='Dutch' title='Dutch' src='flags/flag_nl.png' style='border: 0px solid ; width: 21px; height: 14px;'/></a>
+						<a  href='./README_esp.html'><img alt='Spanish' title='Spanish' src='flags/flag_sp.png' style='border: 0px solid ; width: 21px; height: 14px;'/></a>
+				<!--		<a  href='./README_cat.html'><img alt='Catalan' title='Catalan' src='flags/flag_ct.png' style='border: 0px solid ; width: 21px; height: 14px;'/></a>-->
 					</td>
 				</tr>
 				<tr>

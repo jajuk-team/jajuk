@@ -201,13 +201,18 @@
     </release>
      <release version='0.3.3' date='work in progress' description='Fixes and Catalan langpack'>
      	<action dev='jespo' type='add'>Catalan translation</action> 
+     	<action dev='bflorat' type='add'>Support of Linux menu shortcuts using Java installer</action> 
+     	<action dev='bflorat' type='update'>[Perf] Refresh much faster;  less CPU load</action> 
      	<action dev='bflorat' type='update'>Better handling of of history or collection corruption</action> 
-     	<action dev='bflorat' type='fix'><a href='http://sourceforge.net/tracker/index.php?func=detail&aid=1102189&group_id=91412&atid=597086'>1102189 	Freeze with proxy pwd frame</a></action> 
-     	<action dev='bflorat' type='fix'><a href='http://sourceforge.net/tracker/index.php?func=detail&aid=1102219&group_id=91412&atid=597086'>1102219	Cannot play some MP3 files</a></action> 
-     	<action dev='bflorat' type='fix'><a href='http://sourceforge.net/tracker/index.php?func=detail&aid=1102927&group_id=91412&atid=597086'>1102927	OutOfBoundsException playing mp3</a></action> 
-     	<action dev='bflorat' type='fix'><a href='http://sourceforge.net/tracker/index.php?func=detail&aid=1109307&group_id=91412&atid=597086'>1109307	Cannot read files (audio line not available)</a></action> 
-     	<action dev='bflorat' type='fix'><a href='http://sourceforge.net/tracker/index.php?func=detail&aid=1112671&group_id=91412&atid=597086'>1112671	Minor bug in I18N system</a></action> 
-     	<action dev='bflorat' type='fix'><a href='http://sourceforge.net/tracker/index.php?func=detail&aid=1116459&group_id=91412&atid=597086'>1116459	Logical items not sync with physical after a refresh</a></action> 
+     	<action dev='bflorat' type='remove'>RPM dependencies on JRE</action> 
+     	<action dev='bflorat' type='remove'>Xmx and Xss JVM settings</action> 
+     	<action dev='bflorat' type='fix' issue='1102189'>Freeze with proxy pwd frame</action> 
+     	<action dev='bflorat' type='fix' issue='1102927'>OutOfBoundsException playing mp3</action>
+     	<action dev='bflorat' type='fix' issue='1109307'>Cannot read files (audio line not available)</action>
+     	<action dev='bflorat' type='fix' issue='1112671'>Minor bug in I18N system</action>
+     	<action dev='bflorat' type='fix' issue='1116459'>Logical items not sync with physical after a refresh</action>
+     	<action dev='bflorat' type='fix' issue='1102223'>Delay with pause/resume/stop</action>
+     	<action dev='bflorat' type='fix' issue='1102219'>Cannot play some MP3 files</action>
     </release>
           
   </body>
