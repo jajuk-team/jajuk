@@ -21,14 +21,26 @@
 			<tocitem text="Contextual  views"  expand="true">
 				<tocitem text="Physical perspective"  expand="true">
 					<tocitem text="The Physical Tree view" target="view_physical_tree"/>
+					<tocitem text="The Physical Table view" target="view_physical_table"/>
+					<tocitem text="The Playlist Repository view" target="view_playlist_repository"/>
+					<tocitem text="The  Playlist Editor view" target="view_playlist_editor"/>
+					<tocitem text="The Cover view" target="view_cover"/>
 				</tocitem> 	
 				<tocitem text="Logical perspective"  expand="true">
 					<tocitem text="The Logical Tree view" target="view_logical_tree"/>
+					<tocitem text="The Logical Table view" target="view_logical_table"/>
+					<tocitem text="The Playlist Repository view" target="view_playlist_repository"/>
+					<tocitem text="The  Playlist Editor view" target="view_playlist_editor"/>
+					<tocitem text="The Cover view" target="view_cover"/>
 				</tocitem> 	
 				<tocitem text="Player perspective"  expand="true">
 					<tocitem text="The Animation view" target="view_animation"/>
+					<tocitem text="The Cover view" target="view_cover"/>
 				</tocitem> 	
 				<tocitem text="Configuration perspective"  expand="true">
+				<tocitem text="The Parameter view" target="view_parameter"/>
+					<tocitem text="The CD Scanner view" target="view_cd_scanner"/>
+					<tocitem text="The Device View and the Device Wizzard" target="view_devices"/>
 				</tocitem> 
 				<tocitem text="Statistics perspective"  expand="true">
 					<tocitem text="The Statistics view" target="view_stats"/>
