@@ -402,29 +402,31 @@ public class Util implements ITechnicalStrings {
 			}
 		    //calculates total size in MB for the file to backup and its backup files
 			long lUsedMB = 0;
-			int index = 0;//backup index
+			ArrayList alFiles = new ArrayList(10);
 			File[] files = new File(file.getAbsolutePath()).getParentFile().listFiles();
 			if ( files != null){
 				for ( int i=0;i<files.length;i++){
 					if ( files[i].getName().indexOf(removeExtension(file.getName()))!= -1){ //if the file contains the file name without extension
-						index ++;
 						lUsedMB += files[i].length();
+						alFiles.add(files[i]);
 					}
 				}
-				if ( lUsedMB/1048576 > iMB){  //too much backup files, leave
+				//sort found files
+				alFiles.remove(file);
+				Collections.sort(alFiles);
+				if ( (lUsedMB-file.length())/1048576 > iMB){  //too much backup files
 				    // delete older backup
-				    new File(Util.removeExtension(file.getAbsolutePath())+"-backup-1."+Util.getExtension(file)).delete(); //$NON-NLS-1$
-					//change all backup names ( 2 becomes 1, 3 becomes 2...)
-					for ( int i=2;i<index;i++){
-						File fBefore = new File(Util.removeExtension(file.getAbsolutePath())+"-backup-"+Integer.toString(i)+"."+Util.getExtension(file)); //$NON-NLS-1$//$NON-NLS-2$
-						File fAfter = new File(Util.removeExtension(file.getAbsolutePath())+"-backup-"+Integer.toString(i-1)+"."+Util.getExtension(file)); //$NON-NLS-1$//$NON-NLS-2$
-						fBefore.renameTo(fAfter);  //rename file
-					}	
-					index --;
+				    if (alFiles.size() > 0){
+				        File fileToDelete = (File)alFiles.get(0);
+				        if (fileToDelete != null){
+				            fileToDelete.delete();
+				        }
+				    }
 				}
 			}
-			//backup itself using nio
-			File fileNew = new File(Util.removeExtension(file.getAbsolutePath())+"-backup-"+Integer.toString(index)+"."+Util.getExtension(file)); //$NON-NLS-1$//$NON-NLS-2$
+			//backup itself using nio, file name is collection-backup-yyyMMdd.xml
+			String sExt = new SimpleDateFormat("yyyyMMdd").format(new Date()); //$NON-NLS-1$
+			File fileNew = new File(Util.removeExtension(file.getAbsolutePath())+"-backup-"+sExt+"."+Util.getExtension(file)); //$NON-NLS-1$//$NON-NLS-2$
 			FileChannel fcSrc = new FileInputStream(file).getChannel();
 			FileChannel fcDest = new FileOutputStream(fileNew).getChannel();
 			fcDest.transferFrom(fcSrc, 0, fcSrc.size());
