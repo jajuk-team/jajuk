@@ -156,6 +156,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
         
         ObservationManager.register(EVENT_COVER_REFRESH,this);
         ObservationManager.register(EVENT_PLAYER_STOP,this);
+        ObservationManager.register(EVENT_ZERO,this);
         
         try {
             //check if the cover should be refreshed at startup
@@ -280,7 +281,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                     }
                 } 
             }
-            else if ( EVENT_PLAYER_STOP.equals(subject)){
+            else if ( EVENT_PLAYER_STOP.equals(subject) || EVENT_ZERO.equals(subject)){
                 clearFoundCover();
                 synchronized(alCovers){
                     alCovers.clear();
