@@ -71,6 +71,9 @@ public class Util implements ITechnicalStrings {
 	public static final Cursor WAIT_CURSOR = new Cursor(Cursor.WAIT_CURSOR);
 	public static final Cursor DEFAULT_CURSOR = new Cursor(Cursor.DEFAULT_CURSOR);
 	
+	/**Contains execution location ( jar or directory )*/
+	public static String sExecLocation;
+	
 	/**
 	 * Genres
 	 */
@@ -229,8 +232,27 @@ public class Util implements ITechnicalStrings {
 		sOut = sOut.replaceAll("\'","&apos;"); //$NON-NLS-1$ //$NON-NLS-2$
 		sOut = sOut.replaceAll("\"","&quot;"); //$NON-NLS-1$ //$NON-NLS-2$
 		sOut = sOut.replaceAll("<","&lt;"); //$NON-NLS-1$ //$NON-NLS-2$
-		sOut = sOut.replaceAll(">","&qt;"); //$NON-NLS-1$ //$NON-NLS-2$
-		return sOut;
+		sOut = sOut.replaceAll(">","&gt;"); //$NON-NLS-1$ //$NON-NLS-2$
+		StringBuffer sbOut = new StringBuffer(sOut);
+		/* Transform String to XML-valid characters. XML 1.0 specs ; 
+		 * Character Range
+		[2]     Char    ::=     #x9 | #xA | #xD | [#x20-#xD7FF] | [#xE000-#xFFFD] | [#x10000-#x10FFFF]  
+		any Unicode character, excluding the surrogate blocks, FFFE, and FFFF. */
+		for (int i=0;i<sbOut.length();i++){
+			char c = sbOut.charAt(i);
+			if (c!='&' && c!='.' && c!='_' && c!='-' && c!=';' && c!='#' && c!=' ' && !Character.isLetterOrDigit(c)){ //tranform all special charcters but some very current ones like "." to gain space
+				sbOut.deleteCharAt(i); //remove this char, it will be replaced by the XML format &#x?; or by a space if it is invalid
+				if ( (c =='\u0009'  ||   (c>='\u0020' && c<='\uD7FF') || (c>='\uE000' && c<='\uFFFD')) && (c!='\uFFFE' && c!='\uFFFF')){
+					//some unicode described in XML specs like xA, xD and x10000 and over are not tested because java can't handle them, so we can't get these chars in the incoming string
+					sbOut.insert(i,"&#x");
+					sbOut.insert(i+3,Integer.toHexString((int)c)+";");
+				}
+				else{
+					sbOut.insert(i,' '); //replace invalid character by a space
+				}
+			}
+		}
+		return sbOut.toString();
 	}
 	
 	/**
@@ -547,6 +569,23 @@ public class Util implements ITechnicalStrings {
 		}
 		return sOut;
 	}
+
+	/**Return exec location*/
+	public static String getExecLocation(){
+		return sExecLocation;
+	}
 	
+	/**
+	 * Set exec location
+	 * @param bDebug
+	 */
+	public static void setExecLocation(boolean bDebug){
+		if ( bDebug){
+			sExecLocation = "file:"+System.getProperty("user.dir")+"/jajuk.jar";
+		}
+		else{
+			sExecLocation = Util.getJarLocation(Main.class).toString();
+		}
+	}
 
 }
