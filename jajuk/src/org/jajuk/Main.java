@@ -141,7 +141,7 @@ public class Main implements ITechnicalStrings {
 			org.jajuk.util.ConfigurationManager.load();
 		
 			//starts ui
-			System.setProperty( "apple.laf.useScreenMenuBar", "true"); //mac integration
+			System.setProperty( "apple.laf.useScreenMenuBar", "true"); //mac integration //$NON-NLS-1$ //$NON-NLS-2$
 			jw = new JajukWindow(); 
 			
 			//Set look and feel
