@@ -50,7 +50,7 @@
 				<ul>
 					<li><p>It is safe to install the new release over previous one without uninstalling, Jajuk supports backwards compatibility.</p></li>
 					<li><p>Your collection and configuration is kept and is stored under <span style="font-family: monospace;">${your home directory}/.jajuk</span></p></li>
-					<li><p>However Jajuk don't support downwards compatibility : A Jajuk release is not supposed to work with configuration/persistence files from a previous release.</p></li>
+					<li><p>However Jajuk don't support downwards compatibility : A Jajuk release may not work with a collection built by a newer release than the one you use.</p></li>
 				</ul>
    			</subsection>
    			

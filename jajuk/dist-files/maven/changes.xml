@@ -96,7 +96,7 @@
       <release version='0.2.3' date='2004-07-08' description='Major bug fix release'>
       	<action dev='bflorat' type='fix'>986301 (regression) Cannot create new devices </action>  
       </release>
-      <release version='0.3' date='work in progress' description='Auto-cover and many novelties'>
+      <release version='0.3' date='2004-09-01' description='Auto-cover, many fixes and new features'>
     	<action dev='bflorat' type='add'>Auto-cover grabbing from Web, can be configured in the Parameter View / Covers tab</action>  
     	<action dev='bflorat' type='add'>RFE 962688 Save geometry windows</action>  
     	<action dev='bflorat' type='add'>RFE 966736 Tray for both Windows and Linux</action>  
@@ -135,7 +135,7 @@
     	<action dev='bflorat' type='fix'>984868 Should ignore pause between 2 tracks</action>
     	<action dev='bflorat' type='fix'>1004106 Systray pause not taken into account in main window</action>
     	<action dev='bflorat' type='fix'>1002831 Physical tree collapse when device tested</action>
-    	<action dev='bflorat' type='fix'>Many minor bugs not referenced and discovered during 0.3 qualification</action>
+    	<action dev='bflorat' type='fix'>Many fixes for bugs discovered during 0.3 qualification and not referenced in SF tracker</action>
      </release>
 
   </body>
