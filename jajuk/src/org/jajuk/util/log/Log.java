@@ -70,6 +70,7 @@ public class Log implements ITechnicalStrings{
 			logger.addAppender(new ConsoleAppender(new PatternLayout(LOG_PATTERN)));
 			//message for logging system start
 			Log.info(Messages.getString("Log.2")); //$NON-NLS-1$
+			Log.info(Messages.getString("Log.9")+JAJUK_VERSION);  //$NON-NLS-1$
 			Log.info(Messages.getString("Log.3")); //$NON-NLS-1$
 		} catch (Exception e) {
 			Log.stack(e);
