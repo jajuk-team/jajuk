@@ -25,6 +25,7 @@ import java.net.URL;
 
 import javax.swing.ImageIcon;
 
+import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.DownloadManager;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
@@ -61,10 +62,19 @@ public class Cover implements Comparable,ITechnicalStrings {
     * @param sUrl cover url : absolute path for a local file, http url for a remote file
     * @param iType
     */
-    public Cover(URL url, int iType) {
+    public Cover(URL url, int iType){
         long l = System.currentTimeMillis();
         this.url = url;
         this.iType = iType;
+        //if Pre-load option is enabled, load this cover
+        if (ConfigurationManager.getBoolean(CONF_COVERS_PRELOAD)){
+            try{
+                image = getImage();
+            }
+            catch(Exception e){ //means download failed
+                image = null;
+            }
+        }
     }
     
        

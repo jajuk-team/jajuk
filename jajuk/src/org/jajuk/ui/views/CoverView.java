@@ -27,15 +27,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.awt.image.AreaAveragingScaleFilter;
 import java.awt.image.FilteredImageSource;
 import java.awt.image.ImageFilter;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -56,6 +53,7 @@ import layout.TableLayout;
 
 import org.jajuk.Main;
 import org.jajuk.base.Cover;
+import org.jajuk.base.Directory;
 import org.jajuk.base.FIFO;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.InformationJPanel;
@@ -72,7 +70,7 @@ import org.jajuk.util.log.Log;
  * @author     bflorat
  * @created   28 dec. 2003
  */
-public class CoverView extends ViewAdapter implements Observer,ComponentListener,ActionListener,ItemListener{
+public class CoverView extends ViewAdapter implements Observer,ComponentListener,ActionListener{
     
     /**Current directory used as a cache for perfs*/
     private File fDir;
@@ -132,7 +130,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
         jpControl.setBorder(BorderFactory.createEtchedBorder());
         int iXspace = 5;
         double sizeControl[][] =
-        {{20,iXspace,20,2*iXspace,20,iXspace,20,2*iXspace,20,2*iXspace,0.30,2*iXspace,0.30,2*iXspace,0.30,2*iXspace,20},
+        {{20,iXspace,20,2*iXspace,20,iXspace,20,2*iXspace,20,2*iXspace,0.30,2*iXspace,0.30,2*iXspace,0.40,2*iXspace,20},
                 {25}};
         jpControl.setLayout(new TableLayout(sizeControl));
         jbPrevious = new JButton(Util.getIcon(ICON_PREVIOUS));
@@ -160,7 +158,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
         jcbAccuracy.addItem(Messages.getString("ParameterView.158")); //$NON-NLS-1$
         jcbAccuracy.addItem(Messages.getString("ParameterView.168")); //$NON-NLS-1$ TBI
         jcbAccuracy.setSelectedIndex(Integer.parseInt(ConfigurationManager.getProperty(CONF_COVERS_ACCURACY)));
-        jcbAccuracy.addItemListener(this);
+        jcbAccuracy.addActionListener(this);
         
         jpControl.add(jbPrevious,"0,0");//$NON-NLS-1$
         jpControl.add(jbNext,"2,0");//$NON-NLS-1$
@@ -180,7 +178,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
         try {
             //check if the cover should be refreshed at startup
             coverDefault = new Cover(new URL(IMAGES_SPLASHSCREEN),Cover.DEFAULT_COVER); //instanciate default cover
-        } catch (MalformedURLException e) {
+        } catch (Exception e) {
             Log.error(e);
         }
         synchronized(alCovers){
@@ -215,7 +213,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                     for (int i=0;i<files.length;i++){
                         String sExt = Util.getExtension(files[i]);
                         if (sExt.equalsIgnoreCase("jpg") || sExt.equalsIgnoreCase("png") || sExt.equalsIgnoreCase("gif")){ //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                            if (Util.isAbsoluteDefaultCover(files[i].getPath())){
+                            if (Util.isAbsoluteDefaultCover(FIFO.getInstance().getCurrentFile().getDirectory(),files[i].getName())){
                                 if (!bAbsoluteCover){ //the concidere only the first found absolute cover
                                     alCovers.add(new Cover(files[i].toURL(),Cover.ABSOLUTE_DEFAULT_COVER));
                                     bAbsoluteCover = true;
@@ -236,7 +234,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                     Collections.sort(alCovers); //sort the list
                     Log.debug("Local cover list: "+alCovers); //$NON-NLS-1$
                     if (ConfigurationManager.getBoolean(CONF_COVERS_SHUFFLE)){
-                        index = (int)(Math.random()*(alCovers.size()-1)); //choose a random cover
+                        index = (int)(Math.random()*alCovers.size()); //choose a random cover
                     }
                     else{
                         index = alCovers.size()-1;  //current index points to the best available cover
@@ -247,7 +245,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                 //then we search for web covers asynchronously
                 if (ConfigurationManager.getBoolean(CONF_COVERS_AUTO_COVER)){
                     if ( DownloadManager.isActiveConnection()){ //if a download was yet being done, tell the download manager to trash it and leave
-                        DownloadManager.setConcurrentConnection(true);
+                        DownloadManager.setConcurrentConnection(true); //tell current search to trash it, it's useless now
                     }
                     else{
                         Thread t = new Thread(){ //start search asynchronously
@@ -262,6 +260,32 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                                             searching(true);  //display searching icon
                                             alUrls = DownloadManager.getRemoteCoversList(sQuery);
                                             Collections.reverse(alUrls); //set best results to be displayed  first
+                                            //remove default cover if some remote cover have been found
+                                            if ( alUrls.size() > 0 && alCovers.size()>0 && ((Cover)alCovers.get(0)).getType() == Cover.DEFAULT_COVER){
+                                                alCovers.remove(0);
+                                            }
+                                            Iterator it = alUrls.iterator(); //add logicaly found covers 
+                                            while ( it.hasNext()){
+                                                URL url = (URL)it.next();
+                                                Log.debug("Found Cover: "+url.toString()); //$NON-NLS-1$
+                                                Cover cover = null;
+                                                cover = new Cover(url,Cover.REMOTE_COVER); //create a cover with given url ( image will be really downloaded when required)
+                                                alCovers.add(cover);
+                                            }
+                                            index +=alUrls.size(); //reset index
+                                            Collections.sort(alCovers); //sort the list again with new covers
+                                            //refresh number of found covers
+                                            setFoundText();
+                                            //display the best found cover if no one was found before
+                                            if (ConfigurationManager.getBoolean(CONF_COVERS_SHUFFLE) || (iCoversBeforeSearch == 1 && alCovers.size() >1)){ //force new cover display if the cover shuffle is activated or if nothing was displayed before
+                                                if (ConfigurationManager.getBoolean(CONF_COVERS_SHUFFLE)){
+                                                    index = (int)(Math.random()*alCovers.size()); //choose a random cover
+                                                }
+                                                else{
+                                                    index = alCovers.size()-1;  //current index points to the best available cover
+                                                }
+                                                displayCurrentCover();    
+                                            }
                                         }
                                         catch(Exception e){
                                             return; //no web covers found, just leave
@@ -269,35 +293,9 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                                         finally{
                                             searching(false); //hide searching icon
                                         }
-                                        //remove default cover if some remote cover have been found
-                                        if ( alUrls.size() > 0 && alCovers.size()>0 && ((Cover)alCovers.get(0)).getType() == Cover.DEFAULT_COVER){
-                                            alCovers.remove(0);
-                                        }
-                                        Iterator it = alUrls.iterator(); //add logicaly found covers 
-                                        while ( it.hasNext()){
-                                            URL url = (URL)it.next();
-                                            Log.debug("Found Cover: "+url.toString()); //$NON-NLS-1$
-                                            Cover cover = null;
-                                            cover = new Cover(url,Cover.REMOTE_COVER); //create a cover with given url ( image will be really downloaded when required)
-                                            alCovers.add(cover);
-                                        }
-                                        index +=alUrls.size(); //reset index
-                                        Collections.sort(alCovers); //sort the list again with new covers
-                                        //refresh number of found covers
-                                        setFoundText();
-                                        //display the best found cover if no one was found before
-                                        if (iCoversBeforeSearch == 1 && alCovers.size() >1){
-                                            if (ConfigurationManager.getBoolean(CONF_COVERS_SHUFFLE)){
-                                                index = (int)(Math.random()*(alCovers.size()-1)); //choose a random cover
-                                            }
-                                            else{
-                                                index = alCovers.size()-1;  //current index points to the best available cover
-                                            }
-                                            displayCurrentCover();    
-                                        }
                                     }
-                                }
-                            }
+                                  }
+                             }
                         };
                         t.setPriority(Thread.MIN_PRIORITY); //low priority
                         t.start();
@@ -330,7 +328,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
     private void setFoundText(){
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                jlFound.setText((getCoverNumber()-index)+"/"+getCoverNumber()+" "+Messages.getString("CoverView.9")); //$NON-NLS-1$//$NON-NLS-2$
+                jlFound.setText((getCoverNumber()-index)+"/"+getCoverNumber()); //$NON-NLS-1$//$NON-NLS-2$
             }
         });
     }
@@ -353,7 +351,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
      * Display or hide search icon
      * @param bSearching
      */
-    private void searching(final boolean bSearching){
+    public void searching(final boolean bSearching){
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 if (bSearching){
@@ -459,7 +457,8 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
             ImageFilter filter = new AreaAveragingScaleFilter(this.getWidth()-8,this.getHeight()-30);
             Image img = createImage(new FilteredImageSource(icon.getImage().getSource(),filter));
             img.flush();//free image memory
-            jl = new JLabel(new ImageIcon(img));
+            ImageIcon ii = new ImageIcon(img);
+            jl = new JLabel(ii);
             jl.setMinimumSize(new Dimension(0,0));
             final URL url = cover.getURL();
             final byte[] bData = cover.getData();
@@ -510,7 +509,15 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(final ActionEvent e) {
-        if(e.getSource() == jbPrevious){  //previous : show a better cover
+        if (e.getSource() == jcbAccuracy){
+            ConfigurationManager.setProperty(CONF_COVERS_ACCURACY,Integer.toString(jcbAccuracy.getSelectedIndex()));
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                    update(EVENT_COVER_REFRESH); //force refreshing
+                }
+            });
+        }
+        else if(e.getSource() == jbPrevious){  //previous : show a better cover
             index++;
             if (index > alCovers.size()-1){
                 index = 0;
@@ -532,7 +539,19 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                 }
             }.start();
         }
-        else if(e.getSource() == jbSave || e.getSource() == jbSaveAs || e.getSource() == jbDefault){ //save a save with its original name
+        else if ( e.getSource() == jbDefault){ //choose a default
+            //first commit this cover on the disk if it is a remote cover
+            Cover cover = (Cover)alCovers.get(index);
+            String sFilename = Util.getOnlyFile(cover.getURL().toString());
+            if (cover.getType() == Cover.REMOTE_COVER){
+                String sFilePath = fDir.getPath()+"/"+sFilename; //$NON-NLS-1$
+                saveCover(sFilePath,cover);
+            }
+            //then make it the default cover in this directory
+            Directory dir = FIFO.getInstance().getCurrentFile().getDirectory(); 
+            dir.setProperty("default_cover",sFilename);
+        }
+        else if(e.getSource() == jbSave || e.getSource() == jbSaveAs ){ //save a save with its original name
             SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
                     Cover cover = (Cover)alCovers.get(index);
@@ -570,28 +589,36 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                             return;
                         }
                     }
-                    else if (e.getSource() == jbDefault){
-                        sFilePath = fDir.getPath()+"/"+FILE_ABSOLUTE_DEFAULT_COVER+Util.getExtension(new File(Util.getOnlyFile(cover.getURL().toString()))); //$NON-NLS-1$
-                    }
-                    Util.waiting();
-                    File file = new File(sFilePath);
-                    try{
-                        BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
-                        bos.write(cover.getData());
-                        bos.flush();
-                        bos.close();
-                        InformationJPanel.getInstance().setMessage(Messages.getString("CoverView.11"),InformationJPanel.INFORMATIVE); //$NON-NLS-1$
-                    }
-                    catch(Exception ex){
-                        Log.error("024",ex); //$NON-NLS-1$
-                        Messages.showErrorMessage("024"); //$NON-NLS-1$
-                    }
-                    finally{
-                        Util.stopWaiting();
-                    }
+                    saveCover(sFilePath,cover);
                 }
             });
         }
+    }
+    
+    
+    /**
+     * Save a cover on disk 
+     * @param sFilePath URL of the futur file
+     * @param cover Jajuk cover to be saved
+     */
+    private void saveCover(String sFilePath,Cover cover){
+        Util.waiting();
+        File file = new File(sFilePath);
+        try{
+            BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
+            bos.write(cover.getData());
+            bos.flush();
+            bos.close();
+            InformationJPanel.getInstance().setMessage(Messages.getString("CoverView.11"),InformationJPanel.INFORMATIVE); //$NON-NLS-1$
+        }
+        catch(Exception ex){
+            Log.error("024",ex); //$NON-NLS-1$
+            Messages.showErrorMessage("024"); //$NON-NLS-1$
+        }
+        finally{
+            Util.stopWaiting();
+        }
+        
     }
     
     /**
@@ -607,14 +634,5 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
         }
     }
     
-    /* (non-Javadoc)
-     * @see java.awt.event.ItemListener#itemStateChanged(java.awt.event.ItemEvent)
-     */
-    public void itemStateChanged(ItemEvent e) {
-        if (e.getSource() == jcbAccuracy){
-            ConfigurationManager.setProperty(CONF_COVERS_ACCURACY,Integer.toString(jcbAccuracy.getSelectedIndex()));
-            update(EVENT_COVER_REFRESH); //force refreshing
-        }
-    }
-   
+    
 }

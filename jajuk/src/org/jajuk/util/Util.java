@@ -22,6 +22,7 @@ package org.jajuk.util;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Cursor;
+import java.awt.Dimension;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -51,6 +52,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import org.jajuk.Main;
+import org.jajuk.base.Directory;
 import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.base.Track;
 import org.jajuk.i18n.Messages;
@@ -522,16 +524,23 @@ public class Util implements ITechnicalStrings {
 	 * @return whether the given filename is a standard cover or not
 	 */
 	public static boolean isStandardCover(String sFileName){
-	    return sFileName.toLowerCase().matches(".*"+FILE_DEFAULT_COVER+".*") || sFileName.toLowerCase().matches(".*"+FILE_DEFAULT_COVER_2+".*"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+	    return sFileName.toLowerCase().matches(".*"+FILE_DEFAULT_COVER+".*") //$NON-NLS-1$ //$NON-NLS-2$
+	    				|| sFileName.toLowerCase().matches(".*"+FILE_DEFAULT_COVER_2+".*") //$NON-NLS-1$ //$NON-NLS-2$
+	    		        || sFileName.toLowerCase().matches(".*"+FILE_ABSOLUTE_DEFAULT_COVER+".*"); //just for previous compatibility, now it is a directory property  //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
 	/**
-	 * 
+	 * Tell whether  a file is an absolute default cover or not
+	 * @param directory Jajuk Directory in which we analyse the given file name 
 	 * @param sFileName
 	 * @return whether the given filename is an absolute default cover
 	 */
-	public static boolean isAbsoluteDefaultCover(String sFileName){
-	    return sFileName.toLowerCase().matches(".*"+FILE_ABSOLUTE_DEFAULT_COVER+".*"); //$NON-NLS-1$ //$NON-NLS-2$
+	public static boolean isAbsoluteDefaultCover(Directory directory,String sFilename){
+	    String sDefault = directory.getProperty("default_cover"); //$NON-NLS-1$
+	    if (sDefault != null && sDefault.equals(sFilename)){
+	        return true;
+	    }
+	   return false;
 	}
 	
 	
@@ -735,6 +744,7 @@ public class Util implements ITechnicalStrings {
             jpOut.add(jc);
             jpOut.add(Box.createVerticalGlue());
         }
+        jpOut.setMinimumSize(new Dimension(0,0)); //allow resing with info node
         return jpOut;
     }
     

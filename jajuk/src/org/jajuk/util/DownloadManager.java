@@ -47,8 +47,7 @@ public class DownloadManager implements ITechnicalStrings {
 
     /**Http client**/
 	private static HttpClient client = null;
-    
-	
+    	
 	/**Is there a current connecton? multiple connections are not allowed to avoid out of memory errors and dead locks*/
 	private static boolean bActiveConnection = false;
 	
@@ -180,6 +179,7 @@ public class DownloadManager implements ITechnicalStrings {
 	    finally{
 	        get.releaseConnection();
 	        bActiveConnection = false;
+	        bConcurrentConnection = false;
 	    }
 	    return bOut;
 	}
