@@ -12,12 +12,13 @@
   <property name='srcdir' value='src'/>
   <property name='classdir' value='classes'/>
   <property name='javadocdir' value='dist-files/doc/javadoc'/>
-  <property name='version' value='0.3.1'/>
+  <property name='version' value='0.3.1-rc2'/>
   <property name='jarname' value='jajuk.jar'/>
   <property name='helpsetjarname' value='jajuk-help.jar'/>
   <property name='distjarname' value='jajuk-install-'/>
+  <property name='sourcesdist' value='${finaldistdir}/jajuk-src-${version}.zip'/>
     
-  <target name='all' description='o Create the entire package' depends='izpack,rpm'/>
+  <target name='all' description='o Create the entire package' depends='izpack,rpm,sourcesdist'/>
   
   <target name='clean' description='o Clean up the distribution'>
     <delete dir='${distdir}'/>
@@ -161,7 +162,7 @@
     </copy>
   </target>
 
-  
+
   <target name='helpsetjar' description='o Create the heplset jar' depends='mkdist_izpack'>
     <delete file='${distdir}/bin/${helpsetjarname}'/>
     <exec executable='jhindexer' dir='${basedir}/dist-files/doc/jajuk-hs/default'>
@@ -196,8 +197,13 @@
   <target name='dist-zip' description='o Create a zip distribution' depends='jar'>
       <zip destfile='/tmp/jajuk-dist-${version}.zip' basedir='${distdir}/..'/>
   </target>
-  
-  
+
+  <target name='sourcesdist' description='o Create the source distribution' depends='helpsetjar'>
+  	<zip destfile='${sourcesdist}'>
+  		<fileset dir='${distdir}/src'/>
+  	</zip>
+  </target>
+    
     <target name='javadoc'>
    	   <delete dir='${javadocdir}'/>
    	  <mkdir dir='${javadocdir}'/>

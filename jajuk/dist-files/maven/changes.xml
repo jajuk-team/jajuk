@@ -137,6 +137,40 @@
     	<action dev='bflorat' type='fix'>1002831 Physical tree collapse when device tested</action>
     	<action dev='bflorat' type='fix'>Many fixes for bugs discovered during 0.3 qualification and not referenced in SF tracker</action>
      </release>
-
+     <release version='0.3.1' date='work in progress' description='Many new features'>
+     	<action dev='fdutron' type='add'>Advanced docking for views</action>  
+     	<action dev='bflorat' type='add'>[Packaging] RPM provided for Linux users</action>  
+     	<action dev='bflorat' type='add'>[Packaging] Self-extracting executable provided for Windows users</action>  
+     	<action dev='bflorat' type='add'>Planned tracks in playlist editor</action>  
+     	<action dev='bflorat' type='add'>Add shuffle track in playlist editor</action>  
+     	<action dev='bflorat' type='add'>Now possible to work in multi-selection in playlist editor and to alter queue playlist</action>  
+     	<action dev='bflorat' type='add'>Tray enhancements (icons, volume with wheel, tooltips, mute)</action>  
+     	<action dev='bflorat' type='add'>Volume and position control with mouse wheel</action>  
+     	<action dev='bflorat' type='add'>Remember selected Parameters view tab</action>  
+     	<action dev='bflorat' type='add'>Animation view in Player perspective with 3 text styles and auto-resize</action>  
+     	<action dev='bflorat' type='add'>[Covers] More information displayed : index and search icon</action>  
+     	<action dev='bflorat' type='add'>[Covers] Shuffle cover and change cover at each track</action>  
+     	<action dev='bflorat' type='add'>[Covers] Two cover views in Player perspective : by default one for author and the other for album</action>
+     	<action dev='bflorat' type='add'>[Covers] Accuracy now directly in the Cover view and it is stored individualy for each cover view</action>
+     	<action dev='bflorat' type='add'>[Covers] Delete cover function</action>
+     	<action dev='bflorat' type='add'>[Covers] Pre-load cover option in Parameter view / Cover tab</action>
+     	<action dev='bflorat' type='add'>[Covers] New accuracy levels : album and track</action>
+     	<action dev='bflorat' type='add'>[Covers] New Adapt cover option in Parameter view / Cover tab</action>
+    	<action dev='bflorat' type='update'>New confirmations: when removing a device and when closing during a refresh</action>
+    	<action dev='bflorat' type='update'>Dynamic look and feel change</action>
+     	<action dev='bflorat' type='update'>[Covers] Now setting default cover is just logical and file is no more overwritten on disk if changed</action>
+     	<action dev='bflorat' type='update'>[Covers] Now all covers in any directory is displayed for a matching track</action>
+     	<action dev='bflorat' type='update'>[Covers] Now accuracy level is all covers in any directory is displayed for a matching track</action>
+     	<action dev='bflorat' type='update'>RFE 1056689	global shuffle enhancements</action>
+     	<action dev='bflorat' type='fix'>1044160   Collection corrupted</action>
+    	<action dev='bflorat' type='fix'>1048652   OutOfMemoryError displaying covers (not fully fixed)</action>
+    	<action dev='bflorat' type='fix'>1043597	Step by step mode fails</action>
+    	<action dev='bflorat' type='fix'>1043380	Keep lock if a refresh/sync fails</action>
+    	<action dev='bflorat' type='fix'>1043285	Sync. target erased</action>
+    	<action dev='bflorat' type='fix'>1039576	Auto-cover blocked</action>
+    	<action dev='bflorat' type='fix'>1038487	Window toFront</action>
+    	<action dev='bflorat' type='fix'>1038486	Repeat mode bug</action>
+     </release>
+ 
   </body>
 </document>
