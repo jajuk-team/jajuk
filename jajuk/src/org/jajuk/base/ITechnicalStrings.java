@@ -262,12 +262,13 @@ public interface ITechnicalStrings {
 	public static final String EVENT_INFORMATION_DISPLAY="information display";//the information need to be updated
 	public static final String EVENT_HEART_BEAT="heart beat";//heart beat for geenral use to refresh subscribers every n secs
 	public static final String EVENT_ZERO="zero"; //a reinit has been required
-	public static final String EVENT_ADD_HISTORY_ITEM="history item"; //a new element has been added in the history
+	public static final String EVENT_ADD_HISTORY_ITEM="add history item"; //a new element has been added in the history
 	public static final String EVENT_SPECIAL_MODE="special mode changed"; //special mode (global shuffle, novelties, bestof...) changed
 	public static final String EVENT_PLAY_ERROR="error"; //an error occured during a play
 	
 	//details keys
 	public static final String DETAIL_CURRENT_FILE_ID="current file id";
+	public static final String DETAIL_CURRENT_FILE="current file";
 	public static final String DETAIL_CURRENT_DATE="current date";
 	public static final String DETAIL_CURRENT_POSITION="current position";
 	public static final String DETAIL_TOTAL="total time";
