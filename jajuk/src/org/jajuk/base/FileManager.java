@@ -379,55 +379,35 @@ public class FileManager implements ITechnicalStrings{
 
 }
 
-/**
- * 
- *  File score
- *
- * @author     bflorat
- * @created    22 janv. 2004
- */
+/** File score*/
 class FileScore implements Comparable{
-	/** The score */
+
+    /** The score */
 	long lScore;
 
-    /**
-     * The file
-     * 
-     * @uml.property name="file"
-     * @uml.associationEnd 
-     * @uml.property name="file" multiplicity="(1 1)"
-     */
+    /**The file*/
     File file;
 
-	
+    /** A File scrore*/
 	public FileScore(File file,long lScore){
 		this.lScore = lScore;
 		this.file = file;
 	}
 
     /**
-     * @return Returns the file.
-     * 
-     * @uml.property name="file"
-     */
+     * @return Returns the file.*/
     public File getFile() {
         return file;
     }
 
     /**
-     * @return Returns the lScore.
-     * 
-     * @uml.property name="lScore"
-     */
+     * @return Returns the lScore.*/
     public long getLScore() {
         return lScore;
     }
 
 	
-	/**
-	 * ToString method
-	 * @return a description 
-	 */
+	/** ToString method*/
 	public String toString(){
 		return new StringBuffer(file.toString()).append(',').append(lScore).toString();
 	}
@@ -445,7 +425,5 @@ class FileScore implements Comparable{
 		}
 		return 0;
 	}
-	
-	
 
 }
