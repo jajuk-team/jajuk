@@ -83,7 +83,6 @@ public class LNFManager implements ITechnicalStrings{
             }
 		} catch (Exception e) {
         }
-        Log.debug("Unsupported Look And Feel: "+sClass);
     }
 	
 	/**
