@@ -199,7 +199,7 @@
     	<action dev='bflorat' type='fix'>1099036 Minor UI issue in Playlist editor view with some LAF</action>
     	<action dev='bflorat' type='fix'>Fixed minor UI issues (disable) in parameter view</action>
     </release>
-     <release version='0.3.3' date='2005' description='Fixes and Catalan langpack'>
+     <release version='0.3.3' date='work in progress' description='Fixes and Catalan langpack'>
      	<action dev='jespo' type='add'>Catalan translation</action> 
      	<action dev='bflorat' type='update'>Better handling of of history or collection corruption</action> 
      	<action dev='bflorat' type='fix'><a href='http://sourceforge.net/tracker/index.php?func=detail&aid=1102189&group_id=91412&atid=597086'>1102189 	Freeze with proxy pwd frame</a></action> 
