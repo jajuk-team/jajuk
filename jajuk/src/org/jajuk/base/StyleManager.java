@@ -16,8 +16,8 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
- * Revision 1.1  2003/10/17 20:36:45  bflorat
- * 17/10/2003
+ * Revision 1.2  2003/10/21 17:51:43  bflorat
+ * 21/10/2003
  *
  */
 
@@ -29,7 +29,6 @@ import java.util.Iterator;
 
 /**
  *  Convenient class to manage styles
- * <p> Singleton
  * @author     bflorat
  * @created    17 oct. 2003
  */
@@ -49,10 +48,28 @@ public class StyleManager {
 	 *@param sName
 	 */
 	public static void registerStyle(String sName) {
-		Style style = new Style(hmStyles.size(),sName);
-		hmStyles.put(sName,style);
+		String sId = new Integer(hmStyles.size()).toString();
+		Style style = new Style(sId, sName);
+		hmStyles.put(sId, style);
 	}
 
+	/**
+			 * Format the Style name to be normalized : 
+			 * <p>-no underscores or other non-ascii characters
+			 * <p>-no spaces at the begin and the end
+			 * <p>-All in upper case 
+			 * <p> exemple: "ROCK" 
+			 *  @param sName
+			 * @return
+			 */
+	private static String format(String sName) {
+		String sOut;
+		sOut = sName.trim(); //supress spaces at the begin and the end
+		sOut.replace('-', ' '); //move - to space
+		sOut.replace('_', ' '); //move _ to space
+		sOut = sOut.toUpperCase();
+		return sOut;
+	}
 
 	/**Return all registred styles*/
 	public static Collection getStyles() {
@@ -60,13 +77,12 @@ public class StyleManager {
 	}
 
 	/**
-	 * Return style by name
-	 * @param sName
+	 * Return style by id
+	 * @param sId
 	 * @return
 	 */
-	public static Style getStyle(String sName) {
-		return (Style) hmStyles.get(sName);
+	public static Style getStyle(String sId) {
+		return (Style) hmStyles.get(sId);
 	}
 
-	
 }

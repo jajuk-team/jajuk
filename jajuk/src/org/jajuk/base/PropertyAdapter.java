@@ -16,13 +16,14 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
- * Revision 1.1  2003/10/17 20:36:45  bflorat
- * 17/10/2003
+ * Revision 1.2  2003/10/21 17:51:43  bflorat
+ * 21/10/2003
  *
  */
 
 package org.jajuk.base;
 
+import java.util.Iterator;
 import java.util.Properties;
 
 /**
@@ -63,6 +64,17 @@ public class PropertyAdapter implements IPropertyable {
 	 */
 	public void setProperty(String sKey, String sValue) {
 		properties.put(sKey,sValue);
+	}
+	
+	public String getPropertiesXml(){
+		Iterator it = properties.entrySet().iterator();
+		StringBuffer sb=new StringBuffer("");
+		while (it.hasNext()){
+			String sKey = (String)it.next();
+			String sValue = properties.getProperty(sKey);
+			sb.append(sKey+"='"+sValue+"'");
+		}	
+		return sb.toString();
 	}
 
 }

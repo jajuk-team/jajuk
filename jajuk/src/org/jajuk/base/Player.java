@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.3  2003/10/21 17:51:43  bflorat
+ * 21/10/2003
+ *
  * Revision 1.2  2003/10/17 20:36:45  bflorat
  * 17/10/2003
  *
@@ -44,13 +47,13 @@ public class Player {
 	 */
 	public static void play(File file) {
 		fCurrent = file;
-		pCurrentPlayerImpl = file.getType().getPlayerImpl();
+		pCurrentPlayerImpl = file.getTrack().getType().getPlayerImpl();
 		new Thread() {
 			public void run() {
 				try {
 					pCurrentPlayerImpl.play(fCurrent);
 				} catch (Exception e) {
-					Log.error(Messages.getString("Player.Error_playing____1") + fCurrent.getPath(), e); //$NON-NLS-1$
+					Log.error(Messages.getString("Player.Error_playing____1") + fCurrent.getAbsolutePath(), e); //$NON-NLS-1$
 				}
 			}
 		}
@@ -64,7 +67,7 @@ public class Player {
 	public static void stop() {
 		try {
 			if (fCurrent!=null){
-				fCurrent.getType().getPlayerImpl().stop();
+				fCurrent.getTrack().getType().getPlayerImpl().stop();
 			}
 		} catch (Exception e) {
 			Log.error(Messages.getString("Player.Error_stoping____2"), e); //$NON-NLS-1$

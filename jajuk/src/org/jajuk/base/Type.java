@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.3  2003/10/21 17:51:43  bflorat
+ * 21/10/2003
+ *
  * Revision 1.2  2003/10/17 20:36:45  bflorat
  * 17/10/2003
  *
@@ -33,17 +36,17 @@ package org.jajuk.base;
  */
 public class Type {
 	
-	private int id;
+	private String sId;
 	private String sName;
 	private String sExtension;
 	private IPlayerImpl playerImpl;
 	
 	
-	public Type(int id, String sName,String sExtension, String sPlayerImpl) throws Exception{
+	public Type(String sId, String sName,String sExtension, String sPlayerImpl) throws Exception{
 		this.sExtension = sExtension;
 		this.sName = sName;
 		this.playerImpl = (IPlayerImpl)Class.forName(sPlayerImpl).newInstance();
-		this.id = id;
+		this.sId = sId;
 	}
 
 
@@ -73,7 +76,7 @@ public class Type {
 	 * toString method
 	 */
 	public String toString(){
-			return "Type[Name="+getName()+ " ; Extension="+sExtension+"]";	 //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			return "Type[ID="+sId+" Name="+getName()+ " ; Extension="+sExtension+"]";	 //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 	
 	/**
@@ -81,7 +84,7 @@ public class Type {
 	 * @return
 	 */
 	public String toXml(){
-		StringBuffer sb = new StringBuffer("\t\t<type id='" +id);
+		StringBuffer sb = new StringBuffer("\t\t<type id='" +sId);
 		sb.append("' name='");
 		sb.append(sName).append("' extension='");
 		sb.append(sExtension).append("'/>\n");
@@ -91,9 +94,17 @@ public class Type {
 	/**
 	 * @return
 	 */
-	public int getId() {
-		return id;
+	public String getId() {
+		return sId;
 	}
-
+	
+	/**
+	 * Equal method to check two types are identical
+	 * @param otherType
+	 * @return
+	 */
+	public boolean equals(Type otherType){
+		return sName.equals(otherType.getName());
+	}	
 
 }

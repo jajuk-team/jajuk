@@ -16,34 +16,36 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
- * Revision 1.2  2003/10/21 17:51:43  bflorat
+ * Revision 1.1  2003/10/21 17:51:43  bflorat
  * 21/10/2003
  *
  */
 package org.jajuk.base;
 
+import java.util.Collection;
 import java.util.Properties;
 
 /**
- *  A music style ( jazz, rock...)
- *<p> Logical item
- * @author     bflorat
+ *  An Album
+ * *<p> Logical item
+ * @Author     bflorat
  * @created    17 oct. 2003
  */
-public class Style extends PropertyAdapter {
+public class Album extends PropertyAdapter {
 
-	/** Style ID. Ex:1,2,3...*/
+	/** Album ID. Ex:1,2,3...*/
 	private String sId;
-	/**Style name upper case. ex:ROCK, JAZZ */
+	/**Album name */
 	private String sName;
+	
 
 	/**
-	 * Style constructor
+	 * Album constructor
 	 * @param id
 	 * @param sName
 	 */
-	//TODO: see javadoc/arguments auto
-	public Style(String sId, String sName) {
+	public Album(String sId, String sName) {
+		super();
 		this.sId = sId;
 		this.sName = sName;
 	}
@@ -59,17 +61,20 @@ public class Style extends PropertyAdapter {
 	 * toString method
 	 */
 	public String toString() {
-		return "Style[IS="+sId+" Name=" + getName() + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		return "Album[ID="+getId()+" Name=" + getName() +"]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$//$NON-NLS-4$
 	}
 
-		/**
+	/**
 	 * Return an XML representation of this item  
 	 * @return
 	 */
 	public String toXml() {
-		StringBuffer sb = new StringBuffer("\t\t<style id='" + sId);
-		sb.append("' name='");
-		sb.append(sName).append("'/>\n");
+		StringBuffer sb = new StringBuffer("\t\t<album id='" + sId);//$NON-NLS-1$
+		sb.append("' name='");//$NON-NLS-1$
+		sb.append(sName);
+		sb.append("'' style='");//$NON-NLS-1$
+		sb.append(getPropertiesXml());
+		sb.append("/>\n");//$NON-NLS-1$
 		return sb.toString();
 	}
 
@@ -79,15 +84,15 @@ public class Style extends PropertyAdapter {
 	public String getId() {
 		return sId;
 	}
+
 	
 	/**
-	 * Equal method to check two styles are identical
-	 * @param otherStyle
+	 * Equal method to check two albums are identical
+	 * @param otherAlbum
 	 * @return
 	 */
-	public boolean equals(Style otherStyle){
-		return getName().equals(otherStyle.getName());
-	}	
-
+	public boolean equals(Album otherAlbum){
+		return this.getName().equals(otherAlbum.getName() );
+	}
 
 }

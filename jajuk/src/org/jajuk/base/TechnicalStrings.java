@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.6  2003/10/21 17:51:43  bflorat
+ * 21/10/2003
+ *
  * Revision 1.5  2003/10/17 20:36:45  bflorat
  * 17/10/2003
  *
@@ -80,6 +83,7 @@ public interface TechnicalStrings {
 	public static final String LOG_FILE_SIZE="1MB";
 
 	//files
+	public static final String FILE_JAJUK_DIR = System.getProperty("user.home")+"/.jajuk";
 	public static final String FILE_LOG = System.getProperty("user.home")+"/.jajuk/jajuk.log";
 	public static final String FILE_COLLECTION = System.getProperty("user.home")+"/.jajuk/collection.xml";
 	
@@ -117,5 +121,28 @@ public interface TechnicalStrings {
 	public static final String VIEW_PHYSICAL_TREE	= "VIEW_PHYSICAL_TREE";
 	/** Identifier of the track list view */
 	public static final String VIEW_TRACK_LIST		= "VIEW_TRACK_LIST";
+	
+	
+	//XML tags
+	public static final String XML_TYPES = "types";
+	public static final String XML_TYPE = "type";
+	public static final String XML_DEVICES = "devices";
+	public static final String XML_DEVICE = "device";
+	public static final String XML_STYLES = "styles";
+	public static final String XML_STYLE = "style";
+	public static final String XML_AUTHORS = "author";
+	public static final String XML_AUTHOR = "author";
+	public static final String XML_ALBUMS = "albums";
+	public static final String XML_ALBUM = "album";
+	public static final String XML_TRACKS = "tracks";
+	public static final String XML_TRACK = "track";
+	public static final String XML_DIRECTORIES = "directory";
+	public static final String XML_DIRECTORY = "directory";
+	public static final String XML_FILES = "files";
+	public static final String XML_FILE = "file";
+	public static final String XML_PLAYLIST_FILES = "playlist_files";
+	public static final String XML_PLAYLIST_FILE = "playlist_file";
+	public static final String XML_PLAYLISTS = "playlists";
+	public static final String XML_PLAYLIST = "playlist";
 	
 }

@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.6  2003/10/21 17:51:43  bflorat
+ * 21/10/2003
+ *
  * Revision 1.5  2003/10/17 20:43:56  bflorat
  * 17/10/2003
  *
@@ -42,10 +45,11 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
-import java.util.Collection;
 
 import javax.swing.JFrame;
+import javax.swing.UIManager;
 
+import org.jajuk.base.Collection;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.TechnicalStrings;
 import org.jajuk.base.Type;
@@ -57,8 +61,6 @@ import org.jajuk.ui.JajukJMenuBar;
 import org.jajuk.ui.PerspectiveBarJPanel;
 import org.jajuk.ui.perspectives.IPerspectiveManager;
 import org.jajuk.ui.perspectives.PerspectiveManagerFactory;
-import org.jajuk.util.error.ErrorWindow;
-import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
 /**
@@ -77,7 +79,6 @@ public class Main implements TechnicalStrings{
 
 	public static void main(String[] args) {
 		try {
-			
 			//perform initial checkups
 			initialCheckups();
 
@@ -123,13 +124,16 @@ public class Main implements TechnicalStrings{
 			//registers supported types
 			try {
 				//TODO get player impl in user-conf.xml
-				TypeManager.registerType(new Type(1,Messages.getString("Main.Mpeg_layer_3_5"),EXT_MP3,PLAYER_IMPL_JAVALAYER)); //$NON-NLS-1$ //$NON-NLS-2$
-				TypeManager.registerType(new Type(2,Messages.getString("Main.Playlist_7"),EXT_PLAYLIST,PLAYER_IMPL_JAVALAYER)); //$NON-NLS-1$ //$NON-NLS-2$
-				TypeManager.registerType(new Type(3,Messages.getString("Main.Ogg_vorbis_9"),EXT_OGG,PLAYER_IMPL_JAVALAYER)); //$NON-NLS-1$ //$NON-NLS-2$
+				TypeManager.registerType(new Type("1",Messages.getString("Main.Mpeg_layer_3_5"),EXT_MP3,PLAYER_IMPL_JAVALAYER)); //$NON-NLS-1$ //$NON-NLS-2$
+				TypeManager.registerType(new Type("2",Messages.getString("Main.Playlist_7"),EXT_PLAYLIST,PLAYER_IMPL_JAVALAYER)); //$NON-NLS-1$ //$NON-NLS-2$
+				TypeManager.registerType(new Type("3",Messages.getString("Main.Ogg_vorbis_9"),EXT_OGG,PLAYER_IMPL_JAVALAYER)); //$NON-NLS-1$ //$NON-NLS-2$
 				
 			} catch (Exception e1) {
 				Log.error(Messages.getString("Main.Error_registering_players_11"),e1); //$NON-NLS-1$
 			}
+			//Load collection
+			Collection.load();
+			
 			//Starts the FIFO
 			new FIFO().start();
 			
@@ -155,9 +159,14 @@ public class Main implements TechnicalStrings{
 	 */
 	private static void initialCheckups() throws Exception {
 		//check for jajuk home directory presence
-		File fJajukDir = new File(System.getProperty("user.home") + "/.jajuk"); //$NON-NLS-1$ //$NON-NLS-2$
+		File fJajukDir = new File(FILE_JAJUK_DIR); 
 		if (!fJajukDir.exists() || !fJajukDir.isDirectory()) {
 			fJajukDir.mkdir(); //create the directory if it doesn't exist
+		}
+		//check for collection.xml file
+		File fCollection = new File(FILE_COLLECTION);
+		if (!fCollection.exists()){//if collection file doesn't exit, create it empty
+			Collection.commit();
 		}
 	}
 	
@@ -169,7 +178,9 @@ public class Main implements TechnicalStrings{
 	 */
 	public static void exit(int iExitCode){
 			try {
-				org.jajuk.base.Collection.commit();
+				if (Collection.isModified()){
+					org.jajuk.base.Collection.commit();
+				}
 			}
 			catch (IOException e) {
 				Log.error("",e);

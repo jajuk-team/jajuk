@@ -16,8 +16,8 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
- * Revision 1.1  2003/10/17 20:43:56  bflorat
- * 17/10/2003
+ * Revision 1.2  2003/10/21 17:51:43  bflorat
+ * 21/10/2003
  *
  */
 package org.jajuk.ui;
@@ -27,16 +27,16 @@ import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
 
 import org.jajuk.Main;
+import org.jajuk.base.Directory;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
 import org.jajuk.base.TechnicalStrings;
+import org.jajuk.base.Track;
 import org.jajuk.base.TypeManager;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Util;
-import org.jajuk.util.log.Log;
 
 /**
  *  General UI listener for Jajuk widgets
@@ -75,7 +75,14 @@ public class JajukListener implements ActionListener, TechnicalStrings {
 				FIFO.clear(); //stop all currently played tracks
 				File[] filestoPlay = new File[files.length];
 				for (int i = 0; i < files.length; i++) {
-					filestoPlay[i] = new File(files[i].getAbsolutePath(), TypeManager.getTypeByExtension(Util.getExtension(files[i])));
+					//TODO read actual id tags
+					String sId = "-1"; //no id for this file, can be outside collection
+					String sName = files[i].getName();
+					Directory directory = null;
+					Track track = new Track(sId, sName,null,null,null,0,null,0,TypeManager.getTypeByExtension(Util.getExtension(files[i])),new File[0],0,null); //set actual id tags
+					String size = Long.toString(files[i].length());
+					String sQuality = null; //set actual quality
+					filestoPlay[i] = new File(sId,sName,directory,track,size,sQuality);
 				}
 				FIFO.push(filestoPlay, false);
 			}

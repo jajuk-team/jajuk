@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.3  2003/10/21 17:51:43  bflorat
+ * 21/10/2003
+ *
  * Revision 1.2  2003/10/17 20:37:18  bflorat
  * 17/10/2003
  *
@@ -34,6 +37,7 @@ import javazoom.jl.player.advanced.PlaybackEvent;
 import javazoom.jl.player.advanced.PlaybackListener;
 
 import org.jajuk.base.FIFO;
+import org.jajuk.base.FileManager;
 import org.jajuk.base.IPlayerImpl;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.log.Log;
@@ -53,7 +57,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl{
 	 * @see org.jajuk.base.IPlayerImpl#play()
 	 */
 	public void play(org.jajuk.base.File file) throws Exception{
-		player = new AdvancedPlayer(new FileInputStream(new File(file.getPath()))); //$NON-NLS-1$
+		player = new AdvancedPlayer(new FileInputStream(new File(file.getAbsolutePath()))); //$NON-NLS-1$
 		player.setPlayBackListener(new PlaybackListener() {
 			public void playbackFinished(PlaybackEvent pbe){
 				FIFO.finished();
