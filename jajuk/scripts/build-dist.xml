@@ -8,7 +8,9 @@
   <property name='rpmbuilddir_mdk' value='${rootdir}/mdk/RPMBUILD/'/>
   <property name='rpmdistdir_suse' value='${rpmbuilddir_suse}/jajuk'/>
   <property name='rpmdistdir_mdk' value='${rpmbuilddir_mdk}/jajuk'/>
-  <property name='finaldistdir' value='${rootdir}/dist'/>
+  <property name='windowsdir' value='${rootdir}/windows'/>
+  <property name='izpackdir' value='${rootdir}/java'/>
+  <property name='sourcesdir' value='${rootdir}/src'/>
   <property name='libdir' value='lib'/>
   <property name='nativedir' value='native'/>
   <property name='srcdir' value='src'/>
@@ -18,19 +20,18 @@
   <property name='jarname' value='jajuk.jar'/>
   <property name='helpsetjarname' value='jajuk-help'/>
   <property name='distjarname' value='jajuk-install-'/>
-  <property name='sourcesdist' value='${finaldistdir}/jajuk-src-${version}.zip'/>
+  <property name='sourcesdist' value='${sourcesdir}/jajuk-src-${version}.zip'/>
     
-  <target name='all' description='o Create the entire package' depends='izpack,rpm,sourcesdist'/>
+  <target name='all' description='o Create the entire package' depends='izpack,rpm,sourcesdist,sfx'/>
   
   <target name='clean' description='o Clean up the distribution'>
-    <delete dir='${distdir}'/>
-    <delete dir='${rpmbuilddir_suse}'/>
-    <delete dir='${rpmbuilddir_mdk}'/>
-    </target>
+    <delete dir='${rootdir}'/>
+   </target>
   
   <target name='mkdist_izpack' description='o Create the IzPack distribution structure' depends='clean'>
     <mkdir dir='${rootdir}'/>
     <mkdir dir='${distdir}'/>
+    <mkdir dir='${izpackdir}'/>
     <copy todir='${distdir}/lib' >
      <fileset dir='${libdir}'/>
   	</copy>
@@ -65,11 +66,6 @@
      </copy>
      <copy todir='${distdir}' >
      	<fileset file='${basedir}/dist-files/icons/64x64/jajuk-logo.png'/>
-     </copy>
-      <!-- Native installer-->
-     <copy todir='${finaldistdir}' >
-     	<fileset file='${basedir}/dist-files/packaging/native_launcher/launcher.ini'/>
-     	<fileset file='${basedir}/dist-files/packaging/native_launcher/jajuk.stm'/>
      </copy>
   </target>
   
@@ -259,7 +255,8 @@
   </target>
 
   <target name='sourcesdist' description='o Create the source distribution' depends='helpsetjar'>
-  	<zip destfile='${sourcesdist}'>
+	<mkdir dir='${sourcesdir}'/>
+    <zip destfile='${sourcesdist}'>
   		<fileset dir='${distdir}/src'/>
   	</zip>
   </target>
@@ -316,10 +313,23 @@
       <target name='izpack' depends='jar,helpsetjar' >
         <echo message='Makes the installer using IzPack'/>
                 <izpack input='/data/java/workspace/jajuk/dist-files/packaging/IzPack/jajuk.izpack'
-        output='${finaldistdir}/${distjarname}${version}.jar'
+        output='${izpackdir}/${distjarname}${version}.jar'
         basedir='/data/java/workspace/jajuk'
         izPackDir='/prog/IzPack'/>
       </target>
+      
+      <!-- Windows SFX creation with 7z-->
+    <target name='sfx' depends='izpack'>
+  	 <mkdir dir='${windowsdir}'/>
+      <copy todir='${windowsdir}' >
+      	<fileset file='${basedir}/dist-files/packaging/native_launcher/*'/>
+     	<fileset file='${izpackdir}/${distjarname}${version}.jar'/>
+     </copy>
+   	 <exec executable='/bin/sh' dir='${windowsdir}'>
+	  <arg line='create_sfx.sh jajuk-${version}.exe'/>
+	 </exec>
+  </target>    
+      
       
       <!-- Prepare upload-->
    <target name='prepare_upload' description='o Put all generated packages in the same upload directory'>

@@ -39,6 +39,7 @@ Jajuk main principles are :
 %defattr(-,root,root)
   /usr/bin/jajuk
    /usr/lib/jajuk/bin/jajuk-help.jar
+   /usr/lib/jajuk/bin/jajuk-help_fr.jar
    /usr/lib/jajuk/bin/jajuk.jar
    /usr/lib/jajuk/lib/animation-1.1.3.jar
    /usr/lib/jajuk/lib/basicplayer-2.3.jar
@@ -70,6 +71,7 @@ Jajuk main principles are :
    /usr/share/doc/jajuk/README_ita.html
    /usr/share/doc/jajuk/README_nld.html
    /usr/share/doc/jajuk/README_swe.html
+   /usr/share/doc/jajuk/README_esp.html
    /usr/share/icons/jajuk-logo.png
    /usr/share/icons/mini/jajuk-logo.png
    /usr/share/icons/large/jajuk-logo.png
