@@ -132,9 +132,9 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
 					break;
 				}
 			}
-			if (!bFound){  //no cover file, search for a 'front.jpg' file
+			if (!bFound){  //no cover file, search for a file name containing 'front'
 				for (int i=0;i<files.length;i++){
-					if (files[i].getName().equalsIgnoreCase(FILE_DEFAULT_COVER_2)){
+					if (files[i].getName().toLowerCase().indexOf(FILE_DEFAULT_COVER_2) != -1){
 						image = java.awt.Toolkit.getDefaultToolkit().getImage(files[i].getAbsolutePath());
 						bFound = true;
 						break;
@@ -197,7 +197,11 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
 			lDateLastResize = lCurrentDate;
 			return;
 		}
-		display();
+		SwingUtilities.invokeLater(new Thread(){
+			public void run(){
+				display();
+			}
+		});
 	}
 
 	/* (non-Javadoc)
