@@ -59,14 +59,15 @@ public interface ITechnicalStrings {
 	public static final String ICON_LOGO = PATH_ICONS + "64x64/jajuk-logo.png";
 	public static final String ICON_LOGO_TRAY = PATH_ICONS + "22x22/jajuk-logo.png";
 	public static final String ICON_LOGO_ICO = PATH_IMAGES + "jajuk-logo.ico";
-	public static final String ICON_REPEAT_ON = PATH_ICONS + "16x16/repeat.png";
-	public static final String ICON_SHUFFLE_ON = PATH_ICONS + "16x16/shuffle.png"; 
-	public static final String ICON_CONTINUE_ON = PATH_ICONS + "16x16/continue.png";
-	public static final String ICON_INTRO_ON = PATH_ICONS + "16x16/intro.png";
-	public static final String ICON_SHUFFLE_GLOBAL_ON = PATH_ICONS + "16x16/shuffle_global_on.png";
-	public static final String ICON_BESTOF_ON = PATH_ICONS + "16x16/bestof_on.png";
-	public static final String ICON_MUTE_ON = PATH_ICONS + "16x16/mute_on.png";
-	public static final String ICON_NOVELTIES_ON =  PATH_ICONS + "16x16/novelties_on.png";
+	public static final String ICON_REPEAT = PATH_ICONS + "16x16/repeat.png";
+	public static final String ICON_SHUFFLE = PATH_ICONS + "16x16/shuffle.png"; 
+	public static final String ICON_CONTINUE = PATH_ICONS + "16x16/continue.png";
+	public static final String ICON_INTRO = PATH_ICONS + "16x16/intro.png";
+	public static final String ICON_SHUFFLE_GLOBAL = PATH_ICONS + "16x16/shuffle_global.png";
+	public static final String ICON_BESTOF = PATH_ICONS + "16x16/bestof.png";
+	public static final String ICON_MUTE = PATH_ICONS + "16x16/mute.png";
+	public static final String ICON_UNMUTE = PATH_ICONS + "16x16/unmute.png";
+	public static final String ICON_NOVELTIES =  PATH_ICONS + "16x16/novelties.png";
 	public static final String ICON_PREVIOUS = PATH_ICONS + "16x16/previous.png";
 	public static final String ICON_NEXT = PATH_ICONS + "16x16/next.png";
 	public static final String ICON_REW = PATH_ICONS + "16x16/player_rew.png";
@@ -146,6 +147,7 @@ public interface ITechnicalStrings {
 	public static final String ICON_SAVE_AS =  PATH_ICONS + "16x16/saveas.png";
 	public static final String ICON_DEFAULT_COVER =  PATH_ICONS + "16x16/ok.png";
 	public static final String ICON_MODE_NORMAL =  PATH_ICONS + "16x16/norm.png";
+	public static final String ICON_NET_SEARCH =  PATH_ICONS + "16x16/netsearch.png";
 			
 	//images
 	public static final String IMAGES_SPLASHSCREEN =  PATH_IMAGES + "jajuk-splashscreen.png";
@@ -278,6 +280,7 @@ public interface ITechnicalStrings {
 	public static final String EVENT_ADD_HISTORY_ITEM="add history item"; //a new element has been added in the history
 	public static final String EVENT_SPECIAL_MODE="special mode changed"; //special mode (global shuffle, novelties, bestof...) changed
 	public static final String EVENT_PLAY_ERROR="error"; //an error occured during a play
+	public static final String EVENT_MUTE_STATE="mute_state"; //mute state changed
 	
 	//details keys
 	public static final String DETAIL_CURRENT_FILE_ID="current file id";
@@ -367,6 +370,7 @@ public interface ITechnicalStrings {
 	public static final String CONF_NETWORK_PROXY_PORT = "jajuk.network.proxy_port";
 	public static final String CONF_NETWORK_PROXY_LOGIN = "jajuk.network.proxy_login";
 	public static final String CONF_COVERS_AUTO_COVER = "jajuk.covers.auto_cover";
+	public static final String CONF_COVERS_SHUFFLE = "jajuk.covers.shuffle";
 	public static final String CONF_COVERS_MIN_SIZE = "jajuk.covers.min_size";
 	public static final String CONF_COVERS_MAX_SIZE = "jajuk.covers.max_size";
 	public static final String CONF_COVERS_ACCURACY = "jajuk.covers.accuracy";
