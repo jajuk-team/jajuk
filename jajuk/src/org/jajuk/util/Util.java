@@ -455,7 +455,20 @@ public class Util implements ITechnicalStrings {
 	}
 	
 	
-	/**
+    /**
+     * Create empty file
+     * @param sFullPath
+     * @throws Exception
+     */
+	public static void createEmptyFile(String sFullPath) throws IOException{
+	    File file = new File(sFullPath);
+        FileOutputStream fos = new FileOutputStream(file);
+        fos.write(new byte[0]);
+        fos.close();
+    }
+    
+    
+    /**
 	 * Copy a file to given directory
 	 * @param file : file to copy
 	 * @param directory : destination directory

@@ -901,7 +901,6 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 					ConfigurationManager.setProperty(CONF_BACKUP_SIZE,jtfBackupSize.getText());
 					ConfigurationManager.setProperty(CONF_COLLECTION_CHARSET,jcbCollectionEncoding.getSelectedItem().toString());
 					InformationJPanel.getInstance().setMessage(Messages.getString("ParameterView.109"),InformationJPanel.INFORMATIVE); //$NON-NLS-1$
-					ConfigurationManager.commit();
 					//Network
 					ConfigurationManager.setProperty(CONF_NETWORK_USE_PROXY,Boolean.toString(jcbProxy.isSelected()));
 					ConfigurationManager.setProperty(CONF_NETWORK_PROXY_HOSTNAME,jtfProxyHostname.getText());
@@ -917,7 +916,9 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 					ConfigurationManager.setProperty(CONF_COVERS_CHANGE_AT_EACH_TRACK,Boolean.toString(jcbLoadEachTrack.isSelected()));
 					ConfigurationManager.setProperty(CONF_COVERS_MIN_SIZE,jtfMinSize.getText());
 					ConfigurationManager.setProperty(CONF_COVERS_MAX_SIZE,jtfMaxSize.getText());
-				}
+                    //commit configuration
+                    ConfigurationManager.commit();
+               }
 				else if (e.getSource() == jbDefault){
 					ConfigurationManager.setDefaultProperties();
 					ConfigurationManager.setProperty(CONF_FIRST_CON,FALSE);

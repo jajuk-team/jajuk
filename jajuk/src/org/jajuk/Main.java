@@ -23,9 +23,12 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 
 import javax.swing.BorderFactory;
@@ -187,7 +190,7 @@ public class Main implements ITechnicalStrings {
 			//Set locale
 			Messages.getInstance().setLocal(ConfigurationManager.getProperty(CONF_OPTIONS_LANGUAGE));
 		
-			//		  start the tray
+			//start the tray
 			launchTray();
 		    				    	
 			//Launch splashscreen 
@@ -208,8 +211,8 @@ public class Main implements ITechnicalStrings {
 			registerTypes();
 			
 			//Load collection
-			Collection.load();
-			
+            loadCollection();
+           
 			//Clean the collection up
 			Collection.cleanup();
 			
@@ -222,7 +225,8 @@ public class Main implements ITechnicalStrings {
 			//start exit hook
 			Thread tHook = new Thread() {
 				public void run() {
-					try{
+					Log.debug("Exit Hook begin");//$NON-NLS-1$
+                    try{
 						if (iExitCode == 0){ //commit only if exit is safe (to avoid commiting empty collection)
 							//commit configuration
 							org.jajuk.util.ConfigurationManager.commit();
@@ -232,14 +236,17 @@ public class Main implements ITechnicalStrings {
 							PerspectiveManager.commit();
 							//commit collection if not refreshing ( fix for 939816 )
 							if ( !DeviceManager.isAnyDeviceRefreshing()){
-								Collection.commit();
-								//backup this file
-								Util.backupFile(new File(FILE_COLLECTION),ConfigurationManager.getInt(CONF_BACKUP_SIZE));
+								Collection.commit(FILE_COLLECTION_EXIT);
+                                //create a proof file
+                                Util.createEmptyFile(FILE_COLLECTION_EXIT_PROOF);
 							}
 						}
 					} catch (IOException e) {
 						Log.error("", e); //$NON-NLS-1$
 					}
+                    finally{
+                        Log.debug("Exit Hook end");//$NON-NLS-1$
+                    }
 				}
 			};
 			tHook.setPriority(Thread.MAX_PRIORITY); //give max chances to this thread to complete
@@ -258,7 +265,7 @@ public class Main implements ITechnicalStrings {
 			if ( ConfigurationManager.getBoolean(CONF_SHOW_AT_STARTUP) ){
 			    launchUI();
 			}
-					
+        		            
 		} catch (JajukException je) { //last chance to catch any error for logging purpose
 			Log.error(je);
 			if ( je.getCode().equals("005")){ //$NON-NLS-1$
@@ -296,7 +303,7 @@ public class Main implements ITechnicalStrings {
 		//check for collection.xml file
 		File fCollection = new File(FILE_COLLECTION);
 		if (!fCollection.exists()) { //if collection file doesn't exit, create it empty
-			Collection.commit();
+			Collection.commit(FILE_COLLECTION);
 		}
 		//check for history.xml file
 		File fHistory = new File(FILE_HISTORY);
@@ -406,7 +413,84 @@ public class Main implements ITechnicalStrings {
 		Log.debug("Exit with code: "+iExitCode); //$NON-NLS-1$
 		System.exit(iExitCode);
 	}
-	
+	    
+    /**
+     * Load persisted collection file
+     */
+    private static void loadCollection(){
+        File fCollection = new File(FILE_COLLECTION); 
+        File fCollectionExit = new File(FILE_COLLECTION_EXIT); 
+        File fCollectionExitProof = new File(FILE_COLLECTION_EXIT_PROOF); 
+        //check if previous exit was OK
+        boolean bParsingOK = true;
+        try{
+            if (fCollection.exists() && fCollectionExitProof.exists()){
+                fCollectionExitProof.delete(); //delete this file created just after collection exit commit
+                Collection.load(FILE_COLLECTION_EXIT);
+                //parsing of collection exit ok, use this collection file as final collection
+                fCollectionExit.renameTo(fCollection);
+                //backup the collection
+                Util.backupFile(new File(FILE_COLLECTION),ConfigurationManager.getInt(CONF_BACKUP_SIZE));
+            }
+            else{
+                throw new JajukException("005"); //$NON-NLS-1$
+            }
+        }
+        catch(Exception e){
+            Log.error("005",fCollectionExit.getAbsolutePath(),e); //$NON-NLS-1$
+            Log.debug("Jajuk was not closed properly during previous session, try to load previous collection file"); //$NON-NLS-1$
+            if (fCollectionExit.exists()){
+               fCollectionExit.delete();
+           }
+           try{
+               //try to load "official" collection file, should be OK but not always up-to-date
+               Collection.load(FILE_COLLECTION);
+           }
+          catch(Exception e2){
+              //not better? strange
+              Log.error("005",fCollection.getAbsolutePath(),e2); //$NON-NLS-1$
+              bParsingOK = false;
+          }
+        }
+       if (!bParsingOK){ //even final collection file parsing failed (very unlikely), try to restore a backup file
+           File[] fBackups = new File(FILE_JAJUK_DIR).listFiles(new FilenameFilter() {
+            public boolean accept(File dir, String name) {
+                if (name.indexOf("backup") != -1){ //$NON-NLS-1$
+                    return true;
+                }
+                return false;
+               }
+           });
+           ArrayList alBackupFiles = new ArrayList(Arrays.asList(fBackups));
+           Collections.sort(alBackupFiles); //sort alphabeticaly (newest last)
+           Collections.reverse(alBackupFiles); //newest first now
+           Iterator it = alBackupFiles.iterator();
+           //parse all backup files, newest first
+           while (!bParsingOK && it.hasNext()){
+               File file = (File)it.next();
+               try{
+                   Collection.load(file.getAbsolutePath());
+                   bParsingOK = true;
+                   Messages.getChoice(Messages.getString("Error.133")+":\n"+file.getAbsolutePath(),JOptionPane.WARNING_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+                   break;
+               }
+              catch(Exception e2){
+                  Log.error("005",file.getAbsolutePath(),e2); //$NON-NLS-1$
+              }
+           }
+           if (!bParsingOK){ //not better? ok, commit and load a void collection
+               Collection.cleanup();
+               DeviceManager.cleanAllDevices();
+               try{
+                   Collection.commit(FILE_COLLECTION);
+               }
+               catch(Exception e2){
+                   Log.error(e2);
+               }
+           }
+       }
+    }
+    
 	/**
 	 * Launch initial track at startup
 	 */

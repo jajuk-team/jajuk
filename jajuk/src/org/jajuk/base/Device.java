@@ -264,18 +264,21 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	                    }
 	                }					
 	            }
-	            String sOut = new StringBuffer("[").append(device.getName()).append(Messages.getString("Device.25")).append((int)((System.currentTimeMillis()-lTime)/1000)). //$NON-NLS-1$ //$NON-NLS-2$
-	            append(Messages.getString("Device.26")).append(iNbNewFiles).append(Messages.getString("Device.27")). //$NON-NLS-1$ //$NON-NLS-2$
-	            append(iNbFilesBeforeRefresh - (FileManager.getFiles().size()-iNbNewFiles)).append(Messages.getString("Device.28")).toString(); //$NON-NLS-1$
-	            InformationJPanel.getInstance().setMessage(sOut,InformationJPanel.INFORMATIVE); //$NON-NLS-1$
-	            Log.debug(sOut); 
 	            //clear history to remove olf files referenced in it
 	            History.getInstance().clear(Integer.parseInt(ConfigurationManager.getProperty(CONF_HISTORY))); //delete old history items
 	            //Sort collection
 	    		FileManager.sortFiles();//resort collection in case of
-	            //notify views to refresh
-	            ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH));		
-	        }
+                //notify views to refresh
+	            ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH));
+                //commit collection at each refresh (can e useful if application is closed brutally with control-C or shutdown and that exit hook have no time to perform commit)
+                Collection.commit(FILE_COLLECTION);
+                //Display end of refresh message with stats
+                String sOut = new StringBuffer("[").append(device.getName()).append(Messages.getString("Device.25")).append((int)((System.currentTimeMillis()-lTime)/1000)). //$NON-NLS-1$ //$NON-NLS-2$
+                append(Messages.getString("Device.26")).append(iNbNewFiles).append(Messages.getString("Device.27")). //$NON-NLS-1$ //$NON-NLS-2$
+                append(iNbFilesBeforeRefresh - (FileManager.getFiles().size()-iNbNewFiles)).append(Messages.getString("Device.28")).toString(); //$NON-NLS-1$
+                InformationJPanel.getInstance().setMessage(sOut,InformationJPanel.INFORMATIVE); //$NON-NLS-1$
+                Log.debug(sOut); 
+            }
 	    }
 	    catch(RuntimeException re){ //runtime error are thrown
 	        throw re;

@@ -48,7 +48,7 @@ public interface ITechnicalStrings {
     
     		
 	// Jajuk version
-	public static final String JAJUK_VERSION = "0.3.3";
+	public static final String JAJUK_VERSION = "0.3.3.1";
 	public static final String JAJUK_VERSION_DATE = "Build 2005-04-02";
 	
 	//About 
@@ -171,7 +171,9 @@ public interface ITechnicalStrings {
 	//files
 	public static final String FILE_JAJUK_DIR = System.getProperty("user.home")+"/.jajuk";
 	public static final String FILE_COLLECTION = System.getProperty("user.home")+"/.jajuk/collection.xml";
-	public static final String FILE_PERSPECTIVES_CONF = System.getProperty("user.home")+"/.jajuk/perspectives.xml";
+	public static final String FILE_COLLECTION_EXIT = System.getProperty("user.home")+"/.jajuk/collection_exit.xml"; //FIle written by the exit hook
+    public static final String FILE_COLLECTION_EXIT_PROOF = System.getProperty("user.home")+"/.jajuk/exit_proof"; //Void file created after exit collection file
+    public static final String FILE_PERSPECTIVES_CONF = System.getProperty("user.home")+"/.jajuk/perspectives.xml";
 	public static final String FILE_PHYSICAL_PERSPECTIVE = System.getProperty("user.home")+"/.jajuk/physicalPerspectives.ser";
 	public static final String FILE_LOGICAL_PERSPECTIVE = System.getProperty("user.home")+"/.jajuk/logicalPerspectives.ser";
 	public static final String FILE_PLAYER_PERSPECTIVE = System.getProperty("user.home")+"/.jajuk/playerPerspectives.ser";

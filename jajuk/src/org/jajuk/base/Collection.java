@@ -29,7 +29,6 @@ import java.io.Serializable;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 
-import javax.swing.JOptionPane;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
@@ -82,9 +81,10 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 	}
 
 	/** Write current collection to collection file for persistence between sessions */
-	public static void commit() throws IOException {
-	    String sCharset = ConfigurationManager.getProperty(CONF_COLLECTION_CHARSET);
-		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(FILE_COLLECTION), sCharset)); //$NON-NLS-1$
+	public static void commit(String sFileName) throws IOException {
+	    long lTime = System.currentTimeMillis();
+        String sCharset = ConfigurationManager.getProperty(CONF_COLLECTION_CHARSET);
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(sFileName), sCharset)); //$NON-NLS-1$
 		bw.write("<?xml version='1.0' encoding='"+sCharset+"'?>\n"); //$NON-NLS-1$ //$NON-NLS-2$
 		bw.write("<collection jajuk_version='"+JAJUK_VERSION+"'>\n"); //$NON-NLS-1$ //$NON-NLS-2$
 		//types
@@ -174,36 +174,29 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 		bw.write("</collection>\n"); //$NON-NLS-1$
 		bw.flush();
 		bw.close();
+        Log.debug("Collection commited in "+(System.currentTimeMillis()-lTime)+" ms");//$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/**
 	 * Parse collection.xml file and put all collection information into memory
 	 *  
 	 */
-	public static void load() throws JajukException {
-		try {
-			lTime = System.currentTimeMillis();
-			SAXParserFactory spf = SAXParserFactory.newInstance();
-			spf.setValidating(false);
-			spf.setNamespaceAware(false);
-			SAXParser saxParser = spf.newSAXParser();
-			File frt = new File(FILE_COLLECTION);
-			saxParser.parse(frt.toURL().toString(),getInstance());
-            //Sort collection
-    		FileManager.sortFiles();//resort collection in case of
-		} catch (Exception e) {
-			Log.error(e);
-			//collection corrupted, OK, try to write a void collection file
-			cleanup();
-			DeviceManager.cleanAllDevices();
-			try{
-			    commit();
-			}
-			catch(Exception e2){
-			    Log.error(e2);
-			}
-			Messages.getChoice(Messages.getErrorMessage("005"),JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$
-		}
+	public static void load(String sFile) throws Exception {
+	    lTime = System.currentTimeMillis();
+	    //make sure to clean everything in memory
+	    cleanup();
+	    DeviceManager.cleanAllDevices();
+	    SAXParserFactory spf = SAXParserFactory.newInstance();
+	    spf.setValidating(false);
+	    spf.setNamespaceAware(false);
+	    SAXParser saxParser = spf.newSAXParser();
+	    File frt = new File(sFile);
+        if (!frt.exists()){
+            throw new JajukException("005"); //$NON-NLS-1$
+        }
+	    saxParser.parse(frt.toURL().toString(),getInstance());
+	    //Sort collection
+	    FileManager.sortFiles();//resort collection in case of
 	}
 
 	/**
