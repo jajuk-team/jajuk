@@ -72,8 +72,9 @@ public class ConfigurationManager implements ITechnicalStrings{
 		return properties.getProperty(pName);
 	}
 	
+	
 	/**
-	 * Return the value of a property as a boolean
+	 * Return the value of a property as a boolean or false if the property is not found
 	 * 
 	 * @param pName Name of the property.
 	 * @return boolean value of the property named pName.
@@ -82,7 +83,25 @@ public class ConfigurationManager implements ITechnicalStrings{
 		return Boolean.valueOf(properties.getProperty(pName)).booleanValue();
 	}
 
+	/**
+	 * Return the value of a property as a boolean or specified value of the property is not found
+	 * 
+	 * @param pName Name of the property.
+	 * @param default value
+	 * @return boolean value of the property named pName.
+	 */
+	public static boolean getBoolean(String pName,boolean bDefault) {
+		String s = properties.getProperty(pName);
+		if ( s != null){
+			return Boolean.valueOf(s).booleanValue();
+		}
+		else{
+			return bDefault;
+		}
+	}
 
+	
+	
 	/**
 	 * Set default values
 	 *
