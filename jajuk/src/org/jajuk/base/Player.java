@@ -22,6 +22,7 @@ package org.jajuk.base;
 import org.jajuk.i18n.Messages;
 import org.jajuk.players.IPlayerImpl;
 import org.jajuk.ui.InformationJPanel;
+import org.jajuk.ui.ObservationManager;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.log.Log;
 
@@ -59,15 +60,21 @@ public class Player implements ITechnicalStrings{
 		Thread thread = new Thread() {
 			public void run() {
 				try {
-					synchronized(bLock){  //ultimate concurrency protection
-					    bPlaying = true;
-					    pCurrentPlayerImpl.play(fCurrent,fPosition,length,bMute,ConfigurationManager.getFloat(CONF_VOLUME));
-					}
+				    synchronized(bLock){  //ultimate concurrency protection
+				        bPlaying = true;
+				        if (bMute){
+				            pCurrentPlayerImpl.play(fCurrent,fPosition,length,0.0f);
+				        }
+				        else{
+				            pCurrentPlayerImpl.play(fCurrent,fPosition,length,ConfigurationManager.getFloat(CONF_VOLUME));
+				        }
+				    }
 				} catch (Exception e) {
-					Log.error("007",fCurrent.getAbsolutePath(), e); //$NON-NLS-1$
+				    Log.error("007",fCurrent.getAbsolutePath(), e); //$NON-NLS-1$
 					InformationJPanel.getInstance().setMessage(Messages.getString("Error.007")+" : "+fCurrent.getAbsolutePath(),InformationJPanel.ERROR);//$NON-NLS-1$ //$NON-NLS-2$
 					Player.stop();
 					FIFO.getInstance().finished();
+					ObservationManager.notifySync(EVENT_PLAY_ERROR); //notify the error ( synchronously to allow FIFO not to start a new track )
 				}			
 			}
 		};
@@ -102,7 +109,7 @@ public class Player implements ITechnicalStrings{
 					pCurrentPlayerImpl.setVolume(ConfigurationManager.getFloat(CONF_VOLUME));
 				}
 				else{
-					pCurrentPlayerImpl.mute();
+					pCurrentPlayerImpl.setVolume(0.0f);
 				}
 				Player.bMute = !Player.bMute;
 			}
@@ -120,11 +127,11 @@ public class Player implements ITechnicalStrings{
 	public static void mute(boolean bMute) {
 		try {
 			if (pCurrentPlayerImpl!=null){
-				if (bMute){ //already muted, unmute it by setting the volume previous mute
-					pCurrentPlayerImpl.setVolume(ConfigurationManager.getFloat(CONF_VOLUME));
+				if (bMute){
+				    pCurrentPlayerImpl.setVolume(0.0f);
 				}
 				else{
-					pCurrentPlayerImpl.mute();
+				    pCurrentPlayerImpl.setVolume(ConfigurationManager.getFloat(CONF_VOLUME));
 				}
 				Player.bMute = bMute;
 			}
@@ -208,7 +215,17 @@ public class Player implements ITechnicalStrings{
 	
 	/**Seek to a given position in %. ex : 0.2 for 20% */
 	public static void seek(float fPosition){
-		pCurrentPlayerImpl.seek(fPosition,bMute);
+	    //check if we are yet seeking
+	    if (!pCurrentPlayerImpl.isSeeking()){
+	        // bound seek
+	        if (fPosition < 0.0f){
+	            fPosition = 0.0f;
+	        }
+	        else if (fPosition >= 1.0f){
+	            fPosition = 0.99f;
+	        }
+	        pCurrentPlayerImpl.seek(fPosition);
+	    }
 	}
 	
 	/**
