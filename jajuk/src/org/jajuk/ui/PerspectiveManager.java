@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.4  2003/11/20 19:12:22  bflorat
+ * 20/11/2003
+ *
  * Revision 1.3  2003/11/18 21:50:56  bflorat
  * 18/11/2003
  *
@@ -75,11 +78,9 @@ public class PerspectiveManager extends DefaultHandler implements ITechnicalStri
 			spf.setValidating(false);
 			XMLReader xmlr;
 			SAXParser saxParser = spf.newSAXParser();
-			xmlr = saxParser.getXMLReader();
-			xmlr.setContentHandler(getInstance());
-			xmlr.setErrorHandler(getInstance());
 			File frt = new File(FILE_PERSPECTIVES_CONF);
-			xmlr.parse(frt.toURL().toString());	
+			saxParser.parse(frt.toURL().toString(),getInstance());
+			
 		} catch (Exception e) {
 			Log.error(e);
 			throw new JajukException("115");

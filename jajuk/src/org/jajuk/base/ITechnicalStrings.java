@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.14  2003/11/20 19:12:18  bflorat
+ * 20/11/2003
+ *
  * Revision 1.13  2003/11/18 21:50:56  bflorat
  * 18/11/2003
  *
@@ -149,6 +152,7 @@ public interface ITechnicalStrings {
 	public static final String FILE_COLLECTION = System.getProperty("user.home")+"/.jajuk/collection.xml";
 	public static final String FILE_PERSPECTIVES_CONF = System.getProperty("user.home")+"/.jajuk/perspectives.xml";
 	public static final String FILE_CONFIGURATION = System.getProperty("user.home")+"/.jajuk/conf.properties";
+	public static final String FILE_HISTORY = System.getProperty("user.home")+"/.jajuk/history.xml";
 	
 	//players impls
 	public static final String PLAYER_IMPL_JAVALAYER= "org.jajuk.players.JavaLayerPlayerImpl";
@@ -216,6 +220,12 @@ public interface ITechnicalStrings {
 	public static final String CONF_STARTUP_FILE= "jajuk.startup.file";
 	public static final String CONF_STARTUP_MODE= "jajuk.startup.mode";
 	public static final String CONF_CONFIRMATIONS_DELETE_FILE= "jajuk.confirmations.delete.file";
+	public static final String CONF_OPTIONS_HIDE_UNMOUNTED= "jajuk.options.hide_unmounted";
+	public static final String CONF_OPTIONS_RESTART= "jajuk.options.restart";
+	public static final String CONF_OPTIONS_LOG_LEVEL= "jajuk.options.log_level";
+	public static final String CONF_OPTIONS_LANGUAGE= "jajuk.options.language";
+	
+	
 	
  	
 	//miscelanous

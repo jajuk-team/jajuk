@@ -9,8 +9,8 @@
  * 
  * You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
  * USA. $Log$
- * USA. Revision 1.12  2003/11/18 18:58:07  bflorat
- * USA. 18/11/2003
+ * USA. Revision 1.13  2003/11/20 19:12:18  bflorat
+ * USA. 20/11/2003
  * USA.
  */
 package org.jajuk.base;
@@ -165,11 +165,8 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 			spf.setValidating(false);
 			XMLReader xmlr;
 			SAXParser saxParser = spf.newSAXParser();
-			xmlr = saxParser.getXMLReader();
-			xmlr.setContentHandler(getInstance());
-			xmlr.setErrorHandler(getInstance());
 			File frt = new File(FILE_COLLECTION);
-			xmlr.parse(frt.toURL().toString());
+			saxParser.parse(frt.toURL().toString(),getInstance());
 		} catch (Exception e) {
 			Log.error(e);
 			throw new JajukException("005");

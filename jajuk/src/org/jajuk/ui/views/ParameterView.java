@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.3  2003/11/20 19:12:22  bflorat
+ * 20/11/2003
+ *
  * Revision 1.2  2003/11/18 21:50:56  bflorat
  * 18/11/2003
  *
@@ -115,7 +118,7 @@ public class ParameterView extends ViewAdapter implements ActionListener {
 		
 		//History
 		jpHistory = new JPanel();
-		double sizeHistory[][] = {{0.6,iXSeparator,0.3,iXSeparator},
+		double sizeHistory[][] = {{0.6,iXSeparator,0.3},
 										 {20,iYSeparator,25}};
 		jpHistory.setLayout(new TableLayout(sizeHistory));
 		jlHistory = new JLabel("History duration: ");
@@ -170,14 +173,77 @@ public class ParameterView extends ViewAdapter implements ActionListener {
 		jcbBeforeDelete.setToolTipText("Ask before physically delete a file");
 		jcbBeforeDelete.setSelected(Boolean.valueOf(ConfigurationManager.getProperty(CONF_CONFIRMATIONS_DELETE_FILE)).booleanValue());
 		jpConfirmations.add(jcbBeforeDelete,"0,1");
+		//Options
+		jpOptions = new JPanel();
+		jpOptions.setBorder(BorderFactory.createTitledBorder("Options"));
+		double sizeOptions[][] = {{0.99},
+														 {iYSeparator,20,iYSeparator,20,iYSeparator,60+2*iYSeparator,iYSeparator,40+iYSeparator,iYSeparator}};
+		jpOptions.setLayout(new TableLayout(sizeOptions));
+		jcbDisplayUnmounted = new JCheckBox("Only display mounted devices");
+		jcbDisplayUnmounted.setSelected(Boolean.valueOf(ConfigurationManager.getProperty(CONF_OPTIONS_HIDE_UNMOUNTED)).booleanValue());
+		jcbDisplayUnmounted.setToolTipText("Hides tracks located in unmounted devices");
+		jcbRestart = new JCheckBox("Restart when reaching end of collection");
+		jcbRestart.setSelected(Boolean.valueOf(ConfigurationManager.getProperty(CONF_OPTIONS_RESTART)).booleanValue());
+		jcbRestart.setToolTipText("Restart the entire collection when reaching the very end in continue mode");
+		JPanel jpCombos = new JPanel();
+		double sizeCombos[][] = {{0.50,0.50},
+																 {20,iYSeparator,20,iYSeparator,20}};
+		jpCombos.setLayout(new TableLayout(sizeCombos));
+		jlLanguage = new JLabel("Language : ");
+		jcbLanguage = new JComboBox();
+		jcbLanguage.addItem(Messages.getString("options_language_default"));
+		jcbLanguage.addItem("English (en)");
+		jcbLanguage.addItem("French (fr)");
+		jcbLanguage.setSelectedItem(ConfigurationManager.getProperty(CONF_OPTIONS_LANGUAGE));
+		jcbLanguage.setToolTipText("Interface language setting");
+		jlLAF = new JLabel("Look and Feel : ");
+		jlLAF.setToolTipText("Look and feel setting");
+		jcbLAF = new JComboBox();
+		jcbLAF.setToolTipText("Look and feel setting");
+		//TODO implements l&f : use a property with ',' separator
+		jlLogLevel = new JLabel("Log level : ");
+		jcbLogLevel = new JComboBox();
+		jcbLogLevel.addItem("FATAL");
+		jcbLogLevel.addItem("ERROR");
+		jcbLogLevel.addItem("WARNING");
+		jcbLogLevel.addItem("INFO");
+		jcbLogLevel.addItem("DEBUG");
+		jcbLogLevel.setSelectedItem(ConfigurationManager.getProperty(CONF_OPTIONS_LOG_LEVEL));
+		jcbLogLevel.setToolTipText("Jajuk verbosity : FATAL:display only critical erros, ERROR:+display errors, WARNING:+display warnings, DEBUG: all messages");
+		jpCombos.add(jlLanguage,"0,0");
+		jpCombos.add(jcbLanguage,"1,0");
+		jpCombos.add(jlLAF,"0,2");
+		jpCombos.add(jcbLAF,"1,2");
+		jpCombos.add(jlLogLevel,"0,4");
+		jpCombos.add(jcbLogLevel,"1,4");
+		JPanel jpIntro = new JPanel();
+		double sizeIntro[][] = {{0.50,0.50},
+														 {20,iYSeparator,20}};
+		jpIntro.setLayout(new TableLayout(sizeIntro));
+		jlIntroPosition = new JLabel("Intro begin position (%) : ");
+		jtfIntroPosition = new JTextField(3);
+		jtfIntroPosition.setToolTipText("Introduction position inside track in %, from 0 ( begining of the file) to 99 ( end of the track )" );
+		jlIntroLength = new JLabel("Intro length (sec) : ");
+		jtfIntroLength = new JTextField(3);
+		jtfIntroLength.setToolTipText("Introduction length in seconds" );
+		jpIntro.add(jlIntroPosition,"0,0");
+		jpIntro.add(jtfIntroPosition,"1,0");
+		jpIntro.add(jlIntroLength,"0,2");
+		jpIntro.add(jtfIntroLength,"1,2");
+		jpOptions.add(jcbDisplayUnmounted,"0,1");
+		jpOptions.add(jcbRestart,"0,3");
+		jpOptions.add(jpCombos,"0,5");
+		jpOptions.add(jpIntro,"0,7");
+		
 		
 		//global layout
 		double size[][] = {{0.5,0.5},
-								 {0.15,iYSeparator,0.30,iYSeparator,0.20}};
+								 {0.40,iYSeparator,0.30,iYSeparator,0.20}};
 		setLayout(new TableLayout(size));
 		add(jpHistory,"0,0");
 		add(jpStart,"0,2");
 		add(jpConfirmations,"0,4");
+		add(jpOptions,"1,0");
 		
 	}
 

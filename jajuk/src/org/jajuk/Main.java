@@ -9,6 +9,9 @@
  * 
  * You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,USA
  * $Log$
+ * Revision 1.20  2003/11/20 19:12:22  bflorat
+ * 20/11/2003
+ *
  * Revision 1.19  2003/11/18 21:50:56  bflorat
  * 18/11/2003
  *
@@ -36,9 +39,7 @@ package org.jajuk;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.Frame;
-import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.BufferedWriter;
@@ -50,6 +51,7 @@ import javax.swing.JFrame;
 
 import org.jajuk.base.Collection;
 import org.jajuk.base.FIFO;
+import org.jajuk.base.History;
 import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.base.TypeManager;
 import org.jajuk.i18n.Messages;
@@ -138,6 +140,9 @@ public class Main implements ITechnicalStrings {
 			//Load user configuration
 			org.jajuk.util.ConfigurationManager.load();
 			
+			//Load history
+			History.load();
+			
 			//Starts the FIFO
 			FIFO.getInstance().start();
 	
@@ -151,6 +156,8 @@ public class Main implements ITechnicalStrings {
 	
 			//Set menu bar to the frame
 			jframe.setJMenuBar(JajukJMenuBar.getInstance());
+			
+			History.getInstance().addItem("1233",System.currentTimeMillis());		
 		
 		} catch (JajukException je) { //last chance to catch any error for logging purpose
 			Log.error(je);
@@ -191,6 +198,11 @@ public class Main implements ITechnicalStrings {
 			bw.write(XML_PERSPECTIVES_CONF);
 			bw.close();
 		}
+		//check for history.xml file
+		File fHistory = new File(FILE_HISTORY);
+		if (!fHistory.exists()) { //if history file doesn't exit, create it empty
+			History.commit();
+		}
 	}
 
 	/**
@@ -210,6 +222,8 @@ public class Main implements ITechnicalStrings {
 				org.jajuk.util.ConfigurationManager.commit();
 				//commit collection
 				org.jajuk.base.Collection.commit();
+				//commit history
+				History.commit();
 			}
 		} catch (IOException e) {
 			Log.error("", e);
