@@ -189,10 +189,7 @@ public class Main implements ITechnicalStrings {
 		
 			//		  start the tray
 			launchTray();
-
-			//	Set look and feel, needs local to be set for error messages
-			LNFManager.setLookAndFeel(ConfigurationManager.getProperty(CONF_OPTIONS_LNF));
-            				    	
+		    				    	
 			//Launch splashscreen 
 			SwingUtilities.invokeAndWait(new Runnable() {
                 public void run() {
@@ -540,7 +537,10 @@ public class Main implements ITechnicalStrings {
 		SwingUtilities.invokeAndWait(new Runnable() { //use invokeAndWait to get a better progressive ui display
 		   public void run(){
 				try {
-				    //starts ui
+                    //  Set look and feel, needs local to be set for error messages
+                    LNFManager.setLookAndFeel(ConfigurationManager.getProperty(CONF_OPTIONS_LNF));
+                
+                    //starts ui
 					jw = JajukWindow.getInstance();
 				    jw.setCursor(Util.WAIT_CURSOR);
 							
