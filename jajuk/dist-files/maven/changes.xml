@@ -102,8 +102,14 @@
       	<action dev='bflorat' type='add'>Collection file backup options</action>  
       	<action dev='bflorat' type='update'>Parameter view now uses tabs</action>
     	<action dev='bflorat' type='update'>Now file choosers try to guess a right root directory</action>
+    	<action dev='bflorat' type='update'>For design, it's no more possbile to create a device subdirectory of another device</action>
+    	<action dev='bflorat' type='update'>For design, it's not more possible to change a device name, id or type</action>
     	<action dev='bflorat' type='fix'>1001432 We shouldn't be able to choose a startup file in parameter view if this mode is not selected</action>  
-      </release>
+    	<action dev='bflorat' type='fix'>1003760 A rewind or a forward should resume a paused track</action>  
+    	<action dev='bflorat' type='fix'>1003759 Cannot start tracks after stopping the player during a pause</action>  
+    	<action dev='bflorat' type='fix'>984868 Should ignore pause between 2 tracks</action>
+    	<action dev='bflorat' type='fix'>1004106 Systray pause not taken into account in main window</action>
+     </release>
 
   </body>
 </document>
