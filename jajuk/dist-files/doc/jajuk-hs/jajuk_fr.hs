@@ -6,34 +6,32 @@
 <helpset version="1.0">
 
   <!-- title -->
-  <title>Jajuk Help</title>
+  <title>Aide Jajuk</title>
 
   <!-- maps -->
   <maps>
      <homeID>top</homeID>
-     <mapref location="Map.jhm"/>
+     <mapref location="fr/Map.jhm"/>
   </maps>
 
   <!-- views -->
   <view>
     <name>TOC</name>
-    <label>Table Of Contents</label>
+    <label>Sommaire</label>
     <type>javax.help.TOCView</type>
-    <data>jajukToc.xml</data>
+    <data>fr/jajukToc.xml</data>
   </view>
 
    <view>
     <name>Search</name>
-    <label>Search</label>
+    <label>Recherche</label>
     <type>javax.help.SearchView</type>
-    <data engine="com.sun.java.help.search.DefaultSearchEngine">
-      JavaHelpSearch
-    </data>
+    <data engine="com.sun.java.help.search.DefaultSearchEngine">fr/JavaHelpSearch</data>
   </view>
 
   <view>
     <name>Favorites</name>
-    <label>Favorites</label>
+    <label>Favoris</label>
     <type>javax.help.FavoritesView</type>
   </view>
  
