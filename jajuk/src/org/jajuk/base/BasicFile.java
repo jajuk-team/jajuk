@@ -20,7 +20,6 @@
 
 package org.jajuk.base;
 
-import org.jajuk.util.Util;
 
 /**
  *  File not managed in collection ( selected by file/open or in a playlist file )

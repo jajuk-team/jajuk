@@ -21,6 +21,7 @@
 package org.jajuk.ui.views;
 
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.ui.IView;
@@ -64,6 +65,15 @@ public abstract class ViewAdapter extends JPanel implements IView,ITechnicalStri
 	 */
 	public void setIsDisplayed(boolean isDisplayed) {
 		bIsDisplayed = isDisplayed;
+	}
+	
+	/**
+	 * View refresh
+	 */
+	public void refresh(){
+		removeAll();
+		display();
+		SwingUtilities.updateComponentTreeUI(this);
 	}
 
 }

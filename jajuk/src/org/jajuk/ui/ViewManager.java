@@ -21,15 +21,13 @@
 package org.jajuk.ui;
 
 import java.util.HashMap;
+import java.util.Iterator;
 
 import javax.swing.JComponent;
 import javax.swing.JInternalFrame;
-import javax.swing.JPanel;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
-import javax.swing.event.InternalFrameListener;
 
-import org.jajuk.Main;
 import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.log.Log;
@@ -43,20 +41,16 @@ import org.jajuk.util.log.Log;
  */
 public class ViewManager implements ITechnicalStrings{
 
-	/**View name -> perspective hashmap */
-	static HashMap hmViewPerspective = new HashMap(20);
-	
-	/**View name -> is visible ( Boolean ) */
-		static HashMap hmViewIsVisible = new HashMap(20);
+	/**View -> is visible ( Boolean ) */
+	static HashMap hmViewIsVisible = new HashMap(20);
 	
 	
-	/**View name -> container hashmap */
+	/**View -> container hashmap */
 	static HashMap hmViewContainer = new HashMap(20);
 	
 	
 	/**Maintain relation view/perspective, a view can be in only one perspective*/
 	public static void registerView(final IView view,IPerspective perspective){
-		hmViewPerspective.put(view.getViewName(),perspective);
 		JInternalFrame ji = new JInternalFrame(view.getDesc(),true,true,true,true);
 		ji.setContentPane((JComponent)view);
 		ji.setDefaultCloseOperation(JInternalFrame.DO_NOTHING_ON_CLOSE);
@@ -66,7 +60,7 @@ public class ViewManager implements ITechnicalStrings{
 				JajukJMenuBar.getInstance().refreshViews();
 			}
 		});
-		hmViewContainer.put(view.getViewName(),ji);
+		hmViewContainer.put(view,ji);
 	}
 	
 	
@@ -79,26 +73,16 @@ public class ViewManager implements ITechnicalStrings{
 	public static void notify(String sEvent,IView view){
 		try{
 			if (sEvent.equals(EVENT_VIEW_REFRESH_REQUEST)){
-				JInternalFrame ji = (JInternalFrame)hmViewContainer.get(view.getViewName());
-				IView newView = (IView)view.getClass().newInstance();  //reinstanciate the view, needed to avoid many repaint problems
-				ji.setContentPane((JPanel)newView); //reset content pane. A repaint() inside the JPanel doesn't work.
-				ji.setOpaque(true);
-				ji.repaint();
-				IPerspective perspective = (IPerspective)hmViewPerspective.get(view.getViewName());
-				perspective.getDesktop().repaint();
+				JInternalFrame ji = (JInternalFrame)hmViewContainer.get(view);
+				view.refresh();
 			}
 			else if (sEvent.equals(EVENT_VIEW_CLOSE_REQUEST)){
-				JInternalFrame ji = (JInternalFrame)hmViewContainer.get(view.getViewName());
-				IPerspective perspective = (IPerspective)hmViewPerspective.get(view.getViewName());
+				JInternalFrame ji = (JInternalFrame)hmViewContainer.get(view);
 				setVisible(view,false);
-				perspective.getDesktop().repaint();
 			}
 			else if (sEvent.equals(EVENT_VIEW_SHOW_REQUEST)){
-				JInternalFrame ji = (JInternalFrame)hmViewContainer.get(view.getViewName());
+				JInternalFrame ji = (JInternalFrame)hmViewContainer.get(view);
 				setVisible(view,true);
-				IPerspective perspective = (IPerspective)hmViewPerspective.get(view.getViewName());
-				perspective.getDesktop().repaint();
-				Main.jframe.repaint();
 			}
 		}catch(Exception e){
 			Log.error("118",sEvent,e);
@@ -107,13 +91,29 @@ public class ViewManager implements ITechnicalStrings{
 	}
 	
 	/**
+	 * Notify the manager for a request ( refresh...) for all view of a type
+	 * @param sEvent
+	 * @param c views class
+	 */
+	public static void notify(String sEvent,Class c){
+		Iterator it = hmViewContainer.keySet().iterator();
+		while ( it.hasNext()){
+			IView view = (IView)it.next();
+			if ( view.getClass().equals(c)){
+				notify(sEvent,view);
+			}
+		}
+	}
+	
+	
+	/**
 	 * Set size for a view
 	 * @param view
 	 * @param iWidth
 	 * @param iHeight
 	 */
 	public static void setSize(IView view,int iWidth,int iHeight){
-		JInternalFrame frame = (JInternalFrame)hmViewContainer.get(view.getViewName());
+		JInternalFrame frame = (JInternalFrame)hmViewContainer.get(view);
 		frame.setSize(iWidth,iHeight);
 	}
 	
@@ -124,7 +124,7 @@ public class ViewManager implements ITechnicalStrings{
 	 * @param iY
 	 */
 	public static void setLocation(IView view,int iX,int iY){
-		JInternalFrame frame = (JInternalFrame)hmViewContainer.get(view.getViewName());
+		JInternalFrame frame = (JInternalFrame)hmViewContainer.get(view);
 		frame.setLocation(iX,iY);
 	}
 	
@@ -143,7 +143,7 @@ public class ViewManager implements ITechnicalStrings{
 	 * @param b
 	 */
 	public static void setVisible(IView view,boolean b){
-		JInternalFrame frame = (JInternalFrame)hmViewContainer.get(view.getViewName());
+		JInternalFrame frame = (JInternalFrame)hmViewContainer.get(view);
 		frame.setVisible(b);
 		hmViewIsVisible.put(view,new Boolean(b));
 	}
@@ -154,7 +154,7 @@ public class ViewManager implements ITechnicalStrings{
 	 * @return
 	 */
 	public static JInternalFrame getFrame(IView view){
-		return (JInternalFrame)hmViewContainer.get(view.getViewName());
+		return (JInternalFrame)hmViewContainer.get(view);
 	}
 	
 

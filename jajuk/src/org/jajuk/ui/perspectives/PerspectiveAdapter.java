@@ -29,6 +29,8 @@ import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.ui.IPerspective;
 import org.jajuk.ui.IView;
 import org.jajuk.ui.ViewManager;
+import org.jajuk.ui.views.CoverView;
+import org.jajuk.util.ConfigurationManager;
 
 /**
  * Perspective adapter, provide default implementation for perspectives
@@ -62,6 +64,10 @@ public abstract class PerspectiveAdapter implements IPerspective,ITechnicalStrin
 	 * @see org.jajuk.ui.perspectives.IPerspective#addView(org.jajuk.ui.views.IView)
 	 */
 	public void addView(IView view,int iWidth,int iHeight,int iX,int iY) {
+		//test the unique cover case : don't register the view if the option is disabled  
+		if ((view instanceof CoverView) && !ConfigurationManager.getBoolean(CONF_OPTIONS_COVER) ){
+			return;
+		}
 		alViews.add(view);
 		ViewManager.registerView(view,this);
 		int iCommandYSize = 108;

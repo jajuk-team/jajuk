@@ -89,20 +89,21 @@ public class ConfigurationManager implements ITechnicalStrings{
 	 */
 	public static void setDefaultProperties() {
 		// User preferences
-		properties.put(CONF_PERSPECTIVE_DEFAULT,PERSPECTIVE_NAME_CONFIGURATION); //$NON-NLS-1$ //$NON-NLS-2$
-		properties.put(CONF_STATE_REPEAT,FALSE); //$NON-NLS-1$
+		properties.put(CONF_PERSPECTIVE_DEFAULT,PERSPECTIVE_NAME_CONFIGURATION); 
+		properties.put(CONF_STATE_REPEAT,FALSE); 
 		properties.put(CONF_ICON_REPEAT,ICON_REPEAT_OFF);  
-		properties.put(CONF_STATE_SHUFFLE,FALSE); //$NON-NLS-1$
+		properties.put(CONF_STATE_SHUFFLE,FALSE); 
 		properties.put(CONF_ICON_SHUFFLE,ICON_SHUFFLE_OFF);  
-		properties.put(CONF_STATE_CONTINUE,TRUE); //$NON-NLS-1$
+		properties.put(CONF_STATE_CONTINUE,TRUE);
 		properties.put(CONF_ICON_CONTINUE,ICON_CONTINUE_ON);  
-		properties.put(CONF_STATE_INTRO,FALSE); //$NON-NLS-1$
+		properties.put(CONF_STATE_INTRO,FALSE); 
 		properties.put(CONF_ICON_INTRO,ICON_INTRO_OFF);  
 		properties.put(CONF_CONFIRMATIONS_DELETE_FILE,TRUE);
 		properties.put(CONF_CONFIRMATIONS_EXIT,FALSE);
 		
 		properties.put(CONF_OPTIONS_HIDE_UNMOUNTED,FALSE);
 		properties.put(CONF_OPTIONS_RESTART,TRUE);
+		properties.put(CONF_OPTIONS_COVER,TRUE);
 		String sLanguage = System.getProperty("user.language");
 		if (Messages.getLocals().contains(sLanguage)){
 			properties.put(CONF_OPTIONS_LANGUAGE,sLanguage);

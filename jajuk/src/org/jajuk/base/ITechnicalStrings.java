@@ -130,6 +130,7 @@ public interface ITechnicalStrings {
 	public static final String FILE_HISTORY = System.getProperty("user.home")+"/.jajuk/history.xml";
 	public static final String FILE_LOCK = System.getProperty("user.home")+"/.jajuk/.lock";
 	public static final String FILE_ABOUT = PATH_DOCS+"about.html";
+	public static final String FILE_DEFAULT_COVER = "cover.jpg";
 	
 	//players impls
 	public static final String PLAYER_IMPL_JAVALAYER= "org.jajuk.players.JavaLayerPlayerImpl";
@@ -176,6 +177,7 @@ public interface ITechnicalStrings {
 	public static final String VIEW_NAME_ABOUT = "org.jajuk.ui.views.AboutView";
 	public static final String VIEW_NAME_HELP = "org.jajuk.ui.views.HelpView";
 	public static final String VIEW_NAME_STAT = "org.jajuk.ui.views.StatView";
+	public static final String VIEW_NAME_COVER = "org.jajuk.ui.views.CoverView";
 	 	
 	//extensions
 	public static final String EXT_MP3 = "mp3";
@@ -203,6 +205,7 @@ public interface ITechnicalStrings {
 	public static final String EVENT_VIEW_SHOW_STATUS_CHANGED_REQUEST="change status view";
 	public static final String EVENT_VIEW_COMMAND_SELECT_HISTORY_ITEM="select history item";
 	public static final String EVENT_HELP_REQUIRED="help required";
+	public static final String EVENT_COVER_REFRESH="cover refresh";
 	
 	
 	
@@ -246,6 +249,7 @@ public interface ITechnicalStrings {
 	public static final String CONF_CONFIRMATIONS_EXIT= "jajuk.confirmations.exit";
 	public static final String CONF_OPTIONS_HIDE_UNMOUNTED= "jajuk.options.hide_unmounted";
 	public static final String CONF_OPTIONS_RESTART= "jajuk.options.restart";
+	public static final String CONF_OPTIONS_COVER= "jajuk.options.cover";
 	public static final String CONF_OPTIONS_LOG_LEVEL= "jajuk.options.log_level";
 	public static final String CONF_OPTIONS_LANGUAGE= "jajuk.options.language";
 	public static final String CONF_OPTIONS_INTRO_BEGIN= "jajuk.options.intro.begin";
@@ -320,9 +324,8 @@ public interface ITechnicalStrings {
 		"\t\t<views>\n"+
 		"\t\t\t<view class='"+VIEW_NAME_PHYSICAL_TREE+"' width='30' height='100' x='0' y='0'/>\n"+
 		"\t\t\t<view class='"+VIEW_NAME_PHYSICAL_TABLE+"' width='40' height='100' x='60' y='0'/>\n"+
+		"\t\t\t<view class='"+VIEW_NAME_COVER+"' width='20' height='30' x='40' y='70'/>\n"+
 		/*"\t\t\t<view class='org.jajuk.ui.views.NavigationBarView' />\n"+
-		"\t\t\t<view class='org.jajuk.ui.views.TrackListView' />\n"+
-		"\t\t\t<view class='org.jajuk.ui.views.CoverView'  />\n"+
 		"\t\t\t<view class='org.jajuk.ui.views.PlaylistRepositoryView'/>\n"+
 		"\t\t\t<view class='org.jajuk.ui.views.PlaylistEditorView'  />\n"+*/
 		"\t\t</views>\n"+
@@ -331,9 +334,8 @@ public interface ITechnicalStrings {
 		"\t\t<views>\n"+
 		"\t\t\t<view class='"+VIEW_NAME_LOGICAL_TREE+"' width='30' height='100' x='0' y='0'/>\n"+
 		"\t\t\t<view class='"+VIEW_NAME_LOGICAL_TABLE+"' width='40' height='100' x='60' y='0'/>\n"+
+		"\t\t\t<view class='"+VIEW_NAME_COVER+"' width='20' height='30' x='40' y='70'/>\n"+
 	/*	"\t\t\t<view class='org.jajuk.ui.views.NavigationBarView' />\n"+
-		"\t\t\t<view class='org.jajuk.ui.views.TrackListView'/>\n"+
-		"\t\t\t<view class='org.jajuk.ui.views.CoverView'  />\n"+
 		"\t\t\t<view class='org.jajuk.ui.views.PlaylistRepositoryView'/>\n"+
 		"\t\t\t<view class='org.jajuk.ui.views.PlaylistEditorView'  />\n"+*/
 		"\t\t</views>\n"+

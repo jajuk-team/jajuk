@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.jajuk.ui.InformationJPanel;
+import org.jajuk.ui.ObservationManager;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
@@ -45,7 +46,7 @@ public class FIFO extends Thread implements ITechnicalStrings{
 	private volatile boolean bStop = false;
 	
 	/** Deep time**/
-	private final int SLEEP_TIME = 200;
+	private final int SLEEP_TIME = 100;
 	
 	/** Refresh time in ms**/
 	private final int REFRESH_TIME = 1000;
@@ -273,6 +274,7 @@ public class FIFO extends Thread implements ITechnicalStrings{
 					Log.debug("Now playing :"+fCurrent); //$NON-NLS-1$
 					bPlaying = true;
 					Player.stop();  //for security, make sure no other track is playing
+					ObservationManager.notify(EVENT_COVER_REFRESH); //request update cover 
 					if (ConfigurationManager.getBoolean(CONF_STATE_INTRO)){ //intro mode enabled
 						Player.play(fCurrent,Integer.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_INTRO_BEGIN)),Integer.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_INTRO_LENGTH)));
 					}

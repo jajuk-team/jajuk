@@ -30,6 +30,7 @@ import javazoom.jl.player.advanced.PlaybackListener;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.IPlayerImpl;
 import org.jajuk.base.ITechnicalStrings;
+import org.jajuk.util.log.Log;
 
 /**
  *  My class description
@@ -40,19 +41,28 @@ import org.jajuk.base.ITechnicalStrings;
 public class JavaLayerPlayerImpl implements IPlayerImpl,ITechnicalStrings{
 
 	/**Current player*/
-	private AdvancedPlayer player;
+	private static AdvancedPlayer player;
+	/** Lock to ensure 2 players can be lauched*/
+	private static final byte[] bLock = new byte[0];
+	/** Started */
+	private volatile boolean bStarted = false;
+	
 	
 	/* (non-Javadoc)
 	 * @see org.jajuk.base.IPlayerImpl#play()
 	 */
 	public void play(org.jajuk.base.File file,int iPosition,int iLength) throws Exception{
-		player = new AdvancedPlayer(new BufferedInputStream(new FileInputStream(new File(file.getAbsolutePath())))); //$NON-NLS-1$
-		player.setPlayBackListener(new PlaybackListener() {
-			public void playbackFinished(PlaybackEvent pbe){
-				FIFO.getInstance().finished();
-			}
-		});
-		FIFO.getInstance().lTrackStart = System.currentTimeMillis();  //time correction
+			bStarted = false;
+			player = new AdvancedPlayer(new BufferedInputStream(new FileInputStream(new File(file.getAbsolutePath())))); 
+			player.setPlayBackListener(new PlaybackListener() {
+				public void playbackFinished(PlaybackEvent pbe){
+					FIFO.getInstance().finished();
+				}
+				public void playbackStarted(PlaybackEvent pbe){
+					bStarted = true;
+				}
+			});
+			FIFO.getInstance().lTrackStart = System.currentTimeMillis();  //time correction
 		if (iPosition < 0){
 			player.play();
 		}
@@ -67,9 +77,16 @@ public class JavaLayerPlayerImpl implements IPlayerImpl,ITechnicalStrings{
 	 * @see org.jajuk.base.IPlayerImpl#stop()
 	 */
 	public void stop() {
+		while (!bStarted){  //To avoid strange behaviors in the fifo, we have to wait the track is really started before stoping it 
+			try {
+				Thread.sleep(50);
+			} catch (InterruptedException e) {
+				Log.error(e);
+			}
+		}
 		if (player!= null ){
 			player.close();
-		}
+		}	
 	}
 	
 

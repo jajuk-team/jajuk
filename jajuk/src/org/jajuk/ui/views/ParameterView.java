@@ -45,6 +45,7 @@ import org.jajuk.i18n.Messages;
 import org.jajuk.ui.CommandJPanel;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.LNFManager;
+import org.jajuk.ui.ViewManager;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.log.Log;
@@ -78,7 +79,8 @@ public class ParameterView extends ViewAdapter implements ActionListener {
 		JCheckBox jcbBeforeExit;
 	JPanel jpOptions;
 		JCheckBox jcbDisplayUnmounted;
-		JCheckBox jcbRestart;
+		JCheckBox jcbRestart;//TODO TBI hide unmounted devices
+		JCheckBox jcbCover;
 		JLabel jlLanguage;
 		JComboBox jcbLanguage;
 		JLabel jlLAF;
@@ -202,12 +204,14 @@ public class ParameterView extends ViewAdapter implements ActionListener {
 		jpOptions = new JPanel();
 		jpOptions.setBorder(BorderFactory.createTitledBorder(Messages.getString("ParameterView.33"))); //$NON-NLS-1$
 		double sizeOptions[][] = {{0.99},
-														 {iYSeparator,20,iYSeparator,20,iYSeparator,60+2*iYSeparator,iYSeparator,40+iYSeparator,iYSeparator}};
+														 {iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,60+2*iYSeparator,iYSeparator,40+iYSeparator,iYSeparator}};
 		jpOptions.setLayout(new TableLayout(sizeOptions));
 		jcbDisplayUnmounted = new JCheckBox(Messages.getString("ParameterView.34")); //$NON-NLS-1$
 		jcbDisplayUnmounted.setToolTipText(Messages.getString("ParameterView.35")); //$NON-NLS-1$
 		jcbRestart = new JCheckBox(Messages.getString("ParameterView.36")); //$NON-NLS-1$
 		jcbRestart.setToolTipText(Messages.getString("ParameterView.37")); //$NON-NLS-1$
+		jcbCover = new JCheckBox("Show cover when available");
+		jcbCover.setToolTipText("Show the album cover in physical and logical perspectives. The taken cover is 'cover.jpg' or the first image found in the album directory");
 		JPanel jpCombos = new JPanel();
 		double sizeCombos[][] = {{0.50,0.50},
 																 {20,iYSeparator,20,iYSeparator,20}};
@@ -308,8 +312,9 @@ public class ParameterView extends ViewAdapter implements ActionListener {
 		jpIntro.add(jtfIntroLength,"1,2"); //$NON-NLS-1$
 		jpOptions.add(jcbDisplayUnmounted,"0,1"); //$NON-NLS-1$
 		jpOptions.add(jcbRestart,"0,3"); //$NON-NLS-1$
-		jpOptions.add(jpCombos,"0,5"); //$NON-NLS-1$
-		jpOptions.add(jpIntro,"0,7"); //$NON-NLS-1$
+		jpOptions.add(jcbCover,"0,5"); //$NON-NLS-1$
+		jpOptions.add(jpCombos,"0,7"); //$NON-NLS-1$
+		jpOptions.add(jpIntro,"0,9"); //$NON-NLS-1$
 		//P2P
 		jpP2P = new JPanel();
 		jpP2P.setBorder(BorderFactory.createTitledBorder(Messages.getString("ParameterView.71"))); //$NON-NLS-1$
@@ -395,6 +400,7 @@ public class ParameterView extends ViewAdapter implements ActionListener {
 			//Options
 			ConfigurationManager.setProperty(CONF_OPTIONS_HIDE_UNMOUNTED,Boolean.toString(jcbHideProperties.isSelected()));
 			ConfigurationManager.setProperty(CONF_OPTIONS_RESTART,Boolean.toString(jcbRestart.isSelected()));
+			ConfigurationManager.setProperty(CONF_OPTIONS_COVER,Boolean.toString(jcbCover.isSelected()));
 			String sLocal = (String)Messages.getLocals().get(jcbLanguage.getSelectedIndex());
 			if (!Messages.getLocal().equals(sLocal)){  //local has changed
 				Messages.setLocal(sLocal);
@@ -448,7 +454,14 @@ public class ParameterView extends ViewAdapter implements ActionListener {
 			//tags
 			ConfigurationManager.setProperty(CONF_TAGS_DEEP_SCAN,Boolean.toString(jcbDeepScan.isSelected()));
 			ConfigurationManager.setProperty(CONF_TAGS_USE_PARENT_DIR,Boolean.toString(jcbUseParentDir.isSelected()));
-			
+			//cover
+			if ( ConfigurationManager.getBoolean(CONF_OPTIONS_COVER)){
+				ViewManager.notify(EVENT_VIEW_SHOW_REQUEST,CoverView.class);
+				ViewManager.notify(EVENT_VIEW_REFRESH_REQUEST,CoverView.class);
+			}
+			else{
+				ViewManager.notify(EVENT_VIEW_CLOSE_REQUEST,CoverView.class);
+			}
 			InformationJPanel.getInstance().setMessage("Options saved",InformationJPanel.INFORMATIVE);
 			ConfigurationManager.commit();
 			
@@ -480,21 +493,22 @@ public class ParameterView extends ViewAdapter implements ActionListener {
 		else if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_SHUFFLE)){
 			jrbShuffle.setSelected(true);
 		}
-		jcbBeforeDelete.setSelected(Boolean.valueOf(ConfigurationManager.getProperty(CONF_CONFIRMATIONS_DELETE_FILE)).booleanValue());
-		jcbBeforeExit.setSelected(Boolean.valueOf(ConfigurationManager.getProperty(CONF_CONFIRMATIONS_EXIT)).booleanValue());
-		jcbDisplayUnmounted.setSelected(Boolean.valueOf(ConfigurationManager.getProperty(CONF_OPTIONS_HIDE_UNMOUNTED)).booleanValue());
-		jcbRestart.setSelected(Boolean.valueOf(ConfigurationManager.getProperty(CONF_OPTIONS_RESTART)).booleanValue());
+		jcbBeforeDelete.setSelected(ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_DELETE_FILE));
+		jcbBeforeExit.setSelected(ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_EXIT));
+		jcbDisplayUnmounted.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED));
+		jcbRestart.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_RESTART));
+		jcbCover.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_COVER));
 		jcbLanguage.setSelectedIndex(Messages.getLocals().indexOf(ConfigurationManager.getProperty(CONF_OPTIONS_LANGUAGE)));
 		jcbLAF.setSelectedItem(ConfigurationManager.getProperty(CONF_OPTIONS_LNF));
 		jcbLogLevel.setSelectedIndex(Integer.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_LOG_LEVEL)));
 		jtfIntroLength.setText(ConfigurationManager.getProperty(CONF_OPTIONS_INTRO_LENGTH));
 		jtfIntroPosition.setText(ConfigurationManager.getProperty(CONF_OPTIONS_INTRO_BEGIN));
-		jcbShare.setSelected(Boolean.valueOf(ConfigurationManager.getProperty(CONF_OPTIONS_P2P_SHARE)).booleanValue());
+		jcbShare.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_P2P_SHARE));
 		jpfPasswd.setText(ConfigurationManager.getProperty(CONF_OPTIONS_P2P_PASSWORD));
-		jcbAddRemoteProperties.setSelected(Boolean.valueOf(ConfigurationManager.getProperty(CONF_OPTIONS_P2P_ADD_REMOTE_PROPERTIES)).booleanValue());
-		jcbHideProperties.setSelected(Boolean.valueOf(ConfigurationManager.getProperty(CONF_OPTIONS_P2P_HIDE_LOCAL_PROPERTIES)).booleanValue());
-		jcbDeepScan.setSelected(Boolean.valueOf(ConfigurationManager.getProperty(CONF_TAGS_DEEP_SCAN)).booleanValue());
-		jcbUseParentDir.setSelected(Boolean.valueOf(ConfigurationManager.getProperty(CONF_TAGS_USE_PARENT_DIR)).booleanValue());
+		jcbAddRemoteProperties.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_P2P_ADD_REMOTE_PROPERTIES));
+		jcbHideProperties.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_P2P_HIDE_LOCAL_PROPERTIES));
+		jcbDeepScan.setSelected(ConfigurationManager.getBoolean(CONF_TAGS_DEEP_SCAN));
+		jcbUseParentDir.setSelected(ConfigurationManager.getBoolean(CONF_TAGS_USE_PARENT_DIR));
 	}
 
 	/* (non-Javadoc)

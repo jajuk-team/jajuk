@@ -62,5 +62,10 @@ public interface IView {
 	 */
 	public void setIsDisplayed(boolean isDisplayed) ;
 	
+	/**
+	 * View refresh
+	 */
+	public void refresh();
+	
 
 }

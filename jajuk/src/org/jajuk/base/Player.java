@@ -33,7 +33,8 @@ public class Player {
 
 	private static File fCurrent;
 	private static IPlayerImpl pCurrentPlayerImpl;
-	
+	/** Lock to ensure 2 players can be lauched*/
+	private static final byte[] bLock = new byte[0];
 	
 	/**
 	 * Asynchronous play for specified file with specified time interval
@@ -41,13 +42,15 @@ public class Player {
 	 * @param position in % of the file length
 	 * @param length in sec 
 	 */
-	public static void play(File file,final int iPosition,final int iLength) {
+	public static synchronized void play(File file,final int iPosition,final int iLength) {
 		fCurrent = file;
 		pCurrentPlayerImpl = file.getTrack().getType().getPlayerImpl();
 		Thread thread = new Thread() {
 			public void run() {
 				try {
-					pCurrentPlayerImpl.play(fCurrent,iPosition,iLength);
+					synchronized(bLock){  //ultimate concurrency protection
+						pCurrentPlayerImpl.play(fCurrent,iPosition,iLength);
+					}
 				} catch (Exception e) {
 					Log.error("007",fCurrent.getAbsolutePath(), e); //$NON-NLS-1$
 					InformationJPanel.getInstance().setMessage(Messages.getString("Error.007")+" : "+fCurrent.getAbsolutePath(),InformationJPanel.ERROR);//$NON-NLS-1$
@@ -64,7 +67,7 @@ public class Player {
 	 * Stop the played track
 	 * @param type
 	 */
-	public static void stop() {
+	public static synchronized void stop() {
 		try {
 			if (fCurrent!=null){
 				fCurrent.getTrack().getType().getPlayerImpl().stop();
