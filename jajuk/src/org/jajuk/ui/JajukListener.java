@@ -166,11 +166,16 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
 				ViewManager.notify(EVENT_VIEW_CLOSE_REQUEST,(IView)JajukJMenuBar.getInstance().hmCheckboxView.get(e.getSource()));
 			}
 		}else if (e.getActionCommand().equals(EVENT_VIEW_RESTORE_DEFAULTS)) {
-		    System.out.println("Restore defaults");
-		    IPerspective perspective = PerspectiveManager.getCurrentPerspective();
-		    perspective.removeAllView();
-		    perspective.setDefaultViews();
-		    PerspectiveManager.setCurrentPerspective(perspective.getID());
+		    //start in a thread to leave dispatcher thread in time
+		    new Thread(){
+                public void run() {
+                    IPerspective perspective = PerspectiveManager.getCurrentPerspective();
+        		    perspective.removeAllView();
+        		    perspective.setDefaultViews();
+        		    PerspectiveManager.setCurrentPerspective(perspective.getID());
+                }
+            }.start();
+		   
 		}
 		else if (EVENT_HELP_REQUIRED.equals(e.getActionCommand())){
 			PerspectiveManager.setCurrentPerspective(PERSPECTIVE_NAME_HELP);		
