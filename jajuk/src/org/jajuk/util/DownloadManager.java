@@ -140,7 +140,7 @@ public class DownloadManager implements ITechnicalStrings {
 	        throw je;
 	    }
 	    catch(Exception e){
-	        Log.error(e);
+	        Log.debug(e.toString());
 	    }
 	    return alOut;
 	}
