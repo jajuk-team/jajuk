@@ -25,9 +25,9 @@ import java.awt.Frame;
 import java.awt.Toolkit;
 
 import javax.swing.BoxLayout;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JWindow;
 
 import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.util.Util;
@@ -38,11 +38,11 @@ import org.jajuk.util.Util;
  * @author     bflorat
  * @created    20 nov. 2003
  */
-public class SplashScreen extends JWindow implements ITechnicalStrings
+public class SplashScreen extends JFrame implements ITechnicalStrings
 {
 	public SplashScreen(Frame f)
 	{
-		super(f);
+		setUndecorated(true);
 		JPanel jpContent = (JPanel)getContentPane();
 		jpContent.setLayout(new BoxLayout(jpContent,BoxLayout.Y_AXIS));
 		JLabel l = new JLabel(Util.getIcon(IMAGES_SPLASHSCREEN));
