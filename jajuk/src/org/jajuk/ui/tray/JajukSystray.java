@@ -108,30 +108,54 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
         }
         jmenu = new JPopupMenu(Messages.getString("JajukWindow.3")); //$NON-NLS-1$
         jmiExit =  new JMenuItem(Messages.getString("JajukWindow.4"),Util.getIcon(ICON_EXIT)); //$NON-NLS-1$
+        jmiExit.setToolTipText(Messages.getString("JajukWindow.21")); //$NON-NLS-1$
         jmiExit.addActionListener(this);
+        
         jmiMute =  new JMenuItem(Messages.getString("JajukWindow.2"),Util.getIcon(ICON_MUTE)); //$NON-NLS-1$
         jmiMute.addActionListener(this);
+        jmiMute.setToolTipText(Messages.getString("JajukWindow.19")); //$NON-NLS-1$
+        
         jmiAbout =  new JMenuItem(Messages.getString("JajukWindow.5"),Util.getIcon(ICON_INFO)); //$NON-NLS-1$
         jmiAbout.addActionListener(this);
+        jmiAbout.setToolTipText(Messages.getString("JajukWindow.22")); //$NON-NLS-1$
+        
         jmiShuffle =  new JMenuItem(Messages.getString("JajukWindow.6"),Util.getIcon(ICON_SHUFFLE_GLOBAL)); //$NON-NLS-1$
         jmiShuffle.addActionListener(this);
+        jmiShuffle.setToolTipText(Messages.getString("JajukWindow.23")); //$NON-NLS-1$
+        
         jmiBestof =  new JMenuItem(Messages.getString("JajukWindow.7"),Util.getIcon(ICON_BESTOF)); //$NON-NLS-1$
         jmiBestof.addActionListener(this);
+        jmiBestof.setToolTipText(Messages.getString("JajukWindow.24")); //$NON-NLS-1$
+        
         jmiNorm =  new JMenuItem(Messages.getString("JajukWindow.16"),Util.getIcon(ICON_MODE_NORMAL)); //$NON-NLS-1$
         jmiNorm.addActionListener(this);
+        jmiNorm.setToolTipText(Messages.getString("JajukWindow.32")); //$NON-NLS-1$
+        
         jmiNovelties =  new JMenuItem(Messages.getString("JajukWindow.15"),Util.getIcon(ICON_NOVELTIES)); //$NON-NLS-1$
         jmiNovelties.addActionListener(this);
+        jmiNovelties.setToolTipText(Messages.getString("JajukWindow.31")); //$NON-NLS-1$
+        
         jcbmiVisible =  new JCheckBoxMenuItem(Messages.getString("JajukWindow.8")); //$NON-NLS-1$
         jcbmiVisible.setState(JajukWindow.getInstance().isVisible()); 
         jcbmiVisible.addActionListener(this);
+        jcbmiVisible.setToolTipText(Messages.getString("JajukWindow.25")); //$NON-NLS-1$
+        
         jmiPause = new JMenuItem(Messages.getString("JajukWindow.10"),Util.getIcon(ICON_PAUSE)); //$NON-NLS-1$
         jmiPause.addActionListener(this);
+        jmiPause.setToolTipText(Messages.getString("JajukWindow.26")); //$NON-NLS-1$
+        
         jmiStop = new JMenuItem(Messages.getString("JajukWindow.11"),Util.getIcon(ICON_STOP)); //$NON-NLS-1$
         jmiStop.addActionListener(this);
+        jmiStop.setToolTipText(Messages.getString("JajukWindow.27")); //$NON-NLS-1$
+        
         jmiPrevious = new JMenuItem(Messages.getString("JajukWindow.13"),Util.getIcon(ICON_PREVIOUS)); //$NON-NLS-1$
         jmiPrevious.addActionListener(this);
+        jmiPrevious.setToolTipText(Messages.getString("JajukWindow.29")); //$NON-NLS-1$
+        
         jmiNext = new JMenuItem(Messages.getString("JajukWindow.14"),Util.getIcon(ICON_NEXT)); //$NON-NLS-1$
         jmiNext.addActionListener(this);
+        jmiNext.setToolTipText(Messages.getString("JajukWindow.30")); //$NON-NLS-1$
+        
         jmiOut = new JMenuItem(" "); //$NON-NLS-1$
         
         jmenu.add(jcbmiVisible);
