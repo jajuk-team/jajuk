@@ -75,14 +75,6 @@ public abstract class PerspectiveAdapter implements IPerspective,ITechnicalStrin
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.jajuk.ui.perspectives.IPerspective#addViewOffline(org.jajuk.ui.views.IView)
-	 */
-	public void addViewOffline(IView view) {
-		alViews.add(view);
-	}
-	
-	
-	/* (non-Javadoc)
 	 * @see org.jajuk.ui.perspectives.IPerspective#removeView(org.jajuk.ui.views.IView)
 	 */
 	public void removeView(IView view) {

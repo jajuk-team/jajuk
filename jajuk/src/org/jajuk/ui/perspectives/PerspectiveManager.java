@@ -341,51 +341,51 @@ public static void setCurrentPerspective(final IPerspective perspective) {
         perspective = new PhysicalPerspective();
         perspective.setIconPath(ICON_PERSPECTIVE_PHYSICAL);
         perspective.setID(PERSPECTIVE_NAME_PHYSICAL);
-        perspective.addViewOffline(new AnimationView().setLogicalCoord(100,10,0,0).setShouldBeShown(false));
-        perspective.addViewOffline(new PhysicalTreeView().setLogicalCoord(30,100,0,0).setShouldBeShown(true));
-        perspective.addViewOffline(new PhysicalTableView().setLogicalCoord(60,60,40,0).setShouldBeShown(true));
-        perspective.addViewOffline(new CoverView().setLogicalCoord(30,40,70,60).setShouldBeShown(true));
-        perspective.addViewOffline(new PhysicalPlaylistRepositoryView().setLogicalCoord(10,100,30,0).setShouldBeShown(true));
-        perspective.addViewOffline(new PhysicalPlaylistEditorView().setLogicalCoord(30,40,40,60).setShouldBeShown(true));
+        perspective.addView(new AnimationView().setLogicalCoord(100,10,0,0).setShouldBeShown(false));
+        perspective.addView(new PhysicalTreeView().setLogicalCoord(30,100,0,0).setShouldBeShown(true));
+        perspective.addView(new PhysicalTableView().setLogicalCoord(60,60,40,0).setShouldBeShown(true));
+        perspective.addView(new CoverView().setLogicalCoord(30,40,70,60).setShouldBeShown(true));
+        perspective.addView(new PhysicalPlaylistRepositoryView().setLogicalCoord(10,100,30,0).setShouldBeShown(true));
+        perspective.addView(new PhysicalPlaylistEditorView().setLogicalCoord(30,40,40,60).setShouldBeShown(true));
         registerPerspective(perspective);
         //Logical perspective
         perspective = new LogicalPerspective();
         perspective.setIconPath(ICON_PERSPECTIVE_LOGICAL);
         perspective.setID(PERSPECTIVE_NAME_LOGICAL);
-        perspective.addViewOffline(new AnimationView().setLogicalCoord(100,10,0,0).setShouldBeShown(false));
-        perspective.addViewOffline(new LogicalTreeView().setLogicalCoord(30,100,0,0).setShouldBeShown(true));
-        perspective.addViewOffline(new LogicalTableView().setLogicalCoord(60,60,40,0).setShouldBeShown(true));
-        perspective.addViewOffline(new CoverView().setLogicalCoord(30,40,70,60).setShouldBeShown(true));
-        perspective.addViewOffline(new LogicalPlaylistRepositoryView().setLogicalCoord(10,100,30,0).setShouldBeShown(true));
-        perspective.addViewOffline(new LogicalPlaylistEditorView().setLogicalCoord(30,40,40,60).setShouldBeShown(true));
+        perspective.addView(new AnimationView().setLogicalCoord(100,10,0,0).setShouldBeShown(false));
+        perspective.addView(new LogicalTreeView().setLogicalCoord(30,100,0,0).setShouldBeShown(true));
+        perspective.addView(new LogicalTableView().setLogicalCoord(60,60,40,0).setShouldBeShown(true));
+        perspective.addView(new CoverView().setLogicalCoord(30,40,70,60).setShouldBeShown(true));
+        perspective.addView(new LogicalPlaylistRepositoryView().setLogicalCoord(10,100,30,0).setShouldBeShown(true));
+        perspective.addView(new LogicalPlaylistEditorView().setLogicalCoord(30,40,40,60).setShouldBeShown(true));
         registerPerspective(perspective);
         // Player perspective
         perspective = new PlayerPerspective();
         perspective.setIconPath(ICON_PERSPECTIVE_PLAYER);
         perspective.setID(PERSPECTIVE_NAME_PLAYER);
-        perspective.addViewOffline(new AnimationView().setLogicalCoord(50,100,0,0).setShouldBeShown(false));
-        perspective.addViewOffline(new CoverView().setLogicalCoord(100,100,0,0).setShouldBeShown(true));
+        perspective.addView(new AnimationView().setLogicalCoord(50,100,0,0).setShouldBeShown(false));
+        perspective.addView(new CoverView().setLogicalCoord(100,100,0,0).setShouldBeShown(true));
         registerPerspective(perspective);
         //Configuration perspective
         perspective = new ConfigurationPerspective();
         perspective.setIconPath(ICON_PERSPECTIVE_CONFIGURATION);
         perspective.setID(PERSPECTIVE_NAME_CONFIGURATION);
-        perspective.addViewOffline(new ParameterView().setLogicalCoord(60,100,0,0).setShouldBeShown(true));
-        perspective.addViewOffline(new DeviceView().setLogicalCoord(40,70,60,0).setShouldBeShown(true));
-        perspective.addViewOffline(new CDScanView().setLogicalCoord(40,30,60,70).setShouldBeShown(true));
+        perspective.addView(new ParameterView().setLogicalCoord(60,100,40,0).setShouldBeShown(true));
+        perspective.addView(new DeviceView().setLogicalCoord(40,70,0,0).setShouldBeShown(true));
+        perspective.addView(new CDScanView().setLogicalCoord(40,30,0,70).setShouldBeShown(true));
         registerPerspective(perspective);
         //Stats perspective
         perspective = new StatPerspective();
         perspective.setIconPath(ICON_PERSPECTIVE_STATISTICS);
         perspective.setID(PERSPECTIVE_NAME_STATISTICS);
-        perspective.addViewOffline(new StatView().setLogicalCoord(100,100,0,0).setShouldBeShown(true));
+        perspective.addView(new StatView().setLogicalCoord(100,100,0,0).setShouldBeShown(true));
         registerPerspective(perspective);
         //Help perspective
         perspective = new HelpPerspective();
         perspective.setIconPath(ICON_PERSPECTIVE_HELP);
         perspective.setID(PERSPECTIVE_NAME_HELP);
-        perspective.addViewOffline(new HelpView().setLogicalCoord(70,100,0,0).setShouldBeShown(true));
-        perspective.addViewOffline(new AboutView().setLogicalCoord(30,100,70,0).setShouldBeShown(true));
+        perspective.addView(new HelpView().setLogicalCoord(70,100,0,0).setShouldBeShown(true));
+        perspective.addView(new AboutView().setLogicalCoord(30,100,70,0).setShouldBeShown(true));
         registerPerspective(perspective);
     }
     

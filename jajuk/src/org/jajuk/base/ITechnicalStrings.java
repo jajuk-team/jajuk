@@ -30,7 +30,7 @@ import org.jajuk.util.Util;
 public interface ITechnicalStrings {
 	
 	/**Information bar and command bar default vertical size in pixels*/
-	public static final int BORDER_Y_SIZE = 119;
+	public static final int BORDER_Y_SIZE = 112;
 	/**Command bar default vertical size in pixels*/
 	public static final int BORDER_X_SIZE = 55;
 	/**panels precisions in percent*/
@@ -202,7 +202,7 @@ public interface ITechnicalStrings {
 	public static final String PERSPECTIVE_NAME_CONFIGURATION = "org.jajuk.ui.perspectives.ConfigurationPerspective";
 	public static final String PERSPECTIVE_NAME_STATISTICS = "org.jajuk.ui.perspectives.StatPerspective";
 	public static final String PERSPECTIVE_NAME_HELP = "org.jajuk.ui.perspectives.HelpPerspective";
-	public static final String PERSPECTIVE_NAME_PLAYER = "org.jajuk.ui.perspectives.Pla	yerPerspective";
+	public static final String PERSPECTIVE_NAME_PLAYER = "org.jajuk.ui.perspectives.PlayerPerspective";
 	
 	 //views
 	public static final String VIEW_NAME_DEVICES = "org.jajuk.ui.views.DeviceView";
@@ -357,6 +357,11 @@ public interface ITechnicalStrings {
 	public static final String CONF_NETWORK_CONNECTION_TO = "jajuk.network.connection_timeout";
 	public static final String CONF_NETWORK_TRANSFERT_TO = "jajuk.network.transfert_timeout";
 		
+	//Accuracy levels
+	public static final String ACCURACY_LOW = "low";
+	public static final String ACCURACY_NORMAL = "normal";
+	public static final String ACCURACY_HIGH = "high";
+	
 	//miscelanous
 	public static final String TRUE= "true";
 	public static final String FALSE= "false";
