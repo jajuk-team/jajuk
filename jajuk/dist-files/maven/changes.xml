@@ -24,12 +24,16 @@
     <release version='0.1.3' date='2003-04-02' description='Requested features release (systray)'>
       <action dev='bflorat' type='fix'>927800 Error message not shown before an exit</action>  
       <action dev='bflorat' type='add'>RFE 921256 Systray (only under MS Windows for now)</action>  
+      <action dev='bflorat' type='add'>Cover engine now looks for front.jpg file in addition to cover.jpg</action>  
       <action dev='bflorat' type='add'>RFE 921854 Drag and drop improved, you can now drop tracks from tree or table direcly in playlist editor</action>  
       <action dev='bflorat' type='update'>Now collection and configuration are saved on disk at exit even when Jajuk window is not closed (logout, CTRL-C...)</action>  
      </release>
-     <release version='0.1.4' date='2003-04-02' description='Hot fix release'>
+     <release version='0.1.4' date='2003-04-04' description='Hot fix release'>
       <action dev='bflorat' type='add'>README file (in installation dialog and from site) now available in french</action>  
       <action dev='bflorat' type='fix'>928979 Window disapears when minimized under GNU/Linux</action>  
+     </release>
+     <release version='0.1.5' date='in work' description='in work'>
+      <action dev='bflorat' type='add'>Path selection button for Unix mount points in device wizzard</action>  
      </release>
   </body>
 </document>
