@@ -90,6 +90,9 @@
   <target name='jar' description='o Create the jar' depends='compile'>
     <jar jarfile='${distdir}/bin/${jarname}' excludes='**/package.html' basedir='${distdir}/classes' manifest='${basedir}/dist-files/packaging/MANIFEST.MF'/>
     <delete dir='${distdir}/classes'/>
+    <copy todir='${basedir}' >
+     <fileset file='${distdir}/bin/${jarname}'/>
+  	</copy>
   </target>
   
   <target name='helpsetjar' description='o Create the heplset jar'>
@@ -101,6 +104,9 @@
 	 <fileset dir="${basedir}/dist-files/doc/jajuk-hs/fr/html"/>
    </apply>
    <jar jarfile='${distdir}/bin/${helpsetjarname}' basedir='${basedir}/dist-files/doc/jajuk-hs' />
+   <copy todir='${basedir}' >
+     <fileset file='${distdir}/bin/${helpsetjarname}'/>
+  	</copy>
    </target>
  
    <target name='static_jar' description='o Create the static jar' depends='compile'>
