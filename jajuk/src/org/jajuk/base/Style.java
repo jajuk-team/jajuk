@@ -174,4 +174,11 @@ public class Style extends PropertyAdapter implements Comparable{
 		return alTracks;
 	}
 	
+	/**
+	 * @return whether the style is Unknown or not
+	 */
+	public boolean isUnknown(){
+	    return this.getName().equals(UNKNOWN_STYLE); 
+   }
+	
 }

@@ -158,4 +158,11 @@ public class Author extends PropertyAdapter implements Comparable{
 		Collections.sort(alTracks);
 		return alTracks;
 	}
+	
+	/**
+	 * @return whether the author is Unknown or not
+	 */
+	public boolean isUnknown(){
+	    return this.getName().equals(UNKNOWN_AUTHOR); 
+   }
 }

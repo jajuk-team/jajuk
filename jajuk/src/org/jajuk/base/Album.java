@@ -150,4 +150,11 @@ public class Album extends PropertyAdapter implements Comparable{
 		return  getName2().compareToIgnoreCase(otherAlbum.getName2());
 	}
 	
+	/**
+	 * @return whether the albumr is Unknown or not
+	 */
+	public boolean isUnknown(){
+	    return this.getName().equals(UNKNOWN_ALBUM); 
+   }
+	
 }
