@@ -29,7 +29,14 @@ import org.jajuk.util.Util;
  */
 public interface ITechnicalStrings {
 	
-	// Jjauk version
+	/**Information bar default vertical size in pixels*/
+	public static final int BORDER_Y_SIZE = 108;
+	/**Command bar default vertical size in pixels*/
+	public static final int BORDER_X_SIZE = 55;
+	/**panels precisions in percent*/
+	public static final int PRECISION = 5;
+		
+	// Jajuk version
 	public static final String JAJUK_VERSION = "0.2.4";
 	
 	//About 
@@ -130,6 +137,7 @@ public interface ITechnicalStrings {
 	public static final String ICON_CURRENT_PLAYLIST =  PATH_ICONS + "16x16/run.png";
 	public static final String ICON_CLEAR =  PATH_ICONS + "16x16/clear.png";
 	public static final String ICON_SAVE =  PATH_ICONS + "16x16/save.png";
+	
 			
 	//images
 	public static final String IMAGES_SPLASHSCREEN =  PATH_IMAGES + "jajuk-splashscreen.png";
@@ -292,7 +300,6 @@ public interface ITechnicalStrings {
 	public static final String CONF_CONFIRMATIONS_EXIT= "jajuk.confirmations.exit";
 	public static final String CONF_OPTIONS_HIDE_UNMOUNTED= "jajuk.options.hide_unmounted";
 	public static final String CONF_OPTIONS_RESTART= "jajuk.options.restart";
-	public static final String CONF_OPTIONS_COVER= "jajuk.options.cover";
 	public static final String CONF_OPTIONS_LOG_LEVEL= "jajuk.options.log_level";
 	public static final String CONF_OPTIONS_LANGUAGE= "jajuk.options.language";
 	public static final String CONF_OPTIONS_INTRO_BEGIN= "jajuk.options.intro.begin";
@@ -371,46 +378,5 @@ public interface ITechnicalStrings {
 	
 		
 	public static final String XML_PLAYLIST = "playlist";
-	public static final String XML_PERSPECTIVES_CONF = 
-		"<?xml version='1.0' encoding='UTF-8'?>\n"+
-		 "<perspectives jajuk_version='"+JAJUK_VERSION+"'>\n"+
-		"\t<perspective  class='"+PERSPECTIVE_NAME_PHYSICAL+"' icon='"+ICON_PERSPECTIVE_PHYSICAL+"'>\n"+
-		"\t\t<views>\n"+
-		"\t\t\t<view class='"+VIEW_NAME_PHYSICAL_TREE+"' width='30' height='100' x='0' y='0'/>\n"+
-		"\t\t\t<view class='"+VIEW_NAME_PHYSICAL_TABLE+"' width='60' height='70' x='40' y='0'/>\n"+
-		"\t\t\t<view class='"+VIEW_NAME_COVER+"' width='20' height='30' x='80' y='70'/>\n"+
-		"\t\t\t<view class='"+VIEW_NAME_PHYSICAL_PLAYLIST_REPOSITORY+"' width='10' height='100' x='30' y='0'/>\n"+
-		"\t\t\t<view class='"+VIEW_NAME_PHYSICAL_PLAYLIST_EDITOR+"' width='40' height='30' x='40' y='70'/>\n"+
-		"\t\t</views>\n"+
-		"\t\t</perspective>\n"+
-		"\t<perspective class='"+PERSPECTIVE_NAME_LOGICAL+"' icon='"+ICON_PERSPECTIVE_LOGICAL+"'>\n"+
-		"\t\t<views>\n"+
-		"\t\t\t<view class='"+VIEW_NAME_LOGICAL_TREE+"' width='30' height='100' x='0' y='0'/>\n"+
-		"\t\t\t<view class='"+VIEW_NAME_LOGICAL_TABLE+"' width='60' height='70' x='40' y='0'/>\n"+
-		"\t\t\t<view class='"+VIEW_NAME_COVER+"' width='20' height='30' x='80' y='70'/>\n"+
-		"\t\t\t<view class='"+VIEW_NAME_LOGICAL_PLAYLIST_REPOSITORY+"' width='10' height='100' x='30' y='0'/>\n"+
-		"\t\t\t<view class='"+VIEW_NAME_LOGICAL_PLAYLIST_EDITOR+"' width='40' height='30' x='40' y='70'/>\n"+
-		"\t\t</views>\n"+
-		"\t</perspective>\n"+
-		"\t<perspective class='"+PERSPECTIVE_NAME_CONFIGURATION+"' icon='"+ICON_PERSPECTIVE_CONFIGURATION+"'>\n"+
-		"\t\t<views>\n"+
-		"\t\t\t<view class='"+VIEW_NAME_PARAMETERS+"' width='50' height='100' x='0' y='0' />\n"+
-		"\t\t\t<view class='"+VIEW_NAME_DEVICES+"' width='50' height='70' x='50' y='0' />\n"+
-		"\t\t\t<view class='"+VIEW_NAME_CD_SCAN+"' width='50' height='30' x='50' y='70' />\n"+
-		"\t\t</views>\n"+
-		"\t</perspective>\n"+
-		"\t<perspective class='"+PERSPECTIVE_NAME_STATISTICS+"' icon='"+ICON_PERSPECTIVE_STATISTICS+"'>\n"+
-		"\t\t<views>\n"+
-		"\t\t\t<view class='"+VIEW_NAME_STAT+"' width='100' height='100' x='0' y='0' />\n"+
-		"\t\t</views>\n"+
-		"\t</perspective>\n"+
-		"\t<perspective  class='"+PERSPECTIVE_NAME_HELP+"' icon='"+ICON_PERSPECTIVE_HELP+"'>\n"+
-		"\t\t<views>\n"+
-		"\t\t\t<view class='"+VIEW_NAME_HELP+"' width='70' height='100' x='0' y='0' />\n"+
-		"\t\t\t<view class='"+VIEW_NAME_ABOUT+"' width='30' height='100' x='70' y='0' />\n"+
-		"\t\t</views>\n"+
-		"\t</perspective>\n"+
-		"</perspectives>";
-
 	
 }
