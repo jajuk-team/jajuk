@@ -24,9 +24,7 @@ import java.awt.Dimension;
 import java.awt.Frame;
 import java.io.File;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -110,7 +108,8 @@ public class Main implements ITechnicalStrings {
 	private static boolean bNoTaskBar = false;
 	/**default perspective to shoose, if null, we take the configuration one*/
 	private static String sPerspective;
-	
+	/** Server socket used to check other sessions*/
+	private static ServerSocket ss;
 	/**
 	 * Main entry
 	 * @param args
@@ -344,29 +343,26 @@ public class Main implements ITechnicalStrings {
 	 *
 	 */
 	private static void checkOtherSession(){
-		try {
-			//check for a concurrent jajuk session
-			Socket socket = new Socket("127.0.0.1", 62321);  //try to connect to an existing socket server //$NON-NLS-1$
-			ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
-			oos.writeObject(""); //$NON-NLS-1$
-			//	No error? jajuk already started
-			sc.dispose();
-			Log.error(new JajukException("124")); //$NON-NLS-1$
-			Messages.showErrorMessage("124");	 //$NON-NLS-1$
-			System.exit(-1);
-			
-		} catch (IOException e) { //error? looks like Jajuk is not started, lets start the listener 
-			new Thread(){
-				public void run(){
-					try{
-						ServerSocket ss = new ServerSocket(62321);
-						ss.accept();
-					}
-					catch(Exception e){
-					}
-				}
-			}.start();
-		}
+	    //check for a concurrent jajuk session, try to create a new server socket
+        try{
+    	    ss = new ServerSocket(62321);
+            // 	No error? jajuk was not started, leave
+        } catch (IOException e) { //error? looks like Jajuk is already started 
+            sc.dispose();
+            Log.error(new JajukException("124")); //$NON-NLS-1$
+            Messages.showErrorMessage("124");	 //$NON-NLS-1$
+            System.exit(-1);
+        }
+	    //start listening
+        new Thread(){
+	        public void run(){
+	                try {
+                        ss.accept();
+                    } catch (IOException e) {
+                        Log.error(e);
+                    }
+	        }
+	    }.start();
 	}
 	
 	/**
