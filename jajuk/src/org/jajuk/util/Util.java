@@ -458,6 +458,25 @@ public class Util implements ITechnicalStrings {
     public static URL getJarLocation (Class cClass)  {
         return cClass.getProtectionDomain().getCodeSource().getLocation();
      }
+    
+    /**
+     * Additional file checkusm used to prevent bug 886098. Simply return 10 bytes read at the middle of the file
+     * @return
+     */
+    public static String getFileChecksum(File fio ){
+    	String sOut = "";
+    	try{
+    		char[] c = new char[10];
+    		BufferedReader br = new BufferedReader(new FileReader(fio));
+    		br.read(c,(int)(fio.length()/2),10);
+    		br.close();
+    		sOut = new String(c);
+    	}
+    	catch(Exception e){
+    		Log.error(e);	
+    	}
+    	return sOut;
+    }
 	
 
 }
