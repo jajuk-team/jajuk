@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.16  2003/11/22 15:40:28  bflorat
+ * 22/11/2003
+ *
  * Revision 1.15  2003/11/21 15:52:08  bflorat
  * Exit confirmation
  *
@@ -117,7 +120,6 @@ public class ConfigurationManager implements ITechnicalStrings{
 		// User preferences
 		properties.put(CONF_PERSPECTIVE_DEFAULT,PERSPECTIVE_NAME_CONFIGURATION); //$NON-NLS-1$ //$NON-NLS-2$
 	
-		//Modes
 		properties.put(CONF_STATE_REPEAT,FALSE); //$NON-NLS-1$
 		properties.put(CONF_ICON_REPEAT,ICON_REPEAT_OFF);  
 		properties.put(CONF_STATE_SHUFFLE,FALSE); //$NON-NLS-1$
@@ -128,13 +130,13 @@ public class ConfigurationManager implements ITechnicalStrings{
 		properties.put(CONF_ICON_INTRO,ICON_INTRO_OFF);  
 		properties.put(CONF_CONFIRMATIONS_DELETE_FILE,TRUE);
 		properties.put(CONF_CONFIRMATIONS_EXIT,FALSE);
-	
-		//Options
 		properties.put(CONF_OPTIONS_HIDE_UNMOUNTED,FALSE);
 		properties.put(CONF_OPTIONS_RESTART,TRUE);
 		properties.put(CONF_OPTIONS_LANGUAGE,Messages.getString("options_language_default"));
 		properties.put(CONF_OPTIONS_LOG_LEVEL,"WARNING");
-		
+		properties.put(CONF_OPTIONS_P2P_SHARE,FALSE);
+		properties.put(CONF_OPTIONS_P2P_ADD_REMOTE_PROPERTIES,FALSE);
+		properties.put(CONF_OPTIONS_P2P_HIDE_LOCAL_PROPERTIES,TRUE);
 	}
 	
 	

@@ -172,8 +172,9 @@ public interface ITechnicalStrings {
 	public static final String CONF_OPTIONS_RESTART= "jajuk.options.restart";
 	public static final String CONF_OPTIONS_LOG_LEVEL= "jajuk.options.log_level";
 	public static final String CONF_OPTIONS_LANGUAGE= "jajuk.options.language";
-	
-	
+	public static final String CONF_OPTIONS_P2P_SHARE= "jajuk.options.p2p.share";
+	public static final String CONF_OPTIONS_P2P_ADD_REMOTE_PROPERTIES= "jajuk.options.p2p.add_remote_properties";
+	public static final String CONF_OPTIONS_P2P_HIDE_LOCAL_PROPERTIES= "jajuk.options.p2p.hide_local_properties";
 	
  	
 	//miscelanous

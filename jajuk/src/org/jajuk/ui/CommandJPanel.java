@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.8  2003/11/22 15:40:28  bflorat
+ * 22/11/2003
+ *
  * Revision 1.7  2003/11/18 18:58:07  bflorat
  * 18/11/2003
  *
@@ -211,6 +214,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings{
 		jtbSpecial.addSeparator();
 		jbMute = new JButton(new ImageIcon(ICON_MUTE)); 
 		jbMute.setToolTipText(Messages.getString("CommandJPanel.Turn_sound_off_3")); //$NON-NLS-1$
+		
 		jtbSpecial.add(jbMute);
 		
 		//Play toolbar

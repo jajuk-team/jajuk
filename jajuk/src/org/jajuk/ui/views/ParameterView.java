@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.5  2003/11/22 15:40:28  bflorat
+ * 22/11/2003
+ *
  * Revision 1.4  2003/11/21 15:52:08  bflorat
  * Exit confirmation
  *
@@ -245,6 +248,30 @@ public class ParameterView extends ViewAdapter implements ActionListener {
 		jpOptions.add(jcbRestart,"0,3");
 		jpOptions.add(jpCombos,"0,5");
 		jpOptions.add(jpIntro,"0,7");
+		//P2P
+		jpP2P = new JPanel();
+		jpP2P.setBorder(BorderFactory.createTitledBorder("P2P"));
+		double sizeP2P[][] = {{0.6,0.3,0.1},
+				{iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator}};
+		jpP2P.setLayout(new TableLayout(sizeP2P));
+		jcbShare = new JCheckBox("Share tracks ?");
+		jcbShare.setToolTipText("Check this if you allow others people to come read music from your box");
+		jcbShare.setSelected(Boolean.valueOf(ConfigurationManager.getProperty(CONF_OPTIONS_P2P_SHARE)).booleanValue());
+		jlPasswd = new JLabel("Password : ");
+		jpfPasswd = new JPasswordField();
+		jpfPasswd.setToolTipText("Set password access to your box. If no password is set, no one can read from it.");
+		jcbAddRemoteProperties = new JCheckBox("Add Remote properties");
+		jcbAddRemoteProperties.setToolTipText("If check, you will get personnal remote properties about tracks you read from others boxes.");
+		jcbAddRemoteProperties.setSelected(Boolean.valueOf(ConfigurationManager.getProperty(CONF_OPTIONS_P2P_ADD_REMOTE_PROPERTIES)).booleanValue());
+		jcbHideProperties = new JCheckBox("Hide local properties");
+		jcbHideProperties.setToolTipText("If check, others people will not see your personnal properties on tracks.");
+		jcbHideProperties.setSelected(Boolean.valueOf(ConfigurationManager.getProperty(CONF_OPTIONS_P2P_HIDE_LOCAL_PROPERTIES)).booleanValue());
+		jpP2P.add(jcbShare,"0,1");
+		jpP2P.add(jlPasswd,"0,3");
+		jpP2P.add(jpfPasswd,"1,3");
+		jpP2P.add(jcbAddRemoteProperties,"0,5");
+		jpP2P.add(jcbHideProperties,"0,7");
+		
 		//OK
 		jpOKCancel = new JPanel();
 		jpOKCancel.setLayout(new FlowLayout());
@@ -262,6 +289,7 @@ public class ParameterView extends ViewAdapter implements ActionListener {
 		add(jpStart,"0,2");
 		add(jpConfirmations,"0,4");
 		add(jpOptions,"0,0");
+		add(jpP2P,"1,2");
 		add(jpOKCancel,"0,6");
 	}
 
