@@ -16,12 +16,17 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.3  2003/10/16 15:57:10  sgringoi
+ * Rename getIdView() in getId()
+ * Add getComponent() method
+ *
  * Revision 1.2  2003/10/10 15:29:57  sgringoi
  * *** empty log message ***
  *
  */
 package org.jajuk.ui.views;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.io.IOException;
 import java.net.URL;
@@ -64,9 +69,9 @@ public class PhysicalTreeView extends JInternalFrame implements IView {
 	}
 
 	/*
-	 * @see org.jajuk.ui.views.IView#getIdView()
+	 * @see org.jajuk.ui.views.IView#getId()
 	 */
-	public String getIdView() {
+	public String getId() {
 		return VIEW_PHYSICAL_TREE;
 	}
 
@@ -246,5 +251,13 @@ public class PhysicalTreeView extends JInternalFrame implements IView {
     }
 
 
+
+	/* (non-Javadoc)
+	 * @see org.jajuk.ui.views.IView#getComponent()
+	 */
+	public Component getComponent() {
+		// TODO Auto-generated method stub
+		return this;
+	}
 
 }

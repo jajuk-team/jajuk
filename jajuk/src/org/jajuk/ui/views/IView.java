@@ -16,11 +16,17 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.3  2003/10/16 15:56:30  sgringoi
+ * Rename getIdView() in getId()
+ * Add getComponent() method
+ *
  * Revision 1.2  2003/10/10 15:29:57  sgringoi
  * *** empty log message ***
  *
  */
 package org.jajuk.ui.views;
+
+import java.awt.Component;
 
 /**
  * View
@@ -39,11 +45,16 @@ public interface IView {
 	 * Returns the view identifier.
 	 * @return View identifier.
 	 */
-	public abstract String getIdView();
+	public abstract String getId();
 	/**
 	 * Set the view visible.
 	 * @param pVisible - true to make the view visible; false to make it invisible.
 	 */
 	public void setVisible(boolean pVisible);
+	/**
+	 * Return the graphic component of the view.
+	 * @return Component
+	 */
+	public Component getComponent();
 
 }
