@@ -59,6 +59,7 @@ public interface ITechnicalStrings {
 	public static final String ICON_LOGO = PATH_ICONS + "64x64/jajuk-logo.png";
 	public static final String ICON_LOGO_TRAY = PATH_ICONS + "22x22/jajuk-logo.png";
 	public static final String ICON_LOGO_ICO = PATH_IMAGES + "jajuk-logo.ico";
+	public static final String ICON_LOGO_FRAME = PATH_ICONS + "16x16/jajuk-logo.png";
 	public static final String ICON_REPEAT = PATH_ICONS + "16x16/repeat.png";
 	public static final String ICON_SHUFFLE = PATH_ICONS + "16x16/shuffle.png"; 
 	public static final String ICON_CONTINUE = PATH_ICONS + "16x16/continue.png";
@@ -371,11 +372,13 @@ public interface ITechnicalStrings {
 	public static final String CONF_NETWORK_PROXY_LOGIN = "jajuk.network.proxy_login";
 	public static final String CONF_COVERS_AUTO_COVER = "jajuk.covers.auto_cover";
 	public static final String CONF_COVERS_SHUFFLE = "jajuk.covers.shuffle";
+	public static final String CONF_COVERS_PRELOAD = "jajuk.covers.preload";
 	public static final String CONF_COVERS_MIN_SIZE = "jajuk.covers.min_size";
 	public static final String CONF_COVERS_MAX_SIZE = "jajuk.covers.max_size";
 	public static final String CONF_COVERS_ACCURACY = "jajuk.covers.accuracy";
 	public static final String CONF_NETWORK_CONNECTION_TO = "jajuk.network.connection_timeout";
 	public static final String CONF_NETWORK_TRANSFERT_TO = "jajuk.network.transfert_timeout";
+	public static final String CONF_OPTIONS_TAB = "jajuk.options.tab"; //Last Option selected tab 
 		
 	//Accuracy levels
 	public static final String ACCURACY_LOW = "low";
@@ -422,7 +425,7 @@ public interface ITechnicalStrings {
 			"type","url","album","style","author","length","year","added","rate","files","hits","directory","size",
 			"quality","track","playlist_files","hashcode"}; //contains variables names
 	public static final String[] XML_RESERVED_PROPERTIES_NAMES = {"seek","music","mount_point","synchro_source"
-			,"synchro_mode","auto_refresh","auto_mount","exp","sync","plf_index","plf"}; //contains jajuk-reserved properties
+			,"synchro_mode","auto_refresh","auto_mount","exp","sync","plf_index","plf","default_cover"}; //contains jajuk-reserved properties
 	public static final String XML_ID = "id";
 	public static final String XML_TRACK_NAME = "name";
 	public static final String XML_TRACK_ALBUM = "album";
