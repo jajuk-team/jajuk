@@ -13,7 +13,7 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
+ *  along with this program; if not, write to the Free Software 
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *  $Revision$
  */
@@ -39,26 +39,35 @@ import org.jajuk.util.log.Log;
  * @created    12 oct. 2003
  */
 public class FIFO implements ITechnicalStrings,Runnable{
-	
-	/**Currently played track */
-	private File fCurrent;
-	
-	/**Last played track */
-	private File fLastOne;
-		
-	/**Fifo itself, contains jajuk File objects **/
-	private volatile ArrayList alFIFO;
+
+    /** Currently played track*/
+    private File fCurrent;
+
+    /**
+     * Last played track
+     */
+    private File fLastOne;
+
+    /**
+     * Fifo itself, contains jajuk File objects
+     */
+    private volatile ArrayList alFIFO;
+
 	
 	/**Stop flag**/
 	private static volatile boolean bStop;
-	
-	/** Deep time**/
-	private final int SLEEP_TIME = 100;
-	
-	/** Refresh time in ms**/
-	private final int REFRESH_TIME = 1000;
-	
-	/**Self instance*/
+
+    /**
+     * Deep time
+     */
+    private final int SLEEP_TIME = 100;
+
+    /**
+     * Refresh time in ms
+     */
+    private final int REFRESH_TIME = 1000;
+
+		/**Self instance*/
 	static private FIFO fifo= null; 	
 	
 	/**True if a track is playing */
@@ -80,16 +89,17 @@ public class FIFO implements ITechnicalStrings,Runnable{
 	long lTime;
 	
 	/** Glocal random enabled ? */
-	private boolean bGlobalRandom;
+	private boolean bGlobalRandom = false;
 	
 	/** Best of enabled ? */
-	private boolean bBestOf;
+	private boolean bBestOf = false;
 	
 	/** Novelties enabled ? */
-	private boolean bNovelties;
-	
-	/** Repeated set */
-	private ArrayList alRepeated;
+	private boolean bNovelties = false;
+
+    /**Repeated set  */
+    private ArrayList alRepeated;
+
 	
 	/** Repeated set index */
 	private int iRepeatIndex;

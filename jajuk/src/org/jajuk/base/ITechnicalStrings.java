@@ -29,8 +29,8 @@ import org.jajuk.util.Util;
  */
 public interface ITechnicalStrings {
 	
-	/**Information bar default vertical size in pixels*/
-	public static final int BORDER_Y_SIZE = 112;
+	/**Information bar and command bar default vertical size in pixels*/
+	public static final int BORDER_Y_SIZE = 119;
 	/**Command bar default vertical size in pixels*/
 	public static final int BORDER_X_SIZE = 55;
 	/**panels precisions in percent*/
@@ -273,6 +273,7 @@ public interface ITechnicalStrings {
 	public static final String EVENT_HEART_BEAT="heart beat";
 	public static final String EVENT_ZERO="zero";
 	public static final String EVENT_ADD_HISTORY_ITEM="history item";
+	public static final String EVENT_SPECIAL_MODE_CHANGED="special mode changed";
 	
 	//details keys
 	public static final String DETAIL_CURRENT_FILE_ID="current file id";
@@ -346,7 +347,8 @@ public interface ITechnicalStrings {
 	public static final String CONF_REGEXP= "jajuk.regexp"; //use regular expressions ?
 	public static final String CONF_BACKUP_SIZE= "jajuk.backup_size"; //backup size for collection.xml in MB
 	public static final String CONF_COLLECTION_CHARSET= "jajuk.collection_charset";//collection file charset (utf-8 or utf-16)
-	public static final String CONF_LAST_POSITION= "jajuk.last_position";
+	public static final String CONF_LAST_POSITION= "jajuk.startup.last_position";
+	public static final String CONF_STARTUP_KEEP_MODE= "jajuk.startup.keep_mode";
 	
 	//miscelanous
 	public static final String TRUE= "true";

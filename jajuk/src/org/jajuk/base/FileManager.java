@@ -30,6 +30,7 @@ import java.util.Properties;
 import java.util.TreeSet;
 
 import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 
 /**
@@ -117,11 +118,10 @@ public class FileManager implements ITechnicalStrings{
 	}
 	
 	/**
-	 * Return a shuffle mounted file from the entire collection
-	 * @return
+	 * @return All accessible files of the collection
 	 */
-	public static synchronized File getShuffleFile(){
-		//create a tempory table to remove unmounted files
+	public static synchronized ArrayList getReadyFiles(){
+	    // create a tempory table to remove unmounted files
 		ArrayList alEligibleFiles = new ArrayList(1000);
 		Iterator it = hmIdFile.values().iterator();
 		while ( it.hasNext()){
@@ -130,6 +130,15 @@ public class FileManager implements ITechnicalStrings{
 				alEligibleFiles.add(file);
 			}
 		}
+		return alEligibleFiles;
+	}
+	
+	/**
+	 * Return a shuffle mounted file from the entire collection
+	 * @return
+	 */
+	public static synchronized File getShuffleFile(){
+	    ArrayList alEligibleFiles = getReadyFiles();
 		if (alEligibleFiles.size() ==0 ){
 			return null;
 		}
@@ -137,15 +146,35 @@ public class FileManager implements ITechnicalStrings{
 	}
 	
 	/**
+	 * Return a playlist with the entire accessible shuffle collection 
+	 * @return The entire accessible shuffle collection
+	 */
+	public static synchronized ArrayList getGlobalShufflePlaylist(){
+	    ArrayList alEligibleFiles = getReadyFiles();
+	    return Util.randomize(alEligibleFiles);
+	}
+	
+	/**
 	 * Return a shuffle mounted file from the noveties
 	 * @return
 	 */
 	public static synchronized File getNoveltyFile(){
-		//create a tempory table to remove unmounted files
-		ArrayList alEligibleFiles = new ArrayList(1000);
+		ArrayList alEligibleFiles = getGlobalNoveltiesPlaylist();
+	    return (File)alEligibleFiles.get((int)(Math.random()*alEligibleFiles.size()));
+	}
+	
+	/**
+	 * Return a playlist with the entire accessible novelties collection 
+	 * @return The entire accessible novelties collection
+	 */
+	public static synchronized ArrayList getGlobalNoveltiesPlaylist(){
+	    ArrayList alEligibleFiles = new ArrayList(1000);
 		Iterator it = hmIdFile.values().iterator();
 		while ( it.hasNext()){
 			File file = (File)it.next();
+			if (!file.isReady()){
+			    continue;
+			}
 			int iTrackAge = 0;
 			try{
 				int iYear = Integer.parseInt(file.getTrack().getAdditionDate().substring(0,4));
@@ -157,14 +186,14 @@ public class FileManager implements ITechnicalStrings{
 			catch(Exception e){ //error like a wrong added date 
 			    continue;
 			}
-			if (file.isReady() && iTrackAge <= ConfigurationManager.getInt(CONF_OPTIONS_NOVELTIES_AGE)){
+			if ( iTrackAge <= ConfigurationManager.getInt(CONF_OPTIONS_NOVELTIES_AGE)){
 				alEligibleFiles.add(file);
 			}
 		}
 		if (alEligibleFiles.size() ==0 ){
 			return null;
 		}
-		return (File)alEligibleFiles.get((int)(Math.random()*alEligibleFiles.size()));
+		return alEligibleFiles;
 	}
 	
 	/**
@@ -172,6 +201,16 @@ public class FileManager implements ITechnicalStrings{
 	 * @return
 	 */
 	public static synchronized File getBestOfFile(){
+		TreeSet ts = getSortedByRate();
+		FileScore fscore = (FileScore)ts.last();
+	    return fscore.getFile(); //return highest score file
+	}
+	
+	/**
+	 * 
+	 * @return a sorted set of the collection by rate
+	 */
+	private static synchronized TreeSet getSortedByRate(){
 		//create a tempory table to remove unmounted files
 		TreeSet tsEligibleFiles = new TreeSet();
 		Iterator it = hmIdFile.values().iterator();
@@ -183,12 +222,26 @@ public class FileManager implements ITechnicalStrings{
 				tsEligibleFiles.add(new FileScore(file,lScore));
 			}
 		}
-		FileScore fsBestOne = (FileScore)tsEligibleFiles.last(); 
-		return fsBestOne.getFile(); //return highest score file
+		return tsEligibleFiles;
 	}
 	
 	/**
-	 * Return top files
+	 * Return a playlist with the entire accessible bestof collection 
+	 * @return The entire accessible bestof collection
+	 */
+	public static synchronized ArrayList getGlobalBestofPlaylist(){
+		TreeSet ts = getSortedByRate();
+	    ArrayList al = new ArrayList(ts.size());
+	    Iterator it = ts.iterator();
+	    while (it.hasNext()){
+	        FileScore fs = (FileScore)it.next();
+	        al.add(fs.getFile());
+	    }
+	    return al;
+	}
+	
+	/**
+	 * Return CONF_BESTOF_SIZE top files 
 	 * @return top files
 	 */
 	public static synchronized ArrayList getBestOfFiles(){
@@ -336,27 +389,40 @@ public class FileManager implements ITechnicalStrings{
 class FileScore implements Comparable{
 	/** The score */
 	long lScore;
-	/**The file*/
-	File file;
+
+    /**
+     * The file
+     * 
+     * @uml.property name="file"
+     * @uml.associationEnd 
+     * @uml.property name="file" multiplicity="(1 1)"
+     */
+    File file;
+
 	
 	public FileScore(File file,long lScore){
 		this.lScore = lScore;
 		this.file = file;
 	}
-	
-	/**
-	 * @return Returns the file.
-	 */
-	public File getFile() {
-		return file;
-	}
 
-	/**
-	 * @return Returns the lScore.
-	 */
-	public long getLScore() {
-		return lScore;
-	}
+    /**
+     * @return Returns the file.
+     * 
+     * @uml.property name="file"
+     */
+    public File getFile() {
+        return file;
+    }
+
+    /**
+     * @return Returns the lScore.
+     * 
+     * @uml.property name="lScore"
+     */
+    public long getLScore() {
+        return lScore;
+    }
+
 	
 	/**
 	 * ToString method

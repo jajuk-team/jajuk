@@ -21,6 +21,7 @@ package org.jajuk.ui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -61,10 +62,10 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
     
     //singleton
     static private CommandJPanel command;
-    
+
     //widgets declaration
-    SearchBox  sbSearch;
-    public SteppedComboBox jcbHistory;
+    SearchBox sbSearch;
+    SteppedComboBox jcbHistory;
     JToolBar jtbMode;
     JButton jbRepeat;
     JButton jbRandom;
@@ -86,6 +87,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
     JSlider jsVolume;
     JLabel jlPosition;
     JSlider jsPosition;
+
     
     //variables declaration
     /**Repeat mode flag*/
@@ -128,6 +130,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
                         {height1}}; //note we can't set a % for history combo box because of popup size
                 setLayout(new TableLayout(size));
                 sbSearch = new SearchBox(CommandJPanel.this);
+                setBorder(BorderFactory.createEmptyBorder(0,0,7,0));
                 
                 //history
                 jcbHistory = new SteppedComboBox(History.getInstance().getHistory().toArray());
@@ -293,6 +296,27 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
                 else{
                    jbContinue.setBorder(BorderFactory.createRaisedBevelBorder());
                 }
+                if (ConfigurationManager.getBoolean(CONF_STARTUP_KEEP_MODE)){
+                    if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_SHUFFLE)){
+                        jbGlobalRandom.setBorder(BorderFactory.createLoweredBevelBorder());
+                    }
+                    else{
+                        jbGlobalRandom.setBorder(BorderFactory.createRaisedBevelBorder());
+                    }
+                    if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_BESTOF)){
+                        jbBestof.setBorder(BorderFactory.createLoweredBevelBorder());
+                    }
+                    else{
+                        jbBestof.setBorder(BorderFactory.createRaisedBevelBorder());
+                    }
+                    if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_NOVELTIES)){
+                        jbNovelties.setBorder(BorderFactory.createLoweredBevelBorder());
+                    }
+                    else{
+                        jbNovelties.setBorder(BorderFactory.createRaisedBevelBorder());
+                    }
+                }
+                jbMute.setBorder(BorderFactory.createRaisedBevelBorder());
             }	
         });
     } 
@@ -353,40 +377,61 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
             };
             sw.start();
         }
-        if (ae.getSource() == jbGlobalRandom ){
+        if (ae.getSource() == jbBestof ){
             SwingWorker sw = new SwingWorker() {
-                org.jajuk.base.File file = null;
+                ArrayList alToPlay = null; //files to play
                 public Object construct() {
-                    file = FileManager.getShuffleFile();
+                    alToPlay  = FileManager.getGlobalBestofPlaylist();
                     return null;
                 }
                 
                 public void finished() {
-                    if (file != null){
-                        FIFO.getInstance().setBestof(false); //break best of mode if set
-                        FIFO.getInstance().setNovelties(false); //break novelties mode if set
-                        FIFO.getInstance().setGlobalRandom(true);
-                        FIFO.getInstance().push(file,false,true);
-                        jbGlobalRandom.setIcon(Util.getIcon(ICON_SHUFFLE_GLOBAL_ON));
+                    if ( alToPlay.size() > 0){
+                        boolean bNewState = !FIFO.getInstance().isBestof();
+                        if (bNewState){
+                            FIFO.getInstance().setBestof(true);
+                            jbBestof.setBorder(BorderFactory.createLoweredBevelBorder());
+                            FIFO.getInstance().setGlobalRandom(false);
+                            jbGlobalRandom.setBorder(BorderFactory.createRaisedBevelBorder());
+                            FIFO.getInstance().setNovelties(false);
+                            jbNovelties.setBorder(BorderFactory.createRaisedBevelBorder());
+                            FIFO.getInstance().push(alToPlay,false,true,false);    
+                        }
+                        else{
+                            FIFO.getInstance().setBestof(false);
+                            jbBestof.setBorder(BorderFactory.createRaisedBevelBorder());
+                            FIFO.getInstance().clear();
+                        }
                     }
                 }
             };
             sw.start();
         }
-        if (ae.getSource() == jbBestof ){
+        if (ae.getSource() == jbGlobalRandom ){
             SwingWorker sw = new SwingWorker() {
-                org.jajuk.base.File file = null;
+                ArrayList alToPlay = null; //files to play
                 public Object construct() {
-                    file = FileManager.getBestOfFile();
+                    alToPlay  = FileManager.getGlobalShufflePlaylist();
                     return null;
                 }
                 
                 public void finished() {
-                    if (file != null){
-                        FIFO.getInstance().setGlobalRandom(false); //break global random mode if set
-                        FIFO.getInstance().setNovelties(false); //break novelties mode if set
-                        FIFO.getInstance().setBestof(true);
-                        FIFO.getInstance().push(file,false,true);
+                    if ( alToPlay.size() > 0){
+                        boolean bNewState = !FIFO.getInstance().isGlobalRandom();
+                        if (bNewState){
+                            FIFO.getInstance().setGlobalRandom(true);
+                            jbGlobalRandom.setBorder(BorderFactory.createLoweredBevelBorder());
+                            FIFO.getInstance().setNovelties(false); //break novelties mode if set
+                            jbNovelties.setBorder(BorderFactory.createRaisedBevelBorder());
+                            FIFO.getInstance().setBestof(false);
+                            jbBestof.setBorder(BorderFactory.createRaisedBevelBorder());
+                            FIFO.getInstance().push(alToPlay,false,true,false);    
+                        }
+                        else{
+                            FIFO.getInstance().setGlobalRandom(false);
+                            jbGlobalRandom.setBorder(BorderFactory.createRaisedBevelBorder());
+                            FIFO.getInstance().clear();
+                        }
                     }
                 }
             };
@@ -394,18 +439,32 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
         }
         if (ae.getSource() == jbNovelties ){
             SwingWorker sw = new SwingWorker() {
-                org.jajuk.base.File file = null;
+                ArrayList alToPlay = null; //files to play
                 public Object construct() {
-                    file = FileManager.getNoveltyFile();
+                    alToPlay  = FileManager.getGlobalNoveltiesPlaylist();
                     return null;
                 }
                 
                 public void finished() {
-                    if (file != null){
-                        FIFO.getInstance().setGlobalRandom(false); //break global random mode if set
-                        FIFO.getInstance().setBestof(false); //break best of mode if set
-                        FIFO.getInstance().setNovelties(true);
-                        FIFO.getInstance().push(file,false,true);
+                    if ( alToPlay.size() > 0){
+                        boolean bNewState = !FIFO.getInstance().isNovelties();
+                        if (bNewState){
+                            FIFO.getInstance().setNovelties(true);
+                            jbNovelties.setBorder(BorderFactory.createLoweredBevelBorder());
+                            FIFO.getInstance().setGlobalRandom(false);
+                            jbGlobalRandom.setBorder(BorderFactory.createRaisedBevelBorder());
+                            FIFO.getInstance().setBestof(false);
+                            jbBestof.setBorder(BorderFactory.createRaisedBevelBorder());
+                            FIFO.getInstance().push(alToPlay,false,true,false);    
+                        }
+                        else{
+                            FIFO.getInstance().setNovelties(false);
+                            jbNovelties.setBorder(BorderFactory.createRaisedBevelBorder());
+                            FIFO.getInstance().clear();
+                        }
+                    }
+                    else{ //none novelty found
+                        Messages.showErrorMessage("127"); //$NON-NLS-1$
                     }
                 }
             };
@@ -417,7 +476,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
                 jbMute.setBorder(BorderFactory.createLoweredBevelBorder());
             }
             else{
-                jbMute.setBorder(BorderFactory.createEmptyBorder(4,4,4,4));
+                jbMute.setBorder(BorderFactory.createRaisedBevelBorder());
             }
         }
         else if(ae.getSource() == jbStop){
