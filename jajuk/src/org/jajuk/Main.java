@@ -312,11 +312,12 @@ public class Main implements ITechnicalStrings {
 	 * Registers supported audio supports and default properties
 	 */
 	private static void registerTypes(){
-		try {
+		try { 
 			//mp3
 			Type type = TypeManager.registerType(Messages.getString("Type.mp3"), EXT_MP3, PLAYER_IMPL_JAVALAYER, TAG_IMPL_JLGUI_MP3); //$NON-NLS-1$ //$NON-NLS-2$
 			type.setProperty(TYPE_PROPERTY_IS_MUSIC,"true"); //$NON-NLS-1$
 			type.setProperty(TYPE_PROPERTY_SEEK_SUPPORTED,"true"); //$NON-NLS-1$
+			type.setProperty(TYPE_PROPERTY_TECH_DESC,TYPE_PROPERTY_TECH_DESC_MP3);
 			//playlists
 			type = TypeManager.registerType(Messages.getString("Type.playlist"), EXT_PLAYLIST, PLAYER_IMPL_JAVALAYER, null); //$NON-NLS-1$ //$NON-NLS-2$
 			type.setProperty(TYPE_PROPERTY_IS_MUSIC,"false"); //$NON-NLS-1$
@@ -325,19 +326,22 @@ public class Main implements ITechnicalStrings {
 			type = TypeManager.registerType(Messages.getString("Type.ogg"), EXT_OGG, PLAYER_IMPL_JAVALAYER, TAG_IMPL_JLGUI_OGG); //$NON-NLS-1$ //$NON-NLS-2$
 			type.setProperty(TYPE_PROPERTY_IS_MUSIC,"true"); //$NON-NLS-1$
 			type.setProperty(TYPE_PROPERTY_SEEK_SUPPORTED,"false"); //$NON-NLS-1$
+			type.setProperty(TYPE_PROPERTY_TECH_DESC,TYPE_PROPERTY_TECH_DESC_OGG);
 			//Wave
 			type = TypeManager.registerType(Messages.getString("Type.wav"), EXT_WAV, PLAYER_IMPL_JAVALAYER, TAG_IMPL_NO_TAGS); //$NON-NLS-1$ //$NON-NLS-2$
 			type.setProperty(TYPE_PROPERTY_IS_MUSIC,"true"); //$NON-NLS-1$
 			type.setProperty(TYPE_PROPERTY_SEEK_SUPPORTED,"true"); //$NON-NLS-1$
+			type.setProperty(TYPE_PROPERTY_TECH_DESC,TYPE_PROPERTY_TECH_DESC_WAVE);
 			//au
 			type = TypeManager.registerType(Messages.getString("Type.au"), EXT_AU, PLAYER_IMPL_JAVALAYER, TAG_IMPL_NO_TAGS); //$NON-NLS-1$ //$NON-NLS-2$
 			type.setProperty(TYPE_PROPERTY_IS_MUSIC,"true"); //$NON-NLS-1$
 			type.setProperty(TYPE_PROPERTY_SEEK_SUPPORTED,"false"); //$NON-NLS-1$
+			type.setProperty(TYPE_PROPERTY_TECH_DESC,TYPE_PROPERTY_TECH_DESC_AU);
 			//aiff
 			type = TypeManager.registerType(Messages.getString("Type.aiff"), EXT_AIFF, PLAYER_IMPL_JAVALAYER, TAG_IMPL_NO_TAGS); //$NON-NLS-1$ //$NON-NLS-2$
 			type.setProperty(TYPE_PROPERTY_IS_MUSIC,"true"); //$NON-NLS-1$
 			type.setProperty(TYPE_PROPERTY_SEEK_SUPPORTED,"false"); //$NON-NLS-1$
-			
+			type.setProperty(TYPE_PROPERTY_TECH_DESC,TYPE_PROPERTY_TECH_DESC_AIFF);
 		} catch (Exception e1) {
 			Log.error("026",e1); //$NON-NLS-1$
 		}
