@@ -110,7 +110,6 @@
     	<action dev='bflorat' type='add'>New parameter tab with a function to reset perspectives defaults</action>  
     	<action dev='bflorat' type='add'>New option in Parameter View / Option tab : search in unmounted devices used by the search box</action>  
     	<action dev='bflorat' type='add'>Three new startup / systray modes : bestof, novelties and last track keep position (new default)</action>  
-    	<action dev='bflorat' type='add'>New option in Parameter View / Startup tab : stay in special mode</action>  
     	<action dev='bflorat' type='add'>New tab in Parameter View : Network configuration used by auto-cover and soon P2P</action>  
     	<action dev='bflorat' type='update'>Many usability and look improvements</action>
     	<action dev='bflorat' type='update'>Parameter view now uses tabs</action>
