@@ -452,7 +452,8 @@ public class Main implements ITechnicalStrings {
 	private static void launchInitialTrack(){
 		org.jajuk.base.File file = null;
 		if (!ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_NOTHING)){
-			if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_LAST)){
+			if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_LAST) ||
+			        ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_LAST_KEEP_POS)){
 				file = FileManager.getFile(History.getInstance().getLastFile());
 			}
 			else if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_FILE)){
@@ -460,6 +461,12 @@ public class Main implements ITechnicalStrings {
 			}
 			else if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_SHUFFLE)){
 				file = FileManager.getShuffleFile();
+			}
+			else if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_BESTOF)){
+				file = FileManager.getBestOfFile();
+			}
+			else if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_NOVELTIES)){
+				file = FileManager.getNoveltyFile();
 			}
 			//launch selected file
 			if (file != null && file.isReady()){

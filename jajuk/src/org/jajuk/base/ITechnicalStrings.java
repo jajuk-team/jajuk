@@ -59,9 +59,14 @@ public interface ITechnicalStrings {
 	public static final String ICON_CONTINUE_OFF = PATH_ICONS + "16x16/continue_off.png";
 	public static final String ICON_INTRO_ON = PATH_ICONS + "16x16/intro.png";
 	public static final String ICON_INTRO_OFF = PATH_ICONS + "16x16/intro_off.png";
-	public static final String ICON_ROLL = PATH_ICONS + "16x16/roll.png";
-	public static final String ICON_BESTOF = PATH_ICONS + "16x16/bestof.png";
-	public static final String ICON_MUTE = PATH_ICONS + "16x16/mute.png";
+	public static final String ICON_SHUFFLE_GLOBAL_ON = PATH_ICONS + "16x16/shuffle_global_on.png";
+	public static final String ICON_SHUFFLE_GLOBAL_OFF = PATH_ICONS + "16x16/shuffle_global_off.png";
+	public static final String ICON_BESTOF_ON = PATH_ICONS + "16x16/bestof_on.png";
+	public static final String ICON_BESTOF_OFF = PATH_ICONS + "16x16/bestof_off.png";
+	public static final String ICON_MUTE_ON = PATH_ICONS + "16x16/mute_on.png";
+	public static final String ICON_MUTE_OFF = PATH_ICONS + "16x16/mute_off.png";
+	public static final String ICON_NOVELTIES_ON =  PATH_ICONS + "16x16/novelties_on.png";
+	public static final String ICON_NOVELTIES_OFF =  PATH_ICONS + "16x16/novelties_off.png";
 	public static final String ICON_PREVIOUS = PATH_ICONS + "16x16/previous.png";
 	public static final String ICON_NEXT = PATH_ICONS + "16x16/next.png";
 	public static final String ICON_REW = PATH_ICONS + "16x16/player_rew.png";
@@ -138,7 +143,6 @@ public interface ITechnicalStrings {
 	public static final String ICON_CURRENT_PLAYLIST =  PATH_ICONS + "16x16/run.png";
 	public static final String ICON_CLEAR =  PATH_ICONS + "16x16/clear.png";
 	public static final String ICON_SAVE =  PATH_ICONS + "16x16/save.png";
-	public static final String ICON_NOVELTIES =  PATH_ICONS + "16x16/novelties.png";
 			
 	//images
 	public static final String IMAGES_SPLASHSCREEN =  PATH_IMAGES + "jajuk-splashscreen.png";
@@ -291,6 +295,7 @@ public interface ITechnicalStrings {
 	public static final String STARTUP_MODE_SHUFFLE = "shuffle";
 	public static final String STARTUP_MODE_FILE = "file";
 	public static final String STARTUP_MODE_LAST = "last";
+	public static final String STARTUP_MODE_LAST_KEEP_POS = "last_keep_pos";
 	public static final String STARTUP_MODE_BESTOF = "bestof";
 	public static final String STARTUP_MODE_NOVELTIES = "novelties";
 	
@@ -328,6 +333,7 @@ public interface ITechnicalStrings {
 	public static final String CONF_REGEXP= "jajuk.regexp"; //use regular expressions ?
 	public static final String CONF_BACKUP_SIZE= "jajuk.backup_size"; //backup size for collection.xml in MB
 	public static final String CONF_COLLECTION_CHARSET= "jajuk.collection_charset";//collection file charset (utf-8 or utf-16)
+	public static final String CONF_LAST_POSITION= "jajuk.last_position";
 	
 	//miscelanous
 	public static final String TRUE= "true";

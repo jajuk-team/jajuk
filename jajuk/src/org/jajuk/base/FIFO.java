@@ -105,6 +105,12 @@ public class FIFO implements ITechnicalStrings,Runnable{
 	/** Current file position (%) used for pause */
 	private int iPosition;
 	
+	/** First played file flag**/
+	private boolean bFirstFile = true;
+	
+	/**First file should seek to position flag*/
+	private boolean bSeekFirstFile = false;
+	
 	/**
 	 * Singleton access
 	 * @return
@@ -120,6 +126,9 @@ public class FIFO implements ITechnicalStrings,Runnable{
 	 * constructor
 	 */
 	private FIFO() {
+		if ( ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_LAST_KEEP_POS)){
+		    bSeekFirstFile = true;
+		}
 		init();
 		tStarter = new Thread(this);
 		tStarter.start();
@@ -262,7 +271,6 @@ public class FIFO implements ITechnicalStrings,Runnable{
 		push(file,bAppend,false);
 	}
 	
-	
 	/**
 	 * Clears the fifo, for example when we want to add a group of files stopping previous plays
 	 *
@@ -321,6 +329,7 @@ public class FIFO implements ITechnicalStrings,Runnable{
 						InformationJPanel.getInstance().setCurrentStatusMessage(Util.formatTime(lTime)+" / "+Util.formatTime(fCurrent.getTrack().getLength()*1000)); //$NON-NLS-1$
 						int iPos = (length!=0)?(int)((lTime/10)/length):0;  //if length=0, pos is always 0 to avoid division by zero
 						InformationJPanel.getInstance().setCurrentStatus(iPos);
+						ConfigurationManager.setProperty(CONF_LAST_POSITION,Float.toString(((float)iPos)/100)); //store current position
 						CommandJPanel.getInstance().setCurrentPosition(iPos);
 						InformationJPanel.getInstance().setTotalStatusMessage(Util.formatTimeBySec((int)(lTotalTime-(lTime/1000)),false));
 					}
@@ -358,6 +367,7 @@ public class FIFO implements ITechnicalStrings,Runnable{
 							InformationJPanel.getInstance().setCurrentStatus(0);
 							CommandJPanel.getInstance().setCurrentPosition(0);
 							InformationJPanel.getInstance().setTotalStatusMessage("00:00:00"); //$NON-NLS-1$
+							ConfigurationManager.setProperty(CONF_LAST_POSITION,"0");
 						}
 						i++;
 						continue; //leave
@@ -393,9 +403,16 @@ public class FIFO implements ITechnicalStrings,Runnable{
 						Player.play(fCurrent,Float.parseFloat(ConfigurationManager.getProperty(CONF_OPTIONS_INTRO_BEGIN))/100,1000*Integer.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_INTRO_LENGTH)));
 					}
 					else{
-						Player.play(fCurrent,-1,-1);  //play it
+						if (bFirstFile && bSeekFirstFile){ //if it is the first played file and we are in startup mode keep position
+						    float fPos = ConfigurationManager.getFloat(CONF_LAST_POSITION);
+						    Player.play(fCurrent,fPos,-1);  //play it
+						}
+						else{
+						    Player.play(fCurrent,-1,-1);  //play it
+						}
 					}
-					lTrackStart = System.currentTimeMillis();
+					bFirstFile = false;
+				   lTrackStart = System.currentTimeMillis();
 					//add hits number
 					fCurrent.getTrack().incHits();  //inc hits number 
 					fCurrent.getTrack().incSessionHits();//inc session hits

@@ -83,6 +83,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 	ButtonGroup bgStart;
 	JRadioButton jrbNothing;
 	JRadioButton jrbLast;
+	JRadioButton jrbLastKeepPos;
 	JRadioButton jrbShuffle;
 	JRadioButton jrbBestof;
 	JRadioButton jrbNovelties;
@@ -193,7 +194,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		//--Startup
 		jpStart = new JPanel();
 		double sizeStart[][] = {{0.15,iXSeparator,0.4,iXSeparator,0.3,iXSeparator},
-				{20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20}};
+				{20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20}};
 		jpStart.setLayout(new TableLayout(sizeStart));
 		jlStart = new JLabel(Messages.getString("ParameterView.9")); //$NON-NLS-1$
 		bgStart = new ButtonGroup();
@@ -201,6 +202,8 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jrbNothing.setToolTipText(Messages.getString("ParameterView.11")); //$NON-NLS-1$
 		jrbLast = new JRadioButton(Messages.getString("ParameterView.12")); //$NON-NLS-1$
 		jrbLast.setToolTipText(Messages.getString("ParameterView.13")); //$NON-NLS-1$
+		jrbLastKeepPos = new JRadioButton(Messages.getString("ParameterView.135")); //$NON-NLS-1$
+		jrbLastKeepPos.setToolTipText(Messages.getString("ParameterView.136")); //$NON-NLS-1$
 		jrbShuffle = new JRadioButton(Messages.getString("ParameterView.14")); //$NON-NLS-1$
 		jrbShuffle.setToolTipText(Messages.getString("ParameterView.15")); //$NON-NLS-1$
 		jrbBestof = new JRadioButton(Messages.getString("ParameterView.131")); //$NON-NLS-1$
@@ -226,6 +229,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		sbSearch.setToolTipText(Messages.getString("ParameterView.18")); //$NON-NLS-1$
 		bgStart.add(jrbNothing);
 		bgStart.add(jrbLast);
+		bgStart.add(jrbLastKeepPos);
 		bgStart.add(jrbShuffle);
 		bgStart.add(jrbBestof);
 		bgStart.add(jrbNovelties);
@@ -234,11 +238,12 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jpStart.add(jlStart,"0,2"); //$NON-NLS-1$
 		jpStart.add(jrbNothing,"2,0"); //$NON-NLS-1$
 		jpStart.add(jrbLast,"2,2"); //$NON-NLS-1$
-		jpStart.add(jrbShuffle,"2,4"); //$NON-NLS-1$
-		jpStart.add(jrbBestof,"2,6"); //$NON-NLS-1$
-		jpStart.add(jrbNovelties,"2,8"); //$NON-NLS-1$
-		jpStart.add(jrbFile,"2,10"); //$NON-NLS-1$
-		jpStart.add(sbSearch,"4,10"); //$NON-NLS-1$
+		jpStart.add(jrbLastKeepPos,"2,4"); //$NON-NLS-1$
+		jpStart.add(jrbShuffle,"2,6"); //$NON-NLS-1$
+		jpStart.add(jrbBestof,"2,8"); //$NON-NLS-1$
+		jpStart.add(jrbNovelties,"2,10"); //$NON-NLS-1$
+		jpStart.add(jrbFile,"2,12"); //$NON-NLS-1$
+		jpStart.add(sbSearch,"4,12"); //$NON-NLS-1$
 		
 		//--Confirmations
 		jpConfirmations = new JPanel();
@@ -628,6 +633,9 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 					else if (jrbLast.isSelected()){
 						ConfigurationManager.setProperty(CONF_STARTUP_MODE,STARTUP_MODE_LAST);
 					}
+					else if (jrbLastKeepPos.isSelected()){
+						ConfigurationManager.setProperty(CONF_STARTUP_MODE,STARTUP_MODE_LAST_KEEP_POS);
+					}
 					else if (jrbShuffle.isSelected()){
 						ConfigurationManager.setProperty(CONF_STARTUP_MODE,STARTUP_MODE_SHUFFLE);
 					}
@@ -701,6 +709,9 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		}
 		else if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_LAST)){
 			jrbLast.setSelected(true);
+		}
+		else if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_LAST_KEEP_POS)){
+			jrbLastKeepPos.setSelected(true);
 		}
 		else if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_NOTHING)){
 			jrbNothing.setSelected(true);

@@ -216,8 +216,8 @@
 
    <dependency>
 	   <groupId>lib</groupId>
-        <artifactId>LiquidLnF</artifactId>
-        <version>0.2.3</version> 
+        <artifactId>liquidlnf</artifactId>
+        <version>0.2.8</version> 
     </dependency>
 
    <dependency>
