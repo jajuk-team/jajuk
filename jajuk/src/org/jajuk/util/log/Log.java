@@ -174,13 +174,13 @@ public class Log  implements ITechnicalStrings{
         switch(newVerbosity){
         case DEBUG:
             logger.setLevel(Level.DEBUG);
-            loggerHttp.setLevel(Level.DEBUG);
-            loggerRoot.setLevel(Level.DEBUG);
+            loggerHttp.setLevel(Level.WARN);
+            loggerRoot.setLevel(Level.WARN);
             break;
         case INFO:
             logger.setLevel(Level.INFO);
-            loggerHttp.setLevel(Level.INFO);
-            loggerRoot.setLevel(Level.INFO);
+            loggerHttp.setLevel(Level.WARN);
+            loggerRoot.setLevel(Level.WARN);
             break;
         case WARNING:
             logger.setLevel(Level.WARN);
