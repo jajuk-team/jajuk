@@ -39,7 +39,7 @@ import org.jajuk.util.log.Log;
  */
 public class Messages {
 	
-	private static final String BUNDLE_NAME = "org.jajuk.i18n.jajuk"; //$NON-NLS-1$
+	private static final String BUNDLE_NAME = "org.jajuk.i18n.jajuk-latin1"; //$NON-NLS-1$
 	/**Local ( language) to be used, default is english */
 	private static String sLocal;
 	/**Supported Locals*/
