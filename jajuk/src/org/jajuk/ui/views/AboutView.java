@@ -98,7 +98,7 @@ public class AboutView extends ViewAdapter {
         jpLicence.add(new JScrollPane(jta));
 		jtp = new JTabbedPane();
 		ArrayList alContribs = new ArrayList(10);
-		alContribs.add(new Contributor("Bertrand Florat","Bertrand Florat@users.sourceforge.net")); //$NON-NLS-1$ //$NON-NLS-2$
+		alContribs.add(new Contributor("Bertrand Florat","bflorat@users.sourceforge.net")); //$NON-NLS-1$ //$NON-NLS-2$
 		alContribs.add(new Contributor("Gerhard Dietrichsteiner","skyreacher@users.sourceforge.net")); //$NON-NLS-1$ //$NON-NLS-2$
 		alContribs.add(new Contributor("Riccardo Capecchi","ricciocri@users.sourceforge.net")); //$NON-NLS-1$ //$NON-NLS-2$
 		alContribs.add(new Contributor("Oscar Appelgren","oscariot@users.sourceforge.net")); //$NON-NLS-1$ //$NON-NLS-2$
