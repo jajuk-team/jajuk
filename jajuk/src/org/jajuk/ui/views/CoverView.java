@@ -193,7 +193,6 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                 this.fDir = fDir; //store this dir
                 synchronized(alCovers){
                     alCovers.clear();
-                    alCovers.add(coverDefault); //add the default cover
                     //search for local covers
                     java.io.File[] files = fDir.listFiles();
                     boolean bAbsoluteCover = false; //whether an absolute cover ( unique) has been found
@@ -214,13 +213,16 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                             }
                         }
                     }
+                   if (alCovers.size() == 0){//add the default cover if none other cover has been found
+                       alCovers.add(coverDefault); 
+                   }
                     //display local or default cover without wait
                     Collections.sort(alCovers); //sort the list
                     Log.debug("Local cover list: "+alCovers);
                     index = alCovers.size()-1;  //current index points to the best available cover
                     SwingUtilities.invokeLater(new Runnable() {
                         public void run() {
-                            jlFound.setText(alCovers.size()-1+" "+Messages.getString("CoverView.9"));
+                            jlFound.setText(getCoverNumber()+" "+Messages.getString("CoverView.9"));
                         }
                     });
                 }
@@ -246,6 +248,10 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                                         catch(Exception e){
                                             return; //no web covers found, just leave
                                         }
+                                        //remove default cover if some remote cover have been found
+                                        if ( alCovers.size()>0 && ((Cover)alCovers.get(0)).getType() == Cover.DEFAULT_COVER){
+                                            alCovers.remove(0);
+                                        }
                                         Iterator it = alUrls.iterator(); //add logicaly found covers 
                                         while ( it.hasNext()){
                                             URL url = (URL)it.next();
@@ -261,7 +267,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                                         //refresh number of found covers
                                         SwingUtilities.invokeLater(new Runnable() {
                                             public void run() {
-                                                jlFound.setText(alCovers.size()-1+" "+Messages.getString("CoverView.9"));
+                                                jlFound.setText(getCoverNumber()+" "+Messages.getString("CoverView.9"));
                                             }
                                         });
                                         //display the best found cover if no one was found before
@@ -360,12 +366,16 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                 catch(Exception e){ //this cover cannot be loaded
                     synchronized(alCovers){
                         alCovers.remove(index);
+                        //Add at last the default cover if all remote cover has been discarded
+                        if (alCovers.size() == 0){
+                            alCovers.add(0,coverDefault);
+                        }
                         Log.debug("Removed cover: "+cover);
                     }
                     //refresh number of found covers
                     SwingUtilities.invokeLater(new Runnable() {
                         public void run() {
-                            jlFound.setText(alCovers.size()-1+" "+Messages.getString("CoverView.9"));
+                            jlFound.setText(jlFound+" "+Messages.getString("CoverView.9"));
                         }
                     });
                     index  --; //look at next cover    
@@ -521,8 +531,19 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                 }
             });
         }
-        
     }
-    
+   
+   /**
+    * 
+    * @return number of real covers ( not default) covers found
+    */ 
+    private int getCoverNumber(){
+        if (((Cover)alCovers.get(0)).getType() == Cover.DEFAULT_COVER){
+            return alCovers.size() -1;
+        }
+        else{
+            return alCovers.size() ;
+        }
+    }
     
 }
