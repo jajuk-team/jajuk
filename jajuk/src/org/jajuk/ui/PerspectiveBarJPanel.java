@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.8  2003/11/21 10:28:21  bflorat
+ * Corrected perspective/views repaint problems
+ *
  * Revision 1.7  2003/11/18 18:58:07  bflorat
  * 18/11/2003
  *
@@ -105,7 +108,7 @@ public class PerspectiveBarJPanel
 		jbPhysical.addActionListener(this);
 		jbPhysical.setToolTipText(Messages.getString("PerspectiveBarJPanel.Show_the_physical_perspective")); //$NON-NLS-1$
 		jtbPerspective.add(jbPhysical);
-			// Logical perspective access button
+		// Logical perspective access button
 		jbLogical = new JButton(new ImageIcon(ICON_PERSPECTIVE_LOGICAL)); 
 		jbLogical.addActionListener(this);
 		jbLogical.setToolTipText(Messages.getString("PerspectiveBarJPanel.Show_the_logical_perspective")); //$NON-NLS-1$

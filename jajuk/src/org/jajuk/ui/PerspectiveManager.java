@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.6  2003/11/21 10:28:21  bflorat
+ * Corrected perspective/views repaint problems
+ *
  * Revision 1.5  2003/11/20 21:40:30  bflorat
  * 20/11/2003
  *
@@ -39,6 +42,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.swing.JDesktopPane;
 import javax.swing.JPanel;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -127,10 +131,10 @@ public class PerspectiveManager extends DefaultHandler implements ITechnicalStri
 	public static void setCurrentPerspective(IPerspective perspective) {
 		currentPerspective = perspective;
 		JPanel contentPane = (JPanel)Main.jframe.getContentPane();
-		contentPane.setOpaque(true);
 		contentPane.add(perspective.getDesktop(),BorderLayout.CENTER);
-		//conte
-		contentPane.repaint();
+		JDesktopPane desktop = perspective.getDesktop();
+		desktop.setOpaque(true);
+		desktop.repaint();
 		PerspectiveBarJPanel.getInstance().setActivated(perspective);
 	}
 

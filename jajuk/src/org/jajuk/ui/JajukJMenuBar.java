@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.7  2003/11/21 10:28:21  bflorat
+ * Corrected perspective/views repaint problems
+ *
  * Revision 1.6  2003/11/18 18:58:07  bflorat
  * 18/11/2003
  *
@@ -113,7 +116,6 @@ import org.jajuk.util.ConfigurationManager;
 		
 		//Views menu
 		views = new JMenu(Messages.getString("JajukJMenuBar.Views_2")); //$NON-NLS-1$
-		refreshViews();
 		
 		//Mode menu
 		mode = new JMenu(Messages.getString("JajukJMenuBar.Mode_4")); //$NON-NLS-1$

@@ -9,6 +9,9 @@
  * 
  * You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,USA
  * $Log$
+ * Revision 1.22  2003/11/21 10:28:18  bflorat
+ * Corrected perspective/views repaint problems
+ *
  * Revision 1.21  2003/11/20 21:40:30  bflorat
  * 20/11/2003
  *
@@ -82,6 +85,7 @@ public class Main implements ITechnicalStrings {
 				Log.error(Messages.getString("Main.Error_registering_players_11"), e1); //$NON-NLS-1$
 			}
 	
+			
 			//perform initial checkups
 			initialCheckups();
 			
@@ -91,9 +95,7 @@ public class Main implements ITechnicalStrings {
 			//Load collection
 			Collection.load();
 			
-			//Create the perspective manager ( before user conf load because some part can be overwritten )
-			PerspectiveManager.load();
-			
+						
 			//Load user configuration
 			org.jajuk.util.ConfigurationManager.load();
 			
@@ -103,13 +105,6 @@ public class Main implements ITechnicalStrings {
 			//Starts the FIFO
 			FIFO.getInstance().start();
 			
-			
-			//Close splash screen
-			sc.dispose();
-		
-			jframe.pack();
-			jframe.setExtendedState(Frame.MAXIMIZED_BOTH);  //maximalize
-			jframe.setVisible(true);
 			
 			jframe.addWindowListener(new WindowAdapter() {
 				public void windowClosing(WindowEvent we) {
@@ -140,11 +135,27 @@ public class Main implements ITechnicalStrings {
 			container.add(perspectiveBar, BorderLayout.WEST);
 			container.add(information, BorderLayout.SOUTH);
 			
-			//Initialize perspective manager
-			PerspectiveManager.init();
-	
 			//Set menu bar to the frame
 			jframe.setJMenuBar(JajukJMenuBar.getInstance());
+			
+			//Close splash screen
+			sc.dispose();
+		
+			//display window
+			jframe.pack();
+			jframe.setExtendedState(Frame.MAXIMIZED_BOTH);  //maximalize
+			jframe.setVisible(true);
+			
+			//Create the perspective manager 
+			PerspectiveManager.load();
+						
+			//Initialize perspective manager
+			PerspectiveManager.init();
+			
+			//Update current view 
+			JajukJMenuBar.getInstance().refreshViews();
+		
+	
 			
 			
 		} catch (JajukException je) { //last chance to catch any error for logging purpose
