@@ -199,7 +199,7 @@
     	<action dev='bflorat' type='fix'>1099036 Minor UI issue in Playlist editor view with some LAF</action>
     	<action dev='bflorat' type='fix'>Fixed minor UI issues (disable) in parameter view</action>
     </release>
-     <release version='0.3.3' date='work in progress' description='Fixes,performances and Catalan langpack'>
+     <release version='0.3.3' date='2005-04-02' description='Fixes,performances and Catalan langpack'>
      	<action dev='jespo' type='add'>Catalan translation</action> 
      	<action dev='bflorat' type='add'>Support of Linux menu shortcuts using Java installer</action> 
      	<action dev='bflorat' type='add'>Support for next/previous album from tray with shift or right click on previous/next</action> 
@@ -226,6 +226,5 @@
        <action dev='bflorat' type='fix' issue='1171908'>drag'n drop from sorted list pushes wrong track to playlist</action> 
        <action dev='bflorat' type='fix' issue='1175005'>Freeze when seeking more than 99%</action> 
      </release>
-          
   </body>
 </document>

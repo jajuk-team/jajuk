@@ -1,5 +1,5 @@
 %define name jajuk
-%define version 0.3.3
+%define version 0.3.3.1
 %define release 1mdk
 %define arch noarch
 
