@@ -1,18 +1,51 @@
-<?xml version="1.0"?>
+<?xml version='1.0'?>
 <document>
   <body>
-  	<section name="Jajuk Home Page">
+  	<section name='Jajuk Home Page'>
    		 <p>Jajuk is a Java music organizer for all platforms. The main goal 
    		 of this project is to provide a fully-featured application to advanced 
    		 users with large or scattered music collections.</p>
     </section>
   
-	<section name="News">
-		<p><b>2004/03/21 00:30</b></p>
-			<p><a href="http://sourceforge.net/projects/jajuk/">Jajuk initial version 0.1 released !</a></p>
+	<section name='Supported languages'>
+		<table style='width: 100%; text-align: left;' border='0' cellpadding='2' cellspacing='2'>
+			<tbody>
+				<tr>
+					<td style='vertical-align: top;'><b>Jajuk</b> ( buttons, labels, tooltips... )</td>
+					<td style='vertical-align: top;'>
+						<img alt=''	src='flags/flag_en.png' style='width: 21px; height: 14px;'/>
+						<img alt=''	src='flags/flag_fr.png' style='width: 21px; height: 14px;'/>
+					</td>
+				</tr>
+				<tr>
+					<td style='vertical-align: top;'>Readme file at install</td>
+					<td style='vertical-align: top;'>
+						<img alt='' src='flags/flag_en.png' style='width: 21px; height: 14px;'/>
+					</td>
+				</tr>
+				<tr>
+					<td style='vertical-align: top;'>Online Documentation ( Help perspective )</td>
+					<td style='vertical-align: top;'>
+						<img alt='' src='flags/flag_en.png' style='width: 21px; height: 14px;'/>
+						<img alt='' src='flags/flag_fr.png' style='width: 21px; height: 14px;'/>
+					</td>
+				</tr>
+				<tr>
+					<td style='vertical-align: top;'>Site ( <a href='http://jajuk.sourceforge.net'>http://jajuk.sourceforge.net</a> )</td>
+					<td style='vertical-align: top;'>
+						<img alt='' src='flags/flag_en.png' style='width: 21px; height: 14px;'/>
+					</td>
+				</tr>
+			</tbody>
+		</table>
 	</section>  
 
-  	<section name="Features">
+	<section name='News'>
+		<p><b>2004/03/21 00:30</b></p>
+			<p><a href='http://sourceforge.net/projects/jajuk/'>Jajuk initial version 0.1 released !</a></p>
+	</section>  
+
+  	<section name='Features'>
 		<p><b>Current features</b></p>
   	   		<ul>
 	   			<li>MP3 files support</li>
@@ -43,7 +76,7 @@
 	   			<li>Indexing method : Jajuk doesn't read id3 tags or directory structure at each startup but save them in a XML database. It allows a fast startup even for very large collections (bench:10 sec to start a 140Go collection on a P4 1.8Ghz)</li>
 	   			<li>Unmounted devices support : you can navigate into unmounted devices ( CDs for exemple ). So you get a full view of your collection at any time. Nice feature if you have plenty of music CDs. This behavior can be disabled.</li>
 	   			<li>Several Look and feel supported : Liquid, Metal, Windows, GTK, Kunststoff</li>
-	   			<li>Multilanguage ( English and French langpacks provided in 0.1). Easy to translate, see <a href="translation_howto.html">translation howto</a>.</li>
+	   			<li>Multilanguage ( English and French langpacks provided in 0.1). Easy to translate, see <a href='translation_howto.html'>translation howto</a>.</li>
 	   			<li>Fast collection builder : a cd scanner allows you to create a jajuk collection of tens of CDs in only few minutes</li>
 	   			<li>Eclipse-like graphical interface : Jajuk windows are divided into perspectives and views for a good functionnal separation. Views can be hidden or resized</li>
 	   			<li>Full-featured online  help (not yet written)</li>
@@ -53,7 +86,7 @@
 	   		</ul>	
 	<br></br>
 	<p><b>Near futur features</b></p>
- 		<p>See <a href="/planning.html">roadmap</a> for more details</p>
+ 		<p>See <a href='/planning.html'>roadmap</a> for more details</p>
  		<ul>
   			<li>Ogg Vorbis support</li>
    			<li>Java Web Start support</li>
@@ -65,18 +98,18 @@
    </section>
 
  
-  	<section name="Screenshots">
+  	<section name='Screenshots'>
     <br></br>
-    <table style="text-align: left; width: 100%;" border="1" cellspacing="2"
- cellpadding="2">
+    <table style='text-align: left; width: 100%;' border='1' cellspacing='2'
+ cellpadding='2'>
   <tbody>
     <tr>
-      <td style="vertical-align: top;">
+      <td style='vertical-align: top;'>
       <h2>Physical perspective</h2>
       <p>Navigate into devices, directories and files</p>
-      <img alt="" src="./screenshots/screenshot_perspective_physical.jpg"></img>
+      <img alt='' src='./screenshots/screenshot_perspective_physical.jpg'></img>
     </td>
-      <td style="vertical-align: top;"><span style="font-weight: bold;">Views</span>:
+      <td style='vertical-align: top;'><span style='font-weight: bold;'>Views</span>:
        <ul>
         <li>Physical Tree</li>
         <li>Physical Table</li>
@@ -87,12 +120,12 @@
       </td>
     </tr>
     <tr>
-      <td style="vertical-align: top;">
+      <td style='vertical-align: top;'>
       <h2>Logical perspective</h2>
       <p>Navigate into styles, albums, authors and tracks</p>
-      <img src="./screenshots/screenshot_perspective_logical.jpg" alt=""></img>
+      <img src='./screenshots/screenshot_perspective_logical.jpg' alt=''></img>
       </td>
-      <td style="vertical-align: top;"><span style="font-weight: bold;">Views</span>:
+      <td style='vertical-align: top;'><span style='font-weight: bold;'>Views</span>:
       <ul>
         <li>Logical Tree</li>
         <li>Logical Table</li>
@@ -103,12 +136,12 @@
       </td>
     </tr>
     <tr>
-      <td style="vertical-align: top;">
+      <td style='vertical-align: top;'>
       <h2>Configuration perspective</h2>
       <p>Configure devices, system options, perform a quick CD scanning ...</p>
-      <img alt="" src="./screenshots/screenshot_perspective_configuration.jpg"></img>
+      <img alt='' src='./screenshots/screenshot_perspective_configuration.jpg'></img>
  </td>
-      <td style="vertical-align: top;"><span style="font-weight: bold;">Views</span>:
+      <td style='vertical-align: top;'><span style='font-weight: bold;'>Views</span>:
       <ul>
         <li>Parameters</li>
         <li>Devices</li>
@@ -117,24 +150,24 @@
       </td>
     </tr>
     <tr>
-      <td style="vertical-align: top;">
+      <td style='vertical-align: top;'>
       <h2>Statistics perspective</h2>
       <p>Get facts ( style repartition, number of tracks ...) about your music collection</p>
-      <img src="./screenshots/screenshot_perspective_stat.jpg" alt=""></img>
+      <img src='./screenshots/screenshot_perspective_stat.jpg' alt=''></img>
       </td>
-      <td style="vertical-align: top;"><span style="font-weight: bold;">Views</span>:
+      <td style='vertical-align: top;'><span style='font-weight: bold;'>Views</span>:
       <ul>
         <li>Statistics</li>
       </ul>
       </td>
     </tr>
     <tr>
-      <td style="vertical-align: top;">
+      <td style='vertical-align: top;'>
       <h2>Help perspective</h2>
       <p>Documentation with a full-featured help system</p>
-      <img src="./screenshots/screenshot_perspective_help.jpg" alt=""></img>
+      <img src='./screenshots/screenshot_perspective_help.jpg' alt=''></img>
       </td>
-      <td style="vertical-align: top;"><span style="font-weight: bold;">Views</span>:
+      <td style='vertical-align: top;'><span style='font-weight: bold;'>Views</span>:
       <ul>
         <li>Help</li>
         <li>About</li>
