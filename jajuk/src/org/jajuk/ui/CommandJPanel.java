@@ -191,19 +191,20 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		jtbSpecial.add(Box.createHorizontalGlue());
 		jtbSpecial.setFloatable(false);
 		jtbSpecial.setRollover(true);
-		jbGlobalRandom = new JButton(Util.getIcon(ICON_ROLL)); 
+		jbGlobalRandom = new JButton(Util.getIcon(ICON_SHUFFLE_GLOBAL_ON));
+		jbGlobalRandom.setBorder(BorderFactory.createLoweredBevelBorder());
 		jbGlobalRandom.addActionListener(this);
 		jbGlobalRandom.setToolTipText(Messages.getString("CommandJPanel.5")); //$NON-NLS-1$
 		jtbSpecial.add(jbGlobalRandom);
-		jbBestof = new JButton(Util.getIcon(ICON_BESTOF)); 
+		jbBestof = new JButton(Util.getIcon(ICON_BESTOF_OFF)); 
 		jbBestof.addActionListener(this);
 		jbBestof.setToolTipText(Messages.getString("CommandJPanel.6")); //$NON-NLS-1$
 		jtbSpecial.add(jbBestof);
-		jbNovelties = new JButton(Util.getIcon(ICON_NOVELTIES)); 
+		jbNovelties = new JButton(Util.getIcon(ICON_NOVELTIES_OFF)); 
 		jbNovelties.addActionListener(this);
 		jbNovelties.setToolTipText(Messages.getString("CommandJPanel.16")); //$NON-NLS-1$
 		jtbSpecial.add(jbNovelties);
-		jbMute = new JButton(Util.getIcon(ICON_MUTE)); 
+		jbMute = new JButton(Util.getIcon(ICON_MUTE_OFF)); 
 		jbMute.addActionListener(this);
 		jbMute.setToolTipText(Messages.getString("CommandJPanel.7")); //$NON-NLS-1$
 		jtbSpecial.add(jbMute);
@@ -341,7 +342,6 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 				}
 			};
 			sw.start();
-			
 		}
 		if (ae.getSource() == jbGlobalRandom ){
 			SwingWorker sw = new SwingWorker() {
@@ -357,6 +357,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 						FIFO.getInstance().setNovelties(false); //break novelties mode if set
 						FIFO.getInstance().setGlobalRandom(true);
 						FIFO.getInstance().push(file,false,true);
+						jbGlobalRandom.setIcon(Util.getIcon(ICON_SHUFFLE_GLOBAL_ON));
 					}
 				}
 			};
