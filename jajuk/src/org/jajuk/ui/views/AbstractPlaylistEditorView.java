@@ -118,7 +118,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 	private final int REFRESH_TIME = 1000;
 	
 	/**Columns names table**/
-	protected String[] sColName = new String[]{Messages.getString("AbstractPlaylistEditorView.0"),Messages.getString("AbstractPlaylistEditorView.1")}; //$NON-NLS-1$ //$NON-NLS-2$
+	protected String[] sColName = null;
 	
 	/**Model for table*/
 	class PlayListEditorTableModel extends AbstractTableModel {
@@ -185,6 +185,10 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 	 * @see org.jajuk.ui.IView#display()
 	 */
 	public void display(){
+		//pre-compute column name for perfs
+		if (sColName == null){
+			sColName = new String[]{Messages.getString("AbstractPlaylistEditorView.0"),Messages.getString("AbstractPlaylistEditorView.1")}; //$NON-NLS-1$ //$NON-NLS-2$
+		}
 		//Control panel
 		jpControl = new JPanel();
 		jtb = new JToolBar();
@@ -286,11 +290,6 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 					jlTitle.setToolTipText(plfi.getName());
 					model.fireTableDataChanged();
 					Util.stopWaiting();
-					//set colunm size, doen't work, try to find something better 
-					//				int iTrackColWidth = jtable.getColumnModel().getColumn(0).getPreferredWidth();
-					//				int iLocationColWidth = jtable.getColumnModel().getColumn(0).getPreferredWidth();
-					//				jtable.getColumnModel().getColumn(0).setPreferredWidth((int)((iTrackColWidth+iLocationColWidth)*0.2)); // track name
-					//				jtable.getColumnModel().getColumn(1).setPreferredWidth((int)((iTrackColWidth+iLocationColWidth)*0.8)); //location*/
 					//select right file if not in edition mode
 					if ( !bEditionMode ){
 						File fPlaying = FIFO.getInstance().getCurrentFile();
