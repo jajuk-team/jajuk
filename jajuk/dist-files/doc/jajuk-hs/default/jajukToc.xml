@@ -3,17 +3,41 @@
   PUBLIC "-//Sun Microsystems Inc.//DTD JavaHelp TOC Version 2.0//EN"
          "./toc_2_0.dtd">
 <toc version="2.0">
-<tocitem text="Jajuk Help">
-   <tocitem text="Introduction" target="top"/>
-   <tocitem text="General use" expand="true">
-	   <tocitem text="Perspectives and views" target="pav"/>
-	   <tocitem text="Using devices" target="devices"/>
-	   <tocitem text="Playing music" target="pm"/>
-	   <tocitem text="Using playlists" target="up"/>
-		<tocitem text="Using the tray" target="tray"/>
-	 </tocitem>
-   <tocitem text="Views"  expand="true">
-	   <tocitem text="The command view" target="view_command"/>
+	<tocitem text="Jajuk Help">
+		<tocitem text="Introduction" target="top"/>
+		<tocitem text="Supported formats" target="formats"/>
+		<tocitem text="General use" expand="true">
+			<tocitem text="Perspectives and views" target="pav"/>
+			<tocitem text="Using devices" target="devices"/>
+			<tocitem text="Playing music" target="pm"/>
+			<tocitem text="Using playlists" target="up"/>
+			<tocitem text="Using the tray" target="tray"/>
+		</tocitem>
+		<tocitem text="Views"  expand="true">
+			<tocitem text="Static views"  expand="true">
+				<tocitem text="The Command view" target="view_command"/>
+				<tocitem text="The Information view" target="view_information"/>
+			</tocitem>
+			<tocitem text="Contextual  views"  expand="true">
+				<tocitem text="Physical perspective"  expand="true">
+					<tocitem text="The Physical Tree view" target="view_physical_tree"/>
+				</tocitem> 	
+				<tocitem text="Logical perspective"  expand="true">
+					<tocitem text="The Logical Tree view" target="view_logical_tree"/>
+				</tocitem> 	
+				<tocitem text="Player perspective"  expand="true">
+					<tocitem text="The Animation view" target="view_animation"/>
+				</tocitem> 	
+				<tocitem text="Configuration perspective"  expand="true">
+				</tocitem> 
+				<tocitem text="Statistics perspective"  expand="true">
+					<tocitem text="The Statistics view" target="view_stats"/>
+				</tocitem>
+				<tocitem text="Help perspective"  expand="true">
+					<tocitem text="The Help view" target="view_help"/>
+					<tocitem text="The About view" target="view_about"/>
+				</tocitem> 	
+			</tocitem> 	
+		</tocitem>
 	</tocitem>
-</tocitem>
 </toc>

@@ -16,7 +16,7 @@
   <property name='javadocdir' value='dist-files/doc/javadoc'/>
   <property name='version' value='0.3.2'/>
   <property name='jarname' value='jajuk.jar'/>
-  <property name='helpsetjarname' value='jajuk-help.jar'/>
+  <property name='helpsetjarname' value='jajuk-help'/>
   <property name='distjarname' value='jajuk-install-'/>
   <property name='sourcesdist' value='${finaldistdir}/jajuk-src-${version}.zip'/>
     
@@ -217,24 +217,28 @@
 
 
   <target name='helpsetjar' description='o Create the heplset jar' depends='mkdist_izpack'>
-    <delete file='${distdir}/bin/${helpsetjarname}'/>
-    <exec executable='jhindexer' dir='${basedir}/dist-files/doc/jajuk-hs/default'>
+    <!--English-->
+    <delete file='${distdir}/bin/${helpsetjarname}.jar'/>
+    <!-- delete jhindexer-->
+    <delete dir='${basedir}/dist-files/doc/jajuk-hs/default/JavaHelpSearch'/>
+    <exec executable='/prog/api/jh2.0/javahelp/bin/jhindexer' dir='${basedir}/dist-files/doc/jajuk-hs/default'>
 	 <arg line='html'/>
    </exec>
-    <exec executable='jhindexer' dir='${basedir}/dist-files/doc/jajuk-hs/fr'>
+  <jar jarfile='${distdir}/bin/${helpsetjarname}.jar' basedir='${basedir}/dist-files/doc/jajuk-hs/default' />
+    <!--French-->
+    <delete file='${distdir}/bin/${helpsetjarname}_fr.jar'/>
+    <!-- delete jhindexer-->
+    <delete dir='${basedir}/dist-files/doc/jajuk-hs/fr/JavaHelpSearch'/>
+    <exec executable='/prog/api/jh2.0/javahelp/bin/jhindexer' dir='${basedir}/dist-files/doc/jajuk-hs/fr'>
 	 <arg line='html'/>
    </exec>
-   <jar jarfile='${distdir}/bin/${helpsetjarname}' basedir='${basedir}/dist-files/doc/jajuk-hs' />
-   <!-- Copy jajuk heplset jar in the workspace -->
-    <copy todir='${basedir}' >
-     <fileset file='${distdir}/bin/${helpsetjarname}'/>
-  	</copy>
-  	<!-- Copy jajuk helpset jar in the RPM distdir -->
+  <jar jarfile='${distdir}/bin/${helpsetjarname}_fr.jar' basedir='${basedir}/dist-files/doc/jajuk-hs/fr' />
+  	<!-- Copy jajuk helpset jars in the RPM distdir -->
   	<copy todir='${rpmdistdir_suse}/usr/lib/jajuk/bin' >
-		<fileset file='${distdir}/bin/${helpsetjarname}'/>
+		<fileset file='${distdir}/bin/${helpsetjarname}*.jar'/>
     </copy>
   	<copy todir='${rpmdistdir_mdk}/usr/lib/jajuk/bin' >
-		<fileset file='${distdir}/bin/${helpsetjarname}'/>
+		<fileset file='${distdir}/bin/${helpsetjarname}*.jar'/>
     </copy>
    </target>
  

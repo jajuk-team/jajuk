@@ -16,6 +16,10 @@
 		
    		 <p><a href='./jobs.html'>Want to help ?</a></p>
     </section>
+    
+    <section name='Documentation'>
+		<p>Jajuk user guide is embedded in the application, just click on 'Help'. For others documentations like installation guide, please refer to the menu on your left</p>
+    </section>
   
 	<section name='Supported languages'>
 		<p><a href='./translation_howto.html'>Want to translate ?</a></p>

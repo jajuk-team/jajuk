@@ -48,7 +48,7 @@ Jajuk main principles are :
    /usr/lib/jajuk/lib/javalayer-0.4.jar
    /usr/lib/jajuk/lib/jcommon-0.9.0.jar
    /usr/lib/jajuk/lib/jfreechart-0.9.15.jar
-   /usr/lib/jajuk/lib/jh-2.0.jar
+   /usr/lib/jajuk/lib/jh-2.0.2.jar
    /usr/lib/jajuk/lib/jlGui-2.3.jar
    /usr/lib/jajuk/lib/jogg-0.0.5.jar
    /usr/lib/jajuk/lib/jorbis-0.0.12.jar

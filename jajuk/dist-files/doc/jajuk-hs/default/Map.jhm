@@ -5,11 +5,18 @@
 
 <map version="1.0">
 	<mapID target="top" url="html/intro.html" />
+	<mapID target="formats" url="html/formats.html" />
 	<mapID target="pav" url="html/pav.html" />
 	<mapID target="devices" url="html/devices.html" />
 	<mapID target="pm" url="html/pm.html" />
 	<mapID target="up" url="html/up.html" />
 	<mapID target="tray" url="html/tray.html" />
 	<mapID target="view_command" url="html/view_command.html" />
+	<mapID target="view_information" url="html/view_information.html" />
+	<mapID target="view_physical_tree" url="html/view_physical_tree.html" />
+	<mapID target="view_animation" url="html/view_animation.html" />
+	<mapID target="view_stats" url="html/view_stats.html" />
+	<mapID target="view_help" url="html/view_help.html" />
+	<mapID target="view_about" url="html/view_about.html" />
 	
 </map>
