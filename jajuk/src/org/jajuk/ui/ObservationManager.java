@@ -27,6 +27,7 @@ import java.util.Properties;
 
 import javax.swing.JComponent;
 
+import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.util.log.Log;
 
 /**
@@ -34,7 +35,7 @@ import org.jajuk.util.log.Log;
  * @author     bflorat
  * @created    12 dec. 2003
  */
-public class ObservationManager {
+public class ObservationManager implements ITechnicalStrings{
 	
 	/** one event -> list of components*/
 	static HashMap hEventComponents = new HashMap(10);
@@ -84,7 +85,9 @@ public class ObservationManager {
 	 * @param subject
 	 */
 	public static void notifySync(final String subject){
-		Log.debug("Notify: "+subject);
+		if (!subject.equals(EVENT_HEART_BEAT)){ //do not show this heart beat 
+		    Log.debug("Notify: "+subject);
+		}
 		ArrayList alComponents =(ArrayList)hEventComponents.get(subject); 
 		if (alComponents == null){
 			return;

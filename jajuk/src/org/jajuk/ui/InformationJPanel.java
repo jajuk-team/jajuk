@@ -290,4 +290,10 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,Obser
 	    }
 	}
 	
+	/**
+	 * ToString() method
+	 */
+	public String toString(){
+	    return getClass().getName();
+	}
 }
