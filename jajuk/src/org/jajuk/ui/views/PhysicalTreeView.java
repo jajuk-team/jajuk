@@ -839,7 +839,9 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
      */
     public void update(Event event) {
         String subject = event.getSubject();
-    	if ( subject.equals(EVENT_DEVICE_MOUNT) || subject.equals(EVENT_DEVICE_UNMOUNT) || subject.equals(EVENT_DEVICE_REFRESH) ) {
+    	if ( subject.equals(EVENT_DEVICE_MOUNT) || 
+                subject.equals(EVENT_DEVICE_UNMOUNT) || 
+                subject.equals(EVENT_DEVICE_REFRESH) ) {
             SwingWorker sw = new SwingWorker() {
                 public Object  construct(){
                     populateTree();
@@ -870,8 +872,8 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
     private void expand(){
         for (int i=0;i<jtree.getRowCount();i++){
             Object o = jtree.getPathForRow(i).getLastPathComponent(); 
-            if ( o instanceof DeviceNode && ((DeviceNode)o).getDevice().isMounted()  && !((DeviceNode)o).getDevice().isRefreshing() 
-                    && !((DeviceNode)o).getDevice().isSynchronizing() ){
+            if ( o instanceof DeviceNode 
+                    && ((DeviceNode)o).getDevice().isMounted()){  
                 Device device = ((DeviceNode)o).getDevice();
                 String sExp = device.getProperty(OPTION_EXPANDED); 
                 if ( "y".equals(sExp)){ //$NON-NLS-1$
