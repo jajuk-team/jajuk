@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.5  2003/11/18 21:50:56  bflorat
+ * 18/11/2003
+ *
  * Revision 1.4  2003/11/18 18:58:07  bflorat
  * 18/11/2003
  *
@@ -46,7 +49,7 @@ public class JajukFileChooser extends JFileChooser {
 
 	javax.swing.filechooser.FileFilter filter;
 
-	JajukFileChooser() {
+	public JajukFileChooser() {
 		setDialogTitle(Messages.getString("JajukFileChooser.Please_choose_track(s)_to_play_1")); //$NON-NLS-1$
 		setFileFilter( JajukFileFilter.getInstance());
 		setMultiSelectionEnabled(true);

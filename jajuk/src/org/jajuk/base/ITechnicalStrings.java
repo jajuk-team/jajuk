@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.13  2003/11/18 21:50:56  bflorat
+ * 18/11/2003
+ *
  * Revision 1.12  2003/11/18 18:58:07  bflorat
  * 18/11/2003
  *
@@ -206,11 +209,18 @@ public interface ITechnicalStrings {
 	public static final String CONF_STATE_SHUFFLE="jajuk.state.mode.shuffle";
 	public static final String CONF_STATE_CONTINUE="jajuk.state.mode.continue";
 	public static final String CONF_STATE_INTRO="jajuk.state.mode.intro";
-	 public static final String CONF_ICON_REPEAT= "jajuk.state.ui.icon.repeat";
+	public static final String CONF_ICON_REPEAT= "jajuk.state.ui.icon.repeat";
  	public static final String CONF_ICON_SHUFFLE= "jajuk.state.ui.icon.shuffle";
  	public static final String CONF_ICON_CONTINUE= "jajuk.state.ui.icon.continue";
  	public static final String CONF_ICON_INTRO= "jajuk.state.ui.icon.intro";
+	public static final String CONF_STARTUP_FILE= "jajuk.startup.file";
+	public static final String CONF_STARTUP_MODE= "jajuk.startup.mode";
+	public static final String CONF_CONFIRMATIONS_DELETE_FILE= "jajuk.confirmations.delete.file";
 	
+ 	
+	//miscelanous
+	public static final String TRUE= "true";
+	public static final String FALSE= "false";
 	
 	
 	//views identifiers 

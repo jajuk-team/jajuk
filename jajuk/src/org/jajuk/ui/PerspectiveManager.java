@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.3  2003/11/18 21:50:56  bflorat
+ * 18/11/2003
+ *
  * Revision 1.2  2003/11/18 18:58:07  bflorat
  * 18/11/2003
  *
@@ -131,6 +134,7 @@ public class PerspectiveManager extends DefaultHandler implements ITechnicalStri
 		IPerspective perspective = (IPerspective)hmPerspectives.get(sPerspectiveName);
 		if (perspective != null){
 			setCurrentPerspective(perspective);
+			ConfigurationManager.setProperty(CONF_PERSPECTIVE_DEFAULT,perspective.getName());
 			JajukJMenuBar.getInstance().refreshViews();
 		}
 	}

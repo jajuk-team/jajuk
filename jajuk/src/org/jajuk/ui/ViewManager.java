@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.3  2003/11/18 21:50:56  bflorat
+ * 18/11/2003
+ *
  * Revision 1.2  2003/11/18 18:58:07  bflorat
  * 18/11/2003
  *
@@ -28,8 +31,10 @@ package org.jajuk.ui;
 
 import java.util.HashMap;
 
+import javax.swing.JComponent;
 import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.i18n.Messages;
@@ -54,7 +59,7 @@ public class ViewManager implements ITechnicalStrings{
 	public static void registerView(IView view,IPerspective perspective){
 		hmViewPerspective.put(view.getName(),perspective);
 		JInternalFrame ji = new JInternalFrame(view.getDesc(),true,true,true,true);
-		ji.setContentPane((JPanel)view);
+		ji.setContentPane((JComponent)view);
 		hmViewContainer.put(view.getName(),ji);
 	}
 	

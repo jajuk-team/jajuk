@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.12  2003/11/18 21:50:56  bflorat
+ * 18/11/2003
+ *
  * Revision 1.11  2003/11/18 18:58:07  bflorat
  * 18/11/2003
  *
@@ -106,14 +109,15 @@ public class ConfigurationManager implements ITechnicalStrings{
 		properties.put(CONF_PERSPECTIVE_DEFAULT,PERSPECTIVE_NAME_PHYSICAL); //$NON-NLS-1$ //$NON-NLS-2$
 	
 		//Modes
-		properties.put(CONF_STATE_REPEAT,"false"); //$NON-NLS-1$
+		properties.put(CONF_STATE_REPEAT,FALSE); //$NON-NLS-1$
 		properties.put(CONF_ICON_REPEAT,ICON_REPEAT_OFF);  
-		properties.put(CONF_STATE_SHUFFLE,"false"); //$NON-NLS-1$
+		properties.put(CONF_STATE_SHUFFLE,FALSE); //$NON-NLS-1$
 		properties.put(CONF_ICON_SHUFFLE,ICON_SHUFFLE_OFF);  
 		properties.put(CONF_STATE_CONTINUE,"true"); //$NON-NLS-1$
 		properties.put(CONF_ICON_CONTINUE,ICON_CONTINUE_ON);  
-		properties.put(CONF_STATE_INTRO,"false"); //$NON-NLS-1$
+		properties.put(CONF_STATE_INTRO,FALSE); //$NON-NLS-1$
 		properties.put(CONF_ICON_INTRO,ICON_INTRO_OFF);  
+		properties.put(CONF_CONFIRMATIONS_DELETE_FILE,TRUE);
 		
 	}
 	

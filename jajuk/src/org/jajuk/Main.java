@@ -9,6 +9,9 @@
  * 
  * You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,USA
  * $Log$
+ * Revision 1.19  2003/11/18 21:50:56  bflorat
+ * 18/11/2003
+ *
  * Revision 1.18  2003/11/18 18:58:07  bflorat
  * 18/11/2003
  *
@@ -34,6 +37,7 @@ package org.jajuk;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -87,7 +91,7 @@ public class Main implements ITechnicalStrings {
 			} catch (Exception e1) {
 				Log.error(Messages.getString("Main.Error_registering_players_11"), e1); //$NON-NLS-1$
 			}
-
+	
 			//perform initial checkups
 			initialCheckups();
 			
@@ -96,8 +100,11 @@ public class Main implements ITechnicalStrings {
 			
 			//starts ui
 			jframe = new JFrame("Jajuk : Just Another Jukebox"); //$NON-NLS-1$
-			Dimension dScreenSize = Toolkit.getDefaultToolkit().getScreenSize();
-			jframe.setSize((int) (0.9 * dScreenSize.getWidth()), (int) (0.9 * dScreenSize.getHeight()));
+			jframe.pack();
+			jframe.setExtendedState(Frame.MAXIMIZED_BOTH);  //maximalize
+			jframe.setVisible(true);
+			
+		//	jframe.setSize((int) (0.9 * dScreenSize.getWidth()), (int) (0.9 * dScreenSize.getHeight()));
 			//TODO see for automatic maximalize
 			jframe.addWindowListener(new WindowAdapter() {
 				public void windowClosing(WindowEvent we) {
@@ -108,7 +115,7 @@ public class Main implements ITechnicalStrings {
 			
 			//Creates the command panel
 			command = CommandJPanel.getInstance();
-
+	
 			// Create the perspective tool bar panel
 			perspectiveBar = PerspectiveBarJPanel.getInstance();
 			// Create the information bar panel
@@ -121,7 +128,7 @@ public class Main implements ITechnicalStrings {
 			information.setTotalStatusMessage("00:23:23/01:34:56"); //$NON-NLS-1$
 			information.setCurrentStatus(76);
 			//**************************
-
+	
 			//Load collection
 			Collection.load();
 			
@@ -133,7 +140,7 @@ public class Main implements ITechnicalStrings {
 			
 			//Starts the FIFO
 			FIFO.getInstance().start();
-
+	
 			//Add static panels
 			container.add(command, BorderLayout.NORTH);
 			container.add(perspectiveBar, BorderLayout.WEST);
@@ -141,15 +148,10 @@ public class Main implements ITechnicalStrings {
 			
 			//Initialize perspective manager
 			PerspectiveManager.init();
-
+	
 			//Set menu bar to the frame
 			jframe.setJMenuBar(JajukJMenuBar.getInstance());
-			Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-			
-			//show frame
-			jframe.show();
-
-
+		
 		} catch (JajukException je) { //last chance to catch any error for logging purpose
 			Log.error(je);
 			exit(1);
@@ -161,7 +163,6 @@ public class Main implements ITechnicalStrings {
 	}
 	
 	
-
 	/**
 	 * Performs some basic startup tests
 	 * 
