@@ -4,7 +4,8 @@
   	<section name='Jajuk Home Page'>
   		 <p>Jajuk is a Java music organizer for all platforms. The main goal 
    		 of this project is to provide a fully-featured application to advanced 
-   		 users with large or scattered music collections. Jajuk supports MP3, OGG Vorbis, AU, AIFF, WAV and SPEEX audio formats.</p>
+   		 users with large or scattered music collections. Jajuk supports MP3, OGG Vorbis, AU, AIFF, WAV and SPEEX audio formats. Jajuk is a Free Software published under GPL license.</p>
+   		 <p><a href='./jobs.html'>Want to help ?</a></p>
     </section>
   
 	<section name='Supported languages'>
@@ -55,20 +56,21 @@
 		<table style='width: 100%; text-align: left;' border='0' cellpadding='2' cellspacing='2'>
 			<tbody>
 				<tr>
+					<td style='vertical-align: top;'><p><b>2004/09/?</b></p>
+					<p><a href='http://sourceforge.net/projects/jajuk/'>Jajuk 0.3 released</a><br></br>Auto cover and usability<br></br>
+					<a href='./qualification/qualification-0.3.html'>Qualification form</a></p></td>
 					<td style='vertical-align: top;'><p><b>2004/07/02</b></p>
 					<p><a href='http://sourceforge.net/projects/jajuk/'>Jajuk 0.2.1 released<br></br>Maintenance release</a></p></td>
 					<td style='vertical-align: top;'><p><b>2004/05/14</b></p>
 					<p><a href='http://sourceforge.net/projects/jajuk/'>Jajuk 0.2 released<br></br>Ogg Vorbis and others audio formats supported, <br></br>Swedish and Dutch translation</a></p></td>
-					<td style='vertical-align: top;'><p><b>2004/04/23</b></p>
-					<p><a href='http://sourceforge.net/projects/jajuk/'>Jajuk 0.1.6 released<br></br>Italian translation and bug fixes</a></p></td>
 				</tr>
 				<tr>
+					<td style='vertical-align: top;'><p><b>2004/04/23</b></p>
+					<p><a href='http://sourceforge.net/projects/jajuk/'>Jajuk 0.1.6 released<br></br>Italian translation and bug fixes</a></p></td>
 					<td style='vertical-align: top;'><p><b>2004/04/09</b></p>
 					<p><a href='http://sourceforge.net/projects/jajuk/'>Jajuk 0.1.5 released<br></br>German translation and many bug fixes</a></p></td>
 					<td style='vertical-align: top;'><p><b>2004/04/04</b></p>
 					<p><a href='http://sourceforge.net/projects/jajuk/'>Jajuk hotfix 0.1.4 released</a></p></td>
-					<td style='vertical-align: top;'><p><b>2004/03/21</b></p>
-					<p><a href='http://sourceforge.net/projects/jajuk/'>Jajuk initial version 0.1 released !</a></p></td>
 				</tr>
 			</tbody>
 		</table>	
@@ -84,14 +86,21 @@
 		   			<li>Push : Add  track(s) in the player queue</li>
 		   			<li>Recursive play/repeat/shuffle/push in directories/sub-directories or by style/author/albums...</li>
 		   			<li>Intro from a track % and with a specified length</li>
-		   			<li>Bestof magic function : play your favorite tracks</li>
 		   			<li>Full shuffle in entire collection</li>
+		   			<li>Bestof special function : play your favorite tracks</li>
+		   			<li>Novelties special function : play your collection last albums</li>
+		   			<li>Continue special function : continue in the current album and stop a shuffle</li>
 		   		</ul>	
 	   			<li>Search functions:</li>
 	   			<ul>
 		   			<li>Web navigator-like history bar</li>
 		   			<li>Instant search box : perform instant search on style/author/track name... when typing</li>
 		   			<li>Table filter : you can filter tracks with any criteria</li>
+		   		</ul>	
+	   			<li>Covers support</li>
+	   			<ul>
+		   			<li>Local covers display</li>
+		   			<li>Auto-covers grabbing from the web with possibility to store them on your disk or make them your default cover</li>
 		   		</ul>	
 	   			<li>Playlist support:</li>
 	   			<ul>
@@ -104,14 +113,13 @@
 	   			<li>Physical / logical separation : you can navigate into physical directories and files or into logical styles, authors, albums, tracks.</li>
 	   			<li>Indexing method : Jajuk doesn't read id3 tags or directory structure at each startup but save them in a XML database. It allows a fast startup even for very large collections (bench:10 sec to start a 140Go collection on a P4 1.8Ghz).</li>
 	   			<li>Unmounted devices support : you can navigate into unmounted devices ( CDs for exemple ). So you get a full view of your collection at any time. Nice feature if you have plenty of music CDs. This behavior can be disabled.</li>
-	   			<li>Several Look and feel supported : Liquid, Metal, Windows, GTK, Kunststoff.</li>
+	   			<li>Several Look and feel supported : Liquid, Metal, Windows, GTK, Kunststoff,Metouia.</li>
 	   			<li>Multi-language and easy to translate, see <a href='translation_howto.html'>translation howto</a>.</li>
 	   			<li>Fast collection builder : a cd scanner allows you to create a jajuk collection of tens of CDs in only few minutes.</li>
 	   			<li>Eclipse-like graphical interface : Jajuk windows are divided into perspectives and views for a good functionnal separation.</li>
 	   			<li>Full-featured online help</li>
-	   			<li>Covers support</li>
 	   			<li>Automatic rate support</li>
-	   			<li>Startup track: none, last one, specified, shuffle</li>
+	   			<li>7 Startup modes: none, last one, last one keep position, specified, shuffle, novelties, bestof</li>
 	   		</ul>	
 	<br></br>
 	<p><b>Near futur features</b></p>

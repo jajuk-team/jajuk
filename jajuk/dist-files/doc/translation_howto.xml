@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding='UTF-8'?> 
 <document> 
 	<properties> 
-		<author email="bertrand@florat.net">Bertrand Florat</author>
+		<author email="bflorat@users.sourceforge.net">Bertrand Florat</author>
 		<title>Translation Howto</title> 
 	</properties> 
   	<body>
@@ -21,8 +21,8 @@
 
    			<subsection name='Target'>
    			 <p>Anyone can translate Jajuk, no computer science is required. Note this is a <u>voluntary work</u>.
-				For any question or comments, please send me a mail : <a href="mailto:bertrand@florat.net">
-				bertrand@florat.net</a>. Translate current Jajuk version takes approximately 3 hours.</p>
+				For any question or comments, please send me a mail : <a href="mailto:bflorat@users.sourceforge.net">
+				bflorat@users.sourceforge.net</a>. Translate current Jajuk version takes approximately 3 hours.</p>
     		</subsection>
 
    			<subsection name='README file translation'>
@@ -32,7 +32,7 @@
     		</subsection>
 
    			<subsection name='Jajuk translation'>
-	   			<p>Jajuk uses the standard Java internationalization (i18n) system based on properties file. Files are:</p>
+	   			<p>Jajuk uses a custom internationalization (i18n) system based on a XML/properties file. Files are:</p>
 				<p><span style="font-family: monospace;">${jajuk installation path}/src/org/jajuk/i18n/<br></br>
                                           jajuk.properties<br></br>
                                           jajuk_fr.properties<br></br>
@@ -49,12 +49,12 @@
 				#Written by : ${your name}<br></br>
 				#Copyright 2003,2004 ${your name}, this is part of Jajuk distributed under the GPL V2 license<br></br>
 				#FROM ${source language} ${cvs version}<br></br>
-				#$Revision: 1.4 $</span></p>
+				#$Revision$</span></p>
 				<p>FROM comment gives exact CVS version you translated to allow diffs with newer versions and Revision gives automatically the current CVS version of your file ( do not change this line manually, it will be updated by CVS).</p>
 			</li>
-			<li>Please write your files in UTF-8 encoding, especially if it is an Eastern Europe or Asian language. If you don't know how to set the encoding, please <a href='mailto:bertrand@florat.net'>send be a mail</a>. You can write in UTF-8 using for example : 
+			<li>Please write your files in UTF-8 encoding, especially if it is an Eastern Europe or Asian language. If you don't know how to set the encoding, please <a href='mailto:bflorat@users.sourceforge.net'>send be a mail</a>. You can write in UTF-8 using for example : 
 			eclipse (see developer manual for eclipse i18n configuration), ultraedit... under Windows and eclipse, kate, vi... under Linux. If you didn't used UTF-8, I will convert it for you but please give me the encoding you used. If 
-			you don"t know which encoding you used, start Jajuk, go to Help perspective/About view, click on the <i>system</i> tab and your encoding is given by <i>file.encoding</i> property.</li>
+			you don't know which encoding you used, start Jajuk, go to Help perspective/About view, click on the <i>system</i> tab and your encoding is given by <i>file.encoding</i> property.</li>
 			<li><p>Look at file structure: It is a simple key=value  format. Example:</p>
 				<p><span style="font-family: monospace;">ParameterView.73=Check this if you allow others people to come read music from your box<br></br>
 				ParameterView.74=Password :<br></br>
@@ -67,7 +67,7 @@
 			
 			<li><p>Translate even lines like <span style="font-family: monospace;">Language_desc_*=*</span> (other languages names) and <u>add a new line with your own language name.</u></p></li>
 			
-			<li><p><a href='bertrand@florat.net'>Send us</a> your work as a property file with your local ( ex: jajuk_ru.properties for russian ). It could be nice you send also a message in the forum: 
+			<li><p><a href='bflorat@users.sourceforge.net'>Send us</a> your work as a property file with your local ( ex: jajuk_ru.properties for russian ). It could be nice you send also a message in the forum: 
 			<a href='http://sourceforge.net/forum/forum.php?forum_id=315360'>http://sourceforge.net/forum/forum.php?forum_id=315360</a>. Contact me if you have a developer profile so I will create a 
 			CVS account for you. Then you will be able to commit and maintain your translation files directly in the repository.</p>
 			</li>
@@ -98,7 +98,7 @@
   				<li><p>Perform a 'diff' between this release and the latest in CVS repository. To achieve that, you can either use ViewCVS interface accessible from Jajuk web site (<a href='http://cvs.sourceforge.net/viewcvs.py/jajuk/jajuk/src/org/jajuk/i18n/'>CVS Web repository</a>) or a CVS client like Eclipse if you have one.</p></li>
   				<li><p>Remove old labels, modify and add new ones.</p></li>
   				<li><p>Upgrade the #FROM comment with the translated release.</p></li>
-  				<li><p>Commit your file or send it <a href='mailto:bertrand@florat.net'>by mail</a>.</p></li>
+  				<li><p>Commit your file or send it <a href='mailto:bflorat@users.sourceforge.net'>by mail</a>.</p></li>
   			</ul>
   		</subsection>
    			

@@ -2,52 +2,43 @@
 <document>
   <body>
   	<section name="Technical Roadmap">
-  		<section name="0.1">
-	   		<p>Initial version, offers most of targeted features. Next releases will bring additional non-mandatory features.</p>
-	   	</section>
-  		<section name="0.2">
-	   		<ul>
-	   			<li><p>Ogg Vorbis support</p></li>
-	   			<li><p>ID3 tags update</p></li>
-	   		</ul>	
-	   	</section>
-	   	<section name="0.3">
-	   		<ul>
-	   			<li><p>User properties management</p></li>
-	   			<li><p>Network-type device (P2P)</p></li>
-	   		</ul>	
-	   	</section>
 	   	<section name="0.4">
 	   		<ul>
-	   			<li><p>File functions ( cut/copy/paste, delete, rename... )</p></li>
-	   			<li><p>New stats, sorted by type in tabbed panes</p></li>
+	   			<li><p>New perspective : editions to get collection reports and print them</p></li>
+	   			<li><p>User properties management</p></li>
+	   			<li><p>Tags update</p></li>
 	   		</ul>	
 	   	</section>
 	   	<section name="0.5">
 	   		<ul>
-	   			<li><p>Automatic views resizing</p></li>
+	   			<li><p>Network-type device (P2P)</p></li>
 	   			<li><p>Key shortcuts for track navigation</p></li>
 	   		</ul>	
 	   	</section>
 	   	<section name="0.6">
 	   		<ul>
+	   			<li><p>File functions ( cut/copy/paste, delete, rename... )</p></li>
 	   			<li><p>Re-tagger based on CDDB</p></li> 
-	   			<li><p>Disk Jokey magic function</p></li>
+	   			<li><p>Disk Jokey special function</p></li>
 	   		</ul>	
 	   	</section>
 	   	<section name="0.7">
 	   		<ul>
-	   			<li><p>New perspective : editions to get collection reports and print them</p></li>
 	   			<li><p>Tips of the day</p></li>
+	   			<li><p>New stats, sorted by type in tabbed panes</p></li>
 	   			<li><p>Advanced table filters</p></li>
+	   		</ul>	
+	   	</section>
+	   	<section name="0.8">
+	   		<ul>
+	   			<li><p>Equalizers in a new perspective</p></li>
+	   			<li><p>Light Player bar</p></li>
 	   		</ul>	
 	   	</section>
 	   	<section name="science fiction">
 	   		<ul>
 	   			<li><p>Audio CDs support</p></li>
 	   			<li><p>Eye candies animations when playing in a new perspective</p></li>
-	   			<li><p>Equalizers in a new perspective</p></li>
-	   			<li><p>Covers lookup on the web ( even possible ? )</p></li>
 	   		</ul>	
 	   	</section>
   	</section>

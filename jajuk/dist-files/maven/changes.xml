@@ -2,7 +2,7 @@
 <document>
   <properties>
     <title>Changes</title>
-    <author email='bertrand@florat.net'>Bertrand Florat</author>
+    <author email='bflorat@users.sourceforge.net'>Bertrand Florat</author>
   </properties>
   <body>
     <release version='0.1' date='2004-03-21' description='Initial release'>
@@ -96,45 +96,43 @@
       <release version='0.2.3' date='2004-07-08' description='Major bug fix release'>
       	<action dev='bflorat' type='fix'>986301 (regression) Cannot create new devices </action>  
       </release>
-      <release version='0.3' date='work in progress' description='Many confort novelties'>
-    	<action dev='bflorat' type='add'>Auto-cover grabbing, can be configured in the new Covers tab of parameter view</action>  
-    	<action dev='bflorat' type='add'>RFE962688	 save geometry windows</action>  
-      	<action dev='bflorat' type='add'>IzPack installer upgrade, now in Liquid look and feel and many look improvments</action>  
-    	<action dev='bflorat' type='add'>Advanced tab in parameters view with expert options</action>  
-    	<action dev='bflorat' type='add'>RFE 981210 : A new option for chosing encoding for collection file : UTF-8 or UTF-16</action>  
-      	<action dev='bflorat' type='add'>Collection file backup options</action>  
+      <release version='0.3' date='work in progress' description='Auto-cover and many novelties'>
+    	<action dev='bflorat' type='add'>Auto-cover grabbing from Web, can be configured in the Parameter View / Covers tab</action>  
+    	<action dev='bflorat' type='add'>RFE962688 Save geometry windows</action>  
+    	<action dev='bflorat' type='add'>New special function in the command panel : Novelties  plays recently added tracks, can be configured in the Parameter View / Option tab</action>  
+    	<action dev='bflorat' type='add'>New special function in the command panel : Continue in the current album to stop shuffle and listen a complete album</action>  
+    	<action dev='bflorat' type='add'>New perspective: Player with cover view and some more views in next releases</action>  
+    	<action dev='bflorat' type='add'>IzPack installer upgrade, Liquid look and feel and many look improvements</action>  
+    	<action dev='bflorat' type='add'>RFE 981210  A new option for set collection file encoding : UTF-8 or UTF-16</action>  
+      	<action dev='bflorat' type='add'>New options in Parameter View / Advanced tab : backup options</action>  
     	<action dev='bflorat' type='add'>New Look and feel : Metouia</action>  
-    	<action dev='bflorat' type='add'>New view : animation</action>  
-    	<action dev='bflorat' type='add'>New perspective Player with animation and cover view</action>  
-    	<action dev='bflorat' type='add'>New special function in the command panel : novelties to play recently added tracks</action>  
-    	<action dev='bflorat' type='add'>New parameter tab with a button to reset perspectives defaults</action>  
-    	<action dev='bflorat' type='add'>New option in parameter view : search in unmounted devices for searchs in the search box</action>  
-    	<action dev='bflorat' type='add'>New option in parameter view : novelties age</action>  
-    	<action dev='bflorat' type='add'>Three new startup modes : bestof, novelties and last track keep position(new default)</action>  
-    	<action dev='bflorat' type='add'>Startup modes now feature a keep selected mode option (default=true)</action>  
+    	<action dev='bflorat' type='add'>New view : Animation (work in progress) </action>  
+    	<action dev='bflorat' type='add'>New parameter tab with a function to reset perspectives defaults</action>  
+    	<action dev='bflorat' type='add'>New option in Parameter View / Option tab : search in unmounted devices used by the search box</action>  
+    	<action dev='bflorat' type='add'>Three new startup / systray modes : bestof, novelties and last track keep position (new default)</action>  
+    	<action dev='bflorat' type='add'>New option in Parameter View / Startup tab : stay in special mode</action>  
+    	<action dev='bflorat' type='add'>New tab in Parameter View : Network configuration used by auto-cover and soon P2P</action>  
+    	<action dev='bflorat' type='update'>Many usability and look improvements</action>
     	<action dev='bflorat' type='update'>Parameter view now uses tabs</action>
     	<action dev='bflorat' type='update'>Now file choosers try to guess a right root directory</action>
-    	<action dev='bflorat' type='update'>New repeat mode button behavior : repeat current track, not next one</action>
+    	<action dev='bflorat' type='update'>New repeat mode button behaviour : repeat current track, not next one</action>
     	<action dev='bflorat' type='update'>Now even files on unmounted devices are displayed in history</action>
-    	<action dev='bflorat' type='update'>For design, it's no more possbile to create a device subdirectory of another device</action>
+    	<action dev='bflorat' type='update'>For design, it's no more possible to create a device subdirectory of another device</action>
     	<action dev='bflorat' type='update'>For design, it's not more possible to change a device name, id or type</action>
     	<action dev='bflorat' type='update'>[Perf] Better performances when switching from a perspective to another</action>
     	<action dev='bflorat' type='update'>[Perf] Much faster to start playing at startup</action>
     	<action dev='bflorat' type='update'>[Perf] The global shuffle is much faster</action>
-    	<action dev='bflorat' type='update'>Regexp option is now in advanced tab of parameter view</action>
+    	<action dev='bflorat' type='update'>Regexp option is now in Parameter View / Advanced tab</action>
     	<action dev='bflorat' type='update'>Table filter now supports * joker when regexp option is disabled (default)</action>
-    	<action dev='bflorat' type='update'>Default startup mode is now last file keep position</action>
     	<action dev='bflorat' type='update'>Better handling of errors (able to restart FIFO)</action>
-    	<action dev='bflorat' type='update'>The history doesn't show anymore several times the same track successively</action>
-    	<action dev='bflorat' type='update'>More debug traces, loging classes rewrote</action>
+    	<action dev='bflorat' type='update'>The history doesn't show any more several times the same track successively</action>
+    	<action dev='bflorat' type='update'>More debug traces, logging classes rewrote</action>
     	<action dev='bflorat' type='fix'>1001432 We shouldn't be able to choose a startup file in parameter view if this mode is not selected</action>  
     	<action dev='bflorat' type='fix'>1003760 A rewind or a forward should resume a paused track</action>  
     	<action dev='bflorat' type='fix'>1003759 Cannot start tracks after stopping the player during a pause</action>  
     	<action dev='bflorat' type='fix'>984868 Should ignore pause between 2 tracks</action>
     	<action dev='bflorat' type='fix'>1004106 Systray pause not taken into account in main window</action>
-    	<action dev='bflorat' type='fix'>1008327 Sometimes, main frame is not maximalized at startup</action>
     	<action dev='bflorat' type='fix'>1002831 Physical tree collapse when device tested</action>
-    	   	
      </release>
 
   </body>

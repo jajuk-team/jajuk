@@ -8,7 +8,6 @@
     </footer>
     <links>
       <item name='Sourceforge Jajuk page' href='http://sourceforge.net/projects/jajuk/' />
-      <item name='Bertrand Florat Home Page' href='http://www.florat.net' />
     </links>
     <menu name='Overview'>
       <item name='Home' href='./index.html' />      
@@ -17,7 +16,6 @@
       <item name='Latest news' href='./index.html#News' />
       <item name='Features' href='./index.html#Features' />
       <item name='Screenshots' href='./index.html#Screenshots' />
-      <item name='Roadmap' href='./planning.html' />
       <item name='Dependencies' href='./README.html#Dependencies' />
       <item name='Changelog' href='./changes-report.html' />
       <item name='Report bugs/requests' href='http://sourceforge.net/tracker/?group_id=91412' />
@@ -36,6 +34,7 @@
     </menu>
     <menu name='Project'>
       <item name='Jobs' href='./jobs.html' />
+      <item name='Roadmap' href='./planning.html' />
       <item name='TODO list' href='./todo_list.html' />
       <item name='Translation howto' href='./translation_howto.html' />
       <item name='Developer guide' href='./developer_guide.html' />

@@ -10,6 +10,14 @@
       <answer>
         <p>Jajuk is an advance Jukebox used to manage large or scattered music collections for advanced users.</p>
       </answer>
+      <faq id="license">
+      <question>
+        Under which license is published Jajuk ?
+      </question>
+      <answer>
+        <p>Jajuk, Copyright 2003,2004 Bertrand Florat and Jajuk team. Licence : GPL V2 (Free Software). See Licence provided with the program.</p>
+      </answer>
+    
      </faq>
     
     <faq id="formats">
