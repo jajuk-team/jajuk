@@ -54,7 +54,8 @@ public class Player implements ITechnicalStrings{
 	 * @param length in ms 
 	 */
 	public static void play(final File file,final float fPosition,final long length) {
-		fCurrent = file;
+        stop(); //stop any playing track
+        fCurrent = file;
 		pCurrentPlayerImpl = file.getTrack().getType().getPlayerImpl();
 		try {
 			bPlaying = true;
