@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.3  2003/10/24 12:41:06  sgringoi
+ * Add the init() method
+ *
  * Revision 1.2  2003/10/10 15:29:57  sgringoi
  * *** empty log message ***
  *
@@ -23,6 +26,8 @@
 package org.jajuk.ui.perspectives;
 
 import java.awt.Container;
+
+import javax.swing.JComponent;
 
 import org.jajuk.util.error.JajukException;
 
@@ -78,4 +83,9 @@ public interface IPerspectiveManager {
 	 * @param pContainer - Parent container where to add the perspectives.
 	 */
 	public void setParentContainer(Container pContainer);
+
+	/**
+	 * Initialize the perspectives manager.
+	 */
+	public void init();
 }
