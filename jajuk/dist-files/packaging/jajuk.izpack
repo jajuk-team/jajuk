@@ -53,6 +53,7 @@
             <file targetdir="$INSTALL_PATH" src="/tmp/jajuk-dist/jajuk/build.xml"/>
             <file targetdir="$INSTALL_PATH" src="/tmp/jajuk-dist/jajuk/LICENSE.txt"/>
             <file targetdir="$INSTALL_PATH" src="/tmp/jajuk-dist/jajuk/README.html"/>
+            <file targetdir="$INSTALL_PATH" src="/tmp/jajuk-dist/jajuk/README_fra.html"/>
             <file targetdir="$INSTALL_PATH" src="/tmp/jajuk-dist/jajuk/jajuk.bat">
             	<os family='windows'/>
            </file>

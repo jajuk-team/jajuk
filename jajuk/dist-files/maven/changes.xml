@@ -27,8 +27,9 @@
       <action dev='bflorat' type='add'>RFE 921854 Drag and drop improved, you can now drop tracks from tree or table direcly in playlist editor</action>  
       <action dev='bflorat' type='update'>Now collection and configuration are saved on disk at exit even when Jajuk window is not closed (logout, CTRL-C...)</action>  
      </release>
-     <release version='0.1.4' date='2003-04-02' description='Translation-oriented release'>
+     <release version='0.1.4' date='2003-04-02' description='Hot fix release'>
       <action dev='bflorat' type='add'>README file (in installation dialog and from site) now available in french</action>  
+      <action dev='bflorat' type='fix'>928979 Window disapears when minimized under GNU/Linux</action>  
      </release>
   </body>
 </document>
