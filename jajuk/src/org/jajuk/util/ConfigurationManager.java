@@ -115,7 +115,7 @@ public class ConfigurationManager implements ITechnicalStrings{
 		properties.put(CONF_OPTIONS_LOG_LEVEL,Integer.toString(Log.WARNING));
 		properties.put(CONF_OPTIONS_INTRO_BEGIN,"0");
 		properties.put(CONF_OPTIONS_INTRO_LENGTH,"20");
-		properties.put(CONF_STARTUP_MODE,STARTUP_MODE_SHUFFLE);
+		properties.put(CONF_STARTUP_MODE,STARTUP_MODE_LAST);
 		properties.put(CONF_OPTIONS_P2P_SHARE,FALSE);
 		properties.put(CONF_OPTIONS_P2P_ADD_REMOTE_PROPERTIES,FALSE);
 		properties.put(CONF_OPTIONS_P2P_HIDE_LOCAL_PROPERTIES,TRUE);
