@@ -64,10 +64,6 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	private boolean bAlreadyRefreshing = false;
 	/**Already synchronizing flag*/
 	private boolean bAlreadySynchronizing = false;
-	
-	/**Device types strings . ex:directory, remote...*/
-	public static String[] sDeviceTypes = null;
-	
 	/**Convenient lock */
 	public static byte[] bLock = new byte[0];
 	/** Number of files in this device before refresh ( for refresh stats ) */
@@ -98,23 +94,15 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 		this.sUrl = sUrl;
 		this.sMountPoint = sMountPoint;
 		this.fio = new File(getUrl());
-		//initialize device types labels (pre-computed for perfs)
-		if (sDeviceTypes == null){
-			sDeviceTypes = new String[]{
-				Messages.getString("Device_type.directory"), //$NON-NLS-1$
-				Messages.getString("Device_type.file_cd"), //$NON-NLS-1$
-				Messages.getString("Device_type.remote"), //$NON-NLS-1$
-				Messages.getString("Device_type.extdd"), //$NON-NLS-1$
-				Messages.getString("Device_type.player"), //$NON-NLS-1$
-			};
-		}
 	}
+	
+	
 	
 	/**
 	 * toString method
 	 */
 	public String toString() {
-		return "Device[ID=" + sId + " Name=" + sName + " Type=" + sDeviceTypes[iDeviceType] + " URL=" + sUrl+ " Mount point="+sMountPoint + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$ //$NON-NLS-6$
+		return "Device[ID=" + sId + " Name=" + sName + " Type=" + DeviceManager.getDeviceType(iDeviceType) + " URL=" + sUrl+ " Mount point="+sMountPoint + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$ //$NON-NLS-6$
 	}
 	
 	
@@ -480,7 +468,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	 * @return
 	 */
 	public String getDeviceTypeS() {
-		return sDeviceTypes[iDeviceType];
+		return DeviceManager.getDeviceType(iDeviceType);
 	}
 	
 	/**
@@ -628,7 +616,14 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	 *@return true if the device is available
 	 */
 	public boolean test(){
-		boolean bOK = false;
+		Util.waiting(); //waiting cursor
+	    boolean bOK = false;
+		try {
+            //just wait a moment  so user feels something real happens (psychological)
+            Thread.sleep(250);
+        } catch (InterruptedException e2) {
+            Log.error(e2);
+        }
 		boolean bWasMounted = bMounted;  //store mounted state of device before mount test
 		try{
 			if (!bMounted){
@@ -637,6 +632,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 		}
 		catch(Exception e){
 			Messages.showErrorMessage("112"); //$NON-NLS-1$
+			Util.stopWaiting();
 			return false;
 		}
 		if ( iDeviceType != 2 ){ //not a remote device
@@ -673,6 +669,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 				Log.error(e1);
 			}
 		}
+		Util.stopWaiting();
 		return bOK;
 	}
 	

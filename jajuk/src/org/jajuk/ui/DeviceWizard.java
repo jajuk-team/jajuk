@@ -111,8 +111,9 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 		jp1.setLayout(new TableLayout(size1));
 		jlType = new JLabel(Messages.getString("DeviceWizard.1")); //$NON-NLS-1$
 		jcbType = new JComboBox();
-		for (int i = 0; i < Device.sDeviceTypes.length; i++) {
-			jcbType.addItem(Device.sDeviceTypes[i]);
+		Iterator itDevicesTypes = DeviceManager.getDeviceTypes();
+		while (itDevicesTypes.hasNext()){
+			jcbType.addItem((String)itDevicesTypes.next());
 		}
 		jlName = new JLabel(Messages.getString("DeviceWizard.2")); //$NON-NLS-1$
 		jtfName = new JTextField();

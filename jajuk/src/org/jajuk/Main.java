@@ -169,7 +169,14 @@ public class Main implements ITechnicalStrings {
 		
 			//Set locale
 			Messages.setLocal(ConfigurationManager.getProperty(CONF_OPTIONS_LANGUAGE));
-		
+			
+			//Register device types
+			DeviceManager.registerDeviceType(Messages.getString("Device_type.directory"));//$NON-NLS-1$
+			DeviceManager.registerDeviceType(Messages.getString("Device_type.file_cd"));//$NON-NLS-1$
+			DeviceManager.registerDeviceType(Messages.getString("Device_type.remote"));//$NON-NLS-1$
+			DeviceManager.registerDeviceType(Messages.getString("Device_type.extdd"));//$NON-NLS-1$
+			DeviceManager.registerDeviceType(Messages.getString("Device_type.player"));//$NON-NLS-1$
+					
 			//Load collection
 			Collection.load();
 			

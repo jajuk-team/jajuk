@@ -37,6 +37,8 @@ public class DeviceManager implements ITechnicalStrings{
 	static ArrayList alDevices = new ArrayList(100);
 	/**Device ids*/
 	static ArrayList alDeviceIds = new ArrayList(100);
+	/**Supported device types names*/
+	static private ArrayList alDevicesTypes = new ArrayList(10);
 	
 	/**
 	 * No constructor available, only static access
@@ -73,6 +75,37 @@ public class DeviceManager implements ITechnicalStrings{
 		alDeviceIds.add(sId);
 		alDevices.add(device);
 		return device;
+	}
+	
+	/**
+	 * Register a device type
+	 * @param sDeviceType
+	 */
+	public static void registerDeviceType(String sDeviceType){
+	    alDevicesTypes.add(sDeviceType);
+	}
+	
+	/**
+	 * @return number of registered devices
+	 */
+	public static int getDeviceTypesNumber(){
+	    return alDevicesTypes.size();
+	}
+	
+	/**
+	 * @return Device types iteration
+	 */
+	public static Iterator getDeviceTypes(){
+	    return alDevicesTypes.iterator();
+	}
+	
+	/**
+	 * Get a device type name for a given index
+	 * @param index
+	 * @return device name for a given index
+	 */
+	public static String getDeviceType(int index){
+	    return (String)alDevicesTypes.get(index);
 	}
 	
 	
