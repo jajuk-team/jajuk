@@ -31,6 +31,7 @@ import org.jajuk.Main;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.ObservationManager;
+import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
@@ -265,6 +266,8 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 			append(iNbFilesBeforeRefresh - (FileManager.getFiles().size()-iNbNewFiles)).append(Messages.getString("Device.28")).toString(); //$NON-NLS-1$
 			InformationJPanel.getInstance().setMessage(sOut,InformationJPanel.INFORMATIVE); //$NON-NLS-1$
 			Log.debug(sOut); 
+			//clear history to remove olf files referenced in it
+			History.getInstance().clear(Integer.parseInt(ConfigurationManager.getProperty(CONF_HISTORY))); //delete old history items
 			bAlreadyRefreshing = false;
 			//notify views to refresh
 			ObservationManager.notify(EVENT_DEVICE_REFRESH);		
