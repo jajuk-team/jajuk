@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.4  2003/10/12 21:08:11  bflorat
+ * 12/10/2003
+ *
  * Revision 1.3  2003/10/10 22:32:42  bflorat
  * *** empty log message ***
  *
@@ -29,7 +32,6 @@
  */
 package org.jajuk.ui;
 
-import java.awt.Color;
 import java.awt.Dimension;
 
 import javax.swing.BorderFactory;
@@ -47,7 +49,7 @@ import org.jajuk.base.TechnicalStrings;
 import org.jajuk.i18n.Messages;
 
 /**
- *  Command panel
+ *  Command panel ( static view )
  *
  * @author     bflorat
  * @created    3 oct. 2003
@@ -150,7 +152,7 @@ public class CommandJPanel extends JPanel implements TechnicalStrings{
 		jbContinue.setToolTipText(Messages.getString("CommandJPanel.continue_mode___continue_to_play_next_tracks_when_finished_3")); //$NON-NLS-1$
 		jtbMode.add(jbContinue);
 		jtbMode.addSeparator();
-		jbIntro = new JButton(new ImageIcon(ICON_FILTER)); 
+		jbIntro = new JButton(new ImageIcon(ICON_INTRO)); 
 		jbIntro.setToolTipText(Messages.getString("CommandJPanel.intro_mode___play_just_a_part_of_each_track_offset_and_time_can_be_set_in_the_parameters_view_4")); //$NON-NLS-1$
 		jtbMode.add(jbIntro);
 		

@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.4  2003/10/12 21:08:11  bflorat
+ * 12/10/2003
+ *
  * Revision 1.3  2003/10/10 22:33:12  bflorat
  * added border and separators
  *
@@ -89,7 +92,7 @@ public class PerspectiveBarJPanel
 		jtbPerspective.addSeparator();
 		jtbPerspective.add(jbStatistics);
 			// Help perspective access button
-		jbHelp = new JButton(new ImageIcon(ICON_PERSPECTIVE_HELP)); 
+		jbHelp = new JButton(new ImageIcon(ICON_INFO)); 
 		jbHelp.setToolTipText(Messages.getString("PerspectiveBarJPanel.Show_the_help_perspective")); //$NON-NLS-1$
 		jtbPerspective.addSeparator();
 		jtbPerspective.add(jbHelp);
