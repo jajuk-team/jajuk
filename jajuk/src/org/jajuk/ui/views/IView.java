@@ -16,8 +16,8 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
- * Revision 1.1  2003/10/07 21:02:22  bflorat
- * Initial commit
+ * Revision 1.2  2003/10/10 15:29:57  sgringoi
+ * *** empty log message ***
  *
  */
 package org.jajuk.ui.views;

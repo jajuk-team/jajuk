@@ -16,8 +16,8 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
- * Revision 1.1  2003/10/07 21:02:18  bflorat
- * Initial commit
+ * Revision 1.2  2003/10/10 15:29:57  sgringoi
+ * *** empty log message ***
  *
  */
 package org.jajuk.ui.perspectives;
@@ -30,13 +30,18 @@ package org.jajuk.ui.perspectives;
  * @created		5 oct. 2003
  */
 public class PerspectiveManagerFactory {
-
+	private static PerspectiveManagerImpl perspManager = null;
+	
 	/**
 	 * Return the current perspective manager in use.
 	 * 
 	 * @return IPerspectiveManager Return the current perspective manager in use.
 	 */
 	public static IPerspectiveManager getPerspectiveManager() {
-		return null;
+		if (perspManager == null)
+		{
+			perspManager = new PerspectiveManagerImpl();
+		}
+		return perspManager;
 	}
 }
