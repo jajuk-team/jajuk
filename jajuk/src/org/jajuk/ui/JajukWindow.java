@@ -28,9 +28,11 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import org.jajuk.Main;
+import org.jajuk.base.DeviceManager;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
 import org.jajuk.base.ITechnicalStrings;
@@ -94,7 +96,14 @@ public class JajukWindow extends JFrame implements ITechnicalStrings,ComponentLi
         	public void windowIconified(WindowEvent arg0) {
 			}
 			public void windowClosing(WindowEvent we) {
-				Main.exit(0);
+			    //  check if a device is refreshing
+				if (DeviceManager.isAnyDeviceRefreshing()){
+					int iResu = JOptionPane.showConfirmDialog(jw,Messages.getString("Confirmation_exit_refreshing"),Messages.getString("Main.21"),JOptionPane.YES_NO_OPTION);  //$NON-NLS-1$ //$NON-NLS-2$
+					if (iResu == JOptionPane.NO_OPTION){
+						return;
+					}
+				}
+			    Main.exit(0);
 				return; 
 			}
 		});
