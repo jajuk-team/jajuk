@@ -528,12 +528,19 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 		return bAlreadySynchronizing;
 	}
 	
+	/**
+	 * Mount the device
+	 */
+	public  void mount() throws Exception{
+	    mount(true);
+	}
+	
 	
 	/**
 	 * Mount the device
-	 *
+	 * @param bUIRefresh set wheter the UI should be refreshed
 	 */
-	public  void mount() throws Exception{
+	public  void mount(boolean bUIRefresh) throws Exception{
 		if (bMounted){
 			Messages.showErrorMessage("111"); //$NON-NLS-1$
 		}
@@ -559,8 +566,10 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 			throw new JajukException("011",getName(),e); //$NON-NLS-1$
 		}
 		bMounted = true;
-		//notify views to refresh
-		ObservationManager.notify(EVENT_DEVICE_MOUNT);
+		//notify views to refresh if needed
+		if ( bUIRefresh ){
+		    ObservationManager.notify(EVENT_DEVICE_MOUNT);
+		}
 	}
 	
 	/**
@@ -568,15 +577,16 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	 *
 	 */
 	public  void unmount() throws Exception{
-		unmount(false);
+		unmount(false,true);
 	}
 	
 	
 	/**
 	 * Unmount the device with ejection 
 	 * @param bEjection set whether the device must be ejected
+	 * @param bUIRefresh set wheter the UI should be refreshed
 	 */
-	public  void unmount(boolean bEjection) throws Exception{
+	public  void unmount(boolean bEjection,boolean bUIRefresh) throws Exception{
 		//look to see if the device is already mounted ( the unix 'mount' command cannot say that )
 		File file = new File(getMountPoint());
 		if (!bMounted ){
@@ -607,7 +617,9 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 			}
 		}
 		bMounted = false;
-		ObservationManager.notify(EVENT_DEVICE_UNMOUNT);
+		if (bUIRefresh) {
+		    ObservationManager.notify(EVENT_DEVICE_UNMOUNT);
+		}
 	}
 	
 	
@@ -628,7 +640,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 		boolean bWasMounted = bMounted;  //store mounted state of device before mount test
 		try{
 			if (!bMounted){
-				mount();  //try to mount
+				mount(false);  //try to mount
 			}
 		}
 		catch(Exception e){
@@ -665,7 +677,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 		//unmount the device if it was mounted only for the test 
 		if (!bWasMounted){
 			try {
-				unmount(false);
+				unmount(false,false);
 			} catch (Exception e1) {
 				Log.error(e1);
 			}
