@@ -22,6 +22,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.regex.PatternSyntaxException;
 
@@ -128,6 +129,7 @@ public class LogicalTableView extends AbstractTableView implements Observer{
 		ObservationManager.register(EVENT_DEVICE_MOUNT,this);
 		ObservationManager.register(EVENT_DEVICE_UNMOUNT,this);
 		ObservationManager.register(EVENT_DEVICE_REFRESH,this);
+		ObservationManager.register(EVENT_SYNC_TREE_TABLE,this);
 	}
 	
 	/**Fill the tree */
@@ -309,13 +311,17 @@ public class LogicalTableView extends AbstractTableView implements Observer{
 	 * @see org.jajuk.ui.views.AbstractTableView#applyFilter()
 	 */
 	public void applyFilter(String sPropertyName,String sPropertyValue) {
+	    boolean bShowWithTree = true;
+		HashSet hs = (HashSet)ObservationManager.getDetail(EVENT_SYNC_TREE_TABLE,DETAIL_SELECTION);//look at selection
+		boolean bSyncWithTreeOption = ConfigurationManager.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE);
 		//Values
 		ArrayList alTracks = TrackManager.getSortedTracks();
 		ArrayList alToShow = new ArrayList(alTracks.size());
 		Iterator it = alTracks.iterator();
 		while ( it.hasNext()){
 			Track track = (Track)it.next(); 
-			if ( !track.shouldBeHidden()){
+		    bShowWithTree =  !bSyncWithTreeOption || ((hs != null && hs.size() > 0 && hs.contains(track)));//show it if no sync option or if item is in the selection
+			if ( !track.shouldBeHidden() && bShowWithTree){
 				alToShow.add(track);
 			}
 		}
@@ -327,7 +333,7 @@ public class LogicalTableView extends AbstractTableView implements Observer{
 		    sPropertyValue = sPropertyValue.replaceAll("\\*",".*"); //$NON-NLS-1$ //$NON-NLS-2$
 		    sPropertyValue = ".*"+sPropertyValue+".*"; //$NON-NLS-1$ //$NON-NLS-2$
 		}	
-	    while (it.hasNext()){
+		while (it.hasNext()){
 			Track track = (Track)it.next();
 			if ( sPropertyName != null && sPropertyValue!= null){ //if name or value are null, means there is no filter
 				String sValue = track.getProperty(sPropertyName);
@@ -363,8 +369,8 @@ public class LogicalTableView extends AbstractTableView implements Observer{
 		model.setValues(oValues);
 		model.fireTableDataChanged();
 	}
-	
-	
+
+  	
 }
 
 

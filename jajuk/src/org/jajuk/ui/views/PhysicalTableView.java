@@ -23,6 +23,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.regex.PatternSyntaxException;
 
@@ -122,6 +123,7 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
 		ObservationManager.register(EVENT_DEVICE_MOUNT,this);
 		ObservationManager.register(EVENT_DEVICE_UNMOUNT,this);
 		ObservationManager.register(EVENT_DEVICE_REFRESH,this);
+		ObservationManager.register(EVENT_SYNC_TREE_TABLE,this);
 	}	
 	
 	/**populate the table */
@@ -306,11 +308,15 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
 		ArrayList alFiles = FileManager.getFiles();
 		ArrayList alToShow = new ArrayList(alFiles.size());
 		Iterator it = alFiles.iterator();
+		boolean bShowWithTree = true;
+		HashSet hs = (HashSet)ObservationManager.getDetail(EVENT_SYNC_TREE_TABLE,DETAIL_SELECTION);//look at selection
+		boolean bSyncWithTreeOption = ConfigurationManager.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE);
 		while ( it.hasNext()){
-			File file = (File)it.next(); 
-			if ( !file.shouldBeHidden()){
-				alToShow.add(file);
-			}
+		    File file = (File)it.next(); 
+		    bShowWithTree =  !bSyncWithTreeOption || ((hs != null && hs.size() > 0 && hs.contains(file))); //show it if no sync option or if item is in the selection
+		    if ( !file.shouldBeHidden() && bShowWithTree){
+		        alToShow.add(file);
+		    }
 		}
 		int iColNum = 8;
 		it = alToShow.iterator();
@@ -359,7 +365,4 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
 		model.fireTableDataChanged();
 	}
 	
-	
 }
-
-

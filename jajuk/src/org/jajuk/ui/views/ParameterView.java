@@ -103,6 +103,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 	JPanel jpOptions;
 	JCheckBox jcbDisplayUnmounted;
 	JCheckBox jcbRestart;
+	JCheckBox jcbSyncTableTree;
 	JCheckBox jcbSearchUnmounted;
 	JLabel jlLanguage;
 	JComboBox jcbLanguage;
@@ -308,6 +309,8 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jcbDisplayUnmounted.setToolTipText(Messages.getString("ParameterView.35")); //$NON-NLS-1$
 		jcbRestart = new JCheckBox(Messages.getString("ParameterView.36")); //$NON-NLS-1$
 		jcbRestart.setToolTipText(Messages.getString("ParameterView.37")); //$NON-NLS-1$
+		jcbSyncTableTree = new JCheckBox(Messages.getString("ParameterView.183")); //$NON-NLS-1$
+		jcbSyncTableTree.setToolTipText(Messages.getString("ParameterView.184")); //$NON-NLS-1$
 		jcbSearchUnmounted = new JCheckBox(Messages.getString("ParameterView.127")); //$NON-NLS-1$
 		jcbSearchUnmounted.setToolTipText(Messages.getString("ParameterView.128")); //$NON-NLS-1$
 		jcbDefaultActionClick = new JCheckBox(Messages.getString("ParameterView.179")); //$NON-NLS-1$
@@ -504,7 +507,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jp.add(jtfVisiblePlanned,"1,8"); //$NON-NLS-1$
 	
 		double sizeOptions[][] = {{0.99},
-				{iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,60+2*iYSeparator,iYSeparator,130,iYSeparator}};
+				{iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,60+2*iYSeparator,iYSeparator,130,iYSeparator}};
 		jpOptions.setLayout(new TableLayout(sizeOptions));
 	
 		jpOptions.add(jcbDisplayUnmounted,"0,1"); //$NON-NLS-1$
@@ -512,8 +515,9 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jpOptions.add(jcbSearchUnmounted,"0,5"); //$NON-NLS-1$
 		jpOptions.add(jcbDefaultActionClick,"0,7"); //$NON-NLS-1$
 		jpOptions.add(jcbDefaultActionDrop,"0,9"); //$NON-NLS-1$
-		jpOptions.add(jpCombos,"0,11"); //$NON-NLS-1$
-		jpOptions.add(jp,"0,13"); //$NON-NLS-1$
+		jpOptions.add(jcbSyncTableTree,"0,11"); //$NON-NLS-1$
+		jpOptions.add(jpCombos,"0,13"); //$NON-NLS-1$
+		jpOptions.add(jp,"0,15"); //$NON-NLS-1$
 				
 		//--P2P
 		jpP2P = new JPanel();
@@ -809,6 +813,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 					ConfigurationManager.setProperty(CONF_OPTIONS_SEARCH_UNMOUNTED,Boolean.toString(jcbSearchUnmounted.isSelected()));
 					ConfigurationManager.setProperty(CONF_OPTIONS_DEFAULT_ACTION_CLICK,Boolean.toString(jcbDefaultActionClick.isSelected()));
 					ConfigurationManager.setProperty(CONF_OPTIONS_DEFAULT_ACTION_DROP,Boolean.toString(jcbDefaultActionDrop.isSelected()));
+					ConfigurationManager.setProperty(CONF_OPTIONS_SYNC_TABLE_TREE,Boolean.toString(jcbSyncTableTree.isSelected()));
 					String sLocal = (String)Messages.getInstance().getLocals().get(jcbLanguage.getSelectedIndex());
 					if (!Messages.getInstance().getLocal().equals(sLocal)){  //local has changed
 						Messages.showInfoMessage(Messages.getString("ParameterView.103")); //$NON-NLS-1$
@@ -1012,6 +1017,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jcbSearchUnmounted.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_SEARCH_UNMOUNTED));
 		jcbDefaultActionClick.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_DEFAULT_ACTION_CLICK));
 		jcbDefaultActionDrop.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_DEFAULT_ACTION_DROP));
+		jcbSyncTableTree.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE));
 		jcbLanguage.setSelectedIndex(Messages.getInstance().getLocals().indexOf(ConfigurationManager.getProperty(CONF_OPTIONS_LANGUAGE)));
 		jcbLAF.setSelectedItem(ConfigurationManager.getProperty(CONF_OPTIONS_LNF));
 		jcbLogLevel.setSelectedIndex(Integer.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_LOG_LEVEL)));

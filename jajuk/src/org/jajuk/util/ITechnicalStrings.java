@@ -40,9 +40,7 @@ public interface ITechnicalStrings {
     public static final int MAX_COVER_SIZE=500;
     /**Maximum number of remote covers*/
     public static final int MAX_REMOTE_COVERS=10;
-    
-    
-		
+    		
 	// Jajuk version
 	public static final String JAJUK_VERSION = "0.3.2";
 	public static final String JAJUK_VERSION_DATE = "Build 2004-12-12";
@@ -291,6 +289,7 @@ public interface ITechnicalStrings {
 	public static final String EVENT_SPECIAL_MODE="special mode changed"; //special mode (global shuffle, novelties, bestof...) changed
 	public static final String EVENT_PLAY_ERROR="error"; //an error occured during a play
 	public static final String EVENT_MUTE_STATE="mute_state"; //mute state changed
+	public static final String EVENT_SYNC_TREE_TABLE="sync_tree_table"; //sync table and tree views
 	
 	//details keys
 	public static final String DETAIL_CURRENT_FILE_ID="current file id";
@@ -363,6 +362,7 @@ public interface ITechnicalStrings {
 	public static final String CONF_OPTIONS_VISIBLE_PLANNED = "jajuk.options.visible_planned"; //number of visible planned tracks
 	public static final String CONF_OPTIONS_DEFAULT_ACTION_CLICK = "jajuk.options.default_action_click"; //default action (play or push) when clicking on an item
 	public static final String CONF_OPTIONS_DEFAULT_ACTION_DROP = "jajuk.options.default_action_drop"; //default action (play or push) when droping on an item
+	public static final String CONF_OPTIONS_SYNC_TABLE_TREE = "jajuk.options.sync_table_tree"; //synchronize table and tree views
 	public static final String CONF_P2P_SHARE = "jajuk.options.p2p.share";
 	public static final String CONF_P2P_ADD_REMOTE_PROPERTIES = "jajuk.options.p2p.add_remote_properties";
 	public static final String CONF_P2P_HIDE_LOCAL_PROPERTIES = "jajuk.options.p2p.hide_local_properties";

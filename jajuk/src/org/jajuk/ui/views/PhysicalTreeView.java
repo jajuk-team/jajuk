@@ -32,6 +32,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Properties;
 
 import javax.swing.BoxLayout;
 import javax.swing.JMenuItem;
@@ -477,6 +478,11 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
                     sbOut.append(lSize).append(Messages.getString("PhysicalTreeView.54")); //$NON-NLS-1$
                 }
                 InformationJPanel.getInstance().setSelection(sbOut.toString());
+                if (ConfigurationManager.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE)){ //if table is synchronized with tree, notify the selection change
+	                Properties properties = new Properties();
+	                properties.put(DETAIL_SELECTION,hsSelectedFiles);
+	                ObservationManager.notify(EVENT_SYNC_TREE_TABLE,properties);
+	             }
             }
         });
         //Listen for double clic
@@ -522,7 +528,6 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
                     }
                 }
                 else if ( jtree.getSelectionCount() > 0 && e.getClickCount() == 1 && e.getButton()==MouseEvent.BUTTON3){  //right clic on a selected node set
-                    //Only keep files
                     paths = jtree.getSelectionModel().getSelectionPaths();
                     getInstance().alFiles = new ArrayList(100);
                     getInstance().alDirs = new ArrayList(10);

@@ -169,11 +169,13 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 	 */
 	abstract public void applyFilter(String sPropertyName,String sPropertyValue) ;
 	
+	
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.Observer#update(java.lang.String)
 	 */
 	public void update(String subject) {
-		if ( subject.equals(EVENT_DEVICE_MOUNT) || subject.equals(EVENT_DEVICE_UNMOUNT) || subject.equals(EVENT_DEVICE_REFRESH) ) {
+		if ( EVENT_DEVICE_MOUNT.equals(subject) || EVENT_DEVICE_UNMOUNT.equals(subject) 
+		        || EVENT_DEVICE_REFRESH.equals(subject)  || EVENT_SYNC_TREE_TABLE.equals(subject)) {
 			applyFilter(sAppliedCriteria,sAppliedFilter); //force filter to refresh
 		}	
 	}
