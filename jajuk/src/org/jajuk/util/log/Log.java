@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.3  2003/10/21 20:43:07  bflorat
+ * TechnicalStrings to ITechnicalStrings according to coding convention
+ *
  * Revision 1.2  2003/10/17 20:43:56  bflorat
  * 17/10/2003
  *
@@ -31,7 +34,7 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PatternLayout;
 import org.apache.log4j.RollingFileAppender;
-import org.jajuk.base.TechnicalStrings;
+import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.error.JajukException;
 
@@ -41,7 +44,7 @@ import org.jajuk.util.error.JajukException;
  * @author     bflorat
  * @created    8 oct. 2003
  */
-public class Log implements TechnicalStrings{
+public class Log implements ITechnicalStrings{
 	private static String sLogFile;
 		/** logger for non-persistant events ( output on console)*/
 		private static Logger loggerTemp;	

@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.2  2003/10/21 20:43:06  bflorat
+ * TechnicalStrings to ITechnicalStrings according to coding convention
+ *
  * Revision 1.1  2003/10/12 21:08:11  bflorat
  * 12/10/2003
  *
@@ -34,7 +37,7 @@ import javax.swing.border.EtchedBorder;
 
 import layout.TableLayout;
 
-import org.jajuk.base.TechnicalStrings;
+import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.i18n.Messages;
 
 /**
@@ -43,7 +46,7 @@ import org.jajuk.i18n.Messages;
  * @author     bflorat
  * @created    11 oct. 2003
  */
-public class InformationJPanel extends JPanel implements TechnicalStrings{
+public class InformationJPanel extends JPanel implements ITechnicalStrings{
 	//consts
 	/** Informative message type  ( displayed in blue ) **/
 	public static final int INFORMATIVE = 0;

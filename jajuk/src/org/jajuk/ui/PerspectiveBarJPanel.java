@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.5  2003/10/21 20:43:06  bflorat
+ * TechnicalStrings to ITechnicalStrings according to coding convention
+ *
  * Revision 1.4  2003/10/12 21:08:11  bflorat
  * 12/10/2003
  *
@@ -35,7 +38,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 
-import org.jajuk.base.TechnicalStrings;
+import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.i18n.Messages;
 
 /**
@@ -47,7 +50,7 @@ import org.jajuk.i18n.Messages;
  */
 public class PerspectiveBarJPanel
 	extends JPanel
-	implements TechnicalStrings
+	implements ITechnicalStrings
 {
 
 		// Perspectives tool bar

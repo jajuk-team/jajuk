@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.5  2003/10/21 20:43:06  bflorat
+ * TechnicalStrings to ITechnicalStrings according to coding convention
+ *
  * Revision 1.4  2003/10/21 20:37:54  bflorat
  * 21/10/2003
  *
@@ -41,7 +44,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
-import org.jajuk.base.TechnicalStrings;
+import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
 ;
@@ -52,7 +55,7 @@ import org.jajuk.util.ConfigurationManager;
  *
  * @author     bflorat
  * @created    4 oct. 2003
- */public class JajukJMenuBar extends JMenuBar implements TechnicalStrings{
+ */public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings{
 
 	static JajukJMenuBar jjmb;
 		JMenu file;

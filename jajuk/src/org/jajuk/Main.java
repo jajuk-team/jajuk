@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.7  2003/10/21 20:43:06  bflorat
+ * TechnicalStrings to ITechnicalStrings according to coding convention
+ *
  * Revision 1.6  2003/10/21 17:51:43  bflorat
  * 21/10/2003
  *
@@ -51,7 +54,7 @@ import javax.swing.UIManager;
 
 import org.jajuk.base.Collection;
 import org.jajuk.base.FIFO;
-import org.jajuk.base.TechnicalStrings;
+import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.base.Type;
 import org.jajuk.base.TypeManager;
 import org.jajuk.i18n.Messages;
@@ -69,7 +72,7 @@ import org.jajuk.util.log.Log;
  * @author     bflorat
  * @created    3 oct. 2003
  */
-public class Main implements TechnicalStrings{
+public class Main implements ITechnicalStrings{
 
 	public static JFrame jframe;
 	public static CommandJPanel command;

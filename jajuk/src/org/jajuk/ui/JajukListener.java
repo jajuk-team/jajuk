@@ -16,8 +16,8 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
- * Revision 1.3  2003/10/21 20:37:54  bflorat
- * 21/10/2003
+ * Revision 1.4  2003/10/21 20:43:06  bflorat
+ * TechnicalStrings to ITechnicalStrings according to coding convention
  *
  */
 package org.jajuk.ui;
@@ -33,7 +33,7 @@ import org.jajuk.Main;
 import org.jajuk.base.BasicFile;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
-import org.jajuk.base.TechnicalStrings;
+import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.util.ConfigurationManager;
 
 /**
@@ -43,7 +43,7 @@ import org.jajuk.util.ConfigurationManager;
  * @author     bflorat
  * @created    15 oct. 2003
  */
-public class JajukListener implements ActionListener, TechnicalStrings {
+public class JajukListener implements ActionListener, ITechnicalStrings {
 
 	/**Self instance*/
 	private static JajukListener jlistener;

@@ -3,7 +3,7 @@ package org.jajuk.ui.perspectives;
 import java.awt.BorderLayout;
 import java.awt.Container;
 
-import org.jajuk.base.TechnicalStrings;
+import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
@@ -15,7 +15,7 @@ import org.jajuk.util.log.Log;
  * @version 1.0
  * @created 7 oct. 03
  */
-public class PerspectiveManagerImpl implements IPerspectiveManager,TechnicalStrings {
+public class PerspectiveManagerImpl implements IPerspectiveManager,ITechnicalStrings {
 	/** Current perspective */
 	private Perspective currentPerspective = null;
 	/** Parent container of the perspective */

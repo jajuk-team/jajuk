@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.4  2003/10/21 20:43:06  bflorat
+ * TechnicalStrings to ITechnicalStrings according to coding convention
+ *
  * Revision 1.3  2003/10/17 20:43:56  bflorat
  * 17/10/2003
  *
@@ -28,7 +31,7 @@ package org.jajuk.ui.perspectives;
 import java.util.HashMap;
 import java.util.StringTokenizer;
 
-import org.jajuk.base.TechnicalStrings;
+import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.ui.views.IView;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.error.JajukException;
@@ -40,7 +43,7 @@ import org.jajuk.util.error.JajukException;
  * @version 1.0
  * @created 6 oct. 03
  */
-public class PhysicalPerspective extends Perspective implements TechnicalStrings {
+public class PhysicalPerspective extends Perspective implements ITechnicalStrings {
 		// List of views
 	private HashMap viewsList = null;
 	

@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.4  2003/10/21 20:43:06  bflorat
+ * TechnicalStrings to ITechnicalStrings according to coding convention
+ *
  * Revision 1.3  2003/10/17 20:43:56  bflorat
  * 17/10/2003
  *
@@ -27,7 +30,7 @@ package org.jajuk.util;
 
 import java.util.Properties;
 
-import org.jajuk.base.TechnicalStrings;
+import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.i18n.Messages;
 
 /**
@@ -37,7 +40,7 @@ import org.jajuk.i18n.Messages;
  * @version	1.0
  * @created		5 oct. 2003
  */
-public class ConfigurationManager implements TechnicalStrings{
+public class ConfigurationManager implements ITechnicalStrings{
 	
 	private static Properties properties = null;
 	
