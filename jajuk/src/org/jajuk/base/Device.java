@@ -64,13 +64,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	private boolean bAlreadySynchronizing = false;
 	
 	/**Device types strings . ex:directory, remote...*/
-	public static String[] sDeviceTypes = {
-			Messages.getString("Device_type.directory"), //$NON-NLS-1$
-			Messages.getString("Device_type.file_cd"), //$NON-NLS-1$
-			Messages.getString("Device_type.remote"), //$NON-NLS-1$
-			Messages.getString("Device_type.extdd"), //$NON-NLS-1$
-			Messages.getString("Device_type.player"), //$NON-NLS-1$
-	};
+	public static String[] sDeviceTypes = null;
 	
 	/**Convenient lock */
 	public static byte[] bLock = new byte[0];
@@ -102,6 +96,16 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 		this.sUrl = sUrl;
 		this.sMountPoint = sMountPoint;
 		this.fio = new File(getUrl());
+		//initialize device types labels (pre-computed for perfs)
+		if (sDeviceTypes == null){
+			sDeviceTypes = new String[]{
+				Messages.getString("Device_type.directory"), //$NON-NLS-1$
+				Messages.getString("Device_type.file_cd"), //$NON-NLS-1$
+				Messages.getString("Device_type.remote"), //$NON-NLS-1$
+				Messages.getString("Device_type.extdd"), //$NON-NLS-1$
+				Messages.getString("Device_type.player"), //$NON-NLS-1$
+			};
+		}
 	}
 	
 	/**

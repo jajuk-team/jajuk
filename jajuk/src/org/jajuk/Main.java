@@ -163,20 +163,19 @@ public class Main implements ITechnicalStrings {
 			//Display user configuration
 			Log.debug(System.getProperties().toString());
 			
-			//Load collection
-			Collection.load();
-			
-			//	Clean the collection up
-			org.jajuk.base.Collection.cleanup();
-			
 			//Load user configuration
 			org.jajuk.util.ConfigurationManager.load();
 		
 			//Set locale
 			Messages.setLocal(ConfigurationManager.getProperty(CONF_OPTIONS_LANGUAGE));
+		
+			//Load collection
+			Collection.load();
 			
+			//Clean the collection up
+			org.jajuk.base.Collection.cleanup();
+						
 			//starts ui
-			System.setProperty( "apple.laf.useScreenMenuBar", "true"); //mac integration //$NON-NLS-1$ //$NON-NLS-2$
 			jw = new JajukWindow(); 
 			
 			//Set look and feel
@@ -229,7 +228,7 @@ public class Main implements ITechnicalStrings {
 			jw.pack();
 			jw.setExtendedState(Frame.MAXIMIZED_BOTH);  //maximalize
 			//show window if set in the systray conf
-			if ( ConfigurationManager.getBoolean(CONF_SHOW_AT_STARTUP) || !Util.underWindows()){
+			if ( ConfigurationManager.getBoolean(CONF_SHOW_AT_STARTUP) || !Util.isUnderWindows()){
 				SwingUtilities.invokeLater(new Runnable() { //force screenshot to be upper main window
 					public void run() {
 						jw.setVisible(true); //show main window
