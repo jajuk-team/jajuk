@@ -103,11 +103,15 @@
     	<action dev='bflorat' type='add'>RFE 981210 : A new option for chosing encoding for collection file : UTF-8 or UTF-16</action>  
       	<action dev='bflorat' type='add'>Collection file backup options</action>  
     	<action dev='bflorat' type='add'>New Look and feel : Metouia</action>  
+    	<action dev='bflorat' type='add'>New view : animation</action>  
+    	<action dev='bflorat' type='add'>New perspective Player with animation and cover view</action>  
+    	<action dev='bflorat' type='add'>New parameter tab with a button to reset perspectives defaults</action>  
     	<action dev='bflorat' type='update'>Parameter view now uses tabs</action>
     	<action dev='bflorat' type='update'>Now file choosers try to guess a right root directory</action>
     	<action dev='bflorat' type='update'>For design, it's no more possbile to create a device subdirectory of another device</action>
     	<action dev='bflorat' type='update'>For design, it's not more possible to change a device name, id or type</action>
-    	<action dev='bflorat' type='update'>Better performances when switching from a perspective to another</action>
+    	<action dev='bflorat' type='update'>[Perf] Better performances when switching from a perspective to another</action>
+    	<action dev='bflorat' type='update'>[Perf] Much faster to start playing at startup</action>
     	<action dev='bflorat' type='fix'>1001432 We shouldn't be able to choose a startup file in parameter view if this mode is not selected</action>  
     	<action dev='bflorat' type='fix'>1003760 A rewind or a forward should resume a paused track</action>  
     	<action dev='bflorat' type='fix'>1003759 Cannot start tracks after stopping the player during a pause</action>  
