@@ -48,6 +48,7 @@ import org.jajuk.base.Type;
 import org.jajuk.base.TypeManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.CommandJPanel;
+import org.jajuk.ui.DeviceWizard;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.JajukJMenuBar;
 import org.jajuk.ui.JajukWindow;
@@ -158,11 +159,11 @@ public class Main implements ITechnicalStrings {
 			//Display user Jajuk configuration
 			Log.debug(ConfigurationManager.getProperties().toString());
 
-			//Set look and feel
-			LNFManager.setLookAndFeel(ConfigurationManager.getProperty(CONF_OPTIONS_LNF));
-					
 			//Set locale
 			Messages.getInstance().setLocal(ConfigurationManager.getProperty(CONF_OPTIONS_LANGUAGE));
+		
+			//Set look and feel, needs local to be set for error messages
+			LNFManager.setLookAndFeel(ConfigurationManager.getProperty(CONF_OPTIONS_LNF));
 			
 			//Register device types
 			DeviceManager.registerDeviceType(Messages.getString("Device_type.directory"));//$NON-NLS-1$
@@ -297,7 +298,13 @@ public class Main implements ITechnicalStrings {
 						if (TRUE.equals(ConfigurationManager.getProperty(CONF_FIRST_CON))){
 							ConfigurationManager.setProperty(CONF_FIRST_CON,FALSE);
 							Messages.showInfoMessage(Messages.getString("Main.12")); //$NON-NLS-1$
+							//set parameter perspective
 							PerspectiveManager.setCurrentPerspective(PERSPECTIVE_NAME_CONFIGURATION);
+							//show device creation wizard
+							DeviceWizard dw = new DeviceWizard();
+							dw.updateWidgetsDefault();
+							dw.pack();
+							dw.setVisible(true);
 						}
 						
 						//Close splash screen
@@ -320,6 +327,11 @@ public class Main implements ITechnicalStrings {
 			e.printStackTrace();
 			Log.error("106", e); //$NON-NLS-1$
 			exit(1);
+		}
+		finally{  //make sure to close splashscreen in all cases
+		    if (sc != null){
+		        sc.dispose();
+		    }
 		}
 	}
 	
