@@ -225,6 +225,7 @@
      	<action dev='bflorat' type='fix' issue='1153534'>Elapsed time error with large files</action>
        <action dev='bflorat' type='fix' issue='921441'>Special XML characters not correctly managed by Jajuk (more checkups)</action> 
        <action dev='bflorat' type='fix' issue='1171908'>drag'n drop from sorted list pushes wrong track to playlist</action> 
+       <action dev='bflorat' type='fix' issue='1175005'>Freeze when seeking more than 99%</action> 
      </release>
           
   </body>
