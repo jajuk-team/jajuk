@@ -9,4 +9,4 @@ export JAVA_HOME=`java -cp /usr/lib/jajuk/bin/jajuk.jar org.jajuk.SystemAnalyser
 echo JAVA_HOME=$JAVA_HOME
 
 #Launch jajuk
-java -client -Xms25M -Xss5M -Xmx40M -Djava.library.path=../native -jar jajuk.jar -notaskbar
+java -client -Xms25M -Djava.library.path=../native -jar jajuk.jar -notaskbar
