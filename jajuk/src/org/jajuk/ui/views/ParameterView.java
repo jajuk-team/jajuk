@@ -140,12 +140,11 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 	JTextField jtfTransfertTO;
 	JPanel jpCovers;
 	JCheckBox jcbAutoCover;
+	JCheckBox jcbShuffleCover;
 	JLabel jlMinSize;
 	JTextField jtfMinSize;
 	JLabel jlMaxSize;
 	JTextField jtfMaxSize;
-	JLabel jlSearchAccuracy;
-	JComboBox jcbSearchAccuracy;
 	JPanel jpOKCancel;
 	JButton jbOK;
 	JButton jbDefault;
@@ -625,8 +624,12 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 				{iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator}};
 		jpCovers.setLayout(new TableLayout(sizeCover));
 		jcbAutoCover = new JCheckBox(Messages.getString("ParameterView.148")); //$NON-NLS-1$
+		jcbAutoCover.setSelected(ConfigurationManager.getBoolean(CONF_COVERS_AUTO_COVER));
 		jcbAutoCover.setToolTipText(Messages.getString("ParameterView.149")); //$NON-NLS-1$
 		jcbAutoCover.addActionListener(this);
+		jcbShuffleCover = new JCheckBox(Messages.getString("ParameterView.166")); //$NON-NLS-1$
+		jcbShuffleCover.setSelected(ConfigurationManager.getBoolean(CONF_COVERS_SHUFFLE));
+		jcbShuffleCover.setToolTipText(Messages.getString("ParameterView.167")); //$NON-NLS-1$
 		InputVerifier iverifier = new InputVerifier(){
 			public boolean verify(JComponent input) {
 				JTextField tf = (JTextField) input;
@@ -659,23 +662,13 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jtfMaxSize = new JTextField();
 		jtfMaxSize.setToolTipText(Messages.getString("ParameterView.153")); //$NON-NLS-1$
 		jtfMaxSize.setInputVerifier(iverifier);
-		jlSearchAccuracy = new JLabel(Messages.getString("ParameterView.154")); //$NON-NLS-1$
-		jlSearchAccuracy.setToolTipText(Messages.getString("ParameterView.155")); //$NON-NLS-1$
-		jcbSearchAccuracy = new JComboBox();
-		jcbSearchAccuracy.setToolTipText(Messages.getString("ParameterView.155")); //$NON-NLS-1$
-		jcbSearchAccuracy.addItem(Messages.getString("ParameterView.156")); //$NON-NLS-1$
-		jcbSearchAccuracy.addItem(Messages.getString("ParameterView.157")); //$NON-NLS-1$
-		jcbSearchAccuracy.addItem(Messages.getString("ParameterView.158")); //$NON-NLS-1$
-		jcbSearchAccuracy.addItem(Messages.getString("LogicalTableView.3")); //$NON-NLS-1$ TBI
 		jpCovers.add(jcbAutoCover,"0,1"); //$NON-NLS-1$
-		jpCovers.add(jlMinSize,"0,3"); //$NON-NLS-1$
-		jpCovers.add(jtfMinSize,"1,3"); //$NON-NLS-1$
-		jpCovers.add(jlMaxSize,"0,5"); //$NON-NLS-1$
-		jpCovers.add(jtfMaxSize,"1,5"); //$NON-NLS-1$
-		jpCovers.add(jlSearchAccuracy,"0,7"); //$NON-NLS-1$
-		jpCovers.add(jcbSearchAccuracy,"1,7"); //$NON-NLS-1$
-		
-		
+		jpCovers.add(jcbShuffleCover,"0,3"); //$NON-NLS-1$
+		jpCovers.add(jlMinSize,"0,5"); //$NON-NLS-1$
+		jpCovers.add(jtfMinSize,"1,5"); //$NON-NLS-1$
+		jpCovers.add(jlMaxSize,"0,7"); //$NON-NLS-1$
+		jpCovers.add(jtfMaxSize,"1,7"); //$NON-NLS-1$
+				
 		//--OK/cancel panel
 		jpOKCancel = new JPanel();
 		jpOKCancel.setLayout(new FlowLayout());
@@ -828,9 +821,9 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 					ConfigurationManager.setProperty(CONF_NETWORK_TRANSFERT_TO,jtfTransfertTO.getText());
 					//Covers
 					ConfigurationManager.setProperty(CONF_COVERS_AUTO_COVER,Boolean.toString(jcbAutoCover.isSelected()));
+					ConfigurationManager.setProperty(CONF_COVERS_SHUFFLE,Boolean.toString(jcbShuffleCover.isSelected()));
 					ConfigurationManager.setProperty(CONF_COVERS_MIN_SIZE,jtfMinSize.getText());
 					ConfigurationManager.setProperty(CONF_COVERS_MAX_SIZE,jtfMaxSize.getText());
-					ConfigurationManager.setProperty(CONF_COVERS_ACCURACY,Integer.toString(jcbSearchAccuracy.getSelectedIndex()));
 				}
 				else if (e.getSource() == jbDefault){
 					ConfigurationManager.setDefaultProperties();
@@ -865,12 +858,10 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 				    if ( jcbAutoCover.isSelected()){
 				        jtfMinSize.setEnabled(true);
 				        jtfMaxSize.setEnabled(true);
-				        jcbSearchAccuracy.setEnabled(true);
 				    }
 				    else{
 				        jtfMinSize.setEnabled(false);
 				        jtfMaxSize.setEnabled(false);
-				        jcbSearchAccuracy.setEnabled(false);
 				    }
 				}
 			}
@@ -956,7 +947,6 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jcbAutoCover.setSelected(ConfigurationManager.getBoolean(CONF_COVERS_AUTO_COVER));
 		jtfMinSize.setText(ConfigurationManager.getProperty(CONF_COVERS_MIN_SIZE));
 		jtfMaxSize.setText(ConfigurationManager.getProperty(CONF_COVERS_MAX_SIZE));
-		jcbSearchAccuracy.setSelectedIndex(Integer.parseInt(ConfigurationManager.getProperty(CONF_COVERS_ACCURACY)));
 	}
 	
 	/* (non-Javadoc)
