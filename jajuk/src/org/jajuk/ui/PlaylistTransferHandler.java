@@ -45,7 +45,9 @@ import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
 import org.jajuk.base.Style;
 import org.jajuk.base.Track;
+import org.jajuk.i18n.Messages;
 import org.jajuk.ui.views.AbstractPlaylistEditorView;
+import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 
 /**
@@ -181,17 +183,22 @@ public class PlaylistTransferHandler implements DropTargetListener {
 					alSelectedFiles = ((Device)oData).getFilesRecursively();
 				}
 			}
+			//display a warning message if none accessible file can found for these tracks
+			if (alSelectedFiles.size() == 0){
+			    Messages.showWarningMessage(Messages.getErrorMessage("018"));//$NON-NLS-1$
+			    return;
+			}
 			//queue case
 			if ( plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE){
-				FIFO.getInstance().push(alSelectedFiles,true);
+				FIFO.getInstance().push(Util.applyPlayOption(alSelectedFiles),true);
 			}
 			//bookmark case
 			else if ( plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_BOOKMARK){
-				Bookmarks.getInstance().addFiles(alSelectedFiles);
+				Bookmarks.getInstance().addFiles(Util.applyPlayOption(alSelectedFiles));
 			}
 			//normal or new playlist case
 			else if ( plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_NORMAL || plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_NEW){
-				plfi.getPlaylistFile().addBasicFiles(alSelectedFiles);
+				plfi.getPlaylistFile().addBasicFiles(Util.applyPlayOption(alSelectedFiles));
 			}
 		}		
 		catch (Exception e) {	

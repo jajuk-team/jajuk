@@ -82,7 +82,7 @@ public class PerspectiveBarJPanel extends JPanel implements ITechnicalStrings{
 	 * update contents
 	 *
 	 */
-	public synchronized void update(){
+	public void update(){
 		// set default layout and size
 		setLayout(new BoxLayout(this,BoxLayout.Y_AXIS)); //we use a BoxLayout and not a FlowLayout to allow resizing
 		setBorder(BorderFactory.createEmptyBorder(4,4,4,4));

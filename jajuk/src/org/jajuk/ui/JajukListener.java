@@ -107,10 +107,12 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
 			JajukJMenuBar.getInstance().jcbmiRepeat.setSelected(!b);
 			if (!b == true) { //enabled button
 				CommandJPanel.getInstance().jbRepeat.setBorder(BorderFactory.createLoweredBevelBorder());
+				//set the forced repeat track to repeat over it even with others tracks in the fifo
 				FIFO.getInstance().forceRepeat(FIFO.getInstance().getCurrentFile());
 			}
-			else {
+			else {//disable repeat mode
 			    CommandJPanel.getInstance().jbRepeat.setBorder(BorderFactory.createRaisedBevelBorder());
+			    FIFO.getInstance().forceRepeat(null); //reset forced
 			}
 		}
 		else if (e.getActionCommand().equals(EVENT_SHUFFLE_MODE_STATUS_CHANGED)) {

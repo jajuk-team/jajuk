@@ -355,7 +355,7 @@ public class JajukWindow extends JFrame implements ITechnicalStrings,ComponentLi
     /* (non-Javadoc)
      * @see org.jajuk.ui.Observer#update(java.lang.String)
      */
-    public synchronized void update(String subject) {
+    public void update(String subject) {
         if (subject.equals(EVENT_FILE_LAUNCHED)){
             File file = FIFO.getInstance().getCurrentFile();
             if (file != null){

@@ -180,6 +180,7 @@ public class TreeTransferHandler implements DragGestureListener, DragSourceListe
 	}
 	
 	public final void drop(DropTargetDropEvent dtde) {
+	    clearImage();
 	}
 	
 	private final void paintImage(Point pt) {

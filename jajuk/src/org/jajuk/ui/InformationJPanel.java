@@ -256,7 +256,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,Obser
 	/* (non-Javadoc)
      * @see org.jajuk.ui.Observer#update(java.lang.String)
      */
-	public synchronized void update(String subject) {
+	public void update(String subject) {
 	    if (EVENT_HEART_BEAT.equals(subject)){
 	        String sCurrentStatusMessage =  (String)ObservationManager.getDetail(EVENT_HEART_BEAT,DETAIL_CURRENT_STATUS_MESSAGE);
 	        if (sCurrentStatusMessage != null){

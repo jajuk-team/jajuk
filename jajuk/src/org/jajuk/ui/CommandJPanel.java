@@ -102,8 +102,10 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 	static boolean bIsIntroEnabled = false;
 	/**Forward or rewind jump size in track percentage*/
 	static final float JUMP_SIZE = 0.1f;
-	/**Position slider moving*/
+	/**Position slider move*/
 	private static boolean bPositionChanging = false;
+	/**Last slider manual move date*/
+	private static long lDateLastPosMove;
 	
 	
 	
@@ -481,7 +483,15 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		}
 		else if (e.getSource() == jsPosition && !bPositionChanging && !jsPosition.getValueIsAdjusting()){
 			bPositionChanging = true;
-			Player.seek((float)jsPosition.getValue()/100);
+			lDateLastPosMove = System.currentTimeMillis();
+			float fPosition = (float)jsPosition.getValue()/100;
+			//max position can't be 100% to allow seek properly
+			if (fPosition == 1.0f){
+			    fPosition = 0.99f;
+			}
+			Player.seek(fPosition);
+			Player.mute(false); //if user move the slider, unmute
+			jbMute.setBorder(BorderFactory.createRaisedBevelBorder());
 			bPositionChanging = false;
 		}
 	}
@@ -493,7 +503,10 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 	public void setCurrentPosition(final int i){
 		if ( !bPositionChanging ){//don't move slider when user do it himself a	t the same time
 			bPositionChanging = true;  //block events so player is not affected
-			CommandJPanel.this.jsPosition.setValue(i);
+			//wait 3 secs after end of last move to avoid slider to come back to previous position
+			if (System.currentTimeMillis() - lDateLastPosMove > 3000){
+			    CommandJPanel.this.jsPosition.setValue(i);    
+			}
 			bPositionChanging = false;
 		}
 	}
@@ -501,7 +514,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.Observer#update(java.lang.String)
 	 */
-	public synchronized void update(final String subject) {
+	public void update(final String subject) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				if( EVENT_PLAYER_STOP.equals(subject) || EVENT_ZERO.equals(subject)){
