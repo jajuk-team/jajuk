@@ -73,20 +73,14 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
 		}
 		ObservationManager.register(EVENT_COVER_REFRESH,this);
 		ObservationManager.register(EVENT_PLAYER_STOP,this);
-		
 	}
 	
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.IView#display()
 	 */
 	public void populate(){
-		JInternalFrame ji = ViewManager.getFrame(this);
-		ImageFilter filter = new AreaAveragingScaleFilter(ji.getWidth()-8,ji.getHeight()-30);
-		Image img = createImage(new FilteredImageSource(image.getSource(),filter));
-		JLabel jl = new JLabel(new ImageIcon(img));
-		removeAll(); //remove old picture
-		add(jl);
-		SwingUtilities.updateComponentTreeUI(this.getRootPane());//refresh
+		//check if the cover should be refreshed at startup
+		update(EVENT_COVER_REFRESH);
 	}
 	
 	/**
@@ -151,7 +145,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
 				displayDefault();
 				return;
 			}
-			populate();
+			displayCurrentCover();
 		}
 		else if ( EVENT_PLAYER_STOP.equals(subject)){
 			displayDefault();
@@ -206,5 +200,17 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
 	public void componentShown(ComponentEvent e) {
 	}
 
-
+	/**
+	 * Display current cover
+	 *
+	 */
+	private void displayCurrentCover(){
+	    JInternalFrame ji = ViewManager.getFrame(this);
+	    ImageFilter filter = new AreaAveragingScaleFilter(ji.getWidth()-8,ji.getHeight()-30);
+	    Image img = createImage(new FilteredImageSource(image.getSource(),filter));
+	    JLabel jl = new JLabel(new ImageIcon(img));
+		removeAll(); //remove old picture
+		add(jl);
+		SwingUtilities.updateComponentTreeUI(this.getRootPane());//refresh
+	}
 }
