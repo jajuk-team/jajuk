@@ -64,9 +64,6 @@ public class FIFO implements ITechnicalStrings{
     /** First played file flag**/
     private static boolean bFirstFile = true;
     
-    /**First file should seek to position flag*/
-    private boolean bSeekFirstFile = false;
-    
     /**Concurency flag*/
     private static volatile boolean bFlag = false;
     /**
@@ -336,7 +333,6 @@ public class FIFO implements ITechnicalStrings{
             //check the required track is not null
             if (fCurrent == null){
                 alFIFO.remove(index);
-                Util.stopWaiting(); //stop the waiting cursor
                 return;
             }
             if (  (fCurrent != null && fCurrent.getDirectory() == null )  //basic file
@@ -357,7 +353,7 @@ public class FIFO implements ITechnicalStrings{
                 Player.play(fCurrent,Float.parseFloat(ConfigurationManager.getProperty(CONF_OPTIONS_INTRO_BEGIN))/100,1000*Integer.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_INTRO_LENGTH)));
             }
             else{
-                if (bFirstFile && bSeekFirstFile){ //if it is the first played file and we are in startup mode keep position
+                if (bFirstFile && ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_LAST_KEEP_POS)){ //if it is the first played file and we are in startup mode keep position
                     float fPos = ConfigurationManager.getFloat(CONF_STARTUP_LAST_POSITION);
                     Player.play(fCurrent,fPos,-1);  //play it
                 }
@@ -373,6 +369,8 @@ public class FIFO implements ITechnicalStrings{
             FileManager.setRateHasChanged(true);
         } catch (Exception e) {
             Log.error("122", e); //$NON-NLS-1$
+        }
+        finally{
             Util.stopWaiting(); //stop the waiting cursor
         }
     }
@@ -513,7 +511,6 @@ public class FIFO implements ITechnicalStrings{
      */
     public synchronized void playPrevious(){
         try{
-            // Player.stop();
             JajukTimer.getInstance().reset();
             JajukTimer.getInstance().addTrackTime(alFIFO);
             launch(getPrevious());
@@ -531,7 +528,7 @@ public class FIFO implements ITechnicalStrings{
      */
     public synchronized void playPreviousAlbum(){
         try{
-            //we don't support album navigation inseide repeated tracks
+            //we don't support album navigation inside repeated tracks
             if (((StackItem)getItem(0)).isRepeat()){
                 playPrevious();  
                 return;
