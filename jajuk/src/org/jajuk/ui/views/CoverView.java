@@ -20,7 +20,6 @@
 
 package org.jajuk.ui.views;
 
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -194,7 +193,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
             alCovers.add(coverDefault); //add the default cover
         }
         update(EVENT_COVER_REFRESH);
-        this.addComponentListener(this);
+        this.addComponentListener(this); //listen for resize
         
     }
     
@@ -217,8 +216,8 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                 }
                 synchronized(alCovers){
                     alCovers.clear();
-                    //search for local covers in all directories mapping the current track to reach other devices covers and display them together
                     this.fDir = null; //analyzed directory
+                    //search for local covers in all directories mapping the current track to reach other devices covers and display them together
                     Track trackCurrent = fCurrent.getTrack();
                     ArrayList alFiles = trackCurrent.getFiles(); //list of files mapping the track
                     Iterator it = alFiles.iterator();
@@ -253,7 +252,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                             alCovers.add(coverDefault); 
                         }
                     }
-                    //display local or default cover without wait
+                    //display right now local or default cover
                     Collections.sort(alCovers); //sort the list
                     Log.debug("Local cover list: "+alCovers); //$NON-NLS-1$
                     if (ConfigurationManager.getBoolean(CONF_COVERS_SHUFFLE) || PerspectiveManager.getCurrentPerspective() instanceof PlayerPerspective){ //in player perspective, always show shuffle covers
@@ -268,7 +267,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                 //then we search for web covers asynchronously
                 if (ConfigurationManager.getBoolean(CONF_COVERS_AUTO_COVER)){
                     if ( DownloadManager.isActiveConnection()){ //if a download was yet being done, tell the download manager to trash it and leave
-                        DownloadManager.setConcurrentConnection(true); //tell current search to trash it, it's useless now
+                        DownloadManager.setTrashData(true); //tell current search to trash it, it's useless now
                     }
                     else{
                         Thread t = new Thread(){ //start search asynchronously
@@ -287,15 +286,13 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                                             if ( alUrls.size() > 0 && alCovers.size()>0 && ((Cover)alCovers.get(0)).getType() == Cover.DEFAULT_COVER){
                                                 alCovers.remove(0);
                                             }
-                                            Iterator it = alUrls.iterator(); //add logicaly found covers 
+                                            Iterator it = alUrls.iterator(); //add found covers 
                                             while ( it.hasNext()){
                                                 URL url = (URL)it.next();
                                                 Log.debug("Found Cover: "+url.toString()); //$NON-NLS-1$
-                                                Cover cover = null;
-                                                cover = new Cover(url,Cover.REMOTE_COVER); //create a cover with given url ( image will be really downloaded when required)
-                                                alCovers.add(cover);
+                                                alCovers.add(new Cover(url,Cover.REMOTE_COVER));//create a cover with given url ( image will be really downloaded when required)
                                             }
-                                            index +=alUrls.size(); //reset index
+                                            index += alUrls.size(); //reset index
                                             Collections.sort(alCovers); //sort the list again with new covers
                                             //refresh number of found covers
                                             setFoundText();
@@ -423,7 +420,8 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
      * @see java.awt.event.ComponentListener#componentResized(java.awt.event.ComponentEvent)
      */
     public void componentResized(ComponentEvent e) {
-        Log.debug("Cover resized"); //$NON-NLS-1$
+        searching(true);
+    	Log.debug("Cover resized"); //$NON-NLS-1$
         if (!ConfigurationManager.getBoolean(CONF_COVERS_RESIZE)){ //if user didn't check resize option, just leave
             return;
         }
@@ -434,9 +432,11 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
         }
         new Thread(){
             public void run(){
-                displayCurrentCover();
+               displayCurrentCover();
+               CoverView.this.revalidate();  //make sure the image is repainted
                CoverView.this.repaint();  //make sure the image is repainted
-            }
+               searching(false);
+    	    }
         }.start();
     }
     
@@ -450,12 +450,12 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
         }
         synchronized(bLock){
             Log.debug("display index: "+index); //$NON-NLS-1$
-            //find next OK cover
+            searching(true); //lookup icon
+            //find next correct cover
             ImageIcon icon = null;
             Cover cover = null; 
             while ( index >= 0){//there are some more covers after
                 try{
-                    searching(true); //lookup icon
                     setCursor(Util.WAIT_CURSOR); //waiting cursor
                     cover = (Cover)alCovers.get(index);  //take image at the given index
                     icon = cover.getImage();
@@ -468,7 +468,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                         alCovers.remove(index);
                         //Add at last the default cover if all remote cover has been discarded
                         if (alCovers.size() == 0){
-                            alCovers.add(0,coverDefault);
+                            alCovers.add(coverDefault);
                         }
                         Log.debug("Removed cover: "+cover); //$NON-NLS-1$
                     }
@@ -483,19 +483,18 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
             if (icon == null){ //none available cover
                 return;
             }
-            Container ji =  ViewManager.getContainer(CoverView.this);
             ImageFilter filter = new AreaAveragingScaleFilter(this.getWidth()-8,this.getHeight()-30);
             Image img = createImage(new FilteredImageSource(icon.getImage().getSource(),filter));
             img.flush();//free image memory
             ImageIcon ii = new ImageIcon(img);
             jl = new JLabel(ii);
-            jl.setMinimumSize(new Dimension(0,0));
-            final URL url = cover.getURL();
-            final byte[] bData = cover.getData();
+            jl.setMinimumSize(new Dimension(0,0)); //required for info node resizing
             SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
                     Cover cover = (Cover)alCovers.get(index);  //take image at the given index
-                    //enable delete button only for local covers
+                    URL url = cover.getURL();
+                    byte[] bData = cover.getData();
+                	//enable delete button only for local covers
                     if (cover.getType() == Cover.LOCAL_COVER || cover.getType() == Cover.ABSOLUTE_DEFAULT_COVER){
                         jbDelete.setEnabled(true);
                     }
@@ -521,7 +520,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                     if (indexPrevious > alCovers.size()-1){
                         indexPrevious = 0;
                     }
-                    final URL urlPrevious = ((Cover)alCovers.get(indexPrevious)).getURL();
+                    URL urlPrevious = ((Cover)alCovers.get(indexPrevious)).getURL();
                     if (urlPrevious != null){
                         jbPrevious.setToolTipText("<html>"+Messages.getString("CoverView.4")+"<br>"+urlPrevious.toString()+"</html>"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
                     }
@@ -542,6 +541,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                     setCursor(Util.DEFAULT_CURSOR);
                 }
             });
+            System.gc();//suggest JVM to perform a memory cleanup
         }
     }
     

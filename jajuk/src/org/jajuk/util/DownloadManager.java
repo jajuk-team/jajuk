@@ -52,7 +52,7 @@ public class DownloadManager implements ITechnicalStrings {
 	private static boolean bActiveConnection = false;
 	
 	/**Inform the current connection that a concurrent connection has been tried and that this one should be trashed*/
-	private static boolean bConcurrentConnection = false;
+	private static boolean bTrashData = false;
 	
 	/**
 	 * @param sProxyUser
@@ -151,6 +151,7 @@ public class DownloadManager implements ITechnicalStrings {
 	 * @return result as an array of bytes, null if a problem occured
 	 */
 	public static byte[] download(URL url) throws JajukException{
+	    bActiveConnection = true; //tell others a connection is engaged
 	    byte[] bOut = null;
 	    GetMethod get = null;
 	    try{
@@ -169,17 +170,19 @@ public class DownloadManager implements ITechnicalStrings {
 	        get.setDoAuthentication( true );
 	        int status = client.executeMethod(getHostConfiguration(url.getHost()), get );
 	        bOut = get.getResponseBody();
-	        if ( bConcurrentConnection){ //if another session has tried to download another url, this one shouls be trashed
-	            throw new JajukException("129"); //$NON-NLS-1$
+	        if ( bTrashData){ //if another session has tried to download another url, this one shouls be trashed
+	            Log.debug("Trash data required");
+	        	throw new JajukException("129"); //$NON-NLS-1$
 	        }
 	     }
 	    catch(Exception e){
-	        throw new JajukException("129"); //mainly time outs //$NON-NLS-1$
+	        Log.debug("Time out during cover lookup");
+	    	throw new JajukException("129"); //mainly time outs //$NON-NLS-1$
 	    }
 	    finally{
 	        get.releaseConnection();
 	        bActiveConnection = false;
-	        bConcurrentConnection = false;
+	        bTrashData = false;
 	    }
 	    return bOut;
 	}
@@ -193,18 +196,12 @@ public class DownloadManager implements ITechnicalStrings {
         return JOptionPane.showInputDialog(Main.getWindow(),Messages.getString("DownloadManager.0"),Messages.getString("DownloadManager.1"),JOptionPane.INFORMATION_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
     }
     
-    
+   
     /**
-     * @return Returns the bConcurrentConnection.
+     * @param Set the Trash data
      */
-    public static boolean isConcurrentConnection() {
-        return bConcurrentConnection;
-    }
-    /**
-     * @param concurrentConnection The bConcurrentConnection to set.
-     */
-    public static void setConcurrentConnection(boolean concurrentConnection) {
-        bConcurrentConnection = concurrentConnection;
+    public static void setTrashData(boolean concurrentConnection) {
+        bTrashData = concurrentConnection;
     }
     /**
      * @return Returns the bActiveConnection.
