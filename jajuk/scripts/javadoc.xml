@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="jajuk" default="javadoc">
     <target name="javadoc">
-        <javadoc destdir="../doc" access="private" use="true"
+        <javadoc destdir="../dist-files/doc/javadoc" access="private" use="true"
             notree="false" nonavbar="false" noindex="false"
             splitindex="true" author="true" version="true"
             nodeprecatedlist="false" nodeprecated="false"
