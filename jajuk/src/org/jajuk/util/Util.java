@@ -642,7 +642,7 @@ public class Util implements ITechnicalStrings {
 			}
 			if (properties.containsKey("duration")) //$NON-NLS-1$
 			{
-				milliseconds = (int) (((Long) properties.get("duration")).longValue())/1000;			 //$NON-NLS-1$
+				milliseconds = (long) (((Long) properties.get("duration")).longValue())/1000;			 //$NON-NLS-1$
 			}
 			else
 			{
