@@ -23,6 +23,8 @@ package org.jajuk.ui.views;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.Iterator;
 
 import javax.swing.BorderFactory;
@@ -36,6 +38,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -63,11 +66,12 @@ import org.jajuk.util.log.Log;
  * @author     bflorat
  * @created    17 nov. 2003
  */
-public class ParameterView extends ViewAdapter implements ActionListener,ListSelectionListener {
+public class ParameterView extends ViewAdapter implements ActionListener,ListSelectionListener,ItemListener {
 	
 	/**Self instance*/
 	private static ParameterView pv;
 	
+	JTabbedPane jtpMain;
 	JPanel jpHistory;
 	JLabel jlHistory;
 	JTextField jtfHistory;
@@ -170,7 +174,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jpHistory.add(jtfHistory,"2,0"); //$NON-NLS-1$
 		jpHistory.add(jbClearHistory,"0,2"); //$NON-NLS-1$
 		jpHistory.setBorder(BorderFactory.createTitledBorder(Messages.getString("ParameterView.8"))); //$NON-NLS-1$
-		//Start
+		//Startup
 		jpStart = new JPanel();
 		double sizeStart[][] = {{0.15,iXSeparator,0.4,iXSeparator,0.3,iXSeparator},
 				{20,iYSeparator,20,iYSeparator,20,iYSeparator,20}};
@@ -185,12 +189,13 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jrbShuffle.setToolTipText(Messages.getString("ParameterView.15")); //$NON-NLS-1$
 		jrbFile = new JRadioButton(Messages.getString("ParameterView.16")); //$NON-NLS-1$
 		jrbFile.setToolTipText(Messages.getString("ParameterView.17")); //$NON-NLS-1$
+		jrbFile.addItemListener(this);
 		sbSearch = new SearchBox(this);
-		if (STARTUP_MODE_FILE.equals(ConfigurationManager.getProperty(CONF_STARTUP_MODE))){
-			String sFileId = ConfigurationManager.getProperty(CONF_STARTUP_FILE);
-			if ( !"".equals(sFileId)){ //$NON-NLS-1$
-				sbSearch.setText(FileManager.getFile(sFileId).getTrack().getName());
-			}
+		sbSearch.setEnabled(false); //disabled by default, is enabled only if jrbFile is enabled
+		//set choosen track in file selection
+		String sFileId = ConfigurationManager.getProperty(CONF_STARTUP_FILE);
+		if ( !"".equals(sFileId)){ //$NON-NLS-1$
+			sbSearch.setText(FileManager.getFile(sFileId).getTrack().getName());
 		}
 		sbSearch.setToolTipText(Messages.getString("ParameterView.18")); //$NON-NLS-1$
 		bgStart.add(jrbNothing);
@@ -416,16 +421,20 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jbDefault.addActionListener(this);
 		jpOKCancel.add(jbDefault);
 		//global layout
-		double size[][] = {{0.5,0.5},
-				{0.45,iYSeparator,0.25,iYSeparator,0.20,iYSeparator,0.07}};
+		//global layout
+		double size[][] = {{0.99},
+				{0.9,0.10}};
 		setLayout(new TableLayout(size));
-		add(jpHistory,"1,0"); //$NON-NLS-1$
-		add(jpStart,"0,2"); //$NON-NLS-1$
-		add(jpConfirmations,"0,4"); //$NON-NLS-1$
-		add(jpOptions,"0,0"); //$NON-NLS-1$
-		add(jpP2P,"1,2"); //$NON-NLS-1$
-		add(jpTags,"1,4"); //$NON-NLS-1$
-		add(jpOKCancel,"0,6"); //$NON-NLS-1$
+		//add main panels
+		jtpMain = new JTabbedPane();
+		jtpMain.addTab(Messages.getString("ParameterView.33"),jpOptions); //$NON-NLS-1$
+		jtpMain.addTab(Messages.getString("ParameterView.19"),jpStart); //$NON-NLS-1$
+		jtpMain.addTab(Messages.getString("ParameterView.98"),jpTags); //$NON-NLS-1$
+		jtpMain.addTab(Messages.getString("ParameterView.8"),jpHistory); //$NON-NLS-1$
+		jtpMain.addTab(Messages.getString("ParameterView.71"),jpP2P); //$NON-NLS-1$
+		jtpMain.addTab(Messages.getString("ParameterView.26"),jpConfirmations); //$NON-NLS-1$
+		add(jtpMain,"0,0");
+		add(jpOKCancel,"0,1"); //$NON-NLS-1$
 		//update widgets state
 		updateSelection();
 	}
@@ -547,12 +556,13 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 	}
 	
 	/**
-	 * Set widgets to specified value
+	 * Set widgets to specified value in options
 	 */
 	private void updateSelection(){
 		jtfHistory.setText(ConfigurationManager.getProperty(CONF_HISTORY));
 		if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_FILE)){
 			jrbFile.setSelected(true);
+			sbSearch.setEnabled(true);
 		}
 		else if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_LAST)){
 			jrbLast.setSelected(true);
@@ -603,6 +613,15 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 			sbSearch.popup.hide();
 		}
 	}
+
+       /* (non-Javadoc)
+     * @see java.awt.event.ItemListener#itemStateChanged(java.awt.event.ItemEvent)
+     */
+    public void itemStateChanged(ItemEvent e) {
+        if (e.getSource() == jrbFile){  //jrbFile has been selected or deselected
+            sbSearch.setEnabled(jrbFile.isSelected());
+        }
+    }
 	
 	
 }
