@@ -223,8 +223,8 @@ public class Directory extends PropertyAdapter implements Comparable{
 			if (bIsMusic) {
 				//check the file is not already known in old database
 				org.jajuk.base.File fileRef = null;
-				String sId = MD5Processor.hash(new StringBuffer(getDevice().getName()).append(getDevice().getUrl()).append(getRelativePath()).append(files[i].getName()).append(Util.getFileChecksum(files[i])).toString());
-				Iterator it = TrackManager.getTracks().iterator();
+				String sId = MD5Processor.hash(new StringBuffer(getDevice().getName()).append(getDevice().getUrl()).append(getRelativePath()).append(files[i].getName()).toString());
+                Iterator it = TrackManager.getTracks().iterator();
 				while (it.hasNext() && fileRef == null){
 					Track track = (Track)it.next();
 					Iterator it2 =  track.getFiles().iterator();
