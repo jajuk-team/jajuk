@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.4  2003/10/26 21:28:49  bflorat
+ * 26/10/2003
+ *
  * Revision 1.3  2003/10/21 20:43:07  bflorat
  * TechnicalStrings to ITechnicalStrings according to coding convention
  *
@@ -123,22 +126,48 @@ public class Log implements ITechnicalStrings{
 
 		/**
 		 * Log an error-level  message
-		 * @param sInfosup
-		 * @param t
+		 * @param sCode error code
+		 * @param sInfosup : error context information
+		 * @param t the exception itself
 		**/
-		public static void error(String sInfosup,Throwable t){
-				logger.error(sInfosup,t);
+		public static void error(String sCode,String sInfosup,Throwable t){
+			logger.error('('+sCode+')'+Messages.getErrorMessage(sCode)+ ":"+sInfosup,t);
+		 }
+		
+	/**
+		 * Log an error-level  message
+		 * @param t the exception itself
+		**/
+		public static void error(Throwable t){
+			logger.error("",t);
 		 }
 
-			/**
+		/**
 			 * Log an error-level  message
 			 * @param sInfosup
 			 * @param t
 			**/
-			public static void error(String sInfosup,JajukException je){
-					logger.error('('+je.getCode()+") " +sInfosup,je);
+			public static void error(String sCode,Throwable t){
+					error(sCode,"",t);
 			 }
 
+		
+		/**
+			 * Log an error-level  message
+			 * @param sInfosup
+			 * @param je
+			**/
+			public static void error(String sInfosup,JajukException je){
+					error(je.getCode(),sInfosup,je);
+			 }
+
+			/**
+				 * Log an error-level  message
+				 * @param je
+				**/
+				public static void error(JajukException je){
+						error(je.getCode(),"",je);
+				 }
 
 		/**
 		 * Log a fatal error message

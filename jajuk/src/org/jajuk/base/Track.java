@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.4  2003/10/26 21:28:49  bflorat
+ * 26/10/2003
+ *
  * Revision 1.3  2003/10/24 15:44:25  bflorat
  * 24/10/2003
  *
@@ -29,6 +32,8 @@
 package org.jajuk.base;
 
 import java.util.ArrayList;
+
+import org.jajuk.util.Util;
 
 /**
  *  A track
@@ -61,7 +66,7 @@ public class Track extends PropertyAdapter {
 	/**Track addition date format:YYYYMMDD*/
 	private String sAdditionDate;
 	/**Track associated files*/
-	private ArrayList alFiles;
+	private ArrayList alFiles = new ArrayList(1);
 	
 	
 	
@@ -100,7 +105,7 @@ public class Track extends PropertyAdapter {
 	 * toString method
 	 */
 	public String toString() {
-		String sOut = "Track[ID="+sId+" Name=" + getName() + " Album="+album+" Style="+style+" Author="+author+" Length="+length+" Year="+sYear+" Rate="+lRate+" Type="+type+" Hits="+iHits+" Addition date"+sAdditionDate+"]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		String sOut = "Track[ID="+sId+" Name=" + getName() + " "+album+" "+style+" "+author+" Length="+length+" Year="+sYear+" Rate="+lRate+" "+type+" Hits="+iHits+" Addition date="+sAdditionDate+"]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		for (int i=0;i<alFiles.size();i++){
 			sOut += '\n'+alFiles.get(i).toString();
 		}
@@ -114,27 +119,19 @@ public class Track extends PropertyAdapter {
 	public String toXml() {
 		StringBuffer sb = new StringBuffer("\t\t<track id='" + sId);//$NON-NLS-1$
 		sb.append("' name=' ");//$NON-NLS-1$
-		sb.append(sName).append("' ");//$NON-NLS-1$
-		sb.append("' album=' ");//$NON-NLS-1$
-		sb.append(album.getId()).append("' ");//$NON-NLS-1$
-		sb.append("' style=' ");//$NON-NLS-1$
-		sb.append(style.getId()).append("' ");//$NON-NLS-1$
-		sb.append("' author=' ");//$NON-NLS-1$
-		sb.append(author.getId()).append("' ");//$NON-NLS-1$
-		sb.append("' length=' ");//$NON-NLS-1$
-		sb.append(length).append("' ");//$NON-NLS-1$
-		sb.append("' year=' ");//$NON-NLS-1$
-		sb.append(sYear).append("' ");//$NON-NLS-1$
-		sb.append("' rate=' ");//$NON-NLS-1$
-		sb.append(lRate).append("' ");//$NON-NLS-1$
-		sb.append("' files=' ");//$NON-NLS-1$
+		sb.append(Util.formatXML(sName)).append("' album='");//$NON-NLS-1$
+		sb.append(album.getId()).append("' style='");//$NON-NLS-1$
+		sb.append(style.getId()).append("' author='");//$NON-NLS-1$
+		sb.append(author.getId()).append("' length='");//$NON-NLS-1$
+		sb.append(length).append("' year='");//$NON-NLS-1$
+		sb.append(sYear).append("' rate='");//$NON-NLS-1$
+		sb.append(lRate).append("' files='");//$NON-NLS-1$
 		for (int i=0;i<alFiles.size();i++){
 			sb.append(((File)alFiles.get(i)).getId()).append(",");//$NON-NLS-1$
 		}
 		sb.deleteCharAt(sb.length()-1);
-		sb.append("' hits=' ");//$NON-NLS-1$
-		sb.append(iHits).append("' ");//$NON-NLS-1$
-		sb.append("' added=' ");//$NON-NLS-1$
+		sb.append("' hits='");//$NON-NLS-1$
+		sb.append(iHits).append("' added='");//$NON-NLS-1$
 		sb.append(sAdditionDate).append("' ");//$NON-NLS-1$
 		sb.append(getPropertiesXml());
 		sb.append(sName).append("/>\n");//$NON-NLS-1$

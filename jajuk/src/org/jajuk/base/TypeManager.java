@@ -16,8 +16,8 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
- * Revision 1.2  2003/10/23 22:07:40  bflorat
- * 23/10/2003
+ * Revision 1.3  2003/10/26 21:28:49  bflorat
+ * 26/10/2003
  *
  * Revision 1.1  2003/10/12 21:08:11  bflorat
  * 12/10/2003
@@ -25,7 +25,7 @@
  */
 package org.jajuk.base;
 
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -50,7 +50,9 @@ public class TypeManager {
 	 * Register a type jajuk can read
 	 * @param type
 	 */
-	public static Type registerType(Type type) {
+	public static Type registerType(String sName,String sExtension, String sPlayerImpl,String sTagImpl,boolean bIsMusic)throws Exception {
+		String sId = new Integer(hmSupportedTypes.size()).toString();
+		Type type = new Type(sId,sName,sExtension,sPlayerImpl,sTagImpl,bIsMusic);
 		hmSupportedTypes.put(type.getExtension(), type);
 		return type;
 	}
@@ -65,8 +67,8 @@ public class TypeManager {
 	}
 
 	/**Return all registred types*/
-	public static Collection getTypes() {
-		return hmSupportedTypes.values();
+	public static ArrayList getTypes() {
+		return new ArrayList(hmSupportedTypes.values());
 	}
 
 	/**

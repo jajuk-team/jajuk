@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.3  2003/10/26 21:28:49  bflorat
+ * 26/10/2003
+ *
  * Revision 1.2  2003/10/24 15:44:25  bflorat
  * 24/10/2003
  *
@@ -98,6 +101,10 @@ public interface ITechnicalStrings {
 	
 	//players impls
 	public static final String PLAYER_IMPL_JAVALAYER= "org.jajuk.players.JavaLayerPlayerImpl";
+	
+	//tag impls
+	public static final String TAG_IMPL_JID3LIB= "org.jajuk.tag.JID3LibTagImpl";
+	public static final String TAG_IMPL_MP3INFO= "org.jajuk.tag.MP3InfoTagImpl";
 	
 	//extensions
 	public static final String EXT_MP3 = "mp3";

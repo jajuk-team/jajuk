@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.4  2003/10/26 21:28:49  bflorat
+ * 26/10/2003
+ *
  * Revision 1.3  2003/10/23 22:07:40  bflorat
  * 23/10/2003
  *
@@ -29,8 +32,10 @@
 
 package org.jajuk.base;
 
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.HashMap;
+
+import org.jajuk.util.MD5Processor;
 
 /**
  *  Convenient class to manage files
@@ -53,16 +58,17 @@ public class FileManager {
 	 *@param sName
 	 */
 	public static File registerFile(String sName,Directory directory,Track track,long lSize,String sQuality) {
-		String sId = new Integer(hmFiles.size()).toString();
+		String sId = MD5Processor.hash(directory.getAbsolutePath()+sName); 
 		File file = new File(sId,sName,directory,track,lSize,sQuality);
-		hmFiles.put(new Integer(sId),file);
+		hmFiles.put(sId,file);
+		System.out.println(file);
 		return file;
 	}
 
 
 	/**Return all registred files*/
-	public static Collection getFiles() {
-		return hmFiles.values();
+	public static ArrayList getFiles() {
+		return new ArrayList(hmFiles.values());
 	}
 
 	/**

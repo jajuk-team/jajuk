@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.3  2003/10/26 21:28:49  bflorat
+ * 26/10/2003
+ *
  * Revision 1.2  2003/10/23 22:07:40  bflorat
  * 23/10/2003
  *
@@ -26,9 +29,12 @@
 
 package org.jajuk.base;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+
+import org.jajuk.util.MD5Processor;
 
 /**
  *  Convenient class to manage devices
@@ -52,7 +58,7 @@ public class DeviceManager {
 	 *@return device 
 	 */
 	public static Device  registerDevice(String sName,String sDeviceType,String sUrl) {
-		String sId = new Integer(hmDevices.size()).toString();
+		String sId = MD5Processor.hash(sUrl);
 		Device device = new Device(sId,sName,sDeviceType,sUrl);
 		hmDevices.put(sId,device);
 		return device;
@@ -60,8 +66,8 @@ public class DeviceManager {
 
 
 	/**Return all registred devices*/
-	public static Collection getDevices() {
-		return hmDevices.values();
+	public static ArrayList getDevices() {
+		return new ArrayList(hmDevices.values());
 	}
 
 	/**

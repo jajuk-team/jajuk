@@ -16,13 +16,17 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.2  2003/10/26 21:28:49  bflorat
+ * 26/10/2003
+ *
  * Revision 1.1  2003/10/21 17:51:43  bflorat
  * 21/10/2003
  *
  */
 package org.jajuk.base;
 
-import java.util.Properties;
+import org.jajuk.util.Util;
+
 
 /**
  *  A playlist file
@@ -39,7 +43,7 @@ public class PlaylistFile extends PropertyAdapter {
 	/**Playlist hashcode*/
 	private String  sHashcode;
 	/**Playlist parent directory*/
-	private String sParentDirectory;
+	private Directory dParentDirectory;
 	
 	
 	/**
@@ -49,11 +53,11 @@ public class PlaylistFile extends PropertyAdapter {
 	 * @param sHashcode
 	 * @param sParentDirectory
 	 */
-	public PlaylistFile(String sId, String sName,String sHashcode,String sParentDirectory) {
+	public PlaylistFile(String sId, String sName,String sHashcode,Directory dParentDirectory) {
 		this.sId = sId;
 		this.sName = sName;
 		this.sHashcode = sHashcode;
-		this.sParentDirectory = sParentDirectory;
+		this.dParentDirectory = dParentDirectory;
 	}
 
 	
@@ -61,7 +65,7 @@ public class PlaylistFile extends PropertyAdapter {
 	 * toString method
 	 */
 	public String toString() {
-		return "Playlist file[ID="+sId+" Name=" + getName() + " Hashcode="+sHashcode+" Dir="+sParentDirectory+"]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$
+		return "Playlist file[ID="+sId+" Name=" + getName() + " Hashcode="+sHashcode+" Dir="+dParentDirectory.getId()+"]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$
 	}
 
 	/**
@@ -71,11 +75,11 @@ public class PlaylistFile extends PropertyAdapter {
 	public String toXml() {
 		StringBuffer sb = new StringBuffer("\t\t<playlist_file id='" + sId);
 		sb.append("' name='");
-		sb.append(sName);
+		sb.append(Util.formatXML(sName));
 		sb.append("'' hashcode='");
 		sb.append(sHashcode);
 		sb.append("'' directory='");
-		sb.append(sParentDirectory).append("' ");
+		sb.append(dParentDirectory.getId()).append("' ");
 		sb.append(getPropertiesXml());
 		sb.append("/>\n");
 		return sb.toString();
@@ -116,8 +120,8 @@ public class PlaylistFile extends PropertyAdapter {
 	/**
 	 * @return
 	 */
-	public String getParentDirectory() {
-		return sParentDirectory;
+	public Directory getParentDirectory() {
+		return dParentDirectory;
 	}
 
 }

@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.7  2003/10/26 21:28:49  bflorat
+ * 26/10/2003
+ *
  * Revision 1.6  2003/10/24 15:44:25  bflorat
  * 24/10/2003
  *
@@ -36,6 +39,8 @@
  *
  */
 package org.jajuk.base;
+
+import org.jajuk.util.Util;
 
 
 /**
@@ -95,18 +100,14 @@ public class File extends PropertyAdapter{
 		 */
 		public String toXml() {
 			StringBuffer sb = new StringBuffer("\t\t<file id='" + sId);//$NON-NLS-1$
-			sb.append("' name=' ");//$NON-NLS-1$
-			sb.append(sName).append("' ");//$NON-NLS-1$
-			sb.append("' directory=' ");//$NON-NLS-1$
-			sb.append(directory).append("' ");//$NON-NLS-1$
-			sb.append("' track=' ");//$NON-NLS-1$
-			sb.append(track.getId()).append("' ");//$NON-NLS-1$
-			sb.append("' size=' ");//$NON-NLS-1$
-			sb.append(lSize).append("' ");//$NON-NLS-1$
-			sb.append("' quality=' ");//$NON-NLS-1$
+			sb.append("' name='");//$NON-NLS-1$
+			sb.append(Util.formatXML(sName)).append("' directory='");//$NON-NLS-1$
+			sb.append(directory.getId()).append("' track='");//$NON-NLS-1$
+			sb.append(track.getId()).append("' size='");//$NON-NLS-1$
+			sb.append(lSize).append("' quality='");//$NON-NLS-1$
 			sb.append(sQuality).append("' ");//$NON-NLS-1$
 			sb.append(getPropertiesXml());
-			sb.append(sName).append("/>\n");//$NON-NLS-1$
+			sb.append("/>\n");//$NON-NLS-1$
 			return sb.toString();
 		}
 	

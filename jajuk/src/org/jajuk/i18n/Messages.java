@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.5  2003/10/26 21:28:49  bflorat
+ * 26/10/2003
+ *
  * Revision 1.4  2003/10/23 22:07:40  bflorat
  * 23/10/2003
  *
@@ -31,6 +34,7 @@
  */
 package org.jajuk.i18n;
 
+import java.awt.Label;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
@@ -38,6 +42,7 @@ import java.util.ResourceBundle;
 import javax.swing.JOptionPane;
 
 import org.jajuk.Main;
+import org.jajuk.util.log.Log;
 
 /**
  * Utility class to get strings from localized property files
@@ -64,11 +69,14 @@ public class Messages {
 	 * @return
 	 */
 	public static String getString(String key) {
-		try {
-			return rb.getString(key);
-		} catch (MissingResourceException e) {
-			return '!' + key + '!';
-		}
+		String sOut = key;
+			try{
+				sOut = rb.getString(key); //$NON-NLS-1$
+			}
+			catch(Exception e){
+				Log.error("105","key: "+key,e);
+			}
+			return sOut;
 	}
 
 
@@ -84,7 +92,14 @@ public class Messages {
 		 * @return String Message corresponding to the error code.
 		 */
 		public static String getErrorMessage(String pCode) {
-			return rb.getString("Error." + pCode); //$NON-NLS-1$
+			String sOut = pCode;
+			try{
+				sOut = rb.getString("Error." + pCode); //$NON-NLS-1$
+			}
+			catch(Exception e){
+				Log.error("105","code: "+pCode,e);
+			}
+			return sOut;
 		}
 		
 		

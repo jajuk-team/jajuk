@@ -1,22 +1,18 @@
 /*
  * Jajuk Copyright (C) 2003 bflorat
  * 
- * This program is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by the Free
- * Software Foundation; either version 2 of the License, or any later version.
+ * This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the
+ * License, or any later version.
  * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
- * more details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * General Public License for more details.
  * 
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
- * Place - Suite 330, Boston, MA 02111-1307, USA. $Log$
- * Place - Suite 330, Boston, MA 02111-1307, USA. Revision 1.3  2003/10/24 15:44:25  bflorat
- * Place - Suite 330, Boston, MA 02111-1307, USA. 24/10/2003
- * Place - Suite 330, Boston, MA 02111-1307, USA.
- * Revision 1.2 2003/10/23 22:07:40 bflorat 23/10/2003
+ * You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
+ * USA. $Log$
+ * USA. Revision 1.4  2003/10/26 21:28:49  bflorat
+ * USA. 26/10/2003
+ * USA. Place - Suite 330, Boston, MA 02111-1307, USA. Revision 1.3 2003/10/24 15:44:25 bflorat Place - Suite 330, Boston, MA 02111-1307, USA. 24/10/2003 Place - Suite 330,
+ * Boston, MA 02111-1307, USA. Revision 1.2 2003/10/23 22:07:40 bflorat 23/10/2003
  * 
  * Revision 1.1 2003/10/21 17:51:43 bflorat 21/10/2003
  *  
@@ -24,7 +20,6 @@
 package org.jajuk.base;
 
 import java.io.File;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -51,7 +46,9 @@ public class Directory extends PropertyAdapter {
 	private Device device;
 	/** Child directories */
 	private ArrayList alDirectories = new ArrayList(20);
-	/** IO file for optimizations**/
+	/** Child files */
+	private ArrayList alFiles = new ArrayList(20);
+	/** IO file for optimizations* */
 	private java.io.File fio;
 
 	/**
@@ -67,7 +64,7 @@ public class Directory extends PropertyAdapter {
 		this.sName = sName;
 		this.dParent = dParent;
 		this.device = device;
-		this.fio = new File(device.getUrl()+getAbsolutePath());
+		this.fio = new File(device.getUrl() + getAbsolutePath());
 	}
 
 	/**
@@ -85,12 +82,15 @@ public class Directory extends PropertyAdapter {
 	public String toXml() {
 		StringBuffer sb = new StringBuffer("\t\t<directory id='" + sId);
 		sb.append("' name='");
-		sb.append(sName);
-		sb.append("'' parent='");
-		sb.append(dParent.getName());
-		sb.append("'' device='");
-		sb.append(device.getName());
-		sb.append(sName).append("' ");
+		sb.append(Util.formatXML(sName));
+		sb.append("' parent='");
+		String sParent = "-1";
+		if (dParent!=null){
+			sParent = dParent.getId();
+		}
+		sb.append(sParent);
+		sb.append("' device='");
+		sb.append(device.getId()).append("' ");
 		sb.append(getPropertiesXml());
 		sb.append("/>\n");
 		return sb.toString();
@@ -150,34 +150,60 @@ public class Directory extends PropertyAdapter {
 	public void addDirectory(Directory directory) {
 		alDirectories.add(directory);
 	}
+	
+	/**
+		 * @return
+		 */
+		public ArrayList getFiles() {
+			return alFiles;
+		}
+
+		/**
+		 * @param directory
+		 */
+		public void addFile(File file) {
+			alFiles.add(file);
+		}
+
 
 	/**
 	 * Scan all files in a directory
 	 * 
 	 * @param
-	 **/ 
-	 public void scan() { 
-	 	File[] files = getFio().listFiles(JajukFileFilter.getInstance(false,true)); 
-	 	for (int i = 0; i< files.length; i++) { 
-	 		//Read from id3 tags
-	 		String sTrackName = "track name";
-	 		String sAlbumName = "album name";
-	 		String sAuthorName = "author name";
-			String sStyle = "author name";
-			long length = 120;  //length in sec
-			String sYear = "2000";
-			String sAdditionDate = new SimpleDateFormat(DATE_FILE).format(new Date());
-			String sQuality = "192";
-			
-	 		Album album = AlbumManager.registerAlbum(sAlbumName);
-	 		Style style = StyleManager.registerStyle(sStyle);
-			Author author = AuthorManager.registerAuthor(sAuthorName);
-	 		Type type = TypeManager.getTypeByExtension(Util.getExtension(files[i]));
-			Track track = TrackManager.registerTrack(sTrackName,album,style,author,length,sYear,type,sAdditionDate); 
-	 		FileManager.registerFile(files[i].getName(),this,track,files[i].length(),sQuality);
-	 	} 
-	 }
-	 
+	 */
+	public void scan() {
+		java.io.File[] files = getFio().listFiles(JajukFileFilter.getInstance(false, true));
+		for (int i = 0; i < files.length; i++) {
+			if (TypeManager.getTypeByExtension(Util.getExtension(files[i])).isMusic()) {
+				org.jajuk.base.File fCompare = new org.jajuk.base.File("0",fio.getName(),this,null,0,"");
+				ArrayList alFiles = FileManager.getFiles();
+				int index = alFiles.indexOf(fCompare);
+				if (index != -1){  //file already exists, we don't rescan it 
+					org.jajuk.base.File file = (org.jajuk.base.File)alFiles.get(index);
+					FileManager.registerFile(file.getName(), this, file.getTrack(), file.getSize(), file.getQuality());
+					return;
+				}
+				Tag tag = new Tag(files[i]);
+				String sTrackName = tag.getTrackName();
+				String sAlbumName = tag.getAlbumName();
+				String sAuthorName = tag.getAuthorName();
+				String sStyle = tag.getStyleName();
+				long length = tag.getLength(); //length in sec
+				String sYear = tag.getYear();
+				String sAdditionDate = new SimpleDateFormat(DATE_FILE).format(new Date());
+				String sQuality = tag.getQuality();
+				
+				Album album = AlbumManager.registerAlbum(sAlbumName);
+				Style style = StyleManager.registerStyle(sStyle);
+				Author author = AuthorManager.registerAuthor(sAuthorName);
+				Type type = TypeManager.getTypeByExtension(Util.getExtension(files[i]));
+				Track track = TrackManager.registerTrack(sTrackName, album, style, author, length, sYear, type, sAdditionDate);
+				//System.out.println(track);
+				FileManager.registerFile(files[i].getName(), this, track, files[i].length(), sQuality);
+			}
+		}
+	}
+
 	/**
 	 * Return full directory path name
 	 * 
@@ -189,7 +215,8 @@ public class Directory extends PropertyAdapter {
 		Directory dCurrent = this;
 		while (!bTop) {
 			dCurrent = dCurrent.getParentDirectory();
-			if (dCurrent != null) { //if it is the root directory, no parent
+			if (dCurrent != null) { //if it is the root directory, no
+				// parent
 				sbOut.insert(0, java.io.File.separatorChar).insert(1, dCurrent.getName());
 			} else {
 				bTop = true;

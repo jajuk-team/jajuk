@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.3  2003/10/26 21:28:49  bflorat
+ * 26/10/2003
+ *
  * Revision 1.2  2003/10/23 22:07:40  bflorat
  * 23/10/2003
  *
@@ -26,8 +29,8 @@
 package org.jajuk.base;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Properties;
+
+import org.jajuk.util.Util;
 
 /**
  *  An Album
@@ -77,8 +80,7 @@ public class Album extends PropertyAdapter {
 	public String toXml() {
 		StringBuffer sb = new StringBuffer("\t\t<album id='" + sId);//$NON-NLS-1$
 		sb.append("' name='");//$NON-NLS-1$
-		sb.append(sName);
-		sb.append("'' style='");//$NON-NLS-1$
+		sb.append(Util.formatXML(sName)).append("' ");//$NON-NLS-1$
 		sb.append(getPropertiesXml());
 		sb.append("/>\n");//$NON-NLS-1$
 		return sb.toString();

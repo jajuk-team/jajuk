@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.4  2003/10/26 21:28:49  bflorat
+ * 26/10/2003
+ *
  * Revision 1.3  2003/10/24 15:44:25  bflorat
  * 24/10/2003
  *
@@ -29,11 +32,10 @@
 
 package org.jajuk.base;
 
-import java.text.Format;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
+
+import org.jajuk.util.MD5Processor;
 
 /**
  *  Convenient class to manage Albums
@@ -60,9 +62,10 @@ public class AlbumManager {
 		Album album = null;
 		int index = al.indexOf(new Album("",sName));
 			if (index == -1){  //new album
-				String sId = new Integer(hmAlbums.size()).toString();
-				album = new Album(sId,format(sName));
-				hmAlbums.put(new Integer(sId),album);
+				String sId = MD5Processor.hash(sName);
+				album = new Album(sId,sName);
+				//TODO format
+				hmAlbums.put(sId,album);
 			}
 			else{//album already exists, return it
 				album = (Album)al.get(index);
@@ -72,8 +75,8 @@ public class AlbumManager {
 
 
 	/**Return all registred Albums*/
-	public static Collection getAlbums() {
-		return hmAlbums.values();
+	public static ArrayList getAlbums() {
+		return new ArrayList(hmAlbums.values());
 	}
 
 	/**

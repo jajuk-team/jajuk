@@ -16,8 +16,8 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
- * Revision 1.3  2003/10/24 15:44:25  bflorat
- * 24/10/2003
+ * Revision 1.4  2003/10/26 21:28:49  bflorat
+ * 26/10/2003
  *
  */
 
@@ -25,6 +25,8 @@ package org.jajuk.base;
 
 import java.util.Iterator;
 import java.util.Properties;
+
+import org.jajuk.util.Util;
 
 /**
  * Generic property handler 
@@ -35,7 +37,7 @@ import java.util.Properties;
 public class PropertyAdapter implements IPropertyable,ITechnicalStrings {
 
 	/**Item properties*/
-	private Properties properties;
+	private Properties properties = new Properties();
 	
 
 	/**
@@ -71,7 +73,7 @@ public class PropertyAdapter implements IPropertyable,ITechnicalStrings {
 		StringBuffer sb=new StringBuffer("");
 		while (it.hasNext()){
 			String sKey = (String)it.next();
-			String sValue = properties.getProperty(sKey);
+			String sValue = Util.formatXML(properties.getProperty(sKey));
 			sb.append(sKey+"='"+sValue+"'");
 		}	
 		return sb.toString();

@@ -16,16 +16,17 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
- * Revision 1.3  2003/10/23 22:07:40  bflorat
- * 23/10/2003
+ * Revision 1.4  2003/10/26 21:28:49  bflorat
+ * 26/10/2003
  *
  */
 
 package org.jajuk.base;
 
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
+
+import org.jajuk.util.MD5Processor;
 
 /**
  *  Convenient class to manage styles
@@ -48,11 +49,19 @@ public class StyleManager {
 	 *@param sName
 	 */
 	public static Style registerStyle(String sName) {
-		String sId = new Integer(hmStyles.size()).toString();
+		String sId = MD5Processor.hash(sName);
 		Style style = new Style(sId, sName);
 		hmStyles.put(sId, style);
 		return style;
 	}
+	
+	/**
+		 * Remove a style
+		 *@param style id
+		 */
+		public static void remove(String sId) {
+			hmStyles.remove(sId);
+		}
 
 	/**
 			 * Format the Style name to be normalized : 
@@ -73,8 +82,8 @@ public class StyleManager {
 	}
 
 	/**Return all registred styles*/
-	public static Collection getStyles() {
-		return hmStyles.values();
+	public static ArrayList getStyles() {
+		return new ArrayList(hmStyles.values());
 	}
 
 	/**

@@ -16,13 +16,15 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
- * Revision 1.3  2003/10/23 22:07:40  bflorat
- * 23/10/2003
+ * Revision 1.4  2003/10/26 21:28:49  bflorat
+ * 26/10/2003
  *
  */
 package org.jajuk.base;
 
 import java.util.ArrayList;
+
+import org.jajuk.util.Util;
 
 /**
  *  A music style ( jazz, rock...)
@@ -61,7 +63,7 @@ public class Style extends PropertyAdapter {
 	 * toString method
 	 */
 	public String toString() {
-		return "Style[IS="+sId+" Name=" + getName() + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		return "Style[ID="+sId+" Name=" + getName() + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 
 		/**
@@ -71,7 +73,7 @@ public class Style extends PropertyAdapter {
 	public String toXml() {
 		StringBuffer sb = new StringBuffer("\t\t<style id='" + sId);
 		sb.append("' name='");
-		sb.append(sName).append("'/>\n");
+		sb.append(Util.formatXML(sName)).append("'/>\n");
 		return sb.toString();
 	}
 

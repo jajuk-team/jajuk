@@ -83,4 +83,10 @@ public class PerspectiveManagerImpl implements IPerspectiveManager,ITechnicalStr
 		parentContainer = pContainer;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.jajuk.ui.perspectives.IPerspectiveManager#init()
+	 */
+	public void init() {
+	}
+
 }

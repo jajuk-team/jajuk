@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.3  2003/10/26 21:28:49  bflorat
+ * 26/10/2003
+ *
  * Revision 1.2  2003/10/23 22:07:40  bflorat
  * 23/10/2003
  *
@@ -26,9 +29,10 @@
 
 package org.jajuk.base;
 
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
+
+import org.jajuk.util.MD5Processor;
 
 /**
  *  Convenient class to manage playlists files
@@ -50,17 +54,17 @@ public class PlaylistFileManager {
 	 * Register an PlaylistFile
 	 *@param sName
 	 */
-	public static PlaylistFile registerPlaylistFile(String sName,String sHashcode,String sParentDirectory) {
-		String sId = new Integer(hmPlaylistFiles.size()).toString();
-		PlaylistFile playlistFile = new PlaylistFile(sId,sName,sHashcode,sParentDirectory);
+	public static PlaylistFile registerPlaylistFile(String sName,String sHashcode,Directory dParentDirectory) {
+		String sId = MD5Processor.hash(dParentDirectory.getAbsolutePath()+sName);
+		PlaylistFile playlistFile = new PlaylistFile(sId,sName,sHashcode,dParentDirectory);
 		hmPlaylistFiles.put(sName,playlistFile);
 		return playlistFile;
 	}
 
 
 	/**Return all registred PlaylistFiles*/
-	public static Collection getPlaylistFiles() {
-		return hmPlaylistFiles.values();
+	public static ArrayList getPlaylistFiles() {
+		return new ArrayList(hmPlaylistFiles.values());
 	}
 
 	/**

@@ -13,6 +13,9 @@
  * You should have received a copy of the GNU General Public License along with
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA. $Log$
+ * Place - Suite 330, Boston, MA 02111-1307, USA. Revision 1.4  2003/10/26 21:28:49  bflorat
+ * Place - Suite 330, Boston, MA 02111-1307, USA. 26/10/2003
+ * Place - Suite 330, Boston, MA 02111-1307, USA.
  * Place - Suite 330, Boston, MA 02111-1307, USA. Revision 1.3  2003/10/24 15:44:25  bflorat
  * Place - Suite 330, Boston, MA 02111-1307, USA. 24/10/2003
  * Place - Suite 330, Boston, MA 02111-1307, USA.
@@ -24,9 +27,10 @@
 
 package org.jajuk.base;
 
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
+
+import org.jajuk.util.MD5Processor;
 
 /**
  * Convenient class to manage Tracks
@@ -50,15 +54,16 @@ public class TrackManager {
 	 * @param sName
 	 */
 	public static Track registerTrack(String sName, Album album, Style style, Author author, long length, String sYear, Type type,  String sAdditionDate) {
-		String sId = new Integer(hmTracks.size()).toString();
-		Track track = new Track(sId, format(sName), album, style, author, length, sYear, type, sAdditionDate);
+		String sId = MD5Processor.hash(style.getName()+author.getName()+sYear+length+type.getName()+sName);
+		Track track = new Track(sId,sName, album, style, author, length, sYear, type, sAdditionDate);
+		//TODO format
 		hmTracks.put(sId, track);
 		return track;
 	}
 
 	/** Return all registred Tracks */
-	public static Collection getTracks() {
-		return hmTracks.values();
+	public static ArrayList getTracks() {
+		return new ArrayList(hmTracks.values());
 	}
 
 	/**

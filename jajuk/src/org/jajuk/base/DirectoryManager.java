@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.3  2003/10/26 21:28:49  bflorat
+ * 26/10/2003
+ *
  * Revision 1.2  2003/10/23 22:07:40  bflorat
  * 23/10/2003
  *
@@ -28,7 +31,8 @@ package org.jajuk.base;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
+
+import org.jajuk.util.MD5Processor;
 
 /**
  *  Convenient class to manage directories
@@ -51,7 +55,12 @@ public class DirectoryManager {
 	 *@param sName
 	 */
 	public static Directory registerDirectory(String sName,Directory dParent,Device device) {
-		String sId = new Integer(hmDirectories.size()).toString();
+		String sAbs ="";
+		if (dParent != null){
+			sAbs = dParent.getAbsolutePath();
+		}
+		sAbs += sName;
+		String sId = MD5Processor.hash(sAbs);
 		Directory directory = new Directory(sId,sName,dParent,device);
 		hmDirectories.put(sId,directory);
 		return directory;

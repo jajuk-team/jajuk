@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.4  2003/10/26 21:28:49  bflorat
+ * 26/10/2003
+ *
  * Revision 1.3  2003/10/21 17:51:43  bflorat
  * 21/10/2003
  *
@@ -28,6 +31,8 @@
  */
 package org.jajuk.base;
 
+import org.jajuk.util.Util;
+
 /**
  * Music type 
  *
@@ -36,17 +41,29 @@ package org.jajuk.base;
  */
 public class Type {
 	
+	/**Type id*/
 	private String sId;
+	/**Type name ( description)*/
 	private String sName;
+	/**Type extension ex:mp3,ogg */
 	private String sExtension;
+	/**Type player implementation */
 	private IPlayerImpl playerImpl;
+	/**Type tag implementation, null if it is not a music type */
+	private ITagImpl tagImpl;
+	/**True if the type is a music files and false if it is a playlist-type file*/
+	private boolean bIsMusic;
 	
 	
-	public Type(String sId, String sName,String sExtension, String sPlayerImpl) throws Exception{
+	public Type(String sId, String sName,String sExtension, String sPlayerImpl,String sTagImpl,boolean bIsMusic) throws Exception{
 		this.sExtension = sExtension;
 		this.sName = sName;
 		this.playerImpl = (IPlayerImpl)Class.forName(sPlayerImpl).newInstance();
+		if (sTagImpl != null){
+			this.tagImpl = (ITagImpl)Class.forName(sTagImpl).newInstance();
+		}
 		this.sId = sId;
+		this.bIsMusic = bIsMusic;
 	}
 
 
@@ -86,7 +103,7 @@ public class Type {
 	public String toXml(){
 		StringBuffer sb = new StringBuffer("\t\t<type id='" +sId);
 		sb.append("' name='");
-		sb.append(sName).append("' extension='");
+		sb.append(Util.formatXML(sName)).append("' extension='");
 		sb.append(sExtension).append("'/>\n");
 		return sb.toString();
 	}
@@ -106,5 +123,19 @@ public class Type {
 	public boolean equals(Type otherType){
 		return sName.equals(otherType.getName());
 	}	
+
+	/**
+	 * @return Returns the bIsMusic.
+	 */
+	public boolean isMusic() {
+		return bIsMusic;
+	}
+
+	/**
+	 * @return Returns the tagImpl.
+	 */
+	public ITagImpl getTagImpl() {
+		return tagImpl;
+	}
 
 }

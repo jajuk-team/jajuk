@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.9  2003/10/26 21:28:49  bflorat
+ * 26/10/2003
+ *
  * Revision 1.8  2003/10/23 22:07:40  bflorat
  * 23/10/2003
  *
@@ -51,6 +54,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.util.RandomAccess;
 
 import javax.swing.JFrame;
 import javax.swing.UIManager;
@@ -69,7 +74,12 @@ import org.jajuk.ui.JajukJMenuBar;
 import org.jajuk.ui.PerspectiveBarJPanel;
 import org.jajuk.ui.perspectives.IPerspectiveManager;
 import org.jajuk.ui.perspectives.PerspectiveManagerFactory;
+import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
+
+import de.ueberdosis.mp3info.ExtendedID3Tag;
+import de.ueberdosis.mp3info.ID3Reader;
+import de.ueberdosis.util.OutputCtr;
 
 /**
  * Jajuk lauching class
@@ -87,6 +97,8 @@ public class Main implements ITechnicalStrings{
 
 	public static void main(String[] args) {
 		try {
+			
+			
 			//perform initial checkups
 			initialCheckups();
 
@@ -132,15 +144,19 @@ public class Main implements ITechnicalStrings{
 			//registers supported types
 			try {
 				//TODO get player impl in user-conf.xml
-				TypeManager.registerType(new Type("1",Messages.getString("Main.Mpeg_layer_3_5"),EXT_MP3,PLAYER_IMPL_JAVALAYER)); //$NON-NLS-1$ //$NON-NLS-2$
-				TypeManager.registerType(new Type("2",Messages.getString("Main.Playlist_7"),EXT_PLAYLIST,PLAYER_IMPL_JAVALAYER)); //$NON-NLS-1$ //$NON-NLS-2$
-				TypeManager.registerType(new Type("3",Messages.getString("Main.Ogg_vorbis_9"),EXT_OGG,PLAYER_IMPL_JAVALAYER)); //$NON-NLS-1$ //$NON-NLS-2$
+				TypeManager.registerType(Messages.getString("Main.Mpeg_layer_3_5"),EXT_MP3,PLAYER_IMPL_JAVALAYER,TAG_IMPL_MP3INFO,true); //$NON-NLS-1$ //$NON-NLS-2$
+				TypeManager.registerType(Messages.getString("Main.Playlist_7"),EXT_PLAYLIST,PLAYER_IMPL_JAVALAYER,null,false); //$NON-NLS-1$ //$NON-NLS-2$
+				TypeManager.registerType(Messages.getString("Main.Ogg_vorbis_9"),EXT_OGG,PLAYER_IMPL_JAVALAYER,null,true); //$NON-NLS-1$ //$NON-NLS-2$
 				
 			} catch (Exception e1) {
 				Log.error(Messages.getString("Main.Error_registering_players_11"),e1); //$NON-NLS-1$
 			}
 			//Load collection
 			Collection.load();
+			
+			//Clean the collection up
+			Collection.cleanup();  
+			//TODO check time to do this, lauch it modulo day ?
 			
 			//Starts the FIFO
 			new FIFO().start();
@@ -158,9 +174,16 @@ public class Main implements ITechnicalStrings{
 			//tests en bouchonné
 			DeviceManager.registerDevice("portable","directory","/data/mp3").refresh();  //perform a refresh
 			
-		} catch (Exception e) { //last chance to catch any error for logging purpose
-			Log.error(Messages.getString("Main.uncatched_exception_2"), e); //$NON-NLS-1$
+		} 
+		catch (JajukException je) { //last chance to catch any error for logging purpose
+				Log.error(je);
 			exit(1);
+		}
+		catch (Exception e) { //last chance to catch any error for logging purpose
+			Log.error("106",e); //$NON-NLS-1$
+			exit(1);
+		}
+		finally{
 		}
 	}
 
