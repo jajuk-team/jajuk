@@ -20,6 +20,7 @@
 package org.jajuk.base;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  *  A playlist
@@ -27,12 +28,12 @@ import java.util.ArrayList;
  * @Playlist     bflorat
  * @created    17 oct. 2003
  */
-public class Playlist extends PropertyAdapter {
+public class Playlist extends PropertyAdapter implements Comparable{
 
 	/**ID. Ex:1,2,3...*/
 	private String sId;
 	/**Associated playlist files**/
-	private ArrayList alFiles = new ArrayList(2);
+	private ArrayList alPlaylistFiles = new ArrayList(2);
 	
 	/**
 	 * Playlist constructor
@@ -41,7 +42,7 @@ public class Playlist extends PropertyAdapter {
 	 */
 	public Playlist(String sId,PlaylistFile plFiles){
 		this.sId = sId;
-		this.alFiles.add(plFiles);
+		this.alPlaylistFiles.add(plFiles);
 	}
 
 	/**
@@ -49,8 +50,8 @@ public class Playlist extends PropertyAdapter {
 	 */
 	public String toString() {
 		StringBuffer sbOut = new StringBuffer("Playlist[ID="+sId+"]"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		for (int i=0;i<alFiles.size();i++){
-			sbOut.append('\n').append(alFiles.get(i).toString());
+		for (int i=0;i<alPlaylistFiles.size();i++){
+			sbOut.append('\n').append(alPlaylistFiles.get(i).toString());
 		}
 		return sbOut.toString();
 	}
@@ -62,8 +63,8 @@ public class Playlist extends PropertyAdapter {
 	public String toXml() {
 		StringBuffer sb = new StringBuffer("\t\t<playlist id='" + sId); //$NON-NLS-1$
 		sb.append("' playlist_files='"); //$NON-NLS-1$
-		for (int i=0;i<alFiles.size();i++){
-			sb.append(((PlaylistFile)alFiles.get(i)).getId()).append(',');
+		for (int i=0;i<alPlaylistFiles.size();i++){
+			sb.append(((PlaylistFile)alPlaylistFiles.get(i)).getId()).append(',');
 		}
 		sb.deleteCharAt(sb.length()-1); //remove the last ','
 		sb.append("' "); //$NON-NLS-1$
@@ -95,16 +96,31 @@ public class Playlist extends PropertyAdapter {
 	 *  Add a playlist file 
 	 * @return
 	 */
-	public ArrayList getFiles() {
-		return alFiles;
+	public ArrayList getPlaylistFiles() {
+		return alPlaylistFiles;
+	}
+	
+	/**
+	 * @return an available playlist file to play
+	 */
+	public PlaylistFile getPlayeablePlaylistFile() {
+		PlaylistFile plfOut = null;
+		Iterator it = alPlaylistFiles.iterator();
+		while ( it.hasNext()){
+			PlaylistFile plf = (PlaylistFile)it.next();
+			if ( plf.isReady()){
+				plfOut = plf;
+			}
+		}
+		return plfOut;
 	}
 	
 	/**
 	 * @return
 	 */
 	public void addFile(PlaylistFile plFile) {
-		if (!alFiles.contains(plFile)) {
-			alFiles.add(plFile);
+		if (!alPlaylistFiles.contains(plFile)) {
+			alPlaylistFiles.add(plFile);
 		}
 	}
 
@@ -114,7 +130,7 @@ public class Playlist extends PropertyAdapter {
 	 * @return
 	 */
 	public void removeFile(PlaylistFile plFile) {
-		alFiles.remove(plFile);
+		alPlaylistFiles.remove(plFile);
 	}
 
 	/**
@@ -130,8 +146,8 @@ public class Playlist extends PropertyAdapter {
 	 * @return
 	 */
 	private boolean mapPlaylistFile(String sId){
-		for (int i=0;i<alFiles.size();i++){
-			if (((PlaylistFile)alFiles.get(i)).getId().equals(sId)){
+		for (int i=0;i<alPlaylistFiles.size();i++){
+			if (((PlaylistFile)alPlaylistFiles.get(i)).getId().equals(sId)){
 				return true;
 			}	
 		}
@@ -144,10 +160,20 @@ public class Playlist extends PropertyAdapter {
 	 */
 	public String getName(){
 		String sOut = ""; //$NON-NLS-1$
-		if ( alFiles.size() > 0){
-			sOut =((PlaylistFile)alFiles.get(0)).getName(); 
+		if ( alPlaylistFiles.size() > 0){
+			sOut =((PlaylistFile)alPlaylistFiles.get(0)).getName(); 
 		}
 		return sOut; 
+	}
+	
+	/**
+	 *Alphabetical comparator used to display ordered lists of playlists
+	 *@param other playlist to be compared
+	 *@return comparaison result 
+	 */
+	public int compareTo(Object o){
+		Playlist otherPlaylist = (Playlist)o;
+		return  getName().compareToIgnoreCase(otherPlaylist.getName());
 	}
 
 }

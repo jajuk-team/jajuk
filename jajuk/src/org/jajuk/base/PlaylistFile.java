@@ -35,6 +35,7 @@ import org.jajuk.i18n.Messages;
 import org.jajuk.ui.ObservationManager;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Util;
+import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
 
@@ -74,7 +75,9 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 		this.sName = sName;
 		this.sHashcode = sHashcode;
 		this.dParentDirectory = dParentDirectory;
-		this.fio = new File(getDirectory().getDevice().getUrl()+getDirectory().getRelativePath()+"/"+getName()); //$NON-NLS-1$
+		if ( getDirectory() != null){  //test "new"playlist case
+			this.fio = new File(getDirectory().getDevice().getUrl()+getDirectory().getRelativePath()+"/"+getName()); //$NON-NLS-1$
+		}
 	}
 
 	
@@ -160,15 +163,19 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 	/**
 	 * @return Returns the list of basic files this playlist maps to
 	 */
-	public synchronized ArrayList getBasicFiles() {
+	public synchronized ArrayList getBasicFiles() throws JajukException{
 		if ( alBasicFiles == null){
-			if ( fio.exists() && fio.canRead()){  //check device is mounted
+			if ( fio == null){//is it the "new" playlist?
 				alBasicFiles = new ArrayList(10);
-				load(); //populate playlist
 			}
-			else{  //error accessing playlist file
-				Log.error("009",fio.getAbsolutePath(),new Exception()); //$NON-NLS-1$
-				Messages.showErrorMessage("009",fio.getAbsolutePath()); //$NON-NLS-1$
+			else{  //normal playlist
+				if ( fio.exists() && fio.canRead()){  //check device is mounted
+					alBasicFiles = new ArrayList(10);
+					load(); //populate playlist
+				}
+				else{  //error accessing playlist file
+					throw new JajukException("009",fio.getAbsolutePath(),new Exception());
+				}
 			}
 		}
 		return alBasicFiles;
@@ -178,7 +185,7 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 	 * Add a basic file to this playlist file
 	 * @param bf
 	 */
-	public void addBasicFile(BasicFile bf){
+	public void addBasicFile(BasicFile bf) throws JajukException{
 		ArrayList al = getBasicFiles(); 
 		al.add(bf);
 		bModified = true;

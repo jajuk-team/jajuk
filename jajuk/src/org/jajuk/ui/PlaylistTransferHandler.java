@@ -133,15 +133,18 @@ public class PlaylistTransferHandler implements DropTargetListener {
 					}
 				}
 			}
-			else if ( plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_NEW){
-				if (oData instanceof File){
-				//TODO tbi
-				}
-			}
-			else if ( plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_NORMAL){
+			else if ( plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_NORMAL || plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_NEW){
 				if (oData instanceof File){
 					plfi.getPlaylistFile().addBasicFile(new BasicFile((File)oData));
 				}
+				else if(oData instanceof Directory){
+					Iterator it = ((Directory)oData).getFilesRecursively().iterator();
+					while (it.hasNext()){
+						File file = (File)it.next();
+						plfi.getPlaylistFile().addBasicFile(new BasicFile(file));	
+					}
+				}
+			
 			}
 		}		
 		catch (Exception e) {	

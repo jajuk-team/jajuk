@@ -160,7 +160,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 		it = PlaylistManager.getPlaylists().iterator();
 		while (it.hasNext()) {
 			Playlist playlist = (Playlist) it.next();
-			if (playlist.getFiles().size() > 0) { //this way we clean up all orphan playlists
+			if (playlist.getPlaylistFiles().size() > 0) { //this way we clean up all orphan playlists
 				bw.write(playlist.toXml());
 			}
 		}

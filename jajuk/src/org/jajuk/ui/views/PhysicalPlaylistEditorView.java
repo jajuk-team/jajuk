@@ -32,7 +32,8 @@ package org.jajuk.ui.views;
 public class PhysicalPlaylistEditorView extends AbstractPlaylistEditorView{
 
 	/**Self instance*/
-	private static PhysicalPlaylistEditorView ppe;
+	static PhysicalPlaylistEditorView ppe;
+	
 	
 	/**Return self instance*/
 	public static synchronized PhysicalPlaylistEditorView getInstance(){

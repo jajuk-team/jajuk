@@ -40,7 +40,7 @@ import org.jajuk.util.log.Log;
  * @created    17 oct. 2003
  */
 public class Device extends PropertyAdapter implements ITechnicalStrings, Comparable{
-
+	
 	/** ID. Ex:1,2,3...*/
 	private String sId;
 	/**Device name*/
@@ -68,7 +68,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 			Messages.getString("Device_type.extdd"), //$NON-NLS-1$
 			Messages.getString("Device_type.player"), //$NON-NLS-1$
 	};
-
+	
 	/**Convenient lock */
 	public static byte[] bLock = new byte[0];
 	/** Number of files in this device before refresh ( for refresh stats ) */
@@ -84,7 +84,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	/**Volume of created files during synchro */
 	long lVolume = 0;
 	
-
+	
 	/**
 	 * Device constructor
 	 * @param sId
@@ -99,7 +99,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 		this.sUrl = sUrl;
 		this.sMountPoint = sMountPoint;
 	}
-
+	
 	/**
 	 * toString method
 	 */
@@ -126,7 +126,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 		sb.append("/>\n"); //$NON-NLS-1$
 		return sb.toString();
 	}
-
+	
 	/**
 	 * Equal method to check two devices are identical
 	 * @param otherDevice
@@ -135,14 +135,14 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	public boolean equals(Object otherDevice) {
 		return this.getId().equals(((Device)otherDevice).getId() );
 	}
-
+	
 	/**
 	 * hashcode ( used by the equals method )
 	 */
 	public int hashCode(){
 		return getId().hashCode();
 	}
-
+	
 	
 	/**
 	 * Refresh : scan asynchronously the device to find tracks
@@ -180,7 +180,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 		//lock the synchro
 		synchronized(bLock){
 			/*Remove all directories, playlist files and files for this device before rescan. 
-			Note  that logical item ( tracks, styles...) are device independant and connot be cleared.
+			 Note  that logical item ( tracks, styles...) are device independant and connot be cleared.
 			They will be clean up at next jajuk restart and old track data is used to populate device without full tag scan
 			*/ 
 			iNbFilesBeforeRefresh = FileManager.getFiles().size();
@@ -246,8 +246,8 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 				}					
 			}
 			String sOut = new StringBuffer("[").append(device.getName()).append(Messages.getString("Device.25")).append((int)((System.currentTimeMillis()-lTime)/1000)). //$NON-NLS-1$ //$NON-NLS-2$
-					append(Messages.getString("Device.26")).append(iNbNewFiles).append(Messages.getString("Device.27")). //$NON-NLS-1$ //$NON-NLS-2$
-					append(iNbFilesBeforeRefresh - (FileManager.getFiles().size()-iNbNewFiles)).append(Messages.getString("Device.28")).toString(); //$NON-NLS-1$
+			append(Messages.getString("Device.26")).append(iNbNewFiles).append(Messages.getString("Device.27")). //$NON-NLS-1$ //$NON-NLS-2$
+			append(iNbFilesBeforeRefresh - (FileManager.getFiles().size()-iNbNewFiles)).append(Messages.getString("Device.28")).toString(); //$NON-NLS-1$
 			InformationJPanel.getInstance().setMessage(sOut,InformationJPanel.INFORMATIVE); //$NON-NLS-1$
 			Log.debug(sOut); 
 			bAlreadyRefreshing = false;
@@ -255,7 +255,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 			ObservationManager.notify(EVENT_DEVICE_REFRESH);		
 		}
 	}
-
+	
 	
 	/**
 	 * Synchroning asynchronously 
@@ -322,18 +322,18 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 		}
 		//end message
 		String sOut = new StringBuffer(Messages.getString("Device.33")).append((System.currentTimeMillis()-lTime)/1000) //$NON-NLS-1$
-			.append(Messages.getString("Device.34")).append(iNbCreatedFilesSrc+iNbCreatedFilesDest).append(Messages.getString("Device.35")). //$NON-NLS-1$ //$NON-NLS-2$
-			append(lVolume/1048576).append(Messages.getString("Device.36")).toString(); //$NON-NLS-1$
+		.append(Messages.getString("Device.34")).append(iNbCreatedFilesSrc+iNbCreatedFilesDest).append(Messages.getString("Device.35")). //$NON-NLS-1$ //$NON-NLS-2$
+		append(lVolume/1048576).append(Messages.getString("Device.36")).toString(); //$NON-NLS-1$
 		InformationJPanel.getInstance().setMessage(sOut,InformationJPanel.INFORMATIVE);
 		Log.debug(sOut);
 	}
 	
 	
-		/**
-		 * Synchronize a device with another one ( unidirectional )
-		 *@param device : device to synchronize
-		 *@return nb of created files
-		 */
+	/**
+	 * Synchronize a device with another one ( unidirectional )
+	 *@param device : device to synchronize
+	 *@return nb of created files
+	 */
 	private int synchronizeUnidirectonal(Device dSrc,Device dest){
 		int iNbCreatedFiles = 0;
 		//copy new directories from source device
@@ -439,7 +439,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 		}
 		return iNbCreatedFiles;
 	}
-			
+	
 	
 	/**
 	 * @return
@@ -447,7 +447,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	public boolean isMounted() {
 		return bMounted;
 	}
-
+	
 	/**
 	 * @return
 	 */
@@ -456,41 +456,41 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	}
 	
 	/**
-		 * @return
-		 */
-		public int getDeviceType() {
-			return iDeviceType;
-		}
+	 * @return
+	 */
+	public int getDeviceType() {
+		return iDeviceType;
+	}
 	
-
+	
 	/**
 	 * @return
 	 */
 	public String getId() {
 		return sId;
 	}
-
+	
 	/**
 	 * @return
 	 */
 	public String getName() {
 		return sName;
 	}
-
+	
 	/**
 	 * @return
 	 */
 	public String getUrl() {
 		return sUrl;
 	}
-
+	
 	/**
-		 * @return
-		 */
+	 * @return
+	 */
 	public ArrayList getDirectories() {
 		return alDirectories;
 	}
-
+	
 	/**
 	 * @param directory
 	 */
@@ -510,7 +510,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	public boolean isSynchronizing(){
 		return bAlreadySynchronizing;
 	}
-		
+	
 	
 	/**
 	 * Mount the device
@@ -522,8 +522,8 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 		}
 		String sOS = (String)System.getProperties().get("os.name"); //$NON-NLS-1$
 		int iExit = 0;
-		if (sOS.trim().toLowerCase().lastIndexOf("windows")==-1 && !getMountPoint().trim().equals("")){  //not a windows //$NON-NLS-1$ //$NON-NLS-2$
-			try{
+		try{
+			if (sOS.trim().toLowerCase().lastIndexOf("windows")==-1 && !getMountPoint().trim().equals("")){  //not a windows //$NON-NLS-1$ //$NON-NLS-2$
 				//look to see if the device is already mounted ( the mount command cannot say that )
 				File file = new File(getMountPoint());
 				if ( file.exists() && file.list().length == 0){
@@ -534,12 +534,19 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 					}
 				}
 			}
-			catch(Exception e){
-				Log.error("011",Integer.toString(iExit),e);	//mount failed //$NON-NLS-1$
-				Messages.showErrorMessage("011",getName()); //$NON-NLS-1$
-				return;
+			else{  //windows mount point or mount point not given, check if path exists and contains some files 
+				File file = new File(getUrl());
+				if ( !file.exists() || file.list().length == 0){
+					throw new Exception();
+				}
 			}
 		}
+		catch(Exception e){
+			Log.error("011",Integer.toString(iExit),e);	//mount failed //$NON-NLS-1$
+			Messages.showErrorMessage("011",getName()); //$NON-NLS-1$
+			return;
+		}
+		
 		bMounted = true;
 		//notify views to refresh
 		ObservationManager.notify(EVENT_DEVICE_MOUNT);
@@ -611,45 +618,45 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 			return false;
 		}
 		if ( iDeviceType != 2 ){
-				File file = new File(sUrl);
-				if ( file.exists() && file.canRead()){
-					bOK = true;
-				}
+			File file = new File(sUrl);
+			if ( file.exists() && file.canRead()){
+				bOK = true;
 			}
+		}
 		else{
 			bOK = false; //TBI
 		}
 		return bOK;
 	}
-
+	
 	/**
 	 * @return Returns the unix mount point.
 	 */
 	public String getMountPoint() {
 		return sMountPoint;
 	}
-
+	
 	/**
 	 * @param deviceTypes The sDeviceTypes to set.
 	 */
 	public  void setDeviceType(int i) {
 		this.iDeviceType = i;
 	}
-
+	
 	/**
 	 * @param mountPoint The sMountPoint to set.
 	 */
 	public void setMountPoint(String mountPoint) {
 		sMountPoint = mountPoint;
 	}
-
+	
 	/**
 	 * @param name The sName to set.
 	 */
 	public void setName(String name) {
 		sName = name;
 	}
-
+	
 	/**
 	 * @param url The sUrl to set.
 	 */
@@ -666,5 +673,5 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 		Device otherDevice = (Device)o;
 		return  getName().compareToIgnoreCase(otherDevice.getName());
 	}
-
+	
 }

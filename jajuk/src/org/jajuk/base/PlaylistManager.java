@@ -78,14 +78,14 @@ public class PlaylistManager {
 			Iterator itPlaylists = hmPlaylists.values().iterator();
 			while (itPlaylists.hasNext()) {
 				Playlist playlist= (Playlist)itPlaylists.next();
-				Iterator itPlaylistFiles = playlist.getFiles().iterator();
+				Iterator itPlaylistFiles = playlist.getPlaylistFiles().iterator();
 				while ( itPlaylistFiles.hasNext()){
 					PlaylistFile plf = (PlaylistFile)itPlaylistFiles.next();
 					if (PlaylistFileManager.getPlaylistFile(plf.getId()) == null){
 						itPlaylistFiles.remove();	
 					}
 				}
-				if ( playlist.getFiles().size() == 0){
+				if ( playlist.getPlaylistFiles().size() == 0){
 					itPlaylists.remove();
 				}
 			}

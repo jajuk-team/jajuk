@@ -41,8 +41,11 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JComponent;
 import javax.swing.JTree;
+import javax.swing.event.TreeExpansionEvent;
+import javax.swing.event.TreeWillExpandListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.ExpandVetoException;
 import javax.swing.tree.TreePath;
 
 /**
@@ -58,7 +61,7 @@ import javax.swing.tree.TreePath;
  * @author     bflorat
  * @created    13 févr. 2004
  */
-public class TreeTransferHandler implements DragGestureListener, DragSourceListener, DropTargetListener {
+public class TreeTransferHandler implements DragGestureListener, DragSourceListener, DropTargetListener,TreeWillExpandListener {
 	
 	private JTree tree;
 	private DragSource dragSource; // dragsource
@@ -71,6 +74,7 @@ public class TreeTransferHandler implements DragGestureListener, DragSourceListe
 	
 	public TreeTransferHandler(JTree tree, int action, boolean drawIcon) {
 		this.tree = tree;
+		tree.addTreeWillExpandListener(this);
 		drawImage = drawIcon;
 		dragSource = new DragSource();
 		dragSource.createDefaultDragGestureRecognizer(tree, action, this);
@@ -79,10 +83,8 @@ public class TreeTransferHandler implements DragGestureListener, DragSourceListe
 	
 	/* Methods for DragSourceListener */
 	public void dragDropEnd(DragSourceDropEvent dsde) {
-		if (dsde.getDropSuccess() && dsde.getDropAction()==DnDConstants.ACTION_MOVE && draggedNodeParent != null) {
-			((DefaultTreeModel)tree.getModel()).nodeStructureChanged(draggedNodeParent);				
-		}
 	}
+	
 	public final void dragEnter(DragSourceDragEvent dsde)  {
 		int action = dsde.getDropAction();
 		if (action == DnDConstants.ACTION_COPY)  {
@@ -197,18 +199,18 @@ public class TreeTransferHandler implements DragGestureListener, DragSourceListe
 	private final void clearImage() {
 		tree.paintImmediately(rect2D.getBounds());
 	}
-	
-	
-	
-	public boolean executeDrop(JTree target, DefaultMutableTreeNode draggedNode, DefaultMutableTreeNode newParentNode, int action) { 
-		if (action == DnDConstants.ACTION_MOVE) {
-			draggedNode.removeFromParent();
-			((DefaultTreeModel)target.getModel()).insertNodeInto(draggedNode,newParentNode,newParentNode.getChildCount());
-			TreePath treePath = new TreePath(draggedNode.getPath());
-			target.scrollPathToVisible(treePath);
-			target.setSelectionPath(treePath);
-			return(true);
-		}
-		return(false);
+
+	/* (non-Javadoc)
+	 * @see javax.swing.event.TreeWillExpandListener#treeWillCollapse(javax.swing.event.TreeExpansionEvent)
+	 */
+	public void treeWillCollapse(TreeExpansionEvent event) throws ExpandVetoException {
 	}
+
+	/* (non-Javadoc)
+	 * @see javax.swing.event.TreeWillExpandListener#treeWillExpand(javax.swing.event.TreeExpansionEvent)
+	 */
+	public void treeWillExpand(TreeExpansionEvent event) throws ExpandVetoException {
+	}
+	
+
 }

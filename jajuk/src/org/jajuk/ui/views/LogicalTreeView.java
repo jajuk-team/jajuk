@@ -72,17 +72,10 @@ import com.sun.SwingWorker;
  * @author bflorat 
  * @created 28 nov. 2003
  */
-public class LogicalTreeView extends ViewAdapter implements ActionListener,Observer{
+public class LogicalTreeView extends AbstractTreeView implements ActionListener,Observer{
 	
 	/** Self instance */
 	private static LogicalTreeView ltv;
-	
-	/** The logical tree */
-	JTree jtree;
-	
-	/** The tree scrollpane*/
-	JScrollPane jspTree;
-	
 	
 	/** Top tree node */
 	DefaultMutableTreeNode top;

@@ -15,45 +15,28 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $Revision$
+ * $Release$
  */
 
 package org.jajuk.ui.views;
 
-
+import javax.swing.JScrollPane;
+import javax.swing.JTree;
 
 /**
- * Playliost editor/manager 
- * <p>Logical perspective
- *  * <p>Singleton
+ *  An abstract physical or logical tree view. Contains common methods
+ *
  * @author     bflorat
- * @created   29 dec. 2003
+ * @created    6 mars 2004
  */
-public class LogicalPlaylistEditorView extends AbstractPlaylistEditorView{
-
-	/**Self instance*/
-	static LogicalPlaylistEditorView lpe;
+public abstract class AbstractTreeView extends ViewAdapter {
 	
-	/**Return self instance*/
-	public static synchronized LogicalPlaylistEditorView getInstance(){
-		if (lpe == null){
-			lpe = new LogicalPlaylistEditorView();
-		}
-		return lpe;
-	}
+	/** The tree scrollpane*/
+	JScrollPane jspTree;
 	
-	/**
-	 * Constructor
-	 */
-	public LogicalPlaylistEditorView() {
-		lpe = this;
-	}
+	/** The phyical tree */
+	JTree jtree;
 	
-	/* (non-Javadoc)
-	 * @see org.jajuk.ui.IView#getViewName()
-	 */
-	public String getViewName() {
-		return "org.jajuk.ui.views.LogicalPlaylistEditorView"; //$NON-NLS-1$
-	}
+	
 	
 }

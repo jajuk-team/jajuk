@@ -66,6 +66,8 @@ import org.jajuk.ui.ObservationManager;
 import org.jajuk.ui.TransferableTreeNode;
 import org.jajuk.ui.TreeTransferHandler;
 import org.jajuk.util.Util;
+import org.jajuk.util.error.JajukException;
+import org.jajuk.util.log.Log;
 
 import com.sun.SwingWorker;
 
@@ -75,16 +77,12 @@ import com.sun.SwingWorker;
  * @author bflorat 
  * @created 28 nov. 2003
  */
-public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.jajuk.ui.Observer{
+public class PhysicalTreeView extends AbstractTreeView implements ActionListener,org.jajuk.ui.Observer{
 	
 	/** Self instance */
 	private static PhysicalTreeView ptv;
 	
-	/** The tree scrollpane*/
-	JScrollPane jspTree;
 	
-	/** The phyical tree */
-	JTree jtree;
 	
 	/** Top tree node */
 	DefaultMutableTreeNode top;
@@ -500,7 +498,14 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 					}
 					else if (o instanceof PlaylistFileNode){  //double clic on a playlist file
 						PlaylistFile plf = ((PlaylistFileNode)o).getPlaylistFile();
-						ArrayList alFiles = plf.getBasicFiles();
+						ArrayList alFiles = new ArrayList(10); 
+						try{	
+							alFiles = plf.getBasicFiles();
+						}
+						catch(JajukException je){
+							Log.error("009",plf.getName(),new Exception()); //$NON-NLS-1$
+							Messages.showErrorMessage("009",plf.getName()); //$NON-NLS-1$
+						}
 						if ( alFiles.size() == 0){ //check playlist file contains accessible tracks
 							Messages.showErrorMessage("018");	 //$NON-NLS-1$
 						}
@@ -762,44 +767,32 @@ public class PhysicalTreeView extends ViewAdapter implements ActionListener,org.
 				dir.removeProperty(DIRECTORY_OPTION_SYNCHRO_MODE);
 			}
 		}
-		else if ( e.getSource() == jmiPlaylistFilePlay){
+		else if ( e.getSource() == jmiPlaylistFilePlay || e.getSource()==jmiPlaylistFilePush || e.getSource() == jmiPlaylistFilePlayShuffle || e.getSource() == jmiPlaylistFilePlayRepeat){
 			PlaylistFile plf = ((PlaylistFileNode)paths[0].getLastPathComponent()).getPlaylistFile();
-			ArrayList alFiles = plf.getBasicFiles();
+			ArrayList alFiles = new ArrayList(10); 
+			try{	
+				alFiles = plf.getBasicFiles();
+			}
+			catch(JajukException je){
+				Log.error("009",plf.getName(),new Exception()); //$NON-NLS-1$
+				Messages.showErrorMessage("009",plf.getName()); //$NON-NLS-1$
+			}
 			if ( alFiles.size() == 0){ //check playlist file contains accessible tracks
 				Messages.showErrorMessage("018"); //$NON-NLS-1$
 			}
-			else{
-				FIFO.getInstance().push(alFiles,false);
-			}
-		}
-		else if ( e.getSource() == jmiPlaylistFilePush){
-			PlaylistFile plf = ((PlaylistFileNode)paths[0].getLastPathComponent()).getPlaylistFile();
-			ArrayList alFiles = plf.getBasicFiles();
-			if ( alFiles.size() == 0){ //check playlist file contains accessible tracks
-				Messages.showErrorMessage("018"); //$NON-NLS-1$
-			}
-			else{
-				FIFO.getInstance().push(alFiles,true);
-			}
-		}
-		else if ( e.getSource() == jmiPlaylistFilePlayShuffle){
-			PlaylistFile plf = ((PlaylistFileNode)paths[0].getLastPathComponent()).getPlaylistFile();
-			ArrayList alFiles = plf.getBasicFiles();
-			if ( alFiles.size() == 0){ //check playlist file contains accessible tracks
-				Messages.showErrorMessage("018"); //$NON-NLS-1$
-			}
-			else{
-				FIFO.getInstance().push(Util.randomize(alFiles),false);
-			}
-		}
-		else if ( e.getSource() == jmiPlaylistFilePlayRepeat){
-			PlaylistFile plf = ((PlaylistFileNode)paths[0].getLastPathComponent()).getPlaylistFile();
-			ArrayList alFiles = plf.getBasicFiles();
-			if ( alFiles.size() == 0){ //check playlist file contains accessible tracks
-				Messages.showErrorMessage("018"); //$NON-NLS-1$
-			}
-			else{
-				FIFO.getInstance().push(alFiles,false,false,true);
+			else{ //specific actions
+				if ( e.getSource() == jmiPlaylistFilePlay ){
+					FIFO.getInstance().push(alFiles,false);
+				}
+				else if ( e.getSource()==jmiPlaylistFilePush ){
+					FIFO.getInstance().push(alFiles,true);
+				}
+				else if ( e.getSource() == jmiPlaylistFilePlayShuffle ){
+					FIFO.getInstance().push(Util.randomize(alFiles),false);
+				}
+				else if ( e.getSource() == jmiPlaylistFilePlayRepeat){
+					FIFO.getInstance().push(alFiles,false,false,true);
+				}
 			}
 		}
 		else if ( e.getSource() == jmiPlaylistFileDelete){

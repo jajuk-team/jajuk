@@ -64,6 +64,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl,ITechnicalStrings{
 						public void run(){
 							Util.setMute(Util.getMute());  //keep the mute mode between tracks	
 							Util.setVolume(Util.getVolume()); //keep the volume between tracks
+							Util.stopWaiting();
 						}
 					}.start();
 				}

@@ -46,6 +46,7 @@ import org.jajuk.ui.ObservationManager;
 import org.jajuk.ui.Observer;
 import org.jajuk.ui.PlaylistFileItem;
 import org.jajuk.util.Util;
+import org.jajuk.util.error.JajukException;
 
 
 /**
@@ -55,19 +56,19 @@ import org.jajuk.util.Util;
  * @created   29 dec. 2003
  */
 public abstract class AbstractPlaylistEditorView extends ViewAdapter implements Observer,MouseListener {
-
+	
 	
 	JPanel jpControl;
-		JToolBar jtb;
-			JButton jbRun;
-			JButton jbSave;
-			JButton jbAdd;
-			JButton jbRemove;
-			JButton jbUp;
-			JButton jbDown;
-			JButton jbCurrent;
-			JButton jbClear;
-			JLabel jlTitle;
+	JToolBar jtb;
+	JButton jbRun;
+	JButton jbSave;
+	JButton jbAdd;
+	JButton jbRemove;
+	JButton jbUp;
+	JButton jbDown;
+	JButton jbCurrent;
+	JButton jbClear;
+	JLabel jlTitle;
 	JajukTable jtable;
 	
 	/**playlist editor title : playlist file or playlist name*/
@@ -89,11 +90,14 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 	protected boolean[][] bCellEditable;
 	
 	/**Values*/
-	protected ArrayList alFiles = new ArrayList(10);
+	private ArrayList alFiles = new ArrayList(10);
+	
+	/**Previous selection ( used to check if a refresh is needed */
+	private ArrayList alPrevious;
 	
 	/**Columns names table**/
 	protected String[] sColName = new String[]{Messages.getString("AbstractPlaylistEditorView.0"),Messages.getString("AbstractPlaylistEditorView.1")}; //$NON-NLS-1$ //$NON-NLS-2$
-
+	
 	/**Model for table*/
 	class PlayListEditorTableModel extends AbstractTableModel {
 		public int getColumnCount() {
@@ -108,12 +112,12 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 			return false;
 		}
 		
-	 	public Class getColumnClass(int columnIndex) {
+		public Class getColumnClass(int columnIndex) {
 			Object o =getValueAt(0, columnIndex);
 			if ( o == null){
 				return String.class;
 			}
-	 		return o.getClass();
+			return o.getClass();
 		}
 		
 		public Object getValueAt(int rowIndex, int columnIndex) {
@@ -140,12 +144,6 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 	PlayListEditorTableModel model = new PlayListEditorTableModel();
 	
 	
-	/**
-	 * Constructor
-	 */
-	public AbstractPlaylistEditorView() {
-	}
-	
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.IView#display()
 	 */
@@ -158,7 +156,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 		int iXspace = 0;
 		double sizeControl[][] =
 			{{iXspace,0.50,0.50,iXspace},
-			{25,0.99}};
+				{25,0.99}};
 		jpControl.setLayout(new TableLayout(sizeControl));
 		jbRun = new JButton(Util.getIcon(ICON_RUN));
 		jbRun.setToolTipText(Messages.getString("AbstractPlaylistEditorView.2")); //$NON-NLS-1$
@@ -192,22 +190,22 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 		jtable = new JajukTable(model);
 		jtable.addMouseListener(this);
 		double size[][] =
-		{{0.99},
-		{30,0.99}};
+			{{0.99},
+				{30,0.99}};
 		setLayout(new TableLayout(size));
 		add(jpControl,"0,0"); //$NON-NLS-1$
 		add(new JScrollPane(jtable),"0,1"); //$NON-NLS-1$
 		ObservationManager.register(EVENT_PLAYLIST_REFRESH,this);
 		ObservationManager.register(EVENT_PLAYER_STOP,this);
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.IView#getDesc()
 	 */
 	public String getDesc() {
 		return Messages.getString("AbstractPlaylistEditorView.15");	 //$NON-NLS-1$
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.IView#getViewName()
 	 */
@@ -217,39 +215,47 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 	 * Populate table with tracks in this playlist : track name, author and file url
 	 */
 	private void populate(){
+		//save previous data
+		alPrevious = (ArrayList)alFiles.clone();
 		//clean data
-		ArrayList alPrevious = (ArrayList)alFiles.clone();
 		alFiles = new ArrayList(10);
-		switch(iType){
-			case PlaylistFileItem.PLAYLIST_TYPE_NORMAL:  //regular playlist
-				alFiles = plfi.getPlaylistFile().getBasicFiles();
-				break;
-			case PlaylistFileItem.PLAYLIST_TYPE_NEW:  //new playlist
-				break;
-			case PlaylistFileItem.PLAYLIST_TYPE_BOOKMARK:  //bookmarks
-				ArrayList alBookmarks = Bookmarks.getInstance().getFiles(); 
-				Iterator it = alBookmarks.iterator();
+		Iterator it = null;
+		//regular or new playlist
+		if ( iType == PlaylistFileItem.PLAYLIST_TYPE_NORMAL || iType == PlaylistFileItem.PLAYLIST_TYPE_NEW ){ 
+			ArrayList al = null;
+			try{
+				al = plfi.getPlaylistFile().getBasicFiles();
+			}
+			catch(JajukException je){}; //don't show any message because this is called recursively by fifo, error messages would cascade
+			if ( al != null){ //set alFiles to a void ArrayList if an error occurs when reading playlist to avoid some null pointer exc.
+				alFiles = new ArrayList(al);  //duplicate arraylist to work separetly and detect changes
+			}
+		}
+		//bookmarks
+		else if ( iType == PlaylistFileItem.PLAYLIST_TYPE_BOOKMARK){  
+			ArrayList alBookmarks = Bookmarks.getInstance().getFiles(); 
+			it = alBookmarks.iterator();
+			while (it.hasNext()){
+				alFiles.add(new BasicFile((File)it.next()));
+			}
+		}
+		//bestof
+		else if( iType == PlaylistFileItem.PLAYLIST_TYPE_BESTOF){  
+			if ( FileManager.hasRateChanged()){
+				ArrayList alBestof = FileManager.getBestOfFiles(); 
+				it = alBestof.iterator();
 				while (it.hasNext()){
 					alFiles.add(new BasicFile((File)it.next()));
 				}
-				break;
-			case PlaylistFileItem.PLAYLIST_TYPE_BESTOF:  //bestof
-				if ( FileManager.hasRateChanged()){
-					ArrayList alBestof = FileManager.getBestOfFiles(); 
-					it = alBestof.iterator();
-					while (it.hasNext()){
-						alFiles.add(new BasicFile((File)it.next()));
-					}
-					FileManager.setRateHasChanged(false);
-				}
-				else{
-					alFiles = alPrevious;
-				}
-				break;
-			case PlaylistFileItem.PLAYLIST_TYPE_QUEUE:  //queue
-				if ( FIFO.isStopped()){
-					break;
-				}
+				FileManager.setRateHasChanged(false);
+			}
+			else{
+				alFiles = alPrevious;
+			}
+		}
+		//queue
+		else if ( iType == PlaylistFileItem.PLAYLIST_TYPE_QUEUE){  
+			if ( !FIFO.isStopped()){
 				//add currently played file
 				File file = FIFO.getInstance().getCurrentFile();
 				if ( file != null){
@@ -261,31 +267,27 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 				while (it.hasNext()){
 					alFiles.add(new BasicFile((File)it.next()));
 				}
-				break;
+			}
 		}
 	}
 	
 	
-	
-	
-		/* (non-Javadoc)
+	/* (non-Javadoc)
 	 * @see org.jajuk.ui.Observer#update(java.lang.String)
 	 */
 	public void update(String subject) {
 		if ( EVENT_PLAYLIST_REFRESH.equals(subject)){
-			ArrayList alPrevious = (ArrayList)alFiles.clone();
 			if ( plfi != null){
 				jlTitle.setText(plfi.getName());
 				jlTitle.setToolTipText(plfi.getName());
-				alFiles = new ArrayList(10);
 				populate();
 				//check if a refresh is really needed
 				iRowNum = alFiles.size();
 				boolean bNeedRefresh = false;
-				if ( iRowNum != alPrevious.size() || iRowNum == 0){
+				if ( iRowNum != alPrevious.size()){  //if total numbers of files has changed, no doubt, need refresh
 					bNeedRefresh = true;
 				}
-				else{
+				else{  //else, check file by file a difference in the selection
 					Iterator it = alPrevious.iterator();
 					Iterator it2 = alFiles.iterator();
 					while ( it.hasNext()){
@@ -296,26 +298,29 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 						}
 					}
 				}
-				if ( alFiles.size() > 0 && bNeedRefresh){
-					//remove old rows
-					if (alFiles != null && alFiles.size()>0){
-						model.fireTableRowsDeleted(0,alFiles.size()-1);
-					}
-					model.fireTableRowsInserted(0,alFiles.size()-1);				
+				if ( bNeedRefresh){
+					model.fireTableDataChanged();
+					Util.stopWaiting();
 				}
 				//select currently played track
 				Iterator it = alFiles.iterator();
 				for (int i=0;it.hasNext();i++){
 					File file = (File)it.next();
 					if ( file.equals(FIFO.getInstance().getCurrentFile())){
-						jtable.getSelectionModel().setSelectionInterval(i,i);
+						if ( i != jtable.getSelectedRow()){  //selection change
+							
+						}
+						if ( i > jtable.getSelectedRow()){  //check this to get sure we select right row if a playlist contains several times the same file 
+							jtable.getSelectionModel().setSelectionInterval(i,i);
+							break;
+						}
 					}
 				}
-				//set colunm size
+				/*set colunm size, doen't work, try to find something better 
 				int iTrackColWidth = jtable.getColumnModel().getColumn(0).getPreferredWidth();
 				int iLocationColWidth = jtable.getColumnModel().getColumn(0).getPreferredWidth();
 				jtable.getColumnModel().getColumn(0).setPreferredWidth((int)((iTrackColWidth+iLocationColWidth)*0.2)); // track name
-				jtable.getColumnModel().getColumn(1).setPreferredWidth((int)((iTrackColWidth+iLocationColWidth)*0.8)); //location
+				jtable.getColumnModel().getColumn(1).setPreferredWidth((int)((iTrackColWidth+iLocationColWidth)*0.8)); //location*/
 				//set buttons
 				if ( iType == PlaylistFileItem.PLAYLIST_TYPE_QUEUE){
 					jbAdd.setEnabled(false);
@@ -357,7 +362,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 	 */
 	public void setCurrentPlayListFile(PlaylistFileItem plfi){
 		this.iType = plfi.getType();
-		this.plfi = plfi;
+		this.plfi =plfi;
 	}
 	
 	
@@ -366,22 +371,22 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 	 */
 	public void mouseClicked(MouseEvent e) {
 	}
-
-
+	
+	
 	/* (non-Javadoc)
 	 * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
 	 */
 	public void mouseEntered(MouseEvent e) {
 	}
-
-
+	
+	
 	/* (non-Javadoc)
 	 * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
 	 */
 	public void mouseExited(MouseEvent e) {
 	}
-
-
+	
+	
 	/* (non-Javadoc)
 	 * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
 	 */
@@ -391,8 +396,8 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
 			FIFO.getInstance().push(alFilesToPlay,false);
 		}
 	}
-
-
+	
+	
 	/* (non-Javadoc)
 	 * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
 	 */

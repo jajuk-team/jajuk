@@ -29,8 +29,6 @@ import org.jajuk.i18n.Messages;
 import org.jajuk.ui.CommandJPanel;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.ObservationManager;
-import org.jajuk.ui.views.LogicalPlaylistRepositoryView;
-import org.jajuk.ui.views.PhysicalPlaylistEditorView;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
@@ -308,8 +306,7 @@ public class FIFO implements ITechnicalStrings,Runnable{
 				if (bPlaying ){//already playing something
 					long length = fCurrent.getTrack().getLength();
 					if ( i%(REFRESH_TIME/SLEEP_TIME) == 0 && length!=0){  //actual refresh less frequent for cpu
-						PhysicalPlaylistEditorView.getInstance().update(EVENT_PLAYLIST_REFRESH); //alert playlists editors ( queue playlist ) something changed for him
-						LogicalPlaylistRepositoryView.getInstance().update(EVENT_PLAYLIST_REFRESH); //alert playlists editors ( queue playlist ) something changed for him
+						ObservationManager.notify(EVENT_PLAYLIST_REFRESH); //alert editors ( queue playlist ) something changed
 						lTime = (System.currentTimeMillis() - lTrackStart) + lOffset - lPauseTime;
 						if ( bIntroEnabled){
 							lTime += (fCurrent.getTrack().getLength()*Integer.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_INTRO_BEGIN))*10);
@@ -367,6 +364,7 @@ public class FIFO implements ITechnicalStrings,Runnable{
 					continue;
 				}
 				synchronized(this){  //lock fifo access when lauching
+					Util.waiting();
 					if ( !bPlaying){  //test this to avoid notifying at each launch
 						ObservationManager.notify(EVENT_PLAYER_PLAY);  //notify to devices like commandJPanel to update ui
 					}

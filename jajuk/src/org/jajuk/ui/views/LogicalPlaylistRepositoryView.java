@@ -20,8 +20,16 @@
 
 package org.jajuk.ui.views;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+
+import org.jajuk.base.Playlist;
+import org.jajuk.base.PlaylistFile;
+import org.jajuk.base.PlaylistManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.Observer;
+import org.jajuk.ui.PlaylistFileItem;
 
 /**
  * Shows logical playlists
@@ -30,11 +38,11 @@ import org.jajuk.ui.Observer;
  * @author     bflorat
  * @created   29 dec. 2003
  */
-public class LogicalPlaylistRepositoryView extends ViewAdapter implements Observer{
+public class LogicalPlaylistRepositoryView extends AbstractPlaylistRepositoryView implements Observer{
 
 	/**Self instance*/
-	private static LogicalPlaylistRepositoryView lpr;
-	
+	static LogicalPlaylistRepositoryView lpr;
+		
 	/**Return self instance*/
 	public static synchronized LogicalPlaylistRepositoryView getInstance(){
 		if (lpr == null){
@@ -54,6 +62,7 @@ public class LogicalPlaylistRepositoryView extends ViewAdapter implements Observ
 	 * @see org.jajuk.ui.IView#display()
 	 */
 	public void display(){
+		super.display();
 	}
 
 	/* (non-Javadoc)
@@ -69,11 +78,27 @@ public class LogicalPlaylistRepositoryView extends ViewAdapter implements Observ
 	public String getViewName() {
 		return "org.jajuk.ui.views.LogicalPlaylistRepositoryView"; //$NON-NLS-1$
 	}
-
-	/* (non-Javadoc)
-	 * @see org.jajuk.ui.Observer#update(java.lang.String)
+	
+	/**
+	 * Create playlists from collection 
 	 */
-	public void update(String subject) {
+	void populate(){
+		super.populate();
+		//normal playlists
+		ArrayList al = PlaylistManager.getPlaylists();
+		Collections.sort(al);
+		Iterator it = al.iterator();
+		while ( it.hasNext()){
+			Playlist pl = (Playlist)it.next();
+			PlaylistFile plf = pl.getPlayeablePlaylistFile();
+			if ( plf == null){
+				continue;
+			}
+			PlaylistFileItem plfi = new PlaylistFileItem(PlaylistFileItem.PLAYLIST_TYPE_NORMAL,ICON_PLAYLIST_NORMAL,plf,plf.getName());
+			plfi.addMouseListener(ma);
+			plfi.setToolTipText(plf.getName());
+			jpRoot.add(plfi);
+		}
 	}
 
 }

@@ -50,6 +50,7 @@ import org.jajuk.i18n.Messages;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
+import com.sun.SwingWorker;
 import com.sun.media.sound.MixerSourceLine;
 
 /**
@@ -305,15 +306,27 @@ public class Util implements ITechnicalStrings {
 	 * Set current cursor as waiting cursor
 	 */
 	public static void waiting(){
-	//System.out.println("waiting");	
-		Main.jframe.setCursor(WAIT_CURSOR);
+	System.out.println("waiting");	
+	SwingWorker sw = new SwingWorker() {
+		public Object construct() {
+			return null;
+		}
+		public void finished() {
+			SwingUtilities.invokeLater(new Runnable(){  //actually change cursor when last repaint in awt repaint thread fifo is done 
+				public void run(){
+					Main.jframe.setCursor(WAIT_CURSOR);
+				}
+			});
+		}
+	};
+	sw.start();
 	}
 
 	/**
 	 * Set current cursor as default cursor
 	 */
 	public static void stopWaiting(){
-	//System.out.println("stop waiting");	
+	System.out.println("stop waiting");	
 		SwingUtilities.invokeLater(new Runnable(){  //actually change cursor when last repaint in awt repaint thread fifo is done 
 			public void run(){
 				Main.jframe.setCursor(DEFAULT_CURSOR);
