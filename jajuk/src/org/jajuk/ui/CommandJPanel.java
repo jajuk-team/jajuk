@@ -270,6 +270,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 				ObservationManager.register(EVENT_HEART_BEAT,CommandJPanel.this);
 				ObservationManager.register(EVENT_ADD_HISTORY_ITEM,CommandJPanel.this);
 				ObservationManager.register(EVENT_SPECIAL_MODE,CommandJPanel.this);
+				ObservationManager.register(EVENT_ZERO,CommandJPanel.this);
 				
 				//update initial state 
 				update(EVENT_PLAYER_PLAY);
@@ -503,15 +504,13 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 	public synchronized void update(final String subject) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				if( EVENT_PLAYER_STOP.equals(subject)){
+				if( EVENT_PLAYER_STOP.equals(subject) || EVENT_ZERO.equals(subject)){
 					jbRew.setEnabled(false);
 					jbPlayPause.setEnabled(false);
 					jbStop.setEnabled(false);
 					jbFwd.setEnabled(false);
 					jsPosition.setEnabled(false);
-					jsPosition.removeChangeListener(CommandJPanel.this);  //remove listener to force the value to zero
-					jsPosition.setValue(0);
-					jsPosition.addChangeListener(CommandJPanel.this);
+					setCurrentPosition(0);
 					jbPlayPause.setIcon(Util.getIcon(ICON_PAUSE)); //resume any current pause
 					ConfigurationManager.setProperty(CONF_STARTUP_LAST_POSITION,"0");//reset startup position //$NON-NLS-1$
 				}
@@ -540,17 +539,11 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 						setCurrentPosition(iPos.intValue());
 					}
 				}
-				else if (EVENT_ZERO.equals(subject)){
-					setCurrentPosition(0);
-				}
 				else if (EVENT_ADD_HISTORY_ITEM.equals(subject)){
 					HistoryItem hi = (HistoryItem)ObservationManager.getDetail(EVENT_ADD_HISTORY_ITEM,DETAIL_HISTORY_ITEM);
 					if (hi != null ){
 						addHistoryItem(hi);
 					}
-				}
-				else if (EVENT_SPECIAL_MODE.equals(subject)){
-					
 				}
 			}
 		});
