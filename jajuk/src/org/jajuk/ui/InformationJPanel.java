@@ -66,8 +66,8 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings{
 	//widgets declaration
 	JLabel jlMessage;
 	JLabel jlSelection;
+	JLabel jlQuality;
 	JPanel jpTotal;
-		JProgressBar jpbTotal;
 		JLabel jlTotal;
 	JPanel jpCurrent;
 		JProgressBar jpbCurrent;
@@ -87,12 +87,11 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings{
 		//set current jpanel properties
 		setBorder(BorderFactory.createEtchedBorder());
 		double size[][] =
-			{{0.50, 0.10,0.20,0.20},
+			{{0.45, 0.10,0.05,0.05,0.35},
 			 {20}};
 		 setLayout(new TableLayout(size));
 		
-		
-		//message bar
+		 //message bar
 		jlMessage = new JLabel();  
 		jlMessage.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		
@@ -102,34 +101,37 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings{
 		
 		//total progress bar
 		jpTotal = new JPanel();
+		jpTotal.setToolTipText(Messages.getString("InformationJPanel.Total_selection_progression_5")); //$NON-NLS-1$
 		jpTotal.setLayout(new BoxLayout(jpTotal,BoxLayout.X_AXIS));
 		jpTotal.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		jpbTotal = new JProgressBar(0,100);
-		jlTotal = new JLabel(); 
-		jpTotal.add(jpbTotal);
-		jpTotal.add(Box.createHorizontalStrut(3));
+		jlTotal = new JLabel("0"); 
 		jpTotal.add(jlTotal);
+		jpTotal.add(Box.createHorizontalStrut(3));
+		
+		//Quality
+		jlQuality = new JLabel();
+		jlQuality.setToolTipText("Track bitrate");
+		jlQuality.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		
 		//current progress bar
 		jpCurrent = new JPanel();
+		jpCurrent.setToolTipText(Messages.getString("InformationJPanel.Current_track_progression_6")); //$NON-NLS-1$
 		jpCurrent.setLayout(new BoxLayout(jpCurrent,BoxLayout.X_AXIS));
 		jpCurrent.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		jpbCurrent = new JProgressBar(0,100);
-		jlCurrent = new JLabel();
-		jpCurrent.add(jpbCurrent);
-		jpCurrent.add(Box.createHorizontalStrut(3));
+		jpbCurrent.setStringPainted(true);
+		jlCurrent = new JLabel("00:00:00 / 00:00:00");
 		jpCurrent.add(jlCurrent);
+		jpCurrent.add(Box.createHorizontalStrut(3));
+		jpCurrent.add(jpbCurrent);
 		
 		
 		//add widgets
 		add(jlMessage,"0,0"); //$NON-NLS-1$
 		add(jlSelection,"1,0"); //$NON-NLS-1$
-		add(jpTotal,"2,0"); //$NON-NLS-1$
-		add(jpCurrent,"3,0"); //$NON-NLS-1$
-		
-		//tooltips
-		jpTotal.setToolTipText(Messages.getString("InformationJPanel.Total_selection_progression_5")); //$NON-NLS-1$
-		jpCurrent.setToolTipText(Messages.getString("InformationJPanel.Current_track_progression_6")); //$NON-NLS-1$
+		add(jlQuality,"2,0"); //$NON-NLS-1$
+		add(jpTotal,"3,0"); //$NON-NLS-1$
+		add(jpCurrent,"4,0"); //$NON-NLS-1$
 		
 			
 	}
@@ -170,14 +172,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings{
 		jpbCurrent.setValue(i);
 	}
 
-	/**
-	 * @param i
-	 */
-	public void setTotalStatus(int i) {
-		iTotalStatus = i;
-		jpbTotal.setValue(i);
-	}
-
+	
 	/**
 	 * @param label
 	 */
@@ -209,6 +204,14 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings{
 		jlSelection.setToolTipText(sSelection);
 	}
 
+	/**
+	 * Set the quality box info
+	 * @param sQuality
+	 */
+	public void setQuality(String sQuality){
+		jlQuality.setText(sQuality);
+	}
+	
 	/**
 	 * @return
 	 */

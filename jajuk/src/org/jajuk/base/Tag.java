@@ -15,6 +15,8 @@ package org.jajuk.base;
 import java.io.File;
 import java.util.StringTokenizer;
 
+import org.jajuk.i18n.Messages;
+import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 
@@ -23,7 +25,7 @@ import org.jajuk.util.log.Log;
  * 
  * @author bflorat @created 25 oct. 2003
  */
-public class Tag {
+public class Tag implements ITechnicalStrings{
 
 	/** Current tag impl* */
 	private ITagImpl tagImpl;
@@ -68,17 +70,25 @@ public class Tag {
 	 * @return album name
 	 */
 	public String getAlbumName() {
-		String sAlbumlName = fio.getParentFile().getName(); //if album is not found, take current dirtectory as album name
-		//TODO make it an option
+		String sAlbumlName = null;
 		String sTemp = "";
 		try {
 			sTemp = tagImpl.getAlbumName();
 			if (sTemp != null && !sTemp.equals("")){
-				sAlbumlName = Util.formatTag(sTemp);
+				sAlbumlName = sTemp;
 			}
 		} catch (Exception e) {
 			Log.error("103",fio.getName(), e);
 		}
+		if (sAlbumlName == null){  //album tag cannot be found
+			if (Boolean.valueOf(ConfigurationManager.getProperty(CONF_TAGS_USE_PARENT_DIR)).booleanValue()){
+				sAlbumlName = fio.getParentFile().getName(); //if album is not found, take current dirtectory as album name
+			}
+			else{
+				sAlbumlName = Messages.getString("unknown_album");  //album inconnu
+			}
+		}
+		sAlbumlName = Util.formatTag(sAlbumlName);
 		return sAlbumlName;
 	}
 
@@ -99,6 +109,7 @@ public class Tag {
 		return sAuthorName;
 
 	}
+	
 
 	/**
 	 * @return style name

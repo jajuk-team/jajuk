@@ -24,6 +24,7 @@ import java.util.Collection;
 import java.util.HashMap;
 
 import javax.swing.UIManager;
+import javax.swing.plaf.ComboBoxUI;
 
 import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.util.log.Log;
@@ -78,6 +79,24 @@ public class LNFManager implements ITechnicalStrings{
 	 */
 	public static String getCurrent() {
 		return sCurrent;
+	}
+	
+	public static ComboBoxUI getSteppedComboBoxClass(){
+		try{
+			if (getCurrent().equals(LNF_LIQUID)){
+				return (ComboBoxUI)Class.forName(LNF_LIQUID_CBUI).newInstance();
+			}
+			else if(getCurrent().equals(LNF_KUNSTSTOFF)){
+				return (ComboBoxUI)Class.forName(LNF_KUNSTSTOFF_CBUI).newInstance();
+			}
+			else if(getCurrent().equals(LNF_METAL)){
+				return (ComboBoxUI)Class.forName(LNF_METAL_CBUI).newInstance();
+			}
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }

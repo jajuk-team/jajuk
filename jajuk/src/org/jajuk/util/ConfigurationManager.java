@@ -30,7 +30,6 @@ import org.jajuk.i18n.Messages;
 import org.jajuk.util.log.Log;
 
 /**
- * @TODO a faire
  * Manage all the configuration and user preferences of jajuk.
  * <p> Singleton
  * @author		bflorat
@@ -73,6 +72,17 @@ public class ConfigurationManager implements ITechnicalStrings{
 	public static String getProperty(String pName) {
 		return properties.getProperty(pName);
 	}
+	
+	/**
+	 * Return the value of a property as a boolean
+	 * 
+	 * @param pName Name of the property.
+	 * @return boolean value of the property named pName.
+	 */
+	public static boolean getBoolean(String pName) {
+		return Boolean.valueOf(properties.getProperty(pName)).booleanValue();
+	}
+
 
 	/**
 	 * Set default values
@@ -111,7 +121,8 @@ public class ConfigurationManager implements ITechnicalStrings{
 		properties.put(CONF_OPTIONS_P2P_HIDE_LOCAL_PROPERTIES,TRUE);
 		properties.put(CONF_HISTORY,"-1");
 		properties.put(CONF_OPTIONS_P2P_PASSWORD,"");
-		
+		properties.put(CONF_TAGS_DEEP_SCAN,FALSE);
+		properties.put(CONF_TAGS_USE_PARENT_DIR,TRUE);
 		properties.put(CONF_FIRST_CON,TRUE);
 	}
 	

@@ -21,6 +21,7 @@ package org.jajuk.base;
 
 import java.util.ArrayList;
 
+import org.jajuk.i18n.Messages;
 import org.jajuk.util.Util;
 
 /**
@@ -55,6 +56,19 @@ public class Author extends PropertyAdapter {
 	public String getName() {
 		return sName;
 	}
+	
+	/**
+	 * Return author name, dealing with unkwnown for any language
+	 * @return author name
+	 */
+	public String getName2() {
+		String sOut = getName();
+		if (sOut.equals("unknown_author")){
+			sOut = Messages.getString("unknown_author");
+		}
+		return sOut;
+	}
+
 	
 	/**
 	 * toString method

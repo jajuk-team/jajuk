@@ -21,8 +21,8 @@
 package org.jajuk.ui;
 
 import java.awt.Dimension;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
@@ -54,7 +54,7 @@ import org.jajuk.util.ConfigurationManager;
  * @author     bflorat
  * @created    3 oct. 2003
  */
-public class CommandJPanel extends JPanel implements ITechnicalStrings,ItemListener{
+public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionListener{
 	
 	//singleton
 	static private CommandJPanel command;
@@ -113,36 +113,35 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ItemListe
 		int height2 = 36; //slider ( at least this height in the gtk+ l&f ) 
 		int iSeparator = 0;
 		//set default layout and size
-		double[][] size ={{0.15,iSeparator,200,iSeparator,0.13,iSeparator,0.10,iSeparator,0.19,iSeparator,0.13,iSeparator,0.13},
+		double[][] size ={{0.25,iSeparator,300,iSeparator,0.13,iSeparator,0.10,iSeparator,0.19,iSeparator,0.16,iSeparator,0.16},
 						{height1}};
 		setLayout(new TableLayout(size));
 		setBorder(BorderFactory.createEtchedBorder());
 		//search toolbar
 		jtbSearch = new JToolBar();
+		jtbSearch.setFloatable(false);
 		jtfSearch = new JTextField();
 		jtfSearch.setToolTipText(Messages.getString("CommandJPanel.search_1")); //$NON-NLS-1$
 		jtbSearch.add(jtfSearch);
 			
 		//history toolbar
 		jtbHistory = new JToolBar();
+		jtbHistory.setFloatable(false);
 		jcbHistory = new SteppedComboBox(new Vector());
-		jcbHistory.setMinimumSize(new Dimension(180,20));
-		jcbHistory.setPreferredSize(new Dimension(180,20));
-		jcbHistory.setMaximumSize(new Dimension(180,20));
+		jcbHistory.setMinimumSize(new Dimension(150,20));
+		jcbHistory.setPreferredSize(new Dimension(300,20));
+		jcbHistory.setMaximumSize(new Dimension(300,20));
 		jcbHistory.setPopupWidth(1000);
 		jcbHistory.setToolTipText(Messages.getString("CommandJPanel.play_history_1")); //$NON-NLS-1$
-		Iterator it1 = History.getInstance().getHistory().iterator();
-		while (it1.hasNext()){
-			HistoryItem hi = (HistoryItem)it1.next();
-			addHistoryItem(hi);
-		}
-		jcbHistory.addItemListener(this);
+		populateHistoryBar();
+		jcbHistory.addActionListener(this);
 		jtbHistory.add(jcbHistory);
 		
 		
 		//Mode toolbar
 		jtbMode = new JToolBar();
 		jtbMode.setRollover(true);
+		jtbMode.setFloatable(false);
 		jbRepeat = new JButton(new ImageIcon(ConfigurationManager.getProperty(CONF_ICON_REPEAT))); 
 		jbRepeat.setActionCommand(EVENT_REPEAT_MODE_STATUS_CHANGED);
 		jbRepeat.addActionListener(JajukListener.getInstance());
@@ -165,6 +164,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ItemListe
 		
 		//Special functions toolbar
 		jtbSpecial = new JToolBar();
+		jtbSpecial.setFloatable(false);
 		jtbSpecial.setRollover(true);
 		jbGlobalRandom = new JButton(new ImageIcon(ICON_ROLL)); 
 		jbGlobalRandom.setToolTipText(Messages.getString("CommandJPanel.Play_a_shuffle_selection_from_the_entire_collection_1")); //$NON-NLS-1$
@@ -179,6 +179,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ItemListe
 		//Play toolbar
 		jtbPlay = new JToolBar();
 		jtbPlay.setRollover(true);
+		jtbPlay.setFloatable(false);
 		jbUp = new JButton(new ImageIcon(ICON_UP)); 
 		jbUp.setToolTipText(Messages.getString("CommandJPanel.Play_previous_track_in_current_selection_4")); //$NON-NLS-1$
 		jtbPlay.add(jbUp);
@@ -201,6 +202,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ItemListe
 		
 		//Volume toolbar
 		jtbVolume = new JToolBar();
+		jtbVolume.setFloatable(false);
 		jlVolume = new JLabel(new ImageIcon(ICON_VOLUME)); 
 		jtbVolume.add(jlVolume);
 		jsVolume = new JSlider(0,100,50);
@@ -209,6 +211,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ItemListe
 		
 		//Position toolbar
 		jtbPosition = new JToolBar();
+		jtbPosition.setFloatable(false);
 		jlPosition = new JLabel(new ImageIcon(ICON_POSITION)); 
 		jtbPosition.add(jlPosition);
 		jsPosition = new JSlider(0,100,0);
@@ -234,13 +237,10 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ItemListe
 		if (file == null){
 			return;
 		}
-		String sAuthor = file.getTrack().getAuthor().getName();
-		if (sAuthor.equals("unknown_author")){
-			sAuthor = Messages.getString("unknown_author");
-		}
+		String sAuthor = file.getTrack().getAuthor().getName2();
 		sAuthor +=" / ";
 		String sDate = new SimpleDateFormat("dd/MM/yy HH:mm").format(new Date(hi.getDate()));
-		String sOut = "["+sDate+"] "+sAuthor+file.getTrack().getName();
+		String sOut = sAuthor+file.getTrack().getName()+" ["+sDate+"]";
 		jcbHistory.insertItemAt(sOut,0);
 		bSelect = false;
 		jcbHistory.setSelectedIndex(0);
@@ -249,18 +249,30 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ItemListe
 
 
 
-	/* (non-Javadoc)
-	 * @see java.awt.event.ItemListener#itemStateChanged(java.awt.event.ItemEvent)
+	
+	/**
+	 * Fill the history bar
 	 */
-	public void itemStateChanged(ItemEvent arg0) {
-		if ( bSelect && arg0.getSource() == jcbHistory){
+	public void populateHistoryBar(){
+		jcbHistory.removeAllItems();
+		History.getInstance().clear(Integer.parseInt(ConfigurationManager.getProperty(CONF_HISTORY)));
+		Iterator it1 = History.getInstance().getHistory().iterator();
+		while (it1.hasNext()){
+			HistoryItem hi = (HistoryItem)it1.next();
+			addHistoryItem(hi);
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 */
+	public void actionPerformed(ActionEvent ae) {
+			if ( bSelect && ae.getSource() == jcbHistory){
 			HistoryItem hi = History.getInstance().getHistoryItem(jcbHistory.getSelectedIndex());
 			if (hi != null){
 				org.jajuk.base.File file = FileManager.getFile(hi.getFileId());
 				FIFO.push(file,false);
 			}
 		}
-	
 	}
-
 }

@@ -16,6 +16,7 @@ package org.jajuk.base;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.log.Log;
 
@@ -24,7 +25,7 @@ import org.jajuk.util.log.Log;
  * 
  * @Author bflorat @created 17 oct. 2003
  */
-public class FileManager {
+public class FileManager implements ITechnicalStrings{
 	/** Files collection* */
 	static ArrayList alFilesId = new ArrayList(1000);
 	/** Files collection* */
@@ -123,10 +124,22 @@ public class FileManager {
 	 */
 	public static synchronized File getNextFile(File file){
 		File fileNext = null;
-		do{
-			fileNext = (File)alFiles.get(alFiles.indexOf(file)+1);
+		int index = alFiles.indexOf(file) + 1;
+		if (index >= alFiles.size()){  //problem or we reach end of collection
+			if (ConfigurationManager.getBoolean(CONF_OPTIONS_RESTART)){  //restart collection
+				index = 0;
+			}
+			else{
+				return null;
+			}
 		}
-		while ( fileNext != null && !fileNext.getDirectory().getDevice().isMounted());
+		while ( index < alFiles.size()){
+			fileNext = (File)alFiles.get(index);
+			index ++;
+			if (fileNext.getDirectory().getDevice().isMounted()){  //file must be on a mounted device
+				break;
+			}
+		}
 		return fileNext;
 	}
 

@@ -29,6 +29,7 @@ import javazoom.jl.player.advanced.PlaybackListener;
 
 import org.jajuk.base.FIFO;
 import org.jajuk.base.IPlayerImpl;
+import org.jajuk.i18n.Messages;
 
 /**
  *  My class description
@@ -45,13 +46,18 @@ public class JavaLayerPlayerImpl implements IPlayerImpl{
 	 * @see org.jajuk.base.IPlayerImpl#play()
 	 */
 	public void play(org.jajuk.base.File file) throws Exception{
-		player = new AdvancedPlayer(new FileInputStream(new File(file.getAbsolutePath()))); //$NON-NLS-1$
+		try{
+			player = new AdvancedPlayer(new FileInputStream(new File(file.getAbsolutePath()))); //$NON-NLS-1$
 		player.setPlayBackListener(new PlaybackListener() {
 			public void playbackFinished(PlaybackEvent pbe){
 				FIFO.finished();
 			}
 		});
 		player.play();
+		}
+		catch(Exception e){
+			Messages.showErrorMessage("009",file.getName());
+		}
 	}
 
 	/* (non-Javadoc)

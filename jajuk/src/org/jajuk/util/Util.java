@@ -25,6 +25,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.StringTokenizer;
 
 import org.jajuk.base.ITechnicalStrings;
@@ -146,7 +148,7 @@ public class Util implements ITechnicalStrings {
 		return strColl;
 	}
 	
-/**
+	/**
 	 * Format a string before XML write
 	 * <p>see http://www.w3.org/TR/2000/REC-xml-20001006
 	 * <p> substrings 
@@ -186,6 +188,12 @@ public class Util implements ITechnicalStrings {
 		else{
 			return Messages.getString("Track_unknown_style");
 		}
-	}		
+	}	
+	
+	/**Format a time (ms) to a human readable format*/
+	public static String formatTime(long l){
+		String sOut = new SimpleDateFormat("HH:mm:ss").format(new Date(l+82800000));
+		return sOut;
+	}
 	
 }

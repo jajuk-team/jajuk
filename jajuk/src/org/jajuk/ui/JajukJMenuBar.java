@@ -99,22 +99,22 @@ import org.jajuk.util.ConfigurationManager;
 		//Mode menu
 		mode = new JMenu(Messages.getString("JajukJMenuBar.Mode_4")); //$NON-NLS-1$
 		jcbmiRepeat = new JCheckBoxMenuItem(Messages.getString("JajukJMenuBar.Repeat_12"), new ImageIcon(ICON_REPEAT_ON),true); //$NON-NLS-1$
-		jcbmiRepeat.setSelected(Boolean.valueOf(ConfigurationManager.getProperty(CONF_STATE_REPEAT)).booleanValue());
+		jcbmiRepeat.setSelected(ConfigurationManager.getBoolean(CONF_STATE_REPEAT));
 		jcbmiRepeat.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, ActionEvent.ALT_MASK));
 		jcbmiRepeat.addActionListener(JajukListener.getInstance());
 		jcbmiRepeat.setActionCommand(EVENT_REPEAT_MODE_STATUS_CHANGED);
 		jcbmiShuffle = new JCheckBoxMenuItem(Messages.getString("JajukJMenuBar.Shuffle_13"),new ImageIcon(ICON_SHUFFLE_ON),true); //$NON-NLS-1$
-		jcbmiShuffle.setSelected(Boolean.valueOf(ConfigurationManager.getProperty(CONF_STATE_SHUFFLE)).booleanValue());
+		jcbmiShuffle.setSelected(ConfigurationManager.getBoolean(CONF_STATE_SHUFFLE));
 		jcbmiShuffle.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.ALT_MASK));
 		jcbmiShuffle.addActionListener(JajukListener.getInstance());
 		jcbmiShuffle.setActionCommand(EVENT_SHUFFLE_MODE_STATUS_CHANGED);
 		jcbmiContinue = new JCheckBoxMenuItem(Messages.getString("JajukJMenuBar.Continue_14"),new ImageIcon(ICON_CONTINUE_ON),true); //$NON-NLS-1$
-		jcbmiContinue.setSelected(Boolean.valueOf(ConfigurationManager.getProperty(CONF_STATE_CONTINUE)).booleanValue());
+		jcbmiContinue.setSelected(ConfigurationManager.getBoolean(CONF_STATE_CONTINUE));
 		jcbmiContinue.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.ALT_MASK));
 		jcbmiContinue.addActionListener(JajukListener.getInstance());
 		jcbmiContinue.setActionCommand(EVENT_CONTINUE_MODE_STATUS_CHANGED);
 		jcbmiIntro = new JCheckBoxMenuItem(Messages.getString("JajukJMenuBar.Intro_15"),new ImageIcon(ICON_INTRO_ON),true); //$NON-NLS-1$
-		jcbmiIntro.setSelected(Boolean.valueOf(ConfigurationManager.getProperty(CONF_STATE_INTRO)).booleanValue());
+		jcbmiIntro.setSelected(ConfigurationManager.getBoolean(CONF_STATE_INTRO));
 		jcbmiIntro.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I, ActionEvent.ALT_MASK));
 		jcbmiIntro.setActionCommand(EVENT_INTRO_MODE_STATUS_CHANGED);
 		jcbmiIntro.addActionListener(JajukListener.getInstance());

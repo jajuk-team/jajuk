@@ -39,6 +39,7 @@ public abstract class ViewAdapter extends JPanel implements IView,ITechnicalStri
 	 */
 	public ViewAdapter() {
 		super();
+		setOpaque(true);
 	}
 
 	/**

@@ -92,6 +92,7 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 		//buttons
 		jtbButtons = new JToolBar();
 		jtbButtons.setRollover(true);
+		jtbButtons.setFloatable(false);
 		jtbButtons.setBorder(BorderFactory.createEtchedBorder());
 		
 		jbNew = new JButton(new ImageIcon(ICON_NEW));

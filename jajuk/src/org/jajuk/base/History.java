@@ -26,6 +26,7 @@ import javax.xml.parsers.SAXParserFactory;
 
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.CommandJPanel;
+import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.xml.sax.Attributes;
@@ -62,18 +63,36 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
 	}
 	
 	/** Add an history item */
-	public synchronized HistoryItem addItem(String sFileId,long lDate){
+	public synchronized void addItem(String sFileId,long lDate){
+		if ( ConfigurationManager.getProperty(CONF_HISTORY).equals("0")){  //no history
+			return ;
+		}
 		HistoryItem hi = new HistoryItem(sFileId,lDate);
 		alHistory.add(hi);
 		CommandJPanel.getInstance().addHistoryItem(hi);
-		return hi;
+		return ;
 	}
 	
 	/** Clear history */
 	public synchronized void clear(){
 		alHistory.clear();
-		CommandJPanel.getInstance().jcbHistory.removeAllItems();
 	}
+	
+	/** Clear history for all history items before iDays days*/
+	public synchronized void clear(int iDays){
+		if (iDays == -1){ //infinite history
+			return;
+		}
+		Iterator it = alHistory.iterator();
+		while (it.hasNext()){
+			HistoryItem hi = (HistoryItem)it.next();
+			if (hi.getDate() < (System.currentTimeMillis()- (iDays*86400000))){
+				it.remove();
+			}
+		}
+		
+	}
+	
 	
 	/**
 	 * Write history on disk

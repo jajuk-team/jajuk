@@ -81,6 +81,7 @@ public class PerspectiveBarJPanel
 		setBorder(BorderFactory.createEtchedBorder());
 			// Perspectives tool bar
 		jtbPerspective = new JToolBar();
+		jtbPerspective.setFloatable(false);
 		jtbPerspective.setOrientation(JToolBar.VERTICAL);
 		
 			// Physical perspective access button

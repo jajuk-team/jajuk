@@ -18,6 +18,7 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.Util;
@@ -204,7 +205,7 @@ public class Directory extends PropertyAdapter {
 						}
 					}
 				}
-				if (fileRef!= null){  //read tag data from database, no real read from file for performances reasons
+				if (fileRef!= null && !ConfigurationManager.getBoolean(CONF_TAGS_DEEP_SCAN)){  //read tag data from database, no real read from file for performances reasons if only the deep scan is disable
 					FileManager.registerFile(fileRef.getName(), this, fileRef.getTrack(), fileRef.getSize(),fileRef.getQuality());
 					continue;
 				}

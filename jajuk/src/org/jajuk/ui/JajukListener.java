@@ -76,7 +76,7 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
 			}
 		}
 		else if (e.getActionCommand().equals(EVENT_REPEAT_MODE_STATUS_CHANGED)) {
-			boolean bContinue = Boolean.valueOf(ConfigurationManager.getProperty(CONF_STATE_CONTINUE)).booleanValue();
+			boolean bContinue = ConfigurationManager.getBoolean(CONF_STATE_CONTINUE);
 			if (bContinue){
 				//Repeat and continue can't be set together, so deselect repeat mode
 				ConfigurationManager.setProperty(CONF_STATE_CONTINUE, Boolean.toString(!bContinue));
@@ -84,7 +84,7 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
 				CommandJPanel.getInstance().jbContinue.setIcon(new ImageIcon(ICON_CONTINUE_OFF));
 				ConfigurationManager.setProperty(CONF_ICON_CONTINUE,ICON_CONTINUE_OFF);
 			}
-			boolean b = Boolean.valueOf(ConfigurationManager.getProperty(CONF_STATE_REPEAT)).booleanValue();
+			boolean b = ConfigurationManager.getBoolean(CONF_STATE_REPEAT);
 			ConfigurationManager.setProperty(CONF_STATE_REPEAT, Boolean.toString(!b));
 			JajukJMenuBar.getInstance().jcbmiRepeat.setSelected(!b);
 			if (!b == true) { //enabled button
@@ -97,7 +97,7 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
 			}
 		}
 		else if (e.getActionCommand().equals(EVENT_SHUFFLE_MODE_STATUS_CHANGED)) {
-			boolean b = Boolean.valueOf(ConfigurationManager.getProperty(CONF_STATE_SHUFFLE)).booleanValue();
+			boolean b = ConfigurationManager.getBoolean(CONF_STATE_SHUFFLE);
 			ConfigurationManager.setProperty(CONF_STATE_SHUFFLE, Boolean.toString(!b));
 			JajukJMenuBar.getInstance().jcbmiShuffle.setSelected(!b);
 			if (!b == true) { //enabled button
@@ -110,7 +110,7 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
 			}
 		}
 		else if (e.getActionCommand().equals(EVENT_CONTINUE_MODE_STATUS_CHANGED)) {
-			boolean bRepeat = Boolean.valueOf(ConfigurationManager.getProperty(CONF_STATE_REPEAT)).booleanValue();
+			boolean bRepeat = ConfigurationManager.getBoolean(CONF_STATE_REPEAT);
 			if (bRepeat){
 				//Repeat and continue can't be set together, so deselect repeat mode
 				ConfigurationManager.setProperty(CONF_STATE_REPEAT, Boolean.toString(!bRepeat));
@@ -118,7 +118,7 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
 				CommandJPanel.getInstance().jbRepeat.setIcon(new ImageIcon(ICON_REPEAT_OFF)); 
 				ConfigurationManager.setProperty(CONF_ICON_REPEAT,ICON_REPEAT_OFF);
 			}
-			boolean b = Boolean.valueOf(ConfigurationManager.getProperty(CONF_STATE_CONTINUE)).booleanValue();
+			boolean b = ConfigurationManager.getBoolean(CONF_STATE_CONTINUE);
 			ConfigurationManager.setProperty(CONF_STATE_CONTINUE, Boolean.toString(!b));
 			JajukJMenuBar.getInstance().jcbmiContinue.setSelected(!b);
 			if (!b == true) { //enabled button

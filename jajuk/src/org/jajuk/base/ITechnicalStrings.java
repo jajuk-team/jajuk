@@ -168,11 +168,20 @@ public interface ITechnicalStrings {
 	
 	//Look and feel
 	public static final String LNF_METAL = "Metal";
+	public static final String LNF_METAL_CLASS = "javax.swing.plaf.metal.MetalLookAndFeel";
+	public static final String LNF_METAL_CBUI = "org.jajuk.ui.laf.MetalComboBoxUI";
 	public static final String LNF_GTK = "Gtk";
+	public static final String LNF_GTK_CLASS = "com.sun.java.swing.plaf.gtk.GTKLookAndFeel";
+	public static final String LNF_GTK_CBUI = "";
 	public static final String LNF_WINDOWS = "Windows";
+	public static final String LNF_WINDOWS_CLASS = "com.sun.java.swing.plaf.windows.WindowsLookAndFeel";
+	public static final String LNF_WINDOWS_CBUI = "";
 	public static final String LNF_KUNSTSTOFF = "Kunststoff";
+	public static final String LNF_KUNSTSTOFF_CLASS = "com.incors.plaf.kunststoff.KunststoffLookAndFeel";
+	public static final String LNF_KUNSTSTOFF_CBUI = "org.jajuk.ui.laf.KunststoffComboBoxUI";
 	public static final String LNF_LIQUID = "Liquid";
-	
+	public static final String LNF_LIQUID_CLASS = "com.birosoft.liquid.LiquidLookAndFeel";
+	public static final String LNF_LIQUID_CBUI = "org.jajuk.ui.laf.LiquidComboBoxUI";
 	
 		
 	//statup mode
@@ -208,6 +217,9 @@ public interface ITechnicalStrings {
 	public static final String CONF_OPTIONS_P2P_PASSWORD= "jajuk.options.p2p.password";
 	public static final String CONF_HISTORY= "jajuk.options.history";
 	public static final String CONF_FIRST_CON= "jajuk.first_con";
+	public static final String CONF_TAGS_DEEP_SCAN= "jajuk.tags.deep_scan";
+	public static final String CONF_TAGS_USE_PARENT_DIR= "jajuk.tags.use_parent_dir";
+	
 	
  	
 	//miscelanous
@@ -266,7 +278,7 @@ public interface ITechnicalStrings {
 		 "<perspectives>\n"+
 		"\t<perspective  class='"+PERSPECTIVE_NAME_PHYSICAL+"'>\n"+
 		"\t\t<views>\n"+
-	/*	"\t\t\t<view class='org.jajuk.ui.views.PhysicalTreeView' />\n"+
+		"\t\t\t<view class='org.jajuk.ui.views.PhysicalTreeView' width='50' height='100' x='0' y='0'/>\n"+/*
 		"\t\t\t<view class='org.jajuk.ui.views.NavigationBarView' />\n"+
 		"\t\t\t<view class='org.jajuk.ui.views.TrackListView' />\n"+
 		"\t\t\t<view class='org.jajuk.ui.views.CoverView'  />\n"+

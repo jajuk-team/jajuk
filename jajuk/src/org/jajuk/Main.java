@@ -52,6 +52,7 @@ import org.jajuk.ui.PerspectiveManager;
 import org.jajuk.ui.SplashScreen;
 import org.jajuk.ui.ViewManager;
 import org.jajuk.ui.views.DeviceView;
+import org.jajuk.ui.views.PhysicalTreeView;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
@@ -103,11 +104,11 @@ public class Main implements ITechnicalStrings {
 			}
 	
 			//Registers supported look and feels
-			LNFManager.register(LNF_METAL,"javax.swing.plaf.metal.MetalLookAndFeel"); //$NON-NLS-1$
-			LNFManager.register(LNF_GTK,"com.sun.java.swing.plaf.gtk.GTKLookAndFeel"); //$NON-NLS-1$
-			LNFManager.register(LNF_WINDOWS,"com.sun.java.swing.plaf.windows.WindowsLookAndFeel");//$NON-NLS-1$
-			LNFManager.register(LNF_KUNSTSTOFF,"com.incors.plaf.kunststoff.KunststoffLookAndFeel");//$NON-NLS-1$
-			LNFManager.register(LNF_LIQUID,"com.birosoft.liquid.LiquidLookAndFeel");//$NON-NLS-1$
+			LNFManager.register(LNF_METAL,LNF_METAL_CLASS); //$NON-NLS-1$
+			LNFManager.register(LNF_GTK,LNF_GTK_CLASS); //$NON-NLS-1$
+			LNFManager.register(LNF_WINDOWS,LNF_WINDOWS_CLASS);//$NON-NLS-1$
+			LNFManager.register(LNF_KUNSTSTOFF,LNF_KUNSTSTOFF_CLASS);//$NON-NLS-1$
+			LNFManager.register(LNF_LIQUID,LNF_LIQUID_CLASS);//$NON-NLS-1$
 			
 			//perform initial checkups
 			initialCheckups();
@@ -157,10 +158,6 @@ public class Main implements ITechnicalStrings {
 			information = InformationJPanel.getInstance();
 			//****temp
 			information.setSelection("124 items : 4.5Mo"); //temp //$NON-NLS-1$
-			information.setCurrentStatusMessage("00:01:02/00:05:12"); //$NON-NLS-1$
-			information.setTotalStatus(50);
-			information.setTotalStatusMessage("00:23:23/01:34:56"); //$NON-NLS-1$
-			information.setCurrentStatus(76);
 			//**************************
 	
 			//Main panel
@@ -205,6 +202,9 @@ public class Main implements ITechnicalStrings {
 			
 			//Display a message
 			information.setMessage("Jajuk successfully started", InformationJPanel.INFORMATIVE); //$NON-NLS-1$
+			
+			//Populate trees
+			PhysicalTreeView.getInstance().populate();
 			
 			//Lauch startup track if any
 			launchInitialTrack();

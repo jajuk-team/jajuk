@@ -24,6 +24,7 @@ import java.util.Iterator;
 
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 
 /**
@@ -46,11 +47,20 @@ public class FIFO extends Thread implements ITechnicalStrings{
 	/** Deep time**/
 	private static final int SLEEP_TIME = 50;
 	
+	/** Refresh time in ms**/
+	private static final int REFRESH_TIME = 1000;
+	
 	/**Self instance*/
 	static private FIFO fifo= null; 	
 	
 	/**True is a track is playing */
 	static private boolean bPlaying = false;
+	
+	/** Current track start date*/
+	private static long lTrackStart; 
+	
+	/** Total time in fifo (ms)*/
+	private static long lTotalTime = 0;
 	
 	/**
 	 * Singleton access
@@ -79,12 +89,14 @@ public class FIFO extends Thread implements ITechnicalStrings{
 			Player.stop();
 			bPlaying = false;
 			clear();
+			lTotalTime = 0;
 		}
 		Iterator it = alFiles.iterator();
 		while (it.hasNext()){
 			File file = (File)it.next();
 			if (file != null){
 				alFIFO.add(file);	
+				lTotalTime += file.getTrack().getLength();
 			}
 		}
 	}
@@ -114,22 +126,30 @@ public class FIFO extends Thread implements ITechnicalStrings{
 	 */
 	public synchronized void run() {
 		try {
+			int i = 0;
 			while (!bStop) {
 				Thread.sleep(SLEEP_TIME); //sleep to save CPU
 				if (bPlaying ){//already playing something
+					if ( i%(REFRESH_TIME/SLEEP_TIME) == 0){  //actual refresh less frequent for cpu
+						long lTime = System.currentTimeMillis() - lTrackStart;
+						InformationJPanel.getInstance().setCurrentStatusMessage(Util.formatTime(lTime)+" / "+Util.formatTime(fCurrent.getTrack().getLength()*1000));
+						InformationJPanel.getInstance().setCurrentStatus((int)((lTime/10)/fCurrent.getTrack().getLength()));
+						InformationJPanel.getInstance().setTotalStatusMessage(Integer.toString((int)(lTotalTime-(lTime/1000)))+"'");
+					}
+					i++;
 					continue; //leave
 				}
 				if (!bPlaying && alFIFO.size() == 0 && fCurrent!= null && TRUE.equals(ConfigurationManager.getProperty(CONF_STATE_CONTINUE))){ //empty fifo
 					File fileNext = FileManager.getNextFile(fCurrent);
 					if ( fileNext != null ){
-						alFIFO.add(FileManager.getNextFile(fCurrent));	
+						push(FileManager.getNextFile(fCurrent),true);	
 					}
 				}
 				if (alFIFO.size() == 0){
 					continue;
 				}
 				int index = 0;
-				if (ConfigurationManager.getProperty(CONF_STATE_SHUFFLE).equals("true")){
+				if (ConfigurationManager.getProperty(CONF_STATE_SHUFFLE).equals(TRUE)){
 					index = (int)(Math.random() * alFIFO.size());
 					fCurrent = (File) (alFIFO.get(index));//take the first file in the fifo
 				}
@@ -141,8 +161,10 @@ public class FIFO extends Thread implements ITechnicalStrings{
 				Log.debug("Now playing :"+fCurrent); //$NON-NLS-1$
 				bPlaying = true;
 				Player.play(fCurrent);  //play it
+				lTrackStart = System.currentTimeMillis();
 				History.getInstance().addItem(fCurrent.getId(),System.currentTimeMillis());
-				InformationJPanel.getInstance().setMessage("Now Playing : "+fCurrent.getTrack().getName(),InformationJPanel.INFORMATIVE);
+				InformationJPanel.getInstance().setMessage("Now Playing : "+fCurrent.getTrack().getAuthor().getName2()+" / "+fCurrent.getTrack().getName(),InformationJPanel.INFORMATIVE);
+				InformationJPanel.getInstance().setQuality(fCurrent.getQuality()+" kbps");
 			}
 		} catch (Exception e) {
 			Log.error("122", e); //$NON-NLS-1$
@@ -163,6 +185,7 @@ public class FIFO extends Thread implements ITechnicalStrings{
 	 */
 	public static synchronized void finished(){
 		bPlaying = false;
+		lTotalTime -= fCurrent.getTrack().getLength();
 	}
 	
 	/**

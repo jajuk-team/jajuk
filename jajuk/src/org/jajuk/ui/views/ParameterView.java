@@ -43,6 +43,7 @@ import layout.TableLayout;
 
 import org.jajuk.base.History;
 import org.jajuk.i18n.Messages;
+import org.jajuk.ui.CommandJPanel;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.LNFManager;
 import org.jajuk.util.ConfigurationManager;
@@ -95,6 +96,9 @@ public class ParameterView extends ViewAdapter implements ActionListener {
 		JPasswordField jpfPasswd;
 		JCheckBox jcbAddRemoteProperties;
 		JCheckBox jcbHideProperties;
+	JPanel jpTags;
+		JCheckBox jcbDeepScan;
+		JCheckBox jcbUseParentDir;
 	JPanel jpOKCancel;
 		JButton jbOK;
 		JButton jbDefault;
@@ -127,15 +131,16 @@ public class ParameterView extends ViewAdapter implements ActionListener {
 		jtfHistory.setInputVerifier(new InputVerifier(){
 			 public boolean verify(JComponent input) {
 			 	JTextField tf = (JTextField) input;
-			 	jbOK.setEnabled(false);
 			 	String sText = tf.getText();
 			 	try{
 			 		int iValue = Integer.parseInt(sText);
 			 		if (iValue < -1 ){
+			 			jbOK.setEnabled(false);
 			 			return false;
 			 		}
 			 	}
 			 	catch(Exception e){
+			 		jbOK.setEnabled(false);
 			 		return false;
 			 	}
 			 	jbOK.setEnabled(true);
@@ -247,14 +252,15 @@ public class ParameterView extends ViewAdapter implements ActionListener {
 		jtfIntroPosition.setInputVerifier(new InputVerifier(){
 			 public boolean verify(JComponent input) {
 			 	JTextField tf = (JTextField) input;
-			 	jbOK.setEnabled(false);
 			 	String sText = tf.getText();
 			 	if (sText.length()<1 || sText.length()>2){
+			 		jbOK.setEnabled(false);
 			 		return false;
 			 	}
 			 	try{
 			 		int iValue = Integer.parseInt(sText);
 			 		if (iValue < 0 || iValue>99){
+			 			jbOK.setEnabled(false);
 			 			return false;
 			 		}
 			 	}
@@ -276,15 +282,16 @@ public class ParameterView extends ViewAdapter implements ActionListener {
 		jtfIntroLength.setInputVerifier(new InputVerifier(){
 			 public boolean verify(JComponent input) {
 			 	JTextField tf = (JTextField) input;
-			 	jbOK.setEnabled(false);
 			 	String sText = tf.getText();
 			 	try{
 			 		int iValue = Integer.parseInt(sText);
 			 		if (iValue <= 0 ){
+			 			jbOK.setEnabled(false);
 			 			return false;
 			 		}
 			 	}
 			 	catch(Exception e){
+			 		jbOK.setEnabled(false);
 			 		return false;
 			 	}
 			 	jbOK.setEnabled(true);
@@ -324,6 +331,18 @@ public class ParameterView extends ViewAdapter implements ActionListener {
 		jpP2P.add(jpfPasswd,"1,3"); //$NON-NLS-1$
 		jpP2P.add(jcbAddRemoteProperties,"0,5"); //$NON-NLS-1$
 		jpP2P.add(jcbHideProperties,"0,7"); //$NON-NLS-1$
+		//Tags
+		jpTags = new JPanel();
+		jpTags.setBorder(BorderFactory.createTitledBorder("Tags")); 
+		double sizeTags[][] = {{0.99},
+				{iYSeparator,20,iYSeparator,20,iYSeparator}};
+		jpTags.setLayout(new TableLayout(sizeTags));
+		jcbDeepScan = new JCheckBox("Perform a deep tag scan"); 
+		jcbDeepScan.setToolTipText("Force Jajuk to read the entire files to check length.\nUse it only if you want to get exact track length but be aware that the refresh will be *mush* slower ( up to 15 times )");
+		jcbUseParentDir = new JCheckBox("Use parent directory as album name"); 
+		jcbUseParentDir.setToolTipText("Tell Jajuk to use parent directory as album name for a track if it can't be get by tags");
+		jpTags.add(jcbDeepScan,"0,1"); //$NON-NLS-1$
+		jpTags.add(jcbUseParentDir,"0,3"); //$NON-NLS-1$
 		
 		//OK
 		jpOKCancel = new JPanel();
@@ -343,6 +362,7 @@ public class ParameterView extends ViewAdapter implements ActionListener {
 		add(jpConfirmations,"0,4"); //$NON-NLS-1$
 		add(jpOptions,"0,0"); //$NON-NLS-1$
 		add(jpP2P,"1,2"); //$NON-NLS-1$
+		add(jpTags,"1,4"); //$NON-NLS-1$
 		add(jpOKCancel,"0,6"); //$NON-NLS-1$
 		//update widgets state
 		updateSelection();
@@ -361,6 +381,7 @@ public class ParameterView extends ViewAdapter implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == jbClearHistory){
 			History.getInstance().clear();
+			CommandJPanel.getInstance().populateHistoryBar();
 		}
 		else if (e.getSource() == jbOK){
 			//**Read all parameters**
@@ -409,6 +430,8 @@ public class ParameterView extends ViewAdapter implements ActionListener {
 			if (!sHistoryDuration.equals("")){
 				ConfigurationManager.setProperty(CONF_HISTORY,sHistoryDuration);
 			}
+			//refresh history bar
+			CommandJPanel.getInstance().populateHistoryBar();
 			//P2P
 			ConfigurationManager.setProperty(CONF_OPTIONS_P2P_SHARE,Boolean.toString(jcbShare.isSelected()));
 			ConfigurationManager.setProperty(CONF_OPTIONS_P2P_ADD_REMOTE_PROPERTIES,Boolean.toString(jcbAddRemoteProperties.isSelected()));
@@ -417,11 +440,17 @@ public class ParameterView extends ViewAdapter implements ActionListener {
 			if (!sPass.equals("")){
 				ConfigurationManager.setProperty(CONF_OPTIONS_P2P_PASSWORD,MD5Processor.hash(sPass));
 			}
+			//tags
+			ConfigurationManager.setProperty(CONF_TAGS_DEEP_SCAN,Boolean.toString(jcbDeepScan.isSelected()));
+			ConfigurationManager.setProperty(CONF_TAGS_USE_PARENT_DIR,Boolean.toString(jcbUseParentDir.isSelected()));
+			
 			InformationJPanel.getInstance().setMessage("Options saved",InformationJPanel.INFORMATIVE);
 			ConfigurationManager.commit();
+			
 		}
 		else if (e.getSource() == jbDefault){
 			ConfigurationManager.setDefaultProperties();
+			ConfigurationManager.setProperty(CONF_FIRST_CON,FALSE);
 			updateSelection();
 			InformationJPanel.getInstance().setMessage("Options set to default",InformationJPanel.INFORMATIVE);
 			ConfigurationManager.commit();
@@ -459,6 +488,8 @@ public class ParameterView extends ViewAdapter implements ActionListener {
 		jpfPasswd.setText(ConfigurationManager.getProperty(CONF_OPTIONS_P2P_PASSWORD));
 		jcbAddRemoteProperties.setSelected(Boolean.valueOf(ConfigurationManager.getProperty(CONF_OPTIONS_P2P_ADD_REMOTE_PROPERTIES)).booleanValue());
 		jcbHideProperties.setSelected(Boolean.valueOf(ConfigurationManager.getProperty(CONF_OPTIONS_P2P_HIDE_LOCAL_PROPERTIES)).booleanValue());
+		jcbDeepScan.setSelected(Boolean.valueOf(ConfigurationManager.getProperty(CONF_TAGS_DEEP_SCAN)).booleanValue());
+		jcbUseParentDir.setSelected(Boolean.valueOf(ConfigurationManager.getProperty(CONF_TAGS_USE_PARENT_DIR)).booleanValue());
 	}
 
 }
