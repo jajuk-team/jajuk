@@ -16,13 +16,16 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.2  2003/10/23 22:07:40  bflorat
+ * 23/10/2003
+ *
  * Revision 1.1  2003/10/21 17:51:43  bflorat
  * 21/10/2003
  *
  */
 package org.jajuk.base;
 
-import java.util.Properties;
+import java.util.ArrayList;
 
 /**
  *  A track
@@ -50,12 +53,12 @@ public class Track extends PropertyAdapter {
 	private long lRate;
 	/**Track type*/
 	private Type type;
-	/**Track associated files*/
-	private File[] files;
 	/**Track hits number*/
 	private int iHits;
 	/**Track addition date format:YYYYMMDD*/
 	private String sAdditionDate;
+	/**Track associated files*/
+	private ArrayList alFiles;
 	
 	
 	
@@ -74,7 +77,7 @@ public class Track extends PropertyAdapter {
 	 * @param iHits
 	 * @param sAdditionDate
 	 */
-	public Track(String sId, String sName,Album album,Style style,Author author,long length,String sYear,long lRate,Type type,File[] files,int iHits,String sAdditionDate) {
+	public Track(String sId, String sName,Album album,Style style,Author author,long length,String sYear,long lRate,Type type,int iHits,String sAdditionDate) {
 		this.sId = sId;
 		this.sName = sName;
 		this.album = album;
@@ -84,7 +87,6 @@ public class Track extends PropertyAdapter {
 		this.sYear = sYear;
 		this.lRate = lRate; 
 		this.type = type;
-		this.files = files;
 		this.iHits = iHits;
 		this.sAdditionDate=sAdditionDate;
 	}
@@ -101,8 +103,8 @@ public class Track extends PropertyAdapter {
 	 */
 	public String toString() {
 		String sOut = "Track[ID="+sId+" Name=" + getName() + " Album="+album+" Style="+style+" Author="+author+" Length="+length+" Year="+sYear+" Rate="+lRate+" Type="+type+" Hits="+iHits+" Addition date"+sAdditionDate+"]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		for (int i=0;i<files.length;i++){
-			sOut += '\n'+files[i].toString();
+		for (int i=0;i<alFiles.size();i++){
+			sOut += '\n'+alFiles.get(i).toString();
 		}
 		return sOut; 
 	}
@@ -128,8 +130,8 @@ public class Track extends PropertyAdapter {
 		sb.append("' rate=' ");//$NON-NLS-1$
 		sb.append(lRate).append("' ");//$NON-NLS-1$
 		sb.append("' files=' ");//$NON-NLS-1$
-		for (int i=0;i<files.length;i++){
-			sb.append(files[i].getId()).append(",");//$NON-NLS-1$
+		for (int i=0;i<alFiles.size();i++){
+			sb.append(((File)alFiles.get(i)).getId()).append(",");//$NON-NLS-1$
 		}
 		sb.deleteCharAt(sb.length()-1);
 		sb.append("' hits=' ");//$NON-NLS-1$
@@ -160,8 +162,8 @@ public class Track extends PropertyAdapter {
 	/**
 	 * @return
 	 */
-	public File[] getFiles() {
-		return files;
+	public ArrayList getFiles() {
+		return alFiles;
 	}
 
 	/**
@@ -237,6 +239,14 @@ public class Track extends PropertyAdapter {
 	 */
 	public Style getStyle() {
 		return style;
+	}
+	
+	/**
+	 * Add an associated file 
+	 * @param file
+	 */
+	public void addFile(File file){
+		alFiles.add(file);	
 	}
 
 }

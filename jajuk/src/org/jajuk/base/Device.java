@@ -16,13 +16,26 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.2  2003/10/23 22:07:40  bflorat
+ * 23/10/2003
+ *
  * Revision 1.1  2003/10/21 17:51:43  bflorat
  * 21/10/2003
  *
  */
 package org.jajuk.base;
 
+import java.io.File;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Properties;
+
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
+
+import org.jajuk.Main;
+import org.jajuk.i18n.Messages;
+import org.jajuk.util.JajukFileFilter;
 
 /**
  *  A device ( music files repository )
@@ -42,6 +55,8 @@ public class Device extends PropertyAdapter {
 	private String sUrl;
 	/**Mounted device flag*/
 	private boolean bMounted;
+	/**directories*/
+	private ArrayList alDirectories = new ArrayList(20);
 	
 
 	/**
@@ -52,7 +67,6 @@ public class Device extends PropertyAdapter {
 	 * @param sUrl
 	 */
 	public Device(String sId, String sName,String sDeviceType,String sUrl) {
-		super();
 		this.sId = sId;
 		this.sName = sName;
 		this.sDeviceType = sDeviceType;
@@ -100,6 +114,60 @@ public class Device extends PropertyAdapter {
 		}
 		return false;
 	}	
+	
+	/**
+	 * Refresh : scan the device to find tracks
+	 * @return
+	 */
+	public void refresh(){
+		//TODO do it in a thread
+		File fTop = new File(this.sUrl);
+		if (!fTop.exists()){
+			Messages.showErrorMessage("101");
+			return;
+		}
+		//scanDirectory(fTop);
+		File fParent = fTop;
+		int[] indexTab = new int[1000]; //directories index  
+		for (int i=0;i<1000;i++){ //init
+			indexTab[i] = -1;
+		}
+		int iDeep = 0; //deep
+		while (iDeep >= 0 ){
+			File[] files = fParent.listFiles(JajukFileFilter.getInstance());
+			for (int i=0;i<files.length;i++){
+				System.out.println(files[i]);
+			}
+			if (files.length == 0){
+				indexTab[iDeep] = 0; //re-init for next time we will reach this deep
+				iDeep --;  //come up
+				fParent = fParent.getParentFile();
+			}
+			else{
+				indexTab[iDeep] ++;
+				iDeep ++;
+				fParent = files[indexTab[iDeep]];
+			}
+			
+		}
+	}
+	/*
+	 * Directory directory = DirectoryManager.registerDirectory(files[i].getName(),null,this);
+				scanDirectory(files[i]);
+				File[] files2 = files[i].listFiles(JajukFileFilter.getInstance());
+	 */
+	/**
+	 * Scan all files in a directory
+	 * @param 
+	 */
+	private void scanDirectory(File fDirectory){
+		File[] files = fDirectory.listFiles(JajukFileFilter.getInstance());
+		for (int i=0;i<files.length;i++){
+			if (!files[i].isDirectory()){
+				System.out.println(files[i]);
+			}
+		}
+	}
 
 
 	/**
@@ -136,5 +204,19 @@ public class Device extends PropertyAdapter {
 	public String getUrl() {
 		return sUrl;
 	}
+	
+	/**
+		 * @return
+		 */
+		public ArrayList getDirectories() {
+			return alDirectories;
+		}
+
+		/**
+		 * @param directory
+		 */
+		public void addDirectory(Directory directory) {
+			alDirectories.add(directory);
+		}
 
 }

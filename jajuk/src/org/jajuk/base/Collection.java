@@ -16,8 +16,8 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
- * Revision 1.3  2003/10/21 20:43:06  bflorat
- * TechnicalStrings to ITechnicalStrings according to coding convention
+ * Revision 1.4  2003/10/23 22:07:40  bflorat
+ * 23/10/2003
  *
  */
 package org.jajuk.base;
@@ -243,7 +243,6 @@ public class Collection extends DefaultHandler implements ITechnicalStrings,Erro
 	  public void startElement (String sUri, String sName, String sQName, Attributes attributes) throws SAXException {
 		if (sQName.equals(XML_DEVICE)) {  //device case
 			DeviceManager.registerDevice(attributes.getValue(0),attributes.getValue(1),attributes.getValue(2));
-			System.out.println(DeviceManager.getDevice("2"));
 		}
 	  }
 

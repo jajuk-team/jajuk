@@ -16,12 +16,16 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.2  2003/10/23 22:07:40  bflorat
+ * 23/10/2003
+ *
  * Revision 1.1  2003/10/21 17:51:43  bflorat
  * 21/10/2003
  *
  */
 package org.jajuk.base;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Properties;
 
@@ -37,6 +41,8 @@ public class Album extends PropertyAdapter {
 	private String sId;
 	/**Album name */
 	private String sName;
+	/**Tracks for this album*/
+	private ArrayList alTracks = new ArrayList(10);
 	
 
 	/**
@@ -93,6 +99,20 @@ public class Album extends PropertyAdapter {
 	 */
 	public boolean equals(Album otherAlbum){
 		return this.getName().equals(otherAlbum.getName() );
+	}
+
+	/**
+	 * @return
+	 */
+	public ArrayList getTracks() {
+		return alTracks;
+	}
+
+	/**
+	 * @param list
+	 */
+	public void addTrack(Track track) {
+		alTracks.add(track);
 	}
 
 }

@@ -16,13 +16,16 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.2  2003/10/23 22:07:40  bflorat
+ * 23/10/2003
+ *
  * Revision 1.1  2003/10/21 17:51:43  bflorat
  * 21/10/2003
  *
  */
 package org.jajuk.base;
 
-import java.util.Properties;
+import java.util.ArrayList;
 
 /**
  *  An author
@@ -36,6 +39,8 @@ public class Author extends PropertyAdapter {
 	private String sId;
 	/**Author name */
 	private String sName;
+	/**Albums for this album*/
+	private ArrayList alAlbums = new ArrayList(10);
 
 	/**
 	 * Author constructor
@@ -94,5 +99,19 @@ public class Author extends PropertyAdapter {
 		}
 		return false;
 	}	
+
+		/**
+		 * @return
+		 */
+		public ArrayList getAlbums() {
+			return alAlbums;
+		}
+
+		/**
+		 * @param album
+		 */
+		public void addAlbum(Album album) {
+			alAlbums.add(album);
+		}
 
 }

@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.4  2003/10/23 22:07:40  bflorat
+ * 23/10/2003
+ *
  * Revision 1.3  2003/10/17 20:37:18  bflorat
  * 17/10/2003
  *
@@ -31,6 +34,10 @@ package org.jajuk.i18n;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+
+import javax.swing.JOptionPane;
+
+import org.jajuk.Main;
 
 /**
  * Utility class to get strings from localized property files
@@ -78,6 +85,15 @@ public class Messages {
 		 */
 		public static String getErrorMessage(String pCode) {
 			return rb.getString("Error." + pCode); //$NON-NLS-1$
+		}
+		
+		
+		/**
+		 * Show a dialog with specified error message
+		 * @param sCode
+		 */
+		public static void showErrorMessage(String sCode){
+			JOptionPane.showMessageDialog(Main.jframe,Messages.getErrorMessage(sCode),Messages.getErrorMessage("102"),JOptionPane.ERROR_MESSAGE);
 		}
 	
 

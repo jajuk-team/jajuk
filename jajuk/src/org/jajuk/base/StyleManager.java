@@ -16,8 +16,8 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
- * Revision 1.2  2003/10/21 17:51:43  bflorat
- * 21/10/2003
+ * Revision 1.3  2003/10/23 22:07:40  bflorat
+ * 23/10/2003
  *
  */
 
@@ -47,10 +47,11 @@ public class StyleManager {
 	 * Register a style
 	 *@param sName
 	 */
-	public static void registerStyle(String sName) {
+	public static Style registerStyle(String sName) {
 		String sId = new Integer(hmStyles.size()).toString();
 		Style style = new Style(sId, sName);
 		hmStyles.put(sId, style);
+		return style;
 	}
 
 	/**

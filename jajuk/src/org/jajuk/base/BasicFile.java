@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.2  2003/10/23 22:07:40  bflorat
+ * 23/10/2003
+ *
  * Revision 1.1  2003/10/21 20:37:54  bflorat
  * 21/10/2003
  *
@@ -37,8 +40,25 @@ public class BasicFile extends org.jajuk.base.File {
 	java.io.File fio;
 	
 	public BasicFile(java.io.File fio){
-		super("-1",fio.getName(),null,new Track("-1",fio.getName(),null,null,null,0,null,0,TypeManager.getTypeByExtension(Util.getExtension(fio)),null,0,""),fio.length(),null) ;
+		this.sId = "-1";
+		this.sName = fio.getName();
+		this.directory = null;
+		this.lSize = fio.length();
+		this.sQuality = null;
 		this.fio = fio;
+		//track creation
+		String sTrackId = "1";
+		String sTrackName = "";
+		Album album = null;
+		Style style = null;
+		Author author = null;
+		long length = 0;
+		String sYear = ""; 
+		long lRate = 0;
+		Type type = TypeManager.getTypeByExtension(Util.getExtension(fio));
+		int iHits = 0;
+		String sAdditionDate ="";
+		this.track = new Track(sTrackId,sTrackName,album,style,author,length,sYear,lRate,type,iHits,sAdditionDate);
 	}
 	
 		/**

@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.2  2003/10/23 22:07:40  bflorat
+ * 23/10/2003
+ *
  * Revision 1.1  2003/10/21 17:51:43  bflorat
  * 21/10/2003
  *
@@ -23,9 +26,9 @@
 
 package org.jajuk.base;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 
 /**
  *  Convenient class to manage playlists
@@ -47,10 +50,11 @@ public class PlaylistManager {
 	 * Register an Playlist
 	 *@param files
 	 */	
-	public static void registerPlaylist(PlaylistFile[] files) {
+	public static Playlist registerPlaylist(ArrayList alFiles) {
 		String sId = new Integer(hmPlaylists.size()).toString();
-		Playlist playlist = new Playlist(sId,files);
+		Playlist playlist = new Playlist(sId,alFiles);
 		hmPlaylists.put(sId,playlist);
+		return playlist;
 	}
 
 

@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.2  2003/10/23 22:07:40  bflorat
+ * 23/10/2003
+ *
  * Revision 1.1  2003/10/21 17:51:43  bflorat
  * 21/10/2003
  *
@@ -47,10 +50,11 @@ public class AuthorManager {
 	 * Register an author
 	 *@param sName
 	 */
-	public static void registerAuthor(String sName) {
+	public static Author registerAuthor(String sName) {
 		String sId = new Integer(hmAuthors.size()).toString();
-		Author Author = new Author(sId, format(sName));
-		hmAuthors.put(sId, Author);
+		Author author = new Author(sId, format(sName));
+		hmAuthors.put(sId, author);
+		return author;
 	}
 
 	/**Return all registred Authors*/

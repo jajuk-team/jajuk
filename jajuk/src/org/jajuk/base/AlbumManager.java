@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.2  2003/10/23 22:07:40  bflorat
+ * 23/10/2003
+ *
  * Revision 1.1  2003/10/21 17:51:43  bflorat
  * 21/10/2003
  *
@@ -48,10 +51,11 @@ public class AlbumManager {
 	 * Register an Album
 	 *@param sName
 	 */
-	public static void registerAlbum(String sName) {
+	public static Album registerAlbum(String sName) {
 		String sId = new Integer(hmAlbums.size()).toString();
 		Album album = new Album(sId,format(sName));
 		hmAlbums.put(new Integer(sId),album);
+		return album;
 	}
 
 

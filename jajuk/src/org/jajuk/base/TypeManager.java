@@ -16,8 +16,8 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
- * Revision 1.1  2003/10/17 20:36:45  bflorat
- * 17/10/2003
+ * Revision 1.2  2003/10/23 22:07:40  bflorat
+ * 23/10/2003
  *
  * Revision 1.1  2003/10/12 21:08:11  bflorat
  * 12/10/2003
@@ -50,8 +50,9 @@ public class TypeManager {
 	 * Register a type jajuk can read
 	 * @param type
 	 */
-	public static void registerType(Type type) {
+	public static Type registerType(Type type) {
 		hmSupportedTypes.put(type.getExtension(), type);
+		return type;
 	}
 
 	/**

@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.8  2003/10/23 22:07:40  bflorat
+ * 23/10/2003
+ *
  * Revision 1.7  2003/10/21 20:43:06  bflorat
  * TechnicalStrings to ITechnicalStrings according to coding convention
  *
@@ -53,6 +56,8 @@ import javax.swing.JFrame;
 import javax.swing.UIManager;
 
 import org.jajuk.base.Collection;
+import org.jajuk.base.Device;
+import org.jajuk.base.DeviceManager;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.base.Type;
@@ -149,6 +154,9 @@ public class Main implements ITechnicalStrings{
 			jframe.setJMenuBar(JajukJMenuBar.getInstance());
 			Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
 			jframe.show();
+			
+			//tests en bouchonné
+			DeviceManager.registerDevice("portable","directory","/data/mp3").refresh();  //perform a refresh
 			
 		} catch (Exception e) { //last chance to catch any error for logging purpose
 			Log.error(Messages.getString("Main.uncatched_exception_2"), e); //$NON-NLS-1$

@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.3  2003/10/23 22:07:40  bflorat
+ * 23/10/2003
+ *
  * Revision 1.2  2003/10/21 20:37:54  bflorat
  * 21/10/2003
  *
@@ -49,10 +52,11 @@ public class FileManager {
 	 * Register an File
 	 *@param sName
 	 */
-	public static void registerFile(String sName,Directory directory,Track track,long lSize,String sQuality) {
+	public static File registerFile(String sName,Directory directory,Track track,long lSize,String sQuality) {
 		String sId = new Integer(hmFiles.size()).toString();
 		File file = new File(sId,sName,directory,track,lSize,sQuality);
 		hmFiles.put(new Integer(sId),file);
+		return file;
 	}
 
 

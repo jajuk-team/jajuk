@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.5  2003/10/23 22:07:40  bflorat
+ * 23/10/2003
+ *
  * Revision 1.4  2003/10/21 20:37:54  bflorat
  * 21/10/2003
  *
@@ -40,17 +43,17 @@ package org.jajuk.base;
  */
 public class File extends PropertyAdapter{
 	/** author ID. Ex:1,2,3...*/
-	private String sId;
+	protected String sId;
 	/**File name */
-	private String sName;
+	protected String sName;
 	/**Parent directory*/
-	private Directory directory;
+	protected Directory directory;
 	/**Associated track */
-	private Track track;
+	protected Track track;
 	/**File size in bytes*/
-	private long lSize;
+	protected long lSize;
 	/**File quality. Ex: 192 for 192kb/s*/
-	private String sQuality;
+	protected String sQuality;
 	
 	
 	/**
@@ -71,6 +74,10 @@ public class File extends PropertyAdapter{
 		this.sQuality = sQuality;
 	}
 
+
+	/**Void constructor*/
+	public File(){
+	}
 	
 	/**
 		 * toString method
@@ -176,5 +183,5 @@ public class File extends PropertyAdapter{
 			}
 			return sbOut.toString();
 		}
-
+		
 }

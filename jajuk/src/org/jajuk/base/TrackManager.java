@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.2  2003/10/23 22:07:40  bflorat
+ * 23/10/2003
+ *
  * Revision 1.1  2003/10/21 17:51:43  bflorat
  * 21/10/2003
  *
@@ -47,7 +50,7 @@ public class TrackManager {
 	 * Register an Track
 	 *@param sName
 	 */
-	public static void registerTrack(String sName,Album album,Style style,Author author,long length,String sYear,long lRate,Type type,File[] files,int iHits,String sAdditionDate) {
+	public static Track registerTrack(String sName,Album album,Style style,Author author,long length,String sYear,long lRate,Type type,File[] files,int iHits,String sAdditionDate) {
 		String sId = new Integer(hmTracks.size()).toString();
 		Track track =
 			new Track(
@@ -60,10 +63,10 @@ public class TrackManager {
 				sYear,
 				lRate,
 				type,
-				files,
 				iHits,
 				sAdditionDate);
 		hmTracks.put(sId, track);
+		return track;
 	}
 
 	/**Return all registred Tracks*/

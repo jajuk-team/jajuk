@@ -16,42 +16,57 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
- * Revision 1.3  2003/10/23 22:07:41  bflorat
+ * Revision 1.1  2003/10/23 22:07:41  bflorat
  * 23/10/2003
  *
- * Revision 1.2  2003/10/17 20:43:56  bflorat
- * 17/10/2003
- *
- * Revision 1.1  2003/10/12 21:08:11  bflorat
- * 12/10/2003
- *
  */
-package org.jajuk.ui;
+
+package org.jajuk.util;
 
 import java.io.File;
 
-import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileFilter;
 
 import org.jajuk.base.TypeManager;
-import org.jajuk.i18n.Messages;
-import org.jajuk.util.JajukFileFilter;
-import org.jajuk.util.Util;
 
 /**
- *  Music-oriented file chooser 
- * <p>decorator
+ *  Type description
+ *
  * @author     bflorat
- * @created    12 oct. 2003
+ * @created    22 oct. 2003
  */
-public class JajukFileChooser extends JFileChooser {
+/**
+ *  Music oriented file filter ( mp3, ogg.. )
+ * <p> Singleton
+ *
+ * @author     bflorat
+ * @created    22 oct. 2003
+ */
+public class JajukFileFilter extends FileFilter implements java.io.FileFilter{
+	/**Self instance*/
+	private static JajukFileFilter jff;
 
-	javax.swing.filechooser.FileFilter filter;
+	public static JajukFileFilter getInstance(){
+		if (jff == null){
+			jff = new JajukFileFilter(); 
+		}
+		return jff;
+	}
+	
+	private JajukFileFilter(){
+	}
 
-	JajukFileChooser() {
-		setDialogTitle(Messages.getString("JajukFileChooser.Please_choose_track(s)_to_play_1")); //$NON-NLS-1$
-		setFileFilter( JajukFileFilter.getInstance());
-		setMultiSelectionEnabled(true);
-
+	/**Tells if a file is selected or not**/
+	public boolean accept(File f) {
+		if (TypeManager.isExtensionSupported(Util.getExtension(f))
+			|| f.isDirectory()) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	public String getDescription() {
+		return TypeManager.getTypeListString();
 	}
 
 }

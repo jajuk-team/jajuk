@@ -16,6 +16,9 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  * $Log$
+ * Revision 1.2  2003/10/23 22:07:40  bflorat
+ * 23/10/2003
+ *
  * Revision 1.1  2003/10/21 17:51:43  bflorat
  * 21/10/2003
  *
@@ -47,10 +50,11 @@ public class PlaylistFileManager {
 	 * Register an PlaylistFile
 	 *@param sName
 	 */
-	public static void registerPlaylistFile(String sName,String sHashcode,String sParentDirectory) {
+	public static PlaylistFile registerPlaylistFile(String sName,String sHashcode,String sParentDirectory) {
 		String sId = new Integer(hmPlaylistFiles.size()).toString();
-		PlaylistFile album = new PlaylistFile(sId,sName,sHashcode,sParentDirectory);
-		hmPlaylistFiles.put(sName,album);
+		PlaylistFile playlistFile = new PlaylistFile(sId,sName,sHashcode,sParentDirectory);
+		hmPlaylistFiles.put(sName,playlistFile);
+		return playlistFile;
 	}
 
 
