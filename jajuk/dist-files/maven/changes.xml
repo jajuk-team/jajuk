@@ -121,6 +121,7 @@
     	<action dev='bflorat' type='update'>Regexp option is now in advanced tab of parameter view</action>
     	<action dev='bflorat' type='update'>Table filter now supports * joker when regexp option is disabled (default)</action>
     	<action dev='bflorat' type='update'>Default startup mode is now last file keep position</action>
+    	<action dev='bflorat' type='update'>Better handling of errors (able to restart FIFO)</action>
     	<action dev='bflorat' type='fix'>1001432 We shouldn't be able to choose a startup file in parameter view if this mode is not selected</action>  
     	<action dev='bflorat' type='fix'>1003760 A rewind or a forward should resume a paused track</action>  
     	<action dev='bflorat' type='fix'>1003759 Cannot start tracks after stopping the player during a pause</action>  
