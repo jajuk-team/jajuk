@@ -20,10 +20,7 @@
 
 package org.jajuk.ui.perspectives;
 
-import java.awt.BorderLayout;
 import java.awt.Container;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -33,6 +30,7 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
 import net.infonode.docking.DockingWindow;
@@ -60,7 +58,7 @@ public abstract class PerspectiveAdapter implements IPerspective,ITechnicalStrin
 	/** Perspective views list*/
 	private ArrayList alViews = new ArrayList(10);
 	/**Associated desktop pane*/
-	protected JPanel desktop;
+	protected JPanel jpPerspectiveContentPane;
 	/**Contained by desktop pane*/
     public RootWindow rootWindow;
 	
@@ -72,8 +70,8 @@ public abstract class PerspectiveAdapter implements IPerspective,ITechnicalStrin
 	 * @param sIconName
 	 */
 	public PerspectiveAdapter(){
-		this.desktop = new JPanel();
-		this.desktop.setLayout(new BorderLayout());
+		this.jpPerspectiveContentPane = new JPanel();
+		this.jpPerspectiveContentPane.setLayout(new BoxLayout(this.jpPerspectiveContentPane,BoxLayout.Y_AXIS));
 	}
 	public void setDefaultViews(){
 		
@@ -84,8 +82,6 @@ public abstract class PerspectiveAdapter implements IPerspective,ITechnicalStrin
 	public net.infonode.docking.View addView(IView view) {
 		alViews.add(view);
 		net.infonode.docking.View dockingView = ViewManager.registerView(view);
-		ViewManager.setVisible(view,view.isShouldBeShown());
-		
 		return dockingView;
 	}
 	/**
@@ -95,7 +91,6 @@ public abstract class PerspectiveAdapter implements IPerspective,ITechnicalStrin
 	public net.infonode.docking.View addViewAndPlaceIt(IView view){
 	    net.infonode.docking.View dockingView = addView(view);
 		DockingUtil.addWindow(dockingView,rootWindow);
-		
 		return dockingView;
     
     }
@@ -117,7 +112,7 @@ public abstract class PerspectiveAdapter implements IPerspective,ITechnicalStrin
             ViewManager.removeView(currentView);
         }
        alViews.clear();
-       getDesktop().removeAll();
+       getContentPane().removeAll();
     }
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.perspectives.IPerspective#getID()
@@ -136,8 +131,8 @@ public abstract class PerspectiveAdapter implements IPerspective,ITechnicalStrin
 	/**
 	 * @return Returns the desktop.
 	 */
-	public Container getDesktop() {
-		return desktop;
+	public Container getContentPane() {
+		return jpPerspectiveContentPane;
 	}
 	
 	/**
@@ -185,9 +180,9 @@ public abstract class PerspectiveAdapter implements IPerspective,ITechnicalStrin
 	 * @throws IOException Serialise the perspective
 	 */
 	protected  void commit(String strFile) throws IOException{
-	    ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(strFile));
-		rootWindow.write(out);
-		out.close();
+	    ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(strFile));
+		rootWindow.write(oos);
+		oos.close();
 	}
 	
 	
@@ -196,16 +191,10 @@ public abstract class PerspectiveAdapter implements IPerspective,ITechnicalStrin
 	 * @throws IOException Unserialise the perspective
 	 */
 	protected  void load(String strFile) throws IOException {
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		File f = new File(strFile);
-		if(f.exists()){
-			FileInputStream fis = new FileInputStream(f);
-			byte[] tab = new byte[fis.available()];
-			fis.read(tab);
-			bos.write(tab);
-			rootWindow.read(new ObjectInputStream(new ByteArrayInputStream(bos.toByteArray())));
-			
-		}
+	    File  file = new File(strFile);  
+        if ( file.exists() && file.canRead()){ //try to read serialized perspective, if file doesn't exist, it will be created at next shutdown
+            rootWindow.read(new ObjectInputStream(new FileInputStream(strFile)));    
+        }
     }
     
 	/**
@@ -213,16 +202,17 @@ public abstract class PerspectiveAdapter implements IPerspective,ITechnicalStrin
 	 * @param dockingWindow create the root window and add it to desktop
 	 */
 	protected void setRootWindow(ViewMap viewMap,DockingWindow dockingWindow){
-
 		rootWindow = new RootWindow(viewMap,dockingWindow);
 		rootWindow.getRootWindowProperties().addSuperObject(SlimFlatDockingTheme.createRootWindowProperties());
 		rootWindow.getWindowBar(Direction.DOWN).setEnabled(true);
-		
-		
-		getDesktop().add(rootWindow,BorderLayout.CENTER);
-    
+		jpPerspectiveContentPane.add(rootWindow);
+		//jpPerspectiveContentPane.add(rootWindow);
+		/*
+		JFrame jf = new JFrame("test");
+		jf.setSize(400,400);
+		jf.setContentPane(rootWindow);
+		jf.pack();
+		jf.setVisible(true);*/
     }
 	
-	
-
 }

@@ -24,7 +24,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import org.jajuk.Main;
@@ -74,7 +73,6 @@ public class PerspectiveManager  implements ITechnicalStrings {
      * @throws JajukException
      */
     public static void load() throws JajukException{
-    
         registerDefaultPerspectives();
         try{
             Iterator it = getPerspectives().iterator();
@@ -120,22 +118,18 @@ public class PerspectiveManager  implements ITechnicalStrings {
 				Iterator it = perspective.getViews().iterator();
 				while ( it.hasNext()){
 					final IView view = (IView)it.next();
-					if (!view.isPopulated() && view.isShouldBeShown()){
+					if (!view.isPopulated() ){
 						view.populate();
 						view.setIsPopulated(true);
 					}	
 				}
 				currentPerspective = perspective;
-				
-				JPanel desktop = (JPanel)perspective.getDesktop();
-				JPanel jpDesktop = Main.jpDesktop;
-				jpDesktop.removeAll();
-				jpDesktop.add(desktop,BorderLayout.CENTER);
-				jpDesktop.repaint();  //this repaint is mandatory to avoid strange paintings
+				Main.jpMainContentPane.removeAll();
+				Main.jpMainContentPane.add(perspective.getContentPane(),BorderLayout.CENTER);
+				Main.jpMainContentPane.repaint();  //this repaint is mandatory to avoid strange paintings
 				PerspectiveBarJPanel.getInstance().setActivated(perspective);
 				Util.stopWaiting();
 			}
-			
 		});
 	}  
     

@@ -20,12 +20,11 @@
 
 package org.jajuk.ui;
 
-import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Cursor;
 
+import javax.swing.BoxLayout;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 
 import org.jajuk.ui.views.IView;
 import org.jajuk.util.Util;
@@ -55,8 +54,9 @@ public class JajukContainer extends JPanel{
 	}
 	
 	public void setView(IView c){
+	    setLayout(new BoxLayout(this,BoxLayout.X_AXIS));
 	    removeAll();
-	    add(new JScrollPane((Component)c),BorderLayout.CENTER);
+	    add((Component)c);
 	}
 	
 	/** Constructor
@@ -64,7 +64,6 @@ public class JajukContainer extends JPanel{
 	 * @param view
 	 */
 	public JajukContainer(IView c) {
-		super(new BorderLayout());
 		setView(c);
 	}
 	
@@ -83,6 +82,5 @@ public class JajukContainer extends JPanel{
 	public boolean getWaiting(){
 		return bWaiting;
 	}
-
 	
 }

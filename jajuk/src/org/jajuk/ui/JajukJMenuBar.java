@@ -22,7 +22,6 @@ package org.jajuk.ui;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.HashMap;
-import java.util.Iterator;
 
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
@@ -32,9 +31,6 @@ import javax.swing.KeyStroke;
 
 import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.i18n.Messages;
-import org.jajuk.ui.perspectives.PerspectiveManager;
-import org.jajuk.ui.views.IView;
-import org.jajuk.ui.views.ViewManager;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Util;
 ;
@@ -145,22 +141,6 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings{
 		add(properties);
 		add(mode);
 		add(help);
-	}
-	
-	
-	/** Refresh views checjboxs for new perspective*/
-	public void refreshViews(){
-		views.removeAll();
-		//		Views menu
-		Iterator it = PerspectiveManager.getCurrentPerspective().getViews().iterator();
-		while (it.hasNext()){
-			IView view = (IView)it.next();
-			JCheckBoxMenuItem jcbmi = new JCheckBoxMenuItem(Messages.getString(view.getDesc()), ViewManager.isVisible(view));
-			jcbmi.addActionListener(JajukListener.getInstance());
-			jcbmi.setActionCommand(EVENT_VIEW_SHOW_STATUS_CHANGED_REQUEST);
-			hmCheckboxView.put(jcbmi,view);
-			views.add(jcbmi);
-		}
 	}
 	
 	static public synchronized JajukJMenuBar getInstance(){

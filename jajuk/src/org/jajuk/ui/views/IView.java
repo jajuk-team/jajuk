@@ -44,12 +44,6 @@ public interface IView extends ComponentListener{
 	public String getDesc();
 	
 	/**
-	 * Set the view visible.
-	 * @param pVisible - true to make the view visible; false to make it invisible.
-	 */
-	public void setVisible(boolean pVisible);
-	
-	/**
 	 * Populate the view 
 	 */
 	public void populate();
@@ -120,20 +114,5 @@ public interface IView extends ComponentListener{
      */
     public IView setLogicalCoord(int iWidth,int iHeight,int iX,int iY);
     
-    /**
-     * Set the should be shown flag
-     * @param b 
-     * @return IView
-     */
-    public IView setShouldBeShown(boolean b);
     
-    /**
-     * 
-     * @return should be shown flag
-     */
-    public boolean isShouldBeShown();
-    	
-    
-    
-
 }

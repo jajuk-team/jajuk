@@ -314,7 +314,7 @@ public class Util implements ITechnicalStrings {
 			Container container = null;
 			IPerspective perspective = PerspectiveManager.getCurrentPerspective();
 			if ( perspective != null){
-				container = (Container)perspective.getDesktop();
+				container = (Container)perspective.getContentPane();
 				int numComp = container.getComponentCount();
 				Component comp = null;
 				for (int i = 0; i < numComp; i++) {
@@ -337,7 +337,7 @@ public class Util implements ITechnicalStrings {
 			Container container = null;
 			IPerspective perspective = PerspectiveManager.getCurrentPerspective();
 			if ( perspective != null){
-			    container = (Container)perspective.getDesktop();
+			    container = (Container)perspective.getContentPane();
 				int numComp = container.getComponentCount();
 				Component comp = null;
 				for (int i = 0; i < numComp; i++) {

@@ -46,20 +46,14 @@ public class PlayerPerspective extends PerspectiveAdapter {
         ViewMap viewMap = new ViewMap();
 		
 		IView view = new AnimationView();
-		view.setShouldBeShown(true);
 		net.infonode.docking.View dockingAnimationView = addView(view);
 		viewMap.addView(0,dockingAnimationView);
 		
-		
-        
-        view = new CoverView();
-		view.setShouldBeShown(true);
-        net.infonode.docking.View dockingCoverView = addView(view);
+	    view = new CoverView();
+	    net.infonode.docking.View dockingCoverView = addView(view);
 		viewMap.addView(3,dockingCoverView);
         
         SplitWindow horMainSplit = new SplitWindow(false,0.2f,dockingAnimationView,dockingCoverView);
-		
-		
 		
         setRootWindow(viewMap,horMainSplit);
         

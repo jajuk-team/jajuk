@@ -20,7 +20,6 @@ package org.jajuk;
 
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.Frame;
 import java.io.File;
 import java.io.IOException;
@@ -32,8 +31,6 @@ import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
 
 import org.jajuk.base.Collection;
 import org.jajuk.base.Device;
@@ -61,9 +58,6 @@ import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
 
 
 /**
@@ -82,8 +76,8 @@ public class Main implements ITechnicalStrings {
 	public static PerspectiveBarJPanel perspectiveBar;
 	/**Lower information panel*/
 	public static InformationJPanel information;
-	/**Main desktop pane*/
-	public static JPanel jpDesktop;
+	/**Main contentPane*/
+	public static JPanel jpMainContentPane;
 	/**Main frame panel*/
 	public static JPanel jpFrame;
 	/**Jajuk slashscreen*/
@@ -94,8 +88,6 @@ public class Main implements ITechnicalStrings {
 	private static boolean bDebugMode = false;
 	/**Exiting flag*/
 	public static boolean bExiting = false;
-	/**Perspective release flag used in upgrade method**/
-	private static boolean bPerspectiveReleaseOK = true;
 	/**General use lock used for synchronization*/
 	private static byte[] bLock = new byte[0];
 	/**List of auto-refreshed devices */
@@ -157,6 +149,7 @@ public class Main implements ITechnicalStrings {
 			Messages.getInstance().registerLocal("it","Language_desc_it"); //$NON-NLS-1$ //$NON-NLS-2$
 			Messages.getInstance().registerLocal("sv","Language_desc_sv"); //$NON-NLS-1$ //$NON-NLS-2$
 			Messages.getInstance().registerLocal("nl","Language_desc_nl"); //$NON-NLS-1$ //$NON-NLS-2$
+			Messages.getInstance().registerLocal("zh","Language_desc_zh"); //$NON-NLS-1$ //$NON-NLS-2$
 			
 			//configuration manager startup
 			org.jajuk.util.ConfigurationManager.getInstance();
@@ -509,25 +502,6 @@ public class Main implements ITechnicalStrings {
 		if ( file!= null ){
 			file.delete();
 		}
-		//--For jajuk < 0.3, migrate perspective file
-		try{
-			SAXParserFactory spf = SAXParserFactory.newInstance();
-			spf.setValidating(false);
-			SAXParser saxParser = spf.newSAXParser();
-			File frt = new File(FILE_PERSPECTIVES_CONF);
-			saxParser.parse(frt.toURL().toString(),new DefaultHandler(){
-				public void startElement(String sUri, String sName, String sQName, Attributes attributes) throws SAXException {
-					if (sQName.equals("perspectives")) { //$NON-NLS-1$
-						String sRelease = attributes.getValue(attributes.getIndex("jajuk_version")); //$NON-NLS-1$
-						if (sRelease.matches("0.[1-2].*")){ //0.1 or 0.2 release //$NON-NLS-1$
-							Main.bPerspectiveReleaseOK = false;
-						}
-					}
-				}
-			});
-		} catch (Exception e) {
-			Main.bPerspectiveReleaseOK = false;
-		}
 	}
 	
 	/**
@@ -573,38 +547,21 @@ public class Main implements ITechnicalStrings {
 					information = InformationJPanel.getInstance();
 					
 					//Main panel
-					jpDesktop = new JPanel();
-					jpDesktop.setOpaque(true);
-					jpDesktop.setBorder(BorderFactory.createEtchedBorder());
-					jpDesktop.setLayout(new BorderLayout());
+					jpMainContentPane = new JPanel();
+					jpMainContentPane.setOpaque(true);
+					jpMainContentPane.setBorder(BorderFactory.createEtchedBorder());
+					jpMainContentPane.setLayout(new BorderLayout());
 					
 					//Add static panels
 					jpFrame.add(command, BorderLayout.NORTH);
 					jpFrame.add(information, BorderLayout.SOUTH);
-					jpFrame.add(jpDesktop, BorderLayout.CENTER);
-					JPanel jp = new JPanel(); //we use an empty panel to take west place before actual panel ( perspective bar ). just for a better displaying
-					jp.setPreferredSize(new Dimension(3000,3000));//make sure the temp panel makes screen maximalized
-					jpFrame.add(jp, BorderLayout.WEST);
 					
 					//display window
 					jw.pack();
 					jw.setExtendedState(Frame.MAXIMIZED_BOTH);  //maximalize
 					jw.setVisible(true); //show main window
 					sc.toFront();
-				
-					//Create the perspective manager 
-					File fPerspectives = new File(FILE_PERSPECTIVES_CONF); //check for perspectives.xml file
-					if (!fPerspectives.exists() || !bPerspectiveReleaseOK) {  //if perspective file doesn't exist or is an old version
-						// Register default perspective configuration (need locale, so cannot be done in initCheckup() )
-						PerspectiveManager.registerDefaultPerspectives();
-					}
-					else{
-							PerspectiveManager.load();
-					}
-					// Create the perspective tool bar panel
-					perspectiveBar = PerspectiveBarJPanel.getInstance();
-					jpFrame.remove(jp);
-					jpFrame.add(perspectiveBar, BorderLayout.WEST);
+					
 					
 				} catch (Exception e) { //last chance to catch any error for logging purpose
 					e.printStackTrace();
@@ -618,9 +575,19 @@ public class Main implements ITechnicalStrings {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run(){
 				try {
-					//Initialize perspective manager and load all views
+					//Create the perspective manager 
+					PerspectiveManager.load();
+					
+					//Create the perspective tool bar panel (requires Perspectives load )
+					perspectiveBar = PerspectiveBarJPanel.getInstance();
+					jpFrame.add(perspectiveBar, BorderLayout.WEST);
+						
+				    //Initialize perspective manager and load all views
 					PerspectiveManager.init();
 		
+					jpFrame.add(jpMainContentPane, BorderLayout.CENTER);
+					
+					
 					//Display info message if first session
 					if (ConfigurationManager.getBoolean(CONF_FIRST_CON)){
 						ConfigurationManager.setProperty(CONF_FIRST_CON,FALSE);

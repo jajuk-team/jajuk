@@ -61,26 +61,20 @@ public class ConfigurationPerspective extends PerspectiveAdapter{
 		ViewMap viewMap = new ViewMap();
 		
 		IView view = new ParameterView();
-		view.setShouldBeShown(true);
 		net.infonode.docking.View dockingParameterView = addView(view);
 		viewMap.addView(0,dockingParameterView);
 		
 		view = new DeviceView();
-		view.setShouldBeShown(true);
 		net.infonode.docking.View dockingDeviceView = addView(view);
 		viewMap.addView(1,dockingDeviceView);
 
         view = new CDScanView();
-		view.setShouldBeShown(true);
-        net.infonode.docking.View dockingCDScanView = addView(view);
+		net.infonode.docking.View dockingCDScanView = addView(view);
 		viewMap.addView(2,dockingCDScanView);
-        
-        
         
         SplitWindow horDeviceCDScan = new SplitWindow(false,0.7f,dockingDeviceView,dockingCDScanView);
         SplitWindow verMainSplit = new SplitWindow(true,0.4f,horDeviceCDScan,dockingParameterView);
-		
-		
+				
 		setRootWindow(viewMap,verMainSplit);
         
         

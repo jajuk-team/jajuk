@@ -51,28 +51,23 @@ public class PhysicalPerspective extends PerspectiveAdapter{
 	    ViewMap viewMap = new ViewMap();
 	    
 		IView view = new PhysicalTreeView();
-		view.setShouldBeShown(true);
 		net.infonode.docking.View dockingPhysicalTreeView = addView(view);
 		viewMap.addView(0,dockingPhysicalTreeView);
 
         view = new PhysicalTableView();
-		view.setShouldBeShown(true);
-        net.infonode.docking.View dockingPhysicalTableView = addView(view);
+	    net.infonode.docking.View dockingPhysicalTableView = addView(view);
 		viewMap.addView(1,dockingPhysicalTableView);
         
         view = new CoverView();
-		view.setShouldBeShown(true);
-        net.infonode.docking.View dockingCoverView = addView(view);
+	    net.infonode.docking.View dockingCoverView = addView(view);
 		viewMap.addView(2,dockingCoverView);
         
         view = new PhysicalPlaylistRepositoryView();
-		view.setShouldBeShown(true);
-        net.infonode.docking.View dockingPhysicalPlaylistRepository = addView(view);
+	    net.infonode.docking.View dockingPhysicalPlaylistRepository = addView(view);
 		viewMap.addView(3,dockingPhysicalPlaylistRepository);
         
         view = new PhysicalPlaylistEditorView();
-		view.setShouldBeShown(true);
-        net.infonode.docking.View dockingPlaylistEditorView = addView(view);
+	    net.infonode.docking.View dockingPlaylistEditorView = addView(view);
 		viewMap.addView(4,dockingPlaylistEditorView);
         
         SplitWindow vertPlaylistCoverSplit = new SplitWindow(true,0.7f,dockingPlaylistEditorView,dockingCoverView);
@@ -96,6 +91,7 @@ public class PhysicalPerspective extends PerspectiveAdapter{
     public void load() throws IOException {
         load(FILE_PHYSICAL_PERSPECTIVE);
     }
+    
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.IPerspective#getDesc()
 	 */

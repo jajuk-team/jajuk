@@ -59,14 +59,10 @@ public class HelpPerspective extends PerspectiveAdapter{
         ViewMap viewMap = new ViewMap();
 	
 		IView view = new HelpView();
-		view.setShouldBeShown(true);
 		net.infonode.docking.View dockingHelpView = addView(view);
 		viewMap.addView(0,dockingHelpView);
 		
-		
-	    
 	    view = new AboutView();
-		view.setShouldBeShown(true);
 	    net.infonode.docking.View dockingAboutView = addView(view);
 		viewMap.addView(3,dockingAboutView);
 	    

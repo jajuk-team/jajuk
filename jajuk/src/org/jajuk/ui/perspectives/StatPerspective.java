@@ -20,6 +20,8 @@
 
 package org.jajuk.ui.perspectives;
 
+import java.io.IOException;
+
 import net.infonode.docking.util.ViewMap;
 
 import org.jajuk.i18n.Messages;
@@ -48,20 +50,31 @@ public class StatPerspective extends PerspectiveAdapter{
 	public String getDesc() {
 		return Messages.getString("Perspective_Description_Statistics"); //$NON-NLS-1$
 	}
+	
 	/* (non-Javadoc)
      * @see org.jajuk.ui.perspectives.PerspectiveAdapter#setDefaultViews()
      */
     public void setDefaultViews() {
         ViewMap viewMap = new ViewMap();
-		
-        IView view = new StatView();
-        view.setShouldBeShown(true);
-		net.infonode.docking.View dockingStatView = addView(view);
+		IView view = new StatView();
+	    net.infonode.docking.View dockingStatView = addView(view);
 		viewMap.addView(0,dockingStatView);
-		
-		
-		
-        setRootWindow(viewMap,dockingStatView);
+	    setRootWindow(viewMap,dockingStatView);
     }
+    
+    /* (non-Javadoc)
+	 * @see org.jajuk.ui.perspectives.IPerspective#commit()
+	 */
+	public void commit() throws IOException{
+	    commit(FILE_STAT_PERSPECTIVE);
+	}
+	
+	/* (non-Javadoc)
+     * @see org.jajuk.ui.perspectives.IPerspective#load()
+     */
+    public void load() throws IOException {
+           load(FILE_STAT_PERSPECTIVE);    
+    }
+	
 
 }

@@ -54,32 +54,24 @@ public class LogicalPerspective extends PerspectiveAdapter{
      */
     public void setDefaultViews() {
         ViewMap viewMap = new ViewMap();
-		
-		
-		
 		IView view = new LogicalTreeView();
-		view.setShouldBeShown(true);
 		net.infonode.docking.View dockingLogicalTreeView = addView(view);
 		viewMap.addView(0,dockingLogicalTreeView);
 
         view = new LogicalTableView();
-		view.setShouldBeShown(true);
-        net.infonode.docking.View dockingLogicalTableView = addView(view);
+	    net.infonode.docking.View dockingLogicalTableView = addView(view);
 		viewMap.addView(1,dockingLogicalTableView);
         
         view = new CoverView();
-		view.setShouldBeShown(true);
-        net.infonode.docking.View dockingCoverView = addView(view);
+	    net.infonode.docking.View dockingCoverView = addView(view);
 		viewMap.addView(2,dockingCoverView);
         
         view = new LogicalPlaylistRepositoryView();
-		view.setShouldBeShown(true);
-        net.infonode.docking.View dockingLogicalPlaylistRepository = addView(view);
+	    net.infonode.docking.View dockingLogicalPlaylistRepository = addView(view);
 		viewMap.addView(3,dockingLogicalPlaylistRepository);
         
         view = new LogicalPlaylistEditorView();
-		view.setShouldBeShown(true);
-        net.infonode.docking.View dockingPlaylistEditorView = addView(view);
+	    net.infonode.docking.View dockingPlaylistEditorView = addView(view);
 		viewMap.addView(4,dockingPlaylistEditorView);
         
         SplitWindow vertPlaylistCoverSplit = new SplitWindow(true,0.7f,dockingPlaylistEditorView,dockingCoverView);
@@ -91,7 +83,7 @@ public class LogicalPerspective extends PerspectiveAdapter{
         
         
 	}
-	
+
     /* (non-Javadoc)
 	 * @see org.jajuk.ui.perspectives.IPerspective#commit()
 	 */

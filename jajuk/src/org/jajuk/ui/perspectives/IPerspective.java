@@ -101,7 +101,7 @@ public interface IPerspective {
 	/**
 	 * @return Returns the desktop.
 	 */
-	public Container getDesktop() ;
+	public Container getContentPane() ;
 	
 	/**
 	 * Serialize the perspective

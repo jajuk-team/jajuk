@@ -22,7 +22,6 @@ package org.jajuk.ui.views;
 
 import java.awt.Container;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 
 import javax.swing.JPanel;
@@ -31,6 +30,7 @@ import org.jajuk.base.ITechnicalStrings;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.JajukContainer;
 import org.jajuk.ui.perspectives.PerspectiveManager;
+import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 
 /**
@@ -41,9 +41,6 @@ import org.jajuk.util.log.Log;
  */
 public class ViewManager implements ITechnicalStrings{
 
-	/**View -> is visible ( Boolean ) */
-	static HashMap hmViewIsVisible = new HashMap(20);
-	
 	/**Views*/
 	static ArrayList alViews = new ArrayList(20);
 	
@@ -64,8 +61,7 @@ public class ViewManager implements ITechnicalStrings{
 	}
 	/**Maintain relation view/perspective, a view can be in only one perspective*/
 	public static net.infonode.docking.View registerView(final IView view){
-	    
-		final JajukContainer jc = new JajukContainer(view);
+	    final JajukContainer jc = new JajukContainer(view);
 	    final net.infonode.docking.View dockingView = makeDockingView(view);
 
 	    /*dockingView.addListener(new DockingWindowAdapter(){
@@ -93,7 +89,7 @@ public class ViewManager implements ITechnicalStrings{
 	public static net.infonode.docking.View makeDockingView(final IView view){
 	    final JajukContainer jc = new JajukContainer(view);
 	    final net.infonode.docking.View dockingView = 
-			new net.infonode.docking.View(Messages.getString(view.getDesc()),null,jc);
+			new net.infonode.docking.View(Messages.getString(view.getDesc()),Util.getIcon(ICON_LOGO_TRAY),jc);
 
 	  /*  dockingView.addListener(new DockingWindowAdapter(){
 		    
@@ -141,37 +137,12 @@ public class ViewManager implements ITechnicalStrings{
 		Iterator it = alViews.iterator();
 		while ( it.hasNext()){
 			IView view = (IView)it.next();
-			if ( view.getClass().equals(c) && view.isShouldBeShown()){
+			if ( view.getClass().equals(c) ){
 				notify(sEvent,view);
 			}
 		}
 	}
 		
-	
-	/**
-	 *Return visible state for a view
-	 * @param view
-	 * @return
-	 */
-	public static boolean isVisible(IView view){
-			return ((Boolean)hmViewIsVisible.get(view)).booleanValue();
-	}
-	
-	/**
-	 * Set a view visible
-	 * @param view
-	 * @param b
-	 */
-	public static void setVisible(IView view,boolean b){
-		int index = alViews.indexOf(view);
-		JPanel panel = (JPanel)alContainers.get(index);
-		//net.infonode.docking.View dockingView = (net.infonode.docking.View)alDockingViews.get(index);
-		panel.setVisible(b);
-	    view.setVisible(b);
-		hmViewIsVisible.put(view,new Boolean(b));
-	}
-	
-	
 	/**
 	 * Get the UI asscoiated with a view
 	 * @param view

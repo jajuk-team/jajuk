@@ -153,22 +153,6 @@ public abstract class ViewAdapter extends JPanel implements IView,ITechnicalStri
 		return this;
 	}
 	
-	/**
-	 * Set the should be shown flag
-	 * @param b 
-	 */
-	public IView setShouldBeShown(boolean b){
-		this.bShouldBeShown = b;
-		return this;
-	}
-	
-	/**
-	 * @return should be shown flag
-	 */
-	public boolean isShouldBeShown(){
-		return bShouldBeShown;
-	}
-	
 	/* (non-Javadoc)
      * @see java.awt.event.ComponentListener#componentHidden(java.awt.event.ComponentEvent)
      */
