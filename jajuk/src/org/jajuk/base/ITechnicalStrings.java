@@ -261,7 +261,7 @@ public interface ITechnicalStrings {
 	public static final String EVENT_HEART_BEAT="heart beat";//heart beat for geenral use to refresh subscribers every n secs
 	public static final String EVENT_ZERO="zero"; //a reinit has been required
 	public static final String EVENT_ADD_HISTORY_ITEM="history item"; //a new element has been added in the history
-	public static final String EVENT_SPECIAL_MODE_CHANGED="special mode changed"; //special mode (global shuffle, novelties, bestof...) changed
+	public static final String EVENT_SPECIAL_MODE="special mode changed"; //special mode (global shuffle, novelties, bestof...) changed
 	
 	//details keys
 	public static final String DETAIL_CURRENT_FILE_ID="current file id";
@@ -270,7 +270,14 @@ public interface ITechnicalStrings {
 	public static final String DETAIL_TOTAL="total time";
 	public static final String DETAIL_CURRENT_STATUS_MESSAGE="current status message";
 	public static final String DETAIL_HISTORY_ITEM="history item";
-			
+	public static final String DETAIL_SPECIAL_MODE="special mode";
+	public static final String DETAIL_SPECIAL_MODE_SHUFFLE="shuffle";
+	public static final String DETAIL_SPECIAL_MODE_BESTOF="bestof";
+	public static final String DETAIL_SPECIAL_MODE_NOVELTIES="novelties";
+	public static final String DETAIL_SPECIAL_MODE_NORMAL="norm";
+	public static final String DETAIL_SELECTION="selection";
+	public static final String DETAIL_ENABLE="enable";
+				
 	//Look and feel
 	public static final String LNF_METAL = "Metal";
 	public static final String LNF_METAL_CLASS = "javax.swing.plaf.metal.MetalLookAndFeel";

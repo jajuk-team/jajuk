@@ -22,6 +22,7 @@ package org.jajuk.ui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Properties;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -75,6 +76,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 	JButton jbGlobalRandom;
 	JButton jbBestof;
 	JButton jbNovelties;
+	JButton jbNorm;
 	JButton jbMute;
 	JToolBar jtbPlay;
 	JButton jbPrevious;
@@ -126,7 +128,8 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 				//int height2 = 36; //slider ( at least this height in the gtk+ l&f ) 
 				int iSeparator = 1;
 				//set default layout and size
-				double[][] size ={{0.17,3*iSeparator,0.17,iSeparator,0.11,iSeparator,0.09,iSeparator,0.18,iSeparator,0.12,iSeparator,0.15},
+				double[][] size ={{5*iSeparator,0.15,10*iSeparator,0.17,iSeparator,0.11,iSeparator,
+					0.11,iSeparator,0.18,iSeparator,0.12,0,20,10*iSeparator,0.15},
 						{height1}}; //note we can't set a % for history combo box because of popup size
 				setLayout(new TableLayout(size));
 				sbSearch = new SearchBox(CommandJPanel.this);
@@ -183,10 +186,11 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 				jbNovelties.addActionListener(CommandJPanel.this);
 				jbNovelties.setToolTipText(Messages.getString("CommandJPanel.16")); //$NON-NLS-1$
 				jtbSpecial.add(jbNovelties);
-				jbMute = new JButton(Util.getIcon(ICON_MUTE_ON)); 
-				jbMute.addActionListener(CommandJPanel.this);
-				jbMute.setToolTipText(Messages.getString("CommandJPanel.7")); //$NON-NLS-1$
-				jtbSpecial.add(jbMute);
+				jbNorm = new JButton(Util.getIcon(ICON_PLAY)); 
+				jbNorm.addActionListener(CommandJPanel.this);
+				jbNorm.setToolTipText(Messages.getString("CommandJPanel.17")); //$NON-NLS-1$
+				jtbSpecial.add(jbNorm);
+				
 				jtbSpecial.add(Box.createHorizontalGlue());
 				
 				//Play toolbar
@@ -226,6 +230,9 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 				jtbPlay.add(Box.createHorizontalGlue());
 				
 				//Volume
+				jbMute = new JButton(Util.getIcon(ICON_MUTE_ON)); 
+				jbMute.addActionListener(CommandJPanel.this);
+				jbMute.setToolTipText(Messages.getString("CommandJPanel.7")); //$NON-NLS-1$
 				JPanel jpVolume = new JPanel();
 				jpVolume.setLayout(new BoxLayout(jpVolume,BoxLayout.X_AXIS));
 				jlVolume = new JLabel(Util.getIcon(ICON_VOLUME)); 
@@ -247,13 +254,14 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 				jsPosition.setToolTipText(Messages.getString("CommandJPanel.15")); //$NON-NLS-1$
 				
 				//add toolbars to main panel
-				add(sbSearch,"0,0"); //$NON-NLS-1$
-				add(jcbHistory,"2,0"); //$NON-NLS-1$
-				add(jtbMode,"4,0"); //$NON-NLS-1$
-				add(jtbSpecial,"6,0"); //$NON-NLS-1$
-				add(jtbPlay,"8,0"); //$NON-NLS-1$
-				add(jpVolume,"10,0"); //$NON-NLS-1$
-				add(jpPosition,"12,0"); //$NON-NLS-1$
+				add(sbSearch,"1,0"); //$NON-NLS-1$
+				add(jcbHistory,"3,0"); //$NON-NLS-1$
+				add(jtbMode,"5,0"); //$NON-NLS-1$
+				add(jtbSpecial,"7,0"); //$NON-NLS-1$
+				add(jtbPlay,"9,0"); //$NON-NLS-1$
+				add(jpVolume,"11,0"); //$NON-NLS-1$
+				add(jbMute,"13,0");
+				add(jpPosition,"15,0"); //$NON-NLS-1$
 				
 				//register to player events
 				ObservationManager.register(EVENT_PLAYER_PLAY,CommandJPanel.this);
@@ -262,6 +270,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 				ObservationManager.register(EVENT_PLAYER_RESUME,CommandJPanel.this);
 				ObservationManager.register(EVENT_HEART_BEAT,CommandJPanel.this);
 				ObservationManager.register(EVENT_ADD_HISTORY_ITEM,CommandJPanel.this);
+				ObservationManager.register(EVENT_SPECIAL_MODE,CommandJPanel.this);
 				
 				//update initial state 
 				update(EVENT_PLAYER_PLAY);
@@ -295,26 +304,6 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 				}
 				else{
 					jbContinue.setBorder(BorderFactory.createRaisedBevelBorder());
-				}
-				if (ConfigurationManager.getBoolean(CONF_STARTUP_KEEP_MODE)){
-					if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_SHUFFLE)){
-						jbGlobalRandom.setBorder(BorderFactory.createLoweredBevelBorder());
-					}
-					else{
-						jbGlobalRandom.setBorder(BorderFactory.createRaisedBevelBorder());
-					}
-					if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_BESTOF)){
-						jbBestof.setBorder(BorderFactory.createLoweredBevelBorder());
-					}
-					else{
-						jbBestof.setBorder(BorderFactory.createRaisedBevelBorder());
-					}
-					if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_NOVELTIES)){
-						jbNovelties.setBorder(BorderFactory.createLoweredBevelBorder());
-					}
-					else{
-						jbNovelties.setBorder(BorderFactory.createRaisedBevelBorder());
-					}
 				}
 				jbMute.setBorder(BorderFactory.createRaisedBevelBorder());
 			}	
@@ -378,97 +367,39 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 			sw.start();
 		}
 		if (ae.getSource() == jbBestof ){
-			SwingWorker sw = new SwingWorker() {
-				ArrayList alToPlay = null; //files to play
-				public Object construct() {
-					alToPlay  = FileManager.getGlobalBestofPlaylist();
-					return null;
-				}
-				
-				public void finished() {
-					if ( alToPlay.size() > 0){
-						boolean bNewState = !FIFO.getInstance().isBestof();
-						if (bNewState){
-							FIFO.getInstance().setBestof(true);
-							jbBestof.setBorder(BorderFactory.createLoweredBevelBorder());
-							FIFO.getInstance().setGlobalRandom(false);
-							jbGlobalRandom.setBorder(BorderFactory.createRaisedBevelBorder());
-							FIFO.getInstance().setNovelties(false);
-							jbNovelties.setBorder(BorderFactory.createRaisedBevelBorder());
-							FIFO.getInstance().push(alToPlay,false,true,false);    
-						}
-						else{
-							FIFO.getInstance().setBestof(false);
-							jbBestof.setBorder(BorderFactory.createRaisedBevelBorder());
-							FIFO.getInstance().clear();
-						}
-					}
-				}
-			};
-			sw.start();
+			ArrayList alToPlay = FileManager.getGlobalBestofPlaylist();
+			if ( alToPlay.size() > 0){
+				Properties pDetails = new Properties();
+				pDetails.put(DETAIL_SPECIAL_MODE,DETAIL_SPECIAL_MODE_BESTOF);
+				pDetails.put(DETAIL_SELECTION,alToPlay);
+				ObservationManager.notify(EVENT_SPECIAL_MODE,pDetails);
+			}
 		}
 		if (ae.getSource() == jbGlobalRandom ){
-			SwingWorker sw = new SwingWorker() {
-				ArrayList alToPlay = null; //files to play
-				public Object construct() {
-					alToPlay  = FileManager.getGlobalShufflePlaylist();
-					return null;
-				}
-				
-				public void finished() {
-					if ( alToPlay.size() > 0){
-						boolean bNewState = !FIFO.getInstance().isGlobalRandom();
-						if (bNewState){
-							FIFO.getInstance().setGlobalRandom(true);
-							jbGlobalRandom.setBorder(BorderFactory.createLoweredBevelBorder());
-							FIFO.getInstance().setNovelties(false); //break novelties mode if set
-							jbNovelties.setBorder(BorderFactory.createRaisedBevelBorder());
-							FIFO.getInstance().setBestof(false);
-							jbBestof.setBorder(BorderFactory.createRaisedBevelBorder());
-							FIFO.getInstance().push(alToPlay,false,true,false);    
-						}
-						else{
-							FIFO.getInstance().setGlobalRandom(false);
-							jbGlobalRandom.setBorder(BorderFactory.createRaisedBevelBorder());
-							FIFO.getInstance().clear();
-						}
-					}
-				}
-			};
-			sw.start();
+			ArrayList alToPlay = FileManager.getGlobalShufflePlaylist();
+			if ( alToPlay.size() > 0){
+				Properties pDetail = new Properties();
+				pDetail.put(DETAIL_SPECIAL_MODE,DETAIL_SPECIAL_MODE_SHUFFLE);
+				pDetail.put(DETAIL_SELECTION,alToPlay);
+				ObservationManager.notify(EVENT_SPECIAL_MODE,pDetail);
+			}
 		}
 		if (ae.getSource() == jbNovelties ){
-			SwingWorker sw = new SwingWorker() {
-				ArrayList alToPlay = null; //files to play
-				public Object construct() {
-					alToPlay  = FileManager.getGlobalNoveltiesPlaylist();
-					return null;
-				}
-				
-				public void finished() {
-					if ( alToPlay.size() > 0){
-						boolean bNewState = !FIFO.getInstance().isNovelties();
-						if (bNewState){
-							FIFO.getInstance().setNovelties(true);
-							jbNovelties.setBorder(BorderFactory.createLoweredBevelBorder());
-							FIFO.getInstance().setGlobalRandom(false);
-							jbGlobalRandom.setBorder(BorderFactory.createRaisedBevelBorder());
-							FIFO.getInstance().setBestof(false);
-							jbBestof.setBorder(BorderFactory.createRaisedBevelBorder());
-							FIFO.getInstance().push(alToPlay,false,true,false);    
-						}
-						else{
-							FIFO.getInstance().setNovelties(false);
-							jbNovelties.setBorder(BorderFactory.createRaisedBevelBorder());
-							FIFO.getInstance().clear();
-						}
-					}
-					else{ //none novelty found
-						Messages.showErrorMessage("127"); //$NON-NLS-1$
-					}
-				}
-			};
-			sw.start();
+			ArrayList alToPlay  = FileManager.getGlobalNoveltiesPlaylist();
+			if ( alToPlay.size() > 0){
+				Properties pDetail = new Properties();
+				pDetail.put(DETAIL_SPECIAL_MODE,DETAIL_SPECIAL_MODE_NOVELTIES);
+				pDetail.put(DETAIL_SELECTION,alToPlay);
+				ObservationManager.notify(EVENT_SPECIAL_MODE,pDetail);
+			}
+			else{ //none novelty found
+				Messages.showErrorMessage("127"); //$NON-NLS-1$
+			}
+		}
+		if (ae.getSource() == jbNorm ){
+			Properties pDetail = new Properties();
+			pDetail.put(DETAIL_SPECIAL_MODE,DETAIL_SPECIAL_MODE_NORMAL);
+			ObservationManager.notify(EVENT_SPECIAL_MODE,pDetail);
 		}
 		else if (ae.getSource() == jbMute ){
 			Player.mute();
@@ -619,7 +550,9 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 						addHistoryItem(hi);
 					}
 				}
-				
+				else if (EVENT_SPECIAL_MODE.equals(subject)){
+					
+				}
 			}
 		});
 		

@@ -28,6 +28,7 @@ import javax.swing.JOptionPane;
 import org.jajuk.Main;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.ObservationManager;
+import org.jajuk.ui.Observer;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
@@ -38,7 +39,7 @@ import org.jajuk.util.log.Log;
  * @author     bflorat
  * @created    12 oct. 2003
  */
-public class FIFO implements ITechnicalStrings,Runnable{
+public class FIFO implements ITechnicalStrings,Runnable,Observer{
 
     /** Currently played track*/
     private File fCurrent;
@@ -140,6 +141,7 @@ public class FIFO implements ITechnicalStrings,Runnable{
 		init();
 		tStarter = new Thread(this);
 		tStarter.start();
+	
 	}
 	
 	/**
@@ -159,6 +161,8 @@ public class FIFO implements ITechnicalStrings,Runnable{
 		bIntroEnabled = false;
 		fCurrent = null;
 		fLastOne = null;
+		//register needed events
+		ObservationManager.register(EVENT_SPECIAL_MODE,this);
 	}
 	
 	/**
@@ -589,6 +593,53 @@ public class FIFO implements ITechnicalStrings,Runnable{
 	 */
 	public synchronized ArrayList getFIFO() {
 		return alFIFO;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.jajuk.ui.Observer#update(java.lang.String)
+	 */
+	public void update(String subject) {
+		if (subject.equals(EVENT_SPECIAL_MODE)){
+			ArrayList alToPlay = null; 
+			String sMode = (String)ObservationManager.getDetail(EVENT_SPECIAL_MODE,DETAIL_SPECIAL_MODE);
+			if (sMode == null){
+				return;
+			}
+			//bestof selection
+			if (DETAIL_SPECIAL_MODE_BESTOF.equals(sMode)){
+				alToPlay = (ArrayList)ObservationManager.getDetail(EVENT_SPECIAL_MODE,DETAIL_SELECTION);
+				if (alToPlay != null){
+					setGlobalRandom(false); //break global random mode if set
+					setNovelties(false); //break novelties mode if set
+					setBestof(true);
+					push(alToPlay,false,true,false);
+				}
+			}
+			//novelties selection
+			else if (DETAIL_SPECIAL_MODE_NOVELTIES.equals(sMode)){
+				alToPlay = (ArrayList)ObservationManager.getDetail(EVENT_SPECIAL_MODE,DETAIL_SELECTION);
+				if (alToPlay != null){
+					setGlobalRandom(false); //break global random mode if set
+					setBestof(false); //break best of mode if set
+					setNovelties(true);
+					push(alToPlay,false,true,false);
+				}
+			}
+			//Global shuffle selection
+			else if (DETAIL_SPECIAL_MODE_SHUFFLE.equals(sMode)){
+				alToPlay = (ArrayList)ObservationManager.getDetail(EVENT_SPECIAL_MODE,DETAIL_SELECTION);
+				if (alToPlay != null){
+					setBestof(false); //break best of mode if set
+					setNovelties(false); //break novelties mode if set
+					setGlobalRandom(true);
+					push(alToPlay,false,true,false);
+				}
+			}
+			//Come back to normal selection
+			else if (DETAIL_SPECIAL_MODE_NORMAL.equals(sMode)){
+				clear();
+			}
+		}
 	}
 	
 }

@@ -28,6 +28,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Properties;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -78,6 +80,7 @@ public class JajukWindow extends JFrame implements ITechnicalStrings,ComponentLi
 	SysTrayMenuItem stmiShuffle;
 	SysTrayMenuItem stmiBestof;
 	SysTrayMenuItem stmiNovelties;
+	SysTrayMenuItem stmiNorm;
 	SysTrayMenuItem stmiPause;
 	SysTrayMenuItem stmiStop;
 	SysTrayMenuItem stmiPrevious;
@@ -145,6 +148,8 @@ public class JajukWindow extends JFrame implements ITechnicalStrings,ComponentLi
 			stmiShuffle.addSysTrayMenuListener(this);
 			stmiBestof =  new SysTrayMenuItem(Messages.getString("JajukWindow.7")); //$NON-NLS-1$
 			stmiBestof.addSysTrayMenuListener(this);
+			stmiNorm =  new SysTrayMenuItem(Messages.getString("JajukWindow.16")); //$NON-NLS-1$
+			stmiNorm.addSysTrayMenuListener(this);
 			stmiNovelties =  new SysTrayMenuItem(Messages.getString("JajukWindow.15")); //$NON-NLS-1$
 			stmiNovelties.addSysTrayMenuListener(this);
 			cmiVisible =  new CheckableMenuItem(Messages.getString("JajukWindow.8")); //$NON-NLS-1$
@@ -162,6 +167,7 @@ public class JajukWindow extends JFrame implements ITechnicalStrings,ComponentLi
 			stm.addSeparator();
 			stm.addItem(stmiAbout);
 			stm.addSeparator();
+			stm.addItem(stmiNorm);
 			stm.addItem(stmiNovelties);
 			stm.addItem(stmiBestof);
 			stm.addItem(stmiShuffle);
@@ -240,34 +246,30 @@ public class JajukWindow extends JFrame implements ITechnicalStrings,ComponentLi
 			PerspectiveManager.setCurrentPerspective(PERSPECTIVE_NAME_HELP);
 		}
 		else if (e.getSource() == stmiShuffle){
-			org.jajuk.base.File file = null;
-			file = FileManager.getShuffleFile();
-			if (file != null){
-				FIFO.getInstance().setBestof(false); //break best of mode if set
-				FIFO.getInstance().setNovelties(false); //break novelties mode if set
-				FIFO.getInstance().setGlobalRandom(true);
-				FIFO.getInstance().push(file,false,true);
-			}
+			ArrayList alToPlay = FileManager.getGlobalShufflePlaylist();
+			Properties pDetails = new Properties();
+			pDetails.put(DETAIL_SPECIAL_MODE,DETAIL_SPECIAL_MODE_SHUFFLE);
+			pDetails.put(DETAIL_SELECTION,alToPlay);
+			ObservationManager.notify(EVENT_SPECIAL_MODE,pDetails);
 		}
 		else if (e.getSource() == stmiBestof){
-			org.jajuk.base.File file = null;
-			file = FileManager.getBestOfFile();
-			if (file != null){
-				FIFO.getInstance().setGlobalRandom(false); //break global random mode if set
-				FIFO.getInstance().setNovelties(false); //break novelties mode if set
-				FIFO.getInstance().setBestof(true);
-				FIFO.getInstance().push(file,false,true);
-			}
+			ArrayList alToPlay = FileManager.getGlobalBestofPlaylist();
+			Properties pDetails = new Properties();
+			pDetails.put(DETAIL_SPECIAL_MODE,DETAIL_SPECIAL_MODE_BESTOF);
+			pDetails.put(DETAIL_SELECTION,alToPlay);
+			ObservationManager.notify(EVENT_SPECIAL_MODE,pDetails);		
 		}
 		else if (e.getSource() == stmiNovelties){
-			org.jajuk.base.File file = null;
-			file = FileManager.getNoveltyFile();
-			if (file != null){
-				FIFO.getInstance().setGlobalRandom(false); //break global random mode if set
-				FIFO.getInstance().setBestof(false); //break best of mode if set
-				FIFO.getInstance().setNovelties(true);
-				FIFO.getInstance().push(file,false,true);
-			}
+			ArrayList alToPlay = FileManager.getGlobalNoveltiesPlaylist();
+			Properties pDetails = new Properties();
+			pDetails.put(DETAIL_SPECIAL_MODE,DETAIL_SPECIAL_MODE_NOVELTIES);
+			pDetails.put(DETAIL_SELECTION,alToPlay);
+			ObservationManager.notify(EVENT_SPECIAL_MODE,pDetails);
+		}
+		else if (e.getSource() == stmiNorm){
+			Properties pDetails = new Properties();
+			pDetails.put(DETAIL_SPECIAL_MODE,DETAIL_SPECIAL_MODE_NORMAL);
+			ObservationManager.notify(EVENT_SPECIAL_MODE,pDetails);
 		}
 		else if (e.getSource() == cmiVisible){
 			ConfigurationManager.setProperty(CONF_SHOW_AT_STARTUP,Boolean.toString(cmiVisible.getState()));
