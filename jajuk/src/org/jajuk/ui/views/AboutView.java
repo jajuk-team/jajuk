@@ -104,7 +104,7 @@ public class AboutView extends ViewAdapter {
 		alContribs.add(new Contributor("Oscar Appelgren","oscariot@users.sourceforge.net")); //$NON-NLS-1$ //$NON-NLS-2$
 		alContribs.add(new Contributor("Masiar Farahani","masiar@users.sourceforge.net")); //$NON-NLS-1$ //$NON-NLS-2$
 		alContribs.add(new Contributor("Marc-Siebren Kwadijk","marcsiebren@users.sourceforge.net"));//$NON-NLS-1$ //$NON-NLS-2$
-		alContribs.add(new Contributor("Sébastien Gringoire","sgringoire@users.sourceforge.net")); //$NON-NLS-1$ //$NON-NLS-2$
+		alContribs.add(new Contributor("SÃ©bastien Gringoire","sgringoire@users.sourceforge.net")); //$NON-NLS-1$ //$NON-NLS-2$
 		cp = new ContributorsPanel(alContribs);
 		JPanel jpAbout = new JPanel();
 		jpAbout.setLayout(new BoxLayout(jpAbout,BoxLayout.Y_AXIS));
