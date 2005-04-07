@@ -529,9 +529,9 @@ public class Main implements ITechnicalStrings {
 			else if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_NOVELTIES)){
 			    alToPlay = FileManager.getGlobalNoveltiesPlaylist();
 			}
-			//launch selected file synchronously to avoid startup issues
+			//launch selected file
 			if (alToPlay  != null && alToPlay.size() >0){
-				FIFO.getInstance().pushCommand(Util.createStackItems(alToPlay,
+				FIFO.getInstance().push(Util.createStackItems(alToPlay,
 						ConfigurationManager.getBoolean(CONF_STATE_REPEAT),false),false);
 			}
 		}
