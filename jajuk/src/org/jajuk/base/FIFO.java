@@ -135,7 +135,7 @@ public class FIFO implements ITechnicalStrings {
      * @param bAppend
      */
     public void push(final StackItem item, final boolean bAppend) {
-        new Thread() { // do it in a thread to make UI more reactive
+        Thread t = new Thread() { // do it in a thread to make UI more reactive
             public void run() {
                 try {
                     pushCommand(item, bAppend);
@@ -143,7 +143,9 @@ public class FIFO implements ITechnicalStrings {
                     Log.error(e);
                 }
             }
-        }.start();
+        };
+        t.setPriority(Thread.MAX_PRIORITY);
+        t.start();
     }
 
     /**
