@@ -169,7 +169,7 @@ public class ConfigurationManager implements ITechnicalStrings{
 		properties.put(CONF_OPTIONS_TAB,"0"); //$NON-NLS-1$
 		properties.put(CONF_OPTIONS_INTRO_BEGIN,"0"); //$NON-NLS-1$
 		properties.put(CONF_OPTIONS_INTRO_LENGTH,"20"); //$NON-NLS-1$
-		properties.put(CONF_OPTIONS_LNF,LNF_LIQUID);
+		properties.put(CONF_OPTIONS_LNF,LNF_PLASTICXP);
 		properties.put(CONF_P2P_SHARE,FALSE);
 		properties.put(CONF_P2P_ADD_REMOTE_PROPERTIES,FALSE);
 		properties.put(CONF_P2P_HIDE_LOCAL_PROPERTIES,TRUE);
