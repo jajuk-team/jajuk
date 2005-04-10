@@ -203,6 +203,7 @@
      	<action dev='jespo' type='add'>Catalan translation</action> 
      	<action dev='bflorat' type='add'>Support of Linux menu shortcuts using Java installer</action> 
      	<action dev='bflorat' type='add'>Support for next/previous album from tray with shift or right click on previous/next</action> 
+     	<action dev='bflorat' type='add'>New look and feel: Infonode</action> 
      	<action dev='bflorat' type='update'>[Perf] Refresh much faster;  less CPU load; many improvments</action> 
      	<action dev='bflorat' type='update'>[Perf] Better cover caching saves a lot of memory</action> 
      	<action dev='bflorat' type='update'>Better handling of of history or collection corruption</action> 
@@ -225,6 +226,9 @@
        <action dev='bflorat' type='fix' issue='921441'>Special XML characters not correctly managed by Jajuk (more checkups)</action> 
        <action dev='bflorat' type='fix' issue='1171908'>drag'n drop from sorted list pushes wrong track to playlist</action> 
        <action dev='bflorat' type='fix' issue='1175005'>Freeze when seeking more than 99%</action> 
+       <action dev='bflorat' type='fix' issue='1180255'>Playlist file save extension</action> 
+       <action dev='bflorat' type='fix' issue='1179472'>I can't save playlists in XP / JDK 1.5.0_02</action> 
+       <action dev='bflorat' type='fix' issue='1179051'>Two log files</action> 
      </release>
   </body>
 </document>

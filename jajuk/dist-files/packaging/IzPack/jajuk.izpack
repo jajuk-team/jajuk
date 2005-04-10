@@ -7,7 +7,7 @@
       <url>http://jajuk.sourceforge.net</url>
     </info>
     <guiprefs height='600' resizable='yes' width='800'>
-   	 	<laf name='liquid'>
+   	 	<laf name='looks'>
    	 		<os family='unix' />
    	 		<os family='windows' />
    	 		<os family='mac' />

@@ -6,6 +6,7 @@
 <tocitem text="Aide Jajuk">
    	<tocitem text="Introduction" target="top"/>
 	<tocitem text="Formats supportés" target="formats"/>
+	<tocitem text="Performances" target="perfs"/>
    	<tocitem text="Notions générales" expand="true">
 		<tocitem text="Vues et perspectives" target="pav"/>
    		<tocitem text="Utiliser les supports" target="devices"/>
@@ -51,6 +52,5 @@
 				</tocitem> 	
 			</tocitem> 	
 		</tocitem>
-		<tocitem text="Performances" target="perfs"/>
 	</tocitem>
 </toc>

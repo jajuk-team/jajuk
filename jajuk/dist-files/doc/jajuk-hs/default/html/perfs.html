@@ -5,7 +5,7 @@
 	<TITLE></TITLE>
 	<META NAME="GENERATOR" CONTENT="OpenOffice.org 1.1.3  (Linux)">
 	<META NAME="CREATED" CONTENT="20050321;13074300">
-	<META NAME="CHANGED" CONTENT="20050321;14285800">
+	<META NAME="CHANGED" CONTENT="20050410;18330500">
 </HEAD>
 <BODY LANG="en-US" DIR="LTR">
 <H1>Performance tips</H1>
@@ -13,7 +13,7 @@
 if you want consume less memory, disk, CPU or Network bandwidth using
 Jajuk.</P>
 <H2>JVM choice and customization</H2>
-<P>We recommend Sun JVM 1.5.0 that is from 10 to 30% faster that the
+<P>We recommend Sun JVM 1.5 that is from 10 to 30% faster that the
 1.4.2 running Jajuk. Let us know if you manage to run Jajuk with
 another JVM, especially free ones (Kaffe, SableVM...).</P>
 <P>Default command line to launch Jajuk is :</P>
@@ -75,23 +75,28 @@ enough most of the time.</P>
 <P STYLE="margin-bottom: 0cm">These options are available in the
 Parameter View / Tags tab.</P>
 <UL>
-	<LI><P STYLE="margin-bottom: 0cm"><FONT SIZE=3>Do not use “Perform
-	a deep tag scan” (default=no) option unless you want to force tags
-	read. By default, Jajuk doesn't read id3 tags at each refresh for
-	known files.</FONT></P>
+	<LI><P>Do not use “Perform a deep tag scan” (default=no) option
+	unless you want to force tags read. By default, Jajuk doesn't read
+	id3 tags at each refresh for known files.</P>
 </UL>
 <H2><FONT SIZE=5>Collection performance tunning</FONT></H2>
-<P><FONT SIZE=3>These options are available in the Parameter View /
-Advanced tab.</FONT></P>
+<P>These options are available in the Parameter View / Advanced tab.</P>
 <UL>
-	<LI><P><FONT SIZE=3>If your collection uses mainly non-European
-	characters (like Asian languages), choose UTF-16 as collection
-	encoding : that will reduce collection file size and accelerate
-	startup parsing. Do not use this option if you use European
-	languages because you collection file would then grow.</FONT></P>
-	<LI><P><FONT SIZE=3>You can set the backup size for your collection.
-	The bigger it is, the more you get backup files (one by day).</FONT></P>
+	<LI><P>If your collection uses mainly non-European characters (like
+	Asian languages), choose UTF-16 as collection encoding : that will
+	reduce collection file size and accelerate startup parsing. Do not
+	use this option if you use European languages because you collection
+	file would then grow.</P>
+	<LI><P>You can set the backup size for your collection. The bigger
+	it is, the more you get backup files (one by day).</P>
 </UL>
+<H2><FONT SIZE=5>Animation View performance tunning</FONT></H2>
+<P>Animation view uses Java 2D. CPU overhead can be significant,
+especially with screen resolution higher that 1200x1024. On a P4
+1.8Ghz with a resolution of 1024x768, the overhead is about 2 or 3%
+but reaches 10 or more with a resolution of 1400x1200.</P>
+<P><BR><BR>
+</P>
 <P><BR><BR>
 </P>
 </BODY>
