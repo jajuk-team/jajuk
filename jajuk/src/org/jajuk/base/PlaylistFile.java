@@ -596,12 +596,19 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 		ArrayList alTypes = new ArrayList(1);
 		alTypes.add(TypeManager.getTypeByExtension(EXT_PLAYLIST));
 		JajukFileChooser jfchooser = new JajukFileChooser(new JajukFileFilter(true,alTypes));
+        jfchooser.setSelectedFile(new File(DEFAULT_PLAYLIST_FILE+"."+EXT_PLAYLIST));//$NON-NLS-1$
 		int returnVal = jfchooser.showSaveDialog(Main.getWindow());
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			java.io.File file = jfchooser.getSelectedFile();
-			//add automaticaly the extension
-			file = new File(file.getAbsolutePath()+"."+EXT_PLAYLIST);//$NON-NLS-1$  
-			this.setFio(file); //set new file path ( this playlist is a special playlist, just in memory )
+			//add automaticaly the extension if required
+			if (file.getAbsolutePath().endsWith(EXT_PLAYLIST)){
+                file = new File(file.getAbsolutePath());  
+            }
+            else{
+                file = new File(file.getAbsolutePath()+"."+EXT_PLAYLIST);//$NON-NLS-1$
+            }
+            
+            this.setFio(file); //set new file path ( this playlist is a special playlist, just in memory )
 			try{
 				this.commit(); //write it on the disk
 				ObservationManager.notify(new Event(EVENT_PLAYLIST_REFRESH)); //notify playlist repository to refresh
