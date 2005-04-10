@@ -29,6 +29,7 @@ package org.jajuk.util;
  */
 public interface ITechnicalStrings {
 	
+    //Misc
 	/**Information bar and command bar default vertical size in pixels*/
 	public static final int BORDER_Y_SIZE = 112;
 	/**Command bar default vertical size in pixels*/
@@ -45,11 +46,12 @@ public interface ITechnicalStrings {
     public static final long TO_THE_END=-1;
     /**Time we wait after an error in ms*/
     public static final int WAIT_AFTER_ERROR= 2000;
-    
+    /**Default playlist file name*/
+    public static final String DEFAULT_PLAYLIST_FILE = "playlist";
     		
 	// Jajuk version
-	public static final String JAJUK_VERSION = "0.3.3.2";
-	public static final String JAJUK_VERSION_DATE = "Build 2005-04-07";
+	public static final String JAJUK_VERSION = "0.3.3.3";
+	public static final String JAJUK_VERSION_DATE = "Build 2005-04-10";
 	
 	//About 
 	public static final String ABOUT = "<html>Jajuk version "+JAJUK_VERSION+"</html>";
@@ -60,7 +62,7 @@ public interface ITechnicalStrings {
 	public static final String PATH_RELATIVE_DOCS = "docs/";
 	public static final String PATH_DOCS = "jar:"+Util.getExecLocation()+"!/org/jajuk/"+PATH_RELATIVE_DOCS;
 			
-	//Unkwnown
+	//Unknown
 	public static final String UNKNOWN_AUTHOR = "unknown_author";
 	public static final String UNKNOWN_ALBUM = "unknown_album";
 	public static final String UNKNOWN_STYLE = "unknown_style";
@@ -347,12 +349,14 @@ public interface ITechnicalStrings {
 	public static final String LNF_NAPKIN = "Napkin";
 	public static final String LNF_NAPKIN_CLASS = "napkin.NapkinLookAndFeel";
 	public static final String LNF_PLASTIC = "Plastic";
-	public static final String LNF_PLASTIC_CLASS = "com.jgoodies.plaf.plastic.PlasticLookAndFeel";
+	public static final String LNF_PLASTIC_CLASS = "com.jgoodies.looks.plastic.PlasticLookAndFeel";
 	public static final String LNF_PLASTICXP = "Plastic XP";
-	public static final String LNF_PLASTICXP_CLASS = "com.jgoodies.plaf.plastic.PlasticXPLookAndFeel";
+	public static final String LNF_PLASTICXP_CLASS = "com.jgoodies.looks.plastic.PlasticXPLookAndFeel";
 	public static final String LNF_PLASTIC3D = "Plastic 3D";
-	public static final String LNF_PLASTIC3D_CLASS = "com.jgoodies.plaf.plastic.Plastic3DLookAndFeel";
-		
+	public static final String LNF_PLASTIC3D_CLASS = "com.jgoodies.looks.plastic.Plastic3DLookAndFeel";
+	public static final String LNF_INFONODE = "Infonode";
+    public static final String LNF_INFONODE_CLASS = "net.infonode.gui.laf.InfoNodeLookAndFeel";
+    
 	//statup mode
 	public static final String STARTUP_MODE_NOTHING = "nothing";
 	public static final String STARTUP_MODE_SHUFFLE = "shuffle";
