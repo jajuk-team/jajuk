@@ -21,6 +21,7 @@ NEW RELEASE PROCEDURE
 - Test it under several OS
 - Commit all changes
 - Tag as version
+- Add a release in main_qualification.html file
 - Save dist file in the releases dir
 - Modify index.xml and change.xml maven files
 - Generate and upload maven site
