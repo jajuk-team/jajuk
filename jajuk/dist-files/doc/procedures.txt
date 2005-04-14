@@ -28,10 +28,12 @@ NEW RELEASE PROCEDURE
 - Generate and upload maven site
 - Close bugs, known issues and RFE at SF
 - Release file on SF, ( preserve my preformated text in notes )
-- Make a news at SF
-- Make a release at freshmeat,framasoft,telecharger.com
 - Send a message in the developer forum
 - Clean snapshots directory
+
+ANNOUNCEMENT PROCEDURE
+- Make a news at SF
+- Make a release at freshmeat,framasoft,telecharger.com...
 
 
 NEW API/version PROCEDURE
