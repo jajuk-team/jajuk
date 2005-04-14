@@ -50,8 +50,8 @@ public interface ITechnicalStrings {
     public static final String DEFAULT_PLAYLIST_FILE = "playlist";
     		
 	// Jajuk version
-	public static final String JAJUK_VERSION = "0.3.3.3";
-	public static final String JAJUK_VERSION_DATE = "Build 2005-04-10";
+	public static final String JAJUK_VERSION = "VERSION_REPLACED_BY_ANT";
+	public static final String JAJUK_VERSION_DATE = "Build: DATE_REPLACED_BY_ANT";
 	
 	//About 
 	public static final String ABOUT = "<html>Jajuk version "+JAJUK_VERSION+"</html>";
@@ -325,7 +325,8 @@ public interface ITechnicalStrings {
 	public static final String DETAIL_SELECTION="selection";
 	public static final String DETAIL_ENABLE="enable";
 	public static final String DETAIL_ORIGIN="origin";
-				
+    public static final String DETAIL_REASON="reason";
+    			
 	//Look and feel
 	public static final String LNF_METAL = "Metal";
 	public static final String LNF_METAL_CLASS = "javax.swing.plaf.metal.MetalLookAndFeel";
@@ -349,11 +350,11 @@ public interface ITechnicalStrings {
 	public static final String LNF_NAPKIN = "Napkin";
 	public static final String LNF_NAPKIN_CLASS = "napkin.NapkinLookAndFeel";
 	public static final String LNF_PLASTIC = "Plastic";
-	public static final String LNF_PLASTIC_CLASS = "com.jgoodies.looks.plastic.PlasticLookAndFeel";
+	public static final String LNF_PLASTIC_CLASS = "com.jgoodies.plaf.plastic.PlasticLookAndFeel";
 	public static final String LNF_PLASTICXP = "Plastic XP";
-	public static final String LNF_PLASTICXP_CLASS = "com.jgoodies.looks.plastic.PlasticXPLookAndFeel";
+	public static final String LNF_PLASTICXP_CLASS = "com.jgoodies.plaf.plastic.PlasticXPLookAndFeel";
 	public static final String LNF_PLASTIC3D = "Plastic 3D";
-	public static final String LNF_PLASTIC3D_CLASS = "com.jgoodies.looks.plastic.Plastic3DLookAndFeel";
+	public static final String LNF_PLASTIC3D_CLASS = "com.jgoodies.plaf.plastic.Plastic3DLookAndFeel";
 	public static final String LNF_INFONODE = "Infonode";
     public static final String LNF_INFONODE_CLASS = "net.infonode.gui.laf.InfoNodeLookAndFeel";
     

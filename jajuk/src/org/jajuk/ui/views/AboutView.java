@@ -115,7 +115,7 @@ public class AboutView extends ViewAdapter {
         cp = new ContributorsPanel(alContribs);
 		JPanel jpAbout = new JPanel();
 		jpAbout.setLayout(new BoxLayout(jpAbout,BoxLayout.Y_AXIS));
-		ap = new AboutPanel("Jajuk",JAJUK_VERSION,"<html>Copyright 2003,2004<br>Bertrand Florat & Jajuk team</html>",INFOS,Util.getIcon(ICON_LOGO).getImage()); //$NON-NLS-1$ //$NON-NLS-2$
+		ap = new AboutPanel("Jajuk",JAJUK_VERSION+" "+JAJUK_VERSION_DATE ,"<html>Copyright 2003,2004<br>Bertrand Florat & Jajuk team</html>",INFOS,Util.getIcon(ICON_LOGO).getImage()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		jpAbout.add(ap);
 		jpAbout.add(cp);
 		jpAbout.add(Box.createVerticalGlue());
