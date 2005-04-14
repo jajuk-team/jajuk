@@ -209,6 +209,8 @@
      	<action dev='bflorat' type='update'>Better handling of of history or collection corruption</action> 
      	<action dev='mbraux' type='update'>Better covers adaptation algorithm</action> 
      	<action dev='bflorat' type='update'>Right click auto-selection in trees and tables</action> 
+     	<action dev='bflorat' type='update'>Better handling of unavailable startup tracks</action> 
+     	<action dev='bflorat' type='update'>Better handling of errors launching basic files</action> 
      	<action dev='bflorat' type='remove'>RPM dependencies on JRE</action> 
      	<action dev='bflorat' type='remove'>Xmx and Xss JVM settings</action> 
      	<action dev='bflorat' type='fix' issue='1102189'>Freeze with proxy pwd frame</action> 
@@ -229,6 +231,8 @@
        <action dev='bflorat' type='fix' issue='1180255'>Playlist file save extension</action> 
        <action dev='bflorat' type='fix' issue='1179472'>I can't save playlists in XP / JDK 1.5.0_02</action> 
        <action dev='bflorat' type='fix' issue='1179051'>Two log files</action> 
+       <action dev='bflorat' type='fix' issue='1183212'>Override existing files when downgrading jajuk</action> 
+       <action dev='bflorat' type='fix' issue='1183218'>Refresh blocked on corrupted files</action> 
      </release>
   </body>
 </document>

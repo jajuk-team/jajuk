@@ -14,6 +14,7 @@ NEW LANGUAGE PROCEDURE
 
 NEW RELEASE PROCEDURE
 - Change version in ITechnicalStrings and build-dist.xml and RPM spec files (perform a search)
+- Backup SF data (php file)
 - String externalization
 - Search for debug System.out
 - Make required translations (fr)
@@ -31,6 +32,7 @@ NEW RELEASE PROCEDURE
 - Make a release at freshmeat,framasoft,telecharger.com
 - Send a message in the developer forum
 - Clean snapshots directory
+
 
 NEW API/version PROCEDURE
 - Change MANIFEST (check new versions)
