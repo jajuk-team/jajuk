@@ -2,7 +2,7 @@
 <installation version='1.0'>
     <info>
         <appname>jajuk</appname>
-        <appversion>0.3.3.3</appversion>
+        <appversion>VERSION_REPLACED_BY_ANT</appversion>
         <javaversion>1.4.2</javaversion>
       <url>http://jajuk.sourceforge.net</url>
     </info>
@@ -68,39 +68,39 @@
     <packs>
         <pack name='main pack' required='yes'>
             <description>Main pack</description>
-            <file targetdir='$INSTALL_PATH/bin' src='/tmp/jajuk-dist/jajuk/bin/jajuk.jar'/>
-            <file targetdir='$INSTALL_PATH/bin' src='/tmp/jajuk-dist/jajuk/bin/jajuk-help.jar'/>
-            <file targetdir='$INSTALL_PATH/bin' src='/tmp/jajuk-dist/jajuk/bin/jajuk-help_fr.jar'/>
-            <file targetdir='$INSTALL_PATH/native' src='/tmp/jajuk-dist/jajuk/native/tray.dll'>
+            <file override='true' targetdir='$INSTALL_PATH/bin' src='/tmp/jajuk-dist/jajuk/bin/jajuk.jar'/>
+            <file override='true' targetdir='$INSTALL_PATH/bin' src='/tmp/jajuk-dist/jajuk/bin/jajuk-help.jar'/>
+            <file override='true' targetdir='$INSTALL_PATH/bin' src='/tmp/jajuk-dist/jajuk/bin/jajuk-help_fr.jar'/>
+            <file override='true' targetdir='$INSTALL_PATH/native' src='/tmp/jajuk-dist/jajuk/native/tray.dll'>
             	<os family='windows'/>
            </file>
-            <file targetdir='$INSTALL_PATH/native' src='/tmp/jajuk-dist/jajuk/native/libtray.so'>
+            <file override='true' targetdir='$INSTALL_PATH/native' src='/tmp/jajuk-dist/jajuk/native/libtray.so'>
             	<os family='unix'/>
            </file>
-            <fileset targetdir='$INSTALL_PATH/dist-files' dir='/tmp/jajuk-dist/jajuk/dist-files'/>
-            <fileset targetdir='$INSTALL_PATH/lib' dir='/tmp/jajuk-dist/jajuk/lib'/>
-            <file targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/build.xml'/>
-            <file targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/jajuk-logo.png'/>
-            <file targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/LICENSE.txt'/>
-            <file targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/README.html'/>
-            <file targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/README_fra.html'/>
-            <file targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/README_deu.html'/>
-            <file targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/README_chn.html'/>
-            <file targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/README_ita.html'/>
-            <file targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/README_nld.html'/>
-            <file targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/README_swe.html'/>
-            <file targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/README_esp.html'/>
-            <file targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/README_cat.html'/>
-            <file targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/jajuk.bat'>
+            <fileset override='true' targetdir='$INSTALL_PATH/dist-files' dir='/tmp/jajuk-dist/jajuk/dist-files'/>
+            <fileset override='true' targetdir='$INSTALL_PATH/lib' dir='/tmp/jajuk-dist/jajuk/lib'/>
+            <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/build.xml'/>
+            <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/jajuk-logo.png'/>
+            <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/LICENSE.txt'/>
+            <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/README.html'/>
+            <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/README_fra.html'/>
+            <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/README_deu.html'/>
+            <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/README_chn.html'/>
+            <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/README_ita.html'/>
+            <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/README_nld.html'/>
+            <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/README_swe.html'/>
+            <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/README_esp.html'/>
+            <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/README_cat.html'/>
+            <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/jajuk.bat'>
             	<os family='windows'/>
            </file>
-            <file targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/jajuk.sh'>
+            <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/jajuk.sh'>
             	<os family='unix'/>
            </file>
         </pack>
          <pack name='sources' required='no'>
             <description>Sources</description>
-            <fileset targetdir='$INSTALL_PATH/src' dir='/tmp/jajuk-dist/jajuk/src'/>
+            <fileset override='true' targetdir='$INSTALL_PATH/src' dir='/tmp/jajuk-dist/jajuk/src'/>
         </pack>
     </packs>
 </installation>

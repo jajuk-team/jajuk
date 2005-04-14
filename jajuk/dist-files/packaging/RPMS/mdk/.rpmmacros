@@ -11,5 +11,5 @@
 %_specdir               %{_topdir}/SPECS
 %_rpmdir                %{_topdir}/RPMS
 %_srcrpmdir             %{_topdir}/SRPMS
-%_rpmfilename           %%{NAME}-%%{VERSION}-%%{RELEASE}.%%{ARCH}.rpm
+%_rpmfilename           %%{NAME}-%%{VERSION}-%%{RELEASE}mdk.%%{ARCH}.rpm
 

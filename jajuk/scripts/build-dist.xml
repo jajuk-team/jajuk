@@ -2,6 +2,8 @@
 <!--Ant script for packagers only-->
 
 <project default='all' name='jajuk' basedir='..'>
+  <!-- Only Explicit Release number-->
+  <property name='version' value='0.3.3.4'/>
   <property name='rootdir' value='/tmp/jajuk-dist'/>
   <property name='distdir' value='${rootdir}/jajuk'/>
   <property name='rpmbuilddir_suse' value='${rootdir}/suse/RPMBUILD/'/>
@@ -16,17 +18,18 @@
   <property name='srcdir' value='src'/>
   <property name='classdir' value='classes'/>
   <property name='javadocdir' value='dist-files/doc/javadoc'/>
-  <property name='version' value='0.3.3.3'/>
   <property name='jarname' value='jajuk.jar'/>
   <property name='helpsetjarname' value='jajuk-help'/>
   <property name='distjarname' value='jajuk-install-'/>
   <property name='sourcesdist' value='${sourcesdir}/jajuk-src-${version}.zip'/>
   <property name='uploaddir' value='${rootdir}/upload'/>
-    
-  <target name='all' description='o Create the entire package' depends='izpack,rpm,sourcesdist,sfx,prepare_upload'/>
+ 
+  <target name='all' description='o Create the entire package' depends='izpack,rpm,sourcesdist,sfx,prepare_upload'>
+  </target>
   
   <target name='clean' description='o Clean up the distribution'>
     <delete dir='${rootdir}'/>
+   	<echo message='Building Jajuk release: ${version}'/>
    </target>
   
   <target name='mkdist_izpack' description='o Create the IzPack distribution structure' depends='clean'>
@@ -68,7 +71,60 @@
      <copy todir='${distdir}' >
      	<fileset file='${basedir}/dist-files/icons/64x64/jajuk-logo.png'/>
      </copy>
+     <copy todir='${izpackdir}' >
+     	<fileset file='/data/java/workspace/jajuk/dist-files/packaging/IzPack/jajuk.izpack'/>
+     </copy>
   </target>
+  
+  
+  <target name='mkdist_windows' description='o Create the Windows distribution structure'>
+   <mkdir dir='${windowsdir}'/>
+      <copy todir='${windowsdir}' >
+      	<fileset file='${basedir}/dist-files/packaging/native_launcher/*'/>
+     </copy>
+  </target>
+  
+ <target name='replaces' description='o Set a the build time and release into jajuk code and packaging'>
+  <!-- Set build date --> 
+  <tstamp>
+      <format property='build.time' pattern='yyyy/MM/dd HH:mm'/>
+  </tstamp>    
+  <echo message='Build time: ${build.time}'/>
+  <replace dir='${distdir}/${srcdir}/org/jajuk/util' value='${build.time}'>
+  	<include name='ITechnicalStrings.java'/>
+  	<replacetoken>DATE_REPLACED_BY_ANT</replacetoken>
+ </replace>
+ <!-- Set release in code--> 
+  <replace dir='${distdir}/${srcdir}/org/jajuk/util' value='${version}'>
+  	<include name='ITechnicalStrings.java'/>
+  	<replacetoken>VERSION_REPLACED_BY_ANT</replacetoken>
+ </replace>
+ <!-- Set release in IzPack descriptor file--> 
+ <replace dir='${izpackdir}' value='${version}'>
+  	<include name='jajuk.izpack'/>
+  	<replacetoken>VERSION_REPLACED_BY_ANT</replacetoken>
+ </replace>
+ <!-- Set release in native launcher descriptor file--> 
+ <replace dir='${windowsdir}' value='${version}'>
+  	<include name='launcher.ini'/>
+  	<replacetoken>VERSION_REPLACED_BY_ANT</replacetoken>
+ </replace>
+ <!-- Set release in Suse RPM descriptor file--> 
+ <replace dir='${rpmbuilddir_suse}/SPECS' value='${version}'>
+  	<include name='jajuk-suse.spec'/>
+  	<replacetoken>VERSION_REPLACED_BY_ANT</replacetoken>
+ </replace>
+ <!-- Set release in Mdk RPM descriptor file--> 
+ <replace dir='${rpmbuilddir_mdk}/SPECS' value='${version}'>
+  	<include name='jajuk-mdk.spec'/>
+  	<replacetoken>VERSION_REPLACED_BY_ANT</replacetoken>
+ </replace>
+ <!-- Set release in user build.xml file--> 
+ <replace dir='${distdir}' value='${version}'>
+  	<include name='build.xml'/>
+  	<replacetoken>VERSION_REPLACED_BY_ANT</replacetoken>
+ </replace>
+ </target>
   
  <target name='mkdist_rpm' description='o Create the RPM distribution structure' depends='clean'>
     <!-- Create structure-->
@@ -108,6 +164,9 @@
     
     <!-- Copy files -->
     	<!--Suse-->
+    <copy todir='${rpmbuilddir_suse}/SPECS' >
+    	<fileset file='${basedir}/dist-files/packaging/RPMS/suse/jajuk-suse.spec'/>
+    </copy>
     <copy todir='${rpmdistdir_suse}/usr/bin' >
     	<fileset file='${basedir}/scripts/jajuk'/>
     </copy>
@@ -129,6 +188,9 @@
     	<fileset file='${basedir}/dist-files/icons/64x64/jajuk-logo.png'/>
     </copy>
         	<!--Mandrake-->
+    <copy todir='${rpmbuilddir_mdk}/SPECS' >
+    	<fileset file='${basedir}/dist-files/packaging/RPMS/mdk/jajuk-mdk.spec'/>
+    </copy>
     <copy todir='${rpmdistdir_mdk}/usr/bin' >
     	<fileset file='${basedir}/scripts/jajuk'/>
     </copy>
@@ -158,7 +220,7 @@
   </target>
  
  
- <target name='compile' description='o Compile the code' depends='mkdist_izpack,mkdist_rpm'>
+ <target name='compile' description='o Compile the code' depends='mkdist_izpack,mkdist_rpm,mkdist_windows,replaces'>
     <javac destdir='${distdir}/${classdir}' deprecation='true' debug='true' optimize='true' excludes='**/package.html'>
       <src>
         <pathelement path='${distdir}/${srcdir}'>
@@ -269,23 +331,17 @@
     
     <target name='rpm' depends='jar,helpsetjar'>
     	<!--Suse-->
-    	<copy todir='${rpmbuilddir_suse}/SPECS' >
-    		<fileset file='${basedir}/dist-files/packaging/RPMS/suse/jajuk-suse.spec'/>
-    	</copy>
-    	<copy todir='/home/bflorat' >
+    	<copy todir='/home/bflorat' overwrite='yes'>
     		<fileset file='${basedir}/dist-files/packaging/RPMS/suse/.rpmmacros'/>
     	</copy>
-    	<rpm specFile='jajuk-suse.spec' topDir='${rpmbuilddir_suse}' cleanBuildDir='yes' removeSpec='no' command='-bb' />
+ 		<rpm specFile='jajuk-suse.spec' topDir='${rpmbuilddir_suse}' cleanBuildDir='yes' removeSpec='no' command='-bb' />
     	<!--Mandrake-->
-    	<copy todir='${rpmbuilddir_mdk}/SPECS' >
-    		<fileset file='${basedir}/dist-files/packaging/RPMS/mdk/jajuk-mdk.spec'/>
-    	</copy>
-    	<copy todir='/home/bflorat' >
+    	<copy todir='/home/bflorat'  overwrite='yes'>
     		<fileset file='${basedir}/dist-files/packaging/RPMS/mdk/.rpmmacros'/>
     	</copy>
  		<rpm specFile='jajuk-mdk.spec' topDir='${rpmbuilddir_mdk}' cleanBuildDir='yes' removeSpec='no' command='-bb' /> 
  		<!-- Reset .rpmmacros to suse -->
- 		<copy todir='/home/bflorat' >
+ 		<copy todir='/home/bflorat'  overwrite='yes'>
     		<fileset file='${basedir}/dist-files/packaging/RPMS/suse/.rpmmacros'/>
     	</copy>
    </target>
@@ -296,7 +352,7 @@
          classname='com.izforge.izpack.ant.IzPackTask'/>
       <target name='izpack' depends='jar,helpsetjar' >
         <echo message='Makes the installer using IzPack'/>
-                <izpack input='/data/java/workspace/jajuk/dist-files/packaging/IzPack/jajuk.izpack'
+                <izpack input='${izpackdir}/jajuk.izpack'
         output='${izpackdir}/${distjarname}${version}.jar'
         basedir='/data/java/workspace/jajuk'
         izPackDir='/prog/IzPack'/>
@@ -306,7 +362,6 @@
     <target name='sfx' depends='izpack'>
   	 <mkdir dir='${windowsdir}'/>
       <copy todir='${windowsdir}' >
-      	<fileset file='${basedir}/dist-files/packaging/native_launcher/*'/>
      	<fileset file='${izpackdir}/${distjarname}${version}.jar'/>
      </copy>
    	 <exec executable='/bin/sh' dir='${windowsdir}'>
@@ -320,8 +375,8 @@
   	 <mkdir dir='${uploaddir}'/>
       <copy todir='${uploaddir}' >
       	<fileset file='${sourcesdist}'/>
-     	<fileset file='${rpmbuilddir_mdk}/RPMS/noarch/*'/>
      	<fileset file='${rpmbuilddir_suse}/RPMS/noarch/*'/>
+     	<fileset file='${rpmbuilddir_mdk}/RPMS/*'/>
      	 <fileset file='${windowsdir}/jajuk-${version}.exe'/>
      	 <fileset file='${izpackdir}/jajuk-install-${version}.jar'/>
      </copy>

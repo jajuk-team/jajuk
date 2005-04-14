@@ -1,6 +1,6 @@
 %define name jajuk
-%define version 0.3.3.3
-%define release 1mdk
+%define version VERSION_REPLACED_BY_ANT
+%define release 1
 %define arch noarch
 
 %define section                  Multimedia/Sound

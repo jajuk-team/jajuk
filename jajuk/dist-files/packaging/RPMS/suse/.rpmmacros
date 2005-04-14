@@ -10,5 +10,5 @@
 %_specdir               %{_topdir}/SPECS
 %_rpmdir                %{_topdir}/RPMS
 %_srcrpmdir            %{_topdir}/SRPMS
-%_rpmfilename      %%{ARCH}/%%{NAME}-%%{VERSION}-%%{RELEASE}.%%{ARCH}.rpm
+%_rpmfilename      %%{ARCH}/%%{NAME}-%%{VERSION}-suse.%%{ARCH}.rpm
 

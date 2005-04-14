@@ -1,9 +1,9 @@
 Summary: Jajuk Advanced Jukebox
 Name: jajuk
-Version: 0.3.3.3
-Release: suse
+Version: VERSION_REPLACED_BY_ANT
+Release: 1
 Group: Applications/Audio
-Copyright: Copyright Bertrand Florat & Jajuk team 2003 - 2004
+Copyright: Copyright Bertrand Florat & Jajuk team 2003 - 2005
 URL: http://jajuk.sourceforge.net
 Source: http://jajuk.sourceforge.net
 Packager: Bertrand Florat
