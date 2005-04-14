@@ -368,8 +368,8 @@ public class FIFO implements ITechnicalStrings {
             fCurrent.getTrack().incSessionHits();// inc session hits
             fCurrent.getTrack().setRate(fCurrent.getTrack().getRate() + 1); // inc rate by 1 because it is played
             FileManager.setRateHasChanged(true);
-        } catch (Exception e) {
-            Log.error("122", e); //$NON-NLS-1$
+        } catch (Throwable t) {//catch even Errors (OutOfMemory for exemple)
+            Log.error("122", t); //$NON-NLS-1$
         } finally {
             Util.stopWaiting(); // stop the waiting cursor
         }
@@ -925,5 +925,13 @@ public class FIFO implements ITechnicalStrings {
      */
     public ArrayList getPlanned() {
         return alPlanned;
+    }
+    
+    /**
+     * Set the first file flag
+     * @param bFirstFile
+     */
+    public static void setFirstFile(boolean bFirstFile){
+        FIFO.bFirstFile = bFirstFile;
     }
 }

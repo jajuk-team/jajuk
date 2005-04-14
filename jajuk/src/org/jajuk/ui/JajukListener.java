@@ -42,7 +42,6 @@ import org.jajuk.ui.views.ViewManager;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
-import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
 /**
@@ -80,40 +79,42 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
 				JajukFileChooser jfchooser = new JajukFileChooser();
 				int returnVal = jfchooser.showOpenDialog(Main.getWindow());
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
-					java.io.File[] files = jfchooser.getSelectedFiles();
-					FIFO.getInstance().clear(); //stop all currently played tracks
-					ArrayList alFiles = new ArrayList();
-					for (int i = 0; i < files.length; i++) {
-						if ( Util.getExtension(files[i]).equals(EXT_PLAYLIST)){ 
-							BasicPlaylistFile bplf = new BasicPlaylistFile(files[i]);
-							try{
-								alFiles.addAll(bplf.getBasicFiles());
-							}
-							catch(JajukException je){
-								Log.error(je);
-							}
-						}
-						else{
-							alFiles.add(new BasicFile(files[i]));	
-						}
-					}
-					FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFiles),
-							ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
+				    java.io.File[] files = null;
+                    try{
+				        files = jfchooser.getSelectedFiles();
+				        FIFO.getInstance().clear(); //stop all currently played tracks
+				        ArrayList alFiles = new ArrayList();
+				        for (int i = 0; i < files.length; i++) {
+				            if ( Util.getExtension(files[i]).equals(EXT_PLAYLIST)){ 
+				                BasicPlaylistFile bplf = new BasicPlaylistFile(files[i]);
+				                alFiles.addAll(bplf.getBasicFiles());
+				            }
+				            else{
+				                alFiles.add(new BasicFile(files[i]));	
+				            }
+				        }
+				        FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFiles),
+				                ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
+				    }
+				    catch(Exception e2){
+				        Log.error("009",e2);
+                        ObservationManager.notify(new Event(EVENT_PLAY_ERROR)); //notify the error 
+                    }
 				}
 			}
 			else if (e.getActionCommand().equals(EVENT_REPEAT_MODE_STATUS_CHANGED)) {
-				boolean b = ConfigurationManager.getBoolean(CONF_STATE_REPEAT);
-				ConfigurationManager.setProperty(CONF_STATE_REPEAT, Boolean.toString(!b));
-				JajukJMenuBar.getInstance().jcbmiRepeat.setSelected(!b);
-				if (!b == true) { //enabled button
-					CommandJPanel.getInstance().jbRepeat.setBorder(BorderFactory.createLoweredBevelBorder());
-					//if FIFO is not void, repeat over current item
-					StackItem item = FIFO.getInstance().getCurrentItem();
-					if ( item != null && FIFO.getInstance().getIndex() == 0){ //only non-repeated items need to be set and in this case, index =0 or bug
-						item.setRepeat(true);    
-					}
-				}
-				else {//disable repeat mode
+			    boolean b = ConfigurationManager.getBoolean(CONF_STATE_REPEAT);
+			    ConfigurationManager.setProperty(CONF_STATE_REPEAT, Boolean.toString(!b));
+			    JajukJMenuBar.getInstance().jcbmiRepeat.setSelected(!b);
+			    if (!b == true) { //enabled button
+			        CommandJPanel.getInstance().jbRepeat.setBorder(BorderFactory.createLoweredBevelBorder());
+			        //if FIFO is not void, repeat over current item
+			        StackItem item = FIFO.getInstance().getCurrentItem();
+			        if ( item != null && FIFO.getInstance().getIndex() == 0){ //only non-repeated items need to be set and in this case, index =0 or bug
+			            item.setRepeat(true);    
+			        }
+			    }
+			    else {//disable repeat mode
 					CommandJPanel.getInstance().jbRepeat.setBorder(BorderFactory.createRaisedBevelBorder());
 					//remove repeat mode to all items
 					FIFO.getInstance().setRepeatModeToAll(false);
@@ -196,7 +197,7 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
 				PerspectiveManager.setCurrentPerspective(PERSPECTIVE_NAME_HELP);		
 			}
 		}
-		catch(Exception e2){
+		catch(Throwable e2){
 			Log.error(e2);
 		}
 		finally{

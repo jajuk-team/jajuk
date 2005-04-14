@@ -25,6 +25,7 @@ import java.io.File;
 import javazoom.jlgui.player.amp.tag.MpegInfo;
 
 import org.jajuk.util.Util;
+import org.jajuk.util.error.JajukException;
 
 /**
  *  jlGui MP3 tager implementation
@@ -161,8 +162,13 @@ public class JlGuiMP3TagImpl implements ITagImpl {
 	 * @see org.jajuk.base.ITagImpl#setFile(java.io.File)
 	 */
 	public void setFile(File fio) throws Exception {
-		mpgInfo = new MpegInfo();
-		mpgInfo.load(fio);
+		try{
+		    mpgInfo = new MpegInfo();
+		    mpgInfo.load(fio);
+        }
+        catch(Throwable t){ //can throw OutOfMemory errors
+            throw new JajukException("103",fio.toString(),t);
+        }
 	}
 
 }

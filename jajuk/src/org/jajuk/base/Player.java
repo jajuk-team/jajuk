@@ -65,14 +65,14 @@ public class Player implements ITechnicalStrings{
 			else{
 				pCurrentPlayerImpl.play(fCurrent,fPosition,length,ConfigurationManager.getFloat(CONF_VOLUME));
 			}
-		} catch (final Exception e) {
+		} catch (final Throwable t) {
 			//process playing error asynchonously to avoid loop problems when capscading errors
             new Thread(){
 			    public void run(){
                     Properties pDetails = new Properties();
                     pDetails.put(DETAIL_CURRENT_FILE,file);
                     ObservationManager.notify(new Event(EVENT_PLAY_ERROR,pDetails)); //notify the error 
-                    Log.error("007",fCurrent.getAbsolutePath(), e); //$NON-NLS-1$
+                    Log.error("007",fCurrent.getAbsolutePath(), t); //$NON-NLS-1$
                     try {
                         Thread.sleep(WAIT_AFTER_ERROR); //make sure user has time to see this error message
                     } catch (InterruptedException e1) {
