@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.Properties; 
 
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
@@ -514,12 +515,23 @@ public class Main implements ITechnicalStrings {
 				        return;
 				    }
 				}
-			   if (fileToPlay != null){
-				        alToPlay.add(fileToPlay);    
-				}
-				else{ //file no more exists
-		     	    Messages.getChoice(Messages.getErrorMessage("023"),JOptionPane.OK_CANCEL_OPTION); //$NON-NLS-1$
-				}
+			    if (fileToPlay != null){
+			        if (fileToPlay.isReady()){ //we try to launch at startup only existing and mounted files
+			            alToPlay.add(fileToPlay);    
+			        }
+			        else{ //file exists but is not mounted, just notify the error without anoying dialog at each startup
+			            Properties pDetail = new Properties();
+			            pDetail.put(DETAIL_CURRENT_FILE,fileToPlay);
+                        pDetail.put(DETAIL_REASON,"010");//$NON-NLS-1$
+                        ObservationManager.notify(new Event(EVENT_PLAY_ERROR,pDetail));
+                        FIFO.setFirstFile(false); //no more first file
+			        }
+			    }
+			    else{ //file no more exists
+			        Messages.getChoice(Messages.getErrorMessage("023"),JOptionPane.OK_CANCEL_OPTION); //$NON-NLS-1$
+			        FIFO.setFirstFile(false); //no more first file
+                    return;
+			    }
 			}
 			else if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_SHUFFLE)){
 				alToPlay = FileManager.getGlobalShufflePlaylist();

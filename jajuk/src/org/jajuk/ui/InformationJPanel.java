@@ -60,7 +60,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,Obser
     /** Informative message type ( displayed in red )**/
     public static final int ERROR = 1;
     /**Self instance*/
-    static private InformationJPanel ijp = null; 	
+    static private InformationJPanel ijp = null;    
     /** Swing Timer to refresh the component*/ 
     private Timer timer = new Timer(JajukTimer.DEFAULT_HEARTBEAT,new ActionListener() {
         public void actionPerformed(ActionEvent e) {
@@ -89,7 +89,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,Obser
     JPanel jpCurrent;
     JProgressBar jpbCurrent;
     JLabel jlCurrent;
-    //attributes	
+    //attributes    
     String sMessage;
     String sSelection;
     int iTotalStatus;
@@ -152,6 +152,8 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,Obser
         
         //check if some track has been lauched before the view has been displayed
         update(new Event(EVENT_FILE_LAUNCHED,ObservationManager.getDetailsLastOccurence(EVENT_FILE_LAUNCHED)));
+        //check if some errors occured before the view has been displayed
+        update(new Event(EVENT_PLAY_ERROR,ObservationManager.getDetailsLastOccurence(EVENT_PLAY_ERROR)));
         //register for given events
         ObservationManager.register(EVENT_ZERO,this);
         ObservationManager.register(EVENT_FILE_LAUNCHED,this);
@@ -213,7 +215,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,Obser
                     break;
                 default:
                     jlMessage.setForeground(Color.BLUE);
-                break;	 
+                break;   
                 }
                 jlMessage.setText(sMessage); 
                 jlMessage.setToolTipText(sMessage);
@@ -275,12 +277,24 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,Obser
      */
     public synchronized void update(final Event event) {  //we synchronize this method to make error message is visible all 2 secs
         final String subject = event.getSubject();
-    	//do not insert this subject inside the invokeLater because we have to leave the awt dispatcher called inside the setMessage and THEN, sleep for 2 secs.
+        //do not insert this subject inside the invokeLater because we have to leave the awt dispatcher called inside the setMessage and THEN, sleep for 2 secs.
         if (EVENT_PLAY_ERROR.equals(subject)){
             try{
                 File fCurrent = (File)ObservationManager.getDetail(event,DETAIL_CURRENT_FILE);
-                setMessage(Messages.getString("Error.007")+": "+fCurrent.getAbsolutePath(),InformationJPanel.ERROR);//$NON-NLS-1$ //$NON-NLS-2$
-                Thread.sleep(WAIT_AFTER_ERROR); //make sure user has time to see this error message
+                if (fCurrent != null){
+                    //display associated error code is given
+                    String sReason = (String)ObservationManager.getDetail(event,DETAIL_REASON);
+                    if (sReason != null){ 
+                        setMessage(Messages.getString("Error."+sReason)+": "+fCurrent.getAbsolutePath(),InformationJPanel.ERROR);//$NON-NLS-1$ //$NON-NLS-2$
+                    }
+                    else{//default message
+                        setMessage(Messages.getString("Error.007")+": "+fCurrent.getAbsolutePath(),InformationJPanel.ERROR);//$NON-NLS-1$ //$NON-NLS-2$
+                    }
+                    Thread.sleep(WAIT_AFTER_ERROR); //make sure user has time to see this error message    
+                }
+                else{ //none specified file (basic files error for ex)
+                  setMessage(Messages.getString("Error.007"),InformationJPanel.ERROR);//$NON-NLS-1$
+                }
             } catch (Exception e) {
                 Log.error(e);
             }
@@ -313,15 +327,6 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,Obser
                             +file.getTrack().getName();//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                             setMessage(sMessage,InformationJPanel.INFORMATIVE); 
                             setQuality(file.getQuality2()+Messages.getString("FIFO.13")); //$NON-NLS-1$
-                        }
-                    }
-                    else if (EVENT_PLAY_ERROR.equals(subject)){
-                        try{
-                            File fCurrent = (File)ObservationManager.getDetail(event,DETAIL_CURRENT_FILE);
-                            setMessage(Messages.getString("Error.007")+": "+fCurrent.getAbsolutePath(),InformationJPanel.ERROR);//$NON-NLS-1$ //$NON-NLS-2$
-                            Thread.sleep(2000); //make sure user has time to see this error message
-                        } catch (Exception e) {
-                            Log.error(e);
                         }
                     }
                 }
