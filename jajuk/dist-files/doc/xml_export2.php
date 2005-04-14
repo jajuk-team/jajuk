@@ -29,7 +29,7 @@ Option for show_trackers=1; * To show a specific Tracker instead of all
 	&amp;tracker_to_show=TRACKER_ID
 
 --><export_details>
-<time>1112017136</time>
+<time>1113505420</time>
 <project_group_id>91412</project_group_id>
 <project_unix_name>jajuk</project_unix_name>
 <exporter>bflorat</exporter>
@@ -144,6 +144,14 @@ http://www.florat.net/jajuk-specs.pdf</registration_description>
 <project_admin>No</project_admin>
 </projectmember>
 <projectmember>
+<url>https://sourceforge.net/users/ftavares/</url>
+<user_id>1214731</user_id>
+<user_name>ftavares</user_name>
+<public_name>Filipe Tavares</public_name>
+<email>ftavares@users.sourceforge.net</email>
+<project_admin>No</project_admin>
+</projectmember>
+<projectmember>
 <url>https://sourceforge.net/users/vlad-/</url>
 <user_id>1238523</user_id>
 <user_name>vlad-</user_name>
@@ -206,8 +214,8 @@ http://www.florat.net/jajuk-specs.pdf</registration_description>
 <is_public>All site users</is_public>
 <allow_anonymous>No</allow_anonymous>
 <tracker_id>716053</tracker_id>
-<tracker_name>Request for bugs</tracker_name>
-<description>Request for bug reproductions</description>
+<tracker_name>Request for bug reproduction</tracker_name>
+<description>Request for bug reproduction</description>
 <is_public>All site users</is_public>
 <allow_anonymous>Yes</allow_anonymous>
 </trackers>
@@ -222,6 +230,7 @@ http://www.florat.net/jajuk-specs.pdf</registration_description>
 </projectresources>
 <project_admin_detail>
 <trove_details>
+<trove_category>Translations :: Catalan</trove_category>
 <trove_category>User Interface :: Graphical :: Java Swing</trove_category>
 <trove_category>Topic :: Multimedia :: Sound/Audio :: Players</trove_category>
 <trove_category>Translations :: Spanish</trove_category>
@@ -361,6 +370,126 @@ http://www.florat.net/jajuk-specs.pdf</registration_description>
 <package_id>96449</package_id>
 <file_size>343039</file_size>
 <release_time>1105480037</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=317310</url>
+<filename>jajuk-0.3.3-1mdk.noarch.rpm</filename>
+<release_id>317310</release_id>
+<package_id>96449</package_id>
+<file_size>4580591</file_size>
+<release_time>1112402033</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=317310</url>
+<filename>jajuk-0.3.3.exe</filename>
+<release_id>317310</release_id>
+<package_id>96449</package_id>
+<file_size>7092263</file_size>
+<release_time>1112402054</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=317310</url>
+<filename>jajuk-0.3.3-suse.noarch.rpm</filename>
+<release_id>317310</release_id>
+<package_id>96449</package_id>
+<file_size>4578459</file_size>
+<release_time>1112402067</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=317310</url>
+<filename>jajuk-install-0.3.3.jar</filename>
+<release_id>317310</release_id>
+<package_id>96449</package_id>
+<file_size>6666921</file_size>
+<release_time>1112402086</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=317310</url>
+<filename>jajuk-src-0.3.3.zip</filename>
+<release_id>317310</release_id>
+<package_id>96449</package_id>
+<file_size>355196</file_size>
+<release_time>1112402100</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=317631</url>
+<filename>jajuk-0.3.3.1-1mdk.noarch.rpm</filename>
+<release_id>317631</release_id>
+<package_id>96449</package_id>
+<file_size>4582456</file_size>
+<release_time>1112553921</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=317631</url>
+<filename>jajuk-0.3.3.1.exe</filename>
+<release_id>317631</release_id>
+<package_id>96449</package_id>
+<file_size>7045644</file_size>
+<release_time>1112553936</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=317631</url>
+<filename>jajuk-0.3.3.1-suse.noarch.rpm</filename>
+<release_id>317631</release_id>
+<package_id>96449</package_id>
+<file_size>4580401</file_size>
+<release_time>1112553955</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=317631</url>
+<filename>jajuk-install-0.3.3.1.jar</filename>
+<release_id>317631</release_id>
+<package_id>96449</package_id>
+<file_size>6666180</file_size>
+<release_time>1112553976</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=317631</url>
+<filename>jajuk-src-0.3.3.1.zip</filename>
+<release_id>317631</release_id>
+<package_id>96449</package_id>
+<file_size>356351</file_size>
+<release_time>1112553992</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=318710</url>
+<filename>jajuk-0.3.3.2-1mdk.noarch.rpm</filename>
+<release_id>318710</release_id>
+<package_id>96449</package_id>
+<file_size>4582117</file_size>
+<release_time>1112910391</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=318710</url>
+<filename>jajuk-0.3.3.2.exe</filename>
+<release_id>318710</release_id>
+<package_id>96449</package_id>
+<file_size>7085405</file_size>
+<release_time>1112910413</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=318710</url>
+<filename>jajuk-0.3.3.2-suse.noarch.rpm</filename>
+<release_id>318710</release_id>
+<package_id>96449</package_id>
+<file_size>4580541</file_size>
+<release_time>1112910427</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=318710</url>
+<filename>jajuk-install-0.3.3.2.jar</filename>
+<release_id>318710</release_id>
+<package_id>96449</package_id>
+<file_size>6670248</file_size>
+<release_time>1112910448</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=318710</url>
+<filename>jajuk-src-0.3.3.2.zip</filename>
+<release_id>318710</release_id>
+<package_id>96449</package_id>
+<file_size>356338</file_size>
+<release_time>1112868431</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=319292</url>
+<filename>jajuk-0.3.3.3-1mdk.noarch.rpm</filename>
+<release_id>319292</release_id>
+<package_id>96449</package_id>
+<file_size>4696751</file_size>
+<release_time>1113162442</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=319292</url>
+<filename>jajuk-0.3.3.3.exe</filename>
+<release_id>319292</release_id>
+<package_id>96449</package_id>
+<file_size>7198908</file_size>
+<release_time>1113162457</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=319292</url>
+<filename>jajuk-0.3.3.3-suse.noarch.rpm</filename>
+<release_id>319292</release_id>
+<package_id>96449</package_id>
+<file_size>4694680</file_size>
+<release_time>1113162470</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=319292</url>
+<filename>jajuk-install-0.3.3.3.jar</filename>
+<release_id>319292</release_id>
+<package_id>96449</package_id>
+<file_size>6777227</file_size>
+<release_time>1113162486</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=319292</url>
+<filename>jajuk-src-0.3.3.3.zip</filename>
+<release_id>319292</release_id>
+<package_id>96449</package_id>
+<file_size>356462</file_size>
+<release_time>1113162498</release_time>
 </filereleases>
 <docmanager>
 <docgroup>
@@ -7515,15 +7644,15 @@ the path to the new one manually and now it is working.</details>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1098567</url>
 <id>1098567</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>694965</category_id>
 <group_id>436325</group_id>
 <resolution_id>1</resolution_id>
 <submitter>bflorat</submitter>
 <assignee>bflorat</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1105210212</submit_date>
-<close_date>0</close_date>
+<close_date>1112392542</close_date>
 <priority>8</priority>
 <summary>Linux: Problem upgrading RPM from 0.3.1 to 0.3.2 </summary>
 <details>IMPORTANT NOTE FOR UPGRADE FROM 0.3.1 TO 0.3.2 : due to
@@ -7542,20 +7671,34 @@ a bug in 0.3.1 packaging, please use  rpm -Uvh
 <date>1105477974</date>
 <updator>bflorat</updator>
 </history_entry>
+<history_entry>
+<id>2721031</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1112392542</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2721032</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1112392542</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1102189</url>
 <id>1102189</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>605762</category_id>
 <group_id>436325</group_id>
-<resolution_id>100</resolution_id>
+<resolution_id>1</resolution_id>
 <submitter>bflorat</submitter>
 <assignee>bflorat</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1105695702</submit_date>
-<close_date>0</close_date>
+<close_date>1112392543</close_date>
 <priority>7</priority>
 <summary>Freeze with proxy pwd frame</summary>
 <details>In some cases, closing the proxy frame without giving a
@@ -7565,20 +7708,41 @@ value can cause a geenral freeze.</details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>2721033</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1112392543</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2721034</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1112392543</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2721035</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1112392543</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1102219</url>
 <id>1102219</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>605778</category_id>
 <group_id>436325</group_id>
-<resolution_id>100</resolution_id>
+<resolution_id>3</resolution_id>
 <submitter>bflorat</submitter>
 <assignee>bflorat</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1105699357</submit_date>
-<close_date>0</close_date>
+<close_date>1112392656</close_date>
 <priority>8</priority>
 <summary>Cannot play some MP3 files</summary>
 <details>In some seldom cases (mainly MP3 whose id3 tags
@@ -7610,24 +7774,54 @@ org.jajuk.players.JavaLayerPlayerImpl.play(JavaLayerPlayerImpl.java:151)
 It is caused by a MP3SPI bug. It will be fixed in next
 release.</details>
 <followups>
+<followup>
+<id>1597114</id>
+<submitter>bflorat</submitter>
+<date>1112392656</date>
+<details>Logged In: YES 
+user_id=363565
+
+See known issue 1175047</details>
+</followup>
 </followups>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>2721093</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1112392655</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2721094</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1112392656</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2721095</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1112392656</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1102223</url>
 <id>1102223</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>605763</category_id>
 <group_id>436325</group_id>
-<resolution_id>100</resolution_id>
+<resolution_id>1</resolution_id>
 <submitter>bflorat</submitter>
 <assignee>bflorat</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1105699675</submit_date>
-<close_date>0</close_date>
+<close_date>1112392543</close_date>
 <priority>8</priority>
 <summary>Delay with pause/resume/stop</summary>
 <details>Pause seems to be buggy in some cases. To be checked.</details>
@@ -7653,20 +7847,41 @@ Delay pausing/remusing and stopping under windows. Fixed in
 <date>1108765718</date>
 <updator>bflorat</updator>
 </history_entry>
+<history_entry>
+<id>2721036</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1112392543</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2721037</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1112392543</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2721038</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1112392543</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1102927</url>
 <id>1102927</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>100</category_id>
 <group_id>436325</group_id>
-<resolution_id>100</resolution_id>
+<resolution_id>1</resolution_id>
 <submitter>bflorat</submitter>
 <assignee>bflorat</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1105798138</submit_date>
-<close_date>0</close_date>
+<close_date>1112392543</close_date>
 <priority>3</priority>
 <summary>OutOfBoundsException playing mp3</summary>
 <details>In some seldom cases, some MP3 can throw
@@ -7678,20 +7893,41 @@ been fixed.</details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>2721039</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1112392543</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2721040</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1112392543</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2721041</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1112392543</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1109307</url>
 <id>1109307</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>605763</category_id>
 <group_id>436325</group_id>
-<resolution_id>100</resolution_id>
+<resolution_id>1</resolution_id>
 <submitter>bflorat</submitter>
 <assignee>bflorat</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1106680697</submit_date>
-<close_date>0</close_date>
+<close_date>1112392543</close_date>
 <priority>8</priority>
 <summary>Cannot read files (audio line not available)</summary>
 <details>Linux only, Plastic Look and Feel only :
@@ -7703,20 +7939,41 @@ and a &#34;cannot read file&#34; error for the overall session.</details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>2721042</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1112392543</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2721043</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1112392543</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2721044</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1112392543</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1112671</url>
 <id>1112671</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>605763</category_id>
 <group_id>436325</group_id>
-<resolution_id>100</resolution_id>
+<resolution_id>1</resolution_id>
 <submitter>bflorat</submitter>
 <assignee>bflorat</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1107107841</submit_date>
-<close_date>0</close_date>
+<close_date>1112392543</close_date>
 <priority>2</priority>
 <summary>Minor bug in I18N system</summary>
 <details>In some few cases, system confuses key and value for
@@ -7727,20 +7984,41 @@ generates confusing error traces.</details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>2721045</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1112392543</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2721046</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1112392543</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2721047</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1112392543</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1116073</url>
 <id>1116073</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>605763</category_id>
 <group_id>436325</group_id>
-<resolution_id>100</resolution_id>
+<resolution_id>6</resolution_id>
 <submitter>bflorat</submitter>
 <assignee>bflorat</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1107512417</submit_date>
-<close_date>0</close_date>
+<close_date>1112392765</close_date>
 <priority>5</priority>
 <summary>Problem with pause/resume using samba shares</summary>
 <details>Using samba shares, a pause/resume can result into a
@@ -7750,20 +8028,41 @@ freeze. To be reproduced.</details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>2721098</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1112392765</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2721099</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1112392765</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2721100</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1112392765</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1116459</url>
 <id>1116459</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>605763</category_id>
 <group_id>436325</group_id>
-<resolution_id>100</resolution_id>
+<resolution_id>1</resolution_id>
 <submitter>bflorat</submitter>
 <assignee>bflorat</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1107549671</submit_date>
-<close_date>0</close_date>
+<close_date>1112392544</close_date>
 <priority>6</priority>
 <summary>Logical items not sync with physical after a refresh</summary>
 <details>If a physical item (a file for ie) is removed from
@@ -7774,6 +8073,27 @@ after a refresh.</details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>2721048</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1112392544</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2721049</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1112392544</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2721050</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1112392544</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
@@ -7909,15 +8229,15 @@ jajuk package.</details>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1146035</url>
 <id>1146035</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>605763</category_id>
 <group_id>436325</group_id>
-<resolution_id>100</resolution_id>
+<resolution_id>1</resolution_id>
 <submitter>bflorat</submitter>
 <assignee>bflorat</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1109058312</submit_date>
-<close_date>0</close_date>
+<close_date>1112392544</close_date>
 <priority>6</priority>
 <summary>Skips using user interface</summary>
 <details>When manipulating covers or switching perspective, some
@@ -7934,6 +8254,27 @@ to this current issue if you get skips.</details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>2721051</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1112392544</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2721052</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1112392544</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2721053</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1112392544</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
@@ -8058,15 +8399,15 @@ Thanks
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1153534</url>
 <id>1153534</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>605763</category_id>
 <group_id>436325</group_id>
-<resolution_id>100</resolution_id>
+<resolution_id>1</resolution_id>
 <submitter>bflorat</submitter>
 <assignee>bflorat</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1109602874</submit_date>
-<close_date>0</close_date>
+<close_date>1112392544</close_date>
 <priority>7</priority>
 <summary>Elapsed time error with large files</summary>
 <details>For large files, elasped time can be wrong (display
@@ -8077,20 +8418,41 @@ Thanks
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>2721054</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1112392544</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2721055</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1112392544</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2721056</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1112392544</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1155644</url>
 <id>1155644</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>605762</category_id>
 <group_id>436325</group_id>
-<resolution_id>100</resolution_id>
+<resolution_id>1</resolution_id>
 <submitter>bflorat</submitter>
 <assignee>bflorat</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1109836059</submit_date>
-<close_date>0</close_date>
+<close_date>1112392544</close_date>
 <priority>5</priority>
 <summary>UI reset missing in some cases</summary>
 <details>In at least 2 cases, UI (static views ) is not reseted :
@@ -8102,20 +8464,41 @@ begining.</details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>2721057</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1112392544</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2721058</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1112392544</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2721059</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1112392544</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1156281</url>
 <id>1156281</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>605763</category_id>
 <group_id>436325</group_id>
-<resolution_id>100</resolution_id>
+<resolution_id>1</resolution_id>
 <submitter>bflorat</submitter>
 <assignee>bflorat</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1109891239</submit_date>
-<close_date>0</close_date>
+<close_date>1112392544</close_date>
 <priority>4</priority>
 <summary>Continue mode when stopped</summary>
 <details>When continue mode is set in stopped mode, we have to
@@ -8125,20 +8508,41 @@ start next track</details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>2721060</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1112392544</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2721061</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1112392544</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2721062</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1112392544</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1157305</url>
 <id>1157305</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>605763</category_id>
 <group_id>436325</group_id>
-<resolution_id>100</resolution_id>
+<resolution_id>1</resolution_id>
 <submitter>bflorat</submitter>
 <assignee>bflorat</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1110037088</submit_date>
-<close_date>0</close_date>
+<close_date>1112392544</close_date>
 <priority>7</priority>
 <summary>Novelties function problem</summary>
 <details>Novelties function always return the same playlist</details>
@@ -8147,20 +8551,41 @@ start next track</details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>2721063</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1112392544</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2721064</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1112392544</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2721065</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1112392544</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1157408</url>
 <id>1157408</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>605763</category_id>
 <group_id>436325</group_id>
-<resolution_id>100</resolution_id>
+<resolution_id>1</resolution_id>
 <submitter>bflorat</submitter>
 <assignee>bflorat</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1110051087</submit_date>
-<close_date>0</close_date>
+<close_date>1112392545</close_date>
 <priority>7</priority>
 <summary>Bestof function problem</summary>
 <details>Bestof list was inverted</details>
@@ -8169,21 +8594,42 @@ start next track</details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>2721066</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1112392545</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2721067</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1112392545</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2721068</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1112392545</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1167220</url>
 <id>1167220</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>605763</category_id>
 <group_id>436325</group_id>
-<resolution_id>100</resolution_id>
+<resolution_id>1</resolution_id>
 <submitter>mbraux</submitter>
 <assignee>bflorat</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1111365193</submit_date>
-<close_date>0</close_date>
-<priority>5</priority>
+<close_date>1112392545</close_date>
+<priority>9</priority>
 <summary>Error loading collection file on startup</summary>
 <details>I found the following bug while starting Jajuk for the
 second time.
@@ -8227,10 +8673,647 @@ I forget : please send me directly (bertrand@florat.net)
 your collection.xml  file after a refresh of your samba
 directory and a Jajuk exit (to commit it on the disk). Thanks.</details>
 </followup>
+<followup>
+<id>1591759</id>
+<submitter>bflorat</submitter>
+<date>1112027235</date>
+<details>Logged In: YES 
+user_id=363565
+
+Fixed in the upcoming 0.3.3</details>
+</followup>
 </followups>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>2710149</id>
+<field_name>priority</field_name>
+<old_value>5</old_value>
+<date>1112027235</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2721069</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1112392545</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2721070</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1112392545</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2721071</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1112392545</date>
+<updator>bflorat</updator>
+</history_entry>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1171908</url>
+<id>1171908</id>
+<status_id>2</status_id>
+<category_id>605762</category_id>
+<group_id>436325</group_id>
+<resolution_id>1</resolution_id>
+<submitter>mlo68</submitter>
+<assignee>bflorat</assignee>
+<closer>bflorat</closer>
+<submit_date>1112024855</submit_date>
+<close_date>1112392545</close_date>
+<priority>7</priority>
+<summary>drag'n drop from sorted list pushes wrong track to playlist</summary>
+<details>In physical view, sort the &#34;physical table&#34; pane by
+&#34;track&#34; (by clcking on  the &#34;track&#34; heading).
+
+Select first record (say track A from artist Z and
+album Y) and drag it to the &#34;Current queue&#34; pane.
+
+It appears there as another track from another artist
+(say T from artist A and album A).
+
+It is not random: in fact, the wrong track that appears
+is the one that exists at same index in the &#34;unsorted&#34;
+physical table as the one that was picked in the
+&#34;sorted&#34; physical view. (in above &#34;example&#34;, track T
+from A, A is the first track in the collection that is
+sorted by artist/album in physical view)
+
+The issue exists for any track, not only the first.
+It also exists for other sort order than by track
+(except the natural sort order of the view)
+It exists for the &#34;logical&#34; view too.
+
+Problem does not appear when doing &#34;right click&#34; -&#62;
+menu -&#62; &#34;push&#34; to place item in the play queue.
+
+This is Jajuk 0.3.2 on Linux/KDE.
+
+
+
+
+</details>
+<followups>
+<followup>
+<id>1591737</id>
+<submitter>bflorat</submitter>
+<date>1112026061</date>
+<details>Logged In: YES 
+user_id=363565
+
+Reproduced. Good one, thanks. Fixed in the upcoming 0.3.3.</details>
+</followup>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+<history_entry>
+<id>2710110</id>
+<field_name>priority</field_name>
+<old_value>5</old_value>
+<date>1112026060</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2721072</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1112392545</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2721073</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1112392545</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2721074</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1112392545</date>
+<updator>bflorat</updator>
+</history_entry>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1175005</url>
+<id>1175005</id>
+<status_id>2</status_id>
+<category_id>605763</category_id>
+<group_id>436325</group_id>
+<resolution_id>1</resolution_id>
+<submitter>bflorat</submitter>
+<assignee>bflorat</assignee>
+<closer>bflorat</closer>
+<submit_date>1112384191</submit_date>
+<close_date>1112392545</close_date>
+<priority>9</priority>
+<summary>Freeze when seeking &#62; 99%</summary>
+<details>When seeking &#62; 99%, player freezes. It can be a huge
+problem if user closes jajuk at this position and use
+at the same time &#34;replay at last position&#34; startup mode
+: in this case, jajuk startup can become impossible.</details>
+<followups>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+<history_entry>
+<id>2721075</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1112392545</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2721076</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1112392545</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2721077</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1112392545</date>
+<updator>bflorat</updator>
+</history_entry>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1179051</url>
+<id>1179051</id>
+<status_id>2</status_id>
+<category_id>605763</category_id>
+<group_id>436325</group_id>
+<resolution_id>1</resolution_id>
+<submitter>bflorat</submitter>
+<assignee>bflorat</assignee>
+<closer>bflorat</closer>
+<submit_date>1112947229</submit_date>
+<close_date>1112947245</close_date>
+<priority>5</priority>
+<summary>Two log files</summary>
+<details>Log file (jajuk.log) is rolling using 2 1Mb files
+(jajuk.log and jajuk.log.1). Now it rools using a
+single file.</details>
+<followups>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+<history_entry>
+<id>2735291</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1112947245</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2735292</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1112947245</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2735293</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1112947245</date>
+<updator>bflorat</updator>
+</history_entry>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1179472</url>
+<id>1179472</id>
+<status_id>2</status_id>
+<category_id>605763</category_id>
+<group_id>436325</group_id>
+<resolution_id>1</resolution_id>
+<submitter>mielikki</submitter>
+<assignee>bflorat</assignee>
+<closer>bflorat</closer>
+<submit_date>1112995306</submit_date>
+<close_date>1113153972</close_date>
+<priority>7</priority>
+<summary>I can't save playlists in XP / JDK 1.5.0_02</summary>
+<details>I can't seem to save a playlist in JaJuk 0.3.3.2 when
+running in Windows XP SP2 with the Sun 1.5.0_02 JDK. I
+get the save dialog to come up, but pressing the &#34;Save&#34;
+button doesn't save the file and doesn't close the dialog.
+
+Details:
+
+I'm running JaJuk 0.3.3.2 (installed from the .exe
+version) on Windows XP SP2 with the Sun JDK:
+
+java.runtime.name	Java(TM) 2 Runtime Environment,
+Standard Edition	
+java.runtime.version	1.5.0_02-b09	
+
+I am using a UNC path for my device
+(\\computer\share\directory).
+
+I can drag directories to the Queue or New playlist,
+but when I try to save (either by right-clicking in the
+Playlist view or clicking the Save button in the
+Playlist Editor view) it doesn't work.
+
+What does happen is I get a dialog box to select a file
+(the title is &#34;Please Choose Track(s) to Play&#34;, but I
+assume that's just a little bug). If I enter the name
+of the M3U file I want to save and press the &#34;Save&#34;
+button, the button appears to depress, but the dialog
+stays up. I can press and press the button and nothing
+happens. Pressing the &#34;Cancel&#34; button does put the
+dialog away. No M3U file has been saved.
+
+I get the following exception each time I press the
+&#34;Save&#34; button:
+
+Exception occurred during event dispatching:
+java.lang.NoSuchMethodError:
+sun.awt.shell.ShellFolder.disableFileChooserSpeedFix()Z
+        at
+com.birosoft.liquid.FileChooserBasicUI.setFileSelected(FileChooserBasicUI.java:1087)
+        at
+com.birosoft.liquid.FileChooserBasicUI.doSelectedFilesChanged(FileChooserBasicUI.java:1248)
+        at
+com.birosoft.liquid.FileChooserBasicUI.access$1600(FileChooserBasicUI.java:101)
+        at
+com.birosoft.liquid.FileChooserBasicUI$12.propertyChange(FileChooserBasicUI.java:1373)
+        at
+java.beans.PropertyChangeSupport.firePropertyChange(Unknown
+Source)
+        at
+java.beans.PropertyChangeSupport.firePropertyChange(Unknown
+Source)
+        at
+java.awt.Component.firePropertyChange(Unknown Source)
+        at
+javax.swing.JFileChooser.setSelectedFiles(Unknown Source)
+        at
+javax.swing.plaf.basic.BasicFileChooserUI$ApproveSelectionAction.actionPerformed(Unknown
+Source)
+        at
+javax.swing.AbstractButton.fireActionPerformed(Unknown
+Source)
+        at
+javax.swing.AbstractButton$Handler.actionPerformed(Unknown
+Source)
+        at
+javax.swing.DefaultButtonModel.fireActionPerformed(Unknown
+Source)
+        at
+javax.swing.DefaultButtonModel.setPressed(Unknown Source)
+        at
+javax.swing.plaf.basic.BasicButtonListener.mouseReleased(Unknown
+Source)
+        at
+java.awt.AWTEventMulticaster.mouseReleased(Unknown Source)
+        at java.awt.Component.processMouseEvent(Unknown
+Source)
+        at
+javax.swing.JComponent.processMouseEvent(Unknown Source)
+        at java.awt.Component.processEvent(Unknown Source)
+        at java.awt.Container.processEvent(Unknown Source)
+        at java.awt.Component.dispatchEventImpl(Unknown
+Source)
+        at java.awt.Container.dispatchEventImpl(Unknown
+Source)
+        at java.awt.Component.dispatchEvent(Unknown Source)
+        at
+java.awt.LightweightDispatcher.retargetMouseEvent(Unknown
+Source)
+        at
+java.awt.LightweightDispatcher.processMouseEvent(Unknown
+Source)
+        at
+java.awt.LightweightDispatcher.dispatchEvent(Unknown
+Source)
+        at java.awt.Container.dispatchEventImpl(Unknown
+Source)
+        at java.awt.Window.dispatchEventImpl(Unknown
+Source)
+        at java.awt.Component.dispatchEvent(Unknown Source)
+        at java.awt.EventQueue.dispatchEvent(Unknown
+Source)
+        at
+java.awt.EventDispatchThread.pumpOneEventForHierarchy(Unknown
+Source)
+        at
+java.awt.EventDispatchThread.pumpEventsForHierarchy(Unknown
+Source)
+        at
+java.awt.EventDispatchThread.pumpEventsForHierarchy(Unknown
+Source)
+        at java.awt.Dialog$1.run(Unknown Source)
+        at java.awt.Dialog.show(Unknown Source)
+        at javax.swing.JFileChooser.showDialog(Unknown
+Source)
+        at
+javax.swing.JFileChooser.showSaveDialog(Unknown Source)
+        at
+org.jajuk.base.PlaylistFile.saveAs(PlaylistFile.java:599)
+        at
+org.jajuk.ui.views.AbstractPlaylistEditorView.actionPerformed(AbstractPlaylistEditorView.java:536)
+....
+
+(I gave it a try on a Linux box with the blackdown jdk
+and it did work there, so at least I know the steps I
+followed should be right...)
+</details>
+<followups>
+<followup>
+<id>1606104</id>
+<submitter>bflorat</submitter>
+<date>1113153933</date>
+<details>Logged In: YES 
+user_id=363565
+
+Reproduced under Linux. this is a known issue from Liquid
+LAF. I downgraded to 0.2.6 in upcoming 0.3.3.3. I also found
+fixed other related bugs: 
+- Wrong title (files to play)
+- Extension added even if file already has one
+- We now provide a default file name (playlist.m3u)
+
+This fixes are in the 0.3.3.3 released  today. Thanks for
+your report.</details>
+</followup>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+<history_entry>
+<id>2739066</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1113153972</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2739067</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1113153972</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2739068</id>
+<field_name>category_id</field_name>
+<old_value>100</old_value>
+<date>1113153972</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2739069</id>
+<field_name>artifact_group_id</field_name>
+<old_value>100</old_value>
+<date>1113153972</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2739070</id>
+<field_name>priority</field_name>
+<old_value>5</old_value>
+<date>1113153972</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2739071</id>
+<field_name>assigned_to</field_name>
+<old_value>100</old_value>
+<date>1113153972</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2739072</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1113153972</date>
+<updator>bflorat</updator>
+</history_entry>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1180255</url>
+<id>1180255</id>
+<status_id>2</status_id>
+<category_id>605763</category_id>
+<group_id>436325</group_id>
+<resolution_id>1</resolution_id>
+<submitter>bflorat</submitter>
+<assignee>bflorat</assignee>
+<closer>bflorat</closer>
+<submit_date>1113149371</submit_date>
+<close_date>1113154003</close_date>
+<priority>6</priority>
+<summary>Playlist file save extension</summary>
+<details>When savign a playlist, the extension (.m3u) was always
+added to file name, even if the name already contained
+this extension.</details>
+<followups>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+<history_entry>
+<id>2739075</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1113154003</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2739076</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1113154003</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2739077</id>
+<field_name>priority</field_name>
+<old_value>5</old_value>
+<date>1113154003</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2739078</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1113154003</date>
+<updator>bflorat</updator>
+</history_entry>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1182359</url>
+<id>1182359</id>
+<status_id>2</status_id>
+<category_id>605762</category_id>
+<group_id>436325</group_id>
+<resolution_id>1</resolution_id>
+<submitter>bflorat</submitter>
+<assignee>bflorat</assignee>
+<closer>bflorat</closer>
+<submit_date>1113409782</submit_date>
+<close_date>1113505125</close_date>
+<priority>9</priority>
+<summary>Tray problem under Windows + Looks</summary>
+<details>Only with 0.3.3.3, windows, Looks look and feel (default) :
+Tray doesn't work (none reaction when right/left
+clicking on it). It is a bug with JDIC Tray 0.1.6 +
+Looks 1.3.1. Must be a bug from JDIC because it is
+fixed with new 0.9 release but we can't upgrade to jdic
+0.9 because it brings new bugs (tray flashing) under
+Linux -&#62; we downgrade Looks from 1.3.1 to 1.2.2. Fixed
+in  jajuk 0.3.3.4.</details>
+<followups>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+<history_entry>
+<id>2749856</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1113505125</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2749857</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1113505125</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2749858</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1113505125</date>
+<updator>bflorat</updator>
+</history_entry>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1183212</url>
+<id>1183212</id>
+<status_id>2</status_id>
+<category_id>694965</category_id>
+<group_id>436325</group_id>
+<resolution_id>1</resolution_id>
+<submitter>bflorat</submitter>
+<assignee>bflorat</assignee>
+<closer>bflorat</closer>
+<submit_date>1113499387</submit_date>
+<close_date>1113505126</close_date>
+<priority>5</priority>
+<summary>Override existing files when downgrading jajuk</summary>
+<details>Using IzPack installer, any platform: if you downgrade
+jajuk, files are not overwritten. 
+Since 0.1 
+Fixed in the 0.3.3.4.</details>
+<followups>
+<followup>
+<id>1611024</id>
+<submitter>bflorat</submitter>
+<date>1113502422</date>
+<details>Logged In: YES 
+user_id=363565
+
+Note: downgrading with izpack installer (exe and jar file)
+will be possible from 0.3.3.4, not with previous releases.
+for exemple, it will be possible to downgrade from 1.0 to
+0.3.3.4 in the futur but not from 1.0 to 0.3.3.3. 
+
+Workaround: uninstall first</details>
+</followup>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+<history_entry>
+<id>2749859</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1113505126</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2749860</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1113505126</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2749861</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1113505126</date>
+<updator>bflorat</updator>
+</history_entry>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1183218</url>
+<id>1183218</id>
+<status_id>2</status_id>
+<category_id>605778</category_id>
+<group_id>436325</group_id>
+<resolution_id>1</resolution_id>
+<submitter>bflorat</submitter>
+<assignee>bflorat</assignee>
+<closer>bflorat</closer>
+<submit_date>1113500139</submit_date>
+<close_date>1113505126</close_date>
+<priority>6</priority>
+<summary>Refresh blocked on corrupted files</summary>
+<details>When refreshing a device containing corrupted tags,
+refresh can block.
+Since: 0.1
+Fixed in 0.3.3.4</details>
+<followups>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+<history_entry>
+<id>2749862</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1113505126</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2749863</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1113505126</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2749864</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1113505126</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 </tracker_items>
@@ -11362,6 +12445,77 @@ but wanted to mention
 <history_entries>
 </history_entries>
 </tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1177560</url>
+<id>1177560</id>
+<status_id>1</status_id>
+<category_id>571115</category_id>
+<group_id>340387</group_id>
+<submitter>pjlehtim</submitter>
+<assignee>nobody</assignee>
+<closer>nobody</closer>
+<submit_date>1112771779</submit_date>
+<close_date>0</close_date>
+<priority>5</priority>
+<summary>Collection Arrangement</summary>
+<details>I'd like to be able to arrange my collection of MP3s in
+the logical view. Many times DLed files have slightly
+different ID3 tags and jajuk can't automatically
+include all albums of a single artist into a single
+tree. I believe the best way of implementing usable
+arragement method is to enable drag and drop in logical
+view. User has easy means to say that these two
+differently spelled artists are actually same.
+
+Example:
+I have ripped all of my Prodigy CDs but my CD ripper
+using CDDB didn't get exactly same artist tag each
+time. Once CD was ripped offline and displays &#34;unknown&#34;
+as artist. now I have three different artist nodes in
+my logical view which all are actually the same. What I
+want to do is to tell jajuk that these all are same.
+I pick one of the availiable spellings (The Prodigy,
+prodigy and unknown) and drag the albums under the
+others in this one.
+If I chose that &#34;The Prodigy&#34; is the best choise I
+simply drag albums from &#34;unknown&#34; to &#34;The Prodigy&#34;.
+Same type of arranging would easily allow me to pick
+proper category for my artists. Just dropping them to
+right one.
+
+Ofcourse it would be nice to be able to modify artist
+names etc using ie.F2 shortcut or some kind of
+properties dialog. (allthough you should not include
+popup ever when it is possible to avoid it)
+
+This feature allso needs an undo to prevent accidental
+collection mess ups.
+
+Logical view is IMO the strongest feature of jajuk over
+traditional players. I believe that it should be put
+effort into to develope it further.
+
+I hope I was able to explain myself :-)
+
+-Pasi</details>
+<followups>
+<followup>
+<id>1601870</id>
+<submitter>bflorat</submitter>
+<date>1112774526</date>
+<details>Logged In: YES 
+user_id=363565
+
+Tag modification and retagging is next main developement
+effort. We have understood and we will take this RFE into
+account during this action. Thanks.</details>
+</followup>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+</history_entries>
+</tracker_item>
 </tracker_items>
 </tracker>
 <tracker>
@@ -11534,14 +12688,14 @@ option in the Jajuk shortcut command.</details>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1078264</url>
 <id>1078264</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>100</category_id>
 <group_id>100</group_id>
 <submitter>bflorat</submitter>
 <assignee>nobody</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1102075079</submit_date>
-<close_date>0</close_date>
+<close_date>1112392699</close_date>
 <priority>5</priority>
 <summary>java.lang.OutOfMemoryError</summary>
 <details>Sometimes, opening big cover pictures can conduct to
@@ -11558,6 +12712,15 @@ user_id=363565
 This problem is less likely to append since we limited cover
 size to 500KB.</details>
 </followup>
+<followup>
+<id>1597115</id>
+<submitter>bflorat</submitter>
+<date>1112392699</date>
+<details>Logged In: YES 
+user_id=363565
+
+Should be fixed in 0.3.3  (no more -Xmx)</details>
+</followup>
 </followups>
 <attachments>
 </attachments>
@@ -11567,6 +12730,20 @@ size to 500KB.</details>
 <field_name>priority</field_name>
 <old_value>8</old_value>
 <date>1103241236</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2721096</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1112392699</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2721097</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1112392699</date>
 <updator>bflorat</updator>
 </history_entry>
 </history_entries>
@@ -11668,6 +12845,16 @@ with 128MB RAM, the only difference is that the memory is
 cleaned more often. The -Xmx  option could help if you want
 to limit used memory :
 java ... -Xmx20M.</details>
+</followup>
+<followup>
+<id>1597037</id>
+<submitter>bflorat</submitter>
+<date>1112388621</date>
+<details>Logged In: YES 
+user_id=363565
+
+New in 0.3.3 : memory usage (especialy when using preload
+covers mode) has been optimized.</details>
 </followup>
 </followups>
 <attachments>
@@ -11812,13 +12999,93 @@ in the filter value for exemple) to refresh values.</details>
 <history_entries>
 </history_entries>
 </tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1175047</url>
+<id>1175047</id>
+<status_id>1</status_id>
+<category_id>100</category_id>
+<group_id>100</group_id>
+<submitter>bflorat</submitter>
+<assignee>bflorat</assignee>
+<closer>nobody</closer>
+<submit_date>1112388772</submit_date>
+<close_date>0</close_date>
+<priority>5</priority>
+<summary>Cannot read some MP3 files</summary>
+<details>Some MP3 cannot be read (&#34;error  reading file&#34; in
+information panel and  &#34;Reseting to invalid mark&#34; in
+jajuk.log). This is a known limitation of Javazoom API
+for non-standard MP3 files. Most of the time, this is
+caused by MP3 using pictures inside id3 tags.</details>
+<followups>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+<history_entry>
+<id>2720878</id>
+<field_name>assigned_to</field_name>
+<old_value>100</old_value>
+<date>1112388905</date>
+<updator>bflorat</updator>
+</history_entry>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1180242</url>
+<id>1180242</id>
+<status_id>1</status_id>
+<category_id>100</category_id>
+<group_id>100</group_id>
+<submitter>bflorat</submitter>
+<assignee>nobody</assignee>
+<closer>nobody</closer>
+<submit_date>1113146778</submit_date>
+<close_date>0</close_date>
+<priority>3</priority>
+<summary>Right click selection/popup menu</summary>
+<details>In logical/physical tree/table views with JRE 1.4.2 :
+due to a JRE 1.4.2 bug, a right click can't
+automaticaly select and display popup menu, you have to
+left click or right click on the row or tree element
+and right-click again. Fixed with JRE 1.5. </details>
+<followups>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1180249</url>
+<id>1180249</id>
+<status_id>1</status_id>
+<category_id>100</category_id>
+<group_id>100</group_id>
+<submitter>bflorat</submitter>
+<assignee>nobody</assignee>
+<closer>nobody</closer>
+<submit_date>1113148149</submit_date>
+<close_date>0</close_date>
+<priority>1</priority>
+<summary>Liquid Look and Feel painting problem</summary>
+<details>With JRE 1.4.2 with liquid laf, command panel and
+perspective panel have a grey ugly painting, upgrade to
+1.5.</details>
+<followups>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+</history_entries>
+</tracker_item>
 </tracker_items>
 </tracker>
 <tracker>
 <url>https://sourceforge.net/?group_id=91412&#38;atid=716053</url>
 <tracker_id>716053</tracker_id>
-<name>Request for bugs</name>
-<description>Request for bug reproductions</description>
+<name>Request for bug reproduction</name>
+<description>Request for bug reproduction</description>
 <is_public>All site users</is_public>
 <allow_anon>Yes</allow_anon>
 <email_updates>No</email_updates>
@@ -12146,6 +13413,56 @@ file, uncompress occurs then, nothing appears.</details>
 <history_entries>
 </history_entries>
 </tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1178796</url>
+<id>1178796</id>
+<status_id>1</status_id>
+<category_id>100</category_id>
+<group_id>100</group_id>
+<resolution_id>100</resolution_id>
+<submitter>bflorat</submitter>
+<assignee>nobody</assignee>
+<closer>nobody</closer>
+<submit_date>1112901897</submit_date>
+<close_date>0</close_date>
+<priority>9</priority>
+<summary>LineUnavailableException</summary>
+<details> in some cases, I get this:
+javax.sound.sampled.LineUnavailableException: Audio
+Device Unavailable        at
+com.sun.media.sound.HeadspaceMixer.nResume(Native
+Method)        at
+com.sun.media.sound.HeadspaceMixer.implOpen(HeadspaceMixer.java:346)
+       at
+com.sun.media.sound.AbstractMixer.open(AbstractMixer.java:286)
+       at
+com.sun.media.sound.AbstractMixer.open(AbstractMixer.java:323)
+       at
+com.sun.media.sound.AbstractDataLine.open(AbstractDataLine.java:103)
+       at
+javazoom.jlgui.basicplayer.BasicPlayer.openLine(BasicPlayer.java:456)
+       at
+javazoom.jlgui.basicplayer.BasicPlayer.initLine(BasicPlayer.java:351)
+       at
+javazoom.jlgui.basicplayer.BasicPlayer.startPlayback(BasicPlayer.java:565)
+       at
+javazoom.jlgui.basicplayer.BasicPlayer.play(BasicPlayer.java:913)
+       at
+org.jajuk.players.JavaLayerPlayerImpl.play(JavaLayerPlayerImpl.java:102)
+       at org.jajuk.base.Player.play(Player.java:66)
+       at org.jajuk.base.FIFO.launch(FIFO.java:360)
+       at org.jajuk.base.FIFO.pushCommand(FIFO.java:229)
+
+This append in some cases when a track is launched at
+startup at next track launch and for all others. Did
+you get that before ?</details>
+<followups>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+</history_entries>
+</tracker_item>
 </tracker_items>
 </tracker>
 </trackers>
@@ -12299,6 +13616,14 @@ file, uncompress occurs then, nothing appears.</details>
 <assignee>nobody</assignee>
 </assignees>
 <history_entries>
+<history_entry>
+<task_id>110970</task_id>
+<field_name>details</field_name>
+<old_value>See this RFE:
+https://sourceforge.net/tracker/index.php?func=detail&#38;aid=1177560&#38;group_id=91412&#38;atid=597089</old_value>
+<updator>bflorat</updator>
+<date>1112774598</date>
+</history_entry>
 </history_entries>
 </task>
 <task>
@@ -12412,14 +13737,14 @@ file, uncompress occurs then, nothing appears.</details>
 <percent_complete>0</percent_complete>
 <priority>7</priority>
 <hours>5</hours>
-<start_date>1106521200</start_date>
-<end_date>1106521200</end_date>
+<start_date>1106438400</start_date>
+<end_date>1106438400</end_date>
 <creator>bflorat</creator>
 <status_id>1</status_id>
 <dependencies>
 </dependencies>
 <assignees>
-<assignee>nobody</assignee>
+<assignee>ftavares</assignee>
 </assignees>
 <history_entries>
 <history_entry>
@@ -12428,6 +13753,20 @@ file, uncompress occurs then, nothing appears.</details>
 <old_value>0</old_value>
 <updator>bflorat</updator>
 <date>1106576051</date>
+</history_entry>
+<history_entry>
+<task_id>110975</task_id>
+<field_name>start_date</field_name>
+<old_value>1106521200</old_value>
+<updator>ftavares</updator>
+<date>1112714457</date>
+</history_entry>
+<history_entry>
+<task_id>110975</task_id>
+<field_name>end_date</field_name>
+<old_value>1106521200</old_value>
+<updator>ftavares</updator>
+<date>1112714457</date>
 </history_entry>
 </history_entries>
 </task>
@@ -12792,6 +14131,32 @@ http://www.singularsys.com/jep/index.html</old_value>
 </history_entry>
 </history_entries>
 </task>
+<task>
+<task_id>114234</task_id>
+<summary>[easy] Refresh timer</summary>
+<detail></detail>
+<percent_complete>0</percent_complete>
+<priority>5</priority>
+<hours>5</hours>
+<start_date>1112911200</start_date>
+<end_date>1112911200</end_date>
+<creator>bflorat</creator>
+<status_id>1</status_id>
+<dependencies>
+</dependencies>
+<assignees>
+<assignee>nobody</assignee>
+</assignees>
+<history_entries>
+<history_entry>
+<task_id>114234</task_id>
+<field_name>summary</field_name>
+<old_value>Refresh timer</old_value>
+<updator>bflorat</updator>
+<date>1112965059</date>
+</history_entry>
+</history_entries>
+</task>
 </project>
 <project>
 <project_id>41003</project_id>
@@ -13002,6 +14367,25 @@ http://www.singularsys.com/jep/index.html</old_value>
 <hours>10</hours>
 <start_date>1111960800</start_date>
 <end_date>1111960800</end_date>
+<creator>bflorat</creator>
+<status_id>1</status_id>
+<dependencies>
+</dependencies>
+<assignees>
+<assignee>nobody</assignee>
+</assignees>
+<history_entries>
+</history_entries>
+</task>
+<task>
+<task_id>114231</task_id>
+<summary>Java Help package optimization</summary>
+<detail></detail>
+<percent_complete>0</percent_complete>
+<priority>6</priority>
+<hours>0</hours>
+<start_date>1112911200</start_date>
+<end_date>1112911200</end_date>
 <creator>bflorat</creator>
 <status_id>1</status_id>
 <dependencies>
