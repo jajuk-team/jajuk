@@ -157,7 +157,7 @@ public class LogicalTableView extends AbstractTableView implements Observer{
 			oValues[i][0] = track.getName();
 			oValues[i][1] = track.getAlbum().getName2();
 			oValues[i][2] = track.getAuthor().getName2();
-			oValues[i][3] = Util.formatTimeBySec(track.getLength(),true);
+			oValues[i][3] = Util.formatTimeBySec(track.getLength(),false);
 			oValues[i][4] = track.getStyle().getName2();
 			oValues[i][5] = new Long(track.getRate());
 			oValues[i][6] = track.getId();
@@ -368,7 +368,7 @@ public class LogicalTableView extends AbstractTableView implements Observer{
 			oValues[i][0] = track.getName();
 			oValues[i][1] = track.getAlbum().getName2();
 			oValues[i][2] = track.getAuthor().getName2();
-			oValues[i][3] = Util.formatTimeBySec(track.getLength(),true);
+			oValues[i][3] = Util.formatTimeBySec(track.getLength(),false);
 			oValues[i][4] = track.getStyle().getName2();
 			oValues[i][5] = new Long(track.getRate());
 			oValues[i][6] = track.getId();
