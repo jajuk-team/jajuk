@@ -118,6 +118,14 @@ public class ObservationManager implements ITechnicalStrings{
 	    }
 	}
 	
+    /**
+     * Return whether the event already occured at least once
+     * @param subject
+     * @return
+     */
+    public static boolean containsEvent(String subject){
+        return hLastEventBySubject.containsKey(subject);
+    }
 	
 	/**
 	 * Notify all components having registered for the given subject asynchronously

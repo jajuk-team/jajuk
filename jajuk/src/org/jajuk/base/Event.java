@@ -79,4 +79,22 @@ public class Event {
 	public String toString(){
 		return subject+" "+pDetails.toString(); //$NON-NLS-1$
 	}
+    
+    /**
+     * event equals method
+     */
+    public boolean equals(Object obj){
+        Event event = (Event)obj;
+        boolean bOut = false;
+        if (this.subject.equals(event.getSubject())){
+            if (this.pDetails == null && event.pDetails == null){
+                bOut = true;
+            }
+            else if (this.pDetails != null && event.pDetails != null 
+                    && this.pDetails.equals(event.getDetails())){
+                bOut = true;
+            }
+        }
+        return bOut;
+    }
 }

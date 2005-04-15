@@ -278,7 +278,8 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,Obser
     public synchronized void update(final Event event) {  //we synchronize this method to make error message is visible all 2 secs
         final String subject = event.getSubject();
         //do not insert this subject inside the invokeLater because we have to leave the awt dispatcher called inside the setMessage and THEN, sleep for 2 secs.
-        if (EVENT_PLAY_ERROR.equals(subject)){
+        if (EVENT_PLAY_ERROR.equals(subject) 
+                && ObservationManager.containsEvent(EVENT_PLAY_ERROR)){ //check if this event already occured because this event is simulated at view startup to get startup error messages
             try{
                 File fCurrent = (File)ObservationManager.getDetail(event,DETAIL_CURRENT_FILE);
                 if (fCurrent != null){
