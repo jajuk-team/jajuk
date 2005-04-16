@@ -153,7 +153,9 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,Obser
         //check if some track has been lauched before the view has been displayed
         update(new Event(EVENT_FILE_LAUNCHED,ObservationManager.getDetailsLastOccurence(EVENT_FILE_LAUNCHED)));
         //check if some errors occured before the view has been displayed
-        update(new Event(EVENT_PLAY_ERROR,ObservationManager.getDetailsLastOccurence(EVENT_PLAY_ERROR)));
+        if (ObservationManager.containsEvent(EVENT_PLAY_ERROR)){ 
+            update(new Event(EVENT_PLAY_ERROR,ObservationManager.getDetailsLastOccurence(EVENT_PLAY_ERROR)));
+        }
         //register for given events
         ObservationManager.register(EVENT_ZERO,this);
         ObservationManager.register(EVENT_FILE_LAUNCHED,this);
@@ -278,8 +280,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,Obser
     public synchronized void update(final Event event) {  //we synchronize this method to make error message is visible all 2 secs
         final String subject = event.getSubject();
         //do not insert this subject inside the invokeLater because we have to leave the awt dispatcher called inside the setMessage and THEN, sleep for 2 secs.
-        if (EVENT_PLAY_ERROR.equals(subject) 
-                && ObservationManager.containsEvent(EVENT_PLAY_ERROR)){ //check if this event already occured because this event is simulated at view startup to get startup error messages
+        if (EVENT_PLAY_ERROR.equals(subject)){ 
             try{
                 File fCurrent = (File)ObservationManager.getDetail(event,DETAIL_CURRENT_FILE);
                 if (fCurrent != null){
