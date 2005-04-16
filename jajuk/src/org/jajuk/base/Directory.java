@@ -281,7 +281,7 @@ public class Directory extends PropertyAdapter implements Comparable{
                 }
             }
             catch(Exception e){ 
-                Log.error("103",files.length>0?files[i].toString():"",e);
+                Log.error("103",files.length>0?files[i].toString():"",e); //$NON-NLS-1$ //$NON-NLS-2$
             }
         }
     }

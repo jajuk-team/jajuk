@@ -167,7 +167,7 @@ public class JlGuiMP3TagImpl implements ITagImpl {
 		    mpgInfo.load(fio);
         }
         catch(Throwable t){ //can throw OutOfMemory errors
-            throw new JajukException("103",fio.toString(),t);
+            throw new JajukException("103",fio.toString(),t); //$NON-NLS-1$
         }
 	}
 

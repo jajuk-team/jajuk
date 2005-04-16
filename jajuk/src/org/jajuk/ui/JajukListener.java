@@ -97,7 +97,7 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
 				                ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
 				    }
 				    catch(Exception e2){
-				        Log.error("009",e2);
+				        Log.error("009",e2); //$NON-NLS-1$
                         ObservationManager.notify(new Event(EVENT_PLAY_ERROR)); //notify the error 
                     }
 				}
