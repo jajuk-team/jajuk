@@ -233,6 +233,7 @@
        <action dev='bflorat' type='fix' issue='1179051'>Two log files</action> 
        <action dev='bflorat' type='fix' issue='1183212'>Override existing files when downgrading jajuk</action> 
        <action dev='bflorat' type='fix' issue='1183218'>Refresh blocked on corrupted files</action> 
-     </release>
+       <action dev='bflorat' type='fix' issue='1183907'>Fix for  Wrong startup message</action> 
+      </release>
   </body>
 </document>
