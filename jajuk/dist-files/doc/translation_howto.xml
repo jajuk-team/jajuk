@@ -28,18 +28,18 @@
     		</subsection>
 
    			<subsection name='README file translation'>
-   			 <p>The README file is displayed during installation and is on the web site. Its name is <span style="font-family: monospace;">README_${iso3 code on 3 letters}.html</span>. Get README file of your choice as a source language. Example: use <span style="font-family: monospace;">README.html</span> as English source language at 
+   			 <p>The README file is displayed during installation and is on the web site. Its name is <span style="font-family: monospace;">README_{iso3 code on 3 letters}.html</span>. Get README file of your choice as a source language. Example: use <span style="font-family: monospace;">README.html</span> as English source language at 
    			 <a href='http://cvs.sourceforge.net/viewcvs.py/jajuk/jajuk/dist-files/doc/README.html'>http://cvs.sourceforge.net/viewcvs.py/jajuk/jajuk/dist-files/doc/README.html</a>
 					or any other README file in the directory and translate it. List of ISO3 codes is available at : <a href='http://ftp.ics.uci.edu/pub/ietf/http/related/iso3166.txt'>http://ftp.ics.uci.edu/pub/ietf/http/related/iso3166.txt</a>.</p>
     		</subsection>
 
    			<subsection name='Jajuk translation'>
 	   			<p>Jajuk uses a custom internationalization (i18n) system based on a XML/properties file. In the final distribution, langpack files are:</p>
-				<p><span style="font-family: monospace;">${jajuk installation path}/src/org/jajuk/i18n/<br></br>
+				<p><span style="font-family: monospace;">{jajuk installation path}/src/org/jajuk/i18n/<br></br>
                                           jajuk.properties<br></br>
                                           jajuk_fr.properties<br></br>
-                                          jajuk_${locale}.properties</span></p>
-        	    <p><span style="font-family: monospace;">${locale}</span> is a ISO language code, see <a href='http://www.ics.uci.edu/pub/ietf/http/related/iso639.txt'>http://www.ics.uci.edu/pub/ietf/http/related/iso639.txt</a>. 
+                                          jajuk_{locale}.properties</span></p>
+        	    <p><span style="font-family: monospace;">{locale}</span> is a ISO language code, see <a href='http://www.ics.uci.edu/pub/ietf/http/related/iso639.txt'>http://www.ics.uci.edu/pub/ietf/http/related/iso639.txt</a>. 
             	jajuk.properties contains default resource bundle (English) and you have a property file for each language.</p>
 				<p>Translation :</p>
 				<ul>
@@ -47,10 +47,10 @@
 					or any other property file in this directory.</p>
 				</li>
 				<li><p>Create your text file. It should begin with :</p>
-				<p><span style="font-family: monospace;">#Jajuk ${your language} langpack. <br></br>
-				#Written by : ${your name}<br></br>
-				#Copyright 2003,2004 ${your name}, this is part of Jajuk distributed under the GPL V2 license<br></br>
-				#FROM ${source language} ${cvs version}<br></br>
+				<p><span style="font-family: monospace;">#Jajuk {your language} langpack. <br></br>
+				#Written by : {your name}<br></br>
+				#Copyright 2003,2004 {your name}, this is part of Jajuk distributed under the GPL V2 license<br></br>
+				#FROM {source language} {cvs version}<br></br>
 				#$Revision$</span></p>
 				<p>FROM comment gives exact CVS version you translated to allow diffs with newer versions and Revision gives automatically the current CVS version of your file ( do not change this line manually, it will be updated by CVS).</p>
 			</li>
@@ -77,12 +77,12 @@
 
 			<li><p>(Optional, for developers) If you want to test your work (<i>ant</i> must be installed):</p></li>
 				<ul>
-					<li><p>Edit  <span style="font-family: monospace;">${jajuk installation path}/src/org/jajuk/Main.java</span> file and search for line :</p></li>
+					<li><p>Edit  <span style="font-family: monospace;">{jajuk installation path}/src/org/jajuk/Main.java</span> file and search for line :</p></li>
 					<p><span style="font-family: monospace;">Messages.registerLocal("fr","Language_desc_fr"); //$NON-NLS-1$ //$NON-NLS-2$</span></p>
 					<p>Add after this line your own local. Example :</p>
 					<span style="font-family: monospace;">Messages.registerLocal("ru","Language_desc_ru"); //$NON-NLS-1$ //$NON-NLS-2$</span>
-					<li><p>Copy your properties file in the <span style="font-family: monospace;">${jajuk installation path}/src/org/jajuk/i18n</span> directory</p></li>
-					<li><p>Go in the <span style="font-family: monospace;">${jajuk installation path}</span> directory where you can find the <span style="font-family: monospace;">build.xml</span> file</p></li>
+					<li><p>Copy your properties file in the <span style="font-family: monospace;">{jajuk installation path}/src/org/jajuk/i18n</span> directory</p></li>
+					<li><p>Go in the <span style="font-family: monospace;">{jajuk installation path}</span> directory where you can find the <span style="font-family: monospace;">build.xml</span> file</p></li>
 					<li><p>Rebuild Jajuk typing <span style="font-family: monospace;">'ant'</span></p></li>
 					<li><p>Launch Jajuk and set language in the parameter view of the configuration perspective.</p></li>
 					<li><p>Check your work.</p></li>

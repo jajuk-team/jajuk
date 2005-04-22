@@ -139,20 +139,20 @@
 	   			<li>Physical / logical separation : you can navigate into physical directories and files or into logical styles, authors, albums, tracks.</li>
 	   			<li>Indexing method : Jajuk doesn't read id3 tags or directory structure at each startup but save them in a XML database. It allows a fast startup even for very large collections (bench:10 sec to start a 140Go collection on a P4 1.8Ghz).</li>
 	   			<li>Unmounted devices support : you can navigate into unmounted devices ( CDs for exemple ). So you get a full view of your collection at any time. Nice feature if you have plenty of music CDs. This behavior can be disabled.</li>
-	   			<li>Several Look and feel supported : Liquid, Metal, Windows, GTK, Kunststoff,Metouia.</li>
+	   			<li>Several Look and feel supported : Liquid, Metal, Windows, GTK, Kunststoff,Metouia...</li>
 	   			<li>Multi-language and easy to translate, see <a href='translation_howto.html'>translation howto</a>.</li>
 	   			<li>Fast collection builder : a cd scanner allows you to create a jajuk collection of tens of CDs in only few minutes.</li>
 	   			<li>Eclipse-like graphical interface : Jajuk windows are divided into perspectives and views for a good functionnal separation.</li>
 	   			<li>Tray support under windows and Linux</li>
 	   			<li>Full-featured online help</li>
 	   			<li>Automatic rate support</li>
-	   			<li>7 Startup modes: none, last one, last one keep position, specified, shuffle, novelties, bestof</li>
+	   			<li>Various startup modes: none, last one, last one keep position, specified, shuffle, novelties, bestof</li>
 	   		</ul>	
 	<br></br>
 	<p><b>Near futur features</b></p>
  		<p>See <a href='/planning.html'>roadmap</a> for more details</p>
  		<ul>
-  			<li>Playlist editor</li>
+  			<li>Tag edition</li>
 	   		<li>Custom properties support : you will be able to create a property of your own ( a rate or localisation system for exemple ) that you can set on tracks or any item</li>
    			<li>Peer to Peer device-type support</li>
    		</ul>
