@@ -50,9 +50,10 @@ public class Player implements ITechnicalStrings{
 	 * Asynchronous play for specified file with specified time interval
 	 * @param file to play
 	 * @param position in % of the file length. ex 0.1 for 10%
-	 * @param length in ms 
+	 * @param length in ms
+     * @return true if play is OK
 	 */
-	public static void play(final File file,final float fPosition,final long length) {
+	public static boolean play(final File file,final float fPosition,final long length) {
         stop(); //stop any playing track
         fCurrent = file;
 		pCurrentPlayerImpl = file.getTrack().getType().getPlayerImpl();
@@ -65,23 +66,25 @@ public class Player implements ITechnicalStrings{
 			else{
 				pCurrentPlayerImpl.play(fCurrent,fPosition,length,ConfigurationManager.getFloat(CONF_VOLUME));
 			}
+            return true;
 		} catch (final Throwable t) {
-			//process playing error asynchonously to avoid loop problems when capscading errors
+		    Properties pDetails = new Properties();
+		    pDetails.put(DETAIL_CURRENT_FILE,file);
+		    ObservationManager.notify(new Event(EVENT_PLAY_ERROR,pDetails)); //notify the error 
+		    Log.error("007",fCurrent.getAbsolutePath(), t); //$NON-NLS-1$
+            try {
+                Thread.sleep(WAIT_AFTER_ERROR); //make sure user has time to see this error message
+            } catch (InterruptedException e1) {
+                e1.printStackTrace();
+            }
+            //process playing error asynchonously to avoid loop problems when capscading errors
             new Thread(){
-			    public void run(){
-                    Properties pDetails = new Properties();
-                    pDetails.put(DETAIL_CURRENT_FILE,file);
-                    ObservationManager.notify(new Event(EVENT_PLAY_ERROR,pDetails)); //notify the error 
-                    Log.error("007",fCurrent.getAbsolutePath(), t); //$NON-NLS-1$
-                    try {
-                        Thread.sleep(WAIT_AFTER_ERROR); //make sure user has time to see this error message
-                    } catch (InterruptedException e1) {
-                        e1.printStackTrace();
-                    }
+		        public void run(){
                     Player.stop();
-                    FIFO.getInstance().finished();        
+                    FIFO.getInstance().finished();
                 }
             }.start();
+            return false;
        }			
 	}
 	

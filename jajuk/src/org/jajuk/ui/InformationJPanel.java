@@ -292,7 +292,6 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,Obser
                     else{//default message
                         setMessage(Messages.getString("Error.007")+": "+fCurrent.getAbsolutePath(),InformationJPanel.ERROR);//$NON-NLS-1$ //$NON-NLS-2$
                     }
-                    Thread.sleep(WAIT_AFTER_ERROR); //make sure user has time to see this error message    
                 }
                 else{ //none specified file (basic files error for ex)
                   setMessage(Messages.getString("Error.007"),InformationJPanel.ERROR);//$NON-NLS-1$
