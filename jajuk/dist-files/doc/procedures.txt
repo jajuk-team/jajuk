@@ -11,7 +11,6 @@ NEW LANGUAGE PROCEDURE
 - Change Natural languages in SF and Freshmeat
 - Update translation howto
 
-
 NEW RELEASE PROCEDURE
 - Change version in ITechnicalStrings and build-dist.xml and RPM spec files (perform a search)
 - Backup SF data (php file)
@@ -43,3 +42,23 @@ NEW API/version PROCEDURE
 NEW CONTRIBUTOR PROCEDURE
 - Add in AboutView.java
 - Add in project.xml file 
+- Response:
+******************************************
+Hi, thanks for your proposition.
+
+Now the ideal process could be:
+o Read all interesting materials : specs, web site, javadoc
+o Read developer guide on the web site and make a checkout
+o Have a look at the code
+o Tell us if you still feel OK to work on jajuk
+
+if yes:
+o Give me your sourceforge user so I will give you commit right.
+o Subscribe to the developer list, jajuk main communication stream.
+o Choose one or more tasks from task list (you can asign them to yourself)
+o Keep us in touch by giving an approximatical planning and % realized so we can plan releases.
+o In you have problems, don't hesitate to ask on the list.
+
+Thanks, CU
+******************************************
+
