@@ -470,7 +470,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		jlVisiblePlanned = new JLabel(Messages.getString("ParameterView.177")); //$NON-NLS-1$
 		jlVisiblePlanned.setToolTipText(Messages.getString("ParameterView.178")); //$NON-NLS-1$
 		jtfVisiblePlanned = new JTextField(3);
-		jtfVisiblePlanned.setToolTipText(Messages.getString("ParameterView.130")); //$NON-NLS-1$
+		jtfVisiblePlanned.setToolTipText(Messages.getString("ParameterView.178")); //$NON-NLS-1$
 		jtfVisiblePlanned.setInputVerifier(new InputVerifier(){
 			public boolean verify(JComponent input) {
 				JTextField tf = (JTextField) input;
