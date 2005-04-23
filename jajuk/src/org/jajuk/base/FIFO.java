@@ -329,12 +329,6 @@ public class FIFO implements ITechnicalStrings {
             ConfigurationManager.setProperty(CONF_STATE_WAS_PLAYING, TRUE); // set was playing state
             long lOffset = 0; // track offset in secs
             File fCurrent = getCurrentFile();
-            Log.debug("Now playing :" + fCurrent); //$NON-NLS-1$
-            // Send an event that a track has been launched
-            Properties pDetails = new Properties();
-            pDetails.put(DETAIL_CURRENT_FILE_ID, fCurrent.getId());
-            pDetails.put(DETAIL_CURRENT_DATE, new Long(System.currentTimeMillis()));
-            ObservationManager.notify(new Event(EVENT_FILE_LAUNCHED, pDetails),true);
             if (ConfigurationManager.getBoolean(CONF_STATE_INTRO)) { // intro mode enabled
                 Player.play(fCurrent, Float.parseFloat(ConfigurationManager
                         .getProperty(CONF_OPTIONS_INTRO_BEGIN)) / 100, 1000 * Integer
@@ -350,6 +344,13 @@ public class FIFO implements ITechnicalStrings {
                     bPlayOK = Player.play(fCurrent, 0.0f, TO_THE_END); // play it
                 }
                 if (bPlayOK){ //refresh covers if play is started
+                    Log.debug("Now playing :" + fCurrent); //$NON-NLS-1$
+                    // Send an event that a track has been launched
+                    Properties pDetails = new Properties();
+                    pDetails.put(DETAIL_CURRENT_FILE_ID, fCurrent.getId());
+                    pDetails.put(DETAIL_CURRENT_DATE, new Long(System.currentTimeMillis()));
+                    ObservationManager.notify(new Event(EVENT_FILE_LAUNCHED, pDetails));
+                    
                     //all cases for a cover full refresh
                     if ((fCurrent.getDirectory() == null) // basic file
                             || itemLast == null // first track, display cover
