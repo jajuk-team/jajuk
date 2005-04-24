@@ -21,7 +21,7 @@ package org.jajuk;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.Frame;
+import java.awt.Rectangle;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
@@ -30,7 +30,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
-import java.util.Properties; 
+import java.util.Properties;
 
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
@@ -230,9 +230,13 @@ public class Main implements ITechnicalStrings {
 					Log.debug("Exit Hook begin");//$NON-NLS-1$
                     try{
 						if (iExitCode == 0){ //commit only if exit is safe (to avoid commiting empty collection)
+                            //commit window position
+                            Rectangle rec = jw.getBounds();
+                            ConfigurationManager.setProperty(CONF_WINDOW_POSITION,
+                                (int)rec.getMinX()+","+(int)rec.getMinY()+","+(int)rec.getWidth()+","+(int)rec.getHeight()); 
 							//commit configuration
 							org.jajuk.util.ConfigurationManager.commit();
-							//commit history
+                            //commit history
 							History.commit();
 							//commit perspectives
 							PerspectiveManager.commit();
@@ -676,11 +680,10 @@ public class Main implements ITechnicalStrings {
 					jpFrame.add(perspectiveBar, BorderLayout.WEST);
 					
 					//display window
-					jw.pack();
-					jw.setExtendedState(Frame.MAXIMIZED_BOTH);  //maximalize
 					jw.setVisible(true); //show main window
-					sc.toFront();
-					
+					sc.toFront(); //force screenshot to continue to be visible during loading
+                    jw.applyStoredSize(); //apply size and position as stored in the user properties
+                    
 					//Display info message if first session
 					if (ConfigurationManager.getBoolean(CONF_FIRST_CON)){
 					    sc.dispose(); //make sure to hide splashscreen
