@@ -46,9 +46,9 @@ NEW CONTRIBUTOR PROCEDURE
 ******************************************
 Hi, thanks for your proposition.
 
-Now the ideal process could be:
+Now the perfect process could be:
 o Read all interesting materials : specs, web site, javadoc
-o Read developer guide on the web site and make a checkout
+o Read developer guide on the web site and make a CVS checkout
 o Have a look at the code
 o Tell us if you still feel OK to work on jajuk
 
