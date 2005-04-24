@@ -19,6 +19,7 @@
  */
 package org.jajuk.util;
 
+import java.awt.Toolkit;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -202,7 +203,11 @@ public class ConfigurationManager implements ITechnicalStrings{
 		properties.put(CONF_COVERS_ACCURACY+"_3","3"); //Author accuracy //$NON-NLS-1$ //$NON-NLS-2$
 		properties.put(CONF_COVERS_ACCURACY+"_4","4"); //Album accuracy //$NON-NLS-1$ //$NON-NLS-2$
 		properties.put(CONF_COVERS_CHANGE_AT_EACH_TRACK,FALSE); 
-	}
+        properties.put(CONF_WINDOW_POSITION,
+            "0,0,"+
+            (int)(Toolkit.getDefaultToolkit().getScreenSize().getWidth())+","+
+            (int)(Toolkit.getDefaultToolkit().getScreenSize().getHeight())); //Window position: X,Y,X_size,Y_size
+    }
 	
 	
 	/**

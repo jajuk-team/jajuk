@@ -426,6 +426,7 @@ public interface ITechnicalStrings {
 	public static final String CONF_OPTIONS_TAB = "jajuk.options.tab"; //Last Option selected tab 
     public static final String CONF_BUFFER_SIZE = "jajuk.buffer_size"; //data buffer size in bytes
     public static final String CONF_AUDIO_BUFFER_SIZE = "jajuk.audio_buffer_size"; //Audio buffer size in bytes
+    public static final String CONF_WINDOW_POSITION = "jajuk.window_position"; //Window position and size
     	
 	//Accuracy levels
 	public static final String ACCURACY_LOW = "low";
