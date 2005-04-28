@@ -196,6 +196,12 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
 			else if (EVENT_HELP_REQUIRED.equals(e.getActionCommand())){
 				PerspectiveManager.setCurrentPerspective(PERSPECTIVE_NAME_HELP);		
 			}
+            else if(EVENT_WIZARD.equals(e.getActionCommand())){
+                //First time wizard
+                FirstTimeWizard fsw = new FirstTimeWizard();
+                fsw.pack();
+                fsw.setVisible(true);
+            }
 		}
 		catch(Throwable e2){
 			Log.error(e2);

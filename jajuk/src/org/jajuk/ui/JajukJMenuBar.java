@@ -59,6 +59,9 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings{
 			JCheckBoxMenuItem jcbmiContinue;
 			JCheckBoxMenuItem jcbmiIntro;
 		JMenu help;
+            JMenuItem jmiHelp;
+            JMenuItem jmiAbout;
+            JMenuItem jmiWizard;        
 		
 		/**Hashmap JCheckBoxMenuItem -> associated view*/
 		public HashMap hmCheckboxView = new HashMap(10);
@@ -77,7 +80,7 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings{
 		jmiFileExit.setActionCommand(EVENT_EXIT);
 		jmiFileExit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.ALT_MASK));
 		jmiFileExit.getAccessibleContext().setAccessibleDescription("[ALT-X]");  //$NON-NLS-1$
-		file.add(jmiFileOpen);
+		//file.add(jmiFileOpen); //We remove this function that confuses some users
 		file.add(jmiFileExit);
 				
 		//Properties menu
@@ -122,15 +125,19 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings{
 				
 		//Help menu
 		help = new JMenu(Messages.getString("JajukJMenuBar.14")); //$NON-NLS-1$
-		JMenuItem jmiHelp = new JMenuItem(Messages.getString("JajukJMenuBar.15"),Util.getIcon(ICON_INFO));  //$NON-NLS-1$
+		jmiHelp = new JMenuItem(Messages.getString("JajukJMenuBar.15"),Util.getIcon(ICON_INFO));  //$NON-NLS-1$
 		jmiHelp.addActionListener(JajukListener.getInstance());
 		jmiHelp.setActionCommand(EVENT_HELP_REQUIRED);
-		JMenuItem jmiAbout = new JMenuItem(Messages.getString("JajukJMenuBar.16"),Util.getIcon(ICON_INFO)); //$NON-NLS-1$
+		jmiAbout = new JMenuItem(Messages.getString("JajukJMenuBar.16"),Util.getIcon(ICON_INFO)); //$NON-NLS-1$
 		jmiAbout.addActionListener(JajukListener.getInstance());
 		jmiAbout.setActionCommand(EVENT_HELP_REQUIRED);
-		help.add(jmiHelp);
+        jmiWizard = new JMenuItem(Messages.getString("JajukJMenuBar.18"),Util.getIcon(ICON_WIZARD)); //$NON-NLS-1$
+        jmiWizard.addActionListener(JajukListener.getInstance());
+        jmiWizard.setActionCommand(EVENT_WIZARD);
+        help.add(jmiHelp);
 		help.add(jmiAbout);
-		
+        help.add(jmiWizard);
+        
 		//add menus
 		add(file);
 		add(views);
