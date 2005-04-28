@@ -190,7 +190,7 @@ public class ConfigurationManager implements ITechnicalStrings{
 		properties.put(CONF_NETWORK_PROXY_HOSTNAME,"proxy");//default proxy name, just a guess //$NON-NLS-1$
 		properties.put(CONF_NETWORK_PROXY_PORT,"3128"); //$NON-NLS-1$
 		properties.put(CONF_NETWORK_PROXY_LOGIN,""); //$NON-NLS-1$
-		properties.put(CONF_NETWORK_CONNECTION_TO,"5"); //$NON-NLS-1$
+		properties.put(CONF_NETWORK_CONNECTION_TO,"3"); //$NON-NLS-1$
 		properties.put(CONF_NETWORK_TRANSFERT_TO,"20"); //$NON-NLS-1$
 		properties.put(CONF_COVERS_AUTO_COVER,TRUE);
 		properties.put(CONF_COVERS_SHUFFLE,FALSE);
@@ -204,9 +204,9 @@ public class ConfigurationManager implements ITechnicalStrings{
 		properties.put(CONF_COVERS_ACCURACY+"_4","4"); //Album accuracy //$NON-NLS-1$ //$NON-NLS-2$
 		properties.put(CONF_COVERS_CHANGE_AT_EACH_TRACK,FALSE); 
         properties.put(CONF_WINDOW_POSITION,
-            "0,0,"+
-            (int)(Toolkit.getDefaultToolkit().getScreenSize().getWidth())+","+
-            (int)(Toolkit.getDefaultToolkit().getScreenSize().getHeight())); //Window position: X,Y,X_size,Y_size
+            "50,50,"+
+            (int)(Toolkit.getDefaultToolkit().getScreenSize().getWidth()-100)+","+
+            (int)(Toolkit.getDefaultToolkit().getScreenSize().getHeight()-100)); //Window position: X,Y,X_size,Y_size
     }
 	
 	
