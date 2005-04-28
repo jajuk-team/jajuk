@@ -50,7 +50,7 @@ import org.jajuk.base.Type;
 import org.jajuk.base.TypeManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.CommandJPanel;
-import org.jajuk.ui.DeviceWizard;
+import org.jajuk.ui.FirstTimeWizard;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.JajukJMenuBar;
 import org.jajuk.ui.JajukWindow;
@@ -192,6 +192,9 @@ public class Main implements ITechnicalStrings {
 			//Set locale
 			Messages.getInstance().setLocal(ConfigurationManager.getProperty(CONF_OPTIONS_LANGUAGE));
 		
+            //check for another session (needs setLocal)
+            checkOtherSession();
+            
 			//start the tray
 			launchTray();
 		    				    	
@@ -217,9 +220,6 @@ public class Main implements ITechnicalStrings {
            
 			//Clean the collection up
 			Collection.cleanup();
-			
-			//check for another session
-			checkOtherSession();
 						
 			//Load history
 			History.load();
@@ -234,7 +234,9 @@ public class Main implements ITechnicalStrings {
                             Rectangle rec = jw.getBounds();
                             ConfigurationManager.setProperty(CONF_WINDOW_POSITION,
                                 (int)rec.getMinX()+","+(int)rec.getMinY()+","+(int)rec.getWidth()+","+(int)rec.getHeight()); 
-							//commit configuration
+							//Make sure to store right perspective
+                            ConfigurationManager.setProperty(CONF_PERSPECTIVE_DEFAULT,PerspectiveManager.getCurrentPerspective().getID());
+                            //commit configuration
 							org.jajuk.util.ConfigurationManager.commit();
                             //commit history
 							History.commit();
@@ -365,10 +367,12 @@ public class Main implements ITechnicalStrings {
 	private static void checkOtherSession(){
 	    //check for a concurrent jajuk session, try to create a new server socket
         try{
-    	    ss = new ServerSocket(62321);
+    	    ss = new ServerSocket(PORT);
             // 	No error? jajuk was not started, leave
         } catch (IOException e) { //error? looks like Jajuk is already started 
-            sc.dispose();
+            if (sc != null) {
+                sc.dispose();
+            }
             Log.error(new JajukException("124")); //$NON-NLS-1$
             Messages.getChoice(Messages.getErrorMessage("124"),JOptionPane.OK_CANCEL_OPTION);	 //$NON-NLS-1$
             System.exit(-1);
@@ -684,23 +688,19 @@ public class Main implements ITechnicalStrings {
 					sc.toFront(); //force screenshot to continue to be visible during loading
                     jw.applyStoredSize(); //apply size and position as stored in the user properties
                     
-					//Display info message if first session
-					if (ConfigurationManager.getBoolean(CONF_FIRST_CON)){
-					    sc.dispose(); //make sure to hide splashscreen
-					    ConfigurationManager.setProperty(CONF_FIRST_CON,FALSE);
-						Messages.showInfoMessage(Messages.getString("Main.12")); //$NON-NLS-1$
-						//set parameter perspective
-					    PerspectiveManager.setCurrentPerspective(PERSPECTIVE_NAME_CONFIGURATION);
-						//show device creation wizard
-						DeviceWizard dw = new DeviceWizard();
-						dw.updateWidgetsDefault();
-						dw.pack();
-						dw.setVisible(true);
-					}
-							
-				} catch (Exception e) { //last chance to catch any error for logging purpose
-					e.printStackTrace();
-					Log.error("106", e); //$NON-NLS-1$
+                    //Display info message if first session
+                    if (ConfigurationManager.getBoolean(CONF_FIRST_CON) 
+                            && DeviceManager.getDevices().size() == 0){ //make none device already exist to avoid checking availability
+                        sc.dispose(); //make sure to hide splashscreen
+                        ConfigurationManager.setProperty(CONF_FIRST_CON,FALSE);
+                        //First time wizard
+                        FirstTimeWizard fsw = new FirstTimeWizard();
+                        fsw.pack();
+                        fsw.setVisible(true);
+                    }
+                } catch (Exception e) { //last chance to catch any error for logging purpose
+                    e.printStackTrace();
+                    Log.error("106", e); //$NON-NLS-1$
 				}
 			}
 		});
@@ -708,7 +708,6 @@ public class Main implements ITechnicalStrings {
 		Thread.sleep(2000);  //make sure static panels are drawed
 		
 		//Initialize perspective manager and load all views
-		//display window
 		SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 jpFrame.remove(jpTmp);	
