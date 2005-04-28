@@ -131,10 +131,10 @@ public class PerspectiveManager  implements ITechnicalStrings {
 				Main.jpContentPane.revalidate();
 				Main.jpContentPane.repaint();
 				PerspectiveBarJPanel.getInstance().setActivated(perspective);
+				Util.stopWaiting();
 			}
 		});
-		Util.stopWaiting();
-	}  
+    }  
     
     /** 
      * Set current perspective
