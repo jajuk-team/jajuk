@@ -48,6 +48,10 @@ public interface ITechnicalStrings {
     public static final int WAIT_AFTER_ERROR= 2000;
     /**Default playlist file name*/
     public static final String DEFAULT_PLAYLIST_FILE = "playlist";
+    /**Max number of connection time out before stoping to look for covers*/
+    public static final int STOP_TO_SEARCH= 5;
+    /**Listening port to check others jajuk sessions*/
+    public static final int PORT = 62321;
     		
 	// Jajuk version
 	public static final String JAJUK_VERSION = "VERSION_REPLACED_BY_ANT";
@@ -165,7 +169,8 @@ public interface ITechnicalStrings {
 	public static final String ICON_TRACK_FIFO_PLANNED =  PATH_ICONS + "16x16/clock.png";
 	public static final String ICON_TRACK_FIFO_NORM =  PATH_ICONS + "16x16/player_perspective.png";
 	public static final String ICON_TRACK_FIFO_REPEAT =  PATH_ICONS + "16x16/repeat.png";
-			
+    public static final String ICON_WIZARD = PATH_ICONS + "16x16/wizard.png";
+    		
 	//images
 	public static final String IMAGES_SPLASHSCREEN =  PATH_IMAGES + "jajuk-splashscreen.png";
 	public static final String IMAGES_STAT_PAPER =  PATH_IMAGES + "No-Ones-Laughing-3.jpg";
@@ -285,7 +290,7 @@ public interface ITechnicalStrings {
 	public static final String EVENT_DEVICE_TEST="test device"; //test a device
 	public static final String EVENT_DEVICE_REFRESH="refresh device"; //refresh a device
 	public static final String EVENT_DEVICE_SYNCHRO="synchronize device"; //sync. a device
-	public static final String EVENT_VIEW_REFRESH_REQUEST="refresh view"; //refresh a view is required, used in the device view
+    public static final String EVENT_VIEW_REFRESH_REQUEST="refresh view"; //refresh a view is required, used in the device view
 	public static final String EVENT_VIEW_CLOSE_REQUEST="close view"; //close a view
 	public static final String EVENT_VIEW_SHOW_REQUEST="show view"; //show a view
 	public static final String EVENT_VIEW_SHOW_STATUS_CHANGED_REQUEST="change status view"; //change 
@@ -309,6 +314,7 @@ public interface ITechnicalStrings {
 	public static final String EVENT_MUTE_STATE="mute_state"; //mute state changed
 	public static final String EVENT_SYNC_TREE_TABLE="sync_tree_table"; //sync table and tree views
     public static final String EVENT_CLEAR_HISTORY="clear history"; //clear history
+    public static final String EVENT_WIZARD="launch wizard"; //launch first time wizard
     
 	//details keys
 	public static final String DETAIL_CURRENT_FILE_ID="current file id";

@@ -57,7 +57,7 @@ o Give me your sourceforge user so I will give you commit right.
 o Subscribe to the developer list, jajuk main communication stream.
 o Choose one or more tasks from task list (you can asign them to yourself)
 o Keep us in touch by giving an approximatical planning and % realized so we can plan releases.
-o In you have problems, don't hesitate to ask on the list.
+o In you have questions/problems, don't hesitate to tell me and to ask on the developer list.
 
 Thanks, CU
 ******************************************
