@@ -92,7 +92,7 @@ public class CoverRepository implements Observer,ITechnicalStrings {
      * @param iType Cover type
      * @return
      */
-    public ImageIcon getImage(URL url,int iType) throws JajukException{
+    public ImageIcon getImage(URL url,int iType) throws Exception{
         //check if this image is already in the repository
         if (hmUrlImages.containsKey(url)){
             return (ImageIcon)hmUrlImages.get(url);

@@ -28,9 +28,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
-import java.awt.image.AreaAveragingScaleFilter;
-import java.awt.image.FilteredImageSource;
-import java.awt.image.ImageFilter;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -51,6 +48,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileFilter;
 
+import org.apache.commons.httpclient.HttpConnection;
 import org.jajuk.Main;
 import org.jajuk.base.Album;
 import org.jajuk.base.Author;
@@ -125,7 +123,10 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
     private byte[] bLock = new byte[0];
     
     /**Flag telling that user wants to display a better cover*/
-    boolean bGotoBetter = false;
+    private boolean bGotoBetter = false;
+    
+    /**Error counter to check connection availability*/
+    private static int iErrorCounter = 0;
     
     /**
      * Constructor
@@ -206,6 +207,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
         } catch (Exception e) {
             Log.error(e);
         }
+        add(jpControl,"0,0");
         new Thread(){ //do not execute this very long action all in the event dispatcher thread!
             public void run(){
                 update(new Event(EVENT_COVER_REFRESH,ObservationManager.getDetailsLastOccurence(EVENT_COVER_REFRESH)));        
@@ -222,7 +224,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
         String subject = event.getSubject();
         Log.debug("Cover view update: "+event);
         bStop = true;
-        synchronized(bLock){
+        synchronized(bLock){//block any concurrent cover update
             try{
                 searching(true);
                 if ( EVENT_COVER_REFRESH.equals(subject)){
@@ -249,7 +251,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                         java.io.File[] files = fDir.listFiles();//null if none file found
                         boolean bAbsoluteCover = false; //whether an absolute cover ( unique) has been found
                         for (int i=0;files != null && i<files.length;i++){
-                            //check size
+                            //check size to avoid out of memory errors
                             if (files[i].length() > MAX_COVER_SIZE*1024){
                                 continue;
                             }
@@ -272,46 +274,53 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                             }
                         }
                     }
-                    // then we search for web covers online
-                    if (ConfigurationManager.getBoolean(CONF_COVERS_AUTO_COVER)){
-                        int iCoversBeforeSearch = alCovers.size(); //stores number of covers before web search
-                        final String sQuery = createQuery(fCurrent);
-                        Log.debug("Query="+sQuery); //$NON-NLS-1$
-                        if (!sQuery.equals("")){ //there is not enough information in tags for a web search //$NON-NLS-1$
-                            ArrayList alUrls;
-                            alUrls = DownloadManager.getRemoteCoversList(sQuery);
-                            if (alUrls.size() > MAX_REMOTE_COVERS){ //limit number of remote covers
-                                alUrls = new ArrayList(alUrls.subList(0,MAX_REMOTE_COVERS));
-                            }
-                            Collections.reverse(alUrls); //set best results to be displayed  first
-                            Iterator it2 = alUrls.iterator(); //add found covers 
-                            ArrayList alLocalCovers = new ArrayList(alUrls.size()); //contains found covers to avoid to use main cover repository due to concurency issues
-                            bStop = false;
-                            while ( it2.hasNext() && !bStop){ //load each cover (pre-load or post-load) and stop if a signal has been emitted
-                                URL url = (URL)it2.next();
-                                Log.debug("Found Cover: "+url.toString()); //$NON-NLS-1$
-                                Cover cover = new Cover(url,Cover.REMOTE_COVER);//create a cover with given url ( image will be really downloaded when required if no preload)
-                                if (!alCovers.contains(cover)){
-                                    alLocalCovers.add(cover);
+                    // then we search for web covers online if max connection errors number is not reached
+                    if (ConfigurationManager.getBoolean(CONF_COVERS_AUTO_COVER) 
+                            && iErrorCounter < STOP_TO_SEARCH){
+                        try{
+                            int iCoversBeforeSearch = alCovers.size(); //stores number of covers before web search
+                            final String sQuery = createQuery(fCurrent);
+                            Log.debug("Query="+sQuery); //$NON-NLS-1$
+                            if (!sQuery.equals("")){ //there is not enough information in tags for a web search //$NON-NLS-1$
+                                ArrayList alUrls;
+                                alUrls = DownloadManager.getRemoteCoversList(sQuery);
+                                if (alUrls.size() > MAX_REMOTE_COVERS){ //limit number of remote covers
+                                    alUrls = new ArrayList(alUrls.subList(0,MAX_REMOTE_COVERS));
                                 }
-                            }
-                            if (bStop){
-                                Log.debug("Download stopped");
-                            }
-                            synchronized(bLock){ //now, synchronize found covers with main cover repository, lock it
-                                //remove default cover if some remote cover have been found
-                                if ( alUrls.size() > 0 && alCovers.size()>0 && ((Cover)alCovers.get(0)).getType() == Cover.DEFAULT_COVER){
-                                    alCovers.remove(0);
+                                Collections.reverse(alUrls); //set best results to be displayed  first
+                                Iterator it2 = alUrls.iterator(); //add found covers 
+                                ArrayList alLocalCovers = new ArrayList(alUrls.size()); //contains found covers to avoid to use main cover repository due to concurency issues
+                                bStop = false;
+                                while ( it2.hasNext() && !bStop){ //load each cover (pre-load or post-load) and stop if a signal has been emitted
+                                    URL url = (URL)it2.next();
+                                    Log.debug("Found Cover: "+url.toString()); //$NON-NLS-1$
+                                    Cover cover = new Cover(url,Cover.REMOTE_COVER);//create a cover with given url ( image will be really downloaded when required if no preload)
+                                    if (!alCovers.contains(cover)){
+                                        alLocalCovers.add(cover);
+                                    }
+                                }
+                                if (bStop){ //a stop signal has been emmited from a concurrent thread
+                                    Log.debug("Download stopped");
+                                    return;
                                 }
                                 //Add found covers
                                 alCovers.addAll(alLocalCovers);
                             }
                         }
+                        catch(Exception e){
+                               Log.error(e); //can occur in case of timeout
+                               if (e instanceof HttpConnection.ConnectionTimeoutException){
+                                   iErrorCounter ++;
+                                   if (iErrorCounter == STOP_TO_SEARCH){
+                                       Log.warn("Too much connection fails, stop to search for covers online");
+                                       InformationJPanel.getInstance().setMessage(Messages.getString("Error.030"),InformationJPanel.ERROR);
+                                   }
+                               }
+                        }
                     }
                     if (alCovers.size() == 0){//add the default cover if none other cover has been found
                         alCovers.add(coverDefault); 
                     }
-                    //display right now local or default cover
                     Collections.sort(alCovers); //sort the list
                     Log.debug("Local cover list: "+alCovers); //$NON-NLS-1$
                     if (ConfigurationManager.getBoolean(CONF_COVERS_SHUFFLE) || PerspectiveManager.getCurrentPerspective() instanceof PlayerPerspective){ //in player perspective, always show shuffle covers
@@ -555,9 +564,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                         iNewWidth = (int)(icon.getIconWidth() * ((float)iNewHeight/icon.getIconHeight())) ;     
                     }
                 }
-                ImageFilter filter = new AreaAveragingScaleFilter(iNewWidth,iNewHeight);
-                img = createImage(new FilteredImageSource(img.getSource(),filter));
-                img.flush();//free image memory
+                img = Util.getResizedImage(img,iNewWidth,iNewHeight);
             } 
             ImageIcon ii = new ImageIcon(img);
             jl = new JLabel(ii);
