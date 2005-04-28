@@ -100,7 +100,6 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 	public DeviceWizard() {
 		super(Main.getWindow(),true); //make it modal
 		setTitle(Messages.getString("DeviceWizard.0"));//$NON-NLS-1$
-		setSize(800, 500);
 		setLocation(org.jajuk.Main.getWindow().getX()+100,org.jajuk.Main.getWindow().getY()+100);
 		jpMain = new JPanel();
 		jpMain.setLayout(new BoxLayout(jpMain,BoxLayout.Y_AXIS));
@@ -208,10 +207,10 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 		//buttons
 		jpButtons = new JPanel();
 		jpButtons.setLayout(new FlowLayout(FlowLayout.CENTER));
-		jbOk = new JButton(Messages.getString("DeviceWizard.33")); //$NON-NLS-1$
+		jbOk = new JButton(Messages.getString("OK")); //$NON-NLS-1$
 		jbOk.requestFocus();
 		jbOk.addActionListener(this);
-		jbCancel = new JButton(Messages.getString("DeviceWizard.34")); //$NON-NLS-1$
+		jbCancel = new JButton(Messages.getString("Cancel")); //$NON-NLS-1$
 		jbCancel.addActionListener(this);
 		jpButtons.add(jbOk);
 		jpButtons.add(jbCancel);
