@@ -65,7 +65,7 @@ public class TracksTableModel extends AbstractTableModel{
 	}
 	
 	public synchronized boolean isCellEditable(int rowIndex, int columnIndex) {
-		return bCellEditable[columnIndex][rowIndex];
+		return false;
 	}
 	
 	public synchronized Class getColumnClass(int columnIndex) {
