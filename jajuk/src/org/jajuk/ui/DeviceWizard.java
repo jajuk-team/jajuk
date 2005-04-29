@@ -431,7 +431,7 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 				jcbAutoMount.setSelected(false);
 				break;
 			case 3: //ext dd
-				jcbAutoMount.setSelected(false);
+				jcbAutoMount.setSelected(true);
 				break;
 			case 4: //player
 				jcbAutoMount.setSelected(false);
