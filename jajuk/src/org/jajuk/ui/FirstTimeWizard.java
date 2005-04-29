@@ -39,6 +39,7 @@ import org.jajuk.Main;
 import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;
 import org.jajuk.i18n.Messages;
+import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.JajukFileFilter;
@@ -84,7 +85,13 @@ public class FirstTimeWizard extends JDialog implements ITechnicalStrings,Action
         jbFileSelection = new JButton(Util.getIcon(ICON_OPEN_FILE));
         jbFileSelection.addActionListener(this);
         jcbAutoCover = new JCheckBox(Messages.getString("FirstTimeWizard.3"));
-        jcbAutoCover.setSelected(true);
+        //can't change auto-cover if not first connection
+        if (ConfigurationManager.getBoolean(CONF_FIRST_CON)){
+            jcbAutoCover.setSelected(true);
+        }
+        else{
+            jcbAutoCover.setVisible(false);
+        }
         jcbHelp = new JCheckBox(Messages.getString("FirstTimeWizard.4"));
         //buttons
         jpButtons = new JPanel();
@@ -136,14 +143,27 @@ public class FirstTimeWizard extends JDialog implements ITechnicalStrings,Action
             }
         }
         else if (e.getSource() == jbOk){
-            if (jcbHelp.isSelected()){
-                //set parameter perspective
-                Main.setDefaultPerspective(PERSPECTIVE_NAME_HELP);
+            /*Set perspective to display. We differentiate first connection or not because 
+            during first connection, perspectives are not yet initialized, so we just tell it whish 
+            perspective to use at startup*/
+            if (ConfigurationManager.getBoolean(CONF_FIRST_CON)){
+                if (jcbHelp.isSelected()){
+                    //set parameter perspective
+                    Main.setDefaultPerspective(PERSPECTIVE_NAME_HELP); 
+                }
+                else{
+                    //set physical perspective
+                    Main.setDefaultPerspective(PERSPECTIVE_NAME_PHYSICAL);
+                }    
             }
             else{
-                //set physical perspective
-                Main.setDefaultPerspective(PERSPECTIVE_NAME_PHYSICAL);
+                //go to help perspective if required
+                if (jcbHelp.isSelected()){
+                    //set parameter perspective
+                    PerspectiveManager.setCurrentPerspective(PERSPECTIVE_NAME_HELP);
+                }
             }
+            
             //Set auto cover property
             ConfigurationManager.setProperty(
                 CONF_COVERS_AUTO_COVER,Boolean.toString(jcbAutoCover.isSelected()));
