@@ -692,11 +692,11 @@ public class Main implements ITechnicalStrings {
                     if (ConfigurationManager.getBoolean(CONF_FIRST_CON) 
                             && DeviceManager.getDevices().size() == 0){ //make none device already exist to avoid checking availability
                         sc.dispose(); //make sure to hide splashscreen
-                        ConfigurationManager.setProperty(CONF_FIRST_CON,FALSE);
                         //First time wizard
                         FirstTimeWizard fsw = new FirstTimeWizard();
                         fsw.pack();
                         fsw.setVisible(true);
+                        ConfigurationManager.setProperty(CONF_FIRST_CON,FALSE);
                     }
                 } catch (Exception e) { //last chance to catch any error for logging purpose
                     e.printStackTrace();
