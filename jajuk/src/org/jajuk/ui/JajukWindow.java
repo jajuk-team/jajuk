@@ -20,9 +20,8 @@
 
 package org.jajuk.ui;
 
+import java.awt.Frame;
 import java.awt.Toolkit;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.StringTokenizer;
@@ -51,7 +50,7 @@ import org.jajuk.util.log.Log;
  * @author     Bertrand Florat
  * @created    23 mars 2004
  */
-public class JajukWindow extends JFrame implements ITechnicalStrings,ComponentListener,Observer {
+public class JajukWindow extends JFrame implements ITechnicalStrings,Observer {
 	
 	/**Max width*/
 	private int iMaxWidth ; 
@@ -87,16 +86,14 @@ public class JajukWindow extends JFrame implements ITechnicalStrings,ComponentLi
         setTitle(Messages.getString("JajukWindow.17"));  //$NON-NLS-1$
 		setIconImage(Util.getIcon(ICON_LOGO).getImage());
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		addComponentListener(this);
 		//register for given events
 		ObservationManager.register(EVENT_FILE_LAUNCHED,this);
 		ObservationManager.register(EVENT_ZERO,this);
-		addWindowListener(new WindowAdapter() {
+        addWindowListener(new WindowAdapter() {
             public void windowDeiconified(WindowEvent arg0) {
-        	    setShown(true);
-    	    }
+           }
         	public void windowIconified(WindowEvent arg0) {
-			}
+            }
 			public void windowClosing(WindowEvent we) {
 			    //  check if a device is refreshing
 				if (DeviceManager.isAnyDeviceRefreshing()){
@@ -128,54 +125,8 @@ public class JajukWindow extends JFrame implements ITechnicalStrings,ComponentLi
         setLocation(iX,iY);
         setSize(iXsize,iYsize);
     }
-	
-	/* (non-Javadoc)
-	 * @see java.awt.event.ComponentListener#componentHidden(java.awt.event.ComponentEvent)
-	 */
-	public void componentHidden(ComponentEvent e) {
-	}
-	
-	/* (non-Javadoc)
-	 * @see java.awt.event.ComponentListener#componentMoved(java.awt.event.ComponentEvent)
-	 */
-	public void componentMoved(ComponentEvent e) {
-	}
-	
-	
-	/* (non-Javadoc)
-	 * @see java.awt.event.ComponentListener#componentShown(java.awt.event.ComponentEvent)
-	 */
-	public void componentResized(ComponentEvent e) {
-		int width = getWidth();
-		int height = getHeight();
-		/*Goal here is to fix a bug : when starting, restaure the window ( middle button near close ) set a strange size ( very large * very small ). So if size is too small or too large in front of
-		 * screen size, we set 100% of screen
-		 */
-		
-		boolean resize = false;
-		
-		if (width > 1.1*iMaxWidth) { 
-			resize = true;
-			width = iMaxWidth;
-		}
-		if (height > 1.1*iMaxHeight) { 
-			resize = true;
-			height = iMaxHeight;
-		}
-		if (resize) {
-			setSize(width, height);
-		}
-	}
-	
-	
-	/* (non-Javadoc)
-	 * @see java.awt.event.ComponentListener#componentShown(java.awt.event.ComponentEvent)
-	 */
-	public void componentShown(ComponentEvent e) {
-	}
-	
-	
-	/* (non-Javadoc)
+
+    /* (non-Javadoc)
 	 * @see org.jajuk.ui.Observer#update(java.lang.String)
 	 */
 	public void update(Event event) {
@@ -189,7 +140,6 @@ public class JajukWindow extends JFrame implements ITechnicalStrings,ComponentLi
 		else  if (subject.equals(EVENT_ZERO)){
 			setTitle(Messages.getString("JajukWindow.17")); //$NON-NLS-1$
 		}
-		
 	}
 		
 	/**
@@ -229,6 +179,7 @@ public class JajukWindow extends JFrame implements ITechnicalStrings,ComponentLi
 		//show 
 		if (visible){
 			setVisible(true);
+            setState(Frame.NORMAL); //force de-iconification
 		}
 		//hide
 		else{
