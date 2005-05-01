@@ -208,7 +208,7 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 		jpButtons = new JPanel();
 		jpButtons.setLayout(new FlowLayout(FlowLayout.CENTER));
 		jbOk = new JButton(Messages.getString("OK")); //$NON-NLS-1$
-		jbOk.requestFocus();
+		jbOk.requestFocusInWindow();
 		jbOk.addActionListener(this);
 		jbCancel = new JButton(Messages.getString("Cancel")); //$NON-NLS-1$
 		jbCancel.addActionListener(this);

@@ -163,7 +163,7 @@ public class SearchBox extends JTextField implements KeyListener{
 			}
 		}
 		setEnabled(true);
-		requestFocus();
+		requestFocusInWindow();
 	}
 	
 }

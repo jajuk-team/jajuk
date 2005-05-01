@@ -452,7 +452,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 			public void finished() {
 				if (!e.getValueIsAdjusting()){
 					sbSearch.popup.hide();
-					requestFocus();	
+					requestFocusInWindow();	
 				}	
 			}
 		};
