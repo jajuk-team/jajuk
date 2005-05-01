@@ -148,7 +148,7 @@ public class CDScanView extends ViewAdapter implements ActionListener {
 				}	
 				public void finished() {
 					jtfName.setText(""); //$NON-NLS-1$
-					jtfName.requestFocus();
+					jtfName.requestFocusInWindow();
 				}
 			};
 			sw.start();
