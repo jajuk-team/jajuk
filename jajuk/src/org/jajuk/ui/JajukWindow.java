@@ -60,8 +60,6 @@ public class JajukWindow extends JFrame implements ITechnicalStrings,Observer {
 	private static JajukWindow jw;
 	/**Show window at startup?*/
 	private boolean bVisible = true;
-	
-	
 	/**
 	 * Get instance
 	 * @return
@@ -91,10 +89,12 @@ public class JajukWindow extends JFrame implements ITechnicalStrings,Observer {
 		ObservationManager.register(EVENT_ZERO,this);
         addWindowListener(new WindowAdapter() {
             public void windowDeiconified(WindowEvent arg0) {
+                setFocusableWindowState(true);
            }
         	public void windowIconified(WindowEvent arg0) {
+                setFocusableWindowState(false);
             }
-			public void windowClosing(WindowEvent we) {
+          public void windowClosing(WindowEvent we) {
 			    //  check if a device is refreshing
 				if (DeviceManager.isAnyDeviceRefreshing()){
 					int iResu = Messages.getChoice(Messages.getString("Confirmation_exit_refreshing"),JOptionPane.WARNING_MESSAGE);  //$NON-NLS-1$ //$NON-NLS-2$
@@ -142,7 +142,7 @@ public class JajukWindow extends JFrame implements ITechnicalStrings,Observer {
 		}
 	}
 		
-	/**
+    /**
 	 * @return Returns the bVisible.
 	 */
 	public boolean isVisible() {
@@ -188,4 +188,8 @@ public class JajukWindow extends JFrame implements ITechnicalStrings,Observer {
 		    }
 		 }
 	}
+   
 }
+
+
+    
