@@ -128,6 +128,9 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
     /**Error counter to check connection availability*/
     private static int iErrorCounter = 0;
     
+    /**Connected one flag : true if jajuk managed once to connect to the web to bring covers*/
+    private static boolean bOnceConnected = false;
+    
     /**
      * Constructor
      * @param sID ID used to store independently parameters of views
@@ -274,9 +277,9 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                             }
                         }
                     }
-                    // then we search for web covers online if max connection errors number is not reached
+                    // then we search for web covers online if max connection errors number is not reached or if user already managed to connect
                     if (ConfigurationManager.getBoolean(CONF_COVERS_AUTO_COVER) 
-                            && iErrorCounter < STOP_TO_SEARCH){
+                            && (bOnceConnected || iErrorCounter < STOP_TO_SEARCH)){
                         try{
                             int iCoversBeforeSearch = alCovers.size(); //stores number of covers before web search
                             final String sQuery = createQuery(fCurrent);
@@ -284,6 +287,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                             if (!sQuery.equals("")){ //there is not enough information in tags for a web search //$NON-NLS-1$
                                 ArrayList alUrls;
                                 alUrls = DownloadManager.getRemoteCoversList(sQuery);
+                                bOnceConnected = true; //user managed once to connect to the web
                                 if (alUrls.size() > MAX_REMOTE_COVERS){ //limit number of remote covers
                                     alUrls = new ArrayList(alUrls.subList(0,MAX_REMOTE_COVERS));
                                 }
