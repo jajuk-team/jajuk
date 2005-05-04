@@ -56,6 +56,12 @@
             <unsubscribe>http://lists.sourceforge.net/lists/listinfo/jajuk-developers</unsubscribe>
             <archive>http://sourceforge.net/mailarchive/forum.php?forum=jajuk-developers</archive>
         </mailingList>
+        <mailingList>
+            <name>Jajuk Internalionalization</name>
+            <subscribe>http://lists.sourceforge.net/lists/listinfo/jajuk-i18n</subscribe>
+            <unsubscribe>http://lists.sourceforge.net/lists/listinfo/jajuk-i18n</unsubscribe>
+            <archive>http://sourceforge.net/mailarchive/forum.php?forum=jajuk-i18n</archive>
+        </mailingList>
     </mailingLists>
     
   <versions>
@@ -245,6 +251,11 @@
 			<name>Alexandre Lucazeau</name>
 			 <email>mornik@users.sourceforge.net</email>
 			<roles><role>Doc translation</role></roles>
+		</contributor>
+		<contributor>
+			<name>Laurent Witkowski</name>
+			 <email>pwitkowski@club-internet.fr</email>
+			<roles><role>Tester, RFE</role></roles>
 		</contributor>
 	</contributors>
 	
