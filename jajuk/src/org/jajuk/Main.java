@@ -208,10 +208,11 @@ public class Main implements ITechnicalStrings {
 			//Register device types
 			DeviceManager.registerDeviceType(Messages.getString("Device_type.directory"));//$NON-NLS-1$
 			DeviceManager.registerDeviceType(Messages.getString("Device_type.file_cd"));//$NON-NLS-1$
-			DeviceManager.registerDeviceType(Messages.getString("Device_type.remote"));//$NON-NLS-1$
+			DeviceManager.registerDeviceType(Messages.getString("Device_type.network_drive"));//$NON-NLS-1$
 			DeviceManager.registerDeviceType(Messages.getString("Device_type.extdd"));//$NON-NLS-1$
 			DeviceManager.registerDeviceType(Messages.getString("Device_type.player"));//$NON-NLS-1$
-			
+            DeviceManager.registerDeviceType(Messages.getString("Device_type.remote"));//$NON-NLS-1$
+            
 			//registers supported audio supports and default properties
 			registerTypes();
 			

@@ -199,12 +199,10 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 		jmiDelete.setActionCommand(EVENT_DEVICE_DELETE);
 		jpmenu.add(jmiDelete);
 		
-		
 		jmiProperties = new JMenuItem(Messages.getString("DeviceView.14"),Util.getIcon(ICON_PROPERTIES)); //$NON-NLS-1$
 		jmiProperties.addActionListener(this);
 		jmiProperties.setActionCommand(EVENT_DEVICE_PROPERTIES);
 		jpmenu.add(jmiProperties);
-		
 		
 		//add devices
 		refreshDevices();
@@ -254,50 +252,67 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 		while (it.hasNext()){
 			final Device device = (Device)it.next();
 			String sIcon = ICON_DEVICE_DIRECTORY_MOUNTED;
-			switch (device.getDeviceType()){
-			case 0 : 
+			String sTooltip = "";
+            switch (device.getDeviceType()){
+			case 0 :
+                sTooltip = Messages.getString("Device_type.directory");
 				if ( device.isMounted()){
 					sIcon = ICON_DEVICE_DIRECTORY_MOUNTED;
-				}
+            	}
 				else{
 					sIcon = ICON_DEVICE_DIRECTORY_UNMOUNTED;
-				}
+                 }
 				break;
 			case 1 : 
-				if ( device.isMounted()){
+                sTooltip = Messages.getString("file_cd");
+                if ( device.isMounted()){
 					sIcon = ICON_DEVICE_CD_MOUNTED;
-				}
+             	}
 				else{
 					sIcon = ICON_DEVICE_CD_UNMOUNTED;
-				}
+                }
 				break;
 			case 2 : 
-				if ( device.isMounted()){
-					sIcon = ICON_DEVICE_REMOTE_MOUNTED;
-				}
+                sTooltip = Messages.getString("Device_type.network_drive");
+                if ( device.isMounted()){
+					sIcon = ICON_DEVICE_NETWORK_DRIVE_MOUNTED;
+                 }
 				else{
-					sIcon = ICON_DEVICE_REMOTE_UNMOUNTED;
-				}
+					sIcon = ICON_DEVICE_NETWORK_DRIVE_UNMOUNTED;
+               }
 				break;
 			case 3 : 
-				if ( device.isMounted()){
+                sTooltip = Messages.getString("Device_type.extdd");
+                if ( device.isMounted()){
 					sIcon = ICON_DEVICE_EXT_DD_MOUNTED;
-				}
+             	}
 				else{
 					sIcon = ICON_DEVICE_EXT_DD_UNMOUNTED;
-				}
+                }
 				break;
 			case 4 : 
-				if ( device.isMounted()){
+                sTooltip = Messages.getString("Device_type.player");
+                if ( device.isMounted()){
 					sIcon = ICON_DEVICE_PLAYER_MOUNTED;
 				}
 				else{
 					sIcon = ICON_DEVICE_PLAYER_UNMOUNTED;
 				}
 				break;
-			}
+            case 5 : 
+                sTooltip = Messages.getString("Device_type.remote");
+                if ( device.isMounted()){
+                    sIcon = ICON_DEVICE_REMOTE_MOUNTED;
+                }
+                else{
+                    sIcon = ICON_DEVICE_REMOTE_UNMOUNTED;
+                }
+                break;
+          }
+            
 			final DeviceItem di = new DeviceItem(sIcon,device.getName());
-			di.addMouseListener(new MouseAdapter() {
+			di.setToolTipText(sTooltip);
+            di.addMouseListener(new MouseAdapter() {
 				public void mouseClicked(MouseEvent e) {
 					if (di == diSelected){
 						if (e.getButton() == 3){  //left button

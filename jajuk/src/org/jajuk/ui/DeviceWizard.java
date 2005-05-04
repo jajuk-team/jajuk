@@ -427,8 +427,8 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 			case 1: //file cd
 				jcbAutoMount.setSelected(false);
 				break;
-			case 2: //remote
-				jcbAutoMount.setSelected(false);
+			case 2: //network drive
+				jcbAutoMount.setSelected(true);
 				break;
 			case 3: //ext dd
 				jcbAutoMount.setSelected(true);
@@ -436,6 +436,9 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 			case 4: //player
 				jcbAutoMount.setSelected(false);
 				break;
+            case 5: //P2P
+               jcbAutoMount.setSelected(false);
+                break;
 			}
 		}
 	}
