@@ -53,21 +53,31 @@ public class SearchBox extends JTextField implements KeyListener{
 	
 	/**Do search panel need a search*/
 	private boolean bNeedSearch = false;
-	/**Default time in ms before launching a search automaticaly*/
-	private static final int WAIT_TIME = 1000;
-	private static final int MIN_CRITERIA_LENGTH = 1;
-	/**Search result*/
+	
+    /**Default time in ms before launching a search automaticaly*/
+	private static final int WAIT_TIME = 500;
+	
+    /**Minimum number of characters to start a search*/
+    private static final int MIN_CRITERIA_LENGTH = 1;
+	
+    /**Search result*/
 	public ArrayList alResults;
-	/**Typed string*/
+	
+    /**Typed string*/
 	private String sTyped;
-	public Popup popup;
+	
+    public Popup popup;
 	public JList jlist;
 	private long lDateTyped;
-	/**Listener to handle selections*/
+	
+    /**Listener to handle selections*/
 	private ListSelectionListener lsl;
-	
-	
-	public SearchBox(ListSelectionListener lsl){
+		
+	/**
+     * Constructor
+     * @param lsl
+	 */
+    public SearchBox(ListSelectionListener lsl){
 		this.lsl = lsl;
 		// launches a thread used to perform dynamic search chen user is typing
 		new Thread(){
