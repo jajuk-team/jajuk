@@ -24,6 +24,8 @@ import java.awt.Dimension;
 import java.awt.dnd.DnDConstants;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseListener;
@@ -42,6 +44,7 @@ import org.jajuk.ui.JajukTable;
 import org.jajuk.ui.TableTransferHandler;
 import org.jajuk.ui.TracksTableModel;
 import org.jajuk.util.Util;
+import org.jajuk.util.log.Log;
 
 /**
  * Abstract table view : common implementation for both physical and logical table views 
@@ -49,7 +52,7 @@ import org.jajuk.util.Util;
  * @author Bertrand Florat 
  * @created 13 dec. 2003
  */
-public abstract class AbstractTableView extends ViewAdapter implements ActionListener,MouseListener{
+public abstract class AbstractTableView extends ViewAdapter implements ActionListener,MouseListener,ItemListener{
 	
 	/** The logical table */
 	JajukTable jtable;
@@ -71,10 +74,38 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 	/** Currently applied criteria*/
 	String sAppliedCriteria;
 	
-	
+    /**Do search panel need a search*/
+    private boolean bNeedSearch = false;
+  
+    /**Default time in ms before launching a search automaticaly*/
+    private static final int WAIT_TIME = 300;
+    
+    /**Date last key pressed*/
+    private long lDateTyped;
+
+    
 	/** Constructor */
 	public AbstractTableView(){
-	}
+        // launches a thread used to perform dynamic filtering chen user is typing
+        new Thread(){
+            public void run(){
+                while (true){
+                    try{
+                        Thread.sleep(100);
+                    }
+                    catch(InterruptedException ie){
+                        Log.error(ie);
+                    }
+                    if ( bNeedSearch && (System.currentTimeMillis()-lDateTyped >= WAIT_TIME)){
+                        sAppliedFilter = jtfValue.getText();
+                        sAppliedCriteria = jcbProperty.getSelectedItem().toString();
+                        applyFilter(sAppliedCriteria,sAppliedFilter);
+                        bNeedSearch = false;
+                    }
+                }
+            }
+        }.start();
+    }
 	
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.IView#display()
@@ -90,18 +121,16 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 			jcbProperty.addItem(model.getColumnName(i));	
 		}
 		jcbProperty.setToolTipText(Messages.getString("AbstractTableView.1")); //$NON-NLS-1$
-		jlEquals = new JLabel(Messages.getString("AbstractTableView.7")); //$NON-NLS-1$
+		jcbProperty.addItemListener(this);
+        jlEquals = new JLabel(Messages.getString("AbstractTableView.7")); //$NON-NLS-1$
 		jtfValue = new JTextField();
 		jtfValue.addKeyListener(new KeyAdapter() {
-			public void keyReleased(KeyEvent e) {
-				if (e.getKeyChar()==KeyEvent.VK_ENTER){ //user typed enter
-					sAppliedFilter = jtfValue.getText();
-					sAppliedCriteria = jcbProperty.getSelectedItem().toString();
-					applyFilter(sAppliedCriteria,sAppliedFilter);
-				}
-			}
-		});
-		jtfValue.setToolTipText(Messages.getString("AbstractTableView.3")); //$NON-NLS-1$
+            public void keyReleased(KeyEvent e) {
+                bNeedSearch = true;
+                lDateTyped = System.currentTimeMillis();  
+            }
+        });
+        jtfValue.setToolTipText(Messages.getString("AbstractTableView.3")); //$NON-NLS-1$
 		//buttons
 		jbApplyFilter = new JButton(Util.getIcon(ICON_APPLY_FILTER));
 		jbApplyFilter.addActionListener(this);
@@ -128,9 +157,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 		jpControl.add(jbClearFilter,"11,0"); //$NON-NLS-1$
 		jpControl.add(jbAdvancedFilter,"13,0"); //$NON-NLS-1$
 		jpControl.setMinimumSize(new Dimension(0,0)); //allow resing with info node
-		
-	
-		
+			
 		//add 
 		double size[][] =
 			{{0.99},
@@ -183,6 +210,16 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
 			applyFilter(sAppliedCriteria,sAppliedFilter); //force filter to refresh
 		}	
 	}
+    
+    /**
+     * Detect property change
+     */
+    public void itemStateChanged(ItemEvent ie){
+        sAppliedFilter = jtfValue.getText();
+        sAppliedCriteria = jcbProperty.getSelectedItem().toString();
+        applyFilter(sAppliedCriteria,sAppliedFilter);
+    }
+    
 }
 
 
