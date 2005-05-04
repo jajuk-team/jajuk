@@ -5,7 +5,7 @@
 	<TITLE></TITLE>
 	<META NAME="GENERATOR" CONTENT="OpenOffice.org 1.1.3  (Linux)">
 	<META NAME="CREATED" CONTENT="20050321;13074300">
-	<META NAME="CHANGED" CONTENT="20050410;18330500">
+	<META NAME="CHANGED" CONTENT="20050502;22510400">
 </HEAD>
 <BODY LANG="en-US" DIR="LTR">
 <H1>Performance tips</H1>
@@ -39,8 +39,6 @@ another JVM, especially free ones (Kaffe, SableVM...).</P>
 	<LI><P STYLE="margin-bottom: 0cm">On a PC/P4M 1.8Ghz, Jajuk uses
 	about 9% CPU for mp3 and 3% for Ogg Vorbis. 
 	</P>
-	<LI><P>Performances are better (by 50%) with Ogg Vorbis than MP3. 
-	</P>
 </UL>
 <H2>Memory Usage</H2>
 <P>A JVM runs inside a reserved memory heap. The JVM takes all the
@@ -52,9 +50,9 @@ enough most of the time.</P>
 <P>These options are available in the Parameter View / Cover tab.</P>
 <UL>
 	<LI><P STYLE="margin-bottom: 0cm">“Adapt Cover” option
-	(default=no) uses a lot of CPU and memory to generate and display a
-	new image of the given size. Avoid this option if you have low CPU
-	or Memory computer. 
+	(default=no) uses a <SPAN LANG="en-US">significant</SPAN> amount of
+	CPU and memory to generate and display a new image of the given
+	size. Avoid this option if you have low CPU or Memory computer. 
 	</P>
 	<LI><P STYLE="margin-bottom: 0cm">“Use auto-cover” (default=yes)
 	uses network bandwidth, especially if you use “Preload Cover”
@@ -87,16 +85,12 @@ Parameter View / Tags tab.</P>
 	reduce collection file size and accelerate startup parsing. Do not
 	use this option if you use European languages because you collection
 	file would then grow.</P>
-	<LI><P>You can set the backup size for your collection. The bigger
-	it is, the more you get backup files (one by day).</P>
 </UL>
 <H2><FONT SIZE=5>Animation View performance tunning</FONT></H2>
 <P>Animation view uses Java 2D. CPU overhead can be significant,
 especially with screen resolution higher that 1200x1024. On a P4
 1.8Ghz with a resolution of 1024x768, the overhead is about 2 or 3%
 but reaches 10 or more with a resolution of 1400x1200.</P>
-<P><BR><BR>
-</P>
 <P><BR><BR>
 </P>
 </BODY>

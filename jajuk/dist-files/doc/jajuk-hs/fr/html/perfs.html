@@ -5,99 +5,108 @@
 	<TITLE></TITLE>
 	<META NAME="GENERATOR" CONTENT="OpenOffice.org 1.1.3  (Linux)">
 	<META NAME="CREATED" CONTENT="20050321;13074300">
-	<META NAME="CHANGED" CONTENT="20050410;18330500">
+	<META NAME="CHANGED" CONTENT="20050502;22475100">
 </HEAD>
 <BODY LANG="en-US" DIR="LTR">
-<H1>Performance tips</H1>
-<P>Read that chapter if you encounter some performances drawbacks or
-if you want consume less memory, disk, CPU or Network bandwidth using
-Jajuk.</P>
-<H2>JVM choice and customization</H2>
-<P>We recommend Sun JVM 1.5 that is from 10 to 30% faster that the
-1.4.2 running Jajuk. Let us know if you manage to run Jajuk with
-another JVM, especially free ones (Kaffe, SableVM...).</P>
-<P>Default command line to launch Jajuk is :</P>
-<P><FONT FACE="Courier, monospace"><FONT SIZE=2>java -client -Xms25M
--Djava.library.path=../native -jar jajuk.jar -notaskbar</FONT></FONT></P>
+<H1 LANG="fr-FR">Performances</H1>
+<P LANG="fr-FR">Lisez ce chapitre si vous avez des probl&egrave;mes
+de performance ou si vous d&eacute;sirez consommer moins de m&eacute;moire,
+de disque, de puissance ou de bande passante en utilisant Jajuk.</P>
+<H2 LANG="fr-FR">Choix de la JVM et personnalisation</H2>
+<P LANG="fr-FR">Nous recommandons le JRE Sun 1.5 qui se montre de 10
+&agrave; 30% plus rapide que le 1.4.2.</P>
+<P LANG="fr-FR">La ligne de commande de lancement de Jajuk est par
+d&eacute;faut:</P>
+<P LANG="fr-FR"><FONT FACE="Courier, monospace"><FONT SIZE=2>java
+-client -Xms25M -Djava.library.path=../native -jar jajuk.jar
+-notaskbar</FONT></FONT></P>
 <UL>
-	<LI><P STYLE="margin-bottom: 0cm">If you have a really big
-	collection (something like &gt; 200GB), you may increase -Xms
-	parameter. 
+	<LI><P LANG="fr-FR" STYLE="margin-bottom: 0cm">Si vous avez une tr&egrave;s
+	grosse collection (comme &gt; 200Go), vous pouvez augmenter le
+	param&egrave;tre -Xms. 
 	</P>
-	<LI><P STYLE="margin-bottom: 0cm">You can set a -Xmx parameter to
-	restrict memory usage to this value (example: -Xmx100M), but this
-	could conduct to unpredictable behavior when out of memory errors
-	occur. 
-	</P>
-	<LI><P>Use -Xloggc:&lt;file name&gt; to trace memory usage if
-	needed. 
+	<LI><P LANG="fr-FR" STYLE="margin-bottom: 0cm">Vous pouvez fixer un
+	param&egrave;tre -Xmx pour limiter l'utilisation de m&eacute;moire &agrave;
+	cette valeur (par exemple: -Xmx100M), mais ceci peut conduire &agrave;
+	des comportements impr&eacute;vus ou des erreurs de d&eacute;passement
+	de m&eacute;moire.</P>
+	<LI><P LANG="fr-FR">Utilisez -Xloggc:&lt;nom du fichier&gt; pour
+	tracer l'utilisation de la m&eacute;moire si n&eacute;cessaire. 
 	</P>
 </UL>
-<H2>CPU usage 
+<H2 LANG="fr-FR">Utilisation Processeur 
 </H2>
 <UL>
-	<LI><P STYLE="margin-bottom: 0cm">On a PC/P4M 1.8Ghz, Jajuk uses
-	about 9% CPU for mp3 and 3% for Ogg Vorbis. 
-	</P>
-	<LI><P>Performances are better (by 50%) with Ogg Vorbis than MP3. 
+	<LI><P LANG="fr-FR" STYLE="margin-bottom: 0cm">Sur un PC/P4 1.8Ghz,
+	Jajuk utilise environ 9% de CPU pour les mp3 et 3% pour les Ogg
+	Vorbis. 
 	</P>
 </UL>
-<H2>Memory Usage</H2>
-<P>A JVM runs inside a reserved memory heap. The JVM takes all the
-Xms MB of memory at startup and requires more memory to the OS only
-if necessary. For a big size collection and all cover options
-enabled, it takes about 65MB maximum of memory but 40MB should be
-enough most of the time.</P>
-<H2>Covers performance tunning</H2>
-<P>These options are available in the Parameter View / Cover tab.</P>
+<H2 LANG="fr-FR">Utilisation de la m&eacute;moire</H2>
+<P LANG="fr-FR">Une JVM tourne dans une zone de m&eacute;moire
+r&eacute;serv&eacute;e. La JVM prend tout l'espace donn&eacute; dans
+le Xms au d&eacute;marrage et demande plus de m&eacute;moire au
+syst&egrave;me d'exploitation. Pour une grosse collection et toutes
+les options couverture d&eacute;marr&eacute;es, il prend environ de
+m&eacute;moire 65Mo au maximum mais 40Mo sont suffisant la plupart du
+temps.</P>
+<H2 LANG="fr-FR">Performance des jaquettes</H2>
+<P LANG="fr-FR">Ces options sont accessibles dans la vue Param&eacute;trage/
+onglet Jaquettes.</P>
 <UL>
-	<LI><P STYLE="margin-bottom: 0cm">“Adapt Cover” option
-	(default=no) uses a lot of CPU and memory to generate and display a
-	new image of the given size. Avoid this option if you have low CPU
-	or Memory computer. 
-	</P>
-	<LI><P STYLE="margin-bottom: 0cm">“Use auto-cover” (default=yes)
-	uses network bandwidth, especially if you use “Preload Cover”
-	option. Avoid this option if you have a low bandwidth. 
-	</P>
-	<LI><P STYLE="margin-bottom: 0cm">“Preload covers” (default=no)
-	is very network bandwidth consuming. Use this option only if you
-	have a fast network like xDSL or cable. 
-	</P>
-	<LI><P STYLE="margin-bottom: 0cm">You can reduce covers size by
-	setting lower minimum and maximum cover sizes. 
-	</P>
-	<LI><P>You can increase or decrease the time out when downloading a
-	cover in the Parameter view/ Network tab. 
-	</P>
+	<LI><P LANG="fr-FR" STYLE="margin-bottom: 0cm">L'option “Adapter
+	les jaquettes” (d&eacute;faut=non) utilise une quantit&eacute; non
+	n&eacute;gligeable de CPU et de m&eacute;moire pour g&eacute;n&eacute;rer
+	et afficher une nouvelle image &agrave; la taille d&eacute;sir&eacute;e.
+	&Eacute;vitez cette option si vous disposez d'une machine limit&eacute;e
+	en m&eacute;moire ou en puissance.</P>
+	<LI><P LANG="fr-FR" STYLE="margin-bottom: 0cm">L'option “Chercher
+	les jaquettes en ligne” (d&eacute;faut=oui) utilise de la bande
+	passante, surtout si vous utilisez l'option “Pr&eacute;charger les
+	jaquettes”. &Eacute;vitez cette option si vous disposez d'une
+	faible bande passante.</P>
+	<LI><P LANG="fr-FR" STYLE="margin-bottom: 0cm">L'option “Pr&eacute;charger
+	les jaquettes” (d&eacute;faut=non) est tr&egrave;s consommatrice
+	en bande passante. N'utilisez cette option que si vous disposez
+	d'une ligne &agrave; haut d&eacute;bit comme le xDSL ou le c&acirc;ble.
+		</P>
+	<LI><P LANG="fr-FR" STYLE="margin-bottom: 0cm">Vous pouvez r&eacute;duire
+	la taille des couvertures ramen&eacute;es en fixant une valeur
+	maximale inf&eacute;rieure aux jaquettes gr&acirc;ce &agrave;
+	l'option “Taille maximale des jaquettes”.</P>
+	<LI><P LANG="fr-FR">Vous pouvez augmenter ou r&eacute;duire les
+	limites de dur&eacute;e (time out) en t&eacute;l&eacute;chargeant
+	une couverture dans la vue Param&eacute;trage / onglet R&eacute;seau.
+		</P>
 </UL>
-<H2>Tags performance tunning</H2>
-<P STYLE="margin-bottom: 0cm">These options are available in the
-Parameter View / Tags tab.</P>
+<H2 LANG="fr-FR">Performance des meta-donn&eacute;es</H2>
+<P LANG="fr-FR" STYLE="margin-bottom: 0cm">Ces options sont
+accessibles dans la vue Param&eacute;trage / onglet Meta-donn&eacute;es.</P>
 <UL>
-	<LI><P>Do not use “Perform a deep tag scan” (default=no) option
-	unless you want to force tags read. By default, Jajuk doesn't read
-	id3 tags at each refresh for known files.</P>
+	<LI><P LANG="fr-FR">N'utilisez pas l'option “Forcer la relecture
+	des tags” (d&eacute;faut=non) sauf si vous voulez forcer jajuk &agrave;
+	relire les tags. Jajuk ne lit pas les tags id3 &agrave; chaque
+	rafra&icirc;chissement pour les morceaux connus.</P>
 </UL>
-<H2><FONT SIZE=5>Collection performance tunning</FONT></H2>
-<P>These options are available in the Parameter View / Advanced tab.</P>
+<H2 LANG="fr-FR"><FONT SIZE=5>Performance de la collection</FONT></H2>
+<P LANG="fr-FR" STYLE="margin-bottom: 0cm">Ces options sont
+accessibles dans la vue Param&eacute;trage / onglet Avanc&eacute;.</P>
 <UL>
-	<LI><P>If your collection uses mainly non-European characters (like
-	Asian languages), choose UTF-16 as collection encoding : that will
-	reduce collection file size and accelerate startup parsing. Do not
-	use this option if you use European languages because you collection
-	file would then grow.</P>
-	<LI><P>You can set the backup size for your collection. The bigger
-	it is, the more you get backup files (one by day).</P>
+	<LI><P LANG="fr-FR">Si votre collection utilise principalement des
+	caract&egrave;res non-europ&eacute;ens (comme les langages
+	asiatiques), choisissez l'encodage UTF-16 : ceci r&eacute;duira la
+	taille de la collection et acc&eacute;l&eacute;ra l'analyse de la
+	collection au d&eacute;marrage. N'utilisez pas cette l'UTF-16 si
+	vous utilisez un langage europ&eacute;en sinon votre collection
+	grossirait.</P>
 </UL>
-<H2><FONT SIZE=5>Animation View performance tunning</FONT></H2>
-<P>Animation view uses Java 2D. CPU overhead can be significant,
-especially with screen resolution higher that 1200x1024. On a P4
-1.8Ghz with a resolution of 1024x768, the overhead is about 2 or 3%
-but reaches 10 or more with a resolution of 1400x1200.</P>
-<P><BR><BR>
-</P>
-<P><BR><BR>
+<H2 LANG="fr-FR"><FONT SIZE=5>Performance de la vue Animation</FONT></H2>
+<P LANG="fr-FR">La vue Animation utilise Java 2D. L'utilisation CPU
+peut &ecirc;tre significative, surtout aux r&eacute;solutions &eacute;lev&eacute;es
+comme 200x1024 et plus. Sur un P4 1.8Ghz avec une r&eacute;solution
+de 1024x768, l'augmentation induite est de l'ordre de 2 &agrave; 3%
+mais atteint 10 ou plus avec une r&eacute;solution de 1400x1200.</P>
+<P LANG="fr-FR"><BR><BR>
 </P>
 </BODY>
 </HTML>

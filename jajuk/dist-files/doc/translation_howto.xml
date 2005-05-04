@@ -23,8 +23,12 @@
 
    			<subsection name='Target'>
    			 <p>Anyone can translate Jajuk, no computer science is required. Note this is a <u>voluntary work</u>.
-				For any question or comments, please send us a mail : <a href="mailto:bflorat@users.sourceforge.net">
-				bflorat@users.sourceforge.net</a>. Translate current Jajuk version takes approximately 3 hours and upgrade takes from few minutes to one hour for major releases.</p>
+				For any question or comments, please send us a mail : <a href="mailto:jajuk-i18n@lists.sourceforge.net">
+				jajuk-i18n@lists.sourceforge.net</a>. Translate current Jajuk version takes approximately 3 hours and upgrade takes from few minutes to one hour for major releases.</p>
+    		</subsection>
+
+			<subsection name='Mailing list'>
+   			 <p>Translator should subscribe on the <a href='http://lists.sourceforge.net/lists/listinfo/jajuk-i18n'>translators mailing list</a> to get messages about need for translation upgradestrans and other internationalization issues.<p>
     		</subsection>
 
    			<subsection name='README file translation'>
@@ -54,7 +58,7 @@
 				#$Revision$</span></p>
 				<p>FROM comment gives exact CVS version you translated to allow diffs with newer versions and Revision gives automatically the current CVS version of your file ( do not change this line manually, it will be updated by CVS).</p>
 			</li>
-			<li>Please write your files in Unicode UTF-8 encoding. If you don't know how to set the encoding, please <a href='mailto:bflorat@users.sourceforge.net'>ask us</a>. 
+			<li>Please write your files in Unicode UTF-8 encoding. If you don't know how to set the encoding, please <a href='mailto:jajuk-i18n@lists.sourceforge.net'>ask us</a>. 
 			Under Windows, we advice Eclipse (see developer manual for eclipse i18n configuration) or Ultraedit. 
 			Under Linux, we advice Eclipse (see developer manual for eclipse i18n configuration) or Kate. If you didn't used UTF-8, we will convert it for you but please give us the encoding you used. If 
 			you don't know which encoding you used, start Jajuk, go to Help perspective/About view, click on the <i>system</i> tab and your encoding is given by <i>file.encoding</i> property.</li>
@@ -70,7 +74,7 @@
 			
 			<li><p>Translate even lines like <span style="font-family: monospace;">Language_desc_*=*</span> (other languages names) and <u>add a new line with your own language name.</u></p></li>
 			
-			<li><p><a href='bflorat@users.sourceforge.net'>Send us</a> your work as a property file with your local ( ex: <span style="font-family: monospace;">jajuk_ru.properties</span> for russian ). It could be nice you send also a message in the forum: 
+			<li><p><a href='jajuk-i18n@lists.sourceforge.net'>Send us</a> your work as a property file with your local ( ex: <span style="font-family: monospace;">jajuk_ru.properties</span> for russian ). It could be nice you send also a message in the forum: 
 			<a href='http://sourceforge.net/forum/forum.php?forum_id=315360'>http://sourceforge.net/forum/forum.php?forum_id=315360</a>. Contact us if you have a developer profile so we will create a 
 			CVS account for you. Then you will be able to commit and maintain your translation files directly in the repository.</p>
 			</li>
@@ -102,7 +106,7 @@
   				<li><p>Perform a 'diff' between this release and the latest in CVS repository. To achieve that, you can either use ViewCVS interface accessible from Jajuk web site (<a href='http://cvs.sourceforge.net/viewcvs.py/jajuk/jajuk/src/org/jajuk/i18n/'>CVS Web repository</a>) or a CVS client like Eclipse if you have one.</p></li>
   				<li><p>Remove old labels, modify and add new ones.</p></li>
   				<li><p>Upgrade the #FROM comment with the translated release.</p></li>
-  				<li><p>Commit your file or send it <a href='mailto:bflorat@users.sourceforge.net'>by mail</a>.</p></li>
+  				<li><p>Commit your file or send it <a href='mailto:jajuk-i18n@lists.sourceforge.net'>by mail</a>.</p></li>
   			</ul>
   		</subsection>
    			

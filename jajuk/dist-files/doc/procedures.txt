@@ -46,19 +46,19 @@ NEW CONTRIBUTOR PROCEDURE
 ******************************************
 Hi, thanks for your proposition.
 
-Now the perfect process could be:
+Now please:
 o Read all interesting materials : specs, web site, javadoc
-o Read developer guide on the web site and make a CVS checkout
+o Read developer guide (http://jajuk.sourceforge.net/developer_guide.html) and make a CVS checkout
 o Have a look at the code
-o Tell us if you still feel OK to work on jajuk
+o Tell us if you still feel OK to work on jajuk and accepted rules given in the developer guide. 
 
 if yes:
 o Give me your sourceforge user so I will give you commit right.
-o Subscribe to the developer list, jajuk main communication stream.
-o Choose one or more tasks from task list (you can asign them to yourself)
+o Subscribe to the developer list, jajuk main communication stream: http://lists.sourceforge.net/lists/listinfo/jajuk-developers
+o Choose a tasks from task list or a new one and inform us on the developer list. 
 o Keep us in touch by giving an approximatical planning and % realized so we can plan releases.
-o In you have questions/problems, don't hesitate to tell me and to ask on the developer list.
+o In you have questions/problems, don't hesitate to ask us on the developer list.
 
-Thanks, CU
+Thanks, CU on the list
 ******************************************
 
