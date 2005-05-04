@@ -34,6 +34,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Properties;
 
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
@@ -65,6 +66,7 @@ import org.jajuk.base.PlaylistFile;
 import org.jajuk.base.PlaylistFileManager;
 import org.jajuk.base.StackItem;
 import org.jajuk.i18n.Messages;
+import org.jajuk.ui.DeviceWizard;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.TransferableTreeNode;
 import org.jajuk.ui.TreeTransferHandler;
@@ -136,6 +138,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
     JMenuItem jmiDevTest;
     JMenuItem jmiDevSetProperty;
     JMenuItem jmiDevProperties;
+    JMenuItem jmiDevConfiguration;
     JPopupMenu jmenuPlaylistFile;
     JMenuItem jmiPlaylistFilePlay;
     JMenuItem jmiPlaylistFilePush;
@@ -297,6 +300,8 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         jmiDevProperties = new JMenuItem(Messages.getString("PhysicalTreeView.35")); //$NON-NLS-1$
         jmiDevProperties.setEnabled(false);
         jmiDevProperties.addActionListener(this);
+        jmiDevConfiguration = new JMenuItem(Messages.getString("PhysicalTreeView.55")); //$NON-NLS-1$
+        jmiDevConfiguration.addActionListener(this);
         jmenuDev.add(jmiDevPlay);
         jmenuDev.add(jmiDevPush);
         jmenuDev.add(jmiDevPlayShuffle);
@@ -309,6 +314,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         jmenuDev.add(jmiDevCreatePlaylist);
         jmenuDev.add(jmiDevSetProperty);
         jmenuDev.add(jmiDevProperties);
+        jmenuDev.add(jmiDevConfiguration);
         
         //Playlist file menu
         //File menu
@@ -372,37 +378,69 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
                 super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
                 setFont(new Font("Dialog",Font.PLAIN,10)); //$NON-NLS-1$
                 if (value instanceof FileNode ){
+                    setBorder(null);
                     setIcon(Util.getIcon(ICON_FILE));
                 }
                 else if (value instanceof PlaylistFileNode){
+                    setBorder(null);
                     setIcon(Util.getIcon(ICON_PLAYLIST_FILE));
                 }
                 else if (value instanceof DeviceNode){
+                    setBorder(BorderFactory.createEmptyBorder(2,0,3,0));
                     Device device = (Device)((DeviceNode)value).getDevice();
                     switch ( device.getDeviceType()){
                     case 0 : 
-                        if ( device.isMounted())	setIcon(Util.getIcon(ICON_DEVICE_DIRECTORY_MOUNTED_SMALL));
-                        else setIcon(Util.getIcon(ICON_DEVICE_DIRECTORY_UNMOUNTED_SMALL));
+                        if ( device.isMounted()){
+                            setIcon(Util.getIcon(ICON_DEVICE_DIRECTORY_MOUNTED_SMALL));
+                        }
+                        else{
+                            setIcon(Util.getIcon(ICON_DEVICE_DIRECTORY_UNMOUNTED_SMALL));
+                        }
                         break;
                     case 1 : 
-                        if ( device.isMounted())	setIcon(Util.getIcon(ICON_DEVICE_CD_MOUNTED_SMALL));
-                        else setIcon(Util.getIcon(ICON_DEVICE_CD_UNMOUNTED_SMALL));
+                        if ( device.isMounted()){
+                            setIcon(Util.getIcon(ICON_DEVICE_CD_MOUNTED_SMALL));
+                        }
+                        else{
+                            setIcon(Util.getIcon(ICON_DEVICE_CD_UNMOUNTED_SMALL));
+                        }
                         break;
                     case 2 : 
-                        if ( device.isMounted())	setIcon(Util.getIcon(ICON_DEVICE_REMOTE_MOUNTED_SMALL));
-                        else setIcon(Util.getIcon(ICON_DEVICE_REMOTE_UNMOUNTED_SMALL));
+                        if ( device.isMounted()){
+                            setIcon(Util.getIcon(ICON_DEVICE_NETWORK_DRIVE_MOUNTED_SMALL));
+                        }
+                        else{
+                            setIcon(Util.getIcon(ICON_DEVICE_NETWORK_DRIVE_UNMOUNTED_SMALL));
+                        }
                         break;
                     case 3 : 
-                        if ( device.isMounted())	setIcon(Util.getIcon(ICON_DEVICE_EXT_DD_MOUNTED_SMALL));
-                        else setIcon(Util.getIcon(ICON_DEVICE_EXT_DD_UNMOUNTED_SMALL));
+                        if ( device.isMounted()){
+                            setIcon(Util.getIcon(ICON_DEVICE_EXT_DD_MOUNTED_SMALL));
+                        }
+                        else{
+                            setIcon(Util.getIcon(ICON_DEVICE_EXT_DD_UNMOUNTED_SMALL));
+                        }
                         break;
                     case 4 : 
-                        if ( device.isMounted())	setIcon(Util.getIcon(ICON_DEVICE_PLAYER_MOUNTED_SMALL));
-                        else setIcon(Util.getIcon(ICON_DEVICE_PLAYER_UNMOUNTED_SMALL));
+                        if ( device.isMounted()){
+                            setIcon(Util.getIcon(ICON_DEVICE_PLAYER_MOUNTED_SMALL));
+                        }
+                        else {
+                            setIcon(Util.getIcon(ICON_DEVICE_PLAYER_UNMOUNTED_SMALL));
+                        }
+                        break;
+                    case 5 : 
+                        if ( device.isMounted()){
+                            setIcon(Util.getIcon(ICON_DEVICE_REMOTE_MOUNTED_SMALL));
+                        }
+                        else{
+                            setIcon(Util.getIcon(ICON_DEVICE_REMOTE_UNMOUNTED_SMALL));
+                        }
                         break;
                     }
                 }
                 else if (value instanceof DirectoryNode){
+                    setBorder(null);
                     Directory dir = ((DirectoryNode)value).getDirectory();
                     String synchro = dir.getProperty(DIRECTORY_OPTION_SYNCHRO_MODE);
                     if ( synchro == null || "y".equals(synchro)){  //means this device is not synchronized //$NON-NLS-1$
@@ -838,6 +876,13 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         else if ( e.getSource() == jmiPlaylistFileDelete){
             PlaylistFile plf = ((PlaylistFileNode)paths[0].getLastPathComponent()).getPlaylistFile();
             plf.delete();
+        }
+        else if (e.getSource() == jmiDevConfiguration){
+            Device device =  ((DeviceNode)paths[0].getLastPathComponent()).getDevice();
+            DeviceWizard dw = new DeviceWizard();
+            dw.updateWidgets(device);
+            dw.pack();
+            dw.setVisible(true);
         }
     }
     
