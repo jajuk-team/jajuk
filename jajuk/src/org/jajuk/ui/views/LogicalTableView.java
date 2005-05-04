@@ -28,6 +28,7 @@ import java.util.regex.PatternSyntaxException;
 
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
+import javax.swing.SwingUtilities;
 
 import org.jajuk.base.Album;
 import org.jajuk.base.Author;
@@ -317,66 +318,70 @@ public class LogicalTableView extends AbstractTableView implements Observer{
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.views.AbstractTableView#applyFilter()
 	 */
-	public void applyFilter(String sPropertyName,String sPropertyValue) {
-	    boolean bShowWithTree = true;
-		HashSet hs = (HashSet)ObservationManager.getDetailLastOccurence(EVENT_SYNC_TREE_TABLE,DETAIL_SELECTION);//look at selection
-		boolean bSyncWithTreeOption = ConfigurationManager.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE);
-		//Values
-		ArrayList alTracks = TrackManager.getSortedTracks();
-		ArrayList alToShow = new ArrayList(alTracks.size());
-		Iterator it = alTracks.iterator();
-		while ( it.hasNext()){
-			Track track = (Track)it.next(); 
-		    bShowWithTree =  !bSyncWithTreeOption || ((hs != null && hs.size() > 0 && hs.contains(track)));//show it if no sync option or if item is in the selection
-			if ( !track.shouldBeHidden() && bShowWithTree){
-				alToShow.add(track);
-			}
-		}
-		int iSize = alToShow.size();
-		int iColNum = 6 ;
-		it = alToShow.iterator();
-		//Track | Album | Author | Length | Style | Rate
-		if ( !ConfigurationManager.getBoolean(CONF_REGEXP)){ //do we use regular expression or not? if not, we allow user to use '*'
-		    sPropertyValue = sPropertyValue.replaceAll("\\*",".*"); //$NON-NLS-1$ //$NON-NLS-2$
-		    sPropertyValue = ".*"+sPropertyValue+".*"; //$NON-NLS-1$ //$NON-NLS-2$
-		}	
-		while (it.hasNext()){
-			Track track = (Track)it.next();
-			if ( sPropertyName != null && sPropertyValue!= null){ //if name or value are null, means there is no filter
-				String sValue = track.getProperty(sPropertyName);
-				if ( sValue == null){ //try to filter on a unknown property, don't take this file
-					continue;
-				}
-				else { 
-					boolean bMatch = false;
-				    try{  //test using regular expressions
-							bMatch = sValue.toLowerCase().matches(sPropertyValue.toLowerCase());  // test if the file property contains this property value (ignore case)
-					}
-					catch(PatternSyntaxException pse){ //wrong pattern syntax
-						bMatch = false;
-					}
-					if (!bMatch){
-						it.remove(); //no? remove it
-					}
-				}	
-			}
-		}
-		//populate this values
-		Object[][] oValues = new Object[alToShow.size()][iColNum+1];
-		for  (int i=0;i<alToShow.size();i++){
-			Track track = (Track)alToShow.get(i);
-			oValues[i][0] = track.getName();
-			oValues[i][1] = track.getAlbum().getName2();
-			oValues[i][2] = track.getAuthor().getName2();
-			oValues[i][3] = Util.formatTimeBySec(track.getLength(),false);
-			oValues[i][4] = track.getStyle().getName2();
-			oValues[i][5] = new Long(track.getRate());
-			oValues[i][6] = track.getId();
-		}
-		model.setValues(oValues);
-		model.fireTableDataChanged();
-	}
-
+    public void applyFilter(final String sPropertyName,final String sPropertyValue) {
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                boolean bShowWithTree = true;
+                HashSet hs = (HashSet)ObservationManager.getDetailLastOccurence(EVENT_SYNC_TREE_TABLE,DETAIL_SELECTION);//look at selection
+                boolean bSyncWithTreeOption = ConfigurationManager.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE);
+                //Values
+                ArrayList alTracks = TrackManager.getSortedTracks();
+                ArrayList alToShow = new ArrayList(alTracks.size());
+                Iterator it = alTracks.iterator();
+                while ( it.hasNext()){
+                    Track track = (Track)it.next(); 
+                    bShowWithTree =  !bSyncWithTreeOption || ((hs != null && hs.size() > 0 && hs.contains(track)));//show it if no sync option or if item is in the selection
+                    if ( !track.shouldBeHidden() && bShowWithTree){
+                        alToShow.add(track);
+                    }
+                }
+                int iSize = alToShow.size();
+                int iColNum = 6 ;
+                it = alToShow.iterator();
+                //Track | Album | Author | Length | Style | Rate
+                String sNewPropertyValue = null;
+                if ( !ConfigurationManager.getBoolean(CONF_REGEXP)){ //do we use regular expression or not? if not, we allow user to use '*'
+                    sNewPropertyValue = sPropertyValue.replaceAll("\\*",".*"); //$NON-NLS-1$ //$NON-NLS-2$
+                    sNewPropertyValue = ".*"+sNewPropertyValue+".*"; //$NON-NLS-1$ //$NON-NLS-2$
+                }	
+                while (it.hasNext()){
+                    Track track = (Track)it.next();
+                    if ( sPropertyName != null && sNewPropertyValue!= null){ //if name or value are null, means there is no filter
+                        String sValue = track.getProperty(sPropertyName);
+                        if ( sValue == null){ //try to filter on a unknown property, don't take this file
+                            continue;
+                        }
+                        else { 
+                            boolean bMatch = false;
+                            try{  //test using regular expressions
+                                bMatch = sValue.toLowerCase().matches(sNewPropertyValue.toLowerCase());  // test if the file property contains this property value (ignore case)
+                            }
+                            catch(PatternSyntaxException pse){ //wrong pattern syntax
+                                bMatch = false;
+                            }
+                            if (!bMatch){
+                                it.remove(); //no? remove it
+                            }
+                        }	
+                    }
+                }
+                //populate this values
+                Object[][] oValues = new Object[alToShow.size()][iColNum+1];
+                for  (int i=0;i<alToShow.size();i++){
+                    Track track = (Track)alToShow.get(i);
+                    oValues[i][0] = track.getName();
+                    oValues[i][1] = track.getAlbum().getName2();
+                    oValues[i][2] = track.getAuthor().getName2();
+                    oValues[i][3] = Util.formatTimeBySec(track.getLength(),false);
+                    oValues[i][4] = track.getStyle().getName2();
+                    oValues[i][5] = new Long(track.getRate());
+                    oValues[i][6] = track.getId();
+                }
+                model.setValues(oValues);
+                model.fireTableDataChanged();
+            }
+        });
+    }
   	
 }
 
