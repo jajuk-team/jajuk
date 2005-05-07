@@ -28,7 +28,7 @@
     		</subsection>
 
 			<subsection name='Mailing list'>
-   			 <p>Translator should subscribe on the <a href='http://lists.sourceforge.net/lists/listinfo/jajuk-i18n'>translators mailing list</a> to get messages about need for translation upgradestrans and other internationalization issues.</p>
+   			 <p>Translators should subscribe on the <a href='http://lists.sourceforge.net/lists/listinfo/jajuk-i18n'>translators mailing list</a> to get information about internationalization issues and translation update needs.</p>
     		</subsection>
 
    			<subsection name='README file translation'>
@@ -74,7 +74,7 @@
 			
 			<li><p>Translate even lines like <span style="font-family: monospace;">Language_desc_*=*</span> (other languages names) and <u>add a new line with your own language name.</u></p></li>
 			
-			<li><p><a href='jajuk-i18n@lists.sourceforge.net'>Send us</a> your work as a property file with your local ( ex: <span style="font-family: monospace;">jajuk_ru.properties</span> for russian ). It could be nice you send also a message in the forum: 
+			<li><p><a href='mailto:jajuk-i18n@lists.sourceforge.net'>Send us</a> your work as a property file with your local ( ex: <span style="font-family: monospace;">jajuk_ru.properties</span> for russian ). It could be nice you send also a message in the forum: 
 			<a href='http://sourceforge.net/forum/forum.php?forum_id=315360'>http://sourceforge.net/forum/forum.php?forum_id=315360</a>. Contact us if you have a developer profile so we will create a 
 			CVS account for you. Then you will be able to commit and maintain your translation files directly in the repository.</p>
 			</li>
@@ -120,6 +120,12 @@
 				<li><p>Try to keep values length near from source ones so labels will not be too long and stay visible.</p></li>
 				<li><p>Use a spelling corrector.</p></li>
 				</ul>
+    		</subsection>
+    		<subsection name='Documentation translation'>
+  			<p>Embedded documentation (in help view) can be translated as well (already done in French) but it's a much longer task than application translation.
+  			 We evaluate this translation takes from 15 to 25 hours. None computer science knowledge is required: it's just html files to translate.
+  			 Moreover, we wish documentation translator to update documentation often because documentation have to be accurate to make it useful and not confusing. 
+  			 If interested, send us a mail on <a href='mailto:jajuk-i18n@lists.sourceforge.net'>i18n list.</a></p>
     		</subsection>
     	</section>
   </body>

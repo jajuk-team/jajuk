@@ -3,7 +3,7 @@
 
 <project default='all' name='jajuk' basedir='..'>
   <!-- Only Explicit Release number-->
-  <property name='version' value='0.3.4'/>
+  <property name='version' value='0.4pre'/>
   <property name='rootdir' value='/tmp/jajuk-dist'/>
   <property name='distdir' value='${rootdir}/jajuk'/>
   <property name='rpmbuilddir_suse' value='${rootdir}/suse/RPMBUILD/'/>
