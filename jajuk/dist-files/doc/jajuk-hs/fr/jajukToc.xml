@@ -41,7 +41,7 @@
 				<tocitem text="Perspective Configuration"  expand="true">
 				<tocitem text="La vue Paramétrage" target="view_parameter"/>
 					<tocitem text="La vue scanner de CDs" target="view_cd_scanner"/>
-					<tocitem text="La vue des Supports" target="view_devices"/>
+					<tocitem text="La vue Supports" target="view_devices"/>
 				</tocitem> 
 				<tocitem text="Perspective Statistiques"  expand="true">
 					<tocitem text="La vue statistiques" target="view_stats"/>

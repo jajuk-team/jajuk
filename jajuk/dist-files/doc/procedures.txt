@@ -12,6 +12,7 @@ NEW LANGUAGE PROCEDURE
 - Update translation howto
 
 NEW RELEASE PROCEDURE
+- Check new incoming updates (i18n)
 - Change version in ITechnicalStrings and build-dist.xml and RPM spec files (perform a search)
 - Backup SF data (php file)
 - String externalization

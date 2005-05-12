@@ -17,10 +17,6 @@
    		 <p><a href='./jobs.html'>Want to help ?</a></p>
     </section>
     
-    <section name='Documentation'>
-		<p>To fully benefit from  Jajuk features, please read the user manual embedded in the application, just click on 'Help'. Refer to the menu on your left for others documentations like installation guide.</p>
-    </section>
-  
 	<section name='Supported languages'>
 		<p><a href='./translation_howto.html'>Want to translate ?</a></p>
 		<table style='width: 100%; text-align: left;' border='0' cellpadding='2' cellspacing='2'>
@@ -39,6 +35,13 @@
 					</td>
 				</tr>
 				<tr>
+					<td style='vertical-align: top;'>Jajuk Help</td>
+					<td style='vertical-align: top;'>
+						<a  href='./jajuk-hs/default/html/intro.html'><img alt='English' title='English' src='flags/flag_en.png' style='width: 21px; height: 14px;'/></a>
+						<a  href='./jajuk-hs/fr/html/intro.html'><img alt='French' title='French' src='flags/flag_fr.png' style='width: 21px; height: 14px;'/></a>*
+					</td>
+				</tr>
+				<tr>
 					<td style='vertical-align: top;'>Readme file at install and on the web site</td>
 					<td style='vertical-align: top;'>
 						<a href='./README.html'><img alt='English' title='English' src='flags/flag_en.png'  style='border: 0px solid ; width: 21px; height: 14px;'/></a>
@@ -50,13 +53,6 @@
 						<a  href='./README_nld.html'><img alt='Dutch' title='Dutch' src='flags/flag_nl.png' style='border: 0px solid ; width: 21px; height: 14px;'/></a>
 						<a  href='./README_esp.html'><img alt='Spanish' title='Spanish' src='flags/flag_sp.png' style='border: 0px solid ; width: 21px; height: 14px;'/></a>
 						<a  href='./README_cat.html'><img alt='Catalan' title='Catalan' src='flags/flag_ct.png' style='border: 0px solid ; width: 21px; height: 14px;'/></a>
-					</td>
-				</tr>
-				<tr>
-					<td style='vertical-align: top;'>Online Documentation ( Help perspective )</td>
-					<td style='vertical-align: top;'>
-						<img alt='English' title='English' src='flags/flag_en.png' style='width: 21px; height: 14px;'/>
-						<img alt='French' title='French' src='flags/flag_fr.png' style='width: 21px; height: 14px;'/>*
 					</td>
 				</tr>
 				<tr>

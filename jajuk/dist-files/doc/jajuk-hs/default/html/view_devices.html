@@ -5,7 +5,7 @@
 	<TITLE>The Devices view</TITLE>
 	<META NAME="GENERATOR" CONTENT="OpenOffice.org 1.1.3  (Linux)">
 	<META NAME="CREATED" CONTENT="20050308;19373500">
-	<META NAME="CHANGED" CONTENT="20050504;18053200">
+	<META NAME="CHANGED" CONTENT="20050511;18360300">
 </HEAD>
 <BODY LANG="en-US" DIR="LTR">
 <H1>The Devices view</H1>
@@ -14,7 +14,7 @@ read the <A HREF="devices.html">Using Devices page</A> to learn about
 devices principles.</P>
 <H2>The devices repository</H2>
 <P>In the lower part of the Devices view, you will find devices you
-created. The green array on the bottom of a device means it is now
+created. The green picture on the bottom of a device means it is now
 mounted.</P>
 <P><IMG SRC="../icons/64x64/new.png" NAME="Image1" ALIGN=BOTTOM WIDTH=64 HEIGHT=64 BORDER=0>
 &nbsp;This is not an actual device but a shortcut to create a new
@@ -24,7 +24,9 @@ one. Please click on it to create a new Device.</P>
 <P><IMG SRC="../icons/64x64/folder_mount.png" NAME="Image1" ALIGN=BOTTOM WIDTH=64 HEIGHT=64 BORDER=0>
 &nbsp;Folder from your hard disk</P>
 <P><IMG SRC="../icons/64x64/nfs_mount.png" NAME="Image1" ALIGN=BOTTOM WIDTH=64 HEIGHT=64 BORDER=0>
-&nbsp;Network drive (Netbios/Samba/NFS...)</P>
+&nbsp;Network drive (Netbios/Samba/NFS...). Under Windows, use drive
+letter path (like T:\...) and not network favorites path or UNC
+paths.</P>
 <P><IMG SRC="../icons/64x64/player_mount.png" NAME="Image1" ALIGN=BOTTOM WIDTH=64 HEIGHT=64 BORDER=0>
 &nbsp;Player (like an iPod)</P>
 <P><IMG SRC="../icons/64x64/ext_dd_mount.png" NAME="Image1" ALIGN=BOTTOM WIDTH=64 HEIGHT=64 BORDER=0>
@@ -49,12 +51,10 @@ Devices page</A> if you don't understand the actions):</P>
 	</P>
 	<LI><P STYLE="margin-bottom: 0cm">Remove device: Remove this device
 	from your collection. No data will be deleted from your hard disk.
-	You can set a confirmation dialog (is the default) in Parameter view
-	/ Confirmations tab. 
+	You can set a confirmation dialog (is the default) in <A HREF="view_parameter.html">Parameter
+	view</A> / Confirmations tab. 
 	</P>
-	<LI><P>Get Properties: Display devices properties and change some
-	configuration. 
-	</P>
+	<LI><P>Configuration: Manage device configuration</P>
 </UL>
 <H2>Control panel</H2>
 <P>The Control panel in the upper part of this view features (please
@@ -67,7 +67,7 @@ device)</P>
 &nbsp;Remove selected device from your collection. No data will be
 deleted from your hard disk. You can set a confirmation dialog (is
 the default) in Parameter view / Confirmations tab.</P>
-<P><IMG SRC="../icons/16x16/properties.png" NAME="Image1" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=0>
+<P><IMG SRC="../icons/16x16/configuration_perspective.png" NAME="Image1" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=0>
 &nbsp;Display selected device properties and change some
 configuration.</P>
 <P><IMG SRC="../icons/16x16/mount.png" NAME="Image1" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=0>
@@ -81,7 +81,7 @@ configuration.</P>
 <P><IMG SRC="../icons/16x16/synchro.png" NAME="Image1" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=0>
 &nbsp;Synchronize selected device (available only if this device is
 configured to synchronize with another device)</P>
-<H2>Device wizard / properties</H2>
+<H2>Device configuration wizard</H2>
 <P>If you don't understand Jajuk device notions like mounting,
 refreshing or synchronizing, please read the <A HREF="devices.html">Using
 Devices page</A>.</P>
@@ -112,17 +112,19 @@ in the Control Pane. It features:</P>
 	last Linux distributions that perform auto-mount. 
 	</P>
 	<LI><P STYLE="margin-bottom: 0cm">&quot;Perform an instant refresh&quot;
-	(default): Perform a device refresh immediately after creating the
-	device. This is recommended. Note that this should take a while,
-	especially for the first time. 
+	(default = true): Perform a device refresh immediately after
+	creating the device. This is recommended. Note that this should take
+	a while, especially for the first time. 
 	</P>
 	<LI><P STYLE="margin-bottom: 0cm">&quot;Auto mount at startup&quot;
-	(checked by default for directories, unchecked by default for all
-	others devices): Perform an auto-mount when starting Jajuk. This is
-	recommended for directories or eventually external devices if always
-	plugged but avoid this for CD or devices that can be unplugged or
-	changed quite often. 
+	(checked by default for some types): Perform an auto-mount when
+	starting Jajuk. This is recommended for directories or eventually
+	external devices if always plugged but avoid this for CD or devices
+	that can be unplugged or changed quite often. 
 	</P>
+	<LI><P STYLE="margin-bottom: 0cm">&quot;Auto refresh at startup
+	(default = false)&quot;: refresh device at each Jajuk startup (not
+	recommended, especially for large devices).</P>
 	<LI><P STYLE="margin-bottom: 0cm">Synchronized with combo box: If
 	you have more than one device, you will be able to synchronize them.
 	The current device is the target device and the other one the source
