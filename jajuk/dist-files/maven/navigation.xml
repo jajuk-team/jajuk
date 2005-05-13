@@ -27,7 +27,7 @@
     </menu>
     <search/>
     <menu name='Documentation'>
-      <item name='Jajuk help' href='./jajuk-hs/default/html/intro.html' />
+      <item name='Jajuk manual' href='./jajuk-hs/default/html/intro.html' />
       <item name='Installation' href='./installation.html' />
       <item name='Release notes' href='./main_qualification.html' />
       <item name='README notes' href='./README.html' />
