@@ -332,31 +332,36 @@ public class Main implements ITechnicalStrings {
 			type.setProperty(TYPE_PROPERTY_IS_MUSIC,"true"); //$NON-NLS-1$
 			type.setProperty(TYPE_PROPERTY_SEEK_SUPPORTED,"true"); //$NON-NLS-1$
 			type.setProperty(TYPE_PROPERTY_TECH_DESC,TYPE_PROPERTY_TECH_DESC_MP3);
-			//playlists
+            type.setProperty(TYPE_PROPERTY_ICON,ICON_TYPE_MP3);
+            //playlists
 			type = TypeManager.registerType(Messages.getString("Type.playlist"), EXT_PLAYLIST, PLAYER_IMPL_JAVALAYER, null); //$NON-NLS-1$ //$NON-NLS-2$
 			type.setProperty(TYPE_PROPERTY_IS_MUSIC,"false"); //$NON-NLS-1$
 			type.setProperty(TYPE_PROPERTY_SEEK_SUPPORTED,"false"); //$NON-NLS-1$
-			//Ogg vorbis
+            //Ogg vorbis
 			type = TypeManager.registerType(Messages.getString("Type.ogg"), EXT_OGG, PLAYER_IMPL_JAVALAYER, TAG_IMPL_JLGUI_OGG); //$NON-NLS-1$ //$NON-NLS-2$
 			type.setProperty(TYPE_PROPERTY_IS_MUSIC,"true"); //$NON-NLS-1$
 			type.setProperty(TYPE_PROPERTY_SEEK_SUPPORTED,"false"); //$NON-NLS-1$
 			type.setProperty(TYPE_PROPERTY_TECH_DESC,TYPE_PROPERTY_TECH_DESC_OGG);
-			//Wave
+            type.setProperty(TYPE_PROPERTY_ICON,ICON_TYPE_OGG);
+            //Wave
 			type = TypeManager.registerType(Messages.getString("Type.wav"), EXT_WAV, PLAYER_IMPL_JAVALAYER, TAG_IMPL_NO_TAGS); //$NON-NLS-1$ //$NON-NLS-2$
 			type.setProperty(TYPE_PROPERTY_IS_MUSIC,"true"); //$NON-NLS-1$
 			type.setProperty(TYPE_PROPERTY_SEEK_SUPPORTED,"true"); //$NON-NLS-1$
 			type.setProperty(TYPE_PROPERTY_TECH_DESC,TYPE_PROPERTY_TECH_DESC_WAVE);
-			//au
+            type.setProperty(TYPE_PROPERTY_ICON,ICON_TYPE_WAV);
+            //au
 			type = TypeManager.registerType(Messages.getString("Type.au"), EXT_AU, PLAYER_IMPL_JAVALAYER, TAG_IMPL_NO_TAGS); //$NON-NLS-1$ //$NON-NLS-2$
 			type.setProperty(TYPE_PROPERTY_IS_MUSIC,"true"); //$NON-NLS-1$
 			type.setProperty(TYPE_PROPERTY_SEEK_SUPPORTED,"false"); //$NON-NLS-1$
 			type.setProperty(TYPE_PROPERTY_TECH_DESC,TYPE_PROPERTY_TECH_DESC_AU);
-			//aiff
+            type.setProperty(TYPE_PROPERTY_ICON,ICON_TYPE_AU);
+            //aiff
 			type = TypeManager.registerType(Messages.getString("Type.aiff"), EXT_AIFF, PLAYER_IMPL_JAVALAYER, TAG_IMPL_NO_TAGS); //$NON-NLS-1$ //$NON-NLS-2$
 			type.setProperty(TYPE_PROPERTY_IS_MUSIC,"true"); //$NON-NLS-1$
 			type.setProperty(TYPE_PROPERTY_SEEK_SUPPORTED,"false"); //$NON-NLS-1$
 			type.setProperty(TYPE_PROPERTY_TECH_DESC,TYPE_PROPERTY_TECH_DESC_AIFF);
-		} catch (Exception e1) {
+            type.setProperty(TYPE_PROPERTY_ICON,ICON_TYPE_AIFF);
+     	} catch (Exception e1) {
 			Log.error("026",e1); //$NON-NLS-1$
 		}
 	}
@@ -514,11 +519,11 @@ public class Main implements ITechnicalStrings {
 			        ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_FILE)){
 				
 			    if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_FILE)){
-				    fileToPlay = FileManager.getFile(ConfigurationManager.getProperty(CONF_STARTUP_FILE));
+				    fileToPlay = FileManager.getFileById(ConfigurationManager.getProperty(CONF_STARTUP_FILE));
 				}
 				else {  //last file from begining or last file keep position
 				    if (ConfigurationManager.getBoolean(CONF_STATE_WAS_PLAYING) && History.getInstance().getHistory().size()>0){  //make sure user didn't exit jajuk in the stopped state and that history is not void
-				        fileToPlay = FileManager.getFile(History.getInstance().getLastFile());
+				        fileToPlay = FileManager.getFileById(History.getInstance().getLastFile());
 				    }
 				    else{ //do not try to lauch anything, stay in stop state
 				        return;
@@ -550,6 +555,7 @@ public class Main implements ITechnicalStrings {
 			}
 			else if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_NOVELTIES)){
 			    alToPlay = FileManager.getGlobalNoveltiesPlaylist();
+                Collections.shuffle(alToPlay);//shuffle the selection
 			}
 			//launch selected file
 			if (alToPlay  != null && alToPlay.size() >0){

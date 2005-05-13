@@ -379,7 +379,16 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
                 setFont(new Font("Dialog",Font.PLAIN,10)); //$NON-NLS-1$
                 if (value instanceof FileNode ){
                     setBorder(null);
-                    setIcon(Util.getIcon(ICON_FILE));
+                    File file = ((FileNode)value).getFile();
+                    if (Util.getExtension(file.getIO()).equals(TYPE_PROPERTY_TECH_DESC_MP3)){
+                        setIcon(Util.getIcon(ICON_TYPE_MP3));    
+                    }
+                    else if (Util.getExtension(file.getIO()).equals(TYPE_PROPERTY_TECH_DESC_OGG)){
+                        setIcon(Util.getIcon(ICON_TYPE_OGG));    
+                    }
+                    else {
+                        setIcon(Util.getIcon(ICON_TYPE_WAV));    
+                    }
                 }
                 else if (value instanceof PlaylistFileNode){
                     setBorder(null);
@@ -551,7 +560,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
                         PlaylistFile plf = ((PlaylistFileNode)o).getPlaylistFile();
                         ArrayList alFiles = new ArrayList(10); 
                         try{	
-                            alFiles = plf.getBasicFiles();
+                            alFiles = plf.getFiles();
                         }
                         catch(JajukException je){
                             Log.error("009",plf.getName(),new Exception()); //$NON-NLS-1$
@@ -844,7 +853,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
             PlaylistFile plf = ((PlaylistFileNode)paths[0].getLastPathComponent()).getPlaylistFile();
             ArrayList alFiles = new ArrayList(10); 
             try{	
-                alFiles = plf.getBasicFiles();
+                alFiles = plf.getFiles();
             }
             catch(JajukException je){
                 Log.error("009",plf.getName(),new Exception()); //$NON-NLS-1$
