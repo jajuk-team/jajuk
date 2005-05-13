@@ -75,7 +75,7 @@ public class LogicalPerspective extends PerspectiveAdapter{
 		viewMap.addView(4,dockingPlaylistEditorView);
         
         SplitWindow vertPlaylistCoverSplit = new SplitWindow(true,0.5f,dockingPlaylistEditorView,dockingCoverView);
-        SplitWindow horTableCoverSplit = new SplitWindow(false,0.6f,dockingLogicalTableView,vertPlaylistCoverSplit);
+        SplitWindow horTableCoverSplit = new SplitWindow(false,0.5f,dockingLogicalTableView,vertPlaylistCoverSplit);
         SplitWindow verTreeRepositorySplit = new SplitWindow(true,0.75f,dockingLogicalTreeView,dockingLogicalPlaylistRepository);
         SplitWindow verMainSplit = new SplitWindow(true,0.4f,verTreeRepositorySplit,horTableCoverSplit);
 		
