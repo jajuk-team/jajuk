@@ -233,7 +233,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                 if ( EVENT_COVER_REFRESH.equals(subject)){
                     alCovers.clear(); //remove all existing covers
                     final org.jajuk.base.File fCurrent = FIFO.getInstance().getCurrentFile();
-                    //if current file is null ( probably a file cannot be read ) or basic file 
+                    //if current file is null ( probably a file cannot be read ) 
                     if ( fCurrent == null || fCurrent.getDirectory() == null){
                         alCovers.add(coverDefault);
                         index = 0;

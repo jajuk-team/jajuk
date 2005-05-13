@@ -65,6 +65,9 @@ public class FIFO implements ITechnicalStrings {
 
     /** First played file flag* */
     private static boolean bFirstFile = true;
+    
+    /** Current playlist if not queue*/
+    private PlaylistFile playlist;
 
     /**
      * Singleton access
@@ -93,6 +96,7 @@ public class FIFO implements ITechnicalStrings {
         alPlanned = new ArrayList(10);
         JajukTimer.getInstance().reset();
         index = 0;
+        playlist = null;
     }
 
     /**
@@ -170,8 +174,7 @@ public class FIFO implements ITechnicalStrings {
                     it.remove();
                     break;
                 }
-                if (item.getFile().getDirectory() != null
-                        && !item.getFile().getDirectory().getDevice().isMounted()) { // file is null if it is a BasicFile
+                if (!item.getFile().getDirectory().getDevice().isMounted()) {
                     // not mounted, ok let them a chance to mount it:
                     final String sMessage = Messages.getString("Error.025") + " (" + item.getFile().getDirectory().getDevice().getName() + Messages.getString("FIFO.4"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                     int i = Messages.getChoice(sMessage, JOptionPane.INFORMATION_MESSAGE);
@@ -287,7 +290,7 @@ public class FIFO implements ITechnicalStrings {
                         file = ((StackItem) alPlanned.get(0)).getFile();
                         alPlanned.remove(0); // remove the planned track
                     } else { // otherwise, take next track from file manager
-                        file = FileManager.getNextFile(itemLast.getFile()); // take next availble file
+                        file = FileManager.getNextFile(itemLast.getFile()); // take next available file
                     }
                     if (file != null) {
                         pushCommand(new StackItem(file), false); // push it, it will be played
@@ -352,9 +355,7 @@ public class FIFO implements ITechnicalStrings {
                     ObservationManager.notify(new Event(EVENT_FILE_LAUNCHED, pDetails));
                     
                     //all cases for a cover full refresh
-                    if ((fCurrent.getDirectory() == null) // basic file
-                            || itemLast == null // first track, display cover
-                            || itemLast.getFile().getDirectory() == null // previous file was a basic file
+                    if ( itemLast == null // first track, display cover
                             || (!itemLast.getFile().getDirectory().equals(fCurrent.getDirectory()))) { // if we are always in the same directory, just leave to save cpu
                         ObservationManager.notify(new Event(EVENT_COVER_REFRESH)); // request update cover
                     }
@@ -937,5 +938,13 @@ public class FIFO implements ITechnicalStrings {
      */
     public static void setFirstFile(boolean bFirstFile){
         FIFO.bFirstFile = bFirstFile;
+    }
+
+    /**
+     * Set current playlist
+     * @param playlist
+     */
+    public void setPlaylist(PlaylistFile playlist) {
+        this.playlist = playlist;
     }
 }

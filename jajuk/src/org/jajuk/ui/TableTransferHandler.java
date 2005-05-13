@@ -117,7 +117,7 @@ import com.sun.TableSorter;
         //try to find a track for this id
 	    Object o = TrackManager.getTrack(ts.getValueAt(jtable.getSelectedRow(),jtable.getColumnCount()).toString());
 		if ( o  == null){ //no? try to find a file for this id
-			o = FileManager.getFile(ts.getValueAt(jtable.getSelectedRow(),jtable.getColumnCount()).toString());
+			o = FileManager.getFileById(ts.getValueAt(jtable.getSelectedRow(),jtable.getColumnCount()).toString());
 		}
 		if ( o != null){
 			dragSource.startDrag(dge, DragSource.DefaultMoveNoDrop ,new TransferableTableRow(o), this);

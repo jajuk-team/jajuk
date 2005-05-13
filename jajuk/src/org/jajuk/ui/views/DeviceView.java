@@ -199,7 +199,7 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 		jmiDelete.setActionCommand(EVENT_DEVICE_DELETE);
 		jpmenu.add(jmiDelete);
 		
-		jmiProperties = new JMenuItem(Messages.getString("DeviceView.14"),Util.getIcon(ICON_PROPERTIES)); //$NON-NLS-1$
+		jmiProperties = new JMenuItem(Messages.getString("DeviceView.14"),Util.getIcon(ICON_CONFIGURATION)); //$NON-NLS-1$
 		jmiProperties.addActionListener(this);
 		jmiProperties.setActionCommand(EVENT_DEVICE_PROPERTIES);
 		jpmenu.add(jmiProperties);

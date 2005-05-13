@@ -66,28 +66,7 @@ public class File extends PropertyAdapter implements Comparable,ITechnicalString
 		this.lSize = lSize;
 		this.sQuality = sQuality;
 	}
-	
-	
-	/**Void constructor, needed by BasicFile*/
-	public File(java.io.File fio){
-		this.sId = "-1"; //$NON-NLS-1$
-		Tag tag = new Tag(fio);
-		String sTrackName = tag.getTrackName();
-		String sAlbumName = tag.getAlbumName();
-		String sAuthorName = tag.getAuthorName();
-		String sStyle = tag.getStyleName();
-		long length = tag.getLength(); //length in sec
-		this.sQuality = tag.getQuality();
-		this.sName = fio.getName();
-		this.sAbs = fio.getAbsolutePath();
-		String sYear = tag.getYear();
-		Album album = AlbumManager.registerAlbum(sAlbumName);
-		Style style = StyleManager.registerStyle(sStyle);
-		Author author = AuthorManager.registerAuthor(sAuthorName);
-		Type type = TypeManager.getTypeByExtension(Util.getExtension(fio));
-		this.track = new Track(sId,sTrackName,album,style,author,length,sYear,type);
-	}
-	
+		
 	/**
 	 * toString method
 	 */
@@ -238,9 +217,6 @@ public class File extends PropertyAdapter implements Comparable,ITechnicalString
 	/**Return true if the file can be accessed right now 
 	 * @return true the file can be accessed right now*/
 	public boolean isReady(){
-		if ( getDirectory() == null){ //means it is a basic file
-			return true;
-		}
 		if ( getDirectory().getDevice().isMounted() && !getDirectory().getDevice().isRefreshing() && !getDirectory().getDevice().isSynchronizing()){
 			return true;
 		}
@@ -250,9 +226,6 @@ public class File extends PropertyAdapter implements Comparable,ITechnicalString
 	/**Return true if the file is currently refreshed or synchronized 
 	 * @return true if the file is currently refreshed or synchronized*/
 	public boolean isScanned(){
-		if ( getDirectory() == null){ //means it is a basic file
-			return false;
-		}
 		if ( getDirectory().getDevice().isRefreshing() || getDirectory().getDevice().isSynchronizing()){
 			return true;
 		}

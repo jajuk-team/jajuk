@@ -38,7 +38,6 @@ import javax.swing.BorderFactory;
 import javax.swing.DefaultListSelectionModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -50,7 +49,6 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
 
-import org.jajuk.base.BasicFile;
 import org.jajuk.base.Event;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
@@ -61,16 +59,14 @@ import org.jajuk.base.Playlist;
 import org.jajuk.base.PlaylistFile;
 import org.jajuk.base.PlaylistManager;
 import org.jajuk.base.StackItem;
-import org.jajuk.base.TypeManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.IconLabel;
+import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.JajukCellRender;
-import org.jajuk.ui.JajukFileChooser;
 import org.jajuk.ui.JajukTable;
 import org.jajuk.ui.PlaylistFileItem;
 import org.jajuk.ui.PlaylistTransferHandler;
 import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
@@ -88,7 +84,6 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
     JPanel jpControl;
     JButton jbRun;
     JButton jbSave;
-    JButton jbAdd;
     JButton jbRemove;
     JButton jbUp;
     JButton jbDown;
@@ -237,7 +232,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
         int iXspace = 2;
         //Note : we don't use toolbar because it's buggy in Metal look and feel : icon get bigger
         double sizeControl[][] =
-        {{iXspace,20,iXspace,20,iXspace,20,iXspace,20,iXspace,20,iXspace,20,iXspace,20,iXspace,20,iXspace,TableLayout.FILL,iXspace},
+        {{iXspace,20,iXspace,20,iXspace,20,iXspace,20,iXspace,20,iXspace,20,iXspace,20,iXspace,TableLayout.FILL,iXspace},
                 {25,0.99}};
         jpControl.setLayout(new TableLayout(sizeControl));
         jbRun = new JButton(Util.getIcon(ICON_RUN));
@@ -246,9 +241,6 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
         jbSave = new JButton(Util.getIcon(ICON_SAVE));
         jbSave.setToolTipText(Messages.getString("AbstractPlaylistEditorView.3")); //$NON-NLS-1$
         jbSave.addActionListener(this);
-        jbAdd = new JButton(Util.getIcon(ICON_ADD));
-        jbAdd.setToolTipText(Messages.getString("AbstractPlaylistEditorView.4")); //$NON-NLS-1$
-        jbAdd.addActionListener(this);
         jbRemove = new JButton(Util.getIcon(ICON_REMOVE));
         jbRemove.setToolTipText(Messages.getString("AbstractPlaylistEditorView.5")); //$NON-NLS-1$
         jbRemove.addActionListener(this);
@@ -267,13 +259,12 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
         jlTitle = new JLabel(""); //$NON-NLS-1$
         jpControl.add(jbRun,"1,0"); //$NON-NLS-1$
         jpControl.add(jbSave,"3,0"); //$NON-NLS-1$
-        jpControl.add(jbAdd,"5,0"); //$NON-NLS-1$
-        jpControl.add(jbRemove,"7,0"); //$NON-NLS-1$
-        jpControl.add(jbAddShuffle,"9,0"); //$NON-NLS-1$
-        jpControl.add(jbUp,"11,0"); //$NON-NLS-1$
-        jpControl.add(jbDown,"13,0"); //$NON-NLS-1$
-        jpControl.add(jbClear,"15,0"); //$NON-NLS-1$
-        jpControl.add(Util.getCentredPanel(jlTitle),"17,0"); //$NON-NLS-1$
+        jpControl.add(jbRemove,"5,0"); //$NON-NLS-1$
+        jpControl.add(jbAddShuffle,"7,0"); //$NON-NLS-1$
+        jpControl.add(jbUp,"9,0"); //$NON-NLS-1$
+        jpControl.add(jbDown,"11,0"); //$NON-NLS-1$
+        jpControl.add(jbClear,"13,0"); //$NON-NLS-1$
+        jpControl.add(Util.getCentredPanel(jlTitle),"15,0"); //$NON-NLS-1$
         jtable = new JajukTable(model,false);
         jtable.setSelectionMode(DefaultListSelectionModel.MULTIPLE_INTERVAL_SELECTION); //multi-row selection
         Enumeration enumeration = jtable.getColumnModel().getColumns();
@@ -319,8 +310,8 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
      */
     public void update(Event event) {
         String subject = event.getSubject();
-    	if (EVENT_PLAYLIST_CHANGED.equals(subject) && event.getDetails() != null){
-          //clear planned
+        if (EVENT_PLAYLIST_CHANGED.equals(subject) && event.getDetails() != null){
+            //clear planned
             alPlanned = new ArrayList(0);  //make sure planned is voided if not in Queue
             jtable.getSelectionModel().clearSelection(); //remove selection 
             PlaylistFileItem plfi = (PlaylistFileItem)ObservationManager.getDetail(event,DETAIL_SELECTION);
@@ -350,8 +341,8 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
                             alPlanned = FIFO.getInstance().getPlanned();
                         }
                         else{
-                            alItems = Util.createStackItems(plfi.getPlaylistFile().getBasicFiles(),
-                                    ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true); //PERF
+                            alItems = Util.createStackItems(plfi.getPlaylistFile().getFiles(),
+                                ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true); //PERF
                         }
                         iRowNum = alItems.size() + alPlanned.size();
                     }
@@ -382,7 +373,6 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
     private void setDefaultButtonState(){
         //set buttons
         if ( iType == PlaylistFileItem.PLAYLIST_TYPE_QUEUE){
-            jbAdd.setEnabled(true); //add at the FIFO end by default even with no selection
             jbClear.setEnabled(true);
             jbUp.setEnabled(false); //set it to false just for startup because nothing is selected
             jbDown.setEnabled(false); //set it to false just for startup because nothing is selected 
@@ -390,8 +380,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
             jbRemove.setEnabled(false); //set it to false just for startup because cursor is over first track and it can't be removed in queue mode
             jbRun.setEnabled(false);
         }
-        else if ( iType == PlaylistFileItem.PLAYLIST_TYPE_BESTOF){
-            jbAdd.setEnabled(false);
+        else if ( iType == PlaylistFileItem.PLAYLIST_TYPE_BESTOF ||  iType == PlaylistFileItem.PLAYLIST_TYPE_NOVELTIES){
             jbClear.setEnabled(false);
             jbDown.setEnabled(false);
             jbAddShuffle.setEnabled(false);
@@ -400,7 +389,6 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
             jbUp.setEnabled(false);
         }
         else{
-            jbAdd.setEnabled(true);//add at the FIFO end by default even with no selection
             jbClear.setEnabled(true);
             jbDown.setEnabled(false);//set it to false just for startup because nothing is selected
             jbUp.setEnabled(false);//set it to false just for startup because nothing is selected
@@ -446,7 +434,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
                         item.setUserLaunch(true);
                         FIFO.getInstance().push(item,false);
                     }
-                    else{ //normal item
+                    else{ //all other playlists, we launch all tracks from this position to the end of playlist
                         FIFO.getInstance().goTo(jtable.getSelectedRow());
                         //remove selection for planned tracks
                         ListSelectionModel lsm = jtable.getSelectionModel();
@@ -457,7 +445,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
                 }
                 //For others playlists
                 else{
-                    FIFO.getInstance().push(item,false);
+                    FIFO.getInstance().push(getItemsFrom(jtable.getSelectedRow()),false);
                 }
             }
         }
@@ -479,6 +467,22 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
             return null;
         }
     }
+    
+    /**
+     * Return all stack items from this value to the end of selection
+     * @param index
+     * @return an arraylist of stackitems or null if index is out of bounds
+     */
+    private ArrayList getItemsFrom(int index){
+        ArrayList alOut = new ArrayList(alItems.size());
+        if (index < alItems.size()){
+            return new ArrayList(alItems.subList(index,alItems.size()-1));
+        }
+        else{
+            return null;
+        }
+    }
+    
     
     /* (non-Javadoc)
      * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
@@ -512,8 +516,9 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
                                     PlaylistFile plf = (PlaylistFile)it.next();
                                     plf.setModified(true);
                                     try{
-                                        plf.setBasicFiles(plfi.getPlaylistFile().getBasicFiles()); //set same files for all playlist files
+                                        plf.setFiles(plfi.getPlaylistFile().getFiles()); //set same files for all playlist files
                                         plf.commit();
+                                        InformationJPanel.getInstance().setMessage(Messages.getString("AbstractPlaylistEditorView.22"),InformationJPanel.INFORMATIVE);
                                     }
                                     catch(JajukException je){
                                         Log.error(je);
@@ -525,6 +530,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
                     else{ //in physical perspective
                         try{
                             plfi.getPlaylistFile().commit();
+                            InformationJPanel.getInstance().setMessage(Messages.getString("AbstractPlaylistEditorView.22"),InformationJPanel.INFORMATIVE);
                         }
                         catch(JajukException je){
                             Log.error(je);
@@ -568,28 +574,14 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
                     iRowNum --;
                 }
             }
-            else if (ae.getSource() == jbAdd || ae.getSource() == jbAddShuffle){
+            else if ( ae.getSource() == jbAddShuffle){
                 int iRow = jtable.getSelectedRow();
                 if ( iRow < 0 ){ //no row is selected, take fifo last position as a default
                     iRow = FIFO.getInstance().getFIFO().size(); 
                 }
-                File file = null;
-                if (ae.getSource() == jbAdd){
-                    JajukFileChooser jfchooser = new JajukFileChooser(new JajukFileFilter(true,TypeManager.getAllMusicTypes())); 
-                    if (fileLast != null){//restore last selected directory
-                        jfchooser.setCurrentDirectory(fileLast.getParentFile());
-                    }
-                    int returnVal = jfchooser.showOpenDialog(this);
-                    if (returnVal == JFileChooser.APPROVE_OPTION) {
-                        file = new BasicFile(jfchooser.getSelectedFile());
-                        fileLast = jfchooser.getSelectedFile(); //store current file
-                    }
-                }
-                else if (ae.getSource() == jbAddShuffle){
-                    file = FileManager.getShuffleFile(); 
-                }
+                File file = FileManager.getShuffleFile(); 
                 try{
-                    plfi.getPlaylistFile().addBasicFile(iRow,new BasicFile(file));
+                    plfi.getPlaylistFile().addFile(iRow,file);
                     iRowNum ++;	
                 }
                 catch(JajukException je){
@@ -637,16 +629,6 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
                 bPlanned = true;
             }
             //now analyze each button
-            //add button
-            if ( plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_BESTOF  //neither for bestof playlist
-                    || lsm.getMinSelectionIndex() != lsm.getMaxSelectionIndex()  //multiple selection not supported
-                    || selectedRow > FIFO.getInstance().getFIFO().size()  //no add for planned track but user can add over first planned track to extand FIFO
-                    || (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE && lsm.getMinSelectionIndex() == 0 )){ //can't add track at current track position
-                jbAdd.setEnabled(false);
-            }
-            else{
-                jbAdd.setEnabled(true);
-            }
             //Remove button
             if (bPlanned ){//not for planned track
                 jbRemove.setEnabled(true);
@@ -654,7 +636,8 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
             else{
                 //check for first row remove case : we can't remove currently played track
                 if ( plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE && lsm.getMinSelectionIndex() == 0
-                        || plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_BESTOF ){ //neither for bestof playlist
+                        || plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_BESTOF 
+                        || plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_NOVELTIES){ //neither for bestof or novelties playlist
                     jbRemove.setEnabled(false);
                 }
                 else{
@@ -663,6 +646,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
             }
             //Add shuffle button
             if ( plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_BESTOF  //neither for bestof playlist
+                    || plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_NOVELTIES
                     || lsm.getMinSelectionIndex() != lsm.getMaxSelectionIndex() //multiple selection not supported
                     || selectedRow > FIFO.getInstance().getFIFO().size()  //no add for planned track but user can add over first planned track to extand FIFO
                     || (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE && lsm.getMinSelectionIndex() == 0 )){ //can't add track at current track position
@@ -674,7 +658,8 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
             //Up button
             if (lsm.getMinSelectionIndex() != lsm.getMaxSelectionIndex() //check if several rows have been selected : doesn't supported yet 
                     || (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE && FIFO.getInstance().containsRepeat()) //check if we are in the queue with repeated tracks : not supported yet
-                    || plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_BESTOF ){ //neither for bestof playlist
+                    || plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_BESTOF 
+                    || plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_NOVELTIES){ //neither for bestof or novelties playlist
                 jbUp.setEnabled(false);
             }
             else{ //yet here ?
@@ -699,7 +684,8 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
             //Down button
             if (lsm.getMinSelectionIndex() != lsm.getMaxSelectionIndex() //check if several rows have been selected : doesn't supported yet 
                     || (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE && FIFO.getInstance().containsRepeat()) //check if we are in the queue with repeated tracks : not supported yet
-                    || plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_BESTOF ){ //neither for bestof playlist
+                    || plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_BESTOF 
+                    || plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_NOVELTIES){ //neither for bestof playlist nor novelties
                 jbDown.setEnabled(false);
             }
             else{ //yet here ?

@@ -255,7 +255,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 		//set choosen track in file selection
 		String sFileId = ConfigurationManager.getProperty(CONF_STARTUP_FILE);
 		if ( !"".equals(sFileId)){ //$NON-NLS-1$
-			File file = FileManager.getFile(sFileId);
+			File file = FileManager.getFileById(sFileId);
 			if (file != null){
 			    sbSearch.setText(file.getTrack().getName());
 			}
@@ -918,6 +918,8 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
 					ConfigurationManager.setProperty(CONF_COVERS_MAX_SIZE,jtfMaxSize.getText());
                     //commit configuration
                     ConfigurationManager.commit();
+                    //notify playlist editor (usefull for novelties)
+                    ObservationManager.notify(new Event(EVENT_PLAYLIST_REFRESH));
                }
 				else if (e.getSource() == jbDefault){
 					ConfigurationManager.setDefaultProperties();

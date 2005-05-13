@@ -180,7 +180,20 @@ public class Track extends PropertyAdapter implements Comparable{
 		return l;
 	}
 	
-	/**
+	
+    /**
+     * @param bHideUnmounted : get even unmounted files?
+     * @return best file to play for this track
+     */
+    public File getPlayeableFile(boolean bHideUnmounted) {
+        File file = getPlayeableFile();
+        if (file == null && !bHideUnmounted){
+            file = (File)getFiles().get(0); //take the first file we find
+        }
+        return file;
+    }
+    
+    /**
 	 * @return best file to play for this track
 	 */
 	public File getPlayeableFile() {

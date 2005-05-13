@@ -26,6 +26,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Properties;
 
 import javax.swing.JCheckBoxMenuItem;
@@ -240,6 +241,7 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
 			}
 			else if (e.getSource() == jmiNovelties){
 				ArrayList alToPlay = FileManager.getGlobalNoveltiesPlaylist();
+                Collections.shuffle(alToPlay);//shuffle the selection
 				FIFO.getInstance().push(Util.createStackItems(alToPlay,
 						ConfigurationManager.getBoolean(CONF_STATE_REPEAT),false),false);
 			}
@@ -319,7 +321,7 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
 			}	
 		}
 		else if (EVENT_FILE_LAUNCHED.equals(subject)){
-			File file  = FileManager.getFile((String)ObservationManager.getDetail(event,DETAIL_CURRENT_FILE_ID));
+			File file  = FileManager.getFileById((String)ObservationManager.getDetail(event,DETAIL_CURRENT_FILE_ID));
 			String sOut = ""; //$NON-NLS-1$
 			if (file != null ){
 				String sAuthor = file.getTrack().getAuthor().getName();

@@ -59,6 +59,8 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,Obser
     public static final int INFORMATIVE = 0;
     /** Informative message type ( displayed in red )**/
     public static final int ERROR = 1;
+    /** Warning message type ( displayed in orange )**/
+    public static final int WARNING = 2;
     /**Self instance*/
     static private InformationJPanel ijp = null;    
     /** Swing Timer to refresh the component*/ 
@@ -215,6 +217,9 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,Obser
                 case ERROR:
                     jlMessage.setForeground(Color.RED);
                     break;
+                case WARNING:
+                    jlMessage.setForeground(Color.ORANGE);
+                    break;
                 default:
                     jlMessage.setForeground(Color.BLUE);
                 break;   
@@ -293,7 +298,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,Obser
                         setMessage(Messages.getString("Error.007")+": "+fCurrent.getAbsolutePath(),InformationJPanel.ERROR);//$NON-NLS-1$ //$NON-NLS-2$
                     }
                 }
-                else{ //none specified file (basic files error for ex)
+                else{ //none specified file 
                   setMessage(Messages.getString("Error.007"),InformationJPanel.ERROR);//$NON-NLS-1$
                 }
             } catch (Exception e) {

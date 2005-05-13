@@ -92,7 +92,8 @@ public class PlaylistTransferHandler implements DropTargetListener,ITechnicalStr
 			c = c.getParent().getParent().getParent();
 			plfi = ((AbstractPlaylistEditorView)c).getCurrentPlaylistFileItem();
 		}
-		if ( plfi!= null && plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_BESTOF){ //no dnd to best of playlist
+		if ( plfi!= null && (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_BESTOF
+                ||  plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_NOVELTIES)){ //no dnd to best of playlist
 			dtde.rejectDrag();
 		}
 	}
@@ -201,7 +202,7 @@ public class PlaylistTransferHandler implements DropTargetListener,ITechnicalStr
 			}
 			//normal or new playlist case
 			else if ( plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_NORMAL || plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_NEW){
-				plfi.getPlaylistFile().addBasicFiles(Util.applyPlayOption(alSelectedFiles));
+				plfi.getPlaylistFile().addFiles(Util.applyPlayOption(alSelectedFiles));
 			}
 		}		
 		catch (Exception e) {	

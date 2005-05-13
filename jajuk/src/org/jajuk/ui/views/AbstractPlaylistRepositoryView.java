@@ -37,6 +37,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 
 import org.jajuk.base.Event;
+import org.jajuk.base.FIFO;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Observer;
 import org.jajuk.base.PlaylistFile;
@@ -70,7 +71,10 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 	
 	/**Bestof playlist*/
 	PlaylistFileItem plfiBestof;
-	
+    
+    /**Novelties playlist*/
+    PlaylistFileItem plfiNovelties;
+    
 	/**List of playlistfile item*/
 	ArrayList alPlaylistFileItems = new ArrayList(10);
 	
@@ -198,8 +202,8 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 		plfi.setBorder(BorderFactory.createLineBorder(Color.BLACK,5));
 		//set new item
 		this.plfiSelected = plfi;
-		
-	}
+        FIFO.getInstance().setPlaylist(plfi.getPlaylistFile());
+  }
 	
 	
 	
@@ -279,8 +283,14 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 		plfiBestof = new PlaylistFileItem(PlaylistFileItem.PLAYLIST_TYPE_BESTOF,ICON_PLAYLIST_BESTOF,new PlaylistFile(PlaylistFileItem.PLAYLIST_TYPE_BESTOF,"4",null,null,null),Messages.getString("PhysicalPlaylistRepositoryView.15")); //$NON-NLS-1$ //$NON-NLS-2$
 		plfiBestof.setToolTipText(Messages.getString("PhysicalPlaylistRepositoryView.16")); //$NON-NLS-1$
 		plfiBestof.addMouseListener(ma);
-		jpSpecials.add(plfiBestof);
-		alPlaylistFileItems.add(plfiBestof);
+        jpSpecials.add(plfiBestof);
+        alPlaylistFileItems.add(plfiBestof);
+        //Novelties
+        plfiNovelties = new PlaylistFileItem(PlaylistFileItem.PLAYLIST_TYPE_NOVELTIES,ICON_PLAYLIST_NOVELTIES,new PlaylistFile(PlaylistFileItem.PLAYLIST_TYPE_NOVELTIES,"1",null,null,null),Messages.getString("PhysicalPlaylistRepositoryView.17")); //$NON-NLS-1$ //$NON-NLS-2$
+        plfiNovelties.setToolTipText(Messages.getString("PhysicalPlaylistRepositoryView.18")); //$NON-NLS-1$
+        plfiNovelties.addMouseListener(ma);
+        jpSpecials.add(plfiNovelties);
+		alPlaylistFileItems.add(plfiNovelties);
 		
 		jpRoot.add(jpSpecials);
 		

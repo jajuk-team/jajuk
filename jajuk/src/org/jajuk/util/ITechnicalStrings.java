@@ -59,7 +59,10 @@ public interface ITechnicalStrings {
 	
 	//About 
 	public static final String ABOUT = "<html>Jajuk version "+JAJUK_VERSION+"</html>";
-	
+    
+    //Properties
+    public static final String PROPERTY_SEQ = "sequence";//playlist item sequence
+    
 	// directory path
 	public static final String PATH_ICONS = "jar:"+Util.getExecLocation()+"!/org/jajuk/icons/";
 	public static final String PATH_IMAGES = "jar:"+Util.getExecLocation()+"!/org/jajuk/images/";
@@ -107,7 +110,8 @@ public interface ITechnicalStrings {
 	public static final String ICON_NEW=  PATH_ICONS + "16x16/new.png";
 	public static final String ICON_DELETE=  PATH_ICONS + "16x16/delete.png";
 	public static final String ICON_PROPERTIES=  PATH_ICONS + "16x16/properties.png";
-	public static final String ICON_MOUNT=  PATH_ICONS + "16x16/mount.png";
+    public static final String ICON_CONFIGURATION   = "/org/jajuk/icons/16x16/configuration_perspective.png";
+    public static final String ICON_MOUNT=  PATH_ICONS + "16x16/mount.png";
 	public static final String ICON_UNMOUNT=  PATH_ICONS + "16x16/unmount.png";
 	public static final String ICON_TEST=  PATH_ICONS + "16x16/test.png";
 	public static final String ICON_REFRESH=  PATH_ICONS + "16x16/refresh.png";
@@ -158,7 +162,8 @@ public interface ITechnicalStrings {
 	public static final String ICON_PLAYLIST_NEW =  PATH_ICONS + "40x40/playlist_new.png";
 	public static final String ICON_PLAYLIST_BOOKMARK =  PATH_ICONS + "40x40/playlist_bookmark.png";
 	public static final String ICON_PLAYLIST_BESTOF =  PATH_ICONS + "40x40/playlist_bestof.png";
-	public static final String ICON_RUN =  PATH_ICONS + "16x16/player_play.png";
+    public static final String ICON_PLAYLIST_NOVELTIES =  PATH_ICONS + "40x40/playlist_novelties.png";
+    public static final String ICON_RUN =  PATH_ICONS + "16x16/player_play.png";
 	public static final String ICON_ADD =  PATH_ICONS + "16x16/add.png";
 	public static final String ICON_REMOVE =  PATH_ICONS + "16x16/remove.png";
 	public static final String ICON_UP =  PATH_ICONS + "16x16/up.png";
@@ -174,6 +179,11 @@ public interface ITechnicalStrings {
 	public static final String ICON_TRACK_FIFO_NORM =  PATH_ICONS + "16x16/player_perspective.png";
 	public static final String ICON_TRACK_FIFO_REPEAT =  PATH_ICONS + "16x16/repeat.png";
     public static final String ICON_WIZARD = PATH_ICONS + "16x16/wizard.png";
+    public static final String ICON_TYPE_MP3 = PATH_ICONS + "16x16/type_mp3.png";
+    public static final String ICON_TYPE_OGG = PATH_ICONS + "16x16/type_ogg.png";
+    public static final String ICON_TYPE_AU = PATH_ICONS + "16x16/type_wav.png";
+    public static final String ICON_TYPE_AIFF = PATH_ICONS + "16x16/type_wav.png";
+    public static final String ICON_TYPE_WAV = PATH_ICONS + "16x16/type_wav.png";
     		
 	//images
 	public static final String IMAGES_SPLASHSCREEN =  PATH_IMAGES + "jajuk-splashscreen.png";
@@ -223,7 +233,8 @@ public interface ITechnicalStrings {
 	public static final String TYPE_PROPERTY_IS_MUSIC = "music";  
 	public static final String TYPE_PROPERTY_SEEK_SUPPORTED = "seek";  
 	public static final String TYPE_PROPERTY_TECH_DESC = "tech_desc"; //type description as given in the steam 
-	public static final String TYPE_PROPERTY_TECH_DESC_MP3 = "mp3"; 
+    public static final String TYPE_PROPERTY_ICON = "icon"; //icon used in the physical tree 
+    public static final String TYPE_PROPERTY_TECH_DESC_MP3 = "mp3"; 
 	public static final String TYPE_PROPERTY_TECH_DESC_OGG = "ogg"; 
 	public static final String TYPE_PROPERTY_TECH_DESC_AIFF = "aiff"; 
 	public static final String TYPE_PROPERTY_TECH_DESC_WAVE = "wave"; 
@@ -281,7 +292,6 @@ public interface ITechnicalStrings {
 		
 	//event keys
 	public static final String EVENT_EXIT ="exit"; //exit has be required
-	public static final String EVENT_OPEN_FILE ="open file"; //opening a file in the command jpanel
 	public static final String EVENT_REPEAT_MODE_STATUS_CHANGED="repeat status changed"; //repeat mode changed
 	public static final String EVENT_SHUFFLE_MODE_STATUS_CHANGED="shuffle status changed"; //shuffle mode changed
 	public static final String EVENT_CONTINUE_MODE_STATUS_CHANGED="continue status changed"; //continue mode changed
@@ -495,7 +505,6 @@ public interface ITechnicalStrings {
 	public static final String XML_TRACK_RATE = "rate";
 	public static final String XML_TRACK_HITS = "hits";
 	public static final String XML_TRACK_ADDED = "added";
-			
 	public static final String XML_PLAYLIST = "playlist";
 	
 }

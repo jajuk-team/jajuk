@@ -30,6 +30,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Properties;
 
 import javax.swing.BorderFactory;
@@ -354,7 +355,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 			    HistoryItem hi = null;
 			    hi = History.getInstance().getHistoryItem(jcbHistory.getSelectedIndex());
 			    if (hi != null){
-			        org.jajuk.base.File file = FileManager.getFile(hi.getFileId());
+			        org.jajuk.base.File file = FileManager.getFileById(hi.getFileId());
 			        if (file != null && !file.isScanned()){  //file must be on a device not refreshing
 			            try{
 			                FIFO.getInstance().push(new StackItem(file,ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
@@ -385,6 +386,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 			}
 			if (ae.getSource() == jbNovelties ){
 				ArrayList alToPlay  = FileManager.getGlobalNoveltiesPlaylist();
+                Collections.shuffle(alToPlay);//shuffle the selection
 				if ( alToPlay!= null && alToPlay.size() > 0){
 					FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alToPlay),
 							ConfigurationManager.getBoolean(CONF_STATE_REPEAT),false),false);

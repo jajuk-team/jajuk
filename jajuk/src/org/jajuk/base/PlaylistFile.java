@@ -21,7 +21,6 @@ package org.jajuk.base;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -58,12 +57,12 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 	private String  sHashcode;
 	/**Playlist parent directory*/
 	private Directory dParentDirectory;
-	/**Basic Files list, singleton*/
-	private ArrayList alBasicFiles;
+	/**Files list, singleton*/
+	private ArrayList alFiles;
 	/**Modification flag*/
 	private boolean bModified = false;
 	/**Associated physical file*/
-	private File fio;
+	private java.io.File fio;
 	/**Type type*/
 	private int iType;
 	/** pre-calculated absolute path for perf*/
@@ -85,7 +84,7 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 		this.sHashcode = sHashcode;
 		this.dParentDirectory = dParentDirectory;
 		if ( getDirectory() != null){  //test "new"playlist case
-			this.fio = new File(getDirectory().getDevice().getUrl()+getDirectory().getRelativePath()+"/"+getName()); //$NON-NLS-1$
+			this.fio = new java.io.File(getDirectory().getDevice().getUrl()+getDirectory().getRelativePath()+"/"+getName()); //$NON-NLS-1$
 		}
 	}
 	
@@ -164,7 +163,7 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 			FIFO.getInstance().clear();
 		}
 		else{
-		    alBasicFiles.clear();
+		    alFiles.clear();
 		}
 		setModified(true);
 	}
@@ -216,63 +215,73 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 	}
 	
 	/**
-	 * @return Returns the list of basic files this playlist maps to
+	 * @return Returns the list of files this playlist maps to
 	 */
-	public synchronized ArrayList getBasicFiles() throws JajukException{
-		if ( iType == PlaylistFileItem.PLAYLIST_TYPE_NORMAL && alBasicFiles == null){ //normal playlist, test if list is null for perfs (avoid reading again the m3u file)
+	public synchronized ArrayList getFiles() throws JajukException{
+		if ( iType == PlaylistFileItem.PLAYLIST_TYPE_NORMAL && alFiles == null){ //normal playlist, test if list is null for perfs (avoid reading again the m3u file)
 			if ( fio.exists() && fio.canRead()){  //check device is mounted
-				alBasicFiles = load(); //populate playlist
+				alFiles = load(); //populate playlist
 			}
 			else{  //error accessing playlist file
 				throw new JajukException("009",fio.getAbsolutePath(),new Exception()); //$NON-NLS-1$
 			}
 		}
 		else if ( iType == PlaylistFileItem.PLAYLIST_TYPE_BESTOF){ //bestof playlist
-			alBasicFiles = new ArrayList(10);
-			Iterator it = FileManager.getBestOfFiles().iterator();
+			alFiles = new ArrayList(10);
+			Iterator it = FileManager.getBestOfFiles(ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED)).iterator(); //even unmounted files if required
 			while ( it.hasNext()){
-				alBasicFiles.add(new BasicFile((org.jajuk.base.File)it.next()));
+			    alFiles.add((org.jajuk.base.File)it.next());
 			}
 		}
+        else if ( iType == PlaylistFileItem.PLAYLIST_TYPE_NOVELTIES){ //novelties playlist
+            alFiles = new ArrayList(10);
+            ArrayList alNovelties = FileManager.getGlobalNoveltiesPlaylist(ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED));//even unmounted files if required 
+            if (alNovelties == null){
+                return alFiles;
+            }
+            Iterator it = alNovelties.iterator();
+            while ( it.hasNext()){
+                alFiles.add((org.jajuk.base.File)it.next());
+            }
+        }
 		else if ( iType == PlaylistFileItem.PLAYLIST_TYPE_BOOKMARK){ //bookmark playlist
-			alBasicFiles = new ArrayList(10);
+			alFiles = new ArrayList(10);
 			Iterator it = Bookmarks.getInstance().getFiles().iterator();
 			while ( it.hasNext()){
-				alBasicFiles.add(new BasicFile((org.jajuk.base.File)it.next()));
+				alFiles.add((org.jajuk.base.File)it.next());
 			}
 		}
 		else if ( iType == PlaylistFileItem.PLAYLIST_TYPE_NEW){ //new playlist
-			if (alBasicFiles == null ){
-				alBasicFiles = new ArrayList(10);
+			if (alFiles == null ){
+				alFiles = new ArrayList(10);
 			}
 		}
 		else if ( iType == PlaylistFileItem.PLAYLIST_TYPE_QUEUE){ //queue playlist
 			//clean data
-			alBasicFiles = new ArrayList(10);
+			alFiles = new ArrayList(10);
 			if ( !FIFO.isStopped()){
 				ArrayList alQueue = (ArrayList)FIFO.getInstance().getFIFO().clone();
 				Iterator it = alQueue.iterator();
 				while (it.hasNext()){
-					BasicFile bfile = new BasicFile(((StackItem)it.next()).getFile()); 
-					alBasicFiles.add(bfile);
+					alFiles.add(((StackItem)it.next()).getFile());
 				}
 			}
 		}
-		return alBasicFiles;
+		return alFiles;
 	}
 	
 	/**
-	 * Add a basic file to this playlist file
+	 * Add a file to this playlist file
 	 * @param index
 	 * @param bf
 	 */
-	public synchronized void addBasicFile(int index,BasicFile bf) throws JajukException{
+	public synchronized void addFile(int index,File file) throws JajukException{
 		if ( iType == PlaylistFileItem.PLAYLIST_TYPE_BOOKMARK){
-			Bookmarks.getInstance().addFile(index,bf);
+			Bookmarks.getInstance().addFile(index,file);
 		}
 		if ( iType == PlaylistFileItem.PLAYLIST_TYPE_QUEUE){
 			//set repeat mode : if previous item is repeated, repeat as well
-		    StackItem item = new StackItem(bf);
+		    StackItem item = new StackItem(file);
 			StackItem itemPrevious = FIFO.getInstance().getItem(index-1);
 		    if (itemPrevious != null && itemPrevious.isRepeat()){
 			    item.setRepeat(true);
@@ -284,36 +293,33 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 		    FIFO.getInstance().insert(item,index); //insert this track in the fifo
 		}
 		else {
-			getBasicFiles().add(index,bf);
+			getFiles().add(index,file);
 			setModified(true);
 		}
 	}
 	
 	
 	/**
-	 * Add a basic file to this playlist file
+	 * Add a file to this playlist file
 	 * @param bf
 	 */
-	public synchronized void addBasicFile(BasicFile bf) throws JajukException{
-		ArrayList al = getBasicFiles();
+	public synchronized void addFile(File file) throws JajukException{
+		ArrayList al = getFiles();
 		int index = al.size();
-		addBasicFile(index,bf);
+		addFile(index,file);
 	}
 	
 	/**
-	 * Add some basic files to this playlist file. 
-	 * @param alBasicFilesToAdd : List of File or BasicFiles. Files are transformed to BasicFiles automaticaly
+	 * Add some files to this playlist file. 
+	 * @param alFilesToAdd : List of File
 	 */
-	public synchronized void addBasicFiles(ArrayList alBasicFilesToAdd) throws JajukException{
+	public synchronized void addFiles(ArrayList alFilesToAdd) throws JajukException{
 	    try{
-	        Iterator it = alBasicFilesToAdd.iterator();
+	        Iterator it = alFilesToAdd.iterator();
 	        while (it.hasNext()){
 	            org.jajuk.base.File file = (org.jajuk.base.File)it.next();
-	            if (!(file instanceof BasicFile)){
-	                file = new BasicFile(file);
-	            }
-	            addBasicFile((BasicFile)file);
-	        }
+	            addFile(file);
+            }
 	    }
 	    catch(Exception e){
 	        Log.error(e);
@@ -335,10 +341,10 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 		else if(iType == PlaylistFileItem.PLAYLIST_TYPE_QUEUE){
 		    FIFO.getInstance().down(index);
 		}
-		else if ( alBasicFiles != null &&  index < alBasicFiles.size()-1){ //the last track cannot go depper
-			BasicFile bfile = (BasicFile)alBasicFiles.get(index+1); //save n+1 file
-			alBasicFiles.set(index+1,alBasicFiles.get(index));
-			alBasicFiles.set(index,bfile); //n+1 file becomes nth file
+		else if ( alFiles != null &&  index < alFiles.size()-1){ //the last track cannot go depper
+			File file = (File)alFiles.get(index+1); //save n+1 file
+			alFiles.set(index+1,alFiles.get(index));
+			alFiles.set(index,file); //n+1 file becomes nth file
 			setModified(true);
 		}
 	}
@@ -354,14 +360,15 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 		else if(iType == PlaylistFileItem.PLAYLIST_TYPE_QUEUE){
 		    FIFO.getInstance().up(index);
 		}
-		else if ( alBasicFiles != null &&  index > 0){ //the first track cannot go further
-			BasicFile bfile = (BasicFile)alBasicFiles.get(index-1); //save n-1 file
-			alBasicFiles.set(index-1,alBasicFiles.get(index));
-			alBasicFiles.set(index,bfile); //n-1 file becomes nth file
+		else if ( alFiles != null &&  index > 0){ //the first track cannot go further
+			File bfile = (File)alFiles.get(index-1); //save n-1 file
+			alFiles.set(index-1,alFiles.get(index));
+			alFiles.set(index,bfile); //n-1 file becomes nth file
 			setModified(true);
 		}
 	}
-	
+   
+  
 	
 	/**
 	 * Remove a track from the playlist
@@ -375,7 +382,7 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 			FIFO.getInstance().remove(index,index);
 		}
 		else{
-			alBasicFiles.remove(index);
+			alFiles.remove(index);
 		}
 		setModified(true);
 	}
@@ -390,9 +397,9 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 			try {
 				bw = new BufferedWriter(new FileWriter(fio));
 				bw.write(PLAYLIST_NOTE+"\n"); //$NON-NLS-1$
-				Iterator it = getBasicFiles().iterator();
+				Iterator it = getFiles().iterator();
 				while ( it.hasNext()){
-					BasicFile bfile = (BasicFile)it.next();
+					File bfile = (File)it.next();
 					bw.write(bfile.getAbsolutePath()+"\n"); //$NON-NLS-1$
 				}
 			}
@@ -437,22 +444,24 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 					continue;
 				}
 				else{
-					File fileTrack = null;
+					java.io.File fileTrack = null;
 					StringBuffer sbFileDir = new StringBuffer(getDirectory().getDevice().getUrl()).append(getDirectory().getRelativePath());
 					if ( sLine.charAt(0)!='/'){
 						sb.insert(0,'/');
 					}
 					//take a look relatively to playlist directory to check files exists
-					fileTrack = new File(sbFileDir.append(sb).toString());
+					fileTrack = new java.io.File(sbFileDir.append(sb).toString());
 					if ( !fileTrack.exists()){  //check if this file exists
-						fileTrack = new File(sb.toString()); //check if given url is not absolute
+						fileTrack = new java.io.File(sb.toString()); //check if given url is not absolute
 						if ( !fileTrack.exists()){ //no more ? leave
 							continue;
 						}	
 					}
-					BasicFile bfile = new BasicFile(fileTrack);
-					alFiles.add(bfile);
-				}
+				    File file = FileManager.getFileByPath(fileTrack.getAbsolutePath());
+					if (file != null){ //null if file is not known by the collection
+                        alFiles.add(file);    
+                    }
+               }
 			}
 		}
 		catch(Exception e){
@@ -483,7 +492,7 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 			String sMessage = Messages.getString("Confirmation_delete")+"\n"+sFileToDelete; //$NON-NLS-1$ //$NON-NLS-2$
 			int i = Messages.getChoice(sMessage,JOptionPane.WARNING_MESSAGE); //$NON-NLS-1$
 			if ( i == JOptionPane.OK_OPTION){
-				File fileToDelete = new File(sFileToDelete);
+				java.io.File fileToDelete = new java.io.File(sFileToDelete);
 				if ( fileToDelete.exists()){
 					fileToDelete.delete();
 					PlaylistFileManager.delete(getId());
@@ -518,14 +527,14 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 	/**
 	 * @return Returns the fio.
 	 */
-	public File getFio() {
+	public java.io.File getFio() {
 		return fio;
 	}
 	
 	/**
 	 * @param fio The fio to set.
 	 */
-	public void setFio(File fio) {
+	public void setFio(java.io.File fio) {
 		setModified(true);
 		this.fio = fio;
 	}
@@ -551,7 +560,7 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 	public void play(){
 		ArrayList alFiles = null;
 		try{
-			alFiles = getBasicFiles();
+			alFiles = getFiles();
 		}
 		catch(JajukException je){
 			Log.error("009",getName(),new Exception()); //$NON-NLS-1$
@@ -583,10 +592,10 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 	}
 
 	/**
-	 * @param alBasicFiles The alBasicFiles to set.
+	 * @param alFiles The alFiles to set.
 	 */
-	public void setBasicFiles(ArrayList alBasicFiles) {
-		this.alBasicFiles = alBasicFiles;
+	public void setFiles(ArrayList alFiles) {
+		this.alFiles = alFiles;
 	}
 	
 	/**
@@ -596,16 +605,16 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 		ArrayList alTypes = new ArrayList(1);
 		alTypes.add(TypeManager.getTypeByExtension(EXT_PLAYLIST));
 		JajukFileChooser jfchooser = new JajukFileChooser(new JajukFileFilter(true,alTypes));
-        jfchooser.setSelectedFile(new File(DEFAULT_PLAYLIST_FILE+"."+EXT_PLAYLIST));//$NON-NLS-1$
+        jfchooser.setSelectedFile(new java.io.File(DEFAULT_PLAYLIST_FILE+"."+EXT_PLAYLIST));//$NON-NLS-1$
 		int returnVal = jfchooser.showSaveDialog(Main.getWindow());
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			java.io.File file = jfchooser.getSelectedFile();
 			//add automaticaly the extension if required
 			if (file.getAbsolutePath().endsWith(EXT_PLAYLIST)){
-                file = new File(file.getAbsolutePath());  
+                file = new java.io.File(file.getAbsolutePath());  
             }
             else{
-                file = new File(file.getAbsolutePath()+"."+EXT_PLAYLIST);//$NON-NLS-1$
+                file = new java.io.File(file.getAbsolutePath()+"."+EXT_PLAYLIST);//$NON-NLS-1$
             }
             
             this.setFio(file); //set new file path ( this playlist is a special playlist, just in memory )

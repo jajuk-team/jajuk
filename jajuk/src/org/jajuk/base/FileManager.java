@@ -48,7 +48,9 @@ public class FileManager implements ITechnicalStrings{
 	private static boolean bRateHasChanged = true;
 	/**Best of files*/
 	private static ArrayList alBestofFiles = new ArrayList(20);
-	/**Sorted files*/
+    /**Novelties files*/
+    private static ArrayList alNovelties = new ArrayList(20);
+    /**Sorted files*/
 	private static ArrayList alSortedFiles = new ArrayList(1000);
 	
 	/**
@@ -126,9 +128,28 @@ public class FileManager implements ITechnicalStrings{
 	   * @param id
 	   * @return
 	   */
-	public static synchronized File getFile(String sId) {
+	public static synchronized File getFileById(String sId) {
 		return (File)hmIdFile.get(sId);
 	}
+    
+    /**
+       * Return file by full path
+       * @param sPath : full path
+       * @return file or null if given path is not known
+       */
+    
+    public static synchronized File getFileByPath(String sPath) {
+        File fOut = null;
+        Iterator it = hmIdFile.values().iterator();
+        while ( it.hasNext()){
+            File file = (File)it.next();
+            if (file.getAbsolutePath().equals(sPath)){
+                fOut = file;
+                break;
+            }
+        }
+        return fOut;
+    }
 	
 	/**
 	 * @return All accessible files of the collection
@@ -177,19 +198,29 @@ public class FileManager implements ITechnicalStrings{
 	    return (File)alEligibleFiles.get((int)(Math.random()*alEligibleFiles.size()));
 	}
 	
-	/**
+    /**
+     * Return a playlist with the entire accessible shuffled novelties collection 
+     * @return The entire accessible novelties collection or null if none track in given time interval
+     */
+    public static synchronized ArrayList getGlobalNoveltiesPlaylist(){
+        return getGlobalNoveltiesPlaylist(true);
+    }
+    
+    /**
 	 * Return a playlist with the entire accessible shuffled novelties collection 
-	 * @return The entire accessible novelties collection or null if none track in given time interval
+	 * @param bHideUnmounted 
+     * @return The entire accessible novelties collection or null if none track in given time interval
 	 */
-	public static synchronized ArrayList getGlobalNoveltiesPlaylist(){
+	public static synchronized ArrayList getGlobalNoveltiesPlaylist(boolean bHideUnmounted){
 	    ArrayList alEligibleFiles = new ArrayList(1000);
         Iterator it = TrackManager.getTracks().iterator(); //search in tracks, not files to avoid duplicates items
 		while ( it.hasNext()){
-            File file = ((Track)it.next()).getPlayeableFile(); //can return null
-			if (file!= null && !file.isReady()){//test if file is null!
-			    continue;
-			}
-			int iTrackAge = 0;
+            Track track = (Track)it.next();
+            File file = track.getPlayeableFile(bHideUnmounted); //try to get a mounted file (can return null)
+			if (file == null){//none mounted file, take first file we find
+		        continue;
+            }
+        	int iTrackAge = 0;
 			try{
 				int iYear = Integer.parseInt(file.getTrack().getAdditionDate().substring(0,4));
 				int iMounth = Integer.parseInt(file.getTrack().getAdditionDate().substring(4,6))-1; //mounth is zero based : jan=0
@@ -207,8 +238,7 @@ public class FileManager implements ITechnicalStrings{
 		if (alEligibleFiles.size() ==0 ){
 			return null;
 		}
-		Collections.shuffle(alEligibleFiles); //shuffle results
-        return alEligibleFiles;
+		return alEligibleFiles;
 	}
 	
 	/**
@@ -256,11 +286,20 @@ public class FileManager implements ITechnicalStrings{
         return al;
     }
 	
-	/**
-	 * Return CONF_BESTOF_SIZE top files 
+    /**
+     * Return CONF_BESTOF_SIZE top files
+     * @return top files
+     */
+    public static synchronized ArrayList getBestOfFiles(){
+        return getBestOfFiles(true);
+    }
+    
+    /**
+	 * Return CONF_BESTOF_SIZE top files
+     * @param bHideUnmounted 
 	 * @return top files
 	 */
-	public static synchronized ArrayList getBestOfFiles(){
+	public static synchronized ArrayList getBestOfFiles(boolean bHideUnmounted){
 		if (FileManager.hasRateChanged() || alBestofFiles == null){  //test a rate has changed for perfs
 			//clear data
 			alBestofFiles.clear();
@@ -270,7 +309,7 @@ public class FileManager implements ITechnicalStrings{
 			Iterator it = TrackManager.getTracks().iterator();
 			while ( it.hasNext()){
 				Track track = (Track)it.next();
-				File file = track.getPlayeableFile();
+				File file = track.getPlayeableFile(bHideUnmounted);
 				if (file != null){
 					long lRate = file.getTrack().getRate();
 					alEligibleFiles.add(new FileScore(file,lRate));
@@ -288,9 +327,8 @@ public class FileManager implements ITechnicalStrings{
 		}
 		return alBestofFiles;
 	}
-	
-	
-	/** Return next mounted file ( used in continue mode )
+    
+  	/** Return next mounted file ( used in continue mode )
 	 * @param file : a file
 	 * @return next file from entire collection
 	 */

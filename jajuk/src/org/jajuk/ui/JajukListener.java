@@ -21,15 +21,11 @@ package org.jajuk.ui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JFileChooser;
 
 import org.jajuk.Main;
-import org.jajuk.base.BasicFile;
-import org.jajuk.base.BasicPlaylistFile;
 import org.jajuk.base.Event;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.FileManager;
@@ -41,7 +37,6 @@ import org.jajuk.ui.views.IView;
 import org.jajuk.ui.views.ViewManager;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 
 /**
@@ -74,33 +69,6 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
 			//no thread, nothing requires long execution time and a SwingWorker is not adapted
 			if (e.getActionCommand().equals(EVENT_EXIT)) {
 				Main.exit(0);
-			}
-			else if (e.getActionCommand().equals(EVENT_OPEN_FILE)) {
-				JajukFileChooser jfchooser = new JajukFileChooser();
-				int returnVal = jfchooser.showOpenDialog(Main.getWindow());
-				if (returnVal == JFileChooser.APPROVE_OPTION) {
-				    java.io.File[] files = null;
-                    try{
-				        files = jfchooser.getSelectedFiles();
-				        FIFO.getInstance().clear(); //stop all currently played tracks
-				        ArrayList alFiles = new ArrayList();
-				        for (int i = 0; i < files.length; i++) {
-				            if ( Util.getExtension(files[i]).equals(EXT_PLAYLIST)){ 
-				                BasicPlaylistFile bplf = new BasicPlaylistFile(files[i]);
-				                alFiles.addAll(bplf.getBasicFiles());
-				            }
-				            else{
-				                alFiles.add(new BasicFile(files[i]));	
-				            }
-				        }
-				        FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFiles),
-				                ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
-				    }
-				    catch(Exception e2){
-				        Log.error("009",e2); //$NON-NLS-1$
-                        ObservationManager.notify(new Event(EVENT_PLAY_ERROR)); //notify the error 
-                    }
-				}
 			}
 			else if (e.getActionCommand().equals(EVENT_REPEAT_MODE_STATUS_CHANGED)) {
 			    boolean b = ConfigurationManager.getBoolean(CONF_STATE_REPEAT);

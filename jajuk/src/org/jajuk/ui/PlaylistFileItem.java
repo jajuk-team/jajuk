@@ -56,7 +56,8 @@ import org.jajuk.util.Util;
 		public static final int PLAYLIST_TYPE_BOOKMARK = 2;
 		public static final int PLAYLIST_TYPE_BESTOF = 3;
 		public static final int PLAYLIST_TYPE_QUEUE = 4;
-		
+        public static final int PLAYLIST_TYPE_NOVELTIES = 5;
+        
 		/**
 		 * Constructor
 		 * @param iType : Playlist file type : 0: normal, 1:new, 2:bookmarks, 3:bestif
@@ -128,8 +129,11 @@ import org.jajuk.util.Util;
 			case 4:  //queue
 				sOut = Messages.getString("PlaylistFileItem.5"); //$NON-NLS-1$
 				break;
-			}
-			return sOut;
+			case 5:  //novelties
+                sOut = Messages.getString("PlaylistFileItem.1"); //$NON-NLS-1$
+                break;
+            }
+            return sOut;
 		}
 		
 		

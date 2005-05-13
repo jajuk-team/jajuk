@@ -70,17 +70,11 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings{
 		setAlignmentX(0.0f);
 		//File menu
 		file = new JMenu(Messages.getString("JajukJMenuBar.0")); //$NON-NLS-1$
-		jmiFileOpen = new JMenuItem(Messages.getString("JajukJMenuBar.1"),Util.getIcon(ICON_OPEN_FILE)); //$NON-NLS-1$
-		jmiFileOpen.addActionListener(JajukListener.getInstance());
-		jmiFileOpen.setActionCommand(EVENT_OPEN_FILE);
-		jmiFileOpen.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, ActionEvent.ALT_MASK));
-		jmiFileOpen.getAccessibleContext().setAccessibleDescription("[ALT-F]"); //$NON-NLS-1$
 		jmiFileExit = new JMenuItem(Messages.getString("JajukJMenuBar.3"),Util.getIcon(ICON_EXIT));  //$NON-NLS-1$
 		jmiFileExit.addActionListener(JajukListener.getInstance());
 		jmiFileExit.setActionCommand(EVENT_EXIT);
 		jmiFileExit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.ALT_MASK));
 		jmiFileExit.getAccessibleContext().setAccessibleDescription("[ALT-X]");  //$NON-NLS-1$
-		//file.add(jmiFileOpen); //We remove this function that confuses some users
 		file.add(jmiFileExit);
 				
 		//Properties menu

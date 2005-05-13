@@ -101,7 +101,7 @@ public class TrackManager implements ITechnicalStrings {
 			Iterator itFiles = track.getFiles().iterator();
 			while (itFiles.hasNext()) {
 				org.jajuk.base.File file = (org.jajuk.base.File) itFiles.next();
-				if (FileManager.getFile(file.getId()) == null) { //test if the file exists in the main file repository
+				if (FileManager.getFileById(file.getId()) == null) { //test if the file exists in the main file repository
 					itFiles.remove();//no? remove it from the track
 				}
 			}
