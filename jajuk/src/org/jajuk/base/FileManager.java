@@ -207,7 +207,7 @@ public class FileManager implements ITechnicalStrings{
     }
     
     /**
-	 * Return a playlist with the entire accessible shuffled novelties collection 
+	 * Return a playlist with the entire accessible novelties collection 
 	 * @param bHideUnmounted 
      * @return The entire accessible novelties collection or null if none track in given time interval
 	 */
@@ -238,6 +238,7 @@ public class FileManager implements ITechnicalStrings{
 		if (alEligibleFiles.size() ==0 ){
 			return null;
 		}
+        Collections.sort(alEligibleFiles);
 		return alEligibleFiles;
 	}
 	
