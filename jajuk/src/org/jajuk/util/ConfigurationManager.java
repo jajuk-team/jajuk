@@ -149,7 +149,7 @@ public class ConfigurationManager implements ITechnicalStrings{
 		properties.put(CONF_OPTIONS_DEFAULT_ACTION_DROP,TRUE);
 		properties.put(CONF_OPTIONS_NOVELTIES_AGE,"30"); //$NON-NLS-1$
 		properties.put(CONF_OPTIONS_VISIBLE_PLANNED,"10"); //$NON-NLS-1$
-        properties.put(CONF_BUFFER_SIZE,"64000"); //$NON-NLS-1$
+        properties.put(CONF_BUFFER_SIZE,"16000"); //$NON-NLS-1$
         properties.put(CONF_AUDIO_BUFFER_SIZE,"-1"); //$NON-NLS-1$ //-1 : max available buffer
                         
 		//set default trace level, debug in debug mode and warning in normal mode
