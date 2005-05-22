@@ -13,7 +13,6 @@ NEW LANGUAGE PROCEDURE
 
 NEW RELEASE PROCEDURE
 - Check new incoming updates (i18n)
-- Change version in ITechnicalStrings and build-dist.xml and RPM spec files (perform a search)
 - Backup SF data (php file)
 - String externalization
 - Rename /data/projects/jajuk/maven_rep/xdocs/jajuk-hs link
@@ -56,7 +55,7 @@ o Tell us if you still feel OK to work on jajuk and accepted rules given in the 
 
 if yes:
 o Give me your sourceforge user so I will give you commit right.
-o Subscribe to the developer list, jajuk main communication stream: http://lists.sourceforge.net/lists/listinfo/jajuk-developers
+o [Mandatory] Subscribe to the developer list, jajuk main communication stream: http://lists.sourceforge.net/lists/listinfo/jajuk-developers and send a message to present you and so we make sure that you have subscribed.
 o Choose a tasks from task list or a new one and inform us on the developer list. 
 o Keep us in touch by giving an approximatical planning and % realized so we can plan releases.
 o In you have questions/problems, don't hesitate to ask us on the developer list.

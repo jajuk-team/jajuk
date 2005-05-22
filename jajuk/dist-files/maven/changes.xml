@@ -195,45 +195,61 @@
     	<action dev='bflorat' type='fix'>1089785 JAJUK.EXE is detected by AVG as having a trojan horse</action>
     	<action dev='bflorat' type='fix'>1086794 Help search engine problem</action>
     	<action dev='bflorat' type='fix'>1091598 Occupies far too much ram : set Xmx to 40MB</action>
-     	<action dev='bflorat' type='fix'>1098567 Linux: Problem upgrading RPM from 0.3.1 to 0.3.2</action>
+    	<action dev='bflorat' type='fix'>1098567 Linux: Problem upgrading RPM from 0.3.1 to 0.3.2</action>
     	<action dev='bflorat' type='fix'>1099036 Minor UI issue in Playlist editor view with some LAF</action>
     	<action dev='bflorat' type='fix'>Fixed minor UI issues (disable) in parameter view</action>
     </release>
-     <release version='0.3.3' date='2005-04-02' description='Fixes,performances and Catalan langpack'>
-     	<action dev='jespo' type='add'>Catalan translation</action> 
-     	<action dev='bflorat' type='add'>Support of Linux menu shortcuts using Java installer</action> 
-     	<action dev='bflorat' type='add'>Support for next/previous album from tray with shift or right click on previous/next</action> 
-     	<action dev='bflorat' type='add'>New look and feel: Infonode</action> 
-     	<action dev='bflorat' type='update'>[Perf] Refresh much faster;  less CPU load; many improvments</action> 
-     	<action dev='bflorat' type='update'>[Perf] Better cover caching saves a lot of memory</action> 
-     	<action dev='bflorat' type='update'>Better handling of of history or collection corruption</action> 
-     	<action dev='mbraux' type='update'>Better covers adaptation algorithm</action> 
-     	<action dev='bflorat' type='update'>Right click auto-selection in trees and tables</action> 
-     	<action dev='bflorat' type='update'>Better handling of unavailable startup tracks</action> 
-     	<action dev='bflorat' type='update'>Better handling of errors launching basic files</action> 
-     	<action dev='bflorat' type='remove'>RPM dependencies on JRE</action> 
-     	<action dev='bflorat' type='remove'>Xmx and Xss JVM settings</action> 
-     	<action dev='bflorat' type='fix' issue='1102189'>Freeze with proxy pwd frame</action> 
-     	<action dev='bflorat' type='fix' issue='1102927'>OutOfBoundsException playing mp3</action>
-     	<action dev='bflorat' type='fix' issue='1109307'>Cannot read files (audio line not available)</action>
-     	<action dev='bflorat' type='fix' issue='1112671'>Minor bug in I18N system</action>
-     	<action dev='bflorat' type='fix' issue='1116459'>Logical items not sync with physical after a refresh</action>
-     	<action dev='bflorat' type='fix' issue='1102223'>Delay with pause/resume/stop</action>
-     	<action dev='bflorat' type='fix' issue='1146035'>Skips using user interface</action>
-     	<action dev='bflorat' type='fix' issue='1157408'>Bestof function problem</action>
-     	<action dev='bflorat' type='fix' issue='1157305'>Novelties function problem</action>
-     	<action dev='bflorat' type='fix' issue='1156281'>Continue mode when stopped</action>
-     	<action dev='bflorat' type='fix' issue='1155644'>UI reset missing in some cases</action>
-     	<action dev='bflorat' type='fix' issue='1153534'>Elapsed time error with large files</action>
-       <action dev='bflorat' type='fix' issue='921441'>Special XML characters not correctly managed by Jajuk (more checkups)</action> 
-       <action dev='bflorat' type='fix' issue='1171908'>drag'n drop from sorted list pushes wrong track to playlist</action> 
-       <action dev='bflorat' type='fix' issue='1175005'>Freeze when seeking more than 99%</action> 
-       <action dev='bflorat' type='fix' issue='1180255'>Playlist file save extension</action> 
-       <action dev='bflorat' type='fix' issue='1179472'>I can't save playlists in XP / JDK 1.5.0_02</action> 
-       <action dev='bflorat' type='fix' issue='1179051'>Two log files</action> 
-       <action dev='bflorat' type='fix' issue='1183212'>Override existing files when downgrading jajuk</action> 
-       <action dev='bflorat' type='fix' issue='1183218'>Refresh blocked on corrupted files</action> 
-       <action dev='bflorat' type='fix' issue='1183907'>Fix for  Wrong startup message</action> 
-      </release>
+    <release version='0.3.3' date='2005-04-02' description='Fixes,performances and Catalan langpack'>
+    	<action dev='jespo' type='add'>Catalan translation</action> 
+    	<action dev='bflorat' type='add'>Support of Linux menu shortcuts using Java installer</action> 
+    	<action dev='bflorat' type='add'>Support for next/previous album from tray with shift or right click on previous/next</action> 
+    	<action dev='bflorat' type='add'>New look and feel: Infonode</action> 
+    	<action dev='bflorat' type='update'>[Perf] Refresh much faster;  less CPU load; many improvments</action> 
+    	<action dev='bflorat' type='update'>[Perf] Better cover caching saves a lot of memory</action> 
+    	<action dev='bflorat' type='update'>Better handling of of history or collection corruption</action> 
+    	<action dev='mbraux' type='update'>Better covers adaptation algorithm</action> 
+    	<action dev='bflorat' type='update'>Right click auto-selection in trees and tables</action> 
+    	<action dev='bflorat' type='update'>Better handling of unavailable startup tracks</action> 
+    	<action dev='bflorat' type='update'>Better handling of errors launching basic files</action> 
+    	<action dev='bflorat' type='remove'>RPM dependencies on JRE</action> 
+    	<action dev='bflorat' type='remove'>Xmx and Xss JVM settings</action> 
+    	<action dev='bflorat' type='fix' issue='1102189'>Freeze with proxy pwd frame</action> 
+    	<action dev='bflorat' type='fix' issue='1102927'>OutOfBoundsException playing mp3</action>
+    	<action dev='bflorat' type='fix' issue='1109307'>Cannot read files (audio line not available)</action>
+    	<action dev='bflorat' type='fix' issue='1112671'>Minor bug in I18N system</action>
+    	<action dev='bflorat' type='fix' issue='1116459'>Logical items not sync with physical after a refresh</action>
+    	<action dev='bflorat' type='fix' issue='1102223'>Delay with pause/resume/stop</action>
+    	<action dev='bflorat' type='fix' issue='1146035'>Skips using user interface</action>
+    	<action dev='bflorat' type='fix' issue='1157408'>Bestof function problem</action>
+    	<action dev='bflorat' type='fix' issue='1157305'>Novelties function problem</action>
+    	<action dev='bflorat' type='fix' issue='1156281'>Continue mode when stopped</action>
+    	<action dev='bflorat' type='fix' issue='1155644'>UI reset missing in some cases</action>
+    	<action dev='bflorat' type='fix' issue='1153534'>Elapsed time error with large files</action>
+	<action dev='bflorat' type='fix' issue='921441'>Special XML characters not correctly managed by Jajuk (more checkups)</action> 
+	<action dev='bflorat' type='fix' issue='1171908'>drag'n drop from sorted list pushes wrong track to playlist</action> 
+	<action dev='bflorat' type='fix' issue='1175005'>Freeze when seeking more than 99%</action> 
+	<action dev='bflorat' type='fix' issue='1180255'>Playlist file save extension</action> 
+	<action dev='bflorat' type='fix' issue='1179472'>I can't save playlists in XP / JDK 1.5.0_02</action> 
+	<action dev='bflorat' type='fix' issue='1179051'>Two log files</action> 
+	<action dev='bflorat' type='fix' issue='1183212'>Override existing files when downgrading jajuk</action> 
+	<action dev='bflorat' type='fix' issue='1183218'>Refresh blocked on corrupted files</action> 
+	<action dev='bflorat' type='fix' issue='1183907'>Fix for  Wrong startup message</action> 
+    </release>
+    <release version='0.3.4' date='work in progress' description='Fixes, features'>
+    	<action dev='bflorat' type='add'>New novelties special playlist</action> 
+    	<action dev='bflorat' type='add'>Window position and size now saved</action> 
+    	<action dev='bflorat' type='add'>New quick start wizard for first time users</action> 
+    	<action dev='bflorat' type='add'>New Network drive device type</action> 
+    	<action dev='bflorat' type='add'>New Configuration menu item for devices in physical tree view</action> 
+    	<action dev='bflorat' type='update'>Some cover performance and minor issues fixed</action> 
+    	<action dev='bflorat' type='update'>In physical tree view, mp3, ogg and others files have own icon</action> 
+    	<action dev='bflorat' type='update'>Now external DD are auto-mounted by default</action> 
+    	<action dev='bflorat' type='update'>In table views, filtering is now dynamic</action> 
+    	<action dev='bflorat' type='update'>Now bestof special playlist can show even unmounted files</action> 
+    	<action dev='bflorat' type='update'>Now waits for audio line if occupied by another process</action> 
+    	<action dev='bflorat' type='remove'>No more basic files support: now jajuk only plays indexed files</action> 
+    	<action dev='bflorat' type='fix' issue='1188879'>Window focus issue</action> 
+    	<action dev='bflorat' type='fix' issue='1199367'>Playlist next track wrong</action> 
+   </release>
   </body>
 </document>

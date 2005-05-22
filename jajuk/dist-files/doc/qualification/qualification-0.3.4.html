@@ -4,17 +4,40 @@
 	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=utf-8">
 	<TITLE>Jajuk qualification tests</TITLE>
 	<META NAME="GENERATOR" CONTENT="OpenOffice.org 1.1.3  (Linux)">
-	<META NAME="CREATED" CONTENT="20050226;13081700">
-	<META NAME="CHANGED" CONTENT="20050522;20534500">
+	<META NAME="CREATED" CONTENT="20050401;22034400">
+	<META NAME="CHANGED" CONTENT="20050522;20545100">
 </HEAD>
-<BODY LANG="fr-FR" DIR="LTR">
+<BODY LANG="en-US" DIR="LTR">
 <H1>Release notes</H1>
-<P><U><I>Last update</I></U> <I>: yyyy-mm-dd<BR><BR>Changes:
-</I><A HREF="http://jajuk.sourceforge.net/changes-report.html#XXX">http://jajuk.sourceforge.net/changes-report.html#XXX</A>
+<P><U><I>Last update</I></U> <I>: <BR><BR>Changes:
+</I><A HREF="http://jajuk.sourceforge.net/changes-report.html#0_3_4">http://jajuk.sourceforge.net/changes-report.html#0_3_4</A>
 </P>
 <UL>
-	<LI><P STYLE="margin-bottom: 0cm">Note 1</P>
-	<LI><P STYLE="margin-bottom: 0cm">Note 2</P>
+	<LI><P STYLE="margin-bottom: 0cm">[Mandrake and Suse users using the
+	RPM] IMPORTANT NOTE FOR UPGRADE FROM 0.3.1 : due to a bug in 0.3.1
+	packaging, please use&nbsp; <FONT FACE="monospace">rpm -Uvh
+	<B>--nopostun</B></FONT> <FONT FACE="monospace">jajuk-{release}-suse.noarch.rpm</FONT>
+	or uninstall 0.3.1 and install newer release. 
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm">[Mandrake users using the RPM]
+	Jajuk icon should appear in Multimedia/Audio section. It can take a
+	while for the icon to be visible. If you get no icon after one
+	minute, please open a shell and launch <FONT FACE="monospace">menu-updates</FONT>
+	as your regular user. 
+	</P>
+	<LI><P STYLE="margin-bottom: 0cm">[Windows users using exe package]
+	We have changed the Self Extracting tool (we now use 7-ZIP), so this
+	distribution should no more be seen as infected by some anti-virus
+	scanners. 
+	</P>
+	<LI><P>[Windows users using exe package] In some seldom cases, you
+	may encounter a &quot;IzPack launcher failed&quot; message at the
+	end of the installation. Just ignore this message, your install is
+	safe. 
+	</P>
+	<LI><P>[exe and jar package] Downgrading doesn't work with
+	releases&lt;0.3.3.4, uninstall first. Upgrading works fine without
+	uninstalling.</P>
 </UL>
 <P><BR><BR>
 </P>
@@ -26,48 +49,51 @@ issues:
 <A HREF="http://sourceforge.net/tracker/?group_id=91412&amp;atid=597089">http://sourceforge.net/tracker/?group_id=91412&amp;atid=597089</A><BR>Support/Help:
 <A HREF="http://sourceforge.net/tracker/?group_id=91412&amp;atid=597087">http://sourceforge.net/tracker/?group_id=91412&amp;atid=597087</A></P>
 <H1>Jajuk qualification tests</H1>
-<TABLE BORDER=1 CELLPADDING=2 CELLSPACING=2>
+<TABLE WIDTH=473 BORDER=1 CELLPADDING=2 CELLSPACING=4>
+	<COL WIDTH=90>
+	<COL WIDTH=361>
 	<TR>
-		<TD BGCOLOR="#cccccc">
+		<TD WIDTH=90 BGCOLOR="#cccccc">
 			<P><B>Date</B></P>
 		</TD>
-		<TD BGCOLOR="#cccccc">
-			<P><B>YYYY/MM/DD</B></P>
+		<TD WIDTH=361 BGCOLOR="#cccccc">
+			<P><B>2005/05/22</B></P>
 		</TD>
 	</TR>
 	<TR>
-		<TD BGCOLOR="#cccccc">
+		<TD WIDTH=90 BGCOLOR="#cccccc">
 			<P><B>Tester(s) </B>
 			</P>
 		</TD>
-		<TD BGCOLOR="#cccccc">
-			<P><B>XXX</B></P>
+		<TD WIDTH=361 BGCOLOR="#cccccc">
+			<P><BR>
+			</P>
 		</TD>
 	</TR>
 	<TR>
-		<TD BGCOLOR="#cccccc">
+		<TD WIDTH=90 BGCOLOR="#cccccc">
 			<P><B>Packager</B></P>
 		</TD>
-		<TD BGCOLOR="#cccccc">
+		<TD WIDTH=361 BGCOLOR="#cccccc">
 			<P><B>Bertrand Florat </B>
 			</P>
 		</TD>
 	</TR>
 	<TR>
-		<TD BGCOLOR="#cccccc">
+		<TD WIDTH=90 BGCOLOR="#cccccc">
 			<P><B>Validator</B></P>
 		</TD>
-		<TD BGCOLOR="#cccccc">
+		<TD WIDTH=361 BGCOLOR="#cccccc">
 			<P><B>Bertrand Florat </B>
 			</P>
 		</TD>
 	</TR>
 	<TR>
-		<TD BGCOLOR="#cccccc">
+		<TD WIDTH=90 BGCOLOR="#cccccc">
 			<P><B>Release</B></P>
 		</TD>
-		<TD BGCOLOR="#cccccc">
-			<P><B>x.y.z</B></P>
+		<TD WIDTH=361 BGCOLOR="#cccccc">
+			<P><B>0.3.4</B></P>
 		</TD>
 	</TR>
 </TABLE>
@@ -91,7 +117,7 @@ issues:
 			<P>env1</P>
 		</TD>
 		<TD>
-			<P>Suse Linux 9.1 kernel 2.6.4</P>
+			<P>Suse Linux 9.2 kernel 2.6.4</P>
 		</TD>
 		<TD>
 			<P>Sun 1.4.2_04</P>
@@ -125,10 +151,38 @@ issues:
 <P><BR><BR>
 </P>
 <H2>Detailed changes of this release</H2>
+<P>
+<pre>
+- Better error handling (don't display covers when an error occurs)
+- Now cover displays only when query is over when using auto-cover
+- Window position and size stored
+- Fixed more issues with wrong covers automatic switching to next
+- Quick start wizard
+- Fixed possible bug with cell edition
+- Now external DD are auto-mounted by default
+- Startup automount : just display a infomationJPanel message if problem, ni more mandatory dialog
+- Configuration menu item in physical tree view
+- trad doc fr
+- dynamic filter apply in table views and apply filter when changing filter
+- Fixed multi-desktop focus problem
+- New device type: network drive
+- Dynamic filtering when typing in table views
+- Changed default views position in physical/logical perspectives: bigger cover
+- FR, DE, CA, SP updated
+- different icons for file types in physical tree view
+- New novelties special playlist
+- now bestof special playlist can show even unmounted files
+- Configuration and not propertties in device view
+- Documentation is now online
+- Removed basic files and basic playlist files notion: too specific and brings too mush complexity. Now jajuk only works with indexed files.
+- Now waits for audio line if occupied by another process
+- Try to set external buffer size to 16 and no more 64Ko to accelarate seeking and providing a better wav position precision. (this is the basic player default)
+</pre>
+</P>
 <H2>Scenario-based tests</H2>
 <P><I><U>White</U>: not tested, <U>green</U>: passed, <U>orange</U>:
 passed partially, <U>red</U>: not passed</I></P>
-<TABLE BORDER=1 CELLPADDING=2 CELLSPACING=2>
+<TABLE BORDER=1 CELLPADDING=2 CELLSPACING=4>
 	<TR>
 		<TD BGCOLOR="#cccccc">
 			<P>#</P>
@@ -157,11 +211,11 @@ passed partially, <U>red</U>: not passed</I></P>
 			then&nbsp; remove the directory and install it to this unexisting
 			location. Start and close Jajuk at each test.</P>
 		</TD>
-		<TD BGCOLOR="#99ff99">
+		<TD BGCOLOR="#00ff00">
 			<P><BR>
 			</P>
 		</TD>
-		<TD BGCOLOR="#99ff99">
+		<TD BGCOLOR="#00ff00">
 			<P><BR>
 			</P>
 		</TD>
@@ -178,11 +232,11 @@ passed partially, <U>red</U>: not passed</I></P>
 			<P>Tests with existing collection : start jajuk, lauch some
 			tracks.</P>
 		</TD>
-		<TD BGCOLOR="#99ff99">
+		<TD BGCOLOR="#00ff00">
 			<P><BR>
 			</P>
 		</TD>
-		<TD BGCOLOR="#99ff99">
+		<TD BGCOLOR="#00ff00">
 			<P><BR>
 			</P>
 		</TD>
@@ -198,33 +252,13 @@ passed partially, <U>red</U>: not passed</I></P>
 		<TD>
 			<P>Tests from scratch. Remove .jajuk directory, create a directory
 			device with auto-refresh, lauch some tracks and then quit Jajuk
-			and start it again, lauch some tracks, quit and test again.</P>
+			and start it again, launch some tracks, quit and test again.</P>
 		</TD>
-		<TD BGCOLOR="#99ff99">
+		<TD BGCOLOR="#00ff00">
 			<P><BR>
 			</P>
 		</TD>
-		<TD BGCOLOR="#ffffff">
-			<P><BR>
-			</P>
-		</TD>
-		<TD>
-			<P><BR>
-			</P>
-		</TD>
-	</TR>
-	<TR>
-		<TD>
-			<P>BIG</P>
-		</TD>
-		<TD>
-			<P>Tests on large files (entire album in a single file)</P>
-		</TD>
-		<TD>
-			<P><BR>
-			</P>
-		</TD>
-		<TD>
+		<TD BGCOLOR="#00ff00">
 			<P><BR>
 			</P>
 		</TD>
@@ -238,15 +272,15 @@ passed partially, <U>red</U>: not passed</I></P>
 			<P>FOR</P>
 		</TD>
 		<TD>
-			<P>Tests on formats : lauch at least one mp3, ogg, au, aiff and
+			<P>Tests on formats : launch at least one mp3, ogg, au, aiff and
 			wav file. 
 			</P>
 		</TD>
-		<TD BGCOLOR="#99ff99">
+		<TD BGCOLOR="#00ff00">
 			<P><BR>
 			</P>
 		</TD>
-		<TD BGCOLOR="#ffffff">
+		<TD BGCOLOR="#00ff00">
 			<P><BR>
 			</P>
 		</TD>
@@ -263,7 +297,7 @@ passed partially, <U>red</U>: not passed</I></P>
 			<P>Devices tests : create a directory device, refresh it, unmount
 			it, mount it, remove it.</P>
 		</TD>
-		<TD BGCOLOR="#99ff99">
+		<TD BGCOLOR="#00ff00">
 			<P><BR>
 			</P>
 		</TD>
@@ -303,9 +337,9 @@ passed partially, <U>red</U>: not passed</I></P>
 			<P>SRC</P>
 		</TD>
 		<TD>
-			<P>Instant search box : perform some searchs and launch tracks.</P>
+			<P>Instant search box : perform some searches and launch tracks.</P>
 		</TD>
-		<TD BGCOLOR="#99ff99">
+		<TD BGCOLOR="#00ff00">
 			<P><BR>
 			</P>
 		</TD>
@@ -323,10 +357,10 @@ passed partially, <U>red</U>: not passed</I></P>
 			<P>HST</P>
 		</TD>
 		<TD>
-			<P>History : check all lauched tracks are OK. Clear hisstory and
+			<P>History : check all launched tracks are OK. Clear history and
 			launch others tracks, check it again.</P>
 		</TD>
-		<TD BGCOLOR="#99ff99">
+		<TD BGCOLOR="#00ff00">
 			<P><BR>
 			</P>
 		</TD>
@@ -348,7 +382,7 @@ passed partially, <U>red</U>: not passed</I></P>
 			<P>Compile and test the installed jajuk sources 
 			</P>
 		</TD>
-		<TD BGCOLOR="#99ff99">
+		<TD BGCOLOR="#00ff00">
 			<P><BR>
 			</P>
 		</TD>
@@ -368,7 +402,7 @@ passed partially, <U>red</U>: not passed</I></P>
 		<TD>
 			<P>Startup tests : change startup option and test it.</P>
 		</TD>
-		<TD BGCOLOR="#99ff99">
+		<TD BGCOLOR="#00ff00">
 			<P><BR>
 			</P>
 		</TD>
@@ -409,7 +443,7 @@ passed partially, <U>red</U>: not passed</I></P>
 			<P>Test Jajuk in English and at least with 2 others langpacks,
 			check translation for untranslated fields if any.</P>
 		</TD>
-		<TD BGCOLOR="#99ff99">
+		<TD BGCOLOR="#00ff00">
 			<P><BR>
 			</P>
 		</TD>
@@ -429,11 +463,11 @@ passed partially, <U>red</U>: not passed</I></P>
 		<TD>
 			<P>Change Look and Feel, test it.</P>
 		</TD>
-		<TD BGCOLOR="#99ff99">
+		<TD BGCOLOR="#00ff00">
 			<P><BR>
 			</P>
 		</TD>
-		<TD BGCOLOR="#ffffff">
+		<TD BGCOLOR="#00ff00">
 			<P><BR>
 			</P>
 		</TD>
@@ -449,7 +483,7 @@ passed partially, <U>red</U>: not passed</I></P>
 		<TD>
 			<P>Check stats</P>
 		</TD>
-		<TD BGCOLOR="#99ff99">
+		<TD BGCOLOR="#00ff00">
 			<P><BR>
 			</P>
 		</TD>
@@ -469,11 +503,11 @@ passed partially, <U>red</U>: not passed</I></P>
 		<TD>
 			<P>Check elapsed / remaining time in information bar</P>
 		</TD>
-		<TD BGCOLOR="#99ff99">
+		<TD BGCOLOR="#00ff00">
 			<P><BR>
 			</P>
 		</TD>
-		<TD BGCOLOR="#ffffff">
+		<TD BGCOLOR="#00ff00">
 			<P><BR>
 			</P>
 		</TD>
@@ -489,11 +523,11 @@ passed partially, <U>red</U>: not passed</I></P>
 		<TD>
 			<P>Check About and online doc in all languages.</P>
 		</TD>
-		<TD BGCOLOR="#99ff99">
+		<TD BGCOLOR="#00ff00">
 			<P><BR>
 			</P>
 		</TD>
-		<TD BGCOLOR="#ffffff">
+		<TD BGCOLOR="#00ff00">
 			<P><BR>
 			</P>
 		</TD>
@@ -509,11 +543,11 @@ passed partially, <U>red</U>: not passed</I></P>
 		<TD>
 			<P>Command panel tests : rewind, forward, volume...</P>
 		</TD>
-		<TD BGCOLOR="#99ff99">
+		<TD BGCOLOR="#00ff00">
 			<P><BR>
 			</P>
 		</TD>
-		<TD BGCOLOR="#ffffff">
+		<TD BGCOLOR="#00ff00">
 			<P><BR>
 			</P>
 		</TD>
@@ -533,7 +567,7 @@ passed partially, <U>red</U>: not passed</I></P>
 			<P><BR>
 			</P>
 		</TD>
-		<TD BGCOLOR="#ffffff">
+		<TD BGCOLOR="#00ff00">
 			<P><BR>
 			</P>
 		</TD>
@@ -549,11 +583,11 @@ passed partially, <U>red</U>: not passed</I></P>
 		<TD>
 			<P>Tests covers display and manipulation</P>
 		</TD>
-		<TD BGCOLOR="#99ff99">
+		<TD BGCOLOR="#00ff00">
 			<P><BR>
 			</P>
 		</TD>
-		<TD BGCOLOR="#ffffff">
+		<TD BGCOLOR="#00ff00">
 			<P><BR>
 			</P>
 		</TD>
@@ -568,7 +602,8 @@ passed partially, <U>red</U>: not passed</I></P>
 		</TD>
 		<TD>
 			<P>Change views size / position, close jajuk and restart, check
-			position is saved. Reload default configuration.</P>
+			position is saved. Reload default perspectives in Parameter view /
+			Perspective tab, test.</P>
 		</TD>
 		<TD BGCOLOR="#ffffff">
 			<P><BR>
@@ -588,14 +623,14 @@ passed partially, <U>red</U>: not passed</I></P>
 			<P>RES</P>
 		</TD>
 		<TD>
-			<P>Change resolution (800x600 to 1600x1400) and check everyhting's
-			OK</P>
+			<P>Change resolution (1024x768 to 1600x1400) and check everything
+			is OK</P>
 		</TD>
-		<TD BGCOLOR="#ffffff">
+		<TD BGCOLOR="#00ff00">
 			<P><BR>
 			</P>
 		</TD>
-		<TD BGCOLOR="#ffffff">
+		<TD BGCOLOR="#00ff00">
 			<P><BR>
 			</P>
 		</TD>
@@ -613,11 +648,11 @@ passed partially, <U>red</U>: not passed</I></P>
 			without refreshing device to simulate read errors, check behavior
 			(error message in information panel, history bar...)</P>
 		</TD>
-		<TD BGCOLOR="#ffffff">
+		<TD BGCOLOR="#00ff00">
 			<P><BR>
 			</P>
 		</TD>
-		<TD BGCOLOR="#ffffff">
+		<TD BGCOLOR="#00ff00">
 			<P><BR>
 			</P>
 		</TD>
@@ -633,11 +668,11 @@ passed partially, <U>red</U>: not passed</I></P>
 		<TD>
 			<P>Tray tests</P>
 		</TD>
-		<TD BGCOLOR="#99ff99">
+		<TD BGCOLOR="#00ff00">
 			<P><BR>
 			</P>
 		</TD>
-		<TD BGCOLOR="#ffffff">
+		<TD BGCOLOR="#00ff00">
 			<P><BR>
 			</P>
 		</TD>
@@ -655,11 +690,11 @@ passed partially, <U>red</U>: not passed</I></P>
 			<P>Random tests, general use tests in every views. 
 			</P>
 		</TD>
-		<TD BGCOLOR="#99ff99">
+		<TD BGCOLOR="#00ff00">
 			<P><BR>
 			</P>
 		</TD>
-		<TD BGCOLOR="#ffffff">
+		<TD BGCOLOR="#00ff00">
 			<P><BR>
 			</P>
 		</TD>
@@ -723,9 +758,8 @@ passed partially, <U>red</U>: not passed</I></P>
 <P><BR><BR>
 </P>
 <H2>Comments</H2>
-<P>Have fun using Jajuk ! 
-</P>
+<P>Have fun using Jajuk !</P>
 <H2>Details</H2>
-<PRE STYLE="margin-bottom: 0.5cm">Details of rcs with scores.</PRE>
+<PRE></PRE>
 </BODY>
 </HTML>
