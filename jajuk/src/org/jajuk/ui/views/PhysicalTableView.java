@@ -256,7 +256,7 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
 				}
 				//then specifics
 				//computes selected files
-				ArrayList alFilesToPlay = new ArrayList(10);
+				ArrayList alFilesToPlay = new ArrayList(jtable.getSelectedRowCount());
 				int[] indexes = jtable.getSelectedRows();
 				for (int i=0;i<indexes.length;i++){ //each selected track
 					File file = FileManager.getFileById(jtable.getSortingModel().getValueAt(indexes[i],jtable.getColumnCount()).toString());
@@ -268,20 +268,17 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
 					    alFilesToPlay2.add(file);    
 					}
 					Iterator it = alFilesToPlay2.iterator();
-					while (it.hasNext()){ //each selected file fromt the same directory 
+					while (it.hasNext()){ //each selected file from the same directory 
 					    File file2 = (File)it.next();
-					    if (!file2.isScanned()) {
-							if (!alFilesToPlay.contains(file2)){
-							    alFilesToPlay.add(file2);
-							}
+					    if (!file2.isScanned() && !alFilesToPlay.contains(file2)){
+							 alFilesToPlay.add(file2);
 						}
 						else{
 							Messages.showErrorMessage("120",file2.getDirectory().getDevice().getName()); //$NON-NLS-1$
-							return;  //stop here to avoid error messages 
+							return;  //stop here to avoid cascading error messages 
 						}
 					}    
 				}
-					
 				//simple play
 				if ( e.getSource() == jmiFilePlay || e.getSource() == jmiFilePlayDirectory){
 						FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFilesToPlay),
