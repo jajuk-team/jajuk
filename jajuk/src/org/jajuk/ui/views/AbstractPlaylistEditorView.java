@@ -39,8 +39,10 @@ import javax.swing.DefaultListSelectionModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
@@ -91,6 +93,11 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
     JButton jbClear;
     JLabel jlTitle;
     JajukTable jtable;
+    
+    JPopupMenu jmenuFile;
+    JMenuItem jmiFilePlay;
+    JMenuItem jmiFilePush;
+
     
     /**playlist editor title : playlist file or playlist name*/
     String sTitle;
@@ -286,6 +293,15 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
         setLayout(new TableLayout(size));
         add(jpControl,"0,0"); //$NON-NLS-1$
         add(new JScrollPane(jtable),"0,1"); //$NON-NLS-1$
+        //menu items
+        jmenuFile = new JPopupMenu();
+        jmiFilePlay = new JMenuItem(Messages.getString("AbstractPlaylistEditorView.23")); //$NON-NLS-1$
+        jmiFilePlay.addActionListener(this);
+        jmiFilePush = new JMenuItem(Messages.getString("AbstractPlaylistEditorView.24")); //$NON-NLS-1$
+        jmiFilePush.addActionListener(this);
+        jmenuFile.add(jmiFilePlay);
+        jmenuFile.add(jmiFilePush);
+        //register events
         ObservationManager.register(EVENT_PLAYLIST_REFRESH,this);
         ObservationManager.register(EVENT_PLAYER_STOP,this);
         ObservationManager.register(EVENT_FILE_LAUNCHED,this);
@@ -350,16 +366,17 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
                     } 
                     int[] rows = jtable.getSelectedRows();  //save selection
                     model.fireTableDataChanged();//refresh
-                    if (rows.length > 0) {
-                        bSettingSelection = true;
-                        jtable.getSelectionModel().setSelectionInterval(rows[0],rows[rows.length-1]); //set saved selection after a refresh
-                        bSettingSelection = false;
+                    bSettingSelection = true;
+                    for (int i=0;i<rows.length;i++) {
+                        jtable.getSelectionModel().addSelectionInterval(rows[i],rows[i]); //set saved selection after a refresh
                     }
+                    bSettingSelection = false;
                 }
             });
         }
         
-        else if ( EVENT_PLAYER_STOP.equals(subject)){
+        else if ( EVENT_PLAYER_STOP.equals(subject) 
+                && plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE ){
             alItems.clear();
             alPlanned.clear();
             model.fireTableDataChanged();
@@ -434,7 +451,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
                         item.setUserLaunch(true);
                         FIFO.getInstance().push(item,false);
                     }
-                    else{ //all other playlists, we launch all tracks from this position to the end of playlist
+                    else{ //non planned items
                         FIFO.getInstance().goTo(jtable.getSelectedRow());
                         //remove selection for planned tracks
                         ListSelectionModel lsm = jtable.getSelectionModel();
@@ -443,11 +460,23 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
                         bSettingSelection = false;
                     }
                 }
-                //For others playlists
+                //For others playlists, we launch all tracks from this position to the end of playlist
                 else{
-                    FIFO.getInstance().push(getItemsFrom(jtable.getSelectedRow()),false);
+                    FIFO.getInstance().push(getItemsFrom(jtable.getSelectedRow()),
+                        ConfigurationManager.getBoolean(CONF_OPTIONS_DEFAULT_ACTION_CLICK));
                 }
             }
+        }
+        else if ( e.getClickCount() == 1 
+                && e.getButton()==MouseEvent.BUTTON3
+                && plfi.getType() != PlaylistFileItem.PLAYLIST_TYPE_QUEUE ){  //right clic on a selected node set
+            // if none or 1 node is selected, a right click on another node select it
+            //if more than 1, we keep selection and display a popup for them
+            if (jtable.getSelectedRowCount() < 2){
+                int iSelection = jtable.rowAtPoint(e.getPoint());
+                jtable.getSelectionModel().setSelectionInterval(iSelection,iSelection);
+            }
+            jmenuFile.show(jtable,e.getX(),e.getY());
         }
     }
     
@@ -588,6 +617,15 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
                     Messages.showErrorMessage(je.getCode());
                     Log.error(je);
                 }
+            }
+            else if ( ae.getSource() == jmiFilePlay ||  ( ae.getSource() == jmiFilePush)){
+                //computes selected items
+                ArrayList alItemsToPlay = new ArrayList(jtable.getSelectedRowCount());
+                int[] indexes = jtable.getSelectedRows();
+                for (int i=0;i<indexes.length;i++){
+                    alItemsToPlay.add(alItems.get(indexes[i]));
+                }
+                FIFO.getInstance().push(alItemsToPlay,ae.getSource() == jmiFilePush);
             }
         }
         catch(Exception e2){
