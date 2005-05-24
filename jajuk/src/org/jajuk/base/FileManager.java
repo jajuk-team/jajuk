@@ -238,8 +238,12 @@ public class FileManager implements ITechnicalStrings{
 		if (alEligibleFiles.size() ==0 ){
 			return null;
 		}
-        Collections.sort(alEligibleFiles);
-		return alEligibleFiles;
+        Collections.sort(alEligibleFiles); //sort alphabeticaly
+        //now sort by date
+        File.setSortByDate(true);
+        Collections.sort(alEligibleFiles); //sort by date
+        File.setSortByDate(false);//reset to default sorting method
+        return alEligibleFiles;
 	}
 	
 	/**

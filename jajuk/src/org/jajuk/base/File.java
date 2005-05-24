@@ -48,6 +48,8 @@ public class File extends PropertyAdapter implements Comparable,ITechnicalString
 	private String sAbs = null;
 	/** IO file associated with this file*/
 	private java.io.File fio;
+    /**Flag used to sort by date (default=sort alphabeticaly)*/
+    static private boolean bSortByDate = false;
 
 	/**
 	 * File instanciation 
@@ -210,8 +212,13 @@ public class File extends PropertyAdapter implements Comparable,ITechnicalString
 	 *@return comparaison result 
 	 */
 	public int compareTo(Object o){
-		File otherFile = (File)o;
-		return  getAbsolutePath().compareToIgnoreCase(otherFile.getAbsolutePath());
+        File otherFile = (File)o;
+        if (bSortByDate){ //sort by date, last first
+            return  otherFile.getTrack().getAdditionDate().compareTo(getTrack().getAdditionDate());            
+        }
+        else{ //default, sort alphabeticaly
+            return  getAbsolutePath().compareToIgnoreCase(otherFile.getAbsolutePath());            
+        }
 	}
 	
 	/**Return true if the file can be accessed right now 
@@ -265,6 +272,20 @@ public class File extends PropertyAdapter implements Comparable,ITechnicalString
 		fClone.sAbs = sAbs;
 		return fClone;
 	}
+
+    /**
+     * @return Returns the bSortByDate.
+     */
+    public static boolean isSortedByDate() {
+        return bSortByDate;
+    }
+
+    /**
+     * @param sortByDate The bSortByDate to set.
+     */
+    public static void setSortByDate(boolean sortByDate) {
+        bSortByDate = sortByDate;
+    }
 	
 
 }
