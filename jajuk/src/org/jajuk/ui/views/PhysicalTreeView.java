@@ -47,6 +47,7 @@ import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
+import javax.swing.plaf.TreeUI;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
@@ -370,7 +371,13 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         populateTree();
         
         //create tree
-        jtree = new JTree(top);
+        jtree = new JTree(top){
+            public void setUI(TreeUI ui) { //overwrite this method to make sure all rows have icon own height
+                super.setUI(ui);
+                setRowHeight(-1);
+            }
+        };
+
         jtree.putClientProperty("JTree.lineStyle", "Angled"); //$NON-NLS-1$ //$NON-NLS-2$
         jtree.getSelectionModel().setSelectionMode(TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
         jtree.setCellRenderer(new DefaultTreeCellRenderer() {
