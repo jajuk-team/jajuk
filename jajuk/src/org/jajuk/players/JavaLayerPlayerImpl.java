@@ -128,6 +128,13 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
     public float getCurrentPosition() {
         return fPos;
     }
+    
+    /**
+     * @return current volume as a float ex: 0.2f
+     */
+    public float getCurrentVolume() {
+        return fVolume;
+    }
 
     /**
      * @return Returns the lTime in ms

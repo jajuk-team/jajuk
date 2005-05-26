@@ -82,8 +82,8 @@ public class Player implements ITechnicalStrings{
                         throw bpe;
                     }
                     bWaitingLine = true;
-                    Log.debug("Line occupied, waiting");
-                    InformationJPanel.getInstance().setMessage(Messages.getString("Player.0"),InformationJPanel.WARNING);
+                    Log.debug("Line occupied, waiting"); //$NON-NLS-1$
+                    InformationJPanel.getInstance().setMessage(Messages.getString("Player.0"),InformationJPanel.WARNING); //$NON-NLS-1$
                     try {
                         Thread.sleep(WAIT_AFTER_ERROR); //wait for the line
                     } catch (InterruptedException e1) {
@@ -197,6 +197,7 @@ public class Player implements ITechnicalStrings{
             ConfigurationManager.setProperty(CONF_VOLUME,Float.toString(fVolume));
             if (pCurrentPlayerImpl != null){
                 pCurrentPlayerImpl.setVolume(fVolume);
+                ObservationManager.notify(new Event(EVENT_VOLUME_CHANGED));
             }
         } catch (Exception e) {
             Log.error(e); 
@@ -290,9 +291,20 @@ public class Player implements ITechnicalStrings{
         else{
             return 0.0f;
         }
-        
-        
     }
+  
+    /**
+     * @return volume in track in %
+     */
+    public static float getCurrentVolume(){
+        if (pCurrentPlayerImpl != null){
+            return pCurrentPlayerImpl.getCurrentVolume();
+        }
+        else{
+            return 0.0f;
+        }
+    }
+    
     /**
      * @return Returns the bPlaying.
      */

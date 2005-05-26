@@ -71,6 +71,9 @@ public interface IPlayerImpl {
 	/**Return track position in %*/
 	public float getCurrentPosition();
 	
-	/**Return player state */
+    /**Return volume in %*/
+    public float getCurrentVolume();
+    
+    /**Return player state */
 	public int getState();
 }

@@ -143,19 +143,15 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 	 * Constructor
 	 */
 	private CommandJPanel(){
-		
 		sbSearch = new SearchBox(CommandJPanel.this);
-		
 		//history
 		jcbHistory = new SteppedComboBox();
         //we use a combobox model to make sure we get good performances after rebuilding the entire model like after a refresh
         jcbHistory.setModel(new DefaultComboBoxModel(History.getInstance().getHistory()));
-                
-		int iWidth = (int)(Toolkit.getDefaultToolkit().getScreenSize().getWidth()/2);
+    	int iWidth = (int)(Toolkit.getDefaultToolkit().getScreenSize().getWidth()/2);
 		jcbHistory.setPopupWidth(iWidth);
 		jcbHistory.setToolTipText(Messages.getString("CommandJPanel.0")); //$NON-NLS-1$
 		jcbHistory.addActionListener(CommandJPanel.this);
-		
 		//Mode toolbar
 		jpMode = new JPanel();
 		jpMode.setLayout(new BoxLayout(jpMode,BoxLayout.X_AXIS));
@@ -269,8 +265,8 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		
 		//Volume
 		JPanel jpVolume = new JPanel();
-		jpVolume.setLayout(new BoxLayout(jpVolume,BoxLayout.X_AXIS));
-		jlVolume = new JLabel(Util.getIcon(ICON_VOLUME)); 
+        jpVolume.setLayout(new BoxLayout(jpVolume,BoxLayout.X_AXIS));
+        jlVolume = new JLabel(Util.getIcon(ICON_VOLUME)); 
 		jsVolume = new JSlider(0,100,(int)(100*ConfigurationManager.getFloat(CONF_VOLUME)));
 		jpVolume.add(jlVolume);
 		jpVolume.add(jsVolume);
@@ -280,8 +276,8 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		
 		//Position
 		JPanel jpPosition = new JPanel();
-		jpPosition.setLayout(new BoxLayout(jpPosition,BoxLayout.X_AXIS));
-		jlPosition = new JLabel(Util.getIcon(ICON_POSITION)); 
+        jpPosition.setLayout(new BoxLayout(jpPosition,BoxLayout.X_AXIS));
+    	jlPosition = new JLabel(Util.getIcon(ICON_POSITION)); 
 		jsPosition = new JSlider(0,100,0);
 		jpPosition.add(jlPosition);
 		jpPosition.add(jsPosition);
@@ -317,8 +313,8 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		add(Util.getCentredPanel(Util.getCentredPanel(jpMode),BoxLayout.Y_AXIS),"5,0");  //$NON-NLS-1$
 		add(Util.getCentredPanel(Util.getCentredPanel(jpSpecial),BoxLayout.Y_AXIS),"7,0"); //$NON-NLS-1$
 		add(Util.getCentredPanel(jpPlay),"9,0"); //$NON-NLS-1$
-		add(jsPosition,"11,0"); //$NON-NLS-1$
-		add(jsVolume,"13,0"); //$NON-NLS-1$
+		add(jpPosition,"11,0"); //$NON-NLS-1$
+		add(jpVolume,"13,0"); //$NON-NLS-1$
 		add(jbMute,"15,0"); //$NON-NLS-1$
 		
 		//register to player events
@@ -333,6 +329,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		ObservationManager.register(EVENT_REPEAT_MODE_STATUS_CHANGED,CommandJPanel.this);
 		ObservationManager.register(EVENT_FILE_LAUNCHED,this);
         ObservationManager.register(EVENT_CLEAR_HISTORY,this);
+        ObservationManager.register(EVENT_VOLUME_CHANGED,this);
       //if a track is playing, display right state
 		if ( FIFO.getInstance().getCurrentFile() != null){
 			//update initial state 
@@ -340,7 +337,6 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 			//check if some track has been lauched before the view has been displayed
 			update(new Event(EVENT_HEART_BEAT));
 		}
-		
 		//start timer
 		timer.start();
 	}	
@@ -466,9 +462,9 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 	 */
 	public void stateChanged(ChangeEvent e) {
 		if ( e.getSource() == jsVolume ){
-			Player.setVolume((float)jsVolume.getValue()/100);
-			//if user move the volume slider, unmute
-			Player.mute(false);
+            //if user move the volume slider, unmute
+            Player.mute(false);
+        	Player.setVolume((float)jsVolume.getValue()/100);
 			jbMute.setBorder(BorderFactory.createRaisedBevelBorder());
 		}
 		else if (e.getSource() == jsPosition && !bPositionChanging && !jsPosition.getValueIsAdjusting()){
@@ -607,6 +603,9 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
                 }
                 else if(EVENT_CLEAR_HISTORY.equals(event.getSubject())){
                   jcbHistory.setSelectedItem(null); //clear selection bar (data itself is clear from the model by History class)  
+                }
+                else if(EVENT_VOLUME_CHANGED.equals(event.getSubject())){
+                    jsVolume.setValue((int)(100*Player.getCurrentVolume()));
                 }
 			}
 		});
