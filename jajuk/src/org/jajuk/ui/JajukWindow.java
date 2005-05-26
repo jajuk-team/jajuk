@@ -21,7 +21,10 @@
 package org.jajuk.ui;
 
 import java.awt.Frame;
+import java.awt.Rectangle;
 import java.awt.Toolkit;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.StringTokenizer;
@@ -106,10 +109,38 @@ public class JajukWindow extends JFrame implements ITechnicalStrings,Observer {
 				return; 
 			}
 		});
+        
+        addComponentListener(new ComponentListener() {
+        
+            public void componentShown(ComponentEvent e) {
+            }
+        
+            public void componentResized(ComponentEvent e) {
+                saveSize();
+            }
+        
+            public void componentMoved(ComponentEvent e) {
+                saveSize();
+             }
+        
+            public void componentHidden(ComponentEvent e) {
+            }
+        
+        });
 		//display correct title if a track is lauched at startup
 		update(new Event(EVENT_FILE_LAUNCHED,ObservationManager.getDetailsLastOccurence(EVENT_FILE_LAUNCHED)));
    }
 	
+    /**
+     * Save current window size and position
+     *
+     */
+    private void saveSize(){
+        Rectangle rec = getBounds();
+        ConfigurationManager.setProperty(CONF_WINDOW_POSITION,
+            (int)rec.getMinX()+","+(int)rec.getMinY()+","+(int)rec.getWidth()+","+(int)rec.getHeight());  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    }
+    
     /**
      * Apply size and position stored as property
      *
@@ -117,7 +148,7 @@ public class JajukWindow extends JFrame implements ITechnicalStrings,Observer {
     public void applyStoredSize(){
         //      read stored position and size
         String sPosition = ConfigurationManager.getProperty(CONF_WINDOW_POSITION);
-        StringTokenizer st =new StringTokenizer(sPosition,",");
+        StringTokenizer st =new StringTokenizer(sPosition,","); //$NON-NLS-1$
         int iX = Integer.parseInt((String)st.nextToken());
         int iY = Integer.parseInt((String)st.nextToken());
         int iXsize = Integer.parseInt((String)st.nextToken());
