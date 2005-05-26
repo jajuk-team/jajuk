@@ -20,8 +20,6 @@ package org.jajuk;
 
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.Rectangle;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
@@ -135,6 +133,13 @@ public class Main implements ITechnicalStrings {
 		    //set exec location path ( normal or debug )
 			Util.setExecLocation(bDebugMode);//$NON-NLS-1$ 
 			
+            //Launch splashscreen 
+            SwingUtilities.invokeAndWait(new Runnable() {
+                public void run() {
+                    sc = new SplashScreen(jw);
+                  }
+            });
+        
 			//check for jajuk home directory presence, needed by log
 			File fJajukDir = new File(FILE_JAJUK_DIR);
 			if (!fJajukDir.exists() || !fJajukDir.isDirectory()) {
@@ -197,13 +202,6 @@ public class Main implements ITechnicalStrings {
             
 			//start the tray
 			launchTray();
-		    				    	
-			//Launch splashscreen 
-			SwingUtilities.invokeAndWait(new Runnable() {
-                public void run() {
-                    sc = new SplashScreen(jw);
-                  }
-            });
 						
 			//Register device types
 			DeviceManager.registerDeviceType(Messages.getString("Device_type.directory"));//$NON-NLS-1$
@@ -231,13 +229,7 @@ public class Main implements ITechnicalStrings {
 					Log.debug("Exit Hook begin");//$NON-NLS-1$
                     try{
 						if (iExitCode == 0){ //commit only if exit is safe (to avoid commiting empty collection)
-                            //commit window position
-                            Rectangle rec = jw.getBounds();
-                            ConfigurationManager.setProperty(CONF_WINDOW_POSITION,
-                                (int)rec.getMinX()+","+(int)rec.getMinY()+","+(int)rec.getWidth()+","+(int)rec.getHeight()); 
-							//Make sure to store right perspective
-                            ConfigurationManager.setProperty(CONF_PERSPECTIVE_DEFAULT,PerspectiveManager.getCurrentPerspective().getID());
-                            //commit configuration
+                             //commit configuration
 							org.jajuk.util.ConfigurationManager.commit();
                             //commit history
 							History.commit();
@@ -646,53 +638,50 @@ public class Main implements ITechnicalStrings {
             return;
         }
         //ui init 
-		SwingUtilities.invokeAndWait(new Runnable() { //use invokeAndWait to get a better progressive ui display
-		   public void run(){
-				try {
+        SwingUtilities.invokeLater(new Runnable() { //use invokeAndWait to get a better progressive ui display
+           public void run(){
+                try {
                     //  Set look and feel, needs local to be set for error messages
                     LNFManager.setLookAndFeel(ConfigurationManager.getProperty(CONF_OPTIONS_LNF));
                 
                     //starts ui
-					jw = JajukWindow.getInstance();
-				    jw.setCursor(Util.WAIT_CURSOR);
-							
-					//Creates the panel
-					jpFrame = (JPanel)jw.getContentPane();
-					jpFrame.setOpaque(true);
-					jpFrame.setLayout(new BorderLayout());
-					
-					//Set menu bar to the frame
-					jw.setJMenuBar(JajukJMenuBar.getInstance());
-		
-					//create the command bar
-					command = CommandJPanel.getInstance();
-					
-					// Create the information bar panel
-					information = InformationJPanel.getInstance();
-					
-					//Main panel
-					jpContentPane = new JPanel();
-					jpContentPane.setOpaque(true);
-					jpContentPane.setBorder(BorderFactory.createEtchedBorder());
-					jpContentPane.setLayout(new BorderLayout());
-					
-					//Add static panels
-					jpFrame.add(command, BorderLayout.NORTH);
-					jpFrame.add(information, BorderLayout.SOUTH);
-					jpTmp = new JPanel(); //we use an empty panel to take west place before actual panel ( perspective bar ). just for a better displaying
-					jpTmp.setPreferredSize(new Dimension(3000,3000));//make sure the temp panel makes screen maximalized
-					jpFrame.add(jpTmp, BorderLayout.CENTER);
-				
-					//Create the perspective manager 
-					PerspectiveManager.load();
+                    jw = JajukWindow.getInstance();
+                    jw.setCursor(Util.WAIT_CURSOR);
+                            
+                    //Creates the panel
+                    jpFrame = (JPanel)jw.getContentPane();
+                    jpFrame.setOpaque(true);
+                    jpFrame.setLayout(new BorderLayout());
+                    
+                    //Set menu bar to the frame
+                    jw.setJMenuBar(JajukJMenuBar.getInstance());
+        
+                    //create the command bar
+                    command = CommandJPanel.getInstance();
+                    
+                    // Create the information bar panel
+                    information = InformationJPanel.getInstance();
+                    
+                    //Main panel
+                    jpContentPane = new JPanel();
+                    jpContentPane.setOpaque(true);
+                    jpContentPane.setBorder(BorderFactory.createEtchedBorder());
+                    jpContentPane.setLayout(new BorderLayout());
+                    
+                    //Add static panels
+                    jpFrame.add(command, BorderLayout.NORTH);
+                    jpFrame.add(information, BorderLayout.SOUTH);
+                
+                    //Create the perspective manager 
+                    PerspectiveManager.load();
 
-					// Create the perspective tool bar panel
-					perspectiveBar = PerspectiveBarJPanel.getInstance();
-					jpFrame.add(perspectiveBar, BorderLayout.WEST);
-					
-					//display window
-					jw.setVisible(true); //show main window
-					sc.toFront(); //force screenshot to continue to be visible during loading
+                    // Create the perspective tool bar panel
+                    perspectiveBar = PerspectiveBarJPanel.getInstance();
+                    jpFrame.add(perspectiveBar, BorderLayout.WEST);
+                    
+                    //display window
+                    jw.setVisible(true); //show main window
+                    sc.toFront(); //force screenshot to continue to be visible during loading
                     jw.applyStoredSize(); //apply size and position as stored in the user properties
                     
                     //Display info message if first session
@@ -705,25 +694,18 @@ public class Main implements ITechnicalStrings {
                         fsw.setVisible(true);
                         ConfigurationManager.setProperty(CONF_FIRST_CON,FALSE);
                     }
+                    
+                    jpFrame.add(jpContentPane, BorderLayout.CENTER);
+                    PerspectiveManager.init();
+                    jw.setCursor(Util.DEFAULT_CURSOR);
+                    
                 } catch (Exception e) { //last chance to catch any error for logging purpose
                     e.printStackTrace();
                     Log.error("106", e); //$NON-NLS-1$
-				}
-			}
-		});
-	
-		Thread.sleep(2000);  //make sure static panels are drawed
-		
-		//Initialize perspective manager and load all views
-		SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                jpFrame.remove(jpTmp);	
-                jpFrame.add(jpContentPane, BorderLayout.CENTER);
-                PerspectiveManager.init();
-                jw.setCursor(Util.DEFAULT_CURSOR);
+                }
             }
         });
-		
+    
         bUILauched = true;
    }
     
