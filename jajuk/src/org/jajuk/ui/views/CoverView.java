@@ -210,7 +210,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
         } catch (Exception e) {
             Log.error(e);
         }
-        add(jpControl,"0,0");
+        add(jpControl,"0,0"); //$NON-NLS-1$
         new Thread(){ //do not execute this very long action all in the event dispatcher thread!
             public void run(){
                 update(new Event(EVENT_COVER_REFRESH,ObservationManager.getDetailsLastOccurence(EVENT_COVER_REFRESH)));        
@@ -225,7 +225,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
      */
     public void update(Event event){
         String subject = event.getSubject();
-        Log.debug("Cover view update: "+event);
+        Log.debug("Cover view update: "+event); //$NON-NLS-1$
         bStop = true;
         synchronized(bLock){//block any concurrent cover update
             try{
@@ -304,7 +304,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                                     }
                                 }
                                 if (bStop){ //a stop signal has been emmited from a concurrent thread
-                                    Log.debug("Download stopped");
+                                    Log.debug("Download stopped"); //$NON-NLS-1$
                                     return;
                                 }
                                 //Add found covers
@@ -316,8 +316,8 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                                if (e instanceof HttpConnection.ConnectionTimeoutException){
                                    iErrorCounter ++;
                                    if (iErrorCounter == STOP_TO_SEARCH){
-                                       Log.warn("Too much connection fails, stop to search for covers online");
-                                       InformationJPanel.getInstance().setMessage(Messages.getString("Error.030"),InformationJPanel.ERROR);
+                                       Log.warn("Too much connection fails, stop to search for covers online"); //$NON-NLS-1$
+                                       InformationJPanel.getInstance().setMessage(Messages.getString("Error.030"),InformationJPanel.ERROR); //$NON-NLS-1$
                                    }
                                }
                         }

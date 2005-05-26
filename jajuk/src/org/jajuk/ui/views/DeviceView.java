@@ -252,10 +252,10 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 		while (it.hasNext()){
 			final Device device = (Device)it.next();
 			String sIcon = ICON_DEVICE_DIRECTORY_MOUNTED;
-			String sTooltip = "";
+			String sTooltip = ""; //$NON-NLS-1$
             switch (device.getDeviceType()){
 			case 0 :
-                sTooltip = Messages.getString("Device_type.directory");
+                sTooltip = Messages.getString("Device_type.directory"); //$NON-NLS-1$
 				if ( device.isMounted()){
 					sIcon = ICON_DEVICE_DIRECTORY_MOUNTED;
             	}
@@ -264,7 +264,7 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
                  }
 				break;
 			case 1 : 
-                sTooltip = Messages.getString("file_cd");
+                sTooltip = Messages.getString("file_cd"); //$NON-NLS-1$
                 if ( device.isMounted()){
 					sIcon = ICON_DEVICE_CD_MOUNTED;
              	}
@@ -273,7 +273,7 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
                 }
 				break;
 			case 2 : 
-                sTooltip = Messages.getString("Device_type.network_drive");
+                sTooltip = Messages.getString("Device_type.network_drive"); //$NON-NLS-1$
                 if ( device.isMounted()){
 					sIcon = ICON_DEVICE_NETWORK_DRIVE_MOUNTED;
                  }
@@ -282,7 +282,7 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
                }
 				break;
 			case 3 : 
-                sTooltip = Messages.getString("Device_type.extdd");
+                sTooltip = Messages.getString("Device_type.extdd"); //$NON-NLS-1$
                 if ( device.isMounted()){
 					sIcon = ICON_DEVICE_EXT_DD_MOUNTED;
              	}
@@ -291,7 +291,7 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
                 }
 				break;
 			case 4 : 
-                sTooltip = Messages.getString("Device_type.player");
+                sTooltip = Messages.getString("Device_type.player"); //$NON-NLS-1$
                 if ( device.isMounted()){
 					sIcon = ICON_DEVICE_PLAYER_MOUNTED;
 				}
@@ -300,7 +300,7 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 				}
 				break;
             case 5 : 
-                sTooltip = Messages.getString("Device_type.remote");
+                sTooltip = Messages.getString("Device_type.remote"); //$NON-NLS-1$
                 if ( device.isMounted()){
                     sIcon = ICON_DEVICE_REMOTE_MOUNTED;
                 }

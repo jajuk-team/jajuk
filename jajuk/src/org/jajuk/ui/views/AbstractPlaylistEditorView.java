@@ -547,7 +547,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
                                     try{
                                         plf.setFiles(plfi.getPlaylistFile().getFiles()); //set same files for all playlist files
                                         plf.commit();
-                                        InformationJPanel.getInstance().setMessage(Messages.getString("AbstractPlaylistEditorView.22"),InformationJPanel.INFORMATIVE);
+                                        InformationJPanel.getInstance().setMessage(Messages.getString("AbstractPlaylistEditorView.22"),InformationJPanel.INFORMATIVE); //$NON-NLS-1$
                                     }
                                     catch(JajukException je){
                                         Log.error(je);
@@ -559,7 +559,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
                     else{ //in physical perspective
                         try{
                             plfi.getPlaylistFile().commit();
-                            InformationJPanel.getInstance().setMessage(Messages.getString("AbstractPlaylistEditorView.22"),InformationJPanel.INFORMATIVE);
+                            InformationJPanel.getInstance().setMessage(Messages.getString("AbstractPlaylistEditorView.22"),InformationJPanel.INFORMATIVE); //$NON-NLS-1$
                         }
                         catch(JajukException je){
                             Log.error(je);

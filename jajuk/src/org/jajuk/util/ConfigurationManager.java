@@ -204,8 +204,8 @@ public class ConfigurationManager implements ITechnicalStrings{
 		properties.put(CONF_COVERS_ACCURACY+"_4","4"); //Album accuracy //$NON-NLS-1$ //$NON-NLS-2$
 		properties.put(CONF_COVERS_CHANGE_AT_EACH_TRACK,FALSE); 
         properties.put(CONF_WINDOW_POSITION,
-            "50,50,"+
-            (int)(Toolkit.getDefaultToolkit().getScreenSize().getWidth()-100)+","+
+            "50,50,"+ //$NON-NLS-1$
+            (int)(Toolkit.getDefaultToolkit().getScreenSize().getWidth()-100)+","+ //$NON-NLS-1$
             (int)(Toolkit.getDefaultToolkit().getScreenSize().getHeight()-100)); //Window position: X,Y,X_size,Y_size
     }
 	
