@@ -22,11 +22,13 @@ package org.jajuk.ui;
 
 import info.clearthought.layout.TableLayout;
 
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
+import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -34,6 +36,7 @@ import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import org.jajuk.Main;
 import org.jajuk.base.Device;
@@ -57,6 +60,7 @@ public class FirstTimeWizard extends JDialog implements ITechnicalStrings,Action
     JPanel jpRightPanel;
     JLabel jlWelcome;
     JLabel jlFileSelection;
+    JTextField jtfFileSelected;
     JButton jbFileSelection;
     JCheckBox jcbAutoCover;
     JCheckBox jcbHelp;
@@ -80,11 +84,14 @@ public class FirstTimeWizard extends JDialog implements ITechnicalStrings,Action
         jlLeftIcon = new JLabel(new ImageIcon(Util.getResizedImage(
             Util.getIcon(IMAGES_SPLASHSCREEN).getImage(),300,200)));
         jpRightPanel = new JPanel();
-        jlWelcome=new JLabel(Messages.getString("FirstTimeWizard.1"));
-        jlFileSelection = new JLabel(Messages.getString("FirstTimeWizard.2"));
+        jlWelcome=new JLabel(Messages.getString("FirstTimeWizard.1")); //$NON-NLS-1$
+        jlFileSelection = new JLabel(Messages.getString("FirstTimeWizard.2")); //$NON-NLS-1$
         jbFileSelection = new JButton(Util.getIcon(ICON_OPEN_FILE));
+        jtfFileSelected = new JTextField(""); //$NON-NLS-1$
+        jtfFileSelected.setForeground(Color.BLUE);
+        jtfFileSelected.setEditable(false);
         jbFileSelection.addActionListener(this);
-        jcbAutoCover = new JCheckBox(Messages.getString("FirstTimeWizard.3"));
+        jcbAutoCover = new JCheckBox(Messages.getString("FirstTimeWizard.3")); //$NON-NLS-1$
         //can't change auto-cover if not first connection
         if (ConfigurationManager.getBoolean(CONF_FIRST_CON)){
             jcbAutoCover.setSelected(true);
@@ -92,7 +99,7 @@ public class FirstTimeWizard extends JDialog implements ITechnicalStrings,Action
         else{
             jcbAutoCover.setVisible(false);
         }
-        jcbHelp = new JCheckBox(Messages.getString("FirstTimeWizard.4"));
+        jcbHelp = new JCheckBox(Messages.getString("FirstTimeWizard.4")); //$NON-NLS-1$
         //buttons
         jpButtons = new JPanel();
         jpButtons.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -103,20 +110,28 @@ public class FirstTimeWizard extends JDialog implements ITechnicalStrings,Action
         jbCancel.addActionListener(this);
         jpButtons.add(jbOk);
         jpButtons.add(jbCancel);
-        double sizeRight[][] = { { 0.99,iX_SEPARATOR, 20,iX_SEPARATOR }, 
-                {iY_SEPARATOR,60, iY_SEPARATOR, 20, iY_SEPARATOR, 40 ,iY_SEPARATOR,20, iY_SEPARATOR, 40 }};
+        double sizeRight[][] = { { 0.99,iX_SEPARATOR}, 
+                {iY_SEPARATOR,60, iY_SEPARATOR, 30,iY_SEPARATOR, 20, iY_SEPARATOR, 40 ,iY_SEPARATOR,20, iY_SEPARATOR, 40 }};
+        
+        FlowLayout flSelection = new FlowLayout(FlowLayout.LEFT);
+        JPanel jpFileSelection = new JPanel();
+        jpFileSelection.setLayout(flSelection);
+        jpFileSelection.add(jbFileSelection);
+        jpFileSelection.add(Box.createHorizontalStrut(10));
+        jpFileSelection.add(jlFileSelection);
+        
         jpRightPanel.setLayout(new TableLayout(sizeRight));
-        jpRightPanel.add(jlWelcome,"0,1");
-        jpRightPanel.add(jlFileSelection,"0,3");
-        jpRightPanel.add(jbFileSelection,"2,3");
-        jpRightPanel.add(jcbAutoCover,"0,5");
-        jpRightPanel.add(jcbHelp,"0,7");
-        jpRightPanel.add(jpButtons,"0,9");
+        jpRightPanel.add(jlWelcome,"0,1"); //$NON-NLS-1$
+        jpRightPanel.add(jpFileSelection,"0,3"); //$NON-NLS-1$
+        jpRightPanel.add(jtfFileSelected,"0,5"); //$NON-NLS-1$
+        jpRightPanel.add(jcbAutoCover,"0,7"); //$NON-NLS-1$
+        jpRightPanel.add(jcbHelp,"0,9"); //$NON-NLS-1$
+        jpRightPanel.add(jpButtons,"0,11"); //$NON-NLS-1$
         double size[][] = { { 0.4,30,0.6}, 
                 {0.99 }};
         setLayout(new TableLayout(size));
-        add(jlLeftIcon,"0,0");
-        add(jpRightPanel,"2,0");
+        add(jlLeftIcon,"0,0"); //$NON-NLS-1$
+        add(jpRightPanel,"2,0"); //$NON-NLS-1$
     }
 
 
@@ -139,6 +154,7 @@ public class FirstTimeWizard extends JDialog implements ITechnicalStrings,Action
                     jbOk.setEnabled(false);
                     return;
                 }
+                jtfFileSelected.setText(fDir.getAbsolutePath());
                 jbOk.setEnabled(true);
             }
         }
