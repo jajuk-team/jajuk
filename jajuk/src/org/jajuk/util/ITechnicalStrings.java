@@ -110,7 +110,7 @@ public interface ITechnicalStrings {
 	public static final String ICON_NEW=  PATH_ICONS + "16x16/new.png";
 	public static final String ICON_DELETE=  PATH_ICONS + "16x16/delete.png";
 	public static final String ICON_PROPERTIES=  PATH_ICONS + "16x16/properties.png";
-    public static final String ICON_CONFIGURATION   = "/org/jajuk/icons/16x16/configuration_perspective.png";
+    public static final String ICON_CONFIGURATION   = PATH_ICONS + "16x16/configure.png";
     public static final String ICON_MOUNT=  PATH_ICONS + "16x16/mount.png";
 	public static final String ICON_UNMOUNT=  PATH_ICONS + "16x16/unmount.png";
 	public static final String ICON_TEST=  PATH_ICONS + "16x16/test.png";
@@ -329,6 +329,7 @@ public interface ITechnicalStrings {
 	public static final String EVENT_SYNC_TREE_TABLE="sync_tree_table"; //sync table and tree views
     public static final String EVENT_CLEAR_HISTORY="clear history"; //clear history
     public static final String EVENT_WIZARD="launch wizard"; //launch first time wizard
+    public static final String EVENT_VOLUME_CHANGED="volume changed"; //volume changed
     
 	//details keys
 	public static final String DETAIL_CURRENT_FILE_ID="current file id";
