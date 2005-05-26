@@ -20,6 +20,7 @@
 
 package org.jajuk.ui.tray;
 
+import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -30,20 +31,26 @@ import java.util.Collections;
 import java.util.Properties;
 
 import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JLabel;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.JSlider;
+import javax.swing.Timer;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import org.jajuk.Main;
 import org.jajuk.base.Event;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
+import org.jajuk.base.JajukTimer;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Observer;
 import org.jajuk.base.Player;
 import org.jajuk.base.StackItem;
 import org.jajuk.i18n.Messages;
-import org.jajuk.ui.CommandJPanel;
 import org.jajuk.ui.JajukWindow;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.util.ConfigurationManager;
@@ -59,7 +66,7 @@ import org.jdesktop.jdic.tray.TrayIcon;
  * @author     Administrateur
  * @created    22 sept. 2004
  */
-public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,MouseWheelListener{
+public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,MouseWheelListener,ChangeListener{
 	//Systray variables
 	SystemTray stray = SystemTray.getDefaultSystemTray();;
 	TrayIcon trayIcon;
@@ -76,10 +83,27 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
 	JMenuItem jmiPrevious;
 	JMenuItem jmiNext;
 	JMenuItem jmiOut;
+    JPanel jpVolume;
+    JLabel jlVolume;
+    JSlider jsVolume;
+    JPanel jpPosition;
+    JLabel jlPosition;
+    JSlider jsPosition;
+    /**Position slider move*/
+    private static boolean bPositionChanging = false;
+    /**Last slider manual move date*/
+    private static long lDateLastPosMove;
 	/**Visible at startup?*/
 	JCheckBoxMenuItem jcbmiVisible;
 	/**Self instance singleton*/
 	private static JajukSystray jsystray;
+    
+    /** Swing Timer to refresh the component*/ 
+    private Timer timer = new Timer(JajukTimer.DEFAULT_HEARTBEAT,new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+            update(new Event(EVENT_HEART_BEAT));
+        }
+    });
 	
 	
 	/**
@@ -148,7 +172,28 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
 		jmiNext = new JMenuItem(Messages.getString("JajukWindow.14"),Util.getIcon(ICON_NEXT)); //$NON-NLS-1$
 		jmiNext.addActionListener(this);
 		jmiNext.setToolTipText(Messages.getString("JajukWindow.30")); //$NON-NLS-1$
-		
+		      
+        jpPosition = new JPanel();
+        jpPosition.setLayout(new FlowLayout(FlowLayout.LEFT));
+        jlPosition = new JLabel(Util.getIcon(ICON_POSITION)); 
+        jsPosition = new JSlider(0,100,0);
+        jsPosition.addChangeListener(this);
+        jsPosition.setEnabled(false);
+        jsPosition.setToolTipText(Messages.getString("CommandJPanel.15")); //$NON-NLS-1$
+        jsPosition.addMouseWheelListener(this);
+        jpPosition.add(jlPosition);
+        jpPosition.add(jsPosition);
+        
+        jpVolume = new JPanel();
+        jpVolume.setLayout(new FlowLayout(FlowLayout.LEFT));
+        jlVolume = new JLabel(Util.getIcon(ICON_VOLUME)); 
+        jsVolume = new JSlider(0,100,(int)(100*ConfigurationManager.getFloat(CONF_VOLUME)));
+        jsVolume.setToolTipText(Messages.getString("CommandJPanel.14")); //$NON-NLS-1$
+        jsVolume.addChangeListener(this);
+        jsVolume.addMouseWheelListener(this);
+        jpVolume.add(jlVolume);
+        jpVolume.add(jsVolume);
+        
 		jmiOut = new JMenuItem(" "); //$NON-NLS-1$
 		
 		jmenu.add(jcbmiVisible);
@@ -167,11 +212,13 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
 		jmenu.addSeparator();
 		jmenu.add(jmiMute);
 		jmenu.addSeparator();
-		jmenu.add(jmiExit);
+        jmenu.add(jpPosition);
+        jmenu.add(jpVolume);
+        jmenu.addSeparator();
+        jmenu.add(jmiExit);
 		jmenu.add(jmiOut);
 		
 		trayIcon = new TrayIcon(Util.getIcon(ICON_LOGO_TRAY),Messages.getString("JajukWindow.18"),jmenu); //$NON-NLS-1$);
-		jmenu.addMouseWheelListener(this);
 		trayIcon.setIconAutoSize(true);
 		trayIcon.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -188,7 +235,8 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
 			}
 		});
 		stray.addTrayIcon(trayIcon);
-		
+        //start timer
+        timer.start();
 		//Register needed events
 		ObservationManager.register(EVENT_ZERO,this);
 		ObservationManager.register(EVENT_FILE_LAUNCHED,this);
@@ -197,7 +245,8 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
 		ObservationManager.register(EVENT_PLAYER_RESUME,this);
 		ObservationManager.register(EVENT_PLAYER_STOP,this);
 		ObservationManager.register(EVENT_MUTE_STATE,this);
-		
+        ObservationManager.register(EVENT_VOLUME_CHANGED,this);
+        
 		//check if a fiel has been already started
 		if (FIFO.getInstance().getCurrentFile() == null){
 			update(new Event(EVENT_PLAYER_STOP,ObservationManager.getDetailsLastOccurence(EVENT_PLAYER_STOP)));
@@ -344,6 +393,7 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
 			jmiStop.setEnabled(false);
 			jmiNext.setEnabled(false);
 			jmiPrevious.setEnabled(false);
+            jsPosition.setEnabled(false);
 			jmiPause.setIcon(Util.getIcon(ICON_PAUSE));
 			jmiPause.setText(Messages.getString("JajukWindow.10")); //$NON-NLS-1$
 		}
@@ -352,18 +402,45 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
 			jmiStop.setEnabled(true);
 			jmiNext.setEnabled(true);
 			jmiPrevious.setEnabled(true);
+            jsPosition.setEnabled(true);
 			jmiPause.setText(Messages.getString("JajukWindow.10")); //$NON-NLS-1$
 		}
 		else if ( EVENT_PLAYER_PAUSE.equals(subject)){
 			jmiPause.setText(Messages.getString("JajukWindow.12")); //$NON-NLS-1$
 			jmiPause.setIcon(Util.getIcon(ICON_PLAY));
+            jsPosition.setEnabled(false);
 		}
 		else if ( EVENT_PLAYER_RESUME.equals(subject)){
 			jmiPause.setText(Messages.getString("JajukWindow.10")); //$NON-NLS-1$
 			jmiPause.setIcon(Util.getIcon(ICON_PAUSE));
+            jsPosition.setEnabled(true);
 		}
+        else if(EVENT_VOLUME_CHANGED.equals(event.getSubject())){
+            jsVolume.setValue((int)(100*Player.getCurrentVolume()));
+        }
+        else if (EVENT_HEART_BEAT.equals(subject) &&!FIFO.isStopped() && !Player.isPaused()){
+            long length = JajukTimer.getInstance().getCurrentTrackTotalTime(); 
+            long lTime = JajukTimer.getInstance().getCurrentTrackEllapsedTime();
+            int iPos = (int)(100*JajukTimer.getInstance().getCurrentTrackPosition());
+            setCurrentPosition(iPos);
+        }
 	}
 	
+    /**
+     * Set Slider position
+     * @param i percentage of slider
+     */
+    public void setCurrentPosition(final int i){
+        if ( !bPositionChanging ){//don't move slider when user do it himself at the same time
+            bPositionChanging = true;  //block events so player is not affected
+            //wait 3 secs after end of last move to avoid slider to come back to previous position
+            if (System.currentTimeMillis() - lDateLastPosMove > 3000){
+                jsPosition.setValue(i);    
+            }
+            bPositionChanging = false;
+        }
+    }
+    
 	/**
 	 * Hide systray 
 	 *
@@ -378,15 +455,50 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
 	 * @see java.awt.event.MouseWheelListener#mouseWheelMoved(java.awt.event.MouseWheelEvent)
 	 */
 	public void mouseWheelMoved(MouseWheelEvent e) {
-		int iOld = CommandJPanel.getInstance().getCurrentVolume();
-		int iNew = iOld - (e.getUnitsToScroll()*3);
-		if ( iNew<0){
-			iNew = 0;
-		}
-		else if (iNew>99){
-			iNew = 99;
-		}
-		CommandJPanel.getInstance().setCurrentVolume(iNew);
+        if (e.getSource() == jsPosition){
+            int iOld = jsPosition.getValue();
+            int iNew = iOld - (e.getUnitsToScroll()*3);
+            if ( iNew<0){
+                iNew = 0;
+            }
+            else if (iNew>99){
+                iNew = 99;
+            }
+            jsPosition.setValue(iNew);
+        }
+        else if (e.getSource() == jsVolume){
+            int iOld = jsVolume.getValue();
+            int iNew = iOld - (e.getUnitsToScroll()*3);
+            if ( iNew<0){
+                iNew = 0;
+            }
+            else if (iNew>99){
+                iNew = 99;
+            }
+            jsVolume.setValue(iNew);
+        }
 	}
+
+    public void stateChanged(ChangeEvent e) {
+        if ( e.getSource() == jsVolume ){
+            //if user move the volume slider, unmute
+            Player.mute(false);
+            Player.setVolume((float)jsVolume.getValue()/100);
+        }
+        else if (e.getSource() == jsPosition && !bPositionChanging && !jsPosition.getValueIsAdjusting()){
+            bPositionChanging = true;
+            lDateLastPosMove = System.currentTimeMillis();
+            float fPosition = (float)jsPosition.getValue()/100;
+            Log.debug("Seeking to: "+fPosition); //$NON-NLS-1$
+            //max position can't be 100% to allow seek properly
+            if (fPosition == 1.0f){
+                fPosition = 0.99f;
+            }
+            Player.seek(fPosition);
+            Player.mute(false); //if user move the slider, unmute
+            bPositionChanging = false;
+        }
+    
+    }
 	
 }
