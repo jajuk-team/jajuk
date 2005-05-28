@@ -688,6 +688,10 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                     File file = new File(cover.getURL().getFile());
                     if (file.isFile() && file.exists()){
                         file.delete();
+                        //check that file has been really deleted (sometimes, we get no exception)
+                        if (file.exists()){
+                            throw new Exception(""); //$NON-NLS-1$
+                        }
                     }
                     else{  //not a file, must have a problem
                         throw new Exception(""); //$NON-NLS-1$
