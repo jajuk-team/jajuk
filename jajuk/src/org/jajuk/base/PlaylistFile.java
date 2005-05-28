@@ -280,23 +280,28 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 			Bookmarks.getInstance().addFile(index,file);
 		}
 		if ( iType == PlaylistFileItem.PLAYLIST_TYPE_QUEUE){
-			//set repeat mode : if previous item is repeated, repeat as well
-		    StackItem item = new StackItem(file);
-			StackItem itemPrevious = FIFO.getInstance().getItem(index-1);
-		    if (itemPrevious != null && itemPrevious.isRepeat()){
-			    item.setRepeat(true);
-			}
-			else{
-			    item.setRepeat(false);
-			}
-		    item.setUserLaunch(false);
-		    FIFO.getInstance().insert(item,index); //insert this track in the fifo
-		}
-		else {
-			getFiles().add(index,file);
-			setModified(true);
-		}
-	}
+            StackItem item = new StackItem(file);
+            item.setUserLaunch(false);
+            //set repeat mode : if previous item is repeated, repeat as well
+            if (index > 0){
+                StackItem itemPrevious = FIFO.getInstance().getItem(index-1);
+                if (itemPrevious != null && itemPrevious.isRepeat()){
+                    item.setRepeat(true);
+                }
+                else{
+                    item.setRepeat(false);
+                }
+                FIFO.getInstance().insert(item,index); //insert this track in the fifo
+            }
+            else{ //start immediatly playing
+                FIFO.getInstance().push(item,false);
+            }
+        }
+        else {
+            getFiles().add(index,file);
+            setModified(true);
+        }
+    }
 	
 	
 	/**
