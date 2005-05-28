@@ -25,11 +25,13 @@ NEW RELEASE PROCEDURE
 - Add a release in main_qualification.html file
 - Save dist file in the releases dir
 - Modify index.xml and change.xml maven files
+- Change download.html file for file names
 - Generate and upload maven site
 - Close bugs, known issues and RFE at SF
 - Release file on SF, ( preserve my preformated text in notes )
 - Send a message in the developer forum
 - Clean snapshots directory
+
 
 ANNOUNCEMENT PROCEDURE
 - Make a news at SF
@@ -53,10 +55,12 @@ o Read developer guide (http://jajuk.sourceforge.net/developer_guide.html) and m
 o Have a look at the code
 o Tell us if you still feel OK to work on jajuk and accepted rules given in the developer guide. 
 
-if yes:
-o Give me your sourceforge user so I will give you commit right.
+If yes:
 o [Mandatory] Subscribe to the developer list, jajuk main communication stream: http://lists.sourceforge.net/lists/listinfo/jajuk-developers and send a message to present you and so we make sure that you have subscribed.
-o Choose a tasks from task list or a new one and inform us on the developer list. 
+o Choose a tasks from task list or a new one from your own. 
+o Send us at least one patch with a task implementation. If accepted, you will become member and you will commit your own patch.
+
+As a member:
 o Keep us in touch by giving an approximatical planning and % realized so we can plan releases.
 o In you have questions/problems, don't hesitate to ask us on the developer list.
 
