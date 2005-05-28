@@ -182,6 +182,24 @@ public class Directory extends PropertyAdapter implements Comparable{
     }
     
     /**
+     * return child files from a given file in album included
+     * @return child files
+     */
+    public ArrayList getFilesFromFile(org.jajuk.base.File fileStart) {
+        Iterator it = alFiles.iterator();
+        ArrayList alOut = new ArrayList(alFiles.size());
+        boolean bOK = false;
+        while (it.hasNext()){
+            org.jajuk.base.File file = (org.jajuk.base.File)it.next();
+            if (bOK || file.equals(fileStart)){
+                alOut.add(file);
+                bOK = true;
+            }
+        }
+        return alOut;
+    }
+    
+    /**
      * return child files recursively
      * @return child files recursively
      */
