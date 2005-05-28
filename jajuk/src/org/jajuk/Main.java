@@ -547,7 +547,9 @@ public class Main implements ITechnicalStrings {
 			}
 			else if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_NOVELTIES)){
 			    alToPlay = FileManager.getGlobalNoveltiesPlaylist();
-                Collections.shuffle(alToPlay);//shuffle the selection
+                if (alToPlay != null){
+                    Collections.shuffle(alToPlay);//shuffle the selection
+                }
 			}
 			//launch selected file
 			if (alToPlay  != null && alToPlay.size() >0){
