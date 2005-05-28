@@ -13,14 +13,12 @@
     <menu name='Overview'>
       <item name='-Home-' href='./index.html' />      
       <item name='Download' href='./downloads.html' />
-      <item name='Team' href='./team-list.html' />      
+      <item name='Changelog' href='./changes-report.html' />
       <item name='Support/Help' href='http://sourceforge.net/tracker/?group_id=91412&amp;atid=597087' />
-      <item name='Latest news' href='./index.html#News' />
+      <item name='Bug report / Wishes' href='http://sourceforge.net/tracker/?group_id=91412' />
       <item name='Features' href='./index.html#Features' />
       <item name='Screenshots' href='./index.html#Screenshots' />
-      <item name='Changelog' href='./changes-report.html' />
       <item name='Dependencies' href='./jajuk_dependencies.html' />
-      <item name='Bug report / Wishes' href='http://sourceforge.net/tracker/?group_id=91412' />
       <item name='CVS web repository' href='http://cvs.sourceforge.net/viewcvs.py/jajuk/' />
       <item name='Mailing list' href='./mail-lists.html' />
       <item name='Jajuk on the Web' href='./references.html' />
@@ -37,6 +35,7 @@
       <item name="Get Java" href="http://www.java.com/en/download/manual.jsp" img="./images/get_java_blue-button.gif"/>
     </menu>
     <menu name='Project'>
+      <item name='Team' href='./team-list.html' />      
       <item name='Jobs' href='./jobs.html' />
       <item name='Roadmap' href='./planning.html' />
       <item name='Tasks list' href='http://sourceforge.net/pm/?group_id=91412' />

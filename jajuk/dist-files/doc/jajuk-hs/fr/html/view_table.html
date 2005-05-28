@@ -5,85 +5,86 @@
 	<TITLE>The Physical/Logical Table view</TITLE>
 	<META NAME="GENERATOR" CONTENT="OpenOffice.org 1.1.3  (Linux)">
 	<META NAME="CREATED" CONTENT="20050308;19305500">
-	<META NAME="CHANGED" CONTENT="20050308;19310200">
+	<META NAME="CHANGED" CONTENT="20050528;19525000">
 </HEAD>
 <BODY LANG="en-US" DIR="LTR">
-<H1>The Physical/Logical Table view 
+<H1 LANG="fr-FR">La vue Table Physique/Logique 
 </H1>
-<P>These views show all files/tracks from your collection in a table
-and is used to perform contextual operations and filtering. For the
-moment, columns (track name, directory...) are static but in Jajuk
-future releases, you should be able to add new custom ones. Physical
-Table view displays all files from your collection (so you can get
-several time the same file if located in several devices or
-directories) when the Logical Table view only deals with tracks and
-related information. Note that a single track can actually map
-several files but will only be displayed once in this view.</P>
-<P><U>Notes</U>: 
+<P LANG="fr-FR">Cette vue affiche votre collection sous la forme d'un
+tableau pour effectuer des actions contextuelles et de filtrage. Pour
+le moment, les colonnes sont pr&eacute;d&eacute;finies mais dans les
+version futures de Jajuk, vous pourrez ajouter vos propres colonnes.
+La table physique affiche tous les fichiers de votre collection (donc
+vous pouvez voir plusieurs fois le m&ecirc;me fichier s'il est
+dupliqu&eacute; dans plusieurs r&eacute;pertoires) alors que la table
+logique n'affiche que les morceaux logiques: un simple morceau peut
+en fait correspondre &agrave; plusieurs fichiers mais il ne sera
+afficher qu'une fois.</P>
+<P LANG="fr-FR"><U>Notes</U>: 
 </P>
 <UL>
-	<LI><P STYLE="margin-bottom: 0cm">Rate is related to the track, not
-	to a single file. It is computed this way: +1 when a track is added
-	in queue and +2 when it is played. 
-	</P>
-	<LI><P>As usual, you can limit to files from mounted devices using
-	the &quot;show only mounted devices&quot; option in Parameter view/
-	Option tab. 
+	<LI><P LANG="fr-FR" STYLE="margin-bottom: 0cm">La note est li&eacute;e
+	au morceau, pas aux fichiers. Elle est calcul&eacute;e de cette
+	fa&ccedil;on: +1 lorsqu'un morceau est lanc&eacute;, +2 lorsqu'il
+	est effectivement jou&eacute;.</P>
+	<LI><P STYLE="margin-bottom: 0cm"><SPAN LANG="fr-FR">Vous pouvez
+	n'afficher que les morceaux situ&eacute; sur des supports mont&eacute;s
+	en utilisant l'option &quot;N'afficher que les supports mont&eacute;s&quot;
+	dans la </SPAN><A HREF="view_parameter.html"><SPAN STYLE="background: transparent"><SPAN LANG="fr-FR">vue
+	Param&eacute;trage</SPAN></SPAN></A><SPAN LANG="fr-FR"> / onglet
+	Options. </SPAN>
 	</P>
 </UL>
-<H2>Drag and Drop</H2>
-<P>At any time, you can drag a single file or track from the table to
-any Playlist in the Playlist repository view or to the current
-Playlist Editor.</P>
-<H2>Contextual menu</H2>
-<P>File/track contextual menu features:</P>
+<H2 LANG="fr-FR">Glissez-d&eacute;posez</H2>
+<P><SPAN LANG="fr-FR">A tout moment, vous pouvez glissez un morceau
+et le d&eacute;poser sur la playliste d&eacute;sir&eacute;e (les
+ic&ocirc;nes dans la vue </SPAN><A HREF="view_playlist_repository.html"><SPAN LANG="fr-FR">R&eacute;f&eacute;rentiel
+de playlistes</SPAN></A><SPAN LANG="fr-FR">) ou sur la vue </SPAN><A HREF="view_playlist_editor.html"><SPAN LANG="fr-FR">&Eacute;diteur
+de playlistes</SPAN></A><SPAN LANG="fr-FR">. Si la playliste
+s&eacute;lectionn&eacute;e est la file, un glissez-d&eacute;posez sur
+l'&eacute;diteur de playliste lancera imm&eacute;diatement votre
+s&eacute;lection. Notez que vous pouvez associer l'action de
+glissez-d&eacute;posez &agrave; un pousser et non jouer via l'option
+correspondante dans la </SPAN><A HREF="view_parameter.html"><SPAN LANG="fr-FR">vue
+Param&eacute;trage</SPAN></A><SPAN LANG="fr-FR"> / onglet options.</SPAN></P>
+<H2 LANG="fr-FR">Menu contextuel</H2>
+<P LANG="fr-FR">Le menu contextuel (clic droit) sur une s&eacute;lection
+de lignes contient les actions suivantes:</P>
 <UL>
-	<LI><P STYLE="margin-bottom: 0cm">Play: Stop current track/file and
-	play it 
-	</P>
-	<LI><P STYLE="margin-bottom: 0cm">Push: Don't stop current track but
-	simply add the selection in the queue (see Queue playlist) 
-	</P>
-	<LI><P STYLE="margin-bottom: 0cm">Play shuffle: Stop current track
-	and play selection randomly (note that this mode is automatically
-	used when playing a track if you set Shuffle mode in command view) 
-	</P>
-	<LI><P STYLE="margin-bottom: 0cm">Play repeat: Stop current track
-	and play selection in a loop (note that this mode is automatically
-	used when playing a track if you set Repeat mode in command view) 
-	</P>
-	<LI><P STYLE="margin-bottom: 0cm">Play directory (only physical
-	table): stop current track and play all files found in the selection
-	directory 
-	</P>
-	<LI><P STYLE="margin-bottom: 0cm">Play album (only logical table):
-	stop current track and play all tracks of the selection album 
-	</P>
-	<LI><P STYLE="margin-bottom: 0cm">Play directory (only logical
-	table): stop current track and play all tracks of the selection
-	author 
-	</P>
-	<LI><P STYLE="margin-bottom: 0cm">Set a property (not yet
-	implemented). Set a property to this item 
-	</P>
-	<LI><P>Properties (not yet implemented). Show item properties. 
-	</P>
+	<LI><P LANG="fr-FR" STYLE="margin-bottom: 0cm">Jouer: stoppe le
+	morceau courant et joue la s&eacute;lection.</P>
+	<LI><P LANG="fr-FR" STYLE="margin-bottom: 0cm">Pousser: pousse la
+	s&eacute;lection.</P>
+	<LI><P LANG="fr-FR" STYLE="margin-bottom: 0cm">Jouer al&eacute;atoirement:
+	stoppe le morceau courant et joue la s&eacute;lection al&eacute;atoirement.</P>
+	<LI><P LANG="fr-FR" STYLE="margin-bottom: 0cm">Jouer en boucle:
+	stoppe le morceau courant et joue la s&eacute;lection en boucle.</P>
+	<LI><P LANG="fr-FR" STYLE="margin-bottom: 0cm">Jouer le r&eacute;pertoire
+	entier (seulement dans la vue physique): stoppe le morceau courant
+	et joue l'int&eacute;gralit&eacute; de son r&eacute;pertoire.</P>
+	<LI><P LANG="fr-FR" STYLE="margin-bottom: 0cm">Jouer l'album entier
+	(seulement dans la vue logique): stoppe le morceau courant et joue
+	l'int&eacute;gralit&eacute; des morceaux de son album.</P>
+	<LI><P STYLE="margin-bottom: 0cm"><SPAN LANG="fr-FR">Jouer l'auteur
+	entier (seulement dans la vue logique)</SPAN> <SPAN LANG="fr-FR">:
+	stoppe le morceau courant et joue l'int&eacute;gralit&eacute; des
+	morceaux de son auteur.</SPAN></P>
+	<LI><P LANG="fr-FR" STYLE="margin-bottom: 0cm">Fixer un attribut
+	(pas impl&eacute;ment&eacute;): Fixe un attribut.</P>
+	<LI><P LANG="fr-FR" STYLE="margin-bottom: 0cm">Attributs (pas
+	impl&eacute;ment&eacute;): Affiche les attributs.</P>
 </UL>
-<H2>Filtering panel</H2>
-<P>To filter tracks/files following some criteria, select the
-criteria using the combo box (track name, author and so on), then
-type the filter value in the text field and type [enter]. If filter
-value is void, all tracks/files will be displayed.</P>
-<P>o Filter type combo box: select the criteria you want to filter
-on. 
-</P>
-<P>o Filter value text field: type value you want to filter on. 
-</P>
-<P><IMG SRC="../icons/16x16/filter.png" NAME="Image1" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=0>&nbsp;Use
-the filter (you can also type [Enter])</P>
-<P><IMG SRC="../icons/16x16/clear.png" NAME="Image2" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=0>&nbsp;Clear
-filter and show all tracks/files</P>
-<P><IMG SRC="../icons/16x16/complex_search.png" NAME="Image3" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=0>&nbsp;Use
-complex filters (not yet implemented)</P>
+<H2 LANG="fr-FR">Zone de filtrage</H2>
+<P LANG="fr-FR">Pour filtrer les morceaux suivant des crit&egrave;res,
+s&eacute;lectionnez le crit&egrave;re dans le boite d&eacute;roulante
+(morceau, auteur...) puis saisissez la valeur recherchez dans la zone
+de texte puis tapez [Entr&eacute;e] (la recherche se lance &eacute;galement
+automatiquement apr&egrave;s un arr&ecirc;t de la saisie).</P>
+<P LANG="fr-FR"><IMG SRC="../icons/16x16/filter.png" NAME="Image1" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=0>&nbsp;Utilisez
+le filtre (vous pouvez &eacute;galement tapez [Entr&eacute;e])</P>
+<P LANG="fr-FR"><IMG SRC="../icons/16x16/clear.png" NAME="Image2" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=0>&nbsp;Enlever
+les filtres et afficher tous les morceaux.</P>
+<P LANG="fr-FR"><IMG SRC="../icons/16x16/complex_search.png" NAME="Image3" ALIGN=BOTTOM WIDTH=16 HEIGHT=16 BORDER=0>&nbsp;Utilisation
+de filtres avanc&eacute;s (pas encore impl&eacute;ment&eacute;).</P>
 </BODY>
 </HTML>
