@@ -41,6 +41,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import org.jajuk.Main;
+import org.jajuk.base.Directory;
 import org.jajuk.base.Event;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
@@ -297,7 +298,9 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
 			else if (e.getSource() == jmiNorm){
 				StackItem item = FIFO.getInstance().getCurrentItem();//stores current item
 				FIFO.getInstance().clear(); //clear fifo 
-				FIFO.getInstance().push(item,true); //then re-add current item
+				Directory dir = item.getFile().getDirectory();
+                FIFO.getInstance().push(Util.createStackItems(dir.getFilesFromFile(item.getFile()),
+                    item.isRepeat(),item.isUserLaunch()),true); //then re-add current item
 				FIFO.getInstance().computesPlanned(true); //update planned list
 				Properties properties = new Properties();
 				properties.put(DETAIL_ORIGIN,DETAIL_SPECIAL_MODE_NORMAL);
@@ -394,6 +397,7 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
 			jmiNext.setEnabled(false);
 			jmiPrevious.setEnabled(false);
             jsPosition.setEnabled(false);
+            jsPosition.setValue(0);
 			jmiPause.setIcon(Util.getIcon(ICON_PAUSE));
 			jmiPause.setText(Messages.getString("JajukWindow.10")); //$NON-NLS-1$
 		}

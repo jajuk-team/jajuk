@@ -48,6 +48,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import org.jajuk.base.Directory;
 import org.jajuk.base.Event;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.FileManager;
@@ -394,8 +395,10 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 			if (ae.getSource() == jbNorm ){
 				StackItem item = FIFO.getInstance().getCurrentItem();//stores current item
 				FIFO.getInstance().clear(); //clear fifo 
-				FIFO.getInstance().push(item,true); //then re-add current item
-				FIFO.getInstance().computesPlanned(true); //update planned list
+                Directory dir = item.getFile().getDirectory();
+                FIFO.getInstance().push(Util.createStackItems(dir.getFilesFromFile(item.getFile()),
+                    item.isRepeat(),item.isUserLaunch()),true); //then re-add current item
+                FIFO.getInstance().computesPlanned(true); //update planned list
 				Properties properties = new Properties();
 				properties.put(DETAIL_ORIGIN,DETAIL_SPECIAL_MODE_NORMAL);
 				ObservationManager.notify(new Event(EVENT_SPECIAL_MODE,properties));
