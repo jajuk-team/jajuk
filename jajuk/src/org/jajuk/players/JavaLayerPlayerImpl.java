@@ -74,6 +74,9 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
      */
     public synchronized void play(org.jajuk.base.File file, float fPosition, long length,
         float fVolume) throws Exception {
+        this.fPos = 0;
+        this.lTime = 0;
+        this.mPlayingData = null;
         this.fVolume = fVolume;
         this.length = length;
         // instanciate player is needed

@@ -287,6 +287,11 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,Obser
         //do not insert this subject inside the invokeLater because we have to leave the awt dispatcher called inside the setMessage and THEN, sleep for 2 secs.
         if (EVENT_PLAY_ERROR.equals(subject)){ 
             try{
+                //reset data
+                setCurrentStatusMessage(Util.formatTimeBySec(0,false)+" / "+Util.formatTimeBySec(0,false)); //$NON-NLS-1$
+                setCurrentStatus(0);
+                setQuality(""); //$NON-NLS-1$
+                //set error message
                 File fCurrent = (File)ObservationManager.getDetail(event,DETAIL_CURRENT_FILE);
                 if (fCurrent != null){
                     //display associated error code is given
