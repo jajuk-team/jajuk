@@ -3,7 +3,7 @@
 
 <project default='all' name='jajuk' basedir='..'>
   <!-- Only Explicit Release number-->
-  <property name='version' value='0.3.4rc3'/>
+  <property name='version' value='0.3.4rc2'/>
   <property name='rootdir' value='/tmp/jajuk-dist'/>
   <property name='distdir' value='${rootdir}/jajuk'/>
   <property name='rpmbuilddir_suse' value='${rootdir}/suse/RPMBUILD/'/>
@@ -14,15 +14,14 @@
   <property name='izpackdir' value='${rootdir}/java'/>
   <property name='sourcesdir' value='${rootdir}/src'/>
   <property name='libdir' value='lib'/>
-  <property name='distfiles' value='dist-files'/>
   <property name='nativedir' value='native'/>
   <property name='srcdir' value='src'/>
   <property name='classdir' value='classes'/>
   <property name='javadocdir' value='dist-files/doc/javadoc'/>
   <property name='jarname' value='jajuk.jar'/>
   <property name='helpsetjarname' value='jajuk-help'/>
-  <property name='distjarname' value='jajuk-java-installer-'/>
-  <property name='sourcesdist' value='${sourcesdir}/jajuk-sources-${version}.zip'/>
+  <property name='distjarname' value='jajuk-install-'/>
+  <property name='sourcesdist' value='${sourcesdir}/jajuk-src-${version}.zip'/>
   <property name='uploaddir' value='${rootdir}/upload'/>
  
   <target name='all' description='o Create the entire package' depends='izpack,rpm,sourcesdist,sfx,prepare_upload'>
@@ -31,7 +30,6 @@
   <target name='clean' description='o Clean up the distribution'>
     <delete dir='${rootdir}'/>
    	<echo message='Building Jajuk release: ${version}'/>
-   	<echo message='Basedir: ${basedir}'/>
    </target>
   
   <target name='mkdist_izpack' description='o Create the IzPack distribution structure' depends='clean'>
@@ -74,7 +72,7 @@
      	<fileset file='${basedir}/dist-files/icons/64x64/jajuk-logo.png'/>
      </copy>
      <copy todir='${izpackdir}' >
-     	<fileset file='${distfiles}/packaging/IzPack/jajuk.izpack'/>
+     	<fileset file='/data/java/workspace/jajuk/dist-files/packaging/IzPack/jajuk.izpack'/>
      </copy>
   </target>
   
@@ -218,8 +216,10 @@
     <copy todir='${rpmdistdir_mdk}/usr/lib/menu' >
     	<fileset file='${basedir}/dist-files/packaging/RPMS/mdk/jajuk'/>
     </copy>
+        	
   </target>
-  
+ 
+ 
  <target name='compile' description='o Compile the code' depends='mkdist_izpack,mkdist_rpm,mkdist_windows,replaces'>
     <javac destdir='${distdir}/${classdir}' deprecation='true' debug='true' optimize='true' excludes='**/package.html'>
       <src>
@@ -257,6 +257,7 @@
   	</copy>
   </target>
  
+
   <target name='jar' description='o Create the jar' depends='compile'>
     <jar jarfile='${distdir}/bin/${jarname}' excludes='**/package.html' basedir='${distdir}/${classdir}' manifest='${basedir}/dist-files/packaging/MANIFEST.MF' compress='true'/>
     <delete dir='${distdir}/${classdir}'/>
@@ -272,6 +273,7 @@
     	<fileset file='${distdir}/bin/${jarname}'/>
     </copy>
   </target>
+
 
   <target name='helpsetjar' description='o Create the heplset jar' depends='mkdist_izpack'>
     <!--English-->
@@ -343,7 +345,8 @@
     		<fileset file='${basedir}/dist-files/packaging/RPMS/suse/.rpmmacros'/>
     	</copy>
    </target>
-      
+   
+   
    <!--IzPack package creation -->
   <taskdef name='izpack' classpath='/prog/IzPack/lib/compiler.jar'
          classname='com.izforge.izpack.ant.IzPackTask'/>
@@ -351,7 +354,7 @@
         <echo message='Makes the installer using IzPack'/>
                 <izpack input='${izpackdir}/jajuk.izpack'
         output='${izpackdir}/${distjarname}${version}.jar'
-        basedir='${basedir}'
+        basedir='/data/java/workspace/jajuk'
         izPackDir='/prog/IzPack'/>
       </target>
       
@@ -362,7 +365,7 @@
      	<fileset file='${izpackdir}/${distjarname}${version}.jar'/>
      </copy>
    	 <exec executable='/bin/sh' dir='${windowsdir}'>
-	  <arg line='create_sfx.sh jajuk-${version}-win32.exe'/>
+	  <arg line='create_sfx.sh jajuk-${version}.exe'/>
 	 </exec>
   </target>    
       
@@ -374,8 +377,8 @@
       	<fileset file='${sourcesdist}'/>
      	<fileset file='${rpmbuilddir_suse}/RPMS/noarch/*'/>
      	<fileset file='${rpmbuilddir_mdk}/RPMS/*'/>
-     	 <fileset file='${windowsdir}/jajuk-${version}-win32.exe'/>
-     	 <fileset file='${izpackdir}/jajuk-java-installer-${version}.jar'/>
+     	 <fileset file='${windowsdir}/jajuk-${version}.exe'/>
+     	 <fileset file='${izpackdir}/jajuk-install-${version}.jar'/>
      </copy>
  	</target>      
   

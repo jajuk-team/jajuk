@@ -12,7 +12,7 @@
     <menu name='Overview'>
       <item name='-Home-' href='./index.html' />      
       <item name='Download' href='./downloads.html' />
-      <item name='Team' href='./team-list.html' />
+      <item name='Team' href='./team-list.html' />      
       <item name='Support/Help' href='http://sourceforge.net/tracker/?group_id=91412&amp;atid=597087' />
       <item name='Latest news' href='./index.html#News' />
       <item name='Features' href='./index.html#Features' />
