@@ -500,6 +500,12 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 				java.io.File fileToDelete = new java.io.File(sFileToDelete);
 				if ( fileToDelete.exists()){
 					fileToDelete.delete();
+                    //check that file has been really deleted (sometimes, we get no exception)
+                    if (fileToDelete.exists()){
+                        Log.error("131",new JajukException("131")); //$NON-NLS-1$//$NON-NLS-2$
+                        Messages.showErrorMessage("131"); //$NON-NLS-1$
+                        return;
+                    }
 					PlaylistFileManager.delete(getId());
 					ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH));  //requires device refresh
 				}
