@@ -38,7 +38,7 @@
 					<td style='vertical-align: top;'>Jajuk manual</td>
 					<td style='vertical-align: top;'>
 						<a  href='./jajuk-hs/default/html/intro.html'><img alt='English' title='English' src='flags/flag_en.png' style='width: 21px; height: 14px;'/></a>
-						<a  href='./jajuk-hs/fr/html/intro.html'><img alt='French' title='French' src='flags/flag_fr.png' style='width: 21px; height: 14px;'/></a>*
+						<a  href='./jajuk-hs/fr/html/intro.html'><img alt='French' title='French' src='flags/flag_fr.png' style='width: 21px; height: 14px;'/></a>
 					</td>
 				</tr>
 				<tr>
@@ -179,7 +179,7 @@
     <tr>
       <td style='vertical-align: top;'>
       <h2>Logical perspective</h2>
-      <p>Navigate into styles, albums, authors and tracks (macos X by Romain Herault)</p>
+      <p>Navigate into styles, albums, authors and tracks</p>
       <a href="./screenshots/screenshot_perspective_logical_large.jpg"><img alt='' src='./screenshots/screenshot_perspective_logical.jpg'></img></a>
       </td>
       <td style='vertical-align: top;'><span style='font-weight: bold;'>Views</span>:
@@ -189,6 +189,19 @@
         <li>Logical Playlist Repository</li>
         <li>Playlist Editor</li>
         <li>Cover</li>
+      </ul>
+      </td>
+    </tr>
+    <tr>
+      <td style='vertical-align: top;'>
+      <h2>Player perspective</h2>
+      <p>Display large covers and large track names</p>
+      <a href="./screenshots/screenshot_perspective_player_large.jpg"><img alt='' src='./screenshots/screenshot_perspective_player.jpg'></img></a>
+      </td>
+      <td style='vertical-align: top;'><span style='font-weight: bold;'>Views</span>:
+      <ul>
+        <li>Animation with animated track names</li>
+        <li>Covers</li>
       </ul>
       </td>
     </tr>
