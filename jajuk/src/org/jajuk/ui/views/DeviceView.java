@@ -54,6 +54,8 @@ import org.jajuk.ui.DeviceWizard;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 
+import com.sun.FlowScrollPanel;
+
 /**
  *  Device view used to create and modify Jajuk devices
  * <p>Configuration perspective
@@ -75,7 +77,7 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 	JButton jbTest;
 	JButton jbRefresh;
 	JButton jbSynchro;
-	JPanel jpDevices;
+	FlowScrollPanel jpDevices;
 	
 	JPopupMenu jpmenu;
 	JMenuItem jmiDelete;
@@ -161,8 +163,13 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 		jtbButtons.addSeparator();
 		
 		//devices
-		jpDevices = new JPanel();
-		jpDevices.setPreferredSize(new Dimension(getWidth(),getHeight()));
+		jpDevices = new FlowScrollPanel();
+		Dimension dim = new Dimension(getWidth(),getHeight());
+        jpDevices.setPreferredSize(dim);
+        JScrollPane jsp = new JScrollPane(jpDevices,
+            JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        jpDevices.setScroller(jsp);
+        
 		jpDevices.setLayout(new FlowLayout(FlowLayout.LEFT));
 		jpDevices.setBorder(BorderFactory.createEtchedBorder());
 		
@@ -213,13 +220,13 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 				{30,0.99}};
 		setLayout(new TableLayout(size));
 		add(jtbButtons,"0,0"); //$NON-NLS-1$
-		add(new JScrollPane(jpDevices),"0,1"); //$NON-NLS-1$
-		//Register on the list for subject we are interrested in
+		add(jsp,"0,1"); //$NON-NLS-1$
+        //Register on the list for subject we are interrested in
 		ObservationManager.register(EVENT_DEVICE_MOUNT,this);
 		ObservationManager.register(EVENT_DEVICE_UNMOUNT,this);
 		ObservationManager.register(EVENT_DEVICE_NEW,this);
 		ObservationManager.register(EVENT_DEVICE_REFRESH,this);
-	}
+   }
 	
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.IView#getID()
@@ -264,7 +271,7 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
                  }
 				break;
 			case 1 : 
-                sTooltip = Messages.getString("file_cd"); //$NON-NLS-1$
+                sTooltip = Messages.getString("Device_type.file_cd"); //$NON-NLS-1$
                 if ( device.isMounted()){
 					sIcon = ICON_DEVICE_CD_MOUNTED;
              	}
@@ -309,8 +316,7 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
                 }
                 break;
           }
-            
-			final DeviceItem di = new DeviceItem(sIcon,device.getName());
+      	final DeviceItem di = new DeviceItem(sIcon,device.getName());
 			di.setToolTipText(sTooltip);
             di.addMouseListener(new MouseAdapter() {
 				public void mouseClicked(MouseEvent e) {
@@ -347,8 +353,8 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 			});
 			di.setToolTipText(device.getDeviceTypeS());
 			jpDevices.add(di);
-		}
-	}	
+       }
+   }	
 	
 	
 	/* (non-Javadoc)
@@ -462,6 +468,7 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
 		}
 	}
     
+       
 }
 
 
@@ -483,12 +490,11 @@ class DeviceItem extends JPanel{
 	DeviceItem(String sIcon,String sName){
 		setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
 		setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
-		JLabel jlIcon = new JLabel(Util.getIcon(sIcon)); 
+        JLabel jlIcon = new JLabel(Util.getIcon(sIcon)); 
 		add(jlIcon);
 		JLabel jlName = new JLabel(sName);
 		add(jlName);
-	}
-	
+ 	}
 	
 	/**
 	 * @return Returns the device.
