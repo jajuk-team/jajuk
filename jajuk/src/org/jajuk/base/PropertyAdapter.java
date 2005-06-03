@@ -159,13 +159,23 @@ public class PropertyAdapter implements IPropertyable, ITechnicalStrings,Seriali
 		return (String) properties.get(sKey); //return property value
 	}
 	
+    
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.jajuk.base.Propertyable#containsKey(java.lang.String)
+     */
+    public boolean containsProperty(String sKey) {
+        return properties.containsKey(sKey) && !properties.get(sKey).equals("");
+    }
+    
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see org.jajuk.base.Propertyable#setProperty(java.lang.String, java.lang.String)
 	 */
 	public void setProperty(String sKey, String sValue) {
-		//JRE properties soesn't accept null value
+		//JRE properties doesn't accept null value
 		if (sValue == null){
 			sValue = ""; //$NON-NLS-1$
 		}

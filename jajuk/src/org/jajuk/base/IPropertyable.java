@@ -61,6 +61,12 @@ public interface IPropertyable {
 	 * @param sKey
 	 */
 	public void removeProperty(String sKey);
+    
+    /**
+     * Return wether a key is set
+     * @param sKey
+     */
+    public boolean containsProperty(String sKey) ;
 	
 	/**
 	 * Display a frame with item properties
