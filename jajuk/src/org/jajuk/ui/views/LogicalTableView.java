@@ -339,11 +339,14 @@ public class LogicalTableView extends AbstractTableView implements Observer{
                 int iColNum = 6 ;
                 it = alToShow.iterator();
                 //Track | Album | Author | Length | Style | Rate
-                String sNewPropertyValue = null;
-                if ( !ConfigurationManager.getBoolean(CONF_REGEXP)){ //do we use regular expression or not? if not, we allow user to use '*'
+                String sNewPropertyValue = sPropertyValue;
+                if ( !ConfigurationManager.getBoolean(CONF_REGEXP) && sPropertyValue != null){ //do we use regular expression or not? if not, we allow user to use '*'
                     sNewPropertyValue = sPropertyValue.replaceAll("\\*",".*"); //$NON-NLS-1$ //$NON-NLS-2$
                     sNewPropertyValue = ".*"+sNewPropertyValue+".*"; //$NON-NLS-1$ //$NON-NLS-2$
-                }	
+                }
+                else if ("".equals(sNewPropertyValue)){//in regexp mode, if none selection, display all rows
+                    sNewPropertyValue = ".*";
+                }
                 while (it.hasNext()){
                     Track track = (Track)it.next();
                     if ( sPropertyName != null && sNewPropertyValue!= null){ //if name or value are null, means there is no filter

@@ -328,12 +328,14 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
                 int iColNum = 8;
                 it = alToShow.iterator();
                 //Track | Album | Author |  Length | Style | Device | File name | Rate
-                String sNewPropertyValue = null;
+                String sNewPropertyValue = sPropertyValue;
                 if ( !ConfigurationManager.getBoolean(CONF_REGEXP) && sPropertyValue != null){ //do we use regular expression or not? if not, we allow user to use '*'
                     sNewPropertyValue = sPropertyValue.replaceAll("\\*",".*"); //$NON-NLS-1$ //$NON-NLS-2$
                     sNewPropertyValue = ".*"+sNewPropertyValue+".*"; //$NON-NLS-1$ //$NON-NLS-2$
-                }	
-                
+                }
+                else if ("".equals(sNewPropertyValue)){//in regexp mode, if none selection, display all rows
+                    sNewPropertyValue = ".*";
+                }
                 while (it.hasNext()){
                     File file = (File)it.next();
                     if ( sPropertyName != null && sNewPropertyValue != null ){ //if name or value is null, means there is no filter
