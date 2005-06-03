@@ -167,16 +167,16 @@ public class StatView extends ViewAdapter implements Observer{
 			pdata = new DefaultPieDataset();
 			Iterator itFiles = FileManager.getFiles().iterator();
 			//prepare devices
-			ArrayList alDevices = DeviceManager.getDevices();
 			long lTotalSize = 0;
 			double dOthers = 0;
-			long[] lSizes = new long[alDevices.size()];
+            ArrayList alDevices = DeviceManager.getDevicesList();
+			long[] lSizes = new long[DeviceManager.getDevicesNumber()];
 			while (itFiles.hasNext()){
 				File file = (File)itFiles.next();
 				lTotalSize += file.getSize();
 				lSizes[alDevices.indexOf(file.getDirectory().getDevice())] += file.getSize();
 			}
-			Iterator itDevices = alDevices.iterator();
+			Iterator itDevices = DeviceManager.getDevices();
 			while (itDevices.hasNext()){
 				Device device = (Device)itDevices.next();
 				long lSize = lSizes[alDevices.indexOf(device)];
