@@ -105,13 +105,14 @@
 	   			<li>Standard player functions: repeat, shuffle, intro, fast forward/rewind, mute, volume, position in track...</li>
 	   			<li>Advanced player functions : </li>
 	   			<ul>
-		   			<li>Push : Add  track(s) in the player queue</li>
+		   			<li>Push: Add  track(s) in the player queue</li>
+		   			<li>Planned tracks: See user selection next tracks in queue</li>
 		   			<li>Recursive play/repeat/shuffle/push in directories/sub-directories or by style/author/albums...</li>
 		   			<li>Intro from a track % and with a specified length</li>
 		   			<li>Full shuffle in entire collection</li>
-		   			<li>Bestof special function : play your favorite tracks</li>
-		   			<li>Novelties special function : play your collection last albums</li>
-		   			<li>Continue special function : continue in the current album and stop a shuffle</li>
+		   			<li>Bestof special function: play your favorite tracks</li>
+		   			<li>Novelties special function: play your collection last albums</li>
+		   			<li>Continue special function: continue in the current album and stop a shuffle</li>
 		   		</ul>	
 	   			<li>Search functions:</li>
 	   			<ul>
@@ -119,6 +120,12 @@
 		   			<li>Instant search box : perform instant search on style/author/track name... when typing</li>
 		   			<li>Table filter : you can filter tracks with any criteria</li>
 		   		</ul>	
+				<li>Graphical Interface:</li>
+	   			<ul>	
+	   				<li>Eclipse-like graphical interface : Jajuk windows are divided into perspectives and views for a good functionnal separation.</li>	   			
+					<li>Advanced docking by drag and drop</li>
+					<li>Several Look and feel supported with dynamic switching: Liquid, Metal, Windows, GTK, Kunststoff, Plastic...</li>
+	   			</ul>
 	   			<li>Covers support</li>
 	   			<ul>
 		   			<li>Local covers display</li>
@@ -127,18 +134,17 @@
 	   			<li>Playlist support:</li>
 	   			<ul>
 		   			<li>Dynamic playlist creation by drag and drop</li>
-		   			<li>Top tracks playlist</li>
-		   			<li>Bookmarks playlist</li>
+		   			<li>Bestof special playlist</li>
+		   			<li>Bookmarks special playlist</li>
+		   			<li>Novelties special playlist</li>
 		   		</ul>	
 	   			<li>Devices synchronization : unidirectional or bidirectional, full or partial.</li>
 	   			<li>Collection stats : get charts for your collection : style repartition, size by device, history etc...</li>
-	   			<li>Physical / logical separation : you can navigate into physical directories and files or into logical styles, authors, albums, tracks.</li>
+	   			<li>Physical/logical separation : you can navigate into physical directories and files or into logical styles, authors, albums, tracks.</li>
 	   			<li>Indexing method : Jajuk doesn't read id3 tags or directory structure at each startup but save them in a XML database. It allows a fast startup even for very large collections (bench:10 sec to start a 140Go collection on a P4 1.8Ghz).</li>
 	   			<li>Unmounted devices support : you can navigate into unmounted devices ( CDs for exemple ). So you get a full view of your collection at any time. Nice feature if you have plenty of music CDs. This behavior can be disabled.</li>
-	   			<li>Several Look and feel supported : Liquid, Metal, Windows, GTK, Kunststoff,Metouia...</li>
 	   			<li>Multi-language and easy to translate, see <a href='translation_howto.html'>translation howto</a>.</li>
 	   			<li>Fast collection builder : a cd scanner allows you to create a jajuk collection of tens of CDs in only few minutes.</li>
-	   			<li>Eclipse-like graphical interface : Jajuk windows are divided into perspectives and views for a good functionnal separation.</li>
 	   			<li>Tray support under windows and Linux</li>
 	   			<li>Full-featured online help</li>
 	   			<li>Automatic rate support</li>

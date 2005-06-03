@@ -57,11 +57,11 @@
     </resources>
     <panels>
 	    <panel classname='HTMLInfoPanel'/>
-        <panel classname='LicencePanel'/>
         <panel classname='ImgPacksPanel'/>
         <panel classname='TargetPanel'/>
         <panel classname='ShortcutPanel'/> 
         <panel classname='InstallPanel'/>
+        <panel classname='LicencePanel'/>
         <panel classname='SimpleFinishPanel'/>
     </panels>
     <packs>
