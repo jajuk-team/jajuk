@@ -505,7 +505,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
     private ArrayList getItemsFrom(int index){
         ArrayList alOut = new ArrayList(alItems.size());
         if (index < alItems.size()){
-            return new ArrayList(alItems.subList(index,alItems.size()-1));
+            return new ArrayList(alItems.subList(index,alItems.size()));
         }
         else{
             return null;
