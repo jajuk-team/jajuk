@@ -401,11 +401,13 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 		if ( isModified()){
 			try {
 				bw = new BufferedWriter(new FileWriter(fio));
-				bw.write(PLAYLIST_NOTE+"\n"); //$NON-NLS-1$
-				Iterator it = getFiles().iterator();
+				bw.write(PLAYLIST_NOTE); 
+				bw.newLine();
+                Iterator it = getFiles().iterator();
 				while ( it.hasNext()){
 					File bfile = (File)it.next();
-					bw.write(bfile.getAbsolutePath()+"\n"); //$NON-NLS-1$
+					bw.write(bfile.getAbsolutePath());
+                    bw.newLine();
 				}
 			}
 			catch(Exception e){
