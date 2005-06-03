@@ -97,6 +97,7 @@ public class FIFO implements ITechnicalStrings {
         JajukTimer.getInstance().reset();
         index = 0;
         playlist = null;
+        itemLast = null;
     }
     
     /**
@@ -165,6 +166,10 @@ public class FIFO implements ITechnicalStrings {
             Util.waiting();
             // wake up FIFO if stopped
             bStop = false;
+            //display an error message if selection is void
+            if (alItems.size() == 0){
+                Messages.showWarningMessage(Messages.getString("Error.018")); //$NON-NLS-1$
+            }
             // first try to mount needed devices
             Iterator it = alItems.iterator();
             StackItem item = null;
@@ -356,7 +361,6 @@ public class FIFO implements ITechnicalStrings {
                 pDetails.put(DETAIL_CURRENT_FILE_ID, fCurrent.getId());
                 pDetails.put(DETAIL_CURRENT_DATE, new Long(System.currentTimeMillis()));
                 ObservationManager.notify(new Event(EVENT_FILE_LAUNCHED, pDetails));
-                
                 //all cases for a cover full refresh
                 if ( itemLast == null // first track, display cover
                         || (!itemLast.getFile().getDirectory().equals(fCurrent.getDirectory()))) { // if we are always in the same directory, just leave to save cpu
