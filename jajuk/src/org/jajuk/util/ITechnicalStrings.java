@@ -364,12 +364,6 @@ public interface ITechnicalStrings {
 	public static final String LNF_LIQUID = "Liquid";
 	public static final String LNF_LIQUID_CLASS = "com.birosoft.liquid.LiquidLookAndFeel";
 	public static final String LNF_LIQUID_CBUI = "org.jajuk.ui.laf.LiquidComboBoxUI";
-	public static final String LNF_METOUIA = "Metouia";
-	public static final String LNF_METOUIA_CLASS = "net.sourceforge.mlf.metouia.MetouiaLookAndFeel";
-	public static final String LNF_COMPIERE = "Compiere";
-	public static final String LNF_COMPIERE_CLASS = "org.compiere.plaf.CompiereLookAndFeel";
-	public static final String LNF_NAPKIN = "Napkin";
-	public static final String LNF_NAPKIN_CLASS = "napkin.NapkinLookAndFeel";
 	public static final String LNF_PLASTIC = "Plastic";
 	public static final String LNF_PLASTIC_CLASS = "com.jgoodies.plaf.plastic.PlasticLookAndFeel";
 	public static final String LNF_PLASTICXP = "Plastic XP";
