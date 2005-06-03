@@ -146,13 +146,19 @@ public class JajukWindow extends JFrame implements ITechnicalStrings,Observer {
      *
      */
     public void applyStoredSize(){
-        //      read stored position and size
+        //read stored position and size
         String sPosition = ConfigurationManager.getProperty(CONF_WINDOW_POSITION);
         StringTokenizer st =new StringTokenizer(sPosition,","); //$NON-NLS-1$
         int iX = Integer.parseInt((String)st.nextToken());
         int iY = Integer.parseInt((String)st.nextToken());
         int iXsize = Integer.parseInt((String)st.nextToken());
+        if (iXsize == 0){ //if zero, display max size
+            iXsize = (int)(Toolkit.getDefaultToolkit().getScreenSize().getWidth());
+        }
         int iYsize = Integer.parseInt((String)st.nextToken());
+        if (iYsize == 0){//if zero, display max size
+            iYsize = (int)(Toolkit.getDefaultToolkit().getScreenSize().getHeight());
+        }
         setLocation(iX,iY);
         setSize(iXsize,iYsize);
     }
