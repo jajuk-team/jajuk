@@ -248,8 +248,25 @@
     	<action dev='bflorat' type='update'>Now bestof special playlist can show even unmounted files</action> 
     	<action dev='bflorat' type='update'>Now waits for audio line if occupied by another process</action> 
     	<action dev='bflorat' type='remove'>No more basic files support: now jajuk only plays indexed files</action> 
+    	<action dev='bflorat' type='remove'>Removed Metouia Look and feel that is no more supported</action> 
     	<action dev='bflorat' type='fix' issue='1188879'>Window focus issue</action> 
     	<action dev='bflorat' type='fix' issue='1199367'>Playlist next track wrong</action> 
+    	<action dev='bflorat' type='fix' issue='1207563'>Wrong display in PlaylistEditor after a stop</action> 
+    	<action dev='bflorat' type='fix' issue='1209490'>Missing icons in command view</action> 
+    	<action dev='bflorat' type='fix' issue='1209491'>Changing volume in tray not reflected in command panel</action> 
+    	<action dev='bflorat' type='fix' issue='1209909'>Finish album without continue mode</action> 
+    	<action dev='bflorat' type='fix' issue='1209910'>Issues with intro mode</action> 
+    	<action dev='bflorat' type='fix' issue='1209912'>No error message when delete fails</action> 
+    	<action dev='bflorat' type='fix' issue='1209915'>Not possible to add shuffle tracks after a stop</action> 
+    	<action dev='bflorat' type='fix' issue='1209916'>Time not reset after a playing error</action> 
+    	<action dev='bflorat' type='fix' issue='1210925'>Missing scroller in Device view</action> 
+    	<action dev='bflorat' type='fix' issue='1211783'>Regexp filter buggy</action> 
+    	<action dev='bflorat' type='fix' issue='1211811'>No cover refresh after a stop</action> 
+    	<action dev='bflorat' type='fix' issue='1211997'>Problem with metouia combo boxes</action> 
+    	<action dev='bflorat' type='fix' issue='1212014'>No table refresh after changing sync table/tree option</action> 
+    	<action dev='bflorat' type='fix' issue='1212030'>Several issues with reseting default options</action> 
+    	<action dev='bflorat' type='fix' issue='1213382'>Issues when removing a sync source device</action> 
+    	<action dev='bflorat' type='fix' issue='1214419'>Hard coded newline</action> 
    </release>
   </body>
 </document>
