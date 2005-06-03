@@ -682,7 +682,6 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 			}
 		}
 		catch(Exception e){
-			Messages.showErrorMessage("112"); //$NON-NLS-1$
 			Util.stopWaiting();
 			return false;
 		}
