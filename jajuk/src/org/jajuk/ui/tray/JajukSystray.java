@@ -257,6 +257,10 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
 		}
 	}
 	
+    
+    public JPopupMenu getPopup(){
+        return jmenu;
+    }
 	/**
 	 * ActionListener
 	 */
@@ -398,6 +402,7 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
 			jmiPrevious.setEnabled(false);
             jsPosition.setEnabled(false);
             jsPosition.setValue(0);
+            jmiNorm.setEnabled(false);
 			jmiPause.setIcon(Util.getIcon(ICON_PAUSE));
 			jmiPause.setText(Messages.getString("JajukWindow.10")); //$NON-NLS-1$
 		}
@@ -406,6 +411,7 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
 			jmiStop.setEnabled(true);
 			jmiNext.setEnabled(true);
 			jmiPrevious.setEnabled(true);
+            jmiNorm.setEnabled(true);
             jsPosition.setEnabled(true);
 			jmiPause.setText(Messages.getString("JajukWindow.10")); //$NON-NLS-1$
 		}

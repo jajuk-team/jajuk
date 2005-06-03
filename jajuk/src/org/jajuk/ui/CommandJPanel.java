@@ -220,7 +220,10 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		jbNorm.setBorder(BorderFactory.createEmptyBorder(4,4,4,4));
 		jbNorm.addActionListener(CommandJPanel.this);
 		jbNorm.setToolTipText(Messages.getString("CommandJPanel.17")); //$NON-NLS-1$
-		jpSpecial.add(jbGlobalRandom);
+		if (FIFO.getInstance().getCurrentItem() == null){
+            jbNorm.setEnabled(false);
+        }
+        jpSpecial.add(jbGlobalRandom);
 		jpSpecial.add(jbBestof);
 		jpSpecial.add(jbNovelties);
 		jpSpecial.add(jbNorm);
@@ -369,27 +372,25 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 			}
 			if (ae.getSource() == jbBestof ){
 			    ArrayList alToPlay = FileManager.getGlobalBestofPlaylist();
-			    if ( alToPlay.size() > 0){
-					FIFO.getInstance().push(Util.createStackItems(alToPlay,
+			    FIFO.getInstance().push(Util.createStackItems(alToPlay,
 							ConfigurationManager.getBoolean(CONF_STATE_REPEAT),false),false);
-				}
 			}
 			if (ae.getSource() == jbGlobalRandom ){
 				ArrayList alToPlay = FileManager.getGlobalShufflePlaylist();
-				if ( alToPlay.size() > 0){
-					FIFO.getInstance().push(Util.createStackItems(alToPlay,
+				FIFO.getInstance().push(Util.createStackItems(alToPlay,
 							ConfigurationManager.getBoolean(CONF_STATE_REPEAT),false),false);
-				}
 			}
 			if (ae.getSource() == jbNovelties ){
 				ArrayList alToPlay  = FileManager.getGlobalNoveltiesPlaylist();
-                Collections.shuffle(alToPlay);//shuffle the selection
-				if ( alToPlay!= null && alToPlay.size() > 0){
+                if (alToPlay != null && alToPlay.size() != 0){
+                    Collections.shuffle(alToPlay);//shuffle the selection    
+                }
+                if ( alToPlay!= null ){
 					FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alToPlay),
 							ConfigurationManager.getBoolean(CONF_STATE_REPEAT),false),false);
 				}
 				else{ //none novelty found
-					Messages.showErrorMessage("127"); //$NON-NLS-1$
+					Messages.showWarningMessage(Messages.getString("Error.127")); //$NON-NLS-1$
 				}
 			}
 			if (ae.getSource() == jbNorm ){
@@ -542,6 +543,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 					jbPrevious.setEnabled(false);
 					jsPosition.setEnabled(false);
 					setCurrentPosition(0);
+                    jbNorm.setEnabled(false);
 					jbPlayPause.setIcon(Util.getIcon(ICON_PAUSE)); //resume any current pause
 					ConfigurationManager.setProperty(CONF_STARTUP_LAST_POSITION,"0");//reset startup position //$NON-NLS-1$
 				}
@@ -553,6 +555,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 					jbNext.setEnabled(true);
 					jbPrevious.setEnabled(true);
 					jsPosition.setEnabled(true);
+                    jbNorm.setEnabled(true);
 					jbPlayPause.setIcon(Util.getIcon(ICON_PAUSE)); //resume any current pause
 				}
 				else if (EVENT_PLAYER_PAUSE.equals(subject)){
