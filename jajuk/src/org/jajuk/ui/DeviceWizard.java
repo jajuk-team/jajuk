@@ -152,7 +152,7 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 		jcboxSynchronized.addActionListener(this);
 		jcbSynchronized = new JComboBox();
 		//populate combo
-		Iterator it = DeviceManager.getDevices().iterator();
+		Iterator it = DeviceManager.getDevices();
 		while (it.hasNext()) {
 			Device device2 = (Device) it.next();
 			alDevices.add(device2);
@@ -232,7 +232,8 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 		jcbAutoMount.setSelected(true);
 		jcbAutoRefresh.setEnabled(true);
 		jcbAutoRefresh.setSelected(false);
-		jrbUnidirSynchro.setSelected(true);//default synchro mode
+		jcboxSynchronized.setSelected(false);
+        jrbUnidirSynchro.setSelected(true);//default synchro mode
 		jrbBidirSynchro.setEnabled(false);
 	}
 	
@@ -246,7 +247,9 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 		this.device = device;
 		jcbSynchronized.removeAllItems();
 		alDevices.clear();
-		Iterator it = DeviceManager.getDevices().iterator();
+        //set default values for widgets
+        updateWidgetsDefault();
+		Iterator it = DeviceManager.getDevices();
 		while (it.hasNext()) {
 			Device device2 = (Device) it.next();
 			if ( !device2.equals(device)){
@@ -254,8 +257,6 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 				jcbSynchronized.addItem(device2.getName());
 			}
 		}
-		//set default values for widgets
-		updateWidgetsDefault();
 		//then, specifics
 		jcbType.setSelectedItem(device.getDeviceTypeS());
 		jcbType.setEnabled(false); //device type cannot be changed
@@ -289,9 +290,9 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 			jcbSynchronized.setEnabled(false);
 			jrbBidirSynchro.setEnabled(false);
 		}
-		String sSynchroSource = device.getProperty(DEVICE_OPTION_SYNCHRO_SOURCE); 
-		if ( sSynchroSource != null){
-			jrbBidirSynchro.setEnabled(true);
+		if (device.containsProperty(DEVICE_OPTION_SYNCHRO_SOURCE)){
+			String sSynchroSource = device.getProperty(DEVICE_OPTION_SYNCHRO_SOURCE);
+            jrbBidirSynchro.setEnabled(true);
 			jrbUnidirSynchro.setEnabled(true);
 			jcboxSynchronized.setSelected(true);
 			jcboxSynchronized.setEnabled(true);
