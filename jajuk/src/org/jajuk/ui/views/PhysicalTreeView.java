@@ -695,9 +695,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         this.transferFocus();
         top.removeAllChildren();
         //add devices
-        ArrayList alDevices = DeviceManager.getDevices();
-        Collections.sort(alDevices);
-        Iterator it1 = alDevices.iterator();
+        Iterator it1 = DeviceManager.getDevices();
         while ( it1.hasNext()){
             Device device = (Device)it1.next();
             DefaultMutableTreeNode nodeDevice = new DeviceNode(device);
@@ -770,28 +768,28 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(final ActionEvent e) {
-        if (e.getSource() == jmiFilePlay && alFiles.size() > 0 ){
+        if (e.getSource() == jmiFilePlay ){
             FIFO.getInstance().push(Util.createStackItems(alFiles,
                     ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
         }
-        else if (e.getSource() == jmiFilePush  && alFiles.size() > 0){
+        else if (e.getSource() == jmiFilePush){
             FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFiles),
                     ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),true);
         }
-        else if ( alFiles!= null && alFiles.size() > 0 && (e.getSource() == jmiDirPlay || e.getSource() == jmiDevPlay)){  
+        else if ( alFiles!= null && (e.getSource() == jmiDirPlay || e.getSource() == jmiDevPlay)){  
             FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFiles),
                     ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
         }
-        else if (alFiles!= null && alFiles.size() > 0 && (e.getSource() == jmiDirPush || e.getSource() == jmiDevPush)){
+        else if (alFiles!= null  && (e.getSource() == jmiDirPush || e.getSource() == jmiDevPush)){
             FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFiles),
                     ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),true);
         }
-        else if (alFiles!= null && alFiles.size() > 0 && (e.getSource() == jmiDirPlayShuffle || e.getSource() == jmiDevPlayShuffle)){
+        else if (alFiles!= null  && (e.getSource() == jmiDirPlayShuffle || e.getSource() == jmiDevPlayShuffle)){
             Collections.shuffle(alFiles);
             FIFO.getInstance().push(Util.createStackItems(alFiles,
                     ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
         }
-        else if (alFiles!= null && alFiles.size() > 0 && (e.getSource() == jmiDirPlayRepeat || e.getSource() == jmiDevPlayRepeat)){
+        else if (alFiles!= null  && (e.getSource() == jmiDirPlayRepeat || e.getSource() == jmiDevPlayRepeat)){
             FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFiles),true,true),false);
         }
         else if ( e.getSource() == jmiDevMount){
@@ -856,7 +854,8 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
             jtree.revalidate();
             jtree.repaint();
         }
-        else if ( e.getSource() == jmiPlaylistFilePlay || e.getSource()==jmiPlaylistFilePush || e.getSource() == jmiPlaylistFilePlayShuffle || e.getSource() == jmiPlaylistFilePlayRepeat){
+        else if ( e.getSource() == jmiPlaylistFilePlay || e.getSource()==jmiPlaylistFilePush 
+                || e.getSource() == jmiPlaylistFilePlayShuffle || e.getSource() == jmiPlaylistFilePlayRepeat){
             PlaylistFile plf = ((PlaylistFileNode)paths[0].getLastPathComponent()).getPlaylistFile();
             ArrayList alFiles = new ArrayList(10); 
             try{	

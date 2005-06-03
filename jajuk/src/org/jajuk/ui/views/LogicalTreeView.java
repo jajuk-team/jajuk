@@ -557,28 +557,28 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
 					Messages.showErrorMessage("018"); //$NON-NLS-1$
 					return;
 				}
-				if ( alTracks.size() > 0  && (e.getSource() == jmiTrackPlay 
+				if ( (e.getSource() == jmiTrackPlay 
 						|| e.getSource() == jmiAlbumPlay
 						|| e.getSource() == jmiAuthorPlay
 						|| e.getSource() == jmiStylePlay )){
 					FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFilesToPlay),
 							ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
 				}
-				else if (alTracks.size() > 0  && ( e.getSource() == jmiTrackPush 
+				else if ( ( e.getSource() == jmiTrackPush 
 						|| e.getSource() == jmiAlbumPush
 						|| e.getSource() == jmiAuthorPush
 						|| e.getSource() == jmiStylePush) ){
 					FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFilesToPlay),
 							ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),true);
 				}
-				else if ( alTracks.size() > 0  && (e.getSource() == jmiAlbumPlayShuffle
+				else if ( (e.getSource() == jmiAlbumPlayShuffle
 						|| e.getSource() == jmiAuthorPlayShuffle
 						|| e.getSource() == jmiStylePlayShuffle )){
 				    Collections.shuffle(alFilesToPlay);
 					FIFO.getInstance().push(Util.createStackItems(alFilesToPlay,
 							ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
 				}
-				else if (alTracks.size() > 0  && ( e.getSource() == jmiAlbumPlayRepeat
+				else if ( ( e.getSource() == jmiAlbumPlayRepeat
 						|| e.getSource() == jmiAuthorPlayRepeat
 						|| e.getSource() == jmiStylePlayRepeat) ){
 					FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFilesToPlay),true,true),false);
