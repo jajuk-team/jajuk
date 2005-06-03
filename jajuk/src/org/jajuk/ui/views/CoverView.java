@@ -71,6 +71,8 @@ import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
+import com.sun.SwingWorker;
+
 /**
  *  Cover view. Displays an image for the current album
  * <p>Physical and logical perspectives
@@ -110,9 +112,6 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
     /**Default cover */
     private static Cover coverDefault; 
     
-    /**Download stop flag*/
-    private static boolean bStop = false; 
-    
     /**Used Cover index*/
     int index = 0;
     
@@ -121,6 +120,9 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
     
     /**Generic locker*/
     private byte[] bLock = new byte[0];
+    
+    /**Event ID*/
+    private volatile int iEventID;
     
     /**Flag telling that user wants to display a better cover*/
     private boolean bGotoBetter = false;
@@ -226,7 +228,8 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
     public void update(Event event){
         String subject = event.getSubject();
         Log.debug("Cover view update: "+event); //$NON-NLS-1$
-        bStop = true;
+        this.iEventID = (int)(Integer.MAX_VALUE*Math.random());
+        int iLocalEventID = this.iEventID;
         synchronized(bLock){//block any concurrent cover update
             try{
                 searching(true);
@@ -294,8 +297,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                                 Collections.reverse(alUrls); //set best results to be displayed  first
                                 Iterator it2 = alUrls.iterator(); //add found covers 
                                 ArrayList alLocalCovers = new ArrayList(alUrls.size()); //contains found covers to avoid to use main cover repository due to concurency issues
-                                bStop = false;
-                                while ( it2.hasNext() && !bStop){ //load each cover (pre-load or post-load) and stop if a signal has been emitted
+                                while ( it2.hasNext() && this.iEventID == iLocalEventID){ //load each cover (pre-load or post-load) and stop if a signal has been emitted
                                     URL url = (URL)it2.next();
                                     Log.debug("Found Cover: "+url.toString()); //$NON-NLS-1$
                                     Cover cover = new Cover(url,Cover.REMOTE_COVER);//create a cover with given url ( image will be really downloaded when required if no preload)
@@ -303,8 +305,8 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                                         alLocalCovers.add(cover);
                                     }
                                 }
-                                if (bStop){ //a stop signal has been emmited from a concurrent thread
-                                    Log.debug("Download stopped"); //$NON-NLS-1$
+                                if (this.iEventID != iLocalEventID){ //a stop signal has been emmited from a concurrent thread
+                                    Log.debug("Download stopped - 1"); //$NON-NLS-1$
                                     return;
                                 }
                                 //Add found covers
@@ -312,14 +314,14 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                             }
                         }
                         catch(Exception e){
-                               Log.error(e); //can occur in case of timeout
-                               if (e instanceof HttpConnection.ConnectionTimeoutException){
-                                   iErrorCounter ++;
-                                   if (iErrorCounter == STOP_TO_SEARCH){
-                                       Log.warn("Too much connection fails, stop to search for covers online"); //$NON-NLS-1$
-                                       InformationJPanel.getInstance().setMessage(Messages.getString("Error.030"),InformationJPanel.ERROR); //$NON-NLS-1$
-                                   }
-                               }
+                            Log.error(e); //can occur in case of timeout
+                            if (e instanceof HttpConnection.ConnectionTimeoutException){
+                                iErrorCounter ++;
+                                if (iErrorCounter == STOP_TO_SEARCH){
+                                    Log.warn("Too much connection fails, stop to search for covers online"); //$NON-NLS-1$
+                                    InformationJPanel.getInstance().setMessage(Messages.getString("Error.030"),InformationJPanel.ERROR); //$NON-NLS-1$
+                                }
+                            }
                         }
                     }
                     if (alCovers.size() == 0){//add the default cover if none other cover has been found
@@ -454,260 +456,283 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
      * Display current cover (at this.index), try all covers in case of error
      */
     private void displayCurrentCover(){
-        if ( alCovers.size() == 0){ //should not append
-            alCovers.add(coverDefault); //Add at last the default cover if all remote cover has been discarded
-            try {
-                displayCover(0);
-            } catch (JajukException e) {
-                Log.error(e);
-            }
-            return;    
-        }
-        if (alCovers.size() == 1 &&( (Cover)alCovers.get(0)).getType() == Cover.DEFAULT_COVER){ //only a default cover 
-            try {
-                displayCover(0);
-            } catch (JajukException e) {
-                Log.error(e);
-            }
-            return;    
-        }
-        //else, there is at least one local cover and no default cover
-        while ( alCovers.size() > 0){
-            Cover cover = null;
-            try{
-                displayCover(index);
-                return;
-            }
-            catch(Exception e){
-                Log.debug("Removed cover: "+alCovers.get(index)); //$NON-NLS-1$
-                alCovers.remove(index);    
-                //refresh number of found covers
-                if (!bGotoBetter){ //we go to worse covers. If we go to better covers, we just keep the same index
-                    // try a worse cover...
-                    if (index - 1 >= 0){
-                        index --;
+        SwingWorker sw = new SwingWorker() {
+            public Object  construct(){
+                if ( alCovers.size() == 0){ //should not append
+                    alCovers.add(coverDefault); //Add at last the default cover if all remote cover has been discarded
+                    try {
+                        prepareDisplay(0);
+                    } catch (JajukException e) {
+                        Log.error(e);
                     }
-                    else{ //no more worse cover
-                        index = alCovers.size()-1; //come back to best cover
-                    }  
+                    return null;    
                 }
-                setFoundText();
+                if (alCovers.size() == 1 &&( (Cover)alCovers.get(0)).getType() == Cover.DEFAULT_COVER){ //only a default cover 
+                    try {
+                        prepareDisplay(0);
+                    } catch (JajukException e) {
+                        Log.error(e);
+                    }
+                    return null;    
+                }
+                //else, there is at least one local cover and no default cover
+                while ( alCovers.size() > 0){
+                    Cover cover = null;
+                    try{
+                        prepareDisplay(index);
+                        return null;
+                    }
+                    catch(Exception e){
+                        Log.debug("Removed cover: "+alCovers.get(index)); //$NON-NLS-1$
+                        alCovers.remove(index);    
+                        //refresh number of found covers
+                        if (!bGotoBetter){ //we go to worse covers. If we go to better covers, we just keep the same index
+                            // try a worse cover...
+                            if (index - 1 >= 0){
+                                index --;
+                            }
+                            else{ //no more worse cover
+                                index = alCovers.size()-1; //come back to best cover
+                            }  
+                        }
+                        setFoundText();
+                    }
+                }
+                //if this code is executed, it means than no available cover was found, then display default cover
+                alCovers.add(coverDefault); //Add at last the default cover if all remote cover has been discarded
+                try {
+                    index = 0;
+                    prepareDisplay(index);
+                } catch (JajukException e) {
+                    Log.error(e);
+                }            
+                return null;
             }
-        }
-        //if this code is executed, it means than no available cover was found, then display default cover
-        alCovers.add(coverDefault); //Add at last the default cover if all remote cover has been discarded
-        try {
-            index = 0;
-            displayCover(0);
-        } catch (JajukException e) {
-            Log.error(e);
-        }
+            public void finished() {
+                displayCover(index);
+            }
+        };
+        sw.start();
     }
     
     
     /**
      * Display given cover
      * @param index index of the cover to display
-     * @throws a JajukException if current cover can't be diplayed ( read error for ex.)
      *
      */
-    private void displayCover(final int index) throws JajukException{
-        synchronized(bLock){
-            Log.debug("display index: "+index); //$NON-NLS-1$
-            searching(true); //lookup icon
-            //find next correct cover
-            ImageIcon icon = null;
-            Cover cover = null; 
-            try{
-                setCursor(Util.WAIT_CURSOR); //waiting cursor
+    private void displayCover(final int index) {
+        if(alCovers.size() == 0 || index >= alCovers.size()){ //just a check
+            searching(false);
+            return;
+        }
+        Cover cover = (Cover)alCovers.get(index);  //take image at the given index
+        URL url = cover.getURL();
+        //enable delete button only for local covers
+        if (cover.getType() == Cover.LOCAL_COVER 
+                || cover.getType() == Cover.ABSOLUTE_DEFAULT_COVER){
+            jbDelete.setEnabled(true);
+        }
+        else{
+            jbDelete.setEnabled(false);
+        }
+        if (url != null){
+            String sType = " (L)"; //local cover //$NON-NLS-1$
+            if (cover.getType() == Cover.REMOTE_COVER){
+                sType = " (@)"; //Web cover //$NON-NLS-1$
+            }
+            String size = CoverRepository.getInstance().getSize(cover.getURL());
+            jl.setToolTipText("<html>"+url.toString()+"<br>"+size+"K"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            setSizeText(size+"K"+sType); //$NON-NLS-1$
+            setFoundText();
+        }
+        //set tooltip for previous and next track
+        try{
+            int indexPrevious  = index+1;
+            if (indexPrevious > alCovers.size()-1){
+                indexPrevious = 0;
+            }
+            URL urlPrevious = ((Cover)alCovers.get(indexPrevious)).getURL();
+            if (urlPrevious != null){
+                jbPrevious.setToolTipText("<html>"+Messages.getString("CoverView.4")+"<br>"+urlPrevious.toString()+"</html>"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+            }
+            int indexNext = index-1;
+            if (indexNext < 0){
+                indexNext = alCovers.size()-1;
+            }
+            final URL urlNext = ((Cover)alCovers.get(indexNext)).getURL();
+            if (urlNext != null){
+                jbNext.setToolTipText("<html>"+Messages.getString("CoverView.5")+"<br>"+urlNext.toString()+"</html>"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+            }
+        }
+        catch(Exception e){  //the url code can throw out of bounds exception for unkwown reasons so check it
+            Log.error(e);
+        }
+        setCursor(Util.WAIT_CURSOR);
+        if (getComponentCount() > 0){
+            removeAll();
+        }
+        add(jpControl,"0,0");//$NON-NLS-1$
+        add(jl,"0,1");//$NON-NLS-1$
+        setCursor(Util.DEFAULT_CURSOR);
+        searching(false);
+    }
+    
+    
+    private Object prepareDisplay(final int index) throws JajukException{
+        int iLocalEventID = CoverView.this.iEventID;
+        Log.debug("display index: "+index); //$NON-NLS-1$
+        searching(true); //lookup icon
+        //find next correct cover
+        ImageIcon icon = null;
+        Cover cover = null; 
+        try{
+            setCursor(Util.WAIT_CURSOR); //waiting cursor
+            if (CoverView.this.iEventID == iLocalEventID){
                 cover = (Cover)alCovers.get(index);  //take image at the given index
                 icon = cover.getImage();
-                icon.getImage().flush();      //free image memory             
+                icon.getImage().flush();      //free image memory
             }
-            catch(Exception e){ //this cover cannot be loaded
-                setCursor(Util.DEFAULT_CURSOR);
-                searching(false);
-                throw new JajukException("000"); //$NON-NLS-1$
+            else{
+                Log.debug("Download stopped - 2"); //$NON-NLS-1$
+                return null;
             }
-            Image img = icon.getImage();
-            if (ConfigurationManager.getBoolean(CONF_COVERS_RESIZE)){
-                int iDisplayAreaHeight = this.getHeight() - 30; 
-                int iDisplayAreaWidth = this.getWidth() - 8; 
-                //check minimum sizes
-                if (iDisplayAreaHeight < 1 || iDisplayAreaWidth <1){
-                    return;
-                }
-                int iNewWidth;
-                int iNewHeight;
-                float fRatio;
-                if ( iDisplayAreaHeight > iDisplayAreaWidth){
-                    // Width is smaller than height : try to optimize height
-                    iNewHeight = iDisplayAreaHeight; //take all possible height
-                    //we check now if width will be visible entirely with optimized height
-                    float fHeightRatio = (float)iNewHeight/icon.getIconHeight();
-                    if (icon.getIconWidth()*fHeightRatio <= iDisplayAreaWidth){
-                        iNewWidth = (int)(icon.getIconWidth()*fHeightRatio);
-                    }
-                    else{
-                        //no? so we optimize width 
-                        iNewWidth = iDisplayAreaWidth;
-                        iNewHeight = (int)(icon.getIconHeight() * ((float)iNewWidth/icon.getIconWidth())) ;     
-                    }
-                } 
-                else  {
-                    // Height is smaller or equal than width : try to optimize width
-                    iNewWidth = iDisplayAreaWidth; //take all possible width
-                    // we check now if height will be visible entirely with optimized width
-                    float fWidthRatio = (float)iNewWidth/icon.getIconWidth();
-                    if (icon.getIconHeight()*(fWidthRatio) <= iDisplayAreaHeight){
-                        iNewHeight = (int)(icon.getIconHeight()*fWidthRatio);
-                    }
-                    else{
-                        //no? so we optimize width 
-                        iNewHeight = iDisplayAreaHeight;
-                        iNewWidth = (int)(icon.getIconWidth() * ((float)iNewHeight/icon.getIconHeight())) ;     
-                    }
-                }
-                img = Util.getResizedImage(img,iNewWidth,iNewHeight);
-            } 
-            ImageIcon ii = new ImageIcon(img);
-            jl = new JLabel(ii);
-            jl.setMinimumSize(new Dimension(0,0)); //required for info node resizing
-            SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    synchronized(bLock){
-                        if(alCovers.size() == 0 || index >= alCovers.size()){ //just a check
-                            searching(false);
-                            return;
-                        }
-                        Cover cover = (Cover)alCovers.get(index);  //take image at the given index
-                        URL url = cover.getURL();
-                        //enable delete button only for local covers
-                        if (cover.getType() == Cover.LOCAL_COVER 
-                                || cover.getType() == Cover.ABSOLUTE_DEFAULT_COVER){
-                            jbDelete.setEnabled(true);
-                        }
-                        else{
-                            jbDelete.setEnabled(false);
-                        }
-                        if (url != null){
-                            String sType = " (L)"; //local cover //$NON-NLS-1$
-                            if (cover.getType() == Cover.REMOTE_COVER){
-                                sType = " (@)"; //Web cover //$NON-NLS-1$
-                            }
-                            String size = CoverRepository.getInstance().getSize(cover.getURL());
-                            jl.setToolTipText("<html>"+url.toString()+"<br>"+size+"K"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                            setSizeText(size+"K"+sType); //$NON-NLS-1$
-                            setFoundText();
-                        }
-                        //set tooltip for previous and next track
-                        try{
-                            int indexPrevious  = index+1;
-                            if (indexPrevious > alCovers.size()-1){
-                                indexPrevious = 0;
-                            }
-                            URL urlPrevious = ((Cover)alCovers.get(indexPrevious)).getURL();
-                            if (urlPrevious != null){
-                                jbPrevious.setToolTipText("<html>"+Messages.getString("CoverView.4")+"<br>"+urlPrevious.toString()+"</html>"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-                            }
-                            int indexNext = index-1;
-                            if (indexNext < 0){
-                                indexNext = alCovers.size()-1;
-                            }
-                            final URL urlNext = ((Cover)alCovers.get(indexNext)).getURL();
-                            if (urlNext != null){
-                                jbNext.setToolTipText("<html>"+Messages.getString("CoverView.5")+"<br>"+urlNext.toString()+"</html>"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-                            }
-                        }
-                        catch(Exception e){  //the url code can throw out of bounds exception for unkwown reasons so check it
-                            Log.error(e);
-                        }
-                        setCursor(Util.WAIT_CURSOR);
-                        if (getComponentCount() > 0){
-                            removeAll();
-                        }
-                        add(jpControl,"0,0");//$NON-NLS-1$
-                        add(jl,"0,1");//$NON-NLS-1$
-                        setCursor(Util.DEFAULT_CURSOR);
-                        searching(false);
-                    }
-                }
-            });
         }
+        catch(Exception e){ //this cover cannot be loaded
+            setCursor(Util.DEFAULT_CURSOR);
+            searching(false);
+            Log.error(e);
+            throw new JajukException("000");
+        }
+        Image img = icon.getImage();
+        if (ConfigurationManager.getBoolean(CONF_COVERS_RESIZE)){
+            int iDisplayAreaHeight = CoverView.this.getHeight() - 30; 
+            int iDisplayAreaWidth = CoverView.this.getWidth() - 8; 
+            //check minimum sizes
+            if (iDisplayAreaHeight < 1 || iDisplayAreaWidth <1){
+                return null;
+            }
+            int iNewWidth;
+            int iNewHeight;
+            float fRatio;
+            if ( iDisplayAreaHeight > iDisplayAreaWidth){
+                // Width is smaller than height : try to optimize height
+                iNewHeight = iDisplayAreaHeight; //take all possible height
+                //we check now if width will be visible entirely with optimized height
+                float fHeightRatio = (float)iNewHeight/icon.getIconHeight();
+                if (icon.getIconWidth()*fHeightRatio <= iDisplayAreaWidth){
+                    iNewWidth = (int)(icon.getIconWidth()*fHeightRatio);
+                }
+                else{
+                    //no? so we optimize width 
+                    iNewWidth = iDisplayAreaWidth;
+                    iNewHeight = (int)(icon.getIconHeight() * ((float)iNewWidth/icon.getIconWidth())) ;     
+                }
+            } 
+            else  {
+                // Height is smaller or equal than width : try to optimize width
+                iNewWidth = iDisplayAreaWidth; //take all possible width
+                // we check now if height will be visible entirely with optimized width
+                float fWidthRatio = (float)iNewWidth/icon.getIconWidth();
+                if (icon.getIconHeight()*(fWidthRatio) <= iDisplayAreaHeight){
+                    iNewHeight = (int)(icon.getIconHeight()*fWidthRatio);
+                }
+                else{
+                    //no? so we optimize width 
+                    iNewHeight = iDisplayAreaHeight;
+                    iNewWidth = (int)(icon.getIconWidth() * ((float)iNewHeight/icon.getIconHeight())) ;     
+                }
+            }
+            
+            if (CoverView.this.iEventID == iLocalEventID){
+                img = Util.getResizedImage(img,iNewWidth,iNewHeight);}
+            else{
+                Log.debug("Download stopped - 2"); //$NON-NLS-1$
+                return null;
+            }
+            
+        } 
+        ImageIcon ii = new ImageIcon(img);
+        jl = new JLabel(ii);
+        jl.setMinimumSize(new Dimension(0,0)); //required for info node resizing
+        return null;
     }
+    
+    
     
     /* (non-Javadoc)
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(final ActionEvent e) {
-        synchronized(bLock){
-            if (e.getSource() == jcbAccuracy){
-                ConfigurationManager.setProperty(CONF_COVERS_ACCURACY+"_"+sID,Integer.toString(jcbAccuracy.getSelectedIndex())); //$NON-NLS-1$
-                new Thread(){
-                    public void run(){
-                        update(new Event(EVENT_COVER_REFRESH,ObservationManager.getDetailsLastOccurence(EVENT_COVER_REFRESH))); //force refreshing
-                    }
-                }.start();
-            }
-            else if(e.getSource() == jbPrevious){  //previous : show a better cover
-                bGotoBetter = true;
-                index++;
-                if (index > alCovers.size()-1){
-                    index = 0;
+        if (e.getSource() == jcbAccuracy){
+            ConfigurationManager.setProperty(CONF_COVERS_ACCURACY+"_"+sID,Integer.toString(jcbAccuracy.getSelectedIndex())); //$NON-NLS-1$
+            new Thread(){
+                public void run(){
+                    update(new Event(EVENT_COVER_REFRESH,ObservationManager.getDetailsLastOccurence(EVENT_COVER_REFRESH))); //force refreshing
                 }
-                new Thread(){
-                    public void run(){
-                        displayCurrentCover();
-                        bGotoBetter = false; //make sure default behavior is to go to worse covers
-                    }
-                }.start();
+            }.start();
+        }
+        else if(e.getSource() == jbPrevious){  //previous : show a better cover
+            bGotoBetter = true;
+            index++;
+            if (index > alCovers.size()-1){
+                index = 0;
             }
-            else if(e.getSource() == jbNext){ //next : show a worse cover
-                bGotoBetter = false;
-                index--;
-                if (index < 0){
-                    index = alCovers.size()-1;
+            new Thread(){
+                public void run(){
+                    displayCurrentCover();
+                    bGotoBetter = false; //make sure default behavior is to go to worse covers
                 }
-                new Thread(){
-                    public void run(){
-                        displayCurrentCover();
-                    }
-                }.start();
+            }.start();
+        }
+        else if(e.getSource() == jbNext){ //next : show a worse cover
+            bGotoBetter = false;
+            index--;
+            if (index < 0){
+                index = alCovers.size()-1;
             }
-            else if(e.getSource() == jbDelete){ //delete a local cover
-                Cover cover = (Cover)alCovers.get(index);
-                //show confirmation message if required
-                if ( ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_DELETE_COVER)){
-                    int iResu = Messages.getChoice(Messages.getString("Confirmation_delete_cover")+" : "+cover.getURL().toString(),JOptionPane.WARNING_MESSAGE);  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                    if (iResu != JOptionPane.YES_OPTION){
-                        return;
-                    }
+            new Thread(){
+                public void run(){
+                    displayCurrentCover();
                 }
-                //yet there? ok, delete the cover
-                try{
-                    File file = new File(cover.getURL().getFile());
-                    if (file.isFile() && file.exists()){
-                        file.delete();
-                        //check that file has been really deleted (sometimes, we get no exception)
-                        if (file.exists()){
-                            throw new Exception(""); //$NON-NLS-1$
-                        }
-                    }
-                    else{  //not a file, must have a problem
+            }.start();
+        }
+        else if(e.getSource() == jbDelete){ //delete a local cover
+            Cover cover = (Cover)alCovers.get(index);
+            //show confirmation message if required
+            if ( ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_DELETE_COVER)){
+                int iResu = Messages.getChoice(Messages.getString("Confirmation_delete_cover")+" : "+cover.getURL().toString(),JOptionPane.WARNING_MESSAGE);  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                if (iResu != JOptionPane.YES_OPTION){
+                    return;
+                }
+            }
+            //yet there? ok, delete the cover
+            try{
+                File file = new File(cover.getURL().getFile());
+                if (file.isFile() && file.exists()){
+                    file.delete();
+                    //check that file has been really deleted (sometimes, we get no exception)
+                    if (file.exists()){
                         throw new Exception(""); //$NON-NLS-1$
                     }
                 }
-                catch(Exception ioe){
-                    Log.error("131",ioe); //$NON-NLS-1$
-                    Messages.showErrorMessage("131"); //$NON-NLS-1$
-                    return;
+                else{  //not a file, must have a problem
+                    throw new Exception(""); //$NON-NLS-1$
                 }
-                //If this was the absolute cover, remove the reference in the collection
-                if (cover.getType() == Cover.ABSOLUTE_DEFAULT_COVER){
-                    Directory dir = FIFO.getInstance().getCurrentFile().getDirectory(); 
-                    dir.removeProperty("default_cover"); //$NON-NLS-1$
-                }
-                // reorganize covers
+            }
+            catch(Exception ioe){
+                Log.error("131",ioe); //$NON-NLS-1$
+                Messages.showErrorMessage("131"); //$NON-NLS-1$
+                return;
+            }
+            //If this was the absolute cover, remove the reference in the collection
+            if (cover.getType() == Cover.ABSOLUTE_DEFAULT_COVER){
+                Directory dir = FIFO.getInstance().getCurrentFile().getDirectory(); 
+                dir.removeProperty("default_cover"); //$NON-NLS-1$
+            }
+            // reorganize covers
+            synchronized(bLock){
+                
                 alCovers.remove(index);
                 index--;
                 if (index < 0){
@@ -719,63 +744,62 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                     }
                 }.start();
             }
-            else if ( e.getSource() == jbDefault){ //choose a default
-                //first commit this cover on the disk if it is a remote cover
-                Cover cover = (Cover)alCovers.get(index);
-                String sFilename = Util.getOnlyFile(cover.getURL().toString());
-                if (cover.getType() == Cover.REMOTE_COVER){
-                    String sFilePath = fDir.getPath()+"/"+sFilename; //$NON-NLS-1$
-                    saveCover(sFilePath,cover);
-                }
-                //then make it the default cover in this directory
-                Directory dir = FIFO.getInstance().getCurrentFile().getDirectory(); 
-                dir.setProperty("default_cover",sFilename); //$NON-NLS-1$
+        }
+        else if ( e.getSource() == jbDefault){ //choose a default
+            //first commit this cover on the disk if it is a remote cover
+            Cover cover = (Cover)alCovers.get(index);
+            String sFilename = Util.getOnlyFile(cover.getURL().toString());
+            if (cover.getType() == Cover.REMOTE_COVER){
+                String sFilePath = fDir.getPath()+"/"+sFilename; //$NON-NLS-1$
+                saveCover(sFilePath,cover);
             }
-            else if(e.getSource() == jbSave || e.getSource() == jbSaveAs ){ //save a save with its original name
-                new Thread(){
-                    public void run() {
-                        synchronized(bLock){
-                            Cover cover = (Cover)alCovers.get(index);
-                            if (cover.getType() != Cover.REMOTE_COVER){ 
-                                Messages.showErrorMessage("130",cover.getURL().toString()); //$NON-NLS-1$
-                                return;
-                            }
-                            String sFilePath = null;
-                            if (e.getSource() == jbSave){
-                                sFilePath = fDir.getPath()+"/"+Util.getOnlyFile(cover.getURL().toString()); //$NON-NLS-1$
-                            }
-                            else if(e.getSource() == jbSaveAs){
-                                JFileChooser jfchooser = new JFileChooser(fDir);
-                                FileFilter filter = new FileFilter() {
-                                    public boolean accept(File file) {
-                                        String sExt =Util.getExtension(file); 
-                                        if (sExt.equals("gif") || sExt.equals("png") || sExt.equals("jpg") ){ //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                            return true;
-                                        }
-                                        return false;
-                                    }
-                                    
-                                    public String getDescription() {
-                                        return "*.gif,*.png,*.jpg"; //$NON-NLS-1$
-                                    }
-                                };
-                                jfchooser.setFileFilter(filter);
-                                jfchooser.setDialogTitle(Messages.getString("CoverView.10")); //$NON-NLS-1$
-                                jfchooser.setSelectedFile(new File(Util.getOnlyFile(cover.getURL().toString())));
-                                int returnVal = jfchooser.showSaveDialog(Main.getWindow());
-                                if (returnVal == JFileChooser.APPROVE_OPTION) {
-                                    sFilePath = jfchooser.getSelectedFile().getAbsolutePath();
+            //then make it the default cover in this directory
+            Directory dir = FIFO.getInstance().getCurrentFile().getDirectory(); 
+            dir.setProperty("default_cover",sFilename); //$NON-NLS-1$
+        }
+        else if(e.getSource() == jbSave || e.getSource() == jbSaveAs ){ //save a save with its original name
+            new Thread(){
+                public void run() {
+                    Cover cover = (Cover)alCovers.get(index);
+                    if (cover.getType() != Cover.REMOTE_COVER){ 
+                        Messages.showErrorMessage("130",cover.getURL().toString()); //$NON-NLS-1$
+                        return;
+                    }
+                    String sFilePath = null;
+                    if (e.getSource() == jbSave){
+                        sFilePath = fDir.getPath()+"/"+Util.getOnlyFile(cover.getURL().toString()); //$NON-NLS-1$
+                    }
+                    else if(e.getSource() == jbSaveAs){
+                        JFileChooser jfchooser = new JFileChooser(fDir);
+                        FileFilter filter = new FileFilter() {
+                            public boolean accept(File file) {
+                                String sExt =Util.getExtension(file); 
+                                if (sExt.equals("gif") || sExt.equals("png") || sExt.equals("jpg") ){ //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                    return true;
                                 }
-                                else{
-                                    return;
-                                }
+                                return false;
                             }
-                            saveCover(sFilePath,cover);
+                            
+                            public String getDescription() {
+                                return "*.gif,*.png,*.jpg"; //$NON-NLS-1$
+                            }
+                        };
+                        jfchooser.setFileFilter(filter);
+                        jfchooser.setDialogTitle(Messages.getString("CoverView.10")); //$NON-NLS-1$
+                        jfchooser.setSelectedFile(new File(Util.getOnlyFile(cover.getURL().toString())));
+                        int returnVal = jfchooser.showSaveDialog(Main.getWindow());
+                        if (returnVal == JFileChooser.APPROVE_OPTION) {
+                            sFilePath = jfchooser.getSelectedFile().getAbsolutePath();
+                        }
+                        else{
+                            return;
                         }
                     }
-                }.start();
-            }
+                    saveCover(sFilePath,cover);
+                }
+            }.start();
         }
+        
     }
     
     
