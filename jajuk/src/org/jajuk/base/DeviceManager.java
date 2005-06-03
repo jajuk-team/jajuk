@@ -22,6 +22,8 @@ package org.jajuk.base;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 
 import javax.swing.JOptionPane;
@@ -39,9 +41,7 @@ import org.jajuk.util.Util;
  */
 public class DeviceManager implements ITechnicalStrings{
 	/**Device collection**/
-	static ArrayList alDevices = new ArrayList(100);
-	/**Device ids*/
-	static ArrayList alDeviceIds = new ArrayList(100);
+	static HashMap hDevices = new HashMap(100);
 	/**Supported device types names*/
 	static private ArrayList alDevicesTypes = new ArrayList(10);
 	
@@ -84,10 +84,10 @@ public class DeviceManager implements ITechnicalStrings{
 	 */
 	public static String checkDeviceAvailablity(String sName,int iDeviceType,String sUrl,String sMountPoint){
 		//check name and path
-	    Iterator it = alDevices.iterator();
+	    Iterator it = hDevices.values().iterator();
 		while (it.hasNext()){
 		    Device deviceToCheck = (Device)it.next();
-			if ( sName.equals(deviceToCheck.getName())){
+			if ( sName.toLowerCase().equals(deviceToCheck.getName().toLowerCase())){
 				return "019" ; //$NON-NLS-1$
 			}
 			String sUrlChecked = deviceToCheck.getUrl();
@@ -122,10 +122,9 @@ public class DeviceManager implements ITechnicalStrings{
 	 *@param sName
 	 *@return device 
 	 */
-	public static synchronized Device  registerDevice(String sId,String sName,int iDeviceType,String sUrl,String sMountPoint){
+	public static synchronized Device registerDevice(String sId,String sName,int iDeviceType,String sUrl,String sMountPoint){
 		Device device = new Device(sId,sName,iDeviceType,sUrl,sMountPoint);
-		alDeviceIds.add(sId);
-		alDevices.add(device);
+		hDevices.put(sId,device);
 		return device;
 	}
 	
@@ -162,22 +161,31 @@ public class DeviceManager implements ITechnicalStrings{
 	
 	
 	/**Return all registred devices*/
-	public static synchronized ArrayList getDevices() {
-		return alDevices;
+	public static synchronized Iterator getDevices() {
+		ArrayList al = new ArrayList(hDevices.values());
+        Collections.sort(al); //sort devices name
+        return al.iterator();
 	}
 	
+    /**Return number of registred devices*/
+    public static synchronized int getDevicesNumber() {
+        return hDevices.size();
+    }
+    
+    /**Return all registred devices*/
+    public static synchronized ArrayList getDevicesList() {
+        ArrayList al = new ArrayList(hDevices.values());
+        Collections.sort(al); //sort devices name
+        return al;
+    }
+     
 	/**
 	 * Return device by id
 	 * @param sName
 	 * @return
 	 */
 	public static synchronized Device getDevice(String sId) {
-		Device device = null;
-		int index = alDeviceIds.indexOf(sId);
-		if (index != -1){
-			device = (Device) alDevices.get(index);
-		}
-		return device;
+		return (Device)hDevices.get(sId);
 	}
 	
 	
@@ -214,20 +222,21 @@ public class DeviceManager implements ITechnicalStrings{
 				return;
 			}
 		}
-		alDevices.remove(device);
-		alDeviceIds.remove(device.getId());
+		hDevices.remove(device.getId());
 		DirectoryManager.cleanDevice(device.getId());
 		FileManager.cleanDevice(device.getId());
 		PlaylistFileManager.cleanDevice(device.getId());
 		//	Clean the collection up
 		org.jajuk.base.Collection.cleanup();
 		//remove synchronization if another device was synchronized with this device
-		Iterator it = alDevices.iterator();
+		Iterator it = hDevices.values().iterator();
 		while (it.hasNext()){
 			Device deviceToCheck = (Device)it.next();
-			String sSyncSource = deviceToCheck.getProperty(DEVICE_OPTION_SYNCHRO_SOURCE);
-			if ( sSyncSource != null && sSyncSource.equals(device.getId())){
-				deviceToCheck.setProperty(DEVICE_OPTION_SYNCHRO_SOURCE,null);
+			if (deviceToCheck.containsProperty(DEVICE_OPTION_SYNCHRO_SOURCE)){
+			    String sSyncSource = deviceToCheck.getProperty(DEVICE_OPTION_SYNCHRO_SOURCE);
+			    if ( sSyncSource.equals(device.getId())){
+			        deviceToCheck.removeProperty(DEVICE_OPTION_SYNCHRO_SOURCE);
+                }
 			}
 		}
 		//Sort collection
@@ -242,7 +251,7 @@ public class DeviceManager implements ITechnicalStrings{
 	 */
 	public static boolean isAnyDeviceRefreshing(){
 		boolean bOut = false;
-		Iterator it = DeviceManager.getDevices().iterator();
+		Iterator it = DeviceManager.getDevices();
 		while ( it.hasNext()){
 			Device device = (Device)it.next();
 			if ( device.isRefreshing()){
@@ -268,14 +277,14 @@ public class DeviceManager implements ITechnicalStrings{
 	 * Clean all devices
 	 */
 	public static synchronized void cleanAllDevices() {
-	    Iterator it = alDevices.iterator();
+	    Iterator it = hDevices.values().iterator();
 	    while (it.hasNext()){
 	        Device device = (Device)it.next();
 	        FileManager.cleanDevice(device.getName());
 	        DirectoryManager.cleanDevice(device.getName());
 	        PlaylistFileManager.cleanDevice(device.getName());
 	    }
-	    alDevices.clear();
+	    hDevices.clear();
 	}
 
 }
