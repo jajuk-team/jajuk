@@ -140,10 +140,15 @@ public class FileManager implements ITechnicalStrings{
     
     public static synchronized File getFileByPath(String sPath) {
         File fOut = null;
+        java.io.File fToCompare = new java.io.File(sPath);
+        if (!fToCompare.exists()){ //check that file exists
+            return null;
+        }
         Iterator it = hmIdFile.values().iterator();
         while ( it.hasNext()){
             File file = (File)it.next();
-            if (file.getAbsolutePath().equals(sPath)){
+            if (file.getIO().equals(fToCompare)){ //we compare io files and not paths
+                //to avoid dealing with path name issues
                 fOut = file;
                 break;
             }
