@@ -97,7 +97,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 		bw.write("\t</types>\n"); //$NON-NLS-1$
 		//devices
 		bw.write("\t<devices>\n"); //$NON-NLS-1$
-		it = DeviceManager.getDevices().iterator();
+		it = DeviceManager.getDevices();
 		while (it.hasNext()) {
 			Device device = (Device) it.next();
 			bw.write(device.toXml());
