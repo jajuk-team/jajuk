@@ -173,7 +173,6 @@ public class Main implements ITechnicalStrings {
 			LNFManager.register(LNF_WINDOWS,LNF_WINDOWS_CLASS);
 			LNFManager.register(LNF_KUNSTSTOFF,LNF_KUNSTSTOFF_CLASS);
 			LNFManager.register(LNF_LIQUID,LNF_LIQUID_CLASS);
-			LNFManager.register(LNF_METOUIA,LNF_METOUIA_CLASS);
 			LNFManager.register(LNF_PLASTIC,LNF_PLASTIC_CLASS);
 			LNFManager.register(LNF_PLASTICXP,LNF_PLASTICXP_CLASS);
 			LNFManager.register(LNF_PLASTIC3D,LNF_PLASTIC3D_CLASS);
@@ -547,14 +546,14 @@ public class Main implements ITechnicalStrings {
 			}
 			else if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_NOVELTIES)){
 			    alToPlay = FileManager.getGlobalNoveltiesPlaylist();
-                if (alToPlay != null){
-                    Collections.shuffle(alToPlay);//shuffle the selection
-                }
+			    if (alToPlay != null && alToPlay.size() > 0){
+			        Collections.shuffle(alToPlay);//shuffle the selection
+			    }
 			}
 			//launch selected file
 			if (alToPlay  != null && alToPlay.size() >0){
-				FIFO.getInstance().push(Util.createStackItems(alToPlay,
-						ConfigurationManager.getBoolean(CONF_STATE_REPEAT),false),false);
+			    FIFO.getInstance().push(Util.createStackItems(alToPlay,
+			            ConfigurationManager.getBoolean(CONF_STATE_REPEAT),false),false);
 			}
 		}
 	}
@@ -565,7 +564,7 @@ public class Main implements ITechnicalStrings {
 	 *
 	 */
 	private static void autoMount(){
-		Iterator it = DeviceManager.getDevices().iterator();
+		Iterator it = DeviceManager.getDevices();
 		while (it.hasNext()){
 			Device device = (Device)it.next();
 			if (TRUE.equals(device.getProperty(DEVICE_OPTION_AUTO_MOUNT))){
@@ -588,7 +587,7 @@ public class Main implements ITechnicalStrings {
 	 *
 	 */
 	private static void autoRefresh(){
-		Iterator it = DeviceManager.getDevices().iterator();
+		Iterator it = DeviceManager.getDevices();
 		while (it.hasNext()){
 			Device device = (Device)it.next();
 			if (TRUE.equals(device.getProperty(DEVICE_OPTION_AUTO_REFRESH)) && device.isMounted()){
@@ -688,7 +687,7 @@ public class Main implements ITechnicalStrings {
                     
                     //Display info message if first session
                     if (ConfigurationManager.getBoolean(CONF_FIRST_CON) 
-                            && DeviceManager.getDevices().size() == 0){ //make none device already exist to avoid checking availability
+                            && DeviceManager.getDevicesNumber() == 0){ //make none device already exist to avoid checking availability
                         sc.dispose(); //make sure to hide splashscreen
                         //First time wizard
                         FirstTimeWizard fsw = new FirstTimeWizard();
@@ -713,9 +712,16 @@ public class Main implements ITechnicalStrings {
     
     /**Lauch tray, only for linux and windows, not mac for the moment*/
     private static void launchTray() {
-    	if (Util.isUnderLinux() || Util.isUnderWindows()){
-		    jsystray = JajukSystray.getInstance();	
-    	}
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                if (Util.isUnderLinux() || Util.isUnderWindows()){
+                    //  Set look and feel, needs local to be set for error messages
+                    LNFManager.setLookAndFeel(ConfigurationManager.getProperty(CONF_OPTIONS_LNF));
+                    
+                    jsystray = JajukSystray.getInstance();  
+                }
+            }
+        });
     }
     
     /**
