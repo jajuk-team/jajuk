@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Properties;
+import java.util.Vector;
 
 import javax.swing.JComponent;
 
@@ -47,7 +48,35 @@ public class ObservationManager implements ITechnicalStrings{
 	/**Last event for a given subject (used for new objects that just registrated to this subject)*/
 	static HashMap hLastEventBySubject = new HashMap(10);
 	
-	/**
+    static volatile Vector vFIFO = new Vector(10);
+    
+    static {
+        Thread t = new Thread(){
+            public void run(){
+                while (true){
+                    try {
+                        Thread.sleep(50);
+                    } catch (InterruptedException e) {
+                        Log.error(e);
+                    }
+                    if (vFIFO.size()>0){
+                        final Event event  = (Event)vFIFO.get(0);
+                        vFIFO.remove(0);
+                        new Thread(){ //launch action asynchronously
+                            public void run(){
+                                notifySync(event);        
+                            }
+                        }.start();
+                        
+                    }
+                }
+            }
+        };
+        t.start();
+    }
+    
+    
+    /**
 	 * Register a component for a given subject
 	 * @param subject Subject ( event ) to observe
 	 * @param jc component to register
@@ -136,14 +165,9 @@ public class ObservationManager implements ITechnicalStrings{
 		if (bSync){
 			ObservationManager.notifySync(event);
 		}
-		else{
-			Thread t = new Thread(){
-				public void run(){
-					ObservationManager.notifySync(event);
-				}
-			};
-			t.start();
-		}
+		else{ //do not launch it in a regular thread because AWT event displatcher wait thhread end to display
+		    vFIFO.add(event); //add event in FIFO fo futur use
+        }
 	}
 	
 	/**
