@@ -730,6 +730,11 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
                 while (it.hasNext()){
                     deviceNode.add(new FileNode((File)it.next()));
                 }
+                //add playlist files
+                it = directory.getPlaylistFiles().iterator();
+                while (it.hasNext()){
+                    deviceNode.add(new PlaylistFileNode((PlaylistFile)it.next()));
+                }
             }
         }
         //add files
