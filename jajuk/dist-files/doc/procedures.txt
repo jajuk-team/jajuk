@@ -12,26 +12,27 @@ NEW LANGUAGE PROCEDURE
 - Update translation howto
 
 NEW RELEASE PROCEDURE
-- Check new incoming updates (i18n)
-- Backup SF data (php file)
-- String externalization
-- Rename /data/projects/jajuk/maven_rep/xdocs/jajuk-hs link
-- Search for debug System.out
-- Make required translations (fr)
-- Generate install jar
-- Test it under several OS
+o- Check new incoming updates (i18n)
+o- Backup SF data (php file)
+o- Set right version (no mroe rc) in build-dist.xml
+o- String externalization
+o- Rename /data/projects/jajuk/maven_rep/xdocs/jajuk-hs link
+o- Search for debug System.out
+o- Make required translations (fr)
+o- Generate install jar
+o- Test it under several OS
+o- Update qualification-<release>.html file
+o- Add a release in main_qualification.html file
+o- Save dist file in the releases dir
+o- Modify index.xml and change.xml maven files
+o- Change download.html file for file names
+- Generate and upload maven site
 - Commit all changes
 - Tag as version
-- Add a release in main_qualification.html file
-- Save dist file in the releases dir
-- Modify index.xml and change.xml maven files
-- Change download.html file for file names
-- Generate and upload maven site
 - Close bugs, known issues and RFE at SF
 - Release file on SF, ( preserve my preformated text in notes )
 - Send a message in the developer forum
 - Clean snapshots directory
-
 
 ANNOUNCEMENT PROCEDURE
 - Make a news at SF

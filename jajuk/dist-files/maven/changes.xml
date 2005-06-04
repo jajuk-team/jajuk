@@ -235,7 +235,7 @@
 	<action dev='bflorat' type='fix' issue='1183218'>Refresh blocked on corrupted files</action> 
 	<action dev='bflorat' type='fix' issue='1183907'>Fix for  Wrong startup message</action> 
     </release>
-    <release version='0.3.4' date='work in progress' description='Fixes, features'>
+    <release version='0.3.4' date='2005-06-04' description='Fixes'>
     	<action dev='bflorat' type='add'>New novelties special playlist</action> 
     	<action dev='bflorat' type='add'>Window position and size now saved</action> 
     	<action dev='bflorat' type='add'>New quick start wizard for first time users</action> 
@@ -267,6 +267,8 @@
     	<action dev='bflorat' type='fix' issue='1212030'>Several issues with reseting default options</action> 
     	<action dev='bflorat' type='fix' issue='1213382'>Issues when removing a sync source device</action> 
     	<action dev='bflorat' type='fix' issue='1214419'>Hard coded newline</action> 
-   </release>
+    	<action dev='bflorat' type='fix' issue='1214734'>Playlist at device root not visible in tree</action> 
+    	<action dev='bflorat' type='fix' issue='1214824'>Problem with playlists repository</action> 
+  </release>
   </body>
 </document>
