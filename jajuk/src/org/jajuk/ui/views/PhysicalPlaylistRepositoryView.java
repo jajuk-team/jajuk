@@ -82,16 +82,16 @@ public class PhysicalPlaylistRepositoryView extends AbstractPlaylistRepositoryVi
 	/**
 	 * Create playlists from collection 
 	 */
-	void populatePlaylists(){
-		super.populatePlaylists();
+	public synchronized void populatePlaylists(){
+	    super.populatePlaylists();
 		//normal playlists
 		ArrayList al = PlaylistFileManager.getPlaylistFiles();
-		Collections.sort(al);
+    	Collections.sort(al);
 		Iterator it = al.iterator();
 		while ( it.hasNext()){
 			PlaylistFile plf = (PlaylistFile)it.next();
-			if ( !plf.isReady()){  //don't show playlist files on unmounted devices
-				continue;
+			if ( plf.shouldBeHidden()){
+	            continue;
 			}
 			PlaylistFileItem plfi = new PlaylistFileItem(PlaylistFileItem.PLAYLIST_TYPE_NORMAL,ICON_PLAYLIST_NORMAL,plf,plf.getName());
 			alPlaylistFileItems.add(plfi);
