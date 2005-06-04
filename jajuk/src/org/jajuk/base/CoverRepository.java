@@ -100,7 +100,7 @@ public class CoverRepository implements Observer,ITechnicalStrings {
         //no? check if another thread is not already downloading it
         if (alLoading.contains(url)){
             while (alLoading.contains(url)){
-                Log.debug("Waiting for concurrent cover download");
+                Log.debug("Waiting for concurrent cover download"); //$NON-NLS-1$
                 //another thread is downloading this url, wait until it's finished or in error
                 try {
                     Thread.sleep(100);

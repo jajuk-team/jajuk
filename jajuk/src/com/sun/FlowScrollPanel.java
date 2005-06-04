@@ -112,7 +112,7 @@ public class FlowScrollPanel extends JPanel implements Scrollable {
     }
     else
       throw new
-        AWTError("FlowScrollPane can have only FlowLayout, not " + l);
+        AWTError("FlowScrollPane can have only FlowLayout, not " + l); //$NON-NLS-1$
   }
 
   //

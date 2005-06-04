@@ -333,8 +333,8 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
                     sNewPropertyValue = sPropertyValue.replaceAll("\\*",".*"); //$NON-NLS-1$ //$NON-NLS-2$
                     sNewPropertyValue = ".*"+sNewPropertyValue+".*"; //$NON-NLS-1$ //$NON-NLS-2$
                 }
-                else if ("".equals(sNewPropertyValue)){//in regexp mode, if none selection, display all rows
-                    sNewPropertyValue = ".*";
+                else if ("".equals(sNewPropertyValue)){//in regexp mode, if none selection, display all rows //$NON-NLS-1$
+                    sNewPropertyValue = ".*"; //$NON-NLS-1$
                 }
                 while (it.hasNext()){
                     File file = (File)it.next();

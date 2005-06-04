@@ -166,7 +166,7 @@ public class PropertyAdapter implements IPropertyable, ITechnicalStrings,Seriali
      * @see org.jajuk.base.Propertyable#containsKey(java.lang.String)
      */
     public boolean containsProperty(String sKey) {
-        return properties.containsKey(sKey) && !properties.get(sKey).equals("");
+        return properties.containsKey(sKey) && !properties.get(sKey).equals(""); //$NON-NLS-1$
     }
     
 	/*
