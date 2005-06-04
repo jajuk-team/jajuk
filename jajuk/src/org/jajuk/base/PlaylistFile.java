@@ -425,10 +425,7 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 			}
 		}
 	}
-	
-	
-	
-	
+		
 	/**
 	 * Parse a playlist file
 	 */
