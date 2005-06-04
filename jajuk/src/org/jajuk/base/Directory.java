@@ -53,6 +53,8 @@ public class Directory extends PropertyAdapter implements Comparable{
     private ArrayList alDirectories = new ArrayList(20);
     /** Child files */
     private ArrayList alFiles = new ArrayList(20);
+    /** Playlist files */
+    private ArrayList alPlaylistFiles = new ArrayList(20);
     /** IO file for optimizations* */
     private java.io.File fio;
     /** pre-calculated absolute path for perf*/
@@ -165,6 +167,14 @@ public class Directory extends PropertyAdapter implements Comparable{
     }
     
     /**
+     * Add a playlist file in local refences
+     * @param playlist file
+     */
+    public void addPlaylistFile(PlaylistFile plf) {
+        alPlaylistFiles.add(plf);
+    }
+    
+    /**
      * Remove a child directory from local refences
      * @param directory
      */
@@ -179,6 +189,14 @@ public class Directory extends PropertyAdapter implements Comparable{
      */
     public ArrayList getFiles() {
         return alFiles;
+    }
+    
+    /**
+     * return playlist files
+     * @return playlist files
+     */
+    public ArrayList getPlaylistFiles() {
+        return alPlaylistFiles;
     }
     
     /**
@@ -296,6 +314,7 @@ public class Directory extends PropertyAdapter implements Comparable{
                     String sHashcode =MD5Processor.hash(sbContent.toString()); 
                     PlaylistFile plFile = PlaylistFileManager.registerPlaylistFile(sId,sName,sHashcode,this);
                     PlaylistManager.registerPlaylist(plFile);
+                    addPlaylistFile(plFile);
                 }
             }
             catch(Exception e){ 
