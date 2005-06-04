@@ -224,9 +224,11 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.Observer#update(java.lang.String)
 	 */
-	public void update(Event event) {
+	public synchronized void update(Event event) {
 		String subject = event.getSubject();
-		if ( subject.equals(EVENT_DEVICE_MOUNT) || subject.equals(EVENT_DEVICE_UNMOUNT) || subject.equals(EVENT_DEVICE_REFRESH) ) {
+		if ( subject.equals(EVENT_DEVICE_MOUNT) 
+                || subject.equals(EVENT_DEVICE_UNMOUNT) 
+                || subject.equals(EVENT_DEVICE_REFRESH) ) {
 			SwingWorker sw = new SwingWorker() {
 				public Object  construct(){
 				    if (jpRoot.getComponentCount() > 0){
@@ -252,7 +254,7 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 	}
 	
 	/**
-	 * Create playlists from collection 
+	 * Create special playlists from collection, this is called by both logicial and physical populate methods
 	 */
 	void populatePlaylists(){
 		alPlaylistFileItems.clear();

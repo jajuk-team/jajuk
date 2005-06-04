@@ -81,7 +81,7 @@ public class LogicalPlaylistRepositoryView extends AbstractPlaylistRepositoryVie
 	/**
 	 * Create playlists from collection 
 	 */
-	void populatePlaylists(){
+	public synchronized void  populatePlaylists(){
 		super.populatePlaylists();
 		//normal playlists
 		ArrayList al = PlaylistManager.getPlaylists();
