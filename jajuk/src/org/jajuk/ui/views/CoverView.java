@@ -394,12 +394,10 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 if (bSearching){
-                    Util.waiting();
                     jlSearching.setIcon(Util.getIcon(ICON_NET_SEARCH));
                 }
                 else{
                     jlSearching.setIcon(null);
-                    Util.stopWaiting();
                 }
             }
         });
@@ -522,8 +520,9 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
      *
      */
     private void displayCover(final int index) {
-        if(alCovers.size() == 0 || index >= alCovers.size()){ //just a check
-            searching(false);
+        if(alCovers.size() == 0 || index >= alCovers.size() || index < 0){ //just a check
+            alCovers.add(coverDefault); //display default cover by default
+            displayCover(0);
             return;
         }
         Cover cover = (Cover)alCovers.get(index);  //take image at the given index
@@ -542,6 +541,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                 sType = " (@)"; //Web cover //$NON-NLS-1$
             }
             String size = CoverRepository.getInstance().getSize(cover.getURL());
+            
             jl.setToolTipText("<html>"+url.toString()+"<br>"+size+"K"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             setSizeText(size+"K"+sType); //$NON-NLS-1$
             setFoundText();
@@ -566,6 +566,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
             }
         }
         catch(Exception e){  //the url code can throw out of bounds exception for unkwown reasons so check it
+            Log.debug("jl="+jl+" url="+url); //$NON-NLS-1$ //$NON-NLS-2$
             Log.error(e);
         }
         setCursor(Util.WAIT_CURSOR);
@@ -587,7 +588,6 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
         ImageIcon icon = null;
         Cover cover = null; 
         try{
-            setCursor(Util.WAIT_CURSOR); //waiting cursor
             if (CoverView.this.iEventID == iLocalEventID){
                 cover = (Cover)alCovers.get(index);  //take image at the given index
                 icon = cover.getImage();
@@ -602,7 +602,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
             setCursor(Util.DEFAULT_CURSOR);
             searching(false);
             Log.error(e);
-            throw new JajukException("000");
+            throw new JajukException("000"); //$NON-NLS-1$
         }
         Image img = icon.getImage();
         if (ConfigurationManager.getBoolean(CONF_COVERS_RESIZE)){
