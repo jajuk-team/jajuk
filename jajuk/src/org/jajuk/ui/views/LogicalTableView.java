@@ -344,8 +344,8 @@ public class LogicalTableView extends AbstractTableView implements Observer{
                     sNewPropertyValue = sPropertyValue.replaceAll("\\*",".*"); //$NON-NLS-1$ //$NON-NLS-2$
                     sNewPropertyValue = ".*"+sNewPropertyValue+".*"; //$NON-NLS-1$ //$NON-NLS-2$
                 }
-                else if ("".equals(sNewPropertyValue)){//in regexp mode, if none selection, display all rows
-                    sNewPropertyValue = ".*";
+                else if ("".equals(sNewPropertyValue)){//in regexp mode, if none selection, display all rows //$NON-NLS-1$
+                    sNewPropertyValue = ".*"; //$NON-NLS-1$
                 }
                 while (it.hasNext()){
                     Track track = (Track)it.next();
