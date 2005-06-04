@@ -21,6 +21,7 @@
 package org.jajuk.base;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Properties;
@@ -78,7 +79,8 @@ public class PlaylistFileManager {
 		Iterator it = hmPlaylistFiles.values().iterator();
 		while (it.hasNext()) {
 			PlaylistFile plf = (PlaylistFile) it.next();
-			if ( plf.getDirectory()== null || plf.getDirectory().getDevice().getId().equals(sId)) {
+			if ( plf.getDirectory()== null 
+                    || plf.getDirectory().getDevice().getId().equals(sId)) {
 				it.remove();
 			}
 		}
@@ -86,7 +88,9 @@ public class PlaylistFileManager {
 
 	/** Return all registred PlaylistFiles */
 	public static synchronized ArrayList getPlaylistFiles() {
-		return new ArrayList(hmPlaylistFiles.values());
+		ArrayList alOut = new ArrayList(hmPlaylistFiles.values());
+        Collections.sort(alOut);
+        return alOut;
 	}
 
 	/**
