@@ -149,7 +149,8 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 		populatePlaylists();
 		jpRoot.add(Box.createVerticalStrut(500));  //make sure playlists items are packed to the top
 		JScrollPane jsp = new JScrollPane(jpRoot);
-		add(jsp);
+        jsp.getVerticalScrollBar().setUnitIncrement(60);
+        add(jsp);
 		//Register on the list for subject we are interrested in
 		ObservationManager.register(EVENT_DEVICE_MOUNT,this);
 		ObservationManager.register(EVENT_DEVICE_UNMOUNT,this);

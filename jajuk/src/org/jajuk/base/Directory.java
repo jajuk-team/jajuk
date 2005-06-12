@@ -41,11 +41,7 @@ import org.jajuk.util.log.Log;
  */
 public class Directory extends PropertyAdapter implements Comparable{
     
-    /** ID. Ex:1,2,3... */
-    private String sId;
-    /** directory name. Ex: rock */
-    private String sName;
-    /** Parent directory ID* */
+   /** Parent directory ID* */
     private Directory dParent;
     /** Directory device */
     private Device device;
@@ -59,7 +55,7 @@ public class Directory extends PropertyAdapter implements Comparable{
     private java.io.File fio;
     /** pre-calculated absolute path for perf*/
     private String sAbs = null;
-    
+
     /**
      * Direcotry constructor
      * 
@@ -69,40 +65,23 @@ public class Directory extends PropertyAdapter implements Comparable{
      * @param author
      */
     public Directory(String sId, String sName, Directory dParent, Device device) {
-        this.sId = sId;
-        this.sName = sName;
-        this.dParent = dParent;
-        this.device = device;
+        super(sId,sName);
+        setParent(dParent);
+        setDevice(device);
         this.fio = new File(device.getUrl() + getRelativePath());
     }
-    
+
+/* (non-Javadoc)
+     * @see org.jajuk.base.IPropertyable#getIdentifier()
+     */
+    public String getIdentifier() {
+        return XML_DIRECTORY;
+    }
     /**
      * toString method
      */
     public String toString() {
         return "Directory[ID=" + sId + " Name=" + getRelativePath() + " Parent ID=" + (dParent == null ? "null" : dParent.getId()) + " Device=" + device.getName() + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$ //$NON-NLS-6$
-    }
-    
-    /**
-     * Return an XML representation of this item
-     * 
-     * @return
-     */
-    public String toXml() {
-        StringBuffer sb = new StringBuffer("\t\t<directory id='" + sId); //$NON-NLS-1$
-        sb.append("' name='"); //$NON-NLS-1$
-        sb.append(Util.formatXML(sName));
-        sb.append("' parent='"); //$NON-NLS-1$
-        String sParent = "-1"; //$NON-NLS-1$
-        if (dParent!=null){
-            sParent = dParent.getId();
-        }
-        sb.append(sParent);
-        sb.append("' device='"); //$NON-NLS-1$
-        sb.append(device.getId()).append("' "); //$NON-NLS-1$
-        sb.append(getPropertiesXml());
-        sb.append("/>\n"); //$NON-NLS-1$
-        return sb.toString();
     }
     
     /**
@@ -256,7 +235,7 @@ public class Directory extends PropertyAdapter implements Comparable{
                 if (files[i].isDirectory()){ //if it is a directory, continue
                     continue;
                 }
-                boolean bIsMusic = Boolean.valueOf(TypeManager.getTypeByExtension(Util.getExtension(files[i])).getProperty(TYPE_PROPERTY_IS_MUSIC)).booleanValue();
+                boolean bIsMusic = Boolean.valueOf(TypeManager.getTypeByExtension(Util.getExtension(files[i])).getProperty(XML_TYPE_IS_MUSIC)).booleanValue();
                 if (bIsMusic) {
                     //check the file is not already known in old database
                     org.jajuk.base.File fileRef = null;
@@ -379,6 +358,22 @@ public class Directory extends PropertyAdapter implements Comparable{
             return false;
         }
         return true;
+    }
+
+    /**
+     * @param device The device to set.
+     */
+    protected void setDevice(Device device) {
+        this.device = device;
+        setProperty(XML_DEVICE,device.getId());
+    }
+
+    /**
+     * @param parent The dParent to set.
+     */
+    protected void setParent(Directory parent) {
+        this.dParent = parent;
+        setProperty(XML_DIRECTORY_PARENT,(parent==null?"-1":parent.getId()));
     }
     
 }

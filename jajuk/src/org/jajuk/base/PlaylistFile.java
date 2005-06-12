@@ -49,10 +49,6 @@ import org.jajuk.util.log.Log;
  */
 public class PlaylistFile extends PropertyAdapter implements Comparable {
 	
-	/**ID. Ex:1,2,3...*/
-	private String  sId;
-	/**Playlist name */
-	private String sName;
 	/**Playlist hashcode*/
 	private String  sHashcode;
 	/**Playlist parent directory*/
@@ -67,7 +63,7 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 	private int iType;
 	/** pre-calculated absolute path for perf*/
 	private String sAbs = null;
-
+   
 	
 	/**
 	 * Playlist file constructor
@@ -78,16 +74,22 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 	 * @param sParentDirectory
 	 */
 	public PlaylistFile(int iType,String sId, String sName,String sHashcode,Directory dParentDirectory) {
-		this.iType = iType;
-		this.sId = sId;
-		this.sName = sName;
-		this.sHashcode = sHashcode;
-		this.dParentDirectory = dParentDirectory;
-		if ( getDirectory() != null){  //test "new"playlist case
+        super(sId,sName);
+        setHashcode(sHashcode);
+        setParentDirectory(dParentDirectory);
+        this.iType = iType;
+        if ( getDirectory() != null){  //test "new"playlist case
 			this.fio = new java.io.File(getDirectory().getDevice().getUrl()+getDirectory().getRelativePath()+"/"+getName()); //$NON-NLS-1$
 		}
 	}
 	
+/* (non-Javadoc)
+     * @see org.jajuk.base.IPropertyable#getIdentifier()
+     */
+    public String getIdentifier() {
+        return XML_PLAYLIST_FILE;
+    }
+    
 	/**
 	 * Playlist file constructor
 	 * @param sId
@@ -106,24 +108,6 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 	public String toString() {
 		return "Playlist file[ID="+sId+" Name=" + getName() + " Hashcode="+sHashcode+" Dir="+dParentDirectory.getId()+"]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$
 	}
-	
-	/**
-	 * Return an XML representation of this item  
-	 * @return
-	 */
-	public String toXml() {
-		StringBuffer sb = new StringBuffer("\t\t<playlist_file id='" + sId); //$NON-NLS-1$
-		sb.append("' name='"); //$NON-NLS-1$
-		sb.append(Util.formatXML(sName));
-		sb.append("' hashcode='"); //$NON-NLS-1$
-		sb.append(sHashcode);
-		sb.append("' directory='"); //$NON-NLS-1$
-		sb.append(dParentDirectory.getId()).append("' "); //$NON-NLS-1$
-		sb.append(getPropertiesXml());
-		sb.append("/>\n"); //$NON-NLS-1$
-		return sb.toString();
-	}
-	
 	
 	/**
 	 * Equal method to check two playlist files are identical
@@ -560,7 +544,8 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 	 * @param type The iType to set.
 	 */
 	public void setType(int type) {
-		iType = type;
+		this.iType = type;
+        setProperty(XML_TYPE,Integer.toString(type));
 	}
 	
 	/**
@@ -638,5 +623,21 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 			}
 		}
 	}
+
+    /**
+     * @param parentDirectory The dParentDirectory to set.
+     */
+    protected void setParentDirectory(Directory parentDirectory) {
+        this.dParentDirectory = parentDirectory;
+        setProperty(XML_DIRECTORY_PARENT,parentDirectory==null?"-1":parentDirectory.getId());
+    }
+
+      /**
+     * @param hashcode The sHashcode to set.
+     */
+    protected void setHashcode(String hashcode) {
+        this.sHashcode = hashcode;
+        setProperty(XML_HASHCODE,hashcode);
+    }
 
 }

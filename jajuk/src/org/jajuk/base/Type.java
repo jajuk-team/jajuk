@@ -21,7 +21,6 @@ package org.jajuk.base;
 
 import org.jajuk.players.IPlayerImpl;
 import org.jajuk.tag.ITagImpl;
-import org.jajuk.util.Util;
 
 /**
  * Music type 
@@ -31,17 +30,13 @@ import org.jajuk.util.Util;
  */
 public class Type extends PropertyAdapter{
 	
-	/**Type id*/
-	private String sId;
-	/**Type name ( description)*/
-	private String sName;
 	/**Type extension ex:mp3,ogg */
 	private String sExtension;
 	/**Type player implementation */
 	private IPlayerImpl playerImpl;
 	/**Type tag implementation, null if it is not a music type */
 	private ITagImpl tagImpl;
-		
+   	
 	/**
 	 * Constructor
 	 * @param sId type id if given
@@ -52,16 +47,19 @@ public class Type extends PropertyAdapter{
 	 * @throws Exception
 	 */
 	public Type(String sId, String sName,String sExtension, String sPlayerImpl,String sTagImpl) throws Exception{
-		this.sExtension = sExtension;
-		this.sName = sName;
-		this.playerImpl = (IPlayerImpl)Class.forName(sPlayerImpl).newInstance();
-		if (sTagImpl != null){  //can be null for playlists
-			this.tagImpl = (ITagImpl)Class.forName(sTagImpl).newInstance();
-		}
-		this.sId = sId;
-	}
+        super(sId,sName);
+        setExtension(sExtension);
+        setPlayerImpl(sPlayerImpl);
+        setTagImpl(sTagImpl);
+    }
 
-
+/* (non-Javadoc)
+     * @see org.jajuk.base.IPropertyable#getIdentifier()
+     */
+    public String getIdentifier() {
+        return XML_TYPE;
+    }
+    
 	/**
 	 * @return
 	 */
@@ -92,22 +90,6 @@ public class Type extends PropertyAdapter{
 	}
 	
 	/**
-	 * Return an XML representation of this item  
-	 * @return
-	 */
-	public String toXml(){
-		StringBuffer sb = new StringBuffer("\t\t<type id='" +sId); //$NON-NLS-1$
-		sb.append("' name='"); //$NON-NLS-1$
-		sb.append(Util.formatXML(sName)).append("' extension='"); //$NON-NLS-1$
-		sb.append(sExtension).append("' player_impl='"); //$NON-NLS-1$
-		sb.append(playerImpl.getClass().getName()).append("' tag_impl='"); //$NON-NLS-1$
-		sb.append((tagImpl==null)?"":tagImpl.getClass().getName()).append("' "); //$NON-NLS-1$ //$NON-NLS-2$
-		sb.append(getPropertiesXml());
-		sb.append("/>\n");//$NON-NLS-1$
-		return sb.toString();
-	}
-
-	/**
 	 * @return
 	 */
 	public String getId() {
@@ -137,5 +119,47 @@ public class Type extends PropertyAdapter{
 	public ITagImpl getTagImpl() {
 		return this.tagImpl;
 	}
+
+    /**
+     * @param playerImpl The playerImpl to set.
+     */
+    public void setPlayerImpl(String sPlayerImpl) throws Exception{
+        this.playerImpl = (IPlayerImpl)Class.forName(sPlayerImpl).newInstance();
+        setProperty(XML_TYPE_PLAYER_IMPL,sPlayerImpl);
+    }
+
+    /**
+     * @param extension The sExtension to set.
+     */
+    public void setExtension(String extension) {
+        sExtension = extension;
+        setProperty(XML_TYPE_EXTENSION,extension);
+    }
+
+    /**
+     * @param id The sId to set.
+     */
+    public void setId(String id) {
+        sId = id;
+        setProperty(XML_ID,id);
+    }
+
+    /**
+     * @param name The sName to set.
+     */
+    public void setName(String name) {
+        sName = name;
+        setProperty(XML_NAME,name);
+    }
+
+    /**
+     * @param tagImpl The tagImpl to set.
+     */
+    public void setTagImpl(String sTagImpl) throws Exception{
+        if (sTagImpl != null){  //can be null for playlists
+            this.tagImpl = (ITagImpl)Class.forName(sTagImpl).newInstance();
+        }
+        setProperty(XML_TYPE_TAG_IMPL,sTagImpl);
+    }
 
 }

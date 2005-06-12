@@ -32,6 +32,7 @@ import java.util.TreeSet;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.SequentialMap;
 import org.jajuk.util.log.Log;
 
 /**
@@ -73,7 +74,7 @@ public class FileManager implements ITechnicalStrings{
 			if ( directory.getDevice().isRefreshing() && Log.isDebugEnabled()){
 				Log.debug("registrated new file: "+ file); //$NON-NLS-1$
 			}
-			Properties properties = (Properties)hmIdProperties.get(sId); 
+            SequentialMap properties = (SequentialMap)hmIdProperties.get(sId); 
 			if ( properties  == null){  //new file
 				hmIdProperties.put(sId,file.getProperties());
 			}

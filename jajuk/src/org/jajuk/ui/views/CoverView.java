@@ -133,6 +133,9 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
     /**Connected one flag : true if jajuk managed once to connect to the web to bring covers*/
     private static boolean bOnceConnected = false;
     
+    /**Final image to dplay*/
+    private ImageIcon ii;
+    
     /**
      * Constructor
      * @param sID ID used to store independently parameters of views
@@ -422,7 +425,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
      * @see org.jajuk.ui.IView#getDesc()
      */
     public String getDesc() {
-        return "CoverView.3";	 //$NON-NLS-1$
+        return "CoverView.3";    //$NON-NLS-1$
     }
     
     /* (non-Javadoc)
@@ -541,7 +544,8 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                 sType = " (@)"; //Web cover //$NON-NLS-1$
             }
             String size = CoverRepository.getInstance().getSize(cover.getURL());
-            
+            jl = new JLabel(ii);
+            jl.setMinimumSize(new Dimension(0,0)); //required for info node resizing
             jl.setToolTipText("<html>"+url.toString()+"<br>"+size+"K"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             setSizeText(size+"K"+sType); //$NON-NLS-1$
             setFoundText();
@@ -579,7 +583,12 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
         searching(false);
     }
     
-    
+    /**
+     * Long action to compute image to display (dowload, resizing...)
+     * @param index
+     * @return null (just used by the SwingWorker)
+     * @throws JajukException
+     */
     private Object prepareDisplay(final int index) throws JajukException{
         int iLocalEventID = CoverView.this.iEventID;
         Log.debug("display index: "+index); //$NON-NLS-1$
@@ -652,9 +661,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
             }
             
         } 
-        ImageIcon ii = new ImageIcon(img);
-        jl = new JLabel(ii);
-        jl.setMinimumSize(new Dimension(0,0)); //required for info node resizing
+        ii = new ImageIcon(img);
         return null;
     }
     

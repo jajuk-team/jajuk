@@ -117,7 +117,7 @@ public class TypeManager implements ITechnicalStrings{
 		Iterator it = hmSupportedTypes.values().iterator();
 		while (it.hasNext()){
 			Type type = (Type)it.next();
-			if (type.getProperty(TYPE_PROPERTY_TECH_DESC).equalsIgnoreCase(sTechDesc)){
+			if (type.getProperty(XML_TYPE_TECH_DESC).equalsIgnoreCase(sTechDesc)){
 				return type;
 			}
 		}
@@ -133,7 +133,7 @@ public class TypeManager implements ITechnicalStrings{
 		Iterator it = hmSupportedTypes.values().iterator();
 		while (it.hasNext()){
 			Type type = (Type)it.next();
-			if (type.getProperty(TYPE_PROPERTY_IS_MUSIC).equals(TRUE)){
+			if (TRUE.equals(type.getProperty(XML_TYPE_IS_MUSIC))){
 				alResu.add(type);
 			}
 		}

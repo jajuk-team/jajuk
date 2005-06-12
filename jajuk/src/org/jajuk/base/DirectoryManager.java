@@ -27,6 +27,7 @@ import java.util.Iterator;
 import java.util.Properties;
 
 import org.jajuk.util.MD5Processor;
+import org.jajuk.util.SequentialMap;
 
 /**
  * Convenient class to manage directories
@@ -85,7 +86,7 @@ public class DirectoryManager {
 		}
 		alDirectories.add(directory);
 		alIds.add(sId);
-		Properties properties = (Properties)hmIdProperties.get(sId); 
+        SequentialMap properties = (SequentialMap)hmIdProperties.get(sId); 
 		if ( properties  == null){  //new file
 			hmIdProperties.put(sId,directory.getProperties());
 		}

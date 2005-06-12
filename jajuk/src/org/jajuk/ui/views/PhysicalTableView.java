@@ -61,7 +61,6 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
 	JMenuItem jmiFilePlayShuffle;
 	JMenuItem jmiFilePlayRepeat;
 	JMenuItem jmiFilePlayDirectory;
-	JMenuItem jmiFileSetProperty;
 	JMenuItem jmiFileProperties;
 	
 	
@@ -99,9 +98,6 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
 		jmiFilePlayRepeat.addActionListener(this);
 		jmiFilePlayDirectory = new JMenuItem(Messages.getString("PhysicalTableView.15")); //$NON-NLS-1$
 		jmiFilePlayDirectory.addActionListener(this);
-		jmiFileSetProperty = new JMenuItem(Messages.getString("PhysicalTableView.5")); //$NON-NLS-1$
-		jmiFileSetProperty.setEnabled(false);
-		jmiFileSetProperty.addActionListener(this);
 		jmiFileProperties = new JMenuItem(Messages.getString("PhysicalTableView.6")); //$NON-NLS-1$
 		jmiFileProperties.setEnabled(false);
 		jmiFileProperties.addActionListener(this);
@@ -110,7 +106,6 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
 		jmenuFile.add(jmiFilePlayShuffle);
 		jmenuFile.add(jmiFilePlayRepeat);
 		jmenuFile.add(jmiFilePlayDirectory);
-		jmenuFile.add(jmiFileSetProperty);
 		jmenuFile.add(jmiFileProperties);
 	}
 	

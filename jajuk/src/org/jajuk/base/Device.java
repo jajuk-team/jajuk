@@ -46,10 +46,6 @@ import org.jajuk.util.log.Log;
  */
 public class Device extends PropertyAdapter implements ITechnicalStrings, Comparable{
 	
-	/** ID. Ex:1,2,3...*/
-	private String sId;
-	/**Device name*/
-	private String sName;
 	/**Device type id*/
 	int iDeviceType;
 	/**Device url**/
@@ -80,8 +76,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	int iNbDeletedFiles = 0;
 	/**Volume of created files during synchro */
 	long lVolume = 0;
-	
-	
+  
 	/**
 	 * Device constructor
 	 * @param sId
@@ -90,15 +85,19 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	 * @param sUrl
 	 */
 	public Device(String sId, String sName, int iDeviceType, String sUrl, String sMountPoint) {
-		this.sId = sId;
-		this.sName = sName;
-		this.iDeviceType = iDeviceType;
-		this.sUrl = sUrl;
-		this.sMountPoint = sMountPoint;
-		this.fio = new File(getUrl());
+        super(sId,sName);
+		setDeviceType(iDeviceType);
+		setUrl(sUrl);
+        setMountPoint(sMountPoint);
+        this.fio = new File(getUrl());
 	}
 	
-	
+/* (non-Javadoc)
+     * @see org.jajuk.base.IPropertyable#getIdentifier()
+     */
+    public String getIdentifier() {
+        return XML_DEVICE;
+    }
 	
 	/**
 	 * toString method
@@ -106,27 +105,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	public String toString() {
 		return "Device[ID=" + sId + " Name=" + sName + " Type=" + DeviceManager.getDeviceType(iDeviceType) + " URL=" + sUrl+ " Mount point="+sMountPoint + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$ //$NON-NLS-6$
 	}
-	
-	
-	/**
-	 * Return an XML representation of this item  
-	 * @return
-	 */
-	public String toXml() {
-		StringBuffer sb = new StringBuffer("\t\t<device id='" + sId); //$NON-NLS-1$
-		sb.append("' name='"); //$NON-NLS-1$
-		sb.append(Util.formatXML(sName));
-		sb.append("' type='"); //$NON-NLS-1$
-		sb.append(getDeviceType());
-		sb.append("' url='"); //$NON-NLS-1$
-		sb.append(Util.formatXML(sUrl));
-		sb.append("' mount_point='"); //$NON-NLS-1$
-		sb.append(getMountPoint()).append("' "); //$NON-NLS-1$
-		sb.append(getPropertiesXml());
-		sb.append("/>\n"); //$NON-NLS-1$
-		return sb.toString();
-	}
-	
+		
 	/**
 	 * Equal method to check two devices are identical
 	 * @param otherDevice
@@ -736,6 +715,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	 */
 	protected void setMountPoint(String sMountPoint) {
 		this.sMountPoint = sMountPoint;
+        setProperty(XML_DEVICE_MOUNT_POINT,sMountPoint);
 	}
 	
 	
@@ -786,5 +766,21 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	public File getFio() {
 		return fio;
 	}
+
+     /**
+     * @param deviceType The iDeviceType to set.
+     */
+    protected void setDeviceType(int deviceType) {
+        iDeviceType = deviceType;
+        setProperty(XML_TYPE,Integer.toString(deviceType));
+    }
+
+        /**
+     * @param url The sUrl to set.
+     */
+    protected void setUrl(String url) {
+        sUrl = url;
+        setProperty(XML_URL,url);
+    }
 	
 }

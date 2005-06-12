@@ -24,7 +24,6 @@ import java.util.Collections;
 import java.util.Iterator;
 
 import org.jajuk.i18n.Messages;
-import org.jajuk.util.Util;
 
 /**
  *  An Album
@@ -34,23 +33,16 @@ import org.jajuk.util.Util;
  */
 public class Album extends PropertyAdapter implements Comparable{
 
-	/** Album ID. Ex:1,2,3...*/
-	private String sId;
-	/**Album name */
-	private String sName;
 	/**Tracks for this album*/
 	private ArrayList alTracks = new ArrayList(10);
 	
-
 	/**
 	 * Album constructor
 	 * @param id
 	 * @param sName
 	 */
 	public Album(String sId, String sName) {
-		super();
-		this.sId = sId;
-		this.sName = sName;
+		super(sId,sName);
 	}
 
 	/**
@@ -79,20 +71,7 @@ public class Album extends PropertyAdapter implements Comparable{
 		return "Album[ID="+getId()+" Name=" + getName() +"]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$//$NON-NLS-4$
 	}
 
-	/**
-	 * Return an XML representation of this item  
-	 * @return
-	 */
-	public String toXml() {
-		StringBuffer sb = new StringBuffer("\t\t<album id='" + sId);//$NON-NLS-1$
-		sb.append("' name='");//$NON-NLS-1$
-		sb.append(Util.formatXML(sName)).append("' ");//$NON-NLS-1$
-		sb.append(getPropertiesXml());
-		sb.append("/>\n");//$NON-NLS-1$
-		return sb.toString();
-	}
-
-	/**
+    /**
 	* @return
 	 */
 	public String getId() {
@@ -157,4 +136,12 @@ public class Album extends PropertyAdapter implements Comparable{
 	    return this.getName().equals(UNKNOWN_ALBUM); 
    }
 	
+	/* (non-Javadoc)
+     * @see org.jajuk.base.IPropertyable#getIdentifier()
+     */
+    public String getIdentifier() {
+        return XML_ALBUM;
+    }
+    
+ 
 }

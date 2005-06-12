@@ -24,7 +24,6 @@ import java.util.Collections;
 import java.util.Iterator;
 
 import org.jajuk.i18n.Messages;
-import org.jajuk.util.Util;
 
 /**
  *  An author
@@ -34,25 +33,25 @@ import org.jajuk.util.Util;
  */
 public class Author extends PropertyAdapter implements Comparable{
 
-	/** author ID. Ex:1,2,3...*/
-	private String sId;
-	/**Author name */
-	private String sName;
 	/**Albums for this author*/
 	private ArrayList alAlbums = new ArrayList(10);
-	
+    
 	/**
 	 * Author constructor
 	 * @param id
 	 * @param sName
 	 */
 	public Author(String sId, String sName) {
-		super();
-		this.sId = sId;
-		this.sName = sName;
+        super(sId,sName);
 	}
 	
-	/**
+/* (non-Javadoc)
+     * @see org.jajuk.base.IPropertyable#getIdentifier()
+     */
+    public String getIdentifier() {
+        return XML_AUTHOR;
+    }
+    /**
 	 * @return
 	 */
 	public String getName() {
@@ -77,19 +76,6 @@ public class Author extends PropertyAdapter implements Comparable{
 	 */
 	public String toString() {
 		return "Author[ID="+sId+" Name=" + sName + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-	}
-	
-	/**
-	 * Return an XML representation of this item  
-	 * @return
-	 */
-	public String toXml() {
-		StringBuffer sb = new StringBuffer("\t\t<author id='" + sId);//$NON-NLS-1$
-		sb.append("' name='");//$NON-NLS-1$
-		sb.append(Util.formatXML(sName)).append("' ");//$NON-NLS-1$
-		sb.append(getPropertiesXml());
-		sb.append("/>\n");//$NON-NLS-1$
-		return sb.toString();
 	}
 	
 	/**
@@ -165,4 +151,6 @@ public class Author extends PropertyAdapter implements Comparable{
 	public boolean isUnknown(){
 	    return this.getName().equals(UNKNOWN_AUTHOR); 
    }
+    
+
 }

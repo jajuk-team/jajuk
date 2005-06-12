@@ -273,25 +273,25 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 				Device device = null;
 				device = DeviceManager.registerDevice(attributes.getValue(0), attributes.getValue(1), Integer.parseInt(attributes.getValue(2)), attributes.getValue(3), attributes.getValue(4));
 				if (device != null){
-				    device.populateProperties(attributes, 5);
+				    device.populateProperties(attributes,5);
 				}
 				break;
 			case HASHCODE_STYLE :
 				Style style = StyleManager.registerStyle(attributes.getValue(0), attributes.getValue(1));
 				if (style != null){
-					style.populateProperties(attributes, 2);
+					style.populateProperties(attributes,2);
 				}
 				break; 
 			case HASHCODE_AUTHOR: 
 				Author author = AuthorManager.registerAuthor(attributes.getValue(0), attributes.getValue(1));
 				if (author != null){
-					author.populateProperties(attributes, 2);
+					author.populateProperties(attributes,2);
 				}
 				break;
 			case HASHCODE_ALBUM:
 				Album album = AlbumManager.registerAlbum(attributes.getValue(0), attributes.getValue(1));
 				if (album != null){
-					album.populateProperties(attributes, 2);	
+					album.populateProperties(attributes,2);	
 				}
 				break;
 			case HASHCODE_TRACK :
@@ -311,7 +311,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 				track.setRate(Long.parseLong(attributes.getValue(8)));
 				track.setHits(Integer.parseInt(attributes.getValue(10)));
 				track.setAdditionDate(attributes.getValue(11));
-				track.populateProperties(attributes, 12);
+				track.populateProperties(attributes,12);
 				break;
 			case HASHCODE_DIRECTORY:
 				Directory dParent = null;
@@ -327,7 +327,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 					break;
 				}
 				Directory directory = DirectoryManager.registerDirectory(attributes.getValue(0), attributes.getValue(1), dParent, device);
-				directory.populateProperties(attributes, 4);
+				directory.populateProperties(attributes,4);
 				break;
 			case HASHCODE_FILE:
 				dParent = DirectoryManager.getDirectory(attributes.getValue(2));
@@ -337,7 +337,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 				}
 				long lSize = Long.parseLong(attributes.getValue(4));
 				org.jajuk.base.File file = FileManager.registerFile(attributes.getValue(0), attributes.getValue(1), dParent, track, lSize, attributes.getValue(5));
-				file.populateProperties(attributes, 6);
+				file.populateProperties(attributes,6);
 				track.addFile(file);
 				file.getDirectory().addFile(file);
 				break;
@@ -348,7 +348,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 				}
 				PlaylistFile plf = PlaylistFileManager.registerPlaylistFile(attributes.getValue(0), attributes.getValue(1), attributes.getValue(2), dParent);
 				if (plf != null){
-				    plf.populateProperties(attributes, 4);
+				    plf.populateProperties(attributes,4);
 				}
 				break;
 			case HASHCODE_PLAYLIST:
@@ -358,12 +358,12 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 					do{
 						PlaylistFile plFile = PlaylistFileManager.getPlaylistFile((String) st.nextElement());
 						if (plFile != null){
-							PlaylistManager.registerPlaylist(plFile);
-						}
+							playlist = PlaylistManager.registerPlaylist(plFile);
+                       }
 					}
 					while (st.hasMoreTokens());
 					if ( playlist != null ){
-					    playlist.populateProperties(attributes, 2);
+					    playlist.populateProperties(attributes,2);
 					}
 				}
 				break;
@@ -378,7 +378,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 				}
 				type = TypeManager.registerType(sId, sTypeName, sExtension, sPlayer, sTag);
 				if (type != null){
-				    type.populateProperties(attributes, 5);
+				    type.populateProperties(attributes,5);
 				}
 				break;	
 			}

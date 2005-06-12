@@ -67,6 +67,7 @@ public class FirstTimeWizard extends JDialog implements ITechnicalStrings,Action
     JPanel jpButtons;
     JButton jbOk;
     JButton jbCancel;
+    JPanel jpMain;
     
     /**Selected directory*/
     private File fDir;
@@ -129,9 +130,10 @@ public class FirstTimeWizard extends JDialog implements ITechnicalStrings,Action
         jpRightPanel.add(jpButtons,"0,11"); //$NON-NLS-1$
         double size[][] = { { 0.4,30,0.6}, 
                 {0.99 }};
-        setLayout(new TableLayout(size));
-        add(jlLeftIcon,"0,0"); //$NON-NLS-1$
-        add(jpRightPanel,"2,0"); //$NON-NLS-1$
+        jpMain = (JPanel)getContentPane();
+        jpMain.setLayout(new TableLayout(size));
+        jpMain.add(jlLeftIcon,"0,0"); //$NON-NLS-1$
+        jpMain.add(jpRightPanel,"2,0"); //$NON-NLS-1$
     }
 
 
@@ -156,6 +158,7 @@ public class FirstTimeWizard extends JDialog implements ITechnicalStrings,Action
                 }
                 jtfFileSelected.setText(fDir.getAbsolutePath());
                 jbOk.setEnabled(true);
+                jbOk.requestFocus();
             }
         }
         else if (e.getSource() == jbOk){

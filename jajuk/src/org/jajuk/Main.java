@@ -320,38 +320,38 @@ public class Main implements ITechnicalStrings {
 		try { 
 			//mp3
 			Type type = TypeManager.registerType(Messages.getString("Type.mp3"), EXT_MP3, PLAYER_IMPL_JAVALAYER, TAG_IMPL_JLGUI_MP3); //$NON-NLS-1$ //$NON-NLS-2$
-			type.setProperty(TYPE_PROPERTY_IS_MUSIC,"true"); //$NON-NLS-1$
-			type.setProperty(TYPE_PROPERTY_SEEK_SUPPORTED,"true"); //$NON-NLS-1$
-			type.setProperty(TYPE_PROPERTY_TECH_DESC,TYPE_PROPERTY_TECH_DESC_MP3);
-            type.setProperty(TYPE_PROPERTY_ICON,ICON_TYPE_MP3);
+			type.setProperty(XML_TYPE_IS_MUSIC,TRUE); //$NON-NLS-1$
+			type.setProperty(XML_TYPE_SEEK_SUPPORTED,TRUE); //$NON-NLS-1$
+			type.setProperty(XML_TYPE_TECH_DESC,TYPE_PROPERTY_TECH_DESC_MP3);
+            type.setProperty(XML_TYPE_ICON,ICON_TYPE_MP3);
             //playlists
 			type = TypeManager.registerType(Messages.getString("Type.playlist"), EXT_PLAYLIST, PLAYER_IMPL_JAVALAYER, null); //$NON-NLS-1$ //$NON-NLS-2$
-			type.setProperty(TYPE_PROPERTY_IS_MUSIC,"false"); //$NON-NLS-1$
-			type.setProperty(TYPE_PROPERTY_SEEK_SUPPORTED,"false"); //$NON-NLS-1$
+			type.setProperty(XML_TYPE_IS_MUSIC,FALSE); //$NON-NLS-1$
+			type.setProperty(XML_TYPE_SEEK_SUPPORTED,FALSE); //$NON-NLS-1$
             //Ogg vorbis
 			type = TypeManager.registerType(Messages.getString("Type.ogg"), EXT_OGG, PLAYER_IMPL_JAVALAYER, TAG_IMPL_JLGUI_OGG); //$NON-NLS-1$ //$NON-NLS-2$
-			type.setProperty(TYPE_PROPERTY_IS_MUSIC,"true"); //$NON-NLS-1$
-			type.setProperty(TYPE_PROPERTY_SEEK_SUPPORTED,"false"); //$NON-NLS-1$
-			type.setProperty(TYPE_PROPERTY_TECH_DESC,TYPE_PROPERTY_TECH_DESC_OGG);
-            type.setProperty(TYPE_PROPERTY_ICON,ICON_TYPE_OGG);
+			type.setProperty(XML_TYPE_IS_MUSIC,TRUE); //$NON-NLS-1$
+			type.setProperty(XML_TYPE_SEEK_SUPPORTED,FALSE); //$NON-NLS-1$
+			type.setProperty(XML_TYPE_TECH_DESC,TYPE_PROPERTY_TECH_DESC_OGG);
+            type.setProperty(XML_TYPE_ICON,ICON_TYPE_OGG);
             //Wave
 			type = TypeManager.registerType(Messages.getString("Type.wav"), EXT_WAV, PLAYER_IMPL_JAVALAYER, TAG_IMPL_NO_TAGS); //$NON-NLS-1$ //$NON-NLS-2$
-			type.setProperty(TYPE_PROPERTY_IS_MUSIC,"true"); //$NON-NLS-1$
-			type.setProperty(TYPE_PROPERTY_SEEK_SUPPORTED,"true"); //$NON-NLS-1$
-			type.setProperty(TYPE_PROPERTY_TECH_DESC,TYPE_PROPERTY_TECH_DESC_WAVE);
-            type.setProperty(TYPE_PROPERTY_ICON,ICON_TYPE_WAV);
+			type.setProperty(XML_TYPE_IS_MUSIC,TRUE); //$NON-NLS-1$
+			type.setProperty(XML_TYPE_SEEK_SUPPORTED,TRUE); //$NON-NLS-1$
+			type.setProperty(XML_TYPE_TECH_DESC,TYPE_PROPERTY_TECH_DESC_WAVE);
+            type.setProperty(XML_TYPE_ICON,ICON_TYPE_WAV);
             //au
 			type = TypeManager.registerType(Messages.getString("Type.au"), EXT_AU, PLAYER_IMPL_JAVALAYER, TAG_IMPL_NO_TAGS); //$NON-NLS-1$ //$NON-NLS-2$
-			type.setProperty(TYPE_PROPERTY_IS_MUSIC,"true"); //$NON-NLS-1$
-			type.setProperty(TYPE_PROPERTY_SEEK_SUPPORTED,"false"); //$NON-NLS-1$
-			type.setProperty(TYPE_PROPERTY_TECH_DESC,TYPE_PROPERTY_TECH_DESC_AU);
-            type.setProperty(TYPE_PROPERTY_ICON,ICON_TYPE_AU);
+			type.setProperty(XML_TYPE_IS_MUSIC,TRUE); //$NON-NLS-1$
+			type.setProperty(XML_TYPE_SEEK_SUPPORTED,FALSE); //$NON-NLS-1$
+			type.setProperty(XML_TYPE_TECH_DESC,TYPE_PROPERTY_TECH_DESC_AU);
+            type.setProperty(XML_TYPE_ICON,ICON_TYPE_AU);
             //aiff
 			type = TypeManager.registerType(Messages.getString("Type.aiff"), EXT_AIFF, PLAYER_IMPL_JAVALAYER, TAG_IMPL_NO_TAGS); //$NON-NLS-1$ //$NON-NLS-2$
-			type.setProperty(TYPE_PROPERTY_IS_MUSIC,"true"); //$NON-NLS-1$
-			type.setProperty(TYPE_PROPERTY_SEEK_SUPPORTED,"false"); //$NON-NLS-1$
-			type.setProperty(TYPE_PROPERTY_TECH_DESC,TYPE_PROPERTY_TECH_DESC_AIFF);
-            type.setProperty(TYPE_PROPERTY_ICON,ICON_TYPE_AIFF);
+			type.setProperty(XML_TYPE_IS_MUSIC,TRUE); //$NON-NLS-1$
+			type.setProperty(XML_TYPE_SEEK_SUPPORTED,FALSE); //$NON-NLS-1$
+			type.setProperty(XML_TYPE_TECH_DESC,TYPE_PROPERTY_TECH_DESC_AIFF);
+            type.setProperty(XML_TYPE_ICON,ICON_TYPE_AIFF);
      	} catch (Exception e1) {
 			Log.error("026",e1); //$NON-NLS-1$
 		}
@@ -425,6 +425,10 @@ public class Main implements ITechnicalStrings {
      * Load persisted collection file
      */
     private static void loadCollection(){
+        if (ConfigurationManager.getBoolean(CONF_FIRST_CON)){
+            Log.info("First session, collection will be created");//$NON-NLS-1$
+            return;
+        }
         File fCollection = new File(FILE_COLLECTION); 
         File fCollectionExit = new File(FILE_COLLECTION_EXIT); 
         File fCollectionExitProof = new File(FILE_COLLECTION_EXIT_PROOF); 

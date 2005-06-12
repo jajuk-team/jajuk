@@ -22,7 +22,6 @@ package org.jajuk.base;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Util;
 
 
 /**
@@ -32,10 +31,6 @@ import org.jajuk.util.Util;
  * @created    12 oct. 2003
  */
 public class File extends PropertyAdapter implements Comparable,ITechnicalStrings{
-	/** author ID. Ex:1,2,3...*/
-	protected String sId;
-	/**File name */
-	protected String sName;
 	/**Parent directory*/
 	protected Directory directory;
 	/**Associated track */
@@ -50,7 +45,7 @@ public class File extends PropertyAdapter implements Comparable,ITechnicalString
 	private java.io.File fio;
     /**Flag used to sort by date (default=sort alphabeticaly)*/
     static private boolean bSortByDate = false;
-
+  
 	/**
 	 * File instanciation 
 	 * @param sId
@@ -61,15 +56,21 @@ public class File extends PropertyAdapter implements Comparable,ITechnicalString
 	 * @param sQuality
 	 */
 	public File(String sId,String sName,Directory directory,Track track,long lSize,String sQuality) {
-		this.sId = sId;
-		this.sName = sName;
-		this.directory = directory;
-		this.track = track;
-		this.lSize = lSize;
-		this.sQuality = sQuality;
+        super(sId,sName);
+		setDirectory(directory);
+		setTrack(track);
+		setSize(lSize);
+		setQuality(sQuality);
 	}
 		
-	/**
+/* (non-Javadoc)
+     * @see org.jajuk.base.IPropertyable#getIdentifier()
+     */
+    public String getIdentifier() {
+        return XML_FILE;
+    }
+    
+    /**
 	 * toString method
 	 */
 	public String toString() {
@@ -82,23 +83,6 @@ public class File extends PropertyAdapter implements Comparable,ITechnicalString
 	public String toStringSearch() {
 		StringBuffer sb = new StringBuffer(track.getStyle().getName2()).append('/').append(track.getAuthor().getName2()).append('/').
 			append(track.getAlbum().getName2()).append('/').append(track.getName()).append(" [").append(directory.getName()).append('/').append(this.sName).append(']'); //$NON-NLS-1$
-		return sb.toString();
-	}
-	
-	/**
-	 * Return an XML representation of this item  
-	 * @return
-	 */
-	public String toXml() {
-		StringBuffer sb = new StringBuffer("\t\t<file id='" + sId);//$NON-NLS-1$
-		sb.append("' name='");//$NON-NLS-1$
-		sb.append(Util.formatXML(sName)).append("' directory='");//$NON-NLS-1$
-		sb.append(directory.getId()).append("' track='");//$NON-NLS-1$
-		sb.append(track.getId()).append("' size='");//$NON-NLS-1$
-		sb.append(lSize).append("' quality='");//$NON-NLS-1$
-		sb.append(sQuality).append("' ");//$NON-NLS-1$
-		sb.append(getPropertiesXml());
-		sb.append("/>\n");//$NON-NLS-1$
 		return sb.toString();
 	}
 	
@@ -285,6 +269,38 @@ public class File extends PropertyAdapter implements Comparable,ITechnicalString
      */
     public static void setSortByDate(boolean sortByDate) {
         bSortByDate = sortByDate;
+    }
+
+    /**
+     * @param directory The directory to set.
+     */
+    protected void setDirectory(Directory directory) {
+        this.directory = directory;
+        setProperty(XML_DIRECTORY,directory.getId());
+    }
+
+    /**
+     * @param size The lSize to set.
+     */
+    protected void setSize(long size) {
+        this.lSize = size;
+        setProperty(XML_SIZE,Long.toString(size));
+    }
+
+    /**
+     * @param quality The sQuality to set.
+     */
+    protected void setQuality(String quality) {
+        this.sQuality = quality;
+        setProperty(XML_QUALITY,quality);
+    }
+
+    /**
+     * @param track The track to set.
+     */
+    protected void setTrack(Track track) {
+        this.track = track;
+        setProperty(XML_TRACK,track.getId());
     }
 	
 

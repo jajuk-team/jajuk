@@ -19,7 +19,7 @@
  */
 package org.jajuk.base;
 
-import java.util.Properties;
+import org.jajuk.util.SequentialMap;
 
 /**
  *  Interface for all items using properties ( files, tracks...) 
@@ -27,13 +27,18 @@ import java.util.Properties;
  * @created    16 oct. 2003
  */
 public interface IPropertyable {
-
 	/**
 	 * Get all properties for this item
 	 **/
-	public Properties getProperties();
+	public SequentialMap getProperties();
 	
-	public void setProperties(Properties properties) ;
+	public void setProperties(SequentialMap properties) ;
+    
+	/**
+     * @return an identifier used to generate XML  representation of this item
+     */
+    String getIdentifier();
+   
 	
 	/**
 	 * Get a property

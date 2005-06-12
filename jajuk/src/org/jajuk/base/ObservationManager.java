@@ -50,8 +50,7 @@ public class ObservationManager implements ITechnicalStrings{
 	
     static volatile Vector vFIFO = new Vector(10);
     
-    static {
-        Thread t = new Thread(){
+    static private Thread t = new Thread(){
             public void run(){
                 while (true){
                     try {
@@ -67,13 +66,10 @@ public class ObservationManager implements ITechnicalStrings{
                                 notifySync(event);        
                             }
                         }.start();
-                        
                     }
                 }
             }
         };
-        t.start();
-    }
     
     
     /**
@@ -134,8 +130,8 @@ public class ObservationManager implements ITechnicalStrings{
 	                try{
 	                    obs.update(event);
 	                }
-	                catch(Exception e){
-	                    Log.error(e);
+	                catch(Throwable t){
+	                    Log.error(t);
 	                }
 	            }
 	        }
@@ -166,7 +162,10 @@ public class ObservationManager implements ITechnicalStrings{
 			ObservationManager.notifySync(event);
 		}
 		else{ //do not launch it in a regular thread because AWT event displatcher wait thhread end to display
-		    vFIFO.add(event); //add event in FIFO fo futur use
+		    if (!t.isAlive()){
+                t.start();
+            }
+            vFIFO.add(event); //add event in FIFO fo futur use
         }
 	}
 	

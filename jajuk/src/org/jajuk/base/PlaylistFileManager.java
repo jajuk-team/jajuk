@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Properties;
 
+import org.jajuk.util.SequentialMap;
 import org.jajuk.util.log.Log;
 
 /**
@@ -58,7 +59,7 @@ public class PlaylistFileManager {
 			if ( dParentDirectory.getDevice().isRefreshing()){
 				Log.debug("Registered new playlist file: "+ playlistFile); //$NON-NLS-1$
 			}
-			Properties properties = (Properties)hmIdProperties.get(sId); 
+            SequentialMap properties = (SequentialMap)hmIdProperties.get(sId); 
 			if ( properties  == null){  //new file
 				hmIdProperties.put(sId,playlistFile.getProperties());
 			}

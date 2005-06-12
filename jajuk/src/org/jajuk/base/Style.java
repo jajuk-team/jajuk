@@ -24,7 +24,6 @@ import java.util.Collections;
 import java.util.Iterator;
 
 import org.jajuk.i18n.Messages;
-import org.jajuk.util.Util;
 
 /**
  * A music style ( jazz, rock...)
@@ -35,25 +34,27 @@ import org.jajuk.util.Util;
  */
 public class Style extends PropertyAdapter implements Comparable{
 
-	/** Style ID. Ex:1,2,3... */
-	private String sId;
-	/** Style name upper case. ex:ROCK, JAZZ */
-	private String sName;
 	/** Authors for this style */
 	private ArrayList alAuthors = new ArrayList(10);
-
+  
 	/**
-	 * Style constructor
-	 * 
-	 * @param id
-	 * @param sName
-	 */
+     * Style constructor
+     * 
+     * @param id
+     * @param sName
+     */
 	public Style(String sId, String sName) {
-		this.sId = sId;
-		this.sName = sName;
+        super(sId,sName);
 	}
 
-	/**
+/* (non-Javadoc)
+     * @see org.jajuk.base.IPropertyable#getIdentifier()
+     */
+    public String getIdentifier() {
+        return XML_STYLE;
+    }
+    
+    /**
 	 * @return
 	 */
 	public String getName() {
@@ -78,20 +79,7 @@ public class Style extends PropertyAdapter implements Comparable{
 	public String toString() {
 		return "Style[ID=" + sId + " Name=" + getName() + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
-
-	/**
-	 * Return an XML representation of this item
-	 * 
-	 * @return
-	 */
-	public String toXml() {
-		StringBuffer sb = new StringBuffer("\t\t<style id='" + sId); //$NON-NLS-1$
-		sb.append("' name='"); //$NON-NLS-1$
-		sb.append(Util.formatXML(sName)).append("' ") //$NON-NLS-1$
-			.append(getPropertiesXml()).append("/>\n");//$NON-NLS-1$;
-		return sb.toString();
-	}
-	
+		
 	/**
 	 * @return
 	 */
@@ -180,5 +168,5 @@ public class Style extends PropertyAdapter implements Comparable{
 	public boolean isUnknown(){
 	    return this.getName().equals(UNKNOWN_STYLE); 
    }
-	
+    
 }

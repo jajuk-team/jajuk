@@ -24,12 +24,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import org.jajuk.util.ITechnicalStrings;
+
 /**
  *  Convenient class to manage playlists
  * @Author    Bertrand Florat
  * @created    17 oct. 2003
  */
-public class PlaylistManager {
+public class PlaylistManager implements ITechnicalStrings{
 	/**Playlists collection**/
 	static HashMap hmPlaylists = new HashMap(100);
 
@@ -60,8 +62,9 @@ public class PlaylistManager {
 		}
 		else { //new playlist
 			Playlist playlist = new Playlist(sId,plFile);
-			hmPlaylists.put(sId,playlist);
-			return playlist;
+            playlist.removeProperty(XML_NAME);//no name attribute for playlists
+            hmPlaylists.put(sId,playlist);
+            return playlist;
 		}
 	}
 

@@ -230,11 +230,7 @@ public interface ITechnicalStrings {
 	public static final String DEVICE_TYPE_USBKEY = "Device_type.usbkey";
 	
 	//Types properties
-	public static final String TYPE_PROPERTY_IS_MUSIC = "music";  
-	public static final String TYPE_PROPERTY_SEEK_SUPPORTED = "seek";  
-	public static final String TYPE_PROPERTY_TECH_DESC = "tech_desc"; //type description as given in the steam 
-    public static final String TYPE_PROPERTY_ICON = "icon"; //icon used in the physical tree 
-    public static final String TYPE_PROPERTY_TECH_DESC_MP3 = "mp3"; 
+	public static final String TYPE_PROPERTY_TECH_DESC_MP3 = "mp3"; 
 	public static final String TYPE_PROPERTY_TECH_DESC_OGG = "ogg"; 
 	public static final String TYPE_PROPERTY_TECH_DESC_AIFF = "aiff"; 
 	public static final String TYPE_PROPERTY_TECH_DESC_WAVE = "wave"; 
@@ -252,7 +248,6 @@ public interface ITechnicalStrings {
 	
 	//Directories properties
 	public static final String DIRECTORY_OPTION_SYNCHRO_MODE = "sync";  //can be 'y' or 'n'
-	public static final String OPTION_EXPANDED = "exp";  //can be 'y' or 'n'
 	public static final String OPTION_PLAYLIST = "plf";  //associated playlist file
 		
 	//perspectives
@@ -484,11 +479,6 @@ public interface ITechnicalStrings {
 	public static final String XML_PLAYLIST_FILES = "playlist_files";
 	public static final String XML_PLAYLIST_FILE = "playlist_file";
 	public static final String XML_PLAYLISTS = "playlists";
-	public static final String[] XML_RESERVED_ATTRIBUTE_NAMES = {"name","id","extension","player_impl","tag_impl",
-			"type","url","album","style","author","length","year","added","rate","files","hits","directory","size",
-			"quality","track","playlist_files","hashcode"}; //contains variables names
-	public static final String[] XML_RESERVED_PROPERTIES_NAMES = {"seek","music","mount_point","synchro_source"
-			,"synchro_mode","auto_refresh","auto_mount","exp","sync","plf_index","plf","default_cover"}; //contains jajuk-reserved properties
 	public static final String XML_ID = "id";
 	public static final String XML_TRACK_NAME = "name";
 	public static final String XML_TRACK_ALBUM = "album";
@@ -501,5 +491,32 @@ public interface ITechnicalStrings {
 	public static final String XML_TRACK_HITS = "hits";
 	public static final String XML_TRACK_ADDED = "added";
 	public static final String XML_PLAYLIST = "playlist";
+	public static final String XML_NAME = "name";
+	public static final String XML_URL = "url";
+	public static final String XML_QUALITY = "quality";
+    public static final String XML_SIZE = "size";
+    public static final String XML_DEVICE_MOUNT_POINT = "mount_point";
+    public static final String XML_DEVICE_AUTO_REFRESH = "auto_refresh";
+    public static final String XML_DEVICE_AUTO_MOUNT = "auto_mount";
+    public static final String XML_EXPANDED = "exp";  //can be 'y' or 'n'
+    public static final String XML_DIRECTORY_PARENT = "parent";
+    public static final String XML_HASHCODE = "hashcode";
+    public static final String XML_TYPE_EXTENSION = "extension";
+	public static final String XML_TYPE_PLAYER_IMPL = "player_impl";
+	public static final String XML_TYPE_TAG_IMPL = "tag_impl";
+	public static final String XML_TYPE_IS_MUSIC = "music";  
+    public static final String XML_TYPE_SEEK_SUPPORTED = "seek";  
+    public static final String XML_TYPE_TECH_DESC = "tech_desc"; //type description as given in the steam 
+    public static final String XML_TYPE_ICON = "icon"; //icon used in the physical tree 
+    
+    public static final String[] XML_RESERVED_ATTRIBUTE_NAMES = {
+        XML_NAME,XML_ID,XML_TYPE_EXTENSION,XML_TYPE_PLAYER_IMPL,XML_TYPE_TAG_IMPL,
+        XML_TYPE_TECH_DESC,XML_TYPE_SEEK_SUPPORTED,XML_TYPE_ICON,XML_TYPE_IS_MUSIC,
+        XML_TYPE,XML_URL,XML_DEVICE_AUTO_MOUNT,XML_DEVICE_AUTO_REFRESH,XML_EXPANDED,XML_DEVICE_MOUNT_POINT,
+        XML_ALBUM,XML_AUTHOR,XML_STYLE,XML_TRACK_LENGTH,XML_TRACK_YEAR,XML_TRACK_RATE,XML_FILES,XML_TRACK_HITS,XML_TRACK_ADDED,
+        XML_DIRECTORY_PARENT,XML_DEVICE,XML_DIRECTORY,XML_TRACK,XML_SIZE,XML_QUALITY,
+        XML_HASHCODE,XML_PLAYLIST_FILES}; //contains variables names
+
+    
 	
 }

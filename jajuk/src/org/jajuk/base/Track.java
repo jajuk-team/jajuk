@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.Util;
 
 /**
  *  A track
@@ -33,10 +32,6 @@ import org.jajuk.util.Util;
  */
 public class Track extends PropertyAdapter implements Comparable{
 
-	/** Track ID. Ex:1,2,3...*/
-	private String sId;
-	/**Track name */
-	private String sName;
 	/**Track album**/
 	private Album album;
 	/**Track style*/
@@ -61,9 +56,7 @@ public class Track extends PropertyAdapter implements Comparable{
 	private String sHashCompare;
 	/** Number of hits for current jajuk session */
 	private int iSessionHits = 0;
-	
-	
-	
+ 	
 	/**
 	 *  Track constructor
 	 * @param sId
@@ -77,15 +70,14 @@ public class Track extends PropertyAdapter implements Comparable{
 	 * @param sAdditionDate
 	 */
 	public Track(String sId, String sName,Album album,Style style,Author author,long length,String sYear,Type type) {
-		this.sId = sId;
-		this.sName = sName;
-		this.album = album;
-		this.style = style;
-		this.author = author;
-		this.length = length;
-		this.sYear = sYear;
-		this.type = type;
-		this.sHashCompare = new StringBuffer(style.getName2()).append(author.getName2()).append(album.getName2()).append(sName).toString();
+        super(sId,sName);
+		setAlbum(album);
+        setStyle(style);
+        setAuthor(author);
+        setLength(length);
+        setYear(sYear);
+        setType(type);
+        this.sHashCompare = new StringBuffer(style.getName2()).append(author.getName2()).append(album.getName2()).append(sName).toString();
 	}
 	
 	/**
@@ -106,41 +98,12 @@ public class Track extends PropertyAdapter implements Comparable{
 		return sOut; 
 	}
 	
-	
-	/**
-	 * Return an XML representation of this item  
-	 * @return
-	 */
-	public String toXml() {
-		StringBuffer sb = new StringBuffer("\t\t<track id='" + sId);//$NON-NLS-1$
-		sb.append("' name='");//$NON-NLS-1$
-		sb.append(Util.formatXML(sName)).append("' album='");//$NON-NLS-1$
-		sb.append(album.getId()).append("' style='");//$NON-NLS-1$
-		sb.append(style.getId()).append("' author='");//$NON-NLS-1$
-		sb.append(author.getId()).append("' length='");//$NON-NLS-1$
-		sb.append(length).append("' type='");//$NON-NLS-1$
-		sb.append(type.getId()).append("' year='");//$NON-NLS-1$
-		sb.append(sYear).append("' rate='");//$NON-NLS-1$
-		sb.append(lRate).append("' files='");//$NON-NLS-1$
-		for (int i=0;i<alFiles.size();i++){
-			sb.append(((File)alFiles.get(i)).getId()).append(",");//$NON-NLS-1$
-		}
-		sb.deleteCharAt(sb.length()-1);
-		sb.append("' hits='");//$NON-NLS-1$
-		sb.append(iHits).append("' added='");//$NON-NLS-1$
-		sb.append(sAdditionDate).append("' ");//$NON-NLS-1$
-		sb.append(getPropertiesXml());
-		sb.append("/>\n");//$NON-NLS-1$
-		return sb.toString();
-	}
-
 	/**
 	* @return
 	 */
 	public String getId() {
 		return sId;
 	}
-
 	
 	/**
 	 *Alphabetical comparator used to display ordered lists of tracks
@@ -312,6 +275,11 @@ public class Track extends PropertyAdapter implements Comparable{
 	 */
 	public void addFile(File file){
 		alFiles.add(file);	
+        String sFiles = file.getId();
+        if (this.containsProperty(XML_FILES)){ //already some files 
+            sFiles += ","+getProperty(XML_FILES);
+        }
+        setProperty(XML_FILES,sFiles);
 	}
 	
 	/**
@@ -327,11 +295,12 @@ public class Track extends PropertyAdapter implements Comparable{
 	 * @param hits The iHits to set.
 	 */
 	public void setHits(int hits) {
-		iHits = hits;
+		this.iHits = hits;
+        setProperty(XML_TRACK_HITS,Integer.toString(hits));
 	}
 	
 		public void incHits() {
-			iHits++;
+			setHits(getHits()+1);
 		}
 
 
@@ -339,7 +308,8 @@ public class Track extends PropertyAdapter implements Comparable{
 	 * @param rate The lRate to set.
 	 */
 	public void setRate(long rate) {
-		lRate = rate;
+		this.lRate = rate;
+        setProperty(XML_TRACK_RATE,Long.toString(rate));
 	}
 
 	
@@ -348,7 +318,8 @@ public class Track extends PropertyAdapter implements Comparable{
 	 * @param additionDate The sAdditionDate to set.
 	 */
 	public void setAdditionDate(String additionDate) {
-		sAdditionDate = additionDate;
+		this.sAdditionDate = additionDate;
+        setProperty(XML_TRACK_ADDED,additionDate);
 	}
 
 	
@@ -385,5 +356,60 @@ public class Track extends PropertyAdapter implements Comparable{
 		}
 		return true;
 	}
+
+    /* (non-Javadoc)
+     * @see org.jajuk.base.IPropertyable#getIdentifier()
+     */
+    public String getIdentifier() {
+        return XML_TRACK;
+    }
+
+    /**
+     * @param album The album to set.
+     */
+    protected void setAlbum(Album album) {
+        this.album = album;
+        setProperty(XML_ALBUM,album.getId());
+    }
+
+    /**
+     * @param author The author to set.
+     */
+    protected void setAuthor(Author author) {
+        this.author = author;
+        setProperty(XML_AUTHOR,author.getId());
+    }
+
+    /**
+     * @param length The length to set.
+     */
+    protected void setLength(long length) {
+        this.length = length;
+        setProperty(XML_TRACK_LENGTH,Long.toString(length));
+    }
+
+    /**
+     * @param style The style to set.
+     */
+    protected void setStyle(Style style) {
+        this.style = style;
+        setProperty(XML_STYLE,style.getId());
+    }
+
+    /**
+     * @param year The sYear to set.
+     */
+    protected void setYear(String year) {
+        sYear = year;
+        setProperty(XML_TRACK_YEAR,year);
+    }
+
+    /**
+     * @param type The type to set.
+     */
+    protected void setType(Type type) {
+        this.type = type;
+        setProperty(XML_TYPE,type.getId());
+    }
 
 }

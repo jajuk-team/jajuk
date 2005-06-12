@@ -30,21 +30,26 @@ import java.util.Iterator;
  */
 public class Playlist extends PropertyAdapter implements Comparable{
 
-	/**ID. Ex:1,2,3...*/
-	private String sId;
 	/**Associated playlist files**/
 	private ArrayList alPlaylistFiles = new ArrayList(2);
-	
+  	
 	/**
 	 * Playlist constructor
 	 * @param sId
 	 * @param file :an associated playlist file
 	 */
 	public Playlist(String sId,PlaylistFile plFiles){
-		this.sId = sId;
-		this.alPlaylistFiles.add(plFiles);
+        super(sId,null);
+		setPlaylist(plFiles);
 	}
 
+/* (non-Javadoc)
+     * @see org.jajuk.base.IPropertyable#getIdentifier()
+     */
+    public String getIdentifier() {
+        return XML_PLAYLIST;
+    }
+    
 	/**
 	 * toString method
 	 */
@@ -56,24 +61,7 @@ public class Playlist extends PropertyAdapter implements Comparable{
 		return sbOut.toString();
 	}
 
-	/**
-	 * Return an XML representation of this item  
-	 * @return
-	 */
-	public String toXml() {
-		StringBuffer sb = new StringBuffer("\t\t<playlist id='" + sId); //$NON-NLS-1$
-		sb.append("' playlist_files='"); //$NON-NLS-1$
-		for (int i=0;i<alPlaylistFiles.size();i++){
-			sb.append(((PlaylistFile)alPlaylistFiles.get(i)).getId()).append(',');
-		}
-		sb.deleteCharAt(sb.length()-1); //remove the last ','
-		sb.append("' "); //$NON-NLS-1$
-		sb.append(getPropertiesXml());
-		sb.append("/>\n"); //$NON-NLS-1$
-		return sb.toString();
-	}
 
-	
 	/**
 	 * Equal method to check two playlists are identical
 	 * @param otherPlaylist
@@ -121,6 +109,11 @@ public class Playlist extends PropertyAdapter implements Comparable{
 	public void addFile(PlaylistFile plFile) {
 		if (!alPlaylistFiles.contains(plFile)) {
 			alPlaylistFiles.add(plFile);
+            String sPlaylistFiles = plFile.getId();
+            if (this.containsProperty(XML_PLAYLIST_FILES)){
+                sPlaylistFiles += ","+getProperty(XML_PLAYLIST_FILES); //add previous playlist files 
+            }
+            setProperty(XML_PLAYLIST_FILES,sPlaylistFiles);
 		}
 	}
 
@@ -176,4 +169,9 @@ public class Playlist extends PropertyAdapter implements Comparable{
 		return  getName().compareToIgnoreCase(otherPlaylist.getName());
 	}
 
+    
+    protected void setPlaylist(PlaylistFile plf){
+        this.alPlaylistFiles.add(plf);
+        setProperty(XML_PLAYLIST_FILES,plf.getId());
+    }
 }
