@@ -14,32 +14,49 @@ NEW LANGUAGE PROCEDURE
 NEW RELEASE PROCEDURE
 o- Check new incoming updates (i18n)
 o- Backup SF data (php file)
-o- Set right version (no mroe rc) in build-dist.xml
+o- Set right version (no more rc) in build-dist.xml
 o- String externalization
 o- Rename /data/projects/jajuk/maven_rep/xdocs/jajuk-hs link
 o- Search for debug System.out
 o- Make required translations (fr)
-o- Generate install jar
+o- Generate packages
 o- Test it under several OS
 o- Update qualification-<release>.html file
 o- Add a release in main_qualification.html file
-o- Save dist file in the releases dir
+- Save dist file in the releases dir
 o- Modify index.xml and change.xml maven files
 o- Change download.html file for file names
-- Upgrade project.xml maven file
-- Generate and upload maven site
-- Refresh workspace
-- Commit all changes
-- Tag as version
-- Close bugs, known issues and RFE at SF
-- Release file on SF, ( preserve my preformated text in notes )
-- Send a message in the developer forum
-- Clean snapshots directory
+o- Upgrade project.xml maven file
+o- Generate website PDF (make_jajuk pdf) 
+o- Generate and upload maven site (make_jajuk)
+o- Refresh workspace
+o- Commit all changes
+o- Tag as version
+o- Create a maintenance branch if required
+o- Close bugs, known issues and RFE at SF
+o- Release file on SF, ( preserve my preformated text in notes )
+o- Send a message in the developer forum
+o- Clean snapshots directory
+
+QUICK FIX RELEASE PROCEDURE
+o- Check new incoming updates (i18n)
+o- Set right version in build-dist.xml
+o- String externalization
+o- Search for debug System.out
+o- Generate packages
+o- Test it under several OS
+- Save dist file in the releases dir
+o- Change download.html file for file names
+o- Generate and upload maven site
+o- Commit all changes
+o- Tag as version
+o- Close bugs, known issues and RFE at SF
+o- Release file on SF, ( preserve my preformated text in notes )
+o- Send a message in the developer forum
 
 ANNOUNCEMENT PROCEDURE
 - Make a news at SF
 - Make a release at freshmeat,framasoft,telecharger.com...
-
 
 NEW API/version PROCEDURE
 - Change MANIFEST (check new versions)
