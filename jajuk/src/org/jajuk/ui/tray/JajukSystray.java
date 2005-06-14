@@ -361,7 +361,7 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.Observer#update(java.lang.String)
 	 */
-	public void update(Event event) {
+	public void update(final Event event) {
 		String subject = event.getSubject();
 		if (EVENT_ZERO.equals(subject)){
 			trayIcon.setToolTip(Messages.getString("JajukWindow.18")); //$NON-NLS-1$
@@ -377,27 +377,27 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
 			}	
 		}
 		else if (EVENT_FILE_LAUNCHED.equals(subject)){
-			File file  = FileManager.getFileById((String)ObservationManager.getDetail(event,DETAIL_CURRENT_FILE_ID));
-			String sOut = ""; //$NON-NLS-1$
-			if (file != null ){
-				String sAuthor = file.getTrack().getAuthor().getName();
-				if (!sAuthor.equals(UNKNOWN_AUTHOR)){
-					sOut += sAuthor+" / "; //$NON-NLS-1$
-				}
-				String sAlbum = file.getTrack().getAlbum().getName();
-				if (!sAlbum.equals(UNKNOWN_ALBUM)){
-					sOut += sAlbum+" / "; //$NON-NLS-1$
-				}
-				sOut += file.getTrack().getName(); 
-			}
-			else{
-				sOut = Messages.getString("JajukWindow.18"); //$NON-NLS-1$
-			}
-			trayIcon.setToolTip(sOut);
-            trayIcon.displayMessage("Lanching:",sOut,TrayIcon.INFO_MESSAGE_TYPE);
+		    File file  = FileManager.getFileById((String)ObservationManager.getDetail(event,DETAIL_CURRENT_FILE_ID));
+		    String sOut = ""; //$NON-NLS-1$
+		    if (file != null ){
+		        String sAuthor = file.getTrack().getAuthor().getName();
+		        if (!sAuthor.equals(UNKNOWN_AUTHOR)){
+		            sOut += sAuthor+" / "; //$NON-NLS-1$
+		        }
+		        String sAlbum = file.getTrack().getAlbum().getName();
+		        if (!sAlbum.equals(UNKNOWN_ALBUM)){
+		            sOut += sAlbum+" / "; //$NON-NLS-1$
+		        }
+		        sOut += file.getTrack().getName(); 
+		    }
+		    else{
+		        sOut = Messages.getString("JajukWindow.18"); //$NON-NLS-1$
+		    }
+		    trayIcon.setToolTip(sOut);
+		    trayIcon.displayMessage("Lanching:",sOut,TrayIcon.INFO_MESSAGE_TYPE);
 		}
 		else if( EVENT_PLAYER_STOP.equals(subject) || EVENT_ZERO.equals(subject)){
-			jmiPause.setEnabled(false);
+		    jmiPause.setEnabled(false);
 			jmiStop.setEnabled(false);
 			jmiNext.setEnabled(false);
 			jmiPrevious.setEnabled(false);

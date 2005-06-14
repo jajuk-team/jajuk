@@ -715,13 +715,12 @@ public class Main implements ITechnicalStrings {
    }
     
     /**Lauch tray, only for linux and windows, not mac for the moment*/
-    private static void launchTray() {
-        SwingUtilities.invokeLater(new Runnable() {
+    private static void launchTray() throws Exception {
+        SwingUtilities.invokeAndWait(new Runnable() {
             public void run() {
                 if (Util.isUnderLinux() || Util.isUnderWindows()){
                     //  Set look and feel, needs local to be set for error messages
                     LNFManager.setLookAndFeel(ConfigurationManager.getProperty(CONF_OPTIONS_LNF));
-                    
                     jsystray = JajukSystray.getInstance();  
                 }
             }
