@@ -19,9 +19,12 @@
  */
 package org.jajuk.base;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 
+import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
 
 /**
@@ -56,6 +59,8 @@ public class Track extends PropertyAdapter implements Comparable{
 	private String sHashCompare;
 	/** Number of hits for current jajuk session */
 	private int iSessionHits = 0;
+    /**Date format*/
+    private static SimpleDateFormat sdf= new SimpleDateFormat(DATE_FILE);
  	
 	/**
 	 *  Track constructor
@@ -75,18 +80,15 @@ public class Track extends PropertyAdapter implements Comparable{
         setStyle(style);
         setAuthor(author);
         setLength(length);
-        setYear(sYear);
         setType(type);
+        setYear(sYear);
+        setRate(0);
+        setProperty(XML_FILES,null); //need this to respect attributes order
+        setHits(0);
+        setAdditionDate(sdf.format(new Date()));
         this.sHashCompare = new StringBuffer(style.getName2()).append(author.getName2()).append(album.getName2()).append(sName).toString();
 	}
 	
-	/**
-	 * @return
-	 */
-	public String getName() {
-		return sName;
-	}
-
 	/**
 	 * toString method
 	 */
@@ -97,14 +99,7 @@ public class Track extends PropertyAdapter implements Comparable{
 		}
 		return sOut; 
 	}
-	
-	/**
-	* @return
-	 */
-	public String getId() {
-		return sId;
-	}
-	
+
 	/**
 	 *Alphabetical comparator used to display ordered lists of tracks
 	 *@param other track to be compared
@@ -412,4 +407,58 @@ public class Track extends PropertyAdapter implements Comparable{
         setProperty(XML_TYPE,type.getId());
     }
 
+    /**
+     * Get item description
+     */
+    public String getDesc(){
+        return "<HTML><b>"+Messages.getString("LogicalTableView.1")+" : "+getName()+"</b><HTML>";
+    }
+
+    /* (non-Javadoc)
+     * @see org.jajuk.base.IPropertyable#isPropertyEditable()
+     */
+    public boolean isPropertyEditable(String sProperty){
+        if (XML_ID.equals(sProperty)){
+            return false;
+        }
+        else if (XML_NAME.equals(sProperty)){
+            return true;
+        }
+        else if (XML_ALBUM.equals(sProperty)){
+            return true;
+        }
+        else if (XML_STYLE.equals(sProperty)){
+            return true;
+        }
+        else if (XML_AUTHOR.equals(sProperty)){
+            return true;
+        }
+        else if (XML_TRACK_LENGTH.equals(sProperty)){
+            return false;
+        }
+        else if (XML_TYPE.equals(sProperty)){
+            return false;
+        }
+        else if (XML_TRACK_YEAR.equals(sProperty)){
+            return true;
+        }
+        else if (XML_TRACK_RATE.equals(sProperty)){
+            return true;
+        }
+        else if (XML_FILES.equals(sProperty)){
+            return false;
+        }
+        else if (XML_TRACK_HITS.equals(sProperty)){
+            return true;
+        }
+        else if (XML_EXPANDED.equals(sProperty)){
+            return true;
+        }
+        else if (XML_TRACK_ADDED.equals(sProperty)){
+            return false;
+        }
+        else{
+            return true;
+        }
+    }
 }

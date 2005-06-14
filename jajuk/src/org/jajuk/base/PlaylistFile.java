@@ -170,20 +170,6 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 	/**
 	 * @return
 	 */
-	public String getId() {
-		return sId;
-	}
-	
-	/**
-	 * @return
-	 */
-	public String getName() {
-		return sName;
-	}
-	
-	/**
-	 * @return
-	 */
 	public Directory getDirectory() {
 		return dParentDirectory;
 	}
@@ -629,7 +615,7 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
      */
     protected void setParentDirectory(Directory parentDirectory) {
         this.dParentDirectory = parentDirectory;
-        setProperty(XML_DIRECTORY_PARENT,parentDirectory==null?"-1":parentDirectory.getId());
+        setProperty(XML_DIRECTORY,parentDirectory==null?"-1":parentDirectory.getId());
     }
 
       /**
@@ -640,4 +626,36 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
         setProperty(XML_HASHCODE,hashcode);
     }
 
+    /**
+     * Get item description
+     */
+    public String getDesc(){
+        return "<HTML><b>"+Messages.getString("Item_Playlist_File")+" : "+getName()+"</b><HTML>";
+    }
+    
+/* (non-Javadoc)
+     * @see org.jajuk.base.IPropertyable#isPropertyEditable()
+     */
+    public boolean isPropertyEditable(String sProperty){
+        if (XML_ID.equals(sProperty)){
+            return false;
+        }
+        else if (XML_NAME.equals(sProperty)){
+            return true;
+        }
+        else if (XML_HASHCODE.equals(sProperty)){
+            return false;
+        }
+        else if (XML_DIRECTORY.equals(sProperty)){
+            return false;
+        }
+        else if (XML_EXPANDED.equals(sProperty)){
+            return true;
+        }
+        else{
+            return true;
+        }
+    }    
+
+    
 }

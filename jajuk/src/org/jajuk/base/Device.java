@@ -500,20 +500,6 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	/**
 	 * @return
 	 */
-	public String getId() {
-		return sId;
-	}
-	
-	/**
-	 * @return
-	 */
-	public String getName() {
-		return sName;
-	}
-	
-	/**
-	 * @return
-	 */
 	public String getUrl() {
 		return sUrl;
 	}
@@ -782,5 +768,46 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
         sUrl = url;
         setProperty(XML_URL,url);
     }
+    
+    /**
+     * Get item description
+     */
+    public String getDesc(){
+        return "<HTML><b>"+Messages.getString("PhysicalTableView.12")+" : "+getName()+"</b><HTML>";
+    }
+    
+/* (non-Javadoc)
+     * @see org.jajuk.base.IPropertyable#isPropertyEditable()
+     */
+    public boolean isPropertyEditable(String sProperty){
+        if (XML_ID.equals(sProperty)){
+            return false;
+        }
+        else if (XML_NAME.equals(sProperty)){
+            return true;
+        }
+        else if (XML_TYPE.equals(sProperty)){
+            return false;
+        }
+        else if (XML_URL.equals(sProperty)){
+            return false;
+        }
+        else if (XML_DEVICE_MOUNT_POINT.equals(sProperty)){
+            return false;
+        }
+        else if (XML_DEVICE_AUTO_REFRESH.equals(sProperty)){
+            return true;
+        }
+        else if (XML_DEVICE_AUTO_MOUNT.equals(sProperty)){
+            return true;
+        }
+        else if (XML_EXPANDED.equals(sProperty)){
+            return true;
+        }
+         else{
+            return true;
+        }
+    }    
+
 	
 }

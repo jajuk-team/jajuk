@@ -79,7 +79,17 @@ public interface IPropertyable {
 	 */
 	public void displayProperties();
 	
+    /**
+     * Get item description (HTML)
+     * @return
+     */
+    public String getDesc();
 	
+    /**
+     * 
+     * @return whether given property is editable, false if property doesn't exist
+     */
+    public boolean isPropertyEditable(String sProperty);
 	
 	
 }

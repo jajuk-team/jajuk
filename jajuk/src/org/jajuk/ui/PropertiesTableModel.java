@@ -22,12 +22,16 @@ package org.jajuk.ui;
 
 import javax.swing.table.AbstractTableModel;
 
+import org.jajuk.base.IPropertyable;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Util;
+
 /**
  *  Table model used for properties table
  * @author     Bertrand Florat
  * @created    06 jun. 2005
  */
-public class PropertiesTableModel extends AbstractTableModel{
+public class PropertiesTableModel extends AbstractTableModel implements ITechnicalStrings{
 	
 	/**Columns number*/
 	protected int iColNum;
@@ -44,16 +48,20 @@ public class PropertiesTableModel extends AbstractTableModel{
 	/**Columns names table**/
 	protected String[] sColName;
 	
+    /**Item to display*/
+    protected IPropertyable pa;
+    
 	/**
 	 * Model constructor
 	 * @param iColNum number of rows
 	 * @param bCellEditable cell editability
 	 * @param sColName columns names
 	 */
-	public PropertiesTableModel(int iColNum,boolean[][] bCellEditable,String[] sColName){
+	public PropertiesTableModel(int iColNum,boolean[][] bCellEditable,String[] sColName,IPropertyable pa){
 		this.iColNum = iColNum;
 		this.bCellEditable = bCellEditable;
 		this.sColName = sColName;
+        this.pa = pa;
 	}
 	
 	public synchronized int getColumnCount() {
@@ -65,7 +73,8 @@ public class PropertiesTableModel extends AbstractTableModel{
 	}
 	
 	public synchronized boolean isCellEditable(int rowIndex, int columnIndex) {
-		return false;
+		String sProperty = (String)oValues[rowIndex][0];
+        return pa.isPropertyEditable(sProperty);
 	}
 	
 	public synchronized Class getColumnClass(int columnIndex) {
@@ -79,8 +88,22 @@ public class PropertiesTableModel extends AbstractTableModel{
 	}
 	
 	public synchronized Object getValueAt(int rowIndex, int columnIndex) {
-		return oValues[rowIndex][columnIndex];
-	}
+		String s = (String)oValues[rowIndex][columnIndex];
+        IconLabel il = null;
+        if (columnIndex == 0){//property value
+            return new IconLabel(null,s,null,null,null,s);
+        }
+        else if (columnIndex == 1){ //property name
+            if (isCellEditable(rowIndex,columnIndex)){
+                il = new IconLabel(Util.getIcon(ICON_OK),s,null,null,null,s);
+            }
+            else{
+                il = new IconLabel(Util.getIcon(ICON_KO),s,null,null,null,s);
+            }
+            return il;
+        }
+        return new IconLabel(null,s,null,null,null,s);
+   }
 	
 	public  synchronized void setValueAt(Object oValue, int rowIndex, int columnIndex) {
 		oValues[rowIndex][columnIndex] = oValue;

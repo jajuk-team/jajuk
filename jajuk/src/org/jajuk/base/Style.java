@@ -54,13 +54,7 @@ public class Style extends PropertyAdapter implements Comparable{
         return XML_STYLE;
     }
     
-    /**
-	 * @return
-	 */
-	public String getName() {
-		return sName;
-	}
-	
+   
 	/**
 	 * Return style name, dealing with unkwnown for any language
 	 * @return author name
@@ -80,13 +74,6 @@ public class Style extends PropertyAdapter implements Comparable{
 		return "Style[ID=" + sId + " Name=" + getName() + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 		
-	/**
-	 * @return
-	 */
-	public String getId() {
-		return sId;
-	}
-
 	/**
 	 * Equal method to check two styles are identical
 	 * 
@@ -168,5 +155,30 @@ public class Style extends PropertyAdapter implements Comparable{
 	public boolean isUnknown(){
 	    return this.getName().equals(UNKNOWN_STYLE); 
    }
+
+    /**
+     * Get item description
+     */
+    public String getDesc(){
+        return "<HTML><b>"+Messages.getString("LogicalTreeView.5")+" : "+getName()+"</b><HTML>";
+    }
+  
+/* (non-Javadoc)
+     * @see org.jajuk.base.IPropertyable#isPropertyEditable()
+     */
+    public boolean isPropertyEditable(String sProperty){
+        if (XML_ID.equals(sProperty)){
+            return false;
+        }
+        else if (XML_NAME.equals(sProperty)){
+            return true;
+        }
+        else if (XML_EXPANDED.equals(sProperty)){
+            return true;
+        }
+        else{
+            return true;
+        }
+    }    
     
 }

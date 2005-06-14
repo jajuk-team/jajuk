@@ -1,104 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src">
-		<attributes>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="lib/log4j-1.2.6.jar">
-		<attributes>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="lib/tablelayout-1.0.jar">
-		<attributes>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="lib/jfreechart-0.9.15.jar">
-		<attributes>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="lib/jcommon-0.9.0.jar">
-		<attributes>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="lib/kunststoff-2.0.1.jar">
-		<attributes>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="lib/jogg-0.0.5.jar">
-		<attributes>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="lib/jorbis-0.0.12.jar">
-		<attributes>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="lib/animation-1.1.3.jar">
-		<attributes>
-		</attributes>
-	</classpathentry>
-	<classpathentry sourcepath="/prog/api/commons-httpclient-2.0.1/src/commons-httpclient-2.0.1/src" kind="lib" path="lib/commons-httpclient-2.0.1.jar">
-		<attributes>
-		</attributes>
-	</classpathentry>
-	<classpathentry sourcepath="/prog/api/commons-logging-1.0.4/src" kind="lib" path="lib/commons-logging-1.0.jar">
-		<attributes>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="lib/jh-2.0.2.jar">
-		<attributes>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="lib/vorbisspi-1.0.1.jar">
-		<attributes>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
-		<attributes>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="jajuk-help_fr.jar">
-		<attributes>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="jajuk-help.jar">
-		<attributes>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="lib/jlayer-1.0.jar">
-		<attributes>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="lib/jlGui-2.3.jar">
-		<attributes>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="lib/basicplayer-2.3.jar">
-		<attributes>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="lib/mp3spi-1.9.2.jar">
-		<attributes>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="lib/tritonus_share-jajuk-0.3.6.jar">
-		<attributes>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="lib/infonodeDockingWindows-1.3.0.jar">
-		<attributes>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="lib/liquidlnf-0.2.6.jar">
-		<attributes>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="lib/looks-1.2.2.jar">
-		<attributes>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="lib/tray-0.1.6.jar">
-		<attributes>
-		</attributes>
-	</classpathentry>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="lib/log4j-1.2.6.jar"/>
+	<classpathentry kind="lib" path="lib/tablelayout-1.0.jar"/>
+	<classpathentry kind="lib" path="lib/jfreechart-0.9.15.jar"/>
+	<classpathentry kind="lib" path="lib/jcommon-0.9.0.jar"/>
+	<classpathentry kind="lib" path="lib/kunststoff-2.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/jogg-0.0.5.jar"/>
+	<classpathentry kind="lib" path="lib/jorbis-0.0.12.jar"/>
+	<classpathentry kind="lib" path="lib/animation-1.1.3.jar"/>
+	<classpathentry sourcepath="/prog/api/commons-httpclient-2.0.1/src/commons-httpclient-2.0.1/src" kind="lib" path="lib/commons-httpclient-2.0.1.jar"/>
+	<classpathentry sourcepath="/prog/api/commons-logging-1.0.4/src" kind="lib" path="lib/commons-logging-1.0.jar"/>
+	<classpathentry kind="lib" path="lib/jh-2.0.2.jar"/>
+	<classpathentry kind="lib" path="lib/vorbisspi-1.0.1.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="jajuk-help_fr.jar"/>
+	<classpathentry kind="lib" path="jajuk-help.jar"/>
+	<classpathentry kind="lib" path="lib/jlayer-1.0.jar"/>
+	<classpathentry kind="lib" path="lib/jlGui-2.3.jar"/>
+	<classpathentry kind="lib" path="lib/basicplayer-2.3.jar"/>
+	<classpathentry kind="lib" path="lib/mp3spi-1.9.2.jar"/>
+	<classpathentry kind="lib" path="lib/tritonus_share-jajuk-0.3.6.jar"/>
+	<classpathentry kind="lib" path="lib/infonodeDockingWindows-1.3.0.jar"/>
+	<classpathentry kind="lib" path="lib/liquidlnf-0.2.6.jar"/>
+	<classpathentry kind="lib" path="lib/looks-1.2.2.jar"/>
+	<classpathentry kind="lib" path="/prog/api/jdic-0.9-bin-cross-platform/jdic.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

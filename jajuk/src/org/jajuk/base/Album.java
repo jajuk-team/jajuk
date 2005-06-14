@@ -46,13 +46,6 @@ public class Album extends PropertyAdapter implements Comparable{
 	}
 
 	/**
-	 * @return
-	 */
-	public String getName() {
-		return sName;
-	}
-	
-	/**
 	 * Return album name, dealing with unkwnown for any language
 	 * @return album name
 	 */
@@ -70,15 +63,7 @@ public class Album extends PropertyAdapter implements Comparable{
 	public String toString() {
 		return "Album[ID="+getId()+" Name=" + getName() +"]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$//$NON-NLS-4$
 	}
-
-    /**
-	* @return
-	 */
-	public String getId() {
-		return sId;
-	}
-
-	
+    	
 	/**
 	 * Equal method to check two albums are identical
 	 * @param otherAlbum
@@ -143,5 +128,30 @@ public class Album extends PropertyAdapter implements Comparable{
         return XML_ALBUM;
     }
     
+    /**
+     * Get item description
+     */
+    public String getDesc(){
+        return "<HTML><b>"+Messages.getString("LogicalTableView.2")+" : "+getName2()+"</b><HTML>";
+    }
  
+/* (non-Javadoc)
+     * @see org.jajuk.base.IPropertyable#isPropertyEditable()
+     */
+    public boolean isPropertyEditable(String sProperty){
+        if (XML_ID.equals(sProperty)){
+            return false;
+        }
+        else if (XML_NAME.equals(sProperty)){
+            return true;
+        }
+        else if (XML_EXPANDED.equals(sProperty)){
+            return true;
+        }
+        else{
+            return true;
+        }
+    }    
+
+    
 }

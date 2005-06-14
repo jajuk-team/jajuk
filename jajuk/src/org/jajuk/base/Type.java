@@ -19,6 +19,7 @@
  */
 package org.jajuk.base;
 
+import org.jajuk.i18n.Messages;
 import org.jajuk.players.IPlayerImpl;
 import org.jajuk.tag.ITagImpl;
 
@@ -74,26 +75,11 @@ public class Type extends PropertyAdapter{
 		return sExtension;
 	}
 
-	/**
-	 * @return
-	 */
-	public String getName() {
-		return sName;
-	}
-
-		
-	/**
+		/**
 	 * toString method
 	 */
 	public String toString(){
 			return "Type[ID="+sId+" Name="+getName()+ " ; Extension="+sExtension+"]";	 //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-	}
-	
-	/**
-	 * @return
-	 */
-	public String getId() {
-		return sId;
 	}
 	
 	/**
@@ -162,4 +148,48 @@ public class Type extends PropertyAdapter{
         setProperty(XML_TYPE_TAG_IMPL,sTagImpl);
     }
 
+    /**
+     * Get item description
+     */
+    public String getDesc(){
+        return "<HTML><b>"+Messages.getString("Type")+" : "+getName()+"</b><HTML>";
+    }
+
+/* (non-Javadoc)
+     * @see org.jajuk.base.IPropertyable#isPropertyEditable()
+     */
+    public boolean isPropertyEditable(String sProperty){
+        if (XML_ID.equals(sProperty)){
+            return false;
+        }
+        else if (XML_NAME.equals(sProperty)){
+            return true;
+        }
+        else if (XML_TYPE_EXTENSION.equals(sProperty)){
+            return false;
+        }
+        else if (XML_TYPE_PLAYER_IMPL.equals(sProperty)){
+            return false;
+        }
+        else if (XML_TYPE_TAG_IMPL.equals(sProperty)){
+            return false;
+        }
+        else if (XML_TYPE_ICON.equals(sProperty)){
+            return true;
+        }
+        else if (XML_TYPE_SEEK_SUPPORTED.equals(sProperty)){
+            return false;
+        }
+        else if (XML_TYPE_TECH_DESC.equals(sProperty)){
+            return true;
+        }
+        else if (XML_TYPE_IS_MUSIC.equals(sProperty)){
+            return false;
+        }
+        else{
+            return true;
+        }
+    }    
+
+    
 }

@@ -22,6 +22,8 @@ package org.jajuk.base;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import org.jajuk.i18n.Messages;
+
 /**
  *  A playlist
  *<p> Logical item
@@ -125,13 +127,6 @@ public class Playlist extends PropertyAdapter implements Comparable{
 	public void removeFile(PlaylistFile plFile) {
 		alPlaylistFiles.remove(plFile);
 	}
-
-	/**
-	 * @return
-	 */
-	public String getId() {
-		return sId;
-	}
 	
 	/**
 	 * Return true if this playlist map to specified playlist file id 
@@ -174,4 +169,31 @@ public class Playlist extends PropertyAdapter implements Comparable{
         this.alPlaylistFiles.add(plf);
         setProperty(XML_PLAYLIST_FILES,plf.getId());
     }
+    
+    /**
+     * Get item description
+     */
+    public String getDesc(){
+        return "<HTML><b>"+Messages.getString("Type.playlist")+" : "+getName()+"</b><HTML>";
+    }
+    
+/* (non-Javadoc)
+     * @see org.jajuk.base.IPropertyable#isPropertyEditable()
+     */
+    public boolean isPropertyEditable(String sProperty){
+        if (XML_ID.equals(sProperty)){
+            return false;
+        }
+        else if (XML_PLAYLIST_FILES.equals(sProperty)){
+            return false;
+        }
+        else if (XML_EXPANDED.equals(sProperty)){
+            return true;
+        }
+         else{
+            return true;
+        }
+    }    
+
+   
 }

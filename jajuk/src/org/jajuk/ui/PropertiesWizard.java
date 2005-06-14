@@ -23,13 +23,17 @@ package org.jajuk.ui;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Enumeration;
 import java.util.Iterator;
 
 import javax.swing.BoxLayout;
+import javax.swing.DefaultListSelectionModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.table.TableColumn;
 
 import org.jajuk.base.PropertyAdapter;
 import org.jajuk.i18n.Messages;
@@ -48,6 +52,9 @@ public class PropertiesWizard extends JFrame implements ITechnicalStrings, Actio
     JPanel jpMain;
     
     JPanel jpTable;
+    
+    /**Item description*/
+    JLabel jlDesc;
     
     /** Properties table */
     JajukTable jTable;
@@ -77,7 +84,17 @@ public class PropertiesWizard extends JFrame implements ITechnicalStrings, Actio
         int iY_SEPARATOR = 10;
         populateTable();
         jTable = new JajukTable(ptmodel);
+        jTable.setRowHeight(20);
+        jTable.setSelectionMode(DefaultListSelectionModel.MULTIPLE_INTERVAL_SELECTION); //multi-row selection
+        Enumeration enumeration = jTable.getColumnModel().getColumns();
+        JajukCellRender jcr = new JajukCellRender();
+        while (enumeration.hasMoreElements()){
+            TableColumn col = (TableColumn)enumeration.nextElement();
+            col.setCellRenderer(jcr);
+        }
         jpTable.add(new JScrollPane(jTable));
+        //desc
+        jlDesc = new JLabel(pa.getDesc());
         //buttons
         jpButtons = new JPanel();
         jpButtons.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -91,6 +108,7 @@ public class PropertiesWizard extends JFrame implements ITechnicalStrings, Actio
         //add panels
         jpMain = new JPanel();
         jpMain.setLayout(new BoxLayout(jpMain, BoxLayout.Y_AXIS));
+        jpMain.add(jlDesc);
         jpMain.add(jpTable);
         jpMain.add(jpButtons);
         add(jpMain);
@@ -134,8 +152,9 @@ public class PropertiesWizard extends JFrame implements ITechnicalStrings, Actio
             }
         }
         // model creation
-        ptmodel = new PropertiesTableModel(iColNum, bCellEditable, sColName);
+        ptmodel = new PropertiesTableModel(iColNum, bCellEditable, sColName, pa);
         ptmodel.setValues(oValues);
         ptmodel.fireTableDataChanged();
     }
-}
+
+   }

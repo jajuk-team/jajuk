@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 
+import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.MD5Processor;
@@ -107,20 +108,6 @@ public class Directory extends PropertyAdapter implements Comparable{
      */
     public Device getDevice() {
         return device;
-    }
-    
-    /**
-     * @return
-     */
-    public String getId() {
-        return sId;
-    }
-    
-    /**
-     * @return
-     */
-    public String getName() {
-        return sName;
     }
     
     /**
@@ -375,5 +362,39 @@ public class Directory extends PropertyAdapter implements Comparable{
         this.dParent = parent;
         setProperty(XML_DIRECTORY_PARENT,(parent==null?"-1":parent.getId()));
     }
+    
+    /**
+     * Get item description
+     */
+    public String getDesc(){
+        return "<HTML><b>"+Messages.getString("Device_type.directory")+" : "+getName()+"</b><HTML>";
+    }
+  
+ /* (non-Javadoc)
+     * @see org.jajuk.base.IPropertyable#isPropertyEditable()
+     */
+    public boolean isPropertyEditable(String sProperty){
+        if (XML_ID.equals(sProperty)){
+            return false;
+        }
+        else if (XML_NAME.equals(sProperty)){
+            return true;
+        }
+        else if (XML_ALBUM.equals(sProperty)){
+            return true;
+        }
+        else if (XML_DIRECTORY_PARENT.equals(sProperty)){
+            return false;
+        }
+        else if (XML_EXPANDED.equals(sProperty)){
+            return true;
+        }
+        else if (XML_DEVICE.equals(sProperty)){
+            return false;
+        }
+        else{
+            return true;
+        }
+    }    
     
 }

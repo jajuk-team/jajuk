@@ -43,7 +43,31 @@ abstract public class PropertyAdapter implements IPropertyable, ITechnicalString
     /** Name */
     protected String sName;
     
-  	/*
+    /**
+     * Constructor
+     * @param sId element ID
+     * @param sName element name
+     */
+    PropertyAdapter(String sId,String sName){
+        setId(sId);
+        setName(sName);
+    }
+    
+    /**
+     * @return
+     */
+    public String getId() {
+        return sId;
+    }
+    
+    /**
+     * @return
+     */
+    public String getName() {
+        return sName;
+    }
+    
+    /*
 	 * (non-Javadoc)
 	 * 
 	 * @see org.jajuk.base.Propertyable#getProperties()
@@ -55,16 +79,6 @@ abstract public class PropertyAdapter implements IPropertyable, ITechnicalString
 		return properties;
 	}
 	
-    /**
-     * Constructor
-     * @param sId element ID
-     * @param sName element name
-     */
-    PropertyAdapter(String sId,String sName){
-        setId(sId);
-        setName(sName);
-    }
-    
     
 	/*
 	 * (non-Javadoc)
@@ -84,6 +98,7 @@ abstract public class PropertyAdapter implements IPropertyable, ITechnicalString
 		return (String) properties.get(sKey); //return property value
 	}
 	
+     
     
     /*
      * (non-Javadoc)
@@ -198,5 +213,9 @@ abstract public class PropertyAdapter implements IPropertyable, ITechnicalString
         setProperty(XML_NAME,name);
     }
 	
+    /* (non-Javadoc)
+     * @see org.jajuk.base.IPropertyable#isPropertyEditable()
+     */
+    abstract public boolean isPropertyEditable(String sProperty);
 	
 }

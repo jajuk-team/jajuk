@@ -109,24 +109,10 @@ public class File extends PropertyAdapter implements Comparable,ITechnicalString
 	/**
 	 * @return
 	 */
-	public String getId() {
-		return sId;
-	}
-	
-	/**
-	 * @return
-	 */
 	public long getSize() {
 		return lSize;
 	}
-	
-	/**
-	 * @return
-	 */
-	public String getName() {
-		return sName;
-	}
-	
+		
 	/**
 	 * @return
 	 */
@@ -303,5 +289,42 @@ public class File extends PropertyAdapter implements Comparable,ITechnicalString
         setProperty(XML_TRACK,track.getId());
     }
 	
+    /**
+     * Get item description
+     */
+    public String getDesc(){
+        return "<HTML><b>"+Messages.getString("PhysicalTableView.13")+" : "+getName()+"</b><HTML>";
+    }
+    
+/* (non-Javadoc)
+     * @see org.jajuk.base.IPropertyable#isPropertyEditable()
+     */
+    public boolean isPropertyEditable(String sProperty){
+        if (XML_ID.equals(sProperty)){
+            return false;
+        }
+        else if (XML_NAME.equals(sProperty)){
+            return true;
+        }
+        else if (XML_DIRECTORY.equals(sProperty)){
+            return false;
+        }
+        else if (XML_TRACK.equals(sProperty)){
+            return false;
+        }
+        else if (XML_SIZE.equals(sProperty)){
+            return false;
+        }
+        else if (XML_QUALITY.equals(sProperty)){
+            return true;
+        }
+        else if (XML_EXPANDED.equals(sProperty)){
+            return true;
+        }
+         else{
+            return true;
+        }
+    }    
+
 
 }

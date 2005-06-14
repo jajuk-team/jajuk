@@ -267,7 +267,7 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
 	public void actionPerformed(final ActionEvent e) {
 		//do not run this in a separate thread because Player actions would die with the thread
 		try{
-			if (e.getSource() == jmiExit){
+           if (e.getSource() == jmiExit){
 				Main.exit(0);
             }
 			else if (e.getSource() == jmiAbout){
@@ -394,6 +394,7 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
 				sOut = Messages.getString("JajukWindow.18"); //$NON-NLS-1$
 			}
 			trayIcon.setToolTip(sOut);
+            trayIcon.displayMessage("Lanching:",sOut,TrayIcon.INFO_MESSAGE_TYPE);
 		}
 		else if( EVENT_PLAYER_STOP.equals(subject) || EVENT_ZERO.equals(subject)){
 			jmiPause.setEnabled(false);
