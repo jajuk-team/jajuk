@@ -55,19 +55,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 	/** Self instance */
 	private static Collection collection;
 	private static long lTime;
-	/* XML tags hashcodes */
-	private static final int HASHCODE_TYPE = 3575610;
-	private static final int HASHCODE_DEVICE =  -1335157162;
-	private static final int HASHCODE_STYLE = 109780401;
-	private static final int HASHCODE_AUTHOR = -1406328437;
-	private static final int HASHCODE_ALBUM = 92896879;
-	private static final int HASHCODE_TRACK = 110621003;
-	private static final int HASHCODE_DIRECTORY =  -962584979;
-	private static final int HASHCODE_FILE = 3143036;
-	private static final int HASHCODE_PLAYLIST_FILE = 816218057;
-	private static final int HASHCODE_PLAYLIST = 1879474642;
 	
-
 	/** Instance getter */
 	public static synchronized Collection getInstance() {
 		if (collection == null) {
@@ -88,7 +76,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 		bw.write("<?xml version='1.0' encoding='"+sCharset+"'?>\n"); //$NON-NLS-1$ //$NON-NLS-2$
 	    bw.write("<"+XML_COLLECTION+" "+XML_VERSION+"='"+JAJUK_VERSION+"'>\n"); //$NON-NLS-1$ //$NON-NLS-2$
         //types
-		bw.write("\t<"+XML_TYPES+">\n"); //$NON-NLS-1$
+        bw.write(TypeManager.getInstance().toXML()); //$NON-NLS-1$
         Iterator it = TypeManager.getTypes().iterator();
 		while (it.hasNext()) {
 			Type type = (Type) it.next();
@@ -96,7 +84,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 		}
 		bw.write("\t</"+XML_TYPES+">\n"); //$NON-NLS-1$
         //devices
-		bw.write("\t<"+XML_DEVICES+">\n"); //$NON-NLS-1$
+        bw.write(DeviceManager.getInstance().toXML()); //$NON-NLS-1$
        it = DeviceManager.getDevices();
 		while (it.hasNext()) {
 			Device device = (Device) it.next();
@@ -104,7 +92,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 		}
 		bw.write("\t</"+XML_DEVICES+">\n"); //$NON-NLS-1$
 		//styles
-		bw.write("\t<"+XML_STYLES+">\n"); //$NON-NLS-1$
+        bw.write(StyleManager.getInstance().toXML()); //$NON-NLS-1$
 		it = StyleManager.getStyles().iterator();
 		while (it.hasNext()) {
 			Style style = (Style) it.next();
@@ -112,7 +100,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 		}
 		bw.write("\t</"+XML_STYLES+">\n"); //$NON-NLS-1$
 		//authors
-		bw.write("\t<"+XML_AUTHORS+">\n"); //$NON-NLS-1$
+        bw.write(AuthorManager.getInstance().toXML()); //$NON-NLS-1$
 		it = AuthorManager.getAuthors().iterator();
 		while (it.hasNext()) {
 			Author author = (Author) it.next();
@@ -120,7 +108,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 		}
 		bw.write("\t</"+XML_AUTHORS+">\n"); //$NON-NLS-1$
 		//albums
-		bw.write("\t<"+XML_ALBUMS+">\n"); //$NON-NLS-1$
+		bw.write(AlbumManager.getInstance().toXML()); //$NON-NLS-1$
 		it = AlbumManager.getAlbums().iterator();
 		while (it.hasNext()) {
 			Album album = (Album) it.next();
@@ -128,7 +116,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 		}
 		bw.write("\t</"+XML_ALBUMS+">\n"); //$NON-NLS-1$
 		//tracks
-		bw.write("\t<"+XML_TRACKS+">\n"); //$NON-NLS-1$
+        bw.write(TrackManager.getInstance().toXML()); //$NON-NLS-1$
 		it = TrackManager.getTracks().iterator();
 		while (it.hasNext()) {
 			Track track = (Track) it.next();
@@ -138,7 +126,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 		}
 		bw.write("\t</"+XML_TRACKS+">\n"); //$NON-NLS-1$
 		//directories
-		bw.write("\t<"+XML_DIRECTORIES+">\n"); //$NON-NLS-1$
+        bw.write(DirectoryManager.getInstance().toXML()); //$NON-NLS-1$
 		it = DirectoryManager.getDirectories().iterator();
 		while (it.hasNext()) {
 			Directory directory = (Directory) it.next();
@@ -146,7 +134,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 		}
 		bw.write("\t</"+XML_DIRECTORIES+">\n"); //$NON-NLS-1$
 		//files
-		bw.write("\t<"+XML_FILES+">\n"); //$NON-NLS-1$
+        bw.write(FileManager.getInstance().toXML()); //$NON-NLS-1$
 		it = FileManager.getFiles().iterator();
 		while (it.hasNext()) {
 			org.jajuk.base.File file = (org.jajuk.base.File) it.next();
@@ -154,7 +142,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 		}
 		bw.write("\t</"+XML_FILES+">\n"); //$NON-NLS-1$
 		//playlist files
-		bw.write("\t<"+XML_PLAYLIST_FILES+">\n"); //$NON-NLS-1$
+        bw.write(PlaylistFileManager.getInstance().toXML()); //$NON-NLS-1$
 		it = PlaylistFileManager.getPlaylistFiles().iterator();
 		while (it.hasNext()) {
 			PlaylistFile playlistFile = (PlaylistFile) it.next();
@@ -162,7 +150,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 		}
 		bw.write("\t</"+XML_PLAYLIST_FILES+">\n"); //$NON-NLS-1$
 		//playlist
-		bw.write("\t<"+XML_PLAYLISTS+">\n"); //$NON-NLS-1$
+        bw.write(PlaylistManager.getInstance().toXML()); //$NON-NLS-1$
 		it = PlaylistManager.getPlaylists().iterator();
 		while (it.hasNext()) {
 			Playlist playlist = (Playlist) it.next();
@@ -267,130 +255,158 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 	 *  
 	 */
 	public void startElement(String sUri, String sName, String sQName, Attributes attributes) throws SAXException {
-		try{
-			switch(sQName.hashCode()){
-			case HASHCODE_DEVICE : //device case
-				Device device = null;
-				device = DeviceManager.registerDevice(attributes.getValue(0), attributes.getValue(1), Integer.parseInt(attributes.getValue(2)), attributes.getValue(3), attributes.getValue(4));
-				if (device != null){
-				    device.populateProperties(attributes,5);
-				}
-				break;
-			case HASHCODE_STYLE :
-				Style style = StyleManager.registerStyle(attributes.getValue(0), attributes.getValue(1));
-				if (style != null){
-					style.populateProperties(attributes,2);
-				}
-				break; 
-			case HASHCODE_AUTHOR: 
-				Author author = AuthorManager.registerAuthor(attributes.getValue(0), attributes.getValue(1));
-				if (author != null){
-					author.populateProperties(attributes,2);
-				}
-				break;
-			case HASHCODE_ALBUM:
-				Album album = AlbumManager.registerAlbum(attributes.getValue(0), attributes.getValue(1));
-				if (album != null){
-					album.populateProperties(attributes,2);	
-				}
-				break;
-			case HASHCODE_TRACK :
-				String sId = attributes.getValue(0);
-				String sTrackName = attributes.getValue(1);
-				album = AlbumManager.getAlbum(attributes.getValue(2));
-				style = StyleManager.getStyle(attributes.getValue(3));
-				author = AuthorManager.getAuthor(attributes.getValue(4));
-				long length = Long.parseLong(attributes.getValue(5));
-				Type type = TypeManager.getType(attributes.getValue(6));
-				//more checkups
-				if (album == null || author == null || style == null || type == null){
-					break;
-				}
-				String sYear = attributes.getValue(7);
-				Track track = TrackManager.registerTrack(sId, sTrackName, album, style, author, length, sYear, type);
-				track.setRate(Long.parseLong(attributes.getValue(8)));
-				track.setHits(Integer.parseInt(attributes.getValue(10)));
-				track.setAdditionDate(attributes.getValue(11));
-				track.populateProperties(attributes,12);
-				break;
-			case HASHCODE_DIRECTORY:
-				Directory dParent = null;
-				String sParentId = attributes.getValue(2);
-				if (!"-1".equals(sParentId)) { //$NON-NLS-1$
-					dParent = DirectoryManager.getDirectory(sParentId); //Parent directory should be already referenced because of order conservation
-					if (dParent == null){ //check directory is exists
-						break;
-					}				
-				}
-				device = DeviceManager.getDevice(attributes.getValue(3));
-				if (device == null){ //check device exists
-					break;
-				}
-				Directory directory = DirectoryManager.registerDirectory(attributes.getValue(0), attributes.getValue(1), dParent, device);
-				directory.populateProperties(attributes,4);
-				break;
-			case HASHCODE_FILE:
-				dParent = DirectoryManager.getDirectory(attributes.getValue(2));
-				track = TrackManager.getTrack(attributes.getValue(3));
-				if (dParent == null || track == null){ //more checkups
-					break;
-				}
-				long lSize = Long.parseLong(attributes.getValue(4));
-				org.jajuk.base.File file = FileManager.registerFile(attributes.getValue(0), attributes.getValue(1), dParent, track, lSize, attributes.getValue(5));
-				file.populateProperties(attributes,6);
-				track.addFile(file);
-				file.getDirectory().addFile(file);
-				break;
-			case HASHCODE_PLAYLIST_FILE:
-				dParent = DirectoryManager.getDirectory(attributes.getValue(3));
-				if (dParent == null){ //check directory is exists
-					break;
-				}
-				PlaylistFile plf = PlaylistFileManager.registerPlaylistFile(attributes.getValue(0), attributes.getValue(1), attributes.getValue(2), dParent);
-				if (plf != null){
-				    plf.populateProperties(attributes,4);
-                    dParent.addPlaylistFile(plf);
-				}
-				break;
-			case HASHCODE_PLAYLIST:
-				StringTokenizer st = new StringTokenizer(attributes.getValue(1), ","); //playlist file list with ',' //$NON-NLS-1$
-				Playlist playlist = null;
-				if (st.hasMoreTokens()) { //if none mapped file, ignore it so it will be removed at next commit
-					do{
-						PlaylistFile plFile = PlaylistFileManager.getPlaylistFile((String) st.nextElement());
-						if (plFile != null){
-							playlist = PlaylistManager.registerPlaylist(plFile);
-                       }
-					}
-					while (st.hasMoreTokens());
-					if ( playlist != null ){
-					    playlist.populateProperties(attributes,2);
-					}
-				}
-				break;
-			case HASHCODE_TYPE:
-				sId = attributes.getValue(0);
-				String sTypeName = attributes.getValue(1);
-				String sExtension = attributes.getValue(2);
-				String sPlayer = attributes.getValue(3);
-				String sTag = attributes.getValue(4);
-				if ("".equals(sTag)) { //$NON-NLS-1$
-					sTag = null;
-				}
-				type = TypeManager.registerType(sId, sTypeName, sExtension, sPlayer, sTag);
-				if (type != null){
-				    type.populateProperties(attributes,5);
-				}
-				break;	
-			}
-		}
-		catch(RuntimeException re){
-			String sAttributes = ""; //$NON-NLS-1$
-			for (int i=0;i<attributes.getLength();i++){
-				sAttributes += "\n"+attributes.getQName(i)+"="+attributes.getValue(i); //$NON-NLS-1$ //$NON-NLS-2$
-			}
-			Log.error("005",sAttributes,re); //$NON-NLS-1$
-			throw re;
-		}
+	    try{
+	        if (XML_DEVICE.equals(sQName)){
+	            Device device = null;
+	            device = DeviceManager.registerDevice(attributes.getValue(0), attributes.getValue(1), Integer.parseInt(attributes.getValue(2)), attributes.getValue(3), attributes.getValue(4));
+	            if (device != null){
+	                device.populateProperties(attributes,5);
+	            }
+	        }
+	        else if (XML_STYLE.equals(sQName)){
+	            Style style = StyleManager.registerStyle(attributes.getValue(0), attributes.getValue(1));
+	            if (style != null){
+	                style.populateProperties(attributes,2);
+	            }
+	        } 
+	        else if (XML_AUTHOR.equals(sQName)){
+	            Author author = AuthorManager.registerAuthor(attributes.getValue(0), attributes.getValue(1));
+	            if (author != null){
+	                author.populateProperties(attributes,2);
+	            }
+	        }
+	        else if (XML_ALBUM.equals(sQName)){
+	            Album album = AlbumManager.registerAlbum(attributes.getValue(0), attributes.getValue(1));
+	            if (album != null){
+	                album.populateProperties(attributes,2);	
+	            }
+	        }
+	        else if (XML_TRACK.equals(sQName)){
+	            String sId = attributes.getValue(0);
+	            String sTrackName = attributes.getValue(1);
+	            Album album = AlbumManager.getAlbum(attributes.getValue(2));
+	            Style style = StyleManager.getStyle(attributes.getValue(3));
+	            Author author = AuthorManager.getAuthor(attributes.getValue(4));
+	            long length = Long.parseLong(attributes.getValue(5));
+	            Type type = TypeManager.getType(attributes.getValue(6));
+	            //more checkups
+	            if (album == null || author == null || style == null || type == null){
+	                return;
+	            }
+	            String sYear = attributes.getValue(7);
+	            Track track = TrackManager.registerTrack(sId, sTrackName, album, style, author, length, sYear, type);
+	            track.setRate(Long.parseLong(attributes.getValue(8)));
+	            track.setHits(Integer.parseInt(attributes.getValue(10)));
+	            track.setAdditionDate(attributes.getValue(11));
+	            track.populateProperties(attributes,12);
+	        }
+	        else if (XML_DIRECTORY.equals(sQName)){
+	            Directory dParent = null;
+	            String sParentId = attributes.getValue(2);
+	            if (!"-1".equals(sParentId)) { //$NON-NLS-1$
+	                dParent = DirectoryManager.getDirectory(sParentId); //Parent directory should be already referenced because of order conservation
+	                if (dParent == null){ //check directory is exists
+	                    return;
+	                }				
+	            }
+	            Device device = DeviceManager.getDevice(attributes.getValue(3));
+	            if (device == null){ //check device exists
+	                return;
+	            }
+	            Directory directory = DirectoryManager.registerDirectory(attributes.getValue(0), attributes.getValue(1), dParent, device);
+	            directory.populateProperties(attributes,4);
+	        }
+	        else if (XML_FILE.equals(sQName)){
+	            Directory dParent = DirectoryManager.getDirectory(attributes.getValue(2));
+	            Track track = TrackManager.getTrack(attributes.getValue(3));
+	            if (dParent == null || track == null){ //more checkups
+	                return;
+	            }
+	            long lSize = Long.parseLong(attributes.getValue(4));
+	            org.jajuk.base.File file = FileManager.registerFile(attributes.getValue(0), attributes.getValue(1), dParent, track, lSize, attributes.getValue(5));
+	            file.populateProperties(attributes,6);
+	            track.addFile(file);
+	            file.getDirectory().addFile(file);
+	        }
+	        else if (XML_PLAYLIST_FILE.equals(sQName)){
+	            Directory dParent = DirectoryManager.getDirectory(attributes.getValue(3));
+	            if (dParent == null){ //check directory is exists
+	                return;
+	            }
+	            PlaylistFile plf = PlaylistFileManager.registerPlaylistFile(attributes.getValue(0), attributes.getValue(1), attributes.getValue(2), dParent);
+	            if (plf != null){
+	                plf.populateProperties(attributes,4);
+	                dParent.addPlaylistFile(plf);
+	            }
+	        }
+	        else if (XML_PLAYLIST.equals(sQName)){
+	            StringTokenizer st = new StringTokenizer(attributes.getValue(1), ","); //playlist file list with ',' //$NON-NLS-1$
+	            Playlist playlist = null;
+	            if (st.hasMoreTokens()) { //if none mapped file, ignore it so it will be removed at next commit
+	                do{
+	                    PlaylistFile plFile = PlaylistFileManager.getPlaylistFile((String) st.nextElement());
+	                    if (plFile != null){
+	                        playlist = PlaylistManager.registerPlaylist(plFile);
+	                    }
+	                }
+	                while (st.hasMoreTokens());
+	                if ( playlist != null ){
+	                    playlist.populateProperties(attributes,2);
+	                }
+	            }
+	        }
+	        else if (XML_TYPE.equals(sQName)){
+	            String sId = attributes.getValue(0);
+	            String sTypeName = attributes.getValue(1);
+	            String sExtension = attributes.getValue(2);
+	            String sPlayer = attributes.getValue(3);
+	            String sTag = attributes.getValue(4);
+	            if ("".equals(sTag)) { //$NON-NLS-1$
+	                sTag = null;
+	            }
+	            Type type = TypeManager.registerType(sId, sTypeName, sExtension, sPlayer, sTag);
+	            if (type != null){
+	                type.populateProperties(attributes,5);
+	            }
+	        }
+            else if (XML_DEVICES.equals(sQName)){
+                DeviceManager.getInstance().populateProperties(attributes);
+            }
+            else if (XML_ALBUMS.equals(sQName)){
+                AlbumManager.getInstance().populateProperties(attributes);
+            }
+            else if (XML_AUTHORS.equals(sQName)){
+                AuthorManager.getInstance().populateProperties(attributes);
+            }
+            else if (XML_DIRECTORIES.equals(sQName)){
+                DirectoryManager.getInstance().populateProperties(attributes);
+            }
+            else if (XML_FILES.equals(sQName)){
+                FileManager.getInstance().populateProperties(attributes);
+            }
+            else if (XML_PLAYLISTS.equals(sQName)){
+                PlaylistManager.getInstance().populateProperties(attributes);
+            }
+            else if (XML_PLAYLIST_FILES.equals(sQName)){
+                PlaylistFileManager.getInstance().populateProperties(attributes);
+            }
+            else if (XML_STYLES.equals(sQName)){
+                StyleManager.getInstance().populateProperties(attributes);
+            }
+            else if (XML_TRACKS.equals(sQName)){
+                TrackManager.getInstance().populateProperties(attributes);
+            }
+            else if (XML_TYPES.equals(sQName)){
+                TypeManager.getInstance().populateProperties(attributes);
+            }
+	    }
+	    catch(RuntimeException re){
+	        String sAttributes = ""; //$NON-NLS-1$
+	        for (int i=0;i<attributes.getLength();i++){
+	            sAttributes += "\n"+attributes.getQName(i)+"="+attributes.getValue(i); //$NON-NLS-1$ //$NON-NLS-2$
+	        }
+	        Log.error("005",sAttributes,re); //$NON-NLS-1$
+	        throw re;
+	    }
 	}
 }

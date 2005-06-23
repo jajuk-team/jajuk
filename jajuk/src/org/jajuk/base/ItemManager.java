@@ -1,0 +1,123 @@
+/*
+ *  Jajuk
+ *  Copyright (C) 2005 Bertrand Florat
+ *
+ *  This program is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  as published by the Free Software Foundation; either version 2
+ *  of the License, or any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ *  $Revision$
+ */
+
+package org.jajuk.base;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.SequentialMap;
+import org.jajuk.util.Util;
+import org.xml.sax.Attributes;
+
+/**
+ *  Managers parent class
+ *
+ * @author     Bertrand Florat
+ * @created    20 juin 2005
+ */
+public abstract class ItemManager implements ITechnicalStrings{
+
+    /**Property to format*/
+    SequentialMap smProperties;
+       
+    /**
+     * Constructor
+     *
+     */
+    ItemManager(){
+        smProperties = new SequentialMap();
+    }
+    
+    /**
+     * 
+     * @return identifier used for XML generation
+     */
+    abstract public String getIdentifier();
+    
+    /**
+     * 
+     * @param sProperty
+     * @return format for given property
+     */
+    public String getFormat(String sProperty){
+        return (String)smProperties.get(sProperty);
+    }
+    
+    /**
+     * Add a property 
+     * @param sProperty
+     * @param sFormat
+     */
+    public void addProperty(String sProperty,String sFormat){
+        smProperties.put(Util.formatXML(sProperty),Util.formatXML(sFormat)); //make sure to clean strings for XML compliance
+    }
+    
+    /**Remove a property **/
+    public void removeProperty(String sProperty){
+        smProperties.remove(sProperty);
+        applyRemoveProperty(sProperty); //remove ths property to all items
+    }
+    
+    /**Add new property to all items for the given manager*/
+    public abstract void applyNewProperty(String sProperty); 
+    
+    /**Remove a custom property to all items for the given manager*/
+    public abstract void applyRemoveProperty(String sProperty); 
+    
+    
+    /**
+     * 
+     * @return XML representation of this manager
+     */
+    public String toXML(){
+        StringBuffer sb = new StringBuffer("\t<").append(getIdentifier()); //$NON-NLS-1$
+        Iterator it = smProperties.keys().iterator();
+        while (it.hasNext()) {
+            String sProperty = (String) it.next();
+            String sFormat = (String)smProperties.get(sProperty);
+            sb.append(" "+sProperty + "='" + sFormat + "'"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        }
+        sb.append(">\n"); //$NON-NLS-1$
+        return sb.toString();
+    }
+    
+    public ArrayList getCustomProperties(){
+        return (ArrayList)smProperties.keys();
+    }
+  
+    public String getPropertyAtIndex(int index){
+        return smProperties.getPropertyAt(index);
+    }
+    
+    /**
+     * Set all personnal properties of an XML file for an item manager
+     * 
+     * @param attributes :
+     *                list of attributes for this XML item
+     */
+    public void populateProperties(Attributes attributes) {
+       for (int i = 0; i < attributes.getLength(); i++) {
+             addProperty(attributes.getQName(i), attributes.getValue(i));
+        }
+    }
+    
+}

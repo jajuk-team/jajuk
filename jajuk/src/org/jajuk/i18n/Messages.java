@@ -74,6 +74,15 @@ public class Messages extends DefaultHandler implements ITechnicalStrings	{
 	    return mesg;
 	}
 	
+    /**
+     * 
+     * @param sKey
+     * @return wheter given key exists
+     */
+    public boolean contains(String sKey){
+        return getPropertiesEn().containsKey(sKey);
+    }
+    
 	/**
 	 * @param key
 	 * @return
@@ -356,9 +365,14 @@ public class Messages extends DefaultHandler implements ITechnicalStrings	{
     /**
      * @return Returns the propertiesEn.
      */
-    public Properties getPropertiesEn() throws Exception{
+    public Properties getPropertiesEn(){
         if (this.propertiesEn == null){
-            this.propertiesEn = parseLangpack("en");  //$NON-NLS-1$
+            try{
+                this.propertiesEn = parseLangpack("en");  //$NON-NLS-1$
+            }
+            catch(Exception e){
+                Log.error(e);
+            }
         }
         return this.propertiesEn;
     }

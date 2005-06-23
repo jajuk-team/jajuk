@@ -45,7 +45,7 @@ public interface IPropertyable {
 	 * @param sKey
 	 * @return
 	 */
-	public String getProperty(String sKey);
+	public String getValue(String sKey);
 	
 	/**
 	 * Set a property
@@ -89,7 +89,13 @@ public interface IPropertyable {
      * 
      * @return whether given property is editable, false if property doesn't exist
      */
-    public boolean isPropertyEditable(String sProperty);
+    public boolean isPropertyEditable(String sKey);
 	
+  /**
+     * 
+     * @param key
+     * @return human value for the property (not MD5 hash)
+     */
+    public String getHumanValue(String sKey);
 	
 }

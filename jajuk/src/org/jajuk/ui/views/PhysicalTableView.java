@@ -23,22 +23,19 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.regex.PatternSyntaxException;
 
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
-import javax.swing.SwingUtilities;
 
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
-import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Observer;
 import org.jajuk.base.StackItem;
 import org.jajuk.i18n.Messages;
-import org.jajuk.ui.TracksTableModel;
+import org.jajuk.ui.FilesTableModel;
+import org.jajuk.ui.JajukTableModel;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
@@ -109,61 +106,12 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
 		jmenuFile.add(jmiFileProperties);
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.jajuk.ui.IView#display()
-	 */
-	public void populate(){
-	    populateTable();
-		super.populate();
-		//Register on the list for subject we are interrested in
-		ObservationManager.register(EVENT_DEVICE_MOUNT,this);
-		ObservationManager.register(EVENT_DEVICE_UNMOUNT,this);
-		ObservationManager.register(EVENT_DEVICE_REFRESH,this);
-		ObservationManager.register(EVENT_SYNC_TREE_TABLE,this);
-	}	
 	
 	/**populate the table */
-	public void populateTable(){
-		//Columns names
-		String[] sColName = new String[]{Messages.getString("PhysicalTableView.7"),Messages.getString("PhysicalTableView.8"),Messages.getString("PhysicalTableView.9"),Messages.getString("PhysicalTableView.10"),Messages.getString("PhysicalTableView.11"),Messages.getString("PhysicalTableView.12"),Messages.getString("PhysicalTableView.13"),Messages.getString("PhysicalTableView.14")}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
-		//Values
-		ArrayList alFiles = FileManager.getFiles();
-		ArrayList alToShow = new ArrayList(alFiles.size());
-		Iterator it = alFiles.iterator();
-		while ( it.hasNext()){
-			File file = (File)it.next(); 
-			if ( !file.shouldBeHidden()){
-				alToShow.add(file);
-			}
-		}
-		int iSize = alToShow.size();
-		int iColNum = 8;
-		it = alToShow.iterator();
-		Object[][] oValues = new Object[iSize][iColNum+1];
-		//Track | Album | Author |  Length | Style | Device | File name | Rate
-		for (int i = 0;it.hasNext();i++){
-			File file = (File)it.next(); 
-			oValues[i][0] = file.getTrack().getName();
-			oValues[i][1] = file.getTrack().getAlbum().getName2();
-			oValues[i][2] = file.getTrack().getAuthor().getName2();
-			oValues[i][3] = Util.formatTimeBySec(file.getTrack().getLength(),false);
-			oValues[i][4] = file.getTrack().getStyle().getName2();
-			oValues[i][5] = file.getDirectory().getDevice().getName();
-			oValues[i][6] = file.getName();
-			oValues[i][7] = new Long(file.getTrack().getRate());
-			oValues[i][8] = file.getId();
-		}
-		//edtiable table  and class 
-		boolean[][] bCellEditable = new boolean[iColNum][iSize];
-		for (int i =0;i<iColNum;i++){
-			for (int j=0;j<iSize;j++){
-				bCellEditable[i][j]=false;
-			}
-		}
-		//model creation
-		model = new TracksTableModel(iColNum,bCellEditable,sColName);
-		model.setValues(oValues);
-	}
+	public JajukTableModel populateTable(){
+	    //model creation
+        return new FilesTableModel();
+   }
 	
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.IView#getID()
@@ -199,7 +147,8 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
 	 */
 	public void mousePressed(MouseEvent e) {
 		if ( e.getClickCount() == 2){ //double clic, can be only one file
-			File file = FileManager.getFileById(jtable.getSortingModel().getValueAt(jtable.getSelectedRow(),jtable.getColumnCount()).toString());
+            int iSelectedRow = jtable.getSelectedRow(); //selected row in view
+            File file = FileManager.getFileById(jtable.getModelValueAt(iSelectedRow,0).toString());
 			if (!file.isScanned()){
 				try{
 				    FIFO.getInstance().push(new StackItem(file,ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),ConfigurationManager.getBoolean(CONF_OPTIONS_DEFAULT_ACTION_CLICK));//launch it
@@ -254,7 +203,7 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
 				ArrayList alFilesToPlay = new ArrayList(jtable.getSelectedRowCount());
 				int[] indexes = jtable.getSelectedRows();
 				for (int i=0;i<indexes.length;i++){ //each selected track
-					File file = FileManager.getFileById(jtable.getSortingModel().getValueAt(indexes[i],jtable.getColumnCount()).toString());
+                    File file = FileManager.getFileById(jtable.getModelValueAt(indexes[i],0).toString());
 					ArrayList alFilesToPlay2 = new ArrayList(indexes.length);
 					if (e.getSource() == jmiFilePlayDirectory){
 					    alFilesToPlay2.addAll(FileManager.getAllDirectory(file));   
@@ -304,6 +253,7 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
 	 * @see org.jajuk.ui.views.AbstractTableView#applyFilter()
 	 */
 	public void applyFilter(final String sPropertyName,final String sPropertyValue) {
+        /*
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 //Values
@@ -334,7 +284,7 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
                 while (it.hasNext()){
                     File file = (File)it.next();
                     if ( sPropertyName != null && sNewPropertyValue != null ){ //if name or value is null, means there is no filter
-                        String sValue = file.getProperty(sPropertyName);
+                        String sValue = file.getValue(sPropertyName);
                         if ( sValue == null){ //try to filter on a unknown property, don't take this file
                             continue;
                         }
@@ -369,8 +319,8 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
                 model.setValues(oValues);
                 model.fireTableDataChanged();
             }
-        });
+        });*/
         
 	}
-	
+    	
 }

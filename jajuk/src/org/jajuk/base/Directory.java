@@ -222,7 +222,7 @@ public class Directory extends PropertyAdapter implements Comparable{
                 if (files[i].isDirectory()){ //if it is a directory, continue
                     continue;
                 }
-                boolean bIsMusic = Boolean.valueOf(TypeManager.getTypeByExtension(Util.getExtension(files[i])).getProperty(XML_TYPE_IS_MUSIC)).booleanValue();
+                boolean bIsMusic = Boolean.valueOf(TypeManager.getTypeByExtension(Util.getExtension(files[i])).getValue(XML_TYPE_IS_MUSIC)).booleanValue();
                 if (bIsMusic) {
                     //check the file is not already known in old database
                     org.jajuk.base.File fileRef = null;
@@ -365,9 +365,9 @@ public class Directory extends PropertyAdapter implements Comparable{
     
     /**
      * Get item description
-     */
+      */
     public String getDesc(){
-        return "<HTML><b>"+Messages.getString("Device_type.directory")+" : "+getName()+"</b><HTML>";
+        return Util.formatPropertyDesc(Messages.getString("Item_Directory")+" : "+getName());
     }
   
  /* (non-Javadoc)
@@ -395,6 +395,23 @@ public class Directory extends PropertyAdapter implements Comparable{
         else{
             return true;
         }
-    }    
+    }
+    
+    
+    /* (non-Javadoc)
+     * @see org.jajuk.base.IPropertyable#getHumanValue(java.lang.String)
+     */
+    public String getHumanValue(String sKey){
+        if (XML_DIRECTORY_PARENT.equals(sKey)){
+            Directory dParent = DirectoryManager.getDirectory(getValue(sKey)); 
+            return dParent.getFio().getAbsolutePath();
+        }
+        if (XML_DEVICE.equals(sKey)){
+            return DeviceManager.getDevice(getValue(sKey)).getName();
+        }
+        else{//default
+            return getValue(sKey);
+        }
+    }
     
 }

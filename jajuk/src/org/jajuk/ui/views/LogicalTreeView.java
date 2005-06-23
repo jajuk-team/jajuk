@@ -307,6 +307,9 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
         jtree.addTreeSelectionListener(new TreeSelectionListener() {
             public void valueChanged(TreeSelectionEvent e) {
                 TreePath[] tpSelected = jtree.getSelectionModel().getSelectionPaths();
+                if (tpSelected == null){
+                    return;
+                }
                 //disable menus that are realated to only one item
                 if (tpSelected.length != 1){
                     jmiStyleProperties.setEnabled(false);
@@ -351,7 +354,10 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
         MouseListener ml = new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
                 TreePath path = jtree.getPathForLocation(e.getX(), e.getY());
-                if ( e.getClickCount() == 2){
+                if (path == null){
+                    return;
+                }
+                if ( e.getClickCount() == 2 ){
                     Object o = path.getLastPathComponent();
                     if (o instanceof TrackNode){
                         Track track = ((TrackNode)o).getTrack();
@@ -648,21 +654,21 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
             Object o = jtree.getPathForRow(i).getLastPathComponent(); 
             if ( o instanceof StyleNode){
                 Style style = ((StyleNode)o).getStyle();
-                String sExp = style.getProperty(XML_EXPANDED); 
+                String sExp = style.getValue(XML_EXPANDED); 
                 if ( "y".equals(sExp)){ //$NON-NLS-1$
                     jtree.expandRow(i);	
                 }
             }
             else if ( o instanceof AuthorNode){
                 Author author = ((AuthorNode)o).getAuthor();
-                String sExp = author.getProperty(XML_EXPANDED); 
+                String sExp = author.getValue(XML_EXPANDED); 
                 if ( "y".equals(sExp)){ //$NON-NLS-1$
                     jtree.expandRow(i);	
                 }
             }
             else if ( o instanceof AlbumNode){
                 Album album = ((AlbumNode)o).getAlbum();
-                String sExp = album.getProperty(XML_EXPANDED); 
+                String sExp = album.getValue(XML_EXPANDED); 
                 if ( "y".equals(sExp)){ //$NON-NLS-1$
                     jtree.expandRow(i);	
                 }

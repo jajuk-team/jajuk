@@ -27,7 +27,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.MD5Processor;
 
 /**
@@ -35,9 +34,11 @@ import org.jajuk.util.MD5Processor;
  * @author Bertrand Florat 
  * @created 17 oct. 2003
  */
-public class TrackManager implements ITechnicalStrings {
+public class TrackManager extends ItemManager{
 	/** Tracks collection maps: ID -> track* */
 	static HashMap hmTracks = new HashMap(100);
+    /**Self instance*/
+    static TrackManager singleton;
 	
 	/**
 	 * No constructor available, only static access
@@ -45,6 +46,16 @@ public class TrackManager implements ITechnicalStrings {
 	private TrackManager() {
 		super();
 	}
+    
+    /**
+     * @return singleton
+     */
+    public static ItemManager getInstance(){
+      if (singleton == null){
+          singleton = new TrackManager();
+      }
+        return singleton;
+    }
 
 	/**
 	 * Register an Track
@@ -159,5 +170,49 @@ public class TrackManager implements ITechnicalStrings {
 		sb.setCharAt(0, Character.toUpperCase(c));
 		return sb.toString();
 	}
+    
+    /* (non-Javadoc)
+     * @see org.jajuk.base.ItemManager#getIdentifier()
+     */
+    public String getIdentifier() {
+        return XML_TRACKS;
+    }    
+    
+    /* (non-Javadoc)
+     * @see org.jajuk.base.ItemManager#applyNewProperty()
+     */
+    public void applyNewProperty(String sProperty){
+        Iterator it = getTracks().iterator();
+        while (it.hasNext()){
+            IPropertyable item = (IPropertyable)it.next();
+            item.setProperty(sProperty,null);
+        }
+    }   
 
+     /* (non-Javadoc)
+     * @see org.jajuk.base.ItemManager#applyRemoveProperty(java.lang.String)
+     */
+    public void applyRemoveProperty(String sProperty) {
+        Iterator it = getTracks().iterator();
+        while (it.hasNext()){
+            IPropertyable item = (IPropertyable)it.next();
+            item.removeProperty(sProperty);
+        }
+    }
+    
+    /**
+     * Get tracks properties (all the same)
+     * @return
+     */
+    public static ArrayList getTracksProperties(){
+        Track track = null;
+        if (getTracks().size() > 0){
+            track = (Track)TrackManager.getTracks().get(0);
+        }
+        else{
+            track = new Track("","",null,null,null,0,"",null); 
+        }
+        return (ArrayList)track.getProperties().keys();
+    }
+    
 }

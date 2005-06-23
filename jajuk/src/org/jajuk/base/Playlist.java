@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.jajuk.i18n.Messages;
+import org.jajuk.util.Util;
 
 /**
  *  A playlist
@@ -113,7 +114,7 @@ public class Playlist extends PropertyAdapter implements Comparable{
 			alPlaylistFiles.add(plFile);
             String sPlaylistFiles = plFile.getId();
             if (this.containsProperty(XML_PLAYLIST_FILES)){
-                sPlaylistFiles += ","+getProperty(XML_PLAYLIST_FILES); //add previous playlist files 
+                sPlaylistFiles += ","+getValue(XML_PLAYLIST_FILES); //add previous playlist files 
             }
             setProperty(XML_PLAYLIST_FILES,sPlaylistFiles);
 		}
@@ -174,7 +175,7 @@ public class Playlist extends PropertyAdapter implements Comparable{
      * Get item description
      */
     public String getDesc(){
-        return "<HTML><b>"+Messages.getString("Type.playlist")+" : "+getName()+"</b><HTML>";
+        return Util.formatPropertyDesc(Messages.getString("Item_Playlist")+" : "+getName());
     }
     
 /* (non-Javadoc)

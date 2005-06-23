@@ -33,16 +33,29 @@ import org.jajuk.util.MD5Processor;
  * @Author    Bertrand Florat
  * @created    17 oct. 2003
  */
-public class AlbumManager {
+public class AlbumManager extends ItemManager{
 	/**Albums collection**/
 	static HashMap hmAlbums = new HashMap(100);
+    
+    /**Self instance*/
+    static AlbumManager singleton;
 
 	/**
 	 * No constructor available, only static access
 	 */
 	private AlbumManager() {
-		super();
-	}
+    }
+    
+  /**
+     * @return singleton
+     */
+    public static ItemManager getInstance(){
+      if (singleton == null){
+          singleton = new AlbumManager();
+      }
+        return singleton;
+    }
+    
 
 	/**
 	 * Register an Album
@@ -129,5 +142,34 @@ public class AlbumManager {
 			sb.setCharAt(0,Character.toUpperCase(c));
 			return sb.toString();
 		}
+
+    /* (non-Javadoc)
+     * @see org.jajuk.base.ItemManager#getIdentifier()
+     */
+    public String getIdentifier() {
+        return XML_ALBUMS;
+    }
+    
+    /* (non-Javadoc)
+     * @see org.jajuk.base.ItemManager#applyNewProperty()
+     */
+    public void applyNewProperty(String sProperty){
+        Iterator it = getAlbums().iterator();
+        while (it.hasNext()){
+            IPropertyable item = (IPropertyable)it.next();
+            item.setProperty(sProperty,null);
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see org.jajuk.base.ItemManager#applyRemoveProperty(java.lang.String)
+     */
+    public void applyRemoveProperty(String sProperty) {
+        Iterator it = getAlbums().iterator();
+        while (it.hasNext()){
+            IPropertyable item = (IPropertyable)it.next();
+            item.removeProperty(sProperty);
+        }
+    }
 	
 }

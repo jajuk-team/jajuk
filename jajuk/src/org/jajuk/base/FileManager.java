@@ -31,7 +31,6 @@ import java.util.TreeSet;
 
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.SequentialMap;
 import org.jajuk.util.log.Log;
 
@@ -40,7 +39,7 @@ import org.jajuk.util.log.Log;
  * @Author Bertrand Florat 
  * @created 17 oct. 2003
  */
-public class FileManager implements ITechnicalStrings{
+public class FileManager extends ItemManager{
 	/** Files collection : id-> file*/ 
 	private static HashMap hmIdFile = new HashMap(1000);
 	/** Map ids and properties, survives to a refresh, is used to recover old properties after refresh */
@@ -53,6 +52,8 @@ public class FileManager implements ITechnicalStrings{
     private static ArrayList alNovelties = new ArrayList(20);
     /**Sorted files*/
 	private static ArrayList alSortedFiles = new ArrayList(1000);
+    /**Self instance*/
+    static FileManager singleton;
 	
 	/**
 	 * No constructor available, only static access
@@ -61,6 +62,16 @@ public class FileManager implements ITechnicalStrings{
 		super();
 	}
 
+    /**
+     * @return singleton
+     */
+    public static ItemManager getInstance(){
+      if (singleton == null){
+          singleton = new FileManager();
+      }
+        return singleton;
+    }
+    
 	/**
 	 * Register an File with a known id
 	 * 
@@ -520,7 +531,34 @@ public class FileManager implements ITechnicalStrings{
 	public static void setRateHasChanged(boolean rateHasChanged) {
 		bRateHasChanged = rateHasChanged;
 	}
+    
+	/* (non-Javadoc)
+     * @see org.jajuk.base.ItemManager#getIdentifier()
+     */
+    public String getIdentifier() {
+        return XML_FILES;
+    }
 
+    /* (non-Javadoc)
+     * @see org.jajuk.base.ItemManager#applyNewProperty()
+     */
+    public void applyNewProperty(String sProperty){
+        Iterator it = getFiles().iterator();
+        while (it.hasNext()){
+            IPropertyable item = (IPropertyable)it.next();
+            item.setProperty(sProperty,null);
+        }
+    }
+     /* (non-Javadoc)
+     * @see org.jajuk.base.ItemManager#applyRemoveProperty(java.lang.String)
+     */
+    public void applyRemoveProperty(String sProperty) {
+        Iterator it = getFiles().iterator();
+        while (it.hasNext()){
+            IPropertyable item = (IPropertyable)it.next();
+            item.removeProperty(sProperty);
+        }
+    }
 }
 
 /** File score*/
@@ -569,5 +607,7 @@ class FileScore implements Comparable{
 		}
 		return 0;
 	}
-
+ 
+    
+    
 }

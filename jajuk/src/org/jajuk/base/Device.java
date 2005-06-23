@@ -320,7 +320,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	        iNbDeletedFiles = 0;
 	        lVolume = 0;
 	        //check this device is synchronized
-	        String sIdSrc = getProperty(DEVICE_OPTION_SYNCHRO_SOURCE); 
+	        String sIdSrc = getValue(DEVICE_OPTION_SYNCHRO_SOURCE); 
 	        if ( sIdSrc == null || sIdSrc.equals(getId())){  //cannot synchro with itself
 	            return;
 	        }
@@ -338,7 +338,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	            refresh(false); //refresh this device if needed
 	        }
 	        //if it is bidirectional, make an additional sync from this device to the source one
-	        if ( DEVICE_OPTION_SYNCHRO_MODE_BI.equals(getProperty(DEVICE_OPTION_SYNCHRO_MODE))){
+	        if ( DEVICE_OPTION_SYNCHRO_MODE_BI.equals(getValue(DEVICE_OPTION_SYNCHRO_MODE))){
 	            iNbCreatedFilesSrc = synchronizeUnidirectonal(this,dSrc);
 	            if ( iNbCreatedFilesSrc > 0){
 	                dSrc.refresh(false);  //refresh source device if needed
@@ -377,7 +377,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 		while ( it.hasNext()){
 			Directory dir = (Directory)it.next();
 			if ( dir.getDevice().equals(dSrc)){
-				if (  "n".equals(dir.getProperty(DIRECTORY_OPTION_SYNCHRO_MODE))){  //don't take desynchronized dirs into account //$NON-NLS-1$
+				if (  "n".equals(dir.getValue(DIRECTORY_OPTION_SYNCHRO_MODE))){  //don't take desynchronized dirs into account //$NON-NLS-1$
 					hsDesynchroPaths.add(dir.getRelativePath());
 				}
 				else{
@@ -390,7 +390,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 		while ( it.hasNext()){
 			Directory dir = (Directory)it.next();
 			if ( dir.getDevice().equals(dest)){
-				if (  "n".equals(dir.getProperty(DIRECTORY_OPTION_SYNCHRO_MODE))){  //don't take desynchronized dirs into account //$NON-NLS-1$
+				if (  "n".equals(dir.getValue(DIRECTORY_OPTION_SYNCHRO_MODE))){  //don't take desynchronized dirs into account //$NON-NLS-1$
 					hsDesynchroPaths.add(dir.getRelativePath());
 				}
 				else{
@@ -773,7 +773,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
      * Get item description
      */
     public String getDesc(){
-        return "<HTML><b>"+Messages.getString("PhysicalTableView.12")+" : "+getName()+"</b><HTML>";
+        return Util.formatPropertyDesc(Messages.getString("Item_Device")+" : "+getName());
     }
     
 /* (non-Javadoc)
@@ -784,7 +784,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
             return false;
         }
         else if (XML_NAME.equals(sProperty)){
-            return true;
+            return false;
         }
         else if (XML_TYPE.equals(sProperty)){
             return false;
@@ -802,12 +802,26 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
             return true;
         }
         else if (XML_EXPANDED.equals(sProperty)){
-            return true;
+            return false;
         }
          else{
             return true;
         }
     }    
+    
+   
+    /* (non-Javadoc)
+     * @see org.jajuk.base.IPropertyable#getHumanValue(java.lang.String)
+     */
+    public String getHumanValue(String sKey){
+        if (XML_TYPE.equals(sKey)){
+            int iType = Integer.parseInt(getValue(sKey));
+            return DeviceManager.getDeviceType(iType);
+        }
+        else{//default
+            return getValue(sKey);
+        }
+    }
 
 	
 }

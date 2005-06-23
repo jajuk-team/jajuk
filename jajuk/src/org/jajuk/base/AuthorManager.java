@@ -32,9 +32,12 @@ import org.jajuk.util.MD5Processor;
  * @author Bertrand Florat 
  * @created 17 oct. 2003
  */
-public class AuthorManager {
+public class AuthorManager extends ItemManager{
 	/** Authors collection* */
 	static HashMap hmAuthors = new HashMap(100);
+
+	/**Self instance*/
+    static AuthorManager singleton;
 
 	/**
 	 * No constructor available, only static access
@@ -42,6 +45,17 @@ public class AuthorManager {
 	private AuthorManager() {
 		super();
 	}
+    
+/**
+     * @return singleton
+     */
+    public static ItemManager getInstance(){
+      if (singleton == null){
+          singleton = new AuthorManager();
+      }
+        return singleton;
+    }
+  
 
 	/**
 	 * Register an author
@@ -143,4 +157,31 @@ public class AuthorManager {
 		return sb.toString();
 	}
 
+ /* (non-Javadoc)
+     * @see org.jajuk.base.ItemManager#getIdentifier()
+     */
+    public String getIdentifier() {
+        return XML_AUTHORS;
+    }
+    
+    /* (non-Javadoc)
+     * @see org.jajuk.base.ItemManager#applyNewProperty()
+     */
+    public void applyNewProperty(String sProperty){
+        Iterator it = getAuthors().iterator();
+        while (it.hasNext()){
+            IPropertyable item = (IPropertyable)it.next();
+            item.setProperty(sProperty,null);
+        }
+    }
+     /* (non-Javadoc)
+     * @see org.jajuk.base.ItemManager#applyRemoveProperty(java.lang.String)
+     */
+    public void applyRemoveProperty(String sProperty) {
+        Iterator it = getAuthors().iterator();
+        while (it.hasNext()){
+            IPropertyable item = (IPropertyable)it.next();
+            item.removeProperty(sProperty);
+        }
+    }
 }

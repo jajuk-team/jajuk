@@ -20,20 +20,17 @@
 
 package org.jajuk.ui;
 
-import java.awt.FlowLayout;
+import info.clearthought.layout.TableLayout;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Enumeration;
+import java.util.ArrayList;
 import java.util.Iterator;
 
-import javax.swing.BoxLayout;
-import javax.swing.DefaultListSelectionModel;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.table.TableColumn;
 
 import org.jajuk.base.PropertyAdapter;
 import org.jajuk.i18n.Messages;
@@ -57,7 +54,7 @@ public class PropertiesWizard extends JFrame implements ITechnicalStrings, Actio
     JLabel jlDesc;
     
     /** Properties table */
-    JajukTable jTable;
+    JajukTable jtable;
 
     /** Item to show */
     PropertyAdapter pa;
@@ -65,10 +62,8 @@ public class PropertiesWizard extends JFrame implements ITechnicalStrings, Actio
     /** Table model */
     PropertiesTableModel ptmodel;
     
- JPanel jpButtons;
-    JButton jbOk;
-    JButton jbCancel;
-
+    OKCancelPanel okp;
+ 
     /**
      * Constructor
      * 
@@ -76,44 +71,32 @@ public class PropertiesWizard extends JFrame implements ITechnicalStrings, Actio
      *            the item to display
      */
     public PropertiesWizard(PropertyAdapter pa) {
-        super(pa.getProperty(XML_NAME));
+        super(pa.getValue(XML_NAME));
         setIconImage(Util.getIcon(ICON_LOGO).getImage());
+        setVisible(true);
         this.pa = pa;
-        jpTable = new JPanel();
         int iX_SEPARATOR = 5;
         int iY_SEPARATOR = 10;
-        populateTable();
-        jTable = new JajukTable(ptmodel);
-        jTable.setRowHeight(20);
-        jTable.setSelectionMode(DefaultListSelectionModel.MULTIPLE_INTERVAL_SELECTION); //multi-row selection
-        Enumeration enumeration = jTable.getColumnModel().getColumns();
-        JajukCellRender jcr = new JajukCellRender();
-        while (enumeration.hasMoreElements()){
-            TableColumn col = (TableColumn)enumeration.nextElement();
-            col.setCellRenderer(jcr);
-        }
-        jpTable.add(new JScrollPane(jTable));
         //desc
         jlDesc = new JLabel(pa.getDesc());
         //buttons
-        jpButtons = new JPanel();
-        jpButtons.setLayout(new FlowLayout(FlowLayout.CENTER));
-        jbOk = new JButton(Messages.getString("OK")); //$NON-NLS-1$
-        jbOk.setEnabled(false);
-        jbOk.addActionListener(this);
-        jbCancel = new JButton(Messages.getString("Cancel")); //$NON-NLS-1$
-        jbCancel.addActionListener(this);
-        jpButtons.add(jbOk);
-        jpButtons.add(jbCancel);
+        okp = new OKCancelPanel(this);
+        okp.getOKButton().setEnabled(false);
         //add panels
         jpMain = new JPanel();
-        jpMain.setLayout(new BoxLayout(jpMain, BoxLayout.Y_AXIS));
-        jpMain.add(jlDesc);
-        jpMain.add(jpTable);
-        jpMain.add(jpButtons);
+        double[][] dSize = {{0.99},
+        {40,iY_SEPARATOR,0.99,iY_SEPARATOR,20}};
+        jpMain.setLayout(new TableLayout(dSize));
+        populateTable();
+        jtable = new JajukTable(ptmodel);
+        jtable.setRowHeight(20);
+        jpMain.add(jlDesc,"0,0");
+        jpMain.add(new JScrollPane(jtable),"0,2");
+        jpMain.add(okp,"0,4");
         add(jpMain);
+        jtable.packAll();
         pack();
-        setVisible(true);
+        Util.setShuffleLocation(this,400,400);
     }
 
     /*
@@ -122,7 +105,7 @@ public class PropertiesWizard extends JFrame implements ITechnicalStrings, Actio
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource() == jbCancel){
+        if(e.getSource() == okp.getCancelButton()){
             dispose();
         }
     }
@@ -130,31 +113,51 @@ public class PropertiesWizard extends JFrame implements ITechnicalStrings, Actio
     /** Fill the tree */
     public void populateTable() {
         // col number
-        int iColNum = 2;
+        int iColNum = 3;
         // Columns names
         String[] sColName = new String[] {
-                Messages.getString("PropertiesWizard.1"), Messages.getString("PropertiesWizard.2")}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ 
+                Messages.getString("PropertiesWizard.1"), //$NON-NLS-1$
+                Messages.getString("PropertiesWizard.2"),//$NON-NLS-2$
+                Messages.getString("PropertiesWizard.3")};  //$NON-NLS-3$ 
         // Values
-        SequentialMap properties = pa.getProperties();
-        int iSize = properties.size();
-        Iterator it = properties.keys().iterator();
-        Object[][] oValues = new Object[iSize][iColNum + 1];
-        for (int i = 0; it.hasNext(); i++) {
-            String sProperty = (String) it.next();
-            oValues[i][0] = sProperty;
-            oValues[i][1] = properties.get(sProperty);
+        //set ignored attributes we won't display
+        ArrayList alIgnored = new ArrayList(10);
+        alIgnored.add(XML_ID);//ID
+        alIgnored.add(XML_EXPANDED);//expanded state
+        alIgnored.add(XML_HASHCODE);//hashcode
+        SequentialMap propertiesOrig = pa.getProperties();
+        ArrayList properties = new ArrayList(10); //properties after cleaning
+        //remove hiden attributes
+        Iterator it  = propertiesOrig.keys().iterator();
+        int ignored = 0;
+        while (it.hasNext()){
+            String sProperty = (String)it.next();
+            if (!alIgnored.contains(sProperty)){
+                properties.add(sProperty);
+            }
+            else{
+                ignored ++;
+            }
         }
-        // edtiable table and class
-        boolean[][] bCellEditable = new boolean[8][iSize];
-        for (int i = 0; i < iColNum; i++) {
-            for (int j = 0; j < iSize; j++) {
-                bCellEditable[i][j] = false;
+        int iSize = propertiesOrig.size()-ignored;
+        it = properties.iterator();
+        Object[][] oValues = new Object[iSize][iColNum];
+        for (int i = 0; it.hasNext(); i++) { //we don't display first attribute (ID)
+            String sKey = (String) it.next();
+            oValues[i][0] = Messages.getInstance().contains("Property_"+sKey)?
+                    Messages.getString("Property_"+sKey):sKey; //check if property name is translated (for custom properties)
+            oValues[i][1] = pa.getHumanValue(sKey);
+            if (pa.isPropertyEditable(sKey)){
+                oValues[i][2] = Util.getIcon(ICON_EDIT);    
+            }
+            else{
+                oValues[i][2] = Util.getIcon(ICON_NO_EDIT);
             }
         }
         // model creation
-        ptmodel = new PropertiesTableModel(iColNum, bCellEditable, sColName, pa);
+        ptmodel = new PropertiesTableModel(iColNum,  sColName, pa);
         ptmodel.setValues(oValues);
-        ptmodel.fireTableDataChanged();
     }
 
-   }
+}
+

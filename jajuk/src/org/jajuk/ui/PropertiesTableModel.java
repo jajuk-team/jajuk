@@ -24,7 +24,6 @@ import javax.swing.table.AbstractTableModel;
 
 import org.jajuk.base.IPropertyable;
 import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Util;
 
 /**
  *  Table model used for properties table
@@ -38,9 +37,6 @@ public class PropertiesTableModel extends AbstractTableModel implements ITechnic
 	
 	/**Rows number*/
 	protected int iRowNum;
-	
-	/**Cell editable table**/
-	protected boolean[][] bCellEditable;
 	
 	/**Values table**/
 	protected Object[][] oValues;
@@ -57,9 +53,8 @@ public class PropertiesTableModel extends AbstractTableModel implements ITechnic
 	 * @param bCellEditable cell editability
 	 * @param sColName columns names
 	 */
-	public PropertiesTableModel(int iColNum,boolean[][] bCellEditable,String[] sColName,IPropertyable pa){
+	public PropertiesTableModel(int iColNum,String[] sColName,IPropertyable pa){
 		this.iColNum = iColNum;
-		this.bCellEditable = bCellEditable;
 		this.sColName = sColName;
         this.pa = pa;
 	}
@@ -88,21 +83,7 @@ public class PropertiesTableModel extends AbstractTableModel implements ITechnic
 	}
 	
 	public synchronized Object getValueAt(int rowIndex, int columnIndex) {
-		String s = (String)oValues[rowIndex][columnIndex];
-        IconLabel il = null;
-        if (columnIndex == 0){//property value
-            return new IconLabel(null,s,null,null,null,s);
-        }
-        else if (columnIndex == 1){ //property name
-            if (isCellEditable(rowIndex,columnIndex)){
-                il = new IconLabel(Util.getIcon(ICON_OK),s,null,null,null,s);
-            }
-            else{
-                il = new IconLabel(Util.getIcon(ICON_KO),s,null,null,null,s);
-            }
-            return il;
-        }
-        return new IconLabel(null,s,null,null,null,s);
+            return oValues[rowIndex][columnIndex];
    }
 	
 	public  synchronized void setValueAt(Object oValue, int rowIndex, int columnIndex) {

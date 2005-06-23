@@ -24,6 +24,7 @@ import java.util.Collections;
 import java.util.Iterator;
 
 import org.jajuk.i18n.Messages;
+import org.jajuk.util.Util;
 
 /**
  *  An author
@@ -142,7 +143,7 @@ public class Author extends PropertyAdapter implements Comparable{
 	 * Get item description
 	 */
 	public String getDesc(){
-	    return "<HTML><b>"+Messages.getString("LogicalTableView.3")+" : "+getName2()+"</b><HTML>";
+	    return Util.formatPropertyDesc(Messages.getString("Item_Author")+" : "+getName2());
 	}
 	
 /* (non-Javadoc)
@@ -162,5 +163,17 @@ public class Author extends PropertyAdapter implements Comparable{
             return true;
         }
     }    
+    
+/* (non-Javadoc)
+     * @see org.jajuk.base.IPropertyable#getHumanValue(java.lang.String)
+     */
+    public String getHumanValue(String sKey){
+        if (XML_NAME.equals(sKey)){
+            return getName2();
+        }
+        else{//default
+            return getValue(sKey);
+        }
+    }
 
 }

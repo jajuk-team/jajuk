@@ -170,6 +170,16 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
                 fsw.pack();
                 fsw.setVisible(true);
             }
+            else if(EVENT_CREATE_PROPERTY.equals(e.getActionCommand())){
+                NewPropertyWizard npw = new NewPropertyWizard();
+                npw.pack();
+                npw.setVisible(true);
+            }
+            else if(EVENT_DELETE_PROPERTY.equals(e.getActionCommand())){
+                RemovePropertyWizard rpw = new RemovePropertyWizard();
+                rpw.pack();
+                rpw.setVisible(true);
+            }
 		}
 		catch(Throwable e2){
 			Log.error(e2);

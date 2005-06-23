@@ -74,7 +74,8 @@ public interface ITechnicalStrings {
 	public static final String UNKNOWN_ALBUM = "unknown_album";
 	public static final String UNKNOWN_STYLE = "unknown_style";
 	public static final String UNKNOWN_QUALITY = "unknown_quality";
-	
+	public static final String UNKNOWN_YEAR = "unknown_year";
+    	
 	// icons
 	public static final String ICON_LOGO = PATH_ICONS + "64x64/jajuk-logo.png";
 	public static final String ICON_LOGO_TRAY = PATH_ICONS + "22x22/jajuk-logo.png";
@@ -184,6 +185,8 @@ public interface ITechnicalStrings {
     public static final String ICON_TYPE_AU = PATH_ICONS + "16x16/type_wav.png";
     public static final String ICON_TYPE_AIFF = PATH_ICONS + "16x16/type_wav.png";
     public static final String ICON_TYPE_WAV = PATH_ICONS + "16x16/type_wav.png";
+    public static final String ICON_NO_EDIT = PATH_ICONS + "16x16/stop.png";
+    public static final String ICON_EDIT = PATH_ICONS + "16x16/edit.png";
     		
 	//images
 	public static final String IMAGES_SPLASHSCREEN =  PATH_IMAGES + "jajuk-splashscreen.png";
@@ -325,6 +328,10 @@ public interface ITechnicalStrings {
     public static final String EVENT_CLEAR_HISTORY="clear history"; //clear history
     public static final String EVENT_WIZARD="launch wizard"; //launch first time wizard
     public static final String EVENT_VOLUME_CHANGED="volume changed"; //volume changed
+    public static final String EVENT_CREATE_PROPERTY="create property"; //create a new property
+    public static final String EVENT_DELETE_PROPERTY="delete property"; //delete property
+    public static final String EVENT_CUSTOM_PROPERTIES_ADD="custom property add"; //new custom property
+    public static final String EVENT_CUSTOM_PROPERTIES_REMOVE="custom property remove"; //remove custom property
     
 	//details keys
 	public static final String DETAIL_CURRENT_FILE_ID="current file id";
@@ -342,6 +349,7 @@ public interface ITechnicalStrings {
 	public static final String DETAIL_ENABLE="enable";
 	public static final String DETAIL_ORIGIN="origin";
     public static final String DETAIL_REASON="reason";
+    public static final String DETAIL_CONTENT="content";
     			
 	//Look and feel
 	public static final String LNF_METAL = "Metal";
@@ -437,6 +445,8 @@ public interface ITechnicalStrings {
     public static final String CONF_BUFFER_SIZE = "jajuk.buffer_size"; //data buffer size in bytes
     public static final String CONF_AUDIO_BUFFER_SIZE = "jajuk.audio_buffer_size"; //Audio buffer size in bytes
     public static final String CONF_WINDOW_POSITION = "jajuk.window_position"; //Window position and size
+    public static final String CONF_PHYSICAL_TABLE_COLUMNS = "jajuk.ui.physical_table_columns"; //Physical table columns
+    public static final String CONF_LOGICAL_TABLE_COLUMNS = "jajuk.ui.logical_table_columns"; //Logical table columns
     	
 	//Accuracy levels
 	public static final String ACCURACY_LOW = "low";

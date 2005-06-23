@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.log.Log;
 
 /**
@@ -33,15 +32,27 @@ import org.jajuk.util.log.Log;
  * @author     Bertrand Florat
  * @created    12 oct. 2003
  */
-public class TypeManager implements ITechnicalStrings{
+public class TypeManager extends ItemManager{
 
 	static HashMap hmSupportedTypes = new HashMap(5);
+    /**Self instance*/
+    static TypeManager singleton;
 
 	/**
 	 * No constructor available, only static access
 	 */
 	private TypeManager() {
 	}
+
+    /**
+     * @return singleton
+     */
+    public static ItemManager getInstance(){
+      if (singleton == null){
+          singleton = new TypeManager();
+      }
+        return singleton;
+    }
 
 	/**
 	 * Register a type jajuk can read
@@ -117,7 +128,7 @@ public class TypeManager implements ITechnicalStrings{
 		Iterator it = hmSupportedTypes.values().iterator();
 		while (it.hasNext()){
 			Type type = (Type)it.next();
-			if (type.getProperty(XML_TYPE_TECH_DESC).equalsIgnoreCase(sTechDesc)){
+			if (type.getValue(XML_TYPE_TECH_DESC).equalsIgnoreCase(sTechDesc)){
 				return type;
 			}
 		}
@@ -133,7 +144,7 @@ public class TypeManager implements ITechnicalStrings{
 		Iterator it = hmSupportedTypes.values().iterator();
 		while (it.hasNext()){
 			Type type = (Type)it.next();
-			if (TRUE.equals(type.getProperty(XML_TYPE_IS_MUSIC))){
+			if (TRUE.equals(type.getValue(XML_TYPE_IS_MUSIC))){
 				alResu.add(type);
 			}
 		}
@@ -154,5 +165,34 @@ public class TypeManager implements ITechnicalStrings{
 		sb.deleteCharAt(sb.length() - 1); //remove last ','
 		return sb.toString();
 	}
+    
+	/* (non-Javadoc)
+     * @see org.jajuk.base.ItemManager#getIdentifier()
+     */
+    public String getIdentifier() {
+        return XML_TYPES;
+    }
 
+    /* (non-Javadoc)
+     * @see org.jajuk.base.ItemManager#applyNewProperty()
+     */
+    public void applyNewProperty(String sProperty){
+        Iterator it = getTypes().iterator();
+        while (it.hasNext()){
+            IPropertyable item = (IPropertyable)it.next();
+            item.setProperty(sProperty,null);
+        }
+    }    
+    
+    
+     /* (non-Javadoc)
+     * @see org.jajuk.base.ItemManager#applyRemoveProperty(java.lang.String)
+     */
+    public void applyRemoveProperty(String sProperty) {
+        Iterator it = getTypes().iterator();
+        while (it.hasNext()){
+            IPropertyable item = (IPropertyable)it.next();
+            item.removeProperty(sProperty);
+        }
+    }
 }

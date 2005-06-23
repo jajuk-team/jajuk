@@ -103,6 +103,7 @@ public class SequentialMap {
         return null;
     }
     
+    
     /* (non-Javadoc)
      * @see java.util.Map#get(java.lang.Object)
      */
@@ -110,6 +111,11 @@ public class SequentialMap {
         return (String)get(sKey);
     }
 
+    public String getPropertyAt(int index) {
+        return (String)alKeys.get(index);
+    }
+
+    
     /* (non-Javadoc)
      * @see java.util.Map#remove(java.lang.Object)
      */

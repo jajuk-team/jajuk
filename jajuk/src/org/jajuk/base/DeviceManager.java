@@ -30,7 +30,6 @@ import javax.swing.JOptionPane;
 
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.Util;
 
@@ -39,18 +38,31 @@ import org.jajuk.util.Util;
  * @Author    Bertrand Florat
  * @created    17 oct. 2003
  */
-public class DeviceManager implements ITechnicalStrings{
+public class DeviceManager extends ItemManager{
 	/**Device collection**/
 	static HashMap hDevices = new HashMap(100);
 	/**Supported device types names*/
 	static private ArrayList alDevicesTypes = new ArrayList(10);
-	
+	/**Self instance*/
+    static DeviceManager singleton;
+
 	/**
 	 * No constructor available, only static access
 	 */
 	private DeviceManager() {
 		super();
 	}
+    
+/**
+     * @return singleton
+     */
+    public static ItemManager getInstance(){
+      if (singleton == null){
+          singleton = new DeviceManager();
+      }
+        return singleton;
+    }
+  
 
 	/**
 	 * Register a device
@@ -233,7 +245,7 @@ public class DeviceManager implements ITechnicalStrings{
 		while (it.hasNext()){
 			Device deviceToCheck = (Device)it.next();
 			if (deviceToCheck.containsProperty(DEVICE_OPTION_SYNCHRO_SOURCE)){
-			    String sSyncSource = deviceToCheck.getProperty(DEVICE_OPTION_SYNCHRO_SOURCE);
+			    String sSyncSource = deviceToCheck.getValue(DEVICE_OPTION_SYNCHRO_SOURCE);
 			    if ( sSyncSource.equals(device.getId())){
 			        deviceToCheck.removeProperty(DEVICE_OPTION_SYNCHRO_SOURCE);
                 }
@@ -286,5 +298,34 @@ public class DeviceManager implements ITechnicalStrings{
 	    }
 	    hDevices.clear();
 	}
+    
+ /* (non-Javadoc)
+     * @see org.jajuk.base.ItemManager#getIdentifier()
+     */
+    public String getIdentifier() {
+        return XML_DEVICES;
+    }
+    
+    /* (non-Javadoc)
+     * @see org.jajuk.base.ItemManager#applyNewProperty()
+     */
+    public void applyNewProperty(String sProperty){
+        Iterator it = getDevices();
+        while (it.hasNext()){
+            IPropertyable item = (IPropertyable)it.next();
+            item.setProperty(sProperty,null);
+        }
+    }
+    
+     /* (non-Javadoc)
+     * @see org.jajuk.base.ItemManager#applyRemoveProperty(java.lang.String)
+     */
+    public void applyRemoveProperty(String sProperty) {
+        Iterator it = getDevices();
+        while (it.hasNext()){
+            IPropertyable item = (IPropertyable)it.next();
+            item.removeProperty(sProperty);
+        }
+    }
 
 }

@@ -574,7 +574,7 @@ public class Util implements ITechnicalStrings {
 	 * @return whether the given filename is an absolute default cover
 	 */
 	public static boolean isAbsoluteDefaultCover(Directory directory,String sFilename){
-	    String sDefault = directory.getProperty("default_cover"); //$NON-NLS-1$
+	    String sDefault = directory.getValue("default_cover"); //$NON-NLS-1$
 	    if (sDefault != null && sDefault.equals(sFilename)){
 	        return true;
 	    }
@@ -930,5 +930,26 @@ public class Util implements ITechnicalStrings {
             }
         }
     }
+    
+    /**
+     * Formater for properties dialog window
+     * @param sDesc
+     * @return
+     */
+    public static String formatPropertyDesc(String sDesc){
+        return "<HTML><center><b><font size=+2 color=#ffffdd>"+
+        sDesc +
+        "</font></b><HTML>";
+    }
  
+    
+    /**
+     * Display given container at given position
+     * @param container
+     * @param iFromTop max number of pixels from top
+     * @param iFromLeft max number of pixels from left
+     */
+    public static void setShuffleLocation(Window window,int iFromTop,int iFromLeft){
+        window.setLocation((int)(Math.random()*iFromTop),(int)(Math.random()*iFromLeft));
+    }
 }

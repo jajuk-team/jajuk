@@ -26,6 +26,7 @@ import java.util.Iterator;
 
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.Util;
 
 /**
  *  A track
@@ -204,6 +205,18 @@ public class Track extends PropertyAdapter implements Comparable{
 	public String getYear() {
 		return sYear;
 	}
+    
+	/**
+     * Return year, dealing with unkwnown for any language
+     * @return year
+     *  */
+    public String getYear2() {
+        String sOut = getYear();
+        if (sOut.equals(UNKNOWN_YEAR)){ 
+            sOut = Messages.getString(UNKNOWN_YEAR); 
+        }
+        return sOut;
+    }
 
 	/**
 	 * @return length in sec
@@ -272,7 +285,7 @@ public class Track extends PropertyAdapter implements Comparable{
 		alFiles.add(file);	
         String sFiles = file.getId();
         if (this.containsProperty(XML_FILES)){ //already some files 
-            sFiles += ","+getProperty(XML_FILES);
+            sFiles += ","+getValue(XML_FILES);
         }
         setProperty(XML_FILES,sFiles);
 	}
@@ -411,7 +424,7 @@ public class Track extends PropertyAdapter implements Comparable{
      * Get item description
      */
     public String getDesc(){
-        return "<HTML><b>"+Messages.getString("LogicalTableView.1")+" : "+getName()+"</b><HTML>";
+        return Util.formatPropertyDesc(Messages.getString("Item_Track")+" : "+getName());
     }
 
     /* (non-Javadoc)
@@ -459,6 +472,47 @@ public class Track extends PropertyAdapter implements Comparable{
         }
         else{
             return true;
+        }
+    }
+    
+    
+/* (non-Javadoc)
+     * @see org.jajuk.base.IPropertyable#getHumanValue(java.lang.String)
+     */
+    public String getHumanValue(String sKey){
+        if (XML_ALBUM.equals(sKey)){
+            return AlbumManager.getAlbum(getValue(sKey)).getName2();
+        }
+        else if (XML_AUTHOR.equals(sKey)){
+            return AuthorManager.getAuthor(getValue(sKey)).getName2();
+        }
+        else if (XML_STYLE.equals(sKey)){
+            return StyleManager.getStyle(getValue(sKey)).getName2();
+        }
+        else if (XML_TRACK_LENGTH.equals(sKey)){
+            return Util.formatTimeBySec(length,false);
+        }
+        else if (XML_TYPE.equals(sKey)){
+            return TypeManager.getType(getValue(sKey)).getName();
+        }
+        else if (XML_TRACK_YEAR.equals(sKey)){
+            return getYear2();
+        }
+        else if (XML_FILES.equals(sKey)){
+            StringBuffer sbOut = new StringBuffer();
+            Iterator it = alFiles.iterator();
+            while (it.hasNext()){
+                File file = (File)it.next();
+                sbOut.append(file.getAbsolutePath()+",");
+            }
+            sbOut.substring(0,sbOut.length()-1); //remove last ','
+            return sbOut.toString();
+        }
+        else if (XML_TRACK_ADDED.equals(sKey)){
+            return sAdditionDate.substring(0,4)+"/"+sAdditionDate.substring(4,6)+"/"+sAdditionDate.substring(6,8);
+        }
+        else{//default
+            return getValue(sKey);
         }
     }
 }

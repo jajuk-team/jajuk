@@ -297,9 +297,9 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         jmenuDev.add(jmiDevSynchronize);
         jmenuDev.add(jmiDevTest);
         jmenuDev.add(jmiDevCreatePlaylist);
-        jmenuDev.add(jmiDevProperties);
         jmenuDev.add(jmiDevConfiguration);
-        
+        jmenuDev.add(jmiDevProperties);
+         
         //Playlist file menu
         //File menu
         jmenuPlaylistFile = new JPopupMenu();
@@ -436,7 +436,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
                 else if (value instanceof DirectoryNode){
                     setBorder(null);
                     Directory dir = ((DirectoryNode)value).getDirectory();
-                    String synchro = dir.getProperty(DIRECTORY_OPTION_SYNCHRO_MODE);
+                    String synchro = dir.getValue(DIRECTORY_OPTION_SYNCHRO_MODE);
                     if ( synchro == null || "y".equals(synchro)){  //means this device is not synchronized //$NON-NLS-1$
                         setIcon(Util.getIcon(ICON_DIRECTORY_SYNCHRO));
                     }
@@ -630,7 +630,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
                             return;
                         }
                         Device device =  ((DeviceNode)paths[0].getLastPathComponent()).getDevice();	
-                        if ( device.getProperty(DEVICE_OPTION_SYNCHRO_SOURCE) == null){ //if the device is not synchronized
+                        if ( device.getValue(DEVICE_OPTION_SYNCHRO_SOURCE) == null){ //if the device is not synchronized
                             jmiDevSynchronize.setEnabled(false);
                         }
                         else{
@@ -954,14 +954,14 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
             if ( o instanceof DeviceNode 
                     && ((DeviceNode)o).getDevice().isMounted()){  
                 Device device = ((DeviceNode)o).getDevice();
-                String sExp = device.getProperty(XML_EXPANDED); 
+                String sExp = device.getValue(XML_EXPANDED); 
                 if ( "y".equals(sExp)){ //$NON-NLS-1$
                     jtree.expandRow(i);	
                 }
             }
             else if ( o instanceof DirectoryNode){
                 Directory dir = ((DirectoryNode)o).getDirectory();
-                String sExp = dir.getProperty(XML_EXPANDED); 
+                String sExp = dir.getValue(XML_EXPANDED); 
                 if ( "y".equals(sExp)){ //$NON-NLS-1$
                     jtree.expandRow(i);	
                 }

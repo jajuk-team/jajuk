@@ -32,9 +32,11 @@ import org.jajuk.util.MD5Processor;
  * @author Bertrand Florat 
  * @created 17 oct. 2003
  */
-public class StyleManager {
+public class StyleManager extends ItemManager {
 	/** Styles collection* */
 	static HashMap hmStyles = new HashMap(10);
+    /**Self instance*/
+    static StyleManager singleton;
 
 	/**
 	 * No constructor available, only static access
@@ -42,6 +44,16 @@ public class StyleManager {
 	private StyleManager() {
 		super();
 	}
+
+    /**
+     * @return singleton
+     */
+    public static ItemManager getInstance(){
+      if (singleton == null){
+          singleton = new StyleManager();
+      }
+        return singleton;
+    }
 
 	/**
 	 * Register a style
@@ -142,6 +154,33 @@ public class StyleManager {
 		return (Style) hmStyles.get(sId);
 	}
 	
-	
+ /* (non-Javadoc)
+     * @see org.jajuk.base.ItemManager#getIdentifier()
+     */
+    public String getIdentifier() {
+        return XML_STYLES;
+    }
+
+    /* (non-Javadoc)
+     * @see org.jajuk.base.ItemManager#applyNewProperty()
+     */
+    public void applyNewProperty(String sProperty){
+        Iterator it = getStyles().iterator();
+        while (it.hasNext()){
+            IPropertyable item = (IPropertyable)it.next();
+            item.setProperty(sProperty,null);
+        }
+    }
+    
+     /* (non-Javadoc)
+     * @see org.jajuk.base.ItemManager#applyRemoveProperty(java.lang.String)
+     */
+    public void applyRemoveProperty(String sProperty) {
+        Iterator it = getStyles().iterator();
+        while (it.hasNext()){
+            IPropertyable item = (IPropertyable)it.next();
+            item.removeProperty(sProperty);
+        }
+    }
 
 }

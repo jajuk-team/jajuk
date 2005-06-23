@@ -21,13 +21,16 @@
 package org.jajuk.ui;
 
 import java.awt.event.MouseEvent;
+import java.util.Iterator;
 
 import javax.swing.JTable;
+import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
 import org.jajuk.util.ITechnicalStrings;
-
-import com.sun.TableSorter;
+import org.jdesktop.swingx.JXTable;
+import org.jdesktop.swingx.table.DefaultTableColumnModelExt;
+import org.jdesktop.swingx.table.TableColumnExt;
 
 /**
  *  JTable with followinf features: 
@@ -36,24 +39,36 @@ import com.sun.TableSorter;
  * @author     Bertrand Florat
  * @created    21 feb. 2004
  */
-public class JajukTable extends JTable implements ITechnicalStrings{
+public class JajukTable extends JXTable implements ITechnicalStrings{
 	
-	/** Table sorter*/
-	TableSorter ts;
-
 	/**
 	 * Constructor
 	 * @param model : model to use
 	 * @param bSortable : is this table sortable
 	 * */
-	public JajukTable(TableModel model,boolean bSortable) {
-		super(new TableSorter(model));
-		if ( bSortable ){
-			ts = (TableSorter)getModel();
-			ts.addMouseListenerToHeaderInTable(this);
-		}
+	public JajukTable(TableModel model,TableColumnModel colModel, boolean bSortable) {
+		super(model,colModel);
+		init(bSortable);
 	}
 	
+    /**
+     * Constructor
+     * @param model : model to use
+     * @param bSortable : is this table sortable
+     * */
+    public JajukTable(TableModel model,boolean bSortable) {
+        super(model);
+        init(bSortable);
+    }
+    
+    private void init(boolean bSortable){
+        super.setSortable(bSortable);
+        super.setColumnControlVisible(true);
+        setRolloverEnabled(true);
+        setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+        packAll();   
+    }
+    
 	/**
 	 * Constructor
 	 * @param model : model to use
@@ -61,8 +76,28 @@ public class JajukTable extends JTable implements ITechnicalStrings{
 	public JajukTable(TableModel model) {
 		this(model,true);
 	}
-	
-	
+    
+    
+	public int getRowModelIndex(int row){
+       return  convertRowIndexToModel(row);
+    }
+    
+    public Object getModelValueAt(int row,int col){
+        int i = getRowModelIndex(row);
+        return getModel().getValueAt(i,col);
+    }
+    
+    public void setModel(TableModel model){
+        Iterator it = ((DefaultTableColumnModelExt)getColumnModel()).getAllColumns().iterator();
+        while (it.hasNext()){
+            TableColumnExt col = (TableColumnExt)it.next();
+            removeColumn(col);
+        }
+        super.setModel(model);
+    }
+    
+    
+    
 	/**
 	 * add tooltips to each cell
 	*/
@@ -71,12 +106,11 @@ public class JajukTable extends JTable implements ITechnicalStrings{
 		java.awt.Point p = e.getPoint();
 		int rowIndex = rowAtPoint(p);
 		int colIndex = columnAtPoint(p);
-		int realColumnIndex = convertColumnIndexToModel(colIndex);
 		TableModel model = getModel();
 		if (rowIndex < 0 || colIndex < 0){
 			return null;
 		}
-		Object o = model.getValueAt(rowIndex,colIndex);
+		Object o = getModel().getValueAt(convertRowIndexToModel(rowIndex),convertColumnIndexToModel(colIndex));
 		if (o == null){
 		    return null;
 		}
@@ -88,12 +122,6 @@ public class JajukTable extends JTable implements ITechnicalStrings{
 		}
 	}
 	
-	/**
-	 * @return Returns the sorting model.
-	 */
-	public TableSorter getSortingModel() {
-		return ts;
-	}
 	
 }
 

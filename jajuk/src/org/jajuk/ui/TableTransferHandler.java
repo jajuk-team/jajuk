@@ -31,12 +31,8 @@ import java.awt.dnd.DragSourceListener;
 import java.awt.dnd.DropTarget;
 import java.awt.dnd.DropTargetDragEvent;
 
-import javax.swing.JTable;
-
 import org.jajuk.base.FileManager;
 import org.jajuk.base.TrackManager;
-
-import com.sun.TableSorter;
 
 /**
  *  DND handler for table
@@ -46,11 +42,11 @@ import com.sun.TableSorter;
  
  public class TableTransferHandler implements DragGestureListener, DragSourceListener {
 	
-	private JTable jtable;
+	private JajukTable jtable;
 	private DragSource dragSource; // dragsource
 	private DropTarget dropTarget; //droptarget
 	
-	public TableTransferHandler(JTable jtable, int action) {
+	public TableTransferHandler(JajukTable jtable, int action) {
 		this.jtable = jtable;
 		dragSource = new DragSource();
 		dragSource.createDefaultDragGestureRecognizer(jtable, action, this);
@@ -113,11 +109,12 @@ import com.sun.TableSorter;
 	
 	/* Methods for DragGestureListener */
 	public final void dragGestureRecognized(DragGestureEvent dge) {
-        TableSorter ts = ((JajukTable)jtable).getSortingModel();
         //try to find a track for this id
-	    Object o = TrackManager.getTrack(ts.getValueAt(jtable.getSelectedRow(),jtable.getColumnCount()).toString());
+        int iSelectedRow = jtable.getSelectedRow(); //selected row in view
+        iSelectedRow = jtable.getRowModelIndex(iSelectedRow); //selected row in model
+        Object o = TrackManager.getTrack(jtable.getModel().getValueAt(iSelectedRow,0).toString());
 		if ( o  == null){ //no? try to find a file for this id
-			o = FileManager.getFileById(ts.getValueAt(jtable.getSelectedRow(),jtable.getColumnCount()).toString());
+			o = FileManager.getFileById(jtable.getModel().getValueAt(iSelectedRow,0).toString());
 		}
 		if ( o != null){
 			dragSource.startDrag(dge, DragSource.DefaultMoveNoDrop ,new TransferableTableRow(o), this);

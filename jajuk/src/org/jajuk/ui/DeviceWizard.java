@@ -271,7 +271,7 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 		jcbRefresh.setEnabled(false); //no instant refresh for updates
 		jcbRefresh.setSelected(false);
 		jcbAutoMount.setSelected(true);
-		if (TRUE.equals(device.getProperty(DEVICE_OPTION_AUTO_MOUNT))){
+		if (TRUE.equals(device.getValue(DEVICE_OPTION_AUTO_MOUNT))){
 			jcbAutoMount.setSelected(true);
 			jcbAutoRefresh.setEnabled(true); //refresh at startup is only if it is auto-mounted
 		}
@@ -279,7 +279,7 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 		    jcbAutoMount.setSelected(false);
 			jcbAutoRefresh.setEnabled(false); //refresh at startup is only if it is auto-mounted
 		}
-		if (TRUE.equals(device.getProperty(DEVICE_OPTION_AUTO_REFRESH))){
+		if (TRUE.equals(device.getValue(DEVICE_OPTION_AUTO_REFRESH))){
 			jcbAutoRefresh.setSelected(true);
 		}
 		else{
@@ -291,14 +291,14 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 			jrbBidirSynchro.setEnabled(false);
 		}
 		if (device.containsProperty(DEVICE_OPTION_SYNCHRO_SOURCE)){
-			String sSynchroSource = device.getProperty(DEVICE_OPTION_SYNCHRO_SOURCE);
+			String sSynchroSource = device.getValue(DEVICE_OPTION_SYNCHRO_SOURCE);
             jrbBidirSynchro.setEnabled(true);
 			jrbUnidirSynchro.setEnabled(true);
 			jcboxSynchronized.setSelected(true);
 			jcboxSynchronized.setEnabled(true);
 			jcbSynchronized.setEnabled(true);
 			jcbSynchronized.setSelectedIndex(alDevices.indexOf(DeviceManager.getDevice(sSynchroSource)));
-			if (DEVICE_OPTION_SYNCHRO_MODE_BI.equals(device.getProperty(DEVICE_OPTION_SYNCHRO_MODE))){
+			if (DEVICE_OPTION_SYNCHRO_MODE_BI.equals(device.getValue(DEVICE_OPTION_SYNCHRO_MODE))){
 				jrbBidirSynchro.setSelected(true);
 			}
 			else{

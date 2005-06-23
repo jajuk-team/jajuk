@@ -34,11 +34,13 @@ import org.jajuk.util.log.Log;
  * @Author Bertrand Florat 
  * @created 17 oct. 2003
  */
-public class PlaylistFileManager {
+public class PlaylistFileManager extends ItemManager{
 	/** PlaylistFiles collection* */
 	static HashMap hmPlaylistFiles = new HashMap(100);
 	/** Map ids and properties, survives to a refresh, is used to recover old properties after refresh */
 	static HashMap hmIdProperties = new HashMap(100);
+    /**Self instance*/
+    static PlaylistFileManager singleton;
 	
 	/**
 	 * No constructor available, only static access
@@ -47,6 +49,17 @@ public class PlaylistFileManager {
 		super();
 	}
 
+    /**
+     * @return singleton
+     */
+    public static ItemManager getInstance(){
+      if (singleton == null){
+          singleton = new PlaylistFileManager();
+      }
+        return singleton;
+    }
+    
+    
 	/**
 	 * Register an PlaylistFile with a known id
 	 * 
@@ -121,4 +134,32 @@ public class PlaylistFileManager {
 		return (Properties)hmIdProperties.get(sId);
 	}
 
+ /* (non-Javadoc)
+     * @see org.jajuk.base.ItemManager#getIdentifier()
+     */
+    public String getIdentifier() {
+        return XML_PLAYLIST_FILES;
+    }
+    
+    /* (non-Javadoc)
+     * @see org.jajuk.base.ItemManager#applyNewProperty()
+     */
+    public void applyNewProperty(String sProperty){
+        Iterator it = getPlaylistFiles().iterator();
+        while (it.hasNext()){
+            IPropertyable item = (IPropertyable)it.next();
+            item.setProperty(sProperty,null);
+        }
+    }   
+    
+     /* (non-Javadoc)
+     * @see org.jajuk.base.ItemManager#applyRemoveProperty(java.lang.String)
+     */
+    public void applyRemoveProperty(String sProperty) {
+        Iterator it = getPlaylistFiles().iterator();
+        while (it.hasNext()){
+            IPropertyable item = (IPropertyable)it.next();
+            item.removeProperty(sProperty);
+        }
+    }
 }

@@ -19,6 +19,7 @@
  */
 package org.jajuk.ui;
 
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.HashMap;
@@ -27,6 +28,7 @@ import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
 import org.jajuk.i18n.Messages;
@@ -79,13 +81,16 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings{
 				
 		//Properties menu
 		properties = new JMenu(Messages.getString("JajukJMenuBar.5")); //$NON-NLS-1$
-		jmiNewProperty = new JMenuItem(Messages.getString("JajukJMenuBar.6"),Util.getIcon(ICON_NEW)); //$NON-NLS-1$
-		jmiNewProperty.setEnabled(false);
-		jmiDeleteProperty = new JMenuItem(Messages.getString("JajukJMenuBar.7"),Util.getIcon(ICON_DELETE)); //$NON-NLS-1$
-		jmiDeleteProperty.setEnabled(false);
-		properties.add(jmiNewProperty);
+		jmiNewProperty = new JMenuItem(Messages.getString("JajukJMenuBar.6"),Util.getIcon(ICON_NEW));
+        jmiNewProperty.addActionListener(JajukListener.getInstance());
+        jmiNewProperty.setActionCommand(EVENT_CREATE_PROPERTY);
+        JPanel jpNewProperty = new JPanel();
+        jmiNewProperty.setLayout(new FlowLayout(FlowLayout.LEFT));
+        jmiDeleteProperty = new JMenuItem(Messages.getString("JajukJMenuBar.7"),Util.getIcon(ICON_DELETE)); //$NON-NLS-1$
+		jmiDeleteProperty.addActionListener(JajukListener.getInstance());
+        jmiDeleteProperty.setActionCommand(EVENT_DELETE_PROPERTY);
+        properties.add(jmiNewProperty);
 		properties.add(jmiDeleteProperty);
-		properties.addSeparator();
 		
 		//View menu
 		views = new JMenu(Messages.getString("JajukJMenuBar.8")); //$NON-NLS-1$
@@ -146,6 +151,4 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings{
 		}
 		return jjmb;
 	}
-
-
 }

@@ -630,7 +630,7 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
      * Get item description
      */
     public String getDesc(){
-        return "<HTML><b>"+Messages.getString("Item_Playlist_File")+" : "+getName()+"</b><HTML>";
+        return Util.formatPropertyDesc(Messages.getString("Item_Playlist_File")+" : "+getName());
     }
     
 /* (non-Javadoc)
@@ -657,5 +657,17 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
         }
     }    
 
+/* (non-Javadoc)
+     * @see org.jajuk.base.IPropertyable#getHumanValue(java.lang.String)
+     */
+    public String getHumanValue(String sKey){
+        if (XML_DIRECTORY.equals(sKey)){
+            Directory dParent = DirectoryManager.getDirectory(getValue(sKey)); 
+            return dParent.getFio().getAbsolutePath();
+        }
+        else{//default
+            return getValue(sKey);
+        }
+    }
     
 }

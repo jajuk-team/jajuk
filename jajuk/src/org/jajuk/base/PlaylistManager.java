@@ -24,16 +24,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import org.jajuk.util.ITechnicalStrings;
-
 /**
  *  Convenient class to manage playlists
  * @Author    Bertrand Florat
  * @created    17 oct. 2003
  */
-public class PlaylistManager implements ITechnicalStrings{
+public class PlaylistManager extends ItemManager{
 	/**Playlists collection**/
 	static HashMap hmPlaylists = new HashMap(100);
+    /**Self instance*/
+    static PlaylistManager singleton;
 
 	/**
 	 * No constructor available, only static access
@@ -42,6 +42,17 @@ public class PlaylistManager implements ITechnicalStrings{
 		super();
 	}
 
+    /**
+     * @return singleton
+     */
+    public static ItemManager getInstance(){
+      if (singleton == null){
+          singleton = new PlaylistManager();
+      }
+        return singleton;
+    }
+    
+    
 	/**
 	 * Register an Playlist
 	 *@param file : playlist file
@@ -103,6 +114,34 @@ public class PlaylistManager implements ITechnicalStrings{
 	public static Playlist getPlaylist(String sId) {
 		return (Playlist) hmPlaylists.get(sId);
 	}
+    
+/* (non-Javadoc)
+     * @see org.jajuk.base.ItemManager#getIdentifier()
+     */
+    public String getIdentifier() {
+        return XML_PLAYLISTS;
+    }
+    
+    /* (non-Javadoc)
+     * @see org.jajuk.base.ItemManager#applyNewProperty()
+     */
+    public void applyNewProperty(String sProperty){
+        Iterator it = getPlaylists().iterator();
+        while (it.hasNext()){
+            IPropertyable item = (IPropertyable)it.next();
+            item.setProperty(sProperty,null);
+        }
+    }    
 
+     /* (non-Javadoc)
+     * @see org.jajuk.base.ItemManager#applyRemoveProperty(java.lang.String)
+     */
+    public void applyRemoveProperty(String sProperty) {
+        Iterator it = getPlaylists().iterator();
+        while (it.hasNext()){
+            IPropertyable item = (IPropertyable)it.next();
+            item.removeProperty(sProperty);
+        }
+    }
 	
 }

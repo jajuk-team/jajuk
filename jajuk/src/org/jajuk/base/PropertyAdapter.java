@@ -85,7 +85,7 @@ abstract public class PropertyAdapter implements IPropertyable, ITechnicalString
 	 * 
 	 * @see org.jajuk.base.Propertyable#getProperty(java.lang.String)
 	 */
-	public String getProperty(String sKey) {
+	public String getValue(String sKey) {
 		if ( sKey == null ){
 			return null;
 		}
@@ -218,4 +218,11 @@ abstract public class PropertyAdapter implements IPropertyable, ITechnicalString
      */
     abstract public boolean isPropertyEditable(String sProperty);
 	
+    /**
+     * Default implementation for this method, simply return standard value
+     */
+    public String getHumanValue(String sKey){
+        return getValue(sKey);
+    }
+    
 }

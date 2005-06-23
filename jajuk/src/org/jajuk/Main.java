@@ -232,9 +232,9 @@ public class Main implements ITechnicalStrings {
 							org.jajuk.util.ConfigurationManager.commit();
                             //commit history
 							History.commit();
-							//commit perspectives
+                          	//commit perspectives
 							PerspectiveManager.commit();
-							//commit collection if not refreshing ( fix for 939816 )
+							//Commit collection if not refreshing ( fix for 939816 )
 							if ( !DeviceManager.isAnyDeviceRefreshing()){
 								Collection.commit(FILE_COLLECTION_EXIT);
                                 //create a proof file
@@ -571,7 +571,7 @@ public class Main implements ITechnicalStrings {
 		Iterator it = DeviceManager.getDevices();
 		while (it.hasNext()){
 			Device device = (Device)it.next();
-			if (TRUE.equals(device.getProperty(DEVICE_OPTION_AUTO_MOUNT))){
+			if (TRUE.equals(device.getValue(DEVICE_OPTION_AUTO_MOUNT))){
 				try{
 					device.mount();
 				}
@@ -594,7 +594,7 @@ public class Main implements ITechnicalStrings {
 		Iterator it = DeviceManager.getDevices();
 		while (it.hasNext()){
 			Device device = (Device)it.next();
-			if (TRUE.equals(device.getProperty(DEVICE_OPTION_AUTO_REFRESH)) && device.isMounted()){
+			if (TRUE.equals(device.getValue(DEVICE_OPTION_AUTO_REFRESH)) && device.isMounted()){
 			    device.refresh(true);
 			}
 		}

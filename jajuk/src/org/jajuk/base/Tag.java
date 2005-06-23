@@ -83,14 +83,14 @@ public class Tag implements ITechnicalStrings{
 	 */
 	public String getAlbumName() {
 		if (tagImpl == null){  //if the type doesn't support tags ( like wav )
-			return "unknown_album"; //$NON-NLS-1$
+			return UNKNOWN_ALBUM; //$NON-NLS-1$
 		}
 		String sAlbumlName = null;
 		String sTemp = ""; //$NON-NLS-1$
 		try {
 			sTemp = tagImpl.getAlbumName().trim();
-			if (Messages.getString("unknown_album").equals(sTemp)){  //it is done to avoid duplicates unknown albums if the tag is the real string "unknown" in the current language  //$NON-NLS-1$
-					sAlbumlName = "unknown_album"; //$NON-NLS-1$
+			if (Messages.getString(UNKNOWN_ALBUM).equals(sTemp)){  //it is done to avoid duplicates unknown albums if the tag is the real string "unknown" in the current language  //$NON-NLS-1$
+					sAlbumlName = UNKNOWN_ALBUM; //$NON-NLS-1$
 			}
 			else if (!"".equals(sTemp)){ //$NON-NLS-1$
 				sAlbumlName = sTemp;
@@ -103,7 +103,7 @@ public class Tag implements ITechnicalStrings{
 				sAlbumlName = fio.getParentFile().getName(); //if album is not found, take current dirtectory as album name
 			}
 			else{
-				sAlbumlName = Messages.getString("unknown_album");  //album inconnu //$NON-NLS-1$
+				sAlbumlName = Messages.getString(UNKNOWN_ALBUM);  //album inconnu //$NON-NLS-1$
 			}
 		}
 		sAlbumlName = Util.formatTag(sAlbumlName);
@@ -114,7 +114,7 @@ public class Tag implements ITechnicalStrings{
 	 * @return author name
 	 */
 	public String getAuthorName() {
-		String sAuthorName = "unknown_author"; //$NON-NLS-1$
+		String sAuthorName = UNKNOWN_AUTHOR; //$NON-NLS-1$
 		//if the type doesn't support tags ( like wav )
 		if (tagImpl == null){  
 			return sAuthorName;
@@ -122,8 +122,8 @@ public class Tag implements ITechnicalStrings{
 		String sTemp = ""; //$NON-NLS-1$
 		try {
 			sTemp = tagImpl.getAuthorName().trim();
-			if (Messages.getString("unknown_author").equals(sTemp)){  //it is done to avoid duplicates unknown authors if the tag is the real string "unknown" in the current language  //$NON-NLS-1$
-				sAuthorName = "unknown_author"; //$NON-NLS-1$
+			if (Messages.getString(UNKNOWN_AUTHOR).equals(sTemp)){  //it is done to avoid duplicates unknown authors if the tag is the real string "unknown" in the current language  //$NON-NLS-1$
+				sAuthorName = UNKNOWN_AUTHOR; //$NON-NLS-1$
 			}
 			else if (!"".equals(sTemp)){ //$NON-NLS-1$
 				sAuthorName = Util.formatTag(sTemp);
@@ -140,7 +140,7 @@ public class Tag implements ITechnicalStrings{
 	 * @return style name
 	 */
 	public String getStyleName() {
-		String style = "unknown_style"; //$NON-NLS-1$
+		String style = UNKNOWN_STYLE; //$NON-NLS-1$
 		//if the type doesn't support tags ( like wav )
 		if (tagImpl == null){  
 			return style;
@@ -148,8 +148,8 @@ public class Tag implements ITechnicalStrings{
 		String sTemp = ""; //$NON-NLS-1$
 		try {
 			sTemp = tagImpl.getStyleName().trim();
-			if (Messages.getString("unknown_style").equals(sTemp)){  //it is done to avoid duplicates unknown styles if the tag is the real string "unknown" in the current language  //$NON-NLS-1$
-				style = "unknown_style"; //$NON-NLS-1$
+			if (Messages.getString(UNKNOWN_STYLE).equals(sTemp)){  //it is done to avoid duplicates unknown styles if the tag is the real string "unknown" in the current language  //$NON-NLS-1$
+				style = UNKNOWN_STYLE; //$NON-NLS-1$
 			}
 			else if (!"".equals(sTemp)){ //$NON-NLS-1$
 				if( sTemp.equals("unknown")){ //$NON-NLS-1$
@@ -185,7 +185,7 @@ public class Tag implements ITechnicalStrings{
 	 * @return creation year
 	 */
 	public String getYear() {
-		String sYear = "unknown_year"; //$NON-NLS-1$
+		String sYear = UNKNOWN_YEAR; //$NON-NLS-1$
 		//if the type doesn't support tags ( like wav )
 		if (tagImpl == null){  
 			return sYear;

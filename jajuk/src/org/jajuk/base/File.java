@@ -22,6 +22,7 @@ package org.jajuk.base;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Util;
 
 
 /**
@@ -293,7 +294,7 @@ public class File extends PropertyAdapter implements Comparable,ITechnicalString
      * Get item description
      */
     public String getDesc(){
-        return "<HTML><b>"+Messages.getString("PhysicalTableView.13")+" : "+getName()+"</b><HTML>";
+        return Util.formatPropertyDesc(Messages.getString("Item_File")+" : "+getName());
     }
     
 /* (non-Javadoc)
@@ -324,7 +325,29 @@ public class File extends PropertyAdapter implements Comparable,ITechnicalString
          else{
             return true;
         }
-    }    
+    }  
+    
+/* (non-Javadoc)
+     * @see org.jajuk.base.IPropertyable#getHumanValue(java.lang.String)
+     */
+    public String getHumanValue(String sKey){
+        if (XML_DIRECTORY.equals(sKey)){
+            Directory dParent = DirectoryManager.getDirectory(getValue(sKey)); 
+            return dParent.getFio().getAbsolutePath();
+        }
+        else if (XML_TRACK.equals(sKey)){
+            return getTrack().getName();
+        }
+        else if (XML_SIZE.equals(sKey)){
+            return (lSize/1048576)+Messages.getString("PhysicalTreeView.54");
+        }
+        else if (XML_QUALITY.equals(sKey)){
+            return getQuality2()+Messages.getString("FIFO.13");
+        }
+        else{//default
+            return getValue(sKey);
+        }
+    }
 
 
 }

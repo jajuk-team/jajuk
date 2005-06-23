@@ -34,13 +34,15 @@ import org.jajuk.util.SequentialMap;
  * @Author Bertrand Florat 
  * @created 17 oct. 2003
  */
-public class DirectoryManager {
+public class DirectoryManager extends ItemManager{
 	/** Directories collection stored in a arraylist to conserve creation order when parsing at startup* */
 	static ArrayList alDirectories = new ArrayList(100);
 	/** Directories collection ID */
 	static ArrayList alIds = new ArrayList(100);
 	/** Map ids and properties, survives to a refresh, is used to recover old properties after refresh */
 	static HashMap hmIdProperties = new HashMap(100);
+    /**Self instance*/
+    static DirectoryManager singleton;
 
 	/**
 	 * No constructor available, only static access
@@ -48,6 +50,17 @@ public class DirectoryManager {
 	private DirectoryManager() {
 		super();
 	}
+    
+	/**
+     * @return singleton
+     */
+    public static ItemManager getInstance(){
+      if (singleton == null){
+          singleton = new DirectoryManager();
+      }
+        return singleton;
+    }
+  
 
 	/**
 	 * Register a directory
@@ -162,5 +175,34 @@ public class DirectoryManager {
 	public static synchronized Properties getProperties(String sId){
 		return (Properties)hmIdProperties.get(sId);
 	}
+    
+ /* (non-Javadoc)
+     * @see org.jajuk.base.ItemManager#getIdentifier()
+     */
+    public String getIdentifier() {
+        return XML_DIRECTORIES;
+    }
 
+    /* (non-Javadoc)
+     * @see org.jajuk.base.ItemManager#applyNewProperty()
+     */
+    public void applyNewProperty(String sProperty){
+        Iterator it = getDirectories().iterator();
+        while (it.hasNext()){
+            IPropertyable item = (IPropertyable)it.next();
+            item.setProperty(sProperty,null);
+        }
+    }
+    
+     /* (non-Javadoc)
+     * @see org.jajuk.base.ItemManager#applyRemoveProperty(java.lang.String)
+     */
+    public void applyRemoveProperty(String sProperty) {
+        Iterator it = getDirectories().iterator();
+        while (it.hasNext()){
+            IPropertyable item = (IPropertyable)it.next();
+            item.removeProperty(sProperty);
+        }
+    }
+    
 }
