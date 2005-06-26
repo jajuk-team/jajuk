@@ -224,7 +224,9 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
 		trayIcon.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				//hide menu if opened
-				jmenu.setVisible(false);
+				if (jmenu != null && jmenu.isVisible()){
+				    jmenu.setVisible(false);
+                }
 				//show window if it is not visible and hide it if it is visible
 				if (!JajukWindow.getInstance().isVisible()){
 					JajukWindow.getInstance().setShown(true);
@@ -395,7 +397,7 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
 		    }
 		    trayIcon.setToolTip(sOut);
 		    trayIcon.displayMessage("Lanching:",sOut,TrayIcon.INFO_MESSAGE_TYPE);
-		}
+    	}
 		else if( EVENT_PLAYER_STOP.equals(subject) || EVENT_ZERO.equals(subject)){
 		    jmiPause.setEnabled(false);
 			jmiStop.setEnabled(false);

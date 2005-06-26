@@ -26,5 +26,6 @@
 	<classpathentry kind="lib" path="lib/looks-1.2.2.jar"/>
 	<classpathentry kind="lib" path="lib/jdic.jar"/>
 	<classpathentry kind="lib" path="lib/swingx.jar"/>
+	<classpathentry kind="lib" path="lib/retroweaver-rt.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

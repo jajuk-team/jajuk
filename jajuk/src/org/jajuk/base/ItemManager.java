@@ -120,4 +120,46 @@ public abstract class ItemManager implements ITechnicalStrings{
         }
     }
     
+    /**
+     *  Get Item with a given attribute name and ID   
+     * @param sItem
+     * @param sID
+     * @return
+     */
+    public static IPropertyable getItemByID(String sItem,String sID){
+        if (XML_DEVICE.equals(sItem)){
+            return DeviceManager.getDevice(sID);
+        }
+        else if (XML_TRACK.equals(sItem)){
+            return TrackManager.getTrack(sID);
+        }
+        else if (XML_ALBUM.equals(sItem)){
+            return AlbumManager.getAlbum(sID);
+        }
+        else if (XML_AUTHOR.equals(sItem)){
+            return AuthorManager.getAuthor(sID);
+        }
+        else if (XML_STYLE.equals(sItem)){
+            return StyleManager.getStyle(sID);
+        }
+        else if (XML_DIRECTORY.equals(sItem)){
+            return DirectoryManager.getDirectory(sID);
+        }
+        else if (XML_FILE.equals(sItem)){
+            return FileManager.getFileById(sID);
+        }
+        else if (XML_PLAYLIST_FILE.equals(sItem)){
+            return PlaylistFileManager.getPlaylistFile(sID);
+        }
+        else if (XML_PLAYLIST.equals(sItem)){
+            return PlaylistManager.getPlaylist(sID);
+        }
+        else if (XML_TYPE.equals(sItem)){
+            return TypeManager.getType(sID);
+        }
+        else{
+            return null;
+        }
+    }
+    
 }

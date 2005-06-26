@@ -20,10 +20,17 @@
 
 package org.jajuk.ui;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import javax.swing.table.AbstractTableModel;
 
+import org.jajuk.base.Device;
 import org.jajuk.base.IPropertyable;
+import org.jajuk.i18n.Messages;
 import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.SequentialMap;
+import org.jajuk.util.Util;
 
 /**
  *  Table model used for properties table
@@ -53,11 +60,61 @@ public class PropertiesTableModel extends AbstractTableModel implements ITechnic
 	 * @param bCellEditable cell editability
 	 * @param sColName columns names
 	 */
-	public PropertiesTableModel(int iColNum,String[] sColName,IPropertyable pa){
-		this.iColNum = iColNum;
-		this.sColName = sColName;
-        this.pa = pa;
-	}
+	public PropertiesTableModel(IPropertyable pa){
+		this.iColNum = 4;
+	    this.pa = pa;
+        // Columns names
+        this.sColName= new String[] {
+                Messages.getString("PropertiesWizard.3"), //$NON-NLS-1$
+                Messages.getString("PropertiesWizard.1"),//$NON-NLS-2$
+                Messages.getString("PropertiesWizard.2"),//$NON-NLS-2$
+                Messages.getString("PropertiesWizard.4")};  //$NON-NLS-3$ 
+        // Values
+        //set ignored attributes we won't display
+        ArrayList alIgnored = new ArrayList(10);
+        alIgnored.add(XML_ID);//ID
+        alIgnored.add(XML_EXPANDED);//expanded state
+        alIgnored.add(XML_HASHCODE);//hashcode
+        SequentialMap propertiesOrig = pa.getProperties();
+        ArrayList properties = new ArrayList(10); //properties after cleaning
+        //remove hiden attributes
+        Iterator it  = propertiesOrig.keys().iterator();
+        int ignored = 0;
+        while (it.hasNext()){
+            String sProperty = (String)it.next();
+            if (!alIgnored.contains(sProperty)){
+                properties.add(sProperty);
+            }
+            else{
+                ignored ++;
+            }
+        }
+        iRowNum = propertiesOrig.size()-ignored;
+        it = properties.iterator();
+        oValues = new Object[iRowNum][iColNum+2]; //two hidden columns for attribute name and ID element if any
+        for (int i = 0; it.hasNext(); i++) { //we don't display first attribute (ID)
+            String sKey = (String) it.next();
+            if (pa.isPropertyEditable(sKey)){
+                oValues[i][0] = Util.getIcon(ICON_EDIT);    
+            }
+            else{
+                oValues[i][0] = Util.getIcon(ICON_NO_EDIT);
+            }
+            oValues[i][1] = Messages.getInstance().contains("Property_"+sKey)?
+                    Messages.getString("Property_"+sKey):sKey; //check if property name is translated (for custom properties)
+            oValues[i][2] = pa.getHumanValue(sKey);
+            oValues[i][4] = sKey;
+            oValues[i][5] = pa.getValue(sKey); //attrbute ID or value
+               //link 
+            if (isLinkable(i))      {
+                oValues[i][3] = Util.getIcon(ICON_PROPERTIES);
+            }
+            else{
+                oValues[i][3] = Util.getIcon(ICON_VOID);
+            }
+        }
+     }
+	
 	
 	public synchronized int getColumnCount() {
 		return iColNum;
@@ -68,8 +125,8 @@ public class PropertiesTableModel extends AbstractTableModel implements ITechnic
 	}
 	
 	public synchronized boolean isCellEditable(int rowIndex, int columnIndex) {
-		String sProperty = (String)oValues[rowIndex][0];
-        return pa.isPropertyEditable(sProperty);
+		String sProperty = (String)oValues[rowIndex][4];
+        return pa.isPropertyEditable(sProperty) && (columnIndex==2);
 	}
 	
 	public synchronized Class getColumnClass(int columnIndex) {
@@ -81,7 +138,17 @@ public class PropertiesTableModel extends AbstractTableModel implements ITechnic
 			return null;
 		}
 	}
-	
+    
+    public boolean isLinkable(int iRow){
+    String sKey = (String) getValueAt(iRow,4);
+    return sKey.equals(XML_DEVICE) || sKey.equals(XML_TRACK)
+      || sKey.equals(XML_DEVICE) || sKey.equals(XML_TRACK)
+      ||     sKey.equals(XML_ALBUM) || sKey.equals(XML_AUTHOR) || sKey.equals(XML_STYLE)
+      ||     sKey.equals(XML_DIRECTORY) || sKey.equals(XML_FILE)
+      ||     sKey.equals(XML_PLAYLIST) || sKey.equals(XML_PLAYLIST_FILE)
+      ||    ( sKey.equals(XML_TYPE) && !(pa instanceof Device)) ;   //avoid to confuse between music types and device types
+    }
+    
 	public synchronized Object getValueAt(int rowIndex, int columnIndex) {
             return oValues[rowIndex][columnIndex];
    }

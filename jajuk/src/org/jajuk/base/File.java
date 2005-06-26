@@ -19,10 +19,14 @@
  */
 package org.jajuk.base;
 
+import java.util.Iterator;
+
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.MD5Processor;
 import org.jajuk.util.Util;
+import org.jajuk.util.log.Log;
 
 
 /**
@@ -348,6 +352,56 @@ public class File extends PropertyAdapter implements Comparable,ITechnicalString
             return getValue(sKey);
         }
     }
-
+    
+    /**change a file name*/
+    public void setName(String sFilename) {
+        java.io.File fileNew = new java.io.File(fio.getParentFile().getAbsolutePath()+java.io.File.separator+sFilename);
+        //recalculate file ID
+        String sNewId = MD5Processor.hash(new StringBuffer(getDirectory().getDevice().getName())
+            .append(getDirectory().getDevice().getUrl()).append(getDirectory().getRelativePath()).
+            append(sFilename).toString());
+        File fNew = (File)this.clone();
+        fNew.setId(sId);
+        fNew.setName(sFilename);
+        //check file name and extension
+        if (fileNew.getName().lastIndexOf((int)'.') != fileNew.getName().indexOf((int)'.')//just one '.'
+                || Util.getExtension(fileNew) != Util.getExtension(fio)){ //no extension change
+            Messages.showErrorMessage("134");
+            return;
+        }
+        //check if futur file exists
+        if (fileNew.exists()){
+            Messages.showErrorMessage("134");
+            return;
+        }
+        //try to rename file on disk
+        try{
+            fio.renameTo(fileNew);
+        }
+        catch(Exception e){
+            Messages.showErrorMessage("134");
+            return;
+        }
+        //remove old references
+        getTrack().removeFile(this);
+        //search references in playlists
+        Iterator it = PlaylistFileManager.getPlaylistFiles().iterator();
+        for (int i=0; it.hasNext(); i++){
+            PlaylistFile plf = (PlaylistFile)it.next();
+            try{
+                if (plf.getFiles().contains(this)){
+                    plf.replaceFile(this,fNew);
+                }
+            }
+            catch(Exception e){
+                Log.error("017",e);
+            }
+        }
+        // search and change references to this file
+        getTrack().addFile(this);
+        super.setName(sFilename);
+        //call a refresh for UI
+        ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH));
+    }
 
 }

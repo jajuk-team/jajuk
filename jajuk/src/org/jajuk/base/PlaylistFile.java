@@ -361,6 +361,78 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 		}
 		setModified(true);
 	}
+
+    /**
+     * Remove a fiven file from the playlist (can have several occurences)
+     * @param file to drop
+     */
+    public synchronized void remove(File file){
+        if ( iType == PlaylistFileItem.PLAYLIST_TYPE_BOOKMARK){
+            Iterator it = Bookmarks.getInstance().getFiles().iterator();
+            for (int i=0; it.hasNext(); i++){
+                File fileToTest = (File)it.next();
+                if (fileToTest.equals(file)){
+                    Bookmarks.getInstance().remove(i);
+                }
+            }
+        }
+        else if ( iType == PlaylistFileItem.PLAYLIST_TYPE_QUEUE){
+            Iterator it = FIFO.getInstance().getFIFO().iterator();
+            for (int i=0; it.hasNext(); i++){
+                File fileToTest = (File)it.next();
+                if (fileToTest.equals(file)){
+                    FIFO.getInstance().remove(i,i);
+                }
+            }
+        }
+        else{
+            Iterator it = alFiles.iterator();
+            for (int i=0; it.hasNext(); i++){
+                File fileToTest = (File)it.next();
+                if (fileToTest.equals(file)){
+                    alFiles.remove(i);
+                }
+            }
+        }
+        setModified(true);
+    }
+    
+    public void replaceFile(File fOld,File fNew){
+ if ( iType == PlaylistFileItem.PLAYLIST_TYPE_BOOKMARK){
+            Iterator it = Bookmarks.getInstance().getFiles().iterator();
+            for (int i=0; it.hasNext(); i++){
+                File fileToTest = (File)it.next();
+                if (fileToTest.equals(fOld)){
+                    Bookmarks.getInstance().remove(i);
+                    Bookmarks.getInstance().addFile(i,fNew);
+                }
+            }
+        }
+        else if ( iType == PlaylistFileItem.PLAYLIST_TYPE_QUEUE){
+            Iterator it = FIFO.getInstance().getFIFO().iterator();
+            for (int i=0; it.hasNext(); i++){
+                File fileToTest = (File)it.next();
+                if (fileToTest.equals(fOld)){
+                    FIFO.getInstance().remove(i,i); //just emove
+                    ArrayList al = new ArrayList(1);
+                    al.add(fNew);
+                    FIFO.getInstance().insert(al,i);
+                }
+            }
+        }
+        else{
+            Iterator it = alFiles.iterator();
+            for (int i=0; it.hasNext(); i++){
+                File fileToTest = (File)it.next();
+                if (fileToTest.equals(fOld)){
+                    alFiles.remove(i);
+                    alFiles.add(i,fNew);
+                }
+            }
+        }
+        setModified(true);
+        
+    }
 	
 	/**
 	 * Update playlist file on disk if needed

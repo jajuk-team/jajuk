@@ -111,6 +111,7 @@ public interface ITechnicalStrings {
 	public static final String ICON_NEW=  PATH_ICONS + "16x16/new.png";
 	public static final String ICON_DELETE=  PATH_ICONS + "16x16/delete.png";
 	public static final String ICON_PROPERTIES=  PATH_ICONS + "16x16/properties.png";
+	public static final String ICON_VOID=  PATH_ICONS + "16x16/void.png";
     public static final String ICON_CONFIGURATION   = PATH_ICONS + "16x16/configure.png";
     public static final String ICON_MOUNT=  PATH_ICONS + "16x16/mount.png";
 	public static final String ICON_UNMOUNT=  PATH_ICONS + "16x16/unmount.png";

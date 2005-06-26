@@ -24,18 +24,17 @@ import info.clearthought.layout.TableLayout;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import org.jajuk.base.PropertyAdapter;
-import org.jajuk.i18n.Messages;
+import org.jajuk.base.IPropertyable;
+import org.jajuk.base.ItemManager;
 import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.SequentialMap;
 import org.jajuk.util.Util;
 
 /**
@@ -57,11 +56,9 @@ public class PropertiesWizard extends JFrame implements ITechnicalStrings, Actio
     JajukTable jtable;
 
     /** Item to show */
-    PropertyAdapter pa;
-
-    /** Table model */
-    PropertiesTableModel ptmodel;
-    
+    IPropertyable pa;
+   
+   /**OK / cancel panel*/
     OKCancelPanel okp;
  
     /**
@@ -70,7 +67,7 @@ public class PropertiesWizard extends JFrame implements ITechnicalStrings, Actio
      * @param pa
      *            the item to display
      */
-    public PropertiesWizard(PropertyAdapter pa) {
+    public PropertiesWizard(IPropertyable pa) {
         super(pa.getValue(XML_NAME));
         setIconImage(Util.getIcon(ICON_LOGO).getImage());
         setVisible(true);
@@ -87,13 +84,29 @@ public class PropertiesWizard extends JFrame implements ITechnicalStrings, Actio
         double[][] dSize = {{0.99},
         {40,iY_SEPARATOR,0.99,iY_SEPARATOR,20}};
         jpMain.setLayout(new TableLayout(dSize));
-        populateTable();
-        jtable = new JajukTable(ptmodel);
+        PropertiesTableModel model = new PropertiesTableModel(pa); 
+        jtable = new JajukTable(model);
+        jtable.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                if (jtable.getSelectedColumn() == 3){
+                    int iRow = jtable.getSelectedRow();
+                    PropertiesTableModel model =(PropertiesTableModel)jtable.getModel(); 
+                    if (model.isLinkable(iRow)){
+                        IPropertyable pa = ItemManager.getItemByID((String)model.getValueAt(iRow,4),
+                            (String)model.getValueAt(iRow,5));
+                        if (pa != null){
+                            new PropertiesWizard(pa); //show properties window for this item
+                        }
+                    }
+                }
+            }
+        });
         jtable.setRowHeight(20);
         jpMain.add(jlDesc,"0,0");
         jpMain.add(new JScrollPane(jtable),"0,2");
         jpMain.add(okp,"0,4");
-        add(jpMain);
+        getContentPane().add(jpMain);
         jtable.packAll();
         pack();
         Util.setShuffleLocation(this,400,400);
@@ -108,55 +121,6 @@ public class PropertiesWizard extends JFrame implements ITechnicalStrings, Actio
         if(e.getSource() == okp.getCancelButton()){
             dispose();
         }
-    }
-
-    /** Fill the tree */
-    public void populateTable() {
-        // col number
-        int iColNum = 3;
-        // Columns names
-        String[] sColName = new String[] {
-                Messages.getString("PropertiesWizard.1"), //$NON-NLS-1$
-                Messages.getString("PropertiesWizard.2"),//$NON-NLS-2$
-                Messages.getString("PropertiesWizard.3")};  //$NON-NLS-3$ 
-        // Values
-        //set ignored attributes we won't display
-        ArrayList alIgnored = new ArrayList(10);
-        alIgnored.add(XML_ID);//ID
-        alIgnored.add(XML_EXPANDED);//expanded state
-        alIgnored.add(XML_HASHCODE);//hashcode
-        SequentialMap propertiesOrig = pa.getProperties();
-        ArrayList properties = new ArrayList(10); //properties after cleaning
-        //remove hiden attributes
-        Iterator it  = propertiesOrig.keys().iterator();
-        int ignored = 0;
-        while (it.hasNext()){
-            String sProperty = (String)it.next();
-            if (!alIgnored.contains(sProperty)){
-                properties.add(sProperty);
-            }
-            else{
-                ignored ++;
-            }
-        }
-        int iSize = propertiesOrig.size()-ignored;
-        it = properties.iterator();
-        Object[][] oValues = new Object[iSize][iColNum];
-        for (int i = 0; it.hasNext(); i++) { //we don't display first attribute (ID)
-            String sKey = (String) it.next();
-            oValues[i][0] = Messages.getInstance().contains("Property_"+sKey)?
-                    Messages.getString("Property_"+sKey):sKey; //check if property name is translated (for custom properties)
-            oValues[i][1] = pa.getHumanValue(sKey);
-            if (pa.isPropertyEditable(sKey)){
-                oValues[i][2] = Util.getIcon(ICON_EDIT);    
-            }
-            else{
-                oValues[i][2] = Util.getIcon(ICON_NO_EDIT);
-            }
-        }
-        // model creation
-        ptmodel = new PropertiesTableModel(iColNum,  sColName, pa);
-        ptmodel.setValues(oValues);
     }
 
 }

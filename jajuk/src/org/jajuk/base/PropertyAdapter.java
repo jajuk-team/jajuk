@@ -117,11 +117,7 @@ abstract public class PropertyAdapter implements IPropertyable, ITechnicalString
 	 * @see org.jajuk.base.Propertyable#setProperty(java.lang.String, java.lang.String)
 	 */
 	public void setProperty(String sKey, String sValue) {
-		//JRE properties doesn't accept null value
-		if (sValue == null){
-			sValue = ""; //$NON-NLS-1$
-		}
-        SequentialMap properties = getProperties();
+	    SequentialMap properties = getProperties();
 		properties.put(sKey, sValue);
 	}
 	

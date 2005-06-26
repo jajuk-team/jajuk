@@ -322,7 +322,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                                 iErrorCounter ++;
                                 if (iErrorCounter == STOP_TO_SEARCH){
                                     Log.warn("Too much connection fails, stop to search for covers online"); //$NON-NLS-1$
-                                    InformationJPanel.getInstance().setMessage(Messages.getString("Error.030"),InformationJPanel.ERROR); //$NON-NLS-1$
+                                    InformationJPanel.getInstance().setMessage(Messages.getString("Error.030"),InformationJPanel.WARNING); //$NON-NLS-1$
                                 }
                             }
                         }

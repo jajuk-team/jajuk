@@ -92,16 +92,16 @@ class NewPropertyWizard extends CustomPropertyWizard implements KeyListener{
         if (ae.getSource().equals(this.okp.getOKButton())){
             //check the property is not already used internaly
             for (int i=0;i<XML_RESERVED_ATTRIBUTE_NAMES.length;i++){
-                if (XML_RESERVED_ATTRIBUTE_NAMES[i].equalsIgnoreCase(jtfName.getText())
                      /*check user can't create a property that is the localized name of an existing standard
-                      * attribute. Note that a potential bug can occur if user change language
+                      * attribute. Note that a potential bug can occur if user change language*/
                       
-                        || Messages.getString("Property_"+XML_RESERVED_ATTRIBUTE_NAMES[i])
-                            .equalsIgnoreCase(jtfName.getText())*/
-                     || jtfName.getText().contains(",")){
+                if (XML_RESERVED_ATTRIBUTE_NAMES[i].equalsIgnoreCase(jtfName.getText()) 
+                        || jtfName.getText().matches(",")){
                     Messages.showErrorMessage("110");
                     return;
                 }
+                
+                
             }
             //OK, store it
             ItemManager im = getItemManager();

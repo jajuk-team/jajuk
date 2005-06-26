@@ -164,7 +164,7 @@ public class Type extends PropertyAdapter{
             return false;
         }
         else if (XML_NAME.equals(sProperty)){
-            return true;
+            return false;
         }
         else if (XML_TYPE_EXTENSION.equals(sProperty)){
             return false;
@@ -176,13 +176,13 @@ public class Type extends PropertyAdapter{
             return false;
         }
         else if (XML_TYPE_ICON.equals(sProperty)){
-            return true;
+            return false;
         }
         else if (XML_TYPE_SEEK_SUPPORTED.equals(sProperty)){
             return false;
         }
         else if (XML_TYPE_TECH_DESC.equals(sProperty)){
-            return true;
+            return false;
         }
         else if (XML_TYPE_IS_MUSIC.equals(sProperty)){
             return false;

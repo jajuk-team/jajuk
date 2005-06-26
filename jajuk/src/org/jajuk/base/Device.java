@@ -796,10 +796,10 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
             return false;
         }
         else if (XML_DEVICE_AUTO_REFRESH.equals(sProperty)){
-            return true;
+            return false;
         }
         else if (XML_DEVICE_AUTO_MOUNT.equals(sProperty)){
-            return true;
+            return false;
         }
         else if (XML_EXPANDED.equals(sProperty)){
             return false;
