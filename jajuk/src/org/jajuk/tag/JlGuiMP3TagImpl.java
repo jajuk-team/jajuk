@@ -21,6 +21,8 @@
 package org.jajuk.tag;
 
 import java.io.File;
+import java.util.Iterator;
+import java.util.Vector;
 
 import javazoom.jlgui.player.amp.tag.MpegInfo;
 
@@ -117,6 +119,20 @@ public class JlGuiMP3TagImpl implements ITagImpl {
 	}
 
 	/* (non-Javadoc)
+	 * @see org.jajuk.base.ITagImpl#getComment()
+	 */
+	public String getComment() throws Exception {
+		Vector v = mpgInfo.getComment();
+		String sOut = "";
+		if (v != null){
+		    Iterator it = v.iterator();
+		    while (it.hasNext()){
+		        sOut += it.next().toString();
+		    }
+		}
+		return sOut;
+	}
+	/* (non-Javadoc)
 	 * @see org.jajuk.base.ITagImpl#setTrackName(java.lang.String)
 	 */
 	public void setTrackName(String sTrackName) throws Exception {
@@ -158,6 +174,9 @@ public class JlGuiMP3TagImpl implements ITagImpl {
 	public void setQuality(String sQuality) throws Exception {
 	}
 
+	public void setComment(String sComment) throws Exception {
+	}
+	
 	/* (non-Javadoc)
 	 * @see org.jajuk.base.ITagImpl#setFile(java.io.File)
 	 */
@@ -171,5 +190,18 @@ public class JlGuiMP3TagImpl implements ITagImpl {
             throw new JajukException("103",fio.toString(),t); //$NON-NLS-1$
         }
 	}
+
+    /* (non-Javadoc)
+     * @see org.jajuk.tag.ITagImpl#getTagItem(java.lang.String)
+     */
+    public String getTagItem(String sTagItem) throws Exception {
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see org.jajuk.tag.ITagImpl#setTagItem(java.lang.String, java.lang.String)
+     */
+    public void setTagItem(String sTagItem, String sValue) throws Exception {
+    }
 
 }

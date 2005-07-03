@@ -177,6 +177,7 @@ public class Main implements ITechnicalStrings {
 			LNFManager.register(LNF_PLASTICXP,LNF_PLASTICXP_CLASS);
 			LNFManager.register(LNF_PLASTIC3D,LNF_PLASTIC3D_CLASS);
             LNFManager.register(LNF_INFONODE,LNF_INFONODE_CLASS);
+            LNFManager.register(LNF_SQUARENESS,LNF_SQUARENESS_CLASS);
             		
 			//perform initial checkups
 			initialCheckups();
@@ -199,9 +200,9 @@ public class Main implements ITechnicalStrings {
             //check for another session (needs setLocal)
             checkOtherSession();
             
-			//start the tray
-			launchTray();
-						
+            //start the tray
+            launchTray();
+                    			
 			//Register device types
 			DeviceManager.registerDeviceType(Messages.getString("Device_type.directory"));//$NON-NLS-1$
 			DeviceManager.registerDeviceType(Messages.getString("Device_type.file_cd"));//$NON-NLS-1$
@@ -716,11 +717,11 @@ public class Main implements ITechnicalStrings {
     
     /**Lauch tray, only for linux and windows, not mac for the moment*/
     private static void launchTray() throws Exception {
-        SwingUtilities.invokeAndWait(new Runnable() {
+        SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 if (Util.isUnderLinux() || Util.isUnderWindows()){
-                    //  Set look and feel, needs local to be set for error messages
-                    LNFManager.setLookAndFeel(ConfigurationManager.getProperty(CONF_OPTIONS_LNF));
+                   //  LNFManager.setLookAndFeel(ConfigurationManager.getProperty(CONF_OPTIONS_LNF));
+                    //DO NOT SET A LAF, for unknwon reason, with some LAF (plastic x) and under linux, it causes an audio line blocking, to be investigated
                     jsystray = JajukSystray.getInstance();  
                 }
             }

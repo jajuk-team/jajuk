@@ -34,7 +34,7 @@ import org.jajuk.util.log.Log;
  * @Author Bertrand Florat 
  * @created 17 oct. 2003
  */
-public class PlaylistFileManager extends ItemManager{
+public class PlaylistFileManager extends ItemManager implements Observer{
 	/** PlaylistFiles collection* */
 	static HashMap hmPlaylistFiles = new HashMap(100);
 	/** Map ids and properties, survives to a refresh, is used to recover old properties after refresh */
@@ -141,25 +141,32 @@ public class PlaylistFileManager extends ItemManager{
         return XML_PLAYLIST_FILES;
     }
     
-    /* (non-Javadoc)
-     * @see org.jajuk.base.ItemManager#applyNewProperty()
+ /* (non-Javadoc)
+     * @see org.jajuk.base.Observer#update(org.jajuk.base.Event)
      */
-    public void applyNewProperty(String sProperty){
-        Iterator it = getPlaylistFiles().iterator();
-        while (it.hasNext()){
-            IPropertyable item = (IPropertyable)it.next();
-            item.setProperty(sProperty,null);
-        }
-    }   
-    
-     /* (non-Javadoc)
-     * @see org.jajuk.base.ItemManager#applyRemoveProperty(java.lang.String)
-     */
-    public void applyRemoveProperty(String sProperty) {
-        Iterator it = getPlaylistFiles().iterator();
-        while (it.hasNext()){
-            IPropertyable item = (IPropertyable)it.next();
-            item.removeProperty(sProperty);
+    public void update(Event event) {
+        String subject = event.getSubject();
+        if (EVENT_FILE_NAME_CHANGED.equals(subject)){
+            Properties properties = event.getDetails();
+            File fNew = (File)properties.get(DETAIL_NEW);
+            File fileOld = (File)properties.get(DETAIL_OLD);
+            //search references in playlists
+            Iterator it = getPlaylistFiles().iterator();
+            for (int i=0; it.hasNext(); i++){
+                PlaylistFile plf = (PlaylistFile)it.next();
+                if (plf.isReady()){ //check only in mounted playlists, note that we can't change unmounted playlists
+                    try{
+                        if (plf.getFiles().contains(fileOld)){
+                            plf.replaceFile(fileOld,fNew);
+                        }
+                    }
+                    catch(Exception e){
+                        Log.error("017",e);
+                    }
+                }
+            }
+            //refresh UI
+            ObservationManager.notify(new Event(EVENT_PLAYLIST_REFRESH));
         }
     }
 }

@@ -19,14 +19,13 @@
  */
 package org.jajuk.base;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.MD5Processor;
 import org.jajuk.util.Util;
-import org.jajuk.util.log.Log;
 
 
 /**
@@ -50,7 +49,7 @@ public class File extends PropertyAdapter implements Comparable,ITechnicalString
 	private java.io.File fio;
     /**Flag used to sort by date (default=sort alphabeticaly)*/
     static private boolean bSortByDate = false;
-  
+    
 	/**
 	 * File instanciation 
 	 * @param sId
@@ -62,10 +61,14 @@ public class File extends PropertyAdapter implements Comparable,ITechnicalString
 	 */
 	public File(String sId,String sName,Directory directory,Track track,long lSize,String sQuality) {
         super(sId,sName);
-		setDirectory(directory);
-		setTrack(track);
-		setSize(lSize);
-		setQuality(sQuality);
+        this.directory = directory;
+        setProperty(XML_DIRECTORY,directory.getId());
+        this.track = track;
+        setProperty(XML_TRACK,track.getId());
+        this.lSize = lSize;
+        setProperty(XML_SIZE,Long.toString(lSize));
+        this.sQuality = sQuality;
+        setProperty(XML_QUALITY,sQuality);
 	}
 		
 /* (non-Javadoc)
@@ -265,7 +268,7 @@ public class File extends PropertyAdapter implements Comparable,ITechnicalString
     /**
      * @param directory The directory to set.
      */
-    protected void setDirectory(Directory directory) {
+    public void setDirectory(Directory directory) {
         this.directory = directory;
         setProperty(XML_DIRECTORY,directory.getId());
     }
@@ -273,23 +276,16 @@ public class File extends PropertyAdapter implements Comparable,ITechnicalString
     /**
      * @param size The lSize to set.
      */
-    protected void setSize(long size) {
+    public void setSize(long size) {
         this.lSize = size;
         setProperty(XML_SIZE,Long.toString(size));
     }
 
-    /**
-     * @param quality The sQuality to set.
-     */
-    protected void setQuality(String quality) {
-        this.sQuality = quality;
-        setProperty(XML_QUALITY,quality);
-    }
-
+    
     /**
      * @param track The track to set.
      */
-    protected void setTrack(Track track) {
+    public void setTrack(Track track) {
         this.track = track;
         setProperty(XML_TRACK,track.getId());
     }
@@ -348,60 +344,60 @@ public class File extends PropertyAdapter implements Comparable,ITechnicalString
         else if (XML_QUALITY.equals(sKey)){
             return getQuality2()+Messages.getString("FIFO.13");
         }
+        else if (XML_ALBUM.equals(sKey)){
+            return getTrack().getAlbum().getName2();
+        }
+        else if (XML_STYLE.equals(sKey)){
+            return getTrack().getStyle().getName2();
+        }
+        else if (XML_AUTHOR.equals(sKey)){
+            return getTrack().getAuthor().getName2();
+        }
+        else if (XML_TRACK_LENGTH.equals(sKey)){
+            return Util.formatTimeBySec(getTrack().getLength(),false);
+        }
+        else if (XML_TRACK_RATE.equals(sKey)){
+            return Long.toString(getTrack().getRate());
+        }
+        else if (XML_DEVICE.equals(sKey)){
+            return getDirectory().getDevice().getName();
+        }
+        else if (XML_ANY.equals(sKey)){
+            return getAny();
+        }
         else{//default
             return getValue(sKey);
         }
     }
     
-    /**change a file name*/
-    public void setName(String sFilename) {
-        java.io.File fileNew = new java.io.File(fio.getParentFile().getAbsolutePath()+java.io.File.separator+sFilename);
-        //recalculate file ID
-        String sNewId = MD5Processor.hash(new StringBuffer(getDirectory().getDevice().getName())
-            .append(getDirectory().getDevice().getUrl()).append(getDirectory().getRelativePath()).
-            append(sFilename).toString());
-        File fNew = (File)this.clone();
-        fNew.setId(sId);
-        fNew.setName(sFilename);
-        //check file name and extension
-        if (fileNew.getName().lastIndexOf((int)'.') != fileNew.getName().indexOf((int)'.')//just one '.'
-                || Util.getExtension(fileNew) != Util.getExtension(fio)){ //no extension change
-            Messages.showErrorMessage("134");
-            return;
-        }
-        //check if futur file exists
-        if (fileNew.exists()){
-            Messages.showErrorMessage("134");
-            return;
-        }
-        //try to rename file on disk
-        try{
-            fio.renameTo(fileNew);
-        }
-        catch(Exception e){
-            Messages.showErrorMessage("134");
-            return;
-        }
-        //remove old references
-        getTrack().removeFile(this);
-        //search references in playlists
-        Iterator it = PlaylistFileManager.getPlaylistFiles().iterator();
-        for (int i=0; it.hasNext(); i++){
-            PlaylistFile plf = (PlaylistFile)it.next();
-            try{
-                if (plf.getFiles().contains(this)){
-                    plf.replaceFile(this,fNew);
-                }
+    
+    /* (non-Javadoc)
+     * @see org.jajuk.base.IPropertyable#getAny()
+     */
+    public String getAny(){
+        if (bNeedRefresh){
+            //rebuild any
+            StringBuffer sb  = new StringBuffer();
+            File file = (File)this;
+            Track track = file.getTrack();
+            sb.append(file.getName());
+            sb.append(file.getDirectory().getDevice().getName());
+            sb.append(track.getName());
+            sb.append(track.getStyle().getName2());
+            sb.append(track.getAuthor().getName2());
+            sb.append(track.getAlbum().getName2());
+            sb.append(track.getLength());
+            sb.append(track.getRate());
+            sb.append(track.getValue(XML_COMMENT));//custom properties now
+            ArrayList alCustomProperties = FileManager.getInstance().getCustomProperties();
+            Iterator it = alCustomProperties.iterator();
+            while (it.hasNext()){
+                sb.append((String)it.next());
             }
-            catch(Exception e){
-                Log.error("017",e);
-            }
+            this.sAny = sb.toString();
+            bNeedRefresh = false;
         }
-        // search and change references to this file
-        getTrack().addFile(this);
-        super.setName(sFilename);
-        //call a refresh for UI
-        ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH));
+        return this.sAny;
     }
-
+  
 }

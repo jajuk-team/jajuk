@@ -43,7 +43,8 @@ public class Playlist extends PropertyAdapter implements Comparable{
 	 */
 	public Playlist(String sId,PlaylistFile plFiles){
         super(sId,null);
-		setPlaylist(plFiles);
+        this.alPlaylistFiles.add(plFiles);
+        setProperty(XML_PLAYLIST_FILES,plFiles.getId());
 	}
 
 /* (non-Javadoc)
@@ -165,11 +166,6 @@ public class Playlist extends PropertyAdapter implements Comparable{
 		return  getName().compareToIgnoreCase(otherPlaylist.getName());
 	}
 
-    
-    protected void setPlaylist(PlaylistFile plf){
-        this.alPlaylistFiles.add(plf);
-        setProperty(XML_PLAYLIST_FILES,plf.getId());
-    }
     
     /**
      * Get item description

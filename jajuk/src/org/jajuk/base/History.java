@@ -26,6 +26,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.Iterator;
+import java.util.Properties;
 import java.util.Vector;
 
 import javax.xml.parsers.SAXParser;
@@ -70,6 +71,8 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
         ObservationManager.register(EVENT_FILE_LAUNCHED,this);
         ObservationManager.register(EVENT_DEVICE_REFRESH,this);
         ObservationManager.register(EVENT_CLEAR_HISTORY,this);
+        ObservationManager.register(EVENT_FILE_NAME_CHANGED,this);
+        
         //check if something has already started
         if (ObservationManager.getDetailLastOccurence(EVENT_FILE_LAUNCHED,DETAIL_CURRENT_FILE_ID) != null &&
                 ObservationManager.getDetailLastOccurence(EVENT_FILE_LAUNCHED,DETAIL_CURRENT_DATE) != null){
@@ -128,6 +131,20 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
         }
     }
     
+    /**
+     * Change ID for a file
+     * @param sIDOld
+     * @param sIDNew
+     */
+    public void changeID(String sIDOld,String sIDNew){
+        for (int i=0; i<vHistory.size();i++){
+            HistoryItem hi = (HistoryItem)vHistory.get(i);
+            if (hi.getFileId().equals(sIDOld)){
+                vHistory.remove(i);
+                vHistory.add(i,new HistoryItem(sIDNew,hi.getDate()));
+            }
+        }
+    }
     
     /** Clear history for all history items before iDays days*/
     public  void clear(int iDays){
@@ -297,23 +314,33 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
      * @see org.jajuk.ui.Observer#update(java.lang.String)
      */
     public void update(Event event) {
+        String subject = event.getSubject();
         try {
-            if (EVENT_FILE_LAUNCHED.equals(event.getSubject())){
+            if (EVENT_FILE_LAUNCHED.equals(subject)){
                 String sFileID = (String)ObservationManager.getDetail(event,DETAIL_CURRENT_FILE_ID);
                 long lDate =( (Long)ObservationManager.getDetail(event,DETAIL_CURRENT_DATE)).longValue();
                 addItem(sFileID,lDate);
             }
-            else if (EVENT_DEVICE_REFRESH.equals(event.getSubject())){
+            else if (EVENT_DEVICE_REFRESH.equals(subject)){
                 cleanup();
             }
-            else if(EVENT_CLEAR_HISTORY.equals(event.getSubject())){
+            else if(EVENT_CLEAR_HISTORY.equals(subject)){
                 clear();   
               }
+            else if (EVENT_FILE_NAME_CHANGED.equals(subject)){
+                Properties properties = event.getDetails();
+                org.jajuk.base.File fileOld = (org.jajuk.base.File)properties.get(DETAIL_OLD);
+                org.jajuk.base.File fNew = (org.jajuk.base.File)properties.get(DETAIL_NEW);
+                //change id in history
+                changeID(fileOld.getId(),fNew.getId());
+            }
         }
         catch(Exception e){
             Log.error(e);
             return;
         }
     }
+    
+    
     
 }

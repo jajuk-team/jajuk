@@ -19,9 +19,6 @@
  */
 package org.jajuk.util;
 
-
-
-
 /**
  *  Contains all technical/ non-translatable strings
  * @author     Bertrand Florat
@@ -333,7 +330,7 @@ public interface ITechnicalStrings {
     public static final String EVENT_DELETE_PROPERTY="delete property"; //delete property
     public static final String EVENT_CUSTOM_PROPERTIES_ADD="custom property add"; //new custom property
     public static final String EVENT_CUSTOM_PROPERTIES_REMOVE="custom property remove"; //remove custom property
-    
+    public static final String EVENT_FILE_NAME_CHANGED="file name changed"; //file name change
 	//details keys
 	public static final String DETAIL_CURRENT_FILE_ID="current file id";
 	public static final String DETAIL_CURRENT_FILE="current file";
@@ -351,7 +348,9 @@ public interface ITechnicalStrings {
 	public static final String DETAIL_ORIGIN="origin";
     public static final String DETAIL_REASON="reason";
     public static final String DETAIL_CONTENT="content";
-    			
+    public static final String DETAIL_OLD="old";    
+    public static final String DETAIL_NEW="new";
+        			
 	//Look and feel
 	public static final String LNF_METAL = "Metal";
 	public static final String LNF_METAL_CLASS = "javax.swing.plaf.metal.MetalLookAndFeel";
@@ -376,6 +375,8 @@ public interface ITechnicalStrings {
 	public static final String LNF_PLASTIC3D_CLASS = "com.jgoodies.plaf.plastic.Plastic3DLookAndFeel";
 	public static final String LNF_INFONODE = "Infonode";
     public static final String LNF_INFONODE_CLASS = "net.infonode.gui.laf.InfoNodeLookAndFeel";
+    public static final String LNF_SQUARENESS = "Squareness";
+    public static final String LNF_SQUARENESS_CLASS = "net.beeger.squareness.SquarenessLookAndFeel";
     
 	//statup mode
 	public static final String STARTUP_MODE_NOTHING = "nothing";
@@ -521,15 +522,23 @@ public interface ITechnicalStrings {
     public static final String XML_TYPE_SEEK_SUPPORTED = "seek";  
     public static final String XML_TYPE_TECH_DESC = "tech_desc"; //type description as given in the steam 
     public static final String XML_TYPE_ICON = "icon"; //icon used in the physical tree 
-    
+    public static final String XML_COMMENT = "comment"; //comment tag 
+    public static final String XML_TRACK_NUMBER = "number"; //track number 
+    public static final String XML_ANY = "any"; //"any" criteria 
+        
     public static final String[] XML_RESERVED_ATTRIBUTE_NAMES = {
         XML_NAME,XML_ID,XML_TYPE_EXTENSION,XML_TYPE_PLAYER_IMPL,XML_TYPE_TAG_IMPL,
         XML_TYPE_TECH_DESC,XML_TYPE_SEEK_SUPPORTED,XML_TYPE_ICON,XML_TYPE_IS_MUSIC,
         XML_TYPE,XML_URL,XML_DEVICE_AUTO_MOUNT,XML_DEVICE_AUTO_REFRESH,XML_EXPANDED,XML_DEVICE_MOUNT_POINT,
         XML_ALBUM,XML_AUTHOR,XML_STYLE,XML_TRACK_LENGTH,XML_TRACK_YEAR,XML_TRACK_RATE,XML_FILES,XML_TRACK_HITS,XML_TRACK_ADDED,
         XML_DIRECTORY_PARENT,XML_DEVICE,XML_DIRECTORY,XML_TRACK,XML_SIZE,XML_QUALITY,
-        XML_HASHCODE,XML_PLAYLIST_FILES}; //contains variables names
+        XML_HASHCODE,XML_PLAYLIST_FILES,XML_COMMENT,XML_ANY}; //contains variables names
 
+    public static final String FORMAT_STRING = "Property_Format_String";
+    public static final String FORMAT_NUMBER = "Property_Format_Number";
+    public static final String FORMAT_BOOLEAN = "Property_Format_Boolean";
     
-	
+    public static final String PROPERTY_SEPARATOR = "Property_";
+    
+    
 }

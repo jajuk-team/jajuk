@@ -61,9 +61,9 @@ class NewPropertyWizard extends CustomPropertyWizard implements KeyListener{
         jlFormat = new JLabel(Messages.getString("NewPropertyWizard.3"));
         jtfName = new JTextField();
         jcbFormat = new JComboBox();
-        jcbFormat.addItem(Messages.getString("Property_Format_String"));
-        jcbFormat.addItem(Messages.getString("Property_Format_Number"));
-        jcbFormat.addItem(Messages.getString("Property_Format_Boolean"));
+        jcbFormat.addItem(Messages.getString(FORMAT_STRING));
+        jcbFormat.addItem(Messages.getString(FORMAT_NUMBER));
+        jcbFormat.addItem(Messages.getString(FORMAT_BOOLEAN));
         jcbFormat.addItemListener(this);
         jtfName.addKeyListener(this);
         int iXSeparator = 10;
@@ -100,8 +100,6 @@ class NewPropertyWizard extends CustomPropertyWizard implements KeyListener{
                     Messages.showErrorMessage("110");
                     return;
                 }
-                
-                
             }
             //OK, store it
             ItemManager im = getItemManager();

@@ -151,7 +151,8 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
             File file = FileManager.getFileById(jtable.getModelValueAt(iSelectedRow,0).toString());
 			if (!file.isScanned()){
 				try{
-				    FIFO.getInstance().push(new StackItem(file,ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),ConfigurationManager.getBoolean(CONF_OPTIONS_DEFAULT_ACTION_CLICK));//launch it
+				    FIFO.getInstance().push(new StackItem(file,ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),
+                        ConfigurationManager.getBoolean(CONF_OPTIONS_DEFAULT_ACTION_CLICK));//launch it
 				}
 				catch(JajukException je){
 				    Log.error(je);
@@ -248,79 +249,5 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
 		}.start();
 	}
 	
-	
-	/* (non-Javadoc)
-	 * @see org.jajuk.ui.views.AbstractTableView#applyFilter()
-	 */
-	public void applyFilter(final String sPropertyName,final String sPropertyValue) {
-        /*
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                //Values
-                ArrayList alFiles = FileManager.getFiles();
-                ArrayList alToShow = new ArrayList(alFiles.size());
-                Iterator it = alFiles.iterator();
-                boolean bShowWithTree = true;
-                HashSet hs = (HashSet)ObservationManager.getDetailLastOccurence(EVENT_SYNC_TREE_TABLE,DETAIL_SELECTION);//look at selection
-                boolean bSyncWithTreeOption = ConfigurationManager.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE);
-                while ( it.hasNext()){
-                    File file = (File)it.next(); 
-                    bShowWithTree =  !bSyncWithTreeOption || ((hs != null && hs.size() > 0 && hs.contains(file))); //show it if no sync option or if item is in the selection
-                    if ( !file.shouldBeHidden() && bShowWithTree){
-                        alToShow.add(file);
-                    }
-                }
-                int iColNum = 8;
-                it = alToShow.iterator();
-                //Track | Album | Author |  Length | Style | Device | File name | Rate
-                String sNewPropertyValue = sPropertyValue;
-                if ( !ConfigurationManager.getBoolean(CONF_REGEXP) && sPropertyValue != null){ //do we use regular expression or not? if not, we allow user to use '*'
-                    sNewPropertyValue = sPropertyValue.replaceAll("\\*",".*"); //$NON-NLS-1$ //$NON-NLS-2$
-                    sNewPropertyValue = ".*"+sNewPropertyValue+".*"; //$NON-NLS-1$ //$NON-NLS-2$
-                }
-                else if ("".equals(sNewPropertyValue)){//in regexp mode, if none selection, display all rows //$NON-NLS-1$
-                    sNewPropertyValue = ".*"; //$NON-NLS-1$
-                }
-                while (it.hasNext()){
-                    File file = (File)it.next();
-                    if ( sPropertyName != null && sNewPropertyValue != null ){ //if name or value is null, means there is no filter
-                        String sValue = file.getValue(sPropertyName);
-                        if ( sValue == null){ //try to filter on a unknown property, don't take this file
-                            continue;
-                        }
-                        else { 
-                            boolean bMatch = false;
-                            try{  //test using regular expressions
-                                bMatch = sValue.toLowerCase().matches(sNewPropertyValue.toLowerCase());  // test if the file property contains this property value (ignore case)
-                            }
-                            catch(PatternSyntaxException pse){ //wrong pattern syntax
-                                bMatch = false;
-                            }
-                            if (!bMatch){
-                                it.remove(); //no? remove it
-                            }
-                        }	
-                    }
-                }
-                //populate this values
-                Object[][] oValues = new Object[alToShow.size()][iColNum+1];
-                for (int i=0;i<alToShow.size();i++){
-                    File file = (File)alToShow.get(i);
-                    oValues[i][0] = file.getTrack().getName();
-                    oValues[i][1] = file.getTrack().getAlbum().getName2();
-                    oValues[i][2] = file.getTrack().getAuthor().getName2();
-                    oValues[i][3] = Util.formatTimeBySec(file.getTrack().getLength(),false);
-                    oValues[i][4] = file.getTrack().getStyle().getName2();
-                    oValues[i][5] = file.getDirectory().getDevice().getName();
-                    oValues[i][6] = file.getName();
-                    oValues[i][7] = new Long(file.getTrack().getRate());
-                    oValues[i][8] = file.getId();
-                }
-                model.setValues(oValues);
-                model.fireTableDataChanged();
-            }
-        });*/
-        
-	}
     	
 }

@@ -50,9 +50,13 @@ public class Type extends PropertyAdapter{
 	 */
 	public Type(String sId, String sName,String sExtension, String sPlayerImpl,String sTagImpl) throws Exception{
         super(sId,sName);
-        setExtension(sExtension);
-        setPlayerImpl(sPlayerImpl);
-        setTagImpl(sTagImpl);
+        this.sExtension = sExtension;
+        setProperty(XML_TYPE_EXTENSION,sExtension);
+        this.playerImpl = (IPlayerImpl)Class.forName(sPlayerImpl).newInstance();
+        setProperty(XML_TYPE_PLAYER_IMPL,sPlayerImpl);
+         if (sTagImpl != null){  //can be null for playlists
+            this.tagImpl = (ITagImpl)Class.forName(sTagImpl).newInstance();
+        }
     }
 
 /* (non-Javadoc)
@@ -106,49 +110,7 @@ public class Type extends PropertyAdapter{
 	public ITagImpl getTagImpl() {
 		return this.tagImpl;
 	}
-
-    /**
-     * @param playerImpl The playerImpl to set.
-     */
-    public void setPlayerImpl(String sPlayerImpl) throws Exception{
-        this.playerImpl = (IPlayerImpl)Class.forName(sPlayerImpl).newInstance();
-        setProperty(XML_TYPE_PLAYER_IMPL,sPlayerImpl);
-    }
-
-    /**
-     * @param extension The sExtension to set.
-     */
-    public void setExtension(String extension) {
-        sExtension = extension;
-        setProperty(XML_TYPE_EXTENSION,extension);
-    }
-
-    /**
-     * @param id The sId to set.
-     */
-    public void setId(String id) {
-        sId = id;
-        setProperty(XML_ID,id);
-    }
-
-    /**
-     * @param name The sName to set.
-     */
-    public void setName(String name) {
-        sName = name;
-        setProperty(XML_NAME,name);
-    }
-
-    /**
-     * @param tagImpl The tagImpl to set.
-     */
-    public void setTagImpl(String sTagImpl) throws Exception{
-        if (sTagImpl != null){  //can be null for playlists
-            this.tagImpl = (ITagImpl)Class.forName(sTagImpl).newInstance();
-        }
-        setProperty(XML_TYPE_TAG_IMPL,sTagImpl);
-    }
-
+  
     /**
      * Get item description
      */

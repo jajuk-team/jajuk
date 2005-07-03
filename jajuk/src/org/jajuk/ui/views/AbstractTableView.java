@@ -115,13 +115,28 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
                     }
                     if ( bNeedSearch && (System.currentTimeMillis()-lDateTyped >= WAIT_TIME)){
                         sAppliedFilter = jtfValue.getText();
-                        sAppliedCriteria = jcbProperty.getSelectedItem().toString();
+                        sAppliedCriteria = getApplyCriteria();
                         applyFilter(sAppliedCriteria,sAppliedFilter);
                         bNeedSearch = false;
                     }
                 }
             }
         }.start();
+    }
+    
+    /**
+     * 
+     * @return Applied criteria
+     */
+    private String getApplyCriteria(){
+        int indexCombo = jcbProperty.getSelectedIndex();
+        if (indexCombo == 0){ //first criteria is special: any
+            sAppliedCriteria = XML_ANY;    
+        }
+        else{ //otherwise, take criteria from model
+            sAppliedCriteria = model.getIdentifier(indexCombo);
+        }
+        return sAppliedCriteria;
     }
     
     /* (non-Javadoc)
@@ -141,7 +156,8 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
                 jlFilter = new JLabel(Messages.getString("AbstractTableView.0")); //$NON-NLS-1$
                 //properties combo box, fill with colums names expect ID
                 jcbProperty = new JComboBox();
-                for (int i=1;i<model.getColumnCount();i++){
+                jcbProperty.addItem(Messages.getString("AbstractTableView.8")); //"any" criteria
+                for (int i=1;i<model.getColumnCount();i++){//Others columns except ID
                     jcbProperty.addItem(model.getColumnName(i));    
                 }
                 jcbProperty.setToolTipText(Messages.getString("AbstractTableView.1")); //$NON-NLS-1$
@@ -166,7 +182,6 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
                 jbClearFilter.setToolTipText(Messages.getString("AbstractTableView.5")); //$NON-NLS-1$
                 jbAdvancedFilter.setToolTipText(Messages.getString("AbstractTableView.6")); //$NON-NLS-1$
                 jbAdvancedFilter.setEnabled(false);  //TBI
-                
                 int iXspace = 5;
                 double sizeControl[][] =
                 {{iXspace,TableLayout.FILL,iXspace,0.3,TableLayout.FILL,TableLayout.FILL,iXspace,0.3,iXspace,20,iXspace,20,iXspace,20,iXspace},
@@ -192,6 +207,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
                 new TableTransferHandler(jtable, DnDConstants.ACTION_COPY_OR_MOVE);
                 jtable.addMouseListener(AbstractTableView.this);
                 hideColumns();
+                applyFilter(null,null);
                 //Register on the list for subject we are interrested in
                 ObservationManager.register(EVENT_DEVICE_MOUNT,AbstractTableView.this);
                 ObservationManager.register(EVENT_DEVICE_UNMOUNT,AbstractTableView.this);
@@ -212,7 +228,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
         //not in a thread because it is always called inside a thread created from sub-classes
         if ( e.getSource() == jbApplyFilter){
             this.sAppliedFilter = jtfValue.getText();
-            this.sAppliedCriteria = jcbProperty.getSelectedItem().toString();
+            this.sAppliedCriteria =getApplyCriteria();
             applyFilter(sAppliedCriteria,sAppliedFilter);
         }
         else if(e.getSource() == jbClearFilter){ //remove all filters
@@ -227,7 +243,10 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     /**
      * Apply a filter, to be implemented by physical and logical tables, alter the model
      */
-    abstract public void applyFilter(String sPropertyName,String sPropertyValue) ;
+    public void applyFilter(String sPropertyName,String sPropertyValue) {
+       model.populateModel(sPropertyName,sPropertyValue);
+       model.fireTableDataChanged();
+    }
     
     
     /* (non-Javadoc)
@@ -259,6 +278,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
                             ConfigurationManager.setProperty(CONF_LOGICAL_TABLE_COLUMNS,sTableCols+","+(model.getIdentifier(model.getColumnCount()-1)));
                         }
                         hideColumns();
+                        applyFilter(sAppliedCriteria,sAppliedFilter);
                         jcbProperty.addItem(properties.get(DETAIL_CONTENT));
                     }
                     else if (EVENT_CUSTOM_PROPERTIES_REMOVE.equals(subject)){
@@ -276,6 +296,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
                             ConfigurationManager.setProperty(CONF_LOGICAL_TABLE_COLUMNS,getColumnsConf(al));
                         }
                         hideColumns();
+                        applyFilter(sAppliedCriteria,sAppliedFilter);
                         jcbProperty.removeItem(properties.get(DETAIL_CONTENT));
                     }
                 }
@@ -310,17 +331,16 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
         }
     }
     
-    
-    
-    
-    
     /**
      * Detect property change
      */
     public void itemStateChanged(ItemEvent ie){
-        sAppliedFilter = jtfValue.getText();
-        sAppliedCriteria = jcbProperty.getSelectedItem().toString();
-        applyFilter(sAppliedCriteria,sAppliedFilter);
+        if (ie.getSource() == jcbProperty){
+            sAppliedFilter = jtfValue.getText();
+            sAppliedCriteria = getApplyCriteria();
+            applyFilter(sAppliedCriteria,sAppliedFilter);    
+        }
+        
     }
     
     /**

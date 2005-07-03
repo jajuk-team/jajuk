@@ -63,6 +63,16 @@ public interface ITagImpl {
 	public String getQuality() throws Exception;
 
 	/**
+	 * @return comment
+	 */
+	public String getComment() throws Exception;
+    
+    /**
+     * @return specific property or null if property not tagged
+     */
+    public String getTagItem(String sTagItem) throws Exception;
+    
+	/**
 	 * @param sTrackName
 	 */
 	public void setTrackName(String sTrackName) throws Exception;
@@ -98,11 +108,20 @@ public interface ITagImpl {
 	public void setQuality(String sQuality) throws Exception;
 
 	/**
+	 * @param sComment
+	 */
+	public void setComment(String sComment) throws Exception;
+
+	/**
 	 * Set current file to work with.
 	 * 
 	 * @param fio
 	 */
 	public void setFile(java.io.File fio) throws Exception;
 	
+      /**
+     * @return Set a specific property
+     */
+    public void setTagItem(String sTagItem,String sValue) throws Exception;
 	
 }

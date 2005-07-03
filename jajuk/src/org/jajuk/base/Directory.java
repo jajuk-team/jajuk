@@ -67,8 +67,10 @@ public class Directory extends PropertyAdapter implements Comparable{
      */
     public Directory(String sId, String sName, Directory dParent, Device device) {
         super(sId,sName);
-        setParent(dParent);
-        setDevice(device);
+        this.dParent = dParent;
+        setProperty(XML_DIRECTORY_PARENT,(dParent==null?"-1":dParent.getId()));
+        this.device = device;
+        setProperty(XML_DEVICE,device.getId());
         this.fio = new File(device.getUrl() + getRelativePath());
     }
 
@@ -207,7 +209,13 @@ public class Directory extends PropertyAdapter implements Comparable{
         alFiles.add(file);
     }
     
-    
+    /**
+     * @param directory
+     */
+    public void changeFile(org.jajuk.base.File fileOld,org.jajuk.base.File fileNew) {
+        alFiles.set(alFiles.indexOf(fileOld),fileNew);
+    }
+        
     /**
      * Scan all files in a directory
      * @param
@@ -244,7 +252,8 @@ public class Directory extends PropertyAdapter implements Comparable{
                         device.iNbNewFiles ++;  //stats
                     }
                     else if ( !ConfigurationManager.getBoolean(CONF_TAGS_DEEP_SCAN)){  //read tag data from database, no real read from file for performances reasons if only the deep scan is disable{
-                        org.jajuk.base.File file = FileManager.registerFile(fileRef.getId(),fileRef.getName(), this, fileRef.getTrack(), fileRef.getSize(),fileRef.getQuality());
+                        org.jajuk.base.File file = FileManager.registerFile(fileRef.getId(),fileRef.getName(), 
+                            this, fileRef.getTrack(), fileRef.getSize(),fileRef.getQuality());
                         addFile(file);
                         continue;
                     }
@@ -256,15 +265,20 @@ public class Directory extends PropertyAdapter implements Comparable{
                     long length = tag.getLength(); //length in sec
                     String sYear = tag.getYear();
                     String sQuality = tag.getQuality();
+                    String sComment = tag.getComment();
                     
                     Album album = AlbumManager.registerAlbum(sAlbumName);
                     Style style = StyleManager.registerStyle(sStyle);
                     Author author = AuthorManager.registerAuthor(sAuthorName);
                     Type type = TypeManager.getTypeByExtension(Util.getExtension(files[i]));
                     track = TrackManager.registerTrack(sTrackName, album, style, author, length, sYear, type);
-                    org.jajuk.base.File newFile = FileManager.registerFile(sId,files[i].getName(), this, track, files[i].length(), sQuality);
+                    org.jajuk.base.File newFile = FileManager.registerFile(sId,files[i].getName(), this, track, 
+                        files[i].length(), sQuality);
                     addFile(newFile);
                     track.addFile(newFile);
+                    track.setProperty(XML_COMMENT,sComment); 
+                    /*comment is at the track level, note that we take last found file comment but we changing
+                    a comment, we will apply to all files for a track*/
                 }
                 else{  //playlist file
                     String sName = files[i].getName();
@@ -346,15 +360,7 @@ public class Directory extends PropertyAdapter implements Comparable{
         }
         return true;
     }
-
-    /**
-     * @param device The device to set.
-     */
-    protected void setDevice(Device device) {
-        this.device = device;
-        setProperty(XML_DEVICE,device.getId());
-    }
-
+    
     /**
      * @param parent The dParent to set.
      */

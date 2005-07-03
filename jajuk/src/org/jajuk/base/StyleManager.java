@@ -161,26 +161,4 @@ public class StyleManager extends ItemManager {
         return XML_STYLES;
     }
 
-    /* (non-Javadoc)
-     * @see org.jajuk.base.ItemManager#applyNewProperty()
-     */
-    public void applyNewProperty(String sProperty){
-        Iterator it = getStyles().iterator();
-        while (it.hasNext()){
-            IPropertyable item = (IPropertyable)it.next();
-            item.setProperty(sProperty,null);
-        }
-    }
-    
-     /* (non-Javadoc)
-     * @see org.jajuk.base.ItemManager#applyRemoveProperty(java.lang.String)
-     */
-    public void applyRemoveProperty(String sProperty) {
-        Iterator it = getStyles().iterator();
-        while (it.hasNext()){
-            IPropertyable item = (IPropertyable)it.next();
-            item.removeProperty(sProperty);
-        }
-    }
-
 }

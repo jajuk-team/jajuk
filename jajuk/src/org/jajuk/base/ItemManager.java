@@ -78,11 +78,74 @@ public abstract class ItemManager implements ITechnicalStrings{
     }
     
     /**Add new property to all items for the given manager*/
-    public abstract void applyNewProperty(String sProperty); 
-    
+    public void applyNewProperty(String sProperty){
+        ArrayList alItems = getItems();
+        if (alItems != null){
+            Iterator it = alItems.iterator();
+            while (it.hasNext()){
+                IPropertyable item = (IPropertyable)it.next();
+                String sValue = "";
+                if (getFormat(sProperty).equals(FORMAT_BOOLEAN)){
+                    sValue = FALSE;
+                }
+                else if (getFormat(sProperty).equals(FORMAT_NUMBER)){
+                    sValue = "0";
+                }
+                item.setProperty(sProperty,sValue);
+            }    
+        }
+    }   
+
     /**Remove a custom property to all items for the given manager*/
-    public abstract void applyRemoveProperty(String sProperty); 
+    public void applyRemoveProperty(String sProperty) {
+        ArrayList alItems = getItems();
+        if (alItems != null){
+            Iterator it = alItems.iterator();
+            while (it.hasNext()){
+                IPropertyable item = (IPropertyable)it.next();
+                item.removeProperty(sProperty);
+            }    
+        }
+    }
     
+    /**
+     * 
+     * @return items for given item manager
+     */
+    public ArrayList getItems(){
+        ArrayList alItems = null;
+        if (this instanceof AlbumManager){
+            alItems = AlbumManager.getAlbums();
+        }
+        else if (this instanceof AuthorManager){
+            alItems = AuthorManager.getAuthors();
+        }
+        else if (this instanceof DeviceManager){
+            alItems = DeviceManager.getDevicesList();
+        }
+        else if (this instanceof DirectoryManager){
+            alItems = DirectoryManager.getDirectories();
+        }
+        else if (this instanceof FileManager){
+            alItems = FileManager.getFiles();
+        }
+        else if (this instanceof PlaylistFileManager){
+            alItems = PlaylistFileManager.getPlaylistFiles();
+        }
+        else if (this instanceof PlaylistManager){
+            alItems = PlaylistManager.getPlaylists();
+        }
+        else if (this instanceof StyleManager){
+            alItems = StyleManager.getStyles();
+        }
+        else if (this instanceof TrackManager){
+            alItems = TrackManager.getTracks();
+        }
+        else if (this instanceof TypeManager){
+            alItems = TypeManager.getTypes();
+        }
+        return alItems;
+    }
     
     /**
      * 

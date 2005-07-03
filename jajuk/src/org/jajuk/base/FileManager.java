@@ -31,7 +31,9 @@ import java.util.TreeSet;
 
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.MD5Processor;
 import org.jajuk.util.SequentialMap;
+import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 
 /**
@@ -39,7 +41,7 @@ import org.jajuk.util.log.Log;
  * @Author Bertrand Florat 
  * @created 17 oct. 2003
  */
-public class FileManager extends ItemManager{
+public class FileManager extends ItemManager implements Observer{
 	/** Files collection : id-> file*/ 
 	private static HashMap hmIdFile = new HashMap(1000);
 	/** Map ids and properties, survives to a refresh, is used to recover old properties after refresh */
@@ -77,7 +79,8 @@ public class FileManager extends ItemManager{
 	 * 
 	 * @param sName
 	 */
-	public static synchronized File registerFile(String sId, String sName, Directory directory, Track track, long lSize, String sQuality) {
+	public static synchronized File registerFile(String sId, String sName, Directory directory, 
+            Track track, long lSize, String sQuality) {
 		File file = new File(sId, sName, directory, track, lSize, sQuality);
 		if ( !hmIdFile.containsKey(sId)){
 			hmIdFile.put(sId,file);
@@ -94,6 +97,65 @@ public class FileManager extends ItemManager{
 			}
 		}
 		return file;
+	}
+    
+    /**
+     * Change a file name
+     * @param fileOld
+     * @param sNewName
+     * @return new file or null if an error occurs
+     */
+	public static File changeFileName(File fileOld,String sNewName){
+	    //check if this file still exists
+        if (!fileOld.getIO().exists()){
+            Messages.showErrorMessage("135");
+            return  null;
+        }
+        java.io.File fileNew = new java.io.File(fileOld.getIO().getParentFile().getAbsolutePath()
+	        +java.io.File.separator+sNewName);
+	    //recalculate file ID
+	    Directory dir = fileOld.getDirectory(); 
+	    String sNewId = MD5Processor.hash(new StringBuffer(dir.getDevice().getName())
+	        .append(dir.getDevice().getUrl()).append(dir.getRelativePath())
+	        .append(sNewName).toString());
+	    //create a new file (with own fio and sAbs)
+        File fNew = new File(sNewId,sNewName,fileOld.getDirectory(),fileOld.getTrack(),fileOld.getSize(),fileOld.getQuality());
+	    fNew.setProperties(fileOld.getProperties()); //transfert all properties (inc id and name)
+	    fNew.setId(sNewId); //reset new id and name
+        fNew.setName(sNewName);
+        //check file name and extension
+	    if (fileNew.getName().lastIndexOf((int)'.') != fileNew.getName().indexOf((int)'.')//just one '.'
+	            || !(Util.getExtension(fileNew).equals(Util.getExtension(fileOld.getIO())))){ //no extension change
+	        Messages.showErrorMessage("134");
+	        return null;
+	    }
+	    //check if futur file exists
+	    if (fileNew.exists()){
+	        Messages.showErrorMessage("134");
+	        return  null;
+	    }
+	    //try to rename file on disk
+	    try{
+	        fileOld.getIO().renameTo(fileNew);
+	    }
+	    catch(Exception e){
+	        Messages.showErrorMessage("134");
+	        return null;
+	    }
+	    //OK, remove old file and register this new file
+        removeFile(fileOld);
+        if ( !hmIdFile.containsKey(sNewId)){
+            hmIdFile.put(sNewId,fNew);
+            alSortedFiles.add(fNew);
+        }
+        //notify everybody for the file change
+        Properties properties = new Properties();
+        properties.put(DETAIL_OLD,fileOld);
+        properties.put(DETAIL_NEW,fNew);
+        ObservationManager.notifySync(new Event(EVENT_FILE_NAME_CHANGED,properties));
+        //refresh UI (see later for fine gained event for perfs if needed)
+        ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH));
+        return fNew;
 	}
 
 	/**
@@ -118,6 +180,16 @@ public class FileManager extends ItemManager{
 		}
 	}
 
+    
+    /**
+     * Remove a file reference
+     * @param file
+     */
+    public static void removeFile(File file){
+        hmIdFile.remove(file.getId());
+        alSortedFiles.remove(file);
+    }
+    
 	/** Return all registred files */
 	public static synchronized ArrayList getFiles() {
 		if (alSortedFiles.size() == 0){
@@ -500,9 +572,9 @@ public class FileManager extends ItemManager{
 	 		        (!file.getDirectory().getDevice().isMounted() || file.getDirectory().getDevice().isRefreshing())){
 	 			continue;
 	 		}
-	 		String sResu = file.toStringSearch();
+	 		String sResu = file.getAny();
 	 		if ( new StringBuffer(sResu.toLowerCase()).lastIndexOf(sCriteria) != -1 ){
-	 			tsResu.add(new SearchResult(file,sResu));
+	 			tsResu.add(new SearchResult(file,file.toStringSearch()));
 	 		}
 	 	}
 	 	return tsResu;
@@ -538,26 +610,11 @@ public class FileManager extends ItemManager{
     public String getIdentifier() {
         return XML_FILES;
     }
-
+   
     /* (non-Javadoc)
-     * @see org.jajuk.base.ItemManager#applyNewProperty()
+     * @see org.jajuk.base.Observer#update(org.jajuk.base.Event)
      */
-    public void applyNewProperty(String sProperty){
-        Iterator it = getFiles().iterator();
-        while (it.hasNext()){
-            IPropertyable item = (IPropertyable)it.next();
-            item.setProperty(sProperty,null);
-        }
-    }
-     /* (non-Javadoc)
-     * @see org.jajuk.base.ItemManager#applyRemoveProperty(java.lang.String)
-     */
-    public void applyRemoveProperty(String sProperty) {
-        Iterator it = getFiles().iterator();
-        while (it.hasNext()){
-            IPropertyable item = (IPropertyable)it.next();
-            item.removeProperty(sProperty);
-        }
+    public void update(Event event) {
     }
 }
 

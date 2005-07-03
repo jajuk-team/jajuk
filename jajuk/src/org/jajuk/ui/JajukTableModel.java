@@ -24,13 +24,15 @@ import java.util.Vector;
 
 import javax.swing.table.DefaultTableModel;
 
+import org.jajuk.util.ITechnicalStrings;
+
 /**
  *  Jajuk table model, adds identifier to model
  *
  * @author     Administrateur
  * @created    22 juin 2005
  */
-public class JajukTableModel extends DefaultTableModel {
+public abstract class JajukTableModel extends DefaultTableModel  implements ITechnicalStrings{
 
     /**Column identifiers*/
     Vector vId = new Vector(10);
@@ -104,5 +106,9 @@ public class JajukTableModel extends DefaultTableModel {
         }
     }
     
-    
+    /**Filter table with following criterias
+    * @param sProperty Property (column) to filter
+    * @param sPattern pattern*/
+    public abstract  void populateModel(String sProperty,String sPattern); 
+                
 }

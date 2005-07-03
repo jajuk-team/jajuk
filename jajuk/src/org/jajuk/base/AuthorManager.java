@@ -163,25 +163,5 @@ public class AuthorManager extends ItemManager{
     public String getIdentifier() {
         return XML_AUTHORS;
     }
-    
-    /* (non-Javadoc)
-     * @see org.jajuk.base.ItemManager#applyNewProperty()
-     */
-    public void applyNewProperty(String sProperty){
-        Iterator it = getAuthors().iterator();
-        while (it.hasNext()){
-            IPropertyable item = (IPropertyable)it.next();
-            item.setProperty(sProperty,null);
-        }
-    }
-     /* (non-Javadoc)
-     * @see org.jajuk.base.ItemManager#applyRemoveProperty(java.lang.String)
-     */
-    public void applyRemoveProperty(String sProperty) {
-        Iterator it = getAuthors().iterator();
-        while (it.hasNext()){
-            IPropertyable item = (IPropertyable)it.next();
-            item.removeProperty(sProperty);
-        }
-    }
+   
 }

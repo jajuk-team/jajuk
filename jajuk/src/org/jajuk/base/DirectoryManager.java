@@ -20,7 +20,6 @@
 
 package org.jajuk.base;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -34,7 +33,7 @@ import org.jajuk.util.SequentialMap;
  * @Author Bertrand Florat 
  * @created 17 oct. 2003
  */
-public class DirectoryManager extends ItemManager{
+public class DirectoryManager extends ItemManager implements Observer{
 	/** Directories collection stored in a arraylist to conserve creation order when parsing at startup* */
 	static ArrayList alDirectories = new ArrayList(100);
 	/** Directories collection ID */
@@ -49,6 +48,8 @@ public class DirectoryManager extends ItemManager{
 	 */
 	private DirectoryManager() {
 		super();
+        //      subscriptions
+        ObservationManager.register(EVENT_FILE_NAME_CHANGED,this);
 	}
     
 	/**
@@ -72,7 +73,7 @@ public class DirectoryManager extends ItemManager{
 		if (dParent != null) {
 			sbAbs.append(dParent.getRelativePath());
 		}
-		sbAbs.append(File.separatorChar).append(sName);
+		sbAbs.append(java.io.File.separatorChar).append(sName);
 		String sId = MD5Processor.hash(sbAbs.insert(0,device.getName()).toString());
 		return registerDirectory(sId, sName, dParent, device);
 	}
@@ -182,27 +183,21 @@ public class DirectoryManager extends ItemManager{
     public String getIdentifier() {
         return XML_DIRECTORIES;
     }
-
-    /* (non-Javadoc)
-     * @see org.jajuk.base.ItemManager#applyNewProperty()
+    
+  /* (non-Javadoc)
+     * @see org.jajuk.base.Observer#update(org.jajuk.base.Event)
      */
-    public void applyNewProperty(String sProperty){
-        Iterator it = getDirectories().iterator();
-        while (it.hasNext()){
-            IPropertyable item = (IPropertyable)it.next();
-            item.setProperty(sProperty,null);
+    public void update(Event event) {
+        String subject = event.getSubject();
+        if (EVENT_FILE_NAME_CHANGED.equals(subject)){
+            Properties properties = event.getDetails();
+            File fNew  = (File)properties.get(DETAIL_NEW);
+            File fileOld = (File)properties.get(DETAIL_OLD);
+            Directory dir = fileOld.getDirectory();
+            // change directory references
+            dir.changeFile(fileOld,fNew);
         }
     }
     
-     /* (non-Javadoc)
-     * @see org.jajuk.base.ItemManager#applyRemoveProperty(java.lang.String)
-     */
-    public void applyRemoveProperty(String sProperty) {
-        Iterator it = getDirectories().iterator();
-        while (it.hasNext()){
-            IPropertyable item = (IPropertyable)it.next();
-            item.removeProperty(sProperty);
-        }
-    }
     
 }

@@ -204,10 +204,10 @@ public class ConfigurationManager implements ITechnicalStrings{
 		properties.put(CONF_COVERS_ACCURACY+"_3","3"); //Author accuracy //$NON-NLS-1$ //$NON-NLS-2$
 		properties.put(CONF_COVERS_ACCURACY+"_4","4"); //Album accuracy //$NON-NLS-1$ //$NON-NLS-2$
 		properties.put(CONF_COVERS_CHANGE_AT_EACH_TRACK,FALSE); 
-        properties.put(CONF_PHYSICAL_TABLE_COLUMNS,"Property_track,Property_album,Property_author," +
-                "Property_length,Property_style,Property_directory,Property_name,Property_rate");
-        properties.put(CONF_LOGICAL_TABLE_COLUMNS,"Property_name,Property_album,Property_author," +
-                "Property_length,Property_style,Property_rate");
+        properties.put(CONF_PHYSICAL_TABLE_COLUMNS,XML_TRACK+','+XML_ALBUM+','+XML_AUTHOR+','+
+                XML_TRACK_LENGTH+','+XML_STYLE+','+XML_DEVICE+','+XML_NAME+','+XML_COMMENT+','+XML_TRACK_RATE);
+        properties.put(CONF_LOGICAL_TABLE_COLUMNS,XML_NAME+','+XML_ALBUM+','+XML_AUTHOR+','+
+              XML_TRACK_LENGTH+','+XML_STYLE+','+XML_COMMENT+','+XML_TRACK_RATE);
         properties.put(CONF_WINDOW_POSITION,"50,50,"+ //$NON-NLS-1$
             (int)(Toolkit.getDefaultToolkit().getScreenSize().getWidth()-100)+","+ //$NON-NLS-1$
             (int)(Toolkit.getDefaultToolkit().getScreenSize().getHeight()-100)); //Window position: X,Y,X_size,Y_size

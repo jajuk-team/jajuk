@@ -70,6 +70,7 @@ class RemovePropertyWizard extends CustomPropertyWizard {
         getContentPane().add(jpMain);
         getContentPane().add(okp);
         getContentPane().add(Box.createVerticalStrut(10));
+        okp.getOKButton().grabFocus();
     }
 
     /* (non-Javadoc)
@@ -102,6 +103,7 @@ class RemovePropertyWizard extends CustomPropertyWizard {
         if (jcbItemChoice.getSelectedIndex() != -1 
                 && jcbName.getSelectedIndex() != -1){
             okp.getOKButton().setEnabled(true);
+            okp.getOKButton().requestFocusInWindow();
         }
         else{
             okp.getOKButton().setEnabled(false);

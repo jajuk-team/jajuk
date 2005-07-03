@@ -21,11 +21,16 @@
 package org.jajuk.ui;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.regex.PatternSyntaxException;
 
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
+import org.jajuk.base.ObservationManager;
 import org.jajuk.i18n.Messages;
+import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.SequentialMap;
 import org.jajuk.util.Util;
 
@@ -34,7 +39,7 @@ import org.jajuk.util.Util;
  * @author     Bertrand Florat
  * @created    29 feb. 2004
  */
-public class FilesTableModel extends JajukTableModel{
+public class FilesTableModel extends JajukTableModel implements ITechnicalStrings{
 	
 	
 	/**
@@ -43,34 +48,37 @@ public class FilesTableModel extends JajukTableModel{
 	 * @param sColName columns names
 	 */
 	public FilesTableModel(){
-		super(9);
+		super(10);
         //Columns names
-        vColNames.add(Messages.getString("Property_id"));
-        vId.add("Property_id");
+        vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_ID));
+        vId.add(XML_ID);
         
-        vColNames.add(Messages.getString("Property_track"));
-        vId.add("Property_track");
+        vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_TRACK));
+        vId.add(XML_TRACK);
         
-        vColNames.add(Messages.getString("Property_album"));
-        vId.add("Property_album");
+        vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_ALBUM));
+        vId.add(XML_ALBUM);
         
-        vColNames.add(Messages.getString("Property_author"));
-        vId.add("Property_author");
+        vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_AUTHOR));
+        vId.add(XML_AUTHOR);
         
-        vColNames.add(Messages.getString("Property_length"));
-        vId.add("Property_length");
+        vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_TRACK_LENGTH));
+        vId.add(XML_TRACK_LENGTH);
         
-        vColNames.add(Messages.getString("Property_style"));
-        vId.add("Property_style");
+        vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_STYLE));
+        vId.add(XML_STYLE);
         
-        vColNames.add(Messages.getString("Property_directory"));
-        vId.add("Property_directory");
+        vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_DEVICE));
+        vId.add(XML_DEVICE);
         
-        vColNames.add(Messages.getString("Property_name"));
-        vId.add("Property_name");
+        vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_NAME));
+        vId.add(XML_NAME);
         
-        vColNames.add(Messages.getString("Property_rate"));
-        vId.add("Property_rate");
+        vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_COMMENT));
+        vId.add(XML_COMMENT);
+        
+        vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_TRACK_RATE));
+        vId.add(XML_TRACK_RATE);
         
         //Custom properties now
         ArrayList alCustomProperties = FileManager.getInstance().getCustomProperties();
@@ -80,16 +88,62 @@ public class FilesTableModel extends JajukTableModel{
             vColNames.add(sProperty);
             vId.add(sProperty);
         }   
-        //Values
+    }
+    
+    /**
+     * Fill model with data using an optionnal filter property and pattern
+     */
+    public void populateModel(String sPropertyName,String sPattern){
+        //Filter mounted files if needed and apply sync table with tree option if needed
+        boolean bShowWithTree = true;
+        HashSet hs = (HashSet)ObservationManager.getDetailLastOccurence(EVENT_SYNC_TREE_TABLE,DETAIL_SELECTION);//look at selection
+        boolean bSyncWithTreeOption = ConfigurationManager.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE);
         ArrayList alFiles = FileManager.getFiles();
         ArrayList alToShow = new ArrayList(alFiles.size());
-        it = alFiles.iterator();
+        Iterator it = alFiles.iterator();
         while ( it.hasNext()){
-            File file = (File)it.next(); 
-            if ( !file.shouldBeHidden()){
+            File file = (File)it.next();
+            bShowWithTree =  !bSyncWithTreeOption 
+                || ((hs != null && hs.size() > 0 && hs.contains(file))); //show it if no sync option or if item is in the selection
+            if ( !file.shouldBeHidden() && bShowWithTree){
                 alToShow.add(file);
             }
         }
+        //Filter values using given pattern
+        if (sPropertyName != null && sPattern != null){ //null means no filtering
+            it = alToShow.iterator();
+            //Prepare filter pattern
+            String sNewPattern = sPattern;
+            if ( !ConfigurationManager.getBoolean(CONF_REGEXP) && sNewPattern != null){ //do we use regular expression or not? if not, we allow user to use '*'
+                sNewPattern = sNewPattern.replaceAll("\\*",".*"); //$NON-NLS-1$ //$NON-NLS-2$
+                sNewPattern = ".*"+sNewPattern+".*"; //$NON-NLS-1$ //$NON-NLS-2$
+            }
+            else if ("".equals(sNewPattern)){//in regexp mode, if none selection, display all rows //$NON-NLS-1$
+                sNewPattern = ".*"; //$NON-NLS-1$
+            }
+            while (it.hasNext()){
+                File file = (File)it.next();
+                if ( sPropertyName != null && sNewPattern != null ){ //if name or value is null, means there is no filter
+                    String sValue = file.getHumanValue(sPropertyName);
+                    if ( sValue == null){ //try to filter on a unknown property, don't take this file
+                        continue;
+                    }
+                    else { 
+                        boolean bMatch = false;
+                        try{  //test using regular expressions
+                            bMatch = sValue.toLowerCase().matches(sNewPattern.toLowerCase());  // test if the file property contains this property value (ignore case)
+                        }
+                        catch(PatternSyntaxException pse){ //wrong pattern syntax
+                            bMatch = false;
+                        }
+                        if (!bMatch){
+                            it.remove(); //no? remove it
+                        }
+                    }   
+                }
+            }
+        }
+        it = alToShow.iterator();
         int iColNum = iNumberStandardRows + FileManager.getInstance().getCustomProperties().size();
         iRowNum = alToShow.size();
         it = alToShow.iterator();
@@ -116,16 +170,20 @@ public class FilesTableModel extends JajukTableModel{
             //Style
             oValues[iRow][5] = file.getTrack().getStyle().getName2();
             bCellEditable[iRow][5] = true;
-            //Directory
+            //Device
             oValues[iRow][6] = file.getDirectory().getDevice().getName();
             bCellEditable[iRow][6] = true;
             //File name
             oValues[iRow][7] = file.getName();
             bCellEditable[iRow][7] = true;
-            //Rate
-            oValues[iRow][8] = new Long(file.getTrack().getRate());
+            //Comment
+            oValues[iRow][8] = file.getTrack().getValue(XML_COMMENT);
             bCellEditable[iRow][8] = true;
+            //Rate
+            oValues[iRow][9] = new Long(file.getTrack().getRate());
+            bCellEditable[iRow][9] = true;
             //Custom properties now
+            ArrayList alCustomProperties = FileManager.getInstance().getCustomProperties();
             Iterator it2 = alCustomProperties.iterator();
             for (int i=0;it2.hasNext();i++){
                 String sProperty = (String)it2.next();
@@ -155,4 +213,6 @@ public class FilesTableModel extends JajukTableModel{
             }
         }
     }
+    
+    
 }

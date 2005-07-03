@@ -121,27 +121,6 @@ public class PlaylistManager extends ItemManager{
     public String getIdentifier() {
         return XML_PLAYLISTS;
     }
-    
-    /* (non-Javadoc)
-     * @see org.jajuk.base.ItemManager#applyNewProperty()
-     */
-    public void applyNewProperty(String sProperty){
-        Iterator it = getPlaylists().iterator();
-        while (it.hasNext()){
-            IPropertyable item = (IPropertyable)it.next();
-            item.setProperty(sProperty,null);
-        }
-    }    
-
-     /* (non-Javadoc)
-     * @see org.jajuk.base.ItemManager#applyRemoveProperty(java.lang.String)
-     */
-    public void applyRemoveProperty(String sProperty) {
-        Iterator it = getPlaylists().iterator();
-        while (it.hasNext()){
-            IPropertyable item = (IPropertyable)it.next();
-            item.removeProperty(sProperty);
-        }
-    }
+  
 	
 }

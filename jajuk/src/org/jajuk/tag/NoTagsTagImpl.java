@@ -104,6 +104,13 @@ public class NoTagsTagImpl implements ITagImpl {
 	}
 
 	/* (non-Javadoc)
+	 * @see org.jajuk.base.ITagImpl#getComment()
+	 */
+	public String getComment() throws Exception {
+		return ""; //by doing that, the item wil be the default jajuk unknown string //$NON-NLS-1$
+	}
+	
+	/* (non-Javadoc)
 	 * @see org.jajuk.base.ITagImpl#getQuality()
 	 */
 	public String getQuality() throws Exception {
@@ -121,6 +128,10 @@ public class NoTagsTagImpl implements ITagImpl {
 	 */
 	public void setAlbumName(String sAlbumName) throws Exception {
 	}
+	
+	public void setComment(String sComment) throws Exception {
+	}
+	
 
 	/* (non-Javadoc)
 	 * @see org.jajuk.base.ITagImpl#setAuthorName(java.lang.String)
@@ -158,5 +169,18 @@ public class NoTagsTagImpl implements ITagImpl {
 	public void setFile(File fio) throws Exception {
 		this.fio = fio;
 	}
+    
+     /* (non-Javadoc)
+     * @see org.jajuk.tag.ITagImpl#getTagItem(java.lang.String)
+     */
+    public String getTagItem(String sTagItem) throws Exception {
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see org.jajuk.tag.ITagImpl#setTagItem(java.lang.String, java.lang.String)
+     */
+    public void setTagItem(String sTagItem, String sValue) throws Exception {
+    }
 
 }

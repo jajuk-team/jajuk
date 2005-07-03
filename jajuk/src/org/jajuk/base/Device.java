@@ -86,9 +86,12 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	 */
 	public Device(String sId, String sName, int iDeviceType, String sUrl, String sMountPoint) {
         super(sId,sName);
-		setDeviceType(iDeviceType);
-		setUrl(sUrl);
-        setMountPoint(sMountPoint);
+        this.iDeviceType = iDeviceType;
+        setProperty(XML_TYPE,Integer.toString(iDeviceType));
+        this.sUrl = sUrl;
+        setProperty(XML_URL,sUrl);
+        this.sMountPoint = sMountPoint;
+        setProperty(XML_DEVICE_MOUNT_POINT,sMountPoint);
         this.fio = new File(getUrl());
 	}
 	
@@ -696,13 +699,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	}
 	
 	
-	/**
-	 * @param mountPoint The sMountPoint to set.
-	 */
-	protected void setMountPoint(String sMountPoint) {
-		this.sMountPoint = sMountPoint;
-        setProperty(XML_DEVICE_MOUNT_POINT,sMountPoint);
-	}
+	
 	
 	
 	/**
@@ -759,6 +756,14 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
     protected void setDeviceType(int deviceType) {
         iDeviceType = deviceType;
         setProperty(XML_TYPE,Integer.toString(deviceType));
+    }
+    
+    /**
+     * @param mountPoint The sMountPoint to set.
+     */
+    protected void setMountPoint(String sMountPoint) {
+        this.sMountPoint = sMountPoint;
+        setProperty(XML_DEVICE_MOUNT_POINT,sMountPoint);
     }
 
         /**

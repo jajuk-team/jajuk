@@ -75,8 +75,10 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 	 */
 	public PlaylistFile(int iType,String sId, String sName,String sHashcode,Directory dParentDirectory) {
         super(sId,sName);
-        setHashcode(sHashcode);
-        setParentDirectory(dParentDirectory);
+        this.sHashcode = sHashcode;
+        setProperty(XML_HASHCODE,sHashcode);
+        this.dParentDirectory = dParentDirectory;
+        setProperty(XML_DIRECTORY,dParentDirectory==null?"-1":dParentDirectory.getId());
         this.iType = iType;
         if ( getDirectory() != null){  //test "new"playlist case
 			this.fio = new java.io.File(getDirectory().getDevice().getUrl()+getDirectory().getRelativePath()+"/"+getName()); //$NON-NLS-1$
@@ -427,6 +429,12 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
                 if (fileToTest.equals(fOld)){
                     alFiles.remove(i);
                     alFiles.add(i,fNew);
+                    try {
+                        commit();//save changed playlist file
+                    }
+                    catch (JajukException e) {
+                        Log.error(e);
+                    }
                 }
             }
         }

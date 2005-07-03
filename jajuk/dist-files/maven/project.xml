@@ -91,94 +91,6 @@
 	      <timezone>+2</timezone>
 	    </developer>
 
-	    <developer>
-	      <name>Oscar Appelgren</name>
-	      <id>oscariot</id>
-	     <roles>
-			<role>Swedish translator</role>
-	     </roles>
-	      <email>oscariot@users.sourceforge.net</email>
-	      <organization>Jajuk team</organization>
-	      <timezone>+2</timezone>
-	    </developer>
-
-	   <developer>
-	      <name>Riccardo Capecchi</name>
-	      <id>ricciocri</id>
-	     <roles>
-			<role>Italian translator</role>
-	     </roles>
-	      <email>ricciocri@users.sourceforge.net</email>
-	      <organization>Jajuk team</organization>
-	      <timezone>+2</timezone>
-	    </developer>
-
-		<developer>
-	      <name>Kevin Tangning</name>
-	      <id>kavent</id>
-	     <roles>
-			<role>Chinese translator</role>
-	     </roles>
-	      <email>kavent@users.sourceforge.net</email>
-	      <organization>Jajuk team</organization>
-	      <timezone>+8</timezone>
-	    </developer>
-
-		<developer>
-	     <name>Masiar Farahani</name>
-	      <id>masiar</id>
-	     <roles>
-			<role>Developer</role>
-	     </roles>
-	      <email>masiar@users.sourceforge.net</email>
-	      <organization>Jajuk team</organization>
-	      <timezone>+2</timezone>
-	    </developer>
-	   
-	   <developer>
-	      <name>Marc-Siebren Kwadijk</name>
-	      <id>marcsiebren@users.sourceforge.net</id>
-    	  <roles>
-		      <role>Dutch translator</role>
-	      </roles>
-	      <email>marcsiebren@users.sourceforge.net</email>
-	      <organization>Jajuk team</organization>
-	      <timezone>+2</timezone>
-	    </developer>
-	    
-	    <developer>
-	      <name>Sébastien Gringoire</name>
-	      <id>sgringoi</id>
-    	  <roles>
-		      <role>Design, some early developments</role>
-	      </roles>
-	      <email>sgringoi@users.sourceforge.net</email>
-	      <organization>Jajuk team</organization>
-	      <timezone>+2</timezone>
-	    </developer>
-	
-	   <developer>
-	      <name>Fabrice Dutron</name>
-	      <id>fdutron</id>
-    	  <roles>
-		      <role>Developer</role>
-	      </roles>
-	      <email>fdutron@users.sourceforge.net</email>
-	      <organization>Jajuk team</organization>
-	      <timezone>+2</timezone>
-	    </developer>
-
-	   <developer>
-	      <name>Neoclust</name>
-	      <id>neoclust</id>
-    	  <roles>
-		      <role>Packaging</role>
-	      </roles>
-	      <email>n1c0l4s.l3 at wanadoo.fr</email>
-	      <organization>Jajuk team</organization>
-	      <timezone>+2</timezone>
-	    </developer>
-
 	   <developer>
 	      <name>Josep Carles Collazos</name>
 	      <id>jespo</id>
@@ -190,31 +102,50 @@
 	      <timezone>+2</timezone>
 	    </developer>
 	    
-		 <developer>
-	      <name>Christine Thel</name>
-	      <id>thel</id>
-    	  <roles>
-		      <role>Doc translator</role>
-	      </roles>
-	      <email></email>
-	      <organization>Jajuk team</organization>
-	      <timezone>+2</timezone>
-	    </developer>
 	    
-	    <developer>
-	      <name>Martial Braux</name>
-	      <id>mbraux</id>
-    	  <roles>
-		      <role>Developer</role>
-	      </roles>
-	      <email></email>
-	      <organization>Jajuk team</organization>
-	      <timezone>+2</timezone>
-	    </developer>
 	    
   </developers>
-  
-	<contributors>
+ 	<contributors>
+		<contributor>
+			<name>Oscar Appelgren</name>
+			<roles><role>Swedish translator</role></roles>
+		</contributor>
+		<contributor>
+			<name>Riccardo Capecchi</name>
+			<roles><role>Italian translator</role></roles>
+		</contributor>
+		<contributor>
+			<name>Kevin Tangning</name>
+			<roles><role>Chinese translator</role></roles>
+		</contributor>
+		<contributor>
+			<name>Masiar Farahani</name>
+			<roles><role>Some code and advices</role></roles>
+		</contributor>
+		<contributor>
+			<name>Marc-Siebren Kwadijk</name>
+			<roles><role>Dutch translator</role></roles>
+		</contributor>
+		<contributor>
+			<name>Sébastien Gringoire</name>
+			<roles><role>Design, some early developments</role></roles>
+		</contributor>
+		<contributor>
+			<name>Fabrice Dutron</name>
+			<roles><role>Windows docking development</role></roles>
+		</contributor>
+		<contributor>
+			<name>Neoclust</name>
+			<roles><role>RPM Packaging</role></roles>
+		</contributor>
+		<contributor>
+			<name>Christine Thel</name>
+			<roles><role>Part of french doc translation</role></roles>
+		</contributor>
+		<contributor>
+			<name>Martial Braux</name>
+			<roles><role>Some code on Cover</role></roles>
+		</contributor>
 		<contributor>
 			<name>Romain Herault</name>
 			<roles><role>Mac integration code</role></roles>
@@ -311,10 +242,16 @@
     
    <dependency>
 	   <groupId>lib</groupId>
-        <artifactId>tray</artifactId>
-        <version>0.1.6</version> 
+        <artifactId>jdic</artifactId>
+        <version>0.9.1</version> 
     </dependency>
 
+    <dependency>
+	   <groupId>lib</groupId>
+        <artifactId>swingx</artifactId>
+        <version>beta</version> 
+    </dependency>
+    
      <dependency>
 	   <groupId>lib</groupId>
         <artifactId>jogg</artifactId>

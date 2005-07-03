@@ -69,12 +69,12 @@
             <file override='true' targetdir='$INSTALL_PATH/bin' src='/tmp/jajuk-dist/jajuk/bin/jajuk.jar'/>
             <file override='true' targetdir='$INSTALL_PATH/bin' src='/tmp/jajuk-dist/jajuk/bin/jajuk-help.jar'/>
             <file override='true' targetdir='$INSTALL_PATH/bin' src='/tmp/jajuk-dist/jajuk/bin/jajuk-help_fr.jar'/>
-            <file override='true' targetdir='$INSTALL_PATH/native' src='/tmp/jajuk-dist/jajuk/native/tray.dll'>
+            <dir override='true' targetdir='$INSTALL_PATH/lib' src='/tmp/jajuk-dist/jajuk/lib/windows'>
             	<os family='windows'/>
-           </file>
-            <file override='true' targetdir='$INSTALL_PATH/native' src='/tmp/jajuk-dist/jajuk/native/libtray.so'>
+           </dir>
+            <dir override='true' targetdir='$INSTALL_PATH/lib' src='/tmp/jajuk-dist/jajuk/lib/unix'>
             	<os family='unix'/>
-           </file>
+           </dir>
             <fileset override='true' targetdir='$INSTALL_PATH/dist-files' dir='/tmp/jajuk-dist/jajuk/dist-files'/>
             <fileset override='true' targetdir='$INSTALL_PATH/lib' dir='/tmp/jajuk-dist/jajuk/lib'/>
             <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/build.xml'/>

@@ -38,8 +38,7 @@ public interface IPropertyable {
      * @return an identifier used to generate XML  representation of this item
      */
     String getIdentifier();
-   
-	
+   	
 	/**
 	 * Get a property
 	 * @param sKey
@@ -47,7 +46,13 @@ public interface IPropertyable {
 	 */
 	public String getValue(String sKey);
 	
-	/**
+    /**
+     * Get the "Any" value that contains all values concatenated
+     * @return
+     */
+    public String getAny();
+    
+    /**
 	 * Set a property
 	 * @param sKey
 	 * @param sValue

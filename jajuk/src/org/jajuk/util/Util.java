@@ -937,7 +937,7 @@ public class Util implements ITechnicalStrings {
      * @return
      */
     public static String formatPropertyDesc(String sDesc){
-        return "<HTML><center><b><font size=+2 color=#000000>"+
+        return "<HTML><center><b><font size=+0 color=#000000>"+
         sDesc +
         "</font></b><HTML>";
     }

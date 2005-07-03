@@ -223,9 +223,30 @@ public class Tag implements ITechnicalStrings{
 			Log.error("103",fio.getName(), e); //$NON-NLS-1$
 		}
 		return sQuality;
-
 	}
 
+	/**
+	 * @return comment
+	 */
+	public String getComment() {
+		String sComment = "";
+		//if the type doesn't support tags ( like wav )
+		if (tagImpl == null){  
+			return sComment;
+		}
+		String sTemp = ""; //$NON-NLS-1$
+		try {
+			sTemp = tagImpl.getComment();
+			if (sTemp != null && !sTemp.equals("")){ //$NON-NLS-1$
+				sComment = Util.formatTag(sTemp);
+			}
+		} catch (Exception e) {
+			Log.error("103",fio.getName(), e); //$NON-NLS-1$
+		}
+		return sComment;	
+	}
+
+	
 	/**
 	 * @param sTrackName
 	 */
@@ -306,7 +327,18 @@ public class Tag implements ITechnicalStrings{
 		} catch (Exception e) {
 			Log.error("104", fio.getName(),e); //$NON-NLS-1$
 		}
-
 	}
+
+	/**
+	 * @param sComment
+	 */
+	public void setComment(String sComment) {
+		try {
+			tagImpl.setComment(sComment);
+		} catch (Exception e) {
+			Log.error("104", fio.getName(),e); //$NON-NLS-1$
+		}
+	}
+
 
 }

@@ -22,8 +22,6 @@ package org.jajuk.ui;
 
 import info.clearthought.layout.TableLayout;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -43,7 +41,7 @@ import org.jajuk.util.Util;
  * @author Bertrand Florat
  * @created 6 juin 2005
  */
-public class PropertiesWizard extends JFrame implements ITechnicalStrings, ActionListener {
+public class PropertiesWizard extends JFrame implements ITechnicalStrings {
 
     JPanel jpMain;
     
@@ -57,9 +55,6 @@ public class PropertiesWizard extends JFrame implements ITechnicalStrings, Actio
 
     /** Item to show */
     IPropertyable pa;
-   
-   /**OK / cancel panel*/
-    OKCancelPanel okp;
  
     /**
      * Constructor
@@ -76,13 +71,10 @@ public class PropertiesWizard extends JFrame implements ITechnicalStrings, Actio
         int iY_SEPARATOR = 10;
         //desc
         jlDesc = new JLabel(pa.getDesc());
-        //buttons
-        okp = new OKCancelPanel(this);
-        okp.getOKButton().setEnabled(false);
         //add panels
         jpMain = new JPanel();
         double[][] dSize = {{0.99},
-        {40,iY_SEPARATOR,0.99,iY_SEPARATOR,20}};
+        {40,iY_SEPARATOR,0.99}};
         jpMain.setLayout(new TableLayout(dSize));
         PropertiesTableModel model = new PropertiesTableModel(pa); 
         jtable = new JajukTable(model);
@@ -105,23 +97,11 @@ public class PropertiesWizard extends JFrame implements ITechnicalStrings, Actio
         jtable.setRowHeight(20);
         jpMain.add(jlDesc,"0,0");
         jpMain.add(new JScrollPane(jtable),"0,2");
-        jpMain.add(okp,"0,4");
         getContentPane().add(jpMain);
         jtable.packAll();
         pack();
         Util.setShuffleLocation(this,400,400);
     }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-     */
-    public void actionPerformed(ActionEvent e) {
-        if(e.getSource() == okp.getCancelButton()){
-            dispose();
-        }
-    }
-
+  
 }
 

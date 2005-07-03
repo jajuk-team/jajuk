@@ -26,6 +26,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Properties;
 
 import org.jajuk.util.MD5Processor;
 
@@ -34,7 +35,7 @@ import org.jajuk.util.MD5Processor;
  * @author Bertrand Florat 
  * @created 17 oct. 2003
  */
-public class TrackManager extends ItemManager{
+public class TrackManager extends ItemManager implements Observer{
 	/** Tracks collection maps: ID -> track* */
 	static HashMap hmTracks = new HashMap(100);
     /**Self instance*/
@@ -45,6 +46,8 @@ public class TrackManager extends ItemManager{
 	 */
 	private TrackManager() {
 		super();
+		//      subscriptions
+        ObservationManager.register(EVENT_FILE_NAME_CHANGED,this);
 	}
     
     /**
@@ -178,28 +181,6 @@ public class TrackManager extends ItemManager{
         return XML_TRACKS;
     }    
     
-    /* (non-Javadoc)
-     * @see org.jajuk.base.ItemManager#applyNewProperty()
-     */
-    public void applyNewProperty(String sProperty){
-        Iterator it = getTracks().iterator();
-        while (it.hasNext()){
-            IPropertyable item = (IPropertyable)it.next();
-            item.setProperty(sProperty,null);
-        }
-    }   
-
-     /* (non-Javadoc)
-     * @see org.jajuk.base.ItemManager#applyRemoveProperty(java.lang.String)
-     */
-    public void applyRemoveProperty(String sProperty) {
-        Iterator it = getTracks().iterator();
-        while (it.hasNext()){
-            IPropertyable item = (IPropertyable)it.next();
-            item.removeProperty(sProperty);
-        }
-    }
-    
     /**
      * Get tracks properties (all the same)
      * @return
@@ -213,6 +194,21 @@ public class TrackManager extends ItemManager{
             track = new Track("","",null,null,null,0,"",null); 
         }
         return (ArrayList)track.getProperties().keys();
+    }
+    
+    /* (non-Javadoc)
+     * @see org.jajuk.base.Observer#update(org.jajuk.base.Event)
+     */
+    public void update(Event event) {
+        String subject = event.getSubject();
+        if (EVENT_FILE_NAME_CHANGED.equals(subject)){
+            Properties properties = event.getDetails();
+            File fNew = (File)properties.get(DETAIL_NEW);
+            File fileOld = (File)properties.get(DETAIL_OLD);
+            Track track =fileOld.getTrack(); 
+            track.removeFile(fileOld);
+            track.addFile(fNew);
+        }
     }
     
 }

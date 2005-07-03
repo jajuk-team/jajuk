@@ -41,7 +41,6 @@ Jajuk main principles are :
   /usr/bin/jajuk
    /usr/lib/jajuk/bin/*
    /usr/lib/jajuk/lib/*
-   /usr/lib/jajuk/native/*
    /usr/share/doc/jajuk/*
    /usr/share/icons/*
    /usr/lib/menu/*

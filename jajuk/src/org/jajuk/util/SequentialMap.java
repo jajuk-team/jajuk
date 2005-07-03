@@ -34,8 +34,7 @@ public class SequentialMap {
     private ArrayList alKeys;
 
     private ArrayList alValues;
-    
-     
+         
     
     public SequentialMap(){
         alKeys = new ArrayList(10);
@@ -82,7 +81,7 @@ public class SequentialMap {
      * @see java.util.Map#values()
      */
     public Collection values() {
-        return values();
+        return alValues;
     }
 
        /* (non-Javadoc)
@@ -108,7 +107,12 @@ public class SequentialMap {
      * @see java.util.Map#get(java.lang.Object)
      */
     public String getProperty(String sKey) {
-        return (String)get(sKey);
+        if (get(sKey) == null){
+            return "";
+        }
+        else{
+            return (String)get(sKey);    
+        }
     }
 
     public String getPropertyAt(int index) {

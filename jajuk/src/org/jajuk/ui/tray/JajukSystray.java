@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 Administrateur
+ *  Copyright (C) 2003 Bertrand Florat
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -84,9 +84,11 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
 	JMenuItem jmiPrevious;
 	JMenuItem jmiNext;
 	JMenuItem jmiOut;
+    JMenuItem jmiVolume;
     JPanel jpVolume;
     JLabel jlVolume;
     JSlider jsVolume;
+    JMenuItem jmiPosition;
     JPanel jpPosition;
     JLabel jlPosition;
     JSlider jsPosition;
@@ -184,6 +186,9 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
         jsPosition.addMouseWheelListener(this);
         jpPosition.add(jlPosition);
         jpPosition.add(jsPosition);
+        
+        /**Important: due to a bug probably in swing or jdic, we have to add a jmenuitem in the popup menu 
+         * and not the panel itself, otherwise no action event occurs*/
         
         jpVolume = new JPanel();
         jpVolume.setLayout(new FlowLayout(FlowLayout.LEFT));

@@ -158,7 +158,7 @@ public class FirstTimeWizard extends JDialog implements ITechnicalStrings,Action
                 }
                 jtfFileSelected.setText(fDir.getAbsolutePath());
                 jbOk.setEnabled(true);
-                jbOk.requestFocusInWindow();
+                jbOk.grabFocus();
             }
         }
         else if (e.getSource() == jbOk){

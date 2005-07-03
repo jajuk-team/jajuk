@@ -22,11 +22,19 @@ package org.jajuk.ui;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Properties;
 
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 
 import org.jajuk.base.Device;
+import org.jajuk.base.Event;
+import org.jajuk.base.File;
+import org.jajuk.base.FileManager;
 import org.jajuk.base.IPropertyable;
+import org.jajuk.base.ObservationManager;
+import org.jajuk.base.Observer;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.SequentialMap;
@@ -37,7 +45,8 @@ import org.jajuk.util.Util;
  * @author     Bertrand Florat
  * @created    06 jun. 2005
  */
-public class PropertiesTableModel extends AbstractTableModel implements ITechnicalStrings{
+public class PropertiesTableModel extends AbstractTableModel 
+    implements ITechnicalStrings,TableModelListener,Observer{
 	
 	/**Columns number*/
 	protected int iColNum;
@@ -113,6 +122,10 @@ public class PropertiesTableModel extends AbstractTableModel implements ITechnic
                 oValues[i][3] = Util.getIcon(ICON_VOID);
             }
         }
+        //listen for table changes
+        addTableModelListener(this);
+        //Add observers
+        ObservationManager.register(EVENT_FILE_NAME_CHANGED,this);
      }
 	
 	
@@ -126,7 +139,7 @@ public class PropertiesTableModel extends AbstractTableModel implements ITechnic
 	
 	public synchronized boolean isCellEditable(int rowIndex, int columnIndex) {
 		String sProperty = (String)oValues[rowIndex][4];
-        return pa.isPropertyEditable(sProperty) && (columnIndex==2);
+        return pa != null && (pa.isPropertyEditable(sProperty) && (columnIndex==2));
 	}
 	
 	public synchronized Class getColumnClass(int columnIndex) {
@@ -155,20 +168,45 @@ public class PropertiesTableModel extends AbstractTableModel implements ITechnic
 	
 	public  synchronized void setValueAt(Object oValue, int rowIndex, int columnIndex) {
 		oValues[rowIndex][columnIndex] = oValue;
-	}
-	
-	/**
-	 * Set all values used by this model
-	 * @param oValues : cells values
-	 */
-	public synchronized void setValues(Object[][] oValues) {
-		this.oValues = oValues;
-		this.iRowNum = oValues.length;
+        fireTableCellUpdated(rowIndex,columnIndex);
 	}
 	
 	public String getColumnName(int columnIndex) {
 		return sColName[columnIndex];
 	}
 	
+ /* (non-Javadoc)
+     * @see javax.swing.event.TableModelListener#tableChanged(javax.swing.event.TableModelEvent)
+     */
+    public void tableChanged(TableModelEvent e) {
+        String sKey = (String)getValueAt(e.getFirstRow(),4);
+        String sValue = (String)getValueAt(e.getFirstRow(),2);
+        if (XML_NAME.equals(sKey)){
+            if (pa instanceof File){
+                File file = (File)pa;
+                File fNew = FileManager.changeFileName(file,sValue);
+                pa = fNew; 
+            }
+        }
+        //others properties
+        else{
+            pa. setProperty(sKey,sValue);
+        }
+    }
 
+
+    /* (non-Javadoc)
+     * @see org.jajuk.base.Observer#update(org.jajuk.base.Event)
+     */
+    public void update(Event event) {
+        String subject = event.getSubject();
+        if (EVENT_FILE_NAME_CHANGED.equals(subject)){
+            Properties properties = event.getDetails();
+            String sNewId = properties.getProperty(DETAIL_NEW);
+            pa = FileManager.getFileById(sNewId);
+        }
+    }
+    
+    
+    
 }

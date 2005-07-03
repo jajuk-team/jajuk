@@ -31,7 +31,6 @@ Jajuk main principles are :
   /usr/bin/*
    /usr/lib/jajuk/bin/*
    /usr/lib/jajuk/lib/*
-   /usr/lib/jajuk/native/*
    /usr/share/applications/*
    /usr/share/doc/packages/jajuk/*
    /usr/share/pixmaps/*

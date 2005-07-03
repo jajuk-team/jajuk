@@ -77,18 +77,28 @@ public class Track extends PropertyAdapter implements Comparable{
 	 */
 	public Track(String sId, String sName,Album album,Style style,Author author,long length,String sYear,Type type) {
         super(sId,sName);
-		setAlbum(album);
-        setStyle(style);
-        setAuthor(author);
-        setLength(length);
-        setType(type);
-        setYear(sYear);
-        setRate(0);
-        setProperty(XML_FILES,null); //need this to respect attributes order
-        setHits(0);
-        setAdditionDate(sdf.format(new Date()));
-        this.sHashCompare = new StringBuffer(style.getName2()).append(author.getName2()).append(album.getName2()).append(sName).toString();
-	}
+            this.album = album;
+            setProperty(XML_ALBUM,album.getId());
+            this.style = style;
+            setProperty(XML_STYLE,style.getId());
+            this.author = author;
+            setProperty(XML_AUTHOR,author.getId());
+            this.length = length;
+            setProperty(XML_TRACK_LENGTH,Long.toString(length));
+            this.type = type;
+            setProperty(XML_TYPE,type.getId());
+            this.sYear = sYear;
+            setProperty(XML_TRACK_YEAR,sYear);
+            this.lRate = 0;
+            setProperty(XML_TRACK_RATE,Long.toString(lRate));
+            setProperty(XML_FILES,null); //need this to respect attributes order
+            this.iHits = 0;
+            setProperty(XML_TRACK_HITS,Integer.toString(iHits));
+            this.sAdditionDate = sdf.format(new Date());
+            setProperty(XML_TRACK_ADDED,sAdditionDate);
+            this.sHashCompare = new StringBuffer(style.getName2()).append(author.getName2()).append(album.getName2()).append(sName).toString();
+    }
+        
 	
 	/**
 	 * toString method
@@ -375,7 +385,7 @@ public class Track extends PropertyAdapter implements Comparable{
     /**
      * @param album The album to set.
      */
-    protected void setAlbum(Album album) {
+    public void setAlbum(Album album) {
         this.album = album;
         setProperty(XML_ALBUM,album.getId());
     }
@@ -383,7 +393,7 @@ public class Track extends PropertyAdapter implements Comparable{
     /**
      * @param author The author to set.
      */
-    protected void setAuthor(Author author) {
+    public void setAuthor(Author author) {
         this.author = author;
         setProperty(XML_AUTHOR,author.getId());
     }
@@ -391,7 +401,7 @@ public class Track extends PropertyAdapter implements Comparable{
     /**
      * @param length The length to set.
      */
-    protected void setLength(long length) {
+    public void setLength(long length) {
         this.length = length;
         setProperty(XML_TRACK_LENGTH,Long.toString(length));
     }
@@ -399,7 +409,7 @@ public class Track extends PropertyAdapter implements Comparable{
     /**
      * @param style The style to set.
      */
-    protected void setStyle(Style style) {
+    public void setStyle(Style style) {
         this.style = style;
         setProperty(XML_STYLE,style.getId());
     }
@@ -407,19 +417,12 @@ public class Track extends PropertyAdapter implements Comparable{
     /**
      * @param year The sYear to set.
      */
-    protected void setYear(String year) {
+    public void setYear(String year) {
         sYear = year;
         setProperty(XML_TRACK_YEAR,year);
     }
 
-    /**
-     * @param type The type to set.
-     */
-    protected void setType(Type type) {
-        this.type = type;
-        setProperty(XML_TYPE,type.getId());
-    }
-
+  
     /**
      * Get item description
      */
@@ -511,8 +514,39 @@ public class Track extends PropertyAdapter implements Comparable{
         else if (XML_TRACK_ADDED.equals(sKey)){
             return sAdditionDate.substring(0,4)+"/"+sAdditionDate.substring(4,6)+"/"+sAdditionDate.substring(6,8);
         }
+        else if (XML_ANY.equals(sKey)){
+            return getAny();
+        }
         else{//default
             return getValue(sKey);
         }
     }
+    
+    /* (non-Javadoc)
+     * @see org.jajuk.base.IPropertyable#getAny()
+     */
+    public String getAny(){
+        if (bNeedRefresh){
+            //rebuild any
+            StringBuffer sb  = new StringBuffer();
+            Track track = (Track)this;
+            sb.append(track.getName());
+            sb.append(track.getStyle().getName2());
+            sb.append(track.getAuthor().getName2());
+            sb.append(track.getAlbum().getName2());
+            sb.append(track.getLength());
+            sb.append(track.getRate());
+            sb.append(track.getValue(XML_COMMENT));
+            //custom properties now
+            ArrayList alCustomProperties = TrackManager.getInstance().getCustomProperties();
+            Iterator it = alCustomProperties.iterator();
+            while (it.hasNext()){
+                sb.append((String)it.next());
+            }
+            this.sAny = sb.toString();
+            bNeedRefresh = false;
+        }
+        return this.sAny;
+    }
+    
 }

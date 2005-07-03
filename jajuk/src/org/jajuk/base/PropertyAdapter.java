@@ -42,6 +42,11 @@ abstract public class PropertyAdapter implements IPropertyable, ITechnicalString
     protected String sId;
     /** Name */
     protected String sName;
+    /** "Any" value : concatenation of all properties*/
+    protected String sAny ="";
+    /** Flag for need to refresh any criteria */
+    protected boolean bNeedRefresh = true;
+    
     
     /**
      * Constructor
@@ -119,18 +124,28 @@ abstract public class PropertyAdapter implements IPropertyable, ITechnicalString
 	public void setProperty(String sKey, String sValue) {
 	    SequentialMap properties = getProperties();
 		properties.put(sKey, sValue);
-	}
+        bNeedRefresh = true; //notice getAny to we need to rebuild Any criteria
+    }
+    
+    
+    /* (non-Javadoc)
+     * @see org.jajuk.base.IPropertyable#getAny()
+     */
+    public String getAny(){
+        return null;
+    }
 	
-	public void setDefaultProperty(String sKey, String sValue) {
+    /* (non-Javadoc)
+     * @see org.jajuk.base.IPropertyable#setDefaultProperty(java.lang.String, java.lang.String)
+     */
+    public void setDefaultProperty(String sKey, String sValue) {
         SequentialMap properties = getProperties();
 		if ( properties.containsKey(sKey)){
 			return;
 		}
 		setProperty(sKey,sValue);
 	}
-	
-	
-	
+		
 	/**
      * Return an XML representation of this item  
      * @return
@@ -196,7 +211,7 @@ abstract public class PropertyAdapter implements IPropertyable, ITechnicalString
  /**
      * @param id The sId to set.
      */
-    protected void setId(String id) {
+    public void setId(String id) {
         sId = id;
         setProperty(XML_ID,id);
     }
@@ -204,7 +219,7 @@ abstract public class PropertyAdapter implements IPropertyable, ITechnicalString
     /**
      * @param name The sName to set.
      */
-    protected void setName(String name) {
+    public  void setName(String name) {
         sName = name;
         setProperty(XML_NAME,name);
     }
