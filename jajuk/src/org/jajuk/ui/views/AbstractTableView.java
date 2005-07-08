@@ -59,7 +59,7 @@ import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.table.DefaultTableColumnModelExt;
 import org.jdesktop.swingx.table.TableColumnExt;
 
-import com.sun.SwingWorker;
+import ext.SwingWorker;
 
 /**
  * Abstract table view : common implementation for both physical and logical table views 
@@ -215,6 +215,10 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
                 ObservationManager.register(EVENT_SYNC_TREE_TABLE,AbstractTableView.this);
                 ObservationManager.register(EVENT_CUSTOM_PROPERTIES_ADD,AbstractTableView.this);
                 ObservationManager.register(EVENT_CUSTOM_PROPERTIES_REMOVE,AbstractTableView.this);
+                //refresh columns conf in case of some attributes been removed or added before view instanciation
+                Properties properties = ObservationManager.getDetailsLastOccurence(EVENT_CUSTOM_PROPERTIES_ADD); 
+                Event event = new Event(EVENT_CUSTOM_PROPERTIES_ADD,properties);
+                update(event);
             }
         };
         sw.start();
@@ -266,6 +270,9 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
                     }	
                     else if (EVENT_CUSTOM_PROPERTIES_ADD.equals(subject)){
                         Properties properties = event.getDetails();
+                        if (properties == null){ //can be null at view populate
+                        	return;
+                        }
                         model = populateTable();//create a new model
                         jtable.setModel(model);
                         //add new item in configuration cols
@@ -283,6 +290,9 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
                     }
                     else if (EVENT_CUSTOM_PROPERTIES_REMOVE.equals(subject)){
                         Properties properties = event.getDetails();
+                        if (properties == null){ //can be null at view populate
+                        	return;
+                        }
                         //store old conf
                         ArrayList al = getColumnsConf();
                         al.remove(properties.get(DETAIL_CONTENT));
@@ -386,8 +396,6 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
         }
     }
     
-    
-    
     /**
      * 
      * @return list of visible columns names as string
@@ -407,8 +415,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
         }
         return alOut;
     }
-    
-        
+            
     
     private void columnChange(){
         if (!bReloading){ //ignore this column change when reloading model

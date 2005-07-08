@@ -45,7 +45,7 @@ import org.jajuk.i18n.Messages;
 import org.jajuk.ui.PlaylistFileItem;
 import org.jajuk.util.Util;
 
-import com.sun.SwingWorker;
+import ext.SwingWorker;
 
 /**
  * Shows playlist files

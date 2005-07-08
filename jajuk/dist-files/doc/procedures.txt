@@ -59,6 +59,7 @@ ANNOUNCEMENT PROCEDURE
 - Make a release at freshmeat,framasoft,telecharger.com...
 
 NEW API/version PROCEDURE
+- Change classpath
 - Change MANIFEST (check new versions)
 - Change project.xml maven file for dependencies
 

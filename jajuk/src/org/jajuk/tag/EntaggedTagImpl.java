@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 Bertrand Florat
+ *  Copyright (C) 2005 Bertrand Florat
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -22,28 +22,32 @@ package org.jajuk.tag;
 
 import java.io.File;
 import java.util.Iterator;
-import java.util.Vector;
-
-import javazoom.jlgui.player.amp.tag.OggVorbisInfo;
+import java.util.List;
 
 import org.jajuk.util.Util;
+import org.jajuk.util.error.JajukException;
+
+import entagged.audioformats.AudioFile;
+import entagged.audioformats.AudioFileIO;
+import entagged.audioformats.Tag;
 
 /**
- *  jlGui Ogg vorbis tager implementation
+ *  jlGui MP3 tager implementation
  *
  * @author     Bertrand Florat
- * @created    27 avr. 2004
+ * @created    26 avr. 2004
  */
-public class JlGuiOggTagImpl implements ITagImpl {
+public class EntaggedTagImpl implements ITagImpl {
 
-	private OggVorbisInfo oggInfo;
-	
+	private Tag tag;
+	private AudioFile audioFile;
+    
 	/* (non-Javadoc)
 	 * @see org.jajuk.base.ITagImpl#getTrackName()
 	 */
 	public String getTrackName() throws Exception {
-		String sOut = oggInfo.getTitle();
-		if ( sOut == null ||  sOut.startsWith("Track")){//$NON-NLS-1$
+		String sOut = tag.getFirstTitle();
+		if ( sOut == null || sOut.startsWith("Track")){//$NON-NLS-1$
 			return ""; //doing that, the item wil be the default jajuk unknown string //$NON-NLS-1$
 		}
 		return sOut;
@@ -53,8 +57,8 @@ public class JlGuiOggTagImpl implements ITagImpl {
 	 * @see org.jajuk.base.ITagImpl#getAlbumName()
 	 */
 	public String getAlbumName() throws Exception {
-		String sOut = oggInfo.getAlbum();
-		if (  sOut == null || sOut.equals("title")){//$NON-NLS-1$
+		String sOut = tag.getFirstAlbum();
+		if ( sOut == null || sOut.equals("title")){//$NON-NLS-1$
 			return ""; //doing that, the item wil be the default jajuk unknown string //$NON-NLS-1$
 		}
 		return sOut;
@@ -64,8 +68,8 @@ public class JlGuiOggTagImpl implements ITagImpl {
 	 * @see org.jajuk.base.ITagImpl#getAuthorName()
 	 */
 	public String getAuthorName() throws Exception {
-		String sOut = oggInfo.getArtist();
-		if (  sOut == null || sOut.equals("title")){//$NON-NLS-1$
+		String sOut = tag.getFirstArtist();
+		if ( sOut == null || sOut.equals("title")){//$NON-NLS-1$
 			return ""; //doing that, the item wil be the default jajuk unknown string //$NON-NLS-1$
 		}
 		return sOut;
@@ -75,8 +79,8 @@ public class JlGuiOggTagImpl implements ITagImpl {
 	 * @see org.jajuk.base.ITagImpl#getStyleName()
 	 */
 	public String getStyleName() throws Exception {
-		String sOut = oggInfo.getGenre();
-		if (  sOut == null || sOut.equals("genre")){//$NON-NLS-1$
+		String sOut = tag.getFirstGenre();
+		if ( sOut==null || sOut.equals("genre")){//$NON-NLS-1$
 			return ""; //doing that, the item wil be the default jajuk unknown string //$NON-NLS-1$
 		}
 		//Sometimes, the style has this form : (nb)
@@ -96,14 +100,14 @@ public class JlGuiOggTagImpl implements ITagImpl {
 	 * @see org.jajuk.base.ITagImpl#getLength()
 	 */
 	public long getLength() throws Exception {
-		return oggInfo.getPlayTime();
+		return audioFile.getLength();
 	}
 
 	/* (non-Javadoc)
 	 * @see org.jajuk.base.ITagImpl#getYear()
 	 */
 	public String getYear() throws Exception {
-		String sOut = oggInfo.getYear();
+		String sOut = tag.getFirstYear();
 		if ( sOut == null ){//$NON-NLS-1$
 			return ""; //doing that, the item wil be the default jajuk unknown string //$NON-NLS-1$
 		}
@@ -114,24 +118,23 @@ public class JlGuiOggTagImpl implements ITagImpl {
 	 * @see org.jajuk.base.ITagImpl#getQuality()
 	 */
 	public String getQuality() throws Exception {
-		return Integer.toString(oggInfo.getBitRate()/1000);
+		return Integer.toString(audioFile.getBitrate()/1000);
 	}
 
 	/* (non-Javadoc)
 	 * @see org.jajuk.base.ITagImpl#getComment()
 	 */
 	public String getComment() throws Exception {
-		Vector v = oggInfo.getComment();
+		List list = tag.getComment();
 		String sOut = "";
-		if (v != null){
-		    Iterator it = v.iterator();
+		if (list != null){
+		    Iterator it = list.iterator();
 		    while (it.hasNext()){
-		        sOut += it.next().toString();
+		        sOut += ' '+it.next().toString();
 		    }
 		}
 		return sOut;
 	}
-	
 	/* (non-Javadoc)
 	 * @see org.jajuk.base.ITagImpl#setTrackName(java.lang.String)
 	 */
@@ -154,7 +157,8 @@ public class JlGuiOggTagImpl implements ITagImpl {
 	 * @see org.jajuk.base.ITagImpl#setStyleName(java.lang.String)
 	 */
 	public void setStyleName(String style) throws Exception {
-	}
+	    tag.setGenre(style);
+    }
 
 	/* (non-Javadoc)
 	 * @see org.jajuk.base.ITagImpl#setLength(long)
@@ -181,11 +185,17 @@ public class JlGuiOggTagImpl implements ITagImpl {
 	 * @see org.jajuk.base.ITagImpl#setFile(java.io.File)
 	 */
 	public void setFile(File fio) throws Exception {
-		oggInfo = new OggVorbisInfo();
-		oggInfo.load(fio);
+		try{
+		    audioFile = AudioFileIO.read(fio);
+            tag = audioFile.getTag();
+	    }
+        catch(Throwable t){ //can throw OutOfMemory errors
+            System.gc(); //call garbage collector to avoid than folowing throw make itself an out of memory
+            throw new JajukException("103",fio.toString(),t); //$NON-NLS-1$
+        }
 	}
-    
-     /* (non-Javadoc)
+
+    /* (non-Javadoc)
      * @see org.jajuk.tag.ITagImpl#getTagItem(java.lang.String)
      */
     public String getTagItem(String sTagItem) throws Exception {
@@ -196,6 +206,13 @@ public class JlGuiOggTagImpl implements ITagImpl {
      * @see org.jajuk.tag.ITagImpl#setTagItem(java.lang.String, java.lang.String)
      */
     public void setTagItem(String sTagItem, String sValue) throws Exception {
+    }
+    
+     /* (non-Javadoc)
+     * @see org.jajuk.tag.ITagImpl#commit()
+     */
+    public void commit() throws Exception{
+        audioFile.commit();
     }
 
 }

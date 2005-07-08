@@ -1,4 +1,4 @@
-package com.sun;
+package ext;
 import javax.swing.SwingUtilities;
 
 /**

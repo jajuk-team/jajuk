@@ -49,7 +49,11 @@ public interface ITechnicalStrings {
     public static final int STOP_TO_SEARCH= 5;
     /**Listening port to check others jajuk sessions*/
     public static final int PORT = 62321;
-    		
+    /**Quality agent e-mail*/
+    public static final String FEEDBACK_EMAIL = "jajuk-errors@groups.sourceforge.net";
+    /**Number of lines in the feedback mail*/
+    public static final int FEEDBACK_LINES = 100;
+    
 	// Jajuk version
 	public static final String JAJUK_VERSION = "VERSION_REPLACED_BY_ANT";
 	public static final String JAJUK_VERSION_DATE = "Build: DATE_REPLACED_BY_ANT";
@@ -211,7 +215,8 @@ public interface ITechnicalStrings {
 	public static final String FILE_ABSOLUTE_DEFAULT_COVER = "jajuk-default-cover.";
 	public static final String FILE_LANGPACK_PART1 = "jajuk"; //langpack name : jajuk_<locale>.properties
 	public static final String FILE_LANGPACK_PART2 = ".properties"; //langpack name : jajuk_<locale>.properties
-	
+    public static final String FILE_LOGS = "jajuk.log"; //logs
+    
 	//players impls
 	public static final String PLAYER_IMPL_JAVALAYER= "org.jajuk.players.JavaLayerPlayerImpl";
 	
@@ -222,7 +227,8 @@ public interface ITechnicalStrings {
 	public static final String TAG_IMPL_JLGUI_MP3= "org.jajuk.tag.JlGuiMP3TagImpl";
 	public static final String TAG_IMPL_JLGUI_OGG= "org.jajuk.tag.JlGuiOggTagImpl";
 	public static final String TAG_IMPL_NO_TAGS= "org.jajuk.tag.NoTagsTagImpl";
-	
+	public static final String TAG_IMPL_ENTAGGED = "org.jajuk.tag.EntaggedTagImpl";
+    
 	//device types
 	public static final String DEVICE_TYPE_DIRECTORY = "Device_type.directory";
 	public static final String DEVICE_TYPE_FILE_CD = "Device_type.file_cd";
@@ -325,6 +331,7 @@ public interface ITechnicalStrings {
 	public static final String EVENT_SYNC_TREE_TABLE="sync_tree_table"; //sync table and tree views
     public static final String EVENT_CLEAR_HISTORY="clear history"; //clear history
     public static final String EVENT_WIZARD="launch wizard"; //launch first time wizard
+    public static final String EVENT_QUALITY="quality feedback"; //quality feedback agent
     public static final String EVENT_VOLUME_CHANGED="volume changed"; //volume changed
     public static final String EVENT_CREATE_PROPERTY="create property"; //create a new property
     public static final String EVENT_DELETE_PROPERTY="delete property"; //delete property
@@ -368,11 +375,11 @@ public interface ITechnicalStrings {
 	public static final String LNF_LIQUID_CLASS = "com.birosoft.liquid.LiquidLookAndFeel";
 	public static final String LNF_LIQUID_CBUI = "org.jajuk.ui.laf.LiquidComboBoxUI";
 	public static final String LNF_PLASTIC = "Plastic";
-	public static final String LNF_PLASTIC_CLASS = "com.jgoodies.plaf.plastic.PlasticLookAndFeel";
+	public static final String LNF_PLASTIC_CLASS = "com.jgoodies.looks.plastic.PlasticLookAndFeel";
 	public static final String LNF_PLASTICXP = "Plastic XP";
-	public static final String LNF_PLASTICXP_CLASS = "com.jgoodies.plaf.plastic.PlasticXPLookAndFeel";
+	public static final String LNF_PLASTICXP_CLASS = "com.jgoodies.looks.plastic.PlasticXPLookAndFeel";
 	public static final String LNF_PLASTIC3D = "Plastic 3D";
-	public static final String LNF_PLASTIC3D_CLASS = "com.jgoodies.plaf.plastic.Plastic3DLookAndFeel";
+	public static final String LNF_PLASTIC3D_CLASS = "com.jgoodies.looks.plastic.Plastic3DLookAndFeel";
 	public static final String LNF_INFONODE = "Infonode";
     public static final String LNF_INFONODE_CLASS = "net.infonode.gui.laf.InfoNodeLookAndFeel";
     public static final String LNF_SQUARENESS = "Squareness";
@@ -413,7 +420,8 @@ public interface ITechnicalStrings {
 	public static final String CONF_OPTIONS_DEFAULT_ACTION_CLICK = "jajuk.options.default_action_click"; //default action (play or push) when clicking on an item
 	public static final String CONF_OPTIONS_DEFAULT_ACTION_DROP = "jajuk.options.default_action_drop"; //default action (play or push) when droping on an item
 	public static final String CONF_OPTIONS_SYNC_TABLE_TREE = "jajuk.options.sync_table_tree"; //synchronize table and tree views
-	public static final String CONF_P2P_SHARE = "jajuk.options.p2p.share";
+	public static final String CONF_OPTIONS_SHOW_POPUP = "jajuk.options.show_popup"; //show popup
+    public static final String CONF_P2P_SHARE = "jajuk.options.p2p.share";
 	public static final String CONF_P2P_ADD_REMOTE_PROPERTIES = "jajuk.options.p2p.add_remote_properties";
 	public static final String CONF_P2P_HIDE_LOCAL_PROPERTIES = "jajuk.options.p2p.hide_local_properties";
 	public static final String CONF_P2P_PASSWORD = "jajuk.options.p2p.password";

@@ -32,8 +32,14 @@ import javax.swing.JScrollPane;
 
 import org.jajuk.base.IPropertyable;
 import org.jajuk.base.ItemManager;
+import org.jajuk.base.Track;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
+import org.jdesktop.swingx.decorator.Filter;
+import org.jdesktop.swingx.decorator.FilterPipeline;
+import org.jdesktop.swingx.decorator.ShuttleSorter;
+import org.jdesktop.swingx.decorator.Sorter;
+import org.jdesktop.swingx.table.TableColumnExt;
 
 /**
  * Item properties wizard for any jajuk item
@@ -65,7 +71,6 @@ public class PropertiesWizard extends JFrame implements ITechnicalStrings {
     public PropertiesWizard(IPropertyable pa) {
         super(pa.getValue(XML_NAME));
         setIconImage(Util.getIcon(ICON_LOGO).getImage());
-        setVisible(true);
         this.pa = pa;
         int iX_SEPARATOR = 5;
         int iY_SEPARATOR = 10;
@@ -78,15 +83,18 @@ public class PropertiesWizard extends JFrame implements ITechnicalStrings {
         jpMain.setLayout(new TableLayout(dSize));
         PropertiesTableModel model = new PropertiesTableModel(pa); 
         jtable = new JajukTable(model);
+        Sorter sorter = new ShuttleSorter(0,true);
+        FilterPipeline pipe = new FilterPipeline(new Filter[]{sorter});
+        jtable.setFilters(pipe);
         jtable.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                if (jtable.getSelectedColumn() == 3){
-                    int iRow = jtable.getSelectedRow();
+                if (jtable.convertColumnIndexToModel(jtable.getSelectedColumn()) == 4){
+                    int iRow = jtable.convertRowIndexToModel(jtable.getSelectedRow());
                     PropertiesTableModel model =(PropertiesTableModel)jtable.getModel(); 
                     if (model.isLinkable(iRow)){
-                        IPropertyable pa = ItemManager.getItemByID((String)model.getValueAt(iRow,4),
-                            (String)model.getValueAt(iRow,5));
+                        IPropertyable pa = ItemManager.getItemByID((String)model.getValueAt(iRow,5),
+                            (String)model.getValueAt(iRow,6));
                         if (pa != null){
                             new PropertiesWizard(pa); //show properties window for this item
                         }
@@ -98,9 +106,15 @@ public class PropertiesWizard extends JFrame implements ITechnicalStrings {
         jpMain.add(jlDesc,"0,0");
         jpMain.add(new JScrollPane(jtable),"0,2");
         getContentPane().add(jpMain);
+        //Hide all album columns is not required
+        if (!(this.pa instanceof Track)){
+        	TableColumnExt col = jtable.getColumnExt(3); 
+        	col.setVisible(false);
+        }
         jtable.packAll();
-        pack();
         Util.setShuffleLocation(this,400,400);
+        pack();
+        setVisible(true);
     }
   
 }

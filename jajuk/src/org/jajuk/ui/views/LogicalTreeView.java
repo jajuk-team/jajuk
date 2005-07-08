@@ -73,7 +73,7 @@ import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
-import com.sun.SwingWorker;
+import ext.SwingWorker;
 
 /**
  * Logical tree view

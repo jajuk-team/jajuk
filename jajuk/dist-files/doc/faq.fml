@@ -99,9 +99,6 @@
       <answer>
         <p><li>Please read the Performances tips in the embedded help system.</li></p>
         <p><li>On a PC/P4M 1.8Ghz, Jajuk uses about 9%CPU to read mp3 and 3% to read Ogg Vorbis.</li></p>
-        <p><li>Performances are better (by 50%) with Ogg Vorbis than MP3.</li></p>
-        <p><li>Performances are better (by 10% to 30%) with JRE 1.5 in comparaison with JRE 1.4.2.</li></p>
-        <p><li>Performances are a bit better under Microsoft Windows than GNU/Linux.</li></p>
       </answer>
     </faq>
     

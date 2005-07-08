@@ -87,7 +87,23 @@ public class AlbumManager extends ItemManager{
 		}
 	}
 	
-	
+    /**
+     * Chnage the item
+     * @param old
+     * @param sNewName
+     */
+    public static synchronized void changeAlbumName(Album old,String sNewName){
+        Album newItem = registerAlbum(sNewName);
+        Iterator it = TrackManager.getTracks().iterator();
+        while (it.hasNext()){
+            Track track = (Track)it.next();
+            if (track.getAlbum().equals(old)){
+                TrackManager.changeTrackProperty(track,XML_ALBUM,sNewName);
+            }
+        }
+        cleanup();//remove useless albums if no more tracks use it
+    }
+    
 	/**
 	 * Register an Album with a known id
 	 * 

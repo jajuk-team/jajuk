@@ -183,6 +183,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
                 long skipBytes = (long) Math.round(iAudioLength * posValue); //$NON-NLS-1$
                 try {
                     player.seek(skipBytes);
+                   player.setGain(fVolume); //need this because a seek reset volume 
                 } catch (BasicPlayerException e) {
                     Log.error(e);
                 }

@@ -70,7 +70,7 @@ class RemovePropertyWizard extends CustomPropertyWizard {
         getContentPane().add(jpMain);
         getContentPane().add(okp);
         getContentPane().add(Box.createVerticalStrut(10));
-        okp.getOKButton().grabFocus();
+        getRootPane().setDefaultButton(okp.getOKButton());
     }
 
     /* (non-Javadoc)

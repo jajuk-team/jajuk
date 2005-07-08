@@ -28,6 +28,9 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 
+import org.jajuk.base.AlbumManager;
+import org.jajuk.base.Author;
+import org.jajuk.base.AuthorManager;
 import org.jajuk.base.Device;
 import org.jajuk.base.Event;
 import org.jajuk.base.File;
@@ -35,6 +38,9 @@ import org.jajuk.base.FileManager;
 import org.jajuk.base.IPropertyable;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Observer;
+import org.jajuk.base.Style;
+import org.jajuk.base.StyleManager;
+import org.jajuk.base.Track;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.SequentialMap;
@@ -70,13 +76,14 @@ public class PropertiesTableModel extends AbstractTableModel
 	 * @param sColName columns names
 	 */
 	public PropertiesTableModel(IPropertyable pa){
-		this.iColNum = 4;
+		this.iColNum = 5;
 	    this.pa = pa;
         // Columns names
         this.sColName= new String[] {
                 Messages.getString("PropertiesWizard.3"), //$NON-NLS-1$
                 Messages.getString("PropertiesWizard.1"),//$NON-NLS-2$
                 Messages.getString("PropertiesWizard.2"),//$NON-NLS-2$
+                Messages.getString("PropertiesWizard.5"),//$NON-NLS-2$
                 Messages.getString("PropertiesWizard.4")};  //$NON-NLS-3$ 
         // Values
         //set ignored attributes we won't display
@@ -112,14 +119,15 @@ public class PropertiesTableModel extends AbstractTableModel
             oValues[i][1] = Messages.getInstance().contains("Property_"+sKey)?
                     Messages.getString("Property_"+sKey):sKey; //check if property name is translated (for custom properties)
             oValues[i][2] = pa.getHumanValue(sKey);
-            oValues[i][4] = sKey;
-            oValues[i][5] = pa.getValue(sKey); //attrbute ID or value
+            oValues[i][3] = new Boolean(false); //all album option
+            oValues[i][5] = sKey;
+            oValues[i][6] = pa.getValue(sKey); //attribute ID or value
                //link 
             if (isLinkable(i))      {
-                oValues[i][3] = Util.getIcon(ICON_PROPERTIES);
+                oValues[i][4] = Util.getIcon(ICON_PROPERTIES);
             }
             else{
-                oValues[i][3] = Util.getIcon(ICON_VOID);
+                oValues[i][4] = Util.getIcon(ICON_VOID);
             }
         }
         //listen for table changes
@@ -138,8 +146,8 @@ public class PropertiesTableModel extends AbstractTableModel
 	}
 	
 	public synchronized boolean isCellEditable(int rowIndex, int columnIndex) {
-		String sProperty = (String)oValues[rowIndex][4];
-        return pa != null && (pa.isPropertyEditable(sProperty) && (columnIndex==2));
+		String sProperty = (String)oValues[rowIndex][5];
+        return pa != null && (pa.isPropertyEditable(sProperty) && (columnIndex==2 || columnIndex == 3));
 	}
 	
 	public synchronized Class getColumnClass(int columnIndex) {
@@ -153,7 +161,7 @@ public class PropertiesTableModel extends AbstractTableModel
 	}
     
     public boolean isLinkable(int iRow){
-    String sKey = (String) getValueAt(iRow,4);
+    String sKey = (String) getValueAt(iRow,5);
     return sKey.equals(XML_DEVICE) || sKey.equals(XML_TRACK)
       || sKey.equals(XML_DEVICE) || sKey.equals(XML_TRACK)
       ||     sKey.equals(XML_ALBUM) || sKey.equals(XML_AUTHOR) || sKey.equals(XML_STYLE)
@@ -179,19 +187,51 @@ public class PropertiesTableModel extends AbstractTableModel
      * @see javax.swing.event.TableModelListener#tableChanged(javax.swing.event.TableModelEvent)
      */
     public void tableChanged(TableModelEvent e) {
-        String sKey = (String)getValueAt(e.getFirstRow(),4);
-        String sValue = (String)getValueAt(e.getFirstRow(),2);
-        if (XML_NAME.equals(sKey)){
-            if (pa instanceof File){
+    	if (e.getColumn() == 2){
+    		String sKey = (String)getValueAt(e.getFirstRow(),5);
+    		String sValue = (String)getValueAt(e.getFirstRow(),2);
+            String sRaw =  (String)getValueAt(e.getFirstRow(),6);
+    		if (pa instanceof File){
                 File file = (File)pa;
-                File fNew = FileManager.changeFileName(file,sValue);
-                pa = fNew; 
-            }
-        }
-        //others properties
-        else{
-            pa. setProperty(sKey,sValue);
-        }
+                if (XML_NAME.equals(sKey)){
+    				File fNew = FileManager.changeFileName(file,sValue);
+    				pa = fNew; 
+    			}
+    		}
+            else if (pa instanceof Track){
+                Track track = (Track)pa;
+                if (XML_NAME.equals(sKey)){
+                }
+                if (XML_STYLE.equals(sKey)){
+    				Style style = StyleManager.registerStyle(sValue);
+    				track.setStyle(style);
+    			}
+                else if (XML_ALBUM.equals(sKey)){
+                    AlbumManager.changeAlbumName(AlbumManager.getAlbum(sRaw),sValue);
+                }
+                else if (XML_AUTHOR.equals(sKey)){
+                    Author author = AuthorManager.registerAuthor(sValue);
+                    track.setAuthor(author);
+                }
+                else if (XML_COMMENT.equals(sKey)){
+                    track.setComment(sValue);
+                }
+                else if (XML_TRACK_YEAR.equals(sKey)){
+                    try{
+                        Integer.parseInt(sValue);
+                    }
+                    catch (Exception ex) {
+                        Messages.showErrorMessage("137");
+                        return;
+                    }
+                    track.setYear(sValue);    
+                }
+    		}
+    		//others properties
+    		else{
+    			pa. setProperty(sKey,sValue);
+    		}
+    	}
     }
 
 

@@ -180,6 +180,11 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
                 rpw.pack();
                 rpw.setVisible(true);
             }
+            else if(EVENT_QUALITY.equals(e.getActionCommand())){
+                QualityFeedbackWizard qfw =  new QualityFeedbackWizard();
+                qfw.pack();
+                qfw.setVisible(true);
+            }
 		}
 		catch(Throwable e2){
 			Log.error(e2);

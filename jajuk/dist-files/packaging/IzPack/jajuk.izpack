@@ -3,7 +3,7 @@
     <info>
         <appname>jajuk</appname>
         <appversion>VERSION_REPLACED_BY_ANT</appversion>
-        <javaversion>1.4.2</javaversion>
+        <javaversion>1.5</javaversion>
       <url>http://jajuk.sourceforge.net</url>
     </info>
     <guiprefs height='600' resizable='yes' width='800'>

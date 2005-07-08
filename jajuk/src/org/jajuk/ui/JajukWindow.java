@@ -91,6 +91,7 @@ public class JajukWindow extends JFrame implements ITechnicalStrings,Observer {
 		ObservationManager.register(EVENT_FILE_LAUNCHED,this);
 		ObservationManager.register(EVENT_ZERO,this);
         addWindowListener(new WindowAdapter() {
+        
             public void windowDeiconified(WindowEvent arg0) {
                 setFocusableWindowState(true);
            }

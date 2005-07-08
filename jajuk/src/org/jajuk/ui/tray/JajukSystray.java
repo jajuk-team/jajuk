@@ -20,7 +20,6 @@
 
 package org.jajuk.ui.tray;
 
-import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -33,7 +32,6 @@ import java.util.Properties;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
-import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JSlider;
 import javax.swing.Timer;
@@ -61,6 +59,8 @@ import org.jajuk.util.log.Log;
 import org.jdesktop.jdic.tray.SystemTray;
 import org.jdesktop.jdic.tray.TrayIcon;
 
+import ext.SliderMenuItem;
+
 /**
  *  Jajuk systray
  *
@@ -84,12 +84,8 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
 	JMenuItem jmiPrevious;
 	JMenuItem jmiNext;
 	JMenuItem jmiOut;
-    JMenuItem jmiVolume;
-    JPanel jpVolume;
     JLabel jlVolume;
     JSlider jsVolume;
-    JMenuItem jmiPosition;
-    JPanel jpPosition;
     JLabel jlPosition;
     JSlider jsPosition;
     /**Position slider move*/
@@ -176,29 +172,23 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
 		jmiNext.addActionListener(this);
 		jmiNext.setToolTipText(Messages.getString("JajukWindow.30")); //$NON-NLS-1$
 		      
-        jpPosition = new JPanel();
-        jpPosition.setLayout(new FlowLayout(FlowLayout.LEFT));
         jlPosition = new JLabel(Util.getIcon(ICON_POSITION)); 
-        jsPosition = new JSlider(0,100,0);
+        String sTitle = Messages.getString("JajukWindow.34");
+        jsPosition = new SliderMenuItem(0,100,0,sTitle);
         jsPosition.addChangeListener(this);
         jsPosition.setEnabled(false);
         jsPosition.setToolTipText(Messages.getString("CommandJPanel.15")); //$NON-NLS-1$
         jsPosition.addMouseWheelListener(this);
-        jpPosition.add(jlPosition);
-        jpPosition.add(jsPosition);
-        
+                
         /**Important: due to a bug probably in swing or jdic, we have to add a jmenuitem in the popup menu 
          * and not the panel itself, otherwise no action event occurs*/
         
-        jpVolume = new JPanel();
-        jpVolume.setLayout(new FlowLayout(FlowLayout.LEFT));
         jlVolume = new JLabel(Util.getIcon(ICON_VOLUME)); 
-        jsVolume = new JSlider(0,100,(int)(100*ConfigurationManager.getFloat(CONF_VOLUME)));
-        jsVolume.setToolTipText(Messages.getString("CommandJPanel.14")); //$NON-NLS-1$
+        sTitle = Messages.getString("JajukWindow.33");
+        jsVolume = new SliderMenuItem(0,100,(int)(100*ConfigurationManager.getFloat(CONF_VOLUME)),sTitle);
+        jsVolume.setToolTipText(sTitle); //$NON-NLS-1$
         jsVolume.addChangeListener(this);
         jsVolume.addMouseWheelListener(this);
-        jpVolume.add(jlVolume);
-        jpVolume.add(jsVolume);
         
 		jmiOut = new JMenuItem(" "); //$NON-NLS-1$
 		
@@ -218,8 +208,8 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
 		jmenu.addSeparator();
 		jmenu.add(jmiMute);
 		jmenu.addSeparator();
-        jmenu.add(jpPosition);
-        jmenu.add(jpVolume);
+        jmenu.add(jsPosition);
+        jmenu.add(jsVolume);
         jmenu.addSeparator();
         jmenu.add(jmiExit);
 		jmenu.add(jmiOut);
@@ -395,14 +385,16 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
 		        if (!sAlbum.equals(UNKNOWN_ALBUM)){
 		            sOut += sAlbum+" / "; //$NON-NLS-1$
 		        }
-		        sOut += file.getTrack().getName(); 
+		        sOut += file.getTrack().getName();
+		        if (ConfigurationManager.getBoolean(CONF_OPTIONS_SHOW_POPUP)){
+			        trayIcon.displayMessage(Messages.getString("JajukWindow.35"),sOut,TrayIcon.INFO_MESSAGE_TYPE);    
+	            }
 		    }
 		    else{
 		        sOut = Messages.getString("JajukWindow.18"); //$NON-NLS-1$
 		    }
 		    trayIcon.setToolTip(sOut);
-		    trayIcon.displayMessage("Lanching:",sOut,TrayIcon.INFO_MESSAGE_TYPE);
-    	}
+	   }
 		else if( EVENT_PLAYER_STOP.equals(subject) || EVENT_ZERO.equals(subject)){
 		    jmiPause.setEnabled(false);
 			jmiStop.setEnabled(false);
@@ -461,7 +453,6 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
     
 	/**
 	 * Hide systray 
-	 *
 	 */
 	public void closeSystray(){
 		if ( stray != null && trayIcon != null ){
@@ -518,5 +509,5 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
         }
     
     }
-	
+    
 }

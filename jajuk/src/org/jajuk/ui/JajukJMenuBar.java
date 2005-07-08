@@ -64,7 +64,8 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings{
             JMenuItem jmiHelp;
             JMenuItem jmiAbout;
             JMenuItem jmiWizard;        
-		
+            JMenuItem jmiQualityAgent;        
+        
 		/**Hashmap JCheckBoxMenuItem -> associated view*/
 		public HashMap hmCheckboxView = new HashMap(10);
 	
@@ -133,9 +134,13 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings{
         jmiWizard = new JMenuItem(Messages.getString("JajukJMenuBar.18"),Util.getIcon(ICON_WIZARD)); //$NON-NLS-1$
         jmiWizard.addActionListener(JajukListener.getInstance());
         jmiWizard.setActionCommand(EVENT_WIZARD);
+        jmiQualityAgent = new JMenuItem(Messages.getString("JajukJMenuBar.19"),Util.getIcon(ICON_EDIT)); //$NON-NLS-1$
+        jmiQualityAgent.addActionListener(JajukListener.getInstance());
+        jmiQualityAgent.setActionCommand(EVENT_QUALITY);
         help.add(jmiHelp);
 		help.add(jmiAbout);
         help.add(jmiWizard);
+        help.add(jmiQualityAgent);
         
 		//add menus
 		add(file);

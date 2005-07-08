@@ -29,6 +29,7 @@ import java.util.Iterator;
 import java.util.Properties;
 
 import org.jajuk.util.MD5Processor;
+import org.jajuk.util.SequentialMap;
 
 /**
  * Convenient class to manage Tracks
@@ -69,6 +70,22 @@ public class TrackManager extends ItemManager implements Observer{
 		String sId = MD5Processor.hash(style.getName() + author.getName() +album.getName() + sYear + length + type.getName() + sName);
 		return registerTrack(sId, sName, album, style, author, length, sYear, type);
 	}
+    
+    /**
+     * Change a track property
+     * @param old
+     * @param sProperty
+     * @param sValue
+     */
+    public static synchronized void changeTrackProperty(Track old,String  sProperty, String sValue) {
+        SequentialMap smap = old.getProperties(); //store old properties
+        Track newItem = new Track(null,null,null,null,null,0l,null,null); //create any empty item
+        newItem.setProperties(smap);//apply stored properties
+        newItem.setProperty(sProperty,sValue); //overwrite the given parameter
+        registerTrack(newItem.getName(),newItem.getAlbum(),newItem.getStyle(),newItem.getAuthor(),newItem.getLength(),newItem.getYear(),newItem.getType());//register it
+        remove(old.getId());//remove old
+    }
+    
 
 	/**
 	 * Register an Track with a known id

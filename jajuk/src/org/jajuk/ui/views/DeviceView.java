@@ -54,7 +54,7 @@ import org.jajuk.ui.DeviceWizard;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 
-import com.sun.FlowScrollPanel;
+import ext.FlowScrollPanel;
 
 /**
  *  Device view used to create and modify Jajuk devices

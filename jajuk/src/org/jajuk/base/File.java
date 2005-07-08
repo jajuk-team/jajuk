@@ -317,7 +317,7 @@ public class File extends PropertyAdapter implements Comparable,ITechnicalString
             return false;
         }
         else if (XML_QUALITY.equals(sProperty)){
-            return true;
+            return false;
         }
         else if (XML_EXPANDED.equals(sProperty)){
             return true;

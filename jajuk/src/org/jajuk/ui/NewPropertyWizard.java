@@ -26,6 +26,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.Properties;
 
 import javax.swing.Box;
@@ -82,7 +84,12 @@ class NewPropertyWizard extends CustomPropertyWizard implements KeyListener{
         getContentPane().add(jpMain);
         getContentPane().add(okp);
         getContentPane().add(Box.createVerticalStrut(10));
-        jtfName.requestFocusInWindow();
+        addWindowListener(new WindowAdapter() {
+            public void windowActivated(WindowEvent e) {
+                jtfName.requestFocusInWindow();
+            }
+        });
+        getRootPane().setDefaultButton(okp.getOKButton());
     }
 
     /* (non-Javadoc)

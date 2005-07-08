@@ -124,4 +124,9 @@ public interface ITagImpl {
      */
     public void setTagItem(String sTagItem,String sValue) throws Exception;
 	
+    /**
+     * Commit all changes in the tag 
+     */
+    public void commit() throws Exception;
+    
 }

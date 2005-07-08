@@ -38,7 +38,7 @@ import org.jajuk.ui.JajukFileChooser;
 import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.Util;
 
-import com.sun.SwingWorker;
+import ext.SwingWorker;
 
 
 /**

@@ -134,6 +134,7 @@ public class FirstTimeWizard extends JDialog implements ITechnicalStrings,Action
         jpMain.setLayout(new TableLayout(size));
         jpMain.add(jlLeftIcon,"0,0"); //$NON-NLS-1$
         jpMain.add(jpRightPanel,"2,0"); //$NON-NLS-1$
+        getRootPane().setDefaultButton(jbOk);
     }
 
 

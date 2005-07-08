@@ -388,6 +388,13 @@ public class Track extends PropertyAdapter implements Comparable{
     public void setAlbum(Album album) {
         this.album = album;
         setProperty(XML_ALBUM,album.getId());
+         Iterator it = alFiles.iterator();
+        while (it.hasNext()){
+            File file = (File)it.next();
+            Tag tag = new Tag(file.getIO());
+            tag.setAlbumName(album.getName2());
+            tag.commit();
+        }
     }
 
     /**
@@ -396,6 +403,13 @@ public class Track extends PropertyAdapter implements Comparable{
     public void setAuthor(Author author) {
         this.author = author;
         setProperty(XML_AUTHOR,author.getId());
+         Iterator it = alFiles.iterator();
+        while (it.hasNext()){
+            File file = (File)it.next();
+            Tag tag = new Tag(file.getIO());
+            tag.setAuthorName(author.getName2());
+            tag.commit();
+        }
     }
 
     /**
@@ -412,14 +426,42 @@ public class Track extends PropertyAdapter implements Comparable{
     public void setStyle(Style style) {
         this.style = style;
         setProperty(XML_STYLE,style.getId());
+        Iterator it = alFiles.iterator();
+        while (it.hasNext()){
+            File file = (File)it.next();
+            Tag tag = new Tag(file.getIO());
+            tag.setStyleName(style.getName2());
+            tag.commit();
+        }
     }
 
+     /**
+     * @param comment
+     */
+    public void setComment(String sComment) {
+        setProperty(XML_COMMENT,sComment);
+        Iterator it = alFiles.iterator();
+        while (it.hasNext()){
+            File file = (File)it.next();
+            Tag tag = new Tag(file.getIO());
+            tag.setComment(sComment);
+            tag.commit();
+        }
+    }
+    
     /**
      * @param year The sYear to set.
      */
     public void setYear(String year) {
         sYear = year;
         setProperty(XML_TRACK_YEAR,year);
+        Iterator it = alFiles.iterator();
+        while (it.hasNext()){
+            File file = (File)it.next();
+            Tag tag = new Tag(file.getIO());
+            tag.setYear(year);
+            tag.commit();
+        }
     }
 
   
@@ -465,7 +507,7 @@ public class Track extends PropertyAdapter implements Comparable{
             return false;
         }
         else if (XML_TRACK_HITS.equals(sProperty)){
-            return true;
+            return false;
         }
         else if (XML_EXPANDED.equals(sProperty)){
             return true;
@@ -508,8 +550,7 @@ public class Track extends PropertyAdapter implements Comparable{
                 File file = (File)it.next();
                 sbOut.append(file.getAbsolutePath()+",");
             }
-            sbOut.substring(0,sbOut.length()-1); //remove last ','
-            return sbOut.toString();
+            return sbOut.substring(0,sbOut.length()-1); //remove last ','
         }
         else if (XML_TRACK_ADDED.equals(sKey)){
             return sAdditionDate.substring(0,4)+"/"+sAdditionDate.substring(4,6)+"/"+sAdditionDate.substring(6,8);

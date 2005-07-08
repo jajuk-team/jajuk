@@ -20,6 +20,7 @@
 
 package org.jajuk.ui;
 
+import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.util.Iterator;
 
@@ -29,6 +30,9 @@ import javax.swing.table.TableModel;
 
 import org.jajuk.util.ITechnicalStrings;
 import org.jdesktop.swingx.JXTable;
+import org.jdesktop.swingx.decorator.Highlighter;
+import org.jdesktop.swingx.decorator.HighlighterPipeline;
+import org.jdesktop.swingx.decorator.RolloverHighlighter;
 import org.jdesktop.swingx.table.DefaultTableColumnModelExt;
 import org.jdesktop.swingx.table.TableColumnExt;
 
@@ -64,6 +68,9 @@ public class JajukTable extends JXTable implements ITechnicalStrings{
     private void init(boolean bSortable){
         super.setSortable(bSortable);
         super.setColumnControlVisible(true);
+        Highlighter highlighter = new RolloverHighlighter(Color.LIGHT_GRAY,Color.WHITE);
+        HighlighterPipeline pipeHighlight = new HighlighterPipeline(new Highlighter[]{highlighter});
+        setHighlighters(pipeHighlight);
         setRolloverEnabled(true);
         setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
         packAll();   

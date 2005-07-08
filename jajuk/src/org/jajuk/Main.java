@@ -115,8 +115,12 @@ public class Main implements ITechnicalStrings {
 		try{
 		   //check JVM version
 		    String sJVM = System.getProperty("java.vm.version"); //$NON-NLS-1$
-		    if (sJVM.startsWith("1.0") || sJVM.startsWith("1.1") || sJVM.startsWith("1.2") || sJVM.startsWith("1.3") || sJVM.startsWith("1.4.0") || sJVM.startsWith("1.4.1") ){ //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
-		        System.out.println("Java Runtime Environment 1.4.2 minimum required. You use a JVM "+sJVM); //$NON-NLS-1$
+		    if (	sJVM.startsWith("1.0") 
+		    		|| sJVM.startsWith("1.1") 
+		    		|| sJVM.startsWith("1.2") 
+		    		|| sJVM.startsWith("1.3") 
+		    		|| sJVM.startsWith("1.4")){ 
+		        System.out.println("Java Runtime Environment 1.5 minimum required. You use a JVM "+sJVM); //$NON-NLS-1$
 		        System.exit(2); //error code 2 : wrong JVM
 		    }
 		    
@@ -320,7 +324,7 @@ public class Main implements ITechnicalStrings {
 	private static void registerTypes(){
 		try { 
 			//mp3
-			Type type = TypeManager.registerType(Messages.getString("Type.mp3"), EXT_MP3, PLAYER_IMPL_JAVALAYER, TAG_IMPL_JLGUI_MP3); //$NON-NLS-1$ //$NON-NLS-2$
+			Type type = TypeManager.registerType(Messages.getString("Type.mp3"), EXT_MP3, PLAYER_IMPL_JAVALAYER, TAG_IMPL_ENTAGGED); //$NON-NLS-1$ //$NON-NLS-2$
 			type.setProperty(XML_TYPE_IS_MUSIC,TRUE); //$NON-NLS-1$
 			type.setProperty(XML_TYPE_SEEK_SUPPORTED,TRUE); //$NON-NLS-1$
 			type.setProperty(XML_TYPE_TECH_DESC,TYPE_PROPERTY_TECH_DESC_MP3);
@@ -330,7 +334,7 @@ public class Main implements ITechnicalStrings {
 			type.setProperty(XML_TYPE_IS_MUSIC,FALSE); //$NON-NLS-1$
 			type.setProperty(XML_TYPE_SEEK_SUPPORTED,FALSE); //$NON-NLS-1$
             //Ogg vorbis
-			type = TypeManager.registerType(Messages.getString("Type.ogg"), EXT_OGG, PLAYER_IMPL_JAVALAYER, TAG_IMPL_JLGUI_OGG); //$NON-NLS-1$ //$NON-NLS-2$
+			type = TypeManager.registerType(Messages.getString("Type.ogg"), EXT_OGG, PLAYER_IMPL_JAVALAYER, TAG_IMPL_ENTAGGED); //$NON-NLS-1$ //$NON-NLS-2$
 			type.setProperty(XML_TYPE_IS_MUSIC,TRUE); //$NON-NLS-1$
 			type.setProperty(XML_TYPE_SEEK_SUPPORTED,FALSE); //$NON-NLS-1$
 			type.setProperty(XML_TYPE_TECH_DESC,TYPE_PROPERTY_TECH_DESC_OGG);

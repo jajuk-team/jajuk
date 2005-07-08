@@ -373,7 +373,14 @@ public class Directory extends PropertyAdapter implements Comparable{
      * Get item description
       */
     public String getDesc(){
-        return Util.formatPropertyDesc(Messages.getString("Item_Directory")+" : "+getName());
+        String sName = null;
+        if (getParentDirectory() == null){
+            sName = getDevice().getUrl();
+        }
+        else{
+            sName= getFio().getAbsolutePath();
+        }
+        return Util.formatPropertyDesc(Messages.getString("Item_Directory")+" : "+sName);
     }
   
  /* (non-Javadoc)
@@ -383,9 +390,9 @@ public class Directory extends PropertyAdapter implements Comparable{
         if (XML_ID.equals(sProperty)){
             return false;
         }
-        else if (XML_NAME.equals(sProperty)){
-            return true;
-        }
+        else if (XML_NAME.equals(sProperty) ){
+            return (getParentDirectory() != null); //name editable only for standard directories, not root
+         }
         else if (XML_ALBUM.equals(sProperty)){
             return true;
         }
@@ -410,10 +417,23 @@ public class Directory extends PropertyAdapter implements Comparable{
     public String getHumanValue(String sKey){
         if (XML_DIRECTORY_PARENT.equals(sKey)){
             Directory dParent = DirectoryManager.getDirectory(getValue(sKey)); 
-            return dParent.getFio().getAbsolutePath();
+            if (dParent == null){
+              return ""; //no parent directory          
+            }
+            else{
+                return dParent.getFio().getAbsolutePath();
+            }
         }
-        if (XML_DEVICE.equals(sKey)){
+        else if (XML_DEVICE.equals(sKey)){
             return DeviceManager.getDevice(getValue(sKey)).getName();
+        }
+        if (XML_NAME.equals(sKey)){
+            if (dParent == null){ //if no parent, take device name
+                return getDevice().getUrl();
+            }
+            else{
+                return getName();          
+            }
         }
         else{//default
             return getValue(sKey);

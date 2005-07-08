@@ -339,6 +339,17 @@ public class Tag implements ITechnicalStrings{
 			Log.error("104", fio.getName(),e); //$NON-NLS-1$
 		}
 	}
+    
+    /**
+     * Commit tags
+     */
+    public void commit(){
+        try {
+            tagImpl.commit();
+        } catch (Exception e) {
+            Log.error("104", fio.getName(),e); //$NON-NLS-1$
+        }
+    }
 
 
 }
