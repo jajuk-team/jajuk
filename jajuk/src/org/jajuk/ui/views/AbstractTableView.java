@@ -208,6 +208,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
                 jtable.addMouseListener(AbstractTableView.this);
                 hideColumns();
                 applyFilter(null,null);
+                jtable.packAll();
                 //Register on the list for subject we are interrested in
                 ObservationManager.register(EVENT_DEVICE_MOUNT,AbstractTableView.this);
                 ObservationManager.register(EVENT_DEVICE_UNMOUNT,AbstractTableView.this);

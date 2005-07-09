@@ -20,6 +20,8 @@
 
 package org.jajuk.ui;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -32,6 +34,7 @@ import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.SequentialMap;
 import org.jajuk.util.Util;
+import org.jajuk.util.log.Log;
 
 /**
  *  Table model used for logical table view
@@ -49,9 +52,6 @@ public class TracksTableModel extends JajukTableModel{
 	    super(8);
         
         //Columns names
-        vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_ID));
-        vId.add(XML_ID);
-        
         vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_NAME));
         vId.add(XML_NAME);
         
@@ -61,17 +61,20 @@ public class TracksTableModel extends JajukTableModel{
         vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_AUTHOR));
         vId.add(XML_AUTHOR);
         
-        vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_TRACK_LENGTH));
-        vId.add(XML_TRACK_LENGTH);
-        
         vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_STYLE));
         vId.add(XML_STYLE);
         
+        vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_TRACK_LENGTH));
+        vId.add(XML_TRACK_LENGTH);
+                
         vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_COMMENT));
         vId.add(XML_COMMENT);
         
         vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_TRACK_RATE));
         vId.add(XML_TRACK_RATE);
+    
+        vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_TRACK_ADDED));
+        vId.add(XML_TRACK_ADDED);
     
         //custom properties now
         ArrayList alCustomProperties = TrackManager.getInstance().getCustomProperties();
@@ -146,30 +149,63 @@ public class TracksTableModel extends JajukTableModel{
         for (int iRow = 0;it.hasNext();iRow++){
             Track track = (Track)it.next();
             SequentialMap smProperties = track.getProperties();
-              //ID
-            oValues[iRow][0] = track.getId();
-            bCellEditable[iRow][0] = false;
+            
+            /* vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_NAME));
+        vId.add(XML_NAME);
+        
+        vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_ALBUM));
+        vId.add(XML_ALBUM);
+        
+        vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_AUTHOR));
+        vId.add(XML_AUTHOR);
+        
+        vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_STYLE));
+        vId.add(XML_STYLE);
+        
+        vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_TRACK_LENGTH));
+        vId.add(XML_TRACK_LENGTH);
+                
+        vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_COMMENT));
+        vId.add(XML_COMMENT);
+        
+        vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_TRACK_RATE));
+        vId.add(XML_TRACK_RATE);
+    
+        vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_TRACK_ADDED));
+        vId.add(XML_TRACK_ADDED);
+    *
+             * 
+             */
+            
             //Track name
-            oValues[iRow][1] = track.getName();
-            bCellEditable[iRow][1] = true;
+            oValues[iRow][0] = track.getName();
+            bCellEditable[iRow][0] = true;
             //Album
-            oValues[iRow][2] = track.getAlbum().getName2();
-            bCellEditable[iRow][2] = true;
+            oValues[iRow][1] = track.getAlbum().getName2();
+            bCellEditable[iRow][1] = true;
             //Author
-            oValues[iRow][3] = track.getAuthor().getName2();
+            oValues[iRow][2] = track.getAuthor().getName2();
+            bCellEditable[iRow][2] = true;
+            //Style
+            oValues[iRow][3] = track.getStyle().getName2();
             bCellEditable[iRow][3] = true;
             //Length
             oValues[iRow][4] = Util.formatTimeBySec(track.getLength(),false);
             bCellEditable[iRow][4] = false;
-            //Style
-            oValues[iRow][5] = track.getStyle().getName2();
-            bCellEditable[iRow][5] = true;
             //Comment
-            oValues[iRow][6] = track.getValue(XML_COMMENT);
-            bCellEditable[iRow][6] = true;
+            oValues[iRow][5] = track.getValue(XML_COMMENT);
+            bCellEditable[iRow][5] = true;
             //Rate
-            oValues[iRow][7] = new Long(track.getRate());
-            bCellEditable[iRow][7] = true;
+            oValues[iRow][6] = new Long(track.getRate());
+            bCellEditable[iRow][6] = true;
+            //Date discovery
+            try {
+                oValues[iRow][7] = new SimpleDateFormat(DATE_FILE).parse(track.getAdditionDate());;
+                bCellEditable[iRow][7] = false;
+            }
+            catch (ParseException e1) {
+                Log.error(e1);
+            }
             
             //Custom properties now
             ArrayList alCustomProperties = TrackManager.getInstance().getCustomProperties();

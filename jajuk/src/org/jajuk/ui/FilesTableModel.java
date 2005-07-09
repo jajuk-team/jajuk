@@ -48,11 +48,8 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
 	 * @param sColName columns names
 	 */
 	public FilesTableModel(){
-		super(10);
+		super(11);
         //Columns names
-        vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_ID));
-        vId.add(XML_ID);
-        
         vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_TRACK));
         vId.add(XML_TRACK);
         
@@ -62,11 +59,11 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
         vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_AUTHOR));
         vId.add(XML_AUTHOR);
         
-        vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_TRACK_LENGTH));
-        vId.add(XML_TRACK_LENGTH);
-        
         vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_STYLE));
         vId.add(XML_STYLE);
+     
+        vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_TRACK_LENGTH));
+        vId.add(XML_TRACK_LENGTH);
         
         vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_DEVICE));
         vId.add(XML_DEVICE);
@@ -79,6 +76,12 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
         
         vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_TRACK_RATE));
         vId.add(XML_TRACK_RATE);
+        
+        vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_QUALITY));
+        vId.add(XML_QUALITY);
+        
+        vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_SIZE));
+        vId.add(XML_SIZE);
         
         //Custom properties now
         ArrayList alCustomProperties = FileManager.getInstance().getCustomProperties();
@@ -152,36 +155,43 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
         for (int iRow = 0;it.hasNext();iRow++){
             File file = (File)it.next();
             SequentialMap smProperties = file.getProperties();
-            //ID
-            oValues[iRow][0] = file.getId();
-            bCellEditable[iRow][0] = false;
             //Track name
-            oValues[iRow][1] = file.getTrack().getName();
-            bCellEditable[iRow][1] = true;
+            oValues[iRow][0] = file.getTrack().getName();
+            bCellEditable[iRow][0] = true;
             //Album
-            oValues[iRow][2] = file.getTrack().getAlbum().getName2();
-            bCellEditable[iRow][2] = true;
+            oValues[iRow][1] = file.getTrack().getAlbum().getName2();
+            bCellEditable[iRow][1] = true;
             //Author
-            oValues[iRow][3] = file.getTrack().getAuthor().getName2();
+            oValues[iRow][2] = file.getTrack().getAuthor().getName2();
+            bCellEditable[iRow][2] = true;
+            //Style
+            oValues[iRow][3] = file.getTrack().getStyle().getName2();
             bCellEditable[iRow][3] = true;
             //Length
             oValues[iRow][4] = Util.formatTimeBySec(file.getTrack().getLength(),false);
             bCellEditable[iRow][4] = false;
-            //Style
-            oValues[iRow][5] = file.getTrack().getStyle().getName2();
-            bCellEditable[iRow][5] = true;
             //Device
-            oValues[iRow][6] = file.getDirectory().getDevice().getName();
-            bCellEditable[iRow][6] = true;
+            oValues[iRow][5] = file.getDirectory().getDevice().getName();
+            bCellEditable[iRow][5] = true;
             //File name
-            oValues[iRow][7] = file.getName();
-            bCellEditable[iRow][7] = true;
+            oValues[iRow][6] = file.getName();
+            bCellEditable[iRow][6] = true;
             //Comment
-            oValues[iRow][8] = file.getTrack().getValue(XML_COMMENT);
-            bCellEditable[iRow][8] = true;
+            oValues[iRow][7] = file.getTrack().getValue(XML_COMMENT);
+            bCellEditable[iRow][7] = true;
             //Rate
-            oValues[iRow][9] = new Long(file.getTrack().getRate());
-            bCellEditable[iRow][9] = true;
+            oValues[iRow][8] = new Long(file.getTrack().getRate());
+            bCellEditable[iRow][8] = true;
+            //Quality
+            String size = file.getQuality();
+            if (UNKNOWN_QUALITY.equals(size)){
+                size = "0";
+            }
+            oValues[iRow][9] = new Integer(size);
+            bCellEditable[iRow][9] = false;
+            //Size
+            oValues[iRow][10] = new Integer((int)(file.getSize()>>20));
+            bCellEditable[iRow][10] = false;
             //Custom properties now
             ArrayList alCustomProperties = FileManager.getInstance().getCustomProperties();
             Iterator it2 = alCustomProperties.iterator();

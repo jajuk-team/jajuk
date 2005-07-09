@@ -206,9 +206,10 @@ public class ConfigurationManager implements ITechnicalStrings{
 		properties.put(CONF_COVERS_ACCURACY+"_4","4"); //Album accuracy //$NON-NLS-1$ //$NON-NLS-2$
 		properties.put(CONF_COVERS_CHANGE_AT_EACH_TRACK,FALSE); 
         properties.put(CONF_PHYSICAL_TABLE_COLUMNS,XML_TRACK+','+XML_ALBUM+','+XML_AUTHOR+','+
-                XML_TRACK_LENGTH+','+XML_STYLE+','+XML_DEVICE+','+XML_NAME+','+XML_COMMENT+','+XML_TRACK_RATE);
+                XML_TRACK_STYLE+','+XML_TRACK_LENGTH+','+XML_DEVICE+','+XML_NAME+','+','+
+                XML_TRACK_RATE );
         properties.put(CONF_LOGICAL_TABLE_COLUMNS,XML_NAME+','+XML_ALBUM+','+XML_AUTHOR+','+
-              XML_TRACK_LENGTH+','+XML_STYLE+','+XML_COMMENT+','+XML_TRACK_RATE);
+              XML_TRACK_STYLE+','+XML_TRACK_LENGTH+','+','+XML_TRACK_RATE+','+XML_TRACK_ADDED);
         properties.put(CONF_WINDOW_POSITION,"50,50,"+ //$NON-NLS-1$
             (int)(Toolkit.getDefaultToolkit().getScreenSize().getWidth()-100)+","+ //$NON-NLS-1$
             (int)(Toolkit.getDefaultToolkit().getScreenSize().getHeight()-100)); //Window position: X,Y,X_size,Y_size

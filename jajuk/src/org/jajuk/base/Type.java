@@ -56,6 +56,7 @@ public class Type extends PropertyAdapter{
         setProperty(XML_TYPE_PLAYER_IMPL,sPlayerImpl);
          if (sTagImpl != null){  //can be null for playlists
             this.tagImpl = (ITagImpl)Class.forName(sTagImpl).newInstance();
+            setProperty(XML_TYPE_TAG_IMPL,sTagImpl);
         }
     }
 
