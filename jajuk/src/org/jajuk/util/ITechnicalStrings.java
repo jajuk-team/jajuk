@@ -69,7 +69,8 @@ public interface ITechnicalStrings {
 	public static final String PATH_IMAGES = "jar:"+Util.getExecLocation()+"!/org/jajuk/images/";
 	public static final String PATH_RELATIVE_DOCS = "docs/";
 	public static final String PATH_DOCS = "jar:"+Util.getExecLocation()+"!/org/jajuk/"+PATH_RELATIVE_DOCS;
-			
+	public static final String PATH_LOG_CONF = "jar:"+Util.getExecLocation()+"!/org/jajuk/util/log/";
+    		
 	//Unknown
 	public static final String UNKNOWN_AUTHOR = "unknown_author";
 	public static final String UNKNOWN_ALBUM = "unknown_album";
@@ -216,6 +217,8 @@ public interface ITechnicalStrings {
 	public static final String FILE_LANGPACK_PART1 = "jajuk"; //langpack name : jajuk_<locale>.properties
 	public static final String FILE_LANGPACK_PART2 = ".properties"; //langpack name : jajuk_<locale>.properties
     public static final String FILE_LOGS = "jajuk.log"; //logs
+    public static final String FILE_LOGS_DEBUG = ".jajuk_debug.log"; //debug logs
+    public static final String FILE_LOG4j_CONF = PATH_LOG_CONF +"jajuk-log4j-conf.xml"; 
     
 	//players impls
 	public static final String PLAYER_IMPL_JAVALAYER= "org.jajuk.players.JavaLayerPlayerImpl";

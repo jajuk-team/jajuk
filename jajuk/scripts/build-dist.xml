@@ -54,7 +54,7 @@
       <fileset dir='${basedir}/dist-files/doc'>
       	<include name='README*.html'/>
       </fileset>
-     </copy>
+    </copy>
   	<copy todir='${distdir}/src' >
      <fileset file='${basedir}/dist-files/packaging/MANIFEST.MF'/>
   	</copy>
@@ -252,8 +252,8 @@
   	<copy todir='${distdir}/${classdir}/org/jajuk/i18n' >
      <fileset file='${basedir}/src/org/jajuk/i18n/*.properties'/>
   	</copy>
-  	<copy todir='${distdir}/${classdir}' >
-     <fileset file='${basedir}/src/log4j.properties'/>
+  	<copy todir='${distdir}/${classdir}/org/jajuk/util/log' >
+     <fileset file='${basedir}/src/org/jajuk/util/log/jajuk-log4j-conf.xml'/>
   	</copy>
   </target>
  

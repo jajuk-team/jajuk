@@ -19,8 +19,13 @@
  */
 package org.jajuk.util.log;
 
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.apache.log4j.xml.DOMConfigurator;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.error.JajukException;
@@ -44,18 +49,24 @@ public class Log  implements ITechnicalStrings{
     /**Self instance used for signleton pattern */
     private static Log log = null;
     // Root logger
-    private static Logger loggerRoot = Logger.getRootLogger();
+    private static Logger loggerRoot;
     //Jajuk logger
-    private static Logger logger = Logger.getLogger(Log.class.getName());
+    private static Logger logger;
     //Http client logger
     private static Logger loggerHttp;
+    /**Debug traces spool*/
+    private static ArrayList alSpool;
     
     /**
      *  Constructor for the Log object
      */
     private   Log () {
         try {
+           DOMConfigurator.configure(new URL(FILE_LOG4j_CONF));
+           loggerRoot = Logger.getRootLogger();
+           logger = Logger.getLogger(Log.class.getName());
            loggerHttp = Logger.getLogger("org.apache.commons.httpclient"); //$NON-NLS-1$
+           alSpool = new ArrayList(FEEDBACK_LINES);
             //message for logging system start
             Log.info("******************JAJUK******************"); //$NON-NLS-1$
             Log.info("Version: "+JAJUK_VERSION);  //$NON-NLS-1$
@@ -80,6 +91,7 @@ public class Log  implements ITechnicalStrings{
      * Log a debug-level  message
      */
     public static void debug(String s){
+        spool("[DEBUG] "+s);
         logger.debug(s);
     }
     
@@ -87,6 +99,7 @@ public class Log  implements ITechnicalStrings{
      * Log a info-level  message
      */
     public static void info(String s){
+        spool("[INFO] "+s);
         logger.info(s);
     }
     
@@ -94,6 +107,7 @@ public class Log  implements ITechnicalStrings{
      * Log a warning-level  message
      */
     public static void warn(String s){
+        spool("[WARN] "+s);
         logger.warn(s);
     }
     
@@ -111,6 +125,8 @@ public class Log  implements ITechnicalStrings{
         else{
             sOut = '('+sCode+") "+ ((sInfosup==null)?"":":"+sInfosup); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         }
+        spool("[ERROR] "+sOut);
+        spool(t);
         logger.error(sOut,t);
     }
     
@@ -119,7 +135,8 @@ public class Log  implements ITechnicalStrings{
      * @param t the exception itself
      **/
     public static void error(Throwable t){
-        logger.error("",t); //$NON-NLS-1$
+            spool(t);
+            logger.error("",t); //$NON-NLS-1$
     }
     
     /**
@@ -153,6 +170,7 @@ public class Log  implements ITechnicalStrings{
      * Log a fatal error message
      */
     public  static void fatal(String s){
+        spool("[FATAL] "+s);
         logger.fatal(s);
     }
     
@@ -218,7 +236,39 @@ public class Log  implements ITechnicalStrings{
         }
         return false;
     }
+    
+    /**
+     * Add this message in the memory spool
+     * @param sMessage
+     */
+    private static void spool(String sMessage){
+        if (alSpool.size() == FEEDBACK_LINES ){ //we have tro make some room
+            alSpool.remove(0);
+        }
+        alSpool.add(sMessage);
+    }
+    
+    
+    /**
+     * Spool an excpetion with stacktrace
+     * @param e
+     */
+    private static void spool(Throwable e){
+        spool("[ERROR] "+e.getMessage());
+        spool("[ERROR] "+e.getCause());
+        StackTraceElement[] ste = e.getStackTrace();
+        for (int i=0;i<ste.length;i++){
+            spool(ste[i].toString());
+        }
+    }
+    
+    
+    /**
+     * @return Spool traces
+     */
+    public static Iterator getSpool(){
+        return alSpool.iterator();
+    }
+    
+    
 }	
-
-
-

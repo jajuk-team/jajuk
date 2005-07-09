@@ -30,8 +30,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -132,19 +130,7 @@ class QualityFeedbackWizard extends JDialog implements KeyListener,ActionListene
                 sBody += "Version: "+JAJUK_VERSION+'\n';
                 sBody += System.getProperties().toString()+'\n';
                 sBody += ConfigurationManager.getProperties().toString()+'\n';
-                ArrayList alLines = new ArrayList(1000);
-                BufferedReader br = new BufferedReader(new FileReader(FILE_JAJUK_DIR+"/"+FILE_LOGS));
-                String sLine = null;
-                do{
-                    sLine = br.readLine();
-                    alLines.add(sLine);
-                }
-                while (sLine != null);
-                br.close();
-                if (alLines.size() > FEEDBACK_LINES){
-                    alLines = new ArrayList(alLines.subList(alLines.size()-FEEDBACK_LINES,alLines.size()-1));
-                }
-                Iterator it = alLines.iterator();
+                Iterator it = Log.getSpool();
                 while (it.hasNext()){
                     sBody += it.next().toString() +'\n';
                 }
