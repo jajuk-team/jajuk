@@ -37,7 +37,7 @@
 	
 	<!-- =================Loggers=================-->
 	<logger name='org.apache.commons.httpclient' additivity='false'>
-		<level value='WARN'/>
+		<level value='FATAL'/>
 		<appender-ref ref='CONSOLE'/>
 	</logger>
 	

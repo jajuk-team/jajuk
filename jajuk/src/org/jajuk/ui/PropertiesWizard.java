@@ -24,6 +24,7 @@ import info.clearthought.layout.TableLayout;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.StringTokenizer;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -93,10 +94,24 @@ public class PropertiesWizard extends JFrame implements ITechnicalStrings {
                     int iRow = jtable.convertRowIndexToModel(jtable.getSelectedRow());
                     PropertiesTableModel model =(PropertiesTableModel)jtable.getModel(); 
                     if (model.isLinkable(iRow)){
-                        IPropertyable pa = ItemManager.getItemByID((String)model.getValueAt(iRow,5),
-                            (String)model.getValueAt(iRow,6));
-                        if (pa != null){
-                            new PropertiesWizard(pa); //show properties window for this item
+                        //display given property wizard. files properties in track have to display one window by file 
+                        String sProperty = (String)model.getValueAt(iRow,5);
+                        String sValue = (String)model.getValueAt(iRow,6);
+                        if (XML_FILES.equals(sProperty)){
+                            StringTokenizer st = new StringTokenizer(sValue,",");
+                            while (st.hasMoreTokens()){
+                                String sFile = st.nextToken();
+                                IPropertyable pa = ItemManager.getItemByID(XML_FILE,sFile);
+                                if (pa != null){
+                                    new PropertiesWizard(pa); //show properties window for this item
+                                }  
+                            }
+                        }
+                        else{
+                            IPropertyable pa = ItemManager.getItemByID(sProperty,sValue);
+                            if (pa != null){
+                                new PropertiesWizard(pa); //show properties window for this item
+                            }
                         }
                     }
                 }

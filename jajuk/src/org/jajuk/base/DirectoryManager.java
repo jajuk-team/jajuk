@@ -34,10 +34,8 @@ import org.jajuk.util.SequentialMap;
  * @created 17 oct. 2003
  */
 public class DirectoryManager extends ItemManager implements Observer{
-	/** Directories collection stored in a arraylist to conserve creation order when parsing at startup* */
-	static ArrayList alDirectories = new ArrayList(100);
-	/** Directories collection ID */
-	static ArrayList alIds = new ArrayList(100);
+	/** Id->Directories, note  that we have to conserve creation order when parsing at startup*/
+	static SequentialMap smIdDirectories = new SequentialMap();
 	/** Map ids and properties, survives to a refresh, is used to recover old properties after refresh */
 	static HashMap hmIdProperties = new HashMap(100);
     /**Self instance*/
@@ -95,11 +93,11 @@ public class DirectoryManager extends ItemManager implements Observer{
 	 */
 	public static synchronized Directory registerDirectory(String sId, String sName, Directory dParent, Device device) {
 		Directory directory = new Directory(sId, sName, dParent, device);
-		if (alIds.contains(sId)) {
-			return directory;
+		if (smIdDirectories.containsKey(sId)) {
+			return (Directory)smIdDirectories.get(sId);
 		}
-		alDirectories.add(directory);
-		alIds.add(sId);
+		smIdDirectories.put(sId,directory);
+        //now reapply stored properties before refresh
         SequentialMap properties = (SequentialMap)hmIdProperties.get(sId); 
 		if ( properties  == null){  //new file
 			hmIdProperties.put(sId,directory.getProperties());
@@ -117,13 +115,11 @@ public class DirectoryManager extends ItemManager implements Observer{
 	 *                   Device id
 	 */
 	public static synchronized  void cleanDevice(String sId) {
-		//we have to create a new list because we can't iterate on a moving size list
-		Iterator it = alDirectories.iterator();
+		Iterator it = smIdDirectories.keys().iterator();
 		while(it.hasNext()){
-			Directory directory = (Directory)it.next();
+			Directory directory = getDirectory((String)it.next());
 			if (directory.getDevice().getId().equals(sId)) {
 				it.remove();
-				alIds.remove(directory.getId());
 			}
 		}
 	}
@@ -134,8 +130,7 @@ public class DirectoryManager extends ItemManager implements Observer{
 	 * @param sId
 	 */
 	public static synchronized void removeDirectory(String sId) {
-		int index = alDirectories.indexOf(sId);
-		Directory dToBeRemoved = (Directory) alDirectories.get(index);
+		Directory dToBeRemoved = getDirectory(sId);
 		ArrayList alDirsToBeRemoved = dToBeRemoved.getDirectories(); //list of sub directories to remove
 		Iterator it = alDirsToBeRemoved.iterator();
 		while (it.hasNext()) {
@@ -146,13 +141,12 @@ public class DirectoryManager extends ItemManager implements Observer{
 		if (dParent != null) {
 			dParent.removeDirectory(dToBeRemoved);
 		}
-		alDirectories.remove(index); //delete the dir itself
-		alIds.remove(index);
-	}
+		smIdDirectories.remove(sId);
+     }
 
 	/** Return all registred directories */
 	public static synchronized ArrayList getDirectories() {
-		return alDirectories;
+		return (ArrayList)smIdDirectories.values();
 	}
 
 	/**
@@ -162,10 +156,7 @@ public class DirectoryManager extends ItemManager implements Observer{
 	 * @return
 	 */
 	public static synchronized Directory getDirectory(String sId) {
-		if (!alIds.contains(sId)){
-			return null;
-		}
-		return (Directory) alDirectories.get(alIds.indexOf(sId));
+		return (Directory) smIdDirectories.get(sId);
 	}
 	
 	/**
@@ -198,6 +189,4 @@ public class DirectoryManager extends ItemManager implements Observer{
             dir.changeFile(fileOld,fNew);
         }
     }
-    
-    
 }

@@ -118,7 +118,7 @@ public class EntaggedTagImpl implements ITagImpl {
 	 * @see org.jajuk.base.ITagImpl#getQuality()
 	 */
 	public String getQuality() throws Exception {
-		return Integer.toString(audioFile.getBitrate()/1000);
+		return Integer.toString(audioFile.getBitrate());
 	}
 
 	/* (non-Javadoc)

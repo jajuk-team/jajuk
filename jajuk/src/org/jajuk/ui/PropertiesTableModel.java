@@ -167,6 +167,7 @@ public class PropertiesTableModel extends AbstractTableModel
       ||     sKey.equals(XML_ALBUM) || sKey.equals(XML_AUTHOR) || sKey.equals(XML_STYLE)
       ||     sKey.equals(XML_DIRECTORY) || sKey.equals(XML_FILE)
       ||     sKey.equals(XML_PLAYLIST) || sKey.equals(XML_PLAYLIST_FILE)
+      ||    sKey.equals(XML_FILES)
       ||    ( sKey.equals(XML_TYPE) && !(pa instanceof Device)) ;   //avoid to confuse between music types and device types
     }
     
