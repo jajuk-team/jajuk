@@ -24,6 +24,7 @@ import java.io.File;
 import java.util.Iterator;
 import java.util.List;
 
+import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 
@@ -37,7 +38,7 @@ import entagged.audioformats.Tag;
  * @author     Bertrand Florat
  * @created    26 avr. 2004
  */
-public class EntaggedTagImpl implements ITagImpl {
+public class EntaggedTagImpl implements ITagImpl,ITechnicalStrings {
 
 	private Tag tag;
 	private AudioFile audioFile;
@@ -118,7 +119,11 @@ public class EntaggedTagImpl implements ITagImpl {
 	 * @see org.jajuk.base.ITagImpl#getQuality()
 	 */
 	public String getQuality() throws Exception {
-		return Integer.toString(audioFile.getBitrate());
+		String sQuality = Integer.toString(audioFile.getBitrate());
+		if ("0".equals(sQuality)){
+			sQuality = UNKNOWN_QUALITY;
+		}
+		return sQuality;
 	}
 
 	/* (non-Javadoc)

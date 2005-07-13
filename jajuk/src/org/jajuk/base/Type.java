@@ -52,11 +52,16 @@ public class Type extends PropertyAdapter{
         super(sId,sName);
         this.sExtension = sExtension;
         setProperty(XML_TYPE_EXTENSION,sExtension);
+        alConstructorElements.add(XML_TYPE_EXTENSION);
+        
         this.playerImpl = (IPlayerImpl)Class.forName(sPlayerImpl).newInstance();
         setProperty(XML_TYPE_PLAYER_IMPL,sPlayerImpl);
-         if (sTagImpl != null){  //can be null for playlists
+        alConstructorElements.add(XML_TYPE_PLAYER_IMPL);
+        
+        if (sTagImpl != null){  //can be null for playlists
             this.tagImpl = (ITagImpl)Class.forName(sTagImpl).newInstance();
             setProperty(XML_TYPE_TAG_IMPL,sTagImpl);
+            alConstructorElements.add(XML_TYPE_TAG_IMPL);
         }
     }
 

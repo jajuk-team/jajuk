@@ -29,7 +29,6 @@ import java.util.Iterator;
 import java.util.Properties;
 
 import org.jajuk.util.MD5Processor;
-import org.jajuk.util.SequentialMap;
 
 /**
  * Convenient class to manage Tracks
@@ -41,7 +40,8 @@ public class TrackManager extends ItemManager implements Observer{
 	static HashMap hmTracks = new HashMap(100);
     /**Self instance*/
     static TrackManager singleton;
-	
+   
+   
 	/**
 	 * No constructor available, only static access
 	 */
@@ -72,18 +72,46 @@ public class TrackManager extends ItemManager implements Observer{
 	}
     
     /**
-     * Change a track property
+     * Change a track non-attribute property 
      * @param old
      * @param sProperty
      * @param sValue
+     *
      */
-    public static synchronized void changeTrackProperty(Track old,String  sProperty, String sValue) {
-        SequentialMap smap = old.getProperties(); //store old properties
-        Track newItem = new Track(null,null,null,null,null,0l,null,null); //create any empty item
-        newItem.setProperties(smap);//apply stored properties
-        newItem.setProperty(sProperty,sValue); //overwrite the given parameter
-        registerTrack(newItem.getName(),newItem.getAlbum(),newItem.getStyle(),newItem.getAuthor(),newItem.getLength(),newItem.getYear(),newItem.getType());//register it
-        remove(old.getId());//remove old
+    public static synchronized void changeTrackProperty(Track track,String  sProperty, String sValue) {
+        track.setProperty(sProperty,sValue);
+    }
+    
+    /**
+     * Change a track album 
+     * @param old
+     * @param sProperty
+     * @param sValue
+     * @return new track
+     *
+     */
+    public static synchronized Track changeTrackAlbum(Track track,String sNewAlbum) {
+        //register the new album
+    	Album newAlbum = AlbumManager.registerAlbum(sNewAlbum);
+        //reset previous properties like exp
+    	newAlbum.cloneProperties(track.getAlbum());
+        Track newTrack = registerTrack(track.getName(),newAlbum,track.getStyle(),track.getAuthor(),track.getLength(),
+        		track.getYear(),track.getType());
+        //re apply old properties from old item
+        newTrack.cloneProperties(track);
+       //change tag in files
+        Iterator it = track.getFiles().iterator();
+        while (it.hasNext()){
+            File file = (File)it.next();
+            file.setTrack(newTrack);
+            newTrack.addFile(file);
+            Tag tag = new Tag(file.getIO());
+            tag.setAlbumName(newAlbum.getName2());
+            tag.commit();
+        }
+        remove(track.getId());//remove old reference
+    	AlbumManager.cleanup(track.getAlbum()); //remove this album if no more references
+    	return newTrack;
     }
     
 
@@ -93,18 +121,20 @@ public class TrackManager extends ItemManager implements Observer{
 	 * @param sName
 	 */
 	public static synchronized Track registerTrack(String sId, String sName, Album album, Style style, Author author, long length, String sYear, Type type) {
-		Track track = null;
 		if (!hmTracks.containsKey(sId)) {
 			String sAdditionDate = new SimpleDateFormat(DATE_FILE).format(new Date());
-			track = new Track(sId, sName, album, style, author, length, sYear, type);
+			Track track = new Track(sId, sName, album, style, author, length, sYear, type);
 			track.setAdditionDate(sAdditionDate);
 			hmTracks.put(sId, track);
+			//try to recover some properties previous a refresh
+			getInstance().restorePropertiesAfterRefresh(track,sId);
+			//apply default custom properties
+			getInstance().applyNewProperties();
 			return track;
 		}
 		else{
 			return (Track)hmTracks.get(sId);
 		}
-		
 	}
 
 	/**
@@ -198,20 +228,7 @@ public class TrackManager extends ItemManager implements Observer{
         return XML_TRACKS;
     }    
     
-    /**
-     * Get tracks properties (all the same)
-     * @return
-     */
-    public static ArrayList getTracksProperties(){
-        Track track = null;
-        if (getTracks().size() > 0){
-            track = (Track)TrackManager.getTracks().get(0);
-        }
-        else{
-            track = new Track("","",null,null,null,0,"",null); 
-        }
-        return (ArrayList)track.getProperties().keys();
-    }
+  
     
     /* (non-Javadoc)
      * @see org.jajuk.base.Observer#update(org.jajuk.base.Event)

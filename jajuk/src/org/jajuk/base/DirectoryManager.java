@@ -21,12 +21,12 @@
 package org.jajuk.base;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collection;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Properties;
 
 import org.jajuk.util.MD5Processor;
-import org.jajuk.util.SequentialMap;
 
 /**
  * Convenient class to manage directories
@@ -35,9 +35,7 @@ import org.jajuk.util.SequentialMap;
  */
 public class DirectoryManager extends ItemManager implements Observer{
 	/** Id->Directories, note  that we have to conserve creation order when parsing at startup*/
-	static SequentialMap smIdDirectories = new SequentialMap();
-	/** Map ids and properties, survives to a refresh, is used to recover old properties after refresh */
-	static HashMap hmIdProperties = new HashMap(100);
+	static LinkedHashMap hsIdDirectories = new LinkedHashMap(1000);
     /**Self instance*/
     static DirectoryManager singleton;
 
@@ -92,19 +90,15 @@ public class DirectoryManager extends ItemManager implements Observer{
 	 * @param sName
 	 */
 	public static synchronized Directory registerDirectory(String sId, String sName, Directory dParent, Device device) {
+		if (hsIdDirectories.containsKey(sId)) {
+			return (Directory)hsIdDirectories.get(sId);
+		}
 		Directory directory = new Directory(sId, sName, dParent, device);
-		if (smIdDirectories.containsKey(sId)) {
-			return (Directory)smIdDirectories.get(sId);
-		}
-		smIdDirectories.put(sId,directory);
-        //now reapply stored properties before refresh
-        SequentialMap properties = (SequentialMap)hmIdProperties.get(sId); 
-		if ( properties  == null){  //new file
-			hmIdProperties.put(sId,directory.getProperties());
-		}
-		else{
-			directory.setProperties(properties);
-		}
+		hsIdDirectories.put(sId,directory);
+        //try to recover some properties previous a refresh
+		getInstance().restorePropertiesAfterRefresh(directory,sId);
+		//apply default custom properties
+		getInstance().applyNewProperties();
 		return directory;
 	}
 
@@ -115,7 +109,7 @@ public class DirectoryManager extends ItemManager implements Observer{
 	 *                   Device id
 	 */
 	public static synchronized  void cleanDevice(String sId) {
-		Iterator it = smIdDirectories.keys().iterator();
+		Iterator it = hsIdDirectories.keySet().iterator();
 		while(it.hasNext()){
 			Directory directory = getDirectory((String)it.next());
 			if (directory.getDevice().getId().equals(sId)) {
@@ -141,12 +135,12 @@ public class DirectoryManager extends ItemManager implements Observer{
 		if (dParent != null) {
 			dParent.removeDirectory(dToBeRemoved);
 		}
-		smIdDirectories.remove(sId);
+		hsIdDirectories.remove(sId);
      }
 
 	/** Return all registred directories */
-	public static synchronized ArrayList getDirectories() {
-		return (ArrayList)smIdDirectories.values();
+	public static synchronized Collection getDirectories() {
+		return hsIdDirectories.values();
 	}
 
 	/**
@@ -156,18 +150,10 @@ public class DirectoryManager extends ItemManager implements Observer{
 	 * @return
 	 */
 	public static synchronized Directory getDirectory(String sId) {
-		return (Directory) smIdDirectories.get(sId);
+		return (Directory) hsIdDirectories.get(sId);
 	}
 	
-	/**
-	 * Return properties assiated to an id
-	 * @param sId the id
-	 * @return
-	 */
-	public static synchronized Properties getProperties(String sId){
-		return (Properties)hmIdProperties.get(sId);
-	}
-    
+	    
  /* (non-Javadoc)
      * @see org.jajuk.base.ItemManager#getIdentifier()
      */

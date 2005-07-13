@@ -21,10 +21,11 @@
 package org.jajuk.base;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 
 import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.SequentialMap;
 import org.jajuk.util.Util;
 import org.xml.sax.Attributes;
 
@@ -36,7 +37,7 @@ import org.xml.sax.Attributes;
 abstract public class PropertyAdapter implements IPropertyable, ITechnicalStrings,Serializable {
 	
 	/** Item properties, singleton */
-	private SequentialMap properties;
+	private LinkedHashMap properties;
     
 	/** ID. Ex:1,2,3... */
     protected String sId;
@@ -46,7 +47,9 @@ abstract public class PropertyAdapter implements IPropertyable, ITechnicalString
     protected String sAny ="";
     /** Flag for need to refresh any criteria */
     protected boolean bNeedRefresh = true;
-    
+    /**Constructor elements*/
+    protected ArrayList alConstructorElements = new ArrayList(5);
+ 	
     
     /**
      * Constructor
@@ -54,8 +57,10 @@ abstract public class PropertyAdapter implements IPropertyable, ITechnicalString
      * @param sName element name
      */
     PropertyAdapter(String sId,String sName){
-        setId(sId);
-        setName(sName);
+        alConstructorElements.add(XML_ID);
+    	setId(sId);
+        alConstructorElements.add(XML_NAME);
+    	setName(sName);
     }
     
     /**
@@ -77,9 +82,9 @@ abstract public class PropertyAdapter implements IPropertyable, ITechnicalString
 	 * 
 	 * @see org.jajuk.base.Propertyable#getProperties()
 	 */
-	public SequentialMap getProperties() {
+	public LinkedHashMap getProperties() {
 		if ( properties == null){
-			properties = new SequentialMap();
+			properties = new LinkedHashMap(10);
 		}
 		return properties;
 	}
@@ -95,7 +100,7 @@ abstract public class PropertyAdapter implements IPropertyable, ITechnicalString
 			return null;
 		}
 		//get property singleton
-        SequentialMap properties = getProperties();
+        LinkedHashMap properties = getProperties();
 		//must be a property
 		if ( !properties.containsKey(sKey)){ //no more? return null
 			return null;
@@ -122,7 +127,7 @@ abstract public class PropertyAdapter implements IPropertyable, ITechnicalString
 	 * @see org.jajuk.base.Propertyable#setProperty(java.lang.String, java.lang.String)
 	 */
 	public void setProperty(String sKey, String sValue) {
-	    SequentialMap properties = getProperties();
+	    LinkedHashMap properties = getProperties();
 		properties.put(sKey, sValue);
         bNeedRefresh = true; //notice getAny to we need to rebuild Any criteria
     }
@@ -139,7 +144,7 @@ abstract public class PropertyAdapter implements IPropertyable, ITechnicalString
      * @see org.jajuk.base.IPropertyable#setDefaultProperty(java.lang.String, java.lang.String)
      */
     public void setDefaultProperty(String sKey, String sValue) {
-        SequentialMap properties = getProperties();
+        LinkedHashMap properties = getProperties();
 		if ( properties.containsKey(sKey)){
 			return;
 		}
@@ -158,12 +163,12 @@ abstract public class PropertyAdapter implements IPropertyable, ITechnicalString
     }
     
     private String getPropertiesXml() {
-        SequentialMap properties = getProperties();
-		Iterator it = properties.keys().iterator();
+        LinkedHashMap properties = getProperties();
+		Iterator it = properties.keySet().iterator();
      	StringBuffer sb = new StringBuffer(); //$NON-NLS-1$
 		while (it.hasNext()) {
 			String sKey = (String) it.next();
-			String sValue = Util.formatXML(properties.getProperty(sKey));
+			String sValue = Util.formatXML((String)properties.get(sKey));
 			sb.append(" "+sKey + "='" + sValue + "'"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
 		return sb.toString();
@@ -188,7 +193,7 @@ abstract public class PropertyAdapter implements IPropertyable, ITechnicalString
 	/**
 	 * @param properties The properties to set.
 	 */
-	public void setProperties(SequentialMap properties) {
+	public void setProperties(LinkedHashMap properties) {
 		this.properties = properties;
 	}
 	
@@ -196,7 +201,7 @@ abstract public class PropertyAdapter implements IPropertyable, ITechnicalString
 	 * @see org.jajuk.base.IPropertyable#removeProperty(java.lang.String)
 	 */
 	public void removeProperty(String sKey) {
-        SequentialMap properties = getProperties();
+        LinkedHashMap properties = getProperties();
 		if (properties.containsKey(sKey)){
 			properties.remove(sKey);
         }
@@ -236,4 +241,24 @@ abstract public class PropertyAdapter implements IPropertyable, ITechnicalString
         return getValue(sKey);
     }
     
+    /* (non-Javadoc)
+     * @see org.jajuk.base.IPropertyable#isPropertyConstructorElement(java.lang.String)
+     */
+    public boolean isPropertyConstructorElement(String sProperty) {
+    	return alConstructorElements.contains(sProperty);
+	}
+    
+    /**
+     * Clone all properties from a given properties list but not overwrite constructor properties
+     * @param propertiesSource
+     */
+    public void cloneProperties(IPropertyable propertiesSource){
+    	Iterator it = propertiesSource.getProperties().keySet().iterator();
+    	while (it.hasNext()){
+    		String sProperty = (String)it.next();
+    		if (!isPropertyConstructorElement(sProperty)){
+    			this.properties.put(sProperty,propertiesSource.getValue(sProperty));
+    		}
+    	}
+    }
 }

@@ -33,9 +33,6 @@ import org.jajuk.util.Util;
  * @created    17 oct. 2003
  */
 public class Album extends PropertyAdapter implements Comparable{
-
-	/**Tracks for this album*/
-	private ArrayList alTracks = new ArrayList(10);
 	
 	/**
 	 * Album constructor
@@ -86,11 +83,11 @@ public class Album extends PropertyAdapter implements Comparable{
 	 * @return tracks associated with this item
 	 */
 	public ArrayList getTracks() {
-		ArrayList alTracks = new ArrayList(100);
+		ArrayList alTracks = new ArrayList(10);
 		Iterator it = TrackManager.getTracks().iterator();
 		while ( it.hasNext()){
 			Track track = (Track)it.next();
-			if ( track != null && track.getAlbum().equals(this)){
+			if (track != null && track.getAlbum().equals(this)){
 				alTracks.add(track);
 			}
 		}
@@ -98,13 +95,6 @@ public class Album extends PropertyAdapter implements Comparable{
 		return alTracks;
 	}
 	
-	/**
-	 * @param list
-	 */
-	public void addTrack(Track track) {
-		alTracks.add(track);
-	}
-
 	/**
 	 *Alphabetical comparator used to display ordered lists
 	 *@param other item to be compared

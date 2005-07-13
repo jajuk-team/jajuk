@@ -28,6 +28,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -683,7 +684,6 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
     
     /**Fill the tree */
     public void populateTree(){
-        this.transferFocus();
         top.removeAllChildren();
         //add devices
         Iterator it1 = DeviceManager.getDevices();
@@ -693,9 +693,9 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
             top.add(nodeDevice);
         }
         //add directories
-        ArrayList alDirectories = DirectoryManager.getDirectories();
-        Collections.sort(alDirectories);
-        Iterator it2 = alDirectories.iterator();
+        Collection directories = DirectoryManager.getDirectories();
+        //Collections.sort((List)directories);
+        Iterator it2 = directories.iterator();
         while (it2.hasNext()){
             Directory directory = (Directory)it2.next();
             if (directory.shouldBeHidden()){
@@ -897,7 +897,11 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         }
         else if (e.getSource() == jmiFileProperties){
             File file =  ((FileNode)paths[0].getLastPathComponent()).getFile();
-            new PropertiesWizard(file);
+            //show file and associated track properties
+            ArrayList alItems = new ArrayList(2);
+            alItems.add(file);
+            alItems.add(file.getTrack());
+            new PropertiesWizard(alItems);
         }
         else if (e.getSource() == jmiDirProperties){
             Directory dir =  ((DirectoryNode)paths[0].getLastPathComponent()).getDirectory();

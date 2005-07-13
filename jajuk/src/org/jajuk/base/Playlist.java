@@ -45,6 +45,7 @@ public class Playlist extends PropertyAdapter implements Comparable{
         super(sId,null);
         this.alPlaylistFiles.add(plFiles);
         setProperty(XML_PLAYLIST_FILES,plFiles.getId());
+        alConstructorElements.add(XML_PLAYLIST_FILES);
 	}
 
 /* (non-Javadoc)

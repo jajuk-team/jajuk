@@ -25,6 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.regex.PatternSyntaxException;
 
 import org.jajuk.base.ObservationManager;
@@ -32,7 +33,6 @@ import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.SequentialMap;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 
@@ -77,8 +77,7 @@ public class TracksTableModel extends JajukTableModel{
         vId.add(XML_TRACK_ADDED);
     
         //custom properties now
-        ArrayList alCustomProperties = TrackManager.getInstance().getCustomProperties();
-        Iterator it = alCustomProperties.iterator();
+        Iterator it = TrackManager.getInstance().getCustomProperties().iterator();
         while (it.hasNext()){
             String sProperty = (String)it.next();
             vColNames.add(sProperty);
@@ -148,35 +147,7 @@ public class TracksTableModel extends JajukTableModel{
         bCellEditable = new boolean[iRowNum][iColNum];
         for (int iRow = 0;it.hasNext();iRow++){
             Track track = (Track)it.next();
-            SequentialMap smProperties = track.getProperties();
-            
-            /* vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_NAME));
-        vId.add(XML_NAME);
-        
-        vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_ALBUM));
-        vId.add(XML_ALBUM);
-        
-        vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_AUTHOR));
-        vId.add(XML_AUTHOR);
-        
-        vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_STYLE));
-        vId.add(XML_STYLE);
-        
-        vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_TRACK_LENGTH));
-        vId.add(XML_TRACK_LENGTH);
-                
-        vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_COMMENT));
-        vId.add(XML_COMMENT);
-        
-        vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_TRACK_RATE));
-        vId.add(XML_TRACK_RATE);
-    
-        vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_TRACK_ADDED));
-        vId.add(XML_TRACK_ADDED);
-    *
-             * 
-             */
-            
+            LinkedHashMap smProperties = track.getProperties();
             //Track name
             oValues[iRow][0] = track.getName();
             bCellEditable[iRow][0] = true;
@@ -206,10 +177,8 @@ public class TracksTableModel extends JajukTableModel{
             catch (ParseException e1) {
                 Log.error(e1);
             }
-            
             //Custom properties now
-            ArrayList alCustomProperties = TrackManager.getInstance().getCustomProperties();
-            Iterator it2 = alCustomProperties.iterator();
+            Iterator it2 = TrackManager.getInstance().getCustomProperties().iterator();
             for (int i=0;it2.hasNext();i++){
                 String sProperty = (String)it2.next();
                 String sFormat = TrackManager.getInstance().getFormat(sProperty);

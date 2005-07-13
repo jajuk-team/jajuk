@@ -19,7 +19,7 @@
  */
 package org.jajuk.base;
 
-import org.jajuk.util.SequentialMap;
+import java.util.LinkedHashMap;
 
 /**
  *  Interface for all items using properties ( files, tracks...) 
@@ -30,9 +30,9 @@ public interface IPropertyable {
 	/**
 	 * Get all properties for this item
 	 **/
-	public SequentialMap getProperties();
+	public LinkedHashMap getProperties();
 	
-	public void setProperties(SequentialMap properties) ;
+	public void setProperties(LinkedHashMap properties) ;
     
 	/**
      * @return an identifier used to generate XML  representation of this item
@@ -95,6 +95,12 @@ public interface IPropertyable {
      * @return whether given property is editable, false if property doesn't exist
      */
     public boolean isPropertyEditable(String sKey);
+    
+    /**
+     * 
+     * @return whether given property is element of constructor for this item
+     */
+    public boolean isPropertyConstructorElement(String sKey);
 	
   /**
      * 

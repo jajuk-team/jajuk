@@ -22,6 +22,7 @@ package org.jajuk.base;
 import java.io.File;
 import java.io.FileFilter;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 
@@ -88,10 +89,16 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
         super(sId,sName);
         this.iDeviceType = iDeviceType;
         setProperty(XML_TYPE,Integer.toString(iDeviceType));
+        alConstructorElements.add(XML_TYPE);
+            
         this.sUrl = sUrl;
         setProperty(XML_URL,sUrl);
+        alConstructorElements.add(XML_URL);
+        
         this.sMountPoint = sMountPoint;
         setProperty(XML_DEVICE_MOUNT_POINT,sMountPoint);
+        alConstructorElements.add(XML_DEVICE_MOUNT_POINT);
+        
         this.fio = new File(getUrl());
 	}
 	
@@ -253,7 +260,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
                 //notify views to refresh
 	            ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH));
                 //commit collection at each refresh (can e useful if application is closed brutally with control-C or shutdown and that exit hook have no time to perform commit)
-                Collection.commit(FILE_COLLECTION);
+                org.jajuk.base.Collection.commit(FILE_COLLECTION);
                 //Display end of refresh message with stats
                 String sOut = new StringBuffer("[").append(device.getName()).append(Messages.getString("Device.25")).append((int)((System.currentTimeMillis()-lTime)/1000)). //$NON-NLS-1$ //$NON-NLS-2$
                 append(Messages.getString("Device.26")).append(iNbNewFiles).append(Messages.getString("Device.27")). //$NON-NLS-1$ //$NON-NLS-2$
@@ -719,8 +726,8 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	public ArrayList getFilesRecursively() {
 		//looks for the root directory for this device
 		Directory dirRoot = null;
-		ArrayList alDirs = DirectoryManager.getDirectories();
-		Iterator it = alDirs.iterator();
+		Collection dirs = DirectoryManager.getDirectories();
+		Iterator it = dirs.iterator();
 		while (it.hasNext()){
 			Directory dir = (Directory)it.next();
 			if ( dir.getDevice().equals(this) && dir.getFio().equals(fio)){

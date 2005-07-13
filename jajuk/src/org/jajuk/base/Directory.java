@@ -69,8 +69,12 @@ public class Directory extends PropertyAdapter implements Comparable{
         super(sId,sName);
         this.dParent = dParent;
         setProperty(XML_DIRECTORY_PARENT,(dParent==null?"-1":dParent.getId()));
+        alConstructorElements.add(XML_DIRECTORY_PARENT);
+        
         this.device = device;
         setProperty(XML_DEVICE,device.getId());
+        alConstructorElements.add(XML_DEVICE);
+        
         this.fio = new File(device.getUrl() + getRelativePath());
     }
 
@@ -84,7 +88,7 @@ public class Directory extends PropertyAdapter implements Comparable{
      * toString method
      */
     public String toString() {
-        return "Directory[ID=" + sId + " Name=" + getRelativePath() + " Parent ID=" + (dParent == null ? "null" : dParent.getId()) + " Device=" + device.getName() + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$ //$NON-NLS-6$
+        return "Directory[ID=" + sId + " Name=" + getRelativePath() + " ParentID=" + (dParent == null ? "null" : dParent.getId()) + " Device=" + device.getName() + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$ //$NON-NLS-6$
     }
     
     /**

@@ -22,28 +22,19 @@ package org.jajuk.ui;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Properties;
 
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 
-import org.jajuk.base.AlbumManager;
-import org.jajuk.base.Author;
-import org.jajuk.base.AuthorManager;
 import org.jajuk.base.Device;
 import org.jajuk.base.Event;
-import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.IPropertyable;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Observer;
-import org.jajuk.base.Style;
-import org.jajuk.base.StyleManager;
-import org.jajuk.base.Track;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.SequentialMap;
 import org.jajuk.util.Util;
 
 /**
@@ -52,7 +43,7 @@ import org.jajuk.util.Util;
  * @created    06 jun. 2005
  */
 public class PropertiesTableModel extends AbstractTableModel 
-    implements ITechnicalStrings,TableModelListener,Observer{
+    implements ITechnicalStrings,Observer{
 	
 	/**Columns number*/
 	protected int iColNum;
@@ -91,10 +82,10 @@ public class PropertiesTableModel extends AbstractTableModel
         alIgnored.add(XML_ID);//ID
         alIgnored.add(XML_EXPANDED);//expanded state
         alIgnored.add(XML_HASHCODE);//hashcode
-        SequentialMap propertiesOrig = pa.getProperties();
+        LinkedHashMap propertiesOrig = pa.getProperties();
         ArrayList properties = new ArrayList(10); //properties after cleaning
         //remove hiden attributes
-        Iterator it  = propertiesOrig.keys().iterator();
+        Iterator it  = propertiesOrig.keySet().iterator();
         int ignored = 0;
         while (it.hasNext()){
             String sProperty = (String)it.next();
@@ -130,8 +121,6 @@ public class PropertiesTableModel extends AbstractTableModel
                 oValues[i][4] = Util.getIcon(ICON_VOID);
             }
         }
-        //listen for table changes
-        addTableModelListener(this);
         //Add observers
         ObservationManager.register(EVENT_FILE_NAME_CHANGED,this);
      }
@@ -184,58 +173,7 @@ public class PropertiesTableModel extends AbstractTableModel
 		return sColName[columnIndex];
 	}
 	
- /* (non-Javadoc)
-     * @see javax.swing.event.TableModelListener#tableChanged(javax.swing.event.TableModelEvent)
-     */
-    public void tableChanged(TableModelEvent e) {
-    	if (e.getColumn() == 2){
-    		String sKey = (String)getValueAt(e.getFirstRow(),5);
-    		String sValue = (String)getValueAt(e.getFirstRow(),2);
-            String sRaw =  (String)getValueAt(e.getFirstRow(),6);
-    		if (pa instanceof File){
-                File file = (File)pa;
-                if (XML_NAME.equals(sKey)){
-    				File fNew = FileManager.changeFileName(file,sValue);
-    				pa = fNew; 
-    			}
-    		}
-            else if (pa instanceof Track){
-                Track track = (Track)pa;
-                if (XML_NAME.equals(sKey)){
-                }
-                if (XML_STYLE.equals(sKey)){
-    				Style style = StyleManager.registerStyle(sValue);
-    				track.setStyle(style);
-    			}
-                else if (XML_ALBUM.equals(sKey)){
-                    AlbumManager.changeAlbumName(AlbumManager.getAlbum(sRaw),sValue);
-                }
-                else if (XML_AUTHOR.equals(sKey)){
-                    Author author = AuthorManager.registerAuthor(sValue);
-                    track.setAuthor(author);
-                }
-                else if (XML_COMMENT.equals(sKey)){
-                    track.setComment(sValue);
-                }
-                else if (XML_TRACK_YEAR.equals(sKey)){
-                    try{
-                        Integer.parseInt(sValue);
-                    }
-                    catch (Exception ex) {
-                        Messages.showErrorMessage("137");
-                        return;
-                    }
-                    track.setYear(sValue);    
-                }
-    		}
-    		//others properties
-    		else{
-    			pa. setProperty(sKey,sValue);
-    		}
-    	}
-    }
-
-
+ 
     /* (non-Javadoc)
      * @see org.jajuk.base.Observer#update(org.jajuk.base.Event)
      */

@@ -24,9 +24,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Properties;
 
-import org.jajuk.util.SequentialMap;
 import org.jajuk.util.log.Log;
 
 /**
@@ -66,13 +66,13 @@ public class PlaylistFileManager extends ItemManager implements Observer{
 	 * @param sName
 	 */
 	public static synchronized PlaylistFile registerPlaylistFile(String sId, String sName, String sHashcode, Directory dParentDirectory) {
-		PlaylistFile playlistFile = new PlaylistFile(sId, sName, sHashcode, dParentDirectory);
 		if ( !hmPlaylistFiles.containsKey(sId)){
+			PlaylistFile playlistFile = new PlaylistFile(sId, sName, sHashcode, dParentDirectory);
 			hmPlaylistFiles.put(sId, playlistFile);
 			if ( dParentDirectory.getDevice().isRefreshing()){
 				Log.debug("Registered new playlist file: "+ playlistFile); //$NON-NLS-1$
 			}
-            SequentialMap properties = (SequentialMap)hmIdProperties.get(sId); 
+            LinkedHashMap properties = (LinkedHashMap)hmIdProperties.get(sId); 
 			if ( properties  == null){  //new file
 				hmIdProperties.put(sId,playlistFile.getProperties());
 			}
@@ -80,7 +80,7 @@ public class PlaylistFileManager extends ItemManager implements Observer{
 				playlistFile.setProperties(properties);
 			}
 		}
-		return playlistFile;
+		return (PlaylistFile)hmPlaylistFiles.get(sId);
 	}
 
 	/**

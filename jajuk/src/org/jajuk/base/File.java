@@ -19,7 +19,6 @@
  */
 package org.jajuk.base;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.jajuk.i18n.Messages;
@@ -63,12 +62,20 @@ public class File extends PropertyAdapter implements Comparable,ITechnicalString
         super(sId,sName);
         this.directory = directory;
         setProperty(XML_DIRECTORY,directory.getId());
+        alConstructorElements.add(XML_DIRECTORY);
+        
         this.track = track;
         setProperty(XML_TRACK,track.getId());
+        alConstructorElements.add(XML_TRACK);
+        
         this.lSize = lSize;
         setProperty(XML_SIZE,Long.toString(lSize));
+        alConstructorElements.add(XML_SIZE);
+        
         this.sQuality = sQuality;
         setProperty(XML_QUALITY,sQuality);
+        alConstructorElements.add(XML_QUALITY);
+        
 	}
 		
 /* (non-Javadoc)
@@ -389,8 +396,7 @@ public class File extends PropertyAdapter implements Comparable,ITechnicalString
             sb.append(track.getLength());
             sb.append(track.getRate());
             sb.append(track.getValue(XML_COMMENT));//custom properties now
-            ArrayList alCustomProperties = FileManager.getInstance().getCustomProperties();
-            Iterator it = alCustomProperties.iterator();
+            Iterator it = FileManager.getInstance().getCustomProperties().iterator();
             while (it.hasNext()){
                 sb.append((String)it.next());
             }

@@ -32,7 +32,6 @@ import java.util.TreeSet;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.MD5Processor;
-import org.jajuk.util.SequentialMap;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 
@@ -44,8 +43,6 @@ import org.jajuk.util.log.Log;
 public class FileManager extends ItemManager implements Observer{
 	/** Files collection : id-> file*/ 
 	private static HashMap hmIdFile = new HashMap(1000);
-	/** Map ids and properties, survives to a refresh, is used to recover old properties after refresh */
-	private static HashMap hmIdProperties = new HashMap(1000);
 	/**Flag the fact a rate has change for a track, used by bestof view refresh for perfs*/
 	private static boolean bRateHasChanged = true;
 	/**Best of files*/
@@ -81,22 +78,19 @@ public class FileManager extends ItemManager implements Observer{
 	 */
 	public static synchronized File registerFile(String sId, String sName, Directory directory, 
             Track track, long lSize, String sQuality) {
-		File file = new File(sId, sName, directory, track, lSize, sQuality);
 		if ( !hmIdFile.containsKey(sId)){
+			File file = new File(sId, sName, directory, track, lSize, sQuality);
 			hmIdFile.put(sId,file);
 			alSortedFiles.add(file);
 			if ( directory.getDevice().isRefreshing() && Log.isDebugEnabled()){
 				Log.debug("registrated new file: "+ file); //$NON-NLS-1$
 			}
-            SequentialMap properties = (SequentialMap)hmIdProperties.get(sId); 
-			if ( properties  == null){  //new file
-				hmIdProperties.put(sId,file.getProperties());
-			}
-			else{  //reset properties before refresh
-				file.setProperties(properties);
-			}
+			//try to recover some properties previous a refresh
+			getInstance().restorePropertiesAfterRefresh(file,sId);
+			//apply default custom properties
+			getInstance().applyNewProperties();
 		}
-		return file;
+		return (File)hmIdFile.get(sId);
 	}
     
     /**
@@ -174,7 +168,8 @@ public class FileManager extends ItemManager implements Observer{
 		it = alSortedFiles.iterator();
 		while (it.hasNext()){
 			File file = (File) it.next();
-			if (file.getDirectory() == null || file.getDirectory().getDevice().getId().equals(sId)) {
+			if (file.getDirectory() == null 
+					|| file.getDirectory().getDevice().getId().equals(sId)) {
 				it.remove();  //this is the right way to remove entry 
 			}
 		}
@@ -581,15 +576,6 @@ public class FileManager extends ItemManager implements Observer{
 	}
 	
 	
-	/**
-	 * Return properties assiated to an id
-	 * @param sId the id
-	 * @return
-	 */
-	public static synchronized Properties getProperties(String sId){
-		return (Properties)hmIdProperties.get(sId);
-	}
-
 	/**
 	 * @return Returns the bRateHasChanged.
 	 */

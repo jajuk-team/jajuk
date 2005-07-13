@@ -21,10 +21,12 @@
 package org.jajuk.base;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 
 import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.SequentialMap;
 import org.jajuk.util.Util;
 import org.xml.sax.Attributes;
 
@@ -36,15 +38,17 @@ import org.xml.sax.Attributes;
  */
 public abstract class ItemManager implements ITechnicalStrings{
 
-    /**Property to format*/
-    SequentialMap smProperties;
-       
+    /**Custom Properties -> format*/
+    LinkedHashMap properties;
+    /** Map ids and properties, survives to a refresh, is used to recover old properties after refresh */
+	HashMap hmIdProperties = new HashMap(1000);
+    
     /**
      * Constructor
      *
      */
     ItemManager(){
-        smProperties = new SequentialMap();
+        properties = new LinkedHashMap();
     }
     
     /**
@@ -59,7 +63,22 @@ public abstract class ItemManager implements ITechnicalStrings{
      * @return format for given property
      */
     public String getFormat(String sProperty){
-        return (String)smProperties.get(sProperty);
+        return (String)properties.get(sProperty);
+    }
+    
+    /**
+     * Restore properties after a refresh if possible
+     * @param item
+     * @param sId
+     */
+    public void restorePropertiesAfterRefresh(IPropertyable item,String sId){
+	    LinkedHashMap properties = (LinkedHashMap)hmIdProperties.get(sId); 
+		if ( properties == null){  //new file
+			hmIdProperties.put(sId,item.getProperties());
+		}
+		else{  //reset properties before refresh
+			item.setProperties(properties);
+		}
     }
     
     /**
@@ -68,22 +87,26 @@ public abstract class ItemManager implements ITechnicalStrings{
      * @param sFormat
      */
     public void addProperty(String sProperty,String sFormat){
-        smProperties.put(Util.formatXML(sProperty),Util.formatXML(sFormat)); //make sure to clean strings for XML compliance
+        properties.put(Util.formatXML(sProperty),Util.formatXML(sFormat)); //make sure to clean strings for XML compliance
     }
     
     /**Remove a property **/
     public void removeProperty(String sProperty){
-        smProperties.remove(sProperty);
+        properties.remove(sProperty);
         applyRemoveProperty(sProperty); //remove ths property to all items
     }
     
     /**Add new property to all items for the given manager*/
     public void applyNewProperty(String sProperty){
-        ArrayList alItems = getItems();
-        if (alItems != null){
-            Iterator it = alItems.iterator();
+        Collection items = getItems();
+        if (items != null){
+            Iterator it = items.iterator();
             while (it.hasNext()){
                 IPropertyable item = (IPropertyable)it.next();
+                //just initialize void fields
+                if (item.getValue(sProperty) != null){
+                	continue;
+                }
                 String sValue = "";
                 if (getFormat(sProperty).equals(FORMAT_BOOLEAN)){
                     sValue = FALSE;
@@ -95,12 +118,23 @@ public abstract class ItemManager implements ITechnicalStrings{
             }    
         }
     }   
+    
+    /**Add new property to all items and all custom properties for the given manager*/
+    public void applyNewProperties(){
+        Iterator it = properties.keySet().iterator();
+        while (it.hasNext()){
+        	String sProperty = (String)it.next();
+        	applyNewProperty(sProperty);
+        }
+    }   
+    
+    
 
     /**Remove a custom property to all items for the given manager*/
     public void applyRemoveProperty(String sProperty) {
-        ArrayList alItems = getItems();
-        if (alItems != null){
-            Iterator it = alItems.iterator();
+        Collection items = getItems();
+        if (items != null){
+            Iterator it = items.iterator();
             while (it.hasNext()){
                 IPropertyable item = (IPropertyable)it.next();
                 item.removeProperty(sProperty);
@@ -112,39 +146,39 @@ public abstract class ItemManager implements ITechnicalStrings{
      * 
      * @return items for given item manager
      */
-    public ArrayList getItems(){
-        ArrayList alItems = null;
+    public Collection getItems(){
+        Collection items = null;
         if (this instanceof AlbumManager){
-            alItems = AlbumManager.getAlbums();
+            items = AlbumManager.getAlbums();
         }
         else if (this instanceof AuthorManager){
-            alItems = AuthorManager.getAuthors();
+            items = AuthorManager.getAuthors();
         }
         else if (this instanceof DeviceManager){
-            alItems = DeviceManager.getDevicesList();
+            items = DeviceManager.getDevicesList();
         }
         else if (this instanceof DirectoryManager){
-            alItems = DirectoryManager.getDirectories();
+            items = DirectoryManager.getDirectories();
         }
         else if (this instanceof FileManager){
-            alItems = FileManager.getFiles();
+            items = FileManager.getFiles();
         }
         else if (this instanceof PlaylistFileManager){
-            alItems = PlaylistFileManager.getPlaylistFiles();
+            items = PlaylistFileManager.getPlaylistFiles();
         }
         else if (this instanceof PlaylistManager){
-            alItems = PlaylistManager.getPlaylists();
+            items = PlaylistManager.getPlaylists();
         }
         else if (this instanceof StyleManager){
-            alItems = StyleManager.getStyles();
+            items = StyleManager.getStyles();
         }
         else if (this instanceof TrackManager){
-            alItems = TrackManager.getTracks();
+            items = TrackManager.getTracks();
         }
         else if (this instanceof TypeManager){
-            alItems = TypeManager.getTypes();
+            items = TypeManager.getTypes();
         }
-        return alItems;
+        return items;
     }
     
     /**
@@ -153,22 +187,23 @@ public abstract class ItemManager implements ITechnicalStrings{
      */
     public String toXML(){
         StringBuffer sb = new StringBuffer("\t<").append(getIdentifier()); //$NON-NLS-1$
-        Iterator it = smProperties.keys().iterator();
+        Iterator it = properties.keySet().iterator();
         while (it.hasNext()) {
             String sProperty = (String) it.next();
-            String sFormat = (String)smProperties.get(sProperty);
+            String sFormat = (String)properties.get(sProperty);
             sb.append(" "+sProperty + "='" + sFormat + "'"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         }
         sb.append(">\n"); //$NON-NLS-1$
         return sb.toString();
     }
     
-    public ArrayList getCustomProperties(){
-        return (ArrayList)smProperties.keys();
+    public Collection getCustomProperties(){
+        return properties.keySet();
     }
   
     public String getPropertyAtIndex(int index){
-        return smProperties.getPropertyAt(index);
+        ArrayList al = new ArrayList(properties.keySet());
+    	return (String)al.get(index);
     }
     
     /**

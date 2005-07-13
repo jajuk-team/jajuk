@@ -23,6 +23,7 @@ package org.jajuk.ui;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.regex.PatternSyntaxException;
 
 import org.jajuk.base.File;
@@ -31,7 +32,6 @@ import org.jajuk.base.ObservationManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.SequentialMap;
 import org.jajuk.util.Util;
 
 /**
@@ -84,8 +84,7 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
         vId.add(XML_SIZE);
         
         //Custom properties now
-        ArrayList alCustomProperties = FileManager.getInstance().getCustomProperties();
-        Iterator it = alCustomProperties.iterator();
+        Iterator it = FileManager.getInstance().getCustomProperties().iterator();
         while (it.hasNext()){
             String sProperty = (String)it.next();
             vColNames.add(sProperty);
@@ -154,7 +153,7 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
         bCellEditable = new boolean[iRowNum][iColNum];
         for (int iRow = 0;it.hasNext();iRow++){
             File file = (File)it.next();
-            SequentialMap smProperties = file.getProperties();
+            LinkedHashMap properties = file.getProperties();
             //Track name
             oValues[iRow][0] = file.getTrack().getName();
             bCellEditable[iRow][0] = true;
@@ -193,14 +192,13 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
             oValues[iRow][10] = new Integer((int)(file.getSize()>>20));
             bCellEditable[iRow][10] = false;
             //Custom properties now
-            ArrayList alCustomProperties = FileManager.getInstance().getCustomProperties();
-            Iterator it2 = alCustomProperties.iterator();
+            Iterator it2 = FileManager.getInstance().getCustomProperties().iterator();
             for (int i=0;it2.hasNext();i++){
                 String sProperty = (String)it2.next();
                 String sFormat = FileManager.getInstance().getFormat(sProperty);
                 if ("Property_Format_Number".equals(sFormat)){
                     try{
-                        oValues[iRow][iNumberStandardRows+i] = Double.valueOf((String)smProperties.get(sProperty));
+                        oValues[iRow][iNumberStandardRows+i] = Double.valueOf((String)properties.get(sProperty));
                     }
                     catch(Exception e){ //catch wrong formats
                         oValues[iRow][iNumberStandardRows+i] = new Double(0);
@@ -208,11 +206,11 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
                     }
                 }
                 else if ("Property_Format_String".equals(sFormat)){
-                    oValues[iRow][iNumberStandardRows+i] = (String)smProperties.get(sProperty);
+                    oValues[iRow][iNumberStandardRows+i] = (String)properties.get(sProperty);
                 }
                 else if ("Property_Format_Boolean".equals(sFormat)){
                     try{
-                        oValues[iRow][iNumberStandardRows+i] = Boolean.valueOf((String)smProperties.get(sProperty));
+                        oValues[iRow][iNumberStandardRows+i] = Boolean.valueOf((String)properties.get(sProperty));
                     }
                     catch(Exception e){ //catch wrong formats
                         oValues[iRow][iNumberStandardRows+i] = Boolean.FALSE;

@@ -21,9 +21,8 @@
 
 package org.jajuk.base;
 
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 
 import org.jajuk.util.MD5Processor;
@@ -35,10 +34,10 @@ import org.jajuk.util.MD5Processor;
  */
 public class AlbumManager extends ItemManager{
 	/**Albums collection**/
-	static HashMap hmAlbums = new HashMap(100);
-    
+	private static HashMap hmAlbums = new HashMap(100);
+	    
     /**Self instance*/
-    static AlbumManager singleton;
+    private static AlbumManager singleton;
 
 	/**
 	 * No constructor available, only static access
@@ -71,19 +70,22 @@ public class AlbumManager extends ItemManager{
 	 *  
 	 */
 	public static synchronized void cleanup() {
-		Iterator itTracks = TrackManager.getTracks().iterator();
-		HashSet hs = new HashSet(100);
-		while (itTracks.hasNext()) {
-			Track track = (Track) itTracks.next();
-			Album album = track.getAlbum();
-			hs.add(album);
-		}
 		Iterator itAlbums = hmAlbums.values().iterator();
 		while (itAlbums.hasNext()) {
 			Album album = (Album) itAlbums.next();
-			if ( !hs.contains(album)){
+			if ( album.getTracks().size() == 0){
 				itAlbums.remove();
 			}
+		}
+	}
+	
+	/**
+	 * Perform an album cleanup for a given album
+	 *  
+	 */
+	public static synchronized void cleanup(Album album) {
+		if ( album.getTracks().size() == 0){
+			hmAlbums.remove(album.getId());
 		}
 	}
 	
@@ -91,17 +93,19 @@ public class AlbumManager extends ItemManager{
      * Chnage the item
      * @param old
      * @param sNewName
+     * @return new album
      */
-    public static synchronized void changeAlbumName(Album old,String sNewName){
+    public static synchronized Album changeAlbumName(Album old,String sNewName){
         Album newItem = registerAlbum(sNewName);
         Iterator it = TrackManager.getTracks().iterator();
         while (it.hasNext()){
             Track track = (Track)it.next();
             if (track.getAlbum().equals(old)){
-                TrackManager.changeTrackProperty(track,XML_ALBUM,sNewName);
+                TrackManager.changeTrackAlbum(track,newItem.getId());
             }
         }
         cleanup();//remove useless albums if no more tracks use it
+        return newItem;
     }
     
 	/**
@@ -110,23 +114,22 @@ public class AlbumManager extends ItemManager{
 	 * @param sName
 	 */
 	public static synchronized Album registerAlbum(String sId, String sName) {
-		String sIdTest = MD5Processor.hash(sName.trim().toLowerCase());
-        //Hash checkup
-        if (!sId.equals(sIdTest)){ //collection corruption, ignore this entry
-                return null;
-        }
-		if (hmAlbums.containsKey(sIdTest)) {
-			return (Album) hmAlbums.get(sIdTest);
+		if (hmAlbums.containsKey(sId)) {
+			return (Album)hmAlbums.get(sId);
 		}
 		Album album = new Album(sId, sName);
 		hmAlbums.put(sId, album);
+		//try to recover some properties previous a refresh
+		getInstance().restorePropertiesAfterRefresh(album,sId);
+		//apply default custom properties
+		getInstance().applyNewProperties();
 		return album;
 	}
 
 
 	/**Return all registred Albums*/
-	public static synchronized ArrayList getAlbums() {
-		return new ArrayList(hmAlbums.values());
+	public static synchronized Collection getAlbums() {
+		return hmAlbums.values();
 	}
 
 	/**
