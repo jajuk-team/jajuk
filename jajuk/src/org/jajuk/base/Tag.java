@@ -245,7 +245,31 @@ public class Tag implements ITechnicalStrings{
 		}
 		return sComment;	
 	}
-
+    
+     /**
+     * @return comment
+     */
+    public String getOrder() {
+        String sOrder = UNKNOWN_ORDER;
+        //if the type doesn't support tags ( like wav )
+        if (tagImpl == null){  
+            return sOrder;
+        }
+        String sTemp = ""; //$NON-NLS-1$
+        try {
+            sTemp = tagImpl.getOrder();
+            if (sTemp != null && !sTemp.equals("")){ //$NON-NLS-1$
+                int i = Integer.parseInt(sTemp); //test it is an integer
+                if (i < 0){
+                    throw new Exception();
+                }
+                sOrder = sTemp;
+            }
+        } catch (Exception e) {
+            Log.error("103",fio.getName(), e); //$NON-NLS-1$
+        }
+        return sOrder;    
+    }
 	
 	/**
 	 * @param sTrackName
@@ -291,22 +315,21 @@ public class Tag implements ITechnicalStrings{
 		} catch (Exception e) {
 			Log.error("104", fio.getName(),e); //$NON-NLS-1$
 		}
-
 	}
 
-	/**
-	 * @param length
-	 */
-	public void setLength(long length) {
-		try {
-			tagImpl.setLength(length);
-		} catch (Exception e) {
-			Log.error("104", fio.getName(),e); //$NON-NLS-1$
-		}
+    /**
+     * @param style
+     */
+    public void setOrder(String sOrder) {
+        try {
+            tagImpl.setTrackName(sOrder);
+        } catch (Exception e) {
+            Log.error("104", fio.getName(),e); //$NON-NLS-1$
+        }
+    }
 
-	}
-
-	/**
+    
+    /**
 	 * @param sYear
 	 */
 	public void setYear(String sYear) {

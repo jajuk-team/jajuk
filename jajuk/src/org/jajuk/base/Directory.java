@@ -270,6 +270,7 @@ public class Directory extends PropertyAdapter implements Comparable{
                     String sYear = tag.getYear();
                     String sQuality = tag.getQuality();
                     String sComment = tag.getComment();
+                    String sOrder = tag.getOrder();
                     
                     Album album = AlbumManager.getInstance().registerAlbum(sAlbumName);
                     Style style = StyleManager.getInstance().registerStyle(sStyle);
@@ -283,6 +284,7 @@ public class Directory extends PropertyAdapter implements Comparable{
                     track.setProperty(XML_COMMENT,sComment); 
                     /*comment is at the track level, note that we take last found file comment but we changing
                     a comment, we will apply to all files for a track*/
+                    track.setProperty(XML_TRACK_ORDER,sOrder); 
                 }
                 else{  //playlist file
                     String sName = files[i].getName();

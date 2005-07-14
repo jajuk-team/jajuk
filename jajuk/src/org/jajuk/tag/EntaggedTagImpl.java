@@ -140,23 +140,39 @@ public class EntaggedTagImpl implements ITagImpl,ITechnicalStrings {
 		}
 		return sOut;
 	}
-	/* (non-Javadoc)
+
+      /* (non-Javadoc)
+     * @see org.jajuk.tag.ITagImpl#getOrder()
+     */
+    public String getOrder() throws Exception {
+        String sOrder = tag.getFirstTrack();
+        if ("".equals(sOrder.trim())){
+            sOrder = UNKNOWN_ORDER;
+        }
+        return sOrder;
+    }
+
+    
+    /* (non-Javadoc)
 	 * @see org.jajuk.base.ITagImpl#setTrackName(java.lang.String)
 	 */
 	public void setTrackName(String sTrackName) throws Exception {
+        tag.setTitle(sTrackName);
 	}
 
 	/* (non-Javadoc)
 	 * @see org.jajuk.base.ITagImpl#setAlbumName(java.lang.String)
 	 */
 	public void setAlbumName(String sAlbumName) throws Exception {
+        tag.setAlbum(sAlbumName);
 	}
 
 	/* (non-Javadoc)
 	 * @see org.jajuk.base.ITagImpl#setAuthorName(java.lang.String)
 	 */
 	public void setAuthorName(String sAuthorName) throws Exception {
-	}
+	    tag.setArtist(sAuthorName);
+    }
 
 	/* (non-Javadoc)
 	 * @see org.jajuk.base.ITagImpl#setStyleName(java.lang.String)
@@ -166,25 +182,22 @@ public class EntaggedTagImpl implements ITagImpl,ITechnicalStrings {
     }
 
 	/* (non-Javadoc)
-	 * @see org.jajuk.base.ITagImpl#setLength(long)
-	 */
-	public void setLength(long length) throws Exception {
-	}
-
-	/* (non-Javadoc)
 	 * @see org.jajuk.base.ITagImpl#setYear(java.lang.String)
 	 */
 	public void setYear(String sYear) throws Exception {
+        tag.setYear(sYear);
 	}
-
-	/* (non-Javadoc)
-	 * @see org.jajuk.base.ITagImpl#setQuality(java.lang.String)
-	 */
-	public void setQuality(String sQuality) throws Exception {
-	}
+    
+    /* (non-Javadoc)
+     * @see org.jajuk.base.ITagImpl#setOrder(java.lang.String)
+     */
+    public void setOrder(String sOrder) throws Exception {
+        tag.setTrack(sOrder);
+    }
 
 	public void setComment(String sComment) throws Exception {
-	}
+	    tag.setComment(sComment);
+    }
 	
 	/* (non-Javadoc)
 	 * @see org.jajuk.base.ITagImpl#setFile(java.io.File)
@@ -219,5 +232,6 @@ public class EntaggedTagImpl implements ITagImpl,ITechnicalStrings {
     public void commit() throws Exception{
         audioFile.commit();
     }
+
 
 }

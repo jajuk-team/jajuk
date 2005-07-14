@@ -48,9 +48,9 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
 	 * @param sColName columns names
 	 */
 	public FilesTableModel(){
-		super(11);
+		super(12);
         //Columns names
-        vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_TRACK));
+        vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_NAME));
         vId.add(XML_TRACK);
         
         vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_ALBUM));
@@ -68,7 +68,7 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
         vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_DEVICE));
         vId.add(XML_DEVICE);
         
-        vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_NAME));
+        vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_FILE_NAME));
         vId.add(XML_NAME);
         
         vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_COMMENT));
@@ -82,6 +82,9 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
         
         vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_SIZE));
         vId.add(XML_SIZE);
+        
+         vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_TRACK_ORDER));
+        vId.add(XML_TRACK_ORDER);
         
         //Custom properties now
         Iterator it = FileManager.getInstance().getCustomProperties().iterator();
@@ -191,6 +194,9 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
             //Size
             oValues[iRow][10] = new Integer((int)(file.getSize()>>20));
             bCellEditable[iRow][10] = false;
+            //Order
+            oValues[iRow][11] = file.getTrack().getOrder2();
+            bCellEditable[iRow][11] = true;
             //Custom properties now
             Iterator it2 = FileManager.getInstance().getCustomProperties().iterator();
             for (int i=0;it2.hasNext();i++){

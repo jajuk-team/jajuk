@@ -77,6 +77,7 @@ public interface ITechnicalStrings {
 	public static final String UNKNOWN_STYLE = "unknown_style";
 	public static final String UNKNOWN_QUALITY = "unknown_quality";
 	public static final String UNKNOWN_YEAR = "unknown_year";
+    public static final String UNKNOWN_ORDER = "unknown_order";
     	
 	// icons
 	public static final String ICON_LOGO = PATH_ICONS + "64x64/jajuk-logo.png";
@@ -515,9 +516,11 @@ public interface ITechnicalStrings {
 	public static final String XML_TRACK_RATE = "rate";
 	public static final String XML_TRACK_HITS = "hits";
 	public static final String XML_TRACK_ADDED = "added";
-	public static final String XML_PLAYLIST = "playlist";
+    public static final String XML_TRACK_ORDER = "order";
+    public static final String XML_PLAYLIST = "playlist";
 	public static final String XML_NAME = "name";
-	public static final String XML_URL = "url";
+    public static final String XML_FILE_NAME = "filename";
+    public static final String XML_URL = "url";
 	public static final String XML_QUALITY = "quality";
     public static final String XML_SIZE = "size";
     public static final String XML_DEVICE_MOUNT_POINT = "mount_point";
@@ -543,7 +546,7 @@ public interface ITechnicalStrings {
         XML_TYPE,XML_URL,XML_DEVICE_AUTO_MOUNT,XML_DEVICE_AUTO_REFRESH,XML_EXPANDED,XML_DEVICE_MOUNT_POINT,
         XML_ALBUM,XML_AUTHOR,XML_STYLE,XML_TRACK_LENGTH,XML_TRACK_YEAR,XML_TRACK_RATE,XML_FILES,XML_TRACK_HITS,XML_TRACK_ADDED,
         XML_DIRECTORY_PARENT,XML_DEVICE,XML_DIRECTORY,XML_TRACK,XML_SIZE,XML_QUALITY,
-        XML_HASHCODE,XML_PLAYLIST_FILES,XML_COMMENT,XML_ANY}; //contains variables names
+        XML_HASHCODE,XML_PLAYLIST_FILES,XML_COMMENT,XML_ANY,XML_TRACK_ORDER}; //contains variables names
 
     public static final String FORMAT_STRING = "Property_Format_String";
     public static final String FORMAT_NUMBER = "Property_Format_Number";

@@ -64,7 +64,6 @@ public class LogicalTableView extends AbstractTableView implements Observer{
 	JMenuItem jmiTrackSetProperty;
 	JMenuItem jmiTrackProperties;
 	
-	
 	/*
 	 * (non-Javadoc)
 	 * 

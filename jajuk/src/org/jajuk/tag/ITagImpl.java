@@ -68,6 +68,12 @@ public interface ITagImpl {
 	public String getComment() throws Exception;
     
     /**
+     * @return track order
+     * @throws Exception
+     */
+    public String getOrder() throws Exception;
+    
+    /**
      * @return specific property or null if property not tagged
      */
     public String getTagItem(String sTagItem) throws Exception;
@@ -93,19 +99,9 @@ public interface ITagImpl {
 	public void setStyleName(String style) throws Exception;
 
 	/**
-	 * @param length
-	 */
-	public void setLength(long length) throws Exception;
-
-	/**
 	 * @param sYear
 	 */
 	public void setYear(String sYear) throws Exception;
-
-	/**
-	 * @param sQuality
-	 */
-	public void setQuality(String sQuality) throws Exception;
 
 	/**
 	 * @param sComment
@@ -118,6 +114,13 @@ public interface ITagImpl {
 	 * @param fio
 	 */
 	public void setFile(java.io.File fio) throws Exception;
+    
+    /**
+     * Set track order
+     * @param sOrder
+     * @throws Exception
+     */
+    public void setOrder(String sOrder) throws Exception;
 	
       /**
      * @return Set a specific property

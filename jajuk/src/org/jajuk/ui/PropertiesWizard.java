@@ -44,7 +44,6 @@ import org.jajuk.base.ItemManager;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
-import org.jajuk.i18n.Messages;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jdesktop.swingx.decorator.Filter;
@@ -192,32 +191,34 @@ public class PropertiesWizard extends JFrame implements ITechnicalStrings {
 				}
 				else if (pa instanceof Track){
 					Track track = (Track)pa;
+                    Track trackNew = null;
 					if (XML_NAME.equals(sKey)){
+                        trackNew = TrackManager.getInstance().changeTrackName(track,sValue);
 					}
 					if (XML_STYLE.equals(sKey)){
-					}
+				        trackNew = TrackManager.getInstance().changeTrackStyle(track,sValue);
+                	}
 					else if (XML_ALBUM.equals(sKey)){
-						Track trackNew = TrackManager.getInstance().changeTrackAlbum(track,sValue);
-						this.pa = trackNew;
-						PropertiesTableModel newModel = new PropertiesTableModel(trackNew);
-						jtable.setModel(newModel);
-						jtable.packAll();
-						newModel.addTableModelListener(this);
-						jlDesc.setText(pa.getDesc());
+						trackNew = TrackManager.getInstance().changeTrackAlbum(track,sValue);
 					}
 					else if (XML_AUTHOR.equals(sKey)){
-					}
+                        trackNew = TrackManager.getInstance().changeTrackAuthor(track,sValue);
+                	}
 					else if (XML_COMMENT.equals(sKey)){
-					}
+					    trackNew = TrackManager.getInstance().changeTrackComment(track,sValue);
+                    }
+                    else if (XML_TRACK_ORDER.equals(sKey)){
+                        trackNew = TrackManager.getInstance().changeTrackOrder(track,sValue);
+                    }
 					else if (XML_TRACK_YEAR.equals(sKey)){
-						try{
-							Integer.parseInt(sValue);
-						}
-						catch (Exception ex) {
-							Messages.showErrorMessage("137");
-							return;
-						}
+						trackNew = TrackManager.getInstance().changeTrackYear(track,sValue);
 					}
+					this.pa = trackNew;
+					PropertiesTableModel newModel = new PropertiesTableModel(trackNew);
+					jtable.setModel(newModel);
+					jtable.packAll();
+					newModel.addTableModelListener(this);
+					jlDesc.setText(pa.getDesc());
 				}
 				//others properties
 				else{

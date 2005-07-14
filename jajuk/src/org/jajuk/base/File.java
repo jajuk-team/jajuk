@@ -396,6 +396,7 @@ public class File extends PropertyAdapter implements Comparable,ITechnicalString
             sb.append(track.getLength());
             sb.append(track.getRate());
             sb.append(track.getValue(XML_COMMENT));//custom properties now
+            sb.append(track.getValue(XML_TRACK_ORDER));//custom properties now
             Iterator it = FileManager.getInstance().getCustomProperties().iterator();
             while (it.hasNext()){
                 sb.append((String)it.next());

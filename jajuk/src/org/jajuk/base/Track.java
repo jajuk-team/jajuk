@@ -244,6 +244,18 @@ public class Track extends PropertyAdapter implements Comparable{
         }
         return sOut;
     }
+    
+    /**
+     * Return order, dealing with unkwnown for any language
+     * @return year
+     *  */
+    public String getOrder2() {
+        String sOut = getValue(XML_TRACK_ORDER);
+        if (sOut.equals(UNKNOWN_ORDER)){ 
+            sOut = Messages.getString(UNKNOWN_ORDER); 
+        }
+        return sOut;
+    }
 
 	/**
 	 * @return length in sec
@@ -400,22 +412,7 @@ public class Track extends PropertyAdapter implements Comparable{
     public String getIdentifier() {
         return XML_TRACK;
     }
-   
 
-     /**
-     * @param comment
-     */
-    public void setComment(String sComment) {
-        setProperty(XML_COMMENT,sComment);
-        Iterator it = alFiles.iterator();
-        while (it.hasNext()){
-            File file = (File)it.next();
-            Tag tag = new Tag(file.getIO());
-            tag.setComment(sComment);
-            tag.commit();
-        }
-    }
-  
     /**
      * Get item description
      */
@@ -461,10 +458,16 @@ public class Track extends PropertyAdapter implements Comparable{
             return false;
         }
         else if (XML_EXPANDED.equals(sProperty)){
-            return true;
+            return false;
         }
         else if (XML_TRACK_ADDED.equals(sProperty)){
             return false;
+        }
+        else if (XML_COMMENT.equals(sProperty)){
+            return true;
+        }
+        else if (XML_TRACK_ORDER.equals(sProperty)){
+            return true;
         }
         else{
             return true;
@@ -529,6 +532,7 @@ public class Track extends PropertyAdapter implements Comparable{
             sb.append(track.getLength());
             sb.append(track.getRate());
             sb.append(track.getValue(XML_COMMENT));
+            sb.append(track.getValue(XML_TRACK_ORDER));
             //custom properties now
             Iterator it = TrackManager.getInstance().getCustomProperties().iterator();
             while (it.hasNext()){

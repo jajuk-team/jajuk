@@ -27,6 +27,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.Properties;
 
+import org.jajuk.i18n.Messages;
 import org.jajuk.util.MD5Processor;
 
 /**
@@ -37,7 +38,6 @@ import org.jajuk.util.MD5Processor;
 public class TrackManager extends ItemManager implements Observer{
     /**Self instance*/
     private static TrackManager singleton;
-   
    
 	/**
 	 * No constructor available, only static access
@@ -67,17 +67,6 @@ public class TrackManager extends ItemManager implements Observer{
 		String sId = MD5Processor.hash(style.getName() + author.getName() +album.getName() + sYear + length + type.getName() + sName);
 		return registerTrack(sId, sName, album, style, author, length, sYear, type);
 	}
-    
-    /**
-     * Change a track non-attribute property 
-     * @param old
-     * @param sProperty
-     * @param sValue
-     *
-     */
-    public synchronized void changeTrackProperty(Track track,String  sProperty, String sValue) {
-        track.setProperty(sProperty,sValue);
-    }
     
     /**
      * Change a track album 
@@ -121,8 +110,8 @@ public class TrackManager extends ItemManager implements Observer{
         Author newAuthor = AuthorManager.getInstance().registerAuthor(sNewAuthor);
         //reset previous properties like exp
         newAuthor.cloneProperties(track.getAuthor());
-        Track newTrack = registerTrack(track.getName(),track.getAlbum(),track.getStyle(),newAuthor,track.getLength(),
-                track.getYear(),track.getType());
+        Track newTrack = registerTrack(track.getName(),track.getAlbum(),track.getStyle(),
+            newAuthor,track.getLength(),track.getYear(),track.getType());
         //re apply old properties from old item
         newTrack.cloneProperties(track);
        //change tag in files
@@ -136,11 +125,151 @@ public class TrackManager extends ItemManager implements Observer{
             tag.commit();
         }
         remove(track.getId());//remove old reference
-        AuthorManager.getInstance().cleanup(track.getAuthor()); //remove this album if no more references
+        AuthorManager.getInstance().cleanup(track.getAuthor()); //remove this item if no more references
         return newTrack;
     }
-   
+
+     /**
+     * Change a track style 
+     * @param old item
+     * @param new item name
+     * @return new track
+     */
+    public synchronized Track changeTrackStyle(Track track,String sNewItem) {
+        //register the new item
+        Style newStyle = StyleManager.getInstance().registerStyle(sNewItem);
+        //reset previous properties like exp
+        newStyle.cloneProperties(track.getAuthor());
+        Track newTrack = registerTrack(track.getName(),track.getAlbum(),newStyle,
+            track.getAuthor(),track.getLength(),track.getYear(),track.getType());
+        //re apply old properties from old item
+        newTrack.cloneProperties(track);
+       //change tag in files
+        Iterator it = track.getFiles().iterator();
+        while (it.hasNext()){
+            File file = (File)it.next();
+            file.setTrack(newTrack);
+            newTrack.addFile(file);
+            Tag tag = new Tag(file.getIO());
+            tag.setStyleName(newStyle.getName2());
+            tag.commit();
+        }
+        remove(track.getId());//remove old reference
+        StyleManager.getInstance().cleanup(track.getStyle()); //remove this item if no more references
+        return newTrack;
+    }
     
+    /**
+     * Change a track style 
+     * @param old item
+     * @param new item name
+     * @return new track or null if wronf format
+     */
+    public synchronized Track changeTrackYear(Track track,String sNewItem) {
+        //check format
+        int i = 0;
+        try{
+            i = Integer.parseInt(sNewItem);
+            if (i <0 || i > 10000){ //jajuk supports years till year 10000 !
+                throw new Exception();
+            }
+        }
+        catch(Exception e){
+            Messages.showErrorMessage("137");
+            return null;
+        }
+        Track newTrack = registerTrack(track.getName(),track.getAlbum(),track.getStyle(),
+            track.getAuthor(),track.getLength(),sNewItem,track.getType());
+        //re apply old properties from old item
+        newTrack.cloneProperties(track);
+       //change tag in files
+        Iterator it = track.getFiles().iterator();
+        while (it.hasNext()){
+            File file = (File)it.next();
+            file.setTrack(newTrack);
+            newTrack.addFile(file);
+            Tag tag = new Tag(file.getIO());
+            tag.setYear(sNewItem);
+            tag.commit();
+        }
+        remove(track.getId());//remove old reference
+        return newTrack;
+    }
+    
+     /**
+     * Change a track comment 
+     * @param old item
+     * @param new item name
+     * @return new track or null if wronf format
+     */
+    public synchronized Track changeTrackComment(Track track,String sNewItem) {
+       track.setProperty(XML_COMMENT,sNewItem);
+        //change tag in files
+        Iterator it = track.getFiles().iterator();
+        while (it.hasNext()){
+            File file = (File)it.next();
+            Tag tag = new Tag(file.getIO());
+            tag.setComment(sNewItem);
+            tag.commit();
+        }
+        return track;
+    }
+    
+     /**
+     * Change a track order 
+     * @param old item
+     * @param new item order
+     * @return new track or null if wronf format
+     */
+    public synchronized Track changeTrackOrder(Track track,String sNewItem) {
+        //check format
+        int i = 0;
+        try{
+            i = Integer.parseInt(sNewItem);
+            if (i <0){
+                throw new Exception();
+            }
+        }
+        catch(Exception e){
+            Messages.showErrorMessage("137");
+            return null;
+        }
+        track.setProperty(XML_TRACK_ORDER,sNewItem);
+        //change tag in files
+        Iterator it = track.getFiles().iterator();
+        while (it.hasNext()){
+            File file = (File)it.next();
+            Tag tag = new Tag(file.getIO());
+            tag.setOrder(sNewItem);
+            tag.commit();
+        }
+        return track;
+    }
+    
+     /**
+     * Change a track name 
+     * @param old item
+     * @param new item name
+     * @return new track
+     */
+    public synchronized Track changeTrackName(Track track,String sNewItem) {
+        Track newTrack = registerTrack(sNewItem,track.getAlbum(),track.getStyle(),
+            track.getAuthor(),track.getLength(),track.getYear(),track.getType());
+        //re apply old properties from old item
+        newTrack.cloneProperties(track);
+       //change tag in files
+        Iterator it = track.getFiles().iterator();
+        while (it.hasNext()){
+            File file = (File)it.next();
+            file.setTrack(newTrack);
+            newTrack.addFile(file);
+            Tag tag = new Tag(file.getIO());
+            tag.setTrackName(newTrack.getName());
+            tag.commit();
+        }
+        remove(track.getId());//remove old reference
+        return newTrack;
+    }
     
 	/**
 	 * Register an Track with a known id

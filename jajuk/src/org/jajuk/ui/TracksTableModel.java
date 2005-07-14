@@ -49,7 +49,7 @@ public class TracksTableModel extends JajukTableModel{
 	 * @param sColName columns names
 	 */
 	public TracksTableModel(){
-	    super(8);
+	    super(9);
         
         //Columns names
         vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_NAME));
@@ -75,6 +75,9 @@ public class TracksTableModel extends JajukTableModel{
     
         vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_TRACK_ADDED));
         vId.add(XML_TRACK_ADDED);
+    
+        vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_TRACK_ORDER));
+        vId.add(XML_TRACK_ORDER);
     
         //custom properties now
         Iterator it = TrackManager.getInstance().getCustomProperties().iterator();
@@ -177,6 +180,9 @@ public class TracksTableModel extends JajukTableModel{
             catch (ParseException e1) {
                 Log.error(e1);
             }
+             //Order
+            oValues[iRow][8] = track.getOrder2();
+            bCellEditable[iRow][8] = true;
             //Custom properties now
             Iterator it2 = TrackManager.getInstance().getCustomProperties().iterator();
             for (int i=0;it2.hasNext();i++){

@@ -173,8 +173,7 @@ public class PropertiesTableModel extends AbstractTableModel
 	public String getColumnName(int columnIndex) {
 		return sColName[columnIndex];
 	}
-	
- 
+	 
     /* (non-Javadoc)
      * @see org.jajuk.base.Observer#update(org.jajuk.base.Event)
      */
@@ -186,7 +185,4 @@ public class PropertiesTableModel extends AbstractTableModel
             pa = (File)FileManager.getInstance().getItem(sNewId);
         }
     }
-    
-    
-    
 }

@@ -189,4 +189,17 @@ public class NoTagsTagImpl implements ITagImpl {
     public void commit() throws Exception{
     }
 
+    /* (non-Javadoc)
+     * @see org.jajuk.tag.ITagImpl#getOrder()
+     */
+    public String getOrder() throws Exception {
+        return "";
+    }
+
+    /* (non-Javadoc)
+     * @see org.jajuk.tag.ITagImpl#setOrder(java.lang.String)
+     */
+    public void setOrder(String sOrder) throws Exception {
+    }
+
 }
