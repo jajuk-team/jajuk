@@ -121,7 +121,7 @@ public class Author extends PropertyAdapter implements Comparable{
 	 */
 	public ArrayList getTracks() {
 		ArrayList alTracks = new ArrayList(100);
-		Iterator it = TrackManager.getTracks().iterator();
+		Iterator it = TrackManager.getInstance().getItems().iterator();
 		while ( it.hasNext()){
 			Track track = (Track)it.next();
 			if ( track != null && track.getAuthor().equals(this)){

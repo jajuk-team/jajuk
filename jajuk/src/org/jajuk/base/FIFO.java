@@ -215,7 +215,7 @@ public class FIFO implements ITechnicalStrings {
                 item = (StackItem) it.next();
                 if (item.isUserLaunch()) {
                     item.getFile().getTrack().setRate(item.getFile().getTrack().getRate() + 2); // inc rate by 2 because it is explicitely selected to be played by user
-                    FileManager.setRateHasChanged(true); // alert bestof playlist something changed
+                    FileManager.getInstance().setRateHasChanged(true); // alert bestof playlist something changed
                 }
                 // Apply contextual repeat mode but only for concecutive repeat tracks : we can't have a whole between repeated tracks and first track must be repeated
                 if (ConfigurationManager.getBoolean(CONF_STATE_REPEAT)) {
@@ -295,7 +295,7 @@ public class FIFO implements ITechnicalStrings {
                         file = ((StackItem) alPlanned.get(0)).getFile();
                         alPlanned.remove(0); // remove the planned track
                     } else { // otherwise, take next track from file manager
-                        file = FileManager.getNextFile(itemLast.getFile()); // take next available file
+                        file = FileManager.getInstance().getNextFile(itemLast.getFile()); // take next available file
                     }
                     if (file != null) {
                         pushCommand(new StackItem(file), false); // push it, it will be played
@@ -378,7 +378,7 @@ public class FIFO implements ITechnicalStrings {
             fCurrent.getTrack().incHits(); // inc hits number
             fCurrent.getTrack().incSessionHits();// inc session hits
             fCurrent.getTrack().setRate(fCurrent.getTrack().getRate() + 1); // inc rate by 1 because it is played
-            FileManager.setRateHasChanged(true);
+            FileManager.getInstance().setRateHasChanged(true);
         } catch (Throwable t) {//catch even Errors (OutOfMemory for exemple)
             Log.error("122", t); //$NON-NLS-1$
         } finally {
@@ -424,13 +424,13 @@ public class FIFO implements ITechnicalStrings {
             try {
                 // if random mode, add shuffle tracks
                 if (ConfigurationManager.getBoolean(CONF_STATE_SHUFFLE)) {
-                    item = new StackItem(FileManager.getShuffleFile(), false);
+                    item = new StackItem(FileManager.getInstance().getShuffleFile(), false);
                 } else {
                     // if fifo contains yet some tracks to play
                     if (siLast != null) {
-                        item = new StackItem(FileManager.getNextFile(siLast.getFile()), false);
+                        item = new StackItem(FileManager.getInstance().getNextFile(siLast.getFile()), false);
                     } else { // nothing in fifo, take first files in collection
-                        item = new StackItem((File) FileManager.getFiles().get(i), false);
+                        item = new StackItem((File) FileManager.getInstance().getItems().get(i), false);
                     }
                 }
             } catch (JajukException je) { // can be thrown if FileManager return a null file (like when reaching end of collection)
@@ -499,7 +499,7 @@ public class FIFO implements ITechnicalStrings {
                 if (itemFirst.isRepeat()) { // restart last repeated item in the loop
                     index = getLastRepeatedItem();
                 } else { // first is not repeated, just insert previous file from collection
-                    StackItem item = new StackItem(FileManager.getPreviousFile(((StackItem) alFIFO
+                    StackItem item = new StackItem(FileManager.getInstance().getPreviousFile(((StackItem) alFIFO
                             .get(0)).getFile()),
                             ConfigurationManager.getBoolean(CONF_STATE_REPEAT), true);
                     alFIFO.add(0, item);
@@ -553,11 +553,10 @@ public class FIFO implements ITechnicalStrings {
                     if (dir.equals(dirTested)) { // yet in the same album
                         continue;
                     } else { // OK, previous is not in the same directory than current track, now check if it is the FIRST track from this new directory
-                        if (FileManager.isVeryfirstFile(file)
+                        if (FileManager.getInstance().isVeryfirstFile(file)
                                 || // this was the very first file from collection
-                                (FileManager.getPreviousFile(file) != null && FileManager
-                                        .getPreviousFile(file).getDirectory() != file
-                                        .getDirectory())) { // if true, it was the first track from the dir
+                                (FileManager.getInstance().getPreviousFile(file) != null 
+                                && FileManager.getInstance().getPreviousFile(file).getDirectory() != file.getDirectory())) { // if true, it was the first track from the dir
                             bOK = true;
                         }
                     }
@@ -586,7 +585,7 @@ public class FIFO implements ITechnicalStrings {
             } else if (itemLast != null) { // try to launch any previous file
                 pushCommand(itemLast, false);
             } else { // really nothing? play a shuffle track from collection
-                pushCommand(new StackItem(FileManager.getShuffleFile(), ConfigurationManager
+                pushCommand(new StackItem(FileManager.getInstance().getShuffleFile(), ConfigurationManager
                     .getBoolean(CONF_STATE_REPEAT), false), false);
             }
         } catch (Exception e) {
@@ -629,7 +628,7 @@ public class FIFO implements ITechnicalStrings {
                 } else {
                     File fileNext = itemLast.getFile();
                     do {
-                        fileNext = FileManager.getNextFile(fileNext);
+                        fileNext = FileManager.getInstance().getNextFile(fileNext);
                         if (fileNext != null && !fileNext.getDirectory().equals(dir)) { // look for next different album
                             pushCommand(new StackItem(fileNext, ConfigurationManager
                                 .getBoolean(CONF_STATE_REPEAT), false), false); // play it
@@ -640,7 +639,7 @@ public class FIFO implements ITechnicalStrings {
             } else if (itemLast != null) { // try to launch any previous file
                 pushCommand(itemLast, false);
             } else { // really nothing? play a shuffle track from collection
-                pushCommand(new StackItem(FileManager.getShuffleFile(), ConfigurationManager
+                pushCommand(new StackItem(FileManager.getInstance().getShuffleFile(), ConfigurationManager
                     .getBoolean(CONF_STATE_REPEAT), false), false);
             }
         } catch (Exception e) {
@@ -901,7 +900,7 @@ public class FIFO implements ITechnicalStrings {
     private File nextTrack() {
         File file = null;
         // next file choice
-        file = FileManager.getNextFile(itemLast.getFile());
+        file = FileManager.getInstance().getNextFile(itemLast.getFile());
         return file;
     }
     

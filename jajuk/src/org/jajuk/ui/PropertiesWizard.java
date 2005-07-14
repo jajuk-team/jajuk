@@ -152,13 +152,13 @@ public class PropertiesWizard extends JFrame implements ITechnicalStrings {
 								StringTokenizer st = new StringTokenizer(sValue, ",");
 								while (st.hasMoreTokens()) {
 									String sFile = st.nextToken();
-									IPropertyable pa = ItemManager.getItemByID(XML_FILE, sFile);
+									IPropertyable pa = ItemManager.getItemManager(XML_FILE).getItem(sFile);
 									if (pa != null) {
 										new PropertiesWizard(pa); //show properties window for this item
 									}
 								}
 							} else {
-								IPropertyable pa = ItemManager.getItemByID(sProperty, sValue);
+								IPropertyable pa = ItemManager.getItemManager(sProperty).getItem(sValue);
 								if (pa != null) {
 									new PropertiesWizard(pa); //show properties window for this item
 								}
@@ -197,7 +197,7 @@ public class PropertiesWizard extends JFrame implements ITechnicalStrings {
 					if (XML_STYLE.equals(sKey)){
 					}
 					else if (XML_ALBUM.equals(sKey)){
-						Track trackNew = TrackManager.changeTrackAlbum(track,sValue);
+						Track trackNew = TrackManager.getInstance().changeTrackAlbum(track,sValue);
 						this.pa = trackNew;
 						PropertiesTableModel newModel = new PropertiesTableModel(trackNew);
 						jtable.setModel(newModel);

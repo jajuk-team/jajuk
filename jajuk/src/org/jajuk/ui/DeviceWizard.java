@@ -112,7 +112,7 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 		jp1.setLayout(new TableLayout(size1));
 		jlType = new JLabel(Messages.getString("DeviceWizard.1")); //$NON-NLS-1$
 		jcbType = new JComboBox();
-		Iterator itDevicesTypes = DeviceManager.getDeviceTypes();
+		Iterator itDevicesTypes = DeviceManager.getInstance().getDeviceTypes();
 		while (itDevicesTypes.hasNext()){
 			jcbType.addItem((String)itDevicesTypes.next());
 		}
@@ -152,7 +152,7 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 		jcboxSynchronized.addActionListener(this);
 		jcbSynchronized = new JComboBox();
 		//populate combo
-		Iterator it = DeviceManager.getDevices();
+		Iterator it = DeviceManager.getInstance().getItems().iterator();
 		while (it.hasNext()) {
 			Device device2 = (Device) it.next();
 			alDevices.add(device2);
@@ -249,7 +249,7 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 		alDevices.clear();
         //set default values for widgets
         updateWidgetsDefault();
-		Iterator it = DeviceManager.getDevices();
+		Iterator it = DeviceManager.getInstance().getItems().iterator();
 		while (it.hasNext()) {
 			Device device2 = (Device) it.next();
 			if ( !device2.equals(device)){
@@ -297,7 +297,7 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 			jcboxSynchronized.setSelected(true);
 			jcboxSynchronized.setEnabled(true);
 			jcbSynchronized.setEnabled(true);
-			jcbSynchronized.setSelectedIndex(alDevices.indexOf(DeviceManager.getDevice(sSynchroSource)));
+			jcbSynchronized.setSelectedIndex(alDevices.indexOf((Device)DeviceManager.getInstance().getItem(sSynchroSource)));
 			if (DEVICE_OPTION_SYNCHRO_MODE_BI.equals(device.getValue(DEVICE_OPTION_SYNCHRO_MODE))){
 				jrbBidirSynchro.setSelected(true);
 			}
@@ -346,13 +346,13 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 			}
 			if (bNew){
 				//check device availibility 
-				String sCode = DeviceManager.checkDeviceAvailablity(jtfName.getText(),jcbType.getSelectedIndex(),jtfUrl.getText(),jtfMountPoint.getText());
+				String sCode = DeviceManager.getInstance().checkDeviceAvailablity(jtfName.getText(),jcbType.getSelectedIndex(),jtfUrl.getText(),jtfMountPoint.getText());
 				if (!sCode.equals("0")){ //$NON-NLS-1$
 				    Messages.showErrorMessage(sCode);
 				    this.setVisible(true); //display wizzard window which has been hiden by the error window
 				    return;
 				}
-				device = DeviceManager.registerDevice(jtfName.getText(),jcbType.getSelectedIndex(),jtfUrl.getText(),jtfMountPoint.getText());
+				device = DeviceManager.getInstance().registerDevice(jtfName.getText(),jcbType.getSelectedIndex(),jtfUrl.getText(),jtfMountPoint.getText());
 			}
 			device.setProperty(DEVICE_OPTION_AUTO_MOUNT,Boolean.toString(jcbAutoMount.isSelected()));
 			device.setProperty(DEVICE_OPTION_AUTO_REFRESH,Boolean.toString(jcbAutoRefresh.isSelected()));

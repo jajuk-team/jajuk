@@ -204,14 +204,14 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 		}
 		else if ( iType == PlaylistFileItem.PLAYLIST_TYPE_BESTOF){ //bestof playlist
 			alFiles = new ArrayList(10);
-			Iterator it = FileManager.getBestOfFiles(ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED)).iterator(); //even unmounted files if required
+			Iterator it = FileManager.getInstance().getBestOfFiles(ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED)).iterator(); //even unmounted files if required
 			while ( it.hasNext()){
 			    alFiles.add((org.jajuk.base.File)it.next());
 			}
 		}
         else if ( iType == PlaylistFileItem.PLAYLIST_TYPE_NOVELTIES){ //novelties playlist
             alFiles = new ArrayList(10);
-            ArrayList alNovelties = FileManager.getGlobalNoveltiesPlaylist(ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED));//even unmounted files if required 
+            ArrayList alNovelties = FileManager.getInstance().getGlobalNoveltiesPlaylist(ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED));//even unmounted files if required 
             if (alNovelties == null){
                 return alFiles;
             }
@@ -515,7 +515,7 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 							continue;
 						}	
 					}
-				    File file = FileManager.getFileByPath(fileTrack.getAbsolutePath());
+				    File file = FileManager.getInstance().getFileByPath(fileTrack.getAbsolutePath());
 					if (file != null){ //null if file is not known by the collection
                         alFiles.add(file);    
                     }
@@ -559,7 +559,7 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
                         Messages.showErrorMessage("131"); //$NON-NLS-1$
                         return;
                     }
-					PlaylistFileManager.delete(getId());
+					PlaylistFileManager.getInstance().remove(getId());
 					ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH));  //requires device refresh
 				}
 			}
@@ -668,7 +668,7 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 	 */
 	public void saveAs(){
 		ArrayList alTypes = new ArrayList(1);
-		alTypes.add(TypeManager.getTypeByExtension(EXT_PLAYLIST));
+		alTypes.add(TypeManager.getInstance().getTypeByExtension(EXT_PLAYLIST));
 		JajukFileChooser jfchooser = new JajukFileChooser(new JajukFileFilter(true,alTypes));
         jfchooser.setSelectedFile(new java.io.File(DEFAULT_PLAYLIST_FILE+"."+EXT_PLAYLIST));//$NON-NLS-1$
 		int returnVal = jfchooser.showSaveDialog(Main.getWindow());
@@ -746,7 +746,7 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
      */
     public String getHumanValue(String sKey){
         if (XML_DIRECTORY.equals(sKey)){
-            Directory dParent = DirectoryManager.getDirectory(getValue(sKey)); 
+            Directory dParent = (Directory)DirectoryManager.getInstance().getItem(getValue(sKey)); 
             return dParent.getFio().getAbsolutePath();
         }
         else{//default

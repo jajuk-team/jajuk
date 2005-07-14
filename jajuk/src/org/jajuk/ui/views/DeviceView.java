@@ -252,7 +252,7 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
             }
         });
         //Add devices
-        Iterator it = DeviceManager.getDevices();
+        Iterator it = DeviceManager.getInstance().getItems().iterator();
         while (it.hasNext()){
             final Device device = (Device)it.next();
             String sIcon = ICON_DEVICE_DIRECTORY_MOUNTED;
@@ -393,7 +393,7 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
                 return;
             }
             if (ae.getActionCommand().equals(EVENT_DEVICE_DELETE)){
-                DeviceManager.removeDevice(diSelected.getDevice());
+                DeviceManager.getInstance().removeDevice(diSelected.getDevice());
                 jpDevices.remove(diSelected);
                 ViewManager.notify(EVENT_VIEW_REFRESH_REQUEST,DeviceView.this);
             }

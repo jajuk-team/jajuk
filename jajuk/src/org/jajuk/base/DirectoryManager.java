@@ -21,9 +21,7 @@
 package org.jajuk.base;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.Properties;
 
 import org.jajuk.util.MD5Processor;
@@ -34,10 +32,8 @@ import org.jajuk.util.MD5Processor;
  * @created 17 oct. 2003
  */
 public class DirectoryManager extends ItemManager implements Observer{
-	/** Id->Directories, note  that we have to conserve creation order when parsing at startup*/
-	static LinkedHashMap hsIdDirectories = new LinkedHashMap(1000);
     /**Self instance*/
-    static DirectoryManager singleton;
+    private static DirectoryManager singleton;
 
 	/**
 	 * No constructor available, only static access
@@ -51,20 +47,19 @@ public class DirectoryManager extends ItemManager implements Observer{
 	/**
      * @return singleton
      */
-    public static ItemManager getInstance(){
+    public static DirectoryManager getInstance(){
       if (singleton == null){
           singleton = new DirectoryManager();
       }
         return singleton;
     }
   
-
 	/**
 	 * Register a directory
 	 * 
 	 * @param sName
 	 */
-	public static synchronized Directory registerDirectory(String sName, Directory dParent, Device device) {
+	public synchronized Directory registerDirectory(String sName, Directory dParent, Device device) {
 		StringBuffer sbAbs = new StringBuffer(device.getUrl());
 		if (dParent != null) {
 			sbAbs.append(dParent.getRelativePath());
@@ -79,7 +74,7 @@ public class DirectoryManager extends ItemManager implements Observer{
 	 * 
 	 * @param device
 	 */
-	public static synchronized Directory registerDirectory(Device device) {
+	public synchronized Directory registerDirectory(Device device) {
 		String sId = device.getId();
 		return registerDirectory(sId, "", null, device); //$NON-NLS-1$
 	}
@@ -89,16 +84,13 @@ public class DirectoryManager extends ItemManager implements Observer{
 	 * 
 	 * @param sName
 	 */
-	public static synchronized Directory registerDirectory(String sId, String sName, Directory dParent, Device device) {
-		if (hsIdDirectories.containsKey(sId)) {
-			return (Directory)hsIdDirectories.get(sId);
+	public synchronized Directory registerDirectory(String sId, String sName, Directory dParent, Device device) {
+		if (hmItems.containsKey(sId)) {
+			return (Directory)hmItems.get(sId);
 		}
 		Directory directory = new Directory(sId, sName, dParent, device);
-		hsIdDirectories.put(sId,directory);
-        //try to recover some properties previous a refresh
-		getInstance().restorePropertiesAfterRefresh(directory,sId);
-		//apply default custom properties
-		getInstance().applyNewProperties();
+		hmItems.put(sId,directory);
+        postRegistering(directory);
 		return directory;
 	}
 
@@ -108,10 +100,10 @@ public class DirectoryManager extends ItemManager implements Observer{
 	 * @param sId :
 	 *                   Device id
 	 */
-	public static synchronized  void cleanDevice(String sId) {
-		Iterator it = hsIdDirectories.keySet().iterator();
+	public synchronized  void cleanDevice(String sId) {
+		Iterator it = hmItems.keySet().iterator();
 		while(it.hasNext()){
-			Directory directory = getDirectory((String)it.next());
+			Directory directory = (Directory)getItem((String)it.next());
 			if (directory.getDevice().getId().equals(sId)) {
 				it.remove();
 			}
@@ -123,8 +115,8 @@ public class DirectoryManager extends ItemManager implements Observer{
 	 * 
 	 * @param sId
 	 */
-	public static synchronized void removeDirectory(String sId) {
-		Directory dToBeRemoved = getDirectory(sId);
+	public synchronized void removeDirectory(String sId) {
+		Directory dToBeRemoved = (Directory)getItem(sId);
 		ArrayList alDirsToBeRemoved = dToBeRemoved.getDirectories(); //list of sub directories to remove
 		Iterator it = alDirsToBeRemoved.iterator();
 		while (it.hasNext()) {
@@ -135,25 +127,9 @@ public class DirectoryManager extends ItemManager implements Observer{
 		if (dParent != null) {
 			dParent.removeDirectory(dToBeRemoved);
 		}
-		hsIdDirectories.remove(sId);
+		hmItems.remove(sId);
      }
-
-	/** Return all registred directories */
-	public static synchronized Collection getDirectories() {
-		return hsIdDirectories.values();
-	}
-
-	/**
-	 * Return directory by id
-	 * 
-	 * @param sName
-	 * @return
-	 */
-	public static synchronized Directory getDirectory(String sId) {
-		return (Directory) hsIdDirectories.get(sId);
-	}
-	
-	    
+		    
  /* (non-Javadoc)
      * @see org.jajuk.base.ItemManager#getIdentifier()
      */

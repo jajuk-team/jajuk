@@ -94,7 +94,7 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
             return ;
         }
         //check the ID maps an existing file
-        if (FileManager.getFileById(sFileId) == null){
+        if (FileManager.getInstance().getItem(sFileId) == null){
             return;
         }
         //OK, begin to add the new history item
@@ -296,7 +296,7 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
         else if (sQName.equals("play")){ //$NON-NLS-1$
             String sID = attributes.getValue(attributes.getIndex("file")); //$NON-NLS-1$
             //test if this fiel is still kwown int the collection
-            if (FileManager.getFileById(sID) != null){
+            if (FileManager.getInstance().getItem(sID) != null){
                 HistoryItem hi = new HistoryItem(sID,Long.parseLong(attributes.getValue(attributes.getIndex("date")))); //$NON-NLS-1$ //$NON-NLS-2$
                 vHistory.add(hi);
             }

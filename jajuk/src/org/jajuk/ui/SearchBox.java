@@ -143,7 +143,7 @@ public class SearchBox extends JTextField implements KeyListener{
 		bNeedSearch = false;
 		setEnabled(false); //no typing during search
 		if ( sTyped.length() >= MIN_CRITERIA_LENGTH){  //second test to get sure user didn't typed before entering this method
-			TreeSet tsResu = FileManager.search(sTyped.toString());
+			TreeSet tsResu = FileManager.getInstance().search(sTyped.toString());
 			if (tsResu.size() > 0){
 				DefaultListModel model = new DefaultListModel();
 				alResults = new ArrayList();

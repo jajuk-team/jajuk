@@ -281,17 +281,17 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
 				}
 			}
 			else if (e.getSource() == jmiShuffle){
-				ArrayList alToPlay = FileManager.getGlobalShufflePlaylist();
+				ArrayList alToPlay = FileManager.getInstance().getGlobalShufflePlaylist();
 				FIFO.getInstance().push(Util.createStackItems(alToPlay,
 						ConfigurationManager.getBoolean(CONF_STATE_REPEAT),false),false);
 			}
 			else if (e.getSource() == jmiBestof){
-				ArrayList alToPlay = FileManager.getGlobalBestofPlaylist();
+				ArrayList alToPlay = FileManager.getInstance().getGlobalBestofPlaylist();
 				FIFO.getInstance().push(Util.createStackItems(alToPlay,
 						ConfigurationManager.getBoolean(CONF_STATE_REPEAT),false),false);
 			}
 			else if (e.getSource() == jmiNovelties){
-				ArrayList alToPlay = FileManager.getGlobalNoveltiesPlaylist();
+				ArrayList alToPlay = FileManager.getInstance().getGlobalNoveltiesPlaylist();
                 Collections.shuffle(alToPlay);//shuffle the selection
 				FIFO.getInstance().push(Util.createStackItems(alToPlay,
 						ConfigurationManager.getBoolean(CONF_STATE_REPEAT),false),false);
@@ -374,7 +374,7 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
 			}	
 		}
 		else if (EVENT_FILE_LAUNCHED.equals(subject)){
-		    File file  = FileManager.getFileById((String)ObservationManager.getDetail(event,DETAIL_CURRENT_FILE_ID));
+		    File file  = (File)FileManager.getInstance().getItem((String)ObservationManager.getDetail(event,DETAIL_CURRENT_FILE_ID));
 		    String sOut = ""; //$NON-NLS-1$
 		    if (file != null ){
 		        String sAuthor = file.getTrack().getAuthor().getName();

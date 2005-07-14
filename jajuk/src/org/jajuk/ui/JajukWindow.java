@@ -101,7 +101,7 @@ public class JajukWindow extends JFrame implements ITechnicalStrings,Observer {
           public void windowClosing(WindowEvent we) {
                              
               //  check if a device is refreshing
-				if (DeviceManager.isAnyDeviceRefreshing()){
+				if (DeviceManager.getInstance().isAnyDeviceRefreshing()){
 					int iResu = Messages.getChoice(Messages.getString("Confirmation_exit_refreshing"),JOptionPane.WARNING_MESSAGE);  //$NON-NLS-1$ //$NON-NLS-2$
 					if (iResu != JOptionPane.YES_OPTION){
 						return;

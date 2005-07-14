@@ -33,21 +33,22 @@ import org.jajuk.util.log.Log;
  * @created    12 oct. 2003
  */
 public class TypeManager extends ItemManager{
-
-	static HashMap hmSupportedTypes = new HashMap(5);
+    /**extenssions->types*/
+	private HashMap hmSupportedTypes = new HashMap(10);
     /**Self instance*/
-    static TypeManager singleton;
+    private static TypeManager singleton;
 
 	/**
 	 * No constructor available, only static access
 	 */
 	private TypeManager() {
+        super();
 	}
 
     /**
      * @return singleton
      */
-    public static ItemManager getInstance(){
+    public static TypeManager getInstance(){
       if (singleton == null){
           singleton = new TypeManager();
       }
@@ -58,24 +59,24 @@ public class TypeManager extends ItemManager{
 	 * Register a type jajuk can read
 	 * @param type
 	 */
-	public static synchronized Type registerType(String sName,String sExtension, String sPlayerImpl,String sTagImpl) {
+	public synchronized Type registerType(String sName,String sExtension, String sPlayerImpl,String sTagImpl) {
 		String sId = Integer.toString(hmSupportedTypes.size());
 		return registerType(sId,sName,sExtension,sPlayerImpl,sTagImpl);
 	}
-	
-	
+		
 	/**
 	 * Register a type jajuk can read with a known id
 	 * @param type
 	 */
-	public static synchronized Type registerType(String sId,String sName,String sExtension, String sPlayerImpl,String sTagImpl) {
+	public synchronized Type registerType(String sId,String sName,String sExtension, String sPlayerImpl,String sTagImpl) {
 		if ( hmSupportedTypes.containsKey(sExtension)){ //if the type is already in memory, use it
 			return (Type)hmSupportedTypes.get(sExtension);
 		}	
 		Type type = null;
 		try{
 			type = new Type(sId,sName,sExtension,sPlayerImpl,sTagImpl);
-			hmSupportedTypes.put(type.getExtension(), type);
+			hmItems.put(sId, type);
+            hmSupportedTypes.put(type.getExtension(), type);
 		}
 		catch(Exception e){
 			Log.error("109","sPlayerImpl="+sPlayerImpl+" sTagImpl="+sTagImpl,e ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -83,39 +84,21 @@ public class TypeManager extends ItemManager{
 		return type;
 	}
 
-
-	/**
+    /**
 	 * Tells if the type is supported
 	 * @param type
 	 * @return
 	 */
-	public static synchronized boolean isExtensionSupported(String sExt) {
+	public synchronized boolean isExtensionSupported(String sExt) {
 		return hmSupportedTypes.containsKey(sExt);
 	}
-
-	/**Return all registred types*/
-	public static synchronized ArrayList getTypes() {
-		return new ArrayList(hmSupportedTypes.values());
-	}
 	
-	/**Return a registred type by its id*/
-		public static synchronized Type getType(String sId) {
-			Iterator it = hmSupportedTypes.values().iterator();
-			while (it.hasNext()){
-				Type type = (Type)it.next();
-				if (type.getId().equals(sId)){
-					return type;
-				}
-			}
-			return null;
-		}
-
 	/**
 	 * Return type for a given extension
 	 * @param sExtension
 	 * @return
 	 */
-	public static synchronized Type getTypeByExtension(String sExtension) {
+	public synchronized Type getTypeByExtension(String sExtension) {
 		return (Type) hmSupportedTypes.get(sExtension);
 	}
 	
@@ -124,7 +107,7 @@ public class TypeManager extends ItemManager{
 	 * @param sTechDesc
 	 * @return associated type or null if none found
 	 */
-	public static synchronized Type getTypeByTechDesc(String sTechDesc) {
+	public synchronized Type getTypeByTechDesc(String sTechDesc) {
 		Iterator it = hmSupportedTypes.values().iterator();
 		while (it.hasNext()){
 			Type type = (Type)it.next();
@@ -139,7 +122,7 @@ public class TypeManager extends ItemManager{
 	 * Return all music types
 	 * @return
 	 */
-	public static synchronized ArrayList getAllMusicTypes() {
+	public synchronized ArrayList getAllMusicTypes() {
 		ArrayList alResu = new ArrayList(5);	
 		Iterator it = hmSupportedTypes.values().iterator();
 		while (it.hasNext()){
@@ -155,7 +138,7 @@ public class TypeManager extends ItemManager{
 	 * Return a list "a,b,c" of registered extensions, used by FileChooser
 	 * @return
 	 */
-	public static synchronized String getTypeListString() {
+	public synchronized String getTypeListString() {
 		StringBuffer sb = new StringBuffer();
 		Iterator it = hmSupportedTypes.keySet().iterator();
 		while (it.hasNext()) {

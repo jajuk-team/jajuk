@@ -159,7 +159,7 @@ public class LogicalTableView extends AbstractTableView implements Observer{
 	public void mousePressed(MouseEvent e) {
 		if ( e.getClickCount() == 2){ //double clic, can be only one track
             int iSelectedRow = jtable.getSelectedRow(); //selected row in view
-            Track track = TrackManager.getTrack(jtable.getModelValueAt(iSelectedRow,0).toString());
+            Track track = (Track)TrackManager.getInstance().getItem(jtable.getModelValueAt(iSelectedRow,0).toString());
 			File file = track.getPlayeableFile();
 			if ( file != null){
 				try{
@@ -214,7 +214,7 @@ public class LogicalTableView extends AbstractTableView implements Observer{
 				ArrayList alFilesToPlay = new ArrayList(10);
 				int[] indexes = jtable.getSelectedRows();
 				for (int i=0;i<indexes.length;i++){ //each track in selection
-                    Track track = TrackManager.getTrack(jtable.getModelValueAt(indexes[i],0).toString());
+                    Track track = (Track)TrackManager.getInstance().getItem(jtable.getModelValueAt(indexes[i],0).toString());
 					ArrayList alTracks = new ArrayList(indexes.length);
 					if (e.getSource() == jmiTrackPlayAlbum){
 					    Album album = track.getAlbum();

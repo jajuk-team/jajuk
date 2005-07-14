@@ -530,7 +530,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
                 if ( plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_NORMAL){
                     if ( this instanceof LogicalPlaylistEditorView){ //if logical editor, warning message
                         StringBuffer sbOut = new StringBuffer(Messages.getString("AbstractPlaylistEditorView.17")); //$NON-NLS-1$
-                        Playlist pl = PlaylistManager.getPlaylist(plfi.getPlaylistFile().getHashcode());
+                        Playlist pl = (Playlist)PlaylistManager.getInstance().getItem(plfi.getPlaylistFile().getHashcode());
                         if ( pl != null){
                             ArrayList alPlaylistFiles = pl.getPlaylistFiles(); 
                             Iterator it = alPlaylistFiles.iterator();
@@ -608,7 +608,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
                 if ( iRow < 0 ){ //no row is selected, take fifo last position as a default
                     iRow = FIFO.getInstance().getFIFO().size(); 
                 }
-                File file = FileManager.getShuffleFile(); 
+                File file = FileManager.getInstance().getShuffleFile(); 
                 try{
                     plfi.getPlaylistFile().addFile(iRow,file);
                     iRowNum ++;	

@@ -111,7 +111,7 @@ public class StatView extends ViewAdapter implements Observer{
 			JFreeChart jfchart = null;
 			//data
 			pdata = new DefaultPieDataset();
-			Iterator it = StyleManager.getStyles().iterator();
+			Iterator it = StyleManager.getInstance().getItems().iterator();
 			int iTotal = 0;
 			double dOthers = 0;
 			TreeMap tm = new TreeMap();
@@ -165,18 +165,18 @@ public class StatView extends ViewAdapter implements Observer{
 			JFreeChart jfchart = null;
 			//data
 			pdata = new DefaultPieDataset();
-			Iterator itFiles = FileManager.getFiles().iterator();
+			Iterator itFiles = FileManager.getInstance().getItems().iterator();
 			//prepare devices
 			long lTotalSize = 0;
 			double dOthers = 0;
-            ArrayList alDevices = DeviceManager.getDevicesList();
-			long[] lSizes = new long[DeviceManager.getDevicesNumber()];
+            ArrayList alDevices = new ArrayList(DeviceManager.getInstance().getItems());
+			long[] lSizes = new long[DeviceManager.getInstance().getDevicesNumber()];
 			while (itFiles.hasNext()){
 				File file = (File)itFiles.next();
 				lTotalSize += file.getSize();
 				lSizes[alDevices.indexOf(file.getDirectory().getDevice())] += file.getSize();
 			}
-			Iterator itDevices = DeviceManager.getDevices();
+			Iterator itDevices = DeviceManager.getInstance().getItems().iterator();
 			while (itDevices.hasNext()){
 				Device device = (Device)itDevices.next();
 				long lSize = lSizes[alDevices.indexOf(device)];
@@ -221,7 +221,7 @@ public class StatView extends ViewAdapter implements Observer{
 			long lSizeByMounth[] = new long[iMounthsNumber+1]; //contains size ( in Go ) for each mounth, first cell is before
 			//data
 			int[] iMounts = getMounts(iMounthsNumber);
-			Iterator it = TrackManager.getTracks().iterator();
+			Iterator it = TrackManager.getInstance().getItems().iterator();
 			while ( it.hasNext()){
 				Track track = (Track)it.next();
 				int i = Integer.parseInt(track.getAdditionDate())/100;
@@ -282,7 +282,7 @@ public class StatView extends ViewAdapter implements Observer{
 			int iTracksByMounth[] = new int[iMounthsNumber+1]; //contains number of tracks for each mounth, first cell is 'before'
 			//data
 			int[] iMounts = getMounts(iMounthsNumber);
-			Iterator it = TrackManager.getTracks().iterator();
+			Iterator it = TrackManager.getInstance().getItems().iterator();
 			while ( it.hasNext()){
 				Track track = (Track)it.next();
 				int i = Integer.parseInt(track.getAdditionDate())/100;

@@ -20,11 +20,7 @@
 
 package org.jajuk.base;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.Properties;
 
 import org.jajuk.util.log.Log;
@@ -35,12 +31,8 @@ import org.jajuk.util.log.Log;
  * @created 17 oct. 2003
  */
 public class PlaylistFileManager extends ItemManager implements Observer{
-	/** PlaylistFiles collection* */
-	static HashMap hmPlaylistFiles = new HashMap(100);
-	/** Map ids and properties, survives to a refresh, is used to recover old properties after refresh */
-	static HashMap hmIdProperties = new HashMap(100);
-    /**Self instance*/
-    static PlaylistFileManager singleton;
+	/**Self instance*/
+    private static PlaylistFileManager singleton;
 	
 	/**
 	 * No constructor available, only static access
@@ -52,7 +44,7 @@ public class PlaylistFileManager extends ItemManager implements Observer{
     /**
      * @return singleton
      */
-    public static ItemManager getInstance(){
+    public static PlaylistFileManager getInstance(){
       if (singleton == null){
           singleton = new PlaylistFileManager();
       }
@@ -65,22 +57,16 @@ public class PlaylistFileManager extends ItemManager implements Observer{
 	 * 
 	 * @param sName
 	 */
-	public static synchronized PlaylistFile registerPlaylistFile(String sId, String sName, String sHashcode, Directory dParentDirectory) {
-		if ( !hmPlaylistFiles.containsKey(sId)){
+	public synchronized PlaylistFile registerPlaylistFile(String sId, String sName, String sHashcode, Directory dParentDirectory) {
+		if ( !hmItems.containsKey(sId)){
 			PlaylistFile playlistFile = new PlaylistFile(sId, sName, sHashcode, dParentDirectory);
-			hmPlaylistFiles.put(sId, playlistFile);
+			hmItems.put(sId, playlistFile);
 			if ( dParentDirectory.getDevice().isRefreshing()){
 				Log.debug("Registered new playlist file: "+ playlistFile); //$NON-NLS-1$
 			}
-            LinkedHashMap properties = (LinkedHashMap)hmIdProperties.get(sId); 
-			if ( properties  == null){  //new file
-				hmIdProperties.put(sId,playlistFile.getProperties());
-			}
-			else{
-				playlistFile.setProperties(properties);
-			}
+            postRegistering(playlistFile);
 		}
-		return (PlaylistFile)hmPlaylistFiles.get(sId);
+		return (PlaylistFile)hmItems.get(sId);
 	}
 
 	/**
@@ -89,8 +75,8 @@ public class PlaylistFileManager extends ItemManager implements Observer{
 	 * @param sId :
 	 *                   Device id
 	 */
-	public static synchronized  void cleanDevice(String sId) {
-		Iterator it = hmPlaylistFiles.values().iterator();
+	public synchronized  void cleanDevice(String sId) {
+		Iterator it = hmItems.values().iterator();
 		while (it.hasNext()) {
 			PlaylistFile plf = (PlaylistFile) it.next();
 			if ( plf.getDirectory()== null 
@@ -99,41 +85,7 @@ public class PlaylistFileManager extends ItemManager implements Observer{
 			}
 		}
 	}
-
-	/** Return all registred PlaylistFiles */
-	public static synchronized ArrayList getPlaylistFiles() {
-		ArrayList alOut = new ArrayList(hmPlaylistFiles.values());
-        Collections.sort(alOut);
-        return alOut;
-	}
-
-	/**
-	 * Return PlaylistFile by id
-	 * 
-	 * @param sId
-	 * @return
-	 */
-	public static synchronized PlaylistFile getPlaylistFile(String sId) {
-		return (PlaylistFile) hmPlaylistFiles.get(sId);
-	}
-	
-	/**
-	 * Delete a playlist file from collection
-	 * @param sId
-	 */
-	public static synchronized void delete(String sId){
-		hmPlaylistFiles.remove(sId);
-	}
-	
-	/**
-	 * Return properties assiated to an id
-	 * @param sId the id
-	 * @return
-	 */
-	public static synchronized Properties getProperties(String sId){
-		return (Properties)hmIdProperties.get(sId);
-	}
-
+ 
  /* (non-Javadoc)
      * @see org.jajuk.base.ItemManager#getIdentifier()
      */
@@ -151,7 +103,7 @@ public class PlaylistFileManager extends ItemManager implements Observer{
             File fNew = (File)properties.get(DETAIL_NEW);
             File fileOld = (File)properties.get(DETAIL_OLD);
             //search references in playlists
-            Iterator it = getPlaylistFiles().iterator();
+            Iterator it = getItems().iterator();
             for (int i=0; it.hasNext(); i++){
                 PlaylistFile plf = (PlaylistFile)it.next();
                 if (plf.isReady()){ //check only in mounted playlists, note that we can't change unmounted playlists

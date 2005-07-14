@@ -20,11 +20,6 @@
 
 package org.jajuk.base;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-
 import org.jajuk.util.MD5Processor;
 
 /**
@@ -33,10 +28,8 @@ import org.jajuk.util.MD5Processor;
  * @created 17 oct. 2003
  */
 public class StyleManager extends ItemManager {
-	/** Styles collection* */
-	static HashMap hmStyles = new HashMap(10);
     /**Self instance*/
-    static StyleManager singleton;
+    private static StyleManager singleton;
 
 	/**
 	 * No constructor available, only static access
@@ -48,7 +41,7 @@ public class StyleManager extends ItemManager {
     /**
      * @return singleton
      */
-    public static ItemManager getInstance(){
+    public static StyleManager getInstance(){
       if (singleton == null){
           singleton = new StyleManager();
       }
@@ -60,7 +53,7 @@ public class StyleManager extends ItemManager {
 	 * 
 	 * @param sName
 	 */
-	public static synchronized Style registerStyle(String sName) {
+	public  synchronized Style registerStyle(String sName) {
 		String sId = MD5Processor.hash(sName.trim().toLowerCase());
 		return registerStyle(sId, sName);
 	}
@@ -70,52 +63,16 @@ public class StyleManager extends ItemManager {
 	 * 
 	 * @param sName
 	 */
-	public static synchronized Style registerStyle(String sId, String sName) {
-		String sIdTest = MD5Processor.hash(sName.trim().toLowerCase());
-		 //Hash checkup
-        if (!sId.equals(sIdTest)){ //collection corruption, ignore this entry
-                return null;
-        }
-		if (hmStyles.containsKey(sIdTest)) {
-			return (Style) hmStyles.get(sIdTest);
+	public  synchronized Style registerStyle(String sId, String sName) {
+		if (hmItems.containsKey(sId)) {
+			return (Style) hmItems.get(sId);
 		}
 		Style style = new Style(sId, sName);
-		hmStyles.put(sId, style);
+		hmItems.put(sId, style);
+        postRegistering(style);
 		return style;
 	}
-
-	/**
-	 * Remove a style
-	 * 
-	 * @param style
-	 *                   id
-	 */
-	public static synchronized void remove(String sId) {
-		hmStyles.remove(sId);
-	}
-	
-	
-	/**
-	 * Perform a style cleanup : delete useless items
-	 *
-	 */
-	public static synchronized void cleanup(){
-		HashSet hs = new HashSet(100);
-		Iterator itTracks = TrackManager.getTracks().iterator();
-		while (itTracks.hasNext()) {
-			Track track = (Track) itTracks.next();
-			Style style = track.getStyle();
-			hs.add(style);
-		}
-		Iterator itStyles = hmStyles.values().iterator();
-		while (itStyles.hasNext()) {
-			Style style = (Style) itStyles.next();
-			if ( !hs.contains(style)){
-				itStyles.remove();
-			}
-		}
-	}
-
+		
 	/**
 	 * Format the Style name to be normalized :
 	 * <p>
@@ -137,21 +94,6 @@ public class StyleManager extends ItemManager {
 		sOut.replace('_', ' '); //move _ to space
 		sOut = sOut.toUpperCase();
 		return sOut;
-	}
-
-	/** Return all registred styles */
-	public static synchronized ArrayList getStyles() {
-		return new ArrayList(hmStyles.values());
-	}
-
-	/**
-	 * Return style by id
-	 * 
-	 * @param sId
-	 * @return
-	 */
-	public static synchronized Style getStyle(String sId) {
-		return (Style) hmStyles.get(sId);
 	}
 	
  /* (non-Javadoc)

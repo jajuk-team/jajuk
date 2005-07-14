@@ -113,7 +113,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	 * toString method
 	 */
 	public String toString() {
-		return "Device[ID=" + sId + " Name=" + sName + " Type=" + DeviceManager.getDeviceType(iDeviceType) + " URL=" + sUrl+ " Mount point="+sMountPoint + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$ //$NON-NLS-6$
+		return "Device[ID=" + sId + " Name=" + sName + " Type=" + DeviceManager.getInstance().getDeviceType(iDeviceType) + " URL=" + sUrl+ " Mount point="+sMountPoint + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$ //$NON-NLS-6$
 	}
 		
 	/**
@@ -194,11 +194,11 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	             Note  that logical item ( tracks, styles...) are device independant and cannot be cleared.
 	             They will be clean up at next jajuk restart and old track data is used to populate device without full tag scan
 	             */ 
-	            iNbFilesBeforeRefresh = FileManager.getFiles().size();
+	            iNbFilesBeforeRefresh = FileManager.getInstance().getItems().size();
 	            iNbNewFiles = 0;
-	            FileManager.cleanDevice(device.getId());
-	            PlaylistFileManager.cleanDevice(device.getId());
-	            DirectoryManager.cleanDevice(device.getId());
+	            FileManager.getInstance().cleanDevice(device.getId());
+	            PlaylistFileManager.getInstance().cleanDevice(device.getId());
+	            DirectoryManager.getInstance().cleanDevice(device.getId());
                 /*Note : even after this cleanup, files are yet in memory when mapped by tracks and files have references to directories, it is usefull to keep properties like
                  * desyncrhonization and to optimize scaning */ 
 	            long lTime = System.currentTimeMillis();
@@ -221,7 +221,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	            
 	            //Create a directory for device itself and scan files to allow files at the root of the device
 	            if (!device.getDeviceTypeS().equals(DEVICE_TYPE_REMOTE) || !device.getDeviceTypeS().equals(DEVICE_TYPE_AUDIO_CD)){
-	                Directory d = DirectoryManager.registerDirectory(device);
+	                Directory d = DirectoryManager.getInstance().registerDirectory(device);
 	                dParent = d;
 	                d.scan();
 	            }
@@ -238,7 +238,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	                    if (indexTab[iDeep] < files.length-1 ){  //enter sub-directory
 	                        indexTab[iDeep]++; //inc index for next time we will reach this deep
 	                        fCurrent = files[indexTab[iDeep]];
-	                        dParent = DirectoryManager.registerDirectory(fCurrent.getName(),dParent,device);
+	                        dParent = DirectoryManager.getInstance().registerDirectory(fCurrent.getName(),dParent,device);
 	                        InformationJPanel.getInstance().setMessage(new StringBuffer(Messages.getString("Device.21")).append(device.getName()).append(Messages.getString("Device.22")).append(dParent.getRelativePath()).append("]").toString(),InformationJPanel.INFORMATIVE); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	                        dParent.scan();
 	                        iDeep++;
@@ -256,7 +256,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	            //clear history to remove olf files referenced in it
 	            History.getInstance().clear(Integer.parseInt(ConfigurationManager.getProperty(CONF_HISTORY))); //delete old history items
 	            //Sort collection
-	    		FileManager.sortFiles();//resort collection in case of
+	    		FileManager.getInstance().sortFiles();//resort collection in case of
                 //notify views to refresh
 	            ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH));
                 //commit collection at each refresh (can e useful if application is closed brutally with control-C or shutdown and that exit hook have no time to perform commit)
@@ -264,7 +264,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
                 //Display end of refresh message with stats
                 String sOut = new StringBuffer("[").append(device.getName()).append(Messages.getString("Device.25")).append((int)((System.currentTimeMillis()-lTime)/1000)). //$NON-NLS-1$ //$NON-NLS-2$
                 append(Messages.getString("Device.26")).append(iNbNewFiles).append(Messages.getString("Device.27")). //$NON-NLS-1$ //$NON-NLS-2$
-                append(iNbFilesBeforeRefresh - (FileManager.getFiles().size()-iNbNewFiles)).append(Messages.getString("Device.28")).toString(); //$NON-NLS-1$
+                append(iNbFilesBeforeRefresh - (FileManager.getInstance().getItems().size()-iNbNewFiles)).append(Messages.getString("Device.28")).toString(); //$NON-NLS-1$
                 InformationJPanel.getInstance().setMessage(sOut,InformationJPanel.INFORMATIVE); //$NON-NLS-1$
                 Log.debug(sOut); 
             }
@@ -277,11 +277,11 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	    }
 	    finally{  //make sure to unlock refreshing even if an error occured
             //cleanup logical items
-            TrackManager.cleanup();
-             StyleManager.cleanup();
-             AlbumManager.cleanup();
-             AuthorManager.cleanup();
-             PlaylistManager.cleanup();
+            TrackManager.getInstance().cleanup();
+             StyleManager.getInstance().cleanup();
+             AlbumManager.getInstance().cleanup();
+             AuthorManager.getInstance().cleanup();
+             PlaylistManager.getInstance().cleanup();
             bAlreadyRefreshing = false;
 	    }
 	}
@@ -336,7 +336,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	        }
 	        //force a refresh of this device and src device before any sync
 	        refresh(false);
-	        Device dSrc = DeviceManager.getDevice(sIdSrc);
+	        Device dSrc = (Device)DeviceManager.getInstance().getItem(sIdSrc);
 	        dSrc.refresh(false);
 	        //start message
 	        InformationJPanel.getInstance().setMessage(new StringBuffer(Messages.getString("Device.31")). //$NON-NLS-1$
@@ -383,7 +383,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 		//copy new directories from source device
 		HashSet hsSourceDirs = new HashSet(100);
 		HashSet hsDesynchroPaths = new HashSet(10); //contains paths ( relative to device) of desynchronized dirs
-		Iterator it = DirectoryManager.getDirectories().iterator();
+		Iterator it = DirectoryManager.getInstance().getItems().iterator();
 		while ( it.hasNext()){
 			Directory dir = (Directory)it.next();
 			if ( dir.getDevice().equals(dSrc)){
@@ -396,7 +396,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 			}
 		}
 		HashSet hsDestDirs = new HashSet(100);
-		it = DirectoryManager.getDirectories().iterator();
+		it = DirectoryManager.getInstance().getItems().iterator();
 		while ( it.hasNext()){
 			Directory dir = (Directory)it.next();
 			if ( dir.getDevice().equals(dest)){
@@ -436,7 +436,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 			FileFilter filter = new FileFilter() {
 				public boolean accept(File file) {
 					String sExt = Util.getExtension(file).toLowerCase();
-					if (TypeManager.isExtensionSupported(sExt) || "jpg".equals(sExt) || "gif".equals(sExt)){  //$NON-NLS-1$ //$NON-NLS-2$
+					if (TypeManager.getInstance().isExtensionSupported(sExt) || "jpg".equals(sExt) || "gif".equals(sExt)){  //$NON-NLS-1$ //$NON-NLS-2$
 						return true;
 					}
 					return false;
@@ -496,7 +496,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	 * @return
 	 */
 	public String getDeviceTypeS() {
-		return DeviceManager.getDeviceType(iDeviceType);
+		return DeviceManager.getInstance().getDeviceType(iDeviceType);
 	}
 	
 	/**
@@ -665,7 +665,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 			if ( file.exists() && file.canRead()){ //see if the url exists and is readable
 				//check if this device was void
 				boolean bVoid = true;
-				Iterator it = FileManager.getFiles().iterator();
+				Iterator it = FileManager.getInstance().getItems().iterator();
 				while (it.hasNext()){
 					org.jajuk.base.File f = (org.jajuk.base.File)it.next();
 					if (f.getDirectory().getDevice().equals(this)){ //at least one fiel in this device
@@ -726,7 +726,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	public ArrayList getFilesRecursively() {
 		//looks for the root directory for this device
 		Directory dirRoot = null;
-		Collection dirs = DirectoryManager.getDirectories();
+		Collection dirs = DirectoryManager.getInstance().getItems();
 		Iterator it = dirs.iterator();
 		while (it.hasNext()){
 			Directory dir = (Directory)it.next();
@@ -828,7 +828,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
     public String getHumanValue(String sKey){
         if (XML_TYPE.equals(sKey)){
             int iType = Integer.parseInt(getValue(sKey));
-            return DeviceManager.getDeviceType(iType);
+            return DeviceManager.getInstance().getDeviceType(iType);
         }
         else{//default
             return getValue(sKey);

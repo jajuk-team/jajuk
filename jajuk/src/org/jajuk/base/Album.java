@@ -84,7 +84,7 @@ public class Album extends PropertyAdapter implements Comparable{
 	 */
 	public ArrayList getTracks() {
 		ArrayList alTracks = new ArrayList(10);
-		Iterator it = TrackManager.getTracks().iterator();
+		Iterator it = TrackManager.getInstance().getItems().iterator();
 		while ( it.hasNext()){
 			Track track = (Track)it.next();
 			if (track != null && track.getAlbum().equals(this)){

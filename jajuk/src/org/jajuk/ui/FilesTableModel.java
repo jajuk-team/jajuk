@@ -100,7 +100,7 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
         boolean bShowWithTree = true;
         HashSet hs = (HashSet)ObservationManager.getDetailLastOccurence(EVENT_SYNC_TREE_TABLE,DETAIL_SELECTION);//look at selection
         boolean bSyncWithTreeOption = ConfigurationManager.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE);
-        ArrayList alFiles = FileManager.getFiles();
+        ArrayList alFiles = FileManager.getInstance().getItems();
         ArrayList alToShow = new ArrayList(alFiles.size());
         Iterator it = alFiles.iterator();
         while ( it.hasNext()){

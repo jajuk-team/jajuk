@@ -208,12 +208,12 @@ public class Main implements ITechnicalStrings {
             launchTray();
                     			
 			//Register device types
-			DeviceManager.registerDeviceType(Messages.getString("Device_type.directory"));//$NON-NLS-1$
-			DeviceManager.registerDeviceType(Messages.getString("Device_type.file_cd"));//$NON-NLS-1$
-			DeviceManager.registerDeviceType(Messages.getString("Device_type.network_drive"));//$NON-NLS-1$
-			DeviceManager.registerDeviceType(Messages.getString("Device_type.extdd"));//$NON-NLS-1$
-			DeviceManager.registerDeviceType(Messages.getString("Device_type.player"));//$NON-NLS-1$
-            DeviceManager.registerDeviceType(Messages.getString("Device_type.remote"));//$NON-NLS-1$
+			DeviceManager.getInstance().registerDeviceType(Messages.getString("Device_type.directory"));//$NON-NLS-1$
+			DeviceManager.getInstance().registerDeviceType(Messages.getString("Device_type.file_cd"));//$NON-NLS-1$
+			DeviceManager.getInstance().registerDeviceType(Messages.getString("Device_type.network_drive"));//$NON-NLS-1$
+			DeviceManager.getInstance().registerDeviceType(Messages.getString("Device_type.extdd"));//$NON-NLS-1$
+			DeviceManager.getInstance().registerDeviceType(Messages.getString("Device_type.player"));//$NON-NLS-1$
+            DeviceManager.getInstance().registerDeviceType(Messages.getString("Device_type.remote"));//$NON-NLS-1$
             
 			//registers supported audio supports and default properties
 			registerTypes();
@@ -240,7 +240,7 @@ public class Main implements ITechnicalStrings {
                           	//commit perspectives
 							PerspectiveManager.commit();
 							//Commit collection if not refreshing ( fix for 939816 )
-							if ( !DeviceManager.isAnyDeviceRefreshing()){
+							if ( !DeviceManager.getInstance().isAnyDeviceRefreshing()){
 								Collection.commit(FILE_COLLECTION_EXIT);
                                 //create a proof file
                                 Util.createEmptyFile(FILE_COLLECTION_EXIT_PROOF);
@@ -324,35 +324,35 @@ public class Main implements ITechnicalStrings {
 	private static void registerTypes(){
 		try { 
 			//mp3
-			Type type = TypeManager.registerType(Messages.getString("Type.mp3"), EXT_MP3, PLAYER_IMPL_JAVALAYER, TAG_IMPL_ENTAGGED); //$NON-NLS-1$ //$NON-NLS-2$
+			Type type = TypeManager.getInstance().registerType(Messages.getString("Type.mp3"), EXT_MP3, PLAYER_IMPL_JAVALAYER, TAG_IMPL_ENTAGGED); //$NON-NLS-1$ //$NON-NLS-2$
 			type.setProperty(XML_TYPE_IS_MUSIC,TRUE); //$NON-NLS-1$
 			type.setProperty(XML_TYPE_SEEK_SUPPORTED,TRUE); //$NON-NLS-1$
 			type.setProperty(XML_TYPE_TECH_DESC,TYPE_PROPERTY_TECH_DESC_MP3);
             type.setProperty(XML_TYPE_ICON,ICON_TYPE_MP3);
             //playlists
-			type = TypeManager.registerType(Messages.getString("Type.playlist"), EXT_PLAYLIST, PLAYER_IMPL_JAVALAYER, null); //$NON-NLS-1$ //$NON-NLS-2$
+			type = TypeManager.getInstance().registerType(Messages.getString("Type.playlist"), EXT_PLAYLIST, PLAYER_IMPL_JAVALAYER, null); //$NON-NLS-1$ //$NON-NLS-2$
 			type.setProperty(XML_TYPE_IS_MUSIC,FALSE); //$NON-NLS-1$
 			type.setProperty(XML_TYPE_SEEK_SUPPORTED,FALSE); //$NON-NLS-1$
             //Ogg vorbis
-			type = TypeManager.registerType(Messages.getString("Type.ogg"), EXT_OGG, PLAYER_IMPL_JAVALAYER, TAG_IMPL_ENTAGGED); //$NON-NLS-1$ //$NON-NLS-2$
+			type = TypeManager.getInstance().registerType(Messages.getString("Type.ogg"), EXT_OGG, PLAYER_IMPL_JAVALAYER, TAG_IMPL_ENTAGGED); //$NON-NLS-1$ //$NON-NLS-2$
 			type.setProperty(XML_TYPE_IS_MUSIC,TRUE); //$NON-NLS-1$
 			type.setProperty(XML_TYPE_SEEK_SUPPORTED,FALSE); //$NON-NLS-1$
 			type.setProperty(XML_TYPE_TECH_DESC,TYPE_PROPERTY_TECH_DESC_OGG);
             type.setProperty(XML_TYPE_ICON,ICON_TYPE_OGG);
             //Wave
-			type = TypeManager.registerType(Messages.getString("Type.wav"), EXT_WAV, PLAYER_IMPL_JAVALAYER, TAG_IMPL_NO_TAGS); //$NON-NLS-1$ //$NON-NLS-2$
+			type = TypeManager.getInstance().registerType(Messages.getString("Type.wav"), EXT_WAV, PLAYER_IMPL_JAVALAYER, TAG_IMPL_NO_TAGS); //$NON-NLS-1$ //$NON-NLS-2$
 			type.setProperty(XML_TYPE_IS_MUSIC,TRUE); //$NON-NLS-1$
 			type.setProperty(XML_TYPE_SEEK_SUPPORTED,TRUE); //$NON-NLS-1$
 			type.setProperty(XML_TYPE_TECH_DESC,TYPE_PROPERTY_TECH_DESC_WAVE);
             type.setProperty(XML_TYPE_ICON,ICON_TYPE_WAV);
             //au
-			type = TypeManager.registerType(Messages.getString("Type.au"), EXT_AU, PLAYER_IMPL_JAVALAYER, TAG_IMPL_NO_TAGS); //$NON-NLS-1$ //$NON-NLS-2$
+			type = TypeManager.getInstance().registerType(Messages.getString("Type.au"), EXT_AU, PLAYER_IMPL_JAVALAYER, TAG_IMPL_NO_TAGS); //$NON-NLS-1$ //$NON-NLS-2$
 			type.setProperty(XML_TYPE_IS_MUSIC,TRUE); //$NON-NLS-1$
 			type.setProperty(XML_TYPE_SEEK_SUPPORTED,FALSE); //$NON-NLS-1$
 			type.setProperty(XML_TYPE_TECH_DESC,TYPE_PROPERTY_TECH_DESC_AU);
             type.setProperty(XML_TYPE_ICON,ICON_TYPE_AU);
             //aiff
-			type = TypeManager.registerType(Messages.getString("Type.aiff"), EXT_AIFF, PLAYER_IMPL_JAVALAYER, TAG_IMPL_NO_TAGS); //$NON-NLS-1$ //$NON-NLS-2$
+			type = TypeManager.getInstance().registerType(Messages.getString("Type.aiff"), EXT_AIFF, PLAYER_IMPL_JAVALAYER, TAG_IMPL_NO_TAGS); //$NON-NLS-1$ //$NON-NLS-2$
 			type.setProperty(XML_TYPE_IS_MUSIC,TRUE); //$NON-NLS-1$
 			type.setProperty(XML_TYPE_SEEK_SUPPORTED,FALSE); //$NON-NLS-1$
 			type.setProperty(XML_TYPE_TECH_DESC,TYPE_PROPERTY_TECH_DESC_AIFF);
@@ -496,7 +496,7 @@ public class Main implements ITechnicalStrings {
            }
            if (!bParsingOK){ //not better? ok, commit and load a void collection
                Collection.cleanup();
-               DeviceManager.cleanAllDevices();
+               DeviceManager.getInstance().cleanAllDevices();
                try{
                    Collection.commit(FILE_COLLECTION);
                }
@@ -519,11 +519,11 @@ public class Main implements ITechnicalStrings {
 			        ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_FILE)){
 				
 			    if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_FILE)){
-				    fileToPlay = FileManager.getFileById(ConfigurationManager.getProperty(CONF_STARTUP_FILE));
+				    fileToPlay = (org.jajuk.base.File)FileManager.getInstance().getItem(ConfigurationManager.getProperty(CONF_STARTUP_FILE));
 				}
 				else {  //last file from begining or last file keep position
 				    if (ConfigurationManager.getBoolean(CONF_STATE_WAS_PLAYING) && History.getInstance().getHistory().size()>0){  //make sure user didn't exit jajuk in the stopped state and that history is not void
-				        fileToPlay = FileManager.getFileById(History.getInstance().getLastFile());
+				        fileToPlay = (org.jajuk.base.File)FileManager.getInstance().getItem(History.getInstance().getLastFile());
 				    }
 				    else{ //do not try to lauch anything, stay in stop state
 				        return;
@@ -548,13 +548,13 @@ public class Main implements ITechnicalStrings {
 			    }
 			}
 			else if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_SHUFFLE)){
-				alToPlay = FileManager.getGlobalShufflePlaylist();
+				alToPlay = FileManager.getInstance().getGlobalShufflePlaylist();
 			}
 			else if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_BESTOF)){
-			    alToPlay = FileManager.getGlobalBestofPlaylist();
+			    alToPlay = FileManager.getInstance().getGlobalBestofPlaylist();
 			}
 			else if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_NOVELTIES)){
-			    alToPlay = FileManager.getGlobalNoveltiesPlaylist();
+			    alToPlay = FileManager.getInstance().getGlobalNoveltiesPlaylist();
 			    if (alToPlay != null && alToPlay.size() > 0){
 			        Collections.shuffle(alToPlay);//shuffle the selection
 			    }
@@ -573,7 +573,7 @@ public class Main implements ITechnicalStrings {
 	 *
 	 */
 	private static void autoMount(){
-		Iterator it = DeviceManager.getDevices();
+		Iterator it = DeviceManager.getInstance().getItems().iterator();
 		while (it.hasNext()){
 			Device device = (Device)it.next();
 			if (TRUE.equals(device.getValue(DEVICE_OPTION_AUTO_MOUNT))){
@@ -596,7 +596,7 @@ public class Main implements ITechnicalStrings {
 	 *
 	 */
 	private static void autoRefresh(){
-		Iterator it = DeviceManager.getDevices();
+		Iterator it = DeviceManager.getInstance().getItems().iterator();
 		while (it.hasNext()){
 			Device device = (Device)it.next();
 			if (TRUE.equals(device.getValue(DEVICE_OPTION_AUTO_REFRESH)) && device.isMounted()){
@@ -696,7 +696,7 @@ public class Main implements ITechnicalStrings {
                     
                     //Display info message if first session
                     if (ConfigurationManager.getBoolean(CONF_FIRST_CON) 
-                            && DeviceManager.getDevicesNumber() == 0){ //make none device already exist to avoid checking availability
+                            && DeviceManager.getInstance().getDevicesNumber() == 0){ //make none device already exist to avoid checking availability
                         sc.dispose(); //make sure to hide splashscreen
                         //First time wizard
                         FirstTimeWizard fsw = new FirstTimeWizard();

@@ -20,8 +20,6 @@
 
 package org.jajuk.base;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 
 /**
@@ -30,10 +28,8 @@ import java.util.Iterator;
  * @created    17 oct. 2003
  */
 public class PlaylistManager extends ItemManager{
-	/**Playlists collection**/
-	static HashMap hmPlaylists = new HashMap(100);
     /**Self instance*/
-    static PlaylistManager singleton;
+    private static PlaylistManager singleton;
 
 	/**
 	 * No constructor available, only static access
@@ -45,7 +41,7 @@ public class PlaylistManager extends ItemManager{
     /**
      * @return singleton
      */
-    public static ItemManager getInstance(){
+    public static PlaylistManager getInstance(){
       if (singleton == null){
           singleton = new PlaylistManager();
       }
@@ -57,7 +53,7 @@ public class PlaylistManager extends ItemManager{
 	 * Register an Playlist
 	 *@param file : playlist file
 	 */	
-	public static synchronized Playlist registerPlaylist(PlaylistFile plFile) {
+	public synchronized Playlist registerPlaylist(PlaylistFile plFile) {
 		return registerPlaylist(plFile.getHashcode(),plFile);
 	}
 	
@@ -65,38 +61,33 @@ public class PlaylistManager extends ItemManager{
 	 * Register an Playlist with a known id
 	 *@param file : playlist file
 	 */	
-	public static synchronized Playlist registerPlaylist(String sId,PlaylistFile plFile) {
-		if (hmPlaylists.containsKey(sId)){ //playlist already exist, add a file
-			Playlist playlist = (Playlist)hmPlaylists.get(sId);
+	public  synchronized Playlist registerPlaylist(String sId,PlaylistFile plFile) {
+		if (hmItems.containsKey(sId)){ //playlist already exist, add a file
+			Playlist playlist = (Playlist)hmItems.get(sId);
 			playlist.addFile(plFile);
 			return playlist;
 		}
 		else { //new playlist
 			Playlist playlist = new Playlist(sId,plFile);
             playlist.removeProperty(XML_NAME);//no name attribute for playlists
-            hmPlaylists.put(sId,playlist);
+            hmItems.put(sId,playlist);
+            postRegistering(playlist);
             return playlist;
 		}
-	}
-
-
-	/**Return all registred Playlists*/
-	public static synchronized ArrayList getPlaylists() {
-		return new ArrayList(hmPlaylists.values());
 	}
 
 	/**
 		 * Perform a playlist cleanup : delete useless items
 		 *  
 		 */
-		public static synchronized void cleanup() {
-			Iterator itPlaylists = hmPlaylists.values().iterator();
+		public synchronized void cleanup() {
+			Iterator itPlaylists = hmItems.values().iterator();
 			while (itPlaylists.hasNext()) {
 				Playlist playlist= (Playlist)itPlaylists.next();
 				Iterator itPlaylistFiles = playlist.getPlaylistFiles().iterator();
 				while ( itPlaylistFiles.hasNext()){
 					PlaylistFile plf = (PlaylistFile)itPlaylistFiles.next();
-					if (PlaylistFileManager.getPlaylistFile(plf.getId()) == null){
+					if (PlaylistFileManager.getInstance().getItem(plf.getId()) == null){
 						itPlaylistFiles.remove();	
 					}
 				}
@@ -106,15 +97,6 @@ public class PlaylistManager extends ItemManager{
 			}
 		}
 	
-	/**
-	 * Return Playlist by id
-	 * @param sId
-	 * @return
-	 */
-	public static Playlist getPlaylist(String sId) {
-		return (Playlist) hmPlaylists.get(sId);
-	}
-    
 /* (non-Javadoc)
      * @see org.jajuk.base.ItemManager#getIdentifier()
      */

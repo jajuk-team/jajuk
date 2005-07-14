@@ -132,14 +132,14 @@ public class CDScanView extends ViewAdapter implements ActionListener {
 				public Object construct() {
 					if ( !"".equals(jtfName.getText().trim()) && !"".equals(jtfMountPoint.getText().trim())){ //$NON-NLS-1$ //$NON-NLS-2$
 					    Device device = null;
-					     device = DeviceManager.registerDevice(jtfName.getText().trim(),1,jtfMountPoint.getText().trim(),jtfMountPoint.getText().trim());
+					     device = DeviceManager.getInstance().registerDevice(jtfName.getText().trim(),1,jtfMountPoint.getText().trim(),jtfMountPoint.getText().trim());
 					     try{
 							device.mount();
 							device.refresh(false); //refresh synchronously
 							device.unmount(true,true);
 						}
 						catch(Exception ex){
-							DeviceManager.removeDevice(device);
+							DeviceManager.getInstance().removeDevice(device);
 							Messages.showErrorMessage("016"); //$NON-NLS-1$
 						}
 					}

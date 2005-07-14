@@ -29,6 +29,7 @@ import javax.swing.table.AbstractTableModel;
 
 import org.jajuk.base.Device;
 import org.jajuk.base.Event;
+import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.IPropertyable;
 import org.jajuk.base.ObservationManager;
@@ -182,7 +183,7 @@ public class PropertiesTableModel extends AbstractTableModel
         if (EVENT_FILE_NAME_CHANGED.equals(subject)){
             Properties properties = event.getDetails();
             String sNewId = properties.getProperty(DETAIL_NEW);
-            pa = FileManager.getFileById(sNewId);
+            pa = (File)FileManager.getInstance().getItem(sNewId);
         }
     }
     

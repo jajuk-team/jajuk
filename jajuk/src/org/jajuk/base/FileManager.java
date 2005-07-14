@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Properties;
 import java.util.TreeSet;
@@ -41,18 +40,16 @@ import org.jajuk.util.log.Log;
  * @created 17 oct. 2003
  */
 public class FileManager extends ItemManager implements Observer{
-	/** Files collection : id-> file*/ 
-	private static HashMap hmIdFile = new HashMap(1000);
 	/**Flag the fact a rate has change for a track, used by bestof view refresh for perfs*/
-	private static boolean bRateHasChanged = true;
+	private boolean bRateHasChanged = true;
 	/**Best of files*/
-	private static ArrayList alBestofFiles = new ArrayList(20);
+	private ArrayList alBestofFiles = new ArrayList(20);
     /**Novelties files*/
-    private static ArrayList alNovelties = new ArrayList(20);
+    private ArrayList alNovelties = new ArrayList(20);
     /**Sorted files*/
-	private static ArrayList alSortedFiles = new ArrayList(1000);
+	private ArrayList alSortedFiles = new ArrayList(1000);
     /**Self instance*/
-    static FileManager singleton;
+    private static FileManager singleton;
 	
 	/**
 	 * No constructor available, only static access
@@ -64,7 +61,7 @@ public class FileManager extends ItemManager implements Observer{
     /**
      * @return singleton
      */
-    public static ItemManager getInstance(){
+    public static FileManager getInstance(){
       if (singleton == null){
           singleton = new FileManager();
       }
@@ -76,21 +73,18 @@ public class FileManager extends ItemManager implements Observer{
 	 * 
 	 * @param sName
 	 */
-	public static synchronized File registerFile(String sId, String sName, Directory directory, 
+	public synchronized File registerFile(String sId, String sName, Directory directory, 
             Track track, long lSize, String sQuality) {
-		if ( !hmIdFile.containsKey(sId)){
+		if ( !hmItems.containsKey(sId)){
 			File file = new File(sId, sName, directory, track, lSize, sQuality);
-			hmIdFile.put(sId,file);
+			hmItems.put(sId,file);
 			alSortedFiles.add(file);
 			if ( directory.getDevice().isRefreshing() && Log.isDebugEnabled()){
 				Log.debug("registrated new file: "+ file); //$NON-NLS-1$
 			}
-			//try to recover some properties previous a refresh
-			getInstance().restorePropertiesAfterRefresh(file,sId);
-			//apply default custom properties
-			getInstance().applyNewProperties();
+			postRegistering(file);
 		}
-		return (File)hmIdFile.get(sId);
+		return (File)hmItems.get(sId);
 	}
     
     /**
@@ -99,7 +93,7 @@ public class FileManager extends ItemManager implements Observer{
      * @param sNewName
      * @return new file or null if an error occurs
      */
-	public static File changeFileName(File fileOld,String sNewName){
+	public File changeFileName(File fileOld,String sNewName){
 	    //check if this file still exists
         if (!fileOld.getIO().exists()){
             Messages.showErrorMessage("135");
@@ -138,8 +132,8 @@ public class FileManager extends ItemManager implements Observer{
 	    }
 	    //OK, remove old file and register this new file
         removeFile(fileOld);
-        if ( !hmIdFile.containsKey(sNewId)){
-            hmIdFile.put(sNewId,fNew);
+        if ( !hmItems.containsKey(sNewId)){
+            hmItems.put(sNewId,fNew);
             alSortedFiles.add(fNew);
         }
         //notify everybody for the file change
@@ -156,8 +150,8 @@ public class FileManager extends ItemManager implements Observer{
 	 * Clean all references for the given device
 	 * @param sId : Device id
 	 */
-	public static synchronized void cleanDevice(String sId) {
-		Iterator it = hmIdFile.values().iterator();
+	public synchronized void cleanDevice(String sId) {
+		Iterator it = hmItems.values().iterator();
 		while (it.hasNext()) {
 			File file = (File) it.next();
 			if (file.getDirectory()==null || file.getDirectory().getDevice().getId().equals(sId)) {
@@ -174,42 +168,30 @@ public class FileManager extends ItemManager implements Observer{
 			}
 		}
 	}
-
     
     /**
      * Remove a file reference
      * @param file
      */
-    public static void removeFile(File file){
-        hmIdFile.remove(file.getId());
+    public void removeFile(File file){
+        hmItems.remove(file.getId());
         alSortedFiles.remove(file);
     }
     
 	/** Return all registred files */
-	public static synchronized ArrayList getFiles() {
+	public synchronized ArrayList getItems() {
 		if (alSortedFiles.size() == 0){
-		    alSortedFiles = new ArrayList(hmIdFile.values());
+		    alSortedFiles = new ArrayList(hmItems.values());
 		    sortFiles();
 		}
 	    return alSortedFiles;
 	}
 	
 	/** Sorts collection*/
-	public static synchronized void sortFiles() {
+	public synchronized void sortFiles() {
 		Collections.sort(alSortedFiles);
 		Log.debug("Collection sorted"); //$NON-NLS-1$
 	} 
-
-	
-	/**
-	   * Return file by id
-	   * 
-	   * @param id
-	   * @return
-	   */
-	public static synchronized File getFileById(String sId) {
-		return (File)hmIdFile.get(sId);
-	}
     
     /**
        * Return file by full path
@@ -217,13 +199,13 @@ public class FileManager extends ItemManager implements Observer{
        * @return file or null if given path is not known
        */
     
-    public static synchronized File getFileByPath(String sPath) {
+    public synchronized File getFileByPath(String sPath) {
         File fOut = null;
         java.io.File fToCompare = new java.io.File(sPath);
         if (!fToCompare.exists()){ //check that file exists
             return null;
         }
-        Iterator it = hmIdFile.values().iterator();
+        Iterator it = hmItems.values().iterator();
         while ( it.hasNext()){
             File file = (File)it.next();
             if (file.getIO().equals(fToCompare)){ //we compare io files and not paths
@@ -238,10 +220,10 @@ public class FileManager extends ItemManager implements Observer{
 	/**
 	 * @return All accessible files of the collection
 	 */
-	public static synchronized ArrayList getReadyFiles(){
+	public synchronized ArrayList getReadyFiles(){
 	    // create a tempory table to remove unmounted files
 		ArrayList alEligibleFiles = new ArrayList(1000);
-		Iterator it = hmIdFile.values().iterator();
+		Iterator it = hmItems.values().iterator();
 		while ( it.hasNext()){
 			File file = (File)it.next();
 			if (file.isReady()){
@@ -255,7 +237,7 @@ public class FileManager extends ItemManager implements Observer{
 	 * Return a shuffle mounted file from the entire collection
 	 * @return
 	 */
-	public static synchronized File getShuffleFile(){
+	public synchronized File getShuffleFile(){
 	    ArrayList alEligibleFiles = getReadyFiles();
 		if (alEligibleFiles.size() ==0 ){
 			return null;
@@ -267,7 +249,7 @@ public class FileManager extends ItemManager implements Observer{
 	 * Return a playlist with the entire accessible shuffle collection 
 	 * @return The entire accessible shuffle collection
 	 */
-	public static synchronized ArrayList getGlobalShufflePlaylist(){
+	public synchronized ArrayList getGlobalShufflePlaylist(){
 	    ArrayList alEligibleFiles = getReadyFiles();
 	    Collections.shuffle(alEligibleFiles);
 	    return alEligibleFiles;
@@ -277,7 +259,7 @@ public class FileManager extends ItemManager implements Observer{
 	 * Return a shuffle mounted file from the noveties
 	 * @return
 	 */
-	public static synchronized File getNoveltyFile(){
+	public synchronized File getNoveltyFile(){
 		ArrayList alEligibleFiles = getGlobalNoveltiesPlaylist();
 	    return (File)alEligibleFiles.get((int)(Math.random()*alEligibleFiles.size()));
 	}
@@ -286,7 +268,7 @@ public class FileManager extends ItemManager implements Observer{
      * Return a playlist with the entire accessible shuffled novelties collection 
      * @return The entire accessible novelties collection or null if none track in given time interval
      */
-    public static synchronized ArrayList getGlobalNoveltiesPlaylist(){
+    public synchronized ArrayList getGlobalNoveltiesPlaylist(){
         return getGlobalNoveltiesPlaylist(true);
     }
     
@@ -295,9 +277,9 @@ public class FileManager extends ItemManager implements Observer{
 	 * @param bHideUnmounted 
      * @return The entire accessible novelties collection or null if none track in given time interval
 	 */
-	public static synchronized ArrayList getGlobalNoveltiesPlaylist(boolean bHideUnmounted){
+	public synchronized ArrayList getGlobalNoveltiesPlaylist(boolean bHideUnmounted){
 	    ArrayList alEligibleFiles = new ArrayList(1000);
-        Iterator it = TrackManager.getTracks().iterator(); //search in tracks, not files to avoid duplicates items
+        Iterator it = TrackManager.getInstance().getItems().iterator(); //search in tracks, not files to avoid duplicates items
 		while ( it.hasNext()){
             Track track = (Track)it.next();
             File file = track.getPlayeableFile(bHideUnmounted); //try to get a mounted file (can return null)
@@ -334,7 +316,7 @@ public class FileManager extends ItemManager implements Observer{
 	 * Return a shuffle mounted file from the entire collection with rate weight ( best of mode )
 	 * @return
 	 */
-	public static synchronized File getBestOfFile(){
+	public synchronized File getBestOfFile(){
 		TreeSet ts = getSortedByRate();
 		FileScore fscore = (FileScore)ts.last();
 	    return fscore.getFile(); //return highest score file
@@ -344,10 +326,10 @@ public class FileManager extends ItemManager implements Observer{
 	 * 
 	 * @return a sorted set of the collection by rate, lowest first
 	 */
-	private static synchronized TreeSet getSortedByRate(){
+	private synchronized TreeSet getSortedByRate(){
 		//create a tempory table to remove unmounted files
 		TreeSet tsEligibleFiles = new TreeSet();
-		Iterator it = TrackManager.getTracks().iterator(); //search in tracks, not files to avoid duplicates items
+		Iterator it = TrackManager.getInstance().getItems().iterator(); //search in tracks, not files to avoid duplicates items
 		while ( it.hasNext()){
 			File file = ((Track)it.next()).getPlayeableFile(); //can return null
 			if (file!= null && file.isReady()){ //test if file is null!
@@ -363,7 +345,7 @@ public class FileManager extends ItemManager implements Observer{
 	 * Return a playlist with the entire accessible bestof collection, best first
 	 * @return The entire accessible bestof collection
 	 */
-	public static synchronized ArrayList getGlobalBestofPlaylist(){
+	public synchronized ArrayList getGlobalBestofPlaylist(){
         TreeSet ts = getSortedByRate();
         ArrayList al = new ArrayList(ts.size());
         Iterator it = ts.iterator();
@@ -379,7 +361,7 @@ public class FileManager extends ItemManager implements Observer{
      * Return CONF_BESTOF_SIZE top files
      * @return top files
      */
-    public static synchronized ArrayList getBestOfFiles(){
+    public synchronized ArrayList getBestOfFiles(){
         return getBestOfFiles(true);
     }
     
@@ -388,14 +370,14 @@ public class FileManager extends ItemManager implements Observer{
      * @param bHideUnmounted 
 	 * @return top files
 	 */
-	public static synchronized ArrayList getBestOfFiles(boolean bHideUnmounted){
-		if (FileManager.hasRateChanged() || alBestofFiles == null){  //test a rate has changed for perfs
+	public synchronized ArrayList getBestOfFiles(boolean bHideUnmounted){
+		if (FileManager.getInstance().hasRateChanged() || alBestofFiles == null){  //test a rate has changed for perfs
 			//clear data
 			alBestofFiles.clear();
 		    int iNbBestofFiles = Integer.parseInt(ConfigurationManager.getProperty(CONF_BESTOF_SIZE));
 			//create a tempory table to remove unmounted files
 			ArrayList alEligibleFiles = new ArrayList(iNbBestofFiles);
-			Iterator it = TrackManager.getTracks().iterator();
+			Iterator it = TrackManager.getInstance().getItems().iterator();
 			while ( it.hasNext()){
 				Track track = (Track)it.next();
 				File file = track.getPlayeableFile(bHideUnmounted);
@@ -412,7 +394,7 @@ public class FileManager extends ItemManager implements Observer{
 			    alBestofFiles.add(file);
 			    i++;
 			}
-			FileManager.setRateHasChanged(false);
+			setRateHasChanged(false);
 		}
 		return alBestofFiles;
 	}
@@ -421,12 +403,12 @@ public class FileManager extends ItemManager implements Observer{
 	 * @param file : a file
 	 * @return next file from entire collection
 	 */
-	public static synchronized File getNextFile(File file){
+	public synchronized File getNextFile(File file){
 	    if (file  == null){
 		    return null;
 		}
 	    File fileNext = null;
-		ArrayList alSortedFiles = getFiles();
+		ArrayList alSortedFiles = getItems();
 		//look for a correct file from index to collection end
 		boolean bOk = false;
 		for (int index=alSortedFiles.indexOf(file)+1;index<alSortedFiles.size();index++){
@@ -462,12 +444,12 @@ public class FileManager extends ItemManager implements Observer{
 	 * @param file : a file
 	 * @return previous file from entire collection
 	 */
-	public static synchronized File getPreviousFile(File file){
+	public synchronized File getPreviousFile(File file){
 		if (file  == null){
 		    return null;
 		}
 	    File filePrevious = null;
-		ArrayList alSortedFiles = getFiles();
+		ArrayList alSortedFiles = getItems();
 		//test if this file is the very first one
 		if (alSortedFiles.indexOf(file) == 0){
 		    Messages.showErrorMessage("128"); //$NON-NLS-1$
@@ -494,7 +476,7 @@ public class FileManager extends ItemManager implements Observer{
 	 * @param file
 	 * @return
 	 */
-	public static boolean isVeryfirstFile(File file){
+	public boolean isVeryfirstFile(File file){
 	    if (file == null){
 	        return false;
 	    }
@@ -506,13 +488,13 @@ public class FileManager extends ItemManager implements Observer{
 	 * @param file
 	 * @return All files in the same directory than the given one
 	 */
-	public static ArrayList getAllDirectory(File file){
+	public ArrayList getAllDirectory(File file){
 	    if (file == null){
 	        return null;
 	    }
 	    ArrayList alResu = new ArrayList(10);
 	    Directory dir = file.getDirectory();
-	    Iterator it = getFiles().iterator();
+	    Iterator it = getItems().iterator();
 	    while ( it.hasNext()){
 	        File f = (File)it.next();
 	        Directory d = f.getDirectory();
@@ -528,13 +510,13 @@ public class FileManager extends ItemManager implements Observer{
 	 * @param file
 	 * @return All files in the same directory from the given one (includes the one)
 	 */
-	public static ArrayList getAllDirectoryFrom(File file){
+	public ArrayList getAllDirectoryFrom(File file){
 	    if (file == null){
 	        return null;
 	    }
 	    ArrayList alResu = new ArrayList(10);
 	    Directory dir = file.getDirectory();
-	    Iterator it = getFiles().iterator();
+	    Iterator it = getItems().iterator();
 	    boolean bSeenTheOne = false;
 	    while ( it.hasNext()){
 	        File f = (File)it.next();
@@ -557,10 +539,10 @@ public class FileManager extends ItemManager implements Observer{
 	 * @param sCriteria
 	 * @return
 	 */
-	public static synchronized TreeSet search(String sCriteria){
+	public synchronized TreeSet search(String sCriteria){
 	 	TreeSet tsResu = new TreeSet(); 
 		sCriteria = sCriteria.toLowerCase();
-	 	Iterator it = hmIdFile.values().iterator();
+	 	Iterator it = hmItems.values().iterator();
 	 	while ( it.hasNext()){
 	 		File file = (File)it.next();
 	 		if ( ConfigurationManager.getBoolean(CONF_OPTIONS_SEARCH_ONLY_MOUNTED) && //if  search in only in mounted devices
@@ -579,14 +561,14 @@ public class FileManager extends ItemManager implements Observer{
 	/**
 	 * @return Returns the bRateHasChanged.
 	 */
-	public static boolean hasRateChanged() {
+	public boolean hasRateChanged() {
 		return bRateHasChanged;
 	}
 
 	/**
 	 * @param rateHasChanged The bRateHasChanged to set.
 	 */
-	public static void setRateHasChanged(boolean rateHasChanged) {
+	public void setRateHasChanged(boolean rateHasChanged) {
 		bRateHasChanged = rateHasChanged;
 	}
     

@@ -43,8 +43,10 @@ import org.jajuk.base.Device;
 import org.jajuk.base.Directory;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
+import org.jajuk.base.IPropertyable;
 import org.jajuk.base.Style;
 import org.jajuk.base.Track;
+import org.jajuk.base.TrackManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.views.AbstractPlaylistEditorView;
 import org.jajuk.util.ConfigurationManager;
@@ -148,14 +150,8 @@ public class PlaylistTransferHandler implements DropTargetListener,ITechnicalStr
 			//computes logical selection if any
 			ArrayList alLogicalTracks = null;
 			if(oData instanceof Style || oData instanceof Author || oData instanceof Album || oData instanceof Track){
-				if( oData instanceof Style ){
-					alLogicalTracks = ((Style)oData).getTracks();
-				}
-				else if( oData instanceof Author ){
-					alLogicalTracks = ((Author)oData).getTracks();
-				}
-				else if(  oData instanceof Album ){
-					alLogicalTracks = ((Album)oData).getTracks();
+				if( oData instanceof Style || oData instanceof Author || oData instanceof Album ){
+					alLogicalTracks = TrackManager.getInstance().getAssociatedTracks((IPropertyable)oData);
 				}
 				else if( oData instanceof Track){
 					alLogicalTracks = new ArrayList(100);

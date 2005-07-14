@@ -686,14 +686,14 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
     public void populateTree(){
         top.removeAllChildren();
         //add devices
-        Iterator it1 = DeviceManager.getDevices();
+        Iterator it1 = DeviceManager.getInstance().getItems().iterator();
         while ( it1.hasNext()){
             Device device = (Device)it1.next();
             DefaultMutableTreeNode nodeDevice = new DeviceNode(device);
             top.add(nodeDevice);
         }
         //add directories
-        Collection directories = DirectoryManager.getDirectories();
+        Collection directories = DirectoryManager.getInstance().getItems();
         //Collections.sort((List)directories);
         Iterator it2 = directories.iterator();
         while (it2.hasNext()){
@@ -729,7 +729,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
             }
         }
         //add files
-        ArrayList alFiles = FileManager.getFiles();
+        ArrayList alFiles = FileManager.getInstance().getItems();
         if (alFiles != null && alFiles.size() > 0){
             Collections.sort(alFiles);
         }
@@ -745,9 +745,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
             }
         }
         //add playlist files
-        ArrayList alPlaylistFiles = PlaylistFileManager.getPlaylistFiles();
-        Collections.sort(alPlaylistFiles);
-        Iterator it4 = alPlaylistFiles.iterator();
+        Iterator it4 = PlaylistFileManager.getInstance().getItems().iterator();
         while (it4.hasNext()){
             PlaylistFile playlistFile = (PlaylistFile)it4.next();
             if ( playlistFile.shouldBeHidden()){ //should be hiden by option

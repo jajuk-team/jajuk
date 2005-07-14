@@ -477,19 +477,19 @@ public class Track extends PropertyAdapter implements Comparable{
      */
     public String getHumanValue(String sKey){
         if (XML_ALBUM.equals(sKey)){
-            return AlbumManager.getAlbum(getValue(sKey)).getName2();
+            return ((Album)AlbumManager.getInstance().getItem(getValue(sKey))).getName2();
         }
         else if (XML_AUTHOR.equals(sKey)){
-            return AuthorManager.getAuthor(getValue(sKey)).getName2();
+            return ((Author)AuthorManager.getInstance().getItem(getValue(sKey))).getName2();
         }
         else if (XML_STYLE.equals(sKey)){
-            return StyleManager.getStyle(getValue(sKey)).getName2();
+            return ((Style)StyleManager.getInstance().getItem(getValue(sKey))).getName2();
         }
         else if (XML_TRACK_LENGTH.equals(sKey)){
             return Util.formatTimeBySec(length,false);
         }
         else if (XML_TYPE.equals(sKey)){
-            return TypeManager.getType(getValue(sKey)).getName();
+            return ((Type)TypeManager.getInstance().getItem(getValue(sKey))).getName();
         }
         else if (XML_TRACK_YEAR.equals(sKey)){
             return getYear2();

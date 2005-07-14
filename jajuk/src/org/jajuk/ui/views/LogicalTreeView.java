@@ -469,7 +469,7 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
     public void populateTree(){
         //delete previous tree
         top.removeAllChildren();
-        ArrayList alTracks = TrackManager.getSortedTracks();
+        ArrayList alTracks = TrackManager.getInstance().getSortedTracks();
         Iterator it1 = alTracks.iterator();
         while ( it1.hasNext()){
             Track track = (Track)it1.next();

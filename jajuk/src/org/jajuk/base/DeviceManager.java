@@ -22,8 +22,6 @@ package org.jajuk.base;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 
 import javax.swing.JOptionPane;
@@ -39,12 +37,10 @@ import org.jajuk.util.Util;
  * @created    17 oct. 2003
  */
 public class DeviceManager extends ItemManager{
-	/**Device collection**/
-	static HashMap hDevices = new HashMap(100);
 	/**Supported device types names*/
-	static private ArrayList alDevicesTypes = new ArrayList(10);
+	private ArrayList alDevicesTypes = new ArrayList(10);
 	/**Self instance*/
-    static DeviceManager singleton;
+    private static DeviceManager singleton;
 
 	/**
 	 * No constructor available, only static access
@@ -56,7 +52,7 @@ public class DeviceManager extends ItemManager{
 /**
      * @return singleton
      */
-    public static ItemManager getInstance(){
+    public static DeviceManager getInstance(){
       if (singleton == null){
           singleton = new DeviceManager();
       }
@@ -69,7 +65,7 @@ public class DeviceManager extends ItemManager{
 	 *@param sName
 	 *@return device 
 	 */
-	public static synchronized Device  registerDevice(String sName,int iDeviceType,String sUrl,String sMountPoint){
+	public synchronized Device  registerDevice(String sName,int iDeviceType,String sUrl,String sMountPoint){
 		String sId = processId(sUrl,sName,iDeviceType);
 		return registerDevice(sId,sName,iDeviceType,sUrl,sMountPoint);
 	}
@@ -81,7 +77,7 @@ public class DeviceManager extends ItemManager{
 	 * @param iDeviceType
 	 * @return An id
 	 */
-	private static String processId(String sUrl,String sName,int iDeviceType){
+	private String processId(String sUrl,String sName,int iDeviceType){
 	    return MD5Processor.hash(sUrl+ sName+iDeviceType); //reprocess id;
 	}
 	
@@ -94,9 +90,9 @@ public class DeviceManager extends ItemManager{
 	 * @param sMountPoint
 	 * @return 0:ok or error code 
 	 */
-	public static String checkDeviceAvailablity(String sName,int iDeviceType,String sUrl,String sMountPoint){
+	public String checkDeviceAvailablity(String sName,int iDeviceType,String sUrl,String sMountPoint){
 		//check name and path
-	    Iterator it = hDevices.values().iterator();
+	    Iterator it = hmItems.values().iterator();
 		while (it.hasNext()){
 		    Device deviceToCheck = (Device)it.next();
 			if ( sName.toLowerCase().equals(deviceToCheck.getName().toLowerCase())){
@@ -134,9 +130,10 @@ public class DeviceManager extends ItemManager{
 	 *@param sName
 	 *@return device 
 	 */
-	public static synchronized Device registerDevice(String sId,String sName,int iDeviceType,String sUrl,String sMountPoint){
+	public synchronized Device registerDevice(String sId,String sName,int iDeviceType,String sUrl,String sMountPoint){
 		Device device = new Device(sId,sName,iDeviceType,sUrl,sMountPoint);
-		hDevices.put(sId,device);
+		hmItems.put(sId,device);
+         postRegistering(device);
 		return device;
 	}
 	
@@ -144,21 +141,21 @@ public class DeviceManager extends ItemManager{
 	 * Register a device type
 	 * @param sDeviceType
 	 */
-	public static void registerDeviceType(String sDeviceType){
+	public void registerDeviceType(String sDeviceType){
 	    alDevicesTypes.add(sDeviceType);
 	}
 	
 	/**
 	 * @return number of registered devices
 	 */
-	public static int getDeviceTypesNumber(){
+	public int getDeviceTypesNumber(){
 	    return alDevicesTypes.size();
 	}
 	
 	/**
 	 * @return Device types iteration
 	 */
-	public static Iterator getDeviceTypes(){
+	public Iterator getDeviceTypes(){
 	    return alDevicesTypes.iterator();
 	}
 	
@@ -167,46 +164,20 @@ public class DeviceManager extends ItemManager{
 	 * @param index
 	 * @return device name for a given index
 	 */
-	public static String getDeviceType(int index){
+	public String getDeviceType(int index){
 	    return (String)alDevicesTypes.get(index);
 	}
 	
-	
-	/**Return all registred devices*/
-	public static synchronized Iterator getDevices() {
-		ArrayList al = new ArrayList(hDevices.values());
-        Collections.sort(al); //sort devices name
-        return al.iterator();
-	}
-	
     /**Return number of registred devices*/
-    public static synchronized int getDevicesNumber() {
-        return hDevices.size();
+    public synchronized int getDevicesNumber() {
+        return getItems().size();
     }
-    
-    /**Return all registred devices*/
-    public static synchronized ArrayList getDevicesList() {
-        ArrayList al = new ArrayList(hDevices.values());
-        Collections.sort(al); //sort devices name
-        return al;
-    }
-     
-	/**
-	 * Return device by id
-	 * @param sName
-	 * @return
-	 */
-	public static synchronized Device getDevice(String sId) {
-		return (Device)hDevices.get(sId);
-	}
-	
-	
-	
+       
 	/**
 	 * Remove a device
 	 * @param device
 	 */
-	public static synchronized void removeDevice(Device device){
+	public  synchronized void removeDevice(Device device){
 		//show confirmation message if required
 	    if ( ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_REMOVE_DEVICE)){
 	        int iResu = Messages.getChoice(Messages.getString("Confirmation_remove_device"),JOptionPane.WARNING_MESSAGE);  //$NON-NLS-1$ //$NON-NLS-2$
@@ -234,14 +205,14 @@ public class DeviceManager extends ItemManager{
 				return;
 			}
 		}
-		hDevices.remove(device.getId());
-		DirectoryManager.cleanDevice(device.getId());
-		FileManager.cleanDevice(device.getId());
-		PlaylistFileManager.cleanDevice(device.getId());
+		hmItems.remove(device.getId());
+		DirectoryManager.getInstance().cleanDevice(device.getId());
+		FileManager.getInstance().cleanDevice(device.getId());
+		PlaylistFileManager.getInstance().cleanDevice(device.getId());
 		//	Clean the collection up
 		org.jajuk.base.Collection.cleanup();
 		//remove synchronization if another device was synchronized with this device
-		Iterator it = hDevices.values().iterator();
+		Iterator it = hmItems.values().iterator();
 		while (it.hasNext()){
 			Device deviceToCheck = (Device)it.next();
 			if (deviceToCheck.containsProperty(DEVICE_OPTION_SYNCHRO_SOURCE)){
@@ -252,7 +223,7 @@ public class DeviceManager extends ItemManager{
 			}
 		}
 		//Sort collection
-		FileManager.sortFiles();//resort collection in case of
+		FileManager.getInstance().sortFiles();//resort collection in case of
 		
 		//refresh views
 		ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH));
@@ -261,9 +232,9 @@ public class DeviceManager extends ItemManager{
 	/**
 	 * @return whether any device is currently refreshing
 	 */
-	public static boolean isAnyDeviceRefreshing(){
+	public boolean isAnyDeviceRefreshing(){
 		boolean bOut = false;
-		Iterator it = DeviceManager.getDevices();
+		Iterator it = DeviceManager.getInstance().getItems().iterator();
 		while ( it.hasNext()){
 			Device device = (Device)it.next();
 			if ( device.isRefreshing()){
@@ -280,23 +251,22 @@ public class DeviceManager extends ItemManager{
 	 * @param device to set
 	 * @param mountPoint The sMountPoint to set.
 	 */
-	public static void setMountPoint(Device device,String sMountPoint) {
+	public void setMountPoint(Device device,String sMountPoint) {
 		device.setMountPoint(sMountPoint);
 	}
-	
-	
+		
 	/**
 	 * Clean all devices
 	 */
-	public static synchronized void cleanAllDevices() {
-	    Iterator it = hDevices.values().iterator();
+	public synchronized void cleanAllDevices() {
+	    Iterator it = hmItems.values().iterator();
 	    while (it.hasNext()){
 	        Device device = (Device)it.next();
-	        FileManager.cleanDevice(device.getName());
-	        DirectoryManager.cleanDevice(device.getName());
-	        PlaylistFileManager.cleanDevice(device.getName());
+	        FileManager.getInstance().cleanDevice(device.getName());
+	        DirectoryManager.getInstance().cleanDevice(device.getName());
+	        PlaylistFileManager.getInstance().cleanDevice(device.getName());
 	    }
-	    hDevices.clear();
+	    hmItems.clear();
 	}
     
  /* (non-Javadoc)

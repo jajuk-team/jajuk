@@ -20,8 +20,6 @@
 
 package org.jajuk.ui.views;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 
 import org.jajuk.base.Observer;
@@ -84,9 +82,7 @@ public class LogicalPlaylistRepositoryView extends AbstractPlaylistRepositoryVie
 	public synchronized void  populatePlaylists(){
 		super.populatePlaylists();
 		//normal playlists
-		ArrayList al = PlaylistManager.getPlaylists();
-		Collections.sort(al);
-		Iterator it = al.iterator();
+		Iterator it = PlaylistManager.getInstance().getItems().iterator();
 		while ( it.hasNext()){
 			Playlist pl = (Playlist)it.next();
 			PlaylistFile plf = pl.getPlayeablePlaylistFile();

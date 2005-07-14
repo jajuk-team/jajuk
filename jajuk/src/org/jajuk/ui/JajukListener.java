@@ -121,7 +121,7 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
                         //if nothing playing, play next track if possible
                         StackItem item = FIFO.getInstance().getLastPlayed();
                         if ( item != null){
-                            FIFO.getInstance().push(new StackItem(FileManager.getNextFile(item.getFile())),false);    
+                            FIFO.getInstance().push(new StackItem(FileManager.getInstance().getNextFile(item.getFile())),false);    
                         }
                     }
 				}

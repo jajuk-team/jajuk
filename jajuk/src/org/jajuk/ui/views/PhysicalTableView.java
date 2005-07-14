@@ -148,7 +148,7 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
 	public void mousePressed(MouseEvent e) {
 		if ( e.getClickCount() == 2){ //double clic, can be only one file
             int iSelectedRow = jtable.getSelectedRow(); //selected row in view
-            File file = FileManager.getFileById(jtable.getModelValueAt(iSelectedRow,0).toString());
+            File file = (File)FileManager.getInstance().getItem(jtable.getModelValueAt(iSelectedRow,0).toString());
 			if (!file.isScanned()){
 				try{
 				    FIFO.getInstance().push(new StackItem(file,ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),
@@ -204,10 +204,10 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
 				ArrayList alFilesToPlay = new ArrayList(jtable.getSelectedRowCount());
 				int[] indexes = jtable.getSelectedRows();
 				for (int i=0;i<indexes.length;i++){ //each selected track
-                    File file = FileManager.getFileById(jtable.getModelValueAt(indexes[i],0).toString());
+                    File file = (File)FileManager.getInstance().getItem(jtable.getModelValueAt(indexes[i],0).toString());
 					ArrayList alFilesToPlay2 = new ArrayList(indexes.length);
 					if (e.getSource() == jmiFilePlayDirectory){
-					    alFilesToPlay2.addAll(FileManager.getAllDirectory(file));   
+					    alFilesToPlay2.addAll(FileManager.getInstance().getAllDirectory(file));   
 					}
 					else{
 					    alFilesToPlay2.add(file);    

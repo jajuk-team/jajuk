@@ -112,9 +112,9 @@ import org.jajuk.base.TrackManager;
         //try to find a track for this id
         int iSelectedRow = jtable.getSelectedRow(); //selected row in view
         iSelectedRow = jtable.getRowModelIndex(iSelectedRow); //selected row in model
-        Object o = TrackManager.getTrack(jtable.getModel().getValueAt(iSelectedRow,0).toString());
+        Object o = TrackManager.getInstance().getItem(jtable.getModel().getValueAt(iSelectedRow,0).toString());
 		if ( o  == null){ //no? try to find a file for this id
-			o = FileManager.getFileById(jtable.getModel().getValueAt(iSelectedRow,0).toString());
+			o = FileManager.getInstance().getItem(jtable.getModel().getValueAt(iSelectedRow,0).toString());
 		}
 		if ( o != null){
 			dragSource.startDrag(dge, DragSource.DefaultMoveNoDrop ,new TransferableTableRow(o), this);

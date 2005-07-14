@@ -151,7 +151,7 @@ public class FirstTimeWizard extends JDialog implements ITechnicalStrings,Action
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 fDir = jfc.getSelectedFile();
                 // check device availibility 
-                String sCode = DeviceManager.checkDeviceAvailablity(fDir.getName(),0,fDir.getAbsolutePath(),fDir.getAbsolutePath());
+                String sCode = DeviceManager.getInstance().checkDeviceAvailablity(fDir.getName(),0,fDir.getAbsolutePath(),fDir.getAbsolutePath());
                 if (!sCode.equals("0")){ //$NON-NLS-1$
                     Messages.showErrorMessage(sCode);
                     jbOk.setEnabled(false);
@@ -188,7 +188,7 @@ public class FirstTimeWizard extends JDialog implements ITechnicalStrings,Action
             ConfigurationManager.setProperty(
                 CONF_COVERS_AUTO_COVER,Boolean.toString(jcbAutoCover.isSelected()));
             //Create a directory device
-            Device device = DeviceManager.registerDevice(fDir.getName(),0,fDir.getAbsolutePath(),fDir.getAbsolutePath());
+            Device device = DeviceManager.getInstance().registerDevice(fDir.getName(),0,fDir.getAbsolutePath(),fDir.getAbsolutePath());
             device.setProperty(DEVICE_OPTION_AUTO_MOUNT,TRUE);
             device.setProperty(DEVICE_OPTION_AUTO_REFRESH,FALSE);
             try{

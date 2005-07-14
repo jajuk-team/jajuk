@@ -339,7 +339,7 @@ public class File extends PropertyAdapter implements Comparable,ITechnicalString
      */
     public String getHumanValue(String sKey){
         if (XML_DIRECTORY.equals(sKey)){
-            Directory dParent = DirectoryManager.getDirectory(getValue(sKey)); 
+            Directory dParent = (Directory)DirectoryManager.getInstance().getItem(getValue(sKey)); 
             return dParent.getFio().getAbsolutePath();
         }
         else if (XML_TRACK.equals(sKey)){

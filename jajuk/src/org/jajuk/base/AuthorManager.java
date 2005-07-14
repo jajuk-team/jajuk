@@ -20,9 +20,6 @@
 
 package org.jajuk.base;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 
 import org.jajuk.util.MD5Processor;
@@ -33,11 +30,8 @@ import org.jajuk.util.MD5Processor;
  * @created 17 oct. 2003
  */
 public class AuthorManager extends ItemManager{
-	/** Authors collection* */
-	static HashMap hmAuthors = new HashMap(100);
-
 	/**Self instance*/
-    static AuthorManager singleton;
+    private static AuthorManager singleton;
 
 	/**
 	 * No constructor available, only static access
@@ -49,7 +43,7 @@ public class AuthorManager extends ItemManager{
 /**
      * @return singleton
      */
-    public static ItemManager getInstance(){
+    public static AuthorManager getInstance(){
       if (singleton == null){
           singleton = new AuthorManager();
       }
@@ -62,7 +56,7 @@ public class AuthorManager extends ItemManager{
 	 * 
 	 * @param sName
 	 */
-	public static  synchronized Author registerAuthor(String sName) {
+	public  synchronized Author registerAuthor(String sName) {
 		String sId = MD5Processor.hash(sName.trim().toLowerCase());
 		return registerAuthor(sId, sName);
 	}
@@ -72,65 +66,35 @@ public class AuthorManager extends ItemManager{
 	 * 
 	 * @param sName
 	 */
-	public static  synchronized Author registerAuthor(String sId, String sName) {
-		String sIdTest = MD5Processor.hash(sName.trim().toLowerCase());
-		 //Hash checkup
-        if (!sId.equals(sIdTest)){ //collection corruption, ignore this entry
-                return null;
-        }
-		if (hmAuthors.containsKey(sIdTest)) {
-			return (Author) hmAuthors.get(sIdTest);
+	public  synchronized Author registerAuthor(String sId, String sName) {
+		if (hmItems.containsKey(sId)) {
+			return (Author) hmItems.get(sId);
 		}
 		Author author = new Author(sId, sName);
-		hmAuthors.put(sId, author);
+		hmItems.put(sId, author);
+        postRegistering(author);
 		return author;
-	}
+     }
+	    
+     /**
+     * Change the item name
+     * @param old
+     * @param sNewName
+     * @return new album
+     */
+    public synchronized Author changeAuthorName(Author old,String sNewName){
+        Author newItem = registerAuthor(sNewName);
+        Iterator it = TrackManager.getInstance().getItems().iterator();
+        while (it.hasNext()){
+            Track track = (Track)it.next();
+            if (track.getAuthor().equals(old)){
+                TrackManager.getInstance().changeTrackAuthor(track,newItem.getId());
+            }
+        }
+        cleanup();//remove useless albums if no more tracks use it
+        return newItem;
+    }
 	
-	/**
-		 * Perform an authors cleanup : delete useless items
-		 *
-		 */
-	public static synchronized void cleanup(){
-		HashSet hs = new HashSet(100);
-		Iterator itTracks = TrackManager.getTracks().iterator();
-		while (itTracks.hasNext()) {
-			Track track = (Track) itTracks.next();
-			Author author = track.getAuthor();
-			hs.add(author);
-		}
-		Iterator itAuthors = hmAuthors.values().iterator();
-		while (itAuthors.hasNext()) {
-			Author author = (Author) itAuthors.next();
-			if ( !hs.contains(author)){
-				itAuthors.remove();
-			}
-		}
-	}
-
-	/**
-	 * Remove an author
-	 * 
-	 * @param style  id
-	 */
-	public static  synchronized void remove(String sId) {
-		hmAuthors.remove(sId);
-	}
-
-	/** Return all registred Authors */
-	public static synchronized ArrayList getAuthors() {
-		return new ArrayList(hmAuthors.values());
-	}
-
-	/**
-	 * Return author by id
-	 * 
-	 * @param sName
-	 * @return
-	 */
-	public static  synchronized Author getAuthor(String sId) {
-		return (Author) hmAuthors.get(sId);
-	}
-
 	/**
 	 * Format the author name to be normalized :
 	 * <p>
@@ -145,7 +109,7 @@ public class AuthorManager extends ItemManager{
 	 * @param sName
 	 * @return
 	 */
-	private static synchronized String format(String sName) {
+	private synchronized String format(String sName) {
 		String sOut;
 		sOut = sName.trim(); //supress spaces at the begin and the end
 		sOut.replace('-', ' '); //move - to space

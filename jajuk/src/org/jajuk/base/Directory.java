@@ -195,7 +195,7 @@ public class Directory extends PropertyAdapter implements Comparable{
      */
     public ArrayList getFilesRecursively() {
         ArrayList alFiles = new ArrayList(100);
-        Iterator it = FileManager.getFiles().iterator();
+        Iterator it = FileManager.getInstance().getItems().iterator();
         while ( it.hasNext()){
             org.jajuk.base.File file = (org.jajuk.base.File)it.next();
             if ( file.hasAncestor(this)){
@@ -234,12 +234,12 @@ public class Directory extends PropertyAdapter implements Comparable{
                 if (files[i].isDirectory()){ //if it is a directory, continue
                     continue;
                 }
-                boolean bIsMusic = Boolean.valueOf(TypeManager.getTypeByExtension(Util.getExtension(files[i])).getValue(XML_TYPE_IS_MUSIC)).booleanValue();
+                boolean bIsMusic = Boolean.valueOf(TypeManager.getInstance().getTypeByExtension(Util.getExtension(files[i])).getValue(XML_TYPE_IS_MUSIC)).booleanValue();
                 if (bIsMusic) {
                     //check the file is not already known in old database
                     org.jajuk.base.File fileRef = null;
                     String sId = MD5Processor.hash(new StringBuffer(getDevice().getName()).append(getDevice().getUrl()).append(getRelativePath()).append(files[i].getName()).toString());
-                    Iterator it = TrackManager.getTracks().iterator();
+                    Iterator it = TrackManager.getInstance().getItems().iterator();
                     Track track = null;
                     while (it.hasNext()){
                         track = (Track)it.next();
@@ -256,7 +256,7 @@ public class Directory extends PropertyAdapter implements Comparable{
                         device.iNbNewFiles ++;  //stats
                     }
                     else if ( !ConfigurationManager.getBoolean(CONF_TAGS_DEEP_SCAN)){  //read tag data from database, no real read from file for performances reasons if only the deep scan is disable{
-                        org.jajuk.base.File file = FileManager.registerFile(fileRef.getId(),fileRef.getName(), 
+                        org.jajuk.base.File file = FileManager.getInstance().registerFile(fileRef.getId(),fileRef.getName(), 
                             this, fileRef.getTrack(), fileRef.getSize(),fileRef.getQuality());
                         addFile(file);
                         continue;
@@ -271,12 +271,12 @@ public class Directory extends PropertyAdapter implements Comparable{
                     String sQuality = tag.getQuality();
                     String sComment = tag.getComment();
                     
-                    Album album = AlbumManager.registerAlbum(sAlbumName);
-                    Style style = StyleManager.registerStyle(sStyle);
-                    Author author = AuthorManager.registerAuthor(sAuthorName);
-                    Type type = TypeManager.getTypeByExtension(Util.getExtension(files[i]));
-                    track = TrackManager.registerTrack(sTrackName, album, style, author, length, sYear, type);
-                    org.jajuk.base.File newFile = FileManager.registerFile(sId,files[i].getName(), this, track, 
+                    Album album = AlbumManager.getInstance().registerAlbum(sAlbumName);
+                    Style style = StyleManager.getInstance().registerStyle(sStyle);
+                    Author author = AuthorManager.getInstance().registerAuthor(sAuthorName);
+                    Type type = TypeManager.getInstance().getTypeByExtension(Util.getExtension(files[i]));
+                    track = TrackManager.getInstance().registerTrack(sTrackName, album, style, author, length, sYear, type);
+                    org.jajuk.base.File newFile = FileManager.getInstance().registerFile(sId,files[i].getName(), this, track, 
                         files[i].length(), sQuality);
                     addFile(newFile);
                     track.addFile(newFile);
@@ -296,8 +296,8 @@ public class Directory extends PropertyAdapter implements Comparable{
                     }
                     while (sTemp != null);
                     String sHashcode =MD5Processor.hash(sbContent.toString()); 
-                    PlaylistFile plFile = PlaylistFileManager.registerPlaylistFile(sId,sName,sHashcode,this);
-                    PlaylistManager.registerPlaylist(plFile);
+                    PlaylistFile plFile = PlaylistFileManager.getInstance().registerPlaylistFile(sId,sName,sHashcode,this);
+                    PlaylistManager.getInstance().registerPlaylist(plFile);
                     addPlaylistFile(plFile);
                 }
             }
@@ -420,7 +420,7 @@ public class Directory extends PropertyAdapter implements Comparable{
      */
     public String getHumanValue(String sKey){
         if (XML_DIRECTORY_PARENT.equals(sKey)){
-            Directory dParent = DirectoryManager.getDirectory(getValue(sKey)); 
+            Directory dParent = (Directory)DirectoryManager.getInstance().getItem(getValue(sKey)); 
             if (dParent == null){
               return ""; //no parent directory          
             }
@@ -429,7 +429,7 @@ public class Directory extends PropertyAdapter implements Comparable{
             }
         }
         else if (XML_DEVICE.equals(sKey)){
-            return DeviceManager.getDevice(getValue(sKey)).getName();
+            return ((Device)DeviceManager.getInstance().getItem(getValue(sKey))).getName();
         }
         if (XML_NAME.equals(sKey)){
             if (dParent == null){ //if no parent, take device name

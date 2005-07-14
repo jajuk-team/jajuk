@@ -46,7 +46,7 @@ public class Tag implements ITechnicalStrings{
 	 * @param fio
 	 */
 	public Tag(java.io.File fio) {
-		Type type = TypeManager.getTypeByExtension(Util.getExtension(fio));
+		Type type = TypeManager.getInstance().getTypeByExtension(Util.getExtension(fio));
 		tagImpl = type.getTagImpl();
 		try{
 			tagImpl.setFile(fio);

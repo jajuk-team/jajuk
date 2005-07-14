@@ -51,6 +51,7 @@ import javax.swing.event.ListSelectionListener;
 import org.jajuk.base.Directory;
 import org.jajuk.base.Event;
 import org.jajuk.base.FIFO;
+import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.History;
 import org.jajuk.base.HistoryItem;
@@ -355,7 +356,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 			    HistoryItem hi = null;
 			    hi = History.getInstance().getHistoryItem(jcbHistory.getSelectedIndex());
 			    if (hi != null){
-			        org.jajuk.base.File file = FileManager.getFileById(hi.getFileId());
+			        org.jajuk.base.File file = (File)FileManager.getInstance().getItem(hi.getFileId());
 			        if (file != null && !file.isScanned()){  //file must be on a device not refreshing
 			            try{
 			                FIFO.getInstance().push(new StackItem(file,ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
@@ -371,17 +372,17 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 			    }	
 			}
 			if (ae.getSource() == jbBestof ){
-			    ArrayList alToPlay = FileManager.getGlobalBestofPlaylist();
+			    ArrayList alToPlay = FileManager.getInstance().getGlobalBestofPlaylist();
 			    FIFO.getInstance().push(Util.createStackItems(alToPlay,
 							ConfigurationManager.getBoolean(CONF_STATE_REPEAT),false),false);
 			}
 			if (ae.getSource() == jbGlobalRandom ){
-				ArrayList alToPlay = FileManager.getGlobalShufflePlaylist();
+				ArrayList alToPlay = FileManager.getInstance().getGlobalShufflePlaylist();
 				FIFO.getInstance().push(Util.createStackItems(alToPlay,
 							ConfigurationManager.getBoolean(CONF_STATE_REPEAT),false),false);
 			}
 			if (ae.getSource() == jbNovelties ){
-				ArrayList alToPlay  = FileManager.getGlobalNoveltiesPlaylist();
+				ArrayList alToPlay  = FileManager.getInstance().getGlobalNoveltiesPlaylist();
                 if (alToPlay != null && alToPlay.size() != 0){
                     Collections.shuffle(alToPlay);//shuffle the selection    
                 }

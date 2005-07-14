@@ -89,7 +89,7 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter{
 			}
 		}
 		else{
-			if ((bFiles && TypeManager.isExtensionSupported(Util.getExtension(f)))){
+			if ((bFiles && TypeManager.getInstance().isExtensionSupported(Util.getExtension(f)))){
 				return true;
 			}
 		}
@@ -103,7 +103,7 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter{
 			return sOut;
 		}
 		if ( alTypes == null){ //if no type specified, we considere all Jajuk known files
-			sOut+=TypeManager.getTypeListString();
+			sOut+=TypeManager.getInstance().getTypeListString();
 		}
 		else{
 			Iterator it = alTypes.iterator();

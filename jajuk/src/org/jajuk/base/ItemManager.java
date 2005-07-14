@@ -22,7 +22,6 @@ package org.jajuk.base;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 
@@ -39,10 +38,11 @@ import org.xml.sax.Attributes;
 public abstract class ItemManager implements ITechnicalStrings{
 
     /**Custom Properties -> format*/
-    LinkedHashMap properties;
+   protected  LinkedHashMap properties;
     /** Map ids and properties, survives to a refresh, is used to recover old properties after refresh */
-	HashMap hmIdProperties = new HashMap(1000);
-    
+	protected LinkedHashMap hmIdProperties = new LinkedHashMap(1000);
+    /**Items collection**/
+    protected LinkedHashMap hmItems = new LinkedHashMap(100);
     /**
      * Constructor
      *
@@ -52,7 +52,6 @@ public abstract class ItemManager implements ITechnicalStrings{
     }
     
     /**
-     * 
      * @return identifier used for XML generation
      */
     abstract public String getIdentifier();
@@ -141,46 +140,7 @@ public abstract class ItemManager implements ITechnicalStrings{
             }    
         }
     }
-    
-    /**
-     * 
-     * @return items for given item manager
-     */
-    public Collection getItems(){
-        Collection items = null;
-        if (this instanceof AlbumManager){
-            items = AlbumManager.getAlbums();
-        }
-        else if (this instanceof AuthorManager){
-            items = AuthorManager.getAuthors();
-        }
-        else if (this instanceof DeviceManager){
-            items = DeviceManager.getDevicesList();
-        }
-        else if (this instanceof DirectoryManager){
-            items = DirectoryManager.getDirectories();
-        }
-        else if (this instanceof FileManager){
-            items = FileManager.getFiles();
-        }
-        else if (this instanceof PlaylistFileManager){
-            items = PlaylistFileManager.getPlaylistFiles();
-        }
-        else if (this instanceof PlaylistManager){
-            items = PlaylistManager.getPlaylists();
-        }
-        else if (this instanceof StyleManager){
-            items = StyleManager.getStyles();
-        }
-        else if (this instanceof TrackManager){
-            items = TrackManager.getTracks();
-        }
-        else if (this instanceof TypeManager){
-            items = TypeManager.getTypes();
-        }
-        return items;
-    }
-    
+     
     /**
      * 
      * @return XML representation of this manager
@@ -197,10 +157,19 @@ public abstract class ItemManager implements ITechnicalStrings{
         return sb.toString();
     }
     
+    /**
+     * 
+     * @return custom properties
+     */
     public Collection getCustomProperties(){
         return properties.keySet();
     }
   
+    /**
+     * 
+     * @param index
+     * @return
+     */
     public String getPropertyAtIndex(int index){
         ArrayList al = new ArrayList(properties.keySet());
     	return (String)al.get(index);
@@ -219,45 +188,95 @@ public abstract class ItemManager implements ITechnicalStrings{
     }
     
     /**
-     *  Get Item with a given attribute name and ID   
+     *  Get Item with a given attribute name   
      * @param sItem
-     * @param sID
      * @return
      */
-    public static IPropertyable getItemByID(String sItem,String sID){
-        if (XML_DEVICE.equals(sItem)){
-            return DeviceManager.getDevice(sID);
+    public static ItemManager getItemManager(String sProperty){
+        if (XML_DEVICE.equals(sProperty)){
+            return DeviceManager.getInstance();
         }
-        else if (XML_TRACK.equals(sItem)){
-            return TrackManager.getTrack(sID);
+        else if (XML_TRACK.equals(sProperty)){
+            return TrackManager.getInstance();
         }
-        else if (XML_ALBUM.equals(sItem)){
-            return AlbumManager.getAlbum(sID);
+        else if (XML_ALBUM.equals(sProperty)){
+            return AlbumManager.getInstance();
         }
-        else if (XML_AUTHOR.equals(sItem)){
-            return AuthorManager.getAuthor(sID);
+        else if (XML_AUTHOR.equals(sProperty)){
+            return AuthorManager.getInstance();
         }
-        else if (XML_STYLE.equals(sItem)){
-            return StyleManager.getStyle(sID);
+        else if (XML_STYLE.equals(sProperty)){
+            return StyleManager.getInstance();
         }
-        else if (XML_DIRECTORY.equals(sItem)){
-            return DirectoryManager.getDirectory(sID);
+        else if (XML_DIRECTORY.equals(sProperty)){
+            return DirectoryManager.getInstance();
         }
-        else if (XML_FILE.equals(sItem)){
-            return FileManager.getFileById(sID);
+        else if (XML_FILE.equals(sProperty)){
+            return FileManager.getInstance();
         }
-        else if (XML_PLAYLIST_FILE.equals(sItem)){
-            return PlaylistFileManager.getPlaylistFile(sID);
+        else if (XML_PLAYLIST_FILE.equals(sProperty)){
+            return PlaylistFileManager.getInstance();
         }
-        else if (XML_PLAYLIST.equals(sItem)){
-            return PlaylistManager.getPlaylist(sID);
+        else if (XML_PLAYLIST.equals(sProperty)){
+            return PlaylistManager.getInstance();
         }
-        else if (XML_TYPE.equals(sItem)){
-            return TypeManager.getType(sID);
+        else if (XML_TYPE.equals(sProperty)){
+            return TypeManager.getInstance();
         }
         else{
             return null;
         }
+    }
+    
+    /**
+     * Perform an cleanup : delete useless items
+     */
+    public synchronized void cleanup() {
+        Iterator it = hmItems.values().iterator();
+        while (it.hasNext()) {
+            IPropertyable item = (IPropertyable) it.next();
+            if ( TrackManager.getInstance().getAssociatedTracks(item).size() == 0){
+                it.remove();
+            }
+        }
+    }
+    
+    /**
+     * Perform a cleanup for a given item
+     */
+    public synchronized void cleanup(IPropertyable item) {
+        if ( TrackManager.getInstance().getAssociatedTracks(item).size() == 0){
+            hmItems.remove(((PropertyAdapter)item).getId());
+        }
+    }
+    
+     /**Return all registred items*/
+    public synchronized Collection getItems() {
+        return hmItems.values();
+    }
+    
+      /**Return a given item*/
+    public synchronized IPropertyable getItem(String sID) {
+        return (IPropertyable)hmItems.get(sID);
+    }
+    
+    /**
+     * Delete an item
+     * @param sId
+     */
+    public synchronized void remove(String sId){
+        hmItems.remove(sId);
+    }
+    
+    /**
+     * Post registering code
+     * @param item
+     */
+    public void postRegistering( IPropertyable item){
+         //try to recover some properties previous a refresh
+        restorePropertiesAfterRefresh(item,((PropertyAdapter)item).getId());
+        //apply default custom properties
+        applyNewProperties();
     }
     
 }

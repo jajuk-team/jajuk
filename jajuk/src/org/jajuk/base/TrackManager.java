@@ -24,7 +24,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Properties;
 
@@ -36,10 +35,8 @@ import org.jajuk.util.MD5Processor;
  * @created 17 oct. 2003
  */
 public class TrackManager extends ItemManager implements Observer{
-	/** Tracks collection maps: ID -> track* */
-	static HashMap hmTracks = new HashMap(100);
     /**Self instance*/
-    static TrackManager singleton;
+    private static TrackManager singleton;
    
    
 	/**
@@ -54,7 +51,7 @@ public class TrackManager extends ItemManager implements Observer{
     /**
      * @return singleton
      */
-    public static ItemManager getInstance(){
+    public static TrackManager getInstance(){
       if (singleton == null){
           singleton = new TrackManager();
       }
@@ -66,7 +63,7 @@ public class TrackManager extends ItemManager implements Observer{
 	 * 
 	 * @param sName
 	 */
-	public static synchronized Track registerTrack(String sName, Album album, Style style, Author author, long length, String sYear, Type type) {
+	public synchronized Track registerTrack(String sName, Album album, Style style, Author author, long length, String sYear, Type type) {
 		String sId = MD5Processor.hash(style.getName() + author.getName() +album.getName() + sYear + length + type.getName() + sName);
 		return registerTrack(sId, sName, album, style, author, length, sYear, type);
 	}
@@ -78,21 +75,20 @@ public class TrackManager extends ItemManager implements Observer{
      * @param sValue
      *
      */
-    public static synchronized void changeTrackProperty(Track track,String  sProperty, String sValue) {
+    public synchronized void changeTrackProperty(Track track,String  sProperty, String sValue) {
         track.setProperty(sProperty,sValue);
     }
     
     /**
      * Change a track album 
-     * @param old
-     * @param sProperty
-     * @param sValue
+     * @param old track
+     * @param new album name
      * @return new track
      *
      */
-    public static synchronized Track changeTrackAlbum(Track track,String sNewAlbum) {
+    public synchronized Track changeTrackAlbum(Track track,String sNewAlbum) {
         //register the new album
-    	Album newAlbum = AlbumManager.registerAlbum(sNewAlbum);
+    	Album newAlbum = AlbumManager.getInstance().registerAlbum(sNewAlbum);
         //reset previous properties like exp
     	newAlbum.cloneProperties(track.getAlbum());
         Track newTrack = registerTrack(track.getName(),newAlbum,track.getStyle(),track.getAuthor(),track.getLength(),
@@ -110,49 +106,67 @@ public class TrackManager extends ItemManager implements Observer{
             tag.commit();
         }
         remove(track.getId());//remove old reference
-    	AlbumManager.cleanup(track.getAlbum()); //remove this album if no more references
+    	AlbumManager.getInstance().cleanup(track.getAlbum()); //remove this album if no more references
     	return newTrack;
     }
     
-
+ /**
+     * Change a track author 
+     * @param old track
+     * @param new author name
+     * @return new track
+     */
+    public synchronized Track changeTrackAuthor(Track track,String sNewAuthor) {
+        //register the new item
+        Author newAuthor = AuthorManager.getInstance().registerAuthor(sNewAuthor);
+        //reset previous properties like exp
+        newAuthor.cloneProperties(track.getAuthor());
+        Track newTrack = registerTrack(track.getName(),track.getAlbum(),track.getStyle(),newAuthor,track.getLength(),
+                track.getYear(),track.getType());
+        //re apply old properties from old item
+        newTrack.cloneProperties(track);
+       //change tag in files
+        Iterator it = track.getFiles().iterator();
+        while (it.hasNext()){
+            File file = (File)it.next();
+            file.setTrack(newTrack);
+            newTrack.addFile(file);
+            Tag tag = new Tag(file.getIO());
+            tag.setAuthorName(newAuthor.getName2());
+            tag.commit();
+        }
+        remove(track.getId());//remove old reference
+        AuthorManager.getInstance().cleanup(track.getAuthor()); //remove this album if no more references
+        return newTrack;
+    }
+   
+    
+    
 	/**
 	 * Register an Track with a known id
 	 * 
 	 * @param sName
 	 */
-	public static synchronized Track registerTrack(String sId, String sName, Album album, Style style, Author author, long length, String sYear, Type type) {
-		if (!hmTracks.containsKey(sId)) {
+	public synchronized Track registerTrack(String sId, String sName, Album album, Style style, Author author, long length, String sYear, Type type) {
+		if (!hmItems.containsKey(sId)) {
 			String sAdditionDate = new SimpleDateFormat(DATE_FILE).format(new Date());
 			Track track = new Track(sId, sName, album, style, author, length, sYear, type);
 			track.setAdditionDate(sAdditionDate);
-			hmTracks.put(sId, track);
-			//try to recover some properties previous a refresh
-			getInstance().restorePropertiesAfterRefresh(track,sId);
-			//apply default custom properties
-			getInstance().applyNewProperties();
+			hmItems.put(sId, track);
+			postRegistering(track);
 			return track;
 		}
 		else{
-			return (Track)hmTracks.get(sId);
+			return (Track)hmItems.get(sId);
 		}
 	}
-
-	/**
-	 * Remove a track
-	 * 
-	 * @param style
-	 *                   id
-	 */
-	public static synchronized void remove(String sId) {
-		hmTracks.remove(sId);
-	}
-
+	
 	/**
 	 * Perform a track cleanup : delete useless items
 	 *  
 	 */
-	public static synchronized void cleanup() {
-		Iterator itTracks = hmTracks.values().iterator();
+	public synchronized void cleanup() {
+		Iterator itTracks = hmItems.values().iterator();
 		while (itTracks.hasNext()) {
 			Track track = (Track) itTracks.next();
 			if ( track.getFiles().size() == 0){ //no associated file
@@ -162,7 +176,7 @@ public class TrackManager extends ItemManager implements Observer{
 			Iterator itFiles = track.getFiles().iterator();
 			while (itFiles.hasNext()) {
 				org.jajuk.base.File file = (org.jajuk.base.File) itFiles.next();
-				if (FileManager.getFileById(file.getId()) == null) { //test if the file exists in the main file repository
+				if ((File)FileManager.getInstance().getItem(file.getId()) == null) { //test if the file exists in the main file repository
 					itFiles.remove();//no? remove it from the track
 				}
 			}
@@ -172,28 +186,14 @@ public class TrackManager extends ItemManager implements Observer{
 		}
 	}
 
-	/** Return all registred Tracks */
-	public static synchronized ArrayList getTracks() {
-		return new ArrayList(hmTracks.values());
-	}
-	
 	
 	/** Return sorted registred Tracks */
-		public static synchronized ArrayList getSortedTracks() {
-			ArrayList alTracks = new ArrayList(hmTracks.values());
+		public synchronized ArrayList getSortedTracks() {
+			ArrayList alTracks = new ArrayList(hmItems.values());
 			Collections.sort(alTracks);
 			return alTracks;
 		}
 
-	/**
-	 * Return Track by id
-	 * 
-	 * @param sName
-	 * @return
-	 */
-	public static synchronized Track getTrack(String sId) {
-		return (Track) hmTracks.get(sId);
-	}
 
 	/**
 	 * Format the tracks names to be normalized :
@@ -209,7 +209,7 @@ public class TrackManager extends ItemManager implements Observer{
 	 * @param sName
 	 * @return
 	 */
-	private static synchronized String format(String sName) {
+	private synchronized String format(String sName) {
 		String sOut;
 		sOut = sName.trim(); //supress spaces at the begin and the end
 		sOut.replace('-', ' '); //move - to space
@@ -227,9 +227,7 @@ public class TrackManager extends ItemManager implements Observer{
     public String getIdentifier() {
         return XML_TRACKS;
     }    
-    
-  
-    
+      
     /* (non-Javadoc)
      * @see org.jajuk.base.Observer#update(org.jajuk.base.Event)
      */
@@ -243,6 +241,25 @@ public class TrackManager extends ItemManager implements Observer{
             track.removeFile(fileOld);
             track.addFile(fNew);
         }
+    }
+    
+    /**
+     * Get all tracks associated with this track
+     * @param item
+     * @return
+     */
+    public ArrayList  getAssociatedTracks(IPropertyable item){
+        ArrayList alOut = new ArrayList(100);
+        Iterator it = hmItems.values().iterator();
+        while (it.hasNext()){ //scan each track
+            Track track = (Track)it.next();
+            if ( (item instanceof Album &&  track.getAlbum().equals(item))
+                    || (item instanceof Author &&  track.getAuthor().equals(item))
+                    || (item instanceof Style &&  track.getStyle().equals(item)) ){
+                alOut.add(track);
+            }
+        }
+        return alOut;
     }
     
 }
