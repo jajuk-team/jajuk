@@ -290,8 +290,35 @@ public abstract class ItemManager implements ITechnicalStrings{
         IPropertyable newItem = null;
         if (itemToChange instanceof File){
             File file = (File)itemToChange;
-            if (XML_NAME.equals(sKey)){
+            if (XML_NAME.equals(sKey)){ //file name
                 newItem = FileManager.getInstance().changeFileName((File)itemToChange,sValue);
+            }
+            else if (XML_TRACK.equals(sKey)){ //track name
+                newItem = TrackManager.getInstance().changeTrackName(file.getTrack(),sValue);
+            }
+            else if (XML_STYLE.equals(sKey)){
+                newItem = TrackManager.getInstance().changeTrackStyle(file.getTrack(),sValue);
+            }
+            else if (XML_ALBUM.equals(sKey)){
+                newItem = TrackManager.getInstance().changeTrackAlbum(file.getTrack(),sValue);
+            }
+            else if (XML_AUTHOR.equals(sKey)){
+                newItem = TrackManager.getInstance().changeTrackAuthor(file.getTrack(),sValue);
+            }
+            else if (XML_COMMENT.equals(sKey)){
+                newItem = TrackManager.getInstance().changeTrackComment(file.getTrack(),sValue);
+            }
+            else if (XML_TRACK_ORDER.equals(sKey)){
+                newItem = TrackManager.getInstance().changeTrackOrder(file.getTrack(),sValue);
+            }
+            else if (XML_TRACK_YEAR.equals(sKey)){
+                newItem = TrackManager.getInstance().changeTrackYear(file.getTrack(),sValue);
+            }
+            else if (XML_TRACK_RATE.equals(sKey)){
+                newItem = TrackManager.getInstance().changeTrackRate(file.getTrack(),sValue);
+            }
+            else{ //others properties
+                itemToChange. setProperty(sKey,sValue);
             }
         }
         else if (itemToChange instanceof Track){
@@ -315,6 +342,9 @@ public abstract class ItemManager implements ITechnicalStrings{
             }
             else if (XML_TRACK_YEAR.equals(sKey)){
                 newItem = TrackManager.getInstance().changeTrackYear((Track)itemToChange,sValue);
+            }
+            else if (XML_TRACK_RATE.equals(sKey)){
+                newItem = TrackManager.getInstance().changeTrackRate((Track)itemToChange,sValue);
             }
             else{ //others properties
                 itemToChange. setProperty(sKey,sValue);

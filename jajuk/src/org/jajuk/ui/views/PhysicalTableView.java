@@ -27,14 +27,10 @@ import java.util.Iterator;
 
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
-import javax.swing.event.TableModelEvent;
 
-import org.jajuk.base.Event;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
-import org.jajuk.base.ItemManager;
-import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Observer;
 import org.jajuk.base.StackItem;
 import org.jajuk.i18n.Messages;
@@ -257,28 +253,7 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
             }.start();
         }
     }
-    
-   /* (non-Javadoc)
-     * @see javax.swing.event.TableModelListener#tableChanged(javax.swing.event.TableModelEvent)
-     */
-    public void tableChanged(TableModelEvent e) {
-        String sKey = model.getIdentifier(e.getColumn());
-        Object oValue = model.getValueAt(e.getFirstRow(),e.getColumn());//can be Boolean or String
-        File file = (File)model.getItemAt(e.getFirstRow());
-        String sValue = null;
-        if (oValue instanceof Boolean){
-            sValue = ((Boolean)oValue).toString();
-        }
-        else{
-            sValue = oValue.toString();
-        }
-        File fileNew = (File)ItemManager.changeItem(file,sKey,sValue);
-        if (fileNew != null){
-            ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH)); //TBI see later for a smarter event
-        }
-    }
-    
-    
+      
     /* (non-Javadoc)
      * @see org.jajuk.ui.views.AbstractTableView#isEditable()
      */

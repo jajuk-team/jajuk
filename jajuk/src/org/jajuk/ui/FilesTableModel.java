@@ -50,7 +50,7 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
 	 * @param sColName columns names
 	 */
 	public FilesTableModel(){
-		super(12);
+		super(13);
         //Columns names
         vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_NAME));
         vId.add(XML_TRACK);
@@ -87,6 +87,9 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
         
          vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_TRACK_ORDER));
         vId.add(XML_TRACK_ORDER);
+        
+        vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_TRACK_YEAR));
+        vId.add(XML_TRACK_YEAR);
         
         //Custom properties now
         Iterator it = FileManager.getInstance().getCustomProperties().iterator();
@@ -203,6 +206,9 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
             //Order
             oValues[iRow][11] = new Integer(file.getTrack().getOrder());
             bCellEditable[iRow][11] = true;
+            //year
+            oValues[iRow][12] = file.getTrack().getYear2();
+            bCellEditable[iRow][12] = true;
             //Custom properties now
             Iterator it2 = FileManager.getInstance().getCustomProperties().iterator();
             for (int i=0;it2.hasNext();i++){

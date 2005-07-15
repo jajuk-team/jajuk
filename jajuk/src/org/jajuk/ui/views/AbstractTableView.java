@@ -46,9 +46,12 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.TableColumnModelEvent;
 import javax.swing.event.TableColumnModelListener;
+import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
 import org.jajuk.base.Event;
+import org.jajuk.base.IPropertyable;
+import org.jajuk.base.ItemManager;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.JajukTable;
@@ -485,5 +488,25 @@ public abstract class AbstractTableView extends ViewAdapter
      * @return whether this table is editable
      */
     abstract public boolean isEditable();
+    
+    /* (non-Javadoc)
+     * @see javax.swing.event.TableModelListener#tableChanged(javax.swing.event.TableModelEvent)
+     */
+    public void tableChanged(TableModelEvent e) {
+        String sKey = model.getIdentifier(e.getColumn());
+        Object oValue = model.getValueAt(e.getFirstRow(),e.getColumn());//can be Boolean or String
+        IPropertyable item = model.getItemAt(e.getFirstRow());
+        String sValue = null;
+        if (oValue instanceof Boolean){
+            sValue = ((Boolean)oValue).toString();
+        }
+        else{
+            sValue = oValue.toString();
+        }
+        IPropertyable itemNew = ItemManager.changeItem(item,sKey,sValue);
+        if (itemNew != null){
+            ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH)); //TBI see later for a smarter event
+        }
+    }
     
 }

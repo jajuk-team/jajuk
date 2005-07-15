@@ -51,7 +51,7 @@ public class TracksTableModel extends JajukTableModel{
 	 * @param sColName columns names
 	 */
 	public TracksTableModel(){
-	    super(9);
+	    super(10);
         
         //Columns names
         vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_NAME));
@@ -80,6 +80,9 @@ public class TracksTableModel extends JajukTableModel{
     
         vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_TRACK_ORDER));
         vId.add(XML_TRACK_ORDER);
+    
+        vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_TRACK_YEAR));
+        vId.add(XML_TRACK_YEAR);
     
         //custom properties now
         Iterator it = TrackManager.getInstance().getCustomProperties().iterator();
@@ -188,6 +191,9 @@ public class TracksTableModel extends JajukTableModel{
              //Order
             oValues[iRow][8] = new Integer(track.getOrder());
             bCellEditable[iRow][8] = true;
+             //Year
+            oValues[iRow][9] = track.getYear2();
+            bCellEditable[iRow][9] = true;
             //Custom properties now
             Iterator it2 = TrackManager.getInstance().getCustomProperties().iterator();
             for (int i=0;it2.hasNext();i++){

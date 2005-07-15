@@ -215,6 +215,30 @@ public class TrackManager extends ItemManager implements Observer{
         return track;
     }
     
+    
+      /**
+     * Change a track comment 
+     * @param old item
+     * @param new item name
+     * @return new track or null if wrong format
+     */
+    public synchronized Track changeTrackRate(Track track,String sNewItem) {
+        //check format
+        long  l = 0l;
+        try{
+            l = Integer.parseInt(sNewItem);
+            if (l <0 ){
+                throw new Exception();
+            }
+        }
+        catch(Exception e){
+            Messages.showErrorMessage("137");
+            return null;
+        }
+       track.setRate(l);
+       return track;
+    }
+    
      /**
      * Change a track order 
      * @param old item

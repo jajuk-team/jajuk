@@ -209,7 +209,8 @@ public class ConfigurationManager implements ITechnicalStrings{
                 XML_TRACK_STYLE+','+XML_TRACK_LENGTH+','+XML_DEVICE+','+XML_NAME+','+','+
                 XML_TRACK_RATE );
         properties.put(CONF_LOGICAL_TABLE_COLUMNS,XML_NAME+','+XML_ALBUM+','+XML_AUTHOR+','+
-              XML_TRACK_STYLE+','+XML_TRACK_LENGTH+','+','+XML_TRACK_RATE+','+XML_TRACK_ADDED);
+              XML_TRACK_STYLE+','+XML_TRACK_LENGTH+','+','+XML_TRACK_RATE+','+XML_TRACK_ADDED+','+
+              XML_TRACK_YEAR);
         properties.put(CONF_WINDOW_POSITION,"50,50,"+ //$NON-NLS-1$
             (int)(Toolkit.getDefaultToolkit().getScreenSize().getWidth()-100)+","+ //$NON-NLS-1$
             (int)(Toolkit.getDefaultToolkit().getScreenSize().getHeight()-100)); //Window position: X,Y,X_size,Y_size

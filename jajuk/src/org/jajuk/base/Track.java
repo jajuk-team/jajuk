@@ -362,7 +362,7 @@ public class Track extends PropertyAdapter implements Comparable{
 	 */
 	public void setRate(long rate) {
 		this.lRate = rate;
-        setProperty(XML_COMMENT,Long.toString(rate));
+        setProperty(XML_TRACK_RATE,Long.toString(rate));
 	}
 
     /**
