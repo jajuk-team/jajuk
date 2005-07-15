@@ -195,7 +195,7 @@ public class PropertiesWizard extends JFrame implements ITechnicalStrings {
 					if (XML_NAME.equals(sKey)){
                         trackNew = TrackManager.getInstance().changeTrackName(track,sValue);
 					}
-					if (XML_STYLE.equals(sKey)){
+                    else if (XML_STYLE.equals(sKey)){
 				        trackNew = TrackManager.getInstance().changeTrackStyle(track,sValue);
                 	}
 					else if (XML_ALBUM.equals(sKey)){

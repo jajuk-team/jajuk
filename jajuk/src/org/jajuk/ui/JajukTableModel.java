@@ -84,6 +84,7 @@ public abstract class JajukTableModel extends DefaultTableModel  implements ITec
     
     public  synchronized void setValueAt(Object oValue, int rowIndex, int columnIndex) {
         oValues[rowIndex][columnIndex] = oValue;
+        fireTableCellUpdated(rowIndex,columnIndex);
     }
 
     /* (non-Javadoc)
