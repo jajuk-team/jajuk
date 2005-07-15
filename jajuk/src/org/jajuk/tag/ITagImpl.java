@@ -71,7 +71,7 @@ public interface ITagImpl {
      * @return track order
      * @throws Exception
      */
-    public String getOrder() throws Exception;
+    public int getOrder() throws Exception;
     
     /**
      * @return specific property or null if property not tagged

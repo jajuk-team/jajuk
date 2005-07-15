@@ -186,7 +186,7 @@ public class TracksTableModel extends JajukTableModel{
                 Log.error(e1);
             }
              //Order
-            oValues[iRow][8] = track.getOrder2();
+            oValues[iRow][8] = new Integer(track.getOrder());
             bCellEditable[iRow][8] = true;
             //Custom properties now
             Iterator it2 = TrackManager.getInstance().getCustomProperties().iterator();

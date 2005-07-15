@@ -298,7 +298,9 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 	            track.setRate(Long.parseLong(attributes.getValue(8)));
 	            track.setHits(Integer.parseInt(attributes.getValue(10)));
 	            track.setAdditionDate(attributes.getValue(11));
-	            track.populateProperties(attributes,12);
+	            track.setComment(attributes.getValue(12));
+                track.setOrder(Integer.parseInt(attributes.getValue(13)));
+                track.populateProperties(attributes,14);
 	        }
 	        else if (XML_DIRECTORY.equals(sQName)){
 	            Directory dParent = null;

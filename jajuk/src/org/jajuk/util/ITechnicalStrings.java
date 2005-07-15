@@ -77,7 +77,6 @@ public interface ITechnicalStrings {
 	public static final String UNKNOWN_STYLE = "unknown_style";
 	public static final String UNKNOWN_QUALITY = "unknown_quality";
 	public static final String UNKNOWN_YEAR = "unknown_year";
-    public static final String UNKNOWN_ORDER = "unknown_order";
     	
 	// icons
 	public static final String ICON_LOGO = PATH_ICONS + "64x64/jajuk-logo.png";

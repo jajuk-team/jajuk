@@ -144,12 +144,9 @@ public class EntaggedTagImpl implements ITagImpl,ITechnicalStrings {
       /* (non-Javadoc)
      * @see org.jajuk.tag.ITagImpl#getOrder()
      */
-    public String getOrder() throws Exception {
+    public int getOrder() throws Exception {
         String sOrder = tag.getFirstTrack();
-        if ("".equals(sOrder.trim())){
-            sOrder = UNKNOWN_ORDER;
-        }
-        return sOrder;
+        return Integer.parseInt(sOrder); //try to parse integer
     }
 
     

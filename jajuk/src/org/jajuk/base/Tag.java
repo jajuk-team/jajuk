@@ -249,26 +249,18 @@ public class Tag implements ITechnicalStrings{
      /**
      * @return comment
      */
-    public String getOrder() {
-        String sOrder = UNKNOWN_ORDER;
-        //if the type doesn't support tags ( like wav )
-        if (tagImpl == null){  
-            return sOrder;
-        }
-        String sTemp = ""; //$NON-NLS-1$
+    public int getOrder() {
+        int i = 0;
         try {
-            sTemp = tagImpl.getOrder();
-            if (sTemp != null && !sTemp.equals("")){ //$NON-NLS-1$
-                int i = Integer.parseInt(sTemp); //test it is an integer
-                if (i < 0){
-                    throw new Exception();
-                }
-                sOrder = sTemp;
+            i = tagImpl.getOrder();
+            if (i < 0){
+               throw new Exception();
             }
         } catch (Exception e) {
             Log.error("103",fio.getName(), e); //$NON-NLS-1$
+            i = 0;
         }
-        return sOrder;    
+        return i;    
     }
 	
 	/**

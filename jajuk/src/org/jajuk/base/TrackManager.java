@@ -203,7 +203,7 @@ public class TrackManager extends ItemManager implements Observer{
      * @return new track or null if wronf format
      */
     public synchronized Track changeTrackComment(Track track,String sNewItem) {
-       track.setProperty(XML_COMMENT,sNewItem);
+       track.setComment(sNewItem);
         //change tag in files
         Iterator it = track.getFiles().iterator();
         while (it.hasNext()){
@@ -234,7 +234,7 @@ public class TrackManager extends ItemManager implements Observer{
             Messages.showErrorMessage("137");
             return null;
         }
-        track.setProperty(XML_TRACK_ORDER,sNewItem);
+        track.setOrder(i);
         //change tag in files
         Iterator it = track.getFiles().iterator();
         while (it.hasNext()){

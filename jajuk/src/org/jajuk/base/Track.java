@@ -62,6 +62,10 @@ public class Track extends PropertyAdapter implements Comparable{
 	private int iSessionHits = 0;
     /**Date format*/
     private static SimpleDateFormat sdf= new SimpleDateFormat(DATE_FILE);
+    /**Comment*/
+    private String sComment;
+    /**Order*/
+    private int iOrder = 0;
     
 	/**
 	 *  Track constructor
@@ -121,7 +125,9 @@ public class Track extends PropertyAdapter implements Comparable{
 	 * toString method
 	 */
 	public String toString() {
-		String sOut = "Track[ID="+sId+" Name=" + getName() + " "+album+" "+style+" "+author+" Length="+length+" Year="+sYear+" Rate="+lRate+" "+type+" Hits="+iHits+" Addition date="+sAdditionDate+"]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$ //$NON-NLS-12$
+		String sOut = "Track[ID="+sId+" Name=" + getName() + " "+album+" "+
+            style+" "+author+" Length="+length+" Year="+sYear+" Rate="+lRate+" "+
+            type+" Hits="+iHits+" Addition date="+sAdditionDate+" Comment="+sComment+" order="+iOrder+"]"; 
 		for (int i=0;i<alFiles.size();i++){
 			sOut += '\n'+alFiles.get(i).toString();
 		}
@@ -135,7 +141,10 @@ public class Track extends PropertyAdapter implements Comparable{
 	 */
 	public int compareTo(Object o){
 		Track otherTrack = (Track)o;
-		return  sHashCompare.compareToIgnoreCase(otherTrack.getHashCompare());
+        if (otherTrack.getAlbum().equals(album)){
+            return getOrder() - otherTrack.getOrder(); 
+        }
+        return  sHashCompare.compareToIgnoreCase(otherTrack.getHashCompare());
 	}
 	
 	/**
@@ -226,6 +235,14 @@ public class Track extends PropertyAdapter implements Comparable{
 		return iHits;
 	}
 
+    /**
+     * Get track number
+     * @return
+     */
+    public int getOrder(){
+        return this.iOrder;
+    }
+    
 	/**
 	 * @return
 	 */
@@ -244,19 +261,7 @@ public class Track extends PropertyAdapter implements Comparable{
         }
         return sOut;
     }
-    
-    /**
-     * Return order, dealing with unkwnown for any language
-     * @return year
-     *  */
-    public String getOrder2() {
-        String sOut = getValue(XML_TRACK_ORDER);
-        if (sOut.equals(UNKNOWN_ORDER)){ 
-            sOut = Messages.getString(UNKNOWN_ORDER); 
-        }
-        return sOut;
-    }
-
+   
 	/**
 	 * @return length in sec
 	 */
@@ -348,20 +353,33 @@ public class Track extends PropertyAdapter implements Comparable{
         setProperty(XML_TRACK_HITS,Integer.toString(hits));
 	}
 	
-		public void incHits() {
-			setHits(getHits()+1);
-		}
-
+	public void incHits() {
+	    setHits(getHits()+1);
+	}
 
 	/**
 	 * @param rate The lRate to set.
 	 */
 	public void setRate(long rate) {
 		this.lRate = rate;
-        setProperty(XML_TRACK_RATE,Long.toString(rate));
+        setProperty(XML_COMMENT,Long.toString(rate));
 	}
 
-	
+    /**
+     * @param order to set
+     */
+    public void setOrder(int iOrder) {
+        this.iOrder = iOrder;
+        setProperty(XML_TRACK_ORDER,Integer.toString(iOrder));
+    }
+    
+    /**
+     * @param rate The lRate to set.
+     */
+    public void setComment(String sComment) {
+        this.sComment = sComment;
+        setProperty(XML_TRACK_RATE,sComment);
+    }	
 
 	/**
 	 * @param additionDate The sAdditionDate to set.
@@ -370,8 +388,6 @@ public class Track extends PropertyAdapter implements Comparable{
 		this.sAdditionDate = additionDate;
         setProperty(XML_TRACK_ADDED,additionDate);
 	}
-
-	
 
 	/**
 	 * @return Returns the sHashCompare.

@@ -201,7 +201,7 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
             oValues[iRow][10] = new Integer((int)(file.getSize()>>20));
             bCellEditable[iRow][10] = false;
             //Order
-            oValues[iRow][11] = file.getTrack().getOrder2();
+            oValues[iRow][11] = new Integer(file.getTrack().getOrder());
             bCellEditable[iRow][11] = true;
             //Custom properties now
             Iterator it2 = FileManager.getInstance().getCustomProperties().iterator();
