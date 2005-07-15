@@ -28,10 +28,12 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.regex.PatternSyntaxException;
 
+import org.jajuk.base.IPropertyable;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.i18n.Messages;
+import org.jajuk.ui.views.LogicalTableView;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
@@ -147,10 +149,13 @@ public class TracksTableModel extends JajukTableModel{
         iRowNum = alToShow.size();
         it = alToShow.iterator();
         oValues = new Object[iRowNum][iColNum];
+        oItems = new IPropertyable[iRowNum];
         bCellEditable = new boolean[iRowNum][iColNum];
         for (int iRow = 0;it.hasNext();iRow++){
             Track track = (Track)it.next();
             LinkedHashMap smProperties = track.getProperties();
+            //Id
+            oItems[iRow] = track;
             //Track name
             oValues[iRow][0] = track.getName();
             bCellEditable[iRow][0] = true;
@@ -212,6 +217,14 @@ public class TracksTableModel extends JajukTableModel{
                 bCellEditable[iRow][iNumberStandardRows+i] = true;
             }
         }
+    }
+
+    /* (non-Javadoc)
+     * @see org.jajuk.ui.JajukTableModel#getEditableMode()
+     */
+    @Override
+    public boolean isEditable() {
+        return LogicalTableView.getInstance().isEditable();
     }
   	
 }

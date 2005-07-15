@@ -46,6 +46,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.TableColumnModelEvent;
 import javax.swing.event.TableColumnModelListener;
+import javax.swing.event.TableModelListener;
 
 import org.jajuk.base.Event;
 import org.jajuk.base.ObservationManager;
@@ -54,6 +55,7 @@ import org.jajuk.ui.JajukTable;
 import org.jajuk.ui.JajukTableModel;
 import org.jajuk.ui.TableTransferHandler;
 import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.table.DefaultTableColumnModelExt;
@@ -67,11 +69,14 @@ import ext.SwingWorker;
  * @author Bertrand Florat 
  * @created 13 dec. 2003
  */
-public abstract class AbstractTableView extends ViewAdapter implements ActionListener,MouseListener,ItemListener,TableColumnModelListener{
+public abstract class AbstractTableView extends ViewAdapter
+    implements ActionListener,MouseListener,ItemListener,
+        TableColumnModelListener,TableModelListener,ITechnicalStrings{
     
     /** The logical table */
     JajukTable jtable;
     JPanel jpControl;
+    JButton jbEdition;
     JLabel jlFilter;
     JComboBox jcbProperty; 
     JLabel jlEquals;
@@ -153,6 +158,15 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
                 //Control panel
                 jpControl = new JPanel();
                 jpControl.setBorder(BorderFactory.createEtchedBorder());
+                jbEdition = new JButton(Util.getIcon(ICON_EDIT));
+                jbEdition.setToolTipText(Messages.getString("AbstractTableView.9")); //$NON-NLS-1$
+                jbEdition.addActionListener(AbstractTableView.this);
+                if (isEditable()){
+                    jbEdition.setBorder(BorderFactory.createLoweredBevelBorder());
+                }
+                else{
+                    jbEdition.setBorder(BorderFactory.createRaisedBevelBorder());
+                }
                 jlFilter = new JLabel(Messages.getString("AbstractTableView.0")); //$NON-NLS-1$
                 //properties combo box, fill with colums names expect ID
                 jcbProperty = new JComboBox();
@@ -184,16 +198,17 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
                 jbAdvancedFilter.setEnabled(false);  //TBI
                 int iXspace = 5;
                 double sizeControl[][] =
-                {{iXspace,TableLayout.FILL,iXspace,0.3,TableLayout.FILL,TableLayout.FILL,iXspace,0.3,iXspace,20,iXspace,20,iXspace,20,iXspace},
+                {{iXspace,20,3*iXspace,TableLayout.FILL,iXspace,0.3,TableLayout.FILL,TableLayout.FILL,iXspace,0.3,iXspace,20,iXspace,20,iXspace,20,iXspace},
                         {22}};
                 jpControl.setLayout(new TableLayout(sizeControl));
-                jpControl.add(jlFilter,"1,0"); //$NON-NLS-1$
-                jpControl.add(jcbProperty,"3,0"); //$NON-NLS-1$
-                jpControl.add(jlEquals,"5,0"); //$NON-NLS-1$
-                jpControl.add(jtfValue,"7,0"); //$NON-NLS-1$
-                jpControl.add(jbApplyFilter,"9,0"); //$NON-NLS-1$
-                jpControl.add(jbClearFilter,"11,0"); //$NON-NLS-1$
-                jpControl.add(jbAdvancedFilter,"13,0"); //$NON-NLS-1$
+                jpControl.add(jbEdition,"1,0"); //$NON-NLS-1$
+                jpControl.add(jlFilter,"3,0"); //$NON-NLS-1$
+                jpControl.add(jcbProperty,"5,0"); //$NON-NLS-1$
+                jpControl.add(jlEquals,"7,0"); //$NON-NLS-1$
+                jpControl.add(jtfValue,"9,0"); //$NON-NLS-1$
+                jpControl.add(jbApplyFilter,"11,0"); //$NON-NLS-1$
+                jpControl.add(jbClearFilter,"13,0"); //$NON-NLS-1$
+                jpControl.add(jbAdvancedFilter,"15,0"); //$NON-NLS-1$
                 jpControl.setMinimumSize(new Dimension(0,0)); //allow resing with info node
                 //add 
                 double size[][] =
@@ -220,7 +235,7 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
                 Properties properties = ObservationManager.getDetailsLastOccurence(EVENT_CUSTOM_PROPERTIES_ADD); 
                 Event event = new Event(EVENT_CUSTOM_PROPERTIES_ADD,properties);
                 update(event);
-            }
+             }
         };
         sw.start();
     }	
@@ -242,6 +257,22 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
             this.sAppliedCriteria = null;
             applyFilter(sAppliedCriteria,sAppliedFilter);
         }
+        else if (e.getSource() == jbEdition){
+            if (this instanceof PhysicalTableView){
+                boolean bPreviousState = ConfigurationManager.getBoolean(CONF_PHYSICAL_TABLE_EDITION);
+                ConfigurationManager.setProperty(CONF_PHYSICAL_TABLE_EDITION,new Boolean(!bPreviousState).toString());
+            }
+            else if (this instanceof LogicalTableView){
+                boolean bPreviousState = ConfigurationManager.getBoolean(CONF_LOGICAL_TABLE_EDITION);
+                ConfigurationManager.setProperty(CONF_LOGICAL_TABLE_EDITION,new Boolean(!bPreviousState).toString());
+            }
+        }
+        if (isEditable()){
+            jbEdition.setBorder(BorderFactory.createLoweredBevelBorder());
+        }
+        else{
+            jbEdition.setBorder(BorderFactory.createRaisedBevelBorder());
+        }
     }
     
     
@@ -249,8 +280,10 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
      * Apply a filter, to be implemented by physical and logical tables, alter the model
      */
     public void applyFilter(String sPropertyName,String sPropertyValue) {
+       model.removeTableModelListener(AbstractTableView.this);
        model.populateModel(sPropertyName,sPropertyValue);
        model.fireTableDataChanged();
+       model.addTableModelListener(AbstractTableView.this);
     }
     
     
@@ -447,6 +480,10 @@ public abstract class AbstractTableView extends ViewAdapter implements ActionLis
     public void columnSelectionChanged(ListSelectionEvent arg0) {
     }
     
-    
+    /**
+     * 
+     * @return whether this table is editable
+     */
+    abstract public boolean isEditable();
     
 }

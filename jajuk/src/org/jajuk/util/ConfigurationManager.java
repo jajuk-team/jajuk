@@ -213,6 +213,8 @@ public class ConfigurationManager implements ITechnicalStrings{
         properties.put(CONF_WINDOW_POSITION,"50,50,"+ //$NON-NLS-1$
             (int)(Toolkit.getDefaultToolkit().getScreenSize().getWidth()-100)+","+ //$NON-NLS-1$
             (int)(Toolkit.getDefaultToolkit().getScreenSize().getHeight()-100)); //Window position: X,Y,X_size,Y_size
+        properties.put(CONF_PHYSICAL_TABLE_EDITION,FALSE);
+        properties.put(CONF_LOGICAL_TABLE_EDITION,FALSE);
     }
 	
 	/**

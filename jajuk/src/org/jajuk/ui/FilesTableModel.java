@@ -28,8 +28,10 @@ import java.util.regex.PatternSyntaxException;
 
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
+import org.jajuk.base.IPropertyable;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.i18n.Messages;
+import org.jajuk.ui.views.PhysicalTableView;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
@@ -105,6 +107,7 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
         boolean bSyncWithTreeOption = ConfigurationManager.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE);
         ArrayList alFiles = FileManager.getInstance().getItems();
         ArrayList alToShow = new ArrayList(alFiles.size());
+        oItems = new IPropertyable[iRowNum];
         Iterator it = alFiles.iterator();
         while ( it.hasNext()){
             File file = (File)it.next();
@@ -157,6 +160,8 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
         for (int iRow = 0;it.hasNext();iRow++){
             File file = (File)it.next();
             LinkedHashMap properties = file.getProperties();
+            //Id
+            oItems[iRow] = file;
             //Track name
             oValues[iRow][0] = file.getTrack().getName();
             bCellEditable[iRow][0] = true;
@@ -228,5 +233,12 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
         }
     }
     
+     /* (non-Javadoc)
+     * @see org.jajuk.ui.JajukTableModel#getEditableMode()
+     */
+    @Override
+    public boolean isEditable() {
+        return PhysicalTableView.getInstance().isEditable();
+    }
     
 }

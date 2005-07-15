@@ -461,6 +461,8 @@ public interface ITechnicalStrings {
     public static final String CONF_WINDOW_POSITION = "jajuk.window_position"; //Window position and size
     public static final String CONF_PHYSICAL_TABLE_COLUMNS = "jajuk.ui.physical_table_columns"; //Physical table columns
     public static final String CONF_LOGICAL_TABLE_COLUMNS = "jajuk.ui.logical_table_columns"; //Logical table columns
+    public static final String CONF_LOGICAL_TABLE_EDITION = "jajuk.ui.logical_table_edition"; //Logical table columns
+    public static final String CONF_PHYSICAL_TABLE_EDITION = "jajuk.ui.physical_table_edition"; //Physical table columns
     	
 	//Accuracy levels
 	public static final String ACCURACY_LOW = "low";

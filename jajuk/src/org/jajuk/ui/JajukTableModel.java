@@ -24,6 +24,7 @@ import java.util.Vector;
 
 import javax.swing.table.DefaultTableModel;
 
+import org.jajuk.base.IPropertyable;
 import org.jajuk.util.ITechnicalStrings;
 
 /**
@@ -42,6 +43,9 @@ public abstract class JajukTableModel extends DefaultTableModel  implements ITec
     
     /**Values table**/
     Object[][] oValues;
+    
+    /** Objects*/
+    IPropertyable[] oItems;
     
     /**Number of standard rows*/
     int iNumberStandardRows;
@@ -63,6 +67,15 @@ public abstract class JajukTableModel extends DefaultTableModel  implements ITec
      */
     public String getIdentifier(String sColName){
         return (String)vId.get(vColNames.indexOf(sColName));
+    }
+    
+    /** 
+     * Return item at given position
+     * @param iRow
+     * @return
+     */
+    public IPropertyable getItemAt(int iRow){
+        return oItems[iRow];
     }
     
     public synchronized Object getValueAt(int rowIndex, int columnIndex) {
@@ -93,7 +106,7 @@ public abstract class JajukTableModel extends DefaultTableModel  implements ITec
     }
     
     public synchronized boolean isCellEditable(int rowIndex, int columnIndex) {
-        return bCellEditable[rowIndex][columnIndex];
+        return bCellEditable[rowIndex][columnIndex] && isEditable();
     }
     
     public synchronized Class getColumnClass(int columnIndex) {
@@ -110,5 +123,11 @@ public abstract class JajukTableModel extends DefaultTableModel  implements ITec
     * @param sProperty Property (column) to filter
     * @param sPattern pattern*/
     public abstract  void populateModel(String sProperty,String sPattern); 
+    
+     /**
+     * 
+     * @return whether this model is editable
+     */
+    abstract public boolean isEditable();
                 
 }
