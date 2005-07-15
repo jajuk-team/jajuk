@@ -38,12 +38,10 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
 import org.jajuk.base.Event;
-import org.jajuk.base.File;
 import org.jajuk.base.IPropertyable;
 import org.jajuk.base.ItemManager;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Track;
-import org.jajuk.base.TrackManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jdesktop.swingx.decorator.Filter;
@@ -184,47 +182,16 @@ public class PropertiesWizard extends JFrame implements ITechnicalStrings {
 			if (e.getColumn() == 2){
 				String sKey = (String)jtable.getModel().getValueAt(e.getFirstRow(),5);
 				String sValue = (String)jtable.getModel().getValueAt(e.getFirstRow(),2);
-				if (pa instanceof File){
-					File file = (File)pa;
-					if (XML_NAME.equals(sKey)){
-					}
-				}
-				else if (pa instanceof Track){
-					Track track = (Track)pa;
-                    Track trackNew = null;
-					if (XML_NAME.equals(sKey)){
-                        trackNew = TrackManager.getInstance().changeTrackName(track,sValue);
-					}
-                    else if (XML_STYLE.equals(sKey)){
-				        trackNew = TrackManager.getInstance().changeTrackStyle(track,sValue);
-                	}
-					else if (XML_ALBUM.equals(sKey)){
-						trackNew = TrackManager.getInstance().changeTrackAlbum(track,sValue);
-					}
-					else if (XML_AUTHOR.equals(sKey)){
-                        trackNew = TrackManager.getInstance().changeTrackAuthor(track,sValue);
-                	}
-					else if (XML_COMMENT.equals(sKey)){
-					    trackNew = TrackManager.getInstance().changeTrackComment(track,sValue);
-                    }
-                    else if (XML_TRACK_ORDER.equals(sKey)){
-                        trackNew = TrackManager.getInstance().changeTrackOrder(track,sValue);
-                    }
-					else if (XML_TRACK_YEAR.equals(sKey)){
-						trackNew = TrackManager.getInstance().changeTrackYear(track,sValue);
-					}
-					this.pa = trackNew;
-					PropertiesTableModel newModel = new PropertiesTableModel(trackNew);
-					jtable.setModel(newModel);
-					jtable.packAll();
-					newModel.addTableModelListener(this);
-					jlDesc.setText(pa.getDesc());
-				}
-				//others properties
-				else{
-					pa. setProperty(sKey,sValue);
-				}
-				ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH)); //TBI see later for a smarter event 
+		        IPropertyable newItem = ItemManager.changeItem(pa,sKey,sValue);
+                if (newItem != null){ //null means same item but with others custom properties, no need to refresh
+                    this.pa = newItem;
+                    PropertiesTableModel newModel = new PropertiesTableModel(newItem);
+                    jtable.setModel(newModel);
+                    jtable.packAll();
+                    newModel.addTableModelListener(this);
+                    jlDesc.setText(pa.getDesc());
+                    ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH)); //TBI see later for a smarter event
+                }
 			}
 		}
 	}

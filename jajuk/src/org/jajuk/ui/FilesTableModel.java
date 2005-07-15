@@ -156,6 +156,7 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
         iRowNum = alToShow.size();
         it = alToShow.iterator();
         oValues = new Object[iRowNum][iColNum];
+        oItems = new IPropertyable[iRowNum];
         bCellEditable = new boolean[iRowNum][iColNum];
         for (int iRow = 0;it.hasNext();iRow++){
             File file = (File)it.next();

@@ -279,4 +279,72 @@ public abstract class ItemManager implements ITechnicalStrings{
         applyNewProperties();
     }
     
+    /**
+     * Change any item
+     * @param itemToChange
+     * @param sKey
+     * @param sValue
+     * @return the new item or null if the item is still the same
+     */
+    public static IPropertyable changeItem(IPropertyable itemToChange,String sKey,String sValue){
+        IPropertyable newItem = null;
+        if (itemToChange instanceof File){
+            File file = (File)itemToChange;
+            if (XML_NAME.equals(sKey)){
+                newItem = FileManager.getInstance().changeFileName((File)itemToChange,sValue);
+            }
+        }
+        else if (itemToChange instanceof Track){
+            if (XML_NAME.equals(sKey)){
+                newItem = TrackManager.getInstance().changeTrackName((Track)itemToChange,sValue);
+            }
+            else if (XML_STYLE.equals(sKey)){
+                newItem = TrackManager.getInstance().changeTrackStyle((Track)itemToChange,sValue);
+            }
+            else if (XML_ALBUM.equals(sKey)){
+                newItem = TrackManager.getInstance().changeTrackAlbum((Track)itemToChange,sValue);
+            }
+            else if (XML_AUTHOR.equals(sKey)){
+                newItem = TrackManager.getInstance().changeTrackAuthor((Track)itemToChange,sValue);
+            }
+            else if (XML_COMMENT.equals(sKey)){
+                newItem = TrackManager.getInstance().changeTrackComment((Track)itemToChange,sValue);
+            }
+            else if (XML_TRACK_ORDER.equals(sKey)){
+                newItem = TrackManager.getInstance().changeTrackOrder((Track)itemToChange,sValue);
+            }
+            else if (XML_TRACK_YEAR.equals(sKey)){
+                newItem = TrackManager.getInstance().changeTrackYear((Track)itemToChange,sValue);
+            }
+            else{ //others properties
+                itemToChange. setProperty(sKey,sValue);
+            }
+        }
+        else if (itemToChange instanceof Album){
+            if (XML_NAME.equals(sKey)){
+                newItem = AlbumManager.getInstance().changeAlbumName((Album)itemToChange,sValue);
+            }
+            else{ //others properties
+                itemToChange. setProperty(sKey,sValue);
+            }
+        }
+        else if (itemToChange instanceof Author){
+            if (XML_NAME.equals(sKey)){
+                newItem = AuthorManager.getInstance().changeAuthorName((Author)itemToChange,sValue);
+            }
+            else{ //others properties
+                itemToChange. setProperty(sKey,sValue);
+            }
+        }
+        else if (itemToChange instanceof Style){
+            if (XML_NAME.equals(sKey)){
+                newItem = StyleManager.getInstance().changeStyleName((Style)itemToChange,sValue);
+            }
+            else{ //others properties
+                itemToChange. setProperty(sKey,sValue);
+            }
+        }
+        return newItem;            
+    }
+    
 }

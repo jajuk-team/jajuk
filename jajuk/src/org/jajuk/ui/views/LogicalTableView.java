@@ -33,11 +33,11 @@ import org.jajuk.base.Author;
 import org.jajuk.base.Event;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
+import org.jajuk.base.ItemManager;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Observer;
 import org.jajuk.base.StackItem;
 import org.jajuk.base.Track;
-import org.jajuk.base.TrackManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.JajukTableModel;
 import org.jajuk.ui.TracksTableModel;
@@ -287,33 +287,10 @@ public class LogicalTableView extends AbstractTableView implements Observer{
         else{
             sValue = oValue.toString();
         }
-        Track trackNew = null;
-        if (XML_NAME.equals(sKey)){
-            trackNew = TrackManager.getInstance().changeTrackName(track,sValue);
+        Track trackNew = (Track)ItemManager.changeItem(track,sKey,sValue);
+        if (trackNew != null){
+            ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH)); //TBI see later for a smarter event
         }
-        else if (XML_STYLE.equals(sKey)){
-            trackNew = TrackManager.getInstance().changeTrackStyle(track,sValue);
-        }
-        else if (XML_ALBUM.equals(sKey)){
-            trackNew = TrackManager.getInstance().changeTrackAlbum(track,sValue);
-        }
-        else if (XML_AUTHOR.equals(sKey)){
-            trackNew = TrackManager.getInstance().changeTrackAuthor(track,sValue);
-        }
-        else if (XML_COMMENT.equals(sKey)){
-            trackNew = TrackManager.getInstance().changeTrackComment(track,sValue);
-        }
-        else if (XML_TRACK_ORDER.equals(sKey)){
-            trackNew = TrackManager.getInstance().changeTrackOrder(track,sValue);
-        }
-        else if (XML_TRACK_YEAR.equals(sKey)){
-            trackNew = TrackManager.getInstance().changeTrackYear(track,sValue);
-        }
-        //others properties
-        else{
-            track. setProperty(sKey,sValue);
-        }
-        ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH)); //TBI see later for a smarter event 
     }
     
     /* (non-Javadoc)

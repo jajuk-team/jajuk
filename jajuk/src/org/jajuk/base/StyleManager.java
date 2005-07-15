@@ -20,6 +20,8 @@
 
 package org.jajuk.base;
 
+import java.util.Iterator;
+
 import org.jajuk.util.MD5Processor;
 
 /**
@@ -72,6 +74,25 @@ public class StyleManager extends ItemManager {
         postRegistering(style);
 		return style;
 	}
+    
+      /**
+     * Change the item name
+     * @param old
+     * @param sNewName
+     * @return new item
+     */
+    public synchronized Style changeStyleName(Style old,String sNewName){
+        Style newItem = registerStyle(sNewName);
+        Iterator it = TrackManager.getInstance().getItems().iterator();
+        while (it.hasNext()){
+            Track track = (Track)it.next();
+            if (track.getAuthor().equals(old)){
+                TrackManager.getInstance().changeTrackStyle(track,newItem.getId());
+            }
+        }
+        cleanup();//remove useless items if no more tracks use it
+        return newItem;
+    }
 		
 	/**
 	 * Format the Style name to be normalized :

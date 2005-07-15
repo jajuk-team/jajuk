@@ -29,9 +29,12 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.event.TableModelEvent;
 
+import org.jajuk.base.Event;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
+import org.jajuk.base.ItemManager;
+import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Observer;
 import org.jajuk.base.StackItem;
 import org.jajuk.i18n.Messages;
@@ -148,8 +151,9 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
      * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
      */
     public void mousePressed(MouseEvent e) {
-        if ( e.getClickCount() == 2){ //double clic, can be only one file
-            int iSelectedRow = jtable.getSelectedRow(); //selected row in view
+         if ( e.getClickCount() == 2 //double clic, can be only one file 
+                && !ConfigurationManager.getBoolean(CONF_PHYSICAL_TABLE_EDITION)){ //if edition mode, do not launch track 
+           int iSelectedRow = jtable.getSelectedRow(); //selected row in view
             File file = (File)model.getItemAt(jtable.convertRowIndexToModel(iSelectedRow));
             if (!file.isScanned()){
                 try{
@@ -254,8 +258,24 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
         }
     }
     
+   /* (non-Javadoc)
+     * @see javax.swing.event.TableModelListener#tableChanged(javax.swing.event.TableModelEvent)
+     */
     public void tableChanged(TableModelEvent e) {
-        System.out.println(e);
+        String sKey = model.getIdentifier(e.getColumn());
+        Object oValue = model.getValueAt(e.getFirstRow(),e.getColumn());//can be Boolean or String
+        File file = (File)model.getItemAt(e.getFirstRow());
+        String sValue = null;
+        if (oValue instanceof Boolean){
+            sValue = ((Boolean)oValue).toString();
+        }
+        else{
+            sValue = oValue.toString();
+        }
+        File fileNew = (File)ItemManager.changeItem(file,sKey,sValue);
+        if (fileNew != null){
+            ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH)); //TBI see later for a smarter event
+        }
     }
     
     
