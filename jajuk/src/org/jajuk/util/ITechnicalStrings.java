@@ -50,7 +50,7 @@ public interface ITechnicalStrings {
     /**Listening port to check others jajuk sessions*/
     public static final int PORT = 62321;
     /**Quality agent e-mail*/
-    public static final String FEEDBACK_EMAIL = "jajuk-errors@groups.sourceforge.net";
+    public static final String FEEDBACK_EMAIL = "jajuk-support@lists.sourceforge.net";
     /**Number of lines in the feedback mail*/
     public static final int FEEDBACK_LINES = 100;
     

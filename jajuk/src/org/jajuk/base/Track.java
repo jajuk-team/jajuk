@@ -326,7 +326,7 @@ public class Track extends PropertyAdapter implements Comparable{
 	 * @param file
 	 */
 	public void addFile(File file){
-		if (!alFiles.contains(file)){
+		if (!alFiles.contains(file) && file.getTrack().equals(this)){//make sure a file will be referenced by only one track (first found)
 			alFiles.add(file);	
 			String sFiles = file.getId();
 			if (this.containsProperty(XML_FILES)){ //already some files 
@@ -378,7 +378,7 @@ public class Track extends PropertyAdapter implements Comparable{
      */
     public void setComment(String sComment) {
         this.sComment = sComment;
-        setProperty(XML_TRACK_RATE,sComment);
+        setProperty(XML_COMMENT,sComment);
     }	
 
 	/**

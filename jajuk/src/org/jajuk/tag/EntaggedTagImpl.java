@@ -188,8 +188,8 @@ public class EntaggedTagImpl implements ITagImpl,ITechnicalStrings {
     /* (non-Javadoc)
      * @see org.jajuk.base.ITagImpl#setOrder(java.lang.String)
      */
-    public void setOrder(String sOrder) throws Exception {
-        tag.setTrack(sOrder);
+    public void setOrder(int iOrder) throws Exception {
+        tag.setTrack(Integer.toString(iOrder));
     }
 
 	public void setComment(String sComment) throws Exception {

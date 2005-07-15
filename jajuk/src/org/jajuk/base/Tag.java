@@ -312,9 +312,9 @@ public class Tag implements ITechnicalStrings{
     /**
      * @param style
      */
-    public void setOrder(String sOrder) {
+    public void setOrder(int iOrder) {
         try {
-            tagImpl.setTrackName(sOrder);
+            tagImpl.setOrder(iOrder);
         } catch (Exception e) {
             Log.error("104", fio.getName(),e); //$NON-NLS-1$
         }
@@ -326,25 +326,14 @@ public class Tag implements ITechnicalStrings{
 	 */
 	public void setYear(String sYear) {
 		try {
-			tagImpl.setTrackName(sYear);
+			tagImpl.setYear(sYear);
 		} catch (Exception e) {
 			Log.error("104", e); //$NON-NLS-1$
 		}
 
 	}
 
-	/**
-	 * @param sQuality
-	 */
-	public void setQuality(String sQuality) {
-		try {
-			tagImpl.setTrackName(sQuality);
-		} catch (Exception e) {
-			Log.error("104", fio.getName(),e); //$NON-NLS-1$
-		}
-	}
-
-	/**
+    /**
 	 * @param sComment
 	 */
 	public void setComment(String sComment) {
@@ -365,6 +354,5 @@ public class Tag implements ITechnicalStrings{
             Log.error("104", fio.getName(),e); //$NON-NLS-1$
         }
     }
-
 
 }

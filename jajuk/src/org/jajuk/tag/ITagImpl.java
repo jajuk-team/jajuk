@@ -120,7 +120,7 @@ public interface ITagImpl {
      * @param sOrder
      * @throws Exception
      */
-    public void setOrder(String sOrder) throws Exception;
+    public void setOrder(int iOrder) throws Exception;
 	
       /**
      * @return Set a specific property

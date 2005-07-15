@@ -199,7 +199,7 @@ public class NoTagsTagImpl implements ITagImpl {
     /* (non-Javadoc)
      * @see org.jajuk.tag.ITagImpl#setOrder(java.lang.String)
      */
-    public void setOrder(String sOrder) throws Exception {
+    public void setOrder(int sOrder) throws Exception {
     }
 
 }

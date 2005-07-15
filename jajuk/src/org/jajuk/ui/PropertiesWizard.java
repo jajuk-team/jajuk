@@ -41,6 +41,7 @@ import org.jajuk.base.Event;
 import org.jajuk.base.IPropertyable;
 import org.jajuk.base.ItemManager;
 import org.jajuk.base.ObservationManager;
+import org.jajuk.base.Observer;
 import org.jajuk.base.Track;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
@@ -99,7 +100,7 @@ public class PropertiesWizard extends JFrame implements ITechnicalStrings {
 	 * @author Bertrand Florat
 	 *
 	 */
-	class PropertiesPanel extends JPanel implements TableModelListener {
+	class PropertiesPanel extends JPanel implements TableModelListener,Observer {
 		/** Item to show */
 		IPropertyable pa;
 		
@@ -173,6 +174,7 @@ public class PropertiesWizard extends JFrame implements ITechnicalStrings {
 				col.setVisible(false);
 			}
 			jtable.packAll();
+            ObservationManager.register(EVENT_DEVICE_REFRESH,this);
 		}
 		
 		/* (non-Javadoc)
@@ -194,5 +196,14 @@ public class PropertiesWizard extends JFrame implements ITechnicalStrings {
                 }
 			}
 		}
+
+        /* (non-Javadoc)
+         * @see org.jajuk.base.Observer#update(org.jajuk.base.Event)
+         */
+        public void update(Event event) {
+            if (EVENT_DEVICE_REFRESH.equals(event.getSubject())){
+                model.fireTableDataChanged();
+            }
+        }
 	}
 }

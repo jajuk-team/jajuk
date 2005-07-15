@@ -240,7 +240,7 @@ public class TrackManager extends ItemManager implements Observer{
         while (it.hasNext()){
             File file = (File)it.next();
             Tag tag = new Tag(file.getIO());
-            tag.setOrder(sNewItem);
+            tag.setOrder(i);
             tag.commit();
         }
         return track;
