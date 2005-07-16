@@ -248,7 +248,7 @@ public abstract class AbstractTableView extends ViewAdapter
      */
     public void actionPerformed(final ActionEvent e) {
         //not in a thread because it is always called inside a thread created from sub-classes
-      if(e.getSource() == jbClearFilter){ //remove all filters
+        if(e.getSource() == jbClearFilter){ //remove all filters
             jtfValue.setText(""); //clear value textfield //$NON-NLS-1$
             this.sAppliedFilter = null;
             this.sAppliedCriteria = null;
@@ -270,8 +270,13 @@ public abstract class AbstractTableView extends ViewAdapter
                 jbEdition.setBorder(BorderFactory.createRaisedBevelBorder());
             }
         }
+        else if (e.getSource() == jbAdvancedFilter){
+            //TBI
+        }
+        else{ //others events will be treated bu child classes
+            othersActionPerformed(e);
+        }
     }
-    
     
     /**
      * Apply a filter, to be implemented by physical and logical tables, alter the model
@@ -283,6 +288,12 @@ public abstract class AbstractTableView extends ViewAdapter
        model.addTableModelListener(AbstractTableView.this);
     }
     
+    
+    /**
+     * Child actions
+     * @param ae
+     */
+    abstract void othersActionPerformed(ActionEvent ae);
     
     /* (non-Javadoc)
      * @see org.jajuk.ui.Observer#update(java.lang.String)

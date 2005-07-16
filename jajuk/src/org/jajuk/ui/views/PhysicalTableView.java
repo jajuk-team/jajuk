@@ -31,12 +31,14 @@ import javax.swing.JPopupMenu;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
+import org.jajuk.base.IPropertyable;
 import org.jajuk.base.Observer;
 import org.jajuk.base.StackItem;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.FilesTableModel;
 import org.jajuk.ui.JajukTableModel;
 import org.jajuk.ui.PropertiesWizard;
+import org.jajuk.ui.SetPropertyWizard;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
@@ -149,9 +151,9 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
      * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
      */
     public void mousePressed(MouseEvent e) {
-         if ( e.getClickCount() == 2 //double clic, can be only one file 
+        if ( e.getClickCount() == 2 //double clic, can be only one file 
                 && !ConfigurationManager.getBoolean(CONF_PHYSICAL_TABLE_EDITION)){ //if edition mode, do not launch track 
-           int iSelectedRow = jtable.getSelectedRow(); //selected row in view
+            int iSelectedRow = jtable.getSelectedRow(); //selected row in view
             File file = (File)model.getItemAt(jtable.convertRowIndexToModel(iSelectedRow));
             if (!file.isScanned()){
                 try{
@@ -195,72 +197,73 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
     /* (non-Javadoc)
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
-    public void actionPerformed(final ActionEvent e) {
-        super.actionPerformed(e);
-        if (e.getSource() != jbEdition && e.getSource() != jcbProperty 
-                && e.getSource() != jbClearFilter && e.getSource() != jbAdvancedFilter){    
-            new Thread(){
-                public void run(){
-                    //computes selected files
-                    ArrayList alFilesToPlay = new ArrayList(jtable.getSelectedRowCount());
-                    int[] indexes = jtable.getSelectedRows();
-                    for (int i=0;i<indexes.length;i++){ //each selected track
-                        File file = (File)model.getItemAt(jtable.convertRowIndexToModel(indexes[i]));
-                        ArrayList alFilesToPlay2 = new ArrayList(indexes.length);
-                        if (e.getSource() == jmiFilePlayDirectory){
-                            alFilesToPlay2.addAll(FileManager.getInstance().getAllDirectory(file));   
+    public void othersActionPerformed(final ActionEvent e) {
+        new Thread(){
+            public void run(){
+                //computes selected files
+                ArrayList alFilesToPlay = new ArrayList(jtable.getSelectedRowCount());
+                ArrayList<IPropertyable> alSelectedFiles = new ArrayList<IPropertyable>(jtable.getSelectedRowCount());
+                int[] indexes = jtable.getSelectedRows();
+                for (int i=0;i<indexes.length;i++){ //each selected track
+                    File file = (File)model.getItemAt(jtable.convertRowIndexToModel(indexes[i]));
+                    alSelectedFiles.add(file);
+                    ArrayList alFilesToPlay2 = new ArrayList(indexes.length);
+                    if (e.getSource() == jmiFilePlayDirectory){
+                        alFilesToPlay2.addAll(FileManager.getInstance().getAllDirectory(file));   
+                    }
+                    else{
+                        alFilesToPlay2.add(file);    
+                    }
+                    Iterator it = alFilesToPlay2.iterator();
+                    while (it.hasNext()){ //each selected file from the same directory 
+                        File file2 = (File)it.next();
+                        if (!file2.isScanned() && !alFilesToPlay.contains(file2)){
+                            alFilesToPlay.add(file2);
                         }
                         else{
-                            alFilesToPlay2.add(file);    
+                            Messages.showErrorMessage("120",file2.getDirectory().getDevice().getName()); //$NON-NLS-1$
+                            return;  //stop here to avoid cascading error messages 
                         }
-                        Iterator it = alFilesToPlay2.iterator();
-                        while (it.hasNext()){ //each selected file from the same directory 
-                            File file2 = (File)it.next();
-                            if (!file2.isScanned() && !alFilesToPlay.contains(file2)){
-                                alFilesToPlay.add(file2);
-                            }
-                            else{
-                                Messages.showErrorMessage("120",file2.getDirectory().getDevice().getName()); //$NON-NLS-1$
-                                return;  //stop here to avoid cascading error messages 
-                            }
-                        }    
-                    }
-                    //simple play
-                    if ( e.getSource() == jmiFilePlay || e.getSource() == jmiFilePlayDirectory){
-                        FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFilesToPlay),
-                            ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
-                    }
-                    //push
-                    else if ( e.getSource() == jmiFilePush){
-                        FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFilesToPlay),
-                            ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),true);
-                    }
-                    //shuffle play
-                    else if ( e.getSource() == jmiFilePlayShuffle){
-                        Collections.shuffle(alFilesToPlay);
-                        FIFO.getInstance().push(Util.createStackItems(alFilesToPlay,
-                            ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
-                    }
-                    //repeat play
-                    else if ( e.getSource() == jmiFilePlayRepeat){
-                        FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFilesToPlay),
-                            true,true),false);
-                    }
-                    //properties
-                    else if ( e.getSource() == jmiProperties){
-                        File file = (File)model.getItemAt(
-                            jtable.convertRowIndexToModel(jtable.getSelectedRow()));
-                        //show file and associated track properties
-                        ArrayList alItems = new ArrayList(2);
-                        alItems.add(file);
-                        alItems.add(file.getTrack());
-                        new PropertiesWizard(alItems);
-                    }
+                    }    
                 }
-            }.start();
-        }
+                //simple play
+                if ( e.getSource() == jmiFilePlay || e.getSource() == jmiFilePlayDirectory){
+                    FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFilesToPlay),
+                        ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
+                }
+                //push
+                else if ( e.getSource() == jmiFilePush){
+                    FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFilesToPlay),
+                        ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),true);
+                }
+                //shuffle play
+                else if ( e.getSource() == jmiFilePlayShuffle){
+                    Collections.shuffle(alFilesToPlay);
+                    FIFO.getInstance().push(Util.createStackItems(alFilesToPlay,
+                        ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
+                }
+                //repeat play
+                else if ( e.getSource() == jmiFilePlayRepeat){
+                    FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFilesToPlay),
+                        true,true),false);
+                }
+                //properties
+                else if ( e.getSource() == jmiProperties){
+                    File file = (File)model.getItemAt(
+                        jtable.convertRowIndexToModel(jtable.getSelectedRow()));
+                    //show file and associated track properties
+                    ArrayList alItems = new ArrayList(2);
+                    alItems.add(file);
+                    alItems.add(file.getTrack());
+                    new PropertiesWizard(alItems);
+                }
+                else if (e.getSource() == jmiSetProperty){
+                     new SetPropertyWizard(alSelectedFiles);
+                }
+            }
+        }.start();
     }
-      
+    
     /* (non-Javadoc)
      * @see org.jajuk.ui.views.AbstractTableView#isEditable()
      */

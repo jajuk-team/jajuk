@@ -48,7 +48,7 @@ import org.jajuk.i18n.Messages;
  * @author     Bertrand Florat
  * @created    20 juin 2005
  */
-class NewPropertyWizard extends CustomPropertyWizard implements KeyListener{ 
+public class NewPropertyWizard extends CustomPropertyWizard implements KeyListener{ 
     JLabel jlName;
     JTextField jtfName;
     JLabel jlFormat;

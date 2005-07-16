@@ -62,7 +62,11 @@ public abstract class ItemManager implements ITechnicalStrings{
      * @return format for given property
      */
     public String getFormat(String sProperty){
-        return (String)properties.get(sProperty);
+        String sFormat = (String)properties.get(sProperty);
+        if (sFormat == null){ //occurs for all base properties for ie
+            return FORMAT_STRING; //TBI : write a smater method: some base properties are numbers, here it's enough because we just need to make sure it not a boolean
+        }
+        return sFormat;
     }
     
     /**
@@ -188,7 +192,7 @@ public abstract class ItemManager implements ITechnicalStrings{
     }
     
     /**
-     *  Get Item with a given attribute name   
+     *  Get Item manager with a given attribute name   
      * @param sItem
      * @return
      */
@@ -227,6 +231,48 @@ public abstract class ItemManager implements ITechnicalStrings{
             return null;
         }
     }
+    
+    /**
+     *  Get Item manager for given item class  
+     * @param class
+     * @return associated item manager or null if none was found
+     */
+    public static ItemManager getItemManager(Class c){
+        if (c.equals(Device.class)){
+            return DeviceManager.getInstance();
+        }
+        else if (c.equals(Track.class)){
+            return TrackManager.getInstance();
+        }
+        else if (c.equals(Album.class)){
+            return AlbumManager.getInstance();
+        }
+        else if (c.equals(Author.class)){
+            return AuthorManager.getInstance();
+        }
+        else if (c.equals(Style.class)){
+            return StyleManager.getInstance();
+        }
+        else if (c.equals(Directory.class)){
+            return DirectoryManager.getInstance();
+        }
+        else if (c.equals(File.class)){
+            return FileManager.getInstance();
+        }
+        else if (c.equals(PlaylistFile.class)){
+            return PlaylistFileManager.getInstance();
+        }
+        else if (c.equals(Playlist.class)){
+            return PlaylistManager.getInstance();
+        }
+        else if (c.equals(Type.class)){
+            return TypeManager.getInstance();
+        }
+        else{
+            return null;
+        }
+    }
+    
     
     /**
      * Perform an cleanup : delete useless items

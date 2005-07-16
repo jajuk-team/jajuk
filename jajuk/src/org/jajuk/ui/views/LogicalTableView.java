@@ -31,12 +31,14 @@ import org.jajuk.base.Album;
 import org.jajuk.base.Author;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
+import org.jajuk.base.IPropertyable;
 import org.jajuk.base.Observer;
 import org.jajuk.base.StackItem;
 import org.jajuk.base.Track;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.JajukTableModel;
 import org.jajuk.ui.PropertiesWizard;
+import org.jajuk.ui.SetPropertyWizard;
 import org.jajuk.ui.TracksTableModel;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Util;
@@ -199,70 +201,71 @@ public class LogicalTableView extends AbstractTableView implements Observer{
     /* (non-Javadoc)
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
-    public void actionPerformed(final ActionEvent e) {
-        super.actionPerformed(e);
-        if (e.getSource() != jbEdition && e.getSource() != jcbProperty 
-                && e.getSource() != jbClearFilter && e.getSource() != jbAdvancedFilter){    
-            new Thread(){
-                public void run(){
-                    //computes selected tracks
-                    ArrayList alFilesToPlay = new ArrayList(10);
-                    int[] indexes = jtable.getSelectedRows();
-                    for (int i=0;i<indexes.length;i++){ //each track in selection
-                        Track track = (Track)model.getItemAt(jtable.convertRowIndexToModel(indexes[i]));
-                        ArrayList alTracks = new ArrayList(indexes.length);
-                        if (e.getSource() == jmiTrackPlayAlbum){
-                            Album album = track.getAlbum();
-                            alTracks.addAll(album.getTracks()); //add all tracks from the same album
+    public void othersActionPerformed(final ActionEvent e) {
+        new Thread(){
+            public void run(){
+                //computes selected tracks
+                ArrayList alFilesToPlay = new ArrayList(10);
+                int[] indexes = jtable.getSelectedRows();
+                ArrayList<IPropertyable> alSelectedTracks = new ArrayList<IPropertyable>(indexes.length);
+                for (int i=0;i<indexes.length;i++){ //each track in selection
+                    Track track = (Track)model.getItemAt(jtable.convertRowIndexToModel(indexes[i]));
+                    alSelectedTracks.add(track);
+                    ArrayList alTracks = new ArrayList(indexes.length);
+                    if (e.getSource() == jmiTrackPlayAlbum){
+                        Album album = track.getAlbum();
+                        alTracks.addAll(album.getTracks()); //add all tracks from the same album
+                    }
+                    if (e.getSource() == jmiTrackPlayAuthor){
+                        Author author = track.getAuthor();
+                        alTracks.addAll(author.getTracks()); //add all tracks from the same author
+                    }
+                    else{
+                        alTracks.add(track);
+                    }
+                    Iterator it = alTracks.iterator();
+                    while (it.hasNext()){ //each selected track and tracks from same album /author if required 
+                        Track track2 = (Track)it.next();
+                        File file = track2.getPlayeableFile();
+                        if ( file != null && !alFilesToPlay.contains(file)){
+                            alFilesToPlay.add(file);
                         }
-                        if (e.getSource() == jmiTrackPlayAuthor){
-                            Author author = track.getAuthor();
-                            alTracks.addAll(author.getTracks()); //add all tracks from the same author
-                        }
-                        else{
-                            alTracks.add(track);
-                        }
-                        Iterator it = alTracks.iterator();
-                        while (it.hasNext()){ //each selected track and tracks from same album /author if required 
-                            Track track2 = (Track)it.next();
-                            File file = track2.getPlayeableFile();
-                            if ( file != null && !alFilesToPlay.contains(file)){
-                                alFilesToPlay.add(file);
-                            }
-                        }
-                    }
-                    if ( alFilesToPlay.size() == 0){
-                        Messages.showErrorMessage("018"); //$NON-NLS-1$
-                        return;
-                    }
-                    //simple play
-                    if ( e.getSource() == jmiTrackPlay || e.getSource() == jmiTrackPlayAlbum || e.getSource() == jmiTrackPlayAuthor ){
-                        FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFilesToPlay),
-                            ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
-                    }
-                    //push
-                    else if ( e.getSource() == jmiTrackPush){
-                        FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFilesToPlay),
-                            ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),true);
-                    }
-                    //shuffle play
-                    else if ( e.getSource() == jmiTrackPlayShuffle){
-                        Collections.shuffle(alFilesToPlay);
-                        FIFO.getInstance().push(Util.createStackItems(alFilesToPlay,
-                            ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
-                    }
-                    //repeat play
-                    else if ( e.getSource() == jmiTrackPlayRepeat){
-                        FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFilesToPlay),true,true),false);
-                    }
-                    else if ( e.getSource() == jmiProperties){
-                        Track track = (Track)model.getItemAt(
-                            jtable.convertRowIndexToModel(jtable.getSelectedRow()));
-                        new PropertiesWizard(track);
                     }
                 }
-            }.start();
-        }
+                if ( alFilesToPlay.size() == 0){
+                    Messages.showErrorMessage("018"); //$NON-NLS-1$
+                    return;
+                }
+                //simple play
+                if ( e.getSource() == jmiTrackPlay || e.getSource() == jmiTrackPlayAlbum || e.getSource() == jmiTrackPlayAuthor ){
+                    FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFilesToPlay),
+                        ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
+                }
+                //push
+                else if ( e.getSource() == jmiTrackPush){
+                    FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFilesToPlay),
+                        ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),true);
+                }
+                //shuffle play
+                else if ( e.getSource() == jmiTrackPlayShuffle){
+                    Collections.shuffle(alFilesToPlay);
+                    FIFO.getInstance().push(Util.createStackItems(alFilesToPlay,
+                        ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
+                }
+                //repeat play
+                else if ( e.getSource() == jmiTrackPlayRepeat){
+                    FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFilesToPlay),true,true),false);
+                }
+                else if ( e.getSource() == jmiProperties){
+                    Track track = (Track)model.getItemAt(
+                        jtable.convertRowIndexToModel(jtable.getSelectedRow()));
+                    new PropertiesWizard(track);
+                }
+                 else if (e.getSource() == jmiSetProperty){
+                     new SetPropertyWizard(alSelectedTracks);
+                }
+            }
+        }.start();
     }
     
     /* (non-Javadoc)
