@@ -65,7 +65,7 @@ public class PropertiesWizard extends JFrame implements ITechnicalStrings {
 	 * @param pa  the item to display
 	 */
 	public PropertiesWizard(IPropertyable pa) {
-		super(pa.getValue(XML_NAME));
+	    super(pa.getValue(XML_NAME));
 		setIconImage(Util.getIcon(ICON_LOGO).getImage());
 		getContentPane().add(new PropertiesPanel(pa));
 		Util.setShuffleLocation(this, 400, 400);

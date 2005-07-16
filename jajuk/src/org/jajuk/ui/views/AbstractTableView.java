@@ -38,6 +38,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -84,9 +85,11 @@ public abstract class AbstractTableView extends ViewAdapter
     JComboBox jcbProperty; 
     JLabel jlEquals;
     JTextField jtfValue;
-    JButton jbApplyFilter;
     JButton jbClearFilter;
     JButton jbAdvancedFilter;
+    JMenuItem jmiSetProperty;
+    JMenuItem jmiProperties;
+    
     
     /**Table model*/
     JajukTableModel model;
@@ -189,19 +192,16 @@ public abstract class AbstractTableView extends ViewAdapter
                 });
                 jtfValue.setToolTipText(Messages.getString("AbstractTableView.3")); //$NON-NLS-1$
                 //buttons
-                jbApplyFilter = new JButton(Util.getIcon(ICON_APPLY_FILTER));
-                jbApplyFilter.addActionListener(AbstractTableView.this);
                 jbClearFilter = new JButton(Util.getIcon(ICON_CLEAR_FILTER));
                 jbClearFilter.addActionListener(AbstractTableView.this);
                 jbAdvancedFilter = new JButton(Util.getIcon(ICON_ADVANCED_FILTER));
                 jbAdvancedFilter.addActionListener(AbstractTableView.this);
-                jbApplyFilter.setToolTipText(Messages.getString("AbstractTableView.4")); //$NON-NLS-1$
                 jbClearFilter.setToolTipText(Messages.getString("AbstractTableView.5")); //$NON-NLS-1$
                 jbAdvancedFilter.setToolTipText(Messages.getString("AbstractTableView.6")); //$NON-NLS-1$
                 jbAdvancedFilter.setEnabled(false);  //TBI
                 int iXspace = 5;
                 double sizeControl[][] =
-                {{iXspace,20,3*iXspace,TableLayout.FILL,iXspace,0.3,TableLayout.FILL,TableLayout.FILL,iXspace,0.3,iXspace,20,iXspace,20,iXspace,20,iXspace},
+                {{iXspace,20,3*iXspace,TableLayout.FILL,iXspace,0.3,TableLayout.FILL,TableLayout.FILL,iXspace,0.3,iXspace,20,iXspace,20,iXspace},
                         {22}};
                 jpControl.setLayout(new TableLayout(sizeControl));
                 jpControl.add(jbEdition,"1,0"); //$NON-NLS-1$
@@ -209,9 +209,8 @@ public abstract class AbstractTableView extends ViewAdapter
                 jpControl.add(jcbProperty,"5,0"); //$NON-NLS-1$
                 jpControl.add(jlEquals,"7,0"); //$NON-NLS-1$
                 jpControl.add(jtfValue,"9,0"); //$NON-NLS-1$
-                jpControl.add(jbApplyFilter,"11,0"); //$NON-NLS-1$
-                jpControl.add(jbClearFilter,"13,0"); //$NON-NLS-1$
-                jpControl.add(jbAdvancedFilter,"15,0"); //$NON-NLS-1$
+                jpControl.add(jbClearFilter,"11,0"); //$NON-NLS-1$
+                jpControl.add(jbAdvancedFilter,"13,0"); //$NON-NLS-1$
                 jpControl.setMinimumSize(new Dimension(0,0)); //allow resing with info node
                 //add 
                 double size[][] =
@@ -249,12 +248,7 @@ public abstract class AbstractTableView extends ViewAdapter
      */
     public void actionPerformed(final ActionEvent e) {
         //not in a thread because it is always called inside a thread created from sub-classes
-        if ( e.getSource() == jbApplyFilter){
-            this.sAppliedFilter = jtfValue.getText();
-            this.sAppliedCriteria =getApplyCriteria();
-            applyFilter(sAppliedCriteria,sAppliedFilter);
-        }
-        else if(e.getSource() == jbClearFilter){ //remove all filters
+      if(e.getSource() == jbClearFilter){ //remove all filters
             jtfValue.setText(""); //clear value textfield //$NON-NLS-1$
             this.sAppliedFilter = null;
             this.sAppliedCriteria = null;
@@ -269,12 +263,12 @@ public abstract class AbstractTableView extends ViewAdapter
                 boolean bPreviousState = ConfigurationManager.getBoolean(CONF_LOGICAL_TABLE_EDITION);
                 ConfigurationManager.setProperty(CONF_LOGICAL_TABLE_EDITION,new Boolean(!bPreviousState).toString());
             }
-        }
-        if (isEditable()){
-            jbEdition.setBorder(BorderFactory.createLoweredBevelBorder());
-        }
-        else{
-            jbEdition.setBorder(BorderFactory.createRaisedBevelBorder());
+            if (isEditable()){
+                jbEdition.setBorder(BorderFactory.createLoweredBevelBorder());
+            }
+            else{
+                jbEdition.setBorder(BorderFactory.createRaisedBevelBorder());
+            }
         }
     }
     

@@ -36,6 +36,7 @@ import org.jajuk.base.StackItem;
 import org.jajuk.base.Track;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.JajukTableModel;
+import org.jajuk.ui.PropertiesWizard;
 import org.jajuk.ui.TracksTableModel;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Util;
@@ -60,8 +61,6 @@ public class LogicalTableView extends AbstractTableView implements Observer{
     JMenuItem jmiTrackPlayRepeat;
     JMenuItem jmiTrackPlayAlbum;
     JMenuItem jmiTrackPlayAuthor;
-    JMenuItem jmiTrackSetProperty;
-    JMenuItem jmiTrackProperties;
     
     /*
      * (non-Javadoc)
@@ -99,20 +98,18 @@ public class LogicalTableView extends AbstractTableView implements Observer{
         jmiTrackPlayAlbum.addActionListener(this);
         jmiTrackPlayAuthor = new JMenuItem(Messages.getString("LogicalTableView.12")); //$NON-NLS-1$
         jmiTrackPlayAuthor.addActionListener(this);
-        jmiTrackSetProperty = new JMenuItem(Messages.getString("LogicalTableView.13")); //$NON-NLS-1$
-        jmiTrackSetProperty.setEnabled(false);
-        jmiTrackSetProperty.addActionListener(this);
-        jmiTrackProperties = new JMenuItem(Messages.getString("LogicalTableView.14")); //$NON-NLS-1$
-        jmiTrackProperties.setEnabled(false);
-        jmiTrackProperties.addActionListener(this);
+        jmiSetProperty = new JMenuItem(Messages.getString("LogicalTableView.13")); //$NON-NLS-1$
+        jmiSetProperty.addActionListener(this);
+        jmiProperties = new JMenuItem(Messages.getString("LogicalTableView.14")); //$NON-NLS-1$
+        jmiProperties.addActionListener(this);
         jmenuTrack.add(jmiTrackPlay);
         jmenuTrack.add(jmiTrackPush);
         jmenuTrack.add(jmiTrackPlayShuffle);
         jmenuTrack.add(jmiTrackPlayRepeat);
         jmenuTrack.add(jmiTrackPlayAlbum);
         jmenuTrack.add(jmiTrackPlayAuthor);
-        jmenuTrack.add(jmiTrackSetProperty);
-        jmenuTrack.add(jmiTrackProperties);
+        jmenuTrack.add(jmiSetProperty);
+        jmenuTrack.add(jmiProperties);
     }
     
     /**Fill the table */
@@ -183,10 +180,10 @@ public class LogicalTableView extends AbstractTableView implements Observer{
                 jtable.getSelectionModel().setSelectionInterval(iSelection,iSelection);
             }
             if ( jtable.getSelectedRowCount() > 1){
-                jmiTrackProperties.setEnabled(false); //can read a property from one sole track
+                jmiProperties.setEnabled(false); //can read a property from one sole track
             }
             else{
-                jmiTrackProperties.setEnabled(false); //TBI set to true when managing properties
+                jmiProperties.setEnabled(true); 
             }
             jmenuTrack.show(jtable,e.getX(),e.getY());
         }
@@ -204,20 +201,15 @@ public class LogicalTableView extends AbstractTableView implements Observer{
      */
     public void actionPerformed(final ActionEvent e) {
         super.actionPerformed(e);
-        if (e.getSource() == jcbProperty){
+        if (e.getSource() != jbEdition && e.getSource() != jcbProperty 
+                && e.getSource() != jbClearFilter && e.getSource() != jbAdvancedFilter){    
             new Thread(){
                 public void run(){
-                    //let super class to test common ( physical/logical ) events 
-                    if ( e.getSource() == jbApplyFilter || e.getSource() == jbClearFilter){
-                        LogicalTableView.super.actionPerformed(e);
-                        return;
-                    }
-                    //then specifics
                     //computes selected tracks
                     ArrayList alFilesToPlay = new ArrayList(10);
                     int[] indexes = jtable.getSelectedRows();
                     for (int i=0;i<indexes.length;i++){ //each track in selection
-                        Track track = (Track)model.getItemAt(jtable.convertRowIndexToModel(i));
+                        Track track = (Track)model.getItemAt(jtable.convertRowIndexToModel(indexes[i]));
                         ArrayList alTracks = new ArrayList(indexes.length);
                         if (e.getSource() == jmiTrackPlayAlbum){
                             Album album = track.getAlbum();
@@ -263,11 +255,16 @@ public class LogicalTableView extends AbstractTableView implements Observer{
                     else if ( e.getSource() == jmiTrackPlayRepeat){
                         FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFilesToPlay),true,true),false);
                     }
+                    else if ( e.getSource() == jmiProperties){
+                        Track track = (Track)model.getItemAt(
+                            jtable.convertRowIndexToModel(jtable.getSelectedRow()));
+                        new PropertiesWizard(track);
+                    }
                 }
             }.start();
         }
     }
-       
+    
     /* (non-Javadoc)
      * @see org.jajuk.ui.views.AbstractTableView#isEditable()
      */

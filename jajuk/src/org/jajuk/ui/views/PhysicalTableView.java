@@ -36,6 +36,7 @@ import org.jajuk.base.StackItem;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.FilesTableModel;
 import org.jajuk.ui.JajukTableModel;
+import org.jajuk.ui.PropertiesWizard;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
@@ -58,7 +59,6 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
     JMenuItem jmiFilePlayShuffle;
     JMenuItem jmiFilePlayRepeat;
     JMenuItem jmiFilePlayDirectory;
-    JMenuItem jmiFileProperties;
     
     /*
      * (non-Javadoc)
@@ -94,15 +94,17 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
         jmiFilePlayRepeat.addActionListener(this);
         jmiFilePlayDirectory = new JMenuItem(Messages.getString("PhysicalTableView.15")); //$NON-NLS-1$
         jmiFilePlayDirectory.addActionListener(this);
-        jmiFileProperties = new JMenuItem(Messages.getString("PhysicalTableView.6")); //$NON-NLS-1$
-        jmiFileProperties.setEnabled(false);
-        jmiFileProperties.addActionListener(this);
+        jmiSetProperty = new JMenuItem(Messages.getString("LogicalTableView.13")); //$NON-NLS-1$
+        jmiSetProperty.addActionListener(this);
+        jmiProperties = new JMenuItem(Messages.getString("PhysicalTableView.6")); //$NON-NLS-1$
+        jmiProperties.addActionListener(this);
         jmenuFile.add(jmiFilePlay);
         jmenuFile.add(jmiFilePush);
         jmenuFile.add(jmiFilePlayShuffle);
         jmenuFile.add(jmiFilePlayRepeat);
         jmenuFile.add(jmiFilePlayDirectory);
-        jmenuFile.add(jmiFileProperties);
+        jmenuFile.add(jmiSetProperty);
+        jmenuFile.add(jmiProperties);
     }
     
     
@@ -173,10 +175,10 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
                 jtable.getSelectionModel().setSelectionInterval(iSelection,iSelection);
             }
             if ( jtable.getSelectedRowCount() > 1){
-                jmiFileProperties.setEnabled(false); //can read a property from one sole file
+                jmiProperties.setEnabled(false); //can read a property from one sole file
             }
             else{
-                jmiFileProperties.setEnabled(false); //TBI set to true when managing properties
+                jmiProperties.setEnabled(true); 
             }
             jmenuFile.show(jtable,e.getX(),e.getY());
         }
@@ -195,20 +197,15 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
      */
     public void actionPerformed(final ActionEvent e) {
         super.actionPerformed(e);
-        if (e.getSource() == jcbProperty){
+        if (e.getSource() != jbEdition && e.getSource() != jcbProperty 
+                && e.getSource() != jbClearFilter && e.getSource() != jbAdvancedFilter){    
             new Thread(){
                 public void run(){
-                    //let super class to test common ( physical/logical ) events 
-                    if ( e.getSource() == jbApplyFilter || e.getSource() == jbClearFilter){
-                        PhysicalTableView.super.actionPerformed(e);
-                        return;
-                    }
-                    //then specifics
                     //computes selected files
                     ArrayList alFilesToPlay = new ArrayList(jtable.getSelectedRowCount());
                     int[] indexes = jtable.getSelectedRows();
                     for (int i=0;i<indexes.length;i++){ //each selected track
-                        File file = (File)model.getItemAt(jtable.convertRowIndexToModel(i));
+                        File file = (File)model.getItemAt(jtable.convertRowIndexToModel(indexes[i]));
                         ArrayList alFilesToPlay2 = new ArrayList(indexes.length);
                         if (e.getSource() == jmiFilePlayDirectory){
                             alFilesToPlay2.addAll(FileManager.getInstance().getAllDirectory(file));   
@@ -248,6 +245,16 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
                     else if ( e.getSource() == jmiFilePlayRepeat){
                         FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFilesToPlay),
                             true,true),false);
+                    }
+                    //properties
+                    else if ( e.getSource() == jmiProperties){
+                        File file = (File)model.getItemAt(
+                            jtable.convertRowIndexToModel(jtable.getSelectedRow()));
+                        //show file and associated track properties
+                        ArrayList alItems = new ArrayList(2);
+                        alItems.add(file);
+                        alItems.add(file.getTrack());
+                        new PropertiesWizard(alItems);
                     }
                 }
             }.start();
