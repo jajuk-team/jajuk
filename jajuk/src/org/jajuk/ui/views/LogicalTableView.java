@@ -256,11 +256,13 @@ public class LogicalTableView extends AbstractTableView implements Observer{
                 else if ( e.getSource() == jmiTrackPlayRepeat){
                     FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFilesToPlay),true,true),false);
                 }
+                //properties
                 else if ( e.getSource() == jmiProperties){
                     Track track = (Track)model.getItemAt(
                         jtable.convertRowIndexToModel(jtable.getSelectedRow()));
                     new PropertiesWizard(track);
                 }
+                //set a property
                  else if (e.getSource() == jmiSetProperty){
                      new SetPropertyWizard(alSelectedTracks);
                 }

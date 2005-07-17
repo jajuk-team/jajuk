@@ -20,6 +20,7 @@
 
 package org.jajuk.base;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.jajuk.util.MD5Processor;
@@ -83,11 +84,12 @@ public class StyleManager extends ItemManager {
      */
     public synchronized Style changeStyleName(Style old,String sNewName){
         Style newItem = registerStyle(sNewName);
-        Iterator it = TrackManager.getInstance().getItems().iterator();
+        ArrayList alTracks = new ArrayList(TrackManager.getInstance().getItems()); //we need to create a new list to avoid concurrent exceptions
+        Iterator it = alTracks.iterator();
         while (it.hasNext()){
             Track track = (Track)it.next();
-            if (track.getAuthor().equals(old)){
-                TrackManager.getInstance().changeTrackStyle(track,newItem.getId());
+            if (track.getStyle().equals(old)){
+                TrackManager.getInstance().changeTrackStyle(track,sNewName);
             }
         }
         cleanup();//remove useless items if no more tracks use it

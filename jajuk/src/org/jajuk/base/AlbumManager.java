@@ -21,6 +21,7 @@
 
 package org.jajuk.base;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.jajuk.util.MD5Processor;
@@ -83,11 +84,12 @@ public class AlbumManager extends ItemManager{
      */
     public synchronized Album changeAlbumName(Album old,String sNewName){
         Album newItem = registerAlbum(sNewName);
-        Iterator it = TrackManager.getInstance().getItems().iterator();
+        ArrayList alTracks = new ArrayList(TrackManager.getInstance().getItems()); //we need to create a new list to avoid concurrent exceptions
+        Iterator it = alTracks.iterator();
         while (it.hasNext()){
             Track track = (Track)it.next();
             if (track.getAlbum().equals(old)){
-                TrackManager.getInstance().changeTrackAlbum(track,newItem.getId());
+                TrackManager.getInstance().changeTrackAlbum(track,sNewName);
             }
         }
         cleanup();//remove useless albums if no more tracks use it

@@ -66,6 +66,7 @@ import org.jajuk.base.TrackManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.PropertiesWizard;
+import org.jajuk.ui.SetPropertyWizard;
 import org.jajuk.ui.TransferableTreeNode;
 import org.jajuk.ui.TreeTransferHandler;
 import org.jajuk.util.ConfigurationManager;
@@ -92,6 +93,9 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
     /** Track selection*/
     ArrayList alTracks;
     
+    /**Items selection*/
+    ArrayList alSelected;
+    
     /** Current selection */
     TreePath[] paths;
     
@@ -102,6 +106,7 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
     JMenuItem jmiStylePlayRepeat;
     JMenuItem jmiStyleDelete;
     JMenuItem jmiStyleProperties;
+    JMenuItem jmiStyleSetProperties;
     
     JPopupMenu jmenuAuthor;
     JMenuItem jmiAuthorPlay;
@@ -110,6 +115,7 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
     JMenuItem jmiAuthorPlayRepeat;
     JMenuItem jmiAuthorDelete;
     JMenuItem jmiAuthorProperties;
+    JMenuItem jmiAuthorSetProperties;
     
     JPopupMenu jmenuAlbum;
     JMenuItem jmiAlbumPlay;
@@ -118,12 +124,14 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
     JMenuItem jmiAlbumPlayRepeat;
     JMenuItem jmiAlbumDelete;
     JMenuItem jmiAlbumProperties;
+    JMenuItem jmiAlbumSetProperties;
     
     JPopupMenu jmenuTrack;
     JMenuItem jmiTrackPlay;
     JMenuItem jmiTrackPush;
     JMenuItem jmiTrackDelete;
     JMenuItem jmiTrackProperties;
+    JMenuItem jmiTrackSetProperties;
     
     
     /*
@@ -168,6 +176,8 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
         jmiStyleDelete = new JMenuItem(Messages.getString("LogicalTreeView.5")); //$NON-NLS-1$
         jmiStyleDelete.setEnabled(false);
         jmiStyleDelete.addActionListener(this);
+        jmiStyleSetProperties = new JMenuItem(Messages.getString("LogicalTreeView.25")); //$NON-NLS-1$
+        jmiStyleSetProperties.addActionListener(this);
         jmiStyleProperties = new JMenuItem(Messages.getString("LogicalTreeView.7")); //$NON-NLS-1$
         jmiStyleProperties.addActionListener(this);
         jmenuStyle.add(jmiStylePlay);
@@ -175,6 +185,7 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
         jmenuStyle.add(jmiStylePlayShuffle);
         jmenuStyle.add(jmiStylePlayRepeat);
         jmenuStyle.add(jmiStyleDelete);
+        jmenuStyle.add(jmiStyleSetProperties);
         jmenuStyle.add(jmiStyleProperties);
         
         //Author menu
@@ -190,6 +201,8 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
         jmiAuthorDelete = new JMenuItem(Messages.getString("LogicalTreeView.12")); //$NON-NLS-1$
         jmiAuthorDelete.setEnabled(false);
         jmiAuthorDelete.addActionListener(this);
+        jmiAuthorSetProperties = new JMenuItem(Messages.getString("LogicalTreeView.25")); //$NON-NLS-1$
+        jmiAuthorSetProperties.addActionListener(this);
         jmiAuthorProperties = new JMenuItem(Messages.getString("LogicalTreeView.14")); //$NON-NLS-1$
         jmiAuthorProperties.addActionListener(this);
         jmenuAuthor.add(jmiAuthorPlay);
@@ -197,6 +210,7 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
         jmenuAuthor.add(jmiAuthorPlayShuffle);
         jmenuAuthor.add(jmiAuthorPlayRepeat);
         jmenuAuthor.add(jmiAuthorDelete);
+        jmenuAuthor.add(jmiAuthorSetProperties);
         jmenuAuthor.add(jmiAuthorProperties);
         
         //Album menu
@@ -212,6 +226,8 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
         jmiAlbumDelete = new JMenuItem(Messages.getString("LogicalTreeView.19")); //$NON-NLS-1$
         jmiAlbumDelete.setEnabled(false);
         jmiAlbumDelete.addActionListener(this);
+        jmiAlbumSetProperties = new JMenuItem(Messages.getString("LogicalTreeView.25")); //$NON-NLS-1$
+        jmiAlbumSetProperties.addActionListener(this);
         jmiAlbumProperties = new JMenuItem(Messages.getString("LogicalTreeView.21")); //$NON-NLS-1$
         jmiAlbumProperties.addActionListener(this);
         jmenuAlbum.add(jmiAlbumPlay);
@@ -219,6 +235,7 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
         jmenuAlbum.add(jmiAlbumPlayShuffle);
         jmenuAlbum.add(jmiAlbumPlayRepeat);
         jmenuAlbum.add(jmiAlbumDelete);
+        jmenuAlbum.add(jmiAlbumSetProperties);
         jmenuAlbum.add(jmiAlbumProperties);
         
         //Track menu
@@ -230,13 +247,15 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
         jmiTrackDelete = new JMenuItem(Messages.getString("LogicalTreeView.24")); //$NON-NLS-1$
         jmiTrackDelete.setEnabled(false);
         jmiTrackDelete.addActionListener(this);
+        jmiTrackSetProperties = new JMenuItem(Messages.getString("LogicalTreeView.25")); //$NON-NLS-1$
+        jmiTrackSetProperties.addActionListener(this);
         jmiTrackProperties = new JMenuItem(Messages.getString("LogicalTreeView.26")); //$NON-NLS-1$
         jmiTrackProperties.addActionListener(this);
         jmenuTrack.add(jmiTrackPlay);
         jmenuTrack.add(jmiTrackPush);
         jmenuTrack.add(jmiTrackDelete);
+        jmenuTrack.add(jmiTrackSetProperties);
         jmenuTrack.add(jmiTrackProperties);
-        
         
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         top = new DefaultMutableTreeNode(Messages.getString("LogicalTreeView.27")); //$NON-NLS-1$
@@ -326,8 +345,10 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
                 HashSet hsSelectedTracks = new HashSet(100);
                 int items = 0;
                 //get all components recursively
+                alSelected = new ArrayList(tpSelected.length);
                 for (int i=0;i<tpSelected.length;i++){
                     Object o = tpSelected[i].getLastPathComponent();
+                    alSelected.add(((TransferableTreeNode)o).getData());
                     Enumeration e2 = ((DefaultMutableTreeNode)o).depthFirstEnumeration(); //return all childs nodes recursively
                     while ( e2.hasMoreElements()){
                         DefaultMutableTreeNode node = (DefaultMutableTreeNode)e2.nextElement();
@@ -594,6 +615,18 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
                             || e.getSource() == jmiAuthorPlayRepeat
                             || e.getSource() == jmiStylePlayRepeat) ){
                         FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFilesToPlay),true,true),false);
+                    }
+                    else if ( ( e.getSource() == jmiAlbumDelete
+                            || e.getSource() == jmiAuthorDelete
+                            || e.getSource() == jmiStyleDelete
+                            || e.getSource() == jmiTrackDelete) ){
+                        //TBI
+                    }
+                    else if ( ( e.getSource() == jmiAlbumSetProperties
+                            || e.getSource() == jmiAuthorSetProperties
+                            || e.getSource() == jmiStyleSetProperties
+                            || e.getSource() == jmiTrackSetProperties) ){
+                        new SetPropertyWizard(alSelected);
                     }
                 }
             }

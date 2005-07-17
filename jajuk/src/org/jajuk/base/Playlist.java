@@ -186,7 +186,7 @@ public class Playlist extends PropertyAdapter implements Comparable{
             return false;
         }
         else if (XML_EXPANDED.equals(sProperty)){
-            return true;
+            return false;
         }
          else{
             return true;

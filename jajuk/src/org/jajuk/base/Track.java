@@ -141,7 +141,8 @@ public class Track extends PropertyAdapter implements Comparable{
 	 */
 	public int compareTo(Object o){
 		Track otherTrack = (Track)o;
-        if (otherTrack.getAlbum().equals(album)){
+        //if track # is given, sort by # in a same album, otherwise, sort alphabeticaly
+        if (otherTrack.getAlbum().equals(album) && (getOrder() !=otherTrack.getOrder()) ){
             return getOrder() - otherTrack.getOrder(); 
         }
         return  sHashCompare.compareToIgnoreCase(otherTrack.getHashCompare());

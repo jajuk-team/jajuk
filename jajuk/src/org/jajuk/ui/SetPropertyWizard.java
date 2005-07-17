@@ -100,8 +100,6 @@ public class SetPropertyWizard extends JDialog
                 alKeys.add(sKey); //keys
             }
         }
-        jcbProperty.setSelectedIndex(-1);
-        jcbProperty.addActionListener(this);
         jlValue = new JLabel(Messages.getString("SetPropertyWizard.2"));
         jtfValue = new JTextField();
         jtfValue.setEnabled(false);
@@ -111,6 +109,10 @@ public class SetPropertyWizard extends JDialog
         jcbValue.setEnabled(false);
         okp = new OKCancelPanel(this);
         okp.getCancelButton().setText(Messages.getString("SetPropertyWizard.4"));
+        jcbProperty.addActionListener(this);
+        if (alKeys.size() > 0){ //select first property found
+            jcbProperty.setSelectedIndex(0);
+        }
         int iXSeparator = 10;
         int iYSeparator = 20;
         double[][] dSize = {

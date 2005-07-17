@@ -147,7 +147,7 @@ public class Style extends PropertyAdapter implements Comparable{
             return true;
         }
         else if (XML_EXPANDED.equals(sProperty)){
-            return true;
+            return false;
         }
         else{
             return true;
