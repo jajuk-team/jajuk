@@ -65,8 +65,8 @@ public class PlaylistFileManager extends ItemManager implements Observer{
 				Log.debug("Registered new playlist file: "+ playlistFile); //$NON-NLS-1$
 			}
             postRegistering(playlistFile);
-		}
-		return (PlaylistFile)hmItems.get(sId);
+       }
+       return (PlaylistFile)hmItems.get(sId);
 	}
 
 	/**

@@ -72,7 +72,7 @@ public class AlbumManager extends ItemManager{
         }
         Album album = new Album(sId, sName);
         hmItems.put(sId, album);
-       postRegistering(album);
+        postRegistering(album);
         return album;
     }
 			

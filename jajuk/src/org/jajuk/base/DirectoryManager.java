@@ -91,7 +91,7 @@ public class DirectoryManager extends ItemManager implements Observer{
 		Directory directory = new Directory(sId, sName, dParent, device);
 		hmItems.put(sId,directory);
         postRegistering(directory);
-		return directory;
+     	return directory;
 	}
 
 	/**

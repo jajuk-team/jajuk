@@ -27,6 +27,7 @@ import java.util.LinkedHashMap;
 
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
+import org.jajuk.util.log.Log;
 import org.xml.sax.Attributes;
 
 /**
@@ -156,10 +157,16 @@ abstract public class PropertyAdapter implements IPropertyable, ITechnicalString
      * @return
      */
     public String toXml() {
-        StringBuffer sb = new StringBuffer("\t\t<").append(getIdentifier()); //$NON-NLS-1$
-        sb.append(getPropertiesXml());
-        sb.append("/>\n"); //$NON-NLS-1$
-        return sb.toString();
+        try{
+            StringBuffer sb = new StringBuffer("\t\t<").append(getIdentifier()); //$NON-NLS-1$
+            sb.append(getPropertiesXml());
+            sb.append("/>\n"); //$NON-NLS-1$
+            return sb.toString();
+        }
+        catch(Exception e){ //catch any error here bcause it can prevent collection to commit
+            Log.error(e);
+            return "";
+        }
     }
     
     private String getPropertiesXml() {

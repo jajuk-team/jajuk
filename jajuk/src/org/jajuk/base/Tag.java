@@ -257,7 +257,9 @@ public class Tag implements ITechnicalStrings{
                throw new Exception();
             }
         } catch (Exception e) {
-            Log.error("103",fio.getName(), e); //$NON-NLS-1$
+            if (Log.isDebugEnabled()){
+                Log.debug(Messages.getErrorMessage("103")+" : "+fio.getName()); //$NON-NLS-1$
+            }
             i = 0;
         }
         return i;    

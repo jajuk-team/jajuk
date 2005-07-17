@@ -68,14 +68,14 @@ public class AuthorManager extends ItemManager{
 	 * @param sName
 	 */
 	public  synchronized Author registerAuthor(String sId, String sName) {
-		if (hmItems.containsKey(sId)) {
-			return (Author) hmItems.get(sId);
-		}
-		Author author = new Author(sId, sName);
-		hmItems.put(sId, author);
-        postRegistering(author);
-		return author;
-     }
+	    if (hmItems.containsKey(sId)) {
+	        return (Author) hmItems.get(sId);
+	    }
+	    Author author = new Author(sId, sName);
+	    hmItems.put(sId, author);
+	    postRegistering(author);
+	    return author;
+	}
 	    
      /**
      * Change the item name

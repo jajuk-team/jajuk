@@ -19,8 +19,6 @@
  */
 package org.jajuk.base;
 
-import java.util.ArrayList;
-
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.Util;
 
@@ -33,9 +31,6 @@ import org.jajuk.util.Util;
  */
 public class Style extends PropertyAdapter implements Comparable{
 
-	/** Authors for this style */
-	private ArrayList alAuthors = new ArrayList(10);
-  
 	/**
      * Style constructor
      * 
@@ -88,21 +83,6 @@ public class Style extends PropertyAdapter implements Comparable{
 	 */
 	public int hashCode(){
 		return getId().hashCode();
-	}
-
-
-	/**
-	 * @return
-	 */
-	public ArrayList getAuthors() {
-		return alAuthors;
-	}
-
-	/**
-	 * @param album
-	 */
-	public void addAuthor(Author author) {
-		alAuthors.add(author);
 	}
 
 	/**

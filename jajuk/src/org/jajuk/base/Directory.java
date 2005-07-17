@@ -259,6 +259,7 @@ public class Directory extends PropertyAdapter implements Comparable{
                         org.jajuk.base.File file = FileManager.getInstance().registerFile(fileRef.getId(),fileRef.getName(), 
                             this, fileRef.getTrack(), fileRef.getSize(),fileRef.getQuality());
                         addFile(file);
+                        FileManager.getInstance().postRegistering(file);
                         continue;
                     }
                     Tag tag = new Tag(files[i]);
@@ -280,11 +281,13 @@ public class Directory extends PropertyAdapter implements Comparable{
                     org.jajuk.base.File newFile = FileManager.getInstance().registerFile(sId,files[i].getName(), this, track, 
                         files[i].length(), sQuality);
                     addFile(newFile);
+                    FileManager.getInstance().postRegistering(newFile);
                     track.addFile(newFile);
                     track.setComment(sComment); 
                     /*comment is at the track level, note that we take last found file comment but we changing
                     a comment, we will apply to all files for a track*/
-                    track.setOrder(iOrder); 
+                    track.setOrder(iOrder);
+                    TrackManager.getInstance().postRegistering(track);
                 }
                 else{  //playlist file
                     String sName = files[i].getName();
@@ -367,14 +370,7 @@ public class Directory extends PropertyAdapter implements Comparable{
         return true;
     }
     
-    /**
-     * @param parent The dParent to set.
-     */
-    protected void setParent(Directory parent) {
-        this.dParent = parent;
-        setProperty(XML_DIRECTORY_PARENT,(parent==null?"-1":parent.getId()));
-    }
-    
+   
     /**
      * Get item description
       */

@@ -69,6 +69,18 @@ public class DeviceManager extends ItemManager{
 		String sId = processId(sUrl,sName,iDeviceType);
 		return registerDevice(sId,sName,iDeviceType,sUrl,sMountPoint);
 	}
+    
+        /**
+     * Register a device with a known id
+     *@param sName
+     *@return device 
+     */
+    public synchronized Device registerDevice(String sId,String sName,int iDeviceType,String sUrl,String sMountPoint){
+        Device device = new Device(sId,sName,iDeviceType,sUrl,sMountPoint);
+        hmItems.put(sId,device);
+        postRegistering(device);
+        return device;
+    }
 	
 	/**
 	 * Process to compute a device id
@@ -123,18 +135,6 @@ public class DeviceManager extends ItemManager{
 		    }
 		}
 		return "0"; //$NON-NLS-1$
-	}
-	
-	/**
-	 * Register a device with a known id
-	 *@param sName
-	 *@return device 
-	 */
-	public synchronized Device registerDevice(String sId,String sName,int iDeviceType,String sUrl,String sMountPoint){
-		Device device = new Device(sId,sName,iDeviceType,sUrl,sMountPoint);
-		hmItems.put(sId,device);
-         postRegistering(device);
-		return device;
 	}
 	
 	/**
@@ -244,17 +244,7 @@ public class DeviceManager extends ItemManager{
 		}
 		return bOut;
 	}
-	
-	
-	/**
-	 * Change mount point  for a given device
-	 * @param device to set
-	 * @param mountPoint The sMountPoint to set.
-	 */
-	public void setMountPoint(Device device,String sMountPoint) {
-		device.setMountPoint(sMountPoint);
-	}
-		
+			
 	/**
 	 * Clean all devices
 	 */

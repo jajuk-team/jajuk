@@ -121,8 +121,8 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 		while (it.hasNext()) {
 			Track track = (Track) it.next();
 			if (track.getFiles().size() > 0) { //this way we clean up all orphan tracks
-				bw.write(track.toXml());
-			}
+			   bw.write(track.toXml());
+            }
 		}
 		bw.write("\t</"+XML_TRACKS+">\n"); //$NON-NLS-1$
 		//directories
@@ -301,7 +301,8 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 	            track.setComment(attributes.getValue(12));
                 track.setOrder(Integer.parseInt(attributes.getValue(13)));
                 track.populateProperties(attributes,14);
-	        }
+                TrackManager.getInstance().postRegistering(track);
+            }
 	        else if (XML_DIRECTORY.equals(sQName)){
 	            Directory dParent = null;
 	            String sParentId = attributes.getValue(2);
@@ -329,6 +330,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 	            file.populateProperties(attributes,6);
 	            track.addFile(file);
 	            file.getDirectory().addFile(file);
+                FileManager.getInstance().postRegistering(file);
 	        }
 	        else if (XML_PLAYLIST_FILE.equals(sQName)){
 	            Directory dParent = (Directory)DirectoryManager.getInstance().getItem(attributes.getValue(3));

@@ -256,7 +256,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	            //clear history to remove olf files referenced in it
 	            History.getInstance().clear(Integer.parseInt(ConfigurationManager.getProperty(CONF_HISTORY))); //delete old history items
 	            //Sort collection
-	    		FileManager.getInstance().sortFiles();//resort collection in case of
+	    		//FileManager.getInstance().sortFiles();//resort collection in case of
                 //notify views to refresh
 	            ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH));
                 //commit collection at each refresh (can e useful if application is closed brutally with control-C or shutdown and that exit hook have no time to perform commit)

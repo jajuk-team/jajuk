@@ -82,7 +82,6 @@ public class FileManager extends ItemManager implements Observer{
 			if ( directory.getDevice().isRefreshing() && Log.isDebugEnabled()){
 				Log.debug("registrated new file: "+ file); //$NON-NLS-1$
 			}
-			postRegistering(file);
 		}
 		return (File)hmItems.get(sId);
 	}

@@ -90,7 +90,8 @@ public class SetPropertyWizard extends JDialog
         Iterator it = item.getProperties().keySet().iterator();
         while (it.hasNext()){
             String sKey = (String)it.next();
-            if (item.isPropertyEditable(sKey)){
+            //display editable properties and hide name if several items were selected
+            if (item.isPropertyEditable(sKey) && !(alItems.size() > 1 && XML_NAME.equals(sKey))){
                 if (Messages.getInstance().contains(PROPERTY_SEPARATOR+sKey)){
                     jcbProperty.addItem(Messages.getString(PROPERTY_SEPARATOR+sKey)); //localized keys
                 }
@@ -191,15 +192,25 @@ public class SetPropertyWizard extends JDialog
     /**apply changes*/
     private void process(){
         Iterator<IPropertyable> it = alItems.iterator();
+        ArrayList<IPropertyable> alNewItems = new ArrayList<IPropertyable>(alItems.size());
         while (it.hasNext()){
             IPropertyable item = it.next();
+            IPropertyable newItem = null;
             if (FORMAT_BOOLEAN.equals(sFormat)){
-                 ItemManager.changeItem(item,sKey,Boolean.toString(jcbValue.isSelected()));
+                newItem =  ItemManager.changeItem(item,sKey,Boolean.toString(jcbValue.isSelected()));
             }
             else {
-                 ItemManager.changeItem(item,sKey,jtfValue.getText());
+                newItem =  ItemManager.changeItem(item,sKey,jtfValue.getText());
+            }
+            if (newItem == null){ //no change
+                alNewItems.add(item);
+            }
+            else{
+                alNewItems.add(newItem);
             }
         }
+        //switch old and new items
+        this.alItems = alNewItems;
         InformationJPanel.getInstance().setMessage(Messages.getString("SetPropertyWizard.5"),InformationJPanel.INFORMATIVE);
         ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH)); //refresh all UI
     }

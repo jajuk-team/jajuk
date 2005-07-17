@@ -69,6 +69,24 @@ public class TrackManager extends ItemManager implements Observer{
 	}
     
     /**
+     * Register an Track with a known id
+     * 
+     * @param sName
+     */
+    public synchronized Track registerTrack(String sId, String sName, Album album, Style style, Author author, long length, String sYear, Type type) {
+        if (!hmItems.containsKey(sId)) {
+            String sAdditionDate = new SimpleDateFormat(DATE_FILE).format(new Date());
+            Track track = new Track(sId, sName, album, style, author, length, sYear, type);
+            track.setAdditionDate(sAdditionDate);
+            hmItems.put(sId, track);
+            return track;
+        }
+        else{
+            return (Track)hmItems.get(sId);
+        }
+    }
+    
+    /**
      * Change a track album 
      * @param old track
      * @param new album name
@@ -94,6 +112,7 @@ public class TrackManager extends ItemManager implements Observer{
             tag.setAlbumName(newAlbum.getName2());
             tag.commit();
         }
+        TrackManager.getInstance().postRegistering(newTrack);
         remove(track.getId());//remove old reference
     	AlbumManager.getInstance().cleanup(track.getAlbum()); //remove this album if no more references
     	return newTrack;
@@ -124,6 +143,7 @@ public class TrackManager extends ItemManager implements Observer{
             tag.setAuthorName(newAuthor.getName2());
             tag.commit();
         }
+        TrackManager.getInstance().postRegistering(newTrack);
         remove(track.getId());//remove old reference
         AuthorManager.getInstance().cleanup(track.getAuthor()); //remove this item if no more references
         return newTrack;
@@ -154,6 +174,7 @@ public class TrackManager extends ItemManager implements Observer{
             tag.setStyleName(newStyle.getName2());
             tag.commit();
         }
+        TrackManager.getInstance().postRegistering(newTrack);
         remove(track.getId());//remove old reference
         StyleManager.getInstance().cleanup(track.getStyle()); //remove this item if no more references
         return newTrack;
@@ -192,6 +213,7 @@ public class TrackManager extends ItemManager implements Observer{
             tag.setYear(sNewItem);
             tag.commit();
         }
+        TrackManager.getInstance().postRegistering(newTrack);
         remove(track.getId());//remove old reference
         return newTrack;
     }
@@ -291,29 +313,11 @@ public class TrackManager extends ItemManager implements Observer{
             tag.setTrackName(newTrack.getName());
             tag.commit();
         }
+        TrackManager.getInstance().postRegistering(newTrack);
         remove(track.getId());//remove old reference
         return newTrack;
     }
     
-	/**
-	 * Register an Track with a known id
-	 * 
-	 * @param sName
-	 */
-	public synchronized Track registerTrack(String sId, String sName, Album album, Style style, Author author, long length, String sYear, Type type) {
-		if (!hmItems.containsKey(sId)) {
-			String sAdditionDate = new SimpleDateFormat(DATE_FILE).format(new Date());
-			Track track = new Track(sId, sName, album, style, author, length, sYear, type);
-			track.setAdditionDate(sAdditionDate);
-			hmItems.put(sId, track);
-			postRegistering(track);
-			return track;
-		}
-		else{
-			return (Track)hmItems.get(sId);
-		}
-	}
-	
 	/**
 	 * Perform a track cleanup : delete useless items
 	 *  

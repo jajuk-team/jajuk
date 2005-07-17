@@ -33,10 +33,7 @@ import org.jajuk.util.Util;
  * @created    17 oct. 2003
  */
 public class Author extends PropertyAdapter implements Comparable{
-
-	/**Albums for this author*/
-	private ArrayList alAlbums = new ArrayList(10);
-    
+ 
 	/**
 	 * Author constructor
 	 * @param id
@@ -89,22 +86,7 @@ public class Author extends PropertyAdapter implements Comparable{
 	public int hashCode(){
 		return getId().hashCode();
 	}
-	
-	
-	/**
-	 * @return
-	 */
-	public ArrayList getAlbums() {
-		return alAlbums;
-	}
-	
-	/**
-	 * @param album
-	 */
-	public void addAlbum(Album album) {
-		alAlbums.add(album);
-	}
-	
+		
 	/**
 	 *Alphabetical comparator used to display ordered lists
 	 *@param other item to be compared
