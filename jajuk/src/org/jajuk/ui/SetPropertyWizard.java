@@ -145,6 +145,7 @@ public class SetPropertyWizard extends JDialog
     public void actionPerformed(ActionEvent ae) {
         if (ae.getSource() == jcbProperty){
             ItemManager im = ItemManager.getItemManager(alItems.get(0).getClass());
+            /* A VOIR
             sFormat = im.getFormat((String)alKeys.get(jcbProperty.getSelectedIndex()));
             sKey = (String)alKeys.get(jcbProperty.getSelectedIndex());
             if (FORMAT_BOOLEAN.equals(sFormat)){
@@ -158,7 +159,7 @@ public class SetPropertyWizard extends JDialog
                 jtfValue.setText(alItems.get(0).getHumanValue(sKey));
                 jcbValue.setEnabled(false);
                 jcbValue.setSelected(false);
-            }
+            }*/
         }
         else if (ae.getSource().equals(this.okp.getOKButton())){ //OK
              process();

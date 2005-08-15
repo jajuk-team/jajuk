@@ -38,6 +38,7 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
 import org.jajuk.base.Event;
+import org.jajuk.base.FileManager;
 import org.jajuk.base.IPropertyable;
 import org.jajuk.base.ItemManager;
 import org.jajuk.base.ObservationManager;
@@ -149,7 +150,7 @@ public class PropertiesWizard extends JFrame implements ITechnicalStrings {
 								StringTokenizer st = new StringTokenizer(sValue, ",");
 								while (st.hasMoreTokens()) {
 									String sFile = st.nextToken();
-									IPropertyable pa = ItemManager.getItemManager(XML_FILE).getItem(sFile);
+									IPropertyable pa = FileManager.getInstance().getItem(sFile);
 									if (pa != null) {
 										new PropertiesWizard(pa); //show properties window for this item
 									}

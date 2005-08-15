@@ -39,7 +39,16 @@ public class PlaylistFileManager extends ItemManager implements Observer{
 	 */
 	private PlaylistFileManager() {
 		super();
-	}
+          //---register properties---
+        //ID
+        registerProperty(new PropertyMetaInformation(XML_ID,false,true,String.class));
+        //Name
+        registerProperty(new PropertyMetaInformation(XML_NAME,false,true,String.class));
+        //Hashcode
+        registerProperty(new PropertyMetaInformation(XML_HASHCODE,false,true,String.class));
+        //Directory
+        registerProperty(new PropertyMetaInformation(XML_DIRECTORY,false,true,String.class));
+   }
 
     /**
      * @return singleton
@@ -64,7 +73,7 @@ public class PlaylistFileManager extends ItemManager implements Observer{
 			if ( dParentDirectory.getDevice().isRefreshing()){
 				Log.debug("Registered new playlist file: "+ playlistFile); //$NON-NLS-1$
 			}
-            postRegistering(playlistFile);
+            restorePropertiesAfterRefresh(playlistFile);
        }
        return (PlaylistFile)hmItems.get(sId);
 	}

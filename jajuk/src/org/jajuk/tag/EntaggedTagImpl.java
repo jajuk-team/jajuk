@@ -107,23 +107,20 @@ public class EntaggedTagImpl implements ITagImpl,ITechnicalStrings {
 	/* (non-Javadoc)
 	 * @see org.jajuk.base.ITagImpl#getYear()
 	 */
-	public String getYear() throws Exception {
+	public int getYear() throws Exception {
 		String sOut = tag.getFirstYear();
 		if ( sOut == null ){//$NON-NLS-1$
-			return ""; //doing that, the item wil be the default jajuk unknown string //$NON-NLS-1$
+			return 0;
 		}
-		return sOut;
+		return Integer.parseInt(sOut);
 	}
 
 	/* (non-Javadoc)
 	 * @see org.jajuk.base.ITagImpl#getQuality()
 	 */
-	public String getQuality() throws Exception {
-		String sQuality = Integer.toString(audioFile.getBitrate());
-		if ("0".equals(sQuality)){
-			sQuality = UNKNOWN_QUALITY;
-		}
-		return sQuality;
+	public int getQuality() throws Exception {
+		int iQuality = audioFile.getBitrate();
+		return iQuality;
 	}
 
 	/* (non-Javadoc)
@@ -178,13 +175,6 @@ public class EntaggedTagImpl implements ITagImpl,ITechnicalStrings {
 	    tag.setGenre(style);
     }
 
-	/* (non-Javadoc)
-	 * @see org.jajuk.base.ITagImpl#setYear(java.lang.String)
-	 */
-	public void setYear(String sYear) throws Exception {
-        tag.setYear(sYear);
-	}
-    
     /* (non-Javadoc)
      * @see org.jajuk.base.ITagImpl#setOrder(java.lang.String)
      */
@@ -230,5 +220,10 @@ public class EntaggedTagImpl implements ITagImpl,ITechnicalStrings {
         audioFile.commit();
     }
 
+    /* (non-Javadoc)
+     * @see org.jajuk.tag.ITagImpl#setYear(int)
+     */
+    public void setYear(int iYear) throws Exception {
+    }
 
 }

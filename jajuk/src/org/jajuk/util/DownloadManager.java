@@ -53,11 +53,12 @@ public class DownloadManager implements ITechnicalStrings {
 	 */
 	private static HttpClient getHTTPClient(String sProxyUser,String sProxyPassswd,int iConTimeout,int iDataTimeout){
 		HttpClient client = new HttpClient();
-		client.setConnectionTimeout(iConTimeout); //connection to
-		client.setTimeout(iDataTimeout); //data reception timeout
+		client.getHttpConnectionManager().getParams().setConnectionTimeout(iConTimeout); //connection to
+		client.getHttpConnectionManager().getParams().setSoTimeout(iDataTimeout); //data reception timeout
 		if (sProxyUser!= null && sProxyPassswd!= null){
-			client.getState().setProxyCredentials(null,ConfigurationManager.getProperty(CONF_NETWORK_PROXY_HOSTNAME), new UsernamePasswordCredentials(sProxyUser,sProxyPassswd)  ); //$NON-NLS-1$
-		}
+			client.getHostConfiguration().setProxy(ConfigurationManager.getProperty(CONF_NETWORK_PROXY_HOSTNAME),Integer.parseInt(ConfigurationManager.getProperty(CONF_NETWORK_PROXY_PORT))); 
+            client.getState().setProxyCredentials(null,new UsernamePasswordCredentials(sProxyUser,sProxyPwd ));
+    	}
 		return client;
 	}
 	

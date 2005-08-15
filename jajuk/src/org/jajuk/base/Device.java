@@ -54,7 +54,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	/** IO file for optimizations* */
 	private java.io.File fio;
 	/**Device mount point**/
-	private String sMountPoint;
+	private String sMountPoint = "";
 	/**Mounted device flag*/
 	private boolean bMounted;
 	/**directories*/
@@ -85,20 +85,12 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	 * @param iDeviceType
 	 * @param sUrl
 	 */
-	public Device(String sId, String sName, int iDeviceType, String sUrl, String sMountPoint) {
+	public Device(String sId, String sName, int iDeviceType, String sUrl) {
         super(sId,sName);
         this.iDeviceType = iDeviceType;
         setProperty(XML_TYPE,Integer.toString(iDeviceType));
-        alConstructorElements.add(XML_TYPE);
-            
         this.sUrl = sUrl;
         setProperty(XML_URL,sUrl);
-        alConstructorElements.add(XML_URL);
-        
-        this.sMountPoint = sMountPoint;
-        setProperty(XML_DEVICE_MOUNT_POINT,sMountPoint);
-        alConstructorElements.add(XML_DEVICE_MOUNT_POINT);
-        
         this.fio = new File(getUrl());
 	}
 	

@@ -22,12 +22,11 @@ package org.jajuk.base;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 
 import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Util;
-import org.xml.sax.Attributes;
 
 /**
  *  Managers parent class
@@ -37,18 +36,29 @@ import org.xml.sax.Attributes;
  */
 public abstract class ItemManager implements ITechnicalStrings{
 
-    /**Custom Properties -> format*/
-   protected  LinkedHashMap properties;
     /** Map ids and properties, survives to a refresh, is used to recover old properties after refresh */
 	protected LinkedHashMap hmIdProperties = new LinkedHashMap(1000);
     /**Items collection**/
     protected LinkedHashMap hmItems = new LinkedHashMap(100);
+    /**Maps item classes -> instance*/
+    static private HashMap hmItemManagers  = new LinkedHashMap(10);
+    /**Maps properties meta information name and object*/
+    private LinkedHashMap hmPropertiesMetaInformation = new LinkedHashMap(10);
+    
     /**
      * Constructor
-     *
      */
     ItemManager(){
-        properties = new LinkedHashMap();
+        super();
+    }
+    
+    /**
+     * Registrates a new item manager
+     * @param c Managed item class
+     * @param itemManager
+     */
+    public static void registerItemManager(Class c,ItemManager itemManager){
+        hmItemManagers.put(c,itemManager);
     }
     
     /**
@@ -57,16 +67,11 @@ public abstract class ItemManager implements ITechnicalStrings{
     abstract public String getIdentifier();
     
     /**
-     * 
-     * @param sProperty
-     * @return format for given property
+     * @param sPropertyName
+     * @return meta data for given property
      */
-    public String getFormat(String sProperty){
-        String sFormat = (String)properties.get(sProperty);
-        if (sFormat == null){ //occurs for all base properties for ie
-            return FORMAT_STRING; //TBI : write a smater method: some base properties are numbers, here it's enough because we just need to make sure it not a boolean
-        }
-        return sFormat;
+    public PropertyMetaInformation getMetaInformation(String sPropertyName){
+        return (PropertyMetaInformation)hmPropertiesMetaInformation.get(sPropertyName);
     }
     
     /**
@@ -74,8 +79,9 @@ public abstract class ItemManager implements ITechnicalStrings{
      * @param item
      * @param sId
      */
-    public void restorePropertiesAfterRefresh(IPropertyable item,String sId){
-	    LinkedHashMap properties = (LinkedHashMap)hmIdProperties.get(sId); 
+    public void restorePropertiesAfterRefresh(IPropertyable item){
+	    String sId = ((PropertyAdapter)item).getId();
+        LinkedHashMap properties = (LinkedHashMap)hmIdProperties.get(sId); 
 		if ( properties == null){  //new file
 			hmIdProperties.put(sId,item.getProperties());
 		}
@@ -84,63 +90,34 @@ public abstract class ItemManager implements ITechnicalStrings{
 		}
     }
     
-    /**
-     * Add a property 
-     * @param sProperty
-     * @param sFormat
-     */
-    public void addProperty(String sProperty,String sFormat){
-        properties.put(Util.formatXML(sProperty),Util.formatXML(sFormat)); //make sure to clean strings for XML compliance
-    }
-    
     /**Remove a property **/
     public void removeProperty(String sProperty){
-        properties.remove(sProperty);
-        applyRemoveProperty(sProperty); //remove ths property to all items
+        PropertyMetaInformation meta = getMetaInformation(sProperty);
+        hmPropertiesMetaInformation.remove(sProperty);
+        applyRemoveProperty(meta); //remove this property to all items
     }
     
     /**Add new property to all items for the given manager*/
-    public void applyNewProperty(String sProperty){
+    public void applyNewProperty(PropertyMetaInformation meta){
         Collection items = getItems();
         if (items != null){
             Iterator it = items.iterator();
             while (it.hasNext()){
                 IPropertyable item = (IPropertyable)it.next();
                 //just initialize void fields
-                if (item.getValue(sProperty) != null){
-                	continue;
-                }
-                String sValue = "";
-                if (getFormat(sProperty).equals(FORMAT_BOOLEAN)){
-                    sValue = FALSE;
-                }
-                else if (getFormat(sProperty).equals(FORMAT_NUMBER)){
-                    sValue = "0";
-                }
-                item.setProperty(sProperty,sValue);
+                item.setDefaultProperty(meta);
             }    
         }
     }   
-    
-    /**Add new property to all items and all custom properties for the given manager*/
-    public void applyNewProperties(){
-        Iterator it = properties.keySet().iterator();
-        while (it.hasNext()){
-        	String sProperty = (String)it.next();
-        	applyNewProperty(sProperty);
-        }
-    }   
-    
-    
-
+          
     /**Remove a custom property to all items for the given manager*/
-    public void applyRemoveProperty(String sProperty) {
+    public void applyRemoveProperty(PropertyMetaInformation meta) {
         Collection items = getItems();
         if (items != null){
             Iterator it = items.iterator();
             while (it.hasNext()){
                 IPropertyable item = (IPropertyable)it.next();
-                item.removeProperty(sProperty);
+                item.removeProperty(meta.getName());
             }    
         }
     }
@@ -150,47 +127,39 @@ public abstract class ItemManager implements ITechnicalStrings{
      * @return XML representation of this manager
      */
     public String toXML(){
-        StringBuffer sb = new StringBuffer("\t<").append(getIdentifier()); //$NON-NLS-1$
-        Iterator it = properties.keySet().iterator();
+        StringBuffer sb = new StringBuffer("\t<").append(getIdentifier()+">"); //$NON-NLS-1$
+        Iterator it = hmPropertiesMetaInformation.keySet().iterator();
         while (it.hasNext()) {
             String sProperty = (String) it.next();
-            String sFormat = (String)properties.get(sProperty);
-            sb.append(" "+sProperty + "='" + sFormat + "'"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            PropertyMetaInformation meta = (PropertyMetaInformation)hmPropertiesMetaInformation.get(sProperty);
+            sb.append('\n'+meta.toXML());
         }
-        sb.append(">\n"); //$NON-NLS-1$
-        return sb.toString();
+        return sb.append('\n').toString();
+    }
+    
+     /**
+     * @return properties Meta informations
+     */
+    public Collection getProperties(){
+        return hmPropertiesMetaInformation.values();
     }
     
     /**
-     * 
-     * @return custom properties
+     * @return custom properties Meta informations
      */
     public Collection getCustomProperties(){
-        return properties.keySet();
-    }
-  
-    /**
-     * 
-     * @param index
-     * @return
-     */
-    public String getPropertyAtIndex(int index){
-        ArrayList al = new ArrayList(properties.keySet());
-    	return (String)al.get(index);
-    }
-    
-    /**
-     * Set all personnal properties of an XML file for an item manager
-     * 
-     * @param attributes :
-     *                list of attributes for this XML item
-     */
-    public void populateProperties(Attributes attributes) {
-       for (int i = 0; i < attributes.getLength(); i++) {
-             addProperty(attributes.getQName(i), attributes.getValue(i));
+        ArrayList col = new ArrayList();
+        Iterator it = hmPropertiesMetaInformation.values().iterator();
+        while (it.hasNext()){
+            PropertyMetaInformation meta = (PropertyMetaInformation)it.next();
+            if (meta.isCustom()){
+                col .add(meta);
+            }
         }
+        return col;
     }
-    
+     
+   
     /**
      *  Get Item manager with a given attribute name   
      * @param sItem
@@ -238,41 +207,15 @@ public abstract class ItemManager implements ITechnicalStrings{
      * @return associated item manager or null if none was found
      */
     public static ItemManager getItemManager(Class c){
-        if (c.equals(Device.class)){
-            return DeviceManager.getInstance();
-        }
-        else if (c.equals(Track.class)){
-            return TrackManager.getInstance();
-        }
-        else if (c.equals(Album.class)){
-            return AlbumManager.getInstance();
-        }
-        else if (c.equals(Author.class)){
-            return AuthorManager.getInstance();
-        }
-        else if (c.equals(Style.class)){
-            return StyleManager.getInstance();
-        }
-        else if (c.equals(Directory.class)){
-            return DirectoryManager.getInstance();
-        }
-        else if (c.equals(File.class)){
-            return FileManager.getInstance();
-        }
-        else if (c.equals(PlaylistFile.class)){
-            return PlaylistFileManager.getInstance();
-        }
-        else if (c.equals(Playlist.class)){
-            return PlaylistManager.getInstance();
-        }
-        else if (c.equals(Type.class)){
-            return TypeManager.getInstance();
-        }
-        else{
-            return null;
-        }
-    }
+        return (ItemManager)hmItemManagers.get(c);
+      }
     
+    /**
+     * Return an iteration over item managers
+     */
+    public static Iterator getItemManagers(){
+        return hmItemManagers.values().iterator();
+    }
     
     /**
      * Perform an cleanup : delete useless items
@@ -315,16 +258,13 @@ public abstract class ItemManager implements ITechnicalStrings{
     }
     
     /**
-     * Post registering code
-     * @param item
+     * Register a new property
+     * @param meta
      */
-    public void postRegistering( IPropertyable item){
-         //try to recover some properties previous a refresh
-        restorePropertiesAfterRefresh(item,((PropertyAdapter)item).getId());
-        //apply default custom properties
-        applyNewProperties();
+    public void registerProperty(PropertyMetaInformation meta){
+        hmPropertiesMetaInformation.put(meta.getName(),meta);
     }
-    
+     
     /**
      * Change any item
      * @param itemToChange
@@ -351,14 +291,14 @@ public abstract class ItemManager implements ITechnicalStrings{
             else if (XML_AUTHOR.equals(sKey)){
                 newItem = TrackManager.getInstance().changeTrackAuthor(file.getTrack(),sValue);
             }
-            else if (XML_COMMENT.equals(sKey)){
+            else if (XML_TRACK_COMMENT.equals(sKey)){
                 newItem = TrackManager.getInstance().changeTrackComment(file.getTrack(),sValue);
             }
             else if (XML_TRACK_ORDER.equals(sKey)){
                 newItem = TrackManager.getInstance().changeTrackOrder(file.getTrack(),sValue);
             }
             else if (XML_TRACK_YEAR.equals(sKey)){
-                newItem = TrackManager.getInstance().changeTrackYear(file.getTrack(),sValue);
+                newItem = TrackManager.getInstance().changeTrackYear(file.getTrack(),Integer.parseInt(sValue));
             }
             else if (XML_TRACK_RATE.equals(sKey)){
                 newItem = TrackManager.getInstance().changeTrackRate(file.getTrack(),sValue);
@@ -380,14 +320,14 @@ public abstract class ItemManager implements ITechnicalStrings{
             else if (XML_AUTHOR.equals(sKey)){
                 newItem = TrackManager.getInstance().changeTrackAuthor((Track)itemToChange,sValue);
             }
-            else if (XML_COMMENT.equals(sKey)){
+            else if (XML_TRACK_COMMENT.equals(sKey)){
                 newItem = TrackManager.getInstance().changeTrackComment((Track)itemToChange,sValue);
             }
             else if (XML_TRACK_ORDER.equals(sKey)){
                 newItem = TrackManager.getInstance().changeTrackOrder((Track)itemToChange,sValue);
             }
             else if (XML_TRACK_YEAR.equals(sKey)){
-                newItem = TrackManager.getInstance().changeTrackYear((Track)itemToChange,sValue);
+                newItem = TrackManager.getInstance().changeTrackYear((Track)itemToChange,Integer.parseInt(sValue));
             }
             else if (XML_TRACK_RATE.equals(sKey)){
                 newItem = TrackManager.getInstance().changeTrackRate((Track)itemToChange,sValue);

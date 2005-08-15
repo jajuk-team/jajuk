@@ -77,12 +77,8 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
         super(sId,sName);
         this.sHashcode = sHashcode;
         setProperty(XML_HASHCODE,sHashcode);
-        alConstructorElements.add(XML_HASHCODE);
-        
         this.dParentDirectory = dParentDirectory;
         setProperty(XML_DIRECTORY,dParentDirectory==null?"-1":dParentDirectory.getId());
-        alConstructorElements.add(XML_DIRECTORY);
-        
         this.iType = iType;
         if ( getDirectory() != null){  //test "new"playlist case
 			this.fio = new java.io.File(getDirectory().getDevice().getUrl()+getDirectory().getRelativePath()+"/"+getName()); //$NON-NLS-1$

@@ -40,7 +40,18 @@ public class DirectoryManager extends ItemManager implements Observer{
 	 */
 	private DirectoryManager() {
 		super();
-        //      subscriptions
+         //---register properties---
+        //ID
+        registerProperty(new PropertyMetaInformation(XML_ID,false,true,String.class));
+        //Name
+        registerProperty(new PropertyMetaInformation(XML_NAME,false,true,String.class));
+        //Parent
+        registerProperty(new PropertyMetaInformation(XML_DIRECTORY_PARENT,false,true,String.class));
+        //Device
+        registerProperty(new PropertyMetaInformation(XML_DEVICE,false,true,String.class));
+        //Expand
+        registerProperty(new PropertyMetaInformation(XML_EXPANDED,false,false,Boolean.class,null,"false"));
+        //---Subscriptions---
         ObservationManager.register(EVENT_FILE_NAME_CHANGED,this);
 	}
     
@@ -90,7 +101,7 @@ public class DirectoryManager extends ItemManager implements Observer{
 		}
 		Directory directory = new Directory(sId, sName, dParent, device);
 		hmItems.put(sId,directory);
-        postRegistering(directory);
+        restorePropertiesAfterRefresh(directory);
      	return directory;
 	}
 

@@ -224,7 +224,7 @@ public class StatView extends ViewAdapter implements Observer{
 			Iterator it = TrackManager.getInstance().getItems().iterator();
 			while ( it.hasNext()){
 				Track track = (Track)it.next();
-				int i = Integer.parseInt(track.getAdditionDate())/100;
+				int i =  Integer.parseInt(Util.getAdditionDateFormat().format(track.getAdditionDate()))/100;
 				for (int j=0;j<iMounthsNumber+1;j++){
 					if ( i <= iMounts[j]){
 						lSizeByMounth[j] += track.getTotalSize();
@@ -285,8 +285,8 @@ public class StatView extends ViewAdapter implements Observer{
 			Iterator it = TrackManager.getInstance().getItems().iterator();
 			while ( it.hasNext()){
 				Track track = (Track)it.next();
-				int i = Integer.parseInt(track.getAdditionDate())/100;
-				for (int j=0;j<iMounthsNumber+1;j++){
+				int i =  Integer.parseInt(Util.getAdditionDateFormat().format(track.getAdditionDate()))/100;
+            	for (int j=0;j<iMounthsNumber+1;j++){
 					if ( i <= iMounts[j]){
 						iTracksByMounth[j] ++;
 					}

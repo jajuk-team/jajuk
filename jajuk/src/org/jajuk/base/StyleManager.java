@@ -39,6 +39,13 @@ public class StyleManager extends ItemManager {
 	 */
 	private StyleManager() {
 		super();
+        //register properties
+        //ID
+        registerProperty(new PropertyMetaInformation(XML_ID,false,true,String.class));
+        //Name
+        registerProperty(new PropertyMetaInformation(XML_NAME,false,true,String.class));
+        //Expand
+        registerProperty(new PropertyMetaInformation(XML_EXPANDED,false,false,Boolean.class,null,"false"));
 	}
 
     /**
@@ -72,7 +79,7 @@ public class StyleManager extends ItemManager {
 		}
 		Style style = new Style(sId, sName);
 		hmItems.put(sId, style);
-        postRegistering(style);
+        restorePropertiesAfterRefresh(style);
 		return style;
 	}
     

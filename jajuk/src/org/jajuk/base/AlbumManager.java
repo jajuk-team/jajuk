@@ -40,6 +40,13 @@ public class AlbumManager extends ItemManager{
 	 */
 	private AlbumManager() {
         super();
+       //register properties
+        //ID
+        registerProperty(new PropertyMetaInformation(XML_ID,false,true,String.class));
+        //Name
+        registerProperty(new PropertyMetaInformation(XML_NAME,false,true,String.class));
+        //Expand
+        registerProperty(new PropertyMetaInformation(XML_EXPANDED,false,false,Boolean.class,null,"false"));
     }
     
   /**
@@ -72,7 +79,7 @@ public class AlbumManager extends ItemManager{
         }
         Album album = new Album(sId, sName);
         hmItems.put(sId, album);
-        postRegistering(album);
+        restorePropertiesAfterRefresh(album);
         return album;
     }
 			

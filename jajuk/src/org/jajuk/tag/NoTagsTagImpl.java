@@ -97,25 +97,13 @@ public class NoTagsTagImpl implements ITagImpl {
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.jajuk.base.ITagImpl#getYear()
-	 */
-	public String getYear() throws Exception {
-		return ""; //doing that, the item wil be the default jajuk unknown string //$NON-NLS-1$
-	}
-
-	/* (non-Javadoc)
 	 * @see org.jajuk.base.ITagImpl#getComment()
 	 */
 	public String getComment() throws Exception {
 		return ""; //by doing that, the item wil be the default jajuk unknown string //$NON-NLS-1$
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.jajuk.base.ITagImpl#getQuality()
-	 */
-	public String getQuality() throws Exception {
-		return ""; //$NON-NLS-1$
-	}
+	
 
 	/* (non-Javadoc)
 	 * @see org.jajuk.base.ITagImpl#setTrackName(java.lang.String)
@@ -200,6 +188,26 @@ public class NoTagsTagImpl implements ITagImpl {
      * @see org.jajuk.tag.ITagImpl#setOrder(java.lang.String)
      */
     public void setOrder(int sOrder) throws Exception {
+    }
+
+    /* (non-Javadoc)
+     * @see org.jajuk.tag.ITagImpl#setYear(int)
+     */
+    public void setYear(int iYear) throws Exception {
+    }
+
+    /* (non-Javadoc)
+     * @see org.jajuk.tag.ITagImpl#getYear()
+     */
+    public int getYear() throws Exception {
+        return 0;
+    }
+
+    /* (non-Javadoc)
+     * @see org.jajuk.tag.ITagImpl#getQuality()
+     */
+    public int getQuality() throws Exception {
+        return 0;
     }
 
 }

@@ -79,7 +79,7 @@ class RemovePropertyWizard extends CustomPropertyWizard {
     public void actionPerformed(ActionEvent ae) {
         if (ae.getSource().equals(this.okp.getOKButton())){
             ItemManager im = getItemManager();
-            String sProperty = im.getPropertyAtIndex(jcbName.getSelectedIndex());
+            String sProperty = jcbName.getSelectedItem().toString();
             im.removeProperty(sProperty);
             Properties properties = new Properties();
             properties.put(DETAIL_CONTENT,sProperty);

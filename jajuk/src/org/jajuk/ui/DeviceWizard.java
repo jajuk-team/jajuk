@@ -352,9 +352,10 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 				    this.setVisible(true); //display wizzard window which has been hiden by the error window
 				    return;
 				}
-				device = DeviceManager.getInstance().registerDevice(jtfName.getText(),jcbType.getSelectedIndex(),jtfUrl.getText(),jtfMountPoint.getText());
+				device = DeviceManager.getInstance().registerDevice(jtfName.getText(),jcbType.getSelectedIndex(),jtfUrl.getText());
 			}
-			device.setProperty(DEVICE_OPTION_AUTO_MOUNT,Boolean.toString(jcbAutoMount.isSelected()));
+			device.setProperty(DEVICE_OPTION_MOUNT_POINT,jtfMountPoint.getText());
+            device.setProperty(DEVICE_OPTION_AUTO_MOUNT,Boolean.toString(jcbAutoMount.isSelected()));
 			device.setProperty(DEVICE_OPTION_AUTO_REFRESH,Boolean.toString(jcbAutoRefresh.isSelected()));
 			if (jcbSynchronized.isEnabled() && jcbSynchronized.getSelectedItem() != null){
 				device.setProperty(DEVICE_OPTION_SYNCHRO_SOURCE,((Device)alDevices.get(jcbSynchronized.getSelectedIndex())).getId());

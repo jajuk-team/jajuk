@@ -41,7 +41,7 @@ public class File extends PropertyAdapter implements Comparable,ITechnicalString
 	/**File size in bytes*/
 	protected long lSize;
 	/**File quality. Ex: 192 for 192kb/s*/
-	protected String sQuality;
+	protected int iQuality;
 	/** pre-calculated absolute path for perf*/
 	private String sAbs = null;
 	/** IO file associated with this file*/
@@ -58,25 +58,17 @@ public class File extends PropertyAdapter implements Comparable,ITechnicalString
 	 * @param lSize
 	 * @param sQuality
 	 */
-	public File(String sId,String sName,Directory directory,Track track,long lSize,String sQuality) {
+	public File(String sId,String sName,Directory directory,Track track,long lSize,int iQuality) {
         super(sId,sName);
         this.directory = directory;
         setProperty(XML_DIRECTORY,directory.getId());
-        alConstructorElements.add(XML_DIRECTORY);
-        
         this.track = track;
         setProperty(XML_TRACK,track.getId());
-        alConstructorElements.add(XML_TRACK);
-        
         this.lSize = lSize;
         setProperty(XML_SIZE,Long.toString(lSize));
-        alConstructorElements.add(XML_SIZE);
-        
-        this.sQuality = sQuality;
-        setProperty(XML_QUALITY,sQuality);
-        alConstructorElements.add(XML_QUALITY);
-        
-	}
+        this.iQuality = iQuality;
+        setProperty(XML_QUALITY,iQuality);
+   }
 		
 /* (non-Javadoc)
      * @see org.jajuk.base.IPropertyable#getIdentifier()
@@ -89,7 +81,7 @@ public class File extends PropertyAdapter implements Comparable,ITechnicalString
 	 * toString method
 	 */
 	public String toString() {
-		return "File[ID="+sId+" Name=" + sName + " Dir="+directory+" Size="+lSize+" Quality="+sQuality+"]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$//$NON-NLS-6$//$NON-NLS-7$
+		return "File[ID="+sId+" Name=" + sName + " Dir="+directory+" Size="+lSize+" Quality="+iQuality+"]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$//$NON-NLS-6$//$NON-NLS-7$
 	}
 	
 	/**
@@ -138,19 +130,11 @@ public class File extends PropertyAdapter implements Comparable,ITechnicalString
 	/**
 	 * @return
 	 */
-	public String getQuality() {
-		return sQuality;
+	public int getQuality() {
+		return iQuality;
 	}
 	
-	/**
-	 * @return user-formatted quality string
-	 */
-	public String getQuality2() {
-		if (UNKNOWN_QUALITY.equals(sQuality)){
-		    return Messages.getString(UNKNOWN_QUALITY);
-		}
-	    return sQuality;
-	}
+
 	/**
 	 * @return
 	 */
@@ -252,7 +236,7 @@ public class File extends PropertyAdapter implements Comparable,ITechnicalString
 	 * @return a clonned file
 	 */
 	public Object clone(){
-		File fClone = new File(sId,sName,directory,track,lSize,sQuality);
+		File fClone = new File(sId,sName,directory,track,lSize,iQuality);
 		fClone.fio = fio;
 		fClone.sAbs = sAbs;
 		return fClone;
@@ -349,7 +333,7 @@ public class File extends PropertyAdapter implements Comparable,ITechnicalString
             return (lSize/1048576)+Messages.getString("PhysicalTreeView.54");
         }
         else if (XML_QUALITY.equals(sKey)){
-            return getQuality2()+Messages.getString("FIFO.13");
+            return getQuality()+Messages.getString("FIFO.13");
         }
         else if (XML_ALBUM.equals(sKey)){
             return getTrack().getAlbum().getName2();
@@ -395,7 +379,7 @@ public class File extends PropertyAdapter implements Comparable,ITechnicalString
             sb.append(track.getAlbum().getName2());
             sb.append(track.getLength());
             sb.append(track.getRate());
-            sb.append(track.getValue(XML_COMMENT));//custom properties now
+            sb.append(track.getValue(XML_TRACK_COMMENT));//custom properties now
             sb.append(track.getValue(XML_TRACK_ORDER));//custom properties now
             Iterator it = FileManager.getInstance().getCustomProperties().iterator();
             while (it.hasNext()){

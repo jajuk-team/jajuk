@@ -69,12 +69,8 @@ public class Directory extends PropertyAdapter implements Comparable{
         super(sId,sName);
         this.dParent = dParent;
         setProperty(XML_DIRECTORY_PARENT,(dParent==null?"-1":dParent.getId()));
-        alConstructorElements.add(XML_DIRECTORY_PARENT);
-        
         this.device = device;
         setProperty(XML_DEVICE,device.getId());
-        alConstructorElements.add(XML_DEVICE);
-        
         this.fio = new File(device.getUrl() + getRelativePath());
     }
 
@@ -259,7 +255,7 @@ public class Directory extends PropertyAdapter implements Comparable{
                         org.jajuk.base.File file = FileManager.getInstance().registerFile(fileRef.getId(),fileRef.getName(), 
                             this, fileRef.getTrack(), fileRef.getSize(),fileRef.getQuality());
                         addFile(file);
-                        FileManager.getInstance().postRegistering(file);
+                        FileManager.getInstance().restorePropertiesAfterRefresh(file);
                         continue;
                     }
                     Tag tag = new Tag(files[i]);
@@ -268,8 +264,8 @@ public class Directory extends PropertyAdapter implements Comparable{
                     String sAuthorName = tag.getAuthorName();
                     String sStyle = tag.getStyleName();
                     long length = tag.getLength(); //length in sec
-                    String sYear = tag.getYear();
-                    String sQuality = tag.getQuality();
+                    int iYear = tag.getYear();
+                    int iQuality = tag.getQuality();
                     String sComment = tag.getComment();
                     int iOrder = tag.getOrder();
                     
@@ -277,17 +273,17 @@ public class Directory extends PropertyAdapter implements Comparable{
                     Style style = StyleManager.getInstance().registerStyle(sStyle);
                     Author author = AuthorManager.getInstance().registerAuthor(sAuthorName);
                     Type type = TypeManager.getInstance().getTypeByExtension(Util.getExtension(files[i]));
-                    track = TrackManager.getInstance().registerTrack(sTrackName, album, style, author, length, sYear, type);
+                    track = TrackManager.getInstance().registerTrack(sTrackName, album, style, author, length, iYear, type);
                     org.jajuk.base.File newFile = FileManager.getInstance().registerFile(sId,files[i].getName(), this, track, 
-                        files[i].length(), sQuality);
+                        files[i].length(), iQuality);
                     addFile(newFile);
-                    FileManager.getInstance().postRegistering(newFile);
+                    FileManager.getInstance().restorePropertiesAfterRefresh(newFile);
                     track.addFile(newFile);
                     track.setComment(sComment); 
                     /*comment is at the track level, note that we take last found file comment but we changing
                     a comment, we will apply to all files for a track*/
                     track.setOrder(iOrder);
-                    TrackManager.getInstance().postRegistering(track);
+                    TrackManager.getInstance().restorePropertiesAfterRefresh(track);
                 }
                 else{  //playlist file
                     String sName = files[i].getName();

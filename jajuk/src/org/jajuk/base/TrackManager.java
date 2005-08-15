@@ -20,7 +20,6 @@
 
 package org.jajuk.base;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -44,7 +43,36 @@ public class TrackManager extends ItemManager implements Observer{
 	 */
 	private TrackManager() {
 		super();
-		//      subscriptions
+         //---register properties---
+        //ID
+        registerProperty(new PropertyMetaInformation(XML_ID,false,true,String.class));
+        //Name
+        registerProperty(new PropertyMetaInformation(XML_NAME,false,true,String.class));
+		//Album
+        registerProperty(new PropertyMetaInformation(XML_ALBUM,false,true,String.class));
+        //Style
+        registerProperty(new PropertyMetaInformation(XML_STYLE,false,true,String.class));
+        //Author
+        registerProperty(new PropertyMetaInformation(XML_AUTHOR,false,true,String.class));
+        //Length
+        registerProperty(new PropertyMetaInformation(XML_TRACK_LENGTH,false,true,Integer.class));
+        //Type
+        registerProperty(new PropertyMetaInformation(XML_TRACK_TYPE,false,true,Integer.class));
+        //Year
+        registerProperty(new PropertyMetaInformation(XML_TRACK_YEAR,false,true,String.class));
+        //Rate
+        registerProperty(new PropertyMetaInformation(XML_TRACK_RATE,false,false,Integer.class,null,"0"));
+        //Files
+        registerProperty(new PropertyMetaInformation(XML_FILES,false,false,String.class));
+        //Hits
+        registerProperty(new PropertyMetaInformation(XML_TRACK_HITS,false,false,Integer.class,null,"0"));
+        //Addition date
+        registerProperty(new PropertyMetaInformation(XML_TRACK_ADDED,false,false,Date.class,ADDITION_DATE_FORMAT,null));
+        //Comment
+        registerProperty(new PropertyMetaInformation(XML_TRACK_COMMENT,false,false,String.class));
+        //Track order
+        registerProperty(new PropertyMetaInformation(XML_TRACK_ORDER,false,false,Integer.class));
+        //---subscriptions---
         ObservationManager.register(EVENT_FILE_NAME_CHANGED,this);
 	}
     
@@ -63,9 +91,9 @@ public class TrackManager extends ItemManager implements Observer{
 	 * 
 	 * @param sName
 	 */
-	public synchronized Track registerTrack(String sName, Album album, Style style, Author author, long length, String sYear, Type type) {
-		String sId = MD5Processor.hash(style.getName() + author.getName() +album.getName() + sYear + length + type.getName() + sName);
-		return registerTrack(sId, sName, album, style, author, length, sYear, type);
+	public synchronized Track registerTrack(String sName, Album album, Style style, Author author, long length, int iYear, Type type) {
+		String sId = MD5Processor.hash(style.getName() + author.getName() +album.getName() + iYear + length + type.getName() + sName);
+		return registerTrack(sId, sName, album, style, author, length, iYear, type);
 	}
     
     /**
@@ -73,11 +101,11 @@ public class TrackManager extends ItemManager implements Observer{
      * 
      * @param sName
      */
-    public synchronized Track registerTrack(String sId, String sName, Album album, Style style, Author author, long length, String sYear, Type type) {
+    public synchronized Track registerTrack(String sId, String sName, Album album, Style style, Author author, long length, int iYear, Type type) {
         if (!hmItems.containsKey(sId)) {
-            String sAdditionDate = new SimpleDateFormat(DATE_FILE).format(new Date());
-            Track track = new Track(sId, sName, album, style, author, length, sYear, type);
-            track.setAdditionDate(sAdditionDate);
+            Date dAdditionDate = new Date();
+            Track track = new Track(sId, sName, album, style, author, length, iYear, type);
+            track.setAdditionDate(dAdditionDate);
             hmItems.put(sId, track);
             return track;
         }
@@ -112,7 +140,7 @@ public class TrackManager extends ItemManager implements Observer{
             tag.setAlbumName(newAlbum.getName2());
             tag.commit();
         }
-        TrackManager.getInstance().postRegistering(newTrack);
+        TrackManager.getInstance().restorePropertiesAfterRefresh(newTrack);
         remove(track.getId());//remove old reference
     	AlbumManager.getInstance().cleanup(track.getAlbum()); //remove this album if no more references
     	return newTrack;
@@ -143,7 +171,7 @@ public class TrackManager extends ItemManager implements Observer{
             tag.setAuthorName(newAuthor.getName2());
             tag.commit();
         }
-        TrackManager.getInstance().postRegistering(newTrack);
+        TrackManager.getInstance().restorePropertiesAfterRefresh(newTrack);
         remove(track.getId());//remove old reference
         AuthorManager.getInstance().cleanup(track.getAuthor()); //remove this item if no more references
         return newTrack;
@@ -174,7 +202,7 @@ public class TrackManager extends ItemManager implements Observer{
             tag.setStyleName(newStyle.getName2());
             tag.commit();
         }
-        TrackManager.getInstance().postRegistering(newTrack);
+        TrackManager.getInstance().restorePropertiesAfterRefresh(newTrack);
         remove(track.getId());//remove old reference
         StyleManager.getInstance().cleanup(track.getStyle()); //remove this item if no more references
         return newTrack;
@@ -186,12 +214,11 @@ public class TrackManager extends ItemManager implements Observer{
      * @param new item name
      * @return new track or null if wronf format
      */
-    public synchronized Track changeTrackYear(Track track,String sNewItem) {
+    public synchronized Track changeTrackYear(Track track,int iNewItem) {
         //check format
         int i = 0;
         try{
-            i = Integer.parseInt(sNewItem);
-            if (i <0 || i > 10000){ //jajuk supports years till year 10000 !
+            if (iNewItem <0 || iNewItem > 10000){ //jajuk supports years till year 10000 !
                 throw new Exception();
             }
         }
@@ -200,7 +227,7 @@ public class TrackManager extends ItemManager implements Observer{
             return null;
         }
         Track newTrack = registerTrack(track.getName(),track.getAlbum(),track.getStyle(),
-            track.getAuthor(),track.getLength(),sNewItem,track.getType());
+            track.getAuthor(),track.getLength(),iNewItem,track.getType());
         //re apply old properties from old item
         newTrack.cloneProperties(track);
        //change tag in files
@@ -210,10 +237,10 @@ public class TrackManager extends ItemManager implements Observer{
             file.setTrack(newTrack);
             newTrack.addFile(file);
             Tag tag = new Tag(file.getIO());
-            tag.setYear(sNewItem);
+            tag.setYear(iNewItem);
             tag.commit();
         }
-        TrackManager.getInstance().postRegistering(newTrack);
+        TrackManager.getInstance().restorePropertiesAfterRefresh(newTrack);
         remove(track.getId());//remove old reference
         return newTrack;
     }
@@ -313,7 +340,7 @@ public class TrackManager extends ItemManager implements Observer{
             tag.setTrackName(newTrack.getName());
             tag.commit();
         }
-        TrackManager.getInstance().postRegistering(newTrack);
+        TrackManager.getInstance().restorePropertiesAfterRefresh(newTrack);
         remove(track.getId());//remove old reference
         return newTrack;
     }

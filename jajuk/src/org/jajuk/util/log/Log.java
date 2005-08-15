@@ -112,6 +112,34 @@ public class Log  implements ITechnicalStrings{
     }
     
     /**
+     * Log a warning-level  message with info sup
+     */
+    public static void warn(String s, String sInfoSup){
+        String sOut = s+": "+sInfoSup;
+        spool("[WARN] "+sOut);
+        logger.warn(sOut);
+    }
+    
+    /**
+     * Log an warning-level  message
+     * @param sCode error code
+     * @param sInfosup : error context information
+     * @param t the exception itself
+     **/
+    public static void warn(String sCode,String sInfosup,Throwable t){
+        String sOut;
+        if ( Messages.isInitialized()){
+            sOut = '('+sCode+") "+Messages.getErrorMessage(sCode)+ ((sInfosup==null)?"":":"+sInfosup); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        }
+        else{
+            sOut = '('+sCode+") "+ ((sInfosup==null)?"":":"+sInfosup); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        }
+        spool("[WARN] "+sOut);
+        spool(t);
+        logger.warn(sOut,t);
+    }
+    
+    /**
      * Log an error-level  message
      * @param sCode error code
      * @param sInfosup : error context information
@@ -254,8 +282,7 @@ public class Log  implements ITechnicalStrings{
      * @param e
      */
     private static void spool(Throwable e){
-        spool("[ERROR] "+e.getMessage());
-        spool("[ERROR] "+e.getCause());
+        spool("[ERROR] "+e.getClass()+" / "+e.getMessage()+" / "+e.getCause());
         StackTraceElement[] ste = e.getStackTrace();
         for (int i=0;i<ste.length;i++){
             spool(ste[i].toString());

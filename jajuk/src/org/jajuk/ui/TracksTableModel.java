@@ -20,8 +20,6 @@
 
 package org.jajuk.ui;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -36,7 +34,6 @@ import org.jajuk.i18n.Messages;
 import org.jajuk.ui.views.LogicalTableView;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Util;
-import org.jajuk.util.log.Log;
 
 /**
  *  Table model used for logical table view
@@ -69,8 +66,8 @@ public class TracksTableModel extends JajukTableModel{
         vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_TRACK_LENGTH));
         vId.add(XML_TRACK_LENGTH);
                 
-        vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_COMMENT));
-        vId.add(XML_COMMENT);
+        vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_TRACK_COMMENT));
+        vId.add(XML_TRACK_COMMENT);
         
         vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_TRACK_RATE));
         vId.add(XML_TRACK_RATE);
@@ -175,51 +172,25 @@ public class TracksTableModel extends JajukTableModel{
             oValues[iRow][4] = Util.formatTimeBySec(track.getLength(),false);
             bCellEditable[iRow][4] = false;
             //Comment
-            oValues[iRow][5] = track.getValue(XML_COMMENT);
+            oValues[iRow][5] = track.getValue(XML_TRACK_COMMENT);
             bCellEditable[iRow][5] = true;
             //Rate
             oValues[iRow][6] = new Long(track.getRate());
             bCellEditable[iRow][6] = true;
             //Date discovery
-            try {
-                oValues[iRow][7] = new SimpleDateFormat(DATE_FILE).parse(track.getAdditionDate());;
-                bCellEditable[iRow][7] = false;
-            }
-            catch (ParseException e1) {
-                Log.error(e1);
-            }
-             //Order
+            oValues[iRow][7] = track.getAdditionDate();
+           bCellEditable[iRow][7] = false;
+            //Order
             oValues[iRow][8] = new Integer(track.getOrder());
             bCellEditable[iRow][8] = true;
              //Year
-            oValues[iRow][9] = track.getYear2();
+            oValues[iRow][9] = track.getYear();
             bCellEditable[iRow][9] = true;
             //Custom properties now
             Iterator it2 = TrackManager.getInstance().getCustomProperties().iterator();
             for (int i=0;it2.hasNext();i++){
                 String sProperty = (String)it2.next();
-                String sFormat = TrackManager.getInstance().getFormat(sProperty);
-                if ("Property_Format_Number".equals(sFormat)){
-                    try{
-                        oValues[iRow][iNumberStandardRows+i] = Double.valueOf((String)smProperties.get(sProperty));
-                    }
-                    catch(Exception e){ //catch wrong formats
-                        oValues[iRow][iNumberStandardRows+i] = new Double(0);
-                        track.setProperty(sProperty,"0");
-                    }
-                }
-                else if ("Property_Format_String".equals(sFormat)){
-                    oValues[iRow][iNumberStandardRows+i] = (String)smProperties.get(sProperty);
-                }
-                else if ("Property_Format_Boolean".equals(sFormat)){
-                    try{
-                        oValues[iRow][iNumberStandardRows+i] = Boolean.valueOf((String)smProperties.get(sProperty));
-                    }
-                    catch(Exception e){ //catch wrong formats
-                        oValues[iRow][iNumberStandardRows+i] = Boolean.FALSE;
-                        track.setProperty(sProperty,"false");
-                    }
-                }
+               oValues[iRow][iNumberStandardRows+i] = smProperties.get(sProperty);
                 bCellEditable[iRow][iNumberStandardRows+i] = true;
             }
         }

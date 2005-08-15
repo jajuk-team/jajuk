@@ -29,11 +29,6 @@
 			<param name='ConversionPattern' value='%d{yyyy/MM/dd HH:mm:ss} [%p] %m  [%t] (%F:%L) %n'/>
 		</layout>
 	</appender>
-<!--	<appender name='ASYNC' class='org.apache.log4j.AsyncAppender'>
-		<param name='Threshold' value='DEBUG'/>
-		<param name='BufferSize' value='1'/>
-		<appender-ref ref='FILE_DEBUG'/>
-	</appender>-->
 	
 	<!-- =================Loggers=================-->
 	<logger name='org.apache.commons.httpclient' additivity='false'>

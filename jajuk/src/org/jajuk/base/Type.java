@@ -48,20 +48,15 @@ public class Type extends PropertyAdapter{
 	 * @param sTagImpl Type Tagger implementation class
 	 * @throws Exception
 	 */
-	public Type(String sId, String sName,String sExtension, String sPlayerImpl,String sTagImpl) throws Exception{
+	public Type(String sId, String sName,String sExtension, Class cPlayerImpl,Class cTagImpl) throws Exception{
         super(sId,sName);
         this.sExtension = sExtension;
         setProperty(XML_TYPE_EXTENSION,sExtension);
-        alConstructorElements.add(XML_TYPE_EXTENSION);
-        
-        this.playerImpl = (IPlayerImpl)Class.forName(sPlayerImpl).newInstance();
-        setProperty(XML_TYPE_PLAYER_IMPL,sPlayerImpl);
-        alConstructorElements.add(XML_TYPE_PLAYER_IMPL);
-        
-        if (sTagImpl != null){  //can be null for playlists
-            this.tagImpl = (ITagImpl)Class.forName(sTagImpl).newInstance();
-            setProperty(XML_TYPE_TAG_IMPL,sTagImpl);
-            alConstructorElements.add(XML_TYPE_TAG_IMPL);
+        this.playerImpl = (IPlayerImpl)cPlayerImpl.newInstance();
+        setProperty(XML_TYPE_PLAYER_IMPL,cPlayerImpl);
+        if (cTagImpl != null){  //can be null for playlists
+            this.tagImpl = (ITagImpl)cTagImpl.newInstance();
+            setProperty(XML_TYPE_TAG_IMPL,cTagImpl);
         }
     }
 

@@ -23,7 +23,6 @@ package org.jajuk.base;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.Properties;
 import java.util.TreeSet;
@@ -56,7 +55,20 @@ public class FileManager extends ItemManager implements Observer{
 	 */
 	private FileManager() {
 		super();
-	}
+          //---register properties---
+        //ID
+        registerProperty(new PropertyMetaInformation(XML_ID,false,true,String.class));
+        //Name
+        registerProperty(new PropertyMetaInformation(XML_NAME,false,true,String.class));
+        //Directory
+        registerProperty(new PropertyMetaInformation(XML_DIRECTORY,false,true,String.class));
+        //Track
+        registerProperty(new PropertyMetaInformation(XML_TRACK,false,true,String.class));
+        //Size
+        registerProperty(new PropertyMetaInformation(XML_SIZE,false,true,Integer.class));
+        //Quality
+        registerProperty(new PropertyMetaInformation(XML_QUALITY,false,true,Integer.class,null,"0"));
+  }
 
     /**
      * @return singleton
@@ -74,9 +86,9 @@ public class FileManager extends ItemManager implements Observer{
 	 * @param sName
 	 */
 	public synchronized File registerFile(String sId, String sName, Directory directory, 
-            Track track, long lSize, String sQuality) {
+            Track track, long lSize, int iQuality) {
 		if ( !hmItems.containsKey(sId)){
-			File file = new File(sId, sName, directory, track, lSize, sQuality);
+			File file = new File(sId, sName, directory, track, lSize, iQuality);
 			hmItems.put(sId,file);
 			alSortedFiles.add(file);
 			if ( directory.getDevice().isRefreshing() && Log.isDebugEnabled()){
@@ -285,17 +297,7 @@ public class FileManager extends ItemManager implements Observer{
 			if (file == null){//none mounted file, take first file we find
 		        continue;
             }
-        	int iTrackAge = 0;
-			try{
-				int iYear = Integer.parseInt(file.getTrack().getAdditionDate().substring(0,4));
-				int iMounth = Integer.parseInt(file.getTrack().getAdditionDate().substring(4,6))-1; //mounth is zero based : jan=0
-				int iDay = Integer.parseInt(file.getTrack().getAdditionDate().substring(6,8));
-				GregorianCalendar gc = new GregorianCalendar(iYear,iMounth,iDay);
-				iTrackAge = (int)((new Date().getTime()-gc.getTime().getTime())/86400000); //)/1000/60/60/24;
-			}
-			catch(Exception e){ //error like a wrong added date 
-			    continue;
-			}
+        	int iTrackAge = (int)((new Date().getTime()-track.getAdditionDate().getTime())/86400000); //)/1000/60/60/24;
 			if ( iTrackAge <= ConfigurationManager.getInt(CONF_OPTIONS_NOVELTIES_AGE)){
 				alEligibleFiles.add(file);
 			}

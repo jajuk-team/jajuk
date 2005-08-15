@@ -43,6 +43,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -93,7 +94,9 @@ public class Util implements ITechnicalStrings {
 	public static String sExecLocation;
 	/**Waiting flag for perfs*/
 	private static boolean bWaiting = false;
-	
+      /**Addition date Date format*/
+    private static SimpleDateFormat sdfAdded= new SimpleDateFormat(ADDITION_DATE_FORMAT);
+  
 	/**
 	 * Genres
 	 */
@@ -942,6 +945,15 @@ public class Util implements ITechnicalStrings {
         "</font></b><HTML>";
     }
  
+    /**
+     * 
+     * @return Addition date simple format singleton
+     */
+    public static DateFormat getAdditionDateFormat(){
+        return sdfAdded;
+    }
+    
+    
     
     /**
      * Display given container at given position

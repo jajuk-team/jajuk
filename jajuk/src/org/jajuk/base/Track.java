@@ -19,7 +19,6 @@
  */
 package org.jajuk.base;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -45,7 +44,7 @@ public class Track extends PropertyAdapter implements Comparable{
 	/**Track length*/
 	private long length;
 	/**Track year*/
-	private String sYear;
+	private int iYear;
 	/**Track rate*/
 	private long lRate;
 	/**Track type*/
@@ -53,15 +52,13 @@ public class Track extends PropertyAdapter implements Comparable{
 	/**Track hits number*/
 	private int iHits;
 	/**Track addition date format:YYYYMMDD*/
-	private String sAdditionDate;
+	private Date dAdditionDate;
 	/**Track associated files*/
 	private ArrayList alFiles = new ArrayList(1);
 	/**Track compare hash for perfs*/
 	private String sHashCompare;
 	/** Number of hits for current jajuk session */
 	private int iSessionHits = 0;
-    /**Date format*/
-    private static SimpleDateFormat sdf= new SimpleDateFormat(DATE_FILE);
     /**Comment*/
     private String sComment;
     /**Order*/
@@ -79,32 +76,26 @@ public class Track extends PropertyAdapter implements Comparable{
 	 * @param type
 	 * @param sAdditionDate
 	 */
-	public Track(String sId,String sName,Album album,Style style,Author author,long length,String sYear,Type type) {
+	public Track(String sId,String sName,Album album,Style style,Author author,long length,int iYear,Type type) {
         super(sId,sName);
             //album
         	this.album = album;
-            alConstructorElements.add(XML_ALBUM);
             setProperty(XML_ALBUM,album.getId());
             //style
             this.style = style;
-            alConstructorElements.add(XML_STYLE);
             setProperty(XML_STYLE,style.getId());
             //author
             this.author = author;
             setProperty(XML_AUTHOR,author.getId());
-            alConstructorElements.add(XML_AUTHOR);
             //Length
             this.length = length;
             setProperty(XML_TRACK_LENGTH,Long.toString(length));
-            alConstructorElements.add(XML_TRACK_LENGTH);
             //Type
             this.type = type;
             setProperty(XML_TYPE,type.getId());
-            alConstructorElements.add(XML_TYPE);
             //Year
-            this.sYear = sYear;
-            setProperty(XML_TRACK_YEAR,sYear);
-            alConstructorElements.add(XML_TRACK_YEAR);
+            this.iYear = iYear;
+            setProperty(XML_TRACK_YEAR,iYear);
             //Rate
             this.lRate = 0;
             setProperty(XML_TRACK_RATE,Long.toString(lRate));
@@ -113,8 +104,8 @@ public class Track extends PropertyAdapter implements Comparable{
             this.iHits = 0;
             setProperty(XML_TRACK_HITS,Integer.toString(iHits));
             //Addition date
-            this.sAdditionDate = sdf.format(new Date());
-            setProperty(XML_TRACK_ADDED,sAdditionDate);
+            this.dAdditionDate = new Date();
+            setProperty(XML_TRACK_ADDED,dAdditionDate);
             //Hashcode
             this.sHashCompare = new StringBuffer(style.getName2()).append(author.getName2()).append(album.getName2()).append(sName).toString();
     }
@@ -126,8 +117,8 @@ public class Track extends PropertyAdapter implements Comparable{
 	 */
 	public String toString() {
 		String sOut = "Track[ID="+sId+" Name=" + getName() + " "+album+" "+
-            style+" "+author+" Length="+length+" Year="+sYear+" Rate="+lRate+" "+
-            type+" Hits="+iHits+" Addition date="+sAdditionDate+" Comment="+sComment+" order="+iOrder+"]"; 
+            style+" "+author+" Length="+length+" Year="+iYear+" Rate="+lRate+" "+
+            type+" Hits="+iHits+" Addition date="+dAdditionDate+" Comment="+sComment+" order="+iOrder+"]"; 
 		for (int i=0;i<alFiles.size();i++){
 			sOut += '\n'+alFiles.get(i).toString();
 		}
@@ -212,11 +203,11 @@ public class Track extends PropertyAdapter implements Comparable{
 				int iQuality = 0;
 				int iQualityOut = 0; //quality for out file
 				try {
-					iQuality = Integer.parseInt(file.getQuality());
+					iQuality = file.getQuality();
 				}
 				catch(NumberFormatException nfe){}//quality string can be something like "error", in this case, we considere quality=0
 				try{
-					iQualityOut = Integer.parseInt(fileOut.getQuality());
+					iQualityOut = fileOut.getQuality();
 				}
 				catch(NumberFormatException nfe){}//quality string can be something like "error", in this case, we considere quality=0
 				
@@ -247,22 +238,11 @@ public class Track extends PropertyAdapter implements Comparable{
 	/**
 	 * @return
 	 */
-	public String getYear() {
-		return sYear;
+	public int getYear() {
+		return iYear;
 	}
     
-	/**
-     * Return year, dealing with unkwnown for any language
-     * @return year
-     *  */
-    public String getYear2() {
-        String sOut = getYear();
-        if (sOut.equals(UNKNOWN_YEAR)){ 
-            sOut = Messages.getString(UNKNOWN_YEAR); 
-        }
-        return sOut;
-    }
-   
+	  
 	/**
 	 * @return length in sec
 	 */
@@ -280,8 +260,8 @@ public class Track extends PropertyAdapter implements Comparable{
 	/**
 	 * @return
 	 */
-	public String getAdditionDate() {
-		return sAdditionDate;
+	public Date getAdditionDate() {
+		return dAdditionDate;
 	}
 
 	/**
@@ -379,14 +359,14 @@ public class Track extends PropertyAdapter implements Comparable{
      */
     public void setComment(String sComment) {
         this.sComment = sComment;
-        setProperty(XML_COMMENT,sComment);
+        setProperty(XML_TRACK_COMMENT,sComment);
     }	
 
 	/**
 	 * @param additionDate The sAdditionDate to set.
 	 */
-	public void setAdditionDate(String additionDate) {
-		this.sAdditionDate = additionDate;
+	public void setAdditionDate(Date additionDate) {
+		this.dAdditionDate = additionDate;
         setProperty(XML_TRACK_ADDED,additionDate);
 	}
 
@@ -480,7 +460,7 @@ public class Track extends PropertyAdapter implements Comparable{
         else if (XML_TRACK_ADDED.equals(sProperty)){
             return false;
         }
-        else if (XML_COMMENT.equals(sProperty)){
+        else if (XML_TRACK_COMMENT.equals(sProperty)){
             return true;
         }
         else if (XML_TRACK_ORDER.equals(sProperty)){
@@ -512,7 +492,7 @@ public class Track extends PropertyAdapter implements Comparable{
             return ((Type)TypeManager.getInstance().getItem(getValue(sKey))).getName();
         }
         else if (XML_TRACK_YEAR.equals(sKey)){
-            return getYear2();
+            return Integer.toString(iYear);
         }
         else if (XML_FILES.equals(sKey)){
             StringBuffer sbOut = new StringBuffer();
@@ -524,7 +504,7 @@ public class Track extends PropertyAdapter implements Comparable{
             return sbOut.substring(0,sbOut.length()-1); //remove last ','
         }
         else if (XML_TRACK_ADDED.equals(sKey)){
-            return sAdditionDate.substring(0,4)+"/"+sAdditionDate.substring(4,6)+"/"+sAdditionDate.substring(6,8);
+            return Util.getAdditionDateFormat().format(dAdditionDate);
         }
         else if (XML_ANY.equals(sKey)){
             return getAny();
@@ -548,7 +528,7 @@ public class Track extends PropertyAdapter implements Comparable{
             sb.append(track.getAlbum().getName2());
             sb.append(track.getLength());
             sb.append(track.getRate());
-            sb.append(track.getValue(XML_COMMENT));
+            sb.append(track.getValue(XML_TRACK_COMMENT));
             sb.append(track.getValue(XML_TRACK_ORDER));
             //custom properties now
             Iterator it = TrackManager.getInstance().getCustomProperties().iterator();

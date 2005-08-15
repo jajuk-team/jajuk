@@ -337,7 +337,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,Obser
                             +" / "+file.getTrack().getAlbum().getName2()+" / " //$NON-NLS-1$ //$NON-NLS-2$
                             +file.getTrack().getName();//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                             setMessage(sMessage,InformationJPanel.INFORMATIVE); 
-                            setQuality(file.getQuality2()+Messages.getString("FIFO.13")); //$NON-NLS-1$
+                            setQuality(file.getQuality()+Messages.getString("FIFO.13")); //$NON-NLS-1$
                         }
                     }
                 }

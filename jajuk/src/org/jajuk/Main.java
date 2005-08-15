@@ -19,11 +19,15 @@
 package org.jajuk;
 
 
+import gr.zeus.ui.JSplash;
+
 import java.awt.BorderLayout;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.ServerSocket;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -35,15 +39,23 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import org.jajuk.base.AlbumManager;
+import org.jajuk.base.AuthorManager;
 import org.jajuk.base.Collection;
 import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;
+import org.jajuk.base.DirectoryManager;
 import org.jajuk.base.Event;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.History;
+import org.jajuk.base.ItemManager;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Player;
+import org.jajuk.base.PlaylistFileManager;
+import org.jajuk.base.PlaylistManager;
+import org.jajuk.base.StyleManager;
+import org.jajuk.base.TrackManager;
 import org.jajuk.base.Type;
 import org.jajuk.base.TypeManager;
 import org.jajuk.i18n.Messages;
@@ -54,7 +66,6 @@ import org.jajuk.ui.JajukJMenuBar;
 import org.jajuk.ui.JajukWindow;
 import org.jajuk.ui.LNFManager;
 import org.jajuk.ui.PerspectiveBarJPanel;
-import org.jajuk.ui.SplashScreen;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.ui.tray.JajukSystray;
 import org.jajuk.util.ConfigurationManager;
@@ -84,8 +95,8 @@ public class Main implements ITechnicalStrings {
 	public static JPanel jpContentPane;
 	/**Main frame panel*/
 	public static JPanel jpFrame;
-	/**Jajuk slashscreen*/
-	public static SplashScreen sc;
+	/**splashscreen*/
+	public static JSplash sc;
 	/**Temporary panel*/
 	private static JPanel jpTmp;
 	/**Exit code*/
@@ -140,10 +151,19 @@ public class Main implements ITechnicalStrings {
             //Launch splashscreen 
             SwingUtilities.invokeAndWait(new Runnable() {
                 public void run() {
-                    sc = new SplashScreen(jw);
-                  }
+                    try {
+                        sc = new JSplash(new URL (IMAGES_SPLASHSCREEN),true,true,false,JAJUK_VERSION+" "+JAJUK_VERSION_DATE,null,null);
+                        sc.splashOn();
+                    } catch (MalformedURLException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                }
             });
         
+            //Display progress
+            sc.setProgress(0,Messages.getString("SplashScreen.0"));
+            
 			//check for jajuk home directory presence, needed by log
 			File fJajukDir = new File(FILE_JAJUK_DIR);
 			if (!fJajukDir.exists() || !fJajukDir.isDirectory()) {
@@ -165,7 +185,19 @@ public class Main implements ITechnicalStrings {
 			Messages.getInstance().registerLocal("es","Language_desc_es"); //$NON-NLS-1$ //$NON-NLS-2$
 			Messages.getInstance().registerLocal("ca","Language_desc_ca"); //$NON-NLS-1$ //$NON-NLS-2$
 			
-			//configuration manager startup
+			//Registers Item managers
+            ItemManager.registerItemManager(org.jajuk.base.Album.class,AlbumManager.getInstance());
+            ItemManager.registerItemManager(org.jajuk.base.Author.class,AuthorManager.getInstance());
+            ItemManager.registerItemManager(org.jajuk.base.Device.class,DeviceManager.getInstance());
+            ItemManager.registerItemManager(org.jajuk.base.File.class,FileManager.getInstance());
+            ItemManager.registerItemManager(org.jajuk.base.Directory.class,DirectoryManager.getInstance());
+            ItemManager.registerItemManager(org.jajuk.base.PlaylistFile.class,PlaylistFileManager.getInstance());
+            ItemManager.registerItemManager(org.jajuk.base.Playlist.class,PlaylistManager.getInstance());
+            ItemManager.registerItemManager(org.jajuk.base.Style.class,StyleManager.getInstance());
+            ItemManager.registerItemManager(org.jajuk.base.Track.class,TrackManager.getInstance());
+            ItemManager.registerItemManager(org.jajuk.base.Type.class,TypeManager.getInstance());
+            
+            //configuration manager startup
 			org.jajuk.util.ConfigurationManager.getInstance();
 			
 			//Upgrade configuration from previous releases
@@ -173,7 +205,6 @@ public class Main implements ITechnicalStrings {
 			
 			//Registers supported look and feels
 			LNFManager.register(LNF_METAL,LNF_METAL_CLASS); 
-			LNFManager.register(LNF_GTK,LNF_GTK_CLASS); 
 			LNFManager.register(LNF_WINDOWS,LNF_WINDOWS_CLASS);
 			LNFManager.register(LNF_KUNSTSTOFF,LNF_KUNSTSTOFF_CLASS);
 			LNFManager.register(LNF_LIQUID,LNF_LIQUID_CLASS);
@@ -182,6 +213,7 @@ public class Main implements ITechnicalStrings {
 			LNFManager.register(LNF_PLASTIC3D,LNF_PLASTIC3D_CLASS);
             LNFManager.register(LNF_INFONODE,LNF_INFONODE_CLASS);
             LNFManager.register(LNF_SQUARENESS,LNF_SQUARENESS_CLASS);
+            LNFManager.register(LNF_TINY,LNF_TINY_CLASS);
             		
 			//perform initial checkups
 			initialCheckups();
@@ -218,12 +250,18 @@ public class Main implements ITechnicalStrings {
 			//registers supported audio supports and default properties
 			registerTypes();
 			
-			//Load collection
+			//Display progress
+            sc.setProgress(10,Messages.getString("SplashScreen.1"));
+            
+            //Load collection
             loadCollection();
-           
+            
 			//Clean the collection up
 			Collection.cleanup();
-						
+			
+            //Display progress
+            sc.setProgress(70,Messages.getString("SplashScreen.2"));
+            
 			//Load history
 			History.load();
 			
@@ -257,7 +295,7 @@ public class Main implements ITechnicalStrings {
 			tHook.setPriority(Thread.MAX_PRIORITY); //give max chances to this thread to complete
 			Runtime.getRuntime().addShutdownHook(tHook);
 					
-			//Auto mount devices
+            //Auto mount devices
 			autoMount();
 			
 			//Launch startup track if any
@@ -268,10 +306,11 @@ public class Main implements ITechnicalStrings {
 						
 			//show window if set in the systray conf
 			if ( ConfigurationManager.getBoolean(CONF_SHOW_AT_STARTUP) ){
-			    launchUI();
+			    //Display progress
+			    sc.setProgress(80,Messages.getString("SplashScreen.3"));
+                launchUI();
 			}
-        		            
-		} catch (JajukException je) { //last chance to catch any error for logging purpose
+       } catch (JajukException je) { //last chance to catch any error for logging purpose
 			Log.error(je);
 			if ( je.getCode().equals("005")){ //$NON-NLS-1$
 			   Messages.getChoice(Messages.getErrorMessage("005"),JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$
@@ -288,8 +327,10 @@ public class Main implements ITechnicalStrings {
 		}
 		finally{  //make sure to close splashscreen in all cases
 		    if (sc != null){
-		        sc.dispose();
-		    }
+		         //Display progress
+		        sc.setProgress(100);
+                sc.splashOff();
+            }
 		}
 	}
 	
@@ -324,35 +365,35 @@ public class Main implements ITechnicalStrings {
 	private static void registerTypes(){
 		try { 
 			//mp3
-			Type type = TypeManager.getInstance().registerType(Messages.getString("Type.mp3"), EXT_MP3, PLAYER_IMPL_JAVALAYER, TAG_IMPL_ENTAGGED); //$NON-NLS-1$ //$NON-NLS-2$
+			Type type = TypeManager.getInstance().registerType(Messages.getString("Type.mp3"), EXT_MP3, Class.forName(PLAYER_IMPL_JAVALAYER), Class.forName(TAG_IMPL_ENTAGGED)); //$NON-NLS-1$ //$NON-NLS-2$
 			type.setProperty(XML_TYPE_IS_MUSIC,TRUE); //$NON-NLS-1$
 			type.setProperty(XML_TYPE_SEEK_SUPPORTED,TRUE); //$NON-NLS-1$
 			type.setProperty(XML_TYPE_TECH_DESC,TYPE_PROPERTY_TECH_DESC_MP3);
             type.setProperty(XML_TYPE_ICON,ICON_TYPE_MP3);
             //playlists
-			type = TypeManager.getInstance().registerType(Messages.getString("Type.playlist"), EXT_PLAYLIST, PLAYER_IMPL_JAVALAYER, null); //$NON-NLS-1$ //$NON-NLS-2$
+			type = TypeManager.getInstance().registerType(Messages.getString("Type.playlist"), EXT_PLAYLIST, Class.forName(PLAYER_IMPL_JAVALAYER), null); //$NON-NLS-1$ //$NON-NLS-2$
 			type.setProperty(XML_TYPE_IS_MUSIC,FALSE); //$NON-NLS-1$
 			type.setProperty(XML_TYPE_SEEK_SUPPORTED,FALSE); //$NON-NLS-1$
             //Ogg vorbis
-			type = TypeManager.getInstance().registerType(Messages.getString("Type.ogg"), EXT_OGG, PLAYER_IMPL_JAVALAYER, TAG_IMPL_ENTAGGED); //$NON-NLS-1$ //$NON-NLS-2$
+			type = TypeManager.getInstance().registerType(Messages.getString("Type.ogg"), EXT_OGG, Class.forName(PLAYER_IMPL_JAVALAYER), Class.forName(TAG_IMPL_ENTAGGED)); //$NON-NLS-1$ //$NON-NLS-2$
 			type.setProperty(XML_TYPE_IS_MUSIC,TRUE); //$NON-NLS-1$
 			type.setProperty(XML_TYPE_SEEK_SUPPORTED,FALSE); //$NON-NLS-1$
 			type.setProperty(XML_TYPE_TECH_DESC,TYPE_PROPERTY_TECH_DESC_OGG);
             type.setProperty(XML_TYPE_ICON,ICON_TYPE_OGG);
             //Wave
-			type = TypeManager.getInstance().registerType(Messages.getString("Type.wav"), EXT_WAV, PLAYER_IMPL_JAVALAYER, TAG_IMPL_NO_TAGS); //$NON-NLS-1$ //$NON-NLS-2$
+			type = TypeManager.getInstance().registerType(Messages.getString("Type.wav"), EXT_WAV, Class.forName(PLAYER_IMPL_JAVALAYER), Class.forName(TAG_IMPL_NO_TAGS)); //$NON-NLS-1$ //$NON-NLS-2$
 			type.setProperty(XML_TYPE_IS_MUSIC,TRUE); //$NON-NLS-1$
 			type.setProperty(XML_TYPE_SEEK_SUPPORTED,TRUE); //$NON-NLS-1$
 			type.setProperty(XML_TYPE_TECH_DESC,TYPE_PROPERTY_TECH_DESC_WAVE);
             type.setProperty(XML_TYPE_ICON,ICON_TYPE_WAV);
             //au
-			type = TypeManager.getInstance().registerType(Messages.getString("Type.au"), EXT_AU, PLAYER_IMPL_JAVALAYER, TAG_IMPL_NO_TAGS); //$NON-NLS-1$ //$NON-NLS-2$
+			type = TypeManager.getInstance().registerType(Messages.getString("Type.au"), EXT_AU, Class.forName(PLAYER_IMPL_JAVALAYER), Class.forName(TAG_IMPL_NO_TAGS)); //$NON-NLS-1$ //$NON-NLS-2$
 			type.setProperty(XML_TYPE_IS_MUSIC,TRUE); //$NON-NLS-1$
 			type.setProperty(XML_TYPE_SEEK_SUPPORTED,FALSE); //$NON-NLS-1$
 			type.setProperty(XML_TYPE_TECH_DESC,TYPE_PROPERTY_TECH_DESC_AU);
             type.setProperty(XML_TYPE_ICON,ICON_TYPE_AU);
             //aiff
-			type = TypeManager.getInstance().registerType(Messages.getString("Type.aiff"), EXT_AIFF, PLAYER_IMPL_JAVALAYER, TAG_IMPL_NO_TAGS); //$NON-NLS-1$ //$NON-NLS-2$
+			type = TypeManager.getInstance().registerType(Messages.getString("Type.aiff"), EXT_AIFF, Class.forName(PLAYER_IMPL_JAVALAYER), Class.forName(TAG_IMPL_NO_TAGS)); //$NON-NLS-1$ //$NON-NLS-2$
 			type.setProperty(XML_TYPE_IS_MUSIC,TRUE); //$NON-NLS-1$
 			type.setProperty(XML_TYPE_SEEK_SUPPORTED,FALSE); //$NON-NLS-1$
 			type.setProperty(XML_TYPE_TECH_DESC,TYPE_PROPERTY_TECH_DESC_AIFF);

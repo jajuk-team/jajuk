@@ -55,16 +55,15 @@ public interface IPropertyable {
     /**
 	 * Set a property
 	 * @param sKey
-	 * @param sValue
+	 * @param oValue
 	 */
-	public void setProperty(String sKey, String sValue);
+	public void setProperty(String sKey, Object oValue);
 	
 	/**
 	 * Set a property if it doesn't exist yet
-	 * @param sKey
-	 * @param sValue
+	 * @param Property meta data
 	 */
-	public void setDefaultProperty(String sKey, String sValue);
+	public void setDefaultProperty(PropertyMetaInformation meta);
 	
 	/**
 	 * Remove a property
@@ -95,13 +94,7 @@ public interface IPropertyable {
      * @return whether given property is editable, false if property doesn't exist
      */
     public boolean isPropertyEditable(String sKey);
-    
-    /**
-     * 
-     * @return whether given property is element of constructor for this item
-     */
-    public boolean isPropertyConstructorElement(String sKey);
-	
+      
   /**
      * 
      * @param key

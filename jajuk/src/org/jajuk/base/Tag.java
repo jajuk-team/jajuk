@@ -73,7 +73,7 @@ public class Tag implements ITechnicalStrings{
 				sTrackName = Util.formatTag(sTemp);  //remove the extension
 			}
 		} catch (Exception e) {
-			Log.error("103", fio.getName(),e); //$NON-NLS-1$
+			Log.warn("103", fio.getName(),e); //$NON-NLS-1$
 		}
 		return sTrackName;
 	}
@@ -96,7 +96,7 @@ public class Tag implements ITechnicalStrings{
 				sAlbumlName = sTemp;
 			}
 		} catch (Exception e) {
-			Log.error("103",fio.getName(), e); //$NON-NLS-1$
+			Log.warn("103",fio.getName(), e); //$NON-NLS-1$
 		}
 		if (sAlbumlName == null){  //album tag cannot be found
 			if (Boolean.valueOf(ConfigurationManager.getProperty(CONF_TAGS_USE_PARENT_DIR)).booleanValue()){
@@ -129,7 +129,7 @@ public class Tag implements ITechnicalStrings{
 				sAuthorName = Util.formatTag(sTemp);
 			}
 		} catch (Exception e) {
-			Log.error("103", fio.getName(),e); //$NON-NLS-1$
+			Log.warn("103", fio.getName(),e); //$NON-NLS-1$
 		}
 		return sAuthorName;
 
@@ -158,7 +158,7 @@ public class Tag implements ITechnicalStrings{
 				style = Util.formatTag(sTemp);
 			}
 		} catch (Exception e) {
-			Log.error("103", fio.getName(),e); //$NON-NLS-1$
+			Log.warn("103", fio.getName(),e); //$NON-NLS-1$
 		}
 		return style;
 
@@ -176,7 +176,7 @@ public class Tag implements ITechnicalStrings{
 		try {
 			length = tagImpl.getLength();
 		} catch (Exception e) {
-			Log.error("103", fio.getName(),e); //$NON-NLS-1$
+			Log.warn("103", fio.getName(),e); //$NON-NLS-1$
 		}
 		return length;
 	}
@@ -184,45 +184,37 @@ public class Tag implements ITechnicalStrings{
 	/**
 	 * @return creation year
 	 */
-	public String getYear() {
-		String sYear = UNKNOWN_YEAR; //$NON-NLS-1$
-		//if the type doesn't support tags ( like wav )
+	public int getYear() {
+		int iYear = 0;
+        //if the type doesn't support tags ( like wav )
 		if (tagImpl == null){  
-			return sYear;
+			return iYear;
 		}
-		String sTemp = ""; //$NON-NLS-1$
 		try {
-			sTemp = tagImpl.getYear();
-			if (sTemp != null && !sTemp.equals("")&& !sTemp.equals("0")){ //$NON-NLS-1$ //$NON-NLS-2$
-				sYear = Util.formatTag(sTemp);
-                Integer.parseInt(sYear); //check it is an integer
-			}
+			 iYear = tagImpl.getYear(); //check it is an integer
 		} catch (Exception e) {
-			Log.error("103", fio.getName(),e); //$NON-NLS-1$
+			Log.warn(Messages.getErrorMessage("103"), fio.getName(),e); //$NON-NLS-1$
 		}
-		return sYear;
+		return iYear;
 
 	}
 
 	/**
 	 * @return quality
 	 */
-	public String getQuality() {
-		String sQuality = UNKNOWN_QUALITY;
+	public int getQuality() {
+		int iQuality = 0;
 		//if the type doesn't support tags ( like wav )
 		if (tagImpl == null){  
-			return sQuality;
+			return iQuality;
 		}
 		String sTemp = ""; //$NON-NLS-1$
 		try {
-			sTemp = tagImpl.getQuality();
-			if (sTemp != null && !sTemp.equals("")){ //$NON-NLS-1$
-				sQuality = Util.formatTag(sTemp);
-			}
+	        iQuality = tagImpl.getQuality();
 		} catch (Exception e) {
-			Log.error("103",fio.getName(), e); //$NON-NLS-1$
+			Log.warn("103",fio.getName(), e); //$NON-NLS-1$
 		}
-		return sQuality;
+		return iQuality;
 	}
 
 	/**
@@ -241,7 +233,7 @@ public class Tag implements ITechnicalStrings{
 				sComment = Util.formatTag(sTemp);
 			}
 		} catch (Exception e) {
-			Log.error("103",fio.getName(), e); //$NON-NLS-1$
+			Log.warn("103",fio.getName(), e); //$NON-NLS-1$
 		}
 		return sComment;	
 	}
@@ -254,12 +246,10 @@ public class Tag implements ITechnicalStrings{
         try {
             i = tagImpl.getOrder();
             if (i < 0){
-               throw new Exception();
+               throw new Exception("Negative Order");
             }
         } catch (Exception e) {
-            if (Log.isDebugEnabled()){
-                Log.debug(Messages.getErrorMessage("103")+" : "+fio.getName()); //$NON-NLS-1$
-            }
+            Log.warn("103",fio.getName(),e); //$NON-NLS-1$
             i = 0;
         }
         return i;    
@@ -285,7 +275,6 @@ public class Tag implements ITechnicalStrings{
 		} catch (Exception e) {
 			Log.error("104", fio.getName(),e); //$NON-NLS-1$
 		}
-
 	}
 
 	/**
@@ -322,17 +311,15 @@ public class Tag implements ITechnicalStrings{
         }
     }
 
-    
     /**
 	 * @param sYear
 	 */
-	public void setYear(String sYear) {
+	public void setYear(int iYear) {
 		try {
-			tagImpl.setYear(sYear);
+			tagImpl.setYear(iYear);
 		} catch (Exception e) {
 			Log.error("104", e); //$NON-NLS-1$
 		}
-
 	}
 
     /**

@@ -43,7 +43,26 @@ public class TypeManager extends ItemManager{
 	 */
 	private TypeManager() {
         super();
-	}
+         //---register properties---
+        //ID
+        registerProperty(new PropertyMetaInformation(XML_ID,false,true,String.class));
+        //Name
+        registerProperty(new PropertyMetaInformation(XML_NAME,false,true,String.class));
+        //Extension
+        registerProperty(new PropertyMetaInformation(XML_TYPE_EXTENSION,false,true,String.class));
+        //Player impl
+        registerProperty(new PropertyMetaInformation(XML_TYPE_PLAYER_IMPL,false,true,Class.class));
+        //Tag impl
+        registerProperty(new PropertyMetaInformation(XML_TYPE_TAG_IMPL,false,true,Class.class));
+        //Music 
+        registerProperty(new PropertyMetaInformation(XML_TYPE_IS_MUSIC,false,false,Boolean.class));
+        //Seek
+        registerProperty(new PropertyMetaInformation(XML_TYPE_SEEK_SUPPORTED,false,false,Boolean.class));
+        //Tech desc
+        registerProperty(new PropertyMetaInformation(XML_TYPE_TECH_DESC,false,false,String.class));
+        //Icon
+        registerProperty(new PropertyMetaInformation(XML_TYPE_ICON,false,false,String.class));
+   }
 
     /**
      * @return singleton
@@ -59,27 +78,27 @@ public class TypeManager extends ItemManager{
 	 * Register a type jajuk can read
 	 * @param type
 	 */
-	public synchronized Type registerType(String sName,String sExtension, String sPlayerImpl,String sTagImpl) {
+	public synchronized Type registerType(String sName,String sExtension, Class cPlayerImpl,Class cTagImpl) {
 		String sId = Integer.toString(hmSupportedTypes.size());
-		return registerType(sId,sName,sExtension,sPlayerImpl,sTagImpl);
+		return registerType(sId,sName,sExtension,cPlayerImpl,cTagImpl);
 	}
 		
 	/**
 	 * Register a type jajuk can read with a known id
 	 * @param type
 	 */
-	public synchronized Type registerType(String sId,String sName,String sExtension, String sPlayerImpl,String sTagImpl) {
+	public synchronized Type registerType(String sId,String sName,String sExtension, Class cPlayerImpl,Class cTagImpl) {
 		if ( hmSupportedTypes.containsKey(sExtension)){ //if the type is already in memory, use it
 			return (Type)hmSupportedTypes.get(sExtension);
 		}	
 		Type type = null;
 		try{
-			type = new Type(sId,sName,sExtension,sPlayerImpl,sTagImpl);
+			type = new Type(sId,sName,sExtension,cPlayerImpl,cTagImpl);
 			hmItems.put(sId, type);
             hmSupportedTypes.put(type.getExtension(), type);
 		}
 		catch(Exception e){
-			Log.error("109","sPlayerImpl="+sPlayerImpl+" sTagImpl="+sTagImpl,e ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			Log.error("109","sPlayerImpl="+cPlayerImpl+" sTagImpl="+cTagImpl,e ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
 		return type;
 	}

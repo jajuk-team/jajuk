@@ -36,7 +36,12 @@ public class PlaylistManager extends ItemManager{
 	 */
 	private PlaylistManager() {
 		super();
-	}
+        //---register properties---
+        //ID
+        registerProperty(new PropertyMetaInformation(XML_ID,false,true,String.class));
+        //Playlist file
+        registerProperty(new PropertyMetaInformation(XML_PLAYLIST_FILES,false,true,String.class));
+   }
 
     /**
      * @return singleton
@@ -71,7 +76,7 @@ public class PlaylistManager extends ItemManager{
 			Playlist playlist = new Playlist(sId,plFile);
             playlist.removeProperty(XML_NAME);//no name attribute for playlists
             hmItems.put(sId,playlist);
-            postRegistering(playlist);
+            restorePropertiesAfterRefresh(playlist);
             return playlist;
 		}
 	}

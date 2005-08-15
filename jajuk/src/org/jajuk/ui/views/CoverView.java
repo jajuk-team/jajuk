@@ -48,7 +48,6 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileFilter;
 
-import org.apache.commons.httpclient.HttpConnection;
 import org.jajuk.Main;
 import org.jajuk.base.Album;
 import org.jajuk.base.Author;
@@ -318,7 +317,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                         }
                         catch(Exception e){
                             Log.error(e); //can occur in case of timeout
-                            if (e instanceof HttpConnection.ConnectionTimeoutException){
+                            if (e instanceof org.apache.commons.httpclient.ConnectTimeoutException){
                                 iErrorCounter ++;
                                 if (iErrorCounter == STOP_TO_SEARCH){
                                     Log.warn("Too much connection fails, stop to search for covers online"); //$NON-NLS-1$

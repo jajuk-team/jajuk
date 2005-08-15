@@ -39,6 +39,13 @@ public class AuthorManager extends ItemManager{
 	 */
 	private AuthorManager() {
 		super();
+        //register properties
+        //ID
+        registerProperty(new PropertyMetaInformation(XML_ID,false,true,String.class));
+        //Name
+        registerProperty(new PropertyMetaInformation(XML_NAME,false,true,String.class));
+        //Expand
+        registerProperty(new PropertyMetaInformation(XML_EXPANDED,false,false,Boolean.class,null,"false"));
 	}
     
 /**
@@ -73,7 +80,7 @@ public class AuthorManager extends ItemManager{
 	    }
 	    Author author = new Author(sId, sName);
 	    hmItems.put(sId, author);
-	    postRegistering(author);
+	    restorePropertiesAfterRefresh(author);
 	    return author;
 	}
 	    

@@ -47,7 +47,24 @@ public class DeviceManager extends ItemManager{
 	 */
 	private DeviceManager() {
 		super();
-	}
+        //register properties
+        //ID
+        registerProperty(new PropertyMetaInformation(XML_ID,false,true,String.class));
+        //Name
+        registerProperty(new PropertyMetaInformation(XML_NAME,false,true,String.class));
+        //Type
+        registerProperty(new PropertyMetaInformation(XML_TYPE,false,true,Integer.class));
+        //URL
+        registerProperty(new PropertyMetaInformation(XML_URL,false,true,Integer.class));
+        //Mount point
+        registerProperty(new PropertyMetaInformation(XML_DEVICE_MOUNT_POINT,false,true,String.class));
+        //Auto-mount
+        registerProperty(new PropertyMetaInformation(XML_DEVICE_AUTO_MOUNT,false,true,Boolean.class));
+        //Auto-refresh
+        registerProperty(new PropertyMetaInformation(XML_DEVICE_AUTO_REFRESH,false,true,Boolean.class));
+        //Expand
+        registerProperty(new PropertyMetaInformation(XML_EXPANDED,false,false,Boolean.class,null,"false"));
+   }
     
 /**
      * @return singleton
@@ -65,9 +82,9 @@ public class DeviceManager extends ItemManager{
 	 *@param sName
 	 *@return device 
 	 */
-	public synchronized Device  registerDevice(String sName,int iDeviceType,String sUrl,String sMountPoint){
+	public synchronized Device  registerDevice(String sName,int iDeviceType,String sUrl){
 		String sId = processId(sUrl,sName,iDeviceType);
-		return registerDevice(sId,sName,iDeviceType,sUrl,sMountPoint);
+		return registerDevice(sId,sName,iDeviceType,sUrl);
 	}
     
         /**
@@ -75,10 +92,10 @@ public class DeviceManager extends ItemManager{
      *@param sName
      *@return device 
      */
-    public synchronized Device registerDevice(String sId,String sName,int iDeviceType,String sUrl,String sMountPoint){
-        Device device = new Device(sId,sName,iDeviceType,sUrl,sMountPoint);
+    public synchronized Device registerDevice(String sId,String sName,int iDeviceType,String sUrl){
+        Device device = new Device(sId,sName,iDeviceType,sUrl);
         hmItems.put(sId,device);
-        postRegistering(device);
+        restorePropertiesAfterRefresh(device);
         return device;
     }
 	
