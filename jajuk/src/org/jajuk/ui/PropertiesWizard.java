@@ -66,9 +66,9 @@ public class PropertiesWizard extends JFrame implements ITechnicalStrings {
 	 * @param pa  the item to display
 	 */
 	public PropertiesWizard(IPropertyable pa) {
-	    super(pa.getValue(XML_NAME));
+	    super(pa.getStringValue(XML_NAME));
 		setIconImage(Util.getIcon(ICON_LOGO).getImage());
-		getContentPane().add(new PropertiesPanel(pa));
+		getContentPane().add(new PropertiesPanel(new PropertiesTableModel(pa),pa.getDesc(),false));
 		Util.setShuffleLocation(this, 400, 400);
 		pack();
 		setVisible(true);
@@ -78,17 +78,25 @@ public class PropertiesWizard extends JFrame implements ITechnicalStrings {
 	 * Constructor
 	 * 
 	 * @param pa  the item to display
+     * @param bDistinct: whether we display only one window with merge data or n windows
 	 */
-	public PropertiesWizard(ArrayList alProperties) {
+	public PropertiesWizard(ArrayList alItems,boolean bDistinct) {
 		//use first item for title
-		super(((IPropertyable)alProperties.get(0)).getValue(XML_NAME));
+		super(((IPropertyable)alItems.get(0)).getStringValue(XML_NAME));
 		getContentPane().setLayout(new BoxLayout(getContentPane(),BoxLayout.Y_AXIS));
 		setIconImage(Util.getIcon(ICON_LOGO).getImage());
-		Iterator it = alProperties.iterator();
-		while (it.hasNext()){
-			getContentPane().add(new PropertiesPanel((IPropertyable)it.next()));	
-			getContentPane().add(Box.createHorizontalStrut(30));
-		}
+		if (bDistinct){
+		    Iterator it = alItems.iterator();
+		    while (it.hasNext()){
+                IPropertyable item = (IPropertyable)it.next();
+		        getContentPane().add(new PropertiesPanel(new PropertiesTableModel(item),item.getDesc(),false));    
+		        getContentPane().add(Box.createHorizontalStrut(30));
+		    }    
+        }
+        else{
+            getContentPane().add(new PropertiesPanel(new PropertiesTableModel(alItems),"",true));    
+            getContentPane().add(Box.createHorizontalStrut(30));
+        }
 		Util.setShuffleLocation(this, 400, 400);
 		pack();
 		setVisible(true);
@@ -119,15 +127,14 @@ public class PropertiesWizard extends JFrame implements ITechnicalStrings {
 		 * Property panel
 		 * @param pa
 		 */
-		PropertiesPanel(IPropertyable pa) {
-			this.pa = pa;
+		PropertiesPanel(PropertiesTableModel model,String sDesc,boolean bMultiple) {
+			this.model = model;
 			int iX_SEPARATOR = 5;
 			int iY_SEPARATOR = 10;
 			int iY_ROW_HEIGHT = 20;
 			//desc
-			jlDesc = new JLabel(pa.getDesc());
+			jlDesc = new JLabel(sDesc);
 			//add panels
-			model = new PropertiesTableModel(pa);
 			jtable = new JajukTable(model);
 			//listen for table changes
 			model.addTableModelListener(this);
@@ -169,10 +176,14 @@ public class PropertiesWizard extends JFrame implements ITechnicalStrings {
 			add(jlDesc, "0,0");
 			add(new JScrollPane(jtable), "0,2");
 			//Hide all album columns is not required
-			if (!(pa instanceof Track)) {
+			if (!(pa instanceof Track) || bMultiple) {
 				TableColumnExt col = jtable.getColumnExt(3);
 				col.setVisible(false);
 			}
+            if (bMultiple){//if multiple selection, hide links and editable
+                jtable.getColumnExt(0).setVisible(false);
+                jtable.getColumnExt(4).setVisible(false);
+            }
 			jtable.packAll();
    	}
 		

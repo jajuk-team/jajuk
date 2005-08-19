@@ -87,7 +87,6 @@ public abstract class AbstractTableView extends ViewAdapter
     JTextField jtfValue;
     JButton jbClearFilter;
     JButton jbAdvancedFilter;
-    JMenuItem jmiSetProperty;
     JMenuItem jmiProperties;
     
     

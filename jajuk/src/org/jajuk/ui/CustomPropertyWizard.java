@@ -40,6 +40,8 @@ import org.jajuk.base.PlaylistFileManager;
 import org.jajuk.base.StyleManager;
 import org.jajuk.base.TrackManager;
 import org.jajuk.i18n.Messages;
+import org.jajuk.ui.perspectives.PerspectiveManager;
+import org.jajuk.ui.perspectives.PhysicalPerspective;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 
@@ -82,6 +84,13 @@ public abstract class CustomPropertyWizard extends JDialog implements ActionList
         jcbItemChoice.addItem(Messages.getString("Item_Playlist")); //playlist file actually
         okp = new OKCancelPanel(this);
         okp.getOKButton().setEnabled(false);
+        //In physical perspective, default item is file, otherwise, it is track
+        if (PerspectiveManager.getCurrentPerspective().getClass().equals(PhysicalPerspective.class)){
+          jcbItemChoice.setSelectedIndex(1);  
+        }
+        else{
+            jcbItemChoice.setSelectedIndex(0);
+        }
         jcbItemChoice.addItemListener(this);
         jpMain = new JPanel();
     }

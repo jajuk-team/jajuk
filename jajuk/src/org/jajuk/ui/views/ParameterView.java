@@ -36,6 +36,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
@@ -48,11 +49,14 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import org.jajuk.base.DeviceManager;
 import org.jajuk.base.Event;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.base.SearchResult;
+import org.jajuk.base.Track;
+import org.jajuk.base.TrackManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.LNFManager;
@@ -82,6 +86,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
     JLabel jlHistory;
     JTextField jtfHistory;
     JButton jbClearHistory;
+    JButton jbResetRatings;
     JPanel jpStart;
     JLabel jlStart;
     ButtonGroup bgStart;
@@ -98,6 +103,9 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
     JCheckBox jcbBeforeExit;
     JCheckBox jcbBeforeRemoveDevice;
     JCheckBox jcbBeforeDeleteCover;
+    JCheckBox jcbBeforeClearingHistory;
+    JCheckBox jcbBeforeResetingRatings;
+    
     JPanel jpOptions;
     JCheckBox jcbDisplayUnmounted;
     JCheckBox jcbRestart;
@@ -187,8 +195,8 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
         
         //--History
         jpHistory = new JPanel();
-        double sizeHistory[][] = {{0.6,iXSeparator,0.3},
-                {20,13*iYSeparator,25}};
+        double sizeHistory[][] = {{iXSeparator,0.3,iXSeparator,0.3},
+                {5*iYSeparator,20,10*iYSeparator,25,10*iYSeparator,25}};
         jpHistory.setLayout(new TableLayout(sizeHistory));
         jlHistory = new JLabel(Messages.getString("ParameterView.0")); //$NON-NLS-1$
         jtfHistory = new JTextField();
@@ -219,9 +227,13 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
         jbClearHistory = new JButton(Messages.getString("ParameterView.3"),Util.getIcon(ICON_CLEAR)); //$NON-NLS-1$
         jbClearHistory.setToolTipText(Messages.getString("ParameterView.4")); //$NON-NLS-1$
         jbClearHistory.addActionListener(this);
-        jpHistory.add(jlHistory,"0,0"); //$NON-NLS-1$
-        jpHistory.add(jtfHistory,"2,0"); //$NON-NLS-1$
-        jpHistory.add(jbClearHistory,"0,2"); //$NON-NLS-1$
+        jbResetRatings = new JButton(Messages.getString("ParameterView.186"),Util.getIcon(ICON_CLEAR)); //$NON-NLS-1$
+        jbResetRatings.setToolTipText(Messages.getString("ParameterView.187")); //$NON-NLS-1$
+        jbResetRatings.addActionListener(this);
+        jpHistory.add(jlHistory,"1,1"); //$NON-NLS-1$
+        jpHistory.add(jtfHistory,"3,1"); //$NON-NLS-1$
+        jpHistory.add(jbClearHistory,"1,3"); //$NON-NLS-1$
+        jpHistory.add(jbResetRatings,"1,5"); //$NON-NLS-1$
         
         //--Startup
         jpStart = new JPanel();
@@ -285,7 +297,8 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
         //--Confirmations
         jpConfirmations = new JPanel();
         double sizeConfirmations[][] = {{0.99},
-                {iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator}};
+                {iYSeparator,20,iYSeparator,20,iYSeparator,20,
+                iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator}};
         jpConfirmations.setLayout(new TableLayout(sizeConfirmations));
         jcbBeforeDelete = new JCheckBox(Messages.getString("ParameterView.27")); //$NON-NLS-1$
         jcbBeforeDelete.setToolTipText(Messages.getString("ParameterView.28")); //$NON-NLS-1$
@@ -295,10 +308,17 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
         jcbBeforeRemoveDevice.setToolTipText(Messages.getString("ParameterView.165")); //$NON-NLS-1$
         jcbBeforeDeleteCover = new JCheckBox(Messages.getString("ParameterView.171")); //$NON-NLS-1$
         jcbBeforeDeleteCover.setToolTipText(Messages.getString("ParameterView.172")); //$NON-NLS-1$
+        jcbBeforeClearingHistory = new JCheckBox(Messages.getString("ParameterView.188")); //$NON-NLS-1$
+        jcbBeforeClearingHistory.setToolTipText(Messages.getString("ParameterView.188")); //$NON-NLS-1$
+        jcbBeforeResetingRatings = new JCheckBox(Messages.getString("ParameterView.189")); //$NON-NLS-1$
+        jcbBeforeResetingRatings.setToolTipText(Messages.getString("ParameterView.189")); //$NON-NLS-1$
+        
         jpConfirmations.add(jcbBeforeDelete,"0,1"); //$NON-NLS-1$
         jpConfirmations.add(jcbBeforeExit,"0,3"); //$NON-NLS-1$
         jpConfirmations.add(jcbBeforeRemoveDevice,"0,5"); //$NON-NLS-1$
         jpConfirmations.add(jcbBeforeDeleteCover,"0,7"); //$NON-NLS-1$
+        jpConfirmations.add(jcbBeforeClearingHistory,"0,9"); //$NON-NLS-1$
+        jpConfirmations.add(jcbBeforeResetingRatings,"0,11"); //$NON-NLS-1$
         
         //--Options
         jpOptions = new JPanel();
@@ -788,7 +808,34 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
         new Thread(){
             public void run(){
                 if (e.getSource() == jbClearHistory){
+                    //show confirmation message if required
+                    if ( ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_CLEAR_HISTORY)){
+                        int iResu = Messages.getChoice(Messages.getString("Confirmation_clear_history"),JOptionPane.WARNING_MESSAGE);  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                        if (iResu != JOptionPane.YES_OPTION){
+                            return;
+                        }
+                    }
                     ObservationManager.notify(new Event(EVENT_CLEAR_HISTORY));
+                }
+                else if (e.getSource() == jbResetRatings){
+                    //show confirmation message if required
+                    if ( ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_RESET_RATINGS)){
+                        int iResu = Messages.getChoice(Messages.getString("Confirmation_reset_ratings"),JOptionPane.WARNING_MESSAGE);  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                        if (iResu != JOptionPane.YES_OPTION){
+                            return;
+                        }
+                    }
+                    if (!DeviceManager.getInstance().isAnyDeviceRefreshing()){ //make sure none device is refreshing
+                        Iterator it  = TrackManager.getInstance().getItems().iterator();
+                        while (it.hasNext()){
+                            Track track = (Track)it.next();
+                            track.setRate(0);
+                        }
+                        ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH));
+                    }
+                    else{
+                        Messages.showErrorMessage("120");
+                    }
                 }
                 else if (e.getSource() == jcbShuffleCover){
                     jcbLoadEachTrack.setEnabled(jcbShuffleCover.isSelected());
@@ -940,6 +987,8 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
         ConfigurationManager.setProperty(CONF_CONFIRMATIONS_EXIT,Boolean.toString(jcbBeforeExit.isSelected()));
         ConfigurationManager.setProperty(CONF_CONFIRMATIONS_REMOVE_DEVICE,Boolean.toString(jcbBeforeRemoveDevice.isSelected()));
         ConfigurationManager.setProperty(CONF_CONFIRMATIONS_DELETE_COVER,Boolean.toString(jcbBeforeDeleteCover.isSelected()));
+        ConfigurationManager.setProperty(CONF_CONFIRMATIONS_CLEAR_HISTORY,Boolean.toString(jcbBeforeClearingHistory.isSelected()));
+        ConfigurationManager.setProperty(CONF_CONFIRMATIONS_RESET_RATINGS,Boolean.toString(jcbBeforeResetingRatings.isSelected()));
         //History
         String sHistoryDuration = jtfHistory.getText();
         if (!sHistoryDuration.equals("")){ //$NON-NLS-1$
@@ -1020,6 +1069,8 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
         jcbBeforeExit.setSelected(ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_EXIT));
         jcbBeforeRemoveDevice.setSelected(ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_REMOVE_DEVICE));
         jcbBeforeDeleteCover.setSelected(ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_DELETE_COVER));
+        jcbBeforeClearingHistory.setSelected(ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_CLEAR_HISTORY));
+        jcbBeforeResetingRatings.setSelected(ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_RESET_RATINGS));
         //options
         boolean bHidden = ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED);
         jcbDisplayUnmounted.setSelected(bHidden);

@@ -1,19 +1,12 @@
-#Mon Mar 07 22:22:17 CET 2005
+#Tue Aug 16 08:17:05 CEST 2005
 eclipse.preferences.version=1
-encoding/<project>=UTF-8
-encoding//dist-files/doc/README_ita.html=ISO-8859-1
-encoding//dist-files/doc/README_swe.html=ISO-8859-1
-encoding//dist-files/doc/README_nld.html=ISO-8859-1
-encoding//dist-files/doc/README_chn.html=ISO-8859-1
-encoding//dist-files/doc/README_deu.html=ISO-8859-1
-encoding//dist-files/doc/README_fra.html=ISO-8859-1
-encoding//src/org/jajuk/i18n/jajuk_zh.properties=UTF-8
-encoding//src/org/jajuk/i18n/jajuk_nl.properties=UTF-8
 encoding//src/org/jajuk/i18n/jajuk.properties=UTF-8
-encoding//src/org/jajuk/i18n/jajuk_it.properties=UTF-8
+encoding//src/org/jajuk/i18n/jajuk_ca.properties=UTF-8
+encoding//src/org/jajuk/i18n/jajuk_de.properties=UTF-8
 encoding//src/org/jajuk/i18n/jajuk_es.properties=UTF-8
 encoding//src/org/jajuk/i18n/jajuk_fr.properties=UTF-8
-encoding//src/org/jajuk/i18n/jajuk_de.properties=UTF-8
+encoding//src/org/jajuk/i18n/jajuk_it.properties=UTF-8
+encoding//src/org/jajuk/i18n/jajuk_nl.properties=UTF-8
 encoding//src/org/jajuk/i18n/jajuk_sv.properties=UTF-8
-encoding//src/org/jajuk/i18n/jajuk_ca.properties=UTF-8
-
+encoding//src/org/jajuk/i18n/jajuk_zh.properties=UTF-8
+encoding/<project>=UTF-8

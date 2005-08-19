@@ -49,21 +49,25 @@ public class DeviceManager extends ItemManager{
 		super();
         //register properties
         //ID
-        registerProperty(new PropertyMetaInformation(XML_ID,false,true,String.class));
+        registerProperty(new PropertyMetaInformation(XML_ID,false,true,false,false,String.class));
         //Name
-        registerProperty(new PropertyMetaInformation(XML_NAME,false,true,String.class));
+        registerProperty(new PropertyMetaInformation(XML_NAME,false,true,true,false,String.class));
         //Type
-        registerProperty(new PropertyMetaInformation(XML_TYPE,false,true,Integer.class));
+        registerProperty(new PropertyMetaInformation(XML_TYPE,false,true,true,false,Integer.class));
         //URL
-        registerProperty(new PropertyMetaInformation(XML_URL,false,true,Integer.class));
+        registerProperty(new PropertyMetaInformation(XML_URL,false,true,true,false,Integer.class));
         //Mount point
-        registerProperty(new PropertyMetaInformation(XML_DEVICE_MOUNT_POINT,false,true,String.class));
+        registerProperty(new PropertyMetaInformation(XML_DEVICE_MOUNT_POINT,false,true,true,false,String.class));
         //Auto-mount
-        registerProperty(new PropertyMetaInformation(XML_DEVICE_AUTO_MOUNT,false,true,Boolean.class));
+        registerProperty(new PropertyMetaInformation(XML_DEVICE_AUTO_MOUNT,false,true,true,false,Boolean.class));
         //Auto-refresh
-        registerProperty(new PropertyMetaInformation(XML_DEVICE_AUTO_REFRESH,false,true,Boolean.class));
+        registerProperty(new PropertyMetaInformation(XML_DEVICE_AUTO_REFRESH,false,true,true,false,Boolean.class));
         //Expand
-        registerProperty(new PropertyMetaInformation(XML_EXPANDED,false,false,Boolean.class,null,"false"));
+        registerProperty(new PropertyMetaInformation(XML_EXPANDED,false,false,false,false,Boolean.class,null,"false"));
+        //Synchro source
+        registerProperty(new PropertyMetaInformation(XML_DEVICE_SYNCHRO_SOURCE,false,false,true,false,String.class));
+        //Synchro mode
+        registerProperty(new PropertyMetaInformation(XML_DEVICE_SYNCHRO_MODE,false,false,true,false,String.class));
    }
     
 /**
@@ -232,10 +236,10 @@ public class DeviceManager extends ItemManager{
 		Iterator it = hmItems.values().iterator();
 		while (it.hasNext()){
 			Device deviceToCheck = (Device)it.next();
-			if (deviceToCheck.containsProperty(DEVICE_OPTION_SYNCHRO_SOURCE)){
-			    String sSyncSource = deviceToCheck.getValue(DEVICE_OPTION_SYNCHRO_SOURCE);
+			if (deviceToCheck.containsProperty(XML_DEVICE_SYNCHRO_SOURCE)){
+			    String sSyncSource = deviceToCheck.getStringValue(XML_DEVICE_SYNCHRO_SOURCE);
 			    if ( sSyncSource.equals(device.getId())){
-			        deviceToCheck.removeProperty(DEVICE_OPTION_SYNCHRO_SOURCE);
+			        deviceToCheck.removeProperty(XML_DEVICE_SYNCHRO_SOURCE);
                 }
 			}
 		}

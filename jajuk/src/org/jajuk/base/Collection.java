@@ -258,7 +258,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 	 * Called when we start an element
 	 *  
 	 */
-	public void startElement(String sUri, String sName, String sQName, Attributes attributes) throws SAXException {
+	public void startElement(String sUri, String s, String sQName, Attributes attributes) throws SAXException {
 	    try{
 	        if (XML_DEVICES.equals(sQName)){
                 manager = DeviceManager.getInstance();
@@ -292,12 +292,14 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
             }
             else if (XML_PROPERTY.equals(sQName)){ //A property description
                 String sPropertyName = attributes.getValue(attributes.getIndex(XML_NAME));
-                boolean bCustom = Boolean.getBoolean(attributes.getValue(attributes.getIndex(XML_CUSTOM)));
-                boolean bConstructor = Boolean.getBoolean(attributes.getValue(attributes.getIndex(XML_CONSTRUCTOR)));
+                boolean bCustom = Boolean.parseBoolean(attributes.getValue(attributes.getIndex(XML_CUSTOM)));
+                boolean bConstructor = Boolean.parseBoolean(attributes.getValue(attributes.getIndex(XML_CONSTRUCTOR)));
+                boolean bShouldBeDisplayed = Boolean.parseBoolean(attributes.getValue(attributes.getIndex(XML_DISPLAY)));
+                boolean bEditable = Boolean.parseBoolean(attributes.getValue(attributes.getIndex(XML_EDITABLE)));
                 Class cType = Class.forName(attributes.getValue(attributes.getIndex(XML_TYPE)));
                 String sFormat = attributes.getValue(attributes.getIndex(XML_FORMAT));
                 String sDefaultValue = attributes.getValue(attributes.getIndex(XML_DEFAULT_VALUE));
-                PropertyMetaInformation meta = new PropertyMetaInformation(sPropertyName,bCustom,bConstructor,cType,sFormat,sDefaultValue);
+                PropertyMetaInformation meta = new PropertyMetaInformation(sPropertyName,bCustom,bConstructor,bShouldBeDisplayed,bEditable,cType,sFormat,sDefaultValue);
                 if (manager.getMetaInformation(sPropertyName) == null){ //standard properties are already loaded
                     manager.registerProperty(meta);    
                 }
@@ -316,7 +318,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 	        else if (XML_STYLE.equals(sQName)){
 	            String sId = attributes.getValue(attributes.getIndex(XML_ID));
                 String sItemName = attributes.getValue(attributes.getIndex(XML_NAME));
-                Style style = StyleManager.getInstance().registerStyle(sId,sName);
+                Style style = StyleManager.getInstance().registerStyle(sId,sItemName);
 	            if (style != null){
 	                style.populateProperties(attributes);
 	            }
@@ -375,7 +377,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 	            }
                 String sID = attributes.getValue(attributes.getIndex(XML_ID));
                 String sItemName = attributes.getValue(attributes.getIndex(XML_NAME));
-                Directory directory = DirectoryManager.getInstance().registerDirectory(sID, sName,dParent,device);
+                Directory directory = DirectoryManager.getInstance().registerDirectory(sID, sItemName,dParent,device);
 	            directory.populateProperties(attributes);
 	        }
 	        else if (XML_FILE.equals(sQName)){
@@ -386,7 +388,9 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 	            }
 	            long lSize = Long.parseLong(attributes.getValue(attributes.getIndex(XML_SIZE)));
 	            int iQuality = Integer.parseInt(attributes.getValue(attributes.getIndex(XML_QUALITY)));
-                org.jajuk.base.File file = FileManager.getInstance().registerFile(attributes.getValue(attributes.getIndex(XML_ID)), attributes.getValue(attributes.getIndex(XML_FILE_NAME)), dParent, track, lSize, iQuality);
+                String sID = attributes.getValue(attributes.getIndex(XML_ID)); 
+                String sItemName = attributes.getValue(attributes.getIndex(XML_NAME));
+                org.jajuk.base.File file = FileManager.getInstance().registerFile(sID, sItemName, dParent, track, lSize, iQuality);
 	            file.populateProperties(attributes);
 	            track.addFile(file);
 	            file.getDirectory().addFile(file);

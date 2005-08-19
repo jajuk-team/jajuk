@@ -20,8 +20,12 @@
 
 package org.jajuk.ui.views;
 
+import java.util.ArrayList;
+
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreePath;
 
 
 /**
@@ -37,5 +41,14 @@ public abstract class AbstractTreeView extends ViewAdapter {
 	
 	/** The phyical tree */
 	JTree jtree;
-	
+    
+    /** Current selection */
+    TreePath[] paths;
+    
+      /**Items selection*/
+    ArrayList alSelected;
+    
+     /** Top tree node */
+    DefaultMutableTreeNode top;
+  
 }

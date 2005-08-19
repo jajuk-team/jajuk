@@ -34,6 +34,7 @@ import javax.swing.JLabel;
 import org.jajuk.base.Event;
 import org.jajuk.base.ItemManager;
 import org.jajuk.base.ObservationManager;
+import org.jajuk.base.PropertyMetaInformation;
 import org.jajuk.i18n.Messages;
 
 
@@ -118,8 +119,8 @@ class RemovePropertyWizard extends CustomPropertyWizard {
         if (im != null){
             Iterator it = im.getCustomProperties().iterator();
             while (it.hasNext()){
-                String sProperty = (String)it.next();
-                jcbName.addItem(sProperty);
+                PropertyMetaInformation meta = (PropertyMetaInformation)it.next();
+                jcbName.addItem(meta.getName());
             }
         }
     }

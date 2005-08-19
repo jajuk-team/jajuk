@@ -157,7 +157,9 @@ public class DownloadManager implements ITechnicalStrings {
 	    	throw e;
 	    }
 	    finally{
-	        get.releaseConnection();
+	        if (get != null){
+                get.releaseConnection();
+            }
 	    }
 	    return bOut;
 	}

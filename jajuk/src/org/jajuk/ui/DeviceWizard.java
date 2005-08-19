@@ -271,7 +271,7 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 		jcbRefresh.setEnabled(false); //no instant refresh for updates
 		jcbRefresh.setSelected(false);
 		jcbAutoMount.setSelected(true);
-		if (TRUE.equals(device.getValue(DEVICE_OPTION_AUTO_MOUNT))){
+		if (device.getBooleanValue(XML_DEVICE_AUTO_MOUNT)){
 			jcbAutoMount.setSelected(true);
 			jcbAutoRefresh.setEnabled(true); //refresh at startup is only if it is auto-mounted
 		}
@@ -279,7 +279,7 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 		    jcbAutoMount.setSelected(false);
 			jcbAutoRefresh.setEnabled(false); //refresh at startup is only if it is auto-mounted
 		}
-		if (TRUE.equals(device.getValue(DEVICE_OPTION_AUTO_REFRESH))){
+		if (device.getBooleanValue(XML_DEVICE_AUTO_REFRESH)){
 			jcbAutoRefresh.setSelected(true);
 		}
 		else{
@@ -290,15 +290,15 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 			jcbSynchronized.setEnabled(false);
 			jrbBidirSynchro.setEnabled(false);
 		}
-		if (device.containsProperty(DEVICE_OPTION_SYNCHRO_SOURCE)){
-			String sSynchroSource = device.getValue(DEVICE_OPTION_SYNCHRO_SOURCE);
+		if (device.containsProperty(XML_DEVICE_SYNCHRO_SOURCE)){
+			String sSynchroSource = device.getStringValue(XML_DEVICE_SYNCHRO_SOURCE);
             jrbBidirSynchro.setEnabled(true);
 			jrbUnidirSynchro.setEnabled(true);
 			jcboxSynchronized.setSelected(true);
 			jcboxSynchronized.setEnabled(true);
 			jcbSynchronized.setEnabled(true);
 			jcbSynchronized.setSelectedIndex(alDevices.indexOf((Device)DeviceManager.getInstance().getItem(sSynchroSource)));
-			if (DEVICE_OPTION_SYNCHRO_MODE_BI.equals(device.getValue(DEVICE_OPTION_SYNCHRO_MODE))){
+			if (DEVICE_SYNCHRO_MODE_BI.equals(device.getValue(XML_DEVICE_SYNCHRO_MODE))){
 				jrbBidirSynchro.setSelected(true);
 			}
 			else{
@@ -354,22 +354,21 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 				}
 				device = DeviceManager.getInstance().registerDevice(jtfName.getText(),jcbType.getSelectedIndex(),jtfUrl.getText());
 			}
-			device.setProperty(DEVICE_OPTION_MOUNT_POINT,jtfMountPoint.getText());
-            device.setProperty(DEVICE_OPTION_AUTO_MOUNT,Boolean.toString(jcbAutoMount.isSelected()));
-			device.setProperty(DEVICE_OPTION_AUTO_REFRESH,Boolean.toString(jcbAutoRefresh.isSelected()));
+			device.setProperty(XML_DEVICE_MOUNT_POINT,jtfMountPoint.getText());
+            device.setProperty(XML_DEVICE_AUTO_MOUNT,jcbAutoMount.isSelected());
+			device.setProperty(XML_DEVICE_AUTO_REFRESH,jcbAutoRefresh.isSelected());
 			if (jcbSynchronized.isEnabled() && jcbSynchronized.getSelectedItem() != null){
-				device.setProperty(DEVICE_OPTION_SYNCHRO_SOURCE,((Device)alDevices.get(jcbSynchronized.getSelectedIndex())).getId());
+				device.setProperty(XML_DEVICE_SYNCHRO_SOURCE,((Device)alDevices.get(jcbSynchronized.getSelectedIndex())).getId());
 				if (jrbBidirSynchro.isSelected()){
-					device.setProperty(DEVICE_OPTION_SYNCHRO_MODE,DEVICE_OPTION_SYNCHRO_MODE_BI);
+					device.setProperty(XML_DEVICE_SYNCHRO_MODE,DEVICE_SYNCHRO_MODE_BI);
 				}
 				else{
-					device.setProperty(DEVICE_OPTION_SYNCHRO_MODE,DEVICE_OPTION_SYNCHRO_MODE_UNI);
+					device.setProperty(XML_DEVICE_SYNCHRO_MODE,DEVICE_SYNCHRO_MODE_UNI);
 				}
 			}
 			else{  //no synchro
-				device.removeProperty(DEVICE_OPTION_SYNCHRO_MODE);
-				device.removeProperty(DEVICE_OPTION_SYNCHRO_OPT1);
-				device.removeProperty(DEVICE_OPTION_SYNCHRO_SOURCE);
+				device.removeProperty(XML_DEVICE_SYNCHRO_MODE);
+				device.removeProperty(XML_DEVICE_SYNCHRO_SOURCE);
 			}
 			if (jcbRefresh.isSelected() && bNew ){
 				try{

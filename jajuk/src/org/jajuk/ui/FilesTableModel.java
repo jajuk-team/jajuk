@@ -30,6 +30,7 @@ import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.IPropertyable;
 import org.jajuk.base.ObservationManager;
+import org.jajuk.base.PropertyMetaInformation;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.views.PhysicalTableView;
 import org.jajuk.util.ConfigurationManager;
@@ -94,9 +95,9 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
         //Custom properties now
         Iterator it = FileManager.getInstance().getCustomProperties().iterator();
         while (it.hasNext()){
-            String sProperty = (String)it.next();
-            vColNames.add(sProperty);
-            vId.add(sProperty);
+            PropertyMetaInformation meta = (PropertyMetaInformation)it.next();
+            vColNames.add(meta.getName());
+            vId.add(meta.getName());
         }   
     }
     
@@ -209,10 +210,10 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
             //Custom properties now
             Iterator it2 = FileManager.getInstance().getCustomProperties().iterator();
             for (int i=0;it2.hasNext();i++){
-                String sProperty = (String)it2.next();
-                oValues[iRow][iNumberStandardRows+i] = properties.get(sProperty);
+                PropertyMetaInformation meta = (PropertyMetaInformation)it2.next();
+                oValues[iRow][iNumberStandardRows+i] = properties.get(meta.getName());
                 bCellEditable[iRow][iNumberStandardRows+i] = true;
-            }
+            }   
         }
     }
     

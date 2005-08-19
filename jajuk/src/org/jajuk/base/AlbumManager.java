@@ -42,11 +42,11 @@ public class AlbumManager extends ItemManager{
         super();
        //register properties
         //ID
-        registerProperty(new PropertyMetaInformation(XML_ID,false,true,String.class));
+        registerProperty(new PropertyMetaInformation(XML_ID,false,true,false,false,String.class));
         //Name
-        registerProperty(new PropertyMetaInformation(XML_NAME,false,true,String.class));
+        registerProperty(new PropertyMetaInformation(XML_NAME,false,true,true,true,String.class));
         //Expand
-        registerProperty(new PropertyMetaInformation(XML_EXPANDED,false,false,Boolean.class,null,"false"));
+        registerProperty(new PropertyMetaInformation(XML_EXPANDED,false,false,false,false,Boolean.class,null,"false"));
     }
     
   /**

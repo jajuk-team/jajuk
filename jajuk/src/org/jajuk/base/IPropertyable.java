@@ -19,6 +19,7 @@
  */
 package org.jajuk.base;
 
+import java.util.Date;
 import java.util.LinkedHashMap;
 
 /**
@@ -38,13 +39,28 @@ public interface IPropertyable {
      * @return an identifier used to generate XML  representation of this item
      */
     String getIdentifier();
+    
+    /**
+     * @param sProperty
+     * @return Meta informations for this item and given key
+     */
+    public PropertyMetaInformation getMeta(String sProperty);
    	
 	/**
 	 * Get a property
 	 * @param sKey
 	 * @return
 	 */
-	public String getValue(String sKey);
+	public Object getValue(String sKey);
+    
+    public int getIntValue(String sKey);
+    public long getLongValue(String sKey);
+    public float getFloatValue(String sKey);
+    public double getDoubleValue(String sKey);
+    public String getStringValue(String sKey);
+    public boolean getBooleanValue(String sKey);
+    public Date getDateValue(String sKey);
+      
 	
     /**
      * Get the "Any" value that contains all values concatenated
@@ -90,12 +106,6 @@ public interface IPropertyable {
     public String getDesc();
 	
     /**
-     * 
-     * @return whether given property is editable, false if property doesn't exist
-     */
-    public boolean isPropertyEditable(String sKey);
-      
-  /**
      * 
      * @param key
      * @return human value for the property (not MD5 hash)

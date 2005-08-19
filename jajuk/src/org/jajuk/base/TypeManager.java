@@ -45,23 +45,23 @@ public class TypeManager extends ItemManager{
         super();
          //---register properties---
         //ID
-        registerProperty(new PropertyMetaInformation(XML_ID,false,true,String.class));
+        registerProperty(new PropertyMetaInformation(XML_ID,false,true,false,false,String.class));
         //Name
-        registerProperty(new PropertyMetaInformation(XML_NAME,false,true,String.class));
+        registerProperty(new PropertyMetaInformation(XML_NAME,false,true,true,false,String.class));
         //Extension
-        registerProperty(new PropertyMetaInformation(XML_TYPE_EXTENSION,false,true,String.class));
+        registerProperty(new PropertyMetaInformation(XML_TYPE_EXTENSION,false,true,true,false,String.class));
         //Player impl
-        registerProperty(new PropertyMetaInformation(XML_TYPE_PLAYER_IMPL,false,true,Class.class));
+        registerProperty(new PropertyMetaInformation(XML_TYPE_PLAYER_IMPL,false,true,true,false,Class.class));
         //Tag impl
-        registerProperty(new PropertyMetaInformation(XML_TYPE_TAG_IMPL,false,true,Class.class));
+        registerProperty(new PropertyMetaInformation(XML_TYPE_TAG_IMPL,false,true,true,false,Class.class));
         //Music 
-        registerProperty(new PropertyMetaInformation(XML_TYPE_IS_MUSIC,false,false,Boolean.class));
+        registerProperty(new PropertyMetaInformation(XML_TYPE_IS_MUSIC,false,false,true,false,Boolean.class));
         //Seek
-        registerProperty(new PropertyMetaInformation(XML_TYPE_SEEK_SUPPORTED,false,false,Boolean.class));
+        registerProperty(new PropertyMetaInformation(XML_TYPE_SEEK_SUPPORTED,false,false,true,false,Boolean.class));
         //Tech desc
-        registerProperty(new PropertyMetaInformation(XML_TYPE_TECH_DESC,false,false,String.class));
+        registerProperty(new PropertyMetaInformation(XML_TYPE_TECH_DESC,false,false,true,false,String.class));
         //Icon
-        registerProperty(new PropertyMetaInformation(XML_TYPE_ICON,false,false,String.class));
+        registerProperty(new PropertyMetaInformation(XML_TYPE_ICON,false,false,false,false,String.class));
    }
 
     /**
@@ -130,7 +130,7 @@ public class TypeManager extends ItemManager{
 		Iterator it = hmSupportedTypes.values().iterator();
 		while (it.hasNext()){
 			Type type = (Type)it.next();
-			if (type.getValue(XML_TYPE_TECH_DESC).equalsIgnoreCase(sTechDesc)){
+			if (type.getStringValue(XML_TYPE_TECH_DESC).equalsIgnoreCase(sTechDesc)){
 				return type;
 			}
 		}
@@ -146,7 +146,7 @@ public class TypeManager extends ItemManager{
 		Iterator it = hmSupportedTypes.values().iterator();
 		while (it.hasNext()){
 			Type type = (Type)it.next();
-			if (TRUE.equals(type.getValue(XML_TYPE_IS_MUSIC))){
+			if (type.getBooleanValue(XML_TYPE_IS_MUSIC)){
 				alResu.add(type);
 			}
 		}

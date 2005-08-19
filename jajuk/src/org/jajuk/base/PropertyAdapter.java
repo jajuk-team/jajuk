@@ -21,11 +21,13 @@
 package org.jajuk.base;
 
 import java.io.Serializable;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.Locale;
 
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
@@ -91,18 +93,112 @@ abstract public class PropertyAdapter implements IPropertyable, Serializable,ITe
 	 * 
 	 * @see org.jajuk.base.Propertyable#getProperty(java.lang.String)
 	 */
-	public String getValue(String sKey) {
+	public Object getValue(String sKey) {
 		if ( sKey == null ){
 			return null;
 		}
 		//get property singleton
         LinkedHashMap properties = getProperties();
-		//must be a property
 		if ( !properties.containsKey(sKey)){ //no more? return null
 			return null;
 		}
-		return (String) properties.get(sKey); //return property value
+		return properties.get(sKey); //return property value
 	}
+    
+    
+    public int getIntValue(String sKey){
+        Integer i = (Integer)getValue(sKey);
+        //property not defined, look for a default
+        if (i == null){
+            PropertyMetaInformation meta = getMeta(sKey);
+            if (meta.getType().equals(Integer.class) && meta.getDefaultValue() != null){
+                //OK, return default
+                return Integer.parseInt(meta.getDefaultValue());
+            }
+            else{//no default? return 0
+                return 0;
+            }
+        }
+        return i;
+    }
+    
+    public long getLongValue(String sKey){
+        Long l = (Long)getValue(sKey);
+        //property not defined, look for a default
+        if (l == null){
+            PropertyMetaInformation meta = getMeta(sKey);
+            if (meta.getType().equals(Long.class) && meta.getDefaultValue() != null){
+                //OK, return default
+                return Long.parseLong(meta.getDefaultValue());
+            }
+            else{//no default? return 0
+                return 0l;
+            }
+        }
+        return l;
+    }
+    
+    public float getFloatValue(String sKey){
+        Float f = (Float)getValue(sKey);
+        //property not defined, look for a default
+        if (f == null){
+            PropertyMetaInformation meta = getMeta(sKey);
+            if (meta.getType().equals(Float.class) && meta.getDefaultValue() != null){
+                //OK, return default
+                return Float.parseFloat(meta.getDefaultValue());
+            }
+            else{//no default? return 0
+                return 0f;
+            }
+        }
+        return f;
+    
+    }
+    
+    public double getDoubleValue(String sKey){
+        Double d = (Double)getValue(sKey);
+        //property not defined, look for a default
+        if (d == null){
+            PropertyMetaInformation meta = getMeta(sKey);
+            if (meta.getType().equals(Double.class) && meta.getDefaultValue() != null){
+                //OK, return default
+                return Double.parseDouble(meta.getDefaultValue());
+            }
+            else{//no default? return 0
+                return 0d;
+            }
+        }
+        return d;
+    
+    }
+    
+    public String getStringValue(String sKey){
+        Object o = getValue(sKey);
+        if (o == null){
+            return "";
+        }
+        return o.toString();
+    }
+    
+    public boolean getBooleanValue(String sKey){
+        Boolean b = (Boolean)getValue(sKey);
+        //property not defined, look for a default
+        if (b == null){
+            PropertyMetaInformation meta = getMeta(sKey);
+            if (meta.getType().equals(Boolean.class) && meta.getDefaultValue() != null){
+                //OK, return default
+                return Boolean.parseBoolean(meta.getDefaultValue());
+            }
+            else{//no default? return false
+                return false;
+            }
+        }
+        return b;
+    }
+    
+    public Date getDateValue(String sKey){
+        return (Date)getValue(sKey);
+    }
 	  
     
     /*
@@ -131,7 +227,7 @@ abstract public class PropertyAdapter implements IPropertyable, Serializable,ITe
      * @see org.jajuk.base.IPropertyable#getAny()
      */
     public String getAny(){
-        return null;
+        return null; //default implementation
     }
 	
     /* (non-Javadoc)
@@ -253,8 +349,21 @@ abstract public class PropertyAdapter implements IPropertyable, Serializable,ITe
     public void populateProperties(Attributes attributes) {
         for (int i =0 ; i < attributes.getLength(); i++) {
             String sProperty = attributes.getQName(i);
-            if (properties.containsKey(sProperty)){
-                setProperty(sProperty, attributes.getValue(i));    
+            if (!properties.containsKey(sProperty)){
+                String sValue = attributes.getValue(i);
+                PropertyMetaInformation meta = getMeta(sProperty);
+                //parse boolean values
+                if (meta.getType().equals(Boolean.class)){
+                    if (sValue.equals("y") || sValue.equals(TRUE)){ //"y" and "n" is an old boolean attribute notation prior to 1.0
+                        setProperty(sProperty,true);
+                    }
+                    else{
+                        setProperty(sProperty,false);
+                    }
+                }
+                else{
+                    setProperty(sProperty, sValue);    
+                }
             }
         }
     }
@@ -298,16 +407,43 @@ abstract public class PropertyAdapter implements IPropertyable, Serializable,ITe
         setProperty(XML_NAME,name);
     }
 	
-    /* (non-Javadoc)
-     * @see org.jajuk.base.IPropertyable#isPropertyEditable()
-     */
-    abstract public boolean isPropertyEditable(String sProperty);
-	
+   
     /**
      * Default implementation for this method, simply return standard value
      */
     public String getHumanValue(String sKey){
-        return getValue(sKey);
+        return getStringValue(sKey);
+    }
+    
+    /**
+     * Get formated property if a format is given
+     * Implements for now:
+     * - date
+     * TODO: number(n), florat(n,m)
+     * @return formated result
+     */
+    public String getFormatedValue(String sKey){
+        String sOut = null;
+        Object o = getValue(sKey);
+        PropertyMetaInformation meta = getMeta(sKey);
+        if (meta.getFormat() != null){
+            if (meta.getType().equals(java.util.Date.class)){
+                SimpleDateFormat sdf = new SimpleDateFormat(meta.getFormat());
+                try{
+                    sOut = sdf.format((Date)o);
+                }
+                catch(Exception e){ //parsing error
+                    Log.error("137",e);
+                }
+            }
+        }
+        else{ //no format defined
+            if (meta.getType().equals(java.util.Date.class)){//if date and no format defined, use default format for locale
+                DateFormat dateFormatter = DateFormat.getDateInstance(DateFormat.DEFAULT,Locale.getDefault());
+                sOut = dateFormatter.format((Date)o);
+            }
+        }
+        return sOut;
     }
     
     /**
@@ -317,7 +453,7 @@ abstract public class PropertyAdapter implements IPropertyable, Serializable,ITe
     public PropertyMetaInformation getMeta(String sProperty){
         return ItemManager.getItemManager(this.getClass()).getMetaInformation(sProperty);
     }
-    
+       
     /**
      * Clone all properties from a given properties list but not overwrite constructor properties
      * @param propertiesSource

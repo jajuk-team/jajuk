@@ -153,7 +153,22 @@ public abstract class ItemManager implements ITechnicalStrings{
         while (it.hasNext()){
             PropertyMetaInformation meta = (PropertyMetaInformation)it.next();
             if (meta.isCustom()){
-                col .add(meta);
+                col.add(meta);
+            }
+        }
+        return col;
+    }
+    
+     /**
+     * @return visible properties Meta informations
+     */
+    public Collection getVisibleProperties(){
+        ArrayList col = new ArrayList();
+        Iterator it = hmPropertiesMetaInformation.values().iterator();
+        while (it.hasNext()){
+            PropertyMetaInformation meta = (PropertyMetaInformation)it.next();
+            if (meta.isVisible()){
+                col.add(meta);
             }
         }
         return col;

@@ -41,7 +41,11 @@ public class PropertyMetaInformation implements ITechnicalStrings{
     /**Format like YYYYmmDD for a date for ie or number of digits for an Integer*/
     String sFormat;
     /**Default value (null: no default)*/
-    String  sDefaultValue;
+    String sDefaultValue;
+    /**This property should be displayed to UI?*/
+    boolean bShouldBeDisplayed = true;
+    /**Editable?*/
+    boolean bEditable = true;
     
     /**
      * @param sName
@@ -52,10 +56,13 @@ public class PropertyMetaInformation implements ITechnicalStrings{
      * @param oDefaultValue
      */
     public PropertyMetaInformation(String sName,boolean bCustom,boolean bConstructor,
-            Class cType,String sFormat,String sDefaultValue){
+            boolean bShouldBeDisplayed,boolean bEditable,Class cType,
+            String sFormat,String sDefaultValue){
         this.sName = sName;
         this.bCustom = bCustom;
         this.bConstructor = bConstructor;
+        this.bShouldBeDisplayed = bShouldBeDisplayed;
+        this.bEditable = bEditable;
         this.cType = cType;
         this.sFormat = sFormat;
         this.sDefaultValue = sDefaultValue;
@@ -69,8 +76,8 @@ public class PropertyMetaInformation implements ITechnicalStrings{
      * @param oDefaultValue
      */
     public PropertyMetaInformation(String sName,boolean bCustom,boolean bConstructor,
-            Class cType,String sDefaultValue){
-        this(sName,bCustom,bConstructor,cType,null,sDefaultValue);
+            boolean bShouldBeDisplayed,boolean bEditable,Class cType,String sDefaultValue){
+        this(sName,bCustom,bConstructor,bShouldBeDisplayed,bEditable,cType,null,sDefaultValue);
     }
 
     /**
@@ -80,8 +87,8 @@ public class PropertyMetaInformation implements ITechnicalStrings{
      * @param cType
      */
     public PropertyMetaInformation(String sName,boolean bCustom,boolean bConstructor,
-            Class cType){
-        this(sName,bCustom,bConstructor,cType,null);
+           boolean bShouldBeDisplayed,boolean bEditable,Class cType){
+        this(sName,bCustom,bConstructor,bShouldBeDisplayed,bEditable,cType,null);
     }
 
     /**
@@ -134,9 +141,10 @@ public class PropertyMetaInformation implements ITechnicalStrings{
         return "\t\t<"+XML_PROPERTY+" "+XML_NAME+"='"+sName+"' "+
             XML_CUSTOM+"='"+ bCustom+"' "+
             XML_CONSTRUCTOR+"='"+bConstructor+"' "+
+            XML_DISPLAY+"='"+bShouldBeDisplayed+"' "+
             XML_TYPE+"='"+cType.getName()+"' "+
             XML_FORMAT+"='"+sFormat+"' "+
-            XML_DEFAULT_VALUE+"='"+sFormat+"'/>";
+            XML_DEFAULT_VALUE+"='"+sDefaultValue+"'/>";
       
     }
 
@@ -150,6 +158,14 @@ public class PropertyMetaInformation implements ITechnicalStrings{
     
     public String toString(){
         return "Name="+sName+" Custom="+bCustom+" Constructor="+bConstructor+" Type="+cType+" Default="+sDefaultValue+" Format="+sFormat;
+    }
+
+    public boolean isVisible() {
+        return bShouldBeDisplayed;
+    }
+
+    public boolean isEditable() {
+        return bEditable;
     }
     
 }

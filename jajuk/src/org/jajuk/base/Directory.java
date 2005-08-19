@@ -230,7 +230,7 @@ public class Directory extends PropertyAdapter implements Comparable{
                 if (files[i].isDirectory()){ //if it is a directory, continue
                     continue;
                 }
-                boolean bIsMusic = Boolean.valueOf(TypeManager.getInstance().getTypeByExtension(Util.getExtension(files[i])).getValue(XML_TYPE_IS_MUSIC)).booleanValue();
+                boolean bIsMusic = (Boolean)TypeManager.getInstance().getTypeByExtension(Util.getExtension(files[i])).getValue(XML_TYPE_IS_MUSIC);
                 if (bIsMusic) {
                     //check the file is not already known in old database
                     org.jajuk.base.File fileRef = null;
@@ -380,41 +380,13 @@ public class Directory extends PropertyAdapter implements Comparable{
         }
         return Util.formatPropertyDesc(Messages.getString("Item_Directory")+" : "+sName);
     }
-  
- /* (non-Javadoc)
-     * @see org.jajuk.base.IPropertyable#isPropertyEditable()
-     */
-    public boolean isPropertyEditable(String sProperty){
-        if (XML_ID.equals(sProperty)){
-            return false;
-        }
-        else if (XML_NAME.equals(sProperty) ){
-            return (getParentDirectory() != null); //name editable only for standard directories, not root
-         }
-        else if (XML_ALBUM.equals(sProperty)){
-            return true;
-        }
-        else if (XML_DIRECTORY_PARENT.equals(sProperty)){
-            return false;
-        }
-        else if (XML_EXPANDED.equals(sProperty)){
-            return false;
-        }
-        else if (XML_DEVICE.equals(sProperty)){
-            return false;
-        }
-        else{
-            return true;
-        }
-    }
-    
     
     /* (non-Javadoc)
      * @see org.jajuk.base.IPropertyable#getHumanValue(java.lang.String)
      */
     public String getHumanValue(String sKey){
         if (XML_DIRECTORY_PARENT.equals(sKey)){
-            Directory dParent = (Directory)DirectoryManager.getInstance().getItem(getValue(sKey)); 
+            Directory dParent = (Directory)DirectoryManager.getInstance().getItem((String)getValue(sKey)); 
             if (dParent == null){
               return ""; //no parent directory          
             }
@@ -423,7 +395,7 @@ public class Directory extends PropertyAdapter implements Comparable{
             }
         }
         else if (XML_DEVICE.equals(sKey)){
-            return ((Device)DeviceManager.getInstance().getItem(getValue(sKey))).getName();
+            return ((Device)DeviceManager.getInstance().getItem((String)getValue(sKey))).getName();
         }
         if (XML_NAME.equals(sKey)){
             if (dParent == null){ //if no parent, take device name
@@ -434,7 +406,7 @@ public class Directory extends PropertyAdapter implements Comparable{
             }
         }
         else{//default
-            return getValue(sKey);
+            return getValue(sKey).toString();
         }
     }
     

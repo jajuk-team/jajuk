@@ -28,6 +28,7 @@ import java.util.regex.PatternSyntaxException;
 
 import org.jajuk.base.IPropertyable;
 import org.jajuk.base.ObservationManager;
+import org.jajuk.base.PropertyMetaInformation;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.i18n.Messages;
@@ -84,10 +85,10 @@ public class TracksTableModel extends JajukTableModel{
         //custom properties now
         Iterator it = TrackManager.getInstance().getCustomProperties().iterator();
         while (it.hasNext()){
-            String sProperty = (String)it.next();
-            vColNames.add(sProperty);
-            vId.add(sProperty);
-        }
+            PropertyMetaInformation meta = (PropertyMetaInformation)it.next();
+            vColNames.add(meta.getName());
+            vId.add(meta.getName());
+        }   
     }
     
      /**
@@ -153,7 +154,7 @@ public class TracksTableModel extends JajukTableModel{
         bCellEditable = new boolean[iRowNum][iColNum];
         for (int iRow = 0;it.hasNext();iRow++){
             Track track = (Track)it.next();
-            LinkedHashMap smProperties = track.getProperties();
+            LinkedHashMap properties = track.getProperties();
             //Id
             oItems[iRow] = track;
             //Track name
@@ -189,10 +190,10 @@ public class TracksTableModel extends JajukTableModel{
             //Custom properties now
             Iterator it2 = TrackManager.getInstance().getCustomProperties().iterator();
             for (int i=0;it2.hasNext();i++){
-                String sProperty = (String)it2.next();
-               oValues[iRow][iNumberStandardRows+i] = smProperties.get(sProperty);
+                PropertyMetaInformation meta = (PropertyMetaInformation)it2.next();
+                oValues[iRow][iNumberStandardRows+i] = properties.get(meta.getName());
                 bCellEditable[iRow][iNumberStandardRows+i] = true;
-            }
+            }   
         }
     }
 

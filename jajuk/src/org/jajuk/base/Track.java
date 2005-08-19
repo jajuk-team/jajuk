@@ -19,9 +19,11 @@
  */
 package org.jajuk.base;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.Locale;
 
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
@@ -417,79 +419,26 @@ public class Track extends PropertyAdapter implements Comparable{
         return Util.formatPropertyDesc(Messages.getString("Item_Track")+" : "+getName());
     }
 
-    /* (non-Javadoc)
-     * @see org.jajuk.base.IPropertyable#isPropertyEditable()
-     */
-    public boolean isPropertyEditable(String sProperty){
-        if (XML_ID.equals(sProperty)){
-            return false;
-        }
-        else if (XML_NAME.equals(sProperty)){
-            return true;
-        }
-        else if (XML_ALBUM.equals(sProperty)){
-            return true;
-        }
-        else if (XML_STYLE.equals(sProperty)){
-            return true;
-        }
-        else if (XML_AUTHOR.equals(sProperty)){
-            return true;
-        }
-        else if (XML_TRACK_LENGTH.equals(sProperty)){
-            return false;
-        }
-        else if (XML_TYPE.equals(sProperty)){
-            return false;
-        }
-        else if (XML_TRACK_YEAR.equals(sProperty)){
-            return true;
-        }
-        else if (XML_TRACK_RATE.equals(sProperty)){
-            return true;
-        }
-        else if (XML_FILES.equals(sProperty)){
-            return false;
-        }
-        else if (XML_TRACK_HITS.equals(sProperty)){
-            return false;
-        }
-        else if (XML_EXPANDED.equals(sProperty)){
-            return false;
-        }
-        else if (XML_TRACK_ADDED.equals(sProperty)){
-            return false;
-        }
-        else if (XML_TRACK_COMMENT.equals(sProperty)){
-            return true;
-        }
-        else if (XML_TRACK_ORDER.equals(sProperty)){
-            return true;
-        }
-        else{
-            return true;
-        }
-    }
-    
+   
     
 /* (non-Javadoc)
      * @see org.jajuk.base.IPropertyable#getHumanValue(java.lang.String)
      */
     public String getHumanValue(String sKey){
         if (XML_ALBUM.equals(sKey)){
-            return ((Album)AlbumManager.getInstance().getItem(getValue(sKey))).getName2();
+            return ((Album)AlbumManager.getInstance().getItem(getStringValue(sKey))).getName2();
         }
         else if (XML_AUTHOR.equals(sKey)){
-            return ((Author)AuthorManager.getInstance().getItem(getValue(sKey))).getName2();
+            return ((Author)AuthorManager.getInstance().getItem(getStringValue(sKey))).getName2();
         }
         else if (XML_STYLE.equals(sKey)){
-            return ((Style)StyleManager.getInstance().getItem(getValue(sKey))).getName2();
+            return ((Style)StyleManager.getInstance().getItem(getStringValue(sKey))).getName2();
         }
         else if (XML_TRACK_LENGTH.equals(sKey)){
             return Util.formatTimeBySec(length,false);
         }
         else if (XML_TYPE.equals(sKey)){
-            return ((Type)TypeManager.getInstance().getItem(getValue(sKey))).getName();
+            return ((Type)TypeManager.getInstance().getItem(getStringValue(sKey))).getName();
         }
         else if (XML_TRACK_YEAR.equals(sKey)){
             return Integer.toString(iYear);
@@ -504,13 +453,14 @@ public class Track extends PropertyAdapter implements Comparable{
             return sbOut.substring(0,sbOut.length()-1); //remove last ','
         }
         else if (XML_TRACK_ADDED.equals(sKey)){
-            return Util.getAdditionDateFormat().format(dAdditionDate);
+            DateFormat dateFormatter = DateFormat.getDateInstance(DateFormat.DEFAULT,Locale.getDefault());
+            return dateFormatter.format(dAdditionDate);
         }
         else if (XML_ANY.equals(sKey)){
             return getAny();
         }
         else{//default
-            return getValue(sKey);
+            return getStringValue(sKey);
         }
     }
     

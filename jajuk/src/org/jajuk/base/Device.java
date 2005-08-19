@@ -322,7 +322,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	        iNbDeletedFiles = 0;
 	        lVolume = 0;
 	        //check this device is synchronized
-	        String sIdSrc = getValue(DEVICE_OPTION_SYNCHRO_SOURCE); 
+	        String sIdSrc = (String)getValue(XML_DEVICE_SYNCHRO_SOURCE); 
 	        if ( sIdSrc == null || sIdSrc.equals(getId())){  //cannot synchro with itself
 	            return;
 	        }
@@ -340,7 +340,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	            refresh(false); //refresh this device if needed
 	        }
 	        //if it is bidirectional, make an additional sync from this device to the source one
-	        if ( DEVICE_OPTION_SYNCHRO_MODE_BI.equals(getValue(DEVICE_OPTION_SYNCHRO_MODE))){
+	        if ( DEVICE_SYNCHRO_MODE_BI.equals(getValue(XML_DEVICE_SYNCHRO_MODE))){
 	            iNbCreatedFilesSrc = synchronizeUnidirectonal(this,dSrc);
 	            if ( iNbCreatedFilesSrc > 0){
 	                dSrc.refresh(false);  //refresh source device if needed
@@ -379,11 +379,11 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 		while ( it.hasNext()){
 			Directory dir = (Directory)it.next();
 			if ( dir.getDevice().equals(dSrc)){
-				if (  "n".equals(dir.getValue(DIRECTORY_OPTION_SYNCHRO_MODE))){  //don't take desynchronized dirs into account //$NON-NLS-1$
-					hsDesynchroPaths.add(dir.getRelativePath());
-				}
+				if ( dir.getBooleanValue(XML_DIRECTORY_SYNCHRONIZED)){  //don't take desynchronized dirs into account //$NON-NLS-1$
+					hsSourceDirs.add(dir);
+                }
 				else{
-					hsSourceDirs.add(dir);	
+					hsDesynchroPaths.add(dir.getRelativePath());	
 				}
 			}
 		}
@@ -392,11 +392,11 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 		while ( it.hasNext()){
 			Directory dir = (Directory)it.next();
 			if ( dir.getDevice().equals(dest)){
-				if (  "n".equals(dir.getValue(DIRECTORY_OPTION_SYNCHRO_MODE))){  //don't take desynchronized dirs into account //$NON-NLS-1$
-					hsDesynchroPaths.add(dir.getRelativePath());
-				}
-				else{
+				if ( dir.getBooleanValue(XML_DIRECTORY_SYNCHRONIZED)){  //don't take desynchronized dirs into account //$NON-NLS-1$
 					hsDestDirs.add(dir);
+                }
+				else{
+					hsDesynchroPaths.add(dir.getRelativePath());
 				}
 			}
 		}
@@ -779,51 +779,17 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
     public String getDesc(){
         return Util.formatPropertyDesc(Messages.getString("Item_Device")+" : "+getName());
     }
-    
-/* (non-Javadoc)
-     * @see org.jajuk.base.IPropertyable#isPropertyEditable()
-     */
-    public boolean isPropertyEditable(String sProperty){
-        if (XML_ID.equals(sProperty)){
-            return false;
-        }
-        else if (XML_NAME.equals(sProperty)){
-            return false;
-        }
-        else if (XML_TYPE.equals(sProperty)){
-            return false;
-        }
-        else if (XML_URL.equals(sProperty)){
-            return false;
-        }
-        else if (XML_DEVICE_MOUNT_POINT.equals(sProperty)){
-            return false;
-        }
-        else if (XML_DEVICE_AUTO_REFRESH.equals(sProperty)){
-            return false;
-        }
-        else if (XML_DEVICE_AUTO_MOUNT.equals(sProperty)){
-            return false;
-        }
-        else if (XML_EXPANDED.equals(sProperty)){
-            return false;
-        }
-         else{
-            return true;
-        }
-    }    
-    
    
     /* (non-Javadoc)
      * @see org.jajuk.base.IPropertyable#getHumanValue(java.lang.String)
      */
     public String getHumanValue(String sKey){
         if (XML_TYPE.equals(sKey)){
-            int iType = Integer.parseInt(getValue(sKey));
+            int iType = (Integer)getValue(sKey);
             return DeviceManager.getInstance().getDeviceType(iType);
         }
         else{//default
-            return getValue(sKey);
+            return getStringValue(sKey);
         }
     }
 

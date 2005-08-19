@@ -366,36 +366,36 @@ public class Main implements ITechnicalStrings {
 		try { 
 			//mp3
 			Type type = TypeManager.getInstance().registerType(Messages.getString("Type.mp3"), EXT_MP3, Class.forName(PLAYER_IMPL_JAVALAYER), Class.forName(TAG_IMPL_ENTAGGED)); //$NON-NLS-1$ //$NON-NLS-2$
-			type.setProperty(XML_TYPE_IS_MUSIC,TRUE); //$NON-NLS-1$
-			type.setProperty(XML_TYPE_SEEK_SUPPORTED,TRUE); //$NON-NLS-1$
+			type.setProperty(XML_TYPE_IS_MUSIC,true); //$NON-NLS-1$
+			type.setProperty(XML_TYPE_SEEK_SUPPORTED,true); //$NON-NLS-1$
 			type.setProperty(XML_TYPE_TECH_DESC,TYPE_PROPERTY_TECH_DESC_MP3);
             type.setProperty(XML_TYPE_ICON,ICON_TYPE_MP3);
             //playlists
 			type = TypeManager.getInstance().registerType(Messages.getString("Type.playlist"), EXT_PLAYLIST, Class.forName(PLAYER_IMPL_JAVALAYER), null); //$NON-NLS-1$ //$NON-NLS-2$
-			type.setProperty(XML_TYPE_IS_MUSIC,FALSE); //$NON-NLS-1$
-			type.setProperty(XML_TYPE_SEEK_SUPPORTED,FALSE); //$NON-NLS-1$
+			type.setProperty(XML_TYPE_IS_MUSIC,false); //$NON-NLS-1$
+			type.setProperty(XML_TYPE_SEEK_SUPPORTED,false); //$NON-NLS-1$
             //Ogg vorbis
 			type = TypeManager.getInstance().registerType(Messages.getString("Type.ogg"), EXT_OGG, Class.forName(PLAYER_IMPL_JAVALAYER), Class.forName(TAG_IMPL_ENTAGGED)); //$NON-NLS-1$ //$NON-NLS-2$
-			type.setProperty(XML_TYPE_IS_MUSIC,TRUE); //$NON-NLS-1$
-			type.setProperty(XML_TYPE_SEEK_SUPPORTED,FALSE); //$NON-NLS-1$
+			type.setProperty(XML_TYPE_IS_MUSIC,true); //$NON-NLS-1$
+			type.setProperty(XML_TYPE_SEEK_SUPPORTED,false); //$NON-NLS-1$
 			type.setProperty(XML_TYPE_TECH_DESC,TYPE_PROPERTY_TECH_DESC_OGG);
             type.setProperty(XML_TYPE_ICON,ICON_TYPE_OGG);
             //Wave
 			type = TypeManager.getInstance().registerType(Messages.getString("Type.wav"), EXT_WAV, Class.forName(PLAYER_IMPL_JAVALAYER), Class.forName(TAG_IMPL_NO_TAGS)); //$NON-NLS-1$ //$NON-NLS-2$
-			type.setProperty(XML_TYPE_IS_MUSIC,TRUE); //$NON-NLS-1$
-			type.setProperty(XML_TYPE_SEEK_SUPPORTED,TRUE); //$NON-NLS-1$
+			type.setProperty(XML_TYPE_IS_MUSIC,true); //$NON-NLS-1$
+			type.setProperty(XML_TYPE_SEEK_SUPPORTED,true); //$NON-NLS-1$
 			type.setProperty(XML_TYPE_TECH_DESC,TYPE_PROPERTY_TECH_DESC_WAVE);
             type.setProperty(XML_TYPE_ICON,ICON_TYPE_WAV);
             //au
 			type = TypeManager.getInstance().registerType(Messages.getString("Type.au"), EXT_AU, Class.forName(PLAYER_IMPL_JAVALAYER), Class.forName(TAG_IMPL_NO_TAGS)); //$NON-NLS-1$ //$NON-NLS-2$
-			type.setProperty(XML_TYPE_IS_MUSIC,TRUE); //$NON-NLS-1$
-			type.setProperty(XML_TYPE_SEEK_SUPPORTED,FALSE); //$NON-NLS-1$
+			type.setProperty(XML_TYPE_IS_MUSIC,true); //$NON-NLS-1$
+			type.setProperty(XML_TYPE_SEEK_SUPPORTED,false); //$NON-NLS-1$
 			type.setProperty(XML_TYPE_TECH_DESC,TYPE_PROPERTY_TECH_DESC_AU);
             type.setProperty(XML_TYPE_ICON,ICON_TYPE_AU);
             //aiff
 			type = TypeManager.getInstance().registerType(Messages.getString("Type.aiff"), EXT_AIFF, Class.forName(PLAYER_IMPL_JAVALAYER), Class.forName(TAG_IMPL_NO_TAGS)); //$NON-NLS-1$ //$NON-NLS-2$
-			type.setProperty(XML_TYPE_IS_MUSIC,TRUE); //$NON-NLS-1$
-			type.setProperty(XML_TYPE_SEEK_SUPPORTED,FALSE); //$NON-NLS-1$
+			type.setProperty(XML_TYPE_IS_MUSIC,true); //$NON-NLS-1$
+			type.setProperty(XML_TYPE_SEEK_SUPPORTED,false); //$NON-NLS-1$
 			type.setProperty(XML_TYPE_TECH_DESC,TYPE_PROPERTY_TECH_DESC_AIFF);
             type.setProperty(XML_TYPE_ICON,ICON_TYPE_AIFF);
      	} catch (Exception e1) {
@@ -617,7 +617,7 @@ public class Main implements ITechnicalStrings {
 		Iterator it = DeviceManager.getInstance().getItems().iterator();
 		while (it.hasNext()){
 			Device device = (Device)it.next();
-			if (TRUE.equals(device.getValue(DEVICE_OPTION_AUTO_MOUNT))){
+			if (device.getBooleanValue(XML_DEVICE_AUTO_MOUNT)){
 				try{
 					device.mount();
 				}
@@ -640,7 +640,7 @@ public class Main implements ITechnicalStrings {
 		Iterator it = DeviceManager.getInstance().getItems().iterator();
 		while (it.hasNext()){
 			Device device = (Device)it.next();
-			if (TRUE.equals(device.getValue(DEVICE_OPTION_AUTO_REFRESH)) && device.isMounted()){
+			if (device.getBooleanValue(XML_DEVICE_AUTO_REFRESH) && device.isMounted()){
 			    device.refresh(true);
 			}
 		}

@@ -38,9 +38,9 @@ public class PlaylistManager extends ItemManager{
 		super();
         //---register properties---
         //ID
-        registerProperty(new PropertyMetaInformation(XML_ID,false,true,String.class));
+        registerProperty(new PropertyMetaInformation(XML_ID,false,true,false,false,String.class));
         //Playlist file
-        registerProperty(new PropertyMetaInformation(XML_PLAYLIST_FILES,false,true,String.class));
+        registerProperty(new PropertyMetaInformation(XML_PLAYLIST_FILES,false,true,true,false,String.class));
    }
 
     /**

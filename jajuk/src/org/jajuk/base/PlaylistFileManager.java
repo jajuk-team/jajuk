@@ -41,13 +41,13 @@ public class PlaylistFileManager extends ItemManager implements Observer{
 		super();
           //---register properties---
         //ID
-        registerProperty(new PropertyMetaInformation(XML_ID,false,true,String.class));
+        registerProperty(new PropertyMetaInformation(XML_ID,false,true,false,false,String.class));
         //Name
-        registerProperty(new PropertyMetaInformation(XML_NAME,false,true,String.class));
+        registerProperty(new PropertyMetaInformation(XML_NAME,false,true,true,true,String.class));
         //Hashcode
-        registerProperty(new PropertyMetaInformation(XML_HASHCODE,false,true,String.class));
+        registerProperty(new PropertyMetaInformation(XML_HASHCODE,false,true,false,false,String.class));
         //Directory
-        registerProperty(new PropertyMetaInformation(XML_DIRECTORY,false,true,String.class));
+        registerProperty(new PropertyMetaInformation(XML_DIRECTORY,false,true,true,false,String.class));
    }
 
     /**

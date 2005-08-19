@@ -287,43 +287,13 @@ public class File extends PropertyAdapter implements Comparable,ITechnicalString
     public String getDesc(){
         return Util.formatPropertyDesc(Messages.getString("Item_File")+" : "+getName());
     }
-    
-/* (non-Javadoc)
-     * @see org.jajuk.base.IPropertyable#isPropertyEditable()
-     */
-    public boolean isPropertyEditable(String sProperty){
-        if (XML_ID.equals(sProperty)){
-            return false;
-        }
-        else if (XML_NAME.equals(sProperty)){
-            return true;
-        }
-        else if (XML_DIRECTORY.equals(sProperty)){
-            return false;
-        }
-        else if (XML_TRACK.equals(sProperty)){
-            return false;
-        }
-        else if (XML_SIZE.equals(sProperty)){
-            return false;
-        }
-        else if (XML_QUALITY.equals(sProperty)){
-            return false;
-        }
-        else if (XML_EXPANDED.equals(sProperty)){
-            return false;
-        }
-         else{
-            return true;
-        }
-    }  
-    
+      
 /* (non-Javadoc)
      * @see org.jajuk.base.IPropertyable#getHumanValue(java.lang.String)
      */
     public String getHumanValue(String sKey){
         if (XML_DIRECTORY.equals(sKey)){
-            Directory dParent = (Directory)DirectoryManager.getInstance().getItem(getValue(sKey)); 
+            Directory dParent = (Directory)DirectoryManager.getInstance().getItem(getStringValue(sKey)); 
             return dParent.getFio().getAbsolutePath();
         }
         else if (XML_TRACK.equals(sKey)){
@@ -357,7 +327,7 @@ public class File extends PropertyAdapter implements Comparable,ITechnicalString
             return getAny();
         }
         else{//default
-            return getValue(sKey);
+            return getStringValue(sKey);
         }
     }
     

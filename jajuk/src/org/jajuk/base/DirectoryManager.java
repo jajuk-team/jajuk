@@ -42,15 +42,17 @@ public class DirectoryManager extends ItemManager implements Observer{
 		super();
          //---register properties---
         //ID
-        registerProperty(new PropertyMetaInformation(XML_ID,false,true,String.class));
-        //Name
-        registerProperty(new PropertyMetaInformation(XML_NAME,false,true,String.class));
+        registerProperty(new PropertyMetaInformation(XML_ID,false,true,false,false,String.class));
+        //Name test with (getParentDirectory() != null); //name editable only for standard directories, not root
+        registerProperty(new PropertyMetaInformation(XML_NAME,false,true,true,true,String.class));
         //Parent
-        registerProperty(new PropertyMetaInformation(XML_DIRECTORY_PARENT,false,true,String.class));
+        registerProperty(new PropertyMetaInformation(XML_DIRECTORY_PARENT,false,true,true,false,String.class));
         //Device
-        registerProperty(new PropertyMetaInformation(XML_DEVICE,false,true,String.class));
+        registerProperty(new PropertyMetaInformation(XML_DEVICE,false,true,true,false,String.class));
         //Expand
-        registerProperty(new PropertyMetaInformation(XML_EXPANDED,false,false,Boolean.class,null,"false"));
+        registerProperty(new PropertyMetaInformation(XML_EXPANDED,false,false,false,false,Boolean.class,null,"false"));
+        //Synchonized directory
+        registerProperty(new PropertyMetaInformation(XML_DIRECTORY_SYNCHRONIZED,false,false,true,false,Boolean.class,null,"true"));
         //---Subscriptions---
         ObservationManager.register(EVENT_FILE_NAME_CHANGED,this);
 	}

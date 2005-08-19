@@ -358,7 +358,7 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
                 return;
             }
             //remove options for non synchronized devices
-            if (diSelected.getDevice().containsProperty(DEVICE_OPTION_SYNCHRO_SOURCE)){
+            if (diSelected.getDevice().containsProperty(XML_DEVICE_SYNCHRO_SOURCE)){
                 jbSynchro.setEnabled(true);
                 jmiSynchronize.setEnabled(true);
             }

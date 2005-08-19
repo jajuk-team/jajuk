@@ -38,7 +38,6 @@ import org.jajuk.base.Track;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.JajukTableModel;
 import org.jajuk.ui.PropertiesWizard;
-import org.jajuk.ui.SetPropertyWizard;
 import org.jajuk.ui.TracksTableModel;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Util;
@@ -100,8 +99,6 @@ public class LogicalTableView extends AbstractTableView implements Observer{
         jmiTrackPlayAlbum.addActionListener(this);
         jmiTrackPlayAuthor = new JMenuItem(Messages.getString("LogicalTableView.12")); //$NON-NLS-1$
         jmiTrackPlayAuthor.addActionListener(this);
-        jmiSetProperty = new JMenuItem(Messages.getString("LogicalTableView.13")); //$NON-NLS-1$
-        jmiSetProperty.addActionListener(this);
         jmiProperties = new JMenuItem(Messages.getString("LogicalTableView.14")); //$NON-NLS-1$
         jmiProperties.addActionListener(this);
         jmenuTrack.add(jmiTrackPlay);
@@ -110,7 +107,6 @@ public class LogicalTableView extends AbstractTableView implements Observer{
         jmenuTrack.add(jmiTrackPlayRepeat);
         jmenuTrack.add(jmiTrackPlayAlbum);
         jmenuTrack.add(jmiTrackPlayAuthor);
-        jmenuTrack.add(jmiSetProperty);
         jmenuTrack.add(jmiProperties);
     }
     
@@ -261,10 +257,6 @@ public class LogicalTableView extends AbstractTableView implements Observer{
                     Track track = (Track)model.getItemAt(
                         jtable.convertRowIndexToModel(jtable.getSelectedRow()));
                     new PropertiesWizard(track);
-                }
-                //set a property
-                 else if (e.getSource() == jmiSetProperty){
-                     new SetPropertyWizard(alSelectedTracks);
                 }
             }
         }.start();

@@ -173,24 +173,5 @@ public class Playlist extends PropertyAdapter implements Comparable{
     public String getDesc(){
         return Util.formatPropertyDesc(Messages.getString("Item_Playlist")+" : "+getName());
     }
-    
-/* (non-Javadoc)
-     * @see org.jajuk.base.IPropertyable#isPropertyEditable()
-     */
-    public boolean isPropertyEditable(String sProperty){
-        if (XML_ID.equals(sProperty)){
-            return false;
-        }
-        else if (XML_PLAYLIST_FILES.equals(sProperty)){
-            return false;
-        }
-        else if (XML_EXPANDED.equals(sProperty)){
-            return false;
-        }
-         else{
-            return true;
-        }
-    }    
-
-   
+       
 }

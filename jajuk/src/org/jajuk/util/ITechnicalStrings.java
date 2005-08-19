@@ -210,7 +210,6 @@ public interface ITechnicalStrings {
 	public static final String FILE_CONFIGURATION = System.getProperty("user.home")+"/.jajuk/conf.properties";
 	public static final String FILE_HISTORY = System.getProperty("user.home")+"/.jajuk/history.xml";
 	public static final String FILE_LOCK = System.getProperty("user.home")+"/.jajuk/.lock";
-	public static final String FILE_ABOUT = "about.html";
 	public static final String FILE_DEFAULT_COVER = "cover";
 	public static final String FILE_DEFAULT_COVER_2 = "front";
 	public static final String FILE_ABSOLUTE_DEFAULT_COVER = "jajuk-default-cover.";
@@ -248,21 +247,12 @@ public interface ITechnicalStrings {
 	public static final String TYPE_PROPERTY_TECH_DESC_SPEEX = "speex"; 
     public static final String TYPE_PROPERTY_TECH_DESC_FLAC = "flac"; 
     	
-	//Devices properties
-	public static final String DEVICE_OPTION_MOUNT_POINT = "mount_point";
-	public static final String DEVICE_OPTION_AUTO_REFRESH = "auto_refresh";
-    public static final String DEVICE_OPTION_AUTO_MOUNT = "auto_mount";
-	public static final String DEVICE_OPTION_SYNCHRO_SOURCE = "synchro_source";
-	public static final String DEVICE_OPTION_SYNCHRO_MODE = "synchro_mode";
-	public static final String DEVICE_OPTION_SYNCHRO_MODE_BI = "bi";
-	public static final String DEVICE_OPTION_SYNCHRO_MODE_UNI = "uni";
-	public static final String DEVICE_OPTION_SYNCHRO_OPT1 = "opt1";
-	
-	//Directories properties
-	public static final String DIRECTORY_OPTION_SYNCHRO_MODE = "sync";  //can be 'y' or 'n'
-	public static final String OPTION_PLAYLIST = "plf";  //associated playlist file
-		
-	//perspectives
+	//Devices sync mode
+    public static final String DEVICE_SYNCHRO_MODE_BI = "bi";
+    public static final String DEVICE_SYNCHRO_MODE_UNI = "uni";
+  
+    
+    //perspectives
 	public static final String PERSPECTIVE_NAME_PHYSICAL = "org.jajuk.ui.perspectives.PhysicalPerspective";
 	public static final String PERSPECTIVE_NAME_LOGICAL = "org.jajuk.ui.perspectives.LogicalPerspective";
 	public static final String PERSPECTIVE_NAME_CONFIGURATION = "org.jajuk.ui.perspectives.ConfigurationPerspective";
@@ -415,7 +405,9 @@ public interface ITechnicalStrings {
 	public static final String CONF_CONFIRMATIONS_EXIT = "jajuk.confirmations.exit";
 	public static final String CONF_CONFIRMATIONS_REMOVE_DEVICE = "jajuk.confirmations.remove_device";
 	public static final String CONF_CONFIRMATIONS_DELETE_COVER = "jajuk.confirmations.delete_cover";
-	public static final String CONF_OPTIONS_HIDE_UNMOUNTED = "jajuk.options.hide_unmounted";
+	public static final String CONF_CONFIRMATIONS_CLEAR_HISTORY = "jajuk.confirmations.clear_history";
+    public static final String CONF_CONFIRMATIONS_RESET_RATINGS = "jajuk.confirmations.reset_ratings";
+    public static final String CONF_OPTIONS_HIDE_UNMOUNTED = "jajuk.options.hide_unmounted";
 	public static final String CONF_OPTIONS_RESTART = "jajuk.options.restart";
 	public static final String CONF_OPTIONS_LOG_LEVEL = "jajuk.options.log_level";
 	public static final String CONF_OPTIONS_LANGUAGE = "jajuk.options.language";
@@ -533,8 +525,11 @@ public interface ITechnicalStrings {
     public static final String XML_DEVICE_MOUNT_POINT = "mount_point";
     public static final String XML_DEVICE_AUTO_REFRESH = "auto_refresh";
     public static final String XML_DEVICE_AUTO_MOUNT = "auto_mount";
+    public static final String XML_DEVICE_SYNCHRO_SOURCE = "synchro_source";
+    public static final String XML_DEVICE_SYNCHRO_MODE = "synchro_mode";
     public static final String XML_EXPANDED = "exp";  //can be 'y' or 'n'
     public static final String XML_DIRECTORY_PARENT = "parent";
+    public static final String XML_DIRECTORY_SYNCHRONIZED = "sync"; 
     public static final String XML_HASHCODE = "hashcode";
     public static final String XML_TYPE_EXTENSION = "extension";
 	public static final String XML_TYPE_PLAYER_IMPL = "player_impl";
@@ -548,17 +543,22 @@ public interface ITechnicalStrings {
     public static final String XML_ANY = "any"; //"any" criteria 
     public static final String XML_FORMAT = "format"; //custom property format 
     public static final String XML_CONSTRUCTOR = "constructor";  //constructor property flag
+    public static final String XML_DISPLAY = "display";  //property should be displayed?
+    public static final String XML_EDITABLE = "editable";  //property editable?
     public static final String XML_CUSTOM = "custom"; //custom property flag 
     public static final String XML_PROPERTY = "property"; //property 
     public static final String XML_DEFAULT_VALUE = "default_value"; //default value 
         
+    //Reserved XML tags for property names (note that a user can choose a property name equals to meta information attributes names without pbm)
     public static final String[] XML_RESERVED_ATTRIBUTE_NAMES = {
         XML_NAME,XML_ID,XML_TYPE_EXTENSION,XML_TYPE_PLAYER_IMPL,XML_TYPE_TAG_IMPL,
         XML_TYPE_TECH_DESC,XML_TYPE_SEEK_SUPPORTED,XML_TYPE_ICON,XML_TYPE_IS_MUSIC,
         XML_TYPE,XML_URL,XML_DEVICE_AUTO_MOUNT,XML_DEVICE_AUTO_REFRESH,XML_EXPANDED,XML_DEVICE_MOUNT_POINT,
         XML_ALBUM,XML_AUTHOR,XML_STYLE,XML_TRACK_LENGTH,XML_TRACK_YEAR,XML_TRACK_RATE,XML_FILES,XML_TRACK_HITS,XML_TRACK_ADDED,
         XML_DIRECTORY_PARENT,XML_DEVICE,XML_DIRECTORY,XML_TRACK,XML_SIZE,XML_QUALITY,
-        XML_HASHCODE,XML_PLAYLIST_FILES,XML_TRACK_COMMENT,XML_ANY,XML_TRACK_ORDER}; //contains variables names
+        XML_HASHCODE,XML_PLAYLIST_FILES,XML_TRACK_COMMENT,XML_ANY,XML_TRACK_ORDER,
+        XML_DEVICE_SYNCHRO_MODE,XML_DEVICE_SYNCHRO_SOURCE   
+    }; //contains variables names
 
     public static final String PROPERTY_SEPARATOR = "Property_";
     

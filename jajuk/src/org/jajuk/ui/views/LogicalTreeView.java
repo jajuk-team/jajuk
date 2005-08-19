@@ -66,7 +66,6 @@ import org.jajuk.base.TrackManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.PropertiesWizard;
-import org.jajuk.ui.SetPropertyWizard;
 import org.jajuk.ui.TransferableTreeNode;
 import org.jajuk.ui.TreeTransferHandler;
 import org.jajuk.util.ConfigurationManager;
@@ -87,17 +86,8 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
     /** Self instance */
     private static LogicalTreeView ltv;
     
-    /** Top tree node */
-    DefaultMutableTreeNode top;
-    
     /** Track selection*/
     ArrayList alTracks;
-    
-    /**Items selection*/
-    ArrayList alSelected;
-    
-    /** Current selection */
-    TreePath[] paths;
     
     JPopupMenu jmenuStyle;
     JMenuItem jmiStylePlay;
@@ -115,7 +105,6 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
     JMenuItem jmiAuthorPlayRepeat;
     JMenuItem jmiAuthorDelete;
     JMenuItem jmiAuthorProperties;
-    JMenuItem jmiAuthorSetProperties;
     
     JPopupMenu jmenuAlbum;
     JMenuItem jmiAlbumPlay;
@@ -124,14 +113,12 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
     JMenuItem jmiAlbumPlayRepeat;
     JMenuItem jmiAlbumDelete;
     JMenuItem jmiAlbumProperties;
-    JMenuItem jmiAlbumSetProperties;
     
     JPopupMenu jmenuTrack;
     JMenuItem jmiTrackPlay;
     JMenuItem jmiTrackPush;
     JMenuItem jmiTrackDelete;
     JMenuItem jmiTrackProperties;
-    JMenuItem jmiTrackSetProperties;
     
     
     /*
@@ -201,8 +188,6 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
         jmiAuthorDelete = new JMenuItem(Messages.getString("LogicalTreeView.12")); //$NON-NLS-1$
         jmiAuthorDelete.setEnabled(false);
         jmiAuthorDelete.addActionListener(this);
-        jmiAuthorSetProperties = new JMenuItem(Messages.getString("LogicalTreeView.25")); //$NON-NLS-1$
-        jmiAuthorSetProperties.addActionListener(this);
         jmiAuthorProperties = new JMenuItem(Messages.getString("LogicalTreeView.14")); //$NON-NLS-1$
         jmiAuthorProperties.addActionListener(this);
         jmenuAuthor.add(jmiAuthorPlay);
@@ -210,7 +195,6 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
         jmenuAuthor.add(jmiAuthorPlayShuffle);
         jmenuAuthor.add(jmiAuthorPlayRepeat);
         jmenuAuthor.add(jmiAuthorDelete);
-        jmenuAuthor.add(jmiAuthorSetProperties);
         jmenuAuthor.add(jmiAuthorProperties);
         
         //Album menu
@@ -226,8 +210,6 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
         jmiAlbumDelete = new JMenuItem(Messages.getString("LogicalTreeView.19")); //$NON-NLS-1$
         jmiAlbumDelete.setEnabled(false);
         jmiAlbumDelete.addActionListener(this);
-        jmiAlbumSetProperties = new JMenuItem(Messages.getString("LogicalTreeView.25")); //$NON-NLS-1$
-        jmiAlbumSetProperties.addActionListener(this);
         jmiAlbumProperties = new JMenuItem(Messages.getString("LogicalTreeView.21")); //$NON-NLS-1$
         jmiAlbumProperties.addActionListener(this);
         jmenuAlbum.add(jmiAlbumPlay);
@@ -235,7 +217,6 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
         jmenuAlbum.add(jmiAlbumPlayShuffle);
         jmenuAlbum.add(jmiAlbumPlayRepeat);
         jmenuAlbum.add(jmiAlbumDelete);
-        jmenuAlbum.add(jmiAlbumSetProperties);
         jmenuAlbum.add(jmiAlbumProperties);
         
         //Track menu
@@ -247,14 +228,11 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
         jmiTrackDelete = new JMenuItem(Messages.getString("LogicalTreeView.24")); //$NON-NLS-1$
         jmiTrackDelete.setEnabled(false);
         jmiTrackDelete.addActionListener(this);
-        jmiTrackSetProperties = new JMenuItem(Messages.getString("LogicalTreeView.25")); //$NON-NLS-1$
-        jmiTrackSetProperties.addActionListener(this);
         jmiTrackProperties = new JMenuItem(Messages.getString("LogicalTreeView.26")); //$NON-NLS-1$
         jmiTrackProperties.addActionListener(this);
         jmenuTrack.add(jmiTrackPlay);
         jmenuTrack.add(jmiTrackPush);
         jmenuTrack.add(jmiTrackDelete);
-        jmenuTrack.add(jmiTrackSetProperties);
         jmenuTrack.add(jmiTrackProperties);
         
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -466,15 +444,15 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
                 Object o = event.getPath().getLastPathComponent(); 
                 if (o instanceof StyleNode){
                     Style style = ((StyleNode)o).getStyle();
-                    style.setProperty(XML_EXPANDED,"y"); //$NON-NLS-1$
+                    style.setProperty(XML_EXPANDED,true); //$NON-NLS-1$
                 }
                 else if (o instanceof AuthorNode){
                     Author author = ((AuthorNode)o).getAuthor();
-                    author.setProperty(XML_EXPANDED,"y"); //$NON-NLS-1$
+                    author.setProperty(XML_EXPANDED,true); //$NON-NLS-1$
                 }
                 else if (o instanceof AlbumNode){
                     Album album = ((AlbumNode)o).getAlbum();
-                    album.setProperty(XML_EXPANDED,"y"); //$NON-NLS-1$
+                    album.setProperty(XML_EXPANDED,true); //$NON-NLS-1$
                 }
             }
         });
@@ -622,12 +600,6 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
                             || e.getSource() == jmiTrackDelete) ){
                         //TBI
                     }
-                    else if ( ( e.getSource() == jmiAlbumSetProperties
-                            || e.getSource() == jmiAuthorSetProperties
-                            || e.getSource() == jmiStyleSetProperties
-                            || e.getSource() == jmiTrackSetProperties) ){
-                        new SetPropertyWizard(alSelected);
-                    }
                 }
             }
         }.start();
@@ -687,22 +659,22 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
             Object o = jtree.getPathForRow(i).getLastPathComponent(); 
             if ( o instanceof StyleNode){
                 Style style = ((StyleNode)o).getStyle();
-                String sExp = style.getValue(XML_EXPANDED); 
-                if ( "y".equals(sExp)){ //$NON-NLS-1$
+                boolean bExp = style.getBooleanValue(XML_EXPANDED); 
+                if ( bExp){ //$NON-NLS-1$
                     jtree.expandRow(i);	
                 }
             }
             else if ( o instanceof AuthorNode){
                 Author author = ((AuthorNode)o).getAuthor();
-                String sExp = author.getValue(XML_EXPANDED); 
-                if ( "y".equals(sExp)){ //$NON-NLS-1$
+                boolean bExp = author.getBooleanValue(XML_EXPANDED); 
+                if (bExp){ //$NON-NLS-1$
                     jtree.expandRow(i);	
                 }
             }
             else if ( o instanceof AlbumNode){
                 Album album = ((AlbumNode)o).getAlbum();
-                String sExp = album.getValue(XML_EXPANDED); 
-                if ( "y".equals(sExp)){ //$NON-NLS-1$
+                boolean bExp = album.getBooleanValue(XML_EXPANDED); 
+                if (bExp){ //$NON-NLS-1$
                     jtree.expandRow(i);	
                 }
             }

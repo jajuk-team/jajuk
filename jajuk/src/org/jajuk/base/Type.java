@@ -119,41 +119,5 @@ public class Type extends PropertyAdapter{
         return Util.formatPropertyDesc(Messages.getString("Type")+" : "+getName());
     }
 
-/* (non-Javadoc)
-     * @see org.jajuk.base.IPropertyable#isPropertyEditable()
-     */
-    public boolean isPropertyEditable(String sProperty){
-        if (XML_ID.equals(sProperty)){
-            return false;
-        }
-        else if (XML_NAME.equals(sProperty)){
-            return false;
-        }
-        else if (XML_TYPE_EXTENSION.equals(sProperty)){
-            return false;
-        }
-        else if (XML_TYPE_PLAYER_IMPL.equals(sProperty)){
-            return false;
-        }
-        else if (XML_TYPE_TAG_IMPL.equals(sProperty)){
-            return false;
-        }
-        else if (XML_TYPE_ICON.equals(sProperty)){
-            return false;
-        }
-        else if (XML_TYPE_SEEK_SUPPORTED.equals(sProperty)){
-            return false;
-        }
-        else if (XML_TYPE_TECH_DESC.equals(sProperty)){
-            return false;
-        }
-        else if (XML_TYPE_IS_MUSIC.equals(sProperty)){
-            return false;
-        }
-        else{
-            return true;
-        }
-    }    
 
-    
 }

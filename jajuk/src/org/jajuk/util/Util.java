@@ -577,7 +577,7 @@ public class Util implements ITechnicalStrings {
 	 * @return whether the given filename is an absolute default cover
 	 */
 	public static boolean isAbsoluteDefaultCover(Directory directory,String sFilename){
-	    String sDefault = directory.getValue("default_cover"); //$NON-NLS-1$
+	    String sDefault = directory.getStringValue("default_cover"); //$NON-NLS-1$
 	    if (sDefault != null && sDefault.equals(sFilename)){
 	        return true;
 	    }

@@ -21,8 +21,8 @@
 package org.jajuk.ui;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.Properties;
 
 import javax.swing.table.AbstractTableModel;
@@ -32,8 +32,10 @@ import org.jajuk.base.Event;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.IPropertyable;
+import org.jajuk.base.ItemManager;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Observer;
+import org.jajuk.base.PropertyMetaInformation;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
@@ -61,9 +63,12 @@ public class PropertiesTableModel extends AbstractTableModel
     /**Item to display*/
     protected IPropertyable pa;
     
+    /**Items to display*/
+    protected Collection colItems;
+    
 	/**
-	 * Model constructor
-	 * @param iColNum number of rows
+	 * Model constructor for single item
+	 * @param pa item to show
 	 * @param bCellEditable cell editability
 	 * @param sColName columns names
 	 */
@@ -78,44 +83,26 @@ public class PropertiesTableModel extends AbstractTableModel
                 Messages.getString("PropertiesWizard.5"),//$NON-NLS-2$
                 Messages.getString("PropertiesWizard.4")};  //$NON-NLS-3$ 
         // Values
-        //set ignored attributes we won't display
-        ArrayList alIgnored = new ArrayList(10);
-        alIgnored.add(XML_ID);//ID
-        alIgnored.add(XML_EXPANDED);//expanded state
-        alIgnored.add(XML_HASHCODE);//hashcode
-        LinkedHashMap propertiesOrig = pa.getProperties();
-        ArrayList properties = new ArrayList(10); //properties after cleaning
-        //remove hiden attributes
-        Iterator it  = propertiesOrig.keySet().iterator();
-        int ignored = 0;
-        while (it.hasNext()){
-            String sProperty = (String)it.next();
-            if (!alIgnored.contains(sProperty)){
-                properties.add(sProperty);
-            }
-            else{
-                ignored ++;
-            }
-        }
-        iRowNum = propertiesOrig.size()-ignored;
-        it = properties.iterator();
+        Collection properties = ItemManager.getItemManager(pa.getClass()).getVisibleProperties();
+        iRowNum = properties.size();
+        Iterator it = properties.iterator();
         oValues = new Object[iRowNum][iColNum+2]; //two hidden columns for attribute name and ID element if any
         for (int i = 0; it.hasNext(); i++) { //we don't display first attribute (ID)
-            String sKey = (String) it.next();
-            if (pa.isPropertyEditable(sKey)){
+            PropertyMetaInformation meta = (PropertyMetaInformation) it.next();
+            if (meta.isEditable()){
                 oValues[i][0] = Util.getIcon(ICON_EDIT);    
             }
             else{
                 oValues[i][0] = Util.getIcon(ICON_NO_EDIT);
             }
-            oValues[i][1] = Messages.getInstance().contains("Property_"+sKey)?
-                    Messages.getString("Property_"+sKey):sKey; //check if property name is translated (for custom properties)
-            oValues[i][2] = pa.getHumanValue(sKey);
-            oValues[i][3] = new Boolean(false); //all album option
-            oValues[i][5] = sKey;
-            oValues[i][6] = pa.getValue(sKey); //attribute ID or value
-               //link 
-            if (isLinkable(i))      {
+            oValues[i][1] = Messages.getInstance().contains("Property_"+meta.getName())?
+                    Messages.getString("Property_"+meta.getName()):meta.getName(); //check if property name is translated (for custom properties)
+            oValues[i][2] = pa.getHumanValue(meta.getName());
+            oValues[i][3] = false; //all album option
+            oValues[i][5] = meta.getName();
+            oValues[i][6] = pa.getValue(meta.getName()); //attribute ID or value
+            //link 
+            if (isLinkable(i)){
                 oValues[i][4] = Util.getIcon(ICON_PROPERTIES);
             }
             else{
@@ -123,10 +110,64 @@ public class PropertiesTableModel extends AbstractTableModel
             }
         }
         //Add observers
-        ObservationManager.register(EVENT_FILE_NAME_CHANGED,this);
+        ObservationManager.register(EVENT_DEVICE_REFRESH,this);
      }
 	
-	
+    /**
+     * Model constructor for multiple selection item.
+     * Prerequise: at least one item and all items have the same class
+     * @param alItems items to show
+     */
+    public PropertiesTableModel(Collection colItems){
+        this.iColNum = 5;
+        this.colItems = colItems;
+        // Columns names
+        this.sColName= new String[] {
+                Messages.getString("PropertiesWizard.3"), //$NON-NLS-1$
+                Messages.getString("PropertiesWizard.1"),//$NON-NLS-2$
+                Messages.getString("PropertiesWizard.2"),//$NON-NLS-2$
+                Messages.getString("PropertiesWizard.5"),//$NON-NLS-2$
+                Messages.getString("PropertiesWizard.4")};  //$NON-NLS-3$ 
+        // Values
+        IPropertyable item = (IPropertyable)colItems.toArray()[0]; //take any item to get properties
+        Collection properties =  new ArrayList(10); //list of properties
+        Iterator it = item.getProperties().keySet().iterator();//add only editable and non constructor properties
+        while (it.hasNext()){
+            String sKey = (String)it.next();
+            PropertyMetaInformation meta = item.getMeta(sKey);
+            if (!meta.isConstructor() && meta.isEditable() && meta.isVisible()){
+                properties.add(meta.getName());
+            }
+        }
+        iRowNum = properties.size();
+        it = properties.iterator();
+        oValues = new Object[iRowNum][iColNum+2]; //two hidden columns for attribute name and ID element if any
+        for (int i = 0; it.hasNext(); i++) { //we don't display first attribute (ID)
+            PropertyMetaInformation meta = (PropertyMetaInformation) it.next();
+            if (meta.isEditable()){
+                oValues[i][0] = Util.getIcon(ICON_EDIT);    
+            }
+            else{
+                oValues[i][0] = Util.getIcon(ICON_NO_EDIT);
+            }
+            oValues[i][1] = Messages.getInstance().contains("Property_"+meta.getName())?
+                    Messages.getString("Property_"+meta.getName()):meta.getName(); //check if property name is translated (for custom properties)
+            oValues[i][2] = pa.getHumanValue(meta.getName());
+            oValues[i][3] = false; //all album option
+            oValues[i][5] = meta.getName();
+            oValues[i][6] = pa.getValue(meta.getName()); //attribute ID or value
+            //link 
+            if (isLinkable(i)){
+                oValues[i][4] = Util.getIcon(ICON_PROPERTIES);
+            }
+            else{
+                oValues[i][4] = Util.getIcon(ICON_VOID);
+            }
+        }
+        //Add observers
+        ObservationManager.register(EVENT_DEVICE_REFRESH,this);
+    }
+    
 	public synchronized int getColumnCount() {
 		return iColNum;
 	}
@@ -137,7 +178,7 @@ public class PropertiesTableModel extends AbstractTableModel
 	
 	public synchronized boolean isCellEditable(int rowIndex, int columnIndex) {
 		String sProperty = (String)oValues[rowIndex][5];
-        return pa != null && (pa.isPropertyEditable(sProperty) && (columnIndex==2 || columnIndex == 3));
+        return pa != null && (pa.getMeta(sProperty).isEditable() && (columnIndex==2 || columnIndex == 3));
 	}
 	
 	public synchronized Class getColumnClass(int columnIndex) {
@@ -168,6 +209,7 @@ public class PropertiesTableModel extends AbstractTableModel
 	public  synchronized void setValueAt(Object oValue, int rowIndex, int columnIndex) {
 		oValues[rowIndex][columnIndex] = oValue;
         fireTableCellUpdated(rowIndex,columnIndex);
+        ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH));  //notify change
 	}
 	
 	public String getColumnName(int columnIndex) {
@@ -178,6 +220,8 @@ public class PropertiesTableModel extends AbstractTableModel
      * @see org.jajuk.base.Observer#update(org.jajuk.base.Event)
      */
     public void update(Event event) {
+        //TBI
+        
         String subject = event.getSubject();
         if (EVENT_FILE_NAME_CHANGED.equals(subject)){
             Properties properties = event.getDetails();

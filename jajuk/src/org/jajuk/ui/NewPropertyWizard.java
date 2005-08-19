@@ -65,11 +65,12 @@ public class NewPropertyWizard extends CustomPropertyWizard implements KeyListen
     public NewPropertyWizard() {
         super(Messages.getString("NewPropertyWizard.0"));
         populate();//create default UI
+        //name
         jlName = new JLabel(Messages.getString("NewPropertyWizard.2"));
-        jlFormat = new JLabel(Messages.getString("NewPropertyWizard.3"));
-        jlFormat= new JLabel(Messages.getString("NewPropertyWizard.4"));
-        jlDefault= new JLabel(Messages.getString("NewPropertyWizard.5"));
         jtfName = new JTextField();
+        jtfName.addKeyListener(this);
+        //Type, class
+        jlClass= new JLabel(Messages.getString("NewPropertyWizard.3"));
         jcbClass = new JComboBox();
         jcbClass.addItem(Messages.getString(FORMAT_STRING));
         jcbClass.addItem(Messages.getString(FORMAT_NUMBER));
@@ -77,7 +78,13 @@ public class NewPropertyWizard extends CustomPropertyWizard implements KeyListen
         jcbClass.addItem(Messages.getString(FORMAT_BOOLEAN));
         jcbClass.addItem(Messages.getString(FORMAT_DATE));
         jcbClass.addItemListener(this);
-        jtfName.addKeyListener(this);
+        //Format
+        jlFormat = new JLabel(Messages.getString("NewPropertyWizard.4"));
+        jtfFormat = new JTextField();
+        //Default
+        jlDefault= new JLabel(Messages.getString("NewPropertyWizard.5"));
+        jtfDefault = new JTextField();
+        //main
         int iXSeparator = 10;
         int iYSeparator = 20;
         double[][] dSize = {
@@ -90,10 +97,10 @@ public class NewPropertyWizard extends CustomPropertyWizard implements KeyListen
         jpMain.add(jtfName,"3,3");
         jpMain.add(jlClass,"1,5");
         jpMain.add(jcbClass,"3,5");
-        jpMain.add(jlFormat,"1,7");
-        jpMain.add(jtfFormat,"3,7");
-        jlDefault.add(jlFormat,"1,9");
-        jtfDefault.add(jtfFormat,"3,9");
+        jpMain.add(jlDefault,"1,7");
+        jpMain.add(jtfDefault,"3,7");
+        jpMain.add(jlFormat,"1,9");
+        jpMain.add(jtfFormat,"3,9");
         getContentPane().add(jpMain);
         getContentPane().add(okp);
         getContentPane().add(Box.createVerticalStrut(10));
@@ -147,8 +154,8 @@ public class NewPropertyWizard extends CustomPropertyWizard implements KeyListen
             if (sFormat.trim() == "") {
                 sFormat = null;
             }
-            PropertyMetaInformation meta = new PropertyMetaInformation(sProperty,true,false,cFormat,sFormat,sDefault);
-             im.registerProperty(meta);
+            PropertyMetaInformation meta = new PropertyMetaInformation(sProperty,true,false,true,true,cFormat,sFormat,sDefault);
+            im.registerProperty(meta);
             im.applyNewProperty(meta);
             Properties properties = new Properties();
             properties.put(DETAIL_CONTENT,sProperty);

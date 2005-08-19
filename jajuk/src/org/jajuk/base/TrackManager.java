@@ -45,33 +45,33 @@ public class TrackManager extends ItemManager implements Observer{
 		super();
          //---register properties---
         //ID
-        registerProperty(new PropertyMetaInformation(XML_ID,false,true,String.class));
+        registerProperty(new PropertyMetaInformation(XML_ID,false,true,false,false,String.class));
         //Name
-        registerProperty(new PropertyMetaInformation(XML_NAME,false,true,String.class));
+        registerProperty(new PropertyMetaInformation(XML_NAME,false,true,true,true,String.class));
 		//Album
-        registerProperty(new PropertyMetaInformation(XML_ALBUM,false,true,String.class));
+        registerProperty(new PropertyMetaInformation(XML_ALBUM,false,true,true,true,String.class));
         //Style
-        registerProperty(new PropertyMetaInformation(XML_STYLE,false,true,String.class));
+        registerProperty(new PropertyMetaInformation(XML_STYLE,false,true,true,true,String.class));
         //Author
-        registerProperty(new PropertyMetaInformation(XML_AUTHOR,false,true,String.class));
+        registerProperty(new PropertyMetaInformation(XML_AUTHOR,false,true,true,true,String.class));
         //Length
-        registerProperty(new PropertyMetaInformation(XML_TRACK_LENGTH,false,true,Integer.class));
+        registerProperty(new PropertyMetaInformation(XML_TRACK_LENGTH,false,true,true,false,Integer.class));
         //Type
-        registerProperty(new PropertyMetaInformation(XML_TRACK_TYPE,false,true,Integer.class));
+        registerProperty(new PropertyMetaInformation(XML_TRACK_TYPE,false,true,true,false,Integer.class));
         //Year
-        registerProperty(new PropertyMetaInformation(XML_TRACK_YEAR,false,true,String.class));
+        registerProperty(new PropertyMetaInformation(XML_TRACK_YEAR,false,true,true,true,String.class));
         //Rate
-        registerProperty(new PropertyMetaInformation(XML_TRACK_RATE,false,false,Integer.class,null,"0"));
+        registerProperty(new PropertyMetaInformation(XML_TRACK_RATE,false,false,true,true,Integer.class,null,"0"));
         //Files
-        registerProperty(new PropertyMetaInformation(XML_FILES,false,false,String.class));
+        registerProperty(new PropertyMetaInformation(XML_FILES,false,false,true,false,String.class));
         //Hits
-        registerProperty(new PropertyMetaInformation(XML_TRACK_HITS,false,false,Integer.class,null,"0"));
+        registerProperty(new PropertyMetaInformation(XML_TRACK_HITS,false,false,true,false,Integer.class,null,"0"));
         //Addition date
-        registerProperty(new PropertyMetaInformation(XML_TRACK_ADDED,false,false,Date.class,ADDITION_DATE_FORMAT,null));
+        registerProperty(new PropertyMetaInformation(XML_TRACK_ADDED,false,false,true,false,Date.class,ADDITION_DATE_FORMAT,null));
         //Comment
-        registerProperty(new PropertyMetaInformation(XML_TRACK_COMMENT,false,false,String.class));
+        registerProperty(new PropertyMetaInformation(XML_TRACK_COMMENT,false,false,true,true,String.class));
         //Track order
-        registerProperty(new PropertyMetaInformation(XML_TRACK_ORDER,false,false,Integer.class));
+        registerProperty(new PropertyMetaInformation(XML_TRACK_ORDER,false,false,true,true,Integer.class));
         //---subscriptions---
         ObservationManager.register(EVENT_FILE_NAME_CHANGED,this);
 	}

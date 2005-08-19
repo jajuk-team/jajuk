@@ -96,9 +96,8 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
             int iFirstFrame = (int) (file.getTrack().getLength() * fPosition * 41.666);
             // (position*fPosition(%))*1000(ms) /24 because 1 frame =24ms
             // test if this is a audio format supporting seeking
-            if (Boolean.valueOf(
-                    TypeManager.getInstance().getTypeByExtension(Util.getExtension(file.getIO())).getValue(
-                            XML_TYPE_SEEK_SUPPORTED)).booleanValue()) {
+            if (TypeManager.getInstance().getTypeByExtension(Util.getExtension(file.getIO())).getBooleanValue(
+                            XML_TYPE_SEEK_SUPPORTED)) {
                 seek(fPosition);
             }
         }
@@ -177,7 +176,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
         if (mPlayingData.containsKey("audio.type") && player != null) { //$NON-NLS-1$
             Type type = TypeManager.getInstance().getTypeByTechDesc((String) mPlayingData.get("audio.type")); //$NON-NLS-1$
             // Seek support for MP3. and WAVE
-            if (Boolean.valueOf(type.getValue(XML_TYPE_SEEK_SUPPORTED)).booleanValue()
+            if (type.getBooleanValue(XML_TYPE_SEEK_SUPPORTED)
                     && mPlayingData.containsKey("audio.length.bytes")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                 int iAudioLength = ((Integer) mPlayingData.get("audio.length.bytes")).intValue(); //$NON-NLS-1$
                 long skipBytes = (long) Math.round(iAudioLength * posValue); //$NON-NLS-1$

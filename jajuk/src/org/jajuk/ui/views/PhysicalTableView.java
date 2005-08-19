@@ -38,7 +38,6 @@ import org.jajuk.i18n.Messages;
 import org.jajuk.ui.FilesTableModel;
 import org.jajuk.ui.JajukTableModel;
 import org.jajuk.ui.PropertiesWizard;
-import org.jajuk.ui.SetPropertyWizard;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
@@ -96,8 +95,6 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
         jmiFilePlayRepeat.addActionListener(this);
         jmiFilePlayDirectory = new JMenuItem(Messages.getString("PhysicalTableView.15")); //$NON-NLS-1$
         jmiFilePlayDirectory.addActionListener(this);
-        jmiSetProperty = new JMenuItem(Messages.getString("LogicalTableView.13")); //$NON-NLS-1$
-        jmiSetProperty.addActionListener(this);
         jmiProperties = new JMenuItem(Messages.getString("PhysicalTableView.6")); //$NON-NLS-1$
         jmiProperties.addActionListener(this);
         jmenuFile.add(jmiFilePlay);
@@ -105,7 +102,6 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
         jmenuFile.add(jmiFilePlayShuffle);
         jmenuFile.add(jmiFilePlayRepeat);
         jmenuFile.add(jmiFilePlayDirectory);
-        jmenuFile.add(jmiSetProperty);
         jmenuFile.add(jmiProperties);
     }
     
@@ -255,10 +251,7 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
                     ArrayList alItems = new ArrayList(2);
                     alItems.add(file);
                     alItems.add(file.getTrack());
-                    new PropertiesWizard(alItems);
-                }
-                else if (e.getSource() == jmiSetProperty){
-                     new SetPropertyWizard(alSelectedFiles);
+                    new PropertiesWizard(alItems,true);
                 }
             }
         }.start();

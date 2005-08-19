@@ -133,7 +133,7 @@ public class CDScanView extends ViewAdapter implements ActionListener {
 					if ( !"".equals(jtfName.getText().trim()) && !"".equals(jtfMountPoint.getText().trim())){ //$NON-NLS-1$ //$NON-NLS-2$
 					    Device device = null;
 					     device = DeviceManager.getInstance().registerDevice(jtfName.getText().trim(),1,jtfMountPoint.getText().trim());
-                         device.setProperty(DEVICE_OPTION_MOUNT_POINT,jtfMountPoint.getText().trim());
+                         device.setProperty(XML_DEVICE_MOUNT_POINT,jtfMountPoint.getText().trim());
 					     try{
 							device.mount();
 							device.refresh(false); //refresh synchronously
