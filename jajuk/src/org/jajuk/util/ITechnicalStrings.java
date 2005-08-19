@@ -543,7 +543,7 @@ public interface ITechnicalStrings {
     public static final String XML_ANY = "any"; //"any" criteria 
     public static final String XML_FORMAT = "format"; //custom property format 
     public static final String XML_CONSTRUCTOR = "constructor";  //constructor property flag
-    public static final String XML_DISPLAY = "display";  //property should be displayed?
+    public static final String XML_VISIBLE = "visible";  //property should be displayed?
     public static final String XML_EDITABLE = "editable";  //property editable?
     public static final String XML_CUSTOM = "custom"; //custom property flag 
     public static final String XML_PROPERTY = "property"; //property 

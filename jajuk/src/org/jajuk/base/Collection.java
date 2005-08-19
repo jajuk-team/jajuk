@@ -294,7 +294,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
                 String sPropertyName = attributes.getValue(attributes.getIndex(XML_NAME));
                 boolean bCustom = Boolean.parseBoolean(attributes.getValue(attributes.getIndex(XML_CUSTOM)));
                 boolean bConstructor = Boolean.parseBoolean(attributes.getValue(attributes.getIndex(XML_CONSTRUCTOR)));
-                boolean bShouldBeDisplayed = Boolean.parseBoolean(attributes.getValue(attributes.getIndex(XML_DISPLAY)));
+                boolean bShouldBeDisplayed = Boolean.parseBoolean(attributes.getValue(attributes.getIndex(XML_VISIBLE)));
                 boolean bEditable = Boolean.parseBoolean(attributes.getValue(attributes.getIndex(XML_EDITABLE)));
                 Class cType = Class.forName(attributes.getValue(attributes.getIndex(XML_TYPE)));
                 String sFormat = attributes.getValue(attributes.getIndex(XML_FORMAT));

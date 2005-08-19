@@ -141,7 +141,8 @@ public class PropertyMetaInformation implements ITechnicalStrings{
         return "\t\t<"+XML_PROPERTY+" "+XML_NAME+"='"+sName+"' "+
             XML_CUSTOM+"='"+ bCustom+"' "+
             XML_CONSTRUCTOR+"='"+bConstructor+"' "+
-            XML_DISPLAY+"='"+bShouldBeDisplayed+"' "+
+            XML_VISIBLE+"='"+bShouldBeDisplayed+"' "+
+            XML_EDITABLE+"='"+bEditable+"' "+
             XML_TYPE+"='"+cType.getName()+"' "+
             XML_FORMAT+"='"+sFormat+"' "+
             XML_DEFAULT_VALUE+"='"+sDefaultValue+"'/>";
