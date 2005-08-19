@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<document>
+  <body>
+  	<section name="Technical Roadmap - Last change: 2005 Aug">
+	   	<section name="1.0">
+	   		<ul>
+	   			<li><p>Custom properties</p></li>
+	   			<li><p>Tag edition</p></li>
+	   		</ul>	
+	   	</section>
+	   	<section name="1.1">
+	   		<ul>
+	   			<li><p>Online retagging</p></li> 
+	   			<li><p>Key shortcuts for track navigation</p></li>
+	   		</ul>	
+	   	</section>
+	   	<section name="1.2">
+	   		<ul>
+	   			<li><p>Collection reporting in HTML or XML</p></li>
+	   			<li><p>Covers thumbnails perspective</p></li>
+	   		</ul>	
+	   	</section>
+	   	<section name="1.3">
+	   		<ul>
+	   			<li><p>Disk Jokey special function</p></li>
+	   			<li><p>File functions (cut/copy/paste, delete, rename...)</p></li>
+	   		</ul>	
+	   	</section>
+	   	<section name="1.4">
+	   		<ul>
+	   			<li><p>Network-type device (P2P)</p></li>
+	   		</ul>	
+	   	</section>
+	   	<section name="1.5">
+	   		<ul>
+	   			<li><p>Tips of the day</p></li>
+	   			<li><p>New stats, sorted by type in tabbed panes</p></li>
+	   			<li><p>Advanced table filters</p></li>
+	   		</ul>	
+	   	</section>
+	   	<section name="1.6">
+	   		<ul>
+	   			<li><p>Equalizers in a new perspective</p></li>
+	   			<li><p>Slimline Player bar</p></li>
+	   		</ul>	
+	   	</section>
+  	</section>
+  </body>
+</document>

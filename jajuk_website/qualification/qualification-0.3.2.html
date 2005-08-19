@@ -1,0 +1,735 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta content="text/html; charset=ISO-8859-1"
+ http-equiv="content-type">
+  <title>Jajuk qualification tests</title>
+</head>
+<body>
+<h1>Release notes</h1>
+<span style="text-decoration: underline; font-style: italic;">Last
+update</span><span style="font-style: italic;"> :
+2005-01-12<br>
+<br>
+Changes: </span><a
+ href="http://jajuk.sourceforge.net/changes-report.html#0_3_2">http://jajuk.sourceforge.net/changes-report.html#0_3_2</a><span
+ style="font-style: italic;">
+</span>
+<ul style="list-style-type: circle;">
+  <li>[Mandrake and Suse users using the RPM] IMPORTANT NOTE FOR
+UPGRADE FROM 0.3.1 TO 0.3.2 : due to a bug in 0.3.1
+packaging, please use&nbsp; <span style="font-family: monospace;">rpm
+-Uvh </span><span style="font-weight: bold; font-family: monospace;">--nopostun</span><span
+ style="font-family: monospace;">
+jajuk-0.3.2-1Suse.noarch.rpm</span> or uninstall 0.3.1 and install
+0.3.2.</li>
+  <br>
+  <li>[Mandrake users using the RPM] Jajuk icon should appear in
+Multimedia/Audio section. It can take a while for the icon to be
+visible. If you get no icon after one minute, please open a shell and
+launch <span style="font-family: monospace;">menu-updates</span> as
+your regular user.</li>
+  <br>
+  <li>[Windows users using exe package] We have changed the Self
+Extracting tool (we now use 7-ZIP), so this distribution should no more
+be seen as infected by some anti-virus scanners.</li>
+  <br>
+  <li>[Windows users using exe package] In some seldom cases, you may
+encounter a "IzPack launcher failed" message at the end of the
+installation. Just ignore this message, your install is safe.</li>
+  <br>
+  <li>[French users] Jajuk now contains a full documentation in Help
+view. It has not yet been translated in French so French users will
+only get a minimal documentation. Set language to English to get the
+full English documentation if required. Others langpacks have none
+documentation pack so they will display English one.<br>
+  </li>
+</ul>
+<br>
+<h1>Trakers</h1>
+Bug database: <a
+ href="http://sourceforge.net/tracker/?group_id=91412&amp;atid=597086">http://sourceforge.net/tracker/?group_id=91412&amp;atid=597086</a><br>
+Known issues: <a
+ href="http://sourceforge.net/tracker/?atid=677776&amp;group_id=91412">http://sourceforge.net/tracker/?atid=677776&amp;group_id=91412</a><br>
+Wishes/RFE: <a
+ href="http://sourceforge.net/tracker/?group_id=91412&amp;atid=597089">http://sourceforge.net/tracker/?group_id=91412&amp;atid=597089</a><br>
+Support/Help: <a
+ href="http://sourceforge.net/tracker/?group_id=91412&amp;atid=597087">http://sourceforge.net/tracker/?group_id=91412&amp;atid=597087</a><br>
+<br>
+<h1>Jajuk qualification tests</h1>
+<table style="text-align: left; width: 476px; height: 260px;" border="1"
+ cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+      <td
+ style="vertical-align: top; background-color: rgb(204, 204, 204); font-weight: bold;">Date<br>
+      </td>
+      <td
+ style="vertical-align: top; background-color: rgb(204, 204, 204); font-weight: bold;">2004/01/09<br>
+      </td>
+    </tr>
+    <tr>
+      <td
+ style="vertical-align: top; background-color: rgb(204, 204, 204); font-weight: bold;">Tester(s)
+      </td>
+      <td
+ style="vertical-align: top; background-color: rgb(204, 204, 204); font-weight: bold;">Bertrand
+Florat</td>
+    </tr>
+    <tr>
+      <td
+ style="vertical-align: top; background-color: rgb(204, 204, 204); font-weight: bold;">Packager<br>
+      </td>
+      <td
+ style="vertical-align: top; background-color: rgb(204, 204, 204); font-weight: bold;">Bertrand
+Florat </td>
+    </tr>
+    <tr>
+      <td
+ style="vertical-align: top; background-color: rgb(204, 204, 204); font-weight: bold;">Validator<br>
+      </td>
+      <td
+ style="vertical-align: top; background-color: rgb(204, 204, 204); font-weight: bold;">Bertrand
+Florat </td>
+    </tr>
+    <tr>
+      <td
+ style="vertical-align: top; background-color: rgb(204, 204, 204); font-weight: bold;">Release</td>
+      <td
+ style="vertical-align: top; background-color: rgb(204, 204, 204); font-weight: bold;">0.3.2</td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<h2>Environments</h2>
+<table style="text-align: left; width: 470px; height: 141px;" border="1"
+ cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+      <td
+ style="vertical-align: top; background-color: rgb(204, 204, 204);">Env
+name<br>
+      </td>
+      <td
+ style="vertical-align: top; background-color: rgb(204, 204, 204);">OS<br>
+      </td>
+      <td
+ style="vertical-align: top; background-color: rgb(204, 204, 204);">JRE<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">env1<br>
+      </td>
+      <td style="vertical-align: top;">Suse Linux 9.1 kernel 2.6.4<br>
+      </td>
+      <td style="vertical-align: top;">Sun 1.4.2_04<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">env2<br>
+      </td>
+      <td style="vertical-align: top;">Windows 2000 Pro SP3</td>
+      <td style="vertical-align: top;">Sun 1.4.2_01<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">env3<br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<h2>Applicative impact of this release</h2>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td
+ style="vertical-align: top; background-color: rgb(204, 204, 204);">Impact/change<br>
+      </td>
+      <td
+ style="vertical-align: top; background-color: rgb(204, 204, 204);">Comments<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">Packaging: native packages for
+windows, suse and Mandrake</td>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">Tray under Windows (check
+disparition)</td>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">Documentation<br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<h2>Scenario-based tests</h2>
+<span style="text-decoration: underline; font-style: italic;">White</span><span
+ style="font-style: italic;">: not tested, </span><span
+ style="text-decoration: underline; font-style: italic;">green</span><span
+ style="font-style: italic;">: passed, </span><span
+ style="text-decoration: underline; font-style: italic;">orange</span><span
+ style="font-style: italic;">: passed partially, </span><span
+ style="text-decoration: underline; font-style: italic;">red</span><span
+ style="font-style: italic;">: not passed</span><br>
+<br>
+<table style="text-align: left; width: 100%;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td
+ style="vertical-align: top; background-color: rgb(204, 204, 204); width: 5%;">#<br>
+      </td>
+      <td
+ style="vertical-align: top; background-color: rgb(204, 204, 204); width: 80%;">Description<br>
+      </td>
+      <td
+ style="vertical-align: top; background-color: rgb(204, 204, 204); width: 5%;">Result
+env1<br>
+      </td>
+      <td
+ style="vertical-align: top; background-color: rgb(204, 204, 204); width: 5%;">Result
+env2</td>
+      <td
+ style="vertical-align: top; background-color: rgb(204, 204, 204); width: 5%;">Result
+env3</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 5%;">PKG<br>
+      </td>
+      <td style="vertical-align: top; width: 80%;">Packaging tests :
+install Jajuk in several languages. Target directory : /prog/jajuk and
+c:\Program files\jajuk. Version overwriting tests : install Jajuk on
+existing release directory, then&nbsp; remove the directory and install
+it to this unexisting location. Start and close Jajuk at each test.<br>
+      </td>
+      <td
+ style="vertical-align: top; width: 5%; background-color: rgb(153, 255, 153);"><br>
+      </td>
+      <td
+ style="vertical-align: top; width: 5%; background-color: rgb(153, 255, 153);"><br>
+      </td>
+      <td style="vertical-align: top; width: 5%;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 5%;">SRT<br>
+      </td>
+      <td style="vertical-align: top; width: 80%;">Tests with existing
+collection : start jajuk, lauch some tracks.<br>
+      </td>
+      <td
+ style="vertical-align: top; width: 5%; background-color: rgb(153, 255, 153);"><br>
+      </td>
+      <td
+ style="vertical-align: top; width: 5%; background-color: rgb(153, 255, 153);"><br>
+      </td>
+      <td style="vertical-align: top; width: 5%;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 5%;">SCR<br>
+      </td>
+      <td style="vertical-align: top; width: 80%;">Tests from scratch.
+Remove .jajuk directory, create a directory device with
+auto-refresh, lauch some tracks and then quit Jajuk and start it again,
+lauch some tracks, quit and test again.<br>
+      </td>
+      <td
+ style="vertical-align: top; width: 5%; background-color: rgb(153, 255, 153);"><br>
+      </td>
+      <td
+ style="vertical-align: top; width: 5%; background-color: rgb(255, 255, 255);"><br>
+      </td>
+      <td style="vertical-align: top; width: 5%;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 5%;">FOR<br>
+      </td>
+      <td style="vertical-align: top; width: 80%;">Tests on formats :
+lauch at least one mp3, ogg, au, aiff and wav file. <br>
+      </td>
+      <td
+ style="vertical-align: top; width: 5%; background-color: rgb(153, 255, 153);"><br>
+      </td>
+      <td
+ style="vertical-align: top; width: 5%; background-color: rgb(255, 255, 255);"><br>
+      </td>
+      <td style="vertical-align: top; width: 5%;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 5%;">DEV<br>
+      </td>
+      <td style="vertical-align: top; width: 80%;">Devices tests :
+create a directory device, refresh it, unmount it, mount it, remove it.<br>
+      </td>
+      <td
+ style="vertical-align: top; width: 5%; background-color: rgb(153, 255, 153);"><br>
+      </td>
+      <td
+ style="vertical-align: top; width: 5%; background-color: rgb(255, 255, 255);"><br>
+      </td>
+      <td style="vertical-align: top; width: 5%;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 5%;">SYN<br>
+      </td>
+      <td style="vertical-align: top; width: 80%;">Device
+synchronization : test with a directory device and a player device, if
+possible, try to mix FS : ext3 for directory, FAT32 for player.<br>
+      </td>
+      <td
+ style="vertical-align: top; width: 5%; background-color: rgb(255, 255, 255);"><br>
+      </td>
+      <td
+ style="vertical-align: top; width: 5%; background-color: rgb(255, 255, 255);"><br>
+      </td>
+      <td style="vertical-align: top; width: 5%;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 5%;">SRC<br>
+      </td>
+      <td style="vertical-align: top; width: 80%;">Instant search box :
+perform some searchs and lauch tracks.<br>
+      </td>
+      <td
+ style="vertical-align: top; width: 5%; background-color: rgb(153, 255, 153);"><br>
+      </td>
+      <td
+ style="vertical-align: top; width: 5%; background-color: rgb(255, 255, 255);"><br>
+      </td>
+      <td style="vertical-align: top; width: 5%;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 5%;">HST<br>
+      </td>
+      <td style="vertical-align: top; width: 80%;">History : check all
+lauched tracks are OK. Clear hisstory and lauch others tracks, check it
+again.<br>
+      </td>
+      <td
+ style="vertical-align: top; width: 5%; background-color: rgb(153, 255, 153);"><br>
+      </td>
+      <td
+ style="vertical-align: top; width: 5%; background-color: rgb(255, 255, 255);"><br>
+      </td>
+      <td style="vertical-align: top; width: 5%;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 5%;">COP </td>
+      <td style="vertical-align: top; width: 80%;">Compile and test the
+installed
+jajuk sources </td>
+      <td
+ style="vertical-align: top; width: 5%; background-color: rgb(153, 255, 153);"><br>
+      </td>
+      <td
+ style="vertical-align: top; width: 5%; background-color: rgb(255, 255, 255);"><br>
+      </td>
+      <td style="vertical-align: top; width: 5%;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">SUP<br>
+      </td>
+      <td style="vertical-align: top;">Startup tests : change startup
+option and test it.<br>
+      </td>
+      <td
+ style="vertical-align: top; background-color: rgb(153, 255, 153);"><br>
+      </td>
+      <td
+ style="vertical-align: top; background-color: rgb(255, 255, 255);"><br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">BUP<br>
+      </td>
+      <td style="vertical-align: top;">Backup tests : change backup
+options and test them.<br>
+      </td>
+      <td
+ style="vertical-align: top; background-color: rgb(255, 255, 255);"><br>
+      </td>
+      <td
+ style="vertical-align: top; background-color: rgb(255, 255, 255);"><br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">LNG<br>
+      </td>
+      <td style="vertical-align: top;">Test Jajuk en english and at
+least with 2 others langpacks, check translation for untranslated
+fields if any.<br>
+      </td>
+      <td
+ style="vertical-align: top; background-color: rgb(153, 255, 153);"><br>
+      </td>
+      <td
+ style="vertical-align: top; background-color: rgb(255, 255, 255);"><br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">LNF<br>
+      </td>
+      <td style="vertical-align: top;">Change Look and Feel, test it.<br>
+      </td>
+      <td
+ style="vertical-align: top; background-color: rgb(153, 255, 153);"><br>
+      </td>
+      <td
+ style="vertical-align: top; background-color: rgb(255, 255, 255);"><br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">STA<br>
+      </td>
+      <td style="vertical-align: top;">Check stats<br>
+      </td>
+      <td
+ style="vertical-align: top; background-color: rgb(153, 255, 153);"><br>
+      </td>
+      <td
+ style="vertical-align: top; background-color: rgb(255, 255, 255);"><br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">TIM<br>
+      </td>
+      <td style="vertical-align: top;">Check elapsed / remaining time
+in information bar<br>
+      </td>
+      <td
+ style="vertical-align: top; background-color: rgb(153, 255, 153);"><br>
+      </td>
+      <td
+ style="vertical-align: top; background-color: rgb(255, 255, 255);"><br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">DOC<br>
+      </td>
+      <td style="vertical-align: top;">Check About and online doc in
+all languages.<br>
+      </td>
+      <td
+ style="vertical-align: top; background-color: rgb(153, 255, 153);"><br>
+      </td>
+      <td
+ style="vertical-align: top; background-color: rgb(255, 255, 255);"><br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">COM<br>
+      </td>
+      <td style="vertical-align: top;">Command panel tests : rewind,
+forward, volume...<br>
+      </td>
+      <td
+ style="vertical-align: top; background-color: rgb(153, 255, 153);"><br>
+      </td>
+      <td
+ style="vertical-align: top; background-color: rgb(255, 255, 255);"><br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">PLA<br>
+      </td>
+      <td style="vertical-align: top;">Physical and logical playlists
+tests.<br>
+      </td>
+      <td
+ style="vertical-align: top; background-color: rgb(255, 255, 255);"><br>
+      </td>
+      <td
+ style="vertical-align: top; background-color: rgb(255, 255, 255);"><br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">COV<br>
+      </td>
+      <td style="vertical-align: top;">Tests covers display and
+manipulation<br>
+      </td>
+      <td
+ style="vertical-align: top; background-color: rgb(153, 255, 153);"><br>
+      </td>
+      <td
+ style="vertical-align: top; background-color: rgb(255, 255, 255);"><br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">VIE<br>
+      </td>
+      <td style="vertical-align: top;">Change views size / position,
+close jajuk and restart, check position is saved. Reload default
+perspectives in Parameter view / Perspective tab, test.<br>
+      </td>
+      <td
+ style="vertical-align: top; background-color: rgb(255, 255, 255);"><br>
+      </td>
+      <td
+ style="vertical-align: top; background-color: rgb(255, 255, 255);"><br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">RES<br>
+      </td>
+      <td style="vertical-align: top;">Change resolution (1024x768 to
+1600x1400) and check everyhting's OK<br>
+      </td>
+      <td
+ style="vertical-align: top; background-color: rgb(255, 255, 255);"><br>
+      </td>
+      <td
+ style="vertical-align: top; background-color: rgb(255, 255, 255);"><br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">ERR<br>
+      </td>
+      <td style="vertical-align: top;">Rename or delete physically some
+files in your collection without refreshing device to simulate read
+errors, check behavior (error message in information panel, history
+bar...)<br>
+      </td>
+      <td
+ style="vertical-align: top; background-color: rgb(255, 255, 255);"><br>
+      </td>
+      <td
+ style="vertical-align: top; background-color: rgb(255, 255, 255);"><br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">TRA<br>
+      </td>
+      <td style="vertical-align: top;">Tray tests<br>
+      </td>
+      <td
+ style="vertical-align: top; background-color: rgb(153, 255, 153);"><br>
+      </td>
+      <td
+ style="vertical-align: top; background-color: rgb(255, 255, 255);"><br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">RAN </td>
+      <td style="vertical-align: top;">Random tests,
+general use tests in every views. </td>
+      <td
+ style="vertical-align: top; background-color: rgb(153, 255, 153);"><br>
+      </td>
+      <td
+ style="vertical-align: top; background-color: rgb(255, 255, 255);"><br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<h2>Non-regression tests</h2>
+<span style="text-decoration: underline; font-style: italic;">White</span><span
+ style="font-style: italic;">: not tested, </span><span
+ style="text-decoration: underline; font-style: italic;">green</span><span
+ style="font-style: italic;">: passed, </span><span
+ style="text-decoration: underline; font-style: italic;">orange</span><span
+ style="font-style: italic;">: passed partially, </span><span
+ style="text-decoration: underline; font-style: italic;">red</span><span
+ style="font-style: italic;">: not passed</span><br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td
+ style="vertical-align: top; background-color: rgb(204, 204, 204); width: 10%;">Bug
+number<br>
+      </td>
+      <td
+ style="vertical-align: top; background-color: rgb(204, 204, 204); width: 80%;">Comments<br>
+      </td>
+      <td
+ style="vertical-align: top; background-color: rgb(204, 204, 204); width: 10%;">Result<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 10%;"><br>
+      </td>
+      <td style="vertical-align: top; width: 80%;"><br>
+      </td>
+      <td style="vertical-align: top; width: 10%;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 10%;"><br>
+      </td>
+      <td style="vertical-align: top; width: 80%;"><br>
+      </td>
+      <td style="vertical-align: top; width: 10%;"><br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<h2>Known issues</h2>
+Known issues: <a
+ href="http://sourceforge.net/tracker/?atid=677776&amp;group_id=91412">http://sourceforge.net/tracker/?atid=677776&amp;group_id=91412</a><br>
+<br>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td
+ style="vertical-align: top; background-color: rgb(204, 204, 204);">Issue
+Description<br>
+      </td>
+      <td
+ style="vertical-align: top; background-color: rgb(204, 204, 204);">Workaround<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<h2>Comments</h2>
+<span style="font-style: italic;"></span>
+<table style="width: 100%; text-align: left;" border="1" cellpadding="2"
+ cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">Have fun using Jajuk ! </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<h2>Details</h2>
+rc3: 08/01/05 : 5 bugs : 20<br>
+o [BF] [Packaging] README_esp.html missing if java install<br>
+o [BF] [Bug] If first install, slashscreen hides a part of the screen
+over wizzard 2 <br>
+o [BF] [Bug packaging] RPM upgrade, removed /usr/lib/jajuk dir 8<br>
+o [BF] [Bug packaging] English doc in french 5<br>
+o [BF] [Bug packaging] Wrong icons order in Java IzPack Window 1<br>
+o [BF] [Bug] Fixed Playlist editor table header height problem 4<br>
+<br>
+<br>
+rc2: 07/01/05 : 0 bugs : 0<br>
+o [BF] [RFE JF] Set default unix installation path to /opt/jajuk with
+java installer<br>
+o [BF] [EVO] Finished fr translation<br>
+o [BF] [Packaging] Uploaded java distribution<br>
+o [BF] [Packaging] Fixed exe distribution<br>
+o [BF] [Packaging] Removed IzPack Hello panel for maintenance cost<br>
+<br>
+rc1 : 07/01/05<br>
+o Reference<br>
+<br>
+<span style="font-weight: bold;">Total : 5 bugs, Score : 20</span><br
+ style="font-weight: bold;">
+<span style="font-weight: bold;">Scores for release :</span><br
+ style="font-weight: bold;">
+[BF] : 6 packaging fixes, 5 bugs Score: 20<br>
+<br>
+</body>
+</html>
