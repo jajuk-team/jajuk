@@ -25,6 +25,7 @@ import java.util.Iterator;
 import java.util.Properties;
 
 import org.jajuk.util.MD5Processor;
+import org.jajuk.util.log.Log;
 
 /**
  * Convenient class to manage directories
@@ -42,17 +43,17 @@ public class DirectoryManager extends ItemManager implements Observer{
 		super();
          //---register properties---
         //ID
-        registerProperty(new PropertyMetaInformation(XML_ID,false,true,false,false,String.class));
+        registerProperty(new PropertyMetaInformation(XML_ID,false,true,false,false,true,String.class,null,null));
         //Name test with (getParentDirectory() != null); //name editable only for standard directories, not root
-        registerProperty(new PropertyMetaInformation(XML_NAME,false,true,true,true,String.class));
+        registerProperty(new PropertyMetaInformation(XML_NAME,false,true,true,true,true,String.class,null,null));
         //Parent
-        registerProperty(new PropertyMetaInformation(XML_DIRECTORY_PARENT,false,true,true,false,String.class));
+        registerProperty(new PropertyMetaInformation(XML_DIRECTORY_PARENT,false,true,true,false,false,String.class,null,null));
         //Device
-        registerProperty(new PropertyMetaInformation(XML_DEVICE,false,true,true,false,String.class));
+        registerProperty(new PropertyMetaInformation(XML_DEVICE,false,true,true,false,false,String.class,null,null));
         //Expand
-        registerProperty(new PropertyMetaInformation(XML_EXPANDED,false,false,false,false,Boolean.class,null,"false"));
+        registerProperty(new PropertyMetaInformation(XML_EXPANDED,false,false,false,false,false,Boolean.class,null,"false"));
         //Synchonized directory
-        registerProperty(new PropertyMetaInformation(XML_DIRECTORY_SYNCHRONIZED,false,false,true,false,Boolean.class,null,"true"));
+        registerProperty(new PropertyMetaInformation(XML_DIRECTORY_SYNCHRONIZED,false,false,true,false,false,Boolean.class,null,"true"));
         //---Subscriptions---
         ObservationManager.register(EVENT_FILE_NAME_CHANGED,this);
 	}
@@ -67,6 +68,62 @@ public class DirectoryManager extends ItemManager implements Observer{
         return singleton;
     }
   
+    
+     /**
+     * Change the item name
+     * @param old old item
+     * @param sNewName new item
+     * @return new item
+     */
+    public synchronized Directory changeDirectoryName(Directory old,String sNewName){
+        //check given name is different
+        if (old.getName().equals(sNewName)){
+            return old;
+        }
+        //try change dir on disk
+        try{
+            old.getFio().renameTo(new java.io.File(old.getParentDirectory().getFio().getAbsolutePath()+"/"+sNewName));
+        }
+        catch(Exception e){
+            Log.error(e);
+            return null;
+        }
+        //register new dir
+        Directory newItem = registerDirectory(sNewName,old.getParentDirectory(),old.getDevice());
+        //copy old properties except name and id
+        newItem.setProperties(old.getProperties());
+        newItem.setName(sNewName);
+        newItem.setId(newItem.getId());
+        //add dirs, files and playlist files to this new dir
+        for (File file:old.getFiles()){
+            newItem.addFile(file);
+        }
+        for (PlaylistFile plf:old.getPlaylistFiles()){
+            newItem.addPlaylistFile(plf);
+        }
+        for (Directory dir:old.getDirectories()){
+            newItem.addDirectory(dir);
+        }
+        //remove old dir from parent
+        removeDirectory(old.getId());
+        //Look for files under the old directory
+        ArrayList<String> alIdToChange = new ArrayList(10);//contains ID for files to change (need to do that to avoid concurency problems)
+        ArrayList alFiles = FileManager.getInstance().getItems();
+        for (IPropertyable pa:FileManager.getInstance().getItems()){
+            File file = (File)pa;
+            if (file.getDirectory().equals(old)){
+                alIdToChange.add(file.getId());
+            }
+        }
+        //change files
+        for (String sId:alIdToChange){
+            FileManager.getInstance().changeFileDirectory((File)FileManager.getInstance().getItem(sId),newItem);    
+        }
+        //add the new dir to the parent directory
+        old.getParentDirectory().addDirectory(newItem);
+        return newItem;
+    }
+    
 	/**
 	 * Register a directory
 	 * 
@@ -124,23 +181,31 @@ public class DirectoryManager extends ItemManager implements Observer{
 	}
 
 	/**
-	 * Remove a directory and all subdirectories from main directory repository. Remove reference from parent directories as well.
+	 * Remove a directory and all subdirectories from main directory repository. 
+     * Remove reference from parent directories as well.
 	 * 
 	 * @param sId
 	 */
 	public synchronized void removeDirectory(String sId) {
 		Directory dToBeRemoved = (Directory)getItem(sId);
-		ArrayList alDirsToBeRemoved = dToBeRemoved.getDirectories(); //list of sub directories to remove
-		Iterator it = alDirsToBeRemoved.iterator();
-		while (it.hasNext()) {
-			Directory dCurrent = (Directory) it.next();
-			removeDirectory(dCurrent.getId()); //self call
-		}
-		Directory dParent = dToBeRemoved.getParentDirectory(); //now del references from parent dir
-		if (dParent != null) {
-			dParent.removeDirectory(dToBeRemoved);
-		}
-		hmItems.remove(sId);
+		Iterator it = getItems().iterator();
+        while (it.hasNext()){
+            Directory dir = (Directory)it.next();
+            if (dir.getFio().getAbsolutePath().indexOf(dToBeRemoved.getFio().getAbsolutePath()) == 0){
+                //remove all files
+                for (File file:dir.getFiles()){
+                    FileManager.getInstance().removeFile(file);
+                }
+                //remove all playlists
+                for (PlaylistFile plf:dir.getPlaylistFiles()){
+                    PlaylistFileManager.getInstance().remove(plf.getId());
+                }
+                //remove this dir
+                it.remove();
+            }
+        }
+        //remove this dir
+        hmItems.remove(sId);
      }
 		    
  /* (non-Javadoc)

@@ -508,7 +508,7 @@ public abstract class AbstractTableView extends ViewAdapter
             sValue = oValue.toString();
         }
         IPropertyable itemNew = ItemManager.changeItem(item,sKey,sValue);
-        if (itemNew != null){
+        if (!itemNew.equals(item)){ //check if item has change
             ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH)); //TBI see later for a smarter event
         }
     }

@@ -64,6 +64,7 @@ import org.jajuk.base.Event;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
+import org.jajuk.base.IPropertyable;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.base.PlaylistFile;
 import org.jajuk.base.PlaylistFileManager;
@@ -104,8 +105,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
     JMenuItem jmiFileCopy;
     JMenuItem jmiFileCut;
     JMenuItem jmiFilePaste;
-    JMenuItem jmiFileRename;
-    JMenuItem jmiFileDelete;
+     JMenuItem jmiFileDelete;
     JMenuItem jmiFileProperties;
     
     JPopupMenu jmenuDir;
@@ -119,7 +119,6 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
     JMenuItem jmiDirCopy;
     JMenuItem jmiDirCut;
     JMenuItem jmiDirPaste;
-    JMenuItem jmiDirRename;
     JMenuItem jmiDirDelete;
     JMenuItem jmiDirProperties;
     
@@ -145,7 +144,6 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
     JMenuItem jmiPlaylistFileCopy;
     JMenuItem jmiPlaylistFileCut;
     JMenuItem jmiPlaylistFilePaste;
-    JMenuItem jmiPlaylistFileRename;
     JMenuItem jmiPlaylistFileDelete;
     JMenuItem jmiPlaylistFileProperties;
     
@@ -191,9 +189,6 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         jmiFilePaste = new JMenuItem(Messages.getString("PhysicalTreeView.5")); //$NON-NLS-1$
         jmiFilePaste.setEnabled(false);
         jmiFilePaste.addActionListener(this);
-        jmiFileRename = new JMenuItem(Messages.getString("PhysicalTreeView.6")); //$NON-NLS-1$
-        jmiFileRename.setEnabled(false);
-        jmiFileRename.addActionListener(this);
         jmiFileDelete = new JMenuItem(Messages.getString("PhysicalTreeView.7")); //$NON-NLS-1$
         jmiFileDelete.setEnabled(false);
         jmiFileDelete.addActionListener(this);
@@ -204,7 +199,6 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         jmenuFile.add(jmiFileCopy);
         jmenuFile.add(jmiFileCut);
         jmenuFile.add(jmiFilePaste);
-        jmenuFile.add(jmiFileRename);
         jmenuFile.add(jmiFileDelete);
         jmenuFile.add(jmiFileProperties);
         
@@ -234,9 +228,6 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         jmiDirPaste = new JMenuItem(Messages.getString("PhysicalTreeView.19")); //$NON-NLS-1$
         jmiDirPaste.setEnabled(false);
         jmiDirPaste.addActionListener(this);
-        jmiDirRename = new JMenuItem(Messages.getString("PhysicalTreeView.20")); //$NON-NLS-1$
-        jmiDirRename.setEnabled(false);
-        jmiDirRename.addActionListener(this);
         jmiDirDelete = new JMenuItem(Messages.getString("PhysicalTreeView.21")); //$NON-NLS-1$
         jmiDirDelete.setEnabled(false);
         jmiDirDelete.addActionListener(this);
@@ -252,7 +243,6 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         jmenuDir.add(jmiDirCopy);
         jmenuDir.add(jmiDirCut);
         jmenuDir.add(jmiDirPaste);
-        jmenuDir.add(jmiDirRename);
         jmenuDir.add(jmiDirDelete);
         jmenuDir.add(jmiDirProperties);
         
@@ -316,9 +306,6 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         jmiPlaylistFilePaste = new JMenuItem(Messages.getString("PhysicalTreeView.42")); //$NON-NLS-1$
         jmiPlaylistFilePaste.setEnabled(false);
         jmiPlaylistFilePaste.addActionListener(this);
-        jmiPlaylistFileRename = new JMenuItem(Messages.getString("PhysicalTreeView.43")); //$NON-NLS-1$
-        jmiPlaylistFileRename.setEnabled(false);
-        jmiPlaylistFileRename.addActionListener(this);
         jmiPlaylistFileDelete = new JMenuItem(Messages.getString("PhysicalTreeView.44")); //$NON-NLS-1$
         jmiPlaylistFileDelete.addActionListener(this);
         jmiPlaylistFileProperties = new JMenuItem(Messages.getString("PhysicalTreeView.46")); //$NON-NLS-1$
@@ -330,7 +317,6 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         jmenuPlaylistFile.add(jmiPlaylistFileCopy);
         jmenuPlaylistFile.add(jmiPlaylistFileCut);
         jmenuPlaylistFile.add(jmiPlaylistFilePaste);
-        jmenuPlaylistFile.add(jmiPlaylistFileRename);
         jmenuPlaylistFile.add(jmiPlaylistFileDelete);
         jmenuPlaylistFile.add(jmiPlaylistFileProperties);
         
@@ -485,7 +471,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
                 alSelected = new ArrayList(paths.length);
                 for (int i=0;i<paths.length;i++){
                     Object o = paths[i].getLastPathComponent();
-                    alSelected.add(((TransferableTreeNode)o).getData());
+                    alSelected.add((IPropertyable)((TransferableTreeNode)o).getData());
                     Enumeration e2 = ((DefaultMutableTreeNode)o).depthFirstEnumeration(); //return all childs nodes recursively
                     while ( e2.hasMoreElements()){
                         DefaultMutableTreeNode node = (DefaultMutableTreeNode)e2.nextElement();
@@ -746,9 +732,10 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(final ActionEvent e) {
-        if ( (paths.length > 1) && (e.getSource() == jmiFileProperties || e.getSource() == jmiDirProperties
+        //multiple selection on properties(note we handle file properties later)
+        if ( (paths.length > 1) && (e.getSource() == jmiDirProperties
                 || e.getSource() == jmiDevProperties || e.getSource() == jmiPlaylistFileProperties)){
-            new PropertiesWizard(alSelected,false);
+            new PropertiesWizard(alSelected);
         }
         else if (e.getSource() == jmiFilePlay ){
             FIFO.getInstance().push(Util.createStackItems(alFiles,
@@ -881,12 +868,22 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
             dw.setVisible(true);
         }
         else if (e.getSource() == jmiFileProperties){
-            File file =  ((FileNode)paths[0].getLastPathComponent()).getFile();
-            //show file and associated track properties
-            ArrayList alItems = new ArrayList(2);
-            alItems.add(file);
-            alItems.add(file.getTrack());
-            new PropertiesWizard(alItems,true);
+            ArrayList alItems1 = new ArrayList<IPropertyable>(1); //file items
+            ArrayList alItems2 = new ArrayList<IPropertyable>(1); //tracks items
+            if (alSelected.size() == 1){
+                File file =  (File)alSelected.get(0);
+                //show file and associated track properties
+                alItems1.add(file);
+                alItems2.add(file.getTrack());
+            }
+            else{
+                for (IPropertyable pa:alSelected){
+                    File file = (File)pa;
+                    alItems1.add(file);
+                    alItems2.add(file.getTrack());
+                }
+            }
+            new PropertiesWizard(alItems1,alItems2);
         }
         else if (e.getSource() == jmiDirProperties){
             Directory dir =  ((DirectoryNode)paths[0].getLastPathComponent()).getDirectory();

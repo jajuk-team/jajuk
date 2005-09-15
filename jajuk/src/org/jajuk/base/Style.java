@@ -20,7 +20,6 @@
 package org.jajuk.base;
 
 import org.jajuk.i18n.Messages;
-import org.jajuk.util.Util;
 
 /**
  * A music style ( jazz, rock...)
@@ -113,7 +112,7 @@ public class Style extends PropertyAdapter implements Comparable{
      * Get item description
      */
     public String getDesc(){
-        return Util.formatPropertyDesc(Messages.getString("Item_Style")+" : "+getName2());
+        return Messages.getString("Item_Style")+" : "+getName2();
     }
       
 /* (non-Javadoc)

@@ -53,9 +53,7 @@ public interface IPropertyable {
 	 */
 	public Object getValue(String sKey);
     
-    public int getIntValue(String sKey);
     public long getLongValue(String sKey);
-    public float getFloatValue(String sKey);
     public double getDoubleValue(String sKey);
     public String getStringValue(String sKey);
     public boolean getBooleanValue(String sKey);
@@ -79,7 +77,7 @@ public interface IPropertyable {
 	 * Set a property if it doesn't exist yet
 	 * @param Property meta data
 	 */
-	public void setDefaultProperty(PropertyMetaInformation meta);
+	public void populateDefaultProperty(PropertyMetaInformation meta);
 	
 	/**
 	 * Remove a property

@@ -24,7 +24,6 @@ import java.util.Collections;
 import java.util.Iterator;
 
 import org.jajuk.i18n.Messages;
-import org.jajuk.util.Util;
 
 /**
  *  An Album
@@ -82,7 +81,7 @@ public class Album extends PropertyAdapter implements Comparable{
 	 * return tracks associated with this item
 	 * @return tracks associated with this item
 	 */
-	public ArrayList getTracks() {
+	public ArrayList<Track> getTracks() {
 		ArrayList alTracks = new ArrayList(10);
 		Iterator it = TrackManager.getInstance().getItems().iterator();
 		while ( it.hasNext()){
@@ -123,7 +122,7 @@ public class Album extends PropertyAdapter implements Comparable{
      * Get item description
      */
     public String getDesc(){
-        return Util.formatPropertyDesc(Messages.getString("Item_Album")+" : "+getName2());
+        return Messages.getString("Item_Album")+" : "+getName2();
     }
  
  

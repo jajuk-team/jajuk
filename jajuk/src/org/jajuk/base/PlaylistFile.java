@@ -710,7 +710,7 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
      * Get item description
      */
     public String getDesc(){
-        return Util.formatPropertyDesc(Messages.getString("Item_Playlist_File")+" : "+getName());
+        return Messages.getString("Item_Playlist_File")+" : "+getName();
     }
     
 /* (non-Javadoc)

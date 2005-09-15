@@ -27,6 +27,8 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
+import org.jajuk.base.IPropertyable;
+
 
 /**
  *  An abstract physical or logical tree view. Contains common methods
@@ -45,8 +47,8 @@ public abstract class AbstractTreeView extends ViewAdapter {
     /** Current selection */
     TreePath[] paths;
     
-      /**Items selection*/
-    ArrayList alSelected;
+    /**Items selection*/
+    ArrayList<IPropertyable> alSelected;
     
      /** Top tree node */
     DefaultMutableTreeNode top;

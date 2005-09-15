@@ -172,12 +172,6 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
                 int iSelection = jtable.rowAtPoint(e.getPoint());
                 jtable.getSelectionModel().setSelectionInterval(iSelection,iSelection);
             }
-            if ( jtable.getSelectedRowCount() > 1){
-                jmiProperties.setEnabled(false); //can read a property from one sole file
-            }
-            else{
-                jmiProperties.setEnabled(true); 
-            }
             jmenuFile.show(jtable,e.getX(),e.getY());
         }
     }
@@ -245,13 +239,24 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
                 }
                 //properties
                 else if ( e.getSource() == jmiProperties){
-                    File file = (File)model.getItemAt(
-                        jtable.convertRowIndexToModel(jtable.getSelectedRow()));
-                    //show file and associated track properties
-                    ArrayList alItems = new ArrayList(2);
-                    alItems.add(file);
-                    alItems.add(file.getTrack());
-                    new PropertiesWizard(alItems,true);
+                    ArrayList alItems1 = new ArrayList<IPropertyable>(1); //file items
+                    ArrayList alItems2 = new ArrayList<IPropertyable>(1); //tracks items
+                    if (jtable.getSelectedRowCount() == 1){ //mono selection
+                        File file = (File)model.getItemAt(
+                                jtable.convertRowIndexToModel(jtable.getSelectedRow()));
+                        //show file and associated track properties
+                        alItems1.add(file);
+                        alItems2.add(file.getTrack());
+                    }
+                    else{//multi selection
+                        for (int i=jtable.getSelectionModel().getMinSelectionIndex();i<=jtable.getSelectionModel().getMaxSelectionIndex();i++){
+                            File file = (File)model.getItemAt(
+                                    jtable.convertRowIndexToModel(i));
+                            alItems1.add(file);
+                            alItems2.add(file.getTrack());
+                        }
+                    }
+                    new PropertiesWizard(alItems1,alItems2);
                 }
             }
         }.start();

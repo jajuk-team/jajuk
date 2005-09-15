@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.jajuk.i18n.Messages;
-import org.jajuk.util.Util;
 
 /**
  *  A playlist
@@ -171,7 +170,7 @@ public class Playlist extends PropertyAdapter implements Comparable{
      * Get item description
      */
     public String getDesc(){
-        return Util.formatPropertyDesc(Messages.getString("Item_Playlist")+" : "+getName());
+        return Messages.getString("Item_Playlist")+" : "+getName();
     }
        
 }

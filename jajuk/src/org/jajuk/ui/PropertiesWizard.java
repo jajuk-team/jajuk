@@ -22,27 +22,33 @@ package org.jajuk.ui;
 
 import info.clearthought.layout.TableLayout;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.StringTokenizer;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.JFrame;
+import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
+import org.jajuk.Main;
+import org.jajuk.base.Album;
 import org.jajuk.base.Event;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.IPropertyable;
 import org.jajuk.base.ItemManager;
 import org.jajuk.base.ObservationManager;
+import org.jajuk.base.PropertyMetaInformation;
 import org.jajuk.base.Track;
+import org.jajuk.i18n.Messages;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jdesktop.swingx.decorator.Filter;
@@ -57,51 +63,83 @@ import org.jdesktop.swingx.table.TableColumnExt;
  * @author Bertrand Florat
  * @created 6 juin 2005
  */
-public class PropertiesWizard extends JFrame implements ITechnicalStrings {
-
+public class PropertiesWizard extends JDialog implements ITechnicalStrings,ActionListener {
+    
+    /**Close button*/
+    JButton jbClose;
+    
+    /** Layout dimensions*/
+    double[][] dSize = { { 0.99 }, { 0.99,20,20,20}};
+        
 	
 	/**
 	 * Constructor
 	 * 
-	 * @param pa  the item to display
+	 * @param pa the item to display
 	 */
 	public PropertiesWizard(IPropertyable pa) {
-	    super(pa.getStringValue(XML_NAME));
-		setIconImage(Util.getIcon(ICON_LOGO).getImage());
-		getContentPane().add(new PropertiesPanel(new PropertiesTableModel(pa),pa.getDesc(),false));
-		Util.setShuffleLocation(this, 400, 400);
-		pack();
-		setVisible(true);
-	}
+	    super(Main.getWindow(), pa.getStringValue(XML_NAME),true); //modal
+	    setLayout(new TableLayout(dSize));
+	    getContentPane().add(new PropertiesPanel(new PropertiesTableModel(pa),pa.getDesc()),"0,0"); 
+        display();
+   }
 	
 	/**
-	 * Constructor
+	 * Constructor for normal wizard with only one wizard panel and n items to display 
 	 * 
-	 * @param pa  the item to display
-     * @param bDistinct: whether we display only one window with merge data or n windows
-	 */
-	public PropertiesWizard(ArrayList alItems,boolean bDistinct) {
-		//use first item for title
-		super(((IPropertyable)alItems.get(0)).getStringValue(XML_NAME));
-		getContentPane().setLayout(new BoxLayout(getContentPane(),BoxLayout.Y_AXIS));
-		setIconImage(Util.getIcon(ICON_LOGO).getImage());
-		if (bDistinct){
-		    Iterator it = alItems.iterator();
-		    while (it.hasNext()){
-                IPropertyable item = (IPropertyable)it.next();
-		        getContentPane().add(new PropertiesPanel(new PropertiesTableModel(item),item.getDesc(),false));    
-		        getContentPane().add(Box.createHorizontalStrut(30));
-		    }    
+	 * @param alItems items to display
+    */
+	public PropertiesWizard(ArrayList<IPropertyable> alItems) {
+        //windows title: name of the element of only one item, or "selection" word otherwise
+		super(Main.getWindow(),alItems.size()==1 ? ((IPropertyable)alItems.get(0)).getDesc():Messages.getString("PropertiesWizard.6"),true); //modal
+        setLayout(new TableLayout(dSize));
+        getContentPane().add(new PropertiesPanel(new PropertiesTableModel(alItems),Messages.getString("PropertiesWizard.6")),"0,0");    
+        display();
+    }
+    
+    
+    /**
+     * Constructor for file wizard for ie with 2 wizard panels and n items to display 
+     * 
+     * @param alItems1 items to display in the first wizard panel (file for ie)
+     * @param alItems2 items to display in the second panel (associated track for ie )
+    */
+    public PropertiesWizard(ArrayList<IPropertyable> alItems1,ArrayList<IPropertyable> alItems2) {
+        //windows title: name of the element of only one item, or "selection" word otherwise
+        super(Main.getWindow(),alItems1.size()==1 ? ((IPropertyable)alItems1.get(0)).getDesc():Messages.getString("PropertiesWizard.6"),true); //modal
+        setLayout(new TableLayout(dSize));
+        JPanel jpProperties = new JPanel();
+        jpProperties.setLayout(new BoxLayout(jpProperties,BoxLayout.Y_AXIS));
+        if (alItems1.size() == 1){
+            jpProperties.add(new PropertiesPanel(new PropertiesTableModel(alItems1.get(0)),alItems1.get(0).getDesc()));    
+            jpProperties.add(Box.createVerticalStrut(20));
+            jpProperties.add(new PropertiesPanel(new PropertiesTableModel(alItems2.get(0)),alItems2.get(0).getDesc()));    
         }
         else{
-            getContentPane().add(new PropertiesPanel(new PropertiesTableModel(alItems),"",true));    
-            getContentPane().add(Box.createHorizontalStrut(30));
+            jpProperties.add(new PropertiesPanel(new PropertiesTableModel(alItems1),Util.formatPropertyDesc(Messages.getString("Property_files"))));    
+            jpProperties.add(Box.createVerticalStrut(20));
+            jpProperties.add(new PropertiesPanel(new PropertiesTableModel(alItems2),Util.formatPropertyDesc(Messages.getString("Property_tracks"))));
         }
-		Util.setShuffleLocation(this, 400, 400);
-		pack();
-		setVisible(true);
-	}
+        getContentPane().add(jpProperties,"0,0");
+        display();
+    }
 
+    private void display(){
+        //Close button
+        jbClose = new JButton(Messages.getString("Close"));
+        jbClose.addActionListener(this);
+        getContentPane().add(jbClose,"0,2");
+        pack();
+        Util.setCenteredLocation(this);
+        setVisible(true);
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == jbClose){
+            dispose();
+        }
+    }
+    
 	/**
 	 * 
 	 * A properties panel
@@ -109,31 +147,32 @@ public class PropertiesWizard extends JFrame implements ITechnicalStrings {
 	 *
 	 */
 	class PropertiesPanel extends JPanel implements TableModelListener {
-		/** Item to show */
-		IPropertyable pa;
-		
-		JPanel jpTable;
+		        
+		/**table*/
+        JPanel jpTable;
 		
 		/**Item description*/
 		JLabel jlDesc;
 		
-		/** Properties table */
+    	/** Properties table */
 		JajukTable jtable;
 		
 		/**Model*/
 		PropertiesTableModel model;
-		
+        
+                        
 		/**
 		 * Property panel
-		 * @param pa
-		 */
-		PropertiesPanel(PropertiesTableModel model,String sDesc,boolean bMultiple) {
-			this.model = model;
+		 * @param model properties model
+         * @param sDesc Description (title)
+         */
+		PropertiesPanel(PropertiesTableModel model,String sDesc) {
+		    this.model = model;
 			int iX_SEPARATOR = 5;
 			int iY_SEPARATOR = 10;
 			int iY_ROW_HEIGHT = 20;
 			//desc
-			jlDesc = new JLabel(sDesc);
+			jlDesc = new JLabel(Util.formatPropertyDesc(sDesc));
 			//add panels
 			jtable = new JajukTable(model);
 			//listen for table changes
@@ -151,7 +190,8 @@ public class PropertiesWizard extends JFrame implements ITechnicalStrings {
 						PropertiesTableModel model = (PropertiesTableModel) jtable.getModel();
 						if (model.isLinkable(iRow)) {
 							//display given property wizard. files properties in track have to display one window by file 
-							String sProperty = (String) model.getValueAt(iRow,5);
+							PropertyMetaInformation meta = (PropertyMetaInformation) model.getValueAt(iRow,5);
+                            String sProperty = meta.getName();
 							String sValue = (String) model.getValueAt(iRow, 6);
 							if (XML_FILES.equals(sProperty)) {
 								StringTokenizer st = new StringTokenizer(sValue, ",");
@@ -173,16 +213,16 @@ public class PropertiesWizard extends JFrame implements ITechnicalStrings {
 				}
 			});
 			jtable.setRowHeight(iY_ROW_HEIGHT);
-			add(jlDesc, "0,0");
-			add(new JScrollPane(jtable), "0,2");
-			//Hide all album columns is not required
-			if (!(pa instanceof Track) || bMultiple) {
+		    add(jlDesc, "0,0");
+        	add(new JScrollPane(jtable), "0,2");
+			//Show all album columns only for single track panel
+			if (!(model.getPa() instanceof Track) || model.isMultiple()) {
 				TableColumnExt col = jtable.getColumnExt(3);
 				col.setVisible(false);
 			}
-            if (bMultiple){//if multiple selection, hide links and editable
-                jtable.getColumnExt(0).setVisible(false);
-                jtable.getColumnExt(4).setVisible(false);
+            if (model.isMultiple()){//if multiple selection, hide links and editable
+               jtable.getColumnExt(0).setVisible(false);
+               jtable.getColumnExt(2).setVisible(false); //after hiding previous columns, links col index is now 2
             }
 			jtable.packAll();
    	}
@@ -191,20 +231,47 @@ public class PropertiesWizard extends JFrame implements ITechnicalStrings {
 		 * @see javax.swing.event.TableModelListener#tableChanged(javax.swing.event.TableModelEvent)
 		 */
 		public void tableChanged(TableModelEvent e) {
-			if (e.getColumn() == 2){
-				String sKey = (String)jtable.getModel().getValueAt(e.getFirstRow(),5);
-				String sValue = (String)jtable.getModel().getValueAt(e.getFirstRow(),2);
-		        IPropertyable newItem = ItemManager.changeItem(pa,sKey,sValue);
-                if (newItem != null){ //null means same item but with others custom properties, no need to refresh
-                    this.pa = newItem;
-                    PropertiesTableModel newModel = new PropertiesTableModel(newItem);
-                    jtable.setModel(newModel);
-                    jtable.packAll();
-                    newModel.addTableModelListener(this);
-                    jlDesc.setText(pa.getDesc());
-                    ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH)); //TBI see later for a smarter event
+		    PropertyMetaInformation meta = (PropertyMetaInformation)jtable.getModel().getValueAt(e.getFirstRow(),5);
+            String sKey = meta.getName();
+		    String sValue = (String)jtable.getModel().getValueAt(e.getFirstRow(),2);
+		    if (e.getColumn() == 2){
+		        if (model.isMultiple()){ 
+                    /*multiple items case, in this case, we just change a non-constructor attribute on the same item
+                    because in multiple mode, we cannot change constructor methods*/      
+                   for (IPropertyable pa : model.getItems()){
+                       ItemManager.changeItem(pa,sKey,sValue);
+                   }
+		        }
+                else{ //single item case, in this case, we can change constructor attributes so we can overwrite current item by a new one
+                    //Is full album option is set for current line ?
+                    boolean bFullAlbum = (Boolean)model.getValueAt(e.getFirstRow(),3);
+                    //Apply to full album if selected (do it first because after, current item could be changed and checkbox reseted)
+                    if (model.getPa() instanceof Track && bFullAlbum){
+                        Track track = (Track)model.getPa(); 
+                        Album album = track.getAlbum();
+                        ArrayList<Track> alTracksToChange = album.getTracks();
+                        alTracksToChange.remove(model.getPa()); //we treat the current item separetly
+                        //now change property for each matching item
+                        for (Track trackToChange:alTracksToChange){
+                            ItemManager.changeItem(trackToChange,sKey,sValue);
+                        }
+                    }
+                    //then change current item
+                    IPropertyable newItem = ItemManager.changeItem(model.getPa(),sKey,sValue);
+                    if (!newItem.equals(model.getPa())){ //check if item has change, if so, change current item 
+                        this.model = new PropertiesTableModel(newItem);
+                        //reset current full album values
+                        this.model.setValueAt(bFullAlbum,e.getFirstRow(),3); 
+                        jtable.setModel(this.model);
+                        jtable.packAll();
+                        this.model.addTableModelListener(this);
+                        jlDesc.setText(model.getPa().getDesc());
+                    }
                 }
+		        //UI refresh
+		        ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH)); //TBI see later for a smarter event
+		        
 			}
-		}
+        }
 	}
 }

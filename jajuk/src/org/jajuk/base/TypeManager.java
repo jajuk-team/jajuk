@@ -45,23 +45,23 @@ public class TypeManager extends ItemManager{
         super();
          //---register properties---
         //ID
-        registerProperty(new PropertyMetaInformation(XML_ID,false,true,false,false,String.class));
+        registerProperty(new PropertyMetaInformation(XML_ID,false,true,false,false,true,String.class,null,null));
         //Name
-        registerProperty(new PropertyMetaInformation(XML_NAME,false,true,true,false,String.class));
+        registerProperty(new PropertyMetaInformation(XML_NAME,false,true,true,false,true,String.class,null,null));
         //Extension
-        registerProperty(new PropertyMetaInformation(XML_TYPE_EXTENSION,false,true,true,false,String.class));
+        registerProperty(new PropertyMetaInformation(XML_TYPE_EXTENSION,false,true,true,false,false,String.class,null,null));
         //Player impl
-        registerProperty(new PropertyMetaInformation(XML_TYPE_PLAYER_IMPL,false,true,true,false,Class.class));
+        registerProperty(new PropertyMetaInformation(XML_TYPE_PLAYER_IMPL,false,true,true,false,false,Class.class,null,null));
         //Tag impl
-        registerProperty(new PropertyMetaInformation(XML_TYPE_TAG_IMPL,false,true,true,false,Class.class));
+        registerProperty(new PropertyMetaInformation(XML_TYPE_TAG_IMPL,false,true,true,false,false,Class.class,null,null));
         //Music 
-        registerProperty(new PropertyMetaInformation(XML_TYPE_IS_MUSIC,false,false,true,false,Boolean.class));
+        registerProperty(new PropertyMetaInformation(XML_TYPE_IS_MUSIC,false,false,true,false,false,Boolean.class,null,null));
         //Seek
-        registerProperty(new PropertyMetaInformation(XML_TYPE_SEEK_SUPPORTED,false,false,true,false,Boolean.class));
+        registerProperty(new PropertyMetaInformation(XML_TYPE_SEEK_SUPPORTED,false,false,true,false,false,Boolean.class,null,null));
         //Tech desc
-        registerProperty(new PropertyMetaInformation(XML_TYPE_TECH_DESC,false,false,true,false,String.class));
+        registerProperty(new PropertyMetaInformation(XML_TYPE_TECH_DESC,false,false,true,false,true,String.class,null,null));
         //Icon
-        registerProperty(new PropertyMetaInformation(XML_TYPE_ICON,false,false,false,false,String.class));
+        registerProperty(new PropertyMetaInformation(XML_TYPE_ICON,false,false,false,false,false,String.class,null,null));
    }
 
     /**

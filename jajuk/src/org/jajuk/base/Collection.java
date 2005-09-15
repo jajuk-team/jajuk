@@ -296,10 +296,11 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
                 boolean bConstructor = Boolean.parseBoolean(attributes.getValue(attributes.getIndex(XML_CONSTRUCTOR)));
                 boolean bShouldBeDisplayed = Boolean.parseBoolean(attributes.getValue(attributes.getIndex(XML_VISIBLE)));
                 boolean bEditable = Boolean.parseBoolean(attributes.getValue(attributes.getIndex(XML_EDITABLE)));
+                boolean bUnique = Boolean.parseBoolean(attributes.getValue(attributes.getIndex(XML_UNIQUE)));
                 Class cType = Class.forName(attributes.getValue(attributes.getIndex(XML_TYPE)));
                 String sFormat = attributes.getValue(attributes.getIndex(XML_FORMAT));
                 String sDefaultValue = attributes.getValue(attributes.getIndex(XML_DEFAULT_VALUE));
-                PropertyMetaInformation meta = new PropertyMetaInformation(sPropertyName,bCustom,bConstructor,bShouldBeDisplayed,bEditable,cType,sFormat,sDefaultValue);
+                PropertyMetaInformation meta = new PropertyMetaInformation(sPropertyName,bCustom,bConstructor,bShouldBeDisplayed,bEditable,bUnique,cType,sFormat,sDefaultValue);
                 if (manager.getMetaInformation(sPropertyName) == null){ //standard properties are already loaded
                     manager.registerProperty(meta);    
                 }

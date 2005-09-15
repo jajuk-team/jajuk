@@ -154,9 +154,9 @@ public class NewPropertyWizard extends CustomPropertyWizard implements KeyListen
             if (sFormat.trim() == "") {
                 sFormat = null;
             }
-            PropertyMetaInformation meta = new PropertyMetaInformation(sProperty,true,false,true,true,cFormat,sFormat,sDefault);
+            PropertyMetaInformation meta = new PropertyMetaInformation(sProperty,true,false,true,true,false,cFormat,sFormat,sDefault);
             im.registerProperty(meta);
-            im.applyNewProperty(meta);
+           // im.applyNewProperty(meta);
             Properties properties = new Properties();
             properties.put(DETAIL_CONTENT,sProperty);
             Event event = new Event(EVENT_CUSTOM_PROPERTIES_ADD,properties);

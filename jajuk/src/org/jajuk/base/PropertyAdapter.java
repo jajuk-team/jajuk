@@ -22,7 +22,6 @@ package org.jajuk.base;
 
 import java.io.Serializable;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
@@ -36,6 +35,9 @@ import org.xml.sax.Attributes;
 
 /**
  * Generic property handler, mother class for all items
+ * <p>Note that some properties can be omitted (not in properties object), 
+ * in this case, we take default value given in meta infos, this can
+ * decrease collection fiel size</p>
  * @author Bertrand Florat 
  * @created 17 oct. 2003
  */
@@ -76,6 +78,22 @@ abstract public class PropertyAdapter implements IPropertyable, Serializable,ITe
         return sName;
     }
     
+    /**
+     * Equals method, two propertyable are equals if all properties are equals
+     */
+    public boolean equals(Object other){
+        IPropertyable paOther = (IPropertyable)other;
+        for (Object oKey : paOther.getProperties().keySet()){
+            //if the property is known and equals
+            if (!properties.containsKey(oKey) 
+                    || properties.get(oKey) == null 
+                    || !properties.get(oKey).equals(paOther.getValue((String)oKey))){
+                return false;
+            }
+        }
+        return true;
+    }
+    
     /*
 	 * (non-Javadoc)
 	 * 
@@ -94,112 +112,59 @@ abstract public class PropertyAdapter implements IPropertyable, Serializable,ITe
 	 * @see org.jajuk.base.Propertyable#getProperty(java.lang.String)
 	 */
 	public Object getValue(String sKey) {
-		if ( sKey == null ){
-			return null;
+		//look at properties to check the given property is known
+	    if ( !getProperties().containsKey(sKey)){ //no? take property default
+            return getDefaultValue(sKey);
 		}
-		//get property singleton
-        LinkedHashMap properties = getProperties();
-		if ( !properties.containsKey(sKey)){ //no more? return null
-			return null;
-		}
-		return properties.get(sKey); //return property value
+		return getProperties().get(sKey); //return property value
 	}
     
     
-    public int getIntValue(String sKey){
-        Integer i = (Integer)getValue(sKey);
-        //property not defined, look for a default
-        if (i == null){
-            PropertyMetaInformation meta = getMeta(sKey);
-            if (meta.getType().equals(Integer.class) && meta.getDefaultValue() != null){
-                //OK, return default
-                return Integer.parseInt(meta.getDefaultValue());
-            }
-            else{//no default? return 0
-                return 0;
-            }
-        }
-        return i;
-    }
-    
     public long getLongValue(String sKey){
-        Long l = (Long)getValue(sKey);
-        //property not defined, look for a default
-        if (l == null){
-            PropertyMetaInformation meta = getMeta(sKey);
-            if (meta.getType().equals(Long.class) && meta.getDefaultValue() != null){
-                //OK, return default
-                return Long.parseLong(meta.getDefaultValue());
-            }
-            else{//no default? return 0
-                return 0l;
-            }
+        //look at properties to check the given property is known
+        if ( !getProperties().containsKey(sKey)){ //no? take property default
+            return (Long)getDefaultValue(sKey);
         }
-        return l;
+        return (Long)getProperties().get(sKey); //return property value
     }
     
-    public float getFloatValue(String sKey){
-        Float f = (Float)getValue(sKey);
-        //property not defined, look for a default
-        if (f == null){
-            PropertyMetaInformation meta = getMeta(sKey);
-            if (meta.getType().equals(Float.class) && meta.getDefaultValue() != null){
-                //OK, return default
-                return Float.parseFloat(meta.getDefaultValue());
-            }
-            else{//no default? return 0
-                return 0f;
-            }
-        }
-        return f;
-    
-    }
-    
+        
     public double getDoubleValue(String sKey){
-        Double d = (Double)getValue(sKey);
-        //property not defined, look for a default
-        if (d == null){
-            PropertyMetaInformation meta = getMeta(sKey);
-            if (meta.getType().equals(Double.class) && meta.getDefaultValue() != null){
-                //OK, return default
-                return Double.parseDouble(meta.getDefaultValue());
-            }
-            else{//no default? return 0
-                return 0d;
-            }
+       //look at properties to check the given property is known
+        if ( !getProperties().containsKey(sKey)){ //no? take property default
+            return (Double)getDefaultValue(sKey);
         }
-        return d;
-    
-    }
+        return (Double)getProperties().get(sKey); //return property value
+     }
     
     public String getStringValue(String sKey){
-        Object o = getValue(sKey);
-        if (o == null){
-            return "";
+        //look at properties to check the given property is known
+        if ( !getProperties().containsKey(sKey)){ //no? take property default
+            return (String)getDefaultValue(sKey);
         }
-        return o.toString();
+        return (String)getProperties().get(sKey); //return property value
     }
     
     public boolean getBooleanValue(String sKey){
-        Boolean b = (Boolean)getValue(sKey);
-        //property not defined, look for a default
-        if (b == null){
-            PropertyMetaInformation meta = getMeta(sKey);
-            if (meta.getType().equals(Boolean.class) && meta.getDefaultValue() != null){
-                //OK, return default
-                return Boolean.parseBoolean(meta.getDefaultValue());
-            }
-            else{//no default? return false
-                return false;
-            }
+        //look at properties to check the given property is known
+        if ( !getProperties().containsKey(sKey)){ //no? take property default
+            return (Boolean)getDefaultValue(sKey);
         }
-        return b;
+        return (Boolean)getProperties().get(sKey); //return property value
     }
     
     public Date getDateValue(String sKey){
-        return (Date)getValue(sKey);
+        //look at properties to check the given property is known
+        if ( !getProperties().containsKey(sKey)){ //no? take property default
+            return (Date)getDefaultValue(sKey);
+        }
+        return (Date)getProperties().get(sKey); //return property value}
     }
-	  
+    
+    public Object getDefaultValue(String sKey){
+        PropertyMetaInformation meta = getMeta(sKey);
+        return meta.getDefaultValue();
+    }
     
     /*
      * (non-Javadoc)
@@ -233,64 +198,8 @@ abstract public class PropertyAdapter implements IPropertyable, Serializable,ITe
     /* (non-Javadoc)
      * @see org.jajuk.base.IPropertyable#setDefaultProperty(java.lang.String, java.lang.String)
      */
-    public void setDefaultProperty(PropertyMetaInformation meta) {
-        //Supported types: long,double,string,date, boolean, class
-        Object oValue = "";
-        String sDefault = meta.getDefaultValue();
-        if (meta.getType() == Long.class){
-            if (sDefault == null){
-                oValue = 0l;
-            }
-            else{
-                oValue = new Long(meta.getDefaultValue());
-            }
-        }
-        else if (meta.getType() == Double.class){
-            if (sDefault == null){
-                oValue = 0;
-            }
-            else{
-                oValue = new Integer(meta.getDefaultValue());
-            }
-        }
-        else if (meta.getType() == String.class){
-            if (sDefault == null){
-                oValue = "";
-            }
-            else{
-                oValue = meta.getDefaultValue();
-            }
-        }
-        else if (meta.getType() == Boolean.class){
-            if (sDefault == null){
-                oValue = false;
-            }
-            else{
-                oValue = new Boolean(meta.getDefaultValue());
-            }
-        }
-        else if (meta.getType() == Class.class){
-            if (sDefault == null){
-                oValue = null;
-            }
-            else{
-                oValue = meta.getDefaultValue();
-            }
-        }
-        else if (meta.getType() == Date.class){
-            if (sDefault == null){
-                oValue = new Date();
-            }
-            else{
-                try {
-                    oValue = new SimpleDateFormat(meta.getFormat()) .parseObject(meta.getDefaultValue());
-                }
-                catch (ParseException e) {
-                    Log.error(e);
-                }
-            }
-        }
-        properties.put(meta.getName(),oValue);
+    public void populateDefaultProperty(PropertyMetaInformation meta) {
+        properties.put(meta.getName(),meta.getDefaultValue());
     }
     
 	/**
@@ -412,7 +321,7 @@ abstract public class PropertyAdapter implements IPropertyable, Serializable,ITe
      * Default implementation for this method, simply return standard value
      */
     public String getHumanValue(String sKey){
-        return getStringValue(sKey);
+        return getValue(sKey).toString();
     }
     
     /**

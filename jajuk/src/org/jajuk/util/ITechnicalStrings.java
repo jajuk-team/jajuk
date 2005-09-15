@@ -545,6 +545,7 @@ public interface ITechnicalStrings {
     public static final String XML_CONSTRUCTOR = "constructor";  //constructor property flag
     public static final String XML_VISIBLE = "visible";  //property should be displayed?
     public static final String XML_EDITABLE = "editable";  //property editable?
+    public static final String XML_UNIQUE = "unique";  //property unique?
     public static final String XML_CUSTOM = "custom"; //custom property flag 
     public static final String XML_PROPERTY = "property"; //property 
     public static final String XML_DEFAULT_VALUE = "default_value"; //default value 

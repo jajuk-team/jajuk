@@ -57,17 +57,17 @@ public class FileManager extends ItemManager implements Observer{
 		super();
           //---register properties---
         //ID
-        registerProperty(new PropertyMetaInformation(XML_ID,false,true,false,false,String.class));
+        registerProperty(new PropertyMetaInformation(XML_ID,false,true,false,false,true,String.class,null,null));
         //Name
-        registerProperty(new PropertyMetaInformation(XML_NAME,false,true,true,true,String.class));
+        registerProperty(new PropertyMetaInformation(XML_NAME,false,true,true,true,true,String.class,null,null));
         //Directory
-        registerProperty(new PropertyMetaInformation(XML_DIRECTORY,false,true,true,false,String.class));
+        registerProperty(new PropertyMetaInformation(XML_DIRECTORY,false,true,true,false,false,String.class,null,null));
         //Track
-        registerProperty(new PropertyMetaInformation(XML_TRACK,false,true,true,false,String.class));
+        registerProperty(new PropertyMetaInformation(XML_TRACK,false,true,true,false,false,String.class,null,null));
         //Size
-        registerProperty(new PropertyMetaInformation(XML_SIZE,false,true,true,false,Integer.class));
+        registerProperty(new PropertyMetaInformation(XML_SIZE,false,true,true,false,false,Integer.class,null,null));
         //Quality
-        registerProperty(new PropertyMetaInformation(XML_QUALITY,false,true,true,false,Integer.class,null,"0"));
+        registerProperty(new PropertyMetaInformation(XML_QUALITY,false,true,true,false,false,Integer.class,null,"0"));
   }
 
     /**
@@ -105,7 +105,11 @@ public class FileManager extends ItemManager implements Observer{
      * @return new file or null if an error occurs
      */
 	public File changeFileName(File fileOld,String sNewName){
-	    //check if this file still exists
+	    //check given name is different
+        if (fileOld.getName().equals(sNewName)){
+            return fileOld;
+        }
+        //check if this file still exists
         if (!fileOld.getIO().exists()){
             Messages.showErrorMessage("135");
             return  null;
@@ -157,6 +161,33 @@ public class FileManager extends ItemManager implements Observer{
         return fNew;
 	}
 
+    /**
+     * Change a file directory
+     * @param old old file
+     * @param newDir new dir
+     * @return new file or null if an error occurs
+     */
+    public File changeFileDirectory(File old,Directory newDir){
+        //recalculate file ID
+        String sNewId = MD5Processor.hash(new StringBuffer(newDir.getDevice().getName())
+            .append(newDir.getDevice().getUrl()).append(newDir.getRelativePath())
+            .append(old.getName()).toString());
+        //create a new file (with own fio and sAbs)
+        File fNew = new File(sNewId,old.getName(),newDir,old.getTrack(),old.getSize(),
+                old.getQuality());
+        fNew.setProperties(old.getProperties()); //transfert all properties (inc id)
+        fNew.setId(sNewId); //reset new id
+        //OK, remove old file and register this new file
+        removeFile(old);
+        if ( !hmItems.containsKey(sNewId)){
+            hmItems.put(sNewId,fNew);
+            alSortedFiles.add(fNew);
+        }
+        return fNew;
+    }
+
+    
+    
 	/**
 	 * Clean all references for the given device
 	 * @param sId : Device id
@@ -190,7 +221,7 @@ public class FileManager extends ItemManager implements Observer{
     }
     
 	/** Return all registred files */
-	public synchronized ArrayList getItems() {
+	public synchronized ArrayList<IPropertyable> getItems() {
 		if (alSortedFiles.size() == 0){
 		    alSortedFiles = new ArrayList(hmItems.values());
 		    sortFiles();

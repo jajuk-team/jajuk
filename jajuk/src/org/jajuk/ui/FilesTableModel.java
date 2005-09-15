@@ -211,7 +211,13 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
             Iterator it2 = FileManager.getInstance().getCustomProperties().iterator();
             for (int i=0;it2.hasNext();i++){
                 PropertyMetaInformation meta = (PropertyMetaInformation)it2.next();
-                oValues[iRow][iNumberStandardRows+i] = properties.get(meta.getName());
+                Object o = properties.get(meta.getName());
+                if (o != null){
+                    oValues[iRow][iNumberStandardRows+i] = properties.get(meta.getName());    
+                }
+                else{
+                    oValues[iRow][iNumberStandardRows+i] = meta.getDefaultValue();
+                }
                 bCellEditable[iRow][iNumberStandardRows+i] = true;
             }   
         }

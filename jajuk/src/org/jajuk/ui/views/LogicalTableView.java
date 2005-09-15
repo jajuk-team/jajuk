@@ -177,12 +177,6 @@ public class LogicalTableView extends AbstractTableView implements Observer{
                 int iSelection = jtable.rowAtPoint(e.getPoint());
                 jtable.getSelectionModel().setSelectionInterval(iSelection,iSelection);
             }
-            if ( jtable.getSelectedRowCount() > 1){
-                jmiProperties.setEnabled(false); //can read a property from one sole track
-            }
-            else{
-                jmiProperties.setEnabled(true); 
-            }
             jmenuTrack.show(jtable,e.getX(),e.getY());
         }
     }
@@ -254,9 +248,20 @@ public class LogicalTableView extends AbstractTableView implements Observer{
                 }
                 //properties
                 else if ( e.getSource() == jmiProperties){
-                    Track track = (Track)model.getItemAt(
-                        jtable.convertRowIndexToModel(jtable.getSelectedRow()));
-                    new PropertiesWizard(track);
+                    if (jtable.getSelectedRowCount() == 1){ //mono selection
+                        Track track = (Track)model.getItemAt(
+                                jtable.convertRowIndexToModel(jtable.getSelectedRow()));
+                      new PropertiesWizard(track);
+                    }
+                    else{//multi selection
+                        ArrayList alTracks = new ArrayList(10);
+                        for (int i=jtable.getSelectionModel().getMinSelectionIndex();i<=jtable.getSelectionModel().getMaxSelectionIndex();i++){
+                            Track track = (Track)model.getItemAt(
+                                    jtable.convertRowIndexToModel(i));
+                            alTracks.add(track);
+                        }
+                        new PropertiesWizard(alTracks);
+                    }
                 }
             }
         }.start();

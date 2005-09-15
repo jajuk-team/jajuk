@@ -285,7 +285,7 @@ public class File extends PropertyAdapter implements Comparable,ITechnicalString
      * Get item description
      */
     public String getDesc(){
-        return Util.formatPropertyDesc(Messages.getString("Item_File")+" : "+getName());
+        return Messages.getString("Item_File")+" : "+getName();
     }
       
 /* (non-Javadoc)

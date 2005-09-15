@@ -777,7 +777,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
      * Get item description
      */
     public String getDesc(){
-        return Util.formatPropertyDesc(Messages.getString("Item_Device")+" : "+getName());
+        return Messages.getString("Item_Device")+" : "+getName();
     }
    
     /* (non-Javadoc)

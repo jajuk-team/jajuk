@@ -28,6 +28,7 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.image.AreaAveragingScaleFilter;
 import java.awt.image.FilteredImageSource;
@@ -963,5 +964,13 @@ public class Util implements ITechnicalStrings {
      */
     public static void setShuffleLocation(Window window,int iFromTop,int iFromLeft){
         window.setLocation((int)(Math.random()*iFromTop),(int)(Math.random()*iFromLeft));
+    }
+    
+    /**
+     * Display given container in centred position
+     * @param container
+     */
+    public static void setCenteredLocation(Window window){
+        window.setLocation((int)(Toolkit.getDefaultToolkit().getScreenSize().getWidth()/2-window.getWidth()/2),(int)(Toolkit.getDefaultToolkit().getScreenSize().getHeight()/2-window.getHeight()/2));
     }
 }

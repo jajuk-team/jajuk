@@ -97,7 +97,7 @@ public abstract class ItemManager implements ITechnicalStrings{
         applyRemoveProperty(meta); //remove this property to all items
     }
     
-    /**Add new property to all items for the given manager*/
+    /*Add new property to all items for the given manager
     public void applyNewProperty(PropertyMetaInformation meta){
         Collection items = getItems();
         if (items != null){
@@ -105,10 +105,10 @@ public abstract class ItemManager implements ITechnicalStrings{
             while (it.hasNext()){
                 IPropertyable item = (IPropertyable)it.next();
                 //just initialize void fields
-                item.setDefaultProperty(meta);
+                item.populateDefaultProperty(meta);
             }    
         }
-    }   
+    }   */
           
     /**Remove a custom property to all items for the given manager*/
     public void applyRemoveProperty(PropertyMetaInformation meta) {
@@ -255,7 +255,7 @@ public abstract class ItemManager implements ITechnicalStrings{
     }
     
      /**Return all registred items*/
-    public synchronized Collection getItems() {
+    public synchronized Collection<IPropertyable> getItems() {
         return hmItems.values();
     }
     
@@ -285,10 +285,10 @@ public abstract class ItemManager implements ITechnicalStrings{
      * @param itemToChange
      * @param sKey
      * @param sValue
-     * @return the new item or null if the item is still the same
+     * @return the changed item
      */
     public static IPropertyable changeItem(IPropertyable itemToChange,String sKey,String sValue){
-        IPropertyable newItem = null;
+        IPropertyable newItem = itemToChange;;
         if (itemToChange instanceof File){
             File file = (File)itemToChange;
             if (XML_NAME.equals(sKey)){ //file name
@@ -319,7 +319,16 @@ public abstract class ItemManager implements ITechnicalStrings{
                 newItem = TrackManager.getInstance().changeTrackRate(file.getTrack(),sValue);
             }
             else{ //others properties
-                itemToChange. setProperty(sKey,sValue);
+                itemToChange.setProperty(sKey,sValue);
+            }
+        }
+        else if (itemToChange instanceof Directory){
+            Directory dir = (Directory)itemToChange;
+            if (XML_NAME.equals(sKey)){ //file name
+                newItem = DirectoryManager.getInstance().changeDirectoryName((Directory)itemToChange,sValue);
+            }
+            else{ //others properties
+                itemToChange.setProperty(sKey,sValue);
             }
         }
         else if (itemToChange instanceof Track){
@@ -348,7 +357,7 @@ public abstract class ItemManager implements ITechnicalStrings{
                 newItem = TrackManager.getInstance().changeTrackRate((Track)itemToChange,sValue);
             }
             else{ //others properties
-                itemToChange. setProperty(sKey,sValue);
+                itemToChange.setProperty(sKey,sValue);
             }
         }
         else if (itemToChange instanceof Album){
@@ -356,7 +365,7 @@ public abstract class ItemManager implements ITechnicalStrings{
                 newItem = AlbumManager.getInstance().changeAlbumName((Album)itemToChange,sValue);
             }
             else{ //others properties
-                itemToChange. setProperty(sKey,sValue);
+                itemToChange.setProperty(sKey,sValue);
             }
         }
         else if (itemToChange instanceof Author){
@@ -364,7 +373,7 @@ public abstract class ItemManager implements ITechnicalStrings{
                 newItem = AuthorManager.getInstance().changeAuthorName((Author)itemToChange,sValue);
             }
             else{ //others properties
-                itemToChange. setProperty(sKey,sValue);
+                itemToChange.setProperty(sKey,sValue);
             }
         }
         else if (itemToChange instanceof Style){

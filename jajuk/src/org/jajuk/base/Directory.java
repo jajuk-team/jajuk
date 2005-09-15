@@ -122,7 +122,7 @@ public class Directory extends PropertyAdapter implements Comparable{
     /**
      * @return
      */
-    public ArrayList getDirectories() {
+    public ArrayList<Directory> getDirectories() {
         return alDirectories;
     }
     
@@ -155,7 +155,7 @@ public class Directory extends PropertyAdapter implements Comparable{
      * return child files
      * @return child files
      */
-    public ArrayList getFiles() {
+    public ArrayList<org.jajuk.base.File> getFiles() {
         return alFiles;
     }
     
@@ -163,7 +163,7 @@ public class Directory extends PropertyAdapter implements Comparable{
      * return playlist files
      * @return playlist files
      */
-    public ArrayList getPlaylistFiles() {
+    public ArrayList<PlaylistFile> getPlaylistFiles() {
         return alPlaylistFiles;
     }
     
@@ -378,7 +378,7 @@ public class Directory extends PropertyAdapter implements Comparable{
         else{
             sName= getFio().getAbsolutePath();
         }
-        return Util.formatPropertyDesc(Messages.getString("Item_Directory")+" : "+sName);
+        return Messages.getString("Item_Directory")+" : "+sName;
     }
     
     /* (non-Javadoc)

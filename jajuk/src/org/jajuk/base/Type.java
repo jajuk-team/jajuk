@@ -22,7 +22,6 @@ package org.jajuk.base;
 import org.jajuk.i18n.Messages;
 import org.jajuk.players.IPlayerImpl;
 import org.jajuk.tag.ITagImpl;
-import org.jajuk.util.Util;
 
 /**
  * Music type 
@@ -116,7 +115,7 @@ public class Type extends PropertyAdapter{
      * Get item description
      */
     public String getDesc(){
-        return Util.formatPropertyDesc(Messages.getString("Type")+" : "+getName());
+        return Messages.getString("Type")+" : "+getName();
     }
 
 

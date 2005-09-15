@@ -57,6 +57,7 @@ import org.jajuk.base.Author;
 import org.jajuk.base.Event;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
+import org.jajuk.base.IPropertyable;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Observer;
 import org.jajuk.base.StackItem;
@@ -312,13 +313,11 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
                     jmiStyleProperties.setEnabled(false);
                     jmiAuthorProperties.setEnabled(false);
                     jmiAlbumProperties.setEnabled(false);
-                    jmiTrackProperties.setEnabled(false);
                 }
                 else{
                     jmiStyleProperties.setEnabled(true);
                     jmiAuthorProperties.setEnabled(true);
                     jmiAlbumProperties.setEnabled(true);
-                    jmiTrackProperties.setEnabled(true);
                 }
                 HashSet hsSelectedTracks = new HashSet(100);
                 int items = 0;
@@ -326,7 +325,7 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
                 alSelected = new ArrayList(tpSelected.length);
                 for (int i=0;i<tpSelected.length;i++){
                     Object o = tpSelected[i].getLastPathComponent();
-                    alSelected.add(((TransferableTreeNode)o).getData());
+                    alSelected.add((IPropertyable)((TransferableTreeNode)o).getData());
                     Enumeration e2 = ((DefaultMutableTreeNode)o).depthFirstEnumeration(); //return all childs nodes recursively
                     while ( e2.hasMoreElements()){
                         DefaultMutableTreeNode node = (DefaultMutableTreeNode)e2.nextElement();
@@ -538,7 +537,11 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
     public void actionPerformed(final ActionEvent e) {
         new Thread(){
             public void run(){
-                if (e.getSource() == jmiStyleProperties){
+                if ( (paths.length > 1) && (e.getSource() == jmiStyleProperties || e.getSource() == jmiAuthorProperties
+                || e.getSource() == jmiAlbumProperties || e.getSource() == jmiTrackProperties)){
+                    new PropertiesWizard(alSelected);
+                }
+                else if (e.getSource() == jmiStyleProperties){
                     Style style =  ((StyleNode)paths[0].getLastPathComponent()).getStyle();
                     new PropertiesWizard(style);
                 }

@@ -24,7 +24,6 @@ import java.util.Collections;
 import java.util.Iterator;
 
 import org.jajuk.i18n.Messages;
-import org.jajuk.util.Util;
 
 /**
  *  An author
@@ -125,7 +124,7 @@ public class Author extends PropertyAdapter implements Comparable{
 	 * Get item description
 	 */
 	public String getDesc(){
-	    return Util.formatPropertyDesc(Messages.getString("Item_Author")+" : "+getName2());
+	    return Messages.getString("Item_Author")+" : "+getName2();
 	}
 	
    

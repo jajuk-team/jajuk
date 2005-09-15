@@ -41,11 +41,11 @@ public class StyleManager extends ItemManager {
 		super();
         //register properties
         //ID
-        registerProperty(new PropertyMetaInformation(XML_ID,false,true,false,false,String.class));
+        registerProperty(new PropertyMetaInformation(XML_ID,false,true,false,false,true,String.class,null,null));
         //Name
-        registerProperty(new PropertyMetaInformation(XML_NAME,false,true,true,true,String.class));
+        registerProperty(new PropertyMetaInformation(XML_NAME,false,true,true,true,true,String.class,null,null));
         //Expand
-        registerProperty(new PropertyMetaInformation(XML_EXPANDED,false,false,false,false,Boolean.class,null,"false"));
+        registerProperty(new PropertyMetaInformation(XML_EXPANDED,false,false,false,false,false,Boolean.class,null,"false"));
 	}
 
     /**

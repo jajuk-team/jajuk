@@ -416,7 +416,7 @@ public class Track extends PropertyAdapter implements Comparable{
      * Get item description
      */
     public String getDesc(){
-        return Util.formatPropertyDesc(Messages.getString("Item_Track")+" : "+getName());
+        return Messages.getString("Item_Track")+" : "+getName();
     }
 
    
