@@ -19,6 +19,8 @@
  */
 package org.jajuk.util;
 
+import org.jajuk.Main;
+
 /**
  *  Contains all technical/ non-translatable strings
  * @author     Bertrand Florat
@@ -196,27 +198,26 @@ public interface ITechnicalStrings {
 	public static final String IMAGES_STAT_PAPER =  PATH_IMAGES + "No-Ones-Laughing-3.jpg";
 	
 	//files
-	public static final String FILE_JAJUK_DIR = System.getProperty("user.home")+"/.jajuk";
-	public static final String FILE_COLLECTION = System.getProperty("user.home")+"/.jajuk/collection.xml";
-	public static final String FILE_COLLECTION_EXIT = System.getProperty("user.home")+"/.jajuk/collection_exit.xml"; //FIle written by the exit hook
-    public static final String FILE_COLLECTION_EXIT_PROOF = System.getProperty("user.home")+"/.jajuk/exit_proof"; //Void file created after exit collection file
-    public static final String FILE_PERSPECTIVES_CONF = System.getProperty("user.home")+"/.jajuk/perspectives.xml";
-	public static final String FILE_PHYSICAL_PERSPECTIVE = System.getProperty("user.home")+"/.jajuk/physicalPerspectives.ser";
-	public static final String FILE_LOGICAL_PERSPECTIVE = System.getProperty("user.home")+"/.jajuk/logicalPerspectives.ser";
-	public static final String FILE_PLAYER_PERSPECTIVE = System.getProperty("user.home")+"/.jajuk/playerPerspectives.ser";
-	public static final String FILE_STAT_PERSPECTIVE = System.getProperty("user.home")+"/.jajuk/statPerspectives.ser";
-	public static final String FILE_HELP_PERSPECTIVE = System.getProperty("user.home")+"/.jajuk/helpPerspectives.ser";
-	public static final String FILE_CONFIGURATION_PERSPECTIVE = System.getProperty("user.home")+"/.jajuk/configurationPerspectives.ser";
-	public static final String FILE_CONFIGURATION = System.getProperty("user.home")+"/.jajuk/conf.properties";
-	public static final String FILE_HISTORY = System.getProperty("user.home")+"/.jajuk/history.xml";
-	public static final String FILE_LOCK = System.getProperty("user.home")+"/.jajuk/.lock";
+	public static final String FILE_JAJUK_DIR = System.getProperty("user.home")+(Main.isDebugMode()?"/.jajuk_debug":"/.jajuk");
+	public static final String FILE_COLLECTION = FILE_JAJUK_DIR+"/collection.xml";
+	public static final String FILE_COLLECTION_EXIT = FILE_JAJUK_DIR+"/collection_exit.xml"; //FIle written by the exit hook
+    public static final String FILE_COLLECTION_EXIT_PROOF = FILE_JAJUK_DIR+"/exit_proof"; //Void file created after exit collection file
+    public static final String FILE_PERSPECTIVES_CONF = FILE_JAJUK_DIR+"/perspectives.xml";
+	public static final String FILE_PHYSICAL_PERSPECTIVE = FILE_JAJUK_DIR+"/physicalPerspectives.ser";
+	public static final String FILE_LOGICAL_PERSPECTIVE = FILE_JAJUK_DIR+"/logicalPerspectives.ser";
+	public static final String FILE_PLAYER_PERSPECTIVE = FILE_JAJUK_DIR+"/playerPerspectives.ser";
+	public static final String FILE_STAT_PERSPECTIVE = FILE_JAJUK_DIR+"/statPerspectives.ser";
+	public static final String FILE_HELP_PERSPECTIVE = FILE_JAJUK_DIR+"/helpPerspectives.ser";
+	public static final String FILE_CONFIGURATION_PERSPECTIVE = FILE_JAJUK_DIR+"/configurationPerspectives.ser";
+	public static final String FILE_CONFIGURATION = FILE_JAJUK_DIR+"/conf.properties";
+	public static final String FILE_HISTORY = FILE_JAJUK_DIR+"/history.xml";
+	public static final String FILE_LOCK = FILE_JAJUK_DIR+"/.lock";
 	public static final String FILE_DEFAULT_COVER = "cover";
 	public static final String FILE_DEFAULT_COVER_2 = "front";
 	public static final String FILE_ABSOLUTE_DEFAULT_COVER = "jajuk-default-cover.";
 	public static final String FILE_LANGPACK_PART1 = "jajuk"; //langpack name : jajuk_<locale>.properties
 	public static final String FILE_LANGPACK_PART2 = ".properties"; //langpack name : jajuk_<locale>.properties
-    public static final String FILE_LOGS = "jajuk.log"; //logs
-    public static final String FILE_LOGS_DEBUG = ".jajuk_debug.log"; //debug logs
+    public static final String FILE_LOGS = FILE_JAJUK_DIR+"/jajuk.log"; //logs
     public static final String FILE_LOG4j_CONF = PATH_LOG_CONF +"jajuk-log4j-conf.xml"; 
     
 	//players impls

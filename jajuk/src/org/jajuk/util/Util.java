@@ -636,11 +636,11 @@ public class Util implements ITechnicalStrings {
 	public static void setExecLocation(boolean bDebug){
 		if ( bDebug){
 			sExecLocation = "file:"+System.getProperty("user.dir")+"/jajuk.jar"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		}
+	    }
 		else{
 			sExecLocation = Util.getJarLocation(Main.class).toString();
-		}
-	}
+    	}
+    }
 	
 	
 	/**

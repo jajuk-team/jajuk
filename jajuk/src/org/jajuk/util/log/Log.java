@@ -62,6 +62,7 @@ public class Log  implements ITechnicalStrings{
      */
     private   Log () {
         try {
+           System.setProperty("jajuk.log",FILE_LOGS); //set env variable used in the log4j conf file
            DOMConfigurator.configure(new URL(FILE_LOG4j_CONF));
            loggerRoot = Logger.getRootLogger();
            logger = Logger.getLogger(Log.class.getName());

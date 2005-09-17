@@ -4,6 +4,7 @@
 <project default='all' name='jajuk' basedir='..'>
   <!-- Only Explicit Release number-->
   <property name='version' value='1.0M2'/>
+  <property name='debug' value='-debug'/>
   <property name='rootdir' value='/tmp/jajuk-dist'/>
   <property name='distdir' value='${rootdir}/jajuk'/>
   <property name='rpmbuilddir_suse' value='${rootdir}/suse/RPMBUILD/'/>
@@ -42,9 +43,6 @@
      <fileset dir='${libdir}'/>
   	</copy>
   	<mkdir dir='${distdir}/bin'/>
-  	<copy todir='${distdir}/native' >
-     <fileset dir='${nativedir}'/>
-  	</copy>
   	<mkdir dir='${distdir}/${classdir}'/>
     <copy todir='${distdir}/src' >
      <fileset dir='${srcdir}' />
@@ -76,6 +74,11 @@
      <copy todir='${izpackdir}' >
      	<fileset file='${distfiles}/packaging/IzPack/jajuk.izpack'/>
      </copy>
+     <copy todir='${distdir}' >
+     	<fileset file='${basedir}/scripts/jajuk.sh'/>
+     	<fileset file='${basedir}/scripts/jajuk.bat'/>
+  	</copy>
+ 
   </target>
   
   
@@ -85,49 +88,7 @@
       	<fileset file='${basedir}/dist-files/packaging/native_launcher/*'/>
      </copy>
   </target>
-  
- <target name='replaces' description='o Set a the build time and release into jajuk code and packaging'>
-  <!-- Set build date --> 
-  <tstamp>
-      <format property='build.time' pattern='yyyy/MM/dd HH:mm'/>
-  </tstamp>    
-  <echo message='Build time: ${build.time}'/>
-  <replace dir='${distdir}/${srcdir}/org/jajuk/util' value='${build.time}'>
-  	<include name='ITechnicalStrings.java'/>
-  	<replacetoken>DATE_REPLACED_BY_ANT</replacetoken>
- </replace>
- <!-- Set release in code--> 
-  <replace dir='${distdir}/${srcdir}/org/jajuk/util' value='${version}'>
-  	<include name='ITechnicalStrings.java'/>
-  	<replacetoken>VERSION_REPLACED_BY_ANT</replacetoken>
- </replace>
- <!-- Set release in IzPack descriptor file--> 
- <replace dir='${izpackdir}' value='${version}'>
-  	<include name='jajuk.izpack'/>
-  	<replacetoken>VERSION_REPLACED_BY_ANT</replacetoken>
- </replace>
- <!-- Set release in native launcher descriptor file--> 
- <replace dir='${windowsdir}' value='${version}'>
-  	<include name='launcher.ini'/>
-  	<replacetoken>VERSION_REPLACED_BY_ANT</replacetoken>
- </replace>
- <!-- Set release in Suse RPM descriptor file--> 
- <replace dir='${rpmbuilddir_suse}/SPECS' value='${version}'>
-  	<include name='jajuk-suse.spec'/>
-  	<replacetoken>VERSION_REPLACED_BY_ANT</replacetoken>
- </replace>
- <!-- Set release in Mdk RPM descriptor file--> 
- <replace dir='${rpmbuilddir_mdk}/SPECS' value='${version}'>
-  	<include name='jajuk-mdk.spec'/>
-  	<replacetoken>VERSION_REPLACED_BY_ANT</replacetoken>
- </replace>
- <!-- Set release in user build.xml file--> 
- <replace dir='${distdir}' value='${version}'>
-  	<include name='build.xml'/>
-  	<replacetoken>VERSION_REPLACED_BY_ANT</replacetoken>
- </replace>
- </target>
-  
+   
  <target name='mkdist_rpm' description='o Create the RPM distribution structure' depends='clean'>
     <!-- Create structure-->
     	<!--Suse-->
@@ -176,9 +137,6 @@
     <copy todir='${rpmdistdir_suse}/usr/lib/jajuk/lib' >
     	<fileset dir='${basedir}/lib'/>
     </copy>
-    <copy todir='${rpmdistdir_suse}/usr/lib/jajuk/native' >
-    	<fileset file='${basedir}/native/*.so'/>
-    </copy>
     <copy todir='${rpmdistdir_suse}/usr/share/applications' >
     	<fileset file='${basedir}/dist-files/packaging/RPMS/suse/Jajuk.desktop'/>
     </copy>
@@ -199,9 +157,6 @@
     <chmod file='${rpmdistdir_mdk}/usr/bin/jajuk' perm='ugo+rx'/>
     <copy todir='${rpmdistdir_mdk}/usr/lib/jajuk/lib' >
     	<fileset dir='${basedir}/lib'/>
-    </copy>
-    <copy todir='${rpmdistdir_mdk}/usr/lib/jajuk/native' >
-    	<fileset file='${basedir}/native/*.so'/>
     </copy>
     <copy todir='${rpmdistdir_mdk}/usr/share/doc/jajuk' >
     	<fileset file='${basedir}/dist-files/doc/README*.html'/>
@@ -244,10 +199,6 @@
    </copy>
   	<copy todir='${distdir}/${classdir}/org/jajuk/docs' >
      <fileset file='${basedir}/dist-files/doc/about.html'/>
-  	</copy>
-  	<copy todir='${distdir}' >
-     <fileset file='${basedir}/scripts/jajuk.sh'/>
-     <fileset file='${basedir}/scripts/jajuk.bat'/>
   	</copy>
   	<copy todir='${distdir}/${classdir}/org/jajuk/i18n' >
      <fileset file='${basedir}/src/org/jajuk/i18n/*.properties'/>
@@ -310,7 +261,65 @@
   	</zip>
   </target>
     
-    <target name='javadoc'>
+ 
+ <target name='replaces' description='o Set a the build time and release into jajuk code and packaging'>
+  <!-- Set build date --> 
+  <tstamp>
+      <format property='build.time' pattern='yyyy/MM/dd HH:mm'/>
+  </tstamp>    
+  <echo message='Build time: ${build.time}'/>
+  <replace dir='${distdir}/${srcdir}/org/jajuk/util' value='${build.time}'>
+  	<include name='ITechnicalStrings.java'/>
+  	<replacetoken>DATE_REPLACED_BY_ANT</replacetoken>
+ </replace>
+ <!-- Set release in code--> 
+  <replace dir='${distdir}/${srcdir}/org/jajuk/util' value='${version}'>
+  	<include name='ITechnicalStrings.java'/>
+  	<replacetoken>VERSION_REPLACED_BY_ANT</replacetoken>
+ </replace>
+ <!-- Set release in IzPack descriptor file--> 
+ <replace dir='${izpackdir}' value='${version}'>
+  	<include name='jajuk.izpack'/>
+  	<replacetoken>VERSION_REPLACED_BY_ANT</replacetoken>
+ </replace>
+ <!-- Set release in native launcher descriptor file--> 
+ <replace dir='${windowsdir}' value='${version}'>
+  	<include name='launcher.ini'/>
+  	<replacetoken>VERSION_REPLACED_BY_ANT</replacetoken>
+ </replace>
+ <!-- Set release in Suse RPM descriptor file--> 
+ <replace dir='${rpmbuilddir_suse}/SPECS' value='${version}'>
+  	<include name='jajuk-suse.spec'/>
+  	<replacetoken>VERSION_REPLACED_BY_ANT</replacetoken>
+ </replace>
+ <!-- Set release in Mdk RPM descriptor file--> 
+ <replace dir='${rpmbuilddir_mdk}/SPECS' value='${version}'>
+  	<include name='jajuk-mdk.spec'/>
+  	<replacetoken>VERSION_REPLACED_BY_ANT</replacetoken>
+ </replace>
+ <!-- Set release in user build.xml file--> 
+ <replace dir='${distdir}' value='${version}'>
+  	<include name='build.xml'/>
+  	<replacetoken>VERSION_REPLACED_BY_ANT</replacetoken>
+ </replace>
+ <!-- Set debug value in scripts--> 
+  <replace dir='${distdir}' value='${debug}'>
+  	<include name='jajuk.sh'/>
+  	<include name='jajuk.bat'/>
+  	<replacetoken>DEBUG_FLAG_REPLACED_BY_ANT</replacetoken>
+ </replace>
+ <replace dir='${rpmdistdir_suse}/usr/bin' value='${debug}'>
+  	<include name='jajuk'/>
+	<replacetoken>DEBUG_FLAG_REPLACED_BY_ANT</replacetoken>
+ </replace>
+ <replace dir='${rpmdistdir_mdk}/usr/bin' value='${debug}'>
+  	<include name='jajuk'/>
+	<replacetoken>DEBUG_FLAG_REPLACED_BY_ANT</replacetoken>
+ </replace>
+ </target>
+ 
+ 
+  <target name='javadoc'>
    	   <delete dir='${javadocdir}'/>
    	  <mkdir dir='${javadocdir}'/>
      <property name='copyright' value='Copyright &amp;copy;  Jajuk team. All Rights Reserved.'/>
@@ -359,8 +368,8 @@
         izPackDir='/prog/IzPack'/>
       </target>
       
-      <!-- Windows SFX creation with 7z-->
-    <target name='sfx' depends='izpack'>
+  <!-- Windows SFX creation with 7z-->
+  <target name='sfx' depends='izpack'>
   	 <mkdir dir='${windowsdir}'/>
       <copy todir='${windowsdir}' >
      	<fileset file='${izpackdir}/${distjarname}${version}.jar'/>

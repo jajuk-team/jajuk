@@ -4,7 +4,7 @@
 	<!-- =================Appenders=================-->
 	<appender name='FILE' class='org.apache.log4j.RollingFileAppender'>
 		<param name='Threshold' value='DEBUG'/>
-		<param name='File' value='${user.home}/.jajuk/jajuk.log'/>
+		<param name='File' value='${jajuk.log}'/>
 		<param name='Append' value='true'/>
 		<param name='MaxFileSize' value='1000000'/>
 		<param name='MaxBackupIndex' value='0'/>
