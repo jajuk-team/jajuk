@@ -53,9 +53,9 @@ public class DeviceManager extends ItemManager{
         //Name
         registerProperty(new PropertyMetaInformation(XML_NAME,false,true,true,false,true,String.class,null,null));
         //Type
-        registerProperty(new PropertyMetaInformation(XML_TYPE,false,true,true,false,false,Integer.class,null,null));
+        registerProperty(new PropertyMetaInformation(XML_TYPE,false,true,true,false,false,Long.class,null,null));
         //URL
-        registerProperty(new PropertyMetaInformation(XML_URL,false,true,true,false,true,Integer.class,null,null));
+        registerProperty(new PropertyMetaInformation(XML_URL,false,true,true,false,true,Long.class,null,null));
         //Mount point
         registerProperty(new PropertyMetaInformation(XML_DEVICE_MOUNT_POINT,false,true,true,false,false,String.class,null,null));
         //Auto-mount

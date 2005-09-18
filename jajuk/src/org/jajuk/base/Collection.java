@@ -352,14 +352,32 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 	            if (album == null || author == null || style == null || type == null){
 	                return;
 	            }
-	            int iYear = Integer.parseInt(attributes.getValue(attributes.getIndex(XML_TRACK_YEAR)));
-	            Date dAdditionDate = Util.getAdditionDateFormat().parse(attributes.getValue(attributes.getIndex(XML_TRACK_ADDED)));
+                //Get year: we check number format mainly for the case of upgrade from <1.0
+	            long l = ((Long)TrackManager.getInstance().getMetaInformation(XML_TRACK_YEAR).getDefaultValue());
+                int iYear = (int)l;
+                try{
+                    iYear = Integer.parseInt(attributes.getValue(attributes.getIndex(XML_TRACK_YEAR)));
+                }
+                 catch(Exception e){
+                     Log.warn(Messages.getString("Error.137"),sTrackName); //wrong format
+                 }
+                 //Idem for order
+                l = ((Long)TrackManager.getInstance().getMetaInformation(XML_TRACK_ORDER).getDefaultValue());
+                int iOrder = (int)l;
+                try{
+                    iOrder = Integer.parseInt(attributes.getValue(attributes.getIndex(XML_TRACK_ORDER)));
+                }
+                 catch(Exception e){
+                     Log.warn(Messages.getString("Error.137"),sTrackName); //wrong format
+                 }
+                //Date format should be OK
+                Date dAdditionDate = Util.getAdditionDateFormat().parse(attributes.getValue(attributes.getIndex(XML_TRACK_ADDED)));
                 Track track = TrackManager.getInstance().registerTrack(sId, sTrackName, album, style, author, length, iYear, type);
 	            track.setRate(Long.parseLong(attributes.getValue(attributes.getIndex(XML_TRACK_RATE))));
 	            track.setHits(Integer.parseInt(attributes.getValue(attributes.getIndex(XML_TRACK_HITS))));
 	            track.setAdditionDate(dAdditionDate);
 	            track.setComment(attributes.getValue(attributes.getIndex(XML_TRACK_COMMENT)));
-                track.setOrder(Integer.parseInt(attributes.getValue(attributes.getIndex(XML_TRACK_ORDER))));
+                track.setOrder(iOrder);
                 track.populateProperties(attributes);
             }
 	        else if (XML_DIRECTORY.equals(sQName)){
@@ -387,10 +405,18 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 	            if (dParent == null || track == null){ //more checkups
 	                return;
 	            }
-	            long lSize = Long.parseLong(attributes.getValue(attributes.getIndex(XML_SIZE)));
-	            int iQuality = Integer.parseInt(attributes.getValue(attributes.getIndex(XML_QUALITY)));
+	            String sItemName = attributes.getValue(attributes.getIndex(XML_NAME));
+                long lSize = Long.parseLong(attributes.getValue(attributes.getIndex(XML_SIZE)));
+	             //Quality analyze, handle format problems (mainly for upgrades)
+                long l = ((Long)FileManager.getInstance().getMetaInformation(XML_QUALITY).getDefaultValue());
+                int iQuality = (int)l;
+                try{
+                    iQuality = Integer.parseInt(attributes.getValue(attributes.getIndex(XML_QUALITY)));
+                }
+                 catch(Exception e){
+                     Log.warn(Messages.getString("Error.137"),sItemName); //wrong format
+                 }
                 String sID = attributes.getValue(attributes.getIndex(XML_ID)); 
-                String sItemName = attributes.getValue(attributes.getIndex(XML_NAME));
                 org.jajuk.base.File file = FileManager.getInstance().registerFile(sID, sItemName, dParent, track, lSize, iQuality);
 	            file.populateProperties(attributes);
 	            track.addFile(file);
@@ -430,28 +456,35 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 	        }
 	        else if (XML_TYPE.equals(sQName)){
                 String sId = attributes.getValue(attributes.getIndex(XML_ID));
-                String sTypeName = attributes.getValue(attributes.getIndex(XML_NAME));
-	            String sExtension = attributes.getValue(attributes.getIndex(XML_TYPE_EXTENSION));
-	            Class cPlayer = null;
-                String sPlayer = attributes.getValue(attributes.getIndex(XML_TYPE_PLAYER_IMPL));
-                if (sPlayer ==null || sPlayer.trim().equals("")){
-                    cPlayer = null;
+                /* we ignore classes given in collection file and we keep default types registrated at startup in Main class. 
+                 * But we want to make possible
+                 * the adding of new types from an external source, so we accept types for sequential id >=
+                 * number of registrated types
+                 */ 
+                if ( Integer.parseInt(sId)>=TypeManager.getInstance().getItems().size()){
+                    String sTypeName = attributes.getValue(attributes.getIndex(XML_NAME));
+                    String sExtension = attributes.getValue(attributes.getIndex(XML_TYPE_EXTENSION));
+                    Class cPlayer = null;
+                    String sPlayer = attributes.getValue(attributes.getIndex(XML_TYPE_PLAYER_IMPL));
+                    if (sPlayer ==null || sPlayer.trim().equals("")){
+                        cPlayer = null;
+                    }
+                    else{
+                        cPlayer = Class.forName(sPlayer);
+                    }
+                    Class cTag = null;
+                    String sTag = attributes.getValue(attributes.getIndex(XML_TYPE_TAG_IMPL));
+                    if (sTag == null || sTag.trim().equals("")){
+                        cTag = null;
+                    }
+                    else{
+                        cTag = Class.forName(sTag);
+                    }
+                    Type type = TypeManager.getInstance().registerType(sId, sTypeName, sExtension, cPlayer,cTag);
+                    if (type != null){
+                        type.populateProperties(attributes);
+                    }
                 }
-                else{
-                    cPlayer = Class.forName(sPlayer);
-                }
-                Class cTag = null;
-                String sTag = attributes.getValue(attributes.getIndex(XML_TYPE_TAG_IMPL));
-                if (sTag == null || sTag.trim().equals("")){
-                    cTag = null;
-                }
-                else{
-                    cTag = Class.forName(sTag);
-                }
-                Type type = TypeManager.getInstance().registerType(sId, sTypeName, sExtension, cPlayer,cTag);
-	            if (type != null){
-	                type.populateProperties(attributes);
-	            }
 	        }
         }
 	    catch(Exception re){

@@ -24,6 +24,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.log.Log;
 
 
 /**
@@ -106,6 +107,12 @@ public class PropertyMetaInformation implements ITechnicalStrings{
             } catch (Exception e) {
                 //no log: if no format or default date, default value stays null
             }
+        }
+        else if (cType.equals(Class.class) ){
+            this.oDefaultValue = Object.class;
+        }
+        else{ //class not supported
+            Log.debug("!!!!!!!!! Class not supported");
         }
     }
         

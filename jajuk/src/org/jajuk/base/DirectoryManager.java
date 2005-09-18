@@ -20,7 +20,6 @@
 
 package org.jajuk.base;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Properties;
 
@@ -107,18 +106,7 @@ public class DirectoryManager extends ItemManager implements Observer{
         //remove old dir from parent
         removeDirectory(old.getId());
         //Look for files under the old directory
-        ArrayList<String> alIdToChange = new ArrayList(10);//contains ID for files to change (need to do that to avoid concurency problems)
-        ArrayList alFiles = FileManager.getInstance().getItems();
-        for (IPropertyable pa:FileManager.getInstance().getItems()){
-            File file = (File)pa;
-            if (file.getDirectory().equals(old)){
-                alIdToChange.add(file.getId());
-            }
-        }
-        //change files
-        for (String sId:alIdToChange){
-            FileManager.getInstance().changeFileDirectory((File)FileManager.getInstance().getItem(sId),newItem);    
-        }
+        //for ()
         //add the new dir to the parent directory
         old.getParentDirectory().addDirectory(newItem);
         return newItem;
@@ -133,7 +121,7 @@ public class DirectoryManager extends ItemManager implements Observer{
 		StringBuffer sbAbs = new StringBuffer(device.getUrl());
 		if (dParent != null) {
 			sbAbs.append(dParent.getRelativePath());
-		}
+         }
 		sbAbs.append(java.io.File.separatorChar).append(sName);
 		String sId = MD5Processor.hash(sbAbs.insert(0,device.getName()).toString());
 		return registerDirectory(sId, sName, dParent, device);
@@ -159,6 +147,9 @@ public class DirectoryManager extends ItemManager implements Observer{
 			return (Directory)hmItems.get(sId);
 		}
 		Directory directory = new Directory(sId, sName, dParent, device);
+        if (dParent != null ){
+            dParent.addDirectory(directory);//add the direcotry to parent collection
+        }
 		hmItems.put(sId,directory);
         restorePropertiesAfterRefresh(directory);
      	return directory;
@@ -187,26 +178,26 @@ public class DirectoryManager extends ItemManager implements Observer{
 	 * @param sId
 	 */
 	public synchronized void removeDirectory(String sId) {
-		Directory dToBeRemoved = (Directory)getItem(sId);
-		Iterator it = getItems().iterator();
+	    Directory dir = (Directory)getItem(sId);
+	    //remove all files
+	    for (File file:dir.getFiles()){
+	        FileManager.getInstance().removeFile(file);
+	    }
+	    //remove all playlists
+	    for (PlaylistFile plf:dir.getPlaylistFiles()){
+	        PlaylistFileManager.getInstance().remove(plf.getId());
+	    }
+        //remove all sub dirs
+        Iterator it = dir.getDirectories().iterator();
         while (it.hasNext()){
-            Directory dir = (Directory)it.next();
-            if (dir.getFio().getAbsolutePath().indexOf(dToBeRemoved.getFio().getAbsolutePath()) == 0){
-                //remove all files
-                for (File file:dir.getFiles()){
-                    FileManager.getInstance().removeFile(file);
-                }
-                //remove all playlists
-                for (PlaylistFile plf:dir.getPlaylistFiles()){
-                    PlaylistFileManager.getInstance().remove(plf.getId());
-                }
-                //remove this dir
-                it.remove();
-            }
+            Directory dSub = (Directory)it.next();
+            removeDirectory(dSub.getId()); //self call
+            //remove it 
+            it.remove();
         }
-        //remove this dir
-        hmItems.remove(sId);
-     }
+        //remove this dir from collection
+	    hmItems.remove(dir.getId());
+    }
 		    
  /* (non-Javadoc)
      * @see org.jajuk.base.ItemManager#getIdentifier()

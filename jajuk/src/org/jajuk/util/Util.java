@@ -64,6 +64,8 @@ import javax.swing.JMenu;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 
 import org.jajuk.Main;
 import org.jajuk.base.Directory;
@@ -78,6 +80,9 @@ import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.ui.tray.JajukSystray;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 
 import com.sun.media.sound.MixerSourceLine;
 
@@ -97,7 +102,8 @@ public class Util implements ITechnicalStrings {
 	private static boolean bWaiting = false;
       /**Addition date Date format*/
     private static SimpleDateFormat sdfAdded= new SimpleDateFormat(ADDITION_DATE_FORMAT);
-  
+    /**Jajuk release*/
+    private static String sRelease = null;
 	/**
 	 * Genres
 	 */
@@ -973,4 +979,41 @@ public class Util implements ITechnicalStrings {
     public static void setCenteredLocation(Window window){
         window.setLocation((int)(Toolkit.getDefaultToolkit().getScreenSize().getWidth()/2-window.getWidth()/2),(int)(Toolkit.getDefaultToolkit().getScreenSize().getHeight()/2-window.getHeight()/2));
     }
+    
+    /**
+     * 
+     * @return jajuk release as read from an existing collection file (used for upgrade) or null if no collection file
+     * @throws Exception
+     */
+    public static String getJajukRelease() {
+        try{
+            SAXParserFactory spf = SAXParserFactory.newInstance();
+            spf.setValidating(false);
+            spf.setNamespaceAware(false);
+            SAXParser saxParser = spf.newSAXParser();
+            File frt = new File(FILE_COLLECTION);
+            if (!frt.exists()){
+                return null;
+            }
+            saxParser.parse(frt.toURL().toString(),new DefaultHandler(){
+                public void startElement(String sUri, String s, String sQName, Attributes attributes) throws SAXException {
+                    try{
+                        if (XML_COLLECTION.equals(sQName)){
+                            sRelease =  attributes.getValue(attributes.getIndex(XML_VERSION));;
+                        }
+                    }
+                    catch(Exception e){
+                        sRelease = null; 
+                    }
+                }
+            });
+        }
+        catch(Exception e){
+            return null;
+        }
+        return sRelease;
+    }
+
+
+
 }

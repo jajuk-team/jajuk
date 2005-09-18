@@ -117,6 +117,9 @@ public class Main implements ITechnicalStrings {
 	private static String sPerspective;
 	/** Server socket used to check other sessions*/
 	private static ServerSocket ss;
+    /** Upgrade from prior version flag*/
+    public static boolean bUpgrade  = false; 
+    
 	/**
 	 * Main entry
 	 * @param args
@@ -153,7 +156,7 @@ public class Main implements ITechnicalStrings {
                 public void run() {
                     try {
                         sc = new JSplash(new URL (IMAGES_SPLASHSCREEN),true,true,false,JAJUK_VERSION+" "+JAJUK_VERSION_DATE,null,null);
-                        sc.splashOn();
+                        //temp sc.splashOn();
                     } catch (MalformedURLException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
@@ -416,7 +419,7 @@ public class Main implements ITechnicalStrings {
             if (sc != null) {
                 sc.dispose();
             }
-            Log.error(new JajukException("124")); //$NON-NLS-1$
+            Log.error("124"); //$NON-NLS-1$
             Messages.getChoice(Messages.getErrorMessage("124"),JOptionPane.OK_CANCEL_OPTION);	 //$NON-NLS-1$
             System.exit(-1);
         }
@@ -665,7 +668,7 @@ public class Main implements ITechnicalStrings {
 		if ( file!= null ){
 			file.delete();
 		}
-	}
+    }
 	
 	/**
 	 * @return Returns the bDebugMode.

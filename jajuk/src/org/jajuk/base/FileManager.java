@@ -65,9 +65,9 @@ public class FileManager extends ItemManager implements Observer{
         //Track
         registerProperty(new PropertyMetaInformation(XML_TRACK,false,true,true,false,false,String.class,null,null));
         //Size
-        registerProperty(new PropertyMetaInformation(XML_SIZE,false,true,true,false,false,Integer.class,null,null));
+        registerProperty(new PropertyMetaInformation(XML_SIZE,false,true,true,false,false,Long.class,null,null));
         //Quality
-        registerProperty(new PropertyMetaInformation(XML_QUALITY,false,true,true,false,false,Integer.class,null,"0"));
+        registerProperty(new PropertyMetaInformation(XML_QUALITY,false,true,true,false,false,Long.class,null,"0"));
   }
 
     /**

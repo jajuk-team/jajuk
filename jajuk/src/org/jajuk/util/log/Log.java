@@ -159,6 +159,22 @@ public class Log  implements ITechnicalStrings{
         logger.error(sOut,t);
     }
     
+     /**
+     * Log an error-level  message
+     * @param sCode error code
+     **/
+    public static void error(String sCode){
+        String sOut;
+        if ( Messages.isInitialized()){
+            sOut = '('+sCode+") "+Messages.getErrorMessage(sCode); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        }
+        else{
+            sOut = '('+sCode+") "; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        }
+        spool("[ERROR] "+sOut);
+        logger.error(sOut);
+    }
+    
     /**
      * Log an error-level  message
      * @param t the exception itself
