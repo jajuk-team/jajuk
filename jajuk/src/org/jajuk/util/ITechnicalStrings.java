@@ -500,7 +500,8 @@ public interface ITechnicalStrings {
 	public static final String XML_TRACK = "track";
 	public static final String XML_DIRECTORIES = "directories";
 	public static final String XML_DIRECTORY = "directory";
-	public static final String XML_FILES = "files";
+    public static final String XML_DIRECTORY_DEFAULT_COVER = "default_cover";
+    public static final String XML_FILES = "files";
 	public static final String XML_FILE = "file";
 	public static final String XML_PLAYLIST_FILES = "playlist_files";
 	public static final String XML_PLAYLIST_FILE = "playlist_file";

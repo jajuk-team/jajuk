@@ -53,6 +53,8 @@ public class DirectoryManager extends ItemManager implements Observer{
         registerProperty(new PropertyMetaInformation(XML_EXPANDED,false,false,false,false,false,Boolean.class,null,"false"));
         //Synchonized directory
         registerProperty(new PropertyMetaInformation(XML_DIRECTORY_SYNCHRONIZED,false,false,true,false,false,Boolean.class,null,"true"));
+        //Default cover
+        registerProperty(new PropertyMetaInformation(XML_DIRECTORY_DEFAULT_COVER,false,false,true,false,false,String.class,null,FILE_ABSOLUTE_DEFAULT_COVER));
         //---Subscriptions---
         ObservationManager.register(EVENT_FILE_NAME_CHANGED,this);
 	}
