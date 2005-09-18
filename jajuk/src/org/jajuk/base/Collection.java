@@ -359,7 +359,9 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
                     iYear = Integer.parseInt(attributes.getValue(attributes.getIndex(XML_TRACK_YEAR)));
                 }
                  catch(Exception e){
-                     Log.warn(Messages.getString("Error.137"),sTrackName); //wrong format
+                     if (Log.isDebugEnabled()){
+                         Log.debug(Messages.getString("Error.137")+ ":" +sTrackName); //wrong format
+                     }
                  }
                  //Idem for order
                 l = ((Long)TrackManager.getInstance().getMetaInformation(XML_TRACK_ORDER).getDefaultValue());
@@ -367,9 +369,11 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
                 try{
                     iOrder = Integer.parseInt(attributes.getValue(attributes.getIndex(XML_TRACK_ORDER)));
                 }
-                 catch(Exception e){
-                     Log.warn(Messages.getString("Error.137"),sTrackName); //wrong format
-                 }
+                catch(Exception e){
+                    if (Log.isDebugEnabled()){
+                        Log.debug(Messages.getString("Error.137")+ ":" +sTrackName); //wrong format
+                    }
+                }
                 //Date format should be OK
                 Date dAdditionDate = Util.getAdditionDateFormat().parse(attributes.getValue(attributes.getIndex(XML_TRACK_ADDED)));
                 Track track = TrackManager.getInstance().registerTrack(sId, sTrackName, album, style, author, length, iYear, type);
@@ -413,9 +417,11 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
                 try{
                     iQuality = Integer.parseInt(attributes.getValue(attributes.getIndex(XML_QUALITY)));
                 }
-                 catch(Exception e){
-                     Log.warn(Messages.getString("Error.137"),sItemName); //wrong format
-                 }
+                catch(Exception e){
+                    if (Log.isDebugEnabled()){
+                        Log.debug(Messages.getString("Error.137")+ ":" +sItemName); //wrong format
+                    }
+                }
                 String sID = attributes.getValue(attributes.getIndex(XML_ID)); 
                 org.jajuk.base.File file = FileManager.getInstance().registerFile(sID, sItemName, dParent, track, lSize, iQuality);
 	            file.populateProperties(attributes);
