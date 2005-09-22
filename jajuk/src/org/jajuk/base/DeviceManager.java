@@ -63,7 +63,7 @@ public class DeviceManager extends ItemManager{
         //Auto-refresh
         registerProperty(new PropertyMetaInformation(XML_DEVICE_AUTO_REFRESH,false,true,true,false,false,Boolean.class,null,null));
         //Expand
-        registerProperty(new PropertyMetaInformation(XML_EXPANDED,false,false,false,false,false,Boolean.class,null,"false"));
+        registerProperty(new PropertyMetaInformation(XML_EXPANDED,false,false,false,false,false,Boolean.class,null,false));
         //Synchro source
         registerProperty(new PropertyMetaInformation(XML_DEVICE_SYNCHRO_SOURCE,false,false,true,false,false,String.class,null,null));
         //Synchro mode
@@ -86,9 +86,9 @@ public class DeviceManager extends ItemManager{
 	 *@param sName
 	 *@return device 
 	 */
-	public synchronized Device  registerDevice(String sName,int iDeviceType,String sUrl){
-		String sId = processId(sUrl,sName,iDeviceType);
-		return registerDevice(sId,sName,iDeviceType,sUrl);
+	public synchronized Device  registerDevice(String sName,long lDeviceType,String sUrl){
+		String sId = processId(sUrl,sName,lDeviceType);
+		return registerDevice(sId,sName,lDeviceType,sUrl);
 	}
     
         /**
@@ -96,8 +96,8 @@ public class DeviceManager extends ItemManager{
      *@param sName
      *@return device 
      */
-    public synchronized Device registerDevice(String sId,String sName,int iDeviceType,String sUrl){
-        Device device = new Device(sId,sName,iDeviceType,sUrl);
+    public synchronized Device registerDevice(String sId,String sName,long lDeviceType,String sUrl){
+        Device device = new Device(sId,sName,lDeviceType,sUrl);
         hmItems.put(sId,device);
         restorePropertiesAfterRefresh(device);
         return device;
@@ -110,8 +110,8 @@ public class DeviceManager extends ItemManager{
 	 * @param iDeviceType
 	 * @return An id
 	 */
-	private String processId(String sUrl,String sName,int iDeviceType){
-	    return MD5Processor.hash(sUrl+ sName+iDeviceType); //reprocess id;
+	private String processId(String sUrl,String sName,long lDeviceType){
+	    return MD5Processor.hash(sUrl+ sName+lDeviceType); //reprocess id;
 	}
 	
 	
@@ -185,8 +185,8 @@ public class DeviceManager extends ItemManager{
 	 * @param index
 	 * @return device name for a given index
 	 */
-	public String getDeviceType(int index){
-	    return (String)alDevicesTypes.get(index);
+	public String getDeviceType(long index){
+	    return (String)alDevicesTypes.get((int)index);
 	}
 	
     /**Return number of registred devices*/

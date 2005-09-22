@@ -543,19 +543,26 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
                 }
                 else if (e.getSource() == jmiStyleProperties){
                     Style style =  ((StyleNode)paths[0].getLastPathComponent()).getStyle();
-                    new PropertiesWizard(style);
+                    ArrayList alItems = new ArrayList(1);
+                    alItems.add(style);
+                    new PropertiesWizard(alItems);
                 }
                 else if (e.getSource() == jmiAuthorProperties){
                     Author author =  ((AuthorNode)paths[0].getLastPathComponent()).getAuthor();
-                    new PropertiesWizard(author);
-                }
+                    ArrayList alItems = new ArrayList(1);
+                    alItems.add(author);
+                    new PropertiesWizard(alItems); }
                 else if (e.getSource() == jmiAlbumProperties){
                     Album album =  ((AlbumNode)paths[0].getLastPathComponent()).getAlbum();
-                    new PropertiesWizard(album);
+                    ArrayList alItems = new ArrayList(1);
+                    alItems.add(album);
+                    new PropertiesWizard(alItems);
                 }
                 else if (e.getSource() == jmiTrackProperties){
                     Track track =  ((TrackNode)paths[0].getLastPathComponent()).getTrack();
-                    new PropertiesWizard(track);
+                    ArrayList alItems = new ArrayList(1);
+                    alItems.add(track);
+                    new PropertiesWizard(alItems);
                 }
                 else{
                     //compute selection
@@ -662,9 +669,9 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
             Object o = jtree.getPathForRow(i).getLastPathComponent(); 
             if ( o instanceof StyleNode){
                 Style style = ((StyleNode)o).getStyle();
-                boolean bExp = style.getBooleanValue(XML_EXPANDED); 
+                boolean bExp = style.getBooleanValue(XML_EXPANDED);
                 if ( bExp){ //$NON-NLS-1$
-                    jtree.expandRow(i);	
+                    jtree.expandRow(i);
                 }
             }
             else if ( o instanceof AuthorNode){

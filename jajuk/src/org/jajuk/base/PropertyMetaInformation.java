@@ -20,10 +20,16 @@
 
 package org.jajuk.base;
 
+import java.text.DateFormat;
+import java.text.Format;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
+import org.jajuk.i18n.Messages;
 import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 
 
@@ -43,7 +49,7 @@ public class PropertyMetaInformation implements ITechnicalStrings{
     /**Property Type (java.lang.String for ie)*/
     private Class cType;
     /**Format like YYYYmmDD for a date for ie or number of digits for an Integer*/
-    String sFormat;
+    Format format;
     /**Default value (null: no default)*/
     Object oDefaultValue;
     /**This property should be displayed to UI?*/
@@ -52,7 +58,23 @@ public class PropertyMetaInformation implements ITechnicalStrings{
     boolean bEditable = true;
     /**Unique?*/
     boolean bUnique = false;
-    
+    /**Human Type*/
+    private String sHumanType; 
+    /**Supported date formats desc*/
+    private static ArrayList<String> alDateFormatsDesc = new ArrayList(10);
+    /**Supported date formats*/
+    private static ArrayList<Format> alDateFormats = new ArrayList(10);
+    //Add supported date formats
+    static{
+        alDateFormatsDesc.add("Date_Default");
+        alDateFormats.add(DateFormat.getDateInstance(DateFormat.DEFAULT,Locale.getDefault()));
+        alDateFormatsDesc.add("dd/MM/yyyy");
+        alDateFormats.add(new SimpleDateFormat("dd/MM/yyyy"));
+        alDateFormatsDesc.add("yyyy/MM/dd");
+        alDateFormats.add(new SimpleDateFormat("yyyy/MM/dd"));
+        alDateFormatsDesc.add("yyyyMMdd");
+        alDateFormats.add(new SimpleDateFormat("yyyyMMdd"));
+    };
     /**
      * constructor
      * @param sName Property name
@@ -62,72 +84,75 @@ public class PropertyMetaInformation implements ITechnicalStrings{
      * @param bEditable Is this property editable 
      * @param bUnique Is this property value unique
      * @param cType Property type
-     * @param sFormat Property format
-     * @param sDefaultValue Default value
+     * @param format Property format.
+     * @param oDefaultValue Default value
      */
     public PropertyMetaInformation(String sName,boolean bCustom,boolean bConstructor,
             boolean bShouldBeDisplayed,boolean bEditable,boolean bUnique,Class cType,
-            String sFormat,String sDefaultValue){
+            Format format,Object oDefaultValue){
         this.sName = sName;
         this.bCustom = bCustom;
         this.bConstructor = bConstructor;
         this.bShouldBeDisplayed = bShouldBeDisplayed;
         this.bEditable = bEditable;
         this.bUnique = bUnique;
+        this.format = format;
         this.cType = cType;
-        this.sFormat = sFormat;
-        //parse default value
+        this.oDefaultValue = oDefaultValue;
         if (cType.equals(Boolean.class)){
-            if (sDefaultValue == null){
-                sDefaultValue = "false"; //if no default is given, false for booleans
+            if (oDefaultValue == null){
+                this.oDefaultValue = Boolean.FALSE; //if no default is given, false for booleans
             }
-            this.oDefaultValue = Boolean.parseBoolean(sDefaultValue);    
+            this.sHumanType = Messages.getString("Property_Format_Boolean");
         }
         else if (cType.equals(String.class)){
-            if (sDefaultValue == null){
-                sDefaultValue = ""; //if no default is given, ""
+            if (oDefaultValue == null){
+                this.oDefaultValue = ""; //if no default is given, ""
             }
-            this.oDefaultValue = sDefaultValue;
+            this.sHumanType = Messages.getString("Property_Format_String");
         }
         else if (cType.equals(Long.class)){
-            if (sDefaultValue == null){
-                sDefaultValue = "0"; //if no default is given, 0
+            if (oDefaultValue == null){
+                this.oDefaultValue = 0l; //if no default is given, 0
             }
-            this.oDefaultValue = Long.parseLong(sDefaultValue);
+            this.sHumanType = Messages.getString("Property_Format_Number");
         }
         else if (cType.equals(Double.class)){
-            if (sDefaultValue == null){
-                sDefaultValue = "0"; //if no default is given, 0
+            if (oDefaultValue == null){
+                this.oDefaultValue = 0.0d;  //if no default is given, 0.0
             }
-            this.oDefaultValue = Double.parseDouble(sDefaultValue);
+            this.sHumanType = Messages.getString("Property_Format_Float");
         }
         else if (cType.equals(Date.class) ){
-            try {
-                this.oDefaultValue = new SimpleDateFormat(sFormat).parse(sDefaultValue);
-            } catch (Exception e) {
-                //no log: if no format or default date, default value stays null
+            //date default
+            if (oDefaultValue == null){
+                this.oDefaultValue = new Date();
             }
+            else{
+               this.oDefaultValue = oDefaultValue;
+            }
+            this.sHumanType = Messages.getString("Property_Format_Date");
         }
         else if (cType.equals(Class.class) ){
             this.oDefaultValue = Object.class;
         }
         else{ //class not supported
-            Log.debug("!!!!!!!!! Class not supported");
+            Log.debug("Class not supported !!!");
         }
     }
         
     /**
      * @return
      */
-    public String getFormat() {
-        return sFormat;
+    public Format getFormat() {
+        return format;
     }
 
     /**
      * @param format
      */
-    public void setFormat(String format) {
-        sFormat = format;
+    public void setFormat(Format format){
+        this.format = format;
     }
 
     /**
@@ -150,7 +175,7 @@ public class PropertyMetaInformation implements ITechnicalStrings{
     public Class getType() {
         return cType;
     }
-
+    
     /**
      * @return
      */
@@ -163,6 +188,14 @@ public class PropertyMetaInformation implements ITechnicalStrings{
      * @return property meta information XML description
      */
     public String toXML(){
+        String sDefault = "";
+        try {
+            if (oDefaultValue != null && format != null){
+                sDefault = Util.format(oDefaultValue,this);
+            }
+        } catch (Exception e) { //should to occur at this point
+            Log.error(e);
+        }
         return "\t\t<"+XML_PROPERTY+" "+XML_NAME+"='"+sName+"' "+
             XML_CUSTOM+"='"+ bCustom+"' "+
             XML_CONSTRUCTOR+"='"+bConstructor+"' "+
@@ -170,9 +203,8 @@ public class PropertyMetaInformation implements ITechnicalStrings{
             XML_EDITABLE+"='"+bEditable+"' "+
             XML_UNIQUE+"='"+bUnique+"' "+
             XML_TYPE+"='"+cType.getName()+"' "+
-            XML_FORMAT+"='"+sFormat+"' "+
-            XML_DEFAULT_VALUE+"='"+(oDefaultValue == null ? "null":oDefaultValue)+"'/>";
-      
+            XML_FORMAT+"='"+ (format==null ? "":getFormatDesc(format))+"' "+
+            XML_DEFAULT_VALUE+"='"+sDefault+"'/>";
     }
 
     public Object getDefaultValue() {
@@ -186,7 +218,7 @@ public class PropertyMetaInformation implements ITechnicalStrings{
     public String toString(){
         return "Name="+sName+" Custom="+bCustom+" Constructor="+bConstructor
         +" Type="+cType+" Default="+oDefaultValue+" Format="
-        +sFormat+" Editable="+isEditable()+" Visible="+isVisible() 
+        + format+" Editable="+isEditable()+" Visible="+isVisible() 
         +" Unique="+isUnique();
     }
 
@@ -200,6 +232,30 @@ public class PropertyMetaInformation implements ITechnicalStrings{
     
      public boolean isUnique() {
         return bUnique;
+    }
+
+     /**
+      * 
+      * @return a human representation for a property type
+      */
+    public String getHumanType() {
+        return sHumanType;
+    }
+    
+    public static ArrayList<Format> getSupportedDateFormats(){
+        return alDateFormats;
+    }
+    
+    public static ArrayList<String> getSupportedDateFormatsDesc(){
+        return alDateFormatsDesc;
+    }
+    
+    public static Format getDateFormat(String sDesc){
+        return alDateFormats.get(alDateFormatsDesc.indexOf(sDesc));
+    }
+    
+    public static String getFormatDesc(Format format){
+        return alDateFormatsDesc.get(alDateFormats.indexOf(format));
     }
     
 }

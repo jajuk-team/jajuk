@@ -20,6 +20,7 @@
 
 package org.jajuk.base;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -28,6 +29,7 @@ import java.util.Properties;
 
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.MD5Processor;
+import org.jajuk.util.error.JajukException;
 
 /**
  * Convenient class to manage Tracks
@@ -59,15 +61,15 @@ public class TrackManager extends ItemManager implements Observer{
         //Type
         registerProperty(new PropertyMetaInformation(XML_TRACK_TYPE,false,true,true,false,false,Long.class,null,null));
         //Year
-        registerProperty(new PropertyMetaInformation(XML_TRACK_YEAR,false,true,true,true,false,Long.class,null,"0"));
+        registerProperty(new PropertyMetaInformation(XML_TRACK_YEAR,false,true,true,true,false,Long.class,null,0));
         //Rate
-        registerProperty(new PropertyMetaInformation(XML_TRACK_RATE,false,false,true,true,false,Long.class,null,"0"));
+        registerProperty(new PropertyMetaInformation(XML_TRACK_RATE,false,false,true,true,false,Long.class,null,0));
         //Files
         registerProperty(new PropertyMetaInformation(XML_FILES,false,false,true,false,true,String.class,null,null));
         //Hits
-        registerProperty(new PropertyMetaInformation(XML_TRACK_HITS,false,false,true,false,false,Long.class,null,"0"));
+        registerProperty(new PropertyMetaInformation(XML_TRACK_HITS,false,false,true,false,false,Long.class,null,0));
         //Addition date
-        registerProperty(new PropertyMetaInformation(XML_TRACK_ADDED,false,false,true,false,false,Date.class,ADDITION_DATE_FORMAT,null));
+        registerProperty(new PropertyMetaInformation(XML_TRACK_ADDED,false,false,true,false,false,Date.class,new SimpleDateFormat(ADDITION_DATE_FORMAT),null));
         //Comment
         registerProperty(new PropertyMetaInformation(XML_TRACK_COMMENT,false,false,true,true,false,String.class,null,null));
         //Track order
@@ -91,9 +93,9 @@ public class TrackManager extends ItemManager implements Observer{
 	 * 
 	 * @param sName
 	 */
-	public synchronized Track registerTrack(String sName, Album album, Style style, Author author, long length, int iYear, Type type) {
-		String sId = MD5Processor.hash(style.getName() + author.getName() +album.getName() + iYear + length + type.getName() + sName);
-		return registerTrack(sId, sName, album, style, author, length, iYear, type);
+	public synchronized Track registerTrack(String sName, Album album, Style style, Author author, long length, long lYear, Type type) {
+		String sId = MD5Processor.hash(style.getName() + author.getName() +album.getName() + lYear + length + type.getName() + sName);
+		return registerTrack(sId, sName, album, style, author, length, lYear, type);
 	}
     
     /**
@@ -101,10 +103,10 @@ public class TrackManager extends ItemManager implements Observer{
      * 
      * @param sName
      */
-    public synchronized Track registerTrack(String sId, String sName, Album album, Style style, Author author, long length, int iYear, Type type) {
+    public synchronized Track registerTrack(String sId, String sName, Album album, Style style, Author author, long length, long lYear, Type type) {
         if (!hmItems.containsKey(sId)) {
             Date dAdditionDate = new Date();
-            Track track = new Track(sId, sName, album, style, author, length, iYear, type);
+            Track track = new Track(sId, sName, album, style, author, length, lYear, type);
             track.setAdditionDate(dAdditionDate);
             hmItems.put(sId, track);
             return track;
@@ -121,7 +123,7 @@ public class TrackManager extends ItemManager implements Observer{
      * @return new track
      *
      */
-    public synchronized Track changeTrackAlbum(Track track,String sNewAlbum) {
+    public synchronized Track changeTrackAlbum(Track track,String sNewAlbum)  throws JajukException{
         //register the new album
     	Album newAlbum = AlbumManager.getInstance().registerAlbum(sNewAlbum);
         //reset previous properties like exp
@@ -152,7 +154,7 @@ public class TrackManager extends ItemManager implements Observer{
      * @param new author name
      * @return new track
      */
-    public synchronized Track changeTrackAuthor(Track track,String sNewAuthor) {
+    public synchronized Track changeTrackAuthor(Track track,String sNewAuthor)  throws JajukException{
         //register the new item
         Author newAuthor = AuthorManager.getInstance().registerAuthor(sNewAuthor);
         //reset previous properties like exp
@@ -183,7 +185,7 @@ public class TrackManager extends ItemManager implements Observer{
      * @param new item name
      * @return new track
      */
-    public synchronized Track changeTrackStyle(Track track,String sNewItem) {
+    public synchronized Track changeTrackStyle(Track track,String sNewItem) throws JajukException{
         //register the new item
         Style newStyle = StyleManager.getInstance().registerStyle(sNewItem);
         //reset previous properties like exp
@@ -214,30 +216,23 @@ public class TrackManager extends ItemManager implements Observer{
      * @param new item name
      * @return new track or null if wronf format
      */
-    public synchronized Track changeTrackYear(Track track,int iNewItem) {
-        //check format
-        int i = 0;
-        try{
-            if (iNewItem <0 || iNewItem > 10000){ //jajuk supports years till year 10000 !
-                throw new Exception();
-            }
-        }
-        catch(Exception e){
+    public synchronized Track changeTrackYear(Track track,long lNewItem)  throws JajukException{
+        if (lNewItem <0 || lNewItem > 10000){ //jajuk supports years till year 10000 !
             Messages.showErrorMessage("137");
-            return null;
+            throw new JajukException("137");
         }
         Track newTrack = registerTrack(track.getName(),track.getAlbum(),track.getStyle(),
-            track.getAuthor(),track.getLength(),iNewItem,track.getType());
+                track.getAuthor(),track.getLength(),lNewItem,track.getType());
         //re apply old properties from old item
         newTrack.cloneProperties(track);
-       //change tag in files
+        //change tag in files
         Iterator it = track.getFiles().iterator();
         while (it.hasNext()){
             File file = (File)it.next();
             file.setTrack(newTrack);
             newTrack.addFile(file);
             Tag tag = new Tag(file.getIO());
-            tag.setYear(iNewItem);
+            tag.setYear(lNewItem);
             tag.commit();
         }
         TrackManager.getInstance().restorePropertiesAfterRefresh(newTrack);
@@ -251,7 +246,7 @@ public class TrackManager extends ItemManager implements Observer{
      * @param new item name
      * @return new track or null if wronf format
      */
-    public synchronized Track changeTrackComment(Track track,String sNewItem) {
+    public synchronized Track changeTrackComment(Track track,String sNewItem)  throws JajukException{
        track.setComment(sNewItem);
         //change tag in files
         Iterator it = track.getFiles().iterator();
@@ -271,20 +266,13 @@ public class TrackManager extends ItemManager implements Observer{
      * @param new item name
      * @return new track or null if wrong format
      */
-    public synchronized Track changeTrackRate(Track track,String sNewItem) {
+    public synchronized Track changeTrackRate(Track track,long lNew)  throws JajukException{
         //check format
-        long  l = 0l;
-        try{
-            l = Integer.parseInt(sNewItem);
-            if (l <0 ){
-                throw new Exception();
-            }
-        }
-        catch(Exception e){
+        if (lNew <0 ){
             Messages.showErrorMessage("137");
-            return null;
+            throw new JajukException("137");
         }
-       track.setRate(l);
+        track.setRate(lNew);
        return track;
     }
     
@@ -294,26 +282,19 @@ public class TrackManager extends ItemManager implements Observer{
      * @param new item order
      * @return new track or null if wronf format
      */
-    public synchronized Track changeTrackOrder(Track track,String sNewItem) {
+    public synchronized Track changeTrackOrder(Track track,long lNewOrder) throws JajukException{
         //check format
-        int i = 0;
-        try{
-            i = Integer.parseInt(sNewItem);
-            if (i <0){
-                throw new Exception();
-            }
-        }
-        catch(Exception e){
+        if (lNewOrder <0){
             Messages.showErrorMessage("137");
             return null;
         }
-        track.setOrder(i);
+        track.setOrder(lNewOrder);
         //change tag in files
         Iterator it = track.getFiles().iterator();
         while (it.hasNext()){
             File file = (File)it.next();
             Tag tag = new Tag(file.getIO());
-            tag.setOrder(i);
+            tag.setOrder(lNewOrder);
             tag.commit();
         }
         return track;
@@ -325,7 +306,7 @@ public class TrackManager extends ItemManager implements Observer{
      * @param new item name
      * @return new track
      */
-    public synchronized Track changeTrackName(Track track,String sNewItem) {
+    public synchronized Track changeTrackName(Track track,String sNewItem) throws JajukException{
         Track newTrack = registerTrack(sNewItem,track.getAlbum(),track.getStyle(),
             track.getAuthor(),track.getLength(),track.getYear(),track.getType());
         //re apply old properties from old item

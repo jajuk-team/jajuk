@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.jajuk.util.MD5Processor;
+import org.jajuk.util.error.JajukException;
 
 /**
  *  Convenient class to manage Albums
@@ -46,7 +47,7 @@ public class AlbumManager extends ItemManager{
         //Name
         registerProperty(new PropertyMetaInformation(XML_NAME,false,true,true,true,true,String.class,null,null));
         //Expand
-        registerProperty(new PropertyMetaInformation(XML_EXPANDED,false,false,false,false,false,Boolean.class,null,"false"));
+        registerProperty(new PropertyMetaInformation(XML_EXPANDED,false,false,false,false,false,Boolean.class,null,false));
     }
     
   /**
@@ -89,7 +90,7 @@ public class AlbumManager extends ItemManager{
      * @param sNewName
      * @return new album
      */
-    public synchronized Album changeAlbumName(Album old,String sNewName){
+    public synchronized Album changeAlbumName(Album old,String sNewName) throws JajukException{
         Album newItem = registerAlbum(sNewName);
         ArrayList alTracks = new ArrayList(TrackManager.getInstance().getItems()); //we need to create a new list to avoid concurrent exceptions
         Iterator it = alTracks.iterator();

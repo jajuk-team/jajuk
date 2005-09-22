@@ -26,6 +26,7 @@ import org.jajuk.tag.ITagImpl;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
+import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
 /**
@@ -184,37 +185,37 @@ public class Tag implements ITechnicalStrings{
 	/**
 	 * @return creation year
 	 */
-	public int getYear() {
-		int iYear = 0;
+	public long getYear() {
+		long lYear = 0;
         //if the type doesn't support tags ( like wav )
 		if (tagImpl == null){  
-			return iYear;
+			return lYear;
 		}
 		try {
-			 iYear = tagImpl.getYear(); //check it is an integer
+			 lYear = tagImpl.getYear(); //check it is an integer
 		} catch (Exception e) {
-			Log.warn(Messages.getErrorMessage("103"), fio.getName(),e); //$NON-NLS-1$
+			Log.warn("103", fio.getName(),e); //$NON-NLS-1$
 		}
-		return iYear;
+		return lYear;
 
 	}
 
 	/**
 	 * @return quality
 	 */
-	public int getQuality() {
-		int iQuality = 0;
+	public long getQuality() {
+		long lQuality = 0l;
 		//if the type doesn't support tags ( like wav )
 		if (tagImpl == null){  
-			return iQuality;
+			return lQuality;
 		}
 		String sTemp = ""; //$NON-NLS-1$
 		try {
-	        iQuality = tagImpl.getQuality();
+	        lQuality = tagImpl.getQuality();
 		} catch (Exception e) {
 			Log.warn("103",fio.getName(), e); //$NON-NLS-1$
 		}
-		return iQuality;
+		return lQuality;
 	}
 
 	/**
@@ -241,95 +242,94 @@ public class Tag implements ITechnicalStrings{
      /**
      * @return comment
      */
-    public int getOrder() {
-        int i = 0;
+    public long getOrder() {
+        long l = 0l;
         try {
-            i = tagImpl.getOrder();
-            if (i < 0){
+            l = tagImpl.getOrder();
+            if (l < 0){
                throw new Exception("Negative Order");
             }
         } catch (Exception e) {
             Log.warn("103",fio.getName(),e); //$NON-NLS-1$
-            i = 0;
+            l = 0;
         }
-        return i;    
+        return l;    
     }
 	
 	/**
 	 * @param sTrackName
 	 */
-	public void setTrackName(String sTrackName) {
+	public void setTrackName(String sTrackName) throws JajukException{
 		try {
 			tagImpl.setTrackName(sTrackName);
 		} catch (Exception e) {
-			Log.error("104",fio.getName(), e); //$NON-NLS-1$
+			throw new JajukException("104",fio.getName(), e);
 		}
 	}
 
 	/**
 	 * @param sAlbumName
 	 */
-	public void setAlbumName(String sAlbumName) {
+	public void setAlbumName(String sAlbumName) throws JajukException{
 		try {
 			tagImpl.setAlbumName(sAlbumName);
 		} catch (Exception e) {
-			Log.error("104", fio.getName(),e); //$NON-NLS-1$
+			throw new JajukException("104",fio.getName(), e);
 		}
 	}
 
 	/**
 	 * @param sAuthorName
 	 */
-	public void setAuthorName(String sAuthorName) {
+	public void setAuthorName(String sAuthorName) throws JajukException{
 		try {
 			tagImpl.setAuthorName(sAuthorName);
 		} catch (Exception e) {
-			Log.error("104", fio.getName(),e); //$NON-NLS-1$
+			throw new JajukException("104",fio.getName(), e);
 		}
-
 	}
 
 	/**
 	 * @param style
 	 */
-	public void setStyleName(String style) {
+	public void setStyleName(String style) throws JajukException{
 		try {
 			tagImpl.setStyleName(style);
 		} catch (Exception e) {
-			Log.error("104", fio.getName(),e); //$NON-NLS-1$
+			throw new JajukException("104",fio.getName(), e);
 		}
 	}
 
     /**
      * @param style
      */
-    public void setOrder(int iOrder) {
+    public void setOrder(long lOrder) throws JajukException {
         try {
-            tagImpl.setOrder(iOrder);
+            tagImpl.setOrder(lOrder);
         } catch (Exception e) {
-            Log.error("104", fio.getName(),e); //$NON-NLS-1$
+            throw new JajukException("104",fio.getName(), e);
         }
     }
 
     /**
 	 * @param sYear
 	 */
-	public void setYear(int iYear) {
+	public void setYear(long lYear) throws JajukException {
 		try {
-			tagImpl.setYear(iYear);
+			tagImpl.setYear(lYear);
 		} catch (Exception e) {
-			Log.error("104", e); //$NON-NLS-1$
+			throw new JajukException("104",fio.getName(), e);
 		}
 	}
 
     /**
 	 * @param sComment
 	 */
-	public void setComment(String sComment) {
+	public void setComment(String sComment) throws JajukException{
 		try {
 			tagImpl.setComment(sComment);
 		} catch (Exception e) {
-			Log.error("104", fio.getName(),e); //$NON-NLS-1$
+			throw new JajukException("104",fio.getName(), e);
 		}
 	}
     

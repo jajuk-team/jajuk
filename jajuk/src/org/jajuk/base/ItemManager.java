@@ -27,6 +27,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 
 import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.error.JajukException;
 
 /**
  *  Managers parent class
@@ -140,7 +141,7 @@ public abstract class ItemManager implements ITechnicalStrings{
      /**
      * @return properties Meta informations
      */
-    public Collection getProperties(){
+    public Collection<PropertyMetaInformation> getProperties(){
         return hmPropertiesMetaInformation.values();
     }
     
@@ -284,104 +285,104 @@ public abstract class ItemManager implements ITechnicalStrings{
      * Change any item
      * @param itemToChange
      * @param sKey
-     * @param sValue
+     * @param oValue
      * @return the changed item
      */
-    public static IPropertyable changeItem(IPropertyable itemToChange,String sKey,String sValue){
+    public static IPropertyable changeItem(IPropertyable itemToChange,String sKey,Object oValue) throws JajukException{
         IPropertyable newItem = itemToChange;;
         if (itemToChange instanceof File){
             File file = (File)itemToChange;
             if (XML_NAME.equals(sKey)){ //file name
-                newItem = FileManager.getInstance().changeFileName((File)itemToChange,sValue);
+                newItem = FileManager.getInstance().changeFileName((File)itemToChange,(String)oValue);
             }
             else if (XML_TRACK.equals(sKey)){ //track name
-                newItem = TrackManager.getInstance().changeTrackName(file.getTrack(),sValue);
+                newItem = TrackManager.getInstance().changeTrackName(file.getTrack(),(String)oValue);
             }
             else if (XML_STYLE.equals(sKey)){
-                newItem = TrackManager.getInstance().changeTrackStyle(file.getTrack(),sValue);
+                newItem = TrackManager.getInstance().changeTrackStyle(file.getTrack(),(String)oValue);
             }
             else if (XML_ALBUM.equals(sKey)){
-                newItem = TrackManager.getInstance().changeTrackAlbum(file.getTrack(),sValue);
+                newItem = TrackManager.getInstance().changeTrackAlbum(file.getTrack(),(String)oValue);
             }
             else if (XML_AUTHOR.equals(sKey)){
-                newItem = TrackManager.getInstance().changeTrackAuthor(file.getTrack(),sValue);
+                newItem = TrackManager.getInstance().changeTrackAuthor(file.getTrack(),(String)oValue);
             }
             else if (XML_TRACK_COMMENT.equals(sKey)){
-                newItem = TrackManager.getInstance().changeTrackComment(file.getTrack(),sValue);
+                newItem = TrackManager.getInstance().changeTrackComment(file.getTrack(),(String)oValue);
             }
             else if (XML_TRACK_ORDER.equals(sKey)){
-                newItem = TrackManager.getInstance().changeTrackOrder(file.getTrack(),sValue);
+                newItem = TrackManager.getInstance().changeTrackOrder(file.getTrack(),(Long)oValue);
             }
             else if (XML_TRACK_YEAR.equals(sKey)){
-                newItem = TrackManager.getInstance().changeTrackYear(file.getTrack(),Integer.parseInt(sValue));
+                newItem = TrackManager.getInstance().changeTrackYear(file.getTrack(),(Long)oValue);
             }
             else if (XML_TRACK_RATE.equals(sKey)){
-                newItem = TrackManager.getInstance().changeTrackRate(file.getTrack(),sValue);
+                newItem = TrackManager.getInstance().changeTrackRate(file.getTrack(),(Long)oValue);
             }
             else{ //others properties
-                itemToChange.setProperty(sKey,sValue);
+                itemToChange.setProperty(sKey,oValue);
             }
         }
         else if (itemToChange instanceof Directory){
             Directory dir = (Directory)itemToChange;
             if (XML_NAME.equals(sKey)){ //file name
-                newItem = DirectoryManager.getInstance().changeDirectoryName((Directory)itemToChange,sValue);
+                //TBI    newItem = DirectoryManager.getInstance().changeDirectoryName((Directory)itemToChange,(String)oValue);
             }
             else{ //others properties
-                itemToChange.setProperty(sKey,sValue);
+                itemToChange.setProperty(sKey,oValue);
             }
         }
         else if (itemToChange instanceof Track){
             if (XML_NAME.equals(sKey)){
-                newItem = TrackManager.getInstance().changeTrackName((Track)itemToChange,sValue);
+                newItem = TrackManager.getInstance().changeTrackName((Track)itemToChange,(String)oValue);
             }
             else if (XML_STYLE.equals(sKey)){
-                newItem = TrackManager.getInstance().changeTrackStyle((Track)itemToChange,sValue);
+                newItem = TrackManager.getInstance().changeTrackStyle((Track)itemToChange,(String)oValue);
             }
             else if (XML_ALBUM.equals(sKey)){
-                newItem = TrackManager.getInstance().changeTrackAlbum((Track)itemToChange,sValue);
+                newItem = TrackManager.getInstance().changeTrackAlbum((Track)itemToChange,(String)oValue);
             }
             else if (XML_AUTHOR.equals(sKey)){
-                newItem = TrackManager.getInstance().changeTrackAuthor((Track)itemToChange,sValue);
+                newItem = TrackManager.getInstance().changeTrackAuthor((Track)itemToChange,(String)oValue);
             }
             else if (XML_TRACK_COMMENT.equals(sKey)){
-                newItem = TrackManager.getInstance().changeTrackComment((Track)itemToChange,sValue);
+                newItem = TrackManager.getInstance().changeTrackComment((Track)itemToChange,(String)oValue);
             }
             else if (XML_TRACK_ORDER.equals(sKey)){
-                newItem = TrackManager.getInstance().changeTrackOrder((Track)itemToChange,sValue);
+                newItem = TrackManager.getInstance().changeTrackOrder((Track)itemToChange,(Long)oValue);
             }
             else if (XML_TRACK_YEAR.equals(sKey)){
-                newItem = TrackManager.getInstance().changeTrackYear((Track)itemToChange,Integer.parseInt(sValue));
+                newItem = TrackManager.getInstance().changeTrackYear((Track)itemToChange,(Long)oValue);
             }
             else if (XML_TRACK_RATE.equals(sKey)){
-                newItem = TrackManager.getInstance().changeTrackRate((Track)itemToChange,sValue);
+                newItem = TrackManager.getInstance().changeTrackRate((Track)itemToChange,(Long)oValue);
             }
             else{ //others properties
-                itemToChange.setProperty(sKey,sValue);
+                itemToChange.setProperty(sKey,oValue);
             }
         }
         else if (itemToChange instanceof Album){
             if (XML_NAME.equals(sKey)){
-                newItem = AlbumManager.getInstance().changeAlbumName((Album)itemToChange,sValue);
+                newItem = AlbumManager.getInstance().changeAlbumName((Album)itemToChange,(String)oValue);
             }
             else{ //others properties
-                itemToChange.setProperty(sKey,sValue);
+                itemToChange.setProperty(sKey,oValue);
             }
         }
         else if (itemToChange instanceof Author){
             if (XML_NAME.equals(sKey)){
-                newItem = AuthorManager.getInstance().changeAuthorName((Author)itemToChange,sValue);
+                newItem = AuthorManager.getInstance().changeAuthorName((Author)itemToChange,(String)oValue);
             }
             else{ //others properties
-                itemToChange.setProperty(sKey,sValue);
+                itemToChange.setProperty(sKey,oValue);
             }
         }
         else if (itemToChange instanceof Style){
             if (XML_NAME.equals(sKey)){
-                newItem = StyleManager.getInstance().changeStyleName((Style)itemToChange,sValue);
+                newItem = StyleManager.getInstance().changeStyleName((Style)itemToChange,(String)oValue);
             }
             else{ //others properties
-                itemToChange. setProperty(sKey,sValue);
+                itemToChange. setProperty(sKey,oValue);
             }
         }
         return newItem;            

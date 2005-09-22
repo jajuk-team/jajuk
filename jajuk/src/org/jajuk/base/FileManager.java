@@ -31,6 +31,7 @@ import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.Util;
+import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
 /**
@@ -61,13 +62,13 @@ public class FileManager extends ItemManager implements Observer{
         //Name
         registerProperty(new PropertyMetaInformation(XML_NAME,false,true,true,true,true,String.class,null,null));
         //Directory
-        registerProperty(new PropertyMetaInformation(XML_DIRECTORY,false,true,true,false,false,String.class,null,null));
+        registerProperty(new PropertyMetaInformation(XML_DIRECTORY,false,true,true,false,true,String.class,null,null));
         //Track
-        registerProperty(new PropertyMetaInformation(XML_TRACK,false,true,true,false,false,String.class,null,null));
+        registerProperty(new PropertyMetaInformation(XML_TRACK,false,true,true,true,false,String.class,null,null));
         //Size
         registerProperty(new PropertyMetaInformation(XML_SIZE,false,true,true,false,false,Long.class,null,null));
         //Quality
-        registerProperty(new PropertyMetaInformation(XML_QUALITY,false,true,true,false,false,Long.class,null,"0"));
+        registerProperty(new PropertyMetaInformation(XML_QUALITY,false,true,true,false,false,Long.class,null,0));
   }
 
     /**
@@ -86,9 +87,9 @@ public class FileManager extends ItemManager implements Observer{
 	 * @param sName
 	 */
 	public synchronized File registerFile(String sId, String sName, Directory directory, 
-            Track track, long lSize, int iQuality) {
+            Track track, long lSize, long lQuality) {
 		if ( !hmItems.containsKey(sId)){
-			File file = new File(sId, sName, directory, track, lSize, iQuality);
+			File file = new File(sId, sName, directory, track, lSize, lQuality);
 			hmItems.put(sId,file);
 			alSortedFiles.add(file);
 			if ( directory.getDevice().isRefreshing() && Log.isDebugEnabled()){
@@ -102,9 +103,9 @@ public class FileManager extends ItemManager implements Observer{
      * Change a file name
      * @param fileOld
      * @param sNewName
-     * @return new file or null if an error occurs
+     * @return new file
      */
-	public File changeFileName(File fileOld,String sNewName){
+	public File changeFileName(File fileOld,String sNewName) throws JajukException{
 	    //check given name is different
         if (fileOld.getName().equals(sNewName)){
             return fileOld;
@@ -112,7 +113,7 @@ public class FileManager extends ItemManager implements Observer{
         //check if this file still exists
         if (!fileOld.getIO().exists()){
             Messages.showErrorMessage("135");
-            return  null;
+            throw new JajukException("135");
         }
         java.io.File fileNew = new java.io.File(fileOld.getIO().getParentFile().getAbsolutePath()
 	        +java.io.File.separator+sNewName);
@@ -130,12 +131,12 @@ public class FileManager extends ItemManager implements Observer{
 	    if (fileNew.getName().lastIndexOf((int)'.') != fileNew.getName().indexOf((int)'.')//just one '.'
 	            || !(Util.getExtension(fileNew).equals(Util.getExtension(fileOld.getIO())))){ //no extension change
 	        Messages.showErrorMessage("134");
-	        return null;
+	        throw new JajukException("134");
 	    }
 	    //check if futur file exists
 	    if (fileNew.exists()){
 	        Messages.showErrorMessage("134");
-	        return  null;
+	        throw new JajukException("134");
 	    }
 	    //try to rename file on disk
 	    try{
@@ -143,7 +144,7 @@ public class FileManager extends ItemManager implements Observer{
 	    }
 	    catch(Exception e){
 	        Messages.showErrorMessage("134");
-	        return null;
+	        throw new JajukException("134");
 	    }
 	    //OK, remove old file and register this new file
         removeFile(fileOld);
@@ -167,7 +168,7 @@ public class FileManager extends ItemManager implements Observer{
      * @param newDir new dir
      * @return new file or null if an error occurs
      */
-    public File changeFileDirectory(File old,Directory newDir){
+    public File changeFileDirectory(File old,Directory newDir) throws JajukException{
         //recalculate file ID
         String sNewId = MD5Processor.hash(new StringBuffer(newDir.getDevice().getName())
             .append(newDir.getDevice().getUrl()).append(newDir.getRelativePath())

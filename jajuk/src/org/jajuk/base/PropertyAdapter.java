@@ -22,7 +22,6 @@ package org.jajuk.base;
 
 import java.io.Serializable;
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -233,14 +232,10 @@ abstract public class PropertyAdapter implements IPropertyable, Serializable,ITe
             Object oValue = properties.get(sKey);
             if (oValue != null){
                 PropertyMetaInformation meta = getMeta(sKey);
-                if (meta.getType().equals(Date.class)){ //if date, transform to string with format
-                    sValue = new SimpleDateFormat(meta.getFormat()).format(oValue); //PERF!
-                }
-                else if (meta.getType().equals(Class.class)){ //if Class, just take class name
-                    sValue = ((Class)oValue).getName();
-                }
-                else{
-                    sValue = oValue.toString(); //transform int, long, String.. to String    
+                try {
+                    sValue = Util.format(oValue,meta);
+                } catch (Exception e) { //should not occur
+                    Log.error(e);
                 }
                 sValue = Util.formatXML(sValue); //make sure to remove non-XML characters
             }
@@ -262,17 +257,11 @@ abstract public class PropertyAdapter implements IPropertyable, Serializable,ITe
                 String sValue = attributes.getValue(i);
                 PropertyMetaInformation meta = getMeta(sProperty);
                 //parse boolean values
-                if (meta.getType().equals(Boolean.class)){
-                    if (sValue.equals("y") || sValue.equals(TRUE)){ //"y" and "n" is an old boolean attribute notation prior to 1.0
-                        setProperty(sProperty,true);
-                    }
-                    else{
-                        setProperty(sProperty,false);
-                    }
-                }
-                else{
-                    setProperty(sProperty, sValue);    
-                }
+                try {
+                    setProperty(sProperty, Util.parse(sValue,meta.getType(),meta.getFormat()));
+                } catch (Exception e) {
+                    Log.error("137",sProperty,e);
+                }    
             }
         }
     }
@@ -337,9 +326,8 @@ abstract public class PropertyAdapter implements IPropertyable, Serializable,ITe
         PropertyMetaInformation meta = getMeta(sKey);
         if (meta.getFormat() != null){
             if (meta.getType().equals(java.util.Date.class)){
-                SimpleDateFormat sdf = new SimpleDateFormat(meta.getFormat());
                 try{
-                    sOut = sdf.format((Date)o);
+                    sOut = meta.getFormat().format((Date)o);
                 }
                 catch(Exception e){ //parsing error
                     Log.error("137",e);

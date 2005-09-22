@@ -46,13 +46,13 @@ public class Track extends PropertyAdapter implements Comparable{
 	/**Track length*/
 	private long length;
 	/**Track year*/
-	private int iYear;
+	private long lYear;
 	/**Track rate*/
 	private long lRate;
 	/**Track type*/
 	private Type type;
 	/**Track hits number*/
-	private int iHits;
+	private long lHits;
 	/**Track addition date format:YYYYMMDD*/
 	private Date dAdditionDate;
 	/**Track associated files*/
@@ -64,7 +64,7 @@ public class Track extends PropertyAdapter implements Comparable{
     /**Comment*/
     private String sComment;
     /**Order*/
-    private int iOrder = 0;
+    private long lOrder = 0;
     
 	/**
 	 *  Track constructor
@@ -78,7 +78,7 @@ public class Track extends PropertyAdapter implements Comparable{
 	 * @param type
 	 * @param sAdditionDate
 	 */
-	public Track(String sId,String sName,Album album,Style style,Author author,long length,int iYear,Type type) {
+	public Track(String sId,String sName,Album album,Style style,Author author,long length,long lYear,Type type) {
         super(sId,sName);
             //album
         	this.album = album;
@@ -91,20 +91,20 @@ public class Track extends PropertyAdapter implements Comparable{
             setProperty(XML_AUTHOR,author.getId());
             //Length
             this.length = length;
-            setProperty(XML_TRACK_LENGTH,Long.toString(length));
+            setProperty(XML_TRACK_LENGTH,length);
             //Type
             this.type = type;
             setProperty(XML_TYPE,type.getId());
             //Year
-            this.iYear = iYear;
-            setProperty(XML_TRACK_YEAR,iYear);
+            this.lYear = lYear;
+            setProperty(XML_TRACK_YEAR,lYear);
             //Rate
             this.lRate = 0;
-            setProperty(XML_TRACK_RATE,Long.toString(lRate));
+            setProperty(XML_TRACK_RATE,lRate);
             setProperty(XML_FILES,null); //need this to respect attributes order
             //Hits
-            this.iHits = 0;
-            setProperty(XML_TRACK_HITS,Integer.toString(iHits));
+            this.lHits = 0;
+            setProperty(XML_TRACK_HITS,lHits);
             //Addition date
             this.dAdditionDate = new Date();
             setProperty(XML_TRACK_ADDED,dAdditionDate);
@@ -119,8 +119,8 @@ public class Track extends PropertyAdapter implements Comparable{
 	 */
 	public String toString() {
 		String sOut = "Track[ID="+sId+" Name=" + getName() + " "+album+" "+
-            style+" "+author+" Length="+length+" Year="+iYear+" Rate="+lRate+" "+
-            type+" Hits="+iHits+" Addition date="+dAdditionDate+" Comment="+sComment+" order="+iOrder+"]"; 
+            style+" "+author+" Length="+length+" Year="+lYear+" Rate="+lRate+" "+
+            type+" Hits="+lHits+" Addition date="+dAdditionDate+" Comment="+sComment+" order="+lOrder+"]"; 
 		for (int i=0;i<alFiles.size();i++){
 			sOut += '\n'+alFiles.get(i).toString();
 		}
@@ -135,8 +135,8 @@ public class Track extends PropertyAdapter implements Comparable{
 	public int compareTo(Object o){
 		Track otherTrack = (Track)o;
         //if track # is given, sort by # in a same album, otherwise, sort alphabeticaly
-        if (otherTrack.getAlbum().equals(album) && (getOrder() !=otherTrack.getOrder()) ){
-            return getOrder() - otherTrack.getOrder(); 
+        if (otherTrack.getAlbum().equals(album) && (getOrder() != otherTrack.getOrder()) ){
+            return (int)(getOrder() - otherTrack.getOrder()); 
         }
         return  sHashCompare.compareToIgnoreCase(otherTrack.getHashCompare());
 	}
@@ -202,18 +202,18 @@ public class Track extends PropertyAdapter implements Comparable{
 			fileOut = (File)it.next();  //for the moment, the out file is the first found
 			while ( it.hasNext()){
 				File file = (File)it.next();
-				int iQuality = 0;
-				int iQualityOut = 0; //quality for out file
+				long lQuality = 0;
+				long lQualityOut = 0; //quality for out file
 				try {
-					iQuality = file.getQuality();
+					lQuality = file.getQuality();
 				}
 				catch(NumberFormatException nfe){}//quality string can be something like "error", in this case, we considere quality=0
 				try{
-					iQualityOut = fileOut.getQuality();
+					lQualityOut = fileOut.getQuality();
 				}
 				catch(NumberFormatException nfe){}//quality string can be something like "error", in this case, we considere quality=0
 				
-				if (iQuality > iQualityOut){
+				if (lQuality > lQualityOut){
 					fileOut = file;
 				}
 			}
@@ -225,23 +225,23 @@ public class Track extends PropertyAdapter implements Comparable{
 	/**
 	 * @return
 	 */
-	public int getHits() {
-		return iHits;
+	public long getHits() {
+		return lHits;
 	}
 
     /**
      * Get track number
      * @return
      */
-    public int getOrder(){
-        return this.iOrder;
+    public long getOrder(){
+        return this.lOrder;
     }
     
 	/**
 	 * @return
 	 */
-	public int getYear() {
-		return iYear;
+	public long getYear() {
+		return lYear;
 	}
     
 	  
@@ -331,9 +331,9 @@ public class Track extends PropertyAdapter implements Comparable{
 	/**
 	 * @param hits The iHits to set.
 	 */
-	public void setHits(int hits) {
-		this.iHits = hits;
-        setProperty(XML_TRACK_HITS,Integer.toString(hits));
+	public void setHits(long hits) {
+		this.lHits = hits;
+        setProperty(XML_TRACK_HITS,Long.toString(hits));
 	}
 	
 	public void incHits() {
@@ -351,9 +351,9 @@ public class Track extends PropertyAdapter implements Comparable{
     /**
      * @param order to set
      */
-    public void setOrder(int iOrder) {
-        this.iOrder = iOrder;
-        setProperty(XML_TRACK_ORDER,Integer.toString(iOrder));
+    public void setOrder(long lOrder) {
+        this.lOrder = lOrder;
+        setProperty(XML_TRACK_ORDER,Long.toString(lOrder));
     }
     
     /**
@@ -441,7 +441,7 @@ public class Track extends PropertyAdapter implements Comparable{
             return ((Type)TypeManager.getInstance().getItem(getStringValue(sKey))).getName();
         }
         else if (XML_TRACK_YEAR.equals(sKey)){
-            return Integer.toString(iYear);
+            return Long.toString(lYear);
         }
         else if (XML_FILES.equals(sKey)){
             StringBuffer sbOut = new StringBuffer();
@@ -460,7 +460,7 @@ public class Track extends PropertyAdapter implements Comparable{
             return getAny();
         }
         else{//default
-            return getStringValue(sKey);
+            return getValue(sKey).toString();
         }
     }
     

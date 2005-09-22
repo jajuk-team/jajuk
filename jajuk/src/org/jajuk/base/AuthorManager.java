@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.jajuk.util.MD5Processor;
+import org.jajuk.util.error.JajukException;
 
 /**
  * Convenient class to manage authors
@@ -45,7 +46,7 @@ public class AuthorManager extends ItemManager{
         //Name
         registerProperty(new PropertyMetaInformation(XML_NAME,false,true,true,true,true,String.class,null,null));
         //Expand
-        registerProperty(new PropertyMetaInformation(XML_EXPANDED,false,false,false,false,false,Boolean.class,null,"false"));
+        registerProperty(new PropertyMetaInformation(XML_EXPANDED,false,false,false,false,false,Boolean.class,null,false));
 	}
     
 /**
@@ -74,7 +75,7 @@ public class AuthorManager extends ItemManager{
 	 * 
 	 * @param sName
 	 */
-	public  synchronized Author registerAuthor(String sId, String sName) {
+	public synchronized Author registerAuthor(String sId, String sName) {
 	    if (hmItems.containsKey(sId)) {
 	        return (Author) hmItems.get(sId);
 	    }
@@ -90,7 +91,7 @@ public class AuthorManager extends ItemManager{
      * @param sNewName
      * @return new album
      */
-    public synchronized Author changeAuthorName(Author old,String sNewName){
+    public synchronized Author changeAuthorName(Author old,String sNewName) throws JajukException{
         Author newItem = registerAuthor(sNewName);
         ArrayList alTracks = new ArrayList(TrackManager.getInstance().getItems()); //we need to create a new list to avoid concurrent exceptions
         Iterator it = alTracks.iterator();

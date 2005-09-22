@@ -48,7 +48,7 @@ import org.jajuk.util.log.Log;
 public class Device extends PropertyAdapter implements ITechnicalStrings, Comparable{
 	
 	/**Device type id*/
-	int iDeviceType;
+	long lDeviceType;
 	/**Device url**/
 	private String sUrl;
 	/** IO file for optimizations* */
@@ -85,10 +85,10 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	 * @param iDeviceType
 	 * @param sUrl
 	 */
-	public Device(String sId, String sName, int iDeviceType, String sUrl) {
+	public Device(String sId, String sName, long lDeviceType, String sUrl) {
         super(sId,sName);
-        this.iDeviceType = iDeviceType;
-        setProperty(XML_TYPE,Integer.toString(iDeviceType));
+        this.lDeviceType = lDeviceType;
+        setProperty(XML_TYPE,lDeviceType);
         this.sUrl = sUrl;
         setProperty(XML_URL,sUrl);
         this.fio = new File(getUrl());
@@ -105,7 +105,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	 * toString method
 	 */
 	public String toString() {
-		return "Device[ID=" + sId + " Name=" + sName + " Type=" + DeviceManager.getInstance().getDeviceType(iDeviceType) + " URL=" + sUrl+ " Mount point="+sMountPoint + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$ //$NON-NLS-6$
+		return "Device[ID=" + sId + " Name=" + sName + " Type=" + DeviceManager.getInstance().getDeviceType(lDeviceType) + " URL=" + sUrl+ " Mount point="+sMountPoint + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$ //$NON-NLS-6$
 	}
 		
 	/**
@@ -488,14 +488,14 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	 * @return
 	 */
 	public String getDeviceTypeS() {
-		return DeviceManager.getInstance().getDeviceType(iDeviceType);
+		return DeviceManager.getInstance().getDeviceType(lDeviceType);
 	}
 	
 	/**
 	 * @return
 	 */
-	public int getDeviceType() {
-		return iDeviceType;
+	public long getDeviceType() {
+		return lDeviceType;
 	}
 	
 	
@@ -652,7 +652,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 			Util.stopWaiting();
 			return false;
 		}
-		if ( iDeviceType != 2 ){ //not a remote device
+		if ( lDeviceType != 2 ){ //not a remote device
 			File file = new File(sUrl);
 			if ( file.exists() && file.canRead()){ //see if the url exists and is readable
 				//check if this device was void
@@ -696,10 +696,6 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	public String getMountPoint() {
 		return sMountPoint;
 	}
-	
-	
-	
-	
 	
 	/**
 	 *Alphabetical comparator used to display ordered lists of devices
@@ -753,7 +749,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
      * @param deviceType The iDeviceType to set.
      */
     protected void setDeviceType(int deviceType) {
-        iDeviceType = deviceType;
+        lDeviceType = deviceType;
         setProperty(XML_TYPE,Integer.toString(deviceType));
     }
     
@@ -785,11 +781,11 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
      */
     public String getHumanValue(String sKey){
         if (XML_TYPE.equals(sKey)){
-            int iType = (Integer)getValue(sKey);
-            return DeviceManager.getInstance().getDeviceType(iType);
+            long lType = getLongValue(sKey);
+            return DeviceManager.getInstance().getDeviceType(lType);
         }
         else{//default
-            return getStringValue(sKey);
+            return getValue(sKey).toString();
         }
     }
 

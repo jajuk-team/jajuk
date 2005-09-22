@@ -264,25 +264,25 @@ public class Directory extends PropertyAdapter implements Comparable{
                     String sAuthorName = tag.getAuthorName();
                     String sStyle = tag.getStyleName();
                     long length = tag.getLength(); //length in sec
-                    int iYear = tag.getYear();
-                    int iQuality = tag.getQuality();
+                    long lYear = tag.getYear();
+                    long lQuality = tag.getQuality();
                     String sComment = tag.getComment();
-                    int iOrder = tag.getOrder();
+                    long lOrder = tag.getOrder();
                     
                     Album album = AlbumManager.getInstance().registerAlbum(sAlbumName);
                     Style style = StyleManager.getInstance().registerStyle(sStyle);
                     Author author = AuthorManager.getInstance().registerAuthor(sAuthorName);
                     Type type = TypeManager.getInstance().getTypeByExtension(Util.getExtension(files[i]));
-                    track = TrackManager.getInstance().registerTrack(sTrackName, album, style, author, length, iYear, type);
+                    track = TrackManager.getInstance().registerTrack(sTrackName, album, style, author, length, lYear, type);
                     org.jajuk.base.File newFile = FileManager.getInstance().registerFile(sId,files[i].getName(), this, track, 
-                        files[i].length(), iQuality);
+                        files[i].length(), lQuality);
                     addFile(newFile);
                     FileManager.getInstance().restorePropertiesAfterRefresh(newFile);
                     track.addFile(newFile);
                     track.setComment(sComment); 
                     /*comment is at the track level, note that we take last found file comment but we changing
                     a comment, we will apply to all files for a track*/
-                    track.setOrder(iOrder);
+                    track.setOrder(lOrder);
                     TrackManager.getInstance().restorePropertiesAfterRefresh(track);
                 }
                 else{  //playlist file

@@ -257,7 +257,7 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
             final Device device = (Device)it.next();
             String sIcon = ICON_DEVICE_DIRECTORY_MOUNTED;
             String sTooltip = ""; //$NON-NLS-1$
-            switch (device.getDeviceType()){
+            switch ((int)device.getDeviceType()){
             case 0 :
                 sTooltip = Messages.getString("Device_type.directory"); //$NON-NLS-1$
                 if ( device.isMounted()){

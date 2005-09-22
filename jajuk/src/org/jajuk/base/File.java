@@ -41,7 +41,7 @@ public class File extends PropertyAdapter implements Comparable,ITechnicalString
 	/**File size in bytes*/
 	protected long lSize;
 	/**File quality. Ex: 192 for 192kb/s*/
-	protected int iQuality;
+	protected long lQuality;
 	/** pre-calculated absolute path for perf*/
 	private String sAbs = null;
 	/** IO file associated with this file*/
@@ -58,16 +58,17 @@ public class File extends PropertyAdapter implements Comparable,ITechnicalString
 	 * @param lSize
 	 * @param sQuality
 	 */
-	public File(String sId,String sName,Directory directory,Track track,long lSize,int iQuality) {
+	public File(String sId,String sName,Directory directory,
+            Track track,long lSize,long lQuality) {
         super(sId,sName);
         this.directory = directory;
         setProperty(XML_DIRECTORY,directory.getId());
         this.track = track;
         setProperty(XML_TRACK,track.getId());
         this.lSize = lSize;
-        setProperty(XML_SIZE,Long.toString(lSize));
-        this.iQuality = iQuality;
-        setProperty(XML_QUALITY,iQuality);
+        setProperty(XML_SIZE,lSize);
+        this.lQuality = lQuality;
+        setProperty(XML_QUALITY,lQuality);
    }
 		
 /* (non-Javadoc)
@@ -81,7 +82,7 @@ public class File extends PropertyAdapter implements Comparable,ITechnicalString
 	 * toString method
 	 */
 	public String toString() {
-		return "File[ID="+sId+" Name=" + sName + " Dir="+directory+" Size="+lSize+" Quality="+iQuality+"]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$//$NON-NLS-6$//$NON-NLS-7$
+		return "File[ID="+sId+" Name=" + sName + " Dir="+directory+" Size="+lSize+" Quality="+lQuality+"]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$//$NON-NLS-6$//$NON-NLS-7$
 	}
 	
 	/**
@@ -130,8 +131,8 @@ public class File extends PropertyAdapter implements Comparable,ITechnicalString
 	/**
 	 * @return
 	 */
-	public int getQuality() {
-		return iQuality;
+	public long getQuality() {
+		return lQuality;
 	}
 	
 
@@ -236,7 +237,7 @@ public class File extends PropertyAdapter implements Comparable,ITechnicalString
 	 * @return a clonned file
 	 */
 	public Object clone(){
-		File fClone = new File(sId,sName,directory,track,lSize,iQuality);
+		File fClone = new File(sId,sName,directory,track,lSize,lQuality);
 		fClone.fio = fio;
 		fClone.sAbs = sAbs;
 		return fClone;

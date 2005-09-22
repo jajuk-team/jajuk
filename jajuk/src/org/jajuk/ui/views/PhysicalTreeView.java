@@ -364,7 +364,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
                 else if (value instanceof DeviceNode){
                     setBorder(BorderFactory.createEmptyBorder(2,0,3,0));
                     Device device = (Device)((DeviceNode)value).getDevice();
-                    switch ( device.getDeviceType()){
+                    switch ( (int)device.getDeviceType()){
                     case 0 : 
                         if ( device.isMounted()){
                             setIcon(Util.getIcon(ICON_DEVICE_DIRECTORY_MOUNTED_SMALL));
@@ -887,15 +887,21 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         }
         else if (e.getSource() == jmiDirProperties){
             Directory dir =  ((DirectoryNode)paths[0].getLastPathComponent()).getDirectory();
-            new PropertiesWizard(dir);
+            ArrayList alItems = new ArrayList(1);
+            alItems.add(dir);
+            new PropertiesWizard(alItems);
         }
         else if (e.getSource() == jmiDevProperties){
             Device device =  ((DeviceNode)paths[0].getLastPathComponent()).getDevice();
-            new PropertiesWizard(device);
+            ArrayList alItems = new ArrayList(1);
+            alItems.add(device);
+            new PropertiesWizard(alItems);
         }
         else if (e.getSource() == jmiPlaylistFileProperties){
             PlaylistFile plf =  ((PlaylistFileNode)paths[0].getLastPathComponent()).getPlaylistFile();
-            new PropertiesWizard(plf);
+            ArrayList alItems = new ArrayList(1);
+            alItems.add(plf);
+            new PropertiesWizard(alItems);
         }
     }
     

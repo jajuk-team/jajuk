@@ -26,6 +26,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Serializable;
+import java.text.Format;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.StringTokenizer;
@@ -299,8 +300,18 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
                 boolean bUnique = Boolean.parseBoolean(attributes.getValue(attributes.getIndex(XML_UNIQUE)));
                 Class cType = Class.forName(attributes.getValue(attributes.getIndex(XML_TYPE)));
                 String sFormat = attributes.getValue(attributes.getIndex(XML_FORMAT));
+                Format format = null;
+                if (sFormat != null && !sFormat.trim().equals("")){
+                    format = PropertyMetaInformation.getDateFormat(sFormat);
+                }
                 String sDefaultValue = attributes.getValue(attributes.getIndex(XML_DEFAULT_VALUE));
-                PropertyMetaInformation meta = new PropertyMetaInformation(sPropertyName,bCustom,bConstructor,bShouldBeDisplayed,bEditable,bUnique,cType,sFormat,sDefaultValue);
+                Object oDefaultValue = null;
+                if (sDefaultValue != null && !sDefaultValue.trim().equals("")){
+                    oDefaultValue = Util.parse(sDefaultValue,cType,format);
+                }
+                PropertyMetaInformation meta = new PropertyMetaInformation(
+                        sPropertyName,bCustom,bConstructor,bShouldBeDisplayed,bEditable,bUnique,cType,format,oDefaultValue);
+                
                 if (manager.getMetaInformation(sPropertyName) == null){ //standard properties are already loaded
                     manager.registerProperty(meta);    
                 }
@@ -309,9 +320,9 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 	            Device device = null;
                 String sId = attributes.getValue(attributes.getIndex(XML_ID));
                 String sItemName = attributes.getValue(attributes.getIndex(XML_NAME));
-	            int iType=  Integer.parseInt(attributes.getValue(attributes.getIndex(XML_TYPE)));
+	            long lType=  Long.parseLong(attributes.getValue(attributes.getIndex(XML_TYPE)));
                 String sURL = attributes.getValue(attributes.getIndex(XML_URL));
-                device = DeviceManager.getInstance().registerDevice(sId, sItemName,iType,sURL);
+                device = DeviceManager.getInstance().registerDevice(sId, sItemName,lType,sURL);
 	            if (device != null){
 	                device.populateProperties(attributes);
 	            }
@@ -353,10 +364,9 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 	                return;
 	            }
                 //Get year: we check number format mainly for the case of upgrade from <1.0
-	            long l = ((Long)TrackManager.getInstance().getMetaInformation(XML_TRACK_YEAR).getDefaultValue());
-                int iYear = (int)l;
+	            long lYear = 0;
                 try{
-                    iYear = Integer.parseInt(attributes.getValue(attributes.getIndex(XML_TRACK_YEAR)));
+                    lYear = Integer.parseInt(attributes.getValue(attributes.getIndex(XML_TRACK_YEAR)));
                 }
                  catch(Exception e){
                      if (Log.isDebugEnabled()){
@@ -364,8 +374,8 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
                      }
                  }
                  //Idem for order
-                l = ((Long)TrackManager.getInstance().getMetaInformation(XML_TRACK_ORDER).getDefaultValue());
-                int iOrder = (int)l;
+                lYear = ((Long)TrackManager.getInstance().getMetaInformation(XML_TRACK_ORDER).getDefaultValue());
+                int iOrder = (int)lYear;
                 try{
                     iOrder = Integer.parseInt(attributes.getValue(attributes.getIndex(XML_TRACK_ORDER)));
                 }
@@ -376,9 +386,9 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
                 }
                 //Date format should be OK
                 Date dAdditionDate = Util.getAdditionDateFormat().parse(attributes.getValue(attributes.getIndex(XML_TRACK_ADDED)));
-                Track track = TrackManager.getInstance().registerTrack(sId, sTrackName, album, style, author, length, iYear, type);
+                Track track = TrackManager.getInstance().registerTrack(sId, sTrackName, album, style, author, length, lYear, type);
 	            track.setRate(Long.parseLong(attributes.getValue(attributes.getIndex(XML_TRACK_RATE))));
-	            track.setHits(Integer.parseInt(attributes.getValue(attributes.getIndex(XML_TRACK_HITS))));
+	            track.setHits(Long.parseLong(attributes.getValue(attributes.getIndex(XML_TRACK_HITS))));
 	            track.setAdditionDate(dAdditionDate);
 	            track.setComment(attributes.getValue(attributes.getIndex(XML_TRACK_COMMENT)));
                 track.setOrder(iOrder);
@@ -412,10 +422,9 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 	            String sItemName = attributes.getValue(attributes.getIndex(XML_NAME));
                 long lSize = Long.parseLong(attributes.getValue(attributes.getIndex(XML_SIZE)));
 	             //Quality analyze, handle format problems (mainly for upgrades)
-                long l = ((Long)FileManager.getInstance().getMetaInformation(XML_QUALITY).getDefaultValue());
-                int iQuality = (int)l;
+                long lQuality = 0;
                 try{
-                    iQuality = Integer.parseInt(attributes.getValue(attributes.getIndex(XML_QUALITY)));
+                    lQuality = Long.parseLong(attributes.getValue(attributes.getIndex(XML_QUALITY)));
                 }
                 catch(Exception e){
                     if (Log.isDebugEnabled()){
@@ -423,7 +432,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
                     }
                 }
                 String sID = attributes.getValue(attributes.getIndex(XML_ID)); 
-                org.jajuk.base.File file = FileManager.getInstance().registerFile(sID, sItemName, dParent, track, lSize, iQuality);
+                org.jajuk.base.File file = FileManager.getInstance().registerFile(sID, sItemName, dParent, track, lSize, lQuality);
 	            file.populateProperties(attributes);
 	            track.addFile(file);
 	            file.getDirectory().addFile(file);

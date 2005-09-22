@@ -251,7 +251,9 @@ public class LogicalTableView extends AbstractTableView implements Observer{
                     if (jtable.getSelectedRowCount() == 1){ //mono selection
                         Track track = (Track)model.getItemAt(
                                 jtable.convertRowIndexToModel(jtable.getSelectedRow()));
-                      new PropertiesWizard(track);
+                      ArrayList alItems = new ArrayList(1);
+                      alItems.add(track);
+                      new PropertiesWizard(alItems);
                     }
                     else{//multi selection
                         ArrayList alTracks = new ArrayList(10);

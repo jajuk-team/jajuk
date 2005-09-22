@@ -61,6 +61,7 @@ import org.jajuk.ui.TableTransferHandler;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
+import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.table.DefaultTableColumnModelExt;
 import org.jdesktop.swingx.table.TableColumnExt;
@@ -507,9 +508,14 @@ public abstract class AbstractTableView extends ViewAdapter
         else{
             sValue = oValue.toString();
         }
-        IPropertyable itemNew = ItemManager.changeItem(item,sKey,sValue);
-        if (!itemNew.equals(item)){ //check if item has change
-            ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH)); //TBI see later for a smarter event
+        try{
+            IPropertyable itemNew = ItemManager.changeItem(item,sKey,sValue);
+            if (!itemNew.equals(item)){ //check if item has change
+                ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH)); //TBI see later for a smarter event
+            }
+        }
+        catch(JajukException je){
+            Messages.showErrorMessage("104");
         }
     }
     
