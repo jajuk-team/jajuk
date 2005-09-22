@@ -155,7 +155,7 @@ public class ConfigurationManager implements ITechnicalStrings{
         properties.put(CONF_AUDIO_BUFFER_SIZE,"-1"); //$NON-NLS-1$ //-1 : max available buffer
                         
 		//set default trace level, debug in debug mode and warning in normal mode
-		if (Main.isDebugMode()){
+		if (Main.bIdeMode){
 		    properties.put(CONF_OPTIONS_LOG_LEVEL,Integer.toString(Log.DEBUG));
 		}
 		else{

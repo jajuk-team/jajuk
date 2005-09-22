@@ -154,7 +154,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings	{
 		}
 		sbFilename.append(FILE_LANGPACK_PART2);
 		String sUrl; //property file URL, either in the jajuk.jar jar (normal execution) or found as regular file if in development debug mode
-		if (Main.isDebugMode()){
+		if (Main.bIdeMode){
 		    sUrl = "file:"+System.getProperty("user.dir")+"/src/org/jajuk/i18n/"+ sbFilename.toString(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
 		else{

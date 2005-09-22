@@ -102,8 +102,10 @@ public class Main implements ITechnicalStrings {
 	/**Exit code*/
 	private static int iExitCode = 0;
 	/**Debug mode*/
-	private static boolean bDebugMode = false;
-	/**Exiting flag*/
+	public static boolean bIdeMode = false;
+	/**Test mode*/
+    public static boolean bTestMode = false;
+    /**Exiting flag*/
 	public static boolean bExiting = false;
 	/**General use lock used for synchronization*/
 	private static byte[] bLock = new byte[0];
@@ -140,23 +142,29 @@ public class Main implements ITechnicalStrings {
 		    
 		    //set command line options
 		    for (int i=0;i<args.length;i++){
-		        if (args[i].equals("-debug")){//$NON-NLS-1$
-		            bDebugMode = true;
+                //Tells jajuk it is inside the IDE (usefull to find right location for images and jar resources)
+		        if (args[i].equals("-"+CLI_IDE)){//$NON-NLS-1$
+		            bIdeMode = true;
 		        }
-		        if (args[i].equals("-notaskbar")){//$NON-NLS-1$
+                //if selected, no jajuk window at startup, only tray
+		        if (args[i].equals("-"+CLI_NOTASKBAR)){//$NON-NLS-1$
 		            bNoTaskBar = true;
 		        }
-		    }
+                //Tells jajuk to use a .jajuk_test repository
+                if (args[i].equals("-"+CLI_TEST)){//$NON-NLS-1$
+                    bTestMode = true;
+                }
+            }
 		    
 		    //set exec location path ( normal or debug )
-			Util.setExecLocation(bDebugMode);//$NON-NLS-1$ 
+			Util.setExecLocation(bIdeMode);//$NON-NLS-1$ 
 			
             //Launch splashscreen 
             SwingUtilities.invokeAndWait(new Runnable() {
                 public void run() {
                     try {
                         sc = new JSplash(new URL (IMAGES_SPLASHSCREEN),true,true,false,JAJUK_VERSION+" "+JAJUK_VERSION_DATE,null,null);
-                        //temp sc.splashOn();
+                        sc.splashOn();
                     } catch (MalformedURLException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
@@ -669,14 +677,7 @@ public class Main implements ITechnicalStrings {
 			file.delete();
 		}
     }
-	
-	/**
-	 * @return Returns the bDebugMode.
-	 */
-	public static boolean isDebugMode() {
-		return bDebugMode;
-	}
-	
+			
     /**
      * @return Returns whether jajuk is in exiting state
      */

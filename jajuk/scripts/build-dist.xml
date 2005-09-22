@@ -4,7 +4,7 @@
 <project default='all' name='jajuk' basedir='..'>
   <!-- Only Explicit Release number-->
   <property name='version' value='1.0M2'/>
-  <property name='debug' value='-debug'/>
+  <property name='test' value='-test'/>
   <property name='rootdir' value='/tmp/jajuk-dist'/>
   <property name='distdir' value='${rootdir}/jajuk'/>
   <property name='rpmbuilddir_suse' value='${rootdir}/suse/RPMBUILD/'/>
@@ -303,18 +303,18 @@
   	<replacetoken>VERSION_REPLACED_BY_ANT</replacetoken>
  </replace>
  <!-- Set debug value in scripts--> 
-  <replace dir='${distdir}' value='${debug}'>
+  <replace dir='${distdir}' value='${test}'>
   	<include name='jajuk.sh'/>
   	<include name='jajuk.bat'/>
-  	<replacetoken>DEBUG_FLAG_REPLACED_BY_ANT</replacetoken>
+  	<replacetoken>TEST_FLAG_REPLACED_BY_ANT</replacetoken>
  </replace>
- <replace dir='${rpmdistdir_suse}/usr/bin' value='${debug}'>
+ <replace dir='${rpmdistdir_suse}/usr/bin' value='${test}'>
   	<include name='jajuk'/>
-	<replacetoken>DEBUG_FLAG_REPLACED_BY_ANT</replacetoken>
+	<replacetoken>TEST_FLAG_REPLACED_BY_ANT</replacetoken>
  </replace>
- <replace dir='${rpmdistdir_mdk}/usr/bin' value='${debug}'>
+ <replace dir='${rpmdistdir_mdk}/usr/bin' value='${test}'>
   	<include name='jajuk'/>
-	<replacetoken>DEBUG_FLAG_REPLACED_BY_ANT</replacetoken>
+	<replacetoken>TEST_FLAG_REPLACED_BY_ANT</replacetoken>
  </replace>
  </target>
  

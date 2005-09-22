@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="lib/tablelayout-1.0.jar"/>
 	<classpathentry kind="lib" path="lib/kunststoff-2.0.1.jar"/>
 	<classpathentry kind="lib" path="lib/animation-1.1.3.jar"/>
 	<classpathentry sourcepath="/prog/api/commons-logging-1.0.4/src" kind="lib" path="lib/commons-logging-1.0.jar"/>
@@ -30,5 +29,6 @@
 	<classpathentry kind="lib" path="lib/jorbis-0.0.13.jar"/>
 	<classpathentry kind="lib" path="lib/jspeex-0.9.3.jar"/>
 	<classpathentry kind="lib" path="lib/tritonus_share-release.jar"/>
+	<classpathentry kind="lib" path="lib/tablelayout-20050914.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

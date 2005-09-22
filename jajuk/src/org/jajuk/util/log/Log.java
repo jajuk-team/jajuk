@@ -292,8 +292,7 @@ public class Log  implements ITechnicalStrings{
         }
         alSpool.add(sMessage);
     }
-    
-    
+       
     /**
      * Spool an excpetion with stacktrace
      * @param e
@@ -305,14 +304,13 @@ public class Log  implements ITechnicalStrings{
             spool(ste[i].toString());
         }
     }
-    
-    
+       
     /**
      * @return Spool traces
      */
     public static Iterator getSpool(){
         return alSpool.iterator();
     }
-    
+   
     
 }	

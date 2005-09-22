@@ -5,4 +5,4 @@
 cd `dirname $0`/bin
 
 #Launch jajuk
-java -client -Xms25M -jar jajuk.jar -notaskbar DEBUG_FLAG_REPLACED_BY_ANT
+java -client -Xms25M -jar jajuk.jar -notaskbar TEST_FLAG_REPLACED_BY_ANT

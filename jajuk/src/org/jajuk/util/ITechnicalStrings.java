@@ -198,7 +198,7 @@ public interface ITechnicalStrings {
 	public static final String IMAGES_STAT_PAPER =  PATH_IMAGES + "No-Ones-Laughing-3.jpg";
 	
 	//files
-	public static final String FILE_JAJUK_DIR = System.getProperty("user.home")+(Main.isDebugMode()?"/.jajuk_debug":"/.jajuk");
+	public static final String FILE_JAJUK_DIR = System.getProperty("user.home")+(Main.bTestMode?"/.jajuk_test":"/.jajuk");
 	public static final String FILE_COLLECTION = FILE_JAJUK_DIR+"/collection.xml";
 	public static final String FILE_COLLECTION_EXIT = FILE_JAJUK_DIR+"/collection_exit.xml"; //FIle written by the exit hook
     public static final String FILE_COLLECTION_EXIT_PROOF = FILE_JAJUK_DIR+"/exit_proof"; //Void file created after exit collection file
@@ -220,6 +220,11 @@ public interface ITechnicalStrings {
     public static final String FILE_LOGS = FILE_JAJUK_DIR+"/jajuk.log"; //logs
     public static final String FILE_LOG4j_CONF = PATH_LOG_CONF +"jajuk-log4j-conf.xml"; 
     
+    //Command line options
+    public static final String CLI_NOTASKBAR="notaskbar"; //if selected, no jajuk window at startup, only tray 
+    public static final String CLI_IDE = "ide"; //Tells jajuk it is inside the IDE 
+    public static final String CLI_TEST = "test";  //Tells jajuk to use a .jajuk_test repository
+        
 	//players impls
 	public static final String PLAYER_IMPL_JAVALAYER= "org.jajuk.players.JavaLayerPlayerImpl";
 	

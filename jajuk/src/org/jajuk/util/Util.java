@@ -45,6 +45,7 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.text.DateFormat;
+import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -69,6 +70,7 @@ import javax.xml.parsers.SAXParserFactory;
 
 import org.jajuk.Main;
 import org.jajuk.base.Directory;
+import org.jajuk.base.PropertyMetaInformation;
 import org.jajuk.base.StackItem;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.CommandJPanel;
@@ -639,8 +641,8 @@ public class Util implements ITechnicalStrings {
 	 * Set exec location
 	 * @param bDebug
 	 */
-	public static void setExecLocation(boolean bDebug){
-		if ( bDebug){
+	public static void setExecLocation(boolean bIde){
+		if (bIde){
 			sExecLocation = "file:"+System.getProperty("user.dir")+"/jajuk.jar"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	    }
 		else{
@@ -1012,6 +1014,64 @@ public class Util implements ITechnicalStrings {
             return null;
         }
         return sRelease;
+    }
+    
+    
+    /**
+     * Parse a string to an object
+     * @param sValue
+     * @param cType
+     * @param format
+     * @return
+     * @throws Exception
+     */
+    public static Object parse(String sValue,Class cType,Format format) throws Exception{
+        Object oDefaultValue = sValue; //String by default
+        if (cType.equals(Boolean.class)){
+            if (sValue.equals("y")){ //"y" and "n" is an old boolean attribute notation prior to 1.0
+               oDefaultValue = true;   
+            }
+            else if (sValue.equals("n")){ //"y" and "n" is an old boolean attribute notation prior to 1.0
+               oDefaultValue = false;   
+            }
+            else{
+                oDefaultValue = Boolean.parseBoolean(sValue);    
+            }
+        }
+        else if (cType.equals(Date.class)){
+            oDefaultValue = format.parseObject(sValue);
+        } 
+        else if (cType.equals(Long.class)){
+            oDefaultValue = Long.parseLong(sValue);
+        }
+        else if (cType.equals(Double.class)){
+            oDefaultValue = Double.parseDouble(sValue);
+        }
+        else if (cType.equals(Class.class)){
+            oDefaultValue = Class.forName(sValue);
+        }
+        return oDefaultValue;
+    }
+    
+     /**
+     * Format an object to a string.
+     * @param sValue
+     * @param cType
+     * @param format
+     * @return
+     * @throws Exception
+     */
+    public static String format(Object oValue,PropertyMetaInformation meta) throws Exception{
+        Class cType = meta.getType();
+        Format format = meta.getFormat();
+        String sValue = oValue.toString();//default (works for strings, long and double)
+        if (cType.equals(Date.class)){
+            sValue = format.format(oValue);
+        } 
+        else if (cType.equals(Class.class)){
+            sValue = oValue.getClass().getName();
+        }
+        return sValue;
     }
 
 
