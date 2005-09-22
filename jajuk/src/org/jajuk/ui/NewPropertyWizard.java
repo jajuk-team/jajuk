@@ -200,7 +200,7 @@ public class NewPropertyWizard extends CustomPropertyWizard implements KeyListen
                 format = PropertyMetaInformation.getDateFormat(sFormat);
             }
             PropertyMetaInformation meta = new PropertyMetaInformation(
-                    sProperty,true,false,true,true,false,cType,format,oDefault);
+                    sProperty,true,false,true,true,true,cType,format,oDefault);
             im.registerProperty(meta);
             // im.applyNewProperty(meta);
             Properties properties = new Properties();

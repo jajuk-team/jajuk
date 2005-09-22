@@ -45,9 +45,9 @@ public class TypeManager extends ItemManager{
         super();
          //---register properties---
         //ID
-        registerProperty(new PropertyMetaInformation(XML_ID,false,true,false,false,true,String.class,null,null));
+        registerProperty(new PropertyMetaInformation(XML_ID,false,true,false,false,false,String.class,null,null));
         //Name
-        registerProperty(new PropertyMetaInformation(XML_NAME,false,true,true,false,true,String.class,null,null));
+        registerProperty(new PropertyMetaInformation(XML_NAME,false,true,true,false,false,String.class,null,null));
         //Extension
         registerProperty(new PropertyMetaInformation(XML_TYPE_EXTENSION,false,true,true,false,false,String.class,null,null));
         //Player impl
@@ -59,7 +59,7 @@ public class TypeManager extends ItemManager{
         //Seek
         registerProperty(new PropertyMetaInformation(XML_TYPE_SEEK_SUPPORTED,false,false,true,false,false,Boolean.class,null,null));
         //Tech desc
-        registerProperty(new PropertyMetaInformation(XML_TYPE_TECH_DESC,false,false,true,false,true,String.class,null,null));
+        registerProperty(new PropertyMetaInformation(XML_TYPE_TECH_DESC,false,false,true,false,false,String.class,null,null));
         //Icon
         registerProperty(new PropertyMetaInformation(XML_TYPE_ICON,false,false,false,false,false,String.class,null,null));
    }

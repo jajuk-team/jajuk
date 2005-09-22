@@ -42,15 +42,15 @@ public class DirectoryManager extends ItemManager implements Observer{
 		super();
          //---register properties---
         //ID
-        registerProperty(new PropertyMetaInformation(XML_ID,false,true,false,false,true,String.class,null,null));
+        registerProperty(new PropertyMetaInformation(XML_ID,false,true,false,false,false,String.class,null,null));
         //Name test with (getParentDirectory() != null); //name editable only for standard directories, not root
-        registerProperty(new PropertyMetaInformation(XML_NAME,false,true,true,false,true,String.class,null,null)); //edition to yet implemented TBI
+        registerProperty(new PropertyMetaInformation(XML_NAME,false,true,true,false,false,String.class,null,null)); //edition to yet implemented TBI
         //Parent
         registerProperty(new PropertyMetaInformation(XML_DIRECTORY_PARENT,false,true,true,false,false,String.class,null,null));
         //Device
         registerProperty(new PropertyMetaInformation(XML_DEVICE,false,true,true,false,false,String.class,null,null));
         //Expand
-        registerProperty(new PropertyMetaInformation(XML_EXPANDED,false,false,false,false,false,Boolean.class,null,false));
+        registerProperty(new PropertyMetaInformation(XML_EXPANDED,false,false,false,false,true,Boolean.class,null,false));
         //Synchonized directory
         registerProperty(new PropertyMetaInformation(XML_DIRECTORY_SYNCHRONIZED,false,false,true,false,false,Boolean.class,null,true));
         //Default cover

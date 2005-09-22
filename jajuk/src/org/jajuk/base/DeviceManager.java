@@ -49,13 +49,13 @@ public class DeviceManager extends ItemManager{
 		super();
         //register properties
         //ID
-        registerProperty(new PropertyMetaInformation(XML_ID,false,true,false,false,true,String.class,null,null));
+        registerProperty(new PropertyMetaInformation(XML_ID,false,true,false,false,false,String.class,null,null));
         //Name
-        registerProperty(new PropertyMetaInformation(XML_NAME,false,true,true,false,true,String.class,null,null));
+        registerProperty(new PropertyMetaInformation(XML_NAME,false,true,true,false,false,String.class,null,null));
         //Type
         registerProperty(new PropertyMetaInformation(XML_TYPE,false,true,true,false,false,Long.class,null,null));
         //URL
-        registerProperty(new PropertyMetaInformation(XML_URL,false,true,true,false,true,Long.class,null,null));
+        registerProperty(new PropertyMetaInformation(XML_URL,false,true,true,false,false,Long.class,null,null));
         //Mount point
         registerProperty(new PropertyMetaInformation(XML_DEVICE_MOUNT_POINT,false,true,true,false,false,String.class,null,null));
         //Auto-mount
@@ -63,7 +63,7 @@ public class DeviceManager extends ItemManager{
         //Auto-refresh
         registerProperty(new PropertyMetaInformation(XML_DEVICE_AUTO_REFRESH,false,true,true,false,false,Boolean.class,null,null));
         //Expand
-        registerProperty(new PropertyMetaInformation(XML_EXPANDED,false,false,false,false,false,Boolean.class,null,false));
+        registerProperty(new PropertyMetaInformation(XML_EXPANDED,false,false,false,false,true,Boolean.class,null,false));
         //Synchro source
         registerProperty(new PropertyMetaInformation(XML_DEVICE_SYNCHRO_SOURCE,false,false,true,false,false,String.class,null,null));
         //Synchro mode

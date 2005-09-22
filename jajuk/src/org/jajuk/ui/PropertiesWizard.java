@@ -92,6 +92,9 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
         //windows title: name of the element of only one item, or "selection" word otherwise
 		super(Main.getWindow(),alItems.size()==1 ? ((IPropertyable)alItems.get(0)).getDesc():Messages.getString("PropertiesWizard.6"),true); //modal
         this.alItems = alItems;
+        if (alItems.size() > 1){
+            bMerged = true;
+        }
         setLayout(new TableLayout(dSize));
         getContentPane().add(new PropertiesPanel(alItems,alItems.size()==1 ? ((IPropertyable)alItems.get(0)).getDesc():Messages.getString("PropertiesWizard.6")),"0,0");    
         display();
@@ -109,7 +112,9 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
         super(Main.getWindow(),alItems1.size()==1 ? ((IPropertyable)alItems1.get(0)).getDesc():Messages.getString("PropertiesWizard.6"),true); //modal
         this.alItems = alItems1;
         this.alItems2 = alItems2;
-        bMerged = true;
+        if (alItems1.size() > 1){
+            bMerged = true;
+        }
         setLayout(new TableLayout(dSize));
         JPanel jpProperties = new JPanel();
         jpProperties.setLayout(new BoxLayout(jpProperties,BoxLayout.Y_AXIS));
@@ -133,8 +138,7 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
         jbClose.addActionListener(this);
         getContentPane().add(jbClose,"0,2");
         pack();
-        Util.setCenteredLocation(this);
-        //TBI setSize(new Dimension(500,500));//(int)(Toolkit.getDefaultToolkit().getScreenSize().getWidth()/2),(int)(Toolkit.getDefaultToolkit().getScreenSize().getHeight()/2)));
+        setLocationRelativeTo(Main.getWindow());
         setVisible(true);
     }
 
@@ -191,9 +195,9 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
 			//Process properties to display
 			alToDisplay = new ArrayList(10);
 			for (PropertyMetaInformation meta:ItemManager.getItemManager(pa.getClass()).getProperties()){;//add only editable and non constructor properties
-			    if (meta.isVisible() && !(meta.isUnique()&& alItems.size()>1)){ //if more than one item to display, show only non-unique properties
-			        alToDisplay.add(meta);
-			    }
+			    if (meta.isVisible() && (bMerged ? meta.isMergeable() : true)){ //if more than one item to display, show only mergeable properties
+			            alToDisplay.add(meta);    
+                }
 			}
 			widgets = new JComponent[alToDisplay.size()][5]; //contains widgets for properties
 			//Varname | value | link | type | all album 
@@ -247,7 +251,7 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
                         widgets[index][1] = jtfValue;     
                     }
                     else { //for all others formats (string, class)
-                        JFormattedTextField jtfValue = new JFormattedTextField();
+                        JTextField jtfValue = new JTextField();
                         jtfValue.addActionListener(this);
                         jtfValue.setActionCommand("text");
                         jtfValue.setText(pa.getHumanValue(meta.getName()));//If several items, take first value found
@@ -269,7 +273,7 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
                 //Full album checkbox
                 JCheckBox jcbFull = new JCheckBox();
                 widgets[index][4] = jcbFull;
-                jcbFull.setVisible(pa instanceof Track && alItems.size()==1 && !meta.isUnique() && meta.isEditable()); //full album is only available for non-unique and editable properties on single tracks
+                jcbFull.setVisible(pa instanceof Track && !bMerged && meta.isMergeable() && meta.isEditable()); //full album is only available for non-unique and editable properties on single tracks
           
                 index ++;
             }
@@ -362,8 +366,11 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
                 oValue = jdp.getDate();
             }
             //textfield value changed
-            else if (ae.getActionCommand().equals("text") || 
-                    ae.getActionCommand().equals("double") || 
+            else if (ae.getActionCommand().equals("text") ){
+                JTextField jtf = (JTextField)widgets[getWidgetIndex((JComponent)ae.getSource())][1];
+                oValue = jtf.getText();
+            }
+            else if ( ae.getActionCommand().equals("double") || 
                     ae.getActionCommand().equals("long")){
                 JFormattedTextField jtf = (JFormattedTextField)widgets[getWidgetIndex((JComponent)ae.getSource())][1];
                 oValue = jtf.getValue();

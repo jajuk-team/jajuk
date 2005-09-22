@@ -57,7 +57,7 @@ public class PropertyMetaInformation implements ITechnicalStrings{
     /**Editable?*/
     boolean bEditable = true;
     /**Unique?*/
-    boolean bUnique = false;
+    boolean bMergeable = false;
     /**Human Type*/
     private String sHumanType; 
     /**Supported date formats desc*/
@@ -82,20 +82,20 @@ public class PropertyMetaInformation implements ITechnicalStrings{
      * @param bConstructor Is constructor property
      * @param bShouldBeDisplayed Does this standard property must be displayed (exp for ie is not)
      * @param bEditable Is this property editable 
-     * @param bUnique Is this property value unique
+     * @param bMergeable Is this property mergeable if we display several items together
      * @param cType Property type
      * @param format Property format.
      * @param oDefaultValue Default value
      */
     public PropertyMetaInformation(String sName,boolean bCustom,boolean bConstructor,
-            boolean bShouldBeDisplayed,boolean bEditable,boolean bUnique,Class cType,
+            boolean bShouldBeDisplayed,boolean bEditable,boolean bMergeable,Class cType,
             Format format,Object oDefaultValue){
         this.sName = sName;
         this.bCustom = bCustom;
         this.bConstructor = bConstructor;
         this.bShouldBeDisplayed = bShouldBeDisplayed;
         this.bEditable = bEditable;
-        this.bUnique = bUnique;
+        this.bMergeable = bMergeable;
         this.format = format;
         this.cType = cType;
         this.oDefaultValue = oDefaultValue;
@@ -201,7 +201,7 @@ public class PropertyMetaInformation implements ITechnicalStrings{
             XML_CONSTRUCTOR+"='"+bConstructor+"' "+
             XML_VISIBLE+"='"+bShouldBeDisplayed+"' "+
             XML_EDITABLE+"='"+bEditable+"' "+
-            XML_UNIQUE+"='"+bUnique+"' "+
+            XML_UNIQUE+"='"+bMergeable+"' "+
             XML_TYPE+"='"+cType.getName()+"' "+
             XML_FORMAT+"='"+ (format==null ? "":getFormatDesc(format))+"' "+
             XML_DEFAULT_VALUE+"='"+sDefault+"'/>";
@@ -219,7 +219,7 @@ public class PropertyMetaInformation implements ITechnicalStrings{
         return "Name="+sName+" Custom="+bCustom+" Constructor="+bConstructor
         +" Type="+cType+" Default="+oDefaultValue+" Format="
         + format+" Editable="+isEditable()+" Visible="+isVisible() 
-        +" Unique="+isUnique();
+        +" Mergeable="+isMergeable();
     }
 
     public boolean isVisible() {
@@ -230,8 +230,8 @@ public class PropertyMetaInformation implements ITechnicalStrings{
         return bEditable;
     }
     
-     public boolean isUnique() {
-        return bUnique;
+     public boolean isMergeable() {
+        return bMergeable;
     }
 
      /**
