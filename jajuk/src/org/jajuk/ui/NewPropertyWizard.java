@@ -28,12 +28,15 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.text.Format;
 import java.util.Date;
 import java.util.Properties;
 
 import javax.swing.Box;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import org.jajuk.base.Event;
@@ -41,6 +44,7 @@ import org.jajuk.base.ItemManager;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.base.PropertyMetaInformation;
 import org.jajuk.i18n.Messages;
+import org.jdesktop.swingx.JXDatePicker;
 
 
 /**
@@ -57,8 +61,10 @@ public class NewPropertyWizard extends CustomPropertyWizard implements KeyListen
     JComboBox jcbClass;
     JLabel jlDefault;
     JTextField jtfDefault;
+    JCheckBox jcbDefault;
+    JXDatePicker jdpDefault;
     JLabel jlFormat;
-    JTextField jtfFormat;
+    JComboBox jcbFormat;
     /**
      * Constructor
      */
@@ -80,15 +86,30 @@ public class NewPropertyWizard extends CustomPropertyWizard implements KeyListen
         jcbClass.addItemListener(this);
         //Format
         jlFormat = new JLabel(Messages.getString("NewPropertyWizard.4"));
-        jtfFormat = new JTextField();
+        jcbFormat = new JComboBox();
+        //add supported date formats
+        for (String s:PropertyMetaInformation.getSupportedDateFormatsDesc()){
+            jcbFormat.addItem(s);
+        }
+        jcbFormat.setEnabled(false);
         //Default
         jlDefault= new JLabel(Messages.getString("NewPropertyWizard.5"));
-        jtfDefault = new JTextField();
+        jtfDefault = new JTextField(40);
+        jcbDefault = new JCheckBox();
+        jcbDefault.setEnabled(false);
+        jdpDefault = new JXDatePicker();
+        jdpDefault.setEnabled(false);
+        JPanel jpDefault = new JPanel();
+        double[][] d = {{TableLayout.PREFERRED,10,TableLayout.PREFERRED,10,TableLayout.PREFERRED},{20}};
+        jpDefault.setLayout(new TableLayout(d));
+        jpDefault.add(jtfDefault,"0,0");
+        jpDefault.add(jcbDefault,"2,0");
+        jpDefault.add(jdpDefault,"4,0");
         //main
         int iXSeparator = 10;
         int iYSeparator = 20;
         double[][] dSize = {
-                {iXSeparator,0.5,iXSeparator,0.5,iXSeparator},
+                {iXSeparator,TableLayout.PREFERRED,iXSeparator,TableLayout.PREFERRED,iXSeparator},
                 {iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator} };
         jpMain.setLayout(new TableLayout(dSize));
         jpMain.add(jlItemChoice,"1,1");
@@ -98,9 +119,9 @@ public class NewPropertyWizard extends CustomPropertyWizard implements KeyListen
         jpMain.add(jlClass,"1,5");
         jpMain.add(jcbClass,"3,5");
         jpMain.add(jlDefault,"1,7");
-        jpMain.add(jtfDefault,"3,7");
+        jpMain.add(jpDefault,"3,7");
         jpMain.add(jlFormat,"1,9");
-        jpMain.add(jtfFormat,"3,9");
+        jpMain.add(jcbFormat,"3,9");
         getContentPane().add(jpMain);
         getContentPane().add(okp);
         getContentPane().add(Box.createVerticalStrut(10));
@@ -130,33 +151,58 @@ public class NewPropertyWizard extends CustomPropertyWizard implements KeyListen
             //OK, store it
             ItemManager im = getItemManager();
             //get selected format
-             Class cFormat = null;
+             Class cType = null;
             switch(jcbClass.getSelectedIndex()){
                 case 0:
-                   cFormat =  String.class;
+                   cType =  String.class;
                    break;
                 case 1:
-                    cFormat =  Long.class;
+                    cType =  Long.class;
                     break;
                 case 2:
-                    cFormat =  Double.class;
+                    cType =  Double.class;
                     break;
                 case 3:
-                    cFormat =  Boolean.class;
+                    cType =  Boolean.class;
                     break;
                 case 4:
-                    cFormat =  Date.class;
+                    cType =  Date.class;
                     break;
             }
             String sProperty = jtfName.getText();
-            String sFormat = jtfFormat.getText();
-            String sDefault = jtfDefault.getText();
-            if (sFormat.trim() == "") {
-                sFormat = null;
+            String sFormat = null;
+            if (jcbClass.getSelectedIndex() == 4){
+                sFormat = (String)jcbFormat.getSelectedItem();
             }
-            PropertyMetaInformation meta = new PropertyMetaInformation(sProperty,true,false,true,true,false,cFormat,sFormat,sDefault);
+            Object oDefault = jtfDefault.getText();
+            //Check number and float formats (others are safe)
+            try{
+                if (cType.equals(Long.class)){
+                    Long.parseLong(jtfDefault.getText());
+                }
+                else if (cType.equals(Double.class)){
+                    Double.parseDouble(jtfDefault.getText());
+                }
+            }
+            catch(Exception e){
+               Messages.showErrorMessage("137");
+               return;     
+            }
+            //set default
+            if (cType.equals(Boolean.class)){
+                oDefault = jcbDefault.isSelected();
+            }
+            else if (cType.equals(Date.class)){
+                oDefault = jdpDefault.getDate();
+            }
+            Format format = null;
+            if (sFormat!= null && !sFormat.trim().equals("")) {
+                format = PropertyMetaInformation.getDateFormat(sFormat);
+            }
+            PropertyMetaInformation meta = new PropertyMetaInformation(
+                    sProperty,true,false,true,true,false,cType,format,oDefault);
             im.registerProperty(meta);
-           // im.applyNewProperty(meta);
+            // im.applyNewProperty(meta);
             Properties properties = new Properties();
             properties.put(DETAIL_CONTENT,sProperty);
             Event event = new Event(EVENT_CUSTOM_PROPERTIES_ADD,properties);
@@ -172,6 +218,30 @@ public class NewPropertyWizard extends CustomPropertyWizard implements KeyListen
      * @see java.awt.event.ItemListener#itemStateChanged(java.awt.event.ItemEvent)
      */
     public void itemStateChanged(ItemEvent e) {
+        //Date format
+        if (jcbClass.getSelectedIndex() == 4){ 
+            jcbFormat.setEnabled(true);
+            jdpDefault.setEnabled(true);
+        }
+        else{
+            jcbFormat.setEnabled(false);
+            jdpDefault.setEnabled(false);
+        }
+        //Boolean format
+        if (jcbClass.getSelectedIndex() == 3){ 
+            jcbDefault.setEnabled(true);
+        }
+        else{
+            jcbDefault.setEnabled(false);
+        }
+        //Others formats
+        if (jcbClass.getSelectedIndex() != 3 && jcbClass.getSelectedIndex() != 4){ 
+            jtfDefault.setEnabled(true);
+        }
+        else{
+            jtfDefault.setEnabled(false);
+        }
+        //Ok button
         if (jcbItemChoice.getSelectedIndex() != -1 && jcbClass.getSelectedIndex()!=-1
                 && jtfName.getText().length() > 0){
             okp.getOKButton().setEnabled(true);

@@ -140,12 +140,6 @@ public class NoTagsTagImpl implements ITagImpl {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.jajuk.base.ITagImpl#setYear(java.lang.String)
-	 */
-	public void setYear(String sYear) throws Exception {
-	}
-
-	/* (non-Javadoc)
 	 * @see org.jajuk.base.ITagImpl#setQuality(java.lang.String)
 	 */
 	public void setQuality(String sQuality) throws Exception {
@@ -180,34 +174,34 @@ public class NoTagsTagImpl implements ITagImpl {
     /* (non-Javadoc)
      * @see org.jajuk.tag.ITagImpl#getOrder()
      */
-    public int getOrder() throws Exception {
-        return 0;
+    public long getOrder() throws Exception {
+        return 0l;
     }
 
     /* (non-Javadoc)
      * @see org.jajuk.tag.ITagImpl#setOrder(java.lang.String)
      */
-    public void setOrder(int sOrder) throws Exception {
+    public void setOrder(long lOrder) throws Exception {
     }
 
     /* (non-Javadoc)
      * @see org.jajuk.tag.ITagImpl#setYear(int)
      */
-    public void setYear(int iYear) throws Exception {
+    public void setYear(long lYear) throws Exception {
     }
 
     /* (non-Javadoc)
      * @see org.jajuk.tag.ITagImpl#getYear()
      */
-    public int getYear() throws Exception {
-        return 0;
+    public long getYear() throws Exception {
+        return 0l;
     }
 
     /* (non-Javadoc)
      * @see org.jajuk.tag.ITagImpl#getQuality()
      */
-    public int getQuality() throws Exception {
-        return 0;
+    public long getQuality() throws Exception {
+        return 0l;
     }
 
 }

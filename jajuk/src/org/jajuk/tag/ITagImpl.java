@@ -55,12 +55,12 @@ public interface ITagImpl {
 	/**
 	 * @return creation year
 	 */
-	public int getYear() throws Exception;
+	public long getYear() throws Exception;
 
 	/**
 	 * @return quality
 	 */
-	public int getQuality() throws Exception;
+	public long getQuality() throws Exception;
 
 	/**
 	 * @return comment
@@ -71,7 +71,7 @@ public interface ITagImpl {
      * @return track order
      * @throws Exception
      */
-    public int getOrder() throws Exception;
+    public long getOrder() throws Exception;
     
     /**
      * @return specific property or null if property not tagged
@@ -101,7 +101,7 @@ public interface ITagImpl {
 	/**
 	 * @param sYear
 	 */
-	public void setYear(int iYear) throws Exception;
+	public void setYear(long lYear) throws Exception;
 
 	/**
 	 * @param sComment
@@ -120,7 +120,7 @@ public interface ITagImpl {
      * @param sOrder
      * @throws Exception
      */
-    public void setOrder(int iOrder) throws Exception;
+    public void setOrder(long lOrder) throws Exception;
 	
       /**
      * @return Set a specific property

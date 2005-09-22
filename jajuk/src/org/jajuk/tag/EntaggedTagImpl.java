@@ -107,20 +107,20 @@ public class EntaggedTagImpl implements ITagImpl,ITechnicalStrings {
 	/* (non-Javadoc)
 	 * @see org.jajuk.base.ITagImpl#getYear()
 	 */
-	public int getYear() throws Exception {
+	public long getYear() throws Exception {
 		String sOut = tag.getFirstYear();
 		if ( sOut == null ){//$NON-NLS-1$
 			return 0;
 		}
-		return Integer.parseInt(sOut);
+		return Long.parseLong(sOut);
 	}
 
 	/* (non-Javadoc)
 	 * @see org.jajuk.base.ITagImpl#getQuality()
 	 */
-	public int getQuality() throws Exception {
-		int iQuality = audioFile.getBitrate();
-		return iQuality;
+	public long getQuality() throws Exception {
+		long lQuality = audioFile.getBitrate();
+		return lQuality;
 	}
 
 	/* (non-Javadoc)
@@ -141,9 +141,9 @@ public class EntaggedTagImpl implements ITagImpl,ITechnicalStrings {
       /* (non-Javadoc)
      * @see org.jajuk.tag.ITagImpl#getOrder()
      */
-    public int getOrder() throws Exception {
+    public long getOrder() throws Exception {
         String sOrder = tag.getFirstTrack();
-        return Integer.parseInt(sOrder); //try to parse integer
+        return Long.parseLong(sOrder); //try to parse integer
     }
 
     
@@ -178,8 +178,8 @@ public class EntaggedTagImpl implements ITagImpl,ITechnicalStrings {
     /* (non-Javadoc)
      * @see org.jajuk.base.ITagImpl#setOrder(java.lang.String)
      */
-    public void setOrder(int iOrder) throws Exception {
-        tag.setTrack(Integer.toString(iOrder));
+    public void setOrder(long lOrder) throws Exception {
+        tag.setTrack(Long.toString(lOrder));
     }
 
 	public void setComment(String sComment) throws Exception {
@@ -223,7 +223,7 @@ public class EntaggedTagImpl implements ITagImpl,ITechnicalStrings {
     /* (non-Javadoc)
      * @see org.jajuk.tag.ITagImpl#setYear(int)
      */
-    public void setYear(int iYear) throws Exception {
+    public void setYear(long lYear) throws Exception {
     }
 
 }

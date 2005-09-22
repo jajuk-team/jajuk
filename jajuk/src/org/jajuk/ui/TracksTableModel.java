@@ -21,6 +21,7 @@
 package org.jajuk.ui;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -35,6 +36,7 @@ import org.jajuk.i18n.Messages;
 import org.jajuk.ui.views.LogicalTableView;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Util;
+import org.jajuk.util.log.Log;
 
 /**
  *  Table model used for logical table view
@@ -179,10 +181,10 @@ public class TracksTableModel extends JajukTableModel{
             oValues[iRow][6] = new Long(track.getRate());
             bCellEditable[iRow][6] = true;
             //Date discovery
-            oValues[iRow][7] = track.getAdditionDate();
-           bCellEditable[iRow][7] = false;
+            oValues[iRow][7] = track.getAdditionDate(); //show date using default local format and not technical representation
+            bCellEditable[iRow][7] = false;
             //Order
-            oValues[iRow][8] = new Integer(track.getOrder());
+            oValues[iRow][8] = track.getOrder();
             bCellEditable[iRow][8] = true;
              //Year
             oValues[iRow][9] = track.getYear();
@@ -191,14 +193,29 @@ public class TracksTableModel extends JajukTableModel{
             Iterator it2 = TrackManager.getInstance().getCustomProperties().iterator();
             for (int i=0;it2.hasNext();i++){
                 PropertyMetaInformation meta = (PropertyMetaInformation)it2.next();
-                  Object o = properties.get(meta.getName());
+                Object o = properties.get(meta.getName());
                 if (o != null){
-                    oValues[iRow][iNumberStandardRows+i] = properties.get(meta.getName());    
+                    oValues[iRow][iNumberStandardRows+i] = o;    
                 }
                 else{
                     oValues[iRow][iNumberStandardRows+i] = meta.getDefaultValue();
                 }
-                bCellEditable[iRow][iNumberStandardRows+i] = true;
+                //For date format, just display date conversion
+                if (meta.getType().equals(Date.class)){
+                    try {
+                        oValues[iRow][iNumberStandardRows+i] = Util.format(oValues[iRow][iNumberStandardRows+i],meta);
+                    } catch (Exception e) {
+                        Log.error(e);
+                    }
+                }
+                
+                //Date values not editable, use properties panel instead to edit
+                if (meta.getType().equals(Date.class)){
+                    bCellEditable[iRow][iNumberStandardRows+i] = false;    
+                }
+                else{
+                    bCellEditable[iRow][iNumberStandardRows+i] = true;
+                }
             }   
         }
     }
