@@ -369,11 +369,21 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
             else if (ae.getActionCommand().equals("text") ){
                 JTextField jtf = (JTextField)widgets[getWidgetIndex((JComponent)ae.getSource())][1];
                 oValue = jtf.getText();
+                if (((String)oValue).length() < 1){ //check that string length > 0
+                    String sOldValue = alItems.get(0).getStringValue(meta.getName()); //reset old value
+                    jtf.setText(sOldValue);
+                    Messages.showErrorMessage("137");
+                    return;
+                }
             }
             else if ( ae.getActionCommand().equals("double") || 
                     ae.getActionCommand().equals("long")){
                 JFormattedTextField jtf = (JFormattedTextField)widgets[getWidgetIndex((JComponent)ae.getSource())][1];
                 oValue = jtf.getValue();
+                if (!jtf.getText().equals(jtf.getValue())){
+                    Messages.showErrorMessage("137");
+                    return;
+                }
             }
             //Full album
             JCheckBox jcbFull = (JCheckBox)widgets[getWidgetIndex((JComponent)ae.getSource())][4];
@@ -431,7 +441,7 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
                     //at this point, alItems can contain only one item
                     alItems.remove(pa);
                     alItems.add(newItem);
-                    jlDesc.setText(newItem.getDesc());
+                    jlDesc.setText(Util.formatPropertyDesc(newItem.getDesc()));
                 }
             }
             //UI refresh
