@@ -25,13 +25,13 @@ import info.clearthought.layout.TableLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.StringTokenizer;
 
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -71,8 +71,11 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
     /**Close button*/
     JButton jbClose;
     
+    /**Message panel*/
+    JLabel jlMessage;
+        
     /** Layout dimensions*/
-    double[][] dSize = { { 0.99 }, { 0.99,20,20,20}};
+    double[][] dSize = { { 0.99 }, { 0.99,10,20,10,20}};
     
     /**Items*/
     ArrayList<IPropertyable> alItems;
@@ -81,7 +84,7 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
     ArrayList<IPropertyable> alItems2;
     
     /**Merge flag*/
-    static boolean bMerged = false;
+    boolean bMerged = false;
     
     /**
 	 * Constructor for normal wizard with only one wizard panel and n items to display 
@@ -136,7 +139,12 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
         //Close button
         jbClose = new JButton(Messages.getString("Close"));
         jbClose.addActionListener(this);
+        //Messages
+        jlMessage = new JLabel();
+        jlMessage.setBorder(BorderFactory.createEtchedBorder());//Color.BLACK));
+        jlMessage.setForeground(Color.BLUE);
         getContentPane().add(jbClose,"0,2");
+        getContentPane().add(jlMessage,"0,4");
         pack();
         setLocationRelativeTo(Main.getWindow());
         setVisible(true);
@@ -165,7 +173,7 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
 	 * @author Bertrand Florat
 	 *
 	 */
-	class PropertiesPanel extends JPanel implements ActionListener,PropertyChangeListener{
+	class PropertiesPanel extends JPanel implements ActionListener{
 		        
 		/**Properties panel*/
         JPanel jpProperties;
@@ -182,7 +190,7 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
         /**Items*/
         ArrayList<IPropertyable> alItems;
         
-		/**
+        /**
 		 * Property panel for single types elements
 		 * @param alItems items to display
          * @param sDesc Description (title)
@@ -199,6 +207,10 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
 			            alToDisplay.add(meta);    
                 }
 			}
+            if (alToDisplay.size() == 0){
+                jlMessage.setForeground(Color.RED);
+                jlMessage.setText("  "+Messages.getString("PropertiesWizard.9"));
+            }
 			widgets = new JComponent[alToDisplay.size()][5]; //contains widgets for properties
 			//Varname | value | link | type | all album 
             double p = TableLayout.PREFERRED;
@@ -379,12 +391,15 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
             else if ( ae.getActionCommand().equals("double") || 
                     ae.getActionCommand().equals("long")){
                 JFormattedTextField jtf = (JFormattedTextField)widgets[getWidgetIndex((JComponent)ae.getSource())][1];
-                oValue = jtf.getValue();
-                if (!jtf.getText().equals(jtf.getValue())){
+                try {
+                    jtf.commitEdit();
+                }
+                catch (ParseException e) {
                     Messages.showErrorMessage("137");
                     return;
                 }
-            }
+                oValue = jtf.getValue();
+             }
             //Full album
             JCheckBox jcbFull = (JCheckBox)widgets[getWidgetIndex((JComponent)ae.getSource())][4];
             try{
@@ -415,7 +430,7 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
         }
         
         private void applyChange(String sProperty,Object oValue, boolean bFullAlbum) throws JajukException{
-            if (PropertiesWizard.bMerged){ 
+            if (PropertiesWizard.this.bMerged){ 
                 /*multiple items case, in this case, we just change a non-constructor attribute on the same item
                  because in multiple mode, we cannot change constructor methods*/      
                 for (IPropertyable pa : alItems){
@@ -446,59 +461,9 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
             }
             //UI refresh
             ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH)); //TBI see later for a smarter event
+            //notification message
+            PropertiesWizard.this.jlMessage.setText("  "+Messages.getString("PropertiesWizard.8")+": <"+sProperty+">="+oValue.toString());
         }
-
-        public void propertyChange(PropertyChangeEvent pce) {
-      //       JFormattedTextField jtf = (JFormattedTextField)widgets[getWidgetIndex((JComponent)pce.getSource())][1];
-        //        System.out.println(jtf.getValue());
-        }
-        
-        /* (non-Javadoc)
-		 * @see javax.swing.event.TableModelListener#tableChanged(javax.swing.event.TableModelEvent)
-		 
-		public void tableChanged(TableModelEvent e) {
-		    PropertyMetaInformation meta = (PropertyMetaInformation)jtable.getModel().getValueAt(e.getFirstRow(),5);
-            String sKey = meta.getName();
-		    String sValue = (String)jtable.getModel().getValueAt(e.getFirstRow(),2);
-		    if (e.getColumn() == 2){
-		        if (model.isMultiple()){ 
-                    /*multiple items case, in this case, we just change a non-constructor attribute on the same item
-                    because in multiple mode, we cannot change constructor methods*/      
-          /*         for (IPropertyable pa : model.getItems()){
-                       ItemManager.changeItem(pa,sKey,sValue);
-                   }
-		        }
-                else{ //single item case, in this case, we can change constructor attributes so we can overwrite current item by a new one
-                    //Is full album option is set for current line ?
-                    boolean bFullAlbum = (Boolean)model.getValueAt(e.getFirstRow(),3);
-                    //Apply to full album if selected (do it first because after, current item could be changed and checkbox reseted)
-                    if (model.getPa() instanceof Track && bFullAlbum){
-                        Track track = (Track)model.getPa(); 
-                        Album album = track.getAlbum();
-                        ArrayList<Track> alTracksToChange = album.getTracks();
-                        alTracksToChange.remove(model.getPa()); //we treat the current item separetly
-                        //now change property for each matching item
-                        for (Track trackToChange:alTracksToChange){
-                            ItemManager.changeItem(trackToChange,sKey,sValue);
-                        }
-                    }
-                    //then change current item
-                    IPropertyable newItem = ItemManager.changeItem(model.getPa(),sKey,sValue);
-                    if (!newItem.equals(model.getPa())){ //check if item has change, if so, change current item 
-                        this.model = new PropertiesTableModel(newItem);
-                        //reset current full album values
-                        this.model.setValueAt(bFullAlbum,e.getFirstRow(),3); 
-                        jtable.setModel(this.model);
-                        jtable.packAll();
-                        this.model.addTableModelListener(this);
-                        jlDesc.setText(model.getPa().getDesc());
-                    }
-                }
-		        //UI refresh
-		        ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH)); //TBI see later for a smarter event
-		        
-			}
-        }*/
 	}
-    
+   
 }

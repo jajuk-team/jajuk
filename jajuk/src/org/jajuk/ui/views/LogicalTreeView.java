@@ -97,8 +97,7 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
     JMenuItem jmiStylePlayRepeat;
     JMenuItem jmiStyleDelete;
     JMenuItem jmiStyleProperties;
-    JMenuItem jmiStyleSetProperties;
-    
+        
     JPopupMenu jmenuAuthor;
     JMenuItem jmiAuthorPlay;
     JMenuItem jmiAuthorPush;
@@ -164,8 +163,6 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
         jmiStyleDelete = new JMenuItem(Messages.getString("LogicalTreeView.5")); //$NON-NLS-1$
         jmiStyleDelete.setEnabled(false);
         jmiStyleDelete.addActionListener(this);
-        jmiStyleSetProperties = new JMenuItem(Messages.getString("LogicalTreeView.25")); //$NON-NLS-1$
-        jmiStyleSetProperties.addActionListener(this);
         jmiStyleProperties = new JMenuItem(Messages.getString("LogicalTreeView.7")); //$NON-NLS-1$
         jmiStyleProperties.addActionListener(this);
         jmenuStyle.add(jmiStylePlay);
@@ -173,7 +170,6 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
         jmenuStyle.add(jmiStylePlayShuffle);
         jmenuStyle.add(jmiStylePlayRepeat);
         jmenuStyle.add(jmiStyleDelete);
-        jmenuStyle.add(jmiStyleSetProperties);
         jmenuStyle.add(jmiStyleProperties);
         
         //Author menu
@@ -307,17 +303,6 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
                 TreePath[] tpSelected = jtree.getSelectionModel().getSelectionPaths();
                 if (tpSelected == null){
                     return;
-                }
-                //disable menus that are realated to only one item
-                if (tpSelected.length != 1){
-                    jmiStyleProperties.setEnabled(false);
-                    jmiAuthorProperties.setEnabled(false);
-                    jmiAlbumProperties.setEnabled(false);
-                }
-                else{
-                    jmiStyleProperties.setEnabled(true);
-                    jmiAuthorProperties.setEnabled(true);
-                    jmiAlbumProperties.setEnabled(true);
                 }
                 HashSet hsSelectedTracks = new HashSet(100);
                 int items = 0;
