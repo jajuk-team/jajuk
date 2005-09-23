@@ -72,7 +72,7 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
     JButton jbClose;
     
     /**Message panel*/
-    JLabel jlMessage;
+    JLabel jlMessage = new JLabel();
         
     /** Layout dimensions*/
     double[][] dSize = { { 0.99 }, { 0.99,10,20,10,20}};
@@ -140,7 +140,6 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
         jbClose = new JButton(Messages.getString("Close"));
         jbClose.addActionListener(this);
         //Messages
-        jlMessage = new JLabel();
         jlMessage.setBorder(BorderFactory.createEtchedBorder());//Color.BLACK));
         jlMessage.setForeground(Color.BLUE);
         getContentPane().add(jbClose,"0,2");
@@ -208,7 +207,6 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
                 }
 			}
             if (alToDisplay.size() == 0){
-                jlMessage.setForeground(Color.RED);
                 jlMessage.setText("  "+Messages.getString("PropertiesWizard.9"));
             }
 			widgets = new JComponent[alToDisplay.size()][5]; //contains widgets for properties
@@ -430,7 +428,7 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
         }
         
         private void applyChange(String sProperty,Object oValue, boolean bFullAlbum) throws JajukException{
-            if (PropertiesWizard.this.bMerged){ 
+            if (bMerged){ 
                 /*multiple items case, in this case, we just change a non-constructor attribute on the same item
                  because in multiple mode, we cannot change constructor methods*/      
                 for (IPropertyable pa : alItems){
@@ -462,7 +460,7 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
             //UI refresh
             ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH)); //TBI see later for a smarter event
             //notification message
-            PropertiesWizard.this.jlMessage.setText("  "+Messages.getString("PropertiesWizard.8")+": <"+sProperty+">="+oValue.toString());
+            jlMessage.setText("  "+Messages.getString("PropertiesWizard.8")+": <"+sProperty+">="+oValue.toString());
         }
 	}
    
