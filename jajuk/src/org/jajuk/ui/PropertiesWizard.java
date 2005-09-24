@@ -428,6 +428,9 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
         }
         
         private void applyChange(String sProperty,Object oValue, boolean bFullAlbum) throws JajukException{
+            if (oValue == null){
+                throw new JajukException("137");
+            }
             if (bMerged){ 
                 /*multiple items case, in this case, we just change a non-constructor attribute on the same item
                  because in multiple mode, we cannot change constructor methods*/      
