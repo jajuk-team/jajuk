@@ -193,7 +193,8 @@ public class EntaggedTagImpl implements ITagImpl,ITechnicalStrings {
 		try{
 		    audioFile = AudioFileIO.read(fio);
             tag = audioFile.getTag();
-	    }
+      //      tag.setEncoding("ISO-8859-1");
+        }
         catch(Throwable t){ //can throw OutOfMemory errors
             System.gc(); //call garbage collector to avoid than folowing throw make itself an out of memory
             throw new JajukException("103",fio.toString(),t); //$NON-NLS-1$
@@ -224,6 +225,7 @@ public class EntaggedTagImpl implements ITagImpl,ITechnicalStrings {
      * @see org.jajuk.tag.ITagImpl#setYear(int)
      */
     public void setYear(long lYear) throws Exception {
+        tag.setYear(Long.toString(lYear));
     }
 
 }
