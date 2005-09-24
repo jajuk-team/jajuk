@@ -42,7 +42,12 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
 import javax.swing.JTextField;
+import javax.swing.SpinnerListModel;
+import javax.swing.SpinnerModel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import org.jajuk.Main;
 import org.jajuk.base.Album;
@@ -172,7 +177,7 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
 	 * @author Bertrand Florat
 	 *
 	 */
-	class PropertiesPanel extends JPanel implements ActionListener{
+	class PropertiesPanel extends JPanel implements ActionListener,ChangeListener{
 		        
 		/**Properties panel*/
         JPanel jpProperties;
@@ -259,6 +264,14 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
                         jtfValue.setActionCommand("long");
                         jtfValue.setText(pa.getHumanValue(meta.getName()));//If several items, take first value found
                         widgets[index][1] = jtfValue;     
+                    }
+                    else if (meta.getType().equals(String.class) && meta.getName().equals("style")){ //for styles
+                        ArrayList alStyles = (ArrayList)Util.getStyles().clone();
+                        alStyles.add(0,pa.getHumanValue(meta.getName()));//display the current genre as default
+                        SpinnerModel model = new SpinnerListModel(alStyles);
+                        JSpinner jspinner = new JSpinner(model);
+                        jspinner.addChangeListener(this);
+                        widgets[index][1] = jspinner;     
                     }
                     else { //for all others formats (string, class)
                         JTextField jtfValue = new JTextField();
@@ -463,7 +476,15 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
             //UI refresh
             ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH)); //TBI see later for a smarter event
             //notification message
-            jlMessage.setText("  "+Messages.getString("PropertiesWizard.8")+": <"+sProperty+">="+oValue.toString());
+            jlMessage.setText("  "+Messages.getString("PropertiesWizard.8")+": <"+sProperty+">="+oValue.toString()+
+                (bFullAlbum?" ("+Messages.getString("PropertiesWizard.5")+")":""));
+        }
+
+        /* (non-Javadoc)
+         * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
+         */
+        public void stateChanged(ChangeEvent e) {
+            System.out.println(e.getSource());
         }
 	}
    

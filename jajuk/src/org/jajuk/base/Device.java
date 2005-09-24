@@ -750,7 +750,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
      */
     protected void setDeviceType(int deviceType) {
         lDeviceType = deviceType;
-        setProperty(XML_TYPE,Integer.toString(deviceType));
+        setProperty(XML_TYPE,deviceType);
     }
     
     /**

@@ -333,7 +333,7 @@ public class Track extends PropertyAdapter implements Comparable{
 	 */
 	public void setHits(long hits) {
 		this.lHits = hits;
-        setProperty(XML_TRACK_HITS,Long.toString(hits));
+        setProperty(XML_TRACK_HITS,hits);
 	}
 	
 	public void incHits() {
@@ -345,7 +345,7 @@ public class Track extends PropertyAdapter implements Comparable{
 	 */
 	public void setRate(long rate) {
 		this.lRate = rate;
-        setProperty(XML_TRACK_RATE,Long.toString(rate));
+        setProperty(XML_TRACK_RATE,rate);
 	}
 
     /**
@@ -353,7 +353,7 @@ public class Track extends PropertyAdapter implements Comparable{
      */
     public void setOrder(long lOrder) {
         this.lOrder = lOrder;
-        setProperty(XML_TRACK_ORDER,Long.toString(lOrder));
+        setProperty(XML_TRACK_ORDER,lOrder);
     }
     
     /**

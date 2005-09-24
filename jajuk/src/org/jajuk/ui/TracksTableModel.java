@@ -178,7 +178,7 @@ public class TracksTableModel extends JajukTableModel{
             oValues[iRow][5] = track.getValue(XML_TRACK_COMMENT);
             bCellEditable[iRow][5] = true;
             //Rate
-            oValues[iRow][6] = new Long(track.getRate());
+            oValues[iRow][6] = track.getRate();
             bCellEditable[iRow][6] = true;
             //Date discovery
             oValues[iRow][7] = track.getAdditionDate(); //show date using default local format and not technical representation

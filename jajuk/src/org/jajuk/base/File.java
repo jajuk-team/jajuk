@@ -270,7 +270,7 @@ public class File extends PropertyAdapter implements Comparable,ITechnicalString
      */
     public void setSize(long size) {
         this.lSize = size;
-        setProperty(XML_SIZE,Long.toString(size));
+        setProperty(XML_SIZE,size);
     }
 
     

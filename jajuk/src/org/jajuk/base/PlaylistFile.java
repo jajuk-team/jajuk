@@ -611,7 +611,7 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 	 */
 	public void setType(int type) {
 		this.iType = type;
-        setProperty(XML_TYPE,Integer.toString(type));
+        setProperty(XML_TYPE,type);
 	}
 	
 	/**
