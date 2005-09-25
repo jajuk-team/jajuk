@@ -21,9 +21,12 @@
 package org.jajuk.base;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 
 import org.jajuk.util.MD5Processor;
+import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 
 /**
@@ -34,7 +37,9 @@ import org.jajuk.util.error.JajukException;
 public class StyleManager extends ItemManager {
     /**Self instance*/
     private static StyleManager singleton;
-
+    /*List of all known styles*/
+    public static ArrayList<String> stylesList;
+    
 	/**
 	 * No constructor available, only static access
 	 */
@@ -47,7 +52,10 @@ public class StyleManager extends ItemManager {
         registerProperty(new PropertyMetaInformation(XML_NAME,false,true,true,true,false,String.class,null,null));
         //Expand
         registerProperty(new PropertyMetaInformation(XML_EXPANDED,false,false,false,false,true,Boolean.class,null,false));
-	}
+        //create default style list
+        stylesList = new ArrayList(Arrays.asList(Util.genres));
+        Collections.sort(stylesList);
+   }
 
     /**
      * @return singleton
@@ -81,7 +89,19 @@ public class StyleManager extends ItemManager {
 		Style style = new Style(sId, sName);
 		hmItems.put(sId, style);
         restorePropertiesAfterRefresh(style);
-		return style;
+        //add it in styles list if new
+        boolean bNew = true;
+        for (String s:stylesList){
+            if (s.toLowerCase().equals(sName.toLowerCase())){
+                bNew = false;
+                break;
+            }
+        }
+        if (bNew){
+            stylesList.add(sName);
+        }
+        Collections.sort(stylesList);
+        return style;
 	}
     
       /**
@@ -132,6 +152,10 @@ public class StyleManager extends ItemManager {
      */
     public String getIdentifier() {
         return XML_STYLES;
+    }
+
+    public static ArrayList<String> getStylesList() {
+        return stylesList;
     }
 
 }

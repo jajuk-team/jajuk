@@ -501,15 +501,8 @@ public abstract class AbstractTableView extends ViewAdapter
         String sKey = model.getIdentifier(e.getColumn());
         Object oValue = model.getValueAt(e.getFirstRow(),e.getColumn());//can be Boolean or String
         IPropertyable item = model.getItemAt(e.getFirstRow());
-        String sValue = null;
-        if (oValue instanceof Boolean){
-            sValue = ((Boolean)oValue).toString();
-        }
-        else{
-            sValue = oValue.toString();
-        }
         try{
-            IPropertyable itemNew = ItemManager.changeItem(item,sKey,sValue);
+            IPropertyable itemNew = ItemManager.changeItem(item,sKey,oValue);
             if (!itemNew.equals(item)){ //check if item has change
                 ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH)); //TBI see later for a smarter event
             }

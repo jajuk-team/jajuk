@@ -48,7 +48,6 @@ import java.text.DateFormat;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
@@ -138,11 +137,7 @@ public class Util implements ITechnicalStrings {
 			"Black Metal","Crossover","Contemporary C","Christian Rock","Merengue","Salsa","Thrash Metal", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
 			"Anime","JPop","SynthPop"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	
-    public static ArrayList alStyles;
-    static {
-        alStyles = new ArrayList(Arrays.asList(genres));
-        Collections.sort(alStyles);
-    }
+   
 	/**
 	 * No constructor
 	 */
@@ -1080,10 +1075,5 @@ public class Util implements ITechnicalStrings {
         return sValue;
     }
 
-    public static ArrayList getStyles() {
-        return alStyles;
-    }
-
-
-
+  
 }

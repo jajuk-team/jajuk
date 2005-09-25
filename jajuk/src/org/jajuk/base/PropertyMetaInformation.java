@@ -258,4 +258,9 @@ public class PropertyMetaInformation implements ITechnicalStrings{
         return alDateFormatsDesc.get(alDateFormats.indexOf(format));
     }
     
+    public String getHumanName(){
+        return Messages.getInstance().contains("Property_"+getName())?
+                        Messages.getString("Property_"+getName()):getName();
+    }
+    
 }

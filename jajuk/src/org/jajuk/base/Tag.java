@@ -336,11 +336,11 @@ public class Tag implements ITechnicalStrings{
     /**
      * Commit tags
      */
-    public void commit(){
+    public void commit() throws JajukException{
         try {
             tagImpl.commit();
         } catch (Exception e) {
-            Log.error("104", fio.getName(),e); //$NON-NLS-1$
+             throw new JajukException("104",fio.getName()+" "+e.getMessage(),e);
         }
     }
 

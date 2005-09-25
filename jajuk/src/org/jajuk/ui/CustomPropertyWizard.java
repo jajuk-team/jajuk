@@ -62,7 +62,7 @@ public abstract class CustomPropertyWizard extends JDialog implements ActionList
      * @param sTitle
      */
     CustomPropertyWizard(String sTitle){
-        super(Main.getWindow(),sTitle);
+        super(Main.getWindow(),sTitle,true);
     }
     
     /**

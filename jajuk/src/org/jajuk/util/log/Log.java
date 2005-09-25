@@ -149,13 +149,15 @@ public class Log  implements ITechnicalStrings{
     public static void error(String sCode,String sInfosup,Throwable t){
         String sOut;
         if ( Messages.isInitialized()){
-            sOut = '('+sCode+") "+Messages.getErrorMessage(sCode)+ ((sInfosup==null)?"":":"+sInfosup); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            sOut = '('+sCode+") "+Messages.getErrorMessage(sCode)+ ((sInfosup==null)?"":": "+sInfosup); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         }
         else{
             sOut = '('+sCode+") "+ ((sInfosup==null)?"":":"+sInfosup); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         }
         spool("[ERROR] "+sOut);
-        spool(t);
+        if (t != null){
+            spool(t);
+        }
         logger.error(sOut,t);
     }
     

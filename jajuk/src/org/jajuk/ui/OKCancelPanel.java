@@ -37,8 +37,8 @@ import org.jajuk.i18n.Messages;
  */
 public class OKCancelPanel extends JPanel {
     
-    JButton jbOk;
-    JButton jbCancel;
+    private JButton jbOk;
+    private JButton jbCancel;
     
     /**Associated action listener*/
     ActionListener al;
@@ -46,7 +46,7 @@ public class OKCancelPanel extends JPanel {
     public OKCancelPanel(ActionListener al){
         this.al = al;
         //buttons
-        double[][] dSize = {{TableLayout.FILL,100,TableLayout.FILL,100,TableLayout.FILL},
+        double[][] dSize ={{TableLayout.TRAILING,TableLayout.FILL,TableLayout.TRAILING,TableLayout.FILL,TableLayout.TRAILING},
                 {0.99}};
         setLayout(new TableLayout(dSize));
         jbOk = new JButton(Messages.getString("OK")); //$NON-NLS-1$
@@ -55,6 +55,18 @@ public class OKCancelPanel extends JPanel {
         jbCancel.addActionListener(al);
         add(jbOk,"1,0");
         add(jbCancel,"3,0");
+    }
+    
+    /**
+     * OK Cancel panel with given button names
+     * @param al
+     * @param sOKTitle
+     * @param sCancelTitle
+     */
+    public OKCancelPanel(ActionListener al,String sOKTitle,String sCancelTitle){
+        this(al);
+        jbOk.setText(sOKTitle);
+        jbCancel.setText(sCancelTitle);
     }
     
     public JButton getOKButton(){
