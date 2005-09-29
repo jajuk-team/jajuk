@@ -258,6 +258,7 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
                 //Set layout
                 dVert[2*index+2] = iY_SEPARATOR;
                 dVert[(2*index)+3] = 20;
+                Dimension dim = new Dimension(200,20);
                 //Set widgets
                 //Property name
                 String sName = meta.getHumanName();
@@ -281,10 +282,12 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
                             else if(meta.getType().equals(Double.class)){ //for a double, value is a formatted textfield
                                 JFormattedTextField jtfValue = new JFormattedTextField(NumberFormat.getInstance());
                                 jtfValue.setText(pa.getHumanValue(meta.getName()));//If several items, take first value found
+                                jtfValue.setPreferredSize(dim);
                                 widgets[index][1] = jtfValue;
                             }
                             else if(meta.getType().equals(Long.class)){ //for a double, value is a formatted textfield
                                 JFormattedTextField jtfValue = new JFormattedTextField(NumberFormat.getIntegerInstance());
+                                jtfValue.setPreferredSize(dim);
                                 jtfValue.setText(pa.getHumanValue(meta.getName()));//If several items, take first value found
                                 widgets[index][1] = jtfValue;     
                             }
@@ -293,6 +296,7 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
                                 alStyles.add(0,pa.getHumanValue(meta.getName()));//display the current genre as default
                                 JComboBox jcb = new JComboBox();
                                 jcb.setEditable(true);
+                                jcb.setPreferredSize(dim);
                                 for (String style:alStyles){
                                     jcb.addItem(style);
                                 }
@@ -301,13 +305,14 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
                             else { //for all others formats (string, class)
                                 JTextField jtfValue = new JTextField();
                                 jtfValue.setText(pa.getHumanValue(meta.getName()));//If several items, take first value found
+                                jtfValue.setPreferredSize(dim);
                                 widgets[index][1] = jtfValue;     
                             }
                         }
                         else{
                             JLabel jl = new JLabel(pa.getHumanValue(meta.getName())); //If several items, take first value found
                             jl.setToolTipText(pa.getHumanValue(meta.getName()));
-                            jl.setPreferredSize(new Dimension(200,20));
+                            jl.setPreferredSize(dim);
                             widgets[index][1] = jl;
                             
                         }

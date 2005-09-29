@@ -340,7 +340,7 @@ public class Tag implements ITechnicalStrings{
         try {
             tagImpl.commit();
         } catch (Exception e) {
-             throw new JajukException("104",fio.getName()+" "+e.getMessage(),e);
+             throw new JajukException("104",fio.getName()+"\n"+e.getMessage(),e);
         }
     }
 

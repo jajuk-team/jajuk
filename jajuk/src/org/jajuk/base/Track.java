@@ -142,7 +142,7 @@ public class Track extends PropertyAdapter implements Comparable{
 	/**
 	 * @return
 	 */
-	public ArrayList getFiles() {
+	public ArrayList<File> getFiles() {
 		return alFiles;
 	}
 

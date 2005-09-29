@@ -193,7 +193,6 @@ public class EntaggedTagImpl implements ITagImpl,ITechnicalStrings {
 		try{
 		    audioFile = AudioFileIO.read(fio);
             tag = audioFile.getTag();
-          ///  System.out.println(tag.getClass());
             tag.setEncoding("ISO-8859-1");
         }
         catch(Throwable t){ //can throw OutOfMemory errors
