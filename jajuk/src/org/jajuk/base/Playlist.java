@@ -91,6 +91,24 @@ public class Playlist extends PropertyAdapter implements Comparable{
 		return alPlaylistFiles;
 	}
 	
+    /* (non-Javadoc)
+     * @see org.jajuk.base.IPropertyable#getHumanValue(java.lang.String)
+     */
+	public String getHumanValue(String sKey){
+	    if (XML_PLAYLIST_FILES.equals(sKey)){
+	        StringBuffer sbOut = new StringBuffer();
+	        Iterator it = alPlaylistFiles.iterator();
+	        while (it.hasNext()){
+	            PlaylistFile plf = (PlaylistFile)it.next();
+	            sbOut.append(plf.getAbsolutePath()+",");
+	        }
+	        return sbOut.substring(0,sbOut.length()-1); //remove last ','
+	    }
+	    else{//default
+	        return getStringValue(sKey);
+	    }
+	}
+	
 	/**
 	 * @return an available playlist file to play
 	 */

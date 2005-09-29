@@ -132,6 +132,8 @@ public class TrackManager extends ItemManager implements Observer{
         		track.getYear(),track.getType());
         //re apply old properties from old item
         newTrack.cloneProperties(track);
+        //Reset files property before adding new files
+        newTrack.removeProperty(XML_FILES);
        //change tag in files
         Iterator it = track.getFiles().iterator();
         while (it.hasNext()){
@@ -163,6 +165,8 @@ public class TrackManager extends ItemManager implements Observer{
             newAuthor,track.getLength(),track.getYear(),track.getType());
         //re apply old properties from old item
         newTrack.cloneProperties(track);
+        //Reset files property before adding new files
+        newTrack.removeProperty(XML_FILES);
        //change tag in files
         Iterator it = track.getFiles().iterator();
         while (it.hasNext()){
@@ -194,6 +198,8 @@ public class TrackManager extends ItemManager implements Observer{
             track.getAuthor(),track.getLength(),track.getYear(),track.getType());
         //re apply old properties from old item
         newTrack.cloneProperties(track);
+        //Reset files property before adding new files
+        newTrack.removeProperty(XML_FILES);
        //change tag in files
         Iterator it = track.getFiles().iterator();
         while (it.hasNext()){
@@ -225,6 +231,8 @@ public class TrackManager extends ItemManager implements Observer{
                 track.getAuthor(),track.getLength(),lNewItem,track.getType());
         //re apply old properties from old item
         newTrack.cloneProperties(track);
+        //Reset files property before adding new files
+        newTrack.removeProperty(XML_FILES);
         //change tag in files
         Iterator it = track.getFiles().iterator();
         while (it.hasNext()){
@@ -273,7 +281,7 @@ public class TrackManager extends ItemManager implements Observer{
             throw new JajukException("137");
         }
         track.setRate(lNew);
-       return track;
+        return track;
     }
     
      /**

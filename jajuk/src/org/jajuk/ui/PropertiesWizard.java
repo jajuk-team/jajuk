@@ -23,6 +23,7 @@ package org.jajuk.ui;
 import info.clearthought.layout.TableLayout;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.NumberFormat;
@@ -31,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.StringTokenizer;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -50,6 +52,7 @@ import org.jajuk.base.FileManager;
 import org.jajuk.base.IPropertyable;
 import org.jajuk.base.ItemManager;
 import org.jajuk.base.ObservationManager;
+import org.jajuk.base.PlaylistFileManager;
 import org.jajuk.base.PropertyMetaInformation;
 import org.jajuk.base.StyleManager;
 import org.jajuk.base.Track;
@@ -134,19 +137,21 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
         jpMain = new JPanel();
         jpMain.setLayout(new TableLayout(dSize));
         JPanel jpProperties = new JPanel();
-        double[][] dPanels = {{TableLayout.PREFERRED,TableLayout.PREFERRED},{TableLayout.FILL}};
+        double[][] dPanels = {{TableLayout.PREFERRED,20,TableLayout.PREFERRED},{TableLayout.PREFERRED}};
         jpProperties.setLayout(new TableLayout(dPanels));
         if (alItems1.size() == 1){
             panel1 = new PropertiesPanel(alItems1,alItems1.get(0).getDesc());
+            panel1.setBorder(BorderFactory.createEtchedBorder());
             panel2 = new PropertiesPanel(alItems2,alItems2.get(0).getDesc());
+            panel2.setBorder(BorderFactory.createEtchedBorder());
             jpProperties.add(panel1,"0,0");    
-            jpProperties.add(panel2,"1,0");    
+            jpProperties.add(panel2,"2,0");    
         }
         else{
             panel1 = new PropertiesPanel(alItems1,Util.formatPropertyDesc(Messages.getString("Property_files")));
             panel2 = new PropertiesPanel(alItems2,Util.formatPropertyDesc(Messages.getString("Property_tracks")));
             jpProperties.add(panel1,"0,0");    
-            jpProperties.add(panel2,"1,0");
+            jpProperties.add(panel2,"2,0");
         }
         jpMain.add(jpProperties,"1,1");
         display();
@@ -198,7 +203,7 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
         ||     sKey.equals(XML_ALBUM) || sKey.equals(XML_AUTHOR) || sKey.equals(XML_STYLE)
         ||     sKey.equals(XML_DIRECTORY) || sKey.equals(XML_FILE)
         ||     sKey.equals(XML_PLAYLIST) || sKey.equals(XML_PLAYLIST_FILE)
-        ||    sKey.equals(XML_FILES)
+        ||    sKey.equals(XML_FILES)|| sKey.equals(XML_PLAYLIST_FILES)
         ||    ( sKey.equals(XML_TYPE) && !(alItems.get(0) instanceof Device)) ;   //avoid to confuse between music types and device types
     }
     
@@ -300,7 +305,11 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
                             }
                         }
                         else{
-                            widgets[index][1] = new JLabel(pa.getHumanValue(meta.getName())); //If several items, take first value found
+                            JLabel jl = new JLabel(pa.getHumanValue(meta.getName())); //If several items, take first value found
+                            jl.setToolTipText(pa.getHumanValue(meta.getName()));
+                            jl.setPreferredSize(new Dimension(200,20));
+                            widgets[index][1] = jl;
+                            
                         }
                         //Link
                         if (isLinkable(meta)){
@@ -365,7 +374,7 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
             //desc
             jlDesc = new JLabel(Util.formatPropertyDesc(sDesc));
             add(jlDesc, "0,0");
-            add(new JScrollPane(jpProperties), "0,2");
+            add(jpProperties, "0,2");
         }
         
         public void actionPerformed(ActionEvent ae) {
@@ -381,6 +390,19 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
                     while (st.hasMoreTokens()) {
                         String sFile = st.nextToken();
                         IPropertyable pa = FileManager.getInstance().getItem(sFile);
+                        if (pa != null) {
+                            alItems.add(pa);
+                        }
+                    }
+                    new PropertiesWizard(alItems); //show properties window for this item
+                }
+                else if (XML_PLAYLIST_FILES.equals(sProperty)) {
+                    String sValue = alItems.get(0).getStringValue(sProperty); //can be only a set a files
+                    StringTokenizer st = new StringTokenizer(sValue, ",");
+                    ArrayList alItems = new ArrayList(3);
+                    while (st.hasMoreTokens()) {
+                        String sPlf = st.nextToken();
+                        IPropertyable pa = PlaylistFileManager.getInstance().getItem(sPlf);
                         if (pa != null) {
                             alItems.add(pa);
                         }
@@ -420,7 +442,7 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
                 else if (component instanceof JXDatePicker){
                     oValue = ((JXDatePicker)component).getDate();
                 }
-                //combo box value
+                //combobox value
                 else if (component instanceof JComboBox){
                     oValue = ((JComboBox)component).getSelectedItem();
                     if (((String)oValue).length() < 1){ //check that string length > 0
@@ -457,15 +479,13 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
                 boolean bFull = ((JCheckBox)widgets[index][4]).isSelected();
                 //Old value
                 String  sOldValue = alItems.get(0).getHumanValue(meta.getName()); 
-                //Change the tag if it has changed or if full album is set
+                //Change the tag if it has changed or if we have to update several items (full album or merge)
                 if ( (sOldValue!= null && ! Util.format(oValue,meta).equals(sOldValue))
-                        || bFull){
+                        || bFull || bMerged){
                     applyChange(meta.getName(),oValue,bFull);
                     alChanged.add(meta);
                 }
             }
-            //UI refresh
-            ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH)); //TBI see later for a smarter event
             StringBuffer sbChanged = new StringBuffer();
             sbChanged.append("{");
             for (PropertyMetaInformation meta:alChanged){
@@ -473,8 +493,12 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
             }
             sbChanged.append('}');
             InformationJPanel.getInstance().setMessage(
-              alChanged.size()  +" "+Messages.getString("PropertiesWizard.10")+": "+sbChanged.toString(),
+                    alChanged.size()  +" "+Messages.getString("PropertiesWizard.10")+": "+sbChanged.toString(),
                     InformationJPanel.INFORMATIVE);
+            //UI refresh
+            if (alChanged.size() > 0){
+                ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH)); 
+            }
         }
         
         /**
@@ -503,9 +527,12 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
             if (bMerged){ 
                 /*multiple items case, in this case, we just change a non-constructor attribute on the same item
                  because in multiple mode, we cannot change constructor methods*/      
+                ArrayList<IPropertyable> alNewItems = new ArrayList(alItems.size());
                 for (IPropertyable pa : alItems){
-                    ItemManager.changeItem(pa,sProperty,oValue);
+                    IPropertyable newItem = ItemManager.changeItem(pa,sProperty,oValue);
+                    alNewItems.add(newItem);
                 }
+                alItems = alNewItems;
             }
             else{ //single item case, in this case, we can change constructor attributes so we can overwrite current item by a new one
                 //Apply to full album if selected (do it first because after, current item could be changed and checkbox reseted)

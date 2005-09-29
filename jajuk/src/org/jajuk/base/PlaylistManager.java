@@ -101,6 +101,22 @@ public class PlaylistManager extends ItemManager{
 				}
 			}
 		}
+        
+        /**
+         * 
+         * @param plf
+         * @return pl   ylist for a given playlist file
+         */
+		public Playlist getPlayList(PlaylistFile plf){
+		    Iterator it = hmItems.values().iterator();
+            while (it.hasNext()){
+                Playlist pl = (Playlist)it.next();
+                if (pl.getPlaylistFiles().contains(plf)){
+                    return pl;
+                }
+            }
+            return null;
+        }
 	
 /* (non-Javadoc)
      * @see org.jajuk.base.ItemManager#getIdentifier()

@@ -41,8 +41,10 @@ import org.jajuk.base.FIFO;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Observer;
 import org.jajuk.base.PlaylistFile;
+import org.jajuk.base.PlaylistManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.PlaylistFileItem;
+import org.jajuk.ui.PropertiesWizard;
 import org.jajuk.util.Util;
 
 import ext.SwingWorker;
@@ -116,7 +118,6 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 		
 		jmiProperties = new JMenuItem(Messages.getString("PhysicalPlaylistRepositoryView.4"));  //$NON-NLS-1$
 		jmiProperties.addActionListener(this);
-		jmiProperties.setEnabled(false);
 		jpmenu.add(jmiProperties);
 		
 		//mouse adapter
@@ -175,10 +176,12 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 			jmiDelete.setEnabled(false); 
 			//Save as is only for special playlists
 			jmiSaveAs.setEnabled(true);
+            jmiProperties.setEnabled(false);
 		}
 		else{
 			jmiDelete.setEnabled(true);
 			jmiSaveAs.setEnabled(false);
+            jmiProperties.setEnabled(true);
 		}
 		//cannot play the queue playlist : nonsense
 		if ( plfiSelected.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE){
@@ -312,8 +315,15 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 					plfiSelected.getPlaylistFile().play();
 				}
 				else if(ae.getSource() == jmiProperties){
-					//TBI
-				}
+					ArrayList alItems = new ArrayList(1);
+                    if ( AbstractPlaylistRepositoryView.this instanceof PhysicalPlaylistRepositoryView){
+                      alItems.add(plfiSelected.getPlaylistFile());  
+                    }
+                    else{
+                        alItems.add(PlaylistManager.getInstance().getPlayList(plfiSelected.getPlaylistFile()));;
+                    }
+                      new PropertiesWizard(alItems);
+              }
 				else if(ae.getSource() == jmiSaveAs){ //save as
 					plfiSelected.getPlaylistFile().saveAs();
 				}

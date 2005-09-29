@@ -47,12 +47,8 @@ public class Track extends PropertyAdapter implements Comparable{
 	private long length;
 	/**Track year*/
 	private long lYear;
-	/**Track rate*/
-	private long lRate;
 	/**Track type*/
 	private Type type;
-	/**Track hits number*/
-	private long lHits;
 	/**Track addition date format:YYYYMMDD*/
 	private Date dAdditionDate;
 	/**Track associated files*/
@@ -61,10 +57,6 @@ public class Track extends PropertyAdapter implements Comparable{
 	private String sHashCompare;
 	/** Number of hits for current jajuk session */
 	private int iSessionHits = 0;
-    /**Comment*/
-    private String sComment;
-    /**Order*/
-    private long lOrder = 0;
     
 	/**
 	 *  Track constructor
@@ -99,12 +91,11 @@ public class Track extends PropertyAdapter implements Comparable{
             this.lYear = lYear;
             setProperty(XML_TRACK_YEAR,lYear);
             //Rate
-            this.lRate = 0;
-            setProperty(XML_TRACK_RATE,lRate);
+            setProperty(XML_TRACK_RATE,0l);
+            //Files reset
             setProperty(XML_FILES,null); //need this to respect attributes order
             //Hits
-            this.lHits = 0;
-            setProperty(XML_TRACK_HITS,lHits);
+            setProperty(XML_TRACK_HITS,0l);
             //Addition date
             this.dAdditionDate = new Date();
             setProperty(XML_TRACK_ADDED,dAdditionDate);
@@ -119,8 +110,8 @@ public class Track extends PropertyAdapter implements Comparable{
 	 */
 	public String toString() {
 		String sOut = "Track[ID="+sId+" Name=" + getName() + " "+album+" "+
-            style+" "+author+" Length="+length+" Year="+lYear+" Rate="+lRate+" "+
-            type+" Hits="+lHits+" Addition date="+dAdditionDate+" Comment="+sComment+" order="+lOrder+"]"; 
+            style+" "+author+" Length="+length+" Year="+lYear+" Rate="+getRate()+" "+
+            type+" Hits="+getHits()+" Addition date="+dAdditionDate+" Comment="+getComment()+" order="+getOrder()+"]"; 
 		for (int i=0;i<alFiles.size();i++){
 			sOut += '\n'+alFiles.get(i).toString();
 		}
@@ -226,15 +217,22 @@ public class Track extends PropertyAdapter implements Comparable{
 	 * @return
 	 */
 	public long getHits() {
-		return lHits;
+		return getLongValue(XML_TRACK_HITS);
 	}
 
+    /**
+     * @return
+     */
+    public String getComment() {
+        return getStringValue(XML_TRACK_COMMENT);
+    }
+    
     /**
      * Get track number
      * @return
      */
     public long getOrder(){
-        return this.lOrder;
+        return getLongValue(XML_TRACK_ORDER);
     }
     
 	/**
@@ -256,7 +254,7 @@ public class Track extends PropertyAdapter implements Comparable{
 	 * @return
 	 */
 	public long getRate() {
-		return lRate;
+		return getLongValue(XML_TRACK_RATE);
 	}
 
 	/**
@@ -279,7 +277,7 @@ public class Track extends PropertyAdapter implements Comparable{
 	 * @return
 	 */
 	public boolean equals(Object otherTrack){
-		return this.getId().equals(((Track)otherTrack).getId() );
+		return this.getId().equals(((Track)otherTrack).getId());
 	}	
 	
 	/**
@@ -332,8 +330,7 @@ public class Track extends PropertyAdapter implements Comparable{
 	 * @param hits The iHits to set.
 	 */
 	public void setHits(long hits) {
-		this.lHits = hits;
-        setProperty(XML_TRACK_HITS,hits);
+		setProperty(XML_TRACK_HITS,hits);
 	}
 	
 	public void incHits() {
@@ -344,15 +341,13 @@ public class Track extends PropertyAdapter implements Comparable{
 	 * @param rate The lRate to set.
 	 */
 	public void setRate(long rate) {
-		this.lRate = rate;
-        setProperty(XML_TRACK_RATE,rate);
+	    setProperty(XML_TRACK_RATE,rate);
 	}
 
     /**
      * @param order to set
      */
     public void setOrder(long lOrder) {
-        this.lOrder = lOrder;
         setProperty(XML_TRACK_ORDER,lOrder);
     }
     
@@ -360,7 +355,6 @@ public class Track extends PropertyAdapter implements Comparable{
      * @param rate The lRate to set.
      */
     public void setComment(String sComment) {
-        this.sComment = sComment;
         setProperty(XML_TRACK_COMMENT,sComment);
     }	
 

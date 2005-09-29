@@ -738,8 +738,8 @@ public class FIFO implements ITechnicalStrings {
         if (!Main.isExiting()) {
             ConfigurationManager.setProperty(CONF_STATE_WAS_PLAYING, FALSE);
         }
-        Player.stop(); // stop player
         reset(); // reinit all variables
+        Player.stop(); // stop player
         ObservationManager.notify(new Event(EVENT_PLAYER_STOP)); // notify to devices like commandJPanel to update ui
         ObservationManager.notify(new Event(EVENT_ZERO)); // ask reset
     }
