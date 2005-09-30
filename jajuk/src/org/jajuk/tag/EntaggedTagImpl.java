@@ -218,6 +218,7 @@ public class EntaggedTagImpl implements ITagImpl,ITechnicalStrings {
      * @see org.jajuk.tag.ITagImpl#commit()
      */
     public void commit() throws Exception{
+        tag.setEncoding("ISO-8859-1");//have to set it here to fix an issue with audio-formats 0.12
         audioFile.commit();
     }
 
