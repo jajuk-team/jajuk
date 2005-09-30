@@ -284,7 +284,7 @@
  </replace>
  <!-- Set release in native launcher descriptor file--> 
  <replace dir='${windowsdir}' value='${version}'>
-  	<include name='launcher.ini'/>
+  	<include name='jajuk.jsmooth'/>
   	<replacetoken>VERSION_REPLACED_BY_ANT</replacetoken>
  </replace>
  <!-- Set release in Suse RPM descriptor file--> 
@@ -368,19 +368,19 @@
         izPackDir='/prog/IzPack'/>
       </target>
       
-  <!-- Windows SFX creation with 7z-->
+      
+      
+  <!-- Windows EXE creation-->
+  <taskdef name="jsmoothgen"
+			classname="net.charabia.jsmoothgen.ant.JSmoothGen"
+			classpath="/prog/jsmooth-0.9.7/lib/jsmoothgen-ant.jar"/>
   <target name='sfx' depends='izpack'>
-  	 <mkdir dir='${windowsdir}'/>
-      <copy todir='${windowsdir}' >
-     	<fileset file='${izpackdir}/${distjarname}${version}.jar'/>
-     </copy>
-   	 <exec executable='/bin/sh' dir='${windowsdir}'>
-	  <arg line='create_sfx.sh jajuk-${version}-win32.exe'/>
-	 </exec>
+  	 <jsmoothgen project="/tmp/jajuk-dist/windows/jajuk.jsmooth"
+		skeletonroot="/prog/jsmooth-0.9.7/skeletons"/>
   </target>    
       
       
-      <!-- Prepare upload-->
+   <!-- Prepare upload-->
    <target name='prepare_upload' description='o Put all generated packages in the same upload directory'>
   	 <mkdir dir='${uploaddir}'/>
       <copy todir='${uploaddir}' >
