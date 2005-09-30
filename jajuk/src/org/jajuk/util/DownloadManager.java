@@ -30,6 +30,7 @@ import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HostConfiguration;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.UsernamePasswordCredentials;
+import org.apache.commons.httpclient.auth.AuthScope;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.jajuk.Main;
 import org.jajuk.i18n.Messages;
@@ -56,9 +57,9 @@ public class DownloadManager implements ITechnicalStrings {
 		client.getHttpConnectionManager().getParams().setConnectionTimeout(iConTimeout); //connection to
 		client.getHttpConnectionManager().getParams().setSoTimeout(iDataTimeout); //data reception timeout
 		if (sProxyUser!= null && sProxyPassswd!= null){
-			client.getHostConfiguration().setProxy(ConfigurationManager.getProperty(CONF_NETWORK_PROXY_HOSTNAME),Integer.parseInt(ConfigurationManager.getProperty(CONF_NETWORK_PROXY_PORT))); 
-            client.getState().setProxyCredentials(null,new UsernamePasswordCredentials(sProxyUser,sProxyPwd ));
-    	}
+		    client.getHostConfiguration().setProxy(ConfigurationManager.getProperty(CONF_NETWORK_PROXY_HOSTNAME),Integer.parseInt(ConfigurationManager.getProperty(CONF_NETWORK_PROXY_PORT))); 
+		    client.getState().setProxyCredentials(new AuthScope(AuthScope.ANY),new UsernamePasswordCredentials(sProxyUser,sProxyPwd ));
+		}
 		return client;
 	}
 	
@@ -146,12 +147,18 @@ public class DownloadManager implements ITechnicalStrings {
 	        else{
 	            client = getHTTPClient(iConTO,iTraTO);
 	        }
-	        get = new GetMethod(url.toString());
+	        get = new GetMethod(url.toString());     
+	        get.addRequestHeader("Accept","image/gif, image/x-xbitmap, image/jpeg, image/pjpeg, */*");
+	        get.addRequestHeader("Accept-Language","en-us");
+	        //get.addRequestHeader("Accept-Encoding","gzip, deflate");
+	        get.addRequestHeader("User-Agent","Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)");
+	        get.addRequestHeader("Connection","Keep-Alive");
+	        int statusCode = client.executeMethod(get);
 	        get.addRequestHeader(new Header("User-Agent","Mozilla/4.0 (compatible; MSIE 5.0; Windows 2000) Opera 6.03  [en]")); //$NON-NLS-1$ //$NON-NLS-2$
 	        get.setDoAuthentication( true );
 	        int status = client.executeMethod(getHostConfiguration(url.getHost()), get );
 	        bOut = get.getResponseBody();
-	     }
+         }
 	    catch(Exception e){
 	        Log.debug("Time out during cover lookup"); //$NON-NLS-1$
 	    	throw e;
