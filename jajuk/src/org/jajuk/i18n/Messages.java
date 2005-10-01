@@ -25,6 +25,7 @@ import java.util.Properties;
 import java.util.StringTokenizer;
 
 import javax.swing.Icon;
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.xml.parsers.SAXParser;
@@ -219,7 +220,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings	{
 	public static void showErrorMessage(final String sCode){
 	    SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-              JOptionPane.showMessageDialog(Main.getWindow(),Messages.getErrorMessage(sCode),Messages.getErrorMessage("102"),JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$	}
+              JOptionPane.showMessageDialog(Main.getWindow(),"<html><b>"+Messages.getErrorMessage(sCode)+"</b></html>",Messages.getErrorMessage("102"),JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$	}
     		}
         });
 	}
@@ -457,7 +458,32 @@ class MessageDialog implements Runnable{
      * @see java.lang.Runnable#run()
      */
     public void run() {
-        JOptionPane.showMessageDialog(null, sText,sTitle, iType);
+        JOptionPane optionPane = getNarrowOptionPane(72);
+        optionPane.setMessage(sText);
+        optionPane.setMessageType(iType);
+        JDialog dialog = optionPane.createDialog(null,sTitle);
+        dialog.setVisible(true);
+    }
+    
+    /**
+     * code from http://java.sun.com/developer/onlineTraining/new2java/supplements/2005/July05.html#1
+     * Used to coorectly display long messages
+     * @param maxCharactersPerLineCount
+     * @return
+     */
+    public static JOptionPane getNarrowOptionPane(
+            int maxCharactersPerLineCount) { 
+        // Our inner class definition
+        class NarrowOptionPane extends JOptionPane { 
+            int maxCharactersPerLineCount;
+            NarrowOptionPane(int maxCharactersPerLineCount) { 
+                this.maxCharactersPerLineCount = maxCharactersPerLineCount;
+            } 
+            public int getMaxCharactersPerLineCount() { 
+                return maxCharactersPerLineCount;
+            } 
+        } 
+        return new NarrowOptionPane(maxCharactersPerLineCount);
     }
    
 }
