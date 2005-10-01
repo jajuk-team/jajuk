@@ -10,7 +10,7 @@
     	<action dev='bflorat' type='add'>Custom properties</action> 
     	<action dev='bflorat' type='add'>Tray popups with songs playing</action> 
     	<action dev='bflorat' type='add'>New ANY search criteria in table view</action> 
-    	<action dev='bflorat' type='add'>New Look and feel: Squareness & Tiny</action> 
+    	<action dev='bflorat' type='add'>New Look and feel: Squareness and Tiny</action> 
     	<action dev='bflorat' type='add'>Quality feedback agent</action> 
     	<action dev='bflorat' type='add'>Track numbers management</action> 
     	<action dev='bflorat' type='fix' issue=''></action>
