@@ -29,7 +29,7 @@ Option for show_trackers=1; * To show a specific Tracker instead of all
 	&amp;tracker_to_show=TRACKER_ID
 
 --><export_details>
-<time>1117903308</time>
+<time>1127680153</time>
 <project_group_id>91412</project_group_id>
 <project_unix_name>jajuk</project_unix_name>
 <exporter>bflorat</exporter>
@@ -72,91 +72,11 @@ http://www.florat.net/jajuk-specs.pdf</registration_description>
 <project_admin>Yes</project_admin>
 </projectmember>
 <projectmember>
-<url>https://sourceforge.net/users/mbraux/</url>
-<user_id>544649</user_id>
-<user_name>mbraux</user_name>
-<public_name>Martial BRAUX</public_name>
-<email>mbraux@users.sourceforge.net</email>
-<project_admin>No</project_admin>
-</projectmember>
-<projectmember>
-<url>https://sourceforge.net/users/garywong/</url>
-<user_id>658293</user_id>
-<user_name>garywong</user_name>
-<public_name>garywong</public_name>
-<email>garywong@users.sourceforge.net</email>
-<project_admin>No</project_admin>
-</projectmember>
-<projectmember>
-<url>https://sourceforge.net/users/marcsiebren/</url>
-<user_id>965774</user_id>
-<user_name>marcsiebren</user_name>
-<public_name>Marc-Siebren Kwadijk</public_name>
-<email>marcsiebren@users.sourceforge.net</email>
-<project_admin>No</project_admin>
-</projectmember>
-<projectmember>
-<url>https://sourceforge.net/users/masiar/</url>
-<user_id>994549</user_id>
-<user_name>masiar</user_name>
-<public_name>masi</public_name>
-<email>masiar@users.sourceforge.net</email>
-<project_admin>No</project_admin>
-</projectmember>
-<projectmember>
 <url>https://sourceforge.net/users/skyreacher/</url>
 <user_id>1011653</user_id>
 <user_name>skyreacher</user_name>
 <public_name>Gerhard Dietrichsteiner</public_name>
 <email>skyreacher@users.sourceforge.net</email>
-<project_admin>No</project_admin>
-</projectmember>
-<projectmember>
-<url>https://sourceforge.net/users/ashwin_here/</url>
-<user_id>1194746</user_id>
-<user_name>ashwin_here</user_name>
-<public_name>Ashwin</public_name>
-<email>ashwin_here@users.sourceforge.net</email>
-<project_admin>No</project_admin>
-</projectmember>
-<projectmember>
-<url>https://sourceforge.net/users/ftavares/</url>
-<user_id>1214731</user_id>
-<user_name>ftavares</user_name>
-<public_name>Filipe Tavares</public_name>
-<email>ftavares@users.sourceforge.net</email>
-<project_admin>No</project_admin>
-</projectmember>
-<projectmember>
-<url>https://sourceforge.net/users/omarazam/</url>
-<user_id>1248339</user_id>
-<user_name>omarazam</user_name>
-<public_name>omarazam</public_name>
-<email>omarazam@users.sourceforge.net</email>
-<project_admin>No</project_admin>
-</projectmember>
-<projectmember>
-<url>https://sourceforge.net/users/dartxs/</url>
-<user_id>1264704</user_id>
-<user_name>dartxs</user_name>
-<public_name>S.Dan</public_name>
-<email>dartxs@users.sourceforge.net</email>
-<project_admin>No</project_admin>
-</projectmember>
-<projectmember>
-<url>https://sourceforge.net/users/jijuka/</url>
-<user_id>1267422</user_id>
-<user_name>jijuka</user_name>
-<public_name>Jiju</public_name>
-<email>jijuka@users.sourceforge.net</email>
-<project_admin>No</project_admin>
-</projectmember>
-<projectmember>
-<url>https://sourceforge.net/users/tunnelratz/</url>
-<user_id>1277054</user_id>
-<user_name>tunnelratz</user_name>
-<public_name>TunnelRatz</public_name>
-<email>tunnelratz@users.sourceforge.net</email>
 <project_admin>No</project_admin>
 </projectmember>
 </projectmembers>
@@ -171,7 +91,7 @@ http://www.florat.net/jajuk-specs.pdf</registration_description>
 <forums>
 <forum_id>315360</forum_id>
 <forum_name>Open Discussion</forum_name>
-<description>IMPORTANT: USE &#34;SUPPORT&#34; IF YOU NEED HELP</description>
+<description>*** ONLY FOR DISCUSSION: USE &#34;SUPPORT&#34; FORUM TO GET HELP ***</description>
 <is_public>Yes</is_public>
 <forum_id>315361</forum_id>
 <forum_name>Help</forum_name>
@@ -229,25 +149,28 @@ http://www.florat.net/jajuk-specs.pdf</registration_description>
 <mailing_list_id>46341</mailing_list_id>
 <list_name>jajuk-i18n</list_name>
 <archive_is_public>Yes</archive_is_public>
+<mailing_list_id>47451</mailing_list_id>
+<list_name>jajuk-support</list_name>
+<archive_is_public>Yes</archive_is_public>
 </mailinglists>
 </projectresources>
 <project_admin_detail>
 <trove_details>
-<trove_category>Translations :: Catalan</trove_category>
-<trove_category>User Interface :: Graphical :: Java Swing</trove_category>
-<trove_category>Topic :: Multimedia :: Sound/Audio :: Players</trove_category>
 <trove_category>Translations :: Spanish</trove_category>
+<trove_category>License :: OSI-Approved Open Source :: GNU General Public License (GPL)</trove_category>
+<trove_category>Operating System :: Grouping and Descriptive Categories :: OS Independent (Written in an interpreted language)</trove_category>
+<trove_category>Programming Language :: Java</trove_category>
+<trove_category>Translations :: Dutch</trove_category>
 <trove_category>Translations :: Swedish</trove_category>
 <trove_category>Translations :: German</trove_category>
 <trove_category>Translations :: French</trove_category>
-<trove_category>Translations :: Italian</trove_category>
-<trove_category>Intended Audience :: by End-User Class :: End Users/Desktop</trove_category>
-<trove_category>Development Status :: 5 - Production/Stable</trove_category>
-<trove_category>Translations :: Dutch</trove_category>
-<trove_category>Programming Language :: Java</trove_category>
 <trove_category>Translations :: English</trove_category>
-<trove_category>License :: OSI-Approved Open Source :: GNU General Public License (GPL)</trove_category>
-<trove_category>Operating System :: Grouping and Descriptive Categories :: OS Independent (Written in an interpreted language)</trove_category>
+<trove_category>Translations :: Italian</trove_category>
+<trove_category>Development Status :: 5 - Production/Stable</trove_category>
+<trove_category>Intended Audience :: by End-User Class :: End Users/Desktop</trove_category>
+<trove_category>Topic :: Multimedia :: Sound/Audio :: Players</trove_category>
+<trove_category>User Interface :: Graphical :: Java Swing</trove_category>
+<trove_category>Translations :: Catalan</trove_category>
 </trove_details>
 </project_admin_detail>
 <projectnews>
@@ -403,6 +326,36 @@ http://www.florat.net/jajuk-specs.pdf</registration_description>
 <package_id>96449</package_id>
 <file_size>357416</file_size>
 <release_time>1113679675</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=334064</url>
+<filename>jajuk-0.3.4.1-1mdk.noarch.rpm</filename>
+<release_id>334064</release_id>
+<package_id>96449</package_id>
+<file_size>4651321</file_size>
+<release_time>1118441746</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=334064</url>
+<filename>jajuk-0.3.4.1-suse.noarch.rpm</filename>
+<release_id>334064</release_id>
+<package_id>96449</package_id>
+<file_size>4649513</file_size>
+<release_time>1118441760</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=334064</url>
+<filename>jajuk-0.3.4.1-win32.exe</filename>
+<release_id>334064</release_id>
+<package_id>96449</package_id>
+<file_size>7149025</file_size>
+<release_time>1118441777</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=334064</url>
+<filename>jajuk-java-installer-0.3.4.1.jar</filename>
+<release_id>334064</release_id>
+<package_id>96449</package_id>
+<file_size>6723426</file_size>
+<release_time>1118441791</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=334064</url>
+<filename>jajuk-sources-0.3.4.1.zip</filename>
+<release_id>334064</release_id>
+<package_id>96449</package_id>
+<file_size>367597</file_size>
+<release_time>1118441806</release_time>
 </filereleases>
 <docmanager>
 <docgroup>
@@ -458,10 +411,471 @@ http://www.florat.net/jajuk-specs.pdf</registration_description>
 <forum_id>315360</forum_id>
 <forum_name>Open Discussion</forum_name>
 <is_public>Yes</is_public>
-<description>IMPORTANT: USE &#34;SUPPORT&#34; IF YOU NEED HELP</description>
+<description>*** ONLY FOR DISCUSSION: USE &#34;SUPPORT&#34; FORUM TO GET HELP ***</description>
 <send_posts_to></send_posts_to>
 <anonymous_posting>Yes</anonymous_posting>
 <forum_posts>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=3336118</url>
+<msg_id>3336118</msg_id>
+<poster_user>bflorat</poster_user>
+<poster_name>Bertrand Florat</poster_name>
+<subject>RE: Sound Not Working</subject>
+<thread_id>1329657</thread_id>
+<is_followup_to>3335761</is_followup_to>
+<has_followups>0</has_followups>
+<date>1126596810</date>
+<is_deleted>No</is_deleted>
+<body>Thanks again, I will use some parts of it to update install and FAQ jajuk doc.</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=3335761</url>
+<msg_id>3335761</msg_id>
+<poster_user>nobody</poster_user>
+<poster_name>Nobody/Anonymous</poster_name>
+<subject>RE: Sound Not Working</subject>
+<thread_id>1329657</thread_id>
+<is_followup_to>3278813</is_followup_to>
+<has_followups>1</has_followups>
+<date>1126562019</date>
+<is_deleted>No</is_deleted>
+<body>Hi,
+
+It was me...the nice user ;o) (the first anonymous post on 2005-09-10 15:59).
+Thanx for the link.
+Effectively it works perfectly now.
+If you need it in english, please ask me and I'll try to translate ;o)</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=3335326</url>
+<msg_id>3335326</msg_id>
+<poster_user>nobody</poster_user>
+<poster_name>Nobody/Anonymous</poster_name>
+<subject>RE: Sound Not Working</subject>
+<thread_id>1329657</thread_id>
+<is_followup_to>3278813</is_followup_to>
+<has_followups>0</has_followups>
+<date>1126542521</date>
+<is_deleted>No</is_deleted>
+<body>A nice user did it for ubuntu and documented it :
+http://forum.ubuntu-fr.org/viewtopic.php?id=12019 (french)</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=3333723</url>
+<msg_id>3333723</msg_id>
+<poster_user>nobody</poster_user>
+<poster_name>Nobody/Anonymous</poster_name>
+<subject>RE: Sound Not Working</subject>
+<thread_id>1329657</thread_id>
+<is_followup_to>3333253</is_followup_to>
+<has_followups>0</has_followups>
+<date>1126459196</date>
+<is_deleted>No</is_deleted>
+<body>Even after some searches on the web, I can't figure out how to achieve it. It may also depends on the distribution. This link may help: http://www.google.fr/url?sa=t&#38;ct=res&#38;cd=1&#38;url=http%3A//alsa.opensrc.org/index.php%3Fpage%3DDmix%2BKde%2B-%2Barts%252C%2BESD%2Band%2BSDL%2Bquick%2Band%2Bdirty%2BHOWTO&#38;ei=JmUkQ-GnCcSCRZCZqdsH
+Perhaps starting artsd with right parameters should work or you will get 2 processes ? I don't know. Another way can be to change the /usr/bin/jajuk shell as &#34;artsd &#60;options&#62; java ... jajuk. If you or another user find how to configure artsd at startup, please let us know so we will update the FAQ.</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=3333253</url>
+<msg_id>3333253</msg_id>
+<poster_user>nobody</poster_user>
+<poster_name>Nobody/Anonymous</poster_name>
+<subject>RE: Sound Not Working</subject>
+<thread_id>1329657</thread_id>
+<is_followup_to>3278813</is_followup_to>
+<has_followups>1</has_followups>
+<date>1126393149</date>
+<is_deleted>No</is_deleted>
+<body>Hello,
+
+Same problem for me : jajuk works perfectly when starting artsd with artsd -F 9 -S 4096 -b 16 -s 5 -m artsmessage -c drkonqi -l 3 -f command line but I'm not really good in linux and so I don't know where I need to go to automatically start artsd with all the options instead of artsd without options ?
+
+Please excuse my english because I'm a french guy ;o)
+
+Ragerds and thanx for your help.</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=3282474</url>
+<msg_id>3282474</msg_id>
+<poster_user>bflorat</poster_user>
+<poster_name>Bertrand Florat</poster_name>
+<subject>RE: Sound Not Working</subject>
+<thread_id>1329657</thread_id>
+<is_followup_to>3282414</is_followup_to>
+<has_followups>0</has_followups>
+<date>1123269518</date>
+<is_deleted>No</is_deleted>
+<body>Thx for your investigations.
+BTW, one of the best place to ask could be the javazoom jlayer forum (jajuk uses javazoom APIs for sound). I already asked about this kind of problem without useful answer but you may be luckier than me... </body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=3282414</url>
+<msg_id>3282414</msg_id>
+<poster_user>cworley420</poster_user>
+<poster_name>Christopher Worley</poster_name>
+<subject>RE: Sound Not Working</subject>
+<thread_id>1329657</thread_id>
+<is_followup_to>3278813</is_followup_to>
+<has_followups>1</has_followups>
+<date>1123266841</date>
+<is_deleted>No</is_deleted>
+<body>Actually I beleive the -s parameter allows artsd to suspend connecting with the device.  So, when jajuk plays it is directly connected to the device and is not going through artsd.  I notice when jajuk is playing I cannot here sounds from gxine or gaim.
+
+I have been hunting around for java and artsd intergration.  I'll post what I find.
+
+-chris worley</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=3282256</url>
+<msg_id>3282256</msg_id>
+<poster_user>bflorat</poster_user>
+<poster_name>Bertrand Florat</poster_name>
+<subject>RE: Sound Not Working</subject>
+<thread_id>1329657</thread_id>
+<is_followup_to>3281677</is_followup_to>
+<has_followups>0</has_followups>
+<date>1123258596</date>
+<is_deleted>No</is_deleted>
+<body>Cool, so I assume your issue is over... I will have to add this in the faq.</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=3281677</url>
+<msg_id>3281677</msg_id>
+<poster_user>cworley420</poster_user>
+<poster_name>Christopher Worley</poster_name>
+<subject>RE: Sound Not Working</subject>
+<thread_id>1329657</thread_id>
+<is_followup_to>3278813</is_followup_to>
+<has_followups>1</has_followups>
+<date>1123244786</date>
+<is_deleted>No</is_deleted>
+<body>
+
+I started artsd with the params you posted and it worked.  I started removing the params one at a time and found the -s param allows it to work.  I usally just start artsd with no params.
+
+-chris worley</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=3280809</url>
+<msg_id>3280809</msg_id>
+<poster_user>bflorat</poster_user>
+<poster_name>Bertrand Florat</poster_name>
+<subject>RE: Sound Not Working</subject>
+<thread_id>1329657</thread_id>
+<is_followup_to>3278813</is_followup_to>
+<has_followups>0</has_followups>
+<date>1123190050</date>
+<is_deleted>No</is_deleted>
+<body>Ok, get it.
+Looks strange as it works perfectly for me with or without arts 1.3.0 / Suse 9.2 commande line: 
+/opt/kde3/bin/artsd -F 9 -S 4096 -b 16 -s 5 -m artsmessage -c drkonqi -l 3 -f
+???
+</body>
+</forum_post>
+</forum_posts>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=3280759</url>
+<msg_id>3280759</msg_id>
+<poster_user>cworley420</poster_user>
+<poster_name>Christopher Worley</poster_name>
+<subject>RE: Sound Not Working</subject>
+<thread_id>1329657</thread_id>
+<is_followup_to>3278813</is_followup_to>
+<has_followups>0</has_followups>
+<date>1123187980</date>
+<is_deleted>No</is_deleted>
+<body>nah
+
+- Line is always occupied when arts is running with or with out SunAwtRobot
+- Line is not occupied when arts is not running with or with out SunAwtRobot
+
+-chris worley</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=3280669</url>
+<msg_id>3280669</msg_id>
+<poster_user>bflorat</poster_user>
+<poster_name>Bertrand Florat</poster_name>
+<subject>RE: Sound Not Working</subject>
+<thread_id>1329657</thread_id>
+<is_followup_to>3278813</is_followup_to>
+<has_followups>0</has_followups>
+<date>1123184284</date>
+<is_deleted>No</is_deleted>
+<body>So if I sum up:
+- Line is always occupied when arts is started, even when SunAwtRobot is
+down
+- Line is always occupied when SunAwtRobot is up even if arts is down
+- To get music working, you need SunAwtRobot and arts being down together
+- SunAwtRobot never starts with metal look and feel
+Right ?</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=3280599</url>
+<msg_id>3280599</msg_id>
+<poster_user>cworley420</poster_user>
+<poster_name>Christopher Worley</poster_name>
+<subject>RE: Sound Not Working</subject>
+<thread_id>1329657</thread_id>
+<is_followup_to>3278813</is_followup_to>
+<has_followups>0</has_followups>
+<date>1123181063</date>
+<is_deleted>No</is_deleted>
+<body>
+
+changing to metal look and feel stopped the SunAwtRobot process from starting.
+
+However, I still cannot listen to jajuk with arts.  I press play and jajuk reports the line is occupied.  I kill artsd and jajuk starts playing music.
+
+Then I wonder if the SunAwtRobot is actually envolved with problems.  I swtich the look and feel back to Liquid and close jajuk.  Start up artsd.  Start jajuk.  Verify SunAwyRobot process exist. Press Play.  Jajuk reports line is occupied.  kill artsd.  jajuk plays music.  
+
+I beleive my problem is directly related to arts using the device.  Any other suggestions?
+
+thanks for the help
+-chris worley</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=3280284</url>
+<msg_id>3280284</msg_id>
+<poster_user>bflorat</poster_user>
+<poster_name>Bertrand Florat</poster_name>
+<subject>RE: Sound Not Working</subject>
+<thread_id>1329657</thread_id>
+<is_followup_to>3280223</is_followup_to>
+<has_followups>0</has_followups>
+<date>1123170489</date>
+<is_deleted>No</is_deleted>
+<body>No, it's not related with arts (it works for me with or without artsd) but it's related to the &#34;SunAwtRobot&#34;  java process that uses audio line. Actually, I never understood where this process comes from but it's created by the jajuk main java process and appears only under Linux. For me, it occurs seldomly and it could be releated with tray or look and feel. Can you try to set Metal look and feel and restart jajuk ? Do you systematicly get the SunAwtRobot process? (I get it only very few times). Note you can kill the SunAwtRobot process, it should free audio line. please give me feed back about it.</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=3280223</url>
+<msg_id>3280223</msg_id>
+<poster_user>cworley420</poster_user>
+<poster_name>Christopher Worley</poster_name>
+<subject>RE: Sound Not Working</subject>
+<thread_id>1329657</thread_id>
+<is_followup_to>3278813</is_followup_to>
+<has_followups>1</has_followups>
+<date>1123168092</date>
+<is_deleted>No</is_deleted>
+<body>
+Ah, yes.  killing artsd does allow me to play sound.  Sorry, did not pickup on that right away.  I startup arts when I login so all my programs can play sound.  Can jajuk use arts or is there somthing in development that will allow jajuk to use arts?
+
+
+bash-3.00$   ps -eaf | grep -i robot
+cworley   7670  7662  0 11:00 pts/19   00:00:00 SunAwtRobot 3 :0.0
+cworley   7783  7328  0 11:01 pts/21   00:00:00 grep -i robot
+
+The output was 178 lines so here is the java pograms related to jajuk.  I am running eclipse and jboss also.
+
+cworley   7679  7652  0 11:00 pts/19   00:00:00 java -client -Xms25M -Djava.library.path=../native -jar jajuk.jar -notaskbar
+cworley   7680  7652  0 11:00 pts/19   00:00:00 java -client -Xms25M -Djava.library.path=../native -jar jajuk.jar -notaskbar
+cworley   7682  7652  0 11:00 pts/19   00:00:00 java -client -Xms25M -Djava.library.path=../native -jar jajuk.jar -notaskbar
+cworley   7688  7652  0 11:00 pts/19   00:00:00 java -client -Xms25M -Djava.library.path=../native -jar jajuk.jar -notaskbar
+
+...repeats a number of times</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=3280025</url>
+<msg_id>3280025</msg_id>
+<poster_user>bflorat</poster_user>
+<poster_name>Bertrand Florat</poster_name>
+<subject>RE: Sound Not Working</subject>
+<thread_id>1329657</thread_id>
+<is_followup_to>3279849</is_followup_to>
+<has_followups>0</has_followups>
+<date>1123166418</date>
+<is_deleted>No</is_deleted>
+<body>Line 
+2005/08/04 08:27:21 [DEBUG] Line occupied, waiting [Thread-14] (Log.java:83)  
+means someting is using your audio line and jajuk waits for line freeing, perhaps your audio card uses another device than /dev/dsp like /dev/audio ?
+
+Other thing, please send me output for 
+ps -eaf | grep -i robot
+and
+ps -eaf | grep java
+</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=3279849</url>
+<msg_id>3279849</msg_id>
+<poster_user>cworley420</poster_user>
+<poster_name>Christopher Worley</poster_name>
+<subject>RE: Sound Not Working</subject>
+<thread_id>1329657</thread_id>
+<is_followup_to>3278813</is_followup_to>
+<has_followups>1</has_followups>
+<date>1123160309</date>
+<is_deleted>No</is_deleted>
+<body>
+fuser /dev/dsp returned no output.
+
+I killed artsd and restarted it.  
+
+This is the output in the log when I press play. 
+
+2005/08/04 08:26:54 [DEBUG] Loaded jar:file:/home/cworley/jajuk/bin/jajuk.jar!/org/jajuk/images/jajuk-splashscreen.png in  1 ms  [Thread-12] (Log.java:83)
+2005/08/04 08:26:55 [DEBUG] Cover resized  [AWT-EventQueue-0] (Log.java:83)
+2005/08/04 08:26:55 [DEBUG] display index: 0  [Thread-13] (Log.java:83)
+2005/08/04 08:27:21 [DEBUG] Player state changed: OPENING:-1:/home/cworley/music/Jim Croce - Mr Bojangles.mp3  [Thread-15] (Log.java:83)
+2005/08/04 08:27:21 [DEBUG] Notify: player play  [Thread-16] (Log.java:83)
+2005/08/04 08:27:21 [DEBUG] Line occupied, waiting  [Thread-14] (Log.java:83)
+2005/08/04 08:27:21 [DEBUG] Player state changed: OPENED:2048  [Thread-18] (Log.java:83)
+2005/08/04 08:27:23 [DEBUG] Player state changed: OPENING:-1:/home/cworley/music/Jim Croce - Mr Bojangles.mp3  [Thread-19] (Log.java:83)
+2005/08/04 08:27:23 [DEBUG] Line occupied, waiting  [Thread-14] (Log.java:83)
+2005/08/04 08:27:23 [DEBUG] Player state changed: OPENED:2048  [Thread-20] (Log.java:83)
+</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=3279503</url>
+<msg_id>3279503</msg_id>
+<poster_user>bflorat</poster_user>
+<poster_name>Bertrand Florat</poster_name>
+<subject>RE: Sound Not Working</subject>
+<thread_id>1329657</thread_id>
+<is_followup_to>3278813</is_followup_to>
+<has_followups>0</has_followups>
+<date>1123142346</date>
+<is_deleted>No</is_deleted>
+<body>The mute button at the top is always crossed but is a two state button. By default, it is disabled. About your problem, some ideas:
+- Are you sure you don't already use sound with another process? (try a fuser /dev/dsp as root to check)
+- Try to disable artd
+- Set verbosity to debug in parmameter view, retry and send me your ~/.jajuk/jajuk.log</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=3278813</url>
+<msg_id>3278813</msg_id>
+<poster_user>cworley420</poster_user>
+<poster_name>Christopher Worley</poster_name>
+<subject>Sound Not Working</subject>
+<thread_id>1329657</thread_id>
+<is_followup_to>0</is_followup_to>
+<has_followups>1</has_followups>
+<date>1123094791</date>
+<is_deleted>No</is_deleted>
+<body>Hello,
+
+I can't get any sound out of jajuk
+
+I am running 
+linux 2.6.11
+slackware 10.1
+artsd
+ java 1.4.2_05
+
+In the upper left of jajuk the speaker is crossed out as if it cannot find a sound device.  I never found any preferences were I would tell it to use arts.  Maybe that is my problem.
+
+-chris worley</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=3252027</url>
+<msg_id>3252027</msg_id>
+<poster_user>nobody</poster_user>
+<poster_name>Nobody/Anonymous</poster_name>
+<subject>RE: Menus sous Mac OS X</subject>
+<thread_id>1319559</thread_id>
+<is_followup_to>3250994</is_followup_to>
+<has_followups>0</has_followups>
+<date>1121624186</date>
+<is_deleted>No</is_deleted>
+<body>When i start Jajuk, the menu don't appear completly. I had to pass with the pointer of the mouse to see all the menus. I had to click under the menu for open it and click again  to close it. I tried all themes, but it doesn't change. I send you two screens (PDF) on your mail. Java 1.5 is supported by OS X Tiger 10.4.
+
+Chris</body>
+</forum_post>
+</forum_posts>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=3251024</url>
+<msg_id>3251024</msg_id>
+<poster_user>bflorat</poster_user>
+<poster_name>Bertrand Florat</poster_name>
+<subject>RE: Menus sous Mac OS X</subject>
+<thread_id>1319559</thread_id>
+<is_followup_to>3250994</is_followup_to>
+<has_followups>0</has_followups>
+<date>1121516629</date>
+<is_deleted>No</is_deleted>
+<body>(Merci de me r&#233;pondre en anglais si possible)
+
+Last message English translation 
+&#62; Under Mac OsX, menus stay opened, we need to close them &#62;using control Z. Any workaround ?
+
+As I have no mac and I even never saw jajuk runing under macosx, I can't figure out what you mean exactly. Could you provide a screenshot please ? Other thing : does Mac OsX support JRE 1.5 as next jajuk release requires it ? </body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=3250994</url>
+<msg_id>3250994</msg_id>
+<poster_user>nobody</poster_user>
+<poster_name>Nobody/Anonymous</poster_name>
+<subject>Menus sous Mac OS X</subject>
+<thread_id>1319559</thread_id>
+<is_followup_to>0</is_followup_to>
+<has_followups>1</has_followups>
+<date>1121513095</date>
+<is_deleted>No</is_deleted>
+<body>Bonjour
+
+félicitations pour Jajuk qui est une très bonne alternative &#710; itunes. Sous Mac OsX, les menus restent ouverts. il faut cliquez sur le c&#8482;té pour les fermer. Une solution ?
+Merci d'avance
+chris </body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=3241549</url>
+<msg_id>3241549</msg_id>
+<poster_user>bflorat</poster_user>
+<poster_name>Bertrand Florat</poster_name>
+<subject>RE: Jajuk don't start</subject>
+<thread_id>1315819</thread_id>
+<is_followup_to>3241396</is_followup_to>
+<has_followups>0</has_followups>
+<date>1121011293</date>
+<is_deleted>No</is_deleted>
+<body>Please provide some traces...</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=3241396</url>
+<msg_id>3241396</msg_id>
+<poster_user>nobody</poster_user>
+<poster_name>Nobody/Anonymous</poster_name>
+<subject>RE: Jajuk don't start</subject>
+<thread_id>1315819</thread_id>
+<is_followup_to>3240412</is_followup_to>
+<has_followups>1</has_followups>
+<date>1120998016</date>
+<is_deleted>No</is_deleted>
+<body>I always have Java, I installed JRE 1.5, so I don't understand, why it doesn't work</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=3240623</url>
+<msg_id>3240623</msg_id>
+<poster_user>bflorat</poster_user>
+<poster_name>Bertrand Florat</poster_name>
+<subject>RE: Jajuk don't start</subject>
+<thread_id>1315819</thread_id>
+<is_followup_to>3240412</is_followup_to>
+<has_followups>0</has_followups>
+<date>1120921661</date>
+<is_deleted>No</is_deleted>
+<body>We know Mandrake has some java installation problems.
+Please check http://jajuk.sourceforge.net/installation.html
+and check that your jre is OK by typing java --version'
+If you don't manage to make it work, please open a support request at https://sourceforge.net/tracker/?group_id=91412&#38;atid=597087</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=3240412</url>
+<msg_id>3240412</msg_id>
+<poster_user>nobody</poster_user>
+<poster_name>Nobody/Anonymous</poster_name>
+<subject>Jajuk don't start</subject>
+<thread_id>1315819</thread_id>
+<is_followup_to>0</is_followup_to>
+<has_followups>1</has_followups>
+<date>1120896457</date>
+<is_deleted>No</is_deleted>
+<body>Hi, 
+
+i've a Mandrake 10.1 Community version, i just install Jujak for Mandrake, but i can't start the softwarte.
+When i launch it, nothing happen, could anyone help me?
+Thx</body>
+</forum_post>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3020452</url>
 <msg_id>3020452</msg_id>
@@ -519,6 +933,7 @@ sh jajuk.sh , not ./jajuk.sh. Moreover, 0.3.3 Jajuk release should create menu s
 <is_deleted>No</is_deleted>
 <body>i have an airport express that's on my home network (both mac and pc access it).  currently i can select the airport express via itunes and it will stream the audio over wifi to the airport express (that has an 1/8&#34; stereo out plug).  I was originally planning on setting up a print server/audio box but picked up the airport express cause it does all i want for real cheap.  that link i posted has some info on the public keys that allows any prog to interact w/ the airport express, but i don't know what that all actually means :).  from my understanding as long as you have the public keys you can get the hardware to work w/ any software.</body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3003570</url>
 <msg_id>3003570</msg_id>
@@ -640,7 +1055,6 @@ JAVA_HOME=
 /usr/bin/jajuk: line 12: java: command not found
 </body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=2972177</url>
 <msg_id>2972177</msg_id>
@@ -744,6 +1158,7 @@ Java(TM) 2 Runtime Environment, Standard Edition (build 1.4.2_06-b03)
 Java HotSpot(TM) Client VM (build 1.4.2_06-b03, mixed mode)
 </body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=2921169</url>
 <msg_id>2921169</msg_id>
@@ -835,7 +1250,6 @@ Jajuk 0.3 </body>
 <is_deleted>No</is_deleted>
 <body>I responded on the dev list. Thank you.</body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=2902748</url>
 <msg_id>2902748</msg_id>
@@ -918,6 +1332,7 @@ By the way, do you have real performance problems ? skips ? Any patch is welcome
 
  </body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=2871732</url>
 <msg_id>2871732</msg_id>
@@ -1027,7 +1442,6 @@ If some of my current tasks are done, I 'd love to write a IzPack plugin for mav
 
 Willing to help me? I suggest collaborating on http://maven-plugins.sourceforge.net (ASF license then...)</body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=2840182</url>
 <msg_id>2840182</msg_id>
@@ -1098,6 +1512,7 @@ We will soon try to use the new JRE auto-installer API published by IzPAck. More
 thread.setPriority(Thread.MAX_PRIORITY);
 thread.start();</body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=2829628</url>
 <msg_id>2829628</msg_id>
@@ -1192,7 +1607,6 @@ For example: is anyone working on a IzPack plugin for maven?</body>
 <body>Hi, if you mean changing the tracks' id3 tags when talking about &#34;track attributes&#34;, then this feature is not implemented so far. I think it's planned to be covered in the next release (0.4).
 Bertrand, can you give us information about the current status of that feature? I'd also be interested in it :)</body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=2813064</url>
 <msg_id>2813064</msg_id>
@@ -1271,6 +1685,7 @@ I translated Jajuk to german. The next version of Jajuk (probably 0.1.5) will ha
 
 I hope you enjoy it :)</body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=2217979</url>
 <msg_id>2217979</msg_id>
@@ -9278,15 +9693,15 @@ Fixed in : 0.3.3.5</details>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1188879</url>
 <id>1188879</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>605762</category_id>
 <group_id>436325</group_id>
-<resolution_id>100</resolution_id>
+<resolution_id>1</resolution_id>
 <submitter>bflorat</submitter>
 <assignee>bflorat</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1114339327</submit_date>
-<close_date>0</close_date>
+<close_date>1117907377</close_date>
 <priority>4</priority>
 <summary>Window focus issue</summary>
 <details>There is one slightly annoying bug in jajuk somewhere.
@@ -9303,20 +9718,41 @@ the process in taskbar that blinks.</details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>2865732</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1117907377</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2865733</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1117907377</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2865734</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1117907377</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1199367</url>
 <id>1199367</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>605763</category_id>
 <group_id>436325</group_id>
-<resolution_id>100</resolution_id>
+<resolution_id>1</resolution_id>
 <submitter>bflorat</submitter>
 <assignee>bflorat</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1115756972</submit_date>
-<close_date>0</close_date>
+<close_date>1117907377</close_date>
 <priority>8</priority>
 <summary>Playlist next track wrong</summary>
 <details>When launching only one item from a playlist (regular
@@ -9327,20 +9763,41 @@ track from the collection instead next track).</details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>2865735</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1117907377</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2865736</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1117907377</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2865737</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1117907377</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1207563</url>
 <id>1207563</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>605762</category_id>
 <group_id>436325</group_id>
-<resolution_id>100</resolution_id>
+<resolution_id>1</resolution_id>
 <submitter>bflorat</submitter>
 <assignee>bflorat</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1116920622</submit_date>
-<close_date>0</close_date>
+<close_date>1117907377</close_date>
 <priority>6</priority>
 <summary>Wrong display in PlaylistEditor after a stop</summary>
 <details>After a stop, all playlists but queue shows wrong
@@ -9350,20 +9807,41 @@ display in playlist editor.</details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>2865738</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1117907377</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2865739</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1117907377</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2865740</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1117907377</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1209490</url>
 <id>1209490</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>605762</category_id>
 <group_id>436325</group_id>
-<resolution_id>100</resolution_id>
+<resolution_id>1</resolution_id>
 <submitter>bflorat</submitter>
 <assignee>bflorat</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1117144622</submit_date>
-<close_date>0</close_date>
+<close_date>1117907377</close_date>
 <priority>2</priority>
 <summary>Missing icons in command view</summary>
 <details>Missing volume and position icons near sliders in
@@ -9373,20 +9851,41 @@ command view</details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>2865741</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1117907377</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2865742</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1117907377</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2865743</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1117907377</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1209491</url>
 <id>1209491</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>605762</category_id>
 <group_id>436325</group_id>
-<resolution_id>100</resolution_id>
+<resolution_id>1</resolution_id>
 <submitter>bflorat</submitter>
 <assignee>bflorat</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1117144708</submit_date>
-<close_date>0</close_date>
+<close_date>1117907377</close_date>
 <priority>5</priority>
 <summary>Changing volume in tray not reflected in command panel</summary>
 <details>Changing volume with wheel in tray, command view slider
@@ -9396,6 +9895,27 @@ not updated</details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>2865744</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1117907377</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2865745</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1117907377</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2865746</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1117907377</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
@@ -9445,15 +9965,15 @@ some files are in UTF-16, others in UTF-8.</details>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1209909</url>
 <id>1209909</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>605763</category_id>
 <group_id>436325</group_id>
-<resolution_id>100</resolution_id>
+<resolution_id>1</resolution_id>
 <submitter>bflorat</submitter>
 <assignee>bflorat</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1117204060</submit_date>
-<close_date>0</close_date>
+<close_date>1117907378</close_date>
 <priority>7</priority>
 <summary>Finish album without continue mode</summary>
 <details>Using &#34;continue in album&#34; special function without
@@ -9464,20 +9984,41 @@ current one but last tracks not played.</details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>2865747</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1117907378</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2865748</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1117907378</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2865749</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1117907378</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1209910</url>
 <id>1209910</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>605762</category_id>
 <group_id>436325</group_id>
-<resolution_id>100</resolution_id>
+<resolution_id>1</resolution_id>
 <submitter>bflorat</submitter>
 <assignee>bflorat</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1117204121</submit_date>
-<close_date>0</close_date>
+<close_date>1117907378</close_date>
 <priority>5</priority>
 <summary>Issues with intro mode</summary>
 <details>In intro mode, laucnhed tracks are not displayed in
@@ -9494,20 +10035,41 @@ information panel.</details>
 <date>1117228182</date>
 <updator>bflorat</updator>
 </history_entry>
+<history_entry>
+<id>2865750</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1117907378</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2865751</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1117907378</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2865752</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1117907378</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1209912</url>
 <id>1209912</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>605762</category_id>
 <group_id>436325</group_id>
-<resolution_id>100</resolution_id>
+<resolution_id>1</resolution_id>
 <submitter>bflorat</submitter>
 <assignee>bflorat</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1117204205</submit_date>
-<close_date>0</close_date>
+<close_date>1117907378</close_date>
 <priority>5</priority>
 <summary>No error message when delete fails</summary>
 <details>When deleting a playlist file or a cover file, a fail
@@ -9518,20 +10080,41 @@ repository.</details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>2865753</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1117907378</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2865754</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1117907378</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2865755</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1117907378</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1209915</url>
 <id>1209915</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>605763</category_id>
 <group_id>436325</group_id>
-<resolution_id>100</resolution_id>
+<resolution_id>1</resolution_id>
 <submitter>bflorat</submitter>
 <assignee>bflorat</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1117204291</submit_date>
-<close_date>0</close_date>
+<close_date>1117907378</close_date>
 <priority>4</priority>
 <summary>Not possible to add shuffle tracks after a stop</summary>
 <details>Playlist editor view after a stop: cannot add shuffle
@@ -9541,20 +10124,41 @@ files.</details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>2865756</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1117907378</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2865757</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1117907378</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2865758</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1117907378</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1209916</url>
 <id>1209916</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>605762</category_id>
 <group_id>436325</group_id>
-<resolution_id>100</resolution_id>
+<resolution_id>1</resolution_id>
 <submitter>bflorat</submitter>
 <assignee>bflorat</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1117204360</submit_date>
-<close_date>0</close_date>
+<close_date>1117907378</close_date>
 <priority>5</priority>
 <summary>Time not reset after a playing error</summary>
 <details>After a play error, elapsed time not reset.</details>
@@ -9563,20 +10167,41 @@ files.</details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>2865759</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1117907378</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2865760</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1117907378</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2865761</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1117907378</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1210925</url>
 <id>1210925</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>605762</category_id>
 <group_id>436325</group_id>
-<resolution_id>100</resolution_id>
+<resolution_id>1</resolution_id>
 <submitter>bflorat</submitter>
 <assignee>bflorat</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1117396157</submit_date>
-<close_date>0</close_date>
+<close_date>1117907378</close_date>
 <priority>5</priority>
 <summary>Missing scroller in Device view</summary>
 <details>Missing scroller in Device view if all devices can't be
@@ -9586,20 +10211,41 @@ displayed all together.</details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>2865762</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1117907378</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2865763</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1117907378</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2865764</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1117907378</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1211783</url>
 <id>1211783</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>605763</category_id>
 <group_id>436325</group_id>
-<resolution_id>100</resolution_id>
+<resolution_id>1</resolution_id>
 <submitter>bflorat</submitter>
 <assignee>bflorat</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1117521683</submit_date>
-<close_date>0</close_date>
+<close_date>1117907378</close_date>
 <priority>5</priority>
 <summary>Regexp filter buggy</summary>
 <details>In table views, when using &#34;using regexp&#34; option,
@@ -9609,20 +10255,41 @@ result is wrong.</details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>2865765</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1117907378</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2865766</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1117907378</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2865767</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1117907378</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1211811</url>
 <id>1211811</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>605763</category_id>
 <group_id>436325</group_id>
-<resolution_id>100</resolution_id>
+<resolution_id>1</resolution_id>
 <submitter>bflorat</submitter>
 <assignee>bflorat</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1117524789</submit_date>
-<close_date>0</close_date>
+<close_date>1117907378</close_date>
 <priority>5</priority>
 <summary>No cover refresh after a stop</summary>
 <details>After a stop, no cover refresh.</details>
@@ -9631,20 +10298,41 @@ result is wrong.</details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>2865768</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1117907378</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2865769</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1117907378</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2865770</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1117907378</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1211997</url>
 <id>1211997</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>605762</category_id>
 <group_id>436325</group_id>
-<resolution_id>100</resolution_id>
+<resolution_id>1</resolution_id>
 <submitter>bflorat</submitter>
 <assignee>bflorat</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1117545947</submit_date>
-<close_date>0</close_date>
+<close_date>1117907379</close_date>
 <priority>5</priority>
 <summary>Problem with metouia combo boxes</summary>
 <details>In Parameter view/ option tab : combo boxes not
@@ -9663,20 +10351,41 @@ Note: only in 1.5, no pbm in 1.4.2</details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>2865771</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1117907379</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2865772</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1117907379</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2865773</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1117907379</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1212014</url>
 <id>1212014</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>605762</category_id>
 <group_id>436325</group_id>
-<resolution_id>100</resolution_id>
+<resolution_id>1</resolution_id>
 <submitter>bflorat</submitter>
 <assignee>bflorat</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1117547524</submit_date>
-<close_date>0</close_date>
+<close_date>1117907379</close_date>
 <priority>5</priority>
 <summary>No table refresh after changing sync table/tree option</summary>
 <details>In mode sync table/tree -&#62; select device A, change sync
@@ -9688,20 +10397,41 @@ device A, missing table sync event.</details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>2865774</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1117907379</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2865775</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1117907379</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2865776</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1117907379</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1212030</url>
 <id>1212030</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>605763</category_id>
 <group_id>100</group_id>
-<resolution_id>100</resolution_id>
+<resolution_id>1</resolution_id>
 <submitter>bflorat</submitter>
 <assignee>bflorat</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1117548632</submit_date>
-<close_date>0</close_date>
+<close_date>1117907379</close_date>
 <priority>5</priority>
 <summary>Several issues with reseting default options</summary>
 <details>Parameter view : default button has some issues (LaF
@@ -9712,20 +10442,41 @@ value...)</details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>2865777</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1117907379</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2865778</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1117907379</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2865779</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1117907379</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1213382</url>
 <id>1213382</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>605762</category_id>
 <group_id>436325</group_id>
-<resolution_id>100</resolution_id>
+<resolution_id>1</resolution_id>
 <submitter>bflorat</submitter>
 <assignee>bflorat</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1117706544</submit_date>
-<close_date>0</close_date>
+<close_date>1117907379</close_date>
 <priority>5</priority>
 <summary>Issues when removing a sync source device</summary>
 <details>When removing a sync source device, target device yet
@@ -9735,20 +10486,41 @@ synchronized with nothing.</details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>2865780</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1117907379</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2865781</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1117907379</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2865782</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1117907379</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1214419</url>
 <id>1214419</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>605763</category_id>
 <group_id>100</group_id>
-<resolution_id>100</resolution_id>
+<resolution_id>1</resolution_id>
 <submitter>daedales</submitter>
 <assignee>bflorat</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1117820975</submit_date>
-<close_date>0</close_date>
+<close_date>1117907379</close_date>
 <priority>3</priority>
 <summary>Hard coded newline....</summary>
 <details>In PlayListFille.java an &#34;\n&#34; is used in the commit()
@@ -9780,6 +10552,27 @@ Thanks, fixed in the upcoming 0.3.4.</details>
 <date>1117835654</date>
 <updator>bflorat</updator>
 </history_entry>
+<history_entry>
+<id>2865783</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1117907379</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2865784</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1117907379</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2865785</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1117907379</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
@@ -9788,12 +10581,12 @@ Thanks, fixed in the upcoming 0.3.4.</details>
 <status_id>1</status_id>
 <category_id>605762</category_id>
 <group_id>436325</group_id>
-<resolution_id>100</resolution_id>
+<resolution_id>1</resolution_id>
 <submitter>bflorat</submitter>
 <assignee>bflorat</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1117881039</submit_date>
-<close_date>0</close_date>
+<close_date>1117907379</close_date>
 <priority>7</priority>
 <summary>Playlist at device root not visible in tree</summary>
 <details>Playlist files located at device root not visible in tree
@@ -9809,6 +10602,325 @@ user_id=363565
 Note : playlist files will be effectively visible in tree
 after next refresh</details>
 </followup>
+<followup>
+<id>1678205</id>
+<submitter>bflorat</submitter>
+<date>1119005157</date>
+<details>Logged In: YES 
+user_id=363565
+
+Reopened, only partially fixed in 0.3.4, will be fixed in
+next release.</details>
+</followup>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+<history_entry>
+<id>2865786</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1117907379</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2865787</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1117907379</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2865788</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1117907379</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2891027</id>
+<field_name>status_id</field_name>
+<old_value>2</old_value>
+<date>1119005157</date>
+<updator>bflorat</updator>
+</history_entry>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1214824</url>
+<id>1214824</id>
+<status_id>2</status_id>
+<category_id>605762</category_id>
+<group_id>436325</group_id>
+<resolution_id>1</resolution_id>
+<submitter>bflorat</submitter>
+<assignee>bflorat</assignee>
+<closer>bflorat</closer>
+<submit_date>1117897139</submit_date>
+<close_date>1117907379</close_date>
+<priority>6</priority>
+<summary>Problem with playlists repository</summary>
+<details>In some cases, playlist items may not be visibled in
+playlist repository view after a refresh.</details>
+<followups>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+<history_entry>
+<id>2865789</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1117907379</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2865790</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1117907379</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2865791</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1117907379</date>
+<updator>bflorat</updator>
+</history_entry>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1231077</url>
+<id>1231077</id>
+<status_id>1</status_id>
+<category_id>605763</category_id>
+<group_id>436325</group_id>
+<resolution_id>100</resolution_id>
+<submitter>deathangel</submitter>
+<assignee>bflorat</assignee>
+<closer>nobody</closer>
+<submit_date>1120235618</submit_date>
+<close_date>0</close_date>
+<priority>7</priority>
+<summary>Volume BUG</summary>
+<details>
+When a playlist is loaded into the &#34;playlist editor&#34;
+and you are playing songs, when the song switches the
+volume jumps at the beginning, then settles back to
+where it was.
+
+Also when using the controls at the top of the window
+(previous, pause, stop, next) when using those to
+navigate through the play list say you hit next.  The
+next song appears to be played at full volume.  when
+you double click the song in the play list the song
+plays at the volume i set with the slider.
+
+
+im using jajuk 0.3.4.1 and java v1.5
+
+-ChazZ</details>
+<followups>
+<followup>
+<id>1692830</id>
+<submitter>bflorat</submitter>
+<date>1120238995</date>
+<details>Logged In: YES 
+user_id=363565
+
+Can't reproduce. Use case:
+- Select a playlist using the playlist repository, right
+click -&#62; play
+- In the command panel at the top, next -&#62; the volume is
+still the same.
+- In the playlist editor, double click on a random file -&#62;
+the volume is still the same.
+
+Some questions:
+- When volume is at max, does the slider is set in
+accordance with the volume?
+- Please set Trace level to &#34;Debug&#34; in Parameter view, then
+reproduce the problem and send us your &#34;{home
+directory}/.jajuk/jajuk.log&#34; file.
+
+Thanks for the report.</details>
+</followup>
+<followup>
+<id>1692917</id>
+<submitter>deathangel</submitter>
+<date>1120244308</date>
+<details>Logged In: YES 
+user_id=46199
+
+sorry, maybe i wasnt very clear.  I didnt mean the next
+track buttons, i was talking about the &#34;fast rewind&#34; and
+&#34;fast forward&#34; buttons at the top.  
+
+first play the song by double clicking it in the &#34;playlist
+editor&#34;
+then adjust the volume pretty low on the slider up top.
+then click either the &#34;fast rewind&#34; or &#34;fast forward&#34; button
+at the top, next to the volume slider.  
+last, notice the dramatic volume change after pushing the
+button.
+
+the slider doesnt move but the volume gets louder.  you can
+put the volume back to its original by moving the volume slider.
+
+find debug log attached.
+
+-ChazZ
+</details>
+</followup>
+<followup>
+<id>1695031</id>
+<submitter>bflorat</submitter>
+<date>1120503558</date>
+<details>Logged In: YES 
+user_id=363565
+
+Reproduced and fixed in repository.
+This issue was due to a bug in BasicPlayer API: a seek()
+reset gain to 1.
+Thanks</details>
+</followup>
+</followups>
+<attachments>
+<attachment>
+<url>https://sourceforge.net/tracker/download.php?group_id=91412&#38;atid=597086&#38;file_id=140563&#38;aid=</url>
+<id>140563</id>
+<filename>jajuk.log</filename>
+<description></description>
+<filesize>24010</filesize>
+<filetype>application/octet-stream</filetype>
+<date>1120244340</date>
+<submitter>deathangel</submitter>
+</attachment>
+</attachments>
+<history_entries>
+<history_entry>
+<id>2921464</id>
+<field_name>category_id</field_name>
+<old_value>100</old_value>
+<date>1120238995</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2921632</id>
+<field_name>File Added</field_name>
+<old_value>140563: jajuk.log</old_value>
+<date>1120244340</date>
+<updator>deathangel</updator>
+</history_entry>
+<history_entry>
+<id>2926453</id>
+<field_name>artifact_group_id</field_name>
+<old_value>100</old_value>
+<date>1120503558</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2926454</id>
+<field_name>priority</field_name>
+<old_value>5</old_value>
+<date>1120503558</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2926455</id>
+<field_name>assigned_to</field_name>
+<old_value>100</old_value>
+<date>1120503558</date>
+<updator>bflorat</updator>
+</history_entry>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1234362</url>
+<id>1234362</id>
+<status_id>2</status_id>
+<category_id>100</category_id>
+<group_id>100</group_id>
+<resolution_id>101</resolution_id>
+<submitter>deathangel</submitter>
+<assignee>nobody</assignee>
+<closer>bflorat</closer>
+<submit_date>1120762354</submit_date>
+<close_date>1121768813</close_date>
+<priority>5</priority>
+<summary>Another Volume bug</summary>
+<details>
+I have not downloaded an updated version of jajuk since
+you fixed the other volume bug I mentioned before.  
+
+This one might be related.
+
+I have noticed that while playing throuhg a playlist of
+songs i have  draged into the playlist.  When it
+switches songs, the volume would jump at the first like
+half second of the next song then level back to where
+it was.   its noticeable on songs that start right
+away, without a subtle intro.  This may have gotten
+fixed with the last one, i just havnt had the time to
+DL the new version.</details>
+<followups>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+<history_entry>
+<id>2954882</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1121768813</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2954883</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1121768813</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2954884</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1121768813</date>
+<updator>bflorat</updator>
+</history_entry>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1234825</url>
+<id>1234825</id>
+<status_id>1</status_id>
+<category_id>100</category_id>
+<group_id>100</group_id>
+<resolution_id>100</resolution_id>
+<submitter>deathangel</submitter>
+<assignee>nobody</assignee>
+<closer>nobody</closer>
+<submit_date>1120833820</submit_date>
+<close_date>0</close_date>
+<priority>5</priority>
+<summary>Another Volume bug</summary>
+<details>
+I have not downloaded an updated version of jajuk since
+you fixed the other volume bug I mentioned before.  
+
+This one might be related.
+
+I have noticed that while playing throuhg a playlist of
+songs i have  draged into the playlist.  When it
+switches songs, the volume would jump at the first like
+half second of the next song then level back to where
+it was.   its noticeable on songs that start right
+away, without a subtle intro.  This may have gotten
+fixed with the last one, i just havnt had the time to
+DL the new version.</details>
+<followups>
 </followups>
 <attachments>
 </attachments>
@@ -9816,8 +10928,125 @@ after next refresh</details>
 </history_entries>
 </tracker_item>
 <tracker_item>
-<url>https://sourceforge.net/support/tracker.php?aid=1214824</url>
-<id>1214824</id>
+<url>https://sourceforge.net/support/tracker.php?aid=1240678</url>
+<id>1240678</id>
+<status_id>1</status_id>
+<category_id>571112</category_id>
+<group_id>340384</group_id>
+<resolution_id>100</resolution_id>
+<submitter>akapulko2020</submitter>
+<assignee>nobody</assignee>
+<closer>nobody</closer>
+<submit_date>1121757122</submit_date>
+<close_date>0</close_date>
+<priority>5</priority>
+<summary>Selected directory name not shown in initial directory chice</summary>
+<details>when using the drop down  box to choose the music
+directory ,the name of the directory which is highlited
+ is not displayed at all.when progressing to the next
+directory,the previous one's name is shown but the
+current isn't.</details>
+<followups>
+<followup>
+<id>1708657</id>
+<submitter>bflorat</submitter>
+<date>1121767314</date>
+<details>Logged In: YES 
+user_id=363565
+
+Could you please state precisely? the use case is:
+- at first jajuk startup, you get the Quick Start wizard.
+- you click on the directory chooser button
+- Then you navigate into directories ? something is not
+displayed? what ? where ? What you mean by processing next
+directory ?
+ Please provide jajuk release and your configuration.
+thanks.</details>
+</followup>
+<followup>
+<id>1708678</id>
+<submitter>akapulko2020</submitter>
+<date>1121769328</date>
+<details>Logged In: YES 
+user_id=1314937
+
+release 3.4.1
+win xp 
+
+happened on first run of the jajuk :
+when seeing the directories in tree-like fashion.when one is
+higlighted ,it's name is not visible</details>
+</followup>
+<followup>
+<id>1708733</id>
+<submitter>bflorat</submitter>
+<date>1121774541</date>
+<details>Logged In: YES 
+user_id=363565
+
+So you mean that only at first jajuk session, in the
+physical tree view, when you right click on a directory, the
+name is overwritten byt the highlight ? is that it? (I can't
+reproduce it). Which look and feel do you use, default ?</details>
+</followup>
+<followup>
+<id>1708803</id>
+<submitter>akapulko2020</submitter>
+<date>1121779452</date>
+<details>Logged In: YES 
+user_id=1314937
+
+no,i didnt use the physical tree view
+when first opening the software, there is &#34;choose your music
+directory&#34; option.when choosing it,and browsing my computer,
+and clicking on my documents-in the drop down menu-the
+highlight override the dit name
+and yes,with the default look and feel</details>
+</followup>
+<followup>
+<id>1708880</id>
+<submitter>bflorat</submitter>
+<date>1121783239</date>
+<details>Logged In: YES 
+user_id=363565
+
+I cannot reproduce it neither under W2000 no under Linux (I
+have not Win XP) : under W2000 + default Look and feel,
+there is no directory highlightings in the menu. BTW, I
+shouldn't be able to fix that as I must be a JRE File
+chooser widget bug or a bug from the look and feel. Is it a
+blocking issue anyway ? </details>
+</followup>
+<followup>
+<id>1708889</id>
+<submitter>akapulko2020</submitter>
+<date>1121783399</date>
+<details>Logged In: YES 
+user_id=1314937
+
+no,managed to overcome it [by going up and down:D]</details>
+</followup>
+<followup>
+<id>1742324</id>
+<submitter>e3r</submitter>
+<date>1124649723</date>
+<details>Logged In: YES 
+user_id=857530
+
+couldn't reproduce this error on 
+winxp pro sp2
+jre 1.5.0_04
+jajuk 0.3.4.1</details>
+</followup>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1240758</url>
+<id>1240758</id>
 <status_id>1</status_id>
 <category_id>605762</category_id>
 <group_id>436325</group_id>
@@ -9825,12 +11054,19 @@ after next refresh</details>
 <submitter>bflorat</submitter>
 <assignee>bflorat</assignee>
 <closer>nobody</closer>
-<submit_date>1117897139</submit_date>
+<submit_date>1121768992</submit_date>
 <close_date>0</close_date>
-<priority>6</priority>
-<summary>Problem with playlists repository</summary>
-<details>In some cases, playlist items may not be visibled in
-playlist repository view after a refresh.</details>
+<priority>5</priority>
+<summary>Menu bar display under MacOsX</summary>
+<details>Under Mac OsX (I have no Mac so I can't reproduce),
+menu bar half-painted. 
+If somebody can try to change some properties
+(especially rendering) as decribed in
+http://developer.apple.com/documentation/Java/Conceptual/JavaPropVMInfoRef/index.html#//apple_ref/doc/uid/TP40001882
+?
+Edit your jajuk.sh file and add -Dkey=value properties.
+Note that |&#34;apple.laf.useScreenMenuBar&#34; property is
+true and cannot be changed in 0.3.4.| </details>
 <followups>
 </followups>
 <attachments>
@@ -10376,6 +11612,45 @@ org.jajuk.util.error.JajukException: nullnull
 
 ----- end of log -----</details>
 </followup>
+<followup>
+<id>1667646</id>
+<submitter>nobody</submitter>
+<date>1118089086</date>
+<details>Logged In: NO 
+
+On my winXP box I get also an error:
+
+java -client -Xms25M -Djava.library.path=&#34;C:\Program
+Files\jajuk\native&#34; -jar &#34;C:\Program Files\
+jajuk/bin/jajuk.jar&#34; -notaskbar
+2005/06/06 22:19:11 [INFO]
+******************JAJUK******************  [main] (Log.java:90)
+2005/06/06 22:19:11 [INFO] Version: 0.3.4  [main] (Log.java:90)
+java.lang.Error: Do not use
+org.jajuk.ui.FirstTimeWizard.setLayout() use
+org.jajuk.ui.FirstTimeWizard.getContentPane().setLayout()
+ instead
+        at
+javax.swing.JDialog.createRootPaneException(Unknown Source)
+        at javax.swing.JDialog.setLayout(Unknown Source)
+        at
+org.jajuk.ui.FirstTimeWizard.&#60;init&#62;(FirstTimeWizard.java:132)
+        at org.jajuk.Main$5.run(Main.java:693)
+        at java.awt.event.InvocationEvent.dispatch(Unknown
+Source)
+        at java.awt.EventQueue.dispatchEvent(Unknown Source)
+        at
+java.awt.EventDispatchThread.pumpOneEventForHierarchy(Unknown
+Source)
+        at
+java.awt.EventDispatchThread.pumpEventsForHierarchy(Unknown
+Source)
+        at java.awt.EventDispatchThread.pumpEvents(Unknown
+Source)
+        at java.awt.EventDispatchThread.pumpEvents(Unknown
+Source)
+        at java.awt.EventDispatchThread.run(Unknown Source)</details>
+</followup>
 </followups>
 <attachments>
 </attachments>
@@ -10507,14 +11782,14 @@ directory.</details>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1089983</url>
 <id>1089983</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>100</category_id>
 <group_id>100</group_id>
 <submitter>nobody</submitter>
 <assignee>bflorat</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1103743791</submit_date>
-<close_date>0</close_date>
+<close_date>1118655888</close_date>
 <priority>5</priority>
 <summary>Jajuk-0.3.1.exe infected by Trojan Virus</summary>
 <details>
@@ -10557,6 +11832,197 @@ can use the Java installer instead
 <date>1103793455</date>
 <updator>bflorat</updator>
 </history_entry>
+<history_entry>
+<id>2881521</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1118655888</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2881522</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1118655888</date>
+<updator>bflorat</updator>
+</history_entry>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1215955</url>
+<id>1215955</id>
+<status_id>1</status_id>
+<category_id>571113</category_id>
+<group_id>100</group_id>
+<submitter>nobody</submitter>
+<assignee>nobody</assignee>
+<closer>nobody</closer>
+<submit_date>1118089286</submit_date>
+<close_date>0</close_date>
+<priority>8</priority>
+<summary>WinXP: can't start up</summary>
+<details>installed 0.3.4. --&#62; fine.
+Jajuk starts with the flush screen but hangs in the
+main window. Trying with java from the command line:
+C:\Documents and Settings\hrobert&#62;java -client -Xms25M
+-Djava.library.path=&#34;C:\Program Files\jajuk\native&#34;
+-jar &#34;C:\Program Files\
+jajuk/bin/jajuk.jar&#34; -notaskbar
+2005/06/06 22:19:11 [INFO]
+******************JAJUK******************  [main]
+(Log.java:90)
+2005/06/06 22:19:11 [INFO] Version: 0.3.4  [main]
+(Log.java:90)
+java.lang.Error: Do not use
+org.jajuk.ui.FirstTimeWizard.setLayout() use
+org.jajuk.ui.FirstTimeWizard.getContentPane().setLayout()
+ instead
+        at
+javax.swing.JDialog.createRootPaneException(Unknown Source)
+        at javax.swing.JDialog.setLayout(Unknown Source)
+        at
+org.jajuk.ui.FirstTimeWizard.&#60;init&#62;(FirstTimeWizard.java:132)
+        at org.jajuk.Main$5.run(Main.java:693)
+        at
+java.awt.event.InvocationEvent.dispatch(Unknown Source)
+        at java.awt.EventQueue.dispatchEvent(Unknown
+Source)
+        at
+java.awt.EventDispatchThread.pumpOneEventForHierarchy(Unknown
+Source)
+        at
+java.awt.EventDispatchThread.pumpEventsForHierarchy(Unknown
+Source)
+        at
+java.awt.EventDispatchThread.pumpEvents(Unknown Source)
+        at
+java.awt.EventDispatchThread.pumpEvents(Unknown Source)
+        at java.awt.EventDispatchThread.run(Unknown Source)</details>
+<followups>
+<followup>
+<id>1669713</id>
+<submitter>bflorat</submitter>
+<date>1118263573</date>
+<details>Logged In: YES 
+user_id=363565
+
+It's a bug that occurs only with JRE &#60; 1.5 (reproduced on
+Linux and Windows). This will be fixed soon. In the mean
+time, you can either:
+- Upgrade to JAVA 1.5 (good idea for perfs anyway)
+- Close frozen window, edit {your home
+directory}/.jajuk.conf.properties file and change
+&#34;jajuk.first_con=true&#34; to &#34;jajuk.first_con=false&#34;.</details>
+</followup>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+<history_entry>
+<id>2873812</id>
+<field_name>priority</field_name>
+<old_value>5</old_value>
+<date>1118263573</date>
+<updator>bflorat</updator>
+</history_entry>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1217644</url>
+<id>1217644</id>
+<status_id>1</status_id>
+<category_id>571113</category_id>
+<group_id>100</group_id>
+<submitter>nobody</submitter>
+<assignee>nobody</assignee>
+<closer>nobody</closer>
+<submit_date>1118337608</submit_date>
+<close_date>0</close_date>
+<priority>5</priority>
+<summary>How to install?</summary>
+<details>Yes, I know, I'm a super-n00b and I'm really annoying, 
+but I can't find anywhere HOW to install such programs! 
+If it is possible to explain this without too much fuss it 
+would be really really nice. Thanks in advance, Vincent.</details>
+<followups>
+<followup>
+<id>1673471</id>
+<submitter>nobody</submitter>
+<date>1118651102</date>
+<details>Logged In: NO 
+
+I know now, I need the Java runtime environment. I don't know 
+if I'm blind or that it just ins't there, if it isn't, would be handy 
+to note it on the homepage or something...</details>
+</followup>
+<followup>
+<id>1673513</id>
+<submitter>bflorat</submitter>
+<date>1118653736</date>
+<details>Logged In: YES 
+user_id=363565
+
+Hi,
+See the installation jajuk manual:
+http://jajuk.sourceforge.net/installation.html
+&#167;Requirements
+If you want the JRE installation manual, see the help page
+on www.java.com
+Hope it helps</details>
+</followup>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1229014</url>
+<id>1229014</id>
+<status_id>1</status_id>
+<category_id>100</category_id>
+<group_id>100</group_id>
+<submitter>nobody</submitter>
+<assignee>nobody</assignee>
+<closer>nobody</closer>
+<submit_date>1119967218</submit_date>
+<close_date>0</close_date>
+<priority>5</priority>
+<summary>How to change Device Location?</summary>
+<details>When I first installed jajuk is just set something as
+the Device Location, which is now /home/vincent/Music.
+But now I want to change it, but I can't find how to do
+it anywhere! Then I reinstalled it, but it still used
+the same location. How can I change this?</details>
+<followups>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1231697</url>
+<id>1231697</id>
+<status_id>1</status_id>
+<category_id>100</category_id>
+<group_id>100</group_id>
+<submitter>nobody</submitter>
+<assignee>nobody</assignee>
+<closer>nobody</closer>
+<submit_date>1120363518</submit_date>
+<close_date>0</close_date>
+<priority>5</priority>
+<summary>Doesn't remember devices</summary>
+<details>I can set up a device that's mapped to a folder on my 
+hard drive, but it's not remembered when I restart.
+
+Windows XP sp2</details>
+<followups>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
 </history_entries>
 </tracker_item>
 </tracker_items>
@@ -10948,6 +12414,99 @@ sbHours.append(':').append(sbMins).append(':').append(sbSecs).toString();
 <field_name>close_date</field_name>
 <old_value>0</old_value>
 <date>1091715060</date>
+<updator>bflorat</updator>
+</history_entry>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1217320</url>
+<id>1217320</id>
+<status_id>2</status_id>
+<category_id>100</category_id>
+<group_id>100</group_id>
+<resolution_id>100</resolution_id>
+<submitter>gouss</submitter>
+<assignee>nobody</assignee>
+<closer>bflorat</closer>
+<submit_date>1118279469</submit_date>
+<close_date>1118435296</close_date>
+<priority>5</priority>
+<summary>OSX 10.3.9 FirstTimeWizard not displayed</summary>
+<details>Jajuk would not work on OSX 10.3.9 as the wizard
+couldn't get displayed.
+There is a simple fix for that, as you only need to
+replace setLayout()  and add() methods by
+getContentPane().setLayout() and getContentPane().add()
+at lines 132, 133 and 134 in FirstTimeWizard.java.
+The following patch is attached:
+Index: FirstTimeWizard.java
+===================================================================
+RCS file:
+/cvsroot/jajuk/jajuk/src/org/jajuk/ui/FirstTimeWizard.java,v
+retrieving revision 1.3
+diff -u -r1.3 FirstTimeWizard.java
+--- FirstTimeWizard.java	26 May 2005 21:49:24 -0000	1.3
++++ FirstTimeWizard.java	9 Jun 2005 01:02:53 -0000
+@@ -129,9 +129,9 @@
+         jpRightPanel.add(jpButtons,&#34;0,11&#34;); //$NON-NLS-1$
+         double size[][] = { { 0.4,30,0.6}, 
+                 {0.99 }};
+-        setLayout(new TableLayout(size));
+-        add(jlLeftIcon,&#34;0,0&#34;); //$NON-NLS-1$
+-        add(jpRightPanel,&#34;2,0&#34;); //$NON-NLS-1$
++        getContentPane().setLayout(new TableLayout(size));
++        getContentPane().add(jlLeftIcon,&#34;0,0&#34;);
+//$NON-NLS-1$
++        getContentPane().add(jpRightPanel,&#34;2,0&#34;);
+//$NON-NLS-1$
+     }
+ 
+ 
+
+</details>
+<followups>
+<followup>
+<id>1670104</id>
+<submitter>bflorat</submitter>
+<date>1118304132</date>
+<details>Logged In: YES 
+user_id=363565
+
+Thanks, this will be included in the upcoming 0.3.4.1 (tomorow).</details>
+</followup>
+</followups>
+<attachments>
+<attachment>
+<url>https://sourceforge.net/tracker/download.php?group_id=91412&#38;atid=597088&#38;file_id=137713&#38;aid=</url>
+<id>137713</id>
+<filename>OSX_FirstTimeWizard_patch.txt</filename>
+<description></description>
+<filesize>840</filesize>
+<filetype>text/plain</filetype>
+<date>1118279469</date>
+<submitter>gouss</submitter>
+</attachment>
+</attachments>
+<history_entries>
+<history_entry>
+<id>2874111</id>
+<field_name>File Added</field_name>
+<old_value>137713: OSX_FirstTimeWizard_patch.txt</old_value>
+<date>1118279470</date>
+<updator>gouss</updator>
+</history_entry>
+<history_entry>
+<id>2878202</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1118435296</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2878203</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1118435296</date>
 <updator>bflorat</updator>
 </history_entry>
 </history_entries>
@@ -13067,14 +14626,14 @@ account during this action. Thanks.</details>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1198930</url>
 <id>1198930</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>571115</category_id>
 <group_id>100</group_id>
 <submitter>pjlehtim</submitter>
 <assignee>nobody</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1115721662</submit_date>
-<close_date>0</close_date>
+<close_date>1117907436</close_date>
 <priority>5</priority>
 <summary>Playlist history</summary>
 <details>I'd like to retain few previous songs in playlist view.
@@ -13099,19 +14658,33 @@ parameter view/history tab.</details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>2865796</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1117907436</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2865797</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1117907436</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1198934</url>
 <id>1198934</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>571115</category_id>
 <group_id>100</group_id>
 <submitter>pjlehtim</submitter>
 <assignee>nobody</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1115721905</submit_date>
-<close_date>0</close_date>
+<close_date>1117907414</close_date>
 <priority>5</priority>
 <summary>New Additions</summary>
 <details>LimeWire uses &#34;Shared&#34; directory as DL target when
@@ -13143,6 +14716,205 @@ to add a 'noverlties' special playlist (like we have for
 bestof) that will contain all the tracks whose addition date
 is &#60; to number of days given in the parameter view/option tab. </details>
 </followup>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+<history_entry>
+<id>2865792</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1117907414</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2865793</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1117907414</date>
+<updator>bflorat</updator>
+</history_entry>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1222801</url>
+<id>1222801</id>
+<status_id>1</status_id>
+<category_id>100</category_id>
+<group_id>100</group_id>
+<submitter>nobody</submitter>
+<assignee>nobody</assignee>
+<closer>nobody</closer>
+<submit_date>1119030129</submit_date>
+<close_date>0</close_date>
+<priority>5</priority>
+<summary>Some Items for the wishlist</summary>
+<details>
+here are a couple things i would like to see.
+
+1. ID tag editing, possibly inline wih the &#34;physical
+table&#34; make the fields editable so you can change the
+genre or album and the like.  would be real convienient
+to do that inline instead of having to open up a
+separate idtag window.
+
+2. sound processing, equalizer of sorts.  some kind of
+functionality that allows adjustment of the sound system.
+
+3.  I would like to double click the devider between
+columns to resize the column to fit text.
+
+4.  Maybe have the playlist center in on the track
+being played when the song changes, and the ability to
+toggle it, or just have it jump when not focused or
+something smart like that.
+
+
+beautiful interface and layout, i like it alot!  i will
+be following this project!
+
+-ChazZ</details>
+<followups>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1233711</url>
+<id>1233711</id>
+<status_id>1</status_id>
+<category_id>100</category_id>
+<group_id>100</group_id>
+<submitter>deathangel</submitter>
+<assignee>nobody</assignee>
+<closer>nobody</closer>
+<submit_date>1120678773</submit_date>
+<close_date>0</close_date>
+<priority>5</priority>
+<summary>shortCut/Hot keys</summary>
+<details>
+I would like to see some manner of customizable
+hotkeys.  along the lines of winamp.  you can control
+the player at any time wether you are in a game or if
+its minimized.  it would be cool if i could bind
+playback functions to those stoopid media buttons you
+find lining the top of some keyboards.
+
+
+-ChazZ</details>
+<followups>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1235368</url>
+<id>1235368</id>
+<status_id>1</status_id>
+<category_id>100</category_id>
+<group_id>100</group_id>
+<submitter>bflorat</submitter>
+<assignee>nobody</assignee>
+<closer>nobody</closer>
+<submit_date>1120942880</submit_date>
+<close_date>0</close_date>
+<priority>4</priority>
+<summary>Prepare party function</summary>
+<details>User create a playlist with tracks from several
+unmounted devices like Cds. The prepare party function
+ask each CD and copy them to a special directory device
+to make sure all tracks will be ready for the party.</details>
+<followups>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1235391</url>
+<id>1235391</id>
+<status_id>1</status_id>
+<category_id>100</category_id>
+<group_id>100</group_id>
+<submitter>bflorat</submitter>
+<assignee>nobody</assignee>
+<closer>nobody</closer>
+<submit_date>1120947290</submit_date>
+<close_date>0</close_date>
+<priority>2</priority>
+<summary>Tray popup format</summary>
+<details>Display tray popup on one single line with a play icon.</details>
+<followups>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1263856</url>
+<id>1263856</id>
+<status_id>1</status_id>
+<category_id>100</category_id>
+<group_id>100</group_id>
+<submitter>me-vincent</submitter>
+<assignee>nobody</assignee>
+<closer>nobody</closer>
+<submit_date>1124447677</submit_date>
+<close_date>0</close_date>
+<priority>5</priority>
+<summary>Reset all ratings</summary>
+<details>It would probably be nice to be able to reset your
+ratings. My ratings have all messed up (some are
+somewhere around 150), so now I'd like to reset all
+ratings to 0, but I can't...</details>
+<followups>
+<followup>
+<id>1740433</id>
+<submitter>bflorat</submitter>
+<date>1124453256</date>
+<details>Logged In: YES 
+user_id=363565
+
+OK, with upcoming 1.0 (early oct), you will be able to set
+recursively (ie, for the entire collection for exemple) a
+property (like rating) so it will be simple then to reset
+ratings : right click on  collection, &#34;properties&#34;, set
+rating to zero. We may add a reset ratings button in History
+tab on parameter view as well.</details>
+</followup>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1295677</url>
+<id>1295677</id>
+<status_id>1</status_id>
+<category_id>571115</category_id>
+<group_id>100</group_id>
+<submitter>nobody</submitter>
+<assignee>nobody</assignee>
+<closer>nobody</closer>
+<submit_date>1127154178</submit_date>
+<close_date>0</close_date>
+<priority>5</priority>
+<summary>eye candy :)</summary>
+<details>Hi my wish is for some eye candy to go along with the 
+tunes.... I have replaced everything I had in windows with 
+something better in Linux.. Slackware... and jajuk was my 
+replacement for Media Player (man i hate that junk) the only 
+thing jajuk is missing i think is visual effects for the music... 
+then it's perfect... 
+ </details>
+<followups>
 </followups>
 <attachments>
 </attachments>
@@ -13384,14 +15156,14 @@ Should be fixed in 0.3.3  (no more -Xmx)</details>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1078871</url>
 <id>1078871</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>100</category_id>
 <group_id>100</group_id>
 <submitter>bflorat</submitter>
 <assignee>nobody</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1102167887</submit_date>
-<close_date>0</close_date>
+<close_date>1117907491</close_date>
 <priority>2</priority>
 <summary>Metouia Look and Feel problem</summary>
 <details>When dynamicaly changing Look And Feel to Metouia, the
@@ -13403,6 +15175,20 @@ Workaround : restart jajuk</details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>2865798</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1117907491</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>2865799</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1117907491</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
@@ -14381,6 +16167,25 @@ after a window display (jauk not displayed at startup)</details>
 <history_entries>
 </history_entries>
 </task>
+<task>
+<task_id>119641</task_id>
+<summary>Merge Physical and LogicalTableView</summary>
+<detail></detail>
+<percent_complete>0</percent_complete>
+<priority>5</priority>
+<hours>2</hours>
+<start_date>1127253600</start_date>
+<end_date>1127253600</end_date>
+<creator>bflorat</creator>
+<status_id>1</status_id>
+<dependencies>
+</dependencies>
+<assignees>
+<assignee>nobody</assignee>
+</assignees>
+<history_entries>
+</history_entries>
+</task>
 </project>
 <project>
 <project_id>41002</project_id>
@@ -14463,7 +16268,7 @@ after a window display (jauk not displayed at startup)</details>
 <task_id>110970</task_id>
 <summary>[medium] Tag edition</summary>
 <detail></detail>
-<percent_complete>0</percent_complete>
+<percent_complete>50</percent_complete>
 <priority>9</priority>
 <hours>0</hours>
 <start_date>1106521200</start_date>
@@ -14473,7 +16278,7 @@ after a window display (jauk not displayed at startup)</details>
 <dependencies>
 </dependencies>
 <assignees>
-<assignee>nobody</assignee>
+<assignee>bflorat</assignee>
 </assignees>
 <history_entries>
 <history_entry>
@@ -14484,23 +16289,30 @@ https://sourceforge.net/tracker/index.php?func=detail&#38;aid=1177560&#38;group_
 <updator>bflorat</updator>
 <date>1112774598</date>
 </history_entry>
+<history_entry>
+<task_id>110970</task_id>
+<field_name>percent_complete</field_name>
+<old_value>0</old_value>
+<updator>bflorat</updator>
+<date>1120634217</date>
+</history_entry>
 </history_entries>
 </task>
 <task>
 <task_id>110971</task_id>
 <summary>[hard] Custom properties</summary>
 <detail></detail>
-<percent_complete>0</percent_complete>
+<percent_complete>100</percent_complete>
 <priority>8</priority>
 <hours>0</hours>
 <start_date>1106521200</start_date>
 <end_date>1106521200</end_date>
 <creator>bflorat</creator>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <dependencies>
 </dependencies>
 <assignees>
-<assignee>nobody</assignee>
+<assignee>bflorat</assignee>
 </assignees>
 <history_entries>
 <history_entry>
@@ -14524,6 +16336,20 @@ https://sourceforge.net/tracker/index.php?func=detail&#38;aid=1177560&#38;group_
 Stock others properties for items: volume, balance, ...</old_value>
 <updator>bflorat</updator>
 <date>1114602640</date>
+</history_entry>
+<history_entry>
+<task_id>110971</task_id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<updator>bflorat</updator>
+<date>1120634247</date>
+</history_entry>
+<history_entry>
+<task_id>110971</task_id>
+<field_name>percent_complete</field_name>
+<old_value>0</old_value>
+<updator>bflorat</updator>
+<date>1120634247</date>
 </history_entry>
 </history_entries>
 </task>
@@ -14612,14 +16438,14 @@ Stock others properties for items: volume, balance, ...</old_value>
 <percent_complete>0</percent_complete>
 <priority>7</priority>
 <hours>5</hours>
-<start_date>1106438400</start_date>
-<end_date>1106438400</end_date>
+<start_date>1106434800</start_date>
+<end_date>1106434800</end_date>
 <creator>bflorat</creator>
 <status_id>1</status_id>
 <dependencies>
 </dependencies>
 <assignees>
-<assignee>ftavares</assignee>
+<assignee>nobody</assignee>
 </assignees>
 <history_entries>
 <history_entry>
@@ -14642,6 +16468,20 @@ Stock others properties for items: volume, balance, ...</old_value>
 <old_value>1106521200</old_value>
 <updator>ftavares</updator>
 <date>1112714457</date>
+</history_entry>
+<history_entry>
+<task_id>110975</task_id>
+<field_name>start_date</field_name>
+<old_value>1106438400</old_value>
+<updator>bflorat</updator>
+<date>1119961861</date>
+</history_entry>
+<history_entry>
+<task_id>110975</task_id>
+<field_name>end_date</field_name>
+<old_value>1106438400</old_value>
+<updator>bflorat</updator>
+<date>1119961861</date>
 </history_entry>
 </history_entries>
 </task>
@@ -14711,7 +16551,7 @@ Stock others properties for items: volume, balance, ...</old_value>
 <dependencies>
 </dependencies>
 <assignees>
-<assignee>ashwin_here</assignee>
+<assignee>nobody</assignee>
 </assignees>
 <history_entries>
 <history_entry>
@@ -14726,6 +16566,13 @@ Stock others properties for items: volume, balance, ...</old_value>
 </old_value>
 <updator>bflorat</updator>
 <date>1115658723</date>
+</history_entry>
+<history_entry>
+<task_id>110978</task_id>
+<field_name>details</field_name>
+<old_value>Use API from SwingX !</old_value>
+<updator>bflorat</updator>
+<date>1121454567</date>
 </history_entry>
 </history_entries>
 </task>
@@ -14743,7 +16590,7 @@ Stock others properties for items: volume, balance, ...</old_value>
 <dependencies>
 </dependencies>
 <assignees>
-<assignee>mbraux</assignee>
+<assignee>nobody</assignee>
 </assignees>
 <history_entries>
 <history_entry>
@@ -14812,19 +16659,33 @@ http://www.singularsys.com/jep/index.html</old_value>
 <task_id>110985</task_id>
 <summary>[medium] JTable : automatic column resizing</summary>
 <detail></detail>
-<percent_complete>0</percent_complete>
+<percent_complete>100</percent_complete>
 <priority>5</priority>
 <hours>4</hours>
 <start_date>1106521200</start_date>
 <end_date>1106521200</end_date>
 <creator>bflorat</creator>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <dependencies>
 </dependencies>
 <assignees>
-<assignee>nobody</assignee>
+<assignee>bflorat</assignee>
 </assignees>
 <history_entries>
+<history_entry>
+<task_id>110985</task_id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<updator>bflorat</updator>
+<date>1120634110</date>
+</history_entry>
+<history_entry>
+<task_id>110985</task_id>
+<field_name>percent_complete</field_name>
+<old_value>0</old_value>
+<updator>bflorat</updator>
+<date>1120634110</date>
+</history_entry>
 </history_entries>
 </task>
 <task>
@@ -14945,17 +16806,17 @@ http://www.singularsys.com/jep/index.html</old_value>
 <task_id>112385</task_id>
 <summary>[medium] Easy bug report</summary>
 <detail></detail>
-<percent_complete>0</percent_complete>
+<percent_complete>100</percent_complete>
 <priority>6</priority>
 <hours>5</hours>
 <start_date>1108681200</start_date>
 <end_date>1108681200</end_date>
 <creator>bflorat</creator>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <dependencies>
 </dependencies>
 <assignees>
-<assignee>nobody</assignee>
+<assignee>bflorat</assignee>
 </assignees>
 <history_entries>
 <history_entry>
@@ -14964,6 +16825,20 @@ http://www.singularsys.com/jep/index.html</old_value>
 <old_value>Easy bug report</old_value>
 <updator>bflorat</updator>
 <date>1108764382</date>
+</history_entry>
+<history_entry>
+<task_id>112385</task_id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<updator>bflorat</updator>
+<date>1120634167</date>
+</history_entry>
+<history_entry>
+<task_id>112385</task_id>
+<field_name>percent_complete</field_name>
+<old_value>0</old_value>
+<updator>bflorat</updator>
+<date>1120634167</date>
 </history_entry>
 </history_entries>
 </task>
@@ -15063,19 +16938,40 @@ http://www.singularsys.com/jep/index.html</old_value>
 <task_id>114572</task_id>
 <summary>[easy] Display files/track dates</summary>
 <detail></detail>
-<percent_complete>0</percent_complete>
+<percent_complete>100</percent_complete>
 <priority>5</priority>
 <hours>5</hours>
 <start_date>1113948000</start_date>
-<end_date>1113948000</end_date>
+<end_date>1121378400</end_date>
 <creator>bflorat</creator>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <dependencies>
 </dependencies>
 <assignees>
-<assignee>nobody</assignee>
+<assignee>bflorat</assignee>
 </assignees>
 <history_entries>
+<history_entry>
+<task_id>114572</task_id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<updator>bflorat</updator>
+<date>1121454607</date>
+</history_entry>
+<history_entry>
+<task_id>114572</task_id>
+<field_name>percent_complete</field_name>
+<old_value>0</old_value>
+<updator>bflorat</updator>
+<date>1121454607</date>
+</history_entry>
+<history_entry>
+<task_id>114572</task_id>
+<field_name>end_date</field_name>
+<old_value>1113948000</old_value>
+<updator>bflorat</updator>
+<date>1121454607</date>
+</history_entry>
 </history_entries>
 </task>
 <task>
@@ -15142,6 +17038,67 @@ http://www.singularsys.com/jep/index.html</old_value>
 <history_entries>
 </history_entries>
 </task>
+<task>
+<task_id>116906</task_id>
+<summary>[medium] Track number</summary>
+<detail></detail>
+<percent_complete>100</percent_complete>
+<priority>6</priority>
+<hours>5</hours>
+<start_date>1119477600</start_date>
+<end_date>1121378400</end_date>
+<creator>bflorat</creator>
+<status_id>2</status_id>
+<dependencies>
+</dependencies>
+<assignees>
+<assignee>bflorat</assignee>
+</assignees>
+<history_entries>
+<history_entry>
+<task_id>116906</task_id>
+<field_name>summary</field_name>
+<old_value>Track number</old_value>
+<updator>bflorat</updator>
+<date>1120633642</date>
+</history_entry>
+<history_entry>
+<task_id>116906</task_id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<updator>bflorat</updator>
+<date>1121454533</date>
+</history_entry>
+<history_entry>
+<task_id>116906</task_id>
+<field_name>priority</field_name>
+<old_value>5</old_value>
+<updator>bflorat</updator>
+<date>1121454533</date>
+</history_entry>
+<history_entry>
+<task_id>116906</task_id>
+<field_name>percent_complete</field_name>
+<old_value>0</old_value>
+<updator>bflorat</updator>
+<date>1121454533</date>
+</history_entry>
+<history_entry>
+<task_id>116906</task_id>
+<field_name>hours</field_name>
+<old_value>0</old_value>
+<updator>bflorat</updator>
+<date>1121454533</date>
+</history_entry>
+<history_entry>
+<task_id>116906</task_id>
+<field_name>end_date</field_name>
+<old_value>1119477600</old_value>
+<updator>bflorat</updator>
+<date>1121454533</date>
+</history_entry>
+</history_entries>
+</task>
 </project>
 <project>
 <project_id>41003</project_id>
@@ -15170,19 +17127,40 @@ http://www.singularsys.com/jep/index.html</old_value>
 <task_id>110984</task_id>
 <summary>French documentation</summary>
 <detail></detail>
-<percent_complete>40</percent_complete>
+<percent_complete>100</percent_complete>
 <priority>7</priority>
-<hours>0</hours>
+<hours>30</hours>
 <start_date>1106521200</start_date>
 <end_date>1106521200</end_date>
 <creator>bflorat</creator>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <dependencies>
 </dependencies>
 <assignees>
-<assignee>nobody</assignee>
+<assignee>bflorat</assignee>
 </assignees>
 <history_entries>
+<history_entry>
+<task_id>110984</task_id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<updator>bflorat</updator>
+<date>1119961979</date>
+</history_entry>
+<history_entry>
+<task_id>110984</task_id>
+<field_name>percent_complete</field_name>
+<old_value>40</old_value>
+<updator>bflorat</updator>
+<date>1119961979</date>
+</history_entry>
+<history_entry>
+<task_id>110984</task_id>
+<field_name>hours</field_name>
+<old_value>0</old_value>
+<updator>bflorat</updator>
+<date>1119961979</date>
+</history_entry>
 </history_entries>
 </task>
 </project>

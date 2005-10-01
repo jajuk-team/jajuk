@@ -12,31 +12,32 @@ NEW LANGUAGE PROCEDURE
 - Update translation howto
 
 NEW RELEASE PROCEDURE
-o- Check new incoming updates (i18n)
-o- Backup SF data (php file)
-o- Set right version (no more rc) in build-dist.xml
-o- String externalization
-o- Rename /data/projects/jajuk/maven_rep/xdocs/jajuk-hs link
-o- Search for debug System.out
-o- Make required translations (fr)
-o- Generate packages
-o- Test it under several OS
-o- Update qualification-<release>.html file
-o- Add a release in main_qualification.html file
+- Set debug to '' in build-dist script
+- Check new incoming updates (i18n)
+- Backup SF data (php file)
+- Set right version (no more rc) in build-dist.xml
+- String externalization
+- Rename /data/projects/jajuk/maven_rep/xdocs/jajuk-hs link
+- Search for debug System.out
+- Make required translations (fr)
+- Generate packages
+- Test it under several OS
+- Update qualification-<release>.html file
+- Add a release in main_qualification.html file
 - Save dist file in the releases dir
-o- Modify index.xml and change.xml maven files
-o- Change download.html file for file names
-o- Upgrade project.xml maven file
-o- Generate website PDF (make_jajuk pdf) 
-o- Generate and upload maven site (make_jajuk)
-o- Refresh workspace
-o- Commit all changes
-o- Tag as version
-o- Create a maintenance branch if required
-o- Close bugs, known issues and RFE at SF
-o- Release file on SF, ( preserve my preformated text in notes )
-o- Send a message in the developer forum
-o- Clean snapshots directory
+- Modify index.xml and change.xml maven files
+- Change download.html file for file names
+- Upgrade project.xml maven file
+- Generate website PDF (make_jajuk pdf) 
+- Generate and upload maven site (make_jajuk)
+- Refresh workspace
+- Commit all changes
+- Tag as version
+- Create a maintenance branch if required
+- Close bugs, known issues and RFE at SF
+- Release file on SF, ( preserve my preformated text in notes )
+- Send a message in the developer forum
+- Clean snapshots directory
 
 QUICK FIX RELEASE PROCEDURE
 o- Check new incoming updates (i18n)
