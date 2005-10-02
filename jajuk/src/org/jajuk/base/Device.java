@@ -785,7 +785,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
             return DeviceManager.getInstance().getDeviceType(lType);
         }
         else{//default
-            return getValue(sKey).toString();
+            return super.getHumanValue(sKey);
         }
     }
 

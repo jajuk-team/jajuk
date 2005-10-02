@@ -722,7 +722,7 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
             return dParent.getFio().getAbsolutePath();
         }
         else{//default
-            return getStringValue(sKey);
+            return super.getHumanValue(sKey);
         }
     }
     

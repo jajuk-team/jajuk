@@ -105,7 +105,7 @@ public class Playlist extends PropertyAdapter implements Comparable{
 	        return sbOut.substring(0,sbOut.length()-1); //remove last ','
 	    }
 	    else{//default
-	        return getStringValue(sKey);
+	        return super.getHumanValue(sKey);
 	    }
 	}
 	

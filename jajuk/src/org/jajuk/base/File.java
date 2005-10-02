@@ -19,8 +19,6 @@
  */
 package org.jajuk.base;
 
-import java.util.Iterator;
-
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
@@ -328,7 +326,7 @@ public class File extends PropertyAdapter implements Comparable,ITechnicalString
             return getAny();
         }
         else{//default
-            return getStringValue(sKey);
+            return super.getHumanValue(sKey);
         }
     }
     
@@ -339,10 +337,11 @@ public class File extends PropertyAdapter implements Comparable,ITechnicalString
     public String getAny(){
         if (bNeedRefresh){
             //rebuild any
-            StringBuffer sb  = new StringBuffer();
+            StringBuffer sb  = new StringBuffer(100);
             File file = (File)this;
             Track track = file.getTrack();
-            sb.append(file.getName());
+            sb.append(super.getAny()); //add all files-based properties
+            //now add others properties
             sb.append(file.getDirectory().getDevice().getName());
             sb.append(track.getName());
             sb.append(track.getStyle().getName2());
@@ -352,10 +351,6 @@ public class File extends PropertyAdapter implements Comparable,ITechnicalString
             sb.append(track.getRate());
             sb.append(track.getValue(XML_TRACK_COMMENT));//custom properties now
             sb.append(track.getValue(XML_TRACK_ORDER));//custom properties now
-            Iterator it = FileManager.getInstance().getCustomProperties().iterator();
-            while (it.hasNext()){
-                sb.append((String)it.next());
-            }
             this.sAny = sb.toString();
             bNeedRefresh = false;
         }

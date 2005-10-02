@@ -123,7 +123,7 @@ public class Style extends PropertyAdapter implements Comparable{
             return getName2();
         }
         else{//default
-            return getStringValue(sKey);
+            return super.getHumanValue(sKey);
         }
     }
     

@@ -108,6 +108,6 @@ public interface IPropertyable {
      * @param key
      * @return human value for the property (not MD5 hash)
      */
-    public String getHumanValue(String sKey);
+    public String getHumanValue(String sKey) ;
 	
 }

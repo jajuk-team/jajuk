@@ -148,7 +148,7 @@ public abstract class ItemManager implements ITechnicalStrings{
     /**
      * @return custom properties Meta informations
      */
-    public Collection getCustomProperties(){
+    public Collection<PropertyMetaInformation> getCustomProperties(){
         ArrayList col = new ArrayList();
         Iterator it = hmPropertiesMetaInformation.values().iterator();
         while (it.hasNext()){

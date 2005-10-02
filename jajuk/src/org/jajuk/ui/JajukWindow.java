@@ -20,7 +20,6 @@
 
 package org.jajuk.ui;
 
-import java.awt.Frame;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.ComponentEvent;
@@ -45,6 +44,7 @@ import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
+import org.jdesktop.swingx.JXFrame;
 
 /**
  *  Jajuk main window
@@ -53,7 +53,7 @@ import org.jajuk.util.log.Log;
  * @author     Bertrand Florat
  * @created    23 mars 2004
  */
-public class JajukWindow extends JFrame implements ITechnicalStrings,Observer {
+public class JajukWindow extends JXFrame implements ITechnicalStrings,Observer {
 	
 	/**Max width*/
 	private int iMaxWidth ; 
@@ -217,14 +217,13 @@ public class JajukWindow extends JFrame implements ITechnicalStrings,Observer {
 	    bVisible = visible;
 		//show 
 		if (visible){
-			setVisible(true);
-            setState(Frame.NORMAL); //force de-iconification
-		}
+    		setVisible(true);
+     	}
 		//hide
 		else{
 		    if (Main.isNoTaskBar()){ //hide the window only if it is explicitely required 
 		        setVisible(false);
-		    }
+            }
 		 }
 	}
    

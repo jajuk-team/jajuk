@@ -136,6 +136,9 @@ abstract public class PropertyAdapter implements IPropertyable, Serializable,ITe
         return (Double)getProperties().get(sKey); //return property value
      }
     
+    /**
+     * Return String value for String type values. We assume that given property is a String. If you are not sure, use Util.parse method
+     */
     public String getStringValue(String sKey){
         //look at properties to check the given property is known
         if ( !getProperties().containsKey(sKey)){ //no? take property default
@@ -191,7 +194,25 @@ abstract public class PropertyAdapter implements IPropertyable, Serializable,ITe
      * @see org.jajuk.base.IPropertyable#getAny()
      */
     public String getAny(){
-        return null; //default implementation
+        if (bNeedRefresh){
+            StringBuffer sb = new StringBuffer(100); //$NON-NLS-1$
+            LinkedHashMap properties = getProperties();
+            Iterator it = properties.keySet().iterator();
+            while (it.hasNext()) {
+                String sKey = (String) it.next();
+                String sValue = getHumanValue(sKey);
+                if (sValue != null){
+                    PropertyMetaInformation meta = getMeta(sKey);
+                    if (!meta.isVisible()){ //computes "any" only on visible items
+                        continue;
+                    }
+                    sb.append(sValue);
+                }
+                
+            }
+            this.sAny = sb.toString();
+        }
+        return sAny;
     }
 	
     /* (non-Javadoc)
@@ -309,8 +330,14 @@ abstract public class PropertyAdapter implements IPropertyable, Serializable,ITe
     /**
      * Default implementation for this method, simply return standard value
      */
-    public String getHumanValue(String sKey){
-        return getValue(sKey).toString();
+    public String getHumanValue(String sKey) {
+        try{
+            return Util.format(getValue(sKey),getMeta(sKey));
+        }
+        catch(Exception e){
+            Log.error(e);
+            return "";
+        }
     }
     
     /**

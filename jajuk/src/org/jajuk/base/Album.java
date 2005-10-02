@@ -134,7 +134,7 @@ public class Album extends PropertyAdapter implements Comparable{
             return getName2();
         }
         else{//default
-            return getValue(sKey).toString();
+            return super.getHumanValue(sKey);
         }
     }
     

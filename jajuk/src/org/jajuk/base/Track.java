@@ -454,34 +454,8 @@ public class Track extends PropertyAdapter implements Comparable{
             return getAny();
         }
         else{//default
-            return getValue(sKey).toString();
+            return super.getHumanValue(sKey);
         }
     }
     
-    /* (non-Javadoc)
-     * @see org.jajuk.base.IPropertyable#getAny()
-     */
-    public String getAny(){
-        if (bNeedRefresh){
-            //rebuild any
-            StringBuffer sb  = new StringBuffer();
-            Track track = (Track)this;
-            sb.append(track.getName());
-            sb.append(track.getStyle().getName2());
-            sb.append(track.getAuthor().getName2());
-            sb.append(track.getAlbum().getName2());
-            sb.append(track.getLength());
-            sb.append(track.getRate());
-            sb.append(track.getValue(XML_TRACK_COMMENT));
-            sb.append(track.getValue(XML_TRACK_ORDER));
-            //custom properties now
-            Iterator it = TrackManager.getInstance().getCustomProperties().iterator();
-            while (it.hasNext()){
-                sb.append((String)it.next());
-            }
-            this.sAny = sb.toString();
-            bNeedRefresh = false;
-        }
-        return this.sAny;
-    }
 }

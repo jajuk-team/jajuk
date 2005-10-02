@@ -406,7 +406,7 @@ public class Directory extends PropertyAdapter implements Comparable{
             }
         }
         else{//default
-            return getValue(sKey).toString();
+            return super.getHumanValue(sKey);
         }
     }
     
