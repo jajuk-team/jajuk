@@ -35,6 +35,7 @@ import java.util.Properties;
 import java.util.StringTokenizer;
 
 import javax.swing.BorderFactory;
+import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -54,7 +55,10 @@ import org.jajuk.base.Event;
 import org.jajuk.base.IPropertyable;
 import org.jajuk.base.ItemManager;
 import org.jajuk.base.ObservationManager;
+import org.jajuk.base.PropertyMetaInformation;
+import org.jajuk.base.StyleManager;
 import org.jajuk.i18n.Messages;
+import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.JajukTable;
 import org.jajuk.ui.JajukTableModel;
 import org.jajuk.ui.TableTransferHandler;
@@ -176,7 +180,7 @@ public abstract class AbstractTableView extends ViewAdapter
                 jlFilter = new JLabel(Messages.getString("AbstractTableView.0")); //$NON-NLS-1$
                 //properties combo box, fill with colums names expect ID
                 jcbProperty = new JComboBox();
-                jcbProperty.addItem(Messages.getString("AbstractTableView.8")); //"any" criteria
+                jcbProperty.addItem(Messages.getString("AbstractTableView.8")); //"any" criteria //$NON-NLS-1$
                 for (int i=1;i<model.getColumnCount();i++){//Others columns except ID
                     jcbProperty.addItem(model.getColumnName(i));    
                 }
@@ -306,10 +310,16 @@ public abstract class AbstractTableView extends ViewAdapter
                     String subject = event.getSubject();
                     if ( EVENT_DEVICE_MOUNT.equals(subject) 
                             || EVENT_DEVICE_UNMOUNT.equals(subject) 
-                            || EVENT_DEVICE_REFRESH.equals(subject)  
                             || EVENT_SYNC_TREE_TABLE.equals(subject)) {
                         applyFilter(sAppliedCriteria,sAppliedFilter); //force filter to refresh
                     }	
+                    else if ( EVENT_DEVICE_REFRESH.equals(subject)) {
+                        Object oDetail = ObservationManager.getDetail(event,DETAIL_ORIGIN);
+                        //refresh table only if event doesn't come from this (otherwise, we lose focus on changed item)
+                        if (oDetail != null && !oDetail.equals(this)){
+                            applyFilter(sAppliedCriteria,sAppliedFilter); //force filter to refresh
+                        }
+                    }   
                     else if (EVENT_CUSTOM_PROPERTIES_ADD.equals(subject)){
                         Properties properties = event.getDetails();
                         if (properties == null){ //can be null at view populate
@@ -320,11 +330,11 @@ public abstract class AbstractTableView extends ViewAdapter
                         //add new item in configuration cols
                         if (AbstractTableView.this instanceof PhysicalTableView){
                             String sTableCols = ConfigurationManager.getProperty(CONF_PHYSICAL_TABLE_COLUMNS);
-                            ConfigurationManager.setProperty(CONF_PHYSICAL_TABLE_COLUMNS,sTableCols+","+(model.getIdentifier(model.getColumnCount()-1)));    
+                            ConfigurationManager.setProperty(CONF_PHYSICAL_TABLE_COLUMNS,sTableCols+","+(model.getIdentifier(model.getColumnCount()-1)));     //$NON-NLS-1$
                         }
                         else {
                             String sTableCols = ConfigurationManager.getProperty(CONF_LOGICAL_TABLE_COLUMNS);
-                            ConfigurationManager.setProperty(CONF_LOGICAL_TABLE_COLUMNS,sTableCols+","+(model.getIdentifier(model.getColumnCount()-1)));
+                            ConfigurationManager.setProperty(CONF_LOGICAL_TABLE_COLUMNS,sTableCols+","+(model.getIdentifier(model.getColumnCount()-1))); //$NON-NLS-1$
                         }
                         hideColumns();
                         applyFilter(sAppliedCriteria,sAppliedFilter);
@@ -405,8 +415,19 @@ public abstract class AbstractTableView extends ViewAdapter
         Iterator it = ((DefaultTableColumnModelExt)jtable.getColumnModel()).getAllColumns().iterator();
         while (it.hasNext()){
             TableColumnExt col = (TableColumnExt)it.next();
+            String sIdentifier = model.getIdentifier(col.getModelIndex());
             if (col.isVisible()){
-                sb.append(model.getIdentifier(col.getModelIndex())+",");    
+                sb.append(sIdentifier+",");     //$NON-NLS-1$
+            }
+            //create a combo box for styles, note that we can't add new styles dynamically
+            if (XML_STYLE.equals(sIdentifier)){
+                ArrayList<String> alStyles = (ArrayList)StyleManager.getStylesList();
+                JComboBox jcb = new JComboBox();
+                jcb.setEditable(true);
+                for (String style:alStyles){
+                    jcb.addItem(style);
+                }
+                col.setCellEditor(new DefaultCellEditor(jcb));
             }
         }
         //remove last coma
@@ -427,7 +448,7 @@ public abstract class AbstractTableView extends ViewAdapter
         StringBuffer sb = new StringBuffer();
         Iterator it = alCol.iterator();
         while (it.hasNext()){
-            sb.append((String)it.next()+",");
+            sb.append((String)it.next()+","); //$NON-NLS-1$
         }
         //remove last coma
         if (sb.length()>0){
@@ -451,7 +472,7 @@ public abstract class AbstractTableView extends ViewAdapter
         else {
             sConf = ConfigurationManager.getProperty(CONF_LOGICAL_TABLE_COLUMNS);
         }
-        StringTokenizer st = new StringTokenizer(sConf,",");
+        StringTokenizer st = new StringTokenizer(sConf,","); //$NON-NLS-1$
         while (st.hasMoreTokens()){
             alOut.add(st.nextToken());
         }
@@ -503,12 +524,21 @@ public abstract class AbstractTableView extends ViewAdapter
         IPropertyable item = model.getItemAt(e.getFirstRow());
         try{
             IPropertyable itemNew = ItemManager.changeItem(item,sKey,oValue);
+            //user message
+            PropertyMetaInformation meta = itemNew.getMeta(sKey);
+            InformationJPanel.getInstance().setMessage(
+                    Messages.getString("PropertiesWizard.8")+": "+ItemManager.getHumanType(sKey), //$NON-NLS-1$ //$NON-NLS-2$
+                    InformationJPanel.INFORMATIVE);
+            
             if (!itemNew.equals(item)){ //check if item has change
-                ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH)); //TBI see later for a smarter event
+                Properties properties = new Properties();
+                properties.put(DETAIL_ORIGIN,this);
+                ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH,properties)); //TBI see later for a smarter event
+                
             }
         }
         catch(JajukException je){
-            Messages.showErrorMessage("104");
+            Messages.showErrorMessage("104"); //$NON-NLS-1$
         }
     }
     

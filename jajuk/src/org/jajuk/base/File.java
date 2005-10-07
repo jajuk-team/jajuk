@@ -284,7 +284,7 @@ public class File extends PropertyAdapter implements Comparable,ITechnicalString
      * Get item description
      */
     public String getDesc(){
-        return Messages.getString("Item_File")+" : "+getName();
+        return Messages.getString("Item_File")+" : "+getName(); //$NON-NLS-1$ //$NON-NLS-2$
     }
       
 /* (non-Javadoc)
@@ -299,10 +299,10 @@ public class File extends PropertyAdapter implements Comparable,ITechnicalString
             return getTrack().getName();
         }
         else if (XML_SIZE.equals(sKey)){
-            return (lSize/1048576)+Messages.getString("PhysicalTreeView.54");
+            return (lSize/1048576)+Messages.getString("PhysicalTreeView.54"); //$NON-NLS-1$
         }
         else if (XML_QUALITY.equals(sKey)){
-            return getQuality()+Messages.getString("FIFO.13");
+            return getQuality()+Messages.getString("FIFO.13"); //$NON-NLS-1$
         }
         else if (XML_ALBUM.equals(sKey)){
             return getTrack().getAlbum().getName2();

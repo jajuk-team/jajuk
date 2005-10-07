@@ -128,13 +128,16 @@ public class EntaggedTagImpl implements ITagImpl,ITechnicalStrings {
 	 */
 	public String getComment() throws Exception {
 		List list = tag.getComment();
-		String sOut = "";
+		String sOut = ""; //$NON-NLS-1$
 		if (list != null){
 		    Iterator it = list.iterator();
 		    while (it.hasNext()){
 		        sOut += ' '+it.next().toString();
 		    }
 		}
+        if (sOut.contains("()")){ //$NON-NLS-1$
+            sOut = sOut.substring(9,sOut.length()); //remove [LAN]()
+        }
 		return sOut;
 	}
 
@@ -193,7 +196,7 @@ public class EntaggedTagImpl implements ITagImpl,ITechnicalStrings {
 		try{
 		    audioFile = AudioFileIO.read(fio);
             tag = audioFile.getTag();
-            tag.setEncoding("ISO-8859-1");
+   //         tag.setEncoding("ISO-8859-1");
         }
         catch(Throwable t){ //can throw OutOfMemory errors
             System.gc(); //call garbage collector to avoid than folowing throw make itself an out of memory
@@ -218,7 +221,7 @@ public class EntaggedTagImpl implements ITagImpl,ITechnicalStrings {
      * @see org.jajuk.tag.ITagImpl#commit()
      */
     public void commit() throws Exception{
-        tag.setEncoding("ISO-8859-1");//have to set it here to fix an issue with audio-formats 0.12
+      //  tag.setEncoding("ISO-8859-1");//have to set it here to fix an issue with audio-formats 0.12
         audioFile.commit();
     }
 

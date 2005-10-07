@@ -55,7 +55,6 @@ import org.jdesktop.swingx.JXDatePicker;
  * @created    20 juin 2005
  */
 public class NewPropertyWizard extends CustomPropertyWizard implements KeyListener{ 
-    JLabel jlName;
     JTextField jtfName;
     JLabel jlClass;
     JComboBox jcbClass;
@@ -69,14 +68,13 @@ public class NewPropertyWizard extends CustomPropertyWizard implements KeyListen
      * Constructor
      */
     public NewPropertyWizard() {
-        super(Messages.getString("NewPropertyWizard.0"));
+        super(Messages.getString("NewPropertyWizard.0")); //$NON-NLS-1$
         populate();//create default UI
         //name
-        jlName = new JLabel(Messages.getString("NewPropertyWizard.2"));
         jtfName = new JTextField();
         jtfName.addKeyListener(this);
         //Type, class
-        jlClass= new JLabel(Messages.getString("NewPropertyWizard.3"));
+        jlClass= new JLabel(Messages.getString("NewPropertyWizard.3")); //$NON-NLS-1$
         jcbClass = new JComboBox();
         jcbClass.addItem(Messages.getString(FORMAT_STRING));
         jcbClass.addItem(Messages.getString(FORMAT_NUMBER));
@@ -85,7 +83,7 @@ public class NewPropertyWizard extends CustomPropertyWizard implements KeyListen
         jcbClass.addItem(Messages.getString(FORMAT_DATE));
         jcbClass.addItemListener(this);
         //Format
-        jlFormat = new JLabel(Messages.getString("NewPropertyWizard.4"));
+        jlFormat = new JLabel(Messages.getString("NewPropertyWizard.4")); //$NON-NLS-1$
         jcbFormat = new JComboBox();
         //add supported date formats
         for (String s:PropertyMetaInformation.getSupportedDateFormatsDesc()){
@@ -93,7 +91,7 @@ public class NewPropertyWizard extends CustomPropertyWizard implements KeyListen
         }
         jcbFormat.setEnabled(false);
         //Default
-        jlDefault= new JLabel(Messages.getString("NewPropertyWizard.5"));
+        jlDefault= new JLabel(Messages.getString("NewPropertyWizard.5")); //$NON-NLS-1$
         jtfDefault = new JTextField(40);
         jcbDefault = new JCheckBox();
         jcbDefault.setEnabled(false);
@@ -102,9 +100,9 @@ public class NewPropertyWizard extends CustomPropertyWizard implements KeyListen
         JPanel jpDefault = new JPanel();
         double[][] d = {{TableLayout.PREFERRED,10,TableLayout.PREFERRED,10,TableLayout.PREFERRED},{20}};
         jpDefault.setLayout(new TableLayout(d));
-        jpDefault.add(jtfDefault,"0,0");
-        jpDefault.add(jcbDefault,"2,0");
-        jpDefault.add(jdpDefault,"4,0");
+        jpDefault.add(jtfDefault,"0,0"); //$NON-NLS-1$
+        jpDefault.add(jcbDefault,"2,0"); //$NON-NLS-1$
+        jpDefault.add(jdpDefault,"4,0"); //$NON-NLS-1$
         //main
         int iXSeparator = 10;
         int iYSeparator = 20;
@@ -112,16 +110,16 @@ public class NewPropertyWizard extends CustomPropertyWizard implements KeyListen
                 {iXSeparator,TableLayout.PREFERRED,iXSeparator,TableLayout.PREFERRED,iXSeparator},
                 {iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator} };
         jpMain.setLayout(new TableLayout(dSize));
-        jpMain.add(jlItemChoice,"1,1");
-        jpMain.add(jcbItemChoice,"3,1");
-        jpMain.add(jlName,"1,3");
-        jpMain.add(jtfName,"3,3");
-        jpMain.add(jlClass,"1,5");
-        jpMain.add(jcbClass,"3,5");
-        jpMain.add(jlDefault,"1,7");
-        jpMain.add(jpDefault,"3,7");
-        jpMain.add(jlFormat,"1,9");
-        jpMain.add(jcbFormat,"3,9");
+        jpMain.add(jlItemChoice,"1,1"); //$NON-NLS-1$
+        jpMain.add(jcbItemChoice,"3,1"); //$NON-NLS-1$
+        jpMain.add(jlName,"1,3"); //$NON-NLS-1$
+        jpMain.add(jtfName,"3,3"); //$NON-NLS-1$
+        jpMain.add(jlClass,"1,5"); //$NON-NLS-1$
+        jpMain.add(jcbClass,"3,5"); //$NON-NLS-1$
+        jpMain.add(jlDefault,"1,7"); //$NON-NLS-1$
+        jpMain.add(jpDefault,"3,7"); //$NON-NLS-1$
+        jpMain.add(jlFormat,"1,9"); //$NON-NLS-1$
+        jpMain.add(jcbFormat,"3,9"); //$NON-NLS-1$
         getContentPane().add(jpMain);
         getContentPane().add(okp);
         getContentPane().add(Box.createVerticalStrut(10));
@@ -143,8 +141,8 @@ public class NewPropertyWizard extends CustomPropertyWizard implements KeyListen
                      /*check user can't create a property that is the localized name of an existing standard
                       * attribute. Note that a potential bug can occur if user change language*/
                 if (XML_RESERVED_ATTRIBUTE_NAMES[i].equalsIgnoreCase(jtfName.getText()) 
-                        || jtfName.getText().matches(",")){
-                    Messages.showErrorMessage("110");
+                        || jtfName.getText().matches(",")){ //$NON-NLS-1$
+                    Messages.showErrorMessage("110"); //$NON-NLS-1$
                     return;
                 }
             }
@@ -185,7 +183,7 @@ public class NewPropertyWizard extends CustomPropertyWizard implements KeyListen
                 }
             }
             catch(Exception e){
-               Messages.showErrorMessage("137");
+               Messages.showErrorMessage("137"); //$NON-NLS-1$
                return;     
             }
             //set default
@@ -196,7 +194,7 @@ public class NewPropertyWizard extends CustomPropertyWizard implements KeyListen
                 oDefault = jdpDefault.getDate();
             }
             Format format = null;
-            if (sFormat!= null && !sFormat.trim().equals("")) {
+            if (sFormat!= null && !sFormat.trim().equals("")) { //$NON-NLS-1$
                 format = PropertyMetaInformation.getDateFormat(sFormat);
             }
             PropertyMetaInformation meta = new PropertyMetaInformation(

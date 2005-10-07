@@ -12,7 +12,9 @@
    		<tocitem text="Utiliser les supports" target="devices"/>
 		<tocitem text="Jouer de la musique" target="pm"/>
    		<tocitem text="Utiliser les playlistes" target="up"/>
-   		<tocitem text="Utiliser le tray" target="tray"/>
+  		<tocitem text="Modifier les tags et attributs" target="editing"/>
+		<tocitem text="Utiliser les attributs personnels" target="ucp"/>
+	 	<tocitem text="Utiliser le tray" target="tray"/>
 		</tocitem>
 		<tocitem text="Vues"  expand="true">
 			<tocitem text="Vues statiques"  expand="true">

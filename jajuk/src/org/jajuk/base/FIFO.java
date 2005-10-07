@@ -379,6 +379,7 @@ public class FIFO implements ITechnicalStrings {
             fCurrent.getTrack().incSessionHits();// inc session hits
             fCurrent.getTrack().setRate(fCurrent.getTrack().getRate() + 1); // inc rate by 1 because it is played
             FileManager.getInstance().setRateHasChanged(true);
+            ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH));//refresh to update rates
         } catch (Throwable t) {//catch even Errors (OutOfMemory for exemple)
             Log.error("122", t); //$NON-NLS-1$
         } finally {

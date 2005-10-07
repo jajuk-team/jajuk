@@ -115,7 +115,7 @@ public class Type extends PropertyAdapter{
      * Get item description
      */
     public String getDesc(){
-        return Messages.getString("Type")+" : "+getName();
+        return Messages.getString("Type")+" : "+getName(); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
 

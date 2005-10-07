@@ -29,7 +29,6 @@ import java.util.Properties;
 
 import javax.swing.Box;
 import javax.swing.JComboBox;
-import javax.swing.JLabel;
 
 import org.jajuk.base.Event;
 import org.jajuk.base.ItemManager;
@@ -46,16 +45,14 @@ import org.jajuk.i18n.Messages;
  * @created    20 juin 2005
  */
 class RemovePropertyWizard extends CustomPropertyWizard { 
-    JLabel jlName;
     JComboBox jcbName;
     /**
      * Constructor
      */
     public RemovePropertyWizard() {
-        super(Messages.getString("RemovePropertyWizard.0"));
+        super(Messages.getString("RemovePropertyWizard.0")); //$NON-NLS-1$
         jcbName = new JComboBox();
         populate();//create default UI
-        jlName = new JLabel(Messages.getString("RemovePropertyWizard.2"));
         jcbName.addItemListener(this);
         populateProperties();//fill properties combo with properties for default item
         int iXSeparator = 10;
@@ -64,10 +61,10 @@ class RemovePropertyWizard extends CustomPropertyWizard {
                 {iXSeparator,0.5,iXSeparator,0.5,iXSeparator},
                 {iYSeparator,20,iYSeparator,20,iYSeparator} };
         jpMain.setLayout(new TableLayout(dSize));
-        jpMain.add(jlItemChoice,"1,1");
-        jpMain.add(jcbItemChoice,"3,1");
-        jpMain.add(jlName,"1,3");
-        jpMain.add(jcbName,"3,3");
+        jpMain.add(jlItemChoice,"1,1"); //$NON-NLS-1$
+        jpMain.add(jcbItemChoice,"3,1"); //$NON-NLS-1$
+        jpMain.add(jlName,"1,3"); //$NON-NLS-1$
+        jpMain.add(jcbName,"3,3"); //$NON-NLS-1$
         getContentPane().add(jpMain);
         getContentPane().add(okp);
         getContentPane().add(Box.createVerticalStrut(10));

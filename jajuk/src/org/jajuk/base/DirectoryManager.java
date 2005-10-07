@@ -83,7 +83,7 @@ public class DirectoryManager extends ItemManager implements Observer{
         }
         //try change dir on disk
         try{
-            old.getFio().renameTo(new java.io.File(old.getParentDirectory().getFio().getAbsolutePath()+"/"+sNewName));
+            old.getFio().renameTo(new java.io.File(old.getParentDirectory().getFio().getAbsolutePath()+"/"+sNewName)); //$NON-NLS-1$
         }
         catch(Exception e){
             Log.error(e);

@@ -23,6 +23,10 @@ package org.jajuk.base;
 import java.util.Iterator;
 import java.util.Properties;
 
+import org.jajuk.i18n.Messages;
+import org.jajuk.util.MD5Processor;
+import org.jajuk.util.Util;
+import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
 /**
@@ -102,6 +106,66 @@ public class PlaylistFileManager extends ItemManager implements Observer{
         return XML_PLAYLIST_FILES;
     }
     
+     /**
+     * Change a playlist file name
+     * @param plfOld
+     * @param sNewName
+     * @return new playlist file
+     */
+    public PlaylistFile changePlaylistFileName(PlaylistFile plfOld,String sNewName) throws JajukException{
+        //check given name is different
+        if (plfOld.getName().equals(sNewName)){
+            return plfOld;
+        }
+        //check if this file still exists
+        if (!plfOld.getFio().exists()){
+            Messages.showErrorMessage("135"); //$NON-NLS-1$
+            throw new JajukException("135"); //$NON-NLS-1$
+        }
+        java.io.File ioNew = new java.io.File(plfOld.getFio().getParentFile().getAbsolutePath()
+            +java.io.File.separator+sNewName);
+        //recalculate file ID
+        Directory dir = plfOld.getDirectory(); 
+        String sNewId = MD5Processor.hash(new StringBuffer(dir.getDevice().getName())
+            .append(dir.getDevice().getUrl()).append(dir.getRelativePath())
+            .append(sNewName).toString());
+        //create a new playlist file (with own fio and sAbs)
+        PlaylistFile plfNew = new PlaylistFile(sNewId,sNewName,plfOld.getHashcode(),plfOld.getDirectory());
+        plfNew.setProperties(plfOld.getProperties()); //transfert all properties (inc id and name)
+        plfNew.setId(sNewId); //reset new id and name
+        plfNew.setName(sNewName);
+        //check file name and extension
+        if (plfNew.getName().lastIndexOf((int)'.') != plfNew.getName().indexOf((int)'.')//just one '.'
+                || !(Util.getExtension(ioNew).equals(EXT_PLAYLIST))){ //check extension
+            Messages.showErrorMessage("134"); //$NON-NLS-1$
+            throw new JajukException("134"); //$NON-NLS-1$
+        }
+        //check if futur file exists
+        if (ioNew.exists()){
+            Messages.showErrorMessage("134"); //$NON-NLS-1$
+            throw new JajukException("134"); //$NON-NLS-1$
+        }
+        //try to rename file on disk
+        try{
+            plfOld.getFio().renameTo(ioNew);
+        }
+        catch(Exception e){
+            Messages.showErrorMessage("134"); //$NON-NLS-1$
+            throw new JajukException("134"); //$NON-NLS-1$
+        }
+        //OK, remove old file and register this new file
+        hmItems.remove(plfOld.getId());
+        if ( !hmItems.containsKey(sNewId)){
+            hmItems.put(sNewId,plfNew);
+        }
+        //change directory reference
+        plfNew.getDirectory().changePlaylistFile(plfOld,plfNew);
+        //refresh UI (see later for fine gained event for perfs if needed)
+        ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH));
+        return plfNew;
+    }
+
+    
  /* (non-Javadoc)
      * @see org.jajuk.base.Observer#update(org.jajuk.base.Event)
      */
@@ -122,7 +186,7 @@ public class PlaylistFileManager extends ItemManager implements Observer{
                         }
                     }
                     catch(Exception e){
-                        Log.error("017",e);
+                        Log.error("017",e); //$NON-NLS-1$
                     }
                 }
             }

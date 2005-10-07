@@ -1,0 +1,144 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+  <title>Utiliser les attributs personnels</title>
+
+
+</head>
+
+
+<body>
+
+<h1>Utiliser les attributs personnels</h1>
+
+Jajuk permet d'ajouter des attributs personnels &agrave;
+pratiquement tous les &eacute;l&eacute;ments de l'interface
+(fichiers, playlistes, auteurs, albums...). Imaginez que vous
+n'&ecirc;tes pas satisfaits du syst&egrave;me de notation:
+cr&eacute;&eacute;ez alors votre propre attribut 'mes notes' de
+type entier &agrave; appliquer aux morceaux. Autre cas: vous
+d&eacute;sirez enregister l'endroit ou se trouve vos CDs: creez un
+attribut de type cha&icirc;ne de caract&egrave;re
+appliqu&eacute;s aux supports. Vous d&eacute;sirez stocker la
+date &agrave; laquelle vous avez ecout&eacute; un morceau:
+cr&eacute;&eacute;ez un attribut "madate" de type date aetc...
+<p><span style="text-decoration: underline;">Notes</span>:&nbsp;</p>
+
+<ul>
+
+  <li>Ces informations ne sont stock&eacute;es que dans la
+base de donn&eacute;e interne de Jajuk et NON dans les
+tags&nbsp;(ID3 par exemple) des fichiers musicaux. Par
+cons&eacute;quent, elles ne sont accessibles qu'&agrave; partir
+de Jajuk et non &agrave; partir d'autres lecteurs ou
+jukebox.&nbsp;</li>
+
+  <li>Si vous utilisez intensivement cette
+fonctionnalit&eacute;, pensez &agrave; sauvegarder
+r&eacute;gulierement votre collection (voir <a href="devices.html#backup">Utiliser les supports /
+sauvegardes et restaurations</a>).<br>
+
+  </li>
+
+</ul>
+
+<h2>Comment cr&eacute;er un nouvel attribut ?</h2>
+
+<p>Dans le menu du haut de la fen&ecirc;tre, selectionnez <span style="font-style: italic;">Attributs / Cr&eacute;er un
+attribut</span><span style="font-style: italic;"></span>.
+L'assistant de cr&eacute;ation d'attribut contient:</p>
+
+<ul>
+
+  <li>
+    <p><span style="font-style: italic;">Element</span>:
+choisissez l'element sur lequel sera appliqu&eacute; l'attribut.
+Cel&agrave; peut &ecirc;tre un element
+physique&nbsp;(Support, Repertoire, Fichier, Fichier Playliste) ou
+logique (Style, Autheur, Album,
+Morceau, Playliste).&nbsp;</p>
+
+  </li>
+
+  <li>
+    <p><span style="font-style: italic;">Nom de
+l'attribut</span>: Le nom de l'attribut. Notez que certains noms
+sont reserv&eacute;s comme&nbsp;"name, id...". Vous obtiendrez
+un message d'erreur si vous tentez de les utiliser.</p>
+
+  </li>
+
+  <li>
+    <p><span style="font-style: italic;">Type</span>:
+Type de l'attribut. Jajuk supporte les entiers, les flottants, les
+ch&acirc;ines de caract&egrave;res, les dates et les
+bool&eacute;ens (vrai/faux).</p>
+
+  </li>
+
+  <li>
+    <p><span style="font-style: italic;">Valeur par
+d&eacute;faut</span>
+(optionnel): Une valeur par d&eacute;faut. en fonction du type de
+l'attribut, you pourrez la fixer dans une zone de texte, via un
+calendrier ou via une case &agrave; cocher. Si aucune valeur par
+d&eacute;faut n'est donn&eacute;e, jajuk utilise ces valeurs:
+Entier: 0, Flottants: 0.0, Cha&icirc;nes: "", Dates: &lt;jour
+courrant&gt;,
+Bool&eacute;en: faux.</p>
+
+  </li>
+
+  <li>
+    <p><span style="font-style: italic;">Format </span>(optionnel):
+Seulement pour les dates pour le moment, selectionnez un format de date
+pr&eacute;d&eacute;fini.</p>
+
+  </li>
+
+</ul>
+
+<p>Cliquez sur <span style="font-style: italic;">OK
+</span>pour cr&eacute;er l'attribut.</p>
+
+<h2>Comment supprimer un attribut ?</h2>
+
+<p>Dans le menu du haut de la fen&ecirc;tre, selectionnez <span style="font-style: italic;">Attributs / Supprimer un attribut</span><span style="font-style: italic;"></span>. L'assistant de
+suppression d'attribut contient:</p>
+
+<span style="font-style: italic;"></span>
+<ul>
+
+  <li>
+    <p><span style="font-style: italic;">Element</span>:
+Choisissez l'&eacute;l&eacute;ment duquel vous
+d&eacute;sirez supprimer l'attribut.</p>
+
+  </li>
+
+  <li>
+    <p><span style="font-style: italic;">Nom de
+l'attribut</span>: Le nom de l'attribut &agrave;
+supprimer.&nbsp;</p>
+
+  </li>
+
+</ul>
+
+<p>cliquez alors sur&nbsp;<span style="font-style: italic;">OK
+</span>pour supprimer l'attribut. Notez que toutes les
+donn&eacute;es pour cet attribut seront perdues. En cas de mauvaise
+manipulation, lisez&nbsp;<a href="devices.html#backup">Utiliser
+les supports</a><a href="devices.html#backup"> /
+sauvegardes et restaurations</a>.</p>
+
+<h2>Comment fixer les valeurs ?</h2>
+
+<p>On fixe les valeurs des attributs personnels de la
+m&ecirc;me fa&ccedil;on que pour les attributs standards, voir:
+<a href="editing.html">Modifier les tags et attributs</a>.</p>
+
+</body>
+</html>

@@ -69,24 +69,24 @@ class QualityFeedbackWizard extends JDialog implements KeyListener,ActionListene
      * Constructor
      */
     public QualityFeedbackWizard() {
-        super(Main.getWindow(),Messages.getString("JajukJMenuBar.19"));
+        super(Main.getWindow(),Messages.getString("JajukJMenuBar.19")); //$NON-NLS-1$
         getContentPane().setPreferredSize(new Dimension(600,250));
         //From
-        jlFrom = new JLabel(Messages.getString("QualityFeedbackWizard.1"));
-        jlFrom.setToolTipText(Messages.getString("QualityFeedbackWizard.2"));
+        jlFrom = new JLabel(Messages.getString("QualityFeedbackWizard.1")); //$NON-NLS-1$
+        jlFrom.setToolTipText(Messages.getString("QualityFeedbackWizard.2")); //$NON-NLS-1$
         jtfFrom = new JTextField();
-        jtfFrom.setToolTipText(Messages.getString("QualityFeedbackWizard.2"));
+        jtfFrom.setToolTipText(Messages.getString("QualityFeedbackWizard.2")); //$NON-NLS-1$
        //Description
-        jlDesc = new JLabel(Messages.getString("QualityFeedbackWizard.3"));
-        jlDesc.setToolTipText(Messages.getString("QualityFeedbackWizard.4"));
+        jlDesc = new JLabel(Messages.getString("QualityFeedbackWizard.3")); //$NON-NLS-1$
+        jlDesc.setToolTipText(Messages.getString("QualityFeedbackWizard.4")); //$NON-NLS-1$
         jtfDesc = new JTextField();
-        jtfDesc.setToolTipText(Messages.getString("QualityFeedbackWizard.4"));
+        jtfDesc.setToolTipText(Messages.getString("QualityFeedbackWizard.4")); //$NON-NLS-1$
         jtfDesc.addKeyListener(this);
         //Details
-        jlDetail = new JLabel(Messages.getString("QualityFeedbackWizard.5"));
-        jlDetail.setToolTipText(Messages.getString("QualityFeedbackWizard.6"));
+        jlDetail = new JLabel(Messages.getString("QualityFeedbackWizard.5")); //$NON-NLS-1$
+        jlDetail.setToolTipText(Messages.getString("QualityFeedbackWizard.6")); //$NON-NLS-1$
         jtaDetail = new JTextArea();
-        jtaDetail.setToolTipText(Messages.getString("QualityFeedbackWizard.6"));
+        jtaDetail.setToolTipText(Messages.getString("QualityFeedbackWizard.6")); //$NON-NLS-1$
         okp = new OKCancelPanel(this);
         okp.getOKButton().setEnabled(false);
         jpMain = new JPanel();
@@ -96,13 +96,13 @@ class QualityFeedbackWizard extends JDialog implements KeyListener,ActionListene
                 {iXSeparator,0.3,iXSeparator,0.7,iXSeparator},
                 {iYSeparator,20,iYSeparator,20,iYSeparator,60,3*iYSeparator,20,iYSeparator} };
         jpMain.setLayout(new TableLayout(dSize));
-        jpMain.add(jlFrom,"1,1");
-        jpMain.add(jtfFrom,"3,1");
-        jpMain.add(jlDesc,"1,3");
-        jpMain.add(jtfDesc,"3,3");
-        jpMain.add(jlDetail,"1,5");
-        jpMain.add(jtaDetail,"3,5");
-        jpMain.add(okp,"3,7");
+        jpMain.add(jlFrom,"1,1"); //$NON-NLS-1$
+        jpMain.add(jtfFrom,"3,1"); //$NON-NLS-1$
+        jpMain.add(jlDesc,"1,3"); //$NON-NLS-1$
+        jpMain.add(jtfDesc,"3,3"); //$NON-NLS-1$
+        jpMain.add(jlDetail,"1,5"); //$NON-NLS-1$
+        jpMain.add(jtaDetail,"3,5"); //$NON-NLS-1$
+        jpMain.add(okp,"3,7"); //$NON-NLS-1$
         getContentPane().add(jpMain);
         addWindowListener(new WindowAdapter() {
             public void windowActivated(WindowEvent e) {
@@ -123,11 +123,11 @@ class QualityFeedbackWizard extends JDialog implements KeyListener,ActionListene
                 ArrayList alTo = new ArrayList();
                 alTo.add(FEEDBACK_EMAIL);
                 message.setToAddrs(alTo);
-                String sBody = "";
-                sBody += "From: "+jtfFrom.getText()+'\n';
-                sBody += "Subject: "+jtfDesc.getText()+'\n';
-                sBody += "Details: "+jtaDetail.getText()+'\n';
-                sBody += "Version: "+JAJUK_VERSION+'\n';
+                String sBody = ""; //$NON-NLS-1$
+                sBody += "From: "+jtfFrom.getText()+'\n'; //$NON-NLS-1$
+                sBody += "Subject: "+jtfDesc.getText()+'\n'; //$NON-NLS-1$
+                sBody += "Details: "+jtaDetail.getText()+'\n'; //$NON-NLS-1$
+                sBody += "Version: "+JAJUK_VERSION+'\n'; //$NON-NLS-1$
                 sBody += System.getProperties().toString()+'\n';
                 sBody += ConfigurationManager.getProperties().toString()+'\n';
                 Iterator it = Log.getSpool();
@@ -136,9 +136,10 @@ class QualityFeedbackWizard extends JDialog implements KeyListener,ActionListene
                 }
                 message.setBody(sBody);
                 Desktop.mail(message);
+                dispose();
             }
             catch(Exception e){
-                Messages.showErrorMessage("136");
+                Messages.showErrorMessage("136"); //$NON-NLS-1$
                 Log.error(e);
             }
         }
@@ -169,7 +170,7 @@ class QualityFeedbackWizard extends JDialog implements KeyListener,ActionListene
      * @see java.awt.event.KeyListener#keyReleased(java.awt.event.KeyEvent)
      */
     public void keyReleased(KeyEvent e) {
-           if (!jtfDesc.getText().trim().equals("")){
+           if (!jtfDesc.getText().trim().equals("")){ //$NON-NLS-1$
             okp.getOKButton().setEnabled(true);
         }
         else{

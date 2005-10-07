@@ -12,6 +12,8 @@
 			<tocitem text="Using devices" target="devices"/>
 			<tocitem text="Playing music" target="pm"/>
 			<tocitem text="Using playlists" target="up"/>
+			<tocitem text="Editing tags and properties" target="editing"/>
+			<tocitem text="Using custom properties" target="ucp"/>
 			<tocitem text="Using the tray" target="tray"/>
 		</tocitem>
 		<tocitem text="Views"  expand="true">

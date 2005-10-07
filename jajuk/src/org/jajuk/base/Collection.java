@@ -79,7 +79,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
         String sCharset = ConfigurationManager.getProperty(CONF_COLLECTION_CHARSET);
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(sFileName), sCharset)); //$NON-NLS-1$
 		bw.write("<?xml version='1.0' encoding='"+sCharset+"'?>\n"); //$NON-NLS-1$ //$NON-NLS-2$
-	    bw.write("<"+XML_COLLECTION+" "+XML_VERSION+"='"+JAJUK_VERSION+"'>\n"); //$NON-NLS-1$ //$NON-NLS-2$
+	    bw.write("<"+XML_COLLECTION+" "+XML_VERSION+"='"+JAJUK_VERSION+"'>\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
         //types
         bw.write(TypeManager.getInstance().toXML()); //$NON-NLS-1$
         Iterator it = TypeManager.getInstance().getItems().iterator();
@@ -87,7 +87,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 			Type type = (Type) it.next();
 			bw.write(type.toXml());
 		}
-		bw.write("\t</"+TypeManager.getInstance().getIdentifier()+">\n"); //$NON-NLS-1$
+		bw.write("\t</"+TypeManager.getInstance().getIdentifier()+">\n"); //$NON-NLS-1$ //$NON-NLS-2$
         //devices
         bw.write(DeviceManager.getInstance().toXML()); //$NON-NLS-1$
        it = DeviceManager.getInstance().getItems().iterator();
@@ -95,7 +95,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 			Device device = (Device) it.next();
 			bw.write(device.toXml());
 		}
-		bw.write("\t</"+DeviceManager.getInstance().getIdentifier()+">\n"); //$NON-NLS-1$
+		bw.write("\t</"+DeviceManager.getInstance().getIdentifier()+">\n"); //$NON-NLS-1$ //$NON-NLS-2$
 		//styles
         bw.write(StyleManager.getInstance().toXML()); //$NON-NLS-1$
 		it = StyleManager.getInstance().getItems().iterator();
@@ -103,7 +103,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 			Style style = (Style) it.next();
 			bw.write(style.toXml());
 		}
-		bw.write("\t</"+StyleManager.getInstance().getIdentifier()+">\n"); //$NON-NLS-1$
+		bw.write("\t</"+StyleManager.getInstance().getIdentifier()+">\n"); //$NON-NLS-1$ //$NON-NLS-2$
 		//authors
         bw.write(AuthorManager.getInstance().toXML()); //$NON-NLS-1$
 		it = AuthorManager.getInstance().getItems().iterator();
@@ -111,7 +111,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 			Author author = (Author) it.next();
 			bw.write(author.toXml());
 		}
-		bw.write("\t</"+AuthorManager.getInstance().getIdentifier()+">\n"); //$NON-NLS-1$
+		bw.write("\t</"+AuthorManager.getInstance().getIdentifier()+">\n"); //$NON-NLS-1$ //$NON-NLS-2$
 		//albums
 		bw.write(AlbumManager.getInstance().toXML()); //$NON-NLS-1$
 		it = AlbumManager.getInstance().getItems().iterator();
@@ -119,7 +119,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 			Album album = (Album) it.next();
 			bw.write(album.toXml());
 		}
-		bw.write("\t</"+AlbumManager.getInstance().getIdentifier()+">\n"); //$NON-NLS-1$
+		bw.write("\t</"+AlbumManager.getInstance().getIdentifier()+">\n"); //$NON-NLS-1$ //$NON-NLS-2$
 		//tracks
         bw.write(TrackManager.getInstance().toXML()); //$NON-NLS-1$
 		it = TrackManager.getInstance().getItems().iterator();
@@ -129,7 +129,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 			   bw.write(track.toXml());
             }
 		}
-		bw.write("\t</"+TrackManager.getInstance().getIdentifier()+">\n"); //$NON-NLS-1$
+		bw.write("\t</"+TrackManager.getInstance().getIdentifier()+">\n"); //$NON-NLS-1$ //$NON-NLS-2$
 		//directories
         bw.write(DirectoryManager.getInstance().toXML()); //$NON-NLS-1$
 		it = DirectoryManager.getInstance().getItems().iterator();
@@ -137,7 +137,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 			Directory directory = (Directory) it.next();
 			bw.write(directory.toXml());
 		}
-		bw.write("\t</"+DirectoryManager.getInstance().getIdentifier()+">\n"); //$NON-NLS-1$
+		bw.write("\t</"+DirectoryManager.getInstance().getIdentifier()+">\n"); //$NON-NLS-1$ //$NON-NLS-2$
 		//files
         bw.write(FileManager.getInstance().toXML()); //$NON-NLS-1$
 		it = FileManager.getInstance().getItems().iterator();
@@ -145,7 +145,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 			org.jajuk.base.File file = (org.jajuk.base.File) it.next();
 			bw.write(file.toXml());
 		}
-		bw.write("\t</"+FileManager.getInstance().getIdentifier()+">\n"); //$NON-NLS-1$
+		bw.write("\t</"+FileManager.getInstance().getIdentifier()+">\n"); //$NON-NLS-1$ //$NON-NLS-2$
 		//playlist files
         bw.write(PlaylistFileManager.getInstance().toXML()); //$NON-NLS-1$
 		it = PlaylistFileManager.getInstance().getItems().iterator();
@@ -153,7 +153,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 			PlaylistFile playlistFile = (PlaylistFile) it.next();
 			bw.write(playlistFile.toXml());
 		}
-		bw.write("\t</"+PlaylistFileManager.getInstance().getIdentifier()+">\n"); //$NON-NLS-1$
+		bw.write("\t</"+PlaylistFileManager.getInstance().getIdentifier()+">\n"); //$NON-NLS-1$ //$NON-NLS-2$
 		//playlist
         bw.write(PlaylistManager.getInstance().toXML()); //$NON-NLS-1$
 		it = PlaylistManager.getInstance().getItems().iterator();
@@ -163,8 +163,8 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 				bw.write(playlist.toXml());
 			}
 		}
-		bw.write("\t</"+PlaylistManager.getInstance().getIdentifier()+">\n"); //$NON-NLS-1$
-		bw.write("</"+XML_COLLECTION+">\n"); //$NON-NLS-1$
+		bw.write("\t</"+PlaylistManager.getInstance().getIdentifier()+">\n"); //$NON-NLS-1$ //$NON-NLS-2$
+		bw.write("</"+XML_COLLECTION+">\n"); //$NON-NLS-1$ //$NON-NLS-2$
 		bw.flush();
 		bw.close();
         Log.debug("Collection commited in "+(System.currentTimeMillis()-lTime)+" ms");//$NON-NLS-1$ //$NON-NLS-2$
@@ -301,12 +301,12 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
                 Class cType = Class.forName(attributes.getValue(attributes.getIndex(XML_TYPE)));
                 String sFormat = attributes.getValue(attributes.getIndex(XML_FORMAT));
                 Format format = null;
-                if (sFormat != null && !sFormat.trim().equals("")){
+                if (sFormat != null && !sFormat.trim().equals("")){ //$NON-NLS-1$
                     format = PropertyMetaInformation.getDateFormat(sFormat);
                 }
                 String sDefaultValue = attributes.getValue(attributes.getIndex(XML_DEFAULT_VALUE));
                 Object oDefaultValue = null;
-                if (sDefaultValue != null && !sDefaultValue.trim().equals("")){
+                if (sDefaultValue != null && !sDefaultValue.trim().equals("")){ //$NON-NLS-1$
                     oDefaultValue = Util.parse(sDefaultValue,cType,format);
                 }
                 PropertyMetaInformation meta = new PropertyMetaInformation(
@@ -370,7 +370,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
                 }
                  catch(Exception e){
                      if (Log.isDebugEnabled()){
-                         Log.debug(Messages.getString("Error.137")+ ":" +sTrackName); //wrong format
+                         Log.debug(Messages.getString("Error.137")+ ":" +sTrackName); //wrong format //$NON-NLS-1$ //$NON-NLS-2$
                      }
                  }
                  //Idem for order
@@ -381,7 +381,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
                 }
                 catch(Exception e){
                     if (Log.isDebugEnabled()){
-                        Log.debug(Messages.getString("Error.137")+ ":" +sTrackName); //wrong format
+                        Log.debug(Messages.getString("Error.137")+ ":" +sTrackName); //wrong format //$NON-NLS-1$ //$NON-NLS-2$
                     }
                 }
                 //Date format should be OK
@@ -428,7 +428,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
                 }
                 catch(Exception e){
                     if (Log.isDebugEnabled()){
-                        Log.debug(Messages.getString("Error.137")+ ":" +sItemName); //wrong format
+                        Log.debug(Messages.getString("Error.137")+ ":" +sItemName); //wrong format //$NON-NLS-1$ //$NON-NLS-2$
                     }
                 }
                 String sID = attributes.getValue(attributes.getIndex(XML_ID)); 
@@ -481,7 +481,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
                     String sExtension = attributes.getValue(attributes.getIndex(XML_TYPE_EXTENSION));
                     Class cPlayer = null;
                     String sPlayer = attributes.getValue(attributes.getIndex(XML_TYPE_PLAYER_IMPL));
-                    if (sPlayer ==null || sPlayer.trim().equals("")){
+                    if (sPlayer ==null || sPlayer.trim().equals("")){ //$NON-NLS-1$
                         cPlayer = null;
                     }
                     else{
@@ -489,7 +489,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
                     }
                     Class cTag = null;
                     String sTag = attributes.getValue(attributes.getIndex(XML_TYPE_TAG_IMPL));
-                    if (sTag == null || sTag.trim().equals("")){
+                    if (sTag == null || sTag.trim().equals("")){ //$NON-NLS-1$
                         cTag = null;
                     }
                     else{

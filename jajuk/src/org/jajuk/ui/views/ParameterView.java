@@ -834,7 +834,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
                         ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH));
                     }
                     else{
-                        Messages.showErrorMessage("120");
+                        Messages.showErrorMessage("120"); //$NON-NLS-1$
                     }
                 }
                 else if (e.getSource() == jcbShuffleCover){

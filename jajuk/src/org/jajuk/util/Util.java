@@ -394,7 +394,8 @@ public class Util implements ITechnicalStrings {
 		}
 	};
 	
-	
+    
+    
 	/**
 	 * Set current cursor as waiting cursor
 	 */
@@ -950,9 +951,9 @@ public class Util implements ITechnicalStrings {
      * @return
      */
     public static String formatPropertyDesc(String sDesc){
-        return "<HTML><center><b><font size=+0 color=#000000>"+
+        return "<HTML><center><b><font size=+0 color=#000000>"+ //$NON-NLS-1$
         sDesc +
-        "</font></b><HTML>";
+        "</font></b><HTML>"; //$NON-NLS-1$
     }
  
     /**
@@ -1029,10 +1030,10 @@ public class Util implements ITechnicalStrings {
     public static Object parse(String sValue,Class cType,Format format) throws Exception{
         Object oDefaultValue = sValue; //String by default
         if (cType.equals(Boolean.class)){
-            if (sValue.equals("y")){ //"y" and "n" is an old boolean attribute notation prior to 1.0
+            if (sValue.equals("y")){ //"y" and "n" is an old boolean attribute notation prior to 1.0 //$NON-NLS-1$
                oDefaultValue = true;   
             }
-            else if (sValue.equals("n")){ //"y" and "n" is an old boolean attribute notation prior to 1.0
+            else if (sValue.equals("n")){ //"y" and "n" is an old boolean attribute notation prior to 1.0 //$NON-NLS-1$
                oDefaultValue = false;   
             }
             else{

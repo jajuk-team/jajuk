@@ -30,6 +30,7 @@ import java.util.Properties;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.error.JajukException;
+import org.jajuk.util.error.NoneAccessibleFileException;
 
 /**
  * Convenient class to manage Tracks
@@ -39,6 +40,9 @@ import org.jajuk.util.error.JajukException;
 public class TrackManager extends ItemManager implements Observer{
     /**Self instance*/
     private static TrackManager singleton;
+    
+     /**Unmounted tracks flag*/
+    boolean bChangePbm = false;
     
     /**
      * No constructor available, only static access
@@ -94,7 +98,8 @@ public class TrackManager extends ItemManager implements Observer{
      * @param sName
      */
     public synchronized Track registerTrack(String sName, Album album, Style style, Author author, long length, long lYear, Type type) {
-        String sId = MD5Processor.hash(style.getName() + author.getName() +album.getName() + lYear + length + type.getName() + sName);
+        String sId = MD5Processor.hash(style.getName() + author.getName() 
+                +album.getName() + lYear + length + type.getName() + sName);
         return registerTrack(sId, sName, album, style, author, length, lYear, type);
     }
     
@@ -105,9 +110,7 @@ public class TrackManager extends ItemManager implements Observer{
      */
     public synchronized Track registerTrack(String sId, String sName, Album album, Style style, Author author, long length, long lYear, Type type) {
         if (!hmItems.containsKey(sId)) {
-            Date dAdditionDate = new Date();
             Track track = new Track(sId, sName, album, style, author, length, lYear, type);
-            track.setAdditionDate(dAdditionDate);
             hmItems.put(sId, track);
             return track;
         }
@@ -124,10 +127,13 @@ public class TrackManager extends ItemManager implements Observer{
      *
      */
     public synchronized Track changeTrackAlbum(Track track,String sNewAlbum)  throws JajukException{
+        //check if files are accessible
+        ArrayList<File> alReady = track.getReadyFiles(); 
+        if (alReady.size() == 0){
+            throw new NoneAccessibleFileException("010"); //$NON-NLS-1$
+        }
         //change tag in files
-        Iterator it = track.getFiles().iterator();
-        while (it.hasNext()){
-            File file = (File)it.next();
+        for (File file:alReady){
             Tag tag = new Tag(file.getIO());
             tag.setAlbumName(sNewAlbum);
             tag.commit();
@@ -138,14 +144,7 @@ public class TrackManager extends ItemManager implements Observer{
         newAlbum.cloneProperties(track.getAlbum());
         Track newTrack = registerTrack(track.getName(),newAlbum,track.getStyle(),track.getAuthor(),track.getLength(),
             track.getYear(),track.getType());
-        //re apply old properties from old item
-        newTrack.cloneProperties(track);
-        //Reset files property before adding new files
-        newTrack.removeProperty(XML_FILES);
-        //update files references
-        updateFilesReferences(track,newTrack);
-        TrackManager.getInstance().restorePropertiesAfterRefresh(newTrack);
-        remove(track.getId());//remove old reference
+        postChange(track,newTrack);
         AlbumManager.getInstance().cleanup(track.getAlbum()); //remove this album if no more references
         return newTrack;
     }
@@ -157,10 +156,13 @@ public class TrackManager extends ItemManager implements Observer{
      * @return new track
      */
     public synchronized Track changeTrackAuthor(Track track,String sNewAuthor)  throws JajukException{
+        //check if files are accessible
+        ArrayList<File> alReady = track.getReadyFiles(); 
+        if (alReady.size() == 0){
+            throw new NoneAccessibleFileException("010"); //$NON-NLS-1$
+        }
         //change tag in files
-        Iterator it = track.getFiles().iterator();
-        while (it.hasNext()){
-            File file = (File)it.next();
+        for (File file:alReady){
             Tag tag = new Tag(file.getIO());
             tag.setAuthorName(sNewAuthor);
             tag.commit();
@@ -171,14 +173,7 @@ public class TrackManager extends ItemManager implements Observer{
         newAuthor.cloneProperties(track.getAuthor());
         Track newTrack = registerTrack(track.getName(),track.getAlbum(),track.getStyle(),
             newAuthor,track.getLength(),track.getYear(),track.getType());
-        //re apply old properties from old item
-        newTrack.cloneProperties(track);
-        //Reset files property before adding new files
-        newTrack.removeProperty(XML_FILES);
-        //update files references
-        updateFilesReferences(track,newTrack);
-        TrackManager.getInstance().restorePropertiesAfterRefresh(newTrack);
-        remove(track.getId());//remove old reference
+        postChange(track,newTrack);
         AuthorManager.getInstance().cleanup(track.getAuthor()); //remove this item if no more references
         return newTrack;
     }
@@ -190,10 +185,13 @@ public class TrackManager extends ItemManager implements Observer{
      * @return new track
      */
     public synchronized Track changeTrackStyle(Track track,String sNewStyle) throws JajukException{
+        //check if files are accessible
+        ArrayList<File> alReady = track.getReadyFiles(); 
+        if (alReady.size() == 0){
+            throw new NoneAccessibleFileException("010"); //$NON-NLS-1$
+        }
         //change tag in files
-        Iterator it = track.getFiles().iterator();
-        while (it.hasNext()){
-            File file = (File)it.next();
+        for (File file:alReady){
             Tag tag = new Tag(file.getIO());
             tag.setStyleName(sNewStyle);
             tag.commit();
@@ -204,14 +202,7 @@ public class TrackManager extends ItemManager implements Observer{
         newStyle.cloneProperties(track.getAuthor());
         Track newTrack = registerTrack(track.getName(),track.getAlbum(),newStyle,
             track.getAuthor(),track.getLength(),track.getYear(),track.getType());
-        //re apply old properties from old item
-        newTrack.cloneProperties(track);
-        //Reset files property before adding new files
-        newTrack.removeProperty(XML_FILES);
-        //update files references
-        updateFilesReferences(track,newTrack);
-        TrackManager.getInstance().restorePropertiesAfterRefresh(newTrack);
-        remove(track.getId());//remove old reference
+        postChange(track,newTrack);
         StyleManager.getInstance().cleanup(track.getStyle()); //remove this item if no more references
         return newTrack;
     }
@@ -224,35 +215,24 @@ public class TrackManager extends ItemManager implements Observer{
      */
     public synchronized Track changeTrackYear(Track track,long lNewItem)  throws JajukException{
         if (lNewItem <0 || lNewItem > 10000){ //jajuk supports years till year 10000 !
-            Messages.showErrorMessage("137");
-            throw new JajukException("137");
+            Messages.showErrorMessage("137"); //$NON-NLS-1$
+            throw new JajukException("137"); //$NON-NLS-1$
+        }
+        //check if files are accessible
+        ArrayList<File> alReady = track.getReadyFiles(); 
+        if (alReady.size() == 0){
+            throw new NoneAccessibleFileException("010"); //$NON-NLS-1$
         }
         //change tag in files
-        Iterator it = track.getFiles().iterator();
-        while (it.hasNext()){
-            File file = (File)it.next();
+        for (File file:alReady){
             Tag tag = new Tag(file.getIO());
             tag.setYear(lNewItem);
             tag.commit();
         }
         Track newTrack = registerTrack(track.getName(),track.getAlbum(),track.getStyle(),
-            track.getAuthor(),track.getLength(),lNewItem,track.getType());
-        //re apply old properties from old item
-        newTrack.cloneProperties(track);
-        //Reset files property before adding new files
-        newTrack.removeProperty(XML_FILES);
-        //update files references
-        updateFilesReferences(track,newTrack);
-        TrackManager.getInstance().restorePropertiesAfterRefresh(newTrack);
-        remove(track.getId());//remove old reference
+                track.getAuthor(),track.getLength(),lNewItem,track.getType());
+        postChange(track,newTrack);
         return newTrack;
-    }
-    
-    private void updateFilesReferences(Track oldTrack,Track newTrack){
-        for (File file:oldTrack.getFiles()){
-            file.setTrack(newTrack);
-            newTrack.addFile(file);
-        }
     }
     
     /**
@@ -262,10 +242,13 @@ public class TrackManager extends ItemManager implements Observer{
      * @return new track or null if wronf format
      */
     public synchronized Track changeTrackComment(Track track,String sNewItem)  throws JajukException{
+        //check if files are accessible
+        ArrayList<File> alReady = track.getReadyFiles(); 
+        if (alReady.size() == 0){
+            throw new NoneAccessibleFileException("010"); //$NON-NLS-1$
+        }
         //change tag in files
-        Iterator it = track.getFiles().iterator();
-        while (it.hasNext()){
-            File file = (File)it.next();
+        for (File file:alReady){
             Tag tag = new Tag(file.getIO());
             tag.setComment(sNewItem);
             tag.commit();
@@ -284,8 +267,8 @@ public class TrackManager extends ItemManager implements Observer{
     public synchronized Track changeTrackRate(Track track,long lNew)  throws JajukException{
         //check format
         if (lNew <0 ){
-            Messages.showErrorMessage("137");
-            throw new JajukException("137");
+            Messages.showErrorMessage("137"); //$NON-NLS-1$
+            throw new JajukException("137"); //$NON-NLS-1$
         }
         track.setRate(lNew);
         return track;
@@ -300,13 +283,16 @@ public class TrackManager extends ItemManager implements Observer{
     public synchronized Track changeTrackOrder(Track track,long lNewOrder) throws JajukException{
         //check format
         if (lNewOrder <0){
-            Messages.showErrorMessage("137");
+            Messages.showErrorMessage("137"); //$NON-NLS-1$
             return null;
         }
+        //check if files are accessible
+        ArrayList<File> alReady = track.getReadyFiles(); 
+        if (alReady.size() == 0){
+            throw new NoneAccessibleFileException("010"); //$NON-NLS-1$
+        }
         //change tag in files
-        Iterator it = track.getFiles().iterator();
-        while (it.hasNext()){
-            File file = (File)it.next();
+        for (File file:alReady){
             Tag tag = new Tag(file.getIO());
             tag.setOrder(lNewOrder);
             tag.commit();
@@ -322,24 +308,50 @@ public class TrackManager extends ItemManager implements Observer{
      * @return new track
      */
     public synchronized Track changeTrackName(Track track,String sNewItem) throws JajukException{
+        //check if files are accessible
+        ArrayList<File> alReady = track.getReadyFiles(); 
+        if (alReady.size() == 0){
+            throw new NoneAccessibleFileException("010"); //$NON-NLS-1$
+        }
         //change tag in files
-        Iterator it = track.getFiles().iterator();
-        while (it.hasNext()){
-            File file = (File)it.next();
+        for (File file:alReady){
             Tag tag = new Tag(file.getIO());
             tag.setTrackName(sNewItem);
             tag.commit();
         }
         Track newTrack = registerTrack(sNewItem,track.getAlbum(),track.getStyle(),
-            track.getAuthor(),track.getLength(),track.getYear(),track.getType());
+                track.getAuthor(),track.getLength(),track.getYear(),track.getType());
+        postChange(track,newTrack);
+        return newTrack;
+    }
+
+    
+    private void updateFilesReferences(Track oldTrack,Track newTrack){
+        for (File file:oldTrack.getReadyFiles()){
+            file.setTrack(newTrack);//set new track for the chnaged file
+            newTrack.addFile(file); //add changed file
+            oldTrack.removeFile(file); //remove fiel from old track
+        }
+    }
+    
+    
+    private void postChange(Track track,Track newTrack){
         //re apply old properties from old item
         newTrack.cloneProperties(track);
+        //Reset files property before adding new files
+        newTrack.removeProperty(XML_FILES);
         //update files references
         updateFilesReferences(track,newTrack);
         TrackManager.getInstance().restorePropertiesAfterRefresh(newTrack);
-        remove(track.getId());//remove old reference
-        return newTrack;
-    }
+        if (track.getFiles().size() == 0){ //normal case: old track has no more associated tracks, remove it
+            remove(track.getId());//remove old track
+            bChangePbm = false;
+        }
+        else{ // some files have not been changed because located on unmounted devices
+            bChangePbm = true;
+        }
+    }   
+     
     
     /**
      * Perform a track cleanup : delete useless items
@@ -440,6 +452,10 @@ public class TrackManager extends ItemManager implements Observer{
             }
         }
         return alOut;
+    }
+
+    public boolean isChangePbm() {
+        return bChangePbm;
     }
     
 }

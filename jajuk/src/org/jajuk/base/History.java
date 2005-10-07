@@ -84,12 +84,12 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
      * 
      * @return the history
      */
-    public Vector getHistory(){
+    public synchronized Vector getHistory(){
         return vHistory;
     }
     
     /** Add an history item */
-    public  void addItem(String sFileId,long lDate){
+    public synchronized  void addItem(String sFileId,long lDate){
         if ( ConfigurationManager.getProperty(CONF_HISTORY).equals("0")){  //no history //$NON-NLS-1$
             return ;
         }
@@ -113,7 +113,7 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
     }
     
     /** Clear history */
-    public  void clear(){
+    public synchronized  void clear(){
         vHistory.clear();
     }
     
@@ -121,7 +121,7 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
      * Cleanup history of dead items (removed files after a refresh)
      *
      */
-    public  void cleanup(){
+    public synchronized void cleanup(){
         Iterator it = vHistory.iterator();
         while (it.hasNext()){
             HistoryItem hi = (HistoryItem)it.next();
@@ -136,7 +136,7 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
      * @param sIDOld
      * @param sIDNew
      */
-    public void changeID(String sIDOld,String sIDNew){
+    public synchronized void changeID(String sIDOld,String sIDNew){
         for (int i=0; i<vHistory.size();i++){
             HistoryItem hi = (HistoryItem)vHistory.get(i);
             if (hi.getFileId().equals(sIDOld)){
@@ -147,7 +147,7 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
     }
     
     /** Clear history for all history items before iDays days*/
-    public  void clear(int iDays){
+    public synchronized  void clear(int iDays){
         //Begins by clearing deleted files
         Iterator it = vHistory.iterator();
         while (it.hasNext()){
@@ -219,7 +219,7 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
      * 
      * @return id of last played registered track or null if history is empty
      */
-    public  String getLastFile(){
+    public synchronized  String getLastFile(){
         HistoryItem hiLast = null;
         if (vHistory.size() == 0){
             return null;
@@ -236,7 +236,7 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
      * @param index
      * @return
      */
-    public  HistoryItem getHistoryItem(int index){
+    public synchronized  HistoryItem getHistoryItem(int index){
         return (index>= 0? (HistoryItem)vHistory.get(index):null);
     }
     

@@ -49,7 +49,7 @@ abstract public class PropertyAdapter implements IPropertyable, Serializable,ITe
     /** Name */
     protected String sName;
     /** "Any" value : concatenation of all properties*/
-    protected String sAny ="";
+    protected String sAny =""; //$NON-NLS-1$
     /** Flag for need to refresh any criteria */
     protected boolean bNeedRefresh = true;
        
@@ -235,7 +235,7 @@ abstract public class PropertyAdapter implements IPropertyable, Serializable,ITe
         }
         catch(Exception e){ //catch any error here bcause it can prevent collection to commit
             Log.error(e);
-            return "";
+            return ""; //$NON-NLS-1$
         }
     }
     
@@ -281,7 +281,7 @@ abstract public class PropertyAdapter implements IPropertyable, Serializable,ITe
                 try {
                     setProperty(sProperty, Util.parse(sValue,meta.getType(),meta.getFormat()));
                 } catch (Exception e) {
-                    Log.error("137",sProperty,e);
+                    Log.error("137",sProperty,e); //$NON-NLS-1$
                 }    
             }
         }
@@ -336,7 +336,7 @@ abstract public class PropertyAdapter implements IPropertyable, Serializable,ITe
         }
         catch(Exception e){
             Log.error(e);
-            return "";
+            return ""; //$NON-NLS-1$
         }
     }
     
@@ -357,7 +357,7 @@ abstract public class PropertyAdapter implements IPropertyable, Serializable,ITe
                     sOut = meta.getFormat().format((Date)o);
                 }
                 catch(Exception e){ //parsing error
-                    Log.error("137",e);
+                    Log.error("137",e); //$NON-NLS-1$
                 }
             }
         }

@@ -66,14 +66,14 @@ public class PropertyMetaInformation implements ITechnicalStrings{
     private static ArrayList<Format> alDateFormats = new ArrayList(10);
     //Add supported date formats
     static{
-        alDateFormatsDesc.add("Date_Default");
+        alDateFormatsDesc.add(DATE_FORMAT_DEFAULT);
         alDateFormats.add(DateFormat.getDateInstance(DateFormat.DEFAULT,Locale.getDefault()));
-        alDateFormatsDesc.add("dd/MM/yyyy");
-        alDateFormats.add(new SimpleDateFormat("dd/MM/yyyy"));
-        alDateFormatsDesc.add("yyyy/MM/dd");
-        alDateFormats.add(new SimpleDateFormat("yyyy/MM/dd"));
-        alDateFormatsDesc.add("yyyyMMdd");
-        alDateFormats.add(new SimpleDateFormat("yyyyMMdd"));
+        alDateFormatsDesc.add(DATE_FORMAT_1);
+        alDateFormats.add(new SimpleDateFormat(DATE_FORMAT_1));
+        alDateFormatsDesc.add(DATE_FORMAT_2);
+        alDateFormats.add(new SimpleDateFormat(DATE_FORMAT_2));
+        alDateFormatsDesc.add(DATE_FORMAT_3);
+        alDateFormats.add(new SimpleDateFormat(DATE_FORMAT_3));
     };
     /**
      * constructor
@@ -103,25 +103,25 @@ public class PropertyMetaInformation implements ITechnicalStrings{
             if (oDefaultValue == null){
                 this.oDefaultValue = Boolean.FALSE; //if no default is given, false for booleans
             }
-            this.sHumanType = Messages.getString("Property_Format_Boolean");
+            this.sHumanType = Messages.getString("Property_Format_Boolean"); //$NON-NLS-1$
         }
         else if (cType.equals(String.class)){
             if (oDefaultValue == null){
-                this.oDefaultValue = ""; //if no default is given, ""
+                this.oDefaultValue = ""; //if no default is given, "" //$NON-NLS-1$
             }
-            this.sHumanType = Messages.getString("Property_Format_String");
+            this.sHumanType = Messages.getString("Property_Format_String"); //$NON-NLS-1$
         }
         else if (cType.equals(Long.class)){
             if (oDefaultValue == null){
                 this.oDefaultValue = 0l; //if no default is given, 0
             }
-            this.sHumanType = Messages.getString("Property_Format_Number");
+            this.sHumanType = Messages.getString("Property_Format_Number"); //$NON-NLS-1$
         }
         else if (cType.equals(Double.class)){
             if (oDefaultValue == null){
                 this.oDefaultValue = 0.0d;  //if no default is given, 0.0
             }
-            this.sHumanType = Messages.getString("Property_Format_Float");
+            this.sHumanType = Messages.getString("Property_Format_Float"); //$NON-NLS-1$
         }
         else if (cType.equals(Date.class) ){
             //date default
@@ -131,13 +131,13 @@ public class PropertyMetaInformation implements ITechnicalStrings{
             else{
                this.oDefaultValue = oDefaultValue;
             }
-            this.sHumanType = Messages.getString("Property_Format_Date");
+            this.sHumanType = Messages.getString("Property_Format_Date"); //$NON-NLS-1$
         }
         else if (cType.equals(Class.class) ){
             this.oDefaultValue = Object.class;
         }
         else{ //class not supported
-            Log.debug("Class not supported !!!");
+            Log.debug("Class not supported !!!"); //$NON-NLS-1$
         }
     }
         
@@ -188,7 +188,7 @@ public class PropertyMetaInformation implements ITechnicalStrings{
      * @return property meta information XML description
      */
     public String toXML(){
-        String sDefault = "";
+        String sDefault = ""; //$NON-NLS-1$
         try {
             if (oDefaultValue != null && format != null){
                 sDefault = Util.format(oDefaultValue,this);
@@ -196,15 +196,15 @@ public class PropertyMetaInformation implements ITechnicalStrings{
         } catch (Exception e) { //should to occur at this point
             Log.error(e);
         }
-        return "\t\t<"+XML_PROPERTY+" "+XML_NAME+"='"+sName+"' "+
-            XML_CUSTOM+"='"+ bCustom+"' "+
-            XML_CONSTRUCTOR+"='"+bConstructor+"' "+
-            XML_VISIBLE+"='"+bShouldBeDisplayed+"' "+
-            XML_EDITABLE+"='"+bEditable+"' "+
-            XML_UNIQUE+"='"+bMergeable+"' "+
-            XML_TYPE+"='"+cType.getName()+"' "+
-            XML_FORMAT+"='"+ (format==null ? "":getFormatDesc(format))+"' "+
-            XML_DEFAULT_VALUE+"='"+sDefault+"'/>";
+        return "\t\t<"+XML_PROPERTY+" "+XML_NAME+"='"+sName+"' "+ //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+            XML_CUSTOM+"='"+ bCustom+"' "+ //$NON-NLS-1$ //$NON-NLS-2$
+            XML_CONSTRUCTOR+"='"+bConstructor+"' "+ //$NON-NLS-1$ //$NON-NLS-2$
+            XML_VISIBLE+"='"+bShouldBeDisplayed+"' "+ //$NON-NLS-1$ //$NON-NLS-2$
+            XML_EDITABLE+"='"+bEditable+"' "+ //$NON-NLS-1$ //$NON-NLS-2$
+            XML_UNIQUE+"='"+bMergeable+"' "+ //$NON-NLS-1$ //$NON-NLS-2$
+            XML_TYPE+"='"+cType.getName()+"' "+ //$NON-NLS-1$ //$NON-NLS-2$
+            XML_FORMAT+"='"+ (format==null ? "":getFormatDesc(format))+"' "+ //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            XML_DEFAULT_VALUE+"='"+sDefault+"'/>"; //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     public Object getDefaultValue() {
@@ -216,10 +216,10 @@ public class PropertyMetaInformation implements ITechnicalStrings{
     }*/
     
     public String toString(){
-        return "Name="+sName+" Custom="+bCustom+" Constructor="+bConstructor
-        +" Type="+cType+" Default="+oDefaultValue+" Format="
-        + format+" Editable="+isEditable()+" Visible="+isVisible() 
-        +" Mergeable="+isMergeable();
+        return "Name="+sName+" Custom="+bCustom+" Constructor="+bConstructor //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        +" Type="+cType+" Default="+oDefaultValue+" Format=" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        + format+" Editable="+isEditable()+" Visible="+isVisible()  //$NON-NLS-1$ //$NON-NLS-2$
+        +" Mergeable="+isMergeable(); //$NON-NLS-1$
     }
 
     public boolean isVisible() {
@@ -259,8 +259,8 @@ public class PropertyMetaInformation implements ITechnicalStrings{
     }
     
     public String getHumanName(){
-        return Messages.getInstance().contains("Property_"+getName())?
-                        Messages.getString("Property_"+getName()):getName();
+        return Messages.getInstance().contains("Property_"+getName())? //$NON-NLS-1$
+                        Messages.getString("Property_"+getName()):getName(); //$NON-NLS-1$
     }
     
 }

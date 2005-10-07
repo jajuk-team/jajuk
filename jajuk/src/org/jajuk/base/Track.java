@@ -49,10 +49,8 @@ public class Track extends PropertyAdapter implements Comparable{
 	private long lYear;
 	/**Track type*/
 	private Type type;
-	/**Track addition date format:YYYYMMDD*/
-	private Date dAdditionDate;
 	/**Track associated files*/
-	private ArrayList alFiles = new ArrayList(1);
+	private ArrayList<File> alFiles = new ArrayList(1);
 	/**Track compare hash for perfs*/
 	private String sHashCompare;
 	/** Number of hits for current jajuk session */
@@ -96,9 +94,6 @@ public class Track extends PropertyAdapter implements Comparable{
             setProperty(XML_FILES,null); //need this to respect attributes order
             //Hits
             setProperty(XML_TRACK_HITS,0l);
-            //Addition date
-            this.dAdditionDate = new Date();
-            setProperty(XML_TRACK_ADDED,dAdditionDate);
             //Hashcode
             this.sHashCompare = new StringBuffer(style.getName2()).append(author.getName2()).append(album.getName2()).append(sName).toString();
     }
@@ -109,9 +104,9 @@ public class Track extends PropertyAdapter implements Comparable{
 	 * toString method
 	 */
 	public String toString() {
-		String sOut = "Track[ID="+sId+" Name=" + getName() + " "+album+" "+
-            style+" "+author+" Length="+length+" Year="+lYear+" Rate="+getRate()+" "+
-            type+" Hits="+getHits()+" Addition date="+dAdditionDate+" Comment="+getComment()+" order="+getOrder()+"]"; 
+		String sOut = "Track[ID="+sId+" Name=" + getName() + " "+album+" "+ //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+            style+" "+author+" Length="+length+" Year="+lYear+" Rate="+getRate()+" "+ //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+            type+" Hits="+getHits()+" Addition date="+getAdditionDate()+" Comment="+getComment()+" order="+getOrder()+"]";  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 		for (int i=0;i<alFiles.size();i++){
 			sOut += '\n'+alFiles.get(i).toString();
 		}
@@ -145,6 +140,19 @@ public class Track extends PropertyAdapter implements Comparable{
 	public ArrayList<File> getFiles() {
 		return alFiles;
 	}
+    
+    /**
+     * @return ready files
+     */
+    public ArrayList<File> getReadyFiles() {
+        ArrayList alReadyFiles = new ArrayList(alFiles.size());
+        for (File file:alFiles){
+            if (file.isReady()){
+                alReadyFiles.add(file);
+            }
+        }
+        return alReadyFiles;
+    }
 
 	/**
 	 * Get additionned size of all files this track map to
@@ -261,7 +269,7 @@ public class Track extends PropertyAdapter implements Comparable{
 	 * @return
 	 */
 	public Date getAdditionDate() {
-		return dAdditionDate;
+		return getDateValue(XML_TRACK_ADDED);
 	}
 
 	/**
@@ -311,7 +319,7 @@ public class Track extends PropertyAdapter implements Comparable{
 			alFiles.add(file);	
 			String sFiles = file.getId();
 			if (this.containsProperty(XML_FILES)){ //already some files 
-				sFiles += ","+getValue(XML_FILES);
+				sFiles += ","+getValue(XML_FILES); //$NON-NLS-1$
 			}
 			setProperty(XML_FILES,sFiles);
 		}
@@ -362,8 +370,7 @@ public class Track extends PropertyAdapter implements Comparable{
 	 * @param additionDate The sAdditionDate to set.
 	 */
 	public void setAdditionDate(Date additionDate) {
-		this.dAdditionDate = additionDate;
-        setProperty(XML_TRACK_ADDED,additionDate);
+	    setProperty(XML_TRACK_ADDED,additionDate);
 	}
 
 	/**
@@ -410,7 +417,7 @@ public class Track extends PropertyAdapter implements Comparable{
      * Get item description
      */
     public String getDesc(){
-        return Messages.getString("Item_Track")+" : "+getName();
+        return Messages.getString("Item_Track")+" : "+getName(); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
    
@@ -442,13 +449,13 @@ public class Track extends PropertyAdapter implements Comparable{
             Iterator it = alFiles.iterator();
             while (it.hasNext()){
                 File file = (File)it.next();
-                sbOut.append(file.getAbsolutePath()+",");
+                sbOut.append(file.getAbsolutePath()+","); //$NON-NLS-1$
             }
             return sbOut.substring(0,sbOut.length()-1); //remove last ','
         }
         else if (XML_TRACK_ADDED.equals(sKey)){
             DateFormat dateFormatter = DateFormat.getDateInstance(DateFormat.DEFAULT,Locale.getDefault());
-            return dateFormatter.format(dAdditionDate);
+            return dateFormatter.format(getAdditionDate());
         }
         else if (XML_ANY.equals(sKey)){
             return getAny();

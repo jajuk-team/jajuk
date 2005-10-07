@@ -103,8 +103,6 @@ public class JajukTable extends JXTable implements ITechnicalStrings{
         super.setModel(model);
     }
     
-    
-    
 	/**
 	 * add tooltips to each cell
 	*/

@@ -222,7 +222,7 @@ public class Tag implements ITechnicalStrings{
 	 * @return comment
 	 */
 	public String getComment() {
-		String sComment = "";
+		String sComment = ""; //$NON-NLS-1$
 		//if the type doesn't support tags ( like wav )
 		if (tagImpl == null){  
 			return sComment;
@@ -247,7 +247,7 @@ public class Tag implements ITechnicalStrings{
         try {
             l = tagImpl.getOrder();
             if (l < 0){
-               throw new Exception("Negative Order");
+               throw new Exception("Negative Order"); //$NON-NLS-1$
             }
         } catch (Exception e) {
             Log.warn("103",fio.getName(),e); //$NON-NLS-1$
@@ -263,7 +263,7 @@ public class Tag implements ITechnicalStrings{
 		try {
 			tagImpl.setTrackName(sTrackName);
 		} catch (Exception e) {
-			throw new JajukException("104",fio.getName(), e);
+			throw new JajukException("104",fio.getName(), e); //$NON-NLS-1$
 		}
 	}
 
@@ -274,7 +274,7 @@ public class Tag implements ITechnicalStrings{
 		try {
 			tagImpl.setAlbumName(sAlbumName);
 		} catch (Exception e) {
-			throw new JajukException("104",fio.getName(), e);
+			throw new JajukException("104",fio.getName(), e); //$NON-NLS-1$
 		}
 	}
 
@@ -285,7 +285,7 @@ public class Tag implements ITechnicalStrings{
 		try {
 			tagImpl.setAuthorName(sAuthorName);
 		} catch (Exception e) {
-			throw new JajukException("104",fio.getName(), e);
+			throw new JajukException("104",fio.getName(), e); //$NON-NLS-1$
 		}
 	}
 
@@ -296,7 +296,7 @@ public class Tag implements ITechnicalStrings{
 		try {
 			tagImpl.setStyleName(style);
 		} catch (Exception e) {
-			throw new JajukException("104",fio.getName(), e);
+			throw new JajukException("104",fio.getName(), e); //$NON-NLS-1$
 		}
 	}
 
@@ -307,7 +307,7 @@ public class Tag implements ITechnicalStrings{
         try {
             tagImpl.setOrder(lOrder);
         } catch (Exception e) {
-            throw new JajukException("104",fio.getName(), e);
+            throw new JajukException("104",fio.getName(), e); //$NON-NLS-1$
         }
     }
 
@@ -318,7 +318,7 @@ public class Tag implements ITechnicalStrings{
 		try {
 			tagImpl.setYear(lYear);
 		} catch (Exception e) {
-			throw new JajukException("104",fio.getName(), e);
+			throw new JajukException("104",fio.getName(), e); //$NON-NLS-1$
 		}
 	}
 
@@ -329,7 +329,7 @@ public class Tag implements ITechnicalStrings{
 		try {
 			tagImpl.setComment(sComment);
 		} catch (Exception e) {
-			throw new JajukException("104",fio.getName(), e);
+			throw new JajukException("104",fio.getName(), e); //$NON-NLS-1$
 		}
 	}
     
@@ -340,7 +340,7 @@ public class Tag implements ITechnicalStrings{
         try {
             tagImpl.commit();
         } catch (Exception e) {
-             throw new JajukException("104",fio.getName()+"\n"+e.getMessage(),e);
+             throw new JajukException("104",fio.getName()+"\n"+e.getMessage(),e); //$NON-NLS-1$ //$NON-NLS-2$
         }
     }
 

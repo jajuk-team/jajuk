@@ -26,7 +26,6 @@ import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
-import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HostConfiguration;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.UsernamePasswordCredentials;
@@ -146,17 +145,13 @@ public class DownloadManager implements ITechnicalStrings {
 	        }
 	        else{
 	            client = getHTTPClient(iConTO,iTraTO);
-	        }
+            }
 	        get = new GetMethod(url.toString());     
-	        get.addRequestHeader("Accept","image/gif, image/x-xbitmap, image/jpeg, image/pjpeg, */*");
-	        get.addRequestHeader("Accept-Language","en-us");
-	        //get.addRequestHeader("Accept-Encoding","gzip, deflate");
-	        get.addRequestHeader("User-Agent","Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)");
-	        get.addRequestHeader("Connection","Keep-Alive");
-	        int statusCode = client.executeMethod(get);
-	        get.addRequestHeader(new Header("User-Agent","Mozilla/4.0 (compatible; MSIE 5.0; Windows 2000) Opera 6.03  [en]")); //$NON-NLS-1$ //$NON-NLS-2$
-	        get.setDoAuthentication( true );
-	        int status = client.executeMethod(getHostConfiguration(url.getHost()), get );
+	        get.addRequestHeader("Accept","image/gif, image/x-xbitmap, image/jpeg, image/pjpeg, */*"); //$NON-NLS-1$ //$NON-NLS-2$
+	        get.addRequestHeader("Accept-Language","en-us"); //$NON-NLS-1$ //$NON-NLS-2$
+	        get.addRequestHeader("User-Agent","Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)"); //$NON-NLS-1$ //$NON-NLS-2$
+	        get.addRequestHeader("Connection","Keep-Alive"); //$NON-NLS-1$ //$NON-NLS-2$
+	        int status = client.executeMethod(get);
 	        bOut = get.getResponseBody();
          }
 	    catch(Exception e){
@@ -164,7 +159,7 @@ public class DownloadManager implements ITechnicalStrings {
 	    	throw e;
 	    }
 	    finally{
-	        if (get != null){
+	        if (get != null && get.isRequestSent()){
                 get.releaseConnection();
             }
 	    }

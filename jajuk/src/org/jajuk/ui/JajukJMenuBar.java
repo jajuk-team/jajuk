@@ -82,7 +82,7 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings{
 				
 		//Properties menu
 		properties = new JMenu(Messages.getString("JajukJMenuBar.5")); //$NON-NLS-1$
-		jmiNewProperty = new JMenuItem(Messages.getString("JajukJMenuBar.6"),Util.getIcon(ICON_NEW));
+		jmiNewProperty = new JMenuItem(Messages.getString("JajukJMenuBar.6"),Util.getIcon(ICON_NEW)); //$NON-NLS-1$
         jmiNewProperty.addActionListener(JajukListener.getInstance());
         jmiNewProperty.setActionCommand(EVENT_CREATE_PROPERTY);
         JPanel jpNewProperty = new JPanel();

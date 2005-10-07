@@ -108,7 +108,7 @@ public class SequentialMap {
      */
     public String getProperty(String sKey) {
         if (get(sKey) == null){
-            return "";
+            return ""; //$NON-NLS-1$
         }
         else{
             return (String)get(sKey);    

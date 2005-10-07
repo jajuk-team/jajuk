@@ -78,7 +78,7 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
         this.sHashcode = sHashcode;
         setProperty(XML_HASHCODE,sHashcode);
         this.dParentDirectory = dParentDirectory;
-        setProperty(XML_DIRECTORY,dParentDirectory==null?"-1":dParentDirectory.getId());
+        setProperty(XML_DIRECTORY,dParentDirectory==null?"-1":dParentDirectory.getId()); //$NON-NLS-1$
         this.iType = iType;
         if ( getDirectory() != null){  //test "new"playlist case
 			this.fio = new java.io.File(getDirectory().getDevice().getUrl()+getDirectory().getRelativePath()+"/"+getName()); //$NON-NLS-1$
@@ -695,7 +695,7 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
      */
     protected void setParentDirectory(Directory parentDirectory) {
         this.dParentDirectory = parentDirectory;
-        setProperty(XML_DIRECTORY,parentDirectory==null?"-1":parentDirectory.getId());
+        setProperty(XML_DIRECTORY,parentDirectory==null?"-1":parentDirectory.getId()); //$NON-NLS-1$
     }
 
       /**
@@ -710,7 +710,7 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
      * Get item description
      */
     public String getDesc(){
-        return Messages.getString("Item_Playlist_File")+" : "+getName();
+        return Messages.getString("Item_Playlist_File")+" : "+getName(); //$NON-NLS-1$ //$NON-NLS-2$
     }
     
 /* (non-Javadoc)

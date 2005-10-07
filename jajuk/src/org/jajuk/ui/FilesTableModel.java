@@ -186,7 +186,7 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
             bCellEditable[iRow][4] = false;
             //Device
             oValues[iRow][5] = file.getDirectory().getDevice().getName();
-            bCellEditable[iRow][5] = true;
+            bCellEditable[iRow][5] = false;
             //File name
             oValues[iRow][6] = file.getName();
             bCellEditable[iRow][6] = true;

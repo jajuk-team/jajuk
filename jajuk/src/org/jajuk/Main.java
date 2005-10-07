@@ -131,11 +131,11 @@ public class Main implements ITechnicalStrings {
 		try{
 		   //check JVM version
 		    String sJVM = System.getProperty("java.vm.version"); //$NON-NLS-1$
-		    if (	sJVM.startsWith("1.0") 
-		    		|| sJVM.startsWith("1.1") 
-		    		|| sJVM.startsWith("1.2") 
-		    		|| sJVM.startsWith("1.3") 
-		    		|| sJVM.startsWith("1.4")){ 
+		    if (	sJVM.startsWith("1.0")  //$NON-NLS-1$
+		    		|| sJVM.startsWith("1.1")  //$NON-NLS-1$
+		    		|| sJVM.startsWith("1.2")  //$NON-NLS-1$
+		    		|| sJVM.startsWith("1.3")  //$NON-NLS-1$
+		    		|| sJVM.startsWith("1.4")){  //$NON-NLS-1$
 		        System.out.println("Java Runtime Environment 1.5 minimum required. You use a JVM "+sJVM); //$NON-NLS-1$
 		        System.exit(2); //error code 2 : wrong JVM
 		    }
@@ -163,7 +163,7 @@ public class Main implements ITechnicalStrings {
             SwingUtilities.invokeAndWait(new Runnable() {
                 public void run() {
                     try {
-                        sc = new JSplash(new URL (IMAGES_SPLASHSCREEN),true,true,false,JAJUK_VERSION+" "+JAJUK_VERSION_DATE,null,null);
+                        sc = new JSplash(new URL (IMAGES_SPLASHSCREEN),true,true,false,JAJUK_VERSION+" "+JAJUK_VERSION_DATE,null,null); //$NON-NLS-1$
                         sc.splashOn();
                     } catch (MalformedURLException e) {
                         // TODO Auto-generated catch block
@@ -172,8 +172,17 @@ public class Main implements ITechnicalStrings {
                 }
             });
         
+            //configuration manager startup
+            org.jajuk.util.ConfigurationManager.getInstance();
+        
+            //Load user configuration
+            org.jajuk.util.ConfigurationManager.load();
+        
+            //Set locale
+            Messages.getInstance().setLocal(ConfigurationManager.getProperty(CONF_OPTIONS_LANGUAGE));
+            
             //Display progress
-            sc.setProgress(0,Messages.getString("SplashScreen.0"));
+            sc.setProgress(0,Messages.getString("SplashScreen.0")); //$NON-NLS-1$
             
 			//check for jajuk home directory presence, needed by log
 			File fJajukDir = new File(FILE_JAJUK_DIR);
@@ -207,10 +216,7 @@ public class Main implements ITechnicalStrings {
             ItemManager.registerItemManager(org.jajuk.base.Style.class,StyleManager.getInstance());
             ItemManager.registerItemManager(org.jajuk.base.Track.class,TrackManager.getInstance());
             ItemManager.registerItemManager(org.jajuk.base.Type.class,TypeManager.getInstance());
-            
-            //configuration manager startup
-			org.jajuk.util.ConfigurationManager.getInstance();
-			
+                	
 			//Upgrade configuration from previous releases
 			upgrade();
 			
@@ -228,10 +234,7 @@ public class Main implements ITechnicalStrings {
             		
 			//perform initial checkups
 			initialCheckups();
-			
-			//Load user configuration
-			org.jajuk.util.ConfigurationManager.load();
-		
+				
 			//Set actual log verbosity
 			Log.setVerbosity(Integer.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_LOG_LEVEL)));
 
@@ -240,10 +243,7 @@ public class Main implements ITechnicalStrings {
 			
 			//Display user Jajuk configuration
 			Log.debug(ConfigurationManager.getProperties().toString());
-
-			//Set locale
-			Messages.getInstance().setLocal(ConfigurationManager.getProperty(CONF_OPTIONS_LANGUAGE));
-		
+			
             //check for another session (needs setLocal)
             checkOtherSession();
             
@@ -262,7 +262,7 @@ public class Main implements ITechnicalStrings {
 			registerTypes();
 			
 			//Display progress
-            sc.setProgress(10,Messages.getString("SplashScreen.1"));
+            sc.setProgress(10,Messages.getString("SplashScreen.1")); //$NON-NLS-1$
             
             //Load collection
             loadCollection();
@@ -271,7 +271,7 @@ public class Main implements ITechnicalStrings {
 			Collection.cleanup();
 			
             //Display progress
-            sc.setProgress(70,Messages.getString("SplashScreen.2"));
+            sc.setProgress(70,Messages.getString("SplashScreen.2")); //$NON-NLS-1$
             
 			//Load history
 			History.load();
@@ -318,7 +318,7 @@ public class Main implements ITechnicalStrings {
 			//show window if set in the systray conf
 			if ( ConfigurationManager.getBoolean(CONF_SHOW_AT_STARTUP) ){
 			    //Display progress
-			    sc.setProgress(80,Messages.getString("SplashScreen.3"));
+			    sc.setProgress(80,Messages.getString("SplashScreen.3")); //$NON-NLS-1$
                 launchUI();
 			}
        } catch (JajukException je) { //last chance to catch any error for logging purpose
@@ -336,13 +336,12 @@ public class Main implements ITechnicalStrings {
 		    Log.error("106", error); //$NON-NLS-1$
 		    exit(1);
 		}
-		finally{  //make sure to close splashscreen in all cases
-		    if (sc != null){
-		         //Display progress
-		        sc.setProgress(100);
+		finally{  //make sure to close splashscreen in all cases (ie if UI is not started)
+		    if ( !ConfigurationManager.getBoolean(CONF_SHOW_AT_STARTUP)  && sc!= null){
+                sc.setProgress(100);
                 sc.splashOff();
             }
-		}
+        }
 	}
 	
 	
@@ -754,13 +753,18 @@ public class Main implements ITechnicalStrings {
                     PerspectiveManager.init();
                     jw.setCursor(Util.DEFAULT_CURSOR);
                     
+                    if (sc != null){
+                        //Display progress
+                        sc.setProgress(100);
+                        sc.splashOff();
+                    }
                 } catch (Exception e) { //last chance to catch any error for logging purpose
                     e.printStackTrace();
                     Log.error("106", e); //$NON-NLS-1$
                 }
             }
         });
-    
+        
         bUILauched = true;
    }
     

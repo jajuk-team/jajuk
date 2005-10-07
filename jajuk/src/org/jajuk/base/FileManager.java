@@ -112,8 +112,8 @@ public class FileManager extends ItemManager implements Observer{
         }
         //check if this file still exists
         if (!fileOld.getIO().exists()){
-            Messages.showErrorMessage("135");
-            throw new JajukException("135");
+            Messages.showErrorMessage("135"); //$NON-NLS-1$
+            throw new JajukException("135"); //$NON-NLS-1$
         }
         java.io.File fileNew = new java.io.File(fileOld.getIO().getParentFile().getAbsolutePath()
 	        +java.io.File.separator+sNewName);
@@ -130,21 +130,21 @@ public class FileManager extends ItemManager implements Observer{
         //check file name and extension
 	    if (fileNew.getName().lastIndexOf((int)'.') != fileNew.getName().indexOf((int)'.')//just one '.'
 	            || !(Util.getExtension(fileNew).equals(Util.getExtension(fileOld.getIO())))){ //no extension change
-	        Messages.showErrorMessage("134");
-	        throw new JajukException("134");
+	        Messages.showErrorMessage("134"); //$NON-NLS-1$
+	        throw new JajukException("134"); //$NON-NLS-1$
 	    }
 	    //check if futur file exists
 	    if (fileNew.exists()){
-	        Messages.showErrorMessage("134");
-	        throw new JajukException("134");
+	        Messages.showErrorMessage("134"); //$NON-NLS-1$
+	        throw new JajukException("134"); //$NON-NLS-1$
 	    }
 	    //try to rename file on disk
 	    try{
 	        fileOld.getIO().renameTo(fileNew);
 	    }
 	    catch(Exception e){
-	        Messages.showErrorMessage("134");
-	        throw new JajukException("134");
+	        Messages.showErrorMessage("134"); //$NON-NLS-1$
+	        throw new JajukException("134"); //$NON-NLS-1$
 	    }
 	    //OK, remove old file and register this new file
         removeFile(fileOld);

@@ -53,8 +53,8 @@ public class OKCancelPanel extends JPanel {
         jbOk.addActionListener(al);
         jbCancel = new JButton(Messages.getString("Cancel")); //$NON-NLS-1$
         jbCancel.addActionListener(al);
-        add(jbOk,"1,0");
-        add(jbCancel,"3,0");
+        add(jbOk,"1,0"); //$NON-NLS-1$
+        add(jbCancel,"3,0"); //$NON-NLS-1$
     }
     
     /**

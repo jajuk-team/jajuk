@@ -10,6 +10,8 @@
 	<mapID target="devices" url="html/devices.html" />
 	<mapID target="pm" url="html/pm.html" />
 	<mapID target="up" url="html/up.html" />
+	<mapID target="editing" url="html/editing.html" />
+	<mapID target="ucp" url="html/using_custom_properties.html" />
 	<mapID target="tray" url="html/tray.html" />
 	<mapID target="view_command" url="html/view_command.html" />
 	<mapID target="view_information" url="html/view_information.html" />

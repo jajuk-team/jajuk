@@ -54,7 +54,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	/** IO file for optimizations* */
 	private java.io.File fio;
 	/**Device mount point**/
-	private String sMountPoint = "";
+	private String sMountPoint = ""; //$NON-NLS-1$
 	/**Mounted device flag*/
 	private boolean bMounted;
 	/**directories*/
@@ -773,7 +773,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
      * Get item description
      */
     public String getDesc(){
-        return Messages.getString("Item_Device")+" : "+getName();
+        return Messages.getString("Item_Device")+" : "+getName(); //$NON-NLS-1$ //$NON-NLS-2$
     }
    
     /* (non-Javadoc)

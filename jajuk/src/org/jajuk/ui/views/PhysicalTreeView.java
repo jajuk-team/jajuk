@@ -49,12 +49,10 @@ import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
-import javax.swing.plaf.TreeUI;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
-import javax.swing.tree.TreeSelectionModel;
 
 import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;
@@ -331,15 +329,8 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         populateTree();
         
         //create tree
-        jtree = new JTree(top){
-            public void setUI(TreeUI ui) { //overwrite this method to make sure all rows have icon own height
-                super.setUI(ui);
-                setRowHeight(-1);
-            }
-        };
-
-        jtree.putClientProperty("JTree.lineStyle", "Angled"); //$NON-NLS-1$ //$NON-NLS-2$
-        jtree.getSelectionModel().setSelectionMode(TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
+        createTree();
+        
         jtree.setCellRenderer(new DefaultTreeCellRenderer() {
             public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) {
                 super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
@@ -648,7 +639,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         jspTree = new JScrollPane(jtree);
         add(jspTree);
         //expand all
-        expand();
+        expand(false);
         
     }
     
@@ -909,7 +900,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
      * @see org.jajuk.ui.Observer#update(java.lang.String)
      */
     public void update(Event event) {
-        String subject = event.getSubject();
+        final String subject = event.getSubject();
     	if ( subject.equals(EVENT_DEVICE_MOUNT) || 
                 subject.equals(EVENT_DEVICE_UNMOUNT) || 
                 subject.equals(EVENT_DEVICE_REFRESH) ) {
@@ -920,7 +911,12 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
                 }
                 public void finished() {
                     SwingUtilities.updateComponentTreeUI(jtree);
-                    expand();
+                    if (subject.equals(EVENT_DEVICE_REFRESH)){
+                        expand(false);
+                    }
+                    else{
+                        expand(true);
+                    }
                     int i = jspTree.getVerticalScrollBar().getValue();
                     jspTree.getVerticalScrollBar().setValue(i);
                 }
@@ -940,15 +936,21 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
      * Manages auto-expand 
      *
      */
-    private void expand(){
+    private void expand(boolean bDependsOnMountState){
         for (int i=0;i<jtree.getRowCount();i++){
             Object o = jtree.getPathForRow(i).getLastPathComponent(); 
-            if ( o instanceof DeviceNode 
-                    && ((DeviceNode)o).getDevice().isMounted()){  
+            if ( o instanceof DeviceNode ){  
                 Device device = ((DeviceNode)o).getDevice();
                 boolean bExp = device.getBooleanValue(XML_EXPANDED); 
-                if ( bExp){ //$NON-NLS-1$
-                    jtree.expandRow(i);	
+                //we want to expand following user selection (exp attribute) except after a mount (force expand) or 
+                //an unmount (force collapse)
+                if ( bDependsOnMountState){
+                    if (((DeviceNode)o).getDevice().isMounted()){
+                        jtree.expandRow(i);
+                    }
+                }
+                else if (bExp){
+                     jtree.expandRow(i);
                 }
             }
             else if ( o instanceof DirectoryNode){

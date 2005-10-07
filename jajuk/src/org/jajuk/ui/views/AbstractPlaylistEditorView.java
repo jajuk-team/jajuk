@@ -44,12 +44,14 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
+import javax.swing.table.TableModel;
 
 import org.jajuk.base.Event;
 import org.jajuk.base.FIFO;
@@ -65,7 +67,6 @@ import org.jajuk.i18n.Messages;
 import org.jajuk.ui.IconLabel;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.JajukCellRender;
-import org.jajuk.ui.JajukTable;
 import org.jajuk.ui.PlaylistFileItem;
 import org.jajuk.ui.PlaylistTransferHandler;
 import org.jajuk.util.ConfigurationManager;
@@ -92,7 +93,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
     JButton jbAddShuffle;
     JButton jbClear;
     JLabel jlTitle;
-    JajukTable jtable;
+    JTable jtable;
     
     JPopupMenu jmenuFile;
     JMenuItem jmiFilePlay;
@@ -272,7 +273,31 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
         jpControl.add(jbDown,"11,0"); //$NON-NLS-1$
         jpControl.add(jbClear,"13,0"); //$NON-NLS-1$
         jpControl.add(Util.getCentredPanel(jlTitle),"15,0"); //$NON-NLS-1$
-        jtable = new JajukTable(model,false);
+        jtable = new JTable(model){//we don't use a JajukTable that lose current track layout (orange)
+            /**
+             * add tooltips to each cell
+             */
+            public String getToolTipText(MouseEvent e) {
+                String tip = null;
+                java.awt.Point p = e.getPoint();
+                int rowIndex = rowAtPoint(p);
+                int colIndex = columnAtPoint(p);
+                TableModel model = getModel();
+                if (rowIndex < 0 || colIndex < 0){
+                    return null;
+                }
+                Object o = getModel().getValueAt(rowIndex,colIndex);
+                if (o == null){
+                    return null;
+                }
+                else if(o instanceof IconLabel){
+                    return ((IconLabel)o).getTooltip(); 
+                }
+                else{
+                    return o.toString();
+                }
+            }
+        };
         jtable.setSelectionMode(DefaultListSelectionModel.MULTIPLE_INTERVAL_SELECTION); //multi-row selection
         Enumeration enumeration = jtable.getColumnModel().getColumns();
         JajukCellRender jcr = new JajukCellRender();

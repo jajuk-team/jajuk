@@ -62,7 +62,7 @@ public class Log  implements ITechnicalStrings{
      */
     private   Log () {
         try {
-           System.setProperty("jajuk.log",FILE_LOGS); //set env variable used in the log4j conf file
+           System.setProperty("jajuk.log",FILE_LOGS); //set env variable used in the log4j conf file //$NON-NLS-1$
            DOMConfigurator.configure(new URL(FILE_LOG4j_CONF));
            loggerRoot = Logger.getRootLogger();
            logger = Logger.getLogger(Log.class.getName());
@@ -92,7 +92,7 @@ public class Log  implements ITechnicalStrings{
      * Log a debug-level  message
      */
     public static void debug(String s){
-        spool("[DEBUG] "+s);
+        spool("[DEBUG] "+s); //$NON-NLS-1$
         logger.debug(s);
     }
     
@@ -100,7 +100,7 @@ public class Log  implements ITechnicalStrings{
      * Log a info-level  message
      */
     public static void info(String s){
-        spool("[INFO] "+s);
+        spool("[INFO] "+s); //$NON-NLS-1$
         logger.info(s);
     }
     
@@ -108,7 +108,7 @@ public class Log  implements ITechnicalStrings{
      * Log a warning-level  message
      */
     public static void warn(String s){
-        spool("[WARN] "+s);
+        spool("[WARN] "+s); //$NON-NLS-1$
         logger.warn(s);
     }
     
@@ -116,8 +116,8 @@ public class Log  implements ITechnicalStrings{
      * Log a warning-level  message with info sup
      */
     public static void warn(String s, String sInfoSup){
-        String sOut = s+": "+sInfoSup;
-        spool("[WARN] "+sOut);
+        String sOut = s+": "+sInfoSup; //$NON-NLS-1$
+        spool("[WARN] "+sOut); //$NON-NLS-1$
         logger.warn(sOut);
     }
     
@@ -135,7 +135,7 @@ public class Log  implements ITechnicalStrings{
         else{
             sOut = '('+sCode+") "+ ((sInfosup==null)?"":":"+sInfosup); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         }
-        spool("[WARN] "+sOut);
+        spool("[WARN] "+sOut); //$NON-NLS-1$
         spool(t);
         logger.warn(sOut,t);
     }
@@ -154,7 +154,7 @@ public class Log  implements ITechnicalStrings{
         else{
             sOut = '('+sCode+") "+ ((sInfosup==null)?"":":"+sInfosup); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         }
-        spool("[ERROR] "+sOut);
+        spool("[ERROR] "+sOut); //$NON-NLS-1$
         if (t != null){
             spool(t);
         }
@@ -173,7 +173,7 @@ public class Log  implements ITechnicalStrings{
         else{
             sOut = '('+sCode+") "; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         }
-        spool("[ERROR] "+sOut);
+        spool("[ERROR] "+sOut); //$NON-NLS-1$
         logger.error(sOut);
     }
     
@@ -217,7 +217,7 @@ public class Log  implements ITechnicalStrings{
      * Log a fatal error message
      */
     public  static void fatal(String s){
-        spool("[FATAL] "+s);
+        spool("[FATAL] "+s); //$NON-NLS-1$
         logger.fatal(s);
     }
     
@@ -300,7 +300,7 @@ public class Log  implements ITechnicalStrings{
      * @param e
      */
     private static void spool(Throwable e){
-        spool("[ERROR] "+e.getClass()+" / "+e.getMessage()+" / "+e.getCause());
+        spool("[ERROR] "+e.getClass()+" / "+e.getMessage()+" / "+e.getCause()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         StackTraceElement[] ste = e.getStackTrace();
         for (int i=0;i<ste.length;i++){
             spool(ste[i].toString());

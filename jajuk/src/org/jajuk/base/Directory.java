@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Iterator;
 
 import org.jajuk.i18n.Messages;
@@ -68,7 +69,7 @@ public class Directory extends PropertyAdapter implements Comparable{
     public Directory(String sId, String sName, Directory dParent, Device device) {
         super(sId,sName);
         this.dParent = dParent;
-        setProperty(XML_DIRECTORY_PARENT,(dParent==null?"-1":dParent.getId()));
+        setProperty(XML_DIRECTORY_PARENT,(dParent==null?"-1":dParent.getId())); //$NON-NLS-1$
         this.device = device;
         setProperty(XML_DEVICE,device.getId());
         this.fio = new File(device.getUrl() + getRelativePath());
@@ -217,6 +218,14 @@ public class Directory extends PropertyAdapter implements Comparable{
     }
         
     /**
+     * @param directory
+     */
+    public void changePlaylistFile(PlaylistFile plfOld,PlaylistFile plfNew) {
+        alFiles.set(alPlaylistFiles.indexOf(plfOld),plfNew);
+    }
+    
+    
+    /**
      * Scan all files in a directory
      * @param
      */
@@ -274,6 +283,7 @@ public class Directory extends PropertyAdapter implements Comparable{
                     Author author = AuthorManager.getInstance().registerAuthor(sAuthorName);
                     Type type = TypeManager.getInstance().getTypeByExtension(Util.getExtension(files[i]));
                     track = TrackManager.getInstance().registerTrack(sTrackName, album, style, author, length, lYear, type);
+                    track.setAdditionDate(new Date());
                     org.jajuk.base.File newFile = FileManager.getInstance().registerFile(sId,files[i].getName(), this, track, 
                         files[i].length(), lQuality);
                     addFile(newFile);
@@ -378,7 +388,7 @@ public class Directory extends PropertyAdapter implements Comparable{
         else{
             sName= getFio().getAbsolutePath();
         }
-        return Messages.getString("Item_Directory")+" : "+sName;
+        return Messages.getString("Item_Directory")+" : "+sName; //$NON-NLS-1$ //$NON-NLS-2$
     }
     
     /* (non-Javadoc)
@@ -388,7 +398,7 @@ public class Directory extends PropertyAdapter implements Comparable{
         if (XML_DIRECTORY_PARENT.equals(sKey)){
             Directory dParent = (Directory)DirectoryManager.getInstance().getItem((String)getValue(sKey)); 
             if (dParent == null){
-              return ""; //no parent directory          
+              return ""; //no parent directory           //$NON-NLS-1$
             }
             else{
                 return dParent.getFio().getAbsolutePath();

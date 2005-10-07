@@ -172,7 +172,7 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
 		jmiNext.setToolTipText(Messages.getString("JajukWindow.30")); //$NON-NLS-1$
 		      
         jlPosition = new JLabel(Util.getIcon(ICON_POSITION)); 
-        String sTitle = Messages.getString("JajukWindow.34");
+        String sTitle = Messages.getString("JajukWindow.34"); //$NON-NLS-1$
         jsPosition = new SliderMenuItem(0,100,0,sTitle);
         jsPosition.addChangeListener(this);
         jsPosition.setEnabled(false);
@@ -183,7 +183,7 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
          * and not the panel itself, otherwise no action event occurs*/
         
         jlVolume = new JLabel(Util.getIcon(ICON_VOLUME)); 
-        sTitle = Messages.getString("JajukWindow.33");
+        sTitle = Messages.getString("JajukWindow.33"); //$NON-NLS-1$
         jsVolume = new SliderMenuItem(0,100,(int)(100*ConfigurationManager.getFloat(CONF_VOLUME)),sTitle);
         jsVolume.setToolTipText(sTitle); //$NON-NLS-1$
         jsVolume.addChangeListener(this);
@@ -385,7 +385,7 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
 		        }
 		        sOut += file.getTrack().getName();
 		        if (ConfigurationManager.getBoolean(CONF_OPTIONS_SHOW_POPUP)){
-			        trayIcon.displayMessage(Messages.getString("JajukWindow.35"),sOut,TrayIcon.INFO_MESSAGE_TYPE);    
+			        trayIcon.displayMessage(Messages.getString("JajukWindow.35"),sOut,TrayIcon.INFO_MESSAGE_TYPE);     //$NON-NLS-1$
 	            }
 		    }
 		    else{

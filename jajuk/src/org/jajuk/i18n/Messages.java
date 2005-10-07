@@ -220,7 +220,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings	{
 	public static void showErrorMessage(final String sCode){
 	    SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-              JOptionPane.showMessageDialog(Main.getWindow(),"<html><b>"+Messages.getErrorMessage(sCode)+"</b></html>",Messages.getErrorMessage("102"),JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$	}
+              JOptionPane.showMessageDialog(Main.getWindow(),"<html><b>"+Messages.getErrorMessage(sCode)+"</b></html>",Messages.getErrorMessage("102"),JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$	}
     		}
         });
 	}

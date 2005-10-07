@@ -32,7 +32,6 @@ import java.awt.dnd.DropTarget;
 import java.awt.dnd.DropTargetDragEvent;
 
 import org.jajuk.base.FileManager;
-import org.jajuk.base.TrackManager;
 
 /**
  *  DND handler for table
@@ -111,9 +110,11 @@ import org.jajuk.base.TrackManager;
 	public final void dragGestureRecognized(DragGestureEvent dge) {
         //try to find a track for this id
         int iSelectedRow = jtable.getSelectedRow(); //selected row in view
+        //make sure to remove others selected rows (can occur during the drag)
+        jtable.getSelectionModel().setSelectionInterval(iSelectedRow,iSelectedRow);
         iSelectedRow = jtable.getRowModelIndex(iSelectedRow); //selected row in model
-        Object o = TrackManager.getInstance().getItem(jtable.getModel().getValueAt(iSelectedRow,0).toString());
-		if ( o  == null){ //no? try to find a file for this id
+        Object o = ((JajukTableModel)jtable.getModel()).getItemAt(iSelectedRow);
+        if ( o  == null){ //no? try to find a file for this id
 			o = FileManager.getInstance().getItem(jtable.getModel().getValueAt(iSelectedRow,0).toString());
 		}
 		if ( o != null){

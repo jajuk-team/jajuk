@@ -100,7 +100,7 @@ public class Playlist extends PropertyAdapter implements Comparable{
 	        Iterator it = alPlaylistFiles.iterator();
 	        while (it.hasNext()){
 	            PlaylistFile plf = (PlaylistFile)it.next();
-	            sbOut.append(plf.getAbsolutePath()+",");
+	            sbOut.append(plf.getAbsolutePath()+","); //$NON-NLS-1$
 	        }
 	        return sbOut.substring(0,sbOut.length()-1); //remove last ','
 	    }
@@ -132,7 +132,7 @@ public class Playlist extends PropertyAdapter implements Comparable{
 			alPlaylistFiles.add(plFile);
             String sPlaylistFiles = plFile.getId();
             if (this.containsProperty(XML_PLAYLIST_FILES)){
-                sPlaylistFiles += ","+getValue(XML_PLAYLIST_FILES); //add previous playlist files 
+                sPlaylistFiles += ","+getValue(XML_PLAYLIST_FILES); //add previous playlist files  //$NON-NLS-1$
             }
             setProperty(XML_PLAYLIST_FILES,sPlaylistFiles);
 		}
@@ -188,7 +188,7 @@ public class Playlist extends PropertyAdapter implements Comparable{
      * Get item description
      */
     public String getDesc(){
-        return Messages.getString("Item_Playlist")+" : "+getName();
+        return Messages.getString("Item_Playlist")+" : "+getName(); //$NON-NLS-1$ //$NON-NLS-2$
     }
        
 }

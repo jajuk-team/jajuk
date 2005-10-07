@@ -112,7 +112,7 @@ public class Style extends PropertyAdapter implements Comparable{
      * Get item description
      */
     public String getDesc(){
-        return Messages.getString("Item_Style")+" : "+getName2();
+        return Messages.getString("Item_Style")+" : "+getName2(); //$NON-NLS-1$ //$NON-NLS-2$
     }
       
 /* (non-Javadoc)

@@ -124,7 +124,7 @@ public class Author extends PropertyAdapter implements Comparable{
 	 * Get item description
 	 */
 	public String getDesc(){
-	    return Messages.getString("Item_Author")+" : "+getName2();
+	    return Messages.getString("Item_Author")+" : "+getName2(); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
    
