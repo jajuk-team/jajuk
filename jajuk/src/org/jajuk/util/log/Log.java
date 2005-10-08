@@ -183,7 +183,7 @@ public class Log  implements ITechnicalStrings{
      **/
     public static void error(Throwable t){
             spool(t);
-            logger.error("",t); //$NON-NLS-1$
+            logger.error(t.getMessage()+" / "+t.getCause(),t); //$NON-NLS-1$
     }
     
     /**

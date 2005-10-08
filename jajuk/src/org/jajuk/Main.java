@@ -164,6 +164,7 @@ public class Main implements ITechnicalStrings {
                 public void run() {
                     try {
                         sc = new JSplash(new URL (IMAGES_SPLASHSCREEN),true,true,false,JAJUK_VERSION+" "+JAJUK_VERSION_DATE,null,null); //$NON-NLS-1$
+                        sc.setAlwaysOnTop(false);
                         sc.splashOn();
                     } catch (MalformedURLException e) {
                         // TODO Auto-generated catch block

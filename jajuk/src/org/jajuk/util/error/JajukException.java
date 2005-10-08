@@ -19,6 +19,8 @@
  */
 package org.jajuk.util.error;
 
+import org.jajuk.i18n.Messages;
+
 
 /**
  * JajukException
@@ -28,8 +30,6 @@ package org.jajuk.util.error;
 public class JajukException extends Exception {
 	/** Error code */
 	private String code = null;
-	/** Error message */
-	private String message = null;
 		
 	/**
 	 * JajukException constructor.
@@ -37,9 +37,7 @@ public class JajukException extends Exception {
 	 * @param pCode Code of the current error.
 	 */
 	public JajukException(String pCode) {
-		super();
-		this.
-		code = pCode;
+		this(pCode,null,null);
 	}
 
 	/**
@@ -49,9 +47,7 @@ public class JajukException extends Exception {
 	 * @param pCause Original exception of the error.
 	 */
 	public JajukException(String pCode, Throwable pCause) {
-		super(pCause);
-		
-		code = pCode;
+        this(pCode,null,pCause);
 	}
 	
 	
@@ -67,18 +63,12 @@ public class JajukException extends Exception {
 	 * @param pCause Original exception of the error.
 	 */
 	public JajukException(String pCode, String pMessage, Throwable pCause) {
-		super(pCause);
-		code = pCode;
-		message = pMessage;
+		super((pMessage!=null && pMessage.length()>0)?
+                Messages.getErrorMessage(pCode)+" : "+pMessage:
+                Messages.getErrorMessage(pCode)
+                ,pCause);
+        code = pCode;
 	}
 	
-		
-	
-	/**
-	 * @see java.lang.Throwable#getLocalizedMessage()
-	 */
-	public String getLocalizedMessage() {
-		return getMessage() + message;
-	}
 
 }

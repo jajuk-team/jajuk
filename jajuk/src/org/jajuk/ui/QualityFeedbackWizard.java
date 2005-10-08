@@ -170,7 +170,7 @@ class QualityFeedbackWizard extends JDialog implements KeyListener,ActionListene
      * @see java.awt.event.KeyListener#keyReleased(java.awt.event.KeyEvent)
      */
     public void keyReleased(KeyEvent e) {
-           if (!jtfDesc.getText().trim().equals("")){ //$NON-NLS-1$
+        if (!jtfDesc.getText().trim().equals("")){ //$NON-NLS-1$
             okp.getOKButton().setEnabled(true);
         }
         else{

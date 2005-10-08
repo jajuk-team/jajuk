@@ -136,35 +136,27 @@ public class DownloadManager implements ITechnicalStrings {
 	public static byte[] download(URL url) throws Exception{
 	    byte[] bOut = null;
 	    GetMethod get = null;
-	    try{
-	        HttpClient client = null;
-	        int iConTO = 1000*ConfigurationManager.getInt(CONF_NETWORK_CONNECTION_TO);
-	        int iTraTO =  1000*ConfigurationManager.getInt(CONF_NETWORK_TRANSFERT_TO);
-	        if (ConfigurationManager.getBoolean(CONF_NETWORK_USE_PROXY)){
-	            client = getHTTPClient(ConfigurationManager.getProperty(CONF_NETWORK_PROXY_LOGIN),DownloadManager.getProxyPwd(),iConTO,iTraTO);
-	        }
-	        else{
-	            client = getHTTPClient(iConTO,iTraTO);
-            }
-	        get = new GetMethod(url.toString());     
-	        get.addRequestHeader("Accept","image/gif, image/x-xbitmap, image/jpeg, image/pjpeg, */*"); //$NON-NLS-1$ //$NON-NLS-2$
-	        get.addRequestHeader("Accept-Language","en-us"); //$NON-NLS-1$ //$NON-NLS-2$
-	        get.addRequestHeader("User-Agent","Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)"); //$NON-NLS-1$ //$NON-NLS-2$
-	        get.addRequestHeader("Connection","Keep-Alive"); //$NON-NLS-1$ //$NON-NLS-2$
-	        int status = client.executeMethod(get);
-	        bOut = get.getResponseBody();
-         }
-	    catch(Exception e){
-	        Log.debug("Time out during cover lookup"); //$NON-NLS-1$
-	    	throw e;
+	    HttpClient client = null;
+	    int iConTO = 1000*ConfigurationManager.getInt(CONF_NETWORK_CONNECTION_TO);
+	    int iTraTO =  1000*ConfigurationManager.getInt(CONF_NETWORK_TRANSFERT_TO);
+	    if (ConfigurationManager.getBoolean(CONF_NETWORK_USE_PROXY)){
+	        client = getHTTPClient(ConfigurationManager.getProperty(CONF_NETWORK_PROXY_LOGIN),DownloadManager.getProxyPwd(),iConTO,iTraTO);
 	    }
-	    finally{
-	        if (get != null && get.isRequestSent()){
-                get.releaseConnection();
-            }
+	    else{
+	        client = getHTTPClient(iConTO,iTraTO);
+	    }
+	    get = new GetMethod(url.toString());     
+	    get.addRequestHeader("Accept","image/gif, image/x-xbitmap, image/jpeg, image/pjpeg, */*"); //$NON-NLS-1$ //$NON-NLS-2$
+	    get.addRequestHeader("Accept-Language","en-us"); //$NON-NLS-1$ //$NON-NLS-2$
+	    get.addRequestHeader("User-Agent","Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)"); //$NON-NLS-1$ //$NON-NLS-2$
+	    get.addRequestHeader("Connection","Keep-Alive"); //$NON-NLS-1$ //$NON-NLS-2$
+	    int status = client.executeMethod(get);
+	    bOut = get.getResponseBody();
+	    if (get != null && get.isRequestSent()){
+	        get.releaseConnection();
 	    }
 	    return bOut;
-	}
+    }
     
 	/**
 	 * @return the required proxy pwd

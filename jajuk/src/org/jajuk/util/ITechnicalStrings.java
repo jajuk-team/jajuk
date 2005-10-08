@@ -55,7 +55,9 @@ public interface ITechnicalStrings {
     public static final String FEEDBACK_EMAIL = "jajuk-support@lists.sourceforge.net";
     /**Number of lines in the feedback mail*/
     public static final int FEEDBACK_LINES = 100;
-    
+    /**Max history size*/
+    public static final int MAX_HISTORY_SIZE = 1000;
+        
 	// Jajuk version
 	public static final String JAJUK_VERSION = "VERSION_REPLACED_BY_ANT";
 	public static final String JAJUK_VERSION_DATE = "Build: DATE_REPLACED_BY_ANT";

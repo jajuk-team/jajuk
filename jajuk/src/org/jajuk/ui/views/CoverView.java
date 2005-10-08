@@ -820,7 +820,18 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
         try{
             BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
             //we need to re-download the cover because we don't store anymore bytes in the cover object
-            bos.write(DownloadManager.download(cover.getURL()));
+            byte[] b = null; 
+            //try to download cover 
+            try{
+                b = DownloadManager.download(cover.getURL());
+            }
+            catch(Exception ex1){
+                Log.error("139",ex1); //$NON-NLS-1$
+                Messages.showErrorMessage("139"); //$NON-NLS-1$
+                return;
+            }
+            //try to write file
+            bos.write(b);
             bos.flush();
             bos.close();
             InformationJPanel.getInstance().setMessage(Messages.getString("CoverView.11"),InformationJPanel.INFORMATIVE); //$NON-NLS-1$

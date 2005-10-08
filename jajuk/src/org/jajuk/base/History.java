@@ -99,13 +99,17 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
         }
         //OK, begin to add the new history item
         HistoryItem hi = new HistoryItem(sFileId,lDate);
-        //check if previous history item is not the same, otherwise, leave
+        //check if previous history item is not the same, otherwise, keep last one
         if (vHistory.size() > 0){
             HistoryItem hiPrevious = (HistoryItem)vHistory.get(0);
             if (hiPrevious.getFileId().equals(hi.getFileId())){
                 vHistory.remove(0); 
             }
             vHistory.add(0,hi); //keep only most recent date
+            //test maximum history size, if >, remove oldest item
+            if (vHistory.size() > MAX_HISTORY_SIZE){
+                vHistory.remove(vHistory.size()-1);
+            }
         }
         else{ //first element in history
             vHistory.add(0,hi);    
