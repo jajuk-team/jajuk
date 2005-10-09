@@ -107,6 +107,11 @@
   </developers>
  	<contributors>
 		<contributor>
+			<name>Jean-Yves Durand-Daubin</name>
+			<roles><role>Code on HTTP client through a proxy to get covers</role></roles>
+			<email>ddjy@voila.fr</email>
+		</contributor>
+		<contributor>
 			<name>Oscar Appelgren</name>
 			<roles><role>Swedish translator</role></roles>
 		</contributor>
@@ -336,13 +341,7 @@
         <version>1.0</version> 
     </dependency>
     
-    <dependency>
-	   <groupId>lib</groupId>
-        <artifactId>zeus-jscl</artifactId>
-        <version>1.20</version> 
-    </dependency>
-    
-      <dependency>
+     <dependency>
 	   <groupId>lib</groupId>
         <artifactId>commons-codec</artifactId>
         <version>1.3</version> 

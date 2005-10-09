@@ -13,6 +13,7 @@
     	<action dev='bflorat' type='add'>New Look and feel: Squareness and Tiny</action> 
     	<action dev='bflorat' type='add'>Quality feedback agent</action> 
     	<action dev='bflorat' type='add'>Track numbers management</action> 
+    	<action dev='bflorat' type='add'>New splashscreen</action> 
     	<action dev='bflorat' type='fix' issue=''></action>
     	<action dev='bflorat' type='remove'>GTK Look And Feel</action> 
   	</release>
