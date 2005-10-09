@@ -107,9 +107,9 @@ public interface ITechnicalStrings {
 	public static final String ICON_PERSPECTIVE_PHYSICAL = "/org/jajuk/icons/16x16/physical_perspective.png"; //path inside jar file
 	public static final String ICON_PERSPECTIVE_LOGICAL	= "/org/jajuk/icons/16x16/logical_perspective.png";
 	public static final String ICON_PERSPECTIVE_STATISTICS	= "/org/jajuk/icons/16x16/statistics_perspective.png";
-	public static final String ICON_PERSPECTIVE_CONFIGURATION	= "/org/jajuk/icons/16x16/configuration_perspective.png";
+	public static final String ICON_PERSPECTIVE_CONFIGURATION	= "/org/jajuk/icons/16x16/configure.png";
 	public static final String ICON_PERSPECTIVE_PLAYER	= "/org/jajuk/icons/16x16/player_perspective.png";
-	public static final String ICON_PERSPECTIVE_HELP	= "/org/jajuk/icons/16x16/help_perspective.png";
+	public static final String ICON_PERSPECTIVE_HELP	= "/org/jajuk/icons/16x16/info.png";
 	public static final String ICON_OPEN_FILE	= PATH_ICONS + "16x16/fileopen.png";
 	public static final String ICON_EXIT=  PATH_ICONS + "16x16/exit.png";
 	public static final String ICON_NEW=  PATH_ICONS + "16x16/new.png";

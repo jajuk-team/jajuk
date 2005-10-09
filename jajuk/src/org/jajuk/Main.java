@@ -18,9 +18,6 @@
  */
 package org.jajuk;
 
-
-import gr.zeus.ui.JSplash;
-
 import java.awt.BorderLayout;
 import java.io.File;
 import java.io.FilenameFilter;
@@ -73,6 +70,8 @@ import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
+
+import ext.JSplash;
 
 
 /**
@@ -164,11 +163,9 @@ public class Main implements ITechnicalStrings {
                 public void run() {
                     try {
                         sc = new JSplash(new URL (IMAGES_SPLASHSCREEN),true,true,false,JAJUK_VERSION+" "+JAJUK_VERSION_DATE,null,null); //$NON-NLS-1$
-                        sc.setAlwaysOnTop(false);
                         sc.splashOn();
                     } catch (MalformedURLException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
+                        Log.error(e);
                     }
                 }
             });

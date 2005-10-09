@@ -7,8 +7,8 @@
   <property name='test' value='-test'/>
   <property name='rootdir' value='/tmp/jajuk-dist'/>
   <property name='distdir' value='${rootdir}/jajuk'/>
-  <property name='rpmbuilddir_suse' value='${rootdir}/suse/RPMBUILD/'/>
-  <property name='rpmbuilddir_mdk' value='${rootdir}/mdk/RPMBUILD/'/>
+  <property name='rpmbuilddir_suse' value='${rootdir}/suse/RPMBUILD'/>
+  <property name='rpmbuilddir_mdk' value='${rootdir}/mdk/RPMBUILD'/>
   <property name='rpmdistdir_suse' value='${rpmbuilddir_suse}/jajuk'/>
   <property name='rpmdistdir_mdk' value='${rpmbuilddir_mdk}/jajuk'/>
   <property name='windowsdir' value='${rootdir}/windows'/>
@@ -25,21 +25,24 @@
   <property name='distjarname' value='jajuk-java-installer-'/>
   <property name='sourcesdist' value='${sourcesdir}/jajuk-sources-${version}.zip'/>
   <property name='uploaddir' value='${rootdir}/upload'/>
- 
-  <target name='all' description='o Create the entire package' depends='izpack,rpm,sourcesdist,sfx,prepare_upload'>
+  <property name='helpdir' value='${rootdir}/help'/>
+  
+  <target name='all' description='o Create the entire package' depends='prepare_upload'>
+ 	<echo message='Building Jajuk release: ${version}'/>
+   	<echo message='Basedir: ${basedir}'/>
   </target>
   
   <target name='clean' description='o Clean up the distribution'>
     <delete dir='${rootdir}'/>
-   	<echo message='Building Jajuk release: ${version}'/>
-   	<echo message='Basedir: ${basedir}'/>
    </target>
   
-  <target name='mkdist_izpack' description='o Create the IzPack distribution structure' depends='clean'>
+  <target name='mkdist' description='o Create the Jajuk distribution structure' depends='clean'>
     <mkdir dir='${rootdir}'/>
     <mkdir dir='${distdir}'/>
     <mkdir dir='${izpackdir}'/>
-    <copy todir='${distdir}/lib' >
+   	<mkdir dir='${windowsdir}'/>
+    <mkdir dir='${helpdir}'/>
+  	<copy todir='${distdir}/lib' >
      <fileset dir='${libdir}'/>
   	</copy>
   	<mkdir dir='${distdir}/bin'/>
@@ -71,25 +74,19 @@
      <copy todir='${distdir}' >
      	<fileset file='${basedir}/dist-files/icons/64x64/jajuk-logo.png'/>
      </copy>
-     <copy todir='${izpackdir}' >
-     	<fileset file='${distfiles}/packaging/IzPack/jajuk.izpack'/>
-     </copy>
      <copy todir='${distdir}' >
      	<fileset file='${basedir}/scripts/jajuk.sh'/>
      	<fileset file='${basedir}/scripts/jajuk.bat'/>
   	</copy>
- 
-  </target>
-  
-  
-  <target name='mkdist_windows' description='o Create the Windows distribution structure'>
-   <mkdir dir='${windowsdir}'/>
-      <copy todir='${windowsdir}' >
+  	<!--Windows specific -->
+     <copy todir='${windowsdir}' >
       	<fileset file='${basedir}/dist-files/packaging/native_launcher/*'/>
      </copy>
-  </target>
-   
- <target name='mkdist_rpm' description='o Create the RPM distribution structure' depends='clean'>
+  	<!--Izpack specific -->
+     <copy todir='${izpackdir}' >
+     	<fileset file='${distfiles}/packaging/IzPack/jajuk.izpack'/>
+     </copy>
+	<!--RPM specific--> 
     <!-- Create structure-->
     	<!--Suse-->
     <mkdir dir='${rootdir}'/>
@@ -133,14 +130,12 @@
     <copy todir='${rpmdistdir_suse}/usr/bin' >
     	<fileset file='${basedir}/scripts/jajuk'/>
     </copy>
-    <chmod file='${rpmdistdir_suse}/usr/bin/jajuk' perm='ugo+rx'/>
     <copy todir='${rpmdistdir_suse}/usr/lib/jajuk/lib' >
     	<fileset dir='${basedir}/lib'/>
     </copy>
     <copy todir='${rpmdistdir_suse}/usr/share/applications' >
     	<fileset file='${basedir}/dist-files/packaging/RPMS/suse/Jajuk.desktop'/>
     </copy>
-    <chmod file='${rpmdistdir_suse}/usr/share/applications/Jajuk.desktop' perm='ugo+rwx'/>
     <copy todir='${rpmdistdir_suse}/usr/share/doc/packages/jajuk' >
     	<fileset file='${basedir}/dist-files/doc/README*.html'/>
     </copy>
@@ -154,7 +149,6 @@
     <copy todir='${rpmdistdir_mdk}/usr/bin' >
     	<fileset file='${basedir}/scripts/jajuk'/>
     </copy>
-    <chmod file='${rpmdistdir_mdk}/usr/bin/jajuk' perm='ugo+rx'/>
     <copy todir='${rpmdistdir_mdk}/usr/lib/jajuk/lib' >
     	<fileset dir='${basedir}/lib'/>
     </copy>
@@ -175,7 +169,7 @@
     </copy>
   </target>
   
- <target name='compile' description='o Compile the code' depends='mkdist_izpack,mkdist_rpm,mkdist_windows,replaces'>
+ <target name='compile' description='o Compile the code' depends='mkdist,replaces'>
     <javac destdir='${distdir}/${classdir}' deprecation='true' debug='true' optimize='true' excludes='**/package.html'>
       <src>
         <pathelement path='${distdir}/${srcdir}'>
@@ -209,7 +203,9 @@
   </target>
  
   <target name='jar' description='o Create the jar' depends='compile'>
-    <jar jarfile='${distdir}/bin/${jarname}' excludes='**/package.html' basedir='${distdir}/${classdir}' manifest='${basedir}/dist-files/packaging/MANIFEST.MF' compress='true'/>
+    <jar jarfile='${distdir}/bin/${jarname}' excludes='**/package.html' 
+    	basedir='${distdir}/${classdir}' 
+    	manifest='${basedir}/dist-files/packaging/MANIFEST.MF' compress='true'/>
     <delete dir='${distdir}/${classdir}'/>
 	<!-- Copy jajuk jar in the workspace -->
     <copy todir='${basedir}' >
@@ -224,23 +220,35 @@
     </copy>
   </target>
 
-  <target name='helpsetjar' description='o Create the heplset jar' depends='mkdist_izpack'>
-    <!--English-->
-    <delete file='${distdir}/bin/${helpsetjarname}.jar'/>
-    <!-- delete jhindexer-->
-    <delete dir='${basedir}/dist-files/doc/jajuk-hs/default/JavaHelpSearch'/>
-    <exec executable='/prog/api/jh2.0/javahelp/bin/jhindexer' dir='${basedir}/dist-files/doc/jajuk-hs/default'>
-	 <arg line='html'/>
+  <target name='helpsetjar' description='o Create the heplset jar' depends='mkdist'>
+ 	 <!--Copy-->
+  	<copy todir='${helpdir}' >
+     <fileset dir='${basedir}/dist-files/doc/jajuk-hs'/>
+    </copy>
+    <copy todir='${helpdir}/default' >
+     <fileset dir='${basedir}/dist-files/doc'>
+     	<include name='images/**'/>
+     	<include name='icons/**'/>
+     </fileset>
+    </copy>
+    <copy todir='${helpdir}/fr' >
+     <fileset dir='${basedir}/dist-files/doc'>
+     	<include name='images/**'/>
+     	<include name='icons/**'/>
+     </fileset>
+    </copy>
+    <!-- indexer -->
+    	<!--English-->
+    <exec executable='/prog/api/jh2.0/javahelp/bin/jhindexer' dir='${helpdir}/default'>
+	 <arg line='-locale en_US html'/>
    </exec>
-  <jar jarfile='${distdir}/bin/${helpsetjarname}.jar' basedir='${basedir}/dist-files/doc/jajuk-hs/default' />
-    <!--French-->
-    <delete file='${distdir}/bin/${helpsetjarname}_fr.jar'/>
-    <!-- delete jhindexer-->
-    <delete dir='${basedir}/dist-files/doc/jajuk-hs/fr/JavaHelpSearch'/>
-    <exec executable='/prog/api/jh2.0/javahelp/bin/jhindexer' dir='${basedir}/dist-files/doc/jajuk-hs/fr'>
-	 <arg line='html'/>
+    	<!--French-->
+    <exec executable='/prog/api/jh2.0/javahelp/bin/jhindexer' dir='${helpdir}/fr'>
+	 <arg line='-locale fr_FR html'/>
    </exec>
-  <jar jarfile='${distdir}/bin/${helpsetjarname}_fr.jar' basedir='${basedir}/dist-files/doc/jajuk-hs/fr' />
+   <!-- jar creation -->
+   <jar jarfile='${distdir}/bin/${helpsetjarname}.jar' basedir='${helpdir}/default' />
+   <jar jarfile='${distdir}/bin/${helpsetjarname}_fr.jar' basedir='${helpdir}/fr' />
   	<!-- Copy jajuk helpset jars in the RPM distdir -->
   	<copy todir='${rpmdistdir_suse}/usr/lib/jajuk/bin' >
 		<fileset file='${distdir}/bin/${helpsetjarname}*.jar'/>
@@ -254,7 +262,7 @@
     </copy>
    </target>
  
-    <target name='sourcesdist' description='o Create the source distribution' depends='helpsetjar'>
+    <target name='sourcesdist' description='o Create the source distribution' depends='mkdist'>
 	<mkdir dir='${sourcesdir}'/>
     <zip destfile='${sourcesdist}'>
   		<fileset dir='${distdir}/src'/>
@@ -262,7 +270,8 @@
   </target>
     
  
- <target name='replaces' description='o Set a the build time and release into jajuk code and packaging'>
+ <target name='replaces' description='o Set a the build time and release into jajuk code and packaging'
+ 	depends='mkdist'>
   <!-- Set build date --> 
   <tstamp>
       <format property='build.time' pattern='yyyy/MM/dd HH:mm'/>
@@ -341,6 +350,11 @@
     </target>
     
     <target name='rpm' depends='jar,helpsetjar'>
+ 	  	<!-- rights-->
+   		<chmod file='${rpmdistdir_suse}/usr/bin/jajuk' perm='ugo+rx'/>
+   		<chmod file='${rpmdistdir_suse}/usr/share/applications/Jajuk.desktop' perm='ugo+rwx'/>
+   		<chmod file='${rpmdistdir_mdk}/usr/bin/jajuk' perm='ugo+rx'/>
+ 
     	<!--Suse-->
     	<copy todir='/home/bflorat' overwrite='yes'>
     		<fileset file='${basedir}/dist-files/packaging/RPMS/suse/.rpmmacros'/>
@@ -381,7 +395,8 @@
       
       
    <!-- Prepare upload-->
-   <target name='prepare_upload' description='o Put all generated packages in the same upload directory'>
+   <target name='prepare_upload' description='o Put all generated packages in the same upload directory'
+   	depends='izpack,rpm,sourcesdist,sfx'>
   	 <mkdir dir='${uploaddir}'/>
       <copy todir='${uploaddir}' >
       	<fileset file='${sourcesdist}'/>
