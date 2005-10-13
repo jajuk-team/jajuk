@@ -86,14 +86,18 @@ public class LogicalPlaylistRepositoryView extends AbstractPlaylistRepositoryVie
 		while ( it.hasNext()){
 			Playlist pl = (Playlist)it.next();
 			PlaylistFile plf = pl.getPlayeablePlaylistFile();
-			if ( plf == null){
-				continue;
+			//if none accessible playlist, keep a chance to mount the first playlist file found
+            if ( plf == null && pl.getPlaylistFiles().size()>0){
+				plf = pl.getPlaylistFiles().get(0);
 			}
 			PlaylistFileItem plfi = new PlaylistFileItem(PlaylistFileItem.PLAYLIST_TYPE_NORMAL,ICON_PLAYLIST_NORMAL,plf,plf.getName());
 			alPlaylistFileItems.add(plfi);
 			plfi.addMouseListener(ma);
 			plfi.setToolTipText(plf.getName());
 			jpRoot.add(plfi);
+            if (plfiSelected!=null && plfi.getPlaylistFile().equals(plfiSelected.getPlaylistFile())){
+                plfiSelected = plfi;
+            }
 		}
 	}
 

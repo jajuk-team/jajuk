@@ -30,6 +30,7 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Properties;
 import java.util.StringTokenizer;
 
 import javax.swing.BorderFactory;
@@ -47,11 +48,14 @@ import javax.swing.SwingUtilities;
 
 import org.jajuk.Main;
 import org.jajuk.base.Device;
+import org.jajuk.base.Directory;
 import org.jajuk.base.Event;
+import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.IPropertyable;
 import org.jajuk.base.ItemManager;
 import org.jajuk.base.ObservationManager;
+import org.jajuk.base.PlaylistFile;
 import org.jajuk.base.PlaylistFileManager;
 import org.jajuk.base.PropertyMetaInformation;
 import org.jajuk.base.StyleManager;
@@ -61,6 +65,7 @@ import org.jajuk.i18n.Messages;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
+import org.jajuk.util.error.NoneAccessibleFileException;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.JXDatePicker;
 
@@ -273,7 +278,15 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
                 }
                 widgets[index][0] = jlName;
                 //Property value
-                if (meta.isEditable()){
+                //computes editable state
+                boolean bEditable = meta.isEditable(); //property editable ?
+                if (!meta.isCustom()){ //custom properties are always editable, even for offline items
+                    bEditable = bEditable
+                    && !(pa instanceof Directory && !((Directory)pa).getDevice().isMounted()) //item is not an unmounted dir
+                    && !(pa instanceof File && !((File)pa).isReady())//item is not an unmounted file
+                    && !(pa instanceof PlaylistFile && !((PlaylistFile)pa).isReady());//item is not an unmounted playlist file
+                }
+                if (bEditable){
                     iEditable ++;
                     if (meta.getType().equals(Date.class)){
                         JXDatePicker jdp = new JXDatePicker(pa.getDateValue(meta.getName()).getTime()); //If several items, take first value found
@@ -439,12 +452,13 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
          */
         protected void save() throws Exception{
             Object oValue = null;
+            IPropertyable newItem = null;
             ArrayList<PropertyMetaInformation> alChanged = new ArrayList(2);
             int index = -1;
             for (PropertyMetaInformation meta:alToDisplay){
                 index++;
                 JComponent component = widgets[index][1];
-                //non edtiable item
+                //non editable item
                 if (component instanceof JLabel){
                     continue;
                 }
@@ -466,6 +480,7 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
                         return;
                     }
                 }
+                //formatted text field
                 else if (component instanceof JFormattedTextField){
                     try {
                         ((JFormattedTextField)component).commitEdit();
@@ -493,7 +508,7 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
                  * (we only change properties changed in the UI and not properties different between UI and
                  * value otherwise we can overwrite unwanted properties)
                  */
-                String  sOldValueFirstElement = alItems.get(0).getHumanValue(meta.getName());
+                String sOldValueFirstElement = alItems.get(0).getHumanValue(meta.getName());
                 if ( (sOldValueFirstElement == null || Util.format(oValue,meta).equals(sOldValueFirstElement))){
                     continue;
                 }
@@ -516,7 +531,14 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
                         if (oValue == null){
                             throw new JajukException("137"); //$NON-NLS-1$
                         }
-                        IPropertyable newItem = ItemManager.changeItem(item,meta.getName(),oValue);
+                        try{
+                            newItem = ItemManager.changeItem(item,meta.getName(),oValue);
+                        }
+                        catch(NoneAccessibleFileException none){
+                            Messages.showErrorMessage(none.getCode());
+                            dispose(); //close window to avoid reseting all properties to old values
+                            return;
+                        }
                         //if this item was element of property panel elements, update it
                         if (alItems.contains(item)){
                             alItems.remove(item);
@@ -553,6 +575,7 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
             }
             //UI refresh
             if (alChanged.size() > 0){
+                Properties properties = new Properties();
                 ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH)); 
             }
         }

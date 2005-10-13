@@ -151,8 +151,9 @@ public class LogicalTableView extends AbstractTableView implements Observer{
      * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
      */
     public void mousePressed(MouseEvent e) {
-        if ( e.getClickCount() == 2 //double clic, can be only one track 
-                && !ConfigurationManager.getBoolean(CONF_LOGICAL_TABLE_EDITION)){ //if edition mode, do not launch track 
+        int iSelectedCol = jtable.getSelectedColumn(); //selected column in view
+        //Test click on play icon
+        if (jtable.convertColumnIndexToModel(iSelectedCol) == 0){
             int iSelectedRow = jtable.getSelectedRow(); //selected row in view
             Track track = (Track)model.getItemAt(jtable.convertRowIndexToModel(iSelectedRow));
             File file = track.getPlayeableFile();
@@ -168,7 +169,7 @@ public class LogicalTableView extends AbstractTableView implements Observer{
             else{
                 Messages.showErrorMessage("010",track.getName()); //$NON-NLS-1$
             }
-        }		
+        }
         else if (e.getClickCount() == 1 
                 && e.getButton()==MouseEvent.BUTTON3){  //right clic on a selected node set
             //if none or 1 node is selected, a right click on another node select it
@@ -269,13 +270,6 @@ public class LogicalTableView extends AbstractTableView implements Observer{
         }.start();
     }
     
-    /* (non-Javadoc)
-     * @see org.jajuk.ui.views.AbstractTableView#isEditable()
-     */
-    @Override
-    public boolean isEditable() {
-        return ConfigurationManager.getBoolean(CONF_LOGICAL_TABLE_EDITION);
-    }
-    
+       
     
 }

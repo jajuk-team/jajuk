@@ -33,7 +33,6 @@ import org.jajuk.base.IPropertyable;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.base.PropertyMetaInformation;
 import org.jajuk.i18n.Messages;
-import org.jajuk.ui.views.PhysicalTableView;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
@@ -53,8 +52,12 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
 	 * @param sColName columns names
 	 */
 	public FilesTableModel(){
-		super(13);
+		super(14);
         //Columns names
+        //play column
+        vColNames.add(Messages.getString("PhysicalTreeView.1"));
+        vId.add(XML_PLAY);
+        
         vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_NAME));
         vId.add(XML_TRACK);
         
@@ -169,46 +172,56 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
             LinkedHashMap properties = file.getProperties();
             //Id
             oItems[iRow] = file;
+            //Play
+            IconLabel il = null;
+            if (file.isReady()){
+                il = new IconLabel(PLAY_ICON,"",null,null,null,Messages.getString("PhysicalTreeView.1"));
+            }
+            else{
+                il = new IconLabel(UNMOUNT_PLAY_ICON,"",null,null,null,Messages.getString("PhysicalTreeView.1")+Messages.getString("AbstractTableView.10"));
+            }
+            oValues[iRow][0] = il;
+            bCellEditable[iRow][0] = false;
             //Track name
-            oValues[iRow][0] = file.getTrack().getName();
-            bCellEditable[iRow][0] = true;
-            //Album
-            oValues[iRow][1] = file.getTrack().getAlbum().getName2();
+            oValues[iRow][1] = file.getTrack().getName();
             bCellEditable[iRow][1] = true;
-            //Author
-            oValues[iRow][2] = file.getTrack().getAuthor().getName2();
+            //Album
+            oValues[iRow][2] = file.getTrack().getAlbum().getName2();
             bCellEditable[iRow][2] = true;
-            //Style
-            oValues[iRow][3] = file.getTrack().getStyle().getName2();
+            //Author
+            oValues[iRow][3] = file.getTrack().getAuthor().getName2();
             bCellEditable[iRow][3] = true;
+            //Style
+            oValues[iRow][4] = file.getTrack().getStyle().getName2();
+            bCellEditable[iRow][4] = true;
             //Length
-            oValues[iRow][4] = Util.formatTimeBySec(file.getTrack().getLength(),false);
-            bCellEditable[iRow][4] = false;
-            //Device
-            oValues[iRow][5] = file.getDirectory().getDevice().getName();
+            oValues[iRow][5] = Util.formatTimeBySec(file.getTrack().getLength(),false);
             bCellEditable[iRow][5] = false;
+            //Device
+            oValues[iRow][6] = file.getDirectory().getDevice().getName();
+            bCellEditable[iRow][6] = false;
             //File name
-            oValues[iRow][6] = file.getName();
-            bCellEditable[iRow][6] = true;
-            //Comment
-            oValues[iRow][7] = file.getTrack().getValue(XML_TRACK_COMMENT);
+            oValues[iRow][7] = file.getName();
             bCellEditable[iRow][7] = true;
-            //Rate
-            oValues[iRow][8] = file.getTrack().getRate();
+            //Comment
+            oValues[iRow][8] = file.getTrack().getValue(XML_TRACK_COMMENT);
             bCellEditable[iRow][8] = true;
+            //Rate
+            oValues[iRow][9] = file.getTrack().getRate();
+            bCellEditable[iRow][9] = true;
             //Quality
             long lQuality = file.getQuality();
-            oValues[iRow][9] = lQuality;
-            bCellEditable[iRow][9] = false;
-            //Size
-            oValues[iRow][10] = file.getSize()>>20;
+            oValues[iRow][10] = lQuality;
             bCellEditable[iRow][10] = false;
+            //Size
+            oValues[iRow][11] = file.getSize()>>20;
+            bCellEditable[iRow][11] = false;
             //Order
-            oValues[iRow][11] = file.getTrack().getOrder();
-            bCellEditable[iRow][11] = true;
-            //year
-            oValues[iRow][12] = file.getTrack().getYear();
+            oValues[iRow][12] = file.getTrack().getOrder();
             bCellEditable[iRow][12] = true;
+            //year
+            oValues[iRow][13] = file.getTrack().getYear();
+            bCellEditable[iRow][13] = true;
             //Custom properties now
             Iterator it2 = FileManager.getInstance().getCustomProperties().iterator();
             for (int i=0;it2.hasNext();i++){
@@ -238,13 +251,6 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
             }   
         }
     }
-    
-     /* (non-Javadoc)
-     * @see org.jajuk.ui.JajukTableModel#getEditableMode()
-     */
-    @Override
-    public boolean isEditable() {
-        return PhysicalTableView.getInstance().isEditable();
-    }
+   
     
 }

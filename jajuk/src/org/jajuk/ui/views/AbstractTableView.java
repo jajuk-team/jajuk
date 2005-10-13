@@ -59,6 +59,7 @@ import org.jajuk.base.PropertyMetaInformation;
 import org.jajuk.base.StyleManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.InformationJPanel;
+import org.jajuk.ui.JajukCellRender;
 import org.jajuk.ui.JajukTable;
 import org.jajuk.ui.JajukTableModel;
 import org.jajuk.ui.TableTransferHandler;
@@ -66,6 +67,7 @@ import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
+import org.jajuk.util.error.NoneAccessibleFileException;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.table.DefaultTableColumnModelExt;
 import org.jdesktop.swingx.table.TableColumnExt;
@@ -85,7 +87,6 @@ public abstract class AbstractTableView extends ViewAdapter
     /** The logical table */
     JajukTable jtable;
     JPanel jpControl;
-    JButton jbEdition;
     JLabel jlFilter;
     JComboBox jcbProperty; 
     JLabel jlEquals;
@@ -168,15 +169,6 @@ public abstract class AbstractTableView extends ViewAdapter
                 //Control panel
                 jpControl = new JPanel();
                 jpControl.setBorder(BorderFactory.createEtchedBorder());
-                jbEdition = new JButton(Util.getIcon(ICON_EDIT));
-                jbEdition.setToolTipText(Messages.getString("AbstractTableView.9")); //$NON-NLS-1$
-                jbEdition.addActionListener(AbstractTableView.this);
-                if (isEditable()){
-                    jbEdition.setBorder(BorderFactory.createLoweredBevelBorder());
-                }
-                else{
-                    jbEdition.setBorder(BorderFactory.createRaisedBevelBorder());
-                }
                 jlFilter = new JLabel(Messages.getString("AbstractTableView.0")); //$NON-NLS-1$
                 //properties combo box, fill with colums names expect ID
                 jcbProperty = new JComboBox();
@@ -205,16 +197,15 @@ public abstract class AbstractTableView extends ViewAdapter
                 jbAdvancedFilter.setEnabled(false);  //TBI
                 int iXspace = 5;
                 double sizeControl[][] =
-                {{iXspace,20,3*iXspace,TableLayout.FILL,iXspace,0.3,TableLayout.FILL,TableLayout.FILL,iXspace,0.3,iXspace,20,iXspace,20,iXspace},
+                {{iXspace,TableLayout.FILL,iXspace,0.3,TableLayout.FILL,TableLayout.FILL,iXspace,0.3,iXspace,20,iXspace,20,iXspace},
                         {22}};
                 jpControl.setLayout(new TableLayout(sizeControl));
-                jpControl.add(jbEdition,"1,0"); //$NON-NLS-1$
-                jpControl.add(jlFilter,"3,0"); //$NON-NLS-1$
-                jpControl.add(jcbProperty,"5,0"); //$NON-NLS-1$
-                jpControl.add(jlEquals,"7,0"); //$NON-NLS-1$
-                jpControl.add(jtfValue,"9,0"); //$NON-NLS-1$
-                jpControl.add(jbClearFilter,"11,0"); //$NON-NLS-1$
-                jpControl.add(jbAdvancedFilter,"13,0"); //$NON-NLS-1$
+                jpControl.add(jlFilter,"1,0"); //$NON-NLS-1$
+                jpControl.add(jcbProperty,"3,0"); //$NON-NLS-1$
+                jpControl.add(jlEquals,"5,0"); //$NON-NLS-1$
+                jpControl.add(jtfValue,"7,0"); //$NON-NLS-1$
+                jpControl.add(jbClearFilter,"9,0"); //$NON-NLS-1$
+                jpControl.add(jbAdvancedFilter,"11,0"); //$NON-NLS-1$
                 jpControl.setMinimumSize(new Dimension(0,0)); //allow resing with info node
                 //add 
                 double size[][] =
@@ -258,22 +249,6 @@ public abstract class AbstractTableView extends ViewAdapter
             this.sAppliedCriteria = null;
             applyFilter(sAppliedCriteria,sAppliedFilter);
         }
-        else if (e.getSource() == jbEdition){
-            if (this instanceof PhysicalTableView){
-                boolean bPreviousState = ConfigurationManager.getBoolean(CONF_PHYSICAL_TABLE_EDITION);
-                ConfigurationManager.setProperty(CONF_PHYSICAL_TABLE_EDITION,new Boolean(!bPreviousState).toString());
-            }
-            else if (this instanceof LogicalTableView){
-                boolean bPreviousState = ConfigurationManager.getBoolean(CONF_LOGICAL_TABLE_EDITION);
-                ConfigurationManager.setProperty(CONF_LOGICAL_TABLE_EDITION,new Boolean(!bPreviousState).toString());
-            }
-            if (isEditable()){
-                jbEdition.setBorder(BorderFactory.createLoweredBevelBorder());
-            }
-            else{
-                jbEdition.setBorder(BorderFactory.createRaisedBevelBorder());
-            }
-        }
         else if (e.getSource() == jbAdvancedFilter){
             //TBI
         }
@@ -316,7 +291,7 @@ public abstract class AbstractTableView extends ViewAdapter
                     else if ( EVENT_DEVICE_REFRESH.equals(subject)) {
                         Object oDetail = ObservationManager.getDetail(event,DETAIL_ORIGIN);
                         //refresh table only if event doesn't come from this (otherwise, we lose focus on changed item)
-                        if (oDetail != null && !oDetail.equals(this)){
+                        if (oDetail == null || !oDetail.equals(this)){
                             applyFilter(sAppliedCriteria,sAppliedFilter); //force filter to refresh
                         }
                     }   
@@ -429,6 +404,10 @@ public abstract class AbstractTableView extends ViewAdapter
                 }
                 col.setCellEditor(new DefaultCellEditor(jcb));
             }
+            //create a button for playing
+            else if (XML_PLAY.equals(sIdentifier)){
+                col.setCellRenderer(new JajukCellRender());
+            }
         }
         //remove last coma
         if (sb.length()>0){
@@ -509,11 +488,7 @@ public abstract class AbstractTableView extends ViewAdapter
     public void columnSelectionChanged(ListSelectionEvent arg0) {
     }
     
-    /**
-     * 
-     * @return whether this table is editable
-     */
-    abstract public boolean isEditable();
+    
     
     /* (non-Javadoc)
      * @see javax.swing.event.TableModelListener#tableChanged(javax.swing.event.TableModelEvent)
@@ -536,6 +511,10 @@ public abstract class AbstractTableView extends ViewAdapter
                 ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH,properties)); //TBI see later for a smarter event
                 
             }
+        }
+        catch(NoneAccessibleFileException none){
+            Messages.showErrorMessage(none.getCode());
+            return;
         }
         catch(JajukException je){
             Messages.showErrorMessage("104"); //$NON-NLS-1$

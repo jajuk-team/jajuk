@@ -468,7 +468,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
                         DefaultMutableTreeNode node = (DefaultMutableTreeNode)e2.nextElement();
                         if (node instanceof FileNode){
                             File file = ((FileNode)node).getFile();
-                            if (hsSelectedFiles.contains(file)){ //don't count the same file several time if user select directory and then files inside
+                            if (hsSelectedFiles.contains(file)){ //don't count the same file twice if user select directory and then files inside
                                 continue;
                             }
                             lSize += file.getSize();
@@ -523,11 +523,13 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
                             alFiles = plf.getFiles();
                         }
                         catch(JajukException je){
-                            Log.error("009",plf.getName(),new Exception()); //$NON-NLS-1$
-                            Messages.showErrorMessage("009",plf.getName()); //$NON-NLS-1$
+                            Log.error(je.getCode(),plf.getName(),null); //$NON-NLS-1$
+                            Messages.showErrorMessage(je.getCode(),plf.getName()); //$NON-NLS-1$
+                            return;
                         }
                         if ( alFiles.size() == 0){ //check playlist file contains accessible tracks
                             Messages.showErrorMessage("018");	 //$NON-NLS-1$
+                            return;
                         }
                         else{
                             FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFiles),
@@ -547,12 +549,76 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
                     getInstance().alFiles = new ArrayList(100);
                     getInstance().alDirs = new ArrayList(10);
                     //test mix between types ( not allowed )
-                    String sClass = paths[0].getLastPathComponent().getClass().toString();
+                    Class c = paths[0].getLastPathComponent().getClass();
                     for (int i=0;i<paths.length;i++){
-                        if (!paths[i].getLastPathComponent().getClass().toString().equals(sClass)){
+                        if (!paths[i].getLastPathComponent().getClass().equals(c)){
                             return;
                         }	
                     }
+                    //Test that all items are mounted or hide menu item
+                    //device:mono selection for the moment
+                    if (c.equals(DeviceNode.class)){
+                        Device device = ((DeviceNode)(paths[0].getLastPathComponent())).getDevice(); 
+                        if (device.isMounted()){
+                            jmiDevMount.setEnabled(false);
+                            jmiDevUnmount.setEnabled(true);
+                        }   
+                        else{
+                            jmiDevMount.setEnabled(true);
+                            jmiDevUnmount.setEnabled(false);
+                        }
+                    }
+                    if (c.equals(DirectoryNode.class)){
+                        //NBI jmiDirCopy.setEnabled(true);
+                        //NBI jmiDirCreatePlaylist.setEnabled(true);
+                        //NBI jmiDirCut.setEnabled(true);
+                        //NBI jmiDirDelete.setEnabled(true);
+                        //NBI jmiDirPaste.setEnabled(true);
+                        for (int i=0;i<paths.length;i++){
+                            Directory dir = ((DirectoryNode)(paths[i].getLastPathComponent())).getDirectory(); 
+                            if (!dir.getDevice().isMounted()){
+                                //NBI jmiDirCopy.setEnabled(false);
+                                //NBI jmiDirCreatePlaylist.setEnabled(false);
+                                //NBI jmiDirCut.setEnabled(false);
+                                //NBI jmiDirDelete.setEnabled(false);
+                                //NBI jmiDirPaste.setEnabled(false);
+                                continue;
+                            }   
+                        }   
+                    }
+                    //NBI jmiFileCopy.setEnabled(true);
+                    //NBI jmiFileCut.setEnabled(true);
+                    //NBI jmiFileDelete.setEnabled(true);
+                    //NBI jmiFilePaste.setEnabled(true);
+                    if (c.equals(FileNode.class)){
+                        for (int i=0;i<paths.length;i++){
+                            File file = ((FileNode)(paths[i].getLastPathComponent())).getFile(); 
+                            if (!file.isReady()){
+                                //NBI jmiFileCopy.setEnabled(false);
+                                //NBI jmiFileCut.setEnabled(false);
+                                //NBI jmiFileDelete.setEnabled(false);
+                                //NBI jmiFilePaste.setEnabled(false);
+                                continue;
+                            }   
+                        }   
+                    }
+                    //NBI jmiPlaylistFileCopy.setEnabled(true);
+                    //NBI jmiPlaylistFileCut.setEnabled(true);
+                    jmiPlaylistFileDelete.setEnabled(true);
+                    //NBI jmiPlaylistFilePaste.setEnabled(true);
+                    if (c.equals(PlaylistFileNode.class)){
+                        for (int i=0;i<paths.length;i++){
+                            PlaylistFile plf = ((PlaylistFileNode)(paths[i].getLastPathComponent())).getPlaylistFile(); 
+                            if (!plf.isReady()){
+                                //NBI jmiPlaylistFileCopy.setEnabled(false);
+                                //NBI jmiPlaylistFileCut.setEnabled(false);
+                                jmiPlaylistFileDelete.setEnabled(false);
+                                //NBI jmiPlaylistFilePaste.setEnabled(false);
+                                continue;
+                            }   
+                        }   
+                    }
+                    
                     //get all components recursively
                     for (int i=0;i<paths.length;i++){
                         Object o = paths[i].getLastPathComponent();
@@ -622,7 +688,6 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
                 Object o = event.getPath().getLastPathComponent(); 
                 if (o instanceof DirectoryNode){
                     Directory dir = ((DirectoryNode)o).getDirectory(); 
-                    dir.removeProperty(XML_EXPANDED);
                     dir.setProperty(XML_EXPANDED,true); //$NON-NLS-1$
                 }
                 else if (o instanceof DeviceNode){
@@ -639,7 +704,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         jspTree = new JScrollPane(jtree);
         add(jspTree);
         //expand all
-        expand(false);
+        expand(true);
         
     }
     
@@ -821,11 +886,13 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
                 alFiles = plf.getFiles();
             }
             catch(JajukException je){
-                Log.error("009",plf.getName(),new Exception()); //$NON-NLS-1$
-                Messages.showErrorMessage("009",plf.getName()); //$NON-NLS-1$
+                Log.error(je.getCode(),plf.getName(),null); //$NON-NLS-1$
+                Messages.showErrorMessage(je.getCode(),plf.getName()); //$NON-NLS-1$
+                return;
             }
             if ( alFiles.size() == 0){ //check playlist file contains accessible tracks
                 Messages.showErrorMessage("018"); //$NON-NLS-1$
+                return;
             }
             else{ //specific actions
                 if ( e.getSource() == jmiPlaylistFilePlay ){
@@ -911,6 +978,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
                 }
                 public void finished() {
                     SwingUtilities.updateComponentTreeUI(jtree);
+                    //Do not collapse unmounted devices for this event (common), we want to keep unmounted devices expanded
                     if (subject.equals(EVENT_DEVICE_REFRESH)){
                         expand(false);
                     }
@@ -937,19 +1005,13 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
      *
      */
     private void expand(boolean bDependsOnMountState){
+        //begin by expanding all needed devices and directory, only after, collapse unmounted devices if required
         for (int i=0;i<jtree.getRowCount();i++){
             Object o = jtree.getPathForRow(i).getLastPathComponent(); 
             if ( o instanceof DeviceNode ){  
                 Device device = ((DeviceNode)o).getDevice();
                 boolean bExp = device.getBooleanValue(XML_EXPANDED); 
-                //we want to expand following user selection (exp attribute) except after a mount (force expand) or 
-                //an unmount (force collapse)
-                if ( bDependsOnMountState){
-                    if (((DeviceNode)o).getDevice().isMounted()){
-                        jtree.expandRow(i);
-                    }
-                }
-                else if (bExp){
+                if (bExp){
                      jtree.expandRow(i);
                 }
             }
@@ -958,6 +1020,24 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
                 boolean bExp = dir.getBooleanValue(XML_EXPANDED); 
                 if ( bExp){ //$NON-NLS-1$
                     jtree.expandRow(i);	
+                }
+            }
+        }
+        //Now collapse unmounted devices is needed, we have to do it after expanding previous files
+        for (int i=0;i<jtree.getRowCount();i++){
+            Object o = jtree.getPathForRow(i).getLastPathComponent(); 
+            if ( o instanceof DeviceNode ){
+                Device device = ((DeviceNode)o).getDevice();
+                boolean bExp = device.getBooleanValue(XML_EXPANDED); 
+                //we want to expand following user selection (exp attribute) except after a mount (force expand) or 
+                //an unmount (force collapse)
+                if ( bDependsOnMountState){
+                    if (((DeviceNode)o).getDevice().isMounted()){
+                        jtree.expandRow(i);
+                    }
+                    else{
+                        jtree.collapseRow(i);
+                    }
                 }
             }
         }

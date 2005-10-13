@@ -369,7 +369,13 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
     private void setFoundText(){
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                jlFound.setText((getCoverNumber()-index)+"/"+getCoverNumber()); //$NON-NLS-1$//$NON-NLS-2$
+                //make sure not to display negative indexes
+                int i = getCoverNumber()-index;
+                if (i<0){
+                    Log.debug("Negative cover index: "+i);
+                    i=0;
+                }
+                jlFound.setText(i+"/"+getCoverNumber()); //$NON-NLS-1$//$NON-NLS-2$
             }
         });
     }

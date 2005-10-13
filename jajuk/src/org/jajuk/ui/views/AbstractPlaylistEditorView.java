@@ -711,8 +711,9 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
             if ( plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_BESTOF  //neither for bestof playlist
                     || plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_NOVELTIES
                     || lsm.getMinSelectionIndex() != lsm.getMaxSelectionIndex() //multiple selection not supported
-                    || selectedRow > FIFO.getInstance().getFIFO().size()  //no add for planned track but user can add over first planned track to extand FIFO
-                    || (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE && lsm.getMinSelectionIndex() == 0 )){ //can't add track at current track position
+                    || (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE && lsm.getMinSelectionIndex() == 0 )//can't add track at current track position
+                    || (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE && selectedRow > FIFO.getInstance().getFIFO().size() )//no add for planned track but user can add over first planned track to extand FIFO
+                ){ 
                 jbAddShuffle.setEnabled(false);
             }
             else{

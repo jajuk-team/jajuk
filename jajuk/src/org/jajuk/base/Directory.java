@@ -50,9 +50,9 @@ public class Directory extends PropertyAdapter implements Comparable{
     /** Child directories */
     private ArrayList alDirectories = new ArrayList(20);
     /** Child files */
-    private ArrayList alFiles = new ArrayList(20);
+    private ArrayList<org.jajuk.base.File> alFiles = new ArrayList(20);
     /** Playlist files */
-    private ArrayList alPlaylistFiles = new ArrayList(20);
+    private ArrayList<PlaylistFile> alPlaylistFiles = new ArrayList(20);
     /** IO file for optimizations* */
     private java.io.File fio;
     /** pre-calculated absolute path for perf*/
@@ -221,7 +221,7 @@ public class Directory extends PropertyAdapter implements Comparable{
      * @param directory
      */
     public void changePlaylistFile(PlaylistFile plfOld,PlaylistFile plfNew) {
-        alFiles.set(alPlaylistFiles.indexOf(plfOld),plfNew);
+        alPlaylistFiles.set(alPlaylistFiles.indexOf(plfOld),plfNew);
     }
     
     

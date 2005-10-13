@@ -190,7 +190,26 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 	 * @return Returns the list of files this playlist maps to
 	 */
 	public synchronized ArrayList getFiles() throws JajukException{
-		if ( iType == PlaylistFileItem.PLAYLIST_TYPE_NORMAL && alFiles == null){ //normal playlist, test if list is null for perfs (avoid reading again the m3u file)
+		//if normal playlist, propose to mount device if unmounted
+        if (getType()==PlaylistFileItem.PLAYLIST_TYPE_NORMAL && !isReady()){
+		    String sMessage = Messages.getString("Error.025") + " (" + getDirectory().getDevice().getName() + Messages.getString("FIFO.4"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		    int i = Messages.getChoice(sMessage, JOptionPane.INFORMATION_MESSAGE);
+		    if (i == JOptionPane.YES_OPTION) {
+		        try {
+		            //mount. Note that we don't refresh UI to keep selection on this playlist (otherwise the event reset selection).
+                    getDirectory().getDevice().mount(ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED));
+		        } catch (Exception e) {
+		            Log.error(e);
+		            Messages.showErrorMessage(
+		                    "011", getDirectory().getDevice().getName()); //$NON-NLS-1$
+		            throw new JajukException("141",fio.getAbsolutePath(),null); //$NON-NLS-1$
+		        }
+		    }
+		    else{
+		        throw new JajukException("141",fio.getAbsolutePath(),null); //$NON-NLS-1$
+		    }
+		}
+        if ( iType == PlaylistFileItem.PLAYLIST_TYPE_NORMAL && alFiles == null){ //normal playlist, test if list is null for perfs (avoid reading again the m3u file)
 			if ( fio.exists() && fio.canRead()){  //check device is mounted
 				alFiles = load(); //populate playlist
 			}
@@ -400,7 +419,7 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
     }
     
     public void replaceFile(File fOld,File fNew){
- if ( iType == PlaylistFileItem.PLAYLIST_TYPE_BOOKMARK){
+        if ( iType == PlaylistFileItem.PLAYLIST_TYPE_BOOKMARK){
             Iterator it = Bookmarks.getInstance().getFiles().iterator();
             for (int i=0; it.hasNext(); i++){
                 File fileToTest = (File)it.next();
@@ -483,54 +502,59 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 		ArrayList alFiles = new ArrayList(10);
 		BufferedReader br = null;
 		try {
-			br = new BufferedReader(new FileReader(fio));
-			String sLine = null;
-			while ((sLine = br.readLine()) != null){
-				if (sLine.length() == 0){ //void line
-				    continue;
-				}
-			    sLine = sLine.replace('\\','/'); //replace '\' by '/'
-				if ( sLine.charAt(0) == '.'){ //deal with url begining by "./something"
-					sLine = sLine.substring(1,sLine.length());
-				}
-				StringBuffer sb = new StringBuffer(sLine);
-				if ( sb.charAt(0) == '#'){  //comment
-					continue;
-				}
-				else{
-					java.io.File fileTrack = null;
-					StringBuffer sbFileDir = new StringBuffer(getDirectory().getDevice().getUrl()).append(getDirectory().getRelativePath());
-					if ( sLine.charAt(0)!='/'){
-						sb.insert(0,'/');
-					}
-					//take a look relatively to playlist directory to check files exists
-					fileTrack = new java.io.File(sbFileDir.append(sb).toString());
-					if ( !fileTrack.exists()){  //check if this file exists
-						fileTrack = new java.io.File(sb.toString()); //check if given url is not absolute
-						if ( !fileTrack.exists()){ //no more ? leave
-							continue;
-						}	
-					}
-				    File file = FileManager.getInstance().getFileByPath(fileTrack.getAbsolutePath());
-					if (file != null){ //null if file is not known by the collection
-                        alFiles.add(file);    
-                    }
-               }
-			}
+		    br = new BufferedReader(new FileReader(fio));
+		    String sLine = null;
+		    boolean bUnknownDevicesMessage = false;
+		    while ((sLine = br.readLine()) != null){
+		        if (sLine.length() == 0){ //void line
+		            continue;
+		        }
+		        sLine = sLine.replace('\\','/'); //replace '\' by '/'
+		        if ( sLine.charAt(0) == '.'){ //deal with url begining by "./something"
+		            sLine = sLine.substring(1,sLine.length());
+		        }
+		        StringBuffer sb = new StringBuffer(sLine);
+		        if ( sb.charAt(0) == '#'){  //comment
+		            continue;
+		        }
+		        else{
+		            java.io.File fileTrack = null;
+		            StringBuffer sbFileDir = new StringBuffer(getDirectory().getDevice().getUrl()).append(getDirectory().getRelativePath());
+		            if ( sLine.charAt(0)!='/'){
+		                sb.insert(0,'/');
+		            }
+		            //take a look relatively to playlist directory to check files exists
+		            fileTrack = new java.io.File(sbFileDir.append(sb).toString());
+		            File file = FileManager.getInstance().getFileByPath(fileTrack.getAbsolutePath());
+                    if ( file == null){  //check if this file is known in collection
+		                fileTrack = new java.io.File(sb.toString()); //check if given url is not absolute
+		                file = FileManager.getInstance().getFileByPath(fileTrack.getAbsolutePath());
+                        if ( file == null){ //no more ? leave
+		                    bUnknownDevicesMessage = true;
+                            continue;
+		                }
+                        alFiles.add(file);
+		            }
+		        }
+		    }
+		    //display a warning message if the playlist contains unknown items
+		    if (bUnknownDevicesMessage){
+		        Messages.showWarningMessage(Messages.getErrorMessage("142"));
+		    }
 		}
 		catch(Exception e){
-			Log.error("017",getName(),e); //$NON-NLS-1$
-			Messages.showErrorMessage("017",fio.getAbsolutePath()); //$NON-NLS-1$
+		    Log.error("017",getName(),e); //$NON-NLS-1$
+		    Messages.showErrorMessage("017",fio.getAbsolutePath()); //$NON-NLS-1$
 		}
 		finally{
-			if ( br != null){
-				try {
-					br.close();
-				} catch (IOException e1) {
-					Log.error(e1);
-					Messages.showErrorMessage("017",fio.getAbsolutePath()); //$NON-NLS-1$
-				}
-			}
+		    if ( br != null){
+		        try {
+		            br.close();
+		        } catch (IOException e1) {
+		            Log.error(e1);
+		            Messages.showErrorMessage("017",fio.getAbsolutePath()); //$NON-NLS-1$
+		        }
+		    }
 		}
 		return alFiles;
 	}
@@ -618,17 +642,10 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 	 * Play a playlist file
 	 *
 	 */
-	public void play(){
-		ArrayList alFiles = null;
-		try{
-			alFiles = getFiles();
-		}
-		catch(JajukException je){
-			Log.error("009",getName(),new Exception()); //$NON-NLS-1$
-			Messages.showErrorMessage("009",getName()); //$NON-NLS-1$
-			return;
-		}
-		if ( alFiles == null || alFiles.size() == 0){
+	public void play() throws JajukException{
+	    ArrayList alFiles = null;
+        alFiles = getFiles();
+        if ( alFiles == null || alFiles.size() == 0){
 			Messages.showErrorMessage("018");	 //$NON-NLS-1$
 		}
 		else{

@@ -306,12 +306,11 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
                 }
                 String sDefaultValue = attributes.getValue(attributes.getIndex(XML_DEFAULT_VALUE));
                 Object oDefaultValue = null;
-                if (sDefaultValue != null && !sDefaultValue.trim().equals("")){ //$NON-NLS-1$
+                if (sDefaultValue != null && sDefaultValue.trim().length() > 0){ //$NON-NLS-1$
                     oDefaultValue = Util.parse(sDefaultValue,cType,format);
                 }
                 PropertyMetaInformation meta = new PropertyMetaInformation(
                         sPropertyName,bCustom,bConstructor,bShouldBeDisplayed,bEditable,bUnique,cType,format,oDefaultValue);
-                
                 if (manager.getMetaInformation(sPropertyName) == null){ //standard properties are already loaded
                     manager.registerProperty(meta);    
                 }

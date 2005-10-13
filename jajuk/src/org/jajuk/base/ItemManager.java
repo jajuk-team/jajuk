@@ -29,7 +29,6 @@ import java.util.LinkedHashMap;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.error.JajukException;
-import org.jajuk.util.error.NoneAccessibleFileException;
 
 /**
  *  Managers parent class
@@ -117,15 +116,24 @@ public abstract class ItemManager implements ITechnicalStrings{
           
     /**Remove a custom property to all items for the given manager*/
     public void applyRemoveProperty(PropertyMetaInformation meta) {
-        Collection items = getItems();
+        Collection<IPropertyable> items = getItems();
         if (items != null){
-            Iterator it = items.iterator();
-            while (it.hasNext()){
-                IPropertyable item = (IPropertyable)it.next();
+            for (IPropertyable item:items){
                 item.removeProperty(meta.getName());
             }    
         }
     }
+    
+    /**Add a custom property to all items for the given manager*/
+    public void applyNewProperty(PropertyMetaInformation meta) {
+        Collection<IPropertyable> items = getItems();
+        if (items != null){
+            for (IPropertyable item:items){
+                item.setProperty(meta.getName(),meta.getDefaultValue());
+            }    
+        }
+    }
+    
      
     /**
      * 
@@ -294,120 +302,116 @@ public abstract class ItemManager implements ITechnicalStrings{
      */
     public static IPropertyable changeItem(IPropertyable itemToChange,String sKey,Object oValue) throws JajukException{
         IPropertyable newItem = itemToChange;;
-        try{
-            if (itemToChange instanceof File){
-                File file = (File)itemToChange;
-                if (XML_NAME.equals(sKey)){ //file name
-                    newItem = FileManager.getInstance().changeFileName((File)itemToChange,(String)oValue);
-                }
-                else if (XML_TRACK.equals(sKey)){ //track name
-                    TrackManager.getInstance().changeTrackName(file.getTrack(),(String)oValue);
-                    newItem = itemToChange; //we return the file (not changed), not the associated track
-                }
-                else if (XML_STYLE.equals(sKey)){
-                    TrackManager.getInstance().changeTrackStyle(file.getTrack(),(String)oValue);
-                    newItem = itemToChange; //we return the file (not changed), not the associated track
-                }
-                else if (XML_ALBUM.equals(sKey)){
-                    TrackManager.getInstance().changeTrackAlbum(file.getTrack(),(String)oValue);
-                    newItem = itemToChange; //we return the file (not changed), not the associated track
-                }
-                else if (XML_AUTHOR.equals(sKey)){
-                    TrackManager.getInstance().changeTrackAuthor(file.getTrack(),(String)oValue);
-                    newItem = itemToChange; //we return the file (not changed), not the associated track
-                }
-                else if (XML_TRACK_COMMENT.equals(sKey)){
-                    TrackManager.getInstance().changeTrackComment(file.getTrack(),(String)oValue);
-                    newItem = itemToChange; //we return the file (not changed), not the associated track
-                }
-                else if (XML_TRACK_ORDER.equals(sKey)){
-                    TrackManager.getInstance().changeTrackOrder(file.getTrack(),(Long)oValue);
-                    newItem = itemToChange; //we return the file (not changed), not the associated track
-                }
-                else if (XML_TRACK_YEAR.equals(sKey)){
-                    TrackManager.getInstance().changeTrackYear(file.getTrack(),(Long)oValue);
-                    newItem = itemToChange; //we return the file (not changed), not the associated track
-                }
-                else if (XML_TRACK_RATE.equals(sKey)){
-                    TrackManager.getInstance().changeTrackRate(file.getTrack(),(Long)oValue);
-                    newItem = itemToChange; //we return the file (not changed), not the associated track
-                }
-                else{ //others properties
-                    itemToChange.setProperty(sKey,oValue);
-                }
+        if (itemToChange instanceof File){
+            File file = (File)itemToChange;
+            if (XML_NAME.equals(sKey)){ //file name
+                newItem = FileManager.getInstance().changeFileName((File)itemToChange,(String)oValue);
             }
-            else if (itemToChange instanceof PlaylistFile){
-                PlaylistFile plf = (PlaylistFile)itemToChange;
-                if (XML_NAME.equals(sKey)){ //playlistfile name
-                    newItem = PlaylistFileManager.getInstance().changePlaylistFileName((PlaylistFile)itemToChange,(String)oValue);
-                }
+            else if (XML_TRACK.equals(sKey)){ //track name
+                TrackManager.getInstance().changeTrackName(file.getTrack(),(String)oValue);
+                newItem = itemToChange; //we return the file (not changed), not the associated track
             }
-            else if (itemToChange instanceof Directory){
-                Directory dir = (Directory)itemToChange;
-                if (XML_NAME.equals(sKey)){ //file name
-                    //TBI    newItem = DirectoryManager.getInstance().changeDirectoryName((Directory)itemToChange,(String)oValue);
-                }
-                else{ //others properties
-                    itemToChange.setProperty(sKey,oValue);
-                }
+            else if (XML_STYLE.equals(sKey)){
+                TrackManager.getInstance().changeTrackStyle(file.getTrack(),(String)oValue);
+                newItem = itemToChange; //we return the file (not changed), not the associated track
             }
-            else if (itemToChange instanceof Track){
-                if (XML_NAME.equals(sKey)){
-                    newItem = TrackManager.getInstance().changeTrackName((Track)itemToChange,(String)oValue);
-                }
-                else if (XML_STYLE.equals(sKey)){
-                    newItem = TrackManager.getInstance().changeTrackStyle((Track)itemToChange,(String)oValue);
-                }
-                else if (XML_ALBUM.equals(sKey)){
-                    newItem = TrackManager.getInstance().changeTrackAlbum((Track)itemToChange,(String)oValue);
-                }
-                else if (XML_AUTHOR.equals(sKey)){
-                    newItem = TrackManager.getInstance().changeTrackAuthor((Track)itemToChange,(String)oValue);
-                }
-                else if (XML_TRACK_COMMENT.equals(sKey)){
-                    newItem = TrackManager.getInstance().changeTrackComment((Track)itemToChange,(String)oValue);
-                }
-                else if (XML_TRACK_ORDER.equals(sKey)){
-                    newItem = TrackManager.getInstance().changeTrackOrder((Track)itemToChange,(Long)oValue);
-                }
-                else if (XML_TRACK_YEAR.equals(sKey)){
-                    newItem = TrackManager.getInstance().changeTrackYear((Track)itemToChange,(Long)oValue);
-                }
-                else if (XML_TRACK_RATE.equals(sKey)){
-                    newItem = TrackManager.getInstance().changeTrackRate((Track)itemToChange,(Long)oValue);
-                }
-                else{ //others properties
-                    itemToChange.setProperty(sKey,oValue);
-                }
+            else if (XML_ALBUM.equals(sKey)){
+                TrackManager.getInstance().changeTrackAlbum(file.getTrack(),(String)oValue);
+                newItem = itemToChange; //we return the file (not changed), not the associated track
             }
-            else if (itemToChange instanceof Album){
-                if (XML_NAME.equals(sKey)){
-                    newItem = AlbumManager.getInstance().changeAlbumName((Album)itemToChange,(String)oValue);
-                }
-                else{ //others properties
-                    itemToChange.setProperty(sKey,oValue);
-                }
+            else if (XML_AUTHOR.equals(sKey)){
+                TrackManager.getInstance().changeTrackAuthor(file.getTrack(),(String)oValue);
+                newItem = itemToChange; //we return the file (not changed), not the associated track
             }
-            else if (itemToChange instanceof Author){
-                if (XML_NAME.equals(sKey)){
-                    newItem = AuthorManager.getInstance().changeAuthorName((Author)itemToChange,(String)oValue);
-                }
-                else{ //others properties
-                    itemToChange.setProperty(sKey,oValue);
-                }
+            else if (XML_TRACK_COMMENT.equals(sKey)){
+                TrackManager.getInstance().changeTrackComment(file.getTrack(),(String)oValue);
+                newItem = itemToChange; //we return the file (not changed), not the associated track
             }
-            else if (itemToChange instanceof Style){
-                if (XML_NAME.equals(sKey)){
-                    newItem = StyleManager.getInstance().changeStyleName((Style)itemToChange,(String)oValue);
-                }
-                else{ //others properties
-                    itemToChange. setProperty(sKey,oValue);
-                }
+            else if (XML_TRACK_ORDER.equals(sKey)){
+                TrackManager.getInstance().changeTrackOrder(file.getTrack(),(Long)oValue);
+                newItem = itemToChange; //we return the file (not changed), not the associated track
+            }
+            else if (XML_TRACK_YEAR.equals(sKey)){
+                TrackManager.getInstance().changeTrackYear(file.getTrack(),(Long)oValue);
+                newItem = itemToChange; //we return the file (not changed), not the associated track
+            }
+            else if (XML_TRACK_RATE.equals(sKey)){
+                TrackManager.getInstance().changeTrackRate(file.getTrack(),(Long)oValue);
+                newItem = itemToChange; //we return the file (not changed), not the associated track
+            }
+            else{ //others properties
+                itemToChange.setProperty(sKey,oValue);
             }
         }
-        catch(NoneAccessibleFileException none){
-            Messages.showErrorMessage(none.getCode());
+        else if (itemToChange instanceof PlaylistFile){
+            PlaylistFile plf = (PlaylistFile)itemToChange;
+            if (XML_NAME.equals(sKey)){ //playlistfile name
+                newItem = PlaylistFileManager.getInstance().changePlaylistFileName((PlaylistFile)itemToChange,(String)oValue);
+            }
         }
+        else if (itemToChange instanceof Directory){
+            Directory dir = (Directory)itemToChange;
+            if (XML_NAME.equals(sKey)){ //file name
+                //TBI    newItem = DirectoryManager.getInstance().changeDirectoryName((Directory)itemToChange,(String)oValue);
+            }
+            else{ //others properties
+                itemToChange.setProperty(sKey,oValue);
+            }
+        }
+        else if (itemToChange instanceof Track){
+            if (XML_NAME.equals(sKey)){
+                newItem = TrackManager.getInstance().changeTrackName((Track)itemToChange,(String)oValue);
+            }
+            else if (XML_STYLE.equals(sKey)){
+                newItem = TrackManager.getInstance().changeTrackStyle((Track)itemToChange,(String)oValue);
+            }
+            else if (XML_ALBUM.equals(sKey)){
+                newItem = TrackManager.getInstance().changeTrackAlbum((Track)itemToChange,(String)oValue);
+            }
+            else if (XML_AUTHOR.equals(sKey)){
+                newItem = TrackManager.getInstance().changeTrackAuthor((Track)itemToChange,(String)oValue);
+            }
+            else if (XML_TRACK_COMMENT.equals(sKey)){
+                newItem = TrackManager.getInstance().changeTrackComment((Track)itemToChange,(String)oValue);
+            }
+            else if (XML_TRACK_ORDER.equals(sKey)){
+                newItem = TrackManager.getInstance().changeTrackOrder((Track)itemToChange,(Long)oValue);
+            }
+            else if (XML_TRACK_YEAR.equals(sKey)){
+                newItem = TrackManager.getInstance().changeTrackYear((Track)itemToChange,(Long)oValue);
+            }
+            else if (XML_TRACK_RATE.equals(sKey)){
+                newItem = TrackManager.getInstance().changeTrackRate((Track)itemToChange,(Long)oValue);
+            }
+            else{ //others properties
+                itemToChange.setProperty(sKey,oValue);
+            }
+        }
+        else if (itemToChange instanceof Album){
+            if (XML_NAME.equals(sKey)){
+                newItem = AlbumManager.getInstance().changeAlbumName((Album)itemToChange,(String)oValue);
+            }
+            else{ //others properties
+                itemToChange.setProperty(sKey,oValue);
+            }
+        }
+        else if (itemToChange instanceof Author){
+            if (XML_NAME.equals(sKey)){
+                newItem = AuthorManager.getInstance().changeAuthorName((Author)itemToChange,(String)oValue);
+            }
+            else{ //others properties
+                itemToChange.setProperty(sKey,oValue);
+            }
+        }
+        else if (itemToChange instanceof Style){
+            if (XML_NAME.equals(sKey)){
+                newItem = StyleManager.getInstance().changeStyleName((Style)itemToChange,(String)oValue);
+            }
+            else{ //others properties
+                itemToChange. setProperty(sKey,oValue);
+            }
+        }
+        
         return newItem;            
     }
     

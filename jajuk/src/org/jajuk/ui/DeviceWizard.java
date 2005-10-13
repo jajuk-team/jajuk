@@ -219,6 +219,7 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 		jpMain.add(jp2);
 		jpMain.add(Box.createVerticalGlue());
 		jpMain.add(jpButtons);
+        getRootPane().setDefaultButton(jbOk);
 		setContentPane(jpMain);
 		pack();
 	}

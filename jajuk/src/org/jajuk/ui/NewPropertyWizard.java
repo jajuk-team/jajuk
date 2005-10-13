@@ -44,6 +44,7 @@ import org.jajuk.base.ItemManager;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.base.PropertyMetaInformation;
 import org.jajuk.i18n.Messages;
+import org.jajuk.util.Util;
 import org.jdesktop.swingx.JXDatePicker;
 
 
@@ -146,6 +147,11 @@ public class NewPropertyWizard extends CustomPropertyWizard implements KeyListen
                     return;
                 }
             }
+            //check format
+            if (!Util.isXMLValid(jtfName.getText())){
+                Messages.showErrorMessage("140"); //$NON-NLS-1$
+                return;
+            }
             //OK, store it
             ItemManager im = getItemManager();
             //get selected format
@@ -200,7 +206,7 @@ public class NewPropertyWizard extends CustomPropertyWizard implements KeyListen
             PropertyMetaInformation meta = new PropertyMetaInformation(
                     sProperty,true,false,true,true,true,cType,format,oDefault);
             im.registerProperty(meta);
-            // im.applyNewProperty(meta);
+            im.applyNewProperty(meta);
             Properties properties = new Properties();
             properties.put(DETAIL_CONTENT,sProperty);
             Event event = new Event(EVENT_CUSTOM_PROPERTIES_ADD,properties);

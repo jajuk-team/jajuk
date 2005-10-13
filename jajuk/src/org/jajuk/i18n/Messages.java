@@ -279,7 +279,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings	{
 	            SwingUtilities.invokeLater(message);
         }
 	}
-	
+   
 	/**
 	 * Show a dialog with specified error message and an icon
 	 * @param sMessage

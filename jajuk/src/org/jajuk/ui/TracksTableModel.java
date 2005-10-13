@@ -33,7 +33,6 @@ import org.jajuk.base.PropertyMetaInformation;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.i18n.Messages;
-import org.jajuk.ui.views.LogicalTableView;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
@@ -51,9 +50,12 @@ public class TracksTableModel extends JajukTableModel{
 	 * @param sColName columns names
 	 */
 	public TracksTableModel(){
-	    super(10);
+	    super(11);
         
         //Columns names
+        vColNames.add(Messages.getString("LogicalTreeView.1"));
+        vId.add(XML_PLAY);
+        
         vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_NAME));
         vId.add(XML_NAME);
         
@@ -159,36 +161,46 @@ public class TracksTableModel extends JajukTableModel{
             LinkedHashMap properties = track.getProperties();
             //Id
             oItems[iRow] = track;
+            //Play
+            IconLabel il = null;
+            if (track.getPlayeableFile() != null){
+                il = new IconLabel(PLAY_ICON,"",null,null,null,Messages.getString("LogicalTreeView.1"));
+            }
+            else{
+                il = new IconLabel(UNMOUNT_PLAY_ICON,"",null,null,null,Messages.getString("LogicalTreeView.1")+Messages.getString("AbstractTableView.10"));
+            }
+            oValues[iRow][0] = il;
+            bCellEditable[iRow][0] = false;
             //Track name
-            oValues[iRow][0] = track.getName();
-            bCellEditable[iRow][0] = true;
-            //Album
-            oValues[iRow][1] = track.getAlbum().getName2();
+            oValues[iRow][1] = track.getName();
             bCellEditable[iRow][1] = true;
-            //Author
-            oValues[iRow][2] = track.getAuthor().getName2();
+            //Album
+            oValues[iRow][2] = track.getAlbum().getName2();
             bCellEditable[iRow][2] = true;
-            //Style
-            oValues[iRow][3] = track.getStyle().getName2();
+            //Author
+            oValues[iRow][3] = track.getAuthor().getName2();
             bCellEditable[iRow][3] = true;
+            //Style
+            oValues[iRow][4] = track.getStyle().getName2();
+            bCellEditable[iRow][4] = true;
             //Length
-            oValues[iRow][4] = Util.formatTimeBySec(track.getLength(),false);
-            bCellEditable[iRow][4] = false;
+            oValues[iRow][5] = Util.formatTimeBySec(track.getLength(),false);
+            bCellEditable[iRow][5] = false;
             //Comment
-            oValues[iRow][5] = track.getValue(XML_TRACK_COMMENT);
-            bCellEditable[iRow][5] = true;
-            //Rate
-            oValues[iRow][6] = track.getRate();
+            oValues[iRow][6] = track.getValue(XML_TRACK_COMMENT);
             bCellEditable[iRow][6] = true;
+            //Rate
+            oValues[iRow][7] = track.getRate();
+            bCellEditable[iRow][7] = true;
             //Date discovery
-            oValues[iRow][7] = track.getAdditionDate(); //show date using default local format and not technical representation
-            bCellEditable[iRow][7] = false;
+            oValues[iRow][8] = track.getAdditionDate(); //show date using default local format and not technical representation
+            bCellEditable[iRow][8] = false;
             //Order
-            oValues[iRow][8] = track.getOrder();
-            bCellEditable[iRow][8] = true;
-             //Year
-            oValues[iRow][9] = track.getYear();
+            oValues[iRow][9] = track.getOrder();
             bCellEditable[iRow][9] = true;
+             //Year
+            oValues[iRow][10] = track.getYear();
+            bCellEditable[iRow][10] = true;
             //Custom properties now
             Iterator it2 = TrackManager.getInstance().getCustomProperties().iterator();
             for (int i=0;it2.hasNext();i++){
@@ -220,12 +232,5 @@ public class TracksTableModel extends JajukTableModel{
         }
     }
 
-    /* (non-Javadoc)
-     * @see org.jajuk.ui.JajukTableModel#getEditableMode()
-     */
-    @Override
-    public boolean isEditable() {
-        return LogicalTableView.getInstance().isEditable();
-    }
-  	
+  
 }

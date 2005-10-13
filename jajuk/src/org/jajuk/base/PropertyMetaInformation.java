@@ -190,21 +190,21 @@ public class PropertyMetaInformation implements ITechnicalStrings{
     public String toXML(){
         String sDefault = ""; //$NON-NLS-1$
         try {
-            if (oDefaultValue != null && format != null){
+            if (oDefaultValue != null){
                 sDefault = Util.format(oDefaultValue,this);
             }
         } catch (Exception e) { //should to occur at this point
             Log.error(e);
         }
-        return "\t\t<"+XML_PROPERTY+" "+XML_NAME+"='"+sName+"' "+ //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+        return "\t\t<"+XML_PROPERTY+" "+XML_NAME+"='"+Util.formatXML(sName)+"' "+ //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
             XML_CUSTOM+"='"+ bCustom+"' "+ //$NON-NLS-1$ //$NON-NLS-2$
             XML_CONSTRUCTOR+"='"+bConstructor+"' "+ //$NON-NLS-1$ //$NON-NLS-2$
             XML_VISIBLE+"='"+bShouldBeDisplayed+"' "+ //$NON-NLS-1$ //$NON-NLS-2$
             XML_EDITABLE+"='"+bEditable+"' "+ //$NON-NLS-1$ //$NON-NLS-2$
             XML_UNIQUE+"='"+bMergeable+"' "+ //$NON-NLS-1$ //$NON-NLS-2$
             XML_TYPE+"='"+cType.getName()+"' "+ //$NON-NLS-1$ //$NON-NLS-2$
-            XML_FORMAT+"='"+ (format==null ? "":getFormatDesc(format))+"' "+ //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-            XML_DEFAULT_VALUE+"='"+sDefault+"'/>"; //$NON-NLS-1$ //$NON-NLS-2$
+            XML_FORMAT+"='"+ Util.formatXML((format==null ? "":getFormatDesc(format)))+"' "+ //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            XML_DEFAULT_VALUE+"='"+Util.formatXML(sDefault)+"'/>"; //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     public Object getDefaultValue() {

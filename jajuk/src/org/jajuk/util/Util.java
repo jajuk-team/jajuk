@@ -295,6 +295,29 @@ public class Util implements ITechnicalStrings {
 		|| ucs4char >= 57344 && ucs4char <= 65533 || ucs4char >= 0x10000 && ucs4char<= 0x10ffff;
 	}
 	
+    /**
+     * 
+     * @param s
+     * @return whether given string is XML-valid
+     */
+	public static boolean isXMLValid(String s){
+	    //check reserved chars 
+        if (s.contains("&") ||
+	        s.contains("\'")||
+	        s.contains("\"")||
+	        s.contains("<")||
+	        s.contains(">")){
+	       return false;   
+	    }
+        //check invalid chars
+	    for (int i=0;i<s.length();i++){
+	        char c = s.charAt(i);
+	        if ( !isChar(c)){
+	            return false;
+	        }
+	    }     
+	    return true;
+	}
 	
 	/**
 	 * Performs some cleanups for strings comming from tag libs 

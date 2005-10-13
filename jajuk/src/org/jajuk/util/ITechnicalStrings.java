@@ -192,6 +192,7 @@ public interface ITechnicalStrings {
     public static final String ICON_TYPE_WAV = PATH_ICONS + "16x16/type_wav.png";
     public static final String ICON_NO_EDIT = PATH_ICONS + "16x16/stop.png";
     public static final String ICON_EDIT = PATH_ICONS + "16x16/edit.png";
+    public static final String ICON_UNKNOWN = PATH_ICONS + "16x16/presence_unknown.png";
     		
 	//images
 	public static final String IMAGES_SPLASHSCREEN =  PATH_IMAGES + "jajuk-splashscreen.png";
@@ -359,7 +360,8 @@ public interface ITechnicalStrings {
     public static final String DETAIL_CONTENT="content";
     public static final String DETAIL_OLD="old";    
     public static final String DETAIL_NEW="new";
-        			
+    public static final String DETAIL_OPTION="option";
+               			
 	//Look and feel
 	public static final String LNF_METAL = "Metal";
 	public static final String LNF_METAL_CLASS = "javax.swing.plaf.metal.MetalLookAndFeel";
@@ -464,7 +466,6 @@ public interface ITechnicalStrings {
     public static final String CONF_PHYSICAL_TABLE_COLUMNS = "jajuk.ui.physical_table_columns"; //Physical table columns
     public static final String CONF_LOGICAL_TABLE_COLUMNS = "jajuk.ui.logical_table_columns"; //Logical table columns
     public static final String CONF_LOGICAL_TABLE_EDITION = "jajuk.ui.logical_table_edition"; //Logical table columns
-    public static final String CONF_PHYSICAL_TABLE_EDITION = "jajuk.ui.physical_table_edition"; //Physical table columns
     	
 	//Accuracy levels
 	public static final String ACCURACY_LOW = "low";
@@ -516,7 +517,8 @@ public interface ITechnicalStrings {
 	public static final String XML_PLAYLIST_FILE = "playlist_file";
 	public static final String XML_PLAYLISTS = "playlists";
 	public static final String XML_ID = "id";
-	public static final String XML_TRACK_NAME = "name";
+    public static final String XML_PLAY = "play";
+    public static final String XML_TRACK_NAME = "name";
 	public static final String XML_TRACK_ALBUM = "album";
 	public static final String XML_TRACK_STYLE = "style";
 	public static final String XML_TRACK_AUTHOR = "author";

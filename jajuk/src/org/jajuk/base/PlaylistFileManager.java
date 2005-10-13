@@ -160,8 +160,6 @@ public class PlaylistFileManager extends ItemManager implements Observer{
         }
         //change directory reference
         plfNew.getDirectory().changePlaylistFile(plfOld,plfNew);
-        //refresh UI (see later for fine gained event for perfs if needed)
-        ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH));
         return plfNew;
     }
 

@@ -22,10 +22,12 @@ package org.jajuk.ui;
 
 import java.util.Vector;
 
+import javax.swing.ImageIcon;
 import javax.swing.table.DefaultTableModel;
 
 import org.jajuk.base.IPropertyable;
 import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Util;
 
 /**
  *  Jajuk table model, adds identifier to model
@@ -43,6 +45,12 @@ public abstract class JajukTableModel extends DefaultTableModel  implements ITec
     
     /**Values table**/
     Object[][] oValues;
+    
+    //Play icon in cach
+    public static final ImageIcon PLAY_ICON = Util.getIcon(ICON_TRACK_FIFO_NORM);
+    
+    //Unmount Play icon in cach
+    public static final ImageIcon UNMOUNT_PLAY_ICON = Util.getIcon(ICON_UNKNOWN);
     
     /** Objects*/
     IPropertyable[] oItems;
@@ -107,7 +115,7 @@ public abstract class JajukTableModel extends DefaultTableModel  implements ITec
     }
     
     public synchronized boolean isCellEditable(int rowIndex, int columnIndex) {
-        return bCellEditable[rowIndex][columnIndex] && isEditable();
+        return bCellEditable[rowIndex][columnIndex];
     }
     
     public synchronized Class getColumnClass(int columnIndex) {
@@ -125,10 +133,6 @@ public abstract class JajukTableModel extends DefaultTableModel  implements ITec
     * @param sPattern pattern*/
     public abstract  void populateModel(String sProperty,String sPattern); 
     
-     /**
-     * 
-     * @return whether this model is editable
-     */
-    abstract public boolean isEditable();
+    
                 
 }

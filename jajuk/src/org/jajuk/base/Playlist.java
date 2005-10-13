@@ -33,7 +33,7 @@ import org.jajuk.i18n.Messages;
 public class Playlist extends PropertyAdapter implements Comparable{
 
 	/**Associated playlist files**/
-	private ArrayList alPlaylistFiles = new ArrayList(2);
+	private ArrayList<PlaylistFile> alPlaylistFiles = new ArrayList(2);
   	
 	/**
 	 * Playlist constructor
@@ -87,7 +87,7 @@ public class Playlist extends PropertyAdapter implements Comparable{
 	 *  Add a playlist file 
 	 * @return
 	 */
-	public ArrayList getPlaylistFiles() {
+	public ArrayList<PlaylistFile> getPlaylistFiles() {
 		return alPlaylistFiles;
 	}
 	

@@ -147,8 +147,9 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
      * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
      */
     public void mousePressed(MouseEvent e) {
-        if ( e.getClickCount() == 2 //double clic, can be only one file 
-                && !ConfigurationManager.getBoolean(CONF_PHYSICAL_TABLE_EDITION)){ //if edition mode, do not launch track 
+        int iSelectedCol = jtable.getSelectedColumn(); //selected column in view
+        //Test click on play icon
+        if (jtable.convertColumnIndexToModel(iSelectedCol) == 0){
             int iSelectedRow = jtable.getSelectedRow(); //selected row in view
             File file = (File)model.getItemAt(jtable.convertRowIndexToModel(iSelectedRow));
             if (!file.isScanned()){
@@ -261,14 +262,5 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
             }
         }.start();
     }
-    
-    /* (non-Javadoc)
-     * @see org.jajuk.ui.views.AbstractTableView#isEditable()
-     */
-    @Override
-    public boolean isEditable() {
-        return ConfigurationManager.getBoolean(CONF_PHYSICAL_TABLE_EDITION);
-    }
-    
     
 }

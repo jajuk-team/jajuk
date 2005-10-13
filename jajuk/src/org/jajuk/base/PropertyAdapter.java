@@ -260,7 +260,7 @@ abstract public class PropertyAdapter implements IPropertyable, Serializable,ITe
                 }
                 sValue = Util.formatXML(sValue); //make sure to remove non-XML characters
             }
-			sb.append(" "+sKey + "='" + sValue + "'"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			sb.append(" "+Util.formatXML(sKey) + "='" + sValue + "'"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
 		return sb.toString();
 	}

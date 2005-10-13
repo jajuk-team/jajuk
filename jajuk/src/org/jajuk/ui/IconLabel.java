@@ -31,7 +31,7 @@ import javax.swing.ImageIcon;
  * @author     Bertrand Florat
  * @created    12 nov. 2004
  */
-public class IconLabel {
+public class IconLabel implements Comparable{
     
     /**Icon*/
     private ImageIcon icon;
@@ -117,5 +117,17 @@ public class IconLabel {
      */
     public String getTooltip() {
         return sTooltip;
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Comparable#compareTo(T)
+     */
+    public int compareTo(Object o) {
+        IconLabel ilOther =(IconLabel)o;
+        if (ilOther.getTooltip() != null && this.getTooltip() != null){
+            return ilOther.getTooltip().compareTo(getTooltip());
+        }else{
+            return 0;
+        }
     }
 }

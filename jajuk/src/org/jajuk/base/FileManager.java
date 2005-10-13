@@ -245,9 +245,6 @@ public class FileManager extends ItemManager implements Observer{
     public synchronized File getFileByPath(String sPath) {
         File fOut = null;
         java.io.File fToCompare = new java.io.File(sPath);
-        if (!fToCompare.exists()){ //check that file exists
-            return null;
-        }
         Iterator it = hmItems.values().iterator();
         while ( it.hasNext()){
             File file = (File)it.next();
