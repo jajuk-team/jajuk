@@ -364,6 +364,11 @@ public class Main implements ITechnicalStrings {
 		if (!fHistory.exists()) { //if history file doesn't exit, create it empty
 			History.commit();
 		}
+        //check for image cache presence
+        File fCache = new File(FILE_IMAGE_CACHE);
+        if (!fCache.exists()) { //if history file doesn't exit, create it empty
+            fCache.mkdir();
+        }
 	}
 	
 	

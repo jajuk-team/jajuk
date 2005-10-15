@@ -522,7 +522,7 @@ public class Util implements ITechnicalStrings {
 	 * @param file : file to copy
 	 * @param directory : destination directory
 	 */
-	public static void copy(File file,File directory) throws Exception{
+	public static void copyToDir(File file,File directory) throws Exception{
 		Log.debug("Copying: "+file.getAbsolutePath() +"  to : "+directory.getAbsolutePath()); //$NON-NLS-1$ //$NON-NLS-2$
 		File fileNew = new File(new StringBuffer(directory.getAbsolutePath()).append("/").append(file.getName()).toString()); //$NON-NLS-1$
 		if ( !file.exists() || !file.canRead() ){
@@ -537,6 +537,26 @@ public class Util implements ITechnicalStrings {
 		fcSrc.close();
 		fcDest.close();
 	}
+    
+    /**
+     * Copy a file to another file
+     * @param file : file to copy
+     * @param fNew : destination file
+     */
+    public static void copy(File file,File fNew) throws Exception{
+        Log.debug("Copying: "+file.getAbsolutePath() +"  to : "+fNew.getAbsolutePath()); //$NON-NLS-1$ //$NON-NLS-2$
+        if ( !file.exists() || !file.canRead() ){
+            throw new JajukException("023",file.getAbsolutePath(),null); //$NON-NLS-1$
+        }
+        if (  !fNew.getParentFile().canWrite() ){
+            throw new JajukException("024",file.getAbsolutePath(),null); //$NON-NLS-1$
+        }
+        FileChannel fcSrc = new FileInputStream(file).getChannel();
+        FileChannel fcDest = new FileOutputStream(fNew).getChannel();
+        fcDest.transferFrom(fcSrc, 0, fcSrc.size());
+        fcSrc.close();
+        fcDest.close();
+    }
 	
 	/**
 	 * Rename a file
@@ -656,11 +676,23 @@ public class Util implements ITechnicalStrings {
 	public static String getOnlyFile(String sPath){
 	    return new File(sPath).getName();
 	}
+    
+    public static String getCachePath(URL url){
+        return FILE_IMAGE_CACHE+'/'+Util.getOnlyFile(url.toString());
+    }
 
 	/**Return exec location*/
 	public static String getExecLocation(){
 		return sExecLocation;
 	}
+    
+    public static void clearCache(){
+        File fCache = new File(FILE_IMAGE_CACHE);
+        File[] files = fCache.listFiles();
+        for (int i=0;i<files.length;i++){
+            files[i].delete();
+        }
+    }
 	
 	/**
 	 * Set exec location
@@ -868,7 +900,7 @@ public class Util implements ITechnicalStrings {
      */
     public static Image getResizedImage(Image img,int iNewWidth,int iNewHeight){
         ImageFilter filter = new AreaAveragingScaleFilter(iNewWidth,iNewHeight);
-        img = new JPanel().createImage(new FilteredImageSource(img.getSource(),filter));
+        img = Toolkit.getDefaultToolkit().createImage(new FilteredImageSource(img.getSource(),filter));
         img.flush();//free image memory
         return img;
     }

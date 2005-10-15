@@ -220,6 +220,7 @@ public interface ITechnicalStrings {
 	public static final String FILE_LANGPACK_PART2 = ".properties"; //langpack name : jajuk_<locale>.properties
     public static final String FILE_LOGS = FILE_JAJUK_DIR+"/jajuk.log"; //logs
     public static final String FILE_LOG4j_CONF = PATH_LOG_CONF +"jajuk-log4j-conf.xml"; 
+    public static final String FILE_IMAGE_CACHE = FILE_JAJUK_DIR +"/cache"; 
     
     //Command line options
     public static final String CLI_NOTASKBAR="notaskbar"; //if selected, no jajuk window at startup, only tray 

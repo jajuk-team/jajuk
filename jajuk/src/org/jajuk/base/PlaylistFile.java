@@ -527,14 +527,14 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 		            fileTrack = new java.io.File(sbFileDir.append(sb).toString());
 		            File file = FileManager.getInstance().getFileByPath(fileTrack.getAbsolutePath());
                     if ( file == null){  //check if this file is known in collection
-		                fileTrack = new java.io.File(sb.toString()); //check if given url is not absolute
+		                fileTrack = new java.io.File(sLine); //check if given url is not absolute
 		                file = FileManager.getInstance().getFileByPath(fileTrack.getAbsolutePath());
                         if ( file == null){ //no more ? leave
 		                    bUnknownDevicesMessage = true;
                             continue;
 		                }
-                        alFiles.add(file);
-		            }
+                    }
+                    alFiles.add(file);
 		        }
 		    }
 		    //display a warning message if the playlist contains unknown items

@@ -20,6 +20,9 @@
 
 package org.jajuk.util;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.FileOutputStream;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -101,7 +104,7 @@ public class DownloadManager implements ITechnicalStrings {
         ArrayList alOut = new ArrayList(20); //URL list   
         String sSearchUrl = "http://images.google.com/images?q="+URLEncoder.encode(search, "ISO-8859-1")+"&ie=ISO-8859-1&hl=en&btnG=Google+Search"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         Log.debug("Search URL: "+sSearchUrl); //$NON-NLS-1$
-        byte[] bRes = download(new URL(sSearchUrl));
+        byte[] bRes = download(new URL(sSearchUrl),false);
         if (bRes == null || bRes.length==0){
             return alOut;
         }
@@ -130,10 +133,11 @@ public class DownloadManager implements ITechnicalStrings {
 	/**
 	 * Download the resource at the given url
 	 * @param url to download
+     * @param Use cache : store file in image cache
 	 * @throws Exception
 	 * @return result as an array of bytes, null if a problem occured
 	 */
-	public static byte[] download(URL url) throws Exception{
+	public static byte[] download(URL url,boolean bUseCache) throws Exception{
 	    byte[] bOut = null;
 	    GetMethod get = null;
 	    HttpClient client = null;
@@ -151,7 +155,19 @@ public class DownloadManager implements ITechnicalStrings {
 	    get.addRequestHeader("User-Agent","Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)"); //$NON-NLS-1$ //$NON-NLS-2$
 	    get.addRequestHeader("Connection","Keep-Alive"); //$NON-NLS-1$ //$NON-NLS-2$
 	    int status = client.executeMethod(get);
-	    bOut = get.getResponseBody();
+	    if (bUseCache){
+            BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(Util.getCachePath(url)));
+            BufferedInputStream bis = new BufferedInputStream(get.getResponseBodyAsStream());
+            int i;
+            while((i = bis.read()) != -1) {
+                bos.write(i);
+            }
+            bos.close();
+            bis.close();
+        }
+        else{
+            bOut = get.getResponseBody();
+        }
 	    if (get != null && get.isRequestSent()){
 	        get.releaseConnection();
 	    }

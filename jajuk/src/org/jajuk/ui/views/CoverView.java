@@ -28,9 +28,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -52,7 +50,6 @@ import org.jajuk.Main;
 import org.jajuk.base.Album;
 import org.jajuk.base.Author;
 import org.jajuk.base.Cover;
-import org.jajuk.base.CoverRepository;
 import org.jajuk.base.Directory;
 import org.jajuk.base.Event;
 import org.jajuk.base.FIFO;
@@ -527,7 +524,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
      * @param index index of the cover to display
      *
      */
-    private void displayCover(final int index) {
+    private void displayCover(int index) {
         if(alCovers.size() == 0 || index >= alCovers.size() || index < 0){ //just a check
             alCovers.add(coverDefault); //display default cover by default
             displayCover(0);
@@ -548,7 +545,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
             if (cover.getType() == Cover.REMOTE_COVER){
                 sType = " (@)"; //Web cover //$NON-NLS-1$
             }
-            String size = CoverRepository.getInstance().getSize(cover.getURL());
+            String size = cover.getSize();
             jl = new JLabel(ii);
             jl.setMinimumSize(new Dimension(0,0)); //required for info node resizing
             jl.setToolTipText("<html>"+url.toString()+"<br>"+size+"K"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -594,7 +591,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
      * @return null (just used by the SwingWorker)
      * @throws JajukException
      */
-    private Object prepareDisplay(final int index) throws JajukException{
+    private Object prepareDisplay(int index) throws JajukException{
         int iLocalEventID = CoverView.this.iEventID;
         Log.debug("display index: "+index); //$NON-NLS-1$
         searching(true); //lookup icon
@@ -703,11 +700,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
             if (index < 0){
                 index = alCovers.size()-1;
             }
-            new Thread(){
-                public void run(){
-                    displayCurrentCover();
-                }
-            }.start();
+            displayCurrentCover();
         }
         else if(e.getSource() == jbDelete){ //delete a local cover
             Cover cover = (Cover)alCovers.get(index);
@@ -750,11 +743,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                 if (index < 0){
                     index = alCovers.size()-1;
                 }
-                new Thread(){
-                    public void run(){
-                        displayCurrentCover();
-                    }
-                }.start();
+                displayCurrentCover();
             }
         }
         else if ( e.getSource() == jbDefault){ //choose a default
@@ -822,24 +811,10 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
      */
     private void saveCover(String sFilePath,Cover cover){
         Util.waiting();
-        File file = new File(sFilePath);
         try{
-            BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
-            //we need to re-download the cover because we don't store anymore bytes in the cover object
-            byte[] b = null; 
-            //try to download cover 
-            try{
-                b = DownloadManager.download(cover.getURL());
-            }
-            catch(Exception ex1){
-                Log.error("139",ex1); //$NON-NLS-1$
-                Messages.showErrorMessage("139"); //$NON-NLS-1$
-                return;
-            }
-            //try to write file
-            bos.write(b);
-            bos.flush();
-            bos.close();
+            //copy file from cache
+            File fSource = new File(Util.getCachePath(cover.getURL()));
+            Util.copy(fSource,new File(sFilePath));
             InformationJPanel.getInstance().setMessage(Messages.getString("CoverView.11"),InformationJPanel.INFORMATIVE); //$NON-NLS-1$
         }
         catch(Exception ex){

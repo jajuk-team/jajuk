@@ -449,7 +449,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 					}
 					if ( bNeedCopy) {
 						try{
-							Util.copy(fSrcFiles[i],fileNewDir);
+							Util.copyToDir(fSrcFiles[i],fileNewDir);
 							iNbCreatedFiles ++;
 							lVolume += fSrcFiles[i].length();
 							InformationJPanel.getInstance().setMessage(new StringBuffer(Messages.getString("Device.41")). //$NON-NLS-1$

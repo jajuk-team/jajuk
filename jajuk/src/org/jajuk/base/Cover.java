@@ -20,6 +20,8 @@
 
 package org.jajuk.base;
 
+import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 import javax.swing.ImageIcon;
@@ -27,6 +29,7 @@ import javax.swing.ImageIcon;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
+import org.jajuk.util.log.Log;
 
 
 /**
@@ -48,11 +51,25 @@ public class Cover implements Comparable,ITechnicalStrings {
     /**Cover Type*/
     private int iType;
     
+    /**Associated file*/
+    private File file;
+    
     /**Image*/
     private ImageIcon image;
     
-    /**Image data*/
-    private byte[] bData;
+    /**Default cover image*/
+    private static ImageIcon iiDefaultCover = Util.getIcon(IMAGES_SPLASHSCREEN);
+    
+    /**Default URL*/
+    private static URL urlDefault;
+    static{
+        try {
+            urlDefault = new URL(IMAGES_SPLASHSCREEN);
+        }
+        catch (MalformedURLException e) {
+            Log.error(e);
+        }
+    }
      
    /**
    * Constructor
@@ -63,6 +80,14 @@ public class Cover implements Comparable,ITechnicalStrings {
         long l = System.currentTimeMillis();
         this.url = url;
         this.iType = iType;
+        if ( iType == Cover.LOCAL_COVER 
+                || iType == Cover.DEFAULT_COVER  
+                || iType == Cover.ABSOLUTE_DEFAULT_COVER){
+            this.file = new File(url.getFile());
+        }
+        else if (iType == Cover.REMOTE_COVER){
+            this.file = new File(Util.getCachePath(url));
+        }
         //if Pre-load option is enabled, load this cover
         if (ConfigurationManager.getBoolean(CONF_COVERS_PRELOAD)){
             try{
@@ -143,12 +168,25 @@ public class Cover implements Comparable,ITechnicalStrings {
         return url;
     }
     
+    /**
+     * Return cover image size
+     * @return
+     */
+    public String getSize(){
+        int iSize = (int)(Math.ceil(((double)file.length())/1024));
+        return Integer.toString(iSize);
+    }
+    
     
     /**
      * @return Returns the image.
      */
     public ImageIcon getImage() throws Exception {
-          return CoverRepository.getInstance().getImage(url,iType);
+        //default cover image is cached in memory for perfs
+        if (getURL().equals(urlDefault)){
+            return iiDefaultCover;
+        }
+        return CoverRepository.getInstance().getImage(url,iType);
     }
     
     /**
@@ -176,6 +214,11 @@ public class Cover implements Comparable,ITechnicalStrings {
        //Remote cover
        bOut = url.getFile().equals(cOther.getURL().getFile());
        return bOut;
+    }
+
+
+    public File getFile() {
+        return file;
     }
    
 }
