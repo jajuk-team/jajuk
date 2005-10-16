@@ -541,9 +541,11 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
             jbDelete.setEnabled(false);
         }
         if (url != null){
+            jbSave.setEnabled(false);
             String sType = " (L)"; //local cover //$NON-NLS-1$
             if (cover.getType() == Cover.REMOTE_COVER){
                 sType = " (@)"; //Web cover //$NON-NLS-1$
+                jbSave.setEnabled(true);
             }
             String size = cover.getSize();
             jl = new JLabel(ii);
@@ -706,7 +708,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
             Cover cover = (Cover)alCovers.get(index);
             //show confirmation message if required
             if ( ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_DELETE_COVER)){
-                int iResu = Messages.getChoice(Messages.getString("Confirmation_delete_cover")+" : "+cover.getURL().toString(),JOptionPane.WARNING_MESSAGE);  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                int iResu = Messages.getChoice(Messages.getString("Confirmation_delete_cover")+" : "+cover.getURL().getFile(),JOptionPane.WARNING_MESSAGE);  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                 if (iResu != JOptionPane.YES_OPTION){
                     return;
                 }
@@ -752,77 +754,89 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
             String sFilename = Util.getOnlyFile(cover.getURL().toString());
             if (cover.getType() == Cover.REMOTE_COVER){
                 String sFilePath = fDir.getPath()+"/"+sFilename; //$NON-NLS-1$
-                saveCover(sFilePath,cover);
+                try{
+                    //copy file from cache
+                    File fSource = new File(Util.getCachePath(cover.getURL()));
+                    Util.copy(fSource,new File(sFilePath));
+                    InformationJPanel.getInstance().setMessage(Messages.getString("CoverView.11"),InformationJPanel.INFORMATIVE); //$NON-NLS-1$
+                }
+                catch(Exception ex){
+                    Log.error("024",ex); //$NON-NLS-1$
+                    Messages.showErrorMessage("024"); //$NON-NLS-1$
+                }
             }
             //then make it the default cover in this directory
             Directory dir = FIFO.getInstance().getCurrentFile().getDirectory(); 
             dir.setProperty("default_cover",sFilename); //$NON-NLS-1$
         }
-        else if(e.getSource() == jbSave || e.getSource() == jbSaveAs ){ //save a save with its original name
+        else if(e.getSource() == jbSave ){ //save a file with its original name
             new Thread(){
                 public void run() {
                     Cover cover = (Cover)alCovers.get(index);
+                    //should not happen, only remote covers here
                     if (cover.getType() != Cover.REMOTE_COVER){ 
-                        Messages.showErrorMessage("130",cover.getURL().toString()); //$NON-NLS-1$
+                        Log.debug("Try to save a local cover");//$NON-NLS-1$
                         return;
                     }
                     String sFilePath = null;
-                    if (e.getSource() == jbSave){
-                        sFilePath = fDir.getPath()+"/"+Util.getOnlyFile(cover.getURL().toString()); //$NON-NLS-1$
+                    sFilePath = fDir.getPath()+"/"+Util.getOnlyFile(cover.getURL().toString()); //$NON-NLS-1$
+                    try{
+                        //copy file from cache
+                        File fSource = new File(Util.getCachePath(cover.getURL()));
+                        Util.copy(fSource,new File(sFilePath));
+                        InformationJPanel.getInstance().setMessage(Messages.getString("CoverView.11"),InformationJPanel.INFORMATIVE); //$NON-NLS-1$
                     }
-                    else if(e.getSource() == jbSaveAs){
-                        JFileChooser jfchooser = new JFileChooser(fDir);
-                        FileFilter filter = new FileFilter() {
-                            public boolean accept(File file) {
-                                String sExt =Util.getExtension(file); 
-                                if (sExt.equals("gif") || sExt.equals("png") || sExt.equals("jpg") ){ //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                    return true;
-                                }
-                                return false;
-                            }
-                            
-                            public String getDescription() {
-                                return "*.gif,*.png,*.jpg"; //$NON-NLS-1$
-                            }
-                        };
-                        jfchooser.setFileFilter(filter);
-                        jfchooser.setDialogTitle(Messages.getString("CoverView.10")); //$NON-NLS-1$
-                        jfchooser.setSelectedFile(new File(Util.getOnlyFile(cover.getURL().toString())));
-                        int returnVal = jfchooser.showSaveDialog(Main.getWindow());
-                        if (returnVal == JFileChooser.APPROVE_OPTION) {
-                            sFilePath = jfchooser.getSelectedFile().getAbsolutePath();
-                        }
-                        else{
-                            return;
-                        }
+                    catch(Exception ex){
+                        Log.error("024",ex); //$NON-NLS-1$
+                        Messages.showErrorMessage("024"); //$NON-NLS-1$
                     }
-                    saveCover(sFilePath,cover);
                 }
             }.start();
         }
-        
-    }
-    
-    
-    /**
-     * Save a cover on disk 
-     * @param sFilePath URL of the future file
-     * @param cover Jajuk cover to be saved
-     */
-    private void saveCover(String sFilePath,Cover cover){
-        Util.waiting();
-        try{
-            //copy file from cache
-            File fSource = new File(Util.getCachePath(cover.getURL()));
-            Util.copy(fSource,new File(sFilePath));
-            InformationJPanel.getInstance().setMessage(Messages.getString("CoverView.11"),InformationJPanel.INFORMATIVE); //$NON-NLS-1$
-        }
-        catch(Exception ex){
-            Log.error("024",ex); //$NON-NLS-1$
-            Messages.showErrorMessage("024"); //$NON-NLS-1$
-        }
-        finally{
-            Util.stopWaiting();
+        else if(e.getSource() == jbSaveAs ){ //save a file as... (can be local now) 
+            new Thread(){
+                public void run() {
+                    Cover cover = (Cover)alCovers.get(index);
+                    JFileChooser jfchooser = new JFileChooser(fDir);
+                    FileFilter filter = new FileFilter() {
+                        public boolean accept(File file) {
+                            String sExt =Util.getExtension(file); 
+                            if (sExt.equals("gif") || sExt.equals("png") || sExt.equals("jpg") ){ //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                return true;
+                            }
+                            return false;
+                        }
+                        
+                        public String getDescription() {
+                            return "*.gif,*.png,*.jpg"; //$NON-NLS-1$
+                        }
+                    };
+                    jfchooser.setFileFilter(filter);
+                    jfchooser.setDialogTitle(Messages.getString("CoverView.10")); //$NON-NLS-1$
+                    jfchooser.setSelectedFile(cover.getFile());
+                    int returnVal = jfchooser.showSaveDialog(Main.getWindow());
+                    File fNew = null;
+                    if (returnVal == JFileChooser.APPROVE_OPTION ) {
+                        fNew  = jfchooser.getSelectedFile();
+                        //if user try to save as without changinng file name
+                        if (fNew.getAbsolutePath().equals(cover.getFile().getAbsolutePath())){
+                            return;
+                        }
+                        try {
+                            Util.copy(cover.getFile(),fNew);
+                            InformationJPanel.getInstance().setMessage(Messages.getString("CoverView.11"),InformationJPanel.INFORMATIVE); //$NON-NLS-1$
+                        }
+                        catch(Exception ex){
+                            Log.error("024",ex); //$NON-NLS-1$
+                            Messages.showErrorMessage("024"); //$NON-NLS-1$
+                        }
+                    }
+                    else{
+                        return;
+                    }
+                    
+                }
+            }.start();
         }
         
     }

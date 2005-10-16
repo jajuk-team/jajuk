@@ -161,15 +161,8 @@ public class ConfigurationManager implements ITechnicalStrings{
 		else{
 		    properties.put(CONF_OPTIONS_LOG_LEVEL,Integer.toString(Log.WARNING));    
 		}
-		//set default language without properties file available (normaly only at install)
-		String sLanguage = System.getProperty("user.language"); //$NON-NLS-1$
-		if (Messages.getInstance().getLocals().contains(sLanguage)){ //user language exists in jajuk, take it as default
-			properties.put(CONF_OPTIONS_LANGUAGE,sLanguage);
-		}
-		else{ //user language is unknown, take english as a default, user will be able to change it later anyway
-			properties.put(CONF_OPTIONS_LANGUAGE,"en"); //$NON-NLS-1$
-		}
-		properties.put(CONF_OPTIONS_TAB,"0"); //$NON-NLS-1$
+		properties.put(CONF_OPTIONS_LANGUAGE,"en"); //$NON-NLS-1$
+        properties.put(CONF_OPTIONS_TAB,"0"); //$NON-NLS-1$
 		properties.put(CONF_OPTIONS_INTRO_BEGIN,"0"); //$NON-NLS-1$
 		properties.put(CONF_OPTIONS_INTRO_LENGTH,"20"); //$NON-NLS-1$
 		properties.put(CONF_OPTIONS_LNF,LNF_PLASTICXP);
@@ -219,6 +212,20 @@ public class ConfigurationManager implements ITechnicalStrings{
         properties.put(CONF_LOGICAL_TABLE_EDITION,FALSE);
     }
 	
+    /**
+     * Set default language without properties file available (normaly only at install)
+     *
+     */
+	public void setSystemLocal(){
+	    String sLanguage = System.getProperty("user.language"); //$NON-NLS-1$
+	    if (Messages.getInstance().getLocals().contains(sLanguage)){ //user language exists in jajuk, take it as default
+	        properties.put(CONF_OPTIONS_LANGUAGE,sLanguage);
+	    }
+	    else{ //user language is unknown, take english as a default, user will be able to change it later anyway
+	        properties.put(CONF_OPTIONS_LANGUAGE,"en"); //$NON-NLS-1$
+	    }
+	}
+    
 	/**
 	 * Set a property
 	 * @param sName
@@ -244,7 +251,7 @@ public class ConfigurationManager implements ITechnicalStrings{
 		try {
 			properties.load(new FileInputStream(FILE_CONFIGURATION));
 		} catch (IOException e) {
-			Log.error("114", e); //$NON-NLS-1$
+			e.printStackTrace(); //do not use log system here
 			Messages.showErrorMessage("114"); //$NON-NLS-1$
 		}
 	}

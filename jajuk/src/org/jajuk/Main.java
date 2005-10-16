@@ -155,10 +155,40 @@ public class Main implements ITechnicalStrings {
                 }
             }
 		    
-		    //set exec location path ( normal or debug )
+            //set exec location path ( normal or debug )
 			Util.setExecLocation(bIdeMode);//$NON-NLS-1$ 
-			
-            //Launch splashscreen 
+	
+             //perform initial checkups and create needed files
+            initialCheckups();
+           
+            // log startup depends on : setExecLocation, initialCheckups 
+            Log.getInstance();
+            Log.setVerbosity(Log.DEBUG);
+            
+            //configuration manager startup. Depends on: initialCheckups
+            org.jajuk.util.ConfigurationManager.getInstance();
+            
+            //Register locals, needed by ConfigurationManager to choose default language
+            Messages.getInstance().registerLocal("en","Language_desc_en"); //$NON-NLS-1$ //$NON-NLS-2$
+            Messages.getInstance().registerLocal("fr","Language_desc_fr"); //$NON-NLS-1$ //$NON-NLS-2$
+            Messages.getInstance().registerLocal("de","Language_desc_de"); //$NON-NLS-1$ //$NON-NLS-2$
+            Messages.getInstance().registerLocal("it","Language_desc_it"); //$NON-NLS-1$ //$NON-NLS-2$
+            Messages.getInstance().registerLocal("sv","Language_desc_sv"); //$NON-NLS-1$ //$NON-NLS-2$
+            Messages.getInstance().registerLocal("nl","Language_desc_nl"); //$NON-NLS-1$ //$NON-NLS-2$
+            Messages.getInstance().registerLocal("zh","Language_desc_zh"); //$NON-NLS-1$ //$NON-NLS-2$
+            Messages.getInstance().registerLocal("es","Language_desc_es"); //$NON-NLS-1$ //$NON-NLS-2$
+            Messages.getInstance().registerLocal("ca","Language_desc_ca"); //$NON-NLS-1$ //$NON-NLS-2$
+            
+            //Set default local (from system). Depends on registerLocal 
+            ConfigurationManager.getInstance().setSystemLocal();
+            
+            //Load user configuration. Depends on: initialCheckups, setSystemLocal
+            org.jajuk.util.ConfigurationManager.load();
+            
+            //Set actual log verbosity. Depends on: ConfigurationManager.load
+            Log.setVerbosity(Integer.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_LOG_LEVEL)));
+            
+            //Launch splashscreen. Depends on: log.setVerbosity, configurationManager.load (for local) 
             SwingUtilities.invokeAndWait(new Runnable() {
                 public void run() {
                     try {
@@ -169,40 +199,13 @@ public class Main implements ITechnicalStrings {
                     }
                 }
             });
-        
-            //configuration manager startup
-            org.jajuk.util.ConfigurationManager.getInstance();
-        
-            //Load user configuration
-            org.jajuk.util.ConfigurationManager.load();
-        
-            //Set locale
-            Messages.getInstance().setLocal(ConfigurationManager.getProperty(CONF_OPTIONS_LANGUAGE));
             
             //Display progress
             sc.setProgress(0,Messages.getString("SplashScreen.0")); //$NON-NLS-1$
-            
-			//check for jajuk home directory presence, needed by log
-			File fJajukDir = new File(FILE_JAJUK_DIR);
-			if (!fJajukDir.exists() || !fJajukDir.isDirectory()) {
-				fJajukDir.mkdir(); //create the directory if it doesn't exist
-			}
-			
-			// log startup
-			Log.getInstance();
-			Log.setVerbosity(Log.DEBUG);
-			
-			//Register locals, needed by ConfigurationManager to choose default language
-			Messages.getInstance().registerLocal("en","Language_desc_en"); //$NON-NLS-1$ //$NON-NLS-2$
-			Messages.getInstance().registerLocal("fr","Language_desc_fr"); //$NON-NLS-1$ //$NON-NLS-2$
-			Messages.getInstance().registerLocal("de","Language_desc_de"); //$NON-NLS-1$ //$NON-NLS-2$
-			Messages.getInstance().registerLocal("it","Language_desc_it"); //$NON-NLS-1$ //$NON-NLS-2$
-			Messages.getInstance().registerLocal("sv","Language_desc_sv"); //$NON-NLS-1$ //$NON-NLS-2$
-			Messages.getInstance().registerLocal("nl","Language_desc_nl"); //$NON-NLS-1$ //$NON-NLS-2$
-			Messages.getInstance().registerLocal("zh","Language_desc_zh"); //$NON-NLS-1$ //$NON-NLS-2$
-			Messages.getInstance().registerLocal("es","Language_desc_es"); //$NON-NLS-1$ //$NON-NLS-2$
-			Messages.getInstance().registerLocal("ca","Language_desc_ca"); //$NON-NLS-1$ //$NON-NLS-2$
-			
+            			
+            //Set locale. setSystemLocal
+            Messages.getInstance().setLocal(ConfigurationManager.getProperty(CONF_OPTIONS_LANGUAGE));
+            			
 			//Registers Item managers
             ItemManager.registerItemManager(org.jajuk.base.Album.class,AlbumManager.getInstance());
             ItemManager.registerItemManager(org.jajuk.base.Author.class,AuthorManager.getInstance());
@@ -229,13 +232,7 @@ public class Main implements ITechnicalStrings {
             LNFManager.register(LNF_INFONODE,LNF_INFONODE_CLASS);
             LNFManager.register(LNF_SQUARENESS,LNF_SQUARENESS_CLASS);
             LNFManager.register(LNF_TINY,LNF_TINY_CLASS);
-            		
-			//perform initial checkups
-			initialCheckups();
-				
-			//Set actual log verbosity
-			Log.setVerbosity(Integer.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_LOG_LEVEL)));
-
+            			
 			//Display user system configuration
 			Log.debug(System.getProperties().toString());
 			
@@ -349,15 +346,15 @@ public class Main implements ITechnicalStrings {
 	 * @throws Exception
 	 */
 	private static void initialCheckups() throws Exception {
-		//check for configuration file presence
+	    //check for jajuk directory
+        File fJajukDir = new File(FILE_JAJUK_DIR);
+	    if (!fJajukDir.exists()) {
+	        fJajukDir.mkdir(); //create the directory if it doesn't exist
+	    }
+	    //check for configuration file presence
 		File fConfig = new File(FILE_CONFIGURATION);
 		if (!fConfig.exists()) { //if config file doesn't exit, create it with default values
 			org.jajuk.util.ConfigurationManager.commit();
-		}
-		//check for collection.xml file
-		File fCollection = new File(FILE_COLLECTION);
-		if (!fCollection.exists()) { //if collection file doesn't exit, create it empty
-			Collection.commit(FILE_COLLECTION);
 		}
 		//check for history.xml file
 		File fHistory = new File(FILE_HISTORY);
@@ -494,7 +491,7 @@ public class Main implements ITechnicalStrings {
         //check if previous exit was OK
         boolean bParsingOK = true;
         try{
-            if (fCollection.exists() && fCollectionExitProof.exists()){
+            if (fCollectionExit.exists() && fCollectionExitProof.exists()){
                 fCollectionExitProof.delete(); //delete this file created just after collection exit commit
                 Collection.load(FILE_COLLECTION_EXIT);
                 //parsing of collection exit ok, use this collection file as final collection
