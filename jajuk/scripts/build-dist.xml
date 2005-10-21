@@ -3,7 +3,7 @@
 
 <project default='all' name='jajuk' basedir='..'>
   <!-- Only Explicit Release number-->
-  <property name='version' value='1.0rc5'/>
+  <property name='version' value='1.0rc6'/>
   <property name='test' value='-test'/>
   <property name='rootdir' value='/tmp/jajuk-dist'/>
   <property name='distdir' value='${rootdir}/jajuk'/>
@@ -85,6 +85,7 @@
   	<!--Izpack specific -->
      <copy todir='${izpackdir}' >
      	<fileset file='${distfiles}/packaging/IzPack/jajuk.izpack'/>
+     	<fileset file='${distfiles}/packaging/IzPack/shortcutSpec.xml'/>
      </copy>
 	<!--RPM specific--> 
     <!-- Create structure-->
@@ -325,7 +326,11 @@
   	<include name='jajuk'/>
 	<replacetoken>TEST_FLAG_REPLACED_BY_ANT</replacetoken>
  </replace>
- </target>
+ <replace dir='${izpackdir}' value='${test}'>
+  	<include name='shortcutSpec.xml'/>
+  	<replacetoken>TEST_FLAG_REPLACED_BY_ANT</replacetoken>
+ </replace>
+</target>
  
  
   <target name='javadoc'>

@@ -22,6 +22,7 @@ package org.jajuk.util;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -138,7 +139,13 @@ public class DownloadManager implements ITechnicalStrings {
 	 * @return result as an array of bytes, null if a problem occured
 	 */
 	public static byte[] download(URL url,boolean bUseCache) throws Exception{
-	    byte[] bOut = null;
+        byte[] bOut = null;
+	    //check if file is not already downloaded or being downloaded
+        if (bUseCache){
+            if (new File(Util.getCachePath(url)).exists()){
+                return bOut;
+            }
+        }
 	    GetMethod get = null;
 	    HttpClient client = null;
 	    int iConTO = 1000*ConfigurationManager.getInt(CONF_NETWORK_CONNECTION_TO);
@@ -156,6 +163,7 @@ public class DownloadManager implements ITechnicalStrings {
 	    get.addRequestHeader("Connection","Keep-Alive"); //$NON-NLS-1$ //$NON-NLS-2$
 	    int status = client.executeMethod(get);
 	    if (bUseCache){
+            
             BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(Util.getCachePath(url)));
             BufferedInputStream bis = new BufferedInputStream(get.getResponseBodyAsStream());
             int i;

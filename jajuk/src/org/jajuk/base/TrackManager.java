@@ -109,14 +109,19 @@ public class TrackManager extends ItemManager implements Observer{
      * @param sName
      */
     public synchronized Track registerTrack(String sId, String sName, Album album, Style style, Author author, long length, long lYear, Type type) {
-        if (!hmItems.containsKey(sId)) {
-            Track track = new Track(sId, sName, album, style, author, length, lYear, type);
-            hmItems.put(sId, track);
-            return track;
-        }
-        else{
+        if (hmItems.containsKey(sId)) {
             return (Track)hmItems.get(sId);
         }
+        Track track = null;
+        if (hmIdSaveItems.containsKey(sId)){
+            track = (Track)hmIdSaveItems.get(sId);
+        }
+        else{
+            track = new Track(sId, sName, album, style, author, length, lYear, type);
+            saveItem(track);
+        }
+        hmItems.put(sId, track);
+        return track;
     }
     
     /**
@@ -127,6 +132,10 @@ public class TrackManager extends ItemManager implements Observer{
      *
      */
     public synchronized Track changeTrackAlbum(Track track,String sNewAlbum)  throws JajukException{
+        //check there is actually a change
+        if (track.getAlbum().getName2().equals(sNewAlbum)){
+            return track;
+        }
         //check if files are accessible
         ArrayList<File> alReady = track.getReadyFiles(); 
         if (alReady.size() == 0){
@@ -140,8 +149,6 @@ public class TrackManager extends ItemManager implements Observer{
         }
         //register the new album
         Album newAlbum = AlbumManager.getInstance().registerAlbum(sNewAlbum);
-        //reset previous properties like exp
-        newAlbum.cloneProperties(track.getAlbum());
         Track newTrack = registerTrack(track.getName(),newAlbum,track.getStyle(),track.getAuthor(),track.getLength(),
             track.getYear(),track.getType());
         postChange(track,newTrack);
@@ -156,6 +163,10 @@ public class TrackManager extends ItemManager implements Observer{
      * @return new track
      */
     public synchronized Track changeTrackAuthor(Track track,String sNewAuthor)  throws JajukException{
+        //check there is actually a change
+        if (track.getAuthor().getName2().equals(sNewAuthor)){
+            return track;
+        }
         //check if files are accessible
         ArrayList<File> alReady = track.getReadyFiles(); 
         if (alReady.size() == 0){
@@ -169,8 +180,6 @@ public class TrackManager extends ItemManager implements Observer{
         }
         //register the new item
         Author newAuthor = AuthorManager.getInstance().registerAuthor(sNewAuthor);
-        //reset previous properties like exp
-        newAuthor.cloneProperties(track.getAuthor());
         Track newTrack = registerTrack(track.getName(),track.getAlbum(),track.getStyle(),
             newAuthor,track.getLength(),track.getYear(),track.getType());
         postChange(track,newTrack);
@@ -185,6 +194,10 @@ public class TrackManager extends ItemManager implements Observer{
      * @return new track
      */
     public synchronized Track changeTrackStyle(Track track,String sNewStyle) throws JajukException{
+        //check there is actually a change
+        if (track.getStyle().getName2().equals(sNewStyle)){
+            return track;
+        }
         //check if files are accessible
         ArrayList<File> alReady = track.getReadyFiles(); 
         if (alReady.size() == 0){
@@ -198,8 +211,6 @@ public class TrackManager extends ItemManager implements Observer{
         }
         //register the new item
         Style newStyle = StyleManager.getInstance().registerStyle(sNewStyle);
-        //reset previous properties like exp
-        newStyle.cloneProperties(track.getAuthor());
         Track newTrack = registerTrack(track.getName(),track.getAlbum(),newStyle,
             track.getAuthor(),track.getLength(),track.getYear(),track.getType());
         postChange(track,newTrack);
@@ -214,6 +225,10 @@ public class TrackManager extends ItemManager implements Observer{
      * @return new track or null if wronf format
      */
     public synchronized Track changeTrackYear(Track track,long lNewItem)  throws JajukException{
+        //check there is actually a change
+        if (track.getYear() == lNewItem){
+            return track;
+        }
         if (lNewItem <0 || lNewItem > 10000){ //jajuk supports years till year 10000 !
             Messages.showErrorMessage("137"); //$NON-NLS-1$
             throw new JajukException("137"); //$NON-NLS-1$
@@ -242,6 +257,10 @@ public class TrackManager extends ItemManager implements Observer{
      * @return new track or null if wronf format
      */
     public synchronized Track changeTrackComment(Track track,String sNewItem)  throws JajukException{
+        //check there is actually a change
+        if (track.getComment().equals(sNewItem)){
+            return track;
+        }
         //check if files are accessible
         ArrayList<File> alReady = track.getReadyFiles(); 
         if (alReady.size() == 0){
@@ -265,6 +284,10 @@ public class TrackManager extends ItemManager implements Observer{
      * @return new track or null if wrong format
      */
     public synchronized Track changeTrackRate(Track track,long lNew)  throws JajukException{
+        //check there is actually a change
+        if (track.getRate() == lNew){
+            return track;
+        }
         //check format
         if (lNew <0 ){
             Messages.showErrorMessage("137"); //$NON-NLS-1$
@@ -281,6 +304,10 @@ public class TrackManager extends ItemManager implements Observer{
      * @return new track or null if wronf format
      */
     public synchronized Track changeTrackOrder(Track track,long lNewOrder) throws JajukException{
+        //check there is actually a change
+        if (track.getOrder() == lNewOrder){
+            return track;
+        }
         //check format
         if (lNewOrder <0){
             Messages.showErrorMessage("137"); //$NON-NLS-1$
@@ -308,6 +335,10 @@ public class TrackManager extends ItemManager implements Observer{
      * @return new track
      */
     public synchronized Track changeTrackName(Track track,String sNewItem) throws JajukException{
+        //check there is actually a change
+        if (track.getName().equals(sNewItem)){
+            return track;
+        }
         //check if files are accessible
         ArrayList<File> alReady = track.getReadyFiles(); 
         if (alReady.size() == 0){
@@ -327,10 +358,12 @@ public class TrackManager extends ItemManager implements Observer{
 
     
     private void updateFilesReferences(Track oldTrack,Track newTrack){
+        //Reset files property before adding new files
+       // newTrack.removeProperty(XML_FILES);
         for (File file:oldTrack.getReadyFiles()){
             file.setTrack(newTrack);//set new track for the chnaged file
             newTrack.addFile(file); //add changed file
-            oldTrack.removeFile(file); //remove fiel from old track
+            oldTrack.removeFile(file); //remove file from old track
         }
     }
     
@@ -338,11 +371,8 @@ public class TrackManager extends ItemManager implements Observer{
     private void postChange(Track track,Track newTrack){
         //re apply old properties from old item
         newTrack.cloneProperties(track);
-        //Reset files property before adding new files
-        newTrack.removeProperty(XML_FILES);
         //update files references
         updateFilesReferences(track,newTrack);
-        TrackManager.getInstance().restorePropertiesAfterRefresh(newTrack);
         if (track.getFiles().size() == 0){ //normal case: old track has no more associated tracks, remove it
             remove(track.getId());//remove old track
             bChangePbm = false;

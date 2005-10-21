@@ -84,16 +84,7 @@ public class JajukTable extends JXTable implements ITechnicalStrings{
 		this(model,true);
 	}
     
-    
-	public int getRowModelIndex(int row){
-       return  convertRowIndexToModel(row);
-    }
-    
-    public Object getModelValueAt(int row,int col){
-        int i = getRowModelIndex(row);
-        return getModel().getValueAt(i,col);
-    }
-    
+        
     public void setModel(TableModel model){
         Iterator it = ((DefaultTableColumnModelExt)getColumnModel()).getAllColumns().iterator();
         while (it.hasNext()){

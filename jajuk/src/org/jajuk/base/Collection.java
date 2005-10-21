@@ -373,10 +373,9 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
                      }
                  }
                  //Idem for order
-                lYear = ((Long)TrackManager.getInstance().getMetaInformation(XML_TRACK_ORDER).getDefaultValue());
-                int iOrder = (int)lYear;
+                long lOrder = 0l;
                 try{
-                    iOrder = Integer.parseInt(attributes.getValue(attributes.getIndex(XML_TRACK_ORDER)));
+                    lOrder = Long.parseLong(attributes.getValue(attributes.getIndex(XML_TRACK_ORDER)));
                 }
                 catch(Exception e){
                     if (Log.isDebugEnabled()){
@@ -390,7 +389,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 	            track.setHits(Long.parseLong(attributes.getValue(attributes.getIndex(XML_TRACK_HITS))));
 	            track.setAdditionDate(dAdditionDate);
 	            track.setComment(attributes.getValue(attributes.getIndex(XML_TRACK_COMMENT)));
-                track.setOrder(iOrder);
+                track.setOrder(lOrder);
                 track.populateProperties(attributes);
             }
 	        else if (XML_DIRECTORY.equals(sQName)){

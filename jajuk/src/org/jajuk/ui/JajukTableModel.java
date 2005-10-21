@@ -64,6 +64,9 @@ public abstract class JajukTableModel extends DefaultTableModel  implements ITec
     /**Column names*/
     Vector vColNames  = new Vector(10);
     
+    /**Last value used for undo*/
+    Object oLast = null;
+    
     
     public JajukTableModel(int iNumberStandardRows){
         this.iNumberStandardRows = iNumberStandardRows;
@@ -86,11 +89,21 @@ public abstract class JajukTableModel extends DefaultTableModel  implements ITec
         return oItems[iRow];
     }
     
+    /** 
+     * Set item at given position
+     * @param iRow
+     * @param IPropertyabe item to set
+     */
+    public void setItemAt(int iRow,IPropertyable item){
+        oItems[iRow]=item;
+    }
+        
     public synchronized Object getValueAt(int rowIndex, int columnIndex) {
         return oValues[rowIndex][columnIndex];
     }
     
     public  synchronized void setValueAt(Object oValue, int rowIndex, int columnIndex) {
+        oLast = oValues[rowIndex][columnIndex];
         oValues[rowIndex][columnIndex] = oValue;
         fireTableCellUpdated(rowIndex,columnIndex);
     }
@@ -101,6 +114,17 @@ public abstract class JajukTableModel extends DefaultTableModel  implements ITec
     public int getColumnCount() {
         return vColNames.size();
     }
+    
+    /**
+     * Undo last change
+     *
+     */
+    public void undo(int rowIndex, int columnIndex) {
+        if (oLast != null){
+            oValues[rowIndex][columnIndex] = oLast;
+        }
+    }
+    
     
     public String getColumnName(int column){
         return (String)vColNames.get(column);

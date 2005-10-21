@@ -31,6 +31,7 @@ import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.Util;
+import org.jajuk.util.error.CannotRenameException;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
@@ -89,10 +90,17 @@ public class FileManager extends ItemManager implements Observer{
 	public synchronized File registerFile(String sId, String sName, Directory directory, 
             Track track, long lSize, long lQuality) {
 		if ( !hmItems.containsKey(sId)){
-			File file = new File(sId, sName, directory, track, lSize, lQuality);
-			hmItems.put(sId,file);
+			File file = null;
+            if (hmIdSaveItems.containsKey(sId)){
+                file = (File)hmIdSaveItems.get(sId);
+            }
+            else{
+                file = new File(sId, sName, directory, track, lSize, lQuality);
+                saveItem(file);
+            }
+            hmItems.put(sId,file);
 			alSortedFiles.add(file);
-			if ( directory.getDevice().isRefreshing() && Log.isDebugEnabled()){
+            if ( directory.getDevice().isRefreshing() && Log.isDebugEnabled()){
 				Log.debug("registrated new file: "+ file); //$NON-NLS-1$
 			}
 		}
@@ -112,8 +120,7 @@ public class FileManager extends ItemManager implements Observer{
         }
         //check if this file still exists
         if (!fileOld.getIO().exists()){
-            Messages.showErrorMessage("135"); //$NON-NLS-1$
-            throw new JajukException("135"); //$NON-NLS-1$
+            throw new CannotRenameException("135"); //$NON-NLS-1$
         }
         java.io.File fileNew = new java.io.File(fileOld.getIO().getParentFile().getAbsolutePath()
 	        +java.io.File.separator+sNewName);
@@ -128,24 +135,20 @@ public class FileManager extends ItemManager implements Observer{
 	    fNew.setId(sNewId); //reset new id and name
         fNew.setName(sNewName);
         //check file name and extension
-	    if (fileNew.getName().lastIndexOf((int)'.') != fileNew.getName().indexOf((int)'.')//just one '.'
-	            || !(Util.getExtension(fileNew).equals(Util.getExtension(fileOld.getIO())))){ //no extension change
-	        Messages.showErrorMessage("134"); //$NON-NLS-1$
-	        throw new JajukException("134"); //$NON-NLS-1$
+	    if (!(Util.getExtension(fileNew).equals(Util.getExtension(fileOld.getIO())))){ //no extension change
+	        throw new CannotRenameException("134"); //$NON-NLS-1$
 	    }
 	    //check if futur file exists
 	    if (fileNew.exists()){
-	        Messages.showErrorMessage("134"); //$NON-NLS-1$
-	        throw new JajukException("134"); //$NON-NLS-1$
-	    }
+	        throw new CannotRenameException("134"); //$NON-NLS-1$
+        }
 	    //try to rename file on disk
 	    try{
 	        fileOld.getIO().renameTo(fileNew);
 	    }
 	    catch(Exception e){
-	        Messages.showErrorMessage("134"); //$NON-NLS-1$
-	        throw new JajukException("134"); //$NON-NLS-1$
-	    }
+	        throw new CannotRenameException("134"); //$NON-NLS-1$
+        }
 	    //OK, remove old file and register this new file
         removeFile(fileOld);
         if ( !hmItems.containsKey(sNewId)){

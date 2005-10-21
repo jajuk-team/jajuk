@@ -145,6 +145,9 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
     JMenuItem jmiPlaylistFileDelete;
     JMenuItem jmiPlaylistFileProperties;
     
+    /** Used to differentiate user action tree collapse from code tree colapse**/
+    private boolean bAutoCollapse = false;
+    
     /*
      * (non-Javadoc)
      * 
@@ -674,11 +677,11 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         jtree.addTreeExpansionListener(new TreeExpansionListener() {
             public void treeCollapsed(TreeExpansionEvent event) {
                 Object o = event.getPath().getLastPathComponent(); 
-                if (o instanceof DirectoryNode){
+                if (o instanceof DirectoryNode && !bAutoCollapse){
                     Directory dir = ((DirectoryNode)o).getDirectory(); 
                     dir.removeProperty(XML_EXPANDED);
                 }
-                else if (o instanceof DeviceNode){
+                else if (o instanceof DeviceNode && !bAutoCollapse){
                     Device device = ((DeviceNode)o).getDevice();
                     device.removeProperty(XML_EXPANDED);
                 }
@@ -686,11 +689,11 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
             
             public void treeExpanded(TreeExpansionEvent event) {
                 Object o = event.getPath().getLastPathComponent(); 
-                if (o instanceof DirectoryNode){
+                if (o instanceof DirectoryNode && !bAutoCollapse){
                     Directory dir = ((DirectoryNode)o).getDirectory(); 
                     dir.setProperty(XML_EXPANDED,true); //$NON-NLS-1$
                 }
-                else if (o instanceof DeviceNode){
+                else if (o instanceof DeviceNode && !bAutoCollapse){
                     Device device = ((DeviceNode)o).getDevice();
                     device.setProperty(XML_EXPANDED,true); //$NON-NLS-1$
                 }
@@ -978,6 +981,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
                 }
                 public void finished() {
                     SwingUtilities.updateComponentTreeUI(jtree);
+                    bAutoCollapse = true;
                     //Do not collapse unmounted devices for this event (common), we want to keep unmounted devices expanded
                     if (subject.equals(EVENT_DEVICE_REFRESH)){
                         expand(false);
@@ -985,6 +989,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
                     else{
                         expand(true);
                     }
+                    bAutoCollapse = false;
                     int i = jspTree.getVerticalScrollBar().getValue();
                     jspTree.getVerticalScrollBar().setValue(i);
                 }

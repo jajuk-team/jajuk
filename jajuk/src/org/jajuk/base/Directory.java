@@ -132,7 +132,9 @@ public class Directory extends PropertyAdapter implements Comparable{
      * @param directory
      */
     public void addDirectory(Directory directory) {
-        alDirectories.add(directory);
+        if (!alDirectories.contains(directory)){
+            alDirectories.add(directory);    
+        }
     }
     
     /**
@@ -230,6 +232,9 @@ public class Directory extends PropertyAdapter implements Comparable{
      * @param
      */
     public void scan() {
+        //clear directory files because it have been restored before call by device class
+        alFiles.clear();
+        alPlaylistFiles.clear();
         java.io.File[] files = getFio().listFiles(new JajukFileFilter(false, true));
         if (files == null || files.length==0){  //none file, leave
             return;
@@ -241,32 +246,21 @@ public class Directory extends PropertyAdapter implements Comparable{
                 }
                 boolean bIsMusic = (Boolean)TypeManager.getInstance().getTypeByExtension(Util.getExtension(files[i])).getValue(XML_TYPE_IS_MUSIC);
                 if (bIsMusic) {
-                    //check the file is not already known in old database
-                    org.jajuk.base.File fileRef = null;
                     String sId = MD5Processor.hash(new StringBuffer(getDevice().getName()).append(getDevice().getUrl()).append(getRelativePath()).append(files[i].getName()).toString());
-                    Iterator it = TrackManager.getInstance().getItems().iterator();
-                    Track track = null;
-                    while (it.hasNext()){
-                        track = (Track)it.next();
-                        Iterator it2 =  track.getFiles().iterator();
-                        while (it2.hasNext()){
-                            org.jajuk.base.File file = (org.jajuk.base.File)it2.next();
-                            if (file.getId().equals(sId)){
-                                fileRef = file;
-                                break;
-                            }
-                        }
-                    }
+                    //check the file is not already known in old database
+                    org.jajuk.base.File fileRef = (org.jajuk.base.File)FileManager.getInstance().restoreItemAfterRefresh(sId);
                     if (fileRef == null){  //new file
                         device.iNbNewFiles ++;  //stats
                     }
-                    else if ( !ConfigurationManager.getBoolean(CONF_TAGS_DEEP_SCAN)){  //read tag data from database, no real read from file for performances reasons if only the deep scan is disable{
+                    //read tag data from database, no real read from file for performances reasons if only the deep scan is disable
+                    else if ( !ConfigurationManager.getBoolean(CONF_TAGS_DEEP_SCAN)){  
                         org.jajuk.base.File file = FileManager.getInstance().registerFile(fileRef.getId(),fileRef.getName(), 
                             this, fileRef.getTrack(), fileRef.getSize(),fileRef.getQuality());
+                        //add file to current directory
                         addFile(file);
-                        FileManager.getInstance().restorePropertiesAfterRefresh(file);
                         continue;
                     }
+                    //New file or deep scan case
                     Tag tag = new Tag(files[i]);
                     String sTrackName = tag.getTrackName();
                     String sAlbumName = tag.getAlbumName();
@@ -282,18 +276,17 @@ public class Directory extends PropertyAdapter implements Comparable{
                     Style style = StyleManager.getInstance().registerStyle(sStyle);
                     Author author = AuthorManager.getInstance().registerAuthor(sAuthorName);
                     Type type = TypeManager.getInstance().getTypeByExtension(Util.getExtension(files[i]));
-                    track = TrackManager.getInstance().registerTrack(sTrackName, album, style, author, length, lYear, type);
+                    Track track = TrackManager.getInstance().registerTrack(sTrackName, album, style, author, length, lYear, type);
                     track.setAdditionDate(new Date());
                     org.jajuk.base.File newFile = FileManager.getInstance().registerFile(sId,files[i].getName(), this, track, 
-                        files[i].length(), lQuality);
+                        files[i].length(), lQuality);   
+                    //add file to directory
                     addFile(newFile);
-                    FileManager.getInstance().restorePropertiesAfterRefresh(newFile);
                     track.addFile(newFile);
-                    track.setComment(sComment); 
                     /*comment is at the track level, note that we take last found file comment but we changing
                     a comment, we will apply to all files for a track*/
+                    track.setComment(sComment); 
                     track.setOrder(lOrder);
-                    TrackManager.getInstance().restorePropertiesAfterRefresh(track);
                 }
                 else{  //playlist file
                     String sName = files[i].getName();

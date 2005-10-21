@@ -146,7 +146,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 			Messages.showErrorMessage("107"); //$NON-NLS-1$
 			return;
 		}
-		bAlreadyRefreshing = true; //set ths flag outside the lock scope to maek it as refreshing even if the refresh didn't actually started and is locked by another refresh
+		bAlreadyRefreshing = true; //set this flag outside the lock scope to maek it as refreshing even if the refresh didn't actually started and is locked by another refresh
 		if ( bAsynchronous){
 			new Thread(){
 				public void run(){
@@ -248,10 +248,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	            //clear history to remove olf files referenced in it
 	            History.getInstance().clear(Integer.parseInt(ConfigurationManager.getProperty(CONF_HISTORY))); //delete old history items
 	            //Sort collection
-	    		//FileManager.getInstance().sortFiles();//resort collection in case of
-                //notify views to refresh
-	            ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH));
-                //commit collection at each refresh (can e useful if application is closed brutally with control-C or shutdown and that exit hook have no time to perform commit)
+	    		//commit collection at each refresh (can be useful if application is closed brutally with control-C or shutdown and that exit hook have no time to perform commit)
                 org.jajuk.base.Collection.commit(FILE_COLLECTION);
                 //Display end of refresh message with stats
                 String sOut = new StringBuffer("[").append(device.getName()).append(Messages.getString("Device.25")).append((int)((System.currentTimeMillis()-lTime)/1000)). //$NON-NLS-1$ //$NON-NLS-2$
@@ -268,13 +265,15 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	        Log.error(e);
 	    }
 	    finally{  //make sure to unlock refreshing even if an error occured
-            //cleanup logical items
-            TrackManager.getInstance().cleanup();
-             StyleManager.getInstance().cleanup();
-             AlbumManager.getInstance().cleanup();
-             AuthorManager.getInstance().cleanup();
-             PlaylistManager.getInstance().cleanup();
-            bAlreadyRefreshing = false;
+	        //cleanup logical items
+	        TrackManager.getInstance().cleanup();
+	        StyleManager.getInstance().cleanup();
+	        AlbumManager.getInstance().cleanup();
+	        AuthorManager.getInstance().cleanup();
+	        PlaylistManager.getInstance().cleanup();
+	        bAlreadyRefreshing = false;
+	        //notify views to refresh
+	        ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH));
 	    }
 	}
 	

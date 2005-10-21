@@ -364,6 +364,7 @@ public class FIFO implements ITechnicalStrings {
                 //all cases for a cover full refresh
                 if ( itemLast == null // first track, display cover
                         || (!itemLast.getFile().getDirectory().equals(fCurrent.getDirectory()))) { // if we are always in the same directory, just leave to save cpu
+                    Util.clearCache(); //clear image cache
                     ObservationManager.notify(new Event(EVENT_COVER_REFRESH)); // request update cover
                 }
                 //case just for a cover change without reload

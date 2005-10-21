@@ -99,7 +99,6 @@ public class DeviceManager extends ItemManager{
     public synchronized Device registerDevice(String sId,String sName,long lDeviceType,String sUrl){
         Device device = new Device(sId,sName,lDeviceType,sUrl);
         hmItems.put(sId,device);
-        restorePropertiesAfterRefresh(device);
         return device;
     }
 	

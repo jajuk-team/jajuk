@@ -169,6 +169,7 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
         bCellEditable = new boolean[iRowNum][iColNum];
         for (int iRow = 0;it.hasNext();iRow++){
             File file = (File)it.next();
+            setItemAt(iRow,file);
             LinkedHashMap properties = file.getProperties();
             //Id
             oItems[iRow] = file;

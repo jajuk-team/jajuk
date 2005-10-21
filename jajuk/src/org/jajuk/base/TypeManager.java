@@ -96,7 +96,7 @@ public class TypeManager extends ItemManager{
 			type = new Type(sId,sName,sExtension,cPlayerImpl,cTagImpl);
 			hmItems.put(sId, type);
             hmSupportedTypes.put(type.getExtension(), type);
-		}
+       }
 		catch(Exception e){
 			Log.error("109","sPlayerImpl="+cPlayerImpl+" sTagImpl="+cTagImpl,e ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}

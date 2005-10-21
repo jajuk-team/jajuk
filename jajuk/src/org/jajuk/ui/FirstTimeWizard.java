@@ -29,7 +29,6 @@ import java.awt.event.ActionListener;
 import java.io.File;
 
 import javax.swing.Box;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
@@ -82,8 +81,8 @@ public class FirstTimeWizard extends JDialog implements ITechnicalStrings,Action
         setLocation(org.jajuk.Main.getWindow().getX()+100,org.jajuk.Main.getWindow().getY()+100);
         int iX_SEPARATOR = 5;
         int iY_SEPARATOR = 10;
-        jlLeftIcon = new JLabel(new ImageIcon(Util.getResizedImage(
-            Util.getIcon(IMAGES_SPLASHSCREEN).getImage(),300,200)));
+        jlLeftIcon = new JLabel(Util.getResizedImage(
+            Util.getIcon(IMAGES_SPLASHSCREEN),300,200));
         jpRightPanel = new JPanel();
         jlWelcome=new JLabel(Messages.getString("FirstTimeWizard.1")); //$NON-NLS-1$
         jlFileSelection = new JLabel(Messages.getString("FirstTimeWizard.2")); //$NON-NLS-1$

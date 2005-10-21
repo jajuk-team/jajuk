@@ -23,7 +23,6 @@ package org.jajuk.ui.views;
 import info.clearthought.layout.TableLayout;
 
 import java.awt.Dimension;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
@@ -99,9 +98,6 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
     /**Date last resize (used for adjustment management)*/
     private long lDateLastResize;
     
-    /**Disk covers*/
-    ArrayList alFiles = new ArrayList(10);
-    
     /**URL and size of the image */
     JLabel jl;
     
@@ -129,7 +125,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
     /**Connected one flag : true if jajuk managed once to connect to the web to bring covers*/
     private static boolean bOnceConnected = false;
     
-    /**Final image to dplay*/
+    /**Final image to display*/
     private ImageIcon ii;
     
     /**
@@ -212,7 +208,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
             Log.error(e);
         }
         add(jpControl,"0,0"); //$NON-NLS-1$
-        new Thread(){ //do not execute this very long action all in the event dispatcher thread!
+        new Thread(){ //do not execute this very long action (especialy if preload) all in the event dispatcher thread!
             public void run(){
                 update(new Event(EVENT_COVER_REFRESH,ObservationManager.getDetailsLastOccurence(EVENT_COVER_REFRESH)));        
                 addComponentListener(CoverView.this); //listen for resize
@@ -234,7 +230,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                 searching(true);
                 if ( EVENT_COVER_REFRESH.equals(subject)){
                     alCovers.clear(); //remove all existing covers
-                    final org.jajuk.base.File fCurrent = FIFO.getInstance().getCurrentFile();
+                    org.jajuk.base.File fCurrent = FIFO.getInstance().getCurrentFile();
                     //if current file is null ( probably a file cannot be read ) 
                     if ( fCurrent == null || fCurrent.getDirectory() == null){
                         alCovers.add(coverDefault);
@@ -298,10 +294,22 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                                 ArrayList alLocalCovers = new ArrayList(alUrls.size()); //contains found covers to avoid to use main cover repository due to concurency issues
                                 while ( it2.hasNext() && this.iEventID == iLocalEventID){ //load each cover (pre-load or post-load) and stop if a signal has been emitted
                                     URL url = (URL)it2.next();
-                                    Log.debug("Found Cover: "+url.toString()); //$NON-NLS-1$
-                                    Cover cover = new Cover(url,Cover.REMOTE_COVER);//create a cover with given url ( image will be really downloaded when required if no preload)
-                                    if (!alCovers.contains(cover)){
-                                        alLocalCovers.add(cover);
+                                    try{
+                                        Cover cover = new Cover(url,Cover.REMOTE_COVER);//create a cover with given url ( image will be really downloaded when required if no preload)
+                                        if (!alCovers.contains(cover)){
+                                            Log.debug("Found Cover: "+url.toString()); //$NON-NLS-1$
+                                            alLocalCovers.add(cover);
+                                        }
+                                    }
+                                    catch(Exception e){
+                                        Log.error(e); //can occur in case of timeout or error during cover download
+                                        if (e instanceof org.apache.commons.httpclient.ConnectTimeoutException){
+                                            iErrorCounter ++;
+                                            if (iErrorCounter == STOP_TO_SEARCH){
+                                                Log.warn("Too much connection fails, stop to search for covers online"); //$NON-NLS-1$
+                                                InformationJPanel.getInstance().setMessage(Messages.getString("Error.030"),InformationJPanel.WARNING); //$NON-NLS-1$
+                                            }
+                                        }
                                     }
                                 }
                                 if (this.iEventID != iLocalEventID){ //a stop signal has been emmited from a concurrent thread
@@ -313,7 +321,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                             }
                         }
                         catch(Exception e){
-                            Log.error(e); //can occur in case of timeout
+                            Log.error(e); //can occur in case of timeout or error during covers list download
                             if (e instanceof org.apache.commons.httpclient.ConnectTimeoutException){
                                 iErrorCounter ++;
                                 if (iErrorCounter == STOP_TO_SEARCH){
@@ -604,7 +612,6 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
             if (CoverView.this.iEventID == iLocalEventID){
                 cover = (Cover)alCovers.get(index);  //take image at the given index
                 icon = cover.getImage();
-                icon.getImage().flush();      //free image memory
             }
             else{
                 Log.debug("Download stopped - 2"); //$NON-NLS-1$
@@ -617,7 +624,6 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
             Log.error(e);
             throw new JajukException("000"); //$NON-NLS-1$
         }
-        Image img = icon.getImage();
         if (ConfigurationManager.getBoolean(CONF_COVERS_RESIZE)){
             int iDisplayAreaHeight = CoverView.this.getHeight() - 30; 
             int iDisplayAreaWidth = CoverView.this.getWidth() - 8; 
@@ -658,14 +664,13 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
             }
             
             if (CoverView.this.iEventID == iLocalEventID){
-                img = Util.getResizedImage(img,iNewWidth,iNewHeight);}
+                ii = Util.getResizedImage(icon,iNewWidth,iNewHeight);}
             else{
                 Log.debug("Download stopped - 2"); //$NON-NLS-1$
                 return null;
             }
             
         } 
-        ii = new ImageIcon(img);
         return null;
     }
     
@@ -689,12 +694,8 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
             if (index > alCovers.size()-1){
                 index = 0;
             }
-            new Thread(){
-                public void run(){
-                    displayCurrentCover();
-                    bGotoBetter = false; //make sure default behavior is to go to worse covers
-                }
-            }.start();
+            displayCurrentCover();
+            bGotoBetter = false; //make sure default behavior is to go to worse covers
         }
         else if(e.getSource() == jbNext){ //next : show a worse cover
             bGotoBetter = false;

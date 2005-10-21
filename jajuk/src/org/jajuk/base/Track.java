@@ -91,7 +91,7 @@ public class Track extends PropertyAdapter implements Comparable{
             //Rate
             setProperty(XML_TRACK_RATE,0l);
             //Files reset
-            setProperty(XML_FILES,null); //need this to respect attributes order
+            //setProperty(XML_FILES,null); //need this to respect attributes order
             //Hits
             setProperty(XML_TRACK_HITS,0l);
             //Hashcode
@@ -106,7 +106,8 @@ public class Track extends PropertyAdapter implements Comparable{
 	public String toString() {
 		String sOut = "Track[ID="+sId+" Name=" + getName() + " "+album+" "+ //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
             style+" "+author+" Length="+length+" Year="+lYear+" Rate="+getRate()+" "+ //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-            type+" Hits="+getHits()+" Addition date="+getAdditionDate()+" Comment="+getComment()+" order="+getOrder()+"]";  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+            type+" Hits="+getHits()+" Addition date="+getAdditionDate()+" Comment="+
+            getComment()+" order="+getOrder()+ " Nb of files="+alFiles.size()+"]";  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 		for (int i=0;i<alFiles.size();i++){
 			sOut += '\n'+alFiles.get(i).toString();
 		}
@@ -317,12 +318,13 @@ public class Track extends PropertyAdapter implements Comparable{
 	public void addFile(File file){
 		if (!alFiles.contains(file) && file.getTrack().equals(this)){//make sure a file will be referenced by only one track (first found)
 			alFiles.add(file);	
-			String sFiles = file.getId();
+        }
+		/*	String sFiles = file.getId();
 			if (this.containsProperty(XML_FILES)){ //already some files 
 				sFiles += ","+getValue(XML_FILES); //$NON-NLS-1$
 			}
 			setProperty(XML_FILES,sFiles);
-		}
+		}*/
 	}
 	
 	/**
@@ -330,8 +332,16 @@ public class Track extends PropertyAdapter implements Comparable{
 	 * @param file
 	 */
 	public void removeFile(File file){
-		alFiles.remove(file);	
-	}
+		alFiles.remove(file);
+      /*  String sFiles = "";
+        for (File file1:alFiles){
+            sFiles += ","+file1.getId();
+        }
+        if (sFiles.length() > 0){
+            sFiles = sFiles.substring(1,sFiles.length());
+        }
+        setProperty(XML_FILES,sFiles);*/
+   }
 
 
 	/**
@@ -427,13 +437,25 @@ public class Track extends PropertyAdapter implements Comparable{
      */
     public String getHumanValue(String sKey){
         if (XML_ALBUM.equals(sKey)){
-            return ((Album)AlbumManager.getInstance().getItem(getStringValue(sKey))).getName2();
+            Album album = (Album)AlbumManager.getInstance().getItem(getStringValue(sKey));
+            if (album != null){ //can be null after a fresh change
+                return album.getName2();
+            }
+            return null;
         }
         else if (XML_AUTHOR.equals(sKey)){
-            return ((Author)AuthorManager.getInstance().getItem(getStringValue(sKey))).getName2();
+            Author author = (Author)AuthorManager.getInstance().getItem(getStringValue(sKey));
+            if (author != null){ //can be null after a fresh change
+                return author.getName2();
+            }
+            return null;
         }
         else if (XML_STYLE.equals(sKey)){
-            return ((Style)StyleManager.getInstance().getItem(getStringValue(sKey))).getName2();
+            Style style = (Style)StyleManager.getInstance().getItem(getStringValue(sKey));
+            if (style != null){ //can be null after a fresh change
+                return style.getName2();
+            }
+            return null;
         }
         else if (XML_TRACK_LENGTH.equals(sKey)){
             return Util.formatTimeBySec(length,false);

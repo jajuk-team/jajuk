@@ -29,6 +29,7 @@ import java.util.LinkedHashMap;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.error.JajukException;
+import org.jajuk.util.log.Log;
 
 /**
  *  Managers parent class
@@ -38,8 +39,8 @@ import org.jajuk.util.error.JajukException;
  */
 public abstract class ItemManager implements ITechnicalStrings{
 
-    /** Map ids and properties, survives to a refresh, is used to recover old properties after refresh */
-	protected LinkedHashMap hmIdProperties = new LinkedHashMap(1000);
+    /** Map ids and stored items, survives to a refresh, is used to recover old properties after refresh */
+	protected LinkedHashMap<String,IPropertyable> hmIdSaveItems = new LinkedHashMap(1000);
     /**Items collection**/
     protected LinkedHashMap hmItems = new LinkedHashMap(100);
     /**Maps item classes -> instance*/
@@ -90,21 +91,28 @@ public abstract class ItemManager implements ITechnicalStrings{
         return sOut;
     }
     
-    
-    /**
-     * Restore properties after a refresh if possible
-     * @param item
-     * @param sId
+     /**
+     * Get saved item
+     * @param String sID
      */
-    public void restorePropertiesAfterRefresh(IPropertyable item){
-	    String sId = ((PropertyAdapter)item).getId();
-        LinkedHashMap properties = (LinkedHashMap)hmIdProperties.get(sId); 
-		if ( properties == null){  //new file
-			hmIdProperties.put(sId,item.getProperties());
-		}
-		else{  //reset properties before refresh
-			item.setProperties(properties);
-		}
+    public IPropertyable restoreItemAfterRefresh(String sID){
+        IPropertyable savedItem = hmIdSaveItems.get(sID);
+        if ( savedItem == null){//unknwown
+            Log.debug("No more link to this item in properties restoration pool");
+            return null;
+        }
+        else{  //reset properties before refresh
+            return savedItem;
+        }
+    }
+    
+   /**
+    * Save item (useful after a refresh) 
+    * 
+    */
+    public void saveItem(IPropertyable item){
+        String sId = ((PropertyAdapter)item).getId();
+        hmIdSaveItems.put(sId,item);
     }
     
     /**Remove a property **/
@@ -301,46 +309,43 @@ public abstract class ItemManager implements ITechnicalStrings{
      * @return the changed item
      */
     public static IPropertyable changeItem(IPropertyable itemToChange,String sKey,Object oValue) throws JajukException{
-        IPropertyable newItem = itemToChange;;
+        IPropertyable newItem = itemToChange;
         if (itemToChange instanceof File){
             File file = (File)itemToChange;
             if (XML_NAME.equals(sKey)){ //file name
                 newItem = FileManager.getInstance().changeFileName((File)itemToChange,(String)oValue);
             }
             else if (XML_TRACK.equals(sKey)){ //track name
-                TrackManager.getInstance().changeTrackName(file.getTrack(),(String)oValue);
-                newItem = itemToChange; //we return the file (not changed), not the associated track
+                newItem = TrackManager.getInstance().changeTrackName(file.getTrack(),(String)oValue);
             }
             else if (XML_STYLE.equals(sKey)){
-                TrackManager.getInstance().changeTrackStyle(file.getTrack(),(String)oValue);
-                newItem = itemToChange; //we return the file (not changed), not the associated track
+                newItem = TrackManager.getInstance().changeTrackStyle(file.getTrack(),(String)oValue);
             }
             else if (XML_ALBUM.equals(sKey)){
-                TrackManager.getInstance().changeTrackAlbum(file.getTrack(),(String)oValue);
-                newItem = itemToChange; //we return the file (not changed), not the associated track
+                newItem = TrackManager.getInstance().changeTrackAlbum(file.getTrack(),(String)oValue);
             }
             else if (XML_AUTHOR.equals(sKey)){
-                TrackManager.getInstance().changeTrackAuthor(file.getTrack(),(String)oValue);
-                newItem = itemToChange; //we return the file (not changed), not the associated track
+                newItem = TrackManager.getInstance().changeTrackAuthor(file.getTrack(),(String)oValue);
             }
             else if (XML_TRACK_COMMENT.equals(sKey)){
-                TrackManager.getInstance().changeTrackComment(file.getTrack(),(String)oValue);
-                newItem = itemToChange; //we return the file (not changed), not the associated track
+                newItem = TrackManager.getInstance().changeTrackComment(file.getTrack(),(String)oValue);
             }
             else if (XML_TRACK_ORDER.equals(sKey)){
-                TrackManager.getInstance().changeTrackOrder(file.getTrack(),(Long)oValue);
-                newItem = itemToChange; //we return the file (not changed), not the associated track
+                newItem = TrackManager.getInstance().changeTrackOrder(file.getTrack(),(Long)oValue);
             }
             else if (XML_TRACK_YEAR.equals(sKey)){
-                TrackManager.getInstance().changeTrackYear(file.getTrack(),(Long)oValue);
-                newItem = itemToChange; //we return the file (not changed), not the associated track
+                newItem = TrackManager.getInstance().changeTrackYear(file.getTrack(),(Long)oValue);
             }
             else if (XML_TRACK_RATE.equals(sKey)){
-                TrackManager.getInstance().changeTrackRate(file.getTrack(),(Long)oValue);
-                newItem = itemToChange; //we return the file (not changed), not the associated track
+                newItem = TrackManager.getInstance().changeTrackRate(file.getTrack(),(Long)oValue);
             }
             else{ //others properties
                 itemToChange.setProperty(sKey,oValue);
+            }
+            //Get associated track file
+            if (newItem instanceof Track && newItem != null){
+                file.setTrack((Track)newItem);
+                newItem = file;
             }
         }
         else if (itemToChange instanceof PlaylistFile){
@@ -411,7 +416,6 @@ public abstract class ItemManager implements ITechnicalStrings{
                 itemToChange. setProperty(sKey,oValue);
             }
         }
-        
         return newItem;            
     }
     

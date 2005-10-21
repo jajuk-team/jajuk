@@ -78,9 +78,15 @@ public class AlbumManager extends ItemManager{
         if (hmItems.containsKey(sId)) {
             return (Album)hmItems.get(sId);
         }
-        Album album = new Album(sId, sName);
+        Album album = null;
+        if (hmIdSaveItems.containsKey(sId)){
+            album = (Album)hmIdSaveItems.get(sId);
+        }
+        else{
+            album = new Album(sId, sName);
+            saveItem(album);
+        }
         hmItems.put(sId, album);
-        restorePropertiesAfterRefresh(album);
         return album;
     }
 			
@@ -91,6 +97,10 @@ public class AlbumManager extends ItemManager{
      * @return new album
      */
     public synchronized Album changeAlbumName(Album old,String sNewName) throws JajukException{
+        //check there is actually a change
+        if (old.getName2().equals(sNewName)){
+            return old;
+        }
         Album newItem = registerAlbum(sNewName);
         ArrayList alTracks = new ArrayList(TrackManager.getInstance().getItems()); //we need to create a new list to avoid concurrent exceptions
         Iterator it = alTracks.iterator();

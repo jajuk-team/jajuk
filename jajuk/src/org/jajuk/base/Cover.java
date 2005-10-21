@@ -20,6 +20,7 @@
 
 package org.jajuk.base;
 
+import java.awt.MediaTracker;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -27,8 +28,10 @@ import java.net.URL;
 import javax.swing.ImageIcon;
 
 import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.DownloadManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
+import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
 
@@ -54,11 +57,8 @@ public class Cover implements Comparable,ITechnicalStrings {
     /**Associated file*/
     private File file;
     
-    /**Image*/
-    private ImageIcon image;
-    
     /**Default cover image*/
-    private static ImageIcon iiDefaultCover = Util.getIcon(IMAGES_SPLASHSCREEN);
+    private static final ImageIcon iiDefaultCover = Util.getIcon(IMAGES_SPLASHSCREEN);
     
     /**Default URL*/
     private static URL urlDefault;
@@ -76,7 +76,7 @@ public class Cover implements Comparable,ITechnicalStrings {
     * @param sUrl cover url : absolute path for a local file, http url for a remote file
     * @param iType
     */
-    public Cover(URL url, int iType){
+    public Cover(URL url, int iType) throws Exception{
         long l = System.currentTimeMillis();
         this.url = url;
         this.iType = iType;
@@ -88,14 +88,10 @@ public class Cover implements Comparable,ITechnicalStrings {
         else if (iType == Cover.REMOTE_COVER){
             this.file = new File(Util.getCachePath(url));
         }
-        //if Pre-load option is enabled, load this cover
-        if (ConfigurationManager.getBoolean(CONF_COVERS_PRELOAD)){
-            try{
-                image = getImage();
-            }
-            catch(Exception e){ //means download failed
-                image = null;
-            }
+        //if Pre-load option is enabled, download this cover
+        if (ConfigurationManager.getBoolean(CONF_COVERS_PRELOAD) &&
+                iType == Cover.REMOTE_COVER){
+                DownloadManager.download(url,true);
         }
     }
     
@@ -186,7 +182,26 @@ public class Cover implements Comparable,ITechnicalStrings {
         if (getURL().equals(urlDefault)){
             return iiDefaultCover;
         }
-        return CoverRepository.getInstance().getImage(url,iType);
+        long l = System.currentTimeMillis();
+        ImageIcon image = null;
+        File fImage = null;
+        if ( iType == Cover.LOCAL_COVER 
+                || iType == Cover.DEFAULT_COVER  
+                || iType == Cover.ABSOLUTE_DEFAULT_COVER){
+            image = new ImageIcon(url);
+            if ( image.getImageLoadStatus() != MediaTracker.COMPLETE){
+                throw new JajukException("129",url.toString(),null); //$NON-NLS-1$
+            }
+        }
+        else if (iType == Cover.REMOTE_COVER){
+            DownloadManager.download(url,true);    
+            image = new ImageIcon(fImage.getAbsolutePath()); 
+            if ( image.getImageLoadStatus() != MediaTracker.COMPLETE){
+                throw new JajukException("129"); //$NON-NLS-1$
+            }
+        }
+        Log.debug("Loaded "+url.toString()+" in  "+(System.currentTimeMillis()-l)+" ms"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        return image;
     }
     
     /**

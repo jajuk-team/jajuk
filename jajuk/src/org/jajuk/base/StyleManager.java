@@ -86,9 +86,15 @@ public class StyleManager extends ItemManager {
 		if (hmItems.containsKey(sId)) {
 			return (Style) hmItems.get(sId);
 		}
-		Style style = new Style(sId, sName);
-		hmItems.put(sId, style);
-        restorePropertiesAfterRefresh(style);
+		Style style = null;
+        if (hmIdSaveItems.containsKey(sId)){
+            style = (Style)hmIdSaveItems.get(sId);
+        }
+        else{
+            style = new Style(sId, sName);
+            saveItem(style);
+        }
+        hmItems.put(sId, style);
         //add it in styles list if new
         boolean bNew = true;
         for (String s:stylesList){
@@ -111,6 +117,10 @@ public class StyleManager extends ItemManager {
      * @return new item
      */
     public synchronized Style changeStyleName(Style old,String sNewName) throws JajukException{
+        //check there is actually a change
+        if (old.getName2().equals(sNewName)){
+            return old;
+        }
         Style newItem = registerStyle(sNewName);
         ArrayList alTracks = new ArrayList(TrackManager.getInstance().getItems()); //we need to create a new list to avoid concurrent exceptions
         Iterator it = alTracks.iterator();

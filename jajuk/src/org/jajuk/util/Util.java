@@ -30,9 +30,6 @@ import java.awt.Frame;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.Window;
-import java.awt.image.AreaAveragingScaleFilter;
-import java.awt.image.FilteredImageSource;
-import java.awt.image.ImageFilter;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -898,11 +895,12 @@ public class Util implements ITechnicalStrings {
      * @param iNewHeight
      * @return resized image
      */
-    public static Image getResizedImage(Image img,int iNewWidth,int iNewHeight){
-        ImageFilter filter = new AreaAveragingScaleFilter(iNewWidth,iNewHeight);
-        img = Toolkit.getDefaultToolkit().createImage(new FilteredImageSource(img.getSource(),filter));
-        img.flush();//free image memory
-        return img;
+    public static ImageIcon getResizedImage(ImageIcon img,int iNewWidth,int iNewHeight){
+        ImageIcon iiNew = new ImageIcon();
+        Image image = img.getImage();
+        Image scaleImg = image.getScaledInstance(iNewWidth,iNewHeight,Image.SCALE_AREA_AVERAGING);
+        iiNew.setImage(scaleImg);
+        return iiNew;
     }
 	
     

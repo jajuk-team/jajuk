@@ -158,6 +158,7 @@ public class TracksTableModel extends JajukTableModel{
         bCellEditable = new boolean[iRowNum][iColNum];
         for (int iRow = 0;it.hasNext();iRow++){
             Track track = (Track)it.next();
+            setItemAt(iRow,track);
             LinkedHashMap properties = track.getProperties();
             //Id
             oItems[iRow] = track;
@@ -231,6 +232,6 @@ public class TracksTableModel extends JajukTableModel{
             }   
         }
     }
-
+    
   
 }

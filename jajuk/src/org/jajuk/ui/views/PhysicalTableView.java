@@ -250,11 +250,13 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
                         alItems2.add(file.getTrack());
                     }
                     else{//multi selection
-                        for (int i=jtable.getSelectionModel().getMinSelectionIndex();i<=jtable.getSelectionModel().getMaxSelectionIndex();i++){
-                            File file = (File)model.getItemAt(
-                                    jtable.convertRowIndexToModel(i));
-                            alItems1.add(file);
-                            alItems2.add(file.getTrack());
+                        for (int i=0;i<=jtable.getRowCount();i++){
+                            if (jtable.getSelectionModel().isSelectedIndex(i)){
+                                File file = (File)model.getItemAt(
+                                        jtable.convertRowIndexToModel(i));
+                                alItems1.add(file);
+                                alItems2.add(file.getTrack());
+                            }
                         }
                     }
                     new PropertiesWizard(alItems1,alItems2);
@@ -262,5 +264,5 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
             }
         }.start();
     }
-    
+   
 }

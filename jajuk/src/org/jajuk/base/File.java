@@ -192,7 +192,9 @@ public class File extends PropertyAdapter implements Comparable,ITechnicalString
 	/**Return true if the file can be accessed right now 
 	 * @return true the file can be accessed right now*/
 	public boolean isReady(){
-		if ( getDirectory().getDevice().isMounted() && !getDirectory().getDevice().isRefreshing() && !getDirectory().getDevice().isSynchronizing()){
+		if ( getDirectory().getDevice().isMounted() 
+                && !getDirectory().getDevice().isRefreshing() 
+                && !getDirectory().getDevice().isSynchronizing()){
 			return true;
 		}
 		return false;
@@ -230,18 +232,7 @@ public class File extends PropertyAdapter implements Comparable,ITechnicalString
 		return true;
 	}
 	
-	/**
-	 * Clone method
-	 * @return a clonned file
-	 */
-	public Object clone(){
-		File fClone = new File(sId,sName,directory,track,lSize,lQuality);
-		fClone.fio = fio;
-		fClone.sAbs = sAbs;
-		return fClone;
-	}
-
-    /**
+	 /**
      * @return Returns the bSortByDate.
      */
     public static boolean isSortedByDate() {

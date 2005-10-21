@@ -73,10 +73,16 @@ public class PlaylistManager extends ItemManager{
 			return playlist;
 		}
 		else { //new playlist
-			Playlist playlist = new Playlist(sId,plFile);
-            playlist.removeProperty(XML_NAME);//no name attribute for playlists
+            Playlist playlist = null;
+            if (hmIdSaveItems.containsKey(sId)){
+                playlist = (Playlist)hmIdSaveItems.get(sId);
+            }
+            else{
+                playlist = new Playlist(sId,plFile);
+                saveItem(playlist);
+            }
+			playlist.removeProperty(XML_NAME);//no name attribute for playlists
             hmItems.put(sId,playlist);
-            restorePropertiesAfterRefresh(playlist);
             return playlist;
 		}
 	}

@@ -64,6 +64,7 @@ import org.jajuk.base.TrackManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
+import org.jajuk.util.error.CannotRenameException;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.error.NoneAccessibleFileException;
 import org.jajuk.util.log.Log;
@@ -537,6 +538,10 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
                         catch(NoneAccessibleFileException none){
                             Messages.showErrorMessage(none.getCode());
                             dispose(); //close window to avoid reseting all properties to old values
+                            return;
+                        }
+                        catch(CannotRenameException cre){
+                            Messages.showErrorMessage("135"); //$NON-NLS-1$
                             return;
                         }
                         //if this item was element of property panel elements, update it

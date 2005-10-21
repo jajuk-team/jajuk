@@ -258,10 +258,12 @@ public class LogicalTableView extends AbstractTableView implements Observer{
                     }
                     else{//multi selection
                         ArrayList alTracks = new ArrayList(10);
-                        for (int i=jtable.getSelectionModel().getMinSelectionIndex();i<=jtable.getSelectionModel().getMaxSelectionIndex();i++){
-                            Track track = (Track)model.getItemAt(
-                                    jtable.convertRowIndexToModel(i));
-                            alTracks.add(track);
+                        for (int i=0;i<=jtable.getRowCount();i++){
+                            if (jtable.getSelectionModel().isSelectedIndex(i)){
+                                Track track = (Track)model.getItemAt(
+                                        jtable.convertRowIndexToModel(i));
+                                alTracks.add(track);
+                            }
                         }
                         new PropertiesWizard(alTracks);
                     }
@@ -271,5 +273,4 @@ public class LogicalTableView extends AbstractTableView implements Observer{
     }
     
        
-    
 }

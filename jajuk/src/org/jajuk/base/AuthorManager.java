@@ -49,7 +49,7 @@ public class AuthorManager extends ItemManager{
         registerProperty(new PropertyMetaInformation(XML_EXPANDED,false,false,false,false,true,Boolean.class,null,false));
 	}
     
-/**
+	/**
      * @return singleton
      */
     public static AuthorManager getInstance(){
@@ -79,9 +79,15 @@ public class AuthorManager extends ItemManager{
 	    if (hmItems.containsKey(sId)) {
 	        return (Author) hmItems.get(sId);
 	    }
-	    Author author = new Author(sId, sName);
+        Author author = null;
+        if (hmIdSaveItems.containsKey(sId)){
+            author = (Author)hmIdSaveItems.get(sId);
+        }
+        else{
+            author = new Author(sId, sName);
+            saveItem(author);
+        }
 	    hmItems.put(sId, author);
-	    restorePropertiesAfterRefresh(author);
 	    return author;
 	}
 	    
@@ -92,6 +98,10 @@ public class AuthorManager extends ItemManager{
      * @return new album
      */
     public synchronized Author changeAuthorName(Author old,String sNewName) throws JajukException{
+        //check there is actually a change
+        if (old.getName2().equals(sNewName)){
+            return old;
+        }
         Author newItem = registerAuthor(sNewName);
         ArrayList alTracks = new ArrayList(TrackManager.getInstance().getItems()); //we need to create a new list to avoid concurrent exceptions
         Iterator it = alTracks.iterator();

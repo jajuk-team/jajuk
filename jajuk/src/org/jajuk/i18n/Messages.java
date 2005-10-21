@@ -207,7 +207,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings	{
 			sOut = getString("Error." + pCode); //$NON-NLS-1$
 		}
 		catch(Exception e){
-			Log.error("105","code: "+pCode,e); //$NON-NLS-1$ //$NON-NLS-2$
+			System.out.println("### Error getting error message for code: "+pCode);
 		}
 		return sOut;
 	}
@@ -220,8 +220,10 @@ public class Messages extends DefaultHandler implements ITechnicalStrings	{
 	public static void showErrorMessage(final String sCode){
 	    SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-              JOptionPane.showMessageDialog(Main.getWindow(),"<html><b>"+Messages.getErrorMessage(sCode)+"</b></html>",Messages.getErrorMessage("102"),JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$	}
-    		}
+              JOptionPane.showMessageDialog(Main.getWindow(),
+                      "<html><b>"+Messages.getErrorMessage(sCode)+"</b></html>",//$NON-NLS-1$ //$NON-NLS-2$
+                      Messages.getErrorMessage("102"),JOptionPane.ERROR_MESSAGE);  //$NON-NLS-1$ //$NON-NLS-2$    
+            }
         });
 	}
 	

@@ -71,13 +71,19 @@ public class PlaylistFileManager extends ItemManager implements Observer{
 	 * @param sName
 	 */
 	public synchronized PlaylistFile registerPlaylistFile(String sId, String sName, String sHashcode, Directory dParentDirectory) {
-		if ( !hmItems.containsKey(sId)){
-			PlaylistFile playlistFile = new PlaylistFile(sId, sName, sHashcode, dParentDirectory);
-			hmItems.put(sId, playlistFile);
-			if ( dParentDirectory.getDevice().isRefreshing()){
+	    if ( !hmItems.containsKey(sId)){
+	        PlaylistFile playlistFile = null;
+	        if (hmIdSaveItems.containsKey(sId)){
+	            playlistFile = (PlaylistFile)hmIdSaveItems.get(sId);
+	        }
+	        else{
+	            playlistFile = new PlaylistFile(sId, sName, sHashcode, dParentDirectory);
+	            saveItem(playlistFile);
+	        }
+	        hmItems.put(sId, playlistFile);
+	        if ( dParentDirectory.getDevice().isRefreshing()){
 				Log.debug("Registered new playlist file: "+ playlistFile); //$NON-NLS-1$
 			}
-            restorePropertiesAfterRefresh(playlistFile);
        }
        return (PlaylistFile)hmItems.get(sId);
 	}

@@ -71,7 +71,7 @@ public class DirectoryManager extends ItemManager implements Observer{
   
     
      /**
-     * Change the item name
+     * Change the item name TBI
      * @param old old item
      * @param sNewName new item
      * @return new item
@@ -107,8 +107,6 @@ public class DirectoryManager extends ItemManager implements Observer{
         }
         //remove old dir from parent
         removeDirectory(old.getId());
-        //Look for files under the old directory
-        //for ()
         //add the new dir to the parent directory
         old.getParentDirectory().addDirectory(newItem);
         return newItem;
@@ -148,13 +146,19 @@ public class DirectoryManager extends ItemManager implements Observer{
 		if (hmItems.containsKey(sId)) {
 			return (Directory)hmItems.get(sId);
 		}
-		Directory directory = new Directory(sId, sName, dParent, device);
+		Directory directory = null;
+        if (hmIdSaveItems.containsKey(sId)){
+            directory = (Directory)hmIdSaveItems.get(sId);
+        }
+        else{
+            directory = new Directory(sId, sName, dParent, device);
+            saveItem(directory);
+        }
         if (dParent != null ){
             dParent.addDirectory(directory);//add the direcotry to parent collection
         }
 		hmItems.put(sId,directory);
-        restorePropertiesAfterRefresh(directory);
-     	return directory;
+        return directory;
 	}
 
 	/**

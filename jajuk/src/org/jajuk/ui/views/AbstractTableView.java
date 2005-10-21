@@ -66,6 +66,7 @@ import org.jajuk.ui.TableTransferHandler;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
+import org.jajuk.util.error.CannotRenameException;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.error.NoneAccessibleFileException;
 import org.jajuk.util.log.Log;
@@ -119,7 +120,7 @@ public abstract class AbstractTableView extends ViewAdapter
     
     /** Constructor */
     public AbstractTableView(){
-        // launches a thread used to perform dynamic filtering chen user is typing
+        // launches a thread used to perform dynamic filtering when user is typing
         new Thread(){
             public void run(){
                 while (true){
@@ -215,6 +216,7 @@ public abstract class AbstractTableView extends ViewAdapter
                 add(jpControl,"0,0"); //$NON-NLS-1$
                 jtable = new JajukTable(model,true);
                 jtable.getColumnModel().addColumnModelListener(AbstractTableView.this);
+                setRenderers();
                 add(new JScrollPane(jtable),"0,1"); //$NON-NLS-1$
                 new TableTransferHandler(jtable, DnDConstants.ACTION_COPY_OR_MOVE);
                 jtable.addMouseListener(AbstractTableView.this);
@@ -252,7 +254,7 @@ public abstract class AbstractTableView extends ViewAdapter
         else if (e.getSource() == jbAdvancedFilter){
             //TBI
         }
-        else{ //others events will be treated bu child classes
+        else{ //others events will be treated by child classes
             othersActionPerformed(e);
         }
     }
@@ -291,7 +293,7 @@ public abstract class AbstractTableView extends ViewAdapter
                     else if ( EVENT_DEVICE_REFRESH.equals(subject)) {
                         Object oDetail = ObservationManager.getDetail(event,DETAIL_ORIGIN);
                         //refresh table only if event doesn't come from this (otherwise, we lose focus on changed item)
-                        if (oDetail == null || !oDetail.equals(this)){
+                        if (oDetail == null || !oDetail.equals(AbstractTableView.this.getID())){
                             applyFilter(sAppliedCriteria,sAppliedFilter); //force filter to refresh
                         }
                     }   
@@ -302,6 +304,7 @@ public abstract class AbstractTableView extends ViewAdapter
                         }
                         model = populateTable();//create a new model
                         jtable.setModel(model);
+                        setRenderers();
                         //add new item in configuration cols
                         if (AbstractTableView.this instanceof PhysicalTableView){
                             String sTableCols = ConfigurationManager.getProperty(CONF_PHYSICAL_TABLE_COLUMNS);
@@ -320,11 +323,11 @@ public abstract class AbstractTableView extends ViewAdapter
                         if (properties == null){ //can be null at view populate
                         	return;
                         }
-                        //store old conf
                         ArrayList al = getColumnsConf();
                         al.remove(properties.get(DETAIL_CONTENT));
                         model = populateTable();//create a new model
                         jtable.setModel(model);
+                        setRenderers();
                         //remove item from configuration cols
                         if (AbstractTableView.this instanceof PhysicalTableView){
                             ConfigurationManager.setProperty(CONF_PHYSICAL_TABLE_COLUMNS,getColumnsConf(al));    
@@ -351,6 +354,29 @@ public abstract class AbstractTableView extends ViewAdapter
     /**Fill the table */
     abstract JajukTableModel populateTable();    
     
+    
+    private void setRenderers(){
+        StringBuffer sb = new StringBuffer();
+        Iterator it = ((DefaultTableColumnModelExt)jtable.getColumnModel()).getAllColumns().iterator();
+        while (it.hasNext()){
+            TableColumnExt col = (TableColumnExt)it.next();
+            String sIdentifier = model.getIdentifier(col.getModelIndex());
+            //create a combo box for styles, note that we can't add new styles dynamically
+            if (XML_STYLE.equals(sIdentifier)){
+                ArrayList<String> alStyles = (ArrayList)StyleManager.getStylesList();
+                JComboBox jcb = new JComboBox();
+                jcb.setEditable(true);
+                for (String style:alStyles){
+                    jcb.addItem(style);
+                }
+                col.setCellEditor(new DefaultCellEditor(jcb));
+            }
+            //create a button for playing
+            else if (XML_PLAY.equals(sIdentifier)){
+                col.setCellRenderer(new JajukCellRender());
+            }
+        }
+    }
     
     /**
      * Hide needed columns
@@ -393,20 +419,6 @@ public abstract class AbstractTableView extends ViewAdapter
             String sIdentifier = model.getIdentifier(col.getModelIndex());
             if (col.isVisible()){
                 sb.append(sIdentifier+",");     //$NON-NLS-1$
-            }
-            //create a combo box for styles, note that we can't add new styles dynamically
-            if (XML_STYLE.equals(sIdentifier)){
-                ArrayList<String> alStyles = (ArrayList)StyleManager.getStylesList();
-                JComboBox jcb = new JComboBox();
-                jcb.setEditable(true);
-                for (String style:alStyles){
-                    jcb.addItem(style);
-                }
-                col.setCellEditor(new DefaultCellEditor(jcb));
-            }
-            //create a button for playing
-            else if (XML_PLAY.equals(sIdentifier)){
-                col.setCellRenderer(new JajukCellRender());
             }
         }
         //remove last coma
@@ -499,25 +511,27 @@ public abstract class AbstractTableView extends ViewAdapter
         IPropertyable item = model.getItemAt(e.getFirstRow());
         try{
             IPropertyable itemNew = ItemManager.changeItem(item,sKey,oValue);
+            model.setItemAt(e.getFirstRow(),itemNew); //update model
             //user message
             PropertyMetaInformation meta = itemNew.getMeta(sKey);
             InformationJPanel.getInstance().setMessage(
                     Messages.getString("PropertiesWizard.8")+": "+ItemManager.getHumanType(sKey), //$NON-NLS-1$ //$NON-NLS-2$
                     InformationJPanel.INFORMATIVE);
-            
-            if (!itemNew.equals(item)){ //check if item has change
                 Properties properties = new Properties();
-                properties.put(DETAIL_ORIGIN,this);
+                properties.put(DETAIL_ORIGIN,this.getID());
                 ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH,properties)); //TBI see later for a smarter event
-                
-            }
         }
         catch(NoneAccessibleFileException none){
             Messages.showErrorMessage(none.getCode());
-            return;
+            ((JajukTableModel)jtable.getModel()).undo(e.getFirstRow(),e.getColumn());
+        }
+        catch(CannotRenameException cre){
+            Messages.showErrorMessage(cre.getCode()); //$NON-NLS-1$
+            ((JajukTableModel)jtable.getModel()).undo(e.getFirstRow(),e.getColumn());
         }
         catch(JajukException je){
             Messages.showErrorMessage("104"); //$NON-NLS-1$
+            ((JajukTableModel)jtable.getModel()).undo(e.getFirstRow(),e.getColumn());
         }
     }
     

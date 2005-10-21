@@ -112,7 +112,7 @@ import org.jajuk.base.FileManager;
         int iSelectedRow = jtable.getSelectedRow(); //selected row in view
         //make sure to remove others selected rows (can occur during the drag)
         jtable.getSelectionModel().setSelectionInterval(iSelectedRow,iSelectedRow);
-        iSelectedRow = jtable.getRowModelIndex(iSelectedRow); //selected row in model
+        iSelectedRow = jtable.convertRowIndexToModel(iSelectedRow); //selected row in model
         Object o = ((JajukTableModel)jtable.getModel()).getItemAt(iSelectedRow);
         if ( o  == null){ //no? try to find a file for this id
 			o = FileManager.getInstance().getItem(jtable.getModel().getValueAt(iSelectedRow,0).toString());
