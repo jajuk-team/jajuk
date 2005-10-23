@@ -34,10 +34,12 @@ public class SliderMenuItem extends JSlider implements MenuElement {
 
   public void processMouseEvent(MouseEvent e, MenuElement path[],
       MenuSelectionManager manager) {
+      super.processMouseEvent(e);
   }
 
   public void processKeyEvent(KeyEvent e, MenuElement path[],
       MenuSelectionManager manager) {
+      super.processKeyEvent(e);
   }
 
   public void menuSelectionChanged(boolean isIncluded) {

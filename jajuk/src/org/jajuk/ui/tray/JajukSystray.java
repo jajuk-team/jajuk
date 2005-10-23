@@ -120,7 +120,6 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
 	 *
 	 */
 	public JajukSystray(){
-		
 		jmenu = new JPopupMenu(Messages.getString("JajukWindow.3")); //$NON-NLS-1$
 		jmiExit =  new JMenuItem(Messages.getString("JajukWindow.4"),Util.getIcon(ICON_EXIT)); //$NON-NLS-1$
 		jmiExit.setToolTipText(Messages.getString("JajukWindow.21")); //$NON-NLS-1$
@@ -177,7 +176,6 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
         jsPosition.addChangeListener(this);
         jsPosition.setEnabled(false);
         jsPosition.setToolTipText(Messages.getString("CommandJPanel.15")); //$NON-NLS-1$
-        jsPosition.addMouseWheelListener(this);
                 
         /**Important: due to a bug probably in swing or jdic, we have to add a jmenuitem in the popup menu 
          * and not the panel itself, otherwise no action event occurs*/
@@ -217,10 +215,6 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
 		trayIcon.setIconAutoSize(true);
 		trayIcon.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//hide menu if opened
-				if (jmenu != null && jmenu.isVisible()){
-				    jmenu.setVisible(false);
-                }
 				//show window if it is not visible and hide it if it is visible
 				if (!JajukWindow.getInstance().isVisible()){
 					JajukWindow.getInstance().setShown(true);
@@ -243,7 +237,7 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
 		ObservationManager.register(EVENT_MUTE_STATE,this);
         ObservationManager.register(EVENT_VOLUME_CHANGED,this);
         
-		//check if a fiel has been already started
+		//check if a file has been already started
 		if (FIFO.getInstance().getCurrentFile() == null){
 			update(new Event(EVENT_PLAYER_STOP,ObservationManager.getDetailsLastOccurence(EVENT_PLAYER_STOP)));
         }
@@ -392,6 +386,8 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
 		        sOut = Messages.getString("JajukWindow.18"); //$NON-NLS-1$
 		    }
 		    trayIcon.setToolTip(sOut);
+            jsPosition.setEnabled(true);
+            jsPosition.addMouseWheelListener(this);
 	   }
 		else if( EVENT_PLAYER_STOP.equals(subject) || EVENT_ZERO.equals(subject)){
 		    jmiPause.setEnabled(false);
@@ -399,6 +395,7 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
 			jmiNext.setEnabled(false);
 			jmiPrevious.setEnabled(false);
             jsPosition.setEnabled(false);
+            jsPosition.removeMouseWheelListener(this);//add to remove it as is is yet active even disable
             jsPosition.setValue(0);
             jmiNorm.setEnabled(false);
 			jmiPause.setIcon(Util.getIcon(ICON_PAUSE));
@@ -411,18 +408,21 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
 			jmiPrevious.setEnabled(true);
             jmiNorm.setEnabled(true);
             jsPosition.setEnabled(true);
-			jmiPause.setText(Messages.getString("JajukWindow.10")); //$NON-NLS-1$
+            jsPosition.addMouseWheelListener(this);
+        	jmiPause.setText(Messages.getString("JajukWindow.10")); //$NON-NLS-1$
 		}
 		else if ( EVENT_PLAYER_PAUSE.equals(subject)){
 			jmiPause.setText(Messages.getString("JajukWindow.12")); //$NON-NLS-1$
 			jmiPause.setIcon(Util.getIcon(ICON_PLAY));
             jsPosition.setEnabled(false);
-		}
+            jsPosition.removeMouseWheelListener(this);//add to remove it as is is yet active even disable
+        }
 		else if ( EVENT_PLAYER_RESUME.equals(subject)){
 			jmiPause.setText(Messages.getString("JajukWindow.10")); //$NON-NLS-1$
 			jmiPause.setIcon(Util.getIcon(ICON_PAUSE));
             jsPosition.setEnabled(true);
-		}
+            jsPosition.addMouseWheelListener(this);
+        }
         else if(EVENT_VOLUME_CHANGED.equals(event.getSubject())){
             jsVolume.setValue((int)(100*Player.getCurrentVolume()));
         }
@@ -430,7 +430,9 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
             long length = JajukTimer.getInstance().getCurrentTrackTotalTime(); 
             long lTime = JajukTimer.getInstance().getCurrentTrackEllapsedTime();
             int iPos = (int)(100*JajukTimer.getInstance().getCurrentTrackPosition());
-            setCurrentPosition(iPos);
+            bPositionChanging = true;  //block events so player is not affected
+            jsPosition.setValue(iPos);    
+            bPositionChanging = false;
         }
 	}
 	
@@ -463,6 +465,7 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
 	 */
 	public void mouseWheelMoved(MouseWheelEvent e) {
         if (e.getSource() == jsPosition){
+            bPositionChanging = true;
             int iOld = jsPosition.getValue();
             int iNew = iOld - (e.getUnitsToScroll()*3);
             if ( iNew<0){
@@ -472,6 +475,7 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
                 iNew = 99;
             }
             jsPosition.setValue(iNew);
+            bPositionChanging = false;
         }
         else if (e.getSource() == jsVolume){
             int iOld = jsVolume.getValue();

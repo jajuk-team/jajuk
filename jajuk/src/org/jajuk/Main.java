@@ -205,8 +205,8 @@ public class Main implements ITechnicalStrings {
             			
             //Set locale. setSystemLocal
             Messages.getInstance().setLocal(ConfigurationManager.getProperty(CONF_OPTIONS_LANGUAGE));
-            			
-			//Registers Item managers
+        
+            //Registers Item managers
             ItemManager.registerItemManager(org.jajuk.base.Album.class,AlbumManager.getInstance());
             ItemManager.registerItemManager(org.jajuk.base.Author.class,AuthorManager.getInstance());
             ItemManager.registerItemManager(org.jajuk.base.Device.class,DeviceManager.getInstance());
@@ -241,10 +241,7 @@ public class Main implements ITechnicalStrings {
 			
             //check for another session (needs setLocal)
             checkOtherSession();
-            
-            //start the tray
-            launchTray();
-                    			
+                                			
 			//Register device types
 			DeviceManager.getInstance().registerDeviceType(Messages.getString("Device_type.directory"));//$NON-NLS-1$
 			DeviceManager.getInstance().registerDeviceType(Messages.getString("Device_type.file_cd"));//$NON-NLS-1$
@@ -316,6 +313,11 @@ public class Main implements ITechnicalStrings {
 			    sc.setProgress(80,Messages.getString("SplashScreen.3")); //$NON-NLS-1$
                 launchUI();
 			}
+            
+            //start the tray
+            launchTray();
+        
+            
        } catch (JajukException je) { //last chance to catch any error for logging purpose
 			Log.error(je);
 			if ( je.getCode().equals("005")){ //$NON-NLS-1$
@@ -773,8 +775,7 @@ public class Main implements ITechnicalStrings {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 if (Util.isUnderLinux() || Util.isUnderWindows()){
-                   //  LNFManager.setLookAndFeel(ConfigurationManager.getProperty(CONF_OPTIONS_LNF));
-                    //DO NOT SET A LAF, for unknwon reason, with some LAF (plastic x) and under linux, it causes an audio line blocking, to be investigated
+                    LNFManager.setLookAndFeel(ConfigurationManager.getProperty(CONF_OPTIONS_LNF));
                     jsystray = JajukSystray.getInstance();  
                 }
             }

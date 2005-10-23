@@ -109,7 +109,7 @@ public class EntaggedTagImpl implements ITagImpl,ITechnicalStrings {
 	 */
 	public long getYear() throws Exception {
 		String sOut = tag.getFirstYear();
-		if ( sOut == null ){//$NON-NLS-1$
+		if ( sOut == null || sOut.equals("")){//$NON-NLS-1$
 			return 0;
 		}
 		return Long.parseLong(sOut);

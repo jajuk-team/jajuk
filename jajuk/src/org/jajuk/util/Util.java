@@ -76,7 +76,6 @@ import org.jajuk.ui.JajukContainer;
 import org.jajuk.ui.PerspectiveBarJPanel;
 import org.jajuk.ui.perspectives.IPerspective;
 import org.jajuk.ui.perspectives.PerspectiveManager;
-import org.jajuk.ui.tray.JajukSystray;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 import org.xml.sax.Attributes;
@@ -920,7 +919,9 @@ public class Util implements ITechnicalStrings {
             updateWindowUI(frames[i]);
         }
         //update tray
-        updateComponentTreeUI(JajukSystray.getInstance().getPopup());
+        //DO NOT SET A LAF, for unknwon reason, with some LAF (plastic x) and under linux, it causes an audio line blocking, to be investigated
+        //updateComponentTreeUI(JajukSystray.getInstance().getPopup());
+        
     }
  
     /**

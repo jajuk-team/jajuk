@@ -17,12 +17,11 @@
 		<tocitem text="La vue Commande" target="view_command"/>
 		<tocitem text="La vue Information" target="view_information"/>
 		<tocitem text="La vue Arbre Physique" target="view_physical_tree"/>
-		<tocitem text="La vue Table Physique" target="view_table"/>
+		<tocitem text="La vue Arbre Logique" target="view_physical_tree"/>
+		<tocitem text="La vue Table Physique/Logique" target="view_table"/>
 		<tocitem text="La vue Référentiel de playlistes" target="view_playlist_repository"/>
 		<tocitem text="La vue Editeur de playlistes" target="view_playlist_editor"/>
 		<tocitem text="La vue Jaquettes" target="view_cover"/>
-		<tocitem text="La vue Arbre Logique" target="view_physical_tree"/>
-		<tocitem text="La vue Table Logique" target="view_table"/>
 		<tocitem text="La vue Animation" target="view_animation"/>
 		<tocitem text="La vue Paramétrage" target="view_parameter"/>
 		<tocitem text="La vue scanner de CDs" target="view_cd_scanner"/>

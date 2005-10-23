@@ -38,7 +38,7 @@ public interface ITechnicalStrings {
 	/**Generic border*/
 	public static final int BORDER = 4;
 	/**Maximum size for covers in KB*/
-    public static final int MAX_COVER_SIZE=500;
+    public static final int MAX_COVER_SIZE=1000;
     /**Maximum number of remote covers*/
     public static final int MAX_REMOTE_COVERS=10;
     /**Special length for player meaning end of file*/
