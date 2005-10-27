@@ -22,8 +22,6 @@ package org.jajuk.ui.views;
 
 import java.util.ArrayList;
 
-import org.jajuk.ui.PlaylistFileItem;
-
 /**
  * Playlist editor/manager
  * <p>Physical perspective
@@ -67,10 +65,5 @@ public class PhysicalPlaylistEditorView extends AbstractPlaylistEditorView{
 		return PhysicalPlaylistRepositoryView.getInstance().getPlaylistFileItems();
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.jajuk.ui.views.AbstractPlaylistEditorView#setRepositoryPlayListFileItem(org.jajuk.ui.PlaylistFileItem)
-	 */
-	void setRepositoryPlayListFileItem(PlaylistFileItem plfi) {
-		PhysicalPlaylistRepositoryView.getInstance().selectPlaylistFileItem(plfi);
-	}
+	
 }

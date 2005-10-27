@@ -149,7 +149,8 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
     public void mousePressed(MouseEvent e) {
         int iSelectedCol = jtable.getSelectedColumn(); //selected column in view
         //Test click on play icon
-        if (jtable.convertColumnIndexToModel(iSelectedCol) == 0){
+        //launch track only if only first column is selected (fixes issue with Ctrl-A)
+        if (jtable.getSelectedColumnCount() == 1 && jtable.convertColumnIndexToModel(iSelectedCol) == 0 ){
             int iSelectedRow = jtable.getSelectedRow(); //selected row in view
             File file = (File)model.getItemAt(jtable.convertRowIndexToModel(iSelectedRow));
             if (!file.isScanned()){

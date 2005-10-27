@@ -183,22 +183,12 @@ public class Cover implements Comparable,ITechnicalStrings {
             return iiDefaultCover;
         }
         long l = System.currentTimeMillis();
-        ImageIcon image = null;
-        File fImage = null;
-        if ( iType == Cover.LOCAL_COVER 
-                || iType == Cover.DEFAULT_COVER  
-                || iType == Cover.ABSOLUTE_DEFAULT_COVER){
-            image = new ImageIcon(url);
-            if ( image.getImageLoadStatus() != MediaTracker.COMPLETE){
-                throw new JajukException("129",url.toString(),null); //$NON-NLS-1$
-            }
+        if (!file.exists()){
+            DownloadManager.download(url,true);
         }
-        else if (iType == Cover.REMOTE_COVER){
-            DownloadManager.download(url,true);    
-            image = new ImageIcon(fImage.getAbsolutePath()); 
-            if ( image.getImageLoadStatus() != MediaTracker.COMPLETE){
-                throw new JajukException("129"); //$NON-NLS-1$
-            }
+        ImageIcon image = new ImageIcon(getFile().getAbsolutePath());
+        if ( image.getImageLoadStatus() != MediaTracker.COMPLETE){
+            throw new JajukException("129",url.toString(),null); //$NON-NLS-1$
         }
         Log.debug("Loaded "+url.toString()+" in  "+(System.currentTimeMillis()-l)+" ms"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         return image;

@@ -20,10 +20,15 @@
 
 package org.jajuk.base;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.util.Iterator;
 import java.util.Properties;
 
+import javax.swing.JOptionPane;
+
 import org.jajuk.i18n.Messages;
+import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
@@ -64,6 +69,57 @@ public class PlaylistFileManager extends ItemManager implements Observer{
         return singleton;
     }
     
+    /**
+     * Register an PlaylistFile with a known id
+     * 
+     * @param fio
+     * @param dParentDirectory
+     */
+    public synchronized PlaylistFile registerPlaylistFile(java.io.File fio, Directory dParentDirectory) throws Exception{
+        String sId = MD5Processor.hash(new StringBuffer(
+                dParentDirectory.getDevice().getUrl()).append(dParentDirectory.getRelativePath()).append(fio.getName()).toString());
+        BufferedReader br = new BufferedReader(new FileReader(fio));
+        StringBuffer sbContent = new StringBuffer();
+        String sTemp;
+        do{
+            sTemp = br.readLine();
+            sbContent.append(sTemp);
+        }
+        while (sTemp != null);
+        String sHashcode =MD5Processor.hash(sbContent.toString());
+        return registerPlaylistFile(sId,fio.getName(),sHashcode,dParentDirectory);
+    }                
+    
+    
+    /**
+     * Delete a playlist file
+     *
+     */
+    public void removePlaylistFile(PlaylistFile plf){
+        if ( ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_DELETE_FILE)){  //file delete confirmation
+            String sFileToDelete = plf.getDirectory().getFio().getAbsoluteFile().toString()+java.io.File.separatorChar+plf.getName(); //$NON-NLS-1$
+            String sMessage = Messages.getString("Confirmation_delete")+"\n"+sFileToDelete; //$NON-NLS-1$ //$NON-NLS-2$
+            int i = Messages.getChoice(sMessage,JOptionPane.WARNING_MESSAGE); //$NON-NLS-1$
+            if ( i == JOptionPane.OK_OPTION){
+                java.io.File fileToDelete = new java.io.File(sFileToDelete);
+                if ( fileToDelete.exists()){
+                    fileToDelete.delete();
+                    //check that file has been really deleted (sometimes, we get no exception)
+                    if (fileToDelete.exists()){
+                        Log.error("131",new JajukException("131")); //$NON-NLS-1$//$NON-NLS-2$
+                        Messages.showErrorMessage("131"); //$NON-NLS-1$
+                        return;
+                    }
+                }
+                //remove reference from playlist
+                PlaylistManager.getInstance().removePlaylistFile(plf);
+                plf.getDirectory().removePlaylistFile(plf);
+                //remove playlist file
+                removeItem(plf.getId());
+             }
+        }
+    }
+    
     
 	/**
 	 * Register an PlaylistFile with a known id
@@ -75,12 +131,19 @@ public class PlaylistFileManager extends ItemManager implements Observer{
 	        PlaylistFile playlistFile = null;
 	        if (hmIdSaveItems.containsKey(sId)){
 	            playlistFile = (PlaylistFile)hmIdSaveItems.get(sId);
+                //make sure hashcode has not changed between last release and restoration pool
+                if (!playlistFile.getHashcode().equals(sHashcode)){
+                    playlistFile = new PlaylistFile(sId, sName, sHashcode, dParentDirectory);
+                    saveItem(playlistFile);
+                }
 	        }
 	        else{
 	            playlistFile = new PlaylistFile(sId, sName, sHashcode, dParentDirectory);
 	            saveItem(playlistFile);
 	        }
 	        hmItems.put(sId, playlistFile);
+            //add it to playlist
+            PlaylistManager.getInstance().registerPlaylist(playlistFile);
 	        if ( dParentDirectory.getDevice().isRefreshing()){
 				Log.debug("Registered new playlist file: "+ playlistFile); //$NON-NLS-1$
 			}

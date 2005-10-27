@@ -162,7 +162,6 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
     JCheckBox jcbAutoCover;
     JCheckBox jcbShuffleCover;
     JCheckBox jcbPreLoad;
-    JCheckBox jcbResize;
     JCheckBox jcbLoadEachTrack;
     JLabel jlMinSize;
     JTextField jtfMinSize;
@@ -694,7 +693,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
         //- Cover
         jpCovers = new JPanel();
         double sizeCover[][] = {{0.5,0.45},
-                {iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator}};
+                {iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator}};
         jpCovers.setLayout(new TableLayout(sizeCover));
         jcbAutoCover = new JCheckBox(Messages.getString("ParameterView.148")); //$NON-NLS-1$
         jcbAutoCover.setToolTipText(Messages.getString("ParameterView.149")); //$NON-NLS-1$
@@ -704,8 +703,6 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
         jcbShuffleCover.addActionListener(this);
         jcbPreLoad = new JCheckBox(Messages.getString("ParameterView.169")); //$NON-NLS-1$
         jcbPreLoad.setToolTipText(Messages.getString("ParameterView.170")); //$NON-NLS-1$
-        jcbResize = new JCheckBox(Messages.getString("ParameterView.173")); //$NON-NLS-1$
-        jcbResize.setToolTipText(Messages.getString("ParameterView.174")); //$NON-NLS-1$
         jcbLoadEachTrack = new JCheckBox(Messages.getString("ParameterView.175")); //$NON-NLS-1$
         jcbLoadEachTrack.setToolTipText(Messages.getString("ParameterView.176")); //$NON-NLS-1$
         InputVerifier iverifier = new InputVerifier(){
@@ -746,13 +743,12 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
         jtfMaxSize.setInputVerifier(iverifier);
         jpCovers.add(jcbShuffleCover,"0,1"); //$NON-NLS-1$
         jpCovers.add(jcbLoadEachTrack,"1,1"); //$NON-NLS-1$
-        jpCovers.add(jcbResize,"0,3"); //$NON-NLS-1$
-        jpCovers.add(jcbAutoCover,"0,5"); //$NON-NLS-1$
-        jpCovers.add(jcbPreLoad,"0,7"); //$NON-NLS-1$
-        jpCovers.add(jlMinSize,"0,9"); //$NON-NLS-1$
-        jpCovers.add(jtfMinSize,"1,9"); //$NON-NLS-1$
-        jpCovers.add(jlMaxSize,"0,11"); //$NON-NLS-1$
-        jpCovers.add(jtfMaxSize,"1,11"); //$NON-NLS-1$
+        jpCovers.add(jcbAutoCover,"0,3"); //$NON-NLS-1$
+        jpCovers.add(jcbPreLoad,"0,5"); //$NON-NLS-1$
+        jpCovers.add(jlMinSize,"0,7"); //$NON-NLS-1$
+        jpCovers.add(jtfMinSize,"1,7"); //$NON-NLS-1$
+        jpCovers.add(jlMaxSize,"0,9"); //$NON-NLS-1$
+        jpCovers.add(jtfMaxSize,"1,9"); //$NON-NLS-1$
         
         //--OK/cancel panel
         jpOKCancel = new JPanel();
@@ -1021,7 +1017,6 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
         ConfigurationManager.setProperty(CONF_COVERS_AUTO_COVER,Boolean.toString(jcbAutoCover.isSelected()));
         ConfigurationManager.setProperty(CONF_COVERS_SHUFFLE,Boolean.toString(jcbShuffleCover.isSelected()));
         ConfigurationManager.setProperty(CONF_COVERS_PRELOAD,Boolean.toString(jcbPreLoad.isSelected()));
-        ConfigurationManager.setProperty(CONF_COVERS_RESIZE,Boolean.toString(jcbResize.isSelected()));
         ConfigurationManager.setProperty(CONF_COVERS_CHANGE_AT_EACH_TRACK,Boolean.toString(jcbLoadEachTrack.isSelected()));
         ConfigurationManager.setProperty(CONF_COVERS_MIN_SIZE,jtfMinSize.getText());
         ConfigurationManager.setProperty(CONF_COVERS_MAX_SIZE,jtfMaxSize.getText());
@@ -1136,7 +1131,6 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
         jcbShuffleCover.setSelected(ConfigurationManager.getBoolean(CONF_COVERS_SHUFFLE));
         jcbPreLoad.setSelected(ConfigurationManager.getBoolean(CONF_COVERS_PRELOAD));
         jcbPreLoad.setEnabled(ConfigurationManager.getBoolean(CONF_COVERS_AUTO_COVER));
-        jcbResize.setSelected(ConfigurationManager.getBoolean(CONF_COVERS_RESIZE));
         jcbLoadEachTrack.setSelected(ConfigurationManager.getBoolean(CONF_COVERS_CHANGE_AT_EACH_TRACK));
         jcbLoadEachTrack.setEnabled(jcbShuffleCover.isSelected() && jcbShuffleCover.isEnabled()); //this mode requires shuffle mode
     }

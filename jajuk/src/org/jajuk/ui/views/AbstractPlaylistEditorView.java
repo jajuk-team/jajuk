@@ -164,8 +164,10 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
         public Object getValueAt(int rowIndex, int columnIndex) {
             //check if fifo is void, so there is nothing to do
             if ( alItems.size() == 0 ){
+                jbRemove.setEnabled(false);
                 return null;
             }
+            jbRemove.setEnabled(true);
             boolean bPlanned = false;
             Font font = null;
             StackItem item = getItem(rowIndex);
@@ -351,7 +353,13 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
      */
     public void update(Event event) {
         String subject = event.getSubject();
+        Object origin = ObservationManager.getDetail(event,DETAIL_ORIGIN);
         if (EVENT_PLAYLIST_CHANGED.equals(subject) && event.getDetails() != null){
+            //test mapping between editor and repository
+            if ((this instanceof PhysicalPlaylistEditorView && !(origin instanceof PhysicalPlaylistRepositoryView))
+                || (this instanceof LogicalPlaylistEditorView && !(origin instanceof LogicalPlaylistRepositoryView))){
+                return;
+            }
             //clear planned
             alPlanned = new ArrayList(0);  //make sure planned is voided if not in Queue
             jtable.getSelectionModel().clearSelection(); //remove selection 
@@ -592,7 +600,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
                         }
                     }
                 }
-                else{  //specfial playlist, same behavior than a save as
+                else{  //special playlist, same behavior than a save as
                     plfi.getPlaylistFile().saveAs();
                 }
             }
@@ -627,16 +635,27 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
                     plfi.getPlaylistFile().remove(iRows[i]);
                     iRowNum --;
                 }
+                //set selection to last line if end reached
+                int iLastRow = jtable.getRowCount()-1;
+                if (iRows[0] == jtable.getRowCount()){
+                    jtable.getSelectionModel().setSelectionInterval(iLastRow,iLastRow);
+                }
             }
             else if ( ae.getSource() == jbAddShuffle){
                 int iRow = jtable.getSelectedRow();
-                if ( iRow < 0 ){ //no row is selected, take fifo last position as a default
-                    iRow = FIFO.getInstance().getFIFO().size(); 
+                if ( iRow < 0 ){ //no row is selected, add to the end
+                    if (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE){
+                        iRow = FIFO.getInstance().getFIFO().size();
+                    }
+                    else{
+                        iRow = jtable.getRowCount();
+                    }
                 }
                 File file = FileManager.getInstance().getShuffleFile(); 
                 try{
                     plfi.getPlaylistFile().addFile(iRow,file);
                     iRowNum ++;	
+                    jbRemove.setEnabled(true);
                 }
                 catch(JajukException je){
                     Messages.showErrorMessage(je.getCode());
@@ -667,12 +686,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
      */
     abstract ArrayList getRepositoryCurrentPlaylistFileItem();
     
-    /**
-     * Set the current playlist file item in the playlist repository view
-     * @param plfi
-     */
-    abstract void setRepositoryPlayListFileItem(PlaylistFileItem plfi);
-    
+       
     /**
      * @return Returns current playlist file item
      */

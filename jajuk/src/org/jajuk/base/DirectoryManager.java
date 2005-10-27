@@ -24,7 +24,6 @@ import java.util.Iterator;
 import java.util.Properties;
 
 import org.jajuk.util.MD5Processor;
-import org.jajuk.util.log.Log;
 
 /**
  * Convenient class to manage directories
@@ -67,49 +66,6 @@ public class DirectoryManager extends ItemManager implements Observer{
           singleton = new DirectoryManager();
       }
         return singleton;
-    }
-  
-    
-     /**
-     * Change the item name TBI
-     * @param old old item
-     * @param sNewName new item
-     * @return new item
-     */
-    public synchronized Directory changeDirectoryName(Directory old,String sNewName){
-        //check given name is different
-        if (old.getName().equals(sNewName)){
-            return old;
-        }
-        //try change dir on disk
-        try{
-            old.getFio().renameTo(new java.io.File(old.getParentDirectory().getFio().getAbsolutePath()+"/"+sNewName)); //$NON-NLS-1$
-        }
-        catch(Exception e){
-            Log.error(e);
-            return null;
-        }
-        //register new dir
-        Directory newItem = registerDirectory(sNewName,old.getParentDirectory(),old.getDevice());
-        //copy old properties except name and id
-        newItem.setProperties(old.getProperties());
-        newItem.setName(sNewName);
-        newItem.setId(newItem.getId());
-        //add dirs, files and playlist files to this new dir
-        for (File file:old.getFiles()){
-            newItem.addFile(file);
-        }
-        for (PlaylistFile plf:old.getPlaylistFiles()){
-            newItem.addPlaylistFile(plf);
-        }
-        for (Directory dir:old.getDirectories()){
-            newItem.addDirectory(dir);
-        }
-        //remove old dir from parent
-        removeDirectory(old.getId());
-        //add the new dir to the parent directory
-        old.getParentDirectory().addDirectory(newItem);
-        return newItem;
     }
     
 	/**
@@ -191,7 +147,7 @@ public class DirectoryManager extends ItemManager implements Observer{
 	    }
 	    //remove all playlists
 	    for (PlaylistFile plf:dir.getPlaylistFiles()){
-	        PlaylistFileManager.getInstance().remove(plf.getId());
+	        PlaylistFileManager.getInstance().removeItem(plf.getId());
 	    }
         //remove all sub dirs
         Iterator it = dir.getDirectories().iterator();
@@ -225,5 +181,17 @@ public class DirectoryManager extends ItemManager implements Observer{
             // change directory references
             dir.changeFile(fileOld,fNew);
         }
+    }
+    
+    
+    public Directory getDirectoryForIO(java.io.File fio){
+        Iterator it = getItems().iterator();
+        while (it.hasNext()){
+            Directory dir = (Directory)it.next();
+            if (dir.getFio().equals(fio)){
+                return dir;
+            }
+        }
+        return null;
     }
 }

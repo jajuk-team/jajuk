@@ -465,7 +465,12 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
                 alSelected = new ArrayList(paths.length);
                 for (int i=0;i<paths.length;i++){
                     Object o = paths[i].getLastPathComponent();
-                    alSelected.add((IPropertyable)((TransferableTreeNode)o).getData());
+                    if (o instanceof TransferableTreeNode){
+                        alSelected.add((IPropertyable)((TransferableTreeNode)o).getData());
+                    }
+                    else{
+                        continue;
+                    }
                     Enumeration e2 = ((DefaultMutableTreeNode)o).depthFirstEnumeration(); //return all childs nodes recursively
                     while ( e2.hasMoreElements()){
                         DefaultMutableTreeNode node = (DefaultMutableTreeNode)e2.nextElement();
@@ -919,7 +924,8 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         }
         else if ( e.getSource() == jmiPlaylistFileDelete){
             PlaylistFile plf = ((PlaylistFileNode)paths[0].getLastPathComponent()).getPlaylistFile();
-            plf.delete();
+            PlaylistFileManager.getInstance().removePlaylistFile(plf);
+            ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH));  //requires device refresh
         }
         else if (e.getSource() == jmiDevConfiguration){
             Device device =  ((DeviceNode)paths[0].getLastPathComponent()).getDevice();

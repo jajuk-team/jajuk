@@ -153,7 +153,8 @@ public class LogicalTableView extends AbstractTableView implements Observer{
     public void mousePressed(MouseEvent e) {
         int iSelectedCol = jtable.getSelectedColumn(); //selected column in view
         //Test click on play icon
-        if (jtable.convertColumnIndexToModel(iSelectedCol) == 0){
+        //launch track only if only first column is selected (fixes issue with Ctrl-A)
+        if (jtable.getSelectedColumnCount() == 1 && jtable.convertColumnIndexToModel(iSelectedCol) == 0 ){
             int iSelectedRow = jtable.getSelectedRow(); //selected row in view
             Track track = (Track)model.getItemAt(jtable.convertRowIndexToModel(iSelectedRow));
             File file = track.getPlayeableFile();

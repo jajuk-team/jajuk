@@ -29,7 +29,6 @@ import java.util.LinkedHashMap;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.error.JajukException;
-import org.jajuk.util.log.Log;
 
 /**
  *  Managers parent class
@@ -98,7 +97,6 @@ public abstract class ItemManager implements ITechnicalStrings{
     public IPropertyable restoreItemAfterRefresh(String sID){
         IPropertyable savedItem = hmIdSaveItems.get(sID);
         if ( savedItem == null){//unknwown
-            Log.debug("No more link to this item in properties restoration pool");
             return null;
         }
         else{  //reset properties before refresh
@@ -285,14 +283,11 @@ public abstract class ItemManager implements ITechnicalStrings{
         return (IPropertyable)hmItems.get(sID);
     }
     
-    /**
-     * Delete an item
-     * @param sId
-     */
-    public synchronized void remove(String sId){
-        hmItems.remove(sId);
+    /**Remove a given item*/
+    public synchronized void removeItem(String sID) {
+        hmItems.remove(sID);
     }
-    
+        
     /**
      * Register a new property
      * @param meta

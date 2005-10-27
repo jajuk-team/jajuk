@@ -432,9 +432,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
                 String sID = attributes.getValue(attributes.getIndex(XML_ID)); 
                 org.jajuk.base.File file = FileManager.getInstance().registerFile(sID, sItemName, dParent, track, lSize, lQuality);
 	            file.populateProperties(attributes);
-	            track.addFile(file);
-	            file.getDirectory().addFile(file);
-            }
+	        }
 	        else if (XML_PLAYLIST_FILE.equals(sQName)){
 	            String sDir = attributes.getValue(attributes.getIndex(XML_DIRECTORY));
                 Directory dParent = (Directory)DirectoryManager.getInstance().getItem(sDir);

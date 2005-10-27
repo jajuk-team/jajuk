@@ -289,8 +289,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		jsPosition.addChangeListener(CommandJPanel.this);
 		jsPosition.setEnabled(false);
 		jsPosition.setToolTipText(Messages.getString("CommandJPanel.15")); //$NON-NLS-1$
-		jsPosition.addMouseWheelListener(CommandJPanel.this);
-		
+				
 		//mute
 		jbMute = new JButton(Util.getIcon(ICON_MUTE)); 
 		jbMute.addActionListener(CommandJPanel.this);
@@ -543,6 +542,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 					jbNext.setEnabled(false);
 					jbPrevious.setEnabled(false);
 					jsPosition.setEnabled(false);
+                    jsPosition.removeMouseWheelListener(CommandJPanel.this);
 					setCurrentPosition(0);
                     jbNorm.setEnabled(false);
 					jbPlayPause.setIcon(Util.getIcon(ICON_PAUSE)); //resume any current pause
@@ -556,6 +556,8 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 					jbNext.setEnabled(true);
 					jbPrevious.setEnabled(true);
 					jsPosition.setEnabled(true);
+                    jsPosition.removeMouseWheelListener(CommandJPanel.this);
+                    jsPosition.addMouseWheelListener(CommandJPanel.this);
                     jbNorm.setEnabled(true);
 					jbPlayPause.setIcon(Util.getIcon(ICON_PAUSE)); //resume any current pause
 				}
@@ -563,12 +565,15 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 					jbRew.setEnabled(false);
 					jbFwd.setEnabled(false);
 					jsPosition.setEnabled(false);
+                    jsPosition.removeMouseWheelListener(CommandJPanel.this);
 					jbPlayPause.setIcon(Util.getIcon(ICON_PLAY));
 				}
 				else if (EVENT_PLAYER_RESUME.equals(subject)){
 					jbRew.setEnabled(true);
 					jbFwd.setEnabled(true);
 					jsPosition.setEnabled(true);
+                    jsPosition.removeMouseWheelListener(CommandJPanel.this);
+                    jsPosition.addMouseWheelListener(CommandJPanel.this);
 					jbPlayPause.setIcon(Util.getIcon(ICON_PAUSE));
 				}
 				else if (EVENT_HEART_BEAT.equals(subject) &&!FIFO.isStopped() && !Player.isPaused()){

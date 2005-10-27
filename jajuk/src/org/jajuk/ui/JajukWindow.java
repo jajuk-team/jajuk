@@ -99,7 +99,6 @@ public class JajukWindow extends JXFrame implements ITechnicalStrings,Observer {
                 setFocusableWindowState(false);
             }
           public void windowClosing(WindowEvent we) {
-                             
               //  check if a device is refreshing
 				if (DeviceManager.getInstance().isAnyDeviceRefreshing()){
 					int iResu = Messages.getChoice(Messages.getString("Confirmation_exit_refreshing"),JOptionPane.WARNING_MESSAGE);  //$NON-NLS-1$ //$NON-NLS-2$
@@ -111,7 +110,12 @@ public class JajukWindow extends JXFrame implements ITechnicalStrings,Observer {
 				return; 
 			}
 		});
-        
+        //display correct title if a track is lauched at startup
+		update(new Event(EVENT_FILE_LAUNCHED,ObservationManager.getDetailsLastOccurence(EVENT_FILE_LAUNCHED)));
+   }
+	
+    
+    public void addComponentListener(){
         addComponentListener(new ComponentListener() {
         
             public void componentShown(ComponentEvent e) {
@@ -129,10 +133,9 @@ public class JajukWindow extends JXFrame implements ITechnicalStrings,Observer {
             }
         
         });
-		//display correct title if a track is lauched at startup
-		update(new Event(EVENT_FILE_LAUNCHED,ObservationManager.getDetailsLastOccurence(EVENT_FILE_LAUNCHED)));
-   }
-	
+    }
+    
+    
     /**
      * Save current window size and position
      *

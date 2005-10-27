@@ -133,7 +133,7 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 					}
 					else { //left button again launch it 
 					    try{
-					        plfi.getPlaylistFile().play();
+					        play(plfi);
                         }
 					    catch(JajukException je){
                             Log.error(je.getCode(),plfiSelected.getName(),null); //$NON-NLS-1$
@@ -155,10 +155,6 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 				    }
 				    Util.waiting();
 				    selectPlaylistFileItem(plfi);
-					Properties properties = new Properties();
-					properties.put(DETAIL_SELECTION,plfi);
-					properties.put(DETAIL_ORIGIN,this);
-					ObservationManager.notify(new Event(EVENT_PLAYLIST_CHANGED,properties)); 
 					if (e.getButton() == MouseEvent.BUTTON3){  //right button
 						showMenu(plfi,e);
 					}
@@ -177,19 +173,11 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 		ObservationManager.register(EVENT_DEVICE_REFRESH,this);
 		//set queue playlist as default in playlist editor
 		selectPlaylistFileItem(plfiQueue);	
-		Properties properties = new Properties();
-		properties.put(DETAIL_SELECTION,plfiQueue);
-		properties.put(DETAIL_ORIGIN,this);
-		ObservationManager.notify(new Event(EVENT_PLAYLIST_CHANGED,properties));
 	}
 	
 	
 	private void selectQueue(){
 	    selectPlaylistFileItem(plfiQueue);
-	    Properties properties = new Properties();
-	    properties.put(DETAIL_SELECTION,plfiQueue);
-	    properties.put(DETAIL_ORIGIN,this);
-	    ObservationManager.notify(new Event(EVENT_PLAYLIST_CHANGED,properties));
 	}
     
     
@@ -235,6 +223,10 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 		//set new item
 		this.plfiSelected = plfi;
         FIFO.getInstance().setPlaylist(plfi.getPlaylistFile());
+        Properties properties = new Properties();
+        properties.put(DETAIL_ORIGIN,AbstractPlaylistRepositoryView.this);
+        properties.put(DETAIL_SELECTION,plfi);
+        ObservationManager.notify(new Event(EVENT_PLAYLIST_CHANGED,properties));
   }
 	
 	
@@ -276,10 +268,6 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 				public void finished() {
 					jpRoot.add(Box.createVerticalStrut(500));  //make sure specials playlists are paked to the top
 				    selectPlaylistFileItem(plfiSelected);
-                    Properties properties = new Properties();
-                    properties.put(DETAIL_SELECTION,plfiSelected);
-                    properties.put(DETAIL_ORIGIN,this);
-                    ObservationManager.notify(new Event(EVENT_PLAYLIST_CHANGED,properties));
                     AbstractPlaylistRepositoryView.this.revalidate();
                     AbstractPlaylistRepositoryView.this.repaint();
                }
@@ -291,7 +279,7 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 	/**
 	 * Create special playlists from collection, this is called by both logicial and physical populate methods
 	 */
-	void populatePlaylists(){
+	 void populatePlaylists(){
 		alPlaylistFileItems.clear();
 		//special playlists
 		JPanel jpSpecials = new JPanel();
@@ -360,6 +348,10 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 		
 		jpRoot.add(jpSpecials);
 	}
+    
+    abstract public void removeItem (PlaylistFileItem plfiSelected);
+    
+    abstract public void play(PlaylistFileItem plfi) throws JajukException;
 	
 	/* (non-Javadoc)
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
@@ -381,11 +373,12 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 		        //Others actions: not available for unmounted items
                 else{
                     if ( ae.getSource() == jmiDelete){
-		                plfiSelected.getPlaylistFile().delete();
+		                removeItem(plfiSelected);
+                        ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH));
 		            }
 		            else if(ae.getSource() == jmiPlay){
 		                try{
-		                    plfiSelected.getPlaylistFile().play();
+		                    play(plfiSelected);
 		                }
 		                catch(JajukException je){
 		                    Log.error(je.getCode(),plfiSelected.getName(),null); //$NON-NLS-1$
@@ -405,13 +398,23 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 		                new PropertiesWizard(alItems);
 		            }
 		            else if(ae.getSource() == jmiSaveAs){ //save as
-		                plfiSelected.getPlaylistFile().saveAs();
+		                try{
+		                    plfiSelected.getPlaylistFile().saveAs();    
+                        }
+                        
+                        catch(JajukException je){
+                            Log.error(je);
+                            Messages.showErrorMessage(je.getCode());
+                        }
+                        catch(Exception e){
+                            Log.error(e);
+                        }
+                        ObservationManager.notify(new Event(EVENT_PLAYLIST_REFRESH));
 		            }
 		        }
 		    }
 		}.start();
 	}
-	
 	
 	
 	/**
@@ -429,6 +432,3 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 	}
 	
 }
-
-
-

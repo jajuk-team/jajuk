@@ -46,17 +46,17 @@ public class Tag implements ITechnicalStrings{
 	 * 
 	 * @param fio
 	 */
-	public Tag(java.io.File fio) {
-		Type type = TypeManager.getInstance().getTypeByExtension(Util.getExtension(fio));
-		tagImpl = type.getTagImpl();
-		try{
-			tagImpl.setFile(fio);
-		}
-		catch(Exception e){
-			Log.error("103",fio.getName(),e); //$NON-NLS-1$
-		}
-		this.fio = fio;
-	}
+	public Tag(java.io.File fio)throws JajukException {
+	    try{
+	        Type type = TypeManager.getInstance().getTypeByExtension(Util.getExtension(fio));
+	        tagImpl = type.getTagImpl();
+	        tagImpl.setFile(fio);
+	        this.fio = fio;
+	        
+	    } catch (Exception e) {
+	        throw new JajukException("103",fio.getName(), e); //$NON-NLS-1$
+	    }	
+    }
 
 	/**
 	 * @return track name as defined in tags are file name otherwise

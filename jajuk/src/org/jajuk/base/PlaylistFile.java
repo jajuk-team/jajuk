@@ -54,7 +54,7 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 	/**Playlist parent directory*/
 	private Directory dParentDirectory;
 	/**Files list, singleton*/
-	private ArrayList alFiles;
+	private ArrayList<File> alFiles;
 	/**Modification flag*/
 	private boolean bModified = false;
 	/**Associated physical file*/
@@ -132,7 +132,7 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 		}
 		Directory dCurrent = getDirectory();
 		StringBuffer sbOut = new StringBuffer(getDirectory().getDevice().getUrl())
-			.append(dCurrent.getRelativePath()).append('/').append(this.getName());
+			.append(dCurrent.getRelativePath()).append(java.io.File.separatorChar).append(this.getName());
 		sAbs = sbOut.toString();
 		return sAbs;
 	}
@@ -189,7 +189,7 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 	/**
 	 * @return Returns the list of files this playlist maps to
 	 */
-	public synchronized ArrayList getFiles() throws JajukException{
+	public synchronized ArrayList<File> getFiles() throws JajukException{
 		//if normal playlist, propose to mount device if unmounted
         if (getType()==PlaylistFileItem.PLAYLIST_TYPE_NORMAL && !isReady()){
 		    String sMessage = Messages.getString("Error.025") + " (" + getDirectory().getDevice().getName() + Messages.getString("FIFO.4"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -221,7 +221,7 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 			alFiles = new ArrayList(10);
 			Iterator it = FileManager.getInstance().getBestOfFiles(ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED)).iterator(); //even unmounted files if required
 			while ( it.hasNext()){
-			    alFiles.add((org.jajuk.base.File)it.next());
+			    alFiles.add((File)it.next());
 			}
 		}
         else if ( iType == PlaylistFileItem.PLAYLIST_TYPE_NOVELTIES){ //novelties playlist
@@ -232,14 +232,14 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
             }
             Iterator it = alNovelties.iterator();
             while ( it.hasNext()){
-                alFiles.add((org.jajuk.base.File)it.next());
+                alFiles.add((File)it.next());
             }
         }
 		else if ( iType == PlaylistFileItem.PLAYLIST_TYPE_BOOKMARK){ //bookmark playlist
 			alFiles = new ArrayList(10);
 			Iterator it = Bookmarks.getInstance().getFiles().iterator();
 			while ( it.hasNext()){
-				alFiles.add((org.jajuk.base.File)it.next());
+				alFiles.add((File)it.next());
 			}
 		}
 		else if ( iType == PlaylistFileItem.PLAYLIST_TYPE_NEW){ //new playlist
@@ -560,32 +560,7 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 	}
 	
 	
-	/**
-	 * Delete this playlist file
-	 *
-	 */
-	public void delete(){
-		if ( ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_DELETE_FILE)){  //file delete confirmation
-			String sFileToDelete = getDirectory().getFio().getAbsoluteFile()+"/"+getName(); //$NON-NLS-1$
-			String sMessage = Messages.getString("Confirmation_delete")+"\n"+sFileToDelete; //$NON-NLS-1$ //$NON-NLS-2$
-			int i = Messages.getChoice(sMessage,JOptionPane.WARNING_MESSAGE); //$NON-NLS-1$
-			if ( i == JOptionPane.OK_OPTION){
-				java.io.File fileToDelete = new java.io.File(sFileToDelete);
-				if ( fileToDelete.exists()){
-					fileToDelete.delete();
-                    //check that file has been really deleted (sometimes, we get no exception)
-                    if (fileToDelete.exists()){
-                        Log.error("131",new JajukException("131")); //$NON-NLS-1$//$NON-NLS-2$
-                        Messages.showErrorMessage("131"); //$NON-NLS-1$
-                        return;
-                    }
-					PlaylistFileManager.getInstance().remove(getId());
-					ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH));  //requires device refresh
-				}
-			}
-		}
-	}
-	
+		
 	/**Return true the file can be accessed right now 
 	 * @return true the file can be accessed right now*/
 	public boolean isReady(){
@@ -643,8 +618,7 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 	 *
 	 */
 	public void play() throws JajukException{
-	    ArrayList alFiles = null;
-        alFiles = getFiles();
+	    alFiles = getFiles();
         if ( alFiles == null || alFiles.size() == 0){
 			Messages.showErrorMessage("018");	 //$NON-NLS-1$
 		}
@@ -679,31 +653,42 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 	/**
 	 * Save as... the playlist file 
 	 */
-	public void saveAs(){
+	public void saveAs() throws Exception{
 		ArrayList alTypes = new ArrayList(1);
 		alTypes.add(TypeManager.getInstance().getTypeByExtension(EXT_PLAYLIST));
 		JajukFileChooser jfchooser = new JajukFileChooser(new JajukFileFilter(true,alTypes));
-        jfchooser.setSelectedFile(new java.io.File(DEFAULT_PLAYLIST_FILE+"."+EXT_PLAYLIST));//$NON-NLS-1$
+        String sPlaylist = DEFAULT_PLAYLIST_FILE;
+        //computes new playlist file
+        alFiles = getFiles();
+        if (alFiles.size() > 0){
+            File file = alFiles.get(0);
+            sPlaylist = file.getDirectory().getAbsolutePath()+ java.io.File.separatorChar + file.getTrack().getHumanValue(XML_ALBUM);
+        }
+        else{
+            return;
+        }
+        jfchooser.setSelectedFile(new java.io.File(sPlaylist+"."+EXT_PLAYLIST));//$NON-NLS-1$
 		int returnVal = jfchooser.showSaveDialog(Main.getWindow());
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
-			java.io.File file = jfchooser.getSelectedFile();
-			//add automaticaly the extension if required
-			if (file.getAbsolutePath().endsWith(EXT_PLAYLIST)){
-                file = new java.io.File(file.getAbsolutePath());  
-            }
-            else{
-                file = new java.io.File(file.getAbsolutePath()+"."+EXT_PLAYLIST);//$NON-NLS-1$
-            }
-            
-            this.setFio(file); //set new file path ( this playlist is a special playlist, just in memory )
-			try{
-				this.commit(); //write it on the disk
-				ObservationManager.notify(new Event(EVENT_PLAYLIST_REFRESH)); //notify playlist repository to refresh
-			}
-			catch(JajukException je){
-				Log.error(je);
-				Messages.showErrorMessage(je.getCode(),je.getMessage());
-			}
+		    java.io.File file = jfchooser.getSelectedFile();
+		    //add automaticaly the extension if required
+		    if (file.getAbsolutePath().endsWith(EXT_PLAYLIST)){
+		        file = new java.io.File(file.getAbsolutePath());  
+		    }
+		    else{
+		        file = new java.io.File(file.getAbsolutePath()+"."+EXT_PLAYLIST);//$NON-NLS-1$
+		    }
+		    
+		    this.setFio(file); //set new file path ( this playlist is a special playlist, just in memory )
+		    this.commit(); //write it on the disk
+		    java.io.File fDir = file.getParentFile();
+		    Directory dir = DirectoryManager.getInstance().getDirectoryForIO(fDir);
+		    if (dir != null){ //the new playlist file in inside collection
+		        PlaylistFile plFile = PlaylistFileManager.getInstance().registerPlaylistFile(file,dir);
+		        PlaylistManager.getInstance().registerPlaylist(plFile);
+		        dir.addPlaylistFile(plFile);
+		    }
+		    ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH)); //notify playlist repository to refresh
 		}
 	}
 

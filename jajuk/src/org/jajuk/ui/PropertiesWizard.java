@@ -30,6 +30,7 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
@@ -456,6 +457,10 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
             IPropertyable newItem = null;
             ArrayList<PropertyMetaInformation> alChanged = new ArrayList(2);
             int index = -1;
+            //keep a reference to first item to change
+            IPropertyable itemReference = alItems.get(0);
+            //scan all properties to see whish one has changed
+            HashMap<PropertyMetaInformation,Object> hmPropertyToChange = new HashMap();
             for (PropertyMetaInformation meta:alToDisplay){
                 index++;
                 JComponent component = widgets[index][1];
@@ -509,23 +514,43 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
                  * (we only change properties changed in the UI and not properties different between UI and
                  * value otherwise we can overwrite unwanted properties)
                  */
-                String sOldValueFirstElement = alItems.get(0).getHumanValue(meta.getName());
+                String sOldValueFirstElement = itemReference.getHumanValue(meta.getName());
                 if ( (sOldValueFirstElement == null || Util.format(oValue,meta).equals(sOldValueFirstElement))){
                     continue;
                 }
-                //Full album ?
-                boolean bFull = ((JCheckBox)widgets[index][4]).isSelected();
-                //Computes all items to check
-                ArrayList<IPropertyable> alItemsToCheck = new ArrayList(alItems.size()); //contains items to be changed
-                for (IPropertyable item:alItems){
+                else{
+                    hmPropertyToChange.put(meta,oValue);
+                }
+            }
+            //none change, leave
+            if (hmPropertyToChange.keySet().size() == 0){
+                return;
+            }
+            
+            //Now list all items to change
+            //Full album ?
+            boolean bFull = ((JCheckBox)widgets[index][4]).isSelected();
+            //Computes all items to check
+            ArrayList<IPropertyable> alItemsToCheck = new ArrayList(alItems.size()); //contains items to be changed
+            for (IPropertyable item:alItems){
+                if (!alItemsToCheck.contains(item)){ //avoid dublicates for perfs
                     alItemsToCheck.add(item); //add item
-                    //add others items from the same album if bFull
-                    if (bFull && item instanceof Track){
-                        alItemsToCheck.addAll(((Track)item).getAlbum().getTracks());
+                }
+                //add others items from the same album if bFull
+                if (bFull && item instanceof Track){
+                    for (Track track:((Track)item).getAlbum().getTracks()){
+                        if (!alItemsToCheck.contains(item)){ //avoid dublicates for perfs
+                            alItemsToCheck.add(track); //add item
+                        }       
                     }
                 }
-                //Now we have all items to concidere, check if we need write
+            }
+            ArrayList<IPropertyable> alInError = new ArrayList(alItemsToCheck.size());
+            //Now we have all items to concidere, write tags for each property to change
+            for (PropertyMetaInformation meta:hmPropertyToChange.keySet()){
                 for (IPropertyable item:alItemsToCheck){
+                    //New value
+                    oValue = hmPropertyToChange.get(meta);
                     //Old value
                     String  sOldValue = item.getHumanValue(meta.getName());
                     if ( (sOldValue!= null && ! Util.format(oValue,meta).equals(sOldValue))){
@@ -535,14 +560,24 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
                         try{
                             newItem = ItemManager.changeItem(item,meta.getName(),oValue);
                         }
+                        //none accessible file for this track, for this error, we display an error and leave completely
                         catch(NoneAccessibleFileException none){
-                            Messages.showErrorMessage(none.getCode());
+                            none.printStackTrace();
+                            Messages.showErrorMessage(none.getCode(),item.getHumanValue(XML_NAME));
                             dispose(); //close window to avoid reseting all properties to old values
                             return;
                         }
+                        //cannot rename file, for this error, we display an error and leave completely
                         catch(CannotRenameException cre){
                             Messages.showErrorMessage("135"); //$NON-NLS-1$
                             return;
+                        }
+                        //probably error writing a tag, store track reference and continue
+                        catch(JajukException je){
+                            if (!alInError.contains(item)){
+                                alInError.add(item);
+                            }
+                            continue;
                         }
                         //if this item was element of property panel elements, update it
                         if (alItems.contains(item)){
@@ -560,12 +595,21 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
                     }
                 }
                 /*Display a warning message if some files not updated
-                note that this message will appear only for first property in failure,
-                after, current track will have changed and will no more contain unmounted files*/ 
-                if (alItems.get(0) instanceof Track && TrackManager.getInstance().isChangePbm()){
+                 note that this message will appear only for first item in failure but for each property in failure,
+                 after, current track will have changed and will no more contain unmounted files*/ 
+                if (itemReference instanceof Track && TrackManager.getInstance().isChangePbm()){
                     Messages.showWarningMessage(Messages.getString("Error.138")); //$NON-NLS-1$
                 }
             }
+            //display a message for file write issues
+            if (alInError.size()>0){
+                String sInfo = "";
+                for (IPropertyable item:alInError){
+                    sInfo += "\n"+item.getHumanValue(XML_NAME);
+                }
+                Messages.showErrorMessage("104",sInfo);
+            }
+            
             //display a message if user changed at least one property
             if (alChanged.size() > 0){
                 StringBuffer sbChanged = new StringBuffer();
@@ -583,6 +627,7 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
                 Properties properties = new Properties();
                 ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH)); 
             }
+            dispose(); //close window, otherwise you will have some issues if fields are not updated with changes
         }
         
         /**

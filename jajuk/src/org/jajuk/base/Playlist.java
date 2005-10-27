@@ -138,15 +138,31 @@ public class Playlist extends PropertyAdapter implements Comparable{
 		}
 	}
 
-	/**
-	 * Remove a playlist file *
-	 * 
-	 * @return
-	 */
-	public void removeFile(PlaylistFile plFile) {
-		alPlaylistFiles.remove(plFile);
+    
+    protected void removePlaylistFile(PlaylistFile plf) {
+        if (alPlaylistFiles.contains(plf)){
+            alPlaylistFiles.remove(plf);
+            rebuildProperty();
+        }
+    }
+    
+    
+    /**
+     * Rebuild playlist files property
+     * @return
+     */
+	public void rebuildProperty() {
+	    String sPlaylistFiles = "";
+	    if (alPlaylistFiles.size() > 0){
+	        sPlaylistFiles += alPlaylistFiles.get(0).getId();
+	        for (int i=1; i<alPlaylistFiles.size();i++){
+	            sPlaylistFiles += "," + alPlaylistFiles.get(i).getId();
+	        }
+	    }
+	    setProperty(XML_PLAYLIST_FILES,sPlaylistFiles);
 	}
 	
+	    
 	/**
 	 * Return true if this playlist map to specified playlist file id 
 	 * @param sId

@@ -208,12 +208,23 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
             Log.error(e);
         }
         add(jpControl,"0,0"); //$NON-NLS-1$
-        new Thread(){ //do not execute this very long action (especialy if preload) all in the event dispatcher thread!
+        //request cover refresh after a while to allow ui to paint
+        new Thread(){
             public void run(){
-                update(new Event(EVENT_COVER_REFRESH,ObservationManager.getDetailsLastOccurence(EVENT_COVER_REFRESH)));        
-                addComponentListener(CoverView.this); //listen for resize
+                try{
+                    DownloadManager.getRemoteCoversList("");//try to open connexion, this can take about 30 sec under linux if network not available
+                    Thread.sleep(1000); //one more sec in case of...
+                }
+                catch(Exception e){
+                    Log.error(e);
+                }
+                //Request for cover refresh
+                update(new Event(EVENT_COVER_REFRESH,ObservationManager.getDetailsLastOccurence(EVENT_COVER_REFRESH)));
+                        
             }
         }.start();
+        
+   
     }
     
     
@@ -221,6 +232,8 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
      * @see org.jajuk.ui.Observer#update(java.lang.String)
      */
     public void update(Event event){
+        removeComponentListener(CoverView.this);
+        addComponentListener(CoverView.this); //listen for resize
         String subject = event.getSubject();
         Log.debug("Cover view update: "+event); //$NON-NLS-1$
         this.iEventID = (int)(Integer.MAX_VALUE*Math.random());
@@ -291,14 +304,14 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                                 }
                                 Collections.reverse(alUrls); //set best results to be displayed  first
                                 Iterator it2 = alUrls.iterator(); //add found covers 
-                                ArrayList alLocalCovers = new ArrayList(alUrls.size()); //contains found covers to avoid to use main cover repository due to concurency issues
+                                ArrayList alRemoteCovers = new ArrayList(alUrls.size()); //contains found covers to avoid to use main cover repository due to concurency issues
                                 while ( it2.hasNext() && this.iEventID == iLocalEventID){ //load each cover (pre-load or post-load) and stop if a signal has been emitted
                                     URL url = (URL)it2.next();
                                     try{
                                         Cover cover = new Cover(url,Cover.REMOTE_COVER);//create a cover with given url ( image will be really downloaded when required if no preload)
                                         if (!alCovers.contains(cover)){
                                             Log.debug("Found Cover: "+url.toString()); //$NON-NLS-1$
-                                            alLocalCovers.add(cover);
+                                            alRemoteCovers.add(cover);
                                         }
                                     }
                                     catch(Exception e){
@@ -317,7 +330,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                                     return;
                                 }
                                 //Add found covers
-                                alCovers.addAll(alLocalCovers);
+                                alCovers.addAll(alRemoteCovers);
                             }
                         }
                         catch(Exception e){
@@ -380,6 +393,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                     Log.debug("Negative cover index: "+i);
                     i=0;
                 }
+                
                 jlFound.setText(i+"/"+getCoverNumber()); //$NON-NLS-1$//$NON-NLS-2$
             }
         });
@@ -450,9 +464,6 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
      */
     public void componentResized(ComponentEvent e) {
         Log.debug("Cover resized"); //$NON-NLS-1$
-        if (!ConfigurationManager.getBoolean(CONF_COVERS_RESIZE)){ //if user didn't check resize option, just leave
-            return;
-        }
         long lCurrentDate = System.currentTimeMillis();  //adjusting code
         if ( lCurrentDate - lDateLastResize < 500){  //display image every 500 ms to save CPU
             lDateLastResize = lCurrentDate;
@@ -469,6 +480,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
     private void displayCurrentCover(){
         SwingWorker sw = new SwingWorker() {
             public Object  construct(){
+                removeComponentListener(CoverView.this); //remove listener to avoid looping
                 if ( alCovers.size() == 0){ //should not append
                     alCovers.add(coverDefault); //Add at last the default cover if all remote cover has been discarded
                     try {
@@ -521,6 +533,8 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
             }
             public void finished() {
                 displayCover(index);
+                removeComponentListener(CoverView.this);
+                addComponentListener(CoverView.this); //listen for resize
             }
         };
         sw.start();
@@ -624,53 +638,50 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
             Log.error(e);
             throw new JajukException("000"); //$NON-NLS-1$
         }
-        if (ConfigurationManager.getBoolean(CONF_COVERS_RESIZE)){
-            int iDisplayAreaHeight = CoverView.this.getHeight() - 30; 
-            int iDisplayAreaWidth = CoverView.this.getWidth() - 8; 
-            //check minimum sizes
-            if (iDisplayAreaHeight < 1 || iDisplayAreaWidth <1){
-                return null;
+        int iDisplayAreaHeight = CoverView.this.getHeight() - 30; 
+        int iDisplayAreaWidth = CoverView.this.getWidth() - 8; 
+        //check minimum sizes
+        if (iDisplayAreaHeight < 1 || iDisplayAreaWidth <1){
+            return null;
+        }
+        int iNewWidth;
+        int iNewHeight;
+        float fRatio;
+        if ( iDisplayAreaHeight > iDisplayAreaWidth){
+            // Width is smaller than height : try to optimize height
+            iNewHeight = iDisplayAreaHeight; //take all possible height
+            //we check now if width will be visible entirely with optimized height
+            float fHeightRatio = (float)iNewHeight/icon.getIconHeight();
+            if (icon.getIconWidth()*fHeightRatio <= iDisplayAreaWidth){
+                iNewWidth = (int)(icon.getIconWidth()*fHeightRatio);
             }
-            int iNewWidth;
-            int iNewHeight;
-            float fRatio;
-            if ( iDisplayAreaHeight > iDisplayAreaWidth){
-                // Width is smaller than height : try to optimize height
-                iNewHeight = iDisplayAreaHeight; //take all possible height
-                //we check now if width will be visible entirely with optimized height
-                float fHeightRatio = (float)iNewHeight/icon.getIconHeight();
-                if (icon.getIconWidth()*fHeightRatio <= iDisplayAreaWidth){
-                    iNewWidth = (int)(icon.getIconWidth()*fHeightRatio);
-                }
-                else{
-                    //no? so we optimize width 
-                    iNewWidth = iDisplayAreaWidth;
-                    iNewHeight = (int)(icon.getIconHeight() * ((float)iNewWidth/icon.getIconWidth())) ;     
-                }
-            } 
-            else  {
-                // Height is smaller or equal than width : try to optimize width
-                iNewWidth = iDisplayAreaWidth; //take all possible width
-                // we check now if height will be visible entirely with optimized width
-                float fWidthRatio = (float)iNewWidth/icon.getIconWidth();
-                if (icon.getIconHeight()*(fWidthRatio) <= iDisplayAreaHeight){
-                    iNewHeight = (int)(icon.getIconHeight()*fWidthRatio);
-                }
-                else{
-                    //no? so we optimize width 
-                    iNewHeight = iDisplayAreaHeight;
-                    iNewWidth = (int)(icon.getIconWidth() * ((float)iNewHeight/icon.getIconHeight())) ;     
-                }
-            }
-            
-            if (CoverView.this.iEventID == iLocalEventID){
-                ii = Util.getResizedImage(icon,iNewWidth,iNewHeight);}
             else{
-                Log.debug("Download stopped - 2"); //$NON-NLS-1$
-                return null;
+                //no? so we optimize width 
+                iNewWidth = iDisplayAreaWidth;
+                iNewHeight = (int)(icon.getIconHeight() * ((float)iNewWidth/icon.getIconWidth())) ;     
             }
-            
         } 
+        else  {
+            // Height is smaller or equal than width : try to optimize width
+            iNewWidth = iDisplayAreaWidth; //take all possible width
+            // we check now if height will be visible entirely with optimized width
+            float fWidthRatio = (float)iNewWidth/icon.getIconWidth();
+            if (icon.getIconHeight()*(fWidthRatio) <= iDisplayAreaHeight){
+                iNewHeight = (int)(icon.getIconHeight()*fWidthRatio);
+            }
+            else{
+                //no? so we optimize width 
+                iNewHeight = iDisplayAreaHeight;
+                iNewWidth = (int)(icon.getIconWidth() * ((float)iNewHeight/icon.getIconHeight())) ;     
+            }
+        }
+        
+        if (CoverView.this.iEventID == iLocalEventID){
+            ii = Util.getResizedImage(icon,iNewWidth,iNewHeight);}
+        else{
+            Log.debug("Download stopped - 2"); //$NON-NLS-1$
+            return null;
+        }
         return null;
     }
     
@@ -740,13 +751,12 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
             }
             // reorganize covers
             synchronized(bLock){
-                
                 alCovers.remove(index);
                 index--;
                 if (index < 0){
                     index = alCovers.size()-1;
                 }
-                displayCurrentCover();
+                ObservationManager.notify(new Event(EVENT_COVER_REFRESH));
             }
         }
         else if ( e.getSource() == jbDefault){ //choose a default
@@ -758,8 +768,14 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                 try{
                     //copy file from cache
                     File fSource = new File(Util.getCachePath(cover.getURL()));
-                    Util.copy(fSource,new File(sFilePath));
+                    File file = new File(sFilePath);
+                    Util.copy(fSource,file);
                     InformationJPanel.getInstance().setMessage(Messages.getString("CoverView.11"),InformationJPanel.INFORMATIVE); //$NON-NLS-1$
+                    Cover cover2 = new Cover(file.toURL(),Cover.ABSOLUTE_DEFAULT_COVER);
+                    if (!alCovers.contains(cover2)){
+                        alCovers.add(cover2);
+                        setFoundText();
+                    }
                 }
                 catch(Exception ex){
                     Log.error("024",ex); //$NON-NLS-1$
@@ -784,8 +800,14 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                     try{
                         //copy file from cache
                         File fSource = new File(Util.getCachePath(cover.getURL()));
-                        Util.copy(fSource,new File(sFilePath));
+                        File file = new File(sFilePath);
+                        Util.copy(fSource,file);
                         InformationJPanel.getInstance().setMessage(Messages.getString("CoverView.11"),InformationJPanel.INFORMATIVE); //$NON-NLS-1$
+                        Cover cover2 = new Cover(file.toURL(),Cover.ABSOLUTE_DEFAULT_COVER);
+                        if (!alCovers.contains(cover2)){
+                            alCovers.add(cover2);
+                            setFoundText();
+                        }
                     }
                     catch(Exception ex){
                         Log.error("024",ex); //$NON-NLS-1$
@@ -826,17 +848,14 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                         try {
                             Util.copy(cover.getFile(),fNew);
                             InformationJPanel.getInstance().setMessage(Messages.getString("CoverView.11"),InformationJPanel.INFORMATIVE); //$NON-NLS-1$
+                            ObservationManager.notify(new Event(EVENT_COVER_REFRESH));
                         }
                         catch(Exception ex){
                             Log.error("024",ex); //$NON-NLS-1$
                             Messages.showErrorMessage("024"); //$NON-NLS-1$
                         }
                     }
-                    else{
-                        return;
-                    }
-                    
-                }
+                 }
             }.start();
         }
         
@@ -848,12 +867,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
      */ 
     private int getCoverNumber(){
         synchronized(bLock){
-            if (alCovers.size() == 0 ||  ((Cover)alCovers.get(0)).getType() == Cover.DEFAULT_COVER){
-                return 0;
-            }
-            else{
-                return alCovers.size() ;
-            }
+             return alCovers.size() ;
         }
     }
     

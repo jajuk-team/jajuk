@@ -188,6 +188,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	             */ 
 	            iNbFilesBeforeRefresh = FileManager.getInstance().getItems().size();
 	            iNbNewFiles = 0;
+                PlaylistManager.getInstance().cleanup();
 	            FileManager.getInstance().cleanDevice(device.getId());
 	            PlaylistFileManager.getInstance().cleanDevice(device.getId());
 	            DirectoryManager.getInstance().cleanDevice(device.getId());

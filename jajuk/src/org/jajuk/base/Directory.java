@@ -19,9 +19,7 @@
  */
 package org.jajuk.base;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -32,6 +30,7 @@ import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.Util;
+import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
 /**
@@ -98,6 +97,10 @@ public class Directory extends PropertyAdapter implements Comparable{
         return this.getId().equals(((Directory)otherDirectory).getId() );
     }
     
+    public String getAbsolutePath(){
+        return this.fio.getAbsolutePath();    
+    }
+    
     /**
      * hashcode ( used by the equals method )
      */
@@ -137,12 +140,32 @@ public class Directory extends PropertyAdapter implements Comparable{
         }
     }
     
+     /**
+     * Remove a file from local refences
+     * @param file
+     */
+    public void removeFile(org.jajuk.base.File file) {
+        if(alFiles.contains(file)){
+            alFiles.remove(file);    
+        }
+    }
+    
     /**
      * Add a playlist file in local refences
      * @param playlist file
      */
     public void addPlaylistFile(PlaylistFile plf) {
         alPlaylistFiles.add(plf);
+    }
+    
+    /**
+     * Remove a playlist file from local refences
+     * @param playlist file
+     */
+    public void removePlaylistFile(PlaylistFile plf) {
+        if(alPlaylistFiles.contains(plf)){
+            alPlaylistFiles.remove(plf);    
+        }
     }
     
     /**
@@ -257,11 +280,17 @@ public class Directory extends PropertyAdapter implements Comparable{
                         org.jajuk.base.File file = FileManager.getInstance().registerFile(fileRef.getId(),fileRef.getName(), 
                             this, fileRef.getTrack(), fileRef.getSize(),fileRef.getQuality());
                         //add file to current directory
-                        addFile(file);
                         continue;
                     }
                     //New file or deep scan case
-                    Tag tag = new Tag(files[i]);
+                    Tag tag = null;
+                    try{
+                        tag = new Tag(files[i]);
+                    }
+                    catch(JajukException je){
+                        Log.error("103",fio.getName(),je); //$NON-NLS-1$
+                        continue;
+                    }
                     String sTrackName = tag.getTrackName();
                     String sAlbumName = tag.getAlbumName();
                     String sAuthorName = tag.getAuthorName();
@@ -280,27 +309,13 @@ public class Directory extends PropertyAdapter implements Comparable{
                     track.setAdditionDate(new Date());
                     org.jajuk.base.File newFile = FileManager.getInstance().registerFile(sId,files[i].getName(), this, track, 
                         files[i].length(), lQuality);   
-                    //add file to directory
-                    addFile(newFile);
-                    track.addFile(newFile);
                     /*comment is at the track level, note that we take last found file comment but we changing
                     a comment, we will apply to all files for a track*/
                     track.setComment(sComment); 
                     track.setOrder(lOrder);
                 }
                 else{  //playlist file
-                    String sName = files[i].getName();
-                    String sId = MD5Processor.hash(new StringBuffer(this.getDevice().getUrl()).append(this.	getRelativePath()).append(sName).toString());
-                    BufferedReader br = new BufferedReader(new FileReader(files[i]));
-                    StringBuffer sbContent = new StringBuffer();
-                    String sTemp;
-                    do{
-                        sTemp = br.readLine();
-                        sbContent.append(sTemp);
-                    }
-                    while (sTemp != null);
-                    String sHashcode =MD5Processor.hash(sbContent.toString()); 
-                    PlaylistFile plFile = PlaylistFileManager.getInstance().registerPlaylistFile(sId,sName,sHashcode,this);
+                    PlaylistFile plFile = PlaylistFileManager.getInstance().registerPlaylistFile(files[i],this);
                     PlaylistManager.getInstance().registerPlaylist(plFile);
                     addPlaylistFile(plFile);
                 }

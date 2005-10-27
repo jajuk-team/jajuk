@@ -27,6 +27,7 @@ import org.jajuk.base.Observer;
 import org.jajuk.base.PlaylistFile;
 import org.jajuk.base.PlaylistFileManager;
 import org.jajuk.ui.PlaylistFileItem;
+import org.jajuk.util.error.JajukException;
 
 /**
  * Shows playlist files
@@ -99,5 +100,12 @@ public class PhysicalPlaylistRepositoryView extends AbstractPlaylistRepositoryVi
             }
 		}
 	}
+    
+    public synchronized void removeItem (PlaylistFileItem plfiSelected){
+       PlaylistFileManager.getInstance().removePlaylistFile(plfiSelected.getPlaylistFile());
+    }
 	
+    public void play(PlaylistFileItem plfi) throws JajukException{
+        plfi.getPlaylistFile().play();
+    }
 }

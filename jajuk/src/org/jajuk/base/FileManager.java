@@ -100,6 +100,10 @@ public class FileManager extends ItemManager implements Observer{
             }
             hmItems.put(sId,file);
 			alSortedFiles.add(file);
+            //add to directory
+            //add to track
+            track.addFile(file);
+            file.getDirectory().addFile(file);
             if ( directory.getDevice().isRefreshing() && Log.isDebugEnabled()){
 				Log.debug("registrated new file: "+ file); //$NON-NLS-1$
 			}
@@ -222,6 +226,7 @@ public class FileManager extends ItemManager implements Observer{
     public void removeFile(File file){
         hmItems.remove(file.getId());
         alSortedFiles.remove(file);
+        file.getDirectory().removeFile(file);
     }
     
 	/** Return all registred files */

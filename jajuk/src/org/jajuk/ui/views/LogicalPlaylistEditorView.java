@@ -22,8 +22,6 @@ package org.jajuk.ui.views;
 
 import java.util.ArrayList;
 
-import org.jajuk.ui.PlaylistFileItem;
-
 
 
 /**
@@ -65,13 +63,6 @@ public class LogicalPlaylistEditorView extends AbstractPlaylistEditorView{
 	 */
 	ArrayList getRepositoryCurrentPlaylistFileItem() {
 		return LogicalPlaylistRepositoryView.getInstance().getPlaylistFileItems();
-	}
-
-	/* (non-Javadoc)
-	 * @see org.jajuk.ui.views.AbstractPlaylistEditorView#setRepositoryPlayListFileItem(org.jajuk.ui.PlaylistFileItem)
-	 */
-	void setRepositoryPlayListFileItem(PlaylistFileItem plfi) {
-		LogicalPlaylistRepositoryView.getInstance().selectPlaylistFileItem(plfi);
 	}
 	
 }

@@ -115,7 +115,7 @@ public class ObservationManager implements ITechnicalStrings{
 	    String subject = event.getSubject();
 		Log.debug("Notify: "+subject); //$NON-NLS-1$
 	    //save last event
-		hLastEventBySubject.put(subject,event.getDetails());
+        hLastEventBySubject.put(subject,event.getDetails());
 		ArrayList alComponents =(ArrayList)hEventComponents.get(subject);
 	    if (alComponents == null){
 	        return;

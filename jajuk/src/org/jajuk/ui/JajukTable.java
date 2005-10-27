@@ -117,7 +117,8 @@ public class JajukTable extends JXTable implements ITechnicalStrings{
 		    return o.toString();
 		}
 	}
-	
+
+    
 	
 }
 

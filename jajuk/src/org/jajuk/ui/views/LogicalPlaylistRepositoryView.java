@@ -27,6 +27,9 @@ import org.jajuk.base.Playlist;
 import org.jajuk.base.PlaylistFile;
 import org.jajuk.base.PlaylistManager;
 import org.jajuk.ui.PlaylistFileItem;
+import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.error.JajukException;
+import org.jajuk.util.error.NoneAccessibleFileException;
 
 /**
  * Shows logical playlists
@@ -86,7 +89,11 @@ public class LogicalPlaylistRepositoryView extends AbstractPlaylistRepositoryVie
 		while ( it.hasNext()){
 			Playlist pl = (Playlist)it.next();
 			PlaylistFile plf = pl.getPlayeablePlaylistFile();
-			//if none accessible playlist, keep a chance to mount the first playlist file found
+			//if none accessible and hide devices unmounted, continue
+            if (plf == null && ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED)){
+                continue;
+            }
+            //if none accessible playlist, keep a chance to mount the first playlist file found
             if ( plf == null && pl.getPlaylistFiles().size()>0){
 				plf = pl.getPlaylistFiles().get(0);
 			}
@@ -101,5 +108,23 @@ public class LogicalPlaylistRepositoryView extends AbstractPlaylistRepositoryVie
 		}
 	}
 
+	public synchronized void removeItem (PlaylistFileItem plfiSelected){
+	    Playlist pl = PlaylistManager.getInstance().getPlayList(plfiSelected.getPlaylistFile());
+	    if (pl != null){
+	        PlaylistManager.getInstance().removePlaylist(pl);
+        }
+	}
+	
+	public void play(PlaylistFileItem plfi) throws JajukException{
+	    Playlist pl = PlaylistManager.getInstance().getPlayList(plfiSelected.getPlaylistFile());
+	    if (pl != null){
+	        PlaylistFile plf = pl.getPlayeablePlaylistFile();
+	        if (plf == null){
+	            throw new NoneAccessibleFileException("010");
+	        }
+	        plf.play();
+	    }
+	}
+	
 	
 }

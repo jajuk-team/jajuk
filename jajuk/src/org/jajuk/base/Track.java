@@ -90,8 +90,6 @@ public class Track extends PropertyAdapter implements Comparable{
             setProperty(XML_TRACK_YEAR,lYear);
             //Rate
             setProperty(XML_TRACK_RATE,0l);
-            //Files reset
-            //setProperty(XML_FILES,null); //need this to respect attributes order
             //Hits
             setProperty(XML_TRACK_HITS,0l);
             //Hashcode
@@ -319,12 +317,6 @@ public class Track extends PropertyAdapter implements Comparable{
 		if (!alFiles.contains(file) && file.getTrack().equals(this)){//make sure a file will be referenced by only one track (first found)
 			alFiles.add(file);	
         }
-		/*	String sFiles = file.getId();
-			if (this.containsProperty(XML_FILES)){ //already some files 
-				sFiles += ","+getValue(XML_FILES); //$NON-NLS-1$
-			}
-			setProperty(XML_FILES,sFiles);
-		}*/
 	}
 	
 	/**
@@ -333,14 +325,6 @@ public class Track extends PropertyAdapter implements Comparable{
 	 */
 	public void removeFile(File file){
 		alFiles.remove(file);
-      /*  String sFiles = "";
-        for (File file1:alFiles){
-            sFiles += ","+file1.getId();
-        }
-        if (sFiles.length() > 0){
-            sFiles = sFiles.substring(1,sFiles.length());
-        }
-        setProperty(XML_FILES,sFiles);*/
    }
 
 

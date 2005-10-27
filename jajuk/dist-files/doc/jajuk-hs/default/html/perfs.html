@@ -1,92 +1,156 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<HTML>
-<HEAD>
-	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=utf-8">
-	<TITLE></TITLE>
-	<META NAME="GENERATOR" CONTENT="OpenOffice.org 1.1.3  (Linux)">
-	<META NAME="CREATED" CONTENT="20050321;13074300">
-	<META NAME="CHANGED" CONTENT="20050511;23165300">
-</HEAD>
-<BODY LANG="en-US" DIR="LTR">
-<H1>Performance tips</H1>
-<P>Read that chapter if you encounter some performances drawbacks or
+<html>
+<head>
+
+	
+  <meta http-equiv="CONTENT-TYPE" content="text/html; charset=utf-8">
+
+	
+	
+  <title></title>
+  <meta name="GENERATOR" content="OpenOffice.org 1.1.3  (Linux)">
+
+	
+  <meta name="CREATED" content="20050321;13074300">
+
+	
+  <meta name="CHANGED" content="20050511;23165300">
+</head>
+
+
+<body dir="ltr" lang="en-US">
+
+<h1>Performance tips</h1>
+
+<p>Read that chapter if you encounter some performances drawbacks or
 if you want consume less memory, disk, CPU or Network bandwidth using
-Jajuk.</P>
-<H2>JVM choice and customization</H2>
-<P>We recommend Sun JVM 1.5</P>
-<UL>
-	<LI><P STYLE="margin-bottom: 0cm">If you have a really big
+Jajuk.</p>
+
+<h2>JVM choice and customization</h2>
+
+<p>We recommend Sun JVM 1.5</p>
+
+<ul>
+
+	<li>
+    <p style="margin-bottom: 0cm;">If you have a really big
 	collection (something like &gt; 200GB), you may increase -Xms
 	parameter. 
-	</P>
-	<LI><P STYLE="margin-bottom: 0cm">You can set a -Xmx parameter to
+	</p>
+
+	</li>
+  <li>
+    <p style="margin-bottom: 0cm;">You can set a -Xmx parameter to
 	restrict memory usage to this value (example: -Xmx100M), but this
 	could conduct to unpredictable behavior when out of memory errors
 	occur. 
-	</P>
-	<LI><P>Use -Xloggc:&lt;file name&gt; to trace memory usage if
+	</p>
+
+	</li>
+  <li>
+    <p>Use -Xloggc:&lt;file name&gt; to trace memory usage if
 	needed. 
-	</P>
-</UL>
-<H2>CPU usage 
-</H2>
-<UL>
-	<LI><P STYLE="margin-bottom: 0cm">On a PC/P4M 1.8Ghz, Jajuk uses
+	</p>
+
+  </li>
+</ul>
+
+<h2>CPU usage 
+</h2>
+
+<ul>
+
+	<li>
+    <p style="margin-bottom: 0cm;">On a PC/P4M 1.8Ghz, Jajuk uses
 	about 9% CPU for mp3 and 3% for Ogg Vorbis. 
-	</P>
-</UL>
-<H2>Memory Usage</H2>
-<P>A JVM runs inside a reserved memory heap. The JVM takes all the
+	</p>
+
+  </li>
+</ul>
+
+<h2>Memory Usage</h2>
+
+<p>A JVM runs inside a reserved memory heap. The JVM takes all the
 Xms MB of memory at startup and requires more memory to the OS only
 if necessary. For a big size collection and all cover options
 enabled, it takes about 65MB maximum of memory but 40MB should be
-enough most of the time.</P>
-<H2>Covers performance tunning</H2>
-<P>These options are available in the Parameter View / Cover tab.</P>
-<UL>
-	<LI><P STYLE="margin-bottom: 0cm">Adapt Cover option (default=no)
-	uses a significant amount of CPU and memory to generate and display
-	a new image of the given size. Avoid this option if you have low CPU
-	or Memory computer. 
-	</P>
-	<LI><P STYLE="margin-bottom: 0cm">Use auto-cover (default=yes) uses
-	network bandwidth, especially if you use “Preload Cover” option.
+enough most of the time.</p>
+
+<h2>Covers performance tunning</h2>
+
+<p>These options are available in the Parameter View / Cover tab.</p>
+
+<ul>
+  <li>
+    <p style="margin-bottom: 0cm;">Use auto-cover (default=yes) uses
+	network bandwidth, especially if you use &ldquo;Preload Cover&rdquo; option.
 	Avoid this option if you have a low bandwidth. 
-	</P>
-	<LI><P STYLE="margin-bottom: 0cm">Preload covers (default=no) is
+	</p>
+
+	</li>
+  <li>
+    <p style="margin-bottom: 0cm;">Preload covers (default=no) is
 	very network bandwidth consuming. Use this option only if you have a
 	fast network like xDSL or cable. 
-	</P>
-	<LI><P STYLE="margin-bottom: 0cm">You can reduce covers size by
+	</p>
+
+	</li>
+  <li>
+    <p style="margin-bottom: 0cm;">You can reduce covers size by
 	setting lower minimum and maximum cover sizes. 
-	</P>
-	<LI><P>You can increase or decrease the time out when downloading a
+	</p>
+
+	</li>
+  <li>
+    <p>You can increase or decrease the time out when downloading a
 	cover in the Parameter view/ Network tab. 
-	</P>
-</UL>
-<H2>Tags performance tunning</H2>
-<P STYLE="margin-bottom: 0cm">These options are available in the
-Parameter View / Tags tab.</P>
-<UL>
-	<LI><P>Do not use “Perform a deep tag scan” (default=no) option
+	</p>
+
+  </li>
+</ul>
+
+<h2>Tags performance tunning</h2>
+
+<p style="margin-bottom: 0cm;">These options are available in the
+Parameter View / Tags tab.</p>
+
+<ul>
+
+	<li>
+    <p>Do not use &ldquo;Perform a deep tag scan&rdquo; (default=no) option
 	unless you want to force tags read. By default, Jajuk doesn't read
-	id3 tags at each refresh for known files.</P>
-</UL>
-<H2><FONT SIZE=5>Collection performance tunning</FONT></H2>
-<P>These options are available in the Parameter View / Advanced tab.</P>
-<UL>
-	<LI><P>If your collection uses mainly non-European characters (like
+	id3 tags at each refresh for known files.</p>
+
+  </li>
+</ul>
+
+<h2><font size="5">Collection performance tunning</font></h2>
+
+<p>These options are available in the Parameter View / Advanced tab.</p>
+
+<ul>
+
+	<li>
+    <p>If your collection uses mainly non-European characters (like
 	Asian languages), choose UTF-16 as collection encoding : that will
 	reduce collection file size and accelerate startup parsing. Do not
 	use this option if you use European languages because you collection
-	file would then grow.</P>
-</UL>
-<H2><FONT SIZE=5>Animation View performance tunning</FONT></H2>
-<P>Animation view uses Java 2D. CPU overhead can be significant,
+	file would then grow.</p>
+
+  </li>
+</ul>
+
+<h2><font size="5">Animation View performance tunning</font></h2>
+
+<p>Animation view uses Java 2D. CPU overhead can be significant,
 especially with screen resolution higher that 1200x1024. On a P4
 1.8Ghz with a resolution of 1024x768, the overhead is about 2 or 3%
-but reaches 10 or more with a resolution of 1400x1200.</P>
-<P><BR><BR>
-</P>
-</BODY>
-</HTML>
+but reaches 10 or more with a resolution of 1400x1200.</p>
+
+<p><br>
+<br>
+
+</p>
+
+</body>
+</html>

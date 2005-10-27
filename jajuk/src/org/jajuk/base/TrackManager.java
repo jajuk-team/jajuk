@@ -374,7 +374,7 @@ public class TrackManager extends ItemManager implements Observer{
         //update files references
         updateFilesReferences(track,newTrack);
         if (track.getFiles().size() == 0){ //normal case: old track has no more associated tracks, remove it
-            remove(track.getId());//remove old track
+            removeItem(track.getId());//remove old track
             bChangePbm = false;
         }
         else{ // some files have not been changed because located on unmounted devices

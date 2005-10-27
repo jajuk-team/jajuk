@@ -312,11 +312,13 @@ public class Main implements ITechnicalStrings {
 			    //Display progress
 			    sc.setProgress(80,Messages.getString("SplashScreen.3")); //$NON-NLS-1$
                 launchUI();
-			}
+                //Request for cover refresh
+                ObservationManager.notify(new Event(EVENT_COVER_REFRESH,ObservationManager.getDetailsLastOccurence(EVENT_COVER_REFRESH)));
+           }
             
             //start the tray
             launchTray();
-        
+            
             
        } catch (JajukException je) { //last chance to catch any error for logging purpose
 			Log.error(je);
@@ -754,6 +756,7 @@ public class Main implements ITechnicalStrings {
                     jpFrame.add(jpContentPane, BorderLayout.CENTER);
                     PerspectiveManager.init();
                     jw.setCursor(Util.DEFAULT_CURSOR);
+                    jw.addComponentListener();
                     
                     if (sc != null){
                         //Display progress
@@ -764,10 +767,11 @@ public class Main implements ITechnicalStrings {
                     e.printStackTrace();
                     Log.error("106", e); //$NON-NLS-1$
                 }
+                finally{
+                    bUILauched = true;
+                }
             }
         });
-        
-        bUILauched = true;
    }
     
     /**Lauch tray, only for linux and windows, not mac for the moment*/
