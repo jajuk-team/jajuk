@@ -91,7 +91,7 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
         vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_SIZE));
         vId.add(XML_SIZE);
         
-         vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_TRACK_ORDER));
+        vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_TRACK_ORDER));
         vId.add(XML_TRACK_ORDER);
         
         vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_TRACK_YEAR));
@@ -215,7 +215,7 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
             oValues[iRow][10] = lQuality;
             bCellEditable[iRow][10] = false;
             //Size
-            oValues[iRow][11] = file.getSize()>>20;
+            oValues[iRow][11] = ((double)file.getSize())/1048576;
             bCellEditable[iRow][11] = false;
             //Order
             oValues[iRow][12] = file.getTrack().getOrder();

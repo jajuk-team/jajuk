@@ -575,6 +575,7 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
                         }
                         //probably error writing a tag, store track reference and continue
                         catch(JajukException je){
+                            Log.error(je);
                             if (!alInError.contains(item)){
                                 alInError.add(item);
                             }

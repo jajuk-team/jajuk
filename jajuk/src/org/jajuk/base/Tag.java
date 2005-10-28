@@ -63,6 +63,7 @@ public class Tag implements ITechnicalStrings{
             Type type = TypeManager.getInstance().getTypeByExtension(Util.getExtension(fio));
             tagImpl = type.getTagImpl();
             tagImpl.setFile(fio);
+            bCorrupted = false;
         } catch (Exception e) {
             bCorrupted = true;
             if (!bIgnoreErrors) throw new JajukException("103",fio.getName(), e); //$NON-NLS-1$
@@ -261,7 +262,8 @@ public class Tag implements ITechnicalStrings{
                throw new Exception("Negative Order"); //$NON-NLS-1$
             }
         } catch (Exception e) {
-            Log.warn("103",fio.getName(),e); //$NON-NLS-1$
+            //just debug, no warn because wrong order are too often and generate too much traces
+            Log.debug("Wrong order:"+fio.getName()); //$NON-NLS-1$
             l = 0;
         }
         return l;    
