@@ -751,7 +751,9 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
             }
             else{  //add file at the device root
                 DeviceNode deviceNode = DeviceNode.getDeviceNode(directory.getDevice());
-                Iterator it = directory.getFiles().iterator();
+                ArrayList alFiles = directory.getFiles();
+                Collections.sort(alFiles);
+                Iterator it = alFiles.iterator();
                 while (it.hasNext()){
                     deviceNode.add(new FileNode((File)it.next()));
                 }

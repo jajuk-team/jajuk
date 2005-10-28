@@ -212,7 +212,9 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
         new Thread(){
             public void run(){
                 try{
-                    DownloadManager.getRemoteCoversList("");//try to open connexion, this can take about 30 sec under linux if network not available
+                    if (ConfigurationManager.getBoolean(CONF_COVERS_AUTO_COVER)){
+                        DownloadManager.getRemoteCoversList("");//try to open connexion, this can take about 30 sec under linux if network not available
+                    }
                     Thread.sleep(1000); //one more sec in case of...
                 }
                 catch(Exception e){

@@ -169,7 +169,7 @@ public class File extends PropertyAdapter implements Comparable,ITechnicalString
 		}
 		Directory dCurrent = getDirectory();
 		StringBuffer sbOut = new StringBuffer(getDirectory().getDevice().getUrl())
-			.append(dCurrent.getRelativePath()).append('/').append(this.getName());
+			.append(dCurrent.getRelativePath()).append(java.io.File.separatorChar).append(this.getName());
 		sAbs = sbOut.toString();
 		return sAbs;
 	}

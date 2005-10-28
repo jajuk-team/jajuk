@@ -67,8 +67,10 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	public static byte[] bLock = new byte[0];
 	/** Number of files in this device before refresh ( for refresh stats ) */
 	public int iNbFilesBeforeRefresh;
-	/** Number of new files found during refresh for stats ) */
+	/** Number of new files found during refresh for stats*/
 	public int iNbNewFiles;
+    /** Number of corrupted files found during refresh for stats*/
+    public int iNbCorruptedFiles;
 	/** Number of created files on source device during synchro ( for stats ) */
 	public int iNbCreatedFilesSrc;
 	/** Number of created files on destination device during synchro ( for stats ) */
@@ -188,6 +190,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	             */ 
 	            iNbFilesBeforeRefresh = FileManager.getInstance().getItems().size();
 	            iNbNewFiles = 0;
+                iNbCorruptedFiles = 0;
                 PlaylistManager.getInstance().cleanup();
 	            FileManager.getInstance().cleanDevice(device.getId());
 	            PlaylistFileManager.getInstance().cleanDevice(device.getId());
@@ -252,11 +255,14 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	    		//commit collection at each refresh (can be useful if application is closed brutally with control-C or shutdown and that exit hook have no time to perform commit)
                 org.jajuk.base.Collection.commit(FILE_COLLECTION);
                 //Display end of refresh message with stats
-                String sOut = new StringBuffer("[").append(device.getName()).append(Messages.getString("Device.25")).append((int)((System.currentTimeMillis()-lTime)/1000)). //$NON-NLS-1$ //$NON-NLS-2$
+                StringBuffer sbOut = new StringBuffer("[").append(device.getName()).append(Messages.getString("Device.25")).append((int)((System.currentTimeMillis()-lTime)/1000)). //$NON-NLS-1$ //$NON-NLS-2$
                 append(Messages.getString("Device.26")).append(iNbNewFiles).append(Messages.getString("Device.27")). //$NON-NLS-1$ //$NON-NLS-2$
-                append(iNbFilesBeforeRefresh - (FileManager.getInstance().getItems().size()-iNbNewFiles)).append(Messages.getString("Device.28")).toString(); //$NON-NLS-1$
-                InformationJPanel.getInstance().setMessage(sOut,InformationJPanel.INFORMATIVE); //$NON-NLS-1$
-                Log.debug(sOut); 
+                append(iNbFilesBeforeRefresh - (FileManager.getInstance().getItems().size()-iNbNewFiles)).append(Messages.getString("Device.28")); //$NON-NLS-1$
+                if (iNbCorruptedFiles > 0){
+                    sbOut.append(" - ").append(Messages.getString("Error")).append(": "+iNbCorruptedFiles);
+                }
+                InformationJPanel.getInstance().setMessage(sbOut.toString(),InformationJPanel.INFORMATIVE); //$NON-NLS-1$
+                Log.debug(sbOut.toString()); 
             }
 	    }
 	    catch(RuntimeException re){ //runtime error are thrown

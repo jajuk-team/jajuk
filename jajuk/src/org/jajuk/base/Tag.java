@@ -40,6 +40,8 @@ public class Tag implements ITechnicalStrings{
 	private ITagImpl tagImpl;
 	/** Current file* */
 	private File fio;
+    /**Is thi stag corrupted ?*/
+    private boolean bCorrupted = false;
 
 	/**
 	 * Tag constructor
@@ -47,15 +49,24 @@ public class Tag implements ITechnicalStrings{
 	 * @param fio
 	 */
 	public Tag(java.io.File fio)throws JajukException {
-	    try{
-	        Type type = TypeManager.getInstance().getTypeByExtension(Util.getExtension(fio));
-	        tagImpl = type.getTagImpl();
-	        tagImpl.setFile(fio);
-	        this.fio = fio;
-	        
-	    } catch (Exception e) {
-	        throw new JajukException("103",fio.getName(), e); //$NON-NLS-1$
-	    }	
+	    this(fio,false);
+    }
+    
+    /**
+     * Tag constructor
+     * @bIgnoreError : ignore errror and keep instance
+     * @param fio
+     */
+    public Tag(java.io.File fio,boolean bIgnoreErrors)throws JajukException {
+        try{
+            this.fio = fio;
+            Type type = TypeManager.getInstance().getTypeByExtension(Util.getExtension(fio));
+            tagImpl = type.getTagImpl();
+            tagImpl.setFile(fio);
+        } catch (Exception e) {
+            bCorrupted = true;
+            if (!bIgnoreErrors) throw new JajukException("103",fio.getName(), e); //$NON-NLS-1$
+        }   
     }
 
 	/**
@@ -342,6 +353,14 @@ public class Tag implements ITechnicalStrings{
         } catch (Exception e) {
              throw new JajukException("104",fio.getName()+"\n"+e.getMessage(),e); //$NON-NLS-1$ //$NON-NLS-2$
         }
+    }
+
+    public boolean isCorrupted() {
+        return bCorrupted;
+    }
+
+    public void setCorrupted(boolean corrupted) {
+        bCorrupted = corrupted;
     }
 
 }

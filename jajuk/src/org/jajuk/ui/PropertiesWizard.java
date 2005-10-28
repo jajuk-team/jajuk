@@ -332,7 +332,7 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
                 else{
                     JLabel jl = new JLabel(pa.getHumanValue(meta.getName())); //If several items, take first value found
                     jl.setToolTipText(pa.getHumanValue(meta.getName()));
-                    jl.setPreferredSize(dim);
+                    jl.setMaximumSize(dim);
                     widgets[index][1] = jl;
                     
                 }
@@ -386,7 +386,7 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
             for (PropertyMetaInformation meta:alToDisplay){
                 j = (2*i)+3;
                 jpProperties.add(widgets[i][0],"1,"+j+",c,c"); //$NON-NLS-1$ //$NON-NLS-2$
-                jpProperties.add(widgets[i][1],"3,"+j); //$NON-NLS-1$
+                jpProperties.add(widgets[i][1],"3,"+j+",c,c"); //$NON-NLS-1$
                 if (widgets[i][2] != null){ //link widget can be null
                     jpProperties.add(widgets[i][2],"5,"+j+",c,c"); //$NON-NLS-1$ //$NON-NLS-2$
                 }
@@ -548,6 +548,7 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
             ArrayList<IPropertyable> alInError = new ArrayList(alItemsToCheck.size());
             //Now we have all items to concidere, write tags for each property to change
             for (PropertyMetaInformation meta:hmPropertyToChange.keySet()){
+                ArrayList<IPropertyable> alIntermediate = new ArrayList(alItemsToCheck.size());
                 for (IPropertyable item:alItemsToCheck){
                     //New value
                     oValue = hmPropertyToChange.get(meta);
@@ -584,6 +585,10 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
                             alItems.remove(item);
                             alItems.add(newItem);
                         }
+                        //add the new item in intermediate pool used for next property change
+                        //note that if an error occurs in a property change, the item will not be taken into account for next property change
+                        alIntermediate.add(newItem);
+                        
                         //if individual item, change title in case of constructor element change
                         if (!bMerged){ 
                             jlDesc.setText(Util.formatPropertyDesc(newItem.getDesc()));
@@ -594,8 +599,9 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
                         }
                     }
                 }
+                alItemsToCheck = alIntermediate;
                 /*Display a warning message if some files not updated
-                 note that this message will appear only for first item in failure but for each property in failure,
+                 note that this message will appear only for first item in failure,
                  after, current track will have changed and will no more contain unmounted files*/ 
                 if (itemReference instanceof Track && TrackManager.getInstance().isChangePbm()){
                     Messages.showWarningMessage(Messages.getString("Error.138")); //$NON-NLS-1$

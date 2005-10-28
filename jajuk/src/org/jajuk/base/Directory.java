@@ -30,7 +30,6 @@ import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.Util;
-import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
 /**
@@ -272,25 +271,22 @@ public class Directory extends PropertyAdapter implements Comparable{
                     String sId = MD5Processor.hash(new StringBuffer(getDevice().getName()).append(getDevice().getUrl()).append(getRelativePath()).append(files[i].getName()).toString());
                     //check the file is not already known in old database
                     org.jajuk.base.File fileRef = (org.jajuk.base.File)FileManager.getInstance().restoreItemAfterRefresh(sId);
-                    if (fileRef == null){  //new file
-                        device.iNbNewFiles ++;  //stats
-                    }
-                    //read tag data from database, no real read from file for performances reasons if only the deep scan is disable
-                    else if ( !ConfigurationManager.getBoolean(CONF_TAGS_DEEP_SCAN)){  
+                    //if known file and no deep scan, just register it and leave
+                    if (fileRef != null && !ConfigurationManager.getBoolean(CONF_TAGS_DEEP_SCAN)){
+                       //add file to current directory
                         org.jajuk.base.File file = FileManager.getInstance().registerFile(fileRef.getId(),fileRef.getName(), 
                             this, fileRef.getTrack(), fileRef.getSize(),fileRef.getQuality());
-                        //add file to current directory
                         continue;
                     }
                     //New file or deep scan case
                     Tag tag = null;
-                    try{
-                        tag = new Tag(files[i]);
+                    tag = new Tag(files[i],true); //ignore tag error to make sure to get a tag object in all cases
+                    if (tag.isCorrupted()){
+                        device.iNbCorruptedFiles ++; //stats
+                        Log.error("103",fio.getName(),null); //$NON-NLS-1$
                     }
-                    catch(JajukException je){
-                        Log.error("103",fio.getName(),je); //$NON-NLS-1$
-                        continue;
-                    }
+                    if (fileRef == null) device.iNbNewFiles ++;  //stats
+                    //if an error occurs, just notice it but keep the track
                     String sTrackName = tag.getTrackName();
                     String sAlbumName = tag.getAlbumName();
                     String sAuthorName = tag.getAuthorName();
