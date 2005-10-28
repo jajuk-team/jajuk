@@ -14,7 +14,12 @@
     	<action dev='bflorat' type='add'>Quality feedback agent</action> 
     	<action dev='bflorat' type='add'>Track numbers management</action> 
     	<action dev='bflorat' type='add'>New splashscreen</action> 
-    	<action dev='bflorat' type='fix' issue=''></action>
+    	<action dev='bflorat' type='update'>Performances enhancements on covers and devices refreshing</action> 
+    	<action dev='bflorat' type='fix' issue='1326176'>Cannot add shuffle items in playlist editor</action>
+    	<action dev='bflorat' type='fix' issue='1321671'>Apostroph in an ID3 year tag corrupts the collection file</action>
+    	<action dev='bflorat' type='fix' issue='1231077'>Volume BUG</action>
+    	<action dev='bflorat' type='fix' issue='1214734'>Playlist at device root not visible in tree</action>
+    	<action dev='bflorat' type='fix'>Many minor fixes and enhancements</action>
     	<action dev='bflorat' type='remove'>GTK Look And Feel</action> 
   	</release>
     

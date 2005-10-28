@@ -63,7 +63,7 @@ API ADDITION/UPORADE PROCEDURE
 - Change MANIFEST (check new versions)
 - Change project.xml maven file for dependencies
 
-API ADDITION/UPORADE PROCEDURE
+API ADDITION/UPGRADE PROCEDURE
 - Remove file in lib directory
 - Change MANIFEST 
 - Change project.xml maven file for dependencies

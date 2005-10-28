@@ -290,7 +290,7 @@
      <dependency>
 	   <groupId>lib</groupId>
         <artifactId>entagged-audioformats</artifactId>
-        <version>0.12</version> 
+        <version>0.14</version> 
     </dependency>
 
      <dependency>
@@ -374,7 +374,7 @@
     <report>maven-developer-activity-plugin</report>
     <report>maven-file-activity-plugin</report>
     <report>maven-license-plugin</report>
-    <report>maven-statcvs-plugin</report>
+  	<report>maven-statcvs-plugin</report>
  </reports>
    
 </project> 
