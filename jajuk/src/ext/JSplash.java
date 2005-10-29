@@ -136,7 +136,7 @@ public final class JSplash extends JFrame implements ITechnicalStrings{
             
             if( m_progressBarMessages && !m_progressBarPercent )
             {
-                m_progress.setString( "" );
+                m_progress.setString( "" ); //$NON-NLS-1$
             }
             
             m_progress.setMaximum( 100 );

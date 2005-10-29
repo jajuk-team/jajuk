@@ -120,7 +120,7 @@ public class LogicalPlaylistRepositoryView extends AbstractPlaylistRepositoryVie
 	    if (pl != null){
 	        PlaylistFile plf = pl.getPlayeablePlaylistFile();
 	        if (plf == null){
-	            throw new NoneAccessibleFileException("010");
+	            throw new NoneAccessibleFileException("010"); //$NON-NLS-1$
 	        }
 	        plf.play();
 	    }

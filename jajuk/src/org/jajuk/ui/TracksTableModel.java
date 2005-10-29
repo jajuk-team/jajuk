@@ -53,7 +53,7 @@ public class TracksTableModel extends JajukTableModel{
 	    super(11);
         
         //Columns names
-        vColNames.add(Messages.getString("LogicalTreeView.1"));
+        vColNames.add(Messages.getString("LogicalTreeView.1")); //$NON-NLS-1$
         vId.add(XML_PLAY);
         
         vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_NAME));
@@ -165,10 +165,10 @@ public class TracksTableModel extends JajukTableModel{
             //Play
             IconLabel il = null;
             if (track.getPlayeableFile() != null){
-                il = new IconLabel(PLAY_ICON,"",null,null,null,Messages.getString("LogicalTreeView.1"));
+                il = new IconLabel(PLAY_ICON,"",null,null,null,Messages.getString("LogicalTreeView.1")); //$NON-NLS-1$ //$NON-NLS-2$
             }
             else{
-                il = new IconLabel(UNMOUNT_PLAY_ICON,"",null,null,null,Messages.getString("LogicalTreeView.1")+Messages.getString("AbstractTableView.10"));
+                il = new IconLabel(UNMOUNT_PLAY_ICON,"",null,null,null,Messages.getString("LogicalTreeView.1")+Messages.getString("AbstractTableView.10")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             }
             oValues[iRow][0] = il;
             bCellEditable[iRow][0] = false;

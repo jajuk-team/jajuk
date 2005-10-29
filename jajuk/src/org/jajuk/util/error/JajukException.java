@@ -64,7 +64,7 @@ public class JajukException extends Exception {
 	 */
 	public JajukException(String pCode, String pMessage, Throwable pCause) {
 		super((pMessage!=null && pMessage.length()>0)?
-                Messages.getErrorMessage(pCode)+" : "+pMessage:
+                Messages.getErrorMessage(pCode)+" : "+pMessage: //$NON-NLS-1$
                 Messages.getErrorMessage(pCode)
                 ,pCause);
         code = pCode;

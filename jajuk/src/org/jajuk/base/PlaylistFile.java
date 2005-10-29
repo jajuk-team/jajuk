@@ -539,7 +539,7 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 		    }
 		    //display a warning message if the playlist contains unknown items
 		    if (bUnknownDevicesMessage){
-		        Messages.showWarningMessage(Messages.getErrorMessage("142"));
+		        Messages.showWarningMessage(Messages.getErrorMessage("142")); //$NON-NLS-1$
 		    }
 		}
 		catch(Exception e){

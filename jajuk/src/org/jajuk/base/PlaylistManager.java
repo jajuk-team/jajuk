@@ -112,8 +112,8 @@ public class PlaylistManager extends ItemManager{
      
      public void removePlaylist(Playlist pl){
         if ( ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_DELETE_FILE)){  //file delete confirmation
-            String sFileToDelete = "";
-            String sMessage = Messages.getString("Confirmation_delete");
+            String sFileToDelete = ""; //$NON-NLS-1$
+            String sMessage = Messages.getString("Confirmation_delete"); //$NON-NLS-1$
             for (PlaylistFile plf:pl.getPlaylistFiles()){
               sFileToDelete = plf.getDirectory().getFio().getAbsoluteFile().toString()+java.io.File.separatorChar +pl.getName(); //$NON-NLS-1$
               sMessage += "\n"+sFileToDelete; //$NON-NLS-1$ //$NON-NLS-2$ 

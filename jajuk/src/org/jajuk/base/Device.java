@@ -259,7 +259,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
                 append(Messages.getString("Device.26")).append(iNbNewFiles).append(Messages.getString("Device.27")). //$NON-NLS-1$ //$NON-NLS-2$
                 append(iNbFilesBeforeRefresh - (FileManager.getInstance().getItems().size()-iNbNewFiles)).append(Messages.getString("Device.28")); //$NON-NLS-1$
                 if (iNbCorruptedFiles > 0){
-                    sbOut.append(" - ").append(Messages.getString("Error")).append(": "+iNbCorruptedFiles);
+                    sbOut.append(" [").append(iNbCorruptedFiles).append(']'); //$NON-NLS-1$
                 }
                 InformationJPanel.getInstance().setMessage(sbOut.toString(),InformationJPanel.INFORMATIVE); //$NON-NLS-1$
                 Log.debug(sbOut.toString()); 

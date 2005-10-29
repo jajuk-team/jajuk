@@ -70,8 +70,8 @@ public final class JSplashLabel extends JLabel {
         ImageIcon icon = new ImageIcon( url );
         if( icon.getImageLoadStatus()!=MediaTracker.COMPLETE )
         {
-            System.err.println("Cannot load splash screen: " + url);
-            setText("Cannot load splash screen: " + url);
+            System.err.println("Cannot load splash screen: " + url); //$NON-NLS-1$
+            setText("Cannot load splash screen: " + url); //$NON-NLS-1$
         }
         else
         {

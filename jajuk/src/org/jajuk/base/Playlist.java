@@ -152,11 +152,11 @@ public class Playlist extends PropertyAdapter implements Comparable{
      * @return
      */
 	public void rebuildProperty() {
-	    String sPlaylistFiles = "";
+	    String sPlaylistFiles = ""; //$NON-NLS-1$
 	    if (alPlaylistFiles.size() > 0){
 	        sPlaylistFiles += alPlaylistFiles.get(0).getId();
 	        for (int i=1; i<alPlaylistFiles.size();i++){
-	            sPlaylistFiles += "," + alPlaylistFiles.get(i).getId();
+	            sPlaylistFiles += "," + alPlaylistFiles.get(i).getId(); //$NON-NLS-1$
 	        }
 	    }
 	    setProperty(XML_PLAYLIST_FILES,sPlaylistFiles);

@@ -207,7 +207,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings	{
 			sOut = getString("Error." + pCode); //$NON-NLS-1$
 		}
 		catch(Exception e){
-			System.out.println("### Error getting error message for code: "+pCode);
+			System.out.println("### Error getting error message for code: "+pCode); //$NON-NLS-1$
 		}
 		return sOut;
 	}

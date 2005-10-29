@@ -213,7 +213,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
             public void run(){
                 try{
                     if (ConfigurationManager.getBoolean(CONF_COVERS_AUTO_COVER)){
-                        DownloadManager.getRemoteCoversList("");//try to open connexion, this can take about 30 sec under linux if network not available
+                        DownloadManager.getRemoteCoversList("");//try to open connexion, this can take about 30 sec under linux if network not available //$NON-NLS-1$
                     }
                     Thread.sleep(1000); //one more sec in case of...
                 }
@@ -392,7 +392,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                 //make sure not to display negative indexes
                 int i = getCoverNumber()-index;
                 if (i<0){
-                    Log.debug("Negative cover index: "+i);
+                    Log.debug("Negative cover index: "+i); //$NON-NLS-1$
                     i=0;
                 }
                 

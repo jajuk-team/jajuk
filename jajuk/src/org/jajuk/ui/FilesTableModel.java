@@ -55,7 +55,7 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
 		super(14);
         //Columns names
         //play column
-        vColNames.add(Messages.getString("PhysicalTreeView.1"));
+        vColNames.add(Messages.getString("PhysicalTreeView.1")); //$NON-NLS-1$
         vId.add(XML_PLAY);
         
         vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_NAME));
@@ -176,10 +176,10 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
             //Play
             IconLabel il = null;
             if (file.isReady()){
-                il = new IconLabel(PLAY_ICON,"",null,null,null,Messages.getString("PhysicalTreeView.1"));
+                il = new IconLabel(PLAY_ICON,"",null,null,null,Messages.getString("PhysicalTreeView.1")); //$NON-NLS-1$ //$NON-NLS-2$
             }
             else{
-                il = new IconLabel(UNMOUNT_PLAY_ICON,"",null,null,null,Messages.getString("PhysicalTreeView.1")+Messages.getString("AbstractTableView.10"));
+                il = new IconLabel(UNMOUNT_PLAY_ICON,"",null,null,null,Messages.getString("PhysicalTreeView.1")+Messages.getString("AbstractTableView.10")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             }
             oValues[iRow][0] = il;
             bCellEditable[iRow][0] = false;

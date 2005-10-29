@@ -298,11 +298,11 @@ public class Util implements ITechnicalStrings {
      */
 	public static boolean isXMLValid(String s){
 	    //check reserved chars 
-        if (s.contains("&") ||
-	        s.contains("\'")||
-	        s.contains("\"")||
-	        s.contains("<")||
-	        s.contains(">")){
+        if (s.contains("&") || //$NON-NLS-1$
+	        s.contains("\'")|| //$NON-NLS-1$
+	        s.contains("\"")|| //$NON-NLS-1$
+	        s.contains("<")|| //$NON-NLS-1$
+	        s.contains(">")){ //$NON-NLS-1$
 	       return false;   
 	    }
         //check invalid chars
