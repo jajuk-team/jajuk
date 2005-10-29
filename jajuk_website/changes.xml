@@ -5,7 +5,7 @@
     <author email='bflorat@users.sourceforge.net'>Bertrand Florat</author>
   </properties>
   <body>
-    <release version='1.0' date='2005-?-?' description='Tag edition, properties custom'>
+    <release version='1.0' date='2005-10-29' description='Tag edition, properties custom'>
     	<action dev='bflorat' type='add'>Tag edtion</action> 
     	<action dev='bflorat' type='add'>Custom properties</action> 
     	<action dev='bflorat' type='add'>Tray popups with songs playing</action> 

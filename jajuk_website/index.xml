@@ -10,7 +10,7 @@
 				<li>Maximum features: Jajuk is made firstly for advanced users looking for powerful functionalities</li>
 				<li>Maximum portability and integration: 100% pure Java but native packaging and features like tray</li>
 				<li>Maximum usability: Jajuk is designed to be intuitive, fast and provide multiple ways to perform the same operation</li>
-				<li>Only for music: Jajuk will never become a multi-media (video, pictures...) jukebox</li>
+				<li>Only for music: not a video or picture organizer</li>
 			</ul>	
 		</p>
 		
@@ -123,7 +123,7 @@
 	   				<li>Custom properties support: create custom attributes on any item to store personal data</li>
    	   				<li>Unmounted devices support: navigate into unmounted devices (CDs for exemple) to get a complete view of your collection at any time (nice feature if you have plenty of music CDs)</li>
 	   				<li>CD scanner: create jajuk collection of tens of CDs in only few minutes</li>
-	   				<li>Automatic rate system</li>
+	   				<li>Automatic rating system</li>
 	   		</ul>	
 	   		<p><b>Search functions</b></p>
   	   	 		<ul>

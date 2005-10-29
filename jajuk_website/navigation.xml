@@ -41,7 +41,6 @@
       <item name='Developer guide' href='./developer_guide.html' />
       <item name='Specifications (PDF) ' href='./specs.pdf' />
       <item name='Dependencies' href='./jajuk_dependencies.html' />
-      <item name='Stats' href='http://jajuk.sourceforge.net/statcvs/index.html' />
       <item name='Javadoc' href='http://jajuk.sourceforge.net/apidocs/index.html' />
     </menu>
    </body>

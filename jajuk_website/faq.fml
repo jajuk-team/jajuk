@@ -58,26 +58,7 @@
         sound format if you look for a MP3 replacement.</p>
       </answer>
     </faq>
-     
-     <faq id="tagedit">
-     <question>
-        Can we edit tags with Jajuk ?
-      </question>
-      <answer>
-        <p>Not presently. Jajuk will soon provide new features for tracks edition : id3 and ogg edition, custom properties and CDDB retagging. This is the next main goal if this project.</p>
-      </answer>
-    </faq>
-      
-    <faq id="collection_corruption">
-     <question>
-        What can I do if my collection file (${user home}/.jajuk/collection.xml file contains the Jajuk index to your music files) is corrupted ? 
-      </question>
-      <answer>
-        <p>Note this is very unlikely to append but in this case, you can avoid to re-create all your devices by renaming (Jajuk closed) the last backup file (collection-backup-${date}.xml) as collection.xml.</p>
-      </answer>
-    </faq>
-
-	</part>
+   </part>
 
     
 	<part id="install">
@@ -121,5 +102,27 @@
       </answer>
     </faq>
   </part>
+
+	<part id="troubleshooting">
+   
+    <title>Troubleshooting</title>
+  		<faq id="No sound under Linux">
+    	 <question>
+        	I'm under Linux (especially Debian and Ubuntu) and I can't get sound, audio line is occupied. 
+      	</question>
+      	<answer>
+        	<p>Try stopping all audio apps, check mute mode is not enable, check nothing users /dev/dsp (fuser /dev/dsp as root). If you still have the issue, it is probably an Alsa deamon problem, please read <a href="http://forum.ubuntu-fr.org/viewtopic.php?id=12019">this doc</a>.</p>
+      	</answer>
+    	</faq>
+    	
+    	<faq id="collection_corruption">
+     <question>
+        What can I do if my collection is corrupted ? 
+      </question>
+      <answer>
+        <p>See <a href='./jajuk-hs/default/html/devices.html#Collection_backup_and_restore'>the device page of the jajuk manual</a></p>
+      </answer>
+    </faq>
+	</part>
   
 </faqs>

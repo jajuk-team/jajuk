@@ -29,7 +29,7 @@ Option for show_trackers=1; * To show a specific Tracker instead of all
 	&amp;tracker_to_show=TRACKER_ID
 
 --><export_details>
-<time>1127680153</time>
+<time>1130598210</time>
 <project_group_id>91412</project_group_id>
 <project_unix_name>jajuk</project_unix_name>
 <exporter>bflorat</exporter>
@@ -138,6 +138,11 @@ http://www.florat.net/jajuk-specs.pdf</registration_description>
 <description>Request for bug reproduction</description>
 <is_public>All site users</is_public>
 <allow_anonymous>Yes</allow_anonymous>
+<tracker_id>778343</tracker_id>
+<tracker_name>Limitations</tracker_name>
+<description>Known limitations</description>
+<is_public>All site users</is_public>
+<allow_anonymous>Yes</allow_anonymous>
 </trackers>
 <mailinglists>
 <mailing_list_id>37237</mailing_list_id>
@@ -151,7 +156,7 @@ http://www.florat.net/jajuk-specs.pdf</registration_description>
 <archive_is_public>Yes</archive_is_public>
 <mailing_list_id>47451</mailing_list_id>
 <list_name>jajuk-support</list_name>
-<archive_is_public>Yes</archive_is_public>
+<archive_is_public>No</archive_is_public>
 </mailinglists>
 </projectresources>
 <project_admin_detail>
@@ -10578,7 +10583,7 @@ Thanks, fixed in the upcoming 0.3.4.</details>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1214734</url>
 <id>1214734</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>605762</category_id>
 <group_id>436325</group_id>
 <resolution_id>1</resolution_id>
@@ -10586,7 +10591,7 @@ Thanks, fixed in the upcoming 0.3.4.</details>
 <assignee>bflorat</assignee>
 <closer>bflorat</closer>
 <submit_date>1117881039</submit_date>
-<close_date>1117907379</close_date>
+<close_date>1130597442</close_date>
 <priority>7</priority>
 <summary>Playlist at device root not visible in tree</summary>
 <details>Playlist files located at device root not visible in tree
@@ -10644,6 +10649,20 @@ next release.</details>
 <date>1119005157</date>
 <updator>bflorat</updator>
 </history_entry>
+<history_entry>
+<id>3199752</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1130597442</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3199753</id>
+<field_name>close_date</field_name>
+<old_value>1117907379</old_value>
+<date>1130597442</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
@@ -10693,15 +10712,15 @@ playlist repository view after a refresh.</details>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1231077</url>
 <id>1231077</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>605763</category_id>
 <group_id>436325</group_id>
-<resolution_id>100</resolution_id>
+<resolution_id>1</resolution_id>
 <submitter>deathangel</submitter>
 <assignee>bflorat</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1120235618</submit_date>
-<close_date>0</close_date>
+<close_date>1130597428</close_date>
 <priority>7</priority>
 <summary>Volume BUG</summary>
 <details>
@@ -10834,6 +10853,27 @@ Thanks</details>
 <date>1120503558</date>
 <updator>bflorat</updator>
 </history_entry>
+<history_entry>
+<id>3199749</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1130597428</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3199750</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1130597428</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3199751</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1130597428</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
@@ -10895,15 +10935,15 @@ DL the new version.</details>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1234825</url>
 <id>1234825</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>100</category_id>
 <group_id>100</group_id>
-<resolution_id>100</resolution_id>
+<resolution_id>101</resolution_id>
 <submitter>deathangel</submitter>
 <assignee>nobody</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1120833820</submit_date>
-<close_date>0</close_date>
+<close_date>1130597407</close_date>
 <priority>5</priority>
 <summary>Another Volume bug</summary>
 <details>
@@ -10925,20 +10965,41 @@ DL the new version.</details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>3199746</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1130597407</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3199747</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1130597407</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3199748</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1130597407</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1240678</url>
 <id>1240678</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>571112</category_id>
 <group_id>340384</group_id>
-<resolution_id>100</resolution_id>
+<resolution_id>6</resolution_id>
 <submitter>akapulko2020</submitter>
 <assignee>nobody</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1121757122</submit_date>
-<close_date>0</close_date>
+<close_date>1130597366</close_date>
 <priority>5</priority>
 <summary>Selected directory name not shown in initial directory chice</summary>
 <details>when using the drop down  box to choose the music
@@ -11042,6 +11103,27 @@ jajuk 0.3.4.1</details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>3199743</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1130597366</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3199744</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1130597366</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3199745</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1130597366</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
@@ -11050,7 +11132,7 @@ jajuk 0.3.4.1</details>
 <status_id>1</status_id>
 <category_id>605762</category_id>
 <group_id>436325</group_id>
-<resolution_id>100</resolution_id>
+<resolution_id>102</resolution_id>
 <submitter>bflorat</submitter>
 <assignee>bflorat</assignee>
 <closer>nobody</closer>
@@ -11072,6 +11154,357 @@ true and cannot be changed in 0.3.4.| </details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>3199742</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1130597329</date>
+<updator>bflorat</updator>
+</history_entry>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1313031</url>
+<id>1313031</id>
+<status_id>2</status_id>
+<category_id>694965</category_id>
+<group_id>100</group_id>
+<resolution_id>1</resolution_id>
+<submitter>mybytes</submitter>
+<assignee>nobody</assignee>
+<closer>bflorat</closer>
+<submit_date>1128442477</submit_date>
+<close_date>1130597283</close_date>
+<priority>5</priority>
+<summary>jajuc rc1 installer has wrong entagged version in manifest</summary>
+<details>title says it all.
+
+quick fix: unpack jajuk.jar, change 0.11 to 0.12 in
+manifest, re-packing jar
+</details>
+<followups>
+<followup>
+<id>1786536</id>
+<submitter>bflorat</submitter>
+<date>1128444595</date>
+<details>Logged In: YES 
+user_id=363565
+
+Thanks, right. Will be done for rc2. 
+Note: please report rc bugs by mailing list, not tracker
+(only for final releases).</details>
+</followup>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+<history_entry>
+<id>3199738</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1130597283</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3199739</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1130597283</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3199740</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1130597283</date>
+<updator>bflorat</updator>
+</history_entry>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1321671</url>
+<id>1321671</id>
+<status_id>2</status_id>
+<category_id>605778</category_id>
+<group_id>436325</group_id>
+<resolution_id>1</resolution_id>
+<submitter>butonic</submitter>
+<assignee>bflorat</assignee>
+<closer>bflorat</closer>
+<submit_date>1128914686</submit_date>
+<close_date>1130597269</close_date>
+<priority>9</priority>
+<summary>Apostroph in an ID3 year tag corrupts the collection file </summary>
+<details>I stumbled upon am mp3 file that had the year set to
+&#62;'91&#60;. jajuk would write th apostroph unescaped into
+the xml file, which of course causes the parser to bork ...
+
+I fixed it by changing the ID3 Tag, however it was
+quite annoying to rescan all of my mp3s, because this
+is the first time I used it ...
+
+Keep up the good work, im quite impressed :)
+
+</details>
+<followups>
+<followup>
+<id>1792279</id>
+<submitter>bflorat</submitter>
+<date>1128945315</date>
+<details>Logged In: YES 
+user_id=363565
+
+Thanks, this should be fixed in the upcoming 1.0. Please
+test it and give me feedback on this when it will be out (in
+2 ou 3 weeks).</details>
+</followup>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+<history_entry>
+<id>3159266</id>
+<field_name>priority</field_name>
+<old_value>5</old_value>
+<date>1128945315</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3199735</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1130597269</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3199736</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1130597269</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3199737</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1130597269</date>
+<updator>bflorat</updator>
+</history_entry>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1326176</url>
+<id>1326176</id>
+<status_id>2</status_id>
+<category_id>605763</category_id>
+<group_id>436325</group_id>
+<resolution_id>1</resolution_id>
+<submitter>bflorat</submitter>
+<assignee>bflorat</assignee>
+<closer>bflorat</closer>
+<submit_date>1129235139</submit_date>
+<close_date>1130597252</close_date>
+<priority>3</priority>
+<summary>Cannot add shuffle items in playlist editor</summary>
+<details>Cannot add shuffle items except at first position for
+regular playlists in playlist editor</details>
+<followups>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+<history_entry>
+<id>3199732</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1130597252</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3199733</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1130597252</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3199734</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1130597252</date>
+<updator>bflorat</updator>
+</history_entry>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1334738</url>
+<id>1334738</id>
+<status_id>1</status_id>
+<category_id>605762</category_id>
+<group_id>340384</group_id>
+<resolution_id>4</resolution_id>
+<submitter>jespo</submitter>
+<assignee>nobody</assignee>
+<closer>nobody</closer>
+<submit_date>1129968827</submit_date>
+<close_date>0</close_date>
+<priority>5</priority>
+<summary>Internacionalization issues with JXDatePicker</summary>
+<details>There are some internacinalization issues with
+JXDatePicker, such begin week day, and the Today
+message and the Date format.</details>
+<followups>
+<followup>
+<id>1804903</id>
+<submitter>bflorat</submitter>
+<date>1129970955</date>
+<details>Logged In: YES 
+user_id=363565
+
+Thanks Josep. I'm aware of it but it is a swingx issue, I
+will report a feature request to internationalize it (note
+we use a beta version of swingx, I hope this kind of thing
+will be fixed in final release, if not we will have to
+decorate swingx classes).
+PS: if possible please report rc bugs using dev list, not
+this tracker. </details>
+</followup>
+<followup>
+<id>1805048</id>
+<submitter>bflorat</submitter>
+<date>1129997254</date>
+<details>Logged In: YES 
+user_id=363565
+
+Followup: note that in french, week of the day and date
+format is ok (DD/MM/YYYY). The only thing that's wrong is
+the TODAY is ... message. I assume there is yet some Swingx
+i18n issues for Spanish or Catalan ?</details>
+</followup>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+<history_entry>
+<id>3199725</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1130597176</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3199726</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1130597176</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3199727</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1130597176</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3199728</id>
+<field_name>status_id</field_name>
+<old_value>2</old_value>
+<date>1130597228</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3199729</id>
+<field_name>resolution_id</field_name>
+<old_value>1</old_value>
+<date>1130597228</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3199730</id>
+<field_name>assigned_to</field_name>
+<old_value>363565</old_value>
+<date>1130597228</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3199731</id>
+<field_name>close_date</field_name>
+<old_value>1130597176</old_value>
+<date>1130597228</date>
+<updator>bflorat</updator>
+</history_entry>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1334741</url>
+<id>1334741</id>
+<status_id>2</status_id>
+<category_id>605763</category_id>
+<group_id>340384</group_id>
+<resolution_id>1</resolution_id>
+<submitter>jespo</submitter>
+<assignee>bflorat</assignee>
+<closer>bflorat</closer>
+<submit_date>1129969166</submit_date>
+<close_date>1130597150</close_date>
+<priority>5</priority>
+<summary>The Year Tag scan outputs innecessary exception in log</summary>
+<details>There are very tracks with &#34;&#34; tag in year
+
+The actual method is
+  public long getYear() throws Exception {
+    String sOut = tag.getFirstYear();
+    if ( sOut == null){//$NON-NLS-1$
+      return 0;
+    }
+    return Long.parseLong(sOut);
+  }
+
+I think that this is better and omits a lot of log
+output that ralentizes the scan of large volumes.
+  public long getYear() throws Exception {
+    String sOut = tag.getFirstYear();
+    if ( sOut == null || sOut.equals(&#34;&#34;)){//$NON-NLS-1$
+      return 0;
+    }
+    return Long.parseLong(sOut);
+  }</details>
+<followups>
+<followup>
+<id>1804905</id>
+<submitter>bflorat</submitter>
+<date>1129971063</date>
+<details>Logged In: YES 
+user_id=363565
+
+OK, done.</details>
+</followup>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+<history_entry>
+<id>3199722</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1130597150</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3199723</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1130597150</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3199724</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1130597150</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 </tracker_items>
@@ -12762,23 +13195,46 @@ done in 0.2</details>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=933298</url>
 <id>933298</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>571115</category_id>
 <group_id>100</group_id>
 <submitter>bflorat</submitter>
 <assignee>nobody</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1081708639</submit_date>
-<close_date>0</close_date>
+<close_date>1130597561</close_date>
 <priority>3</priority>
 <summary>JTable : automatic column resizing </summary>
 <details>When double-clicking on a column header, automatical
 column resize.</details>
 <followups>
+<followup>
+<id>1811798</id>
+<submitter>bflorat</submitter>
+<date>1130597550</date>
+<details>Logged In: YES 
+user_id=363565
+
+done in 1.0</details>
+</followup>
 </followups>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>3199758</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1130597561</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3199759</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1130597561</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
@@ -14739,14 +15195,14 @@ is &#60; to number of days given in the parameter view/option tab. </details>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1222801</url>
 <id>1222801</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>100</category_id>
 <group_id>100</group_id>
 <submitter>nobody</submitter>
 <assignee>nobody</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1119030129</submit_date>
-<close_date>0</close_date>
+<close_date>1130597718</close_date>
 <priority>5</priority>
 <summary>Some Items for the wishlist</summary>
 <details>
@@ -14775,10 +15231,38 @@ be following this project!
 
 -ChazZ</details>
 <followups>
+<followup>
+<id>1811800</id>
+<submitter>bflorat</submitter>
+<date>1130597718</date>
+<details>Logged In: YES 
+user_id=363565
+
+1: done in 1.0
+2: planned in roadmap
+3: done in 1.0
+4: done in 1.0 (but not sure to fully understand the wish)
+
+thx for the feedback</details>
+</followup>
 </followups>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>3199763</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1130597718</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3199764</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1130597718</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
@@ -14838,14 +15322,14 @@ to make sure all tracks will be ready for the party.</details>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1235391</url>
 <id>1235391</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>100</category_id>
 <group_id>100</group_id>
 <submitter>bflorat</submitter>
 <assignee>nobody</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1120947290</submit_date>
-<close_date>0</close_date>
+<close_date>1130597516</close_date>
 <priority>2</priority>
 <summary>Tray popup format</summary>
 <details>Display tray popup on one single line with a play icon.</details>
@@ -14854,19 +15338,33 @@ to make sure all tracks will be ready for the party.</details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>3199756</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1130597516</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3199757</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1130597516</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1263856</url>
 <id>1263856</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>100</category_id>
 <group_id>100</group_id>
 <submitter>me-vincent</submitter>
 <assignee>nobody</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1124447677</submit_date>
-<close_date>0</close_date>
+<close_date>1130597493</close_date>
 <priority>5</priority>
 <summary>Reset all ratings</summary>
 <details>It would probably be nice to be able to reset your
@@ -14888,10 +15386,33 @@ ratings : right click on  collection, &#34;properties&#34;, set
 rating to zero. We may add a reset ratings button in History
 tab on parameter view as well.</details>
 </followup>
+<followup>
+<id>1811797</id>
+<submitter>bflorat</submitter>
+<date>1130597493</date>
+<details>Logged In: YES 
+user_id=363565
+
+Done in 1.0</details>
+</followup>
 </followups>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>3199754</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1130597493</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3199755</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1130597493</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
@@ -14915,6 +15436,16 @@ thing jajuk is missing i think is visual effects for the music...
 then it's perfect... 
  </details>
 <followups>
+<followup>
+<id>1811803</id>
+<submitter>bflorat</submitter>
+<date>1130597824</date>
+<details>Logged In: YES 
+user_id=363565
+
+Not planned for the moment but see others goodies comming in
+the roadmap...</details>
+</followup>
 </followups>
 <attachments>
 </attachments>
@@ -15231,14 +15762,14 @@ highlighted could be wrong. Bug is reported at sun.</details>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1091598</url>
 <id>1091598</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>100</category_id>
 <group_id>100</group_id>
 <submitter>blakjaknz</submitter>
 <assignee>nobody</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1104134291</submit_date>
-<close_date>0</close_date>
+<close_date>1130597915</close_date>
 <priority>5</priority>
 <summary>Occupies far too much ram...</summary>
 <details>Windows 2000, it occupied nearly 200MB of Ram with a 
@@ -15275,10 +15806,33 @@ user_id=363565
 New in 0.3.3 : memory usage (especialy when using preload
 covers mode) has been optimized.</details>
 </followup>
+<followup>
+<id>1811805</id>
+<submitter>bflorat</submitter>
+<date>1130597915</date>
+<details>Logged In: YES 
+user_id=363565
+
+Not a bug.</details>
+</followup>
 </followups>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>3199771</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1130597915</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3199772</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1130597915</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
@@ -15321,14 +15875,14 @@ bug in this LAF. To be investigated...</details>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1099575</url>
 <id>1099575</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>100</category_id>
 <group_id>100</group_id>
 <submitter>bflorat</submitter>
 <assignee>nobody</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1105377353</submit_date>
-<close_date>0</close_date>
+<close_date>1130597934</close_date>
 <priority>5</priority>
 <summary>Launcher failed message</summary>
 <details>[Windows only using .exe installer]
@@ -15336,23 +15890,46 @@ In some seldom cases, you can get at the end of install
 a message &#34;IzPack launcher failed&#34;. Just ignore this
 message, your install is safe.</details>
 <followups>
+<followup>
+<id>1811806</id>
+<submitter>bflorat</submitter>
+<date>1130597934</date>
+<details>Logged In: YES 
+user_id=363565
+
+fixed in 1.0</details>
+</followup>
 </followups>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>3199773</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1130597934</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3199774</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1130597934</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1105142</url>
 <id>1105142</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>100</category_id>
 <group_id>100</group_id>
 <submitter>bflorat</submitter>
 <assignee>nobody</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1106128744</submit_date>
-<close_date>0</close_date>
+<close_date>1130597869</close_date>
 <priority>5</priority>
 <summary>Proxy problem</summary>
 <details>In some network configurations, cover grabbing doesn't
@@ -15360,10 +15937,33 @@ work, even setting right proxy parameters in Parameter
 view/ Network tab. We don't understand yet why. In you
 are in this case, please contact us. </details>
 <followups>
+<followup>
+<id>1811804</id>
+<submitter>bflorat</submitter>
+<date>1130597869</date>
+<details>Logged In: YES 
+user_id=363565
+
+fixed in 1.0</details>
+</followup>
 </followups>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>3199769</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1130597869</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3199770</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1130597869</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
@@ -15460,14 +16060,14 @@ caused by MP3 using pictures inside id3 tags.</details>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1180242</url>
 <id>1180242</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>100</category_id>
 <group_id>100</group_id>
 <submitter>bflorat</submitter>
 <assignee>nobody</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1113146778</submit_date>
-<close_date>0</close_date>
+<close_date>1130597961</close_date>
 <priority>3</priority>
 <summary>Right click selection/popup menu</summary>
 <details>In logical/physical tree/table views with JRE 1.4.2 :
@@ -15476,33 +16076,79 @@ automaticaly select and display popup menu, you have to
 left click or right click on the row or tree element
 and right-click again. Fixed with JRE 1.5. </details>
 <followups>
+<followup>
+<id>1811807</id>
+<submitter>bflorat</submitter>
+<date>1130597961</date>
+<details>Logged In: YES 
+user_id=363565
+
+fixed 1.0 as 1.4.2 is no more supported</details>
+</followup>
 </followups>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>3199775</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1130597961</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3199776</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1130597961</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1180249</url>
 <id>1180249</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>100</category_id>
 <group_id>100</group_id>
 <submitter>bflorat</submitter>
 <assignee>nobody</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1113148149</submit_date>
-<close_date>0</close_date>
+<close_date>1130597990</close_date>
 <priority>1</priority>
 <summary>Liquid Look and Feel painting problem</summary>
 <details>With JRE 1.4.2 with liquid laf, command panel and
 perspective panel have a grey ugly painting, upgrade to
 1.5.</details>
 <followups>
+<followup>
+<id>1811808</id>
+<submitter>bflorat</submitter>
+<date>1130597990</date>
+<details>Logged In: YES 
+user_id=363565
+
+Fixed in 1.0 as 1.4.2 is no more supported</details>
+</followup>
 </followups>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>3199777</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1130597990</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3199778</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1130597990</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
@@ -15797,15 +16443,15 @@ Fixed together with &#34;1122450	Pause/resume crazy under Windows&#34;. </detail
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1115765</url>
 <id>1115765</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>100</category_id>
 <group_id>100</group_id>
 <resolution_id>100</resolution_id>
 <submitter>bflorat</submitter>
 <assignee>nobody</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1107466857</submit_date>
-<close_date>0</close_date>
+<close_date>1128169591</close_date>
 <priority>5</priority>
 <summary>Sync. properties lost</summary>
 <details>One after a refresh, I lost the desyncrhonization
@@ -15815,6 +16461,20 @@ properties.</details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>3142701</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1128169591</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3142702</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1128169591</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
@@ -15906,15 +16566,15 @@ thread death.</details>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1143778</url>
 <id>1143778</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>100</category_id>
 <group_id>100</group_id>
 <resolution_id>100</resolution_id>
 <submitter>bflorat</submitter>
 <assignee>nobody</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1108732422</submit_date>
-<close_date>0</close_date>
+<close_date>1128169591</close_date>
 <priority>8</priority>
 <summary>Impossible to delete or unmount a device</summary>
 <details>Can't reproduce it anymore. Once, I had a message
@@ -15925,20 +16585,34 @@ device.</details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>3142699</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1128169591</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3142700</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1128169591</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1152348</url>
 <id>1152348</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>100</category_id>
 <group_id>100</group_id>
 <resolution_id>100</resolution_id>
 <submitter>bflorat</submitter>
 <assignee>nobody</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1109424407</submit_date>
-<close_date>0</close_date>
+<close_date>1128169591</close_date>
 <priority>5</priority>
 <summary>Packaging : native launcher not visible</summary>
 <details>Cannot reproduce. Seen on a W2K, JRE 2.4.1_04 (default)
@@ -15949,6 +16623,20 @@ file, uncompress occurs then, nothing appears.</details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>3142697</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1128169591</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3142698</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1128169591</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
@@ -16004,15 +16692,15 @@ you get that before ?</details>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1206586</url>
 <id>1206586</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>100</category_id>
 <group_id>100</group_id>
 <resolution_id>100</resolution_id>
 <submitter>bflorat</submitter>
 <assignee>nobody</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1116780521</submit_date>
-<close_date>0</close_date>
+<close_date>1128169591</close_date>
 <priority>4</priority>
 <summary>View configuration lost</summary>
 <details>Seldomly, view position is lost and all views can be
@@ -16023,11 +16711,153 @@ workaround: restore default configuration.</details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>3142695</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1128169591</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3142696</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1128169591</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1213440</url>
 <id>1213440</id>
+<status_id>2</status_id>
+<category_id>100</category_id>
+<group_id>100</group_id>
+<resolution_id>100</resolution_id>
+<submitter>bflorat</submitter>
+<assignee>nobody</assignee>
+<closer>bflorat</closer>
+<submit_date>1117713592</submit_date>
+<close_date>1128169591</close_date>
+<priority>7</priority>
+<summary>Window size lost</summary>
+<details>Few times, I got window displayed with zero pixels
+after a window display (jauk not displayed at startup)</details>
+<followups>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+<history_entry>
+<id>3142693</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1128169591</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3142694</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1128169591</date>
+<updator>bflorat</updator>
+</history_entry>
+</history_entries>
+</tracker_item>
+</tracker_items>
+</tracker>
+<tracker>
+<url>https://sourceforge.net/?group_id=91412&#38;atid=778343</url>
+<tracker_id>778343</tracker_id>
+<name>Limitations</name>
+<description>Known limitations</description>
+<is_public>All site users</is_public>
+<allow_anon>Yes</allow_anon>
+<email_updates>No</email_updates>
+<due_period>2592000</due_period>
+<submit_instructions></submit_instructions>
+<browse_instructions></browse_instructions>
+<status_timeout>1209600</status_timeout>
+<due_period_initial>0</due_period_initial>
+<due_period_update>0</due_period_update>
+<canned_responses>
+</canned_responses>
+<groups>
+</groups>
+<categories>
+</categories>
+<resolutions>
+<resolution>
+<id>1</id>
+<name>Fixed</name>
+</resolution>
+<resolution>
+<id>2</id>
+<name>Invalid</name>
+</resolution>
+<resolution>
+<id>3</id>
+<name>Wont Fix</name>
+</resolution>
+<resolution>
+<id>4</id>
+<name>Later</name>
+</resolution>
+<resolution>
+<id>5</id>
+<name>Remind</name>
+</resolution>
+<resolution>
+<id>6</id>
+<name>Works For Me</name>
+</resolution>
+<resolution>
+<id>100</id>
+<name>None</name>
+</resolution>
+<resolution>
+<id>101</id>
+<name>Duplicate</name>
+</resolution>
+<resolution>
+<id>102</id>
+<name>Accepted</name>
+</resolution>
+<resolution>
+<id>103</id>
+<name>Out of Date</name>
+</resolution>
+<resolution>
+<id>104</id>
+<name>Postponed</name>
+</resolution>
+<resolution>
+<id>105</id>
+<name>Rejected</name>
+</resolution>
+</resolutions>
+<statuses>
+<status>
+<id>1</id>
+<name>Open</name>
+</status>
+<status>
+<id>2</id>
+<name>Closed</name>
+</status>
+<status>
+<id>3</id>
+<name>Deleted</name>
+</status>
+<status>
+<id>4</id>
+<name>Pending</name>
+</status>
+</statuses>
+<tracker_items>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1334965</url>
+<id>1334965</id>
 <status_id>1</status_id>
 <category_id>100</category_id>
 <group_id>100</group_id>
@@ -16035,12 +16865,35 @@ workaround: restore default configuration.</details>
 <submitter>bflorat</submitter>
 <assignee>nobody</assignee>
 <closer>nobody</closer>
-<submit_date>1117713592</submit_date>
+<submit_date>1129997521</submit_date>
 <close_date>0</close_date>
 <priority>7</priority>
-<summary>Window size lost</summary>
-<details>Few times, I got window displayed with zero pixels
-after a window display (jauk not displayed at startup)</details>
+<summary>Cannot seek in ogg files</summary>
+<details>Due to javazoom APIs limitations, we cannot seek (fast
+rewind or forward) in ogg files for the moment.</details>
+<followups>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1334968</url>
+<id>1334968</id>
+<status_id>1</status_id>
+<category_id>100</category_id>
+<group_id>100</group_id>
+<resolution_id>100</resolution_id>
+<submitter>bflorat</submitter>
+<assignee>nobody</assignee>
+<closer>nobody</closer>
+<submit_date>1129997618</submit_date>
+<close_date>0</close_date>
+<priority>5</priority>
+<summary>Display only known files in playlists</summary>
+<details>Jajuk ignores items in playlists that are not known in
+the collection.</details>
 <followups>
 </followups>
 <attachments>
@@ -16268,13 +17121,13 @@ after a window display (jauk not displayed at startup)</details>
 <task_id>110970</task_id>
 <summary>[medium] Tag edition</summary>
 <detail></detail>
-<percent_complete>50</percent_complete>
+<percent_complete>100</percent_complete>
 <priority>9</priority>
-<hours>0</hours>
+<hours>30</hours>
 <start_date>1106521200</start_date>
-<end_date>1106521200</end_date>
+<end_date>1128895200</end_date>
 <creator>bflorat</creator>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <dependencies>
 </dependencies>
 <assignees>
@@ -16295,6 +17148,34 @@ https://sourceforge.net/tracker/index.php?func=detail&#38;aid=1177560&#38;group_
 <old_value>0</old_value>
 <updator>bflorat</updator>
 <date>1120634217</date>
+</history_entry>
+<history_entry>
+<task_id>110970</task_id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<updator>bflorat</updator>
+<date>1129235778</date>
+</history_entry>
+<history_entry>
+<task_id>110970</task_id>
+<field_name>percent_complete</field_name>
+<old_value>50</old_value>
+<updator>bflorat</updator>
+<date>1129235778</date>
+</history_entry>
+<history_entry>
+<task_id>110970</task_id>
+<field_name>hours</field_name>
+<old_value>0</old_value>
+<updator>bflorat</updator>
+<date>1129235778</date>
+</history_entry>
+<history_entry>
+<task_id>110970</task_id>
+<field_name>end_date</field_name>
+<old_value>1106521200</old_value>
+<updator>bflorat</updator>
+<date>1129235778</date>
 </history_entry>
 </history_entries>
 </task>
@@ -17097,6 +17978,25 @@ http://www.singularsys.com/jep/index.html</old_value>
 <updator>bflorat</updator>
 <date>1121454533</date>
 </history_entry>
+</history_entries>
+</task>
+<task>
+<task_id>120149</task_id>
+<summary>[Easy] Display Wikipedia page for current author</summary>
+<detail></detail>
+<percent_complete>0</percent_complete>
+<priority>5</priority>
+<hours>10</hours>
+<start_date>1129154400</start_date>
+<end_date>1129154400</end_date>
+<creator>bflorat</creator>
+<status_id>1</status_id>
+<dependencies>
+</dependencies>
+<assignees>
+<assignee>nobody</assignee>
+</assignees>
+<history_entries>
 </history_entries>
 </task>
 </project>
