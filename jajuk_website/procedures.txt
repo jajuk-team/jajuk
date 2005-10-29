@@ -27,7 +27,8 @@ o- Tag as version
 o- Create a maintenance branch for new major releases (x.y level)
 SF
 o- Close bugs, known issues and RFE at SF
-o- Release file on SF, ( preserve my preformated text in notes )
+o- Make a new in SF
+
 - Send a message in the developer forum
 Website
 o- Rename /data/projects/jajuk/maven_rep/xdocs/jajuk-hs link
@@ -44,6 +45,7 @@ o- Commit all changes in jajuk_website project
 o- Clean snapshots directory
 Others
 o- Save dist file in the releases save dir
+o- Send a message in the developer forum
 
 QUICK FIX RELEASE PROCEDURE
 o- Check new incoming updates (i18n)
