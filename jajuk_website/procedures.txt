@@ -13,7 +13,7 @@ NEW LANGUAGE PROCEDURE
 
 NEW RELEASE PROCEDURE
 Code
-- Refresh workspace
+o- Refresh workspace
 o- Set debug to '' in build-dist script
 o- Check new incoming updates (i18n)
 o- Set right version (no more rc) in build-dist.xml
@@ -26,9 +26,8 @@ o- Commit all changes in jajuk project
 o- Tag as version
 o- Create a maintenance branch for new major releases (x.y level)
 SF
-- Close bugs, known issues and RFE at SF
-- Release file on SF, ( preserve my preformated text in notes )
-- Backup SF data (php file)
+o- Close bugs, known issues and RFE at SF
+o- Release file on SF, ( preserve my preformated text in notes )
 - Send a message in the developer forum
 Website
 o- Rename /data/projects/jajuk/maven_rep/xdocs/jajuk-hs link
@@ -38,12 +37,13 @@ o- Add a release in main_qualification.html file
 o- Modify index.xml and change.xml maven files
 o- Change download.html file for file names
 o- Upgrade project.xml maven file
-- Generate website PDF (make_jajuk pdf) 
-- Generate and upload maven site (make_jajuk)
-- Commit all changes in jajuk_website project
-- Clean snapshots directory
+o- Backup SF data (php file)
+o- Generate website PDF (make_jajuk pdf) 
+o- Generate and upload maven site (make_jajuk)
+o- Commit all changes in jajuk_website project
+o- Clean snapshots directory
 Others
-- Save dist file in the releases save dir
+o- Save dist file in the releases save dir
 
 QUICK FIX RELEASE PROCEDURE
 o- Check new incoming updates (i18n)

@@ -42,6 +42,7 @@
       <item name='Specifications (PDF) ' href='./specs.pdf' />
       <item name='Dependencies' href='./jajuk_dependencies.html' />
       <item name='Javadoc' href='http://jajuk.sourceforge.net/apidocs/index.html' />
+      <item name='Sources XREF' href='http://jajuk.sourceforge.net/xref/index.html' />
     </menu>
    </body>
 </project>
