@@ -12,14 +12,13 @@ NEW LANGUAGE PROCEDURE
 - Update translation howto
 
 NEW RELEASE PROCEDURE
-- Set debug to '' in build-dist script
-- Check new incoming updates (i18n)
-- Backup SF data (php file)
-- Set right version (no more rc) in build-dist.xml
-- String externalization
-- Rename /data/projects/jajuk/maven_rep/xdocs/jajuk-hs link
-- Search for debug System.out
-- Make required translations (fr)
+o- Set debug to '' in build-dist script
+o- Check new incoming updates (i18n)
+o- Set right version (no more rc) in build-dist.xml
+o- String externalization
+o- Rename /data/projects/jajuk/maven_rep/xdocs/jajuk-hs link
+o- Search for debug System.out
+o- Make required translations (fr)
 - Generate packages
 - Test it under several OS
 - Update qualification-<release>.html file
@@ -36,6 +35,7 @@ NEW RELEASE PROCEDURE
 - Create a maintenance branch if required
 - Close bugs, known issues and RFE at SF
 - Release file on SF, ( preserve my preformated text in notes )
+- Backup SF data (php file)
 - Send a message in the developer forum
 - Clean snapshots directory
 

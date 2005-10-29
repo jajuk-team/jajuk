@@ -7,7 +7,7 @@
  
   <id>jajuk</id>
  
-  <currentVersion>0.3.4</currentVersion>
+  <currentVersion>1.0</currentVersion>
  
   <organization>
     <name>Jajuk team</name>
@@ -374,7 +374,7 @@
     <report>maven-developer-activity-plugin</report>
     <report>maven-file-activity-plugin</report>
     <report>maven-license-plugin</report>
-  	<report>maven-statcvs-plugin</report>
+  	<!--<report>maven-statcvs-plugin</report>-->
  </reports>
    
 </project> 
