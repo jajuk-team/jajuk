@@ -331,8 +331,16 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
                 }
                 else{
                     JLabel jl = new JLabel(pa.getHumanValue(meta.getName())); //If several items, take first value found
-                    jl.setToolTipText(pa.getHumanValue(meta.getName()));
-                    jl.setMaximumSize(dim);
+                    String s = pa.getHumanValue(meta.getName());
+                    String[] sTab = s.split(",");
+                    StringBuffer sb = new StringBuffer();
+                    sb.append("<html>");
+                    for (int i=0;i<sTab.length;i++){
+                     sb.append(sTab[i]).append("<br>");   
+                    }
+                    sb.append("</html>");
+                    jl.setToolTipText(sb.toString());
+                    jl.setPreferredSize(dim);
                     widgets[index][1] = jl;
                     
                 }
@@ -386,7 +394,7 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
             for (PropertyMetaInformation meta:alToDisplay){
                 j = (2*i)+3;
                 jpProperties.add(widgets[i][0],"1,"+j+",c,c"); //$NON-NLS-1$ //$NON-NLS-2$
-                jpProperties.add(widgets[i][1],"3,"+j+",c,c"); //$NON-NLS-1$ //$NON-NLS-2$
+                jpProperties.add(widgets[i][1],"3,"+j); //$NON-NLS-1$
                 if (widgets[i][2] != null){ //link widget can be null
                     jpProperties.add(widgets[i][2],"5,"+j+",c,c"); //$NON-NLS-1$ //$NON-NLS-2$
                 }
@@ -610,11 +618,11 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
             }
             //display a message for file write issues
             if (alInError.size()>0){
-                String sInfo = ""; //$NON-NLS-1$
+                String sInfo = "";
                 for (IPropertyable item:alInError){
-                    sInfo += "\n"+item.getHumanValue(XML_NAME); //$NON-NLS-1$
+                    sInfo += "\n"+item.getHumanValue(XML_NAME);
                 }
-                Messages.showErrorMessage("104",sInfo); //$NON-NLS-1$
+                Messages.showErrorMessage("104",sInfo);
             }
             
             //display a message if user changed at least one property

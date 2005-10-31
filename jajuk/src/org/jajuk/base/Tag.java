@@ -206,7 +206,7 @@ public class Tag implements ITechnicalStrings{
 		try {
 			 lYear = tagImpl.getYear(); //check it is an integer
 		} catch (Exception e) {
-			Log.warn("103", fio.getName(),e); //$NON-NLS-1$
+			Log.debug("Wrong year:"+fio.getName()); //$NON-NLS-1$
 		}
 		return lYear;
 

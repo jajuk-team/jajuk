@@ -187,8 +187,11 @@ public class Main implements ITechnicalStrings {
             
             //Set actual log verbosity. Depends on: ConfigurationManager.load
             Log.setVerbosity(Integer.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_LOG_LEVEL)));
-            
-            //Launch splashscreen. Depends on: log.setVerbosity, configurationManager.load (for local) 
+                        		
+            //Set locale. setSystemLocal
+            Messages.getInstance().setLocal(ConfigurationManager.getProperty(CONF_OPTIONS_LANGUAGE));
+        
+            //Launch splashscreen. Depends on: log.setVerbosity and setLocal (for local)
             SwingUtilities.invokeAndWait(new Runnable() {
                 public void run() {
                     try {
@@ -202,10 +205,7 @@ public class Main implements ITechnicalStrings {
             
             //Display progress
             sc.setProgress(0,Messages.getString("SplashScreen.0")); //$NON-NLS-1$
-            			
-            //Set locale. setSystemLocal
-            Messages.getInstance().setLocal(ConfigurationManager.getProperty(CONF_OPTIONS_LANGUAGE));
-        
+            
             //Registers Item managers
             ItemManager.registerItemManager(org.jajuk.base.Album.class,AlbumManager.getInstance());
             ItemManager.registerItemManager(org.jajuk.base.Author.class,AuthorManager.getInstance());

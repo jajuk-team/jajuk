@@ -3,7 +3,7 @@
 
 <project default='all' name='jajuk' basedir='..'>
   <!-- Only Explicit Release number-->
-  <property name='version' value='1.0'/>
+  <property name='version' value='1.1'/>
   <property name='test' value=''/>
   <property name='rootdir' value='/tmp/jajuk-dist'/>
   <property name='distdir' value='${rootdir}/jajuk'/>
@@ -384,7 +384,9 @@
                 <izpack input='${izpackdir}/jajuk.izpack'
         output='${izpackdir}/${distjarname}${version}.jar'
         basedir='${basedir}'
-        izPackDir='/prog/IzPack'/>
+        izPackDir='/prog/IzPack'
+        compression='bzip2'
+        compressionlevel='9'/>
       </target>
       
       
@@ -407,8 +409,8 @@
       	<fileset file='${sourcesdist}'/>
      	<fileset file='${rpmbuilddir_suse}/RPMS/noarch/*'/>
      	<fileset file='${rpmbuilddir_mdk}/RPMS/*'/>
-     	 <fileset file='${windowsdir}/jajuk-${version}-win32.exe'/>
-     	 <fileset file='${izpackdir}/jajuk-java-installer-${version}.jar'/>
+     	<fileset file='${windowsdir}/jajuk-${version}-win32.exe'/>
+     	<fileset file='${izpackdir}/jajuk-java-installer-${version}.jar'/>
      </copy>
  	</target>      
   
