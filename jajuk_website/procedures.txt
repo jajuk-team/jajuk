@@ -15,37 +15,37 @@ NEW RELEASE PROCEDURE
 Code
 o- Refresh workspace
 o- Set debug to '' in build-dist script
-o- Check new incoming updates (i18n)
+x- Check new incoming updates (i18n)
 o- Set right version (no more rc) in build-dist.xml
 o- String externalization
-o- Search for debug System.out
-o- Make required translations (fr)
+x- Search for debug System.out
+x- Make required translations (fr)
 o- Generate packages
 o- Test it a minima under several OS
-o- Commit all changes in jajuk project
-o- Tag as version
-o- Create a maintenance branch for new major releases (x.y level)
+- Commit all changes in jajuk project
+- Tag as version
+x- Create a maintenance branch for new major releases (x.y level)
 SF
-o- Close bugs, known issues and RFE at SF
-o- Make a new in SF
+- Close bugs, known issues and RFE at SF
+x- Make a new in SF
 
 - Send a message in the developer forum
 Website
-o- Rename /data/projects/jajuk/maven_rep/xdocs/jajuk-hs link
+x- Rename /data/projects/jajuk/maven_rep/xdocs/jajuk-hs link
 o- set date to release in changes.xml
 o- Update qualification-<release>.html file
-o- Add a release in main_qualification.html file
-o- Modify index.xml and change.xml maven files
+x- Add a release in main_qualification.html file
+x- Modify index.xml and change.xml maven files
 o- Change download.html file for file names
-o- Upgrade project.xml maven file
-o- Backup SF data (php file)
-o- Generate website PDF (make_jajuk pdf) 
-o- Generate and upload maven site (make_jajuk)
-o- Commit all changes in jajuk_website project
-o- Clean snapshots directory
+x- Upgrade project.xml maven file
+- Backup SF data (php file)
+- Generate website PDF (make_jajuk pdf) 
+- Generate and upload maven site (make_jajuk)
+- Commit all changes in jajuk_website project
+- Clean snapshots directory
 Others
-o- Save dist file in the releases save dir
-o- Send a message in the developer forum
+- Save dist file in the releases save dir
+- Send a message in the developer forum
 
 QUICK FIX RELEASE PROCEDURE
 o- Check new incoming updates (i18n)

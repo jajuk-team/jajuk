@@ -5,6 +5,13 @@
     <author email='bflorat@users.sourceforge.net'>Bertrand Florat</author>
   </properties>
   <body>
+    <release version='1.0.1' date='2005-11-01' description='Fixes'>
+    	<action dev='bflorat' type='fix' issue='1345044'>Some tracks maps wrong files</action>
+    	<action dev='bflorat' type='fix' issue='1345056'>Index issue for multiple remove items in playlist editor</action>
+    	<action dev='bflorat' type='fix' issue='1345063'>Possible track mapping error in some cases</action>
+    	<action dev='bflorat' type='fix' issue='1345064'>Wrong local in splashscreen</action>
+    	<action dev='bflorat' type='fix' issue='1345086'>UI issues in Properties Wizard</action>
+    </release>
     <release version='1.0' date='2005-10-29' description='Tag edition, properties custom'>
     	<action dev='bflorat' type='add'>Tag edtion</action> 
     	<action dev='bflorat' type='add'>Custom properties</action> 
