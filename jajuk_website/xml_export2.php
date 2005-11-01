@@ -29,7 +29,7 @@ Option for show_trackers=1; * To show a specific Tracker instead of all
 	&amp;tracker_to_show=TRACKER_ID
 
 --><export_details>
-<time>1130598210</time>
+<time>1130867920</time>
 <project_group_id>91412</project_group_id>
 <project_unix_name>jajuk</project_unix_name>
 <exporter>bflorat</exporter>
@@ -1754,6 +1754,10 @@ KNOWN ISSUES are found in the &#34;Known issues&#34; tracker.</submit_instructio
 <group>
 <id>436325</id>
 <group_name>R 0.3</group_name>
+</group>
+<group>
+<id>537602</id>
+<group_name>R 1.0</group_name>
 </group>
 </groups>
 <categories>
@@ -11507,6 +11511,231 @@ OK, done.</details>
 </history_entry>
 </history_entries>
 </tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1345044</url>
+<id>1345044</id>
+<status_id>2</status_id>
+<category_id>605778</category_id>
+<group_id>537602</group_id>
+<resolution_id>1</resolution_id>
+<submitter>bflorat</submitter>
+<assignee>bflorat</assignee>
+<closer>bflorat</closer>
+<submit_date>1130863042</submit_date>
+<close_date>1130867765</close_date>
+<priority>9</priority>
+<summary>Some tracks maps wrong files</summary>
+<details>In case of error parsing MP3 tags, some tracks can map
+wrong files. If a user change a tag using jajuk
+interface, he can change wrong files tags.</details>
+<followups>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+<history_entry>
+<id>3205329</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1130867765</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3205330</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1130867765</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3205331</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1130867765</date>
+<updator>bflorat</updator>
+</history_entry>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1345056</url>
+<id>1345056</id>
+<status_id>2</status_id>
+<category_id>605762</category_id>
+<group_id>537602</group_id>
+<resolution_id>1</resolution_id>
+<submitter>bflorat</submitter>
+<assignee>bflorat</assignee>
+<closer>bflorat</closer>
+<submit_date>1130864167</submit_date>
+<close_date>1130867739</close_date>
+<priority>6</priority>
+<summary>Index issue for multiple remove items in playlist editor</summary>
+<details>In playlist editor view, all playlists, select several
+contiguous or not items, then remove : taken index is
+wrong.</details>
+<followups>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+<history_entry>
+<id>3205326</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1130867739</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3205327</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1130867739</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3205328</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1130867739</date>
+<updator>bflorat</updator>
+</history_entry>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1345063</url>
+<id>1345063</id>
+<status_id>2</status_id>
+<category_id>605778</category_id>
+<group_id>537602</group_id>
+<resolution_id>1</resolution_id>
+<submitter>bflorat</submitter>
+<assignee>bflorat</assignee>
+<closer>bflorat</closer>
+<submit_date>1130864297</submit_date>
+<close_date>1130867848</close_date>
+<priority>7</priority>
+<summary>Possible track mapping error in some cases</summary>
+<details>In some seldom cases (files with same size, length,
+name and none tag), a track could map wrong files. Now
+use a internal footprint of the file used when
+computing track self ID (only for these cases for
+performance).</details>
+<followups>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+<history_entry>
+<id>3205332</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1130867848</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3205333</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1130867848</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3205334</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1130867848</date>
+<updator>bflorat</updator>
+</history_entry>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1345064</url>
+<id>1345064</id>
+<status_id>2</status_id>
+<category_id>605762</category_id>
+<group_id>537602</group_id>
+<resolution_id>1</resolution_id>
+<submitter>bflorat</submitter>
+<assignee>bflorat</assignee>
+<closer>bflorat</closer>
+<submit_date>1130864382</submit_date>
+<close_date>1130867714</close_date>
+<priority>3</priority>
+<summary>Wrong local in splashscreen</summary>
+<details>In some cases, splashscreen messages can be in English,
+even when using others locals.</details>
+<followups>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+<history_entry>
+<id>3205323</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1130867713</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3205324</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1130867714</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3205325</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1130867714</date>
+<updator>bflorat</updator>
+</history_entry>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1345086</url>
+<id>1345086</id>
+<status_id>2</status_id>
+<category_id>605762</category_id>
+<group_id>537602</group_id>
+<resolution_id>1</resolution_id>
+<submitter>bflorat</submitter>
+<assignee>bflorat</assignee>
+<closer>bflorat</closer>
+<submit_date>1130865562</submit_date>
+<close_date>1130867706</close_date>
+<priority>6</priority>
+<summary>UI issues in Properties Wizard</summary>
+<details>o In some cases, window too large horizontaly
+o Tool tips too large for files list, now split them</details>
+<followups>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+<history_entry>
+<id>3205320</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1130867705</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3205321</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1130867706</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3205322</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1130867706</date>
+<updator>bflorat</updator>
+</history_entry>
+</history_entries>
+</tracker_item>
 </tracker_items>
 </tracker>
 <tracker>
@@ -15445,6 +15674,42 @@ user_id=363565
 
 Not planned for the moment but see others goodies comming in
 the roadmap...</details>
+</followup>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1343663</url>
+<id>1343663</id>
+<status_id>1</status_id>
+<category_id>100</category_id>
+<group_id>100</group_id>
+<submitter>me-vincent</submitter>
+<assignee>nobody</assignee>
+<closer>nobody</closer>
+<submit_date>1130758039</submit_date>
+<close_date>0</close_date>
+<priority>5</priority>
+<summary>Infopipe</summary>
+<details>An infopipe or something would be nice, just as XMMS 
+has. This way, e.g. aMSN could collect data such as 
+which music is playing and display that in your nick, 
+among other options. How about that for an idea?</details>
+<followups>
+<followup>
+<id>1813292</id>
+<submitter>bflorat</submitter>
+<date>1130777581</date>
+<details>Logged In: YES 
+user_id=363565
+
+I don't know XMMS infopipe but I assume what you would like
+is a kind of API to get jajuk engine information in real
+time ? it could be done in the future but not planned
+current roadmap...</details>
 </followup>
 </followups>
 <attachments>
