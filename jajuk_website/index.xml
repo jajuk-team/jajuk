@@ -105,7 +105,7 @@
   	<section name='Features'>
 		<p><b>Player functions</b></p>
   	   		<ul>
-	   			<li>Repeat, shuffle, intro, fast forward/rewind, mute, volume, position in track...</li>
+	   			<li>Repeat, shuffle, intro, fast forward/rewind, mute, volume, seek in track...</li>
 				<li>Push into player queue</li>
 		 		<li>Planned tracks: forsee your selection</li>
 				<li>Recursive play/repeat/shuffle/push in directories/sub-directories or by style/author/albums...</li>
