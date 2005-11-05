@@ -28,15 +28,13 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 
-import javax.swing.JOptionPane;
-
 import org.apache.commons.httpclient.HostConfiguration;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.UsernamePasswordCredentials;
 import org.apache.commons.httpclient.auth.AuthScope;
 import org.apache.commons.httpclient.methods.GetMethod;
-import org.jajuk.Main;
 import org.jajuk.i18n.Messages;
+import org.jajuk.ui.PasswordDialog;
 import org.jajuk.util.log.Log;
 
 /**
@@ -185,11 +183,12 @@ public class DownloadManager implements ITechnicalStrings {
 	/**
 	 * @return the required proxy pwd
 	 */
-	public static String getProxyPwd(){
+	public synchronized static String getProxyPwd(){//must be synchronized to avoid displaying several password dialogs
 	    if (sProxyPwd == null || sProxyPwd.trim().equals("")){ //$NON-NLS-1$
-	        sProxyPwd = JOptionPane.showInputDialog(Main.getWindow(),Messages.getString("DownloadManager.0"),Messages.getString("DownloadManager.1"),JOptionPane.INFORMATION_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+	        PasswordDialog pd = new PasswordDialog(Messages.getString("DownloadManager.1"));
+            sProxyPwd = (String)pd.getOptionPane().getValue();
 	    }
 	    return sProxyPwd;
 	}
-   
+	
 }
