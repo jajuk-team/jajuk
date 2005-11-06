@@ -5,6 +5,14 @@
     <author email='bflorat@users.sourceforge.net'>Bertrand Florat</author>
   </properties>
   <body>
+    <release version='1.0.2' date='2005-11-06' description='Fixes'>
+    	<action dev='bflorat' type='fix' issue='1349702'>Playlists not sorted in playlist repository views</action>
+    	<action dev='bflorat' type='fix' issue='1349700'>Missing scrollbars in detail text area of quality agent</action>
+    	<action dev='bflorat' type='fix' issue='1349698'>Cannot rename file or playlist with different case</action>
+    	<action dev='bflorat' type='fix' issue='1349697'>Issues refresing physical tree after a file rename</action>
+    	<action dev='bflorat' type='fix' issue='1348884'>Proxy password should be hidden</action>
+    	<action dev='bflorat' type='fix' issue='1348883'>UI blocked when using quality agent</action>
+    </release>
     <release version='1.0.1' date='2005-11-01' description='Fixes'>
     	<action dev='bflorat' type='fix' issue='1345044'>Some tracks maps wrong files</action>
     	<action dev='bflorat' type='fix' issue='1345056'>Index issue for multiple remove items in playlist editor</action>

@@ -1,0 +1,61 @@
+#This script generates Jajuk public website
+#For first use, launch twice, errors for first launch are normal
+
+#Variables
+DOC_SOURCE=/data/java/workspace/jajuk-1.0/dist-files/doc
+WEBSITE_SOURCE=/data/java/workspace/jajuk_website
+XDOC_DEST=/data/projects/jajuk/maven_rep/xdocs
+MAVEN_DIR=/data/projects/jajuk/maven_rep
+DOC_DEST=$MAVEN_DIR/target/docs
+
+cd /data/projects/jajuk/maven_rep
+if [ "$1" = "send" ]; then
+ cd target/docs
+ scp -C -r * bflorat@jajuk.sourceforge.net:/home/groups/j/ja/jajuk/htdocs
+ exit 0
+fi
+if [ "$1" = "pdf" ]; then
+ maven pdf
+ exit 0
+fi
+
+#Copy doc files
+
+cp -p $WEBSITE_SOURCE/project.xml $MAVEN_DIR
+cp -p $WEBSITE_SOURCE/maven.xml $MAVEN_DIR
+cp -p $WEBSITE_SOURCE/project.properties $MAVEN_DIR
+cp -p $WEBSITE_SOURCE/LICENSE.txt $MAVEN_DIR
+
+mkdir -p $XDOC_DEST/jajuk-hs/default/html
+mkdir -p $DOC_DEST/jajuk-hs/default
+cp -rp $DOC_SOURCE/images $DOC_DEST/jajuk-hs/default
+cp -rp $DOC_SOURCE/icons $DOC_DEST/jajuk-hs/default
+cp -rp $DOC_SOURCE/jajuk-hs/default/html/*.html $XDOC_DEST/jajuk-hs/default/html
+
+mkdir -p $XDOC_DEST/jajuk-hs/fr/html
+mkdir -p $DOC_DEST/jajuk-hs/fr
+cp -rp $DOC_SOURCE/images $DOC_DEST/jajuk-hs/fr
+cp -rp $DOC_SOURCE/icons $DOC_DEST/jajuk-hs/fr 
+cp -rp $DOC_SOURCE/jajuk-hs/fr/html/*.html $XDOC_DEST/jajuk-hs/fr/html
+
+cp -rp $WEBSITE_SOURCE/flags $DOC_DEST
+cp -rp $WEBSITE_SOURCE/specs.pdf $DOC_DEST
+cp -rp $WEBSITE_SOURCE/qualification $DOC_DEST
+cp -rp $WEBSITE_SOURCE/screenshots $DOC_DEST
+cp -rp $DOC_SOURCE/README*.html $DOC_DEST
+
+cp -rp $WEBSITE_SOURCE/images/* $DOC_DEST/images
+cp -rp $WEBSITE_SOURCE/jajuk-logo.png $DOC_DEST/images/logos 
+
+cp -rp $WEBSITE_SOURCE/*.html $WEBSITE_SOURCE/*.xml $WEBSITE_SOURCE/*.fml $XDOC_DEST
+rm $XDOC_DEST/project.xml $XDOC_DEST/maven.xml
+
+#Sources Checkout
+cvs checkout jajuk
+maven announcement
+maven site
+cd target/docs
+java -cp /data/scripts/ Xiti SCRIPT_XITI /data/scripts/script_xiti index.html > /tmp/index.html
+#marche pas à la fin sed -e '\#SCRIPT_XITI#{r/data/scripts/script_xiti' -e ';d;}' ./index.html > /tmp/index.html
+cp /tmp/index.html .
+scp -C -r * bflorat@jajuk.sourceforge.net:/home/groups/j/ja/jajuk/htdocs
