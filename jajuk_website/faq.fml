@@ -64,7 +64,7 @@
 	<part id="install">
     	<title>Installation</title>
    	    <faq id="how-install">
-    	  <question>How do I install Jajuk?</question>
+    	  <question>How to install Jajuk?</question>
       	  <answer>
         	<p>See <a href="installation.html">Jajuk installation guide</a></p>
       	  </answer>
@@ -79,7 +79,7 @@
       </question>
       <answer>
         <p><li>Please read the Performances tips in the embedded help system.</li></p>
-        <p><li>On a PC/P4M 1.8Ghz, Jajuk uses about 9%CPU to read mp3 and 3% to read Ogg Vorbis.</li></p>
+        <p><li>On a modern PC like a P4, Jajuk uses between 0 and 5% CPU (less for ogg vorbis than mp3) and typicaly from 40 to 70 MB of memory for a 50 GB collection</li></p>
       </answer>
     </faq>
     
@@ -107,7 +107,7 @@
    
     <title>Troubleshooting</title>
   		<faq id="No sound under Linux">
-    	 <question>
+    	<question>
         	I'm under Linux (especially Debian and Ubuntu) and I can't get sound, audio line is occupied. 
       	</question>
       	<answer>
@@ -115,7 +115,7 @@
       	</answer>
     	</faq>
     	
-    	<faq id="collection_corruption">
+    <faq id="collection_corruption">
      <question>
         What can I do if my collection is corrupted ? 
       </question>
@@ -123,6 +123,7 @@
         <p>See <a href='./jajuk-hs/default/html/devices.html#Collection_backup_and_restore'>the device page of the jajuk manual</a></p>
       </answer>
     </faq>
+    
 	</part>
   
 </faqs>

@@ -5,6 +5,23 @@
     <author email='bflorat@users.sourceforge.net'>Bertrand Florat</author>
   </properties>
   <body>
+    <release version='1.0.3' date='2005-11-17' description='Fixes and enhancements'>
+    	<action dev='bflorat' type='fix' issue='1349702'>Issue in command panel seeking with slider</action>
+    	<action dev='bflorat' type='fix' issue='1349700'>Mute synchronization issues between tray and command panel</action>
+    	<action dev='bflorat' type='fix' issue='1349698'>Must remove items from fifo during refresh</action>
+    	<action dev='bflorat' type='fix' issue='1349697'>Collection should not be commited if jajuk stoppped during a refresh</action>
+    	<action dev='bflorat' type='fix' issue='1348884'>Issues when renaming album, style or author with different case</action>
+    	<action dev='bflorat' type='fix' issue='1348883'>Cannot display associated file in property wizard link+tooltip issue</action>
+    	<action dev='bflorat' type='fix' issue='1348883'>Number of error lines after a massive tag change must be limited</action>
+    	<action dev='bflorat' type='fix' issue='1348883'>Sorting issues in trees</action>
+      	<action dev='bflorat' type='fix' issue='1348883'>Missing action when selecting full collection node in tree views</action>
+      	<action dev='bflorat' type='fix' issue='1348883'>Drag and drop table row selection issues</action>
+      	<action dev='bflorat' type='fix' issue='1348883'>Special style unknown issue in style selection</action>    	
+    	<action dev='bflorat' type='update'>Major performance enhancements on collection management and closing</action> 
+		<action dev='bflorat' type='update'>Many improvements in Properties wizard and tag edition</action> 
+		<action dev='bflorat' type='update'>Several UI improvements like style autocompletion and drag and drop from playlist editor</action> 
+		<action dev='bflorat' type='remove'>Full album option in properties wizard</action>     	
+    </release>
     <release version='1.0.2' date='2005-11-06' description='Fixes'>
     	<action dev='bflorat' type='fix' issue='1349702'>Playlists not sorted in playlist repository views</action>
     	<action dev='bflorat' type='fix' issue='1349700'>Missing scrollbars in detail text area of quality agent</action>
