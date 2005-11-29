@@ -29,7 +29,7 @@ Option for show_trackers=1; * To show a specific Tracker instead of all
 	&amp;tracker_to_show=TRACKER_ID
 
 --><export_details>
-<time>1131313369</time>
+<time>1133300126</time>
 <project_group_id>91412</project_group_id>
 <project_unix_name>jajuk</project_unix_name>
 <exporter>bflorat</exporter>
@@ -162,19 +162,19 @@ http://www.florat.net/jajuk-specs.pdf</registration_description>
 <project_admin_detail>
 <trove_details>
 <trove_category>Translations :: Spanish</trove_category>
-<trove_category>License :: OSI-Approved Open Source :: GNU General Public License (GPL)</trove_category>
 <trove_category>Operating System :: Grouping and Descriptive Categories :: OS Independent (Written in an interpreted language)</trove_category>
-<trove_category>Programming Language :: Java</trove_category>
+<trove_category>License :: OSI-Approved Open Source :: GNU General Public License (GPL)</trove_category>
 <trove_category>Translations :: Dutch</trove_category>
-<trove_category>Translations :: Swedish</trove_category>
-<trove_category>Translations :: German</trove_category>
-<trove_category>Translations :: French</trove_category>
-<trove_category>Translations :: English</trove_category>
-<trove_category>Translations :: Italian</trove_category>
-<trove_category>Development Status :: 5 - Production/Stable</trove_category>
+<trove_category>Programming Language :: Java</trove_category>
 <trove_category>Intended Audience :: by End-User Class :: End Users/Desktop</trove_category>
-<trove_category>Topic :: Multimedia :: Sound/Audio :: Players</trove_category>
+<trove_category>Development Status :: 5 - Production/Stable</trove_category>
+<trove_category>Translations :: Italian</trove_category>
+<trove_category>Translations :: English</trove_category>
+<trove_category>Translations :: French</trove_category>
+<trove_category>Translations :: German</trove_category>
+<trove_category>Translations :: Swedish</trove_category>
 <trove_category>User Interface :: Graphical :: Java Swing</trove_category>
+<trove_category>Topic :: Multimedia :: Sound/Audio :: Players</trove_category>
 <trove_category>Translations :: Catalan</trove_category>
 </trove_details>
 </project_admin_detail>
@@ -481,6 +481,45 @@ http://www.florat.net/jajuk-specs.pdf</registration_description>
 <anonymous_posting>Yes</anonymous_posting>
 <forum_posts>
 <forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=3450453</url>
+<msg_id>3450453</msg_id>
+<poster_user>bflorat</poster_user>
+<poster_name>Bertrand Florat</poster_name>
+<subject>RE: Jajuk 1-0-2 install</subject>
+<thread_id>1393474</thread_id>
+<is_followup_to>3450245</is_followup_to>
+<has_followups>0</has_followups>
+<date>1133299081</date>
+<is_deleted>No</is_deleted>
+<body>Hi,
+
+I cannot reproduce this. Please provide Windows release and path you use to install in.
+As an alternative, use installed jajuk.bat to launch jajuk
+
+Cheers, bertrand
+</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=3450245</url>
+<msg_id>3450245</msg_id>
+<poster_user>nobody</poster_user>
+<poster_name>Nobody/Anonymous</poster_name>
+<subject>Jajuk 1-0-2 install</subject>
+<thread_id>1393474</thread_id>
+<is_followup_to>0</is_followup_to>
+<has_followups>1</has_followups>
+<date>1133291859</date>
+<is_deleted>No</is_deleted>
+<body>Hello,
+I've JRE 1.5, and i've tested jajuk 0.3 greatfully.
+When i try to install jajuk 1.0.2 with windows exe or java, the program doesn't finish the install, bugging on the links install.
+Jajuk 0.3 runed with copy/paste and making link from bin/jajuk.jar.
+Is it possible to do the same thing with jajuk 1.0.2. If yes, how configure the link properties on windows.
+Thanks
+
+Richard</body>
+</forum_post>
+<forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3336118</url>
 <msg_id>3336118</msg_id>
 <poster_user>bflorat</poster_user>
@@ -602,6 +641,7 @@ I have been hunting around for java and artsd intergration.  I'll post what I fi
 <is_deleted>No</is_deleted>
 <body>Cool, so I assume your issue is over... I will have to add this in the faq.</body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3281677</url>
 <msg_id>3281677</msg_id>
@@ -636,7 +676,6 @@ Looks strange as it works perfectly for me with or without arts 1.3.0 / Suse 9.2
 ???
 </body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3280759</url>
 <msg_id>3280759</msg_id>
@@ -806,6 +845,7 @@ This is the output in the log when I press play.
 - Try to disable artd
 - Set verbosity to debug in parmameter view, retry and send me your ~/.jajuk/jajuk.log</body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3278813</url>
 <msg_id>3278813</msg_id>
@@ -846,7 +886,6 @@ In the upper left of jajuk the speaker is crossed out as if it cannot find a sou
 
 Chris</body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3251024</url>
 <msg_id>3251024</msg_id>
@@ -972,6 +1011,7 @@ Anyways. This seems to be fixed. Thanks. And good job!</body>
 <body>To my mind, IzPack hasn't this capability, at the opposite of RPM that is launched by root. As stated in the install documentation (http://jajuk.sourceforge.net/installation.html), you have to launch Jajuk using command:
 sh jajuk.sh , not ./jajuk.sh. Moreover, 0.3.3 Jajuk release should create menu shortcuts that make a launch of sh jajuk.sh, does it work under slack ?</body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3011756</url>
 <msg_id>3011756</msg_id>
@@ -998,7 +1038,6 @@ sh jajuk.sh , not ./jajuk.sh. Moreover, 0.3.3 Jajuk release should create menu s
 <is_deleted>No</is_deleted>
 <body>i have an airport express that's on my home network (both mac and pc access it).  currently i can select the airport express via itunes and it will stream the audio over wifi to the airport express (that has an 1/8&#34; stereo out plug).  I was originally planning on setting up a print server/audio box but picked up the airport express cause it does all i want for real cheap.  that link i posted has some info on the public keys that allows any prog to interact w/ the airport express, but i don't know what that all actually means :).  from my understanding as long as you have the public keys you can get the hardware to work w/ any software.</body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3003570</url>
 <msg_id>3003570</msg_id>
@@ -1160,6 +1199,7 @@ greetz
 
 Peter</body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=2971906</url>
 <msg_id>2971906</msg_id>
@@ -1223,7 +1263,6 @@ Java(TM) 2 Runtime Environment, Standard Edition (build 1.4.2_06-b03)
 Java HotSpot(TM) Client VM (build 1.4.2_06-b03, mixed mode)
 </body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=2921169</url>
 <msg_id>2921169</msg_id>
@@ -1359,6 +1398,7 @@ I request some feedback for this translations
 Thank you.
 </body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=2902400</url>
 <msg_id>2902400</msg_id>
@@ -1397,7 +1437,6 @@ By the way, do you have real performance problems ? skips ? Any patch is welcome
 
  </body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=2871732</url>
 <msg_id>2871732</msg_id>
@@ -1545,6 +1584,7 @@ The buffer thread (priority 9) reads from the hard disk (inputstream.read() bloc
 (*) One might think that memory should be synced. Using Pipe(line)Streams it shouldn't but the property holding the amount in the pipeline shoud be synced.
 </body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=2830810</url>
 <msg_id>2830810</msg_id>
@@ -1577,7 +1617,6 @@ We will soon try to use the new JRE auto-installer API published by IzPAck. More
 thread.setPriority(Thread.MAX_PRIORITY);
 thread.start();</body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=2829628</url>
 <msg_id>2829628</msg_id>
@@ -1705,6 +1744,7 @@ We are aware of some performance issues. I started to make some investigations a
 It also seems that jabalayer runs faster on Windows ( 5% CPU ) than Linux, probably due to J2SE Windows optimisations. I can't do a lot with it but alert the Javazoom team... 0.2 jajuk release will support ogg and I will then test cpu usage with ogg.
 About native library, I'm sorry but I won't make Jajuk plateform-dependant, I started to do it with systray and it conducted to major bugs and dirty code). Moreover, I won't have to do JNI, I used it and it's close to nightmare. Any patch using it can be posted for test but I won't write it by myself and bring it to jajuk before strong impact studies.</body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=2547695</url>
 <msg_id>2547695</msg_id>
@@ -1750,7 +1790,6 @@ I translated Jajuk to german. The next version of Jajuk (probably 0.1.5) will ha
 
 I hope you enjoy it :)</body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=2217979</url>
 <msg_id>2217979</msg_id>
@@ -11214,6 +11253,115 @@ Edit your jajuk.sh file and add -Dkey=value properties.
 Note that |&#34;apple.laf.useScreenMenuBar&#34; property is
 true and cannot be changed in 0.3.4.| </details>
 <followups>
+<followup>
+<id>1831305</id>
+<submitter>bflorat</submitter>
+<date>1132141736</date>
+<details>Logged In: YES 
+user_id=363565
+
+Update: some users report exceptions with MAC OSX menu (see
+below), it can be linked with the need to set some
+properties at command line and not inside the application
+itself (java -Dapple.laf.useScreenMenuBar=true -jar
+jajuk.jar). However I cannot reproduce the issue as I don't
+have a Mac. 
+for the moment, we removed the menu integration and we are
+waiting for some further issue evaluation. If interested by
+this issue, please contact us.
+
+********************
+I'm trying to use jajuk 1.02 build: 2005/11/06 20:24 under
+Mac OS
+X 10.4.3.
+The installer complained that I don't have Java 5, although I've
+already got it (just that I have to start it manually):
+
+/System/Library/Frameworks/JavaVM.framework/Versions/1.5.0/
+Home/bin/java -jar jajuk.jar
+
+So then the application loads, however when I click on one
+of the
+menu items, I get the following exception:
+
+-------------------
+2005/11/14 14:45:33 [INFO]
+******************JAJUK******************
+[main] (Log.java:104) 2005/11/14 14:45:
+33 [INFO] Version: 1.0.2 [main] (Log.java:104)
+apple.awt.EventQueueExceptionHandler
+Caught Throwable : java.lang.NullPointerException
+java.lang.NullPointerException
+at apple.laf.
+ScreenPopupFactory.getPopup(ScreenPopupFactory.java:38)
+at com.jgoodies.looks.
+common.ShadowPopupFactory.getPopup(ShadowPopupFactory.
+java:135) at javax.swing.plaf.
+PopupMenuUI.getPopup(PopupMenuUI.java:44)
+at javax.swing.JPopupMenu.
+getPopup(JPopupMenu.java:839)
+at javax.swing.JPopupMenu.
+setVisible(JPopupMenu.java:789)
+at javax.swing.JPopupMenu.show(JPopupMenu.
+java:956) at
+javax.swing.JMenu.setPopupMenuVisible(JMenu.java:320)
+at javax.swing.
+JPopupMenu.menuSelectionChanged(JPopupMenu.java:1468)
+at javax.swing.
+MenuSelectionManager.setSelectedPath(MenuSelectionManager.
+java:89) at javax.swing.plaf.basic.
+BasicMenuUI.appendPath(BasicMenuUI.java:217)
+at javax.swing.plaf.basic.BasicMenuUI.
+access$200(BasicMenuUI.java:32)
+at javax.swing.plaf.basic.BasicMenuUI$Handler.
+mousePressed(BasicMenuUI.java:457)
+at java.awt.AWTEventMulticaster.
+mousePressed(AWTEventMulticaster.java:221)
+at java.awt.Component.
+processMouseEvent(Component.java:5559)
+at javax.swing.JComponent.
+processMouseEvent(JComponent.java:3093)
+at java.awt.Component.processEvent(Component.java:5327)
+at java.awt.Container.processEvent(Container.java:2010)
+at java.awt.Component.dispatchEventImpl(Component.java:
+4029)
+at java.awt.Container.dispatchEventImpl(Container.java:
+2068)
+at java.awt.Component.dispatchEvent(Component.java:3877)
+at java.awt.LightweightDispatcher.
+retargetMouseEvent(Container.java:4256)
+at java.awt.LightweightDispatcher.
+processMouseEvent(Container.java:3933)
+at java.awt.LightweightDispatcher.dispatchEvent(Container.
+java:3866)
+at java.awt.Container.dispatchEventImpl(Container.java:
+2054)
+at java.awt.Window.dispatchEventImpl(Window.java:1766)
+at java.awt.Component.dispatchEvent(Component.java:3877)
+at java.awt.EventQueue.dispatchEvent(EventQueue.java:
+463)
+at java.awt.EventDispatchThread.
+pumpOneEventForHierarchy(EventDispatchThread.java:267)
+at java.awt.EventDispatchThread.
+pumpEventsForHierarchy(EventDispatchThread.java:196)
+at java.awt.EventDispatchThread.
+pumpEvents(EventDispatchThread.java:190)
+at java.awt.EventDispatchThread.
+pumpEvents(EventDispatchThread.java:182)
+at java.awt.EventDispatchThread.run(EventDispatchThread.
+java:110)
+----------------------- </details>
+</followup>
+<followup>
+<id>1844675</id>
+<submitter>bflorat</submitter>
+<date>1133298561</date>
+<details>Logged In: YES 
+user_id=363565
+
+Please try 1.0.3 and tell me, now apple property is set in
+jajuk.sh directly, not in program.</details>
+</followup>
 </followups>
 <attachments>
 </attachments>
@@ -11403,15 +11551,15 @@ regular playlists in playlist editor</details>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1334738</url>
 <id>1334738</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>605762</category_id>
 <group_id>340384</group_id>
-<resolution_id>4</resolution_id>
+<resolution_id>3</resolution_id>
 <submitter>jespo</submitter>
 <assignee>nobody</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1129968827</submit_date>
-<close_date>0</close_date>
+<close_date>1131484069</close_date>
 <priority>5</priority>
 <summary>Internacionalization issues with JXDatePicker</summary>
 <details>There are some internacinalization issues with
@@ -11496,6 +11644,27 @@ i18n issues for Spanish or Catalan ?</details>
 <field_name>close_date</field_name>
 <old_value>1130597176</old_value>
 <date>1130597228</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3220103</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1131484069</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3220104</id>
+<field_name>resolution_id</field_name>
+<old_value>4</old_value>
+<date>1131484069</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3220105</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1131484069</date>
 <updator>bflorat</updator>
 </history_entry>
 </history_entries>
@@ -12058,6 +12227,325 @@ wizard (thx Stephan Zeissler)</details>
 </history_entry>
 </history_entries>
 </tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1351656</url>
+<id>1351656</id>
+<status_id>1</status_id>
+<category_id>605762</category_id>
+<group_id>537602</group_id>
+<resolution_id>100</resolution_id>
+<submitter>bflorat</submitter>
+<assignee>bflorat</assignee>
+<closer>nobody</closer>
+<submit_date>1131482261</submit_date>
+<close_date>0</close_date>
+<priority>6</priority>
+<summary>Issue in command panel seeking with slider</summary>
+<details>In most case, command panel seek slider doesn't work</details>
+<followups>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1351658</url>
+<id>1351658</id>
+<status_id>1</status_id>
+<category_id>605762</category_id>
+<group_id>537602</group_id>
+<resolution_id>100</resolution_id>
+<submitter>bflorat</submitter>
+<assignee>bflorat</assignee>
+<closer>nobody</closer>
+<submit_date>1131482316</submit_date>
+<close_date>0</close_date>
+<priority>3</priority>
+<summary>Mute synchronization issues between tray and command panel</summary>
+<details>Mute synchronization issues between tray and command panel</details>
+<followups>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1354120</url>
+<id>1354120</id>
+<status_id>1</status_id>
+<category_id>605763</category_id>
+<group_id>537602</group_id>
+<resolution_id>100</resolution_id>
+<submitter>bflorat</submitter>
+<assignee>bflorat</assignee>
+<closer>nobody</closer>
+<submit_date>1131725858</submit_date>
+<close_date>0</close_date>
+<priority>5</priority>
+<summary>Must remove items from fifo during refresh</summary>
+<details>Must remove items from queue during refresh</details>
+<followups>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1354121</url>
+<id>1354121</id>
+<status_id>1</status_id>
+<category_id>605763</category_id>
+<group_id>436325</group_id>
+<resolution_id>100</resolution_id>
+<submitter>bflorat</submitter>
+<assignee>bflorat</assignee>
+<closer>nobody</closer>
+<submit_date>1131725888</submit_date>
+<close_date>0</close_date>
+<priority>5</priority>
+<summary>Collection should not be commited if jajuk stoppped during a</summary>
+<details>Collection should not be commited if jajuk stoppped
+during a refresh</details>
+<followups>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1354138</url>
+<id>1354138</id>
+<status_id>1</status_id>
+<category_id>605763</category_id>
+<group_id>537602</group_id>
+<resolution_id>100</resolution_id>
+<submitter>bflorat</submitter>
+<assignee>bflorat</assignee>
+<closer>nobody</closer>
+<submit_date>1131726832</submit_date>
+<close_date>0</close_date>
+<priority>4</priority>
+<summary>Issue in refresh stats for corrupted files</summary>
+<details>If a file is corrupted or not accessible, it was
+counted as new item and then removed again from stats,
+now it is just ignored.</details>
+<followups>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1358042</url>
+<id>1358042</id>
+<status_id>1</status_id>
+<category_id>605763</category_id>
+<group_id>537602</group_id>
+<resolution_id>100</resolution_id>
+<submitter>bflorat</submitter>
+<assignee>bflorat</assignee>
+<closer>nobody</closer>
+<submit_date>1132140841</submit_date>
+<close_date>0</close_date>
+<priority>6</priority>
+<summary>Issues when renaming items with different case</summary>
+<details>Issues when renaming album, style or author with
+different case</details>
+<followups>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1358043</url>
+<id>1358043</id>
+<status_id>1</status_id>
+<category_id>605762</category_id>
+<group_id>537602</group_id>
+<resolution_id>100</resolution_id>
+<submitter>bflorat</submitter>
+<assignee>bflorat</assignee>
+<closer>nobody</closer>
+<submit_date>1132140896</submit_date>
+<close_date>0</close_date>
+<priority>5</priority>
+<summary>File link issue in property wizard link</summary>
+<details>Cannot display associated file in property wizard
+link+tooltip issue</details>
+<followups>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1358045</url>
+<id>1358045</id>
+<status_id>1</status_id>
+<category_id>605762</category_id>
+<group_id>537602</group_id>
+<resolution_id>100</resolution_id>
+<submitter>bflorat</submitter>
+<assignee>bflorat</assignee>
+<closer>nobody</closer>
+<submit_date>1132141022</submit_date>
+<close_date>0</close_date>
+<priority>4</priority>
+<summary>Limit number of errors for tag writting</summary>
+<details>Number of error lines after a massive tag change must
+be limited</details>
+<followups>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1358046</url>
+<id>1358046</id>
+<status_id>1</status_id>
+<category_id>605762</category_id>
+<group_id>537602</group_id>
+<resolution_id>100</resolution_id>
+<submitter>bflorat</submitter>
+<assignee>bflorat</assignee>
+<closer>nobody</closer>
+<submit_date>1132141045</submit_date>
+<close_date>0</close_date>
+<priority>5</priority>
+<summary>Sorting issues in trees</summary>
+<details>Sorting issues in trees</details>
+<followups>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1358047</url>
+<id>1358047</id>
+<status_id>1</status_id>
+<category_id>605762</category_id>
+<group_id>537602</group_id>
+<resolution_id>100</resolution_id>
+<submitter>bflorat</submitter>
+<assignee>bflorat</assignee>
+<closer>nobody</closer>
+<submit_date>1132141101</submit_date>
+<close_date>0</close_date>
+<priority>3</priority>
+<summary>Full collection node in tree views</summary>
+<details>Missing action when selecting full collection node in
+tree views</details>
+<followups>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1358048</url>
+<id>1358048</id>
+<status_id>1</status_id>
+<category_id>605762</category_id>
+<group_id>537602</group_id>
+<resolution_id>100</resolution_id>
+<submitter>bflorat</submitter>
+<assignee>bflorat</assignee>
+<closer>nobody</closer>
+<submit_date>1132141143</submit_date>
+<close_date>0</close_date>
+<priority>4</priority>
+<summary>Drag and drop table row selection issues</summary>
+<details>Drag and drop table row selection issues : sometimes,
+during the drag another row is selected.</details>
+<followups>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1358049</url>
+<id>1358049</id>
+<status_id>1</status_id>
+<category_id>605762</category_id>
+<group_id>537602</group_id>
+<resolution_id>100</resolution_id>
+<submitter>bflorat</submitter>
+<assignee>bflorat</assignee>
+<closer>nobody</closer>
+<submit_date>1132141201</submit_date>
+<close_date>0</close_date>
+<priority>2</priority>
+<summary>Special style unknown issue in style selection</summary>
+<details>Special style unknown issue in style selection combo
+boxes: is seen as technical string, not internationalized.</details>
+<followups>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1369542</url>
+<id>1369542</id>
+<status_id>1</status_id>
+<category_id>605762</category_id>
+<group_id>537602</group_id>
+<resolution_id>100</resolution_id>
+<submitter>bflorat</submitter>
+<assignee>bflorat</assignee>
+<closer>nobody</closer>
+<submit_date>1133298389</submit_date>
+<close_date>0</close_date>
+<priority>3</priority>
+<summary>Synchronize command should be hidden if not enabled</summary>
+<details>Synchronize command should be hidden in physical tree
+if none synchronization source</details>
+<followups>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1369543</url>
+<id>1369543</id>
+<status_id>1</status_id>
+<category_id>605763</category_id>
+<group_id>537602</group_id>
+<resolution_id>100</resolution_id>
+<submitter>bflorat</submitter>
+<assignee>bflorat</assignee>
+<closer>nobody</closer>
+<submit_date>1133298431</submit_date>
+<close_date>0</close_date>
+<priority>3</priority>
+<summary>Author/album/style change lose properties</summary>
+<details>Fixed author/album/style change lose properties when
+name changed</details>
+<followups>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+</history_entries>
+</tracker_item>
 </tracker_items>
 </tracker>
 <tracker>
@@ -12067,7 +12555,7 @@ wizard (thx Stephan Zeissler)</details>
 <description>Tech Support Tracking System</description>
 <is_public>All site users</is_public>
 <allow_anon>Yes</allow_anon>
-<email_updates>No</email_updates>
+<email_updates>Send to bertrand@florat.net</email_updates>
 <due_period>1296000</due_period>
 <submit_instructions></submit_instructions>
 <browse_instructions></browse_instructions>
@@ -12979,6 +13467,19 @@ But now I want to change it, but I can't find how to do
 it anywhere! Then I reinstalled it, but it still used
 the same location. How can I change this?</details>
 <followups>
+<followup>
+<id>1825971</id>
+<submitter>bflorat</submitter>
+<date>1131636034</date>
+<details>Logged In: YES 
+user_id=363565
+
+(Sorry for the delay)
+You cannot change a device location (full path is used to
+create files id), you can create a symbolic link from the
+old directory if under Unix or delete device and recreate it
+elsewhere.</details>
+</followup>
 </followups>
 <attachments>
 </attachments>
@@ -13003,6 +13504,146 @@ hard drive, but it's not remembered when I restart.
 
 Windows XP sp2</details>
 <followups>
+<followup>
+<id>1825977</id>
+<submitter>bflorat</submitter>
+<date>1131636159</date>
+<details>Logged In: YES 
+user_id=363565
+
+Is it a local directory or remote ? did you try to close
+jajuk properly after device refresh ? try to upgrade to
+1.0.x and use the quality agent (Help-&#62; report an issue) if
+the probleme still occurs.</details>
+</followup>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1356564</url>
+<id>1356564</id>
+<status_id>1</status_id>
+<category_id>100</category_id>
+<group_id>100</group_id>
+<submitter>nobody</submitter>
+<assignee>nobody</assignee>
+<closer>nobody</closer>
+<submit_date>1131976129</submit_date>
+<close_date>0</close_date>
+<priority>5</priority>
+<summary>OSX main menu throws exception</summary>
+<details>Hi,
+
+I'm trying to use jajuk 1.02 build: 2005/11/06 20:24 under Mac OS 
+X 10.4.3.
+The installer complained that I don't have Java 5, although I've 
+already got it (just that I have to start it manually):
+
+/System/Library/Frameworks/JavaVM.framework/Versions/1.5.0/
+Home/bin/java -jar jajuk.jar
+
+So then the application loads, however when I click on one of the 
+menu items, I get the following exception:
+
+-------------------
+2005/11/14 14:45:33 [INFO] ******************JAJUK****************** 
+ [main] (Log.java:104)                                     2005/11/14 14:45:
+33 [INFO] Version: 1.0.2  [main] (Log.java:104)                             
+                                   apple.awt.EventQueueExceptionHandler 
+Caught Throwable : java.lang.NullPointerException                        
+                  java.lang.NullPointerException                                   
+                                                                       at apple.laf.
+ScreenPopupFactory.getPopup(ScreenPopupFactory.java:38)        
+                                                    at com.jgoodies.looks.
+common.ShadowPopupFactory.getPopup(ShadowPopupFactory.
+java:135)                                           at javax.swing.plaf.
+PopupMenuUI.getPopup(PopupMenuUI.java:44)                            
+                                       at javax.swing.JPopupMenu.
+getPopup(JPopupMenu.java:839)                                                 
+                        at javax.swing.JPopupMenu.
+setVisible(JPopupMenu.java:789)                                                 
+                      at javax.swing.JPopupMenu.show(JPopupMenu.
+java:956)                                                                             at 
+javax.swing.JMenu.setPopupMenuVisible(JMenu.java:320)            
+                                                            at javax.swing.
+JPopupMenu.menuSelectionChanged(JPopupMenu.java:1468)       
+                                                     at javax.swing.
+MenuSelectionManager.setSelectedPath(MenuSelectionManager.
+java:89)                                               at javax.swing.plaf.basic.
+BasicMenuUI.appendPath(BasicMenuUI.java:217)                         
+                                 at javax.swing.plaf.basic.BasicMenuUI.
+access$200(BasicMenuUI.java:32)                                               
+            at javax.swing.plaf.basic.BasicMenuUI$Handler.
+mousePressed(BasicMenuUI.java:457)                                         
+       at java.awt.AWTEventMulticaster.
+mousePressed(AWTEventMulticaster.java:221)                             
+                         at java.awt.Component.
+processMouseEvent(Component.java:5559)
+        at javax.swing.JComponent.
+processMouseEvent(JComponent.java:3093)
+        at java.awt.Component.processEvent(Component.java:5327)
+        at java.awt.Container.processEvent(Container.java:2010)
+        at java.awt.Component.dispatchEventImpl(Component.java:
+4029)
+        at java.awt.Container.dispatchEventImpl(Container.java:
+2068)
+        at java.awt.Component.dispatchEvent(Component.java:3877)
+        at java.awt.LightweightDispatcher.
+retargetMouseEvent(Container.java:4256)
+        at java.awt.LightweightDispatcher.
+processMouseEvent(Container.java:3933)
+        at java.awt.LightweightDispatcher.dispatchEvent(Container.
+java:3866)
+        at java.awt.Container.dispatchEventImpl(Container.java:
+2054)
+        at java.awt.Window.dispatchEventImpl(Window.java:1766)
+        at java.awt.Component.dispatchEvent(Component.java:3877)
+        at java.awt.EventQueue.dispatchEvent(EventQueue.java:
+463)
+        at java.awt.EventDispatchThread.
+pumpOneEventForHierarchy(EventDispatchThread.java:267)
+        at java.awt.EventDispatchThread.
+pumpEventsForHierarchy(EventDispatchThread.java:196)
+        at java.awt.EventDispatchThread.
+pumpEvents(EventDispatchThread.java:190)
+        at java.awt.EventDispatchThread.
+pumpEvents(EventDispatchThread.java:182)
+        at java.awt.EventDispatchThread.run(EventDispatchThread.
+java:110)
+-----------------------
+
+The rest of the application works fairly smoothly except the main 
+menu. Everytime I click on one of the menu items, the exception 
+gets thrown. If you need any more info, please contact me.
+Thanks for your bugchecking!</details>
+<followups>
+<followup>
+<id>1830359</id>
+<submitter>nobody</submitter>
+<date>1132063683</date>
+<details>Logged In: NO 
+
+Hi,
+
+Can you test with this command line :
+
+java -Dapple.laf.useScreenMenuBar=true -jar jajuk.jar
+
+and tell me  please ?
+
+Other things: 
+
+o how did you extract jajuk.jar file if java installer
+doesn't work ? do you have just a complaint from java
+installer and installation is done anyway ?
+o Do you thing I should provide a specialized shell for mac
+OSX ? Does OSX execute Shell scripts ? if yes, could you
+test it ?  
+</details>
+</followup>
 </followups>
 <attachments>
 </attachments>
@@ -16039,6 +16680,93 @@ current roadmap...</details>
 <history_entries>
 </history_entries>
 </tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1354002</url>
+<id>1354002</id>
+<status_id>1</status_id>
+<category_id>100</category_id>
+<group_id>100</group_id>
+<submitter>nobody</submitter>
+<assignee>nobody</assignee>
+<closer>nobody</closer>
+<submit_date>1131719054</submit_date>
+<close_date>0</close_date>
+<priority>5</priority>
+<summary>Pod-support</summary>
+<details>In Jajuk you can create a Datasource (RSS Feed) and a
+local folder.
+Jajuk checks the Feed periodically and downloads the
+given mp3 files to the local folder, so it gets played
+by the playlist.
+Additionally you can sync the folder with the
+synchronisation-feature to your mp3-player. 
+
+(thanks Stephan Zeissler)</details>
+<followups>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1366832</url>
+<id>1366832</id>
+<status_id>1</status_id>
+<category_id>100</category_id>
+<group_id>100</group_id>
+<submitter>zeisss</submitter>
+<assignee>nobody</assignee>
+<closer>nobody</closer>
+<submit_date>1132990269</submit_date>
+<close_date>0</close_date>
+<priority>5</priority>
+<summary>New devicetype: Web-Streams</summary>
+<details>Hi, 
+
+whats about another Devicetype? I think about an
+online-stream device, where you can add your
+online-radio streams. I hate to switch between jajuk
+and e.g. winamp because i want to listen to a webradio.
+
+I believe this can be achieved with the following steps:
+1) Adding a new devicetype under Devices, e.g.
+&#34;Web-Streams&#34;
+2) Prevent the playlist from taking tracks from this device
+3) Adding some UI to add/delete/modify the web-streams.
+4) Adding some UI to add virtual folders under the
+web-stream device.
+
+Maybe theses &#34;virtual&#34; device can be managed in the xml
+file, which is used for saving the config, afaik.
+
+I don't know whether the used sound-api can connect and
+play web-streams or accept a stream / byte[] insted of
+a file, so this would be a condition for this.
+
+I don't know anything about jajuk's internal structure
+(yet), so i hope there aren't any further steps like
+modifying the popupmenu to hide some menu-entries.
+
+Think about this, maybe theres time to implement such a
+thing.
+
+Regards, 
+ Stephan</details>
+<followups>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+<history_entry>
+<id>3299078</id>
+<field_name>summary</field_name>
+<old_value>New deviceype: Web-Streams</old_value>
+<date>1132993815</date>
+<updator>zeisss</updator>
+</history_entry>
+</history_entries>
+</tracker_item>
 </tracker_items>
 </tracker>
 <tracker>
@@ -18611,6 +19339,26 @@ http://www.singularsys.com/jep/index.html</old_value>
 <hours>10</hours>
 <start_date>1129154400</start_date>
 <end_date>1129154400</end_date>
+<creator>bflorat</creator>
+<status_id>1</status_id>
+<dependencies>
+<dependent_on>100</dependent_on>
+</dependencies>
+<assignees>
+<assignee>nobody</assignee>
+</assignees>
+<history_entries>
+</history_entries>
+</task>
+<task>
+<task_id>121211</task_id>
+<summary>[medium] Pod-support</summary>
+<detail></detail>
+<percent_complete>0</percent_complete>
+<priority>5</priority>
+<hours>0</hours>
+<start_date>1131663600</start_date>
+<end_date>1131663600</end_date>
 <creator>bflorat</creator>
 <status_id>1</status_id>
 <dependencies>
