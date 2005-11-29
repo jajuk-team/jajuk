@@ -5,7 +5,7 @@
     <author email='bflorat@users.sourceforge.net'>Bertrand Florat</author>
   </properties>
   <body>
-    <release version='1.0.3' date='2005-11-17' description='Fixes and enhancements'>
+    <release version='1.0.3' date='2005-11-29' description='Fixes and enhancements'>
     	<action dev='bflorat' type='fix' issue='1349702'>Issue in command panel seeking with slider</action>
     	<action dev='bflorat' type='fix' issue='1349700'>Mute synchronization issues between tray and command panel</action>
     	<action dev='bflorat' type='fix' issue='1349698'>Must remove items from fifo during refresh</action>
@@ -17,7 +17,10 @@
       	<action dev='bflorat' type='fix' issue='1348883'>Missing action when selecting full collection node in tree views</action>
       	<action dev='bflorat' type='fix' issue='1348883'>Drag and drop table row selection issues</action>
       	<action dev='bflorat' type='fix' issue='1348883'>Special style unknown issue in style selection</action>    	
-    	<action dev='bflorat' type='update'>Major performance enhancements on collection management and closing</action> 
+      	<action dev='bflorat' type='fix' issue='1369543'>Author/album/style change lose properties</action>    	
+      	<action dev='bflorat' type='fix' issue='1369542'>Synchronize command should be hidden if not enabled</action>    	
+    	<action dev='bflorat' type='update'>Changed memory options to reduce memory consumption</action> 
+		<action dev='bflorat' type='update'>Major performance enhancements on collection management and closing</action> 
 		<action dev='bflorat' type='update'>Many improvements in Properties wizard and tag edition</action> 
 		<action dev='bflorat' type='update'>Several UI improvements like style autocompletion and drag and drop from playlist editor</action> 
 		<action dev='bflorat' type='remove'>Full album option in properties wizard</action>     	

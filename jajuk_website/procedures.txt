@@ -13,15 +13,15 @@ NEW LANGUAGE PROCEDURE
 
 NEW RELEASE PROCEDURE
 *Code*
-- Refresh workspace
-- Set debug to '' in build-dist script
-- Set right version (no more rc) in build-dist.xml
-x- Check new incoming updates (i18n)
-- String externalization
-x- Search for debug System.out
-x- Make required translations (fr)
-- Generate packages
-- Test it a minima under several OS
+o- Refresh workspace
+o- Set debug to '' in build-dist script
+o- Set right version (no more rc) in build-dist.xml
+o- Check new incoming updates (i18n)
+o- String externalization
+o- Search for debug System.out
+o- Make required translations (fr)
+o- Generate packages
+o- Test it a minima under several OS
 - Commit all changes in jajuk project
 - Tag as version
 x- Create a maintenance branch for new major releases (x.y level)
@@ -31,11 +31,11 @@ x- Create a maintenance branch for new major releases (x.y level)
 x- Make a new in SF
 
 *Web site*
-- Update and set date to release in changes.xml
+o- Update and set date to release in changes.xml
 x- Update qualification-<release>.html file
 x- Add a release in main_qualification.html file
 x- Modify index.xml and change.xml maven files
-- Change download.html file for file names
+o- Change download.html file for file names
 x- Upgrade project.xml maven file
 - Backup SF data (php file)
 x- Generate website PDF (make_jajuk pdf) 
