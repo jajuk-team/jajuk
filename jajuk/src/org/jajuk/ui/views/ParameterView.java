@@ -110,7 +110,6 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
     JCheckBox jcbDisplayUnmounted;
     JCheckBox jcbRestart;
     JCheckBox jcbSyncTableTree;
-    JCheckBox jcbSearchUnmounted;
     JLabel jlLanguage;
     SteppedComboBox scbLanguage;
     JLabel jlLAF;
@@ -327,8 +326,6 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
         jcbRestart.setToolTipText(Messages.getString("ParameterView.37")); //$NON-NLS-1$
         jcbSyncTableTree = new JCheckBox(Messages.getString("ParameterView.183")); //$NON-NLS-1$
         jcbSyncTableTree.setToolTipText(Messages.getString("ParameterView.184")); //$NON-NLS-1$
-        jcbSearchUnmounted = new JCheckBox(Messages.getString("ParameterView.127")); //$NON-NLS-1$
-        jcbSearchUnmounted.setToolTipText(Messages.getString("ParameterView.128")); //$NON-NLS-1$
         jcbDefaultActionClick = new JCheckBox(Messages.getString("ParameterView.179")); //$NON-NLS-1$
         jcbDefaultActionClick.setToolTipText(Messages.getString("ParameterView.180")); //$NON-NLS-1$
         jcbDefaultActionDrop = new JCheckBox(Messages.getString("ParameterView.181")); //$NON-NLS-1$
@@ -524,18 +521,17 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
         jp.add(jtfVisiblePlanned,"1,8"); //$NON-NLS-1$
         
         double sizeOptions[][] = {{0.99},
-                {iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,60+2*iYSeparator,iYSeparator,130,iYSeparator}};
+                {iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,60+2*iYSeparator,iYSeparator,130,iYSeparator}};
         jpOptions.setLayout(new TableLayout(sizeOptions));
         
         jpOptions.add(jcbDisplayUnmounted,"0,1"); //$NON-NLS-1$
         jpOptions.add(jcbRestart,"0,3"); //$NON-NLS-1$
-        jpOptions.add(jcbSearchUnmounted,"0,5"); //$NON-NLS-1$
-        jpOptions.add(jcbDefaultActionClick,"0,7"); //$NON-NLS-1$
-        jpOptions.add(jcbDefaultActionDrop,"0,9"); //$NON-NLS-1$
-        jpOptions.add(jcbSyncTableTree,"0,11"); //$NON-NLS-1$
-        jpOptions.add(jcbShowPopup,"0,13"); //$NON-NLS-1$
-        jpOptions.add(jpCombos,"0,15"); //$NON-NLS-1$
-        jpOptions.add(jp,"0,17"); //$NON-NLS-1$
+        jpOptions.add(jcbDefaultActionClick,"0,5"); //$NON-NLS-1$
+        jpOptions.add(jcbDefaultActionDrop,"0,7"); //$NON-NLS-1$
+        jpOptions.add(jcbSyncTableTree,"0,9"); //$NON-NLS-1$
+        jpOptions.add(jcbShowPopup,"0,11"); //$NON-NLS-1$
+        jpOptions.add(jpCombos,"0,13"); //$NON-NLS-1$
+        jpOptions.add(jp,"0,15"); //$NON-NLS-1$
         
         //--P2P
         jpP2P = new JPanel();
@@ -923,7 +919,6 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
         }
         ConfigurationManager.setProperty(CONF_OPTIONS_HIDE_UNMOUNTED,Boolean.toString(bHiddenState));
         ConfigurationManager.setProperty(CONF_OPTIONS_RESTART,Boolean.toString(jcbRestart.isSelected()));
-        ConfigurationManager.setProperty(CONF_OPTIONS_SEARCH_ONLY_MOUNTED,Boolean.toString(jcbSearchUnmounted.isSelected()));
         ConfigurationManager.setProperty(CONF_OPTIONS_DEFAULT_ACTION_CLICK,Boolean.toString(jcbDefaultActionClick.isSelected()));
         ConfigurationManager.setProperty(CONF_OPTIONS_DEFAULT_ACTION_DROP,Boolean.toString(jcbDefaultActionDrop.isSelected()));
         ConfigurationManager.setProperty(CONF_OPTIONS_SYNC_TABLE_TREE,Boolean.toString(jcbSyncTableTree.isSelected()));
@@ -1071,7 +1066,6 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
         jcbDisplayUnmounted.setSelected(bHidden);
         this.bHidden = bHidden; 
         jcbRestart.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_RESTART));
-        jcbSearchUnmounted.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_SEARCH_ONLY_MOUNTED));
         jcbDefaultActionClick.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_DEFAULT_ACTION_CLICK));
         jcbDefaultActionDrop.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_DEFAULT_ACTION_DROP));
         jcbShowPopup.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_SHOW_POPUP));

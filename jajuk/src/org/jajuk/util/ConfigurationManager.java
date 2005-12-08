@@ -146,7 +146,6 @@ public class ConfigurationManager implements ITechnicalStrings{
         properties.put(CONF_CONFIRMATIONS_RESET_RATINGS,TRUE);
         properties.put(CONF_OPTIONS_HIDE_UNMOUNTED,FALSE);
 		properties.put(CONF_OPTIONS_RESTART,TRUE);
-		properties.put(CONF_OPTIONS_SEARCH_ONLY_MOUNTED,FALSE);
 		properties.put(CONF_OPTIONS_DEFAULT_ACTION_CLICK,FALSE);
 		properties.put(CONF_OPTIONS_DEFAULT_ACTION_DROP,TRUE);
 		properties.put(CONF_OPTIONS_NOVELTIES_AGE,"30"); //$NON-NLS-1$
@@ -209,6 +208,9 @@ public class ConfigurationManager implements ITechnicalStrings{
             (int)(Toolkit.getDefaultToolkit().getScreenSize().getWidth()-100)+","+ //$NON-NLS-1$
             (int)(Toolkit.getDefaultToolkit().getScreenSize().getHeight()-100)); //Window position: X,Y,X_size,Y_size
         properties.put(CONF_LOGICAL_TABLE_EDITION,FALSE);
+        properties.put(CONF_THUMBS_SHOW_WITHOUT_COVER,FALSE);
+        properties.put(CONF_THUMBS_SIZE,THUMBNAIL_SIZE_100x100);
+        
     }
 	
     /**

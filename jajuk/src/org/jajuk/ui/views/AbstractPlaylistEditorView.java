@@ -49,7 +49,6 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 
@@ -57,6 +56,7 @@ import org.jajuk.base.Event;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
+import org.jajuk.base.IPropertyable;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Observer;
 import org.jajuk.base.Playlist;
@@ -67,8 +67,10 @@ import org.jajuk.i18n.Messages;
 import org.jajuk.ui.IconLabel;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.JajukCellRender;
+import org.jajuk.ui.JajukTableModel;
 import org.jajuk.ui.PlaylistFileItem;
 import org.jajuk.ui.PlaylistTransferHandler;
+import org.jajuk.ui.TableTransferHandler;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
@@ -132,7 +134,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
     
     /**Last selected directory using add button*/
     private java.io.File fileLast;
-    
+  
     /*Cashed icons*/
     private static final ImageIcon iconNormal = Util.getIcon(ICON_TRACK_FIFO_NORM);
     private static final ImageIcon iconRepeat  = Util.getIcon(ICON_TRACK_FIFO_REPEAT);
@@ -140,7 +142,12 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
     private static final ImageIcon iconPlaylist = Util.getIcon(ICON_PLAYLIST_FILE);
     
     /**Model for table*/
-    class PlayListEditorTableModel extends AbstractTableModel {
+    class PlayListEditorTableModel extends JajukTableModel {
+        
+        public PlayListEditorTableModel(){
+            super(0);
+        }
+        
         public int getColumnCount() {
             return iColNum;
         }
@@ -224,6 +231,23 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
         public String getColumnName(int columnIndex) {
             return sColName[columnIndex];
         }
+        
+        /** 
+         * Return item at given position
+         * @param iRow
+         * @return
+         */
+        public IPropertyable getItemAt(int iRow){
+            StackItem item = getItem(iRow);
+            return item.getFile();
+        }
+
+        /* (non-Javadoc)
+         * @see org.jajuk.ui.JajukTableModel#populateModel(java.lang.String, java.lang.String)
+         */
+        @Override
+        public void populateModel(String sProperty, String sPattern) {
+        }
     }
     
     PlayListEditorTableModel model = new PlayListEditorTableModel();
@@ -301,6 +325,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
             }
         };
         jtable.setSelectionMode(DefaultListSelectionModel.MULTIPLE_INTERVAL_SELECTION); //multi-row selection
+        new TableTransferHandler(jtable, DnDConstants.ACTION_COPY_OR_MOVE);
         Enumeration enumeration = jtable.getColumnModel().getColumns();
         JajukCellRender jcr = new JajukCellRender();
         while (enumeration.hasMoreElements()){
@@ -500,16 +525,13 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
                 }
             }
         }
-        else if ( e.getClickCount() == 1 
-                && e.getButton()==MouseEvent.BUTTON3
-                && plfi.getType() != PlaylistFileItem.PLAYLIST_TYPE_QUEUE ){  //right clic on a selected node set
-            // if none or 1 node is selected, a right click on another node select it
-            //if more than 1, we keep selection and display a popup for them
-            if (jtable.getSelectedRowCount() < 2){
-                int iSelection = jtable.rowAtPoint(e.getPoint());
-                jtable.getSelectionModel().setSelectionInterval(iSelection,iSelection);
+        else if ( e.getClickCount() == 1 ){
+            int iSelectedRow = jtable.rowAtPoint(e.getPoint());
+            TableTransferHandler.iSelectedRow = iSelectedRow;
+            if (e.getButton()==MouseEvent.BUTTON3
+                    && plfi.getType() != PlaylistFileItem.PLAYLIST_TYPE_QUEUE ){  //right clic on a selected node set
+                jmenuFile.show(jtable,e.getX(),e.getY());
             }
-            jmenuFile.show(jtable,e.getX(),e.getY());
         }
     }
     
@@ -602,6 +624,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
                 }
                 else{  //special playlist, same behavior than a save as
                     plfi.getPlaylistFile().saveAs();
+                    ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH)); //notify playlist repository to refresh
                 }
             }
             else if (ae.getSource() == jbClear){
@@ -631,8 +654,11 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
             }
             else if (ae.getSource() == jbRemove){
                 int[] iRows = jtable.getSelectedRows();
+                if (iRows.length > 1){//if multiple selection, remove selection
+                    jtable.getSelectionModel().removeIndexInterval(0,jtable.getRowCount()-1);
+                }
                 for (int i=0;i<iRows.length;i++){
-                    plfi.getPlaylistFile().remove(iRows[i]);
+                    plfi.getPlaylistFile().remove(iRows[i]-i); //don't forget that index changes when removing
                     iRowNum --;
                 }
                 //set selection to last line if end reached
@@ -789,4 +815,5 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
             }
         }     
     }
+         
 }

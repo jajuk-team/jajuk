@@ -49,7 +49,7 @@ public class Playlist extends PropertyAdapter implements Comparable{
 /* (non-Javadoc)
      * @see org.jajuk.base.IPropertyable#getIdentifier()
      */
-    public String getIdentifier() {
+    final public String getIdentifier() {
         return XML_PLAYLIST;
     }
     

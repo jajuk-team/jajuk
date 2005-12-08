@@ -28,13 +28,13 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Properties;
+import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -67,6 +67,7 @@ import org.jajuk.base.ObservationManager;
 import org.jajuk.base.PlaylistFile;
 import org.jajuk.base.PlaylistFileManager;
 import org.jajuk.base.StackItem;
+import org.jajuk.base.Track;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.DeviceWizard;
 import org.jajuk.ui.InformationJPanel;
@@ -469,7 +470,13 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
                         alSelected.add((IPropertyable)((TransferableTreeNode)o).getData());
                     }
                     else{
-                        continue;
+                        alSelected = new ArrayList(FileManager.getInstance().getSortedFiles());
+                        items = alSelected.size();
+                        hsSelectedFiles.addAll(alSelected);
+                        for (IPropertyable item:alSelected){
+                            lSize += ((File)item).getSize();
+                        }
+                        break;
                     }
                     Enumeration e2 = ((DefaultMutableTreeNode)o).depthFirstEnumeration(); //return all childs nodes recursively
                     while ( e2.hasMoreElements()){
@@ -666,7 +673,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
                             return;
                         }
                         Device device =  ((DeviceNode)paths[0].getLastPathComponent()).getDevice();	
-                        if ( device.getValue(XML_DEVICE_SYNCHRO_SOURCE) == null){ //if the device is not synchronized
+                        if ( device.getValue(XML_DEVICE_SYNCHRO_SOURCE).equals("")){ //if the device is not synchronized //$NON-NLS-1$
                             jmiDevSynchronize.setEnabled(false);
                         }
                         else{
@@ -717,9 +724,11 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
     }
     
     /**Fill the tree */
-    public void populateTree(){
+    public synchronized void populateTree(){
         top.removeAllChildren();
         //add devices
+        ArrayList alDevices = new ArrayList(DeviceManager.getInstance().getItems());
+        Collections.sort(alDevices);
         Iterator it1 = DeviceManager.getInstance().getItems().iterator();
         while ( it1.hasNext()){
             Device device = (Device)it1.next();
@@ -727,8 +736,8 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
             top.add(nodeDevice);
         }
         //add directories
-        Collection directories = DirectoryManager.getInstance().getItems();
-        //Collections.sort((List)directories);
+        ArrayList directories = new ArrayList(DirectoryManager.getInstance().getItems());
+        Collections.sort(directories);
         Iterator it2 = directories.iterator();
         while (it2.hasNext()){
             Directory directory = (Directory)it2.next();
@@ -751,9 +760,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
             }
             else{  //add file at the device root
                 DeviceNode deviceNode = DeviceNode.getDeviceNode(directory.getDevice());
-                ArrayList alFiles = directory.getFiles();
-                Collections.sort(alFiles);
-                Iterator it = alFiles.iterator();
+                Iterator it = directory.getFiles().iterator();
                 while (it.hasNext()){
                     deviceNode.add(new FileNode((File)it.next()));
                 }
@@ -765,11 +772,8 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
             }
         }
         //add files
-        ArrayList alFiles = FileManager.getInstance().getItems();
-        if (alFiles != null && alFiles.size() > 0){
-            Collections.sort(alFiles);
-        }
-        Iterator it3 = alFiles.iterator();
+        Set files = FileManager.getInstance().getSortedFiles();
+        Iterator it3 = files.iterator();
         while (it3.hasNext()){
             File file = (File)it3.next();
             if ( file.shouldBeHidden()){ //should be hiden by option
@@ -781,7 +785,9 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
             }
         }
         //add playlist files
-        Iterator it4 = PlaylistFileManager.getInstance().getItems().iterator();
+        ArrayList playlists = new ArrayList(PlaylistFileManager.getInstance().getItems());
+        Collections.sort(playlists);
+        Iterator it4 = playlists.iterator();
         while (it4.hasNext()){
             PlaylistFile playlistFile = (PlaylistFile)it4.next();
             if ( playlistFile.shouldBeHidden()){ //should be hiden by option
@@ -798,9 +804,9 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(final ActionEvent e) {
-        //multiple selection on properties(note we handle file properties later)
-        if ( (paths.length > 1) && (e.getSource() == jmiDirProperties
-                || e.getSource() == jmiDevProperties || e.getSource() == jmiPlaylistFileProperties)){
+        //multiple selection on properties(note we handle files and dirs properties later)
+        if ( (paths.length > 1) && (e.getSource() == jmiDevProperties 
+                || e.getSource() == jmiPlaylistFileProperties)){
             new PropertiesWizard(alSelected);
         }
         else if (e.getSource() == jmiFilePlay ){
@@ -937,34 +943,31 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
             dw.setVisible(true);
         }
         else if (e.getSource() == jmiFileProperties){
-            ArrayList alItems1 = new ArrayList<IPropertyable>(1); //file items
-            ArrayList alItems2 = new ArrayList<IPropertyable>(1); //tracks items
-            if (alSelected.size() == 1){
-                File file =  (File)alSelected.get(0);
-                //show file and associated track properties
-                alItems1.add(file);
-                alItems2.add(file.getTrack());
+            ArrayList alTracks = new ArrayList<IPropertyable>(alSelected.size()); //tracks items
+            for (IPropertyable pa:alSelected){
+                File file = (File)pa;
+                alTracks.add(file.getTrack());
             }
-            else{
-                for (IPropertyable pa:alSelected){
-                    File file = (File)pa;
-                    alItems1.add(file);
-                    alItems2.add(file.getTrack());
-                }
-            }
-            new PropertiesWizard(alItems1,alItems2);
+            new PropertiesWizard(alSelected,alTracks);
         }
         else if (e.getSource() == jmiDirProperties){
-            Directory dir =  ((DirectoryNode)paths[0].getLastPathComponent()).getDirectory();
-            ArrayList alItems = new ArrayList(1);
-            alItems.add(dir);
-            new PropertiesWizard(alItems);
+            ArrayList<IPropertyable> alTracks = new ArrayList(alSelected.size());
+            for (IPropertyable item:alSelected){
+                Directory dir = (Directory)item;
+                for (File file:dir.getFilesRecursively()){
+                    Track track = file.getTrack();
+                    if (!alTracks.contains(track)){
+                        alTracks.add(track);
+                    }
+                }
+            }
+            new PropertiesWizard(alSelected,alTracks);    
         }
         else if (e.getSource() == jmiDevProperties){
             Device device =  ((DeviceNode)paths[0].getLastPathComponent()).getDevice();
             ArrayList alItems = new ArrayList(1);
             alItems.add(device);
-            new PropertiesWizard(alItems);
+            PropertiesWizard p = new PropertiesWizard(alItems);
         }
         else if (e.getSource() == jmiPlaylistFileProperties){
             PlaylistFile plf =  ((PlaylistFileNode)paths[0].getLastPathComponent()).getPlaylistFile();

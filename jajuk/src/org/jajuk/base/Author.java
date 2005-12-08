@@ -19,10 +19,6 @@
  */
 package org.jajuk.base;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-
 import org.jajuk.i18n.Messages;
 
 /**
@@ -45,7 +41,7 @@ public class Author extends PropertyAdapter implements Comparable{
 /* (non-Javadoc)
      * @see org.jajuk.base.IPropertyable#getIdentifier()
      */
-    public String getIdentifier() {
+    final public String getIdentifier() {
         return XML_AUTHOR;
     }
  
@@ -97,23 +93,6 @@ public class Author extends PropertyAdapter implements Comparable{
 	}
 	
 	/**
-	 * return tracks associated with this item
-	 * @return tracks associated with this item
-	 */
-	public ArrayList getTracks() {
-		ArrayList alTracks = new ArrayList(100);
-		Iterator it = TrackManager.getInstance().getItems().iterator();
-		while ( it.hasNext()){
-			Track track = (Track)it.next();
-			if ( track != null && track.getAuthor().equals(this)){
-				alTracks.add(track);
-			}
-		}
-		Collections.sort(alTracks);
-		return alTracks;
-	}
-	
-	/**
 	 * @return whether the author is Unknown or not
 	 */
 	public boolean isUnknown(){
@@ -139,5 +118,5 @@ public class Author extends PropertyAdapter implements Comparable{
             return super.getHumanValue(sKey);
         }
     }
-
+    
 }

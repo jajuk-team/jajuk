@@ -30,12 +30,12 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
 import javax.swing.BorderFactory;
-import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -52,6 +52,7 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
 import org.jajuk.base.Event;
+import org.jajuk.base.File;
 import org.jajuk.base.IPropertyable;
 import org.jajuk.base.ItemManager;
 import org.jajuk.base.ObservationManager;
@@ -70,6 +71,8 @@ import org.jajuk.util.error.CannotRenameException;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.error.NoneAccessibleFileException;
 import org.jajuk.util.log.Log;
+import org.jdesktop.swingx.autocomplete.ComboBoxCellEditor;
+import org.jdesktop.swingx.autocomplete.Configurator;
 import org.jdesktop.swingx.table.DefaultTableColumnModelExt;
 import org.jdesktop.swingx.table.TableColumnExt;
 
@@ -95,7 +98,6 @@ public abstract class AbstractTableView extends ViewAdapter
     JButton jbClearFilter;
     JButton jbAdvancedFilter;
     JMenuItem jmiProperties;
-    
     
     /**Table model*/
     JajukTableModel model;
@@ -230,6 +232,7 @@ public abstract class AbstractTableView extends ViewAdapter
                 ObservationManager.register(EVENT_SYNC_TREE_TABLE,AbstractTableView.this);
                 ObservationManager.register(EVENT_CUSTOM_PROPERTIES_ADD,AbstractTableView.this);
                 ObservationManager.register(EVENT_CUSTOM_PROPERTIES_REMOVE,AbstractTableView.this);
+                ObservationManager.register(EVENT_RATE_CHANGED,AbstractTableView.this);
                 //refresh columns conf in case of some attributes been removed or added before view instanciation
                 Properties properties = ObservationManager.getDetailsLastOccurence(EVENT_CUSTOM_PROPERTIES_ADD); 
                 Event event = new Event(EVENT_CUSTOM_PROPERTIES_ADD,properties);
@@ -290,12 +293,9 @@ public abstract class AbstractTableView extends ViewAdapter
                             || EVENT_SYNC_TREE_TABLE.equals(subject)) {
                         applyFilter(sAppliedCriteria,sAppliedFilter); //force filter to refresh
                     }	
-                    else if ( EVENT_DEVICE_REFRESH.equals(subject)) {
-                        Object oDetail = ObservationManager.getDetail(event,DETAIL_ORIGIN);
-                        //refresh table only if event doesn't come from this (otherwise, we lose focus on changed item)
-                        if (oDetail == null || !oDetail.equals(AbstractTableView.this.getID())){
-                            applyFilter(sAppliedCriteria,sAppliedFilter); //force filter to refresh
-                        }
+                    else if ( EVENT_DEVICE_REFRESH.equals(subject)
+                            || EVENT_RATE_CHANGED.equals(subject)) {
+                        applyFilter(sAppliedCriteria,sAppliedFilter); //force filter to refresh
                     }   
                     else if (EVENT_CUSTOM_PROPERTIES_ADD.equals(subject)){
                         Properties properties = event.getDetails();
@@ -363,13 +363,10 @@ public abstract class AbstractTableView extends ViewAdapter
             String sIdentifier = model.getIdentifier(col.getModelIndex());
             //create a combo box for styles, note that we can't add new styles dynamically
             if (XML_STYLE.equals(sIdentifier)){
-                ArrayList<String> alStyles = (ArrayList)StyleManager.getStylesList();
-                JComboBox jcb = new JComboBox();
+                JComboBox jcb = new JComboBox(StyleManager.getStylesList());
                 jcb.setEditable(true);
-                for (String style:alStyles){
-                    jcb.addItem(style);
-                }
-                col.setCellEditor(new DefaultCellEditor(jcb));
+                Configurator.enableAutoCompletion(jcb);
+                col.setCellEditor(new ComboBoxCellEditor(jcb));
             }
             //create a button for playing
             else if (XML_PLAY.equals(sIdentifier)){
@@ -510,16 +507,20 @@ public abstract class AbstractTableView extends ViewAdapter
         Object oValue = model.getValueAt(e.getFirstRow(),e.getColumn());//can be Boolean or String
         IPropertyable item = model.getItemAt(e.getFirstRow());
         try{
-            IPropertyable itemNew = ItemManager.changeItem(item,sKey,oValue);
+            //file filter used by physical table view to change only the file, not all files associated with the track
+            HashSet filter = null;
+            if (item instanceof File){
+              filter = new HashSet();
+              filter.add(item);
+            }
+            IPropertyable itemNew = ItemManager.changeItem(item,sKey,oValue,filter);
             model.setItemAt(e.getFirstRow(),itemNew); //update model
             //user message
             PropertyMetaInformation meta = itemNew.getMeta(sKey);
             InformationJPanel.getInstance().setMessage(
                     Messages.getString("PropertiesWizard.8")+": "+ItemManager.getHumanType(sKey), //$NON-NLS-1$ //$NON-NLS-2$
                     InformationJPanel.INFORMATIVE);
-                Properties properties = new Properties();
-                properties.put(DETAIL_ORIGIN,this.getID());
-                ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH,properties)); //TBI see later for a smarter event
+                ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH)); //TBI see later for a smarter event
         }
         catch(NoneAccessibleFileException none){
             Messages.showErrorMessage(none.getCode());
@@ -530,9 +531,11 @@ public abstract class AbstractTableView extends ViewAdapter
             ((JajukTableModel)jtable.getModel()).undo(e.getFirstRow(),e.getColumn());
         }
         catch(JajukException je){
-            Messages.showErrorMessage("104"); //$NON-NLS-1$
+            Log.error("104",je); //$NON-NLS-1$
+            Messages.showErrorMessage("104",je.getMessage()); //$NON-NLS-1$
             ((JajukTableModel)jtable.getModel()).undo(e.getFirstRow(),e.getColumn());
         }
     }
     
+   
 }

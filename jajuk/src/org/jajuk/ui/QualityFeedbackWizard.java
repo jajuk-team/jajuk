@@ -36,6 +36,7 @@ import java.util.Iterator;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
@@ -70,7 +71,7 @@ class QualityFeedbackWizard extends JDialog implements KeyListener,ActionListene
      */
     public QualityFeedbackWizard() {
         super(Main.getWindow(),Messages.getString("JajukJMenuBar.19")); //$NON-NLS-1$
-        getContentPane().setPreferredSize(new Dimension(600,250));
+        getContentPane().setPreferredSize(new Dimension(800,600));
         //From
         jlFrom = new JLabel(Messages.getString("QualityFeedbackWizard.1")); //$NON-NLS-1$
         jlFrom.setToolTipText(Messages.getString("QualityFeedbackWizard.2")); //$NON-NLS-1$
@@ -94,14 +95,14 @@ class QualityFeedbackWizard extends JDialog implements KeyListener,ActionListene
         int iYSeparator = 20;
         double[][] dSize = {
                 {iXSeparator,0.3,iXSeparator,0.7,iXSeparator},
-                {iYSeparator,20,iYSeparator,20,iYSeparator,60,3*iYSeparator,20,iYSeparator} };
+                {iYSeparator,20,iYSeparator,20,iYSeparator,0.99,3*iYSeparator,20,iYSeparator} };
         jpMain.setLayout(new TableLayout(dSize));
         jpMain.add(jlFrom,"1,1"); //$NON-NLS-1$
         jpMain.add(jtfFrom,"3,1"); //$NON-NLS-1$
         jpMain.add(jlDesc,"1,3"); //$NON-NLS-1$
         jpMain.add(jtfDesc,"3,3"); //$NON-NLS-1$
         jpMain.add(jlDetail,"1,5"); //$NON-NLS-1$
-        jpMain.add(jtaDetail,"3,5"); //$NON-NLS-1$
+        jpMain.add(new JScrollPane(jtaDetail),"3,5"); //$NON-NLS-1$
         jpMain.add(okp,"3,7"); //$NON-NLS-1$
         getContentPane().add(jpMain);
         addWindowListener(new WindowAdapter() {
@@ -117,31 +118,36 @@ class QualityFeedbackWizard extends JDialog implements KeyListener,ActionListene
      */
     public void actionPerformed(ActionEvent ae) {
         if (ae.getSource().equals(this.okp.getOKButton())){
-            try{
-                Message message = new Message();
-                message.setSubject(jtfDesc.getText());
-                ArrayList alTo = new ArrayList();
-                alTo.add(FEEDBACK_EMAIL);
-                message.setToAddrs(alTo);
-                String sBody = ""; //$NON-NLS-1$
-                sBody += "From: "+jtfFrom.getText()+'\n'; //$NON-NLS-1$
-                sBody += "Subject: "+jtfDesc.getText()+'\n'; //$NON-NLS-1$
-                sBody += "Details: "+jtaDetail.getText()+'\n'; //$NON-NLS-1$
-                sBody += "Version: "+JAJUK_VERSION+'\n'; //$NON-NLS-1$
-                sBody += System.getProperties().toString()+'\n';
-                sBody += ConfigurationManager.getProperties().toString()+'\n';
-                Iterator it = Log.getSpool();
-                while (it.hasNext()){
-                    sBody += it.next().toString() +'\n';
+            final Message message = new Message();
+            message.setSubject(jtfDesc.getText());
+            ArrayList alTo = new ArrayList();
+            alTo.add(FEEDBACK_EMAIL);
+            message.setToAddrs(alTo);
+            String sBody = ""; //$NON-NLS-1$
+            sBody += "From: "+jtfFrom.getText()+'\n'; //$NON-NLS-1$
+            sBody += "Subject: "+jtfDesc.getText()+'\n'; //$NON-NLS-1$
+            sBody += "Details: "+jtaDetail.getText()+'\n'; //$NON-NLS-1$
+            sBody += "Version: "+JAJUK_VERSION+'\n'; //$NON-NLS-1$
+            sBody += System.getProperties().toString()+'\n';
+            sBody += ConfigurationManager.getProperties().toString()+'\n';
+            Iterator it = Log.getSpool();
+            while (it.hasNext()){
+                sBody += it.next().toString() +'\n';
+            }
+            message.setBody(sBody);
+            new Thread(){
+                public void run(){
+                    try{
+                        Desktop.mail(message);
+                    }
+                    catch(Exception e){
+                        Messages.showErrorMessage("136"); //$NON-NLS-1$
+                        Log.error(e);
+                    }
                 }
-                message.setBody(sBody);
-                Desktop.mail(message);
-                dispose();
-            }
-            catch(Exception e){
-                Messages.showErrorMessage("136"); //$NON-NLS-1$
-                Log.error(e);
-            }
+            }.start();
+            
+            dispose();
         }
         else if (ae.getSource().equals(this.okp.getCancelButton())){
             dispose();

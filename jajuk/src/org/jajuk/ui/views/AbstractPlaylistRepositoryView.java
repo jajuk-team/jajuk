@@ -399,7 +399,8 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 		            }
 		            else if(ae.getSource() == jmiSaveAs){ //save as
 		                try{
-		                    plfiSelected.getPlaylistFile().saveAs();    
+		                    plfiSelected.getPlaylistFile().saveAs();
+                            ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH)); //notify playlist repository to refresh
                         }
                         
                         catch(JajukException je){

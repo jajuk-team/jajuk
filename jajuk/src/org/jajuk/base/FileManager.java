@@ -25,6 +25,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Properties;
+import java.util.Set;
 import java.util.TreeSet;
 
 import org.jajuk.i18n.Messages;
@@ -47,8 +48,8 @@ public class FileManager extends ItemManager implements Observer{
 	private ArrayList alBestofFiles = new ArrayList(20);
     /**Novelties files*/
     private ArrayList alNovelties = new ArrayList(20);
-    /**Sorted files*/
-	private ArrayList alSortedFiles = new ArrayList(1000);
+    /**Sorted and unique files*/
+	private TreeSet sortedFiles = new TreeSet();
     /**Self instance*/
     private static FileManager singleton;
 	
@@ -91,7 +92,7 @@ public class FileManager extends ItemManager implements Observer{
             Track track, long lSize, long lQuality) {
 		if ( !hmItems.containsKey(sId)){
 			File file = null;
-            if (hmIdSaveItems.containsKey(sId)){
+            if (hmIdSaveItems.containsKey(sId) && !ConfigurationManager.getBoolean(CONF_TAGS_DEEP_SCAN)){
                 file = (File)hmIdSaveItems.get(sId);
             }
             else{
@@ -99,10 +100,10 @@ public class FileManager extends ItemManager implements Observer{
                 saveItem(file);
             }
             hmItems.put(sId,file);
-			alSortedFiles.add(file);
-            //add to directory
+			sortedFiles.add(file);
             //add to track
             track.addFile(file);
+            //add to directory
             file.getDirectory().addFile(file);
             if ( directory.getDevice().isRefreshing() && Log.isDebugEnabled()){
 				Log.debug("registrated new file: "+ file); //$NON-NLS-1$
@@ -117,7 +118,7 @@ public class FileManager extends ItemManager implements Observer{
      * @param sNewName
      * @return new file
      */
-	public File changeFileName(File fileOld,String sNewName) throws JajukException{
+	public File changeFileName(org.jajuk.base.File fileOld,String sNewName) throws JajukException{
 	    //check given name is different
         if (fileOld.getName().equals(sNewName)){
             return fileOld;
@@ -134,7 +135,7 @@ public class FileManager extends ItemManager implements Observer{
 	        .append(dir.getDevice().getUrl()).append(dir.getRelativePath())
 	        .append(sNewName).toString());
 	    //create a new file (with own fio and sAbs)
-        File fNew = new File(sNewId,sNewName,fileOld.getDirectory(),fileOld.getTrack(),fileOld.getSize(),fileOld.getQuality());
+        org.jajuk.base.File fNew = new File(sNewId,sNewName,fileOld.getDirectory(),fileOld.getTrack(),fileOld.getSize(),fileOld.getQuality());
 	    fNew.setProperties(fileOld.getProperties()); //transfert all properties (inc id and name)
 	    fNew.setId(sNewId); //reset new id and name
         fNew.setName(sNewName);
@@ -142,8 +143,8 @@ public class FileManager extends ItemManager implements Observer{
 	    if (!(Util.getExtension(fileNew).equals(Util.getExtension(fileOld.getIO())))){ //no extension change
 	        throw new CannotRenameException("134"); //$NON-NLS-1$
 	    }
-	    //check if futur file exists
-	    if (fileNew.exists()){
+	    //check if future file exists (under windows, file.exists return true even with different case so we test file name is different)
+	    if ( !fileNew.getName().equalsIgnoreCase(fileOld.getName()) && fileNew.exists()){
 	        throw new CannotRenameException("134"); //$NON-NLS-1$
         }
 	    //try to rename file on disk
@@ -157,15 +158,16 @@ public class FileManager extends ItemManager implements Observer{
         removeFile(fileOld);
         if ( !hmItems.containsKey(sNewId)){
             hmItems.put(sNewId,fNew);
-            alSortedFiles.add(fNew);
+            sortedFiles.add(fNew);
         }
         //notify everybody for the file change
         Properties properties = new Properties();
         properties.put(DETAIL_OLD,fileOld);
         properties.put(DETAIL_NEW,fNew);
+        //change directory reference
+        dir.changeFile(fileOld,fNew);
+        //Notify interested items (like history manager)
         ObservationManager.notifySync(new Event(EVENT_FILE_NAME_CHANGED,properties));
-        //refresh UI (see later for fine gained event for perfs if needed)
-        ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH));
         return fNew;
 	}
 
@@ -189,7 +191,7 @@ public class FileManager extends ItemManager implements Observer{
         removeFile(old);
         if ( !hmItems.containsKey(sNewId)){
             hmItems.put(sNewId,fNew);
-            alSortedFiles.add(fNew);
+            sortedFiles.add(fNew);
         }
         return fNew;
     }
@@ -209,7 +211,7 @@ public class FileManager extends ItemManager implements Observer{
 			}
 		}
 		//cleanup sorted array
-		it = alSortedFiles.iterator();
+		it = sortedFiles.iterator();
 		while (it.hasNext()){
 			File file = (File) it.next();
 			if (file.getDirectory() == null 
@@ -225,25 +227,15 @@ public class FileManager extends ItemManager implements Observer{
      */
     public void removeFile(File file){
         hmItems.remove(file.getId());
-        alSortedFiles.remove(file);
+        sortedFiles.remove(file);
         file.getDirectory().removeFile(file);
     }
     
-	/** Return all registred files */
-	public synchronized ArrayList<IPropertyable> getItems() {
-		if (alSortedFiles.size() == 0){
-		    alSortedFiles = new ArrayList(hmItems.values());
-		    sortFiles();
-		}
-	    return alSortedFiles;
-	}
-	
-	/** Sorts collection*/
-	public synchronized void sortFiles() {
-		Collections.sort(alSortedFiles);
-		Log.debug("Collection sorted"); //$NON-NLS-1$
-	} 
-    
+    /** Return all registred files sorted alphabeticaly*/
+    public synchronized Set<File> getSortedFiles() {
+        return sortedFiles;
+    }
+		
     /**
        * Return file by full path
        * @param sPath : full path
@@ -446,10 +438,10 @@ public class FileManager extends ItemManager implements Observer{
 		    return null;
 		}
 	    File fileNext = null;
-		ArrayList alSortedFiles = getItems();
+	    ArrayList alSortedFiles = new ArrayList(sortedFiles);
 		//look for a correct file from index to collection end
 		boolean bOk = false;
-		for (int index=alSortedFiles.indexOf(file)+1;index<alSortedFiles.size();index++){
+        for (int index=alSortedFiles.indexOf(file)+1;index<alSortedFiles.size();index++){
 			fileNext = (File)alSortedFiles.get(index);
 			if (fileNext.isReady()){  //file must be on a mounted device not refreshing
 				bOk = true;
@@ -487,15 +479,16 @@ public class FileManager extends ItemManager implements Observer{
 		    return null;
 		}
 	    File filePrevious = null;
-		ArrayList alSortedFiles = getItems();
-		//test if this file is the very first one
-		if (alSortedFiles.indexOf(file) == 0){
+		ArrayList alSortedFiles = new ArrayList(sortedFiles);
+		int i = alSortedFiles.indexOf(file);
+        //test if this file is the very first one
+		if (i == 0){
 		    Messages.showErrorMessage("128"); //$NON-NLS-1$
 		    return null;
 		}
 		//look for a correct file from index to collection begin
 		boolean bOk = false;
-		for (int index=alSortedFiles.indexOf(file)-1;index>=0;index--){
+		for (int index=i-1;index>=0;index--){
 			filePrevious = (File)alSortedFiles.get(index);
 			if (filePrevious.isReady()){  //file must be on a mounted device not refreshing
 				bOk = true;
@@ -515,10 +508,12 @@ public class FileManager extends ItemManager implements Observer{
 	 * @return
 	 */
 	public boolean isVeryfirstFile(File file){
-	    if (file == null){
+	    if (file == null || sortedFiles.size() == 0){
 	        return false;
 	    }
-	    return  (alSortedFiles.indexOf(file) == 0);
+        Iterator it = sortedFiles.iterator();
+        File first = (File)it.next();
+	    return (file.equals(first));
 	}
 	
 	/**
@@ -583,7 +578,7 @@ public class FileManager extends ItemManager implements Observer{
 	 	Iterator it = hmItems.values().iterator();
 	 	while ( it.hasNext()){
 	 		File file = (File)it.next();
-	 		if ( ConfigurationManager.getBoolean(CONF_OPTIONS_SEARCH_ONLY_MOUNTED) && //if  search in only in mounted devices
+	 		if ( ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED) && //if  search in only in mounted devices
 	 		        (!file.getDirectory().getDevice().isMounted() || file.getDirectory().getDevice().isRefreshing())){
 	 			continue;
 	 		}

@@ -19,6 +19,8 @@
  */
 package org.jajuk.base;
 
+import java.util.ArrayList;
+
 import org.jajuk.i18n.Messages;
 
 /**
@@ -118,13 +120,28 @@ public class Style extends PropertyAdapter implements Comparable{
 /* (non-Javadoc)
      * @see org.jajuk.base.IPropertyable#getHumanValue(java.lang.String)
      */
-    public String getHumanValue(String sKey){
+    final public String getHumanValue(String sKey){
         if (XML_NAME.equals(sKey)){
             return getName2();
         }
         else{//default
             return super.getHumanValue(sKey);
         }
+    }
+    
+    /**
+     * 
+     * @return all tracks associated with this style
+     */
+    public ArrayList<Track> getTracksRecursively(){
+        ArrayList<Track> alTracks = new ArrayList(1000);
+        for (IPropertyable item:TrackManager.getInstance().getItems()){
+            Track track = (Track)item;
+            if (track.getStyle().equals(this)){
+                alTracks.add(track);
+            }
+        }
+        return alTracks;
     }
     
 }

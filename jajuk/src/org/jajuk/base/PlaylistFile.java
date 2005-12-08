@@ -88,7 +88,7 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 /* (non-Javadoc)
      * @see org.jajuk.base.IPropertyable#getIdentifier()
      */
-    public String getIdentifier() {
+    final public String getIdentifier() {
         return XML_PLAYLIST_FILE;
     }
     
@@ -688,9 +688,8 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 		        PlaylistManager.getInstance().registerPlaylist(plFile);
 		        dir.addPlaylistFile(plFile);
 		    }
-		    ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH)); //notify playlist repository to refresh
-		}
-	}
+    	}
+    }
 
     /**
      * @param parentDirectory The dParentDirectory to set.

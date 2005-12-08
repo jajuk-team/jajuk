@@ -38,6 +38,7 @@ import org.jajuk.i18n.Messages;
 import org.jajuk.ui.FilesTableModel;
 import org.jajuk.ui.JajukTableModel;
 import org.jajuk.ui.PropertiesWizard;
+import org.jajuk.ui.TableTransferHandler;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
@@ -60,6 +61,7 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
     JMenuItem jmiFilePlayShuffle;
     JMenuItem jmiFilePlayRepeat;
     JMenuItem jmiFilePlayDirectory;
+    
     
     /*
      * (non-Javadoc)
@@ -166,15 +168,17 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
                 Messages.showErrorMessage("120",file.getDirectory().getDevice().getName()); //$NON-NLS-1$
             }
         }		
-        else if ( e.getClickCount() == 1 
-                && e.getButton()==MouseEvent.BUTTON3){  //right clic on a selected node set
-            // if none or 1 node is selected, a right click on another node select it
-            //if more than 1, we keep selection and display a popup for them
-            if (jtable.getSelectedRowCount() < 2){
-                int iSelection = jtable.rowAtPoint(e.getPoint());
-                jtable.getSelectionModel().setSelectionInterval(iSelection,iSelection);
+        else if ( e.getClickCount() == 1 ){
+            int iSelectedRow = jtable.rowAtPoint(e.getPoint());
+            TableTransferHandler.iSelectedRow = iSelectedRow;
+            if (e.getButton()==MouseEvent.BUTTON3){  //right clic on a selected node set
+                // if none or 1 node is selected, a right click on another node select it
+                //if more than 1, we keep selection and display a popup for them
+                if (jtable.getSelectedRowCount() < 2){
+                    jtable.getSelectionModel().setSelectionInterval(iSelectedRow,iSelectedRow);
+                }
+                jmenuFile.show(jtable,e.getX(),e.getY());
             }
-            jmenuFile.show(jtable,e.getX(),e.getY());
         }
     }
     

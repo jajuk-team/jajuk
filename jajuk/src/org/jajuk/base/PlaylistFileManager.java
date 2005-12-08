@@ -188,7 +188,6 @@ public class PlaylistFileManager extends ItemManager implements Observer{
         }
         //check if this file still exists
         if (!plfOld.getFio().exists()){
-            Messages.showErrorMessage("135"); //$NON-NLS-1$
             throw new JajukException("135"); //$NON-NLS-1$
         }
         java.io.File ioNew = new java.io.File(plfOld.getFio().getParentFile().getAbsolutePath()
@@ -209,9 +208,8 @@ public class PlaylistFileManager extends ItemManager implements Observer{
             Messages.showErrorMessage("134"); //$NON-NLS-1$
             throw new JajukException("134"); //$NON-NLS-1$
         }
-        //check if futur file exists
-        if (ioNew.exists()){
-            Messages.showErrorMessage("134"); //$NON-NLS-1$
+        //check if future file exists (under windows, file.exists return true even with different case so we test file name is different)
+        if ( !ioNew.getName().equalsIgnoreCase(plfOld.getName()) && ioNew.exists()){
             throw new JajukException("134"); //$NON-NLS-1$
         }
         //try to rename file on disk
@@ -219,7 +217,6 @@ public class PlaylistFileManager extends ItemManager implements Observer{
             plfOld.getFio().renameTo(ioNew);
         }
         catch(Exception e){
-            Messages.showErrorMessage("134"); //$NON-NLS-1$
             throw new JajukException("134"); //$NON-NLS-1$
         }
         //OK, remove old file and register this new file

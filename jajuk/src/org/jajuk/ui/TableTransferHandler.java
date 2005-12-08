@@ -31,6 +31,8 @@ import java.awt.dnd.DragSourceListener;
 import java.awt.dnd.DropTarget;
 import java.awt.dnd.DropTargetDragEvent;
 
+import javax.swing.JTable;
+
 import org.jajuk.base.FileManager;
 
 /**
@@ -41,11 +43,12 @@ import org.jajuk.base.FileManager;
  
  public class TableTransferHandler implements DragGestureListener, DragSourceListener {
 	
-	private JajukTable jtable;
+	private JTable jtable;
 	private DragSource dragSource; // dragsource
 	private DropTarget dropTarget; //droptarget
-	
-	public TableTransferHandler(JajukTable jtable, int action) {
+	public static int iSelectedRow = 0;
+    
+	public TableTransferHandler(JTable jtable, int action) {
 		this.jtable = jtable;
 		dragSource = new DragSource();
 		dragSource.createDefaultDragGestureRecognizer(jtable, action, this);
@@ -106,13 +109,17 @@ import org.jajuk.base.FileManager;
 		dse.getDragSourceContext().setCursor(DragSource.DefaultMoveNoDrop);
 	}	
 	
-	/* Methods for DragGestureListener */
+	/* Methods for DragGestureListener 
+     * Note that selected in dex is given by views, not from the table itself
+     * because this event arrives often too late and another row on the 
+     * drag road can be selected instead 
+     */
 	public final void dragGestureRecognized(DragGestureEvent dge) {
-        //try to find a track for this id
-        int iSelectedRow = jtable.getSelectedRow(); //selected row in view
         //make sure to remove others selected rows (can occur during the drag)
         jtable.getSelectionModel().setSelectionInterval(iSelectedRow,iSelectedRow);
-        iSelectedRow = jtable.convertRowIndexToModel(iSelectedRow); //selected row in model
+        if (jtable instanceof JajukTable){//sorting only for jajuk table
+            iSelectedRow = ((JajukTable)jtable).convertRowIndexToModel(iSelectedRow); //selected row in model
+        }
         Object o = ((JajukTableModel)jtable.getModel()).getItemAt(iSelectedRow);
         if ( o  == null){ //no? try to find a file for this id
 			o = FileManager.getInstance().getItem(jtable.getModel().getValueAt(iSelectedRow,0).toString());
@@ -120,7 +127,7 @@ import org.jajuk.base.FileManager;
 		if ( o != null){
 			dragSource.startDrag(dge, DragSource.DefaultMoveNoDrop ,new TransferableTableRow(o), this);
 		}
-	}
+   }
 	
 	/* Methods for DropTargetListener */
 	

@@ -396,6 +396,8 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
                 DeviceManager.getInstance().removeDevice(diSelected.getDevice());
                 jpDevices.remove(diSelected);
                 ViewManager.notify(EVENT_VIEW_REFRESH_REQUEST,DeviceView.this);
+                //refresh views
+                ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH));
             }
             else if (ae.getActionCommand().equals(EVENT_DEVICE_MOUNT)){
                 try{

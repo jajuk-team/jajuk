@@ -21,6 +21,7 @@ package org.jajuk.base;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -99,7 +100,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 /* (non-Javadoc)
      * @see org.jajuk.base.IPropertyable#getIdentifier()
      */
-    public String getIdentifier() {
+    final public String getIdentifier() {
         return XML_DEVICE;
     }
 	
@@ -195,6 +196,9 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	            FileManager.getInstance().cleanDevice(device.getId());
 	            PlaylistFileManager.getInstance().cleanDevice(device.getId());
 	            DirectoryManager.getInstance().cleanDevice(device.getId());
+                //clean FIFO to remove items form device being refreshed
+                FIFO.getInstance().cleanDevice(this);
+                ObservationManager.notify(new Event(EVENT_PLAYLIST_REFRESH));
                 /*Note : even after this cleanup, files are yet in memory when mapped by tracks and files have references to directories, it is usefull to keep properties like
                  * desyncrhonization and to optimize scaning */ 
 	            long lTime = System.currentTimeMillis();
@@ -216,14 +220,15 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	            Directory dParent = null;
 	            
 	            //Create a directory for device itself and scan files to allow files at the root of the device
-	            if (!device.getDeviceTypeS().equals(DEVICE_TYPE_REMOTE) || !device.getDeviceTypeS().equals(DEVICE_TYPE_AUDIO_CD)){
+	            if (!device.getDeviceTypeS().equals(DEVICE_TYPE_REMOTE) 
+                        || !device.getDeviceTypeS().equals(DEVICE_TYPE_AUDIO_CD)){
 	                Directory d = DirectoryManager.getInstance().registerDirectory(device);
 	                dParent = d;
 	                d.scan();
 	            }
 	            //Start actual scan
 	            while (iDeep >= 0) {
-	                Log.debug("Entering: "+fCurrent); //$NON-NLS-1$
+	                //Log.debug("Entering: "+fCurrent); //$NON-NLS-1$
 	                File[] files = fCurrent.listFiles(new JajukFileFilter(true,false)); //only directories
 	                if (files== null || files.length == 0 ){  //files is null if fCurrent is a not a directory 
 	                    indexTab[iDeep] = -1;//re-init for next time we will reach this deep
@@ -237,7 +242,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	                        dParent = DirectoryManager.getInstance().registerDirectory(fCurrent.getName(),dParent,device);
 	                        InformationJPanel.getInstance().setMessage(new StringBuffer(Messages.getString("Device.21")).append(device.getName()).append(Messages.getString("Device.22")).append(dParent.getRelativePath()).append("]").toString(),InformationJPanel.INFORMATIVE); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	                        dParent.scan();
-	                        iDeep++;
+                            iDeep++;
 	                    }
 	                    else{
 	                        indexTab[iDeep] = -1;
@@ -251,24 +256,36 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	            }
 	            //clear history to remove olf files referenced in it
 	            History.getInstance().clear(Integer.parseInt(ConfigurationManager.getProperty(CONF_HISTORY))); //delete old history items
-	            //Sort collection
-	    		//commit collection at each refresh (can be useful if application is closed brutally with control-C or shutdown and that exit hook have no time to perform commit)
-                org.jajuk.base.Collection.commit(FILE_COLLECTION);
-                //Display end of refresh message with stats
+	            //Display end of refresh message with stats
                 StringBuffer sbOut = new StringBuffer("[").append(device.getName()).append(Messages.getString("Device.25")).append((int)((System.currentTimeMillis()-lTime)/1000)). //$NON-NLS-1$ //$NON-NLS-2$
                 append(Messages.getString("Device.26")).append(iNbNewFiles).append(Messages.getString("Device.27")). //$NON-NLS-1$ //$NON-NLS-2$
                 append(iNbFilesBeforeRefresh - (FileManager.getInstance().getItems().size()-iNbNewFiles)).append(Messages.getString("Device.28")); //$NON-NLS-1$
                 if (iNbCorruptedFiles > 0){
-                    sbOut.append(" [").append(iNbCorruptedFiles).append(']'); //$NON-NLS-1$
+                    sbOut.append(" - ").append(iNbCorruptedFiles).append(Messages.getString("Device.43")); //$NON-NLS-1$ //$NON-NLS-2$
                 }
                 InformationJPanel.getInstance().setMessage(sbOut.toString(),InformationJPanel.INFORMATIVE); //$NON-NLS-1$
+                //commit collection at each refresh (can be useful if application is closed brutally with control-C or shutdown and that exit hook have no time to perform commit)
+                new Thread(){
+                    public void start(){
+                        try {
+                            org.jajuk.base.Collection.commit(FILE_COLLECTION);
+                        }
+                        catch (IOException e) {
+                            Log.error(e);
+                        }        
+                    }
+                }.start();
                 Log.debug(sbOut.toString()); 
-            }
+	        }
 	    }
 	    catch(RuntimeException re){ //runtime error are thrown
+	        //notify views to refresh
+	        ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH));
 	        throw re;
 	    }
 	    catch(Exception e){ //and regular ones logged
+	        //notify views to refresh
+	        ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH));
 	        Log.error(e);
 	    }
 	    finally{  //make sure to unlock refreshing even if an error occured
@@ -279,15 +296,15 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
 	        AuthorManager.getInstance().cleanup();
 	        PlaylistManager.getInstance().cleanup();
 	        bAlreadyRefreshing = false;
-	        //notify views to refresh
-	        ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH));
-	    }
+            //notify views to refresh
+            ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH));
+        }
 	}
 	
 	
 	/**
 	 * Synchroning asynchronously 
-	 * @param bAsynchronous : set asyncrhonous or synchronous mode
+	 * @param bAsynchronous : set asynchronous or synchronous mode
 	 * @return
 	 */
 	public void synchronize(boolean bAsynchronous) {

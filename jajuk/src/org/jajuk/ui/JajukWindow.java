@@ -78,8 +78,8 @@ public class JajukWindow extends JXFrame implements ITechnicalStrings,Observer {
 	 * Constructor
 	 */
 	public JajukWindow(){
-		//mac integration 
-		System.setProperty( "apple.laf.useScreenMenuBar", "true");//$NON-NLS-1$ //$NON-NLS-2$ 
+		//mac integration (disable for the moment as users reported issues) 
+		//System.setProperty( "apple.laf.useScreenMenuBar", "true");//$NON-NLS-1$ //$NON-NLS-2$ 
 		jw = this;
 		bVisible = ConfigurationManager.getBoolean(CONF_SHOW_AT_STARTUP,true);
 		iMaxWidth = (int)(Toolkit.getDefaultToolkit().getScreenSize().getWidth());
@@ -98,18 +98,26 @@ public class JajukWindow extends JXFrame implements ITechnicalStrings,Observer {
         	public void windowIconified(WindowEvent arg0) {
                 setFocusableWindowState(false);
             }
-          public void windowClosing(WindowEvent we) {
-              //  check if a device is refreshing
-				if (DeviceManager.getInstance().isAnyDeviceRefreshing()){
-					int iResu = Messages.getChoice(Messages.getString("Confirmation_exit_refreshing"),JOptionPane.WARNING_MESSAGE);  //$NON-NLS-1$ //$NON-NLS-2$
-					if (iResu != JOptionPane.YES_OPTION){
-						return;
-					}
-				}
-			    Main.exit(0);
-				return; 
-			}
-		});
+        	public void windowClosing(WindowEvent we) {
+        	    //  check if a device is refreshing
+        	    if (DeviceManager.getInstance().isAnyDeviceRefreshing()){
+        	        int iResu = Messages.getChoice(Messages.getString("Confirmation_exit_refreshing"),JOptionPane.WARNING_MESSAGE);  //$NON-NLS-1$ //$NON-NLS-2$
+        	        if (iResu != JOptionPane.YES_OPTION){
+        	            return;
+        	        }
+        	        else{
+        	            //hide window ASAP
+        	            setVisible(false);
+        	            Main.exit(-1);
+        	        }
+        	    }
+        	    else{
+        	        //hide window ASAP
+        	        setVisible(false);
+        	        Main.exit(0);
+        	    }
+        	}
+        });
         //display correct title if a track is lauched at startup
 		update(new Event(EVENT_FILE_LAUNCHED,ObservationManager.getDetailsLastOccurence(EVENT_FILE_LAUNCHED)));
    }

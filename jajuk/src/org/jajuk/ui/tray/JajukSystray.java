@@ -459,6 +459,8 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
                 }
                 else if(EVENT_VOLUME_CHANGED.equals(event.getSubject())){
                     jsVolume.setValue((int)(100*Player.getCurrentVolume()));
+                    jmiMute.setIcon(Util.getIcon(ICON_MUTE));
+                    jmiMute.setText(Messages.getString("JajukWindow.2")); //$NON-NLS-1$
                 }
                 else if (EVENT_HEART_BEAT.equals(subject) &&!FIFO.isStopped() && !Player.isPaused()){
                     //if position is adjusting, no dont disturb user
@@ -517,7 +519,6 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
             fPosition = 0.99f;
         }
         Player.seek(fPosition);
-        Player.mute(false); //if user move the slider, unmute
     }
     
     private void setVolume(float fVolume){
@@ -526,6 +527,8 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
         //if user move the volume slider, unmute
         Player.mute(false);
         Player.setVolume(fVolume);
+        jmiMute.setIcon(Util.getIcon(ICON_MUTE));
+        jmiMute.setText(Messages.getString("JajukWindow.2")); //$NON-NLS-1$
         jsVolume.addChangeListener(this);
         jsVolume.addMouseWheelListener(this);
     }

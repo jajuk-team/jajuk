@@ -185,7 +185,7 @@ public class DownloadManager implements ITechnicalStrings {
 	 */
 	public synchronized static String getProxyPwd(){//must be synchronized to avoid displaying several password dialogs
 	    if (sProxyPwd == null || sProxyPwd.trim().equals("")){ //$NON-NLS-1$
-	        PasswordDialog pd = new PasswordDialog(Messages.getString("DownloadManager.1"));
+	        PasswordDialog pd = new PasswordDialog(Messages.getString("DownloadManager.1")); //$NON-NLS-1$
             sProxyPwd = (String)pd.getOptionPane().getValue();
 	    }
 	    return sProxyPwd;

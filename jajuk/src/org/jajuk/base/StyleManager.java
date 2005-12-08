@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.Vector;
 
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.Util;
@@ -38,7 +39,7 @@ public class StyleManager extends ItemManager {
     /**Self instance*/
     private static StyleManager singleton;
     /*List of all known styles*/
-    public static ArrayList<String> stylesList;
+    public static Vector<String> stylesList;
     
 	/**
 	 * No constructor available, only static access
@@ -53,7 +54,7 @@ public class StyleManager extends ItemManager {
         //Expand
         registerProperty(new PropertyMetaInformation(XML_EXPANDED,false,false,false,false,true,Boolean.class,null,false));
         //create default style list
-        stylesList = new ArrayList(Arrays.asList(Util.genres));
+        stylesList = new Vector(Arrays.asList(Util.genres));
         Collections.sort(stylesList);
    }
 
@@ -76,19 +77,28 @@ public class StyleManager extends ItemManager {
 		String sId = MD5Processor.hash(sName.trim().toLowerCase());
 		return registerStyle(sId, sName);
 	}
-
+    
 	/**
 	 * Register a style with a known id
 	 * 
 	 * @param sName
 	 */
-	public  synchronized Style registerStyle(String sId, String sName) {
+	public synchronized Style registerStyle(String sId, String sName) {
 		if (hmItems.containsKey(sId)) {
-			return (Style) hmItems.get(sId);
+			Style style = (Style)hmItems.get(sId);
+            //check if name has right case
+            if (!style.getName().equals(sName)){
+                style.setName(sName);
+            }
+            return style;
 		}
 		Style style = null;
         if (hmIdSaveItems.containsKey(sId)){
             style = (Style)hmIdSaveItems.get(sId);
+            //check if name has right case
+            if (!style.getName().equals(sName)){
+                style.setName(sName);
+            }
         }
         else{
             style = new Style(sId, sName);
@@ -104,11 +114,12 @@ public class StyleManager extends ItemManager {
             }
         }
         if (bNew){
-            stylesList.add(sName);
+            stylesList.add(Util.formatStyle(style.getName2()));
         }
         Collections.sort(stylesList);
         return style;
 	}
+    
     
       /**
      * Change the item name
@@ -122,15 +133,17 @@ public class StyleManager extends ItemManager {
             return old;
         }
         Style newItem = registerStyle(sNewName);
+        //re apply old properties from old item
+        newItem.cloneProperties(old);
+        //update tracks
         ArrayList alTracks = new ArrayList(TrackManager.getInstance().getItems()); //we need to create a new list to avoid concurrent exceptions
         Iterator it = alTracks.iterator();
         while (it.hasNext()){
             Track track = (Track)it.next();
             if (track.getStyle().equals(old)){
-                TrackManager.getInstance().changeTrackStyle(track,sNewName);
+                TrackManager.getInstance().changeTrackStyle(track,sNewName,null);
             }
         }
-        cleanup();//remove useless items if no more tracks use it
         return newItem;
     }
 		
@@ -164,8 +177,9 @@ public class StyleManager extends ItemManager {
         return XML_STYLES;
     }
 
-    public static ArrayList<String> getStylesList() {
+    public static synchronized Vector<String> getStylesList() {
         return stylesList;
     }
 
+  
 }

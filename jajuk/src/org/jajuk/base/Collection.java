@@ -28,6 +28,7 @@ import java.io.OutputStreamWriter;
 import java.io.Serializable;
 import java.text.Format;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 
@@ -60,6 +61,8 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 	private static long lTime;
     /**Current Item manager*/
     private ItemManager manager;
+    /**upgrade for track IDs*/
+    private HashMap hmWrongRightID = new HashMap();
 	
 	/** Instance getter */
 	public static synchronized Collection getInstance() {
@@ -77,7 +80,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 	public static void commit(String sFileName) throws IOException {
 	    long lTime = System.currentTimeMillis();
         String sCharset = ConfigurationManager.getProperty(CONF_COLLECTION_CHARSET);
-		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(sFileName), sCharset)); //$NON-NLS-1$
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(sFileName), sCharset),1000000); //$NON-NLS-1$
 		bw.write("<?xml version='1.0' encoding='"+sCharset+"'?>\n"); //$NON-NLS-1$ //$NON-NLS-2$
 	    bw.write("<"+XML_COLLECTION+" "+XML_VERSION+"='"+JAJUK_VERSION+"'>\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
         //types
@@ -140,7 +143,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 		bw.write("\t</"+DirectoryManager.getInstance().getIdentifier()+">\n"); //$NON-NLS-1$ //$NON-NLS-2$
 		//files
         bw.write(FileManager.getInstance().toXML()); //$NON-NLS-1$
-		it = FileManager.getInstance().getItems().iterator();
+		it = FileManager.getInstance().getSortedFiles().iterator();
 		while (it.hasNext()) {
 			org.jajuk.base.File file = (org.jajuk.base.File) it.next();
 			bw.write(file.toXml());
@@ -168,7 +171,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 		bw.flush();
 		bw.close();
         Log.debug("Collection commited in "+(System.currentTimeMillis()-lTime)+" ms");//$NON-NLS-1$ //$NON-NLS-2$
-	}
+    }
 
 	/**
 	 * Parse collection.xml file and put all collection information into memory
@@ -188,8 +191,6 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
             throw new JajukException("005"); //$NON-NLS-1$
         }
 	    saxParser.parse(frt.toURL().toString(),getInstance());
-	    //Sort collection
-	    FileManager.getInstance().sortFiles();//resort collection in case of
 	}
 
 	/**
@@ -352,7 +353,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 	        }
 	        else if (XML_TRACK.equals(sQName)){
 	            String sId = attributes.getValue(attributes.getIndex(XML_ID));
-	            String sTrackName = attributes.getValue(attributes.getIndex(XML_TRACK_NAME));
+                String sTrackName = attributes.getValue(attributes.getIndex(XML_TRACK_NAME));
 	            Album album = (Album)AlbumManager.getInstance().getItem(attributes.getValue(attributes.getIndex(XML_TRACK_ALBUM)));
 	            Style style = (Style)StyleManager.getInstance().getItem(attributes.getValue(attributes.getIndex(XML_TRACK_STYLE)));
 	            Author author =(Author) AuthorManager.getInstance().getItem(attributes.getValue(attributes.getIndex(XML_TRACK_AUTHOR)));
@@ -382,15 +383,25 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
                         Log.debug(Messages.getString("Error.137")+ ":" +sTrackName); //wrong format //$NON-NLS-1$ //$NON-NLS-2$
                     }
                 }
+                //UPGRADE --For jajuk == 1.0.1 to 1.0.2 : Track id changed and used deep hashcode, not used after
+                String sRightID = TrackManager.getHashcode(sTrackName, album, style, author, length, lYear,lOrder, type);
                 //Date format should be OK
                 Date dAdditionDate = Util.getAdditionDateFormat().parse(attributes.getValue(attributes.getIndex(XML_TRACK_ADDED)));
-                Track track = TrackManager.getInstance().registerTrack(sId, sTrackName, album, style, author, length, lYear, type);
+                Track track = TrackManager.getInstance().registerTrack(sRightID, sTrackName, album, style, author, length, lYear,lOrder, type);
 	            track.setRate(Long.parseLong(attributes.getValue(attributes.getIndex(XML_TRACK_RATE))));
 	            track.setHits(Long.parseLong(attributes.getValue(attributes.getIndex(XML_TRACK_HITS))));
 	            track.setAdditionDate(dAdditionDate);
-	            track.setComment(attributes.getValue(attributes.getIndex(XML_TRACK_COMMENT)));
-                track.setOrder(lOrder);
+	            String sComment = attributes.getValue(attributes.getIndex(XML_TRACK_COMMENT));
+                if (sComment == null){
+                    sComment = ""; //$NON-NLS-1$
+                }
+                track.setComment(sComment);
                 track.populateProperties(attributes);
+                //display a message if Id had a problem
+                if (!sId.equals(TrackManager.getHashcode(sTrackName, album, style, author, length, lYear,lOrder,type))){
+                    Log.debug("** Wrong Track Id, upgraded: " +track); //$NON-NLS-1$
+                    hmWrongRightID.put(sId,sRightID);
+                }
             }
 	        else if (XML_DIRECTORY.equals(sQName)){
 	            Directory dParent = null;
@@ -412,9 +423,17 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
 	            directory.populateProperties(attributes);
 	        }
 	        else if (XML_FILE.equals(sQName)){
+	            String sTrackId = attributes.getValue(attributes.getIndex(XML_TRACK));
+                //UPGRADE check if track Id is right
+                if (hmWrongRightID.size() > 0){
+                    //replace wrong by right ID
+                    if (hmWrongRightID.containsKey(sTrackId)){
+                        sTrackId = (String)hmWrongRightID.get(sTrackId);
+                    }
+                }
+                Track track = (Track)TrackManager.getInstance().getItem(sTrackId);
 	            Directory dParent = (Directory)DirectoryManager.getInstance().getItem(attributes.getValue(attributes.getIndex(XML_DIRECTORY)));
-	            Track track = (Track)TrackManager.getInstance().getItem(attributes.getValue(attributes.getIndex(XML_TRACK)));
-	            if (dParent == null || track == null){ //more checkups
+                if (dParent == null || track == null){ //more checkups
 	                return;
 	            }
 	            String sItemName = attributes.getValue(attributes.getIndex(XML_NAME));

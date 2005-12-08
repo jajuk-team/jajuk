@@ -23,12 +23,15 @@ package org.jajuk.base;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 
 import org.jajuk.i18n.Messages;
+import org.jajuk.util.Filter;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.error.JajukException;
+import org.jajuk.util.log.Log;
 
 /**
  *  Managers parent class
@@ -39,11 +42,11 @@ import org.jajuk.util.error.JajukException;
 public abstract class ItemManager implements ITechnicalStrings{
 
     /** Map ids and stored items, survives to a refresh, is used to recover old properties after refresh */
-	protected LinkedHashMap<String,IPropertyable> hmIdSaveItems = new LinkedHashMap(1000);
+	protected HashMap<String,IPropertyable> hmIdSaveItems = new HashMap(100);
     /**Items collection**/
-    protected LinkedHashMap hmItems = new LinkedHashMap(100);
+    protected LinkedHashMap<String,IPropertyable> hmItems = new LinkedHashMap(100);
     /**Maps item classes -> instance*/
-    static private HashMap hmItemManagers  = new LinkedHashMap(10);
+    static private LinkedHashMap hmItemManagers  = new LinkedHashMap(10);
     /**Maps properties meta information name and object*/
     private LinkedHashMap hmPropertiesMetaInformation = new LinkedHashMap(10);
     
@@ -258,6 +261,7 @@ public abstract class ItemManager implements ITechnicalStrings{
         Iterator it = hmItems.values().iterator();
         while (it.hasNext()) {
             IPropertyable item = (IPropertyable) it.next();
+            //check if this item still maps some tracks
             if ( TrackManager.getInstance().getAssociatedTracks(item).size() == 0){
                 it.remove();
             }
@@ -278,6 +282,36 @@ public abstract class ItemManager implements ITechnicalStrings{
         return hmItems.values();
     }
     
+    /**Return all registred items with filter applied*/
+    public synchronized Collection<IPropertyable> getItems(Filter filter) {
+        if (filter == null){
+            return getItems();
+        }
+        Collection<IPropertyable> col = hmItems.values();
+        String comparator = null;
+        String checked = null;
+        if (filter.isExact()){
+            checked = filter.getValue();
+        }
+        else{
+            checked = ".*" + filter.getValue() + ".*";
+        }
+        ArrayList out = new ArrayList(col.size());
+        for (IPropertyable item:col){
+            if (filter.isHuman()){
+                comparator = item.getHumanValue(filter.getProperty().getName());
+            }
+            else{
+                comparator = item.getStringValue(filter.getProperty().getName());
+            }
+            //perform the test
+            if (comparator.toLowerCase().matches(checked.toLowerCase())){
+                out.add(item);
+            }
+        }
+        return out;
+    }
+    
       /**Return a given item*/
     public synchronized IPropertyable getItem(String sID) {
         return (IPropertyable)hmItems.get(sID);
@@ -295,15 +329,20 @@ public abstract class ItemManager implements ITechnicalStrings{
     public void registerProperty(PropertyMetaInformation meta){
         hmPropertiesMetaInformation.put(meta.getName(),meta);
     }
-     
+       
+    
     /**
      * Change any item
      * @param itemToChange
      * @param sKey
      * @param oValue
+     * @param filter: files we want to deal with
      * @return the changed item
      */
-    public static IPropertyable changeItem(IPropertyable itemToChange,String sKey,Object oValue) throws JajukException{
+    public static IPropertyable changeItem(IPropertyable itemToChange,String sKey,Object oValue,HashSet filter) throws JajukException{
+        if (Log.isDebugEnabled()){
+            Log.debug("Set "+sKey+"="+oValue.toString()+" to "+itemToChange); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        }
         IPropertyable newItem = itemToChange;
         if (itemToChange instanceof File){
             File file = (File)itemToChange;
@@ -311,25 +350,25 @@ public abstract class ItemManager implements ITechnicalStrings{
                 newItem = FileManager.getInstance().changeFileName((File)itemToChange,(String)oValue);
             }
             else if (XML_TRACK.equals(sKey)){ //track name
-                newItem = TrackManager.getInstance().changeTrackName(file.getTrack(),(String)oValue);
+                newItem = TrackManager.getInstance().changeTrackName(file.getTrack(),(String)oValue,filter);
             }
             else if (XML_STYLE.equals(sKey)){
-                newItem = TrackManager.getInstance().changeTrackStyle(file.getTrack(),(String)oValue);
+                newItem = TrackManager.getInstance().changeTrackStyle(file.getTrack(),(String)oValue,filter);
             }
             else if (XML_ALBUM.equals(sKey)){
-                newItem = TrackManager.getInstance().changeTrackAlbum(file.getTrack(),(String)oValue);
+                newItem = TrackManager.getInstance().changeTrackAlbum(file.getTrack(),(String)oValue,filter);
             }
             else if (XML_AUTHOR.equals(sKey)){
-                newItem = TrackManager.getInstance().changeTrackAuthor(file.getTrack(),(String)oValue);
+                newItem = TrackManager.getInstance().changeTrackAuthor(file.getTrack(),(String)oValue,filter);
             }
             else if (XML_TRACK_COMMENT.equals(sKey)){
-                newItem = TrackManager.getInstance().changeTrackComment(file.getTrack(),(String)oValue);
+                newItem = TrackManager.getInstance().changeTrackComment(file.getTrack(),(String)oValue,filter);
             }
             else if (XML_TRACK_ORDER.equals(sKey)){
-                newItem = TrackManager.getInstance().changeTrackOrder(file.getTrack(),(Long)oValue);
+                newItem = TrackManager.getInstance().changeTrackOrder(file.getTrack(),(Long)oValue,filter);
             }
             else if (XML_TRACK_YEAR.equals(sKey)){
-                newItem = TrackManager.getInstance().changeTrackYear(file.getTrack(),(Long)oValue);
+                newItem = TrackManager.getInstance().changeTrackYear(file.getTrack(),(Long)oValue,filter);
             }
             else if (XML_TRACK_RATE.equals(sKey)){
                 newItem = TrackManager.getInstance().changeTrackRate(file.getTrack(),(Long)oValue);
@@ -360,25 +399,25 @@ public abstract class ItemManager implements ITechnicalStrings{
         }
         else if (itemToChange instanceof Track){
             if (XML_NAME.equals(sKey)){
-                newItem = TrackManager.getInstance().changeTrackName((Track)itemToChange,(String)oValue);
+                newItem = TrackManager.getInstance().changeTrackName((Track)itemToChange,(String)oValue,filter);
             }
             else if (XML_STYLE.equals(sKey)){
-                newItem = TrackManager.getInstance().changeTrackStyle((Track)itemToChange,(String)oValue);
+                newItem = TrackManager.getInstance().changeTrackStyle((Track)itemToChange,(String)oValue,filter);
             }
             else if (XML_ALBUM.equals(sKey)){
-                newItem = TrackManager.getInstance().changeTrackAlbum((Track)itemToChange,(String)oValue);
+                newItem = TrackManager.getInstance().changeTrackAlbum((Track)itemToChange,(String)oValue,filter);
             }
             else if (XML_AUTHOR.equals(sKey)){
-                newItem = TrackManager.getInstance().changeTrackAuthor((Track)itemToChange,(String)oValue);
+                newItem = TrackManager.getInstance().changeTrackAuthor((Track)itemToChange,(String)oValue,filter);
             }
             else if (XML_TRACK_COMMENT.equals(sKey)){
-                newItem = TrackManager.getInstance().changeTrackComment((Track)itemToChange,(String)oValue);
+                newItem = TrackManager.getInstance().changeTrackComment((Track)itemToChange,(String)oValue,filter);
             }
             else if (XML_TRACK_ORDER.equals(sKey)){
-                newItem = TrackManager.getInstance().changeTrackOrder((Track)itemToChange,(Long)oValue);
+                newItem = TrackManager.getInstance().changeTrackOrder((Track)itemToChange,(Long)oValue,filter);
             }
             else if (XML_TRACK_YEAR.equals(sKey)){
-                newItem = TrackManager.getInstance().changeTrackYear((Track)itemToChange,(Long)oValue);
+                newItem = TrackManager.getInstance().changeTrackYear((Track)itemToChange,(Long)oValue,filter);
             }
             else if (XML_TRACK_RATE.equals(sKey)){
                 newItem = TrackManager.getInstance().changeTrackRate((Track)itemToChange,(Long)oValue);
@@ -414,4 +453,5 @@ public abstract class ItemManager implements ITechnicalStrings{
         return newItem;            
     }
     
+   
 }

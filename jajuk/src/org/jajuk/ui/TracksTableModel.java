@@ -21,6 +21,7 @@
 package org.jajuk.ui;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -103,11 +104,9 @@ public class TracksTableModel extends JajukTableModel{
         boolean bShowWithTree = true;
         HashSet hs = (HashSet)ObservationManager.getDetailLastOccurence(EVENT_SYNC_TREE_TABLE,DETAIL_SELECTION);//look at selection
         boolean bSyncWithTreeOption = ConfigurationManager.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE);
-        ArrayList alTracks = TrackManager.getInstance().getSortedTracks();
+        Collection<Track> alTracks = TrackManager.getInstance().getSortedTracks();
         ArrayList alToShow = new ArrayList(alTracks.size());
-        Iterator it = alTracks.iterator();
-        while ( it.hasNext()){
-            Track track = (Track)it.next();
+        for (Track track:alTracks){
             bShowWithTree =  !bSyncWithTreeOption || ((hs != null && hs.size() > 0 
                     && hs.contains(track))); //show it if no sync option or if item is in the selection
             if ( !track.shouldBeHidden() && bShowWithTree){
@@ -116,7 +115,7 @@ public class TracksTableModel extends JajukTableModel{
         }
         //Filter values using given pattern
         if (sPropertyName != null && sPattern != null){ //null means no filtering
-            it = alToShow.iterator();
+            Iterator it = alToShow.iterator();
             //Prepare filter pattern
             String sNewPattern = sPattern;
             if ( !ConfigurationManager.getBoolean(CONF_REGEXP) && sNewPattern != null){ //do we use regular expression or not? if not, we allow user to use '*'
@@ -148,7 +147,7 @@ public class TracksTableModel extends JajukTableModel{
                 }
             }
         }
-        it = alToShow.iterator();
+        Iterator it = alToShow.iterator();
         int iColNum = iNumberStandardRows + 
             TrackManager.getInstance().getCustomProperties().size();
         iRowNum = alToShow.size();

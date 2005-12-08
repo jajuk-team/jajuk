@@ -109,12 +109,13 @@ public interface ITechnicalStrings {
 	public static final String ICON_PERSPECTIVE_STATISTICS	= "/org/jajuk/icons/16x16/statistics_perspective.png";
 	public static final String ICON_PERSPECTIVE_CONFIGURATION	= "/org/jajuk/icons/16x16/configure.png";
 	public static final String ICON_PERSPECTIVE_PLAYER	= "/org/jajuk/icons/16x16/player_perspective.png";
-	public static final String ICON_PERSPECTIVE_HELP	= "/org/jajuk/icons/16x16/info.png";
+	public static final String ICON_PERSPECTIVE_CATALOG = "/org/jajuk/icons/16x16/thumbnail.png";
+    public static final String ICON_PERSPECTIVE_HELP	= "/org/jajuk/icons/16x16/info.png";
 	public static final String ICON_OPEN_FILE	= PATH_ICONS + "16x16/fileopen.png";
 	public static final String ICON_EXIT=  PATH_ICONS + "16x16/exit.png";
 	public static final String ICON_NEW=  PATH_ICONS + "16x16/new.png";
 	public static final String ICON_DELETE=  PATH_ICONS + "16x16/delete.png";
-	public static final String ICON_PROPERTIES=  PATH_ICONS + "16x16/properties.png";
+	public static final String ICON_PROPERTIES=  PATH_ICONS + "16x16/fileopen.png";
 	public static final String ICON_VOID=  PATH_ICONS + "16x16/void.png";
     public static final String ICON_CONFIGURATION   = PATH_ICONS + "16x16/configure.png";
     public static final String ICON_MOUNT=  PATH_ICONS + "16x16/mount.png";
@@ -197,7 +198,8 @@ public interface ITechnicalStrings {
 	//images
 	public static final String IMAGES_SPLASHSCREEN =  PATH_IMAGES + "jajuk-splashscreen.png";
 	public static final String IMAGES_STAT_PAPER =  PATH_IMAGES + "No-Ones-Laughing-3.jpg";
-	
+	public static final String IMAGE_NO_COVER = PATH_IMAGES + "unknown.jpg";
+        
 	//files
 	public static final String FILE_JAJUK_DIR = System.getProperty("user.home")+(Main.bTestMode?"/.jajuk_test":"/.jajuk");
 	public static final String FILE_COLLECTION = FILE_JAJUK_DIR+"/collection.xml";
@@ -207,7 +209,8 @@ public interface ITechnicalStrings {
 	public static final String FILE_PHYSICAL_PERSPECTIVE = FILE_JAJUK_DIR+"/physicalPerspectives.ser";
 	public static final String FILE_LOGICAL_PERSPECTIVE = FILE_JAJUK_DIR+"/logicalPerspectives.ser";
 	public static final String FILE_PLAYER_PERSPECTIVE = FILE_JAJUK_DIR+"/playerPerspectives.ser";
-	public static final String FILE_STAT_PERSPECTIVE = FILE_JAJUK_DIR+"/statPerspectives.ser";
+	public static final String FILE_CATALOG_PERSPECTIVE = FILE_JAJUK_DIR+"/catalogPerspectives.ser";
+    public static final String FILE_STAT_PERSPECTIVE = FILE_JAJUK_DIR+"/statPerspectives.ser";
 	public static final String FILE_HELP_PERSPECTIVE = FILE_JAJUK_DIR+"/helpPerspectives.ser";
 	public static final String FILE_CONFIGURATION_PERSPECTIVE = FILE_JAJUK_DIR+"/configurationPerspectives.ser";
 	public static final String FILE_CONFIGURATION = FILE_JAJUK_DIR+"/conf.properties";
@@ -221,7 +224,8 @@ public interface ITechnicalStrings {
     public static final String FILE_LOGS = FILE_JAJUK_DIR+"/jajuk.log"; //logs
     public static final String FILE_LOG4j_CONF = PATH_LOG_CONF +"jajuk-log4j-conf.xml"; 
     public static final String FILE_IMAGE_CACHE = FILE_JAJUK_DIR +"/cache"; 
-    
+    public static final String FILE_THUMBS = FILE_JAJUK_DIR +"/thumbs";
+    public static final String FILE_THUMB_NO_COVER = "nocover.jpg";
     //Command line options
     public static final String CLI_NOTASKBAR="notaskbar"; //if selected, no jajuk window at startup, only tray 
     public static final String CLI_IDE = "ide"; //Tells jajuk it is inside the IDE 
@@ -267,7 +271,7 @@ public interface ITechnicalStrings {
 	public static final String PERSPECTIVE_NAME_STATISTICS = "org.jajuk.ui.perspectives.StatPerspective";
 	public static final String PERSPECTIVE_NAME_HELP = "org.jajuk.ui.perspectives.HelpPerspective";
 	public static final String PERSPECTIVE_NAME_PLAYER = "org.jajuk.ui.perspectives.PlayerPerspective";
-	
+	public static final String PERSPECTIVE_NAME_CATALOG = "org.jajuk.ui.perspectives.CatalogPerspective";
 	 //views
 	public static final String VIEW_NAME_DEVICES = "org.jajuk.ui.views.DeviceView";
 	public static final String VIEW_NAME_PARAMETERS = "org.jajuk.ui.views.ParameterView";
@@ -295,7 +299,8 @@ public interface ITechnicalStrings {
 	public static final String EXT_AU = "au";
 	public static final String EXT_AIFF = "aiff";
 	public static final String EXT_FLAC = "flac";
-    	
+    public static final String EXT_THUMB = "jpg";
+        	
 	//event keys
 	public static final String EVENT_EXIT ="exit"; //exit has be required
 	public static final String EVENT_REPEAT_MODE_STATUS_CHANGED="repeat status changed"; //repeat mode changed
@@ -342,7 +347,8 @@ public interface ITechnicalStrings {
     public static final String EVENT_CUSTOM_PROPERTIES_ADD="custom property add"; //new custom property
     public static final String EVENT_CUSTOM_PROPERTIES_REMOVE="custom property remove"; //remove custom property
     public static final String EVENT_FILE_NAME_CHANGED="file name changed"; //file name change
-	//details keys
+	public static final String EVENT_RATE_CHANGED="file rate changed"; //file rate change
+    //details keys
 	public static final String DETAIL_CURRENT_FILE_ID="current file id";
 	public static final String DETAIL_CURRENT_FILE="current file";
 	public static final String DETAIL_CURRENT_DATE="current date";
@@ -422,7 +428,6 @@ public interface ITechnicalStrings {
 	public static final String CONF_OPTIONS_LANGUAGE = "jajuk.options.language";
 	public static final String CONF_OPTIONS_INTRO_BEGIN = "jajuk.options.intro.begin";
 	public static final String CONF_OPTIONS_INTRO_LENGTH = "jajuk.options.intro.length";
-	public static final String CONF_OPTIONS_SEARCH_ONLY_MOUNTED = "jajuk.options.search_only_mounted";
 	public static final String CONF_OPTIONS_LNF = "jajuk.options.lnf";
 	public static final String CONF_OPTIONS_NOVELTIES_AGE = "jajuk.options.novelties";
 	public static final String CONF_OPTIONS_VISIBLE_PLANNED = "jajuk.options.visible_planned"; //number of visible planned tracks
@@ -466,6 +471,8 @@ public interface ITechnicalStrings {
     public static final String CONF_PHYSICAL_TABLE_COLUMNS = "jajuk.ui.physical_table_columns"; //Physical table columns
     public static final String CONF_LOGICAL_TABLE_COLUMNS = "jajuk.ui.logical_table_columns"; //Logical table columns
     public static final String CONF_LOGICAL_TABLE_EDITION = "jajuk.ui.logical_table_edition"; //Logical table columns
+    public static final String CONF_THUMBS_SIZE = "jajuk.ui.cover_catalog.thumbs_size"; //Catalog items size
+    public static final String CONF_THUMBS_SHOW_WITHOUT_COVER = "jajuk.ui.cover_catalog.show_without_cover"; //Catalog items size
     	
 	//Accuracy levels
 	public static final String ACCURACY_LOW = "low";
@@ -581,6 +588,11 @@ public interface ITechnicalStrings {
     public static final String FORMAT_BOOLEAN = "Property_Format_Boolean";
     public static final String FORMAT_FLOAT = "Property_Format_Float";
     public static final String FORMAT_DATE = "Property_Format_Date";
+    
+    public static final String THUMBNAIL_SIZE_50x50 = "50x50";
+    public static final String THUMBNAIL_SIZE_100x100 = "100x100";
+    public static final String THUMBNAIL_SIZE_150x150 = "150x150";
+    public static final String THUMBNAIL_SIZE_200x200 = "200x200";
     
     
 }

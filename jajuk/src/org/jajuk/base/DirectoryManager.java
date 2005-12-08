@@ -21,7 +21,6 @@
 package org.jajuk.base;
 
 import java.util.Iterator;
-import java.util.Properties;
 
 import org.jajuk.util.MD5Processor;
 
@@ -30,7 +29,7 @@ import org.jajuk.util.MD5Processor;
  * @Author Bertrand Florat 
  * @created 17 oct. 2003
  */
-public class DirectoryManager extends ItemManager implements Observer{
+public class DirectoryManager extends ItemManager{
     /**Self instance*/
     private static DirectoryManager singleton;
 
@@ -54,9 +53,7 @@ public class DirectoryManager extends ItemManager implements Observer{
         registerProperty(new PropertyMetaInformation(XML_DIRECTORY_SYNCHRONIZED,false,false,true,false,false,Boolean.class,null,true));
         //Default cover
         registerProperty(new PropertyMetaInformation(XML_DIRECTORY_DEFAULT_COVER,false,false,true,false,false,String.class,null,null));
-        //---Subscriptions---
-        ObservationManager.register(EVENT_FILE_NAME_CHANGED,this);
-	}
+   }
     
 	/**
      * @return singleton
@@ -167,22 +164,6 @@ public class DirectoryManager extends ItemManager implements Observer{
     public String getIdentifier() {
         return XML_DIRECTORIES;
     }
-    
-  /* (non-Javadoc)
-     * @see org.jajuk.base.Observer#update(org.jajuk.base.Event)
-     */
-    public void update(Event event) {
-        String subject = event.getSubject();
-        if (EVENT_FILE_NAME_CHANGED.equals(subject)){
-            Properties properties = event.getDetails();
-            File fNew  = (File)properties.get(DETAIL_NEW);
-            File fileOld = (File)properties.get(DETAIL_OLD);
-            Directory dir = fileOld.getDirectory();
-            // change directory references
-            dir.changeFile(fileOld,fNew);
-        }
-    }
-    
     
     public Directory getDirectoryForIO(java.io.File fio){
         Iterator it = getItems().iterator();

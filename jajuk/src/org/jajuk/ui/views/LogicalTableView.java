@@ -35,9 +35,11 @@ import org.jajuk.base.IPropertyable;
 import org.jajuk.base.Observer;
 import org.jajuk.base.StackItem;
 import org.jajuk.base.Track;
+import org.jajuk.base.TrackManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.JajukTableModel;
 import org.jajuk.ui.PropertiesWizard;
+import org.jajuk.ui.TableTransferHandler;
 import org.jajuk.ui.TracksTableModel;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Util;
@@ -171,17 +173,20 @@ public class LogicalTableView extends AbstractTableView implements Observer{
                 Messages.showErrorMessage("010",track.getName()); //$NON-NLS-1$
             }
         }
-        else if (e.getClickCount() == 1 
-                && e.getButton()==MouseEvent.BUTTON3){  //right clic on a selected node set
-            //if none or 1 node is selected, a right click on another node select it
-            //if more than 1, we keep selection and display a popup for them
-            if (jtable.getSelectedRowCount() < 2){
-                int iSelection = jtable.rowAtPoint(e.getPoint());
-                jtable.getSelectionModel().setSelectionInterval(iSelection,iSelection);
+        else if ( e.getClickCount() == 1 ){
+            int iSelectedRow = jtable.rowAtPoint(e.getPoint());
+            //Store real row index
+            TableTransferHandler.iSelectedRow = iSelectedRow;
+            if (e.getButton()==MouseEvent.BUTTON3){  //right clic on a selected node set
+                // if none or 1 node is selected, a right click on another node select it
+                //if more than 1, we keep selection and display a popup for them
+                if (jtable.getSelectedRowCount() < 2){
+                    jtable.getSelectionModel().setSelectionInterval(iSelectedRow,iSelectedRow);
+                }
+                jmenuTrack.show(jtable,e.getX(),e.getY());
             }
-            jmenuTrack.show(jtable,e.getX(),e.getY());
         }
-    }
+    } 
     
     
     /* (non-Javadoc)
@@ -206,11 +211,11 @@ public class LogicalTableView extends AbstractTableView implements Observer{
                     ArrayList alTracks = new ArrayList(indexes.length);
                     if (e.getSource() == jmiTrackPlayAlbum){
                         Album album = track.getAlbum();
-                        alTracks.addAll(album.getTracks()); //add all tracks from the same album
+                        alTracks.addAll(TrackManager.getInstance().getAssociatedTracks(album)); //add all tracks from the same album
                     }
                     if (e.getSource() == jmiTrackPlayAuthor){
                         Author author = track.getAuthor();
-                        alTracks.addAll(author.getTracks()); //add all tracks from the same author
+                        alTracks.addAll(TrackManager.getInstance().getAssociatedTracks(author)); //add all tracks from the same author
                     }
                     else{
                         alTracks.add(track);

@@ -19,11 +19,11 @@
  */
 package org.jajuk.base;
 
+import java.io.File;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
 
 import org.jajuk.i18n.Messages;
+import org.jajuk.util.Util;
 
 /**
  *  An Album
@@ -76,23 +76,6 @@ public class Album extends PropertyAdapter implements Comparable{
 	public int hashCode(){
 		return getId().hashCode();
 	}
-
-	/**
-	 * return tracks associated with this item
-	 * @return tracks associated with this item
-	 */
-	public ArrayList<Track> getTracks() {
-		ArrayList alTracks = new ArrayList(10);
-		Iterator it = TrackManager.getInstance().getItems().iterator();
-		while ( it.hasNext()){
-			Track track = (Track)it.next();
-			if (track != null && track.getAlbum().equals(this)){
-				alTracks.add(track);
-			}
-		}
-		Collections.sort(alTracks);
-		return alTracks;
-	}
 	
 	/**
 	 *Alphabetical comparator used to display ordered lists
@@ -114,7 +97,7 @@ public class Album extends PropertyAdapter implements Comparable{
 	/* (non-Javadoc)
      * @see org.jajuk.base.IPropertyable#getIdentifier()
      */
-    public String getIdentifier() {
+    final public String getIdentifier() {
         return XML_ALBUM;
     }
     
@@ -137,5 +120,85 @@ public class Album extends PropertyAdapter implements Comparable{
             return super.getHumanValue(sKey);
         }
     }
+    
+     /**
+     * 
+     * @return all tracks associated with this album
+     */
+    public ArrayList<Track> getTracksRecursively(){
+        ArrayList<Track> alTracks = new ArrayList(10);
+        for (IPropertyable item:TrackManager.getInstance().getItems()){
+            Track track = (Track)item;
+            if (track.getAlbum().equals(this)){
+                alTracks.add(track);
+            }
+        }
+        return alTracks;
+    }
+    
+    /**
+     * 
+     * @return associated best cover file available or null if none
+     */
+    public File getCoverFile(){
+        File fCover = null;
+        File fDir = null; //analyzed directory
+        //search for local covers in all directories mapping the current track to reach other devices covers and display them together
+        ArrayList<Track> alTracks = TrackManager.getInstance().getAssociatedTracks(this);
+        if (alTracks.size() == 0){
+            return null;
+        }
+        //List if directories we have to look in
+        ArrayList<Directory> alDirs = new ArrayList(2);
+        for (Track track:alTracks){
+            for (org.jajuk.base.File file:track.getFiles()){
+                if (!alDirs.contains(file.getDirectory())){
+                    alDirs.add(file.getDirectory());
+                }
+            }   
+        }
+        //look for absolute cover in collection
+        for (Directory dir:alDirs){
+            String sAbsolut = dir.getStringValue(XML_DIRECTORY_DEFAULT_COVER);
+            if (sAbsolut != null && !sAbsolut.trim().equals("")){
+                File fAbsoluteDefault = new File(dir.getAbsolutePath()+'/'+sAbsolut); //$NON-NLS-1$.getAbsoluteFile();
+                if (fAbsoluteDefault.canRead()){
+                    return fAbsoluteDefault;
+                }
+            }
+        }
+        //look for standard cover in collection
+        for (Directory dir:alDirs){
+            fDir = dir.getFio(); //store this dir
+            java.io.File[] files = fDir.listFiles();//null if none file found
+            for (int i=0;files != null && i<files.length;i++){
+                if ( files[i].canRead() //test file is readable
+                        && files[i].length() < MAX_COVER_SIZE*1024 ){ //check size to avoid out of memory errors
+                    String sExt = Util.getExtension(files[i]);
+                    if (sExt.equalsIgnoreCase("jpg") || sExt.equalsIgnoreCase("png") || sExt.equalsIgnoreCase("gif")){ //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                        if (Util.isStandardCover(files[i].getAbsolutePath())){
+                            return files[i];
+                        }
+                    }
+                }
+            }
+        }
+        //none ? OK, return first cover file we find
+        for (Directory dir:alDirs){
+            fDir = dir.getFio(); //store this dir
+            java.io.File[] files = fDir.listFiles();//null if none file found
+            for (int i=0;files != null && i<files.length;i++){
+                if ( files[i].canRead() //test file is readable
+                        && files[i].length() < MAX_COVER_SIZE*1024 ){ //check size to avoid out of memory errors
+                    String sExt = Util.getExtension(files[i]);
+                    if (sExt.equalsIgnoreCase("jpg") || sExt.equalsIgnoreCase("png") || sExt.equalsIgnoreCase("gif")){ //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                        return files[i];
+                    }
+                }
+            }
+        }
+        return fCover;
+    }
+    
     
 }

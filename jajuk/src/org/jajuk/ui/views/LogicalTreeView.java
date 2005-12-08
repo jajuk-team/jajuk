@@ -301,7 +301,15 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
                 alSelected = new ArrayList(tpSelected.length);
                 for (int i=0;i<tpSelected.length;i++){
                     Object o = tpSelected[i].getLastPathComponent();
-                    alSelected.add((IPropertyable)((TransferableTreeNode)o).getData());
+                    if (o instanceof TransferableTreeNode){
+                        alSelected.add((IPropertyable)((TransferableTreeNode)o).getData());
+                    }
+                    else{ //collection node
+                        alSelected = new ArrayList(TrackManager.getInstance().getItems());
+                        items = alSelected.size();
+                        hsSelectedTracks.addAll(alSelected);
+                        break;
+                    }
                     Enumeration e2 = ((DefaultMutableTreeNode)o).depthFirstEnumeration(); //return all childs nodes recursively
                     while ( e2.hasMoreElements()){
                         DefaultMutableTreeNode node = (DefaultMutableTreeNode)e2.nextElement();
@@ -443,12 +451,8 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
     public void populateTree(){
         //delete previous tree
         top.removeAllChildren();
-        ArrayList alTracks = TrackManager.getInstance().getSortedTracks();
-        Iterator it1 = alTracks.iterator();
-        while ( it1.hasNext()){
-            Track track = (Track)it1.next();
+        for (Track track:TrackManager.getInstance().getSortedTracks()){
             if ( !track.shouldBeHidden()){
-                
                 StyleNode styleNode = null;
                 Style style=track.getStyle();
                 AuthorNode authorNode = null;
@@ -513,32 +517,32 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
     public void actionPerformed(final ActionEvent e) {
         new Thread(){
             public void run(){
-                if ( (paths.length > 1) && (e.getSource() == jmiStyleProperties || e.getSource() == jmiAuthorProperties
-                || e.getSource() == jmiAlbumProperties || e.getSource() == jmiTrackProperties)){
-                    new PropertiesWizard(alSelected);
-                }
-                else if (e.getSource() == jmiStyleProperties){
-                    Style style =  ((StyleNode)paths[0].getLastPathComponent()).getStyle();
-                    ArrayList alItems = new ArrayList(1);
-                    alItems.add(style);
-                    new PropertiesWizard(alItems);
+                if (e.getSource() == jmiStyleProperties){
+                    ArrayList<IPropertyable> alTracks = new ArrayList(1000); 
+                    for (IPropertyable item:alSelected){
+                        Style style = (Style)item;
+                        alTracks.addAll(style.getTracksRecursively());
+                    }
+                    new PropertiesWizard(alSelected,alTracks);
                 }
                 else if (e.getSource() == jmiAuthorProperties){
-                    Author author =  ((AuthorNode)paths[0].getLastPathComponent()).getAuthor();
-                    ArrayList alItems = new ArrayList(1);
-                    alItems.add(author);
-                    new PropertiesWizard(alItems); }
+                    ArrayList<IPropertyable> alTracks = new ArrayList(100); 
+                    for (IPropertyable item:alSelected){
+                        Author  author = (Author)item;
+                        alTracks.addAll(TrackManager.getInstance().getAssociatedTracks(author));
+                    }
+                    new PropertiesWizard(alSelected,alTracks);
+                }
                 else if (e.getSource() == jmiAlbumProperties){
-                    Album album =  ((AlbumNode)paths[0].getLastPathComponent()).getAlbum();
-                    ArrayList alItems = new ArrayList(1);
-                    alItems.add(album);
-                    new PropertiesWizard(alItems);
+                    ArrayList<IPropertyable> alTracks = new ArrayList(10); 
+                    for (IPropertyable item:alSelected){
+                        Album album = (Album)item;
+                        alTracks.addAll(album.getTracksRecursively());
+                    }
+                    new PropertiesWizard(alSelected,alTracks);
                 }
                 else if (e.getSource() == jmiTrackProperties){
-                    Track track =  ((TrackNode)paths[0].getLastPathComponent()).getTrack();
-                    ArrayList alItems = new ArrayList(1);
-                    alItems.add(track);
-                    new PropertiesWizard(alItems);
+                   PropertiesWizard p = new PropertiesWizard(alSelected);
                 }
                 else{
                     //compute selection

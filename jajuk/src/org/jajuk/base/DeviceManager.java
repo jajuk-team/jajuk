@@ -242,11 +242,6 @@ public class DeviceManager extends ItemManager{
                 }
 			}
 		}
-		//Sort collection
-		FileManager.getInstance().sortFiles();//resort collection in case of
-		
-		//refresh views
-		ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH));
 	}
 	
 	/**

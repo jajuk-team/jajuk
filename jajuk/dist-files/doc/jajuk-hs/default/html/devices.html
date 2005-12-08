@@ -3,29 +3,55 @@
 <head>
 
 
+
+
+  
+  
   
   <meta http-equiv="CONTENT-TYPE" content="text/html; charset=utf-8">
 
+
+
   
 
 
+  
+  
+  
+  
   
   <title>Using devices</title>
   <meta name="GENERATOR" content="OpenOffice.org 2.0-pre (Linux)">
 
 
+
+
+  
+  
   
   <meta name="CREATED" content="20050308;19371100">
 
 
+
+
+  
+  
   
   <meta name="CHANGEDBY" content="bflorat">
 
 
+
+
+  
+  
   
   <meta name="CHANGED" content="20051009;17334100">
 
 
+
+
+  
+  
   
   <style>
 <!--
@@ -40,10 +66,16 @@ H2 { color: #000000 }
 <body style="direction: ltr; color: rgb(0, 0, 0);" lang="en-US">
 
 
+
+
 <h1>Using Devices</h1>
 
 
+
+
 <h2>Definition</h2>
+
+
 
 
 <p>Jajuk plays music from devices. A device is a set of audio
@@ -51,61 +83,102 @@ files.
 It can be : </p>
 
 
+
+
 <ul>
 
 
+
+
   <li>
+    
+    
     
     <p style="margin-bottom: 0cm;">A directory </p>
 
 
+
+
   </li>
 
 
+
+
   <li>
+    
+    
     
     <p style="margin-bottom: 0cm;">A data CD-ROM </p>
 
 
+
+
   </li>
+
+
 
 
   <li>
     
+    
+    
     <p style="margin-bottom: 0cm;">An External Hard Disk </p>
+
+
 
 
   </li>
 
 
+
+
   <li>
+    
+    
     
     <p style="margin-bottom: 0cm;">A Network drive
 (Netbios/Samba/NFS...). Under Windows, use drive letter path (like
 T:\...) and not network favorites path or UNC paths.</p>
 
 
+
+
   </li>
+
+
 
 
   <li>
     
-    <p style="margin-bottom: 0cm;">A Physical Player like
-an iPod </p>
+    
+    
+    <p style="margin-bottom: 0cm;">A&nbsp;MP3 player. </p>
+
+
 
 
   </li>
 
 
+
+
   <li>
+    
+    
     
     <p>A Remote directory (not yet implemented) </p>
 
 
+
+
   </li>
 
 
+
+
 </ul>
+
+
 
 
 <p><u>Note</u>: In all cases except remote, devices
@@ -115,35 +188,51 @@ to deal with particularities (for instance, a CD-ROM is read-only)
 and to provide a friendlier graphical interface.</p>
 
 
+
+
 <p>A device usually contains MP3, OGG and others supported audio
 files, M3P files for playlists and JPG, GIF and others supported
 image files for covers.</p>
 
 
+
+
 <p>What we name a collection is the combination of devices you
 created.</p>
+
+
 <h2>Creating and configurating devices</h2>
+
+
 <p>Devices can be created either using&nbsp;<a href="view_devices.html">the
 Device view</a> in the Configuration perspective or using the quick start devices wizard (Top menu -&gt; help -&gt; Devices wizard).</p>
+
+
 
 
 <h2>Refreshing devices</h2>
 
 
+
+
 <p>Under Jajuk, devices should be refreshed from times to times.
-Indeed, what's make Jajuk so fast is its collection index: music
-files are not scanned and their tags not read at each startup but
-Jajuk builds a collection or index during refresh (stored on the disk
+Indeed, Jajuk uses an&nbsp;indexing system: music
+files are not scanned and their tags not read again at each startup but
+Jajuk builds a collection at refreshing (stored on the disk
 as {home directory}/.jajuk/collection.xml). It allows Jajuk to start
 and be aware of all tracks from a multi 100GB of music collection in
 only few seconds. It is also used to perform searches and filtering
 on the entire collection in real time.</p>
 
 
+
+
 <p>Jajuk only knows files from refreshed devices: if you copy a
 file
 on your disk, Jajuk will know it only after the source device
 refresh.</p>
+
+
 
 
 <p>Devices can be refreshed at each startup but it is not
@@ -155,17 +244,23 @@ them with the "Force tag read" option in Parameter View /
 Option tab if you changed tags using another application.</p>
 
 
+
+
 <p>You can refresh a device from the physical perspective with
 "Refresh" command from contextual menu on selected device
 or from <a href="view_devices.html">the
 Device view</a> in the Configuration perspective.</p>
 
 
+
+
 <h2>Mounting/unmouting devices</h2>
 
 
+
+
 <p>Mounting a device means to make it available and unmounting it
-means to disconnect it. It is near the Unix mount notion. You can
+means to disconnect it. You can
 configure devices in the Device view so they will be automatically
 mounted at startup. Some device can naturally be auto-mounted: a
 directory from your internal hard disk for example. On the other
@@ -173,10 +268,12 @@ hand, we highly discourage to auto-mount some others like CD or USB
 keys because they are likely to be unavailable at next startup. When
 a mount is required on a device, Jajuk will check it is physically
 available (for a CD for instance) and try to access it if required.
-Under Unix, it can eventually perform a "mount" command. If
+Note that under Unix, it can eventually perform a "mount" command. If
 you try to play a track located in an unmounted device, Jajuk will
 ask you if you want it to mount this device. In all cases, you will
 get an error message if the device cannot be mounted.</p>
+
+
 
 
 <p>You can mount or unmount a device from the physical
@@ -186,7 +283,11 @@ selected device or from <a href="view_devices.html">the
 Device view</a> in the Configuration perspective.</p>
 
 
+
+
 <h2>Synchronizing devices</h2>
+
+
 
 
 <p>When creating a device (see device view documentation for more
@@ -194,11 +295,13 @@ information), you can tell Jajuk to make it synchronized with another
 device. This allows you to copy by a single click all the new files
 from source device to the other. Note that you can perform partial
 synchronization by desynchronizing some directories in the Physical
-perspective / Physical tree and contextual menu on directories (watch
+perspective / Physical tree with&nbsp;contextual menu on directories (watch
 the selection box in the Information view at the bottom to know
 recursive size of a selection). You can also perform bidirectional
 synchronizations (all new files from a device are copied to the
 other) and not only unidirectional.</p>
+
+
 
 
 <p>You can synchronize two devices from the physical perspective
@@ -208,31 +311,41 @@ device or from <a href="view_devices.html">the
 Device view</a> in the Configuration perspective.</p>
 
 
+
+
 <h2><a name="backup"></a>Collection backup and
 restore</h2>
 
 
+
+
 <p>All your collection and properties on your tracks are stored
 in
-the collection file ({home directory}/.jajuk/collection.xml file). By
+the collection file (<span style="font-family: monospace;">{home directory}/.jajuk/collection.xml</span> file). By
 default Jajuk performs a backup of this collection file
-(collection-&lt;date&gt;.xml files) until it takes 20MB on the
+(<span style="font-family: monospace;">collection-&lt;date&gt;.xml</span> files) until it takes 20MB on the
 disk.
 You can parameter backup in the Parameter view / Advanced tab.&nbsp;</p>
 
 
+
+
 <p>Restore: if you just made a manipulation error and still in
 jajuk,
-close the it and overwrite collection_exit.xml file with
-collection.xml. If you want to overwrite with an older release,
-overwrite collection_exit.xml
-with&nbsp;collection-&lt;date&gt;.xml
+close the it and overwrite <span style="font-family: monospace;">collection_exit.xml</span> file with
+<span style="font-family: monospace;">collection.xml</span>. If you want to overwrite with an older release,
+overwrite <span style="font-family: monospace;">collection_exit.xml
+</span>with&nbsp;<span style="font-family: monospace;">collection-{date}.xml</span>
 file. Then restart jajuk.</p>
 
 
-<p>It can be a good idea to include your&nbsp;{home
-directory}/.jajuk
+
+
+<p>It can be a good idea to include your&nbsp;<span style="font-family: monospace;">{home
+directory}/.jajuk</span>
 directory in a periodic backup.</p>
+
+
 
 
 </body>

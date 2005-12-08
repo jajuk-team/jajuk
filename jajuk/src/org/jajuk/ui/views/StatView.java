@@ -92,8 +92,8 @@ public class StatView extends ViewAdapter implements Observer{
 	 */
 	public void populate(){
 		double[][] size = new double[][]{
-				{0.5f,0.5f},
-				{0.5f,0.5f}
+				{0.5f,10,0.5f},
+				{0.5f,10,0.5f}
 		};
 		setLayout(new TableLayout(size));
 		ObservationManager.register(EVENT_DEVICE_DELETE,this);
@@ -137,7 +137,7 @@ public class StatView extends ViewAdapter implements Observer{
 				pdata.setValue(Messages.getString("StatView.0"),new Double(dOthers/iTotal)); //$NON-NLS-1$
 			}
 			//chart
-			jfchart = ChartFactory.createPie3DChart(Messages.getString("StatView.1"),pdata,false,true,true); //$NON-NLS-1$
+			jfchart = ChartFactory.createPie3DChart(Messages.getString("StatView.1"),pdata,true,true,true); //$NON-NLS-1$
 			// set the background color for the chart...
 			jfchart.setBackgroundPaint(Color.BLUE);
 			PiePlot plot = (PiePlot) jfchart.getPlot();
@@ -145,7 +145,8 @@ public class StatView extends ViewAdapter implements Observer{
 			plot.setNoDataMessage(Messages.getString("StatView.2")); //$NON-NLS-1$
 			plot.setForegroundAlpha(0.5f);
 			plot.setBackgroundAlpha(0.5f);
-			//plot.setBackgroundImage(Util.getIcon(IMAGES_STAT_PAPER).getImage());
+            plot.setShowSeriesLabels(true);
+            //plot.setBackgroundImage(Util.getIcon(IMAGES_STAT_PAPER).getImage());
 			plot.setItemLabelGenerator(new StandardPieItemLabelGenerator());
 			cpanel = new ChartPanel(jfchart);
 		}
@@ -165,7 +166,7 @@ public class StatView extends ViewAdapter implements Observer{
 			JFreeChart jfchart = null;
 			//data
 			pdata = new DefaultPieDataset();
-			Iterator itFiles = FileManager.getInstance().getItems().iterator();
+			Iterator itFiles = FileManager.getInstance().getSortedFiles().iterator();
 			//prepare devices
 			long lTotalSize = 0;
 			double dOthers = 0;
@@ -191,7 +192,7 @@ public class StatView extends ViewAdapter implements Observer{
 				pdata.setValue(Messages.getString("StatView.3"),new Double(dOthers/1073741824)); //$NON-NLS-1$
 			}
 			//chart
-			jfchart = ChartFactory.createPie3DChart(Messages.getString("StatView.4"),pdata,false,true,true); //$NON-NLS-1$
+			jfchart = ChartFactory.createPie3DChart(Messages.getString("StatView.4"),pdata,true,true,true); //$NON-NLS-1$
 			// set the background color for the chart...
 			jfchart.setBackgroundPaint(Color.BLUE);
 			PiePlot plot = (PiePlot) jfchart.getPlot();
@@ -359,11 +360,11 @@ public class StatView extends ViewAdapter implements Observer{
 			ChartPanel cp1 = createStyleRepartition(); 
 			if ( cp1!= null) add(cp1,"0,0"); //$NON-NLS-1$
 			ChartPanel cp2 = createCollectionSize(); 
-			if ( cp2!= null) add(cp2,"0,1"); //$NON-NLS-1$
+			if ( cp2!= null) add(cp2,"0,2"); //$NON-NLS-1$
 			ChartPanel cp3 = createTrackNumber(); 
-			if ( cp3!= null) add(cp3,"1,1"); //$NON-NLS-1$
+			if ( cp3!= null) add(cp3,"2,2"); //$NON-NLS-1$
 			ChartPanel cp4 = createDeviceRepartition(); 
-			if ( cp4!= null) add(cp4,"1,0"); //$NON-NLS-1$
+			if ( cp4!= null) add(cp4,"2,0"); //$NON-NLS-1$
 			StatView.getInstance().revalidate();
 			StatView.getInstance().repaint();
 			Util.stopWaiting();

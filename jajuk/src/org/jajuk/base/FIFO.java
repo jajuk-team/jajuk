@@ -52,10 +52,10 @@ public class FIFO implements ITechnicalStrings {
     private StackItem itemLast;
     
     /** Fifo itself, contains jajuk File objects */
-    private volatile ArrayList alFIFO;
+    private volatile ArrayList<StackItem> alFIFO;
     
     /** Planned tracks */
-    private volatile ArrayList alPlanned;
+    private volatile ArrayList<StackItem> alPlanned;
     
     /** Stop flag* */
     private static volatile boolean bStop = false;
@@ -119,13 +119,18 @@ public class FIFO implements ITechnicalStrings {
      * @param alItems
      * @param bAppend
      */
-    public void push(final ArrayList alItems, final boolean bAppend) {
+    public void push(final ArrayList<StackItem> alItems, final boolean bAppend) {
         Thread t = new Thread() { // do it in a thread to make UI more reactive
             public void run() {
                 try {
+                    Util.waiting();
                     pushCommand(alItems, bAppend);
                 } catch (Exception e) {
                     Log.error(e);
+                }
+                finally{
+                    ObservationManager.notify(new Event(EVENT_PLAYLIST_REFRESH)); // refresh playlist editor                    Util.waiting();
+                    Util.stopWaiting();
                 }
             }
         };
@@ -143,9 +148,14 @@ public class FIFO implements ITechnicalStrings {
         Thread t = new Thread() { // do it in a thread to make UI more reactive
             public void run() {
                 try {
+                    Util.waiting();
                     pushCommand(item, bAppend);
                 } catch (Exception e) {
                     Log.error(e);
+                }
+                finally{
+                    ObservationManager.notify(new Event(EVENT_PLAYLIST_REFRESH)); // refresh playlist editor                    Util.waiting();
+                    Util.stopWaiting();
                 }
             }
         };
@@ -161,9 +171,8 @@ public class FIFO implements ITechnicalStrings {
      * @param bAppend
      *            keep previous files or stop them to start a new one ?
      */
-    public void pushCommand(ArrayList alItems, boolean bAppend) {
+    public void pushCommand(ArrayList<StackItem> alItems, boolean bAppend) {
         try {
-            Util.waiting();
             // wake up FIFO if stopped
             bStop = false;
             //display an error message if selection is void
@@ -242,10 +251,7 @@ public class FIFO implements ITechnicalStrings {
             computesPlanned(true);
         } catch (Exception e) {
             Log.error(e);
-        } finally {
-            ObservationManager.notify(new Event(EVENT_PLAYLIST_REFRESH)); // refresh playlist editor
-            Util.stopWaiting();
-        }
+        } 
     }
     
     /**
@@ -380,7 +386,7 @@ public class FIFO implements ITechnicalStrings {
             fCurrent.getTrack().incSessionHits();// inc session hits
             fCurrent.getTrack().setRate(fCurrent.getTrack().getRate() + 1); // inc rate by 1 because it is played
             FileManager.getInstance().setRateHasChanged(true);
-            ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH));//refresh to update rates
+            ObservationManager.notify(new Event(EVENT_RATE_CHANGED));//refresh to update rates
         } catch (Throwable t) {//catch even Errors (OutOfMemory for exemple)
             Log.error("122", t); //$NON-NLS-1$
         } finally {
@@ -432,7 +438,8 @@ public class FIFO implements ITechnicalStrings {
                     if (siLast != null) {
                         item = new StackItem(FileManager.getInstance().getNextFile(siLast.getFile()), false);
                     } else { // nothing in fifo, take first files in collection
-                        item = new StackItem((File) FileManager.getInstance().getItems().get(i), false);
+                        ArrayList alFiles = new ArrayList(FileManager.getInstance().getItems());
+                        item = new StackItem((File) alFiles.get(i), false);
                     }
                 }
             } catch (JajukException je) { // can be thrown if FileManager return a null file (like when reaching end of collection)
@@ -955,5 +962,28 @@ public class FIFO implements ITechnicalStrings {
      */
     public void setPlaylist(PlaylistFile playlist) {
         this.playlist = playlist;
+    }
+    
+    /**
+     * Clean all references for the given device
+     * 
+     * @param device: Device to clean
+     **/
+    public synchronized  void cleanDevice(Device device) {
+        if (alFIFO.size()>0){
+            ArrayList<StackItem> alFIFOCopy = (ArrayList)alFIFO.clone();
+            if (alFIFO.size() > 1){ //keep first item (being played)
+                for (int i=1;i<alFIFO.size();i++){
+                    StackItem item = (StackItem)alFIFO.get(i);
+                    File file = item.getFile();
+                    if (file.getDirectory().getDevice().equals(device)){
+                        alFIFOCopy.remove(item);
+                    }
+                }
+            }
+            //Clean FIFO and add again new selection
+            clear();
+            pushCommand(alFIFOCopy,true);
+        }
     }
 }

@@ -215,7 +215,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                     if (ConfigurationManager.getBoolean(CONF_COVERS_AUTO_COVER)){
                         DownloadManager.getRemoteCoversList("");//try to open connexion, this can take about 30 sec under linux if network not available //$NON-NLS-1$
                     }
-                    Thread.sleep(1000); //one more sec in case of...
+                    Thread.sleep(3000); //more sec in case of...
                 }
                 catch(Exception e){
                     Log.error(e);
@@ -336,13 +336,16 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                             }
                         }
                         catch(Exception e){
-                            Log.error(e); //can occur in case of timeout or error during covers list download
                             if (e instanceof org.apache.commons.httpclient.ConnectTimeoutException){
+                                Log.warn(e.getMessage()); //can occur in case of timeout or error during covers list download
                                 iErrorCounter ++;
                                 if (iErrorCounter == STOP_TO_SEARCH){
                                     Log.warn("Too much connection fails, stop to search for covers online"); //$NON-NLS-1$
                                     InformationJPanel.getInstance().setMessage(Messages.getString("Error.030"),InformationJPanel.WARNING); //$NON-NLS-1$
                                 }
+                            }
+                            else{
+                                Log.error(e);
                             }
                         }
                     }

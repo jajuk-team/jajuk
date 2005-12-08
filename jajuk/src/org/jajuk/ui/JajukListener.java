@@ -37,6 +37,7 @@ import org.jajuk.ui.views.IView;
 import org.jajuk.ui.views.ViewManager;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 
 /**
@@ -183,6 +184,7 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
             else if(EVENT_QUALITY.equals(e.getActionCommand())){
                 QualityFeedbackWizard qfw =  new QualityFeedbackWizard();
                 qfw.pack();
+                Util.setCenteredLocation(qfw);
                 qfw.setVisible(true);
             }
 		}

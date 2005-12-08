@@ -76,11 +76,20 @@ public class AlbumManager extends ItemManager{
      */
     public synchronized Album registerAlbum(String sId, String sName) {
         if (hmItems.containsKey(sId)) {
-            return (Album)hmItems.get(sId);
+            Album album = (Album)hmItems.get(sId);
+            //check if name has right case
+            if (!album.getName().equals(sName)){
+                album.setName(sName);
+            }
+            return album;
         }
         Album album = null;
         if (hmIdSaveItems.containsKey(sId)){
             album = (Album)hmIdSaveItems.get(sId);
+            //check if name has right case
+            if (!album.getName().equals(sName)){
+                album.setName(sName);
+            }
         }
         else{
             album = new Album(sId, sName);
@@ -91,7 +100,7 @@ public class AlbumManager extends ItemManager{
     }
 			
     /**
-     * Chnage the item
+     * Change the item
      * @param old
      * @param sNewName
      * @return new album
@@ -102,15 +111,17 @@ public class AlbumManager extends ItemManager{
             return old;
         }
         Album newItem = registerAlbum(sNewName);
+        //re apply old properties from old item
+        newItem.cloneProperties(old);
+        //update tracks
         ArrayList alTracks = new ArrayList(TrackManager.getInstance().getItems()); //we need to create a new list to avoid concurrent exceptions
         Iterator it = alTracks.iterator();
         while (it.hasNext()){
             Track track = (Track)it.next();
             if (track.getAlbum().equals(old)){
-                TrackManager.getInstance().changeTrackAlbum(track,sNewName);
+                TrackManager.getInstance().changeTrackAlbum(track,sNewName,null);
             }
         }
-        cleanup();//remove useless albums if no more tracks use it
         return newItem;
     }
     

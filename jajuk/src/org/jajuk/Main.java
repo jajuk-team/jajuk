@@ -186,12 +186,14 @@ public class Main implements ITechnicalStrings {
             org.jajuk.util.ConfigurationManager.load();
             
             //Set actual log verbosity. Depends on: ConfigurationManager.load
-            Log.setVerbosity(Integer.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_LOG_LEVEL)));
-                        		
+            //test mode is always in debug mode
+            if (!bTestMode){
+                Log.setVerbosity(Integer.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_LOG_LEVEL)));
+            }
             //Set locale. setSystemLocal
             Messages.getInstance().setLocal(ConfigurationManager.getProperty(CONF_OPTIONS_LANGUAGE));
         
-            //Launch splashscreen. Depends on: log.setVerbosity and setLocal (for local)
+            //Launch splashscreen. Depends on: log.setVerbosity, configurationManager.load (for local) 
             SwingUtilities.invokeAndWait(new Runnable() {
                 public void run() {
                     try {
@@ -219,7 +221,7 @@ public class Main implements ITechnicalStrings {
             ItemManager.registerItemManager(org.jajuk.base.Type.class,TypeManager.getInstance());
                 	
 			//Upgrade configuration from previous releases
-			upgrade();
+			upgradeStep1();
 			
 			//Registers supported look and feels
 			LNFManager.register(LNF_METAL,LNF_METAL_CLASS); 
@@ -262,6 +264,9 @@ public class Main implements ITechnicalStrings {
 			//Clean the collection up
 			Collection.cleanup();
 			
+            //Upgrade step2
+            upgradeStep2();
+            
             //Display progress
             sc.setProgress(70,Messages.getString("SplashScreen.2")); //$NON-NLS-1$
             
@@ -367,10 +372,48 @@ public class Main implements ITechnicalStrings {
 		}
         //check for image cache presence
         File fCache = new File(FILE_IMAGE_CACHE);
-        if (!fCache.exists()) { //if history file doesn't exit, create it empty
+        if (!fCache.exists()) { 
             fCache.mkdir();
         }
-	}
+        //check for thumbnails cache presence
+        File fThumbs = new File(FILE_THUMBS);
+        if (!fThumbs.exists()) { 
+            fThumbs.mkdir();
+        }
+        fThumbs = new File(FILE_THUMBS+"/50x50");
+        if (!fThumbs.exists()) { 
+            fThumbs.mkdir();
+        }
+        fThumbs = new File(FILE_THUMBS+"/100x100");
+        if (!fThumbs.exists()) { 
+            fThumbs.mkdir();
+        }
+        fThumbs = new File(FILE_THUMBS+"/150x150");
+        if (!fThumbs.exists()) { 
+            fThumbs.mkdir();
+        }
+        fThumbs = new File(FILE_THUMBS+"/200x200");
+        if (!fThumbs.exists()) { 
+            fThumbs.mkdir();
+        }
+        //check for default covers
+       fThumbs = new File(FILE_THUMBS+"/50x50/"+FILE_THUMB_NO_COVER);
+        if (!fThumbs.exists()){
+            Util.createThumbnail(new URL(IMAGE_NO_COVER),fThumbs,50);
+        }
+       fThumbs = new File(FILE_THUMBS+"/100x100/"+FILE_THUMB_NO_COVER);
+        if (!fThumbs.exists()){
+            Util.createThumbnail(new URL(IMAGE_NO_COVER),fThumbs,100);
+        }
+        fThumbs = new File(FILE_THUMBS+"/150x150/"+FILE_THUMB_NO_COVER);
+        if (!fThumbs.exists()){
+            Util.createThumbnail(new URL(IMAGE_NO_COVER),fThumbs,150);
+        }
+        fThumbs = new File(FILE_THUMBS+"/200x200/"+FILE_THUMB_NO_COVER);
+        if (!fThumbs.exists()){
+            Util.createThumbnail(new URL(IMAGE_NO_COVER),fThumbs,200);
+        }
+    }
 	
 	
 	/**
@@ -671,14 +714,22 @@ public class Main implements ITechnicalStrings {
 	
 	/**
 	 * Actions to migrate an existing installation
+     * Step1 just at startup
 	 *
 	 */
-	public static void upgrade() throws Exception {
+	public static void upgradeStep1() throws Exception {
 		//--For jajuk < 0.2 : remove backup file : collection~.xml
 		File file = new File(FILE_COLLECTION+"~"); //$NON-NLS-1$
 		if ( file!= null ){
 			file.delete();
 		}
+    }
+    
+    /**
+     * Actions to migrate an existing installation
+     * Step 2 after collection load
+     */
+    public static void upgradeStep2() throws Exception {
     }
 			
     /**

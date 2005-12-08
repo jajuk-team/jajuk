@@ -27,9 +27,12 @@ import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Frame;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.Window;
+import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -38,6 +41,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
@@ -82,6 +86,8 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import com.sun.image.codec.jpeg.JPEGCodec;
+import com.sun.image.codec.jpeg.JPEGImageEncoder;
 import com.sun.media.sound.MixerSourceLine;
 
 /**
@@ -90,238 +96,249 @@ import com.sun.media.sound.MixerSourceLine;
  * @created 12 oct. 2003
  */
 public class Util implements ITechnicalStrings {
-	
-	/*Cursors*/
-	public static final Cursor WAIT_CURSOR = new Cursor(Cursor.WAIT_CURSOR);
-	public static final Cursor DEFAULT_CURSOR = new Cursor(Cursor.DEFAULT_CURSOR);
-	/**Contains execution location ( jar or directory )*/
-	public static String sExecLocation;
-	/**Waiting flag for perfs*/
-	private static boolean bWaiting = false;
+    
+    /*Cursors*/
+    public static final Cursor WAIT_CURSOR = new Cursor(Cursor.WAIT_CURSOR);
+    public static final Cursor DEFAULT_CURSOR = new Cursor(Cursor.DEFAULT_CURSOR);
+    /**Contains execution location ( jar or directory )*/
+    public static String sExecLocation;
+    /**Waiting flag for perfs*/
+    private static boolean bWaiting = false;
       /**Addition date Date format*/
     private static SimpleDateFormat sdfAdded= new SimpleDateFormat(ADDITION_DATE_FORMAT);
     /**Jajuk release*/
     private static String sRelease = null;
-	/**
-	 * Genres
-	 */
-	public static final String [] genres = {
-			"Blues","Classic Rock","Country","Dance","Disco","Funk","Grunge", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
-			"Hip-Hop","Jazz","Metal","New Age","Oldies","Other","Pop","R&B", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
-			"Rap","Reggae","Rock","Techno","Industrial","Alternative","Ska", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
-			"Death Metal","Pranks","Soundtrack","Euro-Techno","Ambient", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-			"Trip-Hop","Vocal","Jazz+Funk","Fusion","Trance","Classical", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
-			"Instrumental","Acid","House","Game","Sound Clip","Gospel", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
-			"Noise","AlternRock","Bass","Soul","Punk","Space","Meditative", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
-			"Instrumental Pop","Instrumental Rock","Ethnic","Gothic", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-			"Darkwave","Techno-Industrial","Electronic","Pop-Folk", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-			"Eurodance","Dream","Southern Rock","Comedy","Cult","Gangsta", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
-			"Top 40","Christian Rap","Pop/Funk","Jungle","Native American", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-			"Cabaret","New Wave","Psychedelic","Rave","Showtunes","Trailer", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
-			"Lo-Fi","Tribal","Acid Punk","Acid Jazz","Polka","Retro", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
-			"Musical","Rock & Roll","Hard Rock","Folk","Folk-Rock", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-			"National Folk","Swing","Fast Fusion","Bebob","Latin","Revival", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
-			"Celtic","Bluegrass","Avantgarde","Gothic Rock", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-			"Progressive Rock","Psychedelic Rock","Symphonic Rock", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			"Slow Rock","Big Band","Chorus","Easy Listening","Acoustic", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-			"Humour","Speech","Chanson","Opera","Chamber Music","Sonata", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
-			"Symphony","Booty Brass","Primus","Porn Groove","Satire", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-			"Slow Jam","Club","Tango","Samba","Folklore","Ballad", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
-			"Power Ballad","Rhytmic Soul","Freestyle","Duet","Punk Rock", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-			"Drum Solo","Acapella","Euro-House","Dance Hall", "Goa","Drum & Bass","Club-House","Hardcore", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
-			"Terror","Indie","BritPop","Negerpunk","Polsk Punk","Beat","Christian Gangsta","Heavy Metal", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
-			"Black Metal","Crossover","Contemporary C","Christian Rock","Merengue","Salsa","Thrash Metal", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
-			"Anime","JPop","SynthPop"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-	
+    /**
+     * Genres
+     */
+    public static final String [] genres = {
+            "Blues","Classic Rock","Country","Dance","Disco","Funk","Grunge", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+            "Hip-Hop","Jazz","Metal","New Age","Oldies","Other","Pop","R&B", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
+            "Rap","Reggae","Rock","Techno","Industrial","Alternative","Ska", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+            "Death Metal","Pranks","Soundtrack","Euro-Techno","Ambient", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+            "Trip-Hop","Vocal","Jazz+Funk","Fusion","Trance","Classical", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+            "Instrumental","Acid","House","Game","Sound Clip","Gospel", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+            "Noise","AlternRock","Bass","Soul","Punk","Space","Meditative", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+            "Instrumental Pop","Instrumental Rock","Ethnic","Gothic", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+            "Darkwave","Techno-Industrial","Electronic","Pop-Folk", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+            "Eurodance","Dream","Southern Rock","Comedy","Cult","Gangsta", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+            "Top 40","Christian Rap","Pop/Funk","Jungle","Native American", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+            "Cabaret","New Wave","Psychedelic","Rave","Showtunes","Trailer", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+            "Lo-Fi","Tribal","Acid Punk","Acid Jazz","Polka","Retro", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+            "Musical","Rock & Roll","Hard Rock","Folk","Folk-Rock", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+            "National Folk","Swing","Fast Fusion","Bebob","Latin","Revival", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+            "Celtic","Bluegrass","Avantgarde","Gothic Rock", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+            "Progressive Rock","Psychedelic Rock","Symphonic Rock", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            "Slow Rock","Big Band","Chorus","Easy Listening","Acoustic", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+            "Humour","Speech","Chanson","Opera","Chamber Music","Sonata", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+            "Symphony","Booty Brass","Primus","Porn Groove","Satire", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+            "Slow Jam","Club","Tango","Samba","Folklore","Ballad", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+            "Power Ballad","Rhytmic Soul","Freestyle","Duet","Punk Rock", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+            "Drum Solo","Acapella","Euro-House","Dance Hall", "Goa","Drum & Bass","Club-House","Hardcore", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
+            "Terror","Indie","BritPop","Negerpunk","Polsk Punk","Beat","Christian Gangsta","Heavy Metal", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
+            "Black Metal","Crossover","Contemporary C","Christian Rock","Merengue","Salsa","Thrash Metal", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+            "Anime","JPop","SynthPop"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    
    
-	/**
-	 * No constructor
-	 */
-	private Util() {
-	}
-	
-	/**
-	 * Get a file extension
-	 * 
-	 * @param file
-	 * @return
-	 */
-	public static String getExtension(File file) {
-		String s = file.getName();
-		StringTokenizer st = new StringTokenizer(s, "."); //$NON-NLS-1$
-		String sExt = ""; //$NON-NLS-1$
-		while (st.hasMoreTokens()) {
-			sExt = st.nextToken();
-		}
-		return sExt.toLowerCase();
-	}
-	
-	/**
-	 * Remove an extension from a file name
-	 * @param filename
-	 * @return filename without extension
-	 */
-	public static String removeExtension(String sFilename) {
-		return sFilename.substring(0,sFilename.lastIndexOf('.'));
-	}
-	
-	
-	/**
-	 * Open a file and return a string buffer with the file content.
-	 * 
-	 * @param path -File path
-	 * @return StringBuffer - File content.
-	 * @throws JajukException - Throws a JajukException if a problem occurs during the file  access.
-	 */
-	public static StringBuffer readFile(String path) throws JajukException {
-		// Read
-		File file = null;
-		try{
-			new File(path);
-		}
-		catch(Exception e){
-			throw new JajukException("009",e); //$NON-NLS-1$
-		}
-		FileReader fileReader;
-		try {
-			fileReader = new FileReader(file);
-		} catch (FileNotFoundException e) {
-			JajukException te = new JajukException("009", path, e); //$NON-NLS-1$
-			throw te;
-		}
-		BufferedReader input = new BufferedReader(fileReader);
-		
-		// Read
-		StringBuffer strColl = new StringBuffer();
-		String line = null;
-		try {
-			while ((line = input.readLine()) != null) {
-				strColl.append(line);
-			}
-		} catch (IOException e) {
-			JajukException te = new JajukException("009", path, e); //$NON-NLS-1$
-			throw te;
-		}
-		
-		// Close the bufferedReader
-		try {
-			input.close();
-		} catch (IOException e) {
-			JajukException te = new JajukException("009", path, e); //$NON-NLS-1$
-			throw te;
-		}
-		
-		return strColl;
-	}
-	
-	
-	
-	/**
-	 * Open a file from current jar and return a string buffer with the file content.
-	 * 
-	 * @param sUrl : relative file url
-	 * @return StringBuffer - File content.
-	 * @throws JajukException -Throws a JajukException if a problem occurs during the file  access.
-	 */
-	public static StringBuffer readJarFile(String sURL) throws JajukException {
-		// Read
-		InputStream is;
-		StringBuffer sb = null;
-		try {
-			is = Main.class.getResourceAsStream(sURL);
-			// Read
-			byte[] b = new byte[200];
-			sb = new StringBuffer();
-			int i=0;
-			do {
-				i = is.read(b,0,b.length);
-				sb.append(new String(b));
-			}
-			while (i > 0);
-			// Close the bufferedReader
-			is.close();
-		} catch (IOException e) {
-			JajukException te = new JajukException("009", e); //$NON-NLS-1$
-			throw te;
-		}
-		return sb;
-		
-	}
-	
-	
-	/**
-	 * Format a string before XML write
-	 * <p>see http://www.w3.org/TR/2000/REC-xml-20001006
-	 * <p> substrings 
-	 * <p>' to &apos;
-	 * <p>" to &quot;
-	 * <p>< to &lt;
-	 * <p>> to &gt;
-	 * <p>& to &amp;
-	 * @param s
-	 * @return
-	 */
-	public static String formatXML(String s){
-		String sOut = s.replaceAll("&","&amp;"); //$NON-NLS-1$ //$NON-NLS-2$
-		sOut = sOut.replaceAll("\'","&apos;"); //$NON-NLS-1$ //$NON-NLS-2$
-		sOut = sOut.replaceAll("\"","&quot;"); //$NON-NLS-1$ //$NON-NLS-2$
-		sOut = sOut.replaceAll("<","&lt;"); //$NON-NLS-1$ //$NON-NLS-2$
-		sOut = sOut.replaceAll(">","&gt;"); //$NON-NLS-1$ //$NON-NLS-2$
-		StringBuffer sbOut = new StringBuffer(sOut.length());
-		/* Transform String to XML-valid characters. XML 1.0 specs ; 
-		 * Character Range
-		[2]     Char    ::=     #x9 | #xA | #xD | [#x20-#xD7FF] | [#xE000-#xFFFD] | [#x10000-#x10FFFF]  
-		any Unicode character, excluding the surrogate blocks, FFFE, and FFFF. */
-		for (int i=0;i<sOut.length();i++){
-			char c = sOut.charAt(i);
-			if ( isChar(c)){
-				sbOut.append(c); 
-			}
-		}
-		return sbOut.toString().trim();
-	}
-	
-	/**
-	 * @param ucs4char char to test
-	 * @return whether the char is valid, code taken from Apache sax implementation
-	 */
-	public static boolean isChar(int ucs4char)
-	{
-		return ucs4char >= 32 && ucs4char <= 55295 || ucs4char == 10 || ucs4char == 9 || ucs4char == 13 
-		|| ucs4char >= 57344 && ucs4char <= 65533 || ucs4char >= 0x10000 && ucs4char<= 0x10ffff;
-	}
-	
+    /**
+     * No constructor
+     */
+    private Util() {
+    }
+    
+    /**
+     * Get a file extension
+     * 
+     * @param file
+     * @return
+     */
+    public static String getExtension(File file) {
+        String s = file.getName();
+        StringTokenizer st = new StringTokenizer(s, "."); //$NON-NLS-1$
+        String sExt = ""; //$NON-NLS-1$
+        while (st.hasMoreTokens()) {
+            sExt = st.nextToken();
+        }
+        return sExt.toLowerCase();
+    }
+    
+    /**
+     * Remove an extension from a file name
+     * @param filename
+     * @return filename without extension
+     */
+    public static String removeExtension(String sFilename) {
+        return sFilename.substring(0,sFilename.lastIndexOf('.'));
+    }
+    
+    
+    /**
+     * Open a file and return a string buffer with the file content.
+     * 
+     * @param path -File path
+     * @return StringBuffer - File content.
+     * @throws JajukException - Throws a JajukException if a problem occurs during the file  access.
+     */
+    public static StringBuffer readFile(String path) throws JajukException {
+        // Read
+        File file = null;
+        try{
+            new File(path);
+        }
+        catch(Exception e){
+            throw new JajukException("009",e); //$NON-NLS-1$
+        }
+        FileReader fileReader;
+        try {
+            fileReader = new FileReader(file);
+        } catch (FileNotFoundException e) {
+            JajukException te = new JajukException("009", path, e); //$NON-NLS-1$
+            throw te;
+        }
+        BufferedReader input = new BufferedReader(fileReader);
+        
+        // Read
+        StringBuffer strColl = new StringBuffer();
+        String line = null;
+        try {
+            while ((line = input.readLine()) != null) {
+                strColl.append(line);
+            }
+        } catch (IOException e) {
+            JajukException te = new JajukException("009", path, e); //$NON-NLS-1$
+            throw te;
+        }
+        
+        // Close the bufferedReader
+        try {
+            input.close();
+        } catch (IOException e) {
+            JajukException te = new JajukException("009", path, e); //$NON-NLS-1$
+            throw te;
+        }
+        
+        return strColl;
+    }
+    
+    
+    
+    /**
+     * Open a file from current jar and return a string buffer with the file content.
+     * 
+     * @param sUrl : relative file url
+     * @return StringBuffer - File content.
+     * @throws JajukException -Throws a JajukException if a problem occurs during the file  access.
+     */
+    public static StringBuffer readJarFile(String sURL) throws JajukException {
+        // Read
+        InputStream is;
+        StringBuffer sb = null;
+        try {
+            is = Main.class.getResourceAsStream(sURL);
+            // Read
+            byte[] b = new byte[200];
+            sb = new StringBuffer();
+            int i=0;
+            do {
+                i = is.read(b,0,b.length);
+                sb.append(new String(b));
+            }
+            while (i > 0);
+            // Close the bufferedReader
+            is.close();
+        } catch (IOException e) {
+            JajukException te = new JajukException("009", e); //$NON-NLS-1$
+            throw te;
+        }
+        return sb;
+        
+    }
+    
+    
+    /**
+     * Format a string before XML write
+     * <p>see http://www.w3.org/TR/2000/REC-xml-20001006
+     * <p> substrings 
+     * <p>' to &apos;
+     * <p>" to &quot;
+     * <p>< to &lt;
+     * <p>> to &gt;
+     * <p>& to &amp;
+     * @param s
+     * @return
+     */
+    public static String formatXML(String s){
+        String sOut = s;
+        if (s.contains("&")){ //$NON-NLS-1$
+            sOut = sOut.replaceAll("&","&amp;"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+        if (s.contains("\'")){ //$NON-NLS-1$
+            sOut = sOut.replaceAll("\'","&apos;"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+        if (s.contains("\"")){ //$NON-NLS-1$
+            sOut = sOut.replaceAll("\"","&quot;"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+        if (s.contains("<")){ //$NON-NLS-1$
+            sOut = sOut.replaceAll("<","&lt;"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+        if (s.contains(">")){ //$NON-NLS-1$
+            sOut = sOut.replaceAll(">","&gt;"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+        StringBuffer sbOut = new StringBuffer(sOut.length());
+        /* Transform String to XML-valid characters. XML 1.0 specs ; 
+         * Character Range
+        [2]     Char    ::=     #x9 | #xA | #xD | [#x20-#xD7FF] | [#xE000-#xFFFD] | [#x10000-#x10FFFF]  
+        any Unicode character, excluding the surrogate blocks, FFFE, and FFFF. */
+        for (int i=0;i<sOut.length();i++){
+            char c = sOut.charAt(i);
+            if ( isChar(c)){
+                sbOut.append(c); 
+            }
+        }
+        return sbOut.toString().trim();
+    }
+    
+    /**
+     * @param ucs4char char to test
+     * @return whether the char is valid, code taken from Apache sax implementation
+     */
+    public static boolean isChar(int ucs4char)
+    {
+        return ucs4char >= 32 && ucs4char <= 55295 || ucs4char == 10 || ucs4char == 9 || ucs4char == 13 
+        || ucs4char >= 57344 && ucs4char <= 65533 || ucs4char >= 0x10000 && ucs4char<= 0x10ffff;
+    }
+    
     /**
      * 
      * @param s
      * @return whether given string is XML-valid
      */
-	public static boolean isXMLValid(String s){
-	    //check reserved chars 
+    public static boolean isXMLValid(String s){
+        //check reserved chars 
         if (s.contains("&") || //$NON-NLS-1$
-	        s.contains("\'")|| //$NON-NLS-1$
-	        s.contains("\"")|| //$NON-NLS-1$
-	        s.contains("<")|| //$NON-NLS-1$
-	        s.contains(">")){ //$NON-NLS-1$
-	       return false;   
-	    }
+            s.contains("\'")|| //$NON-NLS-1$
+            s.contains("\"")|| //$NON-NLS-1$
+            s.contains("<")|| //$NON-NLS-1$
+            s.contains(">")){ //$NON-NLS-1$
+           return false;   
+        }
         //check invalid chars
-	    for (int i=0;i<s.length();i++){
-	        char c = s.charAt(i);
-	        if ( !isChar(c)){
-	            return false;
-	        }
-	    }     
-	    return true;
-	}
-	
-	/**
-	 * Performs some cleanups for strings comming from tag libs 
-	 * @param s
-	 * @return
-	 */
-	public static String formatTag(String s){
-		//we delete all non char characters to avoid parsing errors 
+        for (int i=0;i<s.length();i++){
+            char c = s.charAt(i);
+            if ( !isChar(c)){
+                return false;
+            }
+        }     
+        return true;
+    }
+    
+    /**
+     * Performs some cleanups for strings comming from tag libs 
+     * @param s
+     * @return
+     */
+    public static String formatTag(String s){
+        //we delete all non char characters to avoid parsing errors 
         char c;
         StringBuffer sb = new StringBuffer(s.length());
         for (int i=0;i<s.length();i++){
@@ -332,181 +349,181 @@ public class Util implements ITechnicalStrings {
         }
         String sOut =  sb.toString().trim();
         return sOut;
-	}
-	
-	
-	/**Return a genre string for a given genre id **/
-	public static String getStringGenre(int i){
-		if (i>= 0 && i<126){
-			return genres[i];
-		}
-		else{
-			return Messages.getString("unknown_style"); //$NON-NLS-1$
-		}
-	}	
-	
-	/**Format a time from secs to a human readable format*/
-	public static String formatTimeBySec(long l, boolean bTrimZeros){
-		if (l == -1){ //means we are in repeat mode
-		    return "--:--"; //$NON-NLS-1$
-		}
-	    if (l<0) l =0;  //make sure to to get negative values
-	    long lHours = l/3600;
-		long lMins = l/60-(lHours*60);
-		long lSecs = l-(lHours*3600)-(lMins*60);
-		StringBuffer sbHours = new StringBuffer(Long.toString(lHours));
-		if ( sbHours.length() == 1 && !bTrimZeros) sbHours.insert(0,'0');
-		StringBuffer sbMins = new StringBuffer(Long.toString(lMins));
-		if ( sbMins.length() == 1 && !bTrimZeros) sbMins.insert(0,'0');
-		StringBuffer sbSecs = new StringBuffer(Long.toString(lSecs));
-		if ( sbSecs.length() == 1) sbSecs.insert(0,'0');
+    }
+    
+    
+    /**Return a genre string for a given genre id **/
+    public static String getStringGenre(int i){
+        if (i>= 0 && i<126){
+            return genres[i];
+        }
+        else{
+            return Messages.getString("unknown_style"); //$NON-NLS-1$
+        }
+    }   
+    
+    /**Format a time from secs to a human readable format*/
+    public static String formatTimeBySec(long l, boolean bTrimZeros){
+        if (l == -1){ //means we are in repeat mode
+            return "--:--"; //$NON-NLS-1$
+        }
+        if (l<0) l =0;  //make sure to to get negative values
+        long lHours = l/3600;
+        long lMins = l/60-(lHours*60);
+        long lSecs = l-(lHours*3600)-(lMins*60);
+        StringBuffer sbHours = new StringBuffer(Long.toString(lHours));
+        if ( sbHours.length() == 1 && !bTrimZeros) sbHours.insert(0,'0');
+        StringBuffer sbMins = new StringBuffer(Long.toString(lMins));
+        if ( sbMins.length() == 1 && !bTrimZeros) sbMins.insert(0,'0');
+        StringBuffer sbSecs = new StringBuffer(Long.toString(lSecs));
+        if ( sbSecs.length() == 1) sbSecs.insert(0,'0');
 
-	    StringBuffer sbResult = new StringBuffer();
-	    if (lHours > 0) sbResult.append(sbHours).append(":"); //$NON-NLS-1$
-	    return sbResult.append(sbMins).append(":").append(sbSecs).toString(); //$NON-NLS-1$
-	}
-	
-		
-	/** Waiting cursor thread, stored to avoid construction */
-	private static Thread tWaiting = new Thread(){
-		public void run(){
-			Container container = null;
-			IPerspective perspective = PerspectiveManager.getCurrentPerspective();
-			if ( perspective != null){
-				container = (Container)perspective.getContentPane();
-				int numComp = container.getComponentCount();
-				Component comp = null;
-				for (int i = 0; i < numComp; i++) {
-					comp = container.getComponent(i);
-					if (comp instanceof JajukContainer) {// ?
-						((JajukContainer)comp).setWaiting(true);
-					}
-				}
-				container.setCursor(WAIT_CURSOR);
-				CommandJPanel.getInstance().setCursor(WAIT_CURSOR);
-				InformationJPanel.getInstance().setCursor(WAIT_CURSOR);
-				PerspectiveBarJPanel.getInstance().setCursor(WAIT_CURSOR);
-			}
-		}
-	};
-	
-	/** Default cursor thread, stored to avoid construction */
-	private static Thread tDefault = new Thread(){
-		public void run(){
-			Container container = null;
-			IPerspective perspective = PerspectiveManager.getCurrentPerspective();
-			if ( perspective != null){
-			    container = (Container)perspective.getContentPane();
-				int numComp = container.getComponentCount();
-				Component comp = null;
-				for (int i = 0; i < numComp; i++) {
-					comp = container.getComponent(i);
-					if (comp instanceof JajukContainer) {// ?
-						((JajukContainer)comp).setWaiting(true);
-					}
-				}
-				container.setCursor(DEFAULT_CURSOR);
-				CommandJPanel.getInstance().setCursor(DEFAULT_CURSOR);
-				InformationJPanel.getInstance().setCursor(DEFAULT_CURSOR);
-				PerspectiveBarJPanel.getInstance().setCursor(DEFAULT_CURSOR);
-			}
-		}
-	};
-	
+        StringBuffer sbResult = new StringBuffer();
+        if (lHours > 0) sbResult.append(sbHours).append(":"); //$NON-NLS-1$
+        return sbResult.append(sbMins).append(":").append(sbSecs).toString(); //$NON-NLS-1$
+    }
+    
+        
+    /** Waiting cursor thread, stored to avoid construction */
+    private static Thread tWaiting = new Thread(){
+        public void run(){
+            Container container = null;
+            IPerspective perspective = PerspectiveManager.getCurrentPerspective();
+            if ( perspective != null){
+                container = (Container)perspective.getContentPane();
+                int numComp = container.getComponentCount();
+                Component comp = null;
+                for (int i = 0; i < numComp; i++) {
+                    comp = container.getComponent(i);
+                    if (comp instanceof JajukContainer) {// ?
+                        ((JajukContainer)comp).setWaiting(true);
+                    }
+                }
+                container.setCursor(WAIT_CURSOR);
+                CommandJPanel.getInstance().setCursor(WAIT_CURSOR);
+                InformationJPanel.getInstance().setCursor(WAIT_CURSOR);
+                PerspectiveBarJPanel.getInstance().setCursor(WAIT_CURSOR);
+            }
+        }
+    };
+    
+    /** Default cursor thread, stored to avoid construction */
+    private static Thread tDefault = new Thread(){
+        public void run(){
+            Container container = null;
+            IPerspective perspective = PerspectiveManager.getCurrentPerspective();
+            if ( perspective != null){
+                container = (Container)perspective.getContentPane();
+                int numComp = container.getComponentCount();
+                Component comp = null;
+                for (int i = 0; i < numComp; i++) {
+                    comp = container.getComponent(i);
+                    if (comp instanceof JajukContainer) {// ?
+                        ((JajukContainer)comp).setWaiting(true);
+                    }
+                }
+                container.setCursor(DEFAULT_CURSOR);
+                CommandJPanel.getInstance().setCursor(DEFAULT_CURSOR);
+                InformationJPanel.getInstance().setCursor(DEFAULT_CURSOR);
+                PerspectiveBarJPanel.getInstance().setCursor(DEFAULT_CURSOR);
+            }
+        }
+    };
     
     
-	/**
-	 * Set current cursor as waiting cursor
-	 */
-	public static synchronized void waiting(){
-		if (!bWaiting){
-		    bWaiting = true;
-		    SwingUtilities.invokeLater(tWaiting);    
-		}
-	}
-	
-	/**
-	 * Set current cursor as default cursor
-	 */
-	public static synchronized void stopWaiting(){
-	    if (bWaiting){
-	        bWaiting = false;
-			SwingUtilities.invokeLater(tDefault); 
-		}
-	}
-	
-	/**
-	 * Get required icon or image with specified url
-	 * @param sURL
-	 * @return the image
-	 */
-	public static ImageIcon getIcon(String sURL){
-		ImageIcon ii = null;
-		try{
-			ii = new ImageIcon(new URL(sURL));
-		}
-		catch(Exception e){
-			Log.error(e);
-		}
-		return ii;
-	}
-	
-	
-	/**
-	 * Save a file in the same directory with name <filename>_YYYYmmddHHMM.xml and with a given maximum Mb size for the file and its backup files
-	 * @param file
-	 */
-	public static void backupFile(File file,int iMB){
-		try{
-			if (Integer.parseInt(ConfigurationManager.getProperty(CONF_BACKUP_SIZE))<=0){ //0 or less means no backup
-			    return;
-			}
-		    //calculates total size in MB for the file to backup and its backup files
-			long lUsedMB = 0;
-			ArrayList alFiles = new ArrayList(10);
-			File[] files = new File(file.getAbsolutePath()).getParentFile().listFiles();
-			if ( files != null){
-				for ( int i=0;i<files.length;i++){
-					if ( files[i].getName().indexOf(removeExtension(file.getName()))!= -1){ //if the file contains the file name without extension
-						lUsedMB += files[i].length();
-						alFiles.add(files[i]);
-					}
-				}
-				//sort found files
-				alFiles.remove(file);
-				Collections.sort(alFiles);
-				if ( (lUsedMB-file.length())/1048576 > iMB){  //too much backup files
-				    // delete older backup
-				    if (alFiles.size() > 0){
-				        File fileToDelete = (File)alFiles.get(0);
-				        if (fileToDelete != null){
-				            fileToDelete.delete();
-				        }
-				    }
-				}
-			}
-			//backup itself using nio, file name is collection-backup-yyyMMdd.xml
-			String sExt = new SimpleDateFormat("yyyyMMdd").format(new Date()); //$NON-NLS-1$
-			File fileNew = new File(Util.removeExtension(file.getAbsolutePath())+"-backup-"+sExt+"."+Util.getExtension(file)); //$NON-NLS-1$//$NON-NLS-2$
-			FileChannel fcSrc = new FileInputStream(file).getChannel();
-			FileChannel fcDest = new FileOutputStream(fileNew).getChannel();
-			fcDest.transferFrom(fcSrc, 0, fcSrc.size());
-			fcSrc.close();
-			fcDest.close();
-		}
-		catch(IOException ie){
-			Log.error(ie);
-		}
-	}
-	
-	
+    
+    /**
+     * Set current cursor as waiting cursor
+     */
+    public static synchronized void waiting(){
+        if (!bWaiting){
+            bWaiting = true;
+            SwingUtilities.invokeLater(tWaiting);    
+        }
+    }
+    
+    /**
+     * Set current cursor as default cursor
+     */
+    public static synchronized void stopWaiting(){
+        if (bWaiting){
+            bWaiting = false;
+            SwingUtilities.invokeLater(tDefault); 
+        }
+    }
+    
+    /**
+     * Get required icon or image with specified url
+     * @param sURL
+     * @return the image
+     */
+    public static ImageIcon getIcon(String sURL){
+        ImageIcon ii = null;
+        try{
+            ii = new ImageIcon(new URL(sURL));
+        }
+        catch(Exception e){
+            Log.error(e);
+        }
+        return ii;
+    }
+    
+    
+    /**
+     * Save a file in the same directory with name <filename>_YYYYmmddHHMM.xml and with a given maximum Mb size for the file and its backup files
+     * @param file
+     */
+    public static void backupFile(File file,int iMB){
+        try{
+            if (Integer.parseInt(ConfigurationManager.getProperty(CONF_BACKUP_SIZE))<=0){ //0 or less means no backup
+                return;
+            }
+            //calculates total size in MB for the file to backup and its backup files
+            long lUsedMB = 0;
+            ArrayList alFiles = new ArrayList(10);
+            File[] files = new File(file.getAbsolutePath()).getParentFile().listFiles();
+            if ( files != null){
+                for ( int i=0;i<files.length;i++){
+                    if ( files[i].getName().indexOf(removeExtension(file.getName()))!= -1){ //if the file contains the file name without extension
+                        lUsedMB += files[i].length();
+                        alFiles.add(files[i]);
+                    }
+                }
+                //sort found files
+                alFiles.remove(file);
+                Collections.sort(alFiles);
+                if ( (lUsedMB-file.length())/1048576 > iMB){  //too much backup files
+                    // delete older backup
+                    if (alFiles.size() > 0){
+                        File fileToDelete = (File)alFiles.get(0);
+                        if (fileToDelete != null){
+                            fileToDelete.delete();
+                        }
+                    }
+                }
+            }
+            //backup itself using nio, file name is collection-backup-yyyMMdd.xml
+            String sExt = new SimpleDateFormat("yyyyMMdd").format(new Date()); //$NON-NLS-1$
+            File fileNew = new File(Util.removeExtension(file.getAbsolutePath())+"-backup-"+sExt+"."+Util.getExtension(file)); //$NON-NLS-1$//$NON-NLS-2$
+            FileChannel fcSrc = new FileInputStream(file).getChannel();
+            FileChannel fcDest = new FileOutputStream(fileNew).getChannel();
+            fcDest.transferFrom(fcSrc, 0, fcSrc.size());
+            fcSrc.close();
+            fcDest.close();
+        }
+        catch(IOException ie){
+            Log.error(ie);
+        }
+    }
+    
+    
     /**
      * Create empty file
      * @param sFullPath
      * @throws Exception
      */
-	public static void createEmptyFile(String sFullPath) throws IOException{
-	    File file = new File(sFullPath);
+    public static void createEmptyFile(String sFullPath) throws IOException{
+        File file = new File(sFullPath);
         FileOutputStream fos = new FileOutputStream(file);
         fos.write(new byte[0]);
         fos.close();
@@ -514,25 +531,25 @@ public class Util implements ITechnicalStrings {
     
     
     /**
-	 * Copy a file to given directory
-	 * @param file : file to copy
-	 * @param directory : destination directory
-	 */
-	public static void copyToDir(File file,File directory) throws Exception{
-		Log.debug("Copying: "+file.getAbsolutePath() +"  to : "+directory.getAbsolutePath()); //$NON-NLS-1$ //$NON-NLS-2$
-		File fileNew = new File(new StringBuffer(directory.getAbsolutePath()).append("/").append(file.getName()).toString()); //$NON-NLS-1$
-		if ( !file.exists() || !file.canRead() ){
-			throw new JajukException("023",file.getAbsolutePath(),null); //$NON-NLS-1$
-		}
-		if (  !fileNew.getParentFile().canWrite() ){
-			throw new JajukException("024",file.getAbsolutePath(),null); //$NON-NLS-1$
-		}
-		FileChannel fcSrc = new FileInputStream(file).getChannel();
-		FileChannel fcDest = new FileOutputStream(fileNew).getChannel();
-		fcDest.transferFrom(fcSrc, 0, fcSrc.size());
-		fcSrc.close();
-		fcDest.close();
-	}
+     * Copy a file to given directory
+     * @param file : file to copy
+     * @param directory : destination directory
+     */
+    public static void copyToDir(File file,File directory) throws Exception{
+        Log.debug("Copying: "+file.getAbsolutePath() +"  to : "+directory.getAbsolutePath()); //$NON-NLS-1$ //$NON-NLS-2$
+        File fileNew = new File(new StringBuffer(directory.getAbsolutePath()).append("/").append(file.getName()).toString()); //$NON-NLS-1$
+        if ( !file.exists() || !file.canRead() ){
+            throw new JajukException("023",file.getAbsolutePath(),null); //$NON-NLS-1$
+        }
+        if (  !fileNew.getParentFile().canWrite() ){
+            throw new JajukException("024",file.getAbsolutePath(),null); //$NON-NLS-1$
+        }
+        FileChannel fcSrc = new FileInputStream(file).getChannel();
+        FileChannel fcDest = new FileOutputStream(fileNew).getChannel();
+        fcDest.transferFrom(fcSrc, 0, fcSrc.size());
+        fcSrc.close();
+        fcDest.close();
+    }
     
     /**
      * Copy a file to another file
@@ -553,134 +570,134 @@ public class Util implements ITechnicalStrings {
         fcSrc.close();
         fcDest.close();
     }
-	
-	/**
-	 * Rename a file
-	 * @param file : file to rename
-	 * @param sNewName : file new name
-	 */
-	public static void copy(File file,String sNewName) throws Exception{
-		Log.debug("Renaming: "+file.getAbsolutePath() +"  to : "+sNewName); //$NON-NLS-1$ //$NON-NLS-2$
-		File fileNew = new File(new StringBuffer(file.getParentFile().getAbsolutePath()).append('/').append(sNewName).toString()); //$NON-NLS-1$
-		if ( !file.exists() || !file.canRead() ){
-			throw new JajukException("009",file.getAbsolutePath(),null); //$NON-NLS-1$
-		}
-		if (  !fileNew.getParentFile().canWrite() ){
-			throw new JajukException("024",file.getAbsolutePath(),null); //$NON-NLS-1$
-		}
-		FileChannel fcSrc = new FileInputStream(file).getChannel();
-		FileChannel fcDest = new FileOutputStream(fileNew).getChannel();
-		fcDest.transferFrom(fcSrc, 0, fcSrc.size());
-		fcSrc.close();
-		fcDest.close();
-	}
+    
+    /**
+     * Rename a file
+     * @param file : file to rename
+     * @param sNewName : file new name
+     */
+    public static void copy(File file,String sNewName) throws Exception{
+        Log.debug("Renaming: "+file.getAbsolutePath() +"  to : "+sNewName); //$NON-NLS-1$ //$NON-NLS-2$
+        File fileNew = new File(new StringBuffer(file.getParentFile().getAbsolutePath()).append('/').append(sNewName).toString()); //$NON-NLS-1$
+        if ( !file.exists() || !file.canRead() ){
+            throw new JajukException("009",file.getAbsolutePath(),null); //$NON-NLS-1$
+        }
+        if (  !fileNew.getParentFile().canWrite() ){
+            throw new JajukException("024",file.getAbsolutePath(),null); //$NON-NLS-1$
+        }
+        FileChannel fcSrc = new FileInputStream(file).getChannel();
+        FileChannel fcDest = new FileOutputStream(fileNew).getChannel();
+        fcDest.transferFrom(fcSrc, 0, fcSrc.size());
+        fcSrc.close();
+        fcDest.close();
+    }
 
-	
-	
-	/**
-	 * Get current line. Wait until line appears ( with a time out ) 
-	 * @return waited audio line
-	 */	
-	private static Line getCurrentLine(){
-		Mixer mixer = AudioSystem.getMixer(null);
-		Line line = null;
-		int iTimeOut = 200;  //time out to exit line waiting and kill a calling thread 
-		do{
-			Line[] lines = mixer.getSourceLines();
-			for (int i=0;i<lines.length;i++){
-				if ( lines[i] instanceof MixerSourceLine ){
-					line = lines[i];
-					break;
-				}
-			}
-			if ( iTimeOut > 0){
-				try {
-					Thread.sleep(20);
-				} catch (InterruptedException e) {
-					Log.error(e);
-				}
-				iTimeOut --;
-			}
-			else{
-				return null;  //time out reached, leave 
-			}
-		}
-		while(line == null);
-		return line;
-	}
+    
+    
+    /**
+     * Get current line. Wait until line appears ( with a time out ) 
+     * @return waited audio line
+     */ 
+    private static Line getCurrentLine(){
+        Mixer mixer = AudioSystem.getMixer(null);
+        Line line = null;
+        int iTimeOut = 200;  //time out to exit line waiting and kill a calling thread 
+        do{
+            Line[] lines = mixer.getSourceLines();
+            for (int i=0;i<lines.length;i++){
+                if ( lines[i] instanceof MixerSourceLine ){
+                    line = lines[i];
+                    break;
+                }
+            }
+            if ( iTimeOut > 0){
+                try {
+                    Thread.sleep(20);
+                } catch (InterruptedException e) {
+                    Log.error(e);
+                }
+                iTimeOut --;
+            }
+            else{
+                return null;  //time out reached, leave 
+            }
+        }
+        while(line == null);
+        return line;
+    }
 
-	/**
-	 * 
-	 * @param sFileName
-	 * @return whether the given filename is a standard cover or not
-	 */
-	public static boolean isStandardCover(String sFileName){
-	    return sFileName.toLowerCase().matches(".*"+FILE_DEFAULT_COVER+".*") //$NON-NLS-1$ //$NON-NLS-2$
-	    				|| sFileName.toLowerCase().matches(".*"+FILE_DEFAULT_COVER_2+".*") //$NON-NLS-1$ //$NON-NLS-2$
-	    		        || sFileName.toLowerCase().matches(".*"+FILE_ABSOLUTE_DEFAULT_COVER+".*"); //just for previous compatibility, now it is a directory property  //$NON-NLS-1$ //$NON-NLS-2$
-	}
-	
-	/**
-	 * Tell whether  a file is an absolute default cover or not
-	 * @param directory Jajuk Directory in which we analyse the given file name 
-	 * @param sFileName
-	 * @return whether the given filename is an absolute default cover
-	 */
-	public static boolean isAbsoluteDefaultCover(Directory directory,String sFilename){
-	    String sDefault = directory.getStringValue(XML_DIRECTORY_DEFAULT_COVER); //$NON-NLS-1$
-	    if (sDefault != null && sDefault.equals(sFilename)){
-	        return true;
-	    }
-	   return false;
-	}
-	
-	
-	
-	/**
-	 * Return url of jar we are executing 
-	 * @return URL of jar we are executing
-	 */
-	public static URL getJarLocation (Class cClass)  {
-		return cClass.getProtectionDomain().getCodeSource().getLocation();
-	}
-	
-	/**
-	 * Additional file checkusm used to prevent bug 886098. Simply return 10 bytes read at the middle of the file
-	 * <p> uses nio api for performances
-	 * @return
-	 */
-	public static String getFileChecksum(File fio ){
-		String sOut = ""; //$NON-NLS-1$
-		try{
-			FileChannel fc = new FileInputStream(fio).getChannel();
-			ByteBuffer bb = ByteBuffer.allocate(10);
-			fc.read(bb,fio.length()/2);
-			fc.close();
-			sOut = new String(bb.array());
-		}
-		catch(Exception e){
-			Log.error("000",fio.getAbsolutePath(),e);	 //$NON-NLS-1$
-		}
-		return sOut;
-	}
-	
-	/**
-	 * Return only the name of a file from a complete URL 
-	 * @param sPath
-	 * @return
-	 */
-	public static String getOnlyFile(String sPath){
-	    return new File(sPath).getName();
-	}
+    /**
+     * 
+     * @param sFileName
+     * @return whether the given filename is a standard cover or not
+     */
+    public static boolean isStandardCover(String sFileName){
+        return sFileName.toLowerCase().matches(".*"+FILE_DEFAULT_COVER+".*") //$NON-NLS-1$ //$NON-NLS-2$
+                        || sFileName.toLowerCase().matches(".*"+FILE_DEFAULT_COVER_2+".*") //$NON-NLS-1$ //$NON-NLS-2$
+                        || sFileName.toLowerCase().matches(".*"+FILE_ABSOLUTE_DEFAULT_COVER+".*"); //just for previous compatibility, now it is a directory property  //$NON-NLS-1$ //$NON-NLS-2$
+    }
+    
+    /**
+     * Tell whether  a file is an absolute default cover or not
+     * @param directory Jajuk Directory in which we analyse the given file name 
+     * @param sFileName
+     * @return whether the given filename is an absolute default cover
+     */
+    public static boolean isAbsoluteDefaultCover(Directory directory,String sFilename){
+        String sDefault = directory.getStringValue(XML_DIRECTORY_DEFAULT_COVER); //$NON-NLS-1$
+        if (sDefault != null && sDefault.equals(sFilename)){
+            return true;
+        }
+       return false;
+    }
+    
+    
+    
+    /**
+     * Return url of jar we are executing 
+     * @return URL of jar we are executing
+     */
+    public static URL getJarLocation (Class cClass)  {
+        return cClass.getProtectionDomain().getCodeSource().getLocation();
+    }
+    
+    /**
+     * Additional file checkusm used to prevent bug 886098. Simply return some bytes read at the middle of the file
+     * <p> uses nio api for performances
+     * @return
+     */
+    public static String getFileChecksum(File fio )throws JajukException{
+        try{
+            String sOut = ""; //$NON-NLS-1$
+            FileChannel fc = new FileInputStream(fio).getChannel();
+            ByteBuffer bb = ByteBuffer.allocate(500);
+            fc.read(bb,fio.length()/2);
+            fc.close();
+            sOut = new String(bb.array());
+            return MD5Processor.hash(sOut);
+        }
+        catch(Exception e){
+            throw new JajukException("103",e); //$NON-NLS-1$
+        }
+    }
+    
+    /**
+     * Return only the name of a file from a complete URL 
+     * @param sPath
+     * @return
+     */
+    public static String getOnlyFile(String sPath){
+        return new File(sPath).getName();
+    }
     
     public static String getCachePath(URL url){
         return FILE_IMAGE_CACHE+'/'+Util.getOnlyFile(url.toString());
     }
 
-	/**Return exec location*/
-	public static String getExecLocation(){
-		return sExecLocation;
-	}
+    /**Return exec location*/
+    public static String getExecLocation(){
+        return sExecLocation;
+    }
     
     public static void clearCache(){
         File fCache = new File(FILE_IMAGE_CACHE);
@@ -689,96 +706,96 @@ public class Util implements ITechnicalStrings {
             files[i].delete();
         }
     }
-	
-	/**
-	 * Set exec location
-	 * @param bDebug
-	 */
-	public static void setExecLocation(boolean bIde){
-		if (bIde){
-			sExecLocation = "file:"+System.getProperty("user.dir")+"/jajuk.jar"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-	    }
-		else{
-			sExecLocation = Util.getJarLocation(Main.class).toString();
-    	}
+    
+    /**
+     * Set exec location
+     * @param bDebug
+     */
+    public static void setExecLocation(boolean bIde){
+        if (bIde){
+            sExecLocation = "file:"+System.getProperty("user.dir")+"/jajuk.jar"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        }
+        else{
+            sExecLocation = Util.getJarLocation(Main.class).toString();
+        }
     }
-	
-	
-	/**
-	 * @return whether we are under Windows
-	 */
-	public static boolean isUnderWindows(){
-		String sOS = (String)System.getProperties().get("os.name"); //$NON-NLS-1$;
-		if (sOS.trim().toLowerCase().lastIndexOf("windows")!=-1){ //$NON-NLS-1$
-			return true;
-		}
-		return false;
-	}
-	
-	/**
-	 * @return whether we are under Linux
-	 */
-	public static boolean isUnderLinux(){
-		String sOS = (String)System.getProperties().get("os.name"); //$NON-NLS-1$;
-		if (sOS.trim().toLowerCase().lastIndexOf("linux")!=-1){ //$NON-NLS-1$
-			return true;
-		}
-		return false;
-	}
+    
+    
+    /**
+     * @return whether we are under Windows
+     */
+    public static boolean isUnderWindows(){
+        String sOS = (String)System.getProperties().get("os.name"); //$NON-NLS-1$;
+        if (sOS.trim().toLowerCase().lastIndexOf("windows")!=-1){ //$NON-NLS-1$
+            return true;
+        }
+        return false;
+    }
+    
+    /**
+     * @return whether we are under Linux
+     */
+    public static boolean isUnderLinux(){
+        String sOS = (String)System.getProperties().get("os.name"); //$NON-NLS-1$;
+        if (sOS.trim().toLowerCase().lastIndexOf("linux")!=-1){ //$NON-NLS-1$
+            return true;
+        }
+        return false;
+    }
 
-	/**
-	 * Try to compute time length in milliseconds using BasicPlayer API. (code from jlGui 2.3)
-	 */
-	public static long getTimeLengthEstimation(Map properties)
-	{
-		long milliseconds = -1;
-		int byteslength = -1;
-		if (properties != null)
-		{
-			if (properties.containsKey("audio.length.bytes")) //$NON-NLS-1$
-			{
-				byteslength = ((Integer) properties.get("audio.length.bytes")).intValue();			 //$NON-NLS-1$
-			}
-			if (properties.containsKey("duration")) //$NON-NLS-1$
-			{
-				milliseconds = (long) (((Long) properties.get("duration")).longValue())/1000;			 //$NON-NLS-1$
-			}
-			else
-			{
-				// Try to compute duration
-				int bitspersample = -1;
-				int channels = -1;
-				float samplerate = -1.0f;
-				int framesize = -1;			 
-				if (properties.containsKey("audio.samplesize.bits")) //$NON-NLS-1$
-				{
-					bitspersample = ((Integer) properties.get("audio.samplesize.bits")).intValue();  //$NON-NLS-1$
-				}
-				if (properties.containsKey("audio.channels")) //$NON-NLS-1$
-				{
-					channels = ((Integer) properties.get("audio.channels")).intValue();  //$NON-NLS-1$
-				}
-				if (properties.containsKey("audio.samplerate.hz")) //$NON-NLS-1$
-				{
-					samplerate = ((Float) properties.get("audio.samplerate.hz")).floatValue();  //$NON-NLS-1$
-				}
-				if (properties.containsKey("audio.framesize.bytes")) //$NON-NLS-1$
-				{
-					framesize = ((Integer) properties.get("audio.framesize.bytes")).intValue();  //$NON-NLS-1$
-				}
-				if (bitspersample > 0)
-				{
-					milliseconds = (int) (1000.0f*byteslength/(samplerate * channels * (bitspersample/8))); 
-				} 
-				else
-				{
-					milliseconds = (int)(1000.0f*byteslength/(samplerate*framesize)); 
-				}			
-			}
-		}
-		return milliseconds;
-	}
-	
+    /**
+     * Try to compute time length in milliseconds using BasicPlayer API. (code from jlGui 2.3)
+     */
+    public static long getTimeLengthEstimation(Map properties)
+    {
+        long milliseconds = -1;
+        int byteslength = -1;
+        if (properties != null)
+        {
+            if (properties.containsKey("audio.length.bytes")) //$NON-NLS-1$
+            {
+                byteslength = ((Integer) properties.get("audio.length.bytes")).intValue();           //$NON-NLS-1$
+            }
+            if (properties.containsKey("duration")) //$NON-NLS-1$
+            {
+                milliseconds = (long) (((Long) properties.get("duration")).longValue())/1000;            //$NON-NLS-1$
+            }
+            else
+            {
+                // Try to compute duration
+                int bitspersample = -1;
+                int channels = -1;
+                float samplerate = -1.0f;
+                int framesize = -1;          
+                if (properties.containsKey("audio.samplesize.bits")) //$NON-NLS-1$
+                {
+                    bitspersample = ((Integer) properties.get("audio.samplesize.bits")).intValue();  //$NON-NLS-1$
+                }
+                if (properties.containsKey("audio.channels")) //$NON-NLS-1$
+                {
+                    channels = ((Integer) properties.get("audio.channels")).intValue();  //$NON-NLS-1$
+                }
+                if (properties.containsKey("audio.samplerate.hz")) //$NON-NLS-1$
+                {
+                    samplerate = ((Float) properties.get("audio.samplerate.hz")).floatValue();  //$NON-NLS-1$
+                }
+                if (properties.containsKey("audio.framesize.bytes")) //$NON-NLS-1$
+                {
+                    framesize = ((Integer) properties.get("audio.framesize.bytes")).intValue();  //$NON-NLS-1$
+                }
+                if (bitspersample > 0)
+                {
+                    milliseconds = (int) (1000.0f*byteslength/(samplerate * channels * (bitspersample/8))); 
+                } 
+                else
+                {
+                    milliseconds = (int)(1000.0f*byteslength/(samplerate*framesize)); 
+                }           
+            }
+        }
+        return milliseconds;
+    }
+    
     
     /**
      * 
@@ -819,17 +836,17 @@ public class Util implements ITechnicalStrings {
      */
     public static boolean isDescendant(File file1,File file2){
         File fParent = file1.getParentFile();
-		boolean bOut = false;
-		while (fParent != null){
-		    if (fParent.equals(file2)){
-		        bOut =true;
-		        break;
-		    }
-		    fParent = fParent.getParentFile();
-		}
-		return bOut;
+        boolean bOut = false;
+        while (fParent != null){
+            if (fParent.equals(file2)){
+                bOut =true;
+                break;
+            }
+            fParent = fParent.getParentFile();
+        }
+        return bOut;
     }
-	
+    
     /**
      * @param file1 
      * @param file2
@@ -837,15 +854,15 @@ public class Util implements ITechnicalStrings {
      */
     public static boolean isAncestor(File file1,File file2){
         File fParent = file2.getParentFile();
-		boolean bOut = false;
-		while (fParent != null){
-		    if (fParent.equals(file1)){
-		        bOut = true;
-		        break;
-		    }
-		    fParent = fParent.getParentFile();
-		}
-		return bOut;
+        boolean bOut = false;
+        while (fParent != null){
+            if (fParent.equals(file1)){
+                bOut = true;
+                break;
+            }
+            fParent = fParent.getParentFile();
+        }
+        return bOut;
     }
     
     /**
@@ -901,7 +918,7 @@ public class Util implements ITechnicalStrings {
         iiNew.setImage(scaleImg);
         return iiNew;
     }
-	
+    
     
     /**
      * Method to attempt a dynamic update for any GUI accessible by this JVM. It will
@@ -1129,6 +1146,86 @@ public class Util implements ITechnicalStrings {
         }
         return sValue;
     }
+    
+    /**
+     * format style: first letter uppercase and others lowercase
+     * @param style
+     * @return
+     */
+    public static String formatStyle(String style){
+        if (style.length()==0){
+            return ""; //$NON-NLS-1$
+        }
+        if (style.length()==1){
+            return style.substring(0,1).toUpperCase();
+        } 
+        String sOut = style.toLowerCase().substring(1);
+        sOut = style.substring(0,1).toUpperCase()+sOut;
+        return sOut;
+    }
 
+     /**
+     * Reads an image in a file and creates 
+     * a thumbnail in another file.
+     * @param orig The name of image file.
+     * @param thumb The name of thumbnail file.  
+     * Will be created if necessary.
+     * @param maxDim The width and height of 
+     * the thumbnail must 
+     * be maxDim pixels or less.
+     */
+    public static void createThumbnail(
+            URL orig, File thumb,int maxDim) throws Exception{
+        // Get the image from a file.
+        Image inImage = new ImageIcon(orig).getImage();
+        // Determine the scale.
+        double scale = (double)maxDim/(
+                double)inImage.getHeight(null);
+        if (inImage.getWidth(
+            null) > inImage.getHeight(null)) {
+            scale = (double)maxDim/(
+                    double)inImage.getWidth(null);
+        }
+        
+        // Determine size of new image. 
+        //One of them
+        // should equal maxDim.
+        int scaledW = (int)(
+                scale*inImage.getWidth(null));
+        int scaledH = (int)(
+                scale*inImage.getHeight(null));
+        
+        // Create an image buffer in 
+        //which to paint on.
+        BufferedImage outImage = 
+            new BufferedImage(scaledW, scaledH,
+                BufferedImage.TYPE_INT_RGB);
+        
+        // Set the scale.
+        AffineTransform tx = 
+            new AffineTransform();
+        
+        // If the image is smaller than 
+        //the desired image size,
+        // don't bother scaling.
+        if (scale < 1.0d) {
+            tx.scale(scale, scale);
+        }
+        
+        // Paint image.
+        Graphics2D g2d = 
+            outImage.createGraphics();
+        g2d.drawImage(inImage, tx, null);
+        g2d.dispose();
+        
+        // JPEG-encode the image 
+        //and write to file.
+        OutputStream os = 
+            new FileOutputStream(thumb);
+        JPEGImageEncoder encoder = 
+            JPEGCodec.createJPEGEncoder(os);
+        encoder.encode(outImage);
+        os.close();
+    }
   
 }

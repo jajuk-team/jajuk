@@ -22,6 +22,7 @@ package org.jajuk.base;
 import org.jajuk.i18n.Messages;
 import org.jajuk.players.IPlayerImpl;
 import org.jajuk.tag.ITagImpl;
+import org.jajuk.util.log.Log;
 
 /**
  * Music type 
@@ -35,9 +36,9 @@ public class Type extends PropertyAdapter{
 	private String sExtension;
 	/**Type player implementation */
 	private IPlayerImpl playerImpl;
-	/**Type tag implementation, null if it is not a music type */
-	private ITagImpl tagImpl;
-   	
+    /**Player impl*/
+    private Class cTagImpl;
+	
 	/**
 	 * Constructor
 	 * @param sId type id if given
@@ -53,16 +54,16 @@ public class Type extends PropertyAdapter{
         setProperty(XML_TYPE_EXTENSION,sExtension);
         this.playerImpl = (IPlayerImpl)cPlayerImpl.newInstance();
         setProperty(XML_TYPE_PLAYER_IMPL,cPlayerImpl);
+        this.cTagImpl = cTagImpl;
         if (cTagImpl != null){  //can be null for playlists
-            this.tagImpl = (ITagImpl)cTagImpl.newInstance();
             setProperty(XML_TYPE_TAG_IMPL,cTagImpl);
         }
     }
 
-/* (non-Javadoc)
+	/* (non-Javadoc)
      * @see org.jajuk.base.IPropertyable#getIdentifier()
      */
-    public String getIdentifier() {
+    final public String getIdentifier() {
         return XML_TYPE;
     }
     
@@ -108,7 +109,14 @@ public class Type extends PropertyAdapter{
 	 * @return Returns the tagImpl.
 	 */
 	public ITagImpl getTagImpl() {
-		return this.tagImpl;
+		ITagImpl tagImpl = null;
+        try{
+            tagImpl = (ITagImpl)cTagImpl.newInstance();
+        }
+        catch(Exception e){
+            Log.error(e);
+        }
+        return tagImpl;
 	}
   
     /**

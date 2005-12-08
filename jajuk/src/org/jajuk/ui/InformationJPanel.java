@@ -63,6 +63,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,Obser
     public static final int WARNING = 2;
     /**Self instance*/
     static private InformationJPanel ijp = null;    
+   
     /** Swing Timer to refresh the component*/ 
     private Timer timer = new Timer(JajukTimer.DEFAULT_HEARTBEAT,new ActionListener() {
         public void actionPerformed(ActionEvent e) {
@@ -93,6 +94,8 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,Obser
     JLabel jlCurrent;
     //attributes    
     String sMessage;
+    /**Current message type*/
+    int iType = 0;
     String sSelection;
     int iTotalStatus;
     String sTotalStatus;
@@ -207,6 +210,8 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,Obser
      * @param label
      */
     public void setMessage(final String sMessage,final int iMessageType) {
+        this.sMessage = sMessage;
+        this.iType = iMessageType;
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 InformationJPanel.this.sMessage = sMessage;
@@ -350,5 +355,9 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,Obser
      */
     public String toString(){
         return getClass().getName();
+    }
+
+    public int getMessageType() {
+        return iType;
     }
 }

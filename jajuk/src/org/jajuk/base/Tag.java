@@ -23,6 +23,7 @@ import java.io.File;
 
 import org.jajuk.i18n.Messages;
 import org.jajuk.tag.ITagImpl;
+import org.jajuk.ui.InformationJPanel;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
@@ -36,20 +37,21 @@ import org.jajuk.util.log.Log;
  */
 public class Tag implements ITechnicalStrings{
 
-	/** Current tag impl* */
-	private ITagImpl tagImpl;
-	/** Current file* */
-	private File fio;
-    /**Is thi stag corrupted ?*/
+    /** Current tag impl* */
+    private ITagImpl tagImpl;
+    /** Current file* */
+    private File fio;
+    /**Is this tag corrupted ?*/
     private boolean bCorrupted = false;
+   
 
-	/**
-	 * Tag constructor
-	 * 
-	 * @param fio
-	 */
-	public Tag(java.io.File fio)throws JajukException {
-	    this(fio,false);
+    /**
+     * Tag constructor
+     * 
+     * @param fio
+     */
+    public Tag(java.io.File fio)throws JajukException {
+        this(fio,false);
     }
     
     /**
@@ -70,186 +72,186 @@ public class Tag implements ITechnicalStrings{
         }   
     }
 
-	/**
-	 * @return track name as defined in tags are file name otherwise
-	 */
-	public String getTrackName() {
-		//by default, track name is the file name without extension
-		String sTrackName = Util.removeExtension(fio.getName());
-		if (tagImpl == null){  //if the type doesn't support tags ( like wav )
-			return sTrackName;
-		}
-		String sTemp = ""; //$NON-NLS-1$
-		try {
-			sTemp = tagImpl.getTrackName().trim();
-			if (!"".equals(sTemp)){ //$NON-NLS-1$
-				sTrackName = Util.formatTag(sTemp);  //remove the extension
-			}
-		} catch (Exception e) {
-			Log.warn("103", fio.getName(),e); //$NON-NLS-1$
-		}
-		return sTrackName;
-	}
+    /**
+     * @return track name as defined in tags are file name otherwise
+     */
+    public String getTrackName() {
+        //by default, track name is the file name without extension
+        String sTrackName = Util.removeExtension(fio.getName());
+        if (tagImpl == null){  //if the type doesn't support tags ( like wav )
+            return sTrackName;
+        }
+        String sTemp = ""; //$NON-NLS-1$
+        try {
+            sTemp = tagImpl.getTrackName().trim();
+            if (!"".equals(sTemp)){ //$NON-NLS-1$
+                sTrackName = Util.formatTag(sTemp);  //remove the extension
+            }
+        } catch (Exception e) {
+            Log.warn("Wrong track name:"+fio.getName()); //$NON-NLS-1$
+        }
+        return sTrackName;
+    }
 
-	/**
-	 * @return album name
-	 */
-	public String getAlbumName() {
-		if (tagImpl == null){  //if the type doesn't support tags ( like wav )
-			return UNKNOWN_ALBUM; //$NON-NLS-1$
-		}
-		String sAlbumlName = null;
-		String sTemp = ""; //$NON-NLS-1$
-		try {
-			sTemp = tagImpl.getAlbumName().trim();
-			if (Messages.getString(UNKNOWN_ALBUM).equals(sTemp)){  //it is done to avoid duplicates unknown albums if the tag is the real string "unknown" in the current language  //$NON-NLS-1$
-					sAlbumlName = UNKNOWN_ALBUM; //$NON-NLS-1$
-			}
-			else if (!"".equals(sTemp)){ //$NON-NLS-1$
-				sAlbumlName = sTemp;
-			}
-		} catch (Exception e) {
-			Log.warn("103",fio.getName(), e); //$NON-NLS-1$
-		}
-		if (sAlbumlName == null){  //album tag cannot be found
-			if (Boolean.valueOf(ConfigurationManager.getProperty(CONF_TAGS_USE_PARENT_DIR)).booleanValue()){
-				sAlbumlName = fio.getParentFile().getName(); //if album is not found, take current dirtectory as album name
-			}
-			else{
-				sAlbumlName = Messages.getString(UNKNOWN_ALBUM);  //album inconnu //$NON-NLS-1$
-			}
-		}
-		sAlbumlName = Util.formatTag(sAlbumlName);
-		return sAlbumlName;
-	}
+    /**
+     * @return album name
+     */
+    public String getAlbumName() {
+        if (tagImpl == null){  //if the type doesn't support tags ( like wav )
+            return UNKNOWN_ALBUM; //$NON-NLS-1$
+        }
+        String sAlbumlName = null;
+        String sTemp = ""; //$NON-NLS-1$
+        try {
+            sTemp = tagImpl.getAlbumName().trim();
+            if (Messages.getString(UNKNOWN_ALBUM).equals(sTemp)){  //it is done to avoid duplicates unknown albums if the tag is the real string "unknown" in the current language  //$NON-NLS-1$
+                sAlbumlName = UNKNOWN_ALBUM; //$NON-NLS-1$
+            }
+            else if (!"".equals(sTemp)){ //$NON-NLS-1$
+                sAlbumlName = sTemp;
+            }
+        } catch (Exception e) {
+            Log.warn("Wrong album name:"+fio.getName()); //$NON-NLS-1$
+        }
+        if (sAlbumlName == null){  //album tag cannot be found
+            if (Boolean.valueOf(ConfigurationManager.getProperty(CONF_TAGS_USE_PARENT_DIR)).booleanValue()){
+                sAlbumlName = fio.getParentFile().getName(); //if album is not found, take current dirtectory as album name
+            }
+            else{
+                sAlbumlName = Messages.getString(UNKNOWN_ALBUM);  //album inconnu //$NON-NLS-1$
+            }
+        }
+        sAlbumlName = Util.formatTag(sAlbumlName);
+        return sAlbumlName;
+    }
 
-	/**
-	 * @return author name
-	 */
-	public String getAuthorName() {
-		String sAuthorName = UNKNOWN_AUTHOR; //$NON-NLS-1$
-		//if the type doesn't support tags ( like wav )
-		if (tagImpl == null){  
-			return sAuthorName;
-		}
-		String sTemp = ""; //$NON-NLS-1$
-		try {
-			sTemp = tagImpl.getAuthorName().trim();
-			if (Messages.getString(UNKNOWN_AUTHOR).equals(sTemp)){  //it is done to avoid duplicates unknown authors if the tag is the real string "unknown" in the current language  //$NON-NLS-1$
-				sAuthorName = UNKNOWN_AUTHOR; //$NON-NLS-1$
-			}
-			else if (!"".equals(sTemp)){ //$NON-NLS-1$
-				sAuthorName = Util.formatTag(sTemp);
-			}
-		} catch (Exception e) {
-			Log.warn("103", fio.getName(),e); //$NON-NLS-1$
-		}
-		return sAuthorName;
-
-	}
-	
-
-	/**
-	 * @return style name
-	 */
-	public String getStyleName() {
-		String style = UNKNOWN_STYLE; //$NON-NLS-1$
-		//if the type doesn't support tags ( like wav )
-		if (tagImpl == null){  
-			return style;
-		}
-		String sTemp = ""; //$NON-NLS-1$
-		try {
-			sTemp = tagImpl.getStyleName().trim();
-			if (Messages.getString(UNKNOWN_STYLE).equals(sTemp)){  //it is done to avoid duplicates unknown styles if the tag is the real string "unknown" in the current language  //$NON-NLS-1$
-				style = UNKNOWN_STYLE; //$NON-NLS-1$
-			}
-			else if (!"".equals(sTemp)){ //$NON-NLS-1$
-				if( sTemp.equals("unknown")){ //$NON-NLS-1$
-					sTemp = style;
-				}
-				style = Util.formatTag(sTemp);
-			}
-		} catch (Exception e) {
-			Log.warn("103", fio.getName(),e); //$NON-NLS-1$
-		}
-		return style;
-
-	}
-
-	/**
-	 * @return length in sec
-	 */
-	public long getLength() {
-		long length = 0;
-		//if the type doesn't support tags ( like wav )
-		if (tagImpl == null){  
-			return 0;
-		}
-		try {
-			length = tagImpl.getLength();
-		} catch (Exception e) {
-			Log.warn("103", fio.getName(),e); //$NON-NLS-1$
-		}
-		return length;
-	}
-
-	/**
-	 * @return creation year
-	 */
-	public long getYear() {
-		long lYear = 0;
+    /**
+     * @return author name
+     */
+    public String getAuthorName() {
+        String sAuthorName = UNKNOWN_AUTHOR; //$NON-NLS-1$
         //if the type doesn't support tags ( like wav )
-		if (tagImpl == null){  
-			return lYear;
-		}
-		try {
-			 lYear = tagImpl.getYear(); //check it is an integer
-		} catch (Exception e) {
-			Log.debug("Wrong year:"+fio.getName()); //$NON-NLS-1$
-		}
-		return lYear;
+        if (tagImpl == null){  
+            return sAuthorName;
+        }
+        String sTemp = ""; //$NON-NLS-1$
+        try {
+            sTemp = tagImpl.getAuthorName().trim();
+            if (Messages.getString(UNKNOWN_AUTHOR).equals(sTemp)){  //it is done to avoid duplicates unknown authors if the tag is the real string "unknown" in the current language  //$NON-NLS-1$
+                sAuthorName = UNKNOWN_AUTHOR; //$NON-NLS-1$
+            }
+            else if (!"".equals(sTemp)){ //$NON-NLS-1$
+                sAuthorName = Util.formatTag(sTemp);
+            }
+        } catch (Exception e) {
+            Log.warn("Wrong author name:"+fio.getName()); //$NON-NLS-1$
+        }
+        return sAuthorName;
 
-	}
+    }
+    
 
-	/**
-	 * @return quality
-	 */
-	public long getQuality() {
-		long lQuality = 0l;
-		//if the type doesn't support tags ( like wav )
-		if (tagImpl == null){  
-			return lQuality;
-		}
-		String sTemp = ""; //$NON-NLS-1$
-		try {
-	        lQuality = tagImpl.getQuality();
-		} catch (Exception e) {
-			Log.warn("103",fio.getName(), e); //$NON-NLS-1$
-		}
-		return lQuality;
-	}
+    /**
+     * @return style name
+     */
+    public String getStyleName() {
+        String style = UNKNOWN_STYLE; //$NON-NLS-1$
+        //if the type doesn't support tags ( like wav )
+        if (tagImpl == null){  
+            return style;
+        }
+        String sTemp = ""; //$NON-NLS-1$
+        try {
+            sTemp = tagImpl.getStyleName().trim();
+            if (Messages.getString(UNKNOWN_STYLE).equals(sTemp)){  //it is done to avoid duplicates unknown styles if the tag is the real string "unknown" in the current language  //$NON-NLS-1$
+                style = UNKNOWN_STYLE; //$NON-NLS-1$
+            }
+            else if (!"".equals(sTemp)){ //$NON-NLS-1$
+                if( sTemp.equals("unknown")){ //$NON-NLS-1$
+                    sTemp = style;
+                }
+                style = Util.formatTag(sTemp);
+            }
+        } catch (Exception e) {
+            Log.warn("Wrong style name:"+fio.getName()); //$NON-NLS-1$
+        }
+        return style;
 
-	/**
-	 * @return comment
-	 */
-	public String getComment() {
-		String sComment = ""; //$NON-NLS-1$
-		//if the type doesn't support tags ( like wav )
-		if (tagImpl == null){  
-			return sComment;
-		}
-		String sTemp = ""; //$NON-NLS-1$
-		try {
-			sTemp = tagImpl.getComment();
-			if (sTemp != null && !sTemp.equals("")){ //$NON-NLS-1$
-				sComment = Util.formatTag(sTemp);
-			}
-		} catch (Exception e) {
-			Log.warn("103",fio.getName(), e); //$NON-NLS-1$
-		}
-		return sComment;	
-	}
+    }
+
+    /**
+     * @return length in sec
+     */
+    public long getLength() {
+        long length = 0;
+        //if the type doesn't support tags ( like wav )
+        if (tagImpl == null){  
+            return 0;
+        }
+        try {
+            length = tagImpl.getLength();
+        } catch (Exception e) {
+            Log.warn("Wrong length:"+fio.getName()); //$NON-NLS-1$
+        }
+        return length;
+    }
+
+    /**
+     * @return creation year
+     */
+    public long getYear() {
+        long lYear = 0;
+        //if the type doesn't support tags ( like wav )
+        if (tagImpl == null){  
+            return lYear;
+        }
+        try {
+             lYear = tagImpl.getYear(); //check it is an integer
+        } catch (Exception e) {
+            Log.warn("Wrong year:"+fio.getName()); //$NON-NLS-1$
+        }
+        return lYear;
+
+    }
+
+    /**
+     * @return quality
+     */
+    public long getQuality() {
+        long lQuality = 0l;
+        //if the type doesn't support tags ( like wav )
+        if (tagImpl == null){  
+            return lQuality;
+        }
+        String sTemp = ""; //$NON-NLS-1$
+        try {
+            lQuality = tagImpl.getQuality();
+        } catch (Exception e) {
+            Log.warn("Wrong quality:"+fio.getName()); //$NON-NLS-1$
+        }
+        return lQuality;
+    }
+
+    /**
+     * @return comment
+     */
+    public String getComment() {
+        String sComment = ""; //$NON-NLS-1$
+        //if the type doesn't support tags ( like wav )
+        if (tagImpl == null){  
+            return sComment;
+        }
+        String sTemp = ""; //$NON-NLS-1$
+        try {
+            sTemp = tagImpl.getComment();
+            if (sTemp != null && !sTemp.equals("")){ //$NON-NLS-1$
+                sComment = Util.formatTag(sTemp);
+            }
+        } catch (Exception e) {
+            Log.warn("Wrong comment:"+fio.getName()); //$NON-NLS-1$
+        }
+        return sComment;    
+    }
     
      /**
      * @return comment
@@ -268,50 +270,50 @@ public class Tag implements ITechnicalStrings{
         }
         return l;    
     }
-	
-	/**
-	 * @param sTrackName
-	 */
-	public void setTrackName(String sTrackName) throws JajukException{
-		try {
-			tagImpl.setTrackName(sTrackName);
-		} catch (Exception e) {
-			throw new JajukException("104",fio.getName(), e); //$NON-NLS-1$
-		}
-	}
+    
+    /**
+     * @param sTrackName
+     */
+    public void setTrackName(String sTrackName) throws JajukException{
+        try {
+            tagImpl.setTrackName(sTrackName);
+        } catch (Exception e) {
+            throw new JajukException("104",fio.getName(), e); //$NON-NLS-1$
+        }
+    }
 
-	/**
-	 * @param sAlbumName
-	 */
-	public void setAlbumName(String sAlbumName) throws JajukException{
-		try {
-			tagImpl.setAlbumName(sAlbumName);
-		} catch (Exception e) {
-			throw new JajukException("104",fio.getName(), e); //$NON-NLS-1$
-		}
-	}
+    /**
+     * @param sAlbumName
+     */
+    public void setAlbumName(String sAlbumName) throws JajukException{
+        try {
+            tagImpl.setAlbumName(sAlbumName);
+        } catch (Exception e) {
+            throw new JajukException("104",fio.getName(), e); //$NON-NLS-1$
+        }
+    }
 
-	/**
-	 * @param sAuthorName
-	 */
-	public void setAuthorName(String sAuthorName) throws JajukException{
-		try {
-			tagImpl.setAuthorName(sAuthorName);
-		} catch (Exception e) {
-			throw new JajukException("104",fio.getName(), e); //$NON-NLS-1$
-		}
-	}
+    /**
+     * @param sAuthorName
+     */
+    public void setAuthorName(String sAuthorName) throws JajukException{
+        try {
+            tagImpl.setAuthorName(sAuthorName);
+        } catch (Exception e) {
+            throw new JajukException("104",fio.getName(), e); //$NON-NLS-1$
+        }
+    }
 
-	/**
-	 * @param style
-	 */
-	public void setStyleName(String style) throws JajukException{
-		try {
-			tagImpl.setStyleName(style);
-		} catch (Exception e) {
-			throw new JajukException("104",fio.getName(), e); //$NON-NLS-1$
-		}
-	}
+    /**
+     * @param style
+     */
+    public void setStyleName(String style) throws JajukException{
+        try {
+            tagImpl.setStyleName(style);
+        } catch (Exception e) {
+            throw new JajukException("104",fio.getName(), e); //$NON-NLS-1$
+        }
+    }
 
     /**
      * @param style
@@ -325,26 +327,26 @@ public class Tag implements ITechnicalStrings{
     }
 
     /**
-	 * @param sYear
-	 */
-	public void setYear(long lYear) throws JajukException {
-		try {
-			tagImpl.setYear(lYear);
-		} catch (Exception e) {
-			throw new JajukException("104",fio.getName(), e); //$NON-NLS-1$
-		}
-	}
+     * @param sYear
+     */
+    public void setYear(long lYear) throws JajukException {
+        try {
+            tagImpl.setYear(lYear);
+        } catch (Exception e) {
+            throw new JajukException("104",fio.getName(), e); //$NON-NLS-1$
+        }
+    }
 
     /**
-	 * @param sComment
-	 */
-	public void setComment(String sComment) throws JajukException{
-		try {
-			tagImpl.setComment(sComment);
-		} catch (Exception e) {
-			throw new JajukException("104",fio.getName(), e); //$NON-NLS-1$
-		}
-	}
+     * @param sComment
+     */
+    public void setComment(String sComment) throws JajukException{
+        try {
+            tagImpl.setComment(sComment);
+        } catch (Exception e) {
+            throw new JajukException("104",fio.getName(), e); //$NON-NLS-1$
+        }
+    }
     
     /**
      * Commit tags
@@ -352,6 +354,7 @@ public class Tag implements ITechnicalStrings{
     public void commit() throws JajukException{
         try {
             tagImpl.commit();
+            InformationJPanel.getInstance().setMessage(Messages.getString("PropertiesWizard.11")+" "+fio.getName(),InformationJPanel.INFORMATIVE); //$NON-NLS-1$ //$NON-NLS-2$
         } catch (Exception e) {
              throw new JajukException("104",fio.getName()+"\n"+e.getMessage(),e); //$NON-NLS-1$ //$NON-NLS-2$
         }
@@ -364,5 +367,6 @@ public class Tag implements ITechnicalStrings{
     public void setCorrupted(boolean corrupted) {
         bCorrupted = corrupted;
     }
+  
 
 }

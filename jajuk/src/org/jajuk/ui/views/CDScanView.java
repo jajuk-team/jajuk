@@ -33,6 +33,8 @@ import javax.swing.JTextField;
 
 import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;
+import org.jajuk.base.Event;
+import org.jajuk.base.ObservationManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.JajukFileChooser;
 import org.jajuk.util.JajukFileFilter;
@@ -142,6 +144,8 @@ public class CDScanView extends ViewAdapter implements ActionListener {
 						catch(Exception ex){
 							DeviceManager.getInstance().removeDevice(device);
 							Messages.showErrorMessage("016"); //$NON-NLS-1$
+							//refresh views
+							ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH));
 						}
 					}
 					return null;

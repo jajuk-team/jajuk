@@ -22,6 +22,7 @@ package org.jajuk.base;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Locale;
 
@@ -47,12 +48,12 @@ public class Track extends PropertyAdapter implements Comparable{
 	private long length;
 	/**Track year*/
 	private long lYear;
-	/**Track type*/
+	/**Track order*/
+    private long lOrder;
+    /**Track type*/
 	private Type type;
 	/**Track associated files*/
 	private ArrayList<File> alFiles = new ArrayList(1);
-	/**Track compare hash for perfs*/
-	private String sHashCompare;
 	/** Number of hits for current jajuk session */
 	private int iSessionHits = 0;
     
@@ -68,7 +69,7 @@ public class Track extends PropertyAdapter implements Comparable{
 	 * @param type
 	 * @param sAdditionDate
 	 */
-	public Track(String sId,String sName,Album album,Style style,Author author,long length,long lYear,Type type) {
+	public Track(String sId,String sName,Album album,Style style,Author author,long length,long lYear,long lOrder,Type type) {
         super(sId,sName);
             //album
         	this.album = album;
@@ -88,16 +89,15 @@ public class Track extends PropertyAdapter implements Comparable{
             //Year
             this.lYear = lYear;
             setProperty(XML_TRACK_YEAR,lYear);
+            //Order
+            this.lOrder = lOrder;
+            setProperty(XML_TRACK_ORDER,lOrder);
             //Rate
             setProperty(XML_TRACK_RATE,0l);
             //Hits
             setProperty(XML_TRACK_HITS,0l);
-            //Hashcode
-            this.sHashCompare = new StringBuffer(style.getName2()).append(author.getName2()).append(album.getName2()).append(sName).toString();
     }
-        
-	
-	
+       	
 	/**
 	 * toString method
 	 */
@@ -119,11 +119,32 @@ public class Track extends PropertyAdapter implements Comparable{
 	 */
 	public int compareTo(Object o){
 		Track otherTrack = (Track)o;
-        //if track # is given, sort by # in a same album, otherwise, sort alphabeticaly
-        if (otherTrack.getAlbum().equals(album) && (getOrder() != otherTrack.getOrder()) ){
-            return (int)(getOrder() - otherTrack.getOrder()); 
+        if (otherTrack.equals(this)){//ensure a.equals(b) <-> a.compareTo(b)==0 contract
+            return 0;
         }
-        return  sHashCompare.compareToIgnoreCase(otherTrack.getHashCompare());
+        //if track # is given, sort by # in a same album, otherwise, sort alphabeticaly
+        if (otherTrack.getAlbum().equals(album) 
+                && otherTrack.getAuthor().equals(author)
+                && otherTrack.getStyle().equals(style)
+                && (getOrder() != otherTrack.getOrder()) ){
+            //do not use year as an album can contains tracks with different year but we want to keep order
+            return (int)(getOrder()-otherTrack.getOrder()); 
+        }
+        //comparaison based on style, author, album, name and year to differenciate 2 tracks with all the same attributes
+        //note we need to use year because in sorted set, we must differenciate 2 tracks with different years
+        String sHashCompare = new StringBuffer()
+            .append(style.getName2())
+            .append("  ").append(author.getName2())//need 2 spaces to make a right sorting (ex: Rock and Rock & Roll) //$NON-NLS-1$
+            .append("  ").append(album.getName2()) //$NON-NLS-1$
+            .append(lYear)
+            .append("  ").append(sName).toString(); //$NON-NLS-1$
+        String sHashCompareOther = new StringBuffer()
+            .append(otherTrack.getStyle().getName2())
+            .append("  ").append(otherTrack.getAuthor().getName2()) //$NON-NLS-1$
+            .append("  ").append(otherTrack.getAlbum().getName2()) //$NON-NLS-1$
+            .append(otherTrack.getYear())
+            .append("  ").append(otherTrack.getName()).toString(); //$NON-NLS-1$
+        return sHashCompare.compareToIgnoreCase(sHashCompareOther);
 	}
 	
 	/**
@@ -134,9 +155,9 @@ public class Track extends PropertyAdapter implements Comparable{
 	}
 
 	/**
-	 * @return
+	 * @return all associated files
 	 */
-	public ArrayList<File> getFiles() {
+	public ArrayList<org.jajuk.base.File> getFiles() {
 		return alFiles;
 	}
     
@@ -147,6 +168,21 @@ public class Track extends PropertyAdapter implements Comparable{
         ArrayList alReadyFiles = new ArrayList(alFiles.size());
         for (File file:alFiles){
             if (file.isReady()){
+                alReadyFiles.add(file);
+            }
+        }
+        return alReadyFiles;
+    }
+    
+    /**
+     * @return ready files with given filter
+     * @param filter files we want to deal with, null means no filter
+     */
+    public ArrayList<File> getReadyFiles(HashSet filter) {
+        ArrayList alReadyFiles = new ArrayList(alFiles.size());
+        for (File file:alFiles){
+            if (file.isReady() && 
+                    (filter == null || filter.contains(file))){
                 alReadyFiles.add(file);
             }
         }
@@ -345,13 +381,6 @@ public class Track extends PropertyAdapter implements Comparable{
 	public void setRate(long rate) {
 	    setProperty(XML_TRACK_RATE,rate);
 	}
-
-    /**
-     * @param order to set
-     */
-    public void setOrder(long lOrder) {
-        setProperty(XML_TRACK_ORDER,lOrder);
-    }
     
     /**
      * @param rate The lRate to set.
@@ -369,10 +398,9 @@ public class Track extends PropertyAdapter implements Comparable{
 
 	/**
 	 * @return Returns the sHashCompare.
-	 */
 	public String getHashCompare() {
 		return sHashCompare;
-	}
+	}*/
 	
 	/**
 	 * @return Returns the iSessionHits.
@@ -403,7 +431,7 @@ public class Track extends PropertyAdapter implements Comparable{
     /* (non-Javadoc)
      * @see org.jajuk.base.IPropertyable#getIdentifier()
      */
-    public String getIdentifier() {
+    final public String getIdentifier() {
         return XML_TRACK;
     }
 

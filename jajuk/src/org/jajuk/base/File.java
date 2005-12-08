@@ -72,7 +72,7 @@ public class File extends PropertyAdapter implements Comparable,ITechnicalString
 /* (non-Javadoc)
      * @see org.jajuk.base.IPropertyable#getIdentifier()
      */
-    public String getIdentifier() {
+    final public String getIdentifier() {
         return XML_FILE;
     }
     

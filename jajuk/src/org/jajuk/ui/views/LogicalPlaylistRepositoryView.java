@@ -20,6 +20,8 @@
 
 package org.jajuk.ui.views;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 
 import org.jajuk.base.Observer;
@@ -85,8 +87,10 @@ public class LogicalPlaylistRepositoryView extends AbstractPlaylistRepositoryVie
 	public synchronized void  populatePlaylists(){
 		super.populatePlaylists();
 		//normal playlists
-		Iterator it = PlaylistManager.getInstance().getItems().iterator();
-		while ( it.hasNext()){
+		ArrayList alItems = new ArrayList(PlaylistManager.getInstance().getItems());
+        Collections.sort(alItems);
+        Iterator it = alItems.iterator();
+        while ( it.hasNext()){
 			Playlist pl = (Playlist)it.next();
 			PlaylistFile plf = pl.getPlayeablePlaylistFile();
 			//if none accessible and hide devices unmounted, continue

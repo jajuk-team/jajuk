@@ -77,11 +77,19 @@ public class AuthorManager extends ItemManager{
 	 */
 	public synchronized Author registerAuthor(String sId, String sName) {
 	    if (hmItems.containsKey(sId)) {
-	        return (Author) hmItems.get(sId);
+	        Author author = (Author)hmItems.get(sId);
+            //check if name has right case
+            if (!author.getName().equals(sName)){
+                author.setName(sName);
+            }
+            return author;
 	    }
         Author author = null;
         if (hmIdSaveItems.containsKey(sId)){
             author = (Author)hmIdSaveItems.get(sId);
+            if (!author.getName().equals(sName)){
+                author.setName(sName);
+            }
         }
         else{
             author = new Author(sId, sName);
@@ -103,15 +111,17 @@ public class AuthorManager extends ItemManager{
             return old;
         }
         Author newItem = registerAuthor(sNewName);
+        //re apply old properties from old item
+        newItem.cloneProperties(old);
+        //update tracks
         ArrayList alTracks = new ArrayList(TrackManager.getInstance().getItems()); //we need to create a new list to avoid concurrent exceptions
         Iterator it = alTracks.iterator();
         while (it.hasNext()){
             Track track = (Track)it.next();
             if (track.getAuthor().equals(old)){
-                TrackManager.getInstance().changeTrackAuthor(track,sNewName);
+                TrackManager.getInstance().changeTrackAuthor(track,sNewName,null);
             }
         }
-        cleanup();//remove useless albums if no more tracks use it
         return newItem;
     }
 	

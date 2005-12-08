@@ -21,6 +21,8 @@
 package org.jajuk.ui.views;
 
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 
 import org.jajuk.base.Observer;
@@ -84,7 +86,9 @@ public class PhysicalPlaylistRepositoryView extends AbstractPlaylistRepositoryVi
 	public synchronized void populatePlaylists(){
 	    super.populatePlaylists();
 		//normal playlists
-		Iterator it = PlaylistFileManager.getInstance().getItems().iterator();
+		ArrayList alItems = new ArrayList(PlaylistFileManager.getInstance().getItems());
+        Collections.sort(alItems);
+        Iterator it = alItems.iterator();
     	while ( it.hasNext()){
 			PlaylistFile plf = (PlaylistFile)it.next();
 			if ( plf.shouldBeHidden()){

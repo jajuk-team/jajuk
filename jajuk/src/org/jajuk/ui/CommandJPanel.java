@@ -118,10 +118,8 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 	static boolean bIsIntroEnabled = false;
 	/**Forward or rewind jump size in track percentage*/
 	static final float JUMP_SIZE = 0.1f;
-	/**Position slider move*/
-	private static boolean bPositionChanging = false;
 	/**Last slider manual move date*/
-	private static long lDateLastPosMove;
+	private static long lDateLastAdjust;
 	/**Lock to avoid multiple next/previous*/
 	private static byte[] bLock = new byte[0];
 	/** Swing Timer to refresh the component*/ 
@@ -465,42 +463,51 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 	 *  @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
 	 */
 	public void stateChanged(ChangeEvent e) {
-		if ( e.getSource() == jsVolume ){
+		if ( e.getSource() == jsVolume){
+            if (System.currentTimeMillis()-lDateLastAdjust > 200){
+                setVolume((float)jsVolume.getValue()/100);
+                lDateLastAdjust = System.currentTimeMillis();
+            }
+        }
+        else if (e.getSource() == jsPosition){
+            if (jsPosition.getValueIsAdjusting()){
+                lDateLastAdjust = System.currentTimeMillis();
+            }
+            else{
+                setPosition((float)jsPosition.getValue()/100);
+            }
+        }
+        
+        if ( e.getSource() == jsVolume ){
+            if (System.currentTimeMillis()-lDateLastAdjust > 200){
             //if user move the volume slider, unmute
             Player.mute(false);
         	Player.setVolume((float)jsVolume.getValue()/100);
 			jbMute.setBorder(BorderFactory.createRaisedBevelBorder());
-		}
-		else if (e.getSource() == jsPosition && !bPositionChanging && !jsPosition.getValueIsAdjusting()){
-			bPositionChanging = true;
-			lDateLastPosMove = System.currentTimeMillis();
-			float fPosition = (float)jsPosition.getValue()/100;
-			Log.debug("Seeking to: "+fPosition); //$NON-NLS-1$
-			//max position can't be 100% to allow seek properly
-			if (fPosition == 1.0f){
-				fPosition = 0.99f;
-			}
-			Player.seek(fPosition);
-			Player.mute(false); //if user move the slider, unmute
-			jbMute.setBorder(BorderFactory.createRaisedBevelBorder());
-			bPositionChanging = false;
+            }
+            }
+		else if (e.getSource() == jsPosition && !jsPosition.getValueIsAdjusting()){
+			if (jsPosition.getValueIsAdjusting()){
+                lDateLastAdjust = System.currentTimeMillis();
+            }
+            else{
+                setPosition((float)jsPosition.getValue()/100);
+            }
+			
 		}
 	}
 	
-	/**
-	 * Set Slider position
-	 * @param i percentage of slider
-	 */
-	public void setCurrentPosition(final int i){
-		if ( !bPositionChanging ){//don't move slider when user do it himself at the same time
-			bPositionChanging = true;  //block events so player is not affected
-			//wait 3 secs after end of last move to avoid slider to come back to previous position
-			if (System.currentTimeMillis() - lDateLastPosMove > 3000){
-				CommandJPanel.this.jsPosition.setValue(i);    
-			}
-			bPositionChanging = false;
-		}
-	}
+	private void setPosition(float fPosition){
+        Log.debug("Seeking to: "+fPosition); //$NON-NLS-1$
+        //max position can't be 100% to allow seek properly
+        if (fPosition < 0.0f){
+            fPosition = 0.0f;
+        }
+        if (fPosition == 1.0f){
+            fPosition = 0.99f;
+        }
+        Player.seek(fPosition);
+    }
 	
 	/**
 	 * @return Position value
@@ -518,13 +525,15 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 	}
 	
 	
-	/**
-	 * Set Volume
-	 * @param volume
-	 */
-	public void setCurrentVolume(int iValue){
-		this.jsVolume.setValue(iValue);
-	}
+	private void setVolume(float fVolume){
+        jsVolume.removeChangeListener(this);
+        jsVolume.removeMouseWheelListener(this);
+        //if user move the volume slider, unmute
+        Player.mute(false);
+        Player.setVolume(fVolume);
+        jsVolume.addChangeListener(this);
+        jsVolume.addMouseWheelListener(this);
+    }
 	
 	
 	/* (non-Javadoc)
@@ -543,7 +552,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 					jbPrevious.setEnabled(false);
 					jsPosition.setEnabled(false);
                     jsPosition.removeMouseWheelListener(CommandJPanel.this);
-					setCurrentPosition(0);
+					setPosition(0.0f);
                     jbNorm.setEnabled(false);
 					jbPlayPause.setIcon(Util.getIcon(ICON_PAUSE)); //resume any current pause
 					ConfigurationManager.setProperty(CONF_STARTUP_LAST_POSITION,"0");//reset startup position //$NON-NLS-1$
@@ -577,10 +586,20 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 					jbPlayPause.setIcon(Util.getIcon(ICON_PAUSE));
 				}
 				else if (EVENT_HEART_BEAT.equals(subject) &&!FIFO.isStopped() && !Player.isPaused()){
-					long length = JajukTimer.getInstance().getCurrentTrackTotalTime(); 
-					long lTime = JajukTimer.getInstance().getCurrentTrackEllapsedTime();
-					int iPos = (int)(100*JajukTimer.getInstance().getCurrentTrackPosition());
-					setCurrentPosition(iPos);
+					 //if position is adjusting, no dont disturb user
+                    if (jsPosition.getValueIsAdjusting()){
+                        return;
+                    }
+                    //make sure not to set to old position
+                    if ((System.currentTimeMillis() - lDateLastAdjust) < 4000){
+                        return;
+                    }
+                    long length = JajukTimer.getInstance().getCurrentTrackTotalTime(); 
+                    long lTime = JajukTimer.getInstance().getCurrentTrackEllapsedTime();
+                    int iPos = (int)(100*JajukTimer.getInstance().getCurrentTrackPosition());
+                    jsPosition.removeChangeListener(CommandJPanel.this);
+                    jsPosition.setValue(iPos);    
+                    jsPosition.addChangeListener(CommandJPanel.this);
 				}
 				else if (EVENT_MUTE_STATE.equals(subject)){
 					if ( Player.isMuted()){
@@ -618,6 +637,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
                 }
                 else if(EVENT_VOLUME_CHANGED.equals(event.getSubject())){
                     jsVolume.setValue((int)(100*Player.getCurrentVolume()));
+                    jbMute.setBorder(BorderFactory.createRaisedBevelBorder());
                 }
 			}
 		});
@@ -748,27 +768,15 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 	 */
 	public void mouseWheelMoved(MouseWheelEvent e) {
 		if (e.getSource() == jsPosition){
-			int iOld = jsPosition.getValue();
-			int iNew = iOld - (e.getUnitsToScroll()*3);
-			if ( iNew<0){
-				iNew = 0;
-			}
-			else if (iNew>99){
-				iNew = 99;
-			}
-			jsPosition.setValue(iNew);
-		}
-		else if (e.getSource() == jsVolume){
-			int iOld = jsVolume.getValue();
-			int iNew = iOld - (e.getUnitsToScroll()*3);
-			if ( iNew<0){
-				iNew = 0;
-			}
-			else if (iNew>99){
-				iNew = 99;
-			}
-			jsVolume.setValue(iNew);
-		}
+            int iOld = jsPosition.getValue();
+            int iNew = iOld - (e.getUnitsToScroll()*3);
+            setPosition(((float)iNew)/100);
+        }
+        else if (e.getSource() == jsVolume){
+            int iOld = jsVolume.getValue();
+            int iNew = iOld - (e.getUnitsToScroll()*3);
+            setVolume(((float)iNew)/100);
+        }
 	}
 	
 }

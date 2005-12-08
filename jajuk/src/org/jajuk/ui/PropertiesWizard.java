@@ -26,13 +26,16 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Properties;
+import java.util.HashSet;
 import java.util.StringTokenizer;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -52,7 +55,6 @@ import org.jajuk.base.Device;
 import org.jajuk.base.Directory;
 import org.jajuk.base.Event;
 import org.jajuk.base.File;
-import org.jajuk.base.FileManager;
 import org.jajuk.base.IPropertyable;
 import org.jajuk.base.ItemManager;
 import org.jajuk.base.ObservationManager;
@@ -70,12 +72,14 @@ import org.jajuk.util.error.JajukException;
 import org.jajuk.util.error.NoneAccessibleFileException;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.JXDatePicker;
+import org.jdesktop.swingx.autocomplete.Configurator;
 
 /**
  * Item properties wizard for any jajuk item
  * 
  * @author Bertrand Florat
  * @created 6 juin 2005
+ * @TODO Use sets instead of lists
  */
 public class PropertiesWizard extends JDialog implements ITechnicalStrings,ActionListener {
     
@@ -94,8 +98,8 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
     /**Items2*/
     ArrayList<IPropertyable> alItems2;
     
-    /**Merge flag*/
-    boolean bMerged = false;
+    /**Files filter*/
+    HashSet<File> filter = null;
     
     /**number of editable items (all panels)*/
     int iEditable = 0;
@@ -115,12 +119,13 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
         //windows title: name of the element of only one item, or "selection" word otherwise
         super(Main.getWindow(),alItems.size()==1 ? ((IPropertyable)alItems.get(0)).getDesc():Messages.getString("PropertiesWizard.6"),true); //modal //$NON-NLS-1$
         this.alItems = alItems;
+        boolean bMerged = false;
         if (alItems.size() > 1){
             bMerged = true;
         }
         panel1 = new PropertiesPanel(alItems,alItems.size()==1 ? 
                 ((IPropertyable)alItems.get(0)).getDesc():
-                    Messages.getString("PropertiesWizard.6")); //$NON-NLS-1$
+                    Messages.getString("PropertiesWizard.6"),bMerged); //$NON-NLS-1$
         jpMain = new JPanel();
         jpMain.setLayout(new TableLayout(dSize));
         jpMain.add(panel1,"1,1");     //$NON-NLS-1$
@@ -136,30 +141,51 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
      */
     public PropertiesWizard(ArrayList<IPropertyable> alItems1,ArrayList<IPropertyable> alItems2) {
         //windows title: name of the element of only one item, or "selection" word otherwise
-        super(Main.getWindow(),alItems1.size()==1 ? ((IPropertyable)alItems1.get(0)).getDesc():Messages.getString("PropertiesWizard.6"),true); //modal //$NON-NLS-1$
+        super(Main.getWindow(),alItems1.size()==1 ? 
+                ((IPropertyable)alItems1.get(0)).getDesc():Messages.getString("PropertiesWizard.6"),true); //modal //$NON-NLS-1$
         this.alItems = alItems1;
         this.alItems2 = alItems2;
-        if (alItems1.size() > 1){
-            bMerged = true;
+        //computes filter
+        if (alItems1.get(0) instanceof Directory){
+            filter = new HashSet(alItems1.size()*10);
+            for (IPropertyable item:alItems1){
+                Directory dir = (Directory)item;
+                filter.addAll(dir.getFilesRecursively());
+            }
+        }
+        else if (alItems1.get(0) instanceof File){
+            filter = new HashSet(alItems1.size());
+            for (IPropertyable item:alItems1){
+                filter.add((File)item);
+            }
+        }
+        else{
+            filter = null;
         }
         jpMain = new JPanel();
         jpMain.setLayout(new TableLayout(dSize));
         JPanel jpProperties = new JPanel();
         double[][] dPanels = {{TableLayout.PREFERRED,20,TableLayout.PREFERRED},{TableLayout.PREFERRED}};
         jpProperties.setLayout(new TableLayout(dPanels));
-        if (alItems1.size() == 1){
-            panel1 = new PropertiesPanel(alItems1,alItems1.get(0).getDesc());
+        if (alItems1.size() > 0){
+            if (alItems1.size() == 1){
+                panel1 = new PropertiesPanel(alItems1,alItems1.get(0).getDesc(),false);
+            }
+            else{
+                panel1 = new PropertiesPanel(alItems1,Util.formatPropertyDesc(Messages.getString("PropertiesWizard.6")),true); //$NON-NLS-1$
+            }
             panel1.setBorder(BorderFactory.createEtchedBorder());
-            panel2 = new PropertiesPanel(alItems2,alItems2.get(0).getDesc());
-            panel2.setBorder(BorderFactory.createEtchedBorder());
             jpProperties.add(panel1,"0,0");     //$NON-NLS-1$
-            jpProperties.add(panel2,"2,0");     //$NON-NLS-1$
         }
-        else{
-            panel1 = new PropertiesPanel(alItems1,Util.formatPropertyDesc(Messages.getString("Property_files"))); //$NON-NLS-1$
-            panel2 = new PropertiesPanel(alItems2,Util.formatPropertyDesc(Messages.getString("Property_tracks"))); //$NON-NLS-1$
-            jpProperties.add(panel1,"0,0");     //$NON-NLS-1$
-            jpProperties.add(panel2,"2,0"); //$NON-NLS-1$
+        if (alItems2.size() > 0){
+            if (alItems2.size() == 1){
+                panel2 = new PropertiesPanel(alItems2,alItems2.get(0).getDesc(),false);
+            }
+            else{
+                panel2 = new PropertiesPanel(alItems2,Util.formatPropertyDesc(alItems2.size()+" "+Messages.getString("Property_tracks")),true); //$NON-NLS-1$ //$NON-NLS-2$
+            }
+            panel2.setBorder(BorderFactory.createEtchedBorder());
+            jpProperties.add(panel2,"2,0");     //$NON-NLS-1$
         }
         jpMain.add(jpProperties,"1,1"); //$NON-NLS-1$
         display();
@@ -189,17 +215,26 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
             dispose();
         }
         else if (e.getSource().equals(okc.getOKButton())){
-            try{ 
-                panel1.save();
-                if (panel2 != null){
-                    panel2.save();
+            dispose(); //close window, otherwise you will have some issues if fields are not updated with changes
+            new Thread(){
+                public void run(){
+                    try{
+                        PropertiesWizard.this.panel1.save();
+                        if (panel2 != null){
+                            PropertiesWizard.this.panel2.save();
+                        } 
+                    }
+                    catch(Exception ex){
+                        Messages.showErrorMessage("104",ex.getMessage()); //$NON-NLS-1$
+                        Log.error("104",ex.getMessage(),ex); //$NON-NLS-1$
+                        return;
+                    }
+                    finally{
+                        //UI refresh
+                        ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH)); 
+                    }
                 }
-            }
-            catch(Exception ex){
-                Messages.showErrorMessage("104",ex.getMessage()); //$NON-NLS-1$
-                Log.error("104",ex.getMessage(),ex); //$NON-NLS-1$
-                return;
-            }
+            }.start();
         }
     }
     
@@ -241,15 +276,23 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
         
         /**Items*/
         ArrayList<IPropertyable> alItems;
+        
+        /**Changed properties*/
+        HashMap<PropertyMetaInformation,Object> hmPropertyToChange = new HashMap();
+            
+        /**Merge flag*/
+        boolean bMerged = false;
         /**
          * Property panel for single types elements
          * @param alItems items to display
          * @param sDesc Description (title)
+         * @param bMerged : whether this panel contains merged values
          */
-        PropertiesPanel(ArrayList<IPropertyable> alItems,String sDesc) {
+        PropertiesPanel(ArrayList<IPropertyable> alItems,String sDesc,boolean bMerged) {
             int iX_SEPARATOR = 5;
             int iY_SEPARATOR = 10;
             this.alItems = alItems;
+            this.bMerged = bMerged;
             IPropertyable pa = alItems.get(0); //first item 
             //Process properties to display
             alToDisplay = new ArrayList(10);
@@ -258,15 +301,24 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
                     alToDisplay.add(meta);    
                 }
             }
-            widgets = new JComponent[alToDisplay.size()][5]; //contains widgets for properties
+            widgets = new JComponent[alToDisplay.size()][4]; //contains widgets for properties
             //Varname | value | link | type | all album 
             double p = TableLayout.PREFERRED;
-            double[] dHoriz = {iX_SEPARATOR,p,iX_SEPARATOR,p,iX_SEPARATOR,p,iX_SEPARATOR,p,iX_SEPARATOR,p,iX_SEPARATOR};
+            double[] dHoriz = {iX_SEPARATOR,p,iX_SEPARATOR,p,iX_SEPARATOR,p,iX_SEPARATOR,p,iX_SEPARATOR};
             double[] dVert = new double[(2*alToDisplay.size())+3];//*2n+1 rows for spaces + 2 rows for title
             dVert[0]=iY_SEPARATOR;
             dVert[1]=20; //title
             int index = 0;
-            for (PropertyMetaInformation meta:alToDisplay){
+            for (final PropertyMetaInformation meta:alToDisplay){
+                //begin by checking if all items have the same value, otherwise we show a void field
+                boolean bAllEquals = true;
+                Object oRef = pa.getValue(meta.getName());
+                for (IPropertyable item:alItems){
+                    if (!item.getValue(meta.getName()).equals(oRef)){
+                        bAllEquals = false;
+                        break;
+                    }
+                }
                 //Set layout
                 dVert[2*index+2] = iY_SEPARATOR;
                 dVert[(2*index)+3] = 20;
@@ -284,62 +336,200 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
                 boolean bEditable = meta.isEditable(); //property editable ?
                 if (!meta.isCustom()){ //custom properties are always editable, even for offline items
                     bEditable = bEditable
-                    && !(pa instanceof Directory && !((Directory)pa).getDevice().isMounted()) //item is not an unmounted dir
-                    && !(pa instanceof File && !((File)pa).isReady())//item is not an unmounted file
-                    && !(pa instanceof PlaylistFile && !((PlaylistFile)pa).isReady());//item is not an unmounted playlist file
+                        && !(pa instanceof Directory && !((Directory)pa).getDevice().isMounted()) //item is not an unmounted dir
+                        && !(pa instanceof File && !((File)pa).isReady())//item is not an unmounted file
+                        && !(pa instanceof PlaylistFile && !((PlaylistFile)pa).isReady());//item is not an unmounted playlist file
                 }
                 if (bEditable){
                     iEditable ++;
                     if (meta.getType().equals(Date.class)){
-                        JXDatePicker jdp = new JXDatePicker(pa.getDateValue(meta.getName()).getTime()); //If several items, take first value found
+                        final JXDatePicker jdp = new JXDatePicker();
+                        jdp.addActionListener(new ActionListener() {
+                            public void actionPerformed(ActionEvent arg0) {
+                                Object oValue = jdp.getDate();
+                                hmPropertyToChange.put(meta,oValue);
+                            }
+                        });
+                        if (bAllEquals){
+                            jdp.setDate(new Date(pa.getDateValue(meta.getName()).getTime())); //If several items, take first value found
+                        }
+                        else{
+                            jdp.setDate(new Date(System.currentTimeMillis()));  
+                        }
                         widgets[index][1] = jdp;     
                     }
                     else if(meta.getType().equals(Boolean.class)){ //for a boolean, value is a checkbox
-                        JCheckBox jcb = new JCheckBox();
-                        jcb.setSelected(pa.getBooleanValue(meta.getName()));
-                        widgets[index][1] = jcb;
-                    }
-                    else if(meta.getType().equals(Double.class)){ //for a double, value is a formatted textfield
-                        JFormattedTextField jtfValue = new JFormattedTextField(NumberFormat.getInstance());
-                        jtfValue.setText(pa.getHumanValue(meta.getName()));//If several items, take first value found
-                        jtfValue.setPreferredSize(dim);
-                        widgets[index][1] = jtfValue;
-                    }
-                    else if(meta.getType().equals(Long.class)){ //for a double, value is a formatted textfield
-                        JFormattedTextField jtfValue = new JFormattedTextField(NumberFormat.getIntegerInstance());
-                        jtfValue.setPreferredSize(dim);
-                        jtfValue.setText(pa.getHumanValue(meta.getName()));//If several items, take first value found
-                        widgets[index][1] = jtfValue;     
-                    }
-                    else if (meta.getType().equals(String.class) && meta.getName().equals("style")){ //for styles //$NON-NLS-1$
-                        ArrayList<String> alStyles = (ArrayList)StyleManager.getStylesList().clone();
-                        alStyles.add(0,pa.getHumanValue(meta.getName()));//display the current genre as default
-                        JComboBox jcb = new JComboBox();
-                        jcb.setEditable(true);
-                        jcb.setPreferredSize(dim);
-                        for (String style:alStyles){
-                            jcb.addItem(style);
+                        final JCheckBox jcb = new JCheckBox();
+                        jcb.addActionListener(new ActionListener() {
+                            public void actionPerformed(ActionEvent arg0) {
+                                Object oValue = jcb.isSelected();
+                                hmPropertyToChange.put(meta,oValue);
+                            }
+                        });
+                        if (bAllEquals){
+                            jcb.setSelected(pa.getBooleanValue(meta.getName()));
+                        }
+                        //if some elements are different, set opposite value of first item to allow change
+                        else{
+                            jcb.setSelected(!pa.getBooleanValue(meta.getName()));
                         }
                         widgets[index][1] = jcb;
                     }
+                    else if(meta.getType().equals(Double.class) || meta.getType().equals(Long.class)){ //for a double, value is a formatted textfield
+                        final JFormattedTextField jtfValue;
+                        if (meta.getType().equals(Double.class)){
+                            jtfValue = new JFormattedTextField(NumberFormat.getInstance());
+                        }
+                        else{
+                            jtfValue = new JFormattedTextField(NumberFormat.getIntegerInstance());
+                        }
+                        jtfValue.addKeyListener(new KeyListener() {
+                            public void keyTyped(KeyEvent arg0) {
+                            }
+
+                            public void keyPressed(KeyEvent arg0) {
+                            }
+
+                            public void keyReleased(KeyEvent arg0) {
+                                if (jtfValue.getText().length() == 0){
+                                    hmPropertyToChange.remove(meta);
+                                    return;
+                                }
+                                try {
+                                    jtfValue.commitEdit();
+                                }
+                                catch (ParseException e) {
+                                    Log.error("137",meta.getName(),null); //$NON-NLS-1$
+                                    Messages.showErrorMessage("137",meta.getName()); //$NON-NLS-1$
+                                    hmPropertyToChange.remove(meta);
+                                    return;
+                                }
+                                Object oValue = jtfValue.getValue();
+                                hmPropertyToChange.put(meta,oValue);
+                            }
+                        });
+                        if (bAllEquals){
+                            jtfValue.setText(pa.getHumanValue(meta.getName()));//If several items, take first value found
+                        }
+                        jtfValue.setPreferredSize(dim);
+                        widgets[index][1] = jtfValue;
+                    }
+                    else if (meta.getType().equals(String.class) 
+                            && meta.getName().equals("style")){ //for styles //$NON-NLS-1$
+                        Vector<String> styles = StyleManager.getStylesList();
+                        final JComboBox jcb = new JComboBox(styles);
+                        jcb.setEditable(true);
+                        Configurator.enableAutoCompletion(jcb);
+                        jcb.setPreferredSize(dim);
+                        //set current style to combo
+                        int i = -1;
+                        int comp = 0;
+                        String sCurrentStyle = pa.getHumanValue(XML_STYLE);
+                        for (String s:styles){
+                            if (s.equalsIgnoreCase(sCurrentStyle)){
+                                i = comp;
+                                break; 
+                            }
+                            comp ++;
+                        }
+                        jcb.setSelectedIndex(i);
+                        //if different style, don't show anything
+                        if(!bAllEquals){
+                            jcb.setSelectedIndex(-1);
+                        }
+                        jcb.addActionListener(new ActionListener() {
+                            public void actionPerformed(ActionEvent arg0) {
+                                Object oValue = jcb.getSelectedItem();
+                                if (oValue == null || ((String)oValue).trim().length() == 0){//can occur during ui interaction
+                                    return;
+                                }
+                                if (((String)oValue).length() < 1){ //check that string length > 0
+                                    jcb.setSelectedIndex(-1);
+                                    Log.error("137",meta.getName(),null); //$NON-NLS-1$
+                                    Messages.showErrorMessage("137",meta.getName()); //$NON-NLS-1$
+                                    return;
+                                }
+                                hmPropertyToChange.put(meta,oValue);
+                            }
+                        });
+                        widgets[index][1] = jcb;
+                        
+                    }
                     else { //for all others formats (string, class)
-                        JTextField jtfValue = new JTextField();
-                        jtfValue.setText(pa.getHumanValue(meta.getName()));//If several items, take first value found
+                        final JTextField jtfValue = new JTextField();
+                        jtfValue.addKeyListener(new KeyListener() {
+                            
+                            public void keyTyped(KeyEvent arg0) {
+                            }
+
+                            public void keyPressed(KeyEvent arg0) {
+                            }
+
+                            public void keyReleased(KeyEvent arg0) {
+                                Object oValue = jtfValue.getText();
+                                //if no more characters in selection, this field is no more considerated as changed
+                                if (oValue == null || ((String)oValue).trim().length() == 0){
+                                    //for name, author, album and style, set unknown value automaticaly
+                                    if (meta.getName().equals(XML_TRACK_NAME)){
+                                        jtfValue.setText(Messages.getString("unknown")); //$NON-NLS-1$
+                                    }
+                                    else if (meta.getName().equals(XML_TRACK_ALBUM)){
+                                        jtfValue.setText(Messages.getString("unknown_album")); //$NON-NLS-1$
+                                    }
+                                    else if (meta.getName().equals(XML_TRACK_AUTHOR)){
+                                        jtfValue.setText(Messages.getString("unknown_author")); //$NON-NLS-1$
+                                    }
+                                    else if (meta.getName().equals(XML_TRACK_STYLE)){
+                                        jtfValue.setText(Messages.getString("unknown_style")); //$NON-NLS-1$
+                                    }
+                                    else{
+                                        hmPropertyToChange.remove(meta);
+                                        Log.error("137",meta.getName(),null); //$NON-NLS-1$
+                                        Messages.showErrorMessage("137",meta.getName()); //$NON-NLS-1$
+                                        return;
+                                    }
+                                }
+                                oValue = jtfValue.getText();
+                                //we check that field is not void (except for comments and custom properties)
+                                if (((String)oValue).length() < 1 && !meta.getName().equals(XML_TRACK_COMMENT) && !meta.isCustom()){ //check that string length > 0
+                                    //reset old value if only a single element or clear if more
+                                    String sOldValue = null;
+                                    if (PropertiesWizard.this.alItems.size() == 1){
+                                        sOldValue = PropertiesWizard.this.alItems.get(0).getHumanValue(meta.getName()); //reset old value
+                                    }
+                                    jtfValue.setText(sOldValue);
+                                    Log.error("137",meta.getName(),null); //$NON-NLS-1$
+                                    Messages.showErrorMessage("137",meta.getHumanType()); //$NON-NLS-1$
+                                    return;
+                                }
+                                hmPropertyToChange.put(meta,oValue);
+                            }
+                        });
+                        if (bAllEquals){
+                            jtfValue.setText(pa.getHumanValue(meta.getName()));//If several items, take first value found
+                        }
                         jtfValue.setPreferredSize(dim);
                         widgets[index][1] = jtfValue;     
                     }
                 }
                 else{
                     JLabel jl = new JLabel(pa.getHumanValue(meta.getName())); //If several items, take first value found
-                    String s = pa.getHumanValue(meta.getName());
-                    String[] sTab = s.split(",");
-                    StringBuffer sb = new StringBuffer();
-                    sb.append("<html>");
-                    for (int i=0;i<sTab.length;i++){
-                     sb.append(sTab[i]).append("<br>");   
+                    if (bAllEquals){
+                        String s = pa.getHumanValue(meta.getName());
+                        if (s.indexOf(",") != -1){ //$NON-NLS-1$
+                            String[] sTab = s.split(","); //$NON-NLS-1$
+                            StringBuffer sb = new StringBuffer();
+                            sb.append("<html>"); //$NON-NLS-1$
+                            for (int i=0;i<sTab.length;i++){
+                                sb.append("<p>").append(sTab[i]).append("</p>");    //$NON-NLS-1$ //$NON-NLS-2$
+                            }
+                            sb.append("</html>"); //$NON-NLS-1$
+                            jl.setToolTipText(sb.toString());
+                        }
+                        else{
+                            jl.setToolTipText(s);
+                        }
                     }
-                    sb.append("</html>");
-                    jl.setToolTipText(sb.toString());
                     jl.setPreferredSize(dim);
                     widgets[index][1] = jl;
                     
@@ -349,20 +539,17 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
                     JButton jbLink = new JButton(Util.getIcon(ICON_PROPERTIES));
                     jbLink.addActionListener(this);
                     jbLink.setActionCommand("link"); //$NON-NLS-1$
+                    jbLink.setToolTipText(Messages.getString("PropertiesWizard.12")); //$NON-NLS-1$
                     widgets[index][2] = jbLink;   
                 }
                 //Type
                 widgets[index][3] = new JLabel(meta.getHumanType());
-                //Full album checkbox
-                JCheckBox jcbFull = new JCheckBox();
-                widgets[index][4] = jcbFull;
-                jcbFull.setVisible(pa instanceof Track && !bMerged && meta.isMergeable() && meta.isEditable()); //full album is only available for non-unique and editable properties on single tracks
-                
                 index ++;
             }
             if (dVert.length > 0){
                 dVert[dVert.length-1] = iY_SEPARATOR;//last row is a separator    
             }
+                
             //Create layout
             double[][] dSizeProperties = new double[][]{dHoriz,dVert};  
             dSizeProperties[0]=dHoriz;
@@ -379,14 +566,11 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
             jlLink.setToolTipText(Messages.getString("PropertiesWizard.4")); //$NON-NLS-1$
             JLabel jlType = new JLabel("<html><b>"+Messages.getString("PropertiesWizard.7")+"</b></html>"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             jlType.setToolTipText(Messages.getString("PropertiesWizard.7")); //$NON-NLS-1$
-            JLabel jlFullAlbum = new JLabel("<html><b>"+Messages.getString("PropertiesWizard.5")+"</b></html>"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-            jlFullAlbum.setToolTipText(Messages.getString("PropertiesWizard.5")); //$NON-NLS-1$
             
             jpProperties.add(jlName,"1,1,c,c"); //$NON-NLS-1$
             jpProperties.add(jlValue,"3,1,c,c"); //$NON-NLS-1$
             jpProperties.add(jlLink,"5,1,c,c"); //$NON-NLS-1$
             jpProperties.add(jlType,"7,1,c,c"); //$NON-NLS-1$
-            jpProperties.add(jlFullAlbum,"9,1,c,c"); //$NON-NLS-1$
             
             //Add widgets
             int i = 0;
@@ -399,7 +583,6 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
                     jpProperties.add(widgets[i][2],"5,"+j+",c,c"); //$NON-NLS-1$ //$NON-NLS-2$
                 }
                 jpProperties.add(widgets[i][3],"7,"+j+",c,c"); //$NON-NLS-1$ //$NON-NLS-2$
-                jpProperties.add(widgets[i][4],"9,"+j+",c,c"); //$NON-NLS-1$ //$NON-NLS-2$
                 i++;
             }
             double[][] dSize = { { 0.99 }, { 20, iY_SEPARATOR, 0.99} };
@@ -421,17 +604,10 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
                 PropertyMetaInformation meta = alToDisplay.get(getWidgetIndex((JComponent)ae.getSource()));
                 String sProperty = meta.getName();
                 if (XML_FILES.equals(sProperty)) {
-                    String sValue = alItems.get(0).getStringValue(sProperty); //can be only a set a files
-                    StringTokenizer st = new StringTokenizer(sValue, ","); //$NON-NLS-1$
-                    ArrayList alItems = new ArrayList(3);
-                    while (st.hasMoreTokens()) {
-                        String sFile = st.nextToken();
-                        IPropertyable pa = FileManager.getInstance().getItem(sFile);
-                        if (pa != null) {
-                            alItems.add(pa);
-                        }
-                    }
-                    new PropertiesWizard(alItems); //show properties window for this item
+                    Track track =(Track)alItems.get(0);
+                    ArrayList<IPropertyable> alFiles = new ArrayList(track.getFiles().size());
+                    alFiles.addAll(track.getFiles());
+                    new PropertiesWizard(alFiles); //show properties window for this item
                 }
                 else if (XML_PLAYLIST_FILES.equals(sProperty)) {
                     String sValue = alItems.get(0).getStringValue(sProperty); //can be only a set a files
@@ -463,97 +639,23 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
         protected void save() throws Exception{
             Object oValue = null;
             IPropertyable newItem = null;
+            //list of really changed tracks (for message)
             ArrayList<PropertyMetaInformation> alChanged = new ArrayList(2);
-            int index = -1;
             //keep a reference to first item to change
             IPropertyable itemReference = alItems.get(0);
-            //scan all properties to see whish one has changed
-            HashMap<PropertyMetaInformation,Object> hmPropertyToChange = new HashMap();
-            for (PropertyMetaInformation meta:alToDisplay){
-                index++;
-                JComponent component = widgets[index][1];
-                //non editable item
-                if (component instanceof JLabel){
-                    continue;
-                }
-                //Boolean value
-                else if (component instanceof JCheckBox){
-                    oValue = ((JCheckBox)component).isSelected();
-                }
-                //Date value
-                else if (component instanceof JXDatePicker){
-                    oValue = ((JXDatePicker)component).getDate();
-                }
-                //combobox value
-                else if (component instanceof JComboBox){
-                    oValue = ((JComboBox)component).getSelectedItem();
-                    if (((String)oValue).length() < 1){ //check that string length > 0
-                        ((JComboBox)component).setSelectedIndex(0);
-                        Log.error("137",meta.getName(),null); //$NON-NLS-1$
-                        Messages.showErrorMessage("137",meta.getName()); //$NON-NLS-1$
-                        return;
-                    }
-                }
-                //formatted text field
-                else if (component instanceof JFormattedTextField){
-                    try {
-                        ((JFormattedTextField)component).commitEdit();
-                    }
-                    catch (ParseException e) {
-                        Log.error("137",meta.getName(),null); //$NON-NLS-1$
-                        Messages.showErrorMessage("137",meta.getName()); //$NON-NLS-1$
-                        return;
-                    }
-                    oValue = ((JFormattedTextField)component).getValue();
-                }
-                //textfield value
-                else if (component instanceof JTextField){
-                    oValue = ((JTextField)component).getText();
-                    //we check that field is not void (except for comments and custom properties)
-                    if (((String)oValue).length() < 1 && !meta.getName().equals(XML_TRACK_COMMENT) && !meta.isCustom()){ //check that string length > 0
-                        String sOldValue = alItems.get(0).getHumanValue(meta.getName()); //reset old value
-                        ((JTextField)component).setText(sOldValue);
-                        Log.error("137",meta.getName(),null); //$NON-NLS-1$
-                        Messages.showErrorMessage("137",meta.getHumanType()); //$NON-NLS-1$
-                        return;
-                    }
-                }
-                /*Check if reference element (first one inselection) has changed, otherwise, we leave. 
-                 * (we only change properties changed in the UI and not properties different between UI and
-                 * value otherwise we can overwrite unwanted properties)
-                 */
-                String sOldValueFirstElement = itemReference.getHumanValue(meta.getName());
-                if ( (sOldValueFirstElement == null || Util.format(oValue,meta).equals(sOldValueFirstElement))){
-                    continue;
-                }
-                else{
-                    hmPropertyToChange.put(meta,oValue);
-                }
-            }
             //none change, leave
             if (hmPropertyToChange.keySet().size() == 0){
                 return;
             }
-            
-            //Now list all items to change
-            //Full album ?
-            boolean bFull = ((JCheckBox)widgets[index][4]).isSelected();
-            //Computes all items to check
+            //Computes all items to change
             ArrayList<IPropertyable> alItemsToCheck = new ArrayList(alItems.size()); //contains items to be changed
             for (IPropertyable item:alItems){
-                if (!alItemsToCheck.contains(item)){ //avoid dublicates for perfs
+                if (!alItemsToCheck.contains(item)){ //avoid duplicates for perfs
                     alItemsToCheck.add(item); //add item
-                }
-                //add others items from the same album if bFull
-                if (bFull && item instanceof Track){
-                    for (Track track:((Track)item).getAlbum().getTracks()){
-                        if (!alItemsToCheck.contains(item)){ //avoid dublicates for perfs
-                            alItemsToCheck.add(track); //add item
-                        }       
-                    }
                 }
             }
             ArrayList<IPropertyable> alInError = new ArrayList(alItemsToCheck.size());
+            String sDetails = ""; //details for errors //$NON-NLS-1$
             //Now we have all items to concidere, write tags for each property to change
             for (PropertyMetaInformation meta:hmPropertyToChange.keySet()){
                 ArrayList<IPropertyable> alIntermediate = new ArrayList(alItemsToCheck.size());
@@ -567,7 +669,8 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
                             throw new JajukException("137"); //$NON-NLS-1$
                         }
                         try{
-                            newItem = ItemManager.changeItem(item,meta.getName(),oValue);
+                            //if we change track properties for only one file
+                            newItem = ItemManager.changeItem(item,meta.getName(),oValue,filter);    
                         }
                         //none accessible file for this track, for this error, we display an error and leave completely
                         catch(NoneAccessibleFileException none){
@@ -578,7 +681,7 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
                         }
                         //cannot rename file, for this error, we display an error and leave completely
                         catch(CannotRenameException cre){
-                            Messages.showErrorMessage("135"); //$NON-NLS-1$
+                            Messages.showErrorMessage(cre.getCode()); //$NON-NLS-1$
                             return;
                         }
                         //probably error writing a tag, store track reference and continue
@@ -586,6 +689,18 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
                             Log.error(je);
                             if (!alInError.contains(item)){
                                 alInError.add(item);
+                                //create details label with 3 levels deep
+                                sDetails += je.getMessage();
+                                if (je.getCause() != null){
+                                    sDetails += "\nCaused by:"+je.getCause(); //$NON-NLS-1$
+                                    if (je.getCause().getCause() != null){
+                                        sDetails += "\nCaused by:"+je.getCause().getCause(); //$NON-NLS-1$
+                                        if (je.getCause().getCause().getCause() != null){
+                                            sDetails += "\nCaused by:"+je.getCause().getCause().getCause(); //$NON-NLS-1$
+                                        }
+                                    }
+                                }
+                                sDetails += "\n\n"; //$NON-NLS-1$
                             }
                             continue;
                         }
@@ -609,20 +724,27 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
                     }
                 }
                 alItemsToCheck = alIntermediate;
-                /*Display a warning message if some files not updated
+                /*Display a warning message if some files not updated if multifile mode
                  note that this message will appear only for first item in failure,
                  after, current track will have changed and will no more contain unmounted files*/ 
-                if (itemReference instanceof Track && TrackManager.getInstance().isChangePbm()){
+                if (!isMonoFile() && TrackManager.getInstance().isChangePbm()){
                     Messages.showWarningMessage(Messages.getString("Error.138")); //$NON-NLS-1$
                 }
             }
             //display a message for file write issues
             if (alInError.size()>0){
-                String sInfo = "";
+                String sInfo = ""; //$NON-NLS-1$
+                int index = 0;
                 for (IPropertyable item:alInError){
-                    sInfo += "\n"+item.getHumanValue(XML_NAME);
+                    //limit number of errors
+                    if (index == 15){
+                        sInfo += "\n..."; //$NON-NLS-1$
+                        break;
+                    }
+                    sInfo += "\n"+item.getHumanValue(XML_NAME); //$NON-NLS-1$
+                    index++;
                 }
-                Messages.showErrorMessage("104",sInfo);
+                Messages.showDetailedErrorMessage("104",sInfo,sDetails); //$NON-NLS-1$
             }
             
             //display a message if user changed at least one property
@@ -637,12 +759,6 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
                         alChanged.size()  +" "+Messages.getString("PropertiesWizard.10")+": "+sbChanged.toString(), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                         InformationJPanel.INFORMATIVE);
             }
-            //UI refresh
-            if (alChanged.size() > 0){
-                Properties properties = new Properties();
-                ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH)); 
-            }
-            dispose(); //close window, otherwise you will have some issues if fields are not updated with changes
         }
         
         /**
@@ -663,5 +779,15 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
             }
             return resu;
         }
+    }
+
+    /**
+     * Tell if this wizard affects only one single file or logical items
+     * @return Returns the bMultifile.
+     */
+    private boolean isMonoFile() {
+        //mono file mode for files and directories
+        return alItems.get(0) instanceof File || 
+            alItems.get(0) instanceof Directory;
     }
 }

@@ -46,10 +46,10 @@ public class PasswordDialog extends JDialog implements ActionListener{
     
     public PasswordDialog(String sMessage){
         super(Main.getWindow(), true);
-        setTitle(Messages.getString("DownloadManager.1"));
+        setTitle(Messages.getString("DownloadManager.1")); //$NON-NLS-1$
         pf = new JPasswordField(20);
         //Create the JOptionPane.
-        optionPane = new JOptionPane(new Object[]{Messages.getString("DownloadManager.0"),pf},
+        optionPane = new JOptionPane(new Object[]{Messages.getString("DownloadManager.0"),pf}, //$NON-NLS-1$
                                     JOptionPane.QUESTION_MESSAGE,
                                     JOptionPane.OK_CANCEL_OPTION);
         optionPane.addPropertyChangeListener(
@@ -58,8 +58,8 @@ public class PasswordDialog extends JDialog implements ActionListener{
                         String prop = e.getPropertyName();
                         if (prop.equals(JOptionPane.VALUE_PROPERTY)) {
                             String sPwd = new String(pf.getPassword());
-                            if (sPwd == null || sPwd.trim().equals("")){
-                                sPwd = "NOP";//set a string to password to avoid reasking
+                            if (sPwd == null || sPwd.trim().equals("")){ //$NON-NLS-1$
+                                sPwd = "NOP";//set a string to password to avoid reasking //$NON-NLS-1$
                             }
                             optionPane.setValue(sPwd);
                             dispose();

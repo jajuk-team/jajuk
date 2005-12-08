@@ -21,15 +21,22 @@
 package org.jajuk.ui.views;
 
 import java.awt.BorderLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.net.URL;
 import java.util.ArrayList;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 
+import org.jajuk.Main;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.Util;
 import org.jfree.ui.about.AboutPanel;
@@ -95,6 +102,29 @@ public class AboutView extends ViewAdapter {
         jta.setWrapStyleWord(true);
         jta.setCaretPosition(0);
         jta.setEditable(false);
+        jta.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent me) {
+                if (me.getClickCount() == 1 
+                   && ((me.getModifiersEx() & MouseEvent.SHIFT_DOWN_MASK) == MouseEvent.SHIFT_DOWN_MASK)
+                   && ((me.getModifiersEx() & MouseEvent.CTRL_DOWN_MASK) == MouseEvent.CTRL_DOWN_MASK)){
+                    try{
+                        JDialog jd = new JDialog(Main.getWindow());
+                        ImageIcon ii = new ImageIcon(new URL("http://jajuk.sourceforge.net/01/flbf.jpg")); //$NON-NLS-1$
+                        JPanel jp = new JPanel();
+                        jp.setLayout(new BoxLayout(jp,BoxLayout.X_AXIS));
+                        JLabel jl = new JLabel(ii);
+                        jp.add(jl);
+                        jd.setContentPane(jp);
+                        jd.pack();
+                        Util.setCenteredLocation(jd);
+                        jd.setVisible(true);
+                    }
+                    catch(Exception e){                        
+                    }
+                } 
+            }
+        });
+        
         jpLicence.add(new JScrollPane(jta));
 		jtp = new JTabbedPane();
 		ArrayList alContribs = new ArrayList(10);
@@ -110,7 +140,7 @@ public class AboutView extends ViewAdapter {
 	    cp = new ContributorsPanel(alContribs);
 		JPanel jpAbout = new JPanel();
 		jpAbout.setLayout(new BoxLayout(jpAbout,BoxLayout.Y_AXIS));
-		ap = new AboutPanel("Jajuk",JAJUK_VERSION+" "+JAJUK_VERSION_DATE ,"<html>Copyright 2003,2004<br>Bertrand Florat & Jajuk team</html>",INFOS,Util.getIcon(ICON_LOGO).getImage()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		ap = new AboutPanel("Jajuk",JAJUK_VERSION+" "+JAJUK_VERSION_DATE ,"<html>Copyright 2003,2006<br>Bertrand Florat & Jajuk team</html>",INFOS,Util.getIcon(ICON_LOGO).getImage()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		jpAbout.add(ap);
 		jpAbout.add(cp);
 		jpAbout.add(Box.createVerticalGlue());
