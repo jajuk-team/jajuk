@@ -22,6 +22,7 @@ package org.jajuk.i18n;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 import java.util.ArrayList;
 import java.util.Properties;
 import java.util.StringTokenizer;
@@ -64,14 +65,14 @@ public class Messages extends DefaultHandler implements ITechnicalStrings	{
 	private Properties properties;
 	/**english messages used as default**/
 	private Properties propertiesEn;
-	
+
 		
 	/**
 	 * Private Constructor
 	 */
 	private Messages() {
 	}
-	
+
 	/**
 	 * @return Singleton instance
 	 */
@@ -81,16 +82,16 @@ public class Messages extends DefaultHandler implements ITechnicalStrings	{
 	    }
 	    return mesg;
 	}
-	
+
     /**
-     * 
+     *
      * @param sKey
      * @return wheter given key exists
      */
     public boolean contains(String sKey){
         return getPropertiesEn().containsKey(sKey);
     }
-    
+
 	/**
 	 * @param key
 	 * @return
@@ -98,7 +99,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings	{
 	public static String getString(String key) {
 	    String sOut = key;
 	    try{
-	        sOut = getInstance().getProperties().getProperty(key); 
+	        sOut = getInstance().getProperties().getProperty(key);
 	        if (sOut == null){ //this property is unknown for this local, try in english
 	            sOut = getInstance().getPropertiesEn().getProperty(key);
 	        }
@@ -112,8 +113,48 @@ public class Messages extends DefaultHandler implements ITechnicalStrings	{
 	    }
 	    return sOut;
 	}
-	
+
 	/**
+     * Fetch all messages from a given base key. <P/> Example:
+     * <pre>
+     * example.0=Message 1
+     * example.1=Message 2
+     * example.2=Message 3
+     * </pre>
+     * Using <tt>Messages.getAll("example");</tt> will return a size 3 String array containing the
+     * messages in order.
+     * <P/> The keys need to have continuous numbers. So, adding <tt>example.5=Message 5</tt> to the
+     * bundle, will not result in adding it to the array without first adding <tt>example.3</tt> and
+     * <tt>example.4</tt>.
+     *
+     * @param base The base to use for generating the keys.
+     * @return An array of Strings containing the messages linked to the key, never <tt>null</tt>.
+     *         If <tt>base.0</tt> is not found, and empty array is returned.
+     */
+    public static String[] getAll(String base) {
+        List<String> msgs = new ArrayList<String>();
+        try {
+            for (int i = 0; ; i++) {
+                String sOut = getInstance().getProperties().getProperty(base + "." + i);
+
+                if (sOut == null) { //this property is unknown for this local, try in english
+                    sOut = getInstance().getPropertiesEn().getProperty(base + "." + i);
+                }
+
+                // Property not found, assume we found all properties in the set
+                if (sOut == null) {
+                    break;
+                }
+
+                msgs.add(sOut);
+            }
+        } catch (Exception e) { // System error
+            Log.error(e);
+        }
+        return msgs.toArray(new String[msgs.size()]);
+    }
+
+    /**
 	 * Register a local
 	 * @param sName : local name like "english"
 	 * @param sLocal : local name like "en"
@@ -122,7 +163,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings	{
 		alLocals.add(sLocal);
 		alDescs.add(sDesc);
 	}
-	
+
 	/**
 	 * Return list of available locals
 	 * @return
@@ -130,7 +171,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings	{
 	public ArrayList getLocals(){
 		return alLocals;
 	}
-	
+
 	/**
 	 * Return list of available locals
 	 * @return
@@ -138,7 +179,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings	{
 	public ArrayList getDescs(){
 		return alDescs;
 	}
-	
+
 	/**
 	 * Change current local
 	 * @param sLocal
@@ -147,12 +188,12 @@ public class Messages extends DefaultHandler implements ITechnicalStrings	{
 	    this.properties = null; //make sure to reinitialize cached strings
 	    this.sLocal = sLocal;
   	}
-	
+
 	/**Parse a factice properties file inside an XML file as CDATA*
 	 * @param sLocal
 	 * @return a properties with all entries
 	 * @throws Exception
-	 */ 
+	 */
 	private Properties parseLangpack(String sLocal) throws Exception {
 	    final Properties properties = new Properties();
 	    //	  Choose right jajuk_<lang>.properties file to load
@@ -168,14 +209,14 @@ public class Messages extends DefaultHandler implements ITechnicalStrings	{
 		else{
 		    sUrl = "jar:"+Util.getExecLocation()+"!/org/jajuk/i18n/"+ sbFilename.toString(); //$NON-NLS-1$ //$NON-NLS-2$
 		}
-		//parse it, actually it is a big properties file as CDATA in an XML file 
+		//parse it, actually it is a big properties file as CDATA in an XML file
 		try {
 			SAXParserFactory spf = SAXParserFactory.newInstance();
 			spf.setValidating(false);
 			spf.setNamespaceAware(false);
 			SAXParser saxParser = spf.newSAXParser();
 			saxParser.parse(sUrl,new DefaultHandler() {
-			    StringBuffer sb = new StringBuffer(15000); //this buffer will contain the entire properties strings 
+			    StringBuffer sb = new StringBuffer(15000); //this buffer will contain the entire properties strings
 			    //call for each element strings, actually will be called several time if the element is large (our case : large CDATA)
 			    public void characters(char[] ch, int start, int length) throws SAXException {
                     sb.append(ch,start,length);
@@ -200,11 +241,11 @@ public class Messages extends DefaultHandler implements ITechnicalStrings	{
 			throw e;
 		}
 	}
-	
-	
+
+
 	/**
 	 * Return the message display to the user corresponding to the error code.
-	 * 
+	 *
 	 * @param pCode Error code.
 	 * @return String Message corresponding to the error code.
 	 */
@@ -218,8 +259,8 @@ public class Messages extends DefaultHandler implements ITechnicalStrings	{
 		}
 		return sOut;
 	}
-	
-	
+
+
 	/**
 	 * Show a dialog with specified error message
 	 * @param sCode
@@ -229,11 +270,11 @@ public class Messages extends DefaultHandler implements ITechnicalStrings	{
             public void run() {
               JOptionPane.showMessageDialog(Main.getWindow(),
                       "<html><b>"+Messages.getErrorMessage(sCode)+"</b></html>",//$NON-NLS-1$ //$NON-NLS-2$
-                      Messages.getErrorMessage("102"),JOptionPane.ERROR_MESSAGE);  //$NON-NLS-1$ //$NON-NLS-2$    
+                      Messages.getErrorMessage("102"),JOptionPane.ERROR_MESSAGE);  //$NON-NLS-1$ //$NON-NLS-2$
             }
         });
 	}
-	
+
 	/**
 	 * Show a dialog waiting for a user decision
 	 * <p>CAUTION! the thread which calls this method musn't have locks on ressources : otherwise it can conduct to GUI freeze</p>
@@ -256,9 +297,9 @@ public class Messages extends DefaultHandler implements ITechnicalStrings	{
 	    }
 	    return confirm.getResu();
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param iType
 	 * @return String for given JOptionPane message type
 	 */
@@ -273,8 +314,8 @@ public class Messages extends DefaultHandler implements ITechnicalStrings	{
 	    }
 	    return ""; //$NON-NLS-1$
 	}
-	
-	
+
+
 	/**
 	 * Show a dialog with specified warning message
 	 * @param sMessage
@@ -288,7 +329,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings	{
 	            SwingUtilities.invokeLater(message);
         }
 	}
-   
+
 	/**
 	 * Show a dialog with specified error message and an icon
 	 * @param sMessage
@@ -302,7 +343,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings	{
 	            SwingUtilities.invokeLater(message);
         }
 	}
-	
+
 	/**
 	 * Show a dialog with specified error message and infosup
 	 * @param sCode
@@ -317,7 +358,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings	{
 	        SwingUtilities.invokeLater(message);
 	    }
 	}
-    
+
     /**
      * Show a dialog with specified error message and infosup and details
      * @param sCode
@@ -333,7 +374,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings	{
         }
     }
 
-	
+
 	/**
 	 * Show a dialog with specified error message with infos up
 	 * @param sMessage
@@ -362,14 +403,14 @@ public class Messages extends DefaultHandler implements ITechnicalStrings	{
 	            SwingUtilities.invokeLater(message);
          }
 	}
-	
+
 	/**
 	 * @return Returns the sLocal.
 	 */
 	public String getLocal() {
 		return this.sLocal;
 	}
-	
+
 	/**
 	 * Return true if the messaging system is started, can be usefull mainly at startup by services ( like logs) using them to avoid dead locks
 	 * @return
@@ -377,7 +418,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings	{
 	public static boolean isInitialized(){
 	    return !(mesg == null);
 	}
-		
+
     /**
      * @return Returns the properties.
      */
@@ -385,9 +426,9 @@ public class Messages extends DefaultHandler implements ITechnicalStrings	{
         if (this.properties == null){
             this.properties = parseLangpack(this.sLocal);
         }
-        return this.properties; 
+        return this.properties;
     }
-    
+
     /**
      * @return Returns the propertiesEn.
      */
@@ -413,16 +454,16 @@ class ConfirmDialog implements Runnable{
 
     /**Dialog output*/
     private int iResu = -2;
-    
+
     /**Dialog text*/
     private String sText;
-    
+
     /**Dialog title*/
     private String sTitle;
-    
+
     /**dialog type*/
     private int iType;
-        
+
     /**
      * Confirm dialog constructor
      * @param sText
@@ -434,16 +475,16 @@ class ConfirmDialog implements Runnable{
         this.sText = sText;
         this.sTitle = sTitle;
     }
-    
+
     /* (non-Javadoc)
      * @see java.lang.Runnable#run()
      */
     public void run() {
         iResu = JOptionPane.showConfirmDialog (null, sText,sTitle, iType);
     }
-        
+
     /**
-     * 
+     *
      * @return the user option
      */
     public int getResu() {
@@ -460,16 +501,16 @@ class MessageDialog implements Runnable{
 
      /**Dialog text*/
     private String sText;
-    
+
     /**Dialog title*/
     private String sTitle;
-    
+
     /**dialog type*/
     private int iType;
-    
+
     /**Details*/
     private String sDetails;
-        
+
     /**
      * Message dialog constructor
      * @param sText
@@ -482,7 +523,7 @@ class MessageDialog implements Runnable{
         this.sTitle = sTitle;
         this.sDetails = sDetails;
     }
-    
+
     /* (non-Javadoc)
      * @see java.lang.Runnable#run()
      */
@@ -513,10 +554,10 @@ class MessageDialog implements Runnable{
             dialogDetail.setContentPane(jp);
             dialogDetail.pack();
             Util.setCenteredLocation(dialogDetail);
-            dialogDetail.setVisible(true);            
+            dialogDetail.setVisible(true);
         }
     }
-    
+
     /**
      * code from http://java.sun.com/developer/onlineTraining/new2java/supplements/2005/July05.html#1
      * Used to correctly display long messages
@@ -524,18 +565,18 @@ class MessageDialog implements Runnable{
      * @return
      */
     public static JOptionPane getNarrowOptionPane(
-            int maxCharactersPerLineCount) { 
+            int maxCharactersPerLineCount) {
         // Our inner class definition
-        class NarrowOptionPane extends JOptionPane { 
+        class NarrowOptionPane extends JOptionPane {
             int maxCharactersPerLineCount;
-            NarrowOptionPane(int maxCharactersPerLineCount) { 
+            NarrowOptionPane(int maxCharactersPerLineCount) {
                 this.maxCharactersPerLineCount = maxCharactersPerLineCount;
-            } 
-            public int getMaxCharactersPerLineCount() { 
+            }
+            public int getMaxCharactersPerLineCount() {
                 return maxCharactersPerLineCount;
-            } 
-        } 
+            }
+        }
         return new NarrowOptionPane(maxCharactersPerLineCount);
     }
-   
+
 }

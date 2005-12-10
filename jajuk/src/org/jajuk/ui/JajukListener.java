@@ -21,16 +21,10 @@ package org.jajuk.ui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.BorderFactory;
 import javax.swing.JCheckBoxMenuItem;
-
 import org.jajuk.Main;
-import org.jajuk.base.Event;
-import org.jajuk.base.FIFO;
-import org.jajuk.base.FileManager;
-import org.jajuk.base.ObservationManager;
-import org.jajuk.base.StackItem;
+import org.jajuk.base.*;
 import org.jajuk.ui.perspectives.IPerspective;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.ui.views.IView;
@@ -187,7 +181,16 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
                 Util.setCenteredLocation(qfw);
                 qfw.setVisible(true);
             }
-		}
+            else if(EVENT_TIP_OF_THE_DAY.equals(e.getActionCommand())) {
+
+                // Display tip of the day
+                String[] tips = org.jajuk.i18n.Messages.getAll("TipOfTheDay");
+
+                TipOfTheDay tipsView = new TipOfTheDay();
+                tipsView.setLocationRelativeTo(null);
+                tipsView.setVisible(true);
+            }
+        }
 		catch(Throwable e2){
 			Log.error(e2);
 		}

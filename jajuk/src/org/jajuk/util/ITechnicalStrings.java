@@ -194,8 +194,10 @@ public interface ITechnicalStrings {
     public static final String ICON_NO_EDIT = PATH_ICONS + "16x16/stop.png";
     public static final String ICON_EDIT = PATH_ICONS + "16x16/edit.png";
     public static final String ICON_UNKNOWN = PATH_ICONS + "16x16/presence_unknown.png";
-    		
-	//images
+    public static final String ICON_TIP = PATH_ICONS + "40x40/tip.png";
+    public static final String ICON_TIP_SMALL = PATH_ICONS + "16x16/tip.png";
+
+    //images
 	public static final String IMAGES_SPLASHSCREEN =  PATH_IMAGES + "jajuk-splashscreen.png";
 	public static final String IMAGES_STAT_PAPER =  PATH_IMAGES + "No-Ones-Laughing-3.jpg";
 	public static final String IMAGE_NO_COVER = PATH_IMAGES + "unknown.jpg";
@@ -348,6 +350,7 @@ public interface ITechnicalStrings {
     public static final String EVENT_CUSTOM_PROPERTIES_REMOVE="custom property remove"; //remove custom property
     public static final String EVENT_FILE_NAME_CHANGED="file name changed"; //file name change
 	public static final String EVENT_RATE_CHANGED="file rate changed"; //file rate change
+    public static final String EVENT_TIP_OF_THE_DAY="tip of the day"; // show tip of the day
     //details keys
 	public static final String DETAIL_CURRENT_FILE_ID="current file id";
 	public static final String DETAIL_CURRENT_FILE="current file";
@@ -473,8 +476,10 @@ public interface ITechnicalStrings {
     public static final String CONF_LOGICAL_TABLE_EDITION = "jajuk.ui.logical_table_edition"; //Logical table columns
     public static final String CONF_THUMBS_SIZE = "jajuk.ui.cover_catalog.thumbs_size"; //Catalog items size
     public static final String CONF_THUMBS_SHOW_WITHOUT_COVER = "jajuk.ui.cover_catalog.show_without_cover"; //Catalog items size
-    	
-	//Accuracy levels
+    public static final String CONF_SHOW_TIP_ON_STARTUP = "jajuk.tip.show_on_startup"; //Display tips on startup
+    public static final String CONF_TIP_OF_DAY_INDEX = "jajuk.tip.index"; // Index of current displayed tip
+
+    //Accuracy levels
 	public static final String ACCURACY_LOW = "low";
 	public static final String ACCURACY_NORMAL = "normal";
 	public static final String ACCURACY_HIGH = "high";

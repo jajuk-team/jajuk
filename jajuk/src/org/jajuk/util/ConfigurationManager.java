@@ -210,7 +210,8 @@ public class ConfigurationManager implements ITechnicalStrings{
         properties.put(CONF_LOGICAL_TABLE_EDITION,FALSE);
         properties.put(CONF_THUMBS_SHOW_WITHOUT_COVER,FALSE);
         properties.put(CONF_THUMBS_SIZE,THUMBNAIL_SIZE_100x100);
-        
+        properties.put(CONF_SHOW_TIP_ON_STARTUP,TRUE);
+        properties.put(CONF_TIP_OF_DAY_INDEX,"0");
     }
 	
     /**

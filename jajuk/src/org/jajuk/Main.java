@@ -64,6 +64,7 @@ import org.jajuk.ui.JajukWindow;
 import org.jajuk.ui.LNFManager;
 import org.jajuk.ui.PerspectiveBarJPanel;
 import org.jajuk.ui.perspectives.PerspectiveManager;
+import org.jajuk.ui.TipOfTheDay;
 import org.jajuk.ui.tray.JajukSystray;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
@@ -81,7 +82,7 @@ import ext.JSplash;
  * @created 3 oct. 2003
  */
 public class Main implements ITechnicalStrings {
-	
+
 	/** Main window*/
 	private static JajukWindow jw;
 	/**Top command panel*/
@@ -323,8 +324,8 @@ public class Main implements ITechnicalStrings {
             
             //start the tray
             launchTray();
-            
-            
+
+
        } catch (JajukException je) { //last chance to catch any error for logging purpose
 			Log.error(je);
 			if ( je.getCode().equals("005")){ //$NON-NLS-1$
@@ -752,7 +753,7 @@ public class Main implements ITechnicalStrings {
                 try {
                     //  Set look and feel, needs local to be set for error messages
                     LNFManager.setLookAndFeel(ConfigurationManager.getProperty(CONF_OPTIONS_LNF));
-                
+
                     //starts ui
                     jw = JajukWindow.getInstance();
                     jw.setCursor(Util.WAIT_CURSOR);
@@ -792,7 +793,7 @@ public class Main implements ITechnicalStrings {
                     jw.setVisible(true); //show main window
                     sc.toFront(); //force screenshot to continue to be visible during loading
                     jw.applyStoredSize(); //apply size and position as stored in the user properties
-                    
+
                     //Display info message if first session
                     if (ConfigurationManager.getBoolean(CONF_FIRST_CON) 
                             && DeviceManager.getInstance().getDevicesNumber() == 0){ //make none device already exist to avoid checking availability
@@ -813,6 +814,13 @@ public class Main implements ITechnicalStrings {
                         //Display progress
                         sc.setProgress(100);
                         sc.splashOff();
+                    }
+
+                    if (ConfigurationManager.getBoolean(CONF_SHOW_TIP_ON_STARTUP)) {
+                        // Display tip of the day
+                        TipOfTheDay tipsView = new TipOfTheDay();
+                        tipsView.setLocationRelativeTo(jw);
+                        tipsView.setVisible(true);
                     }
                 } catch (Exception e) { //last chance to catch any error for logging purpose
                     e.printStackTrace();

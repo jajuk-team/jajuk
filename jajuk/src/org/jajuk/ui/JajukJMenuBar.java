@@ -62,6 +62,7 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings{
 			JCheckBoxMenuItem jcbmiIntro;
 		JMenu help;
             JMenuItem jmiHelp;
+            JMenuItem jmiTipOfTheDay;
             JMenuItem jmiAbout;
             JMenuItem jmiWizard;        
             JMenuItem jmiQualityAgent;        
@@ -137,8 +138,13 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings{
         jmiQualityAgent = new JMenuItem(Messages.getString("JajukJMenuBar.19"),Util.getIcon(ICON_EDIT)); //$NON-NLS-1$
         jmiQualityAgent.addActionListener(JajukListener.getInstance());
         jmiQualityAgent.setActionCommand(EVENT_QUALITY);
+        jmiTipOfTheDay = new JMenuItem(Messages.getString("JajukJMenuBar.20"), Util.getIcon(ICON_TIP_SMALL)); //$NON-NLS-1$
+        jmiTipOfTheDay.addActionListener(JajukListener.getInstance());
+        jmiTipOfTheDay.setActionCommand(EVENT_TIP_OF_THE_DAY);
+
         help.add(jmiHelp);
-		help.add(jmiAbout);
+        help.add(jmiTipOfTheDay);
+        help.add(jmiAbout);
         help.add(jmiWizard);
         help.add(jmiQualityAgent);
         
