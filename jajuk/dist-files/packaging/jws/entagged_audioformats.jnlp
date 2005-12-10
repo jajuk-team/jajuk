@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <jnlp spec="1.0+" codebase="http://jajuk.sourceforge.net/jws/default" href="entagged_audioformats.jnlp">
+    <information>
+        <title>EntaggedAudioFormats</title>
+        <vendor>Entagged Team</vendor>
+    </information>
+    <resources>
+        <jar href="entagged-audioformats-0.14.jar"/>
+    </resources>
+    <security> 
+           <all-permissions/>
+    </security> 
+    <component-desc/>
+</jnlp>

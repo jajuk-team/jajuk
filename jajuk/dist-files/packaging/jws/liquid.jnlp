@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <jnlp spec="1.0+" codebase="http://jajuk.sourceforge.net/jws/default" href="liquid.jnlp">
+    <information>
+        <title>Liquid</title>
+        <vendor>Liquid team</vendor>
+    </information>
+    <resources>
+        <jar href="liquidlnf-0.2.6.jar"/>
+    </resources>
+    <security> 
+           <all-permissions/>
+    </security> 
+    <component-desc/>
+</jnlp>

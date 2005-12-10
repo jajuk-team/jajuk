@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <jnlp spec="1.0+" codebase="http://jajuk.sourceforge.net/jws/default" href="mp3spi.jnlp">
+    <information>
+        <title>MP3spi</title>
+        <vendor>Javazoom</vendor>
+    </information>
+    <resources>
+        <jar href="mp3spi-1.9.2.jar"/>
+    </resources>
+    <security> 
+           <all-permissions/>
+    </security> 
+    <component-desc/>
+</jnlp>

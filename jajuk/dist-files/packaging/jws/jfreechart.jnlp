@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <jnlp spec="1.0+" codebase="http://jajuk.sourceforge.net/jws/default" href="jfreechart.jnlp">
+    <information>
+        <title>JFreechart</title>
+        <vendor>Object Refinery Limited</vendor>
+    </information>
+    <resources>
+        <jar href="jfreechart_jajuk-0.9.15.jar"/>
+    </resources>
+    <security> 
+           <all-permissions/>
+    </security> 
+    <component-desc/>
+</jnlp>

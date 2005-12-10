@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <jnlp spec="1.0+" codebase="http://jajuk.sourceforge.net/jws/default" href="tiny.jnlp">
+    <information>
+        <title>Tiny</title>
+        <vendor>Hans Bickel</vendor>
+    </information>
+    <resources>
+        <jar href="tinylaf_jajuk-1.3.01.jar"/>
+    </resources>
+    <security> 
+           <all-permissions/>
+    </security> 
+    <component-desc/>
+</jnlp>

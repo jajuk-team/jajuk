@@ -1,0 +1,64 @@
+ <?xml version="1.0" encoding="utf-8"?> 
+    <!-- JNLP File for Jajauk --> 
+    <jnlp spec="1.0+" codebase="http://jajuk.sourceforge.net/jws/default" href="jajuk.jnlp"> 
+        <information> 
+            <title>Jajuk</title> 
+            <vendor>Jajuk team</vendor> 
+            <description>Jajuk advanced jukebox</description> 
+           <description kind="short">Jajuk advanced jukebox</description> 
+            <icon href="jajuk-logo.gif"/>
+		    <icon kind="splash" href="jajuk-splashscreen.png"/>
+		    <association mime-type="audio/mpeg" extensions="mp3"/>
+    		<shortcut online="true">
+      			<desktop/>
+      			<menu submenu="Multimedia"/>
+    		</shortcut>
+           <offline-allowed/> 
+       </information> 
+       <security> 
+           <all-permissions/>
+       </security> 
+       <resources>
+           <j2se version="1.5+" java-vm-args="-client -Xms25M -Xmx256M -XX:MinHeapFreeRatio=10 -XX:MaxHeapFreeRatio=20 -Xloggc:/tmp/gc/>
+           <property name="apple.laf.useScreenMenuBar" value="true"/>
+           <jar href="bin/jajuk.jar"/> 
+           <jar href="bin/jajuk-help.jar"/> 
+           <jar href="bin/jajuk-help_fr.jar"/> 
+			<extension name="Animation" href="animation.jnlp"/>
+        	<extension name="BasicPlayer" href="basic_player.jnlp"/>
+        	<extension name="CommonsCodec" href="commons_codec.jnlp"/>
+        	<extension name="CommonsHttpClient" href="commons_httpclient.jnlp"/>
+        	<extension name="CommonsLogging" href="commons_logging.jnlp"/>
+        	<extension name="EntaggedAudioformats" href="entagged_audioformats.jnlp"/>
+        	<extension name="InfoNodeDockingWindows" href="infonode_docking_windows.jnlp"/>
+        	<extension name="Jdic" href="jdic.jnlp"/>
+        	<extension name="Jfreechart" href="jfreechart.jnlp"/>
+        	<extension name="JavaHelp" href="java_help.jnlp"/>
+        	<extension name="JLayer" href="jlayer.jnlp"/>
+        	<extension name="Jogg" href="jogg.jnlp"/>
+        	<extension name="Jorbis" href="jorbis.jnlp"/>
+        	<extension name="JSpeex" href="jspeex.jnlp"/>
+        	<extension name="Kunststoff" href="kunststoff.jnlp"/>
+        	<extension name="Liquid" href="liquid.jnlp"/>
+        	<extension name="Log4j" href="log4j.jnlp"/>
+        	<extension name="Looks" href="looks.jnlp"/>
+        	<extension name="Mp3spi" href="mp3spi.jnlp"/>
+        	<extension name="Squareness" href="squareness.jnlp"/>
+        	<extension name="Swingx" href="swingx.jnlp"/>
+        	<extension name="TableLayout" href="table_layout.jnlp"/>
+        	<extension name="Tiny" href="tiny.jnlp"/>
+        	<extension name="Tritonus" href="tritonous.jnlp"/>
+        	<extension name="Vorbisspi" href="vorbisspi.jnlp"/>
+       </resources>
+       <resources os="Windows">
+           <jar       href="lib/windows/jdic_stub.jar"/> 
+           <nativelib href="lib/windows/jdic-native.jar"/>
+       </resources>
+       <resources os="Linux">
+           <jar       href="lib/linux/jdic_stub.jar"/> 
+           <nativelib href="lib/linux/jdic-native.jar"/>
+       </resources>
+      <application-desc main-class="org.jajuk.Main">
+      	<argument>-notaskbar</argument>
+      </aplication-desc>
+    </jnlp>

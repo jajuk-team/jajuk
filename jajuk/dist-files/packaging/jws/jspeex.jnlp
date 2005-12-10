@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <jnlp spec="1.0+" codebase="http://jajuk.sourceforge.net/jws/default" href="jspeex.jnlp">
+    <information>
+        <title>Jspeex</title>
+        <vendor>Javazoom</vendor>
+    </information>
+    <resources>
+        <jar href="jspeex-0.9.3.jar"/>
+    </resources>
+    <security> 
+           <all-permissions/>
+    </security> 
+    <component-desc/>
+</jnlp>

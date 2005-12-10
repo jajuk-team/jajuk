@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <jnlp spec="1.0+" codebase="http://jajuk.sourceforge.net/jws/default" href="tablelayout.jnlp">
+    <information>
+        <title>TableLayout</title>
+        <vendor>Daniel Barbalace</vendor>
+    </information>
+    <resources>
+        <jar href="tablelayout-20050914.jar"/>
+    </resources>
+    <security> 
+           <all-permissions/>
+    </security> 
+    <component-desc/>
+</jnlp>

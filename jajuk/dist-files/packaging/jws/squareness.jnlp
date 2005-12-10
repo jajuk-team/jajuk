@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <jnlp spec="1.0+" codebase="http://jajuk.sourceforge.net/jws/default" href="squareness.jnlp">
+    <information>
+        <title>Squareness</title>
+        <vendor>Robert F. Beeger</vendor>
+    </information>
+    <resources>
+        <jar href="squareness-1.0.jar"/>
+    </resources>
+    <security> 
+           <all-permissions/>
+    </security> 
+    <component-desc/>
+</jnlp>

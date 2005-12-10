@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <jnlp spec="1.0+" codebase="http://jajuk.sourceforge.net/jws/default" href="swingx.jnlp">
+    <information>
+        <title>Swingx</title>
+        <vendor>Sun</vendor>
+    </information>
+    <resources>
+        <jar href="swingx-beta.jar"/>
+    </resources>
+    <security> 
+           <all-permissions/>
+    </security> 
+    <component-desc/>
+</jnlp>
