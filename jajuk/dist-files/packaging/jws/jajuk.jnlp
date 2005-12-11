@@ -21,9 +21,9 @@
        <resources>
            <j2se version="1.5+" java-vm-args="-client -Xms25M -Xmx256M -XX:MinHeapFreeRatio=10 -XX:MaxHeapFreeRatio=20 -Xloggc:/tmp/gc/>
            <property name="apple.laf.useScreenMenuBar" value="true"/>
-           <jar href="bin/jajuk.jar"/> 
-           <jar href="bin/jajuk-help.jar"/> 
-           <jar href="bin/jajuk-help_fr.jar"/> 
+           <jar href="jajuk.jar"/> 
+           <jar href="jajuk-help.jar"/> 
+           <jar href="jajuk-help_fr.jar"/> 
 			<extension name="Animation" href="animation.jnlp"/>
         	<extension name="BasicPlayer" href="basic_player.jnlp"/>
         	<extension name="CommonsCodec" href="commons_codec.jnlp"/>
@@ -51,12 +51,12 @@
         	<extension name="Vorbisspi" href="vorbisspi.jnlp"/>
        </resources>
        <resources os="Windows">
-           <jar       href="lib/windows/jdic_stub.jar"/> 
-           <nativelib href="lib/windows/jdic-native.jar"/>
+           <jar       href="windows/jdic_stub.jar"/> 
+           <nativelib href="windows/jdic-native.jar"/>
        </resources>
        <resources os="Linux">
-           <jar       href="lib/linux/jdic_stub.jar"/> 
-           <nativelib href="lib/linux/jdic-native.jar"/>
+           <jar       href="linux/jdic_stub.jar"/> 
+           <nativelib href="linux/jdic-native.jar"/>
        </resources>
       <application-desc main-class="org.jajuk.Main">
       	<argument>-notaskbar</argument>

@@ -22,6 +22,7 @@ package org.jajuk.ui.views;
 
 import info.clearthought.layout.TableLayout;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -35,7 +36,9 @@ import java.awt.event.MouseListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Iterator;
 
 import javax.swing.BorderFactory;
@@ -109,18 +112,21 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
     /**Date last key pressed*/
     private long lDateTyped;
     
+    /**Last selected item*/
+    public CatalogItem item;
+    
     /** Swing Timer to refresh the component*/ 
     private Timer timer = new Timer(WAIT_TIME,new ActionListener() {
         public void actionPerformed(ActionEvent e) {
             if ( bNeedSearch && (System.currentTimeMillis()-lDateTyped >= WAIT_TIME)){
                 jtfValue.setEnabled(false);
                 jcbSorter.setEnabled(false);
-                jcbFilter.setEditable(false);
+                jcbFilter.setEnabled(false);
                 populateCatalog();
                 bNeedSearch = false;
                 jtfValue.setEnabled(true);
                 jcbSorter.setEnabled(true);
-                jcbFilter.setEditable(true);
+                jcbFilter.setEnabled(true);
                 jtfValue.requestFocusInWindow();
                 
             }
@@ -161,21 +167,23 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
         jpControl.setLayout(new TableLayout(sizeControl));
         jlSorter = new JLabel(Messages.getString("CatalogView.1"));
         jcbSorter = new JComboBox();
+        jcbSorter.setEditable(false);
         //note that a single album can contains tracks with different authors or styles, we will show it only one
         for (PropertyMetaInformation meta:alSorters){
             jcbSorter.addItem(meta.getHumanName());
         }
-        jcbSorter.setSelectedIndex(0);
+        jcbSorter.setSelectedIndex(ConfigurationManager.getInt(CONF_THUMBS_SORTER));
         jcbSorter.addActionListener(this);
         
         jlFilter = new JLabel(Messages.getString("AbstractTableView.0"));
         jlContains = new JLabel(Messages.getString("AbstractTableView.7"));
         jcbFilter = new JComboBox();
+        jcbFilter.setEditable(false);
         //note that a single album can contains tracks with different authors or styles, we will show it only one
         for (PropertyMetaInformation meta:alFilters){
             jcbFilter.addItem(meta.getHumanName());
         }
-        jcbFilter.setSelectedIndex(0);
+        jcbSorter.setSelectedIndex(ConfigurationManager.getInt(CONF_THUMBS_FILTER));
         jcbFilter.addActionListener(this);
         jtfValue = new JTextField(20);
         jtfValue.addKeyListener(new KeyAdapter() {
@@ -221,6 +229,7 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
             JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         jpItems.setScroller(jsp);
         jpItems.setLayout(new FlowLayout(FlowLayout.LEFT));
+        jsp.setBackground(Color.WHITE);
         
         //global layout
         double size[][] =
@@ -295,14 +304,66 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
                     filter = new Filter(meta,jtfValue.getText(),true,false);
                 }
                 //filter on tracks properties
+                long l = System.currentTimeMillis();
                 Collection<IPropertyable> alAllTracks = TrackManager.getInstance().getItems(filter);
-                //keep matching albums (we use sets to drop doublons)
-                HashSet<IPropertyable> hsAllAlbums = new HashSet();
+                //keep matching albums (we use sets to drop duplicates)
+                System.out.println(System.currentTimeMillis()-l);
+                ArrayList<Album> albums = new ArrayList();
                 for (IPropertyable item:alAllTracks){
                     Track track = (Track)item;
-                    hsAllAlbums.add(track.getAlbum());
+                    Album album = track.getAlbum();
+                    if (!albums.contains(album)){
+                        albums.add(album);
+                    }
                 }
-                for (IPropertyable item:hsAllAlbums){
+                System.out.println(System.currentTimeMillis()-l);
+                //sort albums
+                final int index = jcbSorter.getSelectedIndex();
+                //store mapped tracks for perfs
+                final HashMap<Album,Track> hmAlbumTrack = new HashMap();
+                for (Album album:albums){
+                    Track track = null;
+                    for (IPropertyable item : TrackManager.getInstance().getItems()){
+                        track = (Track)item;
+                        if (track.getAlbum().equals(album)){
+                            hmAlbumTrack.put(album,track);
+                            break;
+                        }
+                    }
+                    hmAlbumTrack.put(album,track);
+                }
+                
+                Collections.sort(albums,new Comparator() {
+                    
+                    public int compare(Object arg0, Object arg1) {
+                        Album album1 = (Album)arg0;
+                        Album album2 = (Album)arg1;
+                        //for albums, perform a fast compare
+                        if (index == 2){
+                            return album1.compareTo(album2);
+                        }
+                        //get a track for each album
+                        Track track1 = hmAlbumTrack.get(album1);
+                        Track track2 = hmAlbumTrack.get(album2);
+                        //check tracks (normaly useless)
+                        if (track1 == null || track2 == null){
+                            return 0;
+                        }
+                        switch (index){
+                        case 0: //style
+                            return track1.getStyle().compareTo(track2.getStyle());
+                        case 1: //author
+                            return track1.getAuthor().compareTo(track2.getAuthor());
+                        case 3: //year
+                            return (int)(track1.getYear() - track2.getYear());    
+                        }
+                        return 0;
+                    }
+                    
+                });
+                System.out.println(System.currentTimeMillis()-l);
+                
+                for (Object item:albums){
                     Album album = (Album)item;
                     //if hide unmounted tracks is set, continue
                     if (ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED)){
@@ -325,7 +386,8 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
                     }
                     //make sure thumbnail exists
                     refreshThumbnail(album);
-                    CatalogItem cover = new CatalogItem(album,(String)jcbSize.getSelectedItem());
+                    CatalogItem cover = new CatalogItem(album,(String)jcbSize.getSelectedItem(),hmAlbumTrack.get(album));
+                    
                     if (cover.isNoCover()){
                         if (jcbShow.isSelected()){
                             jpItems.add(cover);
@@ -377,12 +439,14 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
      */
     public void actionPerformed(final ActionEvent e) {
         if (e.getSource() == jcbFilter){
-             bNeedSearch = true;
-             lDateTyped = System.currentTimeMillis();  
+            bNeedSearch = true;
+            lDateTyped = System.currentTimeMillis();
+            ConfigurationManager.setProperty(CONF_THUMBS_FILTER,Integer.toString(jcbFilter.getSelectedIndex()));
         }
         else if (e.getSource() == jcbSorter){
-             bNeedSearch = true;
-             lDateTyped = System.currentTimeMillis();  
+            bNeedSearch = true;
+            lDateTyped = System.currentTimeMillis();
+            ConfigurationManager.setProperty(CONF_THUMBS_SORTER,Integer.toString(jcbSorter.getSelectedIndex()));
         }
         else if (e.getSource() == jbRefresh){
             cleanThumbs("50x50");
@@ -411,123 +475,151 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
         if (fThumb.exists()){
             File[] files = fThumb.listFiles();
             for (File file:files){
-                if (!file.getAbsolutePath().matches(FILE_THUMB_NO_COVER)){
+                if (!file.getAbsolutePath().matches(".*"+FILE_THUMB_NO_COVER)){
                     file.delete();
                 }
             }
         }
     }
+    class CatalogItem extends JPanel implements ITechnicalStrings,ActionListener,MouseListener{
+        
+        /** Associated album*/
+        Album album;
+        
+        /** Addociated track */
+        Track track;
+        
+        /**Size*/
+        String size;
+        
+        /**Associated file*/
+        File fCover;
+        
+        /**No cover flag*/
+        boolean bNoCover = false;
+        
+        JPanel jpIcon;
+        JLabel jlIcon;
+        JLabel jlAuthor;
+        JLabel jlAlbum;
+        
+        /**
+         * Constructor
+         * @param album : associated album
+         * @param size : size of the thumbnail
+         */
+        public CatalogItem(Album album,String size,Track track){
+            this.album = album;
+            this.size = size;
+            this.track = track;
+            this.fCover = new File(FILE_THUMBS+'/'+size+'/'+album.getId()+'.'+EXT_THUMB);
+            if (!fCover.exists() || fCover.length() == 0){
+                bNoCover = true;
+                this.fCover = new File(FILE_THUMBS+'/'+size+'/'+FILE_THUMB_NO_COVER);
+            }
+            setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
+            setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+            jpIcon  = new JPanel();
+            jpIcon.setLayout(new BoxLayout(jpIcon,BoxLayout.X_AXIS));
+            jlIcon = new JLabel(new ImageIcon(fCover.getAbsolutePath()));
+            jlIcon.addMouseListener(this);
+            jpIcon.add(Box.createGlue());
+            jpIcon.add(jlIcon);
+            jpIcon.add(Box.createGlue());
+            add(jpIcon);
+            //take first track author as author
+            jlAuthor = new JLabel(track.getAuthor().getName2());
+            jlAlbum = new JLabel(album.getName2());
+            jlAuthor.setFont(new Font("Dialog",Font.PLAIN,12)); //$NON-NLS-1$
+            jlAlbum.setFont(new Font("Dialog",Font.PLAIN,12)); //$NON-NLS-1$
+            
+            add(Util.getCentredPanel(jlAuthor));
+            add(Util.getCentredPanel(jlAlbum));
+            add(Box.createVerticalGlue());
+            
+            setBorder(BorderFactory.createEmptyBorder(2,2,2,2));
+        }
+        
+        public boolean isNoCover() {
+            return bNoCover;
+        }
+        
+        /* (non-Javadoc)
+         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+         */
+        public void actionPerformed(ActionEvent arg0) {
+        }
+        
+        /* (non-Javadoc)
+         * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
+         */
+        public void mouseClicked(MouseEvent arg0) {
+        }
+        
+        /* (non-Javadoc)
+         * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
+         */
+        public void mousePressed(MouseEvent e) {
+            if (e.getSource() == jlIcon){
+                ArrayList<Track> alTracks = TrackManager.getInstance().getAssociatedTracks(album);
+                //compute selection
+                ArrayList alFilesToPlay = new ArrayList(alTracks.size());
+                Iterator it = alTracks.iterator();
+                while ( it.hasNext()){
+                    org.jajuk.base.File file = ((Track)it.next()).getPlayeableFile();
+                    if ( file != null){
+                        alFilesToPlay.add(file);
+                    }
+                }
+                FIFO.getInstance().push(Util.createStackItems(alFilesToPlay,false,true),false);
+                if (CatalogView.this.item != null){
+                    CatalogView.this.item.setBorder(BorderFactory.createEmptyBorder(2,2,2,2));
+                }
+                CatalogView.this.item = this;
+                setBorder(BorderFactory.createMatteBorder(2,2,2,2,Color.RED));
+            }
+        }
+        
+        /* (non-Javadoc)
+         * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
+         */
+        public void mouseReleased(MouseEvent arg0) {
+        }
+        
+        /* (non-Javadoc)
+         * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
+         */
+        public void mouseEntered(MouseEvent arg0) {
+        }
+        
+        /* (non-Javadoc)
+         * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
+         */
+        public void mouseExited(MouseEvent arg0) {
+        }
+        
+        public boolean equals(Object o){
+            if (!(o instanceof CatalogItem)){
+                return false;
+            }
+            CatalogItem other = (CatalogItem)o;
+            //if no cover, compare album
+            if (other.getCoverFile().equals(FILE_THUMB_NO_COVER) || 
+                    getCoverFile().equals(FILE_THUMB_NO_COVER)){
+                return other.getAlbum().equals(album);
+            }
+            //compare cover file
+            return other.getCoverFile().equals(fCover);
+        }
+        
+        public File getCoverFile() {
+            return fCover;
+        }
+        
+        public Album getAlbum() {
+            return album;
+        }
+    }
     
 }
 
-class CatalogItem extends JPanel implements ITechnicalStrings,ActionListener,MouseListener{
-    
-    /** Associated album*/
-    Album album;
-    
-    /**Size*/
-    String size;
-    
-    /**Associated file*/
-    File fCover;
-    
-    /**No cover flag*/
-    boolean bNoCover = false;
-    
-    JPanel jpIcon;
-    JLabel jlIcon;
-    JLabel jlAuthor;
-    JLabel jlAlbum;
-    
-    /**
-     * Constructor
-     * @param album : associated album
-     * @param size : size of the thumbnail
-     */
-    public CatalogItem(Album album,String size){
-        this.album = album;
-        this.size = size;
-        this.fCover = new File(FILE_THUMBS+'/'+size+'/'+album.getId()+'.'+EXT_THUMB);
-        if (!fCover.exists() || fCover.length() == 0){
-            bNoCover = true;
-            this.fCover = new File(FILE_THUMBS+'/'+size+'/'+FILE_THUMB_NO_COVER);
-        }
-        setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
-        setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
-        jpIcon  = new JPanel();
-        jpIcon.setLayout(new BoxLayout(jpIcon,BoxLayout.X_AXIS));
-        jlIcon = new JLabel(new ImageIcon(fCover.getAbsolutePath()));
-        jlIcon.addMouseListener(this);
-        jpIcon.add(Box.createGlue());
-        jpIcon.add(jlIcon);
-        jpIcon.add(Box.createGlue());
-        add(jpIcon);
-        //take first track author as author
-        String sAuthor = "";
-        ArrayList<Track> alTracks = TrackManager.getInstance().getAssociatedTracks(album);
-        if (alTracks.size() > 0){
-            sAuthor = alTracks.get(0).getAuthor().getName2();
-        }
-        jlAuthor = new JLabel(sAuthor);
-        jlAlbum = new JLabel(album.getName2());
-        jlAuthor.setFont(new Font("Dialog",Font.PLAIN,12)); //$NON-NLS-1$
-        jlAlbum.setFont(new Font("Dialog",Font.PLAIN,12)); //$NON-NLS-1$
-        
-        add(Util.getCentredPanel(jlAuthor));
-        add(Util.getCentredPanel(jlAlbum));
-        add(Box.createVerticalGlue());
-    }
-    
-    public boolean isNoCover() {
-        return bNoCover;
-    }
-    
-    /* (non-Javadoc)
-     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-     */
-    public void actionPerformed(ActionEvent arg0) {
-    }
-    
-    /* (non-Javadoc)
-     * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
-     */
-    public void mouseClicked(MouseEvent arg0) {
-    }
-    
-    /* (non-Javadoc)
-     * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
-     */
-    public void mousePressed(MouseEvent e) {
-        if (e.getSource() == jlIcon){
-            ArrayList<Track> alTracks = TrackManager.getInstance().getAssociatedTracks(album);
-            //compute selection
-            ArrayList alFilesToPlay = new ArrayList(alTracks.size());
-            Iterator it = alTracks.iterator();
-            while ( it.hasNext()){
-                org.jajuk.base.File file = ((Track)it.next()).getPlayeableFile();
-                if ( file != null){
-                    alFilesToPlay.add(file);
-                }
-            }
-            FIFO.getInstance().push(Util.createStackItems(alFilesToPlay,false,true),false);
-        }
-    }
-    
-    /* (non-Javadoc)
-     * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
-     */
-    public void mouseReleased(MouseEvent arg0) {
-    }
-    
-    /* (non-Javadoc)
-     * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
-     */
-    public void mouseEntered(MouseEvent arg0) {
-    }
-    
-    /* (non-Javadoc)
-     * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
-     */
-    public void mouseExited(MouseEvent arg0) {
-    }
-}

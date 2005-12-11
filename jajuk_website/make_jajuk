@@ -18,6 +18,15 @@ if [ "$1" = "pdf" ]; then
  maven pdf
  exit 0
 fi
+if [ "$1" = "jws" ]; then
+ RELEASE=$2
+ if [ "$1" = "jws" ]; then
+  RELEASE='default'
+ fi
+ cd /tmp/jajuk-dist/jws
+ scp -C -r * bflorat@jajuk.sourceforge.net:/home/groups/j/ja/jajuk/htdocs/jws/$RELEASE/
+ exit 0
+fi
 
 #Copy doc files
 
@@ -56,7 +65,8 @@ cvs checkout jajuk
 maven announcement
 maven site
 cd target/docs
-java -cp /data/scripts/ Xiti SCRIPT_XITI /data/scripts/script_xiti index.html > /tmp/index.html
+java -cp /data/java/workspace/jajuk_website Xiti SCRIPT_XITI /data/java/workspace/jajuk_website/script_xiti_home.txt index.html > /tmp/index.html
+java -cp /data/java/workspace/jajuk_website Xiti SCRIPT_XITI /data/java/workspace/jajuk_website/script_xiti_jws.txt jws.html > /tmp/jws.html
 #marche pas à la fin sed -e '\#SCRIPT_XITI#{r/data/scripts/script_xiti' -e ';d;}' ./index.html > /tmp/index.html
 cp /tmp/index.html .
-scp -C -r * bflorat@jajuk.sourceforge.net:/home/groups/j/ja/jajuk/htdocs
+cp /tmp/jws.html .

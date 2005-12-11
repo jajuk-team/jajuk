@@ -14,7 +14,9 @@
 			</ul>	
 		</p>
 		
-   		 <p><a href='./jobs.html'>Want to help ?</a></p>
+   <p><a href='./jws.html'><img alt='' src='./images/webstartmenow.png'></img></a></p>
+   
+   <p><a href='./jobs.html'>Want to help ?</a></p>
     </section>
     
 	<section name='Supported languages'>
@@ -70,20 +72,23 @@
 		<table style='width: 100%; text-align: left;' border='0' cellpadding='2' cellspacing='2'>
 			<tbody>
 				<tr>
+					<td style='vertical-align: top;'><p><b>2005/12/11</b></p>
+					<p>Jajuk now <a href='./jws.html'>available in Java Web Start mode</a></p></td>
+	
 					<td style='vertical-align: top;'><p><b>2005/09/26</b></p>
-					<p><a href='http://sourceforge.net/projects/jajuk/'>Jajuk 1.0 released</a><br></br><a href='./jajuk-hs/default/html/editing.html'>Tags edition</a> and <a href='./jajuk-hs/default/html/using_custom_properties.html'>custom properties</a><br></br>
+					<p>Jajuk 1.0 released<br></br><a href='./jajuk-hs/default/html/editing.html'>Tags edition</a> and <a href='./jajuk-hs/default/html/using_custom_properties.html'>custom properties</a><br></br>
 					<a href='./qualification/qualification-1.0.html'>Release notes</a> - <a href='./changes-report.html#1_0'>Changes</a></p></td>
 	
 					<td style='vertical-align: top;'><p><b>2005/06/04</b></p>
-					<p><a href='http://sourceforge.net/projects/jajuk/'>Jajuk 0.3.4 released</a><br></br>Fixes<br></br>
+					<p>Jajuk 0.3.4 released<br></br>Fixes<br></br>
 					<a href='./qualification/qualification-0.3.4.html'>Release notes</a> - <a href='./changes-report.html#0_3_4'>Changes</a></p></td>
 	
+				</tr>
+				<tr>
 					<td style='vertical-align: top;'><p><b>2005/04/02</b></p>
 					<p><a href='http://sourceforge.net/projects/jajuk/'>Jajuk 0.3.3 released</a><br></br>Fixes, performances, Catalan langpack<br></br>
 					<a href='./qualification/qualification-0.3.3.html'>Release notes</a> - <a href='./changes-report.html#0_3_3'>Changes</a></p></td>
-
-				</tr>
-				<tr>
+	
 					<td style='vertical-align: top;'><p><b>2005/01/11</b></p>
 					<p><a href='http://sourceforge.net/projects/jajuk/'>Jajuk 0.3.2 released</a><br></br>Spanish langpack and documentation<br></br>
 					<a href='./qualification/qualification-0.3.2.html'>Release notes</a> - <a href='./changes-report.html#0_3_2'>Changes</a></p></td>
@@ -91,10 +96,6 @@
 					<td style='vertical-align: top;'><p><b>2004/12/05</b></p>
 					<p><a href='http://sourceforge.net/projects/jajuk/'>Jajuk 0.3.1 released</a><br></br>Docking and usability<br></br>
 					<a href='./qualification/qualification-0.3.1.html'>Qualification form</a></p></td>
-	
-					<td style='vertical-align: top;'><p><b>2004/10/01</b></p>
-					<p><a href='http://sourceforge.net/projects/jajuk/'>Jajuk 0.3 released</a><br></br>Auto cover and usability<br></br>
-					<a href='./qualification/qualification-0.3.html'>Qualification form</a></p></td>
 			
 				</tr>
 			</tbody>

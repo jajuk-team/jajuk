@@ -178,7 +178,7 @@ public class ConfigurationManager implements ITechnicalStrings{
 		properties.put(CONF_BOOKMARKS,""); //$NON-NLS-1$
 		properties.put(CONF_SHOW_AT_STARTUP,TRUE);
 		properties.put(CONF_BESTOF_SIZE,"20"); //$NON-NLS-1$
-		properties.put(CONF_VOLUME,"0.5"); //$NON-NLS-1$
+		properties.put(CONF_VOLUME,"0.8"); //$NON-NLS-1$
 		properties.put(CONF_REGEXP,FALSE); //$NON-NLS-1$
 		properties.put(CONF_BACKUP_SIZE,"20");//$NON-NLS-1$
 		properties.put(CONF_COLLECTION_CHARSET,"UTF-8");//$NON-NLS-1$
@@ -210,6 +210,8 @@ public class ConfigurationManager implements ITechnicalStrings{
         properties.put(CONF_LOGICAL_TABLE_EDITION,FALSE);
         properties.put(CONF_THUMBS_SHOW_WITHOUT_COVER,FALSE);
         properties.put(CONF_THUMBS_SIZE,THUMBNAIL_SIZE_100x100);
+        properties.put(CONF_THUMBS_SORTER,"2"); //sort by album
+        properties.put(CONF_THUMBS_FILTER,"2"); //filter on albums
         properties.put(CONF_SHOW_TIP_ON_STARTUP,TRUE);
         properties.put(CONF_TIP_OF_DAY_INDEX,"0");
     }

@@ -726,7 +726,8 @@ public class Util implements ITechnicalStrings {
      */
     public static boolean isUnderWindows(){
         String sOS = (String)System.getProperties().get("os.name"); //$NON-NLS-1$;
-        if (sOS.trim().toLowerCase().lastIndexOf("windows")!=-1){ //$NON-NLS-1$
+        //os.name can be null with JWS under MacOS
+        if (sOS != null && sOS.trim().toLowerCase().lastIndexOf("windows")!=-1){ //$NON-NLS-1$
             return true;
         }
         return false;
@@ -737,7 +738,8 @@ public class Util implements ITechnicalStrings {
      */
     public static boolean isUnderLinux(){
         String sOS = (String)System.getProperties().get("os.name"); //$NON-NLS-1$;
-        if (sOS.trim().toLowerCase().lastIndexOf("linux")!=-1){ //$NON-NLS-1$
+        //os.name can be null with JWS under MacOS
+        if (sOS != null && sOS.trim().toLowerCase().lastIndexOf("linux")!=-1){ //$NON-NLS-1$
             return true;
         }
         return false;
