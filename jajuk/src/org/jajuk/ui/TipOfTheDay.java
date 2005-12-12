@@ -49,6 +49,8 @@ public class TipOfTheDay extends JFrame implements ITechnicalStrings {
         cbShow.setSelected(ConfigurationManager.getBoolean(CONF_SHOW_TIP_ON_STARTUP));
 
         tipArea = new JTextArea();
+        tipArea.setWrapStyleWord(true);
+        tipArea.setLineWrap(true);
         tipArea.setEditable(false);
 
         lCounter = new JLabel("999/999");
@@ -135,6 +137,7 @@ public class TipOfTheDay extends JFrame implements ITechnicalStrings {
         tipArea.setText(tips[i]);
         lCounter.setText((new StringBuilder()).append("").append(i + 1).append("/").append(
             tips.length).toString());
+        tipArea.setCaretPosition(0);
     }
 
     public void setVisible(boolean flag) {
