@@ -28,6 +28,7 @@ import java.util.Iterator;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
+import org.jajuk.base.Bookmarks;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
@@ -61,6 +62,7 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
     JMenuItem jmiFilePlayShuffle;
     JMenuItem jmiFilePlayRepeat;
     JMenuItem jmiFilePlayDirectory;
+    JMenuItem jmiFileAddFavorites;
     
     
     /*
@@ -99,11 +101,14 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
         jmiFilePlayDirectory.addActionListener(this);
         jmiProperties = new JMenuItem(Messages.getString("PhysicalTableView.6")); //$NON-NLS-1$
         jmiProperties.addActionListener(this);
+        jmiFileAddFavorites = new JMenuItem(Messages.getString("PhysicalTableView.16"));
+        jmiFileAddFavorites.addActionListener(this);
         jmenuFile.add(jmiFilePlay);
         jmenuFile.add(jmiFilePush);
         jmenuFile.add(jmiFilePlayShuffle);
         jmenuFile.add(jmiFilePlayRepeat);
         jmenuFile.add(jmiFilePlayDirectory);
+        jmenuFile.add(jmiFileAddFavorites);
         jmenuFile.add(jmiProperties);
     }
     
@@ -242,6 +247,10 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
                 else if ( e.getSource() == jmiFilePlayRepeat){
                     FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFilesToPlay),
                         true,true),false);
+                }
+                //Bookmark
+                else if (e.getSource() == jmiFileAddFavorites){
+                	Bookmarks.getInstance().addFiles(alFilesToPlay);
                 }
                 //properties
                 else if ( e.getSource() == jmiProperties){

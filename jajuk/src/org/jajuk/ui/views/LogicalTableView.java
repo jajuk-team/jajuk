@@ -29,6 +29,7 @@ import javax.swing.JPopupMenu;
 
 import org.jajuk.base.Album;
 import org.jajuk.base.Author;
+import org.jajuk.base.Bookmarks;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
 import org.jajuk.base.IPropertyable;
@@ -64,6 +65,7 @@ public class LogicalTableView extends AbstractTableView implements Observer{
     JMenuItem jmiTrackPlayRepeat;
     JMenuItem jmiTrackPlayAlbum;
     JMenuItem jmiTrackPlayAuthor;
+    JMenuItem jmiTrackAddFavorite;
     
     /*
      * (non-Javadoc)
@@ -101,6 +103,8 @@ public class LogicalTableView extends AbstractTableView implements Observer{
         jmiTrackPlayAlbum.addActionListener(this);
         jmiTrackPlayAuthor = new JMenuItem(Messages.getString("LogicalTableView.12")); //$NON-NLS-1$
         jmiTrackPlayAuthor.addActionListener(this);
+        jmiTrackAddFavorite = new JMenuItem(Messages.getString("LogicalTableView.15")); //$NON-NLS-1$
+        jmiTrackAddFavorite.addActionListener(this);
         jmiProperties = new JMenuItem(Messages.getString("LogicalTableView.14")); //$NON-NLS-1$
         jmiProperties.addActionListener(this);
         jmenuTrack.add(jmiTrackPlay);
@@ -109,6 +113,7 @@ public class LogicalTableView extends AbstractTableView implements Observer{
         jmenuTrack.add(jmiTrackPlayRepeat);
         jmenuTrack.add(jmiTrackPlayAlbum);
         jmenuTrack.add(jmiTrackPlayAuthor);
+        jmenuTrack.add(jmiTrackAddFavorite);
         jmenuTrack.add(jmiProperties);
     }
     
@@ -252,6 +257,10 @@ public class LogicalTableView extends AbstractTableView implements Observer{
                 //repeat play
                 else if ( e.getSource() == jmiTrackPlayRepeat){
                     FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFilesToPlay),true,true),false);
+                }
+                //bookmark
+                else if (e.getSource() == jmiTrackAddFavorite){
+                	Bookmarks.getInstance().addFiles(alFilesToPlay);
                 }
                 //properties
                 else if ( e.getSource() == jmiProperties){

@@ -54,6 +54,7 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
+import org.jajuk.base.Bookmarks;
 import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;
 import org.jajuk.base.Directory;
@@ -106,6 +107,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
     JMenuItem jmiFilePaste;
      JMenuItem jmiFileDelete;
     JMenuItem jmiFileProperties;
+    JMenuItem jmiFileAddFavorites;
     
     JPopupMenu jmenuDir;
     JMenuItem jmiDirPlay;
@@ -120,6 +122,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
     JMenuItem jmiDirPaste;
     JMenuItem jmiDirDelete;
     JMenuItem jmiDirProperties;
+    JMenuItem jmiDirAddFavorites;
     
     JPopupMenu jmenuDev;
     JMenuItem jmiDevPlay;
@@ -196,6 +199,8 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         jmiFileDelete.addActionListener(this);
         jmiFileProperties = new JMenuItem(Messages.getString("PhysicalTreeView.9")); //$NON-NLS-1$
         jmiFileProperties.addActionListener(this);
+        jmiFileAddFavorites = new JMenuItem(Messages.getString("PhysicalTreeView.56")); //$NON-NLS-1$
+        jmiFileAddFavorites.addActionListener(this);
         jmenuFile.add(jmiFilePlay);
         jmenuFile.add(jmiFilePush);
         jmenuFile.add(jmiFileCopy);
@@ -203,6 +208,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         jmenuFile.add(jmiFilePaste);
         jmenuFile.add(jmiFileDelete);
         jmenuFile.add(jmiFileProperties);
+        jmenuFile.add(jmiFileAddFavorites);
         
         //Directory menu
         jmenuDir = new JPopupMenu();
@@ -235,6 +241,8 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         jmiDirDelete.addActionListener(this);
         jmiDirProperties = new JMenuItem(Messages.getString("PhysicalTreeView.23")); //$NON-NLS-1$
         jmiDirProperties.addActionListener(this);
+        jmiDirAddFavorites = new JMenuItem(Messages.getString("PhysicalTreeView.56")); //$NON-NLS-1$
+        jmiDirAddFavorites.addActionListener(this);
         jmenuDir.add(jmiDirPlay);
         jmenuDir.add(jmiDirPush);
         jmenuDir.add(jmiDirPlayShuffle);
@@ -246,6 +254,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         jmenuDir.add(jmiDirCut);
         jmenuDir.add(jmiDirPaste);
         jmenuDir.add(jmiDirDelete);
+        jmenuDir.add(jmiDirAddFavorites);
         jmenuDir.add(jmiDirProperties);
         
         //Device menu
@@ -813,6 +822,9 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
             FIFO.getInstance().push(Util.createStackItems(alFiles,
                     ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
         }
+        else if (e.getSource() == jmiFileAddFavorites){
+        	Bookmarks.getInstance().addFiles(alFiles);
+        }
         else if (e.getSource() == jmiFilePush){
             FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFiles),
                     ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),true);
@@ -820,6 +832,9 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         else if ( alFiles!= null && (e.getSource() == jmiDirPlay || e.getSource() == jmiDevPlay)){  
             FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFiles),
                     ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
+        }
+        else if ( alFiles!= null && e.getSource() == jmiDirAddFavorites) {
+        	Bookmarks.getInstance().addFiles(alFiles);
         }
         else if (alFiles!= null  && (e.getSource() == jmiDirPush || e.getSource() == jmiDevPush)){
             FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFiles),
