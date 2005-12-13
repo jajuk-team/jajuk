@@ -110,6 +110,7 @@ public interface ITechnicalStrings {
 	public static final String ICON_PERSPECTIVE_CONFIGURATION	= "/org/jajuk/icons/16x16/configure.png";
 	public static final String ICON_PERSPECTIVE_PLAYER	= "/org/jajuk/icons/16x16/player_perspective.png";
 	public static final String ICON_PERSPECTIVE_CATALOG = "/org/jajuk/icons/16x16/thumbnail.png";
+    public static final String ICON_PERSPECTIVE_INFORMATION = "/org/jajuk/icons/16x16/contents.png";
     public static final String ICON_PERSPECTIVE_HELP	= "/org/jajuk/icons/16x16/info.png";
 	public static final String ICON_OPEN_FILE	= PATH_ICONS + "16x16/fileopen.png";
 	public static final String ICON_EXIT=  PATH_ICONS + "16x16/exit.png";
@@ -212,6 +213,7 @@ public interface ITechnicalStrings {
 	public static final String FILE_LOGICAL_PERSPECTIVE = FILE_JAJUK_DIR+"/logicalPerspectives.ser";
 	public static final String FILE_PLAYER_PERSPECTIVE = FILE_JAJUK_DIR+"/playerPerspectives.ser";
 	public static final String FILE_CATALOG_PERSPECTIVE = FILE_JAJUK_DIR+"/catalogPerspectives.ser";
+    public static final String FILE_INFO_PERSPECTIVE = FILE_JAJUK_DIR+"/infoPerspectives.ser";
     public static final String FILE_STAT_PERSPECTIVE = FILE_JAJUK_DIR+"/statPerspectives.ser";
 	public static final String FILE_HELP_PERSPECTIVE = FILE_JAJUK_DIR+"/helpPerspectives.ser";
 	public static final String FILE_CONFIGURATION_PERSPECTIVE = FILE_JAJUK_DIR+"/configurationPerspectives.ser";
@@ -274,7 +276,9 @@ public interface ITechnicalStrings {
 	public static final String PERSPECTIVE_NAME_HELP = "org.jajuk.ui.perspectives.HelpPerspective";
 	public static final String PERSPECTIVE_NAME_PLAYER = "org.jajuk.ui.perspectives.PlayerPerspective";
 	public static final String PERSPECTIVE_NAME_CATALOG = "org.jajuk.ui.perspectives.CatalogPerspective";
-	 //views
+	public static final String PERSPECTIVE_NAME_INFO = "org.jajuk.ui.perspectives.InfoPerspective";
+    
+    //views
 	public static final String VIEW_NAME_DEVICES = "org.jajuk.ui.views.DeviceView";
 	public static final String VIEW_NAME_PARAMETERS = "org.jajuk.ui.views.ParameterView";
 	public static final String VIEW_NAME_PHYSICAL_TREE = "org.jajuk.ui.views.PhysicalTreeView";

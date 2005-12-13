@@ -8,10 +8,9 @@
            <description kind="short">Jajuk advanced jukebox</description> 
             <icon href="jajuk-logo.gif"/>
 		    <icon kind="splash" href="jajuk-splashscreen.png"/>
-		    <association mime-type="audio/mpeg" extensions="mp3"/>
-    		<shortcut online="true">
+		    <shortcut online="true">
       			<desktop/>
-      			<menu submenu="Multimedia"/>
+      			<menu submenu="Jajuk"/>
     		</shortcut>
            <offline-allowed/> 
        </information> 

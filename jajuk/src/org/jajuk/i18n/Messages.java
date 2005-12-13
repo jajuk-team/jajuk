@@ -168,7 +168,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings	{
 	 * Return list of available locals
 	 * @return
 	 */
-	public ArrayList getLocals(){
+	public ArrayList<String> getLocals(){
 		return alLocals;
 	}
 
@@ -176,7 +176,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings	{
 	 * Return list of available locals
 	 * @return
 	 */
-	public ArrayList getDescs(){
+	public ArrayList<String> getDescs(){
 		return alDescs;
 	}
 

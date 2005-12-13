@@ -304,10 +304,8 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
                     filter = new Filter(meta,jtfValue.getText(),true,false);
                 }
                 //filter on tracks properties
-                long l = System.currentTimeMillis();
                 Collection<IPropertyable> alAllTracks = TrackManager.getInstance().getItems(filter);
                 //keep matching albums (we use sets to drop duplicates)
-                System.out.println(System.currentTimeMillis()-l);
                 ArrayList<Album> albums = new ArrayList();
                 for (IPropertyable item:alAllTracks){
                     Track track = (Track)item;
@@ -316,7 +314,6 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
                         albums.add(album);
                     }
                 }
-                System.out.println(System.currentTimeMillis()-l);
                 //sort albums
                 final int index = jcbSorter.getSelectedIndex();
                 //store mapped tracks for perfs
@@ -361,8 +358,6 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
                     }
                     
                 });
-                System.out.println(System.currentTimeMillis()-l);
-                
                 for (Object item:albums){
                     Album album = (Album)item;
                     //if hide unmounted tracks is set, continue

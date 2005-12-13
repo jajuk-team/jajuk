@@ -220,6 +220,13 @@ public class PerspectiveManager  implements ITechnicalStrings {
         perspective.setDefaultViews();
         registerPerspective(perspective);
         
+        // Information perspective
+        perspective = new InfoPerspective();
+        perspective.setIconPath(ICON_PERSPECTIVE_INFORMATION);
+        perspective.setID(PERSPECTIVE_NAME_INFO);
+        perspective.setDefaultViews();
+        registerPerspective(perspective);
+        
         //Configuration perspective
         perspective = new ConfigurationPerspective();
         perspective.setIconPath(ICON_PERSPECTIVE_CONFIGURATION);
