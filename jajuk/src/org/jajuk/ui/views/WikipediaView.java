@@ -22,19 +22,24 @@ package org.jajuk.ui.views;
 
 import info.clearthought.layout.TableLayout;
 
-import java.awt.event.ComponentListener;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Properties;
 
 import javax.swing.BorderFactory;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerListModel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import org.jajuk.base.Event;
+import org.jajuk.base.FIFO;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Observer;
 import org.jajuk.i18n.Messages;
+import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.log.Log;
 import org.jdesktop.jdic.browser.WebBrowser;
@@ -45,14 +50,19 @@ import org.jdesktop.jdic.browser.WebBrowser;
  * @author     Bertrand Florat
  * @created    12/12/2005
  */
-public class WikipediaView extends ViewAdapter implements ITechnicalStrings,Observer,ComponentListener {
+public class WikipediaView extends ViewAdapter implements ITechnicalStrings,Observer,ChangeListener {
 	
 	//control panel
     JPanel jpControl;
     JLabel jlLanguage;
-    JComboBox jcbLanguage;
+    JSpinner jspLanguage;
     
+    /**JDIC web browser: ie or netscape*/
     WebBrowser browser;
+    /**Langage index*/
+    int index = 0; 
+    /**Current search*/
+    String search  = "";
     
     /**
      * Constructor
@@ -84,38 +94,50 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings,Obse
         jpControl.setBorder(BorderFactory.createEtchedBorder());
         int iXspace = 10;
         double sizeControl[][] =
-            //        Language by                       combo lang                                       
-        {{3*iXspace,TableLayout.PREFERRED,iXspace,TableLayout.PREFERRED,3*iXspace},
+            //        Language by                       lang                                       
+        {{3*iXspace,TableLayout.PREFERRED,iXspace,200,3*iXspace},
                 {25}};
         jpControl.setLayout(new TableLayout(sizeControl));
         jlLanguage = new JLabel(Messages.getString("WikipediaView.1"));
-        jcbLanguage = new JComboBox();
+        jspLanguage = new JSpinner();
+        String[] model = new String[Messages.getInstance().getDescs().size()];
+        int i = 0;
         for (String s:Messages.getInstance().getDescs()){
-            jcbLanguage.addItem(Messages.getString(s));
+            model[i] = Messages.getString(s);
+            //set index to current language
+            if (Messages.getInstance().getLocals().get(i).
+                    equals(Messages.getInstance().getLocal())){
+                index = i;
+            }
+            i ++;
         }
-        jcbLanguage.setEditable(false);
         
+        //we use a spinner and not a combo because browser native window
+        //can hide combo popup
+        jspLanguage = new JSpinner(new SpinnerListModel(model));
+        int defaultLang = Messages.getInstance().getLocals().indexOf(ConfigurationManager.getProperty(CONF_WIKIPEDIA_LANGUAGE));
+        jspLanguage.setValue(Messages.getString(Messages.getInstance().getDescs().get(defaultLang)));
+        jspLanguage.addChangeListener(this);
         jpControl.add(jlLanguage,"1,0");//$NON-NLS-1$
-        jpControl.add(jcbLanguage,"3,0");//$NON-NLS-1$
+        jpControl.add(jspLanguage,"3,0");//$NON-NLS-1$
         
         //global layout
         double size[][] =
         {{0.99},
                 {30,10,0.99}};
         setLayout(new TableLayout(size));
-        try {
-            browser = new WebBrowser(new URL("file:///tmp/index.html"));
-        }
-        catch (MalformedURLException e) {
-            Log.error(e);
-        }
-       
+        browser = new WebBrowser();
+        launchSearch("");
+        
         add(jpControl,"0,0"); //$NON-NLS-1$
         add(browser,"0,2");
         
         //subscriptions to events
         ObservationManager.register(EVENT_FILE_LAUNCHED,this);
+        ObservationManager.register(EVENT_ZERO,this);
     
+        //force event
+        update(new Event(EVENT_FILE_LAUNCHED,ObservationManager.getDetailsLastOccurence(EVENT_FILE_LAUNCHED)));
     }
 	
 		
@@ -125,9 +147,56 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings,Obse
 	public void update(Event event) {
 		String subject = event.getSubject();
 		if (subject.equals(EVENT_FILE_LAUNCHED)){
-		}
+            Properties details = ObservationManager.getDetailsLastOccurence(EVENT_FILE_LAUNCHED);
+            if (details != null){ //a file has been laucnh before view creation
+                this.search = FIFO.getInstance().getCurrentFile().getTrack().getAuthor().getName2();
+                launchSearch(search);
+            }
+        }
 		else if (subject.equals(EVENT_ZERO)){
+            this.search = ""; //reset
+            launchSearch(search);
 		}
 	}
+   
+   
+    /**
+     * Perform wikipedia search
+     * @param search
+     */
+    private void launchSearch(String search){
+        try {
+            URL url = new URL("http://"+
+                Messages.getInstance().getLocals().get(index)+
+                ".wikipedia.org/wiki/"+search);
+            Log.debug("Wikipedia search: "+url);
+            browser.setURL(url);
+        }
+        catch (MalformedURLException e) {
+            Log.error(e);
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
+     */
+    public void stateChanged(ChangeEvent arg0) {
+        if (arg0.getSource() == jspLanguage){
+            //update index
+            int i = 0;
+            for (String sDesc:Messages.getInstance().getDescs()){
+                if (jspLanguage.getValue().equals(Messages.getString(sDesc))){
+                    this.index = i;
+                    ConfigurationManager.setProperty(CONF_WIKIPEDIA_LANGUAGE,Messages.getInstance().getLocals().get(index));
+                    break;
+                }
+                else{
+                    i++;
+                }
+            }
+            //launch wikipedia search for this language
+            launchSearch(this.search);
+        }
+    }
 	
 }

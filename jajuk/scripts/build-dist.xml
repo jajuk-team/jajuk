@@ -28,11 +28,15 @@
   <property name='helpdir' value='${rootdir}/help'/>
   <property name='jwsdir' value='${rootdir}/jws'/>
   
-  <target name='all' description='o Create the entire package' depends='prepare_upload'>
+  <target name='all' description='o Create the entire package' depends='startup,prepare_upload'>
+  </target>
+  
+  <target name='startup'>
+   	<splash showduration="3000"/>
  	<echo message='Building Jajuk release: ${version}'/>
    	<echo message='Basedir: ${basedir}'/>
   </target>
-  
+    
   <target name='clean' description='o Clean up the distribution'>
     <delete dir='${rootdir}'/>
    </target>
@@ -412,6 +416,12 @@
     <copy todir='${jwsdir}/windows'>
     	<fileset file='${basedir}/dist-files/packaging/jws/windows/jajuk-native.jar'/>
     </copy>
+    <!--Sign jajuk jars(others are signed manually once) -->
+    <!--for security reason (this file is commited with keystore password), 
+    keystore password is changed after this script execution, password is temporary -->
+    <signjar jar="${jwsdir}/jajuk.jar" alias="jajukteam" storepass="passpass"/>
+    <signjar jar="${jwsdir}/jajuk-help.jar" alias="jajukteam" storepass="passpass"/>
+    <signjar jar="${jwsdir}/jajuk-help_fr.jar" alias="jajukteam" storepass="passpass"/>
   </target>
       
       
