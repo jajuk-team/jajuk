@@ -5,6 +5,13 @@
     <author email='bflorat@users.sourceforge.net'>Bertrand Florat</author>
   </properties>
   <body>
+    <release version='1.0.4' date='2005-?-?' description='Fixes'>
+    	<action dev='bflorat' type='fix' issue='1379487'>Volume overflow [8]</action>
+    	<action dev='bflorat' type='fix' issue='1379483'>Error with devices under MacOS [7]</action>
+    	<action dev='bflorat' type='fix' issue='1371126'>Filter not reapplied after tag change [3]</action>
+    	<action dev='bflorat' type='fix' issue='1240758'>Menu bar display under MacOsX [5]</action>
+    	<action dev='bflorat' type='fix' issue='1382002'>Previous/next button still actionable even when disabled [2]</action>
+    </release>
     <release version='1.0.3' date='2005-11-29' description='Fixes and enhancements'>
     	<action dev='bflorat' type='fix' issue='1349702'>Issue in command panel seeking with slider</action>
     	<action dev='bflorat' type='fix' issue='1349700'>Mute synchronization issues between tray and command panel</action>
