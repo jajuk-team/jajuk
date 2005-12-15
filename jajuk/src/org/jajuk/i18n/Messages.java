@@ -173,7 +173,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings	{
 	}
 
 	/**
-	 * Return list of available locals
+	 * Return list of available local descriptions
 	 * @return
 	 */
 	public ArrayList<String> getDescs(){

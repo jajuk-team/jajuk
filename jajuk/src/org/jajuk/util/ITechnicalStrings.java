@@ -484,6 +484,7 @@ public interface ITechnicalStrings {
     public static final String CONF_THUMBS_FILTER = "jajuk.ui.filter"; //Catalog filter
     public static final String CONF_SHOW_TIP_ON_STARTUP = "jajuk.tip.show_on_startup"; //Display tips on startup
     public static final String CONF_TIP_OF_DAY_INDEX = "jajuk.tip.index"; // Index of current displayed tip
+    public static final String CONF_WIKIPEDIA_LANGUAGE = "jajuk.wikipedia.lang"; // wikipedia language
 
     //Accuracy levels
 	public static final String ACCURACY_LOW = "low";
