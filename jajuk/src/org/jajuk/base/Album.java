@@ -120,21 +120,7 @@ public class Album extends PropertyAdapter implements Comparable{
             return super.getHumanValue(sKey);
         }
     }
-    
-     /**
-     * 
-     * @return all tracks associated with this album
-     */
-    public ArrayList<Track> getTracksRecursively(){
-        ArrayList<Track> alTracks = new ArrayList(10);
-        for (IPropertyable item:TrackManager.getInstance().getItems()){
-            Track track = (Track)item;
-            if (track.getAlbum().equals(this)){
-                alTracks.add(track);
-            }
-        }
-        return alTracks;
-    }
+     
     
     /**
      * 

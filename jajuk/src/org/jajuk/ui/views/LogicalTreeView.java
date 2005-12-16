@@ -554,7 +554,7 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
                     ArrayList<IPropertyable> alTracks = new ArrayList(10); 
                     for (IPropertyable item:alSelected){
                         Album album = (Album)item;
-                        alTracks.addAll(album.getTracksRecursively());
+                        alTracks.addAll(TrackManager.getInstance().getAssociatedTracks(album));
                     }
                     new PropertiesWizard(alSelected,alTracks);
                 }

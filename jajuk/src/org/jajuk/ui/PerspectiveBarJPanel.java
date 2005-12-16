@@ -30,7 +30,6 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
-import javax.swing.SwingUtilities;
 
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.perspectives.IPerspective;
@@ -127,18 +126,10 @@ public class PerspectiveBarJPanel extends JPanel implements ITechnicalStrings{
 			final JButton jb = (JButton)it.next();
 			IPerspective perspective2 = (IPerspective)it2.next();
 			if ( perspective2.equals(perspective)){  //this perspective is selected 
-				SwingUtilities.invokeLater(new Runnable(){
-					public void run(){
-					    jb.setBorder(BorderFactory.createLineBorder(Color.BLACK,4)); //this one is selected, black border, make it in the awt dispatcher thread!
-					}
-				});
+			    jb.setBorder(BorderFactory.createLineBorder(Color.BLACK,4)); //this one is selected, black border, make it in the awt dispatcher thread!
 			}
 			else{
-				SwingUtilities.invokeLater(new Runnable(){
-					public void run(){
-					    jb.setBorder(BorderFactory.createEmptyBorder(4,4,4,4));  //no border
-					}
-				});
+			    jb.setBorder(BorderFactory.createEmptyBorder(4,4,4,4));  //no border
 			}
 		}
 	}

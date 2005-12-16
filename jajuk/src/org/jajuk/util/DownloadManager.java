@@ -99,7 +99,7 @@ public class DownloadManager implements ITechnicalStrings {
 	 * @param search
 	 * @return a list of urls
 	 */
-    public static ArrayList getRemoteCoversList(String search) throws Exception{
+    public static ArrayList<URL> getRemoteCoversList(String search) throws Exception{
         ArrayList alOut = new ArrayList(20); //URL list   
         String sSearchUrl = "http://images.google.com/images?q="+URLEncoder.encode(search, "ISO-8859-1")+"&ie=ISO-8859-1&hl=en&btnG=Google+Search"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         Log.debug("Search URL: "+sSearchUrl); //$NON-NLS-1$
