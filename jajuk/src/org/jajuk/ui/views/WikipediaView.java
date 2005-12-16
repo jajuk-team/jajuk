@@ -22,6 +22,7 @@ package org.jajuk.ui.views;
 
 import info.clearthought.layout.TableLayout;
 
+import java.awt.Graphics;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Properties;
@@ -69,9 +70,18 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings,Obse
      *
      */
 	public WikipediaView(){
-	}
-	
-	/* (non-Javadoc)
+    }
+    
+    /**
+     * Overwride paint method to fix an issue with WebBrowser: when user select another perspective and come back, it is void
+     * We have to force setUrl to repaint it
+     */
+    public void paint(Graphics g){
+        super.paint(g);
+        launchSearch(this.search);
+    }
+    
+   /* (non-Javadoc)
 	 * @see org.jajuk.ui.views.IView#getID()
 	 */
 	public String getID() {
@@ -82,7 +92,7 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings,Obse
 	 * @see org.jajuk.ui.views.IView#getDesc()
 	 */
 	public String getDesc() {
-		return "AnimationView.0"; //$NON-NLS-1$
+		return "WikipediaView.0"; //$NON-NLS-1$
 	}
 	
 	/* (non-Javadoc)
@@ -124,7 +134,7 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings,Obse
         //global layout
         double size[][] =
         {{0.99},
-                {30,10,0.99}};
+                {30,0,TableLayout.FILL}};
         setLayout(new TableLayout(size));
         browser = new WebBrowser();
         launchSearch("");
@@ -170,7 +180,9 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings,Obse
                 Messages.getInstance().getLocals().get(index)+
                 ".wikipedia.org/wiki/"+search);
             Log.debug("Wikipedia search: "+url);
-            browser.setURL(url);
+            if (browser != null){
+                browser.setURL(url);
+            }
         }
         catch (MalformedURLException e) {
             Log.error(e);
