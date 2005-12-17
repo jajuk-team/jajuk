@@ -43,8 +43,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -60,6 +58,7 @@ import javax.swing.Timer;
 
 import org.jajuk.Main;
 import org.jajuk.base.Album;
+import org.jajuk.base.Author;
 import org.jajuk.base.Cover;
 import org.jajuk.base.Directory;
 import org.jajuk.base.Event;
@@ -141,11 +140,6 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
                 jcbSorter.setEnabled(false);
                 jcbFilter.setEnabled(false);
                 populateCatalog();
-                bNeedSearch = false;
-                jtfValue.setEnabled(true);
-                jcbSorter.setEnabled(true);
-                jcbFilter.setEnabled(true);
-                jtfValue.requestFocusInWindow();
             }
         }
     });
@@ -326,7 +320,7 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
      * Populate the catalog
      *
      */
-    private void populateCatalog(){
+    private synchronized void populateCatalog(){
         SwingWorker sw = new SwingWorker() {
             @Override
             public Object construct() {
@@ -443,7 +437,12 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
                 jsp.repaint();
             }
         };
-        sw.start();  
+        sw.start();
+        bNeedSearch = false;
+        jtfValue.setEnabled(true);
+        jcbSorter.setEnabled(true);
+        jcbFilter.setEnabled(true);
+        jtfValue.requestFocusInWindow();
     }
     
     
@@ -451,6 +450,9 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
      * @see org.jajuk.ui.Observer#update(java.lang.String)
      */
     public void update(Event event){
+        if (EVENT_DEVICE_REFRESH.equals(event.getSubject())){
+            populateCatalog();
+        }
     }
     
     
@@ -554,26 +556,27 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
                 bNoCover = true;
                 this.fCover = new File(FILE_THUMBS+'/'+size+'/'+FILE_THUMB_NO_COVER);
             }
-            setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
+            double[][] dMain = {{TableLayout.FILL,TableLayout.PREFERRED,TableLayout.FILL}
+            ,{TableLayout.PREFERRED,10,TableLayout.PREFERRED,5,TableLayout.PREFERRED}};
+            setLayout(new TableLayout(dMain));
             setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
             jpIcon  = new JPanel();
-            jpIcon.setLayout(new BoxLayout(jpIcon,BoxLayout.X_AXIS));
-            jlIcon = new JLabel(new ImageIcon(fCover.getAbsolutePath()));
-            jlIcon.addMouseListener(this);
-            jpIcon.add(Box.createGlue());
-            jpIcon.add(jlIcon);
-            jpIcon.add(Box.createGlue());
-            add(jpIcon);
+            double[][] dIcon = {{TableLayout.FILL,TableLayout.PREFERRED,TableLayout.FILL}
+            ,{TableLayout.PREFERRED}};
+            jpIcon.setLayout(new TableLayout(dIcon));
+            jlIcon = new JLabel();
+            jlIcon.setIcon(new ImageIcon(fCover.getAbsolutePath()));
+            addMouseListener(this);
+            jpIcon.add(jlIcon,"1,0");
             //take first track author as author
             jlAuthor = new JLabel(track.getAuthor().getName2());
             jlAlbum = new JLabel(album.getName2());
             jlAuthor.setFont(new Font("Dialog",Font.PLAIN,12)); //$NON-NLS-1$
             jlAlbum.setFont(new Font("Dialog",Font.PLAIN,12)); //$NON-NLS-1$
             
-            add(Util.getCentredPanel(jlAuthor));
-            add(Util.getCentredPanel(jlAlbum));
-            add(Box.createVerticalGlue());
-            
+            add(jpIcon,"1,0");
+            add(jlAuthor,"1,2");
+            add(jlAlbum,"1,4");
             setBorder(BorderFactory.createEmptyBorder(2,2,2,2));
         }
         
@@ -598,10 +601,6 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
             FIFO.getInstance().push(Util.createStackItems(alFilesToPlay,bRepeat,true),bPush);
         }
         
-        public void setIcon(ImageIcon ii){
-            jlIcon.setIcon(ii);
-        }
-        
         /* (non-Javadoc)
          * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
          */
@@ -620,7 +619,12 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
                 play(false,false,true);
             }
             else if (e.getSource() == jmiGetCovers){
-                new CoverSelectionWizard();
+                new Thread(){
+                    public void run(){
+                        Util.waiting();
+                        new CoverSelectionWizard();        
+                    }
+                }.start();
             }
             else if (e.getSource() == jmiAlbumProperties){
                 ArrayList<IPropertyable> alAlbums = new ArrayList();
@@ -642,13 +646,12 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
             if (CatalogView.this.item != null){
                 CatalogView.this.item.setBorder(BorderFactory.createEmptyBorder(2,2,2,2));
             }
-            
             CatalogView.this.item = this;
             setBorder(BorderFactory.createMatteBorder(2,2,2,2,Color.RED));
-            if (e.getButton() == MouseEvent.BUTTON1 && e.getSource() == jlIcon){
+            if (e.getButton() == MouseEvent.BUTTON1 && e.getSource() == this){
                 play(false,false,false);
             }
-            else if (e.getButton() == MouseEvent.BUTTON3 && e.getSource() == jlIcon){
+            else if (e.getButton() == MouseEvent.BUTTON3 && e.getSource() == this){
                 jmenu.show(jlIcon,e.getX(),e.getY());
             }
         }
@@ -670,23 +673,16 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
          */
         public void mouseExited(MouseEvent arg0) {
         }
-        
-        public boolean equals(Object o){
-            if (!(o instanceof CatalogItem)){
-                return false;
-            }
-            CatalogItem other = (CatalogItem)o;
-            //if no cover, compare album
-            if (other.getCoverFile().equals(FILE_THUMB_NO_COVER) || 
-                    getCoverFile().equals(FILE_THUMB_NO_COVER)){
-                return other.getAlbum().equals(album);
-            }
-            //compare cover file
-            return other.getCoverFile().equals(fCover);
-        }
-        
+                
         public File getCoverFile() {
             return fCover;
+        }
+        
+        public void setIcon(ImageIcon icon){
+            jlIcon.setIcon(icon);
+            //!!! need to flush image because thy read image from a file with same name
+            //than previous image and a buffer would display the old image
+            icon.getImage().flush();
         }
         
         public Album getAlbum() {
@@ -702,7 +698,7 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
      * @author     bflorat
      * @created    16 déc. 2005
      */
-    class CoverSelectionWizard extends JDialog implements ActionListener{
+    class CoverSelectionWizard extends JDialog implements ActionListener,ITechnicalStrings{
         
         JLabel jlIcon;
         JPanel jpControls;
@@ -713,8 +709,7 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
         ArrayList<URL> alUrls;
         
         int width = 200;
-        int height = 200;
-        
+       
         int index = 0;
         
         public CoverSelectionWizard(){
@@ -738,13 +733,16 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
             jpControls.add(okc,"5,0");
             //Main
             double[][] dMain = {{10,TableLayout.PREFERRED,10},
-                    {TableLayout.PREFERRED,20,TableLayout.PREFERRED}};
+                    {10,TableLayout.PREFERRED,20,TableLayout.PREFERRED,10}};
             jlIcon = new JLabel();
             JPanel jpMain = (JPanel)getContentPane();
             jpMain.setLayout(new TableLayout(dMain));
-            jpMain.add(jlIcon,"1,0");
-            jpMain.add(jpControls,"1,2");
-            String sQuery = CatalogView.this.item.getAlbum().getName2();
+            jpMain.add(jlIcon,"1,1");
+            jpMain.add(jpControls,"1,3");
+            ArrayList<Track> alTracks = TrackManager.getInstance().getAssociatedTracks(CatalogView.this.item.getAlbum());
+            Author author = alTracks.get(0).getAuthor();
+            String sQuery = (author.getName().equals(UNKNOWN_AUTHOR)?"":author.getName2())
+                +" "+CatalogView.this.item.getAlbum().getName2();
             try {
                 alUrls = DownloadManager.getRemoteCoversList(sQuery);
                 if (alUrls.size() == 0){
@@ -754,7 +752,9 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
                     jbNext.setEnabled(true);
                     jlIcon.setText("");
                     Cover cover = new Cover(alUrls.get(0),Cover.REMOTE_COVER);
-                    jlIcon.setIcon(Util.getResizedImage(cover.getImage(),width,height));
+                    File cache = new File(FILE_IMAGE_CACHE+"/"+Util.getOnlyFile(alUrls.get(0).getPath()));
+                    Util.createThumbnail(alUrls.get(index),cache,width);
+                    jlIcon.setIcon(new ImageIcon(cache.toURL()));
                 }
             } catch (Exception e) {
                 Log.error(e);
@@ -770,13 +770,15 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
         }
         
         public void actionPerformed(ActionEvent e) {
-            Util.waiting();
+            setCursor(Util.WAIT_CURSOR);
             if (e.getSource() == okc.getCancelButton()){
                 dispose();
             }
             else if (e.getSource() == okc.getOKButton()){
+                //save current item
+                CatalogItem item = CatalogView.this.item;
                 //first commit this cover on the disk if it is a remote cover
-                Cover cover;
+                Cover cover = null;
                 try {
                     cover = new Cover(alUrls.get(index),Cover.REMOTE_COVER);
                 } catch (Exception e1) {
@@ -786,7 +788,7 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
                 }
                 String sFilename = Util.getOnlyFile(cover.getURL().toString());
                 //write cover in the first available directory we find
-                Album album = CatalogView.this.item.getAlbum();
+                Album album = item.getAlbum();
                 //test if album contains at least one mounted file
                 ArrayList<Track> alTracks = TrackManager.getInstance().getAssociatedTracks(album);
                 Track mountedTrack = null;
@@ -814,12 +816,13 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
                     Util.copy(fSource,file);
                     InformationJPanel.getInstance().setMessage(Messages.getString("CoverView.11"),InformationJPanel.INFORMATIVE); //$NON-NLS-1$
                     //then make it the default cover in this directory
-                    Directory dir = FIFO.getInstance().getCurrentFile().getDirectory(); 
+                    Directory dir = alFiles.get(0).getDirectory();
                     dir.setProperty("default_cover",sFilename); //$NON-NLS-1$
                     //create new thumbnail
                     File fThumb = new File(FILE_THUMBS+'/'+(String)jcbSize.getSelectedItem()+'/'+album.getId()+'.'+EXT_THUMB);
-                    Util.createThumbnail(new URL(file.getAbsolutePath()),fThumb,100+(50*jcbSize.getSelectedIndex()));
-                    CatalogView.this.item.setIcon(new ImageIcon(fThumb.getAbsolutePath()));
+                    Util.createThumbnail(file.toURL(),fThumb,100+(50*jcbSize.getSelectedIndex()));
+                    //refresh icon
+                    item.setIcon(new ImageIcon(fThumb.toURL()));
                 }
                 catch(Exception ex){
                     Log.error("024",ex); //$NON-NLS-1$
@@ -837,7 +840,10 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
                         Cover cover = new Cover(alUrls.get(index),Cover.REMOTE_COVER);
                         okc.getOKButton().setEnabled(true);
                         jlIcon.setText("");
-                        jlIcon.setIcon(Util.getResizedImage(cover.getImage(),width,height));
+                        File cache = new File(FILE_IMAGE_CACHE+"/"+Util.getOnlyFile(alUrls.get(index).getPath()));
+                        Util.createThumbnail(alUrls.get(index),cache,width);
+                        jlIcon.setIcon(new ImageIcon(cache.toURL()));
+                        pack();
                     } catch (Exception ex) {
                         Log.error(ex);
                         jlIcon.setIcon(null);
@@ -853,7 +859,10 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
                         Cover cover = new Cover(alUrls.get(index),Cover.REMOTE_COVER);
                         okc.getOKButton().setEnabled(true);
                         jlIcon.setText("");
-                        jlIcon.setIcon(Util.getResizedImage(cover.getImage(),width,height));
+                        File cache = new File(FILE_IMAGE_CACHE+"/"+Util.getOnlyFile(alUrls.get(index).getPath()));
+                        Util.createThumbnail(alUrls.get(index),cache,width);
+                        jlIcon.setIcon(new ImageIcon(cache.toURL()));
+                        pack();
                     } catch (Exception ex) {
                         Log.error(ex);
                         jlIcon.setIcon(null);
@@ -875,9 +884,8 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
             else{
                 jbPrevious.setEnabled(true);
             }
-            Util.stopWaiting();
-            
-        }
+            setCursor(Util.DEFAULT_CURSOR);
+         }
     }
     
 }

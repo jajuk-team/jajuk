@@ -32,8 +32,7 @@
   </target>
   
   <target name='startup'>
-   	<splash showduration="3000"/>
- 	<echo message='Building Jajuk release: ${version}'/>
+   	<echo message='Building Jajuk release: ${version}'/>
    	<echo message='Basedir: ${basedir}'/>
   </target>
     
@@ -416,6 +415,10 @@
     <copy todir='${jwsdir}/windows'>
     	<fileset file='${basedir}/dist-files/packaging/jws/windows/jajuk-native.jar'/>
     </copy>
+     <replace dir='${jwsdir}' value='${test}'>
+  		<include name='jajuk.jnlp'/>
+  		<replacetoken>TEST_FLAG_REPLACED_BY_ANT</replacetoken>
+ 	</replace>
     <!--Sign jajuk jars(others are signed manually once) -->
     <!--for security reason (this file is commited with keystore password), 
     keystore password is changed after this script execution, password is temporary -->
