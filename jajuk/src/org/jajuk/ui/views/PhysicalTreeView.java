@@ -70,6 +70,7 @@ import org.jajuk.base.PlaylistFileManager;
 import org.jajuk.base.StackItem;
 import org.jajuk.base.Track;
 import org.jajuk.i18n.Messages;
+import org.jajuk.ui.CDDBWizard;
 import org.jajuk.ui.DeviceWizard;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.PropertiesWizard;
@@ -105,7 +106,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
     JMenuItem jmiFileCopy;
     JMenuItem jmiFileCut;
     JMenuItem jmiFilePaste;
-     JMenuItem jmiFileDelete;
+    JMenuItem jmiFileDelete;
     JMenuItem jmiFileProperties;
     JMenuItem jmiFileAddFavorites;
     
@@ -123,6 +124,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
     JMenuItem jmiDirDelete;
     JMenuItem jmiDirProperties;
     JMenuItem jmiDirAddFavorites;
+    JMenuItem jmiDirCDDBQuery;
     
     JPopupMenu jmenuDev;
     JMenuItem jmiDevPlay;
@@ -147,6 +149,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
     JMenuItem jmiPlaylistFileCut;
     JMenuItem jmiPlaylistFilePaste;
     JMenuItem jmiPlaylistFileDelete;
+    JMenuItem jmiPlaylistAddFavorites;
     JMenuItem jmiPlaylistFileProperties;
     
     /** Used to differentiate user action tree collapse from code tree colapse**/
@@ -207,8 +210,9 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         jmenuFile.add(jmiFileCut);
         jmenuFile.add(jmiFilePaste);
         jmenuFile.add(jmiFileDelete);
-        jmenuFile.add(jmiFileProperties);
         jmenuFile.add(jmiFileAddFavorites);
+        jmenuFile.add(jmiFileProperties);
+        
         
         //Directory menu
         jmenuDir = new JPopupMenu();
@@ -243,6 +247,8 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         jmiDirProperties.addActionListener(this);
         jmiDirAddFavorites = new JMenuItem(Messages.getString("PhysicalTreeView.56")); //$NON-NLS-1$
         jmiDirAddFavorites.addActionListener(this);
+        jmiDirCDDBQuery = new JMenuItem(Messages.getString("PhysicalTreeView.57")); //$NON-NLS-1$
+        jmiDirCDDBQuery.addActionListener(this);
         jmenuDir.add(jmiDirPlay);
         jmenuDir.add(jmiDirPush);
         jmenuDir.add(jmiDirPlayShuffle);
@@ -255,6 +261,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         jmenuDir.add(jmiDirPaste);
         jmenuDir.add(jmiDirDelete);
         jmenuDir.add(jmiDirAddFavorites);
+        jmenuDir.add(jmiDirCDDBQuery);
         jmenuDir.add(jmiDirProperties);
         
         //Device menu
@@ -319,6 +326,8 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         jmiPlaylistFilePaste.addActionListener(this);
         jmiPlaylistFileDelete = new JMenuItem(Messages.getString("PhysicalTreeView.44")); //$NON-NLS-1$
         jmiPlaylistFileDelete.addActionListener(this);
+        jmiPlaylistAddFavorites = new JMenuItem(Messages.getString("PhysicalTreeView.56")); //$NON-NLS-1$
+        jmiPlaylistAddFavorites.addActionListener(this);
         jmiPlaylistFileProperties = new JMenuItem(Messages.getString("PhysicalTreeView.46")); //$NON-NLS-1$
         jmiPlaylistFileProperties.addActionListener(this);
         jmenuPlaylistFile.add(jmiPlaylistFilePlay);
@@ -329,6 +338,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         jmenuPlaylistFile.add(jmiPlaylistFileCut);
         jmenuPlaylistFile.add(jmiPlaylistFilePaste);
         jmenuPlaylistFile.add(jmiPlaylistFileDelete);
+        jmenuPlaylistFile.add(jmiPlaylistAddFavorites);
         jmenuPlaylistFile.add(jmiPlaylistFileProperties);
         
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -836,6 +846,19 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         else if ( alFiles!= null && e.getSource() == jmiDirAddFavorites) {
         	Bookmarks.getInstance().addFiles(alFiles);
         }
+        else if ( alFiles!= null && e.getSource() == jmiDirCDDBQuery) {
+        	ArrayList<IPropertyable> alTracks = new ArrayList(alSelected.size());
+            for (IPropertyable item:alSelected){
+                Directory dir = (Directory)item;
+                for (File file:dir.getFilesRecursively()){
+                    Track track = file.getTrack();
+                    if (!alTracks.contains(track)){
+                        alTracks.add(track);
+                    }
+                }
+            }
+        	new CDDBWizard(alTracks);
+        }
         else if (alFiles!= null  && (e.getSource() == jmiDirPush || e.getSource() == jmiDevPush)){
             FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFiles),
                     ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),true);
@@ -942,6 +965,9 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
                 else if ( e.getSource() == jmiPlaylistFilePlayRepeat){
                     FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFiles),
                             true,true),false);
+                }
+                else if ( e.getSource() == jmiPlaylistAddFavorites){
+                    Bookmarks.getInstance().addFiles(alFiles);
                 }
             }
         }
