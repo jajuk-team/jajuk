@@ -52,6 +52,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 
+import org.jajuk.base.Bookmarks;
 import org.jajuk.base.Event;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
@@ -100,6 +101,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
     JPopupMenu jmenuFile;
     JMenuItem jmiFilePlay;
     JMenuItem jmiFilePush;
+    JMenuItem jmiFileAddFavorites;
 
     
     /**playlist editor title : playlist file or playlist name*/
@@ -351,8 +353,11 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
         jmiFilePlay.addActionListener(this);
         jmiFilePush = new JMenuItem(Messages.getString("AbstractPlaylistEditorView.24")); //$NON-NLS-1$
         jmiFilePush.addActionListener(this);
+        jmiFileAddFavorites = new JMenuItem(Messages.getString("AbstractPlaylistEditorView.25")); //$NON-NLS-1$
+        jmiFileAddFavorites.addActionListener(this);
         jmenuFile.add(jmiFilePlay);
         jmenuFile.add(jmiFilePush);
+        jmenuFile.add(jmiFileAddFavorites);
         //register events
         ObservationManager.register(EVENT_PLAYLIST_REFRESH,this);
         ObservationManager.register(EVENT_PLAYER_STOP,this);
@@ -696,6 +701,20 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
                     alItemsToPlay.add(alItems.get(indexes[i]));
                 }
                 FIFO.getInstance().push(alItemsToPlay,ae.getSource() == jmiFilePush);
+            }
+            else if ( ae.getSource() == jmiFileAddFavorites ){
+                //computes selected items
+                ArrayList alItemsToPlay = new ArrayList(jtable.getSelectedRowCount());
+                int[] indexes = jtable.getSelectedRows();
+                for (int i=0;i<indexes.length;i++){
+                    alItemsToPlay.add(alItems.get(indexes[i]));
+                }                
+                ArrayList alFiles = new ArrayList(alItemsToPlay.size());
+                Iterator it = alItemsToPlay.iterator();
+                while (it.hasNext()){
+                    alFiles.add(((StackItem)it.next()).getFile());
+                }
+                Bookmarks.getInstance().addFiles(alFiles);
             }
         }
         catch(Exception e2){
