@@ -66,7 +66,7 @@ public class PlaylistManager extends ItemManager{
      * Register an Playlist
      *@param file : playlist file
      */	
-    public synchronized Playlist registerPlaylist(PlaylistFile plFile) {
+    public Playlist registerPlaylist(PlaylistFile plFile) {
         return registerPlaylist(plFile.getHashcode(),plFile);
     }
     
@@ -75,77 +75,77 @@ public class PlaylistManager extends ItemManager{
      * Register an Playlist with a known id
      *@param file : playlist file
      */	
-    public  synchronized Playlist registerPlaylist(String sId,PlaylistFile plFile) {
-        if (hmItems.containsKey(sId)){ //playlist already exist, add a file
-            Playlist playlist = (Playlist)hmItems.get(sId);
-            if (!playlist.getPlaylistFiles().contains(plFile)){
-                playlist.addFile(plFile);
+    public Playlist registerPlaylist(String sId,PlaylistFile plFile) {
+        synchronized(PlaylistManager.getInstance().getLock()){
+            if (hmItems.containsKey(sId)){ //playlist already exist, add a file
+                Playlist playlist = (Playlist)hmItems.get(sId);
+                if (!playlist.getPlaylistFiles().contains(plFile)){
+                    playlist.addFile(plFile);
+                }
+                return playlist;
             }
-            return playlist;
-        }
-        else { //new playlist
-            Playlist playlist = null;
-            if (hmIdSaveItems.containsKey(sId)){
-                playlist = (Playlist)hmIdSaveItems.get(sId);
-            }
-            else{
+            else { //new playlist
+                Playlist playlist = null;
                 playlist = new Playlist(sId,plFile);
-                saveItem(playlist);
+                playlist.removeProperty(XML_NAME);//no name attribute for playlists
+                hmItems.put(sId,playlist);
+                return playlist;
             }
-            playlist.removeProperty(XML_NAME);//no name attribute for playlists
-            hmItems.put(sId,playlist);
-            return playlist;
         }
     }
     
-     public void removePlaylistFile(PlaylistFile plf) {
-         Playlist pl = getPlayList(plf);
-         if (pl == null){
-             return;
-         }
-         pl.removePlaylistFile(plf);
-         plf.getDirectory().removePlaylistFile(plf);
-         if (pl.getPlaylistFiles().size() == 0){
-             removeItem(pl.getId());
-         }
-     }
-     
-     public void removePlaylist(Playlist pl){
-        if ( ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_DELETE_FILE)){  //file delete confirmation
-            String sFileToDelete = ""; //$NON-NLS-1$
-            String sMessage = Messages.getString("Confirmation_delete"); //$NON-NLS-1$
-            for (PlaylistFile plf:pl.getPlaylistFiles()){
-              sFileToDelete = plf.getDirectory().getFio().getAbsoluteFile().toString()+java.io.File.separatorChar +pl.getName(); //$NON-NLS-1$
-              sMessage += "\n"+sFileToDelete; //$NON-NLS-1$ //$NON-NLS-2$ 
+    public void removePlaylistFile(PlaylistFile plf) {
+        synchronized(PlaylistManager.getInstance().getLock()){
+            Playlist pl = getPlayList(plf);
+            if (pl == null){
+                return;
             }
-            int i = Messages.getChoice(sMessage,JOptionPane.WARNING_MESSAGE); //$NON-NLS-1$
-            if ( i == JOptionPane.OK_OPTION){
-                boolean bUnmountedItems = false;
-                //take a shallow copy of the array to avoid concurrency exception
-                ArrayList<PlaylistFile> alFiles = (ArrayList)pl.getPlaylistFiles().clone();
-                for (int j=0;j<alFiles.size();j++){
-                    PlaylistFile plf = alFiles.get(j);
-                    java.io.File fileToDelete = plf.getFio();
-                    if (fileToDelete.exists()){
-                        fileToDelete.delete();
-                        //check that file has been really deleted (sometimes, we get no exception)
+            pl.removePlaylistFile(plf);
+            plf.getDirectory().removePlaylistFile(plf);
+            if (pl.getPlaylistFiles().size() == 0){
+                removeItem(pl.getId());
+            }
+        }
+    }
+    
+    public void removePlaylist(Playlist pl){
+        synchronized(PlaylistManager.getInstance().getLock()){
+            if ( ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_DELETE_FILE)){  //file delete confirmation
+                String sFileToDelete = ""; //$NON-NLS-1$
+                String sMessage = Messages.getString("Confirmation_delete"); //$NON-NLS-1$
+                for (PlaylistFile plf:pl.getPlaylistFiles()){
+                    sFileToDelete = plf.getDirectory().getFio().getAbsoluteFile().toString()+java.io.File.separatorChar +pl.getName(); //$NON-NLS-1$
+                    sMessage += "\n"+sFileToDelete; //$NON-NLS-1$ //$NON-NLS-2$ 
+                }
+                int i = Messages.getChoice(sMessage,JOptionPane.WARNING_MESSAGE); //$NON-NLS-1$
+                if ( i == JOptionPane.OK_OPTION){
+                    boolean bUnmountedItems = false;
+                    //take a shallow copy of the array to avoid concurrency exception
+                    ArrayList<PlaylistFile> alFiles = (ArrayList)pl.getPlaylistFiles().clone();
+                    for (int j=0;j<alFiles.size();j++){
+                        PlaylistFile plf = alFiles.get(j);
+                        java.io.File fileToDelete = plf.getFio();
                         if (fileToDelete.exists()){
-                            Log.error("131",new JajukException("131")); //$NON-NLS-1$//$NON-NLS-2$
-                            Messages.showErrorMessage("131"); //$NON-NLS-1$
-                            continue;
+                            fileToDelete.delete();
+                            //check that file has been really deleted (sometimes, we get no exception)
+                            if (fileToDelete.exists()){
+                                Log.error("131",new JajukException("131")); //$NON-NLS-1$//$NON-NLS-2$
+                                Messages.showErrorMessage("131"); //$NON-NLS-1$
+                                continue;
+                            }
+                            PlaylistFileManager.getInstance().removeItem(plf.getId());
+                            removePlaylistFile(plf);
                         }
-                        PlaylistFileManager.getInstance().removeItem(plf.getId());
-                        removePlaylistFile(plf);
+                        else{
+                            bUnmountedItems = true;
+                        }
                     }
-                    else{
-                        bUnmountedItems = true;
+                    if (pl.getPlaylistFiles().size() == 0){
+                        removeItem(pl.getId());
                     }
-                }
-                if (pl.getPlaylistFiles().size() == 0){
-                    removeItem(pl.getId());
-                }
-                if (bUnmountedItems){
-                    Messages.showErrorMessage("138"); //$NON-NLS-1$
+                    if (bUnmountedItems){
+                        Messages.showErrorMessage("138"); //$NON-NLS-1$
+                    }
                 }
             }
         }
@@ -156,19 +156,22 @@ public class PlaylistManager extends ItemManager{
      * Perform a playlist cleanup : delete useless items
      *  
      */
-    public synchronized void cleanup() {
-        Iterator itPlaylists = hmItems.values().iterator();
-        while (itPlaylists.hasNext()) {
-            Playlist playlist= (Playlist)itPlaylists.next();
-            Iterator itPlaylistFiles = playlist.getPlaylistFiles().iterator();
-            while ( itPlaylistFiles.hasNext()){
-                PlaylistFile plf = (PlaylistFile)itPlaylistFiles.next();
-                if (PlaylistFileManager.getInstance().getItem(plf.getId()) == null){
-                    itPlaylistFiles.remove();	
+    public void cleanup() {
+        synchronized(PlaylistManager.getInstance().getLock()){
+            Iterator itPlaylists = hmItems.values().iterator();
+            
+            while (itPlaylists.hasNext()) {
+                Playlist playlist= (Playlist)itPlaylists.next();
+                Iterator itPlaylistFiles = playlist.getPlaylistFiles().iterator();
+                while ( itPlaylistFiles.hasNext()){
+                    PlaylistFile plf = (PlaylistFile)itPlaylistFiles.next();
+                    if (PlaylistFileManager.getInstance().getItem(plf.getId()) == null){
+                        itPlaylistFiles.remove();	
+                    }
                 }
-            }
-            if ( playlist.getPlaylistFiles().size() == 0){
-                itPlaylists.remove();
+                if ( playlist.getPlaylistFiles().size() == 0){
+                    itPlaylists.remove();
+                }
             }
         }
     }
@@ -178,15 +181,17 @@ public class PlaylistManager extends ItemManager{
      * @param plfi
      * @return the playlist or null if none associated playlist
      */
-    public synchronized Playlist getPlaylist(PlaylistFile plf){
-       Iterator it = PlaylistManager.getInstance().getItems().iterator();
-       while (it.hasNext()){
-           Playlist pl = (Playlist)it.next();
-           if (pl.getPlaylistFiles().contains(plf)){
-               return pl;
-           }
-       }
-       return null;
+    public Playlist getPlaylist(PlaylistFile plf){
+        synchronized(getLock()){
+            Iterator it = getItems().iterator();
+            while (it.hasNext()){
+                Playlist pl = (Playlist)it.next();
+                if (pl.getPlaylistFiles().contains(plf)){
+                    return pl;
+                }
+            }
+            return null;
+        }
     }
     
     /**
@@ -195,14 +200,17 @@ public class PlaylistManager extends ItemManager{
      * @return pl   ylist for a given playlist file
      */
     public Playlist getPlayList(PlaylistFile plf){
-        Iterator it = hmItems.values().iterator();
-        while (it.hasNext()){
-            Playlist pl = (Playlist)it.next();
-            if (pl.getPlaylistFiles().contains(plf)){
-                return pl;
+        synchronized(PlaylistManager.getInstance().getLock()){
+            Iterator it = hmItems.values().iterator();
+            
+            while (it.hasNext()){
+                Playlist pl = (Playlist)it.next();
+                if (pl.getPlaylistFiles().contains(plf)){
+                    return pl;
+                }
             }
+            return null;
         }
-        return null;
     }
     
     /* (non-Javadoc)
@@ -211,6 +219,5 @@ public class PlaylistManager extends ItemManager{
     public String getIdentifier() {
         return XML_PLAYLISTS;
     }
-    
     
 }

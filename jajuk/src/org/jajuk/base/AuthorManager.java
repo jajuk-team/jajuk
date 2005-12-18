@@ -65,7 +65,7 @@ public class AuthorManager extends ItemManager{
 	 * 
 	 * @param sName
 	 */
-	public  synchronized Author registerAuthor(String sName) {
+	public Author registerAuthor(String sName) {
 		String sId = MD5Processor.hash(sName.trim().toLowerCase());
 		return registerAuthor(sId, sName);
 	}
@@ -75,28 +75,21 @@ public class AuthorManager extends ItemManager{
 	 * 
 	 * @param sName
 	 */
-	public synchronized Author registerAuthor(String sId, String sName) {
-	    if (hmItems.containsKey(sId)) {
-	        Author author = (Author)hmItems.get(sId);
-            //check if name has right case
-            if (!author.getName().equals(sName)){
-                author.setName(sName);
-            }
-            return author;
+	public Author registerAuthor(String sId, String sName) {
+	    synchronized(AuthorManager.getInstance().getLock()){
+	        if (hmItems.containsKey(sId)) {
+	            Author author = (Author)hmItems.get(sId);
+	            //check if name has right case
+	            if (!author.getName().equals(sName)){
+	                author.setName(sName);
+	            }
+	            return author;
+	        }
+	        Author author = null;
+	        author = new Author(sId, sName);
+	        hmItems.put(sId, author);
+	        return author;
 	    }
-        Author author = null;
-        if (hmIdSaveItems.containsKey(sId)){
-            author = (Author)hmIdSaveItems.get(sId);
-            if (!author.getName().equals(sName)){
-                author.setName(sName);
-            }
-        }
-        else{
-            author = new Author(sId, sName);
-            saveItem(author);
-        }
-	    hmItems.put(sId, author);
-	    return author;
 	}
 	    
      /**
@@ -105,24 +98,26 @@ public class AuthorManager extends ItemManager{
      * @param sNewName
      * @return new album
      */
-    public synchronized Author changeAuthorName(Author old,String sNewName) throws JajukException{
-        //check there is actually a change
-        if (old.getName2().equals(sNewName)){
-            return old;
-        }
-        Author newItem = registerAuthor(sNewName);
-        //re apply old properties from old item
-        newItem.cloneProperties(old);
-        //update tracks
-        ArrayList alTracks = new ArrayList(TrackManager.getInstance().getItems()); //we need to create a new list to avoid concurrent exceptions
-        Iterator it = alTracks.iterator();
-        while (it.hasNext()){
-            Track track = (Track)it.next();
-            if (track.getAuthor().equals(old)){
-                TrackManager.getInstance().changeTrackAuthor(track,sNewName,null);
+    public Author changeAuthorName(Author old,String sNewName) throws JajukException{
+        synchronized(TrackManager.getInstance().getLock()){
+            //check there is actually a change
+            if (old.getName2().equals(sNewName)){
+                return old;
             }
+            Author newItem = registerAuthor(sNewName);
+            //re apply old properties from old item
+            newItem.cloneProperties(old);
+            //update tracks
+            ArrayList alTracks = new ArrayList(TrackManager.getInstance().getItems()); //we need to create a new list to avoid concurrent exceptions
+            Iterator it = alTracks.iterator();
+            while (it.hasNext()){
+                Track track = (Track)it.next();
+                if (track.getAuthor().equals(old)){
+                    TrackManager.getInstance().changeTrackAuthor(track,sNewName,null);
+                }
+            }
+            return newItem;
         }
-        return newItem;
     }
 	
 	/**
@@ -139,7 +134,7 @@ public class AuthorManager extends ItemManager{
 	 * @param sName
 	 * @return
 	 */
-	private synchronized String format(String sName) {
+	private String format(String sName) {
 		String sOut;
 		sOut = sName.trim(); //supress spaces at the begin and the end
 		sOut.replace('-', ' '); //move - to space

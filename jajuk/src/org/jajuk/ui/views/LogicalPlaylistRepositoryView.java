@@ -85,31 +85,33 @@ public class LogicalPlaylistRepositoryView extends AbstractPlaylistRepositoryVie
 	 * Create playlists from collection 
 	 */
 	public synchronized void  populatePlaylists(){
-		super.populatePlaylists();
-		//normal playlists
-		ArrayList alItems = new ArrayList(PlaylistManager.getInstance().getItems());
-        Collections.sort(alItems);
-        Iterator it = alItems.iterator();
-        while ( it.hasNext()){
-			Playlist pl = (Playlist)it.next();
-			PlaylistFile plf = pl.getPlayeablePlaylistFile();
-			//if none accessible and hide devices unmounted, continue
-            if (plf == null && ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED)){
-                continue;
-            }
-            //if none accessible playlist, keep a chance to mount the first playlist file found
-            if ( plf == null && pl.getPlaylistFiles().size()>0){
-				plf = pl.getPlaylistFiles().get(0);
-			}
-			PlaylistFileItem plfi = new PlaylistFileItem(PlaylistFileItem.PLAYLIST_TYPE_NORMAL,ICON_PLAYLIST_NORMAL,plf,plf.getName());
-			alPlaylistFileItems.add(plfi);
-			plfi.addMouseListener(ma);
-			plfi.setToolTipText(plf.getName());
-			jpRoot.add(plfi);
-            if (plfiSelected!=null && plfi.getPlaylistFile().equals(plfiSelected.getPlaylistFile())){
-                plfiSelected = plfi;
-            }
-		}
+	    synchronized(PlaylistManager.getInstance().getLock()){
+	        super.populatePlaylists();
+	        //normal playlists
+	        ArrayList alItems = new ArrayList(PlaylistManager.getInstance().getItems());
+	        Collections.sort(alItems);
+	        Iterator it = alItems.iterator();
+	        while ( it.hasNext()){
+	            Playlist pl = (Playlist)it.next();
+	            PlaylistFile plf = pl.getPlayeablePlaylistFile();
+	            //if none accessible and hide devices unmounted, continue
+	            if (plf == null && ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED)){
+	                continue;
+	            }
+	            //if none accessible playlist, keep a chance to mount the first playlist file found
+	            if ( plf == null && pl.getPlaylistFiles().size()>0){
+	                plf = pl.getPlaylistFiles().get(0);
+	            }
+	            PlaylistFileItem plfi = new PlaylistFileItem(PlaylistFileItem.PLAYLIST_TYPE_NORMAL,ICON_PLAYLIST_NORMAL,plf,plf.getName());
+	            alPlaylistFileItems.add(plfi);
+	            plfi.addMouseListener(ma);
+	            plfi.setToolTipText(plf.getName());
+	            jpRoot.add(plfi);
+	            if (plfiSelected!=null && plfi.getPlaylistFile().equals(plfiSelected.getPlaylistFile())){
+	                plfiSelected = plfi;
+	            }
+	        }
+	    }
 	}
 
 	public synchronized void removeItem (PlaylistFileItem plfiSelected){

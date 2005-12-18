@@ -136,7 +136,6 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
     JCheckBox jcbAddRemoteProperties;
     JCheckBox jcbHideProperties;
     JPanel jpTags;
-    JCheckBox jcbDeepScan;
     JCheckBox jcbUseParentDir;
     JPanel jpAdvanced;
     JCheckBox jcbBackup;
@@ -561,14 +560,11 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
         //--Tags
         jpTags = new JPanel();
         double sizeTags[][] = {{0.99},
-                {iYSeparator,20,iYSeparator,20,iYSeparator}};
+                {iYSeparator,20,iYSeparator}};
         jpTags.setLayout(new TableLayout(sizeTags));
-        jcbDeepScan = new JCheckBox(Messages.getString("ParameterView.99"));  //$NON-NLS-1$
-        jcbDeepScan.setToolTipText(Messages.getString("ParameterView.100")); //$NON-NLS-1$
         jcbUseParentDir = new JCheckBox(Messages.getString("ParameterView.101"));  //$NON-NLS-1$
         jcbUseParentDir.setToolTipText(Messages.getString("ParameterView.102")); //$NON-NLS-1$
-        jpTags.add(jcbDeepScan,"0,1"); //$NON-NLS-1$
-        jpTags.add(jcbUseParentDir,"0,3"); //$NON-NLS-1$
+        jpTags.add(jcbUseParentDir,"0,1"); //$NON-NLS-1$
         
         //--Advanced
         jpAdvanced = new JPanel();
@@ -818,10 +814,12 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
                         }
                     }
                     if (!DeviceManager.getInstance().isAnyDeviceRefreshing()){ //make sure none device is refreshing
-                        Iterator it  = TrackManager.getInstance().getItems().iterator();
-                        while (it.hasNext()){
-                            Track track = (Track)it.next();
-                            track.setRate(0);
+                        synchronized(TrackManager.getInstance().getLock()){
+                            Iterator it  = TrackManager.getInstance().getItems().iterator();
+                            while (it.hasNext()){
+                                Track track = (Track)it.next();
+                                track.setRate(0);
+                            }
                         }
                         ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH));
                     }
@@ -994,7 +992,6 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
             ConfigurationManager.setProperty(CONF_P2P_PASSWORD,MD5Processor.hash(sPass));
         }
         //tags
-        ConfigurationManager.setProperty(CONF_TAGS_DEEP_SCAN,Boolean.toString(jcbDeepScan.isSelected()));
         ConfigurationManager.setProperty(CONF_TAGS_USE_PARENT_DIR,Boolean.toString(jcbUseParentDir.isSelected()));
         ConfigurationManager.setProperty(CONF_REGEXP,Boolean.toString(jcbRegexp.isSelected()));
         //Advanced
@@ -1084,7 +1081,6 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
         jcbAddRemoteProperties.setSelected(ConfigurationManager.getBoolean(CONF_P2P_ADD_REMOTE_PROPERTIES));
         bHidden = ConfigurationManager.getBoolean(CONF_P2P_HIDE_LOCAL_PROPERTIES);
         jcbHideProperties.setSelected(bHidden);
-        jcbDeepScan.setSelected(ConfigurationManager.getBoolean(CONF_TAGS_DEEP_SCAN));
         jcbUseParentDir.setSelected(ConfigurationManager.getBoolean(CONF_TAGS_USE_PARENT_DIR));
         //advanced
         int iBackupSize = ConfigurationManager.getInt(CONF_BACKUP_SIZE);

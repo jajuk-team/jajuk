@@ -322,7 +322,9 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
                         alSelected.add((IPropertyable)((TransferableTreeNode)o).getData());
                     }
                     else{ //collection node
-                        alSelected = new ArrayList(TrackManager.getInstance().getItems());
+                        synchronized(TrackManager.getInstance().getLock()){
+                            alSelected = new ArrayList(TrackManager.getInstance().getItems());
+                        }
                         items = alSelected.size();
                         hsSelectedTracks.addAll(alSelected);
                         break;
@@ -546,7 +548,7 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
                     ArrayList<IPropertyable> alTracks = new ArrayList(100); 
                     for (IPropertyable item:alSelected){
                         Author  author = (Author)item;
-                        alTracks.addAll(TrackManager.getInstance().getAssociatedTracks(author));
+                        alTracks.addAll(TrackManager.getInstance().getSortedAssociatedTracks(author));
                     }
                     new PropertiesWizard(alSelected,alTracks);
                 }
@@ -554,7 +556,7 @@ public class LogicalTreeView extends AbstractTreeView implements ActionListener,
                     ArrayList<IPropertyable> alTracks = new ArrayList(10); 
                     for (IPropertyable item:alSelected){
                         Album album = (Album)item;
-                        alTracks.addAll(TrackManager.getInstance().getAssociatedTracks(album));
+                        alTracks.addAll(TrackManager.getInstance().getSortedAssociatedTracks(album));
                     }
                     new PropertiesWizard(alSelected,alTracks);
                 }

@@ -57,6 +57,13 @@ public interface ITechnicalStrings {
     public static final int FEEDBACK_LINES = 100;
     /**Max history size*/
     public static final int MAX_HISTORY_SIZE = 1000;
+    /**Autocommit delay in ms*/
+    public static final int AUTO_COMMIT_DELAY = 3600000;
+    /**Autorefresh delay in ms*/
+    public static final int AUTO_REFRESH_DELAY = 60000;
+    /**Garbager delay in ms*/
+    public static final int GARBAGER_DELAY = 10000;
+    
         
 	// Jajuk version
 	public static final String JAJUK_VERSION = "VERSION_REPLACED_BY_ANT";
@@ -448,7 +455,6 @@ public interface ITechnicalStrings {
 	public static final String CONF_P2P_PASSWORD = "jajuk.options.p2p.password";
 	public static final String CONF_HISTORY = "jajuk.options.history";
 	public static final String CONF_FIRST_CON = "jajuk.first_con";
-	public static final String CONF_TAGS_DEEP_SCAN = "jajuk.tags.deep_scan";
 	public static final String CONF_TAGS_USE_PARENT_DIR = "jajuk.tags.use_parent_dir";
 	public static final String CONF_BOOKMARKS = "jajuk.bookmarks"; //contains files id separated by a colon
 	public static final String CONF_SHOW_AT_STARTUP = "jajuk.show_at_startup"; //show jajuk window at startup
@@ -555,7 +561,6 @@ public interface ITechnicalStrings {
 	public static final String XML_QUALITY = "quality";
     public static final String XML_SIZE = "size";
     public static final String XML_DEVICE_MOUNT_POINT = "mount_point";
-    public static final String XML_DEVICE_AUTO_REFRESH = "auto_refresh";
     public static final String XML_DEVICE_AUTO_MOUNT = "auto_mount";
     public static final String XML_DEVICE_SYNCHRO_SOURCE = "synchro_source";
     public static final String XML_DEVICE_SYNCHRO_MODE = "synchro_mode";
@@ -586,7 +591,7 @@ public interface ITechnicalStrings {
     public static final String[] XML_RESERVED_ATTRIBUTE_NAMES = {
         XML_NAME,XML_ID,XML_TYPE_EXTENSION,XML_TYPE_PLAYER_IMPL,XML_TYPE_TAG_IMPL,
         XML_TYPE_TECH_DESC,XML_TYPE_SEEK_SUPPORTED,XML_TYPE_ICON,XML_TYPE_IS_MUSIC,
-        XML_TYPE,XML_URL,XML_DEVICE_AUTO_MOUNT,XML_DEVICE_AUTO_REFRESH,XML_EXPANDED,XML_DEVICE_MOUNT_POINT,
+        XML_TYPE,XML_URL,XML_DEVICE_AUTO_MOUNT,XML_EXPANDED,XML_DEVICE_MOUNT_POINT,
         XML_ALBUM,XML_AUTHOR,XML_STYLE,XML_TRACK_LENGTH,XML_TRACK_YEAR,XML_TRACK_RATE,XML_FILES,XML_TRACK_HITS,XML_TRACK_ADDED,
         XML_DIRECTORY_PARENT,XML_DEVICE,XML_DIRECTORY,XML_TRACK,XML_SIZE,XML_QUALITY,
         XML_HASHCODE,XML_PLAYLIST_FILES,XML_TRACK_COMMENT,XML_ANY,XML_TRACK_ORDER,

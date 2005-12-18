@@ -22,7 +22,6 @@ package org.jajuk.base;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -40,16 +39,15 @@ import org.jajuk.util.log.Log;
  * @created    20 juin 2005
  */
 public abstract class ItemManager implements ITechnicalStrings{
-
-    /** Map ids and stored items, survives to a refresh, is used to recover old properties after refresh */
-	protected HashMap<String,IPropertyable> hmIdSaveItems = new HashMap(100);
+    
     /**Items collection**/
     protected LinkedHashMap<String,IPropertyable> hmItems = new LinkedHashMap(100);
     /**Maps item classes -> instance*/
     static private LinkedHashMap hmItemManagers  = new LinkedHashMap(10);
     /**Maps properties meta information name and object*/
     private LinkedHashMap hmPropertiesMetaInformation = new LinkedHashMap(10);
-    
+    /**Manager lock, should be synchronized before any iteration on items*/
+    private byte[] bLock = new byte[0];
     /**
      * Constructor
      */
@@ -93,28 +91,6 @@ public abstract class ItemManager implements ITechnicalStrings{
         return sOut;
     }
     
-     /**
-     * Get saved item
-     * @param String sID
-     */
-    public IPropertyable restoreItemAfterRefresh(String sID){
-        IPropertyable savedItem = hmIdSaveItems.get(sID);
-        if ( savedItem == null){//unknwown
-            return null;
-        }
-        else{  //reset properties before refresh
-            return savedItem;
-        }
-    }
-    
-   /**
-    * Save item (useful after a refresh) 
-    * 
-    */
-    public void saveItem(IPropertyable item){
-        String sId = ((PropertyAdapter)item).getId();
-        hmIdSaveItems.put(sId,item);
-    }
     
     /**Remove a property **/
     public void removeProperty(String sProperty){
@@ -122,28 +98,31 @@ public abstract class ItemManager implements ITechnicalStrings{
         hmPropertiesMetaInformation.remove(sProperty);
         applyRemoveProperty(meta); //remove this property to all items
     }
-          
+    
     /**Remove a custom property to all items for the given manager*/
     public void applyRemoveProperty(PropertyMetaInformation meta) {
-        Collection<IPropertyable> items = getItems();
-        if (items != null){
-            for (IPropertyable item:items){
-                item.removeProperty(meta.getName());
-            }    
+        synchronized(getLock()){
+            Collection<IPropertyable> items = getItems();
+            if (items != null){
+                for (IPropertyable item:items){
+                    item.removeProperty(meta.getName());
+                }    
+            }
         }
     }
     
     /**Add a custom property to all items for the given manager*/
     public void applyNewProperty(PropertyMetaInformation meta) {
-        Collection<IPropertyable> items = getItems();
-        if (items != null){
-            for (IPropertyable item:items){
-                item.setProperty(meta.getName(),meta.getDefaultValue());
-            }    
+        synchronized(getLock()){
+            Collection<IPropertyable> items = getItems();
+            if (items != null){
+                for (IPropertyable item:items){
+                    item.setProperty(meta.getName(),meta.getDefaultValue());
+                }    
+            }
         }
     }
     
-     
     /**
      * 
      * @return XML representation of this manager
@@ -159,7 +138,7 @@ public abstract class ItemManager implements ITechnicalStrings{
         return sb.append('\n').toString();
     }
     
-     /**
+    /**
      * @return properties Meta informations
      */
     public Collection<PropertyMetaInformation> getProperties(){
@@ -181,7 +160,7 @@ public abstract class ItemManager implements ITechnicalStrings{
         return col;
     }
     
-     /**
+    /**
      * @return visible properties Meta informations
      */
     public Collection getVisibleProperties(){
@@ -195,8 +174,8 @@ public abstract class ItemManager implements ITechnicalStrings{
         }
         return col;
     }
-     
-   
+    
+    
     /**
      *  Get Item manager with a given attribute name   
      * @param sItem
@@ -245,7 +224,7 @@ public abstract class ItemManager implements ITechnicalStrings{
      */
     public static ItemManager getItemManager(Class c){
         return (ItemManager)hmItemManagers.get(c);
-      }
+    }
     
     /**
      * Return an iteration over item managers
@@ -257,13 +236,29 @@ public abstract class ItemManager implements ITechnicalStrings{
     /**
      * Perform an cleanup : delete useless items
      */
-    public synchronized void cleanup() {
-        Iterator it = hmItems.values().iterator();
-        while (it.hasNext()) {
-            IPropertyable item = (IPropertyable) it.next();
-            //check if this item still maps some tracks
-            if ( TrackManager.getInstance().getAssociatedTracks(item).size() == 0){
-                it.remove();
+    public void cleanup() {
+        synchronized(getLock()){
+            //build used items set
+            HashSet hsItems = new HashSet(TrackManager.getInstance().getItems().size());
+            for (IPropertyable item:TrackManager.getInstance().getItems()){
+                Track track = (Track)item;
+                if (this instanceof AlbumManager){
+                    hsItems.add(track.getAlbum());   
+                }
+                else if (this instanceof AuthorManager){
+                    hsItems.add(track.getAuthor());   
+                }
+                else if (this instanceof StyleManager){
+                    hsItems.add(track.getStyle());   
+                }
+            }
+            Iterator it = hmItems.values().iterator();
+            while (it.hasNext()) {
+                IPropertyable item = (IPropertyable) it.next();
+                //check if this item still maps some tracks
+                if (!hsItems.contains(item)){
+                    it.remove();
+                }
             }
         }
     }
@@ -271,57 +266,67 @@ public abstract class ItemManager implements ITechnicalStrings{
     /**
      * Perform a cleanup for a given item
      */
-    public synchronized void cleanup(IPropertyable item) {
-        if ( TrackManager.getInstance().getAssociatedTracks(item).size() == 0){
-            hmItems.remove(((PropertyAdapter)item).getId());
+    public void cleanup(IPropertyable item) {
+        synchronized(getLock()){
+            if ( TrackManager.getInstance().getAssociatedTracks(item).size() == 0){
+                hmItems.remove(((PropertyAdapter)item).getId());
+            }
         }
     }
     
-     /**Return all registred items*/
-    public synchronized Collection<IPropertyable> getItems() {
-        return hmItems.values();
+    /**Return all registred items*/
+    public Collection<IPropertyable> getItems() {
+        synchronized(getLock()){
+            return hmItems.values();
+        }
     }
     
     /**Return all registred items with filter applied*/
-    public synchronized Collection<IPropertyable> getItems(Filter filter) {
-        if (filter == null){
-            return getItems();
-        }
-        Collection<IPropertyable> col = hmItems.values();
-        String comparator = null;
-        String checked = null;
-        if (filter.isExact()){
-            checked = filter.getValue();
-        }
-        else{
-            checked = ".*" + filter.getValue() + ".*";
-        }
-        ArrayList out = new ArrayList(col.size());
-        for (IPropertyable item:col){
-            if (filter.isHuman()){
-                comparator = item.getHumanValue(filter.getProperty().getName());
+    public Collection<IPropertyable> getItems(Filter filter) {
+        synchronized(getLock()){
+            if (filter == null){
+                return getItems();
+            }
+            Collection<IPropertyable> col = hmItems.values();
+            String comparator = null;
+            String checked = null;
+            if (filter.isExact()){
+                checked = filter.getValue();
             }
             else{
-                comparator = item.getStringValue(filter.getProperty().getName());
+                checked = ".*" + filter.getValue() + ".*";
             }
-            //perform the test
-            if (comparator.toLowerCase().matches(checked.toLowerCase())){
-                out.add(item);
+            ArrayList out = new ArrayList(col.size());
+            for (IPropertyable item:col){
+                if (filter.isHuman()){
+                    comparator = item.getHumanValue(filter.getProperty().getName());
+                }
+                else{
+                    comparator = item.getStringValue(filter.getProperty().getName());
+                }
+                //perform the test
+                if (comparator.toLowerCase().matches(checked.toLowerCase())){
+                    out.add(item);
+                }
             }
+            return out;
         }
-        return out;
     }
     
-      /**Return a given item*/
+    /**Return a given item*/
     public synchronized IPropertyable getItem(String sID) {
-        return (IPropertyable)hmItems.get(sID);
+        synchronized(getLock()){
+            return (IPropertyable)hmItems.get(sID);
+        }
     }
     
     /**Remove a given item*/
     public synchronized void removeItem(String sID) {
-        hmItems.remove(sID);
+        synchronized(getLock()){
+            hmItems.remove(sID);
+        }
     }
-        
+    
     /**
      * Register a new property
      * @param meta
@@ -329,7 +334,7 @@ public abstract class ItemManager implements ITechnicalStrings{
     public void registerProperty(PropertyMetaInformation meta){
         hmPropertiesMetaInformation.put(meta.getName(),meta);
     }
-       
+    
     
     /**
      * Change any item
@@ -453,5 +458,15 @@ public abstract class ItemManager implements ITechnicalStrings{
         return newItem;            
     }
     
-   
+    public byte[] getLock() {
+        return bLock;
+    }
+    
+    public int getElementCount(){
+        synchronized(getLock()){
+            return hmItems.size();
+        }
+    }
+    
+    
 }

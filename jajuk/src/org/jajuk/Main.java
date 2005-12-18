@@ -264,7 +264,7 @@ public class Main implements ITechnicalStrings {
             
 			//Clean the collection up
 			Collection.cleanup();
-			
+            
             //Upgrade step2
             upgradeStep2();
             
@@ -306,14 +306,17 @@ public class Main implements ITechnicalStrings {
 					
             //Auto mount devices
 			autoMount();
-			
-			//Launch startup track if any
+            
+            //Refresh all devices for startup
+            DeviceManager.getInstance().refreshAllDevices();
+            
+            //Launch auto-refresh thread
+            DeviceManager.getInstance().startAutoRefreshThread();
+            
+            //Launch startup track if any
 			launchInitialTrack();        
-			
-			//Auto refresh devices
-			autoRefresh();
-						
-			//show window if set in the systray conf
+		
+            //show window if set in the systray conf
 			if ( ConfigurationManager.getBoolean(CONF_SHOW_AT_STARTUP) ){
 			    //Display progress
 			    sc.setProgress(80,Messages.getString("SplashScreen.3")); //$NON-NLS-1$
@@ -672,38 +675,25 @@ public class Main implements ITechnicalStrings {
 	 *
 	 */
 	private static void autoMount(){
-		Iterator it = DeviceManager.getInstance().getItems().iterator();
-		while (it.hasNext()){
-			Device device = (Device)it.next();
-			if (device.getBooleanValue(XML_DEVICE_AUTO_MOUNT)){
-				try{
-					device.mount();
-				}
-				catch(Exception e){
-					Log.error("112",device.getName(),e); //$NON-NLS-1$
-					//show a confirm dialog if the device can't be mounted, we can't use regular Messages.showErrorMessage because main window is not yet displayed
-					String sError = Messages.getErrorMessage("112") + " : " + device.getName(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-1$ //$NON-NLS-2$
-					InformationJPanel.getInstance().setMessage(sError,InformationJPanel.ERROR); //$NON-NLS-1$
-			        continue;
-				}
-			}
-		}
+	    synchronized(DeviceManager.getInstance().getLock()){
+	        Iterator it = DeviceManager.getInstance().getItems().iterator();
+	        while (it.hasNext()){
+	            Device device = (Device)it.next();
+	            if (device.getBooleanValue(XML_DEVICE_AUTO_MOUNT)){
+	                try{
+	                    device.mount();
+	                }
+	                catch(Exception e){
+	                    Log.error("112",device.getName(),e); //$NON-NLS-1$
+	                    //show a confirm dialog if the device can't be mounted, we can't use regular Messages.showErrorMessage because main window is not yet displayed
+	                    String sError = Messages.getErrorMessage("112") + " : " + device.getName(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-1$ //$NON-NLS-2$
+	                    InformationJPanel.getInstance().setMessage(sError,InformationJPanel.ERROR); //$NON-NLS-1$
+	                    continue;
+	                }
+	            }
+	        }
+	    }
 	}
-	
-	/**
-	 * Auto-refresh required devices
-	 *
-	 */
-	private static void autoRefresh(){
-		Iterator it = DeviceManager.getInstance().getItems().iterator();
-		while (it.hasNext()){
-			Device device = (Device)it.next();
-			if (device.getBooleanValue(XML_DEVICE_AUTO_REFRESH) && device.isMounted()){
-			    device.refresh(true);
-			}
-		}
-	}
-	
 	
 	
 	/**
@@ -796,7 +786,7 @@ public class Main implements ITechnicalStrings {
 
                     //Display info message if first session
                     if (ConfigurationManager.getBoolean(CONF_FIRST_CON) 
-                            && DeviceManager.getInstance().getDevicesNumber() == 0){ //make none device already exist to avoid checking availability
+                            && DeviceManager.getInstance().getElementCount() == 0){ //make none device already exist to avoid checking availability
                         sc.dispose(); //make sure to hide splashscreen
                         //First time wizard
                         FirstTimeWizard fsw = new FirstTimeWizard();

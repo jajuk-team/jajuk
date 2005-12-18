@@ -237,7 +237,7 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
         Dimension dim = new Dimension(getWidth(),getHeight());
         jpItems.setPreferredSize(dim);
         jsp = new JScrollPane(jpItems,
-                JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+            JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         jpItems.setScroller(jsp);
         jpItems.setLayout(new FlowLayout(FlowLayout.LEFT));
         jsp.setBackground(Color.WHITE);
@@ -289,7 +289,7 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
             InformationJPanel.getInstance().setMessage(Messages.getString("CatalogView.5")+' '+album.getName2(),InformationJPanel.INFORMATIVE);
             File fDir = null; //analyzed directory
             //search for local covers in all directories mapping the current track to reach other devices covers and display them together
-            ArrayList<Track> alTracks = TrackManager.getInstance().getAssociatedTracks(album);
+            ArrayList<Track> alTracks = TrackManager.getInstance().getSortedAssociatedTracks(album);
             if (alTracks.size() == 0){
                 return;
             }
@@ -336,67 +336,69 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
                     PropertyMetaInformation meta = alFilters.get(jcbFilter.getSelectedIndex());
                     filter = new Filter(meta,jtfValue.getText(),true,false);
                 }
-                //filter on tracks properties
-                Collection<IPropertyable> alAllTracks = TrackManager.getInstance().getItems(filter);
-                //keep matching albums (we use sets to drop duplicates)
                 ArrayList<Album> albums = new ArrayList();
-                for (IPropertyable item:alAllTracks){
-                    Track track = (Track)item;
-                    Album album = track.getAlbum();
-                    if (!albums.contains(album)){
-                        albums.add(album);
-                    }
-                }
-                //sort albums
-                final int index = jcbSorter.getSelectedIndex();
-                //store mapped tracks for perfs
                 final HashMap<Album,Track> hmAlbumTrack = new HashMap();
-                for (Album album:albums){
-                    Track track = null;
-                    for (IPropertyable item : TrackManager.getInstance().getItems()){
-                        track = (Track)item;
-                        if (track.getAlbum().equals(album)){
-                            hmAlbumTrack.put(album,track);
-                            break;
+                synchronized(TrackManager.getInstance().getLock()){
+                    //filter on tracks properties
+                    Collection<IPropertyable> alAllTracks = TrackManager.getInstance().getItems(filter);
+                    //keep matching albums (we use sets to drop duplicates)
+                    for (IPropertyable item:alAllTracks){
+                        Track track = (Track)item;
+                        Album album = track.getAlbum();
+                        if (!albums.contains(album)){
+                            albums.add(album);
                         }
                     }
-                    hmAlbumTrack.put(album,track);
-                }
-                
-                Collections.sort(albums,new Comparator() {
-                    
-                    public int compare(Object arg0, Object arg1) {
-                        Album album1 = (Album)arg0;
-                        Album album2 = (Album)arg1;
-                        //for albums, perform a fast compare
-                        if (index == 2){
-                            return album1.compareTo(album2);
+                    //sort albums
+                    final int index = jcbSorter.getSelectedIndex();
+                    //store mapped tracks for perfs
+                    for (Album album:albums){
+                        Track track = null;
+                        for (IPropertyable item : TrackManager.getInstance().getItems()){
+                            track = (Track)item;
+                            if (track.getAlbum().equals(album)){
+                                hmAlbumTrack.put(album,track);
+                                break;
+                            }
                         }
-                        //get a track for each album
-                        Track track1 = hmAlbumTrack.get(album1);
-                        Track track2 = hmAlbumTrack.get(album2);
-                        //check tracks (normaly useless)
-                        if (track1 == null || track2 == null){
+                        hmAlbumTrack.put(album,track);
+                    }
+                    
+                    Collections.sort(albums,new Comparator() {
+                        
+                        public int compare(Object arg0, Object arg1) {
+                            Album album1 = (Album)arg0;
+                            Album album2 = (Album)arg1;
+                            //for albums, perform a fast compare
+                            if (index == 2){
+                                return album1.compareTo(album2);
+                            }
+                            //get a track for each album
+                            Track track1 = hmAlbumTrack.get(album1);
+                            Track track2 = hmAlbumTrack.get(album2);
+                            //check tracks (normaly useless)
+                            if (track1 == null || track2 == null){
+                                return 0;
+                            }
+                            switch (index){
+                            case 0: //style
+                                return track1.getStyle().compareTo(track2.getStyle());
+                            case 1: //author
+                                return track1.getAuthor().compareTo(track2.getAuthor());
+                            case 3: //year
+                                return (int)(track1.getYear() - track2.getYear());    
+                            }
                             return 0;
                         }
-                        switch (index){
-                        case 0: //style
-                            return track1.getStyle().compareTo(track2.getStyle());
-                        case 1: //author
-                            return track1.getAuthor().compareTo(track2.getAuthor());
-                        case 3: //year
-                            return (int)(track1.getYear() - track2.getYear());    
-                        }
-                        return 0;
-                    }
-                    
-                });
+                        
+                    });
+                }
                 for (Object item:albums){
                     Album album = (Album)item;
                     //if hide unmounted tracks is set, continue
                     if (ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED)){
                         //test if album contains at least one mounted file
-                        ArrayList<Track> alTracks = TrackManager.getInstance().getAssociatedTracks(album);
+                        ArrayList<Track> alTracks = TrackManager.getInstance().getSortedAssociatedTracks(album);
                         if (alTracks.size() > 0){
                             boolean bOK = false;
                             for (Track track:alTracks){
@@ -585,7 +587,7 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
         }
         
         private void play(boolean bRepeat,boolean bShuffle,boolean bPush){
-            ArrayList<Track> alTracks = TrackManager.getInstance().getAssociatedTracks(album);
+            ArrayList<Track> alTracks = TrackManager.getInstance().getSortedAssociatedTracks(album);
             //compute selection
             ArrayList alFilesToPlay = new ArrayList(alTracks.size());
             Iterator it = alTracks.iterator();
@@ -629,7 +631,7 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
             else if (e.getSource() == jmiAlbumProperties){
                 ArrayList<IPropertyable> alAlbums = new ArrayList();
                 alAlbums.add(album);
-                new PropertiesWizard(alAlbums,TrackManager.getInstance().getAssociatedTracks(album));
+                new PropertiesWizard(alAlbums,TrackManager.getInstance().getSortedAssociatedTracks(album));
             }
         }
         
@@ -673,7 +675,7 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
          */
         public void mouseExited(MouseEvent arg0) {
         }
-                
+        
         public File getCoverFile() {
             return fCover;
         }
@@ -709,7 +711,7 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
         ArrayList<URL> alUrls;
         
         int width = 200;
-       
+        
         int index = 0;
         
         public CoverSelectionWizard(){
@@ -739,10 +741,10 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
             jpMain.setLayout(new TableLayout(dMain));
             jpMain.add(jlIcon,"1,1");
             jpMain.add(jpControls,"1,3");
-            ArrayList<Track> alTracks = TrackManager.getInstance().getAssociatedTracks(CatalogView.this.item.getAlbum());
+            ArrayList<Track> alTracks = TrackManager.getInstance().getSortedAssociatedTracks(CatalogView.this.item.getAlbum());
             Author author = alTracks.get(0).getAuthor();
             String sQuery = (author.getName().equals(UNKNOWN_AUTHOR)?"":author.getName2())
-                +" "+CatalogView.this.item.getAlbum().getName2();
+            +" "+CatalogView.this.item.getAlbum().getName2();
             try {
                 alUrls = DownloadManager.getRemoteCoversList(sQuery);
                 if (alUrls.size() == 0){
@@ -790,7 +792,7 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
                 //write cover in the first available directory we find
                 Album album = item.getAlbum();
                 //test if album contains at least one mounted file
-                ArrayList<Track> alTracks = TrackManager.getInstance().getAssociatedTracks(album);
+                ArrayList<Track> alTracks = TrackManager.getInstance().getSortedAssociatedTracks(album);
                 Track mountedTrack = null;
                 if (alTracks.size() > 0){
                     boolean bOK= false;
@@ -885,7 +887,7 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
                 jbPrevious.setEnabled(true);
             }
             setCursor(Util.DEFAULT_CURSOR);
-         }
+        }
     }
     
 }

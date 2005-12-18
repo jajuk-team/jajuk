@@ -41,11 +41,11 @@ public class StyleManager extends ItemManager {
     /*List of all known styles*/
     public static Vector<String> stylesList;
     
-	/**
-	 * No constructor available, only static access
-	 */
-	private StyleManager() {
-		super();
+    /**
+     * No constructor available, only static access
+     */
+    private StyleManager() {
+        super();
         //register properties
         //ID
         registerProperty(new PropertyMetaInformation(XML_ID,false,true,false,false,false,String.class,null,null));
@@ -56,130 +56,127 @@ public class StyleManager extends ItemManager {
         //create default style list
         stylesList = new Vector(Arrays.asList(Util.genres));
         Collections.sort(stylesList);
-   }
-
+    }
+    
     /**
      * @return singleton
      */
     public static StyleManager getInstance(){
-      if (singleton == null){
-          singleton = new StyleManager();
-      }
+        if (singleton == null){
+            singleton = new StyleManager();
+        }
         return singleton;
     }
-
-	/**
-	 * Register a style
-	 * 
-	 * @param sName
-	 */
-	public  synchronized Style registerStyle(String sName) {
-		String sId = MD5Processor.hash(sName.trim().toLowerCase());
-		return registerStyle(sId, sName);
-	}
     
-	/**
-	 * Register a style with a known id
-	 * 
-	 * @param sName
-	 */
-	public synchronized Style registerStyle(String sId, String sName) {
-		if (hmItems.containsKey(sId)) {
-			Style style = (Style)hmItems.get(sId);
-            //check if name has right case
-            if (!style.getName().equals(sName)){
-                style.setName(sName);
+    /**
+     * Register a style
+     * 
+     * @param sName
+     */
+    public Style registerStyle(String sName) {
+        String sId = MD5Processor.hash(sName.trim().toLowerCase());
+        return registerStyle(sId, sName);
+    }
+    
+    /**
+     * Register a style with a known id
+     * 
+     * @param sName
+     */
+    public Style registerStyle(String sId, String sName) {
+        synchronized(StyleManager.getInstance().getLock()){
+            if (hmItems.containsKey(sId)) {
+                
+                Style style = (Style)hmItems.get(sId);
+                //check if name has right case
+                if (!style.getName().equals(sName)){
+                    style.setName(sName);
+                }
+                return style;
             }
-            return style;
-		}
-		Style style = null;
-        if (hmIdSaveItems.containsKey(sId)){
-            style = (Style)hmIdSaveItems.get(sId);
-            //check if name has right case
-            if (!style.getName().equals(sName)){
-                style.setName(sName);
-            }
-        }
-        else{
+            Style style = null;
             style = new Style(sId, sName);
-            saveItem(style);
-        }
-        hmItems.put(sId, style);
-        //add it in styles list if new
-        boolean bNew = true;
-        for (String s:stylesList){
-            if (s.toLowerCase().equals(sName.toLowerCase())){
-                bNew = false;
-                break;
+            hmItems.put(sId, style);
+            //add it in styles list if new
+            boolean bNew = true;
+            for (String s:stylesList){
+                if (s.toLowerCase().equals(sName.toLowerCase())){
+                    bNew = false;
+                    break;
+                }
             }
+            if (bNew){
+                stylesList.add(Util.formatStyle(style.getName2()));
+            }
+            Collections.sort(stylesList);
+            return style;
         }
-        if (bNew){
-            stylesList.add(Util.formatStyle(style.getName2()));
-        }
-        Collections.sort(stylesList);
-        return style;
-	}
+    }
     
     
-      /**
+    /**
      * Change the item name
      * @param old
      * @param sNewName
      * @return new item
      */
     public synchronized Style changeStyleName(Style old,String sNewName) throws JajukException{
-        //check there is actually a change
-        if (old.getName2().equals(sNewName)){
-            return old;
-        }
-        Style newItem = registerStyle(sNewName);
-        //re apply old properties from old item
-        newItem.cloneProperties(old);
-        //update tracks
-        ArrayList alTracks = new ArrayList(TrackManager.getInstance().getItems()); //we need to create a new list to avoid concurrent exceptions
-        Iterator it = alTracks.iterator();
-        while (it.hasNext()){
-            Track track = (Track)it.next();
-            if (track.getStyle().equals(old)){
-                TrackManager.getInstance().changeTrackStyle(track,sNewName,null);
+        synchronized(TrackManager.getInstance().getLock()){
+            //check there is actually a change
+            if (old.getName2().equals(sNewName)){
+                return old;
             }
+            Style newItem = registerStyle(sNewName);
+            //re apply old properties from old item
+            newItem.cloneProperties(old);
+            //update tracks
+            ArrayList alTracks = new ArrayList(TrackManager.getInstance().getItems()); //we need to create a new list to avoid concurrent exceptions
+            Iterator it = alTracks.iterator();
+            while (it.hasNext()){
+                Track track = (Track)it.next();
+                if (track.getStyle().equals(old)){
+                    TrackManager.getInstance().changeTrackStyle(track,sNewName,null);
+                }
+            }
+            return newItem;
         }
-        return newItem;
     }
-		
-	/**
-	 * Format the Style name to be normalized :
-	 * <p>
-	 * -no underscores or other non-ascii characters
-	 * <p>
-	 * -no spaces at the begin and the end
-	 * <p>
-	 * -All in upper case
-	 * <p>
-	 * exemple: "ROCK"
-	 * 
-	 * @param sName
-	 * @return
-	 */
-	private static synchronized String format(String sName) {
-		String sOut;
-		sOut = sName.trim(); //supress spaces at the begin and the end
-		sOut.replace('-', ' '); //move - to space
-		sOut.replace('_', ' '); //move _ to space
-		sOut = sOut.toUpperCase();
-		return sOut;
-	}
-	
- /* (non-Javadoc)
+    
+    /**
+     * Format the Style name to be normalized :
+     * <p>
+     * -no underscores or other non-ascii characters
+     * <p>
+     * -no spaces at the begin and the end
+     * <p>
+     * -All in upper case
+     * <p>
+     * exemple: "ROCK"
+     * 
+     * @param sName
+     * @return
+     */
+    private static String format(String sName) {
+        String sOut;
+        sOut = sName.trim(); //supress spaces at the begin and the end
+        sOut.replace('-', ' '); //move - to space
+        sOut.replace('_', ' '); //move _ to space
+        sOut = sOut.toUpperCase();
+        return sOut;
+    }
+    
+    /* (non-Javadoc)
      * @see org.jajuk.base.ItemManager#getIdentifier()
      */
     public String getIdentifier() {
         return XML_STYLES;
     }
-
+    
     public static synchronized Vector<String> getStylesList() {
-        return stylesList;
+        synchronized(StyleManager.getInstance().getLock()){
+            return stylesList;
+        }
     }
-
-  
+    
+    
 }

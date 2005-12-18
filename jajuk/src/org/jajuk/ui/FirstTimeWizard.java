@@ -190,7 +190,6 @@ public class FirstTimeWizard extends JDialog implements ITechnicalStrings,Action
             Device device = DeviceManager.getInstance().registerDevice(fDir.getName(),0,fDir.getAbsolutePath());
             device.setProperty(XML_DEVICE_MOUNT_POINT,fDir.getAbsolutePath());
             device.setProperty(XML_DEVICE_AUTO_MOUNT,true);
-            device.setProperty(XML_DEVICE_AUTO_REFRESH,false);
             try{
                 device.refresh(true);
             }

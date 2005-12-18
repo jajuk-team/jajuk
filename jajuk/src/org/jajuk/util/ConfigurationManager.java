@@ -164,7 +164,7 @@ public class ConfigurationManager implements ITechnicalStrings{
         properties.put(CONF_OPTIONS_TAB,"0"); //$NON-NLS-1$
 		properties.put(CONF_OPTIONS_INTRO_BEGIN,"0"); //$NON-NLS-1$
 		properties.put(CONF_OPTIONS_INTRO_LENGTH,"20"); //$NON-NLS-1$
-		properties.put(CONF_OPTIONS_LNF,LNF_PLASTICXP);
+		properties.put(CONF_OPTIONS_LNF,LNF_TINY);
         properties.put(CONF_OPTIONS_SYNC_TABLE_TREE,FALSE);
         properties.put(CONF_OPTIONS_SHOW_POPUP,TRUE);
         properties.put(CONF_P2P_SHARE,FALSE);
@@ -173,7 +173,6 @@ public class ConfigurationManager implements ITechnicalStrings{
 		properties.put(CONF_P2P_PASSWORD,""); //$NON-NLS-1$
 		properties.put(CONF_HISTORY,"-1"); //$NON-NLS-1$
 		properties.put(CONF_FIRST_CON,TRUE);
-		properties.put(CONF_TAGS_DEEP_SCAN,FALSE);
 		properties.put(CONF_TAGS_USE_PARENT_DIR,TRUE);
 		properties.put(CONF_BOOKMARKS,""); //$NON-NLS-1$
 		properties.put(CONF_SHOW_AT_STARTUP,TRUE);

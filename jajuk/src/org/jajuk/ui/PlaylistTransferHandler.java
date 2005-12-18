@@ -151,7 +151,7 @@ public class PlaylistTransferHandler implements DropTargetListener,ITechnicalStr
 			ArrayList alLogicalTracks = null;
 			if(oData instanceof Style || oData instanceof Author || oData instanceof Album || oData instanceof Track){
 				if( oData instanceof Style || oData instanceof Author || oData instanceof Album ){
-					alLogicalTracks = TrackManager.getInstance().getAssociatedTracks((IPropertyable)oData);
+					alLogicalTracks = TrackManager.getInstance().getSortedAssociatedTracks((IPropertyable)oData);
 				}
 				else if( oData instanceof Track){
 					alLogicalTracks = new ArrayList(100);

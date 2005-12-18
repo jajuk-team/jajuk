@@ -25,6 +25,8 @@ import info.clearthought.layout.TableLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -74,7 +76,6 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 	JTextField jtfMountPoint;
 	JCheckBox jcbRefresh;
 	JCheckBox jcbAutoMount;
-	JCheckBox jcbAutoRefresh;
 	JCheckBox jcboxSynchronized;
 	JComboBox jcbSynchronized;
 	JPanel jp2;
@@ -99,6 +100,11 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 	 */
 	public DeviceWizard() {
 		super(Main.getWindow(),true); //make it modal
+        addWindowListener(new WindowAdapter() {
+            public void windowActivated(WindowEvent e) {
+                jtfName.requestFocusInWindow();
+            }
+        });
 		setTitle(Messages.getString("DeviceWizard.0"));//$NON-NLS-1$
 		setLocation(org.jajuk.Main.getWindow().getX()+100,org.jajuk.Main.getWindow().getY()+100);
 		jpMain = new JPanel();
@@ -118,19 +124,22 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 		}
 		jlName = new JLabel(Messages.getString("DeviceWizard.2")); //$NON-NLS-1$
 		jtfName = new JTextField();
-		jtfName.setToolTipText(Messages.getString("DeviceWizard.45")); //$NON-NLS-1$
-		jlUrl = new JLabel(Messages.getString("DeviceWizard.3")); //$NON-NLS-1$
+        jtfName.setToolTipText(Messages.getString("DeviceWizard.45")); //$NON-NLS-1$
+        jlUrl = new JLabel(Messages.getString("DeviceWizard.3")); //$NON-NLS-1$
 		jtfUrl = new JTextField();
 		jtfUrl.setToolTipText(Messages.getString("DeviceWizard.46")); //$NON-NLS-1$
 		jbUrl = new JButton(Util.getIcon(ICON_OPEN_FILE));
 		jbUrl.setToolTipText(Messages.getString("DeviceWizard.43")); //$NON-NLS-1$
 		jbUrl.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
 		jbUrl.addActionListener(this);
-		jbUrlMountPoint = new JButton(Util.getIcon(ICON_OPEN_FILE));
+		//we desiable focus for url and mount url buttons to facilitate naviguation 
+        jbUrl.setFocusable(false);
+        jbUrlMountPoint = new JButton(Util.getIcon(ICON_OPEN_FILE));
 		jbUrlMountPoint.setToolTipText(Messages.getString("DeviceWizard.47")); //$NON-NLS-1$
 		jbUrlMountPoint.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
 		jbUrlMountPoint.addActionListener(this);
-		jlMountPoint = new JLabel(Messages.getString("DeviceWizard.4")); //$NON-NLS-1$
+		jbUrlMountPoint.setFocusable(false);
+        jlMountPoint = new JLabel(Messages.getString("DeviceWizard.4")); //$NON-NLS-1$
 		jtfMountPoint = new JTextField();
 		jtfMountPoint.setToolTipText(Messages.getString("DeviceWizard.47")); //$NON-NLS-1$
 		//mount point notion is unknown under Windows
@@ -145,18 +154,18 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 		jcbAutoMount = new JCheckBox(Messages.getString("DeviceWizard.8")); //$NON-NLS-1$
 		jcbAutoMount.setToolTipText(Messages.getString("DeviceWizard.49")); //$NON-NLS-1$
 		jcbAutoMount.addActionListener(this);
-		jcbAutoRefresh = new JCheckBox(Messages.getString("DeviceWizard.9")); //$NON-NLS-1$
-		jcbAutoRefresh.setToolTipText(Messages.getString("DeviceWizard.50")); //$NON-NLS-1$
 		jcboxSynchronized = new JCheckBox(Messages.getString("DeviceWizard.10")); //$NON-NLS-1$
 		jcboxSynchronized.setToolTipText(Messages.getString("DeviceWizard.51")); //$NON-NLS-1$
 		jcboxSynchronized.addActionListener(this);
 		jcbSynchronized = new JComboBox();
 		//populate combo
-		Iterator it = DeviceManager.getInstance().getItems().iterator();
-		while (it.hasNext()) {
-			Device device2 = (Device) it.next();
-			alDevices.add(device2);
-			jcbSynchronized.addItem(device2.getName());
+		synchronized(DeviceManager.getInstance().getLock()){
+		    Iterator it = DeviceManager.getInstance().getItems().iterator();
+		    while (it.hasNext()) {
+		        Device device2 = (Device) it.next();
+		        alDevices.add(device2);
+		        jcbSynchronized.addItem(device2.getName());
+		    }
 		}
 		jcbSynchronized.setEnabled(false);
 		jcbSynchronized.setToolTipText(Messages.getString("DeviceWizard.52")); //$NON-NLS-1$
@@ -187,7 +196,6 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 		jp1.add(jtfMountPoint, "2,6"); //$NON-NLS-1$
 		jp1.add(jcbRefresh, "0,8"); //$NON-NLS-1$
 		jp1.add(jcbAutoMount, "0,10"); //$NON-NLS-1$
-		jp1.add(jcbAutoRefresh, "2,10"); //$NON-NLS-1$
 		jp1.add(jcboxSynchronized, "0,12"); //$NON-NLS-1$
 		jp1.add(jcbSynchronized, "2,12"); //$NON-NLS-1$
 		double size2[][] = { { 0.99 }, {
@@ -231,8 +239,6 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 	public void updateWidgetsDefault(){
 		jcbRefresh.setSelected(true);
 		jcbAutoMount.setSelected(true);
-		jcbAutoRefresh.setEnabled(true);
-		jcbAutoRefresh.setSelected(false);
 		jcboxSynchronized.setSelected(false);
         jrbUnidirSynchro.setSelected(true);//default synchro mode
 		jrbBidirSynchro.setEnabled(false);
@@ -250,15 +256,17 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 		alDevices.clear();
         //set default values for widgets
         updateWidgetsDefault();
-		Iterator it = DeviceManager.getInstance().getItems().iterator();
-		while (it.hasNext()) {
-			Device device2 = (Device) it.next();
-			if ( !device2.equals(device)){
-				alDevices.add(device2);
-				jcbSynchronized.addItem(device2.getName());
-			}
-		}
-		//then, specifics
+        synchronized(DeviceManager.getInstance().getLock()){
+            Iterator it = DeviceManager.getInstance().getItems().iterator();
+            while (it.hasNext()) {
+                Device device2 = (Device) it.next();
+                if ( !device2.equals(device)){
+                    alDevices.add(device2);
+                    jcbSynchronized.addItem(device2.getName());
+                }
+            }
+        }
+        //then, specifics
 		jcbType.setSelectedItem(device.getDeviceTypeS());
 		jcbType.setEnabled(false); //device type cannot be changed
 		jtfName.setText(device.getName());
@@ -274,17 +282,9 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 		jcbAutoMount.setSelected(true);
 		if (device.getBooleanValue(XML_DEVICE_AUTO_MOUNT)){
 			jcbAutoMount.setSelected(true);
-			jcbAutoRefresh.setEnabled(true); //refresh at startup is only if it is auto-mounted
 		}
 		else{
 		    jcbAutoMount.setSelected(false);
-			jcbAutoRefresh.setEnabled(false); //refresh at startup is only if it is auto-mounted
-		}
-		if (device.getBooleanValue(XML_DEVICE_AUTO_REFRESH)){
-			jcbAutoRefresh.setSelected(true);
-		}
-		else{
-		    jcbAutoRefresh.setSelected(false);
 		}
 		if (jcbSynchronized.getItemCount()==0){
 			jcboxSynchronized.setEnabled(false);
@@ -315,14 +315,7 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
 	public void actionPerformed(final ActionEvent e) {
-		if (e.getSource() == jcbAutoMount) {
-			if (jcbAutoMount.isSelected()) {
-				jcbAutoRefresh.setEnabled(true);
-			} else {
-				jcbAutoRefresh.setSelected(false);
-				jcbAutoRefresh.setEnabled(false);
-			}
-		} else if (e.getSource() == jcboxSynchronized) {
+		if (e.getSource() == jcboxSynchronized) {
 			if (jcboxSynchronized.isSelected()) {
 				jcbSynchronized.setEnabled(true);
 				jrbBidirSynchro.setEnabled(true);
@@ -357,7 +350,6 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 			}
 			device.setProperty(XML_DEVICE_MOUNT_POINT,jtfMountPoint.getText());
             device.setProperty(XML_DEVICE_AUTO_MOUNT,jcbAutoMount.isSelected());
-			device.setProperty(XML_DEVICE_AUTO_REFRESH,jcbAutoRefresh.isSelected());
 			if (jcbSynchronized.isEnabled() && jcbSynchronized.getSelectedItem() != null){
 				device.setProperty(XML_DEVICE_SYNCHRO_SOURCE,((Device)alDevices.get(jcbSynchronized.getSelectedIndex())).getId());
 				if (jrbBidirSynchro.isSelected()){
@@ -444,4 +436,7 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 			}
 		}
 	}
+   
 }
+
+     

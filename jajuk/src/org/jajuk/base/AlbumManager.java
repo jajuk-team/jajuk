@@ -64,7 +64,7 @@ public class AlbumManager extends ItemManager{
 	 * Register an Album
 	 *@param sName
 	 */
-	public synchronized  Album registerAlbum(String sName) {
+	public Album registerAlbum(String sName) {
 		String sId = MD5Processor.hash(sName.trim().toLowerCase());
 		return registerAlbum(sId,sName);
 	}
@@ -74,56 +74,51 @@ public class AlbumManager extends ItemManager{
      * 
      * @param sName
      */
-    public synchronized Album registerAlbum(String sId, String sName) {
-        if (hmItems.containsKey(sId)) {
-            Album album = (Album)hmItems.get(sId);
-            //check if name has right case
-            if (!album.getName().equals(sName)){
-                album.setName(sName);
+    public Album registerAlbum(String sId, String sName) {
+        synchronized(TrackManager.getInstance().getLock()){
+            if (hmItems.containsKey(sId)) {
+                Album album = (Album)hmItems.get(sId);
+                //check if name has right case
+                if (!album.getName().equals(sName)){
+                    album.setName(sName);
+                }
+                return album;
             }
+            Album album = null;
+            album = new Album(sId, sName);
+            hmItems.put(sId, album);
             return album;
         }
-        Album album = null;
-        if (hmIdSaveItems.containsKey(sId)){
-            album = (Album)hmIdSaveItems.get(sId);
-            //check if name has right case
-            if (!album.getName().equals(sName)){
-                album.setName(sName);
-            }
-        }
-        else{
-            album = new Album(sId, sName);
-            saveItem(album);
-        }
-        hmItems.put(sId, album);
-        return album;
     }
-			
+    
     /**
      * Change the item
      * @param old
      * @param sNewName
      * @return new album
      */
-    public synchronized Album changeAlbumName(Album old,String sNewName) throws JajukException{
+    public Album changeAlbumName(Album old,String sNewName) throws JajukException{
         //check there is actually a change
         if (old.getName2().equals(sNewName)){
             return old;
         }
-        Album newItem = registerAlbum(sNewName);
-        //re apply old properties from old item
-        newItem.cloneProperties(old);
-        //update tracks
-        ArrayList alTracks = new ArrayList(TrackManager.getInstance().getItems()); //we need to create a new list to avoid concurrent exceptions
-        Iterator it = alTracks.iterator();
-        while (it.hasNext()){
-            Track track = (Track)it.next();
-            if (track.getAlbum().equals(old)){
-                TrackManager.getInstance().changeTrackAlbum(track,sNewName,null);
+        synchronized(TrackManager.getInstance().getLock()){
+            Album newItem = registerAlbum(sNewName);
+            //re apply old properties from old item
+            newItem.cloneProperties(old);
+            //update tracks
+            ArrayList alTracks = new ArrayList(TrackManager.getInstance().getItems()); //we need to create a new list to avoid concurrent exceptions
+            Iterator it = alTracks.iterator();
+            while (it.hasNext()){
+                Track track = (Track)it.next();
+                if (track.getAlbum().equals(old)){
+                    TrackManager.getInstance().changeTrackAlbum(track,sNewName,null);
+                }
             }
+            return newItem;
         }
-        return newItem;
     }
+
     
 	/**
 		 * Format the album name to be normalized : 
@@ -145,7 +140,7 @@ public class AlbumManager extends ItemManager{
 			sb.setCharAt(0,Character.toUpperCase(c));
 			return sb.toString();
 		}
-
+        
     /* (non-Javadoc)
      * @see org.jajuk.base.ItemManager#getIdentifier()
      */

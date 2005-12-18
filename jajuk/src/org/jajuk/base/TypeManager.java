@@ -34,16 +34,16 @@ import org.jajuk.util.log.Log;
  */
 public class TypeManager extends ItemManager{
     /**extenssions->types*/
-	private HashMap hmSupportedTypes = new HashMap(10);
+    private HashMap hmSupportedTypes = new HashMap(10);
     /**Self instance*/
     private static TypeManager singleton;
-
-	/**
-	 * No constructor available, only static access
-	 */
-	private TypeManager() {
+    
+    /**
+     * No constructor available, only static access
+     */
+    private TypeManager() {
         super();
-         //---register properties---
+        //---register properties---
         //ID
         registerProperty(new PropertyMetaInformation(XML_ID,false,true,false,false,false,String.class,null,null));
         //Name
@@ -62,117 +62,129 @@ public class TypeManager extends ItemManager{
         registerProperty(new PropertyMetaInformation(XML_TYPE_TECH_DESC,false,false,true,false,false,String.class,null,null));
         //Icon
         registerProperty(new PropertyMetaInformation(XML_TYPE_ICON,false,false,false,false,false,String.class,null,null));
-   }
-
+    }
+    
     /**
      * @return singleton
      */
     public static TypeManager getInstance(){
-      if (singleton == null){
-          singleton = new TypeManager();
-      }
+        if (singleton == null){
+            singleton = new TypeManager();
+        }
         return singleton;
     }
-
-	/**
-	 * Register a type jajuk can read
-	 * @param type
-	 */
-	public synchronized Type registerType(String sName,String sExtension, Class cPlayerImpl,Class cTagImpl) {
-		String sId = Integer.toString(hmSupportedTypes.size());
-		return registerType(sId,sName,sExtension,cPlayerImpl,cTagImpl);
-	}
-		
-	/**
-	 * Register a type jajuk can read with a known id
-	 * @param type
-	 */
-	public synchronized Type registerType(String sId,String sName,String sExtension, Class cPlayerImpl,Class cTagImpl) {
-		if ( hmSupportedTypes.containsKey(sExtension)){ //if the type is already in memory, use it
-			return (Type)hmSupportedTypes.get(sExtension);
-		}	
-		Type type = null;
-		try{
-			type = new Type(sId,sName,sExtension,cPlayerImpl,cTagImpl);
-			hmItems.put(sId, type);
-            hmSupportedTypes.put(type.getExtension(), type);
-       }
-		catch(Exception e){
-			Log.error("109","sPlayerImpl="+cPlayerImpl+" sTagImpl="+cTagImpl,e ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		}
-		return type;
-	}
-
-    /**
-	 * Tells if the type is supported
-	 * @param type
-	 * @return
-	 */
-	public synchronized boolean isExtensionSupported(String sExt) {
-		return hmSupportedTypes.containsKey(sExt);
-	}
-	
-	/**
-	 * Return type for a given extension
-	 * @param sExtension
-	 * @return
-	 */
-	public synchronized Type getTypeByExtension(String sExtension) {
-		return (Type) hmSupportedTypes.get(sExtension);
-	}
-	
-	/**
-	 * Return type for a given technical description
-	 * @param sTechDesc
-	 * @return associated type or null if none found
-	 */
-	public synchronized Type getTypeByTechDesc(String sTechDesc) {
-		Iterator it = hmSupportedTypes.values().iterator();
-		while (it.hasNext()){
-			Type type = (Type)it.next();
-			if (type.getStringValue(XML_TYPE_TECH_DESC).equalsIgnoreCase(sTechDesc)){
-				return type;
-			}
-		}
-		return null;
-	}
-	
-	/**
-	 * Return all music types
-	 * @return
-	 */
-	public synchronized ArrayList getAllMusicTypes() {
-		ArrayList alResu = new ArrayList(5);	
-		Iterator it = hmSupportedTypes.values().iterator();
-		while (it.hasNext()){
-			Type type = (Type)it.next();
-			if (type.getBooleanValue(XML_TYPE_IS_MUSIC)){
-				alResu.add(type);
-			}
-		}
-		return alResu;
-	}
-
-	/**
-	 * Return a list "a,b,c" of registered extensions, used by FileChooser
-	 * @return
-	 */
-	public synchronized String getTypeListString() {
-		StringBuffer sb = new StringBuffer();
-		Iterator it = hmSupportedTypes.keySet().iterator();
-		while (it.hasNext()) {
-			sb.append(it.next());
-			sb.append(',');
-		}
-		sb.deleteCharAt(sb.length() - 1); //remove last ','
-		return sb.toString();
-	}
     
-	/* (non-Javadoc)
+    /**
+     * Register a type jajuk can read
+     * @param type
+     */
+    public Type registerType(String sName,String sExtension, Class cPlayerImpl,Class cTagImpl) {
+        String sId = Integer.toString(hmSupportedTypes.size());
+        return registerType(sId,sName,sExtension,cPlayerImpl,cTagImpl);
+    }
+    
+    /**
+     * Register a type jajuk can read with a known id
+     * @param type
+     */
+    public Type registerType(String sId,String sName,String sExtension, Class cPlayerImpl,Class cTagImpl) {
+        synchronized(TrackManager.getInstance().getLock()){
+            if ( hmSupportedTypes.containsKey(sExtension)){ //if the type is already in memory, use it
+                return (Type)hmSupportedTypes.get(sExtension);
+            }	
+            Type type = null;
+            try{
+                type = new Type(sId,sName,sExtension,cPlayerImpl,cTagImpl);
+                hmItems.put(sId, type);
+                hmSupportedTypes.put(type.getExtension(), type);
+            }
+            catch(Exception e){
+                Log.error("109","sPlayerImpl="+cPlayerImpl+" sTagImpl="+cTagImpl,e ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            }
+            return type;
+        }
+    }
+    
+    /**
+     * Tells if the type is supported
+     * @param type
+     * @return
+     */
+    public boolean isExtensionSupported(String sExt) {
+        synchronized(TrackManager.getInstance().getLock()){
+            return hmSupportedTypes.containsKey(sExt);
+        }
+    }
+    
+    /**
+     * Return type for a given extension
+     * @param sExtension
+     * @return
+     */
+    public Type getTypeByExtension(String sExtension) {
+        synchronized(TrackManager.getInstance().getLock()){
+            return (Type) hmSupportedTypes.get(sExtension);
+        }
+    }
+    
+    /**
+     * Return type for a given technical description
+     * @param sTechDesc
+     * @return associated type or null if none found
+     */
+    public Type getTypeByTechDesc(String sTechDesc) {
+        synchronized(TrackManager.getInstance().getLock()){
+            Iterator it = hmSupportedTypes.values().iterator();
+            while (it.hasNext()){
+                Type type = (Type)it.next();
+                if (type.getStringValue(XML_TYPE_TECH_DESC).equalsIgnoreCase(sTechDesc)){
+                    return type;
+                }
+            }
+            return null;
+        }
+    }
+    
+    /**
+     * Return all music types
+     * @return
+     */
+    public ArrayList getAllMusicTypes() {
+        synchronized(TrackManager.getInstance().getLock()){
+            ArrayList alResu = new ArrayList(5);	
+            Iterator it = hmSupportedTypes.values().iterator();
+            while (it.hasNext()){
+                Type type = (Type)it.next();
+                if (type.getBooleanValue(XML_TYPE_IS_MUSIC)){
+                    alResu.add(type);
+                }
+            }
+            return alResu;
+        }
+    }
+    
+    /**
+     * Return a list "a,b,c" of registered extensions, used by FileChooser
+     * @return
+     */
+    public String getTypeListString() {
+        synchronized(TrackManager.getInstance().getLock()){
+            StringBuffer sb = new StringBuffer();
+            Iterator it = hmSupportedTypes.keySet().iterator();
+            while (it.hasNext()) {
+                sb.append(it.next());
+                sb.append(',');
+            }
+            sb.deleteCharAt(sb.length() - 1); //remove last ','
+            return sb.toString();
+        }
+    }
+    
+    /* (non-Javadoc)
      * @see org.jajuk.base.ItemManager#getIdentifier()
      */
     public String getIdentifier() {
         return XML_TYPES;
     }
-  
+    
 }

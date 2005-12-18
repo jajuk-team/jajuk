@@ -130,7 +130,7 @@ public class Album extends PropertyAdapter implements Comparable{
         File fCover = null;
         File fDir = null; //analyzed directory
         //search for local covers in all directories mapping the current track to reach other devices covers and display them together
-        ArrayList<Track> alTracks = TrackManager.getInstance().getAssociatedTracks(this);
+        ArrayList<Track> alTracks = TrackManager.getInstance().getSortedAssociatedTracks(this);
         if (alTracks.size() == 0){
             return null;
         }

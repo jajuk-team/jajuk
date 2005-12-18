@@ -145,7 +145,7 @@ public class Directory extends PropertyAdapter implements Comparable{
      * @param file
      */
     public void removeFile(org.jajuk.base.File file) {
-        if(files.contains(file)){
+        if (files.contains(file)){
             files.remove(file);    
         }
     }
@@ -252,12 +252,10 @@ public class Directory extends PropertyAdapter implements Comparable{
         
     /**
      * Scan all files in a directory
+     * @param bDeepScan: force files tag read
      * @param
      */
-    public void scan() {
-        //clear directory files because it have been restored before call by device class
-        files.clear();
-        playlistFiles.clear();
+    public void scan(boolean bDeepScan) {
         java.io.File[] files = getFio().listFiles(new JajukFileFilter(false, true));
         if (files == null || files.length==0 ){  //none file, leave
             return;
@@ -267,6 +265,11 @@ public class Directory extends PropertyAdapter implements Comparable{
                 if (files[i].isDirectory()){ //if it is a directory, continue
                     continue;
                 }
+                //check date, file modified before
+                if (files[i].lastModified() > DeviceManager.getInstance().getDateLastGlobalRefresh()
+                        && !bDeepScan){
+                   continue; 
+                }
                 boolean bIsMusic = (Boolean)TypeManager.getInstance().getTypeByExtension(Util.getExtension(files[i])).getValue(XML_TYPE_IS_MUSIC);
                 if (bIsMusic) {
                     String sId = MD5Processor.hash(
@@ -274,10 +277,10 @@ public class Directory extends PropertyAdapter implements Comparable{
                         append(getDevice().getUrl()).
                         append(getRelativePath()).
                         append(files[i].getName()).toString());
-                    //check the file is not already known in old database
-                    org.jajuk.base.File fileRef = (org.jajuk.base.File)FileManager.getInstance().restoreItemAfterRefresh(sId);
+                    //check the file is not already known in database
+                    org.jajuk.base.File fileRef = (org.jajuk.base.File)FileManager.getInstance().getItem(sId);
                     //if known file and no deep scan, just register it and leave
-                    if (fileRef != null && !ConfigurationManager.getBoolean(CONF_TAGS_DEEP_SCAN)){
+                    if (fileRef != null && !bDeepScan){
                        //add file to current directory
                         org.jajuk.base.File file = FileManager.getInstance().registerFile(fileRef.getId(),fileRef.getName(), 
                             this, fileRef.getTrack(), fileRef.getSize(),fileRef.getQuality());

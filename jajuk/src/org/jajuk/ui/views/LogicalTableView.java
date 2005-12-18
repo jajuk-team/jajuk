@@ -216,11 +216,11 @@ public class LogicalTableView extends AbstractTableView implements Observer{
                     ArrayList alTracks = new ArrayList(indexes.length);
                     if (e.getSource() == jmiTrackPlayAlbum){
                         Album album = track.getAlbum();
-                        alTracks.addAll(TrackManager.getInstance().getAssociatedTracks(album)); //add all tracks from the same album
+                        alTracks.addAll(TrackManager.getInstance().getSortedAssociatedTracks(album)); //add all tracks from the same album
                     }
                     if (e.getSource() == jmiTrackPlayAuthor){
                         Author author = track.getAuthor();
-                        alTracks.addAll(TrackManager.getInstance().getAssociatedTracks(author)); //add all tracks from the same author
+                        alTracks.addAll(TrackManager.getInstance().getSortedAssociatedTracks(author)); //add all tracks from the same author
                     }
                     else{
                         alTracks.add(track);

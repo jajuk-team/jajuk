@@ -39,76 +39,78 @@ import org.jajuk.util.error.JajukException;
  * @created   29 dec. 2003
  */
 public class PhysicalPlaylistRepositoryView extends AbstractPlaylistRepositoryView implements Observer,ActionListener{
-	
-	/**Self instance*/
-	static PhysicalPlaylistRepositoryView ppr;
-	
-	/**Return self instance*/
-	public static synchronized PhysicalPlaylistRepositoryView getInstance(){
-		if (ppr == null){
-			ppr = new PhysicalPlaylistRepositoryView();
-		}
-		return ppr;
-	}	
-	/**
-	 * Constructor
-	 */
-	public PhysicalPlaylistRepositoryView() {
-		ppr = this;
-	}
-	
-	/* (non-Javadoc)
-	 * @see org.jajuk.ui.IView#display()
-	 */
-	public void populate(){
-		//commons
-		super.populate();
-	}
-	
-	/* (non-Javadoc)
-	 * @see org.jajuk.ui.IView#getDesc()
-	 */
-	public String getDesc() {
-		return "PhysicalPlaylistRepositoryView.6";	 //$NON-NLS-1$
-	}
-	
-	/* (non-Javadoc)
-	 * @see org.jajuk.ui.IView#getID()
-	 */
-	public String getID() {
-	    return "org.jajuk.ui.views.PhysicalPlaylistRepositoryView"; //$NON-NLS-1$
-	}
-	
-	
-	/**
-	 * Create playlists from collection 
-	 */
-	public synchronized void populatePlaylists(){
-	    super.populatePlaylists();
-		//normal playlists
-		ArrayList alItems = new ArrayList(PlaylistFileManager.getInstance().getItems());
-        Collections.sort(alItems);
-        Iterator it = alItems.iterator();
-    	while ( it.hasNext()){
-			PlaylistFile plf = (PlaylistFile)it.next();
-			if ( plf.shouldBeHidden()){
-	            continue;
-			}
-			PlaylistFileItem plfi = new PlaylistFileItem(PlaylistFileItem.PLAYLIST_TYPE_NORMAL,ICON_PLAYLIST_NORMAL,plf,plf.getName());
-			alPlaylistFileItems.add(plfi);
-			plfi.addMouseListener(ma);
-			plfi.setToolTipText(plf.getName());
-			jpRoot.add(plfi);
-            if (plfiSelected!=null && plfi.getPlaylistFile().equals(plfiSelected.getPlaylistFile())){
-                plfiSelected = plfi;
+    
+    /**Self instance*/
+    static PhysicalPlaylistRepositoryView ppr;
+    
+    /**Return self instance*/
+    public static synchronized PhysicalPlaylistRepositoryView getInstance(){
+        if (ppr == null){
+            ppr = new PhysicalPlaylistRepositoryView();
+        }
+        return ppr;
+    }	
+    /**
+     * Constructor
+     */
+    public PhysicalPlaylistRepositoryView() {
+        ppr = this;
+    }
+    
+    /* (non-Javadoc)
+     * @see org.jajuk.ui.IView#display()
+     */
+    public void populate(){
+        //commons
+        super.populate();
+    }
+    
+    /* (non-Javadoc)
+     * @see org.jajuk.ui.IView#getDesc()
+     */
+    public String getDesc() {
+        return "PhysicalPlaylistRepositoryView.6";	 //$NON-NLS-1$
+    }
+    
+    /* (non-Javadoc)
+     * @see org.jajuk.ui.IView#getID()
+     */
+    public String getID() {
+        return "org.jajuk.ui.views.PhysicalPlaylistRepositoryView"; //$NON-NLS-1$
+    }
+    
+    
+    /**
+     * Create playlists from collection 
+     */
+    public synchronized void populatePlaylists(){
+        synchronized(PlaylistFileManager.getInstance().getLock()){
+            super.populatePlaylists();
+            //normal playlists
+            ArrayList alItems = new ArrayList(PlaylistFileManager.getInstance().getItems());
+            Collections.sort(alItems);
+            Iterator it = alItems.iterator();
+            while ( it.hasNext()){
+                PlaylistFile plf = (PlaylistFile)it.next();
+                if ( plf.shouldBeHidden()){
+                    continue;
+                }
+                PlaylistFileItem plfi = new PlaylistFileItem(PlaylistFileItem.PLAYLIST_TYPE_NORMAL,ICON_PLAYLIST_NORMAL,plf,plf.getName());
+                alPlaylistFileItems.add(plfi);
+                plfi.addMouseListener(ma);
+                plfi.setToolTipText(plf.getName());
+                jpRoot.add(plfi);
+                if (plfiSelected!=null && plfi.getPlaylistFile().equals(plfiSelected.getPlaylistFile())){
+                    plfiSelected = plfi;
+                }
             }
-		}
-	}
+        }
+    }
     
     public synchronized void removeItem (PlaylistFileItem plfiSelected){
-       PlaylistFileManager.getInstance().removePlaylistFile(plfiSelected.getPlaylistFile());
+        PlaylistFileManager.getInstance().removePlaylistFile(plfiSelected.getPlaylistFile());
     }
-	
+    
     public void play(PlaylistFileItem plfi) throws JajukException{
         plfi.getPlaylistFile().play();
     }

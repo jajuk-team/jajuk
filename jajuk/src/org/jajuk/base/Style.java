@@ -100,7 +100,7 @@ public class Style extends PropertyAdapter implements Comparable{
 	 * @return Number of tracks for this style from the collection
 	 */
 	public int getCount(){
-		return TrackManager.getInstance().getAssociatedTracks(this).size();
+		return TrackManager.getInstance().getSortedAssociatedTracks(this).size();
 	}
 		
 	/**
@@ -134,14 +134,16 @@ public class Style extends PropertyAdapter implements Comparable{
      * @return all tracks associated with this style
      */
     public ArrayList<Track> getTracksRecursively(){
-        ArrayList<Track> alTracks = new ArrayList(1000);
-        for (IPropertyable item:TrackManager.getInstance().getItems()){
-            Track track = (Track)item;
-            if (track.getStyle().equals(this)){
-                alTracks.add(track);
+        synchronized(TrackManager.getInstance().getLock()){
+            ArrayList<Track> alTracks = new ArrayList(1000);
+            for (IPropertyable item:TrackManager.getInstance().getItems()){
+                Track track = (Track)item;
+                if (track.getStyle().equals(this)){
+                    alTracks.add(track);
+                }
             }
+            return alTracks;
         }
-        return alTracks;
     }
     
 }
