@@ -2,7 +2,7 @@
 NEW RELEASE (x.y) PROCEDURE
 *Code*
 - Refresh workspace
-- Set right version (no more rc), debug to '' and jwsdeploy to 'default'  in build-dist script
+- Set right version (no more rc), debug to '-notest' and jwsdeploy to 'default'  in build-dist script
 - Set "default" to JWS_DIR in make_jajuk script
 - Check new incoming updates (i18n)
 - String externalization
@@ -39,7 +39,7 @@ NEW RELEASE (x.y) PROCEDURE
 FIX RELEASE (x.y.z) PROCEDURE
 *Code*
 o- Refresh workspace
-o- Set right version (no more rc), debug to '' and jwsdeploy to 'default'  in build-dist script
+o- Set right version (no more rc), debug to '-notest' and jwsdeploy to 'default'  in build-dist script
 o- Set "default" to JWS_DIR in make_jajuk script
 o- Check new incoming updates (i18n)
 o- String externalization
@@ -58,11 +58,11 @@ o- Update and set date to release in changes.xml
 o- Change download.html file for file names
 o- Backup SF data (php file)
 o- Generate and upload maven site (make_jajuk)
-- Commit all changes in jajuk_website project
+o- Commit all changes in jajuk_website project
 
 *Others*
 o- Save dist file in the releases save dir
-- Send a message in the developer forum
+o- Send a message in the developer forum
 
 *********************************************************
 RELEASE CANDIDATE (x.y.zRCn) PROCEDURE
