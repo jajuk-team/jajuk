@@ -7,7 +7,7 @@ WEBSITE_SOURCE=/data/java/workspace/jajuk_website
 XDOC_DEST=/data/projects/jajuk/maven_rep/xdocs
 MAVEN_DIR=/data/projects/jajuk/maven_rep
 DOC_DEST=$MAVEN_DIR/target/docs
-JWS_DIR=test
+JWS_DIR=default
 
 cd /data/projects/jajuk/maven_rep
 if [ "$1" = "send" ]; then
@@ -28,6 +28,9 @@ if [ "$1" = "jws" ]; then
  scp -C -r * bflorat@jajuk.sourceforge.net:/home/groups/j/ja/jajuk/htdocs/jws/$RELEASE/
  exit 0
 fi
+
+#Cleanup
+rm -rf $DOC_DEST/*
 
 #Copy doc files
 

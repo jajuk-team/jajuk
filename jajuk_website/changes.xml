@@ -5,7 +5,7 @@
     <author email='bflorat@users.sourceforge.net'>Bertrand Florat</author>
   </properties>
   <body>
-    <release version='1.0.4' date='2005-?-?' description='Fixes'>
+    <release version='1.0.4' date='2005-12-17' description='Fixes'>
     	<action dev='bflorat' type='fix' issue='1379487'>Volume overflow [8]</action>
     	<action dev='bflorat' type='fix' issue='1379483'>Error with devices under MacOS [7]</action>
     	<action dev='bflorat' type='fix' issue='1371126'>Filter not reapplied after tag change [3]</action>

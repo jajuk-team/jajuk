@@ -80,17 +80,6 @@
 	    </developer>
 
 	    <developer>
-	      <name>Bart Cremers</name>
-	      <id>bcremer</id>
-	     <roles>
-			<role>Developer</role>
-	     </roles>
-	      <email>bcremers@gmail.com</email>
-	      <organization>Jajuk team</organization>
-	      <timezone>+2</timezone>
-	    </developer>
-	    
-	    <developer>
 	      <name>Gerhard Dietrichsteiner</name>
 	      <id>skyreacher</id>
 	     <roles>
@@ -113,9 +102,19 @@
 	      <timezone>+2</timezone>
 	    </developer>
 	    
-	    
+	    <developer>
+	      <name>Bart Cremers</name>
+	      <id>bcremer</id>
+	     <roles>
+			<role>Developer</role>
+	     </roles>
+	      <email>bcremers@gmail.com</email>
+	      <organization>Jajuk team</organization>
+	      <timezone>+2</timezone>
+	    </developer>
 	    
   </developers>
+
  	<contributors>
 		<contributor>
 			<name>Jean-Yves Durand-Daubin</name>
