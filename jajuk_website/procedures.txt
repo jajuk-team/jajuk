@@ -51,7 +51,7 @@ o- Commit all changes in jajuk project
 o- Tag as version
 
 *SF*
-- Close bugs, known issues and RFE at SF
+o- Close bugs, known issues and RFE at SF
 
 *Web site*
 o- Update and set date to release in changes.xml
@@ -61,7 +61,7 @@ o- Generate and upload maven site (make_jajuk)
 - Commit all changes in jajuk_website project
 
 *Others*
-- Save dist file in the releases save dir
+o- Save dist file in the releases save dir
 - Send a message in the developer forum
 
 *********************************************************

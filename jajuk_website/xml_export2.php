@@ -29,7 +29,7 @@ Option for show_trackers=1; * To show a specific Tracker instead of all
 	&amp;tracker_to_show=TRACKER_ID
 
 --><export_details>
-<time>1133300126</time>
+<time>1134943068</time>
 <project_group_id>91412</project_group_id>
 <project_unix_name>jajuk</project_unix_name>
 <exporter>bflorat</exporter>
@@ -64,6 +64,14 @@ http://www.florat.net/jajuk-specs.pdf</registration_description>
 <project_admin>No</project_admin>
 </projectmember>
 <projectmember>
+<url>https://sourceforge.net/users/bartcr/</url>
+<user_id>347798</user_id>
+<user_name>bartcr</user_name>
+<public_name>Bart Cremers</public_name>
+<email>bartcr@users.sourceforge.net</email>
+<project_admin>No</project_admin>
+</projectmember>
+<projectmember>
 <url>https://sourceforge.net/users/bflorat/</url>
 <user_id>363565</user_id>
 <user_name>bflorat</user_name>
@@ -77,6 +85,14 @@ http://www.florat.net/jajuk-specs.pdf</registration_description>
 <user_name>skyreacher</user_name>
 <public_name>Gerhard Dietrichsteiner</public_name>
 <email>skyreacher@users.sourceforge.net</email>
+<project_admin>No</project_admin>
+</projectmember>
+<projectmember>
+<url>https://sourceforge.net/users/dhalsim44/</url>
+<user_id>1404100</user_id>
+<user_name>dhalsim44</user_name>
+<public_name>Dhalsim</public_name>
+<email>dhalsim44@users.sourceforge.net</email>
 <project_admin>No</project_admin>
 </projectmember>
 </projectmembers>
@@ -421,6 +437,66 @@ http://www.florat.net/jajuk-specs.pdf</registration_description>
 <package_id>96449</package_id>
 <file_size>425782</file_size>
 <release_time>1131316583</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=374661</url>
+<filename>jajuk-1.0.3-1mdk.noarch.rpm</filename>
+<release_id>374661</release_id>
+<package_id>96449</package_id>
+<file_size>6177846</file_size>
+<release_time>1133304475</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=374661</url>
+<filename>jajuk-1.0.3-suse.noarch.rpm</filename>
+<release_id>374661</release_id>
+<package_id>96449</package_id>
+<file_size>6176375</file_size>
+<release_time>1133304488</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=374661</url>
+<filename>jajuk-1.0.3-win32.exe</filename>
+<release_id>374661</release_id>
+<package_id>96449</package_id>
+<file_size>8616960</file_size>
+<release_time>1133304509</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=374661</url>
+<filename>jajuk-java-installer-1.0.3.jar</filename>
+<release_id>374661</release_id>
+<package_id>96449</package_id>
+<file_size>8218749</file_size>
+<release_time>1133304530</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=374661</url>
+<filename>jajuk-sources-1.0.3.zip</filename>
+<release_id>374661</release_id>
+<package_id>96449</package_id>
+<file_size>428756</file_size>
+<release_time>1133304543</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=379147</url>
+<filename>jajuk-1.0.4-1mdk.noarch.rpm</filename>
+<release_id>379147</release_id>
+<package_id>96449</package_id>
+<file_size>6249080</file_size>
+<release_time>1134946317</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=379147</url>
+<filename>jajuk-1.0.4-suse.noarch.rpm</filename>
+<release_id>379147</release_id>
+<package_id>96449</package_id>
+<file_size>6247518</file_size>
+<release_time>1134946331</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=379147</url>
+<filename>jajuk-1.0.4-win32.exe</filename>
+<release_id>379147</release_id>
+<package_id>96449</package_id>
+<file_size>8676864</file_size>
+<release_time>1134946345</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=379147</url>
+<filename>jajuk-java-installer-1.0.4.jar</filename>
+<release_id>379147</release_id>
+<package_id>96449</package_id>
+<file_size>8278993</file_size>
+<release_time>1134946359</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=379147</url>
+<filename>jajuk-sources-1.0.4.zip</filename>
+<release_id>379147</release_id>
+<package_id>96449</package_id>
+<file_size>428862</file_size>
+<release_time>1134946377</release_time>
 </filereleases>
 <docmanager>
 <docgroup>
@@ -480,6 +556,192 @@ http://www.florat.net/jajuk-specs.pdf</registration_description>
 <send_posts_to></send_posts_to>
 <anonymous_posting>Yes</anonymous_posting>
 <forum_posts>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=3459429</url>
+<msg_id>3459429</msg_id>
+<poster_user>bflorat</poster_user>
+<poster_name>Bertrand Florat</poster_name>
+<subject>RE: Jajuk Sound in version 1.0.2</subject>
+<thread_id>1393713</thread_id>
+<is_followup_to>3457076</is_followup_to>
+<has_followups>0</has_followups>
+<date>1133788137</date>
+<is_deleted>No</is_deleted>
+<body>Strange, the memory looks pretty normal. The break occur during full gc like :
+73.109: [Full GC 15804K-&#62;15624K(25536K), 0.2238472 secs] 
+means sound has been stopped during 0.22 sec 73 sec after jajuk startup. We call full gc between two tracks. Can you tell me if breaks occur during full gcs (open a texte editor and refresh it often to check it) ? </body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=3457076</url>
+<msg_id>3457076</msg_id>
+<poster_user>nobody</poster_user>
+<poster_name>Nobody/Anonymous</poster_name>
+<subject>RE: Jajuk Sound in version 1.0.2</subject>
+<thread_id>1393713</thread_id>
+<is_followup_to>3451091</is_followup_to>
+<has_followups>1</has_followups>
+<date>1133599462</date>
+<is_deleted>No</is_deleted>
+<body>thanks once again...
+
+1. Yes I have upgraded to 1.0.3
+2. Intel Pentium 4, 3 GHz, 504 MB RAM
+3. Yes, I launch jajuk using the jajuk icon on my desktop. I even tried using the Start-&#62;Programs-&#62;Jajuk-&#62; Jajuk shortcut
+4. Some improvement with the suggestion you have given but then again some songs still have the same problem. I tried to play the same song in WM player and there seems to be no problem. This is an mp3 ( example) with a 32Kbps encoding. 
+Log file dump:
+
+0.000: [GC 1536K-&#62;336K(25408K), 0.0051184 secs]
+0.508: [GC 1872K-&#62;786K(25408K), 0.0098497 secs]
+0.568: [GC 2321K-&#62;1579K(25408K), 0.0053701 secs]
+0.809: [GC 3115K-&#62;1756K(25408K), 0.0070201 secs]
+0.985: [GC 3292K-&#62;1874K(25408K), 0.0031516 secs]
+1.135: [GC 3410K-&#62;2070K(25408K), 0.0053749 secs]
+1.265: [GC 3606K-&#62;2369K(25408K), 0.0088811 secs]
+1.332: [GC 3905K-&#62;2496K(25408K), 0.0029423 secs]
+1.379: [GC 4032K-&#62;2595K(25408K), 0.0014967 secs]
+1.405: [GC 4131K-&#62;2686K(25408K), 0.0013472 secs]
+1.433: [GC 4222K-&#62;2776K(25408K), 0.0012995 secs]
+1.463: [GC 4312K-&#62;2869K(25408K), 0.0018995 secs]
+1.500: [GC 4405K-&#62;2961K(25408K), 0.0017614 secs]
+1.524: [GC 4497K-&#62;3049K(25408K), 0.0018311 secs]
+1.549: [GC 4585K-&#62;3136K(25408K), 0.0017599 secs]
+1.640: [GC 4672K-&#62;3384K(25408K), 0.0033464 secs]
+1.681: [GC 4920K-&#62;4094K(25408K), 0.0083433 secs]
+1.863: [GC 5630K-&#62;4211K(25408K), 0.0052615 secs]
+1.963: [GC 5747K-&#62;4519K(25408K), 0.0049552 secs]
+2.028: [GC 6055K-&#62;4600K(25408K), 0.0028441 secs]
+2.095: [GC 6136K-&#62;4967K(25408K), 0.0047219 secs]
+2.302: [GC 6497K-&#62;5078K(25408K), 0.0065834 secs]
+2.343: [GC 6614K-&#62;5297K(25408K), 0.0028113 secs]
+2.449: [GC 6833K-&#62;5629K(25408K), 0.0038514 secs]
+2.589: [GC 7164K-&#62;6010K(25408K), 0.0035123 secs]
+2.731: [GC 7546K-&#62;6101K(25408K), 0.0036348 secs]
+2.864: [GC 7637K-&#62;6246K(25408K), 0.0035971 secs]
+3.011: [GC 7782K-&#62;6585K(25408K), 0.0053352 secs]
+3.121: [GC 8121K-&#62;7089K(25408K), 0.0073618 secs]
+3.228: [GC 8625K-&#62;7666K(25408K), 0.0090359 secs]
+3.389: [GC 9202K-&#62;7837K(25408K), 0.0055228 secs]
+3.534: [GC 9373K-&#62;8044K(25408K), 0.0046164 secs]
+3.607: [GC 9580K-&#62;8793K(25408K), 0.0100292 secs]
+3.704: [GC 10329K-&#62;9317K(25408K), 0.0084161 secs]
+3.823: [GC 10265K-&#62;9427K(25408K), 0.0046559 secs]
+3.828: [Full GC 9427K-&#62;9427K(25408K), 0.1424886 secs]
+4.023: [GC 13044K-&#62;11508K(25536K), 0.0033166 secs]
+4.063: [GC 13166K-&#62;11971K(25536K), 0.0062591 secs]
+4.099: [GC 13635K-&#62;12341K(25536K), 0.0054656 secs]
+4.152: [GC 14005K-&#62;12633K(25536K), 0.0049870 secs]
+4.189: [GC 14297K-&#62;12700K(25536K), 0.0031707 secs]
+4.217: [GC 14364K-&#62;12886K(25536K), 0.0030072 secs]
+4.256: [GC 14550K-&#62;12872K(25536K), 0.0025354 secs]
+4.291: [GC 14536K-&#62;12904K(25536K), 0.0017915 secs]
+4.312: [GC 14568K-&#62;13076K(25536K), 0.0029833 secs]
+4.331: [GC 14740K-&#62;13289K(25536K), 0.0039436 secs]
+4.356: [GC 14953K-&#62;13520K(25536K), 0.0040875 secs]
+4.387: [GC 15184K-&#62;13838K(25536K), 0.0050461 secs]
+4.527: [GC 15502K-&#62;14208K(25536K), 0.0064300 secs]
+4.582: [GC 15872K-&#62;14983K(25536K), 0.0113074 secs]
+4.645: [GC 16647K-&#62;15414K(25536K), 0.0067416 secs]
+4.713: [GC 17078K-&#62;16097K(25536K), 0.0086641 secs]
+4.794: [GC 17761K-&#62;16576K(25536K), 0.0100698 secs]
+4.906: [GC 18240K-&#62;17026K(25536K), 0.0088082 secs]
+4.976: [GC 18690K-&#62;17482K(25536K), 0.0098532 secs]
+5.038: [GC 19146K-&#62;18060K(25536K), 0.0097319 secs]
+5.118: [GC 19719K-&#62;18399K(25536K), 0.0080605 secs]
+5.396: [GC 20063K-&#62;18686K(25536K), 0.0089637 secs]
+5.538: [GC 20350K-&#62;18906K(25536K), 0.0045352 secs]
+5.625: [GC 20566K-&#62;18943K(25536K), 0.0040807 secs]
+5.795: [GC 20607K-&#62;19139K(25536K), 0.0046448 secs]
+5.927: [GC 20802K-&#62;19393K(25536K), 0.0046746 secs]
+6.015: [GC 21057K-&#62;19499K(25536K), 0.0031479 secs]
+6.145: [GC 21163K-&#62;19594K(25536K), 0.0032283 secs]
+6.198: [GC 21258K-&#62;19615K(25536K), 0.0030764 secs]
+7.920: [GC 21276K-&#62;19622K(25536K), 0.0072101 secs]
+30.123: [GC 21285K-&#62;19612K(25536K), 0.0016671 secs]
+35.966: [GC 21276K-&#62;19636K(25536K), 0.0018140 secs]
+53.497: [GC 21300K-&#62;19613K(25536K), 0.0025254 secs]
+71.571: [GC 21277K-&#62;19627K(25536K), 0.0017276 secs]
+72.777: [Full GC 20187K-&#62;15766K(25536K), 0.2520371 secs]
+73.105: [GC 16350K-&#62;15804K(25536K), 0.0038321 secs]
+73.109: [Full GC 15804K-&#62;15624K(25536K), 0.2238472 secs]
+73.352: [GC 19242K-&#62;17579K(25536K), 0.0007693 secs]
+73.370: [GC 19243K-&#62;17579K(25536K), 0.0006542 secs]
+73.386: [GC 19243K-&#62;17579K(25536K), 0.0006051 secs]
+73.403: [GC 19243K-&#62;17579K(25536K), 0.0006270 secs]
+73.418: [GC 19243K-&#62;17579K(25536K), 0.0006170 secs]
+73.441: [GC 19243K-&#62;17579K(25536K), 0.0005921 secs]
+73.453: [GC 19243K-&#62;17579K(25536K), 0.0005367 secs]
+73.464: [GC 19243K-&#62;17578K(25536K), 0.0005577 secs]
+
+
+</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=3455593</url>
+<msg_id>3455593</msg_id>
+<poster_user>bflorat</poster_user>
+<poster_name>Bertrand Florat</poster_name>
+<subject>RE: Jajuk Sound in version 1.0.2</subject>
+<thread_id>1393713</thread_id>
+<is_followup_to>3455574</is_followup_to>
+<has_followups>0</has_followups>
+<date>1133527716</date>
+<is_deleted>No</is_deleted>
+<body>OK, there is 90% chances that it comes from a memory problem (breaks occur when JVM cleanups memory). 
+Please:
+1- Upgrade to 1.0.3 (memory settings changed) and tell me
+2- Give me your PC memory
+3- Confirm that you lanch Jajuk by using jajuk.bat or Windows shortcut.
+4- If you still have breaks, please edit your windows shortcut (in menu, select jajuk icon -&#62; properties) and change &#34;-Xms25M&#34; to &#34;-Xms25M -Xloggc:c:\gc.txt&#34; , use jajuk until you have breaks and paste your gc.txt in this forum or send me your file (it is the java memory log).
+
+Thanks.</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=3455574</url>
+<msg_id>3455574</msg_id>
+<poster_user>nobody</poster_user>
+<poster_name>Nobody/Anonymous</poster_name>
+<subject>RE: Jajuk Sound in version 1.0.2</subject>
+<thread_id>1393713</thread_id>
+<is_followup_to>3451091</is_followup_to>
+<has_followups>1</has_followups>
+<date>1133526924</date>
+<is_deleted>No</is_deleted>
+<body>thanks for the reply.
+
+What I meant was break of voice and music. There are these abrupt breaks, like when you are listening to radio and there are some breaking signal. This happens during the normal play of the songs. Not for a specific file but for all the files. Files are located in my local hard drive. </body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=3451168</url>
+<msg_id>3451168</msg_id>
+<poster_user>bflorat</poster_user>
+<poster_name>Bertrand Florat</poster_name>
+<subject>RE: Jajuk Sound in version 1.0.2</subject>
+<thread_id>1393713</thread_id>
+<is_followup_to>3451091</is_followup_to>
+<has_followups>0</has_followups>
+<date>1133343858</date>
+<is_deleted>No</is_deleted>
+<body>What do you mean by strange noise ? blanks ? during playing or at stopping ? where are located your files ? on a network drive ? hard drive?  </body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=3451091</url>
+<msg_id>3451091</msg_id>
+<poster_user>nobody</poster_user>
+<poster_name>Nobody/Anonymous</poster_name>
+<subject>Jajuk Sound in version 1.0.2</subject>
+<thread_id>1393713</thread_id>
+<is_followup_to>0</is_followup_to>
+<has_followups>1</has_followups>
+<date>1133340695</date>
+<is_deleted>No</is_deleted>
+<body>Hi
+
+Have this strange problem with the new version of Jajuk. There is this noise that comes with the MP3's that I play. My previous version was 0.3.4 and this one didnt have that problem. I did a complete uninstall and then installed again and this seems to come again. Java I am using is JDK 5.0 plus have JRE 1.4.2_08 also installed. The same configuration with the previous version installation and there seemed to be no problem at all. Some help would be greatly appreciated here!
+
+Thanks
+
+Pranesh</body>
+</forum_post>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3450453</url>
 <msg_id>3450453</msg_id>
@@ -550,6 +812,7 @@ Thanx for the link.
 Effectively it works perfectly now.
 If you need it in english, please ask me and I'll try to translate ;o)</body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3335326</url>
 <msg_id>3335326</msg_id>
@@ -641,7 +904,6 @@ I have been hunting around for java and artsd intergration.  I'll post what I fi
 <is_deleted>No</is_deleted>
 <body>Cool, so I assume your issue is over... I will have to add this in the faq.</body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3281677</url>
 <msg_id>3281677</msg_id>
@@ -713,6 +975,7 @@ down
 - SunAwtRobot never starts with metal look and feel
 Right ?</body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3280599</url>
 <msg_id>3280599</msg_id>
@@ -845,7 +1108,6 @@ This is the output in the log when I press play.
 - Try to disable artd
 - Set verbosity to debug in parmameter view, retry and send me your ~/.jajuk/jajuk.log</body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3278813</url>
 <msg_id>3278813</msg_id>
@@ -921,6 +1183,7 @@ félicitations pour Jajuk qui est une très bonne alternative &#710; itunes. Sous 
 Merci d'avance
 chris </body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3241549</url>
 <msg_id>3241549</msg_id>
@@ -1011,7 +1274,6 @@ Anyways. This seems to be fixed. Thanks. And good job!</body>
 <body>To my mind, IzPack hasn't this capability, at the opposite of RPM that is launched by root. As stated in the install documentation (http://jajuk.sourceforge.net/installation.html), you have to launch Jajuk using command:
 sh jajuk.sh , not ./jajuk.sh. Moreover, 0.3.3 Jajuk release should create menu shortcuts that make a launch of sh jajuk.sh, does it work under slack ?</body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3011756</url>
 <msg_id>3011756</msg_id>
@@ -1082,6 +1344,7 @@ o Use a FM emettor :
 
 http://www.nanocrew.net/blog/</body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=2982011</url>
 <msg_id>2982011</msg_id>
@@ -1199,7 +1462,6 @@ greetz
 
 Peter</body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=2971906</url>
 <msg_id>2971906</msg_id>
@@ -1296,6 +1558,7 @@ Win XP home
 
 no problems :)</body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=2920579</url>
 <msg_id>2920579</msg_id>
@@ -1398,7 +1661,6 @@ I request some feedback for this translations
 Thank you.
 </body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=2902400</url>
 <msg_id>2902400</msg_id>
@@ -1474,6 +1736,7 @@ But I still think it's imported to split up the buffering (loading from disk to 
 For the moment (0.3.1), I will try to increase dramaticaly the buffer size (from 60Kb to something like 5Mb) and at the same time set the awt dispatcher thread priority from  6 (http://www.wilsonmar.com/1threads.htm)  to something like 2 or 3. Player thread is yet 10.
 Then we will see if some deeper changes are needed.</body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=2840300</url>
 <msg_id>2840300</msg_id>
@@ -1584,7 +1847,6 @@ The buffer thread (priority 9) reads from the hard disk (inputstream.read() bloc
 (*) One might think that memory should be synced. Using Pipe(line)Streams it shouldn't but the property holding the amount in the pipeline shoud be synced.
 </body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=2830810</url>
 <msg_id>2830810</msg_id>
@@ -1646,6 +1908,7 @@ Then it uses more memory but works faster too.</body>
 Tests using 1.3 or higher have proven it rivals C++.
 </body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=2829625</url>
 <msg_id>2829625</msg_id>
@@ -1744,7 +2007,6 @@ We are aware of some performance issues. I started to make some investigations a
 It also seems that jabalayer runs faster on Windows ( 5% CPU ) than Linux, probably due to J2SE Windows optimisations. I can't do a lot with it but alert the Javazoom team... 0.2 jajuk release will support ogg and I will then test cpu usage with ogg.
 About native library, I'm sorry but I won't make Jajuk plateform-dependant, I started to do it with systray and it conducted to major bugs and dirty code). Moreover, I won't have to do JNI, I used it and it's close to nightmare. Any patch using it can be posted for test but I won't write it by myself and bring it to jajuk before strong impact studies.</body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=2547695</url>
 <msg_id>2547695</msg_id>
@@ -11232,15 +11494,15 @@ jajuk 0.3.4.1</details>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1240758</url>
 <id>1240758</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>605762</category_id>
 <group_id>436325</group_id>
-<resolution_id>102</resolution_id>
+<resolution_id>1</resolution_id>
 <submitter>bflorat</submitter>
 <assignee>bflorat</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1121768992</submit_date>
-<close_date>0</close_date>
+<close_date>1134942985</close_date>
 <priority>5</priority>
 <summary>Menu bar display under MacOsX</summary>
 <details>Under Mac OsX (I have no Mac so I can't reproduce),
@@ -11362,6 +11624,20 @@ user_id=363565
 Please try 1.0.3 and tell me, now apple property is set in
 jajuk.sh directly, not in program.</details>
 </followup>
+<followup>
+<id>1862864</id>
+<submitter>bflorat</submitter>
+<date>1134942985</date>
+<details>Logged In: YES 
+user_id=363565
+
+I close this bug as I have no feedback. I tested under Tiger
+using apple.laf.useScreenMenuBar=true as JVM property and
+menu is not displayed on top as expected but I didn't see
+any display issue in the menu, the behavior is just the same
+than other OS. Please contact me if you have any solution to
+keep menu at top.</details>
+</followup>
 </followups>
 <attachments>
 </attachments>
@@ -11371,6 +11647,27 @@ jajuk.sh directly, not in program.</details>
 <field_name>resolution_id</field_name>
 <old_value>100</old_value>
 <date>1130597329</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3343311</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1134942985</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3343312</id>
+<field_name>resolution_id</field_name>
+<old_value>102</old_value>
+<date>1134942985</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3343313</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1134942985</date>
 <updator>bflorat</updator>
 </history_entry>
 </history_entries>
@@ -12230,15 +12527,15 @@ wizard (thx Stephan Zeissler)</details>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1351656</url>
 <id>1351656</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>605762</category_id>
 <group_id>537602</group_id>
-<resolution_id>100</resolution_id>
+<resolution_id>1</resolution_id>
 <submitter>bflorat</submitter>
 <assignee>bflorat</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1131482261</submit_date>
-<close_date>0</close_date>
+<close_date>1133301290</close_date>
 <priority>6</priority>
 <summary>Issue in command panel seeking with slider</summary>
 <details>In most case, command panel seek slider doesn't work</details>
@@ -12247,20 +12544,41 @@ wizard (thx Stephan Zeissler)</details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>3307296</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1133301290</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3307297</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1133301290</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3307298</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1133301290</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1351658</url>
 <id>1351658</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>605762</category_id>
 <group_id>537602</group_id>
-<resolution_id>100</resolution_id>
+<resolution_id>1</resolution_id>
 <submitter>bflorat</submitter>
 <assignee>bflorat</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1131482316</submit_date>
-<close_date>0</close_date>
+<close_date>1133301283</close_date>
 <priority>3</priority>
 <summary>Mute synchronization issues between tray and command panel</summary>
 <details>Mute synchronization issues between tray and command panel</details>
@@ -12269,20 +12587,41 @@ wizard (thx Stephan Zeissler)</details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>3307293</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1133301283</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3307294</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1133301283</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3307295</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1133301283</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1354120</url>
 <id>1354120</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>605763</category_id>
 <group_id>537602</group_id>
-<resolution_id>100</resolution_id>
+<resolution_id>1</resolution_id>
 <submitter>bflorat</submitter>
 <assignee>bflorat</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1131725858</submit_date>
-<close_date>0</close_date>
+<close_date>1133301272</close_date>
 <priority>5</priority>
 <summary>Must remove items from fifo during refresh</summary>
 <details>Must remove items from queue during refresh</details>
@@ -12291,20 +12630,41 @@ wizard (thx Stephan Zeissler)</details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>3307290</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1133301272</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3307291</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1133301272</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3307292</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1133301272</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1354121</url>
 <id>1354121</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>605763</category_id>
 <group_id>436325</group_id>
-<resolution_id>100</resolution_id>
+<resolution_id>1</resolution_id>
 <submitter>bflorat</submitter>
 <assignee>bflorat</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1131725888</submit_date>
-<close_date>0</close_date>
+<close_date>1133301263</close_date>
 <priority>5</priority>
 <summary>Collection should not be commited if jajuk stoppped during a</summary>
 <details>Collection should not be commited if jajuk stoppped
@@ -12314,20 +12674,41 @@ during a refresh</details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>3307287</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1133301263</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3307288</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1133301263</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3307289</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1133301263</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1354138</url>
 <id>1354138</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>605763</category_id>
 <group_id>537602</group_id>
-<resolution_id>100</resolution_id>
+<resolution_id>1</resolution_id>
 <submitter>bflorat</submitter>
 <assignee>bflorat</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1131726832</submit_date>
-<close_date>0</close_date>
+<close_date>1133301255</close_date>
 <priority>4</priority>
 <summary>Issue in refresh stats for corrupted files</summary>
 <details>If a file is corrupted or not accessible, it was
@@ -12338,20 +12719,41 @@ now it is just ignored.</details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>3307284</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1133301255</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3307285</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1133301255</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3307286</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1133301255</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1358042</url>
 <id>1358042</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>605763</category_id>
 <group_id>537602</group_id>
-<resolution_id>100</resolution_id>
+<resolution_id>1</resolution_id>
 <submitter>bflorat</submitter>
 <assignee>bflorat</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1132140841</submit_date>
-<close_date>0</close_date>
+<close_date>1133301246</close_date>
 <priority>6</priority>
 <summary>Issues when renaming items with different case</summary>
 <details>Issues when renaming album, style or author with
@@ -12361,20 +12763,41 @@ different case</details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>3307281</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1133301246</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3307282</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1133301246</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3307283</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1133301246</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1358043</url>
 <id>1358043</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>605762</category_id>
 <group_id>537602</group_id>
-<resolution_id>100</resolution_id>
+<resolution_id>1</resolution_id>
 <submitter>bflorat</submitter>
 <assignee>bflorat</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1132140896</submit_date>
-<close_date>0</close_date>
+<close_date>1133301236</close_date>
 <priority>5</priority>
 <summary>File link issue in property wizard link</summary>
 <details>Cannot display associated file in property wizard
@@ -12384,20 +12807,41 @@ link+tooltip issue</details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>3307278</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1133301236</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3307279</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1133301236</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3307280</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1133301236</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1358045</url>
 <id>1358045</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>605762</category_id>
 <group_id>537602</group_id>
-<resolution_id>100</resolution_id>
+<resolution_id>1</resolution_id>
 <submitter>bflorat</submitter>
 <assignee>bflorat</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1132141022</submit_date>
-<close_date>0</close_date>
+<close_date>1133301227</close_date>
 <priority>4</priority>
 <summary>Limit number of errors for tag writting</summary>
 <details>Number of error lines after a massive tag change must
@@ -12407,20 +12851,41 @@ be limited</details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>3307275</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1133301227</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3307276</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1133301227</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3307277</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1133301227</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1358046</url>
 <id>1358046</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>605762</category_id>
 <group_id>537602</group_id>
-<resolution_id>100</resolution_id>
+<resolution_id>1</resolution_id>
 <submitter>bflorat</submitter>
 <assignee>bflorat</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1132141045</submit_date>
-<close_date>0</close_date>
+<close_date>1133301218</close_date>
 <priority>5</priority>
 <summary>Sorting issues in trees</summary>
 <details>Sorting issues in trees</details>
@@ -12429,20 +12894,41 @@ be limited</details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>3307272</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1133301218</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3307273</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1133301218</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3307274</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1133301218</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1358047</url>
 <id>1358047</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>605762</category_id>
 <group_id>537602</group_id>
-<resolution_id>100</resolution_id>
+<resolution_id>1</resolution_id>
 <submitter>bflorat</submitter>
 <assignee>bflorat</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1132141101</submit_date>
-<close_date>0</close_date>
+<close_date>1133301206</close_date>
 <priority>3</priority>
 <summary>Full collection node in tree views</summary>
 <details>Missing action when selecting full collection node in
@@ -12452,20 +12938,41 @@ tree views</details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>3307269</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1133301206</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3307270</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1133301206</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3307271</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1133301206</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1358048</url>
 <id>1358048</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>605762</category_id>
 <group_id>537602</group_id>
-<resolution_id>100</resolution_id>
+<resolution_id>1</resolution_id>
 <submitter>bflorat</submitter>
 <assignee>bflorat</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1132141143</submit_date>
-<close_date>0</close_date>
+<close_date>1133301190</close_date>
 <priority>4</priority>
 <summary>Drag and drop table row selection issues</summary>
 <details>Drag and drop table row selection issues : sometimes,
@@ -12475,20 +12982,41 @@ during the drag another row is selected.</details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>3307266</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1133301190</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3307267</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1133301190</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3307268</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1133301190</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1358049</url>
 <id>1358049</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>605762</category_id>
 <group_id>537602</group_id>
-<resolution_id>100</resolution_id>
+<resolution_id>1</resolution_id>
 <submitter>bflorat</submitter>
 <assignee>bflorat</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1132141201</submit_date>
-<close_date>0</close_date>
+<close_date>1133301176</close_date>
 <priority>2</priority>
 <summary>Special style unknown issue in style selection</summary>
 <details>Special style unknown issue in style selection combo
@@ -12498,20 +13026,41 @@ boxes: is seen as technical string, not internationalized.</details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>3307261</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1133301176</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3307262</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1133301176</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3307263</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1133301176</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1369542</url>
 <id>1369542</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>605762</category_id>
 <group_id>537602</group_id>
-<resolution_id>100</resolution_id>
+<resolution_id>1</resolution_id>
 <submitter>bflorat</submitter>
 <assignee>bflorat</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1133298389</submit_date>
-<close_date>0</close_date>
+<close_date>1133301141</close_date>
 <priority>3</priority>
 <summary>Synchronize command should be hidden if not enabled</summary>
 <details>Synchronize command should be hidden in physical tree
@@ -12521,20 +13070,41 @@ if none synchronization source</details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>3307258</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1133301141</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3307259</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1133301141</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3307260</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1133301141</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1369543</url>
 <id>1369543</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>605763</category_id>
 <group_id>537602</group_id>
-<resolution_id>100</resolution_id>
+<resolution_id>1</resolution_id>
 <submitter>bflorat</submitter>
 <assignee>bflorat</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1133298431</submit_date>
-<close_date>0</close_date>
+<close_date>1133301126</close_date>
 <priority>3</priority>
 <summary>Author/album/style change lose properties</summary>
 <details>Fixed author/album/style change lose properties when
@@ -12544,6 +13114,203 @@ name changed</details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>3307255</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1133301126</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3307256</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1133301126</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3307257</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1133301126</date>
+<updator>bflorat</updator>
+</history_entry>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1371126</url>
+<id>1371126</id>
+<status_id>2</status_id>
+<category_id>605762</category_id>
+<group_id>537602</group_id>
+<resolution_id>1</resolution_id>
+<submitter>bflorat</submitter>
+<assignee>bflorat</assignee>
+<closer>bflorat</closer>
+<submit_date>1133463297</submit_date>
+<close_date>1134943044</close_date>
+<priority>3</priority>
+<summary>Filter not reapplied after tag change</summary>
+<details>In table views, if a filter is set, changing a tag
+doesn't reflect right filtered selection, the filter
+should be applied again.</details>
+<followups>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+<history_entry>
+<id>3343323</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1134943044</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3343324</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1134943044</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3343325</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1134943044</date>
+<updator>bflorat</updator>
+</history_entry>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1379483</url>
+<id>1379483</id>
+<status_id>2</status_id>
+<category_id>605763</category_id>
+<group_id>537602</group_id>
+<resolution_id>1</resolution_id>
+<submitter>bflorat</submitter>
+<assignee>bflorat</assignee>
+<closer>bflorat</closer>
+<submit_date>1134478815</submit_date>
+<close_date>1134943029</close_date>
+<priority>8</priority>
+<summary>Error with devices under MacOS</summary>
+<details>Reproduced under Mac OS X : exception when displaying
+configuration panel.</details>
+<followups>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+<history_entry>
+<id>3343320</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1134943029</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3343321</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1134943029</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3343322</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1134943029</date>
+<updator>bflorat</updator>
+</history_entry>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1379487</url>
+<id>1379487</id>
+<status_id>2</status_id>
+<category_id>605763</category_id>
+<group_id>537602</group_id>
+<resolution_id>1</resolution_id>
+<submitter>bflorat</submitter>
+<assignee>bflorat</assignee>
+<closer>bflorat</closer>
+<submit_date>1134479541</submit_date>
+<close_date>1134943015</close_date>
+<priority>8</priority>
+<summary>Volume overflow</summary>
+<details>In some seldom cases, a volume overflow can happens
+that prevent any further launch of jajuk</details>
+<followups>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+<history_entry>
+<id>3343317</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1134943015</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3343318</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1134943015</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3343319</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1134943015</date>
+<updator>bflorat</updator>
+</history_entry>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1382002</url>
+<id>1382002</id>
+<status_id>2</status_id>
+<category_id>605762</category_id>
+<group_id>537602</group_id>
+<resolution_id>1</resolution_id>
+<submitter>bflorat</submitter>
+<assignee>bflorat</assignee>
+<closer>bflorat</closer>
+<submit_date>1134686582</submit_date>
+<close_date>1134943001</close_date>
+<priority>2</priority>
+<summary>Previous/next button still actionable even when disabled</summary>
+<details>Previous/next button still actionable even when disabled</details>
+<followups>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+<history_entry>
+<id>3343314</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1134943001</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3343315</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1134943001</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3343316</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1134943001</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 </tracker_items>
@@ -13650,6 +14417,205 @@ test it ?
 <history_entries>
 </history_entries>
 </tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1371586</url>
+<id>1371586</id>
+<status_id>1</status_id>
+<category_id>100</category_id>
+<group_id>100</group_id>
+<submitter>patrick71</submitter>
+<assignee>nobody</assignee>
+<closer>nobody</closer>
+<submit_date>1133517398</submit_date>
+<close_date>0</close_date>
+<priority>5</priority>
+<summary>Change/specify collection</summary>
+<details>Hi,
+
+I have all my MP3s on a file server and I am accesing
+this from different workstations.
+
+Is it possible to specify (e.g. via commandline) which
+collection.xml jajuk should use? I'd like to keep only
+*one* file on the file server which all workstations
+access, so that I don't have to rebuild the database
+(and update my ratings) on each of the workstations...
+
+Thanks,
+Patrick</details>
+<followups>
+<followup>
+<id>1847569</id>
+<submitter>bflorat</submitter>
+<date>1133517923</date>
+<details>Logged In: YES 
+user_id=363565
+
+Which OS do you use for your workstation? if under Linux,
+MacOs or others Unix, move your ~/.jajuk directory in a
+centralized server and make a symbolic link from ~/.jajuk to
+this directory.
+If under Windows, I don't see any solution as windows
+shortcut shouldn't work ? 
+In all cases, Jajuk (at least 1.0.x) assumes the collection
+in your home directory as we need a absolute default
+location to start...</details>
+</followup>
+<followup>
+<id>1847608</id>
+<submitter>bflorat</submitter>
+<date>1133521675</date>
+<details>Logged In: YES 
+user_id=363565
+
+Note that another problem is that it is not safe to share a
+single collection:
+o workstation1 starts (parse collection.xml) and uses jajuk
+(collection data like rates, tag updates... is changed in
+memory)
+o workstation2  starts with collection up-to-date and uses
+jajuk and makes changes in memory different from changes in
+workstations1 memory
+o workstation1 stops, collection.xml file is commited on
+disk but only with workstation1 changes, not thoses from
+workstations2
+o workstation3 starts with wrong state, not aware of changes
+from workstation2 and needs a refresh for dome data. </details>
+</followup>
+<followup>
+<id>1848950</id>
+<submitter>nobody</submitter>
+<date>1133647764</date>
+<details>Logged In: NO 
+
+Hm, ok I see the point(s).
+In fact the file server is running linux and I have 1 client
+under Linux and 2 clients on Windows XP.
+
+Usually, only 1 client is active so the last post ist not a
+problem in my case.
+
+&#34;as we need a absolute default location to start&#34;
+Ok, my network drive is always mounted at startup as n:, so
+I thought I could change jajuk's path to something like
+&#34;N:\pathonfileserver\.jajuk&#34;...</details>
+</followup>
+<followup>
+<id>1850203</id>
+<submitter>bflorat</submitter>
+<date>1133787915</date>
+<details>Logged In: YES 
+user_id=363565
+
+I note this feature and I think we may implement it this way:
+- new option to give collections.xml directory (possibily on
+a network device)
+- Locking system: when a desktop starts up, a lock file is
+created in the collection.xml directory and others desktop
+then starts in read-only mode.
+We have to think a little bit deeper about it but it looks
+faisable... any feedback ?</details>
+</followup>
+<followup>
+<id>1850285</id>
+<submitter>patrick71</submitter>
+<date>1133794068</date>
+<details>Logged In: YES 
+user_id=1178884
+
+Yeah, this sounds great/exactly what I asked for ;-)
+
+Thanks!</details>
+</followup>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1373598</url>
+<id>1373598</id>
+<status_id>1</status_id>
+<category_id>100</category_id>
+<group_id>100</group_id>
+<submitter>patrick71</submitter>
+<assignee>nobody</assignee>
+<closer>nobody</closer>
+<submit_date>1133794691</submit_date>
+<close_date>0</close_date>
+<priority>5</priority>
+<summary>Commandline tools?</summary>
+<details>Is there any possibility of updating the collection.xml
+via a commandline-tool?
+
+As I stated in the other thread, I have my MP3s on a
+file server and would like to update die collection.xml
+automatically, for example via a cronjob.
+
+This way, I wouldn't have to wait for an update when I
+start jajuk...</details>
+<followups>
+<followup>
+<id>1850353</id>
+<submitter>bflorat</submitter>
+<date>1133798396</date>
+<details>Logged In: YES 
+user_id=363565
+
+It looks faisable but pretty hard work and system-specific.
+I have another proposition to reach the same goal: in 1.1,
+jajuk should auto-refresh devices regulary so you would just
+have to start jajuk automaticaly at startup in iconified
+mode and it will refresh and maintain collection
+automaticaly... </details>
+</followup>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1375817</url>
+<id>1375817</id>
+<status_id>1</status_id>
+<category_id>100</category_id>
+<group_id>100</group_id>
+<submitter>nobody</submitter>
+<assignee>nobody</assignee>
+<closer>nobody</closer>
+<submit_date>1134000745</submit_date>
+<close_date>0</close_date>
+<priority>5</priority>
+<summary>selection of sound device</summary>
+<details>would it be possible to integrate a configuration
+option for manual selection of a sound device such as
+/dev/dsp or /dev/dsp1 .
+Nowadays, many people are running systems with 2
+soundcards (one onboard, one external at pci), so it
+would be nice to be able to specify which device should
+be used for playback.
+Great program, thanx,
+Alex
+(goalscoringsuperstarhero@gmail.com)</details>
+<followups>
+<followup>
+<id>1853484</id>
+<submitter>bflorat</submitter>
+<date>1134030484</date>
+<details>Logged In: YES 
+user_id=363565
+
+I will have a look with javazoom team but I don't think so.
+Thx for feddback.</details>
+</followup>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+</history_entries>
+</tracker_item>
 </tracker_items>
 </tracker>
 <tracker>
@@ -14133,6 +15099,51 @@ Thanks, this will be included in the upcoming 0.3.4.1 (tomorow).</details>
 <old_value>0</old_value>
 <date>1118435296</date>
 <updator>bflorat</updator>
+</history_entry>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1379732</url>
+<id>1379732</id>
+<status_id>1</status_id>
+<category_id>100</category_id>
+<group_id>100</group_id>
+<resolution_id>100</resolution_id>
+<submitter>dhalsim44</submitter>
+<assignee>nobody</assignee>
+<closer>nobody</closer>
+<submit_date>1134499373</submit_date>
+<close_date>0</close_date>
+<priority>5</priority>
+<summary>&#34;add to favorite&#34; feature</summary>
+<details>i've done the implemetation of this feature.
+
+i've created the patch with the create patch option in
+eclipse so i suppose it's the good way to do that.
+
+All the table and tree menu in physical and logical
+view are updated.</details>
+<followups>
+</followups>
+<attachments>
+<attachment>
+<url>https://sourceforge.net/tracker/download.php?group_id=91412&#38;atid=597088&#38;file_id=159715&#38;aid=</url>
+<id>159715</id>
+<filename>jajuk-favorite.diff</filename>
+<description></description>
+<filesize>16258</filesize>
+<filetype>text/plain</filetype>
+<date>1134499373</date>
+<submitter>dhalsim44</submitter>
+</attachment>
+</attachments>
+<history_entries>
+<history_entry>
+<id>3333778</id>
+<field_name>File Added</field_name>
+<old_value>159715: jajuk-favorite.diff</old_value>
+<date>1134499373</date>
+<updator>dhalsim44</updator>
 </history_entry>
 </history_entries>
 </tracker_item>
@@ -18322,20 +19333,34 @@ the collection.</details>
 <task_id>115378</task_id>
 <summary>HTTP Proxy refactoring</summary>
 <detail></detail>
-<percent_complete>0</percent_complete>
+<percent_complete>100</percent_complete>
 <priority>5</priority>
 <hours>10</hours>
 <start_date>1115589600</start_date>
 <end_date>1115589600</end_date>
 <creator>bflorat</creator>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <dependencies>
 <dependent_on>100</dependent_on>
 </dependencies>
 <assignees>
-<assignee>nobody</assignee>
+<assignee>bflorat</assignee>
 </assignees>
 <history_entries>
+<history_entry>
+<task_id>115378</task_id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<updator>bflorat</updator>
+<date>1134552076</date>
+</history_entry>
+<history_entry>
+<task_id>115378</task_id>
+<field_name>percent_complete</field_name>
+<old_value>0</old_value>
+<updator>bflorat</updator>
+<date>1134552076</date>
+</history_entry>
 </history_entries>
 </task>
 <task>
@@ -18646,15 +19671,15 @@ Stock others properties for items: volume, balance, ...</old_value>
 <percent_complete>0</percent_complete>
 <priority>7</priority>
 <hours>5</hours>
-<start_date>1106434800</start_date>
-<end_date>1106434800</end_date>
+<start_date>1134169200</start_date>
+<end_date>1134860400</end_date>
 <creator>bflorat</creator>
 <status_id>1</status_id>
 <dependencies>
 <dependent_on>100</dependent_on>
 </dependencies>
 <assignees>
-<assignee>nobody</assignee>
+<assignee>bartcr</assignee>
 </assignees>
 <history_entries>
 <history_entry>
@@ -18692,6 +19717,20 @@ Stock others properties for items: volume, balance, ...</old_value>
 <updator>bflorat</updator>
 <date>1119961861</date>
 </history_entry>
+<history_entry>
+<task_id>110975</task_id>
+<field_name>start_date</field_name>
+<old_value>1106434800</old_value>
+<updator>bartcr</updator>
+<date>1134245018</date>
+</history_entry>
+<history_entry>
+<task_id>110975</task_id>
+<field_name>end_date</field_name>
+<old_value>1106434800</old_value>
+<updator>bartcr</updator>
+<date>1134245018</date>
+</history_entry>
 </history_entries>
 </task>
 <task>
@@ -18700,7 +19739,7 @@ Stock others properties for items: volume, balance, ...</old_value>
 <detail></detail>
 <percent_complete>0</percent_complete>
 <priority>6</priority>
-<hours>0</hours>
+<hours>30</hours>
 <start_date>1106521200</start_date>
 <end_date>1106521200</end_date>
 <creator>bflorat</creator>
@@ -18709,7 +19748,7 @@ Stock others properties for items: volume, balance, ...</old_value>
 <dependent_on>100</dependent_on>
 </dependencies>
 <assignees>
-<assignee>nobody</assignee>
+<assignee>dhalsim44</assignee>
 </assignees>
 <history_entries>
 <history_entry>
@@ -18718,6 +19757,13 @@ Stock others properties for items: volume, balance, ...</old_value>
 <old_value>Example : JMP3Renamer or Entagged</old_value>
 <updator>bflorat</updator>
 <date>1106576268</date>
+</history_entry>
+<history_entry>
+<task_id>110976</task_id>
+<field_name>hours</field_name>
+<old_value>0</old_value>
+<updator>bflorat</updator>
+<date>1134510836</date>
 </history_entry>
 </history_entries>
 </task>
@@ -18756,14 +19802,14 @@ Stock others properties for items: volume, balance, ...</old_value>
 <priority>3</priority>
 <hours>0</hours>
 <start_date>1106521200</start_date>
-<end_date>1106521200</end_date>
+<end_date>1134169200</end_date>
 <creator>bflorat</creator>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <dependencies>
 <dependent_on>100</dependent_on>
 </dependencies>
 <assignees>
-<assignee>nobody</assignee>
+<assignee>bartcr</assignee>
 </assignees>
 <history_entries>
 <history_entry>
@@ -18785,6 +19831,20 @@ Stock others properties for items: volume, balance, ...</old_value>
 <old_value>Use API from SwingX !</old_value>
 <updator>bflorat</updator>
 <date>1121454567</date>
+</history_entry>
+<history_entry>
+<task_id>110978</task_id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<updator>bflorat</updator>
+<date>1134238761</date>
+</history_entry>
+<history_entry>
+<task_id>110978</task_id>
+<field_name>end_date</field_name>
+<old_value>1106521200</old_value>
+<updator>bflorat</updator>
+<date>1134238761</date>
 </history_entry>
 </history_entries>
 </task>
@@ -19225,7 +20285,7 @@ http://www.singularsys.com/jep/index.html</old_value>
 <task_id>114643</task_id>
 <summary>[medium] Covers thumbnails view</summary>
 <detail></detail>
-<percent_complete>0</percent_complete>
+<percent_complete>80</percent_complete>
 <priority>6</priority>
 <hours>15</hours>
 <start_date>1114120800</start_date>
@@ -19236,7 +20296,7 @@ http://www.singularsys.com/jep/index.html</old_value>
 <dependent_on>100</dependent_on>
 </dependencies>
 <assignees>
-<assignee>nobody</assignee>
+<assignee>bflorat</assignee>
 </assignees>
 <history_entries>
 <history_entry>
@@ -19245,6 +20305,13 @@ http://www.singularsys.com/jep/index.html</old_value>
 <old_value>[hard] Covers thumbnails view</old_value>
 <updator>bflorat</updator>
 <date>1114165931</date>
+</history_entry>
+<history_entry>
+<task_id>114643</task_id>
+<field_name>percent_complete</field_name>
+<old_value>0</old_value>
+<updator>bflorat</updator>
+<date>1134552157</date>
 </history_entry>
 </history_entries>
 </task>
@@ -19258,14 +20325,28 @@ http://www.singularsys.com/jep/index.html</old_value>
 <start_date>1117144800</start_date>
 <end_date>1117144800</end_date>
 <creator>bflorat</creator>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <dependencies>
 <dependent_on>100</dependent_on>
 </dependencies>
 <assignees>
-<assignee>nobody</assignee>
+<assignee>dhalsim44</assignee>
 </assignees>
 <history_entries>
+<history_entry>
+<task_id>115978</task_id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<updator>bflorat</updator>
+<date>1134684672</date>
+</history_entry>
+<history_entry>
+<task_id>115978</task_id>
+<field_name>summary</field_name>
+<old_value>[easy] Add a &#34;add to favorites&#34; menu item</old_value>
+<updator>bflorat</updator>
+<date>1134684672</date>
+</history_entry>
 </history_entries>
 </task>
 <task>
@@ -19334,7 +20415,7 @@ http://www.singularsys.com/jep/index.html</old_value>
 <task_id>120149</task_id>
 <summary>[Easy] Display Wikipedia page for current author</summary>
 <detail></detail>
-<percent_complete>0</percent_complete>
+<percent_complete>50</percent_complete>
 <priority>5</priority>
 <hours>10</hours>
 <start_date>1129154400</start_date>
@@ -19345,14 +20426,21 @@ http://www.singularsys.com/jep/index.html</old_value>
 <dependent_on>100</dependent_on>
 </dependencies>
 <assignees>
-<assignee>nobody</assignee>
+<assignee>bflorat</assignee>
 </assignees>
 <history_entries>
+<history_entry>
+<task_id>120149</task_id>
+<field_name>percent_complete</field_name>
+<old_value>0</old_value>
+<updator>bflorat</updator>
+<date>1134507935</date>
+</history_entry>
 </history_entries>
 </task>
 <task>
 <task_id>121211</task_id>
-<summary>[medium] Pod-support</summary>
+<summary>[medium] Pod casting</summary>
 <detail></detail>
 <percent_complete>0</percent_complete>
 <priority>5</priority>
@@ -19368,6 +20456,13 @@ http://www.singularsys.com/jep/index.html</old_value>
 <assignee>nobody</assignee>
 </assignees>
 <history_entries>
+<history_entry>
+<task_id>121211</task_id>
+<field_name>summary</field_name>
+<old_value>[medium] Pod-support</old_value>
+<updator>bflorat</updator>
+<date>1134507907</date>
+</history_entry>
 </history_entries>
 </task>
 </project>
@@ -19619,20 +20714,41 @@ http://www.singularsys.com/jep/index.html</old_value>
 <task_id>113832</task_id>
 <summary>Java Web Start package</summary>
 <detail></detail>
-<percent_complete>0</percent_complete>
+<percent_complete>100</percent_complete>
 <priority>6</priority>
 <hours>10</hours>
 <start_date>1111960800</start_date>
-<end_date>1111960800</end_date>
+<end_date>1134169200</end_date>
 <creator>bflorat</creator>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <dependencies>
 <dependent_on>100</dependent_on>
 </dependencies>
 <assignees>
-<assignee>nobody</assignee>
+<assignee>bflorat</assignee>
 </assignees>
 <history_entries>
+<history_entry>
+<task_id>113832</task_id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<updator>bflorat</updator>
+<date>1134223806</date>
+</history_entry>
+<history_entry>
+<task_id>113832</task_id>
+<field_name>percent_complete</field_name>
+<old_value>0</old_value>
+<updator>bflorat</updator>
+<date>1134223806</date>
+</history_entry>
+<history_entry>
+<task_id>113832</task_id>
+<field_name>end_date</field_name>
+<old_value>1111960800</old_value>
+<updator>bflorat</updator>
+<date>1134223806</date>
+</history_entry>
 </history_entries>
 </task>
 <task>
