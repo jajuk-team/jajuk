@@ -270,6 +270,11 @@ public class Directory extends PropertyAdapter implements Comparable{
                         && !bDeepScan){
                    continue; 
                 }
+                //Check file name is correct (usefull to fix name encoding issues)
+                if (!new File(files[i].getAbsolutePath()).exists()){
+                    Log.warn("Cannot read file name (please rename it): "+files[i].getAbsolutePath());
+                    continue;
+                }
                 boolean bIsMusic = (Boolean)TypeManager.getInstance().getTypeByExtension(Util.getExtension(files[i])).getValue(XML_TYPE_IS_MUSIC);
                 if (bIsMusic) {
                     String sId = MD5Processor.hash(

@@ -273,12 +273,11 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
                 }					
             }
             
-            int iRemovedFiles = iNbFilesBeforeRefresh - (FileManager.getInstance().getElementCount()-iNbNewFiles); 
             //Display end of refresh message with stats
             lTime = System.currentTimeMillis()-lTime;
             StringBuffer sbOut = new StringBuffer("[").append(getName()).append(Messages.getString("Device.25")).append(((lTime<1000)?lTime+" ms":lTime/1000+" s")). //$NON-NLS-1$ //$NON-NLS-2$
-            append(Messages.getString("Device.26")).append(iNbNewFiles).append(Messages.getString("Device.27")). //$NON-NLS-1$ //$NON-NLS-2$
-            append(iRemovedFiles).append(Messages.getString("Device.28")); //$NON-NLS-1$
+            append(Messages.getString("Device.26")).append(iNbNewFiles). //$NON-NLS-1$ //$NON-NLS-2$
+            append(Messages.getString("Device.27"));
             if (iNbCorruptedFiles > 0){
                 sbOut.append(" - ").append(iNbCorruptedFiles).append(Messages.getString("Device.43")); //$NON-NLS-1$ //$NON-NLS-2$
             }
@@ -286,7 +285,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
                 InformationJPanel.getInstance().setMessage(sbOut.toString(),InformationJPanel.INFORMATIVE); //$NON-NLS-1$
             }
             Log.debug(sbOut.toString()); 
-            if (iNbNewFiles > 0 || iRemovedFiles > 0){
+            if (iNbNewFiles > 0 ){
                 return true;
             }
             return false;
@@ -354,7 +353,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
             //force a refresh of this device and src device before any sync
             refreshCommand(false);
             Device dSrc = (Device)DeviceManager.getInstance().getItem(sIdSrc);
-            dSrc.refresh(false);
+            dSrc.refreshCommand(false);
             //start message
             InformationJPanel.getInstance().setMessage(new StringBuffer(Messages.getString("Device.31")). //$NON-NLS-1$
                 append(dSrc.getName()).append(',').append(this.getName()).append("]"). //$NON-NLS-1$

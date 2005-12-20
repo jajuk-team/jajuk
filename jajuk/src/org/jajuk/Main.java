@@ -307,9 +307,6 @@ public class Main implements ITechnicalStrings {
             //Auto mount devices
 			autoMount();
             
-            //Refresh all devices for startup
-            DeviceManager.getInstance().refreshAllDevices();
-            
             //Launch auto-refresh thread
             DeviceManager.getInstance().startAutoRefreshThread();
             

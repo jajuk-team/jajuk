@@ -539,7 +539,7 @@ public class Util implements ITechnicalStrings {
         Log.debug("Copying: "+file.getAbsolutePath() +"  to : "+directory.getAbsolutePath()); //$NON-NLS-1$ //$NON-NLS-2$
         File fileNew = new File(new StringBuffer(directory.getAbsolutePath()).append("/").append(file.getName()).toString()); //$NON-NLS-1$
         if ( !file.exists() || !file.canRead() ){
-            throw new JajukException("023",file.getAbsolutePath(),null); //$NON-NLS-1$
+            throw new JajukException("009",file.getAbsolutePath(),null); //$NON-NLS-1$
         }
         if (  !fileNew.getParentFile().canWrite() ){
             throw new JajukException("024",file.getAbsolutePath(),null); //$NON-NLS-1$
@@ -559,7 +559,7 @@ public class Util implements ITechnicalStrings {
     public static void copy(File file,File fNew) throws Exception{
         Log.debug("Copying: "+file.getAbsolutePath() +"  to : "+fNew.getAbsolutePath()); //$NON-NLS-1$ //$NON-NLS-2$
         if ( !file.exists() || !file.canRead() ){
-            throw new JajukException("023",file.getAbsolutePath(),null); //$NON-NLS-1$
+            throw new JajukException("009",file.getAbsolutePath(),null); //$NON-NLS-1$
         }
         if (  !fNew.getParentFile().canWrite() ){
             throw new JajukException("024",file.getAbsolutePath(),null); //$NON-NLS-1$

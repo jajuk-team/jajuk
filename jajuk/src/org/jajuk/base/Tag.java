@@ -265,7 +265,7 @@ public class Tag implements ITechnicalStrings{
             }
         } catch (Exception e) {
             //just debug, no warn because wrong order are too often and generate too much traces
-            Log.debug("Wrong order:"+fio.getName()); //$NON-NLS-1$
+            Log.warn("Wrong order:"+fio.getName()); //$NON-NLS-1$
             l = 0;
         }
         return l;    

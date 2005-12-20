@@ -322,11 +322,14 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
      */
     private synchronized void populateCatalog(){
         SwingWorker sw = new SwingWorker() {
+            String sMessageOld = "";
+            int iMessageOld = 0;
+                
             @Override
             public Object construct() {
                 Util.waiting();
-                String sMessageOld = InformationJPanel.getInstance().getMessage();
-                int iMessageOld = InformationJPanel.getInstance().getMessageType();
+                sMessageOld = InformationJPanel.getInstance().getMessage();
+                iMessageOld = InformationJPanel.getInstance().getMessageType();
                 //remove all devices
                 if (jpItems.getComponentCount() > 0 ){
                     jpItems.removeAll();
@@ -428,8 +431,6 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
                         jpItems.add(cover);
                     }
                 }
-                //reset message dialog, OK I know that the message can change during long actions but...
-                InformationJPanel.getInstance().setMessage(sMessageOld,iMessageOld);
                 Util.stopWaiting();
                 return null;
             }
@@ -437,6 +438,8 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
             public void finished() {
                 jsp.revalidate();
                 jsp.repaint();
+                //reset message dialog, OK I know that the message can change during long actions but...
+                InformationJPanel.getInstance().setMessage(sMessageOld,iMessageOld);
             }
         };
         sw.start();
@@ -573,8 +576,8 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
             //take first track author as author
             jlAuthor = new JLabel(track.getAuthor().getName2());
             jlAlbum = new JLabel(album.getName2());
-            jlAuthor.setFont(new Font("Dialog",Font.PLAIN,12)); //$NON-NLS-1$
-            jlAlbum.setFont(new Font("Dialog",Font.PLAIN,12)); //$NON-NLS-1$
+            jlAuthor.setFont(new Font("Dialog",Font.BOLD,12)); //$NON-NLS-1$
+            jlAlbum.setFont(new Font("Dialog",Font.BOLD,12)); //$NON-NLS-1$
             
             add(jpIcon,"1,0");
             add(jlAuthor,"1,2");
