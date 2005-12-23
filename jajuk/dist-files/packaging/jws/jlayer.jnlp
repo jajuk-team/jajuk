@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <jnlp spec="1.0+" codebase="http://jajuk.sourceforge.net/jws/default" href="jlayer.jnlp">
+    <jnlp spec="1.0+" codebase="http://jajuk.sourceforge.net/jws/JWS_DEPLOY_REPLACED_BY_ANT" href="jlayer.jnlp">
     <information>
         <title>Jlayer</title>
         <vendor>Javazoom</vendor>

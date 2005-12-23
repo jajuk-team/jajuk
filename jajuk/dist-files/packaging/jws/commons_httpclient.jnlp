@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <jnlp spec="1.0+" codebase="http://jajuk.sourceforge.net/jws/default" href="commons-httclient.jnlp">
+    <jnlp spec="1.0+" codebase="http://jajuk.sourceforge.net/jws/JWS_DEPLOY_REPLACED_BY_ANT" href="commons-httclient.jnlp">
     <information>
         <title>CommonsHttpClient</title>
         <vendor>Apache Fondation</vendor>
     </information>
     <resources>
-        <jar href="commons-httpclient-3.0-rc3.jar"/>
+        <jar href="commons-httpclient-3.0.jar"/>
     </resources>
     <security> 
            <all-permissions/>

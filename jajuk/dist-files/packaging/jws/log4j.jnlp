@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <jnlp spec="1.0+" codebase="http://jajuk.sourceforge.net/jws/default" href="log4j.jnlp">
+    <jnlp spec="1.0+" codebase="http://jajuk.sourceforge.net/jws/JWS_DEPLOY_REPLACED_BY_ANT" href="log4j.jnlp">
     <information>
         <title>Log4j</title>
         <vendor>Apache Fondation</vendor>
     </information>
     <resources>
-        <jar href="log4j_jajuk-1.2.6.jar"/>
+        <jar href="log4j_reduced-1.2.6.jar"/>
     </resources>
     <security> 
            <all-permissions/>

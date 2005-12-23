@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <jnlp spec="1.0+" codebase="http://jajuk.sourceforge.net/jws/default" href="java_help.jnlp">
+    <jnlp spec="1.0+" codebase="http://jajuk.sourceforge.net/jws/JWS_DEPLOY_REPLACED_BY_ANT" href="java_help.jnlp">
     <information>
         <title>Java Help</title>
         <vendor>Sun</vendor>
     </information>
     <resources>
-        <jar href="jh_jajuk-2.0.2.jar"/>
+        <jar href="jh_reduced-2.0.2.jar"/>
     </resources>
     <security> 
            <all-permissions/>

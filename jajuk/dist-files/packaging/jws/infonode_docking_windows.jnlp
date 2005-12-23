@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <jnlp spec="1.0+" codebase="http://jajuk.sourceforge.net/jws/default" href="infonode_docking_windows.jnlp">
+    <jnlp spec="1.0+" codebase="http://jajuk.sourceforge.net/jws/JWS_DEPLOY_REPLACED_BY_ANT" href="infonode_docking_windows.jnlp">
     <information>
         <title>InfonodeDockingWindows</title>
         <vendor>NNL Technology AB</vendor>
     </information>
     <resources>
-        <jar href="infonodeDockingWindows-1.3.0.jar"/>
+        <jar href="infonodeDockingWindows-1.4.0.jar"/>
     </resources>
     <security> 
            <all-permissions/>
