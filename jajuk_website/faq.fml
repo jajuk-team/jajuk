@@ -124,6 +124,15 @@
       </answer>
     </faq>
     
+    <faq id="sound_deformation">
+    	<question>
+        	Sound is distorted and not good.
+      	</question>
+      	<answer>
+        	<p>Try to lower jajuk volume (gain) and pop up the system volume.</p>
+      	</answer>
+    	</faq>
+    
 	</part>
   
 </faqs>

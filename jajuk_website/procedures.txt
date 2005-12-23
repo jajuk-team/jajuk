@@ -100,6 +100,8 @@ API ADDITION/UPGRADE/REMOVAL PROCEDURE
 - Add/Change/Remove file in lib directory
 - Change MANIFEST (check new versions)
 - Change project.xml maven file for dependencies
+- Change api jnlp file
+- Sign all new jars (jarsigner myjar.jar jajukteam)
 
 *********************************************************
 NEW CONTRIBUTOR PROCEDURE
