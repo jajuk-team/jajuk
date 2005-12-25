@@ -70,6 +70,7 @@ import org.jajuk.base.PlaylistFileManager;
 import org.jajuk.base.StackItem;
 import org.jajuk.base.Track;
 import org.jajuk.i18n.Messages;
+import org.jajuk.ui.CDDBWizard;
 import org.jajuk.ui.DeviceWizard;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.PropertiesWizard;
@@ -98,7 +99,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
     
     /** Directories selection*/
     ArrayList alDirs;
-    
+        
     JPopupMenu jmenuFile;
     JMenuItem jmiFilePlay;
     JMenuItem jmiFilePush;
@@ -302,7 +303,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         jmenuDev.add(jmiDevCreatePlaylist);
         jmenuDev.add(jmiDevConfiguration);
         jmenuDev.add(jmiDevProperties);
-        
+         
         //Playlist file menu
         //File menu
         jmenuPlaylistFile = new JPopupMenu();
@@ -346,6 +347,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         ObservationManager.register(EVENT_DEVICE_MOUNT,this);
         ObservationManager.register(EVENT_DEVICE_UNMOUNT,this);
         ObservationManager.register(EVENT_DEVICE_REFRESH,this);
+        ObservationManager.register(EVENT_CDDB_WIZARD,this);
         
         //fill the tree
         populateTree();
@@ -520,10 +522,10 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
                 }
                 InformationJPanel.getInstance().setSelection(sbOut.toString());
                 if (ConfigurationManager.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE)){ //if table is synchronized with tree, notify the selection change
-                    Properties properties = new Properties();
-                    properties.put(DETAIL_SELECTION,hsSelectedFiles);
-                    ObservationManager.notify(new Event(EVENT_SYNC_TREE_TABLE,properties));
-                }
+	                Properties properties = new Properties();
+	                properties.put(DETAIL_SELECTION,hsSelectedFiles);
+	                ObservationManager.notify(new Event(EVENT_SYNC_TREE_TABLE,properties));
+	             }
             }
         });
         //Listen for double clic
@@ -566,7 +568,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
                         }
                         else{
                             FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFiles),
-                                ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
+                                    ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
                         }
                     }
                 }
@@ -745,83 +747,75 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
     public synchronized void populateTree(){
         top.removeAllChildren();
         //add devices
-        synchronized(DeviceManager.getInstance().getLock()){
-            ArrayList alDevices = new ArrayList(DeviceManager.getInstance().getItems());
-            Collections.sort(alDevices);
-            Iterator it1 = DeviceManager.getInstance().getItems().iterator();
-            while ( it1.hasNext()){
-                Device device = (Device)it1.next();
-                DefaultMutableTreeNode nodeDevice = new DeviceNode(device);
-                top.add(nodeDevice);
-            }
+        ArrayList alDevices = new ArrayList(DeviceManager.getInstance().getItems());
+        Collections.sort(alDevices);
+        Iterator it1 = DeviceManager.getInstance().getItems().iterator();
+        while ( it1.hasNext()){
+            Device device = (Device)it1.next();
+            DefaultMutableTreeNode nodeDevice = new DeviceNode(device);
+            top.add(nodeDevice);
         }
         //add directories
-        synchronized(DirectoryManager.getInstance().getLock()){
-            ArrayList directories = new ArrayList(DirectoryManager.getInstance().getItems());
-            Collections.sort(directories);
-            Iterator it2 = directories.iterator();
-            while (it2.hasNext()){
-                Directory directory = (Directory)it2.next();
-                if (directory.shouldBeHidden()){
-                    continue;
-                }
-                if (!directory.getName().equals("")){ //device root directory, do not display //$NON-NLS-1$
-                    if (directory.getParentDirectory().getName().equals("")){  //parent directory is a device //$NON-NLS-1$
-                        DeviceNode deviceNode = DeviceNode.getDeviceNode(directory.getDevice());
-                        if ( deviceNode != null){
-                            deviceNode.add(new DirectoryNode(directory));
-                        }
-                    }
-                    else{  //parent directory not root 
-                        DirectoryNode parentDirectoryNode = DirectoryNode.getDirectoryNode(directory.getParentDirectory());
-                        if (parentDirectoryNode != null){ //paranoia check
-                            parentDirectoryNode.add(new DirectoryNode(directory));
-                        }
-                    }
-                }
-                else{  //add file at the device root
+        ArrayList directories = new ArrayList(DirectoryManager.getInstance().getItems());
+        Collections.sort(directories);
+        Iterator it2 = directories.iterator();
+        while (it2.hasNext()){
+            Directory directory = (Directory)it2.next();
+            if (directory.shouldBeHidden()){
+                continue;
+            }
+            if (!directory.getName().equals("")){ //device root directory, do not display //$NON-NLS-1$
+                if (directory.getParentDirectory().getName().equals("")){  //parent directory is a device //$NON-NLS-1$
                     DeviceNode deviceNode = DeviceNode.getDeviceNode(directory.getDevice());
-                    Iterator it = directory.getFiles().iterator();
-                    while (it.hasNext()){
-                        deviceNode.add(new FileNode((File)it.next()));
+                    if ( deviceNode != null){
+                        deviceNode.add(new DirectoryNode(directory));
                     }
-                    //add playlist files
-                    it = directory.getPlaylistFiles().iterator();
-                    while (it.hasNext()){
-                        deviceNode.add(new PlaylistFileNode((PlaylistFile)it.next()));
+                }
+                else{  //parent directory not root 
+                    DirectoryNode parentDirectoryNode = DirectoryNode.getDirectoryNode(directory.getParentDirectory());
+                    if (parentDirectoryNode != null){ //paranoia check
+                        parentDirectoryNode.add(new DirectoryNode(directory));
                     }
+                }
+            }
+            else{  //add file at the device root
+                DeviceNode deviceNode = DeviceNode.getDeviceNode(directory.getDevice());
+                Iterator it = directory.getFiles().iterator();
+                while (it.hasNext()){
+                    deviceNode.add(new FileNode((File)it.next()));
+                }
+                //add playlist files
+                it = directory.getPlaylistFiles().iterator();
+                while (it.hasNext()){
+                    deviceNode.add(new PlaylistFileNode((PlaylistFile)it.next()));
                 }
             }
         }
         //add files
-        synchronized(FileManager.getInstance().getLock()){
-            Set files = FileManager.getInstance().getSortedFiles();
-            Iterator it3 = files.iterator();
-            while (it3.hasNext()){
-                File file = (File)it3.next();
-                if ( file.shouldBeHidden()){ //should be hiden by option
-                    continue;
-                }
-                DirectoryNode directoryNode = DirectoryNode.getDirectoryNode(file.getDirectory());
-                if (directoryNode != null){
-                    directoryNode.add(new FileNode(file));
-                }
+        Set files = FileManager.getInstance().getSortedFiles();
+        Iterator it3 = files.iterator();
+        while (it3.hasNext()){
+            File file = (File)it3.next();
+            if ( file.shouldBeHidden()){ //should be hiden by option
+                continue;
+            }
+            DirectoryNode directoryNode = DirectoryNode.getDirectoryNode(file.getDirectory());
+            if (directoryNode != null){
+                directoryNode.add(new FileNode(file));
             }
         }
         //add playlist files
-        synchronized(PlaylistFileManager.getInstance().getLock()){
-            ArrayList playlists = new ArrayList(PlaylistFileManager.getInstance().getItems());
-            Collections.sort(playlists);
-            Iterator it4 = playlists.iterator();
-            while (it4.hasNext()){
-                PlaylistFile playlistFile = (PlaylistFile)it4.next();
-                if ( playlistFile.shouldBeHidden()){ //should be hiden by option
-                    continue;
-                }
-                DirectoryNode directoryNode = DirectoryNode.getDirectoryNode(playlistFile.getDirectory());
-                if (directoryNode != null){
-                    directoryNode.add(new PlaylistFileNode(playlistFile));
-                }
+        ArrayList playlists = new ArrayList(PlaylistFileManager.getInstance().getItems());
+        Collections.sort(playlists);
+        Iterator it4 = playlists.iterator();
+        while (it4.hasNext()){
+            PlaylistFile playlistFile = (PlaylistFile)it4.next();
+            if ( playlistFile.shouldBeHidden()){ //should be hiden by option
+                continue;
+            }
+            DirectoryNode directoryNode = DirectoryNode.getDirectoryNode(playlistFile.getDirectory());
+            if (directoryNode != null){
+                directoryNode.add(new PlaylistFileNode(playlistFile));
             }
         }
     }
@@ -837,44 +831,38 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         }
         else if (e.getSource() == jmiFilePlay ){
             FIFO.getInstance().push(Util.createStackItems(alFiles,
-                ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
+                    ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
         }
         else if (e.getSource() == jmiFileAddFavorites){
-            Bookmarks.getInstance().addFiles(alFiles);
+        	Bookmarks.getInstance().addFiles(alFiles);
         }
         else if (e.getSource() == jmiFilePush){
             FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFiles),
-                ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),true);
+                    ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),true);
         }
         else if ( alFiles!= null && (e.getSource() == jmiDirPlay || e.getSource() == jmiDevPlay)){  
             FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFiles),
-                ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
+                    ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
         }
         else if ( alFiles!= null && e.getSource() == jmiDirAddFavorites) {
-            Bookmarks.getInstance().addFiles(alFiles);
+        	Bookmarks.getInstance().addFiles(alFiles);
         }
         else if ( alFiles!= null && e.getSource() == jmiDirCDDBQuery) {
-        	ArrayList<IPropertyable> alTracks = new ArrayList(alSelected.size());
+//            ObservationManager.notify(new Event(EVENT_CDDB_WIZARD));      
+            ArrayList alTracks=null;
             for (IPropertyable item:alSelected){
                 Directory dir = (Directory)item;
-                for (File file:dir.getFilesRecursively()){
-                    Track track = file.getTrack();
-                    if (!alTracks.contains(track)){
-                        alTracks.add(track);
-                    }
-                }
-            }
-            //Please uncomment this when CDDBWizard class will be available
-        	//new CDDBWizard(alTracks);
+                new CDDBWizard(dir);                
+            }        	
         }
         else if (alFiles!= null  && (e.getSource() == jmiDirPush || e.getSource() == jmiDevPush)){
             FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFiles),
-                ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),true);
+                    ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),true);
         }
         else if (alFiles!= null  && (e.getSource() == jmiDirPlayShuffle || e.getSource() == jmiDevPlayShuffle)){
             Collections.shuffle(alFiles);
             FIFO.getInstance().push(Util.createStackItems(alFiles,
-                ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
+                    ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
         }
         else if (alFiles!= null  && (e.getSource() == jmiDirPlayRepeat || e.getSource() == jmiDevPlayRepeat)){
             FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFiles),true,true),false);
@@ -959,20 +947,20 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
             else{ //specific actions
                 if ( e.getSource() == jmiPlaylistFilePlay ){
                     FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFiles),
-                        ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
+                            ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
                 }
                 else if ( e.getSource()==jmiPlaylistFilePush ){
                     FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFiles),
-                        ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),true);
+                            ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),true);
                 }
                 else if ( e.getSource() == jmiPlaylistFilePlayShuffle ){
                     Collections.shuffle(alFiles);
                     FIFO.getInstance().push(Util.createStackItems(alFiles,
-                        ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
+                            ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
                 }
                 else if ( e.getSource() == jmiPlaylistFilePlayRepeat){
                     FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFiles),
-                        true,true),false);
+                            true,true),false);
                 }
                 else if ( e.getSource() == jmiPlaylistAddFavorites){
                     Bookmarks.getInstance().addFiles(alFiles);
@@ -1031,7 +1019,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
      */
     public void update(Event event) {
         final String subject = event.getSubject();
-        if ( subject.equals(EVENT_DEVICE_MOUNT) || 
+    	if ( subject.equals(EVENT_DEVICE_MOUNT) || 
                 subject.equals(EVENT_DEVICE_UNMOUNT) || 
                 subject.equals(EVENT_DEVICE_REFRESH) ) {
             SwingWorker sw = new SwingWorker() {
@@ -1077,7 +1065,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
                 Device device = ((DeviceNode)o).getDevice();
                 boolean bExp = device.getBooleanValue(XML_EXPANDED); 
                 if (bExp){
-                    jtree.expandRow(i);
+                     jtree.expandRow(i);
                 }
             }
             else if ( o instanceof DirectoryNode){
