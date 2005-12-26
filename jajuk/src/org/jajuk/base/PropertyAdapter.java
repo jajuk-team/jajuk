@@ -41,10 +41,10 @@ import org.xml.sax.Attributes;
  * @created 17 oct. 2003
  */
 abstract public class PropertyAdapter implements IPropertyable, Serializable,ITechnicalStrings {
-	
-	/** Item properties, singleton */
-	private LinkedHashMap properties;
-   /** ID. Ex:1,2,3... */
+    
+    /** Item properties, singleton */
+    private LinkedHashMap properties;
+    /** ID. Ex:1,2,3... */
     protected String sId;
     /** Name */
     protected String sName;
@@ -52,15 +52,15 @@ abstract public class PropertyAdapter implements IPropertyable, Serializable,ITe
     protected String sAny =""; //$NON-NLS-1$
     /** Flag for need to refresh any criteria */
     protected boolean bNeedRefresh = true;
-       
+    
     /**
      * Constructor
      * @param sId element ID
      * @param sName element name
      */
     PropertyAdapter(String sId,String sName){
-      setId(sId);
-      setName(sName);
+        setId(sId);
+        setName(sName);
     }
     
     /**
@@ -94,29 +94,29 @@ abstract public class PropertyAdapter implements IPropertyable, Serializable,ITe
     }
     
     /*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.jajuk.base.Propertyable#getProperties()
-	 */
-	public LinkedHashMap getProperties() {
-		if ( properties == null){
-			properties = new LinkedHashMap(10);
-		}
-		return properties;
-	}
-	    
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.jajuk.base.Propertyable#getProperty(java.lang.String)
-	 */
-	public Object getValue(String sKey) {
-		//look at properties to check the given property is known
-	    if ( !getProperties().containsKey(sKey)){ //no? take property default
+     * (non-Javadoc)
+     * 
+     * @see org.jajuk.base.Propertyable#getProperties()
+     */
+    public LinkedHashMap getProperties() {
+        if ( properties == null){
+            properties = new LinkedHashMap(10);
+        }
+        return properties;
+    }
+    
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.jajuk.base.Propertyable#getProperty(java.lang.String)
+     */
+    public Object getValue(String sKey) {
+        //look at properties to check the given property is known
+        if ( !getProperties().containsKey(sKey)){ //no? take property default
             return getDefaultValue(sKey);
-		}
-		return getProperties().get(sKey); //return property value
-	}
+        }
+        return getProperties().get(sKey); //return property value
+    }
     
     
     public long getLongValue(String sKey){
@@ -127,14 +127,14 @@ abstract public class PropertyAdapter implements IPropertyable, Serializable,ITe
         return (Long)getProperties().get(sKey); //return property value
     }
     
-        
+    
     public double getDoubleValue(String sKey){
-       //look at properties to check the given property is known
+        //look at properties to check the given property is known
         if ( !getProperties().containsKey(sKey)){ //no? take property default
             return (Double)getDefaultValue(sKey);
         }
         return (Double)getProperties().get(sKey); //return property value
-     }
+    }
     
     /**
      * Return String value for String type values. We assume that given property is a String. If you are not sure, use Util.parse method
@@ -175,21 +175,21 @@ abstract public class PropertyAdapter implements IPropertyable, Serializable,ITe
      */
     public boolean containsProperty(String sKey) {
         return properties.containsKey(sKey) 
-            && properties.get(sKey) != null 
-            && !properties.get(sKey).equals(""); //$NON-NLS-1$
+        && properties.get(sKey) != null 
+        && !properties.get(sKey).equals(""); //$NON-NLS-1$
     }
     
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.jajuk.base.Propertyable#setProperty(java.lang.String, java.lang.String)
-	 */
-	public void setProperty(String sKey, Object oValue) {
-	    LinkedHashMap properties = getProperties();
-		properties.put(sKey, oValue);
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.jajuk.base.Propertyable#setProperty(java.lang.String, java.lang.String)
+     */
+    public void setProperty(String sKey, Object oValue) {
+        LinkedHashMap properties = getProperties();
+        properties.put(sKey, oValue);
         bNeedRefresh = true; //notice getAny to we need to rebuild Any criteria
     }
-        
+    
     /* (non-Javadoc)
      * @see org.jajuk.base.IPropertyable#getAny()
      */
@@ -214,7 +214,7 @@ abstract public class PropertyAdapter implements IPropertyable, Serializable,ITe
         }
         return sAny;
     }
-	
+    
     /* (non-Javadoc)
      * @see org.jajuk.base.IPropertyable#setDefaultProperty(java.lang.String, java.lang.String)
      */
@@ -222,7 +222,7 @@ abstract public class PropertyAdapter implements IPropertyable, Serializable,ITe
         properties.put(meta.getName(),meta.getDefaultValue());
     }
     
-	/**
+    /**
      * Return an XML representation of this item  
      * @return
      */
@@ -245,10 +245,10 @@ abstract public class PropertyAdapter implements IPropertyable, Serializable,ITe
      */
     private String getPropertiesXml() {
         LinkedHashMap properties = getProperties();
-		Iterator it = properties.keySet().iterator();
-     	StringBuffer sb = new StringBuffer(); //$NON-NLS-1$
-		while (it.hasNext()) {
-			String sKey = (String) it.next();
+        Iterator it = properties.keySet().iterator();
+        StringBuffer sb = new StringBuffer(); //$NON-NLS-1$
+        while (it.hasNext()) {
+            String sKey = (String) it.next();
             String sValue = null;
             Object oValue = properties.get(sKey);
             if (oValue != null){
@@ -260,11 +260,11 @@ abstract public class PropertyAdapter implements IPropertyable, Serializable,ITe
                 }
                 sValue = Util.formatXML(sValue); //make sure to remove non-XML characters
             }
-			sb.append(" "+Util.formatXML(sKey) + "='" + sValue + "'"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		}
-		return sb.toString();
-	}
-	
+            sb.append(" "+Util.formatXML(sKey) + "='" + sValue + "'"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        }
+        return sb.toString();
+    }
+    
     /**
      * Set all personnal properties of an XML file for an item (doesn't overwrite existing properties for perfs)
      * 
@@ -277,7 +277,6 @@ abstract public class PropertyAdapter implements IPropertyable, Serializable,ITe
             if (!properties.containsKey(sProperty)){
                 String sValue = attributes.getValue(i);
                 PropertyMetaInformation meta = getMeta(sProperty);
-                //parse boolean values
                 try {
                     setProperty(sProperty, Util.parse(sValue,meta.getType(),meta.getFormat()));
                 } catch (Exception e) {
@@ -286,38 +285,38 @@ abstract public class PropertyAdapter implements IPropertyable, Serializable,ITe
             }
         }
     }
-	
-	/**
-	 * @param properties The properties to set.
-	 */
-	public void setProperties(LinkedHashMap properties) {
-		this.properties = properties;
-	}
-	
-	/* (non-Javadoc)
-	 * @see org.jajuk.base.IPropertyable#removeProperty(java.lang.String)
-	 */
-	public void removeProperty(String sKey) {
-        LinkedHashMap properties = getProperties();
-		if (properties.containsKey(sKey)){
-			properties.remove(sKey);
-        }
-	}
-	
-	/* (non-Javadoc)
-	 * @see org.jajuk.base.IPropertyable#displayProperty()
-	 */
-	public void displayProperties() {
-	}
     
- /**
+    /**
+     * @param properties The properties to set.
+     */
+    public void setProperties(LinkedHashMap properties) {
+        this.properties = properties;
+    }
+    
+    /* (non-Javadoc)
+     * @see org.jajuk.base.IPropertyable#removeProperty(java.lang.String)
+     */
+    public void removeProperty(String sKey) {
+        LinkedHashMap properties = getProperties();
+        if (properties.containsKey(sKey)){
+            properties.remove(sKey);
+        }
+    }
+    
+    /* (non-Javadoc)
+     * @see org.jajuk.base.IPropertyable#displayProperty()
+     */
+    public void displayProperties() {
+    }
+    
+    /**
      * @param id The sId to set.
      */
     public void setId(String id) {
         sId = id;
         setProperty(XML_ID,id);
     }
-
+    
     /**
      * @param name The sName to set.
      */
@@ -325,8 +324,8 @@ abstract public class PropertyAdapter implements IPropertyable, Serializable,ITe
         sName = name;
         setProperty(XML_NAME,name);
     }
-	
-   
+    
+    
     /**
      * Default implementation for this method, simply return standard value
      */
@@ -377,18 +376,18 @@ abstract public class PropertyAdapter implements IPropertyable, Serializable,ITe
     public PropertyMetaInformation getMeta(String sProperty){
         return ItemManager.getItemManager(this.getClass()).getMetaInformation(sProperty);
     }
-       
+    
     /**
      * Clone all properties from a given properties list but not overwrite constructor properties
      * @param propertiesSource
      */
     public void cloneProperties(IPropertyable propertiesSource){
-    	Iterator it = propertiesSource.getProperties().keySet().iterator();
-    	while (it.hasNext()){
-    		String sProperty = (String)it.next();
+        Iterator it = propertiesSource.getProperties().keySet().iterator();
+        while (it.hasNext()){
+            String sProperty = (String)it.next();
             if (!getMeta(sProperty).isConstructor()){
-    			this.properties.put(sProperty,propertiesSource.getValue(sProperty));
-    		}
-    	}
+                this.properties.put(sProperty,propertiesSource.getValue(sProperty));
+            }
+        }
     }
 }
