@@ -257,7 +257,6 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
                     fNewVolume = 0;
                 }
                 try {
-                    System.out.println("fading:"+fNewVolume);
                     setVolume(fNewVolume);
                 }
                 catch (Exception e) {
@@ -273,7 +272,6 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
                 lTime = (long)(lDuration * fPos);
             }
             //Cross-Fade test
-            //System.out.println((lTime)+"/"+(lDuration - FADE_DURATION));
             if (iFadeDuration > 0  && lTime > (lDuration - iFadeDuration)){
                 bFading = true;
                 this.fadingVolume = fVolume;
