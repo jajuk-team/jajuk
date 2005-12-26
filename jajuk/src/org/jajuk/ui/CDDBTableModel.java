@@ -1,5 +1,21 @@
-/**
- * 
+/*
+ *  Jajuk
+ *  Copyright (C) 2003 Bertrand Florat
+ *
+ *  This program is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  as published by the Free Software Foundation; either version 2
+ *  of the License, or any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ *  $Revision$
  */
 package org.jajuk.ui;
 
@@ -12,18 +28,18 @@ import org.jajuk.base.PropertyMetaInformation;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.i18n.Messages;
+import org.jajuk.ui.CDDBWizard.CDDBTrack;
 
-import entagged.freedb.Freedb;
-import entagged.freedb.FreedbException;
-import entagged.freedb.FreedbQueryResult;
 import entagged.freedb.FreedbReadResult;
 
 /**
- * @author dhalsim
+ * @author Erwan Richard
+ * @created 15 december 2005
  */
+
 public class CDDBTableModel extends JajukTableModel {
 
-    ArrayList alItems;
+    ArrayList<CDDBTrack> alItems;
 
     /**
      * Model constructor
@@ -37,21 +53,21 @@ public class CDDBTableModel extends JajukTableModel {
         super(5);
         this.alItems = alItems;
 
+        // Current Album title 
+        vColNames.add(Messages.getString("CDDBWizard.3"));
+        vId.add("CDDBWizard.1");
+
         // Filename
-        vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_ALBUM));
-        vId.add(XML_ALBUM);
+        vColNames.add(Messages.getString("CDDBWizard.1"));
+        vId.add("CDDBWizard.2");
 
-        // Current Track Name
-        vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_FILE_NAME));
-        vId.add(XML_FILE_NAME);
-
-        // Current Album Name
-        vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_TRACK));
-        vId.add(XML_TRACK);
+        // Current Track title
+        vColNames.add(Messages.getString("CDDBWizard.2"));
+        vId.add("CDDBWizard.2");
 
         // Proposed Track Name
-        vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_CDDB_TRACK));
-        vId.add(XML_CDDB_TRACK);
+        vColNames.add(Messages.getString("CDDBWizard.4"));
+        vId.add("CDDBWizard.4");
 
         // custom properties now
         Iterator it = TrackManager.getInstance().getCustomProperties().iterator();
@@ -62,18 +78,10 @@ public class CDDBTableModel extends JajukTableModel {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.jajuk.ui.JajukTableModel#populateModel(java.lang.String, java.lang.String)
-     */
-
     /**
      * Fill model with tracks
      */
-    public void populateModel(FreedbReadResult fdbReader) {
-        // Filter mounted files if needed and apply sync table with tree option if needed
-        
+    public void populateModel(FreedbReadResult fdbReader) {               
         iRowNum = alItems.size();
         int iColNum = iNumberStandardRows;
         Iterator it = alItems.iterator();
@@ -81,7 +89,7 @@ public class CDDBTableModel extends JajukTableModel {
         oItems = new IPropertyable[iRowNum];
         bCellEditable = new boolean[iRowNum][iColNum];
         for (int iRow = 0; it.hasNext(); iRow++) {
-            Track track = (Track) it.next();
+            Track track = ((CDDBTrack) it.next()).track;
             setItemAt(iRow, track);
             ArrayList file = track.getFiles();
             Iterator ifi = file.iterator();

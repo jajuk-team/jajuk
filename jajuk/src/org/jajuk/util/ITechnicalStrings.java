@@ -592,10 +592,7 @@ public interface ITechnicalStrings {
     public static final String XML_UNIQUE = "unique";  //property unique?
     public static final String XML_CUSTOM = "custom"; //custom property flag 
     public static final String XML_PROPERTY = "property"; //property 
-    public static final String XML_DEFAULT_VALUE = "default_value"; //default value
-    public static final String XML_ACCEPT = "accept"; 
-    public static final String XML_CDDB_TRACK = "cddb_track";
-    public static final String XML_CDDB_ALBUM = "cddb_album";
+    public static final String XML_DEFAULT_VALUE = "default_value"; //default value  
         
     //Reserved XML tags for property names (note that a user can choose a property name equals to meta information attributes names without pbm)
     public static final String[] XML_RESERVED_ATTRIBUTE_NAMES = {
