@@ -362,6 +362,7 @@ public interface ITechnicalStrings {
     public static final String EVENT_FILE_NAME_CHANGED="file name changed"; //file name change
 	public static final String EVENT_RATE_CHANGED="file rate changed"; //file rate change
     public static final String EVENT_TIP_OF_THE_DAY="tip of the day"; // show tip of the day
+    public static final String EVENT_CDDB_WIZARD="cddb wizard"; // show tip of the day
     //details keys
 	public static final String DETAIL_CURRENT_FILE_ID="current file id";
 	public static final String DETAIL_CURRENT_FILE="current file";
@@ -585,7 +586,10 @@ public interface ITechnicalStrings {
     public static final String XML_UNIQUE = "unique";  //property unique?
     public static final String XML_CUSTOM = "custom"; //custom property flag 
     public static final String XML_PROPERTY = "property"; //property 
-    public static final String XML_DEFAULT_VALUE = "default_value"; //default value 
+    public static final String XML_DEFAULT_VALUE = "default_value"; //default value
+    public static final String XML_ACCEPT = "accept"; 
+    public static final String XML_CDDB_TRACK = "cddb_track";
+    public static final String XML_CDDB_ALBUM = "cddb_album";
         
     //Reserved XML tags for property names (note that a user can choose a property name equals to meta information attributes names without pbm)
     public static final String[] XML_RESERVED_ATTRIBUTE_NAMES = {
