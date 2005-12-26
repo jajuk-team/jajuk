@@ -126,6 +126,8 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
     JTextField jtfNoveltiesAge;
     JLabel jlVisiblePlanned;
     JTextField jtfVisiblePlanned;
+    JLabel jlCrossFadeDuration;
+    JTextField jtfCrossFadeDuration;
     JCheckBox jcbDefaultActionClick;
     JCheckBox jcbDefaultActionDrop;
     JCheckBox jcbShowPopup;
@@ -368,7 +370,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
         //Intro
         JPanel jp = new JPanel();
         double sizeIntro[][] = {{0.50,0.45},
-                {20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator}};
+                {20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator}};
         jp.setLayout(new TableLayout(sizeIntro));
         //intro position
         jlIntroPosition = new JLabel(Messages.getString("ParameterView.59")); //$NON-NLS-1$
@@ -507,6 +509,32 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
                 return verify(input);
             }
         });
+        jlCrossFadeDuration = new JLabel(Messages.getString("ParameterView.190")); //$NON-NLS-1$
+        jlCrossFadeDuration.setToolTipText(Messages.getString("ParameterView.191")); //$NON-NLS-1$
+        jtfCrossFadeDuration = new JTextField(3);
+        jtfCrossFadeDuration.setToolTipText(Messages.getString("ParameterView.191")); //$NON-NLS-1$
+        jtfCrossFadeDuration.setInputVerifier(new InputVerifier(){
+            public boolean verify(JComponent input) {
+                JTextField tf = (JTextField) input;
+                String sText = tf.getText();
+                try{
+                    int iValue = Integer.parseInt(sText);
+                    if (iValue < 0 || iValue > 20){  
+                        return false;
+                    }
+                }
+                catch(Exception e){
+                    return false;
+                }
+                jbOK.setEnabled(true);
+                return true;
+            }
+            
+            public boolean shouldYieldFocus(JComponent input) {
+                return verify(input);
+            }
+        });
+        
         //add panels
         jp.add(jlIntroPosition,"0,0"); //$NON-NLS-1$
         jp.add(jtfIntroPosition,"1,0"); //$NON-NLS-1$
@@ -518,9 +546,11 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
         jp.add(jtfNoveltiesAge,"1,6"); //$NON-NLS-1$
         jp.add(jlVisiblePlanned,"0,8"); //$NON-NLS-1$
         jp.add(jtfVisiblePlanned,"1,8"); //$NON-NLS-1$
+        jp.add(jlCrossFadeDuration,"0,10"); //$NON-NLS-1$
+        jp.add(jtfCrossFadeDuration,"1,10"); //$NON-NLS-1$
         
         double sizeOptions[][] = {{0.99},
-                {iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,60+2*iYSeparator,iYSeparator,130,iYSeparator}};
+                {iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,TableLayout.PREFERRED,iYSeparator,TableLayout.PREFERRED,iYSeparator}};
         jpOptions.setLayout(new TableLayout(sizeOptions));
         
         jpOptions.add(jcbDisplayUnmounted,"0,1"); //$NON-NLS-1$
@@ -949,6 +979,10 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
         if (!sVisiblePlanned.equals("")){ //$NON-NLS-1$
             ConfigurationManager.setProperty(CONF_OPTIONS_VISIBLE_PLANNED,sVisiblePlanned);
         }
+        String sFade = jtfCrossFadeDuration.getText();
+        if (!sFade.equals("")){ //$NON-NLS-1$
+            ConfigurationManager.setProperty(CONF_FADE_DURATION,sFade);
+        }
         //startup
         if (jrbNothing.isSelected()){
             ConfigurationManager.setProperty(CONF_STARTUP_MODE,STARTUP_MODE_NOTHING);
@@ -1076,6 +1110,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
         jtfBestofSize.setText(ConfigurationManager.getProperty(CONF_BESTOF_SIZE));
         jtfNoveltiesAge.setText(ConfigurationManager.getProperty(CONF_OPTIONS_NOVELTIES_AGE));
         jtfVisiblePlanned.setText(ConfigurationManager.getProperty(CONF_OPTIONS_VISIBLE_PLANNED));
+        jtfCrossFadeDuration.setText(ConfigurationManager.getProperty(CONF_FADE_DURATION));
         jcbShare.setSelected(ConfigurationManager.getBoolean(CONF_P2P_SHARE));
         jpfPasswd.setText(ConfigurationManager.getProperty(CONF_P2P_PASSWORD));
         jcbAddRemoteProperties.setSelected(ConfigurationManager.getBoolean(CONF_P2P_ADD_REMOTE_PROPERTIES));

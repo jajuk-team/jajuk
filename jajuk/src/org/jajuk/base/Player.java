@@ -43,7 +43,11 @@ public class Player implements ITechnicalStrings{
     /**Current file read*/
     private static File fCurrent;
     /**Current player used*/
-    private static IPlayerImpl pCurrentPlayerImpl;
+    private static IPlayerImpl playerImpl;
+    /**Current player used nb 1*/
+    private static IPlayerImpl playerImpl1;
+    /**Current player used nb 2*/
+    private static IPlayerImpl playerImpl2;
     /**Mute flag */
     private static boolean bMute = false;
     /**Paused flag*/
@@ -60,20 +64,45 @@ public class Player implements ITechnicalStrings{
      * @return true if play is OK
      */
     public static boolean play(final File file,final float fPosition,final long length) {
-        stop(); //stop any playing track
         fCurrent = file;
-        pCurrentPlayerImpl = file.getTrack().getType().getPlayerImpl();
         try {
+            playerImpl = null;
+            Class cPlayer = file.getTrack().getType().getPlayerImpl();
+            //check if we have already an instanciated player for this kind of file
+            if (playerImpl1 != null 
+                    && playerImpl1.getClass().equals(cPlayer)
+                    && playerImpl1.getState() != FADING_STATUS){
+                    playerImpl = playerImpl1;
+            }
+            else if (playerImpl2 != null 
+                    && playerImpl2.getClass().equals(cPlayer)
+                    && playerImpl2.getState() != FADING_STATUS){
+                    playerImpl = playerImpl2;
+            }
+            //no matching type? ok, take a non-null player not fading is available
+            else if ( (playerImpl1 != null && playerImpl1.getState() != FADING_STATUS) ){
+                    playerImpl1 = (IPlayerImpl)cPlayer.newInstance();
+                    playerImpl = playerImpl1;
+            }
+            else if ( (playerImpl2 != null && playerImpl2.getState() != FADING_STATUS) ){
+                    playerImpl2 = (IPlayerImpl)cPlayer.newInstance();
+                    playerImpl = playerImpl2;
+            }
+            else { 
+                //No player yet, OK, take first one
+                playerImpl1 = (IPlayerImpl)cPlayer.newInstance();
+                playerImpl = playerImpl1;
+            }
             bPlaying = true;
             bPaused = false;
             boolean bWaitingLine = true;
             while (bWaitingLine){
                 try{
                     if (bMute){
-                        pCurrentPlayerImpl.play(fCurrent,fPosition,length,0.0f);
+                        playerImpl.play(fCurrent,fPosition,length,0.0f);
                     }
                     else{
-                        pCurrentPlayerImpl.play(fCurrent,fPosition,length,ConfigurationManager.getFloat(CONF_VOLUME));
+                        playerImpl.play(fCurrent,fPosition,length,ConfigurationManager.getFloat(CONF_VOLUME));
                     }
                     bWaitingLine = false;
                 }
@@ -105,7 +134,7 @@ public class Player implements ITechnicalStrings{
             //process playing error asynchonously to avoid loop problems when capscading errors
             new Thread(){
                 public void run(){
-                    Player.stop();
+                    Player.stop(false);
                     FIFO.getInstance().finished();
                 }
             }.start();
@@ -115,15 +144,22 @@ public class Player implements ITechnicalStrings{
     
     /**
      * Stop the played track
-     * @param type
+     * @param bAll stop fading tracks as well ?
      */
-    public static void stop() {
+    public static void stop(boolean bAll) {
         try {
-            if (pCurrentPlayerImpl == null){ //none current player, leave
+            if (playerImpl == null){ //none current player, leave
                 return;
             }
-            if (fCurrent!=null){
-                fCurrent.getTrack().getType().getPlayerImpl().stop();
+            if (fCurrent != null){
+                if (playerImpl1 != null 
+                        && (playerImpl1.getState() != FADING_STATUS || bAll)){
+                    playerImpl1.stop();
+                }
+                if (playerImpl2 != null 
+                        && (playerImpl2.getState() != FADING_STATUS || bAll)){
+                    playerImpl2.stop();
+                }
                 bPaused = false; //cancel any current pause
                 bPlaying = false;
             }
@@ -132,20 +168,26 @@ public class Player implements ITechnicalStrings{
         }
     }
     
+    
     /**
      * Alternative Mute/unmute the player
      * @throws Exception
      */
     public static void mute() {
         try {
-            if (pCurrentPlayerImpl == null){ //none current player, leave
+            if (playerImpl == null){ //none current player, leave
                 return;
             }
             if (Player.bMute){ //already muted, unmute it by setting the volume previous mute
-                pCurrentPlayerImpl.setVolume(ConfigurationManager.getFloat(CONF_VOLUME));
+                playerImpl.setVolume(ConfigurationManager.getFloat(CONF_VOLUME));
             }
             else{
-                pCurrentPlayerImpl.setVolume(0.0f);
+                if (playerImpl1 != null){
+                    playerImpl1.setVolume(0.0f);;
+                }
+                if (playerImpl2 != null){
+                    playerImpl2.setVolume(0.0f);;
+                }
             }
             Player.bMute = !Player.bMute;
             //notify UI
@@ -163,14 +205,19 @@ public class Player implements ITechnicalStrings{
      */
     public static void mute(boolean bMute) {
         try {
-            if (pCurrentPlayerImpl == null){ //none current player, leave
+            if (playerImpl == null){ //none current player, leave
                 return;
             }
             if (bMute){
-                pCurrentPlayerImpl.setVolume(0.0f);
+                if (playerImpl1 != null){
+                    playerImpl1.setVolume(0.0f);;
+                }
+                if (playerImpl2 != null){
+                    playerImpl2.setVolume(0.0f);;
+                }
             }
             else{
-                pCurrentPlayerImpl.setVolume(ConfigurationManager.getFloat(CONF_VOLUME));
+                playerImpl.setVolume(ConfigurationManager.getFloat(CONF_VOLUME));
             }
             Player.bMute = bMute;
         } catch (Exception e) {
@@ -195,12 +242,12 @@ public class Player implements ITechnicalStrings{
     public static void setVolume(float fVolume){
         try {
             ConfigurationManager.setProperty(CONF_VOLUME,Float.toString(fVolume));
-            if (pCurrentPlayerImpl != null){
+            if (playerImpl != null){
                 //check, it can be over 1 for unknown reason
                 if (fVolume > 1.0f){
                     fVolume = 1.0f;
                 }
-                pCurrentPlayerImpl.setVolume(fVolume);
+                playerImpl.setVolume(fVolume);
                 ObservationManager.notify(new Event(EVENT_VOLUME_CHANGED));
             }
         } catch (Exception e) {
@@ -213,8 +260,8 @@ public class Player implements ITechnicalStrings{
      * @return Returns the lTime in ms
      */
     public static long getElapsedTime() {
-        if (pCurrentPlayerImpl != null){
-            return pCurrentPlayerImpl.getElapsedTime();
+        if (playerImpl != null){
+            return playerImpl.getElapsedTime();
         }
         else{
             return 0;
@@ -227,8 +274,8 @@ public class Player implements ITechnicalStrings{
             if (!bPlaying){ //ignore pause when not playing to avoid confusion between two tracks
                 return;
             }
-            if (pCurrentPlayerImpl != null){
-                pCurrentPlayerImpl.pause();
+            if (playerImpl != null){
+                playerImpl.pause();
             }
             bPaused = true;
         } catch (Exception e) {
@@ -239,10 +286,10 @@ public class Player implements ITechnicalStrings{
     /**resume the player*/
     public static void resume(){
         try {
-            if (pCurrentPlayerImpl == null){ //none current player, leave
+            if (playerImpl == null){ //none current player, leave
                 return;
             }
-            pCurrentPlayerImpl.resume();
+            playerImpl.resume();
             bPaused = false;
         } catch (Exception e) {
             Log.error(e); 
@@ -266,7 +313,7 @@ public class Player implements ITechnicalStrings{
     
     /**Seek to a given position in %. ex : 0.2 for 20% */
     public static void seek(float fPosition){
-        if (pCurrentPlayerImpl == null){ //none current player, leave
+        if (playerImpl == null){ //none current player, leave
             return;
         }
         // bound seek
@@ -277,7 +324,7 @@ public class Player implements ITechnicalStrings{
             fPosition = 0.99f;
         }
         try{
-            pCurrentPlayerImpl.seek(fPosition);
+            playerImpl.seek(fPosition);
         }
         catch(Exception e){ //we can get some errors in unexpected cases
             Log.debug(e.toString());
@@ -289,8 +336,8 @@ public class Player implements ITechnicalStrings{
      * @return position in track in %
      */
     public static float getCurrentPosition(){
-        if (pCurrentPlayerImpl != null){
-            return pCurrentPlayerImpl.getCurrentPosition();
+        if (playerImpl != null){
+            return playerImpl.getCurrentPosition();
         }
         else{
             return 0.0f;
@@ -301,8 +348,8 @@ public class Player implements ITechnicalStrings{
      * @return volume in track in %
      */
     public static float getCurrentVolume(){
-        if (pCurrentPlayerImpl != null){
-            return pCurrentPlayerImpl.getCurrentVolume();
+        if (playerImpl != null){
+            return playerImpl.getCurrentVolume();
         }
         else{
             return 0.0f;

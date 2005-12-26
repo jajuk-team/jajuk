@@ -76,4 +76,6 @@ public interface IPlayerImpl {
     
     /**Return player state */
 	public int getState();
+    
+    
 }

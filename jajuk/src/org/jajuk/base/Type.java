@@ -20,7 +20,6 @@
 package org.jajuk.base;
 
 import org.jajuk.i18n.Messages;
-import org.jajuk.players.IPlayerImpl;
 import org.jajuk.tag.ITagImpl;
 import org.jajuk.util.log.Log;
 
@@ -34,10 +33,10 @@ public class Type extends PropertyAdapter{
 	
 	/**Type extension ex:mp3,ogg */
 	private String sExtension;
-	/**Type player implementation */
-	private IPlayerImpl playerImpl;
-    /**Player impl*/
+	/**Player impl*/
     private Class cTagImpl;
+    /**Player class*/
+    Class cPlayerImpl;
 	
 	/**
 	 * Constructor
@@ -50,9 +49,9 @@ public class Type extends PropertyAdapter{
 	 */
 	public Type(String sId, String sName,String sExtension, Class cPlayerImpl,Class cTagImpl) throws Exception{
         super(sId,sName);
+        this.cPlayerImpl = cPlayerImpl;
         this.sExtension = sExtension;
         setProperty(XML_TYPE_EXTENSION,sExtension);
-        this.playerImpl = (IPlayerImpl)cPlayerImpl.newInstance();
         setProperty(XML_TYPE_PLAYER_IMPL,cPlayerImpl);
         this.cTagImpl = cTagImpl;
         if (cTagImpl != null){  //can be null for playlists
@@ -70,9 +69,9 @@ public class Type extends PropertyAdapter{
 	/**
 	 * @return
 	 */
-	public IPlayerImpl getPlayerImpl() {
-		return playerImpl;
-	}
+	public Class getPlayerImpl() throws Exception{
+	   return  cPlayerImpl;
+   }
 
 	/**
 	 * @return

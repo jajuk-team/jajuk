@@ -49,7 +49,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
     /** Current player */
     private BasicPlayer player;
 
-    /** Time elapsed in secs */
+    /** Time elapsed in ms */
     private long lTime = 0;
 
     /** Date of last elapsed time update */
@@ -66,7 +66,22 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
 
     /** Stored Volume */
     private float fVolume;
-
+    
+    /** Current track estimated duration in ms*/
+    private long lDuration;
+    
+    /**Cross fade duration in ms*/
+    int iFadeDuration = 0;
+    
+    /**Fading state*/
+    boolean bFading = false;
+    
+    /**Progress step in ms*/
+    private static final int PROGRESS_STEP = 900;
+    
+    /**Volume when starting fade*/
+    private float fadingVolume;
+    
     /*
      * (non-Javadoc)
      * 
@@ -79,6 +94,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
         this.mPlayingData = null;
         this.fVolume = fVolume;
         this.length = length;
+        this.bFading = false;
         // instanciate player is needed
        if (player == null ) {
            BasicPlayer.EXTERNAL_BUFFER_SIZE = ConfigurationManager.getInt(CONF_BUFFER_SIZE);
@@ -165,13 +181,19 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
      * @see org.jajuk.players.IPlayerImpl#seek(float) Ogg vorbis seek not yet supported
      */
     public void seek(float posValue) {
+        //if fading, ignore
+        if (bFading){
+            return;
+        }
+        //save current position
+        float fCurrentPos = fPos;
         //Do not seek to a position too near from the end : it can cause freeze. MAX=98%
         if (posValue>0.98f){
             posValue = 0.98f;
         }
         // leave if already seeking
         if (player != null && getState() == BasicPlayer.SEEKING) {
-            Log.debug("Already seeking, leaving"); //$NON-NLS-1$
+            Log.warn("Already seeking, leaving"); //$NON-NLS-1$
             return;
         }
         if (mPlayingData.containsKey("audio.type") && player != null) { //$NON-NLS-1$
@@ -186,9 +208,11 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
                     player.setGain(fVolume); //need this because a seek reset volume 
                 } catch (BasicPlayerException e) {
                     Log.error(e);
+                    return;
                 }
             } else {
                 Messages.showErrorMessage("126"); //$NON-NLS-1$
+                return;
             }
         }
     }
@@ -197,9 +221,13 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
      * @return player state, -1 if player is null.
      */
     public int getState() {
-        if (player != null) {
+        if (bFading){
+            return FADING_STATUS;
+        }
+        else if (player != null) {
             return player.getStatus();
-        } else {
+        } 
+        else {
             return -1;
         }
     }
@@ -209,6 +237,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
      */
     public void opened(Object arg0, Map arg1) {
         this.mPlayingData = arg1;
+        this.lDuration = Util.getTimeLengthEstimation(mPlayingData);
     }
 
     /**
@@ -216,18 +245,43 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
      */
     public void progress(int iBytesread, long lMicroseconds, byte[] bPcmdata,
             java.util.Map mProperties) {
-        if ((System.currentTimeMillis() - lDateLastUpdate) > 900) { 
-            //  update every 900 ms
+        if ((System.currentTimeMillis() - lDateLastUpdate) > PROGRESS_STEP) { 
             lDateLastUpdate = System.currentTimeMillis();
+            this.iFadeDuration = 1000 * ConfigurationManager.getInt(CONF_FADE_DURATION);
+            if (bFading){
+                //computes the volume we have to sub to reach zero at last progress()
+                float fVolumeStep = fadingVolume * ((float)PROGRESS_STEP/iFadeDuration);
+                float fNewVolume = fVolume - fVolumeStep;
+                //decrease volume by n% of initial volume 
+                if (fNewVolume < 0){
+                    fNewVolume = 0;
+                }
+                try {
+                    System.out.println("fading:"+fNewVolume);
+                    setVolume(fNewVolume);
+                }
+                catch (Exception e) {
+                    Log.error(e);
+                }
+                return;
+            }
             // computes read time
             if (mPlayingData.containsKey("audio.length.bytes")) { //$NON-NLS-1$
                 int byteslength = ((Integer) mPlayingData.get("audio.length.bytes")).intValue(); //$NON-NLS-1$
                 fPos = (byteslength != 0) ? (float) iBytesread / (float) byteslength : 0;
                 ConfigurationManager.setProperty(CONF_STARTUP_LAST_POSITION, Float.toString(fPos));
-                lTime = (long) (Util.getTimeLengthEstimation(mPlayingData) * fPos);
+                lTime = (long)(lDuration * fPos);
             }
-            // test end of length
-            if (length != TO_THE_END && lMicroseconds / 1000 > length) {
+            //Cross-Fade test
+            //System.out.println((lTime)+"/"+(lDuration - FADE_DURATION));
+            if (iFadeDuration > 0  && lTime > (lDuration - iFadeDuration)){
+                bFading = true;
+                this.fadingVolume = fVolume;
+                FIFO.getInstance().finished();
+            }
+             //Caution: lMicroseconds reset to zero after a seek
+            // test end of length for intro mode
+            else if (length != TO_THE_END && lTime > length) {
                 // length=-1 means there is no max length
                 try {
                     player.stop();
@@ -246,7 +300,10 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
         Log.debug("Player state changed: " + bpe); //$NON-NLS-1$
         switch (bpe.getCode()) {
         case BasicPlayerEvent.EOM:
-            FIFO.getInstance().finished();
+            if (!bFading){ //if using crossfade, ignore end of file
+                FIFO.getInstance().finished();
+            }
+            bFading = false;
             break;
         case BasicPlayerEvent.STOPPED:
             break;

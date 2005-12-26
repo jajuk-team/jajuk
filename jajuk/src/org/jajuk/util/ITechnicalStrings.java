@@ -59,10 +59,14 @@ public interface ITechnicalStrings {
     public static final int MAX_HISTORY_SIZE = 1000;
     /**Autocommit delay in ms*/
     public static final int AUTO_COMMIT_DELAY = 3600000;
-    /**Autorefresh delay in ms*/
-    public static final int AUTO_REFRESH_DELAY = 60000;
+    /**Autorefresh thread delay in ms*/
+    public static final int AUTO_REFRESH_DELAY = 30000;
+    /**Minimum reresh fequency (ms)*/
+    public static final int MIN_AUTO_REFRESH_DELAY = 30000;
     /**Garbager delay in ms*/
-    public static final int GARBAGER_DELAY = 10000;
+    public static final int GARBAGER_DELAY = 600000;
+    /**Fading status code*/
+    public static final int FADING_STATUS = 9999;
     
         
 	// Jajuk version
@@ -362,7 +366,7 @@ public interface ITechnicalStrings {
     public static final String EVENT_FILE_NAME_CHANGED="file name changed"; //file name change
 	public static final String EVENT_RATE_CHANGED="file rate changed"; //file rate change
     public static final String EVENT_TIP_OF_THE_DAY="tip of the day"; // show tip of the day
-    public static final String EVENT_CDDB_WIZARD="cddb wizard"; // show tip of the day
+    public static final String EVENT_CDDB_WIZARD = "cddb.wizard";
     //details keys
 	public static final String DETAIL_CURRENT_FILE_ID="current file id";
 	public static final String DETAIL_CURRENT_FILE="current file";
@@ -492,6 +496,7 @@ public interface ITechnicalStrings {
     public static final String CONF_SHOW_TIP_ON_STARTUP = "jajuk.tip.show_on_startup"; //Display tips on startup
     public static final String CONF_TIP_OF_DAY_INDEX = "jajuk.tip.index"; // Index of current displayed tip
     public static final String CONF_WIKIPEDIA_LANGUAGE = "jajuk.wikipedia.lang"; // wikipedia language
+    public static final String CONF_FADE_DURATION = "jajuk.fade_duration"; // cross fade duration in secs
 
     //Accuracy levels
 	public static final String ACCURACY_LOW = "low";
@@ -562,6 +567,7 @@ public interface ITechnicalStrings {
 	public static final String XML_QUALITY = "quality";
     public static final String XML_SIZE = "size";
     public static final String XML_DEVICE_MOUNT_POINT = "mount_point";
+    public static final String XML_DEVICE_AUTO_REFRESH = "auto_refresh";
     public static final String XML_DEVICE_AUTO_MOUNT = "auto_mount";
     public static final String XML_DEVICE_SYNCHRO_SOURCE = "synchro_source";
     public static final String XML_DEVICE_SYNCHRO_MODE = "synchro_mode";
@@ -595,7 +601,7 @@ public interface ITechnicalStrings {
     public static final String[] XML_RESERVED_ATTRIBUTE_NAMES = {
         XML_NAME,XML_ID,XML_TYPE_EXTENSION,XML_TYPE_PLAYER_IMPL,XML_TYPE_TAG_IMPL,
         XML_TYPE_TECH_DESC,XML_TYPE_SEEK_SUPPORTED,XML_TYPE_ICON,XML_TYPE_IS_MUSIC,
-        XML_TYPE,XML_URL,XML_DEVICE_AUTO_MOUNT,XML_EXPANDED,XML_DEVICE_MOUNT_POINT,
+XML_TYPE,XML_URL,XML_DEVICE_AUTO_MOUNT,XML_DEVICE_AUTO_REFRESH,XML_EXPANDED,XML_DEVICE_MOUNT_POINT,
         XML_ALBUM,XML_AUTHOR,XML_STYLE,XML_TRACK_LENGTH,XML_TRACK_YEAR,XML_TRACK_RATE,XML_FILES,XML_TRACK_HITS,XML_TRACK_ADDED,
         XML_DIRECTORY_PARENT,XML_DEVICE,XML_DIRECTORY,XML_TRACK,XML_SIZE,XML_QUALITY,
         XML_HASHCODE,XML_PLAYLIST_FILES,XML_TRACK_COMMENT,XML_ANY,XML_TRACK_ORDER,

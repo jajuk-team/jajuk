@@ -214,7 +214,7 @@ public class FIFO implements ITechnicalStrings {
             }
             // ok, stop current track if no append
             if (!bAppend) {
-                Player.stop();
+                Player.stop(false);
                 clear();
                 JajukTimer.getInstance().reset();
             }
@@ -586,7 +586,7 @@ public class FIFO implements ITechnicalStrings {
         try {
             // if playing, stop current
             if (Player.isPlaying()) {
-                Player.stop();
+                Player.stop(false);
             }
             // force a finish to current track if any
             if (getCurrentFile() != null) { // if stopped, nothing to stop
@@ -616,7 +616,7 @@ public class FIFO implements ITechnicalStrings {
             }
             // if playing, stop current
             if (Player.isPlaying()) {
-                Player.stop();
+                Player.stop(false);
             }
             // force a finish to current track if any
             if (getCurrentFile() != null) { // if stopped, nothing to stop
@@ -750,7 +750,7 @@ public class FIFO implements ITechnicalStrings {
         System.gc();//Benefit from end of file to perform a full gc
         //TBI in case of fade, do not do it
         reset(); // reinit all variables
-        Player.stop(); // stop player
+        Player.stop(true); // stop player
         ObservationManager.notify(new Event(EVENT_PLAYER_STOP)); // notify to devices like commandJPanel to update ui
         ObservationManager.notify(new Event(EVENT_ZERO)); // ask reset
     }
