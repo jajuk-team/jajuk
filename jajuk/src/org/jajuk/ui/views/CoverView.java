@@ -841,7 +841,8 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                     };
                     jfchooser.setFileFilter(filter);
                     jfchooser.setDialogTitle(Messages.getString("CoverView.10")); //$NON-NLS-1$
-                    jfchooser.setSelectedFile(cover.getFile());
+                    File finalFile = new File(fDir.getPath()+"/"+Util.getOnlyFile(cover.getURL().toString())); //$NON-NLS-1$
+                    jfchooser.setSelectedFile(finalFile);
                     int returnVal = jfchooser.showSaveDialog(Main.getWindow());
                     File fNew = null;
                     if (returnVal == JFileChooser.APPROVE_OPTION ) {
