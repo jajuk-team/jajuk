@@ -17,7 +17,7 @@
  * ${see_to_overridden}
  */</template><template context="newtype_context" deleted="false" description="Newly created files" enabled="true" id="org.eclipse.jdt.ui.text.codetemplates.newtype" name="newtype">/*
  *  Jajuk
- *  Copyright (C) 2004 ${user}
+ *  Copyright (C) 2006 ${user}
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
