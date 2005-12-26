@@ -29,11 +29,9 @@ import java.awt.event.WindowEvent;
 import java.util.StringTokenizer;
 
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import org.jajuk.Main;
-import org.jajuk.base.DeviceManager;
 import org.jajuk.base.Event;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
@@ -99,23 +97,9 @@ public class JajukWindow extends JXFrame implements ITechnicalStrings,Observer {
                 setFocusableWindowState(false);
             }
         	public void windowClosing(WindowEvent we) {
-        	    //  check if a device is refreshing
-        	    if (DeviceManager.getInstance().isAnyDeviceRefreshing()){
-        	        int iResu = Messages.getChoice(Messages.getString("Confirmation_exit_refreshing"),JOptionPane.WARNING_MESSAGE);  //$NON-NLS-1$ //$NON-NLS-2$
-        	        if (iResu != JOptionPane.YES_OPTION){
-        	            return;
-        	        }
-        	        else{
-        	            //hide window ASAP
-        	            setVisible(false);
-        	            Main.exit(-1);
-        	        }
-        	    }
-        	    else{
-        	        //hide window ASAP
-        	        setVisible(false);
-        	        Main.exit(0);
-        	    }
+        	    //hide window ASAP
+        	    setVisible(false);
+        	    Main.exit(0);
         	}
         });
         //display correct title if a track is lauched at startup

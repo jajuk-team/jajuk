@@ -27,7 +27,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -40,7 +43,9 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
@@ -76,7 +81,10 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 	JTextField jtfMountPoint;
 	JCheckBox jcbRefresh;
 	JCheckBox jcbAutoMount;
-	JCheckBox jcboxSynchronized;
+	JLabel jlAutoRefresh;
+    JFormattedTextField jftfAutoRefresh;
+	JLabel jlMinutes;
+    JCheckBox jcboxSynchronized;
 	JComboBox jcbSynchronized;
 	JPanel jp2;
 	ButtonGroup bgSynchro;
@@ -113,7 +121,7 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 		jp1.setBorder(BorderFactory.createEmptyBorder(25, 15, 0, 15));
 		int iX_SEPARATOR = 5;
 		double size1[][] = { { 0.5,iX_SEPARATOR,0.45,iX_SEPARATOR,40 }, {
-			20, 20, 20, 20, 20,20,20, 20, 20, 20, 20,20,20 }
+			20,20,20,20,20,20,20,20,20,20,20,20,20,20,20}
 		};
 		jp1.setLayout(new TableLayout(size1));
 		jlType = new JLabel(Messages.getString("DeviceWizard.1")); //$NON-NLS-1$
@@ -154,6 +162,23 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 		jcbAutoMount = new JCheckBox(Messages.getString("DeviceWizard.8")); //$NON-NLS-1$
 		jcbAutoMount.setToolTipText(Messages.getString("DeviceWizard.49")); //$NON-NLS-1$
 		jcbAutoMount.addActionListener(this);
+		jlAutoRefresh = new JLabel(Messages.getString("DeviceWizard.53"));
+		jlMinutes = new JLabel(Messages.getString("DeviceWizard.54"));
+		jftfAutoRefresh = new JFormattedTextField(NumberFormat.getNumberInstance()); //$NON-NLS-1$
+		//miminum delay is half a minute
+        jftfAutoRefresh.addPropertyChangeListener(
+		    new PropertyChangeListener() {
+		        public void propertyChange(PropertyChangeEvent e) {
+		            String prop = e.getPropertyName();
+		            if (prop.equals(JOptionPane.VALUE_PROPERTY)) {
+		              double value = new Double(jftfAutoRefresh.getValue().toString());
+                        if (value<0 || (value <0.5d && value != 0)){
+                          jftfAutoRefresh.setValue(0.5d);
+                      }
+		            }
+		        }
+		    });
+		jftfAutoRefresh.setToolTipText(Messages.getString("DeviceWizard.50")); //$NON-NLS-1$
 		jcboxSynchronized = new JCheckBox(Messages.getString("DeviceWizard.10")); //$NON-NLS-1$
 		jcboxSynchronized.setToolTipText(Messages.getString("DeviceWizard.51")); //$NON-NLS-1$
 		jcboxSynchronized.addActionListener(this);
@@ -194,10 +219,13 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 		jp1.add(jbUrlMountPoint, "4,6"); //$NON-NLS-1$
 		jp1.add(jlMountPoint, "0,6"); //$NON-NLS-1$
 		jp1.add(jtfMountPoint, "2,6"); //$NON-NLS-1$
-		jp1.add(jcbRefresh, "0,8"); //$NON-NLS-1$
-		jp1.add(jcbAutoMount, "0,10"); //$NON-NLS-1$
-		jp1.add(jcboxSynchronized, "0,12"); //$NON-NLS-1$
-		jp1.add(jcbSynchronized, "2,12"); //$NON-NLS-1$
+		jp1.add(jlAutoRefresh, "0,8"); //$NON-NLS-1$
+		jp1.add(jftfAutoRefresh, "2,8"); //$NON-NLS-1$
+        jp1.add(jlMinutes, "4,8"); //$NON-NLS-1$
+        jp1.add(jcbRefresh, "0,10"); //$NON-NLS-1$
+        jp1.add(jcbAutoMount, "0,12"); //$NON-NLS-1$
+        jp1.add(jcboxSynchronized, "0,14"); //$NON-NLS-1$
+		jp1.add(jcbSynchronized, "2,16"); //$NON-NLS-1$
 		double size2[][] = { { 0.99 }, {
 			20, 20, 20, 20, 20, 20, 20 }
 		};
@@ -211,7 +239,6 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 			jcbSynchronized.setEnabled(false);
 			jrbBidirSynchro.setEnabled(false);
 		}
-		
 		//buttons
 		jpButtons = new JPanel();
 		jpButtons.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -239,12 +266,12 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 	public void updateWidgetsDefault(){
 		jcbRefresh.setSelected(true);
 		jcbAutoMount.setSelected(true);
+		jftfAutoRefresh.setValue(0.5d);
 		jcboxSynchronized.setSelected(false);
         jrbUnidirSynchro.setSelected(true);//default synchro mode
 		jrbBidirSynchro.setEnabled(false);
 	}
-	
-	
+		
 	/**
 	 * Update widgets for device property state 
 	 */
@@ -286,6 +313,7 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 		else{
 		    jcbAutoMount.setSelected(false);
 		}
+        jftfAutoRefresh.setValue(device.getDoubleValue(XML_DEVICE_AUTO_REFRESH));
 		if (jcbSynchronized.getItemCount()==0){
 			jcboxSynchronized.setEnabled(false);
 			jcbSynchronized.setEnabled(false);
@@ -307,8 +335,7 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 			}
 		}
 	}
-	
-	
+		
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -350,6 +377,7 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 			}
 			device.setProperty(XML_DEVICE_MOUNT_POINT,jtfMountPoint.getText());
             device.setProperty(XML_DEVICE_AUTO_MOUNT,jcbAutoMount.isSelected());
+			device.setProperty(XML_DEVICE_AUTO_REFRESH,new Double(jftfAutoRefresh.getValue().toString()));
 			if (jcbSynchronized.isEnabled() && jcbSynchronized.getSelectedItem() != null){
 				device.setProperty(XML_DEVICE_SYNCHRO_SOURCE,((Device)alDevices.get(jcbSynchronized.getSelectedIndex())).getId());
 				if (jrbBidirSynchro.isSelected()){
@@ -417,26 +445,31 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 			switch(jcbType.getSelectedIndex()){
 			case 0: //directory
 				jcbAutoMount.setSelected(true);
-				break;
+				jftfAutoRefresh.setValue(0.5d); 
+                break;
 			case 1: //file cd
 				jcbAutoMount.setSelected(false);
-				break;
+                jftfAutoRefresh.setValue(0d); 
+               break;
 			case 2: //network drive
 				jcbAutoMount.setSelected(true);
+                //no auto-refresh by default for network drive
+                jftfAutoRefresh.setValue(5d); 
 				break;
 			case 3: //ext dd
 				jcbAutoMount.setSelected(true);
-				break;
+                jftfAutoRefresh.setValue(3d); 
+              break;
 			case 4: //player
 				jcbAutoMount.setSelected(false);
-				break;
+                jftfAutoRefresh.setValue(3d); 
+               break;
             case 5: //P2P
                jcbAutoMount.setSelected(false);
+               jftfAutoRefresh.setValue(0d); 
                 break;
 			}
 		}
 	}
-   
 }
-
      

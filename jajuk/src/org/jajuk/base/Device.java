@@ -32,11 +32,13 @@ import javax.swing.JOptionPane;
 import org.jajuk.Main;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.InformationJPanel;
+import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
+import org.xml.sax.Attributes;
 
 /**
  *  A device ( music files repository )
@@ -77,6 +79,8 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
     int iNbDeletedFiles = 0;
     /**Volume of created files during synchro */
     long lVolume = 0;
+    /**date last refresh*/
+    long lDateLastRefresh;
     
     /**
      * Device constructor
@@ -193,6 +197,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
     protected synchronized boolean refreshCommand(boolean bDeepScan){
         try{
             long lTime = System.currentTimeMillis();
+            lDateLastRefresh = lTime;
             //check Jajuk is not exiting because a refresh cannot start in this state
             if (Main.bExiting){
                 return false;
@@ -243,7 +248,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
                 d.scan(bDeepScan);
             }
             //Start actual scan
-            while (iDeep >= 0) {
+            while (iDeep >= 0 && !Main.isExiting()) {
                 //Log.debug("Entering: "+fCurrent); //$NON-NLS-1$
                 File[] files = fCurrent.listFiles(new JajukFileFilter(true,false)); //only directories
                 if (files== null || files.length == 0 ){  //files is null if fCurrent is a not a directory 
@@ -418,6 +423,10 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
             it = hsSourceDirs.iterator();
             Iterator it2;
             while ( it.hasNext()){
+                //give a chance to exit during sync
+                if (Main.isExiting()){
+                    return iNbCreatedFiles;
+                }
                 boolean bNeedCreate = true;
                 Directory dir = (Directory)it.next();
                 String sPath = dir.getRelativePath();
@@ -813,5 +822,120 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
         }
     }
     
+    public long getDateLastRefresh() {
+        return lDateLastRefresh;
+    }
+    
+    /**
+     * Scan directories to cleanup removed files and playlist files
+     * @param device device to cleanup
+     * @return whether some items have been removed
+     */
+    public boolean cleanRemovedFiles(){
+        boolean bChanges = false;
+        long l = System.currentTimeMillis();
+        //need to use a shallow copy to avoid concurent exceptions
+        ArrayList<Directory> alDirs = new ArrayList(DirectoryManager.getInstance().getItems());
+        for (IPropertyable item:alDirs){
+            Directory dir = (Directory)item;
+            if (!Main.isExiting()
+                    &&dir.getDevice().equals(this) 
+                    && dir.getDevice().isMounted()){ 
+                if (!dir.getFio().exists()){
+                    //note that associated files are removed too
+                    synchronized(DirectoryManager.getInstance().getLock()){
+                        DirectoryManager.getInstance().removeDirectory(dir.getId());
+                    }
+                    Log.debug("Removed: "+dir);
+                    bChanges = true;
+                }
+            }
+        }
+        
+        ArrayList<org.jajuk.base.File> alFiles = new ArrayList(FileManager.getInstance().getItems());
+        for (org.jajuk.base.File file:alFiles){
+            if (!Main.isExiting() 
+                    && file.getDirectory().getDevice().equals(this)
+                    && file.isReady()){
+                if (!file.getIO().exists()){
+                    synchronized(FileManager.getInstance().getLock()){
+                        FileManager.getInstance().removeFile(file);
+                    }
+                    Log.debug("Removed: "+file);
+                    bChanges = true;
+                }
+            }
+        }
+        
+        ArrayList<PlaylistFile> alplf = new ArrayList(PlaylistFileManager.getInstance().getItems());
+        for (PlaylistFile plf:alplf){
+            if (!Main.isExiting()
+                    && plf.getDirectory().getDevice().equals(this)
+                    && plf.isReady()){
+                if (!plf.getFio().exists()){
+                    synchronized(PlaylistFileManager.getInstance().getLock()){
+                        PlaylistFileManager.getInstance().removePlaylistFile(plf);
+                    }
+                    Log.debug("Removed: "+plf);
+                    bChanges = true;
+                }
+            }
+            
+        }    
+        //clear history to remove olf files referenced in it
+        History.getInstance().clear(Integer.parseInt(ConfigurationManager.getProperty(CONF_HISTORY))); //delete old history items
+        
+        l = System.currentTimeMillis()-l;
+        Log.debug("Old file references cleaned in: "
+            +((l<1000)?l+" ms":l/1000+" s"));
+        return bChanges;
+    }
+    
+    /**
+     * Set all personnal properties of an XML file for an item (doesn't overwrite existing properties for perfs)
+     * 
+     * @param attributes :
+     *                list of attributes for this XML item
+     */
+    public void populateProperties(Attributes attributes) {
+        for (int i =0 ; i < attributes.getLength(); i++) {
+            String sProperty = attributes.getQName(i);
+            if (!getProperties().containsKey(sProperty)){
+                String sValue = attributes.getValue(i);
+                PropertyMetaInformation meta = getMeta(sProperty);
+                //compatibility code for <1.1 : auto-refresh is now a double, no more a boolean
+                if (meta.getName().equals(XML_DEVICE_AUTO_REFRESH)
+                        && (sValue.equalsIgnoreCase(TRUE)||sValue.equalsIgnoreCase(FALSE))) {
+                    switch ((int)((Device)this).getDeviceType()){
+                    case 0: //directory
+                        sValue = "0.5d";
+                        break;
+                    case 1: //file cd
+                        sValue = "0d";
+                        break;
+                    case 2: //network drive
+                        sValue = "5d";
+                        break;
+                    case 3: //ext dd
+                        sValue = "3d"; 
+                        break;
+                    case 4: //player
+                        sValue = "3d";
+                        break;
+                    case 5: //P2P
+                        sValue = "0d";
+                        break;
+                    }
+                }
+                try {
+                    setProperty(sProperty, Util.parse(sValue,meta.getType(),meta.getFormat()));
+                } catch (Exception e) {
+                    Log.error("137",sProperty,e); //$NON-NLS-1$
+                }    
+            }
+        }
+    }
     
 }
+
+

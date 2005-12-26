@@ -79,6 +79,8 @@ public class DeviceManager extends ItemManager{
         registerProperty(new PropertyMetaInformation(XML_DEVICE_MOUNT_POINT,false,true,true,false,false,String.class,null,null));
         //Auto-mount
         registerProperty(new PropertyMetaInformation(XML_DEVICE_AUTO_MOUNT,false,true,true,false,false,Boolean.class,null,null));
+        //Auto-refresh
+        registerProperty(new PropertyMetaInformation(XML_DEVICE_AUTO_REFRESH,false,true,true,false,false,Double.class,null,0d));
         //Expand
         registerProperty(new PropertyMetaInformation(XML_EXPANDED,false,false,false,false,true,Boolean.class,null,false));
         //Synchro source
@@ -212,7 +214,7 @@ public class DeviceManager extends ItemManager{
     public String getDeviceType(long index){
         return (String)alDevicesTypes.get((int)index);
     }
-        
+    
     /**
      * Remove a device
      * @param device
@@ -312,54 +314,59 @@ public class DeviceManager extends ItemManager{
     }
     
     /**
-     * Refresh of all devices used in automatic mode
+     * Refresh of all devices with auto-refresh enabled (used in automatic mode)
      * Must be the sortest possible
      */
     public void refreshAllDevices(){
-        synchronized(DeviceManager.getInstance().getLock()){
-            try{
-                //check thread is not already refreshing
-                if (bGlobalRefreshing){
-                    return;
+        try{
+            //check thread is not already refreshing
+            if (bGlobalRefreshing){
+                return;
+            }
+            bGlobalRefreshing = true;
+            long l = System.currentTimeMillis();
+            lDateLastGlobalRefresh = System.currentTimeMillis();
+            boolean bNeedUIRefresh = false;
+            for (IPropertyable item:getItems()){
+                Device device = (Device)item;
+                double frequency = 60000 * device.getDoubleValue(XML_DEVICE_AUTO_REFRESH);
+                //check if this device needs auto-refresh
+                if (frequency == 0d || 
+                        device.getDateLastRefresh() > (System.currentTimeMillis() - frequency)){
+                    continue;
                 }
-                bGlobalRefreshing = true;
-                long l = System.currentTimeMillis();
-                lDateLastGlobalRefresh = System.currentTimeMillis();
-                //cleanup removed files
-                Collection.cleanRemovedFiles();
-                boolean bNeedUIRefresh = false;
-                for (IPropertyable item:getItems()){
-                    Device device = (Device)item;
-                    //Check of mounted device contains files, otherwise it is not mounted
-                    //we have to check this because of the automatic cleaner thread musn't remove all references
-                    File[] files = new File(device.getUrl()).listFiles();
-                    if (!device.isRefreshing() && files !=null && files.length > 0){
-                        bNeedUIRefresh = bNeedUIRefresh | device.refreshCommand(false); //logical or, not an error !
-                    }
+                //cleanup device
+                bNeedUIRefresh = bNeedUIRefresh | device.cleanRemovedFiles();//logical or, not an error !
+                //Check of mounted device contains files, otherwise it is not mounted
+                //we have to check this because of the automatic cleaner thread musn't remove all references
+                File[] files = new File(device.getUrl()).listFiles();
+                if (!device.isRefreshing() && files !=null && files.length > 0){
+                    bNeedUIRefresh = bNeedUIRefresh | device.refreshCommand(false); //logical or, not an error !
                 }
-                
+            }
+            
+            //If something changed
+            if (bNeedUIRefresh){
                 //cleanup logical items
                 TrackManager.getInstance().cleanup();
                 StyleManager.getInstance().cleanup();
                 AlbumManager.getInstance().cleanup();
                 AuthorManager.getInstance().cleanup();
                 PlaylistManager.getInstance().cleanup();
-                
                 //notify views to refresh
-                if (bNeedUIRefresh){
-                    ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH));
-                }
-                //Display end of refresh message with stats
-                l = System.currentTimeMillis() -l;
-                Log.debug("Global refresh done in: "+((l<1000)?l+" ms":l/1000+" s"));
+                ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH));
             }
-            catch(Exception e){
-                Log.error(e);
-            }
-            finally{
-                bGlobalRefreshing = false;
-            }
+            //Display end of refresh message with stats
+            l = System.currentTimeMillis() -l;
+            Log.debug("Global refresh done in: "+((l<1000)?l+" ms":l/1000+" s"));
         }
+        catch(Exception e){
+            Log.error(e);
+        }
+        finally{
+            bGlobalRefreshing = false;
+        }
+        
     }
 }
 

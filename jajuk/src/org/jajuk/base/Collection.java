@@ -27,7 +27,6 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Serializable;
 import java.text.Format;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -65,6 +64,8 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
     private ItemManager manager;
     /**upgrade for track IDs*/
     private HashMap hmWrongRightID = new HashMap();
+    /**Garbager activity flag*/
+    private static volatile boolean bGarbaging = false;
     /**Auto commit thread*/
     private static Thread tAutoCommit = new Thread(){
         public void run(){
@@ -74,22 +75,6 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
                     Log.debug("Auto commit");
                     //commit collection at each refresh (can be useful if application is closed brutally with control-C or shutdown and that exit hook have no time to perform commit)
                     org.jajuk.base.Collection.commit(FILE_COLLECTION);
-                }
-                catch (Exception e) {
-                    Log.error(e);
-                }
-            }
-        }
-    };
-    /**Garbager thread: not used for the moment as garbaging is done
-     * by refresh thread*/
-    private static Thread tGarbager = new Thread(){
-        public void run(){
-            while (!Main.isExiting()){
-                try {
-                    Thread.sleep(GARBAGER_DELAY);
-                    Log.debug("Garbager");
-                    cleanRemovedFiles();
                 }
                 catch (Exception e) {
                     Log.error(e);
@@ -583,55 +568,5 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
         }
     }
     
-    /**
-     * Scan directories to cleanup removed files and playlist files
-     *
-     */
-    public static void cleanRemovedFiles(){
-        long l = System.currentTimeMillis();
-        synchronized(DirectoryManager.getInstance().getLock()){
-            //need to use a shallow copy to avoid concurent exceptions
-            ArrayList<Directory> alDirs = new ArrayList(DirectoryManager.getInstance().getItems());
-            for (IPropertyable item:alDirs){
-                Directory dir = (Directory)item;
-                if (dir.getDevice().isMounted()){
-                    if (!dir.getFio().exists()){
-                        Log.debug("Removed: "+dir);
-                        //note that associated fiels are removed too
-                        DirectoryManager.getInstance().removeDirectory(dir.getId());
-                    }
-                }
-            }
-        }
-        synchronized(FileManager.getInstance().getLock()){
-            ArrayList<org.jajuk.base.File> alFiles = new ArrayList(FileManager.getInstance().getItems());
-            for (org.jajuk.base.File file:alFiles){
-                if (file.isReady()){
-                    if (!file.getIO().exists()){
-                        Log.debug("Removed: "+file);
-                        FileManager.getInstance().removeFile(file);
-                    }
-                }
-            }
-        }
-        synchronized(PlaylistFileManager.getInstance().getLock()){
-            ArrayList<PlaylistFile> alplf = new ArrayList(PlaylistFileManager.getInstance().getItems());
-            for (PlaylistFile plf:alplf){
-                if (plf.isReady()){
-                    if (!plf.getFio().exists()){
-                        Log.debug("Removed: "+plf);
-                        PlaylistFileManager.getInstance().removePlaylistFile(plf);
-                    }
-                }
-            }
-        }
-        //clear history to remove olf files referenced in it
-        History.getInstance().clear(Integer.parseInt(ConfigurationManager.getProperty(CONF_HISTORY))); //delete old history items
         
-        l = System.currentTimeMillis()-l;
-        Log.debug("Old file references cleaned in: "
-            +((l<1000)?l+" ms":l/1000+" s"));
-        
-    }
-    
 }

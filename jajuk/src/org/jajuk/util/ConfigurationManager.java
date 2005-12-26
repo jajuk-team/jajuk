@@ -177,7 +177,7 @@ public class ConfigurationManager implements ITechnicalStrings{
 		properties.put(CONF_BOOKMARKS,""); //$NON-NLS-1$
 		properties.put(CONF_SHOW_AT_STARTUP,TRUE);
 		properties.put(CONF_BESTOF_SIZE,"20"); //$NON-NLS-1$
-		properties.put(CONF_VOLUME,"0.8"); //$NON-NLS-1$
+		properties.put(CONF_VOLUME,"0.5"); //$NON-NLS-1$
 		properties.put(CONF_REGEXP,FALSE); //$NON-NLS-1$
 		properties.put(CONF_BACKUP_SIZE,"20");//$NON-NLS-1$
 		properties.put(CONF_COLLECTION_CHARSET,"UTF-8");//$NON-NLS-1$
