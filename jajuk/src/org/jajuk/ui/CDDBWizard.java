@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2003 Bertrand Florat
+ *  Copyright (C) 2006 Erwan Richard
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -326,7 +326,6 @@ public class CDDBWizard extends JDialog implements ITechnicalStrings, ActionList
                 
             }
             ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH));
-            dispose();
         }
     }
 
@@ -335,7 +334,12 @@ public class CDDBWizard extends JDialog implements ITechnicalStrings, ActionList
             dispose();
         }
         if (e.getSource() == okc.getOKButton()) {
-           retagFiles();
+           dispose();
+           new Thread(){
+               public void run(){
+                   retagFiles();
+               }
+           }.start();
         }
     }
 

@@ -30,15 +30,13 @@ import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Util;
 
-import entagged.freedb.FreedbTrack;
-
 /**
  *  A track
  *<p> Logical item
  * @Author   Bertrand Florat
  * @created    17 oct. 2003
  */
-public class Track extends PropertyAdapter implements Comparable,FreedbTrack{
+public class Track extends PropertyAdapter implements Comparable{
 
 	/**Track album**/
 	private Album album;
@@ -291,16 +289,9 @@ public class Track extends PropertyAdapter implements Comparable,FreedbTrack{
 	/**
 	 * @return length in sec
 	 */
-/*	public long getLength() {
+	public long getLength() {
 		return length;
-	}*/
-    
-    /**
-     * @return length in sec
-     */
-    public int getLength() {
-        return (new Long(length)).intValue();
-    }
+	}
 
 	/**
 	 * @return
@@ -506,10 +497,6 @@ public class Track extends PropertyAdapter implements Comparable,FreedbTrack{
         else{//default
             return super.getHumanValue(sKey);
         }
-    }
-
-    public float getPreciseLength() {
-        return length;
     }
     
 }
