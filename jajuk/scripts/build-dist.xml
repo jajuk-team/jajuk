@@ -2,9 +2,12 @@
 <!--Ant script for packagers only-->
 
 <project default='all' name='jajuk' basedir='..'>
-  <!-- Only Explicit Release number-->
-  <property name='version' value='1.1beta'/>
+  <!--VARIABLES-->
+  <property name='version' value='1.1m1'/>
   <property name='test' value='-test'/>
+  <property name='jwsdeploy' value='test'/>
+  
+  <!--CONST-->
   <property name='rootdir' value='/tmp/jajuk-dist'/>
   <property name='distdir' value='${rootdir}/jajuk'/>
   <property name='rpmbuilddir_suse' value='${rootdir}/suse/RPMBUILD'/>
@@ -211,6 +214,11 @@
     <jar jarfile='${distdir}/bin/${jarname}' excludes='**/package.html' 
     	basedir='${distdir}/${classdir}' 
     	manifest='${basedir}/dist-files/packaging/MANIFEST.MF' compress='true'/>
+    <!--Sign jajuk jars(others are signed manually once) -->
+    <!--for security reason (this file is commited with keystore password), 
+    keystore password is changed after this script execution, password is temporary -->
+    <signjar jar="${distdir}/bin/${jarname}" alias="jajukteam" storepass="passpass"/>
+    	
     <delete dir='${distdir}/${classdir}'/>
 	<!-- Copy jajuk jar in the workspace -->
     <copy todir='${basedir}' >
@@ -252,8 +260,10 @@
 	 <arg line='-locale fr_FR html'/>
    </exec>
    <!-- jar creation -->
-   <jar jarfile='${distdir}/bin/${helpsetjarname}.jar' basedir='${helpdir}/default' />
-   <jar jarfile='${distdir}/bin/${helpsetjarname}_fr.jar' basedir='${helpdir}/fr' />
+    <jar jarfile='${distdir}/bin/${helpsetjarname}.jar' basedir='${helpdir}/default' />
+    <signjar jar="${distdir}/bin/${helpsetjarname}.jar" alias="jajukteam" storepass="passpass"/>
+    <jar jarfile='${distdir}/bin/${helpsetjarname}_fr.jar' basedir='${helpdir}/fr' />
+	<signjar jar="${distdir}/bin/${helpsetjarname}_fr.jar" alias="jajukteam" storepass="passpass"/>
   	<!-- Copy jajuk helpset jars in the RPM distdir -->
   	<copy todir='${rpmdistdir_suse}/usr/lib/jajuk/bin' >
 		<fileset file='${distdir}/bin/${helpsetjarname}*.jar'/>
@@ -261,10 +271,10 @@
   	<copy todir='${rpmdistdir_mdk}/usr/lib/jajuk/bin' >
 		<fileset file='${distdir}/bin/${helpsetjarname}*.jar'/>
     </copy>
-    <!-- Copy jajuk jars in the workspace -->
-  	<copy todir='.' >
-		<fileset file='${distdir}/bin/*.jar'/>
-    </copy>
+    <!-- Copy jajuk jar in the workspace -->
+    <copy todir='${basedir}' >
+     <fileset file='${distdir}/bin/${helpsetjarname}*.jar'/>
+  	</copy>
    </target>
  
     <target name='sourcesdist' description='o Create the source distribution' depends='mkdist'>
@@ -410,21 +420,21 @@
     </copy>
     <!--Copy native jars -->
     <copy todir='${jwsdir}/linux'>
-    	<fileset file='${basedir}/dist-files/packaging/jws/linux/jajuk-native.jar'/>
+    	<fileset file='${basedir}/dist-files/packaging/jws/linux/jdic-native.jar'/>
+    	<fileset file='${basedir}/lib/linux/jdic_stub.jar'/>
     </copy>
     <copy todir='${jwsdir}/windows'>
-    	<fileset file='${basedir}/dist-files/packaging/jws/windows/jajuk-native.jar'/>
+    	<fileset file='${basedir}/dist-files/packaging/jws/windows/jdic-native.jar'/>
+	   	<fileset file='${basedir}/lib/windows/jdic_stub.jar'/>
     </copy>
-     <replace dir='${jwsdir}' value='${test}'>
+    <replace dir='${jwsdir}' value='${test}'>
   		<include name='jajuk.jnlp'/>
   		<replacetoken>TEST_FLAG_REPLACED_BY_ANT</replacetoken>
  	</replace>
-    <!--Sign jajuk jars(others are signed manually once) -->
-    <!--for security reason (this file is commited with keystore password), 
-    keystore password is changed after this script execution, password is temporary -->
-    <signjar jar="${jwsdir}/jajuk.jar" alias="jajukteam" storepass="passpass"/>
-    <signjar jar="${jwsdir}/jajuk-help.jar" alias="jajukteam" storepass="passpass"/>
-    <signjar jar="${jwsdir}/jajuk-help_fr.jar" alias="jajukteam" storepass="passpass"/>
+ 	<replace dir='${jwsdir}' value='${jwsdeploy}'>
+  		<include name='*.jnlp'/>
+  		<replacetoken>JWS_DEPLOY_REPLACED_BY_ANT</replacetoken>
+ 	</replace>
   </target>
       
       
