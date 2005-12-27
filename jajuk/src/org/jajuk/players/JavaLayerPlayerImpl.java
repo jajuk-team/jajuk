@@ -295,7 +295,9 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
      * State updated implementation
      */
     public void stateUpdated(BasicPlayerEvent bpe) {
-        Log.debug("Player state changed: " + bpe); //$NON-NLS-1$
+        if (bpe.getCode() != 10){ //do not trace volume changes
+            Log.debug("Player state changed: " + bpe); //$NON-NLS-1$
+        }
         switch (bpe.getCode()) {
         case BasicPlayerEvent.EOM:
             if (!bFading){ //if using crossfade, ignore end of file

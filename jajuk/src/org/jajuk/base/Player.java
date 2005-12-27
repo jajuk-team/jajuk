@@ -68,30 +68,31 @@ public class Player implements ITechnicalStrings{
         try {
             playerImpl = null;
             Class cPlayer = file.getTrack().getType().getPlayerImpl();
-            //check if we have already an instanciated player for this kind of file
-            if (playerImpl1 != null 
-                    && playerImpl1.getClass().equals(cPlayer)
-                    && playerImpl1.getState() != FADING_STATUS){
-                    playerImpl = playerImpl1;
-            }
-            else if (playerImpl2 != null 
-                    && playerImpl2.getClass().equals(cPlayer)
-                    && playerImpl2.getState() != FADING_STATUS){
-                    playerImpl = playerImpl2;
-            }
-            //no matching type? ok, take a non-null player not fading is available
-            else if ( (playerImpl1 != null && playerImpl1.getState() != FADING_STATUS) ){
-                    playerImpl1 = (IPlayerImpl)cPlayer.newInstance();
-                    playerImpl = playerImpl1;
-            }
-            else if ( (playerImpl2 != null && playerImpl2.getState() != FADING_STATUS) ){
-                    playerImpl2 = (IPlayerImpl)cPlayer.newInstance();
-                    playerImpl = playerImpl2;
-            }
-            else { 
-                //No player yet, OK, take first one
-                playerImpl1 = (IPlayerImpl)cPlayer.newInstance();
+            //player 1 null ?
+            if (playerImpl1 == null){
+                playerImpl1 = (IPlayerImpl)cPlayer.newInstance();    
                 playerImpl = playerImpl1;
+            }
+            //player 1 not null, test if it is fading
+            else if (playerImpl1.getState() != FADING_STATUS){
+                //not fading but different player class, reinstanciate it
+                if (!playerImpl1.getClass().equals(cPlayer)){
+                    playerImpl1 = (IPlayerImpl)cPlayer.newInstance();
+                }
+                playerImpl = playerImpl1;
+            }
+            //player 1 fading, OK, test player 2
+            else if (playerImpl2 == null){
+                playerImpl2 = (IPlayerImpl)cPlayer.newInstance();    
+                playerImpl = playerImpl2;
+            }
+            //if here, the only normal case is player 1 is fading and player 2 not null and not fading
+            else {
+                //not fading but different player class, reinstanciate it
+                if (!playerImpl2.getClass().equals(cPlayer)){
+                    playerImpl2 = (IPlayerImpl)cPlayer.newInstance();
+                }
+                playerImpl = playerImpl2;
             }
             bPlaying = true;
             bPaused = false;
@@ -154,10 +155,12 @@ public class Player implements ITechnicalStrings{
             if (fCurrent != null){
                 if (playerImpl1 != null 
                         && (playerImpl1.getState() != FADING_STATUS || bAll)){
+                    System.out.println("Stoping player 1");
                     playerImpl1.stop();
                 }
                 if (playerImpl2 != null 
                         && (playerImpl2.getState() != FADING_STATUS || bAll)){
+                    System.out.println("Stoping player 2");
                     playerImpl2.stop();
                 }
                 bPaused = false; //cancel any current pause
