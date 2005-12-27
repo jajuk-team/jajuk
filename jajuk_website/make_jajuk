@@ -7,9 +7,15 @@ WEBSITE_SOURCE=/data/java/workspace/jajuk_website
 XDOC_DEST=/data/projects/jajuk/maven_rep/xdocs
 MAVEN_DIR=/data/projects/jajuk/maven_rep
 DOC_DEST=$MAVEN_DIR/target/docs
-JWS_DIR=default
+USAGE="Usage: make_jajuk [site] [pdf] [jws <release:default|test>]"
+
+if [ "$1" = "" ]; then
+	echo $USAGE
+fi
 
 cd /data/projects/jajuk/maven_rep
+
+#### PDF TASK ####
 if [ "$1" = "send" ]; then
  cd target/docs
  scp -C -r * bflorat@jajuk.sourceforge.net:/home/groups/j/ja/jajuk/htdocs
@@ -19,15 +25,20 @@ if [ "$1" = "pdf" ]; then
  maven pdf
  exit 0
 fi
+
+#### JWS TASK ####
 if [ "$1" = "jws" ]; then
- RELEASE=$2
- if [ "$1" = "jws" ]; then
-  RELEASE='default'
+ if [ "$2" = "" ]; then
+  echo $USAGE
+  exit 1  
  fi
  cd /tmp/jajuk-dist/jws
- scp -C -r * bflorat@jajuk.sourceforge.net:/home/groups/j/ja/jajuk/htdocs/jws/$RELEASE/
+ scp -C -r * bflorat@jajuk.sourceforge.net:/home/groups/j/ja/jajuk/htdocs/jws/$2/
  exit 0
 fi
+
+#### SITE TASK ####
+if [ "$1" = "site" ]; then
 
 #Cleanup
 rm -rf $DOC_DEST/*
@@ -75,5 +86,4 @@ java -cp /data/java/workspace/jajuk_website Xiti SCRIPT_XITI /data/java/workspac
 #marche pas à la fin sed -e '\#SCRIPT_XITI#{r/data/scripts/script_xiti' -e ';d;}' ./index.html > /tmp/index.html
 cp /tmp/index.html .
 cp /tmp/jws.html .
-mkdir -p $DOC_DEST/jws/$JWS_DIR
-cp -rp /tmp/jajuk-dist/jws/* $DOC_DEST/jws/$JWS_DIR/
+fi

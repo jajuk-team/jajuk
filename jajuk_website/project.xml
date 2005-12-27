@@ -112,7 +112,17 @@
 	      <organization>Jajuk team</organization>
 	      <timezone>+2</timezone>
 	    </developer>
-	    
+
+	    <developer>
+	      <name>Richard Erwan</name>
+	      <id>dhalsim44</id>
+	     <roles>
+			<role>Developer</role>
+	     </roles>
+	      <email>erwan.richard@laposte.net</email>
+	      <organization>Jajuk team</organization>
+	      <timezone>+2</timezone>
+	    </developer>
   </developers>
 
  	<contributors>
@@ -355,6 +365,12 @@
 	   <groupId>lib</groupId>
         <artifactId>commons-codec</artifactId>
         <version>1.3</version> 
+    </dependency>
+    
+     <dependency>
+	   <groupId>lib</groupId>
+        <artifactId>entagged-freedb</artifactId>
+        <version>0.04</version> 
     </dependency>
     
    </dependencies>
