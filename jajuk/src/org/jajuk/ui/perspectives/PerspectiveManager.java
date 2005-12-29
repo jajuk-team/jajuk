@@ -82,7 +82,7 @@ public class PerspectiveManager  implements ITechnicalStrings {
             } 
         } catch (Exception e) {
             Log.error(e);
-            throw new JajukException("115"); //$NON-NLS-1$
+            throw new JajukException("108"); //$NON-NLS-1$
         }
     }
     
@@ -95,11 +95,14 @@ public class PerspectiveManager  implements ITechnicalStrings {
             sPerspective = ConfigurationManager.getProperty(CONF_PERSPECTIVE_DEFAULT); //no? take the configuration ( user last perspective)
         }
         int index = alNames.indexOf(sPerspective);
+        //test if perspective still exists still previous session
+        if (index < 0){
+            index = 0;
+        }    
         IPerspective perspective = (IPerspective)alPerspectives.get(index);
         setCurrentPerspective(perspective);
     }
-    
-    
+        
     /*
      * @see org.jajuk.ui.perspectives.IPerspectiveManager#getCurrentPerspective()
      */
@@ -221,12 +224,24 @@ public class PerspectiveManager  implements ITechnicalStrings {
         registerPerspective(perspective);
         
         // Information perspective
-        perspective = new InfoPerspective();
-        perspective.setIconPath(ICON_PERSPECTIVE_INFORMATION);
-        perspective.setID(PERSPECTIVE_NAME_INFO);
-        perspective.setDefaultViews();
-        registerPerspective(perspective);
-        
+        /* Disable this perspective for the moment as jdic release is buggy*/
+        /*test Web browser is OK
+        boolean bOK = true;
+        try{
+            WebBrowser browser = new WebBrowser();
+            bOK = browser.isInitialized();
+        }
+        catch(Error e){
+            bOK = false;
+        }
+        if (true){
+            perspective = new InfoPerspective();
+            perspective.setIconPath(ICON_PERSPECTIVE_INFORMATION);
+            perspective.setID(PERSPECTIVE_NAME_INFO);
+            perspective.setDefaultViews();
+            registerPerspective(perspective);
+        }*/
+                
         //Configuration perspective
         perspective = new ConfigurationPerspective();
         perspective.setIconPath(ICON_PERSPECTIVE_CONFIGURATION);
