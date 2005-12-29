@@ -155,12 +155,10 @@ public class Player implements ITechnicalStrings{
             if (fCurrent != null){
                 if (playerImpl1 != null 
                         && (playerImpl1.getState() != FADING_STATUS || bAll)){
-                    System.out.println("Stoping player 1");
                     playerImpl1.stop();
                 }
                 if (playerImpl2 != null 
                         && (playerImpl2.getState() != FADING_STATUS || bAll)){
-                    System.out.println("Stoping player 2");
                     playerImpl2.stop();
                 }
                 bPaused = false; //cancel any current pause

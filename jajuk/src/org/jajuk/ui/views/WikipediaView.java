@@ -111,17 +111,23 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings,Obse
         jlLanguage = new JLabel(Messages.getString("WikipediaView.1"));
         jspLanguage = new JSpinner();
         String[] model = new String[Messages.getInstance().getDescs().size()];
+        //set startup locale
         int i = 0;
-        for (String s:Messages.getInstance().getDescs()){
-            model[i] = Messages.getString(s);
-            //set index to current language
-            if (Messages.getInstance().getLocals().get(i).
-                    equals(Messages.getInstance().getLocal())){
-                index = i;
-            }
-            i ++;
+        String local = ConfigurationManager.getProperty(CONF_WIKIPEDIA_LANGUAGE);
+        if (local == null || local.trim().length()== 0){
+            index = 0; //english as default in case of error
         }
-        
+        else{
+            for (String s:Messages.getInstance().getDescs()){
+                model[i] = Messages.getString(s);
+                //set index to current language
+                if (Messages.getInstance().getLocals().get(i).
+                        equals(local)){
+                    index = i;
+                }
+                i ++;
+            }
+        }
         //we use a spinner and not a combo because browser native window
         //can hide combo popup
         jspLanguage = new JSpinner(new SpinnerListModel(model));
@@ -137,6 +143,7 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings,Obse
                 {30,0,TableLayout.FILL}};
         setLayout(new TableLayout(size));
         browser = new WebBrowser();
+        WebBrowser.setDebug(true);
         launchSearch("");
         
         add(jpControl,"0,0"); //$NON-NLS-1$
@@ -147,7 +154,7 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings,Obse
         ObservationManager.register(EVENT_ZERO,this);
     
         //force event
-        update(new Event(EVENT_FILE_LAUNCHED,ObservationManager.getDetailsLastOccurence(EVENT_FILE_LAUNCHED)));
+        update(new Event(EVENT_FILE_LAUNCHED,ObservationManager.getDetailsLastOccurence(EVENT_FILE_LAUNCHED)));        
     }
 	
 		

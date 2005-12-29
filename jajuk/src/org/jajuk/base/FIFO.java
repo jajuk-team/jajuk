@@ -747,8 +747,10 @@ public class FIFO implements ITechnicalStrings {
         if (!Main.isExiting()) {
             ConfigurationManager.setProperty(CONF_STATE_WAS_PLAYING, FALSE);
         }
-        System.gc();//Benefit from end of file to perform a full gc
-        //TBI in case of fade, do not do it
+        //If not fading, call garber
+        if (ConfigurationManager.getInt(CONF_FADE_DURATION) == 0){
+            System.gc();//Benefit from end of file to perform a full gc
+        }
         reset(); // reinit all variables
         Player.stop(true); // stop player
         ObservationManager.notify(new Event(EVENT_PLAYER_STOP)); // notify to devices like commandJPanel to update ui
