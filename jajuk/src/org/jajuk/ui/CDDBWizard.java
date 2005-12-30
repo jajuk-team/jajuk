@@ -54,6 +54,7 @@ import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
@@ -180,53 +181,60 @@ TableColumnModelListener, TableModelListener, MouseListener {
     public CDDBWizard(Directory dir) {
         // windows title: absolute path name of the given directory
         super(Main.getWindow(), dir.getAbsolutePath(), true); // modal //$NON-NLS-1$
-        
-        // Search all tracks in the given directory
-        Set files = dir.getFiles();
-        alTracks = new ArrayList(files.size());
-        for (File file : dir.getFiles()) {
-            CDDBTrack track = new CDDBTrack(file.getTrack());
-            if (!alTracks.contains(track)) {
-                alTracks.add(track);
+        try{
+            // Search all tracks in the given directory
+            Set files = dir.getFiles();
+            alTracks = new ArrayList(files.size());
+            for (File file : dir.getFiles()) {
+                CDDBTrack track = new CDDBTrack(file.getTrack());
+                if (!alTracks.contains(track)) {
+                    alTracks.add(track);
+                }
             }
-        }
-        
-        // Put an error message if no tracks were found
-        if (alTracks.size() == 0) {
-            InformationJPanel.getInstance().setMessage(Messages.getString("CDDBWizard.14"), 2);
-            return;
             
-        }
-        // Put a message that show the query is running
-        else {
-            InformationJPanel.getInstance().setMessage(Messages.getString("CDDBWizard.11"), 0);
-            
-            // Perform CDDB Query
-            idx = performQuery(alTracks);
-            
-            // Put an error message if CDDB query don't found any matches
-            if (idx < 0) {
-                InformationJPanel.getInstance().setMessage(Messages.getString("CDDBWizard.12"), 2);
+            // Put an error message if no tracks were found
+            if (alTracks.size() == 0) {
+                InformationJPanel.getInstance().setMessage(Messages.getString("CDDBWizard.14"), 2);
                 return;
                 
             }
-            // Put a message that show possible matches are found
+            // Put a message that show the query is running
             else {
-                InformationJPanel.getInstance().setMessage(Messages.getString("CDDBWizard.13"), 0);
+                InformationJPanel.getInstance().setMessage(Messages.getString("CDDBWizard.11"), 0);
                 
-                // create Main panel
-                jpMain = new JPanel();
-                jpMain.setBorder(BorderFactory.createEtchedBorder());
-                jpMain.setLayout(new TableLayout(dSize));
+                // Perform CDDB Query
+                idx = performQuery(alTracks);
                 
-                jtable = populateTable(aResult[idx]);
-                jpNav = new NavigationPanel();
-                okc = new OKCancelPanel(CDDBWizard.this, Messages.getString("Apply"), Messages
-                    .getString("Close"));         
-                
-                // Display main panel
-                display();
+                // Put an error message if CDDB query don't found any matches
+                if (idx < 0) {
+                    InformationJPanel.getInstance().setMessage(Messages.getString("CDDBWizard.12"), 2);
+                    return;
+                    
+                }
+                // Put a message that show possible matches are found
+                else {
+                    InformationJPanel.getInstance().setMessage(Messages.getString("CDDBWizard.13"), 0);
+                    
+                    // create Main panel
+                    jpMain = new JPanel();
+                    jpMain.setBorder(BorderFactory.createEtchedBorder());
+                    jpMain.setLayout(new TableLayout(dSize));
+                    
+                    jtable = populateTable(aResult[idx]);
+                    jpNav = new NavigationPanel();
+                    okc = new OKCancelPanel(CDDBWizard.this, Messages.getString("Apply"), Messages
+                        .getString("Close"));         
+                    
+                    // Display main panel
+                    display();
+                }
             }
+        }
+        catch(Exception e){
+            Log.error(e);   
+        }
+        finally{
+            Util.stopWaiting();
         }
     }
     

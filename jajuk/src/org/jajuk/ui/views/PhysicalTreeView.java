@@ -848,11 +848,15 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         	Bookmarks.getInstance().addFiles(alFiles);
         }
         else if ( alFiles!= null && e.getSource() == jmiDirCDDBQuery) {
-//            ObservationManager.notify(new Event(EVENT_CDDB_WIZARD));      
             ArrayList alTracks=null;
             for (IPropertyable item:alSelected){
-                Directory dir = (Directory)item;
-                new CDDBWizard(dir);                
+                final Directory dir = (Directory)item;
+                Util.waiting();
+                new Thread(){
+                    public void run(){
+                        new CDDBWizard(dir);
+                    }
+                }.start();
             }        	
         }
         else if (alFiles!= null  && (e.getSource() == jmiDirPush || e.getSource() == jmiDevPush)){
