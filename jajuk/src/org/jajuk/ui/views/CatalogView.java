@@ -287,7 +287,6 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
         File fThumb = new File(FILE_THUMBS+'/'+(String)jcbSize.getSelectedItem()+'/'+album.getId()+'.'+EXT_THUMB);
         if (!fThumb.exists()){
             InformationJPanel.getInstance().setMessage(Messages.getString("CatalogView.5")+' '+album.getName2(),InformationJPanel.INFORMATIVE);
-            File fDir = null; //analyzed directory
             //search for local covers in all directories mapping the current track to reach other devices covers and display them together
             ArrayList<Track> alTracks = TrackManager.getInstance().getSortedAssociatedTracks(album);
             if (alTracks.size() == 0){

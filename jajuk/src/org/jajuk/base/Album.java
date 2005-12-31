@@ -20,7 +20,7 @@
 package org.jajuk.base;
 
 import java.io.File;
-import java.util.ArrayList;
+import java.util.HashSet;
 
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.Util;
@@ -130,21 +130,20 @@ public class Album extends PropertyAdapter implements Comparable{
         File fCover = null;
         File fDir = null; //analyzed directory
         //search for local covers in all directories mapping the current track to reach other devices covers and display them together
-        ArrayList<Track> alTracks = TrackManager.getInstance().getSortedAssociatedTracks(this);
-        if (alTracks.size() == 0){
+        HashSet<Track> tracks = TrackManager.getInstance().getAssociatedTracks(this);
+        if (tracks.size() == 0){
             return null;
         }
         //List if directories we have to look in
-        ArrayList<Directory> alDirs = new ArrayList(2);
-        for (Track track:alTracks){
+        HashSet<Directory> dirs = new HashSet(2);
+        for (Track track:tracks){
             for (org.jajuk.base.File file:track.getFiles()){
-                if (!alDirs.contains(file.getDirectory())){
-                    alDirs.add(file.getDirectory());
-                }
+                //note that hashset ensures directory unicity
+                dirs.add(file.getDirectory());
             }   
         }
         //look for absolute cover in collection
-        for (Directory dir:alDirs){
+        for (Directory dir:dirs){
             String sAbsolut = dir.getStringValue(XML_DIRECTORY_DEFAULT_COVER);
             if (sAbsolut != null && !sAbsolut.trim().equals("")){
                 File fAbsoluteDefault = new File(dir.getAbsolutePath()+'/'+sAbsolut); //$NON-NLS-1$.getAbsoluteFile();
@@ -154,7 +153,7 @@ public class Album extends PropertyAdapter implements Comparable{
             }
         }
         //look for standard cover in collection
-        for (Directory dir:alDirs){
+        for (Directory dir:dirs){
             fDir = dir.getFio(); //store this dir
             java.io.File[] files = fDir.listFiles();//null if none file found
             for (int i=0;files != null && i<files.length;i++){
@@ -170,7 +169,7 @@ public class Album extends PropertyAdapter implements Comparable{
             }
         }
         //none ? OK, return first cover file we find
-        for (Directory dir:alDirs){
+        for (Directory dir:dirs){
             fDir = dir.getFio(); //store this dir
             java.io.File[] files = fDir.listFiles();//null if none file found
             for (int i=0;files != null && i<files.length;i++){
