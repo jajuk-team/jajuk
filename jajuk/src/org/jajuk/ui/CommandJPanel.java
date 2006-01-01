@@ -354,7 +354,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 			    hi = History.getInstance().getHistoryItem(jcbHistory.getSelectedIndex());
 			    if (hi != null){
 			        org.jajuk.base.File file = (File)FileManager.getInstance().getItem(hi.getFileId());
-			        if (file != null && !file.isScanned()){  //file must be on a device not refreshing
+			        if (file != null){ 
 			            try{
 			                FIFO.getInstance().push(new StackItem(file,ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
 			            }

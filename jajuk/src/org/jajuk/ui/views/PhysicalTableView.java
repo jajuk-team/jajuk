@@ -160,17 +160,12 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
         if (jtable.getSelectedColumnCount() == 1 && jtable.convertColumnIndexToModel(iSelectedCol) == 0 ){
             int iSelectedRow = jtable.getSelectedRow(); //selected row in view
             File file = (File)model.getItemAt(jtable.convertRowIndexToModel(iSelectedRow));
-            if (!file.isScanned()){
-                try{
-                    FIFO.getInstance().push(new StackItem(file,ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),
-                        ConfigurationManager.getBoolean(CONF_OPTIONS_DEFAULT_ACTION_CLICK));//launch it
-                }
-                catch(JajukException je){
-                    Log.error(je);
-                }
+            try{
+                FIFO.getInstance().push(new StackItem(file,ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),
+                    ConfigurationManager.getBoolean(CONF_OPTIONS_DEFAULT_ACTION_CLICK));//launch it
             }
-            else{
-                Messages.showErrorMessage("120",file.getDirectory().getDevice().getName()); //$NON-NLS-1$
+            catch(JajukException je){
+                Log.error(je);
             }
         }		
         else if ( e.getClickCount() == 1 ){
@@ -218,12 +213,8 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
                     Iterator it = alFilesToPlay2.iterator();
                     while (it.hasNext()){ //each selected file from the same directory 
                         File file2 = (File)it.next();
-                        if (!file2.isScanned() && !alFilesToPlay.contains(file2)){
+                        if (!alFilesToPlay.contains(file2)){
                             alFilesToPlay.add(file2);
-                        }
-                        else{
-                            Messages.showErrorMessage("120",file2.getDirectory().getDevice().getName()); //$NON-NLS-1$
-                            return;  //stop here to avoid cascading error messages 
                         }
                     }    
                 }

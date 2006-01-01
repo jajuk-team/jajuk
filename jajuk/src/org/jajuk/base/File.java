@@ -192,9 +192,7 @@ public class File extends PropertyAdapter implements Comparable,ITechnicalString
 	/**Return true if the file can be accessed right now 
 	 * @return true the file can be accessed right now*/
 	public boolean isReady(){
-		if ( getDirectory().getDevice().isMounted() 
-                && !getDirectory().getDevice().isRefreshing() 
-                && !getDirectory().getDevice().isSynchronizing()){
+		if ( getDirectory().getDevice().isMounted()){
 			return true;
 		}
 		return false;

@@ -215,10 +215,6 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
                     return false;
                 }
             }
-            /*Remove all directories, playlist files and files for this device before rescan. 
-             Note  that logical item ( tracks, styles...) are device independant and cannot be cleared.
-             They will be clean up at next jajuk restart and old track data is used to populate device without full tag scan
-             */ 
             iNbFilesBeforeRefresh = FileManager.getInstance().getElementCount();
             iNbNewFiles = 0;
             iNbCorruptedFiles = 0;
@@ -281,8 +277,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
             //Display end of refresh message with stats
             lTime = System.currentTimeMillis()-lTime;
             StringBuffer sbOut = new StringBuffer("[").append(getName()).append(Messages.getString("Device.25")).append(((lTime<1000)?lTime+" ms":lTime/1000+" s")). //$NON-NLS-1$ //$NON-NLS-2$
-            append(Messages.getString("Device.26")).append(iNbNewFiles). //$NON-NLS-1$ //$NON-NLS-2$
-            append(Messages.getString("Device.27"));
+            append(Messages.getString("Device.26")).append(iNbNewFiles).append(Messages.getString("Device.27")); //$NON-NLS-1$ //$NON-NLS-2$
             if (iNbCorruptedFiles > 0){
                 sbOut.append(" - ").append(iNbCorruptedFiles).append(Messages.getString("Device.43")); //$NON-NLS-1$ //$NON-NLS-2$
             }
@@ -367,7 +362,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
             iNbCreatedFilesDest = synchronizeUnidirectonal(dSrc,this);
             //end message
             String sOut = new StringBuffer(Messages.getString("Device.33")).append((System.currentTimeMillis()-lTime)/1000) //$NON-NLS-1$
-            .append(Messages.getString("Device.34")).append(iNbCreatedFilesSrc+iNbCreatedFilesDest).append(Messages.getString("Device.35")). //$NON-NLS-1$ //$NON-NLS-2$
+            .append(Messages.getString("Device.26")).append(iNbCreatedFilesSrc+iNbCreatedFilesDest).append(Messages.getString("Device.35")). //$NON-NLS-1$ //$NON-NLS-2$
             append(lVolume/1048576).append(Messages.getString("Device.36")).toString(); //$NON-NLS-1$
             InformationJPanel.getInstance().setMessage(sOut,InformationJPanel.INFORMATIVE);
             Log.debug(sOut);

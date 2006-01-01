@@ -539,16 +539,11 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
                     Object o = path.getLastPathComponent();
                     if (o instanceof FileNode){
                         File file = ((FileNode)o).getFile();
-                        if (!file.isScanned()){ //don't test if it is mounted to let FIFO ask user for mounting
-                            try{
-                                FIFO.getInstance().push(new StackItem(file,ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),ConfigurationManager.getBoolean(CONF_OPTIONS_DEFAULT_ACTION_CLICK));
-                            }
-                            catch(JajukException je){
-                                Log.error(je);
-                            }
+                        try{
+                            FIFO.getInstance().push(new StackItem(file,ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),ConfigurationManager.getBoolean(CONF_OPTIONS_DEFAULT_ACTION_CLICK));
                         }
-                        else{
-                            Messages.showErrorMessage("120",file.getDirectory().getDevice().getName()); //$NON-NLS-1$
+                        catch(JajukException je){
+                            Log.error(je);
                         }
                     }
                     else if (o instanceof PlaylistFileNode){  //double clic on a playlist file
@@ -662,15 +657,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
                             DefaultMutableTreeNode node = (DefaultMutableTreeNode)e2.nextElement();
                             if (node instanceof FileNode){
                                 File file = ((FileNode)node).getFile();
-                                if (!file.isScanned()){
-                                    getInstance().alFiles.add(((FileNode)node).getFile());
-                                }
-                                else{
-                                    if (!(o instanceof DeviceNode)){
-                                        Messages.showErrorMessage("120"); //$NON-NLS-1$
-                                        return; //show only one error message
-                                    }
-                                }
+                                getInstance().alFiles.add(((FileNode)node).getFile());
                             }
                             else if (node instanceof DirectoryNode){
                                 Directory dir = ((DirectoryNode)node).getDirectory();

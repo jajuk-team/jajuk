@@ -564,7 +564,7 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 	/**Return true the file can be accessed right now 
 	 * @return true the file can be accessed right now*/
 	public boolean isReady(){
-		if ( getDirectory().getDevice().isMounted() && !getDirectory().getDevice().isRefreshing() && !getDirectory().getDevice().isSynchronizing()){
+		if ( getDirectory().getDevice().isMounted()){
 			return true;
 		}
 		return false;
