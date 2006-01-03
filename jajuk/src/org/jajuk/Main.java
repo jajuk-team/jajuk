@@ -199,6 +199,7 @@ public class Main implements ITechnicalStrings {
                 public void run() {
                     try {
                         sc = new JSplash(new URL (IMAGES_SPLASHSCREEN),true,true,false,JAJUK_VERSION+" "+JAJUK_VERSION_DATE,null,null); //$NON-NLS-1$
+                        sc.setTitle(Messages.getString("JajukWindow.3"));
                         sc.splashOn();
                     } catch (MalformedURLException e) {
                         Log.error(e);
