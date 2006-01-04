@@ -19,36 +19,22 @@
  */
 package org.jajuk.ui;
 
+import static org.jajuk.ui.action.JajukAction.*;
 import info.clearthought.layout.TableLayout;
 
 import java.awt.Component;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Properties;
 
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JSlider;
-import javax.swing.SwingUtilities;
-import javax.swing.Timer;
+import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import org.jajuk.base.Directory;
 import org.jajuk.base.Event;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
@@ -67,6 +53,9 @@ import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
+import org.jajuk.ui.action.ActionManager;
+import org.jajuk.ui.action.JajukAction;
+import org.jajuk.ui.action.ActionUtil;
 
 import ext.SwingWorker;
 
@@ -76,19 +65,19 @@ import ext.SwingWorker;
  * @author     Bertrand Florat
  * @created    3 oct. 2003
  */
-public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionListener,ListSelectionListener,ChangeListener,Observer,MouseListener,MouseWheelListener{
-	
+public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionListener,ListSelectionListener,ChangeListener,Observer,MouseWheelListener{
+
 	//singleton
 	static private CommandJPanel command;
-	
+
 	//widgets declaration
 	SearchBox sbSearch;
 	SteppedComboBox jcbHistory;
 	JPanel jpMode;
-	JButton jbRepeat;
-	JButton jbRandom;
-	JButton jbContinue;
-	JButton jbIntro;
+	public JajukToggleButton jbRepeat;
+	public JajukToggleButton jbRandom;
+	public JajukToggleButton jbContinue;
+	public JajukToggleButton jbIntro;
 	JPanel jpSpecial;
 	JButton jbGlobalRandom;
 	JButton jbBestof;
@@ -97,16 +86,16 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 	JPanel jpPlay;
 	JButton jbPrevious;
 	JButton jbNext;
-	JButton jbRew;
+	JPressButton jbRew;
 	JButton jbPlayPause;
 	JButton jbStop;
-	JButton jbFwd;
+	JPressButton jbFwd;
 	JLabel jlVolume;
 	JSlider jsVolume;
 	JLabel jlPosition;
 	JSlider jsPosition;
 	JButton jbMute;
-		
+
 	//variables declaration
 	/**Repeat mode flag*/
 	static boolean bIsRepeatEnabled = false;
@@ -120,15 +109,13 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 	static final float JUMP_SIZE = 0.1f;
 	/**Last slider manual move date*/
 	private static long lDateLastAdjust;
-	/**Lock to avoid multiple next/previous*/
-	private static byte[] bLock = new byte[0];
-	/** Swing Timer to refresh the component*/ 
+	/** Swing Timer to refresh the component*/
 	private Timer timer = new Timer(JajukTimer.DEFAULT_HEARTBEAT,new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			update(new Event(EVENT_HEART_BEAT));
 		}
 	});
-	
+
     /**
 	 * @return singleton
 	 */
@@ -138,7 +125,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		}
 		return command;
 	}
-	
+
 	/**
 	 * Constructor
 	 */
@@ -152,151 +139,91 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		jcbHistory.setPopupWidth(iWidth);
 		jcbHistory.setToolTipText(Messages.getString("CommandJPanel.0")); //$NON-NLS-1$
 		jcbHistory.addActionListener(CommandJPanel.this);
-		//Mode toolbar
+
+        //Mode toolbar
 		jpMode = new JPanel();
 		jpMode.setLayout(new BoxLayout(jpMode,BoxLayout.X_AXIS));
-		jbRepeat = new JButton(Util.getIcon(ICON_REPEAT)); 
-		jbRepeat.setActionCommand(EVENT_REPEAT_MODE_STATUS_CHANGED);
-		jbRepeat.setToolTipText(Messages.getString("CommandJPanel.1")); //$NON-NLS-1$
-		jbRepeat.addActionListener(JajukListener.getInstance());
-		if ( ConfigurationManager.getBoolean(CONF_STATE_REPEAT)){
-			jbRepeat.setBorder(BorderFactory.createLoweredBevelBorder());
-		}
-		else{
-			jbRepeat.setBorder(BorderFactory.createRaisedBevelBorder());
-		}
-		jbRandom = new JButton(Util.getIcon(ICON_SHUFFLE));
-		jbRandom.setToolTipText(Messages.getString("CommandJPanel.2")); //$NON-NLS-1$
-		jbRandom.setActionCommand(EVENT_SHUFFLE_MODE_STATUS_CHANGED);
-		jbRandom.addActionListener(JajukListener.getInstance());
-		if ( ConfigurationManager.getBoolean(CONF_STATE_SHUFFLE)){
-			jbRandom.setBorder(BorderFactory.createLoweredBevelBorder());
-		}
-		else{
-			jbRandom.setBorder(BorderFactory.createRaisedBevelBorder());
-		}
-		jbContinue = new JButton(Util.getIcon(ICON_CONTINUE));
-		jbContinue.setToolTipText(Messages.getString("CommandJPanel.3")); //$NON-NLS-1$
-		jbContinue.setActionCommand(EVENT_CONTINUE_MODE_STATUS_CHANGED);
-		jbContinue.addActionListener(JajukListener.getInstance());
-		if ( ConfigurationManager.getBoolean(CONF_STATE_CONTINUE)){
-			jbContinue.setBorder(BorderFactory.createLoweredBevelBorder());
-		}
-		else{
-			jbContinue.setBorder(BorderFactory.createRaisedBevelBorder());
-		}
-		jbIntro = new JButton(Util.getIcon(ICON_INTRO));
-		jbIntro.setToolTipText(Messages.getString("CommandJPanel.4")); //$NON-NLS-1$
-		jbIntro.setActionCommand(EVENT_INTRO_MODE_STATUS_CHANGED);
-		jbIntro.addActionListener(JajukListener.getInstance());
-		if ( ConfigurationManager.getBoolean(CONF_STATE_INTRO)){
-			jbIntro.setBorder(BorderFactory.createLoweredBevelBorder());
-		}
-		else{
-			jbIntro.setBorder(BorderFactory.createRaisedBevelBorder());
-		}
+
+        jbRepeat = new JajukToggleButton(ActionManager.getAction(REPEAT_MODE_STATUS_CHANGE));
+        jbRepeat.setSelected(ConfigurationManager.getBoolean(CONF_STATE_REPEAT));
+
+        jbRandom = new JajukToggleButton(ActionManager.getAction(SHUFFLE_MODE_STATUS_CHANGED));
+        jbRandom.setSelected(ConfigurationManager.getBoolean(CONF_STATE_SHUFFLE));
+
+        jbContinue = new JajukToggleButton(ActionManager.getAction(JajukAction.CONTINUE_MODE_STATUS_CHANGED));
+        jbContinue.setSelected(ConfigurationManager.getBoolean(CONF_STATE_CONTINUE));
+
+        jbIntro = new JajukToggleButton(ActionManager.getAction(JajukAction.INTRO_MODE_STATUS_CHANGED));
+        jbIntro.setSelected(ConfigurationManager.getBoolean(CONF_STATE_INTRO));
+
 		jpMode.add(jbRepeat);
 		jpMode.add(jbRandom);
 		jpMode.add(jbContinue);
 		jpMode.add(jbIntro);
-		
+
 		//Special functions toolbar
 		jpSpecial = new JPanel();
 		jpSpecial.setLayout(new BoxLayout(jpSpecial,BoxLayout.X_AXIS));
-		jbGlobalRandom = new JButton(Util.getIcon(ICON_SHUFFLE_GLOBAL));
-		jbGlobalRandom.setBorder(BorderFactory.createEmptyBorder(4,4,4,4));
-		jbGlobalRandom.addActionListener(CommandJPanel.this);
-		jbGlobalRandom.setToolTipText(Messages.getString("CommandJPanel.5")); //$NON-NLS-1$
-		jbBestof = new JButton(Util.getIcon(ICON_BESTOF)); 
-		jbBestof.setBorder(BorderFactory.createEmptyBorder(4,4,4,4));
-		jbBestof.addActionListener(CommandJPanel.this);
-		jbBestof.setToolTipText(Messages.getString("CommandJPanel.6")); //$NON-NLS-1$
-		jbNovelties = new JButton(Util.getIcon(ICON_NOVELTIES)); 
-		jbNovelties.setBorder(BorderFactory.createEmptyBorder(4,4,4,4));
-		jbNovelties.addActionListener(CommandJPanel.this);
-		jbNovelties.setToolTipText(Messages.getString("CommandJPanel.16")); //$NON-NLS-1$
-		jbNorm = new JButton(Util.getIcon(ICON_MODE_NORMAL)); 
-		jbNorm.setBorder(BorderFactory.createEmptyBorder(4,4,4,4));
-		jbNorm.addActionListener(CommandJPanel.this);
-		jbNorm.setToolTipText(Messages.getString("CommandJPanel.17")); //$NON-NLS-1$
-		if (FIFO.getInstance().getCurrentItem() == null){
-            jbNorm.setEnabled(false);
-        }
+		jbGlobalRandom = new JajukButton(ActionManager.getAction(SHUFFLE_GLOBAL));
+		jbBestof = new JajukButton(ActionManager.getAction(BEST_OF));
+		jbNovelties = new JajukButton(ActionManager.getAction(NOVELTIES));
+		jbNorm = new JajukButton(ActionManager.getAction(FINISH_ALBUM));
         jpSpecial.add(jbGlobalRandom);
 		jpSpecial.add(jbBestof);
 		jpSpecial.add(jbNovelties);
 		jpSpecial.add(jbNorm);
-		
+
 		//Play toolbar
-		jpPlay = new JPanel();
-		jpPlay.setLayout(new BoxLayout(jpPlay,BoxLayout.X_AXIS));
-		jbPrevious = new JButton(Util.getIcon(ICON_PREVIOUS)); 
-		jbPrevious.setBorder(BorderFactory.createEmptyBorder(4,4,4,4));
-		jbPrevious.setToolTipText(Messages.getString("CommandJPanel.8")); //$NON-NLS-1$
-		jbPrevious.addMouseListener(CommandJPanel.this);
-		jbNext = new JButton(Util.getIcon(ICON_NEXT)); 
-		jbNext.setBorder(BorderFactory.createEmptyBorder(4,4,4,4));
-		jbNext.setToolTipText(Messages.getString("CommandJPanel.9")); //$NON-NLS-1$
-		jbNext.addMouseListener(CommandJPanel.this);
-		jbRew = new JButton(Util.getIcon(ICON_REW)); 
-		jbRew.setBorder(BorderFactory.createEmptyBorder(4,4,4,4));
-		jbRew.setEnabled(false);
-		jbRew.setToolTipText(Messages.getString("CommandJPanel.10")); //$NON-NLS-1$
-		jbRew.addMouseListener(CommandJPanel.this);
-		jbPlayPause = new JButton(Util.getIcon(ICON_PAUSE)); 
-		jbPlayPause.setBorder(BorderFactory.createEmptyBorder(4,4,4,4));
-		jbPlayPause.setToolTipText(Messages.getString("CommandJPanel.11")); //$NON-NLS-1$
-		jbPlayPause.setEnabled(false);
-		jbPlayPause.addActionListener(CommandJPanel.this);
-		jbStop = new JButton(Util.getIcon(ICON_STOP)); 
-		jbStop.setBorder(BorderFactory.createEmptyBorder(4,4,4,4));
-		jbStop.setToolTipText(Messages.getString("CommandJPanel.12")); //$NON-NLS-1$
-		jbStop.addActionListener(CommandJPanel.this);
-		jbStop.setEnabled(false);
-		jbFwd = new JButton(Util.getIcon(ICON_FWD)); 
-		jbFwd.setBorder(BorderFactory.createEmptyBorder(4,4,4,4));
-		jbFwd.setToolTipText(Messages.getString("CommandJPanel.13")); //$NON-NLS-1$
-		jbFwd.setEnabled(false);
-		jbFwd.addActionListener(CommandJPanel.this);
-		jpPlay.add(jbPrevious);
-		jpPlay.add(jbNext);
+        jpPlay = new JPanel();
+        ActionUtil.installKeystrokes(jpPlay, ActionManager.getAction(NEXT_ALBUM),
+                                     ActionManager.getAction(PREVIOUS_ALBUM));
+        jpPlay.setLayout(new BoxLayout(jpPlay, BoxLayout.X_AXIS));
+        jbPrevious = new JajukButton(ActionManager.getAction(PREVIOUS_TRACK));
+        jbNext = new JajukButton(ActionManager.getAction(NEXT_TRACK));
+        jbRew = new JPressButton(ActionManager.getAction(REWIND_TRACK));
+        jbPlayPause = new JajukButton(ActionManager.getAction(PLAY_PAUSE_TRACK));
+        jbStop = new JajukButton(ActionManager.getAction(STOP_TRACK));
+        jbFwd = new JPressButton(ActionManager.getAction(FAST_FORWARD_TRACK));
+
+        jpPlay.add(jbPrevious);
+        jpPlay.add(jbNext);
 		jpPlay.add(Box.createHorizontalGlue());
 		jpPlay.add(jbRew);
 		jpPlay.add(jbPlayPause);
 		jpPlay.add(jbStop);
 		jpPlay.add(jbFwd);
-		
+
 		//Volume
 		JPanel jpVolume = new JPanel();
+        ActionUtil.installKeystrokes(jpVolume, ActionManager.getAction(DECREASE_VOLUME),
+                                     ActionManager.getAction(INCREASE_VOLUME));
+
         jpVolume.setLayout(new BoxLayout(jpVolume,BoxLayout.X_AXIS));
-        jlVolume = new JLabel(Util.getIcon(ICON_VOLUME)); 
+        jlVolume = new JLabel(Util.getIcon(ICON_VOLUME));
 		jsVolume = new JSlider(0,100,(int)(100*ConfigurationManager.getFloat(CONF_VOLUME)));
 		jpVolume.add(jlVolume);
 		jpVolume.add(jsVolume);
 		jsVolume.setToolTipText(Messages.getString("CommandJPanel.14")); //$NON-NLS-1$
 		jsVolume.addChangeListener(CommandJPanel.this);
 		jsVolume.addMouseWheelListener(CommandJPanel.this);
-		
+
 		//Position
 		JPanel jpPosition = new JPanel();
         jpPosition.setLayout(new BoxLayout(jpPosition,BoxLayout.X_AXIS));
-    	jlPosition = new JLabel(Util.getIcon(ICON_POSITION)); 
+    	jlPosition = new JLabel(Util.getIcon(ICON_POSITION));
 		jsPosition = new JSlider(0,100,0);
 		jpPosition.add(jlPosition);
 		jpPosition.add(jsPosition);
 		jsPosition.addChangeListener(CommandJPanel.this);
 		jsPosition.setEnabled(false);
 		jsPosition.setToolTipText(Messages.getString("CommandJPanel.15")); //$NON-NLS-1$
-				
+
 		//mute
-		jbMute = new JButton(Util.getIcon(ICON_MUTE)); 
-		jbMute.addActionListener(CommandJPanel.this);
-		jbMute.setToolTipText(Messages.getString("CommandJPanel.7")); //$NON-NLS-1$
-		jbMute.setBorder(BorderFactory.createRaisedBevelBorder());
-			
+        jbMute = new JajukToggleButton(ActionManager.getAction(MUTE_STATE));
+
 		//dimensions
 		int height1 = 25;  //buttons, components
-		//int height2 = 36; //slider ( at least this height in the gtk+ l&f ) 
+		//int height2 = 36; //slider ( at least this height in the gtk+ l&f )
 		int iSeparator = 1;
 		//set default layout and size
 		double[][] size ={{5*iSeparator,0.15,10*iSeparator,0.17,5*iSeparator,  //search box + history
@@ -306,9 +233,8 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 			0.13,iSeparator,0.11,TableLayout.FILL,20,5*iSeparator},  //position + volume sliders + mute button
 			{height1}}; //note we can't set a % for history combo box because of popup size
 		setLayout(new TableLayout(size));
-		TableLayout tl = new TableLayout();
 		setAlignmentY(Component.CENTER_ALIGNMENT);
-		
+
 		//add toolbars to main panel
 		add(sbSearch,"1,0"); //$NON-NLS-1$
 		add(jcbHistory,"3,0"); //$NON-NLS-1$
@@ -318,7 +244,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		add(jpPosition,"11,0"); //$NON-NLS-1$
 		add(jpVolume,"13,0"); //$NON-NLS-1$
 		add(jbMute,"15,0"); //$NON-NLS-1$
-		
+
 		//register to player events
 		ObservationManager.register(EVENT_PLAYER_PLAY,CommandJPanel.this);
 		ObservationManager.register(EVENT_PLAYER_STOP,CommandJPanel.this);
@@ -334,15 +260,15 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
         ObservationManager.register(EVENT_VOLUME_CHANGED,this);
       //if a track is playing, display right state
 		if ( FIFO.getInstance().getCurrentFile() != null){
-			//update initial state 
+			//update initial state
 			update(new Event(EVENT_PLAYER_PLAY,ObservationManager.getDetailsLastOccurence(EVENT_PLAYER_PLAY)));
 			//check if some track has been lauched before the view has been displayed
 			update(new Event(EVENT_HEART_BEAT));
 		}
 		//start timer
 		timer.start();
-	}	
-	
+	}
+
 	/* (non-Javadoc)
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
@@ -350,7 +276,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		//do not run this in a separate thread because Player actions would die with the thread
 		try{
 			if ( ae.getSource() == jcbHistory){
-			    HistoryItem hi = null;
+			    HistoryItem hi;
 			    hi = History.getInstance().getHistoryItem(jcbHistory.getSelectedIndex());
 			    if (hi != null){
 			        org.jajuk.base.File file = (File)FileManager.getInstance().getItem(hi.getFileId());
@@ -359,68 +285,13 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 			                FIFO.getInstance().push(new StackItem(file,ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
 			            }
 			            catch(JajukException je){  //can be thrown if file is null
-			                return;
-			            }
+                        }
 			        }
 			        else{
-			            Messages.showErrorMessage("120",file.getDirectory().getDevice().getName()); //$NON-NLS-1$
+			            Messages.showErrorMessage("120",file == null ? "null" : file.getDirectory().getDevice().getName()); //$NON-NLS-1$ //$NON-NLS-2$
 			            jcbHistory.setSelectedItem(null);
 			        }
-			    }	
-			}
-			if (ae.getSource() == jbBestof ){
-			    ArrayList alToPlay = FileManager.getInstance().getGlobalBestofPlaylist();
-			    FIFO.getInstance().push(Util.createStackItems(alToPlay,
-							ConfigurationManager.getBoolean(CONF_STATE_REPEAT),false),false);
-			}
-			if (ae.getSource() == jbGlobalRandom ){
-				ArrayList alToPlay = FileManager.getInstance().getGlobalShufflePlaylist();
-				FIFO.getInstance().push(Util.createStackItems(alToPlay,
-							ConfigurationManager.getBoolean(CONF_STATE_REPEAT),false),false);
-			}
-			if (ae.getSource() == jbNovelties ){
-				ArrayList alToPlay  = FileManager.getInstance().getGlobalNoveltiesPlaylist();
-                if (alToPlay != null && alToPlay.size() != 0){
-                    Collections.shuffle(alToPlay);//shuffle the selection    
-                }
-                if ( alToPlay!= null ){
-					FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alToPlay),
-							ConfigurationManager.getBoolean(CONF_STATE_REPEAT),false),false);
-				}
-				else{ //none novelty found
-					Messages.showWarningMessage(Messages.getString("Error.127")); //$NON-NLS-1$
-				}
-			}
-			if (ae.getSource() == jbNorm ){
-				StackItem item = FIFO.getInstance().getCurrentItem();//stores current item
-				FIFO.getInstance().clear(); //clear fifo 
-                Directory dir = item.getFile().getDirectory();
-                FIFO.getInstance().push(Util.createStackItems(dir.getFilesFromFile(item.getFile()),
-                    item.isRepeat(),item.isUserLaunch()),true); //then re-add current item
-                FIFO.getInstance().computesPlanned(true); //update planned list
-				Properties properties = new Properties();
-				properties.put(DETAIL_ORIGIN,DETAIL_SPECIAL_MODE_NORMAL);
-				ObservationManager.notify(new Event(EVENT_SPECIAL_MODE,properties));
-			}
-			else if (ae.getSource() == jbMute ){
-				Player.mute(); //change mute state
-			}
-			else if(ae.getSource() == jbStop){
-				FIFO.getInstance().stopRequest();
-			}
-			else if(ae.getSource() == jbPlayPause){
-				if ( Player.isPaused()){  //player was paused, resume it
-					Player.resume();
-					ObservationManager.notify(new Event(EVENT_PLAYER_RESUME));  //notify of this event
-				}
-				else{ //player is not paused, pause it
-					Player.pause();
-					ObservationManager.notify(new Event(EVENT_PLAYER_PAUSE));  //notify of this event
-				}
-			}
-			else if (ae.getSource() == jbFwd){
-				float fCurrentPosition = Player.getCurrentPosition();
-				Player.seek(fCurrentPosition+JUMP_SIZE);
+			    }
 			}
 		}
 		catch(Exception e){
@@ -430,7 +301,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 			ObservationManager.notify(new Event(EVENT_PLAYLIST_REFRESH)); //refresh playlist editor
 		}
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.ListSelectionEvent)
 	 */
@@ -448,17 +319,17 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 				}
 				return null;
 			}
-			
+
 			public void finished() {
 				if (!e.getValueIsAdjusting()){
 					sbSearch.popup.hide();
-					requestFocusInWindow();	
-				}	
+					requestFocusInWindow();
+				}
 			}
 		};
 		sw.start();
 	}
-	
+
 	/*
 	 *  @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
 	 */
@@ -477,7 +348,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
                 setPosition((float)jsPosition.getValue()/100);
             }
         }
-        
+
         if ( e.getSource() == jsVolume ){
             if (System.currentTimeMillis()-lDateLastAdjust > 200){
             //if user move the volume slider, unmute
@@ -493,10 +364,10 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
             else{
                 setPosition((float)jsPosition.getValue()/100);
             }
-			
+
 		}
 	}
-	
+
 	private void setPosition(float fPosition){
         Log.debug("Seeking to: "+fPosition); //$NON-NLS-1$
         //max position can't be 100% to allow seek properly
@@ -508,24 +379,24 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
         }
         Player.seek(fPosition);
     }
-	
+
 	/**
 	 * @return Position value
 	 */
 	public int getCurrentPosition(){
 		return this.jsPosition.getValue();
 	}
-	
-	
+
+
 	/**
 	 * @return Volume value
 	 */
 	public int getCurrentVolume(){
 		return this.jsVolume.getValue();
 	}
-	
-	
-	private void setVolume(float fVolume){
+
+
+	public void setVolume(float fVolume){
         jsVolume.removeChangeListener(this);
         jsVolume.removeMouseWheelListener(this);
         //if user move the volume slider, unmute
@@ -534,8 +405,8 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
         jsVolume.addChangeListener(this);
         jsVolume.addMouseWheelListener(this);
     }
-	
-	
+
+
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.Observer#update(java.lang.String)
 	 */
@@ -544,46 +415,58 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 			public void run() {
 				String subject = event.getSubject();
 				if(EVENT_PLAYER_STOP.equals(subject) || EVENT_ZERO.equals(subject)){
-					jbRew.setEnabled(false);
-					jbPlayPause.setEnabled(false);
-					jbStop.setEnabled(false);
-					jbFwd.setEnabled(false);
-					jbNext.setEnabled(false);
-					jbPrevious.setEnabled(false);
-					jsPosition.setEnabled(false);
+                    ActionManager.getAction(PREVIOUS_TRACK).setEnabled(false);
+                    ActionManager.getAction(NEXT_TRACK).setEnabled(false);
+                    ActionManager.getAction(REWIND_TRACK).setEnabled(false);
+                    ActionManager.getAction(PLAY_PAUSE_TRACK).setEnabled(false);
+                    ActionManager.getAction(STOP_TRACK).setEnabled(false);
+                    ActionManager.getAction(FAST_FORWARD_TRACK).setEnabled(false);
+                    ActionManager.getAction(NEXT_ALBUM).setEnabled(false);
+                    ActionManager.getAction(PREVIOUS_ALBUM).setEnabled(false);
+                    ActionManager.getAction(FINISH_ALBUM).setEnabled(false);
+
+                    ActionManager.getAction(PLAY_PAUSE_TRACK).setIcon(Util.getIcon(ICON_PAUSE));
+
+                    jsPosition.setEnabled(false);
                     jsPosition.removeMouseWheelListener(CommandJPanel.this);
 					setPosition(0.0f);
-                    jbNorm.setEnabled(false);
-					jbPlayPause.setIcon(Util.getIcon(ICON_PAUSE)); //resume any current pause
 					ConfigurationManager.setProperty(CONF_STARTUP_LAST_POSITION,"0");//reset startup position //$NON-NLS-1$
 				}
 				else if (EVENT_PLAYER_PLAY.equals(subject)){
-					jbRew.setEnabled(true);
-					jbPlayPause.setEnabled(true);
-					jbStop.setEnabled(true);
-					jbFwd.setEnabled(true);
-					jbNext.setEnabled(true);
-					jbPrevious.setEnabled(true);
-					jsPosition.setEnabled(true);
+                    ActionManager.getAction(PREVIOUS_TRACK).setEnabled(true);
+                    ActionManager.getAction(NEXT_TRACK).setEnabled(true);
+                    ActionManager.getAction(REWIND_TRACK).setEnabled(true);
+                    ActionManager.getAction(PLAY_PAUSE_TRACK).setEnabled(true);
+                    ActionManager.getAction(STOP_TRACK).setEnabled(true);
+                    ActionManager.getAction(FAST_FORWARD_TRACK).setEnabled(true);
+                    ActionManager.getAction(NEXT_ALBUM).setEnabled(true);
+                    ActionManager.getAction(PREVIOUS_ALBUM).setEnabled(true);
+                    ActionManager.getAction(FINISH_ALBUM).setEnabled(true);
+
+                    ActionManager.getAction(PLAY_PAUSE_TRACK).setIcon(Util.getIcon(ICON_PAUSE));
+
+                    jsPosition.setEnabled(true);
                     jsPosition.removeMouseWheelListener(CommandJPanel.this);
                     jsPosition.addMouseWheelListener(CommandJPanel.this);
-                    jbNorm.setEnabled(true);
-					jbPlayPause.setIcon(Util.getIcon(ICON_PAUSE)); //resume any current pause
 				}
 				else if (EVENT_PLAYER_PAUSE.equals(subject)){
-					jbRew.setEnabled(false);
-					jbFwd.setEnabled(false);
+                    ActionManager.getAction(REWIND_TRACK).setEnabled(false);
+                    ActionManager.getAction(FAST_FORWARD_TRACK).setEnabled(false);
+
+                    ActionManager.getAction(PLAY_PAUSE_TRACK).setIcon(Util.getIcon(ICON_PLAY));
+
 					jsPosition.setEnabled(false);
                     jsPosition.removeMouseWheelListener(CommandJPanel.this);
-					jbPlayPause.setIcon(Util.getIcon(ICON_PLAY));
 				}
 				else if (EVENT_PLAYER_RESUME.equals(subject)){
-					jbRew.setEnabled(true);
-					jbFwd.setEnabled(true);
+                    ActionManager.getAction(REWIND_TRACK).setEnabled(true);
+                    ActionManager.getAction(FAST_FORWARD_TRACK).setEnabled(true);
+
+                    ActionManager.getAction(PLAY_PAUSE_TRACK).setIcon(Util.getIcon(ICON_PAUSE));
+
 					jsPosition.setEnabled(true);
                     jsPosition.removeMouseWheelListener(CommandJPanel.this);
                     jsPosition.addMouseWheelListener(CommandJPanel.this);
-					jbPlayPause.setIcon(Util.getIcon(ICON_PAUSE));
 				}
 				else if (EVENT_HEART_BEAT.equals(subject) &&!FIFO.isStopped() && !Player.isPaused()){
 					 //if position is adjusting, no dont disturb user
@@ -594,27 +477,17 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
                     if ((System.currentTimeMillis() - lDateLastAdjust) < 4000){
                         return;
                     }
-                    long length = JajukTimer.getInstance().getCurrentTrackTotalTime(); 
-                    long lTime = JajukTimer.getInstance().getCurrentTrackEllapsedTime();
                     int iPos = (int)(100*JajukTimer.getInstance().getCurrentTrackPosition());
                     jsPosition.removeChangeListener(CommandJPanel.this);
-                    jsPosition.setValue(iPos);    
+                    jsPosition.setValue(iPos);
                     jsPosition.addChangeListener(CommandJPanel.this);
 				}
-				else if (EVENT_MUTE_STATE.equals(subject)){
-					if ( Player.isMuted()){
-						jbMute.setBorder(BorderFactory.createLoweredBevelBorder());
-					}
-					else{
-						jbMute.setBorder(BorderFactory.createRaisedBevelBorder());
-					}
-				}      
 				else if(EVENT_SPECIAL_MODE.equals(subject)){
 				    if (ObservationManager.getDetail(event,DETAIL_ORIGIN).equals(DETAIL_SPECIAL_MODE_NORMAL)){
 						// deselect shuffle mode
 						ConfigurationManager.setProperty(CONF_STATE_SHUFFLE, FALSE);
-						JajukJMenuBar.getInstance().jcbmiShuffle.setSelected(false);
-						CommandJPanel.getInstance().jbRandom.setBorder(BorderFactory.createRaisedBevelBorder());
+                        JajukJMenuBar.getInstance().jcbmiShuffle.setSelected(false);
+						CommandJPanel.getInstance().jbRandom.setSelected(false);
 						//computes planned tracks
 						FIFO.getInstance().computesPlanned(true);
 					}
@@ -624,145 +497,33 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 						//    deselect repeat mode
 						ConfigurationManager.setProperty(CONF_STATE_REPEAT, FALSE);
 						JajukJMenuBar.getInstance().jcbmiRepeat.setSelected(false);
-						CommandJPanel.getInstance().jbRepeat.setBorder(BorderFactory.createRaisedBevelBorder());    
+						CommandJPanel.getInstance().jbRepeat.setSelected(false);
 					}
 				}
                 else if (EVENT_FILE_LAUNCHED.equals(subject)){
-                    jcbHistory.removeActionListener(CommandJPanel.this);
+                    //jcbHistory.removeActionListener(CommandJPanel.this);
                     jcbHistory.setSelectedIndex(0);
-                    jcbHistory.addActionListener(CommandJPanel.this);
+                    //jcbHistory.addActionListener(CommandJPanel.this);
                 }
                 else if(EVENT_CLEAR_HISTORY.equals(event.getSubject())){
-                  jcbHistory.setSelectedItem(null); //clear selection bar (data itself is clear from the model by History class)  
+                  jcbHistory.setSelectedItem(null); //clear selection bar (data itself is clear from the model by History class)
                 }
                 else if(EVENT_VOLUME_CHANGED.equals(event.getSubject())){
                     jsVolume.setValue((int)(100*Player.getCurrentVolume()));
-                    jbMute.setBorder(BorderFactory.createRaisedBevelBorder());
+                    jbMute.setSelected(false);
                 }
 			}
 		});
-		
+
 	}
-	
+
 	/**
 	 * ToString() method
 	 */
 	public String toString(){
 		return getClass().getName();
 	}
-	
-	/* (non-Javadoc)
-	 * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
-	 */
-	public void mouseClicked(MouseEvent e) {
-		//left button and no shift pressed :track level
-		if (e.getButton() == MouseEvent.BUTTON1 && ((e.getModifiersEx() & MouseEvent.SHIFT_DOWN_MASK) != MouseEvent.SHIFT_DOWN_MASK)){
-			if (e.getSource() == jbPrevious){
-				synchronized(bLock){
-					new Thread(){
-						public void run(){
-							try{
-								FIFO.getInstance().playPrevious();
-							}
-							catch(Exception e){
-								Log.error(e);
-							}
-						}
-					}.start();
-					if ( Player.isPaused()){  //player was paused, reset pause button when changing of track
-						Player.setPaused(false);
-						ObservationManager.notify(new Event(EVENT_PLAYER_RESUME));  //notify of this event
-					}
-				}
-			}
-			else if (e.getSource() == jbNext){
-				synchronized(bLock){
-					new Thread(){
-						public void run(){
-							try{
-								FIFO.getInstance().playNext();
-							}
-							catch(Exception e){
-								Log.error(e);
-							}
-						}
-					}.start();
-					if ( Player.isPaused()){  //player was paused, reset pause button
-						Player.setPaused(false);
-						ObservationManager.notify(new Event(EVENT_PLAYER_RESUME));  //notify of this event
-					}
-				}
-			}
-            else if (e.getSource() == jbRew){
-                 float fCurrentPosition = Player.getCurrentPosition();
-                  Player.seek(fCurrentPosition-JUMP_SIZE);
-            }
-		}
-		//right click or shift+left click
-		else if (e.getButton() == MouseEvent.BUTTON3 || ((e.getModifiersEx() & MouseEvent.SHIFT_DOWN_MASK) == MouseEvent.SHIFT_DOWN_MASK)){
-			if (e.getSource() == jbNext){
-				synchronized(bLock){
-					new Thread(){
-						public void run(){
-							try{
-								FIFO.getInstance().playNextAlbum();
-							}
-							catch(Exception e){
-								Log.error(e);
-							}
-						}
-					}.start();
-				}
-			}
-			else if (e.getSource() == jbPrevious){
-				synchronized(bLock){
-					new Thread(){
-						public void run(){
-							try{
-								FIFO.getInstance().playPreviousAlbum();
-							}
-							catch(Exception e){
-								Log.error(e);
-							}
-						}
-					}.start();
-					if ( Player.isPaused()){  //player was paused, reset pause button when changing of track
-						Player.setPaused(false);
-						ObservationManager.notify(new Event(EVENT_PLAYER_RESUME));  //notify of this event
-					}
-				}
-			}
-			else if (e.getSource() == jbRew){
-			    //replay the entire file
-			    Player.seek(0);
-			}
-		}
-	}
-	
-	/* (non-Javadoc)
-	 * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
-	 */
-	public void mousePressed(MouseEvent e) {
-	}
-	
-	/* (non-Javadoc)
-	 * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
-	 */
-	public void mouseReleased(MouseEvent e) {
-	}
-	
-	/* (non-Javadoc)
-	 * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
-	 */
-	public void mouseEntered(MouseEvent e) {
-	}
-	
-	/* (non-Javadoc)
-	 * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
-	 */
-	public void mouseExited(MouseEvent e) {
-	}
-	
+
 	/* (non-Javadoc)
 	 * @see java.awt.event.MouseWheelListener#mouseWheelMoved(java.awt.event.MouseWheelEvent)
 	 */

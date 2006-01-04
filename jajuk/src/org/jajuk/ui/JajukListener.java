@@ -70,7 +70,7 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
 			    ConfigurationManager.setProperty(CONF_STATE_REPEAT, Boolean.toString(!b));
 			    JajukJMenuBar.getInstance().jcbmiRepeat.setSelected(!b);
 			    if (!b == true) { //enabled button
-			        CommandJPanel.getInstance().jbRepeat.setBorder(BorderFactory.createLoweredBevelBorder());
+			    //    CommandJPanel.getInstance().jbRepeat.setBorder(BorderFactory.createLoweredBevelBorder());
 			        //if FIFO is not void, repeat over current item
 			        StackItem item = FIFO.getInstance().getCurrentItem();
 			        if ( item != null && FIFO.getInstance().getIndex() == 0){ //only non-repeated items need to be set and in this case, index =0 or bug
@@ -78,7 +78,7 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
 			        }
 			    }
 			    else {//disable repeat mode
-					CommandJPanel.getInstance().jbRepeat.setBorder(BorderFactory.createRaisedBevelBorder());
+				//	CommandJPanel.getInstance().jbRepeat.setBorder(BorderFactory.createRaisedBevelBorder());
 					//remove repeat mode to all items
 					FIFO.getInstance().setRepeatModeToAll(false);
 					//remove tracks before current position

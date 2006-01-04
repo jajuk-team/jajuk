@@ -56,7 +56,7 @@ import org.jdesktop.jdic.desktop.Message;
  * @author     Bertrand Florat
  * @created    20 juin 2005
  */
-class QualityFeedbackWizard extends JDialog implements KeyListener,ActionListener,ITechnicalStrings{ 
+public class QualityFeedbackWizard extends JDialog implements KeyListener,ActionListener,ITechnicalStrings{
     JPanel jpMain;
     JLabel jlFrom;
     JTextField jtfFrom;
