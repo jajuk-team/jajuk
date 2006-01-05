@@ -26,6 +26,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.MediaTracker;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentListener;
@@ -78,6 +79,7 @@ import org.jajuk.util.DownloadManager;
 import org.jajuk.util.Filter;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
+import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
 import ext.FlowScrollPanel;
@@ -286,7 +288,8 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
     private void refreshThumbnail(Album album){
         File fThumb = new File(FILE_THUMBS+'/'+(String)jcbSize.getSelectedItem()+'/'+album.getId()+'.'+EXT_THUMB);
         if (!fThumb.exists()){
-            InformationJPanel.getInstance().setMessage(Messages.getString("CatalogView.5")+' '+album.getName2(),InformationJPanel.INFORMATIVE);
+            InformationJPanel.getInstance().setMessage(Messages.getString("CatalogView.5")
+                +' '+album.getName2(),InformationJPanel.INFORMATIVE);
             //search for local covers in all directories mapping the current track to reach other devices covers and display them together
             ArrayList<Track> alTracks = TrackManager.getInstance().getSortedAssociatedTracks(album);
             if (alTracks.size() == 0){
@@ -704,6 +707,7 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
      */
     class CoverSelectionWizard extends JDialog implements ActionListener,ITechnicalStrings{
         
+        JLabel jlSearch;
         JLabel jlIcon;
         JPanel jpControls;
         JButton jbPrevious;
@@ -716,6 +720,10 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
         
         int index = 0;
         
+        /**
+         * Cover selection wizard allows user to select and download an online cover
+         *
+         */
         public CoverSelectionWizard(){
             super(Main.getWindow(),Messages.getString("CatalogView.7"),true); //modal //$NON-NLS-1$
             //Control
@@ -725,6 +733,8 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
                 {TableLayout.PREFERRED}};
             jpControls = new JPanel();
             okc = new OKCancelPanel(this);
+            okc.getCancelButton().setText(Messages.getString("Close"));
+            okc.getOKButton().setEnabled(false);
             jbPrevious = new JButton(Messages.getString("Previous"));
             jbPrevious.setEnabled(false); //always false at startup
             jbPrevious.addActionListener(this);
@@ -735,35 +745,36 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
             jpControls.add(jbPrevious,"1,0");
             jpControls.add(jbNext,"3,0");
             jpControls.add(okc,"5,0");
-            //Main
-            double[][] dMain = {{10,TableLayout.PREFERRED,10},
-                    {10,TableLayout.PREFERRED,20,TableLayout.PREFERRED,10}};
-            jlIcon = new JLabel();
-            JPanel jpMain = (JPanel)getContentPane();
-            jpMain.setLayout(new TableLayout(dMain));
-            jpMain.add(jlIcon,"1,1");
-            jpMain.add(jpControls,"1,3");
+            
             ArrayList<Track> alTracks = TrackManager.getInstance().getSortedAssociatedTracks(CatalogView.this.item.getAlbum());
             Author author = alTracks.get(0).getAuthor();
             String sQuery = (author.getName().equals(UNKNOWN_AUTHOR)?"":author.getName2())
             +" "+CatalogView.this.item.getAlbum().getName2();
+            jlSearch = new JLabel((author.getName().equals(UNKNOWN_AUTHOR)?"":author.getName2())
+            +" - "+CatalogView.this.item.getAlbum().getName2());
+            jlSearch.setFont(new Font("Dialog",Font.BOLD,12)); //$NON-NLS-1$
+            
+            //Main
+            double[][] dMain = {{10,300,10},
+                    {10,TableLayout.PREFERRED,300,20,TableLayout.PREFERRED,10}};
+            jlIcon = new JLabel();
+            JPanel jpMain = (JPanel)getContentPane();
+            jpMain.setLayout(new TableLayout(dMain));
+            jpMain.add(jlSearch,"1,1");
+            jpMain.add(Util.getCentredPanel(jlIcon),"1,2");
+            jpMain.add(jpControls,"1,4");
+            
             try {
                 alUrls = DownloadManager.getRemoteCoversList(sQuery);
                 if (alUrls.size() == 0){
                     jlIcon.setText(Messages.getString("CatalogView.8"));
                 }
                 else{
-                    jbNext.setEnabled(true);
-                    jlIcon.setText("");
-                    Cover cover = new Cover(alUrls.get(0),Cover.REMOTE_COVER);
-                    File cache = new File(FILE_IMAGE_CACHE+"/"+Util.getOnlyFile(alUrls.get(0).getPath()));
-                    Util.createThumbnail(alUrls.get(index),cache,width);
-                    jlIcon.setIcon(new ImageIcon(cache.toURL()));
+                    displayCurrentCover();
                 }
             } catch (Exception e) {
                 Log.error(e);
-                jlIcon.setText(Messages.getString("Error.129"));
-                okc.getOKButton().setEnabled(false);
+                jlIcon.setText(Messages.getString("CatalogView.8"));
             }
             finally{
                 pack();
@@ -771,6 +782,50 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
                 setVisible(true);
                 Util.stopWaiting();
             }
+        }
+        
+        /**
+         * Manages cover display, auto-switch to next correct cover if an error occurs
+         * @throws Exception if none correct cover found
+         */
+        private void displayCurrentCover()throws Exception{
+            File thumb = null;
+            //try to find next correct cover
+            while (alUrls.size() > 0){
+                try{
+                    Cover cover = new Cover(alUrls.get(index),Cover.REMOTE_COVER);
+                    thumb = new File(FILE_IMAGE_CACHE+"/thumb."+EXT_THUMB);
+                    Util.createThumbnail(cover.getFile().toURL(),thumb,width);
+                    ImageIcon image = new ImageIcon(thumb.getAbsolutePath());
+                    //check image
+                    if ( image.getImageLoadStatus() != MediaTracker.COMPLETE){
+                        throw new JajukException("129"); //$NON-NLS-1$
+                    }
+                    jlIcon.setIcon(image);
+                    okc.getOKButton().setEnabled(true);
+                    if (alUrls.size() > 1 && index < (alUrls.size()-1)){
+                      jbNext.setEnabled(true);  
+                    }
+                    else{
+                        jbNext.setEnabled(false);
+                    }
+                    if (alUrls.size() > 1 && index > 0){
+                      jbPrevious.setEnabled(true);  
+                    }
+                    else{
+                        jbPrevious.setEnabled(false);
+                    }
+                    pack();
+                    return;
+                }catch(Exception e){
+                    alUrls.remove(index);
+                }
+                finally{
+                    setCursor(Util.DEFAULT_CURSOR);
+                }
+            }
+            //none correct cover found
+            throw new JajukException("129"); //$NON-NLS-1$
         }
         
         public void actionPerformed(ActionEvent e) {
@@ -790,7 +845,7 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
                     dispose();
                     return;
                 }
-                String sFilename = Util.getOnlyFile(cover.getURL().toString());
+                String sFilename = cover.getFile().getName();
                 //write cover in the first available directory we find
                 Album album = item.getAlbum();
                 //test if album contains at least one mounted file
@@ -815,7 +870,7 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
                 String sFilePath =  alFiles.get(0).getDirectory().getAbsolutePath()+"/"+sFilename; //$NON-NLS-1$
                 try{
                     //copy file from cache
-                    File fSource = new File(Util.getCachePath(cover.getURL()));
+                    File fSource = cover.getFile();
                     File file = new File(sFilePath);
                     Util.copy(fSource,file);
                     InformationJPanel.getInstance().setMessage(Messages.getString("CoverView.11"),InformationJPanel.INFORMATIVE); //$NON-NLS-1$
@@ -841,18 +896,9 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
                 if (index < alUrls.size()-1){
                     index ++;
                     try{
-                        Cover cover = new Cover(alUrls.get(index),Cover.REMOTE_COVER);
-                        okc.getOKButton().setEnabled(true);
-                        jlIcon.setText("");
-                        File cache = new File(FILE_IMAGE_CACHE+"/"+Util.getOnlyFile(alUrls.get(index).getPath()));
-                        Util.createThumbnail(alUrls.get(index),cache,width);
-                        jlIcon.setIcon(new ImageIcon(cache.toURL()));
-                        pack();
+                        displayCurrentCover();
                     } catch (Exception ex) {
                         Log.error(ex);
-                        jlIcon.setIcon(null);
-                        jlIcon.setText(Messages.getString("Error.129"));
-                        okc.getOKButton().setEnabled(false);
                     }
                 }
             }
@@ -860,35 +906,12 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
                 if (index > 0){
                     index --;
                     try{
-                        Cover cover = new Cover(alUrls.get(index),Cover.REMOTE_COVER);
-                        okc.getOKButton().setEnabled(true);
-                        jlIcon.setText("");
-                        File cache = new File(FILE_IMAGE_CACHE+"/"+Util.getOnlyFile(alUrls.get(index).getPath()));
-                        Util.createThumbnail(alUrls.get(index),cache,width);
-                        jlIcon.setIcon(new ImageIcon(cache.toURL()));
-                        pack();
+                        displayCurrentCover();
                     } catch (Exception ex) {
                         Log.error(ex);
-                        jlIcon.setIcon(null);
-                        jlIcon.setText(Messages.getString("Error.129"));
-                        okc.getOKButton().setEnabled(false);
                     }
                 }
             }
-            //check button state
-            if (index == alUrls.size()-1){
-                jbNext.setEnabled(false);
-            }
-            else{
-                jbNext.setEnabled(true);
-            }
-            if (index == 0){
-                jbPrevious.setEnabled(false);
-            }
-            else{
-                jbPrevious.setEnabled(true);
-            }
-            setCursor(Util.DEFAULT_CURSOR);
         }
     }
     
