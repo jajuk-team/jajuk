@@ -194,10 +194,24 @@ public class Main implements ITechnicalStrings {
             //Set locale. setSystemLocal
             Messages.getInstance().setLocal(ConfigurationManager.getProperty(CONF_OPTIONS_LANGUAGE));
         
+            //Registers supported look and feels
+            LNFManager.register(LNF_METAL,LNF_METAL_CLASS); 
+            LNFManager.register(LNF_WINDOWS,LNF_WINDOWS_CLASS);
+            LNFManager.register(LNF_KUNSTSTOFF,LNF_KUNSTSTOFF_CLASS);
+            LNFManager.register(LNF_LIQUID,LNF_LIQUID_CLASS);
+            LNFManager.register(LNF_PLASTIC,LNF_PLASTIC_CLASS);
+            LNFManager.register(LNF_PLASTICXP,LNF_PLASTICXP_CLASS);
+            LNFManager.register(LNF_PLASTIC3D,LNF_PLASTIC3D_CLASS);
+            LNFManager.register(LNF_INFONODE,LNF_INFONODE_CLASS);
+            LNFManager.register(LNF_SQUARENESS,LNF_SQUARENESS_CLASS);
+            LNFManager.register(LNF_TINY,LNF_TINY_CLASS);
+            
             //Launch splashscreen. Depends on: log.setVerbosity, configurationManager.load (for local) 
             SwingUtilities.invokeAndWait(new Runnable() {
                 public void run() {
                     try {
+                        //  Set look and feel, needs local to be set for error messages
+                        LNFManager.setLookAndFeel(ConfigurationManager.getProperty(CONF_OPTIONS_LNF));
                         sc = new JSplash(new URL (IMAGES_SPLASHSCREEN),true,true,false,JAJUK_VERSION+" "+JAJUK_VERSION_DATE,null,null); //$NON-NLS-1$
                         sc.setTitle(Messages.getString("JajukWindow.3"));
                         sc.splashOn();
@@ -224,19 +238,7 @@ public class Main implements ITechnicalStrings {
                 	
 			//Upgrade configuration from previous releases
 			upgradeStep1();
-			
-			//Registers supported look and feels
-			LNFManager.register(LNF_METAL,LNF_METAL_CLASS); 
-			LNFManager.register(LNF_WINDOWS,LNF_WINDOWS_CLASS);
-			LNFManager.register(LNF_KUNSTSTOFF,LNF_KUNSTSTOFF_CLASS);
-			LNFManager.register(LNF_LIQUID,LNF_LIQUID_CLASS);
-			LNFManager.register(LNF_PLASTIC,LNF_PLASTIC_CLASS);
-			LNFManager.register(LNF_PLASTICXP,LNF_PLASTICXP_CLASS);
-			LNFManager.register(LNF_PLASTIC3D,LNF_PLASTIC3D_CLASS);
-            LNFManager.register(LNF_INFONODE,LNF_INFONODE_CLASS);
-            LNFManager.register(LNF_SQUARENESS,LNF_SQUARENESS_CLASS);
-            LNFManager.register(LNF_TINY,LNF_TINY_CLASS);
-            			
+									
 			//Display user system configuration
 			Log.debug(System.getProperties().toString());
 			
@@ -325,8 +327,6 @@ public class Main implements ITechnicalStrings {
             
             //start the tray
             launchTray();
-
-
        } catch (JajukException je) { //last chance to catch any error for logging purpose
 			Log.error(je);
 			if ( je.getCode().equals("005")){ //$NON-NLS-1$
@@ -776,12 +776,7 @@ public class Main implements ITechnicalStrings {
                     // Create the perspective tool bar panel
                     perspectiveBar = PerspectiveBarJPanel.getInstance();
                     jpFrame.add(perspectiveBar, BorderLayout.WEST);
-                    
-                    //display window
-                    jw.setVisible(true); //show main window
-                    sc.toFront(); //force screenshot to continue to be visible during loading
-                    jw.applyStoredSize(); //apply size and position as stored in the user properties
-
+                                        
                     //Display info message if first session
                     if (ConfigurationManager.getBoolean(CONF_FIRST_CON) 
                             && DeviceManager.getInstance().getElementCount() == 0){ //make none device already exist to avoid checking availability
@@ -793,8 +788,8 @@ public class Main implements ITechnicalStrings {
                         ConfigurationManager.setProperty(CONF_FIRST_CON,FALSE);
                     }
                     
-                    jpFrame.add(jpContentPane, BorderLayout.CENTER);
                     PerspectiveManager.init();
+                    jpFrame.add(jpContentPane, BorderLayout.CENTER);
                     jw.setCursor(Util.DEFAULT_CURSOR);
                     jw.addComponentListener();
                     
@@ -804,6 +799,10 @@ public class Main implements ITechnicalStrings {
                         sc.splashOff();
                     }
 
+                    //display window
+                    jw.applyStoredSize(); //apply size and position as stored in the user properties
+                    jw.setVisible(true); //show main window
+                   
                     if (ConfigurationManager.getBoolean(CONF_SHOW_TIP_ON_STARTUP)) {
                         // Display tip of the day
                         TipOfTheDay tipsView = new TipOfTheDay();
