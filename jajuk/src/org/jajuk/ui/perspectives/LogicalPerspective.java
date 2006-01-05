@@ -80,9 +80,7 @@ public class LogicalPerspective extends PerspectiveAdapter{
         SplitWindow verMainSplit = new SplitWindow(true,0.4f,verTreeRepositorySplit,horTableCoverSplit);
 		
         setRootWindow(viewMap,verMainSplit);
-        
-        
-	}
+  }
 
     /* (non-Javadoc)
 	 * @see org.jajuk.ui.perspectives.IPerspective#commit()

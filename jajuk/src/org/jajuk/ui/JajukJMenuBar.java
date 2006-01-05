@@ -19,7 +19,16 @@
  */
 package org.jajuk.ui;
 
-import static org.jajuk.ui.action.JajukAction.*;
+import static org.jajuk.ui.action.JajukAction.CONTINUE_MODE_STATUS_CHANGED;
+import static org.jajuk.ui.action.JajukAction.HELP_REQUIRED;
+import static org.jajuk.ui.action.JajukAction.INTRO_MODE_STATUS_CHANGED;
+import static org.jajuk.ui.action.JajukAction.QUALITY;
+import static org.jajuk.ui.action.JajukAction.REPEAT_MODE_STATUS_CHANGE;
+import static org.jajuk.ui.action.JajukAction.SHOW_ABOUT;
+import static org.jajuk.ui.action.JajukAction.SHUFFLE_MODE_STATUS_CHANGED;
+import static org.jajuk.ui.action.JajukAction.TIP_OF_THE_DAY;
+import static org.jajuk.ui.action.JajukAction.WIZARD;
+
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -33,12 +42,11 @@ import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
 import org.jajuk.i18n.Messages;
+import org.jajuk.ui.action.ActionManager;
+import org.jajuk.ui.action.ActionUtil;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
-import org.jajuk.ui.action.JajukAction;
-import org.jajuk.ui.action.ActionManager;
-import org.jajuk.ui.action.ActionUtil;
 
 /**
  *  Jajuk menu bar

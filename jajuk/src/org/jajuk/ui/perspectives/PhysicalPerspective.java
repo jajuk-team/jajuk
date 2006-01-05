@@ -30,6 +30,7 @@ import org.jajuk.ui.views.IView;
 import org.jajuk.ui.views.PhysicalPlaylistEditorView;
 import org.jajuk.ui.views.PhysicalPlaylistRepositoryView;
 import org.jajuk.ui.views.PhysicalTableView;
+import org.jajuk.ui.views.PhysicalTreeView;
 
 /**
  * Physical perspective
