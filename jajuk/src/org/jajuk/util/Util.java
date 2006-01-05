@@ -1183,29 +1183,26 @@ public class Util implements ITechnicalStrings {
         // Determine the scale.
         double scale = (double)maxDim/(
                 double)inImage.getHeight(null);
-        if (inImage.getWidth(
-            null) > inImage.getHeight(null)) {
-            scale = (double)maxDim/(
-                    double)inImage.getWidth(null);
+        if (scale < 0){
+            throw new Exception("Negative scale");
+        }
+        if (inImage.getWidth(null) > inImage.getHeight(null)) {
+            scale = (double)maxDim/(double)inImage.getWidth(null);
         }
         
         // Determine size of new image. 
         //One of them
         // should equal maxDim.
-        int scaledW = (int)(
-                scale*inImage.getWidth(null));
-        int scaledH = (int)(
-                scale*inImage.getHeight(null));
+        int scaledW = (int)(scale*inImage.getWidth(null));
+        int scaledH = (int)(scale*inImage.getHeight(null));
         
         // Create an image buffer in 
         //which to paint on.
-        BufferedImage outImage = 
-            new BufferedImage(scaledW, scaledH,
+        BufferedImage outImage = new BufferedImage(scaledW, scaledH,
                 BufferedImage.TYPE_INT_RGB);
         
         // Set the scale.
-        AffineTransform tx = 
-            new AffineTransform();
+        AffineTransform tx = new AffineTransform();
         
         // If the image is smaller than 
         //the desired image size,
@@ -1215,17 +1212,14 @@ public class Util implements ITechnicalStrings {
         }
         
         // Paint image.
-        Graphics2D g2d = 
-            outImage.createGraphics();
+        Graphics2D g2d = outImage.createGraphics();
         g2d.drawImage(inImage, tx, null);
         g2d.dispose();
         
         // JPEG-encode the image 
         //and write to file.
-        OutputStream os = 
-            new FileOutputStream(thumb);
-        JPEGImageEncoder encoder = 
-            JPEGCodec.createJPEGEncoder(os);
+        OutputStream os = new FileOutputStream(thumb);
+        JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(os);
         encoder.encode(outImage);
         os.close();
     }
