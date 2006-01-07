@@ -178,7 +178,7 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
         {{iXspace,TableLayout.PREFERRED,iXspace,TableLayout.PREFERRED,3*iXspace,TableLayout.PREFERRED,iXspace,TableLayout.PREFERRED,iXspace,TableLayout.PREFERRED,iXspace,TableLayout.PREFERRED,iXspace,TableLayout.PREFERRED,iXspace,TableLayout.PREFERRED,iXspace,TableLayout.PREFERRED,TableLayout.FILL,TableLayout.PREFERRED,2*iXspace},
                 {25}};
         jpControl.setLayout(new TableLayout(sizeControl));
-        jlSorter = new JLabel(Messages.getString("CatalogView.1"));
+        jlSorter = new JLabel(Messages.getString("Sort"));
         jcbSorter = new JComboBox();
         jcbSorter.setEditable(false);
         //note that a single album can contains tracks with different authors or styles, we will show it only one
