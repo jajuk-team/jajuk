@@ -18,8 +18,9 @@
 
 package org.jajuk.ui.views;
 
+import info.clearthought.layout.TableLayout;
+
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.dnd.DnDConstants;
 import java.awt.event.ActionEvent;
@@ -34,11 +35,11 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Properties;
 
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
@@ -101,6 +102,7 @@ public class LogicalTreeView extends AbstractTreeView implements
     JRadioButtonMenuItem jmiCollectionAuthor;
     JRadioButtonMenuItem jmiCollectionAlbum;
     
+    JLabel jlSort;
     JComboBox jcbSort;   
     
     JPopupMenu jmenuStyle;
@@ -168,12 +170,15 @@ public class LogicalTreeView extends AbstractTreeView implements
         // **Menu items**
 
         // ComboBox fort sort
+        double[][] dSizeSort = {{5,TableLayout.PREFERRED,5,TableLayout.FILL},
+                {TableLayout.PREFERRED}};
+        JPanel jpsort = new JPanel();
+        jpsort.setLayout(new TableLayout(dSizeSort));
+        jlSort = new JLabel(Messages.getString("Sort"));
         jcbSort = new JComboBox();
-        jcbSort.setMaximumSize(new Dimension(250, 25));
-        jcbSort.setAlignmentX(RIGHT_ALIGNMENT);
-        jcbSort.addItem(Messages.getString("LogicalTreeView.33"));
-        jcbSort.addItem(Messages.getString("LogicalTreeView.34"));
-        jcbSort.addItem(Messages.getString("LogicalTreeView.35"));
+        jcbSort.addItem(Messages.getString("Property_style"));
+        jcbSort.addItem(Messages.getString("Property_author"));
+        jcbSort.addItem(Messages.getString("Property_album"));
         jcbSort.setSelectedIndex(0);
         jcbSort.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
@@ -199,22 +204,26 @@ public class LogicalTreeView extends AbstractTreeView implements
                 SwingUtilities.updateComponentTreeUI(jtree);
             }
         });
+        jpsort.add(jlSort,"1,0");
+        jpsort.add(jcbSort,"3,0");
+        
         // Collection menu
         jmenuCollection = new JPopupMenu();
         btCollection = new ButtonGroup();
         jmiCollectionStyle = new JRadioButtonMenuItem(Messages
-                .getString("LogicalTreeView.33")); //$NON-NLS-1$
+                .getString("Property_style")); //$NON-NLS-1$
         jmiCollectionStyle.addActionListener(this);
         jmiCollectionStyle.setSelected(true);
         jmiCollectionAuthor = new JRadioButtonMenuItem(Messages
-                .getString("LogicalTreeView.34")); //$NON-NLS-1$
+                .getString("Property_author")); //$NON-NLS-1$
         jmiCollectionAuthor.addActionListener(this);
         jmiCollectionAlbum = new JRadioButtonMenuItem(Messages
-                .getString("LogicalTreeView.35")); //$NON-NLS-1$
+                .getString("Property_album")); //$NON-NLS-1$
         jmiCollectionAlbum.addActionListener(this);
         btCollection.add(jmiCollectionStyle);
         btCollection.add(jmiCollectionAuthor);
         btCollection.add(jmiCollectionAlbum);
+        jmenuCollection.add(new JLabel(Messages.getString("Sort")));
         jmenuCollection.add(jmiCollectionStyle);
         jmenuCollection.add(jmiCollectionAuthor);
         jmenuCollection.add(jmiCollectionAlbum);
@@ -328,7 +337,6 @@ public class LogicalTreeView extends AbstractTreeView implements
         jmenuTrack.add(jmiTrackAddFavorite);
         jmenuTrack.add(jmiTrackProperties);
 
-        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         top = new DefaultMutableTreeNode(Messages
                 .getString("LogicalTreeView.27")); //$NON-NLS-1$
 
@@ -434,22 +442,11 @@ public class LogicalTreeView extends AbstractTreeView implements
                 StringBuffer sbOut = new StringBuffer().append(items).append(
                         Messages.getString("LogicalTreeView.31")); //$NON-NLS-1$
                 InformationJPanel.getInstance().setSelection(sbOut.toString());
-                if (ConfigurationManager
-                        .getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE)) { 
-                    // if
-                    // table
-                    // is
-                    // synchronized
-                    // with
-                    // tree,
-                    // notify
-                    // the
-                    // selection
-                    // change
+                if (ConfigurationManager.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE)) {
+                    // if table is synchronized with tree, notify the selection change
                     Properties properties = new Properties();
                     properties.put(DETAIL_SELECTION, hsSelectedTracks);
-                    ObservationManager.notify(new Event(EVENT_SYNC_TREE_TABLE,
-                            properties));
+                    ObservationManager.notify(new Event(EVENT_SYNC_TREE_TABLE, properties));
                 }
             }
         });
@@ -467,16 +464,9 @@ public class LogicalTreeView extends AbstractTreeView implements
                         File file = track.getPlayeableFile();
                         if (file != null) {
                             try {
-                                FIFO
-                                        .getInstance()
-                                        .push(
-                                                new StackItem(
-                                                        file,
-                                                        ConfigurationManager
-                                                                .getBoolean(CONF_STATE_REPEAT),
-                                                        true),
-                                                ConfigurationManager
-                                                        .getBoolean(CONF_OPTIONS_DEFAULT_ACTION_CLICK));
+                                FIFO.getInstance().push(
+                                                new StackItem(file,ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),
+                                                ConfigurationManager.getBoolean(CONF_OPTIONS_DEFAULT_ACTION_CLICK));
                             } catch (JajukException je) {
                                 Log.error(je);
                             }
@@ -486,15 +476,9 @@ public class LogicalTreeView extends AbstractTreeView implements
                     }
                 } else if (e.getClickCount() == 1
                         && e.getButton() == MouseEvent.BUTTON3) {
-                    // right
-                    // clic on a
-                    // selected
-                    // node set
-                    // Right clic behavior identical to konqueror tree:
-                    // if none or 1 node is selected, a right click on another
-                    // node select it
-                    // if more than 1, we keep selection and display a popup for
-                    // them
+                    // right clic on a selected node set right clic behavior identical to konqueror tree:
+                   // if none or 1 node is selected, a right click on another
+                    // node select it. if more than 1, we keep selection and display a popup for them
                     if (jtree.getSelectionCount() < 2) {
                         jtree.getSelectionModel().setSelectionPath(path);
                     }
@@ -577,9 +561,11 @@ public class LogicalTreeView extends AbstractTreeView implements
         // DND support
         new TreeTransferHandler(jtree, DnDConstants.ACTION_COPY_OR_MOVE, true);
         jspTree = new JScrollPane(jtree);
-        add(jcbSort);
-        add(Box.createRigidArea(new Dimension(0, 5)));
-        add(jspTree);
+        double[][] dSize = {{TableLayout.FILL},
+                {5,TableLayout.PREFERRED,5,TableLayout.FILL}};
+        setLayout(new TableLayout(dSize));
+        add(jpsort,"0,1");
+        add(jspTree,"0,3");
         expand();
     }
 
