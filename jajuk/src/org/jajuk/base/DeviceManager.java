@@ -90,6 +90,7 @@ public class DeviceManager extends ItemManager{
     }
     
     public void startAutoRefreshThread(){
+        tAutoRefresh.setPriority(Thread.MIN_PRIORITY);
         tAutoRefresh.start();
     }
     

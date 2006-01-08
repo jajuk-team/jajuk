@@ -152,11 +152,13 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
         }
         bAlreadyRefreshing = true; //set this flag outside the lock scope to maek it as refreshing even if the refresh didn't actually started and is locked by another refresh
         if ( bAsynchronous){
-            new Thread(){
+            Thread t = new Thread(){
                 public void run(){
                     manualRefresh();
                 }
-            }.start();
+            };
+            t.setPriority(Thread.MIN_PRIORITY);
+            t.start();
         }
         else{
             manualRefresh();
@@ -322,11 +324,13 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
         }
         bAlreadySynchronizing = true;
         if ( bAsynchronous){
-            new Thread(){
+            Thread t = new Thread(){
                 public void  run() {
                     synchronizeCommand();
                 }
-            }.start();
+            };
+            t.setPriority(Thread.MIN_PRIORITY);
+            t.start();
         }
         else{
             synchronizeCommand();
