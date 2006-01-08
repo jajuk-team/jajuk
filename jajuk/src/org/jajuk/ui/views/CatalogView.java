@@ -41,6 +41,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 
 import javax.swing.BorderFactory;
@@ -122,6 +123,9 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
     /**Sorter properties*/
     ArrayList<PropertyMetaInformation> alSorters;
     
+    /**Items**/
+    HashSet<CatalogItem> hsItems;
+    
     /**Do search panel need a search*/
     private boolean bNeedSearch = false;
     
@@ -161,6 +165,8 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
         alSorters.add(TrackManager.getInstance().getMetaInformation(XML_TRACK_AUTHOR));
         alSorters.add(TrackManager.getInstance().getMetaInformation(XML_TRACK_ALBUM));
         alSorters.add(TrackManager.getInstance().getMetaInformation(XML_TRACK_YEAR));
+        
+        hsItems = new HashSet();
         
         timer.start();
     }
@@ -330,6 +336,7 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
             @Override
             public Object construct() {
                 Util.waiting();
+                hsItems.clear();
                 sMessageOld = InformationJPanel.getInstance().getMessage();
                 iMessageOld = InformationJPanel.getInstance().getMessageType();
                 //remove all devices
@@ -431,6 +438,7 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
                     }
                     else{
                         jpItems.add(cover);
+                        hsItems.add(cover);
                     }
                 }
                 Util.stopWaiting();
@@ -458,7 +466,19 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
      */
     public void update(Event event){
         if (EVENT_DEVICE_REFRESH.equals(event.getSubject())){
+            //save selected item
+            CatalogItem oldItem = CatalogView.this.item;
             populateCatalog();
+            //try to restore previous item
+            if (oldItem != null){
+                for (CatalogItem item:hsItems){
+                    if (item.getAlbum().equals(oldItem.getAlbum())){
+                        CatalogView.this.item = item;
+                        CatalogView.this.item.setBorder(BorderFactory.createMatteBorder(2,2,2,2,Color.RED));
+                        break;
+                    }
+                }
+            }
         }
     }
     
@@ -707,11 +727,13 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
      */
     class CoverSelectionWizard extends JDialog implements ActionListener,ITechnicalStrings{
         
+        JPanel jpMain;
         JLabel jlSearch;
         JLabel jlIcon;
         JPanel jpControls;
         JButton jbPrevious;
         JButton jbNext;
+        JLabel jlIndex;
         OKCancelPanel okc;
         
         ArrayList<URL> alUrls;
@@ -741,6 +763,8 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
             jbNext = new JButton(Messages.getString("Next"));
             jbNext.addActionListener(this);
             jbNext.setEnabled(false);
+            jlIndex = new JLabel("");
+            jlIndex.setFont(new Font("Dialog",Font.BOLD,10)); //$NON-NLS-1$
             jpControls.setLayout(new TableLayout(dControl));
             jpControls.add(jbPrevious,"1,0");
             jpControls.add(jbNext,"3,0");
@@ -756,13 +780,16 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
             
             //Main
             double[][] dMain = {{10,300,10},
-                    {10,TableLayout.PREFERRED,300,20,TableLayout.PREFERRED,10}};
+                    {10,TableLayout.PREFERRED,300,TableLayout.PREFERRED,
+                20,TableLayout.PREFERRED,10}};
             jlIcon = new JLabel();
-            JPanel jpMain = (JPanel)getContentPane();
+            jlIcon.setBorder(BorderFactory.createEtchedBorder());
+            jpMain = (JPanel)getContentPane();
             jpMain.setLayout(new TableLayout(dMain));
             jpMain.add(jlSearch,"1,1");
             jpMain.add(Util.getCentredPanel(jlIcon),"1,2");
-            jpMain.add(jpControls,"1,4");
+            jpMain.add(Util.getCentredPanel(jlIndex),"1,3");
+            jpMain.add(jpControls,"1,5");
             
             try {
                 alUrls = DownloadManager.getRemoteCoversList(sQuery);
@@ -794,14 +821,19 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
             while (alUrls.size() > 0){
                 try{
                     Cover cover = new Cover(alUrls.get(index),Cover.REMOTE_COVER);
+                    cover.getImage();
                     thumb = new File(FILE_IMAGE_CACHE+"/thumb."+EXT_THUMB);
                     Util.createThumbnail(cover.getFile().toURL(),thumb,width);
                     ImageIcon image = new ImageIcon(thumb.getAbsolutePath());
+                    //!!! need to flush image because thy read image from a file with same name
+                    //than previous image and a buffer would display the old image
+                    image.getImage().flush();
                     //check image
                     if ( image.getImageLoadStatus() != MediaTracker.COMPLETE){
                         throw new JajukException("129"); //$NON-NLS-1$
                     }
                     jlIcon.setIcon(image);
+                    jlIndex.setText((index+1)+"/"+alUrls.size());
                     okc.getOKButton().setEnabled(true);
                     if (alUrls.size() > 1 && index < (alUrls.size()-1)){
                       jbNext.setEnabled(true);  
