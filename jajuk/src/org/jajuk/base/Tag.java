@@ -355,6 +355,9 @@ public class Tag implements ITechnicalStrings{
         try {
             tagImpl.commit();
             InformationJPanel.getInstance().setMessage(Messages.getString("PropertiesWizard.11")+" "+fio.getName(),InformationJPanel.INFORMATIVE); //$NON-NLS-1$ //$NON-NLS-2$
+            if (Log.isDebugEnabled()){
+                Log.debug(Messages.getString("PropertiesWizard.11")+" "+fio.getName());
+            }
         } catch (Exception e) {
              throw new JajukException("104",fio.getName()+"\n"+e.getMessage(),e); //$NON-NLS-1$ //$NON-NLS-2$
         }
