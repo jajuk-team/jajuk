@@ -454,7 +454,7 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 			case 2: //network drive
 				jcbAutoMount.setSelected(true);
                 //no auto-refresh by default for network drive
-                jftfAutoRefresh.setValue(5d); 
+                jftfAutoRefresh.setValue(0d); 
 				break;
 			case 3: //ext dd
 				jcbAutoMount.setSelected(true);
