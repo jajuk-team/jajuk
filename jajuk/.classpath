@@ -18,7 +18,6 @@
 	<classpathentry kind="lib" path="lib/jorbis-0.0.13.jar"/>
 	<classpathentry kind="lib" path="lib/jspeex-0.9.3.jar"/>
 	<classpathentry kind="lib" path="lib/tritonus_share-release.jar"/>
-	<classpathentry kind="lib" path="lib/tablelayout-20050914.jar"/>
 	<classpathentry kind="lib" path="lib/basicplayer-2.3.jar"/>
 	<classpathentry kind="lib" path="lib/entagged-audioformats-0.14.jar"/>
 	<classpathentry kind="lib" path="lib/mp3spi-1.9.4.jar"/>
@@ -30,5 +29,6 @@
 	<classpathentry kind="lib" path="lib/infonodeDockingWindows-1.4.0.jar"/>
 	<classpathentry kind="lib" path="lib/entagged-freedb-0.04.jar"/>
 	<classpathentry kind="lib" path="lib/jdic-0.9.1.jar"/>
+	<classpathentry kind="lib" path="lib/tablelayout-20050920.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

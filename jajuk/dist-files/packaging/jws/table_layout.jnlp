@@ -5,7 +5,7 @@
         <vendor>Daniel Barbalace</vendor>
     </information>
     <resources>
-        <jar href="tablelayout-20050914.jar"/>
+        <jar href="tablelayout-20050920.jar"/>
     </resources>
     <security> 
            <all-permissions/>
