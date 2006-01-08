@@ -63,16 +63,14 @@ import org.jajuk.ui.JajukJMenuBar;
 import org.jajuk.ui.JajukWindow;
 import org.jajuk.ui.LNFManager;
 import org.jajuk.ui.PerspectiveBarJPanel;
-import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.ui.TipOfTheDay;
+import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.ui.tray.JajukSystray;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
-
-import com.sun.java.help.impl.SwingWorker;
 
 import ext.JSplash;
 
@@ -738,12 +736,12 @@ public class Main implements ITechnicalStrings {
             return;
         }
         //ui init 
-        SwingWorker sw = new SwingWorker() {
+        SwingUtilities.invokeLater(new Runnable() {
             
-            
-            
-            @Override
-            public Object construct() {
+            public void run() {
+                
+                
+                
                 try {
                     //  Set look and feel, needs local to be set for error messages
                     LNFManager.setLookAndFeel(ConfigurationManager.getProperty(CONF_OPTIONS_LNF));
@@ -816,20 +814,14 @@ public class Main implements ITechnicalStrings {
                         sc.splashOff();
                     }
                     bUILauched = true;
+                    //display window
+                    jw.applyStoredSize(); //apply size and position as stored in the user properties
+                    jw.setVisible(true); //show main window
+                    
                 }
-                return null;
             }
             
-            @Override
-            public void finished() {
-                //display window
-                jw.applyStoredSize(); //apply size and position as stored in the user properties
-                jw.setVisible(true); //show main window
-                
-            }
-            
-        };
-        sw.start();
+        });
         
     }
     
