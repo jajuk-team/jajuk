@@ -367,6 +367,8 @@ public interface ITechnicalStrings {
 	public static final String EVENT_RATE_CHANGED="file rate changed"; //file rate change
     public static final String EVENT_TIP_OF_THE_DAY="tip of the day"; // show tip of the day
     public static final String EVENT_CDDB_WIZARD = "cddb.wizard";
+    public static final String EVENT_LOGICAL_TREE_SORT = "logical tree sort";
+    
     //details keys
 	public static final String DETAIL_CURRENT_FILE_ID="current file id";
 	public static final String DETAIL_CURRENT_FILE="current file";
@@ -497,6 +499,7 @@ public interface ITechnicalStrings {
     public static final String CONF_TIP_OF_DAY_INDEX = "jajuk.tip.index"; // Index of current displayed tip
     public static final String CONF_WIKIPEDIA_LANGUAGE = "jajuk.wikipedia.lang"; // wikipedia language
     public static final String CONF_FADE_DURATION = "jajuk.fade_duration"; // cross fade duration in secs
+    public static final String CONF_LOGICAL_TREE_SORT_ORDER = "jajuk.logical_tree_sort_order";// logical tree sort order
 
     //Accuracy levels
 	public static final String ACCURACY_LOW = "low";

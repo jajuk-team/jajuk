@@ -215,6 +215,7 @@ public class ConfigurationManager implements ITechnicalStrings{
         properties.put(CONF_TIP_OF_DAY_INDEX,"0");
         properties.put(CONF_WIKIPEDIA_LANGUAGE,Messages.getInstance().getLocal());
         properties.put(CONF_FADE_DURATION,"10");
+        properties.put(CONF_LOGICAL_TREE_SORT_ORDER,"0"); //sort by style
     }
 	
     /**

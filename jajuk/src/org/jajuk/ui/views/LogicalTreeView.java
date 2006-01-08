@@ -68,6 +68,7 @@ import org.jajuk.base.Observer;
 import org.jajuk.base.StackItem;
 import org.jajuk.base.Style;
 import org.jajuk.base.Track;
+import org.jajuk.base.TrackComparator;
 import org.jajuk.base.TrackManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.InformationJPanel;
@@ -88,14 +89,14 @@ import ext.SwingWorker;
  * @created 28 nov. 2003
  */
 public class LogicalTreeView extends AbstractTreeView implements
-        ActionListener, Observer {
-
+ActionListener, Observer {
+    
     /** Self instance */
     private static LogicalTreeView ltv;
-
+    
     /** Track selection */
     ArrayList alTracks;
-
+    
     JPopupMenu jmenuCollection;
     ButtonGroup btCollection;
     JRadioButtonMenuItem jmiCollectionStyle;
@@ -138,7 +139,9 @@ public class LogicalTreeView extends AbstractTreeView implements
     JMenuItem jmiTrackDelete;
     JMenuItem jmiTrackAddFavorite;
     JMenuItem jmiTrackProperties;
-
+    
+    private int iSortOrder = 0;
+    
     /*
      * (non-Javadoc)
      * 
@@ -147,7 +150,7 @@ public class LogicalTreeView extends AbstractTreeView implements
     public String getDesc() {
         return "LogicalTreeView.0"; //$NON-NLS-1$
     }
-
+    
     /** Return singleton */
     public static synchronized LogicalTreeView getInstance() {
         if (ltv == null) {
@@ -155,20 +158,23 @@ public class LogicalTreeView extends AbstractTreeView implements
         }
         return ltv;
     }
-
+    
     /** Constructor */
     public LogicalTreeView() {
         ltv = this;
     }
-
+    
     /*
      * (non-Javadoc)
      * 
      * @see org.jajuk.ui.IView#display()
      */
     public void populate() {
+        //init sort order
+        iSortOrder = ConfigurationManager.getInt(CONF_LOGICAL_TREE_SORT_ORDER);
+        
         // **Menu items**
-
+        
         // ComboBox fort sort
         double[][] dSizeSort = {{5,TableLayout.PREFERRED,5,TableLayout.FILL},
                 {TableLayout.PREFERRED}};
@@ -179,47 +185,40 @@ public class LogicalTreeView extends AbstractTreeView implements
         jcbSort.addItem(Messages.getString("Property_style"));
         jcbSort.addItem(Messages.getString("Property_author"));
         jcbSort.addItem(Messages.getString("Property_album"));
-        jcbSort.setSelectedIndex(0);
-        jcbSort.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent arg0) {
-                int idx = jcbSort.getSelectedIndex();
-                Log.debug("Sort selected is " + jcbSort.getItemAt(idx));
-
-                // Update tree
-                switch (idx) {
-                case 0:
-                    jmiCollectionStyle.setSelected(true);
-                    break;
-                case 1:
-                    jmiCollectionAuthor.setSelected(true);
-                    break;
-                case 2:
-                    jmiCollectionAlbum.setSelected(true);
-                    break;
-                default:
-                    Log.error("Index error on sort selection");
-                    break;
-                }
-                populateTree();
-                SwingUtilities.updateComponentTreeUI(jtree);
-            }
-        });
+        jcbSort.setSelectedIndex(iSortOrder);
+        jcbSort.setActionCommand(EVENT_LOGICAL_TREE_SORT);
+        jcbSort.addActionListener(this); 
         jpsort.add(jlSort,"1,0");
         jpsort.add(jcbSort,"3,0");
         
         // Collection menu
         jmenuCollection = new JPopupMenu();
         btCollection = new ButtonGroup();
+        //Style
         jmiCollectionStyle = new JRadioButtonMenuItem(Messages
-                .getString("Property_style")); //$NON-NLS-1$
+            .getString("Property_style")); //$NON-NLS-1$
         jmiCollectionStyle.addActionListener(this);
-        jmiCollectionStyle.setSelected(true);
+        jmiCollectionStyle.setActionCommand(EVENT_LOGICAL_TREE_SORT);
+        if (ConfigurationManager.getInt(CONF_LOGICAL_TREE_SORT_ORDER) == 0){
+            jmiCollectionStyle.setSelected(true);
+        }
+        //Author
         jmiCollectionAuthor = new JRadioButtonMenuItem(Messages
-                .getString("Property_author")); //$NON-NLS-1$
+            .getString("Property_author")); //$NON-NLS-1$
         jmiCollectionAuthor.addActionListener(this);
+        jmiCollectionAuthor.setActionCommand(EVENT_LOGICAL_TREE_SORT);
+        if (ConfigurationManager.getInt(CONF_LOGICAL_TREE_SORT_ORDER) == 1){
+            jmiCollectionAuthor.setSelected(true);
+        }
+        //Album
         jmiCollectionAlbum = new JRadioButtonMenuItem(Messages
-                .getString("Property_album")); //$NON-NLS-1$
+            .getString("Property_album")); //$NON-NLS-1$
         jmiCollectionAlbum.addActionListener(this);
+        jmiCollectionAlbum.setActionCommand(EVENT_LOGICAL_TREE_SORT);
+        if (ConfigurationManager.getInt(CONF_LOGICAL_TREE_SORT_ORDER) == 2){
+            jmiCollectionAlbum.setSelected(true);
+        }
+        
         btCollection.add(jmiCollectionStyle);
         btCollection.add(jmiCollectionAuthor);
         btCollection.add(jmiCollectionAlbum);
@@ -227,7 +226,7 @@ public class LogicalTreeView extends AbstractTreeView implements
         jmenuCollection.add(jmiCollectionStyle);
         jmenuCollection.add(jmiCollectionAuthor);
         jmenuCollection.add(jmiCollectionAlbum);
-
+        
         // Style menu
         jmenuStyle = new JPopupMenu();
         jmiStylePlay = new JMenuItem(Messages.getString("LogicalTreeView.1")); //$NON-NLS-1$
@@ -235,19 +234,19 @@ public class LogicalTreeView extends AbstractTreeView implements
         jmiStylePush = new JMenuItem(Messages.getString("LogicalTreeView.2")); //$NON-NLS-1$
         jmiStylePush.addActionListener(this);
         jmiStylePlayShuffle = new JMenuItem(Messages
-                .getString("LogicalTreeView.3")); //$NON-NLS-1$
+            .getString("LogicalTreeView.3")); //$NON-NLS-1$
         jmiStylePlayShuffle.addActionListener(this);
         jmiStylePlayRepeat = new JMenuItem(Messages
-                .getString("LogicalTreeView.4")); //$NON-NLS-1$
+            .getString("LogicalTreeView.4")); //$NON-NLS-1$
         jmiStylePlayRepeat.addActionListener(this);
         jmiStyleDelete = new JMenuItem(Messages.getString("LogicalTreeView.5")); //$NON-NLS-1$
         jmiStyleDelete.setEnabled(false);
         jmiStyleDelete.addActionListener(this);
         jmiStyleAddFavorite = new JMenuItem(Messages
-                .getString("LogicalTreeView.32")); //$NON-NLS-1$
+            .getString("LogicalTreeView.32")); //$NON-NLS-1$
         jmiStyleAddFavorite.addActionListener(this);
         jmiStyleProperties = new JMenuItem(Messages
-                .getString("LogicalTreeView.7")); //$NON-NLS-1$
+            .getString("LogicalTreeView.7")); //$NON-NLS-1$
         jmiStyleProperties.addActionListener(this);
         jmenuStyle.add(jmiStylePlay);
         jmenuStyle.add(jmiStylePush);
@@ -256,7 +255,7 @@ public class LogicalTreeView extends AbstractTreeView implements
         jmenuStyle.add(jmiStyleDelete);
         jmenuStyle.add(jmiStyleAddFavorite);
         jmenuStyle.add(jmiStyleProperties);
-
+        
         // Author menu
         jmenuAuthor = new JPopupMenu();
         jmiAuthorPlay = new JMenuItem(Messages.getString("LogicalTreeView.8")); //$NON-NLS-1$
@@ -264,20 +263,20 @@ public class LogicalTreeView extends AbstractTreeView implements
         jmiAuthorPush = new JMenuItem(Messages.getString("LogicalTreeView.9")); //$NON-NLS-1$
         jmiAuthorPush.addActionListener(this);
         jmiAuthorPlayShuffle = new JMenuItem(Messages
-                .getString("LogicalTreeView.10")); //$NON-NLS-1$
+            .getString("LogicalTreeView.10")); //$NON-NLS-1$
         jmiAuthorPlayShuffle.addActionListener(this);
         jmiAuthorPlayRepeat = new JMenuItem(Messages
-                .getString("LogicalTreeView.11")); //$NON-NLS-1$
+            .getString("LogicalTreeView.11")); //$NON-NLS-1$
         jmiAuthorPlayRepeat.addActionListener(this);
         jmiAuthorDelete = new JMenuItem(Messages
-                .getString("LogicalTreeView.12")); //$NON-NLS-1$
+            .getString("LogicalTreeView.12")); //$NON-NLS-1$
         jmiAuthorDelete.setEnabled(false);
         jmiAuthorDelete.addActionListener(this);
         jmiAuthorAddFavorite = new JMenuItem(Messages
-                .getString("LogicalTreeView.32")); //$NON-NLS-1$       
+            .getString("LogicalTreeView.32")); //$NON-NLS-1$       
         jmiAuthorAddFavorite.addActionListener(this);
         jmiAuthorProperties = new JMenuItem(Messages
-                .getString("LogicalTreeView.14")); //$NON-NLS-1$
+            .getString("LogicalTreeView.14")); //$NON-NLS-1$
         jmiAuthorProperties.addActionListener(this);
         jmenuAuthor.add(jmiAuthorPlay);
         jmenuAuthor.add(jmiAuthorPush);
@@ -286,7 +285,7 @@ public class LogicalTreeView extends AbstractTreeView implements
         jmenuAuthor.add(jmiAuthorDelete);
         jmenuAuthor.add(jmiAuthorAddFavorite);
         jmenuAuthor.add(jmiAuthorProperties);
-
+        
         // Album menu
         jmenuAlbum = new JPopupMenu();
         jmiAlbumPlay = new JMenuItem(Messages.getString("LogicalTreeView.15")); //$NON-NLS-1$
@@ -294,19 +293,19 @@ public class LogicalTreeView extends AbstractTreeView implements
         jmiAlbumPush = new JMenuItem(Messages.getString("LogicalTreeView.16")); //$NON-NLS-1$
         jmiAlbumPush.addActionListener(this);
         jmiAlbumPlayShuffle = new JMenuItem(Messages
-                .getString("LogicalTreeView.17")); //$NON-NLS-1$
+            .getString("LogicalTreeView.17")); //$NON-NLS-1$
         jmiAlbumPlayShuffle.addActionListener(this);
         jmiAlbumPlayRepeat = new JMenuItem(Messages
-                .getString("LogicalTreeView.18")); //$NON-NLS-1$
+            .getString("LogicalTreeView.18")); //$NON-NLS-1$
         jmiAlbumPlayRepeat.addActionListener(this);
         jmiAlbumDelete = new JMenuItem(Messages.getString("LogicalTreeView.19")); //$NON-NLS-1$
         jmiAlbumDelete.setEnabled(false);
         jmiAlbumDelete.addActionListener(this);
         jmiAlbumAddFavorite = new JMenuItem(Messages
-                .getString("LogicalTreeView.32")); //$NON-NLS-1$        
+            .getString("LogicalTreeView.32")); //$NON-NLS-1$        
         jmiAlbumAddFavorite.addActionListener(this);
         jmiAlbumProperties = new JMenuItem(Messages
-                .getString("LogicalTreeView.21")); //$NON-NLS-1$
+            .getString("LogicalTreeView.21")); //$NON-NLS-1$
         jmiAlbumProperties.addActionListener(this);
         jmenuAlbum.add(jmiAlbumPlay);
         jmenuAlbum.add(jmiAlbumPush);
@@ -315,7 +314,7 @@ public class LogicalTreeView extends AbstractTreeView implements
         jmenuAlbum.add(jmiAlbumDelete);
         jmenuAlbum.add(jmiAlbumAddFavorite);
         jmenuAlbum.add(jmiAlbumProperties);
-
+        
         // Track menu
         jmenuTrack = new JPopupMenu();
         jmiTrackPlay = new JMenuItem(Messages.getString("LogicalTreeView.22")); //$NON-NLS-1$
@@ -326,26 +325,36 @@ public class LogicalTreeView extends AbstractTreeView implements
         jmiTrackDelete.setEnabled(false);
         jmiTrackDelete.addActionListener(this);
         jmiTrackAddFavorite = new JMenuItem(Messages
-                .getString("LogicalTreeView.32")); //$NON-NLS-1$
+            .getString("LogicalTreeView.32")); //$NON-NLS-1$
         jmiTrackAddFavorite.addActionListener(this);
         jmiTrackProperties = new JMenuItem(Messages
-                .getString("LogicalTreeView.26")); //$NON-NLS-1$
+            .getString("LogicalTreeView.26")); //$NON-NLS-1$
         jmiTrackProperties.addActionListener(this);
         jmenuTrack.add(jmiTrackPlay);
         jmenuTrack.add(jmiTrackPush);
         jmenuTrack.add(jmiTrackDelete);
         jmenuTrack.add(jmiTrackAddFavorite);
         jmenuTrack.add(jmiTrackProperties);
-
+        
         top = new DefaultMutableTreeNode(Messages
-                .getString("LogicalTreeView.27")); //$NON-NLS-1$
-
+            .getString("LogicalTreeView.27")); //$NON-NLS-1$
+        
         // Register on the list for subject we are interrested in
         ObservationManager.register(EVENT_DEVICE_MOUNT, this);
         ObservationManager.register(EVENT_DEVICE_UNMOUNT, this);
         ObservationManager.register(EVENT_DEVICE_REFRESH, this);
-        // fill the tree
-        populateTreeByStyle();
+        // populate the tree
+        switch(iSortOrder){
+        case 0:
+            populateTreeByStyle();
+            break;
+        case 1:
+            populateTreeByAuthor();
+            break;
+        case 2:
+            populateTreeByAlbum();
+            break;
+        }
         // create tree
         createTree();
         jtree.setCellRenderer(new DefaultTreeCellRenderer() {
@@ -353,7 +362,7 @@ public class LogicalTreeView extends AbstractTreeView implements
                     Object value, boolean sel, boolean expanded, boolean leaf,
                     int row, boolean hasFocus) {
                 super.getTreeCellRendererComponent(tree, value, sel, expanded,
-                        leaf, row, hasFocus);
+                    leaf, row, hasFocus);
                 setFont(new Font("Dialog", Font.PLAIN, 10)); //$NON-NLS-1$
                 if (value instanceof StyleNode) {
                     setIcon(Util.getIcon(ICON_STYLE));
@@ -370,36 +379,36 @@ public class LogicalTreeView extends AbstractTreeView implements
         DefaultTreeModel treeModel = new DefaultTreeModel(top);
         // Tree model listener to detect changes in the tree structure
         treeModel.addTreeModelListener(new TreeModelListener() {
-
+            
             public void treeNodesChanged(TreeModelEvent e) {
                 DefaultMutableTreeNode node;
                 node = (DefaultMutableTreeNode) (e.getTreePath()
                         .getLastPathComponent());
-
+                
                 try {
                     int index = e.getChildIndices()[0];
                     node = (DefaultMutableTreeNode) (node.getChildAt(index));
                 } catch (NullPointerException exc) {
                 }
-
+                
             }
-
+            
             public void treeNodesInserted(TreeModelEvent e) {
             }
-
+            
             public void treeNodesRemoved(TreeModelEvent e) {
             }
-
+            
             public void treeStructureChanged(TreeModelEvent e) {
             }
-
+            
         });
-
+        
         // Tree selection listener to detect a selection
         jtree.addTreeSelectionListener(new TreeSelectionListener() {
             public void valueChanged(TreeSelectionEvent e) {
                 TreePath[] tpSelected = jtree.getSelectionModel()
-                        .getSelectionPaths();
+                .getSelectionPaths();
                 if (tpSelected == null) {
                     return;
                 }
@@ -411,22 +420,22 @@ public class LogicalTreeView extends AbstractTreeView implements
                     Object o = tpSelected[i].getLastPathComponent();
                     if (o instanceof TransferableTreeNode) {
                         alSelected
-                                .add((IPropertyable) ((TransferableTreeNode) o)
-                                        .getData());
+                        .add((IPropertyable) ((TransferableTreeNode) o)
+                            .getData());
                     } else { // collection node
                         synchronized (TrackManager.getInstance().getLock()) {
                             alSelected = new ArrayList(TrackManager
-                                    .getInstance().getItems());
+                                .getInstance().getItems());
                         }
                         items = alSelected.size();
                         hsSelectedTracks.addAll(alSelected);
                         break;
                     }
                     Enumeration e2 = ((DefaultMutableTreeNode) o)
-                            .depthFirstEnumeration(); // return all childs nodes recursively
+                    .depthFirstEnumeration(); // return all childs nodes recursively
                     while (e2.hasMoreElements()) {
                         DefaultMutableTreeNode node = (DefaultMutableTreeNode) e2
-                                .nextElement();
+                        .nextElement();
                         if (node instanceof TrackNode) {
                             Track track = ((TrackNode) node).getTrack();
                             if (hsSelectedTracks.contains(track)) { 
@@ -440,7 +449,7 @@ public class LogicalTreeView extends AbstractTreeView implements
                     }
                 }
                 StringBuffer sbOut = new StringBuffer().append(items).append(
-                        Messages.getString("LogicalTreeView.31")); //$NON-NLS-1$
+                    Messages.getString("LogicalTreeView.31")); //$NON-NLS-1$
                 InformationJPanel.getInstance().setSelection(sbOut.toString());
                 if (ConfigurationManager.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE)) {
                     // if table is synchronized with tree, notify the selection change
@@ -465,8 +474,8 @@ public class LogicalTreeView extends AbstractTreeView implements
                         if (file != null) {
                             try {
                                 FIFO.getInstance().push(
-                                                new StackItem(file,ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),
-                                                ConfigurationManager.getBoolean(CONF_OPTIONS_DEFAULT_ACTION_CLICK));
+                                    new StackItem(file,ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),
+                                    ConfigurationManager.getBoolean(CONF_OPTIONS_DEFAULT_ACTION_CLICK));
                             } catch (JajukException je) {
                                 Log.error(je);
                             }
@@ -477,7 +486,7 @@ public class LogicalTreeView extends AbstractTreeView implements
                 } else if (e.getClickCount() == 1
                         && e.getButton() == MouseEvent.BUTTON3) {
                     // right clic on a selected node set right clic behavior identical to konqueror tree:
-                   // if none or 1 node is selected, a right click on another
+                    // if none or 1 node is selected, a right click on another
                     // node select it. if more than 1, we keep selection and display a popup for them
                     if (jtree.getSelectionCount() < 2) {
                         jtree.getSelectionModel().setSelectionPath(path);
@@ -486,7 +495,7 @@ public class LogicalTreeView extends AbstractTreeView implements
                     getInstance().alTracks = new ArrayList(100);
                     // test mix between types ( not allowed )
                     String sClass = paths[0].getLastPathComponent().getClass()
-                            .toString();
+                    .toString();
                     for (int i = 0; i < paths.length; i++) {
                         if (!paths[i].getLastPathComponent().getClass()
                                 .toString().equals(sClass)) {
@@ -497,16 +506,16 @@ public class LogicalTreeView extends AbstractTreeView implements
                     for (int i = 0; i < paths.length; i++) {
                         Object o = paths[i].getLastPathComponent();
                         Enumeration e2 = ((DefaultMutableTreeNode) o)
-                                .depthFirstEnumeration(); // return all childs
+                        .depthFirstEnumeration(); // return all childs
                         // nodes recursively
                         while (e2.hasMoreElements()) {
                             DefaultMutableTreeNode node = (DefaultMutableTreeNode) e2
-                                    .nextElement();
+                            .nextElement();
                             if (node instanceof TrackNode) {
                                 Track track = ((TrackNode) node).getTrack();
                                 if (track.getPlayeableFile() != null) {
                                     getInstance().alTracks
-                                            .add(((TrackNode) node).getTrack());
+                                    .add(((TrackNode) node).getTrack());
                                 }
                             }
                         }
@@ -542,7 +551,7 @@ public class LogicalTreeView extends AbstractTreeView implements
                     album.removeProperty(XML_EXPANDED);
                 }
             }
-
+            
             public void treeExpanded(TreeExpansionEvent event) {
                 Object o = event.getPath().getLastPathComponent();
                 if (o instanceof StyleNode) {
@@ -568,19 +577,23 @@ public class LogicalTreeView extends AbstractTreeView implements
         add(jspTree,"0,3");
         expand();
     }
-
+    
     /** Fill the tree */
-
+    
     public void populateTree() {
-        if (jmiCollectionStyle.isSelected()) {
+        switch(iSortOrder){
+        case 0:
             populateTreeByStyle();
-        } else if (jmiCollectionAuthor.isSelected()) {
+            break;
+        case 1:
             populateTreeByAuthor();
-        } else if (jmiCollectionAlbum.isSelected()) {
+            break;
+        case 2:
             populateTreeByAlbum();
+            break;
         }
     }
-
+    
     public void populateTreeByStyle() {
         // delete previous tree
         top.removeAllChildren();
@@ -592,7 +605,7 @@ public class LogicalTreeView extends AbstractTreeView implements
                 Author author = track.getAuthor();
                 AlbumNode albumNode = null;
                 Album album = track.getAlbum();
-
+                
                 // create style
                 Enumeration e = top.children();
                 boolean b = false;
@@ -646,7 +659,7 @@ public class LogicalTreeView extends AbstractTreeView implements
             }
         }
     }
-
+    
     /** Fill the tree */
     public void populateTreeByAuthor() {
         // delete previous tree
@@ -657,7 +670,7 @@ public class LogicalTreeView extends AbstractTreeView implements
                 Author author = track.getAuthor();
                 AlbumNode albumNode = null;
                 Album album = track.getAlbum();
-
+                
                 // create author
                 Enumeration e = top.children();
                 boolean b = false;
@@ -695,7 +708,7 @@ public class LogicalTreeView extends AbstractTreeView implements
             }
         }
     }
-
+    
     /** Fill the tree */
     public void populateTreeByAlbum() {
         // delete previous tree
@@ -706,7 +719,7 @@ public class LogicalTreeView extends AbstractTreeView implements
                 Author author = track.getAuthor();
                 AlbumNode albumNode = null;
                 Album album = track.getAlbum();
-
+                
                 // create album
                 Enumeration e = top.children();
                 boolean b = false;
@@ -723,20 +736,12 @@ public class LogicalTreeView extends AbstractTreeView implements
                     albumNode = new AlbumNode(album);
                     top.add(albumNode);
                 }
-                /*
-                 * // create author e = albumNode.children(); b = false; while
-                 * (e.hasMoreElements()){ //check if the author doesn't already
-                 * exist AuthorNode an = (AuthorNode)e.nextElement(); if (
-                 * an.getAuthor().equals(author)){ b = true; authorNode = an;
-                 * break; } } if ( !b){ authorNode = new AuthorNode(author);
-                 * albumNode.add(authorNode); }
-                 */
                 // create track
                 albumNode.add(new TrackNode(track));
             }
         }
     }
-
+    
     /*
      * (non-Javadoc)
      * 
@@ -757,7 +762,7 @@ public class LogicalTreeView extends AbstractTreeView implements
                     for (IPropertyable item : alSelected) {
                         Author author = (Author) item;
                         alTracks.addAll(TrackManager.getInstance()
-                                .getSortedAssociatedTracks(author));
+                            .getSortedAssociatedTracks(author));
                     }
                     new PropertiesWizard(alSelected, alTracks);
                 } else if (e.getSource() == jmiAlbumProperties) {
@@ -765,23 +770,40 @@ public class LogicalTreeView extends AbstractTreeView implements
                     for (IPropertyable item : alSelected) {
                         Album album = (Album) item;
                         alTracks.addAll(TrackManager.getInstance()
-                                .getSortedAssociatedTracks(album));
+                            .getSortedAssociatedTracks(album));
                     }
                     new PropertiesWizard(alSelected, alTracks);
                 } else if (e.getSource() == jmiTrackProperties) {
                     PropertiesWizard p = new PropertiesWizard(alSelected);
-                } else if (e.getSource() == jmiCollectionStyle) {
-                    Log.debug("Clik on style");
-                    populateTreeByStyle();
-                    SwingUtilities.updateComponentTreeUI(jtree);
-                } else if (e.getSource() == jmiCollectionAuthor) {
-                    Log.debug("Clik on author");
-                    populateTreeByAuthor();
-                    SwingUtilities.updateComponentTreeUI(jtree);
-                } else if (e.getSource() == jmiCollectionAlbum) {
-                    Log.debug("Clik on album");
-                    populateTreeByAlbum();
-                    SwingUtilities.updateComponentTreeUI(jtree);
+                    //Sorting  
+                }else if (e.getActionCommand().equals(EVENT_LOGICAL_TREE_SORT)){
+                    Util.waiting();
+                    iSortOrder = 0;
+                    if (e.getSource() == jcbSort){
+                        iSortOrder = jcbSort.getSelectedIndex();
+                    }
+                    else if (e.getSource() == jmiCollectionStyle){
+                        iSortOrder = 0;
+                    }
+                    else if (e.getSource() == jmiCollectionAuthor){
+                        iSortOrder = 1;
+                    }
+                    else if (e.getSource() == jmiCollectionAlbum){
+                        iSortOrder = 2;
+                    }
+                    ConfigurationManager.setProperty(CONF_LOGICAL_TREE_SORT_ORDER,Integer.toString(iSortOrder));
+                    //refresh comparator
+                    TrackManager.getInstance().setComparator(
+                        new TrackComparator(ConfigurationManager.getInt(CONF_LOGICAL_TREE_SORT_ORDER)));
+                    populateTree();
+                    SwingUtilities.invokeLater(new Runnable() {
+                        public void run() {
+                            SwingUtilities.updateComponentTreeUI(jtree);
+                            Util.stopWaiting();
+                        }
+                    });
+                    
+                    
                 } else {
                     // compute selection
                     ArrayList alFilesToPlay = new ArrayList(alTracks.size());
@@ -800,36 +822,36 @@ public class LogicalTreeView extends AbstractTreeView implements
                             || e.getSource() == jmiAlbumPlay
                             || e.getSource() == jmiAuthorPlay || e.getSource() == jmiStylePlay)) {
                         FIFO.getInstance().push(
-                                Util.createStackItems(Util
-                                        .applyPlayOption(alFilesToPlay),
-                                        ConfigurationManager
-                                                .getBoolean(CONF_STATE_REPEAT),
-                                        true), false);
+                            Util.createStackItems(Util
+                                .applyPlayOption(alFilesToPlay),
+                                ConfigurationManager
+                                .getBoolean(CONF_STATE_REPEAT),
+                                true), false);
                     } else if ((e.getSource() == jmiTrackPush
                             || e.getSource() == jmiAlbumPush
                             || e.getSource() == jmiAuthorPush || e.getSource() == jmiStylePush)) {
                         FIFO.getInstance().push(
-                                Util.createStackItems(Util
-                                        .applyPlayOption(alFilesToPlay),
-                                        ConfigurationManager
-                                                .getBoolean(CONF_STATE_REPEAT),
-                                        true), true);
+                            Util.createStackItems(Util
+                                .applyPlayOption(alFilesToPlay),
+                                ConfigurationManager
+                                .getBoolean(CONF_STATE_REPEAT),
+                                true), true);
                     } else if ((e.getSource() == jmiAlbumPlayShuffle
                             || e.getSource() == jmiAuthorPlayShuffle || e
                             .getSource() == jmiStylePlayShuffle)) {
                         Collections.shuffle(alFilesToPlay);
                         FIFO.getInstance().push(
-                                Util.createStackItems(alFilesToPlay,
-                                        ConfigurationManager
-                                                .getBoolean(CONF_STATE_REPEAT),
-                                        true), false);
+                            Util.createStackItems(alFilesToPlay,
+                                ConfigurationManager
+                                .getBoolean(CONF_STATE_REPEAT),
+                                true), false);
                     } else if ((e.getSource() == jmiAlbumPlayRepeat
                             || e.getSource() == jmiAuthorPlayRepeat || e
                             .getSource() == jmiStylePlayRepeat)) {
                         FIFO.getInstance().push(
-                                Util.createStackItems(Util
-                                        .applyPlayOption(alFilesToPlay), true,
-                                        true), false);
+                            Util.createStackItems(Util
+                                .applyPlayOption(alFilesToPlay), true,
+                                true), false);
                     } else if ((e.getSource() == jmiStyleAddFavorite
                             || e.getSource() == jmiAlbumAddFavorite
                             || e.getSource() == jmiAuthorAddFavorite || e
@@ -844,7 +866,7 @@ public class LogicalTreeView extends AbstractTreeView implements
             }
         }.start();
     }
-
+    
     /*
      * (non-Javadoc)
      * 
@@ -853,7 +875,7 @@ public class LogicalTreeView extends AbstractTreeView implements
     public String getID() {
         return "org.jajuk.ui.views.LogicalTreeView"; //$NON-NLS-1$
     }
-
+    
     /*
      * (non-Javadoc)
      * 
@@ -868,7 +890,7 @@ public class LogicalTreeView extends AbstractTreeView implements
                     populateTreeByStyle();
                     return null;
                 }
-
+                
                 public void finished() {
                     SwingUtilities.updateComponentTreeUI(jtree);
                     expand();
@@ -883,7 +905,7 @@ public class LogicalTreeView extends AbstractTreeView implements
                     populateTree();
                     return null;
                 }
-
+                
                 public void finished() {
                     SwingUtilities.updateComponentTreeUI(jtree);
                     expand();
@@ -894,7 +916,7 @@ public class LogicalTreeView extends AbstractTreeView implements
             sw.start();
         }
     }
-
+    
     /**
      * Manages auto-expand
      * 
@@ -924,14 +946,25 @@ public class LogicalTreeView extends AbstractTreeView implements
             }
         }
     }
-
+    
     /**
      * @return Returns the alTracks.
      */
     public ArrayList getTrackSelection() {
         return alTracks;
     }
-
+    
+    /**
+     * 
+     * @return Logical tree sort order.
+     * <p>0: Style </p>
+     * <p>1: author </p>
+     * <p>2: Album </p>
+     */
+    public int getSortOrder() {
+        return iSortOrder;
+    }
+    
 }
 
 /**
@@ -941,7 +974,7 @@ public class LogicalTreeView extends AbstractTreeView implements
  * @created 29 nov. 2003
  */
 class StyleNode extends TransferableTreeNode {
-
+    
     /**
      * Constructor
      * 
@@ -950,14 +983,14 @@ class StyleNode extends TransferableTreeNode {
     public StyleNode(Style track) {
         super(track);
     }
-
+    
     /**
      * return a string representation of this track node
      */
     public String toString() {
         return ((Style) super.getData()).getName2();
     }
-
+    
     /**
      * @return Returns the track.
      */
@@ -973,7 +1006,7 @@ class StyleNode extends TransferableTreeNode {
  * @created 29 nov. 2003
  */
 class AuthorNode extends TransferableTreeNode {
-
+    
     /**
      * Constructor
      * 
@@ -982,21 +1015,21 @@ class AuthorNode extends TransferableTreeNode {
     public AuthorNode(Author author) {
         super(author);
     }
-
+    
     /**
      * return a string representation of this author node
      */
     public String toString() {
         return ((Author) super.getData()).getName2();
     }
-
+    
     /**
      * @return Returns the author.
      */
     public Author getAuthor() {
         return (Author) super.getData();
     }
-
+    
 }
 
 /**
@@ -1006,7 +1039,7 @@ class AuthorNode extends TransferableTreeNode {
  * @created 29 nov. 2003
  */
 class AlbumNode extends TransferableTreeNode {
-
+    
     /**
      * Constructor
      * 
@@ -1015,14 +1048,14 @@ class AlbumNode extends TransferableTreeNode {
     public AlbumNode(Album album) {
         super(album);
     }
-
+    
     /**
      * return a string representation of this album node
      */
     public String toString() {
         return ((Album) super.getData()).getName2();
     }
-
+    
     /**
      * @return Returns the album.
      */
@@ -1038,7 +1071,7 @@ class AlbumNode extends TransferableTreeNode {
  * @created 29 nov. 2003
  */
 class TrackNode extends TransferableTreeNode {
-
+    
     /**
      * Constructor
      * 
@@ -1047,14 +1080,14 @@ class TrackNode extends TransferableTreeNode {
     public TrackNode(Track track) {
         super(track);
     }
-
+    
     /**
      * return a string representation of this track node
      */
     public String toString() {
         return ((Track) super.getData()).getName();
     }
-
+    
     /**
      * @return Returns the track.
      */

@@ -57,6 +57,7 @@ public class Track extends PropertyAdapter implements Comparable{
 	/** Number of hits for current jajuk session */
 	private int iSessionHits = 0;
     
+    
 	/**
 	 *  Track constructor
 	 * @param sId
@@ -119,32 +120,8 @@ public class Track extends PropertyAdapter implements Comparable{
 	 */
 	public int compareTo(Object o){
 		Track otherTrack = (Track)o;
-        if (otherTrack.equals(this)){//ensure a.equals(b) <-> a.compareTo(b)==0 contract
-            return 0;
-        }
-        //if track # is given, sort by # in a same album, otherwise, sort alphabeticaly
-        if (otherTrack.getAlbum().equals(album) 
-                && otherTrack.getAuthor().equals(author)
-                && otherTrack.getStyle().equals(style)
-                && (getOrder() != otherTrack.getOrder()) ){
-            //do not use year as an album can contains tracks with different year but we want to keep order
-            return (int)(getOrder()-otherTrack.getOrder()); 
-        }
-        //comparaison based on style, author, album, name and year to differenciate 2 tracks with all the same attributes
-        //note we need to use year because in sorted set, we must differenciate 2 tracks with different years
-        String sHashCompare = new StringBuffer()
-            .append(style.getName2())
-            .append("  ").append(author.getName2())//need 2 spaces to make a right sorting (ex: Rock and Rock & Roll) //$NON-NLS-1$
-            .append("  ").append(album.getName2()) //$NON-NLS-1$
-            .append(lYear)
-            .append("  ").append(sName).toString(); //$NON-NLS-1$
-        String sHashCompareOther = new StringBuffer()
-            .append(otherTrack.getStyle().getName2())
-            .append("  ").append(otherTrack.getAuthor().getName2()) //$NON-NLS-1$
-            .append("  ").append(otherTrack.getAlbum().getName2()) //$NON-NLS-1$
-            .append(otherTrack.getYear())
-            .append("  ").append(otherTrack.getName()).toString(); //$NON-NLS-1$
-        return sHashCompare.compareToIgnoreCase(sHashCompareOther);
+        TrackComparator comparator = TrackManager.getInstance().getComparator();
+        return comparator.compare(this,o);
 	}
 	
 	/**
@@ -498,5 +475,7 @@ public class Track extends PropertyAdapter implements Comparable{
             return super.getHumanValue(sKey);
         }
     }
+    
+   
     
 }

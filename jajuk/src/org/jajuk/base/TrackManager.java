@@ -30,6 +30,7 @@ import java.util.Properties;
 import java.util.TreeSet;
 
 import org.jajuk.i18n.Messages;
+import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.error.NoneAccessibleFileException;
@@ -50,6 +51,9 @@ public class TrackManager extends ItemManager implements Observer{
     
     /**Sorted tracks (perfs)*/
     TreeSet<Track> sortedTracks = new TreeSet();
+    
+    /**comparator in use**/
+    private TrackComparator comparator;
     
     /**
      * No constructor available, only static access
@@ -87,6 +91,8 @@ public class TrackManager extends ItemManager implements Observer{
         registerProperty(new PropertyMetaInformation(XML_TRACK_ORDER,false,true,true,true,false,Long.class,null,null));
         //---subscriptions---
         ObservationManager.register(EVENT_FILE_NAME_CHANGED,this);
+        //select comparator
+        comparator = new TrackComparator(ConfigurationManager.getInt(CONF_LOGICAL_TREE_SORT_ORDER));
     }
     
     /**
@@ -577,12 +583,29 @@ public class TrackManager extends ItemManager implements Observer{
         }
     }
      
-    
-    
     public boolean isChangePbm() {
         synchronized(TrackManager.getInstance().getLock()){
             return bChangePbm;
         }
     }
+
+    public TrackComparator getComparator() {
+        return comparator;
+    }
     
-}
+    /**
+     * Set a new track comparator
+     * @param comparator
+     */
+    public void setComparator(TrackComparator comparator) {
+        synchronized (getLock()) {
+            this.comparator = comparator;
+            //clear re-add all tracks using new comparator
+            sortedTracks.clear();
+            for (IPropertyable item:getItems()){
+                sortedTracks.add((Track)item);
+            }
+        }
+    }
+}    
+     
