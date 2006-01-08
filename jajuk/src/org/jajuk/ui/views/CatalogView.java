@@ -592,7 +592,9 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
             ,{TableLayout.PREFERRED}};
             jpIcon.setLayout(new TableLayout(dIcon));
             jlIcon = new JLabel();
-            jlIcon.setIcon(new ImageIcon(fCover.getAbsolutePath()));
+            ImageIcon ii = new ImageIcon(fCover.getAbsolutePath());
+            ii.getImage().flush(); //flush image buffer to avoid jre to use old image
+            jlIcon.setIcon(ii);
             addMouseListener(this);
             jpIcon.add(jlIcon,"1,0");
             //take first track author as author
