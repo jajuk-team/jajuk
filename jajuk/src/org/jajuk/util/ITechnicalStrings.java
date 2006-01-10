@@ -366,8 +366,9 @@ public interface ITechnicalStrings {
     public static final String EVENT_FILE_NAME_CHANGED="file name changed"; //file name change
 	public static final String EVENT_RATE_CHANGED="file rate changed"; //file rate change
     public static final String EVENT_TIP_OF_THE_DAY="tip of the day"; // show tip of the day
-    public static final String EVENT_CDDB_WIZARD = "cddb.wizard";
-    public static final String EVENT_LOGICAL_TREE_SORT = "logical tree sort";
+    public static final String EVENT_CDDB_WIZARD = "cddb.wizard"; //Cddb wizard required
+    public static final String EVENT_LOGICAL_TREE_SORT = "logical tree sort"; //logical tree osrt method changed
+    public static final String EVENT_COVER_DEFAULT_CHANGED = "cover default changed"; //cover default changed
     
     //details keys
 	public static final String DETAIL_CURRENT_FILE_ID="current file id";

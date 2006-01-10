@@ -37,7 +37,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.TableColumnModelEvent;
@@ -57,6 +56,8 @@ import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
+
+import com.sun.java.help.impl.SwingWorker;
 
 import entagged.freedb.Freedb;
 import entagged.freedb.FreedbAlbum;
@@ -127,8 +128,11 @@ TableColumnModelListener, TableModelListener, MouseListener {
         JTextField jtGenre;
         JLabel jlAlbum; 
         
+        /**
+         * Navigation panel
+         *
+         */
         NavigationPanel() {
-            
             // Albums List
             jlAlbum = new JLabel(Messages.getString("CDDBWizard.5"));
             jcbAlbum = new SteppedComboBox();
@@ -174,52 +178,64 @@ TableColumnModelListener, TableModelListener, MouseListener {
             add(jlGenre, "5,0");
             add(jtGenre, "7,0");
             add(jlCurrent, "9,0");            
-            pack();
         }
     }
     
-    public CDDBWizard(Directory dir) {
+    /**
+     * CDDB wizard
+     * @param dir directory to retag
+     */
+    public CDDBWizard(final Directory dir) {
         // windows title: absolute path name of the given directory
         super(Main.getWindow(), dir.getAbsolutePath(), true); // modal //$NON-NLS-1$
-        try{
-            // Search all tracks in the given directory
-            Set files = dir.getFiles();
-            alTracks = new ArrayList(files.size());
-            for (File file : dir.getFiles()) {
-                CDDBTrack track = new CDDBTrack(file.getTrack());
-                if (!alTracks.contains(track)) {
-                    alTracks.add(track);
+        SwingWorker sw = new SwingWorker() {
+            
+            @Override
+            public Object construct() {
+                try{
+                    // Search all tracks in the given directory
+                    Set files = dir.getFiles();
+                    alTracks = new ArrayList(files.size());
+                    for (File file : dir.getFiles()) {
+                        CDDBTrack track = new CDDBTrack(file.getTrack());
+                        if (!alTracks.contains(track)) {
+                            alTracks.add(track);
+                        }
+                    }
+                    // Put an error message if no tracks were found
+                    if (alTracks.size() == 0) {
+                        InformationJPanel.getInstance().setMessage(Messages.getString("CDDBWizard.14"), 2);
+                        return null;
+                    }
+                    // Put a message that show the query is running
+                    else {
+                        InformationJPanel.getInstance().setMessage(Messages.getString("CDDBWizard.11"), 0);
+                        // Perform CDDB Query
+                        idx = performQuery(alTracks);
+                        // Put an error message if CDDB query don't found any matches
+                        if (idx < 0) {
+                            InformationJPanel.getInstance().setMessage(Messages.getString("CDDBWizard.12"), 2);
+                            return null;
+                        }
+                        // Put a message that show possible matches are found
+                        else {
+                            InformationJPanel.getInstance().setMessage(Messages.getString("CDDBWizard.13"), 0);
+                        }
+                    }
                 }
+                catch(Exception e){
+                    Log.error(e);   
+                }
+                return null;
             }
             
-            // Put an error message if no tracks were found
-            if (alTracks.size() == 0) {
-                InformationJPanel.getInstance().setMessage(Messages.getString("CDDBWizard.14"), 2);
-                return;
-                
-            }
-            // Put a message that show the query is running
-            else {
-                InformationJPanel.getInstance().setMessage(Messages.getString("CDDBWizard.11"), 0);
-                
-                // Perform CDDB Query
-                idx = performQuery(alTracks);
-                
-                // Put an error message if CDDB query don't found any matches
-                if (idx < 0) {
-                    InformationJPanel.getInstance().setMessage(Messages.getString("CDDBWizard.12"), 2);
-                    return;
-                    
-                }
-                // Put a message that show possible matches are found
-                else {
-                    InformationJPanel.getInstance().setMessage(Messages.getString("CDDBWizard.13"), 0);
-                    
+            @Override
+            public void finished() {
+                if (idx >= 0 && aResult!= null){ 
                     // create Main panel
                     jpMain = new JPanel();
                     jpMain.setBorder(BorderFactory.createEtchedBorder());
                     jpMain.setLayout(new TableLayout(dSize));
-                    
                     jtable = populateTable(aResult[idx]);
                     jpNav = new NavigationPanel();
                     okc = new OKCancelPanel(CDDBWizard.this, Messages.getString("Apply"), Messages
@@ -229,13 +245,9 @@ TableColumnModelListener, TableModelListener, MouseListener {
                     display();
                 }
             }
-        }
-        catch(Exception e){
-            Log.error(e);   
-        }
-        finally{
-            Util.stopWaiting();
-        }
+        };
+        sw.start();
+        Util.stopWaiting();
     }
     
     /** Fill the table */
@@ -266,21 +278,15 @@ TableColumnModelListener, TableModelListener, MouseListener {
     
     public void display() {
         // Create UI
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                
-                jpMain.add(jpNav, "1,1");
-                jpMain.add(new JScrollPane(jtable), "1,2");
-                jpMain.add(okc, "1,3");
-                
-                getRootPane().setDefaultButton(okc.getOKButton());
-                getContentPane().add(jpMain);
-                setResizable(false);
-                pack();
-                setLocationRelativeTo(Main.getWindow());
-                setVisible(true);
-            }
-        });
+        jpMain.add(jpNav, "1,1");
+        jpMain.add(new JScrollPane(jtable), "1,2");
+        jpMain.add(okc, "1,3");
+        
+        getRootPane().setDefaultButton(okc.getOKButton());
+        getContentPane().add(jpMain);
+        pack();
+        setLocationRelativeTo(Main.getWindow());
+        setVisible(true);
     }
     
     public int performQuery(ArrayList alItems) {

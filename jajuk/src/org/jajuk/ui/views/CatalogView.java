@@ -284,6 +284,7 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
         
         //subscriptions to events
         ObservationManager.register(EVENT_DEVICE_REFRESH,this);
+        ObservationManager.register(EVENT_COVER_DEFAULT_CHANGED,this);
     }
     
     /**
@@ -314,7 +315,7 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
             }
             else{
                 try {
-                    Util.createThumbnail(fCover.toURL(),fThumb,100+(50*jcbSize.getSelectedIndex()));
+                    Util.createThumbnail(fCover.toURL(),fThumb,50+(50*jcbSize.getSelectedIndex()));
                 }
                 catch (Exception e) {
                     Log.error(e);
@@ -465,7 +466,8 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
      * @see org.jajuk.ui.Observer#update(java.lang.String)
      */
     public void update(Event event){
-        if (EVENT_DEVICE_REFRESH.equals(event.getSubject())){
+        if (EVENT_DEVICE_REFRESH.equals(event.getSubject())
+                || EVENT_COVER_DEFAULT_CHANGED.equals(event.getSubject())){
             //save selected item
             CatalogItem oldItem = CatalogView.this.item;
             populateCatalog();
@@ -681,7 +683,7 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
                 play(false,false,false);
             }
             else if (e.getButton() == MouseEvent.BUTTON3 && e.getSource() == this){
-                jmenu.show(jlIcon,e.getX(),e.getY());
+                jmenu.show(jlIcon,e.getX()-100,e.getY());
             }
         }
         
@@ -759,10 +761,10 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
             okc = new OKCancelPanel(this);
             okc.getCancelButton().setText(Messages.getString("Close"));
             okc.getOKButton().setEnabled(false);
-            jbPrevious = new JButton(Messages.getString("Previous"));
+            jbPrevious = new JButton(Messages.getString("CatalogView.9"));
             jbPrevious.setEnabled(false); //always false at startup
             jbPrevious.addActionListener(this);
-            jbNext = new JButton(Messages.getString("Next"));
+            jbNext = new JButton(Messages.getString("CatalogView.10"));
             jbNext.addActionListener(this);
             jbNext.setEnabled(false);
             jlIndex = new JLabel("");
@@ -835,7 +837,7 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
                         throw new JajukException("129"); //$NON-NLS-1$
                     }
                     jlIcon.setIcon(image);
-                    jlIndex.setText((index+1)+"/"+alUrls.size());
+                    jlIndex.setText(cover.getSize()+"K  -  "+(index+1)+"/"+alUrls.size());
                     okc.getOKButton().setEnabled(true);
                     if (alUrls.size() > 1 && index < (alUrls.size()-1)){
                       jbNext.setEnabled(true);  

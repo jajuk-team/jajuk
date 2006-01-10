@@ -790,6 +790,18 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
             //then make it the default cover in this directory
             Directory dir = FIFO.getInstance().getCurrentFile().getDirectory(); 
             dir.setProperty("default_cover",sFilename); //$NON-NLS-1$
+            //refresh thumbs
+            try{
+                for (int i=0; i<4; i++){
+                    Album album = FIFO.getInstance().getCurrentFile().getTrack().getAlbum();
+                    File fThumb = new File(FILE_THUMBS+'/'+(50+50*i)+"x"+(50+50*i)+'/'+album.getId()+'.'+EXT_THUMB);
+                    Util.createThumbnail(cover.getFile().toURL(),fThumb,(50+50*i));
+                }
+                ObservationManager.notify(new Event(EVENT_COVER_DEFAULT_CHANGED));
+            }
+            catch(Exception ex){
+                Log.error("024",ex); //$NON-NLS-1$
+            }
         }
         else if(e.getSource() == jbSave ){ //save a file with its original name
             new Thread(){

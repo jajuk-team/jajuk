@@ -287,7 +287,7 @@ public class Directory extends PropertyAdapter implements Comparable{
                     //if known file and no deep scan, just register it and leave
                     if (fileRef != null && !bDeepScan){
                        //add file to current directory
-                        org.jajuk.base.File file = FileManager.getInstance().registerFile(fileRef.getId(),fileRef.getName(), 
+                        FileManager.getInstance().registerFile(fileRef.getId(),fileRef.getName(), 
                             this, fileRef.getTrack(), fileRef.getSize(),fileRef.getQuality());
                         continue;
                     }
@@ -318,7 +318,7 @@ public class Directory extends PropertyAdapter implements Comparable{
                     Type type = TypeManager.getInstance().getTypeByExtension(Util.getExtension(files[i]));
                     Track track = TrackManager.getInstance().registerTrack(sTrackName, album, style, author, length, lYear,lOrder, type);
                     track.setAdditionDate(new Date());
-                    org.jajuk.base.File newFile = FileManager.getInstance().registerFile(sId,files[i].getName(), this, track, 
+                    FileManager.getInstance().registerFile(sId,files[i].getName(), this, track, 
                         files[i].length(), lQuality);   
                     /*comment is at the track level, note that we take last found file comment but we changing
                     a comment, we will apply to all files for a track*/

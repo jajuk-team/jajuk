@@ -791,6 +791,29 @@ ActionListener, Observer {
                     else if (e.getSource() == jmiCollectionAlbum){
                         iSortOrder = 2;
                     }
+                    //make sure to update combo and popup items state if used popup menu
+                    jcbSort.removeActionListener(LogicalTreeView.this);
+                    jcbSort.setSelectedIndex(iSortOrder);
+                    jcbSort.addActionListener(LogicalTreeView.this);
+                    //popup
+                    jmiCollectionStyle.removeActionListener(LogicalTreeView.this);
+                    jmiCollectionAuthor.removeActionListener(LogicalTreeView.this);
+                    jmiCollectionAlbum.removeActionListener(LogicalTreeView.this);
+                    switch(iSortOrder){
+                    case 0:
+                        jmiCollectionStyle.setSelected(true);
+                        break;
+                    case 1:
+                        jmiCollectionAuthor.setSelected(true);
+                        break;
+                    case 2:
+                        jmiCollectionAlbum.setSelected(true);
+                        break;
+                    }
+                    jmiCollectionStyle.addActionListener(LogicalTreeView.this);
+                    jmiCollectionAuthor.addActionListener(LogicalTreeView.this);
+                    jmiCollectionAlbum.addActionListener(LogicalTreeView.this);
+                    
                     ConfigurationManager.setProperty(CONF_LOGICAL_TREE_SORT_ORDER,Integer.toString(iSortOrder));
                     //refresh comparator
                     TrackManager.getInstance().setComparator(
@@ -802,8 +825,6 @@ ActionListener, Observer {
                             Util.stopWaiting();
                         }
                     });
-                    
-                    
                 } else {
                     // compute selection
                     ArrayList alFilesToPlay = new ArrayList(alTracks.size());

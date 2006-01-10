@@ -587,7 +587,10 @@ public class Main implements ITechnicalStrings {
                 try{
                     Collection.load(file.getAbsolutePath());
                     bParsingOK = true;
-                    Messages.getChoice(Messages.getString("Error.133")+":\n"+file.getAbsolutePath(),JOptionPane.WARNING_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+                    int i = Messages.getChoice(Messages.getString("Error.133")+":\n"+file.getAbsolutePath(),JOptionPane.WARNING_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+                    if (i == JOptionPane.CANCEL_OPTION){
+                        System.exit(-1);
+                    }
                     break;
                 }
                 catch(Exception e2){

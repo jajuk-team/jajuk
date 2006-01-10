@@ -291,6 +291,7 @@ public abstract class AbstractTableView extends ViewAdapter
                     if ( EVENT_DEVICE_MOUNT.equals(subject) 
                             || EVENT_DEVICE_UNMOUNT.equals(subject) 
                             || EVENT_SYNC_TREE_TABLE.equals(subject)) {
+                        jtable.clearSelection();
                         applyFilter(sAppliedCriteria,sAppliedFilter); //force filter to refresh
                     }	
                     else if ( EVENT_DEVICE_REFRESH.equals(subject)

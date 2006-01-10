@@ -200,7 +200,11 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 
         jpVolume.setLayout(new BoxLayout(jpVolume,BoxLayout.X_AXIS));
         jlVolume = new JLabel(Util.getIcon(ICON_VOLUME));
-		jsVolume = new JSlider(0,100,(int)(100*ConfigurationManager.getFloat(CONF_VOLUME)));
+		int iVolume = (int)(100*ConfigurationManager.getFloat(CONF_VOLUME));
+        if (iVolume > 100){ //can occur in some undefined cases
+            iVolume = 100;
+        }
+        jsVolume = new JSlider(0,100,iVolume);
 		jpVolume.add(jlVolume);
 		jpVolume.add(jsVolume);
 		jsVolume.setToolTipText(Messages.getString("CommandJPanel.14")); //$NON-NLS-1$

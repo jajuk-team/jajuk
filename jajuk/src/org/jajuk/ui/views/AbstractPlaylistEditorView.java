@@ -71,6 +71,7 @@ import org.jajuk.ui.JajukCellRender;
 import org.jajuk.ui.JajukTableModel;
 import org.jajuk.ui.PlaylistFileItem;
 import org.jajuk.ui.PlaylistTransferHandler;
+import org.jajuk.ui.PropertiesWizard;
 import org.jajuk.ui.TableTransferHandler;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Util;
@@ -102,7 +103,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
     JMenuItem jmiFilePlay;
     JMenuItem jmiFilePush;
     JMenuItem jmiFileAddFavorites;
-
+    JMenuItem jmiFileProperties;
     
     /**playlist editor title : playlist file or playlist name*/
     String sTitle;
@@ -123,10 +124,10 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
     protected boolean[][] bCellEditable;
     
     /**Values*/
-    private ArrayList alItems = new ArrayList(10);
+    private ArrayList<IPropertyable> alItems = new ArrayList(10);
     
     /**Values planned*/
-    private ArrayList alPlanned = new ArrayList(10);
+    private ArrayList<IPropertyable> alPlanned = new ArrayList(10);
     
     /**Columns names table**/
     protected String[] sColName = null;
@@ -355,9 +356,12 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
         jmiFilePush.addActionListener(this);
         jmiFileAddFavorites = new JMenuItem(Messages.getString("AbstractPlaylistEditorView.25")); //$NON-NLS-1$
         jmiFileAddFavorites.addActionListener(this);
+        jmiFileProperties = new JMenuItem(Messages.getString("AbstractPlaylistEditorView.26")); //$NON-NLS-1$
+        jmiFileProperties.addActionListener(this);
         jmenuFile.add(jmiFilePlay);
         jmenuFile.add(jmiFilePush);
         jmenuFile.add(jmiFileAddFavorites);
+        jmenuFile.add(jmiFileProperties);
         //register events
         ObservationManager.register(EVENT_PLAYLIST_REFRESH,this);
         ObservationManager.register(EVENT_PLAYER_STOP,this);
@@ -532,9 +536,9 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
         }
         else if ( e.getClickCount() == 1 ){
             int iSelectedRow = jtable.rowAtPoint(e.getPoint());
+            jtable.getSelectionModel().setSelectionInterval(iSelectedRow,iSelectedRow);
             TableTransferHandler.iSelectedRow = iSelectedRow;
-            if (e.getButton()==MouseEvent.BUTTON3
-                    && plfi.getType() != PlaylistFileItem.PLAYLIST_TYPE_QUEUE ){  //right clic on a selected node set
+            if (e.getButton()==MouseEvent.BUTTON3){  //right clic on a selected node set
                 jmenuFile.show(jtable,e.getX(),e.getY());
             }
         }
@@ -698,7 +702,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
                 ArrayList alItemsToPlay = new ArrayList(jtable.getSelectedRowCount());
                 int[] indexes = jtable.getSelectedRows();
                 for (int i=0;i<indexes.length;i++){
-                    alItemsToPlay.add(alItems.get(indexes[i]));
+                    alItemsToPlay.add(getItem(indexes[i]));
                 }
                 FIFO.getInstance().push(alItemsToPlay,ae.getSource() == jmiFilePush);
             }
@@ -707,7 +711,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
                 ArrayList alItemsToPlay = new ArrayList(jtable.getSelectedRowCount());
                 int[] indexes = jtable.getSelectedRows();
                 for (int i=0;i<indexes.length;i++){
-                    alItemsToPlay.add(alItems.get(indexes[i]));
+                    alItemsToPlay.add(getItem(indexes[i]));
                 }                
                 ArrayList alFiles = new ArrayList(alItemsToPlay.size());
                 Iterator it = alItemsToPlay.iterator();
@@ -715,6 +719,12 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
                     alFiles.add(((StackItem)it.next()).getFile());
                 }
                 Bookmarks.getInstance().addFiles(alFiles);
+            }
+            else if ( ae.getSource() == jmiFileProperties ){
+                ArrayList<IPropertyable> alItems = new ArrayList();
+                int iSelected = jtable.getSelectedRow();
+                alItems.add((IPropertyable)getItem(iSelected).getFile());
+                new PropertiesWizard(alItems);
             }
         }
         catch(Exception e2){

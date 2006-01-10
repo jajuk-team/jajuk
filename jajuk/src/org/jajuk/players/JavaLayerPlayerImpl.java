@@ -81,7 +81,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
     
     /**Volume when starting fade*/
     private float fadingVolume;
-    
+        
     /*
      * (non-Javadoc)
      * 
@@ -272,10 +272,17 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
                 lTime = (long)(lDuration * fPos);
             }
             //Cross-Fade test
-            if (iFadeDuration > 0  && lTime > (lDuration - iFadeDuration)){
-                bFading = true;
-                this.fadingVolume = fVolume;
-                FIFO.getInstance().finished();
+            if (iFadeDuration > 0   
+                    && lTime > (lDuration - iFadeDuration)){
+                //if memory is low, we force full gc to avoid blanck during fade
+                if (Util.needFullFC()){
+                    Log.debug("Need full gc, no cross fade");
+                }
+                else{
+                    bFading = true;
+                    this.fadingVolume = fVolume;
+                    FIFO.getInstance().finished();
+                }
             }
              //Caution: lMicroseconds reset to zero after a seek
             // test end of length for intro mode
@@ -301,6 +308,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
         switch (bpe.getCode()) {
         case BasicPlayerEvent.EOM:
             if (!bFading){ //if using crossfade, ignore end of file
+                System.gc();//Benefit from end of file to perform a full gc
                 FIFO.getInstance().finished();
             }
             bFading = false;

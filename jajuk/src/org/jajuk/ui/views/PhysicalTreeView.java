@@ -525,7 +525,18 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
 	                Properties properties = new Properties();
 	                properties.put(DETAIL_SELECTION,hsSelectedFiles);
 	                ObservationManager.notify(new Event(EVENT_SYNC_TREE_TABLE,properties));
-	             }
+	            }
+                //No CDDB on directories without files
+                if (alSelected.size()>0 && alSelected.get(0) instanceof Directory){
+                    boolean bShowCDDB = false;
+                    for (IPropertyable item:alSelected){ //if at least one selected dir contains a file, show option
+                        Directory dir = (Directory)item;
+                        if (dir.getFiles().size() > 0){
+                            bShowCDDB = true;
+                        }
+                    }
+                    jmiDirCDDBQuery.setEnabled(bShowCDDB);
+                }
             }
         });
         //Listen for double clic
@@ -839,11 +850,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
             for (IPropertyable item:alSelected){
                 final Directory dir = (Directory)item;
                 Util.waiting();
-                new Thread(){
-                    public void run(){
-                        new CDDBWizard(dir);
-                    }
-                }.start();
+                new CDDBWizard(dir);
             }        	
         }
         else if (alFiles!= null  && (e.getSource() == jmiDirPush || e.getSource() == jmiDevPush)){

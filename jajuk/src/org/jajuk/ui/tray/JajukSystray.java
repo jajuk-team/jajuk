@@ -180,7 +180,11 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
         
         jlVolume = new JLabel(Util.getIcon(ICON_VOLUME)); 
         sTitle = Messages.getString("JajukWindow.33"); //$NON-NLS-1$
-        jsVolume = new SliderMenuItem(0,100,(int)(100*ConfigurationManager.getFloat(CONF_VOLUME)),sTitle);
+        int iVolume = (int)(100*ConfigurationManager.getFloat(CONF_VOLUME));
+        if (iVolume > 100){ //can occur in some undefined cases
+            iVolume = 100;
+        }
+        jsVolume = new SliderMenuItem(0,100,iVolume,sTitle);
         jsVolume.setToolTipText(sTitle); //$NON-NLS-1$
         jsVolume.addMouseWheelListener(this);
         jsVolume.addChangeListener(this);

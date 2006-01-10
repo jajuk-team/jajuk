@@ -163,6 +163,7 @@ public class Player implements ITechnicalStrings{
                 }
                 bPaused = false; //cancel any current pause
                 bPlaying = false;
+                System.gc();//Benefit from end of file to perform a full gc
             }
         } catch (Exception e) {
             Log.error("008",fCurrent.getName(),e); //$NON-NLS-1$

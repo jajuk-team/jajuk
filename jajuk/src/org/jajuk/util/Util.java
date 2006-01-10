@@ -295,7 +295,7 @@ public class Util implements ITechnicalStrings {
                 sbOut.append(c); 
             }
         }
-        return sbOut.toString().trim();
+        return sbOut.toString();
     }
     
     /**
@@ -1222,6 +1222,14 @@ public class Util implements ITechnicalStrings {
         JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(os);
         encoder.encode(outImage);
         os.close();
+    }
+    
+    /**
+     * 
+     * @return whether we need a full gc or not
+     */
+    public static boolean needFullFC(){
+        return Runtime.getRuntime().freeMemory()/1024 < 6000;
     }
   
 }
