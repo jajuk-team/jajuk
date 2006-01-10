@@ -9,13 +9,15 @@ import java.awt.event.ActionEvent;
 import org.jajuk.ui.CommandJPanel;
 
 /**
+ * Action class for increasing the volume. Installed keystroke: <code>CTRL + UP ARROW</code>.
+ *
  * @author Bart Cremers(Real Software)
  * @since 13-dec-2005
  */
 public class IncreaseVolumeAction extends ActionBase {
 
     IncreaseVolumeAction() {
-        super("increase volume", "ctrl PLUS", true); //$NON-NLS-1$ //$NON-NLS-2$
+        super("increase volume", "ctrl UP", true); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     public void perform(ActionEvent evt) {

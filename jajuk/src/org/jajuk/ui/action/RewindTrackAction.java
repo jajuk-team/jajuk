@@ -11,6 +11,9 @@ import org.jajuk.i18n.Messages;
 import org.jajuk.util.Util;
 
 /**
+ * Action class for rewinding the current track. Installed keystroke:
+ * <code>CTRL + ALT + LEFT ARROW</code>.
+ *
  * @author Bart Cremers(Real Software)
  * @since 13-dec-2005
  */
@@ -19,7 +22,7 @@ public class RewindTrackAction extends ActionBase {
     private static final float JUMP_SIZE = 0.1f;
 
     RewindTrackAction() {
-        super(Util.getIcon(ICON_REW), "ctrl alt B", false);
+        super(Util.getIcon(ICON_REW), "ctrl alt LEFT", false);
         setShortDescription(Messages.getString("CommandJPanel.10")); //$NON-NLS-1$
 
     }

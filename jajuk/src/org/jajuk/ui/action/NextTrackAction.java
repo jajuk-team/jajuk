@@ -15,12 +15,15 @@ import org.jajuk.base.Event;
 import java.awt.event.ActionEvent;
 
 /**
+ * Action class for jumping to the next track. Installed keystroke:
+ * <code>CTRL + RIGHT ARROW</code>.
+ *
  * @author Bart Cremers(Real Software)
  * @since 13-dec-2005
  */
 public class NextTrackAction extends ActionBase {
     NextTrackAction() {
-        super(Util.getIcon(ICON_NEXT), "ctrl F", false); //$NON-NLS-1$
+        super(Util.getIcon(ICON_NEXT), "ctrl RIGHT", false); //$NON-NLS-1$
         setShortDescription(Messages.getString("CommandJPanel.9")); //$NON-NLS-1$
     }
 

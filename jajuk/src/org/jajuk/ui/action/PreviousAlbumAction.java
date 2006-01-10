@@ -13,13 +13,16 @@ import org.jajuk.base.Player;
 import org.jajuk.util.log.Log;
 
 /**
+ * Action class for jumping to the previous album. Installed keystroke:
+ * <code>CTRL + SHIFT + LEFT ARROW</code>.
+ *
  * @author Bart Cremers(Real Software)
  * @since 13-dec-2005
  */
 public class PreviousAlbumAction extends ActionBase {
 
     PreviousAlbumAction() {
-        super("previous album", "ctrl shift B", false); //$NON-NLS-1$ //$NON-NLS-2$
+        super("previous album", "ctrl shift LEFT", false); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     public void perform(ActionEvent evt) {

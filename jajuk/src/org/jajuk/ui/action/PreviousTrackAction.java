@@ -15,13 +15,16 @@ import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 
 /**
+ * Action class for jumping to the previous track. Installed keystroke:
+ * <code>CTRL + LEFT ARROW</code>.
+ *
  * @author Bart Cremers(Real Software)
  * @since 13-dec-2005
  */
 public class PreviousTrackAction extends ActionBase {
 
     PreviousTrackAction() {
-        super(Util.getIcon(ICON_PREVIOUS), "ctrl B", false); //$NON-NLS-1$
+        super(Util.getIcon(ICON_PREVIOUS), "ctrl LEFT", false); //$NON-NLS-1$
         setShortDescription(Messages.getString("CommandJPanel.8")); //$NON-NLS-1$
     }
 

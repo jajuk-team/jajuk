@@ -11,6 +11,9 @@ import org.jajuk.base.Player;
 import java.awt.event.ActionEvent;
 
 /**
+ * Action class for fast forwarding the current track. Installed keystroke:
+ * <code>CTRL + ALT + RIGHT ARROW</code>.
+ *
  * @author Bart Cremers(Real Software)
  * @since 13-dec-2005
  */
@@ -19,7 +22,7 @@ public class FastForwardTrackAction extends ActionBase {
     private static final float JUMP_SIZE = 0.1f;
 
     FastForwardTrackAction() {
-        super(Util.getIcon(ICON_FWD), "ctrl alt F", false);
+        super(Util.getIcon(ICON_FWD), "ctrl alt RIGHT", false);
         setShortDescription(Messages.getString("CommandJPanel.13")); //$NON-NLS-1$
     }
 

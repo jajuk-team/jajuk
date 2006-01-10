@@ -13,12 +13,15 @@ import org.jajuk.base.Event;
 import org.jajuk.util.log.Log;
 
 /**
+ * Action class for jumping to the next album. Installed keystroke:
+ * <code>CTRL + SHIFT + RIGHT ARROW</code>.
+ *
  * @author Bart Cremers(Real Software)
  * @since 13-dec-2005
  */
 public class NextAlbumAction extends ActionBase {
     NextAlbumAction() {
-        super("next album", "ctrl shift F", false); //$NON-NLS-1$ //$NON-NLS-2$
+        super("next album", "ctrl shift RIGHT", false); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     public void perform(ActionEvent evt) {
