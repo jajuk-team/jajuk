@@ -138,7 +138,8 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
      */
     public synchronized void setVolume(float fVolume) throws Exception {
         this.fVolume = fVolume;
-        player.setGain(fVolume);
+        player.setGain(fVolume*0.66);
+        //limit gain to avoid sound issues
     }
 
     /**

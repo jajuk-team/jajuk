@@ -225,7 +225,7 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
         jp1.add(jcbRefresh, "0,10"); //$NON-NLS-1$
         jp1.add(jcbAutoMount, "0,12"); //$NON-NLS-1$
         jp1.add(jcboxSynchronized, "0,14"); //$NON-NLS-1$
-		jp1.add(jcbSynchronized, "2,16"); //$NON-NLS-1$
+		jp1.add(jcbSynchronized, "2,14"); //$NON-NLS-1$
 		double size2[][] = { { 0.99 }, {
 			20, 20, 20, 20, 20, 20, 20 }
 		};

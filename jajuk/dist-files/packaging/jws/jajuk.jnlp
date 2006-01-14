@@ -18,7 +18,7 @@
            <all-permissions/>
        </security> 
        <resources>
-           <j2se version="1.5+" java-vm-args="-client -Xms25M -Xmx256M -XX:MinHeapFreeRatio=10 -XX:MaxHeapFreeRatio=20 -Xloggc:/tmp/gc/>
+           <j2se version="1.5+" java-vm-args="-client -Xms25M -Xmx256M -XX:MinHeapFreeRatio=20 -XX:MaxHeapFreeRatio=30 -Xincgc -XX:NewRatio=12/>
            <property name="apple.laf.useScreenMenuBar" value="true"/>
            <jar href="jajuk.jar"/> 
            <jar href="jajuk-help.jar"/> 

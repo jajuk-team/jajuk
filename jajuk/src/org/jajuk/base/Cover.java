@@ -190,6 +190,7 @@ public class Cover implements Comparable,ITechnicalStrings {
         if ( image.getImageLoadStatus() != MediaTracker.COMPLETE){
             throw new JajukException("129",url.toString(),null); //$NON-NLS-1$
         }
+        image.getImage().flush();
         Log.debug("Loaded "+url.toString()+" in  "+(System.currentTimeMillis()-l)+" ms"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         return image;
     }

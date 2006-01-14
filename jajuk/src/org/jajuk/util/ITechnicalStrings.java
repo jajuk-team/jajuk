@@ -67,8 +67,9 @@ public interface ITechnicalStrings {
     public static final int GARBAGER_DELAY = 600000;
     /**Fading status code*/
     public static final int FADING_STATUS = 9999;
-    
-        
+    /**Need full gc memory %*/
+    public static final float NEED_FULL_GC_LEVEL = 0.90f;
+            
 	// Jajuk version
 	public static final String JAJUK_VERSION = "VERSION_REPLACED_BY_ANT";
 	public static final String JAJUK_VERSION_DATE = "Build: DATE_REPLACED_BY_ANT";

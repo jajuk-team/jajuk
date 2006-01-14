@@ -63,6 +63,13 @@ public interface IView extends ComponentListener{
 	 * View refresh
 	 */
 	public void refresh();
+    
+    /**
+     * Activate
+     * Calls when perspective is selected
+     */
+    public void activate();
+    
 	   
     
 }

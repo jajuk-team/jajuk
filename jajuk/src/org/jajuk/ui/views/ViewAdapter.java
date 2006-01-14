@@ -111,6 +111,14 @@ public abstract class ViewAdapter extends JPanel implements IView,ITechnicalStri
     public Dimension getMinimumSize(){
         return d;
     }
-
+    
+   
+    /**
+     * Activate
+     */
+    public void activate(){
+        
+    }
+   
     
 }

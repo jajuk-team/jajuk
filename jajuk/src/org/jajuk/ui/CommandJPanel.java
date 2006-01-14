@@ -381,7 +381,12 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
         if (fPosition == 1.0f){
             fPosition = 0.99f;
         }
-        Player.seek(fPosition);
+        final float f = fPosition;
+        new Thread(){
+            public void run(){
+                Player.seek(f);        
+            }
+        }.start();
     }
 
 	/**
@@ -400,16 +405,15 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 	}
 
 
-	public void setVolume(float fVolume){
-        jsVolume.removeChangeListener(this);
-        jsVolume.removeMouseWheelListener(this);
-        //if user move the volume slider, unmute
-        Player.mute(false);
-        Player.setVolume(fVolume);
-        jsVolume.addChangeListener(this);
-        jsVolume.addMouseWheelListener(this);
-    }
-
+	public void setVolume(final float fVolume){
+	    jsVolume.removeChangeListener(CommandJPanel.this);
+	    jsVolume.removeMouseWheelListener(CommandJPanel.this);
+	    //if user move the volume slider, unmute
+	    Player.mute(false);
+	    Player.setVolume(fVolume);
+	    jsVolume.addChangeListener(CommandJPanel.this);
+	    jsVolume.addMouseWheelListener(CommandJPanel.this);
+	}
 
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.Observer#update(java.lang.String)
@@ -474,7 +478,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 				}
 				else if (EVENT_HEART_BEAT.equals(subject) &&!FIFO.isStopped() && !Player.isPaused()){
 					 //if position is adjusting, no dont disturb user
-                    if (jsPosition.getValueIsAdjusting()){
+                    if (jsPosition.getValueIsAdjusting() || Player.isSeeking()){
                         return;
                     }
                     //make sure not to set to old position

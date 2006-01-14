@@ -57,6 +57,7 @@ import org.jajuk.base.Observer;
 import org.jajuk.base.Track;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.InformationJPanel;
+import org.jajuk.ui.perspectives.IPerspective;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.ui.perspectives.PlayerPerspective;
 import org.jajuk.util.ConfigurationManager;
@@ -237,13 +238,14 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
         removeComponentListener(CoverView.this);
         addComponentListener(CoverView.this); //listen for resize
         String subject = event.getSubject();
-        Log.debug("Cover view update: "+event); //$NON-NLS-1$
         this.iEventID = (int)(Integer.MAX_VALUE*Math.random());
         int iLocalEventID = this.iEventID;
         synchronized(bLock){//block any concurrent cover update
             try{
                 searching(true);
-                if ( EVENT_COVER_REFRESH.equals(subject)){
+                if ( EVENT_COVER_REFRESH.equals(subject)
+                        && isInCurrentPerspective()){
+                    //change cover only if we are in the current perspective to save memory
                     alCovers.clear(); //remove all existing covers
                     org.jajuk.base.File fCurrent = FIFO.getInstance().getCurrentFile();
                     //if current file is null ( probably a file cannot be read ) 
@@ -372,7 +374,8 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                     displayCurrentCover();
                     fDir = null;
                 }
-                else if ( EVENT_COVER_CHANGE.equals(subject)){
+                else if ( EVENT_COVER_CHANGE.equals(subject)
+                        && isInCurrentPerspective()){
                     index = (int)(Math.random()*alCovers.size()-1); //choose a random cover
                     displayCurrentCover();
                 }
@@ -881,7 +884,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
     
     /**
      * 
-     * @return number of real covers ( not default) covers found
+     * @return number of real covers (not default) covers found
      */ 
     private int getCoverNumber(){
         synchronized(bLock){
@@ -944,4 +947,32 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
         return sQuery;
     }
     
+    /**
+     * When this view perspective is selected, force cover refreshes
+     */
+    public void activate(){
+        new Thread(){
+            public void run(){
+                update(new Event(EVENT_COVER_REFRESH));        
+            }
+        }.start();
+    }
+       
+     /**
+     * To be refactored
+     * @return whether this view is in current perspective
+     */
+    public boolean isInCurrentPerspective(){
+        IPerspective current = PerspectiveManager.getCurrentPerspective();
+        for (IView view:PerspectiveManager.getCurrentPerspective().getViews()){
+            if (view instanceof CoverView){
+                CoverView cv = (CoverView)view;
+                if (cv.sID.equals(sID)){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
 }

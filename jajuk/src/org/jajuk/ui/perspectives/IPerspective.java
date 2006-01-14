@@ -96,7 +96,7 @@ public interface IPerspective {
 	/**
 	 * @return Arraylist views registered in the perspective.
 	 */
-	public ArrayList getViews();
+	public ArrayList<IView> getViews();
 	
 	/**
 	 * @return Returns the desktop.

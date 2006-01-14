@@ -331,16 +331,12 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
      */
     private synchronized void populateCatalog(){
         SwingWorker sw = new SwingWorker() {
-            String sMessageOld = "";
-            int iMessageOld = 0;
-                
+              
             @Override
             public Object construct() {
                 Util.waiting();
                 hsItems.clear();
-                sMessageOld = InformationJPanel.getInstance().getMessage();
-                iMessageOld = InformationJPanel.getInstance().getMessageType();
-                //remove all devices
+                 //remove all devices
                 if (jpItems.getComponentCount() > 0 ){
                     jpItems.removeAll();
                 }
@@ -449,8 +445,8 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
             public void finished() {
                 jsp.revalidate();
                 jsp.repaint();
-                //reset message dialog, OK I know that the message can change during long actions but...
-                InformationJPanel.getInstance().setMessage(sMessageOld,iMessageOld);
+                //reset message dialog
+                InformationJPanel.getInstance().setMessage("",InformationJPanel.INFORMATIVE);
             }
         };
         sw.start();
@@ -778,8 +774,8 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
             Author author = alTracks.get(0).getAuthor();
             String sQuery = (author.getName().equals(UNKNOWN_AUTHOR)?"":author.getName2())
             +" "+CatalogView.this.item.getAlbum().getName2();
-            jlSearch = new JLabel((author.getName().equals(UNKNOWN_AUTHOR)?"":author.getName2())
-            +" - "+CatalogView.this.item.getAlbum().getName2());
+            jlSearch = new JLabel((author.getName().equals(UNKNOWN_AUTHOR)?"":author.getName2()+" - ")
+                +CatalogView.this.item.getAlbum().getName2());
             jlSearch.setFont(new Font("Dialog",Font.BOLD,12)); //$NON-NLS-1$
             
             //Main

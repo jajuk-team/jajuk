@@ -23,6 +23,7 @@ import java.util.Properties;
 
 import javax.sound.sampled.LineUnavailableException;
 
+import javazoom.jlgui.basicplayer.BasicPlayer;
 import javazoom.jlgui.basicplayer.BasicPlayerException;
 
 import org.jajuk.i18n.Messages;
@@ -163,7 +164,6 @@ public class Player implements ITechnicalStrings{
                 }
                 bPaused = false; //cancel any current pause
                 bPlaying = false;
-                System.gc();//Benefit from end of file to perform a full gc
             }
         } catch (Exception e) {
             Log.error("008",fCurrent.getName(),e); //$NON-NLS-1$
@@ -363,5 +363,13 @@ public class Player implements ITechnicalStrings{
      */
     public static boolean isPlaying() {
         return bPlaying;
+    }
+    
+    /**
+     * 
+     * @return whether current player is seeking
+     */
+    public static boolean isSeeking(){
+        return (playerImpl != null && playerImpl.getState() == BasicPlayer.SEEKING);
     }
 }

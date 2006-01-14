@@ -124,7 +124,10 @@ public class PerspectiveManager  implements ITechnicalStrings {
 					if (!view.isPopulated() ){
 						view.populate();
 						view.setIsPopulated(true);
-					}	
+					}
+                    else{//view already populated, should be activated
+                        view.activate();
+                    }
 				}
 				currentPerspective = perspective;
 				if (Main.jpContentPane.getComponentCount() > 0 ){
@@ -134,7 +137,8 @@ public class PerspectiveManager  implements ITechnicalStrings {
 				Main.jpContentPane.revalidate();
 				Main.jpContentPane.repaint();
 				PerspectiveBarJPanel.getInstance().setActivated(perspective);
-				Util.stopWaiting();
+				
+                Util.stopWaiting();
 			}
 		});
     }  

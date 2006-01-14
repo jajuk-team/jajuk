@@ -723,8 +723,11 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
             else if ( ae.getSource() == jmiFileProperties ){
                 ArrayList<IPropertyable> alItems = new ArrayList();
                 int iSelected = jtable.getSelectedRow();
-                alItems.add((IPropertyable)getItem(iSelected).getFile());
-                new PropertiesWizard(alItems);
+                File file = (File)getItem(iSelected).getFile();
+                alItems.add(file);
+                ArrayList alTracks = new ArrayList<IPropertyable>(1); //tracks items
+                alTracks.add(file.getTrack());
+                new PropertiesWizard(alItems,alTracks);
             }
         }
         catch(Exception e2){

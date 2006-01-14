@@ -29,6 +29,7 @@ import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.MediaTracker;
 import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.geom.AffineTransform;
@@ -1179,7 +1180,11 @@ public class Util implements ITechnicalStrings {
     public static void createThumbnail(
             URL orig, File thumb,int maxDim) throws Exception{
         // Get the image from a file.
-        Image inImage = new ImageIcon(orig).getImage();
+        ImageIcon icon = new ImageIcon(orig);
+        if ( icon.getImageLoadStatus() != MediaTracker.COMPLETE){
+            throw new JajukException("129",orig.toString(),null); //$NON-NLS-1$
+        }
+        Image inImage = icon.getImage();
         // Determine the scale.
         double scale = (double)maxDim/(
                 double)inImage.getHeight(null);
@@ -1210,7 +1215,6 @@ public class Util implements ITechnicalStrings {
         if (scale < 1.0d) {
             tx.scale(scale, scale);
         }
-        
         // Paint image.
         Graphics2D g2d = outImage.createGraphics();
         g2d.drawImage(inImage, tx, null);
@@ -1229,7 +1233,11 @@ public class Util implements ITechnicalStrings {
      * @return whether we need a full gc or not
      */
     public static boolean needFullFC(){
-        return Runtime.getRuntime().freeMemory()/1024 < 6000;
+        float fTotal = (float)Runtime.getRuntime().totalMemory();
+        float fFree = (float)Runtime.getRuntime().freeMemory();
+        float fLevel = (fTotal-fFree)/fTotal;
+        Log.debug("GC level:"+fLevel);
+        return  fLevel >= NEED_FULL_GC_LEVEL;
     }
-  
+ 
 }
