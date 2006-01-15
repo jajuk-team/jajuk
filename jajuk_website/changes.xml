@@ -5,6 +5,20 @@
     <author email='bflorat@users.sourceforge.net'>Bertrand Florat</author>
   </properties>
   <body>
+    <release version='1.1' date='work in progress' description='New Features'>
+    	<action dev='bcremer' type='add'>Tips of the day (110978)</action>
+    	<action dev='bcremer' type='add'>Keystrokes (110975)</action>
+    	<action dev='dhalsim' type='add'>Online(CDDB) tagging (110976)</action>
+    	<action dev='dhalsim' type='add'>Add to bookmarks item in menus (115978)</action>
+    	<action dev='dhalsim' type='add'>Configurable logical tree view (122666)</action>
+    	<action dev='bflorat' type='add'>Catalog view (114643)</action>
+    	<action dev='bflorat' type='add'>Configurable devices auto refresh (114234)</action>
+    	<action dev='bflorat' type='add'>Configurable Cross-fade (110988)</action>
+    	<action dev='bflorat' type='fix' issue='1388793'>Intro and seeking issues</action>
+    	<action dev='bflorat' type='fix' issue='1388785'>Wrong default path for save as covers</action>
+    	<action dev='bflorat' type='fix' issue='1399366'>Wrong Look and Feel for Information view</action>
+    	<action dev='bflorat' type='remove'>Search unmounted option</action>
+    </release>
     <release version='1.0.4' date='2005-12-17' description='Fixes'>
     	<action dev='bflorat' type='fix' issue='1379487'>Volume overflow [8]</action>
     	<action dev='bflorat' type='fix' issue='1379483'>Error with devices under MacOS [7]</action>
@@ -78,8 +92,6 @@
     	<action dev='bflorat' type='update'>In table views, filtering is now dynamic</action> 
     	<action dev='bflorat' type='update'>Now bestof special playlist can show even unmounted files</action> 
     	<action dev='bflorat' type='update'>Now waits for audio line if occupied by another process</action> 
-    	<action dev='bflorat' type='remove'>No more basic files support: now jajuk only plays indexed files</action> 
-    	<action dev='bflorat' type='remove'>Removed Metouia Look and feel that is no more supported</action> 
     	<action dev='bflorat' type='fix' issue='1188879'>Window focus issue</action> 
     	<action dev='bflorat' type='fix' issue='1199367'>Playlist next track wrong</action> 
     	<action dev='bflorat' type='fix' issue='1207563'>Wrong display in PlaylistEditor after a stop</action> 
@@ -100,7 +112,9 @@
     	<action dev='bflorat' type='fix' issue='1214419'>Hard coded newline</action> 
     	<action dev='bflorat' type='fix' issue='1214734'>Playlist at device root not visible in tree</action> 
     	<action dev='bflorat' type='fix' issue='1214824'>Problem with playlists repository</action> 
-  	</release>
+  		<action dev='bflorat' type='remove'>No more basic files support: now jajuk only plays indexed files</action> 
+    	<action dev='bflorat' type='remove'>Removed Metouia Look and feel that is no more supported</action> 
+    </release>
     
     <release version='0.3.3' date='2005-04-02' description='Fixes,performances and Catalan langpack'>
     	<action dev='jespo' type='add'>Catalan translation</action> 
@@ -114,8 +128,6 @@
     	<action dev='bflorat' type='update'>Right click auto-selection in trees and tables</action> 
     	<action dev='bflorat' type='update'>Better handling of unavailable startup tracks</action> 
     	<action dev='bflorat' type='update'>Better handling of errors launching basic files</action> 
-    	<action dev='bflorat' type='remove'>RPM dependencies on JRE</action> 
-    	<action dev='bflorat' type='remove'>Xmx and Xss JVM settings</action> 
     	<action dev='bflorat' type='fix' issue='1102189'>Freeze with proxy pwd frame</action> 
     	<action dev='bflorat' type='fix' issue='1102927'>OutOfBoundsException playing mp3</action>
     	<action dev='bflorat' type='fix' issue='1109307'>Cannot read files (audio line not available)</action>
@@ -137,6 +149,8 @@
 		<action dev='bflorat' type='fix' issue='1183212'>Override existing files when downgrading jajuk</action> 
 		<action dev='bflorat' type='fix' issue='1183218'>Refresh blocked on corrupted files</action> 
 		<action dev='bflorat' type='fix' issue='1183907'>Fix for  Wrong startup message</action> 
+    	<action dev='bflorat' type='remove'>RPM dependencies on JRE</action> 
+    	<action dev='bflorat' type='remove'>Xmx and Xss JVM settings</action> 
     </release>
      
      <release version='0.3.2' date='2005-01-11' description='Full English documentation,Spanish translation and new features '>

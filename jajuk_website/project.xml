@@ -7,7 +7,7 @@
  
   <id>jajuk</id>
  
-  <currentVersion>1.0</currentVersion>
+  <currentVersion>1.1</currentVersion>
  
   <organization>
     <name>Jajuk team</name>
@@ -220,7 +220,7 @@
     <dependency>
 	   <groupId>lib</groupId>
         <artifactId>tablelayout</artifactId>
-        <version>20050914</version> 
+        <version>20050920</version> 
     </dependency>
     
     <dependency>

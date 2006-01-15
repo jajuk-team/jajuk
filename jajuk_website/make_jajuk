@@ -7,6 +7,7 @@ WEBSITE_SOURCE=/data/java/workspace/jajuk_website
 XDOC_DEST=/data/projects/jajuk/maven_rep/xdocs
 MAVEN_DIR=/data/projects/jajuk/maven_rep
 DOC_DEST=$MAVEN_DIR/target/docs
+STATCVS_JAR=/prog/api/statcvs-xml-0.9.6-full.jar
 USAGE="Usage: make_jajuk [site] [pdf] [jws <release:default|test>]"
 
 if [ "$1" = "" ]; then
@@ -78,11 +79,22 @@ rm $XDOC_DEST/project.xml $XDOC_DEST/maven.xml
 
 #Sources Checkout
 cvs checkout jajuk
+
+#Stats generation (outside maven website because it doesn't work anymore with maven)
+cd $MAVEN_DIR
+cvs log > cvs.log
+java -Xmx256M -jar $STATCVS_JAR -output-dir $XDOC_DEST/statcvs-xml-out -renderer xdoc
+
+#Announcement generation
 maven announcement
+
+#Web site generation
 maven site
-cd target/docs
-java -cp /data/java/workspace/jajuk_website Xiti SCRIPT_XITI /data/java/workspace/jajuk_website/script_xiti_home.txt index.html > /tmp/index.html
-java -cp /data/java/workspace/jajuk_website Xiti SCRIPT_XITI /data/java/workspace/jajuk_website/script_xiti_jws.txt jws.html > /tmp/jws.html
+
+#Replace variables
+cd $DOC_DEST
+java -cp $WEBSITE_SOURCE Xiti SCRIPT_XITI $WEBSITE_SOURCE/script_xiti_home.txt index.html > /tmp/index.html
+java -cp $WEBSITE_SOURCE Xiti SCRIPT_XITI $WEBSITE_SOURCE/script_xiti_jws.txt jws.html > /tmp/jws.html
 #marche pas à la fin sed -e '\#SCRIPT_XITI#{r/data/scripts/script_xiti' -e ';d;}' ./index.html > /tmp/index.html
 cp /tmp/index.html .
 cp /tmp/jws.html .

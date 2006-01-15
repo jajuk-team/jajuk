@@ -108,6 +108,7 @@
   	   		<ul>
 	   			<li>Repeat, shuffle, intro, fast forward/rewind, mute...</li>
 				<li>Push into player queue</li>
+		 		<li>Configurable cross-fade</li>
 		 		<li>Planned tracks: forsee your selection</li>
 				<li>Recursive play/repeat/shuffle/push in directories/sub-directories or by style/author/albums...</li>
 				<li>Intro from a track position and specified length</li>
@@ -119,7 +120,7 @@
 	   		</ul>
 	   	<p><b>Engine</b></p>
 	   			<ul>
-		   			<li>Indexing method: Jajuk uses an XML database to store collection tags. It allows a fast startup even for very large collections (bench:10 sec to start a 140Go collection on a P4 1.8Ghz).</li>
+		   			<li>Automatic indexing: Jajuk uses an XML database to store collection tags. It allows a fast startup even for very large collections (bench:10 sec to start a 140Go collection on a P4 1.8Ghz).</li>
 	   				<li>Devices synchronization: unidirectional or bidirectional, full or partial</li>
 	   				<li>Custom properties support: create custom attributes on any item to store personal data</li>
    	   				<li>Unmounted devices support: navigate into unmounted devices (CDs for exemple) to get a complete view of your collection at any time (nice feature if you have plenty of music CDs)</li>
@@ -136,11 +137,13 @@
   	   			<ul>	
 	   				<li>Ogg, ID3 V1 and V2 support (not yet V2.4)</li>
 	   				<li>Tag edition (single and multiple tracks)</li>
+	   				<li>Online(CDDB) retagging</li>
 	   			</ul>
 	   	<p><b>Graphical Interface</b></p>
   	   			<ul>	
 	   				<li>Dockable perspectives and views</li>	   			
 					<li>Tray support under windows and Linux</li>
+	   				<li>Full keyboard controls</li>
 	   				<li>Look and Feel support</li>
 	   				<li>Physical/logical separation: navigate into physical directories or into logical styles, authors, albums, tracks</li>
 	   				<li>Full user manual included</li>
@@ -149,7 +152,7 @@
 	   			</ul>
 	   	<p><b>Covers support</b></p>
   	   			<ul>
-		   			<li>Local covers display</li>
+		   			<li>Visual catalog of all albums by covers</li>
 		   			<li>Auto-covers grabbing from the web with possibility to store them on your disk or make them your default cover</li>
 		   		</ul>	
 	   	<p><b>Playlist support</b></p>
@@ -210,6 +213,18 @@
       <ul>
         <li>Animation with animated track names</li>
         <li>Covers</li>
+      </ul>
+      </td>
+    </tr>
+    <tr>
+      <td style='vertical-align: top;'>
+      <h2>Catalog perspective</h2>
+      <p>Manage your albums by covers</p>
+      <a href="./screenshots/screenshot_perspective_catalog_large.jpg"><img alt='' src='./screenshots/screenshot_perspective_catalog.jpg'></img></a>
+      </td>
+      <td style='vertical-align: top;'><span style='font-weight: bold;'>Views</span>:
+      <ul>
+        <li>Catalog view</li>
       </ul>
       </td>
     </tr>
