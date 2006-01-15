@@ -284,11 +284,8 @@ public class Directory extends PropertyAdapter implements Comparable{
                         append(files[i].getName()).toString());
                     //check the file is not already known in database
                     org.jajuk.base.File fileRef = (org.jajuk.base.File)FileManager.getInstance().getItem(sId);
-                    //if known file and no deep scan, just register it and leave
+                    //if known file and no deep scan, just leave
                     if (fileRef != null && !bDeepScan){
-                       //add file to current directory
-                        FileManager.getInstance().registerFile(fileRef.getId(),fileRef.getName(), 
-                            this, fileRef.getTrack(), fileRef.getSize(),fileRef.getQuality());
                         continue;
                     }
                     //New file or deep scan case

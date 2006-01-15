@@ -150,7 +150,6 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
             Messages.showErrorMessage("107"); //$NON-NLS-1$
             return;
         }
-        bAlreadyRefreshing = true; //set this flag outside the lock scope to maek it as refreshing even if the refresh didn't actually started and is locked by another refresh
         if ( bAsynchronous){
             Thread t = new Thread(){
                 public void run(){
@@ -198,6 +197,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
      */
     protected synchronized boolean refreshCommand(boolean bDeepScan){
         try{
+            bAlreadyRefreshing = true;
             long lTime = System.currentTimeMillis();
             lDateLastRefresh = lTime;
             //check Jajuk is not exiting because a refresh cannot start in this state
@@ -278,8 +278,9 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
             
             //Display end of refresh message with stats
             lTime = System.currentTimeMillis()-lTime;
-            StringBuffer sbOut = new StringBuffer("[").append(getName()).append(Messages.getString("Device.25")).append(((lTime<1000)?lTime+" ms":lTime/1000+" s")). //$NON-NLS-1$ //$NON-NLS-2$
-            append(Messages.getString("Device.26")).append(iNbNewFiles).append(Messages.getString("Device.27")); //$NON-NLS-1$ //$NON-NLS-2$
+            StringBuffer sbOut = new StringBuffer("[").append(getName()).append(Messages.getString("Device.25")).
+                append(((lTime < 1000)?lTime+" ms":lTime/1000+" s")). //$NON-NLS-1$ //$NON-NLS-2$
+                append(" - ").append(iNbNewFiles).append(Messages.getString("Device.27")); //$NON-NLS-1$ //$NON-NLS-2$
             if (iNbCorruptedFiles > 0){
                 sbOut.append(" - ").append(iNbCorruptedFiles).append(Messages.getString("Device.43")); //$NON-NLS-1$ //$NON-NLS-2$
             }
@@ -322,7 +323,6 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
                 return;
             }
         }
-        bAlreadySynchronizing = true;
         if ( bAsynchronous){
             Thread t = new Thread(){
                 public void  run() {
@@ -344,6 +344,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
      */
     public void synchronizeCommand(){
         try{
+            bAlreadySynchronizing = true;
             long lTime = System.currentTimeMillis();				
             iNbCreatedFilesDest = 0;
             iNbCreatedFilesSrc = 0;

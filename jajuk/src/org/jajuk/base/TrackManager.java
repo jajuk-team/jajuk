@@ -122,7 +122,8 @@ public class TrackManager extends ItemManager implements Observer{
     public static String getHashcode(String sName, Album album, Style style, Author author, long length, long lYear, long lOrder,Type type){
         StringBuffer sb = new StringBuffer(200);
         sb.append(style.getName()).append(author.getName()).append(album.getName())
-        .append(lYear).append(length).append(lYear).append(lOrder).append(type.getName()).append(sName);
+        .append(lYear).append(length).append(lYear).append(lOrder)
+        .append(type.getName()).append(sName);
         return MD5Processor.hash(sb.toString());
     }
     
@@ -134,7 +135,6 @@ public class TrackManager extends ItemManager implements Observer{
     public Track registerTrack(String sId, String sName, Album album, Style style, Author author, long length, long lYear, long lOrder, Type type) {
         synchronized(TrackManager.getInstance().getLock()){
             if (hmItems.containsKey(sId)) {
-                
                 return (Track)hmItems.get(sId);
             }
             Track track = null;
@@ -480,11 +480,12 @@ public class TrackManager extends ItemManager implements Observer{
         synchronized(TrackManager.getInstance().getLock()){
             //Cleanup dead tracks if needed
             if (sortedTracks.size() != hmItems.size()){
-                Log.debug("** Dead tracks reference in sorted list"); //$NON-NLS-1$
+                Log.debug("** Dead tracks reference in sorted list "+sortedTracks.size()+"/"+hmItems.size()); //$NON-NLS-1$
                 Iterator it = sortedTracks.iterator();
                 while (it.hasNext()){
                     Track track = (Track)it.next();
                     if (!hmItems.containsKey(track.getId())){
+                        Log.debug("** Removed: "+track);
                         it.remove();
                     }
                 }

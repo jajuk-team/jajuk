@@ -336,12 +336,13 @@ public class DeviceManager extends ItemManager{
                         device.getDateLastRefresh() > (System.currentTimeMillis() - frequency)){
                     continue;
                 }
-                //cleanup device
-                bNeedUIRefresh = bNeedUIRefresh | device.cleanRemovedFiles();//logical or, not an error !
                 //Check of mounted device contains files, otherwise it is not mounted
                 //we have to check this because of the automatic cleaner thread musn't remove all references
                 File[] files = new File(device.getUrl()).listFiles();
                 if (!device.isRefreshing() && files !=null && files.length > 0){
+                    //cleanup device
+                    bNeedUIRefresh = bNeedUIRefresh | device.cleanRemovedFiles();//logical or, not an error !
+                    //refresh it
                     bNeedUIRefresh = bNeedUIRefresh | device.refreshCommand(false); //logical or, not an error !
                 }
             }

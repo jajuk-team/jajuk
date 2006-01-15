@@ -953,7 +953,11 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
     public void activate(){
         new Thread(){
             public void run(){
-                update(new Event(EVENT_COVER_REFRESH));        
+                //refresh only if needed
+                if (fDir == null ||  
+                        !fDir.equals(FIFO.getInstance().getCurrentFile().getDirectory().getFio())){
+                    update(new Event(EVENT_COVER_REFRESH));
+                }
             }
         }.start();
     }

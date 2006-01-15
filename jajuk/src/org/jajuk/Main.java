@@ -476,7 +476,8 @@ public class Main implements ITechnicalStrings {
                 sc.dispose();
             }
             Log.error("124"); //$NON-NLS-1$
-            Messages.getChoice(Messages.getErrorMessage("124"),JOptionPane.OK_CANCEL_OPTION);	 //$NON-NLS-1$
+            Messages.getChoice(Messages.getErrorMessage("124"),
+                JOptionPane.DEFAULT_OPTION);	 //$NON-NLS-1$
             System.exit(-1);
         }
         //start listening
@@ -817,10 +818,14 @@ public class Main implements ITechnicalStrings {
                         sc.splashOff();
                     }
                     bUILauched = true;
-                    //display window
+                    /*display window
+                    We have to apply position and size before and after window made visible
+                    - If position/size are set after, we can see a small window on screen at random position                  because in some cases, the window is displayed at random position 
+                    - If position/size are set only after, position can be lost
+                    this way, the window is always at right position*/
                     jw.applyStoredSize(); //apply size and position as stored in the user properties
                     jw.setVisible(true); //show main window
-                    
+                    jw.applyStoredSize(); //apply size and position as stored in the user properties
                 }
             }
             

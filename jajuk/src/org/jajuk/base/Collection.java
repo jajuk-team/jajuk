@@ -178,7 +178,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
         //files
         bw.write(FileManager.getInstance().toXML()); //$NON-NLS-1$
         synchronized(FileManager.getInstance().getLock()){
-            it = FileManager.getInstance().getSortedFiles().iterator();
+            it = FileManager.getInstance().getItems().iterator();
             while (it.hasNext()) {
                 org.jajuk.base.File file = (org.jajuk.base.File) it.next();
                 bw.write(file.toXml());

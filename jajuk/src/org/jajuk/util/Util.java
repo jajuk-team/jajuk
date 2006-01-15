@@ -1236,7 +1236,6 @@ public class Util implements ITechnicalStrings {
         float fTotal = (float)Runtime.getRuntime().totalMemory();
         float fFree = (float)Runtime.getRuntime().freeMemory();
         float fLevel = (fTotal-fFree)/fTotal;
-        Log.debug("GC level:"+fLevel);
         return  fLevel >= NEED_FULL_GC_LEVEL;
     }
  
