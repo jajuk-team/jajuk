@@ -99,7 +99,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
     
     /** Directories selection*/
     ArrayList alDirs;
-        
+    
     JPopupMenu jmenuFile;
     JMenuItem jmiFilePlay;
     JMenuItem jmiFilePush;
@@ -138,6 +138,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
     JMenuItem jmiDevSynchronize;
     JMenuItem jmiDevTest;
     JMenuItem jmiDevProperties;
+    JMenuItem jmiDevCDDBQuery;
     JMenuItem jmiDevConfiguration;
     
     JPopupMenu jmenuPlaylistFile;
@@ -289,6 +290,8 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         jmiDevCreatePlaylist.addActionListener(this);
         jmiDevProperties = new JMenuItem(Messages.getString("PhysicalTreeView.35")); //$NON-NLS-1$
         jmiDevProperties.addActionListener(this);
+        jmiDevCDDBQuery = new JMenuItem(Messages.getString("PhysicalTreeView.57")); //$NON-NLS-1$
+        jmiDevCDDBQuery.addActionListener(this);
         jmiDevConfiguration = new JMenuItem(Messages.getString("PhysicalTreeView.55")); //$NON-NLS-1$
         jmiDevConfiguration.addActionListener(this);
         jmenuDev.add(jmiDevPlay);
@@ -302,8 +305,9 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         jmenuDev.add(jmiDevTest);
         jmenuDev.add(jmiDevCreatePlaylist);
         jmenuDev.add(jmiDevConfiguration);
+        jmenuDev.add(jmiDevCDDBQuery);
         jmenuDev.add(jmiDevProperties);
-         
+        
         //Playlist file menu
         //File menu
         jmenuPlaylistFile = new JPopupMenu();
@@ -522,10 +526,10 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
                 }
                 InformationJPanel.getInstance().setSelection(sbOut.toString());
                 if (ConfigurationManager.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE)){ //if table is synchronized with tree, notify the selection change
-	                Properties properties = new Properties();
-	                properties.put(DETAIL_SELECTION,hsSelectedFiles);
-	                ObservationManager.notify(new Event(EVENT_SYNC_TREE_TABLE,properties));
-	            }
+                    Properties properties = new Properties();
+                    properties.put(DETAIL_SELECTION,hsSelectedFiles);
+                    ObservationManager.notify(new Event(EVENT_SYNC_TREE_TABLE,properties));
+                }
                 //No CDDB on directories without files
                 if (alSelected.size()>0 && alSelected.get(0) instanceof Directory){
                     boolean bShowCDDB = false;
@@ -607,7 +611,13 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
                         else{
                             jmiDevMount.setEnabled(true);
                             jmiDevUnmount.setEnabled(false);
+                        }                        
+                        final Directory dir = DirectoryManager.getInstance().registerDirectory(device);                        
+                        boolean bShowCDDB = false;
+                        if (dir.getFiles().size() > 0){
+                            bShowCDDB = true;                            
                         }
+                        jmiDevCDDBQuery.setEnabled(bShowCDDB);                        
                     }
                     if (c.equals(DirectoryNode.class)){
                         //NBI jmiDirCopy.setEnabled(true);
@@ -832,7 +842,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
                     ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
         }
         else if (e.getSource() == jmiFileAddFavorites){
-        	Bookmarks.getInstance().addFiles(alFiles);
+            Bookmarks.getInstance().addFiles(alFiles);
         }
         else if (e.getSource() == jmiFilePush){
             FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFiles),
@@ -843,15 +853,21 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
                     ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
         }
         else if ( alFiles!= null && e.getSource() == jmiDirAddFavorites) {
-        	Bookmarks.getInstance().addFiles(alFiles);
+            Bookmarks.getInstance().addFiles(alFiles);
         }
-        else if ( alFiles!= null && e.getSource() == jmiDirCDDBQuery) {
+        else if ( alFiles!= null && (e.getSource() == jmiDirCDDBQuery) ) {
             ArrayList alTracks=null;
             for (IPropertyable item:alSelected){
                 final Directory dir = (Directory)item;
                 Util.waiting();
                 new CDDBWizard(dir);
             }        	
+        }    
+        else if (alFiles!= null && e.getSource() == jmiDevCDDBQuery ){
+            Util.waiting();
+            Device device = ((DeviceNode)(paths[0].getLastPathComponent())).getDevice();
+            final Directory dir = DirectoryManager.getInstance().registerDirectory(device);
+            new CDDBWizard(dir);            
         }
         else if (alFiles!= null  && (e.getSource() == jmiDirPush || e.getSource() == jmiDevPush)){
             FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFiles),
@@ -1017,7 +1033,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
      */
     public void update(Event event) {
         final String subject = event.getSubject();
-    	if ( subject.equals(EVENT_DEVICE_MOUNT) || 
+        if ( subject.equals(EVENT_DEVICE_MOUNT) || 
                 subject.equals(EVENT_DEVICE_UNMOUNT) || 
                 subject.equals(EVENT_DEVICE_REFRESH) ) {
             SwingWorker sw = new SwingWorker() {
@@ -1063,7 +1079,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
                 Device device = ((DeviceNode)o).getDevice();
                 boolean bExp = device.getBooleanValue(XML_EXPANDED); 
                 if (bExp){
-                     jtree.expandRow(i);
+                    jtree.expandRow(i);
                 }
             }
             else if ( o instanceof DirectoryNode){
