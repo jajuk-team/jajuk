@@ -116,6 +116,8 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,Obser
         //message bar
         jlMessage = new JLabel();  
         jlMessage.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+        jlMessage.setBackground(Color.WHITE);
+        jlMessage.setOpaque(true);
         setMessage(Messages.getString("JajukWindow.18"), InformationJPanel.INFORMATIVE);  //$NON-NLS-1$
         
         //selection bar
@@ -223,7 +225,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,Obser
                     jlMessage.setForeground(Color.RED);
                     break;
                 case WARNING:
-                    jlMessage.setForeground(Color.ORANGE);
+                    jlMessage.setForeground(new Color(255,80,0));
                     break;
                 default:
                     jlMessage.setForeground(Color.BLUE);
