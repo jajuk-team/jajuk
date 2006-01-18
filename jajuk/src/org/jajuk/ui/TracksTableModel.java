@@ -104,9 +104,10 @@ public class TracksTableModel extends JajukTableModel{
         boolean bShowWithTree = true;
         HashSet hs = (HashSet)ObservationManager.getDetailLastOccurence(EVENT_SYNC_TREE_TABLE,DETAIL_SELECTION);//look at selection
         boolean bSyncWithTreeOption = ConfigurationManager.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE);
-        Collection<Track> alTracks = TrackManager.getInstance().getSortedTracks();
+        Collection<IPropertyable> alTracks = TrackManager.getInstance().getItems();
         ArrayList alToShow = new ArrayList(alTracks.size());
-        for (Track track:alTracks){
+        for (IPropertyable item:alTracks){
+            Track track = (Track)item;
             bShowWithTree =  !bSyncWithTreeOption || ((hs != null && hs.size() > 0 
                     && hs.contains(track))); //show it if no sync option or if item is in the selection
             if ( !track.shouldBeHidden() && bShowWithTree){

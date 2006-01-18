@@ -93,14 +93,16 @@ public class Style extends PropertyAdapter implements Comparable{
 	 */
 	public int compareTo(Object o){
 		Style otherStyle = (Style)o;
-		return  getName2().compareToIgnoreCase(otherStyle.getName2());
+		//compare using name and id to differenciate unknown items
+        return (getName2()+getId()).
+            compareToIgnoreCase(otherStyle.getName2()+otherStyle.getId());
 	}
 	
 	/**
 	 * @return Number of tracks for this style from the collection
 	 */
 	public int getCount(){
-		return TrackManager.getInstance().getSortedAssociatedTracks(this).size();
+		return TrackManager.getInstance().getAssociatedTracks(this).size();
 	}
 		
 	/**

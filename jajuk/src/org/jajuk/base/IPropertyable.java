@@ -36,7 +36,7 @@ public interface IPropertyable {
 	public void setProperties(LinkedHashMap properties) ;
     
 	/**
-     * @return an identifier used to generate XML  representation of this item
+     * @return an identifier used to generate XML representation of this item
      */
     String getIdentifier();
     
@@ -58,6 +58,7 @@ public interface IPropertyable {
     public String getStringValue(String sKey);
     public boolean getBooleanValue(String sKey);
     public Date getDateValue(String sKey);
+    public String getId();
       
 	
     /**

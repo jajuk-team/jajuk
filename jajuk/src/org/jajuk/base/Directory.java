@@ -376,7 +376,7 @@ public class Directory extends PropertyAdapter implements Comparable{
      */
     public int compareTo(Object o){
         Directory otherDirectory = (Directory)o;
-        return  getRelativePath().compareToIgnoreCase(otherDirectory.getRelativePath());
+        return getAbsolutePath().compareToIgnoreCase(otherDirectory.getAbsolutePath());
     }
     
     /**

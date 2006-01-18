@@ -183,7 +183,7 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 	 */
 	public int compareTo(Object o){
 		PlaylistFile otherPlaylistFile = (PlaylistFile)o;
-		return  getName().compareToIgnoreCase(otherPlaylistFile.getName());
+		return getAbsolutePath().compareToIgnoreCase(otherPlaylistFile.getAbsolutePath());
 	}
 	
 	/**

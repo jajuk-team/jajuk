@@ -29,7 +29,7 @@ import org.jajuk.util.log.Log;
  * @author     Bertrand Florat
  * @created    12 oct. 2003
  */
-public class Type extends PropertyAdapter{
+public class Type extends PropertyAdapter implements Comparable{
 	
 	/**Type extension ex:mp3,ogg */
 	private String sExtension;
@@ -123,6 +123,15 @@ public class Type extends PropertyAdapter{
      */
     public String getDesc(){
         return Messages.getString("Type")+" : "+getName(); //$NON-NLS-1$ //$NON-NLS-2$
+    }
+    
+    /**
+     *Alphabetical comparator used to display ordered lists
+     *@param other item to be compared
+     *@return comparaison result 
+     */
+    public int compareTo(Object other){
+        return toString().compareTo(other.toString());
     }
 
 

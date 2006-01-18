@@ -597,7 +597,8 @@ ActionListener, Observer {
     public void populateTreeByStyle() {
         // delete previous tree
         top.removeAllChildren();
-        for (Track track : TrackManager.getInstance().getSortedTracks()) {
+        for (IPropertyable item : TrackManager.getInstance().getItems()) {
+            Track track = (Track)item;
             if (!track.shouldBeHidden()) {
                 StyleNode styleNode = null;
                 Style style = track.getStyle();
@@ -664,7 +665,8 @@ ActionListener, Observer {
     public void populateTreeByAuthor() {
         // delete previous tree
         top.removeAllChildren();
-        for (Track track : TrackManager.getInstance().getSortedTracks()) {
+        for (IPropertyable item : TrackManager.getInstance().getItems()) {
+            Track track = (Track)item;
             if (!track.shouldBeHidden()) {
                 AuthorNode authorNode = null;
                 Author author = track.getAuthor();
@@ -713,7 +715,8 @@ ActionListener, Observer {
     public void populateTreeByAlbum() {
         // delete previous tree
         top.removeAllChildren();
-        for (Track track : TrackManager.getInstance().getSortedTracks()) {
+        for (IPropertyable item : TrackManager.getInstance().getItems()) {
+            Track track = (Track)item;
             if (!track.shouldBeHidden()) {
                 AuthorNode authorNode = null;
                 Author author = track.getAuthor();
@@ -762,7 +765,7 @@ ActionListener, Observer {
                     for (IPropertyable item : alSelected) {
                         Author author = (Author) item;
                         alTracks.addAll(TrackManager.getInstance()
-                            .getSortedAssociatedTracks(author));
+                            .getAssociatedTracks(author));
                     }
                     new PropertiesWizard(alSelected, alTracks);
                 } else if (e.getSource() == jmiAlbumProperties) {
@@ -770,7 +773,7 @@ ActionListener, Observer {
                     for (IPropertyable item : alSelected) {
                         Album album = (Album) item;
                         alTracks.addAll(TrackManager.getInstance()
-                            .getSortedAssociatedTracks(album));
+                            .getAssociatedTracks(album));
                     }
                     new PropertiesWizard(alSelected, alTracks);
                 } else if (e.getSource() == jmiTrackProperties) {

@@ -89,7 +89,9 @@ public class Author extends PropertyAdapter implements Comparable{
 	 */
 	public int compareTo(Object o){
 		Author otherAuthor = (Author)o;
-		return  getName2().compareToIgnoreCase(otherAuthor.getName2());
+		//compare using name and id to differenciate unknown items
+        return (getName2()+getId()).
+            compareToIgnoreCase(otherAuthor.getName2()+otherAuthor.getId());
 	}
 	
 	/**

@@ -22,19 +22,17 @@ package org.jajuk.base;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Properties;
-import java.util.TreeSet;
 
+import org.apache.commons.collections.bidimap.TreeBidiMap;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.error.NoneAccessibleFileException;
-import org.jajuk.util.log.Log;
 
 /**
  * Convenient class to manage Tracks
@@ -48,9 +46,6 @@ public class TrackManager extends ItemManager implements Observer{
     
     /**Unmounted tracks flag*/
     boolean bChangePbm = false;
-    
-    /**Sorted tracks (perfs)*/
-    TreeSet<Track> sortedTracks = new TreeSet();
     
     /**comparator in use**/
     private TrackComparator comparator;
@@ -140,7 +135,6 @@ public class TrackManager extends ItemManager implements Observer{
             Track track = null;
             track = new Track(sId, sName, album, style, author, length, lYear, lOrder, type);
             hmItems.put(sId, track);
-            sortedTracks.add(track);
             return track;
         }
     }
@@ -432,7 +426,6 @@ public class TrackManager extends ItemManager implements Observer{
             updateFilesReferences(track,newTrack,filter);
             if (track.getFiles().size() == 0){ //normal case: old track has no more associated tracks, remove it
                 removeItem(track.getId());//remove old track
-                sortedTracks.remove(track);
                 bChangePbm = false;
             }
             else{ // some files have not been changed because located on unmounted devices
@@ -452,7 +445,6 @@ public class TrackManager extends ItemManager implements Observer{
                 Track track = (Track) itTracks.next();
                 if ( track.getFiles().size() == 0){ //no associated file
                     itTracks.remove();
-                    sortedTracks.remove(track);
                     continue;
                 }
                 Iterator itFiles = track.getFiles().iterator();
@@ -464,36 +456,10 @@ public class TrackManager extends ItemManager implements Observer{
                 }
                 if (track.getFiles().size() == 0) { //the track don't map anymore to any physical item, just remove it
                     itTracks.remove();
-                    sortedTracks.remove(track);
                 }
             }
         }
     }
-    
-    
-    /** Return sorted registred Tracks
-     * It is computed only if needed. We need to compute it because
-     * we don't have a sorted list (do not use a TreeMap as we need duplicates items)
-     * and because it is mush simpler to make it this way
-     * **/ 
-    public synchronized Collection<Track> getSortedTracks() {
-        synchronized(TrackManager.getInstance().getLock()){
-            //Cleanup dead tracks if needed
-            if (sortedTracks.size() != hmItems.size()){
-                Log.debug("** Dead tracks reference in sorted list "+sortedTracks.size()+"/"+hmItems.size()); //$NON-NLS-1$
-                Iterator it = sortedTracks.iterator();
-                while (it.hasNext()){
-                    Track track = (Track)it.next();
-                    if (!hmItems.containsKey(track.getId())){
-                        Log.debug("** Removed: "+track);
-                        it.remove();
-                    }
-                }
-            }
-            return sortedTracks;
-        }
-    }
-    
     
     /**
      * Format the tracks names to be normalized :
@@ -542,37 +508,17 @@ public class TrackManager extends ItemManager implements Observer{
             track.addFile(fNew);
         }
     }
-    
-    /**
-     * Get sorted tracks associated with this track
-     * @param item
-     * @return
-     **/
-    public ArrayList getSortedAssociatedTracks(IPropertyable item){
-        synchronized(TrackManager.getInstance().getLock()){
-            ArrayList alOut = new ArrayList(100);
-        Iterator it = sortedTracks.iterator();
-        while (it.hasNext()){ //scan each track
-            Track track = (Track)it.next();
-            if ( (item instanceof Album &&  track.getAlbum().equals(item))
-                    || (item instanceof Author &&  track.getAuthor().equals(item))
-                    || (item instanceof Style &&  track.getStyle().equals(item)) ){
-                alOut.add(track);
-            }
-        }
-        return alOut;
-        }
-    }
+  
     
     /**
      * Get tracks associated with this track
      * @param item
      * @return
      **/
-    public HashSet getAssociatedTracks(IPropertyable item){
+    public HashSet<Track> getAssociatedTracks(IPropertyable item){
         synchronized(TrackManager.getInstance().getLock()){
             HashSet out = new HashSet();
-            for (IPropertyable item2:hmItems.values()){
+            for (Object item2:hmItems.values()){
                 Track track = (Track)item2;
                 if ( (item instanceof Album &&  track.getAlbum().equals(item))
                         || (item instanceof Author &&  track.getAuthor().equals(item))
@@ -602,10 +548,11 @@ public class TrackManager extends ItemManager implements Observer{
         synchronized (getLock()) {
             this.comparator = comparator;
             //clear re-add all tracks using new comparator
-            sortedTracks.clear();
+            TreeBidiMap newTree = new TreeBidiMap();
             for (IPropertyable item:getItems()){
-                sortedTracks.add((Track)item);
+                newTree.put(item.getId(),item);
             }
+            hmItems = newTree;
         }
     }
 }    

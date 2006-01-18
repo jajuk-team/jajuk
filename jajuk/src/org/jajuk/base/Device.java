@@ -666,7 +666,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
         Util.waiting(); //waiting cursor
         boolean bOK = false;
         try {
-            //just wait a moment  so user feels something real happens (psychological)
+            //just wait a moment so user feels something real happens (psychological)
             Thread.sleep(250);
         } catch (InterruptedException e2) {
             Log.error(e2);
@@ -681,7 +681,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
             Util.stopWaiting();
             return false;
         }
-        if ( lDeviceType != 2 ){ //not a remote device
+        if ( lDeviceType != 5 ){ //not a remote device
             File file = new File(sUrl);
             if ( file.exists() && file.canRead()){ //see if the url exists and is readable
                 //check if this device was void
@@ -735,7 +735,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
      */
     public int compareTo(Object o){
         Device otherDevice = (Device)o;
-        return  getName().compareToIgnoreCase(otherDevice.getName());
+        return getName().compareToIgnoreCase(otherDevice.getName());
     }
     
     /**

@@ -295,7 +295,8 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
      * Called at parsing end
      */
     public void endDocument() {
-        Log.debug("Collection file parsing done : " + (System.currentTimeMillis() - lTime) + " ms"); //$NON-NLS-1$ //$NON-NLS-2$
+        Log.debug("Collection file parsing done : " + 
+            (System.currentTimeMillis() - lTime)/1024 + " s"); //$NON-NLS-1$ //$NON-NLS-2$
     }
     
     /**
@@ -425,8 +426,8 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
                         Log.debug(Messages.getString("Error.137")+ ":" +sTrackName); //wrong format //$NON-NLS-1$ //$NON-NLS-2$
                     }
                 }
-                //UPGRADE --For jajuk == 1.0.1 to 1.0.2 : Track id changed and used deep hashcode, not used after
-                String sRightID = TrackManager.getHashcode(sTrackName, album, style, author, length, lYear,lOrder, type);
+                //UPGRADE --For jajuk == 1.0.1 to 1.0.2 : Track id changed and used deep hashcode, not used later
+                String sRightID = TrackManager.getHashcode(sTrackName,album,style,author,length,lYear,lOrder,type);
                 //Date format should be OK
                 Date dAdditionDate = Util.getAdditionDateFormat().parse(attributes.getValue(attributes.getIndex(XML_TRACK_ADDED)));
                 Track track = TrackManager.getInstance().registerTrack(sRightID, sTrackName, album, style, author, length, lYear,lOrder, type);
@@ -440,7 +441,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
                 track.setComment(sComment);
                 track.populateProperties(attributes);
                 //display a message if Id had a problem
-                if (!sId.equals(TrackManager.getHashcode(sTrackName, album, style, author, length, lYear,lOrder,type))){
+                if (!sId.equals(sRightID)){
                     Log.debug("** Wrong Track Id, upgraded: " +track); //$NON-NLS-1$
                     hmWrongRightID.put(sId,sRightID);
                 }

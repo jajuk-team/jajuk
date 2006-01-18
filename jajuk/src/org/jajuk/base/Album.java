@@ -84,7 +84,9 @@ public class Album extends PropertyAdapter implements Comparable{
 	 */
 	public int compareTo(Object o){
 		Album otherAlbum = (Album)o;
-		return  getName2().compareToIgnoreCase(otherAlbum.getName2());
+		//compare using name and id to differenciate unknown items
+        return (getName2()+getId()).
+            compareToIgnoreCase(otherAlbum.getName2()+otherAlbum.getId());
 	}
 	
 	/**

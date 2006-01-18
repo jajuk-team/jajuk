@@ -22,6 +22,7 @@ package org.jajuk.base;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Properties;
@@ -361,11 +362,16 @@ public class FileManager extends ItemManager implements Observer{
             if (alEligibleFiles.size() ==0 ){
                 return null;
             }
-            Collections.sort(alEligibleFiles); //sort alphabeticaly
-            //now sort by date
-            File.setSortByDate(true);
-            Collections.sort(alEligibleFiles); //sort by date
-            File.setSortByDate(false);//reset to default sorting method
+            //sort alphabetinaly and by date
+            Collections.sort(alEligibleFiles,new Comparator() {
+                public int compare(Object o1, Object o2) {
+                    File file1 = (File)o1;
+                    File file2 = (File)o2;
+                    String sCompared1 = file1.getTrack().getAdditionDate()+file1.getAbsolutePath(); 
+                    String sCompared2 = file2.getTrack().getAdditionDate()+file2.getAbsolutePath(); 
+                    return sCompared1.compareTo(sCompared2);            
+                }
+            }); 
             return alEligibleFiles;
         }
     }

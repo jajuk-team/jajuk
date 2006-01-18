@@ -26,6 +26,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 
+import org.apache.commons.collections.bidimap.TreeBidiMap;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.Filter;
 import org.jajuk.util.ITechnicalStrings;
@@ -41,7 +42,7 @@ import org.jajuk.util.log.Log;
 public abstract class ItemManager implements ITechnicalStrings{
     
     /**Items collection**/
-    protected LinkedHashMap<String,IPropertyable> hmItems = new LinkedHashMap(100);
+    protected TreeBidiMap hmItems = new TreeBidiMap();
     /**Maps item classes -> instance*/
     static private LinkedHashMap hmItemManagers  = new LinkedHashMap(10);
     /**Maps properties meta information name and object*/
@@ -277,7 +278,7 @@ public abstract class ItemManager implements ITechnicalStrings{
     /**Return all registred items*/
     public Collection<IPropertyable> getItems() {
         synchronized(getLock()){
-            return hmItems.values();
+            return hmItems.inverseBidiMap().keySet();
         }
     }
     
