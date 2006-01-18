@@ -20,8 +20,13 @@
 package org.jajuk.ui.action;
 
 import java.util.EnumMap;
+import java.util.List;
+import java.util.ArrayList;
 
 import static org.jajuk.ui.action.JajukAction.*;
+import javax.swing.KeyStroke;
+import javax.swing.InputMap;
+import javax.swing.UIManager;
 
 /**
  * Helper class used to create, store and lookup actions.
@@ -33,42 +38,43 @@ public final class ActionManager {
 
     private static final EnumMap<JajukAction, ActionBase> map =
         new EnumMap<JajukAction, ActionBase>(JajukAction.class);
+    private static final List<KeyStroke> strokeList = new ArrayList<KeyStroke>();
 
     static {
 
         // CommandJPanel: Mode Panel
-        map.put(REPEAT_MODE_STATUS_CHANGE, new RepeatModeAction());
-        map.put(SHUFFLE_MODE_STATUS_CHANGED, new ShuffleModeAction());
-        map.put(CONTINUE_MODE_STATUS_CHANGED, new ContinueModeAction());
-        map.put(INTRO_MODE_STATUS_CHANGED, new IntroModeAction());
+        installAction(REPEAT_MODE_STATUS_CHANGE, new RepeatModeAction(), false);
+        installAction(SHUFFLE_MODE_STATUS_CHANGED, new ShuffleModeAction(), false);
+        installAction(CONTINUE_MODE_STATUS_CHANGED, new ContinueModeAction(), false);
+        installAction(INTRO_MODE_STATUS_CHANGED, new IntroModeAction(), false);
 
         // CommandJPanel: Special Functions Panel
-        map.put(SHUFFLE_GLOBAL, new GlobalRandomAction());
-        map.put(BEST_OF, new BestOfAction());
-        map.put(NOVELTIES, new NoveltiesAction());
-        map.put(FINISH_ALBUM, new FinishAlbumAction());
+        installAction(SHUFFLE_GLOBAL, new GlobalRandomAction(), false);
+        installAction(BEST_OF, new BestOfAction(), false);
+        installAction(NOVELTIES, new NoveltiesAction(), false);
+        installAction(FINISH_ALBUM, new FinishAlbumAction(), false);
 
         // CommandJPanel: Play Panel
-        map.put(PREVIOUS_TRACK, new PreviousTrackAction());
-        map.put(NEXT_TRACK, new NextTrackAction());
-        map.put(PREVIOUS_ALBUM, new PreviousAlbumAction());
-        map.put(NEXT_ALBUM, new NextAlbumAction());
-        map.put(REWIND_TRACK, new RewindTrackAction());
-        map.put(PLAY_PAUSE_TRACK, new PlayPauseAction());
-        map.put(STOP_TRACK, new StopTrackAction());
-        map.put(FAST_FORWARD_TRACK, new FastForwardTrackAction());
+        installAction(PREVIOUS_TRACK, new PreviousTrackAction(), true);
+        installAction(NEXT_TRACK, new NextTrackAction(), true);
+        installAction(PREVIOUS_ALBUM, new PreviousAlbumAction(), true);
+        installAction(NEXT_ALBUM, new NextAlbumAction(), true);
+        installAction(REWIND_TRACK, new RewindTrackAction(), true);
+        installAction(PLAY_PAUSE_TRACK, new PlayPauseAction(), false);
+        installAction(STOP_TRACK, new StopTrackAction(), false);
+        installAction(FAST_FORWARD_TRACK, new FastForwardTrackAction(), true);
 
         // CommandJPanel: Volume control
-        map.put(DECREASE_VOLUME, new DecreaseVolumeAction());
-        map.put(INCREASE_VOLUME, new IncreaseVolumeAction());
-        map.put(MUTE_STATE, new MuteAction());
+        installAction(DECREASE_VOLUME, new DecreaseVolumeAction(), true);
+        installAction(INCREASE_VOLUME, new IncreaseVolumeAction(), true);
+        installAction(MUTE_STATE, new MuteAction(), false);
 
         // JajukJMenuBar: Help Menu
-        map.put(HELP_REQUIRED, new HelpRequiredAction());
-        map.put(SHOW_ABOUT, new ShowAboutAction());
-        map.put(WIZARD, new WizardAction());
-        map.put(QUALITY, new QualityAction());
-        map.put(TIP_OF_THE_DAY, new TipOfTheDayAction());
+        installAction(HELP_REQUIRED, new HelpRequiredAction(), false);
+        installAction(SHOW_ABOUT, new ShowAboutAction(), false);
+        installAction(WIZARD, new WizardAction(), false);
+        installAction(QUALITY, new QualityAction(), false);
+        installAction(TIP_OF_THE_DAY, new TipOfTheDayAction(), false);
     }
 
     private ActionManager() {
@@ -85,5 +91,40 @@ public final class ActionManager {
             throw new ExceptionInInitializerError("No action mapping found for " + action);
         }
         return actionBase;
+    }
+
+    /**
+     * Installs a new action in the action manager. If <code>removeFromLAF</code> is
+     * <code>true</code>, then the keystroke attached to the action will be stored in list. To
+     * remove the these keystrokes from the <code>InputMap</code>s of the different components,
+     * call {@link #uninstallStrokes()}.
+     *
+     * @param name The name for the action.
+     * @param action The action implementation.
+     * @param removeFromLAF Remove default keystrokes from look and feel.
+     */
+    private static void installAction(JajukAction name, ActionBase action, boolean removeFromLAF) {
+        map.put(name, action);
+
+        if (removeFromLAF) {
+            KeyStroke stroke = (KeyStroke) action.getValue(ActionBase.ACCELERATOR_KEY);
+            if (stroke != null) {
+                strokeList.add(stroke);
+            }
+        }
+    }
+
+    /**
+     * Uninstalls default keystrokes from different JComponents to allow more globally configured
+     * JaJuk keystrokes.
+     */
+    public static void uninstallStrokes() {
+        InputMap tableMap = (InputMap) UIManager.get("Table.ancestorInputMap");
+        InputMap treeMap = (InputMap) UIManager.get("Tree.focusInputMap");
+
+        for (KeyStroke stroke : strokeList) {
+            tableMap.remove(stroke);
+            treeMap.remove(stroke);
+        }
     }
 }
