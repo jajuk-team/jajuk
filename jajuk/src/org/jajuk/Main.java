@@ -741,11 +741,7 @@ public class Main implements ITechnicalStrings {
         }
         //ui init 
         SwingUtilities.invokeLater(new Runnable() {
-            
             public void run() {
-                
-                
-                
                 try {
                     //  Set look and feel, needs local to be set for error messages
                     LNFManager.setLookAndFeel(ConfigurationManager.getProperty(CONF_OPTIONS_LNF));
@@ -784,6 +780,14 @@ public class Main implements ITechnicalStrings {
                     // Create the perspective tool bar panel
                     perspectiveBar = PerspectiveBarJPanel.getInstance();
                     jpFrame.add(perspectiveBar, BorderLayout.WEST);
+                    /*display window
+                    We have to apply position and size before and after window made visible
+                    - If position/size are set after, we can see a small window on screen at random position                  because in some cases, the window is displayed at random position 
+                    - If position/size are set only after, position can be lost
+                    this way, the window is always at right position*/
+                    jw.applyStoredSize(); //apply size and position as stored in the user properties
+                    jw.setVisible(true); //show main window
+                    jw.applyStoredSize(); //apply size and position as stored in the user properties
                     
                     //Display info message if first session
                     if (ConfigurationManager.getBoolean(CONF_FIRST_CON) 
@@ -818,17 +822,8 @@ public class Main implements ITechnicalStrings {
                         sc.splashOff();
                     }
                     bUILauched = true;
-                    /*display window
-                    We have to apply position and size before and after window made visible
-                    - If position/size are set after, we can see a small window on screen at random position                  because in some cases, the window is displayed at random position 
-                    - If position/size are set only after, position can be lost
-                    this way, the window is always at right position*/
-                    jw.applyStoredSize(); //apply size and position as stored in the user properties
-                    jw.setVisible(true); //show main window
-                    jw.applyStoredSize(); //apply size and position as stored in the user properties
                 }
             }
-            
         });
         
     }
