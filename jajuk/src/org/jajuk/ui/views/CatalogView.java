@@ -35,6 +35,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -43,6 +44,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -129,6 +131,9 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
     /**Do search panel need a search*/
     private boolean bNeedSearch = false;
     
+    /**Populating flag*/
+    private boolean bPopulating = false;
+    
     /**Default time in ms before launching a search automaticaly*/
     private static final int WAIT_TIME = 300;
     
@@ -141,10 +146,8 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
     /** Swing Timer to refresh the component*/ 
     private Timer timer = new Timer(WAIT_TIME,new ActionListener() {
         public void actionPerformed(ActionEvent e) {
-            if ( bNeedSearch && (System.currentTimeMillis()-lDateTyped >= WAIT_TIME)){
-                jtfValue.setEnabled(false);
-                jcbSorter.setEnabled(false);
-                jcbFilter.setEnabled(false);
+            if ( bNeedSearch && !bPopulating &&
+                    (System.currentTimeMillis()-lDateTyped >= WAIT_TIME)){
                 populateCatalog();
             }
         }
@@ -298,11 +301,11 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
             InformationJPanel.getInstance().setMessage(Messages.getString("CatalogView.5")
                 +' '+album.getName2(),InformationJPanel.INFORMATIVE);
             //search for local covers in all directories mapping the current track to reach other devices covers and display them together
-            ArrayList<Track> alTracks = TrackManager.getInstance().getSortedAssociatedTracks(album);
-            if (alTracks.size() == 0){
+            HashSet<Track> tracks = TrackManager.getInstance().getAssociatedTracks(album);
+            if (tracks.size() == 0){
                 return;
             }
-            Track trackCurrent = alTracks.get(0); //take first track found to get associated directories as we assume all tracks for an album are in the same directory 
+            Track trackCurrent = (Track)tracks.iterator().next(); //take first track found to get associated directories as we assume all tracks for an album are in the same directory 
             File fCover = trackCurrent.getAlbum().getCoverFile();
             if (fCover == null){
                 try {
@@ -318,6 +321,13 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
                     Util.createThumbnail(fCover.toURL(),fThumb,50+(50*jcbSize.getSelectedIndex()));
                 }
                 catch (Exception e) {
+                    //create a void thumb to avoid trying to create again this thumb 
+                    try {
+                        fThumb.createNewFile();
+                    }
+                    catch (IOException e1) {
+                        Log.error(e1);
+                    }
                     Log.error(e);
                 }
             }
@@ -330,8 +340,8 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
      *
      */
     private synchronized void populateCatalog(){
+        bPopulating = true;
         SwingWorker sw = new SwingWorker() {
-              
             @Override
             public Object construct() {
                 Util.waiting();
@@ -407,10 +417,10 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
                     //if hide unmounted tracks is set, continue
                     if (ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED)){
                         //test if album contains at least one mounted file
-                        ArrayList<Track> alTracks = TrackManager.getInstance().getSortedAssociatedTracks(album);
-                        if (alTracks.size() > 0){
+                        HashSet<Track> tracks = TrackManager.getInstance().getAssociatedTracks(album);
+                        if (tracks.size() > 0){
                             boolean bOK = false;
-                            for (Track track:alTracks){
+                            for (Track track:tracks){
                                 if (track.getReadyFiles().size() > 0){
                                     bOK = true;
                                     break;
@@ -447,14 +457,12 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
                 jsp.repaint();
                 //reset message dialog
                 InformationJPanel.getInstance().setMessage("",InformationJPanel.INFORMATIVE);
+                jtfValue.requestFocusInWindow();
+                bNeedSearch = false;
+                bPopulating = false;
             }
         };
         sw.start();
-        bNeedSearch = false;
-        jtfValue.setEnabled(true);
-        jcbSorter.setEnabled(true);
-        jcbFilter.setEnabled(true);
-        jtfValue.requestFocusInWindow();
     }
     
     
@@ -612,10 +620,10 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
         }
         
         private void play(boolean bRepeat,boolean bShuffle,boolean bPush){
-            ArrayList<Track> alTracks = TrackManager.getInstance().getSortedAssociatedTracks(album);
+            Set<Track> tracks = TrackManager.getInstance().getAssociatedTracks(album);
             //compute selection
-            ArrayList alFilesToPlay = new ArrayList(alTracks.size());
-            Iterator it = alTracks.iterator();
+            ArrayList alFilesToPlay = new ArrayList(tracks.size());
+            Iterator it = tracks.iterator();
             while ( it.hasNext()){
                 org.jajuk.base.File file = ((Track)it.next()).getPlayeableFile();
                 if ( file != null){
@@ -656,7 +664,8 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
             else if (e.getSource() == jmiAlbumProperties){
                 ArrayList<IPropertyable> alAlbums = new ArrayList();
                 alAlbums.add(album);
-                new PropertiesWizard(alAlbums,TrackManager.getInstance().getSortedAssociatedTracks(album));
+                new PropertiesWizard(alAlbums,
+                    new ArrayList(TrackManager.getInstance().getAssociatedTracks(album)));
             }
         }
         
@@ -679,7 +688,7 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
                 play(false,false,false);
             }
             else if (e.getButton() == MouseEvent.BUTTON3 && e.getSource() == this){
-                jmenu.show(jlIcon,e.getX()-100,e.getY());
+                jmenu.show(jlIcon,e.getX()-(50+(50*jcbSize.getSelectedIndex())),e.getY());
             }
         }
         
@@ -770,8 +779,8 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
             jpControls.add(jbNext,"3,0");
             jpControls.add(okc,"5,0");
             
-            ArrayList<Track> alTracks = TrackManager.getInstance().getSortedAssociatedTracks(CatalogView.this.item.getAlbum());
-            Author author = alTracks.get(0).getAuthor();
+            Set tracks = TrackManager.getInstance().getAssociatedTracks(CatalogView.this.item.getAlbum());
+            Author author = ((Track)tracks.iterator().next()).getAuthor();
             String sQuery = (author.getName().equals(UNKNOWN_AUTHOR)?"":author.getName2())
             +" "+CatalogView.this.item.getAlbum().getName2();
             jlSearch = new JLabel((author.getName().equals(UNKNOWN_AUTHOR)?"":author.getName2()+" - ")
@@ -881,11 +890,11 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
                 //write cover in the first available directory we find
                 Album album = item.getAlbum();
                 //test if album contains at least one mounted file
-                ArrayList<Track> alTracks = TrackManager.getInstance().getSortedAssociatedTracks(album);
+                Set <Track> tracks = TrackManager.getInstance().getAssociatedTracks(album);
                 Track mountedTrack = null;
-                if (alTracks.size() > 0){
+                if (tracks.size() > 0){
                     boolean bOK= false;
-                    for (Track track:alTracks){
+                    for (Track track:tracks){
                         if (track.getReadyFiles().size() > 0){
                             bOK = true;
                             mountedTrack = track;
