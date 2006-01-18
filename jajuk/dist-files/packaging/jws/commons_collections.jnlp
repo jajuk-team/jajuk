@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <jnlp spec="1.0+" codebase="http://jajuk.sourceforge.net/jws/JWS_DEPLOY_REPLACED_BY_ANT" href="commons_collections.jnlp">
+    <information>
+        <title>Commons Collections</title>
+        <vendor>Apache Group</vendor>
+    </information>
+    <security> 
+           <all-permissions/>
+    </security> 
+    <resources>
+        <jar href="commons-collections-3.1.jar"/>
+    </resources>
+    <component-desc/>
+</jnlp>

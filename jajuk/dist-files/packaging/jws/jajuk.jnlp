@@ -49,6 +49,7 @@
         	<extension name="Tritonus" href="tritonous.jnlp"/>
         	<extension name="Vorbisspi" href="vorbisspi.jnlp"/>
         	<extension name="EntaggedFreedb" href="entagged_freedb.jnlp"/>
+        	<extension name="CommonsCollections" href="commons_collections.jnlp"/>
        </resources>
        <resources os="Windows">
            <jar       href="windows/jdic_stub.jar"/> 
