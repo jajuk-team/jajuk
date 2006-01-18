@@ -22,8 +22,8 @@ package org.jajuk.i18n;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.lang.reflect.InvocationTargetException;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
@@ -321,7 +321,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings	{
 	 * @param sMessage
 	 */
 	public static void showWarningMessage(final String sMessage){
-	    MessageDialog message = new MessageDialog(sMessage,getTitleForType(JOptionPane.WARNING_MESSAGE),JOptionPane.WARNING_MESSAGE,null);
+	    MessageDialog message = new MessageDialog(sMessage,getTitleForType(JOptionPane.WARNING_MESSAGE),JOptionPane.WARNING_MESSAGE,null,null);
 	    if (SwingUtilities.isEventDispatchThread()){ //in the dispatcher thread, no need to use invokeLatter
 	        message.run();
 	    }
@@ -335,7 +335,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings	{
 	 * @param sMessage
 	 */
 	public static void showInfoMessage(final String sMessage,final Icon icon){
-	    MessageDialog message = new MessageDialog(sMessage,getTitleForType(JOptionPane.INFORMATION_MESSAGE),JOptionPane.INFORMATION_MESSAGE,null);
+	    MessageDialog message = new MessageDialog(sMessage,getTitleForType(JOptionPane.INFORMATION_MESSAGE),JOptionPane.INFORMATION_MESSAGE,null,icon);
 	    if (SwingUtilities.isEventDispatchThread()){ //in the dispatcher thread, no need to use invokeLatter
 	        message.run();
 	    }
@@ -350,7 +350,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings	{
 	 * @param sInfoSup
 	 */
 	public static void showErrorMessage(final String sCode,final String sInfoSup){
-	    MessageDialog message = new MessageDialog(Messages.getErrorMessage(sCode)+" : "+sInfoSup,getTitleForType(JOptionPane.ERROR_MESSAGE),JOptionPane.ERROR_MESSAGE,null); //$NON-NLS-1$
+	    MessageDialog message = new MessageDialog(Messages.getErrorMessage(sCode)+" : "+sInfoSup,getTitleForType(JOptionPane.ERROR_MESSAGE),JOptionPane.ERROR_MESSAGE,null,null); //$NON-NLS-1$
 	    if (SwingUtilities.isEventDispatchThread()){ //in the dispatcher thread, no need to use invokeLatter
 	        message.run();
 	    }
@@ -365,7 +365,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings	{
      * @param sInfoSup
      */
     public static void showDetailedErrorMessage(final String sCode,final String sInfoSup,String sDetails){
-        MessageDialog message = new MessageDialog(Messages.getErrorMessage(sCode)+" : "+sInfoSup,getTitleForType(JOptionPane.ERROR_MESSAGE),JOptionPane.ERROR_MESSAGE,sDetails); //$NON-NLS-1$
+        MessageDialog message = new MessageDialog(Messages.getErrorMessage(sCode)+" : "+sInfoSup,getTitleForType(JOptionPane.ERROR_MESSAGE),JOptionPane.ERROR_MESSAGE,sDetails,null); //$NON-NLS-1$
         if (SwingUtilities.isEventDispatchThread()){ //in the dispatcher thread, no need to use invokeLatter
             message.run();
         }
@@ -381,7 +381,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings	{
 	 * @param sInfoSup
 	 */
 	public static void showInfoMessage(final String sMessage,final String sInfoSup){
-	    MessageDialog message = new MessageDialog(sMessage+" : "+sInfoSup,getTitleForType(JOptionPane.INFORMATION_MESSAGE),JOptionPane.INFORMATION_MESSAGE,null); //$NON-NLS-1$
+	    MessageDialog message = new MessageDialog(sMessage+" : "+sInfoSup,getTitleForType(JOptionPane.INFORMATION_MESSAGE),JOptionPane.INFORMATION_MESSAGE,null,null); //$NON-NLS-1$
 	    if (SwingUtilities.isEventDispatchThread()){ //in the dispatcher thread, no need to use invokeLatter
 	        message.run();
 	    }
@@ -395,7 +395,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings	{
 	 * @param sMessage
 	 */
 	public static void showInfoMessage(final String sMessage){
-	    MessageDialog message = new MessageDialog(sMessage,getTitleForType(JOptionPane.INFORMATION_MESSAGE),JOptionPane.INFORMATION_MESSAGE,null);
+	    MessageDialog message = new MessageDialog(sMessage,getTitleForType(JOptionPane.INFORMATION_MESSAGE),JOptionPane.INFORMATION_MESSAGE,null,null);
 	    if (SwingUtilities.isEventDispatchThread()){ //in the dispatcher thread, no need to use invokeLatter
 	        message.run();
 	    }
@@ -511,17 +511,21 @@ class MessageDialog implements Runnable{
     /**Details*/
     private String sDetails;
 
+    /**Icon*/
+    private Icon icon;
+
     /**
      * Message dialog constructor
      * @param sText
      * @param sTitle
      * @param iType
      */
-    MessageDialog(String sText,String sTitle,int iType,String sDetails){
+    MessageDialog(String sText,String sTitle,int iType,String sDetails,Icon icon){
         this.iType = iType;
         this.sText = sText;
         this.sTitle = sTitle;
         this.sDetails = sDetails;
+        this.icon = icon;
     }
 
     /* (non-Javadoc)
@@ -535,6 +539,9 @@ class MessageDialog implements Runnable{
             optionPane.setOptions(options);
         }
         optionPane.setMessageType(iType);
+        if (icon != null){
+            optionPane.setIcon(icon);
+        }
         JDialog dialog = optionPane.createDialog(null,sTitle);
         dialog.setVisible(true);
         if (optionPane.getValue().equals(Messages.getString("Details"))){ //details //$NON-NLS-1$
