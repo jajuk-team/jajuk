@@ -23,41 +23,11 @@
 probl&egrave;mes
 de performance ou si vous d&eacute;sirez consommer moins de
 m&eacute;moire,
-de disque, de puissance ou de bande passante en utilisant Jajuk.</p>
+de disque, de puissance ou de bande passante en utilisant Jajuk.<br>
 
-<h2 lang="fr-FR">Choix de la JVM et personnalisation</h2>
+</p>
 
-<p lang="fr-FR">Nous recommandons le JRE de Sun.</p>
-
-<ul>
-
-  <li>
-    <p style="margin-bottom: 0cm;" lang="fr-FR">Si
-vous avez une tr&egrave;s grosse collection (comme &gt; 200Go),
-vous pouvez augmenter le param&egrave;tre -Xms. </p>
-
-  </li>
-
-  <li>
-    <p style="margin-bottom: 0cm;" lang="fr-FR">Vous
-pouvez fixer un param&egrave;tre -Xmx pour limiter l'utilisation de
-m&eacute;moire &agrave; cette valeur (par exemple: -Xmx100M),
-mais ceci peut conduire &agrave; des comportements
-impr&eacute;vus ou des erreurs de d&eacute;passement de
-m&eacute;moire.</p>
-
-  </li>
-
-  <li>
-    <p lang="fr-FR">Utilisez -Xloggc:&lt;nom du
-fichier&gt; pour tracer l'utilisation de la m&eacute;moire si
-n&eacute;cessaire. </p>
-
-  </li>
-
-</ul>
-
-<h2 lang="fr-FR">Utilisation Processeur </h2>
+<h2 lang="fr-FR">Utilisation processeur </h2>
 
 <ul>
 
@@ -85,6 +55,27 @@ m&eacute;moire 65Mo au maximum mais 40Mo sont suffisant la plupart
 du
 temps.</p>
 
+<h2 lang="fr-FR">Utilisation de la bande passante
+(r&eacute;seau)</h2>
+
+<ul>
+
+  <li>
+    <p>Si votre connexion internet est limit&eacute;e,
+attention aux options de recherche de couverture en ligne (voir
+chapitre suivant).</p>
+  </li>
+
+  <li>
+    <p>Si vous utilisez un lecteur r&eacute;seau comme
+support, attention &agrave; la fr&eacute;quence de
+rafra&icirc;chissement (d&eacute;faut: 5 minutes) car Jajuk
+scannera tous les r&eacute;pertoires avec cette
+fr&eacute;quence, ce qui consomme de la bande passante. augmentez cette frequence si la collection bouge peu.</p>
+  </li>
+
+</ul>
+
 <h2 lang="fr-FR">Performance des jaquettes</h2>
 
 <p lang="fr-FR">Ces options sont accessibles dans la vue
@@ -104,7 +95,7 @@ si vous disposez d'une faible bande passante.</p>
 
   <li>
     <p style="margin-bottom: 0cm;" lang="fr-FR">L'option
-Pr&eacute;charger les jaquettes (d&eacute;faut=non) est
+"Pr&eacute;charger les jaquettes" (d&eacute;faut=non) est
 tr&egrave;s consommatrice en bande passante. N'utilisez cette
 option que si vous disposez d'une ligne &agrave; haut
 d&eacute;bit comme le xDSL ou le c&acirc;ble. </p>
@@ -129,25 +120,14 @@ Param&eacute;trage / onglet R&eacute;seau. </p>
 
 </ul>
 
-<h2 lang="fr-FR">Performance des meta-donn&eacute;es</h2>
+<h2 lang="fr-FR">Performance des tags</h2>
 
-<p style="margin-bottom: 0cm;" lang="fr-FR">Ces
-options sont
-accessibles dans la vue Param&eacute;trage / onglet
-Meta-donn&eacute;es.</p>
-
-<ul>
-
-  <li>
-    <p lang="fr-FR">N'utilisez pas l'option "Forcer la
-relecture des tags" (d&eacute;faut=non) sauf si vous voulez forcer
-jajuk &agrave; relire les tags. Jajuk ne lit pas les tags id3
-&agrave; chaque rafra&icirc;chissement pour les morceaux connus.</p>
-
-  </li>
-
-</ul>
-
+Lors du premier rafraichissement d'un support ou lors d'un
+rafra&icirc;chissement forc&eacute;, tous les tags sont relus,
+ce qui est beaucoup plus long. N'utilisez la fonction "Forcer le
+rafra&icirc;chissement" d'un support seulement si vous voulez
+mettre &agrave; jour des tags modifi&eacute;s dans une autre
+application.
 <h2 lang="fr-FR"><font size="5">Performance
 de la collection</font></h2>
 
@@ -182,11 +162,39 @@ comme 200x1024 et plus. Sur un P4 1.8Ghz avec une r&eacute;solution
 de 1024x768, l'augmentation induite est de l'ordre de 2 &agrave; 3%
 mais atteint 10 ou plus avec une r&eacute;solution de 1400x1200.</p>
 
-<p><br>
+<h2 lang="fr-FR">Choix de la JVM et personnalisation</h2>
 
-<br>
+<p lang="fr-FR">Nous recommandons le JRE de Sun.</p>
 
-</p>
+<ul>
+
+  <li>
+    <p style="margin-bottom: 0cm;" lang="fr-FR">Si
+vous avez une tr&egrave;s grosse collection (comme &gt; 200Go),
+vous pouvez augmenter le param&egrave;tre -Xms. </p>
+
+  </li>
+
+  <li>
+    <p style="margin-bottom: 0cm;" lang="fr-FR">Vous
+pouvez fixer un param&egrave;tre -Xmx pour limiter l'utilisation de
+m&eacute;moire &agrave; cette valeur (par exemple: -Xmx100M),
+mais ceci peut conduire &agrave; des comportements
+impr&eacute;vus ou des erreurs de d&eacute;passement de
+m&eacute;moire.</p>
+
+  </li>
+
+  <li>
+    <p>Utilisez -Xloggc:&lt;nom du
+fichier&gt; pour tracer l'utilisation de la m&eacute;moire si
+n&eacute;cessaire.<br>
+
+    </p>
+
+  </li>
+
+</ul>
 
 </body>
 </html>

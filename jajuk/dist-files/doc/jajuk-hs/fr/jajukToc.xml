@@ -12,6 +12,7 @@
   		<tocitem text="Modifier les tags et attributs" target="editing"/>
 		<tocitem text="Utiliser les attributs personnels" target="ucp"/>
 	 	<tocitem text="Utiliser le tray" target="tray"/>
+	 	<tocitem text="Les raccourcis clavier" target="keys"/>
 	</tocitem>
 	<tocitem text="Vues"  expand="true">
 		<tocitem text="La vue Commande" target="view_command"/>
@@ -22,6 +23,7 @@
 		<tocitem text="La vue Référentiel de playlistes" target="view_playlist_repository"/>
 		<tocitem text="La vue Editeur de playlistes" target="view_playlist_editor"/>
 		<tocitem text="La vue Jaquettes" target="view_cover"/>
+		<tocitem text="La vue Catalogue" target="view_catalog"/>
 		<tocitem text="La vue Animation" target="view_animation"/>
 		<tocitem text="La vue Paramétrage" target="view_parameter"/>
 		<tocitem text="La vue scanner de CDs" target="view_cd_scanner"/>

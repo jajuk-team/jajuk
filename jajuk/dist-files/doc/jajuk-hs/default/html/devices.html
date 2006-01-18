@@ -5,6 +5,8 @@
 
 
 
+
+  
   
   
   
@@ -12,9 +14,12 @@
 
 
 
+
   
 
 
+  
+  
   
   
   
@@ -26,6 +31,8 @@
 
 
 
+
+  
   
   
   
@@ -34,6 +41,8 @@
 
 
 
+
+  
   
   
   
@@ -42,6 +51,8 @@
 
 
 
+
+  
   
   
   
@@ -50,6 +61,8 @@
 
 
 
+
+  
   
   
   
@@ -68,12 +81,15 @@ H2 { color: #000000 }
 
 
 
+
 <h1>Using Devices</h1>
 
 
 
 
+
 <h2>Definition</h2>
+
 
 
 
@@ -85,12 +101,15 @@ It can be : </p>
 
 
 
+
 <ul>
 
 
 
 
+
   <li>
+    
     
     
     
@@ -99,12 +118,15 @@ It can be : </p>
 
 
 
+
   </li>
 
 
 
 
+
   <li>
+    
     
     
     
@@ -113,12 +135,15 @@ It can be : </p>
 
 
 
+
   </li>
 
 
 
 
+
   <li>
+    
     
     
     
@@ -127,12 +152,15 @@ It can be : </p>
 
 
 
+
   </li>
 
 
 
 
+
   <li>
+    
     
     
     
@@ -143,12 +171,15 @@ T:\...) and not network favorites path or UNC paths.</p>
 
 
 
+
   </li>
 
 
 
 
+
   <li>
+    
     
     
     
@@ -157,7 +188,9 @@ T:\...) and not network favorites path or UNC paths.</p>
 
 
 
+
   </li>
+
 
 
 
@@ -166,7 +199,9 @@ T:\...) and not network favorites path or UNC paths.</p>
     
     
     
+    
     <p>A Remote directory (not yet implemented) </p>
+
 
 
 
@@ -176,7 +211,9 @@ T:\...) and not network favorites path or UNC paths.</p>
 
 
 
+
 </ul>
+
 
 
 
@@ -190,9 +227,11 @@ and to provide a friendlier graphical interface.</p>
 
 
 
+
 <p>A device usually contains MP3, OGG and others supported audio
 files, M3P files for playlists and JPG, GIF and others supported
 image files for covers.</p>
+
 
 
 
@@ -201,60 +240,58 @@ image files for covers.</p>
 created.</p>
 
 
+
 <h2>Creating and configurating devices</h2>
+
 
 
 <p>Devices can be created either using&nbsp;<a href="view_devices.html">the
 Device view</a> in the Configuration perspective or using the quick start devices wizard (Top menu -&gt; help -&gt; Devices wizard).</p>
-
-
-
-
 <h2>Refreshing devices</h2>
 
 
 
 
-<p>Under Jajuk, devices should be refreshed from times to times.
-Indeed, Jajuk uses an&nbsp;indexing system: music
+
+<p>Jajuk uses an automatic indexing system: music
 files are not scanned and their tags not read again at each startup but
 Jajuk builds a collection at refreshing (stored on the disk
 as {home directory}/.jajuk/collection.xml). It allows Jajuk to start
-and be aware of all tracks from a multi 100GB of music collection in
+and be aware of all tracks from a multi 100GB+ of music collection in
 only few seconds. It is also used to perform searches and filtering
 on the entire collection in real time.</p>
 
 
 
 
+
 <p>Jajuk only knows files from refreshed devices: if you copy a
 file
-on your disk, Jajuk will know it only after the source device
-refresh.</p>
+on your disk, Jajuk will be aware of it&nbsp;only after the next device
+refresh. Device refreshing is automatic and scanning frequency can be set in&nbsp; <a href="view_devices.html">the
+Device view</a>.
+Default frequency for hard disk devices (directory devices) are 30 sec
+(0.5 mins) and scanning often takes less than few secs so if you remove
+or add some files in this device, the change will be reflected into the
+application after about 30 seconds. Note that frequency used for
+network drives are much longer (default: 5 mins) because scanning them
+takes a longer time (1 min or more for huge drives) and
+consumes&nbsp;network bandwidth.</p>
 
 
 
 
-<p>Devices can be refreshed at each startup but it is not
-recommended
-because of the spaces of time. Note however that Jajuk integrates
-some optimizations that greatly accelerates refreshing: by default,
-Jajuk doesn't read tags for known files. You can force it to read
-them with the "Force tag read" option in Parameter View /
-Option tab if you changed tags using another application.</p>
 
 
 
 
-<p>You can refresh a device from the physical perspective with
-"Refresh" command from contextual menu on selected device
-or from <a href="view_devices.html">the
-Device view</a> in the Configuration perspective.</p>
 
 
-
-
+<p>Jajuk doesn't read tags for known files. You can force it to read
+them with the "Force refresh" function in Physical tree view on devices nodes or from <a href="view_devices.html">the
+Device view</a>&nbsp;if you changed tags using another application.</p>
 <h2>Mounting/unmouting devices</h2>
+
 
 
 
@@ -276,6 +313,7 @@ get an error message if the device cannot be mounted.</p>
 
 
 
+
 <p>You can mount or unmount a device from the physical
 perspective
 with "Mount or Unmount" commands from contextual menu on
@@ -285,7 +323,9 @@ Device view</a> in the Configuration perspective.</p>
 
 
 
+
 <h2>Synchronizing devices</h2>
+
 
 
 
@@ -304,17 +344,16 @@ other) and not only unidirectional.</p>
 
 
 
+
 <p>You can synchronize two devices from the physical perspective
 with
 "Synchronize" command from contextual menu on selected
 device or from <a href="view_devices.html">the
-Device view</a> in the Configuration perspective.</p>
-
-
-
-
+Device view</a> in the Configuration perspective.<br>
+</p>
 <h2><a name="backup"></a>Collection backup and
 restore</h2>
+
 
 
 
@@ -330,6 +369,7 @@ You can parameter backup in the Parameter view / Advanced tab.&nbsp;</p>
 
 
 
+
 <p>Restore: if you just made a manipulation error and still in
 jajuk,
 close the it and overwrite <span style="font-family: monospace;">collection_exit.xml</span> file with
@@ -341,9 +381,11 @@ file. Then restart jajuk.</p>
 
 
 
+
 <p>It can be a good idea to include your&nbsp;<span style="font-family: monospace;">{home
 directory}/.jajuk</span>
 directory in a periodic backup.</p>
+
 
 
 

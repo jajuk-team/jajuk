@@ -3,21 +3,30 @@
 <head>
 
 
+
+  
   
   <meta http-equiv="CONTENT-TYPE" content="text/html; charset=utf-8">
 
+
   
 
 
+  
+  
   
   <title>Performance tips</title>
   <meta name="GENERATOR" content="OpenOffice.org 1.1.3 (Linux)">
 
 
+
+  
   
   <meta name="CREATED" content="20050321;13074300">
 
 
+
+  
   
   <meta name="CHANGED" content="20050511;23165300">
 </head>
@@ -26,77 +35,43 @@
 <body style="direction: ltr;" lang="en-US">
 
 
+
 <h1>Performance tips</h1>
+
 
 
 <p>Read that chapter if you encounter some performances drawbacks
 or
 if you want consume less memory, disk, CPU or Network bandwidth using
-Jajuk.</p>
-
-
-<h2>JVM choice and customization</h2>
-
-
-<p>We recommend Sun JVM 1.5</p>
-
-
-<ul>
-
-
-  <li>
-    
-    <p style="margin-bottom: 0cm;">If you have a really
-big collection (something like &gt; 200GB), you may increase -Xms
-parameter. </p>
-
-
-  </li>
-
-
-  <li>
-    
-    <p style="margin-bottom: 0cm;">You can set a -Xmx
-parameter to restrict memory usage to this value (example: -Xmx100M),
-but this could conduct to unpredictable behavior when out of memory
-errors occur. </p>
-
-
-  </li>
-
-
-  <li>
-    
-    <p>Use -Xloggc:&lt;file name&gt; to trace memory
-usage if needed. </p>
-
-
-  </li>
-
-
-</ul>
-
-
+Jajuk.<br>
+</p>
 <h2>CPU usage </h2>
 
 
+
 <ul>
 
 
+
   <li>
+    
     
     <p style="margin-bottom: 0cm;">On a PC/P4M 1.8Ghz,
 Jajuk uses about 9% CPU for mp3 and 3% for Ogg Vorbis.&nbsp; On
 a&nbsp;Centrino 1.8 Ghz: 0% CPU. </p>
 
 
+
   </li>
+
 
 
 </ul>
 
 
+
 <h2>Memory Usage</h2>
+
 
 
 <p>A JVM runs inside a reserved memory heap. The JVM takes all
@@ -105,93 +80,105 @@ Xms MB of memory at startup and requires more memory to the OS only
 if necessary. For a big size collection and all cover options
 enabled, it takes about 65MB maximum of memory but 40MB should be
 enough most of the time.</p>
+<h2 lang="fr-FR">Bandwidth</h2>
+
+<ul>
+  <li>
+    <p>If you have a low Internet connection, avoid using advanced online covers options (see next chapter).</p>
+  </li>
+  <li>
+    <p>If you use a network drive-type device, check refresh frequency&nbsp;(default: 5 mins) because Jajuk
+scans all the device with this given frequency and this uses bandwidth. Increase frequency if the collection changes few.</p>
+  </li>
+</ul>
+
 
 
 <h2>Covers performance tunning</h2>
 
 
+
 <p>These options are available in the Parameter View / Cover tab.</p>
+
 
 
 <ul>
 
 
+
   <li>
+    
     
     <p style="margin-bottom: 0cm;">"Use auto-cover" option
 (default=yes) uses network bandwidth, especially if you use "Preload Cover" option. Avoid this option if you
 have a low bandwidth. </p>
 
 
+
   </li>
 
 
+
   <li>
+    
     
     <p style="margin-bottom: 0cm;">"Preload covers"
 (default=no) is very network bandwidth consuming. Use this option only
 if you have a fast network like xDSL or cable. </p>
 
 
+
   </li>
 
 
+
   <li>
+    
     
     <p style="margin-bottom: 0cm;">You can reduce covers
 size by setting lower minimum and maximum cover sizes. </p>
 
 
+
   </li>
 
 
+
   <li>
+    
     
     <p>You can increase or decrease the time out when downloading
 a cover in the Parameter view/ Network tab. </p>
 
 
+
   </li>
 
 
+
 </ul>
+
 
 
 <h2>Tags performance tunning</h2>
-
-
-<p style="margin-bottom: 0cm;">These options are available
-in the
-Parameter View / Tags tab.</p>
-
-
-<ul>
-
-
-  <li>
-    
-    <p>Do not use "Perform a deep tag scan"
-(default=no) option unless you want to force tags read. By default,
-Jajuk doesn't read id3 tags at each refresh for known files.</p>
-
-
-  </li>
-
-
-</ul>
-
-
+At first refresh or during a forced refresh, all tags are read again.
+This takes a while. Use "Force refresh" function only if you want to
+update tags changed by another application.
 <h2><font size="5">Collection performance tunning</font></h2>
+
 
 
 <p>These options are available in the Parameter View / Advanced
 tab.</p>
 
 
+
 <ul>
 
 
+
   <li>
+    
     
     <p>If your collection uses mainly non-European characters
 (like Asian languages), choose UTF-16 as collection encoding : that
@@ -200,28 +187,70 @@ use this option if you use European languages because you collection
 file would then grow.</p>
 
 
+
   </li>
+
 
 
 </ul>
 
 
+
 <h2><font size="5">Animation View performance tunning</font></h2>
+
 
 
 <p>Animation view uses Java 2D. CPU overhead can be significant,
 especially with screen resolution higher that 1200x1024. On a P4
 1.8Ghz with a resolution of 1024x768, the overhead is about 2 or 3%
 but reaches 10 or more with a resolution of 1400x1200.</p>
+<h2>JVM choice and customization</h2>
 
 
-<p><br>
+
+<p>We recommend Sun JVM 1.5</p>
 
 
-<br>
+
+<ul>
+  <li>
+    
+    
+    <p style="margin-bottom: 0cm;">If you have a really
+big collection (something like &gt; 200GB), you may increase -Xms
+parameter. </p>
 
 
-</p>
+
+  </li>
+  <li>
+    
+    
+    <p style="margin-bottom: 0cm;">You can set a -Xmx
+parameter to restrict memory usage to this value (example: -Xmx100M),
+but this could conduct to unpredictable behavior when out of memory
+errors occur. </p>
+
+
+
+  </li>
+  <li>
+    
+    
+    <p>Use -Xloggc:&lt;file name&gt; to trace memory
+usage if needed.
+
+
+    </p>
+
+
+
+  </li>
+</ul>
+
+
+
+
 
 
 </body>

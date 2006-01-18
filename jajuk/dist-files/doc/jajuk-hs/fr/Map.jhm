@@ -29,4 +29,6 @@
 	<mapID target="view_cd_scanner" url="html/view_cd_scanner.html" />
 	<mapID target="view_devices" url="html/view_devices.html" />
 	<mapID target="perfs" url="html/perfs.html" />
+	<mapID target="view_catalog" url="html/view_catalog.html" />
+	<mapID target="keys" url="html/keys.html" />
 </map>
