@@ -366,9 +366,12 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
             //in both cases ( bi or uni-directional ), make an unidirectional sync from source device to this one
             iNbCreatedFilesDest = synchronizeUnidirectonal(dSrc,this);
             //end message
-            String sOut = new StringBuffer(Messages.getString("Device.33")).append((System.currentTimeMillis()-lTime)/1000) //$NON-NLS-1$
-            .append(Messages.getString("Device.26")).append(iNbCreatedFilesSrc+iNbCreatedFilesDest).append(Messages.getString("Device.35")). //$NON-NLS-1$ //$NON-NLS-2$
+            lTime = System.currentTimeMillis()-lTime;
+            String sOut = new StringBuffer(Messages.getString("Device.33")).append(((lTime < 1000)?lTime+" ms":lTime/1000+" s")) //$NON-NLS-1$
+            .append(" - ").append(iNbCreatedFilesSrc+iNbCreatedFilesDest).append(Messages.getString("Device.35")). //$NON-NLS-1$ //$NON-NLS-2$
             append(lVolume/1048576).append(Messages.getString("Device.36")).toString(); //$NON-NLS-1$
+            //perform a refresh
+            this.refresh(false);
             InformationJPanel.getInstance().setMessage(sOut,InformationJPanel.INFORMATIVE);
             Log.debug(sOut);
         }
