@@ -4,14 +4,19 @@
 
 
 
+
+  
   
   
   <meta http-equiv="CONTENT-TYPE" content="text/html; charset=utf-8">
 
 
+
   
 
 
+  
+  
   
   
   
@@ -20,12 +25,16 @@
 
 
 
+
+  
   
   
   <meta name="CREATED" content="20050321;13074300">
 
 
 
+
+  
   
   
   <meta name="CHANGED" content="20050511;23165300">
@@ -36,7 +45,9 @@
 
 
 
+
 <h1>Performance tips</h1>
+
 
 
 
@@ -44,8 +55,11 @@
 or
 if you want consume less memory, disk, CPU or Network bandwidth using
 Jajuk.<br>
+
 </p>
+
 <h2>CPU usage </h2>
+
 
 
 
@@ -53,7 +67,9 @@ Jajuk.<br>
 
 
 
+
   <li>
+    
     
     
     <p style="margin-bottom: 0cm;">On a PC/P4M 1.8Ghz,
@@ -62,7 +78,9 @@ a&nbsp;Centrino 1.8 Ghz: 0% CPU. </p>
 
 
 
+
   </li>
+
 
 
 
@@ -70,7 +88,9 @@ a&nbsp;Centrino 1.8 Ghz: 0% CPU. </p>
 
 
 
+
 <h2>Memory Usage</h2>
+
 
 
 
@@ -80,17 +100,27 @@ Xms MB of memory at startup and requires more memory to the OS only
 if necessary. For a big size collection and all cover options
 enabled, it takes about 65MB maximum of memory but 40MB should be
 enough most of the time.</p>
+
 <h2 lang="fr-FR">Bandwidth</h2>
 
+
 <ul>
+
   <li>
+    
     <p>If you have a low Internet connection, avoid using advanced online covers options (see next chapter).</p>
+
   </li>
+
   <li>
+    
     <p>If you use a network drive-type device, check refresh frequency&nbsp;(default: 5 mins) because Jajuk
-scans all the device with this given frequency and this uses bandwidth. Increase frequency if the collection changes few.</p>
+scans all the device with this given frequency and this uses bandwidth. Increase duration if the collection changes few.</p>
+
   </li>
+
 </ul>
+
 
 
 
@@ -98,7 +128,9 @@ scans all the device with this given frequency and this uses bandwidth. Increase
 
 
 
+
 <p>These options are available in the Parameter View / Cover tab.</p>
+
 
 
 
@@ -106,7 +138,9 @@ scans all the device with this given frequency and this uses bandwidth. Increase
 
 
 
+
   <li>
+    
     
     
     <p style="margin-bottom: 0cm;">"Use auto-cover" option
@@ -115,11 +149,14 @@ have a low bandwidth. </p>
 
 
 
+
   </li>
 
 
 
+
   <li>
+    
     
     
     <p style="margin-bottom: 0cm;">"Preload covers"
@@ -128,11 +165,14 @@ if you have a fast network like xDSL or cable. </p>
 
 
 
+
   </li>
 
 
 
+
   <li>
+    
     
     
     <p style="margin-bottom: 0cm;">You can reduce covers
@@ -140,11 +180,14 @@ size by setting lower minimum and maximum cover sizes. </p>
 
 
 
+
   </li>
 
 
 
+
   <li>
+    
     
     
     <p>You can increase or decrease the time out when downloading
@@ -152,7 +195,9 @@ a cover in the Parameter view/ Network tab. </p>
 
 
 
+
   </li>
+
 
 
 
@@ -160,11 +205,14 @@ a cover in the Parameter view/ Network tab. </p>
 
 
 
+
 <h2>Tags performance tunning</h2>
+
 At first refresh or during a forced refresh, all tags are read again.
 This takes a while. Use "Force refresh" function only if you want to
 update tags changed by another application.
 <h2><font size="5">Collection performance tunning</font></h2>
+
 
 
 
@@ -173,11 +221,14 @@ tab.</p>
 
 
 
+
 <ul>
 
 
 
+
   <li>
+    
     
     
     <p>If your collection uses mainly non-European characters
@@ -188,7 +239,9 @@ file would then grow.</p>
 
 
 
+
   </li>
+
 
 
 
@@ -196,7 +249,9 @@ file would then grow.</p>
 
 
 
+
 <h2><font size="5">Animation View performance tunning</font></h2>
+
 
 
 
@@ -204,7 +259,9 @@ file would then grow.</p>
 especially with screen resolution higher that 1200x1024. On a P4
 1.8Ghz with a resolution of 1024x768, the overhead is about 2 or 3%
 but reaches 10 or more with a resolution of 1400x1200.</p>
+
 <h2>JVM choice and customization</h2>
+
 
 
 
@@ -212,8 +269,11 @@ but reaches 10 or more with a resolution of 1400x1200.</p>
 
 
 
+
 <ul>
+
   <li>
+    
     
     
     <p style="margin-bottom: 0cm;">If you have a really
@@ -222,8 +282,11 @@ parameter. </p>
 
 
 
+
   </li>
+
   <li>
+    
     
     
     <p style="margin-bottom: 0cm;">You can set a -Xmx
@@ -233,8 +296,11 @@ errors occur. </p>
 
 
 
+
   </li>
+
   <li>
+    
     
     
     <p>Use -Xloggc:&lt;file name&gt; to trace memory
@@ -245,8 +311,11 @@ usage if needed.
 
 
 
+
   </li>
+
 </ul>
+
 
 
 
