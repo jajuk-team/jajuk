@@ -638,15 +638,25 @@ public class Main implements ITechnicalStrings {
                         alToPlay.add(fileToPlay);    
                     }
                     else{ //file exists but is not mounted, just notify the error without anoying dialog at each startup
-                        Properties pDetail = new Properties();
-                        pDetail.put(DETAIL_CURRENT_FILE,fileToPlay);
-                        pDetail.put(DETAIL_REASON,"010");//$NON-NLS-1$
-                        ObservationManager.notify(new Event(EVENT_PLAY_ERROR,pDetail));
-                        FIFO.setFirstFile(false); //no more first file
+                        //try to mount device
+                        Log.debug("Startup file located on an unmounted device, try to mount it");
+                        try {
+                            fileToPlay.getDevice().mount(true);
+                            Log.debug("Mount OK");
+                            alToPlay.add(fileToPlay);
+                        }
+                        catch (Exception e) {
+                            Log.debug("Mount failed");
+                            Properties pDetail = new Properties();
+                            pDetail.put(DETAIL_CURRENT_FILE,fileToPlay);
+                            pDetail.put(DETAIL_REASON,"010");//$NON-NLS-1$
+                            ObservationManager.notify(new Event(EVENT_PLAY_ERROR,pDetail));
+                            FIFO.setFirstFile(false); //no more first file
+                        }
                     }
                 }
                 else{ //file no more exists
-                    Messages.getChoice(Messages.getErrorMessage("023"),JOptionPane.OK_CANCEL_OPTION); //$NON-NLS-1$
+                    Messages.getChoice(Messages.getErrorMessage("023"),JOptionPane.DEFAULT_OPTION); //$NON-NLS-1$
                     FIFO.setFirstFile(false); //no more first file
                     return;
                 }
@@ -664,7 +674,7 @@ public class Main implements ITechnicalStrings {
                 }
             }
             //launch selected file
-            if (alToPlay  != null && alToPlay.size() >0){
+            if (alToPlay != null && alToPlay.size() >0){
                 FIFO.getInstance().push(Util.createStackItems(alToPlay,
                     ConfigurationManager.getBoolean(CONF_STATE_REPEAT),false),false);
             }
