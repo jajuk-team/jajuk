@@ -397,6 +397,10 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
                     jsPosition.removeChangeListener(JajukSystray.this);
                     jsPosition.addChangeListener(JajukSystray.this);
                     jsPosition.setEnabled(true);
+                    String sID = (String)ObservationManager.getDetail(event,DETAIL_CURRENT_FILE_ID);
+                    if (sID == null){
+                        return;
+                    }
                     File file  = (File)FileManager.getInstance().getItem((String)ObservationManager.getDetail(event,DETAIL_CURRENT_FILE_ID));
                     String sOut = ""; //$NON-NLS-1$
                     if (file != null ){

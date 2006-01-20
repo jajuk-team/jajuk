@@ -123,6 +123,13 @@ public class File extends PropertyAdapter implements Comparable,ITechnicalString
 	public Directory getDirectory() {
 		return directory;
 	}
+    
+    /**
+     * @return associated device
+     */
+    public Device getDevice() {
+        return directory.getDevice();
+    }
 	
 	/**
 	 * @return

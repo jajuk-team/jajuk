@@ -393,7 +393,7 @@ public interface ITechnicalStrings {
     public static final String DETAIL_OPTION="option";
                			
 	//Look and feel
-	public static final String LNF_METAL = "Metal";
+	public static final String LNF_METAL = "Ocean";
 	public static final String LNF_METAL_CLASS = "javax.swing.plaf.metal.MetalLookAndFeel";
 	public static final String LNF_METAL_CBUI = "org.jajuk.ui.laf.MetalComboBoxUI";
 	public static final String LNF_GTK = "Gtk";

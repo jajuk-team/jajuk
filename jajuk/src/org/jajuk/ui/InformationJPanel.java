@@ -116,7 +116,6 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,Obser
         //message bar
         jlMessage = new JLabel();  
         jlMessage.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-        jlMessage.setBackground(Color.WHITE);
         jlMessage.setOpaque(true);
         setMessage(Messages.getString("JajukWindow.18"), InformationJPanel.INFORMATIVE);  //$NON-NLS-1$
         

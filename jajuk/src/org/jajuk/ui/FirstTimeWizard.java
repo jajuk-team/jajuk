@@ -78,7 +78,8 @@ public class FirstTimeWizard extends JDialog implements ITechnicalStrings,Action
     public FirstTimeWizard() {
         super(Main.getWindow(),true); //make it modal
         setTitle(Messages.getString("FirstTimeWizard.0"));//$NON-NLS-1$
-        setLocation(org.jajuk.Main.getWindow().getX()+100,org.jajuk.Main.getWindow().getY()+100);
+        setLocation(org.jajuk.Main.getWindow().getX()+200,
+            org.jajuk.Main.getWindow().getY()+200);
         int iX_SEPARATOR = 5;
         int iY_SEPARATOR = 10;
         jlLeftIcon = new JLabel(Util.getResizedImage(
@@ -127,12 +128,12 @@ public class FirstTimeWizard extends JDialog implements ITechnicalStrings,Action
         jpRightPanel.add(jcbAutoCover,"0,7"); //$NON-NLS-1$
         jpRightPanel.add(jcbHelp,"0,9"); //$NON-NLS-1$
         jpRightPanel.add(jpButtons,"0,11"); //$NON-NLS-1$
-        double size[][] = { { 0.4,30,0.6}, 
+        double size[][] = { { 20,TableLayout.PREFERRED,30,TableLayout.PREFERRED}, 
                 {0.99 }};
         jpMain = (JPanel)getContentPane();
         jpMain.setLayout(new TableLayout(size));
-        jpMain.add(jlLeftIcon,"0,0"); //$NON-NLS-1$
-        jpMain.add(jpRightPanel,"2,0"); //$NON-NLS-1$
+        jpMain.add(jlLeftIcon,"1,0"); //$NON-NLS-1$
+        jpMain.add(jpRightPanel,"3,0"); //$NON-NLS-1$
         getRootPane().setDefaultButton(jbOk);
     }
 

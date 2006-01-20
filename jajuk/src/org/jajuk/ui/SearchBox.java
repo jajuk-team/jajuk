@@ -78,6 +78,7 @@ public class SearchBox extends JTextField implements KeyListener{
      * @param lsl
      */
     public SearchBox(ListSelectionListener lsl){
+        super(10);
         this.lsl = lsl;
         // launches a thread used to perform dynamic search chen user is typing
         new Thread(){

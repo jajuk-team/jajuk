@@ -129,7 +129,7 @@ public class ConfigurationManager implements ITechnicalStrings{
 	 */
 	public static void setDefaultProperties() {
 		// User preferences
-		properties.put(CONF_PERSPECTIVE_DEFAULT,PERSPECTIVE_NAME_CONFIGURATION); 
+		properties.put(CONF_PERSPECTIVE_DEFAULT,PERSPECTIVE_NAME_PHYSICAL); 
 		properties.put(CONF_STATE_REPEAT,FALSE); 
 		properties.put(CONF_STATE_SHUFFLE,FALSE); 
 		properties.put(CONF_STATE_CONTINUE,TRUE);
@@ -203,9 +203,9 @@ public class ConfigurationManager implements ITechnicalStrings{
         properties.put(CONF_LOGICAL_TABLE_COLUMNS,XML_PLAY+','+XML_NAME+','+XML_ALBUM+','+XML_AUTHOR+','+
               XML_TRACK_STYLE+','+XML_TRACK_LENGTH+','+','+XML_TRACK_RATE+','+XML_TRACK_ADDED+','+
               XML_TRACK_YEAR);
-        properties.put(CONF_WINDOW_POSITION,"50,50,"+ //$NON-NLS-1$
-            (int)(Toolkit.getDefaultToolkit().getScreenSize().getWidth()-100)+","+ //$NON-NLS-1$
-            (int)(Toolkit.getDefaultToolkit().getScreenSize().getHeight()-100)); //Window position: X,Y,X_size,Y_size
+        properties.put(CONF_WINDOW_POSITION,"100,100,"+ //$NON-NLS-1$
+            (int)(Toolkit.getDefaultToolkit().getScreenSize().getWidth()-250)+","+ //$NON-NLS-1$
+            (int)(Toolkit.getDefaultToolkit().getScreenSize().getHeight()-250)); //Window position: X,Y,X_size,Y_size
         properties.put(CONF_LOGICAL_TABLE_EDITION,FALSE);
         properties.put(CONF_THUMBS_SHOW_WITHOUT_COVER,FALSE);
         properties.put(CONF_THUMBS_SIZE,THUMBNAIL_SIZE_150x150);

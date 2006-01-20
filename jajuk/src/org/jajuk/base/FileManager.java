@@ -324,7 +324,6 @@ public class FileManager extends ItemManager implements Observer{
     public synchronized File getNoveltyFile(){
         synchronized(FileManager.getInstance().getLock()){
             ArrayList alEligibleFiles = getGlobalNoveltiesPlaylist();
-            
             return (File)alEligibleFiles.get((int)(Math.random()*alEligibleFiles.size()));
         }
     }
@@ -362,14 +361,14 @@ public class FileManager extends ItemManager implements Observer{
             if (alEligibleFiles.size() ==0 ){
                 return null;
             }
-            //sort alphabetinaly and by date
+            //sort alphabetinaly and by date, newest first
             Collections.sort(alEligibleFiles,new Comparator() {
                 public int compare(Object o1, Object o2) {
                     File file1 = (File)o1;
                     File file2 = (File)o2;
-                    String sCompared1 = file1.getTrack().getAdditionDate()+file1.getAbsolutePath(); 
-                    String sCompared2 = file2.getTrack().getAdditionDate()+file2.getAbsolutePath(); 
-                    return sCompared1.compareTo(sCompared2);            
+                    String sCompared1 = file1.getTrack().getAdditionDate().getTime()+file1.getAbsolutePath(); 
+                    String sCompared2 = file2.getTrack().getAdditionDate().getTime()+file2.getAbsolutePath(); 
+                    return sCompared2.compareTo(sCompared1);            
                 }
             }); 
             return alEligibleFiles;

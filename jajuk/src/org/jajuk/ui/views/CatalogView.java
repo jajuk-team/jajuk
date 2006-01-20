@@ -55,7 +55,6 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.Timer;
@@ -86,6 +85,7 @@ import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
 import ext.FlowScrollPanel;
+import ext.SmartPopupMenu;
 import ext.SwingWorker;
 
 /**
@@ -111,7 +111,7 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
     FlowScrollPanel jpItems;
     JScrollPane jsp;
     
-    JPopupMenu jmenu;
+    SmartPopupMenu jmenu;
     JMenuItem jmiAlbumPlay;
     JMenuItem jmiAlbumPush;
     JMenuItem jmiAlbumPlayShuffle;
@@ -184,7 +184,7 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
         int iXspace = 10;
         double sizeControl[][] =
             //        Sort by                       combo sorter                    Filter:                       combo filter                  contains:                     value textfield               show albums without covers       Size:                      Size combo                    refresh                          
-        {{iXspace,TableLayout.PREFERRED,iXspace,TableLayout.PREFERRED,3*iXspace,TableLayout.PREFERRED,iXspace,TableLayout.PREFERRED,iXspace,TableLayout.PREFERRED,iXspace,TableLayout.PREFERRED,iXspace,TableLayout.PREFERRED,iXspace,TableLayout.PREFERRED,iXspace,TableLayout.PREFERRED,TableLayout.FILL,TableLayout.PREFERRED,2*iXspace},
+        {{iXspace,TableLayout.PREFERRED,iXspace,TableLayout.PREFERRED,3*iXspace,TableLayout.PREFERRED,iXspace,TableLayout.PREFERRED,iXspace,TableLayout.PREFERRED,iXspace,TableLayout.PREFERRED,iXspace,TableLayout.PREFERRED,iXspace,TableLayout.PREFERRED,TableLayout.FILL,TableLayout.PREFERRED,2*iXspace},
                 {25}};
         jpControl.setLayout(new TableLayout(sizeControl));
         jlSorter = new JLabel(Messages.getString("Sort"));
@@ -207,7 +207,7 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
         }
         jcbSorter.setSelectedIndex(ConfigurationManager.getInt(CONF_THUMBS_FILTER));
         jcbFilter.addActionListener(this);
-        jtfValue = new JTextField(20);
+        jtfValue = new JTextField(10);
         jtfValue.addKeyListener(new KeyAdapter() {
             public void keyReleased(KeyEvent e) {
                 bNeedSearch = true;
@@ -219,7 +219,6 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
         jcbShow.setSelected(ConfigurationManager.getBoolean(CONF_THUMBS_SHOW_WITHOUT_COVER));
         jcbShow.addActionListener(this);
         
-        jlSize = new JLabel(Messages.getString("CatalogView.4"));
         jcbSize = new JComboBox();
         jcbSize.addItem(THUMBNAIL_SIZE_50x50);
         jcbSize.addItem(THUMBNAIL_SIZE_100x100);
@@ -227,6 +226,7 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
         jcbSize.addItem(THUMBNAIL_SIZE_200x200);
         jcbSize.setSelectedItem(ConfigurationManager.getProperty(CONF_THUMBS_SIZE));
         jcbSize.addActionListener(this);
+        jcbSize.setToolTipText(Messages.getString("CatalogView.4"));
         
         jbRefresh = new JButton(Util.getIcon(ICON_REFRESH));
         jbRefresh.setToolTipText(Messages.getString("CatalogView.3"));
@@ -239,9 +239,8 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
         jpControl.add(jlContains,"9,0");//$NON-NLS-1$
         jpControl.add(jtfValue,"11,0");//$NON-NLS-1$
         jpControl.add(jcbShow,"13,0");//$NON-NLS-1$
-        jpControl.add(jlSize,"15,0");//$NON-NLS-1$
-        jpControl.add(jcbSize,"17,0");//$NON-NLS-1$
-        jpControl.add(jbRefresh,"19,0");//$NON-NLS-1$
+        jpControl.add(jcbSize,"15,0");//$NON-NLS-1$
+        jpControl.add(jbRefresh,"17,0");//$NON-NLS-1$
         
         //Covers
         jpItems = new FlowScrollPanel();
@@ -255,7 +254,7 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
         
         //Menu items
         //Album menu
-        jmenu = new JPopupMenu();
+        jmenu = new SmartPopupMenu();
         jmiAlbumPlay = new JMenuItem(Messages.getString("LogicalTreeView.15")); //$NON-NLS-1$
         jmiAlbumPlay.addActionListener(this);
         jmiAlbumPush = new JMenuItem(Messages.getString("LogicalTreeView.16")); //$NON-NLS-1$
@@ -688,7 +687,7 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
                 play(false,false,false);
             }
             else if (e.getButton() == MouseEvent.BUTTON3 && e.getSource() == this){
-                jmenu.show(jlIcon,e.getX()-(50+(50*jcbSize.getSelectedIndex())),e.getY());
+                jmenu.show(jlIcon,e.getX(),e.getY());
             }
         }
         

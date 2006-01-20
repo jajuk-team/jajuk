@@ -98,7 +98,7 @@ public class PhysicalPlaylistRepositoryView extends AbstractPlaylistRepositoryVi
                 PlaylistFileItem plfi = new PlaylistFileItem(PlaylistFileItem.PLAYLIST_TYPE_NORMAL,ICON_PLAYLIST_NORMAL,plf,plf.getName());
                 alPlaylistFileItems.add(plfi);
                 plfi.addMouseListener(ma);
-                plfi.setToolTipText(plf.getName());
+                plfi.setToolTipText(plf.getAbsolutePath());
                 jpRoot.add(plfi);
                 if (plfiSelected!=null && plfi.getPlaylistFile().equals(plfiSelected.getPlaylistFile())){
                     plfiSelected = plfi;
