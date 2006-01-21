@@ -504,7 +504,8 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
                 String sID= attributes.getValue(attributes.getIndex(XML_ID));
                 String sItemName= attributes.getValue(attributes.getIndex(XML_NAME));
                 String sHashcode= attributes.getValue(attributes.getIndex(XML_HASHCODE));
-                PlaylistFile plf = PlaylistFileManager.getInstance().registerPlaylistFile(sID, sItemName,sHashcode,dParent);
+                PlaylistFile plf = PlaylistFileManager.getInstance().registerPlaylistFile(sID,sItemName,dParent);
+                plf.setHashcode(sHashcode);
                 if (plf != null){
                     plf.populateProperties(attributes);
                     dParent.addPlaylistFile(plf);

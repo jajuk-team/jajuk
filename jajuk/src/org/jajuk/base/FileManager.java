@@ -26,7 +26,6 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Properties;
-import java.util.Set;
 import java.util.TreeSet;
 
 import org.jajuk.i18n.Messages;
@@ -49,8 +48,6 @@ public class FileManager extends ItemManager implements Observer{
     private ArrayList alBestofFiles = new ArrayList(20);
     /**Novelties files*/
     private ArrayList alNovelties = new ArrayList(20);
-    /**Sorted and unique files*/
-    private TreeSet sortedFiles = new TreeSet();
     /**Self instance*/
     private static FileManager singleton;
     
@@ -96,7 +93,6 @@ public class FileManager extends ItemManager implements Observer{
                 File file = null;
                 file = new File(sId, sName, directory, track, lSize, lQuality);
                 hmItems.put(sId,file);
-                sortedFiles.add(file);
                 //add to track
                 track.addFile(file);
                 //add to directory
@@ -157,7 +153,6 @@ public class FileManager extends ItemManager implements Observer{
             removeFile(fileOld);
             if ( !hmItems.containsKey(sNewId)){
                 hmItems.put(sNewId,fNew);
-                sortedFiles.add(fNew);
             }
             //notify everybody for the file change
             Properties properties = new Properties();
@@ -193,7 +188,6 @@ public class FileManager extends ItemManager implements Observer{
             removeFile(old);
             if ( !hmItems.containsKey(sNewId)){
                 hmItems.put(sNewId,fNew);
-                sortedFiles.add(fNew);
             }
             return fNew;
         }
@@ -216,7 +210,7 @@ public class FileManager extends ItemManager implements Observer{
                 }
             }
             //cleanup sorted array
-            it = sortedFiles.iterator();
+            it = hmItems.values().iterator();
             while (it.hasNext()){
                 File file = (File) it.next();
                 if (file.getDirectory() == null 
@@ -234,18 +228,10 @@ public class FileManager extends ItemManager implements Observer{
     public void removeFile(File file){
         synchronized(FileManager.getInstance().getLock()){
             hmItems.remove(file.getId());
-            sortedFiles.remove(file);
             file.getDirectory().removeFile(file);
         }
     }
-    
-    /** Return all registred files sorted alphabeticaly*/
-    public Set<File> getSortedFiles() {
-        synchronized(FileManager.getInstance().getLock()){
-            return sortedFiles;
-        }
-    }
-    
+        
     /**
      * Return file by full path
      * @param sPath : full path
@@ -485,11 +471,16 @@ public class FileManager extends ItemManager implements Observer{
                 return null;
             }
             File fileNext = null;
-            ArrayList alSortedFiles = new ArrayList(sortedFiles);
             //look for a correct file from index to collection end
             boolean bOk = false;
-            for (int index=alSortedFiles.indexOf(file)+1;index<alSortedFiles.size();index++){
-                fileNext = (File)alSortedFiles.get(index);
+            boolean bStart = false;
+            Iterator it = getItems().iterator();
+            while (it.hasNext()){
+                fileNext = (File)it.next();
+                if (!bStart && fileNext.equals(file)){
+                    bStart = true; //OK, begin to concidere files from this one
+                    continue;
+                }
                 if (fileNext.isReady()){  //file must be on a mounted device not refreshing
                     bOk = true;
                     break;
@@ -502,9 +493,9 @@ public class FileManager extends ItemManager implements Observer{
                 return null;
             }
             //ok, if we are in restart collection mode, restart from collection begin to file index
-            int indexFile = alSortedFiles.indexOf(file);
-            for (int index=0; index<indexFile; index++){
-                fileNext = (File)alSortedFiles.get(index);
+            it = getItems().iterator();
+            while (it.hasNext()){
+                fileNext = (File)it.next();
                 if (fileNext.isReady()){  //file must be on a mounted device not refreshing
                     bOk = true;
                     break;
@@ -529,7 +520,7 @@ public class FileManager extends ItemManager implements Observer{
                 return null;
             }
             File filePrevious = null;
-            ArrayList alSortedFiles = new ArrayList(sortedFiles);
+            ArrayList alSortedFiles = new ArrayList(getItems());
             int i = alSortedFiles.indexOf(file);
             //test if this file is the very first one
             if (i == 0){
@@ -560,11 +551,11 @@ public class FileManager extends ItemManager implements Observer{
      */
     public boolean isVeryfirstFile(File file){
         synchronized(FileManager.getInstance().getLock()){
-            if (file == null || sortedFiles.size() == 0){
+            if (file == null || getItems().size() == 0){
                 
                 return false;
             }
-            Iterator it = sortedFiles.iterator();
+            Iterator it = getItems().iterator();
             File first = (File)it.next();
             return (file.equals(first));
         }

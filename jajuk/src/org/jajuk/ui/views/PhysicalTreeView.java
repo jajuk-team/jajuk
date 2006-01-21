@@ -28,17 +28,18 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Properties;
-import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
@@ -494,7 +495,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
                         alSelected.add((IPropertyable)((TransferableTreeNode)o).getData());
                     }
                     else{
-                        alSelected = new ArrayList(FileManager.getInstance().getSortedFiles());
+                        alSelected = new ArrayList(FileManager.getInstance().getItems());
                         items = alSelected.size();
                         hsSelectedFiles.addAll(alSelected);
                         for (IPropertyable item:alSelected){
@@ -800,7 +801,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
             }
         }
         //add files
-        Set files = FileManager.getInstance().getSortedFiles();
+        Collection files = FileManager.getInstance().getItems();
         Iterator it3 = files.iterator();
         while (it3.hasNext()){
             File file = (File)it3.next();
@@ -982,9 +983,16 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
             }
         }
         else if ( e.getSource() == jmiPlaylistFileDelete){
-            PlaylistFile plf = ((PlaylistFileNode)paths[0].getLastPathComponent()).getPlaylistFile();
-            PlaylistFileManager.getInstance().removePlaylistFile(plf);
-            ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH));  //requires device refresh
+            if ( ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_DELETE_FILE)){  //file delete confirmation
+                PlaylistFile plf = ((PlaylistFileNode)paths[0].getLastPathComponent()).getPlaylistFile();
+                String sFileToDelete = plf.getAbsolutePath(); //$NON-NLS-1$
+                String sMessage = Messages.getString("Confirmation_delete")+"\n"+sFileToDelete; //$NON-NLS-1$ //$NON-NLS-2$
+                int i = Messages.getChoice(sMessage,JOptionPane.WARNING_MESSAGE); //$NON-NLS-1$
+                if ( i == JOptionPane.OK_OPTION){
+                    PlaylistFileManager.getInstance().removePlaylistFile(plf);
+                    ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH));  //requires device refresh
+                }
+            }
         }
         else if (e.getSource() == jmiDevConfiguration){
             Device device =  ((DeviceNode)paths[0].getLastPathComponent()).getDevice();

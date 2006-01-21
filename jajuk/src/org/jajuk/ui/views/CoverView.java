@@ -78,7 +78,7 @@ import ext.SwingWorker;
 public class CoverView extends ViewAdapter implements Observer,ComponentListener,ActionListener,ITechnicalStrings{
     
     /**Current directory used as a cache for perfs*/
-    private File fDir;
+    private Directory dirCurrent;
     
     /**List of available covers for the current file*/
     private ArrayList alCovers = new ArrayList(20);
@@ -255,18 +255,18 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                         displayCurrentCover(); 
                         return; 
                     }
-                    this.fDir = null; //analyzed directory
+                    this.dirCurrent = null; //analyzed directory
                     //search for local covers in all directories mapping the current track to reach other devices covers and display them together
                     Track trackCurrent = fCurrent.getTrack();
                     ArrayList alFiles = trackCurrent.getFiles(); //list of files mapping the track
                     Iterator it = alFiles.iterator();
                     while (it.hasNext()){
                         org.jajuk.base.File file = (org.jajuk.base.File)it.next();
-                        if ( !file.getDirectory().getDevice().isReady()) { //if the device is not ready, just ignore it
+                        if ( !file.getDirectory().getDevice().isMounted()) { //if the device is not ready, just ignore it
                             continue;
                         }
-                        fDir = new java.io.File(file.getAbsolutePath()).getParentFile(); //store this dir
-                        java.io.File[] files = fDir.listFiles();//null if none file found
+                        dirCurrent = file.getDirectory(); //store this dir
+                        java.io.File[] files = dirCurrent.getFio().listFiles();//null if none file found
                         boolean bAbsoluteCover = false; //whether an absolute cover ( unique) has been found
                         for (int i=0;files != null && i<files.length;i++){
                             //check size to avoid out of memory errors
@@ -308,14 +308,13 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                                 }
                                 Collections.reverse(alUrls); //set best results to be displayed  first
                                 Iterator it2 = alUrls.iterator(); //add found covers 
-                                ArrayList alRemoteCovers = new ArrayList(alUrls.size()); //contains found covers to avoid to use main cover repository due to concurency issues
                                 while ( it2.hasNext() && this.iEventID == iLocalEventID){ //load each cover (pre-load or post-load) and stop if a signal has been emitted
                                     URL url = (URL)it2.next();
                                     try{
                                         Cover cover = new Cover(url,Cover.REMOTE_COVER);//create a cover with given url ( image will be really downloaded when required if no preload)
                                         if (!alCovers.contains(cover)){
                                             Log.debug("Found Cover: "+url.toString()); //$NON-NLS-1$
-                                            alRemoteCovers.add(cover);
+                                            alCovers.add(cover);
                                         }
                                     }
                                     catch(Exception e){
@@ -333,8 +332,6 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                                     Log.debug("Download stopped - 1"); //$NON-NLS-1$
                                     return;
                                 }
-                                //Add found covers
-                                alCovers.addAll(alRemoteCovers);
                             }
                         }
                         catch(Exception e){
@@ -372,7 +369,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                     alCovers.add(coverDefault); //add the default cover
                     index = 0;
                     displayCurrentCover();
-                    fDir = null;
+                    dirCurrent = null;
                 }
                 else if ( EVENT_COVER_CHANGE.equals(subject)
                         && isInCurrentPerspective()){
@@ -754,8 +751,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
             }
             //If this was the absolute cover, remove the reference in the collection
             if (cover.getType() == Cover.ABSOLUTE_DEFAULT_COVER){
-                Directory dir = FIFO.getInstance().getCurrentFile().getDirectory(); 
-                dir.removeProperty("default_cover"); //$NON-NLS-1$
+                dirCurrent.removeProperty("default_cover"); //$NON-NLS-1$
             }
             // reorganize covers
             synchronized(bLock){
@@ -772,39 +768,32 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
             Cover cover = (Cover)alCovers.get(index);
             String sFilename = Util.getOnlyFile(cover.getURL().toString());
             if (cover.getType() == Cover.REMOTE_COVER){
-                String sFilePath = fDir.getPath()+"/"+sFilename; //$NON-NLS-1$
+                String sFilePath = dirCurrent.getFio().getPath()+"/"+sFilename; //$NON-NLS-1$
                 try{
                     //copy file from cache
                     File fSource = new File(Util.getCachePath(cover.getURL()));
                     File file = new File(sFilePath);
                     Util.copy(fSource,file);
-                    InformationJPanel.getInstance().setMessage(Messages.getString("CoverView.11"),InformationJPanel.INFORMATIVE); //$NON-NLS-1$
                     Cover cover2 = new Cover(file.toURL(),Cover.ABSOLUTE_DEFAULT_COVER);
                     if (!alCovers.contains(cover2)){
                         alCovers.add(cover2);
                         setFoundText();
                     }
+                    refreshThumbs(cover);
+                    InformationJPanel.getInstance().setMessage(Messages.getString("CoverView.11"),InformationJPanel.INFORMATIVE); //$NON-NLS-1$
                 }
                 catch(Exception ex){
                     Log.error("024",ex); //$NON-NLS-1$
                     Messages.showErrorMessage("024"); //$NON-NLS-1$
                 }
             }
+            else{
+               refreshThumbs(cover);
+               InformationJPanel.getInstance().setMessage(Messages.getString("CoverView.8"),InformationJPanel.INFORMATIVE); //$NON-NLS-1$
+            }
             //then make it the default cover in this directory
-            Directory dir = FIFO.getInstance().getCurrentFile().getDirectory(); 
-            dir.setProperty("default_cover",sFilename); //$NON-NLS-1$
-            //refresh thumbs
-            try{
-                for (int i=0; i<4; i++){
-                    Album album = FIFO.getInstance().getCurrentFile().getTrack().getAlbum();
-                    File fThumb = new File(FILE_THUMBS+'/'+(50+50*i)+"x"+(50+50*i)+'/'+album.getId()+'.'+EXT_THUMB);
-                    Util.createThumbnail(cover.getFile().toURL(),fThumb,(50+50*i));
-                }
-                ObservationManager.notify(new Event(EVENT_COVER_DEFAULT_CHANGED));
-            }
-            catch(Exception ex){
-                Log.error("024",ex); //$NON-NLS-1$
-            }
+            dirCurrent.setProperty("default_cover",sFilename); //$NON-NLS-1$
+            
         }
         else if(e.getSource() == jbSave ){ //save a file with its original name
             new Thread(){
@@ -816,7 +805,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                         return;
                     }
                     String sFilePath = null;
-                    sFilePath = fDir.getPath()+"/"+Util.getOnlyFile(cover.getURL().toString()); //$NON-NLS-1$
+                    sFilePath = dirCurrent.getFio().getPath()+"/"+Util.getOnlyFile(cover.getURL().toString()); //$NON-NLS-1$
                     try{
                         //copy file from cache
                         File fSource = new File(Util.getCachePath(cover.getURL()));
@@ -840,7 +829,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
             new Thread(){
                 public void run() {
                     Cover cover = (Cover)alCovers.get(index);
-                    JFileChooser jfchooser = new JFileChooser(fDir);
+                    JFileChooser jfchooser = new JFileChooser(dirCurrent.getFio());
                     FileFilter filter = new FileFilter() {
                         public boolean accept(File file) {
                             String sExt =Util.getExtension(file); 
@@ -856,7 +845,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                     };
                     jfchooser.setFileFilter(filter);
                     jfchooser.setDialogTitle(Messages.getString("CoverView.10")); //$NON-NLS-1$
-                    File finalFile = new File(fDir.getPath()+"/"+Util.getOnlyFile(cover.getURL().toString())); //$NON-NLS-1$
+                    File finalFile = new File(dirCurrent.getFio().getPath()+"/"+Util.getOnlyFile(cover.getURL().toString())); //$NON-NLS-1$
                     jfchooser.setSelectedFile(finalFile);
                     int returnVal = jfchooser.showSaveDialog(Main.getWindow());
                     File fNew = null;
@@ -880,6 +869,26 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
             }.start();
         }
         
+    }
+    
+    
+    /**
+     * Refresh default cover thumb (used in catalog view)
+     *
+     */
+    private void refreshThumbs(Cover cover){
+        //refresh thumbs
+        try{
+            for (int i=0; i<4; i++){
+                Album album = dirCurrent.getFiles().iterator().next().getTrack().getAlbum();
+                File fThumb = new File(FILE_THUMBS+'/'+(50+50*i)+"x"+(50+50*i)+'/'+album.getId()+'.'+EXT_THUMB);
+                Util.createThumbnail(cover.getFile().toURL(),fThumb,(50+50*i));
+            }
+            ObservationManager.notify(new Event(EVENT_COVER_DEFAULT_CHANGED));
+        }
+        catch(Exception ex){
+            Log.error("024",ex); //$NON-NLS-1$
+        }
     }
     
     /**
@@ -954,8 +963,8 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
         new Thread(){
             public void run(){
                 //refresh only if needed
-                if (fDir == null ||  
-                        !fDir.equals(FIFO.getInstance().getCurrentFile().getDirectory().getFio())){
+                if (dirCurrent == null ||  
+                        !dirCurrent.equals(dirCurrent)){
                     update(new Event(EVENT_COVER_REFRESH));
                 }
             }

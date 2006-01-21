@@ -25,10 +25,7 @@ import java.io.FileReader;
 import java.util.Iterator;
 import java.util.Properties;
 
-import javax.swing.JOptionPane;
-
 import org.jajuk.i18n.Messages;
-import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
@@ -78,18 +75,8 @@ public class PlaylistFileManager extends ItemManager implements Observer{
     public PlaylistFile registerPlaylistFile(java.io.File fio, Directory dParentDirectory) throws Exception{
         synchronized(PlaylistFileManager.getInstance().getLock()){
             String sId = MD5Processor.hash(new StringBuffer(
-                
                 dParentDirectory.getDevice().getUrl()).append(dParentDirectory.getRelativePath()).append(fio.getName()).toString());
-            BufferedReader br = new BufferedReader(new FileReader(fio));
-            StringBuffer sbContent = new StringBuffer();
-            String sTemp;
-            do{
-                sTemp = br.readLine();
-                sbContent.append(sTemp);
-            }
-            while (sTemp != null);
-            String sHashcode =MD5Processor.hash(sbContent.toString());
-            return registerPlaylistFile(sId,fio.getName(),sHashcode,dParentDirectory);
+            return registerPlaylistFile(sId,fio.getName(),dParentDirectory);
         }
     }
     
@@ -99,28 +86,22 @@ public class PlaylistFileManager extends ItemManager implements Observer{
      */
     public void removePlaylistFile(PlaylistFile plf){
         synchronized(PlaylistFileManager.getInstance().getLock()){
-            if ( ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_DELETE_FILE)){  //file delete confirmation
-                String sFileToDelete = plf.getDirectory().getFio().getAbsoluteFile().toString()+java.io.File.separatorChar+plf.getName(); //$NON-NLS-1$
-                String sMessage = Messages.getString("Confirmation_delete")+"\n"+sFileToDelete; //$NON-NLS-1$ //$NON-NLS-2$
-                int i = Messages.getChoice(sMessage,JOptionPane.WARNING_MESSAGE); //$NON-NLS-1$
-                if ( i == JOptionPane.OK_OPTION){
-                    java.io.File fileToDelete = new java.io.File(sFileToDelete);
-                    if ( fileToDelete.exists()){
-                        fileToDelete.delete();
-                        //check that file has been really deleted (sometimes, we get no exception)
-                        if (fileToDelete.exists()){
-                            Log.error("131",new JajukException("131")); //$NON-NLS-1$//$NON-NLS-2$
-                            Messages.showErrorMessage("131"); //$NON-NLS-1$
-                            return;
-                        }
-                    }
-                    //remove reference from playlist
-                    PlaylistManager.getInstance().removePlaylistFile(plf);
-                    plf.getDirectory().removePlaylistFile(plf);
-                    //remove playlist file
-                    removeItem(plf.getId());
+            String sFileToDelete = plf.getDirectory().getFio().getAbsoluteFile().toString()+java.io.File.separatorChar+plf.getName(); //$NON-NLS-1$
+            java.io.File fileToDelete = new java.io.File(sFileToDelete);
+            if ( fileToDelete.exists()){
+                fileToDelete.delete();
+                //check that file has been really deleted (sometimes, we get no exception)
+                if (fileToDelete.exists()){
+                    Log.error("131",new JajukException("131")); //$NON-NLS-1$//$NON-NLS-2$
+                    Messages.showErrorMessage("131"); //$NON-NLS-1$
+                    return;
                 }
             }
+            //remove reference from playlist
+            PlaylistManager.getInstance().removePlaylistFile(plf);
+            plf.getDirectory().removePlaylistFile(plf);
+            //remove playlist file
+            removeItem(plf.getId());
         }
     }
     
@@ -129,9 +110,19 @@ public class PlaylistFileManager extends ItemManager implements Observer{
      * 
      * @param sName
      */
-    public synchronized PlaylistFile registerPlaylistFile(String sId, String sName, String sHashcode, Directory dParentDirectory) {
+    public synchronized PlaylistFile registerPlaylistFile(String sId, String sName, Directory dParentDirectory) throws Exception{
         synchronized(PlaylistFileManager.getInstance().getLock()){
             if ( !hmItems.containsKey(sId)){
+                java.io.File fio = new java.io.File(dParentDirectory.getAbsolutePath()+'/'+sName);
+                BufferedReader br = new BufferedReader(new FileReader(fio));
+                StringBuffer sbContent = new StringBuffer();
+                String sTemp;
+                do{
+                    sTemp = br.readLine();
+                    sbContent.append(sTemp);
+                }
+                while (sTemp != null);
+                String sHashcode =MD5Processor.hash(sbContent.toString());
                 PlaylistFile playlistFile = null;
                 playlistFile = new PlaylistFile(sId, sName, sHashcode, dParentDirectory);
                 hmItems.put(sId, playlistFile);

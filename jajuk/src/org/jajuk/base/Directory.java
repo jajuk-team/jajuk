@@ -217,7 +217,7 @@ public class Directory extends PropertyAdapter implements Comparable{
      */
     public ArrayList<org.jajuk.base.File> getFilesRecursively() {
         ArrayList alFiles = new ArrayList(100);
-        Iterator it = FileManager.getInstance().getSortedFiles().iterator();
+        Iterator it = FileManager.getInstance().getItems().iterator();
         while ( it.hasNext()){
             org.jajuk.base.File file = (org.jajuk.base.File)it.next();
             if ( file.hasAncestor(this)){
@@ -305,7 +305,6 @@ public class Directory extends PropertyAdapter implements Comparable{
                     long lQuality = tag.getQuality();
                     String sComment = tag.getComment();
                     long lOrder = tag.getOrder();
-                    
                     if (fileRef == null){
                         device.iNbNewFiles ++;  //stats, do it here and not before because we ignore the file if we cannot read it
                     }
@@ -322,9 +321,21 @@ public class Directory extends PropertyAdapter implements Comparable{
                     track.setComment(sComment); 
                 }
                 else{  //playlist file
+                    String sId = MD5Processor.hash(new StringBuffer(
+                        this.getDevice().getUrl()).
+                        append(this.getRelativePath()).
+                        append(files[i].getName()).toString());
+                    PlaylistFile plfRef = (PlaylistFile)PlaylistFileManager.getInstance().getItem(sId);
+                    //if known playlist file and no deep scan, just leave
+                    if (plfRef != null && !bDeepScan){
+                        continue;
+                    }
                     PlaylistFile plFile = PlaylistFileManager.getInstance().registerPlaylistFile(files[i],this);
                     PlaylistManager.getInstance().registerPlaylist(plFile);
                     addPlaylistFile(plFile);
+                    if (plfRef == null){
+                        device.iNbNewFiles ++;  //stats, do it here and not before because we ignore the file if we cannot read it
+                    }
                 }
             }
             catch(Exception e){ 

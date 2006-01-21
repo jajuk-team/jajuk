@@ -25,10 +25,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 
+import javax.swing.JOptionPane;
+
 import org.jajuk.base.Observer;
 import org.jajuk.base.PlaylistFile;
 import org.jajuk.base.PlaylistFileManager;
+import org.jajuk.i18n.Messages;
 import org.jajuk.ui.PlaylistFileItem;
+import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.error.JajukException;
 
 /**
@@ -108,7 +112,14 @@ public class PhysicalPlaylistRepositoryView extends AbstractPlaylistRepositoryVi
     }
     
     public synchronized void removeItem (PlaylistFileItem plfiSelected){
-        PlaylistFileManager.getInstance().removePlaylistFile(plfiSelected.getPlaylistFile());
+        if ( ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_DELETE_FILE)){  //file delete confirmation
+                String sFileToDelete = plfiSelected.getPlaylistFile().getAbsolutePath(); //$NON-NLS-1$
+                String sMessage = Messages.getString("Confirmation_delete")+"\n"+sFileToDelete; //$NON-NLS-1$ //$NON-NLS-2$
+                int i = Messages.getChoice(sMessage,JOptionPane.WARNING_MESSAGE); //$NON-NLS-1$
+                if ( i == JOptionPane.OK_OPTION){
+                    PlaylistFileManager.getInstance().removePlaylistFile(plfiSelected.getPlaylistFile());
+                }
+        }
     }
     
     public void play(PlaylistFileItem plfi) throws JajukException{

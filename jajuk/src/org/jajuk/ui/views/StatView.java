@@ -169,7 +169,7 @@ public class StatView extends ViewAdapter implements Observer{
                 JFreeChart jfchart = null;
                 //data
                 pdata = new DefaultPieDataset();
-                Iterator itFiles = FileManager.getInstance().getSortedFiles().iterator();
+                Iterator itFiles = FileManager.getInstance().getItems().iterator();
                 //prepare devices
                 long lTotalSize = 0;
                 double dOthers = 0;

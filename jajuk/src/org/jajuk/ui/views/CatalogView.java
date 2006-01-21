@@ -297,8 +297,6 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
     private void refreshThumbnail(Album album){
         File fThumb = new File(FILE_THUMBS+'/'+(String)jcbSize.getSelectedItem()+'/'+album.getId()+'.'+EXT_THUMB);
         if (!fThumb.exists()){
-            InformationJPanel.getInstance().setMessage(Messages.getString("CatalogView.5")
-                +' '+album.getName2(),InformationJPanel.INFORMATIVE);
             //search for local covers in all directories mapping the current track to reach other devices covers and display them together
             HashSet<Track> tracks = TrackManager.getInstance().getAssociatedTracks(album);
             if (tracks.size() == 0){
@@ -318,6 +316,8 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
             else{
                 try {
                     Util.createThumbnail(fCover.toURL(),fThumb,50+(50*jcbSize.getSelectedIndex()));
+                    InformationJPanel.getInstance().setMessage(Messages.getString("CatalogView.5")
+                        +' '+album.getName2(),InformationJPanel.INFORMATIVE);
                 }
                 catch (Exception e) {
                     //create a void thumb to avoid trying to create again this thumb 
@@ -454,8 +454,6 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
             public void finished() {
                 jsp.revalidate();
                 jsp.repaint();
-                //reset message dialog
-                InformationJPanel.getInstance().setMessage("",InformationJPanel.INFORMATIVE);
                 jtfValue.requestFocusInWindow();
                 bNeedSearch = false;
                 bPopulating = false;

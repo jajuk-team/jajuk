@@ -438,7 +438,7 @@ public class FIFO implements ITechnicalStrings {
                     if (siLast != null) {
                         item = new StackItem(FileManager.getInstance().getNextFile(siLast.getFile()), false);
                     } else { // nothing in fifo, take first files in collection
-                        File file = (File)FileManager.getInstance().getSortedFiles().toArray()[i];
+                        File file = (File)FileManager.getInstance().getItems().toArray()[i];
                         item = new StackItem(file, false);
                     }
                 }
