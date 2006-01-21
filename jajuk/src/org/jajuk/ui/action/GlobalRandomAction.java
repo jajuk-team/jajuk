@@ -21,8 +21,8 @@ import org.jajuk.base.FIFO;
 public class GlobalRandomAction extends ActionBase {
 
     GlobalRandomAction() {
-        super(Util.getIcon(ICON_SHUFFLE_GLOBAL), true);
-        setShortDescription(Messages.getString("CommandJPanel.5")); //$NON-NLS-1$
+        super(Messages.getString("JajukWindow.6"), Util.getIcon(ICON_SHUFFLE_GLOBAL), true); //$NON-NLS-1$
+        setShortDescription(Messages.getString("JajukWindow.23")); //$NON-NLS-1$
     }
 
     public void perform(ActionEvent evt) throws JajukException {

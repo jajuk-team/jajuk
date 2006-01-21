@@ -23,7 +23,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.JCheckBoxMenuItem;
-import org.jajuk.Main;
 import org.jajuk.base.*;
 import org.jajuk.ui.perspectives.IPerspective;
 import org.jajuk.ui.perspectives.PerspectiveManager;
@@ -61,11 +60,8 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
 	 */
 	public void actionPerformed(final ActionEvent e) {
 		try{
-			//no thread, nothing requires long execution time and a SwingWorker is not adapted
-			if (e.getActionCommand().equals(EVENT_EXIT)) {
-				Main.exit(0);
-			}
-			else if (e.getActionCommand().equals(EVENT_REPEAT_MODE_STATUS_CHANGED)) {
+ 			//no thread, nothing requires long execution time and a SwingWorker is not adapted
+            if (e.getActionCommand().equals(EVENT_REPEAT_MODE_STATUS_CHANGED)) {
 			    boolean b = ConfigurationManager.getBoolean(CONF_STATE_REPEAT);
 			    ConfigurationManager.setProperty(CONF_STATE_REPEAT, Boolean.toString(!b));
 			    JajukJMenuBar.getInstance().jcbmiRepeat.setSelected(!b);

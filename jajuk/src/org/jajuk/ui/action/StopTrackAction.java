@@ -5,10 +5,10 @@
  */
 package org.jajuk.ui.action;
 
+import java.awt.event.ActionEvent;
+import org.jajuk.base.FIFO;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.Util;
-import org.jajuk.base.FIFO;
-import java.awt.event.ActionEvent;
 
 /**
  * @author Bart Cremers(Real Software)
@@ -16,8 +16,8 @@ import java.awt.event.ActionEvent;
  */
 public class StopTrackAction extends ActionBase {
     StopTrackAction() {
-        super(Util.getIcon(ICON_STOP), "ctrl S", false);
-        setShortDescription(Messages.getString("CommandJPanel.12")); //$NON-NLS-1$
+        super(Messages.getString("JajukWindow.11"), Util.getIcon(ICON_STOP), "ctrl S", false); //$NON-NLS-1$ //$NON-NLS-2$
+        setShortDescription(Messages.getString("JajukWindow.27")); //$NON-NLS-1$
     }
 
     public void perform(ActionEvent evt) {

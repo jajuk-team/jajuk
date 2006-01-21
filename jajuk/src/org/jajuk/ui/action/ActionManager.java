@@ -69,6 +69,9 @@ public final class ActionManager {
         installAction(INCREASE_VOLUME, new IncreaseVolumeAction(), true);
         installAction(MUTE_STATE, new MuteAction(), false);
 
+        // JajukJMenuBar: File Menu
+        installAction(EXIT, new ExitAction(), false);
+
         // JajukJMenuBar: Help Menu
         installAction(HELP_REQUIRED, new HelpRequiredAction(), false);
         installAction(SHOW_ABOUT, new ShowAboutAction(), false);

@@ -5,14 +5,14 @@
  */
 package org.jajuk.ui.action;
 
+import java.awt.event.ActionEvent;
+import org.jajuk.base.Event;
+import org.jajuk.base.FIFO;
+import org.jajuk.base.ObservationManager;
+import org.jajuk.base.Player;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
-import org.jajuk.base.FIFO;
-import org.jajuk.base.Player;
-import org.jajuk.base.ObservationManager;
-import org.jajuk.base.Event;
-import java.awt.event.ActionEvent;
 
 /**
  * Action class for jumping to the next track. Installed keystroke:
@@ -23,8 +23,8 @@ import java.awt.event.ActionEvent;
  */
 public class NextTrackAction extends ActionBase {
     NextTrackAction() {
-        super(Util.getIcon(ICON_NEXT), "ctrl RIGHT", false); //$NON-NLS-1$
-        setShortDescription(Messages.getString("CommandJPanel.9")); //$NON-NLS-1$
+        super(Messages.getString("JajukWindow.14"), Util.getIcon(ICON_NEXT), "ctrl RIGHT", false); //$NON-NLS-1$ //$NON-NLS-2$
+        setShortDescription(Messages.getString("JajukWindow.30")); //$NON-NLS-1$
     }
 
     public void perform(ActionEvent evt) {

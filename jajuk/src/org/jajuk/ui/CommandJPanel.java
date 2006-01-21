@@ -94,7 +94,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 	JSlider jsVolume;
 	JLabel jlPosition;
 	JSlider jsPosition;
-	JButton jbMute;
+	public JajukToggleButton jbMute;
 
 	//variables declaration
 	/**Repeat mode flag*/

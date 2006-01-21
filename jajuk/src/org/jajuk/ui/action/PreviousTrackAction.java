@@ -24,8 +24,8 @@ import org.jajuk.util.log.Log;
 public class PreviousTrackAction extends ActionBase {
 
     PreviousTrackAction() {
-        super(Util.getIcon(ICON_PREVIOUS), "ctrl LEFT", false); //$NON-NLS-1$
-        setShortDescription(Messages.getString("CommandJPanel.8")); //$NON-NLS-1$
+        super(Messages.getString("JajukWindow.13"), Util.getIcon(ICON_PREVIOUS), "ctrl LEFT", false); //$NON-NLS-1$ $NON-NLS-2$
+        setShortDescription(Messages.getString("JajukWindow.29")); //$NON-NLS-1$
     }
 
     public void perform(ActionEvent evt) {

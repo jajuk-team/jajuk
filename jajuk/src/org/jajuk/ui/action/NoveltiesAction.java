@@ -8,12 +8,12 @@ package org.jajuk.ui.action;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Collections;
-import org.jajuk.i18n.Messages;
-import org.jajuk.util.Util;
-import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.error.JajukException;
-import org.jajuk.base.FileManager;
 import org.jajuk.base.FIFO;
+import org.jajuk.base.FileManager;
+import org.jajuk.i18n.Messages;
+import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.Util;
+import org.jajuk.util.error.JajukException;
 
 /**
  * @author Bart Cremers
@@ -22,8 +22,8 @@ import org.jajuk.base.FIFO;
 public class NoveltiesAction extends ActionBase {
 
     NoveltiesAction() {
-        super(Util.getIcon(ICON_NOVELTIES), true);
-        setShortDescription(Messages.getString("CommandJPanel.16")); //$NON-NLS-1$
+        super(Messages.getString("JajukWindow.15"), Util.getIcon(ICON_NOVELTIES), true); //$NON-NLS-1$
+        setShortDescription(Messages.getString("JajukWindow.31")); //$NON-NLS-1$
     }
 
     public void perform(ActionEvent evt) throws JajukException {

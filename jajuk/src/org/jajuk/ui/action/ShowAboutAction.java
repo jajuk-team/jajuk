@@ -19,10 +19,12 @@
  */
 package org.jajuk.ui.action;
 
+import java.awt.event.ActionEvent;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.perspectives.PerspectiveManager;
+import org.jajuk.ui.JajukWindow;
 import org.jajuk.util.Util;
-import java.awt.event.ActionEvent;
+import org.jajuk.Main;
 
 /**
  * Action for displaying the tip of the day.
@@ -33,14 +35,23 @@ import java.awt.event.ActionEvent;
 public class ShowAboutAction extends ActionBase {
 
     ShowAboutAction() {
-        super(Messages.getString("JajukJMenuBar.16"), Util.getIcon(ICON_INFO), true);
+        super(Messages.getString("JajukWindow.5"), Util.getIcon(ICON_INFO), true); //$NON-NLS-1$
+        setShortDescription(Messages.getString("JajukWindow.22")); //$NON-NLS-1$
     }
 
     /**
      * Invoked when an action occurs.
-     * @param evt
      */
     public void perform(ActionEvent evt) {
-        PerspectiveManager.setCurrentPerspective(PERSPECTIVE_NAME_HELP);
+        //set default perspective to show if UIi is not yet started
+        if (Main.isUILauched()) {
+            PerspectiveManager.setCurrentPerspective(PERSPECTIVE_NAME_HELP);
+        } else {
+            Main.setDefaultPerspective(PERSPECTIVE_NAME_HELP);
+        }
+        //make frame visible
+        if (!JajukWindow.getInstance().isVisible()) {
+            JajukWindow.getInstance().setShown(true);
+        }
     }
 }

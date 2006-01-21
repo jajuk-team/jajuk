@@ -19,31 +19,14 @@
  */
 package org.jajuk.ui;
 
-import static org.jajuk.ui.action.JajukAction.CONTINUE_MODE_STATUS_CHANGED;
-import static org.jajuk.ui.action.JajukAction.HELP_REQUIRED;
-import static org.jajuk.ui.action.JajukAction.INTRO_MODE_STATUS_CHANGED;
-import static org.jajuk.ui.action.JajukAction.QUALITY;
-import static org.jajuk.ui.action.JajukAction.REPEAT_MODE_STATUS_CHANGE;
-import static org.jajuk.ui.action.JajukAction.SHOW_ABOUT;
-import static org.jajuk.ui.action.JajukAction.SHUFFLE_MODE_STATUS_CHANGED;
-import static org.jajuk.ui.action.JajukAction.TIP_OF_THE_DAY;
-import static org.jajuk.ui.action.JajukAction.WIZARD;
-
 import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 import java.util.HashMap;
-
-import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JPanel;
-import javax.swing.KeyStroke;
-
+import javax.swing.*;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.action.ActionManager;
 import org.jajuk.ui.action.ActionUtil;
+import org.jajuk.ui.action.JajukAction;
+import static org.jajuk.ui.action.JajukAction.*;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
@@ -85,11 +68,8 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings{
         setAlignmentX(0.0f);
         //File menu
         file = new JMenu(Messages.getString("JajukJMenuBar.0")); //$NON-NLS-1$
-        jmiFileExit = new JMenuItem(Messages.getString("JajukJMenuBar.3"),Util.getIcon(ICON_EXIT));  //$NON-NLS-1$
-        jmiFileExit.addActionListener(JajukListener.getInstance());
-        jmiFileExit.setActionCommand(EVENT_EXIT);
-        jmiFileExit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.ALT_MASK));
-        jmiFileExit.getAccessibleContext().setAccessibleDescription("[ALT-X]");  //$NON-NLS-1$
+
+        jmiFileExit = new JMenuItem(ActionManager.getAction(JajukAction.EXIT));
         file.add(jmiFileExit);
 
         //Properties menu

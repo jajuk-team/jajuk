@@ -7,10 +7,10 @@ package org.jajuk.ui.action;
 
 import java.awt.event.ActionEvent;
 import java.util.Properties;
+import org.jajuk.base.*;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
-import org.jajuk.base.*;
 
 /**
  * @author Bart Cremers
@@ -19,8 +19,9 @@ import org.jajuk.base.*;
 public class FinishAlbumAction extends ActionBase {
 
     FinishAlbumAction() {
-        super(Util.getIcon(ICON_MODE_NORMAL), FIFO.getInstance().getCurrentItem() != null);
-        setShortDescription(Messages.getString("CommandJPanel.17")); //$NON-NLS-1$
+        super(Messages.getString("JajukWindow.16"), Util.getIcon(ICON_MODE_NORMAL), //$NON-NLS-1$
+              FIFO.getInstance().getCurrentItem() != null);
+        setShortDescription(Messages.getString("JajukWindow.32")); //$NON-NLS-1$
     }
 
     public void perform(ActionEvent evt) throws JajukException {
