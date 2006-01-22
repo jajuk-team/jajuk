@@ -74,9 +74,19 @@ public class StyleManager extends ItemManager {
      * @param sName
      */
     public Style registerStyle(String sName) {
-        String sId = MD5Processor.hash(sName.trim().toLowerCase());
+        String sId = getHashcode(sName);
         return registerStyle(sId, sName);
     }
+    
+    /**
+     * Return hashcode for this item
+     * @param sName item name
+     * @return Item ID
+     */
+    protected static String getHashcode(String sName){
+        return MD5Processor.hash(sName.trim().toLowerCase());
+    }
+    
     
     /**
      * Register a style with a known id

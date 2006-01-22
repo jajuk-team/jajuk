@@ -427,7 +427,8 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
                     }
                 }
                 //UPGRADE --For jajuk == 1.0.1 to 1.0.2 : Track id changed and used deep hashcode, not used later
-                String sRightID = TrackManager.getHashcode(sTrackName,album,style,author,length,lYear,lOrder,type);
+                String sRightID = TrackManager.getID(sTrackName,album,style,author,length,lYear,lOrder,type);
+                
                 //Date format should be OK
                 Date dAdditionDate = Util.getAdditionDateFormat().parse(attributes.getValue(attributes.getIndex(XML_TRACK_ADDED)));
                 Track track = TrackManager.getInstance().registerTrack(sRightID, sTrackName, album, style, author, length, lYear,lOrder, type);
@@ -503,9 +504,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
                 }
                 String sID= attributes.getValue(attributes.getIndex(XML_ID));
                 String sItemName= attributes.getValue(attributes.getIndex(XML_NAME));
-                String sHashcode= attributes.getValue(attributes.getIndex(XML_HASHCODE));
                 PlaylistFile plf = PlaylistFileManager.getInstance().registerPlaylistFile(sID,sItemName,dParent);
-                plf.setHashcode(sHashcode);
                 if (plf != null){
                     plf.populateProperties(attributes);
                     dParent.addPlaylistFile(plf);

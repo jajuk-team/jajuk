@@ -28,7 +28,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -579,7 +578,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
                         }
                         else{
                             FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFiles),
-                                    ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
+                                ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
                         }
                     }
                 }
@@ -756,24 +755,27 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
     public synchronized void populateTree(){
         top.removeAllChildren();
         //add devices
-        ArrayList alDevices = new ArrayList(DeviceManager.getInstance().getItems());
-        Collections.sort(alDevices);
-        Iterator it1 = DeviceManager.getInstance().getItems().iterator();
-        while ( it1.hasNext()){
-            Device device = (Device)it1.next();
-            DefaultMutableTreeNode nodeDevice = new DeviceNode(device);
-            top.add(nodeDevice);
+        synchronized (DeviceManager.getInstance().getLock()) {
+            ArrayList alDevices = new ArrayList(DeviceManager.getInstance().getItems());
+            Iterator it1 = DeviceManager.getInstance().getItems().iterator();
+            while ( it1.hasNext()){
+                Device device = (Device)it1.next();
+                DefaultMutableTreeNode nodeDevice = new DeviceNode(device);
+                top.add(nodeDevice);
+            }
         }
         //add directories
-        ArrayList directories = new ArrayList(DirectoryManager.getInstance().getItems());
-        Collections.sort(directories);
+        ArrayList directories = null;
+        synchronized (DirectoryManager.getInstance().getLock()) {
+            directories = new ArrayList(DirectoryManager.getInstance().getItems());
+        }
         Iterator it2 = directories.iterator();
         while (it2.hasNext()){
             Directory directory = (Directory)it2.next();
             if (directory.shouldBeHidden()){
                 continue;
             }
-            if (!directory.getName().equals("")){ //device root directory, do not display //$NON-NLS-1$
+            if (directory.getParentDirectory() != null){ //device root directory, do not display //$NON-NLS-1$
                 if (directory.getParentDirectory().getName().equals("")){  //parent directory is a device //$NON-NLS-1$
                     DeviceNode deviceNode = DeviceNode.getDeviceNode(directory.getDevice());
                     if ( deviceNode != null){
@@ -801,7 +803,10 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
             }
         }
         //add files
-        Collection files = FileManager.getInstance().getItems();
+        ArrayList files = null;
+        synchronized (FileManager.getInstance().getLock()) {
+            files = new ArrayList(FileManager.getInstance().getItems());
+        }
         Iterator it3 = files.iterator();
         while (it3.hasNext()){
             File file = (File)it3.next();
@@ -813,9 +818,12 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
                 directoryNode.add(new FileNode(file));
             }
         }
+        
         //add playlist files
-        ArrayList playlists = new ArrayList(PlaylistFileManager.getInstance().getItems());
-        Collections.sort(playlists);
+        ArrayList playlists = null;
+        synchronized (PlaylistFileManager.getInstance().getLock()) {
+            playlists = new ArrayList(PlaylistFileManager.getInstance().getItems());
+        }
         Iterator it4 = playlists.iterator();
         while (it4.hasNext()){
             PlaylistFile playlistFile = (PlaylistFile)it4.next();
@@ -827,6 +835,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
                 directoryNode.add(new PlaylistFileNode(playlistFile));
             }
         }
+        
     }
     
     /* (non-Javadoc)
@@ -840,18 +849,18 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         }
         else if (e.getSource() == jmiFilePlay ){
             FIFO.getInstance().push(Util.createStackItems(alFiles,
-                    ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
+                ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
         }
         else if (e.getSource() == jmiFileAddFavorites){
             Bookmarks.getInstance().addFiles(alFiles);
         }
         else if (e.getSource() == jmiFilePush){
             FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFiles),
-                    ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),true);
+                ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),true);
         }
         else if ( alFiles!= null && (e.getSource() == jmiDirPlay || e.getSource() == jmiDevPlay)){  
             FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFiles),
-                    ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
+                ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
         }
         else if ( alFiles!= null && e.getSource() == jmiDirAddFavorites) {
             Bookmarks.getInstance().addFiles(alFiles);
@@ -872,12 +881,12 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         }
         else if (alFiles!= null  && (e.getSource() == jmiDirPush || e.getSource() == jmiDevPush)){
             FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFiles),
-                    ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),true);
+                ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),true);
         }
         else if (alFiles!= null  && (e.getSource() == jmiDirPlayShuffle || e.getSource() == jmiDevPlayShuffle)){
             Collections.shuffle(alFiles);
             FIFO.getInstance().push(Util.createStackItems(alFiles,
-                    ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
+                ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
         }
         else if (alFiles!= null  && (e.getSource() == jmiDirPlayRepeat || e.getSource() == jmiDevPlayRepeat)){
             FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFiles),true,true),false);
@@ -962,20 +971,20 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
             else{ //specific actions
                 if ( e.getSource() == jmiPlaylistFilePlay ){
                     FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFiles),
-                            ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
+                        ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
                 }
                 else if ( e.getSource()==jmiPlaylistFilePush ){
                     FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFiles),
-                            ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),true);
+                        ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),true);
                 }
                 else if ( e.getSource() == jmiPlaylistFilePlayShuffle ){
                     Collections.shuffle(alFiles);
                     FIFO.getInstance().push(Util.createStackItems(alFiles,
-                            ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
+                        ConfigurationManager.getBoolean(CONF_STATE_REPEAT),true),false);
                 }
                 else if ( e.getSource() == jmiPlaylistFilePlayRepeat){
                     FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFiles),
-                            true,true),false);
+                        true,true),false);
                 }
                 else if ( e.getSource() == jmiPlaylistAddFavorites){
                     Bookmarks.getInstance().addFiles(alFiles);

@@ -288,7 +288,7 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 		//queue
 		//note we give an id : this id is only used to match current playlist
 		if (plfiQueue == null){
-            plfiQueue = new PlaylistFileItem(PlaylistFileItem.PLAYLIST_TYPE_QUEUE,ICON_PLAYLIST_QUEUE,new PlaylistFile(PlaylistFileItem.PLAYLIST_TYPE_QUEUE,"1",null,null,null),Messages.getString("PhysicalPlaylistRepositoryView.9")); //$NON-NLS-1$ //$NON-NLS-2$
+            plfiQueue = new PlaylistFileItem(PlaylistFileItem.PLAYLIST_TYPE_QUEUE,ICON_PLAYLIST_QUEUE,new PlaylistFile(PlaylistFileItem.PLAYLIST_TYPE_QUEUE,"1",null,null),Messages.getString("PhysicalPlaylistRepositoryView.9")); //$NON-NLS-1$ //$NON-NLS-2$
             plfiQueue.setToolTipText(Messages.getString("PhysicalPlaylistRepositoryView.10")); //$NON-NLS-1$
             plfiQueue.addMouseListener(ma);
         }
@@ -300,7 +300,7 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
         
 		//new
 		if (plfiNew == null){
-		    plfiNew = new PlaylistFileItem(PlaylistFileItem.PLAYLIST_TYPE_NEW,ICON_PLAYLIST_NEW,new PlaylistFile(PlaylistFileItem.PLAYLIST_TYPE_NEW,"2",null,null,null),Messages.getString("PhysicalPlaylistRepositoryView.11")); //$NON-NLS-1$ //$NON-NLS-2$
+		    plfiNew = new PlaylistFileItem(PlaylistFileItem.PLAYLIST_TYPE_NEW,ICON_PLAYLIST_NEW,new PlaylistFile(PlaylistFileItem.PLAYLIST_TYPE_NEW,"2",null,null),Messages.getString("PhysicalPlaylistRepositoryView.11")); //$NON-NLS-1$ //$NON-NLS-2$
 		    plfiNew.setToolTipText(Messages.getString("PhysicalPlaylistRepositoryView.12")); //$NON-NLS-1$
 		    plfiNew.addMouseListener(ma);
         }
@@ -311,7 +311,7 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 		alPlaylistFileItems.add(plfiNew);
 		//bookmark
 		if (plfiBookmarks == null){
-		    plfiBookmarks = new PlaylistFileItem(PlaylistFileItem.PLAYLIST_TYPE_BOOKMARK,ICON_PLAYLIST_BOOKMARK,new PlaylistFile(PlaylistFileItem.PLAYLIST_TYPE_BOOKMARK,"3",null,null,null),Messages.getString("PhysicalPlaylistRepositoryView.13")); //$NON-NLS-1$ //$NON-NLS-2$
+		    plfiBookmarks = new PlaylistFileItem(PlaylistFileItem.PLAYLIST_TYPE_BOOKMARK,ICON_PLAYLIST_BOOKMARK,new PlaylistFile(PlaylistFileItem.PLAYLIST_TYPE_BOOKMARK,"3",null,null),Messages.getString("PhysicalPlaylistRepositoryView.13")); //$NON-NLS-1$ //$NON-NLS-2$
 		    plfiBookmarks.setToolTipText(Messages.getString("PhysicalPlaylistRepositoryView.14")); //$NON-NLS-1$
 		    plfiBookmarks.addMouseListener(ma);
 		}
@@ -322,7 +322,7 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 		alPlaylistFileItems.add(plfiBookmarks);
         //Best of
 		if (plfiBestof == null){
-            plfiBestof = new PlaylistFileItem(PlaylistFileItem.PLAYLIST_TYPE_BESTOF,ICON_PLAYLIST_BESTOF,new PlaylistFile(PlaylistFileItem.PLAYLIST_TYPE_BESTOF,"4",null,null,null),Messages.getString("PhysicalPlaylistRepositoryView.15")); //$NON-NLS-1$ //$NON-NLS-2$
+            plfiBestof = new PlaylistFileItem(PlaylistFileItem.PLAYLIST_TYPE_BESTOF,ICON_PLAYLIST_BESTOF,new PlaylistFile(PlaylistFileItem.PLAYLIST_TYPE_BESTOF,"4",null,null),Messages.getString("PhysicalPlaylistRepositoryView.15")); //$NON-NLS-1$ //$NON-NLS-2$
     		plfiBestof.setToolTipText(Messages.getString("PhysicalPlaylistRepositoryView.16")); //$NON-NLS-1$
     		plfiBestof.addMouseListener(ma);
         }
@@ -336,7 +336,7 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
         }
         //Novelties
         if (plfiNovelties == null){
-            plfiNovelties = new PlaylistFileItem(PlaylistFileItem.PLAYLIST_TYPE_NOVELTIES,ICON_PLAYLIST_NOVELTIES,new PlaylistFile(PlaylistFileItem.PLAYLIST_TYPE_NOVELTIES,"1",null,null,null),Messages.getString("PhysicalPlaylistRepositoryView.17")); //$NON-NLS-1$ //$NON-NLS-2$
+            plfiNovelties = new PlaylistFileItem(PlaylistFileItem.PLAYLIST_TYPE_NOVELTIES,ICON_PLAYLIST_NOVELTIES,new PlaylistFile(PlaylistFileItem.PLAYLIST_TYPE_NOVELTIES,"1",null,null),Messages.getString("PhysicalPlaylistRepositoryView.17")); //$NON-NLS-1$ //$NON-NLS-2$
             plfiNovelties.setToolTipText(Messages.getString("PhysicalPlaylistRepositoryView.18")); //$NON-NLS-1$
             plfiNovelties.addMouseListener(ma);
         }

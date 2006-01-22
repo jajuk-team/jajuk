@@ -197,7 +197,8 @@ public class Playlist extends PropertyAdapter implements Comparable{
 	public int compareTo(Object o){
 		Playlist otherPlaylist = (Playlist)o;
 		//use id in compare because 2 different playlists can have the same name
-        return (getName()+getId()).compareToIgnoreCase(otherPlaylist.getName()+otherPlaylist.getId());
+        return (sName+getId()).
+            compareTo(otherPlaylist.getName()+otherPlaylist.getId());
 	}
 
     

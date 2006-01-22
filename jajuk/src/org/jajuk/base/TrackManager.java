@@ -104,7 +104,7 @@ public class TrackManager extends ItemManager implements Observer{
      * Register an Track
      */
     public synchronized Track registerTrack(String sName, Album album, Style style, Author author, long length, long lYear, long lOrder,Type type) {
-        String sId = getHashcode(sName, album, style, author, length, lYear,lOrder,type);
+        String sId = getID(sName, album, style, author, length, lYear,lOrder,type);
         return registerTrack(sId, sName, album, style, author, length, lYear, lOrder, type);
     }
     
@@ -114,11 +114,16 @@ public class TrackManager extends ItemManager implements Observer{
      * @param track
      * @return
      */
-    public static String getHashcode(String sName, Album album, Style style, Author author, long length, long lYear, long lOrder,Type type){
+    protected static String getID(String sName, Album album, Style style, Author author, long length, long lYear, long lOrder,Type type){
         StringBuffer sb = new StringBuffer(200);
-        sb.append(style.getName()).append(author.getName()).append(album.getName())
-        .append(lYear).append(length).append(lYear).append(lOrder)
-        .append(type.getName()).append(sName);
+        sb.append(sName)
+        .append(style.getName().toLowerCase())
+        .append(author.getName().toLowerCase())
+        .append(album.getName().toLowerCase())
+        .append(lYear)
+        .append(length)
+        .append(lOrder)
+        .append(type.getName()); //differenciate tracks by type because we can't find best file on different quality levels by format
         return MD5Processor.hash(sb.toString());
     }
     

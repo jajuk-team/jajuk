@@ -109,6 +109,10 @@ public class Util implements ITechnicalStrings {
     private static SimpleDateFormat sdfAdded= new SimpleDateFormat(ADDITION_DATE_FORMAT);
     /**Jajuk release*/
     private static String sRelease = null;
+    /**Directory filter used in refresh*/
+    public static JajukFileFilter dirFilter = new JajukFileFilter(true,false);
+    /**File filter used in refresh*/
+    public static JajukFileFilter fileFilter = new JajukFileFilter(false,true);
     /**
      * Genres
      */

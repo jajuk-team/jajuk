@@ -110,8 +110,8 @@ public class DeviceManager extends ItemManager{
      *@param sName
      *@return device 
      */
-    public Device  registerDevice(String sName,long lDeviceType,String sUrl){
-        String sId = processId(sUrl,sName,lDeviceType);
+    public Device registerDevice(String sName,long lDeviceType,String sUrl){
+        String sId = getID(sUrl,sName,lDeviceType);
         return registerDevice(sId,sName,lDeviceType,sUrl);
     }
     
@@ -135,7 +135,7 @@ public class DeviceManager extends ItemManager{
      * @param iDeviceType
      * @return An id
      */
-    private String processId(String sUrl,String sName,long lDeviceType){
+    private String getID(String sUrl,String sName,long lDeviceType){
         return MD5Processor.hash(sUrl+ sName+lDeviceType); //reprocess id;
     }
     

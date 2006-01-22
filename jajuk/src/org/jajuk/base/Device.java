@@ -34,7 +34,6 @@ import org.jajuk.i18n.Messages;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
@@ -248,7 +247,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
             //Start actual scan
             while (iDeep >= 0 && !Main.isExiting()) {
                 //Log.debug("Entering: "+fCurrent); //$NON-NLS-1$
-                File[] files = fCurrent.listFiles(new JajukFileFilter(true,false)); //only directories
+                File[] files = fCurrent.listFiles(Util.dirFilter); //only directories
                 if (files== null || files.length == 0 ){  //files is null if fCurrent is a not a directory 
                     indexTab[iDeep] = -1;//re-init for next time we will reach this deep
                     iDeep--; //come up
@@ -269,7 +268,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
                         indexTab[iDeep] = -1;
                         iDeep --;
                         fCurrent = fCurrent.getParentFile();
-                        if (dParent!=null){
+                        if (dParent != null){
                             dParent = dParent.getParentDirectory();
                         }
                     }
@@ -838,7 +837,10 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
         boolean bChanges = false;
         long l = System.currentTimeMillis();
         //need to use a shallow copy to avoid concurent exceptions
-        ArrayList<Directory> alDirs = new ArrayList(DirectoryManager.getInstance().getItems());
+        ArrayList<Directory> alDirs = null;
+        synchronized(DirectoryManager.getInstance().getLock()){
+            alDirs = new ArrayList(DirectoryManager.getInstance().getItems());
+        }
         for (IPropertyable item:alDirs){
             Directory dir = (Directory)item;
             if (!Main.isExiting()
@@ -855,7 +857,10 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
             }
         }
         
-        ArrayList<org.jajuk.base.File> alFiles = new ArrayList(FileManager.getInstance().getItems());
+        ArrayList<org.jajuk.base.File> alFiles = null;
+        synchronized(FileManager.getInstance().getLock()){
+            alFiles = new ArrayList(FileManager.getInstance().getItems());
+        }
         for (org.jajuk.base.File file:alFiles){
             if (!Main.isExiting() 
                     && file.getDirectory().getDevice().equals(this)
@@ -869,8 +874,10 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
                 }
             }
         }
-        
-        ArrayList<PlaylistFile> alplf = new ArrayList(PlaylistFileManager.getInstance().getItems());
+        ArrayList<PlaylistFile> alplf = null;
+        synchronized(PlaylistFileManager.getInstance().getLock()){
+            alplf = new ArrayList(PlaylistFileManager.getInstance().getItems());
+        }
         for (PlaylistFile plf:alplf){
             if (!Main.isExiting()
                     && plf.getDirectory().getDevice().equals(this)

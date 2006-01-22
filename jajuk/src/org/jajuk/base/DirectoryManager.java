@@ -72,13 +72,8 @@ public class DirectoryManager extends ItemManager{
      */
     public Directory registerDirectory(String sName, Directory dParent, Device device) {
         synchronized(DirectoryManager.getInstance().getLock()){
-            StringBuffer sbAbs = new StringBuffer(device.getUrl());
-            if (dParent != null) {
-                sbAbs.append(dParent.getRelativePath());
-            }
-            sbAbs.append(java.io.File.separatorChar).append(sName);
-            String sId = MD5Processor.hash(sbAbs.insert(0,device.getName()).toString());
-            return registerDirectory(sId, sName, dParent, device);
+            return registerDirectory(getID(sName,device,dParent),
+                sName, dParent, device);
         }
     }
     
@@ -88,9 +83,26 @@ public class DirectoryManager extends ItemManager{
      * @param device
      */
     public Directory registerDirectory(Device device) {
-        String sId = device.getId();
-        return registerDirectory(sId, "", null, device); //$NON-NLS-1$
+        return registerDirectory(device.getId(), "", null, device); //$NON-NLS-1$
     }
+    
+    /**
+     * Return hashcode for this item
+     * @param sName directory name
+     * @param device device
+     * @param dParent parent directory
+     * @return Item ID
+     */
+    protected static String getID(String sName,Device device,Directory dParent){
+        StringBuffer sbAbs = new StringBuffer(device.getUrl());
+            if (dParent != null) {
+                sbAbs.append(dParent.getRelativePath());
+            }
+            sbAbs.append(java.io.File.separatorChar).append(sName);
+            String sId = MD5Processor.hash(sbAbs.insert(0,device.getName()).toString());
+        return sId;
+    }
+    
     
     /**
      * Register a directory with a known id

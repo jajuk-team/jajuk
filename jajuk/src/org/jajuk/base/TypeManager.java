@@ -79,9 +79,18 @@ public class TypeManager extends ItemManager{
      * @param type
      */
     public Type registerType(String sName,String sExtension, Class cPlayerImpl,Class cTagImpl) {
-        String sId = Integer.toString(hmSupportedTypes.size());
-        return registerType(sId,sName,sExtension,cPlayerImpl,cTagImpl);
+        return registerType(getID(hmSupportedTypes.size()),
+            sName,sExtension,cPlayerImpl,cTagImpl);
     }
+    
+     /**
+     * @param type index
+     * @return Item ID
+     */
+    protected static String getID(int index){
+        return Integer.toString(index);    
+    }
+   
     
     /**
      * Register a type jajuk can read with a known id

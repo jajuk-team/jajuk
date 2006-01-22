@@ -66,9 +66,19 @@ public class AuthorManager extends ItemManager{
 	 * @param sName
 	 */
 	public Author registerAuthor(String sName) {
-		String sId = MD5Processor.hash(sName.trim().toLowerCase());
+		String sId = getID(sName);
 		return registerAuthor(sId, sName);
 	}
+    
+    /**
+     * Return hashcode for this item
+     * @param sName item name
+     * @return Item ID
+     */
+    protected static String getID(String sName){
+        return MD5Processor.hash(sName.trim().toLowerCase());
+    }
+    
 
 	/**
 	 * Register an author with a known id

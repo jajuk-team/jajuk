@@ -495,8 +495,8 @@ public interface ITechnicalStrings {
     public static final String CONF_LOGICAL_TABLE_EDITION = "jajuk.ui.logical_table_edition"; //Logical table columns
     public static final String CONF_THUMBS_SIZE = "jajuk.ui.cover_catalog.thumbs_size"; //Catalog items size
     public static final String CONF_THUMBS_SHOW_WITHOUT_COVER = "jajuk.ui.cover_catalog.show_without_cover"; //Catalog items size
-    public static final String CONF_THUMBS_SORTER = "jajuk.ui.sorter"; //Catalog sorter
-    public static final String CONF_THUMBS_FILTER = "jajuk.ui.filter"; //Catalog filter
+    public static final String CONF_THUMBS_SORTER = "jajuk.catalog.sorter"; //Catalog sorter
+    public static final String CONF_THUMBS_FILTER = "jajuk.catalog.filter"; //Catalog filter
     public static final String CONF_SHOW_TIP_ON_STARTUP = "jajuk.tip.show_on_startup"; //Display tips on startup
     public static final String CONF_TIP_OF_DAY_INDEX = "jajuk.tip.index"; // Index of current displayed tip
     public static final String CONF_WIKIPEDIA_LANGUAGE = "jajuk.wikipedia.lang"; // wikipedia language

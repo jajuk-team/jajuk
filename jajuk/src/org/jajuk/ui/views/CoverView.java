@@ -243,11 +243,10 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
         synchronized(bLock){//block any concurrent cover update
             try{
                 searching(true);
-                if ( EVENT_COVER_REFRESH.equals(subject)
-                        && isInCurrentPerspective()){
-                    //change cover only if we are in the current perspective to save memory
-                    alCovers.clear(); //remove all existing covers
+                if ( EVENT_COVER_REFRESH.equals(subject)){
                     org.jajuk.base.File fCurrent = FIFO.getInstance().getCurrentFile();
+                    this.dirCurrent = fCurrent.getDirectory(); //store this dir
+                    alCovers.clear(); //remove all existing covers
                     //if current file is null ( probably a file cannot be read ) 
                     if ( fCurrent == null || fCurrent.getDirectory() == null){
                         alCovers.add(coverDefault);
@@ -255,7 +254,6 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                         displayCurrentCover(); 
                         return; 
                     }
-                    this.dirCurrent = null; //analyzed directory
                     //search for local covers in all directories mapping the current track to reach other devices covers and display them together
                     Track trackCurrent = fCurrent.getTrack();
                     ArrayList alFiles = trackCurrent.getFiles(); //list of files mapping the track
@@ -265,7 +263,6 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                         if ( !file.getDirectory().getDevice().isMounted()) { //if the device is not ready, just ignore it
                             continue;
                         }
-                        dirCurrent = file.getDirectory(); //store this dir
                         java.io.File[] files = dirCurrent.getFio().listFiles();//null if none file found
                         boolean bAbsoluteCover = false; //whether an absolute cover ( unique) has been found
                         for (int i=0;files != null && i<files.length;i++){
@@ -495,7 +492,8 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                     }
                     return null;    
                 }
-                if (alCovers.size() == 1 &&( (Cover)alCovers.get(0)).getType() == Cover.DEFAULT_COVER){ //only a default cover 
+                if (alCovers.size() == 1 &&
+                        ((Cover)alCovers.get(0)).getType() == Cover.DEFAULT_COVER){ //only a default cover 
                     try {
                         prepareDisplay(0);
                     } catch (JajukException e) {
@@ -504,11 +502,11 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                     return null;    
                 }
                 //else, there is at least one local cover and no default cover
-                while ( alCovers.size() > 0){
+                while (alCovers.size() > 0){
                     Cover cover = null;
                     try{
                         prepareDisplay(index);
-                        return null;
+                        return null; //OK, leave
                     }
                     catch(Exception e){
                         Log.debug("Removed cover: "+alCovers.get(index)); //$NON-NLS-1$
@@ -955,21 +953,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
         }
         return sQuery;
     }
-    
-    /**
-     * When this view perspective is selected, force cover refreshes
-     */
-    public void activate(){
-        new Thread(){
-            public void run(){
-                //refresh only if needed
-                if (dirCurrent == null ||  
-                        !dirCurrent.equals(dirCurrent)){
-                    update(new Event(EVENT_COVER_REFRESH));
-                }
-            }
-        }.start();
-    }
+   
        
      /**
      * To be refactored

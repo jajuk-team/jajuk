@@ -205,7 +205,7 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
         for (PropertyMetaInformation meta:alFilters){
             jcbFilter.addItem(meta.getHumanName());
         }
-        jcbSorter.setSelectedIndex(ConfigurationManager.getInt(CONF_THUMBS_FILTER));
+        jcbFilter.setSelectedIndex(ConfigurationManager.getInt(CONF_THUMBS_FILTER));
         jcbFilter.addActionListener(this);
         jtfValue = new JTextField(10);
         jtfValue.addKeyListener(new KeyAdapter() {
@@ -506,6 +506,9 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
      */
     public void actionPerformed(final ActionEvent e) {
         if (e.getSource() == jcbFilter){
+            if (jtfValue.getText().trim().equals("")){ //no need to refresh
+                return;
+            }
             bNeedSearch = true;
             lDateTyped = System.currentTimeMillis();
             ConfigurationManager.setProperty(CONF_THUMBS_FILTER,Integer.toString(jcbFilter.getSelectedIndex()));

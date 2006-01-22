@@ -49,8 +49,6 @@ import org.jajuk.util.log.Log;
  */
 public class PlaylistFile extends PropertyAdapter implements Comparable {
 	
-	/**Playlist hashcode*/
-	private String  sHashcode;
 	/**Playlist parent directory*/
 	private Directory dParentDirectory;
 	/**Files list, singleton*/
@@ -73,10 +71,8 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 	 * @param sHashcode
 	 * @param sParentDirectory
 	 */
-	public PlaylistFile(int iType,String sId, String sName,String sHashcode,Directory dParentDirectory) {
+	public PlaylistFile(int iType,String sId, String sName,Directory dParentDirectory) {
         super(sId,sName);
-        this.sHashcode = sHashcode;
-        setProperty(XML_HASHCODE,sHashcode);
         this.dParentDirectory = dParentDirectory;
         setProperty(XML_DIRECTORY,dParentDirectory==null?"-1":dParentDirectory.getId()); //$NON-NLS-1$
         this.iType = iType;
@@ -99,8 +95,8 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 	 * @param sHashcode
 	 * @param sParentDirectory
 	 */
-	public PlaylistFile(String sId, String sName,String sHashcode,Directory dParentDirectory) {
-		this(PlaylistFileItem.PLAYLIST_TYPE_NORMAL,sId,sName,sHashcode,dParentDirectory);
+	public PlaylistFile(String sId, String sName,Directory dParentDirectory) {
+		this(PlaylistFileItem.PLAYLIST_TYPE_NORMAL,sId,sName,dParentDirectory);
 	}
 	
 	
@@ -108,7 +104,7 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 	 * toString method
 	 */
 	public String toString() {
-		return "Playlist file[ID="+sId+" Name=" + getName() + " Hashcode="+sHashcode+" Dir="+dParentDirectory.getId()+"]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$
+		return "Playlist file[ID="+sId+" Name=" + getName() + " Hashcode="+getStringValue(XML_HASHCODE)+" Dir="+dParentDirectory.getId()+"]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$
 	}
 	
 	/**
@@ -166,7 +162,7 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 	 * @return
 	 */
 	public String getHashcode() {
-		return sHashcode;
+		return getStringValue(XML_HASHCODE);
 	}
 	
 	/**
@@ -183,7 +179,7 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 	 */
 	public int compareTo(Object o){
 		PlaylistFile otherPlaylistFile = (PlaylistFile)o;
-		return getAbsolutePath().compareToIgnoreCase(otherPlaylistFile.getAbsolutePath());
+		return getAbsolutePath().compareTo(otherPlaylistFile.getAbsolutePath());
 	}
 	
 	/**
@@ -703,7 +699,6 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
      * @param hashcode The sHashcode to set.
      */
     protected void setHashcode(String hashcode) {
-        this.sHashcode = hashcode;
         setProperty(XML_HASHCODE,hashcode);
     }
 

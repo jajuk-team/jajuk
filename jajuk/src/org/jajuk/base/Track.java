@@ -37,106 +37,106 @@ import org.jajuk.util.Util;
  * @created    17 oct. 2003
  */
 public class Track extends PropertyAdapter implements Comparable{
-
-	/**Track album**/
-	private Album album;
-	/**Track style*/
-	private Style style;
-	/**Track author in sec*/
-	private Author author;
-	/**Track length*/
-	private long length;
-	/**Track year*/
-	private long lYear;
-	/**Track order*/
-    private long lOrder;
+    
+    /**Track album**/
+    private final Album album;
+    /**Track style*/
+    private final Style style;
+    /**Track author in sec*/
+    private final Author author;
+    /**Track length*/
+    private final long length;
+    /**Track year*/
+    private final long lYear;
+    /**Track order*/
+    private final long lOrder;
     /**Track type*/
-	private Type type;
-	/**Track associated files*/
-	private ArrayList<File> alFiles = new ArrayList(1);
-	/** Number of hits for current jajuk session */
-	private int iSessionHits = 0;
+    private final Type type;
+    /**Track associated files*/
+    private ArrayList<File> alFiles = new ArrayList(1);
+    /** Number of hits for current jajuk session */
+    private int iSessionHits = 0;
     
     
-	/**
-	 *  Track constructor
-	 * @param sId
-	 * @param sName
-	 * @param album
-	 * @param style
-	 * @param author
-	 * @param length
-	 * @param sYear
-	 * @param type
-	 * @param sAdditionDate
-	 */
-	public Track(String sId,String sName,Album album,Style style,Author author,long length,long lYear,long lOrder,Type type) {
+    /**
+     *  Track constructor
+     * @param sId
+     * @param sName
+     * @param album
+     * @param style
+     * @param author
+     * @param length
+     * @param sYear
+     * @param type
+     * @param sAdditionDate
+     */
+    public Track(String sId,String sName,Album album,Style style,Author author,long length,long lYear,long lOrder,Type type) {
         super(sId,sName);
-            //album
-        	this.album = album;
-            setProperty(XML_ALBUM,album.getId());
-            //style
-            this.style = style;
-            setProperty(XML_STYLE,style.getId());
-            //author
-            this.author = author;
-            setProperty(XML_AUTHOR,author.getId());
-            //Length
-            this.length = length;
-            setProperty(XML_TRACK_LENGTH,length);
-            //Type
-            this.type = type;
-            setProperty(XML_TYPE,type.getId());
-            //Year
-            this.lYear = lYear;
-            setProperty(XML_TRACK_YEAR,lYear);
-            //Order
-            this.lOrder = lOrder;
-            setProperty(XML_TRACK_ORDER,lOrder);
-            //Rate
-            setProperty(XML_TRACK_RATE,0l);
-            //Hits
-            setProperty(XML_TRACK_HITS,0l);
+        //album
+        this.album = album;
+        setProperty(XML_ALBUM,album.getId());
+        //style
+        this.style = style;
+        setProperty(XML_STYLE,style.getId());
+        //author
+        this.author = author;
+        setProperty(XML_AUTHOR,author.getId());
+        //Length
+        this.length = length;
+        setProperty(XML_TRACK_LENGTH,length);
+        //Type
+        this.type = type;
+        setProperty(XML_TYPE,type.getId());
+        //Year
+        this.lYear = lYear;
+        setProperty(XML_TRACK_YEAR,lYear);
+        //Order
+        this.lOrder = lOrder;
+        setProperty(XML_TRACK_ORDER,lOrder);
+        //Rate
+        setProperty(XML_TRACK_RATE,0l);
+        //Hits
+        setProperty(XML_TRACK_HITS,0l);
     }
-       	
-	/**
-	 * toString method
-	 */
-	public String toString() {
-		String sOut = "Track[ID="+sId+" Name=" + getName() + " "+album+" "+ //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-            style+" "+author+" Length="+length+" Year="+lYear+" Rate="+getRate()+" "+ //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-            type+" Hits="+getHits()+" Addition date="+getAdditionDate()+" Comment="+ //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-            getComment()+" order="+getOrder()+ " Nb of files="+alFiles.size()+"]";  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-		for (int i=0;i<alFiles.size();i++){
-			sOut += '\n'+alFiles.get(i).toString();
-		}
-		return sOut; 
-	}
-
-	/**
-	 *Alphabetical comparator used to display ordered lists of tracks
-	 *@param other track to be compared
-	 *@return comparaison result 
-	 */
-	public int compareTo(Object o){
-		Track otherTrack = (Track)o;
+    
+    /**
+     * toString method
+     */
+    public String toString() {
+        String sOut = "Track[ID="+sId+" Name=" + getName() + " "+album+" "+ //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+        style+" "+author+" Length="+length+" Year="+lYear+" Rate="+getRate()+" "+ //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+        type+" Hits="+getHits()+" Addition date="+getAdditionDate()+" Comment="+ //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        getComment()+" order="+getOrder()+ " Nb of files="+alFiles.size()+"]";  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+        for (int i=0;i<alFiles.size();i++){
+            sOut += '\n'+alFiles.get(i).toString();
+        }
+        return sOut; 
+    }
+    
+    /**
+     *Alphabetical comparator used to display ordered lists of tracks
+     *@param other track to be compared
+     *@return comparaison result 
+     */
+    public int compareTo(Object o){
+        Track otherTrack = (Track)o;
         TrackComparator comparator = TrackManager.getInstance().getComparator();
         return comparator.compare(this,o);
-	}
-	
-	/**
-	 * @return
-	 */
-	public Album getAlbum() {
-		return album;
-	}
-
-	/**
-	 * @return all associated files
-	 */
-	public ArrayList<org.jajuk.base.File> getFiles() {
-		return alFiles;
-	}
+    }
+    
+    /**
+     * @return
+     */
+    public Album getAlbum() {
+        return album;
+    }
+    
+    /**
+     * @return all associated files
+     */
+    public ArrayList<org.jajuk.base.File> getFiles() {
+        return alFiles;
+    }
     
     /**
      * @return ready files
@@ -165,22 +165,22 @@ public class Track extends PropertyAdapter implements Comparable{
         }
         return alReadyFiles;
     }
-
-	/**
-	 * Get additionned size of all files this track map to
-	 * @return the total size
-	 */
-	public long getTotalSize(){
-		long l = 0;
-		Iterator it = alFiles.iterator();
-		while ( it.hasNext()){
-			File file = (File)it.next();
-			l += file.lSize;
-		}
-		return l;
-	}
-	
-	
+    
+    /**
+     * Get additionned size of all files this track map to
+     * @return the total size
+     */
+    public long getTotalSize(){
+        long l = 0;
+        Iterator it = alFiles.iterator();
+        while ( it.hasNext()){
+            File file = (File)it.next();
+            l += file.lSize;
+        }
+        return l;
+    }
+    
+    
     /**
      * @param bHideUnmounted : get even unmounted files?
      * @return best file to play for this track
@@ -194,52 +194,43 @@ public class Track extends PropertyAdapter implements Comparable{
     }
     
     /**
-	 * @return best file to play for this track
-	 */
-	public File getPlayeableFile() {
-		File fileOut = null;
-		ArrayList alMountedFiles = new ArrayList(2);
-		//firstly, keep only mounted files
-		Iterator it = alFiles.iterator();
-		while ( it.hasNext()){
-			File file = (File)it.next();
-			if (file.isReady()){
-				alMountedFiles.add(file);
-			}
-		}
-		//then keep best quality
-		if (alMountedFiles.size() > 0){
-			it = alMountedFiles.iterator();
-			fileOut = (File)it.next();  //for the moment, the out file is the first found
-			while ( it.hasNext()){
-				File file = (File)it.next();
-				long lQuality = 0;
-				long lQualityOut = 0; //quality for out file
-				try {
-					lQuality = file.getQuality();
-				}
-				catch(NumberFormatException nfe){}//quality string can be something like "error", in this case, we considere quality=0
-				try{
-					lQualityOut = fileOut.getQuality();
-				}
-				catch(NumberFormatException nfe){}//quality string can be something like "error", in this case, we considere quality=0
-				
-				if (lQuality > lQualityOut){
-					fileOut = file;
-				}
-			}
-		}
-		return fileOut;
-	}
-
-	
-	/**
-	 * @return
-	 */
-	public long getHits() {
-		return getLongValue(XML_TRACK_HITS);
-	}
-
+     * @return best file to play for this track
+     */
+    public File getPlayeableFile() {
+        File fileOut = null;
+        ArrayList alMountedFiles = new ArrayList(2);
+        //firstly, keep only mounted files
+        Iterator it = alFiles.iterator();
+        while ( it.hasNext()){
+            File file = (File)it.next();
+            if (file.isReady()){
+                alMountedFiles.add(file);
+            }
+        }
+        //then keep best quality
+        if (alMountedFiles.size() > 0){
+            it = alMountedFiles.iterator();
+            fileOut = (File)it.next();  //for the moment, the out file is the first found
+            while ( it.hasNext()){
+                File file = (File)it.next();
+                long lQuality = file.getQuality();
+                long lQualityOut = fileOut.getQuality(); //quality for out file
+                if (lQuality > lQualityOut){
+                    fileOut = file;
+                }
+            }
+        }
+        return fileOut;
+    }
+    
+    
+    /**
+     * @return
+     */
+    public long getHits() {
+        return getLongValue(XML_TRACK_HITS);
+    }
+    
     /**
      * @return
      */
@@ -255,109 +246,109 @@ public class Track extends PropertyAdapter implements Comparable{
         return getLongValue(XML_TRACK_ORDER);
     }
     
-	/**
-	 * @return
-	 */
-	public long getYear() {
-		return lYear;
-	}
+    /**
+     * @return
+     */
+    public long getYear() {
+        return lYear;
+    }
     
-	  
-	/**
-	 * @return length in sec
-	 */
-	public long getLength() {
-		return length;
-	}
-
-	/**
-	 * @return
-	 */
-	public long getRate() {
-		return getLongValue(XML_TRACK_RATE);
-	}
-
-	/**
-	 * @return
-	 */
-	public Date getAdditionDate() {
-		return getDateValue(XML_TRACK_ADDED);
-	}
-
-	/**
-	 * @return
-	 */
-	public Type getType() {
-		return type;
-	}
-	
-	/**
-	 * Equal method to check two tracks are identical
-	 * @param otherTrack
-	 * @return
-	 */
-	public boolean equals(Object otherTrack){
-		return this.getId().equals(((Track)otherTrack).getId());
-	}	
-	
-	/**
-	 * Track hashcode ( used by the equals method )
-	 */
-	public int hashCode(){
-		return getId().hashCode();
-	}
-	
-	
-	/**
-	 * @return
-	 */
-	public Author getAuthor() {
-		return author;
-	}
-
-	/**
-	 * @return
-	 */
-	public Style getStyle() {
-		return style;
-	}
-	
-	/**
-	 * Add an associated file 
-	 * @param file
-	 */
-	public void addFile(File file){
-		if (!alFiles.contains(file) && file.getTrack().equals(this)){//make sure a file will be referenced by only one track (first found)
-			alFiles.add(file);	
+    
+    /**
+     * @return length in sec
+     */
+    public long getLength() {
+        return length;
+    }
+    
+    /**
+     * @return
+     */
+    public long getRate() {
+        return getLongValue(XML_TRACK_RATE);
+    }
+    
+    /**
+     * @return
+     */
+    public Date getAdditionDate() {
+        return getDateValue(XML_TRACK_ADDED);
+    }
+    
+    /**
+     * @return
+     */
+    public Type getType() {
+        return type;
+    }
+    
+    /**
+     * Equal method to check two tracks are identical
+     * @param otherTrack
+     * @return
+     */
+    public boolean equals(Object otherTrack){
+        return this.getId().equals(((Track)otherTrack).getId());
+    }	
+    
+    /**
+     * Track hashcode ( used by the equals method )
+     */
+    public int hashCode(){
+        return getId().hashCode();
+    }
+    
+    
+    /**
+     * @return
+     */
+    public Author getAuthor() {
+        return author;
+    }
+    
+    /**
+     * @return
+     */
+    public Style getStyle() {
+        return style;
+    }
+    
+    /**
+     * Add an associated file 
+     * @param file
+     */
+    public void addFile(File file){
+        if (!alFiles.contains(file) && file.getTrack().equals(this)){//make sure a file will be referenced by only one track (first found)
+            alFiles.add(file);	
         }
-	}
-	
-	/**
-	 * Remove an associated file 
-	 * @param file
-	 */
-	public void removeFile(File file){
-		alFiles.remove(file);
-   }
-
-
-	/**
-	 * @param hits The iHits to set.
-	 */
-	public void setHits(long hits) {
-		setProperty(XML_TRACK_HITS,hits);
-	}
-	
-	public void incHits() {
-	    setHits(getHits()+1);
-	}
-
-	/**
-	 * @param rate The lRate to set.
-	 */
-	public void setRate(long rate) {
-	    setProperty(XML_TRACK_RATE,rate);
-	}
+    }
+    
+    /**
+     * Remove an associated file 
+     * @param file
+     */
+    public void removeFile(File file){
+        alFiles.remove(file);
+    }
+    
+    
+    /**
+     * @param hits The iHits to set.
+     */
+    public void setHits(long hits) {
+        setProperty(XML_TRACK_HITS,hits);
+    }
+    
+    public void incHits() {
+        setHits(getHits()+1);
+    }
+    
+    /**
+     * @param rate The lRate to set.
+     */
+    public void setRate(long rate) {
+        setProperty(XML_TRACK_RATE,rate);
+    }
     
     /**
      * @param rate The lRate to set.
@@ -365,63 +356,63 @@ public class Track extends PropertyAdapter implements Comparable{
     public void setComment(String sComment) {
         setProperty(XML_TRACK_COMMENT,sComment);
     }	
-
-	/**
-	 * @param additionDate The sAdditionDate to set.
-	 */
-	public void setAdditionDate(Date additionDate) {
-	    setProperty(XML_TRACK_ADDED,additionDate);
-	}
-
-	/**
-	 * @return Returns the sHashCompare.
-	public String getHashCompare() {
-		return sHashCompare;
-	}*/
-	
-	/**
-	 * @return Returns the iSessionHits.
-	 */
-	public int getSessionHits() {
-		return iSessionHits;
-	}
-
-	/**
-	 * @param sessionHits The iSessionHits to inc.
-	 */
-	public void incSessionHits() {
-		iSessionHits ++;
-	}
-	
-	/**
-	 * Return whether this item should be hidden with hide option
-	 * @return whether this item should be hidden with hide option
-	 */
-	public boolean shouldBeHidden(){
-		if (getPlayeableFile() != null
-			 ||ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED) == false){ //option "only display mounted devices "
-			return false;
-		}
-		return true;
-	}
-
+    
+    /**
+     * @param additionDate The sAdditionDate to set.
+     */
+    public void setAdditionDate(Date additionDate) {
+        setProperty(XML_TRACK_ADDED,additionDate);
+    }
+    
+    /**
+     * @return Returns the sHashCompare.
+     public String getHashCompare() {
+     return sHashCompare;
+     }*/
+    
+    /**
+     * @return Returns the iSessionHits.
+     */
+    public int getSessionHits() {
+        return iSessionHits;
+    }
+    
+    /**
+     * @param sessionHits The iSessionHits to inc.
+     */
+    public void incSessionHits() {
+        iSessionHits ++;
+    }
+    
+    /**
+     * Return whether this item should be hidden with hide option
+     * @return whether this item should be hidden with hide option
+     */
+    public boolean shouldBeHidden(){
+        if (getPlayeableFile() != null
+                ||ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED) == false){ //option "only display mounted devices "
+            return false;
+        }
+        return true;
+    }
+    
     /* (non-Javadoc)
      * @see org.jajuk.base.IPropertyable#getIdentifier()
      */
     final public String getIdentifier() {
         return XML_TRACK;
     }
-
+    
     /**
      * Get item description
      */
     public String getDesc(){
         return Messages.getString("Item_Track")+" : "+getName(); //$NON-NLS-1$ //$NON-NLS-2$
     }
-
-   
     
-/* (non-Javadoc)
+    
+    
+    /* (non-Javadoc)
      * @see org.jajuk.base.IPropertyable#getHumanValue(java.lang.String)
      */
     public String getHumanValue(String sKey){
@@ -476,6 +467,6 @@ public class Track extends PropertyAdapter implements Comparable{
         }
     }
     
-   
+    
     
 }

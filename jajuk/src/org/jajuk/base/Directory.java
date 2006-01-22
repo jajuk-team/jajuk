@@ -19,7 +19,9 @@
  */
 package org.jajuk.base;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -28,7 +30,6 @@ import java.util.TreeSet;
 
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
@@ -256,7 +257,7 @@ public class Directory extends PropertyAdapter implements Comparable{
      * @param
      */
     public void scan(boolean bDeepScan) {
-        java.io.File[] files = getFio().listFiles(new JajukFileFilter(false, true));
+        java.io.File[] files = getFio().listFiles(Util.fileFilter);
         if (files == null || files.length==0 ){  //none file, leave
             return;
         }
@@ -277,11 +278,7 @@ public class Directory extends PropertyAdapter implements Comparable{
                 }
                 boolean bIsMusic = (Boolean)TypeManager.getInstance().getTypeByExtension(Util.getExtension(files[i])).getValue(XML_TYPE_IS_MUSIC);
                 if (bIsMusic) {
-                    String sId = MD5Processor.hash(
-                        new StringBuffer(getDevice().getName()).
-                        append(getDevice().getUrl()).
-                        append(getRelativePath()).
-                        append(files[i].getName()).toString());
+                    String sId = FileManager.getID(files[i].getName(),device,this);
                     //check the file is not already known in database
                     org.jajuk.base.File fileRef = (org.jajuk.base.File)FileManager.getInstance().getItem(sId);
                     //if known file and no deep scan, just leave
@@ -312,10 +309,10 @@ public class Directory extends PropertyAdapter implements Comparable{
                     Style style = StyleManager.getInstance().registerStyle(sStyle);
                     Author author = AuthorManager.getInstance().registerAuthor(sAuthorName);
                     Type type = TypeManager.getInstance().getTypeByExtension(Util.getExtension(files[i]));
-                    Track track = TrackManager.getInstance().registerTrack(sTrackName, album, style, author, length, lYear,lOrder, type);
+                    Track track = TrackManager.getInstance().registerTrack(sTrackName,album,style,author,length,lYear,lOrder,type);
                     track.setAdditionDate(new Date());
-                    FileManager.getInstance().registerFile(sId,files[i].getName(), this, track, 
-                        files[i].length(), lQuality);   
+                    FileManager.getInstance().registerFile(sId,files[i].getName(),this,track, 
+                        files[i].length(),lQuality);   
                     /*comment is at the track level, note that we take last found file comment but we changing
                     a comment, we will apply to all files for a track*/
                     track.setComment(sComment); 
@@ -331,7 +328,20 @@ public class Directory extends PropertyAdapter implements Comparable{
                         continue;
                     }
                     PlaylistFile plFile = PlaylistFileManager.getInstance().registerPlaylistFile(files[i],this);
+                    //set hashcode to this playlist file
+                    BufferedReader br = new BufferedReader(new FileReader(files[i]));
+                    StringBuffer sbContent = new StringBuffer();
+                    String sTemp;
+                    do{
+                        sTemp = br.readLine();
+                        sbContent.append(sTemp);
+                    }
+                    while (sTemp != null);
+                    String sHashcode =MD5Processor.hash(sbContent.toString());
+                    plFile.setHashcode(sHashcode);
+                    //create associated playlist
                     PlaylistManager.getInstance().registerPlaylist(plFile);
+                    //add playlist file to current directory
                     addPlaylistFile(plFile);
                     if (plfRef == null){
                         device.iNbNewFiles ++;  //stats, do it here and not before because we ignore the file if we cannot read it
@@ -387,7 +397,7 @@ public class Directory extends PropertyAdapter implements Comparable{
      */
     public int compareTo(Object o){
         Directory otherDirectory = (Directory)o;
-        return getAbsolutePath().compareToIgnoreCase(otherDirectory.getAbsolutePath());
+        return getAbsolutePath().compareTo(otherDirectory.getAbsolutePath());
     }
     
     /**

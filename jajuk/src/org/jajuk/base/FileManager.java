@@ -106,6 +106,21 @@ public class FileManager extends ItemManager implements Observer{
     }
     
     /**
+     * Get file hashcode (ID)
+     * @param sName
+     * @param device
+     * @param dir
+     * @return file ID
+     */
+    protected static String getID(String sName,Device device,Directory dir){
+        return MD5Processor.hash(
+            new StringBuffer(device.getName()).
+            append(device.getUrl()).
+            append(dir.getRelativePath()).
+            append(sName).toString().toString());
+    }
+    
+    /**
      * Change a file name
      * @param fileOld
      * @param sNewName

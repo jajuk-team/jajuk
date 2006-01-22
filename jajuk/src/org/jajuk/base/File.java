@@ -33,13 +33,13 @@ import org.jajuk.util.Util;
  */
 public class File extends PropertyAdapter implements Comparable,ITechnicalStrings{
 	/**Parent directory*/
-	protected Directory directory;
+	protected final Directory directory;
 	/**Associated track */
 	protected Track track;
 	/**File size in bytes*/
-	protected long lSize;
+	protected final long lSize;
 	/**File quality. Ex: 192 for 192kb/s*/
-	protected long lQuality;
+	protected final long lQuality;
 	/** pre-calculated absolute path for perf*/
 	private String sAbs = null;
 	/** IO file associated with this file*/
@@ -186,7 +186,7 @@ public class File extends PropertyAdapter implements Comparable,ITechnicalString
 	 */
 	public int compareTo(Object o){
         File otherFile = (File)o;
-        return getAbsolutePath().compareToIgnoreCase(otherFile.getAbsolutePath());            
+        return getAbsolutePath().compareTo(otherFile.getAbsolutePath());            
    }
 	
 	/**Return true if the file can be accessed right now 
@@ -230,24 +230,7 @@ public class File extends PropertyAdapter implements Comparable,ITechnicalString
 		return true;
 	}
 	
-	/**
-     * @param directory The directory to set.
-     */
-    public void setDirectory(Directory directory) {
-        this.directory = directory;
-        setProperty(XML_DIRECTORY,directory.getId());
-    }
-
-    /**
-     * @param size The lSize to set.
-     */
-    public void setSize(long size) {
-        this.lSize = size;
-        setProperty(XML_SIZE,size);
-    }
-
-    
-    /**
+	 /**
      * @param track The track to set.
      */
     public void setTrack(Track track) {

@@ -186,11 +186,15 @@ public class Cover implements Comparable,ITechnicalStrings {
         if (!file.exists()){
             DownloadManager.download(url,true);
         }
-        ImageIcon image = new ImageIcon(getFile().getAbsolutePath());
-        if ( image.getImageLoadStatus() != MediaTracker.COMPLETE){
-            throw new JajukException("129",url.toString(),null); //$NON-NLS-1$
+        ImageIcon image = null;
+        synchronized (Cover.class){
+            image = new ImageIcon(getFile().getAbsolutePath());
+            if ( image.getImageLoadStatus() != MediaTracker.COMPLETE){
+                Log.debug("Image Loading status: "+image.getImageLoadStatus());
+                throw new JajukException("129",url.toString(),null); //$NON-NLS-1$
+            }
+            image.getImage().flush();
         }
-        image.getImage().flush();
         Log.debug("Loaded "+url.toString()+" in  "+(System.currentTimeMillis()-l)+" ms"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         return image;
     }

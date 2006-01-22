@@ -67,9 +67,17 @@ public class PlaylistManager extends ItemManager{
      *@param file : playlist file
      */	
     public Playlist registerPlaylist(PlaylistFile plFile) {
-        return registerPlaylist(plFile.getHashcode(),plFile);
+        return registerPlaylist(getID(plFile),plFile);
     }
     
+     /**
+     * @param plf playlist file
+     * @return Item ID
+     */
+    protected static String getID(PlaylistFile plf){
+        return plf.getHashcode();
+    }
+   
     
     /**
      * Register an Playlist with a known id

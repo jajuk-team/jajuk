@@ -20,8 +20,6 @@
 
 package org.jajuk.base;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.util.Iterator;
 import java.util.Properties;
 
@@ -51,7 +49,7 @@ public class PlaylistFileManager extends ItemManager implements Observer{
         //Name
         registerProperty(new PropertyMetaInformation(XML_NAME,false,true,true,true,false,String.class,null,null));
         //Hashcode
-        registerProperty(new PropertyMetaInformation(XML_HASHCODE,false,true,false,false,false,String.class,null,null));
+        registerProperty(new PropertyMetaInformation(XML_HASHCODE,false,false,false,false,false,String.class,null,null));
         //Directory
         registerProperty(new PropertyMetaInformation(XML_DIRECTORY,false,true,true,false,false,String.class,null,null));
     }
@@ -74,10 +72,21 @@ public class PlaylistFileManager extends ItemManager implements Observer{
      */
     public PlaylistFile registerPlaylistFile(java.io.File fio, Directory dParentDirectory) throws Exception{
         synchronized(PlaylistFileManager.getInstance().getLock()){
-            String sId = MD5Processor.hash(new StringBuffer(
-                dParentDirectory.getDevice().getUrl()).append(dParentDirectory.getRelativePath()).append(fio.getName()).toString());
+            String sId = getID(fio.getName(),dParentDirectory);
             return registerPlaylistFile(sId,fio.getName(),dParentDirectory);
         }
+    }
+    
+    /**
+     * @param sName
+     * @param dParentDirectory
+     * @return Item ID
+     */
+    protected static String getID(String sName,Directory dParentDirectory){
+        return MD5Processor.hash(new StringBuffer(
+            dParentDirectory.getDevice().getUrl()).
+            append(dParentDirectory.getRelativePath()).
+            append(sName).toString());
     }
     
     /**
@@ -113,21 +122,9 @@ public class PlaylistFileManager extends ItemManager implements Observer{
     public synchronized PlaylistFile registerPlaylistFile(String sId, String sName, Directory dParentDirectory) throws Exception{
         synchronized(PlaylistFileManager.getInstance().getLock()){
             if ( !hmItems.containsKey(sId)){
-                java.io.File fio = new java.io.File(dParentDirectory.getAbsolutePath()+'/'+sName);
-                BufferedReader br = new BufferedReader(new FileReader(fio));
-                StringBuffer sbContent = new StringBuffer();
-                String sTemp;
-                do{
-                    sTemp = br.readLine();
-                    sbContent.append(sTemp);
-                }
-                while (sTemp != null);
-                String sHashcode =MD5Processor.hash(sbContent.toString());
                 PlaylistFile playlistFile = null;
-                playlistFile = new PlaylistFile(sId, sName, sHashcode, dParentDirectory);
+                playlistFile = new PlaylistFile(sId,sName,dParentDirectory);
                 hmItems.put(sId, playlistFile);
-                //add it to playlist
-                PlaylistManager.getInstance().registerPlaylist(playlistFile);
                 if ( dParentDirectory.getDevice().isRefreshing()){
                     Log.debug("Registered new playlist file: "+ playlistFile); //$NON-NLS-1$
                 }
@@ -186,7 +183,7 @@ public class PlaylistFileManager extends ItemManager implements Observer{
                 .append(dir.getDevice().getUrl()).append(dir.getRelativePath())
                 .append(sNewName).toString());
             //create a new playlist file (with own fio and sAbs)
-            PlaylistFile plfNew = new PlaylistFile(sNewId,sNewName,plfOld.getHashcode(),plfOld.getDirectory());
+            PlaylistFile plfNew = new PlaylistFile(sNewId,sNewName,plfOld.getDirectory());
             plfNew.setProperties(plfOld.getProperties()); //transfert all properties (inc id and name)
             plfNew.setId(sNewId); //reset new id and name
             plfNew.setName(sNewName);
