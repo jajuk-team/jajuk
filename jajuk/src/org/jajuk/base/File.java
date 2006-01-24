@@ -181,12 +181,21 @@ public class File extends PropertyAdapter implements Comparable,ITechnicalString
 	
 	/**
 	 *Alphabetical comparator used to display ordered lists of files
+     *<p>Sort ignoring cases but different items with different cases should be distinct
+     * before being added into bidimap</p>
 	 *@param other file to be compared
 	 *@return comparaison result 
 	 */
 	public int compareTo(Object o){
         File otherFile = (File)o;
-        return getAbsolutePath().compareTo(otherFile.getAbsolutePath());            
+        String sAbs = getAbsolutePath();
+        String sOtherAbs = otherFile.getAbsolutePath();
+        if (sAbs.equalsIgnoreCase(sOtherAbs) && !sAbs.equals(sOtherAbs)){
+            return sAbs.compareTo(sOtherAbs);
+        }
+        else{
+            return sAbs.compareToIgnoreCase(sOtherAbs);
+        }
    }
 	
 	/**Return true if the file can be accessed right now 

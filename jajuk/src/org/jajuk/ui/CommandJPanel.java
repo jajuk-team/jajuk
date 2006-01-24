@@ -19,7 +19,23 @@
  */
 package org.jajuk.ui;
 
-import static org.jajuk.ui.action.JajukAction.*;
+import static org.jajuk.ui.action.JajukAction.BEST_OF;
+import static org.jajuk.ui.action.JajukAction.DECREASE_VOLUME;
+import static org.jajuk.ui.action.JajukAction.FAST_FORWARD_TRACK;
+import static org.jajuk.ui.action.JajukAction.FINISH_ALBUM;
+import static org.jajuk.ui.action.JajukAction.INCREASE_VOLUME;
+import static org.jajuk.ui.action.JajukAction.MUTE_STATE;
+import static org.jajuk.ui.action.JajukAction.NEXT_ALBUM;
+import static org.jajuk.ui.action.JajukAction.NEXT_TRACK;
+import static org.jajuk.ui.action.JajukAction.NOVELTIES;
+import static org.jajuk.ui.action.JajukAction.PLAY_PAUSE_TRACK;
+import static org.jajuk.ui.action.JajukAction.PREVIOUS_ALBUM;
+import static org.jajuk.ui.action.JajukAction.PREVIOUS_TRACK;
+import static org.jajuk.ui.action.JajukAction.REPEAT_MODE_STATUS_CHANGE;
+import static org.jajuk.ui.action.JajukAction.REWIND_TRACK;
+import static org.jajuk.ui.action.JajukAction.SHUFFLE_GLOBAL;
+import static org.jajuk.ui.action.JajukAction.SHUFFLE_MODE_STATUS_CHANGED;
+import static org.jajuk.ui.action.JajukAction.STOP_TRACK;
 import info.clearthought.layout.TableLayout;
 
 import java.awt.Component;
@@ -29,7 +45,16 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JSlider;
+import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
@@ -48,14 +73,14 @@ import org.jajuk.base.Player;
 import org.jajuk.base.SearchResult;
 import org.jajuk.base.StackItem;
 import org.jajuk.i18n.Messages;
+import org.jajuk.ui.action.ActionManager;
+import org.jajuk.ui.action.ActionUtil;
+import org.jajuk.ui.action.JajukAction;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
-import org.jajuk.ui.action.ActionManager;
-import org.jajuk.ui.action.JajukAction;
-import org.jajuk.ui.action.ActionUtil;
 
 import ext.SwingWorker;
 
@@ -432,15 +457,19 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
                     ActionManager.getAction(NEXT_ALBUM).setEnabled(false);
                     ActionManager.getAction(PREVIOUS_ALBUM).setEnabled(false);
                     ActionManager.getAction(FINISH_ALBUM).setEnabled(false);
-
                     ActionManager.getAction(PLAY_PAUSE_TRACK).setIcon(Util.getIcon(ICON_PAUSE));
-
                     jsPosition.setEnabled(false);
                     jsPosition.removeMouseWheelListener(CommandJPanel.this);
-					setPosition(0.0f);
-					ConfigurationManager.setProperty(CONF_STARTUP_LAST_POSITION,"0");//reset startup position //$NON-NLS-1$
+					jsPosition.removeChangeListener(CommandJPanel.this);
+                    jsPosition.setValue(0);//use set value, not setPosition that would cause a seek that could fail with some formats
+			        ConfigurationManager.setProperty(CONF_STARTUP_LAST_POSITION,"0");//reset startup position //$NON-NLS-1$
 				}
 				else if (EVENT_PLAYER_PLAY.equals(subject)){
+                    //remove and re-add listener to make sure not to add it twice
+                    jsPosition.removeMouseWheelListener(CommandJPanel.this);
+                    jsPosition.addMouseWheelListener(CommandJPanel.this);
+                    jsPosition.removeChangeListener(CommandJPanel.this);
+                    jsPosition.addChangeListener(CommandJPanel.this);
                     ActionManager.getAction(PREVIOUS_TRACK).setEnabled(true);
                     ActionManager.getAction(NEXT_TRACK).setEnabled(true);
                     ActionManager.getAction(REWIND_TRACK).setEnabled(true);
@@ -450,32 +479,28 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
                     ActionManager.getAction(NEXT_ALBUM).setEnabled(true);
                     ActionManager.getAction(PREVIOUS_ALBUM).setEnabled(true);
                     ActionManager.getAction(FINISH_ALBUM).setEnabled(true);
-
                     ActionManager.getAction(PLAY_PAUSE_TRACK).setIcon(Util.getIcon(ICON_PAUSE));
-
                     jsPosition.setEnabled(true);
-                    jsPosition.removeMouseWheelListener(CommandJPanel.this);
-                    jsPosition.addMouseWheelListener(CommandJPanel.this);
 				}
 				else if (EVENT_PLAYER_PAUSE.equals(subject)){
                     ActionManager.getAction(REWIND_TRACK).setEnabled(false);
                     ActionManager.getAction(FAST_FORWARD_TRACK).setEnabled(false);
-
                     ActionManager.getAction(PLAY_PAUSE_TRACK).setIcon(Util.getIcon(ICON_PLAY));
-
 					jsPosition.setEnabled(false);
-                    jsPosition.removeMouseWheelListener(CommandJPanel.this);
-				}
+					jsPosition.removeMouseWheelListener(CommandJPanel.this);
+                    jsPosition.removeChangeListener(CommandJPanel.this);
+            	}
 				else if (EVENT_PLAYER_RESUME.equals(subject)){
-                    ActionManager.getAction(REWIND_TRACK).setEnabled(true);
-                    ActionManager.getAction(FAST_FORWARD_TRACK).setEnabled(true);
-
-                    ActionManager.getAction(PLAY_PAUSE_TRACK).setIcon(Util.getIcon(ICON_PAUSE));
-
-					jsPosition.setEnabled(true);
+                    //remove and re-add listener to make sure not to add it twice
                     jsPosition.removeMouseWheelListener(CommandJPanel.this);
                     jsPosition.addMouseWheelListener(CommandJPanel.this);
-				}
+                    jsPosition.removeChangeListener(CommandJPanel.this);
+                    jsPosition.addChangeListener(CommandJPanel.this);
+                    ActionManager.getAction(REWIND_TRACK).setEnabled(true);
+                    ActionManager.getAction(FAST_FORWARD_TRACK).setEnabled(true);
+                    ActionManager.getAction(PLAY_PAUSE_TRACK).setIcon(Util.getIcon(ICON_PAUSE));
+					jsPosition.setEnabled(true);
+             	}
 				else if (EVENT_HEART_BEAT.equals(subject) &&!FIFO.isStopped() && !Player.isPaused()){
 					 //if position is adjusting, no dont disturb user
                     if (jsPosition.getValueIsAdjusting() || Player.isSeeking()){

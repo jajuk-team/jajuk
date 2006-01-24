@@ -191,15 +191,23 @@ public class Playlist extends PropertyAdapter implements Comparable{
 	
 	/**
 	 *Alphabetical comparator used to display ordered lists of playlists
-	 *@param other playlist to be compared
+	 *<p>Sort ignoring cases but different items with different cases should be distinct
+     * before being added into bidimap</p>
+     *@param other playlist to be compared
 	 *@return comparaison result 
 	 */
 	public int compareTo(Object o){
 		Playlist otherPlaylist = (Playlist)o;
 		//use id in compare because 2 different playlists can have the same name
-        return (sName+getId()).
-            compareTo(otherPlaylist.getName()+otherPlaylist.getId());
-	}
+        String sAbs = getName();
+        String sOtherAbs = otherPlaylist.getName();
+        if (sAbs.equalsIgnoreCase(sOtherAbs) && !sAbs.equals(sOtherAbs)){
+            return (sAbs+getId()).compareToIgnoreCase(sOtherAbs+otherPlaylist.getId());
+        }
+        else{
+            return sAbs.compareToIgnoreCase(sOtherAbs);
+        }
+  }
 
     
     /**

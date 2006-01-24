@@ -55,7 +55,9 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.Timer;
 
@@ -85,7 +87,6 @@ import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
 import ext.FlowScrollPanel;
-import ext.SmartPopupMenu;
 import ext.SwingWorker;
 
 /**
@@ -111,7 +112,7 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
     FlowScrollPanel jpItems;
     JScrollPane jsp;
     
-    SmartPopupMenu jmenu;
+    JPopupMenu jmenu;
     JMenuItem jmiAlbumPlay;
     JMenuItem jmiAlbumPush;
     JMenuItem jmiAlbumPlayShuffle;
@@ -254,7 +255,7 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
         
         //Menu items
         //Album menu
-        jmenu = new SmartPopupMenu();
+        jmenu = new JPopupMenu();
         jmiAlbumPlay = new JMenuItem(Messages.getString("LogicalTreeView.15")); //$NON-NLS-1$
         jmiAlbumPlay.addActionListener(this);
         jmiAlbumPush = new JMenuItem(Messages.getString("LogicalTreeView.16")); //$NON-NLS-1$
@@ -572,8 +573,8 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
         
         JPanel jpIcon;
         JLabel jlIcon;
-        JLabel jlAuthor;
-        JLabel jlAlbum;
+        JTextArea jlAuthor;
+        JTextArea jlAlbum;
         
         /**
          * Constructor
@@ -603,9 +604,14 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
             jlIcon.setIcon(ii);
             addMouseListener(this);
             jpIcon.add(jlIcon,"1,0");
+            int iRows = 9 + 3*(jcbSize.getSelectedIndex());
             //take first track author as author
-            jlAuthor = new JLabel(track.getAuthor().getName2());
-            jlAlbum = new JLabel(album.getName2());
+            jlAuthor = new JTextArea(track.getAuthor().getName2(),1,iRows);
+            jlAuthor.setLineWrap(true);
+            jlAuthor.setEditable(false);
+            jlAlbum = new JTextArea(album.getName2(),1,iRows);
+            jlAlbum.setLineWrap(true);
+            jlAlbum.setEditable(false);
             jlAuthor.setFont(new Font("Dialog",Font.BOLD,12)); //$NON-NLS-1$
             jlAlbum.setFont(new Font("Dialog",Font.BOLD,12)); //$NON-NLS-1$
             

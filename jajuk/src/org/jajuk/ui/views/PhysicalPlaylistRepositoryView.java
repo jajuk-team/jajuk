@@ -22,7 +22,6 @@ package org.jajuk.ui.views;
 
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 
 import javax.swing.JOptionPane;
@@ -92,7 +91,6 @@ public class PhysicalPlaylistRepositoryView extends AbstractPlaylistRepositoryVi
             super.populatePlaylists();
             //normal playlists
             ArrayList alItems = new ArrayList(PlaylistFileManager.getInstance().getItems());
-            Collections.sort(alItems);
             Iterator it = alItems.iterator();
             while ( it.hasNext()){
                 PlaylistFile plf = (PlaylistFile)it.next();

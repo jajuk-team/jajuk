@@ -466,9 +466,9 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
                             }
 
                             public void keyReleased(KeyEvent arg0) {
-                                Object oValue = jtfValue.getText();
+                                String value = jtfValue.getText();
                                 //if no more characters in selection, this field is no more considerated as changed
-                                if (oValue == null || ((String)oValue).trim().length() == 0){
+                                if (value == null || value.trim().length() == 0){
                                     //for name, author, album and style, set unknown value automaticaly
                                     if (meta.getName().equals(XML_TRACK_NAME)){
                                         jtfValue.setText(Messages.getString("unknown")); //$NON-NLS-1$
@@ -482,27 +482,15 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
                                     else if (meta.getName().equals(XML_TRACK_STYLE)){
                                         jtfValue.setText(Messages.getString("unknown_style")); //$NON-NLS-1$
                                     }
-                                    else{
+                                    else if (!meta.isCustom()){
                                         hmPropertyToChange.remove(meta);
                                         Log.error("137",meta.getName(),null); //$NON-NLS-1$
                                         Messages.showErrorMessage("137",meta.getName()); //$NON-NLS-1$
                                         return;
                                     }
                                 }
-                                oValue = jtfValue.getText();
-                                //we check that field is not void (except for comments and custom properties)
-                                if (((String)oValue).length() < 1 && !meta.getName().equals(XML_TRACK_COMMENT) && !meta.isCustom()){ //check that string length > 0
-                                    //reset old value if only a single element or clear if more
-                                    String sOldValue = null;
-                                    if (PropertiesWizard.this.alItems.size() == 1){
-                                        sOldValue = PropertiesWizard.this.alItems.get(0).getHumanValue(meta.getName()); //reset old value
-                                    }
-                                    jtfValue.setText(sOldValue);
-                                    Log.error("137",meta.getName(),null); //$NON-NLS-1$
-                                    Messages.showErrorMessage("137",meta.getHumanType()); //$NON-NLS-1$
-                                    return;
-                                }
-                                hmPropertyToChange.put(meta,oValue);
+                                value = jtfValue.getText();
+                                hmPropertyToChange.put(meta,value);
                             }
                         });
                         if (bAllEquals){

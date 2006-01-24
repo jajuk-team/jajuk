@@ -179,9 +179,7 @@ public class PlaylistFileManager extends ItemManager implements Observer{
                 +java.io.File.separator+sNewName);
             //recalculate file ID
             Directory dir = plfOld.getDirectory(); 
-            String sNewId = MD5Processor.hash(new StringBuffer(dir.getDevice().getName())
-                .append(dir.getDevice().getUrl()).append(dir.getRelativePath())
-                .append(sNewName).toString());
+            String sNewId = PlaylistFileManager.getID(sNewName,plfOld.getDirectory());
             //create a new playlist file (with own fio and sAbs)
             PlaylistFile plfNew = new PlaylistFile(sNewId,sNewName,plfOld.getDirectory());
             plfNew.setProperties(plfOld.getProperties()); //transfert all properties (inc id and name)
@@ -206,7 +204,7 @@ public class PlaylistFileManager extends ItemManager implements Observer{
             }
             //OK, remove old file and register this new file
             hmItems.remove(plfOld.getId());
-            if ( !hmItems.containsKey(sNewId)){
+            if (!hmItems.containsKey(sNewId)){
                 hmItems.put(sNewId,plfNew);
             }
             //change directory reference

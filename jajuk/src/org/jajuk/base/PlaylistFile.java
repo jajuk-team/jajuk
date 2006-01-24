@@ -174,13 +174,22 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 	
 	/**
 	 *Alphabetical comparator used to display ordered lists of playlist files
-	 *@param other playlistfile to be compared
+	 *<p>Sort ignoring cases but different items with different cases should be distinct
+     * before being added into bidimap</p>
+     *@param other playlistfile to be compared
 	 *@return comparaison result 
 	 */
 	public int compareTo(Object o){
-		PlaylistFile otherPlaylistFile = (PlaylistFile)o;
-		return getAbsolutePath().compareTo(otherPlaylistFile.getAbsolutePath());
-	}
+	    PlaylistFile otherPlaylistFile = (PlaylistFile)o;
+	    String sAbs = getName()+getAbsolutePath();
+	    String sOtherAbs = otherPlaylistFile.getName()+otherPlaylistFile.getAbsolutePath();
+	    if (sAbs.equalsIgnoreCase(sOtherAbs) && !sAbs.equals(sOtherAbs)){
+	        return sAbs.compareTo(sOtherAbs);
+        }
+        else{
+            return sAbs.compareToIgnoreCase(sOtherAbs);
+        }
+   }
 	
 	/**
 	 * @return Returns the list of files this playlist maps to
@@ -414,6 +423,11 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
         setModified(true);
     }
     
+    /**
+     * Relace a file inside a playlist
+     * @param fOld
+     * @param fNew
+     */
     public void replaceFile(File fOld,File fNew){
         if ( iType == PlaylistFileItem.PLAYLIST_TYPE_BOOKMARK){
             Iterator it = Bookmarks.getInstance().getFiles().iterator();

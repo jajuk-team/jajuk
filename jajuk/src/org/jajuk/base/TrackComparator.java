@@ -103,6 +103,12 @@ public class TrackComparator implements Comparator{
         }
         String sHashCompare = getCompareString(track1);
         String sHashCompareOther = getCompareString(track2);
-        return sHashCompare.compareToIgnoreCase(sHashCompareOther);
+        if (sHashCompare.equalsIgnoreCase(sHashCompareOther) 
+                && !sHashCompare.equals(sHashCompareOther)){
+            return sHashCompare.compareTo(sHashCompareOther);
+        }
+        else{
+            return sHashCompare.compareToIgnoreCase(sHashCompareOther);
+        }
     }
 }

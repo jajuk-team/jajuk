@@ -318,10 +318,7 @@ public class Directory extends PropertyAdapter implements Comparable{
                     track.setComment(sComment); 
                 }
                 else{  //playlist file
-                    String sId = MD5Processor.hash(new StringBuffer(
-                        this.getDevice().getUrl()).
-                        append(this.getRelativePath()).
-                        append(files[i].getName()).toString());
+                    String sId = PlaylistFileManager.getID(files[i].getName(),this);
                     PlaylistFile plfRef = (PlaylistFile)PlaylistFileManager.getInstance().getItem(sId);
                     //if known playlist file and no deep scan, just leave
                     if (plfRef != null && !bDeepScan){
@@ -392,12 +389,21 @@ public class Directory extends PropertyAdapter implements Comparable{
     
     /**
      *Alphabetical comparator used to display ordered lists of directories
+     **<p>Sort ignoring cases but different items with different cases should be distinct
+     * before being added into bidimap</p>
      *@param other directory to be compared
      *@return comparaison result 
      */
     public int compareTo(Object o){
         Directory otherDirectory = (Directory)o;
-        return getAbsolutePath().compareTo(otherDirectory.getAbsolutePath());
+        String sAbs = getAbsolutePath();
+        String sOtherAbs = otherDirectory.getAbsolutePath();
+        if (sAbs.equalsIgnoreCase(sOtherAbs) && !sAbs.equals(sOtherAbs)){
+            return sAbs.compareTo(sOtherAbs);
+        }
+        else{
+            return sAbs.compareToIgnoreCase(sOtherAbs);
+        }
     }
     
     /**

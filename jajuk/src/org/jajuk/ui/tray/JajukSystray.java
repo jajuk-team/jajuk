@@ -254,6 +254,7 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
             public void run() {
                 String subject = event.getSubject();
                 if (EVENT_FILE_LAUNCHED.equals(subject)){
+                    //remove and re-add listener to make sure not to add it twice
                     jsPosition.removeMouseWheelListener(JajukSystray.this);
                     jsPosition.addMouseWheelListener(JajukSystray.this);
                     jsPosition.removeChangeListener(JajukSystray.this);

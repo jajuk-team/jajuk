@@ -597,69 +597,72 @@ ActionListener, Observer {
     public void populateTreeByStyle() {
         // delete previous tree
         top.removeAllChildren();
+        ArrayList<Track> tracks;
         synchronized (TrackManager.getInstance().getLock()) {
-            for (IPropertyable item : TrackManager.getInstance().getItems()) {
-                Track track = (Track)item;
-                if (!track.shouldBeHidden()) {
-                    StyleNode styleNode = null;
-                    Style style = track.getStyle();
-                    AuthorNode authorNode = null;
-                    Author author = track.getAuthor();
-                    AlbumNode albumNode = null;
-                    Album album = track.getAlbum();
-                    
-                    // create style
-                    Enumeration e = top.children();
-                    boolean b = false;
-                    while (e.hasMoreElements()) { // check the style doesn't
-                        // already exist
-                        StyleNode sn = (StyleNode) e.nextElement();
-                        if (sn.getStyle().equals(style)) {
-                            b = true;
-                            styleNode = sn;
-                            break;
-                        }
+            tracks = new ArrayList(TrackManager.getInstance().getItems());
+        }
+        Collections.sort(tracks,TrackManager.getInstance().getComparator());
+        for (Track track : tracks) {
+            if (!track.shouldBeHidden()) {
+                StyleNode styleNode = null;
+                Style style = track.getStyle();
+                AuthorNode authorNode = null;
+                Author author = track.getAuthor();
+                AlbumNode albumNode = null;
+                Album album = track.getAlbum();
+                
+                // create style
+                Enumeration e = top.children();
+                boolean b = false;
+                while (e.hasMoreElements()) { // check the style doesn't
+                    // already exist
+                    StyleNode sn = (StyleNode) e.nextElement();
+                    if (sn.getStyle().equals(style)) {
+                        b = true;
+                        styleNode = sn;
+                        break;
                     }
-                    if (!b) {
-                        styleNode = new StyleNode(style);
-                        top.add(styleNode);
-                    }
-                    // create author
-                    e = styleNode.children();
-                    b = false;
-                    while (e.hasMoreElements()) { // check if the author doesn't
-                        // already exist
-                        AuthorNode an = (AuthorNode) e.nextElement();
-                        if (an.getAuthor().equals(author)) {
-                            b = true;
-                            authorNode = an;
-                            break;
-                        }
-                    }
-                    if (!b) {
-                        authorNode = new AuthorNode(author);
-                        styleNode.add(authorNode);
-                    }
-                    // create album
-                    e = authorNode.children();
-                    b = false;
-                    while (e.hasMoreElements()) { // check if the album doesn't
-                        // already exist
-                        AlbumNode an = (AlbumNode) e.nextElement();
-                        if (an.getAlbum().equals(album)) {
-                            b = true;
-                            albumNode = an;
-                            break;
-                        }
-                    }
-                    if (!b) {
-                        albumNode = new AlbumNode(album);
-                        authorNode.add(albumNode);
-                    }
-                    // create track
-                    albumNode.add(new TrackNode(track));
                 }
+                if (!b) {
+                    styleNode = new StyleNode(style);
+                    top.add(styleNode);
+                }
+                // create author
+                e = styleNode.children();
+                b = false;
+                while (e.hasMoreElements()) { // check if the author doesn't
+                    // already exist
+                    AuthorNode an = (AuthorNode) e.nextElement();
+                    if (an.getAuthor().equals(author)) {
+                        b = true;
+                        authorNode = an;
+                        break;
+                    }
+                }
+                if (!b) {
+                    authorNode = new AuthorNode(author);
+                    styleNode.add(authorNode);
+                }
+                // create album
+                e = authorNode.children();
+                b = false;
+                while (e.hasMoreElements()) { // check if the album doesn't
+                    // already exist
+                    AlbumNode an = (AlbumNode) e.nextElement();
+                    if (an.getAlbum().equals(album)) {
+                        b = true;
+                        albumNode = an;
+                        break;
+                    }
+                }
+                if (!b) {
+                    albumNode = new AlbumNode(album);
+                    authorNode.add(albumNode);
+                }
+                // create track
+                albumNode.add(new TrackNode(track));
             }
+            
         }
     }
     
@@ -667,86 +670,91 @@ ActionListener, Observer {
     public void populateTreeByAuthor() {
         // delete previous tree
         top.removeAllChildren();
+        ArrayList<Track> tracks;
         synchronized (TrackManager.getInstance().getLock()) {
-            for (IPropertyable item : TrackManager.getInstance().getItems()) {
-                Track track = (Track)item;
-                if (!track.shouldBeHidden()) {
-                    AuthorNode authorNode = null;
-                    Author author = track.getAuthor();
-                    AlbumNode albumNode = null;
-                    Album album = track.getAlbum();
-                    
-                    // create author
-                    Enumeration e = top.children();
-                    boolean b = false;
-                    while (e.hasMoreElements()) { // check if the author doesn't
-                        // already exist
-                        AuthorNode an = (AuthorNode) e.nextElement();
-                        if (an.getAuthor().equals(author)) {
-                            b = true;
-                            authorNode = an;
-                            break;
-                        }
+            tracks = new ArrayList(TrackManager.getInstance().getItems());
+        }
+        Collections.sort(tracks,TrackManager.getInstance().getComparator());
+        for (Track track : tracks) {
+            if (!track.shouldBeHidden()) {
+                AuthorNode authorNode = null;
+                Author author = track.getAuthor();
+                AlbumNode albumNode = null;
+                Album album = track.getAlbum();
+                
+                // create author
+                Enumeration e = top.children();
+                boolean b = false;
+                while (e.hasMoreElements()) { // check if the author doesn't
+                    // already exist
+                    AuthorNode an = (AuthorNode) e.nextElement();
+                    if (an.getAuthor().equals(author)) {
+                        b = true;
+                        authorNode = an;
+                        break;
                     }
-                    if (!b) {
-                        authorNode = new AuthorNode(author);
-                        top.add(authorNode);
-                    }
-                    // create album
-                    e = authorNode.children();
-                    b = false;
-                    while (e.hasMoreElements()) { // check if the album doesn't
-                        // already exist
-                        AlbumNode an = (AlbumNode) e.nextElement();
-                        if (an.getAlbum().equals(album)) {
-                            b = true;
-                            albumNode = an;
-                            break;
-                        }
-                    }
-                    if (!b) {
-                        albumNode = new AlbumNode(album);
-                        authorNode.add(albumNode);
-                    }
-                    // create track
-                    albumNode.add(new TrackNode(track));
                 }
+                if (!b) {
+                    authorNode = new AuthorNode(author);
+                    top.add(authorNode);
+                }
+                // create album
+                e = authorNode.children();
+                b = false;
+                while (e.hasMoreElements()) { // check if the album doesn't
+                    // already exist
+                    AlbumNode an = (AlbumNode) e.nextElement();
+                    if (an.getAlbum().equals(album)) {
+                        b = true;
+                        albumNode = an;
+                        break;
+                    }
+                }
+                if (!b) {
+                    albumNode = new AlbumNode(album);
+                    authorNode.add(albumNode);
+                }
+                // create track
+                albumNode.add(new TrackNode(track));
             }
         }
+        
     }
     
     /** Fill the tree */
     public void populateTreeByAlbum() {
         // delete previous tree
         top.removeAllChildren();
+        ArrayList<Track> tracks;
         synchronized (TrackManager.getInstance().getLock()) {
-            for (IPropertyable item : TrackManager.getInstance().getItems()) {
-                Track track = (Track)item;
-                if (!track.shouldBeHidden()) {
-                    AuthorNode authorNode = null;
-                    Author author = track.getAuthor();
-                    AlbumNode albumNode = null;
-                    Album album = track.getAlbum();
-                    
-                    // create album
-                    Enumeration e = top.children();
-                    boolean b = false;
-                    while (e.hasMoreElements()) { // check if the album doesn't
-                        // already exist
-                        AlbumNode an = (AlbumNode) e.nextElement();
-                        if (an.getAlbum().equals(album)) {
-                            b = true;
-                            albumNode = an;
-                            break;
-                        }
+            tracks = new ArrayList(TrackManager.getInstance().getItems());
+        }
+        Collections.sort(tracks,TrackManager.getInstance().getComparator());
+        for (Track track : tracks) {
+            if (!track.shouldBeHidden()) {
+                AuthorNode authorNode = null;
+                Author author = track.getAuthor();
+                AlbumNode albumNode = null;
+                Album album = track.getAlbum();
+                
+                // create album
+                Enumeration e = top.children();
+                boolean b = false;
+                while (e.hasMoreElements()) { // check if the album doesn't
+                    // already exist
+                    AlbumNode an = (AlbumNode) e.nextElement();
+                    if (an.getAlbum().equals(album)) {
+                        b = true;
+                        albumNode = an;
+                        break;
                     }
-                    if (!b) {
-                        albumNode = new AlbumNode(album);
-                        top.add(albumNode);
-                    }
-                    // create track
-                    albumNode.add(new TrackNode(track));
                 }
+                if (!b) {
+                    albumNode = new AlbumNode(album);
+                    top.add(albumNode);
+                }
+                // create track
+                albumNode.add(new TrackNode(track));
             }
         }
     }
@@ -917,7 +925,7 @@ ActionListener, Observer {
                 || subject.equals(EVENT_DEVICE_UNMOUNT)) {
             SwingWorker sw = new SwingWorker() {
                 public Object construct() {
-                    populateTreeByStyle();
+                    populateTree();
                     return null;
                 }
                 

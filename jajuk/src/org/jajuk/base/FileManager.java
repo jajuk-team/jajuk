@@ -482,7 +482,6 @@ public class FileManager extends ItemManager implements Observer{
     public File getNextFile(File file){
         synchronized(FileManager.getInstance().getLock()){
             if (file  == null){
-                
                 return null;
             }
             File fileNext = null;
@@ -496,12 +495,12 @@ public class FileManager extends ItemManager implements Observer{
                     bStart = true; //OK, begin to concidere files from this one
                     continue;
                 }
-                if (fileNext.isReady()){  //file must be on a mounted device not refreshing
+                if (bStart && fileNext.isReady()){  //file must be on a mounted device not refreshing
                     bOk = true;
                     break;
                 }
             }
-            if ( bOk){
+            if (bOk){
                 return fileNext;
             }
             else if (!ConfigurationManager.getBoolean(CONF_OPTIONS_RESTART)){
@@ -531,7 +530,6 @@ public class FileManager extends ItemManager implements Observer{
     public File getPreviousFile(File file){
         synchronized(FileManager.getInstance().getLock()){
             if (file  == null){
-                
                 return null;
             }
             File filePrevious = null;
@@ -567,7 +565,6 @@ public class FileManager extends ItemManager implements Observer{
     public boolean isVeryfirstFile(File file){
         synchronized(FileManager.getInstance().getLock()){
             if (file == null || getItems().size() == 0){
-                
                 return false;
             }
             Iterator it = getItems().iterator();
