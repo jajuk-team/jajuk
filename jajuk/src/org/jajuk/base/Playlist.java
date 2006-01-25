@@ -40,10 +40,10 @@ public class Playlist extends PropertyAdapter implements Comparable{
 	 * @param sId
 	 * @param file :an associated playlist file
 	 */
-	public Playlist(String sId,PlaylistFile plFiles){
+	public Playlist(String sId,PlaylistFile plFile){
         super(sId,null);
-        this.alPlaylistFiles.add(plFiles);
-        setProperty(XML_PLAYLIST_FILES,plFiles.getId());
+        this.alPlaylistFiles.add(plFile);
+        setProperty(XML_PLAYLIST_FILES,plFile.getId());
    }
 
 /* (non-Javadoc)
@@ -199,8 +199,8 @@ public class Playlist extends PropertyAdapter implements Comparable{
 	public int compareTo(Object o){
 		Playlist otherPlaylist = (Playlist)o;
 		//use id in compare because 2 different playlists can have the same name
-        String sAbs = getName();
-        String sOtherAbs = otherPlaylist.getName();
+        String sAbs = getName()+getId();
+        String sOtherAbs = otherPlaylist.getName()+otherPlaylist.getId();
         if (sAbs.equalsIgnoreCase(sOtherAbs) && !sAbs.equals(sOtherAbs)){
             return (sAbs+getId()).compareToIgnoreCase(sOtherAbs+otherPlaylist.getId());
         }

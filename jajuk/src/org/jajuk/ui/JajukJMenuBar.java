@@ -124,10 +124,10 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings{
 
         help.add(jmiHelp);
         help.add(jmiTipOfTheDay);
-        help.add(jmiAbout);
         help.add(jmiWizard);
         help.add(jmiQualityAgent);
-
+        help.add(jmiAbout);
+        
         //add menus
         add(file);
         add(views);

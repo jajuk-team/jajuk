@@ -163,7 +163,8 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 		jcbAutoMount.setToolTipText(Messages.getString("DeviceWizard.49")); //$NON-NLS-1$
 		jcbAutoMount.addActionListener(this);
 		jlAutoRefresh = new JLabel(Messages.getString("DeviceWizard.53"));
-		jlMinutes = new JLabel(Messages.getString("DeviceWizard.54"));
+		jlAutoRefresh.setToolTipText(Messages.getString("DeviceWizard.50")); //$NON-NLS-1$
+        jlMinutes = new JLabel(Messages.getString("DeviceWizard.54"));
 		jftfAutoRefresh = new JFormattedTextField(NumberFormat.getNumberInstance()); //$NON-NLS-1$
 		//miminum delay is half a minute
         jftfAutoRefresh.addPropertyChangeListener(

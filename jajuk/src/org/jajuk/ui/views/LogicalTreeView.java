@@ -601,7 +601,7 @@ ActionListener, Observer {
         synchronized (TrackManager.getInstance().getLock()) {
             tracks = new ArrayList(TrackManager.getInstance().getItems());
         }
-        Collections.sort(tracks,TrackManager.getInstance().getComparator());
+        //no need for sorting as we use natural ordering of tracks
         for (Track track : tracks) {
             if (!track.shouldBeHidden()) {
                 StyleNode styleNode = null;

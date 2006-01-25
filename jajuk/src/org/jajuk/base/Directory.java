@@ -19,9 +19,7 @@
  */
 package org.jajuk.base;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -30,7 +28,6 @@ import java.util.TreeSet;
 
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
-import org.jajuk.util.MD5Processor;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 
@@ -326,15 +323,8 @@ public class Directory extends PropertyAdapter implements Comparable{
                     }
                     PlaylistFile plFile = PlaylistFileManager.getInstance().registerPlaylistFile(files[i],this);
                     //set hashcode to this playlist file
-                    BufferedReader br = new BufferedReader(new FileReader(files[i]));
-                    StringBuffer sbContent = new StringBuffer();
-                    String sTemp;
-                    do{
-                        sTemp = br.readLine();
-                        sbContent.append(sTemp);
-                    }
-                    while (sTemp != null);
-                    String sHashcode =MD5Processor.hash(sbContent.toString());
+                    String sHashcode = plFile.computesHashcode();
+                    plFile.forceRefresh(); //force refresh
                     plFile.setHashcode(sHashcode);
                     //create associated playlist
                     PlaylistManager.getInstance().registerPlaylist(plFile);

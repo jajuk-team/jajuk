@@ -93,6 +93,17 @@ public class PlaylistManager extends ItemManager{
                 return playlist;
             }
             else { //new playlist
+                //firstly, make sure the playlist file is not already referenced by another playlist
+                boolean bPresence = false;
+                for (IPropertyable item:getItems()){
+                    Playlist pl = (Playlist)item;
+                    if (pl.getPlaylistFiles().contains(plFile)){
+                        bPresence = true;
+                    }
+                }
+                if (bPresence){
+                    return null;
+                }
                 Playlist playlist = null;
                 playlist = new Playlist(sId,plFile);
                 playlist.removeProperty(XML_NAME);//no name attribute for playlists
@@ -157,6 +168,26 @@ public class PlaylistManager extends ItemManager{
                 }
             }
         }
+    }
+    
+    /**
+     * Update associated playlist after a change into the playlist. A playlist can only
+     * map playlists with exactly the same content 
+     *@param plf changed playlist file 
+     */
+    protected void refreshPlaylist(PlaylistFile plf){
+        Playlist pl = getPlayList(plf);
+        //check if a change really occured
+        if (pl.getId().equals(plf.getHashcode())){
+            return;
+        }
+        pl.removePlaylistFile(plf);
+        //if no more mapped playlist files, remove this playlist
+        if (pl.getPlaylistFiles().size() == 0){
+            removeItem(pl.getId());
+        }
+        //Register the new playlist
+        registerPlaylist(plf);
     }
     
     

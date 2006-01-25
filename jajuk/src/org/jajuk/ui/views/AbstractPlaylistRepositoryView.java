@@ -41,6 +41,7 @@ import org.jajuk.base.FIFO;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Observer;
 import org.jajuk.base.PlaylistFile;
+import org.jajuk.base.PlaylistFileManager;
 import org.jajuk.base.PlaylistManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.PlaylistFileItem;
@@ -266,8 +267,13 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
                     return null;
 				}
 				public void finished() {
-					jpRoot.add(Box.createVerticalStrut(500));  //make sure specials playlists are paked to the top
-				    selectPlaylistFileItem(plfiSelected);
+					jpRoot.add(Box.createVerticalStrut(500));  //make sure specials playlists are packed to the top
+				    if ( PlaylistFileManager.getInstance().getItem(plfiSelected.getPlaylistFile().getId()) != null){
+				        selectPlaylistFileItem(plfiSelected);    
+                    }
+                    else{ //means previously selected playlist has changed, select queue
+                        selectPlaylistFileItem(plfiQueue);
+                    }
                     AbstractPlaylistRepositoryView.this.revalidate();
                     AbstractPlaylistRepositoryView.this.repaint();
                }

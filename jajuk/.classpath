@@ -30,7 +30,6 @@
 	<classpathentry kind="lib" path="lib/entagged-freedb-0.04.jar"/>
 	<classpathentry kind="lib" path="lib/jdic-0.9.1.jar"/>
 	<classpathentry kind="lib" path="lib/tablelayout-20050920.jar"/>
-	<classpathentry kind="lib" path="/prog/api/commons-collections-3.1/commons-collections-3.1.jar"/>
 	<classpathentry kind="lib" path="lib/commons-collections-3.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

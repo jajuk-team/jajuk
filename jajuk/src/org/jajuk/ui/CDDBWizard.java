@@ -244,10 +244,10 @@ TableColumnModelListener, TableModelListener, MouseListener {
                     // Display main panel
                     display();
                 }
+                Util.stopWaiting();
             }
         };
         sw.start();
-        Util.stopWaiting();
     }
     
     /** Fill the table */

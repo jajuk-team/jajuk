@@ -282,7 +282,13 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
                 else{
                     bFading = true;
                     this.fadingVolume = fVolume;
-                    FIFO.getInstance().finished();
+                    /*we have to launch the next file from another file to avoid stopping current track 
+                    (perceptible during player.open() for remote files)*/
+                    new Thread(){
+                        public void run(){
+                            FIFO.getInstance().finished();
+                        }
+                    }.start();
                 }
             }
              //Caution: lMicroseconds reset to zero after a seek

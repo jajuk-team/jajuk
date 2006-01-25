@@ -27,7 +27,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Properties;
 
-import org.apache.commons.collections.bidimap.TreeBidiMap;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.MD5Processor;
@@ -552,13 +551,7 @@ public class TrackManager extends ItemManager implements Observer{
     public void setComparator(TrackComparator comparator) {
         synchronized (getLock()) {
             this.comparator = comparator;
-            //clear re-add all tracks using new comparator
-            TreeBidiMap newTree = new TreeBidiMap();
-            for (IPropertyable item:getItems()){
-                newTree.put(item.getId(),item);
-            }
-            hmItems = newTree;
-        }
+       }
     }
 }    
      

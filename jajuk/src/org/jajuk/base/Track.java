@@ -120,22 +120,22 @@ public class Track extends PropertyAdapter implements Comparable{
      */
     public int compareTo(Object o){
         Track otherTrack = (Track)o;
-        
+     
         String src = new StringBuffer(200)
-        .append(sName)
         .append(style.getName().toLowerCase())
         .append(author.getName().toLowerCase())
         .append(album.getName().toLowerCase())
+        .append(sName)
         .append(lYear)
         .append(length)
         .append(lOrder)
         .append(type.getName()).toString(); //differenciate tracks by type because we can't find best file on different quality levels by format
         
         String other = new StringBuffer(200)
-        .append(otherTrack.getName())
         .append(otherTrack.getStyle().getName().toLowerCase())
         .append(otherTrack.getAuthor().getName().toLowerCase())
         .append(otherTrack.getAlbum().getName().toLowerCase())
+        .append(otherTrack.getName())
         .append(otherTrack.getYear())
         .append(otherTrack.getLength())
         .append(otherTrack.getOrder())

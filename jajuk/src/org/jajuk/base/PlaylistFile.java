@@ -36,6 +36,7 @@ import org.jajuk.ui.JajukFileChooser;
 import org.jajuk.ui.PlaylistFileItem;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.JajukFileFilter;
+import org.jajuk.util.MD5Processor;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
@@ -164,7 +165,26 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 	public String getHashcode() {
 		return getStringValue(XML_HASHCODE);
 	}
+    
+    
+    /**
+     * 
+     * @return playlist file hashcode based on its content
+     * @throws IOException
+     */
+    public String computesHashcode() throws IOException{
+        BufferedReader br = new BufferedReader(new FileReader(this.getFio()));
+        StringBuffer sbContent = new StringBuffer();
+        String sTemp;
+        do{
+            sTemp = br.readLine();
+            sbContent.append(sTemp);
+        }
+        while (sTemp != null);
+        return MD5Processor.hash(sbContent.toString());
+    }
 	
+      
 	/**
 	 * @return
 	 */
@@ -265,6 +285,14 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 		}
 		return alFiles;
 	}
+    
+    /**
+     * Force playlist re-read (don't use the cache). Can be used after a forced refresh
+     *
+     */
+    protected synchronized void forceRefresh(){
+        alFiles = load(); //populate playlist
+    }
 	
 	/**
 	 * Add a file to this playlist file
@@ -308,7 +336,7 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 		ArrayList al = getFiles();
 		int index = al.size();
 		addFile(index,file);
-	}
+  }
 	
 	/**
 	 * Add some files to this playlist file. 
@@ -327,7 +355,7 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 	    }
 	    finally{
 	        ObservationManager.notify(new Event(EVENT_PLAYLIST_REFRESH)); //refresh playlist editor    
-		}
+	    }
 	}
 	
 	
@@ -347,7 +375,7 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 			alFiles.set(index+1,alFiles.get(index));
 			alFiles.set(index,file); //n+1 file becomes nth file
 			setModified(true);
-		}
+    	}
 	}
 	
 	/**
@@ -366,7 +394,7 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 			alFiles.set(index-1,alFiles.get(index));
 			alFiles.set(index,bfile); //n-1 file becomes nth file
 			setModified(true);
-		}
+   	}
 	}
    
   
@@ -386,7 +414,7 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 			alFiles.remove(index);
 		}
 		setModified(true);
-	}
+  }
 
     /**
      * Remove a fiven file from the playlist (can have several occurences)
@@ -468,12 +496,10 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
             }
         }
         setModified(true);
-        
     }
 	
 	/**
 	 * Update playlist file on disk if needed
-	 *
 	 */
 	public void commit() throws JajukException{
 		BufferedWriter bw = null;
@@ -497,6 +523,9 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 					try {
 						bw.flush();
 						bw.close();
+                        setHashcode(computesHashcode());
+                        PlaylistManager.getInstance().refreshPlaylist(this);
+                        ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH));  //refresh repository list (mandatory for logical playlist collapse/merge)
 					} catch (IOException e1) {
 						throw new JajukException("028",getName(),e1); //$NON-NLS-1$
 					}

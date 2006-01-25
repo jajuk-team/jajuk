@@ -389,7 +389,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
         String subject = event.getSubject();
         Object origin = ObservationManager.getDetail(event,DETAIL_ORIGIN);
         if (EVENT_PLAYLIST_CHANGED.equals(subject) && event.getDetails() != null){
-            //test mapping between editor and repository
+            //test mapping between editor and repository, to be refactored
             if ((this instanceof PhysicalPlaylistEditorView && !(origin instanceof PhysicalPlaylistRepositoryView))
                 || (this instanceof LogicalPlaylistEditorView && !(origin instanceof LogicalPlaylistRepositoryView))){
                 return;
@@ -407,7 +407,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
             update(new Event(EVENT_PLAYLIST_REFRESH,ObservationManager.getDetailsLastOccurence(EVENT_PLAYLIST_REFRESH))); //force refresh
             Util.stopWaiting(); //stop waiting
         }
-        else if ( EVENT_PLAYLIST_REFRESH.equals(subject)){
+        else if ( EVENT_PLAYLIST_REFRESH.equals(subject) || EVENT_DEVICE_REFRESH.equals(subject)){
             SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
                     if ( plfi == null ){  //nothing ? leave
