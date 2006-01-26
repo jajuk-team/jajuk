@@ -499,7 +499,7 @@ public class FIFO implements ITechnicalStrings {
      * @return new index of current file
      * @throws Exception
      */
-    private int getPrevious() throws Exception {
+    private int addPrevious() throws Exception {
         StackItem itemFirst = getItem(0);
         if (itemFirst != null) {
             if (index > 0) { // if we have some repeat files
@@ -526,7 +526,7 @@ public class FIFO implements ITechnicalStrings {
         try {
             JajukTimer.getInstance().reset();
             JajukTimer.getInstance().addTrackTime(alFIFO);
-            launch(getPrevious());
+            launch(addPrevious());
         } catch (Exception e) {
             Log.error(e);
         } finally {
@@ -552,7 +552,7 @@ public class FIFO implements ITechnicalStrings {
                 return;
             }
             while (!bOK) {
-                int index = getPrevious();
+                int index = addPrevious();
                 Directory dirTested = null;
                 if (alFIFO.get(index) == null) {
                     return;
@@ -632,9 +632,14 @@ public class FIFO implements ITechnicalStrings {
                         bOK = true;
                     }
                 }
-                if (bOK) {
+                if (bOK) { //some tracks of other album were already in fifo, sraer them
+                    //add a fake album at the top the fifo because the finish will drop first element and we won't
+                    //drop first track of the next album
+                    ArrayList alFake = new ArrayList(1);
+                    alFake.add(getItem(0));
+                    insert(alFake,0);
                     finished(); // stop current track and start the new one
-                } else {
+                } else {//void fifo, add next album
                     File fileNext = itemLast.getFile();
                     do {
                         fileNext = FileManager.getInstance().getNextFile(fileNext);
