@@ -172,12 +172,6 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
         }
         
         public Object getValueAt(int rowIndex, int columnIndex) {
-            //check if fifo is void, so there is nothing to do
-            if ( alItems.size() == 0 ){
-                jbRemove.setEnabled(false);
-                return null;
-            }
-            jbRemove.setEnabled(true);
             boolean bPlanned = false;
             Font font = null;
             StackItem item = getItem(rowIndex);
@@ -444,9 +438,14 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
         
         else if ( EVENT_PLAYER_STOP.equals(subject) 
                 && plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE ){
-            alItems.clear();
-            alPlanned.clear();
-            model.fireTableDataChanged();
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                    alItems.clear();
+                    alPlanned.clear();
+                    iRowNum = 0;
+                    model.fireTableDataChanged();
+                }
+            });
         }
     }
     
@@ -550,6 +549,9 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
      * @return
      */
     private StackItem getItem(int index){
+        if (alItems.size() == 0){
+            return null;
+        }
         if (index < alItems.size()){
             return (StackItem)alItems.get(index);
         }
