@@ -21,6 +21,10 @@ public class ExitAction extends ActionBase {
     }
 
     public void perform(ActionEvent evt) {
+        if (Main.getWindow() != null){
+            //Hide window ASAP
+            Main.getWindow().setVisible(false);
+        }
         Main.exit(0);
     }
 }
