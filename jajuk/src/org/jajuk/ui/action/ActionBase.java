@@ -19,14 +19,14 @@
  */
 package org.jajuk.ui.action;
 
+import java.awt.event.ActionEvent;
+
 import javax.swing.AbstractAction;
 import javax.swing.Icon;
 import javax.swing.KeyStroke;
+
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.log.Log;
-import org.jajuk.base.ObservationManager;
-import org.jajuk.base.Event;
-import java.awt.event.ActionEvent;
 
 /**
  * Common super class for Swing actions. This class provides useful construction options to create
@@ -261,7 +261,6 @@ public abstract class ActionBase extends AbstractAction implements ITechnicalStr
         } catch (Throwable e2) {
             Log.error(e2);
         } finally {
-            ObservationManager.notify(new Event(EVENT_PLAYLIST_REFRESH)); //refresh playlist editor
         }
     }
 
