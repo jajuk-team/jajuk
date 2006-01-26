@@ -193,7 +193,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
             posValue = 0.98f;
         }
         // leave if already seeking
-        if (player != null && getState() == BasicPlayer.SEEKING) {
+        if (player != null && getState() != BasicPlayer.PLAYING) {
             Log.warn("Already seeking, leaving"); //$NON-NLS-1$
             return;
         }
