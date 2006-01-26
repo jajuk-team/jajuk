@@ -45,7 +45,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
-import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
@@ -363,30 +362,13 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 	 *  @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
 	 */
 	public void stateChanged(ChangeEvent e) {
-		if ( e.getSource() == jsVolume){
+		if ( e.getSource() == jsVolume && !jsVolume.getValueIsAdjusting() ){
             if (System.currentTimeMillis()-lDateLastAdjust > 200){
                 setVolume((float)jsVolume.getValue()/100);
                 lDateLastAdjust = System.currentTimeMillis();
             }
         }
-        else if (e.getSource() == jsPosition){
-            if (jsPosition.getValueIsAdjusting()){
-                lDateLastAdjust = System.currentTimeMillis();
-            }
-            else{
-                setPosition((float)jsPosition.getValue()/100);
-            }
-        }
-
-        if ( e.getSource() == jsVolume ){
-            if (System.currentTimeMillis()-lDateLastAdjust > 200){
-            //if user move the volume slider, unmute
-            Player.mute(false);
-        	Player.setVolume((float)jsVolume.getValue()/100);
-			jbMute.setBorder(BorderFactory.createRaisedBevelBorder());
-            }
-        }
-		else if (e.getSource() == jsPosition && !jsPosition.getValueIsAdjusting()){
+        else if (e.getSource() == jsPosition && !jsPosition.getValueIsAdjusting()){
 			if (jsPosition.getValueIsAdjusting()){
                 lDateLastAdjust = System.currentTimeMillis();
             }
@@ -434,8 +416,10 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 	    jsVolume.removeChangeListener(CommandJPanel.this);
 	    jsVolume.removeMouseWheelListener(CommandJPanel.this);
 	    //if user move the volume slider, unmute
-	    Player.mute(false);
-	    Player.setVolume(fVolume);
+	    if (Player.isMuted()){
+	        Player.mute(false);    
+        }
+        Player.setVolume(fVolume);
 	    jsVolume.addChangeListener(CommandJPanel.this);
 	    jsVolume.addMouseWheelListener(CommandJPanel.this);
 	}
@@ -543,7 +527,9 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
                   jcbHistory.setSelectedItem(null); //clear selection bar (data itself is clear from the model by History class)
                 }
                 else if(EVENT_VOLUME_CHANGED.equals(event.getSubject())){
+                    jsVolume.removeChangeListener(CommandJPanel.this);
                     jsVolume.setValue((int)(100*Player.getCurrentVolume()));
+                    jsVolume.addChangeListener(CommandJPanel.this);
                     jbMute.setSelected(false);
                 }
 			}
@@ -565,12 +551,12 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		if (e.getSource() == jsPosition){
             int iOld = jsPosition.getValue();
             int iNew = iOld - (e.getUnitsToScroll()*3);
-            setPosition(((float)iNew)/100);
+            jsPosition.setValue(iNew);
         }
         else if (e.getSource() == jsVolume){
             int iOld = jsVolume.getValue();
             int iNew = iOld - (e.getUnitsToScroll()*3);
-            setVolume(((float)iNew)/100);
+            jsVolume.setValue(iNew);
         }
 	}
 	

@@ -322,7 +322,9 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
                     jsPosition.setEnabled(true);
                 }
                 else if(EVENT_VOLUME_CHANGED.equals(event.getSubject())){
+                    jsVolume.removeChangeListener(JajukSystray.this);
                     jsVolume.setValue((int)(100*Player.getCurrentVolume()));
+                    jsVolume.addChangeListener(JajukSystray.this);
                     ActionManager.getAction(JajukAction.MUTE_STATE).setIcon(Util.getIcon(ICON_MUTE));
                     ActionManager.getAction(JajukAction.MUTE_STATE).setName(Messages.getString("JajukWindow.2")); //$NON-NLS-1$
                 }
