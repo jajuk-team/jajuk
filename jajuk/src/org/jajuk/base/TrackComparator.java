@@ -57,25 +57,22 @@ public class TrackComparator implements Comparator{
         case 0:
             sHashCompare = new StringBuffer()
             .append(track.getStyle().getName2())
-            .append("  ").append(track.getAuthor().getName2())//need 2 spaces to make a right sorting (ex: Rock and Rock & Roll) //$NON-NLS-1$
-            .append("  ").append(track.getAlbum().getName2()) //$NON-NLS-1$
-            .append(track.getYear())
-            .append("  ").append(track.getName()).toString(); //$NON-NLS-1$
+            .append(track.getAuthor().getName2())//need 2 spaces to make a right sorting (ex: Rock and Rock & Roll) //$NON-NLS-1$
+            .append(track.getAlbum().getName2()) //$NON-NLS-1$
+            .append(track.getName()).toString(); //$NON-NLS-1$
             break;
             //Author/album
         case 1:
             sHashCompare = new StringBuffer()
-            .append("  ").append(track.getAuthor().getName2())//need 2 spaces to make a right sorting (ex: Rock and Rock & Roll) //$NON-NLS-1$
-            .append("  ").append(track.getAlbum().getName2()) //$NON-NLS-1$
-            .append(track.getYear())
-            .append("  ").append(track.getName()).toString(); //$NON-NLS-1$
+            .append(track.getAuthor().getName2())//need 2 spaces to make a right sorting (ex: Rock and Rock & Roll) //$NON-NLS-1$
+            .append(track.getAlbum().getName2()) //$NON-NLS-1$
+            .append(track.getName()).toString(); //$NON-NLS-1$
             break;
             //Album    
         case 2:
             sHashCompare = new StringBuffer()
-            .append("  ").append(track.getAlbum().getName2()) //$NON-NLS-1$
-            .append(track.getYear())
-            .append("  ").append(track.getName()).toString(); //$NON-NLS-1$
+            .append(track.getAlbum().getName2()) //$NON-NLS-1$
+            .append(track.getName()).toString(); //$NON-NLS-1$
             break;
         }
         return sHashCompare;
