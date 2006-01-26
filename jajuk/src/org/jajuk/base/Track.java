@@ -114,39 +114,14 @@ public class Track extends PropertyAdapter implements Comparable{
     }
     
     /**
-     *Alphabetical comparator used to display ordered lists of tracks
+     *Default comparator for tracks, not used for sorting (use TrackComparator for that)
+     *But only for storage. We must make sure of unicity inside bidimap
      *@param other track to be compared
      *@return comparaison result 
      */
     public int compareTo(Object o){
         Track otherTrack = (Track)o;
-     
-        String src = new StringBuffer(200)
-        .append(style.getName().toLowerCase())
-        .append(author.getName().toLowerCase())
-        .append(album.getName().toLowerCase())
-        .append(sName)
-        .append(lYear)
-        .append(length)
-        .append(lOrder)
-        .append(type.getName()).toString(); //differenciate tracks by type because we can't find best file on different quality levels by format
-        
-        String other = new StringBuffer(200)
-        .append(otherTrack.getStyle().getName().toLowerCase())
-        .append(otherTrack.getAuthor().getName().toLowerCase())
-        .append(otherTrack.getAlbum().getName().toLowerCase())
-        .append(otherTrack.getName())
-        .append(otherTrack.getYear())
-        .append(otherTrack.getLength())
-        .append(otherTrack.getOrder())
-        .append(otherTrack.getType().getName()).toString(); //differenciate tracks by type because we can't find best file on different quality levels by format
-        
-        if (src.equalsIgnoreCase(other) && !src.equals(other)){
-            return src.compareTo(other);
-        }
-        else{
-            return src.compareToIgnoreCase(other);
-        }
+        return getId().compareTo(otherTrack.getId());
     }
     
     /**
