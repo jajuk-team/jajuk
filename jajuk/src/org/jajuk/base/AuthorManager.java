@@ -89,10 +89,6 @@ public class AuthorManager extends ItemManager{
 	    synchronized(AuthorManager.getInstance().getLock()){
 	        if (hmItems.containsKey(sId)) {
 	            Author author = (Author)hmItems.get(sId);
-	            //check if name has right case
-	            if (!author.getName().equals(sName)){
-	                author.setName(sName);
-	            }
 	            return author;
 	        }
 	        Author author = null;

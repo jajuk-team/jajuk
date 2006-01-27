@@ -147,8 +147,8 @@ public class FileManager extends ItemManager implements Observer{
             //create a new file (with own fio and sAbs)
             org.jajuk.base.File fNew = new File(sNewId,sNewName,fileOld.getDirectory(),fileOld.getTrack(),fileOld.getSize(),fileOld.getQuality());
             fNew.setProperties(fileOld.getProperties()); //transfert all properties (inc id and name)
-            fNew.setId(sNewId); //reset new id and name
-            fNew.setName(sNewName);
+            fNew.setProperty(XML_ID,sNewId); //reset new id and name
+            fNew.setProperty(XML_NAME,sNewName); //reset new id and name
             //check file name and extension
             if (!(Util.getExtension(fileNew).equals(Util.getExtension(fileOld.getIO())))){ //no extension change
                 throw new CannotRenameException("134"); //$NON-NLS-1$
@@ -198,7 +198,7 @@ public class FileManager extends ItemManager implements Observer{
             File fNew = new File(sNewId,old.getName(),newDir,old.getTrack(),old.getSize(),
                 old.getQuality());
             fNew.setProperties(old.getProperties()); //transfert all properties (inc id)
-            fNew.setId(sNewId); //reset new id
+            fNew.setProperty(XML_ID,sNewId); //reset new id and name
             //OK, remove old file and register this new file
             removeFile(old);
             if ( !hmItems.containsKey(sNewId)){

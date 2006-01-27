@@ -98,10 +98,6 @@ public class StyleManager extends ItemManager {
             if (hmItems.containsKey(sId)) {
                 
                 Style style = (Style)hmItems.get(sId);
-                //check if name has right case
-                if (!style.getName().equals(sName)){
-                    style.setName(sName);
-                }
                 return style;
             }
             Style style = null;

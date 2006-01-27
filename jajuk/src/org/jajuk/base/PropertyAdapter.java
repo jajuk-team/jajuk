@@ -45,9 +45,9 @@ abstract public class PropertyAdapter implements IPropertyable, Serializable,ITe
     /** Item properties, singleton */
     private LinkedHashMap properties;
     /** ID. Ex:1,2,3... */
-    protected String sId;
+    protected final String sId;
     /** Name */
-    protected String sName;
+    protected final String sName;
     /** "Any" value : concatenation of all properties*/
     protected String sAny =""; //$NON-NLS-1$
     /** Flag for need to refresh any criteria */
@@ -58,9 +58,11 @@ abstract public class PropertyAdapter implements IPropertyable, Serializable,ITe
      * @param sId element ID
      * @param sName element name
      */
-    PropertyAdapter(String sId,String sName){
-        setId(sId);
-        setName(sName);
+    PropertyAdapter(final String sId,final String sName){
+        this.sId = sId;
+        setProperty(XML_ID,sId);
+        this.sName = sName;
+        setProperty(XML_NAME,sName);
     }
     
     /**
@@ -309,24 +311,7 @@ abstract public class PropertyAdapter implements IPropertyable, Serializable,ITe
     public void displayProperties() {
     }
     
-    /**
-     * @param id The sId to set.
-     */
-    public void setId(String id) {
-        sId = id;
-        setProperty(XML_ID,id);
-    }
-    
-    /**
-     * @param name The sName to set.
-     */
-    public  void setName(String name) {
-        sName = name;
-        setProperty(XML_NAME,name);
-    }
-    
-    
-    /**
+      /**
      * Default implementation for this method, simply return standard value
      */
     public String getHumanValue(String sKey) {

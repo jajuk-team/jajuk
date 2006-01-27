@@ -183,8 +183,8 @@ public class PlaylistFileManager extends ItemManager implements Observer{
             //create a new playlist file (with own fio and sAbs)
             PlaylistFile plfNew = new PlaylistFile(sNewId,sNewName,plfOld.getDirectory());
             plfNew.setProperties(plfOld.getProperties()); //transfert all properties (inc id and name)
-            plfNew.setId(sNewId); //reset new id and name
-            plfNew.setName(sNewName);
+            plfNew.setProperty(XML_ID,sNewId); //reset new id and name
+            plfNew.setProperty(XML_NAME,sNewName); //reset new id and name
             //check file name and extension
             if (plfNew.getName().lastIndexOf((int)'.') != plfNew.getName().indexOf((int)'.')//just one '.'
                     || !(Util.getExtension(ioNew).equals(EXT_PLAYLIST))){ //check extension

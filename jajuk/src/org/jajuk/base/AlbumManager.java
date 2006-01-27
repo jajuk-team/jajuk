@@ -87,10 +87,6 @@ public class AlbumManager extends ItemManager{
         synchronized(TrackManager.getInstance().getLock()){
             if (hmItems.containsKey(sId)) {
                 Album album = (Album)hmItems.get(sId);
-                //check if name has right case
-                if (!album.getName().equals(sName)){
-                    album.setName(sName);
-                }
                 return album;
             }
             Album album = null;
