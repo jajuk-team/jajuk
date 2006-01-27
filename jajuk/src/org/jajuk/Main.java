@@ -282,6 +282,12 @@ public class Main implements ITechnicalStrings {
                 public void run() {
                     Log.debug("Exit Hook begin");//$NON-NLS-1$
                     try{
+                        Player.stop(true); //stop sound ASAP
+                    }
+                    catch(Exception e){
+                        e.printStackTrace(); //no log to make sure to reach collection commit
+                    }
+                    try{
                         if (iExitCode == 0){ //commit only if exit is safe (to avoid commiting empty collection)
                             //commit configuration
                             org.jajuk.util.ConfigurationManager.commit();
