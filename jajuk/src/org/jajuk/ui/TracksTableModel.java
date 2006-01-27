@@ -22,6 +22,7 @@ package org.jajuk.ui;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -32,6 +33,7 @@ import org.jajuk.base.IPropertyable;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.base.PropertyMetaInformation;
 import org.jajuk.base.Track;
+import org.jajuk.base.TrackComparator;
 import org.jajuk.base.TrackManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
@@ -148,6 +150,8 @@ public class TracksTableModel extends JajukTableModel{
                 }
             }
         }
+        //sort by album
+        Collections.sort(alToShow,new TrackComparator(2));
         Iterator it = alToShow.iterator();
         int iColNum = iNumberStandardRows + 
             TrackManager.getInstance().getCustomProperties().size();
