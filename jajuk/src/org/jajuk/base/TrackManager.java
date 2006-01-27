@@ -22,6 +22,7 @@ package org.jajuk.base;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -519,9 +520,9 @@ public class TrackManager extends ItemManager implements Observer{
      * @param item
      * @return
      **/
-    public HashSet<Track> getAssociatedTracks(IPropertyable item){
+    public ArrayList<Track> getAssociatedTracks(IPropertyable item){
         synchronized(TrackManager.getInstance().getLock()){
-            HashSet out = new HashSet();
+            ArrayList out = new ArrayList(10);
             for (Object item2:hmItems.values()){
                 Track track = (Track)item2;
                 if ( (item instanceof Album &&  track.getAlbum().equals(item))
@@ -530,6 +531,8 @@ public class TrackManager extends ItemManager implements Observer{
                     out.add(track);
                 }
             }
+            //sort by style/author/album
+            Collections.sort(out,new TrackComparator(0));
             return out;
         }
     }

@@ -30,10 +30,11 @@ import java.awt.Frame;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.MediaTracker;
+import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.Window;
-import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -42,7 +43,6 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
@@ -88,6 +88,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import com.sun.image.codec.jpeg.JPEGCodec;
+import com.sun.image.codec.jpeg.JPEGEncodeParam;
 import com.sun.image.codec.jpeg.JPEGImageEncoder;
 import com.sun.media.sound.MixerSourceLine;
 
@@ -926,6 +927,25 @@ public class Util implements ITechnicalStrings {
         return iiNew;
     }
     
+    public static ImageIcon getScaledImage(ImageIcon img,int iScale){
+        int iNewWidth;
+        int iNewHeight;
+        float fRatio;
+        // Height is smaller or equal than width : try to optimize width
+        iNewWidth = iScale; //take all possible width
+        // we check now if height will be visible entirely with optimized width
+        float fWidthRatio = (float)iNewWidth/img.getIconWidth();
+        if (img.getIconHeight()*(fWidthRatio) <= iScale){
+            iNewHeight = (int)(img.getIconHeight()*fWidthRatio);
+        }
+        else{
+            //no? so we optimize width 
+            iNewHeight = iScale;
+            iNewWidth = (int)(img.getIconWidth() * ((float)iNewHeight/img.getIconHeight())) ;     
+        }
+        return getResizedImage(img,iNewWidth,iNewHeight);
+        
+    }
     
     /**
      * Method to attempt a dynamic update for any GUI accessible by this JVM. It will
@@ -1180,57 +1200,60 @@ public class Util implements ITechnicalStrings {
      * @param maxDim The width and height of 
      * the thumbnail must 
      * be maxDim pixels or less.
+     * Thanks Marco Schmidt http://schmidt.devlib.org/java/save-jpeg-thumbnail.html#source
+     */
+    
+    /**
+     * Reads an image in a file and creates 
+     * a thumbnail in another file.
+     * Will be created if necessary.
+     * the thumbnail must be maxDim pixels or less.
+     * Thanks Marco Schmidt http://schmidt.devlib.org/java/save-jpeg-thumbnail.html#source
+     * @param orig source image
+     * @param thumb destination file (jpg)
+     * @param maxDim required size
+     * @throws Exception
      */
     public static void createThumbnail(
             URL orig, File thumb,int maxDim) throws Exception{
         // Get the image from a file.
-        ImageIcon icon = new ImageIcon(orig);
-        if ( icon.getImageLoadStatus() != MediaTracker.COMPLETE){
-            throw new JajukException("129",orig.toString(),null); //$NON-NLS-1$
+        Image image = new ImageIcon(orig).getImage();
+        MediaTracker mediaTracker = new MediaTracker(new Container());
+        mediaTracker.addImage(image, 0);
+        mediaTracker.waitForID(0);
+        // determine thumbnail size from WIDTH and HEIGHT
+        int thumbWidth = maxDim;
+        int thumbHeight = maxDim;
+        double thumbRatio = (double)thumbWidth / (double)thumbHeight;
+        int imageWidth = image.getWidth(null);
+        int imageHeight = image.getHeight(null);
+        double imageRatio = (double)imageWidth / (double)imageHeight;
+        if (thumbRatio < imageRatio) {
+            thumbHeight = (int)(thumbWidth / imageRatio);
+        } else {
+            thumbWidth = (int)(thumbHeight * imageRatio);
         }
-        Image inImage = icon.getImage();
-        // Determine the scale.
-        double scale = (double)maxDim/(
-                double)inImage.getHeight(null);
-        if (scale < 0){
-            throw new Exception("Negative scale");
-        }
-        if (inImage.getWidth(null) > inImage.getHeight(null)) {
-            scale = (double)maxDim/(double)inImage.getWidth(null);
-        }
-        
-        // Determine size of new image. 
-        //One of them
-        // should equal maxDim.
-        int scaledW = (int)(scale*inImage.getWidth(null));
-        int scaledH = (int)(scale*inImage.getHeight(null));
-        
-        // Create an image buffer in 
-        //which to paint on.
-        BufferedImage outImage = new BufferedImage(scaledW, scaledH,
-                BufferedImage.TYPE_INT_RGB);
-        
-        // Set the scale.
-        AffineTransform tx = new AffineTransform();
-        
-        // If the image is smaller than 
-        //the desired image size,
-        // don't bother scaling.
-        if (scale < 1.0d) {
-            tx.scale(scale, scale);
-        }
-        // Paint image.
-        Graphics2D g2d = outImage.createGraphics();
-        g2d.drawImage(inImage, tx, null);
-        g2d.dispose();
-        
-        // JPEG-encode the image 
-        //and write to file.
-        OutputStream os = new FileOutputStream(thumb);
-        JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(os);
-        encoder.encode(outImage);
-        os.close();
-    }
+        // draw original image to thumbnail image object and
+        // scale it to the new size on-the-fly
+        BufferedImage thumbImage = new BufferedImage(thumbWidth, 
+            thumbHeight, BufferedImage.TYPE_INT_RGB);
+        Graphics2D graphics2D = thumbImage.createGraphics();
+        graphics2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+            RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        graphics2D.drawImage(image, 0, 0, thumbWidth, thumbHeight, null);
+        // save thumbnail image to OUTFILE
+        BufferedOutputStream out = new BufferedOutputStream(new
+            FileOutputStream(thumb));
+        JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(out);
+        JPEGEncodeParam param = encoder.
+        getDefaultJPEGEncodeParam(thumbImage);
+        int quality = 100;
+        quality = Math.max(0, Math.min(quality, 100));
+        param.setQuality((float)quality / 100.0f, false);
+        encoder.setJPEGEncodeParam(param);
+        encoder.encode(thumbImage);
+        out.close();     
+      }
     
     /**
      * 

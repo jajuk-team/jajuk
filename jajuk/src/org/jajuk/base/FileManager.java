@@ -348,13 +348,14 @@ public class FileManager extends ItemManager implements Observer{
         synchronized(TrackManager.getInstance().getLock()){
             ArrayList alEligibleFiles = new ArrayList(1000);
             Iterator it = TrackManager.getInstance().getItems().iterator(); //search in tracks, not files to avoid duplicates items
+            Date now = new Date();
             while ( it.hasNext()){
                 Track track = (Track)it.next();
                 File file = track.getPlayeableFile(bHideUnmounted); //try to get a mounted file (can return null)
                 if (file == null){//none mounted file, take first file we find
                     continue;
                 }
-                int iTrackAge = (int)((new Date().getTime()-track.getAdditionDate().getTime())/86400000); //)/1000/60/60/24;
+                int iTrackAge = (int)((now.getTime()-track.getAdditionDate().getTime())/86400000); //)/1000/60/60/24;
                 if ( iTrackAge <= ConfigurationManager.getInt(CONF_OPTIONS_NOVELTIES_AGE)){
                     alEligibleFiles.add(file);
                 }

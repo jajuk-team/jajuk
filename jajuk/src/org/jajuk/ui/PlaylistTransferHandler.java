@@ -32,7 +32,6 @@ import java.awt.dnd.DropTargetEvent;
 import java.awt.dnd.DropTargetListener;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Iterator;
 
 import javax.swing.JTable;
@@ -149,13 +148,13 @@ public class PlaylistTransferHandler implements DropTargetListener,ITechnicalStr
 			//computes selection
 			ArrayList alSelectedFiles = new ArrayList(100);
 			//computes logical selection if any
-			HashSet alLogicalTracks = null;
+			ArrayList alLogicalTracks = null;
 			if(oData instanceof Style || oData instanceof Author || oData instanceof Album || oData instanceof Track){
 				if( oData instanceof Style || oData instanceof Author || oData instanceof Album ){
 					alLogicalTracks = TrackManager.getInstance().getAssociatedTracks((IPropertyable)oData);
 				}
 				else if( oData instanceof Track){
-					alLogicalTracks = new HashSet(100);
+					alLogicalTracks = new ArrayList(100);
 					alLogicalTracks.add(oData);
 				}
 				//prepare files
