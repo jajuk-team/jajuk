@@ -145,7 +145,6 @@ public class ConfigurationManager implements ITechnicalStrings{
 		properties.put(CONF_CONFIRMATIONS_CLEAR_HISTORY,TRUE);
         properties.put(CONF_CONFIRMATIONS_RESET_RATINGS,TRUE);
         properties.put(CONF_OPTIONS_HIDE_UNMOUNTED,FALSE);
-		properties.put(CONF_OPTIONS_RESTART,TRUE);
 		properties.put(CONF_OPTIONS_DEFAULT_ACTION_CLICK,FALSE);
 		properties.put(CONF_OPTIONS_DEFAULT_ACTION_DROP,TRUE);
 		properties.put(CONF_OPTIONS_NOVELTIES_AGE,"30"); //$NON-NLS-1$
@@ -190,8 +189,8 @@ public class ConfigurationManager implements ITechnicalStrings{
 		properties.put(CONF_COVERS_AUTO_COVER,TRUE);
 		properties.put(CONF_COVERS_SHUFFLE,FALSE);
 		properties.put(CONF_COVERS_PRELOAD,FALSE);
-		properties.put(CONF_COVERS_MIN_SIZE,"20"); //$NON-NLS-1$
-		properties.put(CONF_COVERS_MAX_SIZE,"50"); //$NON-NLS-1$
+		properties.put(CONF_COVERS_MIN_SIZE,"10"); //$NON-NLS-1$
+		properties.put(CONF_COVERS_MAX_SIZE,"70"); //$NON-NLS-1$
 		properties.put(CONF_COVERS_ACCURACY+"_1","1"); //medium accuracy //$NON-NLS-1$ //$NON-NLS-2$
 		properties.put(CONF_COVERS_ACCURACY+"_2","1"); //medium accuracy //$NON-NLS-1$ //$NON-NLS-2$
 		properties.put(CONF_COVERS_ACCURACY+"_3","3"); //Author accuracy //$NON-NLS-1$ //$NON-NLS-2$

@@ -446,7 +446,6 @@ public interface ITechnicalStrings {
 	public static final String CONF_CONFIRMATIONS_CLEAR_HISTORY = "jajuk.confirmations.clear_history";
     public static final String CONF_CONFIRMATIONS_RESET_RATINGS = "jajuk.confirmations.reset_ratings";
     public static final String CONF_OPTIONS_HIDE_UNMOUNTED = "jajuk.options.hide_unmounted";
-	public static final String CONF_OPTIONS_RESTART = "jajuk.options.restart";
 	public static final String CONF_OPTIONS_LOG_LEVEL = "jajuk.options.log_level";
 	public static final String CONF_OPTIONS_LANGUAGE = "jajuk.options.language";
 	public static final String CONF_OPTIONS_INTRO_BEGIN = "jajuk.options.intro.begin";

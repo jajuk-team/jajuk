@@ -110,7 +110,6 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
     
     JPanel jpOptions;
     JCheckBox jcbDisplayUnmounted;
-    JCheckBox jcbRestart;
     JCheckBox jcbSyncTableTree;
     JLabel jlLanguage;
     SteppedComboBox scbLanguage;
@@ -331,8 +330,6 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
         jpOptions = new JPanel();
         jcbDisplayUnmounted = new JCheckBox(Messages.getString("ParameterView.34")); //$NON-NLS-1$
         jcbDisplayUnmounted.setToolTipText(Messages.getString("ParameterView.35")); //$NON-NLS-1$
-        jcbRestart = new JCheckBox(Messages.getString("ParameterView.36")); //$NON-NLS-1$
-        jcbRestart.setToolTipText(Messages.getString("ParameterView.37")); //$NON-NLS-1$
         jcbSyncTableTree = new JCheckBox(Messages.getString("ParameterView.183")); //$NON-NLS-1$
         jcbSyncTableTree.setToolTipText(Messages.getString("ParameterView.184")); //$NON-NLS-1$
         jcbDefaultActionClick = new JCheckBox(Messages.getString("ParameterView.179")); //$NON-NLS-1$
@@ -558,17 +555,16 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
         jp.add(jtfCrossFadeDuration,"1,10"); //$NON-NLS-1$
         
         double sizeOptions[][] = {{0.99},
-                {iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,TableLayout.PREFERRED,iYSeparator,TableLayout.PREFERRED,iYSeparator}};
+                {iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,TableLayout.PREFERRED,iYSeparator,TableLayout.PREFERRED,iYSeparator}};
         jpOptions.setLayout(new TableLayout(sizeOptions));
         
         jpOptions.add(jcbDisplayUnmounted,"0,1"); //$NON-NLS-1$
-        jpOptions.add(jcbRestart,"0,3"); //$NON-NLS-1$
-        jpOptions.add(jcbDefaultActionClick,"0,5"); //$NON-NLS-1$
-        jpOptions.add(jcbDefaultActionDrop,"0,7"); //$NON-NLS-1$
-        jpOptions.add(jcbSyncTableTree,"0,9"); //$NON-NLS-1$
-        jpOptions.add(jcbShowPopup,"0,11"); //$NON-NLS-1$
-        jpOptions.add(jpCombos,"0,13"); //$NON-NLS-1$
-        jpOptions.add(jp,"0,15"); //$NON-NLS-1$
+        jpOptions.add(jcbDefaultActionClick,"0,3"); //$NON-NLS-1$
+        jpOptions.add(jcbDefaultActionDrop,"0,5"); //$NON-NLS-1$
+        jpOptions.add(jcbSyncTableTree,"0,7"); //$NON-NLS-1$
+        jpOptions.add(jcbShowPopup,"0,9"); //$NON-NLS-1$
+        jpOptions.add(jpCombos,"0,11"); //$NON-NLS-1$
+        jpOptions.add(jp,"0,13"); //$NON-NLS-1$
         
         //--P2P
         jpP2P = new JPanel();
@@ -954,7 +950,6 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
             ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH));
         }
         ConfigurationManager.setProperty(CONF_OPTIONS_HIDE_UNMOUNTED,Boolean.toString(bHiddenState));
-        ConfigurationManager.setProperty(CONF_OPTIONS_RESTART,Boolean.toString(jcbRestart.isSelected()));
         ConfigurationManager.setProperty(CONF_OPTIONS_DEFAULT_ACTION_CLICK,Boolean.toString(jcbDefaultActionClick.isSelected()));
         ConfigurationManager.setProperty(CONF_OPTIONS_DEFAULT_ACTION_DROP,Boolean.toString(jcbDefaultActionDrop.isSelected()));
         ConfigurationManager.setProperty(CONF_OPTIONS_SYNC_TABLE_TREE,Boolean.toString(jcbSyncTableTree.isSelected()));
@@ -1104,7 +1099,6 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
         boolean bHidden = ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED);
         jcbDisplayUnmounted.setSelected(bHidden);
         this.bHidden = bHidden; 
-        jcbRestart.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_RESTART));
         jcbDefaultActionClick.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_DEFAULT_ACTION_CLICK));
         jcbDefaultActionDrop.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_DEFAULT_ACTION_DROP));
         jcbShowPopup.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_SHOW_POPUP));
