@@ -138,7 +138,7 @@ TableColumnModelListener, TableModelListener, MouseListener {
          */
         NavigationPanel() {
             // Albums List
-            jlAlbum = new JLabel(Messages.getString("CDDBWizard.5"));
+            jlAlbum = new JLabel(Messages.getString("CDDBWizard.5")); //$NON-NLS-1$
             jcbAlbum = new SteppedComboBox();
             
             // add all matches
@@ -149,12 +149,12 @@ TableColumnModelListener, TableModelListener, MouseListener {
             jcbAlbum.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent arg0) {
                     idx = jcbAlbum.getSelectedIndex();
-                    Log.debug("Select index " + jcbAlbum.getSelectedIndex());
+                    Log.debug("Select index " + jcbAlbum.getSelectedIndex()); //$NON-NLS-1$
                     
                     // change the table model
                     model = populateModel();
                     jtable.setModel(model);                    
-                    Log.debug(model.getRowCount()+" rows in model.");
+                    Log.debug(model.getRowCount()+" rows in model."); //$NON-NLS-1$
                     jtable.selectAll();          
                     
                     jtGenre.setText(fdbReader.getGenre());
@@ -162,13 +162,13 @@ TableColumnModelListener, TableModelListener, MouseListener {
             });
             
             // Genre Text label
-            jlGenre = new JLabel(Messages.getString("CDDBWizard.16"));
+            jlGenre = new JLabel(Messages.getString("CDDBWizard.16")); //$NON-NLS-1$
             jtGenre = new JTextField(fdbReader.getGenre());
             jtGenre.setEditable(false);
             
             // Show the number of matches found
             
-            jlCurrent = new JLabel(aResult.length +" "+ Messages.getString("CDDBWizard.18"));
+            jlCurrent = new JLabel(aResult.length +" "+ Messages.getString("CDDBWizard.18")); //$NON-NLS-1$ //$NON-NLS-2$
             
             int iXspace = 5;
             double sizeControl[][] = {
@@ -177,11 +177,11 @@ TableColumnModelListener, TableModelListener, MouseListener {
             
             setLayout(new TableLayout(sizeControl));
             
-            add(jlAlbum, "1,0");
-            add(jcbAlbum, "3,0");
-            add(jlGenre, "5,0");
-            add(jtGenre, "7,0");
-            add(jlCurrent, "9,0");            
+            add(jlAlbum, "1,0"); //$NON-NLS-1$
+            add(jcbAlbum, "3,0"); //$NON-NLS-1$
+            add(jlGenre, "5,0"); //$NON-NLS-1$
+            add(jtGenre, "7,0"); //$NON-NLS-1$
+            add(jlCurrent, "9,0");             //$NON-NLS-1$
         }
     }
     
@@ -210,22 +210,22 @@ TableColumnModelListener, TableModelListener, MouseListener {
                     }
                     // Put an error message if no tracks were found
                     if (alTracks.size() == 0) {
-                        InformationJPanel.getInstance().setMessage(Messages.getString("CDDBWizard.14"), 2);
+                        InformationJPanel.getInstance().setMessage(Messages.getString("CDDBWizard.14"), 2); //$NON-NLS-1$
                         return null;
                     }
                     // Put a message that show the query is running
                     else {
-                        InformationJPanel.getInstance().setMessage(Messages.getString("CDDBWizard.11"), 0);
+                        InformationJPanel.getInstance().setMessage(Messages.getString("CDDBWizard.11"), 0); //$NON-NLS-1$
                         // Perform CDDB Query
                         idx = performQuery(alTracks);
                         // Put an error message if CDDB query don't found any matches
                         if (idx < 0) {
-                            InformationJPanel.getInstance().setMessage(Messages.getString("CDDBWizard.12"), 2);
+                            InformationJPanel.getInstance().setMessage(Messages.getString("CDDBWizard.12"), 2); //$NON-NLS-1$
                             return null;
                         }
                         // Put a message that show possible matches are found
                         else {
-                            InformationJPanel.getInstance().setMessage(Messages.getString("CDDBWizard.13"), 0);
+                            InformationJPanel.getInstance().setMessage(Messages.getString("CDDBWizard.13"), 0); //$NON-NLS-1$
                         }
                     }
                 }
@@ -244,8 +244,8 @@ TableColumnModelListener, TableModelListener, MouseListener {
                     jpMain.setLayout(new TableLayout(dSize));
                     jtable = populateTable(aResult[idx]);
                     jpNav = new NavigationPanel();
-                    okc = new OKCancelPanel(CDDBWizard.this, Messages.getString("Apply"), Messages
-                        .getString("Close"));         
+                    okc = new OKCancelPanel(CDDBWizard.this, Messages.getString("Apply"), Messages //$NON-NLS-1$
+                        .getString("Close"));          //$NON-NLS-1$
                     
                     // Display main panel
                     display();
@@ -271,7 +271,7 @@ TableColumnModelListener, TableModelListener, MouseListener {
         try {
             fdbReader = fdb.read(aResult[idx]);
         } catch (FreedbException e) {
-            Log.error("CDDB error ! "+e.getLocalizedMessage());
+            Log.error("CDDB error ! "+e.getLocalizedMessage()); //$NON-NLS-1$
             dispose();
         }        
         // Repopulate model
@@ -284,9 +284,9 @@ TableColumnModelListener, TableModelListener, MouseListener {
     
     public void display() {
         // Create UI
-        jpMain.add(jpNav, "1,1");
-        jpMain.add(new JScrollPane(jtable), "1,2");
-        jpMain.add(okc, "1,3");
+        jpMain.add(jpNav, "1,1"); //$NON-NLS-1$
+        jpMain.add(new JScrollPane(jtable), "1,2"); //$NON-NLS-1$
+        jpMain.add(okc, "1,3"); //$NON-NLS-1$
         
         getRootPane().setDefaultButton(okc.getOKButton());
         getContentPane().add(jpMain);
@@ -303,13 +303,13 @@ TableColumnModelListener, TableModelListener, MouseListener {
         try {
             aResult = fdb.query(fdbAlbum);
             vAlbums = new Vector(aResult.length);
-            Log.debug("CDDB Query return " + aResult.length + " match(es).");
+            Log.debug("CDDB Query return " + aResult.length + " match(es)."); //$NON-NLS-1$ //$NON-NLS-2$
             int idx = 0;
             for (int i = 0; i < aResult.length; i++) {
-                vAlbums.add("[" + aResult[i].getDiscId() + "] " + aResult[i].getAlbum());
+                vAlbums.add("[" + aResult[i].getDiscId() + "] " + aResult[i].getAlbum()); //$NON-NLS-1$ //$NON-NLS-2$
                 if (aResult[i].isExactMatch()) {
                     idx = i;
-                    InformationJPanel.getInstance().setMessage(Messages.getString("CDDBWizard.17"),0);
+                    InformationJPanel.getInstance().setMessage(Messages.getString("CDDBWizard.17"),0); //$NON-NLS-1$
                 }
             }
             return idx;
@@ -369,7 +369,7 @@ TableColumnModelListener, TableModelListener, MouseListener {
                     dispose();
                 }
             }
-            InformationJPanel.getInstance().setMessage(Messages.getString("Success"),InformationJPanel.INFORMATIVE);
+            InformationJPanel.getInstance().setMessage(Messages.getString("Success"),InformationJPanel.INFORMATIVE); //$NON-NLS-1$
             ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH));
         }
     }

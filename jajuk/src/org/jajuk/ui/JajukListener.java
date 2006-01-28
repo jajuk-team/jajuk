@@ -180,7 +180,7 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
             else if(EVENT_TIP_OF_THE_DAY.equals(e.getActionCommand())) {
 
                 // Display tip of the day
-                String[] tips = org.jajuk.i18n.Messages.getAll("TipOfTheDay");
+                String[] tips = org.jajuk.i18n.Messages.getAll("TipOfTheDay"); //$NON-NLS-1$
 
                 TipOfTheDay tipsView = new TipOfTheDay();
                 tipsView.setLocationRelativeTo(null);

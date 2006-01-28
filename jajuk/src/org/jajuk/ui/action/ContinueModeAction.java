@@ -24,7 +24,7 @@ import java.awt.event.ActionEvent;
 public class ContinueModeAction extends ActionBase {
 
     ContinueModeAction() {
-        super(Messages.getString("JajukJMenuBar.12"), Util.getIcon(ICON_CONTINUE),
+        super(Messages.getString("JajukJMenuBar.12"), Util.getIcon(ICON_CONTINUE), //$NON-NLS-1$
               true); //$NON-NLS-1$
         setShortDescription(Messages.getString("CommandJPanel.3")); //$NON-NLS-1$
     }

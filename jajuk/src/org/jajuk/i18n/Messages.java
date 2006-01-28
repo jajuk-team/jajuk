@@ -135,10 +135,10 @@ public class Messages extends DefaultHandler implements ITechnicalStrings	{
         List<String> msgs = new ArrayList<String>();
         try {
             for (int i = 0; ; i++) {
-                String sOut = getInstance().getProperties().getProperty(base + "." + i);
+                String sOut = getInstance().getProperties().getProperty(base + "." + i); //$NON-NLS-1$
 
                 if (sOut == null) { //this property is unknown for this local, try in english
-                    sOut = getInstance().getPropertiesEn().getProperty(base + "." + i);
+                    sOut = getInstance().getPropertiesEn().getProperty(base + "." + i); //$NON-NLS-1$
                 }
 
                 // Property not found, assume we found all properties in the set

@@ -879,7 +879,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
         try{
             for (int i=0; i<4; i++){
                 Album album = dirCurrent.getFiles().iterator().next().getTrack().getAlbum();
-                File fThumb = new File(FILE_THUMBS+'/'+(50+50*i)+"x"+(50+50*i)+'/'+album.getId()+'.'+EXT_THUMB);
+                File fThumb = new File(FILE_THUMBS+'/'+(50+50*i)+"x"+(50+50*i)+'/'+album.getId()+'.'+EXT_THUMB); //$NON-NLS-1$
                 Util.createThumbnail(cover.getFile().toURL(),fThumb,(50+50*i));
             }
             ObservationManager.notify(new Event(EVENT_COVER_DEFAULT_CHANGED));

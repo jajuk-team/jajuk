@@ -78,7 +78,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
             while (!Main.isExiting()){
                 try {
                     Thread.sleep(AUTO_COMMIT_DELAY);
-                    Log.debug("Auto commit");
+                    Log.debug("Auto commit"); //$NON-NLS-1$
                     //commit collection at each refresh (can be useful if application is closed brutally with control-C or shutdown and that exit hook have no time to perform commit)
                     org.jajuk.base.Collection.commit(FILE_COLLECTION);
                 }
@@ -301,7 +301,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
      * Called at parsing end
      */
     public void endDocument() {
-        Log.debug("Collection file parsing done : " + 
+        Log.debug("Collection file parsing done : " +  //$NON-NLS-1$
             (System.currentTimeMillis() - lTime)/1024 + " s"); //$NON-NLS-1$ //$NON-NLS-2$
     }
     

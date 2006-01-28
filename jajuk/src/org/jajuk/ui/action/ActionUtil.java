@@ -64,7 +64,7 @@ public final class ActionUtil {
      * @see #INDICATOR
      */
     public static String strip(String text) {
-        return text.replace(String.valueOf(INDICATOR), "");
+        return text.replace(String.valueOf(INDICATOR), ""); //$NON-NLS-1$
     }
 
     /**

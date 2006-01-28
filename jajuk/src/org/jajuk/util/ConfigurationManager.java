@@ -208,13 +208,13 @@ public class ConfigurationManager implements ITechnicalStrings{
         properties.put(CONF_LOGICAL_TABLE_EDITION,FALSE);
         properties.put(CONF_THUMBS_SHOW_WITHOUT_COVER,FALSE);
         properties.put(CONF_THUMBS_SIZE,THUMBNAIL_SIZE_150x150);
-        properties.put(CONF_THUMBS_SORTER,"2"); //sort by album
-        properties.put(CONF_THUMBS_FILTER,"2"); //filter on albums
+        properties.put(CONF_THUMBS_SORTER,"2"); //sort by album //$NON-NLS-1$
+        properties.put(CONF_THUMBS_FILTER,"2"); //filter on albums //$NON-NLS-1$
         properties.put(CONF_SHOW_TIP_ON_STARTUP,TRUE);
-        properties.put(CONF_TIP_OF_DAY_INDEX,"0");
+        properties.put(CONF_TIP_OF_DAY_INDEX,"0"); //$NON-NLS-1$
         properties.put(CONF_WIKIPEDIA_LANGUAGE,Messages.getInstance().getLocal());
-        properties.put(CONF_FADE_DURATION,"0");
-        properties.put(CONF_LOGICAL_TREE_SORT_ORDER,"0"); //sort by style
+        properties.put(CONF_FADE_DURATION,"0"); //$NON-NLS-1$
+        properties.put(CONF_LOGICAL_TREE_SORT_ORDER,"0"); //sort by style //$NON-NLS-1$
     }
 	
     /**

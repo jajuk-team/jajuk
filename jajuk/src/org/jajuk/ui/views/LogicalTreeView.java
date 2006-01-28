@@ -180,16 +180,16 @@ ActionListener, Observer {
                 {TableLayout.PREFERRED}};
         JPanel jpsort = new JPanel();
         jpsort.setLayout(new TableLayout(dSizeSort));
-        jlSort = new JLabel(Messages.getString("Sort"));
+        jlSort = new JLabel(Messages.getString("Sort")); //$NON-NLS-1$
         jcbSort = new JComboBox();
-        jcbSort.addItem(Messages.getString("Property_style"));
-        jcbSort.addItem(Messages.getString("Property_author"));
-        jcbSort.addItem(Messages.getString("Property_album"));
+        jcbSort.addItem(Messages.getString("Property_style")); //$NON-NLS-1$
+        jcbSort.addItem(Messages.getString("Property_author")); //$NON-NLS-1$
+        jcbSort.addItem(Messages.getString("Property_album")); //$NON-NLS-1$
         jcbSort.setSelectedIndex(iSortOrder);
         jcbSort.setActionCommand(EVENT_LOGICAL_TREE_SORT);
         jcbSort.addActionListener(this); 
-        jpsort.add(jlSort,"1,0");
-        jpsort.add(jcbSort,"3,0");
+        jpsort.add(jlSort,"1,0"); //$NON-NLS-1$
+        jpsort.add(jcbSort,"3,0"); //$NON-NLS-1$
         
         // Collection menu
         jmenuCollection = new JPopupMenu();
@@ -222,7 +222,7 @@ ActionListener, Observer {
         btCollection.add(jmiCollectionStyle);
         btCollection.add(jmiCollectionAuthor);
         btCollection.add(jmiCollectionAlbum);
-        jmenuCollection.add(new JLabel(Messages.getString("Sort")));
+        jmenuCollection.add(new JLabel(Messages.getString("Sort"))); //$NON-NLS-1$
         jmenuCollection.add(jmiCollectionStyle);
         jmenuCollection.add(jmiCollectionAuthor);
         jmenuCollection.add(jmiCollectionAlbum);
@@ -573,8 +573,8 @@ ActionListener, Observer {
         double[][] dSize = {{TableLayout.FILL},
                 {5,TableLayout.PREFERRED,5,TableLayout.FILL}};
         setLayout(new TableLayout(dSize));
-        add(jpsort,"0,1");
-        add(jspTree,"0,3");
+        add(jpsort,"0,1"); //$NON-NLS-1$
+        add(jspTree,"0,3"); //$NON-NLS-1$
         expand();
     }
     

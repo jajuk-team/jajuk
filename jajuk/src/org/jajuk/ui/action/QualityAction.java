@@ -33,7 +33,7 @@ import java.awt.event.ActionEvent;
 public class QualityAction extends ActionBase {
 
     QualityAction() {
-        super(Messages.getString("JajukJMenuBar.19"), Util.getIcon(ICON_EDIT), true);
+        super(Messages.getString("JajukJMenuBar.19"), Util.getIcon(ICON_EDIT), true); //$NON-NLS-1$
     }
 
     /**

@@ -213,7 +213,7 @@ public class Main implements ITechnicalStrings {
                         //  Set look and feel, needs local to be set for error messages
                         LNFManager.setLookAndFeel(ConfigurationManager.getProperty(CONF_OPTIONS_LNF));
                         sc = new JSplash(new URL (IMAGES_SPLASHSCREEN),true,true,false,JAJUK_VERSION+" "+JAJUK_VERSION_DATE,null,null); //$NON-NLS-1$
-                        sc.setTitle(Messages.getString("JajukWindow.3"));
+                        sc.setTitle(Messages.getString("JajukWindow.3")); //$NON-NLS-1$
                         sc.splashOn();
                     } catch (MalformedURLException e) {
                         Log.error(e);
@@ -388,36 +388,36 @@ public class Main implements ITechnicalStrings {
         if (!fThumbs.exists()) { 
             fThumbs.mkdir();
         }
-        fThumbs = new File(FILE_THUMBS+"/50x50");
+        fThumbs = new File(FILE_THUMBS+"/50x50"); //$NON-NLS-1$
         if (!fThumbs.exists()) { 
             fThumbs.mkdir();
         }
-        fThumbs = new File(FILE_THUMBS+"/100x100");
+        fThumbs = new File(FILE_THUMBS+"/100x100"); //$NON-NLS-1$
         if (!fThumbs.exists()) { 
             fThumbs.mkdir();
         }
-        fThumbs = new File(FILE_THUMBS+"/150x150");
+        fThumbs = new File(FILE_THUMBS+"/150x150"); //$NON-NLS-1$
         if (!fThumbs.exists()) { 
             fThumbs.mkdir();
         }
-        fThumbs = new File(FILE_THUMBS+"/200x200");
+        fThumbs = new File(FILE_THUMBS+"/200x200"); //$NON-NLS-1$
         if (!fThumbs.exists()) { 
             fThumbs.mkdir();
         }
         //check for default covers
-        fThumbs = new File(FILE_THUMBS+"/50x50/"+FILE_THUMB_NO_COVER);
+        fThumbs = new File(FILE_THUMBS+"/50x50/"+FILE_THUMB_NO_COVER); //$NON-NLS-1$
         if (!fThumbs.exists()){
             Util.createThumbnail(new URL(IMAGE_NO_COVER),fThumbs,50);
         }
-        fThumbs = new File(FILE_THUMBS+"/100x100/"+FILE_THUMB_NO_COVER);
+        fThumbs = new File(FILE_THUMBS+"/100x100/"+FILE_THUMB_NO_COVER); //$NON-NLS-1$
         if (!fThumbs.exists()){
             Util.createThumbnail(new URL(IMAGE_NO_COVER),fThumbs,100);
         }
-        fThumbs = new File(FILE_THUMBS+"/150x150/"+FILE_THUMB_NO_COVER);
+        fThumbs = new File(FILE_THUMBS+"/150x150/"+FILE_THUMB_NO_COVER); //$NON-NLS-1$
         if (!fThumbs.exists()){
             Util.createThumbnail(new URL(IMAGE_NO_COVER),fThumbs,150);
         }
-        fThumbs = new File(FILE_THUMBS+"/200x200/"+FILE_THUMB_NO_COVER);
+        fThumbs = new File(FILE_THUMBS+"/200x200/"+FILE_THUMB_NO_COVER); //$NON-NLS-1$
         if (!fThumbs.exists()){
             Util.createThumbnail(new URL(IMAGE_NO_COVER),fThumbs,200);
         }
@@ -482,7 +482,7 @@ public class Main implements ITechnicalStrings {
                 sc.dispose();
             }
             Log.error("124"); //$NON-NLS-1$
-            Messages.getChoice(Messages.getErrorMessage("124"),
+            Messages.getChoice(Messages.getErrorMessage("124"), //$NON-NLS-1$
                 JOptionPane.DEFAULT_OPTION);	 //$NON-NLS-1$
             System.exit(-1);
         }
@@ -645,14 +645,14 @@ public class Main implements ITechnicalStrings {
                     }
                     else{ //file exists but is not mounted, just notify the error without anoying dialog at each startup
                         //try to mount device
-                        Log.debug("Startup file located on an unmounted device, try to mount it");
+                        Log.debug("Startup file located on an unmounted device, try to mount it"); //$NON-NLS-1$
                         try {
                             fileToPlay.getDevice().mount(true);
-                            Log.debug("Mount OK");
+                            Log.debug("Mount OK"); //$NON-NLS-1$
                             alToPlay.add(fileToPlay);
                         }
                         catch (Exception e) {
-                            Log.debug("Mount failed");
+                            Log.debug("Mount failed"); //$NON-NLS-1$
                             Properties pDetail = new Properties();
                             pDetail.put(DETAIL_CURRENT_FILE,fileToPlay);
                             pDetail.put(DETAIL_REASON,"010");//$NON-NLS-1$

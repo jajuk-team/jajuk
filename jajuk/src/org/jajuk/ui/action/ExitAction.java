@@ -16,7 +16,7 @@ import org.jajuk.util.Util;
  */
 public class ExitAction extends ActionBase {
     ExitAction() {
-        super(Messages.getString("JajukWindow.4"), Util.getIcon(ICON_EXIT), "alt X", true); //$NON-NLS-1$ $NON-NLS-2$
+        super(Messages.getString("JajukWindow.4"), Util.getIcon(ICON_EXIT), "alt X", true); //$NON-NLS-1$ //$NON-NLS-2$ $NON-NLS-2$
         setShortDescription(Messages.getString("JajukWindow.21")); //$NON-NLS-1$
     }
 

@@ -22,7 +22,7 @@ public class RewindTrackAction extends ActionBase {
     private static final float JUMP_SIZE = 0.1f;
 
     RewindTrackAction() {
-        super(Util.getIcon(ICON_REW), "ctrl alt LEFT", false);
+        super(Util.getIcon(ICON_REW), "ctrl alt LEFT", false); //$NON-NLS-1$
         setShortDescription(Messages.getString("CommandJPanel.10")); //$NON-NLS-1$
 
     }

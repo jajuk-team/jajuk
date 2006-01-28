@@ -33,7 +33,7 @@ import java.awt.event.ActionEvent;
 public class WizardAction extends ActionBase {
 
     WizardAction() {
-        super(Messages.getString("JajukJMenuBar.18"), Util.getIcon(ICON_WIZARD), true);
+        super(Messages.getString("JajukJMenuBar.18"), Util.getIcon(ICON_WIZARD), true); //$NON-NLS-1$
     }
 
     /**

@@ -219,7 +219,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
             iNbFilesBeforeRefresh = FileManager.getInstance().getElementCount();
             iNbNewFiles = 0;
             iNbCorruptedFiles = 0;
-            if (bDeepScan){
+            if (bDeepScan && Log.isDebugEnabled()){
                 Log.debug("Starting refresh of device : "+this); //$NON-NLS-1$    
             }
             File fTop = new File(sUrl);
@@ -246,7 +246,6 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
             }
             //Start actual scan
             while (iDeep >= 0 && !Main.isExiting()) {
-                //Log.debug("Entering: "+fCurrent); //$NON-NLS-1$
                 File[] files = fCurrent.listFiles(Util.dirFilter); //only directories
                 if (files== null || files.length == 0 ){  //files is null if fCurrent is a not a directory 
                     indexTab[iDeep] = -1;//re-init for next time we will reach this deep
@@ -277,7 +276,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
             
             //Display end of refresh message with stats
             lTime = System.currentTimeMillis()-lTime;
-            StringBuffer sbOut = new StringBuffer("[").append(getName()).append(Messages.getString("Device.25")).
+            StringBuffer sbOut = new StringBuffer("[").append(getName()).append(Messages.getString("Device.25")). //$NON-NLS-1$ //$NON-NLS-2$
                 append(((lTime < 1000)?lTime+" ms":lTime/1000+" s")). //$NON-NLS-1$ //$NON-NLS-2$
                 append(" - ").append(iNbNewFiles).append(Messages.getString("Device.27")); //$NON-NLS-1$ //$NON-NLS-2$
             if (iNbCorruptedFiles > 0){
@@ -366,7 +365,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
             iNbCreatedFilesDest = synchronizeUnidirectonal(dSrc,this);
             //end message
             lTime = System.currentTimeMillis()-lTime;
-            String sOut = new StringBuffer(Messages.getString("Device.33")).append(((lTime < 1000)?lTime+" ms":lTime/1000+" s")) //$NON-NLS-1$
+            String sOut = new StringBuffer(Messages.getString("Device.33")).append(((lTime < 1000)?lTime+" ms":lTime/1000+" s")) //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             .append(" - ").append(iNbCreatedFilesSrc+iNbCreatedFilesDest).append(Messages.getString("Device.35")). //$NON-NLS-1$ //$NON-NLS-2$
             append(lVolume/1048576).append(Messages.getString("Device.36")).toString(); //$NON-NLS-1$
             //perform a refresh
@@ -851,7 +850,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
                     synchronized(DirectoryManager.getInstance().getLock()){
                         DirectoryManager.getInstance().removeDirectory(dir.getId());
                     }
-                    Log.debug("Removed: "+dir);
+                    Log.debug("Removed: "+dir); //$NON-NLS-1$
                     bChanges = true;
                 }
             }
@@ -869,7 +868,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
                     synchronized(FileManager.getInstance().getLock()){
                         FileManager.getInstance().removeFile(file);
                     }
-                    Log.debug("Removed: "+file);
+                    Log.debug("Removed: "+file); //$NON-NLS-1$
                     bChanges = true;
                 }
             }
@@ -886,7 +885,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
                     synchronized(PlaylistFileManager.getInstance().getLock()){
                         PlaylistFileManager.getInstance().removePlaylistFile(plf);
                     }
-                    Log.debug("Removed: "+plf);
+                    Log.debug("Removed: "+plf); //$NON-NLS-1$
                     bChanges = true;
                 }
             }
@@ -896,8 +895,8 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
         History.getInstance().clear(Integer.parseInt(ConfigurationManager.getProperty(CONF_HISTORY))); //delete old history items
         
         l = System.currentTimeMillis()-l;
-        Log.debug("Old file references cleaned in: "
-            +((l<1000)?l+" ms":l/1000+" s"));
+        Log.debug("Old file references cleaned in: " //$NON-NLS-1$
+            +((l<1000)?l+" ms":l/1000+" s")); //$NON-NLS-1$ //$NON-NLS-2$
         return bChanges;
     }
     
@@ -918,22 +917,22 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
                         && (sValue.equalsIgnoreCase(TRUE)||sValue.equalsIgnoreCase(FALSE))) {
                     switch ((int)((Device)this).getDeviceType()){
                     case 0: //directory
-                        sValue = "0.5d";
+                        sValue = "0.5d"; //$NON-NLS-1$
                         break;
                     case 1: //file cd
-                        sValue = "0d";
+                        sValue = "0d"; //$NON-NLS-1$
                         break;
                     case 2: //network drive
-                        sValue = "0d";
+                        sValue = "0d"; //$NON-NLS-1$
                         break;
                     case 3: //ext dd
-                        sValue = "3d"; 
+                        sValue = "3d";  //$NON-NLS-1$
                         break;
                     case 4: //player
-                        sValue = "3d";
+                        sValue = "3d"; //$NON-NLS-1$
                         break;
                     case 5: //P2P
-                        sValue = "0d";
+                        sValue = "0d"; //$NON-NLS-1$
                         break;
                     }
                 }

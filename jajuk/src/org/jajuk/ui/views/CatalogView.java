@@ -189,7 +189,7 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
         {{iXspace,TableLayout.PREFERRED,iXspace,TableLayout.PREFERRED,3*iXspace,TableLayout.PREFERRED,iXspace,TableLayout.PREFERRED,iXspace,TableLayout.PREFERRED,iXspace,TableLayout.PREFERRED,iXspace,TableLayout.PREFERRED,iXspace,TableLayout.PREFERRED,TableLayout.FILL,TableLayout.PREFERRED,2*iXspace},
                 {25}};
         jpControl.setLayout(new TableLayout(sizeControl));
-        jlSorter = new JLabel(Messages.getString("Sort"));
+        jlSorter = new JLabel(Messages.getString("Sort")); //$NON-NLS-1$
         jcbSorter = new JComboBox();
         jcbSorter.setEditable(false);
         //note that a single album can contains tracks with different authors or styles, we will show it only one
@@ -199,8 +199,8 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
         jcbSorter.setSelectedIndex(ConfigurationManager.getInt(CONF_THUMBS_SORTER));
         jcbSorter.addActionListener(this);
         
-        jlFilter = new JLabel(Messages.getString("AbstractTableView.0"));
-        jlContains = new JLabel(Messages.getString("AbstractTableView.7"));
+        jlFilter = new JLabel(Messages.getString("AbstractTableView.0")); //$NON-NLS-1$
+        jlContains = new JLabel(Messages.getString("AbstractTableView.7")); //$NON-NLS-1$
         jcbFilter = new JComboBox();
         jcbFilter.setEditable(false);
         //note that a single album can contains tracks with different authors or styles, we will show it only one
@@ -217,7 +217,7 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
             }
         });
         
-        jcbShow = new JCheckBox(Messages.getString("CatalogView.2"));
+        jcbShow = new JCheckBox(Messages.getString("CatalogView.2")); //$NON-NLS-1$
         jcbShow.setSelected(ConfigurationManager.getBoolean(CONF_THUMBS_SHOW_WITHOUT_COVER));
         jcbShow.addActionListener(this);
         
@@ -228,10 +228,10 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
         jcbSize.addItem(THUMBNAIL_SIZE_200x200);
         jcbSize.setSelectedItem(ConfigurationManager.getProperty(CONF_THUMBS_SIZE));
         jcbSize.addActionListener(this);
-        jcbSize.setToolTipText(Messages.getString("CatalogView.4"));
+        jcbSize.setToolTipText(Messages.getString("CatalogView.4")); //$NON-NLS-1$
         
         jbRefresh = new JButton(Util.getIcon(ICON_REFRESH));
-        jbRefresh.setToolTipText(Messages.getString("CatalogView.3"));
+        jbRefresh.setToolTipText(Messages.getString("CatalogView.3")); //$NON-NLS-1$
         jbRefresh.addActionListener(this);
         
         jpControl.add(jlSorter,"1,0");//$NON-NLS-1$
@@ -282,7 +282,7 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
                 {30,10,0.99}};
         setLayout(new TableLayout(size));
         add(jpControl,"0,0"); //$NON-NLS-1$
-        add(jsp,"0,2");
+        add(jsp,"0,2"); //$NON-NLS-1$
         
         populateCatalog();
         
@@ -318,7 +318,7 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
             else{
                 try {
                     Util.createThumbnail(fCover.toURL(),fThumb,50+(50*jcbSize.getSelectedIndex()));
-                    InformationJPanel.getInstance().setMessage(Messages.getString("CatalogView.5")
+                    InformationJPanel.getInstance().setMessage(Messages.getString("CatalogView.5") //$NON-NLS-1$
                         +' '+album.getName2(),InformationJPanel.INFORMATIVE);
                 }
                 catch (Exception e) {
@@ -507,7 +507,7 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
      */
     public void actionPerformed(final ActionEvent e) {
         if (e.getSource() == jcbFilter){
-            if (jtfValue.getText().trim().equals("")){ //no need to refresh
+            if (jtfValue.getText().trim().equals("")){ //no need to refresh //$NON-NLS-1$
                 return;
             }
             bNeedSearch = true;
@@ -520,10 +520,10 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
             ConfigurationManager.setProperty(CONF_THUMBS_SORTER,Integer.toString(jcbSorter.getSelectedIndex()));
         }
         else if (e.getSource() == jbRefresh){
-            cleanThumbs("50x50");
-            cleanThumbs("100x100");
-            cleanThumbs("150x150");
-            cleanThumbs("200x200");
+            cleanThumbs("50x50"); //$NON-NLS-1$
+            cleanThumbs("100x100"); //$NON-NLS-1$
+            cleanThumbs("150x150"); //$NON-NLS-1$
+            cleanThumbs("200x200"); //$NON-NLS-1$
             
             //display thumbs
             populateCatalog();
@@ -548,7 +548,7 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
         if (fThumb.exists()){
             File[] files = fThumb.listFiles();
             for (File file:files){
-                if (!file.getAbsolutePath().matches(".*"+FILE_THUMB_NO_COVER)){
+                if (!file.getAbsolutePath().matches(".*"+FILE_THUMB_NO_COVER)){ //$NON-NLS-1$
                     file.delete();
                 }
             }
@@ -567,7 +567,7 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
         
         /**Associated file*/
         File fCover;
-        
+               
         /**No cover flag*/
         boolean bNoCover = false;
         
@@ -600,10 +600,12 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
             jpIcon.setLayout(new TableLayout(dIcon));
             jlIcon = new JLabel();
             ImageIcon ii = new ImageIcon(fCover.getAbsolutePath());
-            ii.getImage().flush(); //flush image buffer to avoid jre to use old image
+            if (!bNoCover){ //avoif flushing no cover thumb: it blinks
+                ii.getImage().flush(); //flush image buffer to avoid jre to use old image
+            }
             jlIcon.setIcon(ii);
             addMouseListener(this);
-            jpIcon.add(jlIcon,"1,0");
+            jpIcon.add(jlIcon,"1,0"); //$NON-NLS-1$
             int iRows = 9 + 3*(jcbSize.getSelectedIndex());
             //take first track author as author
             jlAuthor = new JTextArea(track.getAuthor().getName2(),1,iRows);
@@ -615,9 +617,9 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
             jlAuthor.setFont(new Font("Dialog",Font.BOLD,12)); //$NON-NLS-1$
             jlAlbum.setFont(new Font("Dialog",Font.BOLD,12)); //$NON-NLS-1$
             
-            add(jpIcon,"1,0");
-            add(jlAuthor,"1,2");
-            add(jlAlbum,"1,4");
+            add(jpIcon,"1,0"); //$NON-NLS-1$
+            add(jlAuthor,"1,2"); //$NON-NLS-1$
+            add(jlAlbum,"1,4"); //$NON-NLS-1$
             setBorder(BorderFactory.createEmptyBorder(2,2,2,2));
         }
         
@@ -770,26 +772,26 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
                 {TableLayout.PREFERRED}};
             jpControls = new JPanel();
             okc = new OKCancelPanel(this);
-            okc.getCancelButton().setText(Messages.getString("Close"));
+            okc.getCancelButton().setText(Messages.getString("Close")); //$NON-NLS-1$
             okc.getOKButton().setEnabled(false);
-            jbPrevious = new JButton(Messages.getString("CatalogView.9"));
+            jbPrevious = new JButton(Messages.getString("CatalogView.9")); //$NON-NLS-1$
             jbPrevious.setEnabled(false); //always false at startup
             jbPrevious.addActionListener(this);
-            jbNext = new JButton(Messages.getString("CatalogView.10"));
+            jbNext = new JButton(Messages.getString("CatalogView.10")); //$NON-NLS-1$
             jbNext.addActionListener(this);
             jbNext.setEnabled(false);
-            jlIndex = new JLabel("");
+            jlIndex = new JLabel(""); //$NON-NLS-1$
             jlIndex.setFont(new Font("Dialog",Font.BOLD,10)); //$NON-NLS-1$
             jpControls.setLayout(new TableLayout(dControl));
-            jpControls.add(jbPrevious,"1,0");
-            jpControls.add(jbNext,"3,0");
-            jpControls.add(okc,"5,0");
+            jpControls.add(jbPrevious,"1,0"); //$NON-NLS-1$
+            jpControls.add(jbNext,"3,0"); //$NON-NLS-1$
+            jpControls.add(okc,"5,0"); //$NON-NLS-1$
             
             ArrayList tracks = TrackManager.getInstance().getAssociatedTracks(CatalogView.this.item.getAlbum());
             Author author = ((Track)tracks.iterator().next()).getAuthor();
-            final String sQuery = (author.getName().equals(UNKNOWN_AUTHOR)?"":author.getName2())
-            +" "+CatalogView.this.item.getAlbum().getName2();
-            jlSearch = new JLabel((author.getName().equals(UNKNOWN_AUTHOR)?"":author.getName2()+" - ")
+            final String sQuery = (author.getName().equals(UNKNOWN_AUTHOR)?"":author.getName2()) //$NON-NLS-1$
+            +" "+CatalogView.this.item.getAlbum().getName2(); //$NON-NLS-1$
+            jlSearch = new JLabel((author.getName().equals(UNKNOWN_AUTHOR)?"":author.getName2()+" - ") //$NON-NLS-1$ //$NON-NLS-2$
                 +CatalogView.this.item.getAlbum().getName2());
             jlSearch.setFont(new Font("Dialog",Font.BOLD,12)); //$NON-NLS-1$
             
@@ -801,10 +803,10 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
             jlIcon.setBorder(BorderFactory.createEtchedBorder());
             jpMain = (JPanel)getContentPane();
             jpMain.setLayout(new TableLayout(dMain));
-            jpMain.add(jlSearch,"1,1");
-            jpMain.add(Util.getCentredPanel(jlIcon),"1,2");
-            jpMain.add(Util.getCentredPanel(jlIndex),"1,3");
-            jpMain.add(jpControls,"1,5");
+            jpMain.add(jlSearch,"1,1"); //$NON-NLS-1$
+            jpMain.add(Util.getCentredPanel(jlIcon),"1,2"); //$NON-NLS-1$
+            jpMain.add(Util.getCentredPanel(jlIndex),"1,3"); //$NON-NLS-1$
+            jpMain.add(jpControls,"1,5"); //$NON-NLS-1$
             //Try to download covers
             try {
                 alUrls = DownloadManager.getRemoteCoversList(sQuery);
@@ -816,14 +818,14 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
                 public void run() {
                     try {
                         if (alUrls == null || alUrls.size() == 0){
-                            jlIcon.setText(Messages.getString("CatalogView.8"));
+                            jlIcon.setText(Messages.getString("CatalogView.8")); //$NON-NLS-1$
                         }
                         else{
                             displayCurrentCover();
                         }
                     } catch (Exception e) {
                         Log.error(e);
-                        jlIcon.setText(Messages.getString("CatalogView.8"));
+                        jlIcon.setText(Messages.getString("CatalogView.8")); //$NON-NLS-1$
                     }
                     finally{
                         pack();
@@ -847,7 +849,7 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
                 try{
                     Cover cover = new Cover(alUrls.get(index),Cover.REMOTE_COVER);
                     cover.getImage();
-                    thumb = new File(FILE_IMAGE_CACHE+"/thumb."+EXT_THUMB);
+                    thumb = new File(FILE_IMAGE_CACHE+"/thumb."+EXT_THUMB); //$NON-NLS-1$
                     ImageIcon image = new ImageIcon(cover.getFile().toURL());
                     image = Util.getScaledImage(image,width);
                     //!!! need to flush image because thy read image from a file with same name
@@ -858,7 +860,7 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
                     }
                     jlIcon.setIcon(image);
                     image.getImage().flush();
-                    jlIndex.setText(cover.getSize()+"K  -  "+(index+1)+"/"+alUrls.size());
+                    jlIndex.setText(cover.getSize()+"K  -  "+(index+1)+"/"+alUrls.size()); //$NON-NLS-1$ //$NON-NLS-2$
                     okc.getOKButton().setEnabled(true);
                     if (alUrls.size() > 1 && index < (alUrls.size()-1)){
                       jbNext.setEnabled(true);  
@@ -918,7 +920,7 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
                         }
                     }
                     if (!bOK){
-                        Messages.showErrorMessage("024");
+                        Messages.showErrorMessage("024"); //$NON-NLS-1$
                         dispose();
                         return;
                     }

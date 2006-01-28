@@ -101,7 +101,7 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
         jmiFilePlayDirectory.addActionListener(this);
         jmiProperties = new JMenuItem(Messages.getString("PhysicalTableView.6")); //$NON-NLS-1$
         jmiProperties.addActionListener(this);
-        jmiFileAddFavorites = new JMenuItem(Messages.getString("PhysicalTableView.16"));
+        jmiFileAddFavorites = new JMenuItem(Messages.getString("PhysicalTableView.16")); //$NON-NLS-1$
         jmiFileAddFavorites.addActionListener(this);
         jmenuFile.add(jmiFilePlay);
         jmenuFile.add(jmiFilePush);

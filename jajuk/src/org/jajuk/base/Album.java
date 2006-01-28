@@ -148,7 +148,7 @@ public class Album extends PropertyAdapter implements Comparable{
         //look for absolute cover in collection
         for (Directory dir:dirs){
             String sAbsolut = dir.getStringValue(XML_DIRECTORY_DEFAULT_COVER);
-            if (sAbsolut != null && !sAbsolut.trim().equals("")){
+            if (sAbsolut != null && !sAbsolut.trim().equals("")){ //$NON-NLS-1$
                 File fAbsoluteDefault = new File(dir.getAbsolutePath()+'/'+sAbsolut); //$NON-NLS-1$.getAbsoluteFile();
                 if (fAbsoluteDefault.canRead()){
                     return fAbsoluteDefault;

@@ -277,7 +277,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
                     && lTime > (lDuration - iFadeDuration)){
                 //if memory is low, we force full gc to avoid blanck during fade
                 if (Util.needFullFC()){
-                    Log.debug("Need full gc, no cross fade");
+                    Log.debug("Need full gc, no cross fade"); //$NON-NLS-1$
                 }
                 else{
                     bFading = true;

@@ -33,7 +33,7 @@ import java.awt.event.ActionEvent;
 public class TipOfTheDayAction extends ActionBase {
 
     TipOfTheDayAction() {
-        super(Messages.getString("JajukJMenuBar.20"), Util.getIcon(ICON_TIP_SMALL), true);
+        super(Messages.getString("JajukJMenuBar.20"), Util.getIcon(ICON_TIP_SMALL), true); //$NON-NLS-1$
     }
 
     /**

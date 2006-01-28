@@ -295,7 +295,7 @@ public abstract class ItemManager implements ITechnicalStrings{
                 checked = filter.getValue();
             }
             else{
-                checked = ".*" + filter.getValue() + ".*";
+                checked = ".*" + filter.getValue() + ".*"; //$NON-NLS-1$ //$NON-NLS-2$
             }
             ArrayList out = new ArrayList(col.size());
             for (IPropertyable item:col){

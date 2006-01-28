@@ -190,7 +190,7 @@ public class Cover implements Comparable,ITechnicalStrings {
         synchronized (Cover.class){
             image = new ImageIcon(getFile().getAbsolutePath());
             if ( image.getImageLoadStatus() != MediaTracker.COMPLETE){
-                Log.debug("Image Loading status: "+image.getImageLoadStatus());
+                Log.debug("Image Loading status: "+image.getImageLoadStatus()); //$NON-NLS-1$
                 throw new JajukException("129",url.toString(),null); //$NON-NLS-1$
             }
             image.getImage().flush();

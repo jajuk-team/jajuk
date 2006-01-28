@@ -91,7 +91,7 @@ public final class ActionManager {
     public static ActionBase getAction(JajukAction action) {
         ActionBase actionBase = map.get(action);
         if (actionBase == null) {
-            throw new ExceptionInInitializerError("No action mapping found for " + action);
+            throw new ExceptionInInitializerError("No action mapping found for " + action); //$NON-NLS-1$
         }
         return actionBase;
     }
@@ -122,8 +122,8 @@ public final class ActionManager {
      * JaJuk keystrokes.
      */
     public static void uninstallStrokes() {
-        InputMap tableMap = (InputMap) UIManager.get("Table.ancestorInputMap");
-        InputMap treeMap = (InputMap) UIManager.get("Tree.focusInputMap");
+        InputMap tableMap = (InputMap) UIManager.get("Table.ancestorInputMap"); //$NON-NLS-1$
+        InputMap treeMap = (InputMap) UIManager.get("Tree.focusInputMap"); //$NON-NLS-1$
 
         for (KeyStroke stroke : strokeList) {
             tableMap.remove(stroke);

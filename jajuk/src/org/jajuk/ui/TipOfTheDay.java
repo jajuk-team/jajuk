@@ -33,7 +33,7 @@ import org.jajuk.util.ConfigurationManager;
  */
 public class TipOfTheDay extends JFrame implements ITechnicalStrings {
 
-    private static final String[] tips = Messages.getAll("TipOfTheDay");
+    private static final String[] tips = Messages.getAll("TipOfTheDay"); //$NON-NLS-1$
     private int iLastTip;
     private JCheckBox cbShow;
     private JTextArea tipArea;
@@ -53,7 +53,7 @@ public class TipOfTheDay extends JFrame implements ITechnicalStrings {
         tipArea.setLineWrap(true);
         tipArea.setEditable(false);
 
-        lCounter = new JLabel("999/999");
+        lCounter = new JLabel("999/999"); //$NON-NLS-1$
         JButton bNext = new JButton(Util.getIcon(ICON_NEXT));
         bNext.setMargin(new Insets(1, 1, 1, 1));
         bNext.addActionListener(new ActionListener() {
@@ -86,7 +86,7 @@ public class TipOfTheDay extends JFrame implements ITechnicalStrings {
         JScrollPane scroll = new JScrollPane(tipArea);
         scroll.setPreferredSize(new Dimension(200, 100));
 
-        JLabel lTitle = new JLabel(Messages.getString("TipOfTheDayView.1"),
+        JLabel lTitle = new JLabel(Messages.getString("TipOfTheDayView.1"), //$NON-NLS-1$
                                    JLabel.LEFT); //$NON-NLS-1$
         Font fTitle = lTitle.getFont();
         lTitle.setFont(new Font(fTitle.getName(), fTitle.getStyle(),
@@ -135,7 +135,7 @@ public class TipOfTheDay extends JFrame implements ITechnicalStrings {
             i = 0;
         }
         tipArea.setText(tips[i]);
-        lCounter.setText((new StringBuilder()).append("").append(i + 1).append("/").append(
+        lCounter.setText((new StringBuilder()).append("").append(i + 1).append("/").append( //$NON-NLS-1$ //$NON-NLS-2$
             tips.length).toString());
         tipArea.setCaretPosition(0);
     }

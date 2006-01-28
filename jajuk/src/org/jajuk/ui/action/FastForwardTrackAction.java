@@ -22,7 +22,7 @@ public class FastForwardTrackAction extends ActionBase {
     private static final float JUMP_SIZE = 0.1f;
 
     FastForwardTrackAction() {
-        super(Util.getIcon(ICON_FWD), "ctrl alt RIGHT", false);
+        super(Util.getIcon(ICON_FWD), "ctrl alt RIGHT", false); //$NON-NLS-1$
         setShortDescription(Messages.getString("CommandJPanel.13")); //$NON-NLS-1$
     }
 

@@ -270,7 +270,7 @@ public class Directory extends PropertyAdapter implements Comparable{
                 }
                 //Check file name is correct (usefull to fix name encoding issues)
                 if (!new File(files[i].getAbsolutePath()).exists()){
-                    Log.warn("Cannot read file name (please rename it): "+files[i].getAbsolutePath());
+                    Log.warn("Cannot read file name (please rename it): "+files[i].getAbsolutePath()); //$NON-NLS-1$
                     continue;
                 }
                 boolean bIsMusic = (Boolean)TypeManager.getInstance().getTypeByExtension(Util.getExtension(files[i])).getValue(XML_TYPE_IS_MUSIC);

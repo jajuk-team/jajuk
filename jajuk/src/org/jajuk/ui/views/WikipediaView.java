@@ -63,7 +63,7 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings,Obse
     /**Langage index*/
     int index = 0; 
     /**Current search*/
-    String search  = "";
+    String search  = ""; //$NON-NLS-1$
     
     /**
      * Constructor
@@ -108,7 +108,7 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings,Obse
         {{3*iXspace,TableLayout.PREFERRED,iXspace,200,3*iXspace},
                 {25}};
         jpControl.setLayout(new TableLayout(sizeControl));
-        jlLanguage = new JLabel(Messages.getString("WikipediaView.1"));
+        jlLanguage = new JLabel(Messages.getString("WikipediaView.1")); //$NON-NLS-1$
         jspLanguage = new JSpinner();
         String[] model = new String[Messages.getInstance().getDescs().size()];
         //set startup locale
@@ -144,10 +144,10 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings,Obse
         setLayout(new TableLayout(size));
         browser = new WebBrowser();
         WebBrowser.setDebug(true);
-        launchSearch("");
+        launchSearch(""); //$NON-NLS-1$
         
         add(jpControl,"0,0"); //$NON-NLS-1$
-        add(browser,"0,2");
+        add(browser,"0,2"); //$NON-NLS-1$
         
         //subscriptions to events
         ObservationManager.register(EVENT_FILE_LAUNCHED,this);
@@ -171,7 +171,7 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings,Obse
             }
         }
 		else if (subject.equals(EVENT_ZERO)){
-            this.search = ""; //reset
+            this.search = ""; //reset //$NON-NLS-1$
             launchSearch(search);
 		}
 	}
@@ -183,10 +183,10 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings,Obse
      */
     private void launchSearch(String search){
         try {
-            URL url = new URL("http://"+
+            URL url = new URL("http://"+ //$NON-NLS-1$
                 Messages.getInstance().getLocals().get(index)+
-                ".wikipedia.org/wiki/"+search);
-            Log.debug("Wikipedia search: "+url);
+                ".wikipedia.org/wiki/"+search); //$NON-NLS-1$
+            Log.debug("Wikipedia search: "+url); //$NON-NLS-1$
             if (browser != null){
                 browser.setURL(url);
             }
