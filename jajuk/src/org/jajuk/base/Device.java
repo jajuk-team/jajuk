@@ -924,7 +924,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
                         sValue = "0d";
                         break;
                     case 2: //network drive
-                        sValue = "5d";
+                        sValue = "0d";
                         break;
                     case 3: //ext dd
                         sValue = "3d"; 
