@@ -27,6 +27,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.Vector;
 
@@ -83,6 +84,9 @@ TableColumnModelListener, TableModelListener, MouseListener {
     
     /** OK/Cancel panel */
     OKCancelPanel okc;
+    
+    /**File filter*/
+    HashSet filter;
     
     /** Layout dimensions */
     double[][] dSize = { { 0, TableLayout.FILL }, { 0, 22, TableLayout.PREFERRED, 22 } };
@@ -196,9 +200,11 @@ TableColumnModelListener, TableModelListener, MouseListener {
                     // Search all tracks in the given directory
                     Set files = dir.getFiles();
                     alTracks = new ArrayList(files.size());
+                    filter = new HashSet();
                     for (File file : dir.getFiles()) {
                         CDDBTrack track = new CDDBTrack(file.getTrack());
                         if (!alTracks.contains(track)) {
+                            filter.add(file);
                             alTracks.add(track);
                         }
                     }
@@ -294,7 +300,6 @@ TableColumnModelListener, TableModelListener, MouseListener {
         CDDBTrack[] alTracks = new CDDBTrack[alItems.size()];
         alItems.toArray(alTracks);
         fdbAlbum = new FreedbAlbum(alTracks);
-        
         try {
             aResult = fdb.query(fdbAlbum);
             vAlbums = new Vector(aResult.length);
@@ -327,24 +332,24 @@ TableColumnModelListener, TableModelListener, MouseListener {
                 try {                                    
                     String sValue = fdbReader.getAlbum();
                     if (sValue != null && sValue.trim().length() > 0){
-                        track = TrackManager.getInstance().changeTrackAlbum(track,sValue,null);
+                        track = TrackManager.getInstance().changeTrackAlbum(track,sValue,filter);
                     }
                     sValue = fdbReader.getArtist();
                     if (sValue != null && sValue.trim().length() > 0){
-                        track = TrackManager.getInstance().changeTrackAuthor(track,sValue,null);
+                        track = TrackManager.getInstance().changeTrackAuthor(track,sValue,filter);
                     }
                     sValue = fdbReader.getTrackTitle(iRow);
                     if (sValue != null && sValue.trim().length() > 0){
-                        track = TrackManager.getInstance().changeTrackName(track,sValue,null);
+                        track = TrackManager.getInstance().changeTrackName(track,sValue,filter);
                     }
                     sValue = fdbReader.getGenre();
                     if (sValue != null && sValue.trim().length() > 0){
-                        track = TrackManager.getInstance().changeTrackStyle(track,sValue,null);
+                        track = TrackManager.getInstance().changeTrackStyle(track,sValue,filter);
                     }
                     try{
                         int iValue = fdbReader.getTrackNumber(iRow);
                         if (iValue > 0){
-                            track = TrackManager.getInstance().changeTrackOrder(track,iValue,null);
+                            track = TrackManager.getInstance().changeTrackOrder(track,iValue,filter);
                         }
                     }
                     catch(Exception e){
@@ -353,7 +358,7 @@ TableColumnModelListener, TableModelListener, MouseListener {
                     try{
                         long lValue = Long.parseLong(fdbReader.getYear());
                         if (lValue > 0 && lValue < 10000){
-                            track = TrackManager.getInstance().changeTrackYear(track,lValue,null);
+                            track = TrackManager.getInstance().changeTrackYear(track,lValue,filter);
                         }
                     }
                     catch(Exception e){
