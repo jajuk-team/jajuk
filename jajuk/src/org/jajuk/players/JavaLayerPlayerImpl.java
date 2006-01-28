@@ -77,7 +77,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
     boolean bFading = false;
     
     /**Progress step in ms*/
-    private static final int PROGRESS_STEP = 900;
+    private static final int PROGRESS_STEP = 300;//need a fast refresh, especially for fading
     
     /**Volume when starting fade*/
     private float fadingVolume;
