@@ -68,6 +68,14 @@ public class Player implements ITechnicalStrings{
         fCurrent = file;
         try {
             playerImpl = null;
+            //make sure to stop non-fading players
+            if (playerImpl1 != null && playerImpl1.getState() != FADING_STATUS){
+                playerImpl1.stop();
+            }
+            if (playerImpl2 != null && playerImpl2.getState() != FADING_STATUS){
+                playerImpl2.stop();
+            }
+            //Choose the player
             Class cPlayer = file.getTrack().getType().getPlayerImpl();
             //player 1 null ?
             if (playerImpl1 == null){

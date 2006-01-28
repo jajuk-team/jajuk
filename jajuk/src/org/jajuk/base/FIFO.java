@@ -524,6 +524,10 @@ public class FIFO implements ITechnicalStrings {
      */
     public void playPrevious() {
         try {
+            // if playing, stop current
+            if (Player.isPlaying()) {
+                Player.stop(false);
+            }
             JajukTimer.getInstance().reset();
             JajukTimer.getInstance().addTrackTime(alFIFO);
             launch(addPrevious());
