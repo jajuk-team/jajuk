@@ -62,6 +62,8 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 	private int iType;
 	/** pre-calculated absolute path for perf*/
 	private String sAbs = null;
+    /**Contains files outside device flag*/
+    private boolean bContainsExtFiles = false;
    
 	
 	/**
@@ -234,9 +236,13 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 		        throw new JajukException("141",fio.getAbsolutePath(),null); //$NON-NLS-1$
 		    }
 		}
-        if ( iType == PlaylistFileItem.PLAYLIST_TYPE_NORMAL && alFiles == null){ //normal playlist, test if list is null for perfs (avoid reading again the m3u file)
+        if ( iType == PlaylistFileItem.PLAYLIST_TYPE_NORMAL 
+                && alFiles == null){ //normal playlist, test if list is null for perfs (avoid reading again the m3u file)
 			if ( fio.exists() && fio.canRead()){  //check device is mounted
 				alFiles = load(); //populate playlist
+                if (containsExtFiles()){
+                    Messages.showWarningMessage(Messages.getErrorMessage("142")); //$NON-NLS-1$
+                }
 			}
 			else{  //error accessing playlist file
 				throw new JajukException("009",fio.getAbsolutePath(),new Exception()); //$NON-NLS-1$
@@ -291,7 +297,12 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
      *
      */
     protected synchronized void forceRefresh(){
-        alFiles = load(); //populate playlist
+        try{
+            alFiles = load(); //populate playlist
+        }
+        catch(JajukException je){
+            Log.error(je);
+        }
     }
 	
 	/**
@@ -537,7 +548,7 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 	/**
 	 * Parse a playlist file
 	 */
-	public ArrayList load(){
+	public ArrayList load() throws JajukException{
 		ArrayList alFiles = new ArrayList(10);
 		BufferedReader br = null;
 		try {
@@ -578,12 +589,12 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 		    }
 		    //display a warning message if the playlist contains unknown items
 		    if (bUnknownDevicesMessage){
-		        Messages.showWarningMessage(Messages.getErrorMessage("142")); //$NON-NLS-1$
+		        this.bContainsExtFiles = true;
 		    }
 		}
 		catch(Exception e){
 		    Log.error("017",getName(),e); //$NON-NLS-1$
-		    Messages.showErrorMessage("017",fio.getAbsolutePath()); //$NON-NLS-1$
+		    throw new JajukException("017",fio.getAbsolutePath(),e); //$NON-NLS-1$
 		}
 		finally{
 		    if ( br != null){
@@ -591,7 +602,7 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 		            br.close();
 		        } catch (IOException e1) {
 		            Log.error(e1);
-		            Messages.showErrorMessage("017",fio.getAbsolutePath()); //$NON-NLS-1$
+		            throw new JajukException("017",fio.getAbsolutePath(),e1); //$NON-NLS-1$
 		        }
 		    }
 		}
@@ -763,6 +774,10 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
         else{//default
             return super.getHumanValue(sKey);
         }
+    }
+
+    public boolean containsExtFiles() {
+        return bContainsExtFiles;
     }
     
 }
