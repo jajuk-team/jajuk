@@ -50,7 +50,47 @@ public class FileManager extends ItemManager implements Observer{
     private ArrayList alNovelties = new ArrayList(20);
     /**Self instance*/
     private static FileManager singleton;
-    
+    /**File comparator based on score*/
+    private Comparator scoreComparator = new Comparator() {
+                public int compare(Object arg0, Object arg1) {
+                    File file1 = (File)arg0;
+                    long lRate1 = file1.getTrack().getRate();
+                    long lScore1 = (long)(Math.random()*
+                            (100/(file1.getTrack().getSessionHits()+1))*Math.log(lRate1));  //computes score for each file ( part of shuffleness, part of hits weight )
+                    File file2 = (File)arg1;
+                    long lRate2 = file2.getTrack().getRate();
+                    long lScore2 = (long)(Math.random()*
+                            (100/(file2.getTrack().getSessionHits()+1))*Math.log(lRate2));  //computes score for each file ( part of shuffleness, part of hits weight )
+                    if (lScore1 == lScore2){
+                        return 0;
+                    }
+                    else if (lScore1 < lScore2){
+                        return 1;
+                    }
+                    else{
+                        return -1;
+                    }
+                }
+    };
+    /**File comparator based on rate*/
+    private Comparator rateComparator = new Comparator() {
+                public int compare(Object arg0, Object arg1) {
+                    File file1 = (File)arg0;
+                    long lRate1 = file1.getTrack().getRate();
+                    File file2 = (File)arg1;
+                    long lRate2 = file2.getTrack().getRate();
+                    if (lRate1 == lRate2){
+                        return 0;
+                    }
+                    else if (lRate1 < lRate2){
+                        return 1;
+                    }
+                    else{
+                        return -1;
+                    }
+                }
+    };
+       
     /**
      * No constructor available, only static access
      */
@@ -277,12 +317,11 @@ public class FileManager extends ItemManager implements Observer{
     public ArrayList getReadyFiles(){
         synchronized(FileManager.getInstance().getLock()){
             // create a tempory table to remove unmounted files
-            
             ArrayList alEligibleFiles = new ArrayList(1000);
             Iterator it = hmItems.values().iterator();
             while ( it.hasNext()){
                 File file = (File)it.next();
-                if (file.isReady()){
+                if (file != null && file.isReady()){
                     alEligibleFiles.add(file);
                 }
             }
@@ -376,38 +415,18 @@ public class FileManager extends ItemManager implements Observer{
             return alEligibleFiles;
         }
     }
-    
-    /**
-     * Return a shuffle mounted file from the entire collection with rate weight ( best of mode )
-     * @return
-     */
-    public File getBestOfFile(){
-        synchronized(FileManager.getInstance().getLock()){
-            TreeSet ts = getSortedByRate();
-            
-            FileScore fscore = (FileScore)ts.last();
-            return fscore.getFile(); //return highest score file
-        }
-    }
-    
+       
     /**
      * 
      * @return a sorted set of the collection by rate, lowest first
      */
-    private TreeSet getSortedByRate(){
+    private ArrayList<File> getSortedByRate(){
         synchronized(TrackManager.getInstance().getLock()){
-            //create a tempory table to remove unmounted files
-            TreeSet tsEligibleFiles = new TreeSet();
-            Iterator it = TrackManager.getInstance().getItems().iterator(); //search in tracks, not files to avoid duplicates items
-            while ( it.hasNext()){
-                File file = ((Track)it.next()).getPlayeableFile(); //can return null
-                if (file!= null && file.isReady()){ //test if file is null!
-                    long lRate = file.getTrack().getRate();
-                    long lScore = (long)(Math.random()*(100/(file.getTrack().getSessionHits()+1))*Math.log(lRate));  //computes score for each file ( part of shuffleness, part of hits weight )
-                    tsEligibleFiles.add(new FileScore(file,lScore));
-                }
-            }
-            return tsEligibleFiles;
+            //use only mounted files
+            ArrayList alEligibleFiles = getReadyFiles();
+            //now sort by rate
+            Collections.sort(alEligibleFiles,rateComparator);
+            return alEligibleFiles;
         }
     }
     
@@ -417,15 +436,7 @@ public class FileManager extends ItemManager implements Observer{
      */
     public ArrayList getGlobalBestofPlaylist(){
         synchronized(FileManager.getInstance().getLock()){
-            TreeSet ts = getSortedByRate();
-            
-            ArrayList al = new ArrayList(ts.size());
-            Iterator it = ts.iterator();
-            while (it.hasNext()){
-                FileScore fs = (FileScore)it.next();
-                al.add(fs.getFile());
-            }
-            Collections.reverse(al); //reverse to have best first
+            ArrayList al = getSortedByRate();
             return al;
         }
     }
@@ -452,21 +463,19 @@ public class FileManager extends ItemManager implements Observer{
                 alBestofFiles.clear();
                 int iNbBestofFiles = Integer.parseInt(ConfigurationManager.getProperty(CONF_BESTOF_SIZE));
                 //create a tempory table to remove unmounted files
-                ArrayList alEligibleFiles = new ArrayList(iNbBestofFiles);
+                ArrayList<File> alEligibleFiles = new ArrayList(iNbBestofFiles);
                 Iterator it = TrackManager.getInstance().getItems().iterator();
                 while ( it.hasNext()){
                     Track track = (Track)it.next();
                     File file = track.getPlayeableFile(bHideUnmounted);
                     if (file != null){
-                        long lRate = file.getTrack().getRate();
-                        alEligibleFiles.add(new FileScore(file,lRate));
+                        alEligibleFiles.add(file);
                     }
                 }
-                Collections.sort(alEligibleFiles);
-                Collections.reverse(alEligibleFiles); //reverse score
+                Collections.sort(alEligibleFiles,rateComparator);
                 int i = 0;
                 while (i<alEligibleFiles.size() && i<iNbBestofFiles){
-                    File file = ((FileScore)alEligibleFiles.get(i)).getFile();
+                    File file = alEligibleFiles.get(i);
                     alBestofFiles.add(file);
                     i++;
                 }
@@ -676,51 +685,4 @@ public class FileManager extends ItemManager implements Observer{
     }
 }
 
-/** File score*/
-class FileScore implements Comparable{
-    
-    /** The score */
-    long lScore;
-    
-    /**The file*/
-    File file;
-    
-    /** A File scrore*/
-    public FileScore(File file,long lScore){
-        this.lScore = lScore;
-        this.file = file;
-    }
-    
-    /**
-     * @return Returns the file.*/
-    public File getFile() {
-        return file;
-    }
-    
-    /**
-     * @return Returns the lScore.*/
-    public long getLScore() {
-        return lScore;
-    }
-    
-    
-    /** ToString method*/
-    public String toString(){
-        return new StringBuffer(file.toString()).append(',').append(lScore).toString();
-    }
-    
-    /* (non-Javadoc)
-     * @see java.lang.Comparable#compareTo(java.lang.Object)
-     */
-    public int compareTo(Object o) {
-        FileScore fscore = (FileScore)o;
-        if ( fscore.getLScore() < lScore){
-            return 1;
-        }
-        else if ( fscore.getLScore() > lScore){
-            return -1;
-        }
-        return 0;
-    }
-    
-}
+  
