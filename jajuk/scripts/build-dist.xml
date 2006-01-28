@@ -3,9 +3,9 @@
 
 <project default='all' name='jajuk' basedir='..'>
   <!--VARIABLES-->
-  <property name='version' value='1.1rc4'/>
-  <property name='test' value='-test'/>
-  <property name='jwsdeploy' value='test'/>
+  <property name='version' value='1.1'/>
+  <property name='test' value='-notest'/>
+  <property name='jwsdeploy' value='default'/>
   
   <!--CONST-->
   <property name='rootdir' value='/tmp/jajuk-dist'/>
