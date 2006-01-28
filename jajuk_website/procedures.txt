@@ -27,10 +27,12 @@ o- Change download.html file for file names
 o- Upgrade project.xml maven file
 o- Backup SF data (php file)
 o- Generate website PDF (make_jajuk pdf) 
-- Generate and upload maven site (make_jajuk)
-- Refresh jajuk_website project
+- Generate maven site (make_jajuk site)
+o- Refresh jajuk_website project
 - Commit all changes in jajuk_website project
+- Upload new web site (make_jajuk send)
 - Clean snapshots directory
+
 
 *Others*
 - Save dist file in the releases save dir
