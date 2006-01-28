@@ -453,7 +453,6 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
                             }
                         });
                         widgets[index][1] = jcb;
-                        
                     }
                     else { //for all others formats (string, class)
                         final JTextField jtfValue = new JTextField();
@@ -467,29 +466,6 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
 
                             public void keyReleased(KeyEvent arg0) {
                                 String value = jtfValue.getText();
-                                //if no more characters in selection, this field is no more considerated as changed
-                                if (value == null || value.trim().length() == 0){
-                                    //for name, author, album and style, set unknown value automaticaly
-                                    if (meta.getName().equals(XML_TRACK_NAME)){
-                                        jtfValue.setText(Messages.getString("unknown")); //$NON-NLS-1$
-                                    }
-                                    else if (meta.getName().equals(XML_TRACK_ALBUM)){
-                                        jtfValue.setText(Messages.getString("unknown_album")); //$NON-NLS-1$
-                                    }
-                                    else if (meta.getName().equals(XML_TRACK_AUTHOR)){
-                                        jtfValue.setText(Messages.getString("unknown_author")); //$NON-NLS-1$
-                                    }
-                                    else if (meta.getName().equals(XML_TRACK_STYLE)){
-                                        jtfValue.setText(Messages.getString("unknown_style")); //$NON-NLS-1$
-                                    }
-                                    else if (!meta.isCustom()){
-                                        hmPropertyToChange.remove(meta);
-                                        Log.error("137",meta.getName(),null); //$NON-NLS-1$
-                                        Messages.showErrorMessage("137",meta.getName()); //$NON-NLS-1$
-                                        return;
-                                    }
-                                }
-                                value = jtfValue.getText();
                                 hmPropertyToChange.put(meta,value);
                             }
                         });
@@ -650,6 +626,14 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
                 for (IPropertyable item:alItemsToCheck){
                     //New value
                     oValue = hmPropertyToChange.get(meta);
+                    //Check it is not null for non custom properties
+                    if (oValue == null || 
+                            (oValue.toString().trim().length() == 0)
+                            && !meta.isCustom()){
+                        Log.error("137",meta.getName(),null); //$NON-NLS-1$
+                        Messages.showErrorMessage("137",meta.getName()); //$NON-NLS-1$
+                        return;
+                    }
                     //Old value
                     String  sOldValue = item.getHumanValue(meta.getName());
                     if ( (sOldValue!= null && ! Util.format(oValue,meta).equals(sOldValue))){
