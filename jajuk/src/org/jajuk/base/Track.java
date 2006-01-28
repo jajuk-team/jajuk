@@ -185,25 +185,21 @@ public class Track extends PropertyAdapter implements Comparable{
      * @param bHideUnmounted : get even unmounted files?
      * @return best file to play for this track
      */
-    public File getPlayeableFile(boolean bHideUnmounted) {
-        File file = getPlayeableFile();
-        if (file == null && !bHideUnmounted){
-            file = (File)getFiles().get(0); //take the first file we find
-        }
-        return file;
+    public File getPlayeableFile() {
+        return getPlayeableFile(false);
     }
     
     /**
      * @return best file to play for this track
      */
-    public File getPlayeableFile() {
+    public File getPlayeableFile(boolean bHideUnmounted) {
         File fileOut = null;
         ArrayList alMountedFiles = new ArrayList(2);
-        //firstly, keep only mounted files
+        //firstly, filter mounted files if needed
         Iterator it = alFiles.iterator();
         while ( it.hasNext()){
             File file = (File)it.next();
-            if (file.isReady()){
+            if (!bHideUnmounted || file.isReady()){
                 alMountedFiles.add(file);
             }
         }
