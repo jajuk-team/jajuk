@@ -5,7 +5,7 @@
     <author email='bflorat@users.sourceforge.net'>Bertrand Florat</author>
   </properties>
   <body>
-    <release version='1.1' date='work in progress' description='New Features'>
+    <release version='1.1' date='2006-01-28' description='New Features'>
     	<action dev='bcremer' type='add'>Tips of the day (110978)</action>
     	<action dev='bcremer' type='add'>Keystrokes (110975)</action>
     	<action dev='dhalsim' type='add'>Online(CDDB) tagging (110976)</action>
@@ -17,7 +17,9 @@
     	<action dev='bflorat' type='fix' issue='1388793'>Intro and seeking issues</action>
     	<action dev='bflorat' type='fix' issue='1388785'>Wrong default path for save as covers</action>
     	<action dev='bflorat' type='fix' issue='1399366'>Wrong Look and Feel for Information view</action>
+    	<action dev='bflorat' type='fix'>4 minor fixes</action>
     	<action dev='bflorat' type='remove'>Search unmounted option</action>
+    	<action dev='bflorat' type='remove'>Restart when reaching end of collection option (true as default)</action>
     </release>
     <release version='1.0.4' date='2005-12-17' description='Fixes'>
     	<action dev='bflorat' type='fix' issue='1379487'>Volume overflow [8]</action>

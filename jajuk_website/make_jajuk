@@ -2,7 +2,7 @@
 #For first use, launch twice, errors for first launch are normal
 
 #Variables
-DOC_SOURCE=/data/java/workspace/jajuk-1.0/dist-files/doc
+DOC_SOURCE=/data/java/workspace/jajuk/dist-files/doc
 WEBSITE_SOURCE=/data/java/workspace/jajuk_website
 XDOC_DEST=/data/projects/jajuk/maven_rep/xdocs
 MAVEN_DIR=/data/projects/jajuk/maven_rep

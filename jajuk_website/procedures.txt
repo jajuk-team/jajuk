@@ -1,33 +1,34 @@
 *********************************************************
 NEW RELEASE (x.y) PROCEDURE
 *Code*
-- Refresh workspace
-- Set right version (no more rc), debug to '-notest' and jwsdeploy to 'default'  in build-dist script
-- Set "default" to JWS_DIR in make_jajuk script
-- Check new incoming updates (i18n)
-- String externalization
-- Search for debug System.out
-- Make required translations (fr)
-- Generate packages
-- Test it a minima under several OS
-- Commit all changes in jajuk project
-- Tag as version
-- Create a maintenance branch for new major releases (x.y level)
+o- Refresh workspace
+o- Set right version (no more rc), test to '-notest' and jwsdeploy to 'default'  in build-dist script
+o- Check new incoming updates (i18n)
+o- String externalization
+o- Search for debug System.out
+o- Make required translations (fr)
+o- Generate packages
+o- Test it a minima under several OS
+o- Commit all changes in jajuk project
+o- Tag as version
+o- Create a maintenance branch for new major releases (x.y level)
 
 *SF*
-- Close bugs, known issues and RFE at SF
+o- Close bugs, known issues and RFE at SF
+- Release on SF
 - Make a new in SF
 
 *Web site*
-- Update and set date to release in changes.xml
-- Create a qualification-<release>.html file
-- Add a release in main_qualification.html file
-- Modify index.xml and change.xml maven files
-- Change download.html file for file names
-- Upgrade project.xml maven file
-- Backup SF data (php file)
-- Generate website PDF (make_jajuk pdf) 
+o- Update and set date to release in changes.xml
+o- Create a qualification-<release>.html file
+o- Add a release in main_qualification.html file
+o- Modify index.xml and change.xml maven files
+o- Change download.html file for file names
+o- Upgrade project.xml maven file
+o- Backup SF data (php file)
+o- Generate website PDF (make_jajuk pdf) 
 - Generate and upload maven site (make_jajuk)
+- Refresh jajuk_website project
 - Commit all changes in jajuk_website project
 - Clean snapshots directory
 
@@ -39,7 +40,7 @@ NEW RELEASE (x.y) PROCEDURE
 FIX RELEASE (x.y.z) PROCEDURE
 *Code*
 o- Refresh workspace
-o- Set right version (no more rc), debug to '-notest' and jwsdeploy to 'default'  in build-dist script
+o- Set right version (no more rc), test to '-notest' and jwsdeploy to 'default'  in build-dist script
 o- Set "default" to JWS_DIR in make_jajuk script
 o- Check new incoming updates (i18n)
 o- String externalization
@@ -52,6 +53,7 @@ o- Tag as version
 
 *SF*
 o- Close bugs, known issues and RFE at SF
+- Release on SF
 
 *Web site*
 o- Update and set date to release in changes.xml
@@ -100,8 +102,9 @@ API ADDITION/UPGRADE/REMOVAL PROCEDURE
 - Add/Change/Remove file in lib directory
 - Change MANIFEST (check new versions)
 - Change project.xml maven file for dependencies
-- Change api jnlp file
+- Add/Change jnlp file and update jajuk.jnlp file
 - Sign all new jars (jarsigner myjar.jar jajukteam)
+- Update website dependencies
 
 *********************************************************
 NEW CONTRIBUTOR PROCEDURE

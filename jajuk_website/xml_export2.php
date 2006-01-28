@@ -29,7 +29,7 @@ Option for show_trackers=1; * To show a specific Tracker instead of all
 	&amp;tracker_to_show=TRACKER_ID
 
 --><export_details>
-<time>1134943068</time>
+<time>1138492166</time>
 <project_group_id>91412</project_group_id>
 <project_unix_name>jajuk</project_unix_name>
 <exporter>bflorat</exporter>
@@ -557,6 +557,88 @@ http://www.florat.net/jajuk-specs.pdf</registration_description>
 <anonymous_posting>Yes</anonymous_posting>
 <forum_posts>
 <forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=3522430</url>
+<msg_id>3522430</msg_id>
+<poster_user>bflorat</poster_user>
+<poster_name>Bertrand Florat</poster_name>
+<subject>RE: Jajuk Sound in version 1.0.2</subject>
+<thread_id>1393713</thread_id>
+<is_followup_to>3522386</is_followup_to>
+<has_followups>0</has_followups>
+<date>1137240751</date>
+<is_deleted>No</is_deleted>
+<body>You may be right, we will have a try for 1.1 to limit to 2/3 max.</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=3522386</url>
+<msg_id>3522386</msg_id>
+<poster_user>kutzi</poster_user>
+<poster_name>Christoph Kutzinski</poster_name>
+<subject>RE: Jajuk Sound in version 1.0.2</subject>
+<thread_id>1393713</thread_id>
+<is_followup_to>3521719</is_followup_to>
+<has_followups>1</has_followups>
+<date>1137236462</date>
+<is_deleted>No</is_deleted>
+<body>Wouldn't it be a good idea to limit the volume slider to 50% or so, if you know that settings higher than that result in sound problems?</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=3521719</url>
+<msg_id>3521719</msg_id>
+<poster_user>bflorat</poster_user>
+<poster_name>Bertrand Florat</poster_name>
+<subject>RE: Jajuk Sound in version 1.0.2</subject>
+<thread_id>1393713</thread_id>
+<is_followup_to>3521672</is_followup_to>
+<has_followups>1</has_followups>
+<date>1137181058</date>
+<is_deleted>No</is_deleted>
+<body>OK, I close the issue. Note that future releases of jajuk could provide in the future real system volume controls using JDIC new APIs, keep in touch !</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=3521672</url>
+<msg_id>3521672</msg_id>
+<poster_user>kutzi</poster_user>
+<poster_name>Christoph Kutzinski</poster_name>
+<subject>RE: Jajuk Sound in version 1.0.2</subject>
+<thread_id>1393713</thread_id>
+<is_followup_to>3506570</is_followup_to>
+<has_followups>1</has_followups>
+<date>1137179370</date>
+<is_deleted>No</is_deleted>
+<body>&#62; Did you try to decrease volume (gain) and increase systeme volume ? 
+
+Yes, I did that now. When I decrease the volume to ca. 50-60% of the maximum the sound problems go away.</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=3506570</url>
+<msg_id>3506570</msg_id>
+<poster_user>bflorat</poster_user>
+<poster_name>Bertrand Florat</poster_name>
+<subject>RE: Jajuk Sound in version 1.0.2</subject>
+<thread_id>1393713</thread_id>
+<is_followup_to>3505823</is_followup_to>
+<has_followups>1</has_followups>
+<date>1136451365</date>
+<is_deleted>No</is_deleted>
+<body>Did you try to decrease volume (gain) and increase systeme volume ?</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=3505823</url>
+<msg_id>3505823</msg_id>
+<poster_user>kutzi</poster_user>
+<poster_name>Christoph Kutzinski</poster_name>
+<subject>RE: Jajuk Sound in version 1.0.2</subject>
+<thread_id>1393713</thread_id>
+<is_followup_to>3451091</is_followup_to>
+<has_followups>1</has_followups>
+<date>1136404781</date>
+<is_deleted>No</is_deleted>
+<body>I have the same problem with Jajuk 1.0.4 and Sun JDK 1.5.0_05 on WinXP.
+Doesn't look like a GC problem to me, too.
+The breaks sound like atmospheric disturbance on radio or something like that.</body>
+</forum_post>
+<forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3459429</url>
 <msg_id>3459429</msg_id>
 <poster_user>bflorat</poster_user>
@@ -710,6 +792,7 @@ Thanks.</body>
 
 What I meant was break of voice and music. There are these abrupt breaks, like when you are listening to radio and there are some breaking signal. This happens during the normal play of the songs. Not for a specific file but for all the files. Files are located in my local hard drive. </body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3451168</url>
 <msg_id>3451168</msg_id>
@@ -812,7 +895,6 @@ Thanx for the link.
 Effectively it works perfectly now.
 If you need it in english, please ask me and I'll try to translate ;o)</body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3335326</url>
 <msg_id>3335326</msg_id>
@@ -874,6 +956,7 @@ Ragerds and thanx for your help.</body>
 <body>Thx for your investigations.
 BTW, one of the best place to ask could be the javazoom jlayer forum (jajuk uses javazoom APIs for sound). I already asked about this kind of problem without useful answer but you may be luckier than me... </body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3282414</url>
 <msg_id>3282414</msg_id>
@@ -975,7 +1058,6 @@ down
 - SunAwtRobot never starts with metal look and feel
 Right ?</body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3280599</url>
 <msg_id>3280599</msg_id>
@@ -1062,6 +1144,7 @@ and
 ps -eaf | grep java
 </body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3279849</url>
 <msg_id>3279849</msg_id>
@@ -1183,7 +1266,6 @@ félicitations pour Jajuk qui est une très bonne alternative &#710; itunes. Sous 
 Merci d'avance
 chris </body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3241549</url>
 <msg_id>3241549</msg_id>
@@ -1243,6 +1325,7 @@ i've a Mandrake 10.1 Community version, i just install Jujak for Mandrake, but i
 When i launch it, nothing happen, could anyone help me?
 Thx</body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3020452</url>
 <msg_id>3020452</msg_id>
@@ -1344,7 +1427,6 @@ o Use a FM emettor :
 
 http://www.nanocrew.net/blog/</body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=2982011</url>
 <msg_id>2982011</msg_id>
@@ -1422,6 +1504,7 @@ JAVA_HOME=
 /usr/bin/jajuk: line 12: java: command not found
 </body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=2972177</url>
 <msg_id>2972177</msg_id>
@@ -1558,7 +1641,6 @@ Win XP home
 
 no problems :)</body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=2920579</url>
 <msg_id>2920579</msg_id>
@@ -1617,6 +1699,7 @@ Jajuk 0.3 </body>
 <is_deleted>No</is_deleted>
 <body>I responded on the dev list. Thank you.</body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=2902748</url>
 <msg_id>2902748</msg_id>
@@ -1736,7 +1819,6 @@ But I still think it's imported to split up the buffering (loading from disk to 
 For the moment (0.3.1), I will try to increase dramaticaly the buffer size (from 60Kb to something like 5Mb) and at the same time set the awt dispatcher thread priority from  6 (http://www.wilsonmar.com/1threads.htm)  to something like 2 or 3. Player thread is yet 10.
 Then we will see if some deeper changes are needed.</body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=2840300</url>
 <msg_id>2840300</msg_id>
@@ -1809,6 +1891,7 @@ If some of my current tasks are done, I 'd love to write a IzPack plugin for mav
 
 Willing to help me? I suggest collaborating on http://maven-plugins.sourceforge.net (ASF license then...)</body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=2840182</url>
 <msg_id>2840182</msg_id>
@@ -1908,7 +1991,6 @@ Then it uses more memory but works faster too.</body>
 Tests using 1.3 or higher have proven it rivals C++.
 </body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=2829625</url>
 <msg_id>2829625</msg_id>
@@ -1974,6 +2056,7 @@ For example: is anyone working on a IzPack plugin for maven?</body>
 <body>Hi, if you mean changing the tracks' id3 tags when talking about &#34;track attributes&#34;, then this feature is not implemented so far. I think it's planned to be covered in the next release (0.4).
 Bertrand, can you give us information about the current status of that feature? I'd also be interested in it :)</body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=2813064</url>
 <msg_id>2813064</msg_id>
@@ -13313,6 +13396,175 @@ that prevent any further launch of jajuk</details>
 </history_entry>
 </history_entries>
 </tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1388785</url>
+<id>1388785</id>
+<status_id>2</status_id>
+<category_id>605763</category_id>
+<group_id>537602</group_id>
+<resolution_id>1</resolution_id>
+<submitter>bflorat</submitter>
+<assignee>bflorat</assignee>
+<closer>bflorat</closer>
+<submit_date>1135335413</submit_date>
+<close_date>1138491459</close_date>
+<priority>3</priority>
+<summary>Wrong default path for save as covers</summary>
+<details>Default cover save as location for remote covers in the
+local cache directory instead of music directory.</details>
+<followups>
+<followup>
+<id>1879385</id>
+<submitter>wolfshorst</submitter>
+<date>1136597003</date>
+<details>Logged In: YES 
+user_id=1373296
+
+Here's a fix for this:
+
+In CoverView.java, method &#34;actionPerformed()&#34; after the
+  &#34;else if(e.getSource() == jbSaveAs ){ //save a file as..&#34;
+line. Change this line:
+  &#34;jfchooser.setSelectedFile(cover.getFile());&#34;
+to this:
+
+if (cover.getType() != Cover.REMOTE_COVER) {
+   jfchooser.setSelectedFile(cover.getFile());
+}
+</details>
+</followup>
+<followup>
+<id>1879727</id>
+<submitter>bflorat</submitter>
+<date>1136654973</date>
+<details>Logged In: YES 
+user_id=363565
+
+Thanks for your patch and feedback. Note however that it was
+already fixed in  the 1.0 maintenance branch (future 1.0.5
+if any) and in the 1.1 branch. Our fixe should save as every
+covers (inclusing remote) in the music directory.
+For the moment, only two minor fixes have been done in 1.0.5
+and we were waiting for more issues to release it, we will
+discuss about opportunity to release a 1.0.5. In all cases,
+upcoming 1.1 (in 3 or 4 weeks) will include this fix.
+Bertrand</details>
+</followup>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+<history_entry>
+<id>3423157</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1138491459</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3423158</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1138491459</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3423159</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1138491459</date>
+<updator>bflorat</updator>
+</history_entry>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1388793</url>
+<id>1388793</id>
+<status_id>2</status_id>
+<category_id>605763</category_id>
+<group_id>537602</group_id>
+<resolution_id>1</resolution_id>
+<submitter>bflorat</submitter>
+<assignee>bflorat</assignee>
+<closer>bflorat</closer>
+<submit_date>1135336097</submit_date>
+<close_date>1138491439</close_date>
+<priority>3</priority>
+<summary>Intro mode and seeking</summary>
+<details>When seeking (forward/rewind), intro mode time is not
+respected.</details>
+<followups>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+<history_entry>
+<id>3423154</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1138491439</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3423155</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1138491439</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3423156</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1138491439</date>
+<updator>bflorat</updator>
+</history_entry>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1399366</url>
+<id>1399366</id>
+<status_id>2</status_id>
+<category_id>605762</category_id>
+<group_id>537602</group_id>
+<resolution_id>1</resolution_id>
+<submitter>bflorat</submitter>
+<assignee>bflorat</assignee>
+<closer>bflorat</closer>
+<submit_date>1136663826</submit_date>
+<close_date>1138491422</close_date>
+<priority>3</priority>
+<summary>Wrong Look and Feel for Information view</summary>
+<details>Splashscreen and Information view progress bars doesn't
+use user-selected look and feel.</details>
+<followups>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+<history_entry>
+<id>3423151</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1138491422</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3423152</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1138491422</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3423153</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1138491422</date>
+<updator>bflorat</updator>
+</history_entry>
+</history_entries>
+</tracker_item>
 </tracker_items>
 </tracker>
 <tracker>
@@ -14614,6 +14866,323 @@ Thx for feddback.</details>
 <attachments>
 </attachments>
 <history_entries>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1384961</url>
+<id>1384961</id>
+<status_id>1</status_id>
+<category_id>100</category_id>
+<group_id>100</group_id>
+<submitter>guyd</submitter>
+<assignee>nobody</assignee>
+<closer>nobody</closer>
+<submit_date>1134979033</submit_date>
+<close_date>0</close_date>
+<priority>5</priority>
+<summary>concurrent access over network</summary>
+<details>Just came across the Jajuk project and it looks really
+great, but I have one question which is rather
+important to me:
+
+Is it possible to share everything over the LAN, so
+multiple users can concurrently access the songs ?
+
+Let me explain a little bit more:
+What I want to do is set up a dedicated server which
+collects and organizes all my songs and which can be
+used to play those songs.
+But I also want to be able to access those songs on
+other pc's/laptops in the LAN.
+With access I mean both playing those songs on that
+particular pc/laptop and modifying/updating/... songs.
+
+The &#34;server&#34; is a windows XP machine, but the clients
+can be either windows or linux.
+
+Maybe it's enough to share the folder where all songs
+are  stored and just map it on the clients (samba etc) ?
+But wouldn't it be possible songs get corrupted when
+concurrently accessing them on multiple clients ?</details>
+<followups>
+<followup>
+<id>1863304</id>
+<submitter>bflorat</submitter>
+<date>1134982518</date>
+<details>Logged In: YES 
+user_id=363565
+
+Hi,
+
+This have been already discussed in
+https://sourceforge.net/tracker/index.php?func=detail&#38;aid=1371586&#38;group_id=91412&#38;atid=597087
+
+In 1.1, we will address with need :
+o either the solution described in given link: user can
+store collection files in a shared location and concurrent
+users access it in read-only.
+o or (preferred) using auto-refresh feature of 1.1 (new
+files are detected automaticaly without manual refresh) if
+performant that will make disapear this issue.
+
+bertrand</details>
+</followup>
+<followup>
+<id>1863320</id>
+<submitter>guyd</submitter>
+<date>1134984252</date>
+<details>Logged In: YES 
+user_id=81866
+
+I did take a look at the forums, support requests, etc
+before posting my question, but didn't actually found anything.
+Actually I did came across the thread you're talking about,
+but didn't click through on that one because the subject is
+called &#34;Change/specify collection&#34; which actually doesn't
+sound like the same &#34;problem&#34; ;-)
+
+Any timeframes about 1.1 ?
+Of course I understand it's always very difficult to give
+any estimations related to new releases, but maybe some
+hints in the form of: &#34;within the next few weeks&#34; or &#34;maybe
+next year&#34; ;-)
+
+thanx in advance.
+
+BTW, the second option (auto-refresh) would be the most
+preferable of course ;-)</details>
+</followup>
+<followup>
+<id>1864996</id>
+<submitter>bflorat</submitter>
+<date>1135071788</date>
+<details>Logged In: YES 
+user_id=363565
+
+Hi,
+Auto-refresh feature is now implemented and is very
+promising (scanning of a 20Go USB drive takes less than 1
+sec for ex), however, others features are still to be
+implemented in 1.1 (mainly keyboard controls and CDDB
+retagging), we have not yet decided of a release date nor a
+feature freeze date but I hope the freeze could happen at
+the end of janary max and release about 1 mounth later (end
+of feb). If interrested, note that you can be a 1.1 beta
+tester, just subscribe on jajuk-dev list to be aware of beta
+or release candidate to test.
+
+Bertrand.</details>
+</followup>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1385239</url>
+<id>1385239</id>
+<status_id>1</status_id>
+<category_id>571113</category_id>
+<group_id>340385</group_id>
+<submitter>nobody</submitter>
+<assignee>nobody</assignee>
+<closer>nobody</closer>
+<submit_date>1135005841</submit_date>
+<close_date>0</close_date>
+<priority>5</priority>
+<summary>Shortcut issues under mandriva</summary>
+<details>Hello,
+
+I installed java at first and all was fine. Then I
+installed de rpm jajuk for mandrake 10.1 :
+jajuk-1.0.3-1mdk.noarch.rpm
+The installation was really well done ; well I thought
+so but actually from that time, I could only open
+Jajuk. Every links are going wrong. I don't have access
+to the configuration system either. There isn't
+anything left in the star button. Why is my computer
+going wrong? also, when I unistall jajuk all is going
+well again. I tried to reinstall it and it starts
+again! May I have some help??!
+Thanks very much
+Arnaud</details>
+<followups>
+<followup>
+<id>1864923</id>
+<submitter>bflorat</submitter>
+<date>1135067511</date>
+<details>Logged In: YES 
+user_id=363565
+
+Hi,
+
+Sorry, I don't see what you mean by 'links are goind wrong'.
+Can you provide more traces (if jajuk is started, please
+send an error report using Help-&#62;Send error report). if not,
+please send your ~/.jajuk/jajuk.log. Check you java is
+installed (java -version should return 1.5).
+
+Thanks.
+
+Bertrand.</details>
+</followup>
+<followup>
+<id>1865081</id>
+<submitter>nobody</submitter>
+<date>1135077046</date>
+<details>Logged In: NO 
+
+Hello,
+I actually mean the shortcuts of linux. They nearly all
+don't work any more. There are no errors when I turn Jajuk
+on and Java is perfectly installed as I can turn on Jajuk
+properly when I launch it online. The system also works good
+But I would like to install it with rpm but mandrakelinux
+doesn't seem to appreciate... when I install it with rpm,
+jajuk works but mandrakelinux doesn't any more (shortcuts
+problem, configuration panel disappears)... actually only
+the rpm seems to not work on my computer. It makes a real
+mess. I can't send the log as I uninstall it. 
+thanks for your help but want is going wrong??
+Arnaud CALLIES</details>
+</followup>
+<followup>
+<id>1865100</id>
+<submitter>bflorat</submitter>
+<date>1135078683</date>
+<details>Logged In: YES 
+user_id=363565
+
+Please provide detailed error messages. I don't see any link
+between jajuk rpm and symbolic links (the jajuk rpm desn't
+use symbolic links itself and just perform a shortcut
+reorganization). Do you mean shortcuts problems or symbolic
+links problems ?</details>
+</followup>
+<followup>
+<id>1865450</id>
+<submitter>nobody</submitter>
+<date>1135094435</date>
+<details>Logged In: NO 
+
+I mean the shortcuts problem. There aren't any detailed
+error messages. Actually all the shortcuts are dissapearing
+when I install the rpm and all are comming back when I
+unistall it.  not the shortcuts for Jajuk, but all the
+schortcuts to turn other applciations on. Some of them are
+still visible but they are broken... and they work again
+when I unistall the rpm... Perhaps the rpm perform a
+shortcut reorganization but I can't create new ones
+anymore... What can I do??
+Arnaud</details>
+</followup>
+<followup>
+<id>1866093</id>
+<submitter>bflorat</submitter>
+<date>1135130051</date>
+<details>Logged In: YES 
+user_id=363565
+
+Jajuk rpm performs a 'update-menus' command to make new
+icons appear (this is the standard way to do it under
+mandriva and we tested it successfully under mdk 10.1).
+Please try to launch a update-menus from console when your
+shortcuts are wrong and tell us if it fixes your problem.
+
+Bertrand</details>
+</followup>
+<followup>
+<id>1866788</id>
+<submitter>nobody</submitter>
+<date>1135185669</date>
+<details>Logged In: NO 
+
+Hello,
+Wel actually I did it befor the problem appears and it
+worked! I can't believe it! But now when I start Jajuk with
+the consol, look what happens :
+
+[administrateur@arnaud administrateur]$ jajuk
+2005/12/21 18:08:29 [INFO]
+******************JAJUK******************  [main] (Log.java:104)
+2005/12/21 18:08:29 [INFO] Version: 1.0.4  [main] (Log.java:104)
+Couldn't execl robot child process: Permission denied
+
+The same happens when I try to launch it with root
+I don't understand why and what do I have to do?
+thanks
+Arnaud
+</details>
+</followup>
+<followup>
+<id>1866805</id>
+<submitter>bflorat</submitter>
+<date>1135186822</date>
+<details>Logged In: YES 
+user_id=363565
+
+About shortcuts: I forget to tell you that I observed a bug
+under mdk: after an update-menus (ie after the rpm install),
+you have to wait about 1 min for shortcuts to refresh. If
+you try to navigate into shortcuts before, you can have
+issues as you described.
+
+About your sound issue, please provide full log
+(~/.jajuk.log) and check that /dev/dsp is r/x for users.</details>
+</followup>
+<followup>
+<id>1866837</id>
+<submitter>nobody</submitter>
+<date>1135188288</date>
+<details>Logged In: NO 
+
+2005/12/21 18:08:29 [INFO]
+******************JAJUK******************  [main]
+(Log.java:104) 
+2005/12/21 18:08:29 [INFO] Version: 1.0.4  [main]
+(Log.java:104) 
+
+here is the log file. Actually the shortcut didn't appear
+but I don't mind!! If I can start it with the consol all is
+fine!
+</details>
+</followup>
+<followup>
+<id>1866848</id>
+<submitter>bflorat</submitter>
+<date>1135188583</date>
+<details>Logged In: YES 
+user_id=363565
+
+Strange (note that shortcut under MDK is a mess). Anyway, do
+you mean it works using command line (/usr/bin/jajuk) ?
+If no, note you can try java we start online from jajuk web
+site... Please give us feedback.</details>
+</followup>
+<followup>
+<id>1866882</id>
+<submitter>nobody</submitter>
+<date>1135190431</date>
+<details>Logged In: NO 
+
+I still have a problem when I launch it with the consol :
+Couldn't execl robot child process: Permission denied
+Jajuk can't start; It stops and I can't do anything about it?
+What is the problem? and /dev/dsp is r/x for users
+Arnaud</details>
+</followup>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+<history_entry>
+<id>3349184</id>
+<field_name>summary</field_name>
+<old_value>links</old_value>
+<date>1135130051</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 </tracker_items>
@@ -17114,14 +17683,14 @@ protocol.</details>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1105164</url>
 <id>1105164</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>100</category_id>
 <group_id>340387</group_id>
 <submitter>nobody</submitter>
 <assignee>nobody</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1106131908</submit_date>
-<close_date>0</close_date>
+<close_date>1138491537</close_date>
 <priority>5</priority>
 <summary>Crossfade</summary>
 <details>
@@ -17146,10 +17715,33 @@ user_id=363565
 
 Not sure we can, we have to check with JLayer team...</details>
 </followup>
+<followup>
+<id>1902336</id>
+<submitter>bflorat</submitter>
+<date>1138491537</date>
+<details>Logged In: YES 
+user_id=363565
+
+Done 1.1</details>
+</followup>
 </followups>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>3423164</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1138491537</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3423165</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1138491537</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
@@ -19383,6 +19975,66 @@ the collection.</details>
 <history_entries>
 </history_entries>
 </task>
+<task>
+<task_id>122602</task_id>
+<summary>Use JGoodies Validation API</summary>
+<detail></detail>
+<percent_complete>0</percent_complete>
+<priority>5</priority>
+<hours>10</hours>
+<start_date>1135551600</start_date>
+<end_date>1135551600</end_date>
+<creator>bflorat</creator>
+<status_id>1</status_id>
+<dependencies>
+<dependent_on>100</dependent_on>
+</dependencies>
+<assignees>
+<assignee>nobody</assignee>
+</assignees>
+<history_entries>
+</history_entries>
+</task>
+<task>
+<task_id>123065</task_id>
+<summary>[Reserved] Enhance perspective/views system</summary>
+<detail></detail>
+<percent_complete>0</percent_complete>
+<priority>5</priority>
+<hours>0</hours>
+<start_date>1137193200</start_date>
+<end_date>1137193200</end_date>
+<creator>bflorat</creator>
+<status_id>1</status_id>
+<dependencies>
+<dependent_on>100</dependent_on>
+</dependencies>
+<assignees>
+<assignee>nobody</assignee>
+</assignees>
+<history_entries>
+</history_entries>
+</task>
+<task>
+<task_id>123066</task_id>
+<summary>Switch from XML storage to SGBDR</summary>
+<detail></detail>
+<percent_complete>0</percent_complete>
+<priority>5</priority>
+<hours>0</hours>
+<start_date>1137193200</start_date>
+<end_date>1137193200</end_date>
+<creator>bflorat</creator>
+<status_id>1</status_id>
+<dependencies>
+<dependent_on>100</dependent_on>
+</dependencies>
+<assignees>
+<assignee>nobody</assignee>
+</assignees>
+<history_entries>
+</history_entries>
+</task>
 </project>
 <project>
 <project_id>41002</project_id>
@@ -19605,7 +20257,7 @@ Stock others properties for items: volume, balance, ...</old_value>
 </task>
 <task>
 <task_id>110973</task_id>
-<summary>[hard] File functions ( cut/copy/paste, delete, rename... )</summary>
+<summary>[hard] [Reserved] File functions (cut/copy/paste,delete,..)</summary>
 <detail></detail>
 <percent_complete>0</percent_complete>
 <priority>5</priority>
@@ -19618,7 +20270,7 @@ Stock others properties for items: volume, balance, ...</old_value>
 <dependent_on>100</dependent_on>
 </dependencies>
 <assignees>
-<assignee>nobody</assignee>
+<assignee>bartcr</assignee>
 </assignees>
 <history_entries>
 <history_entry>
@@ -19634,6 +20286,20 @@ Stock others properties for items: volume, balance, ...</old_value>
 <old_value>Drag and drop should be supported as well. Goal is to provide a full-featured file management tree like Windows explorer for example.</old_value>
 <updator>bflorat</updator>
 <date>1106576291</date>
+</history_entry>
+<history_entry>
+<task_id>110973</task_id>
+<field_name>summary</field_name>
+<old_value>[hard] File functions ( cut/copy/paste, delete, rename... )</old_value>
+<updator>bflorat</updator>
+<date>1138491694</date>
+</history_entry>
+<history_entry>
+<task_id>110973</task_id>
+<field_name>summary</field_name>
+<old_value>[hard] [reserved] File functions (cut/copy/paste,delete,..)</old_value>
+<updator>bflorat</updator>
+<date>1138491710</date>
 </history_entry>
 </history_entries>
 </task>
@@ -19666,15 +20332,15 @@ Stock others properties for items: volume, balance, ...</old_value>
 </task>
 <task>
 <task_id>110975</task_id>
-<summary>[easy] Key shortcuts for track navigation</summary>
+<summary>[easy] [Reserved] Key shortcuts for track navigation</summary>
 <detail></detail>
-<percent_complete>0</percent_complete>
+<percent_complete>100</percent_complete>
 <priority>7</priority>
-<hours>5</hours>
+<hours>0</hours>
 <start_date>1134169200</start_date>
 <end_date>1134860400</end_date>
 <creator>bflorat</creator>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <dependencies>
 <dependent_on>100</dependent_on>
 </dependencies>
@@ -19731,19 +20397,47 @@ Stock others properties for items: volume, balance, ...</old_value>
 <updator>bartcr</updator>
 <date>1134245018</date>
 </history_entry>
+<history_entry>
+<task_id>110975</task_id>
+<field_name>summary</field_name>
+<old_value>[easy] Key shortcuts for track navigation</old_value>
+<updator>bflorat</updator>
+<date>1135247175</date>
+</history_entry>
+<history_entry>
+<task_id>110975</task_id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<updator>bflorat</updator>
+<date>1136467667</date>
+</history_entry>
+<history_entry>
+<task_id>110975</task_id>
+<field_name>percent_complete</field_name>
+<old_value>0</old_value>
+<updator>bflorat</updator>
+<date>1136467667</date>
+</history_entry>
+<history_entry>
+<task_id>110975</task_id>
+<field_name>hours</field_name>
+<old_value>5</old_value>
+<updator>bflorat</updator>
+<date>1136467667</date>
+</history_entry>
 </history_entries>
 </task>
 <task>
 <task_id>110976</task_id>
-<summary>[very hard] Re-tagger based on CDDB</summary>
+<summary>[very hard] [Reserved] Re-tagger based on CDDB</summary>
 <detail></detail>
-<percent_complete>0</percent_complete>
+<percent_complete>100</percent_complete>
 <priority>6</priority>
 <hours>30</hours>
 <start_date>1106521200</start_date>
 <end_date>1106521200</end_date>
 <creator>bflorat</creator>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <dependencies>
 <dependent_on>100</dependent_on>
 </dependencies>
@@ -19765,11 +20459,32 @@ Stock others properties for items: volume, balance, ...</old_value>
 <updator>bflorat</updator>
 <date>1134510836</date>
 </history_entry>
+<history_entry>
+<task_id>110976</task_id>
+<field_name>summary</field_name>
+<old_value>[very hard] Re-tagger based on CDDB</old_value>
+<updator>bflorat</updator>
+<date>1135247142</date>
+</history_entry>
+<history_entry>
+<task_id>110976</task_id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<updator>bflorat</updator>
+<date>1136467634</date>
+</history_entry>
+<history_entry>
+<task_id>110976</task_id>
+<field_name>percent_complete</field_name>
+<old_value>0</old_value>
+<updator>bflorat</updator>
+<date>1136467634</date>
+</history_entry>
 </history_entries>
 </task>
 <task>
 <task_id>110977</task_id>
-<summary>[hard] Disk Jokey special function</summary>
+<summary>[hard] [Reserved] Disk Jokey special function</summary>
 <detail></detail>
 <percent_complete>0</percent_complete>
 <priority>5</priority>
@@ -19782,7 +20497,7 @@ Stock others properties for items: volume, balance, ...</old_value>
 <dependent_on>100</dependent_on>
 </dependencies>
 <assignees>
-<assignee>nobody</assignee>
+<assignee>bflorat</assignee>
 </assignees>
 <history_entries>
 <history_entry>
@@ -19791,6 +20506,13 @@ Stock others properties for items: volume, balance, ...</old_value>
 <old_value>Disk Jokey special function</old_value>
 <updator>bflorat</updator>
 <date>1106576387</date>
+</history_entry>
+<history_entry>
+<task_id>110977</task_id>
+<field_name>summary</field_name>
+<old_value>[hard] Disk Jokey special function</old_value>
+<updator>bflorat</updator>
+<date>1138491760</date>
 </history_entry>
 </history_entries>
 </task>
@@ -19850,7 +20572,7 @@ Stock others properties for items: volume, balance, ...</old_value>
 </task>
 <task>
 <task_id>110980</task_id>
-<summary>[medium] Export data in html or XML </summary>
+<summary>[medium] [Pre-Reserved] Export data in html or XML </summary>
 <detail></detail>
 <percent_complete>0</percent_complete>
 <priority>6</priority>
@@ -19873,11 +20595,47 @@ Stock others properties for items: volume, balance, ...</old_value>
 <updator>bflorat</updator>
 <date>1111794847</date>
 </history_entry>
+<history_entry>
+<task_id>110980</task_id>
+<field_name>summary</field_name>
+<old_value>[medium] Export data in html or XML </old_value>
+<updator>bflorat</updator>
+<date>1135247313</date>
+</history_entry>
+<history_entry>
+<task_id>110980</task_id>
+<field_name>details</field_name>
+<old_value>Edition should be done on : full collection, device, directory, style, author and album.
+I reserve to you this task until 1.2 dev startup (in feb). You will become a new developer and get commit right after having release this feature as a patch.
+
+Notes: 
+- This feature will be available from trees as contextual menu (add the menu item *before* &#34;Properties&#34;)
+- please use FOP/XSLT API to generate reports (formats supported should be at least PDF and HTML)
+- For API you will use, keep jar size in mind and eventually reduce their size by removing useless classes if more than 300/400 Kb. 
+- If possible, propose several layouts (can be done later).
+- When validating, user will be prompt to select a directy (default dir: Mes documents under windows, ~ under unix, default file name jajuk-report-&#60;scope&#62;.&#60;extension&#62;) using a JFileChooser.</old_value>
+<updator>bflorat</updator>
+<date>1135247313</date>
+</history_entry>
+<history_entry>
+<task_id>110980</task_id>
+<field_name>details</field_name>
+<old_value>for HTML format, please add an option to create hyperlinks relative to device path and music files, this way, use will be able to create and publish a web site mapping his collection online (user clicks on the link to launch the file).</old_value>
+<updator>bflorat</updator>
+<date>1135552366</date>
+</history_entry>
+<history_entry>
+<task_id>110980</task_id>
+<field_name>summary</field_name>
+<old_value>[medium] [Reserved] Export data in html or XML </old_value>
+<updator>bflorat</updator>
+<date>1138491778</date>
+</history_entry>
 </history_entries>
 </task>
 <task>
 <task_id>110982</task_id>
-<summary>[hard] Advanced table filters</summary>
+<summary>[medium] Advanced table filters</summary>
 <detail></detail>
 <percent_complete>0</percent_complete>
 <priority>3</priority>
@@ -19907,6 +20665,13 @@ Stock others properties for items: volume, balance, ...</old_value>
 http://www.singularsys.com/jep/index.html</old_value>
 <updator>bflorat</updator>
 <date>1107507524</date>
+</history_entry>
+<history_entry>
+<task_id>110982</task_id>
+<field_name>summary</field_name>
+<old_value>[hard] Advanced table filters</old_value>
+<updator>bflorat</updator>
+<date>1135247343</date>
 </history_entry>
 </history_entries>
 </task>
@@ -20006,22 +20771,57 @@ http://www.singularsys.com/jep/index.html</old_value>
 </task>
 <task>
 <task_id>110988</task_id>
-<summary>[hard] crossfade</summary>
+<summary>[hard] [Reserved] crossfade</summary>
 <detail></detail>
-<percent_complete>0</percent_complete>
+<percent_complete>100</percent_complete>
 <priority>5</priority>
-<hours>0</hours>
+<hours>15</hours>
 <start_date>1106521200</start_date>
 <end_date>1106521200</end_date>
 <creator>bflorat</creator>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <dependencies>
 <dependent_on>100</dependent_on>
 </dependencies>
 <assignees>
-<assignee>nobody</assignee>
+<assignee>bflorat</assignee>
 </assignees>
 <history_entries>
+<history_entry>
+<task_id>110988</task_id>
+<field_name>summary</field_name>
+<old_value>[hard] crossfade</old_value>
+<updator>bflorat</updator>
+<date>1135247230</date>
+</history_entry>
+<history_entry>
+<task_id>110988</task_id>
+<field_name>percent_complete</field_name>
+<old_value>0</old_value>
+<updator>bflorat</updator>
+<date>1135247230</date>
+</history_entry>
+<history_entry>
+<task_id>110988</task_id>
+<field_name>hours</field_name>
+<old_value>0</old_value>
+<updator>bflorat</updator>
+<date>1135247230</date>
+</history_entry>
+<history_entry>
+<task_id>110988</task_id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<updator>bflorat</updator>
+<date>1136467612</date>
+</history_entry>
+<history_entry>
+<task_id>110988</task_id>
+<field_name>percent_complete</field_name>
+<old_value>15</old_value>
+<updator>bflorat</updator>
+<date>1136467612</date>
+</history_entry>
 </history_entries>
 </task>
 <task>
@@ -20203,7 +21003,7 @@ http://www.singularsys.com/jep/index.html</old_value>
 <start_date>1112911200</start_date>
 <end_date>1112911200</end_date>
 <creator>bflorat</creator>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <dependencies>
 <dependent_on>100</dependent_on>
 </dependencies>
@@ -20217,6 +21017,20 @@ http://www.singularsys.com/jep/index.html</old_value>
 <old_value>Refresh timer</old_value>
 <updator>bflorat</updator>
 <date>1112965059</date>
+</history_entry>
+<history_entry>
+<task_id>114234</task_id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<updator>bflorat</updator>
+<date>1135247386</date>
+</history_entry>
+<history_entry>
+<task_id>114234</task_id>
+<field_name>details</field_name>
+<old_value>No more need due to auto-refresh from 1.1</old_value>
+<updator>bflorat</updator>
+<date>1135247386</date>
 </history_entry>
 </history_entries>
 </task>
@@ -20263,7 +21077,7 @@ http://www.singularsys.com/jep/index.html</old_value>
 </task>
 <task>
 <task_id>114642</task_id>
-<summary>[hard] Lyrics</summary>
+<summary>[hard] [Reserved] Lyrics</summary>
 <detail></detail>
 <percent_complete>0</percent_complete>
 <priority>5</priority>
@@ -20279,19 +21093,26 @@ http://www.singularsys.com/jep/index.html</old_value>
 <assignee>nobody</assignee>
 </assignees>
 <history_entries>
+<history_entry>
+<task_id>114642</task_id>
+<field_name>summary</field_name>
+<old_value>[hard] Lyrics</old_value>
+<updator>bflorat</updator>
+<date>1137233027</date>
+</history_entry>
 </history_entries>
 </task>
 <task>
 <task_id>114643</task_id>
 <summary>[medium] Covers thumbnails view</summary>
 <detail></detail>
-<percent_complete>80</percent_complete>
+<percent_complete>100</percent_complete>
 <priority>6</priority>
 <hours>15</hours>
 <start_date>1114120800</start_date>
 <end_date>1114120800</end_date>
 <creator>bflorat</creator>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <dependencies>
 <dependent_on>100</dependent_on>
 </dependencies>
@@ -20312,6 +21133,20 @@ http://www.singularsys.com/jep/index.html</old_value>
 <old_value>0</old_value>
 <updator>bflorat</updator>
 <date>1134552157</date>
+</history_entry>
+<history_entry>
+<task_id>114643</task_id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<updator>bflorat</updator>
+<date>1135247115</date>
+</history_entry>
+<history_entry>
+<task_id>114643</task_id>
+<field_name>percent_complete</field_name>
+<old_value>80</old_value>
+<updator>bflorat</updator>
+<date>1135247115</date>
 </history_entry>
 </history_entries>
 </task>
@@ -20415,13 +21250,13 @@ http://www.singularsys.com/jep/index.html</old_value>
 <task_id>120149</task_id>
 <summary>[Easy] Display Wikipedia page for current author</summary>
 <detail></detail>
-<percent_complete>50</percent_complete>
+<percent_complete>100</percent_complete>
 <priority>5</priority>
 <hours>10</hours>
 <start_date>1129154400</start_date>
 <end_date>1129154400</end_date>
 <creator>bflorat</creator>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <dependencies>
 <dependent_on>100</dependent_on>
 </dependencies>
@@ -20435,6 +21270,20 @@ http://www.singularsys.com/jep/index.html</old_value>
 <old_value>0</old_value>
 <updator>bflorat</updator>
 <date>1134507935</date>
+</history_entry>
+<history_entry>
+<task_id>120149</task_id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<updator>bflorat</updator>
+<date>1135247160</date>
+</history_entry>
+<history_entry>
+<task_id>120149</task_id>
+<field_name>percent_complete</field_name>
+<old_value>50</old_value>
+<updator>bflorat</updator>
+<date>1135247160</date>
 </history_entry>
 </history_entries>
 </task>
@@ -20463,6 +21312,154 @@ http://www.singularsys.com/jep/index.html</old_value>
 <updator>bflorat</updator>
 <date>1134507907</date>
 </history_entry>
+</history_entries>
+</task>
+<task>
+<task_id>122666</task_id>
+<summary>[easy][reserved] Configurable logical tree view</summary>
+<detail></detail>
+<percent_complete>100</percent_complete>
+<priority>6</priority>
+<hours>0</hours>
+<start_date>1135897200</start_date>
+<end_date>1135897200</end_date>
+<creator>bflorat</creator>
+<status_id>2</status_id>
+<dependencies>
+<dependent_on>100</dependent_on>
+</dependencies>
+<assignees>
+<assignee>dhalsim44</assignee>
+</assignees>
+<history_entries>
+<history_entry>
+<task_id>122666</task_id>
+<field_name>summary</field_name>
+<old_value>Configurable logical tree view</old_value>
+<updator>bflorat</updator>
+<date>1135961970</date>
+</history_entry>
+<history_entry>
+<task_id>122666</task_id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<updator>bflorat</updator>
+<date>1136467693</date>
+</history_entry>
+<history_entry>
+<task_id>122666</task_id>
+<field_name>percent_complete</field_name>
+<old_value>0</old_value>
+<updator>bflorat</updator>
+<date>1136467693</date>
+</history_entry>
+</history_entries>
+</task>
+<task>
+<task_id>122667</task_id>
+<summary>[hard][reserved] Refactor file names</summary>
+<detail></detail>
+<percent_complete>0</percent_complete>
+<priority>5</priority>
+<hours>0</hours>
+<start_date>1135897200</start_date>
+<end_date>1135897200</end_date>
+<creator>bflorat</creator>
+<status_id>1</status_id>
+<dependencies>
+<dependent_on>100</dependent_on>
+</dependencies>
+<assignees>
+<assignee>dhalsim44</assignee>
+</assignees>
+<history_entries>
+</history_entries>
+</task>
+<task>
+<task_id>122718</task_id>
+<summary>[medium] Visual effects</summary>
+<detail></detail>
+<percent_complete>0</percent_complete>
+<priority>5</priority>
+<hours>15</hours>
+<start_date>1136156400</start_date>
+<end_date>1136156400</end_date>
+<creator>bflorat</creator>
+<status_id>1</status_id>
+<dependencies>
+<dependent_on>100</dependent_on>
+</dependencies>
+<assignees>
+<assignee>nobody</assignee>
+</assignees>
+<history_entries>
+<history_entry>
+<task_id>122718</task_id>
+<field_name>summary</field_name>
+<old_value>Visual effects</old_value>
+<updator>bflorat</updator>
+<date>1136214686</date>
+</history_entry>
+</history_entries>
+</task>
+<task>
+<task_id>122800</task_id>
+<summary>[medium] Music RSS reader</summary>
+<detail></detail>
+<percent_complete>0</percent_complete>
+<priority>5</priority>
+<hours>20</hours>
+<start_date>1136415600</start_date>
+<end_date>1136415600</end_date>
+<creator>bflorat</creator>
+<status_id>1</status_id>
+<dependencies>
+<dependent_on>100</dependent_on>
+</dependencies>
+<assignees>
+<assignee>nobody</assignee>
+</assignees>
+<history_entries>
+</history_entries>
+</task>
+<task>
+<task_id>122801</task_id>
+<summary>[Hard] [Reserved] Display any view in any perspective</summary>
+<detail></detail>
+<percent_complete>0</percent_complete>
+<priority>7</priority>
+<hours>20</hours>
+<start_date>1136415600</start_date>
+<end_date>1136415600</end_date>
+<creator>bflorat</creator>
+<status_id>1</status_id>
+<dependencies>
+<dependent_on>100</dependent_on>
+</dependencies>
+<assignees>
+<assignee>bflorat</assignee>
+</assignees>
+<history_entries>
+</history_entries>
+</task>
+<task>
+<task_id>123064</task_id>
+<summary>[Hard] [Pre-Reserved] Integrate Music Miner</summary>
+<detail></detail>
+<percent_complete>0</percent_complete>
+<priority>4</priority>
+<hours>0</hours>
+<start_date>1137193200</start_date>
+<end_date>1137193200</end_date>
+<creator>bflorat</creator>
+<status_id>1</status_id>
+<dependencies>
+<dependent_on>100</dependent_on>
+</dependencies>
+<assignees>
+<assignee>nobody</assignee>
+</assignees>
+<history_entries>
 </history_entries>
 </task>
 </project>

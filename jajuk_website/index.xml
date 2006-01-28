@@ -31,7 +31,7 @@
 						<img alt='German' title='German' src='flags/flag_de.png' style='width: 21px; height: 14px;'/>
 						<img alt='Italian' title='Italian' src='flags/flag_it.png' style='width: 21px; height: 14px;'/>*
 						<img alt='Swedish' title='Swedish' src='flags/flag_sv.png' style='width: 21px; height: 14px;'/>*
-						<img alt='Dutch' title='Dutch' src='flags/flag_nl.png' style='width: 21px; height: 14px;'/>*
+						<img alt='Dutch' title='Dutch' src='flags/flag_nl.png' style='width: 21px; height: 14px;'/>
 						<img alt='Spanish' title='Spanish' src='flags/flag_sp.png' style='width: 21px; height: 14px;'/>
 						<img alt='Catalan' title='Catalan' src='flags/flag_ct.png' style='width: 21px; height: 14px;'/> 
 					</td>
@@ -72,19 +72,22 @@
 		<table style='width: 100%; text-align: left;' border='0' cellpadding='2' cellspacing='2'>
 			<tbody>
 				<tr>
+					<td style='vertical-align: top;'><p><b>2005/01/28</b></p>
+					<p>Jajuk 1.1 released<br></br><a href='./jajuk-hs/default/html/view_catalog.html'>Catalog view</a>, <a href='./jajuk-hs/default/html/editing.html'>CDDB retagging</a>, <a href='./jajuk-hs/default/html/keys.html'>keyboard controls</a>,<a href='./jajuk-hs/default/html/devices.html'>auto-refresh</a> and <a href='./jajuk-hs/default/html/view_parameter.html'>cross-fade</a><br></br>
+					<a href='./qualification/qualification-1.1.html'>Release notes</a> - <a href='./changes-report.html#1_1'>Changes</a></p></td>
+
 					<td style='vertical-align: top;'><p><b>2005/12/11</b></p>
 					<p>Jajuk now <a href='./jws.html'>available in Java Web Start mode</a></p></td>
 	
 					<td style='vertical-align: top;'><p><b>2005/09/26</b></p>
 					<p>Jajuk 1.0 released<br></br><a href='./jajuk-hs/default/html/editing.html'>Tags edition</a> and <a href='./jajuk-hs/default/html/using_custom_properties.html'>custom properties</a><br></br>
 					<a href='./qualification/qualification-1.0.html'>Release notes</a> - <a href='./changes-report.html#1_0'>Changes</a></p></td>
-	
+				</tr>
+				<tr>
 					<td style='vertical-align: top;'><p><b>2005/06/04</b></p>
 					<p>Jajuk 0.3.4 released<br></br>Fixes<br></br>
 					<a href='./qualification/qualification-0.3.4.html'>Release notes</a> - <a href='./changes-report.html#0_3_4'>Changes</a></p></td>
-	
-				</tr>
-				<tr>
+
 					<td style='vertical-align: top;'><p><b>2005/04/02</b></p>
 					<p><a href='http://sourceforge.net/projects/jajuk/'>Jajuk 0.3.3 released</a><br></br>Fixes, performances, Catalan langpack<br></br>
 					<a href='./qualification/qualification-0.3.3.html'>Release notes</a> - <a href='./changes-report.html#0_3_3'>Changes</a></p></td>
@@ -93,10 +96,6 @@
 					<p><a href='http://sourceforge.net/projects/jajuk/'>Jajuk 0.3.2 released</a><br></br>Spanish langpack and documentation<br></br>
 					<a href='./qualification/qualification-0.3.2.html'>Release notes</a> - <a href='./changes-report.html#0_3_2'>Changes</a></p></td>
 	
-					<td style='vertical-align: top;'><p><b>2004/12/05</b></p>
-					<p><a href='http://sourceforge.net/projects/jajuk/'>Jajuk 0.3.1 released</a><br></br>Docking and usability<br></br>
-					<a href='./qualification/qualification-0.3.1.html'>Qualification form</a></p></td>
-			
 				</tr>
 			</tbody>
 		</table>	

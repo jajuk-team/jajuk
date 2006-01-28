@@ -106,7 +106,7 @@
 	      <name>Bart Cremers</name>
 	      <id>bcremer</id>
 	     <roles>
-			<role>Developer</role>
+			<role>Developer, Dutch translator</role>
 	     </roles>
 	      <email>bcremers@gmail.com</email>
 	      <organization>Jajuk team</organization>
@@ -371,6 +371,12 @@
 	   <groupId>lib</groupId>
         <artifactId>entagged-freedb</artifactId>
         <version>0.04</version> 
+    </dependency>
+    
+     <dependency>
+	   <groupId>lib</groupId>
+        <artifactId>commons-collections</artifactId>
+        <version>3.1</version> 
     </dependency>
     
    </dependencies>
