@@ -482,43 +482,35 @@ public class FileManager extends ItemManager implements Observer{
      */
     public File getNextFile(File file){
         synchronized(FileManager.getInstance().getLock()){
-            if (file  == null){
-                return null;
-            }
             File fileNext = null;
+            if (file  == null){
+                return fileNext;
+            }
             //look for a correct file from index to collection end
-            boolean bOk = false;
-            boolean bStart = false;
+            boolean bStarted = false;
             Iterator it = getItems().iterator();
             while (it.hasNext()){
                 fileNext = (File)it.next();
-                if (!bStart && fileNext.equals(file)){
-                    bStart = true; //OK, begin to concidere files from this one
-                    continue;
+                if (bStarted){
+                    if (fileNext.isReady()){
+                        return fileNext;
+                    }
                 }
-                if (bStart && fileNext.isReady()){  //file must be on a mounted device not refreshing
-                    bOk = true;
-                    break;
+                else{
+                    if (fileNext.equals(file)){
+                        bStarted = true; //OK, begin to concidere files from this one
+                    }
                 }
             }
-            if (bOk){
-                return fileNext;
-            }
-            else if (!ConfigurationManager.getBoolean(CONF_OPTIONS_RESTART)){
-                return null;
-            }
-            //ok, if we are in restart collection mode, restart from collection begin to file index
+            //ok restart from collection from begining
             it = getItems().iterator();
             while (it.hasNext()){
                 fileNext = (File)it.next();
                 if (fileNext.isReady()){  //file must be on a mounted device not refreshing
-                    bOk = true;
-                    break;
+                    return fileNext;
                 }
             }
-            if ( bOk){
-                return fileNext;
-            }
+            //none ready file
             return null;
         }
     }

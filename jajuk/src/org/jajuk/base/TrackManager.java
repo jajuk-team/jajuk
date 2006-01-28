@@ -116,9 +116,9 @@ public class TrackManager extends ItemManager implements Observer{
      */
     protected static String getID(String sName, Album album, Style style, Author author, long length, long lYear, long lOrder,Type type){
         StringBuffer sb = new StringBuffer(200);
-        sb.append(style.getName().toLowerCase())
-        .append(author.getName().toLowerCase())
-        .append(album.getName().toLowerCase())
+        sb.append(style.getName())
+        .append(author.getName())
+        .append(album.getName())
         .append(sName)
         .append(lYear)
         .append(length)

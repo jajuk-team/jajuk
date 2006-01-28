@@ -63,7 +63,13 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
     /**Current Item manager*/
     private ItemManager manager;
     /**upgrade for track IDs*/
-    private HashMap hmWrongRightID = new HashMap();
+    private HashMap<String,String> hmWrongRightTrackID = new HashMap();
+    /**upgrade for album IDs*/
+    private HashMap<String,String> hmWrongRightAlbumID = new HashMap();
+    /**upgrade for author IDs*/
+    private HashMap<String,String> hmWrongRightAuthorID= new HashMap();
+    /**upgrade for style IDs*/
+    private HashMap<String,String> hmWrongRightStyleID = new HashMap();
     /**Garbager activity flag*/
     private static volatile boolean bGarbaging = false;
     /**Auto commit thread*/
@@ -373,33 +379,75 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
             else if (XML_STYLE.equals(sQName)){
                 String sId = attributes.getValue(attributes.getIndex(XML_ID));
                 String sItemName = attributes.getValue(attributes.getIndex(XML_NAME));
-                Style style = StyleManager.getInstance().registerStyle(sId,sItemName);
+                //UPGRADE --For jajuk == 1.0.1 to 1.0.2 : id changed
+                String sRightID = StyleManager.getID(sItemName);
+                Style style = StyleManager.getInstance().registerStyle(sRightID,sItemName);
                 if (style != null){
                     style.populateProperties(attributes);
+                }
+                //display a message if Id had a problem
+                if (!sId.equals(sRightID)){
+                    Log.debug("** Wrong style Id, upgraded: " +style); //$NON-NLS-1$
+                    hmWrongRightStyleID.put(sId,sRightID);
                 }
             } 
             else if (XML_AUTHOR.equals(sQName)){
                 String sId = attributes.getValue(attributes.getIndex(XML_ID));
                 String sItemName = attributes.getValue(attributes.getIndex(XML_NAME));
-                Author author = AuthorManager.getInstance().registerAuthor(sId,sItemName);
+                //UPGRADE --For jajuk == 1.0.1 to 1.0.2 : id changed
+                String sRightID = AuthorManager.getID(sItemName);
+                Author author = AuthorManager.getInstance().registerAuthor(sRightID,sItemName);
                 if (author != null){
                     author.populateProperties(attributes);
+                }
+                //display a message if Id had a problem
+                if (!sId.equals(sRightID)){
+                    Log.debug("** Wrong author Id, upgraded: " +author); //$NON-NLS-1$
+                    hmWrongRightAuthorID.put(sId,sRightID);
                 }
             }
             else if (XML_ALBUM.equals(sQName)){
                 String sId = attributes.getValue(attributes.getIndex(XML_ID));
                 String sItemName = attributes.getValue(attributes.getIndex(XML_NAME));
-                Album album = AlbumManager.getInstance().registerAlbum(sId, sItemName);
+                //UPGRADE --For jajuk == 1.0.1 to 1.0.2 : id changed
+                String sRightID = AlbumManager.getID(sItemName);
+                Album album = AlbumManager.getInstance().registerAlbum(sRightID, sItemName);
                 if (album != null){
                     album.populateProperties(attributes);	
+                }
+                //display a message if Id had a problem
+                if (!sId.equals(sRightID)){
+                    Log.debug("** Wrong album Id, upgraded: " +album); //$NON-NLS-1$
+                    hmWrongRightAlbumID.put(sId,sRightID);
                 }
             }
             else if (XML_TRACK.equals(sQName)){
                 String sId = attributes.getValue(attributes.getIndex(XML_ID));
                 String sTrackName = attributes.getValue(attributes.getIndex(XML_TRACK_NAME));
-                Album album = (Album)AlbumManager.getInstance().getItem(attributes.getValue(attributes.getIndex(XML_TRACK_ALBUM)));
-                Style style = (Style)StyleManager.getInstance().getItem(attributes.getValue(attributes.getIndex(XML_TRACK_STYLE)));
-                Author author =(Author) AuthorManager.getInstance().getItem(attributes.getValue(attributes.getIndex(XML_TRACK_AUTHOR)));
+                //album
+                String sAlbumID = attributes.getValue(attributes.getIndex(XML_TRACK_ALBUM)); 
+                if (hmWrongRightAlbumID.size()>0){
+                    if (hmWrongRightAlbumID.containsKey(sAlbumID)){
+                        sAlbumID = hmWrongRightAlbumID.get(sAlbumID);
+                    }
+                }
+                Album album = (Album)AlbumManager.getInstance().getItem(sAlbumID);
+                //Style
+                String sStyleID = attributes.getValue(attributes.getIndex(XML_TRACK_STYLE)); 
+                if (hmWrongRightStyleID.size()>0){
+                    if (hmWrongRightStyleID.containsKey(sStyleID)){
+                        sStyleID = hmWrongRightStyleID.get(sStyleID);
+                    }
+                }
+                Style style = (Style)StyleManager.getInstance().getItem(sStyleID);
+                //Author
+                String sAuthorID = attributes.getValue(attributes.getIndex(XML_TRACK_AUTHOR)); 
+                if (hmWrongRightAuthorID.size()>0){
+                    if (hmWrongRightAuthorID.containsKey(sAuthorID)){
+                        sAuthorID = hmWrongRightAuthorID.get(sAuthorID);
+                    }
+                }
+                Author author =(Author) AuthorManager.getInstance().getItem(sAuthorID);
                 long length = Long.parseLong(attributes.getValue(attributes.getIndex(XML_TRACK_LENGTH)));
                 Type type = (Type)TypeManager.getInstance().getItem(attributes.getValue(attributes.getIndex(XML_TYPE)));
                 //more checkups
@@ -444,7 +492,7 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
                 //display a message if Id had a problem
                 if (!sId.equals(sRightID)){
                     Log.debug("** Wrong Track Id, upgraded: " +track); //$NON-NLS-1$
-                    hmWrongRightID.put(sId,sRightID);
+                    hmWrongRightTrackID.put(sId,sRightID);
                 }
             }
             else if (XML_DIRECTORY.equals(sQName)){
@@ -469,10 +517,10 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
             else if (XML_FILE.equals(sQName)){
                 String sTrackId = attributes.getValue(attributes.getIndex(XML_TRACK));
                 //UPGRADE check if track Id is right
-                if (hmWrongRightID.size() > 0){
+                if (hmWrongRightTrackID.size() > 0){
                     //replace wrong by right ID
-                    if (hmWrongRightID.containsKey(sTrackId)){
-                        sTrackId = (String)hmWrongRightID.get(sTrackId);
+                    if (hmWrongRightTrackID.containsKey(sTrackId)){
+                        sTrackId = (String)hmWrongRightTrackID.get(sTrackId);
                     }
                 }
                 Track track = (Track)TrackManager.getInstance().getItem(sTrackId);

@@ -75,7 +75,7 @@ public class AlbumManager extends ItemManager{
      * @return Item ID
      */
     protected static String getID(String sName){
-        return MD5Processor.hash(sName.trim().toLowerCase());
+        return MD5Processor.hash(sName);
     }
     
     /**
