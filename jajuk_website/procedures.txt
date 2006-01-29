@@ -3,6 +3,7 @@ NEW RELEASE (x.y) PROCEDURE
 *Code*
 o- Refresh workspace
 o- Set right version (no more rc), test to '-notest' and jwsdeploy to 'default'  in build-dist script
+o- Set right version in README files
 o- Check new incoming updates (i18n)
 o- String externalization
 o- Search for debug System.out
