@@ -127,6 +127,11 @@
 
  	<contributors>
 		<contributor>
+			<name>Jérome Fortain</name>
+			 <email>jf_sourceforge@khiplus.fr</email>
+			<roles><role>Bug reports, qualification</role></roles>
+		</contributor>
+		<contributor>
 			<name>Jean-Yves Durand-Daubin</name>
 			<roles><role>Code on HTTP client through a proxy to get covers</role></roles>
 			<email>ddjy@voila.fr</email>
@@ -197,11 +202,6 @@
 			<name>darsa</name>
 			 <email>darsa@users.sourceforge.net</email>
 			<roles><role>Bug reports</role></roles>
-		</contributor>
-		<contributor>
-			<name>Jérome Fortain</name>
-			 <email>jf_sourceforge@khiplus.fr</email>
-			<roles><role>Bug reports, qualification</role></roles>
 		</contributor>
 		<contributor>
 			<name>Alexandre Lucazeau</name>

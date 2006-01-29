@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <document>
   <body>
-  	<section name="Technical Roadmap - Last change: 2006 Jan">
+  	<section name="Technical Roadmap - Last update: Jan 2006">
 	   	<section name="1.2 - 2006 april">
 	   		<ul>
 	   			<li><p>Filenames and directories refactoring by tags</p></li>
