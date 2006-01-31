@@ -87,7 +87,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
      * 
      * @see org.jajuk.players.IPlayerImpl#play(org.jajuk.base.File, float, long, float)
      */
-    public synchronized void play(org.jajuk.base.File file, float fPosition, long length,
+    public void play(org.jajuk.base.File file, float fPosition, long length,
         float fVolume) throws Exception {
         this.fPos = 0;
         this.lTime = 0;
@@ -126,9 +126,10 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
      * 
      * @see org.jajuk.base.IPlayerImpl#stop()
      */
-    public synchronized void stop() throws Exception {
-        player.stop();
-        player.setGain(0.0f);
+    public void stop() throws Exception {
+        if (player != null){
+            player.stop();
+        }
     }
 
     /*
@@ -136,7 +137,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
      * 
      * @see org.jajuk.base.IPlayerImpl#setVolume(float)
      */
-    public synchronized void setVolume(float fVolume) throws Exception {
+    public void setVolume(float fVolume) throws Exception {
         this.fVolume = fVolume;
         player.setGain(fVolume*0.66);
         //limit gain to avoid sound issues
@@ -168,11 +169,11 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
      * 
      * @see org.jajuk.players.IPlayerImpl#pause()
      */
-    public synchronized void pause() throws Exception {
+    public void pause() throws Exception {
         player.pause();
     }
 
-    public synchronized void resume() throws Exception {
+    public void resume() throws Exception {
         player.resume();
     }
 
