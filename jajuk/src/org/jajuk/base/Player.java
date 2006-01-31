@@ -69,12 +69,7 @@ public class Player implements ITechnicalStrings{
         try {
             playerImpl = null;
             //make sure to stop non-fading players
-            if (playerImpl1 != null && playerImpl1.getState() != FADING_STATUS){
-                playerImpl1.stop();
-            }
-            if (playerImpl2 != null && playerImpl2.getState() != FADING_STATUS){
-                playerImpl2.stop();
-            }
+            stop(false);
             //Choose the player
             Class cPlayer = file.getTrack().getType().getPlayerImpl();
             //player 1 null ?
@@ -136,15 +131,15 @@ public class Player implements ITechnicalStrings{
             pDetails.put(DETAIL_CURRENT_FILE,file);
             ObservationManager.notify(new Event(EVENT_PLAY_ERROR,pDetails)); //notify the error 
             Log.error("007",fCurrent.getAbsolutePath(), t); //$NON-NLS-1$
-            try {
-                Thread.sleep(WAIT_AFTER_ERROR); //make sure user has time to see this error message
-            } catch (InterruptedException e1) {
-                e1.printStackTrace();
-            }
             //process playing error asynchonously to avoid loop problems when capscading errors
             new Thread(){
                 public void run(){
                     Player.stop(false);
+                    try {
+                        Thread.sleep(WAIT_AFTER_ERROR); //make sure user has time to see this error message
+                    } catch (InterruptedException e1) {
+                        e1.printStackTrace();
+                    }
                     FIFO.getInstance().finished();
                 }
             }.start();
@@ -174,7 +169,7 @@ public class Player implements ITechnicalStrings{
                 bPlaying = false;
             }
         } catch (Exception e) {
-            Log.error("008",fCurrent.getName(),e); //$NON-NLS-1$
+            Log.debug(Messages.getString("Error.008")+":"+fCurrent.getName()+" "+e.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         }
     }
     
