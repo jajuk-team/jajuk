@@ -223,11 +223,11 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                 }
                 //Request for cover refresh
                 update(new Event(EVENT_COVER_REFRESH,ObservationManager.getDetailsLastOccurence(EVENT_COVER_REFRESH)));
-                        
+                
             }
         }.start();
         
-   
+        
     }
     
     
@@ -260,10 +260,11 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                     Iterator it = alFiles.iterator();
                     while (it.hasNext()){
                         org.jajuk.base.File file = (org.jajuk.base.File)it.next();
-                        if ( !file.getDirectory().getDevice().isMounted()) { //if the device is not ready, just ignore it
+                        Directory dirScanned = file.getDirectory();
+                        if ( !dirScanned.getDevice().isMounted()) { //if the device is not ready, just ignore it
                             continue;
                         }
-                        java.io.File[] files = dirCurrent.getFio().listFiles();//null if none file found
+                        java.io.File[] files = dirScanned.getFio().listFiles();//null if none file found
                         boolean bAbsoluteCover = false; //whether an absolute cover ( unique) has been found
                         for (int i=0;files != null && i<files.length;i++){
                             //check size to avoid out of memory errors
@@ -482,56 +483,58 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
     private void displayCurrentCover(){
         SwingWorker sw = new SwingWorker() {
             public Object  construct(){
-                removeComponentListener(CoverView.this); //remove listener to avoid looping
-                if ( alCovers.size() == 0){ //should not append
+                synchronized(bLock){
+                    removeComponentListener(CoverView.this); //remove listener to avoid looping
+                    if ( alCovers.size() == 0){ //should not append
+                        alCovers.add(coverDefault); //Add at last the default cover if all remote cover has been discarded
+                        try {
+                            prepareDisplay(0);
+                        } catch (JajukException e) {
+                            Log.error(e);
+                        }
+                        return null;    
+                    }
+                    if (alCovers.size() == 1 &&
+                            ((Cover)alCovers.get(0)).getType() == Cover.DEFAULT_COVER){ //only a default cover 
+                        try {
+                            prepareDisplay(0);
+                        } catch (JajukException e) {
+                            Log.error(e);
+                        }
+                        return null;    
+                    }
+                    //else, there is at least one local cover and no default cover
+                    while (alCovers.size() > 0){
+                        Cover cover = null;
+                        try{
+                            prepareDisplay(index);
+                            return null; //OK, leave
+                        }
+                        catch(Exception e){
+                            Log.debug("Removed cover: "+alCovers.get(index)); //$NON-NLS-1$
+                            alCovers.remove(index);    
+                            //refresh number of found covers
+                            if (!bGotoBetter){ //we go to worse covers. If we go to better covers, we just keep the same index
+                                // try a worse cover...
+                                if (index - 1 >= 0){
+                                    index --;
+                                }
+                                else{ //no more worse cover
+                                    index = alCovers.size()-1; //come back to best cover
+                                }  
+                            }
+                            setFoundText();
+                        }
+                    }
+                    //if this code is executed, it means than no available cover was found, then display default cover
                     alCovers.add(coverDefault); //Add at last the default cover if all remote cover has been discarded
                     try {
-                        prepareDisplay(0);
-                    } catch (JajukException e) {
-                        Log.error(e);
-                    }
-                    return null;    
-                }
-                if (alCovers.size() == 1 &&
-                        ((Cover)alCovers.get(0)).getType() == Cover.DEFAULT_COVER){ //only a default cover 
-                    try {
-                        prepareDisplay(0);
-                    } catch (JajukException e) {
-                        Log.error(e);
-                    }
-                    return null;    
-                }
-                //else, there is at least one local cover and no default cover
-                while (alCovers.size() > 0){
-                    Cover cover = null;
-                    try{
+                        index = 0;
                         prepareDisplay(index);
-                        return null; //OK, leave
-                    }
-                    catch(Exception e){
-                        Log.debug("Removed cover: "+alCovers.get(index)); //$NON-NLS-1$
-                        alCovers.remove(index);    
-                        //refresh number of found covers
-                        if (!bGotoBetter){ //we go to worse covers. If we go to better covers, we just keep the same index
-                            // try a worse cover...
-                            if (index - 1 >= 0){
-                                index --;
-                            }
-                            else{ //no more worse cover
-                                index = alCovers.size()-1; //come back to best cover
-                            }  
-                        }
-                        setFoundText();
+                    } catch (JajukException e) {
+                        Log.error(e);
                     }
                 }
-                //if this code is executed, it means than no available cover was found, then display default cover
-                alCovers.add(coverDefault); //Add at last the default cover if all remote cover has been discarded
-                try {
-                    index = 0;
-                    prepareDisplay(index);
-                } catch (JajukException e) {
-                    Log.error(e);
-                }            
                 return null;
             }
             public void finished() {
@@ -786,8 +789,8 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                 }
             }
             else{
-               refreshThumbs(cover);
-               InformationJPanel.getInstance().setMessage(Messages.getString("CoverView.8"),InformationJPanel.INFORMATIVE); //$NON-NLS-1$
+                refreshThumbs(cover);
+                InformationJPanel.getInstance().setMessage(Messages.getString("CoverView.8"),InformationJPanel.INFORMATIVE); //$NON-NLS-1$
             }
             //then make it the default cover in this directory
             dirCurrent.setProperty("default_cover",sFilename); //$NON-NLS-1$
@@ -863,7 +866,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                             Messages.showErrorMessage("024"); //$NON-NLS-1$
                         }
                     }
-                 }
+                }
             }.start();
         }
         
@@ -880,7 +883,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
             for (int i=0; i<4; i++){
                 Album album = dirCurrent.getFiles().iterator().next().getTrack().getAlbum();
                 File fThumb = new File(FILE_THUMBS+'/'+(50+50*i)+"x"+(50+50*i)+'/'+album.getId()+'.'+EXT_THUMB); //$NON-NLS-1$
-                Util.createThumbnail(cover.getFile().toURL(),fThumb,(50+50*i));
+                Util.createThumbnail(cover.getFile(),fThumb,(50+50*i));
             }
             ObservationManager.notify(new Event(EVENT_COVER_DEFAULT_CHANGED));
         }
@@ -895,7 +898,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
      */ 
     private int getCoverNumber(){
         synchronized(bLock){
-             return alCovers.size() ;
+            return alCovers.size() ;
         }
     }
     
@@ -953,9 +956,9 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
         }
         return sQuery;
     }
-   
-       
-     /**
+    
+    
+    /**
      * To be refactored
      * @return whether this view is in current perspective
      */
@@ -971,5 +974,5 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
         }
         return false;
     }
-
+    
 }
