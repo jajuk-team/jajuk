@@ -58,7 +58,6 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
 import org.jajuk.Main;
@@ -317,7 +316,7 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
             }
             else{
                 try {
-                    Util.createThumbnail(fCover.toURL(),fThumb,50+(50*jcbSize.getSelectedIndex()));
+                    Util.createThumbnail(fCover,fThumb,50+(50*jcbSize.getSelectedIndex()));
                     InformationJPanel.getInstance().setMessage(Messages.getString("CatalogView.5") //$NON-NLS-1$
                         +' '+album.getName2(),InformationJPanel.INFORMATIVE);
                 }
@@ -759,6 +758,37 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
         
         int index = 0;
         
+        /** Need refresh flag*/
+        boolean bNeedRefresh = false;
+        
+        /**Timer used to display asynchonously found covers*/
+        Timer timer = new Timer(300,new ActionListener() {
+            
+            public void actionPerformed(ActionEvent arg0) {
+                if (bNeedRefresh){
+                    bNeedRefresh = false;
+                    try {
+                        if (alUrls == null || alUrls.size() == 0){
+                            jlIcon.setText(Messages.getString("CatalogView.8")); //$NON-NLS-1$
+                        }
+                        else{
+                            displayCurrentCover();
+                        }
+                    } catch (Exception e) {
+                        Log.error(e);
+                        jlIcon.setText(Messages.getString("CatalogView.8")); //$NON-NLS-1$
+                    }
+                    finally{
+                        pack();
+                        setLocationRelativeTo(Main.getWindow());
+                        setVisible(true);
+                        Util.stopWaiting();
+                    }
+                }
+            }
+            
+        });
+        
         /**
          * Cover selection wizard allows user to select and download an online cover
          *
@@ -787,6 +817,8 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
             jpControls.add(jbNext,"3,0"); //$NON-NLS-1$
             jpControls.add(okc,"5,0"); //$NON-NLS-1$
             
+            timer.start();
+            
             ArrayList tracks = TrackManager.getInstance().getAssociatedTracks(CatalogView.this.item.getAlbum());
             Author author = ((Track)tracks.iterator().next()).getAuthor();
             final String sQuery = (author.getName().equals(UNKNOWN_AUTHOR)?"":author.getName2()) //$NON-NLS-1$
@@ -813,29 +845,7 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
             } catch (Exception e) {
                 Log.error(e);
             }
-            //OK, display them
-            SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    try {
-                        if (alUrls == null || alUrls.size() == 0){
-                            jlIcon.setText(Messages.getString("CatalogView.8")); //$NON-NLS-1$
-                        }
-                        else{
-                            displayCurrentCover();
-                        }
-                    } catch (Exception e) {
-                        Log.error(e);
-                        jlIcon.setText(Messages.getString("CatalogView.8")); //$NON-NLS-1$
-                    }
-                    finally{
-                        pack();
-                        setLocationRelativeTo(Main.getWindow());
-                        setVisible(true);
-                        Util.stopWaiting();
-                    }
-                }
-                
-            });
+            bNeedRefresh = true;
         }
         
         /**
@@ -938,7 +948,7 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
                     dir.setProperty("default_cover",sFilename); //$NON-NLS-1$
                     //create new thumbnail
                     File fThumb = new File(FILE_THUMBS+'/'+(String)jcbSize.getSelectedItem()+'/'+album.getId()+'.'+EXT_THUMB);
-                    Util.createThumbnail(file.toURL(),fThumb,100+(50*jcbSize.getSelectedIndex()));
+                    Util.createThumbnail(file,fThumb,100+(50*jcbSize.getSelectedIndex()));
                     //refresh icon
                     item.setIcon(new ImageIcon(fThumb.toURL()));
                 }
