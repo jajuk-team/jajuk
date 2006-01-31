@@ -1215,9 +1215,9 @@ public class Util implements ITechnicalStrings {
      * @throws Exception
      */
     public static void createThumbnail(
-            URL orig, File thumb,int maxDim) throws Exception{
+            File orig, File thumb,int maxDim) throws Exception{
         // Get the image from a file.
-        Image image = new ImageIcon(orig).getImage();
+        Image image = new ImageIcon(orig.getAbsolutePath()).getImage();
         MediaTracker mediaTracker = new MediaTracker(new Container());
         mediaTracker.addImage(image, 0);
         mediaTracker.waitForID(0);
