@@ -5,6 +5,14 @@
     <author email='bflorat@users.sourceforge.net'>Bertrand Florat</author>
   </properties>
   <body>
+    <release version='1.1.1' date='2006-01-31' description='Fixes'>
+    	<action dev='bflorat' type='fix'>Error on reading tracks on some boxes [9]</action>
+    	<action dev='bflorat' type='fix'>Freeze if looping playing errors [9]</action>
+    	<action dev='bflorat' type='fix'>Cannot create thumbs for some covers [4]</action>
+    	<action dev='bflorat' type='fix'>Error on previous track during fading [4]</action>
+    	<action dev='bflorat' type='fix'>Hide unmounted option has no effect in logical table view [5]</action>
+    	<action dev='bflorat' type='fix'>Cannot find covers in others directories even if available [5]</action>
+    </release>
     <release version='1.1' date='2006-01-28' description='New Features'>
     	<action dev='bcremer' type='add'>Tips of the day (110978)</action>
     	<action dev='bcremer' type='add'>Keystrokes (110975)</action>

@@ -53,19 +53,20 @@ o- Search for debug System.out
 o- Make required translations (fr)
 o- Generate packages
 o- Test it a minima under several OS
-o- Commit all changes in jajuk project
-o- Tag as version
+- Commit all changes in jajuk project
+- Tag as version
 
 *SF*
-o- Close bugs, known issues and RFE at SF
+- Close bugs, known issues and RFE at SF
 - Release on SF
 
 *Web site*
 o- Update and set date to release in changes.xml
 o- Change download.html file for file names
-o- Backup SF data (php file)
-o- Generate and upload maven site (make_jajuk)
-o- Commit all changes in jajuk_website project
+- Backup SF data (php file)
+- Generate maven site (make_jajuk)
+- Upload maven site (make_send)
+- Commit all changes in jajuk_website project
 - Upload java web start distribution (make_jajuk jws default)
 - Check website (links, pages...)
 - Check JWS distribution
