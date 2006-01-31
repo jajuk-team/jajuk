@@ -182,8 +182,8 @@ public class Track extends PropertyAdapter implements Comparable{
     
     
     /**
-     * @param bHideUnmounted : get even unmounted files?
-     * @return best file to play for this track
+     * 
+     * @return best file to play for this track with unmounted tracks
      */
     public File getPlayeableFile() {
         return getPlayeableFile(false);
@@ -191,6 +191,7 @@ public class Track extends PropertyAdapter implements Comparable{
     
     /**
      * @return best file to play for this track
+     * bHideUnmounted
      */
     public File getPlayeableFile(boolean bHideUnmounted) {
         File fileOut = null;
@@ -385,8 +386,8 @@ public class Track extends PropertyAdapter implements Comparable{
      * @return whether this item should be hidden with hide option
      */
     public boolean shouldBeHidden(){
-        if (getPlayeableFile() != null
-                ||ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED) == false){ //option "only display mounted devices "
+        if (getPlayeableFile(true) != null
+                || ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED) == false){ //option "only display mounted devices "
             return false;
         }
         return true;
