@@ -327,8 +327,6 @@ public class Main implements ITechnicalStrings {
                 //Display progress
                 sc.setProgress(80,Messages.getString("SplashScreen.3")); //$NON-NLS-1$
                 launchUI();
-                //Request for cover refresh
-                ObservationManager.notify(new Event(EVENT_COVER_REFRESH,ObservationManager.getDetailsLastOccurence(EVENT_COVER_REFRESH)));
             }
             
             //start the tray
@@ -407,19 +405,19 @@ public class Main implements ITechnicalStrings {
         //check for default covers
         fThumbs = new File(FILE_THUMBS+"/50x50/"+FILE_THUMB_NO_COVER); //$NON-NLS-1$
         if (!fThumbs.exists()){
-            Util.createThumbnail(new URL(IMAGE_NO_COVER),fThumbs,50);
+            Util.createThumbnail(new File(IMAGE_NO_COVER),fThumbs,50);
         }
         fThumbs = new File(FILE_THUMBS+"/100x100/"+FILE_THUMB_NO_COVER); //$NON-NLS-1$
         if (!fThumbs.exists()){
-            Util.createThumbnail(new URL(IMAGE_NO_COVER),fThumbs,100);
+            Util.createThumbnail(new File(IMAGE_NO_COVER),fThumbs,100);
         }
         fThumbs = new File(FILE_THUMBS+"/150x150/"+FILE_THUMB_NO_COVER); //$NON-NLS-1$
         if (!fThumbs.exists()){
-            Util.createThumbnail(new URL(IMAGE_NO_COVER),fThumbs,150);
+            Util.createThumbnail(new File(IMAGE_NO_COVER),fThumbs,150);
         }
         fThumbs = new File(FILE_THUMBS+"/200x200/"+FILE_THUMB_NO_COVER); //$NON-NLS-1$
         if (!fThumbs.exists()){
-            Util.createThumbnail(new URL(IMAGE_NO_COVER),fThumbs,200);
+            Util.createThumbnail(new File(IMAGE_NO_COVER),fThumbs,200);
         }
     }
     
