@@ -42,6 +42,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
+import javax.swing.JFileChooser;
 import javax.swing.SwingUtilities;
 import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeExpansionListener;
@@ -69,6 +70,8 @@ import org.jajuk.base.PlaylistFile;
 import org.jajuk.base.PlaylistFileManager;
 import org.jajuk.base.StackItem;
 import org.jajuk.base.Track;
+import org.jajuk.base.exporters.XMLExporter;
+import org.jajuk.base.exporters.ExportFileFilter;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.CDDBWizard;
 import org.jajuk.ui.DeviceWizard;
@@ -125,6 +128,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
     JMenuItem jmiDirProperties;
     JMenuItem jmiDirAddFavorites;
     JMenuItem jmiDirCDDBQuery;
+    JMenuItem jmiDirExport;
     
     JPopupMenu jmenuDev;
     JMenuItem jmiDevPlay;
@@ -140,6 +144,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
     JMenuItem jmiDevProperties;
     JMenuItem jmiDevCDDBQuery;
     JMenuItem jmiDevConfiguration;
+    JMenuItem jmiDevExport;
     
     JPopupMenu jmenuPlaylistFile;
     JMenuItem jmiPlaylistFilePlay;
@@ -250,6 +255,8 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         jmiDirAddFavorites.addActionListener(this);
         jmiDirCDDBQuery = new JMenuItem(Messages.getString("PhysicalTreeView.57")); //$NON-NLS-1$
         jmiDirCDDBQuery.addActionListener(this);
+        jmiDirExport = new JMenuItem(Messages.getString("PhysicalTreeView.58")); //$NON-NLS-1$
+        jmiDirExport.addActionListener(this);        
         jmenuDir.add(jmiDirPlay);
         jmenuDir.add(jmiDirPush);
         jmenuDir.add(jmiDirPlayShuffle);
@@ -263,6 +270,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         jmenuDir.add(jmiDirDelete);
         jmenuDir.add(jmiDirAddFavorites);
         jmenuDir.add(jmiDirCDDBQuery);
+        jmenuDir.add(jmiDirExport);
         jmenuDir.add(jmiDirProperties);
         
         //Device menu
@@ -294,6 +302,8 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         jmiDevCDDBQuery.addActionListener(this);
         jmiDevConfiguration = new JMenuItem(Messages.getString("PhysicalTreeView.55")); //$NON-NLS-1$
         jmiDevConfiguration.addActionListener(this);
+        jmiDevExport = new JMenuItem(Messages.getString("PhysicalTreeView.58")); //$NON-NLS-1$
+        jmiDevExport.addActionListener(this);        
         jmenuDev.add(jmiDevPlay);
         jmenuDev.add(jmiDevPush);
         jmenuDev.add(jmiDevPlayShuffle);
@@ -306,6 +316,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         jmenuDev.add(jmiDevCreatePlaylist);
         jmenuDev.add(jmiDevConfiguration);
         jmenuDev.add(jmiDevCDDBQuery);
+        jmenuDev.add(jmiDevExport);
         jmenuDev.add(jmiDevProperties);
         
         //Playlist file menu
@@ -878,6 +889,38 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
             Device device = ((DeviceNode)(paths[0].getLastPathComponent())).getDevice();
             final Directory dir = DirectoryManager.getInstance().registerDirectory(device);
             new CDDBWizard(dir);            
+        }
+        else if ((alFiles != null && e.getSource() == jmiDirExport) || (e.getSource() == jmiDevExport)) {
+        	final JFileChooser filechooser = new JFileChooser();
+        	ExportFileFilter filter = new ExportFileFilter(".xml");
+        	
+        	filechooser.setCurrentDirectory(new java.io.File(System.getProperty("user.home")));
+        	
+        	filechooser.addChoosableFileFilter(filter);
+       // 	filter = new ExportFileFilter(".pdf");
+       // 	filechooser.addChoosableFileFilter(filter);
+       // 	filter = new ExportFileFilter(".html");
+       // 	filechooser.addChoosableFileFilter(filter);
+        	
+        	int returnVal = filechooser.showSaveDialog(PhysicalTreeView.this);
+        	
+        	if (returnVal == JFileChooser.APPROVE_OPTION) {
+        		java.io.File file = filechooser.getSelectedFile();
+        		String filepath = file.getAbsolutePath();
+        		String filetypename = Util.getExtension(file);
+        		String result = "";
+        		if (filetypename.equals("xml")) {
+        			final XMLExporter xmlexporter = XMLExporter.getInstance();
+        			if (e.getSource() == jmiDirExport) {
+        				Directory dir = ((DirectoryNode)paths[0].getLastPathComponent()).getDirectory();         				
+            			result = xmlexporter.directoryToXML(dir);	
+        			} else if (e.getSource() == jmiDevExport) {
+        				Device device = ((DeviceNode)paths[0].getLastPathComponent()).getDevice();
+        				result = xmlexporter.deviceToXML(device);
+        			}        			
+        			xmlexporter.commit(filepath, result);
+        		} 
+        	}   	
         }
         else if (alFiles!= null  && (e.getSource() == jmiDirPush || e.getSource() == jmiDevPush)){
             FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFiles),

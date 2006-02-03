@@ -36,6 +36,7 @@ import java.util.Iterator;
 import java.util.Properties;
 
 import javax.swing.ButtonGroup;
+import javax.swing.JFileChooser;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
@@ -59,6 +60,8 @@ import javax.swing.tree.TreePath;
 import org.jajuk.base.Album;
 import org.jajuk.base.Author;
 import org.jajuk.base.Bookmarks;
+import org.jajuk.base.Device;
+import org.jajuk.base.Directory;
 import org.jajuk.base.Event;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
@@ -70,6 +73,8 @@ import org.jajuk.base.Style;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackComparator;
 import org.jajuk.base.TrackManager;
+import org.jajuk.base.exporters.XMLExporter;
+import org.jajuk.base.exporters.ExportFileFilter;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.PropertiesWizard;
@@ -113,8 +118,9 @@ ActionListener, Observer {
     JMenuItem jmiStylePlayRepeat;
     JMenuItem jmiStyleDelete;
     JMenuItem jmiStyleAddFavorite;
+    JMenuItem jmiStyleExport;
     JMenuItem jmiStyleProperties;
-    
+        
     JPopupMenu jmenuAuthor;
     JMenuItem jmiAuthorPlay;
     JMenuItem jmiAuthorPush;
@@ -122,6 +128,7 @@ ActionListener, Observer {
     JMenuItem jmiAuthorPlayRepeat;
     JMenuItem jmiAuthorDelete;
     JMenuItem jmiAuthorAddFavorite;
+    JMenuItem jmiAuthorExport;
     JMenuItem jmiAuthorProperties;
     
     JPopupMenu jmenuAlbum;
@@ -131,6 +138,7 @@ ActionListener, Observer {
     JMenuItem jmiAlbumPlayRepeat;
     JMenuItem jmiAlbumDelete;
     JMenuItem jmiAlbumAddFavorite;
+    JMenuItem jmiAlbumExport;
     JMenuItem jmiAlbumProperties;
     
     JPopupMenu jmenuTrack;
@@ -245,6 +253,8 @@ ActionListener, Observer {
         jmiStyleAddFavorite = new JMenuItem(Messages
             .getString("LogicalTreeView.32")); //$NON-NLS-1$
         jmiStyleAddFavorite.addActionListener(this);
+        jmiStyleExport = new JMenuItem(Messages.getString("LogicalTreeView.33")); //$NON-NLS-1$
+        jmiStyleExport.addActionListener(this);        
         jmiStyleProperties = new JMenuItem(Messages
             .getString("LogicalTreeView.7")); //$NON-NLS-1$
         jmiStyleProperties.addActionListener(this);
@@ -254,6 +264,7 @@ ActionListener, Observer {
         jmenuStyle.add(jmiStylePlayRepeat);
         jmenuStyle.add(jmiStyleDelete);
         jmenuStyle.add(jmiStyleAddFavorite);
+        jmenuStyle.add(jmiStyleExport);
         jmenuStyle.add(jmiStyleProperties);
         
         // Author menu
@@ -275,6 +286,8 @@ ActionListener, Observer {
         jmiAuthorAddFavorite = new JMenuItem(Messages
             .getString("LogicalTreeView.32")); //$NON-NLS-1$       
         jmiAuthorAddFavorite.addActionListener(this);
+        jmiAuthorExport = new JMenuItem(Messages.getString("LogicalTreeView.33")); //$NON-NLS-1$
+        jmiAuthorExport.addActionListener(this);        
         jmiAuthorProperties = new JMenuItem(Messages
             .getString("LogicalTreeView.14")); //$NON-NLS-1$
         jmiAuthorProperties.addActionListener(this);
@@ -284,6 +297,7 @@ ActionListener, Observer {
         jmenuAuthor.add(jmiAuthorPlayRepeat);
         jmenuAuthor.add(jmiAuthorDelete);
         jmenuAuthor.add(jmiAuthorAddFavorite);
+        jmenuAuthor.add(jmiAuthorExport);
         jmenuAuthor.add(jmiAuthorProperties);
         
         // Album menu
@@ -304,6 +318,8 @@ ActionListener, Observer {
         jmiAlbumAddFavorite = new JMenuItem(Messages
             .getString("LogicalTreeView.32")); //$NON-NLS-1$        
         jmiAlbumAddFavorite.addActionListener(this);
+        jmiAlbumExport = new JMenuItem(Messages.getString("LogicalTreeView.33")); //$NON-NLS-1$
+        jmiAlbumExport.addActionListener(this);        
         jmiAlbumProperties = new JMenuItem(Messages
             .getString("LogicalTreeView.21")); //$NON-NLS-1$
         jmiAlbumProperties.addActionListener(this);
@@ -313,6 +329,7 @@ ActionListener, Observer {
         jmenuAlbum.add(jmiAlbumPlayRepeat);
         jmenuAlbum.add(jmiAlbumDelete);
         jmenuAlbum.add(jmiAlbumAddFavorite);
+        jmenuAlbum.add(jmiAlbumExport);
         jmenuAlbum.add(jmiAlbumProperties);
         
         // Track menu
@@ -842,7 +859,47 @@ ActionListener, Observer {
                             Util.stopWaiting();
                         }
                     });
-                } else {
+                } else if (e.getSource() == jmiStyleExport
+            				|| e.getSource() == jmiAuthorExport
+            				|| e.getSource() == jmiAlbumExport) {
+                		final JFileChooser filechooser = new JFileChooser();
+                		ExportFileFilter filter = new ExportFileFilter(".xml");
+            	
+                		filechooser.setCurrentDirectory(new java.io.File(System.getProperty("user.home")));
+                		
+                		filechooser.addChoosableFileFilter(filter);
+                		// 	filter = new ExportFileFilter(".pdf");
+                		// 	filechooser.addChoosableFileFilter(filter);
+                		// 	filter = new ExportFileFilter(".html");
+                		// 	filechooser.addChoosableFileFilter(filter);
+            	
+                		int returnVal = filechooser.showSaveDialog(LogicalTreeView.this);
+            	
+                		if (returnVal == JFileChooser.APPROVE_OPTION) {
+                			java.io.File file = filechooser.getSelectedFile();
+                			String filepath = file.getAbsolutePath();
+                			String filetypename = Util.getExtension(file);
+                			final XMLExporter xmlexporter = XMLExporter.getInstance();        		        		
+                				if (filetypename.equals("xml")) {
+                					String result = "";
+                					if (e.getSource() == jmiStyleExport) {
+                						Style style = ((StyleNode)paths[0].getLastPathComponent()).getStyle();         				
+                						result = xmlexporter.styleToXML(style);	
+                					} else if (e.getSource() == jmiAuthorExport) {                	
+                						Style style = ((StyleNode)paths[0].getParentPath().getLastPathComponent()).getStyle();
+                						Author author = ((AuthorNode)paths[0].getLastPathComponent()).getAuthor();
+                						result = xmlexporter.authorToXML(author, style);
+                					} else if (e.getSource() == jmiAlbumExport) { 
+                						Style style = ((StyleNode)paths[0].getParentPath().getParentPath().getLastPathComponent()).getStyle();
+                						Author author = ((AuthorNode)paths[0].getParentPath().getLastPathComponent()).getAuthor();
+                						Album album = ((AlbumNode)paths[0].getLastPathComponent()).getAlbum();
+                						result = xmlexporter.albumToXML(album, author, style);
+                					}
+                					xmlexporter.commit(filepath, result);
+                				}
+                		}  
+                }                
+                else {
                     // compute selection
                     ArrayList alFilesToPlay = new ArrayList(alTracks.size());
                     Iterator it = alTracks.iterator();
