@@ -370,6 +370,7 @@ public interface ITechnicalStrings {
     public static final String EVENT_CDDB_WIZARD = "cddb.wizard"; //Cddb wizard required
     public static final String EVENT_LOGICAL_TREE_SORT = "logical tree sort"; //logical tree osrt method changed
     public static final String EVENT_COVER_DEFAULT_CHANGED = "cover default changed"; //cover default changed
+    public static final String EVENT_TABLE_CLEAR_SELECTION = "table.clear_selection"; //clear table selection
     
     //details keys
 	public static final String DETAIL_CURRENT_FILE_ID="current file id";

@@ -233,6 +233,7 @@ public abstract class AbstractTableView extends ViewAdapter
                 ObservationManager.register(EVENT_CUSTOM_PROPERTIES_ADD,AbstractTableView.this);
                 ObservationManager.register(EVENT_CUSTOM_PROPERTIES_REMOVE,AbstractTableView.this);
                 ObservationManager.register(EVENT_RATE_CHANGED,AbstractTableView.this);
+                ObservationManager.register(EVENT_TABLE_CLEAR_SELECTION,AbstractTableView.this);
                 //refresh columns conf in case of some attributes been removed or added before view instanciation
                 Properties properties = ObservationManager.getDetailsLastOccurence(EVENT_CUSTOM_PROPERTIES_ADD); 
                 Event event = new Event(EVENT_CUSTOM_PROPERTIES_ADD,properties);
@@ -288,6 +289,9 @@ public abstract class AbstractTableView extends ViewAdapter
                 try{
                     bReloading = true; //flag reloading to avoid wrong column events
                     String subject = event.getSubject();
+                    if ( EVENT_TABLE_CLEAR_SELECTION.equals(subject)){ 
+                        jtable.clearSelection();
+                    }
                     if ( EVENT_DEVICE_MOUNT.equals(subject) 
                             || EVENT_DEVICE_UNMOUNT.equals(subject) 
                             || EVENT_SYNC_TREE_TABLE.equals(subject)) {

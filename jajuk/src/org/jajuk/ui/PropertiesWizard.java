@@ -231,6 +231,7 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
                     }
                     finally{
                         //UI refresh
+                        ObservationManager.notify(new Event(EVENT_TABLE_CLEAR_SELECTION)); //clear tables selection
                         ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH)); 
                     }
                 }
