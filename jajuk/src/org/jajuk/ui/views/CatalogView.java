@@ -341,6 +341,10 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
      */
     private synchronized void populateCatalog(){
         bPopulating = true;
+        jcbSize.setEnabled(false);
+        jcbFilter.setEnabled(false);
+        jcbShow.setEnabled(false);
+        jcbSorter.setEnabled(false);
         SwingWorker sw = new SwingWorker() {
             @Override
             public Object construct() {
@@ -456,6 +460,10 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
                 jsp.revalidate();
                 jsp.repaint();
                 jtfValue.requestFocusInWindow();
+                jcbSize.setEnabled(true);
+                jcbFilter.setEnabled(true);
+                jcbShow.setEnabled(true);
+                jcbSorter.setEnabled(true);
                 bPopulating = false;
             }
         };
