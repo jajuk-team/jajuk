@@ -243,12 +243,17 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
         synchronized(bLock){//block any concurrent cover update
             try{
                 searching(true);
-                if ( EVENT_COVER_REFRESH.equals(subject)){
+                if (EVENT_COVER_REFRESH.equals(subject)){
                     org.jajuk.base.File fCurrent = FIFO.getInstance().getCurrentFile();
-                    this.dirCurrent = fCurrent.getDirectory(); //store this dir
+                    if (fCurrent == null){
+                        this.dirCurrent = null;       
+                    }
+                    else{
+                        this.dirCurrent = fCurrent.getDirectory(); //store this dir
+                    }
                     alCovers.clear(); //remove all existing covers
                     //if current file is null ( probably a file cannot be read ) 
-                    if ( fCurrent == null || fCurrent.getDirectory() == null){
+                    if ( this.dirCurrent == null){
                         alCovers.add(coverDefault);
                         index = 0;
                         displayCurrentCover(); 
