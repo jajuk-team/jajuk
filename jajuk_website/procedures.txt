@@ -46,11 +46,9 @@ FIX RELEASE (x.y.z) PROCEDURE
 *Code*
 o- Refresh workspace
 o- Set right version (no more rc), test to '-notest' and jwsdeploy to 'default'  in build-dist script
-o- Set "default" to JWS_DIR in make_jajuk script
 o- Check new incoming updates (i18n)
 o- String externalization
 o- Search for debug System.out
-o- Make required translations (fr)
 o- Generate packages
 o- Test it a minima under several OS
 - Commit all changes in jajuk project
@@ -113,7 +111,7 @@ API ADDITION/UPGRADE/REMOVAL PROCEDURE
 - Change project.xml maven file for dependencies
 - Add/Change jnlp file and update jajuk.jnlp file
 - Sign all new jars (jarsigner myjar.jar jajukteam)
-- Update website dependencies
+- Update website dependencies if needed
 
 *********************************************************
 NEW CONTRIBUTOR PROCEDURE

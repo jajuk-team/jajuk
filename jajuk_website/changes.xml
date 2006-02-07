@@ -5,6 +5,14 @@
     <author email='bflorat@users.sourceforge.net'>Bertrand Florat</author>
   </properties>
   <body>
+    <release version='1.1.2' date='2006-02-07' description='Fixes'>
+    	<action dev='bflorat' type='add'>ID3 2.4 tags support</action> 
+    	<action dev='bflorat' type='fix' issue='1424176'>Double thumbnails creation [7]</action>
+    	<action dev='bflorat' type='fix' issue='1426113'>Desktop menu creation under suse [5]</action>
+    	<action dev='bflorat' type='fix' issue='1426431'>Looping format error message in properties wizzard [5]</action>
+    	<action dev='bflorat' type='fix' issue='1424208'>NullPointerException CoverView.update [3]</action>
+    	<action dev='bflorat' type='fix' issue='1424209'>Selections stays after items disappeared [3]</action>
+    </release>
     <release version='1.1.1' date='2006-01-31' description='Fixes'>
     	<action dev='bflorat' type='fix'>Error on reading tracks on some boxes [9]</action>
     	<action dev='bflorat' type='fix'>Freeze if looping playing errors [9]</action>

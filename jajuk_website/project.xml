@@ -310,7 +310,7 @@
      <dependency>
 	   <groupId>lib</groupId>
         <artifactId>entagged-audioformats</artifactId>
-        <version>0.14</version> 
+        <version>0.15</version> 
     </dependency>
 
      <dependency>

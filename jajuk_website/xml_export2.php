@@ -29,7 +29,7 @@ Option for show_trackers=1; * To show a specific Tracker instead of all
 	&amp;tracker_to_show=TRACKER_ID
 
 --><export_details>
-<time>1138492166</time>
+<time>1139343259</time>
 <project_group_id>91412</project_group_id>
 <project_unix_name>jajuk</project_unix_name>
 <exporter>bflorat</exporter>
@@ -85,6 +85,14 @@ http://www.florat.net/jajuk-specs.pdf</registration_description>
 <user_name>skyreacher</user_name>
 <public_name>Gerhard Dietrichsteiner</public_name>
 <email>skyreacher@users.sourceforge.net</email>
+<project_admin>No</project_admin>
+</projectmember>
+<projectmember>
+<url>https://sourceforge.net/users/rspatel/</url>
+<user_id>1361536</user_id>
+<user_name>rspatel</user_name>
+<public_name>Ronak Patel</public_name>
+<email>rspatel@users.sourceforge.net</email>
 <project_admin>No</project_admin>
 </projectmember>
 <projectmember>
@@ -497,6 +505,36 @@ http://www.florat.net/jajuk-specs.pdf</registration_description>
 <package_id>96449</package_id>
 <file_size>428862</file_size>
 <release_time>1134946377</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=389802</url>
+<filename>jajuk-1.1.1-1mdk.noarch.rpm</filename>
+<release_id>389802</release_id>
+<package_id>96449</package_id>
+<file_size>7012327</file_size>
+<release_time>1138735459</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=389802</url>
+<filename>jajuk-1.1.1-suse.noarch.rpm</filename>
+<release_id>389802</release_id>
+<package_id>96449</package_id>
+<file_size>7010627</file_size>
+<release_time>1138735475</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=389802</url>
+<filename>jajuk-1.1.1-win32.exe</filename>
+<release_id>389802</release_id>
+<package_id>96449</package_id>
+<file_size>9524736</file_size>
+<release_time>1138735498</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=389802</url>
+<filename>jajuk-java-installer-1.1.1.jar</filename>
+<release_id>389802</release_id>
+<package_id>96449</package_id>
+<file_size>9126871</file_size>
+<release_time>1138735777</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=389802</url>
+<filename>jajuk-sources-1.1.1.zip</filename>
+<release_id>389802</release_id>
+<package_id>96449</package_id>
+<file_size>502184</file_size>
+<release_time>1138735793</release_time>
 </filereleases>
 <docmanager>
 <docgroup>
@@ -2202,6 +2240,10 @@ KNOWN ISSUES are found in the &#34;Known issues&#34; tracker.</submit_instructio
 <group>
 <id>537602</id>
 <group_name>R 1.0</group_name>
+</group>
+<group>
+<id>566446</id>
+<group_name>R 1.1</group_name>
 </group>
 </groups>
 <categories>
@@ -13565,6 +13607,296 @@ use user-selected look and feel.</details>
 </history_entry>
 </history_entries>
 </tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1424176</url>
+<id>1424176</id>
+<status_id>1</status_id>
+<category_id>605762</category_id>
+<group_id>566446</group_id>
+<resolution_id>100</resolution_id>
+<submitter>bflorat</submitter>
+<assignee>bflorat</assignee>
+<closer>nobody</closer>
+<submit_date>1139078041</submit_date>
+<close_date>0</close_date>
+<priority>4</priority>
+<summary>Double thumbnails creation</summary>
+<details>When creating covers in catalog view and using criteria
+during cover generation, covers are displayed several
+times.</details>
+<followups>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+<history_entry>
+<id>3438208</id>
+<field_name>artifact_group_id</field_name>
+<old_value>537602</old_value>
+<date>1139078082</date>
+<updator>bflorat</updator>
+</history_entry>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1424203</url>
+<id>1424203</id>
+<status_id>1</status_id>
+<category_id>605778</category_id>
+<group_id>566446</group_id>
+<resolution_id>100</resolution_id>
+<submitter>mybytes</submitter>
+<assignee>bflorat</assignee>
+<closer>nobody</closer>
+<submit_date>1139081752</submit_date>
+<close_date>0</close_date>
+<priority>5</priority>
+<summary>file parsing error: collection_exit.xml</summary>
+<details>2006/02/04 13:19:34 [ERROR] (005) Collection file
+parsing error: /home/me/.jajuk/collection_exit.xml 
+[main] (Log.java:161)
+
+didn't hurt the runnig program, however, and
+disappeared after a while. I did see it several times
+in the log though. the collection file does not exist.</details>
+<followups>
+<followup>
+<id>1910025</id>
+<submitter>bflorat</submitter>
+<date>1139142419</date>
+<details>Logged In: YES 
+user_id=363565
+
+When stopping (even using OS-level signal like OS/session
+stop or Control-C), the collection is commited as
+collection_exit.xml file. In your case, either your
+collection_file didn't exist or was not fully comitted. 
+This can normally occur only in these cases:
+o when JVM crashed : did you have crashes ?
+o When JVM is stopped from an IDE in debug mode: did you
+used jajuk from an ide like eclipse ? 
+o If commit takes too mush time before OS real stop: how
+mush time does your computer to stop? how much CPU/memory do
+you have? what's your collection file size ?
+</details>
+</followup>
+<followup>
+<id>1910835</id>
+<submitter>mybytes</submitter>
+<date>1139215314</date>
+<details>Logged In: YES 
+user_id=577095
+
+I was not using an IDE and I do not recall using Ctrl-C. But
+my system was under a quite heavy load and the collection
+was quite big when I closed Jajuk, so that probably explains it.</details>
+</followup>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+<history_entry>
+<id>3439053</id>
+<field_name>category_id</field_name>
+<old_value>100</old_value>
+<date>1139142419</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3439054</id>
+<field_name>artifact_group_id</field_name>
+<old_value>100</old_value>
+<date>1139142419</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3439055</id>
+<field_name>assigned_to</field_name>
+<old_value>100</old_value>
+<date>1139142419</date>
+<updator>bflorat</updator>
+</history_entry>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1424208</url>
+<id>1424208</id>
+<status_id>1</status_id>
+<category_id>605763</category_id>
+<group_id>566446</group_id>
+<resolution_id>100</resolution_id>
+<submitter>mybytes</submitter>
+<assignee>bflorat</assignee>
+<closer>nobody</closer>
+<submit_date>1139081951</submit_date>
+<close_date>0</close_date>
+<priority>3</priority>
+<summary>NullPointerException CoverView.update</summary>
+<details>2006/02/04 20:20:09 [ERROR] null / null  [Thread-36]
+(Log.java:186) 
+java.lang.NullPointerException
+        at
+org.jajuk.ui.views.CoverView.update(CoverView.java:248)
+        at
+org.jajuk.ui.views.CoverView$1.run(CoverView.java:225)
+
+after starting up and not doing really anything. didn't
+hurt the running program.</details>
+<followups>
+<followup>
+<id>1910032</id>
+<submitter>bflorat</submitter>
+<date>1139142947</date>
+<details>Logged In: YES 
+user_id=363565
+
+Fixed in upcoming 1.1.2.</details>
+</followup>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+<history_entry>
+<id>3439061</id>
+<field_name>category_id</field_name>
+<old_value>100</old_value>
+<date>1139142947</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3439062</id>
+<field_name>artifact_group_id</field_name>
+<old_value>100</old_value>
+<date>1139142947</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3439063</id>
+<field_name>priority</field_name>
+<old_value>5</old_value>
+<date>1139142947</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3439064</id>
+<field_name>assigned_to</field_name>
+<old_value>100</old_value>
+<date>1139142947</date>
+<updator>bflorat</updator>
+</history_entry>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1424209</url>
+<id>1424209</id>
+<status_id>1</status_id>
+<category_id>605762</category_id>
+<group_id>566446</group_id>
+<resolution_id>100</resolution_id>
+<submitter>mybytes</submitter>
+<assignee>bflorat</assignee>
+<closer>nobody</closer>
+<submit_date>1139082085</submit_date>
+<close_date>0</close_date>
+<priority>3</priority>
+<summary>Selections stays after items disappeared</summary>
+<details>- select a style node in the logical tree
+- select top few songs in the logical table
+- open properties and change style, apply
+- songs disappear from view correctly, but the
+selection in the table is transferred to the next songs
+that are moving up in the table.
+</details>
+<followups>
+<followup>
+<id>1910020</id>
+<submitter>bflorat</submitter>
+<date>1139141922</date>
+<details>Logged In: YES 
+user_id=363565
+
+Fixed in 1.1.2 when change is done from property wizard</details>
+</followup>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+<history_entry>
+<id>3439012</id>
+<field_name>category_id</field_name>
+<old_value>100</old_value>
+<date>1139141922</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3439013</id>
+<field_name>artifact_group_id</field_name>
+<old_value>100</old_value>
+<date>1139141922</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3439014</id>
+<field_name>priority</field_name>
+<old_value>5</old_value>
+<date>1139141922</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3439015</id>
+<field_name>assigned_to</field_name>
+<old_value>100</old_value>
+<date>1139141922</date>
+<updator>bflorat</updator>
+</history_entry>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1426113</url>
+<id>1426113</id>
+<status_id>1</status_id>
+<category_id>694965</category_id>
+<group_id>566446</group_id>
+<resolution_id>100</resolution_id>
+<submitter>bflorat</submitter>
+<assignee>bflorat</assignee>
+<closer>nobody</closer>
+<submit_date>1139320656</submit_date>
+<close_date>0</close_date>
+<priority>5</priority>
+<summary>Desktop menu creation under suse</summary>
+<details>Desktop menu item is not created (should be in
+Audio/Video/ Audio player). Fixed in the upcoming 1.1.2.</details>
+<followups>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1426431</url>
+<id>1426431</id>
+<status_id>1</status_id>
+<category_id>605762</category_id>
+<group_id>566446</group_id>
+<resolution_id>100</resolution_id>
+<submitter>bflorat</submitter>
+<assignee>bflorat</assignee>
+<closer>nobody</closer>
+<submit_date>1139337499</submit_date>
+<close_date>0</close_date>
+<priority>5</priority>
+<summary>Looping format error message in properties wizzard</summary>
+<details>Looping format error message in properties wizzard for
+double or integer fields + leave using enter key</details>
+<followups>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+</history_entries>
+</tracker_item>
 </tracker_items>
 </tracker>
 <tracker>
@@ -15713,6 +16045,49 @@ view are updated.</details>
 <old_value>159715: jajuk-favorite.diff</old_value>
 <date>1134499373</date>
 <updator>dhalsim44</updator>
+</history_entry>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1421832</url>
+<id>1421832</id>
+<status_id>1</status_id>
+<category_id>100</category_id>
+<group_id>100</group_id>
+<resolution_id>100</resolution_id>
+<submitter>rspatel</submitter>
+<assignee>nobody</assignee>
+<closer>nobody</closer>
+<submit_date>1138826167</submit_date>
+<close_date>0</close_date>
+<priority>5</priority>
+<summary>XML Exporting</summary>
+<details>I currently have XML Exporting implemented. Exporting 
+entire collection and to HTML and PDF are on the way.
+
+Instead of copy and pasting the code, I have attached 
+a zip file with files.</details>
+<followups>
+</followups>
+<attachments>
+<attachment>
+<url>https://sourceforge.net/tracker/download.php?group_id=91412&#38;atid=597088&#38;file_id=165838&#38;aid=</url>
+<id>165838</id>
+<filename>exporter patch.zip</filename>
+<description></description>
+<filesize>31210</filesize>
+<filetype>application/x-zip-compressed</filetype>
+<date>1138826168</date>
+<submitter>rspatel</submitter>
+</attachment>
+</attachments>
+<history_entries>
+<history_entry>
+<id>3431558</id>
+<field_name>File Added</field_name>
+<old_value>165838: exporter patch.zip</old_value>
+<date>1138826169</date>
+<updator>rspatel</updator>
 </history_entry>
 </history_entries>
 </tracker_item>
@@ -18368,6 +18743,164 @@ Regards,
 <date>1132993815</date>
 <updator>zeisss</updator>
 </history_entry>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1424188</url>
+<id>1424188</id>
+<status_id>1</status_id>
+<category_id>100</category_id>
+<group_id>100</group_id>
+<submitter>mybytes</submitter>
+<assignee>nobody</assignee>
+<closer>nobody</closer>
+<submit_date>1139081036</submit_date>
+<close_date>0</close_date>
+<priority>5</priority>
+<summary>Default view for new user</summary>
+<details>should be configuration for new devices, as the first
+step will typically be adding one. jajuk could even
+offer this right away by opening the appropriate dialog.</details>
+<followups>
+<followup>
+<id>1910196</id>
+<submitter>bflorat</submitter>
+<date>1139158217</date>
+<details>Logged In: YES 
+user_id=363565
+
+I was previously the case but we switched to physical
+perspective after having created the first time wizard to
+create device:
+o On one hand, you're right we can have to create new devices
+o On the other hand, we observed that people are lost after
+having created their device using the wizard and don't know
+how to switch to others perspectives...</details>
+</followup>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1424191</url>
+<id>1424191</id>
+<status_id>1</status_id>
+<category_id>100</category_id>
+<group_id>100</group_id>
+<submitter>mybytes</submitter>
+<assignee>nobody</assignee>
+<closer>nobody</closer>
+<submit_date>1139081100</submit_date>
+<close_date>0</close_date>
+<priority>5</priority>
+<summary>Remember settings in device dialog</summary>
+<details>when creating a couple of new devices, it would be nice
+if some settings (e.g. refresh time or the path of the
+directory selection dialog) could be remembered.
+</details>
+<followups>
+<followup>
+<id>1910202</id>
+<submitter>bflorat</submitter>
+<date>1139158438</date>
+<details>Logged In: YES 
+user_id=363565
+
+I don't think you could extrapolate refresh time or path
+from one device to another and device creation is a very
+limited task so I don't think this is really useful.</details>
+</followup>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1424193</url>
+<id>1424193</id>
+<status_id>1</status_id>
+<category_id>100</category_id>
+<group_id>100</group_id>
+<submitter>mybytes</submitter>
+<assignee>nobody</assignee>
+<closer>nobody</closer>
+<submit_date>1139081181</submit_date>
+<close_date>0</close_date>
+<priority>5</priority>
+<summary>Select all w/ Ctrl-A</summary>
+<details>I would like to select all trakcs in the logical table
+with a keyboard shortcut Ctrl-a, e.g. to open the
+properties and change the style for all simultaneously.</details>
+<followups>
+<followup>
+<id>1910209</id>
+<submitter>bflorat</submitter>
+<date>1139158864</date>
+<details>Logged In: YES 
+user_id=363565
+
+It already works for me in every table. Make sure the table
+view is selected before using the control-A. Please give me
+detailed use case if it doesn't work for you as it may have
+a bug here.</details>
+</followup>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1424200</url>
+<id>1424200</id>
+<status_id>1</status_id>
+<category_id>100</category_id>
+<group_id>100</group_id>
+<submitter>mybytes</submitter>
+<assignee>nobody</assignee>
+<closer>nobody</closer>
+<submit_date>1139081572</submit_date>
+<close_date>0</close_date>
+<priority>5</priority>
+<summary>More flexible logical views</summary>
+<details>would be nice. 
+
+1) I would like to see more views with additional
+groupings. In MusicMiner we offer more categorization
+as templates (e.g. Artist/Year or Year/Artist/Album)
+and the underlying code can basically do any multi
+level categorization based on the song's attributes.
+
+2) Also still missing in MusicMiner, I would like to
+filter logical views by the number of songs a node
+would have. If there are a few compilations in a genre,
+each artists gets a node even if you have only one
+song. Configuring a minimum number of songs for an
+artist to show up in the tree would be helpful in
+concentrating only on the most relevant artists. an
+additional node &#34;misc&#34; or &#34;rest&#34; could hold the songs
+of the filtered artists.
+
+</details>
+<followups>
+<followup>
+<id>1910206</id>
+<submitter>bflorat</submitter>
+<date>1139158648</date>
+<details>Logged In: YES 
+user_id=363565
+
+1) OK we will try to do for 1.2
+2) This looks like a pretty good idea, we will try to
+implement it for 1.2</details>
+</followup>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
 </history_entries>
 </tracker_item>
 </tracker_items>
