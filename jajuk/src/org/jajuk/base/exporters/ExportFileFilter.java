@@ -27,14 +27,14 @@ import javax.swing.filechooser.FileFilter;
  * @created		26 dec. 2005
 */
 public class ExportFileFilter extends FileFilter {
-	private String myFilterType;
+	private String sFilterType;
 	
 	/** 
 	 * Constructor
 	 * @param Takes a String that represents the file to be filtered. Example: ".htm" or ".pdf"
 	 */
 	public ExportFileFilter(String sFilterType) {
-		myFilterType = sFilterType;
+		sFilterType = sFilterType;
 	}
 	
 	/**
@@ -47,7 +47,7 @@ public class ExportFileFilter extends FileFilter {
 		
 		String filename = f.getName().toLowerCase();
 		if (filename != null) {
-			if (filename.endsWith(myFilterType)) {
+			if (filename.endsWith(sFilterType)) {
 				return true;
 			}	
 		} 
@@ -59,6 +59,6 @@ public class ExportFileFilter extends FileFilter {
 	 * @return Returns description of filter.
 	 */
 	public String getDescription() {
-		return myFilterType + " File";
+		return sFilterType + " File";
 	}
 }
