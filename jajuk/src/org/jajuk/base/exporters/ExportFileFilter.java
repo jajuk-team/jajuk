@@ -33,8 +33,8 @@ public class ExportFileFilter extends FileFilter {
 	 * Constructor
 	 * @param Takes a String that represents the file to be filtered. Example: ".htm" or ".pdf"
 	 */
-	public ExportFileFilter(String sFilterType) {
-		sFilterType = sFilterType;
+	public ExportFileFilter(String filtertype) {
+		sFilterType = filtertype;
 	}
 	
 	/**
