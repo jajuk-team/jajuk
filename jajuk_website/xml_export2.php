@@ -29,7 +29,7 @@ Option for show_trackers=1; * To show a specific Tracker instead of all
 	&amp;tracker_to_show=TRACKER_ID
 
 --><export_details>
-<time>1139343259</time>
+<time>1139600952</time>
 <project_group_id>91412</project_group_id>
 <project_unix_name>jajuk</project_unix_name>
 <exporter>bflorat</exporter>
@@ -535,6 +535,36 @@ http://www.florat.net/jajuk-specs.pdf</registration_description>
 <package_id>96449</package_id>
 <file_size>502184</file_size>
 <release_time>1138735793</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=391702</url>
+<filename>jajuk-1.1.2-1mdk.noarch.rpm</filename>
+<release_id>391702</release_id>
+<package_id>96449</package_id>
+<file_size>7020805</file_size>
+<release_time>1139347166</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=391702</url>
+<filename>jajuk-1.1.2-suse.noarch.rpm</filename>
+<release_id>391702</release_id>
+<package_id>96449</package_id>
+<file_size>7018303</file_size>
+<release_time>1139347185</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=391702</url>
+<filename>jajuk-1.1.2-win32.exe</filename>
+<release_id>391702</release_id>
+<package_id>96449</package_id>
+<file_size>9538048</file_size>
+<release_time>1139347213</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=391702</url>
+<filename>jajuk-java-installer-1.1.2.jar</filename>
+<release_id>391702</release_id>
+<package_id>96449</package_id>
+<file_size>9140026</file_size>
+<release_time>1139347232</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=391702</url>
+<filename>jajuk-sources-1.1.2.zip</filename>
+<release_id>391702</release_id>
+<package_id>96449</package_id>
+<file_size>502459</file_size>
+<release_time>1139347248</release_time>
 </filereleases>
 <docmanager>
 <docgroup>
@@ -594,6 +624,22 @@ http://www.florat.net/jajuk-specs.pdf</registration_description>
 <send_posts_to></send_posts_to>
 <anonymous_posting>Yes</anonymous_posting>
 <forum_posts>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=3569389</url>
+<msg_id>3569389</msg_id>
+<poster_user>nobody</poster_user>
+<poster_name>Nobody/Anonymous</poster_name>
+<subject>Can't find some options...</subject>
+<thread_id>1438549</thread_id>
+<is_followup_to>0</is_followup_to>
+<has_followups>0</has_followups>
+<date>1139584169</date>
+<is_deleted>No</is_deleted>
+<body>Hello, and first of all, thanks for this great program!!!
+I'm running under Debian etch and i've got some problems with tags. I've read that jajuk can't modify some of them. That's not terrible, i've downloaded another program to modify them. But i would like to &#34;Perform a deep tag scan&#34; but i definitely can't find this option in jajuk!
+Is that a bug? With Jajuk? Java (1.5.0)?
+Thanks in advance...</body>
+</forum_post>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3522430</url>
 <msg_id>3522430</msg_id>
@@ -815,6 +861,7 @@ Please:
 
 Thanks.</body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3455574</url>
 <msg_id>3455574</msg_id>
@@ -830,7 +877,6 @@ Thanks.</body>
 
 What I meant was break of voice and music. There are these abrupt breaks, like when you are listening to radio and there are some breaking signal. This happens during the normal play of the songs. Not for a specific file but for all the files. Files are located in my local hard drive. </body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3451168</url>
 <msg_id>3451168</msg_id>
@@ -980,6 +1026,7 @@ Please excuse my english because I'm a french guy ;o)
 
 Ragerds and thanx for your help.</body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3282474</url>
 <msg_id>3282474</msg_id>
@@ -994,7 +1041,6 @@ Ragerds and thanx for your help.</body>
 <body>Thx for your investigations.
 BTW, one of the best place to ask could be the javazoom jlayer forum (jajuk uses javazoom APIs for sound). I already asked about this kind of problem without useful answer but you may be luckier than me... </body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3282414</url>
 <msg_id>3282414</msg_id>
@@ -1161,6 +1207,7 @@ cworley   7688  7652  0 11:00 pts/19   00:00:00 java -client -Xms25M -Djava.libr
 
 ...repeats a number of times</body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3280025</url>
 <msg_id>3280025</msg_id>
@@ -1182,7 +1229,6 @@ and
 ps -eaf | grep java
 </body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3279849</url>
 <msg_id>3279849</msg_id>
@@ -1346,6 +1392,7 @@ Please check http://jajuk.sourceforge.net/installation.html
 and check that your jre is OK by typing java --version'
 If you don't manage to make it work, please open a support request at https://sourceforge.net/tracker/?group_id=91412&#38;atid=597087</body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3240412</url>
 <msg_id>3240412</msg_id>
@@ -1363,7 +1410,6 @@ i've a Mandrake 10.1 Community version, i just install Jujak for Mandrake, but i
 When i launch it, nothing happen, could anyone help me?
 Thx</body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3020452</url>
 <msg_id>3020452</msg_id>
@@ -1523,6 +1569,7 @@ Please tell me if you solved it or not, I will add a doc in the installation gui
 
 Bertrand.</body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=2973386</url>
 <msg_id>2973386</msg_id>
@@ -1542,7 +1589,6 @@ JAVA_HOME=
 /usr/bin/jajuk: line 12: java: command not found
 </body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=2972177</url>
 <msg_id>2972177</msg_id>
@@ -1724,6 +1770,7 @@ Jajuk 0.3 </body>
 <is_deleted>No</is_deleted>
 <body>I downloaded the latest windows exe (0.3.1) from two different servers, and AVG found the same virus in both. PSW.Banker.3.H</body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=2902769</url>
 <msg_id>2902769</msg_id>
@@ -1737,7 +1784,6 @@ Jajuk 0.3 </body>
 <is_deleted>No</is_deleted>
 <body>I responded on the dev list. Thank you.</body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=2902748</url>
 <msg_id>2902748</msg_id>
@@ -1912,6 +1958,7 @@ There is a RPM plugin for Maven at maven-plugins.sf.net
 But you might need to really mavenize Jajuk.
 Or just drop everything in the binary distribution directory (see dist plugin). I 'll bet the plugin just gets his dist from there.</body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=2840185</url>
 <msg_id>2840185</msg_id>
@@ -1929,7 +1976,6 @@ If some of my current tasks are done, I 'd love to write a IzPack plugin for mav
 
 Willing to help me? I suggest collaborating on http://maven-plugins.sourceforge.net (ASF license then...)</body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=2840182</url>
 <msg_id>2840182</msg_id>
@@ -2080,6 +2126,7 @@ For example: is anyone working on a IzPack plugin for maven?</body>
 <is_deleted>No</is_deleted>
 <body>Right, the tag editions are planned for 0.4 (probably for the end of november). We also planned to provide advanced auto-retagging features using CDDB and custom properties. </body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=2814348</url>
 <msg_id>2814348</msg_id>
@@ -2094,7 +2141,6 @@ For example: is anyone working on a IzPack plugin for maven?</body>
 <body>Hi, if you mean changing the tracks' id3 tags when talking about &#34;track attributes&#34;, then this feature is not implemented so far. I think it's planned to be covered in the next release (0.4).
 Bertrand, can you give us information about the current status of that feature? I'd also be interested in it :)</body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=2813064</url>
 <msg_id>2813064</msg_id>
@@ -13610,15 +13656,15 @@ use user-selected look and feel.</details>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1424176</url>
 <id>1424176</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>605762</category_id>
 <group_id>566446</group_id>
 <resolution_id>100</resolution_id>
 <submitter>bflorat</submitter>
 <assignee>bflorat</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1139078041</submit_date>
-<close_date>0</close_date>
+<close_date>1139343917</close_date>
 <priority>4</priority>
 <summary>Double thumbnails creation</summary>
 <details>When creating covers in catalog view and using criteria
@@ -13634,6 +13680,20 @@ times.</details>
 <field_name>artifact_group_id</field_name>
 <old_value>537602</old_value>
 <date>1139078082</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3444357</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1139343917</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3444358</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1139343917</date>
 <updator>bflorat</updator>
 </history_entry>
 </history_entries>
@@ -13721,15 +13781,15 @@ was quite big when I closed Jajuk, so that probably explains it.</details>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1424208</url>
 <id>1424208</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>605763</category_id>
 <group_id>566446</group_id>
 <resolution_id>100</resolution_id>
 <submitter>mybytes</submitter>
 <assignee>bflorat</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1139081951</submit_date>
-<close_date>0</close_date>
+<close_date>1139343917</close_date>
 <priority>3</priority>
 <summary>NullPointerException CoverView.update</summary>
 <details>2006/02/04 20:20:09 [ERROR] null / null  [Thread-36]
@@ -13784,20 +13844,34 @@ Fixed in upcoming 1.1.2.</details>
 <date>1139142947</date>
 <updator>bflorat</updator>
 </history_entry>
+<history_entry>
+<id>3444355</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1139343917</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3444356</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1139343917</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1424209</url>
 <id>1424209</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>605762</category_id>
 <group_id>566446</group_id>
 <resolution_id>100</resolution_id>
 <submitter>mybytes</submitter>
 <assignee>bflorat</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1139082085</submit_date>
-<close_date>0</close_date>
+<close_date>1139343917</close_date>
 <priority>3</priority>
 <summary>Selections stays after items disappeared</summary>
 <details>- select a style node in the logical tree
@@ -13849,20 +13923,34 @@ Fixed in 1.1.2 when change is done from property wizard</details>
 <date>1139141922</date>
 <updator>bflorat</updator>
 </history_entry>
+<history_entry>
+<id>3444353</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1139343917</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3444354</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1139343917</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1426113</url>
 <id>1426113</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>694965</category_id>
 <group_id>566446</group_id>
 <resolution_id>100</resolution_id>
 <submitter>bflorat</submitter>
 <assignee>bflorat</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1139320656</submit_date>
-<close_date>0</close_date>
+<close_date>1139343917</close_date>
 <priority>5</priority>
 <summary>Desktop menu creation under suse</summary>
 <details>Desktop menu item is not created (should be in
@@ -13872,24 +13960,148 @@ Audio/Video/ Audio player). Fixed in the upcoming 1.1.2.</details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>3444351</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1139343917</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3444352</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1139343917</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1426431</url>
 <id>1426431</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>605762</category_id>
 <group_id>566446</group_id>
 <resolution_id>100</resolution_id>
 <submitter>bflorat</submitter>
 <assignee>bflorat</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1139337499</submit_date>
-<close_date>0</close_date>
+<close_date>1139343916</close_date>
 <priority>5</priority>
 <summary>Looping format error message in properties wizzard</summary>
 <details>Looping format error message in properties wizzard for
 double or integer fields + leave using enter key</details>
+<followups>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+<history_entry>
+<id>3444349</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1139343916</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3444350</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1139343916</date>
+<updator>bflorat</updator>
+</history_entry>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1427917</url>
+<id>1427917</id>
+<status_id>1</status_id>
+<category_id>605763</category_id>
+<group_id>566446</group_id>
+<resolution_id>100</resolution_id>
+<submitter>bflorat</submitter>
+<assignee>bflorat</assignee>
+<closer>nobody</closer>
+<submit_date>1139434653</submit_date>
+<close_date>0</close_date>
+<priority>8</priority>
+<summary>UI freeze if line occupied (linux only)</summary>
+<details>(Linux only)
+If audio line is occupied at startup, UI freezes during
+initial startup.</details>
+<followups>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1428633</url>
+<id>1428633</id>
+<status_id>1</status_id>
+<category_id>605763</category_id>
+<group_id>566446</group_id>
+<resolution_id>100</resolution_id>
+<submitter>bflorat</submitter>
+<assignee>bflorat</assignee>
+<closer>nobody</closer>
+<submit_date>1139519373</submit_date>
+<close_date>0</close_date>
+<priority>2</priority>
+<summary>Wrong default playlist save as name</summary>
+<details>When making a save as on special playlists execpt new
+playlist, first track name is use instead of a generic
+name like &#34;bookmarks.m3u&#34;. </details>
+<followups>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1428635</url>
+<id>1428635</id>
+<status_id>1</status_id>
+<category_id>605762</category_id>
+<group_id>566446</group_id>
+<resolution_id>100</resolution_id>
+<submitter>bflorat</submitter>
+<assignee>bartcr</assignee>
+<closer>nobody</closer>
+<submit_date>1139519443</submit_date>
+<close_date>0</close_date>
+<priority>6</priority>
+<summary>New playlist not refreshed</summary>
+<details>When making a new playlist using the new playlist
+special playlist + save as, it is not displayed in the
+playlist repository.</details>
+<followups>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1428695</url>
+<id>1428695</id>
+<status_id>1</status_id>
+<category_id>605762</category_id>
+<group_id>537602</group_id>
+<resolution_id>100</resolution_id>
+<submitter>bflorat</submitter>
+<assignee>bflorat</assignee>
+<closer>nobody</closer>
+<submit_date>1139523656</submit_date>
+<close_date>0</close_date>
+<priority>5</priority>
+<summary>Random playlist repository refresh errors</summary>
+<details>In some cases (like a device creation), playlist
+repository view can wrongly refreshed due to
+concurrency between events</details>
 <followups>
 </followups>
 <attachments>

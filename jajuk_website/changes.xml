@@ -5,6 +5,13 @@
     <author email='bflorat@users.sourceforge.net'>Bertrand Florat</author>
   </properties>
   <body>
+    <release version='1.1.3' date='2006-02-10' description='Fixes'>
+    	<action dev='bflorat' type='add'>Refresh time can now be set in First time wizard</action> 
+    	<action dev='bflorat' type='fix' issue='1427917'>UI freeze if line occupied (linux only) [9]</action>
+    	<action dev='bflorat' type='fix' issue='1428635'>New playlists not refreshed [6]</action>
+    	<action dev='bflorat' type='fix' issue='1428695'>Random playlist repository refresh errors [5]</action>
+    	<action dev='bflorat' type='fix' issue='1428633'>Wrong default playlist save as name [2]</action>
+    </release>
     <release version='1.1.2' date='2006-02-07' description='Fixes'>
     	<action dev='bflorat' type='add'>ID3 2.4 tags support</action> 
     	<action dev='bflorat' type='fix' issue='1424176'>Double thumbnails creation [7]</action>

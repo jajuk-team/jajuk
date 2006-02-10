@@ -61,8 +61,8 @@ o- Test it a minima under several OS
 *Web site*
 o- Update and set date to release in changes.xml
 o- Change download.html file for file names
-- Backup SF data (php file)
 - Generate maven site (make_jajuk)
+- Backup SF data (php file)
 - Upload maven site (make_send)
 - Commit all changes in jajuk_website project
 - Upload java web start distribution (make_jajuk jws default)
