@@ -5,7 +5,7 @@
         <vendor>Entagged Team</vendor>
     </information>
     <resources>
-        <jar href="entagged-audioformats-0.14.jar"/>
+        <jar href="entagged-audioformats-0.15.jar"/>
     </resources>
     <security> 
            <all-permissions/>

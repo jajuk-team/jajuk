@@ -480,7 +480,7 @@ class ConfirmDialog implements Runnable{
      * @see java.lang.Runnable#run()
      */
     public void run() {
-        iResu = JOptionPane.showConfirmDialog (null, sText,sTitle, iType);
+        iResu = JOptionPane.showConfirmDialog (null,sText,sTitle,iType);
     }
 
     /**

@@ -301,8 +301,9 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
      * Called at parsing end
      */
     public void endDocument() {
+        long l = (System.currentTimeMillis() - lTime);
         Log.debug("Collection file parsing done : " +  //$NON-NLS-1$
-            (System.currentTimeMillis() - lTime)/1024 + " s"); //$NON-NLS-1$ //$NON-NLS-2$
+             ((l < 1000)?l+" ms":(l/1000)+" s")); //$NON-NLS-1$ //$NON-NLS-2$
     }
     
     /**

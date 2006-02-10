@@ -242,6 +242,10 @@ public interface ITechnicalStrings {
     public static final String FILE_IMAGE_CACHE = FILE_JAJUK_DIR +"/cache"; 
     public static final String FILE_THUMBS = FILE_JAJUK_DIR +"/thumbs";
     public static final String FILE_THUMB_NO_COVER = "nocover.jpg";
+    public static final String FILE_DEFAULT_BESTOF_PLAYLIST = "bestof";
+    public static final String FILE_DEFAULT_NOVELTIES_PLAYLIST = "novelties";
+    public static final String FILE_DEFAULT_BOOKMARKS_PLAYLIST = "bookmarks";
+    public static final String FILE_DEFAULT_QUEUE_PLAYLIST = "queue";
     //Command line options
     public static final String CLI_NOTASKBAR="notaskbar"; //if selected, no jajuk window at startup, only tray 
     public static final String CLI_IDE = "ide"; //Tells jajuk it is inside the IDE 

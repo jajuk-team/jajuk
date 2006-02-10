@@ -1,8 +1,10 @@
 [Desktop Entry]
-Type=Application
+X-SuSE-translate=true
 Name=Jajuk
+Comment=Jajuk Advanced Jukebox
 Exec=jajuk
-GenericName=Jajuk Advanced Jukebox
 Icon=/usr/share/pixmaps/jajuk-logo.png
-MimeType=audio/x-mp3;audio/x-wav;application/x-ogg;
-Categories=X-SuSE-Core-Multimedia
+Terminal=false
+Type=Application
+Encoding=UTF-8
+Categories=Application;AudioVideo;Audio;Player

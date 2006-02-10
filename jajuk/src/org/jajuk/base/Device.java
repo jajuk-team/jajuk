@@ -80,6 +80,8 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
     long lVolume = 0;
     /**date last refresh*/
     long lDateLastRefresh;
+    /**Refresh message*/
+    private String sFinalMessage = ""; 
     
     /**
      * Device constructor
@@ -169,7 +171,22 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
      *
      */
     private void manualRefresh(){
-        refreshCommand(true);
+        Object[] possibleValues = { Messages.getString("PhysicalTreeView.60"),//fast
+                                    Messages.getString("PhysicalTreeView.61"),//deep
+                                    Messages.getString("Cancel")};//cancel
+        int i = JOptionPane.showOptionDialog(null,
+                                   Messages.getString("PhysicalTreeView.59"),
+                                   Messages.getString("Option"),
+                                   JOptionPane.DEFAULT_OPTION,
+                                   JOptionPane.QUESTION_MESSAGE,
+                                   null,
+                                   possibleValues,
+                                   possibleValues[0]);
+        if (i == 2){ //Cancel
+            return;
+        }
+        refreshCommand((i==1));
+        InformationJPanel.getInstance().setMessage(sFinalMessage,InformationJPanel.INFORMATIVE); //$NON-NLS-1$
         //notify views to refresh
         ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH));
         //cleanup logical items
@@ -282,10 +299,8 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
             if (iNbCorruptedFiles > 0){
                 sbOut.append(" - ").append(iNbCorruptedFiles).append(Messages.getString("Device.43")); //$NON-NLS-1$ //$NON-NLS-2$
             }
-            if (bDeepScan){
-                InformationJPanel.getInstance().setMessage(sbOut.toString(),InformationJPanel.INFORMATIVE); //$NON-NLS-1$
-            }
-            Log.debug(sbOut.toString()); 
+            sFinalMessage = sbOut.toString();
+            Log.debug(sFinalMessage); 
             if (iNbNewFiles > 0 ){
                 return true;
             }

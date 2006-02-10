@@ -119,7 +119,7 @@ public class Player implements ITechnicalStrings{
                     Log.debug("Line occupied, waiting"); //$NON-NLS-1$
                     InformationJPanel.getInstance().setMessage(Messages.getString("Player.0"),InformationJPanel.WARNING); //$NON-NLS-1$
                     try {
-                        Thread.sleep(WAIT_AFTER_ERROR); //wait for the line
+                        FIFO.getInstance().wait(WAIT_AFTER_ERROR); //wait for the line
                     } catch (InterruptedException e1) {
                         e1.printStackTrace();
                     }

@@ -635,8 +635,8 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
                 }
                 else{  //special playlist, same behavior than a save as
                     plfi.getPlaylistFile().saveAs();
-                    ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH)); //notify playlist repository to refresh
                 }
+                ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH)); //notify playlist repository to refresh
             }
             else if (ae.getSource() == jbClear){
                 plfi.getPlaylistFile().clear();

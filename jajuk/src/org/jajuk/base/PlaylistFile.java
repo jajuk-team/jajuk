@@ -535,7 +535,10 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 						bw.flush();
 						bw.close();
                         setHashcode(computesHashcode());
-                        PlaylistManager.getInstance().refreshPlaylist(this);
+                        //Associated logical playlist is null for special playlists 
+                        if (PlaylistManager.getInstance().getPlayList(this) != null){
+                            PlaylistManager.getInstance().refreshPlaylist(this);
+                        }
                         ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH));  //refresh repository list (mandatory for logical playlist collapse/merge)
 					} catch (IOException e1) {
 						throw new JajukException("028",getName(),e1); //$NON-NLS-1$
@@ -712,7 +715,25 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
         alFiles = getFiles();
         if (alFiles.size() > 0){
             File file = alFiles.get(0);
-            sPlaylist = file.getDirectory().getAbsolutePath()+ java.io.File.separatorChar + file.getTrack().getHumanValue(XML_ALBUM);
+            if (getType() == PlaylistFileItem.PLAYLIST_TYPE_BESTOF){
+                sPlaylist = file.getDevice().getUrl()+ 
+                    java.io.File.separatorChar +FILE_DEFAULT_BESTOF_PLAYLIST;
+            }
+            else if (getType() == PlaylistFileItem.PLAYLIST_TYPE_BOOKMARK){
+                sPlaylist = file.getDevice().getUrl()+ 
+                    java.io.File.separatorChar +FILE_DEFAULT_BOOKMARKS_PLAYLIST;
+            }
+            else if (getType() == PlaylistFileItem.PLAYLIST_TYPE_NOVELTIES){
+                sPlaylist = file.getDevice().getUrl()+ 
+                    java.io.File.separatorChar +FILE_DEFAULT_BOOKMARKS_PLAYLIST;
+            }
+            else if (getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE){
+                sPlaylist = file.getDevice().getUrl()+ 
+                    java.io.File.separatorChar +FILE_DEFAULT_QUEUE_PLAYLIST;
+            }
+            else{
+                sPlaylist = file.getDirectory().getAbsolutePath()+ java.io.File.separatorChar + file.getTrack().getHumanValue(XML_ALBUM);
+            }
         }
         else{
             return;

@@ -401,7 +401,11 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
                                 }
                                 catch (ParseException e) {
                                     Log.error("137",meta.getName(),null); //$NON-NLS-1$
+                                    //disable field to avoid that user typing enter in error dialog 
+                                    //generate a new key event and creates a looping error scheme
+                                    jtfValue.setEnabled(false);
                                     Messages.showErrorMessage("137",meta.getName()); //$NON-NLS-1$
+                                    jtfValue.setEnabled(true);
                                     hmPropertyToChange.remove(meta);
                                     return;
                                 }

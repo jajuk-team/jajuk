@@ -62,6 +62,9 @@ public class FirstTimeWizard extends JDialog implements ITechnicalStrings,Action
     JTextField jtfFileSelected;
     JButton jbFileSelection;
     JCheckBox jcbAutoCover;
+    JLabel jlRefreshTime;
+    JTextField jtfRefreshTime;
+    JLabel jlMins;
     JCheckBox jcbHelp;
     JPanel jpButtons;
     JButton jbOk;
@@ -98,9 +101,20 @@ public class FirstTimeWizard extends JDialog implements ITechnicalStrings,Action
             jcbAutoCover.setSelected(true);
         }
         else{
-            jcbAutoCover.setVisible(false);
+            jcbAutoCover.setEnabled(false);
         }
         jcbHelp = new JCheckBox(Messages.getString("FirstTimeWizard.4")); //$NON-NLS-1$
+        //Refresh time
+        jlRefreshTime = new JLabel(Messages.getString("DeviceWizard.53"));//$NON-NLS-1$
+        jtfRefreshTime = new JTextField("5");//5 mins by default //$NON-NLS-1$
+        jlMins = new JLabel(Messages.getString("DeviceWizard.54"));//$NON-NLS-1$
+        JPanel jpRefresh = new JPanel();
+        double sizeRefresh[][] = { { TableLayout.PREFERRED,iX_SEPARATOR,100,iX_SEPARATOR,TableLayout.PREFERRED}, 
+                {20}};
+        jpRefresh.setLayout(new TableLayout(sizeRefresh));
+        jpRefresh.add(jlRefreshTime,"0,0"); //$NON-NLS-1$
+        jpRefresh.add(jtfRefreshTime,"2,0"); //$NON-NLS-1$
+        jpRefresh.add(jlMins,"4,0"); //$NON-NLS-1$
         //buttons
         jpButtons = new JPanel();
         jpButtons.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -112,7 +126,7 @@ public class FirstTimeWizard extends JDialog implements ITechnicalStrings,Action
         jpButtons.add(jbOk);
         jpButtons.add(jbCancel);
         double sizeRight[][] = { { 0.99,iX_SEPARATOR}, 
-                {iY_SEPARATOR,60, iY_SEPARATOR, 30,iY_SEPARATOR, 20, iY_SEPARATOR, 40 ,iY_SEPARATOR,20, iY_SEPARATOR, 40 }};
+                {iY_SEPARATOR,60, iY_SEPARATOR, 30,iY_SEPARATOR,20,4*iY_SEPARATOR,40,iY_SEPARATOR,40,iY_SEPARATOR,40,iY_SEPARATOR,40 }};
         
         FlowLayout flSelection = new FlowLayout(FlowLayout.LEFT);
         JPanel jpFileSelection = new JPanel();
@@ -125,9 +139,10 @@ public class FirstTimeWizard extends JDialog implements ITechnicalStrings,Action
         jpRightPanel.add(jlWelcome,"0,1"); //$NON-NLS-1$
         jpRightPanel.add(jpFileSelection,"0,3"); //$NON-NLS-1$
         jpRightPanel.add(jtfFileSelected,"0,5"); //$NON-NLS-1$
-        jpRightPanel.add(jcbAutoCover,"0,7"); //$NON-NLS-1$
-        jpRightPanel.add(jcbHelp,"0,9"); //$NON-NLS-1$
-        jpRightPanel.add(jpButtons,"0,11"); //$NON-NLS-1$
+        jpRightPanel.add(jpRefresh,"0,7"); //$NON-NLS-1$
+        jpRightPanel.add(jcbAutoCover,"0,9"); //$NON-NLS-1$
+        jpRightPanel.add(jcbHelp,"0,11"); //$NON-NLS-1$
+        jpRightPanel.add(jpButtons,"0,13"); //$NON-NLS-1$
         double size[][] = { { 20,TableLayout.PREFERRED,30,TableLayout.PREFERRED}, 
                 {0.99 }};
         jpMain = (JPanel)getContentPane();
@@ -184,14 +199,26 @@ public class FirstTimeWizard extends JDialog implements ITechnicalStrings,Action
                 }
             }
             //Set auto cover property
-            ConfigurationManager.setProperty(
+            if (jcbAutoCover.isEnabled()){
+                ConfigurationManager.setProperty(
                 CONF_COVERS_AUTO_COVER,Boolean.toString(jcbAutoCover.isSelected()));
+            }
             //Create a directory device
             Device device = DeviceManager.getInstance().registerDevice(fDir.getName(),0,fDir.getAbsolutePath());
             device.setProperty(XML_DEVICE_MOUNT_POINT,fDir.getAbsolutePath());
             device.setProperty(XML_DEVICE_AUTO_MOUNT,true);
-            //as we don't know type of device, no auto-refresh (can cause network bandwith use for network drive)
-            device.setProperty(XML_DEVICE_AUTO_REFRESH,0d);
+            //Set refresh time
+            double dRefreshTime = 5d;
+            try {
+                dRefreshTime = Double.parseDouble(jtfRefreshTime.getText());
+                if (dRefreshTime < 0){
+                    dRefreshTime = 0;
+                }
+            }
+            catch (NumberFormatException e1) {
+                dRefreshTime = 0;
+            }
+            device.setProperty(XML_DEVICE_AUTO_REFRESH,dRefreshTime);
             try{
                 device.refresh(true);
             }

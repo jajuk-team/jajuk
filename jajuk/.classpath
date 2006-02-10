@@ -19,7 +19,6 @@
 	<classpathentry kind="lib" path="lib/jspeex-0.9.3.jar"/>
 	<classpathentry kind="lib" path="lib/tritonus_share-release.jar"/>
 	<classpathentry kind="lib" path="lib/basicplayer-2.3.jar"/>
-	<classpathentry kind="lib" path="lib/entagged-audioformats-0.14.jar"/>
 	<classpathentry kind="lib" path="lib/mp3spi-1.9.4.jar"/>
 	<classpathentry kind="lib" path="lib/commons-httpclient-3.0.jar"/>
 	<classpathentry kind="lib" path="lib/jfreechart_reduced-0.9.15.jar"/>
@@ -31,5 +30,6 @@
 	<classpathentry kind="lib" path="lib/jdic-0.9.1.jar"/>
 	<classpathentry kind="lib" path="lib/tablelayout-20050920.jar"/>
 	<classpathentry kind="lib" path="lib/commons-collections-3.1.jar"/>
+	<classpathentry kind="lib" path="lib/entagged-audioformats-0.15.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
