@@ -83,7 +83,9 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 	/**List of playlistfile item*/
 	ArrayList<PlaylistFileItem> alPlaylistFileItems = new ArrayList(10);
 	
-	
+	/**Concorency flag*/
+    boolean bReleased = true;
+    
 	JPanel jpRoot;
 	JPopupMenu jpmenu;
 	JMenuItem jmiPlay;
@@ -215,7 +217,7 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 	 * Set current playlist file item
 	 * @param plfi
 	 */
-	void selectPlaylistFileItem(PlaylistFileItem plfi){
+	synchronized void selectPlaylistFileItem(PlaylistFileItem plfi){
 		//remove item border
 		if (plfiSelected!=null){
 			plfiSelected.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
@@ -249,26 +251,29 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.Observer#update(java.lang.String)
 	 */
-	public synchronized void update(final Event event) {
+	public void update(final Event event) {
 		String subject = event.getSubject();
 		if ( subject.equals(EVENT_DEVICE_MOUNT) 
                 || subject.equals(EVENT_DEVICE_UNMOUNT) 
                 || subject.equals(EVENT_DEVICE_REFRESH) ) {
-			SwingWorker sw = new SwingWorker() {
-				public Object  construct(){
-				    if (jpRoot.getComponentCount() > 0){
-						jpRoot.removeAll();
-				    }
-				    populatePlaylists();
+            
+            SwingWorker sw = new SwingWorker() {
+                public Object  construct(){
+                    bReleased = false; //take "MUTEX"
+                    if (jpRoot.getComponentCount() > 0){
+                        jpRoot.removeAll();
+                    }
+                    populatePlaylists();
                     //try to keep back previous selected playlist if it exists
                     if (plfiSelected == null || !alPlaylistFileItems.contains(plfiSelected)){
                         plfiSelected = plfiQueue;
                     }
                     return null;
-				}
-				public void finished() {
+                }
+                public void finished() {
 					jpRoot.add(Box.createVerticalStrut(500));  //make sure specials playlists are packed to the top
-				    if ( PlaylistFileManager.getInstance().getItem(plfiSelected.getPlaylistFile().getId()) != null){
+				    if ( plfiSelected.getPlaylistFile().getType() != PlaylistFileItem.PLAYLIST_TYPE_NORMAL ||
+                            PlaylistFileManager.getInstance().getItem(plfiSelected.getPlaylistFile().getId()) != null){
 				        selectPlaylistFileItem(plfiSelected);    
                     }
                     else{ //means previously selected playlist has changed, select queue
@@ -276,16 +281,28 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
                     }
                     AbstractPlaylistRepositoryView.this.revalidate();
                     AbstractPlaylistRepositoryView.this.repaint();
+                    bReleased = true;
                }
 			};
-			sw.start();
-		}
+			int i = 0;
+            while (!bReleased && i < 100){ //wait until ressource is released
+			    //we can't just synchronize because action is done in 2 methods of swing worker
+                try {
+                    Thread.sleep(100);
+                    i++;
+                }
+                catch (InterruptedException e) {
+                    Log.error(e);
+                }         
+            }
+            sw.start();
+      }
 	}
 	
 	/**
 	 * Create special playlists from collection, this is called by both logicial and physical populate methods
 	 */
-	 void populatePlaylists(){
+	 synchronized void populatePlaylists(){
 		alPlaylistFileItems.clear();
 		//special playlists
 		JPanel jpSpecials = new JPanel();
