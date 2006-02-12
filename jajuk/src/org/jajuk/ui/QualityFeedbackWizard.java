@@ -22,7 +22,9 @@ package org.jajuk.ui;
 
 import info.clearthought.layout.TableLayout;
 
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -42,8 +44,8 @@ import javax.swing.JTextField;
 
 import org.jajuk.Main;
 import org.jajuk.i18n.Messages;
-import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 import org.jdesktop.jdic.desktop.Desktop;
 import org.jdesktop.jdic.desktop.Message;
@@ -58,6 +60,7 @@ import org.jdesktop.jdic.desktop.Message;
  */
 public class QualityFeedbackWizard extends JDialog implements KeyListener,ActionListener,ITechnicalStrings{
     JPanel jpMain;
+    JTextArea jtaNotice;
     JLabel jlFrom;
     JTextField jtfFrom;
     JLabel jlDesc;
@@ -72,6 +75,14 @@ public class QualityFeedbackWizard extends JDialog implements KeyListener,Action
     public QualityFeedbackWizard() {
         super(Main.getWindow(),Messages.getString("JajukJMenuBar.19")); //$NON-NLS-1$
         getContentPane().setPreferredSize(new Dimension(800,600));
+        //Notice
+        jtaNotice = new JTextArea(Messages.getString("QualityFeedbackWizard.7")); //$NON-NLS-1$
+        jtaNotice.setLineWrap(true);
+        jtaNotice.setWrapStyleWord(true);
+        jtaNotice.setEditable(false);
+        jtaNotice.setOpaque(true);
+        jtaNotice.setBackground(Color.ORANGE);
+        jtaNotice.setFont(new Font("Dialog",Font.BOLD,12));
         //From
         jlFrom = new JLabel(Messages.getString("QualityFeedbackWizard.1")); //$NON-NLS-1$
         jlFrom.setToolTipText(Messages.getString("QualityFeedbackWizard.2")); //$NON-NLS-1$
@@ -95,15 +106,16 @@ public class QualityFeedbackWizard extends JDialog implements KeyListener,Action
         int iYSeparator = 20;
         double[][] dSize = {
                 {iXSeparator,0.3,iXSeparator,0.7,iXSeparator},
-                {iYSeparator,20,iYSeparator,20,iYSeparator,0.99,3*iYSeparator,20,iYSeparator} };
+                {iYSeparator,TableLayout.PREFERRED,iYSeparator,20,iYSeparator,20,iYSeparator,0.99,iYSeparator,20,iYSeparator} };
         jpMain.setLayout(new TableLayout(dSize));
-        jpMain.add(jlFrom,"1,1"); //$NON-NLS-1$
-        jpMain.add(jtfFrom,"3,1"); //$NON-NLS-1$
-        jpMain.add(jlDesc,"1,3"); //$NON-NLS-1$
-        jpMain.add(jtfDesc,"3,3"); //$NON-NLS-1$
-        jpMain.add(jlDetail,"1,5"); //$NON-NLS-1$
-        jpMain.add(new JScrollPane(jtaDetail),"3,5"); //$NON-NLS-1$
-        jpMain.add(okp,"3,7"); //$NON-NLS-1$
+        jpMain.add(jtaNotice,"3,1"); //$NON-NLS-1$
+        jpMain.add(jlFrom,"1,3"); //$NON-NLS-1$
+        jpMain.add(jtfFrom,"3,3"); //$NON-NLS-1$
+        jpMain.add(jlDesc,"1,5"); //$NON-NLS-1$
+        jpMain.add(jtfDesc,"3,5"); //$NON-NLS-1$
+        jpMain.add(jlDetail,"1,7"); //$NON-NLS-1$
+        jpMain.add(new JScrollPane(jtaDetail),"3,7"); //$NON-NLS-1$
+        jpMain.add(okp,"3,9"); //$NON-NLS-1$
         getContentPane().add(jpMain);
         addWindowListener(new WindowAdapter() {
             public void windowActivated(WindowEvent e) {
@@ -128,8 +140,8 @@ public class QualityFeedbackWizard extends JDialog implements KeyListener,Action
             sBody += "Subject: "+jtfDesc.getText()+'\n'; //$NON-NLS-1$
             sBody += "Details: "+jtaDetail.getText()+'\n'; //$NON-NLS-1$
             sBody += "Version: "+JAJUK_VERSION+'\n'; //$NON-NLS-1$
-            sBody += System.getProperties().toString()+'\n';
-            sBody += ConfigurationManager.getProperties().toString()+'\n';
+            sBody += Util.getAnonymizedSystemProperties().toString()+'\n';
+            sBody += Util.getAnonymizedJajukProperties().toString()+'\n';
             Iterator it = Log.getSpool();
             while (it.hasNext()){
                 sBody += it.next().toString() +'\n';
@@ -146,7 +158,6 @@ public class QualityFeedbackWizard extends JDialog implements KeyListener,Action
                     }
                 }
             }.start();
-            
             dispose();
         }
         else if (ae.getSource().equals(this.okp.getCancelButton())){
