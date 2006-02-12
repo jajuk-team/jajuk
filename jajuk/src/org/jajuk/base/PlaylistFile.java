@@ -107,7 +107,9 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 	 * toString method
 	 */
 	public String toString() {
-		return "Playlist file[ID="+sId+" Name=" + getName() + " Hashcode="+getStringValue(XML_HASHCODE)+" Dir="+dParentDirectory.getId()+"]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$
+		return "Playlist file[ID="+sId+" Name={{" + getName() + "}} Hashcode="+
+        getStringValue(XML_HASHCODE)+
+        " Dir="+dParentDirectory.getId()+"]"; 
 	}
 	
 	/**

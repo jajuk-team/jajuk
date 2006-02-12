@@ -78,7 +78,7 @@ public class File extends PropertyAdapter implements Comparable,ITechnicalString
 	 * toString method
 	 */
 	public String toString() {
-		return "File[ID="+sId+" Name=" + sName + " Dir="+directory+" Size="+lSize+" Quality="+lQuality+"]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$//$NON-NLS-6$//$NON-NLS-7$
+		return "File[ID="+sId+" Name={{" + sName + "}} Dir="+directory+" Size="+lSize+" Quality="+lQuality+"]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$//$NON-NLS-6$//$NON-NLS-7$
 	}
 	
 	/**

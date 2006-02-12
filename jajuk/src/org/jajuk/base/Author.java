@@ -62,7 +62,7 @@ public class Author extends PropertyAdapter implements Comparable{
 	 * toString method
 	 */
 	public String toString() {
-		return "Author[ID="+sId+" Name=" + sName + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		return "Author[ID="+sId+" Name={{" + sName + "}}]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 	
 	/**

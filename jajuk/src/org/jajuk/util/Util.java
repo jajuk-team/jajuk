@@ -54,6 +54,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Properties;
 import java.util.StringTokenizer;
 
 import javax.sound.sampled.AudioSystem;
@@ -1264,6 +1265,34 @@ public class Util implements ITechnicalStrings {
         float fFree = (float)Runtime.getRuntime().freeMemory();
         float fLevel = (fTotal-fFree)/fTotal;
         return  fLevel >= NEED_FULL_GC_LEVEL;
+    }
+    
+    
+    /**
+     * @return Anonymized System properties (for log or quality agent)
+     */
+    public static Properties getAnonymizedSystemProperties(){
+        Properties properties = (Properties)System.getProperties().clone();
+        //We remove sensible data from logs
+        properties.remove("java.library.path"); //can contain external program paths
+        properties.remove("java.class.path"); //can contain external program paths
+        properties.remove("user.name"); //user name is private
+        properties.remove("java.ext.dirs");//can contain external program paths
+        properties.remove("sun.boot.class.path");//can contain external program paths
+        return properties;
+    }
+    
+    /**
+     * @return Anonymized Jajuk properties (for log or quality agent)
+     */
+    public static Properties getAnonymizedJajukProperties(){
+        Properties properties = (Properties)ConfigurationManager.getProperties().clone();
+        //We remove sensible data from logs
+        properties.remove("jajuk.network.proxy_login");
+        properties.remove("jajuk.network.proxy_port");
+        properties.remove("jajuk.network.proxy_hostname");
+        properties.remove("jajuk.options.p2p.password");
+        return properties;
     }
  
 }

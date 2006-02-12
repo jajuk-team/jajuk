@@ -59,7 +59,7 @@ public class Album extends PropertyAdapter implements Comparable{
 	 * toString method
 	 */
 	public String toString() {
-		return "Album[ID="+getId()+" Name=" + getName() +"]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$//$NON-NLS-4$
+		return "Album[ID="+getId()+" Name={{" + getName() +"}}]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$//$NON-NLS-4$
 	}
     	
 	/**

@@ -66,7 +66,7 @@ public class Style extends PropertyAdapter implements Comparable{
 	 * toString method
 	 */
 	public String toString() {
-		return "Style[ID=" + sId + " Name=" + getName() + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		return "Style[ID=" + sId + " Name={{" + getName() + "}}]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 		
 	/**

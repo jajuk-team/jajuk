@@ -292,7 +292,18 @@ public class Log  implements ITechnicalStrings{
         if (alSpool.size() == FEEDBACK_LINES ){ //we have tro make some room
             alSpool.remove(0);
         }
-        alSpool.add(sMessage);
+        try{
+            //anonymize standard labels (with {{xxx}})
+            sMessage = sMessage.replaceAll("\\{\\{.*\\}\\}","***");
+            //anonymize Basic Player logs
+            if (sMessage.indexOf("Player state changed: OPENING") != -1){
+                sMessage = sMessage.substring(0,40);
+            }
+            alSpool.add(sMessage);
+        }
+        catch(Exception e){ //make sure to avoid looping tracing
+            System.out.print("Spooling error:"+e);
+        }
     }
        
     /**

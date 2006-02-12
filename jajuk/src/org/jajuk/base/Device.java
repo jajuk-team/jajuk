@@ -110,7 +110,9 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
      * toString method
      */
     public String toString() {
-        return "Device[ID=" + sId + " Name=" + sName + " Type=" + DeviceManager.getInstance().getDeviceType(lDeviceType) + " URL=" + sUrl+ " Mount point="+sMountPoint + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$ //$NON-NLS-6$
+        return "Device[ID=" + sId + " Name=" + sName + " Type=" + 
+        DeviceManager.getInstance().getDeviceType(lDeviceType) +
+        " URL=" + sUrl+ " Mount point="+sMountPoint + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$ //$NON-NLS-6$
     }
     
     /**

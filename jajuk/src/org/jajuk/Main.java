@@ -240,10 +240,10 @@ public class Main implements ITechnicalStrings {
             upgradeStep1();
             
             //Display user system configuration
-            Log.debug(System.getProperties().toString());
+            Log.debug(Util.getAnonymizedSystemProperties().toString());
             
             //Display user Jajuk configuration
-            Log.debug(ConfigurationManager.getProperties().toString());
+            Log.debug(Util.getAnonymizedJajukProperties().toString());
             
             //check for another session (needs setLocal)
             checkOtherSession();
