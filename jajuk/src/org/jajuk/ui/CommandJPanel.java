@@ -362,7 +362,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 	 *  @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
 	 */
 	public void stateChanged(ChangeEvent e) {
-		if ( e.getSource() == jsVolume && !jsVolume.getValueIsAdjusting() ){
+		if ( e.getSource() == jsVolume ){
             if (System.currentTimeMillis()-lDateLastAdjust > 200){
                 setVolume((float)jsVolume.getValue()/100);
                 lDateLastAdjust = System.currentTimeMillis();
