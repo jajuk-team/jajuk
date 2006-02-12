@@ -617,9 +617,11 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
             //take first track author as author
             jlAuthor = new JTextArea(track.getAuthor().getName2(),1,iRows);
             jlAuthor.setLineWrap(true);
+            jlAuthor.setWrapStyleWord(true);
             jlAuthor.setEditable(false);
             jlAlbum = new JTextArea(album.getName2(),1,iRows);
             jlAlbum.setLineWrap(true);
+            jlAlbum.setWrapStyleWord(true);
             jlAlbum.setEditable(false);
             jlAuthor.setFont(new Font("Dialog",Font.BOLD,12)); //$NON-NLS-1$
             jlAlbum.setFont(new Font("Dialog",Font.BOLD,12)); //$NON-NLS-1$
