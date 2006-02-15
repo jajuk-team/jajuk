@@ -495,8 +495,9 @@ public interface ITechnicalStrings {
     public static final String CONF_AUDIO_BUFFER_SIZE = "jajuk.audio_buffer_size"; //Audio buffer size in bytes
     public static final String CONF_WINDOW_POSITION = "jajuk.window_position"; //Window position and size
     public static final String CONF_PHYSICAL_TABLE_COLUMNS = "jajuk.ui.physical_table_columns"; //Physical table columns
+    public static final String CONF_PHYSICAL_TABLE_EDITION = "jajuk.ui.physical_table_edition"; //Physical table edition state
     public static final String CONF_LOGICAL_TABLE_COLUMNS = "jajuk.ui.logical_table_columns"; //Logical table columns
-    public static final String CONF_LOGICAL_TABLE_EDITION = "jajuk.ui.logical_table_edition"; //Logical table columns
+    public static final String CONF_LOGICAL_TABLE_EDITION = "jajuk.ui.logical_table_edition"; //Logical table edition state
     public static final String CONF_THUMBS_SIZE = "jajuk.ui.cover_catalog.thumbs_size"; //Catalog items size
     public static final String CONF_THUMBS_SHOW_WITHOUT_COVER = "jajuk.ui.cover_catalog.show_without_cover"; //Catalog items size
     public static final String CONF_THUMBS_SORTER = "jajuk.catalog.sorter"; //Catalog sorter
@@ -558,6 +559,7 @@ public interface ITechnicalStrings {
 	public static final String XML_PLAYLISTS = "playlists";
 	public static final String XML_ID = "id";
     public static final String XML_PLAY = "play";
+    public static final String XML_FILE_DATE = "date";
     public static final String XML_TRACK_NAME = "name";
 	public static final String XML_TRACK_ALBUM = "album";
 	public static final String XML_TRACK_STYLE = "style";
@@ -611,7 +613,7 @@ XML_TYPE,XML_URL,XML_DEVICE_AUTO_MOUNT,XML_DEVICE_AUTO_REFRESH,XML_EXPANDED,XML_
         XML_ALBUM,XML_AUTHOR,XML_STYLE,XML_TRACK_LENGTH,XML_TRACK_YEAR,XML_TRACK_RATE,XML_FILES,XML_TRACK_HITS,XML_TRACK_ADDED,
         XML_DIRECTORY_PARENT,XML_DEVICE,XML_DIRECTORY,XML_TRACK,XML_SIZE,XML_QUALITY,
         XML_HASHCODE,XML_PLAYLIST_FILES,XML_TRACK_COMMENT,XML_ANY,XML_TRACK_ORDER,
-        XML_DEVICE_SYNCHRO_MODE,XML_DEVICE_SYNCHRO_SOURCE   
+        XML_DEVICE_SYNCHRO_MODE,XML_DEVICE_SYNCHRO_SOURCE,XML_FILE_DATE   
     }; //contains variables names
 
     public static final String PROPERTY_SEPARATOR = "Property_";

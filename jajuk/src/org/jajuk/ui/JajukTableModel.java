@@ -67,6 +67,9 @@ public abstract class JajukTableModel extends DefaultTableModel  implements ITec
     /**Last value used for undo*/
     Object oLast = null;
     
+    /**Editable flag*/
+    boolean bEditable = false;
+    
     
     public JajukTableModel(int iNumberStandardRows){
         this.iNumberStandardRows = iNumberStandardRows;
@@ -98,11 +101,11 @@ public abstract class JajukTableModel extends DefaultTableModel  implements ITec
         oItems[iRow]=item;
     }
         
-    public synchronized Object getValueAt(int rowIndex, int columnIndex) {
+    public Object getValueAt(int rowIndex, int columnIndex) {
         return oValues[rowIndex][columnIndex];
     }
     
-    public  synchronized void setValueAt(Object oValue, int rowIndex, int columnIndex) {
+    public  void setValueAt(Object oValue, int rowIndex, int columnIndex) {
         oLast = oValues[rowIndex][columnIndex];
         oValues[rowIndex][columnIndex] = oValue;
         fireTableCellUpdated(rowIndex,columnIndex);
@@ -134,15 +137,15 @@ public abstract class JajukTableModel extends DefaultTableModel  implements ITec
         return (String)vId.get(column);
     }
     
-    public synchronized int getRowCount() {
+    public int getRowCount() {
         return iRowNum;
     }
     
-    public synchronized boolean isCellEditable(int rowIndex, int columnIndex) {
-        return bCellEditable[rowIndex][columnIndex];
+    public boolean isCellEditable(int rowIndex, int columnIndex) {
+        return bEditable && bCellEditable[rowIndex][columnIndex];
     }
     
-    public synchronized Class getColumnClass(int columnIndex) {
+    public Class getColumnClass(int columnIndex) {
         Object o = getValueAt(0,columnIndex);
         if ( o != null){
             return o.getClass();
@@ -157,6 +160,13 @@ public abstract class JajukTableModel extends DefaultTableModel  implements ITec
     * @param sPattern pattern*/
     public abstract  void populateModel(String sProperty,String sPattern); 
     
+    /** 
+     * Set this model editable state
+     *@param b whether model is editable or not
+     **/
+    public void setEditable(boolean b){
+        this.bEditable = b;
+    }
     
                 
 }

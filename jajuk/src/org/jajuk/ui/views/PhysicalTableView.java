@@ -157,7 +157,9 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
         int iSelectedCol = jtable.getSelectedColumn(); //selected column in view
         //Test click on play icon
         //launch track only if only first column is selected (fixes issue with Ctrl-A)
-        if (jtable.getSelectedColumnCount() == 1 && jtable.convertColumnIndexToModel(iSelectedCol) == 0 ){
+        if ( jtable.getSelectedColumnCount() == 1 && 
+                (jtable.convertColumnIndexToModel(iSelectedCol) == 0 ) //click on play icon
+                || (e.getClickCount() == 2 && !jtbEditable.isSelected())){ //double click on any column and edition state false
             int iSelectedRow = jtable.getSelectedRow(); //selected row in view
             File file = (File)model.getItemAt(jtable.convertRowIndexToModel(iSelectedRow));
             try{
@@ -243,6 +245,11 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
                 else if (e.getSource() == jmiFileAddFavorites){
                 	Bookmarks.getInstance().addFiles(alFilesToPlay);
                 }
+                 //editable state
+                else if (e.getSource() == jtbEditable){
+                    ConfigurationManager.setProperty(CONF_PHYSICAL_TABLE_EDITION,Boolean.toString(jtbEditable.isSelected()));
+                    model.setEditable(jtbEditable.isSelected());
+                }
                 //properties
                 else if ( e.getSource() == jmiProperties){
                     ArrayList alItems1 = new ArrayList<IPropertyable>(1); //file items
@@ -268,6 +275,15 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
                 }
             }
         }.start();
+    }
+   
+    
+     /* (non-Javadoc)
+     * @see org.jajuk.ui.views.AbstractTableView#initTable()
+     */
+    @Override
+    void initTable() {
+        jtbEditable.setSelected(ConfigurationManager.getBoolean(CONF_PHYSICAL_TABLE_EDITION));
     }
    
 }

@@ -161,10 +161,12 @@ public class LogicalTableView extends AbstractTableView implements Observer{
         int iSelectedCol = jtable.getSelectedColumn(); //selected column in view
         //Test click on play icon
         //launch track only if only first column is selected (fixes issue with Ctrl-A)
-        if (jtable.getSelectedColumnCount() == 1 && jtable.convertColumnIndexToModel(iSelectedCol) == 0 ){
+        if ( jtable.getSelectedColumnCount() == 1 && 
+                (jtable.convertColumnIndexToModel(iSelectedCol) == 0 ) //click on play icon
+                || (e.getClickCount() == 2 && !jtbEditable.isSelected())){ //double click on any column and edition state false
             int iSelectedRow = jtable.getSelectedRow(); //selected row in view
             Track track = (Track)model.getItemAt(jtable.convertRowIndexToModel(iSelectedRow));
-            File file = track.getPlayeableFile();
+            File file = track.getPlayeableFile(false);
             if ( file != null){
                 try{
                     FIFO.getInstance().push(new StackItem(file,ConfigurationManager.getBoolean(CONF_STATE_REPEAT)),
@@ -228,7 +230,7 @@ public class LogicalTableView extends AbstractTableView implements Observer{
                     Iterator it = alTracks.iterator();
                     while (it.hasNext()){ //each selected track and tracks from same album /author if required 
                         Track track2 = (Track)it.next();
-                        File file = track2.getPlayeableFile();
+                        File file = track2.getPlayeableFile(false);
                         if ( file != null && !alFilesToPlay.contains(file)){
                             alFilesToPlay.add(file);
                         }
@@ -262,6 +264,11 @@ public class LogicalTableView extends AbstractTableView implements Observer{
                 else if (e.getSource() == jmiTrackAddFavorite){
                 	Bookmarks.getInstance().addFiles(alFilesToPlay);
                 }
+                //editable state
+                else if (e.getSource() == jtbEditable){
+                    ConfigurationManager.setProperty(CONF_LOGICAL_TABLE_EDITION,Boolean.toString(jtbEditable.isSelected()));
+                    model.setEditable(jtbEditable.isSelected());
+                }
                 //properties
                 else if ( e.getSource() == jmiProperties){
                     if (jtable.getSelectedRowCount() == 1){ //mono selection
@@ -285,6 +292,15 @@ public class LogicalTableView extends AbstractTableView implements Observer{
                 }
             }
         }.start();
+    }
+
+
+    /* (non-Javadoc)
+     * @see org.jajuk.ui.views.AbstractTableView#initTable()
+     */
+    @Override
+    void initTable() {
+        jtbEditable.setSelected(ConfigurationManager.getBoolean(CONF_LOGICAL_TABLE_EDITION));
     }
     
        

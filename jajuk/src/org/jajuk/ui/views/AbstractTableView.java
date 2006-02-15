@@ -63,6 +63,7 @@ import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.JajukCellRender;
 import org.jajuk.ui.JajukTable;
 import org.jajuk.ui.JajukTableModel;
+import org.jajuk.ui.JajukToggleButton;
 import org.jajuk.ui.TableTransferHandler;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
@@ -91,6 +92,7 @@ public abstract class AbstractTableView extends ViewAdapter
     /** The logical table */
     JajukTable jtable;
     JPanel jpControl;
+    JajukToggleButton jtbEditable;
     JLabel jlFilter;
     JComboBox jcbProperty; 
     JLabel jlEquals;
@@ -166,12 +168,14 @@ public abstract class AbstractTableView extends ViewAdapter
             public Object construct() {
                 model = populateTable();
                 return null;
-                
             }   
             public void finished() {
                 //Control panel
                 jpControl = new JPanel();
                 jpControl.setBorder(BorderFactory.createEtchedBorder());
+                jtbEditable = new JajukToggleButton(Util.getIcon(ICON_EDIT));
+                jtbEditable.setToolTipText(Messages.getString("AbstractTableView.11"));
+                jtbEditable.addActionListener(AbstractTableView.this);
                 jlFilter = new JLabel(Messages.getString("AbstractTableView.0")); //$NON-NLS-1$
                 //properties combo box, fill with colums names expect ID
                 jcbProperty = new JComboBox();
@@ -200,15 +204,16 @@ public abstract class AbstractTableView extends ViewAdapter
                 jbAdvancedFilter.setEnabled(false);  //TBI
                 int iXspace = 5;
                 double sizeControl[][] =
-                {{iXspace,TableLayout.FILL,iXspace,0.3,TableLayout.FILL,TableLayout.FILL,iXspace,0.3,iXspace,20,iXspace,20,iXspace},
+                {{iXspace,20,3*iXspace,TableLayout.FILL,iXspace,0.3,TableLayout.FILL,TableLayout.FILL,iXspace,0.3,iXspace,20,iXspace,20,iXspace},
                         {22}};
                 jpControl.setLayout(new TableLayout(sizeControl));
-                jpControl.add(jlFilter,"1,0"); //$NON-NLS-1$
-                jpControl.add(jcbProperty,"3,0"); //$NON-NLS-1$
-                jpControl.add(jlEquals,"5,0"); //$NON-NLS-1$
-                jpControl.add(jtfValue,"7,0"); //$NON-NLS-1$
-                jpControl.add(jbClearFilter,"9,0"); //$NON-NLS-1$
-                jpControl.add(jbAdvancedFilter,"11,0"); //$NON-NLS-1$
+                jpControl.add(jtbEditable,"1,0"); //$NON-NLS-1$
+                jpControl.add(jlFilter,"3,0"); //$NON-NLS-1$
+                jpControl.add(jcbProperty,"5,0"); //$NON-NLS-1$
+                jpControl.add(jlEquals,"7,0"); //$NON-NLS-1$
+                jpControl.add(jtfValue,"9,0"); //$NON-NLS-1$
+                jpControl.add(jbClearFilter,"11,0"); //$NON-NLS-1$
+                jpControl.add(jbAdvancedFilter,"13,0"); //$NON-NLS-1$
                 jpControl.setMinimumSize(new Dimension(0,0)); //allow resing with info node
                 //add 
                 double size[][] =
@@ -238,6 +243,7 @@ public abstract class AbstractTableView extends ViewAdapter
                 Properties properties = ObservationManager.getDetailsLastOccurence(EVENT_CUSTOM_PROPERTIES_ADD); 
                 Event event = new Event(EVENT_CUSTOM_PROPERTIES_ADD,properties);
                 update(event);
+                initTable(); //perform type-specific init
              }
         };
         sw.start();
@@ -541,6 +547,12 @@ public abstract class AbstractTableView extends ViewAdapter
             ((JajukTableModel)jtable.getModel()).undo(e.getFirstRow(),e.getColumn());
         }
     }
+    
+    /**
+     * Table initialization after table display
+     *
+     */
+    abstract void initTable();
     
    
 }

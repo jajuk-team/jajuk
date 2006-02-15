@@ -168,7 +168,7 @@ public class TracksTableModel extends JajukTableModel{
             oItems[iRow] = track;
             //Play
             IconLabel il = null;
-            if (track.getPlayeableFile() != null){
+            if (track.getPlayeableFile(true) != null){
                 il = new IconLabel(PLAY_ICON,"",null,null,null,Messages.getString("LogicalTreeView.1")); //$NON-NLS-1$ //$NON-NLS-2$
             }
             else{
