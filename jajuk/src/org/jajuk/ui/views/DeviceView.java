@@ -20,6 +20,7 @@
 
 package org.jajuk.ui.views;
 
+import static org.jajuk.ui.action.JajukAction.WIZARD;
 import info.clearthought.layout.TableLayout;
 
 import java.awt.Color;
@@ -51,6 +52,8 @@ import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Observer;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.DeviceWizard;
+import org.jajuk.ui.JajukButton;
+import org.jajuk.ui.action.ActionManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 
@@ -77,6 +80,7 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
     JButton jbTest;
     JButton jbRefresh;
     JButton jbSynchro;
+    JajukButton jbWizard;
     FlowScrollPanel jpDevices;
     
     JPopupMenu jpmenu;
@@ -144,6 +148,10 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
         jbSynchro.addActionListener(this);
         jbSynchro.setToolTipText(Messages.getString("DeviceView.7")); //$NON-NLS-1$
         
+        jbWizard = new JajukButton(ActionManager.getAction(WIZARD));
+        jbWizard.setActionCommand(EVENT_WIZARD);
+        jbWizard.setToolTipText(Messages.getString("JajukJMenuBar.18")); //$NON-NLS-1$
+        
         jtbButtons.add(jbNew);
         jtbButtons.addSeparator();
         jtbButtons.add(jbDelete);
@@ -159,6 +167,8 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
         jtbButtons.add(jbRefresh);
         jtbButtons.addSeparator();
         jtbButtons.add(jbSynchro);
+        jtbButtons.addSeparator();
+        jtbButtons.add(jbWizard);
         jtbButtons.addSeparator();
         
         //devices
@@ -440,6 +450,9 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
                     }
                 }
             }.start();
+        }
+        else if (ae.getActionCommand().equals(EVENT_WIZARD)){
+            
         }
     }
     
