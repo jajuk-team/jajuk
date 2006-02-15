@@ -485,7 +485,7 @@ ActionListener, Observer {
                     Object o = path.getLastPathComponent();
                     if (o instanceof TrackNode) {
                         Track track = ((TrackNode) o).getTrack();
-                        File file = track.getPlayeableFile();
+                        File file = track.getPlayeableFile(false);
                         if (file != null) {
                             try {
                                 FIFO.getInstance().push(
@@ -528,7 +528,7 @@ ActionListener, Observer {
                             .nextElement();
                             if (node instanceof TrackNode) {
                                 Track track = ((TrackNode) node).getTrack();
-                                if (track.getPlayeableFile() != null) {
+                                if (track.getPlayeableFile(false) != null) {
                                     getInstance().alTracks
                                     .add(((TrackNode) node).getTrack());
                                 }
@@ -902,7 +902,7 @@ ActionListener, Observer {
                     ArrayList alFilesToPlay = new ArrayList(alTracks.size());
                     Iterator it = alTracks.iterator();
                     while (it.hasNext()) {
-                        File file = ((Track) it.next()).getPlayeableFile();
+                        File file = ((Track) it.next()).getPlayeableFile(false);
                         if (file != null) {
                             alFilesToPlay.add(file);
                         }

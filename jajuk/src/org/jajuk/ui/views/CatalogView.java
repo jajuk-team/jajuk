@@ -642,7 +642,7 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
             ArrayList alFilesToPlay = new ArrayList(tracks.size());
             Iterator it = tracks.iterator();
             while ( it.hasNext()){
-                org.jajuk.base.File file = ((Track)it.next()).getPlayeableFile();
+                org.jajuk.base.File file = ((Track)it.next()).getPlayeableFile(false);
                 if ( file != null){
                     alFilesToPlay.add(file);
                 }

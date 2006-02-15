@@ -162,7 +162,7 @@ public class PlaylistTransferHandler implements DropTargetListener,ITechnicalStr
 					Iterator it = alLogicalTracks.iterator();
 					while ( it.hasNext()){
 						Track track = (Track)it.next();
-						File file = track.getPlayeableFile();
+						File file = track.getPlayeableFile(false);
 						if ( file == null){ //none mounted file for this track
 							continue;
 						}

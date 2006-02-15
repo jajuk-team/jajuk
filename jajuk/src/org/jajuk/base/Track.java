@@ -181,15 +181,7 @@ public class Track extends PropertyAdapter implements Comparable{
     }
     
     
-    /**
-     * 
-     * @return best file to play for this track with unmounted tracks
-     */
-    public File getPlayeableFile() {
-        return getPlayeableFile(false);
-    }
-    
-    /**
+     /**
      * @return best file to play for this track
      * bHideUnmounted
      */
