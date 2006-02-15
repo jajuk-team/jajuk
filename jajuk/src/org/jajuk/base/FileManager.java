@@ -20,6 +20,7 @@
 
 package org.jajuk.base;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -109,6 +110,8 @@ public class FileManager extends ItemManager implements Observer{
         registerProperty(new PropertyMetaInformation(XML_SIZE,false,true,true,false,false,Long.class,null,null));
         //Quality
         registerProperty(new PropertyMetaInformation(XML_QUALITY,false,true,true,false,false,Long.class,null,0));
+        //Date
+        registerProperty(new PropertyMetaInformation(XML_FILE_DATE,false,false,true,false,false,Date.class,new SimpleDateFormat(PropertyMetaInformation.DATE_FORMAT_2),new Date()));
     }
     
     /**

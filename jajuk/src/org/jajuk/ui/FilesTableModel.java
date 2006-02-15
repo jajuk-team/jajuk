@@ -53,7 +53,7 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
 	 * @param sColName columns names
 	 */
 	public FilesTableModel(){
-		super(14);
+		super(15);
         //Columns names
         //play column
         vColNames.add(Messages.getString("PhysicalTreeView.1")); //$NON-NLS-1$
@@ -97,6 +97,9 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
         
         vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_TRACK_YEAR));
         vId.add(XML_TRACK_YEAR);
+        
+        vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_FILE_DATE));
+        vId.add(XML_FILE_DATE);
         
         //Custom properties now
         Iterator it = FileManager.getInstance().getCustomProperties().iterator();
@@ -224,6 +227,9 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
             //year
             oValues[iRow][13] = file.getTrack().getYear();
             bCellEditable[iRow][13] = true;
+            //file date
+            oValues[iRow][14] = file.getDateValue(XML_FILE_DATE);
+            bCellEditable[iRow][14] = false;
             //Custom properties now
             Iterator it2 = FileManager.getInstance().getCustomProperties().iterator();
             for (int i=0;it2.hasNext();i++){
@@ -253,6 +259,6 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
             }   
         }
     }
-   
+    
     
 }
