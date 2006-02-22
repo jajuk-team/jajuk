@@ -21,6 +21,8 @@ package org.jajuk.base;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -56,6 +58,8 @@ public class Track extends PropertyAdapter implements Comparable{
     private ArrayList<File> alFiles = new ArrayList(1);
     /** Number of hits for current jajuk session */
     private int iSessionHits = 0;
+    /**Max rate*/
+    public static long lMaxRate = 0l;
     
     
     /**
@@ -187,7 +191,7 @@ public class Track extends PropertyAdapter implements Comparable{
      */
     public File getPlayeableFile(boolean bHideUnmounted) {
         File fileOut = null;
-        ArrayList alMountedFiles = new ArrayList(2);
+        ArrayList<File> alMountedFiles = new ArrayList(2);
         //firstly, filter mounted files if needed
         Iterator it = alFiles.iterator();
         while ( it.hasNext()){
@@ -196,18 +200,31 @@ public class Track extends PropertyAdapter implements Comparable{
                 alMountedFiles.add(file);
             }
         }
-        //then keep best quality
-        if (alMountedFiles.size() > 0){
-            it = alMountedFiles.iterator();
-            fileOut = (File)it.next();  //for the moment, the out file is the first found
-            while ( it.hasNext()){
-                File file = (File)it.next();
-                long lQuality = file.getQuality();
-                long lQualityOut = fileOut.getQuality(); //quality for out file
-                if (lQuality > lQualityOut){
-                    fileOut = file;
+        if (alMountedFiles.size() == 1){
+            fileOut = alMountedFiles.get(0);
+        }
+        else if (alMountedFiles.size() > 0){
+            //then keep best quality and mounted first
+            Collections.sort(alMountedFiles,new Comparator() {
+                public int compare(Object arg0, Object arg1) {
+                    File file1 = (File)arg0;
+                    long lQuality1 = file1.getQuality();
+                    boolean bMounted1 = file1.isReady();
+                    File file2 = (File)arg1;
+                    long lQuality2 = file2.getQuality(); //quality for out file
+                    boolean bMounted2 = file2.isReady();
+                    if (bMounted1 && !bMounted2){//first item mounted, not second
+                        return 1;
+                    }
+                    else if (!bMounted1 && bMounted2){ //second mounted, not the first
+                        return -1;
+                    }
+                    else{ //both mounted or unmounted, compare quality
+                        return (int)(lQuality1 - lQuality2);  
+                    }
                 }
-            }
+            });
+            fileOut = alMountedFiles.get(alMountedFiles.size()-1); //highest score last
         }
         return fileOut;
     }
@@ -337,6 +354,10 @@ public class Track extends PropertyAdapter implements Comparable{
      */
     public void setRate(long rate) {
         setProperty(XML_TRACK_RATE,rate);
+        //Store max rate
+        if (rate > lMaxRate){
+            lMaxRate = rate;
+        }
     }
     
     /**
@@ -352,12 +373,6 @@ public class Track extends PropertyAdapter implements Comparable{
     public void setAdditionDate(Date additionDate) {
         setProperty(XML_TRACK_ADDED,additionDate);
     }
-    
-    /**
-     * @return Returns the sHashCompare.
-     public String getHashCompare() {
-     return sHashCompare;
-     }*/
     
     /**
      * @return Returns the iSessionHits.
