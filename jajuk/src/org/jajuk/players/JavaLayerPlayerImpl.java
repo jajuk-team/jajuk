@@ -29,6 +29,7 @@ import javazoom.jlgui.basicplayer.BasicPlayerException;
 import javazoom.jlgui.basicplayer.BasicPlayerListener;
 
 import org.jajuk.base.FIFO;
+import org.jajuk.base.FileManager;
 import org.jajuk.base.Type;
 import org.jajuk.base.TypeManager;
 import org.jajuk.i18n.Messages;
@@ -81,6 +82,12 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
     
     /**Volume when starting fade*/
     private float fadingVolume;
+    
+    /**current file*/
+    private org.jajuk.base.File fCurrent;
+    
+    /**Inc rating flag*/
+    private boolean bHasBeenRated = false;
         
     /*
      * (non-Javadoc)
@@ -95,6 +102,8 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
         this.fVolume = fVolume;
         this.length = length;
         this.bFading = false;
+        this.fCurrent = file;
+        this.bHasBeenRated = false;
         // instanciate player is needed
        if (player == null ) {
            BasicPlayer.EXTERNAL_BUFFER_SIZE = ConfigurationManager.getInt(CONF_BUFFER_SIZE);
@@ -138,6 +147,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
      * @see org.jajuk.base.IPlayerImpl#setVolume(float)
      */
     public void setVolume(float fVolume) throws Exception {
+        //Log.debug("Volume= "+fVolume);
         this.fVolume = fVolume;
         player.setGain(fVolume*0.66);
         //limit gain to avoid sound issues
@@ -252,8 +262,8 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
             this.iFadeDuration = 1000 * ConfigurationManager.getInt(CONF_FADE_DURATION);
             if (bFading){
                 //computes the volume we have to sub to reach zero at last progress()
-                float fVolumeStep = fadingVolume * ((float)PROGRESS_STEP/iFadeDuration);
-                float fNewVolume = fVolume - fVolumeStep;
+                float fVolumeStep = fadingVolume * ((float)500/iFadeDuration);
+                float fNewVolume = fVolume - (fVolumeStep/2);
                 //decrease volume by n% of initial volume 
                 if (fNewVolume < 0){
                     fNewVolume = 0;
@@ -273,6 +283,14 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
                 ConfigurationManager.setProperty(CONF_STARTUP_LAST_POSITION, Float.toString(fPos));
                 lTime = (long)(lDuration * fPos);
             }
+            //check if the track get rate increasing level (INC_RATE_TIME secs or intro length)
+            if (!bHasBeenRated && (lTime >= INC_RATE_TIME*1000 || 
+                    (length != TO_THE_END && lTime > length))){
+                // inc rate by 1 if file is played at least INC_RATE_TIME secs
+                fCurrent.getTrack().setRate(fCurrent.getTrack().getRate() + 1); 
+                FileManager.getInstance().setRateHasChanged(true); // alert bestof playlist something changed
+                bHasBeenRated = true;
+            }
             //Cross-Fade test
             if (iFadeDuration > 0   
                     && lTime > (lDuration - iFadeDuration)){
@@ -283,7 +301,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
                 else{
                     bFading = true;
                     this.fadingVolume = fVolume;
-                    /*we have to launch the next file from another file to avoid stopping current track 
+                    /*we have to launch the next file from another thread to avoid stopping current track 
                     (perceptible during player.open() for remote files)*/
                     new Thread(){
                         public void run(){
@@ -296,12 +314,11 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
             // test end of length for intro mode
             else if (length != TO_THE_END && lTime > length) {
                 // length=-1 means there is no max length
-                try {
-                    player.stop();
-                    FIFO.getInstance().finished();
-                } catch (BasicPlayerException e) {
-                    Log.error(e);
-                }
+                new Thread(){
+                    public void run(){
+                        FIFO.getInstance().finished();
+                    }
+                }.start();
             }
         }
     }
@@ -315,6 +332,9 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
         }
         switch (bpe.getCode()) {
         case BasicPlayerEvent.EOM:
+            // inc rate by 1 if file is fully played
+            fCurrent.getTrack().setRate(fCurrent.getTrack().getRate() + 1); 
+            FileManager.getInstance().setRateHasChanged(true); // alert bestof playlist something changed
             if (!bFading){ //if using crossfade, ignore end of file
                 System.gc();//Benefit from end of file to perform a full gc
                 FIFO.getInstance().finished();
