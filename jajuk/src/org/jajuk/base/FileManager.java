@@ -672,6 +672,9 @@ public class FileManager extends ItemManager implements Observer{
      */
     public void setRateHasChanged(boolean rateHasChanged) {
         bRateHasChanged = rateHasChanged;
+        if (bRateHasChanged){
+            ObservationManager.notify(new Event(EVENT_RATE_CHANGED));//refresh to update rates
+        }
     }
     
     /* (non-Javadoc)
