@@ -143,6 +143,9 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
     /**Last selected item*/
     public CatalogItem item;
     
+    /**Number of created thumbs, used for garbage collection*/
+    public int iNbCreatedThumbs = 0;
+    
     /** Swing Timer to refresh the component*/ 
     private Timer timer = new Timer(WAIT_TIME,new ActionListener() {
         public void actionPerformed(ActionEvent e) {
@@ -309,6 +312,10 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
                 try {
                     //use void file to store the fact we didn't find a cover, too long to scan again
                     fThumb.createNewFile();
+                    iNbCreatedThumbs ++;
+                    if (iNbCreatedThumbs > 30){
+                        System.gc(); //invoke garbage collecting to avoid using too mush memory
+                    }
                 }
                 catch (Exception e) {
                     Log.error(e);
