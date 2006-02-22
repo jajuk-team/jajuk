@@ -69,6 +69,9 @@ public interface ITechnicalStrings {
     public static final int FADING_STATUS = 9999;
     /**Need full gc memory %*/
     public static final float NEED_FULL_GC_LEVEL = 0.90f;
+    /**Play time to get rate +1 in secs*/
+    public static final int INC_RATE_TIME = 20;
+    
             
 	// Jajuk version
 	public static final String JAJUK_VERSION = "VERSION_REPLACED_BY_ANT";
@@ -209,11 +212,18 @@ public interface ITechnicalStrings {
     public static final String ICON_UNKNOWN = PATH_ICONS + "16x16/presence_unknown.png";
     public static final String ICON_TIP = PATH_ICONS + "40x40/tip.png";
     public static final String ICON_TIP_SMALL = PATH_ICONS + "16x16/tip.png";
+    public static final String ICON_OPEN_DIR = PATH_ICONS + "40x40/folder_open.png";
+    public static final String ICON_STAR_1 = PATH_ICONS + "16x16/star1.png";
+    public static final String ICON_STAR_2 = PATH_ICONS + "16x16/star2.png";
+    public static final String ICON_STAR_3 = PATH_ICONS + "16x16/star3.png";
+    public static final String ICON_STAR_4 = PATH_ICONS + "16x16/star4.png";
 
     //images
 	public static final String IMAGES_SPLASHSCREEN =  PATH_IMAGES + "jajuk-splashscreen.png";
 	public static final String IMAGES_STAT_PAPER =  PATH_IMAGES + "No-Ones-Laughing-3.jpg";
 	public static final String IMAGE_NO_COVER = PATH_IMAGES + "unknown.jpg";
+    public static final String IMAGE_WRITE = PATH_IMAGES + "write.png";
+    public static final String IMAGE_SEARCH = PATH_IMAGES + "search.png";
         
 	//files
 	public static final String FILE_JAJUK_DIR = System.getProperty("user.home")+(Main.bTestMode?"/.jajuk_test":"/.jajuk");
