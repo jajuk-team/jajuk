@@ -71,15 +71,15 @@ public class TracksTableModel extends JajukTableModel{
         vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_STYLE));
         vId.add(XML_STYLE);
         
+        vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_TRACK_RATE));
+        vId.add(XML_TRACK_RATE);
+    
         vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_TRACK_LENGTH));
         vId.add(XML_TRACK_LENGTH);
                 
         vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_TRACK_COMMENT));
         vId.add(XML_TRACK_COMMENT);
         
-        vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_TRACK_RATE));
-        vId.add(XML_TRACK_RATE);
-    
         vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_TRACK_ADDED));
         vId.add(XML_TRACK_ADDED);
     
@@ -174,6 +174,8 @@ public class TracksTableModel extends JajukTableModel{
             else{
                 il = new IconLabel(UNMOUNT_PLAY_ICON,"",null,null,null,Messages.getString("LogicalTreeView.1")+Messages.getString("AbstractTableView.10")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             }
+            //Note: if you want to add an image, use an ImageIcon class and change
+            //AbstractTableView.setRenderer()
             oValues[iRow][0] = il;
             bCellEditable[iRow][0] = false;
             //Track name
@@ -188,14 +190,30 @@ public class TracksTableModel extends JajukTableModel{
             //Style
             oValues[iRow][4] = track.getStyle().getName2();
             bCellEditable[iRow][4] = true;
-            //Length
-            oValues[iRow][5] = Util.formatTimeBySec(track.getLength(),false);
-            bCellEditable[iRow][5] = false;
-            //Comment
-            oValues[iRow][6] = track.getValue(XML_TRACK_COMMENT);
-            bCellEditable[iRow][6] = true;
             //Rate
-            oValues[iRow][7] = track.getRate();
+            IconLabel ilRate = null;
+            long lInterval = Track.lMaxRate / 4;
+            long lRate = track.getRate();
+            if (lRate < lInterval){
+                ilRate = new IconLabel(Util.getIcon(ICON_STAR_1),"",null,null,null,Long.toString(track.getRate()));
+            }
+            else if (lRate < 2*lInterval){
+                ilRate = new IconLabel(Util.getIcon(ICON_STAR_2),"",null,null,null,Long.toString(track.getRate()));
+            }
+            else if (lRate < 3*lInterval){
+                ilRate = new IconLabel(Util.getIcon(ICON_STAR_3),"",null,null,null,Long.toString(track.getRate()));
+            }
+            else {
+                ilRate = new IconLabel(Util.getIcon(ICON_STAR_4),"",null,null,null,Long.toString(track.getRate()));
+            }
+            oValues[iRow][5] = ilRate;
+            bCellEditable[iRow][5] = false;
+            ilRate.setInteger(true);
+            //Length
+            oValues[iRow][6] = Util.formatTimeBySec(track.getLength(),false);
+            bCellEditable[iRow][6] = false;
+            //Comment
+            oValues[iRow][7] = track.getValue(XML_TRACK_COMMENT);
             bCellEditable[iRow][7] = true;
             //Date discovery
             oValues[iRow][8] = track.getAdditionDate(); //show date using default local format and not technical representation
