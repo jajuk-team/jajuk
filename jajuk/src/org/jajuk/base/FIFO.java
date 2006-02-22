@@ -182,6 +182,7 @@ public class FIFO implements ITechnicalStrings {
             // first try to mount needed devices
             Iterator it = alItems.iterator();
             StackItem item = null;
+            boolean bNoMount = false;
             while (it.hasNext()) {
                 item = (StackItem) it.next();
                 if (item == null) {
@@ -190,22 +191,29 @@ public class FIFO implements ITechnicalStrings {
                 }
                 //Do not synchronize this as we will wait for user response
                 if (!item.getFile().getDirectory().getDevice().isMounted()) {
-                    // not mounted, ok let them a chance to mount it:
-                    final String sMessage = Messages.getString("Error.025") + " (" + item.getFile().getDirectory().getDevice().getName() + Messages.getString("FIFO.4"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                    int i = Messages.getChoice(sMessage, JOptionPane.INFORMATION_MESSAGE);
-                    if (i == JOptionPane.YES_OPTION) {
-                        try {
-                            item.getFile().getDirectory().getDevice().mount();
-                        } catch (Exception e) {
+                    if (!bNoMount){
+                        // not mounted, ok let them a chance to mount it:
+                        final String sMessage = Messages.getString("Error.025") + " (" + item.getFile().getDirectory().getDevice().getName() + Messages.getString("FIFO.4"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                        int i = Messages.getChoice(sMessage, JOptionPane.INFORMATION_MESSAGE);
+                        if (i == JOptionPane.YES_OPTION) {
+                            try {
+                                item.getFile().getDirectory().getDevice().mount();
+                            } catch (Exception e) {
+                                it.remove();
+                                Log.error(e);
+                                Messages.showErrorMessage(
+                                    "011", item.getFile().getDirectory().getDevice().getName()); //$NON-NLS-1$
+                                return;
+                            }
+                        } else if (i == JOptionPane.NO_OPTION) {
+                            bNoMount = true; //do not ask again
                             it.remove();
-                            Log.error(e);
-                            Messages.showErrorMessage(
-                                "011", item.getFile().getDirectory().getDevice().getName()); //$NON-NLS-1$
+                        } else if (i == JOptionPane.CANCEL_OPTION) {
                             return;
                         }
-                    } else {
+                    }
+                    else{
                         it.remove();
-                        return;
                     }
                 }
             }
@@ -224,10 +232,6 @@ public class FIFO implements ITechnicalStrings {
                 it = alItems.iterator();
                 while (it.hasNext()) {
                     item = (StackItem) it.next();
-                    if (item.isUserLaunch()) {
-                        item.getFile().getTrack().setRate(item.getFile().getTrack().getRate() + 2); // inc rate by 2 because it is explicitely selected to be played by user
-                        FileManager.getInstance().setRateHasChanged(true); // alert bestof playlist something changed
-                    }
                     // Apply contextual repeat mode but only for concecutive repeat tracks : we can't have a whole between repeated tracks and first track must be repeated
                     if (ConfigurationManager.getBoolean(CONF_STATE_REPEAT)) {
                         // check if last in fifo is repeated
@@ -387,9 +391,7 @@ public class FIFO implements ITechnicalStrings {
             // add hits number
             fCurrent.getTrack().incHits(); // inc hits number
             fCurrent.getTrack().incSessionHits();// inc session hits
-            fCurrent.getTrack().setRate(fCurrent.getTrack().getRate() + 1); // inc rate by 1 because it is played
             FileManager.getInstance().setRateHasChanged(true);
-            ObservationManager.notify(new Event(EVENT_RATE_CHANGED));//refresh to update rates
         } catch (Throwable t) {//catch even Errors (OutOfMemory for exemple)
             Log.error("122", t); //$NON-NLS-1$
         } finally {
