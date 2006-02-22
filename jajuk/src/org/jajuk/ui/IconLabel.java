@@ -31,6 +31,12 @@ import javax.swing.ImageIcon;
  * @author     Bertrand Florat
  * @created    12 nov. 2004
  */
+/**
+ *  Type description
+ *
+ * @author     Bertrand Florat
+ * @created    22 févr. 2006
+ */
 public class IconLabel implements Comparable{
     
     /**Icon*/
@@ -50,6 +56,9 @@ public class IconLabel implements Comparable{
     
     /**Tooltip*/
     private String sTooltip;
+    
+    /**Whether this is a integer*/
+    private boolean bInteger = false;
     
     /**
      * Constructor
@@ -125,9 +134,23 @@ public class IconLabel implements Comparable{
     public int compareTo(Object o) {
         IconLabel ilOther =(IconLabel)o;
         if (ilOther.getTooltip() != null && this.getTooltip() != null){
-            return ilOther.getTooltip().compareTo(getTooltip());
+            if (bInteger){ //is this item represents an integer ?
+                long l = Long.parseLong(getTooltip());
+                long lOther = Long.parseLong(ilOther.getTooltip());
+                return (int)(l - lOther);
+            }
+            else{ //simply compare tooltip strings
+                return ilOther.getTooltip().compareTo(getTooltip());
+            }
         }else{
             return 0;
         }
+    }
+
+    /**
+     * @param integer
+     */
+    public void setInteger(boolean integer) {
+        bInteger = integer;
     }
 }
