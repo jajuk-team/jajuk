@@ -33,6 +33,7 @@ import org.jajuk.base.FileManager;
 import org.jajuk.base.IPropertyable;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.base.PropertyMetaInformation;
+import org.jajuk.base.Track;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
@@ -53,7 +54,7 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
 	 * @param sColName columns names
 	 */
 	public FilesTableModel(){
-		super(15);
+		super(16);
         //Columns names
         //play column
         vColNames.add(Messages.getString("PhysicalTreeView.1")); //$NON-NLS-1$
@@ -71,6 +72,9 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
         vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_STYLE));
         vId.add(XML_STYLE);
      
+        vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_TRACK_RATE));
+        vId.add(XML_TRACK_RATE);
+        
         vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_TRACK_LENGTH));
         vId.add(XML_TRACK_LENGTH);
         
@@ -82,10 +86,7 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
         
         vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_TRACK_COMMENT));
         vId.add(XML_TRACK_COMMENT);
-        
-        vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_TRACK_RATE));
-        vId.add(XML_TRACK_RATE);
-        
+                
         vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_QUALITY));
         vId.add(XML_QUALITY);
         
@@ -100,6 +101,9 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
         
         vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_FILE_DATE));
         vId.add(XML_FILE_DATE);
+        
+        vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_DIRECTORY));
+        vId.add(XML_DIRECTORY);
         
         //Custom properties now
         Iterator it = FileManager.getInstance().getCustomProperties().iterator();
@@ -199,20 +203,38 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
             //Style
             oValues[iRow][4] = file.getTrack().getStyle().getName2();
             bCellEditable[iRow][4] = true;
-            //Length
-            oValues[iRow][5] = Util.formatTimeBySec(file.getTrack().getLength(),false);
-            bCellEditable[iRow][5] = false;
-            //Device
-            oValues[iRow][6] = file.getDirectory().getDevice().getName();
-            bCellEditable[iRow][6] = false;
-            //File name
-            oValues[iRow][7] = file.getName();
-            bCellEditable[iRow][7] = true;
-            //Comment
-            oValues[iRow][8] = file.getTrack().getValue(XML_TRACK_COMMENT);
-            bCellEditable[iRow][8] = true;
             //Rate
-            oValues[iRow][9] = file.getTrack().getRate();
+            //Rate
+            IconLabel ilRate = null;
+            long lInterval = Track.lMaxRate / 4;
+            Track track = file.getTrack();
+            long lRate = track.getRate();
+            if (lRate < lInterval){
+                ilRate = new IconLabel(Util.getIcon(ICON_STAR_1),"",null,null,null,Long.toString(track.getRate()));
+            }
+            else if (lRate < 2*lInterval){
+                ilRate = new IconLabel(Util.getIcon(ICON_STAR_2),"",null,null,null,Long.toString(track.getRate()));
+            }
+            else if (lRate < 3*lInterval){
+                ilRate = new IconLabel(Util.getIcon(ICON_STAR_3),"",null,null,null,Long.toString(track.getRate()));
+            }
+            else {
+                ilRate = new IconLabel(Util.getIcon(ICON_STAR_4),"",null,null,null,Long.toString(track.getRate()));
+            }
+            ilRate.setInteger(true);
+            oValues[iRow][5] = ilRate;
+            bCellEditable[iRow][5] = false;
+            //Length
+            oValues[iRow][6] = Util.formatTimeBySec(file.getTrack().getLength(),false);
+            bCellEditable[iRow][6] = false;
+            //Device
+            oValues[iRow][7] = file.getDirectory().getDevice().getName();
+            bCellEditable[iRow][7] = false;
+            //File name
+            oValues[iRow][8] = file.getName();
+            bCellEditable[iRow][8] = true;
+            //Comment
+            oValues[iRow][9] = file.getTrack().getValue(XML_TRACK_COMMENT);
             bCellEditable[iRow][9] = true;
             //Quality
             long lQuality = file.getQuality();
@@ -230,6 +252,9 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
             //file date
             oValues[iRow][14] = file.getDateValue(XML_FILE_DATE);
             bCellEditable[iRow][14] = false;
+            //directory full path
+            oValues[iRow][15] = file.getDirectory().getAbsolutePath();
+            bCellEditable[iRow][15] = false;
             //Custom properties now
             Iterator it2 = FileManager.getInstance().getCustomProperties().iterator();
             for (int i=0;it2.hasNext();i++){
