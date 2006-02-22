@@ -85,12 +85,11 @@ public class FirstTimeWizard extends JDialog implements ITechnicalStrings,Action
             org.jajuk.Main.getWindow().getY()+200);
         int iX_SEPARATOR = 5;
         int iY_SEPARATOR = 10;
-        jlLeftIcon = new JLabel(Util.getResizedImage(
-            Util.getIcon(IMAGES_SPLASHSCREEN),300,200));
+        jlLeftIcon = new JLabel(Util.getIcon(IMAGE_SEARCH));
         jpRightPanel = new JPanel();
         jlWelcome=new JLabel(Messages.getString("FirstTimeWizard.1")); //$NON-NLS-1$
         jlFileSelection = new JLabel(Messages.getString("FirstTimeWizard.2")); //$NON-NLS-1$
-        jbFileSelection = new JButton(Util.getIcon(ICON_OPEN_FILE));
+        jbFileSelection = new JButton(Util.getIcon(ICON_OPEN_DIR));
         jtfFileSelected = new JTextField(""); //$NON-NLS-1$
         jtfFileSelected.setForeground(Color.BLUE);
         jtfFileSelected.setEditable(false);
@@ -126,7 +125,7 @@ public class FirstTimeWizard extends JDialog implements ITechnicalStrings,Action
         jpButtons.add(jbOk);
         jpButtons.add(jbCancel);
         double sizeRight[][] = { { 0.99,iX_SEPARATOR}, 
-                {iY_SEPARATOR,60, iY_SEPARATOR, 30,iY_SEPARATOR,20,4*iY_SEPARATOR,40,iY_SEPARATOR,40,iY_SEPARATOR,40,iY_SEPARATOR,40 }};
+                {iY_SEPARATOR,TableLayout.PREFERRED, iY_SEPARATOR, TableLayout.PREFERRED,iY_SEPARATOR,20,4*iY_SEPARATOR,40,iY_SEPARATOR,40,iY_SEPARATOR,40,iY_SEPARATOR,40 }};
         
         FlowLayout flSelection = new FlowLayout(FlowLayout.LEFT);
         JPanel jpFileSelection = new JPanel();

@@ -25,6 +25,7 @@ import info.clearthought.layout.TableLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -35,6 +36,7 @@ import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -61,6 +63,8 @@ import org.jdesktop.jdic.desktop.Message;
 public class QualityFeedbackWizard extends JDialog implements KeyListener,ActionListener,ITechnicalStrings{
     JPanel jpMain;
     JTextArea jtaNotice;
+    JLabel jlType;
+    JComboBox jcbType;
     JLabel jlFrom;
     JTextField jtfFrom;
     JLabel jlDesc;
@@ -80,20 +84,31 @@ public class QualityFeedbackWizard extends JDialog implements KeyListener,Action
         jtaNotice.setLineWrap(true);
         jtaNotice.setWrapStyleWord(true);
         jtaNotice.setEditable(false);
+        jtaNotice.setMargin(new Insets(10,10,10,10));
         jtaNotice.setOpaque(true);
         jtaNotice.setBackground(Color.ORANGE);
+        jtaNotice.setForeground(Color.DARK_GRAY);
         jtaNotice.setFont(new Font("Dialog",Font.BOLD,12));
         //From
         jlFrom = new JLabel(Messages.getString("QualityFeedbackWizard.1")); //$NON-NLS-1$
         jlFrom.setToolTipText(Messages.getString("QualityFeedbackWizard.2")); //$NON-NLS-1$
         jtfFrom = new JTextField();
         jtfFrom.setToolTipText(Messages.getString("QualityFeedbackWizard.2")); //$NON-NLS-1$
-       //Description
+        //Description
         jlDesc = new JLabel(Messages.getString("QualityFeedbackWizard.3")); //$NON-NLS-1$
         jlDesc.setToolTipText(Messages.getString("QualityFeedbackWizard.4")); //$NON-NLS-1$
         jtfDesc = new JTextField();
         jtfDesc.setToolTipText(Messages.getString("QualityFeedbackWizard.4")); //$NON-NLS-1$
         jtfDesc.addKeyListener(this);
+        //Type
+        jlType = new JLabel(Messages.getString("QualityFeedbackWizard.12")); //$NON-NLS-1$
+        jlType.setToolTipText(Messages.getString("QualityFeedbackWizard.12")); //$NON-NLS-1$
+        jcbType = new JComboBox();
+        jcbType.addItem(Messages.getString("QualityFeedbackWizard.8"));
+        jcbType.addItem(Messages.getString("QualityFeedbackWizard.9"));
+        jcbType.addItem(Messages.getString("QualityFeedbackWizard.10"));
+        jcbType.addItem(Messages.getString("QualityFeedbackWizard.11"));
+        jcbType.setToolTipText(Messages.getString("QualityFeedbackWizard.12")); //$NON-NLS-1$
         //Details
         jlDetail = new JLabel(Messages.getString("QualityFeedbackWizard.5")); //$NON-NLS-1$
         jlDetail.setToolTipText(Messages.getString("QualityFeedbackWizard.6")); //$NON-NLS-1$
@@ -106,16 +121,19 @@ public class QualityFeedbackWizard extends JDialog implements KeyListener,Action
         int iYSeparator = 20;
         double[][] dSize = {
                 {iXSeparator,0.3,iXSeparator,0.7,iXSeparator},
-                {iYSeparator,TableLayout.PREFERRED,iYSeparator,20,iYSeparator,20,iYSeparator,0.99,iYSeparator,20,iYSeparator} };
+                {iYSeparator,TableLayout.PREFERRED,iYSeparator,TableLayout.PREFERRED,iYSeparator,20,iYSeparator,20,iYSeparator,0.99,iYSeparator,20,iYSeparator} };
         jpMain.setLayout(new TableLayout(dSize));
+        jpMain.add(new JLabel(Util.getIcon(IMAGE_WRITE)),"1,1"); //$NON-NLS-1$
         jpMain.add(jtaNotice,"3,1"); //$NON-NLS-1$
-        jpMain.add(jlFrom,"1,3"); //$NON-NLS-1$
-        jpMain.add(jtfFrom,"3,3"); //$NON-NLS-1$
-        jpMain.add(jlDesc,"1,5"); //$NON-NLS-1$
-        jpMain.add(jtfDesc,"3,5"); //$NON-NLS-1$
-        jpMain.add(jlDetail,"1,7"); //$NON-NLS-1$
-        jpMain.add(new JScrollPane(jtaDetail),"3,7"); //$NON-NLS-1$
-        jpMain.add(okp,"3,9"); //$NON-NLS-1$
+        jpMain.add(jlType,"1,3");
+        jpMain.add(jcbType,"3,3");
+        jpMain.add(jlFrom,"1,5"); //$NON-NLS-1$
+        jpMain.add(jtfFrom,"3,5"); //$NON-NLS-1$
+        jpMain.add(jlDesc,"1,7"); //$NON-NLS-1$
+        jpMain.add(jtfDesc,"3,7"); //$NON-NLS-1$
+        jpMain.add(jlDetail,"1,9"); //$NON-NLS-1$
+        jpMain.add(new JScrollPane(jtaDetail),"3,9"); //$NON-NLS-1$
+        jpMain.add(okp,"3,11"); //$NON-NLS-1$
         getContentPane().add(jpMain);
         addWindowListener(new WindowAdapter() {
             public void windowActivated(WindowEvent e) {
@@ -136,15 +154,18 @@ public class QualityFeedbackWizard extends JDialog implements KeyListener,Action
             alTo.add(FEEDBACK_EMAIL);
             message.setToAddrs(alTo);
             String sBody = ""; //$NON-NLS-1$
+            sBody += "Type: "+jcbType.getSelectedItem() +'\n'; //$NON-NLS-1$
             sBody += "From: "+jtfFrom.getText()+'\n'; //$NON-NLS-1$
             sBody += "Subject: "+jtfDesc.getText()+'\n'; //$NON-NLS-1$
             sBody += "Details: "+jtaDetail.getText()+'\n'; //$NON-NLS-1$
             sBody += "Version: "+JAJUK_VERSION+'\n'; //$NON-NLS-1$
-            sBody += Util.getAnonymizedSystemProperties().toString()+'\n';
-            sBody += Util.getAnonymizedJajukProperties().toString()+'\n';
-            Iterator it = Log.getSpool();
-            while (it.hasNext()){
-                sBody += it.next().toString() +'\n';
+            if (jcbType.getSelectedIndex() == 0){ //bug
+                sBody += Util.getAnonymizedSystemProperties().toString()+'\n';
+                sBody += Util.getAnonymizedJajukProperties().toString()+'\n';
+                Iterator it = Log.getSpool();
+                while (it.hasNext()){
+                    sBody += it.next().toString() +'\n';
+                }
             }
             message.setBody(sBody);
             new Thread(){
