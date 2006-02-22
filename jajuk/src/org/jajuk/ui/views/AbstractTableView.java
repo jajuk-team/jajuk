@@ -383,6 +383,10 @@ public abstract class AbstractTableView extends ViewAdapter
             else if (XML_PLAY.equals(sIdentifier)){
                 col.setCellRenderer(new JajukCellRender());
             }
+            else if (XML_TRACK_RATE.equals(sIdentifier)){
+                col.setCellRenderer(new JajukCellRender());
+                col.setMinWidth(67);
+            }
         }
     }
     
