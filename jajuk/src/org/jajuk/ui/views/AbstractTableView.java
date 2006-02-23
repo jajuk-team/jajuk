@@ -51,6 +51,7 @@ import javax.swing.event.TableColumnModelListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
+import org.jajuk.base.AuthorManager;
 import org.jajuk.base.Event;
 import org.jajuk.base.File;
 import org.jajuk.base.IPropertyable;
@@ -368,13 +369,20 @@ public abstract class AbstractTableView extends ViewAdapter
     
     private void setRenderers(){
         StringBuffer sb = new StringBuffer();
-        Iterator it = ((DefaultTableColumnModelExt)jtable.getColumnModel()).getAllColumns().iterator();
+        Iterator it = ((DefaultTableColumnModelExt)jtable.getColumnModel()).getColumns(true).iterator();
         while (it.hasNext()){
             TableColumnExt col = (TableColumnExt)it.next();
             String sIdentifier = model.getIdentifier(col.getModelIndex());
             //create a combo box for styles, note that we can't add new styles dynamically
             if (XML_STYLE.equals(sIdentifier)){
                 JComboBox jcb = new JComboBox(StyleManager.getStylesList());
+                jcb.setEditable(true);
+                Configurator.enableAutoCompletion(jcb);
+                col.setCellEditor(new ComboBoxCellEditor(jcb));
+            }
+            //create a combo box for authors, note that we can't add new authors dynamically
+            if (XML_AUTHOR.equals(sIdentifier)){
+                JComboBox jcb = new JComboBox(AuthorManager.getAuthorsList());
                 jcb.setEditable(true);
                 Configurator.enableAutoCompletion(jcb);
                 col.setCellEditor(new ComboBoxCellEditor(jcb));
@@ -397,7 +405,7 @@ public abstract class AbstractTableView extends ViewAdapter
     private void hideColumns(){
         //display columns
         ArrayList al = getColumnsConf(); 
-        Iterator it = ((DefaultTableColumnModelExt)jtable.getColumnModel()).getAllColumns().iterator();
+        Iterator it = ((DefaultTableColumnModelExt)jtable.getColumnModel()).getColumns(false).iterator();
         while (it.hasNext()){
             TableColumnExt col = (TableColumnExt)it.next();
             if (!al.contains(model.getIdentifier(col.getModelIndex()))){
@@ -425,7 +433,7 @@ public abstract class AbstractTableView extends ViewAdapter
      */
     public String createColumnsConf(){
         StringBuffer sb = new StringBuffer();
-        Iterator it = ((DefaultTableColumnModelExt)jtable.getColumnModel()).getAllColumns().iterator();
+        Iterator it = ((DefaultTableColumnModelExt)jtable.getColumnModel()).getColumns(true).iterator();
         while (it.hasNext()){
             TableColumnExt col = (TableColumnExt)it.next();
             String sIdentifier = model.getIdentifier(col.getModelIndex());

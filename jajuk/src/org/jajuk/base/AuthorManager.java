@@ -21,9 +21,12 @@
 package org.jajuk.base;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.Vector;
 
 import org.jajuk.util.MD5Processor;
+import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 
 /**
@@ -34,6 +37,8 @@ import org.jajuk.util.error.JajukException;
 public class AuthorManager extends ItemManager{
 	/**Self instance*/
     private static AuthorManager singleton;
+    /*List of all known authors*/
+    public static Vector<String> authorsList;
 
 	/**
 	 * No constructor available, only static access
@@ -47,6 +52,8 @@ public class AuthorManager extends ItemManager{
         registerProperty(new PropertyMetaInformation(XML_NAME,false,true,true,true,false,String.class,null,null));
         //Expand
         registerProperty(new PropertyMetaInformation(XML_EXPANDED,false,false,false,false,true,Boolean.class,null,false));
+        //create author list
+        authorsList = new Vector(100);
 	}
     
 	/**
@@ -94,6 +101,18 @@ public class AuthorManager extends ItemManager{
 	        Author author = null;
 	        author = new Author(sId, sName);
 	        hmItems.put(sId, author);
+            //add it in styles list if new
+            boolean bNew = true;
+            for (String s:authorsList){
+                if (s.toLowerCase().equals(sName.toLowerCase())){
+                    bNew = false;
+                    break;
+                }
+            }
+            if (bNew){
+                authorsList.add(Util.formatStyle(author.getName2()));
+            }
+            Collections.sort(authorsList);
 	        return author;
 	    }
 	}
@@ -157,6 +176,16 @@ public class AuthorManager extends ItemManager{
      */
     public String getIdentifier() {
         return XML_AUTHORS;
+    }
+    
+    /**
+     * 
+     * @return authors as a string list (used for authors combos)
+     */
+    public static synchronized Vector<String> getAuthorsList() {
+        synchronized(getInstance().getLock()){
+            return authorsList;
+        }
     }
    
 }

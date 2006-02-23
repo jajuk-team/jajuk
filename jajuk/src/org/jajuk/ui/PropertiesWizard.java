@@ -51,6 +51,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import org.jajuk.Main;
+import org.jajuk.base.AuthorManager;
 import org.jajuk.base.Device;
 import org.jajuk.base.Directory;
 import org.jajuk.base.Event;
@@ -420,7 +421,7 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
                         widgets[index][1] = jtfValue;
                     }
                     else if (meta.getType().equals(String.class) 
-                            && meta.getName().equals("style")){ //for styles //$NON-NLS-1$
+                            && meta.getName().equals(XML_STYLE)){ //for styles //$NON-NLS-1$
                         Vector<String> styles = StyleManager.getStylesList();
                         final JComboBox jcb = new JComboBox(styles);
                         jcb.setEditable(true);
@@ -439,6 +440,46 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
                         }
                         jcb.setSelectedIndex(i);
                         //if different style, don't show anything
+                        if(!bAllEquals){
+                            jcb.setSelectedIndex(-1);
+                        }
+                        jcb.addActionListener(new ActionListener() {
+                            public void actionPerformed(ActionEvent arg0) {
+                                Object oValue = jcb.getSelectedItem();
+                                if (oValue == null || ((String)oValue).trim().length() == 0){//can occur during ui interaction
+                                    return;
+                                }
+                                if (((String)oValue).length() < 1){ //check that string length > 0
+                                    jcb.setSelectedIndex(-1);
+                                    Log.error("137",meta.getName(),null); //$NON-NLS-1$
+                                    Messages.showErrorMessage("137",meta.getName()); //$NON-NLS-1$
+                                    return;
+                                }
+                                hmPropertyToChange.put(meta,oValue);
+                            }
+                        });
+                        widgets[index][1] = jcb;
+                    }
+                    else if (meta.getType().equals(String.class) 
+                            && meta.getName().equals(XML_AUTHOR)){ //for authors //$NON-NLS-1$
+                        Vector<String> authors = AuthorManager.getAuthorsList();
+                        final JComboBox jcb = new JComboBox(authors);
+                        jcb.setEditable(true);
+                        Configurator.enableAutoCompletion(jcb);
+                        jcb.setPreferredSize(dim);
+                        //set current style to combo
+                        int i = -1;
+                        int comp = 0;
+                        String sCurrentAuthor = pa.getHumanValue(XML_AUTHOR);
+                        for (String s:authors){
+                            if (s.equalsIgnoreCase(sCurrentAuthor)){
+                                i = comp;
+                                break; 
+                            }
+                            comp ++;
+                        }
+                        jcb.setSelectedIndex(i);
+                        //if different author, don't show anything
                         if(!bAllEquals){
                             jcb.setSelectedIndex(-1);
                         }
