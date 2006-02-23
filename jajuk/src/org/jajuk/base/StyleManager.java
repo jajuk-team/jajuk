@@ -96,7 +96,6 @@ public class StyleManager extends ItemManager {
     public Style registerStyle(String sId, String sName) {
         synchronized(StyleManager.getInstance().getLock()){
             if (hmItems.containsKey(sId)) {
-                
                 Style style = (Style)hmItems.get(sId);
                 return style;
             }

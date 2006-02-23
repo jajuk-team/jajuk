@@ -204,7 +204,6 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
             oValues[iRow][4] = file.getTrack().getStyle().getName2();
             bCellEditable[iRow][4] = true;
             //Rate
-            //Rate
             IconLabel ilRate = null;
             long lInterval = Track.lMaxRate / 4;
             Track track = file.getTrack();

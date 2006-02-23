@@ -147,7 +147,6 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
      * @see org.jajuk.base.IPlayerImpl#setVolume(float)
      */
     public void setVolume(float fVolume) throws Exception {
-        //Log.debug("Volume= "+fVolume);
         this.fVolume = fVolume;
         player.setGain(fVolume*0.66);
         //limit gain to avoid sound issues
@@ -263,7 +262,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
             if (bFading){
                 //computes the volume we have to sub to reach zero at last progress()
                 float fVolumeStep = fadingVolume * ((float)500/iFadeDuration);
-                float fNewVolume = fVolume - (fVolumeStep/2);
+                float fNewVolume = fVolume - (fVolumeStep/2); //divide step by two to make fade softer
                 //decrease volume by n% of initial volume 
                 if (fNewVolume < 0){
                     fNewVolume = 0;
