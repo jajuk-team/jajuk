@@ -29,7 +29,7 @@
       <item name='README notes' href='./README.html' />
       <item name='FAQ' href='./faq.html' />
       <item name='Site documentation (PDF)' href='./jajuk.pdf' />
-      <item name="Get Java" href="http://www.java.com/en/download/manual.jsp" img="./images/get_java_blue-button.gif"/>
+      <item name="Get Java" href="http://java.com/java/download/index.jsp?cid=jdp77505" img="http://java.com/en/img/everywhere/getjava_med.gif?cid=jdp77505"/>
     </menu>
     <menu name='Project'>
       <item name='Team' href='./team-list.html' />      

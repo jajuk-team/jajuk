@@ -70,7 +70,6 @@ cp -rp $WEBSITE_SOURCE/screenshots $DOC_DEST
 cp -rp $DOC_SOURCE/README*.html $DOC_DEST
 
 mkdir -p $DOC_DEST/images/logos
-rm -f $DOC_DEST/images/get_java_blue-button.gif
 cp -rp $WEBSITE_SOURCE/images/* $DOC_DEST/images/
 cp -rp $WEBSITE_SOURCE/jajuk-logo.png $DOC_DEST/images/logos/ 
 
