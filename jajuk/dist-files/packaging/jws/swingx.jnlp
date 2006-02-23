@@ -5,7 +5,7 @@
         <vendor>Sun</vendor>
     </information>
     <resources>
-        <jar href="swingx-beta.jar"/>
+        <jar href="swingx-20060222.jar"/>
     </resources>
     <security> 
            <all-permissions/>
