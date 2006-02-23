@@ -1253,7 +1253,8 @@ public class Util implements ITechnicalStrings {
         param.setQuality((float)quality / 100.0f, false);
         encoder.setJPEGEncodeParam(param);
         encoder.encode(thumbImage);
-        out.close();     
+        out.close();
+        image.flush();
       }
     
     /**

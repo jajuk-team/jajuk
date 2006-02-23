@@ -314,6 +314,7 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
                     fThumb.createNewFile();
                     iNbCreatedThumbs ++;
                     if (iNbCreatedThumbs > 30){
+                        iNbCreatedThumbs = 0;
                         System.gc(); //invoke garbage collecting to avoid using too mush memory
                     }
                 }
