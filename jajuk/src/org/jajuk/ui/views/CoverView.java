@@ -786,6 +786,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                         setFoundText();
                     }
                     refreshThumbs(cover);
+                    ObservationManager.notify(new Event(EVENT_COVER_REFRESH));//add new cover in others cover views
                     InformationJPanel.getInstance().setMessage(Messages.getString("CoverView.11"),InformationJPanel.INFORMATIVE); //$NON-NLS-1$
                 }
                 catch(Exception ex){
@@ -823,6 +824,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                             alCovers.add(cover2);
                             setFoundText();
                         }
+                        ObservationManager.notify(new Event(EVENT_COVER_REFRESH));//add new cover in others cover views
                     }
                     catch(Exception ex){
                         Log.error("024",ex); //$NON-NLS-1$
