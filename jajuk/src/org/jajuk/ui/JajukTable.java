@@ -22,7 +22,6 @@ package org.jajuk.ui;
 
 import java.awt.Color;
 import java.awt.event.MouseEvent;
-import java.util.Iterator;
 
 import javax.swing.JTable;
 import javax.swing.table.TableColumnModel;
@@ -33,8 +32,6 @@ import org.jdesktop.swingx.JXTable;
 import org.jdesktop.swingx.decorator.Highlighter;
 import org.jdesktop.swingx.decorator.HighlighterPipeline;
 import org.jdesktop.swingx.decorator.RolloverHighlighter;
-import org.jdesktop.swingx.table.DefaultTableColumnModelExt;
-import org.jdesktop.swingx.table.TableColumnExt;
 
 /**
  *  JTable with followinf features: 
@@ -83,17 +80,7 @@ public class JajukTable extends JXTable implements ITechnicalStrings{
 	public JajukTable(TableModel model) {
 		this(model,true);
 	}
-    
-        
-    public void setModel(TableModel model){
-        Iterator it = ((DefaultTableColumnModelExt)getColumnModel()).getAllColumns().iterator();
-        while (it.hasNext()){
-            TableColumnExt col = (TableColumnExt)it.next();
-            removeColumn(col);
-        }
-        super.setModel(model);
-    }
-    
+   
 	/**
 	 * add tooltips to each cell
 	*/
