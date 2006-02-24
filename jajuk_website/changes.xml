@@ -5,6 +5,15 @@
     <author email='bflorat@users.sourceforge.net'>Bertrand Florat</author>
   </properties>
   <body>
+    <release version='1.1.4' date='2006-02-24' description='Fixes'>
+    	<action dev='bflorat' type='fix' issue='1437591'>Memory leak when creating thumbs [6]</action>
+    	<action dev='bflorat' type='fix' issue='1436703'>Should play mounted tracks if selection contains unmounted items [5]</action>
+    	<action dev='bflorat' type='fix' issue='1436702'>Play mounted files issue in catalog view [5]</action>
+    	<action dev='bflorat' type='fix' issue='1432496'>Wrong icon for unmounted tracks in logical table view [5]</action>
+    	<action dev='bflorat' type='fix' issue='1429652'>Volume in command panel not dynamic [5]</action>
+    	<action dev='bflorat' type='fix' issue='1437724'>New saved covers not added in others cover views [3]</action>
+    	<action dev='jespo' type='update'>Spanish and Catalan langpack update</action>
+    </release>
     <release version='1.1.3' date='2006-02-10' description='Fixes'>
     	<action dev='bflorat' type='add'>Refresh time can now be set in First time wizard</action> 
     	<action dev='bflorat' type='fix' issue='1427917'>UI freeze if line occupied (linux only) [9]</action>

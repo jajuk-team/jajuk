@@ -29,7 +29,7 @@ Option for show_trackers=1; * To show a specific Tracker instead of all
 	&amp;tracker_to_show=TRACKER_ID
 
 --><export_details>
-<time>1139600952</time>
+<time>1140822647</time>
 <project_group_id>91412</project_group_id>
 <project_unix_name>jajuk</project_unix_name>
 <exporter>bflorat</exporter>
@@ -565,6 +565,36 @@ http://www.florat.net/jajuk-specs.pdf</registration_description>
 <package_id>96449</package_id>
 <file_size>502459</file_size>
 <release_time>1139347248</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=392634</url>
+<filename>jajuk-1.1.3-1mdk.noarch.rpm</filename>
+<release_id>392634</release_id>
+<package_id>96449</package_id>
+<file_size>7021568</file_size>
+<release_time>1139605280</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=392634</url>
+<filename>jajuk-1.1.3-suse.noarch.rpm</filename>
+<release_id>392634</release_id>
+<package_id>96449</package_id>
+<file_size>7020285</file_size>
+<release_time>1139605301</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=392634</url>
+<filename>jajuk-1.1.3-win32.exe</filename>
+<release_id>392634</release_id>
+<package_id>96449</package_id>
+<file_size>9543168</file_size>
+<release_time>1139605317</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=392634</url>
+<filename>jajuk-java-installer-1.1.3.jar</filename>
+<release_id>392634</release_id>
+<package_id>96449</package_id>
+<file_size>9145296</file_size>
+<release_time>1139605330</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=392634</url>
+<filename>jajuk-sources-1.1.3.zip</filename>
+<release_id>392634</release_id>
+<package_id>96449</package_id>
+<file_size>503006</file_size>
+<release_time>1139605341</release_time>
 </filereleases>
 <docmanager>
 <docgroup>
@@ -13701,15 +13731,15 @@ times.</details>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1424203</url>
 <id>1424203</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>605778</category_id>
 <group_id>566446</group_id>
-<resolution_id>100</resolution_id>
+<resolution_id>5</resolution_id>
 <submitter>mybytes</submitter>
 <assignee>bflorat</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1139081752</submit_date>
-<close_date>0</close_date>
+<close_date>1139657266</close_date>
 <priority>5</priority>
 <summary>file parsing error: collection_exit.xml</summary>
 <details>2006/02/04 13:19:34 [ERROR] (005) Collection file
@@ -13774,6 +13804,27 @@ was quite big when I closed Jajuk, so that probably explains it.</details>
 <field_name>assigned_to</field_name>
 <old_value>100</old_value>
 <date>1139142419</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3452509</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1139657266</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3452510</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1139657266</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3452511</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1139657266</date>
 <updator>bflorat</updator>
 </history_entry>
 </history_entries>
@@ -14016,15 +14067,15 @@ double or integer fields + leave using enter key</details>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1427917</url>
 <id>1427917</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>605763</category_id>
 <group_id>566446</group_id>
 <resolution_id>100</resolution_id>
 <submitter>bflorat</submitter>
 <assignee>bflorat</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1139434653</submit_date>
-<close_date>0</close_date>
+<close_date>1139601416</close_date>
 <priority>8</priority>
 <summary>UI freeze if line occupied (linux only)</summary>
 <details>(Linux only)
@@ -14035,20 +14086,34 @@ initial startup.</details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>3451481</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1139601416</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3451482</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1139601416</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1428633</url>
 <id>1428633</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>605763</category_id>
 <group_id>566446</group_id>
 <resolution_id>100</resolution_id>
 <submitter>bflorat</submitter>
 <assignee>bflorat</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1139519373</submit_date>
-<close_date>0</close_date>
+<close_date>1139601416</close_date>
 <priority>2</priority>
 <summary>Wrong default playlist save as name</summary>
 <details>When making a save as on special playlists execpt new
@@ -14059,20 +14124,34 @@ name like &#34;bookmarks.m3u&#34;. </details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>3451479</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1139601416</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3451480</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1139601416</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1428635</url>
 <id>1428635</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>605762</category_id>
 <group_id>566446</group_id>
 <resolution_id>100</resolution_id>
 <submitter>bflorat</submitter>
 <assignee>bartcr</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1139519443</submit_date>
-<close_date>0</close_date>
+<close_date>1139601416</close_date>
 <priority>6</priority>
 <summary>New playlist not refreshed</summary>
 <details>When making a new playlist using the new playlist
@@ -14083,20 +14162,34 @@ playlist repository.</details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>3451477</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1139601416</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3451478</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1139601416</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1428695</url>
 <id>1428695</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>605762</category_id>
 <group_id>537602</group_id>
 <resolution_id>100</resolution_id>
 <submitter>bflorat</submitter>
 <assignee>bflorat</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1139523656</submit_date>
-<close_date>0</close_date>
+<close_date>1139601415</close_date>
 <priority>5</priority>
 <summary>Random playlist repository refresh errors</summary>
 <details>In some cases (like a device creation), playlist
@@ -14107,6 +14200,407 @@ concurrency between events</details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>3451475</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1139601415</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3451476</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1139601415</date>
+<updator>bflorat</updator>
+</history_entry>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1429652</url>
+<id>1429652</id>
+<status_id>2</status_id>
+<category_id>605762</category_id>
+<group_id>566446</group_id>
+<resolution_id>1</resolution_id>
+<submitter>bflorat</submitter>
+<assignee>bflorat</assignee>
+<closer>bflorat</closer>
+<submit_date>1139657371</submit_date>
+<close_date>1140822224</close_date>
+<priority>3</priority>
+<summary>Volume in command panel not dynamic</summary>
+<details>In command panel only (works in tray popup), volume
+changing is not dynamic, we have to release mouse to
+change the volume.
+
+Workaround: use the mouse wheel over the slider.
+
+Fixed in upcoming 1.1.4 or 1.2</details>
+<followups>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+<history_entry>
+<id>3482162</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1140822224</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3482163</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1140822224</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3482164</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1140822224</date>
+<updator>bflorat</updator>
+</history_entry>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1430399</url>
+<id>1430399</id>
+<status_id>2</status_id>
+<category_id>571112</category_id>
+<group_id>566446</group_id>
+<resolution_id>100</resolution_id>
+<submitter>vavilu</submitter>
+<assignee>nobody</assignee>
+<closer>vavilu</closer>
+<submit_date>1139798629</submit_date>
+<close_date>1139976619</close_date>
+<priority>5</priority>
+<summary>Infinite loop while change ID3 tags</summary>
+<details>When I selected multiple files (or even one file for
+that matter) to change tags, I wanted to skip a song so
+I click on the '&#62;&#62;' icon on the toolbar. This made the
+software go into an infinite loop about being unable to
+forward (Generally this message is displayed only once,
+but here, i had to 'end task' it to stop the message
+boxes from appearing.) Basically this made the software
+unusable since the primary window is the tag change
+box, but a 'message box' keeps coming up... </details>
+<followups>
+<followup>
+<id>1919748</id>
+<submitter>bflorat</submitter>
+<date>1139930799</date>
+<details>Logged In: YES 
+user_id=363565
+
+Sorry but I don't understand your case as it is impossible
+to click on toolbar icons when property window is displayed
+(modal window). Please provide a detailed reproduction
+procedure.</details>
+</followup>
+<followup>
+<id>1920428</id>
+<submitter>vavilu</submitter>
+<date>1139976619</date>
+<details>Logged In: YES 
+user_id=342955
+
+Frankly that was exactly the point (that one shouldn't be
+able to click on a main window button).
+
+What I also realised after submitting that this bug, was
+that the error message started coming up even when tags were
+not being changed (the error message was regarding being
+unable to forward a song, probably because of a corrupted
+mp3 encoding?).
+
+Anyways, I tried to play a lot of songs and forward rewind
+them too, but am unable to bring the same error message. I
+think for now, I'd rather mark this as resolved and get back
+on this bug when I have a reproducible error message.</details>
+</followup>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+<history_entry>
+<id>3460198</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1139976619</date>
+<updator>vavilu</updator>
+</history_entry>
+<history_entry>
+<id>3460199</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1139976619</date>
+<updator>vavilu</updator>
+</history_entry>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1430401</url>
+<id>1430401</id>
+<status_id>1</status_id>
+<category_id>605763</category_id>
+<group_id>100</group_id>
+<resolution_id>100</resolution_id>
+<submitter>vavilu</submitter>
+<assignee>bflorat</assignee>
+<closer>nobody</closer>
+<submit_date>1139798776</submit_date>
+<close_date>0</close_date>
+<priority>5</priority>
+<summary>'Report an Issue' doesnt work</summary>
+<details>Hi,
+
+I have Windows XP/Thunderbird/Jajuk 1.1.3 and tried
+twice to write a detailed report via the 'report an
+issue' wizard, but it just disappeared... 
+
+I did open Thunderbird, but the compose window was
+blank and I lost the typed report (twice!). The problem
+is that even the 'to:' field is blank so i couldn't
+send this as an email directly....
+
+</details>
+<followups>
+<followup>
+<id>1919755</id>
+<submitter>bflorat</submitter>
+<date>1139931030</date>
+<details>Logged In: YES 
+user_id=363565
+
+What do you mean by &#34;disapear&#34;? thunderbird window is
+displayed and closes afterwards ? frozen ?</details>
+</followup>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1432496</url>
+<id>1432496</id>
+<status_id>2</status_id>
+<category_id>605762</category_id>
+<group_id>566446</group_id>
+<resolution_id>1</resolution_id>
+<submitter>bflorat</submitter>
+<assignee>bflorat</assignee>
+<closer>bflorat</closer>
+<submit_date>1140040587</submit_date>
+<close_date>1140822207</close_date>
+<priority>5</priority>
+<summary>Wrong icon for unmounted tracks in logical table view</summary>
+<details>Wrong icon for unmounted tracks in logical table view</details>
+<followups>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+<history_entry>
+<id>3482159</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1140822207</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3482160</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1140822207</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3482161</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1140822207</date>
+<updator>bflorat</updator>
+</history_entry>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1436702</url>
+<id>1436702</id>
+<status_id>2</status_id>
+<category_id>605763</category_id>
+<group_id>566446</group_id>
+<resolution_id>1</resolution_id>
+<submitter>bflorat</submitter>
+<assignee>bflorat</assignee>
+<closer>bflorat</closer>
+<submit_date>1140618158</submit_date>
+<close_date>1140822186</close_date>
+<priority>5</priority>
+<summary>Play mounted files issue in catalog view</summary>
+<details>Play mounted files issue in catalog view</details>
+<followups>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+<history_entry>
+<id>3482156</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1140822186</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3482157</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1140822186</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3482158</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1140822186</date>
+<updator>bflorat</updator>
+</history_entry>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1436703</url>
+<id>1436703</id>
+<status_id>2</status_id>
+<category_id>605763</category_id>
+<group_id>566446</group_id>
+<resolution_id>1</resolution_id>
+<submitter>bflorat</submitter>
+<assignee>bflorat</assignee>
+<closer>bflorat</closer>
+<submit_date>1140618183</submit_date>
+<close_date>1140822161</close_date>
+<priority>5</priority>
+<summary>Should play mounted tracks if selection contains unmounted i</summary>
+<details>Should play mounted tracks if selection contains
+unmounted items</details>
+<followups>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+<history_entry>
+<id>3482153</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1140822161</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3482154</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1140822161</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3482155</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1140822161</date>
+<updator>bflorat</updator>
+</history_entry>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1437591</url>
+<id>1437591</id>
+<status_id>2</status_id>
+<category_id>605778</category_id>
+<group_id>566446</group_id>
+<resolution_id>1</resolution_id>
+<submitter>bflorat</submitter>
+<assignee>bflorat</assignee>
+<closer>bflorat</closer>
+<submit_date>1140718674</submit_date>
+<close_date>1140822134</close_date>
+<priority>6</priority>
+<summary>Memory leak when creating thumbs</summary>
+<details>Category view: we observe a memory leak when creating
+thumbs</details>
+<followups>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+<history_entry>
+<id>3482150</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1140822134</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3482151</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1140822134</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3482152</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1140822134</date>
+<updator>bflorat</updator>
+</history_entry>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1437724</url>
+<id>1437724</id>
+<status_id>2</status_id>
+<category_id>605763</category_id>
+<group_id>566446</group_id>
+<resolution_id>1</resolution_id>
+<submitter>bflorat</submitter>
+<assignee>bflorat</assignee>
+<closer>bflorat</closer>
+<submit_date>1140731746</submit_date>
+<close_date>1140822098</close_date>
+<priority>3</priority>
+<summary>New saved covers not added in others cover views</summary>
+<details>Adding a cover by default or save button in a cover
+view is not reflected immediatly in others cover views</details>
+<followups>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+<history_entry>
+<id>3482147</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1140822098</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3482148</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1140822098</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3482149</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1140822098</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 </tracker_items>
@@ -15727,6 +16221,38 @@ Arnaud</details>
 <date>1135130051</date>
 <updator>bflorat</updator>
 </history_entry>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1434149</url>
+<id>1434149</id>
+<status_id>1</status_id>
+<category_id>100</category_id>
+<group_id>100</group_id>
+<submitter>nobody</submitter>
+<assignee>nobody</assignee>
+<closer>nobody</closer>
+<submit_date>1140271918</submit_date>
+<close_date>0</close_date>
+<priority>5</priority>
+<summary>Can't find some options...</summary>
+<details>Hello, and first of all, thanks for this great program!!! 
+I'm running under Debian etch and i've got some
+problems with tags. I've read that jajuk can't modify
+some of them. That's not terrible, i've downloaded
+another program to modify them. But i would like to
+&#34;Perform a deep tag scan&#34; but i definitely can't find
+this option in jajuk! 
+Is that a bug? With Jajuk? Java (1.5.0)? 
+Thanks in advance...
+
+PS : this is a copy of a previous message posted in a
+wrong section of the forum... sorry for that!</details>
+<followups>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
 </history_entries>
 </tracker_item>
 </tracker_items>
@@ -19108,6 +19634,85 @@ user_id=363565
 1) OK we will try to do for 1.2
 2) This looks like a pretty good idea, we will try to
 implement it for 1.2</details>
+</followup>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1430405</url>
+<id>1430405</id>
+<status_id>1</status_id>
+<category_id>571115</category_id>
+<group_id>100</group_id>
+<submitter>vavilu</submitter>
+<assignee>nobody</assignee>
+<closer>nobody</closer>
+<submit_date>1139798955</submit_date>
+<close_date>0</close_date>
+<priority>5</priority>
+<summary>Could 'Device' have the actual folder name?</summary>
+<details>Hi,
+
+It would be a real real big help if the 'Device' column
+could have the 'actual' folder rather than the 'source'
+folder that I specified during a search...
+
+This helps if I have a complete song selection in a
+'songs' folder and am able to track a song down in case
+i need to from the playlist...
+
+thanks</details>
+<followups>
+<followup>
+<id>1919744</id>
+<submitter>bflorat</submitter>
+<date>1139930552</date>
+<details>Logged In: YES 
+user_id=363565
+
+Sorry but I don't see what your mean. Do you mean you want
+to see files absolute path in the physical table ?</details>
+</followup>
+<followup>
+<id>1919775</id>
+<submitter>vavilu</submitter>
+<date>1139932956</date>
+<details>Logged In: YES 
+user_id=342955
+
+Yes. Effectively that is what I meant.
+
+It would be helpful if the 'device' column could show the
+absolute path.</details>
+</followup>
+<followup>
+<id>1920542</id>
+<submitter>nobody</submitter>
+<date>1139991719</date>
+<details>Logged In: NO 
+
+I can't do that as a device is identified by its name and 
+bacause devices full path would take too mush column space 
+but what I can do is to add an optional column with file's 
+directory full path. This can be done for upcoming 1.2.</details>
+</followup>
+<followup>
+<id>1920923</id>
+<submitter>vavilu</submitter>
+<date>1140019447</date>
+<details>Logged In: YES 
+user_id=342955
+
+Nothing like it !!
+
+If there could be an additional column (even if its
+optional), which could provide the file's full path, it
+would be really helpful in tracking down the file.
+
+Thanks :)</details>
 </followup>
 </followups>
 <attachments>
