@@ -881,17 +881,14 @@ ActionListener, Observer {
                 				if (filetypename.equals("xml")) {
                 					String result = "";
                 					if (e.getSource() == jmiStyleExport) {
-                						Style style = ((StyleNode)paths[0].getLastPathComponent()).getStyle();         				
+                						Style style = ((StyleNode)paths[0].getLastPathComponent()).getStyle();                    						                		
                 						result = xmlexporter.styleToXML(style);	
-                					} else if (e.getSource() == jmiAuthorExport) {                	
-                						Style style = ((StyleNode)paths[0].getParentPath().getLastPathComponent()).getStyle();
-                						Author author = ((AuthorNode)paths[0].getLastPathComponent()).getAuthor();
-                						result = xmlexporter.authorToXML(author, style);
-                					} else if (e.getSource() == jmiAlbumExport) { 
-                						Style style = ((StyleNode)paths[0].getParentPath().getParentPath().getLastPathComponent()).getStyle();
-                						Author author = ((AuthorNode)paths[0].getParentPath().getLastPathComponent()).getAuthor();
+                					} else if (e.getSource() == jmiAuthorExport) {                	                						
+                						Author author = ((AuthorNode)paths[0].getLastPathComponent()).getAuthor();                						
+                						result = xmlexporter.authorToXML(author);
+                					} else if (e.getSource() == jmiAlbumExport) {                 						
                 						Album album = ((AlbumNode)paths[0].getLastPathComponent()).getAlbum();
-                						result = xmlexporter.albumToXML(album, author, style);
+                						result = xmlexporter.albumToXML(album);
                 					}
                 					xmlexporter.commit(filepath, result);
                 				}
