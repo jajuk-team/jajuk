@@ -24,6 +24,9 @@ import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.base.Device;
 import org.jajuk.base.Directory;
 import org.jajuk.base.DirectoryManager;
+import org.jajuk.base.IPropertyable;
+import org.jajuk.base.TrackManager;
+import org.jajuk.base.TrackComparator;
 import org.jajuk.base.File;
 import org.jajuk.base.Track;
 import org.jajuk.base.Style;
@@ -34,6 +37,7 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.StringBuffer;
+import java.util.Collections;
 import java.util.ListIterator;
 import java.util.Iterator;
 import java.util.ArrayList;
@@ -122,8 +126,8 @@ public class XMLExporter implements ITechnicalStrings {
 		StringBuffer sb = new StringBuffer();
 		
 		// Retrieve child directories of current directory and gather information on them.
-		ArrayList directories = dir.getDirectories();
-		Iterator itr1 = directories.iterator();
+		ArrayList alDirectories = dir.getDirectories();
+		Iterator itr1 = alDirectories.iterator();
 		while (itr1.hasNext()) {
 			Directory directory = (Directory)itr1.next();
 			sb.append(createTabs(level) + "<" + dir.getIdentifier() + ">\n");	
@@ -135,8 +139,8 @@ public class XMLExporter implements ITechnicalStrings {
 		}
 		
 		// Retrieve child files of current directory and gather information on them.
-		Set files = dir.getFiles();
-		Iterator itr2 = files.iterator();
+		Set fFiles = dir.getFiles();
+		Iterator itr2 = fFiles.iterator();
 		while (itr2.hasNext()) {
 			File file = (File)itr2.next();
 			sb.append(createTabs(level) + "<" + file.getIdentifier() + ">\n");
@@ -167,18 +171,20 @@ public class XMLExporter implements ITechnicalStrings {
 	 * @return xml for style
 	 */
 	public String styleToXML(Style style) {
-		ArrayList tracks = style.getTracksRecursively();		// Retrieve all tracks of style
+		ArrayList alTracks = style.getTracksRecursively();		// Retrieve all tracks of style
 		Track track = null;
 		Track previoustrack = null;
 		StringBuffer sb = new StringBuffer();
 		
+		Collections.sort(alTracks, new TrackComparator(0));
+		
 		sb.append("<" + style.getIdentifier() + ">\n");
 		sb.append(createTabs(1) + "<name>" + style.getName2() + "</name>\n");
 		
-		ListIterator itr1 = tracks.listIterator();
+		ListIterator itr1 = alTracks.listIterator();
 		while (itr1.hasNext()) {	
 			if (itr1.hasPrevious()) {
-				previoustrack = (Track)tracks.get(itr1.previousIndex());
+				previoustrack = (Track)alTracks.get(itr1.previousIndex());
 				track = (Track)itr1.next();	
 				// Check if current author is same as the previous author
 				if (previoustrack.getAuthor().getId().equals(track.getAuthor().getId())) {
@@ -256,71 +262,72 @@ public class XMLExporter implements ITechnicalStrings {
 	 * @param style
 	 * @return xml for author
 	 */
-	public String authorToXML(Author author, Style style) {
-		ArrayList styletracklist = style.getTracksRecursively();		// Retrieve all tracks of style of the author.
-		ArrayList<Track> authortracklist = new ArrayList<Track>();
+	public String authorToXML(Author author) {				
+		ArrayList<Track> alAuthorTrackList;
 		Track track = null;
 		Track previoustrack = null;
 		StringBuffer sb = new StringBuffer();
 		
-		// Retrieve all tracks from track list of style that are of the author.
-		ListIterator itr1 = styletracklist.listIterator();
-		while (itr1.hasNext()) {
-			track = (Track)itr1.next();
-			if (track.getAuthor().getId().equals(author.getId())) {
-				authortracklist.add(track);
-			}
+		// Retrieve tracks belonging to author
+		synchronized (TrackManager.getInstance().getLock()) {
+			alAuthorTrackList = new ArrayList<Track>(20);
+			
+            for (IPropertyable item:TrackManager.getInstance().getItems()){
+                track = (Track)item;
+                if (track.getAuthor().getId().equals(author.getId())) {
+                	alAuthorTrackList.add(track);
+                }
+            }			
 		}
 		
-		sb.append("<" + style.getIdentifier() + ">\n");
-		sb.append(createTabs(1) + "<name>" + style.getName2() + "</name>\n");
-		sb.append(createTabs(1) + "<" + author.getIdentifier() + ">\n");
-		sb.append(createTabs(2) + "<name>" + author.getName2() + "</name>\n");
+		Collections.sort(alAuthorTrackList, new TrackComparator(0));
 		
-		itr1 = authortracklist.listIterator();
+		sb.append("<" + author.getIdentifier() + ">\n");
+		sb.append(createTabs(1) + "<name>" + author.getName2() + "</name>\n");
+		
+		ListIterator itr1 = alAuthorTrackList.listIterator();
 		while (itr1.hasNext()) {
 			if (itr1.hasPrevious()) {
-				previoustrack = (Track)authortracklist.get(itr1.previousIndex());
+				previoustrack = (Track)alAuthorTrackList.get(itr1.previousIndex());
 				track = (Track)itr1.next();
 				// Check if current album is same as previous.
 				if (previoustrack.getAlbum().getId().equals(track.getAlbum().getId())) {
 					// Gather current track information.
-					sb.append(createTabs(3) + "<" + track.getIdentifier() + ">\n");
-					sb.append(createTabs(4) + "<name>" + track.getName() + "</name>\n");
-					sb.append(createTabs(4) + "<length>" + track.getLength() + "</length>\n");
-					sb.append(createTabs(4) + "<rate>" + track.getRate() + "</rate>\n");
-					sb.append(createTabs(4) + "<comment>" + track.getValue(XML_TRACK_COMMENT) + "</comment>\n");
-					sb.append(createTabs(4) + "<order>" + track.getValue(XML_TRACK_ORDER) + "</order>\n");
-					sb.append(createTabs(3) + "</" + track.getIdentifier() + ">\n");					
+					sb.append(createTabs(2) + "<" + track.getIdentifier() + ">\n");
+					sb.append(createTabs(3) + "<name>" + track.getName() + "</name>\n");
+					sb.append(createTabs(3) + "<length>" + track.getLength() + "</length>\n");
+					sb.append(createTabs(3) + "<rate>" + track.getRate() + "</rate>\n");
+					sb.append(createTabs(3) + "<comment>" + track.getValue(XML_TRACK_COMMENT) + "</comment>\n");
+					sb.append(createTabs(3) + "<order>" + track.getValue(XML_TRACK_ORDER) + "</order>\n");
+					sb.append(createTabs(2) + "</" + track.getIdentifier() + ">\n");					
 				} else {
 					// Gather current album and track information.
-					sb.append(createTabs(2) + "</" + track.getAlbum().getIdentifier() + ">\n");
-					sb.append(createTabs(2) + "<" + track.getAlbum().getIdentifier() + ">\n");
-					sb.append(createTabs(3) + "<name>" + track.getAlbum().getName2() + "</name>\n");
-					sb.append(createTabs(3) + "<" + track.getIdentifier() + ">\n");
-					sb.append(createTabs(4) + "<name>" + track.getName() + "</name>\n");
-					sb.append(createTabs(4) + "<length>" + track.getLength() + "</length>\n");
-					sb.append(createTabs(4) + "<rate>" + track.getRate() + "</rate>\n");
-					sb.append(createTabs(4) + "<comment>" + track.getValue(XML_TRACK_COMMENT) + "</comment>\n");
-					sb.append(createTabs(4) + "<order>" + track.getValue(XML_TRACK_ORDER) + "</order>\n");
-					sb.append(createTabs(3) + "</" + track.getIdentifier() + ">\n");
+					sb.append(createTabs(1) + "</" + track.getAlbum().getIdentifier() + ">\n");
+					sb.append(createTabs(1) + "<" + track.getAlbum().getIdentifier() + ">\n");
+					sb.append(createTabs(2) + "<name>" + track.getAlbum().getName2() + "</name>\n");
+					sb.append(createTabs(2) + "<" + track.getIdentifier() + ">\n");
+					sb.append(createTabs(3) + "<name>" + track.getName() + "</name>\n");
+					sb.append(createTabs(3) + "<length>" + track.getLength() + "</length>\n");
+					sb.append(createTabs(3) + "<rate>" + track.getRate() + "</rate>\n");
+					sb.append(createTabs(3) + "<comment>" + track.getValue(XML_TRACK_COMMENT) + "</comment>\n");
+					sb.append(createTabs(3) + "<order>" + track.getValue(XML_TRACK_ORDER) + "</order>\n");
+					sb.append(createTabs(2) + "</" + track.getIdentifier() + ">\n");
 					
 				}
 			} else {
 				// Executed for first track only.
 				track = (Track)itr1.next();
-				sb.append(createTabs(2) + "<" + track.getAlbum().getIdentifier() + ">\n");
-				sb.append(createTabs(3) + "<name>" + track.getAlbum().getName2() + "</name>\n");
+				sb.append(createTabs(1) + "<" + track.getAlbum().getIdentifier() + ">\n");
+				sb.append(createTabs(2) + "<name>" + track.getAlbum().getName2() + "</name>\n");
 			}
 			
 			//	Make sure the last album or author gets included.
 			if (!itr1.hasNext()) {
-				sb.append(createTabs(2) + "</" + track.getAlbum().getIdentifier() + ">\n");
+				sb.append(createTabs(1) + "</" + track.getAlbum().getIdentifier() + ">\n");
 			}
 		}
 	
-		sb.append(createTabs(1) + "</" + author.getIdentifier() + ">\n");
-		sb.append("</" + style.getIdentifier() + ">\n");
+		sb.append("</" + author.getIdentifier() + ">\n");
 		
 		return sb.toString();
 	}
@@ -332,21 +339,33 @@ public class XMLExporter implements ITechnicalStrings {
 	 * @param style
 	 * @return xml of album
 	 */
-	public String albumToXML(Album album, Author author, Style style) {
-		ArrayList styletracklist = style.getTracksRecursively();		// Retrieve all tracks of style of the album
-		ArrayList<Track> albumtracklist = new ArrayList<Track>();
+	public String albumToXML(Album album) {
+		ArrayList<Track> alAlbumTrackList;
 		Track track = null;
+		Author author = null;
+		Style style = null;
 		StringBuffer sb = new StringBuffer();
 		
-		//	Retrieve all tracks from track list of style that are of the album. 
-		ListIterator itr1 = styletracklist.listIterator();
-		while (itr1.hasNext()) {
-			track = (Track)itr1.next();
-			if (track.getAlbum().getId().equals(album.getId())) {
-				albumtracklist.add(track);
+		synchronized (TrackManager.getInstance().getLock()) {
+			alAlbumTrackList = new ArrayList<Track>(20);
+			
+			for (IPropertyable item:TrackManager.getInstance().getItems()) {
+				track = (Track)item;
+				
+				if (track.getAlbum().getId().equals(album.getId())) {
+					alAlbumTrackList.add(track);
+				}
 			}
 		}
-				
+		
+		Collections.sort(alAlbumTrackList, new TrackComparator(0));
+		
+		// If alAlbumTrackList is not empty then find the the style and author of this album.
+		if (alAlbumTrackList.size() != 0) {
+			author = alAlbumTrackList.get(0).getAuthor();
+			style = alAlbumTrackList.get(0).getStyle();
+		}
+			
 		sb.append("<" + style.getIdentifier() + ">\n");
 		sb.append(createTabs(1) + "<name>" + style.getName2() + "</name>\n");
 		sb.append(createTabs(1) + "<" + author.getIdentifier() + ">\n");
@@ -354,10 +373,10 @@ public class XMLExporter implements ITechnicalStrings {
 		sb.append(createTabs(2) + "<" + album.getIdentifier() + ">\n");
 		sb.append(createTabs(3) + "<name>" + album.getName2() + "</name>\n");
 		
-		itr1 = albumtracklist.listIterator();
+		ListIterator itr1 = alAlbumTrackList.listIterator();
 		while (itr1.hasNext()) {
 			if (itr1.hasPrevious()) {
-				// Retreive track information.
+				// Retrieve track information.
 				track = (Track)itr1.next();
 				
 				sb.append(createTabs(3) + "<" + track.getIdentifier() + ">\n");
@@ -381,9 +400,9 @@ public class XMLExporter implements ITechnicalStrings {
 			}
 		}
 		
-		sb.append(createTabs(2) + "<" + album.getIdentifier() + ">\n");
-		sb.append(createTabs(1) + "<" + author.getIdentifier() + ">\n");
-		sb.append("<" + style.getIdentifier() + ">\n");
+		sb.append(createTabs(2) + "</" + album.getIdentifier() + ">\n");
+		sb.append(createTabs(1) + "</" + author.getIdentifier() + ">\n");
+		sb.append("</" + style.getIdentifier() + ">\n");
 		
 		return sb.toString();
 	}
