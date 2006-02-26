@@ -111,7 +111,7 @@ public class DeviceManager extends ItemManager{
      *@return device 
      */
     public Device registerDevice(String sName,long lDeviceType,String sUrl){
-        String sId = getID(sUrl,sName,lDeviceType);
+        String sId = getID(sName);
         return registerDevice(sId,sName,lDeviceType,sUrl);
     }
     
@@ -122,7 +122,9 @@ public class DeviceManager extends ItemManager{
      */
     public Device registerDevice(String sId,String sName,long lDeviceType,String sUrl){
         synchronized(DeviceManager.getInstance().getLock()){
-            Device device = new Device(sId,sName,lDeviceType,sUrl);
+            Device device = new Device(sId,sName);
+            device.setProperty(XML_TYPE, lDeviceType);
+            device.setUrl(sUrl);
             hmItems.put(sId,device);
             return device;
         }
@@ -130,13 +132,11 @@ public class DeviceManager extends ItemManager{
     
     /**
      * Process to compute a device id
-     * @param sUrl
      * @param sName
-     * @param iDeviceType
      * @return An id
      */
-    private String getID(String sUrl,String sName,long lDeviceType){
-        return MD5Processor.hash(sUrl+ sName+lDeviceType); //reprocess id;
+    protected static String getID(String sName){
+        return MD5Processor.hash(sName); //reprocess id;
     }
     
     
@@ -146,15 +146,20 @@ public class DeviceManager extends ItemManager{
      * @param iDeviceType
      * @param sUrl
      * @param sMountPoint
+     * @param bNew: is it a new device ?
      * @return 0:ok or error code 
      */
-    public String checkDeviceAvailablity(String sName,int iDeviceType,String sUrl,String sMountPoint){
+    public String checkDeviceAvailablity(String sName,int iDeviceType,String sUrl,String sMountPoint,boolean bNew){
         synchronized(DeviceManager.getInstance().getLock()){
             //check name and path
             Iterator it = hmItems.values().iterator();
             while (it.hasNext()){
                 Device deviceToCheck = (Device)it.next();
-                if ( sName.toLowerCase().equals(deviceToCheck.getName().toLowerCase())){
+                //if we check an existing device, do not compare it with itself ...
+                if (!bNew && deviceToCheck.getName().equals(deviceToCheck.getName())){
+                    continue;
+                }
+                if ( bNew && (sName.toLowerCase().equals(deviceToCheck.getName().toLowerCase()))){
                     return "019" ; //$NON-NLS-1$
                 }
                 String sUrlChecked = deviceToCheck.getUrl();
@@ -178,7 +183,7 @@ public class DeviceManager extends ItemManager{
                 //test directory is available
                 File file = new File(sUrl);
                 if ( !file.exists() || !file.canRead()){ //see if the url exists and is readable
-                    return "101"; //$NON-NLS-1$
+                    return "143"; //$NON-NLS-1$
                 }
             }
             return "0"; //$NON-NLS-1$

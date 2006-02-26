@@ -155,12 +155,11 @@ public class FileManager extends ItemManager implements Observer{
      * @param dir
      * @return file ID
      */
-    protected static String getID(String sName,Device device,Directory dir){
+    protected static String getID(String sName,Directory dir){
         return MD5Processor.hash(
-            new StringBuffer(device.getName()).
-            append(device.getUrl()).
+            new StringBuffer(dir.getDevice().getName()).
             append(dir.getRelativePath()).
-            append(sName).toString().toString());
+            append(sName).toString());
     }
     
     /**

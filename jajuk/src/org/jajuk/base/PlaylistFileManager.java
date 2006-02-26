@@ -84,7 +84,7 @@ public class PlaylistFileManager extends ItemManager implements Observer{
      */
     protected static String getID(String sName,Directory dParentDirectory){
         return MD5Processor.hash(new StringBuffer(
-            dParentDirectory.getDevice().getUrl()).
+            dParentDirectory.getDevice().getName()).
             append(dParentDirectory.getRelativePath()).
             append(sName).toString());
     }

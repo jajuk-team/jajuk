@@ -70,6 +70,12 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
     private HashMap<String,String> hmWrongRightAuthorID= new HashMap();
     /**upgrade for style IDs*/
     private HashMap<String,String> hmWrongRightStyleID = new HashMap();
+    /**upgrade for device IDs*/
+    private HashMap<String,String> hmWrongRightDeviceID = new HashMap();
+    /**upgrade for directory IDs*/
+    private HashMap<String,String> hmWrongRightDirectoryID = new HashMap();
+    /**upgrade for playlist file IDs*/
+    private HashMap<String,String> hmWrongRightPlaylistFileID = new HashMap();
     /**Garbager activity flag*/
     private static volatile boolean bGarbaging = false;
     /**Auto commit thread*/
@@ -371,10 +377,17 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
                 String sId = attributes.getValue(attributes.getIndex(XML_ID));
                 String sItemName = attributes.getValue(attributes.getIndex(XML_NAME));
                 long lType=  Long.parseLong(attributes.getValue(attributes.getIndex(XML_TYPE)));
+                //UPGRADE --For jajuk < 1.2 id changed
+                String sRightID = DeviceManager.getID(sItemName);
                 String sURL = attributes.getValue(attributes.getIndex(XML_URL));
-                device = DeviceManager.getInstance().registerDevice(sId, sItemName,lType,sURL);
+                device = DeviceManager.getInstance().registerDevice(sRightID, sItemName,lType,sURL);
                 if (device != null){
                     device.populateProperties(attributes);
+                }
+                //display a message if Id had a problem
+                if (!sId.equals(sRightID)){
+                    Log.debug("** Wrong device Id, upgraded: " +device); //$NON-NLS-1$
+                    hmWrongRightDeviceID.put(sId,sRightID);
                 }
             }
             else if (XML_STYLE.equals(sQName)){
@@ -499,21 +512,40 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
             else if (XML_DIRECTORY.equals(sQName)){
                 Directory dParent = null;
                 String sParentId = attributes.getValue(attributes.getIndex(XML_DIRECTORY_PARENT));
+                //UPGRADE --For jajuk < 1.2 id changed
+                if (hmWrongRightDirectoryID.size() > 0){
+                    if (hmWrongRightDirectoryID.containsKey(sParentId)){
+                        sParentId = hmWrongRightDirectoryID.get(sParentId);                    
+                    }
+                }
                 if (!"-1".equals(sParentId)) { //$NON-NLS-1$
                     dParent = (Directory)DirectoryManager.getInstance().getItem(sParentId); //Parent directory should be already referenced because of order conservation
-                    if (dParent == null){ //check directory is exists
+                    if (dParent == null){ //check parent directory exists
                         return;
                     }				
                 }
-                String sDevice = attributes.getValue(attributes.getIndex(XML_DEVICE));
-                Device device = (Device)DeviceManager.getInstance().getItem(sDevice);
+                String sDeviceID = attributes.getValue(attributes.getIndex(XML_DEVICE));
+                //take upgraded device ID if needed
+                if (hmWrongRightDeviceID.size()>0){
+                    if (hmWrongRightDeviceID.containsKey(sDeviceID)){
+                        sDeviceID = hmWrongRightDeviceID.get(sDeviceID);
+                    }
+                }
+                Device device = (Device)DeviceManager.getInstance().getItem(sDeviceID);
                 if (device == null){ //check device exists
                     return;
                 }
-                String sID = attributes.getValue(attributes.getIndex(XML_ID));
                 String sItemName = attributes.getValue(attributes.getIndex(XML_NAME));
-                Directory directory = DirectoryManager.getInstance().registerDirectory(sID, sItemName,dParent,device);
+                String sID = attributes.getValue(attributes.getIndex(XML_ID));
+                //UPGRADE --For jajuk < 1.2 id changed
+                String sRightID = DirectoryManager.getID(sItemName,device,dParent);
+                Directory directory = DirectoryManager.getInstance().registerDirectory(sRightID, sItemName,dParent,device);
                 directory.populateProperties(attributes);
+                //display a message if Id had a problem
+                if (!sID.equals(sRightID)){
+                    Log.debug("** Wrong directory Id, upgraded: " +directory); //$NON-NLS-1$
+                    hmWrongRightDirectoryID.put(sID,sRightID);
+                }
             }
             else if (XML_FILE.equals(sQName)){
                 String sTrackId = attributes.getValue(attributes.getIndex(XML_TRACK));
@@ -525,7 +557,15 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
                     }
                 }
                 Track track = (Track)TrackManager.getInstance().getItem(sTrackId);
-                Directory dParent = (Directory)DirectoryManager.getInstance().getItem(attributes.getValue(attributes.getIndex(XML_DIRECTORY)));
+                String sParentID = attributes.getValue(attributes.getIndex(XML_DIRECTORY)); 
+                //UPGRADE check parent ID is right
+                if (hmWrongRightDirectoryID.size() > 0){
+                    //replace wrong by right ID
+                    if (hmWrongRightDirectoryID.containsKey(sParentID)){
+                        sParentID = (String)hmWrongRightDirectoryID.get(sParentID);
+                    }
+                }
+                Directory dParent = (Directory)DirectoryManager.getInstance().getItem(sParentID);
                 if (dParent == null || track == null){ //more checkups
                     return;
                 }
@@ -542,21 +582,81 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
                     }
                 }
                 String sID = attributes.getValue(attributes.getIndex(XML_ID)); 
-                org.jajuk.base.File file = FileManager.getInstance().registerFile(sID, sItemName, dParent, track, lSize, lQuality);
+                //UPGRADE --For jajuk < 1.2 id changed
+                String sRightID = FileManager.getID(sItemName,dParent);
+                org.jajuk.base.File file = FileManager.getInstance().registerFile(sRightID, sItemName, dParent, track, lSize, lQuality);
                 file.populateProperties(attributes);
+                //display a message if Id had a problem
+                if (!sID.equals(sRightID)){
+                    Log.debug("** Wrong file Id, upgraded: " +file); //$NON-NLS-1$
+                }
+                /*Test
+                // create AFE application object
+                AFE afe = new AFE();
+                
+                // init log4j but not the database
+                afe.setDatabase(false);
+                afe.init();
+                
+                // audio feature definition to extract
+                Feature feature = AFE.getFeatureFromFile("musicminer-0.9.0");
+                
+                // variant: if musicminer database is available
+                //Feature feature = FeatureFactory.findByName("musicminer");
+                
+                // init Yale experiment
+                Experiment exp = afe.initExperiment(feature);
+                
+                // seconds of audio data to use
+                int seconds = 10;
+                
+                // for all songs
+                DoubleMatrix2D data = null;
+                
+                // convert audio file from command line to Yale input
+                File tmp = afe.audioToYale(file.getAbsolutePath(), seconds);
+                
+                // run feature extraction on this file
+                DoubleMatrix2D row = afe.yaleToFeatures(exp, tmp, seconds);
+                
+                // initializa matrix if not done
+                if (data == null) {
+                    data = new DenseDoubleMatrix2D(0,row.columns());
+                }
+                data.viewPart(0, 0, 1, row.columns()).assign(row);
+                
+                // normalize result (important!)
+                AFE.normalize(data);
+                
+                // output result
+                System.out.println(data);*/
             }
             else if (XML_PLAYLIST_FILE.equals(sQName)){
-                String sDir = attributes.getValue(attributes.getIndex(XML_DIRECTORY));
-                Directory dParent = (Directory)DirectoryManager.getInstance().getItem(sDir);
+                String sParentID = attributes.getValue(attributes.getIndex(XML_DIRECTORY)); 
+                //UPGRADE check parent ID is right
+                if (hmWrongRightDirectoryID.size() > 0){
+                    //replace wrong by right ID
+                    if (hmWrongRightDirectoryID.containsKey(sParentID)){
+                        sParentID = (String)hmWrongRightDirectoryID.get(sParentID);
+                    }
+                }
+                Directory dParent = (Directory)DirectoryManager.getInstance().getItem(sParentID);
                 if (dParent == null){ //check directory is exists
                     return;
                 }
                 String sID= attributes.getValue(attributes.getIndex(XML_ID));
                 String sItemName= attributes.getValue(attributes.getIndex(XML_NAME));
-                PlaylistFile plf = PlaylistFileManager.getInstance().registerPlaylistFile(sID,sItemName,dParent);
+                //UPGRADE --For jajuk < 1.2 id changed
+                String sRightID = PlaylistFileManager.getID(sItemName,dParent);
+                PlaylistFile plf = PlaylistFileManager.getInstance().registerPlaylistFile(sRightID,sItemName,dParent);
                 if (plf != null){
                     plf.populateProperties(attributes);
                     dParent.addPlaylistFile(plf);
+                }
+                //display a message if Id had a problem
+                if (!sID.equals(sRightID)){
+                    Log.debug("** Wrong playlist file Id, upgraded: " +plf); //$NON-NLS-1$
+                    hmWrongRightPlaylistFileID.put(sID,sRightID);
                 }
             }
             else if (XML_PLAYLIST.equals(sQName)){
@@ -565,7 +665,15 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
                 Playlist playlist = null;
                 if (st.hasMoreTokens()) { //if none mapped file, ignore it so it will be removed at next commit
                     do{
-                        PlaylistFile plFile = (PlaylistFile)PlaylistFileManager.getInstance().getItem((String) st.nextElement());
+                        String sPlaylistFileID = (String) st.nextElement();
+                        //UPGRADE check parent ID is right
+                        if (hmWrongRightPlaylistFileID.size() > 0){
+                            //replace wrong by right ID
+                            if (hmWrongRightPlaylistFileID.containsKey(sPlaylistFileID)){
+                                sPlaylistFileID = (String)hmWrongRightPlaylistFileID.get(sPlaylistFileID);
+                            }
+                        }
+                        PlaylistFile plFile = (PlaylistFile)PlaylistFileManager.getInstance().getItem(sPlaylistFileID);
                         if (plFile != null){
                             playlist = PlaylistManager.getInstance().registerPlaylist(plFile);
                         }

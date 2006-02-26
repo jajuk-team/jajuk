@@ -169,12 +169,13 @@ public class File extends PropertyAdapter implements Comparable,ITechnicalString
 	 * @return String
 	 */
 	public String getAbsolutePath(){
-		if (sAbs!=null){
+		if (sAbs != null){
 			return sAbs;
 		}
-		Directory dCurrent = getDirectory();
-		StringBuffer sbOut = new StringBuffer(getDirectory().getDevice().getUrl())
-			.append(dCurrent.getRelativePath()).append(java.io.File.separatorChar).append(this.getName());
+		StringBuffer sbOut = new StringBuffer(getDevice().getUrl())
+			.append(getDirectory().getRelativePath()).
+            append(java.io.File.separatorChar).
+            append(this.getName());
 		sAbs = sbOut.toString();
 		return sAbs;
 	}
@@ -322,6 +323,12 @@ public class File extends PropertyAdapter implements Comparable,ITechnicalString
             bNeedRefresh = false;
         }
         return this.sAny;
+    }
+    
+    /**Reset pre-calculated paths**/
+    protected void reset(){
+        sAbs = null;
+        fio = null;
     }
   
 }

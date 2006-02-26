@@ -276,7 +276,7 @@ public class Directory extends PropertyAdapter implements Comparable{
                 }
                 boolean bIsMusic = (Boolean)TypeManager.getInstance().getTypeByExtension(Util.getExtension(files[i])).getValue(XML_TYPE_IS_MUSIC);
                 if (bIsMusic) {
-                    String sId = FileManager.getID(files[i].getName(),device,this);
+                    String sId = FileManager.getID(files[i].getName(),this);
                     //check the file is not already known in database
                     org.jajuk.base.File fileRef = (org.jajuk.base.File)FileManager.getInstance().getItem(sId);
                     //if known file and no deep scan, just leave

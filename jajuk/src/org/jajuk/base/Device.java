@@ -48,9 +48,7 @@ import org.xml.sax.Attributes;
  */
 public class Device extends PropertyAdapter implements ITechnicalStrings, Comparable{
     
-    /**Device type id*/
-    long lDeviceType;
-    /**Device url**/
+    /**Device URL (used for perfs)*/
     private String sUrl;
     /** IO file for optimizations* */
     private java.io.File fio;
@@ -90,13 +88,8 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
      * @param iDeviceType
      * @param sUrl
      */
-    public Device(String sId, String sName, long lDeviceType, String sUrl) {
+    public Device(String sId, String sName) {
         super(sId,sName);
-        this.lDeviceType = lDeviceType;
-        setProperty(XML_TYPE,lDeviceType);
-        this.sUrl = sUrl;
-        setProperty(XML_URL,sUrl);
-        this.fio = new File(getUrl());
     }
     
     /* (non-Javadoc)
@@ -111,7 +104,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
      */
     public String toString() {
         return "Device[ID=" + sId + " Name=" + sName + " Type=" + 
-        DeviceManager.getInstance().getDeviceType(lDeviceType) +
+        DeviceManager.getInstance().getDeviceType(getLongValue(XML_TYPE)) +
         " URL=" + sUrl+ " Mount point="+sMountPoint + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$ //$NON-NLS-6$
     }
     
@@ -241,7 +234,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
             if (bDeepScan && Log.isDebugEnabled()){
                 Log.debug("Starting refresh of device : "+this); //$NON-NLS-1$    
             }
-            File fTop = new File(sUrl);
+            File fTop = new File(getStringValue(XML_URL));
             if (!fTop.exists()) {
                 Messages.showErrorMessage("101"); //$NON-NLS-1$
                 return false;
@@ -531,14 +524,14 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
      * @return
      */
     public String getDeviceTypeS() {
-        return DeviceManager.getInstance().getDeviceType(lDeviceType);
+        return DeviceManager.getInstance().getDeviceType(getLongValue(XML_TYPE));
     }
     
     /**
      * @return
      */
     public long getDeviceType() {
-        return lDeviceType;
+        return getLongValue(XML_TYPE);
     }
     
     
@@ -547,6 +540,33 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
      */
     public String getUrl() {
         return sUrl;
+    }
+    
+    /**
+     * @param url The sUrl to set.
+     */
+    public void setUrl(String url) {
+        synchronized (DeviceManager.getInstance().getLock()){
+            this.sUrl = url;
+            setProperty(XML_URL,url);
+            this.fio = new File(url);
+            /**Rest files*/
+            synchronized(FileManager.getInstance().getLock()){
+                Iterator it = FileManager.getInstance().getItems().iterator();
+                while (it.hasNext()) {
+                    org.jajuk.base.File file = (org.jajuk.base.File) it.next();
+                    file.reset();
+                }
+            }
+            /**Rest playlist files*/
+            synchronized(PlaylistFileManager.getInstance().getLock()){
+                Iterator it = PlaylistFileManager.getInstance().getItems().iterator();
+                while (it.hasNext()) {
+                    org.jajuk.base.PlaylistFile plf = (org.jajuk.base.PlaylistFile) it.next();
+                    plf.reset();
+                }
+            }
+        }
     }
     
     /**
@@ -699,7 +719,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
             Util.stopWaiting();
             return false;
         }
-        if ( lDeviceType != 5 ){ //not a remote device
+        if ( getLongValue(XML_TYPE) != 5 ){ //not a remote device
             File file = new File(sUrl);
             if ( file.exists() && file.canRead()){ //see if the url exists and is readable
                 //check if this device was void
@@ -794,30 +814,6 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
      */
     public File getFio() {
         return fio;
-    }
-    
-    /**
-     * @param deviceType The iDeviceType to set.
-     */
-    protected void setDeviceType(int deviceType) {
-        lDeviceType = deviceType;
-        setProperty(XML_TYPE,deviceType);
-    }
-    
-    /**
-     * @param mountPoint The sMountPoint to set.
-     */
-    protected void setMountPoint(String sMountPoint) {
-        this.sMountPoint = sMountPoint;
-        setProperty(XML_DEVICE_MOUNT_POINT,sMountPoint);
-    }
-    
-    /**
-     * @param url The sUrl to set.
-     */
-    protected void setUrl(String url) {
-        sUrl = url;
-        setProperty(XML_URL,url);
     }
     
     /**

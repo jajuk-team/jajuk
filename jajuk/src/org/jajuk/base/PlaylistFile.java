@@ -79,9 +79,6 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
         this.dParentDirectory = dParentDirectory;
         setProperty(XML_DIRECTORY,dParentDirectory==null?"-1":dParentDirectory.getId()); //$NON-NLS-1$
         this.iType = iType;
-        if ( getDirectory() != null){  //test "new"playlist case
-			this.fio = new java.io.File(getDirectory().getDevice().getUrl()+getDirectory().getRelativePath()+"/"+getName()); //$NON-NLS-1$
-		}
    }
 	
 /* (non-Javadoc)
@@ -231,23 +228,23 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 		            Log.error(e);
 		            Messages.showErrorMessage(
 		                    "011", getDirectory().getDevice().getName()); //$NON-NLS-1$
-		            throw new JajukException("141",fio.getAbsolutePath(),null); //$NON-NLS-1$
+		            throw new JajukException("141",getFio().getAbsolutePath(),null); //$NON-NLS-1$
 		        }
 		    }
 		    else{
-		        throw new JajukException("141",fio.getAbsolutePath(),null); //$NON-NLS-1$
+		        throw new JajukException("141",getFio().getAbsolutePath(),null); //$NON-NLS-1$
 		    }
 		}
         if ( iType == PlaylistFileItem.PLAYLIST_TYPE_NORMAL 
                 && alFiles == null){ //normal playlist, test if list is null for perfs (avoid reading again the m3u file)
-			if ( fio.exists() && fio.canRead()){  //check device is mounted
+			if ( getFio().exists() && getFio().canRead()){  //check device is mounted
 				alFiles = load(); //populate playlist
                 if (containsExtFiles()){
                     Messages.showWarningMessage(Messages.getErrorMessage("142")); //$NON-NLS-1$
                 }
 			}
 			else{  //error accessing playlist file
-				throw new JajukException("009",fio.getAbsolutePath(),new Exception()); //$NON-NLS-1$
+				throw new JajukException("009",getFio().getAbsolutePath(),new Exception()); //$NON-NLS-1$
 			}
 		}
 		else if ( iType == PlaylistFileItem.PLAYLIST_TYPE_BESTOF){ //bestof playlist
@@ -518,7 +515,7 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 		BufferedWriter bw = null;
 		if ( isModified()){
 			try {
-				bw = new BufferedWriter(new FileWriter(fio));
+				bw = new BufferedWriter(new FileWriter(getFio()));
 				bw.write(PLAYLIST_NOTE); 
 				bw.newLine();
                 Iterator it = getFiles().iterator();
@@ -557,7 +554,7 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 		ArrayList alFiles = new ArrayList(10);
 		BufferedReader br = null;
 		try {
-		    br = new BufferedReader(new FileReader(fio));
+		    br = new BufferedReader(new FileReader(getFio()));
 		    String sLine = null;
 		    boolean bUnknownDevicesMessage = false;
 		    while ((sLine = br.readLine()) != null){
@@ -599,7 +596,7 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 		}
 		catch(Exception e){
 		    Log.error("017",getName(),e); //$NON-NLS-1$
-		    throw new JajukException("017",fio.getAbsolutePath(),e); //$NON-NLS-1$
+		    throw new JajukException("017",getFio().getAbsolutePath(),e); //$NON-NLS-1$
 		}
 		finally{
 		    if ( br != null){
@@ -607,7 +604,7 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 		            br.close();
 		        } catch (IOException e1) {
 		            Log.error(e1);
-		            throw new JajukException("017",fio.getAbsolutePath(),e1); //$NON-NLS-1$
+		            throw new JajukException("017",getFio().getAbsolutePath(),e1); //$NON-NLS-1$
 		        }
 		    }
 		}
@@ -642,7 +639,10 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 	 * @return Returns the fio.
 	 */
 	public java.io.File getFio() {
-		return fio;
+		if ( fio == null){
+            fio = new java.io.File(getAbsolutePath());
+        }
+        return fio;
 	}
 	
 	/**
@@ -786,7 +786,7 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
         return Messages.getString("Item_Playlist_File")+" : "+getName(); //$NON-NLS-1$ //$NON-NLS-2$
     }
     
-/* (non-Javadoc)
+    /* (non-Javadoc)
      * @see org.jajuk.base.IPropertyable#getHumanValue(java.lang.String)
      */
     public String getHumanValue(String sKey){
@@ -799,8 +799,18 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
         }
     }
 
+    /**
+     * 
+     * @return whether this playlist contains files located out of known devices
+     */
     public boolean containsExtFiles() {
         return bContainsExtFiles;
+    }
+    
+    /**Reset pre-calculated paths**/
+    protected void reset(){
+        this.sAbs = null;
+        this.fio = null;
     }
     
 }

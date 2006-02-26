@@ -94,12 +94,12 @@ public class DirectoryManager extends ItemManager{
      * @return Item ID
      */
     protected static String getID(String sName,Device device,Directory dParent){
-        StringBuffer sbAbs = new StringBuffer(device.getUrl());
+        StringBuffer sbAbs = new StringBuffer(device.getName());
             if (dParent != null) {
                 sbAbs.append(dParent.getRelativePath());
             }
-            sbAbs.append(java.io.File.separatorChar).append(sName);
-            String sId = MD5Processor.hash(sbAbs.insert(0,device.getName()).toString());
+            sbAbs.append(sName);
+            String sId = MD5Processor.hash(sbAbs.toString());
         return sId;
     }
     
