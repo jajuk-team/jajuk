@@ -165,7 +165,9 @@ public class FirstTimeWizard extends JDialog implements ITechnicalStrings,Action
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 fDir = jfc.getSelectedFile();
                 // check device availibility 
-                String sCode = DeviceManager.getInstance().checkDeviceAvailablity(fDir.getName(),0,fDir.getAbsolutePath(),fDir.getAbsolutePath());
+                String sCode = DeviceManager.getInstance().checkDeviceAvailablity(
+                    fDir.getName(),0,fDir.getAbsolutePath(),
+                    fDir.getAbsolutePath(),true);
                 if (!sCode.equals("0")){ //$NON-NLS-1$
                     Messages.showErrorMessage(sCode);
                     jbOk.setEnabled(false);

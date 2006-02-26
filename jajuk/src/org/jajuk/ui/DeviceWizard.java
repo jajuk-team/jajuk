@@ -296,15 +296,10 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
         }
         //then, specifics
 		jcbType.setSelectedItem(device.getDeviceTypeS());
-		jcbType.setEnabled(false); //device type cannot be changed
 		jtfName.setText(device.getName());
 		jtfName.setEnabled(false); //device name cannot be changed
 		jtfUrl.setText(device.getUrl());
-		jtfUrl.setEnabled(false); //device url cannot be changed
-		jbUrl.setEnabled(false);//device url cannot be changed
 		jtfMountPoint.setText(device.getMountPoint());
-		jtfMountPoint.setEnabled(false); //mount point cannot be changed
-		jbUrlMountPoint.setEnabled(false);//mount point cannot be changed
 		jcbRefresh.setEnabled(false); //no instant refresh for updates
 		jcbRefresh.setSelected(false);
 		jcbAutoMount.setSelected(true);
@@ -354,7 +349,7 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 				jrbUnidirSynchro.setEnabled(false);
 			}
 		} 
-		else if (e.getSource() == jbOk){
+        else if (e.getSource() == jbOk){
 			//surface checks
 			if ( jtfUrl.getText().trim().equals("")){ //$NON-NLS-1$
 				Messages.showErrorMessage("021"); //$NON-NLS-1$
@@ -366,20 +361,24 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 				this.setVisible(true);
 				return;
 			}
+			//check device availibility (test name only if new device) 
+			String sCode = DeviceManager.getInstance().checkDeviceAvailablity(
+                jtfName.getText(),jcbType.getSelectedIndex(),
+                jtfUrl.getText(),jtfMountPoint.getText(),bNew);
+			if (!sCode.equals("0")){ //$NON-NLS-1$
+			    Messages.showErrorMessage(sCode);
+			    this.setVisible(true); //display wizzard window which has been hiden by the error window
+			    return;
+			}
 			if (bNew){
-				//check device availibility 
-				String sCode = DeviceManager.getInstance().checkDeviceAvailablity(jtfName.getText(),jcbType.getSelectedIndex(),jtfUrl.getText(),jtfMountPoint.getText());
-				if (!sCode.equals("0")){ //$NON-NLS-1$
-				    Messages.showErrorMessage(sCode);
-				    this.setVisible(true); //display wizzard window which has been hiden by the error window
-				    return;
-				}
-				device = DeviceManager.getInstance().registerDevice(jtfName.getText(),jcbType.getSelectedIndex(),jtfUrl.getText());
+			    device = DeviceManager.getInstance().registerDevice(jtfName.getText(),jcbType.getSelectedIndex(),jtfUrl.getText());
 			}
 			device.setProperty(XML_DEVICE_MOUNT_POINT,jtfMountPoint.getText());
-            device.setProperty(XML_DEVICE_AUTO_MOUNT,jcbAutoMount.isSelected());
+			device.setProperty(XML_DEVICE_AUTO_MOUNT,jcbAutoMount.isSelected());
 			device.setProperty(XML_DEVICE_AUTO_REFRESH,new Double(jftfAutoRefresh.getValue().toString()));
-			if (jcbSynchronized.isEnabled() && jcbSynchronized.getSelectedItem() != null){
+			device.setProperty(XML_TYPE, new Long(jcbType.getSelectedIndex()));
+            device.setUrl(jtfUrl.getText());
+            if (jcbSynchronized.isEnabled() && jcbSynchronized.getSelectedItem() != null){
 				device.setProperty(XML_DEVICE_SYNCHRO_SOURCE,((Device)alDevices.get(jcbSynchronized.getSelectedIndex())).getId());
 				if (jrbBidirSynchro.isSelected()){
 					device.setProperty(XML_DEVICE_SYNCHRO_MODE,DEVICE_SYNCHRO_MODE_BI);
@@ -401,9 +400,7 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 					Messages.showErrorMessage("112",device.getName()); //$NON-NLS-1$
 				}
 			}
-			else{
-				ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH));  //refresh trees with empty device
-			}
+			ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH));
 			dispose();
 			if (bNew){
 				InformationJPanel.getInstance().setMessage(Messages.getString("DeviceWizard.44"),InformationJPanel.INFORMATIVE);  //$NON-NLS-1$
@@ -446,28 +443,28 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 			switch(jcbType.getSelectedIndex()){
 			case 0: //directory
 				jcbAutoMount.setSelected(true);
-				jftfAutoRefresh.setValue(0.5d); 
+				if (bNew) jftfAutoRefresh.setValue(0.5d); 
                 break;
 			case 1: //file cd
 				jcbAutoMount.setSelected(false);
-                jftfAutoRefresh.setValue(0d); 
+                if (bNew) jftfAutoRefresh.setValue(0d); 
                break;
 			case 2: //network drive
 				jcbAutoMount.setSelected(true);
                 //no auto-refresh by default for network drive
-                jftfAutoRefresh.setValue(0d); 
+                if (bNew) jftfAutoRefresh.setValue(0d); 
 				break;
 			case 3: //ext dd
 				jcbAutoMount.setSelected(true);
-                jftfAutoRefresh.setValue(3d); 
+                if (bNew) jftfAutoRefresh.setValue(3d); 
               break;
 			case 4: //player
 				jcbAutoMount.setSelected(false);
-                jftfAutoRefresh.setValue(3d); 
+                if (bNew) jftfAutoRefresh.setValue(3d); 
                break;
             case 5: //P2P
                jcbAutoMount.setSelected(false);
-               jftfAutoRefresh.setValue(0d); 
+               if (bNew) jftfAutoRefresh.setValue(0d); 
                 break;
 			}
 		}
