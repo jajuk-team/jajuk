@@ -520,7 +520,9 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
                 else if (EVENT_FILE_LAUNCHED.equals(subject)){
                     //Remove history listener, otherwise u get a recursive event generation
                     jcbHistory.removeActionListener(CommandJPanel.this);
-                    jcbHistory.setSelectedIndex(0);
+                    if (jcbHistory.getItemCount() > 0){
+                        jcbHistory.setSelectedIndex(0);
+                    }
                     jcbHistory.addActionListener(CommandJPanel.this);
                 }
                 else if(EVENT_CLEAR_HISTORY.equals(event.getSubject())){
