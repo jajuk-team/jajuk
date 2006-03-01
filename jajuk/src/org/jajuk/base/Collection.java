@@ -74,6 +74,8 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
     private HashMap<String,String> hmWrongRightDeviceID = new HashMap();
     /**upgrade for directory IDs*/
     private HashMap<String,String> hmWrongRightDirectoryID = new HashMap();
+    /**upgrade for file IDs*/
+    private HashMap<String,String> hmWrongRightFileID = new HashMap();
     /**upgrade for playlist file IDs*/
     private HashMap<String,String> hmWrongRightPlaylistFileID = new HashMap();
     /**Garbager activity flag*/
@@ -589,47 +591,8 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
                 //display a message if Id had a problem
                 if (!sID.equals(sRightID)){
                     Log.debug("** Wrong file Id, upgraded: " +file); //$NON-NLS-1$
+                    hmWrongRightFileID.put(sID,sRightID);
                 }
-                /*Test
-                // create AFE application object
-                AFE afe = new AFE();
-                
-                // init log4j but not the database
-                afe.setDatabase(false);
-                afe.init();
-                
-                // audio feature definition to extract
-                Feature feature = AFE.getFeatureFromFile("musicminer-0.9.0");
-                
-                // variant: if musicminer database is available
-                //Feature feature = FeatureFactory.findByName("musicminer");
-                
-                // init Yale experiment
-                Experiment exp = afe.initExperiment(feature);
-                
-                // seconds of audio data to use
-                int seconds = 10;
-                
-                // for all songs
-                DoubleMatrix2D data = null;
-                
-                // convert audio file from command line to Yale input
-                File tmp = afe.audioToYale(file.getAbsolutePath(), seconds);
-                
-                // run feature extraction on this file
-                DoubleMatrix2D row = afe.yaleToFeatures(exp, tmp, seconds);
-                
-                // initializa matrix if not done
-                if (data == null) {
-                    data = new DenseDoubleMatrix2D(0,row.columns());
-                }
-                data.viewPart(0, 0, 1, row.columns()).assign(row);
-                
-                // normalize result (important!)
-                AFE.normalize(data);
-                
-                // output result
-                System.out.println(data);*/
             }
             else if (XML_PLAYLIST_FILE.equals(sQName)){
                 String sParentID = attributes.getValue(attributes.getIndex(XML_DIRECTORY)); 
@@ -724,6 +687,13 @@ public class Collection extends DefaultHandler implements ITechnicalStrings, Err
             }
             Log.error("005",sAttributes,re); //$NON-NLS-1$
         }
+    }
+
+    /**
+     * @return list of wrong file id (used by history)
+     */
+    public HashMap<String, String> getHmWrongRightFileID() {
+        return hmWrongRightFileID;
     }
     
         

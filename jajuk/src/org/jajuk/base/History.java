@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Properties;
 import java.util.Vector;
@@ -299,7 +300,13 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
         }
         else if (sQName.equals("play")){ //$NON-NLS-1$
             String sID = attributes.getValue(attributes.getIndex("file")); //$NON-NLS-1$
-            //test if this fiel is still kwown int the collection
+            //check id has not been changed
+            HashMap<String,String> hm = Collection.getInstance().getHmWrongRightFileID();
+            if (hm.size() > 0 && hm.containsKey(sID)){
+                sID = hm.get(sID);
+                Log.debug("upload:"+sID);
+            }
+            //test if this file is still kwown int the collection
             if (FileManager.getInstance().getItem(sID) != null){
                 HistoryItem hi = new HistoryItem(sID,Long.parseLong(attributes.getValue(attributes.getIndex("date")))); //$NON-NLS-1$ //$NON-NLS-2$
                 vHistory.add(hi);
