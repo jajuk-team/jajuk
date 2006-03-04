@@ -219,6 +219,8 @@ public interface ITechnicalStrings {
     public static final String ICON_STAR_2 = PATH_ICONS + "16x16/star2.png";
     public static final String ICON_STAR_3 = PATH_ICONS + "16x16/star3.png";
     public static final String ICON_STAR_4 = PATH_ICONS + "16x16/star4.png";
+    public static final String ICON_DROP_DOWN = PATH_ICONS + "16x16/dropdown.gif";
+    public static final String ICON_DIGITAL_DJ = PATH_ICONS + "16x16/ddj.png";
 
     //images
 	public static final String IMAGES_SPLASHSCREEN =  PATH_IMAGES + "jajuk-splashscreen.png";

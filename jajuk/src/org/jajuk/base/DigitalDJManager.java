@@ -21,6 +21,8 @@
 package org.jajuk.base;
 
 import java.io.File;
+import java.util.HashSet;
+import java.util.Iterator;
 
 /**
  *  Manages Digital DJs
@@ -30,19 +32,23 @@ import java.io.File;
  */
 public class DigitalDJManager {
 
-    private DigitalDJManager dj;
+    /**List of registated DJs*/
+    private HashSet djs;
+    
+    /**self instance*/
+    private static DigitalDJManager dj;
     
     /**
      * no instanciation
      */
     private DigitalDJManager() {
-        super();
+        djs = new HashSet(10);
     }
     
     /**
      * @return self instance
      */
-    public DigitalDJManager getInstance(){
+    public static DigitalDJManager getInstance(){
         if (dj == null){
             dj = new DigitalDJManager();
         }
@@ -55,6 +61,14 @@ public class DigitalDJManager {
      */
     public void registerDJ(File fio){
         
+    }
+    
+    /**
+     * 
+     * @return DJs iteration
+     */
+    public Iterator getDJs(){
+        return djs.iterator();
     }
 
 }
