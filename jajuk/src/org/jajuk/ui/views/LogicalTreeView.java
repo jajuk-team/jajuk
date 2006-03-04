@@ -63,6 +63,9 @@ import org.jajuk.base.AlbumManager;
 import org.jajuk.base.Author;
 import org.jajuk.base.AuthorManager;
 import org.jajuk.base.Bookmarks;
+import org.jajuk.base.Device;
+import org.jajuk.base.Directory;
+import org.jajuk.base.DirectoryManager;
 import org.jajuk.base.Event;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
@@ -857,7 +860,15 @@ ActionListener, Observer {
                 } else if (e.getSource() == jmiTrackProperties) {
                     PropertiesWizard p = new PropertiesWizard(alSelected);
                     //Sorting  
-                }else if (e.getActionCommand().equals(EVENT_LOGICAL_TREE_SORT)){
+                } else if (e.getSource() == jmiAlbumCDDBWizard) {
+                    ArrayList<IPropertyable> alTracks = new ArrayList<IPropertyable>(100);
+                    for (IPropertyable item : alSelected) {
+                        Album album = (Album) item;
+                        alTracks.addAll(TrackManager.getInstance().getAssociatedTracks(album));
+                    }
+                    Util.waiting();
+                    new CDDBWizard(alTracks);        
+                } else if (e.getActionCommand().equals(EVENT_LOGICAL_TREE_SORT)){
                     Util.waiting();
                     iSortOrder = 0;
                     if (e.getSource() == jcbSort){

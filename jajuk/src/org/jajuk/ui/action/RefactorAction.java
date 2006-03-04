@@ -20,22 +20,19 @@
 
 package org.jajuk.ui.action;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.swing.JOptionPane;
 
-import org.jajuk.Main;
 import org.jajuk.base.Device;
+import org.jajuk.base.Directory;
 import org.jajuk.base.Event;
 import org.jajuk.base.File;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Track;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.InformationJPanel;
-import org.jajuk.ui.OKCancelPanel;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
@@ -48,7 +45,6 @@ public class RefactorAction implements ITechnicalStrings{
     
     public RefactorAction (ArrayList<File> al){
         alFiles = al;
-        filename = CONF_REFACTOR_PATTERN;
         if (Boolean.valueOf(ConfigurationManager.getProperty(CONF_CONFIRMATIONS_REFACTOR_FILES)).booleanValue()){
             int iResu = Messages.getChoice(Messages.getString("Confirmation_refactor_files"),JOptionPane.INFORMATION_MESSAGE);  //$NON-NLS-1$ //$NON-NLS-2$
             if (iResu != JOptionPane.YES_OPTION){
@@ -87,15 +83,35 @@ public class RefactorAction implements ITechnicalStrings{
                 filename = filename.replace("%y - ","");
             }                      
             filename += "."+tCurrent.getType().getExtension();
-            Device device = fCurrent.getDevice();
+            
+            // Compute the new filename
             java.io.File fOld = fCurrent.getIO();
-            java.io.File fNew = new java.io.File(device.getFio().getAbsolutePath()+filename);
-            java.io.File dNew = new java.io.File(fNew.getParent());
-            boolean bDir = dNew.mkdirs();                                                         
-            InformationJPanel.getInstance().setMessage(Messages.getString("[Moving] "+fNew.getAbsolutePath()),InformationJPanel.INFORMATIVE); //$NON-NLS-1$
+            java.io.File fNew = new java.io.File(fCurrent.getDevice().getUrl()+"/"+filename);
+            
+            // Create Directories
+            boolean bDir = fNew.getParentFile().mkdirs();
+            
+            // Move file but save old Directory pathname
+            String sDirUrl = fOld.getParent();
             boolean bState = fOld.renameTo(fNew);
-            Log.debug("[Refactoring] "+fNew.getAbsolutePath()+" Success : " + bState);
-                        
+            
+            // Put some message
+            if (bState){
+            	InformationJPanel.getInstance().setMessage("File " + Messages.getString(fNew.getAbsolutePath()+" moved"),InformationJPanel.INFORMATIVE); //$NON-NLS-1$
+            } else {
+            	InformationJPanel.getInstance().setMessage("File " + Messages.getString(fNew.getAbsolutePath()+" could not be moved !"),InformationJPanel.ERROR); //$NON-NLS-1$
+            }
+            
+            
+                                    
+            // Delete Empty dir
+            java.io.File dOld = new java.io.File(sDirUrl);            
+            boolean bDelete = dOld.delete();
+            
+//          Debug log
+            Log.debug("[Refactoring] {{"+ fNew.getAbsolutePath() +"}} Success ? " + bState);
+            Log.debug("[Refactoring] Empty Dir should be deleted :  {{"+ sDirUrl +"}} "+ bDelete);
+            
         }       
     }
 }

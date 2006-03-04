@@ -880,20 +880,26 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         else if ( alFiles!= null && e.getSource() == jmiDirAddFavorites) {
             Bookmarks.getInstance().addFiles(alFiles);
         }
-        else if ( alFiles!= null && (e.getSource() == jmiDirCDDBQuery) ) {
-            ArrayList alTracks=null;
-            for (IPropertyable item:alSelected){
-                final Directory dir = (Directory)item;
+        else if (alFiles != null && (e.getSource() == jmiDirCDDBQuery)) {
+            ArrayList<IPropertyable> alCDDBTracks = new ArrayList<IPropertyable>();
+            for (IPropertyable item : alSelected) {
+                final Directory dir = (Directory) item;
                 Util.waiting();
-                new CDDBWizard(dir);
-            }        	
-        }    
-        else if (alFiles!= null && e.getSource() == jmiDevCDDBQuery ){
-            Util.waiting();
-            Device device = ((DeviceNode)(paths[0].getLastPathComponent())).getDevice();
+                for (File file : dir.getFiles()) {
+                    alCDDBTracks.add(file.getTrack());
+                }
+                new CDDBWizard(alCDDBTracks);
+            }
+        } else if (alFiles != null && e.getSource() == jmiDevCDDBQuery) {
+            Device device = ((DeviceNode) (paths[0].getLastPathComponent())).getDevice();
             final Directory dir = DirectoryManager.getInstance().registerDirectory(device);
-            new CDDBWizard(dir);            
-        }
+            Util.waiting();
+            ArrayList<IPropertyable> alCDDBTracks = new ArrayList<IPropertyable>(100);
+            for (File file : dir.getFiles()) {
+                alCDDBTracks.add(file.getTrack());
+            }
+            new CDDBWizard(alCDDBTracks);
+        } 
         else if ((alFiles != null && e.getSource() == jmiDirRefactor)){
             Util.waiting();
             ArrayList<File> alRefactor = new ArrayList<File>();
