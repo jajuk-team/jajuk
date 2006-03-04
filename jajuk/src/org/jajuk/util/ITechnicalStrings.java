@@ -71,6 +71,8 @@ public interface ITechnicalStrings {
     public static final float NEED_FULL_GC_LEVEL = 0.90f;
     /**Play time to get rate +1 in secs*/
     public static final int INC_RATE_TIME = 20;
+    /**Min Number of tracks in an AuthorNode*/
+    public static final int MIN_TRACKS_NUMBER = 4;
     
             
 	// Jajuk version
@@ -460,6 +462,7 @@ public interface ITechnicalStrings {
 	public static final String CONF_CONFIRMATIONS_DELETE_COVER = "jajuk.confirmations.delete_cover";
 	public static final String CONF_CONFIRMATIONS_CLEAR_HISTORY = "jajuk.confirmations.clear_history";
     public static final String CONF_CONFIRMATIONS_RESET_RATINGS = "jajuk.confirmations.reset_ratings";
+    public static final String CONF_CONFIRMATIONS_REFACTOR_FILES = "jajuk.confirmations.refactor_files";
     public static final String CONF_OPTIONS_HIDE_UNMOUNTED = "jajuk.options.hide_unmounted";
 	public static final String CONF_OPTIONS_LOG_LEVEL = "jajuk.options.log_level";
 	public static final String CONF_OPTIONS_LANGUAGE = "jajuk.options.language";
@@ -517,6 +520,7 @@ public interface ITechnicalStrings {
     public static final String CONF_WIKIPEDIA_LANGUAGE = "jajuk.wikipedia.lang"; // wikipedia language
     public static final String CONF_FADE_DURATION = "jajuk.fade_duration"; // cross fade duration in secs
     public static final String CONF_LOGICAL_TREE_SORT_ORDER = "jajuk.logical_tree_sort_order";// logical tree sort order
+    public static final String CONF_REFACTOR_PATTERN = "jajuk.refactor_pattern";// logical tree sort order
 
     //Accuracy levels
 	public static final String ACCURACY_LOW = "low";

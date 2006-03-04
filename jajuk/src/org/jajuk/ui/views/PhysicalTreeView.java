@@ -18,7 +18,6 @@
 
 package org.jajuk.ui.views;
 
-
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.dnd.DnDConstants;
@@ -37,12 +36,12 @@ import java.util.Properties;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.JFileChooser;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
-import javax.swing.JFileChooser;
 import javax.swing.SwingUtilities;
 import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeExpansionListener;
@@ -70,8 +69,8 @@ import org.jajuk.base.PlaylistFile;
 import org.jajuk.base.PlaylistFileManager;
 import org.jajuk.base.StackItem;
 import org.jajuk.base.Track;
-import org.jajuk.base.exporters.XMLExporter;
 import org.jajuk.base.exporters.ExportFileFilter;
+import org.jajuk.base.exporters.XMLExporter;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.CDDBWizard;
 import org.jajuk.ui.DeviceWizard;
@@ -79,6 +78,7 @@ import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.PropertiesWizard;
 import org.jajuk.ui.TransferableTreeNode;
 import org.jajuk.ui.TreeTransferHandler;
+import org.jajuk.ui.action.RefactorAction;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
@@ -129,7 +129,8 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
     JMenuItem jmiDirAddFavorites;
     JMenuItem jmiDirCDDBQuery;
     JMenuItem jmiDirExport;
-    
+    JMenuItem jmiDirRefactor;
+
     JPopupMenu jmenuDev;
     JMenuItem jmiDevPlay;
     JMenuItem jmiDevPush;
@@ -256,7 +257,9 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         jmiDirCDDBQuery = new JMenuItem(Messages.getString("PhysicalTreeView.57")); //$NON-NLS-1$
         jmiDirCDDBQuery.addActionListener(this);
         jmiDirExport = new JMenuItem(Messages.getString("PhysicalTreeView.58")); //$NON-NLS-1$
-        jmiDirExport.addActionListener(this);        
+        jmiDirExport.addActionListener(this); 
+        jmiDirRefactor = new JMenuItem(Messages.getString(("PhysicalTreeView.62")));
+        jmiDirRefactor.addActionListener(this);       
         jmenuDir.add(jmiDirPlay);
         jmenuDir.add(jmiDirPush);
         jmenuDir.add(jmiDirPlayShuffle);
@@ -271,6 +274,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         jmenuDir.add(jmiDirAddFavorites);
         jmenuDir.add(jmiDirCDDBQuery);
         jmenuDir.add(jmiDirExport);
+        jmenuDir.add(jmiDirRefactor);
         jmenuDir.add(jmiDirProperties);
         
         //Device menu
@@ -889,6 +893,18 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
             Device device = ((DeviceNode)(paths[0].getLastPathComponent())).getDevice();
             final Directory dir = DirectoryManager.getInstance().registerDirectory(device);
             new CDDBWizard(dir);            
+        }
+        else if ((alFiles != null && e.getSource() == jmiDirRefactor)){
+            Util.waiting();
+            ArrayList<File> alRefactor = new ArrayList<File>();
+            for (IPropertyable item : alSelected) {
+                final Directory dir = (Directory) item;
+                Util.waiting();
+                /*for (File file : dir.getFilesRecursively()) {
+                    alRefactor.add(file);
+                }*/
+                new RefactorAction(dir.getFilesRecursively());
+            }
         }
         else if ((alFiles != null && e.getSource() == jmiDirExport) || (e.getSource() == jmiDevExport)) {
         	final JFileChooser filechooser = new JFileChooser();

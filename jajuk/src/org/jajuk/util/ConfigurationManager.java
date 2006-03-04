@@ -144,6 +144,7 @@ public class ConfigurationManager implements ITechnicalStrings{
 		properties.put(CONF_CONFIRMATIONS_DELETE_COVER,TRUE);
 		properties.put(CONF_CONFIRMATIONS_CLEAR_HISTORY,TRUE);
         properties.put(CONF_CONFIRMATIONS_RESET_RATINGS,TRUE);
+        properties.put(CONF_CONFIRMATIONS_REFACTOR_FILES,TRUE);
         properties.put(CONF_OPTIONS_HIDE_UNMOUNTED,FALSE);
 		properties.put(CONF_OPTIONS_DEFAULT_ACTION_CLICK,FALSE);
 		properties.put(CONF_OPTIONS_DEFAULT_ACTION_DROP,TRUE);
@@ -179,6 +180,7 @@ public class ConfigurationManager implements ITechnicalStrings{
 		properties.put(CONF_VOLUME,"0.5"); //$NON-NLS-1$
 		properties.put(CONF_REGEXP,FALSE); //$NON-NLS-1$
 		properties.put(CONF_BACKUP_SIZE,"20");//$NON-NLS-1$
+        properties.put(CONF_REFACTOR_PATTERN,"%a/%y - %A/%n - %t");//$NON-NLS-1$        
 		properties.put(CONF_COLLECTION_CHARSET,"UTF-8");//$NON-NLS-1$
 		properties.put(CONF_NETWORK_USE_PROXY,FALSE);
 		properties.put(CONF_NETWORK_PROXY_HOSTNAME,"proxy");//default proxy name, just a guess //$NON-NLS-1$
@@ -216,6 +218,7 @@ public class ConfigurationManager implements ITechnicalStrings{
         properties.put(CONF_WIKIPEDIA_LANGUAGE,Messages.getInstance().getLocal());
         properties.put(CONF_FADE_DURATION,"0"); //$NON-NLS-1$
         properties.put(CONF_LOGICAL_TREE_SORT_ORDER,"0"); //sort by style //$NON-NLS-1$
+        
     }
 	
     /**

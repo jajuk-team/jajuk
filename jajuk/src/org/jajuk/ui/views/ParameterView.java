@@ -107,6 +107,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
     JCheckBox jcbBeforeDeleteCover;
     JCheckBox jcbBeforeClearingHistory;
     JCheckBox jcbBeforeResetingRatings;
+    JCheckBox jcbBeforeRefactorFiles;
     
     JPanel jpOptions;
     JCheckBox jcbDisplayUnmounted;
@@ -147,6 +148,9 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
     JLabel jlCollectionEncoding;
     JComboBox jcbCollectionEncoding;
     JCheckBox jcbRegexp;
+    JLabel jlRefactorPattern;
+    JTextField jtfRefactorPattern;
+    
     JPanel jpNetwork;
     JCheckBox jcbProxy;
     JLabel jlProxyHostname;
@@ -304,7 +308,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
         jpConfirmations = new JPanel();
         double sizeConfirmations[][] = {{0.99},
                 {iYSeparator,20,iYSeparator,20,iYSeparator,20,
-                iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator}};
+                iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator}};
         jpConfirmations.setLayout(new TableLayout(sizeConfirmations));
         jcbBeforeDelete = new JCheckBox(Messages.getString("ParameterView.27")); //$NON-NLS-1$
         jcbBeforeDelete.setToolTipText(Messages.getString("ParameterView.28")); //$NON-NLS-1$
@@ -318,6 +322,8 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
         jcbBeforeClearingHistory.setToolTipText(Messages.getString("ParameterView.188")); //$NON-NLS-1$
         jcbBeforeResetingRatings = new JCheckBox(Messages.getString("ParameterView.189")); //$NON-NLS-1$
         jcbBeforeResetingRatings.setToolTipText(Messages.getString("ParameterView.189")); //$NON-NLS-1$
+        jcbBeforeRefactorFiles = new JCheckBox(Messages.getString("ParameterView.194")); //$NON-NLS-1$
+        jcbBeforeRefactorFiles.setToolTipText(Messages.getString("ParameterView.194")); //$NON-NLS-1$
         
         jpConfirmations.add(jcbBeforeDelete,"0,1"); //$NON-NLS-1$
         jpConfirmations.add(jcbBeforeExit,"0,3"); //$NON-NLS-1$
@@ -325,6 +331,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
         jpConfirmations.add(jcbBeforeDeleteCover,"0,7"); //$NON-NLS-1$
         jpConfirmations.add(jcbBeforeClearingHistory,"0,9"); //$NON-NLS-1$
         jpConfirmations.add(jcbBeforeResetingRatings,"0,11"); //$NON-NLS-1$
+        jpConfirmations.add(jcbBeforeRefactorFiles,"0,13"); //$NON-NLS-1$
         
         //--Options
         jpOptions = new JPanel();
@@ -603,7 +610,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
         //--Advanced
         jpAdvanced = new JPanel();
         double sizeAdvanced[][] = {{0.5,0.45},
-                {iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator}};
+                {iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator}};
         jpAdvanced.setLayout(new TableLayout(sizeAdvanced));
         jcbBackup = new JCheckBox(Messages.getString("ParameterView.116"));  //$NON-NLS-1$
         jcbBackup.addActionListener(this);
@@ -621,12 +628,17 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
         jcbRegexp.setToolTipText(Messages.getString("ParameterView.114")); //$NON-NLS-1$
         jcbCollectionEncoding.addItem("UTF-8"); //$NON-NLS-1$
         jcbCollectionEncoding.addItem("UTF-16"); //$NON-NLS-1$
+        jlRefactorPattern = new JLabel(Messages.getString("ParameterView.192"));
+        jlRefactorPattern.setToolTipText(Messages.getString("ParameterView.193"));
+        jtfRefactorPattern = new JTextField();
         jpAdvanced.add(jcbRegexp,"0,1");//$NON-NLS-1$
         jpAdvanced.add(jlCollectionEncoding,"0,3");//$NON-NLS-1$
         jpAdvanced.add(jcbCollectionEncoding,"1,3");//$NON-NLS-1$
         jpAdvanced.add(jcbBackup,"0,5");//$NON-NLS-1$
         jpAdvanced.add(jlBackupSize,"0,7");//$NON-NLS-1$
         jpAdvanced.add(jtfBackupSize,"1,7");//$NON-NLS-1$
+        jpAdvanced.add(jlRefactorPattern,"0,9");//$NON-NLS-1$
+        jpAdvanced.add(jtfRefactorPattern,"1,9");//$NON-NLS-1
         
         //- Network
         jpNetwork = new JPanel();
@@ -1035,6 +1047,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
         ConfigurationManager.setProperty(CONF_BACKUP_SIZE,jtfBackupSize.getText());
         ConfigurationManager.setProperty(CONF_COLLECTION_CHARSET,jcbCollectionEncoding.getSelectedItem().toString());
         InformationJPanel.getInstance().setMessage(Messages.getString("ParameterView.109"),InformationJPanel.INFORMATIVE); //$NON-NLS-1$
+        ConfigurationManager.setProperty(CONF_REFACTOR_PATTERN,jtfRefactorPattern.getText());
         //Network
         ConfigurationManager.setProperty(CONF_NETWORK_USE_PROXY,Boolean.toString(jcbProxy.isSelected()));
         ConfigurationManager.setProperty(CONF_NETWORK_PROXY_HOSTNAME,jtfProxyHostname.getText());
@@ -1095,6 +1108,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
         jcbBeforeDeleteCover.setSelected(ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_DELETE_COVER));
         jcbBeforeClearingHistory.setSelected(ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_CLEAR_HISTORY));
         jcbBeforeResetingRatings.setSelected(ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_RESET_RATINGS));
+        jcbBeforeRefactorFiles.setSelected(ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_REFACTOR_FILES));
         //options
         boolean bHidden = ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED);
         jcbDisplayUnmounted.setSelected(bHidden);
@@ -1132,7 +1146,8 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
             jlBackupSize.setEnabled(true);
         }
         jtfBackupSize.setText(Integer.toString(iBackupSize));
-        jcbCollectionEncoding.setSelectedItem(ConfigurationManager.getProperty(CONF_COLLECTION_CHARSET)); 
+        jcbCollectionEncoding.setSelectedItem(ConfigurationManager.getProperty(CONF_COLLECTION_CHARSET));
+        jtfRefactorPattern.setText(ConfigurationManager.getProperty(CONF_REFACTOR_PATTERN));
         //network
         boolean bUseProxy = ConfigurationManager.getBoolean(CONF_NETWORK_USE_PROXY);
         jcbProxy.setSelected(bUseProxy);

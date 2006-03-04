@@ -34,6 +34,7 @@ import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Properties;
+import java.util.Vector;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JComboBox;
@@ -58,7 +59,9 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
 import org.jajuk.base.Album;
+import org.jajuk.base.AlbumManager;
 import org.jajuk.base.Author;
+import org.jajuk.base.AuthorManager;
 import org.jajuk.base.Bookmarks;
 import org.jajuk.base.Event;
 import org.jajuk.base.FIFO;
@@ -74,6 +77,7 @@ import org.jajuk.base.TrackManager;
 import org.jajuk.base.exporters.ExportFileFilter;
 import org.jajuk.base.exporters.XMLExporter;
 import org.jajuk.i18n.Messages;
+import org.jajuk.ui.CDDBWizard;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.PropertiesWizard;
 import org.jajuk.ui.TransferableTreeNode;
@@ -137,6 +141,7 @@ ActionListener, Observer {
     JMenuItem jmiAlbumDelete;
     JMenuItem jmiAlbumAddFavorite;
     JMenuItem jmiAlbumExport;
+    JMenuItem jmiAlbumCDDBWizard;
     JMenuItem jmiAlbumProperties;
     
     JPopupMenu jmenuTrack;
@@ -318,6 +323,8 @@ ActionListener, Observer {
         jmiAlbumAddFavorite.addActionListener(this);
         jmiAlbumExport = new JMenuItem(Messages.getString("LogicalTreeView.33")); //$NON-NLS-1$
         jmiAlbumExport.addActionListener(this);        
+        jmiAlbumCDDBWizard = new JMenuItem(Messages.getString("LogicalTreeView.34"));
+        jmiAlbumCDDBWizard.addActionListener(this);
         jmiAlbumProperties = new JMenuItem(Messages
             .getString("LogicalTreeView.21")); //$NON-NLS-1$
         jmiAlbumProperties.addActionListener(this);
@@ -328,6 +335,7 @@ ActionListener, Observer {
         jmenuAlbum.add(jmiAlbumDelete);
         jmenuAlbum.add(jmiAlbumAddFavorite);
         jmenuAlbum.add(jmiAlbumExport);
+        jmenuAlbum.add(jmiAlbumCDDBWizard);
         jmenuAlbum.add(jmiAlbumProperties);
         
         // Track menu
@@ -771,6 +779,47 @@ ActionListener, Observer {
                 // create track
                 albumNode.add(new TrackNode(track));
             }
+        }
+    }
+    
+     /**
+     * Create a Misc node
+     */
+    public void cleanTree() {
+        AuthorNode amisc = new AuthorNode(AuthorManager.getInstance().registerAuthor("Misc"));
+
+        DefaultMutableTreeNode authorNode = new DefaultMutableTreeNode();
+        DefaultMutableTreeNode albumNode = new DefaultMutableTreeNode();
+        DefaultMutableTreeNode trackNode = new DefaultMutableTreeNode();
+        AlbumNode misc;
+        Enumeration eAuthor = top.children();
+
+        while (eAuthor.hasMoreElements()) {
+            authorNode = (AuthorNode) eAuthor.nextElement();
+            misc = new AlbumNode(AlbumManager.getInstance().registerAlbum("Misc"));
+
+            for (Enumeration<AlbumNode> eAlbum = authorNode.children(); eAlbum.hasMoreElements();) {
+                albumNode = eAlbum.nextElement();
+                if (albumNode.getChildCount() < MIN_TRACKS_NUMBER) {
+                    while (albumNode.getChildCount() > 0) {
+
+                    }
+                }
+
+            }
+
+            authorNode.remove(albumNode);
+
+            if (misc.getChildCount() > 0) {
+                authorNode.add(misc);
+            }
+            /*
+             * if (authorNode.getChildCount() == 1 && authorNode.getNextNode().equals(misc)) {
+             * amisc.add(authorNode); }
+             */
+        }
+        if (amisc.getChildCount() > 0) {
+            top.add(amisc);
         }
     }
     
