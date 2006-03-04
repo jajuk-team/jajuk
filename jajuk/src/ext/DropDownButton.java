@@ -13,7 +13,10 @@ import javax.swing.JToolBar;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.PopupMenuEvent;
-import javax.swing.event.PopupMenuListener; 
+import javax.swing.event.PopupMenuListener;
+
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Util;
 
 /**
  * Copyright santhosh kumar
@@ -21,14 +24,15 @@ import javax.swing.event.PopupMenuListener;
  * Drop down button
  */
 public abstract class DropDownButton extends JButton 
-                     implements ChangeListener, PopupMenuListener, ActionListener, PropertyChangeListener{ 
+                     implements ChangeListener, PopupMenuListener, ActionListener, PropertyChangeListener,ITechnicalStrings{ 
     private final JButton mainButton = this; 
-    private final JButton arrowButton = new JButton(new ImageIcon(getClass().getResource("dropdown.gif"))); 
+    private final JButton arrowButton = new JButton(Util.getIcon(ICON_DROP_DOWN)); 
  
     private boolean popupVisible = false; 
  
-    public DropDownButton(){ 
-        mainButton.getModel().addChangeListener(this); 
+    public DropDownButton(ImageIcon icon){ 
+        mainButton.getModel().addChangeListener(this);
+        mainButton.setIcon(icon);
         arrowButton.getModel().addChangeListener(this); 
         arrowButton.addActionListener(this); 
         arrowButton.setMargin(new Insets(3, 0, 3, 0)); 
