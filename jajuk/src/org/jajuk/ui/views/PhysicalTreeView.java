@@ -37,6 +37,7 @@ import java.util.Properties;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
@@ -102,6 +103,10 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
     
     /** Directories selection*/
     ArrayList alDirs;
+    
+    /** Collection export */
+    JPopupMenu jmenuCollection;
+    JMenuItem jmiCollectionExport;
     
     JPopupMenu jmenuFile;
     JMenuItem jmiFilePlay;
@@ -189,6 +194,16 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
      */
     public void populate(){
         //**Menu items**
+    	
+    	// Collection menu
+    	jmenuCollection = new JPopupMenu();
+    	// Export
+    	jmiCollectionExport = new JMenuItem(Messages
+    			.getString("Property_export")); //$NON-NLS-1$
+    	jmiCollectionExport.addActionListener(this);
+    	jmenuCollection.add(new JLabel(Messages.getString("Export"))); //$NON-NLS-1$
+    	jmenuCollection.add(jmiCollectionExport);
+    	
         //File menu
         jmenuFile = new JPopupMenu();
         jmiFilePlay = new JMenuItem(Messages.getString("PhysicalTreeView.1")); //$NON-NLS-1$
@@ -723,6 +738,8 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
                             jmiDevSynchronize.setEnabled(true);
                         }
                         jmenuDev.show(jtree,e.getX(),e.getY()); 
+                    } else if (paths[0].getLastPathComponent() instanceof DefaultMutableTreeNode) {
+                    	jmenuCollection.show(jtree, e.getX(), e.getY());
                     }
                 }
             }
@@ -912,7 +929,9 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
                 new RefactorAction(dir.getFilesRecursively());
             }
         }
-        else if ((alFiles != null && e.getSource() == jmiDirExport) || (e.getSource() == jmiDevExport)) {
+        else if ((alFiles != null && e.getSource() == jmiDirExport) 
+        			|| (e.getSource() == jmiDevExport
+        			|| (e.getSource() == jmiCollectionExport))) {
         	final JFileChooser filechooser = new JFileChooser();
         	ExportFileFilter filter = new ExportFileFilter(".xml");
         	
@@ -939,7 +958,9 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         			} else if (e.getSource() == jmiDevExport) {
         				Device device = ((DeviceNode)paths[0].getLastPathComponent()).getDevice();
         				result = xmlexporter.deviceToXML(device);
-        			}        			
+        			} else if (e.getSource() == jmiCollectionExport) {
+        				result = xmlexporter.collectionToXML();
+        			}
         			xmlexporter.commit(filepath, result);
         		} 
         	}   	
