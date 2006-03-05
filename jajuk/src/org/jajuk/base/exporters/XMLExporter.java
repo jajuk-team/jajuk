@@ -68,12 +68,287 @@ public class XMLExporter implements ITechnicalStrings {
 	}
 	
 	/**
-	 * Returns string containing XML markup for entire collection.
+	 * Returns string containing XML markup for entire collection based on styles.
 	 * @return xml for collection
 	 */
-	public String collectionToXML() {
+	public String logicalStyleCollectionToXML() {
+		ArrayList<Track> alStyleTrackList;
+		Track track = null;
+		Track previoustrack = null;
+		StringBuffer sb = new StringBuffer();
 		
-		return "";
+		synchronized (TrackManager.getInstance().getLock()) {
+			alStyleTrackList = new ArrayList<Track>(1000);
+			
+			for (IPropertyable item : TrackManager.getInstance().getItems()) {
+				alStyleTrackList.add((Track)item);
+			}
+		}
+		
+		Collections.sort(alStyleTrackList, new TrackComparator(0));
+		
+		sb.append("<collection>\n");
+		
+		ListIterator itr1 = alStyleTrackList.listIterator();
+		while (itr1.hasNext()) {	
+			if (itr1.hasPrevious()) {
+				previoustrack = (Track)alStyleTrackList.get(itr1.previousIndex());
+				track = (Track)itr1.next();	
+				if (previoustrack.getStyle().getId().equals(track.getStyle().getId())) {
+					// Check if current author is same as the previous author
+					if (previoustrack.getAuthor().getId().equals(track.getAuthor().getId())) {
+						// Check if current album is same as previous album
+						if (previoustrack.getAlbum().getId().equals(track.getAlbum().getId())) {
+							// Gather information on current track
+							sb.append(createTabs(4) + "<" + track.getIdentifier() + ">\n");
+							sb.append(createTabs(5) + "<name>" + track.getName() + "</name>\n");
+							sb.append(createTabs(5) + "<length>" + track.getLength() + "</length>\n");
+							sb.append(createTabs(5) + "<rate>" + track.getRate() + "</rate>\n");
+							sb.append(createTabs(5) + "<comment>" + track.getValue(XML_TRACK_COMMENT) + "</comment>\n");
+							sb.append(createTabs(5) + "<order>" + track.getValue(XML_TRACK_ORDER) + "</order>\n");
+							sb.append(createTabs(4) + "</" + track.getIdentifier() + ">\n");							
+						} else {
+							// Gather information on current album
+							sb.append(createTabs(3) + "</" + track.getAlbum().getIdentifier() + ">\n");
+							sb.append(createTabs(3) + "<" + track.getAlbum().getIdentifier() + ">\n");
+							sb.append(createTabs(4) + "<name>" + track.getAlbum().getName2() + "</name>\n");
+							sb.append(createTabs(4) + "<" + track.getIdentifier() + ">\n");
+							sb.append(createTabs(5) + "<name>" + track.getName() + "</name>\n");
+							sb.append(createTabs(5) + "<length>" + track.getLength() + "</length>\n");
+							sb.append(createTabs(5) + "<rate>" + track.getRate() + "</rate>\n");
+							sb.append(createTabs(5) + "<comment>" + track.getValue(XML_TRACK_COMMENT) + "</comment>\n");
+							sb.append(createTabs(5) + "<order>" + track.getValue(XML_TRACK_ORDER) + "</order>\n");
+							sb.append(createTabs(4) + "</" + track.getIdentifier() + ">\n");						
+						}
+					} else {
+						// Gather information on current author
+						sb.append(createTabs(3) + "</" + track.getAlbum().getIdentifier() + ">\n");
+						sb.append(createTabs(2) + "</" + track.getAuthor().getIdentifier() + ">\n");
+						sb.append(createTabs(2) + "<" + track.getAuthor().getIdentifier() + ">\n");
+						sb.append(createTabs(3) + "<name>" + track.getAuthor().getName2() + "</name>\n");
+						sb.append(createTabs(3) + "<" + track.getAlbum().getIdentifier() + ">\n");
+						sb.append(createTabs(4) + "<name>" + track.getAlbum().getName2() + ">\n");
+						sb.append(createTabs(4) + "<" + track.getIdentifier() + ">\n");
+						sb.append(createTabs(5) + "<name>" + track.getName() + "</name>\n");
+						sb.append(createTabs(5) + "<length>" + track.getLength() + "</length>\n");
+						sb.append(createTabs(5) + "<rate>" + track.getRate() + "</rate>\n");
+						sb.append(createTabs(5) + "<comment>" + track.getValue(XML_TRACK_COMMENT) + "</comment>\n");
+						sb.append(createTabs(5) + "<order>" + track.getValue(XML_TRACK_ORDER) + "</order>\n");
+						sb.append(createTabs(4) + "</" + track.getIdentifier() + ">\n");
+					}
+				} else {
+					sb.append(createTabs(3) + "</" + track.getAlbum().getIdentifier() + ">\n");
+					sb.append(createTabs(2) + "</" + track.getAuthor().getIdentifier() + ">\n");
+					sb.append(createTabs(1) + "</" + track.getStyle().getIdentifier() + ">\n");
+					sb.append(createTabs(1) + "<" + track.getStyle().getIdentifier() + ">\n");
+					sb.append(createTabs(2) + "<name>" + track.getStyle().getName2() + "</name>\n");
+					sb.append(createTabs(2) + "<" + track.getAuthor().getIdentifier() + ">\n");
+					sb.append(createTabs(3) + "<name>" + track.getAuthor().getName2() + "</name>\n");
+					sb.append(createTabs(3) + "<" + track.getAlbum().getIdentifier() + ">\n");
+					sb.append(createTabs(4) + "<name>" + track.getAlbum().getName2() + "</name>\n");
+					sb.append(createTabs(5) + "<" + track.getIdentifier() + ">\n");
+					sb.append(createTabs(5) + "<name>" + track.getName() + "</name>\n");
+					sb.append(createTabs(5) + "<length>" + track.getLength() + "</length>\n");
+					sb.append(createTabs(5) + "<rate>" + track.getRate() + "</rate>\n");
+					sb.append(createTabs(5) + "<comment>" + track.getValue(XML_TRACK_COMMENT) + "</comment>\n");
+					sb.append(createTabs(5) + "<order>" + track.getValue(XML_TRACK_ORDER) + "</order>\n");
+					sb.append(createTabs(4) + "</" + track.getIdentifier() + ">\n");	
+				}
+			} else {
+				// Executed on first track in the list.
+				track = (Track)itr1.next();	
+				sb.append(createTabs(1) + "<" + track.getStyle().getIdentifier() + ">\n");
+				sb.append(createTabs(2) + "<name>" + track.getStyle().getName2() + "</name>\n");
+				sb.append(createTabs(2) + "<" + track.getAuthor().getIdentifier() + ">\n");
+				sb.append(createTabs(3) + "<name>" + track.getAuthor().getName2() + "</name>\n");
+				sb.append(createTabs(3) + "<" + track.getAlbum().getIdentifier() + ">\n");
+				sb.append(createTabs(4) + "<name>" + track.getAlbum().getName2() + "</name>\n");
+				sb.append(createTabs(5) + "<" + track.getIdentifier() + ">\n");
+				sb.append(createTabs(5) + "<name>" + track.getName() + "</name>\n");
+				sb.append(createTabs(5) + "<length>" + track.getLength() + "</length>\n");
+				sb.append(createTabs(5) + "<rate>" + track.getRate() + "</rate>\n");
+				sb.append(createTabs(5) + "<comment>" + track.getValue(XML_TRACK_COMMENT) + "</comment>\n");
+				sb.append(createTabs(5) + "<order>" + track.getValue(XML_TRACK_ORDER) + "</order>\n");
+				sb.append(createTabs(4) + "</" + track.getIdentifier() + ">\n");						
+			}
+			
+			// Make sure the last album or author gets included.
+			if (!itr1.hasNext()) {
+				sb.append(createTabs(3) + "</" + track.getAlbum().getIdentifier() + ">\n");
+				sb.append(createTabs(2) + "</" + track.getAuthor().getIdentifier() + ">\n");
+				sb.append(createTabs(1) + "</" + track.getStyle().getIdentifier() + ">\n");
+			}
+		}		
+			
+		sb.append("</collection>\n");
+		
+		return sb.toString();
+	}
+	
+	/**
+	 * Returns string containing XML markup for entire collection based on authors.
+	 * @return xml for collection
+	 */
+	public String logicalAuthorCollectionToXML() {
+		ArrayList<Track> alAuthorTrackList;
+		Track track = null;
+		Track previoustrack = null;
+		StringBuffer sb = new StringBuffer();
+		
+		synchronized (TrackManager.getInstance().getLock()) {
+			alAuthorTrackList = new ArrayList<Track>(1000);
+			
+			for (IPropertyable item : TrackManager.getInstance().getItems()) {
+				alAuthorTrackList.add((Track)item);
+			}
+		}
+		
+		Collections.sort(alAuthorTrackList, new TrackComparator(1));
+		
+		sb.append("<collection>\n");
+		
+		ListIterator itr1 = alAuthorTrackList.listIterator();
+		
+		while (itr1.hasNext()) {	
+			if (itr1.hasPrevious()) {
+				previoustrack = (Track)alAuthorTrackList.get(itr1.previousIndex());
+				track = (Track)itr1.next();	
+				if (previoustrack.getAuthor().getId().equals(track.getAuthor().getId())) {
+					if (previoustrack.getAlbum().getId().equals(track.getAlbum().getId())) {
+						// Gather information on current track
+						sb.append(createTabs(3) + "<" + track.getIdentifier() + ">\n");
+						sb.append(createTabs(4) + "<name>" + track.getName() + "</name>\n");
+						sb.append(createTabs(4) + "<length>" + track.getLength() + "</length>\n");
+						sb.append(createTabs(4) + "<rate>" + track.getRate() + "</rate>\n");
+						sb.append(createTabs(4) + "<comment>" + track.getValue(XML_TRACK_COMMENT) + "</comment>\n");
+						sb.append(createTabs(4) + "<order>" + track.getValue(XML_TRACK_ORDER) + "</order>\n");
+						sb.append(createTabs(3) + "</" + track.getIdentifier() + ">\n");	
+					} else {
+						// Gather information on current album
+						sb.append(createTabs(2) + "</" + track.getAlbum().getIdentifier() + ">\n");
+						sb.append(createTabs(2) + "<" + track.getAlbum().getIdentifier() + ">\n");
+						sb.append(createTabs(3) + "<name>" + track.getAlbum().getName2() + "</name>\n");
+						sb.append(createTabs(3) + "<" + track.getIdentifier() + ">\n");
+						sb.append(createTabs(4) + "<name>" + track.getName() + "</name>\n");
+						sb.append(createTabs(4) + "<length>" + track.getLength() + "</length>\n");
+						sb.append(createTabs(4) + "<rate>" + track.getRate() + "</rate>\n");
+						sb.append(createTabs(4) + "<comment>" + track.getValue(XML_TRACK_COMMENT) + "</comment>\n");
+						sb.append(createTabs(4) + "<order>" + track.getValue(XML_TRACK_ORDER) + "</order>\n");
+						sb.append(createTabs(3) + "</" + track.getIdentifier() + ">\n");	
+					}
+				} else {
+					// Gather information on current author
+					sb.append(createTabs(2) + "</" + track.getAlbum().getIdentifier() + ">\n");
+					sb.append(createTabs(1) + "</" + track.getAuthor().getIdentifier() + ">\n");
+					sb.append(createTabs(1) + "<" + track.getAuthor().getIdentifier() + ">\n");
+					sb.append(createTabs(2) + "<name>" + track.getAuthor().getName2() + "</name>\n");
+					sb.append(createTabs(2) + "<" + track.getAlbum().getIdentifier() + ">\n");
+					sb.append(createTabs(3) + "<name>" + track.getAlbum().getName2() + ">\n");
+					sb.append(createTabs(3) + "<" + track.getIdentifier() + ">\n");
+					sb.append(createTabs(4) + "<name>" + track.getName() + "</name>\n");
+					sb.append(createTabs(4) + "<length>" + track.getLength() + "</length>\n");
+					sb.append(createTabs(4) + "<rate>" + track.getRate() + "</rate>\n");
+					sb.append(createTabs(4) + "<comment>" + track.getValue(XML_TRACK_COMMENT) + "</comment>\n");
+					sb.append(createTabs(4) + "<order>" + track.getValue(XML_TRACK_ORDER) + "</order>\n");
+					sb.append(createTabs(3) + "</" + track.getIdentifier() + ">\n");
+				}
+			} else {
+				// Executed on first track in the list.
+				track = (Track)itr1.next();	
+				sb.append(createTabs(1) + "<" + track.getAuthor().getIdentifier() + ">\n");
+				sb.append(createTabs(2) + "<name>" + track.getAuthor().getName2() + "</name>\n");
+				sb.append(createTabs(2) + "<" + track.getAlbum().getIdentifier() + ">\n");
+				sb.append(createTabs(3) + "<name>" + track.getAlbum().getName2() + "</name>\n");
+				sb.append(createTabs(4) + "<" + track.getIdentifier() + ">\n");
+				sb.append(createTabs(4) + "<name>" + track.getName() + "</name>\n");
+				sb.append(createTabs(4) + "<length>" + track.getLength() + "</length>\n");
+				sb.append(createTabs(4) + "<rate>" + track.getRate() + "</rate>\n");
+				sb.append(createTabs(4) + "<comment>" + track.getValue(XML_TRACK_COMMENT) + "</comment>\n");
+				sb.append(createTabs(4) + "<order>" + track.getValue(XML_TRACK_ORDER) + "</order>\n");
+				sb.append(createTabs(3) + "</" + track.getIdentifier() + ">\n");
+			}
+		}
+		
+		if (!itr1.hasNext()) {
+			sb.append(createTabs(2) + "</" + track.getAlbum().getIdentifier() + ">\n");
+			sb.append(createTabs(1) + "</" + track.getAuthor().getIdentifier() + ">\n");
+		}
+		
+		sb.append("</collection>\n");
+		
+		return sb.toString();
+	}
+	
+	/**
+	 * Return string containing XML markup for entire collection based on albums.
+	 * @return xml for collection
+	 */
+	public String logicalAlbumCollectionToXML() {
+		ArrayList<Track> alAlbumTrackList;
+		Track track = null;
+		Track previoustrack = null;
+		StringBuffer sb = new StringBuffer();
+		
+		synchronized (TrackManager.getInstance().getLock()) {
+			alAlbumTrackList = new ArrayList<Track>(1000);
+			
+			for (IPropertyable item : TrackManager.getInstance().getItems()) {
+				alAlbumTrackList.add((Track)item);
+			}
+		}
+		
+		Collections.sort(alAlbumTrackList, new TrackComparator(2));
+		
+		sb.append("<collection>\n");
+		
+		ListIterator itr1 = alAlbumTrackList.listIterator();
+
+		while (itr1.hasNext()) {
+			if (itr1.hasPrevious()) {
+				previoustrack = (Track)alAlbumTrackList.get(itr1.previousIndex());
+				track = (Track)itr1.next();				
+				if (previoustrack.getAlbum().getId().equals(track.getAlbum().getId())) {					
+					sb.append(createTabs(2) + "<" + track.getIdentifier() + ">\n");
+					sb.append(createTabs(3) + "<name>" + track.getName() + "</name>\n");
+					sb.append(createTabs(3) + "<length>" + track.getLength() + "</length>\n");
+					sb.append(createTabs(3) + "<rate>" + track.getRate() + "</rate>\n");
+					sb.append(createTabs(3) + "<comment>" + track.getValue(XML_TRACK_COMMENT) + "</comment>\n");
+					sb.append(createTabs(3) + "<order>" + track.getValue(XML_TRACK_ORDER) + "</order>\n");
+					sb.append(createTabs(2) + "</" + track.getIdentifier() + ">\n");
+				} else {
+					sb.append(createTabs(1) + "</" + track.getAlbum().getIdentifier() + ">\n");
+					sb.append(createTabs(1) + "<" + track.getAlbum().getIdentifier() + ">\n");
+					sb.append(createTabs(2) + "<name>" + track.getAlbum().getName2() + "</name>\n");
+					sb.append(createTabs(2) + "<" + track.getIdentifier() + ">\n");
+					sb.append(createTabs(3) + "<name>" + track.getName() + "</name>\n");
+					sb.append(createTabs(3) + "<length>" + track.getLength() + "</length>\n");
+					sb.append(createTabs(3) + "<rate>" + track.getRate() + "</rate>\n");
+					sb.append(createTabs(3) + "<comment>" + track.getValue(XML_TRACK_COMMENT) + "</comment>\n");
+					sb.append(createTabs(3) + "<order>" + track.getValue(XML_TRACK_ORDER) + "</order>\n");
+					sb.append(createTabs(2) + "</" + track.getIdentifier() + ">\n");
+				}
+			} else {
+				track = (Track)itr1.next();				
+				
+				sb.append(createTabs(1) + "<" + track.getAlbum().getIdentifier() + ">\n");
+				sb.append(createTabs(2) + "<name>" + track.getAlbum().getName2() + "</name>\n");
+				sb.append(createTabs(2) + "<" + track.getIdentifier() + ">\n");
+				sb.append(createTabs(3) + "<name>" + track.getName() + "</name>\n");
+				sb.append(createTabs(3) + "<length>" + track.getLength() + "</length>\n");
+				sb.append(createTabs(3) + "<rate>" + track.getRate() + "</rate>\n");
+				sb.append(createTabs(3) + "<comment>" + track.getValue(XML_TRACK_COMMENT) + "</comment>\n");
+				sb.append(createTabs(3) + "<order>" + track.getValue(XML_TRACK_ORDER) + "</order>\n");
+				sb.append(createTabs(2) + "</" + track.getIdentifier() + ">\n");
+			}
+		}
+		
+		if (!itr1.hasNext()) {
+			sb.append(createTabs(1) + "</" + track.getAlbum().getIdentifier() + ">\n");
+		}
+		
+		sb.append("</collection>\n");
+		
+		return sb.toString();
 	}
 	
 	/**
@@ -272,7 +547,7 @@ public class XMLExporter implements ITechnicalStrings {
 		synchronized (TrackManager.getInstance().getLock()) {
 			alAuthorTrackList = new ArrayList<Track>(20);
 			
-            for (IPropertyable item:TrackManager.getInstance().getItems()){
+            for (IPropertyable item : TrackManager.getInstance().getItems()){
                 track = (Track)item;
                 if (track.getAuthor().getId().equals(author.getId())) {
                 	alAuthorTrackList.add(track);
@@ -280,7 +555,7 @@ public class XMLExporter implements ITechnicalStrings {
             }			
 		}
 		
-		Collections.sort(alAuthorTrackList, new TrackComparator(0));
+		Collections.sort(alAuthorTrackList, new TrackComparator(1));
 		
 		sb.append("<" + author.getIdentifier() + ">\n");
 		sb.append(createTabs(1) + "<name>" + author.getName2() + "</name>\n");
@@ -349,7 +624,7 @@ public class XMLExporter implements ITechnicalStrings {
 		synchronized (TrackManager.getInstance().getLock()) {
 			alAlbumTrackList = new ArrayList<Track>(20);
 			
-			for (IPropertyable item:TrackManager.getInstance().getItems()) {
+			for (IPropertyable item : TrackManager.getInstance().getItems()) {
 				track = (Track)item;
 				
 				if (track.getAlbum().getId().equals(album.getId())) {
@@ -358,7 +633,7 @@ public class XMLExporter implements ITechnicalStrings {
 			}
 		}
 		
-		Collections.sort(alAlbumTrackList, new TrackComparator(0));
+		Collections.sort(alAlbumTrackList, new TrackComparator(2));
 		
 		// If alAlbumTrackList is not empty then find the the style and author of this album.
 		if (alAlbumTrackList.size() != 0) {
