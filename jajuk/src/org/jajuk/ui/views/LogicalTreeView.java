@@ -112,6 +112,7 @@ ActionListener, Observer {
     JRadioButtonMenuItem jmiCollectionStyle;
     JRadioButtonMenuItem jmiCollectionAuthor;
     JRadioButtonMenuItem jmiCollectionAlbum;
+    JMenuItem jmiCollectionExport;
     
     JLabel jlSort;
     JComboBox jcbSort;   
@@ -198,7 +199,7 @@ ActionListener, Observer {
         jcbSort = new JComboBox();
         jcbSort.addItem(Messages.getString("Property_style")); //$NON-NLS-1$
         jcbSort.addItem(Messages.getString("Property_author")); //$NON-NLS-1$
-        jcbSort.addItem(Messages.getString("Property_album")); //$NON-NLS-1$
+        jcbSort.addItem(Messages.getString("Property_album")); //$NON-NLS-1    
         jcbSort.setSelectedIndex(iSortOrder);
         jcbSort.setActionCommand(EVENT_LOGICAL_TREE_SORT);
         jcbSort.addActionListener(this); 
@@ -232,6 +233,10 @@ ActionListener, Observer {
         if (ConfigurationManager.getInt(CONF_LOGICAL_TREE_SORT_ORDER) == 2){
             jmiCollectionAlbum.setSelected(true);
         }
+        //Export
+        jmiCollectionExport = new JMenuItem(Messages
+        	.getString("Property_export")); //$NON-NLS-1$
+        jmiCollectionExport.addActionListener(this);        
         
         btCollection.add(jmiCollectionStyle);
         btCollection.add(jmiCollectionAuthor);
@@ -240,7 +245,9 @@ ActionListener, Observer {
         jmenuCollection.add(jmiCollectionStyle);
         jmenuCollection.add(jmiCollectionAuthor);
         jmenuCollection.add(jmiCollectionAlbum);
-        
+        jmenuCollection.add(new JLabel(Messages.getString("Export"))); //$NON-NLS-1$
+        jmenuCollection.add(jmiCollectionExport);
+                
         // Style menu
         jmenuStyle = new JPopupMenu();
         jmiStylePlay = new JMenuItem(Messages.getString("LogicalTreeView.1")); //$NON-NLS-1$
@@ -919,7 +926,8 @@ ActionListener, Observer {
                     });
                 } else if (e.getSource() == jmiStyleExport
             				|| e.getSource() == jmiAuthorExport
-            				|| e.getSource() == jmiAlbumExport) {
+            				|| e.getSource() == jmiAlbumExport
+            				|| e.getSource() == jmiCollectionExport) {
                 		final JFileChooser filechooser = new JFileChooser();
                 		ExportFileFilter filter = new ExportFileFilter(".xml");
             	
@@ -949,6 +957,14 @@ ActionListener, Observer {
                 					} else if (e.getSource() == jmiAlbumExport) {                 						
                 						Album album = ((AlbumNode)paths[0].getLastPathComponent()).getAlbum();
                 						result = xmlexporter.albumToXML(album);
+                					} else if (e.getSource() == jmiCollectionExport) {
+                						if (iSortOrder == 0) {
+                							result = xmlexporter.logicalStyleCollectionToXML();
+                						} else if (iSortOrder == 1) {
+                							result = xmlexporter.logicalAuthorCollectionToXML();
+                						} else if (iSortOrder == 2) {
+                							result = xmlexporter.logicalAlbumCollectionToXML();
+                						}
                 					}
                 					xmlexporter.commit(filepath, result);
                 				}
