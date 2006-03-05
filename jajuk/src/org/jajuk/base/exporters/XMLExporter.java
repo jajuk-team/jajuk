@@ -22,6 +22,7 @@ package org.jajuk.base.exporters;
 import org.jajuk.util.log.Log;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.base.Device;
+import org.jajuk.base.DeviceManager;
 import org.jajuk.base.Directory;
 import org.jajuk.base.DirectoryManager;
 import org.jajuk.base.IPropertyable;
@@ -351,6 +352,30 @@ public class XMLExporter implements ITechnicalStrings {
 		return sb.toString();
 	}
 	
+	/** 
+	 * Returns string containing XML markup for entire collection.
+	 * @return xml for collection
+	 */
+	public String collectionToXML() {
+		StringBuffer sb = new StringBuffer();
+		Iterator itr1;
+		Device device;
+		
+		sb.append("<collection>\n");
+		
+		synchronized (DeviceManager.getInstance().getLock()) {
+			itr1 = DeviceManager.getInstance().getItems().iterator();
+			while (itr1.hasNext()) {
+				device = (Device)itr1.next();
+				sb.append(collectionToXMLHelper(device,2));
+			}
+		}
+		
+		sb.append("</collection>\n");
+		
+		return sb.toString();
+	}
+	
 	/**
 	 * Returns string containing XML markup for device specified.
 	 * @param device
@@ -371,6 +396,30 @@ public class XMLExporter implements ITechnicalStrings {
 		sb.append(toXMLHelper(deviceDir,1));
 		
 		sb.append("</" + device.getIdentifier() + ">\n");
+		
+		return sb.toString();
+	}
+	
+	/**
+	 * Private method used in collection exporting.
+	 * @param device, int
+	 * @return xml for device
+	 */
+	private String collectionToXMLHelper(Device device, int level) {
+		StringBuffer sb = new StringBuffer();
+		
+		// Gather information about the device.
+		sb.append(createTabs(level-1) + "<" + device.getIdentifier() + ">\n");			
+		sb.append(createTabs(level) + "<name>" + device.getName() + "</name>\n");
+		sb.append(createTabs(level) + "<type>" + device.getDeviceTypeS() + "</type>\n");
+		sb.append(createTabs(level) + "<url>" + device.getUrl() + "</url>\n");
+		sb.append(createTabs(level) + "<unix-mount-point>" + device.getMountPoint() + "</unix-mount-point>\n");
+		
+		// Retrieve the directory of the device to start traversal.
+		Directory deviceDir = DirectoryManager.getInstance().getDirectoryForIO(device.getFio());
+		sb.append(toXMLHelper(deviceDir,2));
+		
+		sb.append(createTabs(level-1) + "</" + device.getIdentifier() + ">\n");
 		
 		return sb.toString();
 	}
