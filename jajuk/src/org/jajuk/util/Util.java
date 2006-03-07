@@ -1295,5 +1295,45 @@ public class Util implements ITechnicalStrings {
         properties.remove("jajuk.options.p2p.password");
         return properties;
     }
+    
+    /**
+     * 
+     * @param parent parent directory
+     * @param name file name
+     * @return whether the file name is correct on the current filesystem
+     */
+    public static boolean isValidFileName( File parent , String name ) {
+        if( parent == null || name == null ) {
+            return false ;
+        }
+        File f = new File( parent , name ) ;
+        if( !f.exists() ) {
+            try {
+                //try to create the file
+                f.createNewFile();
+                // test if the file is seen into the directory
+                File[] files = parent.listFiles();
+                boolean b = false;
+                for (int i=0;i<files.length;i++){
+                    if (files[i].getName().equals(name)){
+                        System.out.println(files[i].getName());
+                        b = true;
+                        break;
+                    }
+                }
+                //remove test file
+                if (f.exists()){
+                    f.delete();
+                }
+                return b ;
+            } catch ( IOException ioe ) {
+                return false ;
+            }
+        }
+        else{ //file already exists
+            return true;
+        }
+    }
+
  
 }
