@@ -41,6 +41,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
+import javax.swing.JSlider;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
@@ -119,9 +120,9 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
     JLabel jlLogLevel;
     SteppedComboBox scbLogLevel;
     JLabel jlIntroPosition;
-    JTextField jtfIntroPosition;
+    JSlider introPosition;
     JLabel jlIntroLength;
-    JTextField jtfIntroLength;
+    JSlider introLength;
     JLabel jlBestofSize;
     JTextField jtfBestofSize;
     JLabel jlNoveltiesAge;
@@ -129,7 +130,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
     JLabel jlVisiblePlanned;
     JTextField jtfVisiblePlanned;
     JLabel jlCrossFadeDuration;
-    JTextField jtfCrossFadeDuration;
+    JSlider crossFadeDuration;
     JCheckBox jcbDefaultActionClick;
     JCheckBox jcbDefaultActionDrop;
     JCheckBox jcbShowPopup;
@@ -144,7 +145,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
     JPanel jpAdvanced;
     JCheckBox jcbBackup;
     JLabel jlBackupSize;
-    JTextField jtfBackupSize;
+    JSlider backupSize;
     JLabel jlCollectionEncoding;
     JComboBox jcbCollectionEncoding;
     JCheckBox jcbRegexp;
@@ -160,9 +161,9 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
     JLabel jlProxyLogin;
     JTextField jtfProxyLogin;
     JLabel jlConnectionTO;
-    JTextField jtfConnectionTO;
+    JSlider connectionTO;
     JLabel jlTransfertTO;
-    JTextField jtfTransfertTO;
+    JSlider transfertTO;
     JPanel jpCovers;
     JCheckBox jcbAutoCover;
     JCheckBox jcbShuffleCover;
@@ -381,66 +382,22 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
         jpCombos.add(scbLogLevel,"1,4"); //$NON-NLS-1$
         //Intro
         JPanel jp = new JPanel();
-        double sizeIntro[][] = {{0.50,0.45},
-                {20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator}};
-        jp.setLayout(new TableLayout(sizeIntro));
         //intro position
         jlIntroPosition = new JLabel(Messages.getString("ParameterView.59")); //$NON-NLS-1$
-        jtfIntroPosition = new JTextField(3);
-        jtfIntroPosition.setInputVerifier(new InputVerifier(){
-            public boolean verify(JComponent input) {
-                JTextField tf = (JTextField) input;
-                String sText = tf.getText();
-                if (sText.length()<1 || sText.length()>2){
-                    jbOK.setEnabled(false);
-                    return false;
-                }
-                try{
-                    int iValue = Integer.parseInt(sText);
-                    if (iValue < 0 || iValue>99){
-                        jbOK.setEnabled(false);
-                        return false;
-                    }
-                }
-                catch(Exception e){
-                    return false;
-                }
-                jbOK.setEnabled(true);
-                return true;
-            }
-            
-            public boolean shouldYieldFocus(JComponent input) {
-                return verify(input);
-            }
-        });
-        jtfIntroPosition.setToolTipText(Messages.getString("ParameterView.60") ); //$NON-NLS-1$
+        introPosition = new JSlider(0,100,0);
+        introPosition.setMajorTickSpacing(10);
+        introPosition.setMinorTickSpacing(10);
+        introPosition.setPaintTicks(true);
+        introPosition.setPaintLabels(true);
+        introPosition.setToolTipText(Messages.getString("ParameterView.60") ); //$NON-NLS-1$
         //intro length
         jlIntroLength = new JLabel(Messages.getString("ParameterView.61")); //$NON-NLS-1$
-        jtfIntroLength = new JTextField(3);
-        jtfIntroLength.setInputVerifier(new InputVerifier(){
-            public boolean verify(JComponent input) {
-                JTextField tf = (JTextField) input;
-                String sText = tf.getText();
-                try{
-                    int iValue = Integer.parseInt(sText);
-                    if (iValue <= 0 ){
-                        jbOK.setEnabled(false);
-                        return false;
-                    }
-                }
-                catch(Exception e){
-                    jbOK.setEnabled(false);
-                    return false;
-                }
-                jbOK.setEnabled(true);
-                return true;
-            }
-            
-            public boolean shouldYieldFocus(JComponent input) {
-                return verify(input);
-            }
-        });
-        jtfIntroLength.setToolTipText(Messages.getString("ParameterView.110") ); //$NON-NLS-1$
+        introLength = new JSlider(0,30,20);
+        introLength.setMajorTickSpacing(10);
+        introLength.setMinorTickSpacing(1);
+        introLength.setPaintTicks(true);
+        introLength.setPaintLabels(true);
+        introLength.setToolTipText(Messages.getString("ParameterView.110") ); //$NON-NLS-1$
         //best of size
         jlBestofSize = new JLabel(Messages.getString("ParameterView.111")); //$NON-NLS-1$
         jlBestofSize.setToolTipText(Messages.getString("ParameterView.112") ); //$NON-NLS-1$
@@ -523,43 +480,29 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
         });
         jlCrossFadeDuration = new JLabel(Messages.getString("ParameterView.190")); //$NON-NLS-1$
         jlCrossFadeDuration.setToolTipText(Messages.getString("ParameterView.191")); //$NON-NLS-1$
-        jtfCrossFadeDuration = new JTextField(3);
-        jtfCrossFadeDuration.setToolTipText(Messages.getString("ParameterView.191")); //$NON-NLS-1$
-        jtfCrossFadeDuration.setInputVerifier(new InputVerifier(){
-            public boolean verify(JComponent input) {
-                JTextField tf = (JTextField) input;
-                String sText = tf.getText();
-                try{
-                    int iValue = Integer.parseInt(sText);
-                    if (iValue < 0 || iValue > 20){  
-                        return false;
-                    }
-                }
-                catch(Exception e){
-                    return false;
-                }
-                jbOK.setEnabled(true);
-                return true;
-            }
-            
-            public boolean shouldYieldFocus(JComponent input) {
-                return verify(input);
-            }
-        });
-        
+        crossFadeDuration = new JSlider(0,30,0);
+        crossFadeDuration.setMajorTickSpacing(10);
+        crossFadeDuration.setMinorTickSpacing(1);
+        crossFadeDuration.setPaintTicks(true);
+        crossFadeDuration.setPaintLabels(true);
+        crossFadeDuration.setToolTipText(Messages.getString("ParameterView.191")); //$NON-NLS-1$
         //add panels
+        double sizeIntro[][] = {{0.50,0.45},
+                {TableLayout.PREFERRED,iYSeparator,TableLayout.PREFERRED,iYSeparator,TableLayout.PREFERRED,iYSeparator,TableLayout.PREFERRED,iYSeparator,
+            TableLayout.PREFERRED,iYSeparator,TableLayout.PREFERRED,iYSeparator}};
+        jp.setLayout(new TableLayout(sizeIntro));
         jp.add(jlIntroPosition,"0,0"); //$NON-NLS-1$
-        jp.add(jtfIntroPosition,"1,0"); //$NON-NLS-1$
+        jp.add(introPosition,"1,0"); //$NON-NLS-1$
         jp.add(jlIntroLength,"0,2"); //$NON-NLS-1$
-        jp.add(jtfIntroLength,"1,2"); //$NON-NLS-1$
-        jp.add(jlBestofSize,"0,4"); //$NON-NLS-1$
-        jp.add(jtfBestofSize,"1,4"); //$NON-NLS-1$
-        jp.add(jlNoveltiesAge,"0,6"); //$NON-NLS-1$
-        jp.add(jtfNoveltiesAge,"1,6"); //$NON-NLS-1$
-        jp.add(jlVisiblePlanned,"0,8"); //$NON-NLS-1$
-        jp.add(jtfVisiblePlanned,"1,8"); //$NON-NLS-1$
-        jp.add(jlCrossFadeDuration,"0,10"); //$NON-NLS-1$
-        jp.add(jtfCrossFadeDuration,"1,10"); //$NON-NLS-1$
+        jp.add(introLength,"1,2"); //$NON-NLS-1$
+        jp.add(jlCrossFadeDuration,"0,4"); //$NON-NLS-1$
+        jp.add(crossFadeDuration,"1,4"); //$NON-NLS-1$
+        jp.add(jlBestofSize,"0,6"); //$NON-NLS-1$
+        jp.add(jtfBestofSize,"1,6"); //$NON-NLS-1$
+        jp.add(jlNoveltiesAge,"0,8"); //$NON-NLS-1$
+        jp.add(jtfNoveltiesAge,"1,8"); //$NON-NLS-1$
+        jp.add(jlVisiblePlanned,"0,10"); //$NON-NLS-1$
+        jp.add(jtfVisiblePlanned,"1,10"); //$NON-NLS-1$
         
         double sizeOptions[][] = {{0.99},
                 {iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,TableLayout.PREFERRED,iYSeparator,TableLayout.PREFERRED,iYSeparator}};
@@ -609,16 +552,17 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
         
         //--Advanced
         jpAdvanced = new JPanel();
-        double sizeAdvanced[][] = {{0.5,0.45},
-                {iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator}};
-        jpAdvanced.setLayout(new TableLayout(sizeAdvanced));
         jcbBackup = new JCheckBox(Messages.getString("ParameterView.116"));  //$NON-NLS-1$
         jcbBackup.addActionListener(this);
         jcbBackup.setToolTipText(Messages.getString("ParameterView.117")); //$NON-NLS-1$
         jlBackupSize = new JLabel(Messages.getString("ParameterView.118")); //$NON-NLS-1$
         jlBackupSize.setToolTipText(Messages.getString("ParameterView.119")); //$NON-NLS-1$
-        jtfBackupSize = new JTextField(4);
-        jtfBackupSize.setToolTipText(Messages.getString("ParameterView.119")); //$NON-NLS-1$
+        backupSize = new JSlider(0,100);
+        backupSize.setMajorTickSpacing(10);
+        backupSize.setMinorTickSpacing(10);
+        backupSize.setPaintTicks(true);
+        backupSize.setPaintLabels(true);
+        backupSize.setToolTipText(Messages.getString("ParameterView.119")); //$NON-NLS-1$
         jlCollectionEncoding = new JLabel(Messages.getString("ParameterView.120")); //$NON-NLS-1$
         jlCollectionEncoding.setToolTipText(Messages.getString("ParameterView.121")); //$NON-NLS-1$
         jcbCollectionEncoding = new JComboBox();
@@ -631,19 +575,24 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
         jlRefactorPattern = new JLabel(Messages.getString("ParameterView.192"));
         jlRefactorPattern.setToolTipText(Messages.getString("ParameterView.193"));
         jtfRefactorPattern = new JTextField();
+        double sizeAdvanced[][] = {{0.5,0.45},
+                {iYSeparator,TableLayout.PREFERRED,iYSeparator,TableLayout.PREFERRED,iYSeparator,
+            TableLayout.PREFERRED,iYSeparator,TableLayout.PREFERRED,iYSeparator,TableLayout.PREFERRED,iYSeparator}};
+        jpAdvanced.setLayout(new TableLayout(sizeAdvanced));
         jpAdvanced.add(jcbRegexp,"0,1");//$NON-NLS-1$
         jpAdvanced.add(jlCollectionEncoding,"0,3");//$NON-NLS-1$
         jpAdvanced.add(jcbCollectionEncoding,"1,3");//$NON-NLS-1$
         jpAdvanced.add(jcbBackup,"0,5");//$NON-NLS-1$
         jpAdvanced.add(jlBackupSize,"0,7");//$NON-NLS-1$
-        jpAdvanced.add(jtfBackupSize,"1,7");//$NON-NLS-1$
+        jpAdvanced.add(backupSize,"1,7");//$NON-NLS-1$
         jpAdvanced.add(jlRefactorPattern,"0,9");//$NON-NLS-1$
         jpAdvanced.add(jtfRefactorPattern,"1,9");//$NON-NLS-1
         
         //- Network
         jpNetwork = new JPanel();
         double sizeNetwork[][] = {{0.5,0.45},
-                {iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator}};
+                {iYSeparator,TableLayout.PREFERRED,iYSeparator,TableLayout.PREFERRED,iYSeparator,TableLayout.PREFERRED
+            ,iYSeparator,TableLayout.PREFERRED,iYSeparator,TableLayout.PREFERRED,iYSeparator,TableLayout.PREFERRED,iYSeparator}};
         jpNetwork.setLayout(new TableLayout(sizeNetwork));
         jcbProxy = new JCheckBox(Messages.getString("ParameterView.140"));  //$NON-NLS-1$
         jcbProxy.setToolTipText(Messages.getString("ParameterView.141"));  //$NON-NLS-1$
@@ -706,20 +655,24 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
         };
         jlConnectionTO = new JLabel(Messages.getString("ParameterView.160"));  //$NON-NLS-1$
         jlConnectionTO.setToolTipText(Messages.getString("ParameterView.160"));  //$NON-NLS-1$
-        jtfConnectionTO = new JTextField();
-        jtfConnectionTO.setToolTipText(Messages.getString("ParameterView.161"));  //$NON-NLS-1$)
-        jtfConnectionTO.addActionListener(this);
-        jtfConnectionTO.setInputVerifier(verifier);
+        connectionTO = new JSlider(0,60);
+        connectionTO.setMajorTickSpacing(10);
+        connectionTO.setMinorTickSpacing(5);
+        connectionTO.setPaintTicks(true);
+        connectionTO.setPaintLabels(true);
+        connectionTO.setToolTipText(Messages.getString("ParameterView.161"));  //$NON-NLS-1$)
         jlTransfertTO = new JLabel(Messages.getString("ParameterView.162"));  //$NON-NLS-1$
         jlTransfertTO.setToolTipText(Messages.getString("ParameterView.163"));  //$NON-NLS-1$
-        jtfTransfertTO = new JTextField();
-        jtfTransfertTO.setToolTipText(Messages.getString("ParameterView.163"));  //$NON-NLS-1$)
-        jtfTransfertTO.addActionListener(this);
-        jtfTransfertTO.setInputVerifier(verifier);
+        transfertTO = new JSlider(0,60);
+        transfertTO.setMajorTickSpacing(10);
+        transfertTO.setMinorTickSpacing(5);
+        transfertTO.setPaintTicks(true);
+        transfertTO.setPaintLabels(true);
+        transfertTO.setToolTipText(Messages.getString("ParameterView.163"));  //$NON-NLS-1$)
         jpNetwork.add(jlConnectionTO,"0,1"); //$NON-NLS-1$
-        jpNetwork.add(jtfConnectionTO,"1,1"); //$NON-NLS-1$
+        jpNetwork.add(connectionTO,"1,1"); //$NON-NLS-1$
         jpNetwork.add(jlTransfertTO,"0,3"); //$NON-NLS-1$
-        jpNetwork.add(jtfTransfertTO,"1,3"); //$NON-NLS-1$
+        jpNetwork.add(transfertTO,"1,3"); //$NON-NLS-1$
         jpNetwork.add(jcbProxy,"0,5"); //$NON-NLS-1$
         jpNetwork.add(jlProxyHostname,"0,7"); //$NON-NLS-1$
         jpNetwork.add(jtfProxyHostname,"1,7"); //$NON-NLS-1$
@@ -786,7 +739,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
         jpCovers.add(jlMinSize,"0,7"); //$NON-NLS-1$
         jpCovers.add(jtfMinSize,"1,7"); //$NON-NLS-1$
         jpCovers.add(jlMaxSize,"0,9"); //$NON-NLS-1$
-        jpCovers.add(jtfMaxSize,"1,9"); //$NON-NLS-1$
+        jpCovers.add(jtfMaxSize,"1,9");
         
         //--OK/cancel panel
         jpOKCancel = new JPanel();
@@ -892,14 +845,14 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
                 }
                 else if (e.getSource() == jcbBackup){ //if backup option is unchecked, reset backup size
                     if ( jcbBackup.isSelected()){
-                        jtfBackupSize.setEnabled(true);
+                        backupSize.setEnabled(true);
                         jlBackupSize.setEnabled(true);
-                        jtfBackupSize.setText(ConfigurationManager.getProperty(CONF_BACKUP_SIZE));
+                        backupSize.setValue(ConfigurationManager.getInt(CONF_BACKUP_SIZE));
                     }
                     else{
-                        jtfBackupSize.setEnabled(false);
+                        backupSize.setEnabled(false);
                         jlBackupSize.setEnabled(false);
-                        jtfBackupSize.setText("0"); //$NON-NLS-1$
+                        backupSize.setValue(0); //$NON-NLS-1$
                     }
                 }
                 else if (e.getSource() == jcbProxy){
@@ -973,14 +926,10 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
         int iLogLevel = scbLogLevel.getSelectedIndex(); 
         Log.setVerbosity(iLogLevel);
         ConfigurationManager.setProperty(CONF_OPTIONS_LOG_LEVEL,Integer.toString(iLogLevel));
-        String sIntroPosition = jtfIntroPosition.getText();
-        if (!jtfIntroPosition.equals("")){ //$NON-NLS-1$
-            ConfigurationManager.setProperty(CONF_OPTIONS_INTRO_BEGIN,sIntroPosition);
-        }
-        String sIntroLength = jtfIntroLength.getText();
-        if (!jtfIntroLength.equals("")){ //$NON-NLS-1$
-            ConfigurationManager.setProperty(CONF_OPTIONS_INTRO_LENGTH,sIntroLength);
-        }
+        ConfigurationManager.setProperty(CONF_OPTIONS_INTRO_BEGIN,
+            Integer.toString(introPosition.getValue()));
+        ConfigurationManager.setProperty(CONF_OPTIONS_INTRO_LENGTH,
+                Integer.toString(introLength.getValue()));
         String sBestofSize = jtfBestofSize.getText();
         if (!sBestofSize.equals("")){ //$NON-NLS-1$
             ConfigurationManager.setProperty(CONF_BESTOF_SIZE,sBestofSize);
@@ -994,10 +943,8 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
         if (!sVisiblePlanned.equals("")){ //$NON-NLS-1$
             ConfigurationManager.setProperty(CONF_OPTIONS_VISIBLE_PLANNED,sVisiblePlanned);
         }
-        String sFade = jtfCrossFadeDuration.getText();
-        if (!sFade.equals("")){ //$NON-NLS-1$
-            ConfigurationManager.setProperty(CONF_FADE_DURATION,sFade);
-        }
+        ConfigurationManager.setProperty(CONF_FADE_DURATION,
+                Integer.toString(crossFadeDuration.getValue()));
         //startup
         if (jrbNothing.isSelected()){
             ConfigurationManager.setProperty(CONF_STARTUP_MODE,STARTUP_MODE_NOTHING);
@@ -1044,7 +991,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
         ConfigurationManager.setProperty(CONF_TAGS_USE_PARENT_DIR,Boolean.toString(jcbUseParentDir.isSelected()));
         ConfigurationManager.setProperty(CONF_REGEXP,Boolean.toString(jcbRegexp.isSelected()));
         //Advanced
-        ConfigurationManager.setProperty(CONF_BACKUP_SIZE,jtfBackupSize.getText());
+        ConfigurationManager.setProperty(CONF_BACKUP_SIZE,Integer.toString(backupSize.getValue()));
         ConfigurationManager.setProperty(CONF_COLLECTION_CHARSET,jcbCollectionEncoding.getSelectedItem().toString());
         InformationJPanel.getInstance().setMessage(Messages.getString("ParameterView.109"),InformationJPanel.INFORMATIVE); //$NON-NLS-1$
         ConfigurationManager.setProperty(CONF_REFACTOR_PATTERN,jtfRefactorPattern.getText());
@@ -1053,16 +1000,15 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
         ConfigurationManager.setProperty(CONF_NETWORK_PROXY_HOSTNAME,jtfProxyHostname.getText());
         ConfigurationManager.setProperty(CONF_NETWORK_PROXY_PORT,jtfProxyPort.getText());
         ConfigurationManager.setProperty(CONF_NETWORK_PROXY_LOGIN,jtfProxyLogin.getText());
-        ConfigurationManager.setProperty(CONF_NETWORK_CONNECTION_TO,jtfConnectionTO.getText());
-        ConfigurationManager.setProperty(CONF_NETWORK_TRANSFERT_TO,jtfTransfertTO.getText());
+        ConfigurationManager.setProperty(CONF_NETWORK_CONNECTION_TO,Integer.toString(connectionTO.getValue()));
+        ConfigurationManager.setProperty(CONF_NETWORK_TRANSFERT_TO,Integer.toString(transfertTO.getValue()));
         //Covers
         ConfigurationManager.setProperty(CONF_COVERS_AUTO_COVER,Boolean.toString(jcbAutoCover.isSelected()));
         ConfigurationManager.setProperty(CONF_COVERS_SHUFFLE,Boolean.toString(jcbShuffleCover.isSelected()));
         ConfigurationManager.setProperty(CONF_COVERS_PRELOAD,Boolean.toString(jcbPreLoad.isSelected()));
         ConfigurationManager.setProperty(CONF_COVERS_CHANGE_AT_EACH_TRACK,Boolean.toString(jcbLoadEachTrack.isSelected()));
         ConfigurationManager.setProperty(CONF_COVERS_MIN_SIZE,jtfMinSize.getText());
-        ConfigurationManager.setProperty(CONF_COVERS_MAX_SIZE,jtfMaxSize.getText());
-        //commit configuration
+        ConfigurationManager.setProperty(CONF_COVERS_MAX_SIZE,jtfMaxSize.getText());//commit configuration
         ConfigurationManager.commit();
         //notify playlist editor (usefull for novelties)
         ObservationManager.notify(new Event(EVENT_PLAYLIST_REFRESH));
@@ -1121,12 +1067,12 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
         scbLAF.setSelectedItem(ConfigurationManager.getProperty(CONF_OPTIONS_LNF));
         scbLAF.addActionListener(this);
         scbLogLevel.setSelectedIndex(Integer.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_LOG_LEVEL)));
-        jtfIntroLength.setText(ConfigurationManager.getProperty(CONF_OPTIONS_INTRO_LENGTH));
-        jtfIntroPosition.setText(ConfigurationManager.getProperty(CONF_OPTIONS_INTRO_BEGIN));
+        introLength.setValue(ConfigurationManager.getInt(CONF_OPTIONS_INTRO_LENGTH));
+        introPosition.setValue(ConfigurationManager.getInt(CONF_OPTIONS_INTRO_BEGIN));
         jtfBestofSize.setText(ConfigurationManager.getProperty(CONF_BESTOF_SIZE));
         jtfNoveltiesAge.setText(ConfigurationManager.getProperty(CONF_OPTIONS_NOVELTIES_AGE));
         jtfVisiblePlanned.setText(ConfigurationManager.getProperty(CONF_OPTIONS_VISIBLE_PLANNED));
-        jtfCrossFadeDuration.setText(ConfigurationManager.getProperty(CONF_FADE_DURATION));
+        crossFadeDuration.setValue(ConfigurationManager.getInt(CONF_FADE_DURATION));
         jcbShare.setSelected(ConfigurationManager.getBoolean(CONF_P2P_SHARE));
         jpfPasswd.setText(ConfigurationManager.getProperty(CONF_P2P_PASSWORD));
         jcbAddRemoteProperties.setSelected(ConfigurationManager.getBoolean(CONF_P2P_ADD_REMOTE_PROPERTIES));
@@ -1137,15 +1083,15 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
         int iBackupSize = ConfigurationManager.getInt(CONF_BACKUP_SIZE);
         if (iBackupSize<=0){ //backup size =0 means no backup
             jcbBackup.setSelected(false);   
-            jtfBackupSize.setEnabled(false);
+            backupSize.setEnabled(false);
             jlBackupSize.setEnabled(false);
         }
         else{
             jcbBackup.setSelected(true);
-            jtfBackupSize.setEnabled(true);
+            backupSize.setEnabled(true);
             jlBackupSize.setEnabled(true);
         }
-        jtfBackupSize.setText(Integer.toString(iBackupSize));
+        backupSize.setValue(iBackupSize);
         jcbCollectionEncoding.setSelectedItem(ConfigurationManager.getProperty(CONF_COLLECTION_CHARSET));
         jtfRefactorPattern.setText(ConfigurationManager.getProperty(CONF_REFACTOR_PATTERN));
         //network
@@ -1160,8 +1106,8 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
         jtfProxyLogin.setText(ConfigurationManager.getProperty(CONF_NETWORK_PROXY_LOGIN));
         jtfProxyLogin.setEnabled(bUseProxy);
         jlProxyLogin.setEnabled(bUseProxy);
-        jtfConnectionTO.setText(ConfigurationManager.getProperty(CONF_NETWORK_CONNECTION_TO));
-        jtfTransfertTO.setText(ConfigurationManager.getProperty(CONF_NETWORK_TRANSFERT_TO));
+        connectionTO.setValue(ConfigurationManager.getInt(CONF_NETWORK_CONNECTION_TO));
+        transfertTO.setValue(ConfigurationManager.getInt(CONF_NETWORK_TRANSFERT_TO));
         //Covers
         jcbAutoCover.setSelected(ConfigurationManager.getBoolean(CONF_COVERS_AUTO_COVER));
         jtfMinSize.setText(ConfigurationManager.getProperty(CONF_COVERS_MIN_SIZE));
