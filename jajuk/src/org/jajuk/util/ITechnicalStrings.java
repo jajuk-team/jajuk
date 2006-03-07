@@ -228,6 +228,7 @@ public interface ITechnicalStrings {
 	public static final String IMAGE_NO_COVER = PATH_IMAGES + "unknown.jpg";
     public static final String IMAGE_WRITE = PATH_IMAGES + "write.png";
     public static final String IMAGE_SEARCH = PATH_IMAGES + "search.png";
+    public static final String IMAGE_DJ = "/org/jajuk/images/dj.jpg";
         
 	//files
 	public static final String FILE_JAJUK_DIR = System.getProperty("user.home")+(Main.bTestMode?"/.jajuk_test":"/.jajuk");
