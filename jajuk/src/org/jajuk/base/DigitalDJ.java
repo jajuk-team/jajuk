@@ -22,6 +22,8 @@ package org.jajuk.base;
 
 import java.util.ArrayList;
 
+import org.jajuk.util.ITechnicalStrings;
+
 
 /**
  *  Digital DJ
@@ -29,22 +31,22 @@ import java.util.ArrayList;
  * @author     Bertrand Florat
  * @created    27/02/2006
  */
-public abstract class DigitalDJ {
+public abstract class DigitalDJ implements ITechnicalStrings{
     
     /**DJ name*/
-    private String sName;
+    protected String sName;
     
     /**Startup style*/
-    private Style startupStyle;
+    protected Style startupStyle;
     
     /**Use ratings*/
-    private boolean bUseRatings = false;
+    protected boolean bUseRatings = false;
     
     /**Rating floor*/
-    private int iRatingFloor = 0;
+    protected int iRatingFloor = 0;
     
     /**Fading duration in sec*/
-    private int iFadingDuration = 0;
+    protected int iFadingDuration = 0;
     
     /**
      * Constructor
@@ -61,6 +63,32 @@ public abstract class DigitalDJ {
     public String toString(){
         return "DJ "+sName;
     }
+    
+    /**
+     * <DJ namespace='jajuk' name='toto'>
+    <general_parameters>
+        <use_rating>true</use_rating>
+        <rating_level>3</rating_level>
+        <start_with>JAZZ</start_with>
+    <general_parameters>
+    <transitions>
+        <transition number_tracks='2'>
+            <from>
+                <style>JAZZ</style>
+                <style>CLASSICAL</style>
+            </from>
+            <to>
+                <style>POP</style>
+                <style>ROCK</style>
+            </to>
+        </transition>
+    </transitions>
+            
+</DJ>
+
+     * @return XML representation of this DJ
+     */
+    abstract public String toXML();
     
     /**
      * 

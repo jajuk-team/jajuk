@@ -73,5 +73,16 @@ public class ProportionDigitalDJ extends DigitalDJ {
     public void addProportion(Style style,float proportion) {
         this.proportions.put(style,proportion);
     }
+    
+    /* (non-Javadoc)
+     * @see org.jajuk.base.DigitalDJ#toXML()
+     */
+    public String toXML(){
+        StringBuffer sb = new StringBuffer(2000);
+        sb.append("<?xml version='1.0' encoding='UTF-8'?>\n");
+        sb.append("<DJ jajuk_version='1.2' name='"+sName+"'>\n");
+        sb.append("</DJ>");
+        return sb.toString();
+    }
 
 }

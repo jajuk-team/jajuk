@@ -44,14 +44,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.util.Iterator;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JSlider;
+import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.event.ChangeEvent;
@@ -59,6 +63,8 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import org.jajuk.base.DigitalDJ;
+import org.jajuk.base.DigitalDJManager;
 import org.jajuk.base.Event;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
@@ -81,6 +87,7 @@ import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
+import ext.DropDownButton;
 import ext.SwingWorker;
 
 /**
@@ -102,12 +109,15 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 	public JajukToggleButton jbRandom;
 	public JajukToggleButton jbContinue;
 	public JajukToggleButton jbIntro;
-	JPanel jpSpecial;
-	JButton jbGlobalRandom;
+	JToolBar jtbSpecial;
+    JButton jbGlobalRandom;
 	JButton jbBestof;
 	JButton jbNovelties;
 	JButton jbNorm;
-	JPanel jpPlay;
+    DropDownButton ddbDDJ;
+    JPopupMenu popupDDJ;
+	
+    JPanel jpPlay;
 	JButton jbPrevious;
 	JButton jbNext;
 	JPressButton jbRew;
@@ -186,16 +196,42 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		jpMode.add(jbIntro);
 
 		//Special functions toolbar
-		jpSpecial = new JPanel();
-		jpSpecial.setLayout(new BoxLayout(jpSpecial,BoxLayout.X_AXIS));
-		jbGlobalRandom = new JajukButton(ActionManager.getAction(SHUFFLE_GLOBAL));
+		jtbSpecial = new JToolBar();
+        jtbSpecial.setFloatable(false);
+        jbGlobalRandom = new JajukButton(ActionManager.getAction(SHUFFLE_GLOBAL));
 		jbBestof = new JajukButton(ActionManager.getAction(BEST_OF));
 		jbNovelties = new JajukButton(ActionManager.getAction(NOVELTIES));
 		jbNorm = new JajukButton(ActionManager.getAction(FINISH_ALBUM));
-        jpSpecial.add(jbGlobalRandom);
-		jpSpecial.add(jbBestof);
-		jpSpecial.add(jbNovelties);
-		jpSpecial.add(jbNorm);
+        popupDDJ = new JPopupMenu();
+        Iterator it = DigitalDJManager.getInstance().getDJs();
+        while (it.hasNext()){
+            DigitalDJ dj = (DigitalDJ)it.next();
+            popupDDJ.add(new JMenuItem(dj.getName()));    
+        }
+        popupDDJ.addSeparator();
+        JMenuItem jmiNew = new JMenuItem(Messages.getString("CommandJPanel.17"),Util.getIcon(ICON_NEW)); 
+        jmiNew.addActionListener(new ActionListener() {
+        
+            public void actionPerformed(ActionEvent arg0) {
+                new DigitalDJWizard();
+            }
+        
+        });
+        popupDDJ.add(jmiNew);
+        ddbDDJ = new DropDownButton(Util.getIcon(ICON_DIGITAL_DJ)) {
+        
+            @Override
+            protected JPopupMenu getPopupMenu() {
+                return popupDDJ;
+            }
+        
+        };
+        ddbDDJ.setToolTipText(Messages.getString("CommandJPanel.16"));
+        jtbSpecial.add(jbGlobalRandom);
+		jtbSpecial.add(jbBestof);
+		jtbSpecial.add(jbNovelties);
+		jtbSpecial.add(jbNorm);
+        ddbDDJ.addToToolBar(jtbSpecial);
 
 		//Play toolbar
         jpPlay = new JPanel();
@@ -267,7 +303,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		add(sbSearch,"1,0"); //$NON-NLS-1$
 		add(jcbHistory,"3,0"); //$NON-NLS-1$
 		add(Util.getCentredPanel(Util.getCentredPanel(jpMode),BoxLayout.Y_AXIS),"5,0");  //$NON-NLS-1$
-		add(Util.getCentredPanel(Util.getCentredPanel(jpSpecial),BoxLayout.Y_AXIS),"7,0"); //$NON-NLS-1$
+		add(Util.getCentredPanel(Util.getCentredPanel(jtbSpecial),BoxLayout.Y_AXIS),"7,0"); //$NON-NLS-1$
 		add(Util.getCentredPanel(jpPlay),"9,0"); //$NON-NLS-1$
 		add(jpPosition,"11,0"); //$NON-NLS-1$
 		add(jpVolume,"13,0"); //$NON-NLS-1$

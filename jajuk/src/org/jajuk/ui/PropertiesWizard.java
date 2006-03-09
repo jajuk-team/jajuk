@@ -422,7 +422,7 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
                     }
                     else if (meta.getType().equals(String.class) 
                             && meta.getName().equals(XML_STYLE)){ //for styles //$NON-NLS-1$
-                        Vector<String> styles = StyleManager.getStylesList();
+                        Vector<String> styles = StyleManager.getInstance().getStylesList();
                         final JComboBox jcb = new JComboBox(styles);
                         jcb.setEditable(true);
                         Configurator.enableAutoCompletion(jcb);

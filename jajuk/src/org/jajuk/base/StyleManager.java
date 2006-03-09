@@ -177,9 +177,24 @@ public class StyleManager extends ItemManager {
         return XML_STYLES;
     }
     
-    public static synchronized Vector<String> getStylesList() {
+    /**
+     * 
+     * @return Human readable registrated style list
+     */
+    public synchronized Vector<String> getStylesList() {
         synchronized(StyleManager.getInstance().getLock()){
             return stylesList;
+        }
+    }
+    
+    /**
+     * XXX Check this method
+     * @param index
+     * @return style for specified index and folowing Style natural sorting
+     */
+    public synchronized Style getStyleAt(int index) {
+        synchronized(StyleManager.getInstance().getLock()){
+            return (Style)new ArrayList(getInstance().getItems()).get(index);
         }
     }
     

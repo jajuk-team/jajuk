@@ -375,7 +375,7 @@ public abstract class AbstractTableView extends ViewAdapter
             String sIdentifier = model.getIdentifier(col.getModelIndex());
             //create a combo box for styles, note that we can't add new styles dynamically
             if (XML_STYLE.equals(sIdentifier)){
-                JComboBox jcb = new JComboBox(StyleManager.getStylesList());
+                JComboBox jcb = new JComboBox(StyleManager.getInstance().getStylesList());
                 jcb.setEditable(true);
                 Configurator.enableAutoCompletion(jcb);
                 col.setCellEditor(new ComboBoxCellEditor(jcb));

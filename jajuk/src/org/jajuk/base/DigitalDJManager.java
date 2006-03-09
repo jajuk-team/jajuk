@@ -21,7 +21,7 @@
 package org.jajuk.base;
 
 import java.io.File;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.Iterator;
 
 /**
@@ -32,8 +32,8 @@ import java.util.Iterator;
  */
 public class DigitalDJManager {
 
-    /**List of registated DJs*/
-    private HashSet djs;
+    /**List of registated DJs name->DJ*/
+    private HashMap<String,DigitalDJ> djs;
     
     /**self instance*/
     private static DigitalDJManager dj;
@@ -42,7 +42,7 @@ public class DigitalDJManager {
      * no instanciation
      */
     private DigitalDJManager() {
-        djs = new HashSet(10);
+        djs = new HashMap();
     }
     
     /**
@@ -68,7 +68,15 @@ public class DigitalDJManager {
      * @return DJs iteration
      */
     public Iterator getDJs(){
-        return djs.iterator();
+        return djs.values().iterator();
+    }
+    
+    /**
+     * 
+     * @return DJ by name
+     */
+    public DigitalDJ getDJ(String sName){
+        return djs.get(sName);
     }
 
 }
