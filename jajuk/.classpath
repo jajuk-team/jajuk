@@ -31,5 +31,6 @@
 	<classpathentry kind="lib" path="lib/commons-collections-3.1.jar"/>
 	<classpathentry kind="lib" path="lib/entagged-audioformats-0.15.jar"/>
 	<classpathentry kind="lib" path="lib/swingx-20060222.jar"/>
+	<classpathentry kind="lib" path="lib/wizard-20060304_jajuk.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
