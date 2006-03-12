@@ -34,6 +34,9 @@ public class TransitionDigitalDJ extends DigitalDJ {
     /**List of transitions*/
     private ArrayList<Transition> alTransitions;
     
+    /**Startup style**/
+    private Style startupStyle;
+    
     /**
      * @param sName
      */
@@ -92,16 +95,43 @@ public class TransitionDigitalDJ extends DigitalDJ {
         return null;
     }
 
-    
+    /**
     /* (non-Javadoc)
      * @see org.jajuk.base.DigitalDJ#toXML()
-     */
+     **/
     public String toXML(){
         StringBuffer sb = new StringBuffer(2000);
         sb.append("<?xml version='1.0' encoding='UTF-8'?>\n");
-        sb.append("<DJ jajuk_version='1.2' name='"+sName+"'>\n");
-        sb.append("</DJ>");
+        sb.append("<dj jajuk_version='1.2' name='"+sName+"' type='transition'>\n");
+        sb.append("\t<general_parameters use-ratings='"+bUseRatings+"' ");
+        sb.append("rating_level='"+iRatingFloor+"' ");
+        sb.append("start_with='"+startupStyle.getId()+"'>");
+        sb.append("\t</general_parameters>");
+        sb.append("\t<transitions>");
+        for (Transition transition: alTransitions){
+            String sFrom = "";
+            for (Style style:transition.getFrom()){
+               sFrom += style.getId()+","; 
+            }
+            sFrom = sFrom.substring(0,sFrom.length()-1); //remove last coma
+            String sTo = "";
+            for (Style style:transition.getTo()){
+               sTo += style.getId()+","; 
+            }
+            sTo = sTo.substring(0,sTo.length()-1); //remove last coma
+            sb.append("\t\t<transition from='"+sFrom+"' to='"+sTo+"'/>");
+        }
+        sb.append("\t</transitions>");
+        sb.append("</dj>");
         return sb.toString();
+    }
+
+    public Style getStartupStyle() {
+        return this.startupStyle;
+    }
+
+    public void setStartupStyle(Style startupStyle) {
+        this.startupStyle = startupStyle;
     }
     
 }

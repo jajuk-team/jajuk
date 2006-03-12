@@ -22,6 +22,7 @@ package org.jajuk.base;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 /**
  *  Type description
@@ -31,8 +32,8 @@ import java.util.HashMap;
  */
 public class ProportionDigitalDJ extends DigitalDJ {
 
-    /**Style -> proportions*/
-    private HashMap<Style,Float> proportions;
+    /**Set of Style -> proportions*/
+    private HashMap<HashSet<Style>,Float> proportions;
     
     /**
      * @param sName
@@ -53,7 +54,7 @@ public class ProportionDigitalDJ extends DigitalDJ {
     /**
      * @return Proportions
      */
-    public HashMap<Style,Float> getProportions() {
+    public HashMap<HashSet<Style>,Float> getProportions() {
         return this.proportions;
     }
     
@@ -70,19 +71,35 @@ public class ProportionDigitalDJ extends DigitalDJ {
      * @param style
      * @param proportion as a float. Exemple: 0.5 for 50%
      */
-    public void addProportion(Style style,float proportion) {
-        this.proportions.put(style,proportion);
+    public void addProportion(HashSet styles,float proportion) {
+        this.proportions.put(styles,proportion);
     }
     
+     /**
     /* (non-Javadoc)
      * @see org.jajuk.base.DigitalDJ#toXML()
-     */
+     **/
     public String toXML(){
         StringBuffer sb = new StringBuffer(2000);
         sb.append("<?xml version='1.0' encoding='UTF-8'?>\n");
-        sb.append("<DJ jajuk_version='1.2' name='"+sName+"'>\n");
-        sb.append("</DJ>");
+        sb.append("<dj jajuk_version='1.2' name='"+sName+"' type='proportion'>\n");
+        sb.append("\t<general_parameters use-ratings='"+bUseRatings+"' ");
+        sb.append("rating_level='"+iRatingFloor+"' ");
+        sb.append("\t</general_parameters>");
+        sb.append("\t<propotions>");
+        for (HashSet<Style> styles: proportions.keySet()){
+            String stylesDesc = "";
+            for (Style style:styles){
+                stylesDesc += style.getId();
+            }
+            stylesDesc = stylesDesc.substring(0,stylesDesc.length() - 1);
+            sb.append("\t\t<proportion styles='"+stylesDesc+"' value='"+proportions.get(styles)+"'/>");
+        }
+        sb.append("\t</propotions>");
+        sb.append("</dj>");
         return sb.toString();
     }
+    
+    
 
 }

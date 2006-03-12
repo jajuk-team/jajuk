@@ -74,7 +74,7 @@ public class Transition {
     /**
      * @return
      */
-    public HashSet getFrom() {
+    public HashSet<Style> getFrom() {
         return this.from;
     }
         
@@ -112,7 +112,7 @@ public class Transition {
     /**
      * @return
      */
-    public HashSet getTo() {
+    public HashSet<Style> getTo() {
         return this.to;
     }
     

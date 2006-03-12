@@ -65,27 +65,6 @@ public abstract class DigitalDJ implements ITechnicalStrings{
     }
     
     /**
-     * <DJ namespace='jajuk' name='toto'>
-    <general_parameters>
-        <use_rating>true</use_rating>
-        <rating_level>3</rating_level>
-        <start_with>JAZZ</start_with>
-    <general_parameters>
-    <transitions>
-        <transition number_tracks='2'>
-            <from>
-                <style>JAZZ</style>
-                <style>CLASSICAL</style>
-            </from>
-            <to>
-                <style>POP</style>
-                <style>ROCK</style>
-            </to>
-        </transition>
-    </transitions>
-            
-</DJ>
-
      * @return XML representation of this DJ
      */
     abstract public String toXML();
