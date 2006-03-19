@@ -55,7 +55,9 @@
   	<mkdir dir='${distdir}/bin'/>
   	<mkdir dir='${distdir}/${classdir}'/>
     <copy todir='${distdir}/src' >
-     <fileset dir='${srcdir}' />
+     <fileset dir='${srcdir}'>
+      	<exclude name='**/*Test*'/>
+     </fileset>
   	</copy>
   	<copy todir='${distdir}' >
      <fileset file='${basedir}/dist-files/legals/LICENSE.txt'/>
