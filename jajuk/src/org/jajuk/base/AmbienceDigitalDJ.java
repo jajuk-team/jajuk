@@ -21,27 +21,25 @@
 package org.jajuk.base;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 
 import org.jajuk.util.ITechnicalStrings;
 
 /**
- *  Type description
+ *  Ambience DJ
  *
  * @author     Bertrand Florat
- * @created    1 mars 2006
+ * @created    19 march 2006
  */
-public class ProportionDigitalDJ extends DigitalDJ implements ITechnicalStrings{
+public class AmbienceDigitalDJ extends DigitalDJ implements ITechnicalStrings{
 
-    /**Set of proportions*/
-    private HashSet<Proportion> proportions;
+    /**Used ambience*/
+    private Ambience ambience;
     
     /**
      * @param sName
      */
-    public ProportionDigitalDJ(String sName) {
+    public AmbienceDigitalDJ(String sName) {
         super(sName);
-        this.proportions = new HashSet(10);
     }
 
     /* (non-Javadoc)
@@ -53,10 +51,10 @@ public class ProportionDigitalDJ extends DigitalDJ implements ITechnicalStrings{
     }
     
     /**
-     * @return Proportions
+     * @return Ambience
      */
-    public HashSet<Proportion> getProportions() {
-        return this.proportions;
+    public Ambience getAmbience() {
+        return this.ambience;
     }
     
    /**
@@ -66,26 +64,13 @@ public class ProportionDigitalDJ extends DigitalDJ implements ITechnicalStrings{
     public String toXML(){
         StringBuffer sb = new StringBuffer(2000);
         sb.append(toXMLGeneralParameters());
-        sb.append("\t<"+XML_DJ_PROPORTIONS+">\n");
-        for (Proportion proportion: proportions){
-            String stylesDesc = "";
-            for (Style style:proportion.getStyles()){
-                stylesDesc += style.getId()+',';
-            }
-            //remove trailing coma
-            stylesDesc = stylesDesc.substring(0,stylesDesc.length() - 1);
-            sb.append("\t\t<"+XML_DJ_PROPORTION+" "+XML_DJ_STYLES+"='"+stylesDesc+"' "+
-            		XML_DJ_VALUE+"='"+proportion.getProportion()+"'/>\n");
-        }
-        sb.append("\t</"+XML_DJ_PROPORTIONS+">\n");
+        sb.append("\t<"+XML_DJ_AMBIENCE+" "+XML_DJ_VALUE+"='");
+        sb.append(ambience.getName()+"'/>\n");
         sb.append("</"+XML_DJ_DJ+">\n");
         return sb.toString();
     }
 
-	public void setProportions(HashSet<Proportion> proportions) {
-		this.proportions = proportions;
+	public void setAmbience(Ambience ambience) {
+		this.ambience = ambience;
 	}
-    
-    
-
 }

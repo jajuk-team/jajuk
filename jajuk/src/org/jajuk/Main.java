@@ -37,6 +37,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import org.jajuk.base.AlbumManager;
+import org.jajuk.base.AmbienceManager;
 import org.jajuk.base.AuthorManager;
 import org.jajuk.base.Collection;
 import org.jajuk.base.Device;
@@ -276,6 +277,9 @@ public class Main implements ITechnicalStrings {
             
             //Load history
             History.load();
+    
+            //Load ambiences
+            AmbienceManager.load();
             
             //start exit hook
             Thread tHook = new Thread() {

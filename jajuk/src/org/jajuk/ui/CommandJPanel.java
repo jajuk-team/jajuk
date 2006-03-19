@@ -203,7 +203,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		jbNovelties = new JajukButton(ActionManager.getAction(NOVELTIES));
 		jbNorm = new JajukButton(ActionManager.getAction(FINISH_ALBUM));
         popupDDJ = new JPopupMenu();
-        Iterator it = DigitalDJManager.getInstance().getDJs();
+        Iterator it = DigitalDJManager.getInstance().getDJs().iterator();
         while (it.hasNext()){
             DigitalDJ dj = (DigitalDJ)it.next();
             popupDDJ.add(new JMenuItem(dj.getName()));    
@@ -287,14 +287,16 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 
 		//dimensions
 		int height1 = 25;  //buttons, components
-		//int height2 = 36; //slider ( at least this height in the gtk+ l&f )
-		int iSeparator = 1;
+		int iXSeparator = 10;
 		//set default layout and size
-		double[][] size ={{5*iSeparator,0.14,10*iSeparator,0.17,5*iSeparator,  //search box + history
-			0.11,5*iSeparator, //mode buttons
-			0.14,10*iSeparator, //special functions buttons
-			0.20,10*iSeparator, //play buttons
-			0.13,5*iSeparator,0.11,TableLayout.FILL,20,5*iSeparator},  //position + volume sliders + mute button
+		double[][] size ={{iXSeparator/2,0.14,iXSeparator, //search box
+			TableLayout.FILL,iXSeparator,// history 
+			TableLayout.PREFERRED,iXSeparator, //mode buttons
+			TableLayout.PREFERRED,iXSeparator, //special functions buttons
+			TableLayout.PREFERRED,iXSeparator, //play buttons
+			0.2,iXSeparator/2, //position
+			0.2,iXSeparator, //volume
+			20,iXSeparator},   //mute button
 			{height1}}; //note we can't set a % for history combo box because of popup size
 		setLayout(new TableLayout(size));
 		setAlignmentY(Component.CENTER_ALIGNMENT);

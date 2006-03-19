@@ -20,22 +20,23 @@
 
 package org.jajuk.ui;
 
-import info.clearthought.layout.TableLayout;
-
 import java.awt.Dimension;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Vector;
 
-import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JDialog;
 import javax.swing.JList;
+import javax.swing.JScrollPane;
 
-import org.jajuk.Main;
 import org.jajuk.base.Style;
 import org.jajuk.base.StyleManager;
-import org.jajuk.util.Util;
+import org.jajuk.i18n.Messages;
 
 /**
  *  Allow a user to select a list of styles 
@@ -50,17 +51,40 @@ public class StylesSelectionDialog extends JDialog {
     
     HashSet<Style> selectedStyles;
     
+    HashSet<Style> disabledStyles;
+    
     /**
      * @throws HeadlessException
      */
-    public StylesSelectionDialog() throws HeadlessException {
-        super(Main.getWindow(),
-             Messages.getString("DigitalDJWizard.14"),true);
+    public StylesSelectionDialog(HashSet disabledStyles) throws HeadlessException {
+        super();
+        this.selectedStyles = new HashSet();
+        this.disabledStyles = disabledStyles; 
+        setLocationByPlatform(true);
+        setTitle(Messages.getString("DigitalDJWizard.14"));
+        setModal(true);
         initUI();
         pack();
-        Util.setCenteredLocation(Main.getWindow());
-        setVisible(true);
-        setSize(new Dimension(640,480));
+    }
+    
+    /**
+     * Set selected item
+     * @param selection or null to void it
+     */
+    public void setSelection(HashSet<Style> selection){
+        if (selection != null){
+            int[] indices = new int[selection.size()];
+            int comp = 0;
+            for (int i=0;i<jlist.getModel().getSize();i++){
+                for (Style style:selection){
+                    if (style.getName2().equals((String)jlist.getModel().getElementAt(i))){
+                        indices[comp] = i;
+                        comp ++;
+                    }
+                }
+            }
+            jlist.setSelectedIndices(indices);
+        }
     }
 
     
@@ -73,29 +97,44 @@ public class StylesSelectionDialog extends JDialog {
     }
     
     private void initUI(){
-        jlist = new JList(StyleManager.getInstance().getStylesList());
-        jlist.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-        jlist.setAutoscrolls(true);
-        jlist.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+        Vector<String> list = (Vector)StyleManager.getInstance().getStylesList().clone();
+        //remove disabled items
+        if (disabledStyles != null){
+            Iterator it = list.iterator();
+            while (it.hasNext()){
+                String testedStyle = (String)it.next();
+                for (Style disabledStyle:disabledStyles){
+                    if (disabledStyle.getName2().equals(testedStyle)){
+                        it.remove();
+                    }
+                }
+            }
+        }
+        //main part of the dialog
+        jlist = new JList(list);
+        jlist.setLayoutOrientation(JList.VERTICAL_WRAP);
+        jlist.setPreferredSize(new Dimension(600,600));
+        jlist.setVisibleRowCount(-1);
         okc = new OKCancelPanel(new ActionListener() {
             public void actionPerformed(ActionEvent ae) {
                 if (ae.getSource() == okc.getOKButton()){
                     int[] selection = jlist.getSelectedIndices();
                     for (int i=0;i<selection.length;i++){
                         selectedStyles.add(
-                            StyleManager.getInstance().getStyleAt(selection[i]));
+                            StyleManager.getInstance().registerStyle( //create style only if new (never in this case)
+                                (String)jlist.getModel().getElementAt(selection[i])));
                     }
                 }
                 dispose();
             }
         });
-        okc.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
-        double[][] size = new double[][]{{TableLayout.PREFERRED},
-                {TableLayout.PREFERRED,TableLayout.PREFERRED}};
-        setLayout(new TableLayout(size));
-        
-        add(jlist,"0,0");
-        add(okc,"0,1");
+        JScrollPane jsp = new JScrollPane(jlist);
+        setLayout(new BoxLayout(this.getContentPane(),BoxLayout.Y_AXIS));
+        add(jsp);
+        add(Box.createVerticalStrut(20));
+        add(okc);
+        add(Box.createVerticalStrut(20));
+        getRootPane().setDefaultButton(okc.getOKButton());
     };
     
     

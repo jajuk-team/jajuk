@@ -54,6 +54,16 @@ public class Transition {
         this.nb = nb;
     }
     
+    /**
+     * Constructor for void transition
+     * @param nb initial number of tracks
+     **/
+    public Transition(int nb){
+        this.from = new HashSet();
+        this.to = new HashSet();
+        this.nb = nb;
+    }
+    
     
     /**
      * equals method

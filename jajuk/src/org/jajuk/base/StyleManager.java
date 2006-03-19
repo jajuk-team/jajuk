@@ -186,17 +186,6 @@ public class StyleManager extends ItemManager {
             return stylesList;
         }
     }
-    
-    /**
-     * XXX Check this method
-     * @param index
-     * @return style for specified index and folowing Style natural sorting
-     */
-    public synchronized Style getStyleAt(int index) {
-        synchronized(StyleManager.getInstance().getLock()){
-            return (Style)new ArrayList(getInstance().getItems()).get(index);
-        }
-    }
-    
+       
     
 }

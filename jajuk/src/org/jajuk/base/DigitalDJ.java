@@ -33,27 +33,39 @@ import org.jajuk.util.ITechnicalStrings;
  */
 public abstract class DigitalDJ implements ITechnicalStrings{
     
+    /**DJ unique ID*/
+    protected String sID;
+    
     /**DJ name*/
     protected String sName;
-    
-    /**Startup style*/
-    protected Style startupStyle;
-    
+        
     /**Use ratings*/
     protected boolean bUseRatings = false;
     
     /**Rating floor*/
-    protected int iRatingFloor = 0;
+    protected int iRatingLevel = 0;
     
     /**Fading duration in sec*/
     protected int iFadingDuration = 0;
     
     /**
-     * Constructor
+     * Constructor without ID
      * @param sName DJ name
      */
     public DigitalDJ(String sName){
         this.sName = sName;
+        //create a unique ID for this DJ, simply use current time in ms
+        this.sID = Long.toString(System.currentTimeMillis());
+    }
+    
+    /**
+     * Constructor with ID
+     * @param sName DJ name
+     * @param sID DJ ID
+     */
+    public DigitalDJ(String sName,String sID){
+        this.sName = sName;
+        this.sID = sID;
     }
     
     /**
@@ -68,6 +80,21 @@ public abstract class DigitalDJ implements ITechnicalStrings{
      * @return XML representation of this DJ
      */
     abstract public String toXML();
+    
+    
+    /**
+     * 
+     * @return DJ common parameters 
+     */
+    protected String toXMLGeneralParameters(){
+    	StringBuffer sb = new StringBuffer();
+    	sb.append("<?xml version='1.0' encoding='UTF-8'?>\n");
+        sb.append("<"+XML_DJ_DJ+" "+XML_VERSION+"='"+JAJUK_VERSION+"' "+XML_NAME+"='"+sName+"' "+XML_TYPE+"='"+this.getClass().getName()+"'>\n");
+        sb.append("\t<"+XML_DJ_GENERAL+" "+XML_DJ_USE_RATINGS+"='"+bUseRatings+"' ");
+        sb.append(XML_DJ_RATING_LEVEL+"='"+iRatingLevel+"' ");
+        sb.append(XML_DJ_FADE_DURATION+"='"+iFadingDuration+"'/>\n");
+        return sb.toString();
+    }
     
     /**
      * 
@@ -94,20 +121,6 @@ public abstract class DigitalDJ implements ITechnicalStrings{
      */
     public void setName(String name) {
         this.sName = name;
-    }
-
-    /**
-     * @return
-     */
-    public Style getStartupStyle() {
-        return this.startupStyle;
-    }
-
-    /**
-     * @param startupStyle
-     */
-    public void setStartupStyle(Style startupStyle) {
-        this.startupStyle = startupStyle;
     }
 
     /**
@@ -142,14 +155,14 @@ public abstract class DigitalDJ implements ITechnicalStrings{
      * @return Returns the iRatingFloor.
      */
     public int getRatingFloor() {
-        return this.iRatingFloor;
+        return this.iRatingLevel;
     }
 
     /**
      * @param ratingFloor The iRatingFloor to set.
      */
-    public void setRatingFloor(int ratingFloor) {
-        this.iRatingFloor = ratingFloor;
+    public void setRatingLevel(int ratingFloor) {
+        this.iRatingLevel = ratingFloor;
     }
     
     /**
@@ -157,6 +170,10 @@ public abstract class DigitalDJ implements ITechnicalStrings{
      * @return Generated playlist
      */
     abstract public ArrayList<File> generatePlaylist();
+
+    public String getID() {
+        return this.sID;
+    }
     
    
 }

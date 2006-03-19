@@ -84,6 +84,7 @@ public interface ITechnicalStrings {
     
     //Properties
     public static final String PROPERTY_SEQ = "sequence";//playlist item sequence
+    public static final String AMBIENCE_PREFIX = "jajuk.ambience.";
     
 	// directory path
 	public static final String PATH_ICONS = "jar:"+Util.getExecLocation()+"!/org/jajuk/icons/";
@@ -622,11 +623,33 @@ public interface ITechnicalStrings {
     public static final String XML_PROPERTY = "property"; //property 
     public static final String XML_DEFAULT_VALUE = "default_value"; //default value  
         
+    public static final String XML_DJ_DJ = "dj"; //general dj tag
+    public static final String XML_DJ_GENERAL = "general_parameters"; //general parameters
+    public static final String XML_DJ_USE_RATINGS = "use_ratings";
+    public static final String XML_DJ_RATING_LEVEL = "rating_level";
+    public static final String XML_DJ_FADE_DURATION = "fade_duration";
+    public static final String XML_DJ_PROPORTIONS = "proportions";
+    public static final String XML_DJ_PROPORTION = "proportion";
+    public static final String XML_DJ_AMBIENCES = "ambiences";
+    public static final String XML_DJ_AMBIENCE = "ambience";
+    public static final String XML_DJ_STYLES = "styles";
+    public static final String XML_DJ_VALUE = "values";
+    public static final String XML_DJ_PROPORTION_CLASS = "org.jajuk.base.ProportionDigitalDJ";
+    public static final String XML_DJ_TRANSITION_CLASS = "org.jajuk.base.TransitionDigitalDJ";
+    public static final String XML_DJ_AMBIENCE_CLASS = "org.jajuk.base.AmbienceDigitalDJ";
+    public static final String XML_DJ_EXTENSION = "dj";
+    public static final String XML_DJ_TRANSITION = "transition";
+    public static final String XML_DJ_TRANSITIONS = "transitions";
+    public static final String XML_DJ_FROM = "from";
+    public static final String XML_DJ_TO = "to";
+    public static final String XML_DJ_NUMBER = "number";
+       
+    
     //Reserved XML tags for property names (note that a user can choose a property name equals to meta information attributes names without pbm)
     public static final String[] XML_RESERVED_ATTRIBUTE_NAMES = {
         XML_NAME,XML_ID,XML_TYPE_EXTENSION,XML_TYPE_PLAYER_IMPL,XML_TYPE_TAG_IMPL,
         XML_TYPE_TECH_DESC,XML_TYPE_SEEK_SUPPORTED,XML_TYPE_ICON,XML_TYPE_IS_MUSIC,
-XML_TYPE,XML_URL,XML_DEVICE_AUTO_MOUNT,XML_DEVICE_AUTO_REFRESH,XML_EXPANDED,XML_DEVICE_MOUNT_POINT,
+        XML_TYPE,XML_URL,XML_DEVICE_AUTO_MOUNT,XML_DEVICE_AUTO_REFRESH,XML_EXPANDED,XML_DEVICE_MOUNT_POINT,
         XML_ALBUM,XML_AUTHOR,XML_STYLE,XML_TRACK_LENGTH,XML_TRACK_YEAR,XML_TRACK_RATE,XML_FILES,XML_TRACK_HITS,XML_TRACK_ADDED,
         XML_DIRECTORY_PARENT,XML_DEVICE,XML_DIRECTORY,XML_TRACK,XML_SIZE,XML_QUALITY,
         XML_HASHCODE,XML_PLAYLIST_FILES,XML_TRACK_COMMENT,XML_ANY,XML_TRACK_ORDER,
@@ -635,16 +658,19 @@ XML_TYPE,XML_URL,XML_DEVICE_AUTO_MOUNT,XML_DEVICE_AUTO_REFRESH,XML_EXPANDED,XML_
 
     public static final String PROPERTY_SEPARATOR = "Property_";
     
+    //Formats
     public static final String FORMAT_STRING = "Property_Format_String";
     public static final String FORMAT_NUMBER = "Property_Format_Number";
     public static final String FORMAT_BOOLEAN = "Property_Format_Boolean";
     public static final String FORMAT_FLOAT = "Property_Format_Float";
     public static final String FORMAT_DATE = "Property_Format_Date";
     
+    //Thumbs
     public static final String THUMBNAIL_SIZE_50x50 = "50x50";
     public static final String THUMBNAIL_SIZE_100x100 = "100x100";
     public static final String THUMBNAIL_SIZE_150x150 = "150x150";
     public static final String THUMBNAIL_SIZE_200x200 = "200x200";
+    
     
     
 }
