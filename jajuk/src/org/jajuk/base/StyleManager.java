@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.Properties;
 import java.util.Vector;
 
 import org.jajuk.util.MD5Processor;
@@ -143,6 +144,12 @@ public class StyleManager extends ItemManager {
                     TrackManager.getInstance().changeTrackStyle(track,sNewName,null);
                 }
             }
+            //notify everybody for the file change
+            Properties properties = new Properties();
+            properties.put(DETAIL_OLD,old);
+            properties.put(DETAIL_NEW,newItem);
+            //Notify interested items (like ambience manager)
+            ObservationManager.notifySync(new Event(EVENT_STYLE_NAME_CHANGED,properties));
             return newItem;
         }
     }

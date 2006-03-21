@@ -279,7 +279,7 @@ public class Main implements ITechnicalStrings {
             History.load();
     
             //Load ambiences
-            AmbienceManager.load();
+            AmbienceManager.getInstance().load();
             
             //start exit hook
             Thread tHook = new Thread() {
@@ -293,6 +293,8 @@ public class Main implements ITechnicalStrings {
                     }
                     try{
                         if (iExitCode == 0){ //commit only if exit is safe (to avoid commiting empty collection)
+                            //commit ambiences
+                            AmbienceManager.getInstance().commit();
                             //commit configuration
                             org.jajuk.util.ConfigurationManager.commit();
                             //commit history

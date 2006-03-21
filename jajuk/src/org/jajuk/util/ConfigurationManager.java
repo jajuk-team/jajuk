@@ -271,4 +271,12 @@ public class ConfigurationManager implements ITechnicalStrings{
     public static Properties getProperties() {
         return properties;
     }
+    
+    /**
+     * Remove a property
+     * @param sKey property key to remove
+     */
+    public static void removeProperty(String sKey){
+        properties.remove(sKey);
+    }
 }

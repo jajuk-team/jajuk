@@ -52,6 +52,7 @@ public class Ambience {
      */
     public Ambience(String sName) {
         this.sName = sName;
+        this.styles = new HashSet(10);
     }
     
     public void addStyle(Style style){
@@ -77,5 +78,30 @@ public class Ambience {
     public void setStyles(HashSet<Style> styles) {
         this.styles = styles;
     }
+    
+    /**
+     * From String, return style1,style2,...
+     */
+    public String getStylesDesc(){
+        String out = "";
+        for (Style s:styles){
+            out += s.getName2()+',';
+        }
+        if (out.length() > 0){
+            out = out.substring(0,out.length()-1); //remove trailling ,
+        }
+        return out;
+    }
+    
+    /**
+     * Equals method
+     * @return true if ambience have the same same and contains the same styles
+     */
+    public boolean equals(Object o){
+        Ambience ambienceOther = (Ambience)o;
+        return this.sName.equals(ambienceOther.getName()) && 
+            this.styles.equals(ambienceOther.getStyles());
+    }
+    
 
 }

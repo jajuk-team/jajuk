@@ -36,10 +36,10 @@ import org.jajuk.util.ITechnicalStrings;
  * @author     Bertrand Florat
  * @created    19 march 2006
  */
-public class AmbienceManager implements ITechnicalStrings{
+public class AmbienceManager implements ITechnicalStrings,Observer{
 
     /**Ambience name-> ambience*/
-    private static HashMap<String,Ambience> ambiences = new HashMap(10);
+    private HashMap<String,Ambience> ambiences = new HashMap(10);
     
     /**Self instance*/
     private static AmbienceManager self;
@@ -48,6 +48,7 @@ public class AmbienceManager implements ITechnicalStrings{
      * No direct constructor
      */
     private AmbienceManager() {
+        ObservationManager.register(EVENT_STYLE_NAME_CHANGED,this);
     }
     
     /**
@@ -62,7 +63,7 @@ public class AmbienceManager implements ITechnicalStrings{
     }
     
     /** Load properties from in file */
-    public static void load() {
+    public void load() {
         Properties properties = ConfigurationManager.getProperties();
         Enumeration e = properties.keys();
         while (e.hasMoreElements()){
@@ -71,7 +72,10 @@ public class AmbienceManager implements ITechnicalStrings{
                 HashSet<Style> styles = new HashSet(10);
                 StringTokenizer st = new StringTokenizer((String)properties.get(sKey),",");
                 while (st.hasMoreTokens()){
-                    styles.add((Style)StyleManager.getInstance().getItem(st.nextToken()));
+                    Style style = (Style)StyleManager.getInstance().getItem(st.nextToken());
+                    if (style != null){
+                        styles.add(style);
+                    }
                 }
                 String ambienceName = sKey.substring(AMBIENCE_PREFIX.length()); 
                 Ambience ambience = new Ambience(ambienceName,styles);
@@ -103,12 +107,57 @@ public class AmbienceManager implements ITechnicalStrings{
      */
     public void registerAmbience(Ambience ambience){
         ambiences.put(ambience.getName(),ambience);
-        String styles = "";
-        for (Style style:ambience.getStyles()){
-            styles += style.getId() + ',';
-        }
-        styles = styles.substring(0,styles.length()-1);
-        ConfigurationManager.setProperty(AMBIENCE_PREFIX+ambience.getName(),styles);
     }
-
+    
+    /* (non-Javadoc)
+     * @see org.jajuk.ui.Observer#update(java.lang.String)
+     */
+    public void update(Event event) {
+        String subject = event.getSubject();
+        if (EVENT_STYLE_NAME_CHANGED.equals(subject)){
+            Properties properties = event.getDetails();
+            Style old = (Style)properties.get(DETAIL_OLD);
+            Style newStyle = (Style)properties.get(DETAIL_NEW);
+            //replace style into all styles
+            for (Ambience ambience:ambiences.values()){
+                if (ambience.getStyles().contains(old)){
+                    ambience.removeStyle(old);
+                    ambience.addStyle(newStyle);
+                }
+            }
+        }
+    }
+    
+    /**
+     * Perform required operations before exit
+     *
+     */
+    public void commit(){
+        //first, remove all ambience from configuration
+        Properties properties = ConfigurationManager.getProperties();
+        for (Object o:properties.keySet()){
+            String sKey = (String)o;
+            if (sKey.startsWith(AMBIENCE_PREFIX)){
+                ConfigurationManager.removeProperty(sKey);
+            }
+        }
+        //now create and set each ambience
+        for (Ambience ambience:ambiences.values()){
+            String styles = "";
+            for (Style style:ambience.getStyles()){
+                styles += style.getId() + ',';
+            }
+            styles = styles.substring(0,styles.length()-1);
+            ConfigurationManager.setProperty(AMBIENCE_PREFIX+ambience.getName(),styles);
+        }
+    }
+    
+    /**
+     * Remove a ambience
+     * @param sAmbienceName the ambience to remove
+     */
+    public void removeAmbience(String sAmbienceName){
+        this.ambiences.remove(sAmbienceName);
+    }
+    
 }

@@ -385,7 +385,8 @@ public interface ITechnicalStrings {
     public static final String EVENT_CUSTOM_PROPERTIES_ADD="custom property add"; //new custom property
     public static final String EVENT_CUSTOM_PROPERTIES_REMOVE="custom property remove"; //remove custom property
     public static final String EVENT_FILE_NAME_CHANGED="file name changed"; //file name change
-	public static final String EVENT_RATE_CHANGED="file rate changed"; //file rate change
+	public static final String EVENT_STYLE_NAME_CHANGED="style name changed"; //Style name change
+    public static final String EVENT_RATE_CHANGED="file rate changed"; //file rate change
     public static final String EVENT_TIP_OF_THE_DAY="tip of the day"; // show tip of the day
     public static final String EVENT_CDDB_WIZARD = "cddb.wizard"; //Cddb wizard required
     public static final String EVENT_LOGICAL_TREE_SORT = "logical tree sort"; //logical tree osrt method changed
