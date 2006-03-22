@@ -20,12 +20,14 @@
 
 package org.jajuk.ui.action;
 
+import java.io.FileFilter;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.swing.JOptionPane;
 
+import org.jajuk.base.AuthorManager;
 import org.jajuk.base.Event;
 import org.jajuk.base.File;
 import org.jajuk.base.ObservationManager;
@@ -71,59 +73,57 @@ public class RefactorAction implements ITechnicalStrings{
     	}
     }
     
+    class DirectorieFilter implements FileFilter{
+    	
+    	public boolean accept (java.io.File pathname){
+    		return pathname.isDirectory();
+    	}
+    }
+    
     public void refactor(){               
         Iterator it = alFiles.iterator();
         
         while (it.hasNext()){
             File fCurrent = (File) it.next();
             Track tCurrent = fCurrent.getTrack(); 
-            filename = ConfigurationManager.getProperty(CONF_REFACTOR_PATTERN);
-            filename = filename.replace("%a",tCurrent.getAuthor().getName2());
-            filename = filename.replace("%s",tCurrent.getStyle().getName2());
-            filename = filename.replace("%A",tCurrent.getAlbum().getName2());                     
+            filename = ConfigurationManager.getProperty(CONF_REFACTOR_PATTERN).toLowerCase();
+            filename = filename.replace("%artist",tCurrent.getAuthor().getName2());
+            filename = filename.replace("%genre",tCurrent.getStyle().getName2());
+            filename = filename.replace("%album",tCurrent.getAlbum().getName2());                     
             if (tCurrent.getOrder() < 10) {
-                filename = filename.replace("%n","0"+tCurrent.getOrder());
+                filename = filename.replace("%track#","0"+tCurrent.getOrder());
             } else {
-                filename = filename.replace("%n",tCurrent.getOrder()+"");
+                filename = filename.replace("%track#",tCurrent.getOrder()+"");
             }
-            filename = filename.replace("%t",tCurrent.getName());
+            filename = filename.replace("%track",tCurrent.getName());
             
             if (tCurrent.getYear() != 0){
-                filename = filename.replace("%y",tCurrent.getYear()+"");
+                filename = filename.replace("%year",tCurrent.getYear()+"");
             } else {
-                filename = filename.replace("%y - ","");
+                filename = filename.replace("%year","");
             }                      
             filename += "."+tCurrent.getType().getExtension();
             
+            
             // Compute the new filename
-            java.io.File fOld = fCurrent.getIO();            
-            java.io.File fNew = new java.io.File(fCurrent.getDevice().getUrl()+"/"+filename);
-            java.io.File dOld = new java.io.File(fOld.getParent());            
+            java.io.File fOld = fCurrent.getIO();         
+            String sRoot = fCurrent.getDevice().getUrl();
+            
+            // Check if directories exists, and if not create them
+            String sPathname = mkdirsIgnoreCase(sRoot,filename);                                                                                   
+            java.io.File fNew = new java.io.File(sPathname);
+            boolean bDirCreated = fNew.getParentFile().mkdirs();
+            
+            // Move file and related cover but save old Directory pathname for futur deletion
             java.io.File fCover = tCurrent.getAlbum().getCoverFile();
-            java.io.File dir = fNew.getParentFile();
-            
-            String sTarget = dir.getPath();
-            String sList[];
-            // Create Directories
-            while (!dir.getPath().equals(fCurrent.getDevice().getUrl())){
-            	
-            	if (dir.isDirectory()){
-            		dir.mkdirs();
-            		break;
-            	} else {
-            		dir = dir.getParentFile();
-            	}
-            }
-            
-            
-            // Move file and related cover but save old Directory pathname for futur deletion            
             if (fCover != null) {
             	fCover.renameTo(new java.io.File(fNew.getParent()+"/"+fCover.getName()));
             }
             
-            //boolean bState = fOld.renameTo(fNew);            
+            Util.isValidFileName(fNew.getParentFile());
+            boolean bState = fOld.renameTo(fNew);            
             
-            boolean bState = true;
+           
             // Put some message
             if (bState){
             	InformationJPanel.getInstance().setMessage("File " + Messages.getString(fNew.getAbsolutePath()+" moved"),InformationJPanel.INFORMATIVE); //$NON-NLS-1$
@@ -132,6 +132,7 @@ public class RefactorAction implements ITechnicalStrings{
             }                       
                     
             // See if old directory contain other files and move them
+            java.io.File dOld = fOld.getParentFile();
             java.io.File[] list = dOld.listFiles(new AudioFileFilter());
             if (list != null && list.length != 0){
             	for (java.io.File f:list){
@@ -145,5 +146,29 @@ public class RefactorAction implements ITechnicalStrings{
             Log.debug("[Refactoring] {{"+ fNew.getAbsolutePath() +"}} Success ? " + bState);            
             
         }       
+    }
+    
+    public String mkdirsIgnoreCase(String sRoot, String sPathname){
+    	
+    	java.io.File fioRoot = new java.io.File(sRoot);
+    	java.io.File[] fioList = fioRoot.listFiles(new DirectorieFilter());
+    	
+    	String[] sPaths = sPathname.split("/");
+    	String sReturn = sRoot;
+    	for (int i=0;i<sPaths.length-1;i++){
+    		String sPath = sPaths[i];
+    		boolean bool = false;
+    		for (java.io.File fio : fioList){
+    			String s = fio.getPath();
+    			if (s.equalsIgnoreCase(sReturn+sPath)){
+    				sReturn += "/"+s.replace(sReturn,"");
+    				bool=true;
+    			}
+    		}
+    		if (bool == false){
+    			sReturn+="/"+sPath;
+    		}
+    	}    	    	
+    	return sReturn+"/"+sPaths[sPaths.length-1];
     }
 }
