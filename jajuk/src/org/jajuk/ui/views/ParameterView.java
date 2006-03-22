@@ -141,7 +141,9 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
     JCheckBox jcbAddRemoteProperties;
     JCheckBox jcbHideProperties;
     JPanel jpTags;
-    JCheckBox jcbUseParentDir;
+    JCheckBox jcbUseParentDir;    
+    JLabel jlRefactorPattern;
+    JTextField jtfRefactorPattern;
     JPanel jpAdvanced;
     JCheckBox jcbBackup;
     JLabel jlBackupSize;
@@ -149,8 +151,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
     JLabel jlCollectionEncoding;
     JComboBox jcbCollectionEncoding;
     JCheckBox jcbRegexp;
-    JLabel jlRefactorPattern;
-    JTextField jtfRefactorPattern;
+    
     
     JPanel jpNetwork;
     JCheckBox jcbProxy;
@@ -543,12 +544,55 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
         
         //--Tags
         jpTags = new JPanel();
-        double sizeTags[][] = {{0.99},
-                {iYSeparator,20,iYSeparator}};
+        double sizeTags[][] = {{0.5,0.45},
+                {iYSeparator,20,iYSeparator,20,iYSeparator}};
         jpTags.setLayout(new TableLayout(sizeTags));
         jcbUseParentDir = new JCheckBox(Messages.getString("ParameterView.101"));  //$NON-NLS-1$
         jcbUseParentDir.setToolTipText(Messages.getString("ParameterView.102")); //$NON-NLS-1$
+        jlRefactorPattern = new JLabel(Messages.getString("ParameterView.192"));
+        jlRefactorPattern.setToolTipText(Messages.getString("ParameterView.193"));
+        jtfRefactorPattern = new JTextField();
+        jtfRefactorPattern.setInputVerifier(new InputVerifier(){
+        	public boolean verify(JComponent input) {
+                JTextField tf = (JTextField) input;
+                String sText = tf.getText().toLowerCase();
+                try{
+                	String[] stPattern = sText.split("[% /-]");
+                	for (String sPattern : stPattern){
+                		if (!sPattern.equals("")){
+                			if (sPattern.equalsIgnoreCase("Album") ||
+                				sPattern.equalsIgnoreCase("Artist") ||
+                				sPattern.equalsIgnoreCase("Year") ||
+                				sPattern.equalsIgnoreCase("track#") ||
+                				sPattern.equalsIgnoreCase("track") ||
+                				sPattern.equalsIgnoreCase("genre")){
+                				Log.debug("[Refactor Verifier] "+sPattern+" : OK !");
+                			} else {
+                				Log.debug("[Refactor Verifier] "+sPattern+" : Wrong !");
+                				JOptionPane.showMessageDialog(jtpMain,
+                					    Messages.getString("Error.146"),
+                					    Messages.getString("Error"),
+                					    JOptionPane.ERROR_MESSAGE);
+                				jbOK.setEnabled(false);
+                				return false;
+                			}                		
+                		}
+                	}                	                   
+                }
+                catch(Exception e){
+                    return false;
+                }
+                jbOK.setEnabled(true);
+                return true;
+            }
+            
+            public boolean shouldYieldFocus(JComponent input) {
+                return verify(input);
+            }
+        });
         jpTags.add(jcbUseParentDir,"0,1"); //$NON-NLS-1$
+        jpTags.add(jlRefactorPattern,"0,3");
+        jpTags.add(jtfRefactorPattern,"1,3");
         
         //--Advanced
         jpAdvanced = new JPanel();
@@ -572,9 +616,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
         jcbRegexp.setToolTipText(Messages.getString("ParameterView.114")); //$NON-NLS-1$
         jcbCollectionEncoding.addItem("UTF-8"); //$NON-NLS-1$
         jcbCollectionEncoding.addItem("UTF-16"); //$NON-NLS-1$
-        jlRefactorPattern = new JLabel(Messages.getString("ParameterView.192"));
-        jlRefactorPattern.setToolTipText(Messages.getString("ParameterView.193"));
-        jtfRefactorPattern = new JTextField();
+        
         double sizeAdvanced[][] = {{0.5,0.45},
                 {iYSeparator,TableLayout.PREFERRED,iYSeparator,TableLayout.PREFERRED,iYSeparator,
             TableLayout.PREFERRED,iYSeparator,TableLayout.PREFERRED,iYSeparator,TableLayout.PREFERRED,iYSeparator}};
@@ -584,9 +626,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
         jpAdvanced.add(jcbCollectionEncoding,"1,3");//$NON-NLS-1$
         jpAdvanced.add(jcbBackup,"0,5");//$NON-NLS-1$
         jpAdvanced.add(jlBackupSize,"0,7");//$NON-NLS-1$
-        jpAdvanced.add(backupSize,"1,7");//$NON-NLS-1$
-        jpAdvanced.add(jlRefactorPattern,"0,9");//$NON-NLS-1$
-        jpAdvanced.add(jtfRefactorPattern,"1,9");//$NON-NLS-1
+        jpAdvanced.add(backupSize,"1,7");//$NON-NLS-1$        
         
         //- Network
         jpNetwork = new JPanel();
@@ -653,6 +693,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
                 return verify(input);
             }
         };
+        jtfProxyLogin.setInputVerifier(verifier);
         jlConnectionTO = new JLabel(Messages.getString("ParameterView.160"));  //$NON-NLS-1$
         jlConnectionTO.setToolTipText(Messages.getString("ParameterView.160"));  //$NON-NLS-1$
         connectionTO = new JSlider(0,60);
