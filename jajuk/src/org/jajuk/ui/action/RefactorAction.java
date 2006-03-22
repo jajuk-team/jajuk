@@ -20,13 +20,12 @@
 
 package org.jajuk.ui.action;
 
+import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.swing.JOptionPane;
 
-import org.jajuk.base.Device;
-import org.jajuk.base.Directory;
 import org.jajuk.base.Event;
 import org.jajuk.base.File;
 import org.jajuk.base.ObservationManager;
@@ -48,7 +47,8 @@ public class RefactorAction implements ITechnicalStrings{
         if (Boolean.valueOf(ConfigurationManager.getProperty(CONF_CONFIRMATIONS_REFACTOR_FILES)).booleanValue()){
             int iResu = Messages.getChoice(Messages.getString("Confirmation_refactor_files"),JOptionPane.INFORMATION_MESSAGE);  //$NON-NLS-1$ //$NON-NLS-2$
             if (iResu != JOptionPane.YES_OPTION){
-                return;                       
+            	Util.stopWaiting();
+            	return;                       
             }
         } 
         new Thread() {
@@ -58,6 +58,17 @@ public class RefactorAction implements ITechnicalStrings{
         }.start();
         Util.stopWaiting();   
         ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH));
+    }
+    
+    class AudioFileFilter implements FilenameFilter,ITechnicalStrings{
+    	
+    	public boolean accept (java.io.File dir, String name){
+    		return !(name.endsWith(EXT_MP3) ||    				
+    				name.endsWith(EXT_OGG) ||
+    				name.endsWith(EXT_AU) ||
+    				name.endsWith(EXT_AIFF) ||
+    				name.endsWith(EXT_FLAC));    		
+    	}
     }
     
     public void refactor(){               
@@ -85,32 +96,53 @@ public class RefactorAction implements ITechnicalStrings{
             filename += "."+tCurrent.getType().getExtension();
             
             // Compute the new filename
-            java.io.File fOld = fCurrent.getIO();
+            java.io.File fOld = fCurrent.getIO();            
             java.io.File fNew = new java.io.File(fCurrent.getDevice().getUrl()+"/"+filename);
+            java.io.File dOld = new java.io.File(fOld.getParent());            
+            java.io.File fCover = tCurrent.getAlbum().getCoverFile();
+            java.io.File dir = fNew.getParentFile();
             
+            String sTarget = dir.getPath();
+            String sList[];
             // Create Directories
-            boolean bDir = fNew.getParentFile().mkdirs();
+            while (!dir.getPath().equals(fCurrent.getDevice().getUrl())){
+            	
+            	if (dir.isDirectory()){
+            		dir.mkdirs();
+            		break;
+            	} else {
+            		dir = dir.getParentFile();
+            	}
+            }
             
-            // Move file but save old Directory pathname
-            String sDirUrl = fOld.getParent();
-            boolean bState = fOld.renameTo(fNew);
             
+            // Move file and related cover but save old Directory pathname for futur deletion            
+            if (fCover != null) {
+            	fCover.renameTo(new java.io.File(fNew.getParent()+"/"+fCover.getName()));
+            }
+            
+            //boolean bState = fOld.renameTo(fNew);            
+            
+            boolean bState = true;
             // Put some message
             if (bState){
             	InformationJPanel.getInstance().setMessage("File " + Messages.getString(fNew.getAbsolutePath()+" moved"),InformationJPanel.INFORMATIVE); //$NON-NLS-1$
             } else {
             	InformationJPanel.getInstance().setMessage("File " + Messages.getString(fNew.getAbsolutePath()+" could not be moved !"),InformationJPanel.ERROR); //$NON-NLS-1$
-            }
+            }                       
+                    
+            // See if old directory contain other files and move them
+            java.io.File[] list = dOld.listFiles(new AudioFileFilter());
+            if (list != null && list.length != 0){
+            	for (java.io.File f:list){
+            		f.renameTo(new java.io.File(fNew.getParent()+"/"+f.getName()));
+            	}
+            } else if (list.length == 0){
+            	dOld.delete();
+            }                                            
             
-            
-                                    
-            // Delete Empty dir
-            java.io.File dOld = new java.io.File(sDirUrl);            
-            boolean bDelete = dOld.delete();
-            
-//          Debug log
-            Log.debug("[Refactoring] {{"+ fNew.getAbsolutePath() +"}} Success ? " + bState);
-            Log.debug("[Refactoring] Empty Dir should be deleted :  {{"+ sDirUrl +"}} "+ bDelete);
+            // Debug log
+            Log.debug("[Refactoring] {{"+ fNew.getAbsolutePath() +"}} Success ? " + bState);            
             
         }       
     }

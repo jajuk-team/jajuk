@@ -225,12 +225,12 @@ public class CDDBWizard extends JDialog implements ITechnicalStrings,
 						//                    	 Convert given tracks into CDDBTracks
 						alTracks = new ArrayList<CDDBTrack>(alGivenTracks
 								.size());
-						filter = new HashSet();
+						filter = null;
 						Iterator it = alGivenTracks.iterator();
 						while (it.hasNext()) {
 							CDDBTrack track = new CDDBTrack((Track) it.next());
 							if (!alTracks.contains(track)) {
-								filter.add(track);
+								//filter.add(track);
 								alTracks.add(track);
 							}
 						}
@@ -353,8 +353,6 @@ public class CDDBWizard extends JDialog implements ITechnicalStrings,
 		} else {
 			for (int i = 0; i < aIdxToTag.length; i++) {
 				int iRow = aIdxToTag[i];
-				String sTrack = (String) model.oValues[iRow][3];
-				String sAlbum = fdbReader.getAlbum();
 				Track track = ((CDDBTrack) alTracks.get(iRow)).track;
 				try {
 					String sValue = fdbReader.getAlbum();
