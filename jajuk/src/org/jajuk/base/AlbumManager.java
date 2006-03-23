@@ -134,7 +134,7 @@ public class AlbumManager extends ItemManager{
 		 *  @param sName
 		 * @return
 		 */
-		private synchronized String format(String sName){
+		public static synchronized String format(String sName){
 			String sOut;
 			sOut = sName.trim(); //supress spaces at the begin and the end
 			sOut.replace('-',' ');  //move - to space

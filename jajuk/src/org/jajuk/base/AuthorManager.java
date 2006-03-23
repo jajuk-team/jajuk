@@ -159,7 +159,7 @@ public class AuthorManager extends ItemManager{
 	 * @param sName
 	 * @return
 	 */
-	private String format(String sName) {
+	public static String format(String sName) {
 		String sOut;
 		sOut = sName.trim(); //supress spaces at the begin and the end
 		sOut.replace('-', ' '); //move - to space
