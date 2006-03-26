@@ -1399,7 +1399,6 @@ public class Util implements ITechnicalStrings {
 				boolean b = false;
 				for (int i = 0; i < files.length; i++) {
 					if (files[i].getName().equals(name)) {
-						System.out.println(files[i].getName());
 						b = true;
 						break;
 					}
@@ -1417,14 +1416,37 @@ public class Util implements ITechnicalStrings {
 		}
 	}
 
+    /**
+     * 
+     * @param file
+     *            file
+     * @return whether the file name is correct on the current filesystem
+     */
 	public static boolean isValidFileName(File file) {
 		if (file == null) {
 			return false;
 		} else {
-			String[] sPath = file.getPath().split(file.separator);
+			String[] sPath = file.getPath().split(File.separator);
 			File fParent = file.getParentFile();
 			String name = sPath[sPath.length - 1];
 			return (isValidFileName(fParent, name));
 		}
+	}
+    
+    
+    /**
+     * 
+     * @param s String to analyse
+     * @return whether the given string contains non digit or letters chararcters
+     */
+	public static boolean containsNonDigitOrLetters(String s){
+	    boolean bOK = false;
+	    for (int i=0;i<s.length();i++){
+	        if (!Character.isLetterOrDigit(s.charAt(i))){
+	            bOK = true;
+	            break;
+	        }
+	    }
+        return bOK;
 	}
 }

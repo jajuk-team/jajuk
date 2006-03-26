@@ -94,6 +94,14 @@ public class Ambience {
     }
     
     /**
+     * toString method
+     * @return String representation of this item
+     */
+    public String toString(){
+        return sName+ " "+styles;
+    }
+    
+    /**
      * Equals method
      * @return true if ambience have the same same and contains the same styles
      */

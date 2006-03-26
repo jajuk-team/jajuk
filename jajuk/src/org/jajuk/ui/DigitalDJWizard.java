@@ -27,9 +27,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Vector;
@@ -55,6 +54,7 @@ import javax.swing.event.ChangeListener;
 import org.jajuk.base.Ambience;
 import org.jajuk.base.AmbienceDigitalDJ;
 import org.jajuk.base.AmbienceManager;
+import org.jajuk.base.DigitalDJ;
 import org.jajuk.base.DigitalDJManager;
 import org.jajuk.base.Proportion;
 import org.jajuk.base.ProportionDigitalDJ;
@@ -100,6 +100,8 @@ public class DigitalDJWizard implements ITechnicalStrings{
     private static final String KEY_PROPORTIONS = "PROPORTIONS";
     /**Ambience*/
     private static final String KEY_AMBIENCE = "AMBIENCE";
+    /**DJ to remove*/
+    private static final String KEY_REMOVE = "REMOVE";
     
     /**
      * 
@@ -176,6 +178,69 @@ public class DigitalDJWizard implements ITechnicalStrings{
     
     /**
      * 
+     * SJ removal 
+     *
+     * @author     Bertrand Florat
+     * @created    26 march 2006
+     */
+    public static class RemovePanel extends JPanel implements ActionListener{
+        /**Unique ID for this panel*/
+        protected static final String ID = "DJ_REMOVE"; 
+        
+        private final WizardController controller;
+        private final Map data;
+        JComponent[][] widgets;
+
+        ButtonGroup bgDJS;
+        
+        public RemovePanel(WizardController controller,Map data){
+            initUI();
+            this.controller = controller;
+            this.data = data;
+            data.put(KEY_DJ_TYPE,-1); //default value
+        }
+        
+        /**
+         * Create panel UI
+         *
+         */
+        private void initUI(){
+            ArrayList<DigitalDJ> djs = new ArrayList(DigitalDJManager.getInstance().getDJs()); 
+            Collections.sort(djs);
+            widgets = new JComponent[1][djs.size()];
+            double[] dVert = new double[djs.size()];
+            //prepare vertical layout
+            for (int i=0;i<djs.size();i++){
+                dVert[i] = 20;
+            }
+            double[][] size = new double[][]
+                                           {{0.99},dVert};
+            TableLayout layout = new TableLayout(size);
+            layout.setVGap(10);
+            layout.setHGap(10);
+            setLayout(new TableLayout(size));
+            bgDJS = new ButtonGroup();
+            int index = 0;
+            for (DigitalDJ dj : djs){
+                JRadioButton jrb = new JRadioButton(dj.getName()); 
+                bgDJS.add(jrb);
+                widgets[0][index] = jrb;
+                add(jrb,"0,"+index+",c,c");
+                index ++;
+            }
+          }
+  
+        /* (non-Javadoc)
+         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+         */
+        public void actionPerformed(ActionEvent e) {
+            int row = getWidgetIndex(widgets,(JComponent)e.getSource());
+            data.put(KEY_REMOVE,row);
+        }
+      }
+    
+    /**
+     * 
      * Action type (new or alter)
      *
      * @author     Bertrand Florat
@@ -185,11 +250,11 @@ public class DigitalDJWizard implements ITechnicalStrings{
         /**Unique ID for this panel*/
         protected static final String ID = "ACTION_SELECTION"; 
         /**NEW code*/
-        private static final int ACTION_CREATION = 0;
+        public static final int ACTION_CREATION = 0;
         /**CHANGE code*/
-        private static final int ACTION_CHANGE = 1;
+        public static final int ACTION_CHANGE = 1;
         /**DELETE code*/
-        private static final int ACTION_DELETE = 2;
+        public static final int ACTION_DELETE = 2;
         
         private final WizardController controller;
         private final Map data;
@@ -203,7 +268,6 @@ public class DigitalDJWizard implements ITechnicalStrings{
             initUI();
             this.controller = controller;
             this.data = data;
-            data.put(KEY_ACTION,0); //default value: create
         }
         
         /**
@@ -249,7 +313,7 @@ public class DigitalDJWizard implements ITechnicalStrings{
     
      /**
      * 
-     * Initial steps
+     * Initial step
      *
      * @author     Bertrand Florat
      * @created    4 march 2006
@@ -262,11 +326,8 @@ public class DigitalDJWizard implements ITechnicalStrings{
          */
         protected InitStep() {
             super(Messages.getString("DigitalDJWizard.4"), 
-                new String[]{ActionSelectionPanel.ID,TypeSelectionPanel.ID,GeneralOptionsPanel.ID,
-                    TransitionsPanel.ID,ProportionsPanel.ID,AmbiencePanel.ID}, 
-                new String[]{Messages.getString("DigitalDJWizard.16"),Messages.getString("DigitalDJWizard.0")
-                ,Messages.getString("DigitalDJWizard.5"),Messages.getString("DigitalDJWizard.20"),
-                Messages.getString("DigitalDJWizard.29"),Messages.getString("DigitalDJWizard.31")});
+                new String[]{ActionSelectionPanel.ID}, 
+                new String[]{Messages.getString("DigitalDJWizard.16")});
         }
 
         /* (non-Javadoc)
@@ -277,23 +338,48 @@ public class DigitalDJWizard implements ITechnicalStrings{
                 String id, Map settings) {
             switch(indexOfStep(id)){
             case 0:
-                return new AmbiencePanel(controller,settings);
-            case 1:
-                return new TypeSelectionPanel(controller,settings);
-            case 2:
-                return new GeneralOptionsPanel(controller,settings);
-            case 3:
-                return new TransitionsPanel(controller,settings);
-            case 4:
-                return new ProportionsPanel(controller,settings);
-            case 5:
-                return new AmbiencePanel(controller,settings);
+                return new ActionSelectionPanel(controller,settings);
             default:
                 throw new IllegalArgumentException(id);
             }
         }
-        
     }
+
+    
+    /**
+     * 
+     * Remove step
+     *
+     * @author     Bertrand Florat
+     * @created    4 march 2006
+     */
+    public static class RemoveStep extends WizardPanelProvider{
+
+        /**
+         * @param steps
+         * @param descriptions
+         */
+        protected RemoveStep() {
+            super(Messages.getString("DigitalDJWizard.4"), 
+                new String[]{RemovePanel.ID}, 
+                new String[]{Messages.getString("DigitalDJWizard.40")});
+        }
+
+        /* (non-Javadoc)
+         * @see org.netbeans.spi.wizard.WizardPanelProvider#createPanel(org.netbeans.spi.wizard.WizardController, java.lang.String, java.util.Map)
+         */
+        @Override
+        protected JComponent createPanel(WizardController controller, 
+                String id, Map settings) {
+            switch(indexOfStep(id)){
+            case 0:
+                return new RemovePanel(controller,settings);
+            default:
+                throw new IllegalArgumentException(id);
+            }
+        }
+    }
+
     
      /**
      * 
@@ -491,7 +577,7 @@ public class DigitalDJWizard implements ITechnicalStrings{
                 JButton jbDelete = new JButton(Util.getIcon(ICON_DELETE));
                 jbDelete.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent ae) {
-                        alTransitions.remove(getWidgetIndex((JComponent)ae.getSource()));
+                        alTransitions.remove(getWidgetIndex(widgets,(JComponent)ae.getSource()));
                         refreshScreen();
                     }
                 });
@@ -510,7 +596,7 @@ public class DigitalDJWizard implements ITechnicalStrings{
                 }
                 jbFrom.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent ae) {
-                        int row = getWidgetIndex((JComponent)ae.getSource()); 
+                        int row = getWidgetIndex(widgets,(JComponent)ae.getSource()); 
                         addStyle(row,true);
                     }
                 });
@@ -524,7 +610,7 @@ public class DigitalDJWizard implements ITechnicalStrings{
                 }
                 jbTo.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent ae) {
-                        int row = getWidgetIndex((JComponent)ae.getSource()); 
+                        int row = getWidgetIndex(widgets,(JComponent)ae.getSource()); 
                         addStyle(row,false);
                     }
                 });
@@ -534,7 +620,7 @@ public class DigitalDJWizard implements ITechnicalStrings{
                 JSpinner jsNb = new JSpinner(new SpinnerNumberModel(2,1,10,1));
                 jsNb.addChangeListener(new ChangeListener() {
                     public void stateChanged(ChangeEvent ce) {
-                        int row = getWidgetIndex((JComponent)ce.getSource());
+                        int row = getWidgetIndex(widgets,(JComponent)ce.getSource());
                         int nb = Integer.parseInt(((JSpinner)ce.getSource()).getValue().toString());
                         Transition transition = alTransitions.get(row);
                         transition.setNb(nb);
@@ -677,28 +763,9 @@ public class DigitalDJWizard implements ITechnicalStrings{
             revalidate();
             repaint();
         }
-        
-        /**
-         * 
-         * @param widget
-         * @return index of a given widget row in the widget table
-         */
-        private int getWidgetIndex(JComponent widget){
-            int resu = -1;
-            for (int row=0;row<widgets.length;row++){ 
-                for (int col=0;col<widgets[0].length;col++){
-                    if (widget.equals(widgets[row][col])){
-                        resu = row;
-                        break;
-                    }    
-                }
-                
-            }
-            return resu; 
-        }
     }
-    
-    
+        
+           
      /**
      * 
      * Proportion panel
@@ -774,7 +841,7 @@ public class DigitalDJWizard implements ITechnicalStrings{
                 JButton jbDelete = new JButton(Util.getIcon(ICON_DELETE));
                 jbDelete.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent ae) {
-                        proportions.remove(getWidgetIndex((JComponent)ae.getSource()));
+                        proportions.remove(getWidgetIndex(widgets,(JComponent)ae.getSource()));
                         refreshScreen();
                     }
                 });
@@ -793,7 +860,7 @@ public class DigitalDJWizard implements ITechnicalStrings{
                 }
                 jbStyle.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent ae) {
-                        int row = getWidgetIndex((JComponent)ae.getSource()); 
+                        int row = getWidgetIndex(widgets,(JComponent)ae.getSource()); 
                         addStyle(row);
                     }
                 });
@@ -803,7 +870,7 @@ public class DigitalDJWizard implements ITechnicalStrings{
                 JSpinner jsNb = new JSpinner(new SpinnerNumberModel(20,1,100,1));
                 jsNb.addChangeListener(new ChangeListener() {
                     public void stateChanged(ChangeEvent ce) {
-                        int row = getWidgetIndex((JComponent)ce.getSource());
+                        int row = getWidgetIndex(widgets,(JComponent)ce.getSource());
                         int nb = Integer.parseInt(((JSpinner)ce.getSource()).getValue().toString());
                         Proportion proportion = proportions.get(row);
                         proportion.setProportion(nb);
@@ -918,27 +985,7 @@ public class DigitalDJWizard implements ITechnicalStrings{
             revalidate();
             repaint();
         }
-        
-        /**
-         * 
-         * @param widget
-         * @return index of a given widget row in the widget table
-         */
-        private int getWidgetIndex(JComponent widget){
-            int resu = -1;
-            for (int row=0;row<widgets.length;row++){ 
-                for (int col=0;col<widgets[0].length;col++){
-                    if (widget.equals(widgets[row][col])){
-                        resu = row;
-                        break;
-                    }    
-                }
-                
-            }
-            return resu; 
-        }
     }
-    
     
      /**
      * 
@@ -974,7 +1021,7 @@ public class DigitalDJWizard implements ITechnicalStrings{
          * Generic Constructor
          */
         public AmbiencePanel(WizardController controller,Map data){
-            ambiences = new ArrayList(10);
+            ambiences = new ArrayList(AmbienceManager.getInstance().getAmbiences());
             initUI();
             this.controller = controller;
             this.data = data;
@@ -999,11 +1046,11 @@ public class DigitalDJWizard implements ITechnicalStrings{
             }
             //set layout
             double[][] dSizeGeneral = {{10,0.99,5},
-                    {10,TableLayout.PREFERRED,10,20,10}};
+                    {10,TableLayout.FILL,10,TableLayout.PREFERRED,10}};
             setLayout(new TableLayout(dSizeGeneral));
             //button layout
-            double[][] dButtons = {{TableLayout.FILL,TableLayout.PREFERRED,
-                TableLayout.FILL,TableLayout.PREFERRED,TableLayout.FILL},{20}};
+            double[][] dButtons = {{10,TableLayout.PREFERRED,
+                20,0.99,10},{20}};
             jpButtons = new JPanel(new TableLayout(dButtons));
             jbNew = new JButton(Messages.getString("DigitalDJWizard.32"),Util.getIcon(ICON_NEW));
             jbNew.addActionListener(this);
@@ -1025,7 +1072,7 @@ public class DigitalDJWizard implements ITechnicalStrings{
             widgets = new JComponent[ambiences.size()][3];
             JPanel out = new JPanel();
             //Delete|Style list|proportion in %  
-            double[] dHoriz = {25,10,0.25,10,TableLayout.FILL,5};
+            double[] dHoriz = {25,120,200};
             double[] dVert = new double[widgets.length+2]; 
             dVert[0] = 20;
             ButtonGroup group = new ButtonGroup();
@@ -1033,22 +1080,19 @@ public class DigitalDJWizard implements ITechnicalStrings{
             for (int index=0;index<ambiences.size();index++ ){
                 //Ambience name
                 final JTextField jtfName = new JTextField();
-                jtfName.addKeyListener(new KeyListener() {
-                    public void keyReleased(KeyEvent arg0) {
-                    }
-                
-                    public void keyPressed(KeyEvent arg0) {
-                    }
-                
-                    public void keyTyped(KeyEvent ke) {
-                        //check if each typed letter is either a letter or a digit or ignore it
-                        if (!Character.isLetterOrDigit(ke.getKeyChar())){
-                            String sCurrent = jtfName.getText();
-                            jtfName.setText(sCurrent.substring(0,sCurrent.length()-1)); //it should exist a better way to do that
+                jtfName.setText(ambiences.get(index).getName());
+                jtfName.addCaretListener(new CaretListener() {
+                    public void caretUpdate(CaretEvent arg0) {
+                        int index = getWidgetIndex(widgets,(JComponent)arg0.getSource());
+                        String s = jtfName.getText();
+                        JButton jb = (JButton)widgets[index][2];
+                        Ambience ambience = ambiences.get(index);
+                        ambience.setName(s);
+                        if (s.length() == 0){
+                            jb.setEnabled(false);
                         }
-                        //if name and style are selected,no more error message
-                        else if(((JButton)widgets[getWidgetIndex(jtfName)][2]).getText().length() > 0){
-                            controller.setProblem(null);
+                        else{
+                            jb.setEnabled(true);
                         }
                     }
                 });
@@ -1059,8 +1103,8 @@ public class DigitalDJWizard implements ITechnicalStrings{
                 group.add(jrbAmbience);
                 jrbAmbience.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent ae) {
-                        String sAmbienceName = ((JTextField)widgets[getWidgetIndex(jrbAmbience)][1]).getText();
-                        ambienceIndex = getWidgetIndex(jrbAmbience);
+                        String sAmbienceName = ((JTextField)widgets[getWidgetIndex(widgets,jrbAmbience)][1]).getText();
+                        ambienceIndex = getWidgetIndex(widgets,jrbAmbience);
                         Ambience ambience = AmbienceManager.getInstance().getAmbience(sAmbienceName);
                         if (!ambience.getName().equals("") && ambience.getStyles().size() > 0){
                             data.put(KEY_AMBIENCE,ambience);
@@ -1073,16 +1117,22 @@ public class DigitalDJWizard implements ITechnicalStrings{
                     }
                 });
                 widgets[index][0] = jrbAmbience;
+                if (index == ambienceIndex){
+                    jrbAmbience.setSelected(true);
+                }
+                Ambience ambience = ambiences.get(index);
                 //style list
                 JButton jbStyle = new JButton(Util.getIcon(ICON_LIST));
-                Ambience ambience = ambiences.get(index);
+                if (ambience.getName().length() == 0){
+                    jbStyle.setEnabled(false);
+                }
                 if (ambience.getStyles() != null && ambience.getStyles().size() > 0){
                     jbStyle.setText(ambience.getStylesDesc());
                     jbStyle.setToolTipText(ambience.getStylesDesc());
                 }
                 jbStyle.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent ae) {
-                        int row = getWidgetIndex((JComponent)ae.getSource()); 
+                        int row = getWidgetIndex(widgets,(JComponent)ae.getSource()); 
                         addStyle(row);
                     }
                 });
@@ -1103,15 +1153,16 @@ public class DigitalDJWizard implements ITechnicalStrings{
             jlHeader1.setFont(new Font("Dialog",Font.BOLD,12));
             JLabel jlHeader2 = new JLabel(Messages.getString("DigitalDJWizard.27"));
             jlHeader2.setFont(new Font("Dialog",Font.BOLD,12));
-            out.add(jlHeader1,"2,0");
-            out.add(jlHeader2,"4,0");
+            out.add(jlHeader1,"1,0,c,c");
+            out.add(jlHeader2,"2,0,c,c");
             //Add widgets
             for (int i=0;i<dVert.length-2;i++){
                 out.add(widgets[i][0],"0,"+(i+1)+",c,c"); //$NON-NLS-1$ //$NON-NLS-2$
-                out.add(widgets[i][1],"2,"+(i+1)); //$NON-NLS-1$
-                out.add(widgets[i][2],"4,"+(i+1)); //$NON-NLS-1$ //$NON-NLS-2$
+                out.add(widgets[i][1],"1,"+(i+1)); //$NON-NLS-1$
+                out.add(widgets[i][2],"2,"+(i+1)); //$NON-NLS-1$ //$NON-NLS-2$
             }
-            return new JScrollPane(out);
+            JScrollPane jsp = new JScrollPane(out);
+            return jsp;
         }
         
         /**
@@ -1122,9 +1173,7 @@ public class DigitalDJWizard implements ITechnicalStrings{
             synchronized(StyleManager.getInstance().getLock()){
                 Ambience ambience = ambiences.get(row);
                 //create list of styles used in current selection
-                HashSet disabledStyles = new HashSet();
-                disabledStyles.addAll(ambience.getStyles());    
-                StylesSelectionDialog dialog = new StylesSelectionDialog(disabledStyles);
+                StylesSelectionDialog dialog = new StylesSelectionDialog(null);
                 dialog.setSelection(ambience.getStyles());
                 dialog.setVisible(true);
                 HashSet<Style> styles =  dialog.getSelectedStyles();
@@ -1133,6 +1182,8 @@ public class DigitalDJWizard implements ITechnicalStrings{
                     return;
                 }
                 String sText = "";
+                //reset old styles
+                ambience.setStyles(new HashSet(10));
                 for (Style style:styles){
                     ambience.addStyle(style);
                     sText += style.getName2()+',';  
@@ -1141,7 +1192,7 @@ public class DigitalDJWizard implements ITechnicalStrings{
                 //Set button text
                 ((JButton)widgets[row][2]).setText(sText);
                 //if we have ambience name and some styles, register the ambience
-                if (!ambience.getName().equals("") && 
+                if (ambience.getName().length() > 0 && 
                         ambience.getStyles().size() > 0){
                     //register this new ambience
                     AmbienceManager.getInstance().registerAmbience(ambience);
@@ -1163,26 +1214,8 @@ public class DigitalDJWizard implements ITechnicalStrings{
             revalidate();
             repaint();
         }
-        
-        /**
-         * 
-         * @param widget
-         * @return index of a given widget row in the widget table
-         */
-        private int getWidgetIndex(JComponent widget){
-            int resu = -1;
-            for (int row=0;row<widgets.length;row++){ 
-                for (int col=0;col<widgets[0].length;col++){
-                    if (widget.equals(widgets[row][col])){
-                        resu = row;
-                        break;
-                    }    
-                }
-                
-            }
-            return resu; 
-        }
-
+    
+    
         /* (non-Javadoc)
          * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
          */
@@ -1193,18 +1226,24 @@ public class DigitalDJWizard implements ITechnicalStrings{
                 //refresh screen
                 refreshScreen();
                 //select new row
-                JRadioButton jrb = (JRadioButton)widgets[ambiences.size() - 1][0];
+                JRadioButton jrb = (JRadioButton)widgets[ambiences.size()-1][0];
                 jrb.setSelected(true);
+                ambienceIndex = ambiences.size()-1;
                 controller.setProblem(Messages.getString("DigitalDJWizard.39"));
             }
             else if (ae.getSource() == jbDelete){
                 JTextField jtf = (JTextField)widgets[ambienceIndex][1];
-                Ambience ambience = new Ambience(jtf.getText());
+                Ambience ambience = ambiences.get(ambienceIndex);
                 ambiences.remove(ambience);
                 AmbienceManager.getInstance().removeAmbience(ambience.getName());
                 //We need at least one ambience
                 if (AmbienceManager.getInstance().getAmbiences().size() == 0){
                     controller.setProblem(Messages.getString("DigitalDJWizard.38"));    
+                }
+                if (ambienceIndex > 0){
+                    ambienceIndex --;
+                    JRadioButton jrb = (JRadioButton)widgets[ambienceIndex][0];
+                    jrb.setSelected(true);
                 }
                 //refresh screen
                 refreshScreen();
@@ -1221,8 +1260,8 @@ public class DigitalDJWizard implements ITechnicalStrings{
      */
     public static class DJWizardController extends WizardBranchController{
         /**Cached instance for perfs*/
-        InitStep typeStep = new InitStep();  
-        
+        InitStep actionStep = new InitStep();  
+        RemoveStep removeStep = new RemoveStep();  
         
         /**
          * @param base
@@ -1235,8 +1274,16 @@ public class DigitalDJWizard implements ITechnicalStrings{
          * Return next panel provider
          */
         protected WizardPanelProvider getPanelProviderForStep(String step,Map data){
-            if (step.equals(TypeSelectionPanel.ID)){
-                 return typeStep;    
+            if (step.equals(ActionSelectionPanel.ID)){
+                if (data.get(KEY_ACTION) == null){
+                    return actionStep;    
+                }
+                else if ((Integer)data.get(KEY_ACTION) == ActionSelectionPanel.ACTION_DELETE){
+                    return removeStep;
+                }
+            }
+            else if (step.equals(RemovePanel.ID)){
+                 return removeStep;    
             }
             /*assert step == KEY_DJ_TYPE;
             int iType = (Integer)data.get(step);
@@ -1264,6 +1311,24 @@ public class DigitalDJWizard implements ITechnicalStrings{
              
         //And show it onscreen
         WizardDisplayer.showWizard(wizard);
+    }
+    
+    /**
+     * 
+     * @param widget
+     * @return index of a given widget row in the widget table
+     */
+    private static int getWidgetIndex(JComponent[][] widgets,JComponent widget){
+        int resu = -1;
+        for (int row=0;row<widgets.length;row++){ 
+            for (int col=0;col<widgets[0].length;col++){
+                if (widget.equals(widgets[row][col])){
+                    resu = row;
+                    break;
+                }    
+            }
+        }
+        return resu; 
     }
 
 }

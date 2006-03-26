@@ -24,6 +24,7 @@ import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
@@ -93,6 +94,15 @@ public class AmbienceManager implements ITechnicalStrings,Observer{
     }
     
     /**
+     * Cette methode sert à ...
+     * @param s ma chaine
+     * @param i mon entier
+     */
+    public void mamethode(String s,int i){
+        
+    }
+    
+    /**
      * 
      * @param sName Ambience name
      * @return registrated ambience
@@ -135,10 +145,11 @@ public class AmbienceManager implements ITechnicalStrings,Observer{
     public void commit(){
         //first, remove all ambience from configuration
         Properties properties = ConfigurationManager.getProperties();
-        for (Object o:properties.keySet()){
-            String sKey = (String)o;
+        Iterator it = properties.keySet().iterator();
+        while (it.hasNext()){
+            String sKey = (String)it.next();
             if (sKey.startsWith(AMBIENCE_PREFIX)){
-                ConfigurationManager.removeProperty(sKey);
+                it.remove();
             }
         }
         //now create and set each ambience

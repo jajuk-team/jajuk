@@ -31,7 +31,7 @@ import org.jajuk.util.ITechnicalStrings;
  * @author     Bertrand Florat
  * @created    27/02/2006
  */
-public abstract class DigitalDJ implements ITechnicalStrings{
+public abstract class DigitalDJ implements ITechnicalStrings,Comparable{
     
     /**DJ unique ID*/
     protected String sID;
@@ -74,6 +74,16 @@ public abstract class DigitalDJ implements ITechnicalStrings{
      */
     public String toString(){
         return "DJ "+sName;
+    }
+    
+    /**
+     * Compare to method, sorted alphaticaly
+     * @param o
+     * @return
+     */
+    public int compareTo(Object o){
+        DigitalDJ other = (DigitalDJ)o;
+        return this.sName.compareTo(other.getName());
     }
     
     /**
