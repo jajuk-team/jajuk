@@ -672,6 +672,12 @@ public interface ITechnicalStrings {
     public static final String THUMBNAIL_SIZE_150x150 = "150x150";
     public static final String THUMBNAIL_SIZE_200x200 = "200x200";
     
-    
+    //Patterns
+    public static final String PATTERN_ARTIST = "%artist";
+    public static final String PATTERN_ALBUM = "%album";
+    public static final String PATTERN_GENRE = "%genre";
+    public static final String PATTERN_YEAR = "%year";
+    public static final String PATTERN_TRACKNAME = "%track";
+    public static final String PATTERN_TRACKORDER = "%track#";
     
 }

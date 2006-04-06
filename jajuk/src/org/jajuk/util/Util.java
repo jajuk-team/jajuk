@@ -508,7 +508,7 @@ public class Util implements ITechnicalStrings {
 		try {
 			if (Integer.parseInt(ConfigurationManager
 					.getProperty(CONF_BACKUP_SIZE)) <= 0) { // 0 or less means
-															// no backup
+				// no backup
 				return;
 			}
 			// calculates total size in MB for the file to backup and its backup
@@ -521,14 +521,14 @@ public class Util implements ITechnicalStrings {
 				for (int i = 0; i < files.length; i++) {
 					if (files[i].getName().indexOf(
 							removeExtension(file.getName())) != -1) { // if
-																		// the
-																		// file
-																		// contains
-																		// the
-																		// file
-																		// name
-																		// without
-																		// extension
+						// the
+						// file
+						// contains
+						// the
+						// file
+						// name
+						// without
+						// extension
 						lUsedMB += files[i].length();
 						alFiles.add(files[i]);
 					}
@@ -537,8 +537,8 @@ public class Util implements ITechnicalStrings {
 				alFiles.remove(file);
 				Collections.sort(alFiles);
 				if ((lUsedMB - file.length()) / 1048576 > iMB) { // too much
-																	// backup
-																	// files
+					// backup
+					// files
 					// delete older backup
 					if (alFiles.size() > 0) {
 						File fileToDelete = (File) alFiles.get(0);
@@ -661,7 +661,7 @@ public class Util implements ITechnicalStrings {
 		Mixer mixer = AudioSystem.getMixer(null);
 		Line line = null;
 		int iTimeOut = 200; // time out to exit line waiting and kill a calling
-							// thread
+		// thread
 		do {
 			Line[] lines = mixer.getSourceLines();
 			for (int i = 0; i < lines.length; i++) {
@@ -696,14 +696,14 @@ public class Util implements ITechnicalStrings {
 						".*" + FILE_DEFAULT_COVER_2 + ".*") //$NON-NLS-1$ //$NON-NLS-2$
 				|| sFileName.toLowerCase().matches(
 						".*" + FILE_ABSOLUTE_DEFAULT_COVER + ".*"); // just for
-																	// previous
-																	// compatibility,
-																	// now it is
-																	// a
-																	// directory
-																	// property
-																	// //$NON-NLS-1$
-																	// //$NON-NLS-2$
+		// previous
+		// compatibility,
+		// now it is
+		// a
+		// directory
+		// property
+		// //$NON-NLS-1$
+		// //$NON-NLS-2$
 	}
 
 	/**
@@ -890,7 +890,7 @@ public class Util implements ITechnicalStrings {
 			jpOut.add(Box.createVerticalGlue());
 		}
 		jpOut.setMinimumSize(new Dimension(0, 0)); // allow resing with info
-													// node
+		// node
 		return jpOut;
 	}
 
@@ -1203,12 +1203,12 @@ public class Util implements ITechnicalStrings {
 		Object oDefaultValue = sValue; // String by default
 		if (cType.equals(Boolean.class)) {
 			if (sValue.equals("y")) { // "y" and "n" is an old boolean
-										// attribute notation prior to 1.0
-										// //$NON-NLS-1$
+				// attribute notation prior to 1.0
+				// //$NON-NLS-1$
 				oDefaultValue = true;
 			} else if (sValue.equals("n")) { // "y" and "n" is an old boolean
-												// attribute notation prior to
-												// 1.0 //$NON-NLS-1$
+				// attribute notation prior to
+				// 1.0 //$NON-NLS-1$
 				oDefaultValue = false;
 			} else {
 				oDefaultValue = Boolean.parseBoolean(sValue);
@@ -1239,7 +1239,7 @@ public class Util implements ITechnicalStrings {
 		Class cType = meta.getType();
 		Format format = meta.getFormat();
 		String sValue = oValue.toString();// default (works for strings, long
-											// and double)
+		// and double)
 		if (cType.equals(Date.class)) {
 			sValue = format.format(oValue);
 		} else if (cType.equals(Class.class)) {
@@ -1352,14 +1352,14 @@ public class Util implements ITechnicalStrings {
 		Properties properties = (Properties) System.getProperties().clone();
 		// We remove sensible data from logs
 		properties.remove("java.library.path"); // can contain external program
-												// paths
+		// paths
 		properties.remove("java.class.path"); // can contain external program
-												// paths
+		// paths
 		properties.remove("user.name"); // user name is private
 		properties.remove("java.ext.dirs");// can contain external program
-											// paths
+		// paths
 		properties.remove("sun.boot.class.path");// can contain external
-													// program paths
+		// program paths
 		return properties;
 	}
 
@@ -1399,6 +1399,7 @@ public class Util implements ITechnicalStrings {
 				boolean b = false;
 				for (int i = 0; i < files.length; i++) {
 					if (files[i].getName().equals(name)) {
+						System.out.println(files[i].getName());
 						b = true;
 						break;
 					}
@@ -1415,25 +1416,7 @@ public class Util implements ITechnicalStrings {
 			return true;
 		}
 	}
-
-    /**
-     * 
-     * @param file
-     *            file
-     * @return whether the file name is correct on the current filesystem
-     */
-	public static boolean isValidFileName(File file) {
-		if (file == null) {
-			return false;
-		} else {
-			String[] sPath = file.getPath().split(File.separator);
-			File fParent = file.getParentFile();
-			String name = sPath[sPath.length - 1];
-			return (isValidFileName(fParent, name));
-		}
-	}
-    
-    
+	
     /**
      * 
      * @param s String to analyse

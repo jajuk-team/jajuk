@@ -49,13 +49,19 @@ public class RefactorAction implements ITechnicalStrings {
 
 	public RefactorAction(ArrayList<File> al) {
 		alFiles = al;
+		Iterator it = alFiles.iterator();
+		String sFiles = "";
+		while (it.hasNext()) {
+			File f = (File) it.next();
+			sFiles += f.getName() + "\n";
+		}
 		if (Boolean.valueOf(
 				ConfigurationManager
 						.getProperty(CONF_CONFIRMATIONS_REFACTOR_FILES))
 				.booleanValue()) {
 			int iResu = Messages
 					.getChoice(
-							Messages.getString("Confirmation_refactor_files"), JOptionPane.INFORMATION_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+							Messages.getString("Confirmation_refactor_files") + " : \n" + sFiles, JOptionPane.INFORMATION_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
 			if (iResu != JOptionPane.YES_OPTION) {
 				Util.stopWaiting();
 				return;
@@ -88,32 +94,91 @@ public class RefactorAction implements ITechnicalStrings {
 
 	public void refactor() {
 		Iterator it = alFiles.iterator();
-
+		String sErrors = "";
 		while (it.hasNext()) {
 			File fCurrent = (File) it.next();
 			Track tCurrent = fCurrent.getTrack();
 			filename = ConfigurationManager.getProperty(CONF_REFACTOR_PATTERN)
 					.toLowerCase();
-			filename = filename.replace("%artist", AuthorManager
-					.format(tCurrent.getAuthor().getName2()));
-			filename = filename.replace("%genre", StyleManager.format(tCurrent
-					.getStyle().getName2()));
-			filename = filename.replace("%album", AlbumManager.format(tCurrent
-					.getAlbum().getName2()));
-			if (tCurrent.getOrder() < 10) {
-				filename = filename.replace("%track#", "0"
-						+ tCurrent.getOrder());
-			} else {
-				filename = filename
-						.replace("%track#", tCurrent.getOrder() + "");
-			}
-			filename = filename.replace("%track", tCurrent.getName());
 
-			if (tCurrent.getYear() != 0) {
-				filename = filename.replace("%year", tCurrent.getYear() + "");
-			} else {
-				filename = filename.replace("%year", "");
+			String sValue;
+			// Check Author name
+			if (filename.contains(PATTERN_ARTIST)) {
+				sValue = tCurrent.getAuthor().getName2();
+				if (!sValue.equalsIgnoreCase(Messages.getString("unknown"))) {
+					filename = filename.replace(PATTERN_ARTIST, AuthorManager
+							.format(sValue));
+				} else {
+					sErrors += fCurrent.getAbsolutePath() +" ("+ Messages.getString("Error.150")+ ")\n";
+					continue;
+				}
 			}
+
+			// Check Style name
+			if (filename.contains(PATTERN_GENRE)) {
+				sValue = tCurrent.getStyle().getName2();
+				if (!sValue.equalsIgnoreCase(Messages.getString("unknown"))) {
+					filename = filename.replace(PATTERN_GENRE, StyleManager
+							.format(sValue));
+				} else {
+					sErrors += fCurrent.getAbsolutePath() +" ("+ Messages.getString("Error.153")+ ")\n";
+					continue;
+				}
+			}
+
+			// Check Album Name
+			if (filename.contains(PATTERN_ALBUM)) {
+				sValue = tCurrent.getAlbum().getName2();
+				if (!sValue.equalsIgnoreCase(Messages.getString("unknown"))) {
+					filename = filename.replace(PATTERN_ALBUM, AlbumManager
+							.format(sValue));
+				} else {
+					sErrors += fCurrent.getAbsolutePath() +" ("+ Messages.getString("Error.149")+ ")\n";
+					continue;
+				}
+			}
+
+			
+
+			// Check Track Order
+			if (filename.contains(PATTERN_TRACKORDER)) {
+				long lOrder = tCurrent.getOrder();
+
+				if (lOrder == 0) {
+					sErrors += fCurrent.getAbsolutePath() +" ("+ Messages.getString("Error.152")+ ")\n";
+					continue;
+				} else if (lOrder < 10) {
+					filename = filename.replace(PATTERN_TRACKORDER, "0"
+							+ lOrder);
+				} else {
+					filename = filename
+							.replace(PATTERN_TRACKORDER, lOrder + "");
+				}
+			}
+			
+			// Check Track name
+			if (filename.contains(PATTERN_TRACKNAME)) {
+
+				sValue = tCurrent.getName();
+				if (!sValue.equalsIgnoreCase(Messages.getString("unknown"))) {
+					filename = filename.replace(PATTERN_TRACKNAME,
+							AuthorManager.format(sValue));
+				} else {
+					sErrors += fCurrent.getAbsolutePath() +" ("+ Messages.getString("Error.151")+ ")\n";
+					continue;
+				}
+			}
+			// Check Year Value
+			if (filename.contains(PATTERN_YEAR)) {
+				if (tCurrent.getYear() != 0) {
+					filename = filename.replace(PATTERN_YEAR, tCurrent.getYear()+ "");
+				} else {
+					sErrors += fCurrent.getAbsolutePath() + " ("+Messages.getString("Error.148")+")\n";
+					continue;
+				}
+
+			}
+
 			filename += "." + tCurrent.getType().getExtension();
 
 			// Compute the new filename
@@ -121,33 +186,25 @@ public class RefactorAction implements ITechnicalStrings {
 			String sRoot = fCurrent.getDevice().getUrl();
 
 			// Check if directories exists, and if not create them
-			String sPathname = mkdirsIgnoreCase(sRoot, filename);
+			String sPathname = checkDirectories(sRoot, filename);
 			java.io.File fNew = new java.io.File(sPathname);
-			if (fNew.getParentFile().isDirectory()){
-				fNew.getParentFile().mkdirs();
-			}
+			fNew.getParentFile().mkdirs();
+			
 
-			// Move file and related cover but save old Directory pathname for futur deletion
+			// Move file and related cover but save old Directory pathname for
+			// futur deletion
 			java.io.File fCover = tCurrent.getAlbum().getCoverFile();
 			if (fCover != null) {
 				fCover.renameTo(new java.io.File(fNew.getParent() + "/"
 						+ fCover.getName()));
 			}
-
-			Util.isValidFileName(fNew.getParentFile());
-			boolean bState = fOld.renameTo(fNew);
+			boolean bState = false;
+			
+			bState = fOld.renameTo(fNew);			
 
 			// Put some message
-			if (bState) {
-				InformationJPanel
-						.getInstance()
-						.setMessage(
-								"File "	+ Messages.getString(fNew.getAbsolutePath() + " moved"), InformationJPanel.INFORMATIVE); //$NON-NLS-1$
-			} else {
-				InformationJPanel
-						.getInstance()
-						.setMessage(
-								"File "	+ Messages.getString(fNew.getAbsolutePath() + " could not be moved !"), InformationJPanel.ERROR); //$NON-NLS-1$
+			if (!bState) {			
+				sErrors += fCurrent.getAbsolutePath() +" ("+ Messages.getString("Error.154")+ ")\n";
 			}
 
 			// See if old directory contain other files and move them
@@ -163,18 +220,24 @@ public class RefactorAction implements ITechnicalStrings {
 			}
 
 			// Debug log
-			Log.debug("[Refactoring] {{" + fNew.getAbsolutePath()
-					+ "}} Success ? " + bState);
+			Log.debug("[Refactoring] " + fNew.getAbsolutePath()+ " Success ? " + bState);
 
+		}
+
+		if (!sErrors.equals("")){
+			Messages.showDetailedErrorMessage("147", "",sErrors);
+		} else {
+			InformationJPanel.getInstance().setMessage(
+				Messages.getString("Success"), InformationJPanel.INFORMATIVE); //$NON-NLS-1$
 		}
 	}
 
-	public String mkdirsIgnoreCase(String sRoot, String sPathname) {
+	public String checkDirectories(String sRoot, String sPathname) {
 
 		java.io.File fioRoot = new java.io.File(sRoot);
 		java.io.File[] fioList = fioRoot.listFiles(new DirectorieFilter());
 
-		String[] sPaths = sPathname.split("/");
+		String[] sPaths = sPathname.split("\\"+java.io.File.separator);
 		String sReturn = sRoot;
 		for (int i = 0; i < sPaths.length - 1; i++) {
 			String sPath = sPaths[i];
