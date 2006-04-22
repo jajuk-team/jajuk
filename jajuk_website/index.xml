@@ -37,13 +37,6 @@
 					</td>
 				</tr>
 				<tr>
-					<td style='vertical-align: top;'>Jajuk manual</td>
-					<td style='vertical-align: top;'>
-						<a  href='./jajuk-hs/default/html/intro.html'><img alt='English' title='English' src='flags/flag_en.png' style='width: 21px; height: 14px;'/></a>
-						<a  href='./jajuk-hs/fr/html/intro.html'><img alt='French' title='French' src='flags/flag_fr.png' style='width: 21px; height: 14px;'/></a>
-					</td>
-				</tr>
-				<tr>
 					<td style='vertical-align: top;'>Readme file at install and on the web site</td>
 					<td style='vertical-align: top;'>
 						<a href='./README.html'><img alt='English' title='English' src='flags/flag_en.png'  style='border: 0px solid ; width: 21px; height: 14px;'/></a>
@@ -55,6 +48,13 @@
 						<a  href='./README_nld.html'><img alt='Dutch' title='Dutch' src='flags/flag_nl.png' style='border: 0px solid ; width: 21px; height: 14px;'/></a>
 						<a  href='./README_esp.html'><img alt='Spanish' title='Spanish' src='flags/flag_sp.png' style='border: 0px solid ; width: 21px; height: 14px;'/></a>
 						<a  href='./README_cat.html'><img alt='Catalan' title='Catalan' src='flags/flag_ct.png' style='border: 0px solid ; width: 21px; height: 14px;'/></a>
+					</td>
+				</tr>
+				<tr>
+					<td style='vertical-align: top;'>Jajuk manual</td>
+					<td style='vertical-align: top;'>
+						<a  href='./jajuk-hs/default/html/intro.html'><img alt='English' title='English' src='flags/flag_en.png' style='width: 21px; height: 14px;'/></a>
+						<a  href='./jajuk-hs/fr/html/intro.html'><img alt='French' title='French' src='flags/flag_fr.png' style='width: 21px; height: 14px;'/></a>
 					</td>
 				</tr>
 				<tr>

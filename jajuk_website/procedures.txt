@@ -2,6 +2,7 @@
 NEW RELEASE (x.y) PROCEDURE
 *Code*
 o- Refresh workspace
+- Remove useless jars in lib directory
 o- Set right version (no more rc), test to '-notest' and jwsdeploy to 'default'  in build-dist script
 o- Set right version in README files
 o- Check new incoming updates (i18n)
@@ -60,9 +61,9 @@ o- Tag as version
 *Web site*
 o- Update and set date to release in changes.xml
 o- Change download.html file for file names
-- Generate maven site (make_jajuk)
+- Generate maven site (make_jajuk site)
 - Backup SF data (php file)
-- Upload maven site (make_send)
+- Upload maven site (make_jajuk send)
 - Commit all changes in jajuk_website project
 - Upload java web start distribution (make_jajuk jws default)
 - Check website (links, pages...)

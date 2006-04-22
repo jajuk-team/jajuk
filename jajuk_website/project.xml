@@ -268,7 +268,7 @@
     <dependency>
 	   <groupId>lib</groupId>
         <artifactId>swingx</artifactId>
-        <version>20060222</version> 
+        <version>20060402</version> 
     </dependency>
     
      <dependency>

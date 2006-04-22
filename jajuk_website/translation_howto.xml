@@ -73,6 +73,7 @@
 			</li>
 			
 			<li><p>Translate even lines like <span style="font-family: monospace;">Language_desc_*=*</span> (other languages names) and <u>add a new line with your own language name.</u></p></li>
+			<li><p>Some lines are under comments like "limited size". In this case, make sure to keep the nearest number of characters as possible in your translation to ensure correct display.</p></li>
 			<li><p><a href='mailto:jajuk-i18n@lists.sourceforge.net'>Send us</a> your work as a property file with your local ( ex: <span style="font-family: monospace;">jajuk_ru.properties</span> for russian ). It could be nice you send also a message in the forum: 
 			<a href='http://sourceforge.net/forum/forum.php?forum_id=315360'>http://sourceforge.net/forum/forum.php?forum_id=315360</a>. Contact us if you have a developer profile so we will create a 
 			CVS account for you. Then you will be able to commit and maintain your translation files directly in the repository.</p>
