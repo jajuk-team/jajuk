@@ -129,7 +129,7 @@
         	Sound is saturated
       	</question>
       	<answer>
-        	<p>Upgrade to Jajuk 1.1.5 or earlier as it fixes some saturation issues.</p>
+        	<p>Upgrade to Jajuk 1.1.5 or later as it fixes some saturation issues.</p>
       	</answer>
     	</faq>
 
@@ -148,7 +148,7 @@
         	I experience Out Of Memory problem
       	</question>
       	<answer>
-        	<p>By default, Jajuk can use from 35MB to 512MB of physical memory. If should be largely enough for main users. If you have really huge collection and you experience out of memory problems, increase -Xmx value in jajuk launch script (contact us if you need help)</p>
+        	<p>By default, Jajuk can use from 35MB to 512MB of physical memory. If should be largely enough for main users. If you have really huge collection and experience out of memory problems, increase -Xmx value in jajuk launch script (contact us if you need help)</p>
       	</answer>
     	</faq>
     
