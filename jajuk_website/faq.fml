@@ -126,10 +126,29 @@
     
     <faq id="sound_deformation">
     	<question>
-        	Sound is distorted and not good.
+        	Sound is saturated
       	</question>
       	<answer>
-        	<p>Try to lower jajuk volume (gain) and pop up the system volume.</p>
+        	<p>Upgrade to Jajuk 1.1.5 or earlier as it fixes some saturation issues.</p>
+      	</answer>
+    	</faq>
+
+    <faq id="sound_pauses">
+    	<question>
+        	I experience sound small pauses
+      	</question>
+      	<answer>
+        	<p>o It can occurs curring thumbnails generation (only once).</p>
+        	<p>o Try without fading (set fade duration=0 in configuration perspective/Parameter view)</p>
+      	</answer>
+    	</faq>
+
+    <faq id="oom">
+    	<question>
+        	I experience Out Of Memory problem
+      	</question>
+      	<answer>
+        	<p>By default, Jajuk can use from 35MB to 512MB of physical memory. If should be largely enough for main users. If you have really huge collection and you experience out of memory problems, increase -Xmx value in jajuk launch script (contact us if you need help)</p>
       	</answer>
     	</faq>
     
