@@ -29,9 +29,10 @@ import javax.swing.JOptionPane;
 
 import org.jajuk.base.AlbumManager;
 import org.jajuk.base.AuthorManager;
-import org.jajuk.base.Event;
+import org.jajuk.base.Directory;
+import org.jajuk.base.DirectoryManager;
 import org.jajuk.base.File;
-import org.jajuk.base.ObservationManager;
+import org.jajuk.base.FileManager;
 import org.jajuk.base.StyleManager;
 import org.jajuk.base.Track;
 import org.jajuk.i18n.Messages;
@@ -73,7 +74,7 @@ public class RefactorAction implements ITechnicalStrings {
 			}
 		}.start();
 		Util.stopWaiting();
-		ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH));
+		//ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH));
 	}
 
 	class AudioFileFilter implements FilenameFilter, ITechnicalStrings {
@@ -180,17 +181,21 @@ public class RefactorAction implements ITechnicalStrings {
 			}
 
 			filename += "." + tCurrent.getType().getExtension();
-
+			
 			// Compute the new filename
 			java.io.File fOld = fCurrent.getIO();
 			String sRoot = fCurrent.getDevice().getUrl();
+			String [] split = filename.split("\\"+java.io.File.separator);
+			String sName = split[0];
+			
 
 			// Check if directories exists, and if not create them
 			String sPathname = checkDirectories(sRoot, filename);
 			java.io.File fNew = new java.io.File(sPathname);
 			fNew.getParentFile().mkdirs();
 			
-
+						
+			
 			// Move file and related cover but save old Directory pathname for
 			// futur deletion
 			java.io.File fCover = tCurrent.getAlbum().getCoverFile();
@@ -201,7 +206,12 @@ public class RefactorAction implements ITechnicalStrings {
 			boolean bState = false;
 			
 			bState = fOld.renameTo(fNew);			
-
+			
+			Directory dir = DirectoryManager.getInstance().getDirectoryForIO(new java.io.File(sRoot+"/"+sName));
+			
+			if (dir != null){
+				dir.scan(true);
+			}
 			// Put some message
 			if (!bState) {			
 				sErrors += fCurrent.getAbsolutePath() +" ("+ Messages.getString("Error.154")+ ")\n";
@@ -210,13 +220,16 @@ public class RefactorAction implements ITechnicalStrings {
 			// See if old directory contain other files and move them
 			java.io.File dOld = fOld.getParentFile();
 			java.io.File[] list = dOld.listFiles(new AudioFileFilter());
-			if (list != null && list.length != 0) {
+			if (list == null){
+				DirectoryManager.getInstance().removeDirectory(fOld.getParent());
+			} else if (list.length != 0) {
 				for (java.io.File f : list) {
 					f.renameTo(new java.io.File(fNew.getParent() + "/"
 							+ f.getName()));
 				}
 			} else if (list.length == 0) {
 				dOld.delete();
+				DirectoryManager.getInstance().removeDirectory(fOld.getParent());
 			}
 
 			// Debug log
