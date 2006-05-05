@@ -348,6 +348,8 @@ public class CDDBWizard extends JDialog implements ITechnicalStrings,
 
 	public void retagFiles() {
 		aIdxToTag = jtable.getSelectedRows();
+		boolean b = false;
+		String error = "";
 		if (aIdxToTag.length == 0) {
 			dispose();
 		} else {
@@ -356,6 +358,7 @@ public class CDDBWizard extends JDialog implements ITechnicalStrings,
 				Track track = ((CDDBTrack) alTracks.get(iRow)).track;
 				try {
 					String sValue = fdbReader.getAlbum();
+					
 					if (sValue != null && sValue.trim().length() > 0) {
 						track = TrackManager.getInstance().changeTrackAlbum(
 								track, sValue, filter);
@@ -381,6 +384,7 @@ public class CDDBWizard extends JDialog implements ITechnicalStrings,
 							track = TrackManager.getInstance()
 									.changeTrackOrder(track, iValue, filter);
 						}
+					b = true;
 					} catch (Exception e) {
 						Log.error(e);
 					}
@@ -391,18 +395,26 @@ public class CDDBWizard extends JDialog implements ITechnicalStrings,
 									track, lValue, filter);
 						}
 					} catch (Exception e) {
-						Log.error(e);
+						Log.error(e);						
 					}
 				} catch (JajukException e) {
 					Log.error(e);
-					dispose();
+					//dispose();
 				}
 			}
-			InformationJPanel
+			if (b){
+				InformationJPanel			
 					.getInstance()
 					.setMessage(
 							Messages.getString("Success"), InformationJPanel.INFORMATIVE); //$NON-NLS-1$
 			ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH));
+			} else {
+				InformationJPanel			
+				.getInstance()
+				.setMessage(
+						Messages.getString("Error.155"), InformationJPanel.ERROR); //$NON-NLS-1$
+			}
+			
 		}
 	}
 
