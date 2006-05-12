@@ -119,6 +119,15 @@ public class StyleManager extends ItemManager {
         }
     }
     
+    /**
+     * Return style by name
+     * @param sName
+     * @return
+     */
+    public Style getStyleByName(String sName){
+        return registerStyle(sName);
+    }
+    
     
     /**
      * Change the item name
