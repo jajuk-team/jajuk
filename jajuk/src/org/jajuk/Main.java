@@ -37,7 +37,6 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import org.jajuk.base.AlbumManager;
-import org.jajuk.base.AmbienceManager;
 import org.jajuk.base.AuthorManager;
 import org.jajuk.base.Collection;
 import org.jajuk.base.Device;
@@ -56,17 +55,19 @@ import org.jajuk.base.StyleManager;
 import org.jajuk.base.TrackManager;
 import org.jajuk.base.Type;
 import org.jajuk.base.TypeManager;
+import org.jajuk.dj.AmbienceManager;
+import org.jajuk.dj.DigitalDJManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.CommandJPanel;
 import org.jajuk.ui.FirstTimeWizard;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.JajukJMenuBar;
+import org.jajuk.ui.JajukSystray;
 import org.jajuk.ui.JajukWindow;
 import org.jajuk.ui.LNFManager;
 import org.jajuk.ui.PerspectiveBarJPanel;
 import org.jajuk.ui.TipOfTheDay;
 import org.jajuk.ui.perspectives.PerspectiveManager;
-import org.jajuk.ui.tray.JajukSystray;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
@@ -281,6 +282,9 @@ public class Main implements ITechnicalStrings {
             //Load ambiences
             AmbienceManager.getInstance().load();
             
+            //Load djs
+            DigitalDJManager.getInstance().loadAllDJs();
+            
             //start exit hook
             Thread tHook = new Thread() {
                 public void run() {
@@ -424,6 +428,11 @@ public class Main implements ITechnicalStrings {
         fThumbs = new File(FILE_THUMBS+"/200x200/"+FILE_THUMB_NO_COVER); //$NON-NLS-1$
         if (!fThumbs.exists()){
             Util.createThumbnail(new File(IMAGE_NO_COVER),fThumbs,200);
+        }
+        //check for djs directory
+        File fdjs = new File(FILE_DJ_DIR); 
+        if (!fdjs.exists()) { 
+            fdjs.mkdir();
         }
     }
     

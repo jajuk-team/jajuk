@@ -6,7 +6,8 @@
   <property name='version' value='1.2beta'/>
   <property name='test' value='-test'/>
   <property name='jwsdeploy' value='test'/>
-  
+  <property name='qdwizard_version' value='1.0'/>
+	  
   <!--CONST-->
   <property name='rootdir' value='/tmp/jajuk-dist'/>
   <property name='distdir' value='${rootdir}/jajuk'/>
@@ -30,7 +31,8 @@
   <property name='uploaddir' value='${rootdir}/upload'/>
   <property name='helpdir' value='${rootdir}/help'/>
   <property name='jwsdir' value='${rootdir}/jws'/>
-  
+  <property name='qdwizarddir' value='${rootdir}/qdwizard'/>
+	  
   <target name='all' description='o Create the entire package' depends='startup,prepare_upload'>
   </target>
   
@@ -459,6 +461,15 @@
      	 <fileset file='${windowsdir}/jajuk-${version}-win32.exe'/>
      	 <fileset file='${izpackdir}/jajuk-java-installer-${version}.jar'/>
      </copy>
- 	</target>      
-  
+ 	</target>  
+	
+	
+	<!-- QDWizard distribution-->
+	<target name='qdwizard' description='o QDWizard distribution creation'>
+		<mkdir dir='${qdwizarddir}'/>
+		<copy todir='${qdwizarddir}/lib' >
+	      	<fileset file='${distdir}/lib/tablelayout-20050920.jar'/>
+			<fileset file='${distdir}/lib/tablelayout-20050920.jar'/>
+		</copy>		           	
+ 	</target>    
 </project>
