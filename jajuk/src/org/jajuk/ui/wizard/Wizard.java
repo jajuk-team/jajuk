@@ -37,7 +37,7 @@ import javax.swing.Timer;
 import org.jajuk.Main;
 
 /**
- *  This is a wizard dialog
+ *  Wizard dialog
  *
  * @author     Bertrand Florat
  * @created    1 may 2006
@@ -232,7 +232,7 @@ public abstract class Wizard extends Object implements ActionListener{
     }
     
     /**
-     * Finish action 
+     * Finish action. Called when user clicks on "finish"
      */
     abstract public void finish();
 

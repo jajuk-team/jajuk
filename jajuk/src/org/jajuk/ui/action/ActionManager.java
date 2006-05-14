@@ -44,6 +44,7 @@ import static org.jajuk.ui.action.JajukAction.SHUFFLE_MODE_STATUS_CHANGED;
 import static org.jajuk.ui.action.JajukAction.STOP_TRACK;
 import static org.jajuk.ui.action.JajukAction.TIP_OF_THE_DAY;
 import static org.jajuk.ui.action.JajukAction.WIZARD;
+import static org.jajuk.ui.action.JajukAction.DJ;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
@@ -76,6 +77,7 @@ public final class ActionManager {
         // CommandJPanel: Special Functions Panel
         installAction(SHUFFLE_GLOBAL, new GlobalRandomAction(), false);
         installAction(BEST_OF, new BestOfAction(), false);
+        installAction(DJ, new DJAction(), false);
         installAction(NOVELTIES, new NoveltiesAction(), false);
         installAction(FINISH_ALBUM, new FinishAlbumAction(), false);
 

@@ -37,7 +37,7 @@ public abstract class Screen extends JPanel {
     boolean bCanGoNext;
     /**Can Go Previous*/
     boolean bCanGoPrevious;
-    /**data*/
+    /**Wizard data*/
     public HashMap data;
     /**Problem*/
     private String sProblem;
@@ -57,11 +57,13 @@ public abstract class Screen extends JPanel {
     }
         
     /**
+     * Give here the step name.
      * @return screen name
      */
     abstract public String getName();
     
     /**
+     * Screen description (optional)
      * @return screen description
      */
     abstract public String getDescription();
@@ -96,11 +98,19 @@ public abstract class Screen extends JPanel {
         this.bCanGoPrevious = b;
     }
     
+    /**
+     * Set a problem (set to null if problem is fixed)
+     * @param sProblem Problem string or null if no more problem
+     */
     public void setProblem(String sProblem){
         this.sProblem = sProblem;
         bCanGoNext = (sProblem==null);
     }
     
+    /**
+     * Get current problem
+     * @return the current problem
+     */
     public String getProblem(){
         return this.sProblem;
     }

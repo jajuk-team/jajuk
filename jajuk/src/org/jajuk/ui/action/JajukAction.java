@@ -201,6 +201,11 @@ public enum JajukAction {
      * Used when the best of button is pressed.
      */
     BEST_OF,
+    
+    /**
+     * Used when the DJ button is pressed.
+     */
+    DJ,
 
     /**
      * Used when the novelties button is pressed.

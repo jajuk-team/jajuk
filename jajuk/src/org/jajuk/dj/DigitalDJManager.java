@@ -27,6 +27,7 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.StringTokenizer;
 
@@ -37,6 +38,7 @@ import org.jajuk.base.Event;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Style;
 import org.jajuk.base.StyleManager;
+import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.log.Log;
 import org.xml.sax.Attributes;
@@ -52,7 +54,7 @@ import org.xml.sax.helpers.DefaultHandler;
  */
 public class DigitalDJManager implements ITechnicalStrings{
 
-    /**List of registated DJs name->DJ*/
+    /**List of registated DJs ID->DJ*/
     private HashMap<String,DigitalDJ> djs;
     
     /**self instance*/
@@ -89,15 +91,32 @@ public class DigitalDJManager implements ITechnicalStrings{
      * @return DJs names iteration
      */
     public Set<String> getDJNames(){
-        return djs.keySet();
+        HashSet<String> hsNames = new HashSet(10);
+        for (DigitalDJ dj:djs.values()){
+           hsNames.add(dj.getName()); 
+        }
+        return hsNames;
     }
     
     /**
      * 
      * @return DJ by name
      */
-    public DigitalDJ getDJ(String sName){
-        return djs.get(sName);
+    public DigitalDJ getDJByName(String sName){
+        for (DigitalDJ dj:djs.values()){
+            if (dj.getName().equals(sName)){
+                return dj;
+            }
+        }
+        return null;
+    }
+    
+    /**
+     * 
+     * @return DJ by ID
+     */
+    public DigitalDJ getDJByID(String sID){
+        return djs.get(sID);
     }
     
     /**
@@ -122,8 +141,12 @@ public class DigitalDJManager implements ITechnicalStrings{
      * @param DJ
      */
     public void remove(DigitalDJ dj){
-        djs.remove(dj.getName());
+        djs.remove(dj.getID());
         new File(FILE_DJ_DIR+"/"+dj.getID()+"."+XML_DJ_EXTENSION).delete();
+        //reset default DJ if this DJ was default
+        if (ConfigurationManager.getProperty(CONF_DEFAULT_DJ).equals(dj.getID())){
+            ConfigurationManager.setProperty(CONF_DEFAULT_DJ,"");
+        }
         //alert command panel
         ObservationManager.notify(new Event(EVENT_DJ_CHANGE));
     }
@@ -133,7 +156,7 @@ public class DigitalDJManager implements ITechnicalStrings{
      * @param DJ
      */
     public void register(DigitalDJ dj){
-        djs.put(dj.getName(),dj);
+        djs.put(dj.getID(),dj);
         //alert command panel
         ObservationManager.notify(new Event(EVENT_DJ_CHANGE));
     }
@@ -156,7 +179,7 @@ public class DigitalDJManager implements ITechnicalStrings{
     			try{ //try each DJ to continue others if one fails
     				DigitalDJFactory factory = DigitalDJFactory.getFactory(files[i]);
     				DigitalDJ dj = factory.getDJ(files[i]);
-    				djs.put(dj.getName(),dj);
+    				djs.put(dj.getID(),dj);
     			}
     			catch(Exception e){
     				Log.error("144",files[i].getAbsolutePath(),e);
@@ -385,6 +408,7 @@ class DigitalDJFactoryTransitionImpl extends DigitalDJFactory{
 					}
 					String toStyles = attributes.getValue(attributes.getIndex(XML_DJ_TO));
 					Ambience toAmbience = new Ambience();
+                    st = new StringTokenizer(toStyles,",");
 					while (st.hasMoreTokens()){
 						toAmbience.addStyle((Style)StyleManager.getInstance().getItem(st.nextToken()));
 					}

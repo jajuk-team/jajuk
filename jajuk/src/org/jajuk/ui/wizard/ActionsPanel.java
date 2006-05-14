@@ -35,10 +35,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**
- *  Problem panel + state buttons panel
+ *  Problem state buttons panel
  *
  * @author     Bertrand Florat
- * @created    1 mai 2006
+ * @created    1 may 2006
  */
 public class ActionsPanel extends JPanel {
 

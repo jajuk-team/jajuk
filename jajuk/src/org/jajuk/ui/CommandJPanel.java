@@ -219,23 +219,8 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
             }
         };
         ddbDDJ.setToolTipText(Messages.getString("CommandJPanel.16"));
-        ddbDDJ.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent arg0) {
-                if (StyleManager.getInstance().getItems().size() == 0){
-                    Messages.showErrorMessage("156"); //void collection error
-                }
-                else{
-                    DigitalDJ dj = DigitalDJManager.getInstance().getDJ(ConfigurationManager.getProperty(CONF_DEFAULT_DJ));
-                    if (dj != null){
-                        FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(dj.generatePlaylist()),
-                        ConfigurationManager.getBoolean(CONF_STATE_REPEAT), false), false);
-                    }
-                    else{
-                        Messages.showErrorMessage("157");
-                    }
-                }
-            }
-        });
+        ddbDDJ.setAction(ActionManager.getAction(JajukAction.DJ));
+        ddbDDJ.setText("");//no text visible
         jtbSpecial.add(jbGlobalRandom);
 		jtbSpecial.add(jbBestof);
 		jtbSpecial.add(jbNovelties);
@@ -603,13 +588,14 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
             JCheckBoxMenuItem jmi = new JCheckBoxMenuItem(dj.getName(),Util.getIcon(ICON_DIGITAL_DJ));
             jmi.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent arg0) {
-                    ConfigurationManager.setProperty(CONF_DEFAULT_DJ,dj.getName());
+                    ConfigurationManager.setProperty(CONF_DEFAULT_DJ,dj.getID());
+                    ObservationManager.notify(new Event(EVENT_DJ_CHANGE));
                     FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(dj.generatePlaylist()),
                         ConfigurationManager.getBoolean(CONF_STATE_REPEAT), false), false);
                 }
             });
             popupDDJ.add(jmi);
-            jmi.setSelected(dj.getName().equals(ConfigurationManager.getProperty(CONF_DEFAULT_DJ)));
+            jmi.setSelected(dj.getID().equals(ConfigurationManager.getProperty(CONF_DEFAULT_DJ)));
         }
         popupDDJ.addSeparator();
         JMenuItem jmiNew = new JMenuItem(Messages.getString("CommandJPanel.17"),Util.getIcon(ICON_NEW)); 

@@ -32,6 +32,8 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import org.jajuk.Main;
+import org.jajuk.base.Event;
+import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Style;
 import org.jajuk.base.StyleManager;
 import org.jajuk.dj.Ambience;
@@ -46,6 +48,7 @@ import org.jajuk.dj.TransitionDigitalDJ;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.wizard.Screen;
 import org.jajuk.ui.wizard.Wizard;
+import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
@@ -241,11 +244,11 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
         public void initUI(){
             djs = new ArrayList(DigitalDJManager.getInstance().getDJs()); 
             Collections.sort(djs);
-            widgets = new JComponent[1][djs.size()];
+            widgets = new JComponent[djs.size()][1];
             double[] dVert = new double[djs.size()];
             //prepare vertical layout
             for (int i=0;i<djs.size();i++){
-                dVert[i] = 20;
+                dVert[i] = 30;
             }
             double[][] size = new double[][]
                                            {{0.99},dVert};
@@ -259,7 +262,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
                 JRadioButton jrb = new JRadioButton(dj.getName()); 
                 jrb.addActionListener(this);
                 bgDJS.add(jrb);
-                widgets[0][index] = jrb;
+                widgets[index][0] = jrb;
                 jpDjs.add(jrb,"0,"+index);
                 index ++;
             }
@@ -268,8 +271,8 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
                                            {{0.99},{20,TableLayout.PREFERRED}};
             setLayout(new TableLayout(main));
             add(jpDjs,"0,1");
-            //If only one dj, select it
-            if (djs.size() == 1){
+            //If more than one DJ, select first
+            if (djs.size() > 0){
                 JRadioButton jrb = (JRadioButton)widgets[0][0];
                 jrb.doClick();
             }
@@ -589,7 +592,8 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
             if (ActionSelectionPanel.ACTION_CHANGE.equals(data.get(KEY_ACTION))){
                 DigitalDJ dj = (DigitalDJ)data.get(KEY_CHANGE);
                 alTransitions = ((TransitionDigitalDJ)dj).getTransitions();
-                data.put(KEY_TRANSITIONS,alTransitions);
+                data.put(KEY_TRANSITIONS,alTransitions.clone());
+                alTransitions.add(new Transition(DEFAULT_TRANSITION_TRACK_NUMBER)); //add a void transition
             }
             else{
                 alTransitions = new ArrayList(10);
@@ -615,12 +619,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
             jpStartwith.setLayout(new TableLayout(dSize));
             jpStartwith.add(jlStartWith,"0,0");
             jpStartwith.add(jcbStartwith,"2,0");
-            /*Get DJ
-            dj = (TransitionDigitalDJ)DigitalDJManager.getInstance().getDJ((String)data.get(KEY_DJ_NAME));
-            if (dj != null){ //null if new DJ
-                alTransitions = dj.getTransitions();
-            }*/
-            //set layout
+             //set layout
             double[][] dSizeGeneral = {{10,0.99,5},
                     {10,TableLayout.PREFERRED,10,TableLayout.FILL,10}};
             setLayout(new TableLayout(dSizeGeneral));
@@ -685,7 +684,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
                 jbTo.setToolTipText(Messages.getString("DigitalDJWizard.23"));
                 widgets[index][2] = jbTo;
                 //Nb of tracks
-                JSpinner jsNb = new JSpinner(new SpinnerNumberModel(DEFAULT_TRANSITION_TRACK_NUMBER,1,10,1));
+                JSpinner jsNb = new JSpinner(new SpinnerNumberModel(transition.getNbTracks(),1,10,1));
                 jsNb.addChangeListener(new ChangeListener() {
                     public void stateChanged(ChangeEvent ce) {
                         int row = getWidgetIndex(widgets,(JComponent)ce.getSource());
@@ -867,7 +866,8 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
             if (ActionSelectionPanel.ACTION_CHANGE.equals(data.get(KEY_ACTION))){
                 DigitalDJ dj = (DigitalDJ)data.get(KEY_CHANGE);
                 proportions = ((ProportionDigitalDJ)dj).getProportions();
-                data.put(KEY_PROPORTIONS,proportions);
+                data.put(KEY_PROPORTIONS,proportions.clone());
+                proportions.add(new Proportion()); //add a void item
             }
             else{
                 proportions = new ArrayList(10);
@@ -926,7 +926,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
                 jbStyle.setToolTipText(Messages.getString("DigitalDJWizard.27"));
                 widgets[index][1] = jbStyle;
                 //Proportion
-                JSpinner jsNb = new JSpinner(new SpinnerNumberModel(20,1,100,1));
+                JSpinner jsNb = new JSpinner(new SpinnerNumberModel((int)(proportion.getProportion()*100),1,100,1));
                 jsNb.addChangeListener(new ChangeListener() {
                     public void stateChanged(ChangeEvent ce) {
                         int row = getWidgetIndex(widgets,(JComponent)ce.getSource());
@@ -1092,7 +1092,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
             }
             setCanFinish(true);
             //Get DJ
-            dj = (AmbienceDigitalDJ)DigitalDJManager.getInstance().getDJ((String)data.get(KEY_DJ_NAME));
+            dj = (AmbienceDigitalDJ)DigitalDJManager.getInstance().getDJByName((String)data.get(KEY_DJ_NAME));
             //set layout
             double[][] dSizeGeneral = {{10,0.99,5},
                     {10,TableLayout.FILL,10,TableLayout.PREFERRED,10}};
@@ -1137,12 +1137,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
                         JButton jb = (JButton)widgets[index][2];
                         Ambience ambience = ambiences.get(index);
                         ambience.setName(s);
-                        if (s.length() == 0){
-                            jb.setEnabled(false);
-                        }
-                        else{
-                            jb.setEnabled(true);
-                        }
+                        jb.setEnabled(s.length() > 0);
                     }
                 });
                 jtfName.setToolTipText(Messages.getString("DigitalDJWizard.36"));
@@ -1225,6 +1220,10 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
                         break;
                     }
                 }
+            }
+            else if (ambiences.size() > 0){ //new dj, select first ambiance found
+                JRadioButton jrb = (JRadioButton)widgets[0][0];
+                jrb.doClick(); 
             }
             return jsp;
         }
@@ -1320,16 +1319,14 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
      * @return index of a given widget row in the widget table
      */
     private static int getWidgetIndex(JComponent[][] widgets,JComponent widget){
-        int resu = -1;
         for (int row=0;row<widgets.length;row++){ 
             for (int col=0;col<widgets[0].length;col++){
                 if (widget.equals(widgets[row][col])){
-                    resu = row;
-                    break;
+                    return row;
                 }    
             }
         }
-        return resu; 
+        return -1; 
     }
     
    
@@ -1451,6 +1448,12 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
             dj.setRatingLevel(iRateLevel);
             dj.setTrackUnicity(bUnicity);
             DigitalDJManager.getInstance().register(dj);
+            //commit the DJ right now
+            DigitalDJManager.commit(dj);
+            //If first DJ, select it as default
+            if (DigitalDJManager.getInstance().getDJs().size() == 1){
+                ConfigurationManager.setProperty(CONF_DEFAULT_DJ,dj.getID());
+            }
         }
         else if (ActionSelectionPanel.ACTION_CHANGE.equals(sAction)){
             String sType = (String)data.get(KEY_DJ_TYPE);
@@ -1477,9 +1480,11 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
             dj.setFadingDuration(iFadeDuration);
             dj.setRatingLevel(iRateLevel);
             dj.setTrackUnicity(bUnicity);
+            //commit the DJ right now
+            DigitalDJManager.commit(dj);
         }
-        //commit it right now
-        DigitalDJManager.commit(dj);
+        //Refresh command panel (usefull for ie if DJ names changed)
+        ObservationManager.notify(new Event(EVENT_DJ_CHANGE));
     }
 
 }

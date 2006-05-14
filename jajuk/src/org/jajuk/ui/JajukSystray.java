@@ -71,6 +71,7 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
     JMenuItem jmiAbout;
     JMenuItem jmiShuffle;
     JMenuItem jmiBestof;
+    JMenuItem jmiDJ;
     JMenuItem jmiNovelties;
     JMenuItem jmiNorm;
     JMenuItem jmiPause;
@@ -120,6 +121,7 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
         jmiAbout = new JMenuItem(ActionManager.getAction(JajukAction.SHOW_ABOUT));
         jmiShuffle =  new JMenuItem(ActionManager.getAction(JajukAction.SHUFFLE_GLOBAL));
         jmiBestof =  new JMenuItem(ActionManager.getAction(JajukAction.BEST_OF));
+        jmiDJ =  new JMenuItem(ActionManager.getAction(JajukAction.DJ));
         jmiNorm =  new JMenuItem(ActionManager.getAction(JajukAction.FINISH_ALBUM));
         jmiNovelties =  new JMenuItem(ActionManager.getAction(JajukAction.NOVELTIES));
 
@@ -164,6 +166,7 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
         jmenu.addSeparator();
         jmenu.add(jmiShuffle);
         jmenu.add(jmiBestof);
+        jmenu.add(jmiDJ);
         jmenu.add(jmiNovelties);
         jmenu.add(jmiNorm);
         jmenu.addSeparator();
