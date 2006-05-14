@@ -158,7 +158,7 @@ public final class JSplash extends JFrame implements ITechnicalStrings{
         pack();
         
         // center on screen
-        Util.setCenteredLocation(this);
+        setLocationRelativeTo(this);
         
         // hide the panel for now...
         setVisible( false );
