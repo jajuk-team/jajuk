@@ -48,20 +48,20 @@
 <p>Within the framework of <a href="http://jajuk.sourceforge.net">Jajuk</a>
 project, we had to write some complex multi-branching wizard for
 several features. After a quick search, it appears that only one Swing
-project was maintened and able to match our needs: <a href="https://wizard.dev.java.net/">Wizard Project</a>from
-java.net. However, since this project is well documented, provides
+project was maintened and able to match our needs: <a href="https://wizard.dev.java.net/">Wizard Project</a> from
+ java.net. However, since this project is well documented, provides
 a good support, it is still in early stages, too complex, doesn't
-provide i18n and the worst: We didn't manage to make it work and had to
-gice up after about 20 hours. We tried later the EzBranch
+provide i18n and the worst: we didn't manage to make it work and had to
+give up after about 20 hours. We tried later the EzBranch
 from this project that is not yet merged into the head. This branch is
 better and fixes multi-branching issues but brings other issues and
-limitations and is not yet officially supported. </p>
+limitations and is not yet officially supported.</p>
 
 
 
 <p>Being pretty in a hurry with jajuk, we decided to write a new
 API
-from scratch. As we wrote this API in only few hours,&nbsp;it's a low
+from scratch. As we wrote this API in only few hours, it's a low
 quality design but we think that we need a working solution right now and we
 will decide in the future to switch back to Wizard API or to enhance
 QDWizard instead depending on the Wizard project evolution.</p>
@@ -118,13 +118,18 @@ Wizard and Screen</p>
   <li>
     
     
-    <p>Full branching support, can implement any wizard cinematic
-Error management and display using a simple setProblem(...)</p>
+    <p>Full branching support, can implement any wizard cinematic.</p>
+
+  </li>
+
+<li>
+    
+    
+    <p>Error management/display using a simple setProblem(...) method</p>
 
 
 
   </li>
-
 
 
   <li>
@@ -346,7 +351,7 @@ public Class getNextScreen(Class screen) {
 
 
 The last QDWizard is 1.0(2006/05/13) This zip contains API binaries, sources and docfor any system supporting Java 1.5+.
-&nbsp;<a href="http://sourceforge.net/project/showfiles.php?group_id=91412&amp;package_id=189679">Download it on Jajuk download center.</a>
+<a href="http://sourceforge.net/project/showfiles.php?group_id=91412&amp;package_id=189679">Download it on Jajuk download center.</a>
 
 <h2>Samples</h2>
 
