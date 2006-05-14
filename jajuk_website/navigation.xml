@@ -40,9 +40,10 @@
       <item name='Developer guide' href='./developer_guide.html' />
       <item name='Specifications (PDF) ' href='./specs.pdf' />
       <item name='Dependencies' href='./jajuk_dependencies.html' />
+      <item name='QDWizard' href='./QDWizard.html' />
       <item name='Last commits' href='./statcvs-xml-out/commitlog.html#Commit_Log' />
       <item name='Javadoc' href='./apidocs/index.html' />
-      <item name='CVS web repository' href='http://cvs.sourceforge.net/viewcvs.py/jajuk/' />
+      <item name='CVS web repository' href='http://jajuk.cvs.sourceforge.net/jajuk/' />
       <item name='Sources XREF' href='./xref/index.html' />
       <item name='Code statistics' href='./statcvs-xml-out/index.html' />
     </menu>

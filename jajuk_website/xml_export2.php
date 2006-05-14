@@ -29,7 +29,7 @@ Option for show_trackers=1; * To show a specific Tracker instead of all
 	&amp;tracker_to_show=TRACKER_ID
 
 --><export_details>
-<time>1140822647</time>
+<time>1145710291</time>
 <project_group_id>91412</project_group_id>
 <project_unix_name>jajuk</project_unix_name>
 <exporter>bflorat</exporter>
@@ -101,6 +101,14 @@ http://www.florat.net/jajuk-specs.pdf</registration_description>
 <user_name>dhalsim44</user_name>
 <public_name>Dhalsim</public_name>
 <email>dhalsim44@users.sourceforge.net</email>
+<project_admin>No</project_admin>
+</projectmember>
+<projectmember>
+<url>https://sourceforge.net/users/perpetualburn/</url>
+<user_id>1487551</user_id>
+<user_name>perpetualburn</user_name>
+<public_name>Mike Kelp</public_name>
+<email>perpetualburn@users.sourceforge.net</email>
 <project_admin>No</project_admin>
 </projectmember>
 </projectmembers>
@@ -595,6 +603,36 @@ http://www.florat.net/jajuk-specs.pdf</registration_description>
 <package_id>96449</package_id>
 <file_size>503006</file_size>
 <release_time>1139605341</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=396405</url>
+<filename>jajuk-1.1.4-1mdk.noarch.rpm</filename>
+<release_id>396405</release_id>
+<package_id>96449</package_id>
+<file_size>7059285</file_size>
+<release_time>1140826380</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=396405</url>
+<filename>jajuk-1.1.4-suse.noarch.rpm</filename>
+<release_id>396405</release_id>
+<package_id>96449</package_id>
+<file_size>7057265</file_size>
+<release_time>1140826400</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=396405</url>
+<filename>jajuk-1.1.4-win32.exe</filename>
+<release_id>396405</release_id>
+<package_id>96449</package_id>
+<file_size>9613312</file_size>
+<release_time>1140826441</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=396405</url>
+<filename>jajuk-java-installer-1.1.4.jar</filename>
+<release_id>396405</release_id>
+<package_id>96449</package_id>
+<file_size>9215101</file_size>
+<release_time>1140827000</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=396405</url>
+<filename>jajuk-sources-1.1.4.zip</filename>
+<release_id>396405</release_id>
+<package_id>96449</package_id>
+<file_size>505228</file_size>
+<release_time>1140827029</release_time>
 </filereleases>
 <docmanager>
 <docgroup>
@@ -14348,7 +14386,7 @@ on this bug when I have a reproducible error message.</details>
 <status_id>1</status_id>
 <category_id>605763</category_id>
 <group_id>100</group_id>
-<resolution_id>100</resolution_id>
+<resolution_id>102</resolution_id>
 <submitter>vavilu</submitter>
 <assignee>bflorat</assignee>
 <closer>nobody</closer>
@@ -14379,10 +14417,27 @@ user_id=363565
 What do you mean by &#34;disapear&#34;? thunderbird window is
 displayed and closes afterwards ? frozen ?</details>
 </followup>
+<followup>
+<id>1931366</id>
+<submitter>bflorat</submitter>
+<date>1140824173</date>
+<details>Logged In: YES 
+user_id=363565
+
+Reproduced under Windows + Thunderbird (OK with Outlook
+exspress) : void message. Probably a JDIC issue. Investigating.</details>
+</followup>
 </followups>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>3482190</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1140824173</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
@@ -14599,6 +14654,98 @@ view is not reflected immediatly in others cover views</details>
 <field_name>close_date</field_name>
 <old_value>0</old_value>
 <date>1140822098</date>
+<updator>bflorat</updator>
+</history_entry>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1451266</url>
+<id>1451266</id>
+<status_id>2</status_id>
+<category_id>100</category_id>
+<group_id>100</group_id>
+<resolution_id>103</resolution_id>
+<submitter>kootox</submitter>
+<assignee>nobody</assignee>
+<closer>bflorat</closer>
+<submit_date>1142515475</submit_date>
+<close_date>1145710185</close_date>
+<priority>5</priority>
+<summary>Don't launch</summary>
+<details>Hi, I'm under Linux (Ubuntu 5.10)/java 1.5
+
+I installed jajuk but when i launch it, it doesn't work
+and says me that: (sorry but i've not jajuk.log file on
+my system,  don't know why)
+
+
+
+
+kootox@kootox:~/Desktop$ jajuk
+Exception in thread &#34;main&#34;
+java.lang.UnsupportedClassVersionError: org/jajuk/Main
+(Unsupported major.minor version 49.0)
+        at java.lang.ClassLoader.defineClass0(Native
+Method)
+        at
+java.lang.ClassLoader.defineClass(ClassLoader.java:539)
+        at
+java.security.SecureClassLoader.defineClass(SecureClassLoader.java:123)
+        at
+java.net.URLClassLoader.defineClass(URLClassLoader.java:251)
+        at
+java.net.URLClassLoader.access$100(URLClassLoader.java:55)
+        at
+java.net.URLClassLoader$1.run(URLClassLoader.java:194)
+        at
+java.security.AccessController.doPrivileged(Native Method)
+        at
+java.net.URLClassLoader.findClass(URLClassLoader.java:187)
+        at
+java.lang.ClassLoader.loadClass(ClassLoader.java:289)
+        at
+sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:274)
+        at
+java.lang.ClassLoader.loadClass(ClassLoader.java:235)
+        at
+java.lang.ClassLoader.loadClassInternal(ClassLoader.java:302)
+kootox@kootox:~/Desktop$
+</details>
+<followups>
+<followup>
+<id>1951596</id>
+<submitter>bflorat</submitter>
+<date>1142523220</date>
+<details>Logged In: YES 
+user_id=363565
+
+I guess you don't use a JRE 1.5. Can you perform a java
+--version on command line ? if it is not Sun JRE 1.5, change
+your PATH so you use the right JVM.</details>
+</followup>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+<history_entry>
+<id>3599380</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1145710185</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3599381</id>
+<field_name>resolution_id</field_name>
+<old_value>100</old_value>
+<date>1145710185</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3599382</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1145710185</date>
 <updator>bflorat</updator>
 </history_entry>
 </history_entries>
@@ -15443,6 +15590,25 @@ time, you can either:
 directory}/.jajuk.conf.properties file and change
 &#34;jajuk.first_con=true&#34; to &#34;jajuk.first_con=false&#34;.</details>
 </followup>
+<followup>
+<id>1981944</id>
+<submitter>nobody</submitter>
+<date>1145182608</date>
+<details>Logged In: NO 
+
+
+</details>
+</followup>
+<followup>
+<id>1982630</id>
+<submitter>bflorat</submitter>
+<date>1145275976</date>
+<details>Logged In: YES 
+user_id=363565
+
+Hi, can you detail your case ? (jajuk release, JRE,
+operating system). Thanks.</details>
+</followup>
 </followups>
 <attachments>
 </attachments>
@@ -16248,6 +16414,33 @@ Thanks in advance...
 
 PS : this is a copy of a previous message posted in a
 wrong section of the forum... sorry for that!</details>
+<followups>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1470977</url>
+<id>1470977</id>
+<status_id>1</status_id>
+<category_id>100</category_id>
+<group_id>100</group_id>
+<submitter>nobody</submitter>
+<assignee>nobody</assignee>
+<closer>nobody</closer>
+<submit_date>1145131592</submit_date>
+<close_date>0</close_date>
+<priority>5</priority>
+<summary>great program!!</summary>
+<details>
+thanks for a great program! installed it on a ubuntu
+hoary system. 
+
+not a problem during install. great gui.
+
+keep up the good work!</details>
 <followups>
 </followups>
 <attachments>
@@ -19720,6 +19913,44 @@ Thanks :)</details>
 <history_entries>
 </history_entries>
 </tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1445357</url>
+<id>1445357</id>
+<status_id>1</status_id>
+<category_id>100</category_id>
+<group_id>100</group_id>
+<submitter>nobody</submitter>
+<assignee>nobody</assignee>
+<closer>nobody</closer>
+<submit_date>1141790605</submit_date>
+<close_date>0</close_date>
+<priority>5</priority>
+<summary>Add Cover from HD</summary>
+<details>It's possible a feature for add a cover from any folder
+from my hard disk?
+
+Thanks!!
+
+coke.jaca@gmail.com</details>
+<followups>
+<followup>
+<id>1942934</id>
+<submitter>bflorat</submitter>
+<date>1141807590</date>
+<details>Logged In: YES 
+user_id=363565
+
+Hi,
+
+Simply copy cover files into the targeted album 
+directory...</details>
+</followup>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+</history_entries>
+</tracker_item>
 </tracker_items>
 </tracker>
 <tracker>
@@ -21922,7 +22153,7 @@ Stock others properties for items: volume, balance, ...</old_value>
 </task>
 <task>
 <task_id>110980</task_id>
-<summary>[medium] [Pre-Reserved] Export data in html or XML </summary>
+<summary>[medium] [Reserved] Export data in html or XML </summary>
 <detail></detail>
 <percent_complete>0</percent_complete>
 <priority>6</priority>
@@ -21935,7 +22166,7 @@ Stock others properties for items: volume, balance, ...</old_value>
 <dependent_on>100</dependent_on>
 </dependencies>
 <assignees>
-<assignee>nobody</assignee>
+<assignee>rspatel</assignee>
 </assignees>
 <history_entries>
 <history_entry>
@@ -21980,6 +22211,13 @@ Notes:
 <old_value>[medium] [Reserved] Export data in html or XML </old_value>
 <updator>bflorat</updator>
 <date>1138491778</date>
+</history_entry>
+<history_entry>
+<task_id>110980</task_id>
+<field_name>summary</field_name>
+<old_value>[medium] [Pre-Reserved] Export data in html or XML </old_value>
+<updator>bflorat</updator>
+<date>1141473023</date>
 </history_entry>
 </history_entries>
 </task>
@@ -22794,13 +23032,47 @@ http://www.singularsys.com/jep/index.html</old_value>
 </task>
 <task>
 <task_id>123064</task_id>
-<summary>[Hard] [Pre-Reserved] Integrate Music Miner</summary>
+<summary>[Hard] Integrate Music Miner</summary>
 <detail></detail>
 <percent_complete>0</percent_complete>
 <priority>4</priority>
 <hours>0</hours>
 <start_date>1137193200</start_date>
 <end_date>1137193200</end_date>
+<creator>bflorat</creator>
+<status_id>1</status_id>
+<dependencies>
+<dependent_on>100</dependent_on>
+</dependencies>
+<assignees>
+<assignee>nobody</assignee>
+</assignees>
+<history_entries>
+<history_entry>
+<task_id>123064</task_id>
+<field_name>summary</field_name>
+<old_value>[Hard] [Pre-Reserved] Integrate Music Miner</old_value>
+<updator>bflorat</updator>
+<date>1141853809</date>
+</history_entry>
+<history_entry>
+<task_id>123064</task_id>
+<field_name>details</field_name>
+<old_value>Standby for now, waiting for MusicMiner refactoring as a API.</old_value>
+<updator>bflorat</updator>
+<date>1141853809</date>
+</history_entry>
+</history_entries>
+</task>
+<task>
+<task_id>124699</task_id>
+<summary>[medium] Synchronization enhancements</summary>
+<detail></detail>
+<percent_complete>0</percent_complete>
+<priority>5</priority>
+<hours>15</hours>
+<start_date>1141426800</start_date>
+<end_date>1141426800</end_date>
 <creator>bflorat</creator>
 <status_id>1</status_id>
 <dependencies>

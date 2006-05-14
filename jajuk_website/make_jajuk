@@ -77,7 +77,7 @@ cp -rp $WEBSITE_SOURCE/*.html $WEBSITE_SOURCE/*.xml $WEBSITE_SOURCE/*.js $WEBSIT
 rm $XDOC_DEST/project.xml $XDOC_DEST/maven.xml
 
 #Sources Checkout
-cvs checkout jajuk
+#cvs checkout jajuk
 
 #Stats generation (outside maven website because it doesn't work anymore with maven)
 cd $MAVEN_DIR
@@ -94,7 +94,11 @@ maven site
 cd $DOC_DEST
 java -cp $WEBSITE_SOURCE Xiti SCRIPT_XITI $WEBSITE_SOURCE/script_xiti_home.txt index.html > /tmp/index.html
 java -cp $WEBSITE_SOURCE Xiti SCRIPT_XITI $WEBSITE_SOURCE/script_xiti_jws.txt jws.html > /tmp/jws.html
+java -cp $WEBSITE_SOURCE Xiti SCRIPT_XITI $WEBSITE_SOURCE/script_xiti_jws.txt downloads.html > /tmp/downloads.html
+java -cp $WEBSITE_SOURCE Xiti SCRIPT_XITI $WEBSITE_SOURCE/script_xiti_jws.txt QDWizard.html > /tmp/QDWizard.html
 #marche pas à la fin sed -e '\#SCRIPT_XITI#{r/data/scripts/script_xiti' -e ';d;}' ./index.html > /tmp/index.html
 cp /tmp/index.html .
 cp /tmp/jws.html .
+cp /tmp/downloads.html .
+cp /tmp/QDWizard.html .
 fi

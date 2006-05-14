@@ -36,10 +36,10 @@
  
  <repository>
     <connection>
-      scm:cvs:pserver:anonymous@cvs.sourceforge.net:/cvsroot/jajuk:jajuk
+      scm:cvs:pserver:anonymous@jajuk.cvs.sourceforge.net:/cvsroot/jajuk:jajuk
     </connection>
     <url>
-      http://cvs.sourceforge.net/viewcvs.py/jajuk/
+      http://jajuk.cvs.sourceforge.net/jajuk/
     </url>
   </repository>
   

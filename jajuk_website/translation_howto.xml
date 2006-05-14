@@ -33,7 +33,7 @@
 
    			<subsection name='README file translation'>
    			 <p>The README file is displayed during installation and is on the web site. Its name is <span style="font-family: monospace;">README_{iso3 code on 3 letters}.html</span>. Get README file of your choice as a source language. Example: use <span style="font-family: monospace;">README.html</span> as English source language at 
-   			 <a href='http://cvs.sourceforge.net/viewcvs.py/jajuk/jajuk/dist-files/doc/README.html'>http://cvs.sourceforge.net/viewcvs.py/jajuk/jajuk/dist-files/doc/README.html</a>
+   			 <a href='http://jajuk.cvs.sourceforge.net/jajuk/jajuk/dist-files/doc/README.html?view=log'>http://jajuk.cvs.sourceforge.net/jajuk/jajuk/dist-files/doc/README.html?view=log</a>
 					or any other README file in the directory and translate it. List of ISO3 codes is available at : <a href='http://ftp.ics.uci.edu/pub/ietf/http/related/iso3166.txt'>http://ftp.ics.uci.edu/pub/ietf/http/related/iso3166.txt</a>.</p>
     		</subsection>
 

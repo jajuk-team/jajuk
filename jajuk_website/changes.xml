@@ -5,6 +5,10 @@
     <author email='bflorat@users.sourceforge.net'>Bertrand Florat</author>
   </properties>
   <body>
+    <release version='1.1.6' date='2006-04-22' description='Fixes'>
+    	<action dev='bflorat' type='fix' issue=''>Fix wrong thumb size when creating finding a new cover online
+     [7]</action>
+    </release>
     <release version='1.1.5' date='2006-04-22' description='Fixes'>
     	<action dev='bflorat' type='fix' issue=''>Sound saturation fix [10]</action>
     	<action dev='bflorat' type='fix' issue=''>External tags changes not reflected even using force refresh [9]</action>
