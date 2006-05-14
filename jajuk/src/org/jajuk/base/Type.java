@@ -93,7 +93,10 @@ public class Type extends PropertyAdapter implements Comparable{
 	 * @return
 	 */
 	public boolean equals(Object otherType){
-		return this.getId().equals(((Type)otherType).getId() );
+		if (otherType == null){
+            return false;
+        }
+        return this.getId().equals(((Type)otherType).getId() );
 	}
 	
 	/**

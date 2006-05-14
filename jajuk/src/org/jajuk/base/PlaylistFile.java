@@ -115,7 +115,10 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 	 * @return
 	 */
 	public boolean equals(Object otherPlaylistFile){
-		PlaylistFile plfOther = (PlaylistFile)otherPlaylistFile;
+		if (otherPlaylistFile == null){
+            return false;
+        }
+        PlaylistFile plfOther = (PlaylistFile)otherPlaylistFile;
 		return (this.getId().equals(plfOther.getId()) && plfOther.getType() == this.iType);
 	}	
 	

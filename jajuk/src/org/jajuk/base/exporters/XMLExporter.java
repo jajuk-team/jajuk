@@ -19,30 +19,29 @@
 
 package org.jajuk.base.exporters;
 
-import org.jajuk.util.log.Log;
-import org.jajuk.util.ITechnicalStrings;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.ListIterator;
+import java.util.Set;
+
+import org.jajuk.base.Album;
+import org.jajuk.base.Author;
 import org.jajuk.base.Device;
 import org.jajuk.base.DeviceManager;
 import org.jajuk.base.Directory;
 import org.jajuk.base.DirectoryManager;
-import org.jajuk.base.IPropertyable;
-import org.jajuk.base.TrackManager;
-import org.jajuk.base.TrackComparator;
 import org.jajuk.base.File;
-import org.jajuk.base.Track;
+import org.jajuk.base.IPropertyable;
 import org.jajuk.base.Style;
-import org.jajuk.base.Author;
-import org.jajuk.base.Album;
-
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.lang.StringBuffer;
-import java.util.Collections;
-import java.util.ListIterator;
-import java.util.Iterator;
-import java.util.ArrayList;
-import java.util.Set;
+import org.jajuk.base.Track;
+import org.jajuk.base.TrackComparator;
+import org.jajuk.base.TrackManager;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.log.Log;
 
 /**
  * Exports music data to an XML file.

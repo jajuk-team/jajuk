@@ -76,7 +76,10 @@ public class Style extends PropertyAdapter implements Comparable{
 	 * @return
 	 */
 	public boolean equals(Object otherStyle) {
-		return this.getId().equals(((Style)otherStyle).getId());
+		if (otherStyle == null){
+            return false;
+        }
+        return this.getId().equals(((Style)otherStyle).getId());
 	}
 	
 	/**

@@ -50,6 +50,9 @@ public class TrackManager extends ItemManager implements Observer{
     /**comparator in use**/
     private TrackComparator comparator;
     
+    /**Max rate*/
+    private long lMaxRate = 0l;
+    
     /**
      * No constructor available, only static access
      */
@@ -556,5 +559,20 @@ public class TrackManager extends ItemManager implements Observer{
             this.comparator = comparator;
        }
     }
+    
+    /**
+     * @return maximum rating between all tracks
+     */
+    public long getMaxRate(){
+        return lMaxRate;
+    }
+    
+    /**
+     * Set max rate
+     */
+    public void setMaxRate(long lRate){
+        this.lMaxRate = lRate;
+    }
+    
 }    
      

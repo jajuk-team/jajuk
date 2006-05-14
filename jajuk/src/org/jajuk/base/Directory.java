@@ -92,6 +92,9 @@ public class Directory extends PropertyAdapter implements Comparable{
      * @return
      */
     public boolean equals(Object otherDirectory) {
+        if (otherDirectory == null){
+            return false;
+        }
         return this.getId().equals(((Directory)otherDirectory).getId() );
     }
     

@@ -88,7 +88,7 @@ public class Tag implements ITechnicalStrings{
                 sTrackName = Util.formatTag(sTemp);  //remove the extension
             }
         } catch (Exception e) {
-            Log.warn("Wrong track name:"+fio.getName()); //$NON-NLS-1$
+            Log.info("Wrong track name:"+fio.getName()); //$NON-NLS-1$
         }
         return sTrackName;
     }
@@ -111,7 +111,7 @@ public class Tag implements ITechnicalStrings{
                 sAlbumlName = sTemp;
             }
         } catch (Exception e) {
-            Log.warn("Wrong album name:"+fio.getName()); //$NON-NLS-1$
+            Log.info("Wrong album name:"+fio.getName()); //$NON-NLS-1$
         }
         if (sAlbumlName == null){  //album tag cannot be found
             if (Boolean.valueOf(ConfigurationManager.getProperty(CONF_TAGS_USE_PARENT_DIR)).booleanValue()){
@@ -144,7 +144,7 @@ public class Tag implements ITechnicalStrings{
                 sAuthorName = Util.formatTag(sTemp);
             }
         } catch (Exception e) {
-            Log.warn("Wrong author name:"+fio.getName()); //$NON-NLS-1$
+            Log.info("Wrong author name:"+fio.getName()); //$NON-NLS-1$
         }
         return sAuthorName;
 
@@ -173,7 +173,7 @@ public class Tag implements ITechnicalStrings{
                 style = Util.formatTag(sTemp);
             }
         } catch (Exception e) {
-            Log.warn("Wrong style name:"+fio.getName()); //$NON-NLS-1$
+            Log.info("Wrong style name:"+fio.getName()); //$NON-NLS-1$
         }
         return style;
 
@@ -191,7 +191,7 @@ public class Tag implements ITechnicalStrings{
         try {
             length = tagImpl.getLength();
         } catch (Exception e) {
-            Log.warn("Wrong length:"+fio.getName()); //$NON-NLS-1$
+            Log.info("Wrong length:"+fio.getName()); //$NON-NLS-1$
         }
         return length;
     }
@@ -208,7 +208,7 @@ public class Tag implements ITechnicalStrings{
         try {
              lYear = tagImpl.getYear(); //check it is an integer
         } catch (Exception e) {
-            Log.warn("Wrong year:"+fio.getName()); //$NON-NLS-1$
+            Log.info("Wrong year:"+fio.getName()); //$NON-NLS-1$
         }
         return lYear;
 
@@ -227,7 +227,7 @@ public class Tag implements ITechnicalStrings{
         try {
             lQuality = tagImpl.getQuality();
         } catch (Exception e) {
-            Log.warn("Wrong quality:"+fio.getName()); //$NON-NLS-1$
+            Log.info("Wrong quality:"+fio.getName()); //$NON-NLS-1$
         }
         return lQuality;
     }
@@ -248,7 +248,7 @@ public class Tag implements ITechnicalStrings{
                 sComment = Util.formatTag(sTemp);
             }
         } catch (Exception e) {
-            Log.warn("Wrong comment:"+fio.getName()); //$NON-NLS-1$
+            Log.info("Wrong comment:"+fio.getName()); //$NON-NLS-1$
         }
         return sComment;    
     }
@@ -265,7 +265,7 @@ public class Tag implements ITechnicalStrings{
             }
         } catch (Exception e) {
             //just debug, no warn because wrong order are too often and generate too much traces
-            Log.warn("Wrong order:"+fio.getName()); //$NON-NLS-1$
+            Log.info("Wrong order:"+fio.getName()); //$NON-NLS-1$
             l = 0;
         }
         return l;    

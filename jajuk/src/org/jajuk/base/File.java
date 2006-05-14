@@ -152,7 +152,10 @@ public class File extends PropertyAdapter implements Comparable,ITechnicalString
 	 * @return
 	 */
 	public boolean equals(Object otherFile){
-		return this.getId().equals(((File)otherFile).getId() );
+		if (otherFile == null){
+            return false;
+        }
+        return this.getId().equals(((File)otherFile).getId() );
 	}	
 	
 	

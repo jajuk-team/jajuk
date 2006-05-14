@@ -114,6 +114,9 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
      * @return
      */
     public boolean equals(Object otherDevice) {
+        if (otherDevice == null){
+            return false;
+        }
         return this.getId().equals(((Device)otherDevice).getId() );
     }
     
@@ -180,6 +183,9 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
         if (i == 2){ //Cancel
             return;
         }
+        //clean old files up
+        cleanRemovedFiles();
+        //Actual refresh
         refreshCommand((i==1));
         InformationJPanel.getInstance().setMessage(sFinalMessage,InformationJPanel.INFORMATIVE); //$NON-NLS-1$
         //notify views to refresh

@@ -132,19 +132,24 @@ public class FileManager extends ItemManager implements Observer{
     public File registerFile(String sId, String sName, Directory directory, 
             Track track, long lSize, long lQuality) {
         synchronized(FileManager.getInstance().getLock()){
+            File file = null;
             if ( !hmItems.containsKey(sId)){
-                File file = null;
                 file = new File(sId, sName, directory, track, lSize, lQuality);
                 hmItems.put(sId,file);
-                //add to track
-                track.addFile(file);
                 //add to directory
                 file.getDirectory().addFile(file);
                 if ( directory.getDevice().isRefreshing() && Log.isDebugEnabled()){
                     Log.debug("registrated new file: "+ file); //$NON-NLS-1$
                 }
             }
-            return (File)hmItems.get(sId);
+            else{
+                //If file already exist and the track has changed, make changes
+                file = (File)hmItems.get(sId);
+            }
+            //add this file to track
+            file.setTrack(track);
+            track.addFile(file);//make sure the file is added
+            return file;
         }
     }
     
@@ -350,7 +355,7 @@ public class FileManager extends ItemManager implements Observer{
      * Return a playlist with the entire accessible shuffle collection 
      * @return The entire accessible shuffle collection
      */
-    public ArrayList getGlobalShufflePlaylist(){
+    public ArrayList<File> getGlobalShufflePlaylist(){
         synchronized(FileManager.getInstance().getLock()){
             ArrayList alEligibleFiles = getReadyFiles();
             

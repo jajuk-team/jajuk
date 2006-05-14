@@ -249,7 +249,10 @@ public class Player implements ITechnicalStrings{
             ConfigurationManager.setProperty(CONF_VOLUME,Float.toString(fVolume));
             if (playerImpl != null){
                 //check, it can be over 1 for unknown reason
-                if (fVolume > 1.0f){
+                if (fVolume < 0.0f){
+                    fVolume = 0.0f;
+                }
+                else if (fVolume > 1.0f){
                     fVolume = 1.0f;
                 }
                 playerImpl.setVolume(fVolume);

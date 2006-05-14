@@ -58,8 +58,6 @@ public class Track extends PropertyAdapter implements Comparable{
     private ArrayList<File> alFiles = new ArrayList(1);
     /** Number of hits for current jajuk session */
     private int iSessionHits = 0;
-    /**Max rate*/
-    public static long lMaxRate = 0l;
     
     
     /**
@@ -294,6 +292,9 @@ public class Track extends PropertyAdapter implements Comparable{
      * @return
      */
     public boolean equals(Object otherTrack){
+        if (otherTrack == null){
+            return false;
+        }
         return this.getId().equals(((Track)otherTrack).getId());
     }	
     
@@ -355,8 +356,8 @@ public class Track extends PropertyAdapter implements Comparable{
     public void setRate(long rate) {
         setProperty(XML_TRACK_RATE,rate);
         //Store max rate
-        if (rate > lMaxRate){
-            lMaxRate = rate;
+        if (rate > TrackManager.getInstance().getMaxRate()){
+            TrackManager.getInstance().setMaxRate(rate);
         }
     }
     

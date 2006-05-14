@@ -68,7 +68,10 @@ public class Album extends PropertyAdapter implements Comparable{
 	 * @return
 	 */
 	public boolean equals(Object otherAlbum){
-		return this.getId().equals(((Album)otherAlbum).getId() );
+		if (otherAlbum == null){
+            return false;
+        }
+        return this.getId().equals(((Album)otherAlbum).getId() );
 	}
 	
 	/**

@@ -71,7 +71,10 @@ public class Playlist extends PropertyAdapter implements Comparable{
 	 * @return
 	 */
 	public boolean equals(Object otherPlaylist){
-		return this.getId().equals(((Playlist)otherPlaylist).getId());
+		if (otherPlaylist == null){
+            return false;
+        }
+        return this.getId().equals(((Playlist)otherPlaylist).getId());
 	}	
 
 	

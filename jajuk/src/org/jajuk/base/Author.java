@@ -71,7 +71,10 @@ public class Author extends PropertyAdapter implements Comparable{
 	 * @return
 	 */
 	public boolean equals(Object otherAuthor){
-		return this.getId().equals(((Author)otherAuthor).getId() );
+		if (otherAuthor == null){
+            return false;
+        }
+        return this.getId().equals(((Author)otherAuthor).getId() );
 	}	
 	
 	

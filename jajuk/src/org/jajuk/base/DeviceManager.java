@@ -365,7 +365,7 @@ public class DeviceManager extends ItemManager{
             }
             //Display end of refresh message with stats
             l = System.currentTimeMillis() -l;
-            Log.debug("Global refresh done in: "+((l<1000)?l+" ms":l/1000+" s")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            //Log.debug("Global refresh done in: "+((l<1000)?l+" ms":l/1000+" s")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         }
         catch(Exception e){
             Log.error(e);
