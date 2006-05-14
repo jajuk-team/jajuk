@@ -228,8 +228,7 @@ public class PerspectiveManager  implements ITechnicalStrings {
         registerPerspective(perspective);
         
         // Information perspective
-        /* Disable this perspective for the moment as jdic release is buggy*/
-        /*test Web browser is OK
+        /* Disable this perspective for the moment as jdic release is buggy
         boolean bOK = true;
         try{
             WebBrowser browser = new WebBrowser();

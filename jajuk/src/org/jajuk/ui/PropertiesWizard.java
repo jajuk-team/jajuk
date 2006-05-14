@@ -73,7 +73,7 @@ import org.jajuk.util.error.JajukException;
 import org.jajuk.util.error.NoneAccessibleFileException;
 import org.jajuk.util.log.Log;
 import org.jdesktop.swingx.JXDatePicker;
-import org.jdesktop.swingx.autocomplete.Configurator;
+import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
 /**
  * Item properties wizard for any jajuk item
@@ -425,7 +425,7 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
                         Vector<String> styles = StyleManager.getInstance().getStylesList();
                         final JComboBox jcb = new JComboBox(styles);
                         jcb.setEditable(true);
-                        Configurator.enableAutoCompletion(jcb);
+                        AutoCompleteDecorator.decorate(jcb);
                         jcb.setPreferredSize(dim);
                         //set current style to combo
                         int i = -1;
@@ -465,7 +465,7 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
                         Vector<String> authors = AuthorManager.getAuthorsList();
                         final JComboBox jcb = new JComboBox(authors);
                         jcb.setEditable(true);
-                        Configurator.enableAutoCompletion(jcb);
+                        AutoCompleteDecorator.decorate(jcb);
                         jcb.setPreferredSize(dim);
                         //set current style to combo
                         int i = -1;

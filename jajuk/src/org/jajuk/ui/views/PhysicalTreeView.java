@@ -18,6 +18,7 @@
 
 package org.jajuk.ui.views;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.dnd.DnDConstants;
@@ -378,6 +379,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         top = new DefaultMutableTreeNode(Messages.getString("PhysicalTreeView.47")); //$NON-NLS-1$
         //Register on the list for subject we are interrested in
+        ObservationManager.register(EVENT_FILE_LAUNCHED,this);
         ObservationManager.register(EVENT_DEVICE_MOUNT,this);
         ObservationManager.register(EVENT_DEVICE_UNMOUNT,this);
         ObservationManager.register(EVENT_DEVICE_REFRESH,this);
@@ -404,6 +406,10 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
                     }
                     else {
                         setIcon(Util.getIcon(ICON_TYPE_WAV));    
+                    }
+                    File current = FIFO.getInstance().getCurrentFile();
+                    if ( current != null && file.equals(current)){
+                        setForeground(new Color(0,200,0));
                     }
                 }
                 else if (value instanceof PlaylistFileNode){
@@ -1136,7 +1142,10 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
      */
     public void update(Event event) {
         final String subject = event.getSubject();
-        if ( subject.equals(EVENT_DEVICE_MOUNT) || 
+        if ( subject.equals(EVENT_FILE_LAUNCHED)){ //used for current track display refresh
+            repaint();
+        }
+        else if ( subject.equals(EVENT_DEVICE_MOUNT) || 
                 subject.equals(EVENT_DEVICE_UNMOUNT) || 
                 subject.equals(EVENT_DEVICE_REFRESH) ) {
             SwingWorker sw = new SwingWorker() {

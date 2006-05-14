@@ -5,6 +5,8 @@
  */
 package org.jajuk.ui.action;
 
+import java.awt.event.ActionEvent;
+
 import org.jajuk.base.FIFO;
 import org.jajuk.base.StackItem;
 import org.jajuk.i18n.Messages;
@@ -12,7 +14,6 @@ import org.jajuk.ui.CommandJPanel;
 import org.jajuk.ui.JajukJMenuBar;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Util;
-import java.awt.event.ActionEvent;
 
 /**
  * @author Bart Cremers(Real Software)

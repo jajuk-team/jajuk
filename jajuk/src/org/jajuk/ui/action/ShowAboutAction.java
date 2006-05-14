@@ -20,11 +20,12 @@
 package org.jajuk.ui.action;
 
 import java.awt.event.ActionEvent;
-import org.jajuk.i18n.Messages;
-import org.jajuk.ui.perspectives.PerspectiveManager;
-import org.jajuk.ui.JajukWindow;
-import org.jajuk.util.Util;
+
 import org.jajuk.Main;
+import org.jajuk.i18n.Messages;
+import org.jajuk.ui.JajukWindow;
+import org.jajuk.ui.perspectives.PerspectiveManager;
+import org.jajuk.util.Util;
 
 /**
  * Action for displaying the tip of the day.

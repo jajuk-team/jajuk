@@ -20,6 +20,7 @@ package org.jajuk.ui.views;
 
 import info.clearthought.layout.TableLayout;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.dnd.DnDConstants;
@@ -34,7 +35,6 @@ import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Properties;
-import java.util.Vector;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JComboBox;
@@ -63,9 +63,6 @@ import org.jajuk.base.AlbumManager;
 import org.jajuk.base.Author;
 import org.jajuk.base.AuthorManager;
 import org.jajuk.base.Bookmarks;
-import org.jajuk.base.Device;
-import org.jajuk.base.Directory;
-import org.jajuk.base.DirectoryManager;
 import org.jajuk.base.Event;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
@@ -373,6 +370,7 @@ ActionListener, Observer {
             .getString("LogicalTreeView.27")); //$NON-NLS-1$
         
         // Register on the list for subject we are interrested in
+        ObservationManager.register(EVENT_FILE_LAUNCHED,this);
         ObservationManager.register(EVENT_DEVICE_MOUNT, this);
         ObservationManager.register(EVENT_DEVICE_UNMOUNT, this);
         ObservationManager.register(EVENT_DEVICE_REFRESH, this);
@@ -405,6 +403,11 @@ ActionListener, Observer {
                     setIcon(Util.getIcon(ICON_ALBUM));
                 } else if (value instanceof TrackNode) {
                     setIcon(Util.getIcon(ICON_FILE));
+                    Track track = ((TrackNode)value).getTrack();
+                    File current = FIFO.getInstance().getCurrentFile();
+                    if ( current != null && track.equals(current.getTrack())){
+                        setForeground(new Color(0,200,0));
+                    }
                 }
                 return this;
             }
@@ -1049,7 +1052,10 @@ ActionListener, Observer {
      */
     public void update(Event event) {
         String subject = event.getSubject();
-        if (subject.equals(EVENT_DEVICE_MOUNT)
+        if ( subject.equals(EVENT_FILE_LAUNCHED)){ //used for current track display refresh 
+            repaint();
+        }
+        else if (subject.equals(EVENT_DEVICE_MOUNT)
                 || subject.equals(EVENT_DEVICE_UNMOUNT)) {
             SwingWorker sw = new SwingWorker() {
                 public Object construct() {

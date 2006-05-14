@@ -25,7 +25,6 @@ import java.util.Map;
 import javazoom.jlgui.basicplayer.BasicController;
 import javazoom.jlgui.basicplayer.BasicPlayer;
 import javazoom.jlgui.basicplayer.BasicPlayerEvent;
-import javazoom.jlgui.basicplayer.BasicPlayerException;
 import javazoom.jlgui.basicplayer.BasicPlayerListener;
 
 import org.jajuk.base.FIFO;
@@ -127,7 +126,7 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
             }
         }
         player.play();
-        player.setGain(fVolume);
+        setVolume(fVolume);
     }
 
     /*
@@ -148,8 +147,8 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
      */
     public void setVolume(float fVolume) throws Exception {
         this.fVolume = fVolume;
-        player.setGain(fVolume*0.66);
-        //limit gain to avoid sound issues
+        player.setGain(fVolume*0.6);
+        //limit gain to avoid saturation
     }
 
     /**
@@ -216,8 +215,8 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
                 long skipBytes = (long) Math.round(iAudioLength * posValue); //$NON-NLS-1$
                 try {
                     player.seek(skipBytes);
-                    player.setGain(fVolume); //need this because a seek reset volume 
-                } catch (BasicPlayerException e) {
+                    setVolume(fVolume); //need this because a seek reset volume 
+                } catch (Exception e) {
                     Log.error(e);
                     return;
                 }

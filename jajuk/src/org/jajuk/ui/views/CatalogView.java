@@ -44,6 +44,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.StringTokenizer;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -324,7 +325,7 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
             }
             else{
                 try {
-                    Util.createThumbnail(fCover,fThumb,50+(50*jcbSize.getSelectedIndex()));
+                    Util.createThumbnail(fCover,fThumb,getSelectedSize());
                     InformationJPanel.getInstance().setMessage(Messages.getString("CatalogView.5") //$NON-NLS-1$
                         +' '+album.getName2(),InformationJPanel.INFORMATIVE);
                 }
@@ -567,8 +568,28 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
                     file.delete();
                 }
             }
+            //Refresh default cover
+            File fDefault = new File(FILE_THUMBS+"/"+size+"/"+FILE_THUMB_NO_COVER); //$NON-NLS-1$ //$NON-NLS-2$
+            fDefault.delete();
+            try{
+                int iSize= Integer.parseInt(new StringTokenizer(size,"x").nextToken()); //$NON-NLS-1$
+                Util.createThumbnail(Util.getIcon(IMAGE_NO_COVER),fDefault,iSize);
+            }
+            catch(Exception e){
+                Log.error(e);
+            }
         }
     }
+    
+    /**
+     * 
+     * @return current thimbs size as selected with the combo
+     */
+    private int getSelectedSize(){
+        return 50+(50*jcbSize.getSelectedIndex());
+    }
+    
+    
     class CatalogItem extends JPanel implements ITechnicalStrings,ActionListener,MouseListener{
         
         /** Associated album*/
@@ -966,7 +987,7 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
                     dir.setProperty("default_cover",sFilename); //$NON-NLS-1$
                     //create new thumbnail
                     File fThumb = new File(FILE_THUMBS+'/'+(String)jcbSize.getSelectedItem()+'/'+album.getId()+'.'+EXT_THUMB);
-                    Util.createThumbnail(file,fThumb,100+(50*jcbSize.getSelectedIndex()));
+                    Util.createThumbnail(file,fThumb,getSelectedSize());
                     //refresh icon
                     item.setIcon(new ImageIcon(fThumb.toURL()));
                 }

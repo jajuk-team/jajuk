@@ -7,6 +7,7 @@ package org.jajuk.ui.action;
 
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+
 import org.jajuk.base.FIFO;
 import org.jajuk.base.FileManager;
 import org.jajuk.i18n.Messages;

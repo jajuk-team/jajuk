@@ -56,7 +56,7 @@ public class TracksTableModel extends JajukTableModel{
 	    super(11);
         
         //Columns names
-        vColNames.add(Messages.getString("LogicalTreeView.1")); //$NON-NLS-1$
+        vColNames.add(""); //$NON-NLS-1$
         vId.add(XML_PLAY);
         
         vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_NAME));
@@ -192,7 +192,7 @@ public class TracksTableModel extends JajukTableModel{
             bCellEditable[iRow][4] = true;
             //Rate
             IconLabel ilRate = null;
-            long lInterval = Track.lMaxRate / 4;
+            long lInterval = TrackManager.getInstance().getMaxRate() / 4;
             long lRate = track.getRate();
             if (lRate < lInterval){
                 ilRate = new IconLabel(Util.getIcon(ICON_STAR_1),"",null,null,null,Long.toString(track.getRate()));

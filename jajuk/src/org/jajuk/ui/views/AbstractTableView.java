@@ -73,8 +73,8 @@ import org.jajuk.util.error.CannotRenameException;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.error.NoneAccessibleFileException;
 import org.jajuk.util.log.Log;
+import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 import org.jdesktop.swingx.autocomplete.ComboBoxCellEditor;
-import org.jdesktop.swingx.autocomplete.Configurator;
 import org.jdesktop.swingx.table.DefaultTableColumnModelExt;
 import org.jdesktop.swingx.table.TableColumnExt;
 
@@ -377,14 +377,14 @@ public abstract class AbstractTableView extends ViewAdapter
             if (XML_STYLE.equals(sIdentifier)){
                 JComboBox jcb = new JComboBox(StyleManager.getInstance().getStylesList());
                 jcb.setEditable(true);
-                Configurator.enableAutoCompletion(jcb);
+                AutoCompleteDecorator.decorate(jcb);
                 col.setCellEditor(new ComboBoxCellEditor(jcb));
             }
             //create a combo box for authors, note that we can't add new authors dynamically
             if (XML_AUTHOR.equals(sIdentifier)){
                 JComboBox jcb = new JComboBox(AuthorManager.getAuthorsList());
                 jcb.setEditable(true);
-                Configurator.enableAutoCompletion(jcb);
+                AutoCompleteDecorator.decorate(jcb);
                 col.setCellEditor(new ComboBoxCellEditor(jcb));
             }
             //create a button for playing

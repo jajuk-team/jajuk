@@ -19,7 +19,11 @@
  */
 package org.jajuk.ui.action;
 
-import javax.swing.*;
+import javax.swing.Action;
+import javax.swing.ActionMap;
+import javax.swing.InputMap;
+import javax.swing.JComponent;
+import javax.swing.KeyStroke;
 
 /**
  * Utility class for swing actions.

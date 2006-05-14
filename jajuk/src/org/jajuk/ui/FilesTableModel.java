@@ -34,6 +34,7 @@ import org.jajuk.base.IPropertyable;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.base.PropertyMetaInformation;
 import org.jajuk.base.Track;
+import org.jajuk.base.TrackManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
@@ -57,7 +58,7 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
 		super(16);
         //Columns names
         //play column
-        vColNames.add(Messages.getString("PhysicalTreeView.1")); //$NON-NLS-1$
+        vColNames.add(""); //$NON-NLS-1$
         vId.add(XML_PLAY);
         
         vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_NAME));
@@ -205,7 +206,7 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
             bCellEditable[iRow][4] = true;
             //Rate
             IconLabel ilRate = null;
-            long lInterval = Track.lMaxRate / 4;
+            long lInterval = TrackManager.getInstance().getMaxRate() / 4;
             Track track = file.getTrack();
             long lRate = track.getRate();
             if (lRate < lInterval){

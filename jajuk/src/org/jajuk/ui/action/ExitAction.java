@@ -6,6 +6,7 @@
 package org.jajuk.ui.action;
 
 import java.awt.event.ActionEvent;
+
 import org.jajuk.Main;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.Util;

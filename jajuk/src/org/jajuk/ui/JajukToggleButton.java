@@ -6,6 +6,7 @@
 package org.jajuk.ui;
 
 import java.awt.event.ActionEvent;
+
 import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.Icon;

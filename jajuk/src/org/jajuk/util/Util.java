@@ -31,7 +31,6 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.MediaTracker;
 import java.awt.RenderingHints;
-import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.image.BufferedImage;
 import java.io.BufferedOutputStream;
@@ -50,9 +49,11 @@ import java.text.DateFormat;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.StringTokenizer;
@@ -1142,18 +1143,6 @@ public class Util implements ITechnicalStrings {
 	}
 
 	/**
-	 * Display given container in centred position
-	 * 
-	 * @param container
-	 */
-	public static void setCenteredLocation(Window window) {
-		window.setLocation((int) (Toolkit.getDefaultToolkit().getScreenSize()
-				.getWidth() / 2 - window.getWidth() / 2), (int) (Toolkit
-				.getDefaultToolkit().getScreenSize().getHeight() / 2 - window
-				.getHeight() / 2));
-	}
-
-	/**
 	 * 
 	 * @return jajuk release as read from an existing collection file (used for
 	 *         upgrade) or null if no collection file
@@ -1267,72 +1256,74 @@ public class Util implements ITechnicalStrings {
 	}
 
 	/**
-	 * Reads an image in a file and creates a thumbnail in another file.
-	 * 
-	 * @param orig
-	 *            The name of image file.
-	 * @param thumb
-	 *            The name of thumbnail file. Will be created if necessary.
-	 * @param maxDim
-	 *            The width and height of the thumbnail must be maxDim pixels or
-	 *            less. Thanks Marco Schmidt
-	 *            http://schmidt.devlib.org/java/save-jpeg-thumbnail.html#source
-	 */
-
-	/**
-	 * Reads an image in a file and creates a thumbnail in another file. Will be
-	 * created if necessary. the thumbnail must be maxDim pixels or less. Thanks
-	 * Marco Schmidt
-	 * http://schmidt.devlib.org/java/save-jpeg-thumbnail.html#source
-	 * 
-	 * @param orig
-	 *            source image
-	 * @param thumb
-	 *            destination file (jpg)
-	 * @param maxDim
-	 *            required size
-	 * @throws Exception
-	 */
-	public static void createThumbnail(File orig, File thumb, int maxDim)
-			throws Exception {
-		// Get the image from a file.
-		Image image = new ImageIcon(orig.getAbsolutePath()).getImage();
-		MediaTracker mediaTracker = new MediaTracker(new Container());
-		mediaTracker.addImage(image, 0);
-		mediaTracker.waitForID(0);
-		// determine thumbnail size from WIDTH and HEIGHT
-		int thumbWidth = maxDim;
-		int thumbHeight = maxDim;
-		double thumbRatio = (double) thumbWidth / (double) thumbHeight;
-		int imageWidth = image.getWidth(null);
-		int imageHeight = image.getHeight(null);
-		double imageRatio = (double) imageWidth / (double) imageHeight;
-		if (thumbRatio < imageRatio) {
-			thumbHeight = (int) (thumbWidth / imageRatio);
-		} else {
-			thumbWidth = (int) (thumbHeight * imageRatio);
-		}
-		// draw original image to thumbnail image object and
-		// scale it to the new size on-the-fly
-		BufferedImage thumbImage = new BufferedImage(thumbWidth, thumbHeight,
-				BufferedImage.TYPE_INT_RGB);
-		Graphics2D graphics2D = thumbImage.createGraphics();
-		graphics2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-				RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-		graphics2D.drawImage(image, 0, 0, thumbWidth, thumbHeight, null);
-		// save thumbnail image to OUTFILE
-		BufferedOutputStream out = new BufferedOutputStream(
-				new FileOutputStream(thumb));
-		JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(out);
-		JPEGEncodeParam param = encoder.getDefaultJPEGEncodeParam(thumbImage);
-		int quality = 100;
-		quality = Math.max(0, Math.min(quality, 100));
-		param.setQuality((float) quality / 100.0f, false);
-		encoder.setJPEGEncodeParam(param);
-		encoder.encode(thumbImage);
-		out.close();
-		image.flush();
-	}
+     * Reads an image in a file and creates 
+     * a thumbnail in another file.
+     * Will be created if necessary.
+     * the thumbnail must be maxDim pixels or less.
+     * Thanks Marco Schmidt http://schmidt.devlib.org/java/save-jpeg-thumbnail.html#source
+     * @param orig source image
+     * @param thumb destination file (jpg)
+     * @param maxDim required size
+     * @throws Exception
+     */
+    public static void createThumbnail(
+            File orig, File thumb,int maxDim) throws Exception{
+          createThumbnail(new ImageIcon(orig.getAbsolutePath()),thumb,maxDim); //do not use URL object has it can corrupt special paths
+    }
+    
+    /**
+     * Reads an image in a file and creates 
+     * a thumbnail in another file.
+     * Use this method to get thumbs from images inside jar files, some bugs in URL encoding makes
+     * impossible to create the image from a file.
+     * Will be created if necessary.
+     * the thumbnail must be maxDim pixels or less.
+     * Thanks Marco Schmidt http://schmidt.devlib.org/java/save-jpeg-thumbnail.html#source
+     * @param orig source image
+     * @param thumb destination file (jpg)
+     * @param maxDim required size
+     * @throws Exception
+     */
+    public static void createThumbnail(
+            ImageIcon ii, File thumb,int maxDim) throws Exception{
+        Image image = ii.getImage();
+        MediaTracker mediaTracker = new MediaTracker(new Container());
+        mediaTracker.addImage(image, 0);
+        mediaTracker.waitForID(0);
+        // determine thumbnail size from WIDTH and HEIGHT
+        int thumbWidth = maxDim;
+        int thumbHeight = maxDim;
+        double thumbRatio = (double)thumbWidth / (double)thumbHeight;
+        int imageWidth = image.getWidth(null);
+        int imageHeight = image.getHeight(null);
+        double imageRatio = (double)imageWidth / (double)imageHeight;
+        if (thumbRatio < imageRatio) {
+            thumbHeight = (int)(thumbWidth / imageRatio);
+        } else {
+            thumbWidth = (int)(thumbHeight * imageRatio);
+        }
+        // draw original image to thumbnail image object and
+        // scale it to the new size on-the-fly
+        BufferedImage thumbImage = new BufferedImage(thumbWidth, 
+            thumbHeight, BufferedImage.TYPE_INT_RGB);
+        Graphics2D graphics2D = thumbImage.createGraphics();
+        graphics2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+            RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        graphics2D.drawImage(image, 0, 0, thumbWidth, thumbHeight, null);
+        // save thumbnail image to OUTFILE
+        BufferedOutputStream out = new BufferedOutputStream(new
+            FileOutputStream(thumb));
+        JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(out);
+        JPEGEncodeParam param = encoder.
+        getDefaultJPEGEncodeParam(thumbImage);
+        int quality = 100;
+        quality = Math.max(0, Math.min(quality, 100));
+        param.setQuality((float)quality / 100.0f, false);
+        encoder.setJPEGEncodeParam(param);
+        encoder.encode(thumbImage);
+        out.close();     
+        image.flush(); //free memory
+      }
 
 	/**
 	 * 
@@ -1432,4 +1423,23 @@ public class Util implements ITechnicalStrings {
 	    }
         return bOK;
 	}
+    
+    /**
+     * 
+     * @param col
+     * @return a single shuffle element from a list, null if none element in provided collection
+     */
+    public static Object getShuffleItem(Collection col){
+        if (col.size() == 0){
+            return null;
+        }
+        List list = null;
+        if (col instanceof List){
+            list = (List)col;
+        }
+        else{
+            list = new ArrayList(col);
+        }
+        return list.get((int)(Math.random()*list.size()));
+    }
 }

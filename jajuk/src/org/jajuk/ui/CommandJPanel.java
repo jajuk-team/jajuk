@@ -50,6 +50,7 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
@@ -63,8 +64,6 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import org.jajuk.base.DigitalDJ;
-import org.jajuk.base.DigitalDJManager;
 import org.jajuk.base.Event;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
@@ -77,6 +76,9 @@ import org.jajuk.base.Observer;
 import org.jajuk.base.Player;
 import org.jajuk.base.SearchResult;
 import org.jajuk.base.StackItem;
+import org.jajuk.base.StyleManager;
+import org.jajuk.dj.DigitalDJ;
+import org.jajuk.dj.DigitalDJManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.action.ActionManager;
 import org.jajuk.ui.action.ActionUtil;
@@ -203,30 +205,37 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		jbNovelties = new JajukButton(ActionManager.getAction(NOVELTIES));
 		jbNorm = new JajukButton(ActionManager.getAction(FINISH_ALBUM));
         popupDDJ = new JPopupMenu();
-        Iterator it = DigitalDJManager.getInstance().getDJs().iterator();
-        while (it.hasNext()){
-            DigitalDJ dj = (DigitalDJ)it.next();
-            popupDDJ.add(new JMenuItem(dj.getName()));    
-        }
-        popupDDJ.addSeparator();
-        JMenuItem jmiNew = new JMenuItem(Messages.getString("CommandJPanel.17"),Util.getIcon(ICON_NEW)); 
-        jmiNew.addActionListener(new ActionListener() {
-        
-            public void actionPerformed(ActionEvent arg0) {
-                new DigitalDJWizard();
-            }
-        
-        });
-        popupDDJ.add(jmiNew);
+        populateDJs();
         ddbDDJ = new DropDownButton(Util.getIcon(ICON_DIGITAL_DJ)) {
-        
             @Override
             protected JPopupMenu getPopupMenu() {
-                return popupDDJ;
+                //can access to menu only if collection is not void
+                if (StyleManager.getInstance().getItems().size() > 0){
+                    return popupDDJ;
+                }
+                else{
+                    return new JPopupMenu();
+                }
             }
-        
         };
         ddbDDJ.setToolTipText(Messages.getString("CommandJPanel.16"));
+        ddbDDJ.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                if (StyleManager.getInstance().getItems().size() == 0){
+                    Messages.showErrorMessage("156"); //void collection error
+                }
+                else{
+                    DigitalDJ dj = DigitalDJManager.getInstance().getDJ(ConfigurationManager.getProperty(CONF_DEFAULT_DJ));
+                    if (dj != null){
+                        FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(dj.generatePlaylist()),
+                        ConfigurationManager.getBoolean(CONF_STATE_REPEAT), false), false);
+                    }
+                    else{
+                        Messages.showErrorMessage("157");
+                    }
+                }
+            }
+        });
         jtbSpecial.add(jbGlobalRandom);
 		jtbSpecial.add(jbBestof);
 		jtbSpecial.add(jbNovelties);
@@ -324,7 +333,9 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		ObservationManager.register(EVENT_FILE_LAUNCHED,this);
         ObservationManager.register(EVENT_CLEAR_HISTORY,this);
         ObservationManager.register(EVENT_VOLUME_CHANGED,this);
-      //if a track is playing, display right state
+        ObservationManager.register(EVENT_DJ_CHANGE,this);
+        
+        //if a track is playing, display right state
 		if ( FIFO.getInstance().getCurrentFile() != null){
 			//update initial state
 			update(new Event(EVENT_PLAYER_PLAY,ObservationManager.getDetailsLastOccurence(EVENT_PLAYER_PLAY)));
@@ -401,7 +412,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 	 */
 	public void stateChanged(ChangeEvent e) {
 		if ( e.getSource() == jsVolume ){
-            if (System.currentTimeMillis()-lDateLastAdjust > 200){
+            if (System.currentTimeMillis()-lDateLastAdjust > 20){ //this value should be low to make sure we can reach zero
                 setVolume((float)jsVolume.getValue()/100);
                 lDateLastAdjust = System.currentTimeMillis();
             }
@@ -572,10 +583,43 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
                     jsVolume.addChangeListener(CommandJPanel.this);
                     jbMute.setSelected(false);
                 }
+                else if(EVENT_DJ_CHANGE.equals(event.getSubject())){
+                    populateDJs();
+                }
 			}
 		});
 
 	}
+    
+    /**
+     * Populate DJs
+     *
+     */
+    private void populateDJs(){
+        popupDDJ.removeAll();
+        Iterator it = DigitalDJManager.getInstance().getDJs().iterator();
+        while (it.hasNext()){
+            final DigitalDJ dj = (DigitalDJ)it.next();
+            JCheckBoxMenuItem jmi = new JCheckBoxMenuItem(dj.getName(),Util.getIcon(ICON_DIGITAL_DJ));
+            jmi.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent arg0) {
+                    ConfigurationManager.setProperty(CONF_DEFAULT_DJ,dj.getName());
+                    FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(dj.generatePlaylist()),
+                        ConfigurationManager.getBoolean(CONF_STATE_REPEAT), false), false);
+                }
+            });
+            popupDDJ.add(jmi);
+            jmi.setSelected(dj.getName().equals(ConfigurationManager.getProperty(CONF_DEFAULT_DJ)));
+        }
+        popupDDJ.addSeparator();
+        JMenuItem jmiNew = new JMenuItem(Messages.getString("CommandJPanel.17"),Util.getIcon(ICON_NEW)); 
+        jmiNew.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                new DigitalDJWizard();
+            }
+        });
+        popupDDJ.add(jmiNew);
+    }
 
 	/**
 	 * ToString() method

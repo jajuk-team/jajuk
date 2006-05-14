@@ -7,7 +7,12 @@ package org.jajuk.ui.action;
 
 import java.awt.event.ActionEvent;
 import java.util.Properties;
-import org.jajuk.base.*;
+
+import org.jajuk.base.Directory;
+import org.jajuk.base.Event;
+import org.jajuk.base.FIFO;
+import org.jajuk.base.ObservationManager;
+import org.jajuk.base.StackItem;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;

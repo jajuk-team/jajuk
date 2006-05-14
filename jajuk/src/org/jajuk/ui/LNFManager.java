@@ -22,13 +22,15 @@ package org.jajuk.ui;
 
 import java.util.Collection;
 import java.util.HashMap;
+
 import javax.swing.LookAndFeel;
 import javax.swing.UIManager;
 import javax.swing.plaf.ComboBoxUI;
+
 import org.jajuk.i18n.Messages;
+import org.jajuk.ui.action.ActionManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.log.Log;
-import org.jajuk.ui.action.ActionManager;
 
 /**
  * Manages Look and Feel

@@ -5,9 +5,17 @@
  */
 package org.jajuk.ui;
 
-import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.event.ActionEvent;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.ActionMap;
+import javax.swing.BorderFactory;
+import javax.swing.Icon;
+import javax.swing.InputMap;
+import javax.swing.JButton;
+import javax.swing.KeyStroke;
+import javax.swing.border.Border;
 
 /**
  * @author Bart Cremers

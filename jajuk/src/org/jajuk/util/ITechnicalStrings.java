@@ -73,8 +73,11 @@ public interface ITechnicalStrings {
     public static final int INC_RATE_TIME = 20;
     /**Min Number of tracks in an AuthorNode*/
     public static final int MIN_TRACKS_NUMBER = 4;
+    /**Min number of tracks in a DJ selection without track unicity*/
+    public static final int MIN_TRACKS_NUMBER_WITHOUT_UNICITY = 200;
+    /**Default number of tracks in a transition*/
+    public static final int DEFAULT_TRANSITION_TRACK_NUMBER = 2;
     
-            
 	// Jajuk version
 	public static final String JAJUK_VERSION = "VERSION_REPLACED_BY_ANT";
 	public static final String JAJUK_VERSION_DATE = "Build: DATE_REPLACED_BY_ANT";
@@ -226,10 +229,10 @@ public interface ITechnicalStrings {
     //images
 	public static final String IMAGES_SPLASHSCREEN =  PATH_IMAGES + "jajuk-splashscreen.png";
 	public static final String IMAGES_STAT_PAPER =  PATH_IMAGES + "No-Ones-Laughing-3.jpg";
-	public static final String IMAGE_NO_COVER = PATH_IMAGES + "unknown.jpg";
+	public static final String IMAGE_NO_COVER = PATH_IMAGES + "unknown.png";
     public static final String IMAGE_WRITE = PATH_IMAGES + "write.png";
     public static final String IMAGE_SEARCH = PATH_IMAGES + "search.png";
-    public static final String IMAGE_DJ = "/org/jajuk/images/dj.jpg";
+    public static final String IMAGE_DJ = PATH_IMAGES + "dj.jpg";
         
 	//files
 	public static final String FILE_JAJUK_DIR = System.getProperty("user.home")+(Main.bTestMode?"/.jajuk_test":"/.jajuk");
@@ -262,6 +265,7 @@ public interface ITechnicalStrings {
     public static final String FILE_DEFAULT_NOVELTIES_PLAYLIST = "novelties";
     public static final String FILE_DEFAULT_BOOKMARKS_PLAYLIST = "bookmarks";
     public static final String FILE_DEFAULT_QUEUE_PLAYLIST = "queue";
+    public static final String FILE_DJ_DIR = FILE_JAJUK_DIR+"/djs";
     //Command line options
     public static final String CLI_NOTASKBAR="notaskbar"; //if selected, no jajuk window at startup, only tray 
     public static final String CLI_IDE = "ide"; //Tells jajuk it is inside the IDE 
@@ -392,6 +396,7 @@ public interface ITechnicalStrings {
     public static final String EVENT_LOGICAL_TREE_SORT = "logical tree sort"; //logical tree osrt method changed
     public static final String EVENT_COVER_DEFAULT_CHANGED = "cover default changed"; //cover default changed
     public static final String EVENT_TABLE_CLEAR_SELECTION = "table.clear_selection"; //clear table selection
+    public static final String EVENT_DJ_CHANGE = "dj_change"; //DJ creation or removal
     
     //details keys
 	public static final String DETAIL_CURRENT_FILE_ID="current file id";
@@ -526,6 +531,7 @@ public interface ITechnicalStrings {
     public static final String CONF_FADE_DURATION = "jajuk.fade_duration"; // cross fade duration in secs
     public static final String CONF_LOGICAL_TREE_SORT_ORDER = "jajuk.logical_tree_sort_order";// logical tree sort order
     public static final String CONF_REFACTOR_PATTERN = "jajuk.refactor_pattern";// logical tree sort order
+    public static final String CONF_DEFAULT_DJ="jajuk.default_dj"; //default dj
 
     //Accuracy levels
 	public static final String ACCURACY_LOW = "low";
@@ -626,8 +632,8 @@ public interface ITechnicalStrings {
         
     public static final String XML_DJ_DJ = "dj"; //general dj tag
     public static final String XML_DJ_GENERAL = "general_parameters"; //general parameters
-    public static final String XML_DJ_USE_RATINGS = "use_ratings";
     public static final String XML_DJ_RATING_LEVEL = "rating_level";
+    public static final String XML_DJ_UNICITY = "unicity";
     public static final String XML_DJ_FADE_DURATION = "fade_duration";
     public static final String XML_DJ_PROPORTIONS = "proportions";
     public static final String XML_DJ_PROPORTION = "proportion";
@@ -635,16 +641,16 @@ public interface ITechnicalStrings {
     public static final String XML_DJ_AMBIENCE = "ambience";
     public static final String XML_DJ_STYLES = "styles";
     public static final String XML_DJ_VALUE = "values";
-    public static final String XML_DJ_PROPORTION_CLASS = "org.jajuk.base.ProportionDigitalDJ";
-    public static final String XML_DJ_TRANSITION_CLASS = "org.jajuk.base.TransitionDigitalDJ";
-    public static final String XML_DJ_AMBIENCE_CLASS = "org.jajuk.base.AmbienceDigitalDJ";
+    public static final String XML_DJ_PROPORTION_CLASS = "org.jajuk.dj.ProportionDigitalDJ";
+    public static final String XML_DJ_TRANSITION_CLASS = "org.jajuk.dj.TransitionDigitalDJ";
+    public static final String XML_DJ_AMBIENCE_CLASS = "org.jajuk.dj.AmbienceDigitalDJ";
     public static final String XML_DJ_EXTENSION = "dj";
     public static final String XML_DJ_TRANSITION = "transition";
     public static final String XML_DJ_TRANSITIONS = "transitions";
     public static final String XML_DJ_FROM = "from";
     public static final String XML_DJ_TO = "to";
     public static final String XML_DJ_NUMBER = "number";
-       
+    public static final String XML_DJ_STARTUP_STYLE = "startup_style";
     
     //Reserved XML tags for property names (note that a user can choose a property name equals to meta information attributes names without pbm)
     public static final String[] XML_RESERVED_ATTRIBUTE_NAMES = {
@@ -679,5 +685,12 @@ public interface ITechnicalStrings {
     public static final String PATTERN_YEAR = "%year";
     public static final String PATTERN_TRACKNAME = "%track";
     public static final String PATTERN_TRACKORDER = "%track#";
+    
+    //Actions
+    public static final String ACTION_NEXT = "next";
+    public static final String ACTION_PREV = "prev";
+    public static final String ACTION_FINISH = "finish";
+    public static final String ACTION_Cancel = "cancel";
+    
     
 }

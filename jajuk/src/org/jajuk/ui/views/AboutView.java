@@ -73,7 +73,7 @@ public class AboutView extends ViewAdapter {
 	private JTabbedPane jtp;
 	
 	/**Additional informations */
-	private static final String INFOS = "<html><a href='http://jajuk.sourceforge.net'>http://jajuk.sourceforge.net</a></html>"; //$NON-NLS-1$
+	private static final String INFOS = "http://jajuk.sourceforge.net"; //$NON-NLS-1$
 	
 	/**Return self instance*/
 	public static synchronized AboutView getInstance(){
@@ -116,7 +116,7 @@ public class AboutView extends ViewAdapter {
                         jp.add(jl);
                         jd.setContentPane(jp);
                         jd.pack();
-                        Util.setCenteredLocation(jd);
+                        jd.setLocationRelativeTo(Main.getWindow());
                         jd.setVisible(true);
                     }
                     catch(Exception e){                        

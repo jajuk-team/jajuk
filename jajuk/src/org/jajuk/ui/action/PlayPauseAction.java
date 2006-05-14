@@ -6,6 +6,7 @@
 package org.jajuk.ui.action;
 
 import java.awt.event.ActionEvent;
+
 import org.jajuk.base.Event;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Player;

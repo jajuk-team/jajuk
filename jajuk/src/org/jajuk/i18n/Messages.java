@@ -560,7 +560,7 @@ class MessageDialog implements Runnable{
             jp.add(Util.getCentredPanel(jbOK));
             dialogDetail.setContentPane(jp);
             dialogDetail.pack();
-            Util.setCenteredLocation(dialogDetail);
+            dialogDetail.setLocationRelativeTo(Main.getWindow());
             dialogDetail.setVisible(true);
         }
     }

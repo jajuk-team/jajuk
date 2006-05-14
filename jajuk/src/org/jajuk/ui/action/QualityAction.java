@@ -19,10 +19,12 @@
  */
 package org.jajuk.ui.action;
 
+import java.awt.event.ActionEvent;
+
+import org.jajuk.Main;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.QualityFeedbackWizard;
 import org.jajuk.util.Util;
-import java.awt.event.ActionEvent;
 
 /**
  * Action for displaying the tip of the day.
@@ -43,7 +45,7 @@ public class QualityAction extends ActionBase {
     public void perform(ActionEvent evt) {
         QualityFeedbackWizard qfw =  new QualityFeedbackWizard();
         qfw.pack();
-        Util.setCenteredLocation(qfw);
+        qfw.setLocationRelativeTo(Main.getWindow());
         qfw.setVisible(true);
     }
 }

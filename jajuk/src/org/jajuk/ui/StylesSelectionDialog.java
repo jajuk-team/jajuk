@@ -121,7 +121,7 @@ public class StylesSelectionDialog extends JDialog {
                     int[] selection = jlist.getSelectedIndices();
                     for (int i=0;i<selection.length;i++){
                         selectedStyles.add(
-                            StyleManager.getInstance().registerStyle( //create style only if new (never in this case)
+                            StyleManager.getInstance().getStyleByName( 
                                 (String)jlist.getModel().getElementAt(selection[i])));
                     }
                 }

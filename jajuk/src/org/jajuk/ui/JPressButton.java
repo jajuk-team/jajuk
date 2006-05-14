@@ -19,11 +19,15 @@
  */
 package org.jajuk.ui;
 
+import java.awt.AWTEvent;
+import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
-import java.awt.EventQueue;
-import java.awt.AWTEvent;
-import javax.swing.*;
+
+import javax.swing.Action;
+import javax.swing.DefaultButtonModel;
+import javax.swing.Icon;
+import javax.swing.UIManager;
 import javax.swing.plaf.ButtonUI;
 
 /**
