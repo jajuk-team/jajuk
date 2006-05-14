@@ -2,25 +2,48 @@
 <html>
 <head>
 
+
+
+  
+  
   <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+
+
+  
+
+
+  
+  
+  
   <title>QDWizard page</title>
-
-
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-  <meta name="Generator" content="Kate, the KDE Advanced Text Editor">
 
+
+  
+  
+  <meta name="Generator" content="Kate, the KDE Advanced Text Editor">
 </head>
 
 
 <body>
 
+
+
 <h1>QDWizard : Quick and Dirty Swing Wizard API</h1>
+
+
 
 <img style="width: 667px; height: 437px;" alt="Quick and dirty Wizard" src="./images/qdwizard.png"><br>
 
+
+
 <span style="font-style: italic;">Jajuk Digital DJ creation wizard</span><br>
+
+
 <h2>Context</h2>
+
+
 
 <p>Within the framework of <a href="http://jajuk.sourceforge.net">Jajuk</a>
 project, we had to write some complex multi-branching wizard for
@@ -34,162 +57,320 @@ from this project that is not yet merged into the head. This branch is
 better and fixes multi-branching issues but brings other issues and
 limitations and is not yet officially supported. </p>
 
+
+
 <p>Being pretty in a hurry with jajuk, we decided to write a new
 API
-from scratch. We wrote this API in about 5 or 6 hours so it a low
+from scratch. As we wrote this API in only few hours,&nbsp;it's a low
 quality design but we think that we need a working solution right now and we
 will decide in the future to switch back to Wizard API or to enhance
-QDWizard instead depending on the Wizard project state.</p>
+QDWizard instead depending on the Wizard project evolution.</p>
+<p>Please provide feedback !</p>
+
+
 
 <h2>Features</h2>
 
+
+
 <ul>
 
+
+
   <li>
+    
+    
     <p>Easy to use, minimum code. Only 3 methods to implement in
 Screen: getDescription(), getName() and initUI() and 3 methods in
 Wizard class:
 Screen getPreviousScreen(), Screen getNextScreen() and
 finish().</p>
 
+
+
   </li>
 
+
+
   <li>
+    
+    
     <p>Simple design, no branchs, only 2 class for the user:
 Wizard and Screen</p>
 
+
+
   </li>
 
+
+
   <li>
+    
+    
     <p>I18n (only en, fr, de, sp, ca, nl for the moment)</p>
 
+
+
   </li>
 
+
+
   <li>
+    
+    
     <p>Full branching support, can implement any wizard cinematic
 Error management and display using a simple setProblem(...)</p>
 
+
+
   </li>
 
+
+
   <li>
+    
+    
     <p>Wizard Image simply given in Wizard constructor (no weird property to set)</p>
 
+
+
   </li>
 
+
+
   <li>
+    
+    
     <p>Ultra light API: 4 classes, only few KB.</p>
 
+
+
   </li>
 
+
+
   <li>
+    
+    
     <p>Reactive support as it is included in Jajuk
 project.</p>
 
+
+
   </li>
 
+
+
   <li>
+    
+    
     <p>Learning curve of 15 minutes maximum.</p>
 
+
+
   </li>
 
+
+
   <li>
+    
+    
     <p>Generic wizard look, cannot be personalized but... who cares ?</p>
 
+
+
   </li>
 
+
+
   <li>
+    
+    
     <p>Poor design (no MVC pattern, no IOC...) but should work out of the
 box...</p>
 
+
+
   </li>
 
+
+
   <li>
+    
+    
     <p>Real world samples provided(jajuk classes)<br>
+
+
 
     </p>
 
+
+
   </li>
 
+
+
 </ul>
+
+
 <h2>Documentation</h2>
 
+
+
 <h3>Requirements</h3>
+
+
 <ul>
+
+
   <li>
 To use QDWizard, add the qdwizard-&lt;release&gt;.jar to your
 CLASSPATH. Note that qdwizard depends upon tablelayout (jar provided)
 so you have to add tablelayout to your CLASSPATH too to use it.</li>
+
+
   <li>JRE 1.5 + only.</li>
+
+
 </ul>
+
+
 
 <h3>Concepts</h3>
 
+
+
 <ul>
+
+
 
   <li>A wizard is build of several screens.</li>
 
+
+
   <li>Previous and next screens decision is taken by the wizard
 class.</li>
+
+
 
   <li>Wizard data is stored in a Hashtable named <span style="font-family: monospace;">data</span>. IT is
 accessible from Wizard and Screen class. Store and get data user
 selects in screens into this object.</li>
 
+
+
 </ul>
+
+
 
 <h3>Wizard creation</h3>
 
+
+
 <ul>
+
+
 
   <li>Create a class that extends Wizard. You have to implement <span style="font-family: monospace;">getPreviousScreen()</span>,
     <span style="font-family: monospace;">getNextScreen()</span>
 and <span style="font-family: monospace;">finish()</span>
 abstract methods.</li>
+
+
   <li><span style="font-family: monospace;">finish()</span> method implements actions to be done at the end of the wizard.</li>
+
+
 
   <li><span style="font-family: monospace;">getPreviousScreen()</span>
 and <span style="font-family: monospace;">getNextScreen()</span>
 have to return previous or next screen class. Example:</li>
 
+
+
 </ul>
+
+
 <pre>
 public Class getNextScreen(Class screen) {
-  if (ActionSelectionPanel.class.equals(getCurrentScreen())){
-    String sAction = (String)data.get(KEY_ACTION);
-    if (ActionSelectionPanel.ACTION_CREATION.equals(sAction)){
-    return TypeSelectionPanel.class;
-  }
-  else if (ActionSelectionPanel.ACTION_CHANGE.equals(sAction)){
-    return ChangePanel.class;
-  }
-  else if (ActionSelectionPanel.ACTION_DELETE.equals(sAction)){
-    return RemovePanel.class;
-  }
+ if (ActionSelectionPanel.class.equals(getCurrentScreen())){
+ String sAction = (String)data.get(KEY_ACTION);
+ if (ActionSelectionPanel.ACTION_CREATION.equals(sAction)){
+   return TypeSelectionPanel.class;
+ }
+ else if (ActionSelectionPanel.ACTION_CHANGE.equals(sAction)){
+   return ChangePanel.class;
+ }
+ else if (ActionSelectionPanel.ACTION_DELETE.equals(sAction)){
+   return RemovePanel.class;
+ }
 }
 </pre>
+
 <h3>Screen creation</h3>
+
+
 <ul>
+
+
   <li>For each wizard page, create a <span style="font-family: monospace;">Screen</span> class. You have to implement <span style="font-family: monospace;">initUI()</span>, <span style="font-family: monospace;">getDescription()</span> and <span style="font-family: monospace;">getName()</span> abstract methods.</li>
+
+
   <li>getName method should return the step name and getDescription the step description (return null if no description needed).</li>
+
+
   <li>initUI method contains graphical code for your screen. <span style="text-decoration: underline;">This method is automatically called from screen constructor so don't call it from your own constructor.</span></li>
+
+
 </ul>
+
+
 <h3>General use</h3>
+
+
 <ul>
+
+
   <li>Set errors using the <span style="font-family: monospace;">setProblem(String)</span> method. The error will be displayed in red to the user at the bottom of the screen. When error is fixed, do<span style="font-family: monospace;">setProblem(null)</span>.</li>
+
+
   <li>Get and set wizard data using <span style="font-family: monospace;">data</span> object available from wizard and screen classes.</li>
+
+
   <li>Use <span style="font-family: monospace;">setCanFinish(true) </span>method in a screen to set the fact that the screen is the last one (user can click on Finished button).</li>
+
+
 </ul>
+
+
 <h2>Download</h2>
-<a href="qdwizard-1.0.zip">
-The last QDWizard is 1.0</a> (2006/05/13) This zip contains API binaries, sources and docfor any system supporting Java 1.5+.
+
+
+The last QDWizard is 1.0(2006/05/13) This zip contains API binaries, sources and docfor any system supporting Java 1.5+.
+&nbsp;<a href="http://sourceforge.net/project/showfiles.php?group_id=91412&amp;package_id=189679">Download it on Jajuk download center.</a>
 
 <h2>Samples</h2>
+
+
 Have a look on Jajuk <a href="http://jajuk.cvs.sourceforge.net/jajuk/jajuk/src/org/jajuk/ui/DigitalDJWizard.java?view=log">DJ wizard</a>.
 <h2>Support</h2>
 
+
+
 Please use the <a href="http://sourceforge.net/tracker/?group_id=91412">jajuk
-support</a>.
+support</a>.<br>
+
+<h2>History</h2>
+
+<ul>
+
+  <li>2006/05/14: [1.0] Initial release</li>
+
+</ul>
+
+
 
 <p>SCRIPT_XITI</p>
+
+
 </body>
 </html>

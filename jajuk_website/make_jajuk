@@ -77,7 +77,7 @@ cp -rp $WEBSITE_SOURCE/*.html $WEBSITE_SOURCE/*.xml $WEBSITE_SOURCE/*.js $WEBSIT
 rm $XDOC_DEST/project.xml $XDOC_DEST/maven.xml
 
 #Sources Checkout
-#cvs checkout jajuk
+cvs checkout jajuk
 
 #Stats generation (outside maven website because it doesn't work anymore with maven)
 cd $MAVEN_DIR

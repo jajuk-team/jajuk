@@ -31,7 +31,7 @@
   <property name='uploaddir' value='${rootdir}/upload'/>
   <property name='helpdir' value='${rootdir}/help'/>
   <property name='jwsdir' value='${rootdir}/jws'/>
-  <property name='qdwizarddir' value='${rootdir}/qdwizard'/>
+  <property name='qdwizarddir' value='${rootdir}/qdwizard-${qdwizard_version}'/>
 	  
   <target name='all' description='o Create the entire package' depends='startup,prepare_upload'>
   </target>
@@ -216,7 +216,7 @@
     <jar jarfile='${distdir}/bin/${jarname}' excludes='**/package.html' 
     	basedir='${distdir}/${classdir}' 
     	manifest='${basedir}/dist-files/packaging/MANIFEST.MF' compress='true'/>
-    <!--Sign jajuk jars(others are signed manually once) -->
+    <!--Sign jajuk jars (others are signed manually once) -->
     <!--for security reason (this file is commited with keystore password), 
     keystore password is changed after this script execution, password is temporary -->
     <signjar jar="${distdir}/bin/${jarname}" alias="jajukteam" storepass="passpass"/>
@@ -349,7 +349,7 @@
  
  
   <target name='javadoc'>
-   	   <delete dir='${javadocdir}'/>
+   	  <delete dir='${javadocdir}'/>
    	  <mkdir dir='${javadocdir}'/>
      <property name='copyright' value='Copyright &amp;copy;  Jajuk team. All Rights Reserved.'/>
      <javadoc destdir='${javadocdir}' access='private' use='true'
@@ -358,6 +358,7 @@
             nodeprecatedlist='false' nodeprecated='false'
             packagenames='org.jajuk.base,org.jajuk.ui.views,org.jajuk,org.jajuk.i18n,org.jajuk.ui.perspectives,org.jajuk.util.log,org.jajuk.ui,org.jajuk.util,org.jajuk.util.error,org.jajuk.players'
             sourcepath='src'
+     		source='1.5'
             Windowtitle='Jajuk ${version} API'   >
 		<classpath>
          <fileset dir='${libdir}'>
@@ -466,10 +467,48 @@
 	
 	<!-- QDWizard distribution-->
 	<target name='qdwizard' description='o QDWizard distribution creation'>
+		<delete dir='${qdwizarddir}'/>
 		<mkdir dir='${qdwizarddir}'/>
+		<mkdir dir='${qdwizarddir}/src'/>
+		<mkdir dir='${qdwizarddir}/src/org'/>
+		<mkdir dir='${qdwizarddir}/src/org/jajuk'/>
+		<mkdir dir='${qdwizarddir}/src/org/jajuk/ui'/>
+		<mkdir dir='${qdwizarddir}/lib'/>
+		<mkdir dir='${qdwizarddir}/doc'/>
+		<mkdir dir='${qdwizarddir}/doc/images'/>
+		<mkdir dir='${qdwizarddir}/doc/javadoc'/>
 		<copy todir='${qdwizarddir}/lib' >
 	      	<fileset file='${distdir}/lib/tablelayout-20050920.jar'/>
-			<fileset file='${distdir}/lib/tablelayout-20050920.jar'/>
-		</copy>		           	
- 	</target>    
+		</copy>
+		<copy todir='${qdwizarddir}/src/org/jajuk/ui' >
+	      	<fileset file='${basedir}/src/org/jajuk/ui/wizard/**.java'/>
+		</copy>
+		<copy todir='${qdwizarddir}/doc' >
+			 <fileset file='${basedir}/../jajuk_website/QDWizard.html'/>
+		</copy>
+		<copy todir='${qdwizarddir}/doc/images' >
+			 <fileset file='${basedir}/../jajuk_website/images/qdwizard.png'/>
+		</copy>
+		<jar jarfile='${qdwizarddir}/qdwizard-${qdwizard_version}.jar' includes='**/org/jajuk/ui/wizard/*.class' 
+    	basedir='${basedir}/bin' 
+    	compress='true'/>
+    	<javadoc destdir='${qdwizarddir}/doc/javadoc' access='public' use='true'
+            notree='false' nonavbar='false' noindex='false'
+            splitindex='true' author='true' version='true'
+            nodeprecatedlist='false' nodeprecated='false'
+            packagenames='org.jajuk.ui.wizard'
+            sourcepath='src'
+    		source='1.5'
+            Windowtitle='QDWizard ${qdwizard_version} API'   >
+		<classpath>
+         <fileset dir='${libdir}'>
+           <include name='*.jar'>
+           </include>
+         </fileset>
+         <pathelement location='target/${final.name}.jar'/>
+       </classpath>
+      </javadoc>
+	  <zip basedir='${rootdir}' destfile='${uploaddir}/qdwizard-dist-${qdwizard_version}.zip' includes='qdwizard*/**'/>
+    	
+   </target>    
 </project>
