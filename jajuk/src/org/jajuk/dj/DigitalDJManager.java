@@ -209,6 +209,9 @@ abstract class DigitalDJFactory extends DefaultHandler implements ITechnicalStri
 	/**DJ name*/
 	protected String name; 
 	
+    /**DJ ID*/
+    protected String id; 
+    
 	/**DJ Fade duration*/
 	protected int fadeDuration; 
 	
@@ -230,7 +233,8 @@ abstract class DigitalDJFactory extends DefaultHandler implements ITechnicalStri
          */
         public void startElement(String sUri, String s, String sQName, Attributes attributes) throws SAXException {
         	if (XML_DJ_DJ.equals(sQName)){
-        		name = attributes.getValue(attributes.getIndex(XML_NAME));
+        		id = attributes.getValue(attributes.getIndex(XML_ID));
+                name = attributes.getValue(attributes.getIndex(XML_NAME));
         		type = attributes.getValue(attributes.getIndex(XML_TYPE));
         	}
         	else if (XML_DJ_GENERAL.equals(sQName)){
@@ -256,16 +260,24 @@ abstract class DigitalDJFactory extends DefaultHandler implements ITechnicalStri
 		//Parse the file to get DJ type 
 		SAXParserFactory spf = SAXParserFactory.newInstance();
         SAXParser saxParser = spf.newSAXParser();
-        saxParser.parse(file,new DefaultHandler(){
-        	/**
-             * Called when we start an element
-             */
-            public void startElement(String sUri, String s, String sQName, Attributes attributes) throws SAXException {
-            	if (XML_DJ_DJ.equals(sQName)){
-            		factoryType = attributes.getValue(attributes.getIndex(XML_TYPE));
-            	}
-            }
-        });
+        try{
+            saxParser.parse(file,new DefaultHandler(){
+                /**
+                 * Called when we start an element
+                 */
+                public void startElement(String sUri, String s, String sQName, Attributes attributes) throws SAXException {
+                    if (XML_DJ_DJ.equals(sQName)){
+                        factoryType = attributes.getValue(attributes.getIndex(XML_TYPE));
+                    }
+                }
+            });
+        }
+        //Error parsing the DJ ? delete it
+        catch(Exception e){
+            Log.error(e);
+            Log.debug("Corrupted DJ: "+file.getAbsolutePath()+" deleted");
+            file.delete();
+        }
         if (XML_DJ_PROPORTION_CLASS.equals(factoryType)){
         	return new DigitalDJFactoryProportionImpl();
         }
@@ -327,7 +339,8 @@ class DigitalDJFactoryProportionImpl extends DigitalDJFactory{
 		SAXParserFactory spf = SAXParserFactory.newInstance();
         SAXParser saxParser = spf.newSAXParser();
         saxParser.parse(file,handler);
-        ProportionDigitalDJ dj = new ProportionDigitalDJ(name);
+        ProportionDigitalDJ dj = new ProportionDigitalDJ(id);
+        dj.setName(name);
         dj.setFadingDuration(fadeDuration);
         dj.setRatingLevel(iRatingLevel);
         dj.setTrackUnicity(bTrackUnicity);
@@ -367,7 +380,8 @@ class DigitalDJFactoryAmbienceImpl extends DigitalDJFactory{
         SAXParserFactory spf = SAXParserFactory.newInstance();
         SAXParser saxParser = spf.newSAXParser();
         saxParser.parse(file,handler);
-        AmbienceDigitalDJ dj = new AmbienceDigitalDJ(name);
+        AmbienceDigitalDJ dj = new AmbienceDigitalDJ(id);
+        dj.setName(name);
         dj.setFadingDuration(fadeDuration);
         dj.setRatingLevel(iRatingLevel);
         dj.setTrackUnicity(bTrackUnicity);
@@ -422,7 +436,8 @@ class DigitalDJFactoryTransitionImpl extends DigitalDJFactory{
 		SAXParserFactory spf = SAXParserFactory.newInstance();
         SAXParser saxParser = spf.newSAXParser();
         saxParser.parse(file,handler);
-        TransitionDigitalDJ dj = new TransitionDigitalDJ(name);
+        TransitionDigitalDJ dj = new TransitionDigitalDJ(id);
+        dj.setName(name);
         dj.setFadingDuration(fadeDuration);
         dj.setRatingLevel(iRatingLevel);
         dj.setTrackUnicity(bTrackUnicity);

@@ -38,10 +38,10 @@ public class AmbienceDigitalDJ extends DigitalDJ implements ITechnicalStrings{
     private Ambience ambience;
     
     /**
-     * @param sName
+     * @param ID
      */
-    public AmbienceDigitalDJ(String sName) {
-        super(sName);
+    public AmbienceDigitalDJ(String sID) {
+        super(sID);
     }
 
     /* (non-Javadoc)

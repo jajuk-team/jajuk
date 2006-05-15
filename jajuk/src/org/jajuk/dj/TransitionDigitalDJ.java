@@ -45,10 +45,10 @@ public class TransitionDigitalDJ extends DigitalDJ {
     private Style startupStyle;
     
     /**
-     * @param sName
+     * @param sID
      */
-    public TransitionDigitalDJ(String sName) {
-        super(sName);
+    public TransitionDigitalDJ(String sID) {
+        super(sID);
         this.transitions = new ArrayList(10);
     }
     

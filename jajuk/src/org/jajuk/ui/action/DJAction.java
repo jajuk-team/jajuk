@@ -21,6 +21,7 @@
 package org.jajuk.ui.action;
 
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 
 import org.jajuk.base.FIFO;
 import org.jajuk.base.StyleManager;
@@ -49,7 +50,13 @@ public class DJAction extends ActionBase {
         else{
             DigitalDJ dj = DigitalDJManager.getInstance().getDJByID(ConfigurationManager.getProperty(CONF_DEFAULT_DJ));
             if (dj != null){
-                FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(dj.generatePlaylist()),
+                ConfigurationManager.setProperty(CONF_FADE_DURATION,Integer.toString(dj.getFadingDuration()));
+                ArrayList al = dj.generatePlaylist();
+                if (al.size() == 0){ //DJ constraints cannot be respected
+                    Messages.showErrorMessage("158");
+                    return;
+                }
+                FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(al),
                     ConfigurationManager.getBoolean(CONF_STATE_REPEAT), false), false);
             }
             else{

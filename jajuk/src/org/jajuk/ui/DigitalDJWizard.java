@@ -286,9 +286,9 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
          */
         public void actionPerformed(ActionEvent e) {
             int row = getWidgetIndex(widgets,(JComponent)e.getSource());
-            data.put(KEY_CHANGE,djs.get(row));
             //set DJ type useful for screen choice 
             DigitalDJ dj = djs.get(row);
+            data.put(KEY_CHANGE,dj);
             if (dj instanceof AmbienceDigitalDJ){
                 data.put(KEY_DJ_TYPE,TypeSelectionPanel.DJ_TYPE_AMBIENCE);
             }
@@ -421,7 +421,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
             if (ActionSelectionPanel.ACTION_CREATION.equals(data.get(KEY_ACTION))){
                 //default values
                 data.put(KEY_FADE_DURATION,10);
-                data.put(KEY_RATINGS_LEVEL,2);
+                data.put(KEY_RATINGS_LEVEL,0); //all tracks by default
                 data.put(KEY_UNICITY,false);
             }
             else if (ActionSelectionPanel.ACTION_CHANGE.equals(data.get(KEY_ACTION))){ //keep existing DJ values
@@ -1221,7 +1221,8 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
                     }
                 }
             }
-            else if (ambiences.size() > 0){ //new dj, select first ambiance found
+            //select first ambiance found
+            if (ambiences.size() > 0){ 
                 JRadioButton jrb = (JRadioButton)widgets[0][0];
                 jrb.doClick(); 
             }
@@ -1424,19 +1425,21 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
             String sType = (String)data.get(KEY_DJ_TYPE);
             dj = null;
             String sName = (String)data.get(KEY_DJ_NAME);
+            //create a unique ID for this DJ, simply use current time in ms
+            String sID = Long.toString(System.currentTimeMillis());
             if (TypeSelectionPanel.DJ_TYPE_AMBIENCE.equals(sType)){
                 Ambience ambience = (Ambience)data.get(KEY_AMBIENCE);
-                dj = new AmbienceDigitalDJ(sName);
+                dj = new AmbienceDigitalDJ(sID);
                 ((AmbienceDigitalDJ)dj).setAmbience(ambience);
             }
             else if (TypeSelectionPanel.DJ_TYPE_PROPORTION.equals(sType)){
-                dj = new ProportionDigitalDJ(sName);
+                dj = new ProportionDigitalDJ(sID);
                 ArrayList proportions = (ArrayList)data.get(KEY_PROPORTIONS);
                 ((ProportionDigitalDJ)dj).setProportions(proportions);
             }
             else if (TypeSelectionPanel.DJ_TYPE_TRANSITION.equals(sType)){
                 ArrayList transitions = (ArrayList)data.get(KEY_TRANSITIONS);
-                dj = new TransitionDigitalDJ(sName);
+                dj = new TransitionDigitalDJ(sID);
                 ((TransitionDigitalDJ)dj).setTransitions(transitions);
                 Style startup = (Style)data.get(KEY_STARTUP_STYLE);
                 ((TransitionDigitalDJ)dj).setStartupStyle(startup);
@@ -1444,6 +1447,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
             int iFadeDuration = (Integer)data.get(KEY_FADE_DURATION);
             int iRateLevel = (Integer)data.get(KEY_RATINGS_LEVEL);
             boolean bUnicity = (Boolean)data.get(KEY_UNICITY);
+            dj.setName(sName);
             dj.setFadingDuration(iFadeDuration);
             dj.setRatingLevel(iRateLevel);
             dj.setTrackUnicity(bUnicity);

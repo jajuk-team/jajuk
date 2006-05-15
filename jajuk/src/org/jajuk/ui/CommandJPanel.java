@@ -581,30 +581,35 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
      *
      */
     private void populateDJs(){
-        popupDDJ.removeAll();
-        Iterator it = DigitalDJManager.getInstance().getDJs().iterator();
-        while (it.hasNext()){
-            final DigitalDJ dj = (DigitalDJ)it.next();
-            JCheckBoxMenuItem jmi = new JCheckBoxMenuItem(dj.getName(),Util.getIcon(ICON_DIGITAL_DJ));
-            jmi.addActionListener(new ActionListener() {
+        try{
+            popupDDJ.removeAll();
+            Iterator it = DigitalDJManager.getInstance().getDJs().iterator();
+            while (it.hasNext()){
+                final DigitalDJ dj = (DigitalDJ)it.next();
+                JCheckBoxMenuItem jmi = new JCheckBoxMenuItem(dj.getName(),Util.getIcon(ICON_DIGITAL_DJ));
+                jmi.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent arg0) {
+                        ConfigurationManager.setProperty(CONF_DEFAULT_DJ,dj.getID());
+                        ObservationManager.notify(new Event(EVENT_DJ_CHANGE));
+                        FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(dj.generatePlaylist()),
+                            ConfigurationManager.getBoolean(CONF_STATE_REPEAT), false), false);
+                    }
+                });
+                popupDDJ.add(jmi);
+                jmi.setSelected(dj.getID().equals(ConfigurationManager.getProperty(CONF_DEFAULT_DJ)));
+            }
+            popupDDJ.addSeparator();
+            JMenuItem jmiNew = new JMenuItem(Messages.getString("CommandJPanel.17"),Util.getIcon(ICON_NEW)); 
+            jmiNew.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent arg0) {
-                    ConfigurationManager.setProperty(CONF_DEFAULT_DJ,dj.getID());
-                    ObservationManager.notify(new Event(EVENT_DJ_CHANGE));
-                    FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(dj.generatePlaylist()),
-                        ConfigurationManager.getBoolean(CONF_STATE_REPEAT), false), false);
+                    new DigitalDJWizard();
                 }
             });
-            popupDDJ.add(jmi);
-            jmi.setSelected(dj.getID().equals(ConfigurationManager.getProperty(CONF_DEFAULT_DJ)));
+            popupDDJ.add(jmiNew);
         }
-        popupDDJ.addSeparator();
-        JMenuItem jmiNew = new JMenuItem(Messages.getString("CommandJPanel.17"),Util.getIcon(ICON_NEW)); 
-        jmiNew.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent arg0) {
-                new DigitalDJWizard();
-            }
-        });
-        popupDDJ.add(jmiNew);
+        catch(Exception e){
+            Log.error(e);
+        }
     }
 
 	/**

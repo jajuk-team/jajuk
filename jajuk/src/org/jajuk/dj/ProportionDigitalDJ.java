@@ -42,10 +42,10 @@ public class ProportionDigitalDJ extends DigitalDJ implements ITechnicalStrings{
     private ArrayList<Proportion> proportions;
     
     /**
-     * @param sName
+     * @param sID
      */
-    public ProportionDigitalDJ(String sName) {
-        super(sName);
+    public ProportionDigitalDJ(String sID) {
+        super(sID);
         this.proportions = new ArrayList(10);
     }
 
@@ -75,11 +75,14 @@ public class ProportionDigitalDJ extends DigitalDJ implements ITechnicalStrings{
         ArrayList<File> global = FileManager.getInstance().getGlobalShufflePlaylist(); 
         //Select by rate if needed
         filterFilesByRate(global);
-        
         for (File file:global){
-            for (Proportion prop:list.keySet()){
+            for (Proportion prop:proportions){
                 if (prop.getStyles().contains(file.getTrack().getStyle())){
                     ArrayList files = list.get(prop);
+                    if (files == null){ //not yet file list
+                        files = new ArrayList(100);
+                        list.put(prop,files);
+                    }
                     files.add(file);
                 }
             }

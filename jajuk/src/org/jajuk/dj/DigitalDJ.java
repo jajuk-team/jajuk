@@ -37,7 +37,7 @@ import org.jajuk.util.ITechnicalStrings;
 public abstract class DigitalDJ implements ITechnicalStrings,Comparable{
     
     /**DJ unique ID*/
-    protected String sID;
+    private String sID;
     
     /**DJ name*/
     protected String sName;
@@ -51,24 +51,12 @@ public abstract class DigitalDJ implements ITechnicalStrings,Comparable{
     /**Track unicity*/
     protected boolean bUnicity = false;
     
-    
-    /**
-     * Constructor without ID
-     * @param sName DJ name
-     */
-    public DigitalDJ(String sName){
-        this.sName = sName;
-        //create a unique ID for this DJ, simply use current time in ms
-        this.sID = Long.toString(System.currentTimeMillis());
-    }
-    
     /**
      * Constructor with ID
      * @param sName DJ name
      * @param sID DJ ID
      */
-    public DigitalDJ(String sName,String sID){
-        this.sName = sName;
+    DigitalDJ(String sID){
         this.sID = sID;
     }
     
@@ -103,7 +91,7 @@ public abstract class DigitalDJ implements ITechnicalStrings,Comparable{
     protected String toXMLGeneralParameters(){
     	StringBuffer sb = new StringBuffer();
     	sb.append("<?xml version='1.0' encoding='UTF-8'?>\n");
-        sb.append("<"+XML_DJ_DJ+" "+XML_VERSION+"='"+JAJUK_VERSION+"' "+XML_NAME+"='"+sName+"' "+XML_TYPE+"='"+this.getClass().getName()+"'>\n");
+        sb.append("<"+XML_DJ_DJ+" "+XML_VERSION+"='"+JAJUK_VERSION+"' "+XML_ID+"='"+sID+"' "+XML_NAME+"='"+sName+"' "+XML_TYPE+"='"+this.getClass().getName()+"'>\n");
         sb.append("\t<"+XML_DJ_GENERAL+" ");
         sb.append(XML_DJ_RATING_LEVEL+"='"+iRatingLevel+"' ");
         sb.append(XML_DJ_UNICITY+"='"+bUnicity+"' ");
