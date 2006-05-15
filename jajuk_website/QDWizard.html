@@ -49,7 +49,7 @@
 project, we had to write some complex multi-branching wizard for
 several features. After a quick search, it appears that only one Swing
 project was maintened and able to match our needs: <a href="https://wizard.dev.java.net/">Wizard Project</a> from
- java.net. However, since this project is well documented, provides
+ <a href="http://java.net/">java.net</a>. However, since this project is well documented, provides
 a good support, it is still in early stages, too complex, doesn't
 provide i18n and the worst: we didn't manage to make it work and had to
 give up after about 20 hours. We tried later the EzBranch
@@ -61,12 +61,9 @@ limitations and is not yet officially supported.</p>
 
 <p>Being pretty in a hurry with jajuk, we decided to write a new
 API
-from scratch. As we wrote this API in only few hours, it's a low
-quality design but we think that we need a working solution right now and we
+from scratch. We 
 will decide in the future to switch back to Wizard API or to enhance
 QDWizard instead depending on the Wizard project evolution.</p>
-<p>Please provide feedback !</p>
-
 
 
 <h2>Features</h2>
@@ -157,7 +154,7 @@ Wizard and Screen</p>
   <li>
     
     
-    <p>Reactive support as it is included in Jajuk
+    <p>Reactive support as part of the Jajuk
 project.</p>
 
 
@@ -203,7 +200,7 @@ box...</p>
   <li>
     
     
-    <p>Real world samples provided(jajuk classes)<br>
+    <p>Real world samples provided (jajuk classes)<br>
 
 
 
@@ -231,7 +228,7 @@ box...</p>
   <li>
 To use QDWizard, add the qdwizard-&lt;release&gt;.jar to your
 CLASSPATH. Note that qdwizard depends upon tablelayout (jar provided)
-so you have to add tablelayout to your CLASSPATH too to use it.</li>
+so add it to your CLASSPATH to use it.</li>
 
 
   <li>JRE 1.5 + only.</li>
@@ -258,9 +255,9 @@ class.</li>
 
 
 
-  <li>Wizard data is stored in a Hashtable named <span style="font-family: monospace;">data</span>. IT is
-accessible from Wizard and Screen class. Store and get data user
-selects in screens into this object.</li>
+  <li>Wizard data is stored in a Hashtable named <span style="font-family: monospace;">data</span>. It is
+accessible from Wizard and Screen class. Store and get here options 
+selected by the user.</li>
 
 
 
@@ -335,7 +332,7 @@ public Class getNextScreen(Class screen) {
 <ul>
 
 
-  <li>Set errors using the <span style="font-family: monospace;">setProblem(String)</span> method. The error will be displayed in red to the user at the bottom of the screen. When error is fixed, do<span style="font-family: monospace;">setProblem(null)</span>.</li>
+  <li>Set errors using the <span style="font-family: monospace;">setProblem(String)</span> method. The error will be displayed in red to the user at the bottom of the screen. When error is fixed, use a <span style="font-family: monospace;">setProblem(null)</span>.</li>
 
 
   <li>Get and set wizard data using <span style="font-family: monospace;">data</span> object available from wizard and screen classes.</li>
@@ -362,7 +359,7 @@ Have a look on Jajuk <a href="http://jajuk.cvs.sourceforge.net/jajuk/jajuk/src/o
 
 
 Please use the <a href="http://sourceforge.net/tracker/?group_id=91412">jajuk
-support</a>.<br>
+support</a>.
 
 <h2>History</h2>
 
