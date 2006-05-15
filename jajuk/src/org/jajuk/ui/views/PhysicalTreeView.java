@@ -38,7 +38,6 @@ import java.util.Properties;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JFileChooser;
-import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
@@ -200,10 +199,9 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
     	jmenuCollection = new JPopupMenu();
     	// Export
     	jmiCollectionExport = new JMenuItem(Messages
-    			.getString("Property_export")); //$NON-NLS-1$
+    			.getString("LogicalTreeView.33")); //$NON-NLS-1$
     	jmiCollectionExport.addActionListener(this);
-    	jmenuCollection.add(new JLabel(Messages.getString("Export"))); //$NON-NLS-1$
-    	jmenuCollection.add(jmiCollectionExport);
+    	//TBI EXP jmenuCollection.add(jmiCollectionExport);
     	
         //File menu
         jmenuFile = new JPopupMenu();
@@ -289,7 +287,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         jmenuDir.add(jmiDirDelete);
         jmenuDir.add(jmiDirAddFavorites);
         jmenuDir.add(jmiDirCDDBQuery);
-        jmenuDir.add(jmiDirExport);
+        //TBI EXP jmenuDir.add(jmiDirExport);
         jmenuDir.add(jmiDirRefactor);
         jmenuDir.add(jmiDirProperties);
         
@@ -336,7 +334,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         jmenuDev.add(jmiDevCreatePlaylist);
         jmenuDev.add(jmiDevConfiguration);
         jmenuDev.add(jmiDevCDDBQuery);
-        jmenuDev.add(jmiDevExport);
+        //TBI EXP jmenuDev.add(jmiDevExport);
         jmenuDev.add(jmiDevProperties);
         
         //Playlist file menu
