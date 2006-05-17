@@ -1377,9 +1377,14 @@ public class Util implements ITechnicalStrings {
 	 * @return whether the file name is correct on the current filesystem
 	 */
 	public static boolean isValidFileName(File parent, String name) {
-		if (parent == null || name == null) {
+		//General tests
+        if (parent == null || name == null) {
 			return false;
 		}
+        //only digits or letters, OK, no need to test
+        if (!Util.containsNonDigitOrLetters(name)){
+            return true;
+        }
 		File f = new File(parent, name);
 		if (!f.exists()) {
 			try {
@@ -1390,7 +1395,6 @@ public class Util implements ITechnicalStrings {
 				boolean b = false;
 				for (int i = 0; i < files.length; i++) {
 					if (files[i].getName().equals(name)) {
-						System.out.println(files[i].getName());
 						b = true;
 						break;
 					}

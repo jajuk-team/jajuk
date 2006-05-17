@@ -29,7 +29,9 @@ import org.jajuk.base.AlbumManager;
 import org.jajuk.base.AuthorManager;
 import org.jajuk.base.Directory;
 import org.jajuk.base.DirectoryManager;
+import org.jajuk.base.Event;
 import org.jajuk.base.File;
+import org.jajuk.base.ObservationManager;
 import org.jajuk.base.StyleManager;
 import org.jajuk.base.Track;
 import org.jajuk.i18n.Messages;
@@ -65,6 +67,7 @@ public class RefactorAction implements ITechnicalStrings {
 		new Thread() {
 			public void run() {
 				refactor();
+                ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH));
 			}
 		}.start();
 		Util.stopWaiting();
@@ -165,7 +168,7 @@ public class RefactorAction implements ITechnicalStrings {
 			String sName = split[0];
 		
 			// Check if directories exists, and if not create them
-			String sPathname = getCheckPath(sRoot, filename);
+			String sPathname = getCheckedPath(sRoot, filename);
 			java.io.File fNew = new java.io.File(sPathname);
 			fNew.getParentFile().mkdirs();
 			
@@ -218,7 +221,7 @@ public class RefactorAction implements ITechnicalStrings {
 		}
 	}
 
-	public String getCheckPath(String sRoot, String sPathname) {
+	public String getCheckedPath(String sRoot, String sPathname) {
 
 		java.io.File fioRoot = new java.io.File(sRoot);
 		java.io.File[] fioList = fioRoot.listFiles(new JajukFileFilter(true,false));
