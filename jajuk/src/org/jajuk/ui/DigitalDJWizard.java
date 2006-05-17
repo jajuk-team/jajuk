@@ -123,6 +123,8 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
             jrbProp.addActionListener(this);
             jrbAmbiance = new JRadioButton(Messages.getString("DigitalDJWizard.3"));
             jrbAmbiance.addActionListener(this);
+            //can select ambience DJ only if at least one ambience defined
+            jrbAmbiance.setEnabled(AmbienceManager.getInstance().getAmbiences().size() > 0);
             bgTypes.add(jrbProp);
             bgTypes.add(jrbTransitions);
             bgTypes.add(jrbAmbiance);
@@ -204,6 +206,9 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
             setLayout(new TableLayout(main));
             add(jpDjs,"0,1");
             setProblem(Messages.getString("DigitalDJWizard.40"));
+            //select first ambience found
+            JRadioButton jrb = (JRadioButton)widgets[0][0];
+            jrb.doClick();
           }
   
         /* (non-Javadoc)
@@ -1058,10 +1063,6 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
         /**All dynamic widgets*/
         JComponent[][] widgets;
         
-        JButton jbNew;
-        JButton jbDelete;
-        JPanel jpButtons;
-        
         /**Ambiences**/
         ArrayList<Ambience> ambiences;
         
@@ -1070,9 +1071,8 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
         
         /**Selected ambience index*/
         int ambienceIndex = 0;
-      
         
-         public String getDescription() {
+        public String getDescription() {
             return Messages.getString("DigitalDJWizard.47");
         }
          
@@ -1086,6 +1086,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
          */
         public void initUI(){
             ambiences = new ArrayList(AmbienceManager.getInstance().getAmbiences());
+            widgets = new JComponent[1][ambiences.size()];
             //We need at least one ambience
             if (AmbienceManager.getInstance().getAmbiences().size() == 0){
                 setProblem(Messages.getString("DigitalDJWizard.38"));    
@@ -1094,225 +1095,63 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
             //Get DJ
             dj = (AmbienceDigitalDJ)DigitalDJManager.getInstance().getDJByName((String)data.get(KEY_DJ_NAME));
             //set layout
-            double[][] dSizeGeneral = {{10,0.99,5},
-                    {10,TableLayout.FILL,10,TableLayout.PREFERRED,10}};
-            setLayout(new TableLayout(dSizeGeneral));
-            //button layout
-            double[][] dButtons = {{10,TableLayout.PREFERRED,
-                20,0.99,10},{20}};
-            jpButtons = new JPanel(new TableLayout(dButtons));
-            jbNew = new JButton(Messages.getString("DigitalDJWizard.32"),Util.getIcon(ICON_NEW));
-            jbNew.addActionListener(this);
-            jbNew.setToolTipText(Messages.getString("DigitalDJWizard.33"));
-            jbDelete = new JButton(Messages.getString("DigitalDJWizard.34"),Util.getIcon(ICON_DELETE));
-            jbDelete.addActionListener(this);
-            jbDelete.setToolTipText(Messages.getString("DigitalDJWizard.35"));
-            jpButtons.add(jbNew,"1,0");
-            jpButtons.add(jbDelete,"3,0");
-            add(getPanel(),"1,1");
-            add(jpButtons,"1,3,c,c");
-        }
-        
-        /**
-         * 
-         * @return a panel containing all items
-         */
-        private JScrollPane getPanel(){
-            widgets = new JComponent[ambiences.size()][3];
-            JPanel out = new JPanel();
-            //Delete|Style list|proportion in %  
-            double[] dHoriz = {25,120,200};
-            double[] dVert = new double[widgets.length+2]; 
-            dVert[0] = 20;
-            ButtonGroup group = new ButtonGroup();
-            //now add all ambiences
-            for (int index=0;index<ambiences.size();index++ ){
-                //Ambience name
-                final JTextField jtfName = new JTextField();
-                jtfName.setText(ambiences.get(index).getName());
-                jtfName.addCaretListener(new CaretListener() {
-                    public void caretUpdate(CaretEvent arg0) {
-                        int index = getWidgetIndex(widgets,(JComponent)arg0.getSource());
-                        String s = jtfName.getText();
-                        JButton jb = (JButton)widgets[index][2];
-                        Ambience ambience = ambiences.get(index);
-                        ambience.setName(s);
-                        jb.setEnabled(s.length() > 0);
-                    }
-                });
-                jtfName.setToolTipText(Messages.getString("DigitalDJWizard.36"));
-                widgets[index][1] = jtfName;
-                //radio button
-                final JRadioButton jrbAmbience = new JRadioButton();
-                group.add(jrbAmbience);
-                jrbAmbience.addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent ae) {
-                        String sAmbienceName = ((JTextField)widgets[getWidgetIndex(widgets,jrbAmbience)][1]).getText();
-                        ambienceIndex = getWidgetIndex(widgets,jrbAmbience);
-                        Ambience ambience = AmbienceManager.getInstance().getAmbience(sAmbienceName);
-                        if (!ambience.getName().equals("") && ambience.getStyles().size() > 0){
-                            data.put(KEY_AMBIENCE,ambience);
-                            setProblem(null);
-                        }
-                        else{
-                            data.put(KEY_AMBIENCE,null);
-                            setProblem(Messages.getString("DigitalDJWizard.39"));
-                        }
-                    }
-                });
-                widgets[index][0] = jrbAmbience;
-                if (index == ambienceIndex){
-                    jrbAmbience.setSelected(true);
-                }
-                Ambience ambience = ambiences.get(index);
-                //style list
-                JButton jbStyle = new JButton(Util.getIcon(ICON_LIST));
-                if (ambience.getName().length() == 0){
-                    jbStyle.setEnabled(false);
-                }
-                if (ambience.getStyles() != null && ambience.getStyles().size() > 0){
-                    jbStyle.setText(ambience.getStylesDesc());
-                    jbStyle.setToolTipText(ambience.getStylesDesc());
-                }
-                jbStyle.addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent ae) {
-                        int row = getWidgetIndex(widgets,(JComponent)ae.getSource()); 
-                        addStyle(row);
-                        //refresh ambience (force an action event) 
-                        JRadioButton jrb = (JRadioButton)widgets[row][0];
-                        jrb.doClick();
-                    }
-                });
-                jbStyle.setToolTipText(Messages.getString("DigitalDJWizard.27"));
-                widgets[index][2] = jbStyle;
-                //Set layout
-                dVert[index+1] = 20;
+            double[] dVert = new double[ambiences.size()];
+            //prepare vertical layout
+            for (int i=0;i<ambiences.size();i++){
+                dVert[i] = 20;
             }
-            dVert[widgets.length+1] = 20;
-            //Create layout
-            double[][] dSizeProperties = new double[][]{dHoriz,dVert};  
-            TableLayout layout = new TableLayout(dSizeProperties);
-            layout.setHGap(10);
+            double[][] size = new double[][]
+                                           {{0.99},dVert};
+            ButtonGroup bg = new ButtonGroup();
+            JPanel jpAmbiences = new JPanel(new TableLayout(size));
+            TableLayout layout = new TableLayout(size);
             layout.setVGap(10);
-            out.setLayout(layout);
-            //Create header
-            JLabel jlHeader1 = new JLabel(Messages.getString("DigitalDJWizard.37"));
-            jlHeader1.setFont(new Font("Dialog",Font.BOLD,12));
-            JLabel jlHeader2 = new JLabel(Messages.getString("DigitalDJWizard.27"));
-            jlHeader2.setFont(new Font("Dialog",Font.BOLD,12));
-            out.add(jlHeader1,"1,0,c,c");
-            out.add(jlHeader2,"2,0,c,c");
-            //Add widgets
-            for (int i=0;i<dVert.length-2;i++){
-                out.add(widgets[i][0],"0,"+(i+1)+",c,c"); //$NON-NLS-1$ //$NON-NLS-2$
-                out.add(widgets[i][1],"1,"+(i+1)); //$NON-NLS-1$
-                out.add(widgets[i][2],"2,"+(i+1)); //$NON-NLS-1$ //$NON-NLS-2$
+            layout.setHGap(10);
+            jpAmbiences.setLayout(layout);
+            int index = 0;
+            for (Ambience ambience : ambiences){
+                JRadioButton jrb = new JRadioButton(ambience.getName()); 
+                jrb.addActionListener(this);
+                bg.add(jrb);
+                widgets[0][index] = jrb;
+                jpAmbiences.add(jrb,"0,"+index);
+                index ++;
             }
-            JScrollPane jsp = new JScrollPane(out);
-            //if change, select the ambience
+            //main panel
+            double[][] main = new double[][]
+                                           {{0.99},{20,TableLayout.PREFERRED}};
+            setLayout(new TableLayout(main));
+            add(jpAmbiences,"0,1");
+            //DJ change, set right ambience
             if (ActionSelectionPanel.ACTION_CHANGE.equals(data.get(KEY_ACTION))){
-                for (int index=0;index<ambiences.size();index++ ){
-                    JTextField jtf = (JTextField)widgets[index][1]; 
-                    DigitalDJ dj = (DigitalDJ)data.get(KEY_CHANGE);
-                    if (jtf.getText().equals(dj.getName())){
-                        JCheckBox jcb = (JCheckBox)widgets[index][0];
-                        jcb.setSelected(true);
+                DigitalDJ dj = (DigitalDJ)data.get(KEY_CHANGE);
+                Ambience ambience = ((AmbienceDigitalDJ)dj).getAmbience();
+                index = 0;
+                for (Ambience a:ambiences){
+                    if (a.equals(ambience)){
+                        JRadioButton jrb = (JRadioButton)widgets[0][index];
+                        jrb.doClick();//select right ambience, it will set right value into data
                         break;
                     }
+                    index ++;
                 }
-            }
-            //select first ambiance found
-            if (ambiences.size() > 0){ 
+            }else{
+                //select first ambience found
                 JRadioButton jrb = (JRadioButton)widgets[0][0];
-                jrb.doClick(); 
-            }
-            return jsp;
-        }
-        
-        /**
-         * Add a style to a proportion
-         * @param row row
-         */
-        private void addStyle(int row){
-            synchronized(StyleManager.getInstance().getLock()){
-                Ambience ambience = ambiences.get(row);
-                //create list of styles used in current selection
-                StylesSelectionDialog dialog = new StylesSelectionDialog(null);
-                dialog.setSelection(ambience.getStyles());
-                dialog.setVisible(true);
-                HashSet<Style> styles =  dialog.getSelectedStyles();
-                //check if at least one style has been selected
-                if (styles.size() == 0){
-                    return;
-                }
-                String sText = "";
-                //reset old styles
-                ambience.setStyles(new HashSet(10));
-                for (Style style:styles){
-                    ambience.addStyle(style);
-                    sText += style.getName2()+',';  
-                }
-                sText = sText.substring(0,sText.length()-1);
-                //Set button text
-                ((JButton)widgets[row][2]).setText(sText);
-                //if we have ambience name and some styles, register the ambience
-                if (ambience.getName().length() > 0 && 
-                        ambience.getStyles().size() > 0){
-                    //register this new ambience
-                    AmbienceManager.getInstance().registerAmbience(ambience);
-                    //no more error message if at least one ambience
-                    setProblem(null);
-                }
+                jrb.doClick();
             }
         }
         
-        /**
-         * Refresh panel
-         */
-        private void refreshScreen(){
-            removeAll();
-            //refresh panel
-            add(getPanel(),"1,1");
-            add(jpButtons,"1,3,c,c");
-            revalidate();
-            repaint();
-        }
-    
-    
-        /* (non-Javadoc)
+         /* (non-Javadoc)
          * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
          */
-        public void actionPerformed(ActionEvent ae) {
-            if (ae.getSource() == jbNew){
-                ambiences.add(new Ambience("")); //create a void ambience
-                setProblem(null);
-                //refresh screen
-                refreshScreen();
-                //select new row
-                JRadioButton jrb = (JRadioButton)widgets[ambiences.size()-1][0];
-                jrb.setSelected(true);
-                ambienceIndex = ambiences.size()-1;
-                setProblem(Messages.getString("DigitalDJWizard.39"));
-            }
-            else if (ae.getSource() == jbDelete){
-                JTextField jtf = (JTextField)widgets[ambienceIndex][1];
-                Ambience ambience = ambiences.get(ambienceIndex);
-                ambiences.remove(ambience);
-                AmbienceManager.getInstance().removeAmbience(ambience.getName());
-                //We need at least one ambience
-                if (AmbienceManager.getInstance().getAmbiences().size() == 0){
-                    setProblem(Messages.getString("DigitalDJWizard.38"));    
-                }
-                if (ambienceIndex > 0){
-                    ambienceIndex --;
-                    JRadioButton jrb = (JRadioButton)widgets[ambienceIndex][0];
-                    jrb.setSelected(true);
-                }
-                //refresh screen
-                refreshScreen();
-            }
+        public void actionPerformed(ActionEvent e) {
+            int row = getWidgetIndex(widgets,(JComponent)e.getSource());
+            data.put(KEY_AMBIENCE,ambiences.get(row));
+            setProblem(null);
         }
-    }
+        
+       }
     
     /**
      * 

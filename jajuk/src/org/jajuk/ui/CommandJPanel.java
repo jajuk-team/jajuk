@@ -605,7 +605,14 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
                     new DigitalDJWizard();
                 }
             });
+            JMenuItem jmiAmbiences = new JMenuItem(Messages.getString("CommandJPanel.19"),Util.getIcon(ICON_NEW)); 
+            jmiAmbiences.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent arg0) {
+                    new AmbienceWizard();
+                }
+            });
             popupDDJ.add(jmiNew);
+            popupDDJ.add(jmiAmbiences);
         }
         catch(Exception e){
             Log.error(e);
