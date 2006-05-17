@@ -20,8 +20,6 @@
 
 package org.jajuk.ui.action;
 
-import java.io.FileFilter;
-import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -38,6 +36,7 @@ import org.jajuk.i18n.Messages;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 
@@ -55,12 +54,8 @@ public class RefactorAction implements ITechnicalStrings {
 			File f = (File) it.next();
 			sFiles += f.getName() + "\n";
 		}
-		if (Boolean.valueOf(
-				ConfigurationManager
-						.getProperty(CONF_CONFIRMATIONS_REFACTOR_FILES))
-				.booleanValue()) {
-			int iResu = Messages
-					.getChoice(
+		if (ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_REFACTOR_FILES)){
+			int iResu = Messages.getChoice(
 							Messages.getString("Confirmation_refactor_files") + " : \n" + sFiles, JOptionPane.INFORMATION_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
 			if (iResu != JOptionPane.YES_OPTION) {
 				Util.stopWaiting();
@@ -73,24 +68,8 @@ public class RefactorAction implements ITechnicalStrings {
 			}
 		}.start();
 		Util.stopWaiting();
-		//ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH));
 	}
-
-	class AudioFileFilter implements FilenameFilter, ITechnicalStrings {
-
-		public boolean accept(java.io.File dir, String name) {
-			return !(name.endsWith(EXT_MP3) || name.endsWith(EXT_OGG)
-					|| name.endsWith(EXT_AU) || name.endsWith(EXT_AIFF) || name
-					.endsWith(EXT_FLAC));
-		}
-	}
-
-	class DirectorieFilter implements FileFilter {
-
-		public boolean accept(java.io.File pathname) {
-			return pathname.isDirectory();
-		}
-	}
+	
 
 	public void refactor() {
 		Iterator it = alFiles.iterator();
@@ -138,8 +117,6 @@ public class RefactorAction implements ITechnicalStrings {
 				}
 			}
 
-			
-
 			// Check Track Order
 			if (filename.contains(PATTERN_TRACKORDER)) {
 				long lOrder = tCurrent.getOrder();
@@ -186,14 +163,11 @@ public class RefactorAction implements ITechnicalStrings {
 			String sRoot = fCurrent.getDevice().getUrl();
 			String [] split = filename.split("\\"+java.io.File.separator);
 			String sName = split[0];
-			
-
+		
 			// Check if directories exists, and if not create them
-			String sPathname = checkDirectories(sRoot, filename);
+			String sPathname = getCheckPath(sRoot, filename);
 			java.io.File fNew = new java.io.File(sPathname);
 			fNew.getParentFile().mkdirs();
-			
-						
 			
 			// Move file and related cover but save old Directory pathname for
 			// futur deletion
@@ -218,7 +192,7 @@ public class RefactorAction implements ITechnicalStrings {
 
 			// See if old directory contain other files and move them
 			java.io.File dOld = fOld.getParentFile();
-			java.io.File[] list = dOld.listFiles(new AudioFileFilter());
+			java.io.File[] list = dOld.listFiles(new JajukFileFilter(false,true));
 			if (list == null){
 				DirectoryManager.getInstance().removeDirectory(fOld.getParent());
 			} else if (list.length != 0) {
@@ -244,10 +218,10 @@ public class RefactorAction implements ITechnicalStrings {
 		}
 	}
 
-	public String checkDirectories(String sRoot, String sPathname) {
+	public String getCheckPath(String sRoot, String sPathname) {
 
 		java.io.File fioRoot = new java.io.File(sRoot);
-		java.io.File[] fioList = fioRoot.listFiles(new DirectorieFilter());
+		java.io.File[] fioList = fioRoot.listFiles(new JajukFileFilter(true,false));
 
 		String[] sPaths = sPathname.split("\\"+java.io.File.separator);
 		String sReturn = sRoot;
