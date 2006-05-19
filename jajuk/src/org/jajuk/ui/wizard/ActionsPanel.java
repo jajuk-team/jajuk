@@ -78,7 +78,7 @@ public class ActionsPanel extends JPanel {
         float fButton = 0.2f;
         double[][] layout = new double[][]{
                 {TableLayout.FILL,fButton,xSeparator,fButton,xSeparator,fButton,xSeparator,fButton,20},
-                {10,20,10}
+                {20}
         };
         JPanel jpButtons = new JPanel(new TableLayout(layout));
         jbPrevious = new JButton(getMessage(CODE_PREVIOUS));
@@ -93,15 +93,15 @@ public class ActionsPanel extends JPanel {
         jbFinish = new JButton(getMessage(CODE_FINISH));
         jbFinish.addActionListener(al);
         jbFinish.setActionCommand("Finish");
-        jpButtons.add(jbCancel,"1,1");
-        jpButtons.add(jbPrevious,"3,1");
-        jpButtons.add(jbNext,"5,1");
-        jpButtons.add(jbFinish,"7,1");
+        jpButtons.add(jbCancel,"1,0");
+        jpButtons.add(jbPrevious,"3,0");
+        jpButtons.add(jbNext,"5,0");
+        jpButtons.add(jbFinish,"7,0");
         
         //Main panel
         double[][] dScreenLayout = new double[][]{
                 {TableLayout.FILL},
-                {TableLayout.PREFERRED,5,TableLayout.PREFERRED}
+                {20,5,30}
         };
         TableLayout l = new TableLayout(dScreenLayout);
         setLayout(l);

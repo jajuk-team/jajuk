@@ -22,8 +22,8 @@ package org.jajuk.ui.wizard;
 
 import info.clearthought.layout.TableLayout;
 
+import java.awt.Frame;
 import java.awt.Image;
-import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
@@ -33,8 +33,6 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
-
-import org.jajuk.Main;
 
 /**
  *  Wizard dialog
@@ -63,12 +61,8 @@ public abstract class Wizard extends Object implements ActionListener{
     Timer timer;    
     /**Screen buffer*/
     HashMap<Class<Screen>,Screen> hmClassScreens;
-    /**Wizard dialog horizontal size*/
-    int iHorizSize = 600;
-    /**Wizard dialog vertical size*/
-    int iVertSize = 400;
     /**Parent window*/
-    Window parentWindow;
+    Frame parentWindow;
     
     /**
      * Wizard constructor
@@ -77,7 +71,7 @@ public abstract class Wizard extends Object implements ActionListener{
      * @param icon Wizard icon (null if no icon)
      * @param parentWindow wizard parent window
      */
-    public Wizard(String sName,Class initial,ImageIcon icon,Window parentWindow) {
+     public Wizard(String sName,Class initial,ImageIcon icon,Frame parentWindow) {
         this.sName = sName;
         this.initial = initial;
         this.parentWindow = parentWindow;
@@ -106,12 +100,10 @@ public abstract class Wizard extends Object implements ActionListener{
     
     /**
      * UI manager
-     *
      */
     private void createUI(){
-        dialog = new JDialog(Main.getWindow(),true);//modale
+        dialog = new JDialog(parentWindow,true);//modale
         dialog.setTitle(sName);
-        dialog.setSize(iHorizSize,iVertSize);
         header = new Header();
         actions = new ActionsPanel(this);
         display();
@@ -168,9 +160,15 @@ public abstract class Wizard extends Object implements ActionListener{
         current = screen;
         current.setCanGoPrevious((getPreviousScreen(screenClass) != null));
         current.setCanGoNext((getNextScreen(screenClass) != null));
+        String sDesc = screen.getDescription(); 
+        if (sDesc != null){
         header.setText("<html><b>&nbsp;"+screen.getName()+
-            "</b><p><p>&nbsp;"+
-            screen.getDescription());
+            "</b><p><p>&nbsp;"+sDesc);
+        }
+        else{
+        header.setText("<html><b>&nbsp;"+screen.getName()+
+            "</b>");
+        }
         display();
     }
     
@@ -182,8 +180,8 @@ public abstract class Wizard extends Object implements ActionListener{
         ((JPanel)dialog.getContentPane()).removeAll();
         //(buttons+problem)+screen+header
         double[][] dVertical = new double[][]{
-                {TableLayout.FILL},
-                {TableLayout.PREFERRED,TableLayout.FILL,10,TableLayout.PREFERRED}
+                {450},
+                {TableLayout.PREFERRED,250,10,TableLayout.PREFERRED}
         };
         JPanel jpVert = new JPanel(new TableLayout(dVertical));
         jpVert.add(header,"0,0");
@@ -201,7 +199,7 @@ public abstract class Wizard extends Object implements ActionListener{
                     {TableLayout.FILL}
             };
             dialog.setLayout(new TableLayout(dGlobal));
-            dialog.add(new JLabel(getResizedImage(icon,200,iVertSize)),"0,0");
+            dialog.add(new JLabel(getResizedImage(icon,200,400)),"0,0");
             dialog.add(jpVert,"2,0");
         }
         else{

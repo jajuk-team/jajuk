@@ -599,13 +599,13 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
                 jmi.setSelected(dj.getID().equals(ConfigurationManager.getProperty(CONF_DEFAULT_DJ)));
             }
             popupDDJ.addSeparator();
-            JMenuItem jmiNew = new JMenuItem(Messages.getString("CommandJPanel.17"),Util.getIcon(ICON_NEW)); 
+            JMenuItem jmiNew = new JMenuItem(Messages.getString("CommandJPanel.17"),Util.getIcon(ICON_DIGITAL_DJ)); 
             jmiNew.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent arg0) {
                     new DigitalDJWizard();
                 }
             });
-            JMenuItem jmiAmbiences = new JMenuItem(Messages.getString("CommandJPanel.19"),Util.getIcon(ICON_NEW)); 
+            JMenuItem jmiAmbiences = new JMenuItem(Messages.getString("CommandJPanel.19"),Util.getIcon(ICON_STYLE)); 
             jmiAmbiences.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent arg0) {
                     new AmbienceWizard();

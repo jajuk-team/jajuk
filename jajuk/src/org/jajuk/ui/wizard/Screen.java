@@ -83,7 +83,7 @@ public abstract class Screen extends JPanel {
     
     boolean canGoNext(){
         //if screen is last one, cannot go futher
-        return bCanGoNext && !bCanFinish; 
+        return bCanGoNext && !bCanFinish && (sProblem == null); 
     }
    
     boolean canGoPrevious(){

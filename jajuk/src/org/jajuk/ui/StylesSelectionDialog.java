@@ -20,22 +20,28 @@
 
 package org.jajuk.ui;
 
+import info.clearthought.layout.TableLayout;
+
 import java.awt.Dimension;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Vector;
 
-import javax.swing.Box;
-import javax.swing.BoxLayout;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import org.jajuk.base.Style;
 import org.jajuk.base.StyleManager;
+import org.jajuk.dj.Ambience;
+import org.jajuk.dj.AmbienceManager;
 import org.jajuk.i18n.Messages;
 
 /**
@@ -44,14 +50,17 @@ import org.jajuk.i18n.Messages;
  * @author     Bertrand Florat
  * @created    9 march 2006
  */
-public class StylesSelectionDialog extends JDialog {
+public class StylesSelectionDialog extends JDialog implements ActionListener{
 
+    JComboBox jcbAmbiences;
     JList jlist;
     OKCancelPanel okc;
     
     HashSet<Style> selectedStyles;
     
     HashSet<Style> disabledStyles;
+    
+    Vector<String> list;
     
     /**
      * @throws HeadlessException
@@ -97,7 +106,7 @@ public class StylesSelectionDialog extends JDialog {
     }
     
     private void initUI(){
-        Vector<String> list = (Vector)StyleManager.getInstance().getStylesList().clone();
+        list = (Vector)StyleManager.getInstance().getStylesList().clone();
         //remove disabled items
         if (disabledStyles != null){
             Iterator it = list.iterator();
@@ -111,6 +120,22 @@ public class StylesSelectionDialog extends JDialog {
             }
         }
         //main part of the dialog
+        //populate ambience combo
+        jcbAmbiences = new JComboBox();
+        for (Ambience ambience:AmbienceManager.getInstance().getAmbiences()){
+           jcbAmbiences.addItem(ambience.getName()); 
+        }
+        //none ambience selected by default
+        jcbAmbiences.setSelectedIndex(-1);
+        jcbAmbiences.addActionListener(this);
+        JPanel jpAmbiences = new JPanel();
+        double[][] layoutCombo = new double[][]{
+                {TableLayout.PREFERRED,10,TableLayout.FILL},
+                {20}
+        };
+        jpAmbiences.setLayout(new TableLayout(layoutCombo));
+        jpAmbiences.add(new JLabel(Messages.getString("DigitalDJWizard.58")),"0,0");
+        jpAmbiences.add(jcbAmbiences,"2,0");
         jlist = new JList(list);
         jlist.setLayoutOrientation(JList.VERTICAL_WRAP);
         jlist.setPreferredSize(new Dimension(600,600));
@@ -128,13 +153,29 @@ public class StylesSelectionDialog extends JDialog {
                 dispose();
             }
         });
+        
         JScrollPane jsp = new JScrollPane(jlist);
-        setLayout(new BoxLayout(this.getContentPane(),BoxLayout.Y_AXIS));
-        add(jsp);
-        add(Box.createVerticalStrut(20));
-        add(okc);
-        add(Box.createVerticalStrut(20));
+        double[][] layout = new double[][]{
+                {10,TableLayout.PREFERRED,10},
+                {10,20,5,TableLayout.PREFERRED,5,20,10}
+        };
+        setLayout(new TableLayout(layout));
+        add(jpAmbiences,"1,1");
+        add(jsp,"1,3");
+        add(okc,"1,5");
         getRootPane().setDefaultButton(okc.getOKButton());
+    }
+
+    /* (non-Javadoc)
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
+    public void actionPerformed(ActionEvent ae) {
+        if (ae.getSource().equals(jcbAmbiences)){
+            ArrayList<Ambience> alAmbiences = new ArrayList(AmbienceManager.getInstance().getAmbiences());
+            Ambience ambience = alAmbiences.get(jcbAmbiences.getSelectedIndex());
+            //select all styles for this ambience
+            setSelection(ambience.getStyles());
+        }
     };
     
     

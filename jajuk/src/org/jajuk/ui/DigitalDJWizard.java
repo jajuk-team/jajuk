@@ -177,7 +177,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
         public void initUI(){
             djs = new ArrayList(DigitalDJManager.getInstance().getDJs()); 
             Collections.sort(djs);
-            widgets = new JComponent[1][djs.size()];
+            widgets = new JComponent[djs.size()][1];
             double[] dVert = new double[djs.size()];
             //prepare vertical layout
             for (int i=0;i<djs.size();i++){
@@ -196,7 +196,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
                 JRadioButton jrb = new JRadioButton(dj.getName()); 
                 jrb.addActionListener(this);
                 bgDJS.add(jrb);
-                widgets[0][index] = jrb;
+                widgets[index][0] = jrb;
                 jpDjs.add(jrb,"0,"+index);
                 index ++;
             }
@@ -1086,7 +1086,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
          */
         public void initUI(){
             ambiences = new ArrayList(AmbienceManager.getInstance().getAmbiences());
-            widgets = new JComponent[1][ambiences.size()];
+            widgets = new JComponent[ambiences.size()][1];
             //We need at least one ambience
             if (AmbienceManager.getInstance().getAmbiences().size() == 0){
                 setProblem(Messages.getString("DigitalDJWizard.38"));    
@@ -1113,7 +1113,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
                 JRadioButton jrb = new JRadioButton(ambience.getName()); 
                 jrb.addActionListener(this);
                 bg.add(jrb);
-                widgets[0][index] = jrb;
+                widgets[index][0] = jrb;
                 jpAmbiences.add(jrb,"0,"+index);
                 index ++;
             }
@@ -1129,7 +1129,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
                 index = 0;
                 for (Ambience a:ambiences){
                     if (a.equals(ambience)){
-                        JRadioButton jrb = (JRadioButton)widgets[0][index];
+                        JRadioButton jrb = (JRadioButton)widgets[index][0];
                         jrb.doClick();//select right ambience, it will set right value into data
                         break;
                     }
