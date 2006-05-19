@@ -596,7 +596,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
                     }
                 });
                 popupDDJ.add(jmi);
-                jmi.setSelected(dj.getID().equals(ConfigurationManager.getProperty(CONF_DEFAULT_DJ)));
+                jmi.setSelected(ConfigurationManager.getProperty(CONF_DEFAULT_DJ).equals(dj.getID()));
             }
             popupDDJ.addSeparator();
             JMenuItem jmiNew = new JMenuItem(Messages.getString("CommandJPanel.17"),Util.getIcon(ICON_DIGITAL_DJ)); 

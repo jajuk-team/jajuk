@@ -160,7 +160,7 @@ public class TransitionDigitalDJ extends DigitalDJ {
                     }
                 }
             }
-            else{ //startyp style doesn't match any known ambience, take an ambience associated with
+            else{ //startup style doesn't match any known ambience, take an ambience associated with
                 //any file style
                 File fShuffle = (File)Util.getShuffleItem(global);
                 next = getAmbience(fShuffle.getTrack().getStyle());
@@ -175,7 +175,7 @@ public class TransitionDigitalDJ extends DigitalDJ {
                 ArrayList<File> files = hmAmbienceFiles.get(next);
                 //take any file from files associated with this ambience
                 //if no more files, try from 'null' ambience
-                if (files.size() > 0){
+                if (files != null && files.size() > 0){
                     File file = (File)Util.getShuffleItem(files);
                     out.add(file);
                     //unicity in selection, remove it from this ambience

@@ -84,7 +84,7 @@ public class AmbienceWizard extends Wizard implements ITechnicalStrings{
             ambiences = new ArrayList(AmbienceManager.getInstance().getAmbiences());
             //We need at least one ambience
             if (AmbienceManager.getInstance().getAmbiences().size() == 0){
-                setProblem(Messages.getString("DigitalDJWizard.38"));    
+                setProblem(Messages.getString("DigitalDJWizard.38")); 
             }
             setCanFinish(true);
             //set layout
@@ -144,11 +144,12 @@ public class AmbienceWizard extends Wizard implements ITechnicalStrings{
                         String sAmbienceName = ((JTextField)widgets[getWidgetIndex(widgets,jrbAmbience)][1]).getText();
                         ambienceIndex = getWidgetIndex(widgets,jrbAmbience);
                         Ambience ambience = AmbienceManager.getInstance().getAmbience(sAmbienceName);
-                        if (!ambience.getName().equals("") && ambience.getStyles().size() > 0){
-                            setProblem(null);
+                        if ( ambience == null || ambience.getName().equals("") || ambience.getStyles().size() == 0){
+                            setProblem(Messages.getString("DigitalDJWizard.39"));
                         }
                         else{
-                            setProblem(Messages.getString("DigitalDJWizard.39"));
+                            setProblem(null);
+                            jbNew.setEnabled(true);
                         }
                     }
                 });
@@ -242,6 +243,7 @@ public class AmbienceWizard extends Wizard implements ITechnicalStrings{
                     AmbienceManager.getInstance().registerAmbience(ambience);
                     //no more error message if at least one ambience
                     setProblem(null);
+                    jbNew.setEnabled(true);
                 }
             }
         }
@@ -265,7 +267,6 @@ public class AmbienceWizard extends Wizard implements ITechnicalStrings{
         public void actionPerformed(ActionEvent ae) {
             if (ae.getSource() == jbNew){
                 ambiences.add(new Ambience("")); //create a void ambience
-                setProblem(null);
                 //refresh screen
                 refreshScreen();
                 //select new row
@@ -273,6 +274,10 @@ public class AmbienceWizard extends Wizard implements ITechnicalStrings{
                 jrb.setSelected(true);
                 ambienceIndex = ambiences.size()-1;
                 setProblem(Messages.getString("DigitalDJWizard.39"));
+                jbNew.setEnabled(false);
+                jbDelete.setEnabled(true);
+                JTextField jtf = (JTextField)widgets[ambienceIndex][1];
+                jtf.requestFocusInWindow();
             }
             else if (ae.getSource() == jbDelete){
                 JTextField jtf = (JTextField)widgets[ambienceIndex][1];
@@ -281,7 +286,8 @@ public class AmbienceWizard extends Wizard implements ITechnicalStrings{
                 AmbienceManager.getInstance().removeAmbience(ambience.getName());
                 //We need at least one ambience
                 if (AmbienceManager.getInstance().getAmbiences().size() == 0){
-                    setProblem(Messages.getString("DigitalDJWizard.38"));    
+                    setProblem(Messages.getString("DigitalDJWizard.38")); 
+                    jbDelete.setEnabled(false);
                 }
                 if (ambienceIndex > 0){
                     ambienceIndex --;

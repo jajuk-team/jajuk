@@ -589,6 +589,22 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
         }
 
          
+         /**
+          * 
+          * @return Filled transitions only
+          */
+         private ArrayList<Transition> getCleanedTransitions(){
+             ArrayList<Transition> out = new ArrayList(alTransitions.size());
+             for (Transition transition:alTransitions){
+                 if (transition.getFrom() != null && transition.getTo() != null && 
+                         transition.getFrom().getStyles().size() > 0 && transition.getTo().getStyles().size() > 0){
+                     out.add(transition);
+                 }
+             }
+             return out;
+         }
+         
+         
         /**
          * Create panel UI
          *
@@ -597,7 +613,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
             if (ActionSelectionPanel.ACTION_CHANGE.equals(data.get(KEY_ACTION))){
                 DigitalDJ dj = (DigitalDJ)data.get(KEY_CHANGE);
                 alTransitions = ((TransitionDigitalDJ)dj).getTransitions();
-                data.put(KEY_TRANSITIONS,alTransitions.clone());
+                data.put(KEY_TRANSITIONS,getCleanedTransitions());
                 alTransitions.add(new Transition(DEFAULT_TRANSITION_TRACK_NUMBER)); //add a void transition
             }
             else{
@@ -651,6 +667,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
                     public void actionPerformed(ActionEvent ae) {
                         alTransitions.remove(getWidgetIndex(widgets,(JComponent)ae.getSource()));
                         refreshScreen();
+                        data.put(KEY_TRANSITIONS,getCleanedTransitions()); 
                     }
                 });
                 //cannot delete if void selection
@@ -793,7 +810,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
                     setProblem(null);
                     
                     //Fill wizard data
-                    data.put(KEY_TRANSITIONS,alTransitions.clone()); //set a cloned transition list to avoid add void transition (see next line)
+                    data.put(KEY_TRANSITIONS,getCleanedTransitions()); 
                     
                     //create a new void proportion if needed
                     if (!containsVoidItem()){
