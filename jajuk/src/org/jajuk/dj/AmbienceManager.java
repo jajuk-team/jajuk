@@ -107,15 +107,25 @@ public class AmbienceManager implements ITechnicalStrings,Observer{
         return ambiences.get(sName);
     }
     
+    
+    /**
+     * Change Ambience name
+     * @param ambience
+     * @param sNewName
+     */
+    public void changeAmbianceName(Ambience ambience,String sNewName){
+        //Remove old value
+        ambiences.remove(ambience.getName());
+        ambience.setName(sNewName);
+        registerAmbience(ambience);
+    }
+    
     /**
      * Register a new ambience
      * @param ambience ambience to register
      */
     public void registerAmbience(Ambience ambience){
         ambiences.put(ambience.getName(),ambience);
-        //commit it to avoid it is lost before the app close
-        commit();
-        ConfigurationManager.commit();
     }
     
     /* (non-Javadoc)

@@ -31,6 +31,7 @@ import org.jajuk.dj.AmbienceManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.wizard.Screen;
 import org.jajuk.ui.wizard.Wizard;
+import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 /**
@@ -41,6 +42,8 @@ import org.jajuk.util.Util;
  */
 public class AmbienceWizard extends Wizard implements ITechnicalStrings{
 
+     /**Ambiences**/
+     static ArrayList<Ambience> ambiences;
     
      /**
      * 
@@ -57,9 +60,6 @@ public class AmbienceWizard extends Wizard implements ITechnicalStrings{
         JButton jbNew;
         JButton jbDelete;
         JPanel jpButtons;
-        
-        /**Ambiences**/
-        ArrayList<Ambience> ambiences;
         
         /**DJ**/
         AmbienceDigitalDJ dj = null;
@@ -128,6 +128,24 @@ public class AmbienceWizard extends Wizard implements ITechnicalStrings{
                     public void caretUpdate(CaretEvent arg0) {
                         int index = getWidgetIndex(widgets,(JComponent)arg0.getSource());
                         String s = jtfName.getText();
+                        //Check this name is not already token
+                        for (int i=0;i<widgets.length;i++){
+                            if (i == index){
+                                continue;
+                            }
+                            JTextField jtf = (JTextField)widgets[i][1];
+                            if (jtf.getText().equals(s)){
+                                setProblem(Messages.getString("DigitalDJWizard.60"));
+                                return;
+                            }
+                        }
+                        //reset previous problems
+                        if (s.length() == 0 || ((JButton)widgets[index][2]).getText().length() == 0){
+                            setProblem(Messages.getString("DigitalDJWizard.39"));
+                        }
+                        else{
+                            setProblem(null);
+                        }
                         JButton jb = (JButton)widgets[index][2];
                         Ambience ambience = ambiences.get(index);
                         ambience.setName(s);
@@ -143,14 +161,6 @@ public class AmbienceWizard extends Wizard implements ITechnicalStrings{
                     public void actionPerformed(ActionEvent ae) {
                         String sAmbienceName = ((JTextField)widgets[getWidgetIndex(widgets,jrbAmbience)][1]).getText();
                         ambienceIndex = getWidgetIndex(widgets,jrbAmbience);
-                        Ambience ambience = AmbienceManager.getInstance().getAmbience(sAmbienceName);
-                        if ( ambience == null || ambience.getName().equals("") || ambience.getStyles().size() == 0){
-                            setProblem(Messages.getString("DigitalDJWizard.39"));
-                        }
-                        else{
-                            setProblem(null);
-                            jbNew.setEnabled(true);
-                        }
                     }
                 });
                 widgets[index][0] = jrbAmbience;
@@ -239,8 +249,6 @@ public class AmbienceWizard extends Wizard implements ITechnicalStrings{
                 //if we have ambience name and some styles, register the ambience
                 if (ambience.getName().length() > 0 && 
                         ambience.getStyles().size() > 0){
-                    //register this new ambience
-                    AmbienceManager.getInstance().registerAmbience(ambience);
                     //no more error message if at least one ambience
                     setProblem(null);
                     jbNew.setEnabled(true);
@@ -346,6 +354,12 @@ public class AmbienceWizard extends Wizard implements ITechnicalStrings{
     public void finish() {
         //Refresh command panel (usefull for ie if DJ names changed)
         ObservationManager.notify(new Event(EVENT_DJ_CHANGE));
+        for (Ambience ambience:ambiences){
+            AmbienceManager.getInstance().registerAmbience(ambience);
+        }
+         //commit it to avoid it is lost before the app close
+        AmbienceManager.getInstance().commit();
+        ConfigurationManager.commit();
     }
 
 }
