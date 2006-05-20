@@ -888,7 +888,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
             if (ActionSelectionPanel.ACTION_CHANGE.equals(data.get(KEY_ACTION))){
                 DigitalDJ dj = (DigitalDJ)data.get(KEY_CHANGE);
                 proportions = ((ProportionDigitalDJ)dj).getProportions();
-                data.put(KEY_PROPORTIONS,proportions.clone());
+                data.put(KEY_PROPORTIONS,proportions);
                 proportions.add(new Proportion()); //add a void item
             }
             else{
@@ -904,6 +904,20 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
             setLayout(new TableLayout(dSizeGeneral));
             add(getProportionsPanel(),"1,1");
         }
+        
+        /**
+          * 
+          * @return Filled proportions only
+          */
+         private ArrayList<Proportion> getCleanedProportions(){
+             ArrayList<Proportion> out = new ArrayList(proportions.size());
+             for (Proportion proportion:proportions){
+                 if (proportion.getStyles() != null && proportion.getStyles().size() > 0){
+                     out.add(proportion);
+                 }
+             }
+             return out;
+         }
         
         /**
          * 
@@ -923,6 +937,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
                 jbDelete.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent ae) {
                         proportions.remove(getWidgetIndex(widgets,(JComponent)ae.getSource()));
+                        data.put(KEY_PROPORTIONS,getCleanedProportions());
                         refreshScreen();
                     }
                 });
@@ -948,9 +963,17 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
                 jbStyle.setToolTipText(Messages.getString("DigitalDJWizard.27"));
                 widgets[index][1] = jbStyle;
                 //Proportion
-                JSpinner jsNb = new JSpinner(new SpinnerNumberModel((int)(proportion.getProportion()*100),1,100,1));
+                JSpinner jsNb = new JSpinner(new SpinnerNumberModel(
+                    (int)(proportion.getProportion()*100),1,100,1));
                 jsNb.addChangeListener(new ChangeListener() {
                     public void stateChanged(ChangeEvent ce) {
+                        if (getTotalValue() > 100){
+                            setProblem(Messages.getString("DigitalDJWizard.59"));
+                            return;
+                        }
+                        else{
+                            setProblem(null);
+                        }
                         int row = getWidgetIndex(widgets,(JComponent)ce.getSource());
                         int nb = Integer.parseInt(((JSpinner)ce.getSource()).getValue().toString());
                         Proportion proportion = proportions.get(row);
@@ -983,6 +1006,24 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
                 out.add(widgets[i][2],"4,"+(i+1)); //$NON-NLS-1$ //$NON-NLS-2$
             }
             return new JScrollPane(out);
+        }
+        
+        /**
+         * 
+         * @return Sum of all proportions
+         */
+        private int getTotalValue(){
+            int total = 0;
+            for (int i=0;i<widgets.length;i++){
+                JSpinner jsp = (JSpinner)widgets[i][2];
+                //Only filled proportions are token into account
+                JButton jb = (JButton)widgets[i][1];
+                if (jb.getText() == null || jb.getText().equals("")){
+                    continue;
+                }
+                total += Integer.parseInt(jsp.getValue().toString());
+            }
+            return total;
         }
         
         /**
@@ -1027,7 +1068,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
                     setProblem(null);
                     
                     //Fill wizard data
-                    data.put(KEY_PROPORTIONS,proportions.clone());//set a cloned proportion list to avoid add void items (see next line)
+                    data.put(KEY_PROPORTIONS,getCleanedProportions());
                     
                     //create a new void proportion if needed
                     if (!containsVoidItem()){
