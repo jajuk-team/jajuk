@@ -59,8 +59,6 @@ public abstract class Wizard extends Object implements ActionListener{
     JDialog dialog;
     /**Wizard timer used to refresh actions states*/
     Timer timer;    
-    /**Screen buffer*/
-    HashMap<Class<Screen>,Screen> hmClassScreens;
     /**Parent window*/
     Frame parentWindow;
     
@@ -76,7 +74,6 @@ public abstract class Wizard extends Object implements ActionListener{
         this.initial = initial;
         this.parentWindow = parentWindow;
         data = new HashMap(10);
-        hmClassScreens = new HashMap(10);
         this.icon = icon;
         timer  = new Timer(50,new ActionListener() {
             //Refresh button states 
@@ -146,16 +143,13 @@ public abstract class Wizard extends Object implements ActionListener{
     }
     
     private void setScreen(Class screenClass) {
-        Screen screen = hmClassScreens.get(screenClass);
-        if (screen == null){
-            try {
-                screen = (Screen)screenClass.newInstance();
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-                return;
-            }
-            hmClassScreens.put(screenClass,screen);
+        Screen screen = null;
+        try {
+            screen = (Screen)screenClass.newInstance();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return;
         }
         current = screen;
         current.setCanGoPrevious((getPreviousScreen(screenClass) != null));
