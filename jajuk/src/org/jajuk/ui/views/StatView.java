@@ -48,13 +48,15 @@ import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.CategoryAxis;
 import org.jfree.chart.axis.CategoryLabelPosition;
-import org.jfree.chart.labels.StandardPieItemLabelGenerator;
+import org.jfree.chart.axis.CategoryLabelPositions;
+import org.jfree.chart.axis.CategoryLabelWidthType;
+import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PiePlot;
 import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.data.CategoryDataset;
-import org.jfree.data.DatasetUtilities;
-import org.jfree.data.DefaultPieDataset;
+import org.jfree.data.category.CategoryDataset;
+import org.jfree.data.general.DatasetUtilities;
+import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.text.TextBlockAnchor;
 import org.jfree.ui.RectangleAnchor;
 import org.jfree.ui.TextAnchor;
@@ -138,17 +140,17 @@ public class StatView extends ViewAdapter implements Observer{
                     pdata.setValue(Messages.getString("StatView.0"),new Double(dOthers/iTotal)); //$NON-NLS-1$
                 }
                 //chart
-                jfchart = ChartFactory.createPie3DChart(Messages.getString("StatView.1"),pdata,true,true,true); //$NON-NLS-1$
+                jfchart = ChartFactory.createPieChart3D(Messages.getString("StatView.1"),pdata,true,true,true); //$NON-NLS-1$
                 // set the background color for the chart...
                 jfchart.setBackgroundPaint(Color.BLUE);
                 PiePlot plot = (PiePlot) jfchart.getPlot();
-                plot.setSectionLabelType(PiePlot.NAME_AND_PERCENT_LABELS);
+                plot.setLabelFont(PiePlot.DEFAULT_LABEL_FONT);
                 plot.setNoDataMessage(Messages.getString("StatView.2")); //$NON-NLS-1$
                 plot.setForegroundAlpha(0.5f);
                 plot.setBackgroundAlpha(0.5f);
-                plot.setShowSeriesLabels(true);
+                //plot.setShowSeriesLabels(true);
                 //plot.setBackgroundImage(Util.getIcon(IMAGES_STAT_PAPER).getImage());
-                plot.setItemLabelGenerator(new StandardPieItemLabelGenerator());
+                plot.setLabelGenerator(new StandardPieSectionLabelGenerator());
                 cpanel = new ChartPanel(jfchart);
             }
             catch(Exception e){
@@ -196,16 +198,16 @@ public class StatView extends ViewAdapter implements Observer{
                     pdata.setValue(Messages.getString("StatView.3"),new Double(dOthers/1073741824)); //$NON-NLS-1$
                 }
                 //chart
-                jfchart = ChartFactory.createPie3DChart(Messages.getString("StatView.4"),pdata,true,true,true); //$NON-NLS-1$
+                jfchart = ChartFactory.createPieChart3D(Messages.getString("StatView.4"),pdata,true,true,true); //$NON-NLS-1$
                 // set the background color for the chart...
                 jfchart.setBackgroundPaint(Color.BLUE);
                 PiePlot plot = (PiePlot) jfchart.getPlot();
-                plot.setSectionLabelType(PiePlot.NAME_AND_VALUE_LABELS);
+                plot.setLabelFont(PiePlot.DEFAULT_LABEL_FONT);
                 plot.setNoDataMessage(Messages.getString("StatView.5")); //$NON-NLS-1$
                 plot.setForegroundAlpha(0.5f);
                 plot.setBackgroundAlpha(0.5f);
                 //plot.setBackgroundImage(Util.getIcon(IMAGES_STAT_PAPER).getImage());
-                plot.setItemLabelGenerator(new StandardPieItemLabelGenerator());
+                plot.setLabelGenerator(new StandardPieSectionLabelGenerator());
                 cpanel = new ChartPanel(jfchart);
             }
             catch(Exception e){
@@ -259,9 +261,9 @@ public class StatView extends ViewAdapter implements Observer{
             CategoryPlot plot = jfchart.getCategoryPlot();
             CategoryAxis axis = plot.getDomainAxis();
             CategoryLabelPosition position = new CategoryLabelPosition(
-                RectangleAnchor.TOP, TextBlockAnchor.TOP_RIGHT, TextAnchor.TOP_RIGHT, -Math.PI / 8.0
+                RectangleAnchor.TOP, TextBlockAnchor.TOP_RIGHT, TextAnchor.TOP_RIGHT, -Math.PI / 8.0, CategoryLabelWidthType.CATEGORY, 0
             );
-            axis.setBottomCategoryLabelPosition(position);
+            axis.setCategoryLabelPositions(CategoryLabelPositions.STANDARD);
             
             // set the background color for the chart...
             jfchart.setBackgroundPaint(Color.BLUE);
@@ -321,9 +323,9 @@ public class StatView extends ViewAdapter implements Observer{
                 CategoryPlot plot = jfchart.getCategoryPlot();
                 CategoryAxis axis = plot.getDomainAxis();
                 CategoryLabelPosition position = new CategoryLabelPosition(
-                    RectangleAnchor.TOP, TextBlockAnchor.TOP_RIGHT, TextAnchor.TOP_RIGHT, -Math.PI / 8.0
-                );
-                axis.setBottomCategoryLabelPosition(position);
+                        RectangleAnchor.TOP, TextBlockAnchor.TOP_RIGHT, TextAnchor.TOP_RIGHT, -Math.PI / 8.0, CategoryLabelWidthType.CATEGORY, 0
+                    );
+                    axis.setCategoryLabelPositions(CategoryLabelPositions.STANDARD);
                 
                 // set the background color for the chart...
                 jfchart.setBackgroundPaint(Color.BLUE);

@@ -20,7 +20,8 @@
 	<classpathentry kind="lib" path="lib/basicplayer-2.3.jar"/>
 	<classpathentry kind="lib" path="lib/mp3spi-1.9.4.jar"/>
 	<classpathentry kind="lib" path="lib/commons-httpclient-3.0.jar"/>
-	<classpathentry kind="lib" path="lib/jfreechart_reduced-0.9.15.jar"/>
+	<classpathentry kind="lib" path="lib/jfreechart-1.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/jcommon-1.0.0.jar"/>
 	<classpathentry kind="lib" path="lib/jh_reduced-2.0.2.jar"/>
 	<classpathentry kind="lib" path="lib/log4j_reduced-1.2.6.jar"/>
 	<classpathentry kind="lib" path="lib/tinylaf_reduced-1.3.01.jar"/>
