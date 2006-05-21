@@ -274,7 +274,7 @@ public class AmbienceWizard extends Wizard implements ITechnicalStrings{
          */
         public void actionPerformed(ActionEvent ae) {
             if (ae.getSource() == jbNew){
-                ambiences.add(new Ambience("")); //create a void ambience
+                ambiences.add(new Ambience(Long.toString(System.currentTimeMillis()),"")); //create a void ambience
                 //refresh screen
                 refreshScreen();
                 //select new row
@@ -291,7 +291,7 @@ public class AmbienceWizard extends Wizard implements ITechnicalStrings{
                 JTextField jtf = (JTextField)widgets[ambienceIndex][1];
                 Ambience ambience = ambiences.get(ambienceIndex);
                 ambiences.remove(ambience);
-                AmbienceManager.getInstance().removeAmbience(ambience.getName());
+                AmbienceManager.getInstance().removeAmbience(ambience.getID());
                 //We need at least one ambience
                 if (AmbienceManager.getInstance().getAmbiences().size() == 0){
                     setProblem(Messages.getString("DigitalDJWizard.38")); 

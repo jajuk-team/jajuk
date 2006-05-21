@@ -58,8 +58,8 @@ public class Transition {
      * @param nb initial number of tracks
      **/
     public Transition(int nb){
-        this.from = new Ambience("");
-        this.to = new Ambience("");
+        this.from = new Ambience(Long.toString(System.currentTimeMillis()),"");
+        this.to = new Ambience(Long.toString(System.currentTimeMillis()-100),"");
         this.nb = nb;
     }
     

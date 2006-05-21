@@ -28,16 +28,20 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Properties;
 import java.util.Set;
 import java.util.StringTokenizer;
 
+import javax.swing.JOptionPane;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import org.jajuk.base.Event;
 import org.jajuk.base.ObservationManager;
+import org.jajuk.base.Observer;
 import org.jajuk.base.Style;
 import org.jajuk.base.StyleManager;
+import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.log.Log;
@@ -52,7 +56,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * @author     Bertrand Florat
  * @created    01/03/2006
  */
-public class DigitalDJManager implements ITechnicalStrings{
+public class DigitalDJManager implements ITechnicalStrings,Observer{
 
     /**List of registated DJs ID->DJ*/
     private HashMap<String,DigitalDJ> djs;
@@ -65,6 +69,7 @@ public class DigitalDJManager implements ITechnicalStrings{
      */
     private DigitalDJManager() {
         djs = new HashMap();
+        ObservationManager.register(EVENT_AMBIENCE_REMOVED,this);
     }
     
     /**
@@ -159,6 +164,30 @@ public class DigitalDJManager implements ITechnicalStrings{
         djs.put(dj.getID(),dj);
         //alert command panel
         ObservationManager.notify(new Event(EVENT_DJ_CHANGE));
+    }
+    
+     /* (non-Javadoc)
+     * @see org.jajuk.base.Observer#update(org.jajuk.base.Event)
+     */
+    public void update(Event event) {
+        if (EVENT_AMBIENCE_REMOVED.equals(event.getSubject())){
+            Properties properties = event.getDetails();
+            String sID = (String)properties.get(DETAIL_CONTENT);
+            for (DigitalDJ dj:djs.values()){
+                if (dj instanceof AmbienceDigitalDJ
+                    && ((AmbienceDigitalDJ)dj).getAmbience().getID().equals(sID)){
+                    int i = Messages.getChoice(
+                        Messages.getString("DigitalDJWizard.61")+" "+dj.getName()+" ?",
+                        JOptionPane.YES_NO_CANCEL_OPTION);
+                    if (i == JOptionPane.YES_OPTION){
+                        remove(dj);
+                    }
+                    else{
+                        return;
+                    }
+                }
+            }
+        }
     }
     
     /**
@@ -327,7 +356,7 @@ class DigitalDJFactoryProportionImpl extends DigitalDJFactory{
 					styles = attributes.getValue(attributes.getIndex(XML_DJ_STYLES));
 					proportion = Float.parseFloat(attributes.getValue(attributes.getIndex(XML_DJ_VALUE)));
 					StringTokenizer st = new StringTokenizer(styles,",");
-					Ambience ambience = new Ambience("");
+					Ambience ambience = new Ambience(Long.toString(System.currentTimeMillis()),"");
 					while (st.hasMoreTokens()){
 						ambience.addStyle((Style)StyleManager.getInstance().getItem(st.nextToken()));
 					}
@@ -371,9 +400,9 @@ class DigitalDJFactoryAmbienceImpl extends DigitalDJFactory{
             @Override
             protected void othersTags(String sQname, Attributes attributes) {
                 if (XML_DJ_AMBIENCE.equals(sQname)){
-                    String sAmbienceName = 
+                    String sAmbienceID = 
                         attributes.getValue(attributes.getIndex(XML_DJ_VALUE));
-                    ambience = AmbienceManager.getInstance().getAmbience(sAmbienceName);
+                    ambience = AmbienceManager.getInstance().getAmbience(sAmbienceID);
                 }
             }
         };

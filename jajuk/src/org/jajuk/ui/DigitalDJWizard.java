@@ -612,7 +612,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
         public void initUI(){
             if (ActionSelectionPanel.ACTION_CHANGE.equals(data.get(KEY_ACTION))){
                 DigitalDJ dj = (DigitalDJ)data.get(KEY_CHANGE);
-                alTransitions = ((TransitionDigitalDJ)dj).getTransitions();
+                alTransitions = (ArrayList)((TransitionDigitalDJ)dj).getTransitions().clone();
                 data.put(KEY_TRANSITIONS,getCleanedTransitions());
                 alTransitions.add(new Transition(DEFAULT_TRANSITION_TRACK_NUMBER)); //add a void transition
             }
@@ -795,10 +795,10 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
                 }
                 //set selected style in transition object
                 if (bFrom){
-                    transition.setFrom(new Ambience("",styles));
+                    transition.setFrom(new Ambience(Long.toString(System.currentTimeMillis()),"",styles));
                 }
                 else{
-                    transition.setTo(new Ambience("",styles));
+                    transition.setTo(new Ambience(Long.toString(System.currentTimeMillis()),"",styles));
                 }
                 //check if the transaction is fully selected now
                 if (transition.getFrom().getStyles().size() > 0 
@@ -887,8 +887,8 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
         public void initUI(){
             if (ActionSelectionPanel.ACTION_CHANGE.equals(data.get(KEY_ACTION))){
                 DigitalDJ dj = (DigitalDJ)data.get(KEY_CHANGE);
-                proportions = ((ProportionDigitalDJ)dj).getProportions();
-                data.put(KEY_PROPORTIONS,proportions);
+                proportions = (ArrayList)((ProportionDigitalDJ)dj).getProportions().clone();
+                data.put(KEY_PROPORTIONS,getCleanedProportions());
                 proportions.add(new Proportion()); //add a void item
             }
             else{
@@ -1004,6 +1004,10 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
                 out.add(widgets[i][0],"0,"+(i+1)+",c,c"); //$NON-NLS-1$ //$NON-NLS-2$
                 out.add(widgets[i][1],"2,"+(i+1)); //$NON-NLS-1$
                 out.add(widgets[i][2],"4,"+(i+1)); //$NON-NLS-1$ //$NON-NLS-2$
+            }
+            //Display an error message if sum of proportion is > 100%
+            if (getTotalValue() > 100){
+                setProblem(Messages.getString("DigitalDJWizard.59"));
             }
             return new JScrollPane(out);
         }

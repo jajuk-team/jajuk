@@ -50,7 +50,7 @@ public class Proportion {
     /**Constructor for void proportion
      * */
     public Proportion(){
-        this.ambience = new Ambience("");
+        this.ambience = new Ambience(Long.toString(System.currentTimeMillis()),"");
         this.proportion = 0.2f;
     }
    

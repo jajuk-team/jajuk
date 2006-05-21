@@ -37,13 +37,16 @@ public class Ambience {
     /**Ambience name*/
     private String sName;
     
+    /**Ambience ID*/
+    private String sID;
     
     /**
      * Constructor
      * @param sName Ambience name
      * @param styles list of styles
      */
-    public Ambience(String sName,HashSet<Style> styles) {
+    public Ambience(String sID,String sName,HashSet<Style> styles) {
+        this.sID = sID;
         this.sName = sName;
         this.styles = styles;
     }
@@ -52,9 +55,8 @@ public class Ambience {
      * Constructor
      * @param sName Ambience name
      */
-    public Ambience(String sName) {
-        this.sName = sName;
-        this.styles = new HashSet(10);
+    public Ambience(String sID,String sName) {
+        this(sID,sName,new HashSet(10));
     }
     
      /**
@@ -77,6 +79,10 @@ public class Ambience {
 
     public String getName() {
         return this.sName;
+    }
+    
+    public String getID() {
+        return this.sID;
     }
 
     public void setName(String name) {
@@ -127,7 +133,7 @@ public class Ambience {
     }
     
     /**
-     * return "style1,style2,..,stylen"
+     * return "style1,style2,..,style_n"
      * @return String used in DJ XML representation
      */
     public String toXML(){

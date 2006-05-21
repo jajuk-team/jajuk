@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.jajuk.base.File;
-import org.jajuk.base.TrackManager;
 import org.jajuk.util.ITechnicalStrings;
 
 
@@ -105,7 +104,7 @@ public abstract class DigitalDJ implements ITechnicalStrings,Comparable{
             Iterator it = files.iterator();
             while (it.hasNext()){
                 File file = (File)it.next();
-                if (file.getTrack().getRate() < (TrackManager.getInstance().getMaxRate())/4){
+                if (file.getTrack().getStarsNumber() < iRatingLevel){
                     it.remove();
                 }
             }

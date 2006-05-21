@@ -24,6 +24,7 @@ import java.util.ArrayList;
 
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
+import org.jajuk.i18n.Messages;
 import org.jajuk.util.ITechnicalStrings;
 
 /**
@@ -49,6 +50,10 @@ public class AmbienceDigitalDJ extends DigitalDJ implements ITechnicalStrings{
      */
     @Override
     public ArrayList<File> generatePlaylist() {
+        if (ambience == null){ //can be null if ambience has been removed
+            Messages.showErrorMessage("159");
+            return new ArrayList();
+        }
         ArrayList<File> out = new ArrayList(100);
         out = getSequence(); 
         if ( !bUnicity && out.size() > 0){
@@ -93,7 +98,7 @@ public class AmbienceDigitalDJ extends DigitalDJ implements ITechnicalStrings{
         StringBuffer sb = new StringBuffer(2000);
         sb.append(toXMLGeneralParameters());
         sb.append("\t<"+XML_DJ_AMBIENCE+" "+XML_DJ_VALUE+"='");
-        sb.append(ambience.getName()+"'/>\n");
+        sb.append(ambience.getID()+"'/>\n");
         sb.append("</"+XML_DJ_DJ+">\n");
         return sb.toString();
     }
@@ -101,4 +106,6 @@ public class AmbienceDigitalDJ extends DigitalDJ implements ITechnicalStrings{
 	public void setAmbience(Ambience ambience) {
 		this.ambience = ambience;
 	}
+
+    
 }

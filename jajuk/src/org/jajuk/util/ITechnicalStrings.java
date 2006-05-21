@@ -397,6 +397,7 @@ public interface ITechnicalStrings {
     public static final String EVENT_COVER_DEFAULT_CHANGED = "cover default changed"; //cover default changed
     public static final String EVENT_TABLE_CLEAR_SELECTION = "table.clear_selection"; //clear table selection
     public static final String EVENT_DJ_CHANGE = "dj_change"; //DJ creation or removal
+    public static final String EVENT_AMBIENCE_REMOVED = "ambience_removed"; //An ambience has been removed
     
     //details keys
 	public static final String DETAIL_CURRENT_FILE_ID="current file id";

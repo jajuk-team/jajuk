@@ -44,7 +44,7 @@ import org.jajuk.util.ITechnicalStrings;
  */
 public class AmbienceManager implements ITechnicalStrings,Observer{
 
-    /**Ambience name-> ambience*/
+    /**Ambience id-> ambience*/
     private HashMap<String,Ambience> ambiences = new HashMap(10);
     
     /**Self instance*/
@@ -68,7 +68,9 @@ public class AmbienceManager implements ITechnicalStrings,Observer{
         return self;
     }
     
-    /** Load properties from in file */
+    /** Load properties from in file 
+     * Format: jajuk.ambience.<ID>/<name>=style1,style2,...
+     * */
     public void load() {
         Properties properties = ConfigurationManager.getProperties();
         Enumeration e = properties.keys();
@@ -83,9 +85,16 @@ public class AmbienceManager implements ITechnicalStrings,Observer{
                         styles.add(style);
                     }
                 }
-                String ambienceName = sKey.substring(AMBIENCE_PREFIX.length()); 
-                Ambience ambience = new Ambience(ambienceName,styles);
-                ambiences.put(ambienceName,ambience);
+                String ambienceDesc = sKey.substring(AMBIENCE_PREFIX.length());
+                int index = ambienceDesc.indexOf('/');
+                if (index == -1){
+                    continue;
+                }
+                String ambienceID = ambienceDesc.substring(0,index);
+                String ambienceName = ambienceDesc.substring(index+1);
+                Ambience ambience = 
+                    new Ambience(ambienceID,ambienceName,styles);
+                ambiences.put(ambienceID,ambience);
             }
         }
     }
@@ -100,32 +109,20 @@ public class AmbienceManager implements ITechnicalStrings,Observer{
     
     /**
      * 
-     * @param sName Ambience name
+     * @param sName Ambience id
      * @return registrated ambience
      */
-    public Ambience getAmbience(String sName){
-        return ambiences.get(sName);
+    public Ambience getAmbience(String sID){
+        return ambiences.get(sID);
     }
     
-    
-    /**
-     * Change Ambience name
-     * @param ambience
-     * @param sNewName
-     */
-    public void changeAmbianceName(Ambience ambience,String sNewName){
-        //Remove old value
-        ambiences.remove(ambience.getName());
-        ambience.setName(sNewName);
-        registerAmbience(ambience);
-    }
     
     /**
      * Register a new ambience
      * @param ambience ambience to register
      */
     public void registerAmbience(Ambience ambience){
-        ambiences.put(ambience.getName(),ambience);
+        ambiences.put(ambience.getID(),ambience);
     }
     
     /* (non-Javadoc)
@@ -169,17 +166,22 @@ public class AmbienceManager implements ITechnicalStrings,Observer{
                     styles += style.getId() + ',';
                 }
                 styles = styles.substring(0,styles.length()-1);
-                ConfigurationManager.setProperty(AMBIENCE_PREFIX+ambience.getName(),styles);
+                ConfigurationManager.setProperty(AMBIENCE_PREFIX+
+                    ambience.getID()+'/'+ambience.getName(),styles);
             }
         }
     }
     
     /**
      * Remove a ambience
-     * @param sAmbienceName the ambience to remove
+     * @param sAmbienceID the ambience to remove
      */
-    public void removeAmbience(String sAmbienceName){
-        this.ambiences.remove(sAmbienceName);
+    public void removeAmbience(String sAmbienceID){
+        this.ambiences.remove(sAmbienceID);
+        //Propagate the event
+        Properties properties = new Properties();
+        properties.put(DETAIL_CONTENT,sAmbienceID);
+        ObservationManager.notify(new Event(EVENT_AMBIENCE_REMOVED,properties));
     }
     
 }
