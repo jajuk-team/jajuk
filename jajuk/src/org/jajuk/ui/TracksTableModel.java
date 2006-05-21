@@ -192,19 +192,20 @@ public class TracksTableModel extends JajukTableModel{
             bCellEditable[iRow][4] = true;
             //Rate
             IconLabel ilRate = null;
-            long lInterval = TrackManager.getInstance().getMaxRate() / 4;
             long lRate = track.getRate();
-            if (lRate < lInterval){
+            switch(track.getStarsNumber()){
+            case 1:
                 ilRate = new IconLabel(Util.getIcon(ICON_STAR_1),"",null,null,null,Long.toString(track.getRate()));
-            }
-            else if (lRate < 2*lInterval){
+                break;
+            case 2:
                 ilRate = new IconLabel(Util.getIcon(ICON_STAR_2),"",null,null,null,Long.toString(track.getRate()));
-            }
-            else if (lRate < 3*lInterval){
+                break;
+            case 3:
                 ilRate = new IconLabel(Util.getIcon(ICON_STAR_3),"",null,null,null,Long.toString(track.getRate()));
-            }
-            else {
+                break;
+            case 4:
                 ilRate = new IconLabel(Util.getIcon(ICON_STAR_4),"",null,null,null,Long.toString(track.getRate()));
+                break;
             }
             oValues[iRow][5] = ilRate;
             bCellEditable[iRow][5] = false;
