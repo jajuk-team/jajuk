@@ -27,6 +27,7 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
+import java.util.Locale;
 
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
@@ -61,6 +62,8 @@ public abstract class Wizard extends Object implements ActionListener{
     Timer timer;    
     /**Parent window*/
     Frame parentWindow;
+    /**Locale*/
+    Locale locale;
     
     /**
      * Wizard constructor
@@ -68,11 +71,18 @@ public abstract class Wizard extends Object implements ActionListener{
      * @param initial Initial screen class
      * @param icon Wizard icon (null if no icon)
      * @param parentWindow wizard parent window
+     * @param locale wizard locale
      */
-     public Wizard(String sName,Class initial,ImageIcon icon,Frame parentWindow) {
+     public Wizard(String sName,Class initial,ImageIcon icon,Frame parentWindow,Locale locale) {
         this.sName = sName;
         this.initial = initial;
         this.parentWindow = parentWindow;
+        if (locale != null){
+            this.locale = locale;
+        }
+        else{
+            this.locale = Locale.getDefault();
+        }
         data = new HashMap(10);
         this.icon = icon;
         timer  = new Timer(50,new ActionListener() {
@@ -94,6 +104,17 @@ public abstract class Wizard extends Object implements ActionListener{
         timer.start();
         dialog.setVisible(true);
      }
+     
+     /**
+     * Wizard constructor (uses default locale)
+     * @param sName Wizard name displayed in dialog title
+     * @param initial Initial screen class
+     * @param icon Wizard icon (null if no icon)
+     * @param parentWindow wizard parent window
+     */
+     public Wizard(String sName,Class initial,ImageIcon icon,Frame parentWindow) {
+         this(sName,initial,icon,parentWindow,Locale.getDefault());
+     }
     
     /**
      * UI manager
@@ -102,7 +123,7 @@ public abstract class Wizard extends Object implements ActionListener{
         dialog = new JDialog(parentWindow,true);//modale
         dialog.setTitle(sName);
         header = new Header();
-        actions = new ActionsPanel(this);
+        actions = new ActionsPanel(this,locale);
         display();
         dialog.pack();
         dialog.setLocationRelativeTo(parentWindow);

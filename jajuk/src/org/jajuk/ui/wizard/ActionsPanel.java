@@ -50,6 +50,9 @@ public class ActionsPanel extends JPanel {
     JButton jbFinish;
     JButton jbCancel;
     
+    /**Locale*/
+    Locale locale;
+    
     private static final String[] locales = {"fr","nl","ca","de","es"};
     private static final String[] Finish = {"Terminé","Afgerond","Finalitzar","Fertig","Finalizar"};
     private static final String[] Cancel = {"Annuler","Annuleren","Cancelar","Abbrechen","Cancelar"};
@@ -67,7 +70,10 @@ public class ActionsPanel extends JPanel {
     /**
      * @param al associated action listener
      */
-    public ActionsPanel(ActionListener al) {
+    public ActionsPanel(ActionListener al,Locale locale) {
+        //set locale
+        this.locale = locale;
+        
         //Problem panel
         jlProblem = new JLabel(); 
         jlProblem.setForeground(Color.RED);
@@ -136,7 +142,7 @@ public class ActionsPanel extends JPanel {
      * @return
      */
     private String getMessage(int message){
-        String sLocale =  Locale.getDefault().getLanguage();
+        String sLocale =  locale.getLanguage();
         List alLocales = Arrays.asList(locales);
         List alOK = Arrays.asList(Finish);
         List alCancel = Arrays.asList(Cancel);
