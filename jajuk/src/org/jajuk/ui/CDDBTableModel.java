@@ -24,9 +24,7 @@ import java.util.Iterator;
 
 import org.jajuk.base.File;
 import org.jajuk.base.IPropertyable;
-import org.jajuk.base.PropertyMetaInformation;
 import org.jajuk.base.Track;
-import org.jajuk.base.TrackManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.CDDBWizard.CDDBTrack;
 
@@ -63,19 +61,11 @@ public class CDDBTableModel extends JajukTableModel {
 
         // Current Track title
         vColNames.add(Messages.getString("CDDBWizard.2")); //$NON-NLS-1$
-        vId.add("CDDBWizard.2"); //$NON-NLS-1$
+        vId.add("CDDBWizard.3"); //$NON-NLS-1$
 
         // Proposed Track Name
         vColNames.add(Messages.getString("CDDBWizard.4")); //$NON-NLS-1$
         vId.add("CDDBWizard.4"); //$NON-NLS-1$
-
-        // custom properties now
-        Iterator it = TrackManager.getInstance().getCustomProperties().iterator();
-        while (it.hasNext()) {
-            PropertyMetaInformation meta = (PropertyMetaInformation) it.next();
-            vColNames.add(meta.getName());
-            vId.add(meta.getName());
-        }
     }
 
     /**
