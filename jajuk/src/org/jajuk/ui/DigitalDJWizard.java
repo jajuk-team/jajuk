@@ -6,11 +6,10 @@ import info.clearthought.layout.TableLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Vector;
 
 import javax.swing.ButtonGroup;
@@ -400,7 +399,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
      * @created    4 march 2006
      */
     public static class GeneralOptionsPanel extends Screen 
-        implements ActionListener,CaretListener,ChangeListener,MouseWheelListener{
+        implements ActionListener,CaretListener,ChangeListener{
         
         JLabel jlName;
         JTextField jtfName;
@@ -426,7 +425,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
             if (ActionSelectionPanel.ACTION_CREATION.equals(data.get(KEY_ACTION))){
                 //default values
                 data.put(KEY_FADE_DURATION,10);
-                data.put(KEY_RATINGS_LEVEL,0); //all tracks by default
+                data.put(KEY_RATINGS_LEVEL,1); //all tracks by default
                 data.put(KEY_UNICITY,false);
             }
             else if (ActionSelectionPanel.ACTION_CHANGE.equals(data.get(KEY_ACTION))){ //keep existing DJ values
@@ -442,20 +441,20 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
             jtfName.requestFocusInWindow();
             jlRatingLevel = new JLabel(Messages.getString("DigitalDJWizard.8"));
             jlRatingLevel.setToolTipText(Messages.getString("DigitalDJWizard.53"));
-            jsRatingLevel = new JSlider(0,4,(Integer)data.get(KEY_RATINGS_LEVEL));
+            jsRatingLevel = new JSlider(1,4,(Integer)data.get(KEY_RATINGS_LEVEL));
             jsRatingLevel.setToolTipText(Messages.getString("DigitalDJWizard.53"));
             jsRatingLevel.setMajorTickSpacing(1);
             jsRatingLevel.setMinorTickSpacing(1);
             jsRatingLevel.setPaintTicks(true);
             jsRatingLevel.setPaintLabels(true);
             jsRatingLevel.setToolTipText(Messages.getString("DigitalDJWizard.8"));
-            jsRatingLevel.addMouseWheelListener(this);
+            jsRatingLevel.addMouseWheelListener(new DefaultMouseWheelListener(jsRatingLevel));
             jsRatingLevel.addChangeListener(this);
             jlFadeDuration = new JLabel(Messages.getString("DigitalDJWizard.9"));
             jlFadeDuration.setToolTipText(Messages.getString("DigitalDJWizard.54"));
             jsFadeDuration = new JSlider(0,30,(Integer)data.get(KEY_FADE_DURATION));
             jsFadeDuration.setToolTipText(Messages.getString("DigitalDJWizard.54"));
-            jsFadeDuration.addMouseWheelListener(this);
+            jsFadeDuration.addMouseWheelListener(new DefaultMouseWheelListener(jsFadeDuration));
             jsFadeDuration.addChangeListener(this);
             jsFadeDuration.setMajorTickSpacing(10);
             jsFadeDuration.setMinorTickSpacing(1);
@@ -529,23 +528,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
                 }
             }
         }
-
-       
-        /* (non-Javadoc)
-         * @see java.awt.event.MouseWheelListener#mouseWheelMoved(java.awt.event.MouseWheelEvent)
-         */
-        public void mouseWheelMoved(MouseWheelEvent mwe) {
-            if (mwe.getSource().equals(jsFadeDuration)){
-                int iOld = jsFadeDuration.getValue();
-                int iNew = iOld - mwe.getUnitsToScroll();
-                jsFadeDuration.setValue(iNew);
-            }
-            else if (mwe.getSource().equals(jsRatingLevel) && jsRatingLevel.isEnabled()){
-                int iOld = jsRatingLevel.getValue();
-                int iNew = iOld - mwe.getUnitsToScroll()/3;
-                jsRatingLevel.setValue(iNew);
-            }
-        }
+        
 
         /* (non-Javadoc)
          * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
@@ -1308,7 +1291,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
     
     public DigitalDJWizard() {
         super(Messages.getString("DigitalDJWizard.4"),ActionSelectionPanel.class,
-            Util.getIcon(IMAGE_DJ),Main.getWindow());
+            Util.getIcon(IMAGE_DJ),Main.getWindow(),new Locale(Messages.getInstance().getLocal()));
     }
 
 

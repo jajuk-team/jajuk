@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Locale;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -343,7 +344,7 @@ public class AmbienceWizard extends Wizard implements ITechnicalStrings{
     
     public AmbienceWizard() {
         super(Messages.getString("DigitalDJWizard.56"),AmbiencePanel.class,
-            Util.getIcon(IMAGE_DJ),Main.getWindow());
+            Util.getIcon(IMAGE_DJ),Main.getWindow(),new Locale(Messages.getInstance().getLocal()));
     }
 
 
