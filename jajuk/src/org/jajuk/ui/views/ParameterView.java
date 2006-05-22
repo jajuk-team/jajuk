@@ -59,6 +59,7 @@ import org.jajuk.base.SearchResult;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
 import org.jajuk.i18n.Messages;
+import org.jajuk.ui.DefaultMouseWheelListener;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.LNFManager;
 import org.jajuk.ui.PerspectiveBarJPanel;
@@ -391,6 +392,8 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
         introPosition.setPaintTicks(true);
         introPosition.setPaintLabels(true);
         introPosition.setToolTipText(Messages.getString("ParameterView.60") ); //$NON-NLS-1$
+        introPosition.addMouseWheelListener(new DefaultMouseWheelListener(introPosition));
+        
         //intro length
         jlIntroLength = new JLabel(Messages.getString("ParameterView.61")); //$NON-NLS-1$
         introLength = new JSlider(0,30,20);
@@ -399,6 +402,8 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
         introLength.setPaintTicks(true);
         introLength.setPaintLabels(true);
         introLength.setToolTipText(Messages.getString("ParameterView.110") ); //$NON-NLS-1$
+        introLength.addMouseWheelListener(new DefaultMouseWheelListener(introLength));
+        
         //best of size
         jlBestofSize = new JLabel(Messages.getString("ParameterView.111")); //$NON-NLS-1$
         jlBestofSize.setToolTipText(Messages.getString("ParameterView.112") ); //$NON-NLS-1$
@@ -487,6 +492,8 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
         crossFadeDuration.setPaintTicks(true);
         crossFadeDuration.setPaintLabels(true);
         crossFadeDuration.setToolTipText(Messages.getString("ParameterView.191")); //$NON-NLS-1$
+        crossFadeDuration.addMouseWheelListener(new DefaultMouseWheelListener(crossFadeDuration));
+        
         //add panels
         double sizeIntro[][] = {{0.50,0.45},
                 {TableLayout.PREFERRED,iYSeparator,TableLayout.PREFERRED,iYSeparator,TableLayout.PREFERRED,iYSeparator,TableLayout.PREFERRED,iYSeparator,
@@ -607,6 +614,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
         backupSize.setPaintTicks(true);
         backupSize.setPaintLabels(true);
         backupSize.setToolTipText(Messages.getString("ParameterView.119")); //$NON-NLS-1$
+        backupSize.addMouseWheelListener(new DefaultMouseWheelListener(backupSize));
         jlCollectionEncoding = new JLabel(Messages.getString("ParameterView.120")); //$NON-NLS-1$
         jlCollectionEncoding.setToolTipText(Messages.getString("ParameterView.121")); //$NON-NLS-1$
         jcbCollectionEncoding = new JComboBox();
@@ -702,6 +710,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
         connectionTO.setPaintTicks(true);
         connectionTO.setPaintLabels(true);
         connectionTO.setToolTipText(Messages.getString("ParameterView.161"));  //$NON-NLS-1$)
+        connectionTO.addMouseWheelListener(new DefaultMouseWheelListener(connectionTO));
         jlTransfertTO = new JLabel(Messages.getString("ParameterView.162"));  //$NON-NLS-1$
         jlTransfertTO.setToolTipText(Messages.getString("ParameterView.163"));  //$NON-NLS-1$
         transfertTO = new JSlider(0,60);
@@ -710,6 +719,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
         transfertTO.setPaintTicks(true);
         transfertTO.setPaintLabels(true);
         transfertTO.setToolTipText(Messages.getString("ParameterView.163"));  //$NON-NLS-1$)
+        transfertTO.addMouseWheelListener(new DefaultMouseWheelListener(transfertTO));
         jpNetwork.add(jlConnectionTO,"0,1"); //$NON-NLS-1$
         jpNetwork.add(connectionTO,"1,1"); //$NON-NLS-1$
         jpNetwork.add(jlTransfertTO,"0,3"); //$NON-NLS-1$
@@ -721,6 +731,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
         jpNetwork.add(jtfProxyPort,"1,9"); //$NON-NLS-1$
         jpNetwork.add(jlProxyLogin,"0,11"); //$NON-NLS-1$
         jpNetwork.add(jtfProxyLogin,"1,11"); //$NON-NLS-1$
+        
         
         //- Cover
         jpCovers = new JPanel();
@@ -802,12 +813,18 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
         jtpMain.addTab(Messages.getString("ParameterView.19"),jpStart); //$NON-NLS-1$
         jtpMain.addTab(Messages.getString("ParameterView.98"),jpTags); //$NON-NLS-1$
         jtpMain.addTab(Messages.getString("ParameterView.8"),jpHistory); //$NON-NLS-1$
-        jtpMain.addTab(Messages.getString("ParameterView.71"),jpP2P); //$NON-NLS-1$
+        //TBI jtpMain.addTab(Messages.getString("ParameterView.71"),jpP2P); //$NON-NLS-1$
         jtpMain.addTab(Messages.getString("ParameterView.159"),jpCovers); //$NON-NLS-1$
         jtpMain.addTab(Messages.getString("ParameterView.26"),jpConfirmations); //$NON-NLS-1$
         jtpMain.addTab(Messages.getString("ParameterView.139"),jpNetwork); //$NON-NLS-1$
         jtpMain.addTab(Messages.getString("ParameterView.115"),jpAdvanced); //$NON-NLS-1$
-        jtpMain.setSelectedIndex(ConfigurationManager.getInt(CONF_OPTIONS_TAB));  //Reload stored selected index
+        try{
+            jtpMain.setSelectedIndex(ConfigurationManager.getInt(CONF_OPTIONS_TAB));  //Reload stored selected index
+        }
+        catch(Exception e){ //an error can occur if a new release brings or remove tabs
+            Log.error(e);
+            jtpMain.setSelectedIndex(0);
+        }
         jtpMain.addChangeListener(this);
         add(jtpMain,"0,0"); //$NON-NLS-1$
         add(jpOKCancel,"0,1"); //$NON-NLS-1$
