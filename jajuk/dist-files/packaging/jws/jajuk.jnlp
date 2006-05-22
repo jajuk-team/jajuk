@@ -32,6 +32,7 @@
         	<extension name="InfoNodeDockingWindows" href="infonode_docking_windows.jnlp"/>
         	<extension name="Jdic" href="jdic.jnlp"/>
         	<extension name="Jfreechart" href="jfreechart.jnlp"/>
+        	<extension name="JCommon" href="jcommon.jnlp"/>
         	<extension name="JavaHelp" href="java_help.jnlp"/>
         	<extension name="JLayer" href="jlayer.jnlp"/>
         	<extension name="Jogg" href="jogg.jnlp"/>
