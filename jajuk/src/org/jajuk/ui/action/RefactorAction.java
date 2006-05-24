@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileFilter;
 
 import org.jajuk.base.AlbumManager;
 import org.jajuk.base.AuthorManager;
@@ -73,7 +74,6 @@ public class RefactorAction implements ITechnicalStrings {
 		Util.stopWaiting();
 	}
 	
-
 	public void refactor() {
 		Iterator it = alFiles.iterator();
 		String sErrors = "";
@@ -86,7 +86,7 @@ public class RefactorAction implements ITechnicalStrings {
 			String sValue;
 			// Check Author name
 			if (filename.contains(PATTERN_ARTIST)) {
-				sValue = tCurrent.getAuthor().getName2();
+				sValue = tCurrent.getAuthor().getName2().replace("/","-");
 				if (!sValue.equalsIgnoreCase(Messages.getString("unknown"))) {
 					filename = filename.replace(PATTERN_ARTIST, AuthorManager
 							.format(sValue));
@@ -98,7 +98,7 @@ public class RefactorAction implements ITechnicalStrings {
 
 			// Check Style name
 			if (filename.contains(PATTERN_GENRE)) {
-				sValue = tCurrent.getStyle().getName2();
+				sValue = tCurrent.getStyle().getName2().replace("/","-");
 				if (!sValue.equalsIgnoreCase(Messages.getString("unknown"))) {
 					filename = filename.replace(PATTERN_GENRE, StyleManager
 							.format(sValue));
@@ -110,7 +110,7 @@ public class RefactorAction implements ITechnicalStrings {
 
 			// Check Album Name
 			if (filename.contains(PATTERN_ALBUM)) {
-				sValue = tCurrent.getAlbum().getName2();
+				sValue = tCurrent.getAlbum().getName2().replace("/","-");
 				if (!sValue.equalsIgnoreCase(Messages.getString("unknown"))) {
 					filename = filename.replace(PATTERN_ALBUM, AlbumManager
 							.format(sValue));
@@ -125,9 +125,22 @@ public class RefactorAction implements ITechnicalStrings {
 				long lOrder = tCurrent.getOrder();
 
 				if (lOrder == 0) {
-					sErrors += fCurrent.getAbsolutePath() +" ("+ Messages.getString("Error.152")+ ")\n";
-					continue;
-				} else if (lOrder < 10) {
+					String sFilename = fCurrent.getName();					
+					if (!Character.isDigit(sFilename.charAt(0))){
+						sErrors += fCurrent.getAbsolutePath() +" ("+ Messages.getString("Error.152")+ ")\n";
+						continue;
+					}else {						
+						String sTo = fCurrent.getName().substring(0,3).trim();											
+						for (char c :sTo.toCharArray()){														
+							if (!Character.isDigit(c)){															
+								sErrors += fCurrent.getAbsolutePath() +" ("+ Messages.getString("Error.152")+ ")\n";
+								continue;
+							}
+						}
+						lOrder = Long.parseLong(sTo); 						
+					}																			
+				} 
+				if (lOrder < 10) {
 					filename = filename.replace(PATTERN_TRACKORDER, "0"
 							+ lOrder);
 				} else {
@@ -139,7 +152,8 @@ public class RefactorAction implements ITechnicalStrings {
 			// Check Track name
 			if (filename.contains(PATTERN_TRACKNAME)) {
 
-				sValue = tCurrent.getName();
+				sValue = tCurrent.getName().replace("/","-");
+				
 				if (!sValue.equalsIgnoreCase(Messages.getString("unknown"))) {
 					filename = filename.replace(PATTERN_TRACKNAME,
 							AuthorManager.format(sValue));
@@ -160,6 +174,7 @@ public class RefactorAction implements ITechnicalStrings {
 			}
 
 			filename += "." + tCurrent.getType().getExtension();
+						
 			
 			// Compute the new filename
 			java.io.File fOld = fCurrent.getIO();
@@ -172,6 +187,8 @@ public class RefactorAction implements ITechnicalStrings {
 			java.io.File fNew = new java.io.File(sPathname);
 			fNew.getParentFile().mkdirs();
 			
+						
+			
 			// Move file and related cover but save old Directory pathname for
 			// futur deletion
 			java.io.File fCover = tCurrent.getAlbum().getCoverFile();
@@ -181,36 +198,46 @@ public class RefactorAction implements ITechnicalStrings {
 			}
 			boolean bState = false;
 			
-			bState = fOld.renameTo(fNew);			
+			if (fNew.getAbsolutePath().equalsIgnoreCase(fOld.getAbsolutePath())){
+				sErrors += fCurrent.getAbsolutePath() +" ("+ Messages.getString("Error.160")+ ")\n";				
+			} else {			
+				if (fNew.getParentFile().canWrite()){
+					bState = fOld.renameTo(fNew);
+					if (!bState) {
+						sErrors += fCurrent.getAbsolutePath() +" ("+ Messages.getString("Error.154")+ ")\n";
+					}
+					Log.debug("[Refactoring] " + fNew.getAbsolutePath()+ " Success ? " + bState);
+					fCurrent.getDevice().cleanRemovedFiles();
+				} else {
+					sErrors += fCurrent.getAbsolutePath() +" ("+ Messages.getString("Error.161")+ ")\n";
+				}
+			}		
 			
-			Directory dir = DirectoryManager.getInstance().getDirectoryForIO(new java.io.File(sRoot+"/"+sName));
+			//Register and scans new directories
+			Directory dir = DirectoryManager.getInstance().registerDirectory(sName,
+					DirectoryManager.getInstance().getDirectoryForIO(fCurrent.getDevice().getFio())
+					,fCurrent.getDevice());
 			
-			if (dir != null){
-				dir.scan(true);
-			}
-			// Put some message
-			if (!bState) {			
-				sErrors += fCurrent.getAbsolutePath() +" ("+ Messages.getString("Error.154")+ ")\n";
-			}
-
+			
+			registerFile(dir);
+			
+			
 			// See if old directory contain other files and move them
-			java.io.File dOld = fOld.getParentFile();
-			java.io.File[] list = dOld.listFiles(new JajukFileFilter(false,true));
+			java.io.File dOld = fOld.getParentFile();			
+			java.io.File[] list = dOld.listFiles(new JajukFileFilter(false));
 			if (list == null){
-				DirectoryManager.getInstance().removeDirectory(fOld.getParent());
+				DirectoryManager.getInstance().removeDirectory(fOld.getParent());				
 			} else if (list.length != 0) {
 				for (java.io.File f : list) {
 					f.renameTo(new java.io.File(fNew.getParent() + "/"
 							+ f.getName()));
+				}				
+			} else if (list.length == 0) {				
+				if (dOld.delete()){
+					DirectoryManager.getInstance().removeDirectory(fOld.getParent());
+					
 				}
-			} else if (list.length == 0) {
-				dOld.delete();
-				DirectoryManager.getInstance().removeDirectory(fOld.getParent());
-			}
-
-			// Debug log
-			Log.debug("[Refactoring] " + fNew.getAbsolutePath()+ " Success ? " + bState);
-
+			}						
 		}
 
 		if (!sErrors.equals("")){
@@ -243,5 +270,19 @@ public class RefactorAction implements ITechnicalStrings {
 			}
 		}
 		return sReturn + "/" + sPaths[sPaths.length - 1];
+	}
+
+	public void registerFile (Directory d) {
+		
+		java.io.File fList [] = d.getFio().listFiles(new JajukFileFilter(true,false));
+		
+		if (fList.length != 0){
+			for (java.io.File f : fList){
+				Directory dir = DirectoryManager.getInstance().registerDirectory(f.getName(),d,d.getDevice());
+				registerFile(dir);
+			}
+		} else {
+			d.scan(true);
+		}								
 	}
 }

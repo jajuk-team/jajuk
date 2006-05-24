@@ -685,7 +685,7 @@ public interface ITechnicalStrings {
     public static final String PATTERN_GENRE = "%genre";
     public static final String PATTERN_YEAR = "%year";
     public static final String PATTERN_TRACKNAME = "%track";
-    public static final String PATTERN_TRACKORDER = "%track#";
+    public static final String PATTERN_TRACKORDER = "%n";
     
     //Actions
     public static final String ACTION_NEXT = "next";

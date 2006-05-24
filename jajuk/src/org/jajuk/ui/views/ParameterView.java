@@ -567,12 +567,12 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
                 	String[] stPattern = sText.split("[% /-]");
                 	for (String sPattern : stPattern){
                 		if (!sPattern.equals("")){
-                			if (sPattern.equalsIgnoreCase("Album") ||
-                				sPattern.equalsIgnoreCase("Artist") ||
-                				sPattern.equalsIgnoreCase("Year") ||
-                				sPattern.equalsIgnoreCase("track#") ||
-                				sPattern.equalsIgnoreCase("track") ||
-                				sPattern.equalsIgnoreCase("genre")){
+                			if (sPattern.equalsIgnoreCase(PATTERN_ALBUM.substring(1))||
+                				sPattern.equalsIgnoreCase(PATTERN_ARTIST.substring(1)) ||
+                				sPattern.equalsIgnoreCase(PATTERN_YEAR.substring(1)) ||
+                				sPattern.equalsIgnoreCase(PATTERN_TRACKNAME.substring(1)) ||
+                				sPattern.equalsIgnoreCase(PATTERN_TRACKORDER.substring(1)) ||
+                				sPattern.equalsIgnoreCase(PATTERN_GENRE.substring(1))){
                 				Log.debug("[Refactor Verifier] "+sPattern+" : OK !");
                 			} else {
                 				Log.debug("[Refactor Verifier] "+sPattern+" : Wrong !");

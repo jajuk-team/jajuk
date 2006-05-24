@@ -180,7 +180,7 @@ public class ConfigurationManager implements ITechnicalStrings{
 		properties.put(CONF_VOLUME,"0.5"); //$NON-NLS-1$
 		properties.put(CONF_REGEXP,FALSE); //$NON-NLS-1$
 		properties.put(CONF_BACKUP_SIZE,"20");//$NON-NLS-1$
-        properties.put(CONF_REFACTOR_PATTERN,"%artist/%year - %album/%track# - %track");//$NON-NLS-1$        
+        properties.put(CONF_REFACTOR_PATTERN,PATTERN_ARTIST+"/"+PATTERN_YEAR+" - "+PATTERN_ALBUM+"/"+PATTERN_TRACKORDER+" - "+PATTERN_TRACKNAME);//$NON-NLS-1$        
 		properties.put(CONF_COLLECTION_CHARSET,"UTF-8");//$NON-NLS-1$
 		properties.put(CONF_NETWORK_USE_PROXY,FALSE);
 		properties.put(CONF_NETWORK_PROXY_HOSTNAME,"proxy");//default proxy name, just a guess //$NON-NLS-1$

@@ -40,6 +40,8 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter{
 	private boolean bDirectories = true;
 	/**Display files flag**/
 	private boolean bFiles = true;
+	/**Display audio files**/
+	private boolean bAudio = true;
 	/**Accepted types**/
 	private ArrayList alTypes;
 	
@@ -72,12 +74,25 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter{
 		this(true,true);
 	}
 
+	/**
+	 * Constructor
+	 * @param bDirectories can we show directories
+	 * @param bFiles can we show files
+	 * @param bAudio can we show audio files
+	 */
+	public JajukFileFilter(boolean bAudio){
+		this.bDirectories = false;
+		this.bFiles = true;
+		this.bAudio = bAudio;
+		
+	}
+	
 	/**Tells if a file is selected or not**/
 	public boolean accept(File f) {
 		//directories case
 		if ( bDirectories && f.isDirectory()) {				
 			return true;
-		}
+		}		
 		//file cases
 		if ( alTypes != null){ //one or more types is specified
 			Iterator it = alTypes.iterator();
@@ -87,9 +102,10 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter{
 					return true;
 				}
 			}
-		}
-		else{
-			if ((bFiles && TypeManager.getInstance().isExtensionSupported(Util.getExtension(f)))){
+		} else{
+			if (!bAudio && TypeManager.getInstance().isExtensionSupported(Util.getExtension(f))){
+				return false;
+			} else if (bFiles){
 				return true;
 			}
 		}
