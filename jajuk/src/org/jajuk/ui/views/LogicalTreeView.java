@@ -406,7 +406,7 @@ ActionListener, Observer {
                     Track track = ((TrackNode)value).getTrack();
                     File current = FIFO.getInstance().getCurrentFile();
                     if ( current != null && track.equals(current.getTrack())){
-                        setForeground(new Color(0,200,0));
+                        setForeground(Color.ORANGE);
                     }
                 }
                 return this;

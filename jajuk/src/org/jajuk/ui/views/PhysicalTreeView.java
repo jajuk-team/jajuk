@@ -407,7 +407,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
                     }
                     File current = FIFO.getInstance().getCurrentFile();
                     if ( current != null && file.equals(current)){
-                        setForeground(new Color(0,200,0));
+                        setForeground(Color.ORANGE);
                     }
                 }
                 else if (value instanceof PlaylistFileNode){
