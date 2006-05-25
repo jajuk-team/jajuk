@@ -260,7 +260,7 @@ public class CDDBWizard extends JDialog implements ITechnicalStrings,
 			}
 
 			@Override
-			public void finished() {
+			public void finished() {				
 				if (idx >= 0 && aResult != null) {
 					// create Main panel
 					jpMain = new JPanel();
@@ -275,7 +275,7 @@ public class CDDBWizard extends JDialog implements ITechnicalStrings,
 					// Display main panel
 					display();
 				}
-				Util.stopWaiting();
+				Util.stopWaiting();				
 			}
 		};
 		sw.start();

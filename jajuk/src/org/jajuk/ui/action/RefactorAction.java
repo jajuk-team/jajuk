@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.swing.JOptionPane;
-import javax.swing.filechooser.FileFilter;
 
 import org.jajuk.base.AlbumManager;
 import org.jajuk.base.AuthorManager;
@@ -32,10 +31,12 @@ import org.jajuk.base.Directory;
 import org.jajuk.base.DirectoryManager;
 import org.jajuk.base.Event;
 import org.jajuk.base.File;
+import org.jajuk.base.IPropertyable;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.base.StyleManager;
 import org.jajuk.base.Track;
 import org.jajuk.i18n.Messages;
+import org.jajuk.ui.CDDBWizard;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
@@ -56,9 +57,10 @@ public class RefactorAction implements ITechnicalStrings {
 		while (it.hasNext()) {
 			File f = (File) it.next();
 			sFiles += f.getName() + "\n";
-		}
-		if (ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_REFACTOR_FILES)){
-			int iResu = Messages.getChoice(
+		}		
+		if (ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_REFACTOR_FILES)) {
+			int iResu = Messages
+					.getChoice(
 							Messages.getString("Confirmation_refactor_files") + " : \n" + sFiles, JOptionPane.INFORMATION_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
 			if (iResu != JOptionPane.YES_OPTION) {
 				Util.stopWaiting();
@@ -68,12 +70,12 @@ public class RefactorAction implements ITechnicalStrings {
 		new Thread() {
 			public void run() {
 				refactor();
-                ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH));
+				ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH));
 			}
 		}.start();
 		Util.stopWaiting();
 	}
-	
+
 	public void refactor() {
 		Iterator it = alFiles.iterator();
 		String sErrors = "";
@@ -86,36 +88,39 @@ public class RefactorAction implements ITechnicalStrings {
 			String sValue;
 			// Check Author name
 			if (filename.contains(PATTERN_ARTIST)) {
-				sValue = tCurrent.getAuthor().getName2().replace("/","-");
+				sValue = tCurrent.getAuthor().getName2().replace("/", "-");
 				if (!sValue.equalsIgnoreCase(Messages.getString("unknown"))) {
 					filename = filename.replace(PATTERN_ARTIST, AuthorManager
 							.format(sValue));
 				} else {
-					sErrors += fCurrent.getAbsolutePath() +" ("+ Messages.getString("Error.150")+ ")\n";
+					sErrors += fCurrent.getAbsolutePath() + " ("
+							+ Messages.getString("Error.150") + ")\n";
 					continue;
 				}
 			}
 
 			// Check Style name
 			if (filename.contains(PATTERN_GENRE)) {
-				sValue = tCurrent.getStyle().getName2().replace("/","-");
+				sValue = tCurrent.getStyle().getName2().replace("/", "-");
 				if (!sValue.equalsIgnoreCase(Messages.getString("unknown"))) {
 					filename = filename.replace(PATTERN_GENRE, StyleManager
 							.format(sValue));
 				} else {
-					sErrors += fCurrent.getAbsolutePath() +" ("+ Messages.getString("Error.153")+ ")\n";
+					sErrors += fCurrent.getAbsolutePath() + " ("
+							+ Messages.getString("Error.153") + ")\n";
 					continue;
 				}
 			}
 
 			// Check Album Name
 			if (filename.contains(PATTERN_ALBUM)) {
-				sValue = tCurrent.getAlbum().getName2().replace("/","-");
+				sValue = tCurrent.getAlbum().getName2().replace("/", "-");
 				if (!sValue.equalsIgnoreCase(Messages.getString("unknown"))) {
 					filename = filename.replace(PATTERN_ALBUM, AlbumManager
 							.format(sValue));
 				} else {
-					sErrors += fCurrent.getAbsolutePath() +" ("+ Messages.getString("Error.149")+ ")\n";
+					sErrors += fCurrent.getAbsolutePath() + " ("
+							+ Messages.getString("Error.149") + ")\n";
 					continue;
 				}
 			}
@@ -125,21 +130,25 @@ public class RefactorAction implements ITechnicalStrings {
 				long lOrder = tCurrent.getOrder();
 
 				if (lOrder == 0) {
-					String sFilename = fCurrent.getName();					
-					if (!Character.isDigit(sFilename.charAt(0))){
-						sErrors += fCurrent.getAbsolutePath() +" ("+ Messages.getString("Error.152")+ ")\n";
+					String sFilename = fCurrent.getName();
+					if (!Character.isDigit(sFilename.charAt(0))) {
+						sErrors += fCurrent.getAbsolutePath() + " ("
+								+ Messages.getString("Error.152") + ")\n";
 						continue;
-					}else {						
-						String sTo = fCurrent.getName().substring(0,3).trim();											
-						for (char c :sTo.toCharArray()){														
-							if (!Character.isDigit(c)){															
-								sErrors += fCurrent.getAbsolutePath() +" ("+ Messages.getString("Error.152")+ ")\n";
+					} else {
+						String sTo = fCurrent.getName().substring(0, 3).trim()
+								.replaceAll("[^0-9]", "");
+						for (char c : sTo.toCharArray()) {
+							if (!Character.isDigit(c)) {
+								sErrors += fCurrent.getAbsolutePath() + " ("
+										+ Messages.getString("Error.152")
+										+ ")\n";
 								continue;
 							}
 						}
-						lOrder = Long.parseLong(sTo); 						
-					}																			
-				} 
+						lOrder = Long.parseLong(sTo);
+					}
+				}
 				if (lOrder < 10) {
 					filename = filename.replace(PATTERN_TRACKORDER, "0"
 							+ lOrder);
@@ -148,47 +157,48 @@ public class RefactorAction implements ITechnicalStrings {
 							.replace(PATTERN_TRACKORDER, lOrder + "");
 				}
 			}
-			
+
 			// Check Track name
 			if (filename.contains(PATTERN_TRACKNAME)) {
 
-				sValue = tCurrent.getName().replace("/","-");
-				
+				sValue = tCurrent.getName().replace("/", "-");
+
 				if (!sValue.equalsIgnoreCase(Messages.getString("unknown"))) {
 					filename = filename.replace(PATTERN_TRACKNAME,
 							AuthorManager.format(sValue));
 				} else {
-					sErrors += fCurrent.getAbsolutePath() +" ("+ Messages.getString("Error.151")+ ")\n";
+					sErrors += fCurrent.getAbsolutePath() + " ("
+							+ Messages.getString("Error.151") + ")\n";
 					continue;
 				}
 			}
 			// Check Year Value
 			if (filename.contains(PATTERN_YEAR)) {
 				if (tCurrent.getYear() != 0) {
-					filename = filename.replace(PATTERN_YEAR, tCurrent.getYear()+ "");
+					filename = filename.replace(PATTERN_YEAR, tCurrent
+							.getYear()
+							+ "");
 				} else {
-					sErrors += fCurrent.getAbsolutePath() + " ("+Messages.getString("Error.148")+")\n";
+					sErrors += fCurrent.getAbsolutePath() + " ("
+							+ Messages.getString("Error.148") + ")\n";
 					continue;
 				}
 
 			}
 
 			filename += "." + tCurrent.getType().getExtension();
-						
-			
+
 			// Compute the new filename
 			java.io.File fOld = fCurrent.getIO();
 			String sRoot = fCurrent.getDevice().getUrl();
-			String [] split = filename.split("\\"+java.io.File.separator);
+			String[] split = filename.split("\\" + java.io.File.separator);
 			String sName = split[0];
-		
+
 			// Check if directories exists, and if not create them
 			String sPathname = getCheckedPath(sRoot, filename);
 			java.io.File fNew = new java.io.File(sPathname);
 			fNew.getParentFile().mkdirs();
-			
-						
-			
+
 			// Move file and related cover but save old Directory pathname for
 			// futur deletion
 			java.io.File fCover = tCurrent.getAlbum().getCoverFile();
@@ -197,63 +207,73 @@ public class RefactorAction implements ITechnicalStrings {
 						+ fCover.getName()));
 			}
 			boolean bState = false;
-			
-			if (fNew.getAbsolutePath().equalsIgnoreCase(fOld.getAbsolutePath())){
-				sErrors += fCurrent.getAbsolutePath() +" ("+ Messages.getString("Error.160")+ ")\n";				
-			} else {			
-				if (fNew.getParentFile().canWrite()){
+
+			if (fNew.getAbsolutePath().equalsIgnoreCase(fOld.getAbsolutePath())) {
+				sErrors += fCurrent.getAbsolutePath() + " ("
+						+ Messages.getString("Error.160") + ")\n";
+			} else {
+				if (fNew.getParentFile().canWrite()) {
 					bState = fOld.renameTo(fNew);
 					if (!bState) {
-						sErrors += fCurrent.getAbsolutePath() +" ("+ Messages.getString("Error.154")+ ")\n";
+						sErrors += fCurrent.getAbsolutePath() + " ("
+								+ Messages.getString("Error.154") + ")\n";
 					}
-					Log.debug("[Refactoring] " + fNew.getAbsolutePath()+ " Success ? " + bState);
-					fCurrent.getDevice().cleanRemovedFiles();
+					Log.debug("[Refactoring] " + fNew.getAbsolutePath()
+							+ " Success ? " + bState);
+
 				} else {
-					sErrors += fCurrent.getAbsolutePath() +" ("+ Messages.getString("Error.161")+ ")\n";
+					sErrors += fCurrent.getAbsolutePath() + " ("
+							+ Messages.getString("Error.161") + ")\n";
 				}
-			}		
-			
-			//Register and scans new directories
-			Directory dir = DirectoryManager.getInstance().registerDirectory(sName,
-					DirectoryManager.getInstance().getDirectoryForIO(fCurrent.getDevice().getFio())
-					,fCurrent.getDevice());
-			
-			
+			}
+			fCurrent.getDevice().cleanRemovedFiles();
+
+			// Register and scans new directories
+			Directory dir = DirectoryManager.getInstance().registerDirectory(
+					sName,
+					DirectoryManager.getInstance().getDirectoryForIO(
+							fCurrent.getDevice().getFio()),
+					fCurrent.getDevice());
+
 			registerFile(dir);
-			
-			
+
 			// See if old directory contain other files and move them
-			java.io.File dOld = fOld.getParentFile();			
+			java.io.File dOld = fOld.getParentFile();
 			java.io.File[] list = dOld.listFiles(new JajukFileFilter(false));
-			if (list == null){
-				DirectoryManager.getInstance().removeDirectory(fOld.getParent());				
+			if (list == null) {
+				DirectoryManager.getInstance()
+						.removeDirectory(fOld.getParent());
 			} else if (list.length != 0) {
 				for (java.io.File f : list) {
 					f.renameTo(new java.io.File(fNew.getParent() + "/"
 							+ f.getName()));
-				}				
-			} else if (list.length == 0) {				
-				if (dOld.delete()){
-					DirectoryManager.getInstance().removeDirectory(fOld.getParent());
-					
 				}
-			}						
+			} else if (list.length == 0) {
+				if (dOld.delete()) {
+					DirectoryManager.getInstance().removeDirectory(
+							fOld.getParent());
+
+				}
+			}
 		}
 
-		if (!sErrors.equals("")){
-			Messages.showDetailedErrorMessage("147", "",sErrors);
+		if (!sErrors.equals("")) {
+			Messages.showDetailedErrorMessage("147", "", sErrors);
 		} else {
-			InformationJPanel.getInstance().setMessage(
-				Messages.getString("Success"), InformationJPanel.INFORMATIVE); //$NON-NLS-1$
+			InformationJPanel
+					.getInstance()
+					.setMessage(
+							Messages.getString("Success"), InformationJPanel.INFORMATIVE); //$NON-NLS-1$
 		}
 	}
 
 	public String getCheckedPath(String sRoot, String sPathname) {
 
 		java.io.File fioRoot = new java.io.File(sRoot);
-		java.io.File[] fioList = fioRoot.listFiles(new JajukFileFilter(true,false));
+		java.io.File[] fioList = fioRoot.listFiles(new JajukFileFilter(true,
+				false));
 
-		String[] sPaths = sPathname.split("\\"+java.io.File.separator);
+		String[] sPaths = sPathname.split("\\" + java.io.File.separator);
 		String sReturn = sRoot;
 		for (int i = 0; i < sPaths.length - 1; i++) {
 			String sPath = sPaths[i];
@@ -272,17 +292,19 @@ public class RefactorAction implements ITechnicalStrings {
 		return sReturn + "/" + sPaths[sPaths.length - 1];
 	}
 
-	public void registerFile (Directory d) {
-		
-		java.io.File fList [] = d.getFio().listFiles(new JajukFileFilter(true,false));
-		
-		if (fList.length != 0){
-			for (java.io.File f : fList){
-				Directory dir = DirectoryManager.getInstance().registerDirectory(f.getName(),d,d.getDevice());
+	public void registerFile(Directory d) {
+
+		java.io.File fList[] = d.getFio().listFiles(
+				new JajukFileFilter(true, false));
+
+		if (fList.length != 0) {
+			for (java.io.File f : fList) {
+				Directory dir = DirectoryManager.getInstance()
+						.registerDirectory(f.getName(), d, d.getDevice());
 				registerFile(dir);
 			}
 		} else {
 			d.scan(true);
-		}								
+		}
 	}
 }
