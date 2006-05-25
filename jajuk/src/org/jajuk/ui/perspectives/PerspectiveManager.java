@@ -27,6 +27,7 @@ import java.util.Iterator;
 import javax.swing.SwingUtilities;
 
 import org.jajuk.Main;
+import org.jajuk.i18n.Messages;
 import org.jajuk.ui.PerspectiveBarJPanel;
 import org.jajuk.ui.views.IView;
 import org.jajuk.util.ConfigurationManager;
@@ -45,9 +46,9 @@ public class PerspectiveManager  implements ITechnicalStrings {
     /** Current perspective */
     private static IPerspective currentPerspective = null;
     /** Perspective name*/
-    private static ArrayList alNames = new ArrayList(10);
+    private static ArrayList<String> alNames = new ArrayList(10);
     /**perspective  */
-    private static ArrayList alPerspectives = new ArrayList(10);
+    private static ArrayList<IPerspective> alPerspectives = new ArrayList(10);
     /** Parsing temporary variable */
     private static IPerspective pCurrent = null;
     /**Date used by probe */
@@ -74,6 +75,15 @@ public class PerspectiveManager  implements ITechnicalStrings {
      */
     public static void load() throws JajukException{
         registerDefaultPerspectives();
+        //upgrade code; if > 1.1, do not overwrie default conf by user conf
+        String sRelease = ConfigurationManager.getProperty(CONF_RELEASE);
+        if (sRelease.matches("0..*")
+                || sRelease.matches("1.0..*")
+                || sRelease.matches("1.1.*")){
+            ConfigurationManager.setProperty(CONF_RELEASE,JAJUK_VERSION);
+            Messages.showInfoMessage(Messages.getString("Note.0"));
+            return;
+        }
         try{
             Iterator it = getPerspectives().iterator();
             while (it.hasNext()){ //for each perspective
@@ -175,6 +185,19 @@ public class PerspectiveManager  implements ITechnicalStrings {
         return alPerspectives;
     }
     
+    /**
+     * Get a perspective by ID
+     * @param sID perspective ID
+     * @return pespective
+     */
+    public static IPerspective getPerspective(String sID){
+        int index = alNames.indexOf(sID);
+        if (index == -1){
+            return null;
+        }
+        return alPerspectives.get(index);
+    }
+    
     
     /**
      * Saves perspectives and views position in the perspective.xml file
@@ -228,22 +251,14 @@ public class PerspectiveManager  implements ITechnicalStrings {
         registerPerspective(perspective);
         
         // Information perspective
-        /* Disable this perspective for the moment as jdic release is buggy
-        boolean bOK = true;
-        try{
-            WebBrowser browser = new WebBrowser();
-            bOK = browser.isInitialized();
-        }
-        catch(Error e){
-            bOK = false;
-        }
-        if (true){
+        /* jdic buggy under linux for the moment*/
+        if (Util.isUnderWindows()){
             perspective = new InfoPerspective();
             perspective.setIconPath(ICON_PERSPECTIVE_INFORMATION);
             perspective.setID(PERSPECTIVE_NAME_INFO);
             perspective.setDefaultViews();
             registerPerspective(perspective);
-        }*/
+        }
                 
         //Configuration perspective
         perspective = new ConfigurationPerspective();
