@@ -33,8 +33,6 @@ import org.jajuk.base.FileManager;
 import org.jajuk.base.IPropertyable;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.base.PropertyMetaInformation;
-import org.jajuk.base.Track;
-import org.jajuk.base.TrackManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
@@ -47,7 +45,6 @@ import org.jajuk.util.log.Log;
  * @created    29 feb. 2004
  */
 public class FilesTableModel extends JajukTableModel implements ITechnicalStrings{
-	
 	
 	/**
 	 * Model constructor
@@ -170,7 +167,7 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
             }
         }
         it = alToShow.iterator();
-        int iColNum = iNumberStandardRows + FileManager.getInstance().getCustomProperties().size();
+        int iColNum = iNumberStandardCols + FileManager.getInstance().getCustomProperties().size();
         iRowNum = alToShow.size();
         it = alToShow.iterator();
         oValues = new Object[iRowNum][iColNum];
@@ -205,25 +202,7 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
             oValues[iRow][4] = file.getTrack().getStyle().getName2();
             bCellEditable[iRow][4] = true;
             //Rate
-            IconLabel ilRate = null;
-            long lInterval = TrackManager.getInstance().getMaxRate() / 4;
-            Track track = file.getTrack();
-            long lRate = track.getRate();
-            switch(track.getStarsNumber()){
-            case 1:
-                ilRate = new IconLabel(Util.getIcon(ICON_STAR_1),"",null,null,null,Long.toString(track.getRate()));
-                break;
-            case 2:
-                ilRate = new IconLabel(Util.getIcon(ICON_STAR_2),"",null,null,null,Long.toString(track.getRate()));
-                break;
-            case 3:
-                ilRate = new IconLabel(Util.getIcon(ICON_STAR_3),"",null,null,null,Long.toString(track.getRate()));
-                break;
-            case 4:
-                ilRate = new IconLabel(Util.getIcon(ICON_STAR_4),"",null,null,null,Long.toString(track.getRate()));
-                break;
-            }
-            ilRate.setInteger(true);
+            IconLabel ilRate = file.getTrack().getStars();
             oValues[iRow][5] = ilRate;
             bCellEditable[iRow][5] = false;
             //Length
@@ -263,25 +242,25 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
                 PropertyMetaInformation meta = (PropertyMetaInformation)it2.next();
                 Object o = properties.get(meta.getName());
                 if (o != null){
-                    oValues[iRow][iNumberStandardRows+i] = properties.get(meta.getName());    
+                    oValues[iRow][iNumberStandardCols+i] = properties.get(meta.getName());    
                 }
                 else{
-                    oValues[iRow][iNumberStandardRows+i] = meta.getDefaultValue();
+                    oValues[iRow][iNumberStandardCols+i] = meta.getDefaultValue();
                 }
                 //For date format, just display date conversion
                 if (meta.getType().equals(Date.class)){
                     try {
-                        oValues[iRow][iNumberStandardRows+i] = Util.format(oValues[iRow][iNumberStandardRows+i],meta);
+                        oValues[iRow][iNumberStandardCols+i] = Util.format(oValues[iRow][iNumberStandardCols+i],meta);
                     } catch (Exception e) {
                         Log.error(e);
                     }
                 }
                 //Date values not editable, use properties panel instead to edit
                 if (meta.getType().equals(Date.class)){
-                    bCellEditable[iRow][iNumberStandardRows+i] = false;    
+                    bCellEditable[iRow][iNumberStandardCols+i] = false;    
                 }
                 else{
-                    bCellEditable[iRow][iNumberStandardRows+i] = true;
+                    bCellEditable[iRow][iNumberStandardCols+i] = true;
                 }
             }   
         }

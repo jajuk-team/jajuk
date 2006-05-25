@@ -153,7 +153,7 @@ public class TracksTableModel extends JajukTableModel{
         //sort by album
         Collections.sort(alToShow,new TrackComparator(2));
         Iterator it = alToShow.iterator();
-        int iColNum = iNumberStandardRows + 
+        int iColNum = iNumberStandardCols + 
             TrackManager.getInstance().getCustomProperties().size();
         iRowNum = alToShow.size();
         it = alToShow.iterator();
@@ -191,22 +191,7 @@ public class TracksTableModel extends JajukTableModel{
             oValues[iRow][4] = track.getStyle().getName2();
             bCellEditable[iRow][4] = true;
             //Rate
-            IconLabel ilRate = null;
-            long lRate = track.getRate();
-            switch(track.getStarsNumber()){
-            case 1:
-                ilRate = new IconLabel(Util.getIcon(ICON_STAR_1),"",null,null,null,Long.toString(track.getRate()));
-                break;
-            case 2:
-                ilRate = new IconLabel(Util.getIcon(ICON_STAR_2),"",null,null,null,Long.toString(track.getRate()));
-                break;
-            case 3:
-                ilRate = new IconLabel(Util.getIcon(ICON_STAR_3),"",null,null,null,Long.toString(track.getRate()));
-                break;
-            case 4:
-                ilRate = new IconLabel(Util.getIcon(ICON_STAR_4),"",null,null,null,Long.toString(track.getRate()));
-                break;
-            }
+            IconLabel ilRate = track.getStars();
             oValues[iRow][5] = ilRate;
             bCellEditable[iRow][5] = false;
             ilRate.setInteger(true);
@@ -231,15 +216,15 @@ public class TracksTableModel extends JajukTableModel{
                 PropertyMetaInformation meta = (PropertyMetaInformation)it2.next();
                 Object o = properties.get(meta.getName());
                 if (o != null){
-                    oValues[iRow][iNumberStandardRows+i] = o;    
+                    oValues[iRow][iNumberStandardCols+i] = o;    
                 }
                 else{
-                    oValues[iRow][iNumberStandardRows+i] = meta.getDefaultValue();
+                    oValues[iRow][iNumberStandardCols+i] = meta.getDefaultValue();
                 }
                 //For date format, just display date conversion
                 if (meta.getType().equals(Date.class)){
                     try {
-                        oValues[iRow][iNumberStandardRows+i] = Util.format(oValues[iRow][iNumberStandardRows+i],meta);
+                        oValues[iRow][iNumberStandardCols+i] = Util.format(oValues[iRow][iNumberStandardCols+i],meta);
                     } catch (Exception e) {
                         Log.error(e);
                     }
@@ -247,10 +232,10 @@ public class TracksTableModel extends JajukTableModel{
                 
                 //Date values not editable, use properties panel instead to edit
                 if (meta.getType().equals(Date.class)){
-                    bCellEditable[iRow][iNumberStandardRows+i] = false;    
+                    bCellEditable[iRow][iNumberStandardCols+i] = false;    
                 }
                 else{
-                    bCellEditable[iRow][iNumberStandardRows+i] = true;
+                    bCellEditable[iRow][iNumberStandardCols+i] = true;
                 }
             }   
         }

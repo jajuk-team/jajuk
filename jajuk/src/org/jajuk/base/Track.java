@@ -29,6 +29,7 @@ import java.util.Iterator;
 import java.util.Locale;
 
 import org.jajuk.i18n.Messages;
+import org.jajuk.ui.IconLabel;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Util;
 
@@ -290,6 +291,30 @@ public class Track extends PropertyAdapter implements Comparable{
         else {
             return 4;
         }
+    }
+    
+    /**
+     * @return the stars icon
+     */
+    public IconLabel getStars() {
+        IconLabel ilRate = null;
+        long lRate = getRate();
+        switch(getStarsNumber()){
+        case 1:
+            ilRate = new IconLabel(Util.getIcon(ICON_STAR_1),"",null,null,null,Long.toString(getRate()));
+            break;
+        case 2:
+            ilRate = new IconLabel(Util.getIcon(ICON_STAR_2),"",null,null,null,Long.toString(getRate()));
+            break;
+        case 3:
+            ilRate = new IconLabel(Util.getIcon(ICON_STAR_3),"",null,null,null,Long.toString(getRate()));
+            break;
+        case 4:
+            ilRate = new IconLabel(Util.getIcon(ICON_STAR_4),"",null,null,null,Long.toString(getRate()));
+            break;
+        }
+        ilRate.setInteger(true);
+        return ilRate;
     }
     
     /**
