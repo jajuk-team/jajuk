@@ -270,9 +270,6 @@ public class Main implements ITechnicalStrings {
             //Clean the collection up
             Collection.cleanup();
             
-            //Upgrade step2
-            upgradeStep2();
-            
             //Display progress
             sc.setProgress(70,Messages.getString("SplashScreen.2")); //$NON-NLS-1$
             
@@ -749,9 +746,10 @@ public class Main implements ITechnicalStrings {
     
     /**
      * Actions to migrate an existing installation
-     * Step 2 after collection load
+     * Step 2 at the end of UI startup
      */
     public static void upgradeStep2() throws Exception {
+        
     }
     
     /**
@@ -833,6 +831,9 @@ public class Main implements ITechnicalStrings {
                     jpFrame.add(jpContentPane, BorderLayout.CENTER);
                     jw.setCursor(Util.DEFAULT_CURSOR);
                     jw.addComponentListener();
+                    
+                    //Upgrade step2
+                    upgradeStep2();
                     
                     if (ConfigurationManager.getBoolean(CONF_SHOW_TIP_ON_STARTUP)) {
                         // Display tip of the day
