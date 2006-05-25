@@ -69,8 +69,6 @@ import javax.swing.JMenu;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
 
 import org.jajuk.Main;
 import org.jajuk.base.Directory;
@@ -85,9 +83,6 @@ import org.jajuk.ui.perspectives.IPerspective;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
 
 import com.sun.image.codec.jpeg.JPEGCodec;
 import com.sun.image.codec.jpeg.JPEGEncodeParam;
@@ -122,10 +117,10 @@ public class Util implements ITechnicalStrings {
 	private static String sRelease = null;
 
 	/** Directory filter used in refresh */
-	public static JajukFileFilter dirFilter = new JajukFileFilter(true, false);
+	public static JajukFileFilter dirFilter = new JajukFileFilter(JajukFileFilter.DirectoryFilter.getInstance());
 
 	/** File filter used in refresh */
-	public static JajukFileFilter fileFilter = new JajukFileFilter(false, true);
+	public static JajukFileFilter fileFilter = new JajukFileFilter(JajukFileFilter.KnownTypeFilter.getInstance());
 
 	/**
 	 * Genres
@@ -1140,42 +1135,6 @@ public class Util implements ITechnicalStrings {
 			int iFromLeft) {
 		window.setLocation((int) (Math.random() * iFromTop), (int) (Math
 				.random() * iFromLeft));
-	}
-
-	/**
-	 * 
-	 * @return jajuk release as read from an existing collection file (used for
-	 *         upgrade) or null if no collection file
-	 * @throws Exception
-	 */
-	public static String getJajukRelease() {
-		try {
-			SAXParserFactory spf = SAXParserFactory.newInstance();
-			spf.setValidating(false);
-			spf.setNamespaceAware(false);
-			SAXParser saxParser = spf.newSAXParser();
-			File frt = new File(FILE_COLLECTION);
-			if (!frt.exists()) {
-				return null;
-			}
-			saxParser.parse(frt.toURL().toString(), new DefaultHandler() {
-				public void startElement(String sUri, String s, String sQName,
-						Attributes attributes) throws SAXException {
-					try {
-						if (XML_COLLECTION.equals(sQName)) {
-							sRelease = attributes.getValue(attributes
-									.getIndex(XML_VERSION));
-							;
-						}
-					} catch (Exception e) {
-						sRelease = null;
-					}
-				}
-			});
-		} catch (Exception e) {
-			return null;
-		}
-		return sRelease;
 	}
 
 	/**
