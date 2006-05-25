@@ -159,7 +159,7 @@ public class CDScanView extends ViewAdapter implements ActionListener {
 			sw.start();
 		}
 		else if (e.getSource() == jbUrl){
-			JajukFileChooser jfc = new JajukFileChooser(new JajukFileFilter(true,false));
+			JajukFileChooser jfc = new JajukFileChooser(new JajukFileFilter(JajukFileFilter.DirectoryFilter.getInstance()));
 			jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 			jfc.setDialogTitle(Messages.getString("DeviceWizard.43"));//$NON-NLS-1$
 			jfc.setMultiSelectionEnabled(false);

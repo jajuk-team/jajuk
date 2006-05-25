@@ -31,12 +31,10 @@ import org.jajuk.base.Directory;
 import org.jajuk.base.DirectoryManager;
 import org.jajuk.base.Event;
 import org.jajuk.base.File;
-import org.jajuk.base.IPropertyable;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.base.StyleManager;
 import org.jajuk.base.Track;
 import org.jajuk.i18n.Messages;
-import org.jajuk.ui.CDDBWizard;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
@@ -239,7 +237,7 @@ public class RefactorAction implements ITechnicalStrings {
 
 			// See if old directory contain other files and move them
 			java.io.File dOld = fOld.getParentFile();
-			java.io.File[] list = dOld.listFiles(new JajukFileFilter(false));
+			java.io.File[] list = dOld.listFiles(new JajukFileFilter(JajukFileFilter.NotAudioFilter.getInstance()));
 			if (list == null) {
 				DirectoryManager.getInstance()
 						.removeDirectory(fOld.getParent());
@@ -270,9 +268,7 @@ public class RefactorAction implements ITechnicalStrings {
 	public String getCheckedPath(String sRoot, String sPathname) {
 
 		java.io.File fioRoot = new java.io.File(sRoot);
-		java.io.File[] fioList = fioRoot.listFiles(new JajukFileFilter(true,
-				false));
-
+		java.io.File[] fioList = fioRoot.listFiles(new JajukFileFilter(JajukFileFilter.DirectoryFilter.getInstance()));
 		String[] sPaths = sPathname.split("\\" + java.io.File.separator);
 		String sReturn = sRoot;
 		for (int i = 0; i < sPaths.length - 1; i++) {
@@ -295,7 +291,7 @@ public class RefactorAction implements ITechnicalStrings {
 	public void registerFile(Directory d) {
 
 		java.io.File fList[] = d.getFio().listFiles(
-				new JajukFileFilter(true, false));
+				new JajukFileFilter(JajukFileFilter.DirectoryFilter.getInstance()));
 
 		if (fList.length != 0) {
 			for (java.io.File f : fList) {

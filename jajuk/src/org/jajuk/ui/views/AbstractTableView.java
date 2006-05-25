@@ -33,7 +33,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Properties;
-import java.util.StringTokenizer;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -123,8 +122,18 @@ public abstract class AbstractTableView extends ViewAdapter
     /**Model refreshing flag*/
     boolean bReloading = false;
     
+    /**Associated conf key*/
+    String sConf = null;
+                
+    
     /** Constructor */
     public AbstractTableView(){
+        if (AbstractTableView.this instanceof PhysicalTableView){
+            sConf = CONF_PHYSICAL_TABLE_COLUMNS;
+        }
+        else {
+            sConf = CONF_LOGICAL_TABLE_COLUMNS;
+        }
         // launches a thread used to perform dynamic filtering when user is typing
         new Thread(){
             public void run(){
@@ -228,9 +237,9 @@ public abstract class AbstractTableView extends ViewAdapter
                 add(new JScrollPane(jtable),"0,1"); //$NON-NLS-1$
                 new TableTransferHandler(jtable, DnDConstants.ACTION_COPY_OR_MOVE);
                 jtable.addMouseListener(AbstractTableView.this);
-                hideColumns();
+                jtable.hideColumns(jtable.getColumnsConf(sConf));
                 applyFilter(null,null);
-                jtable.packAll();
+                jtable.packTable(5);
                 //Register on the list for subject we are interrested in
                 ObservationManager.register(EVENT_DEVICE_MOUNT,AbstractTableView.this);
                 ObservationManager.register(EVENT_DEVICE_UNMOUNT,AbstractTableView.this);
@@ -321,12 +330,13 @@ public abstract class AbstractTableView extends ViewAdapter
                         if (AbstractTableView.this instanceof PhysicalTableView){
                             String sTableCols = ConfigurationManager.getProperty(CONF_PHYSICAL_TABLE_COLUMNS);
                             ConfigurationManager.setProperty(CONF_PHYSICAL_TABLE_COLUMNS,sTableCols+","+(model.getIdentifier(model.getColumnCount()-1)));     //$NON-NLS-1$
+                            jtable.hideColumns(jtable.getColumnsConf(CONF_PHYSICAL_TABLE_COLUMNS));
                         }
                         else {
                             String sTableCols = ConfigurationManager.getProperty(CONF_LOGICAL_TABLE_COLUMNS);
                             ConfigurationManager.setProperty(CONF_LOGICAL_TABLE_COLUMNS,sTableCols+","+(model.getIdentifier(model.getColumnCount()-1))); //$NON-NLS-1$
+                            jtable.hideColumns(jtable.getColumnsConf(CONF_LOGICAL_TABLE_COLUMNS));
                         }
-                        hideColumns();
                         applyFilter(sAppliedCriteria,sAppliedFilter);
                         jcbProperty.addItem(properties.get(DETAIL_CONTENT));
                     }
@@ -335,19 +345,19 @@ public abstract class AbstractTableView extends ViewAdapter
                         if (properties == null){ //can be null at view populate
                         	return;
                         }
-                        ArrayList al = getColumnsConf();
+                        ArrayList al = jtable.getColumnsConf(sConf);
                         al.remove(properties.get(DETAIL_CONTENT));
                         model = populateTable();//create a new model
                         jtable.setModel(model);
                         setRenderers();
                         //remove item from configuration cols
                         if (AbstractTableView.this instanceof PhysicalTableView){
-                            ConfigurationManager.setProperty(CONF_PHYSICAL_TABLE_COLUMNS,getColumnsConf(al));    
+                            ConfigurationManager.setProperty(CONF_PHYSICAL_TABLE_COLUMNS,jtable.getColumnsConf(al));    
                         }
                         else {
-                            ConfigurationManager.setProperty(CONF_LOGICAL_TABLE_COLUMNS,getColumnsConf(al));
+                            ConfigurationManager.setProperty(CONF_LOGICAL_TABLE_COLUMNS,jtable.getColumnsConf(al));
                         }
-                        hideColumns();
+                        jtable.hideColumns(jtable.getColumnsConf(sConf));
                         applyFilter(sAppliedCriteria,sAppliedFilter);
                         jcbProperty.removeItem(properties.get(DETAIL_CONTENT));
                     }
@@ -399,22 +409,6 @@ public abstract class AbstractTableView extends ViewAdapter
     }
     
     /**
-     * Hide needed columns
-     *
-     */
-    private void hideColumns(){
-        //display columns
-        ArrayList al = getColumnsConf(); 
-        Iterator it = ((DefaultTableColumnModelExt)jtable.getColumnModel()).getColumns(false).iterator();
-        while (it.hasNext()){
-            TableColumnExt col = (TableColumnExt)it.next();
-            if (!al.contains(model.getIdentifier(col.getModelIndex()))){
-                col.setVisible(false);
-            }
-        }
-    }
-    
-    /**
      * Detect property change
      */
     public void itemStateChanged(ItemEvent ie){
@@ -426,78 +420,13 @@ public abstract class AbstractTableView extends ViewAdapter
         
     }
     
-    /**
-     * 
-     * @return columns configuration
-     * 
-     */
-    public String createColumnsConf(){
-        StringBuffer sb = new StringBuffer();
-        Iterator it = ((DefaultTableColumnModelExt)jtable.getColumnModel()).getColumns(true).iterator();
-        while (it.hasNext()){
-            TableColumnExt col = (TableColumnExt)it.next();
-            String sIdentifier = model.getIdentifier(col.getModelIndex());
-            if (col.isVisible()){
-                sb.append(sIdentifier+",");     //$NON-NLS-1$
-            }
-        }
-        //remove last coma
-        if (sb.length()>0){
-            return sb.substring(0,sb.length()-1);
-        }
-        else{
-            return sb.toString();    
-        }
-    }
-    
-    /**
-     * 
-     * @return columns configuration from given list of columns identifiers
-     * 
-     */
-    public String getColumnsConf(ArrayList alCol){
-        StringBuffer sb = new StringBuffer();
-        Iterator it = alCol.iterator();
-        while (it.hasNext()){
-            sb.append((String)it.next()+","); //$NON-NLS-1$
-        }
-        //remove last coma
-        if (sb.length()>0){
-            return sb.substring(0,sb.length()-1);
-        }
-        else{
-            return sb.toString();    
-        }
-    }
-    
-    /**
-     * 
-     * @return list of visible columns names as string
-     */
-    public ArrayList getColumnsConf(){
-        ArrayList alOut = new ArrayList(10);
-        String sConf;
-        if (this instanceof PhysicalTableView){
-            sConf = ConfigurationManager.getProperty(CONF_PHYSICAL_TABLE_COLUMNS);
-        }
-        else {
-            sConf = ConfigurationManager.getProperty(CONF_LOGICAL_TABLE_COLUMNS);
-        }
-        StringTokenizer st = new StringTokenizer(sConf,","); //$NON-NLS-1$
-        while (st.hasMoreTokens()){
-            alOut.add(st.nextToken());
-        }
-        return alOut;
-    }
-            
-    
     private void columnChange(){
         if (!bReloading){ //ignore this column change when reloading model
             if (this instanceof PhysicalTableView){
-                ConfigurationManager.setProperty(CONF_PHYSICAL_TABLE_COLUMNS,createColumnsConf());
+                ConfigurationManager.setProperty(CONF_PHYSICAL_TABLE_COLUMNS,jtable.createColumnsConf());
             }
             else{
-                ConfigurationManager.setProperty(CONF_LOGICAL_TABLE_COLUMNS,createColumnsConf());
+                ConfigurationManager.setProperty(CONF_LOGICAL_TABLE_COLUMNS,jtable.createColumnsConf());
             }
         }
     }

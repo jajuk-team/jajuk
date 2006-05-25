@@ -73,7 +73,7 @@ public class CDDBTableModel extends JajukTableModel {
      */
     public void populateModel(FreedbReadResult fdbReader) {               
         iRowNum = alItems.size();
-        int iColNum = iNumberStandardRows;
+        int iColNum = iNumberStandardCols;
         Iterator it = alItems.iterator();
         oValues = new Object[iRowNum][iColNum];
         oItems = new IPropertyable[iRowNum];
