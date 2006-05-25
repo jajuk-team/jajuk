@@ -44,11 +44,13 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
+import javax.swing.event.ChangeEvent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TableColumnModelEvent;
+import javax.swing.event.TableColumnModelListener;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 
@@ -68,6 +70,7 @@ import org.jajuk.i18n.Messages;
 import org.jajuk.ui.IconLabel;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.JajukCellRender;
+import org.jajuk.ui.JajukTable;
 import org.jajuk.ui.JajukTableModel;
 import org.jajuk.ui.PlaylistFileItem;
 import org.jajuk.ui.PlaylistTransferHandler;
@@ -77,6 +80,8 @@ import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
+import org.jdesktop.swingx.decorator.ComponentAdapter;
+import org.jdesktop.swingx.decorator.ConditionalHighlighter;
 
 
 /**
@@ -85,7 +90,7 @@ import org.jajuk.util.log.Log;
  * @author     Bertrand Florat
  * @created   29 dec. 2003
  */
-public abstract class AbstractPlaylistEditorView extends ViewAdapter implements Observer,MouseListener,ActionListener,ListSelectionListener {
+public abstract class AbstractPlaylistEditorView extends ViewAdapter implements Observer,MouseListener,ActionListener,ListSelectionListener,TableColumnModelListener {
     
     
     JPanel jpControl;
@@ -97,7 +102,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
     JButton jbAddShuffle;
     JButton jbClear;
     JLabel jlTitle;
-    JTable jtable;
+    JajukTable jtable;
     
     JPopupMenu jmenuFile;
     JMenuItem jmiFilePlay;
@@ -114,9 +119,6 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
     /**Playlist file type*/
     private int iType;
     
-    /**Columns number*/
-    protected int iColNum = 3;
-    
     /**Rows number*/
     protected int iRowNum;
     
@@ -129,14 +131,14 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
     /**Values planned*/
     private ArrayList<IPropertyable> alPlanned = new ArrayList(10);
     
-    /**Columns names table**/
-    protected String[] sColName = null;
-    
     /**Selection set flag*/
     private boolean bSettingSelection = false;
     
     /**Last selected directory using add button*/
     private java.io.File fileLast;
+    
+    /**playing track row*/
+    private int playingRow = 0;
   
     /*Cashed icons*/
     private static final ImageIcon iconNormal = Util.getIcon(ICON_TRACK_FIFO_NORM);
@@ -148,27 +150,40 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
     class PlayListEditorTableModel extends JajukTableModel {
         
         public PlayListEditorTableModel(){
-            super(0);
+            super(5); //icon/track/album/author/style
+            setEditable(false); //table not editable
+            // State icon (play/repeat/planned) 
+            vColNames.add("");//$NON-NLS-1$
+            vId.add("0");//$NON-NLS-1$
+            
+            // Track name
+            vColNames.add(Messages.getString("AbstractPlaylistEditorView.0")); //$NON-NLS-1$
+            vId.add(XML_TRACK_NAME); //$NON-NLS-1$
+            
+            // Album
+            vColNames.add(Messages.getString("Item_Album")); //$NON-NLS-1$
+            vId.add(XML_TRACK_ALBUM); //$NON-NLS-1$
+            
+            // Author
+            vColNames.add(Messages.getString("Item_Author")); //$NON-NLS-1$
+            vId.add(XML_TRACK_AUTHOR); //$NON-NLS-1$
+            
+            // Style
+            vColNames.add(Messages.getString("Item_Style")); //$NON-NLS-1$
+            vId.add(XML_TRACK_STYLE); //$NON-NLS-1$
+        
+            // Stars
+            vColNames.add(Messages.getString("Property_rate")); //$NON-NLS-1$
+            vId.add(XML_TRACK_RATE); //$NON-NLS-1$
+        
+            // Year
+            vColNames.add(Messages.getString("Property_year")); //$NON-NLS-1$
+            vId.add(XML_TRACK_YEAR); //$NON-NLS-1$
         }
         
-        public int getColumnCount() {
-            return iColNum;
-        }
         
         public int getRowCount() {
             return iRowNum;
-        }
-        
-        public boolean isCellEditable(int rowIndex, int columnIndex) {
-            return false;
-        }
-        
-        public Class getColumnClass(int columnIndex) {
-            Object o =getValueAt(0, columnIndex);
-            if ( o == null){
-                return String.class;
-            }
-            return o.getClass();
         }
         
         public Object getValueAt(int rowIndex, int columnIndex) {
@@ -178,16 +193,17 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
             if (item == null){
                 return null;
             }
-            Color color = null; //default background color
+            Color colorBackground = null; //default background color
+            Color colorForeground = null; //default foreground color
             StackItem itemCurrent = FIFO.getInstance().getCurrentItem();
             if (itemCurrent != null  && itemCurrent.equals(item)){ //if it is the currently played track, change color
                 if (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE){ //for queue playlist, only highlight real current track
                     if ( FIFO.getInstance().getIndex() == rowIndex){
-                        color = Color.ORANGE;
+                        playingRow = rowIndex;
                     }
                 }
                 else{ //for others, we can't guess whish one to highlight if several times the same EVO
-                    color = Color.ORANGE;    
+                    playingRow = rowIndex;
                 }
             }
             if( item.isPlanned() ){ //it is a planned file
@@ -198,35 +214,42 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
             if ( columnIndex == 0){
                 if (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE){
                     if (bPlanned){
-                        return new IconLabel(iconPlanned,"",color,null,font,Messages.getString("AbstractPlaylistEditorView.20")); //$NON-NLS-1$ //$NON-NLS-2$
+                        return new IconLabel(iconPlanned,"",colorBackground,null,font,Messages.getString("AbstractPlaylistEditorView.20")); //$NON-NLS-1$ //$NON-NLS-2$
                     }
                     else {
                         if (item.isRepeat()){
-                            return new IconLabel(iconRepeat,"",color,null,font,Messages.getString("AbstractPlaylistEditorView.19")); //normal file, repeated //$NON-NLS-1$ //$NON-NLS-2$
+                            return new IconLabel(iconRepeat,"",colorBackground,null,font,Messages.getString("AbstractPlaylistEditorView.19")); //normal file, repeated //$NON-NLS-1$ //$NON-NLS-2$
                         }
                         else{ 
-                            return new IconLabel(iconNormal,"",color,null,font,Messages.getString("AbstractPlaylistEditorView.18")); //normal file, not repeated //$NON-NLS-1$ //$NON-NLS-2$
+                            return new IconLabel(iconNormal,"",colorBackground,null,font,Messages.getString("AbstractPlaylistEditorView.18")); //normal file, not repeated //$NON-NLS-1$ //$NON-NLS-2$
                         }
                     }
                 }
                 else{
-                    return new IconLabel(iconPlaylist,"",color,null,font,Messages.getString("AbstractPlaylistEditorView.21")); //$NON-NLS-1$ //$NON-NLS-2$
+                    return new IconLabel(iconPlaylist,"",colorBackground,null,font,Messages.getString("AbstractPlaylistEditorView.21")); //$NON-NLS-1$ //$NON-NLS-2$
                 }
             }
             else if ( columnIndex == 1){
-                return new IconLabel(null,bf.getTrack().getName(),color,null,font,bf.getTrack().getName());
+                return new IconLabel(null,bf.getTrack().getName(),colorBackground,colorForeground,font,bf.getTrack().getName());
             }
             else if ( columnIndex == 2){
-                return new IconLabel(null,bf.getAbsolutePath(),color,null,font,bf.getAbsolutePath());
+                return new IconLabel(null,bf.getTrack().getAlbum().getName2(),colorBackground,colorForeground,font,bf.getTrack().getAlbum().getName2());
+            }
+            else if ( columnIndex == 3){
+                return new IconLabel(null,bf.getTrack().getAuthor().getName2(),colorBackground,colorForeground,font,bf.getTrack().getAuthor().getName2());
+            }
+            else if ( columnIndex == 4){
+                return new IconLabel(null,bf.getTrack().getStyle().getName2(),colorBackground,colorForeground,font,bf.getTrack().getStyle().getName2());
+            }
+            else if ( columnIndex == 5){
+                //Rate
+                return bf.getTrack().getStars();
+            }
+            else if ( columnIndex == 6){
+                //year
+                return new IconLabel(null,Long.toString(bf.getTrack().getYear()),colorBackground,colorForeground,font,Long.toString(bf.getTrack().getYear()));
             }
             return null;
-        }
-        
-        public void setValueAt(Object oValue, int rowIndex, int columnIndex) {
-        }
-        
-        public String getColumnName(int columnIndex) {
-            return sColName[columnIndex];
         }
         
         /** 
@@ -253,10 +276,6 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
      * @see org.jajuk.ui.IView#display()
      */
     public void populate(){
-        //pre-compute column name for perfs
-        if (sColName == null){
-            sColName = new String[]{"",Messages.getString("AbstractPlaylistEditorView.0"),Messages.getString("AbstractPlaylistEditorView.1")}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        }
         //Control panel
         jpControl = new JPanel();
         jpControl.setBorder(BorderFactory.createEtchedBorder());
@@ -296,7 +315,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
         jpControl.add(jbDown,"11,0"); //$NON-NLS-1$
         jpControl.add(jbClear,"13,0"); //$NON-NLS-1$
         jpControl.add(Util.getCentredPanel(jlTitle),"15,0"); //$NON-NLS-1$
-        jtable = new JTable(model){//we don't use a JajukTable that lose current track layout (orange)
+        jtable = new JajukTable(model){//we don't use a JajukTable that lose current track layout (orange)
             /**
              * add tooltips to each cell
              */
@@ -322,6 +341,9 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
             }
         };
         jtable.setSelectionMode(DefaultListSelectionModel.MULTIPLE_INTERVAL_SELECTION); //multi-row selection
+        jtable.hideColumns(jtable.getColumnsConf(CONF_PLAYLIST_EDITOR_COLUMNS));
+        jtable.getColumnModel().addColumnModelListener(this);
+        jtable.setSortable(false);
         new TableTransferHandler(jtable, DnDConstants.ACTION_COPY_OR_MOVE);
         Enumeration enumeration = jtable.getColumnModel().getColumns();
         JajukCellRender jcr = new JajukCellRender();
@@ -332,8 +354,29 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
         jtable.getColumnModel().getColumn(0).setPreferredWidth(20); //just an icon
         jtable.getColumnModel().getColumn(0).setMaxWidth(20);
         jtable.getTableHeader().setPreferredSize(new Dimension(0,20));
+        jtable.addHighlighter(new ConditionalHighlighter(Color.ORANGE,Color.BLACK,-1,-1){
+
+            @Override
+            protected boolean test(ComponentAdapter adapter) {
+                StackItem item = getItem(adapter.row);
+                StackItem itemCurrent = FIFO.getInstance().getCurrentItem();
+                if (itemCurrent != null  && itemCurrent.equals(item)){ //if it is the currently played track, change color
+                    if (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE){ //for queue playlist, only highlight real current track
+                        if ( FIFO.getInstance().getIndex() == playingRow){
+                            return true;
+                        }
+                    }
+                    else{ //for others, we can't guess whish one to highlight if several times the same EVO
+                            return true;
+                    }
+                }
+                return false;
+            }
+            
+            
+        });
         jtable.addMouseListener(this);
-        //selection listener to hide some buttons to planned tracks
+        //selection listener to hide some buttons when selecting planned tracks
         ListSelectionModel lsm = jtable.getSelectionModel();
         lsm.addListSelectionListener(this);
         double size[][] =
@@ -366,6 +409,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
         new PlaylistTransferHandler(jtable,DnDConstants.ACTION_COPY_OR_MOVE);
         //force a refresh
         update(new Event(EVENT_PLAYLIST_CHANGED,ObservationManager.getDetailsLastOccurence(EVENT_PLAYLIST_CHANGED)));
+        update(new Event(EVENT_PLAYLIST_REFRESH)); //force first refresh
     }
     
     /* (non-Javadoc)
@@ -373,6 +417,28 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
      */
     public String getDesc() {
         return "AbstractPlaylistEditorView.15";	 //$NON-NLS-1$
+    }
+    
+    private void columnChange(){
+       ConfigurationManager.setProperty(CONF_PLAYLIST_EDITOR_COLUMNS,jtable.createColumnsConf());
+    }
+    
+    public void columnAdded(TableColumnModelEvent arg0) {
+        columnChange();
+    }
+    
+    public void columnRemoved(TableColumnModelEvent arg0) {
+        columnChange();
+    }
+    
+    
+    public void columnMoved(TableColumnModelEvent arg0) {
+    }
+    
+    public void columnMarginChanged(ChangeEvent arg0) {
+    }
+    
+    public void columnSelectionChanged(ListSelectionEvent arg0) {
     }
     
     
@@ -432,6 +498,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
                         jtable.getSelectionModel().addSelectionInterval(rows[i],rows[i]); //set saved selection after a refresh
                     }
                     bSettingSelection = false;
+                    jtable.packTable(5);
                 }
             });
         }
@@ -752,6 +819,14 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
      */
     public PlaylistFileItem getCurrentPlaylistFileItem() {
         return plfi;
+    }
+    
+    /**
+     * Select the current playlist file item
+     * @param plfi
+     */
+    public void setCurrentPlaylistFileItem(PlaylistFileItem plfi){
+        this.plfi = plfi;
     }
     
     public void valueChanged(ListSelectionEvent e) {

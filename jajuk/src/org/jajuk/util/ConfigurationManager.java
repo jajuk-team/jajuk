@@ -128,7 +128,8 @@ public class ConfigurationManager implements ITechnicalStrings{
 	 *
 	 */
 	public static void setDefaultProperties() {
-		// User preferences
+		properties.put(CONF_RELEASE,JAJUK_VERSION); 
+        // User preferences
 		properties.put(CONF_PERSPECTIVE_DEFAULT,PERSPECTIVE_NAME_PHYSICAL); 
 		properties.put(CONF_STATE_REPEAT,FALSE); 
 		properties.put(CONF_STATE_SHUFFLE,FALSE); 
@@ -204,6 +205,8 @@ public class ConfigurationManager implements ITechnicalStrings{
         properties.put(CONF_LOGICAL_TABLE_COLUMNS,XML_PLAY+','+XML_NAME+','+XML_ALBUM+','+XML_AUTHOR+','+
               XML_TRACK_STYLE+','+XML_TRACK_LENGTH+','+','+XML_TRACK_RATE+','+XML_TRACK_ADDED+','+
               XML_TRACK_YEAR);
+        properties.put(CONF_PLAYLIST_EDITOR_COLUMNS,"0"+','+XML_TRACK_NAME+','+','+XML_TRACK_AUTHOR+','+
+              XML_TRACK_RATE);
         properties.put(CONF_WINDOW_POSITION,"100,100,"+ //$NON-NLS-1$
             (int)(Toolkit.getDefaultToolkit().getScreenSize().getWidth()-250)+","+ //$NON-NLS-1$
             (int)(Toolkit.getDefaultToolkit().getScreenSize().getHeight()-250)); //Window position: X,Y,X_size,Y_size

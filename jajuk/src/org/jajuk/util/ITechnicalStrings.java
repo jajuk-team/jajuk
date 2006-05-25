@@ -459,7 +459,8 @@ public interface ITechnicalStrings {
 	public static final String STARTUP_MODE_NOVELTIES = "novelties";
 	
 	//	configuration keys
-	public static final String CONF_PERSPECTIVE_DEFAULT = "jajuk.preference.perspective.default";
+	public static final String CONF_RELEASE = "jajuk.release";
+    public static final String CONF_PERSPECTIVE_DEFAULT = "jajuk.preference.perspective.default";
 	public static final String CONF_STATE_REPEAT = "jajuk.state.mode.repeat";
 	public static final String CONF_STATE_SHUFFLE = "jajuk.state.mode.shuffle";
 	public static final String CONF_STATE_CONTINUE = "jajuk.state.mode.continue";
@@ -521,6 +522,7 @@ public interface ITechnicalStrings {
     public static final String CONF_PHYSICAL_TABLE_COLUMNS = "jajuk.ui.physical_table_columns"; //Physical table columns
     public static final String CONF_PHYSICAL_TABLE_EDITION = "jajuk.ui.physical_table_edition"; //Physical table edition state
     public static final String CONF_LOGICAL_TABLE_COLUMNS = "jajuk.ui.logical_table_columns"; //Logical table columns
+    public static final String CONF_PLAYLIST_EDITOR_COLUMNS = "jajuk.ui.playlist_editor_columns"; //playlist editor columns to display
     public static final String CONF_LOGICAL_TABLE_EDITION = "jajuk.ui.logical_table_edition"; //Logical table edition state
     public static final String CONF_THUMBS_SIZE = "jajuk.ui.cover_catalog.thumbs_size"; //Catalog items size
     public static final String CONF_THUMBS_SHOW_WITHOUT_COVER = "jajuk.ui.cover_catalog.show_without_cover"; //Catalog items size
