@@ -22,16 +22,22 @@ package org.jajuk.ui;
 
 import java.awt.Color;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.StringTokenizer;
 
 import javax.swing.JTable;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
+import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jdesktop.swingx.JXTable;
 import org.jdesktop.swingx.decorator.Highlighter;
 import org.jdesktop.swingx.decorator.HighlighterPipeline;
 import org.jdesktop.swingx.decorator.RolloverHighlighter;
+import org.jdesktop.swingx.table.DefaultTableColumnModelExt;
+import org.jdesktop.swingx.table.TableColumnExt;
 
 /**
  *  JTable with followinf features: 
@@ -80,7 +86,81 @@ public class JajukTable extends JXTable implements ITechnicalStrings{
 	public JajukTable(TableModel model) {
 		this(model,true);
 	}
+    
+    /**
+     * Hide columns
+     *colsToShow list of columns id to keep
+     */
+    public void hideColumns(ArrayList<String> colsToShow){
+        Iterator it = ((DefaultTableColumnModelExt)getColumnModel()).getColumns(false).iterator();
+        while (it.hasNext()){
+            TableColumnExt col = (TableColumnExt)it.next();
+            if (!colsToShow.contains(((JajukTableModel)getModel()).getIdentifier(col.getModelIndex()))){
+                col.setVisible(false);
+            }
+        }
+    }
+    
+    /**
+     * 
+     * @return list of visible columns names as string
+     * @param Name of the configuration key giving configuration
+     */
+    public ArrayList getColumnsConf(String property){
+        ArrayList alOut = new ArrayList(10);
+        String sConf;
+        sConf = ConfigurationManager.getProperty(property);
+        StringTokenizer st = new StringTokenizer(sConf,","); //$NON-NLS-1$
+        while (st.hasMoreTokens()){
+            alOut.add(st.nextToken());
+        }
+        return alOut;
+    }
    
+     /**
+     * 
+     * @return columns configuration
+     * 
+     */
+    public String createColumnsConf(){
+        StringBuffer sb = new StringBuffer();
+        Iterator it = ((DefaultTableColumnModelExt)getColumnModel()).getColumns(true).iterator();
+        while (it.hasNext()){
+            TableColumnExt col = (TableColumnExt)it.next();
+            String sIdentifier = ((JajukTableModel)getModel()).getIdentifier(col.getModelIndex());
+            if (col.isVisible()){
+                sb.append(sIdentifier+",");     //$NON-NLS-1$
+            }
+        }
+        //remove last coma
+        if (sb.length()>0){
+            return sb.substring(0,sb.length()-1);
+        }
+        else{
+            return sb.toString();    
+        }
+    }
+    
+    /**
+     * 
+     * @return columns configuration from given list of columns identifiers
+     * 
+     */
+    public String getColumnsConf(ArrayList alCol){
+        StringBuffer sb = new StringBuffer();
+        Iterator it = alCol.iterator();
+        while (it.hasNext()){
+            sb.append((String)it.next()+","); //$NON-NLS-1$
+        }
+        //remove last coma
+        if (sb.length()>0){
+            return sb.substring(0,sb.length()-1);
+        }
+        else{
+            return sb.toString();    
+        }
+    }
+    
 	/**
 	 * add tooltips to each cell
 	*/
