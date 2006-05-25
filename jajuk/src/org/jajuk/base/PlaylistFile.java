@@ -712,9 +712,7 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 	 * Save as... the playlist file 
 	 */
 	public void saveAs() throws Exception{
-		ArrayList alTypes = new ArrayList(1);
-		alTypes.add(TypeManager.getInstance().getTypeByExtension(EXT_PLAYLIST));
-		JajukFileChooser jfchooser = new JajukFileChooser(new JajukFileFilter(true,alTypes));
+		JajukFileChooser jfchooser = new JajukFileChooser(new JajukFileFilter(JajukFileFilter.PlaylistFilter.getInstance()));
         String sPlaylist = DEFAULT_PLAYLIST_FILE;
         //computes new playlist file
         alFiles = getFiles();

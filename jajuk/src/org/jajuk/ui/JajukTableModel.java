@@ -38,7 +38,7 @@ import org.jajuk.util.Util;
 public abstract class JajukTableModel extends DefaultTableModel  implements ITechnicalStrings{
 
     /**Column identifiers*/
-    Vector vId = new Vector(10);
+    public Vector vId = new Vector(10);
     
     /**Rows number*/
     int iRowNum;
@@ -55,14 +55,14 @@ public abstract class JajukTableModel extends DefaultTableModel  implements ITec
     /** Objects*/
     IPropertyable[] oItems;
     
-    /**Number of standard rows*/
-    int iNumberStandardRows;
+    /**Number of standard columns*/
+    int iNumberStandardCols;
     
     /**Cell editable flag*/
     boolean[][] bCellEditable;
     
     /**Column names*/
-    Vector vColNames  = new Vector(10);
+    public Vector vColNames  = new Vector(10);
     
     /**Last value used for undo*/
     Object oLast = null;
@@ -70,9 +70,12 @@ public abstract class JajukTableModel extends DefaultTableModel  implements ITec
     /**Editable flag*/
     boolean bEditable = false;
     
-    
-    public JajukTableModel(int iNumberStandardRows){
-        this.iNumberStandardRows = iNumberStandardRows;
+    /**
+     * 
+     * @param iNumberStandardCols Number of columns of this model (without custom properties)
+     */
+    public JajukTableModel(int iNumberStandardCols){
+        this.iNumberStandardCols = iNumberStandardCols;
     }
     
      /**
@@ -155,10 +158,11 @@ public abstract class JajukTableModel extends DefaultTableModel  implements ITec
         }
     }
     
-    /**Filter table with following criterias
+    /**
+     * Fill model with data using an optionnal filter property and pattern
     * @param sProperty Property (column) to filter
     * @param sPattern pattern*/
-    public abstract  void populateModel(String sProperty,String sPattern); 
+    public abstract void populateModel(String sProperty,String sPattern); 
     
     /** 
      * Set this model editable state

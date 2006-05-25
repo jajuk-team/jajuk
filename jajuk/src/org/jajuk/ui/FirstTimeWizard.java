@@ -157,7 +157,7 @@ public class FirstTimeWizard extends JDialog implements ITechnicalStrings,Action
             dispose();  //close window
         }
         else if(e.getSource() == jbFileSelection){
-            JajukFileChooser jfc = new JajukFileChooser(new JajukFileFilter(true,false));
+            JajukFileChooser jfc = new JajukFileChooser(new JajukFileFilter(JajukFileFilter.DirectoryFilter.getInstance()));
             jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             jfc.setDialogTitle(Messages.getString("FirstTimeWizard.5"));//$NON-NLS-1$
             jfc.setMultiSelectionEnabled(false);

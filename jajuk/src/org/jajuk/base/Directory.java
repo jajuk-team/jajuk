@@ -263,9 +263,6 @@ public class Directory extends PropertyAdapter implements Comparable{
         }
         for (int i = 0; i < files.length; i++) {
             try{ //check errors for each file
-                if (files[i].isDirectory()){ //if it is a directory, continue
-                    continue;
-                }
                 //check date, file modified before
                 long lastModified = files[i].lastModified();
                 if (lastModified > DeviceManager.getInstance().getDateLastGlobalRefresh()
