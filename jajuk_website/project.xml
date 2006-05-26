@@ -255,8 +255,15 @@
 
    <dependency>
 	   <groupId>lib</groupId>
-        <artifactId>jfreechart_reduced</artifactId>
-        <version>0.9.15</version> 
+        <artifactId>jfreechart</artifactId>
+        <version>1.0.1</version> 
+    </dependency>
+    
+
+   <dependency>
+	   <groupId>lib</groupId>
+        <artifactId>jcommon</artifactId>
+        <version>1.0.0</version> 
     </dependency>
     
    <dependency>
