@@ -83,10 +83,6 @@ public class AmbienceWizard extends Wizard implements ITechnicalStrings{
          */
         public void initUI(){
             ambiences = new ArrayList(AmbienceManager.getInstance().getAmbiences());
-            //We need at least one ambience
-            if (AmbienceManager.getInstance().getAmbiences().size() == 0){
-                setProblem(Messages.getString("DigitalDJWizard.38")); 
-            }
             setCanFinish(true);
             //set layout
             double[][] dSizeGeneral = {{10,0.99,5},
@@ -293,9 +289,7 @@ public class AmbienceWizard extends Wizard implements ITechnicalStrings{
                 Ambience ambience = ambiences.get(ambienceIndex);
                 ambiences.remove(ambience);
                 AmbienceManager.getInstance().removeAmbience(ambience.getID());
-                //We need at least one ambience
                 if (AmbienceManager.getInstance().getAmbiences().size() == 0){
-                    setProblem(Messages.getString("DigitalDJWizard.38")); 
                     jbDelete.setEnabled(false);
                 }
                 if (ambienceIndex > 0){
