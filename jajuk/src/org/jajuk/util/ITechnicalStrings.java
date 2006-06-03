@@ -227,7 +227,7 @@ public interface ITechnicalStrings {
     public static final String ICON_DIGITAL_DJ = PATH_ICONS + "16x16/ddj.png";
     public static final String ICON_LIST = PATH_ICONS + "16x16/contents.png";
     //images
-	public static final String IMAGES_SPLASHSCREEN =  PATH_IMAGES + "jajuk-splashscreen.png";
+	public static final String IMAGES_SPLASHSCREEN =  PATH_IMAGES + "jajuk-splashscreen.jpg";
 	public static final String IMAGES_STAT_PAPER =  PATH_IMAGES + "No-Ones-Laughing-3.jpg";
 	public static final String IMAGE_NO_COVER = PATH_IMAGES + "unknown.png";
     public static final String IMAGE_WRITE = PATH_IMAGES + "write.png";
