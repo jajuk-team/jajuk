@@ -26,30 +26,18 @@ import java.util.ArrayList;
 
 /**
  * Playlist editor/manager 
- * <p>Logical perspective
- *  * <p>Singleton
+ * <p>Logical perspective</p>
  * @author     Bertrand Florat
  * @created   29 dec. 2003
  */
 public class LogicalPlaylistEditorView extends AbstractPlaylistEditorView{
-
-	/**Self instance*/
-	static LogicalPlaylistEditorView lpe;
-	
-	/**Return self instance*/
-	public static synchronized LogicalPlaylistEditorView getInstance(){
-		if (lpe == null){
-			lpe = new LogicalPlaylistEditorView();
-		}
-		return lpe;
-	}
-	
+   
+   
 	/**
 	 * Constructor
 	 */
 	public LogicalPlaylistEditorView() {
-		lpe = this;
-	}
+    }
 	
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.IView#getID()

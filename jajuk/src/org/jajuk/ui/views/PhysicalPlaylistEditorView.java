@@ -24,30 +24,16 @@ import java.util.ArrayList;
 
 /**
  * Playlist editor/manager
- * <p>Physical perspective
- *  * <p>Singleton
+ * <p>Physical perspective</p>
  * @author     Bertrand Florat
  * @created   29 dec. 2003
  */
 public class PhysicalPlaylistEditorView extends AbstractPlaylistEditorView{
-
-	/**Self instance*/
-	static PhysicalPlaylistEditorView ppe;
-	
-	
-	/**Return self instance*/
-	public static synchronized PhysicalPlaylistEditorView getInstance(){
-		if (ppe == null){
-			ppe = new PhysicalPlaylistEditorView();
-		}
-		return ppe;
-	}
-	
+        
 	/**
 	 * Constructor
 	 */
 	public PhysicalPlaylistEditorView() {
-		ppe = this;
 	}
 	
 

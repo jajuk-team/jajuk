@@ -345,7 +345,7 @@ public abstract class AbstractTableView extends ViewAdapter
                         if (properties == null){ //can be null at view populate
                         	return;
                         }
-                        ArrayList al = jtable.getColumnsConf(sConf);
+                        ArrayList al = jtable.getColumnsConf(CONF_LOGICAL_TABLE_COLUMNS);
                         al.remove(properties.get(DETAIL_CONTENT));
                         model = populateTable();//create a new model
                         jtable.setModel(model);
@@ -357,7 +357,7 @@ public abstract class AbstractTableView extends ViewAdapter
                         else {
                             ConfigurationManager.setProperty(CONF_LOGICAL_TABLE_COLUMNS,jtable.getColumnsConf(al));
                         }
-                        jtable.hideColumns(jtable.getColumnsConf(sConf));
+                        jtable.hideColumns(jtable.getColumnsConf(CONF_LOGICAL_TABLE_COLUMNS));
                         applyFilter(sAppliedCriteria,sAppliedFilter);
                         jcbProperty.removeItem(properties.get(DETAIL_CONTENT));
                     }
