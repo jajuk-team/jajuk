@@ -38,13 +38,13 @@ import org.jajuk.util.Util;
 public abstract class JajukTableModel extends DefaultTableModel  implements ITechnicalStrings{
 
     /**Column identifiers*/
-    public Vector vId = new Vector(10);
+    volatile public Vector vId = new Vector(10);
     
     /**Rows number*/
-    int iRowNum;
+    public int iRowNum;
     
     /**Values table**/
-    Object[][] oValues;
+    public Object[][] oValues;
     
     //Play icon in cach
     public static final ImageIcon PLAY_ICON = Util.getIcon(ICON_TRACK_FIFO_NORM);
@@ -53,19 +53,19 @@ public abstract class JajukTableModel extends DefaultTableModel  implements ITec
     public static final ImageIcon UNMOUNT_PLAY_ICON = Util.getIcon(ICON_UNKNOWN);
     
     /** Objects*/
-    IPropertyable[] oItems;
+    public IPropertyable[] oItems;
     
     /**Number of standard columns*/
-    int iNumberStandardCols;
+    public int iNumberStandardCols;
     
     /**Cell editable flag*/
-    boolean[][] bCellEditable;
+    public boolean[][] bCellEditable;
     
     /**Column names*/
     public Vector vColNames  = new Vector(10);
     
     /**Last value used for undo*/
-    Object oLast = null;
+    public Object oLast = null;
     
     /**Editable flag*/
     boolean bEditable = false;
@@ -76,6 +76,14 @@ public abstract class JajukTableModel extends DefaultTableModel  implements ITec
      */
     public JajukTableModel(int iNumberStandardCols){
         this.iNumberStandardCols = iNumberStandardCols;
+    }
+    
+    /**
+     * 
+     * Default constructor
+     */
+    public JajukTableModel(){
+        this.iNumberStandardCols = 0;
     }
     
      /**
@@ -163,6 +171,14 @@ public abstract class JajukTableModel extends DefaultTableModel  implements ITec
     * @param sProperty Property (column) to filter
     * @param sPattern pattern*/
     public abstract void populateModel(String sProperty,String sPattern); 
+    
+    
+     /**
+     * Fill model with data
+   */
+    public void populateModel(){
+        populateModel(null,null);
+    }
     
     /** 
      * Set this model editable state

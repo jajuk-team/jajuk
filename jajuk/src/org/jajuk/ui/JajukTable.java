@@ -108,8 +108,7 @@ public class JajukTable extends JXTable implements ITechnicalStrings{
      */
     public ArrayList getColumnsConf(String property){
         ArrayList alOut = new ArrayList(10);
-        String sConf;
-        sConf = ConfigurationManager.getProperty(property);
+        String sConf = ConfigurationManager.getProperty(property);
         StringTokenizer st = new StringTokenizer(sConf,","); //$NON-NLS-1$
         while (st.hasMoreTokens()){
             alOut.add(st.nextToken());

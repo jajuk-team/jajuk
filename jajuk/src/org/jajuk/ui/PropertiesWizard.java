@@ -666,7 +666,7 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
             }
             ArrayList<IPropertyable> alInError = new ArrayList(alItemsToCheck.size());
             String sDetails = ""; //details for errors //$NON-NLS-1$
-            //Now we have all items to concidere, write tags for each property to change
+            //Now we have all items to considere, write tags for each property to change
             for (PropertyMetaInformation meta:hmPropertyToChange.keySet()){
                 ArrayList<IPropertyable> alIntermediate = new ArrayList(alItemsToCheck.size());
                 for (IPropertyable item:alItemsToCheck){
