@@ -13,7 +13,7 @@
 
 <h1>QDWizard : Quick and Dirty Java Swing Wizard API</h1>
 
-<img style="width: 667px; height: 437px;" alt="Quick and dirty Wizard" src="./images/qdwizard.png"><br>
+<img style="width: 667px; height: 437px;" alt="Quick and dirty Wizard" src="./images/qdwizard.jpg"><br>
 
 <span style="font-style: italic;">Jajuk Digital DJ
 creation wizard</span><br>
@@ -154,15 +154,15 @@ have to return previous or next screen class. Example:</li>
 </ul>
 
 <pre>public Class getNextScreen(Class screen) {
-&nbsp;&nbsp;if (ActionSelectionPanel.class.equals(getCurrentScreen())){
-&nbsp;&nbsp;&nbsp;&nbsp;String sAction = (String)data.get(KEY_ACTION);
-&nbsp;&nbsp;&nbsp;&nbsp;if (ActionSelectionPanel.ACTION_CREATION.equals(sAction)){
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return TypeSelectionPanel.class;
-&nbsp;&nbsp;&nbsp;&nbsp;}
-&nbsp;&nbsp;&nbsp;&nbsp;else if (ActionSelectionPanel.ACTION_DELETE.equals(sAction)){
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return RemovePanel.class;
-&nbsp;&nbsp;&nbsp;&nbsp;}
-&nbsp;&nbsp;}
+	if (ActionSelectionPanel.class.equals(getCurrentScreen())){
+		String sAction = (String)data.get(KEY_ACTION);
+			if (ActionSelectionPanel.ACTION_CREATION.equals(sAction)){
+				return TypeSelectionPanel.class;
+			}
+			else if (ActionSelectionPanel.ACTION_DELETE.equals(sAction)){
+				return RemovePanel.class;
+			}
+	}
 }</pre>
 
 <h3>Screen creation</h3>
@@ -206,11 +206,11 @@ the last one (user can click on Finished button).</li>
 
 The last QDWizard is 1.0(2006/05/13) This zip contains API binaries,
 sources and doc for any system supporting Java 1.5+.
-<a href="http://sourceforge.net/project/showfiles.php?group_id=91412&amp;package_id=189679">Download
-it on Jajuk download center.</a>
+<a href="http://sourceforge.net/project/showfiles.php?group_id=168745">Download
+it here.</a>
 <h2>Samples</h2>
 
-Have a look on Jajuk <a href="http://jajuk.cvs.sourceforge.net/jajuk/jajuk/src/org/jajuk/ui/DigitalDJWizard.java?view=log">DJ
+Have a look at Jajuk <a href="http://jajuk.cvs.sourceforge.net/jajuk/jajuk/src/org/jajuk/ui/DigitalDJWizard.java?view=log">DJ
 wizard</a>.
 <h2>Support</h2>
 
