@@ -350,11 +350,15 @@ public class DeviceManager extends ItemManager{
                     //refresh it
                     bNeedUIRefresh = bNeedUIRefresh | device.refreshCommand(false); //logical or, not an error !
                 }
+                //If something changed, refresh device ASAP because scanning next device can take a while
+                if (bNeedUIRefresh){
+                    //notify views to refresh
+                    ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH));
+                }
             }
             
-            //If something changed
+            ////cleanup logical items
             if (bNeedUIRefresh){
-                //cleanup logical items
                 TrackManager.getInstance().cleanup();
                 StyleManager.getInstance().cleanup();
                 AlbumManager.getInstance().cleanup();
