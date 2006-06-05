@@ -47,7 +47,7 @@ public abstract class JajukTableModel extends DefaultTableModel  implements ITec
     public Object[][] oValues;
     
     //Play icon in cach
-    public static final ImageIcon PLAY_ICON = Util.getIcon(ICON_TRACK_FIFO_NORM);
+    public static final ImageIcon PLAY_ICON = Util.getIcon(ICON_PLAY2);
     
     //Unmount Play icon in cach
     public static final ImageIcon UNMOUNT_PLAY_ICON = Util.getIcon(ICON_UNKNOWN);

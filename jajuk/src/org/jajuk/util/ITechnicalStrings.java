@@ -77,6 +77,9 @@ public interface ITechnicalStrings {
     public static final int MIN_TRACKS_NUMBER_WITHOUT_UNICITY = 200;
     /**Default number of tracks in a transition*/
     public static final int DEFAULT_TRANSITION_TRACK_NUMBER = 2;
+    /**Rate Stars columns size in pixels*/
+    public static final int RATE_COLUMN_SIZE = 75;
+    
     
 	// Jajuk version
 	public static final String JAJUK_VERSION = "VERSION_REPLACED_BY_ANT";
@@ -226,6 +229,8 @@ public interface ITechnicalStrings {
     public static final String ICON_DROP_DOWN = PATH_ICONS + "16x16/dropdown.gif";
     public static final String ICON_DIGITAL_DJ = PATH_ICONS + "16x16/ddj.png";
     public static final String ICON_LIST = PATH_ICONS + "16x16/contents.png";
+    public static final String ICON_PLAY2 = PATH_ICONS + "16x16/play.png";
+    
     //images
 	public static final String IMAGES_SPLASHSCREEN =  PATH_IMAGES + "jajuk-splashscreen.jpg";
 	public static final String IMAGES_STAT_PAPER =  PATH_IMAGES + "No-Ones-Laughing-3.jpg";
