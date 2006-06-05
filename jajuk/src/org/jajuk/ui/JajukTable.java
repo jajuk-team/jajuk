@@ -22,7 +22,9 @@ package org.jajuk.ui;
 
 import java.awt.Color;
 import java.awt.event.MouseEvent;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 
@@ -91,7 +93,7 @@ public class JajukTable extends JXTable implements ITechnicalStrings{
      * Hide columns
      *colsToShow list of columns id to keep
      */
-    public void hideColumns(ArrayList<String> colsToShow){
+    public void keepColumns(ArrayList<String> colsToShow){
         Iterator it = ((DefaultTableColumnModelExt)getColumnModel()).getColumns(false).iterator();
         while (it.hasNext()){
             TableColumnExt col = (TableColumnExt)it.next();
@@ -179,6 +181,9 @@ public class JajukTable extends JXTable implements ITechnicalStrings{
 		else if(o instanceof IconLabel){
 		    return ((IconLabel)o).getTooltip(); 
 		}
+        else if(o instanceof Date){
+            return new SimpleDateFormat().format((Date)o); 
+        }
 		else{
 		    return o.toString();
 		}
