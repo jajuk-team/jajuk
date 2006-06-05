@@ -237,7 +237,7 @@ public abstract class AbstractTableView extends ViewAdapter
                 add(new JScrollPane(jtable),"0,1"); //$NON-NLS-1$
                 new TableTransferHandler(jtable, DnDConstants.ACTION_COPY_OR_MOVE);
                 jtable.addMouseListener(AbstractTableView.this);
-                jtable.hideColumns(jtable.getColumnsConf(sConf));
+                jtable.keepColumns(jtable.getColumnsConf(sConf));
                 applyFilter(null,null);
                 jtable.packTable(5);
                 //Register on the list for subject we are interrested in
@@ -330,12 +330,12 @@ public abstract class AbstractTableView extends ViewAdapter
                         if (AbstractTableView.this instanceof PhysicalTableView){
                             String sTableCols = ConfigurationManager.getProperty(CONF_PHYSICAL_TABLE_COLUMNS);
                             ConfigurationManager.setProperty(CONF_PHYSICAL_TABLE_COLUMNS,sTableCols+","+(model.getIdentifier(model.getColumnCount()-1)));     //$NON-NLS-1$
-                            jtable.hideColumns(jtable.getColumnsConf(CONF_PHYSICAL_TABLE_COLUMNS));
+                            jtable.keepColumns(jtable.getColumnsConf(CONF_PHYSICAL_TABLE_COLUMNS));
                         }
                         else {
                             String sTableCols = ConfigurationManager.getProperty(CONF_LOGICAL_TABLE_COLUMNS);
                             ConfigurationManager.setProperty(CONF_LOGICAL_TABLE_COLUMNS,sTableCols+","+(model.getIdentifier(model.getColumnCount()-1))); //$NON-NLS-1$
-                            jtable.hideColumns(jtable.getColumnsConf(CONF_LOGICAL_TABLE_COLUMNS));
+                            jtable.keepColumns(jtable.getColumnsConf(CONF_LOGICAL_TABLE_COLUMNS));
                         }
                         applyFilter(sAppliedCriteria,sAppliedFilter);
                         jcbProperty.addItem(properties.get(DETAIL_CONTENT));
@@ -357,7 +357,7 @@ public abstract class AbstractTableView extends ViewAdapter
                         else {
                             ConfigurationManager.setProperty(CONF_LOGICAL_TABLE_COLUMNS,jtable.getColumnsConf(al));
                         }
-                        jtable.hideColumns(jtable.getColumnsConf(CONF_LOGICAL_TABLE_COLUMNS));
+                        jtable.keepColumns(jtable.getColumnsConf(CONF_LOGICAL_TABLE_COLUMNS));
                         applyFilter(sAppliedCriteria,sAppliedFilter);
                         jcbProperty.removeItem(properties.get(DETAIL_CONTENT));
                     }
@@ -403,7 +403,8 @@ public abstract class AbstractTableView extends ViewAdapter
             }
             else if (XML_TRACK_RATE.equals(sIdentifier)){
                 col.setCellRenderer(new JajukCellRender());
-                col.setMinWidth(67);
+                col.setMinWidth(RATE_COLUMN_SIZE);
+                col.setMaxWidth(RATE_COLUMN_SIZE);
             }
         }
     }
