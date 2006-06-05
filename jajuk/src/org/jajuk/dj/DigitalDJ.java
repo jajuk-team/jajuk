@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.jajuk.base.File;
+import org.jajuk.base.Track;
 import org.jajuk.util.ITechnicalStrings;
 
 
@@ -98,14 +99,23 @@ public abstract class DigitalDJ implements ITechnicalStrings,Comparable{
         return sb.toString();
     }
     
+    /**
+     * Filter by rate and remove duplicates (unicity)
+     * @param files
+     */
     void filterFilesByRate(ArrayList<File> files){
+        ArrayList<Track> selectedTracks =  new ArrayList(100);
         //Select by rate if needed
         if (iRatingLevel > 0){
             Iterator it = files.iterator();
             while (it.hasNext()){
                 File file = (File)it.next();
-                if (file.getTrack().getStarsNumber() < iRatingLevel){
+                if (file.getTrack().getStarsNumber() < iRatingLevel
+                        || selectedTracks.contains(file.getTrack())){
                     it.remove();
+                }
+                else{
+                    selectedTracks.add(file.getTrack());
                 }
             }
         }

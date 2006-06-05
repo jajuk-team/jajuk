@@ -28,6 +28,7 @@ import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.Style;
 import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Util;
 
 
 /**
@@ -54,6 +55,7 @@ public class ProportionDigitalDJ extends DigitalDJ implements ITechnicalStrings{
      */
     @Override
     public ArrayList<File> generatePlaylist() {
+        Util.waiting();
         ArrayList<File> out = new ArrayList(100);
         out = getSequence(); 
         if ( !bUnicity && out.size() > 0){
@@ -61,6 +63,7 @@ public class ProportionDigitalDJ extends DigitalDJ implements ITechnicalStrings{
                 out.addAll(getSequence());
             }
         }
+        Util.stopWaiting();
         return out;
     }
     
@@ -87,7 +90,10 @@ public class ProportionDigitalDJ extends DigitalDJ implements ITechnicalStrings{
                 }
             }
         }
-        
+        //check if all properties are represented
+        if (list.keySet().size() < proportions.size()){
+            return out; //return void list
+        }
         //now, keep the smallest list before applying proportion
         Proportion minProp = null;
         int iMinSize = 0;
@@ -95,7 +101,8 @@ public class ProportionDigitalDJ extends DigitalDJ implements ITechnicalStrings{
         for (Proportion prop:list.keySet()){
             fTotal += prop.getProportion();
             ArrayList files = list.get(prop);
-            if (minProp == null || files.size() < iMinSize){
+            //keep proportion with smallest number of files
+            if (minProp == null || files.size() < iMinSize ){
                 minProp = prop;
                 iMinSize = files.size();
             }

@@ -81,6 +81,13 @@ public class Proportion {
     public void addStyle(Style style) {
         ambience.addStyle(style);
     }
+    
+    /**
+     * @return String representation of this proportion
+     */
+    public String toString(){
+        return ""+proportion;
+    }
         
     /**
      * From String, return style1,style2,...

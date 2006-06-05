@@ -48,20 +48,25 @@ public class DJAction extends ActionBase {
             Messages.showErrorMessage("156"); //void collection error
         }
         else{
-            DigitalDJ dj = DigitalDJManager.getInstance().getDJByID(ConfigurationManager.getProperty(CONF_DEFAULT_DJ));
-            if (dj != null){
-                ConfigurationManager.setProperty(CONF_FADE_DURATION,Integer.toString(dj.getFadingDuration()));
-                ArrayList al = dj.generatePlaylist();
-                if (al.size() == 0){ //DJ constraints cannot be respected
-                    Messages.showErrorMessage("158");
-                    return;
+            new Thread(){
+                public void run(){
+                    
+                    DigitalDJ dj = DigitalDJManager.getInstance().getDJByID(ConfigurationManager.getProperty(CONF_DEFAULT_DJ));
+                    if (dj != null){
+                        ConfigurationManager.setProperty(CONF_FADE_DURATION,Integer.toString(dj.getFadingDuration()));
+                        ArrayList al = dj.generatePlaylist();
+                        if (al.size() == 0){ //DJ constraints cannot be respected
+                            Messages.showErrorMessage("158");
+                            return;
+                        }
+                        FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(al),
+                            ConfigurationManager.getBoolean(CONF_STATE_REPEAT), false), false);
+                    }
+                    else{
+                        Messages.showErrorMessage("157");
+                    }
                 }
-                FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(al),
-                    ConfigurationManager.getBoolean(CONF_STATE_REPEAT), false), false);
-            }
-            else{
-                Messages.showErrorMessage("157");
-            }
+            }.start();
         }
     }
 }

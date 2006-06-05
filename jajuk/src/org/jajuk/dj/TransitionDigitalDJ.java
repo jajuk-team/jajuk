@@ -99,6 +99,7 @@ public class TransitionDigitalDJ extends DigitalDJ {
      */
     @Override
     public ArrayList<File> generatePlaylist() {
+        Util.waiting();
         ArrayList<File> out = new ArrayList(500);
         //get a global shuffle selection
         ArrayList<File> global = FileManager.getInstance().getGlobalShufflePlaylist(); 
@@ -201,6 +202,7 @@ public class TransitionDigitalDJ extends DigitalDJ {
                 comp ++;
             }
         }
+        Util.stopWaiting();
         return out;
     }
         

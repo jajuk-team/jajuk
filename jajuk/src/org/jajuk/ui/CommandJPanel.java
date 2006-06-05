@@ -44,6 +44,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.swing.Box;
@@ -589,10 +590,19 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
                 JCheckBoxMenuItem jmi = new JCheckBoxMenuItem(dj.getName(),Util.getIcon(ICON_DIGITAL_DJ));
                 jmi.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent arg0) {
-                        ConfigurationManager.setProperty(CONF_DEFAULT_DJ,dj.getID());
-                        ObservationManager.notify(new Event(EVENT_DJ_CHANGE));
-                        FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(dj.generatePlaylist()),
-                            ConfigurationManager.getBoolean(CONF_STATE_REPEAT), false), false);
+                        new Thread(){
+                            public void run(){
+                                ConfigurationManager.setProperty(CONF_DEFAULT_DJ,dj.getID());
+                                ObservationManager.notify(new Event(EVENT_DJ_CHANGE));
+                                ArrayList al = dj.generatePlaylist();
+                                if (al.size() == 0){ //DJ constraints cannot be respected
+                                    Messages.showErrorMessage("158");
+                                    return;
+                                }
+                                FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(al),
+                                    ConfigurationManager.getBoolean(CONF_STATE_REPEAT), false), false);        
+                            }
+                        }.start();
                     }
                 });
                 popupDDJ.add(jmi);
