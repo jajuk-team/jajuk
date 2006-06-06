@@ -224,7 +224,7 @@ public class RefactorAction implements ITechnicalStrings {
 							+ Messages.getString("Error.161") + ")\n";
 				}
 			}
-			fCurrent.getDevice().cleanRemovedFiles();
+			
 
 			// Register and scans new directories
 			Directory dir = DirectoryManager.getInstance().registerDirectory(
@@ -253,6 +253,7 @@ public class RefactorAction implements ITechnicalStrings {
 
 				}
 			}
+			fCurrent.getDevice().cleanRemovedFiles();
 		}
 
 		if (!sErrors.equals("")) {
@@ -263,6 +264,7 @@ public class RefactorAction implements ITechnicalStrings {
 					.setMessage(
 							Messages.getString("Success"), InformationJPanel.INFORMATIVE); //$NON-NLS-1$
 		}
+		
 	}
 
 	public String getCheckedPath(String sRoot, String sPathname) {
