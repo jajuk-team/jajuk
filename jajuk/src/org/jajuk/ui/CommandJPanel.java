@@ -594,7 +594,9 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
                             public void run(){
                                 ConfigurationManager.setProperty(CONF_DEFAULT_DJ,dj.getID());
                                 ObservationManager.notify(new Event(EVENT_DJ_CHANGE));
+                                Util.waiting();
                                 ArrayList al = dj.generatePlaylist();
+                                Util.stopWaiting();
                                 if (al.size() == 0){ //DJ constraints cannot be respected
                                     Messages.showErrorMessage("158");
                                     return;
@@ -609,7 +611,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
                 jmi.setSelected(ConfigurationManager.getProperty(CONF_DEFAULT_DJ).equals(dj.getID()));
             }
             popupDDJ.addSeparator();
-            JMenuItem jmiNew = new JMenuItem(Messages.getString("CommandJPanel.17"),Util.getIcon(ICON_DIGITAL_DJ)); 
+            JMenuItem jmiNew = new JMenuItem(Messages.getString("CommandJPanel.17"),Util.getIcon(ICON_WIZARD)); 
             jmiNew.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent arg0) {
                     new DigitalDJWizard();

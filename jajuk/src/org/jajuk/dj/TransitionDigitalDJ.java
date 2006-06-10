@@ -99,7 +99,6 @@ public class TransitionDigitalDJ extends DigitalDJ {
      */
     @Override
     public ArrayList<File> generatePlaylist() {
-        Util.waiting();
         ArrayList<File> out = new ArrayList(500);
         //get a global shuffle selection
         ArrayList<File> global = FileManager.getInstance().getGlobalShufflePlaylist(); 
@@ -109,22 +108,20 @@ public class TransitionDigitalDJ extends DigitalDJ {
         if (global.size() == 0){
             return out;
         }
-        //Sort tracks by ambience (set of styles)
+        //Sort tracks by TO ambience (set of styles)
         HashMap<Ambience,ArrayList<File>> hmAmbienceFiles = new HashMap(100); 
-        for (File file:global){
-            Transition tr = getTransition(file.getTrack().getStyle());
-            //add the file, note that styles associated with none transition are
-            //added in null transition
-            Ambience from = null;
+        for (Transition tr:transitions){
+            Ambience to = null;
             if (tr != null){
-                from = tr.getFrom();
+                to = tr.getTo();
             }
-            ArrayList<File> files = hmAmbienceFiles.get(from);
-            if (files == null){
-                files = new ArrayList(100);
+            ArrayList<File> files = new ArrayList(100);
+            for (File file:global){
+                if (to.getStyles().contains(file.getTrack().getStyle())){
+                    files.add(file);
+                }
             }
-            files.add(file);
-            hmAmbienceFiles.put(from,files);
+            hmAmbienceFiles.put(to,files);
         }
         //Get first track
         for (File file:global){
@@ -187,7 +184,7 @@ public class TransitionDigitalDJ extends DigitalDJ {
                 else{ //no more files in this ambience, search in null ambience
                     files = hmAmbienceFiles.get(null);
                     //no more tracks even in others, leave
-                    if (files.size() == 0){
+                    if (files == null || files.size() == 0){
                         return out;
                     }
                     else{
@@ -202,7 +199,6 @@ public class TransitionDigitalDJ extends DigitalDJ {
                 comp ++;
             }
         }
-        Util.stopWaiting();
         return out;
     }
         

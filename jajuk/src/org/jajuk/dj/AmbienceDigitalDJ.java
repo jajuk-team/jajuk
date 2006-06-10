@@ -26,7 +26,6 @@ import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Util;
 
 /**
  *  Ambience DJ
@@ -51,7 +50,6 @@ public class AmbienceDigitalDJ extends DigitalDJ implements ITechnicalStrings{
      */
     @Override
     public ArrayList<File> generatePlaylist() {
-        Util.waiting();
         if (ambience == null){ //can be null if ambience has been removed
             Messages.showErrorMessage("159");
             return new ArrayList();
@@ -63,7 +61,6 @@ public class AmbienceDigitalDJ extends DigitalDJ implements ITechnicalStrings{
                 out.addAll(getSequence());
             }
         }
-        Util.stopWaiting();
         return out;
     }
     

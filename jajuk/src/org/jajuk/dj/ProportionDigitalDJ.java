@@ -28,7 +28,6 @@ import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
 import org.jajuk.base.Style;
 import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Util;
 
 
 /**
@@ -55,7 +54,6 @@ public class ProportionDigitalDJ extends DigitalDJ implements ITechnicalStrings{
      */
     @Override
     public ArrayList<File> generatePlaylist() {
-        Util.waiting();
         ArrayList<File> out = new ArrayList(100);
         out = getSequence(); 
         if ( !bUnicity && out.size() > 0){
@@ -63,7 +61,6 @@ public class ProportionDigitalDJ extends DigitalDJ implements ITechnicalStrings{
                 out.addAll(getSequence());
             }
         }
-        Util.stopWaiting();
         return out;
     }
     

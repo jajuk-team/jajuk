@@ -593,25 +593,31 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
          *
          */
         public void initUI(){
+            final Vector<String> styles = StyleManager.getInstance().getStylesList();
             if (ActionSelectionPanel.ACTION_CHANGE.equals(data.get(KEY_ACTION))){
-                DigitalDJ dj = (DigitalDJ)data.get(KEY_CHANGE);
-                alTransitions = (ArrayList)((TransitionDigitalDJ)dj).getTransitions().clone();
+                TransitionDigitalDJ dj = (TransitionDigitalDJ)data.get(KEY_CHANGE);
+                alTransitions = (ArrayList)dj.getTransitions().clone();
                 data.put(KEY_TRANSITIONS,getCleanedTransitions());
                 alTransitions.add(new Transition(DEFAULT_TRANSITION_TRACK_NUMBER)); //add a void transition
+                data.put(KEY_STARTUP_STYLE,dj.getStartupStyle());
             }
-            else{
+            else{ //DJ creation
                 alTransitions = new ArrayList(10);
                 alTransitions.add(new Transition(DEFAULT_TRANSITION_TRACK_NUMBER)); //add a void transition
                 setProblem(Messages.getString("DigitalDJWizard.26"));
+                //set first style by default
+                data.put(KEY_STARTUP_STYLE,StyleManager.getInstance().
+                    getStyleByName(styles.get(0)));
             }
             setCanFinish(true);
             jlStartWith = new JLabel(Messages.getString("DigitalDJWizard.25"));
-            final Vector<String> styles = StyleManager.getInstance().getStylesList();
             jcbStartwith = new JComboBox(styles);
-            //set first style by default
-            data.put(KEY_STARTUP_STYLE,StyleManager.getInstance().
-                        getStyleByName(styles.get(0)));
             AutoCompleteDecorator.decorate(jcbStartwith);
+            String startup = ((Style)data.get(KEY_STARTUP_STYLE)).getName();
+            int indexStyle = styles.indexOf(startup);
+            if (indexStyle >= 0){
+                jcbStartwith.setSelectedIndex(indexStyle);
+            }
             jcbStartwith.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent arg0) {
                     data.put(KEY_STARTUP_STYLE,StyleManager.getInstance().

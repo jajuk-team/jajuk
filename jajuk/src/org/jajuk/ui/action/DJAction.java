@@ -54,7 +54,9 @@ public class DJAction extends ActionBase {
                     DigitalDJ dj = DigitalDJManager.getInstance().getDJByID(ConfigurationManager.getProperty(CONF_DEFAULT_DJ));
                     if (dj != null){
                         ConfigurationManager.setProperty(CONF_FADE_DURATION,Integer.toString(dj.getFadingDuration()));
+                        Util.waiting();
                         ArrayList al = dj.generatePlaylist();
+                        Util.stopWaiting();
                         if (al.size() == 0){ //DJ constraints cannot be respected
                             Messages.showErrorMessage("158");
                             return;
