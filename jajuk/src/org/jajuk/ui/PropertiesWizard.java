@@ -647,6 +647,7 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
          * Save changes in tags
          */
         protected void save() throws Exception{
+            Util.waiting();
             Object oValue = null;
             IPropertyable newItem = null;
             //list of really changed tracks (for message)
@@ -777,6 +778,7 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
                         alChanged.size()  +" "+Messages.getString("PropertiesWizard.10")+": "+sbChanged.toString(), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                         InformationJPanel.INFORMATIVE);
             }
+            Util.stopWaiting();
         }
         
         /**
