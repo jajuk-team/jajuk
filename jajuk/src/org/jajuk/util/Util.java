@@ -71,9 +71,16 @@ import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 
 import org.jajuk.Main;
+import org.jajuk.base.Album;
+import org.jajuk.base.Author;
+import org.jajuk.base.Device;
 import org.jajuk.base.Directory;
+import org.jajuk.base.IPropertyable;
 import org.jajuk.base.PropertyMetaInformation;
 import org.jajuk.base.StackItem;
+import org.jajuk.base.Style;
+import org.jajuk.base.Track;
+import org.jajuk.base.TrackManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.CommandJPanel;
 import org.jajuk.ui.InformationJPanel;
@@ -1404,5 +1411,51 @@ public class Util implements ITechnicalStrings {
             list = new ArrayList(col);
         }
         return list.get((int)(Math.random()*list.size()));
+    }
+    
+    /**
+     * Computes file selection from any item
+     * @param oData the item (a directory, a file...)
+     * @return the files
+     */
+    public static ArrayList<org.jajuk.base.File> getfilesFromSelection(IPropertyable oData){
+        //computes selection
+        ArrayList alSelectedFiles = new ArrayList(100);
+        //computes logical selection if any
+        ArrayList alLogicalTracks = null;
+        if(oData instanceof Style || oData instanceof Author || oData instanceof Album || oData instanceof Track){
+            if( oData instanceof Style || oData instanceof Author || oData instanceof Album ){
+                alLogicalTracks = TrackManager.getInstance().getAssociatedTracks((IPropertyable)oData);
+            }
+            else if( oData instanceof Track){
+                alLogicalTracks = new ArrayList(100);
+                alLogicalTracks.add(oData);
+            }
+            //prepare files
+            if ( alLogicalTracks != null && alLogicalTracks.size() > 0){
+                Iterator it = alLogicalTracks.iterator();
+                while ( it.hasNext()){
+                    Track track = (Track)it.next();
+                    org.jajuk.base.File file = track.getPlayeableFile(false);
+                    if ( file == null){ //none mounted file for this track
+                        continue;
+                    }
+                    alSelectedFiles.add(file);
+                }
+            }
+        }
+        //computes physical selection if any
+        else if(oData instanceof org.jajuk.base.File || oData instanceof Directory || oData instanceof Device){
+            if( oData instanceof org.jajuk.base.File ){
+                alSelectedFiles.add(oData);
+            }
+            else if( oData instanceof Directory ){
+                alSelectedFiles = ((Directory)oData).getFilesRecursively();
+            }
+            else if( oData instanceof Device ){
+                alSelectedFiles = ((Device)oData).getFilesRecursively();
+            }
+        }
+        return alSelectedFiles;
     }
 }

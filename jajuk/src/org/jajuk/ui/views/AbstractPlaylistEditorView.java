@@ -25,7 +25,6 @@ import info.clearthought.layout.TableLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.dnd.DnDConstants;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -76,7 +75,7 @@ import org.jajuk.ui.JajukTable;
 import org.jajuk.ui.JajukTableModel;
 import org.jajuk.ui.PlaylistFileItem;
 import org.jajuk.ui.PropertiesWizard;
-import org.jajuk.ui.TableTransferHandler;
+import org.jajuk.ui.PlaylistEditorTransferHandler;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
@@ -156,6 +155,13 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
             setEditable(false); //table not editable
             prepareColumns();
             populateModel();
+        }
+        
+        /**
+         * Need to overwrite this method for drag and drop
+         */
+        public IPropertyable getItemAt(int iRow){
+            return AbstractPlaylistEditorView.this.getItem(iRow).getFile();
         }
         
         /**
@@ -401,7 +407,8 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
         jtable = new JajukTable(model);
         jtable.setSelectionMode(DefaultListSelectionModel.MULTIPLE_INTERVAL_SELECTION); //multi-row selection
         jtable.setSortable(false);
-        new TableTransferHandler(jtable, DnDConstants.ACTION_COPY_OR_MOVE);
+        jtable.setDragEnabled(true);
+        jtable.setTransferHandler(new PlaylistEditorTransferHandler(jtable));
         setRenderers();
         jtable.getColumnModel().getColumn(0).setPreferredWidth(20); //just an icon
         jtable.getColumnModel().getColumn(0).setMaxWidth(20);
@@ -459,7 +466,6 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
         ObservationManager.register(EVENT_FILE_LAUNCHED,this);
         ObservationManager.register(EVENT_PLAYLIST_CHANGED,this);
         //DND
-        new TableTransferHandler(jtable, DnDConstants.ACTION_COPY_OR_MOVE);
         //force a refresh
         update(new Event(EVENT_PLAYLIST_CHANGED,ObservationManager.getDetailsLastOccurence(EVENT_PLAYLIST_CHANGED)));
         update(new Event(EVENT_PLAYLIST_REFRESH)); //force first refresh
@@ -704,8 +710,6 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
         }
         else if ( e.getClickCount() == 1 ){
             int iSelectedRow = jtable.rowAtPoint(e.getPoint());
-            jtable.getSelectionModel().setSelectionInterval(iSelectedRow,iSelectedRow);
-            TableTransferHandler.iSelectedRow = iSelectedRow;
             if (e.getButton()==MouseEvent.BUTTON3){  //right clic on a selected node set
                 jmenuFile.show(jtable,e.getX(),e.getY());
             }
@@ -890,13 +894,26 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
                 Bookmarks.getInstance().addFiles(alFiles);
             }
             else if ( ae.getSource() == jmiFileProperties ){
-                ArrayList<IPropertyable> alItems = new ArrayList();
-                int iSelected = jtable.getSelectedRow();
-                File file = (File)getItem(iSelected).getFile();
-                alItems.add(file);
-                ArrayList alTracks = new ArrayList<IPropertyable>(1); //tracks items
-                alTracks.add(file.getTrack());
-                new PropertiesWizard(alItems,alTracks);
+                ArrayList alItems1 = new ArrayList<IPropertyable>(1); //file items
+                ArrayList alItems2 = new ArrayList<IPropertyable>(1); //tracks items
+                if (jtable.getSelectedRowCount() == 1){ //mono selection
+                    File file = (File)model.getItemAt(
+                        jtable.convertRowIndexToModel(jtable.getSelectedRow()));
+                    //show file and associated track properties
+                    alItems1.add(file);
+                    alItems2.add(file.getTrack());
+                }
+                else{//multi selection
+                    for (int i=0;i<=jtable.getRowCount();i++){
+                        if (jtable.getSelectionModel().isSelectedIndex(i)){
+                            File file = (File)model.getItemAt(
+                                jtable.convertRowIndexToModel(i));
+                            alItems1.add(file);
+                            alItems2.add(file.getTrack());
+                        }
+                    }
+                }
+                new PropertiesWizard(alItems1,alItems2);
             }
         }
         catch(Exception e2){
