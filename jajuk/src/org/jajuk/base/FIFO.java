@@ -880,11 +880,12 @@ public class FIFO implements ITechnicalStrings {
                 remove(0, index - 1);
                 index = 0;
             }
+            Player.stop(false); //need to stop before launching! this fix a wrong EOM event in BasicPlayer
             launch(index);
         } catch (Exception e) {
             Log.error(e);
         } finally {
-            ObservationManager.notify(new Event(EVENT_PLAYLIST_REFRESH)); // refresh playlist editor
+           ObservationManager.notify(new Event(EVENT_PLAYLIST_REFRESH)); // refresh playlist editor
         }
     }
     
