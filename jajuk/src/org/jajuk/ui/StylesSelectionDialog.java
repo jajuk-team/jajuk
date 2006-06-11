@@ -83,15 +83,22 @@ public class StylesSelectionDialog extends JDialog implements ActionListener{
     public void setSelection(HashSet<Style> selection){
         if (selection != null){
             int[] indices = new int[selection.size()];
+            //reset all indices to -1 to avoid selecting zero th item
+            for (int i=0;i<selection.size();i++){
+                indices[i] = -1;
+            }
+            //find all matching items
             int comp = 0;
             for (int i=0;i<jlist.getModel().getSize();i++){
+                String modelStyle = (String)jlist.getModel().getElementAt(i);
                 for (Style style:selection){
-                    if (style.getName2().equals((String)jlist.getModel().getElementAt(i))){
+                    if (style.getName2().equals(modelStyle)){
                         indices[comp] = i;
                         comp ++;
                     }
                 }
             }
+            //select item in the list
             jlist.setSelectedIndices(indices);
         }
     }
