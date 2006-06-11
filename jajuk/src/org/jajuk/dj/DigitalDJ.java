@@ -21,6 +21,7 @@
 package org.jajuk.dj;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 
 import org.jajuk.base.File;
@@ -104,7 +105,8 @@ public abstract class DigitalDJ implements ITechnicalStrings,Comparable{
      * @param files
      */
     void filterFilesByRate(ArrayList<File> files){
-        ArrayList<Track> selectedTracks =  new ArrayList(100);
+        //this set stores already used tracks
+        HashSet<Track> selectedTracks =  new HashSet(files.size());
         //Select by rate if needed
         if (iRatingLevel > 0){
             Iterator it = files.iterator();

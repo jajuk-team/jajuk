@@ -110,6 +110,8 @@ public class TransitionDigitalDJ extends DigitalDJ {
         }
         //Sort tracks by TO ambience (set of styles)
         HashMap<Ambience,ArrayList<File>> hmAmbienceFiles = new HashMap(100); 
+        //This list contains all files not yat sorted (used for null key)
+        ArrayList<File> alFilesToSort = (ArrayList)global.clone();
         for (Transition tr:transitions){
             Ambience to = null;
             if (tr != null){
@@ -119,10 +121,13 @@ public class TransitionDigitalDJ extends DigitalDJ {
             for (File file:global){
                 if (to.getStyles().contains(file.getTrack().getStyle())){
                     files.add(file);
+                    alFilesToSort.remove(file);
                 }
             }
             hmAmbienceFiles.put(to,files);
         }
+        //fill null key
+        hmAmbienceFiles.put(null,alFilesToSort);
         //Get first track
         for (File file:global){
             if (file.getTrack().getStyle().equals(startupStyle)){
