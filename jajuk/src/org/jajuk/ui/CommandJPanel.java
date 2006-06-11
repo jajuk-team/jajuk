@@ -44,7 +44,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
-import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.swing.Box;
@@ -219,8 +218,9 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
                 }
             }
         };
-        ddbDDJ.setToolTipText(Messages.getString("CommandJPanel.16"));
         ddbDDJ.setAction(ActionManager.getAction(JajukAction.DJ));
+        String sDJ = DigitalDJManager.getInstance().getDJByID(ConfigurationManager.getProperty(CONF_DEFAULT_DJ)).getName();
+        ddbDDJ.setToolTipText("<html>"+Messages.getString("CommandJPanel.18")+"<p><b>"+sDJ+"</b></p></html>"); //$NON-NLS-1$
         ddbDDJ.setText("");//no text visible
         jtbSpecial.add(jbGlobalRandom);
 		jtbSpecial.add(jbBestof);
@@ -590,21 +590,8 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
                 JCheckBoxMenuItem jmi = new JCheckBoxMenuItem(dj.getName(),Util.getIcon(ICON_DIGITAL_DJ));
                 jmi.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent arg0) {
-                        new Thread(){
-                            public void run(){
-                                ConfigurationManager.setProperty(CONF_DEFAULT_DJ,dj.getID());
-                                ObservationManager.notify(new Event(EVENT_DJ_CHANGE));
-                                Util.waiting();
-                                ArrayList al = dj.generatePlaylist();
-                                Util.stopWaiting();
-                                if (al.size() == 0){ //DJ constraints cannot be respected
-                                    Messages.showErrorMessage("158");
-                                    return;
-                                }
-                                FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(al),
-                                    ConfigurationManager.getBoolean(CONF_STATE_REPEAT), false), false);        
-                            }
-                        }.start();
+                        ConfigurationManager.setProperty(CONF_DEFAULT_DJ,dj.getID());
+                        ObservationManager.notify(new Event(EVENT_DJ_CHANGE));
                     }
                 });
                 popupDDJ.add(jmi);
@@ -625,6 +612,9 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
             });
             popupDDJ.add(jmiNew);
             popupDDJ.add(jmiAmbiences);
+            //Set new tooltip for DJ button
+            String sDJ = DigitalDJManager.getInstance().getDJByID(ConfigurationManager.getProperty(CONF_DEFAULT_DJ)).getName();
+            ddbDDJ.setToolTipText("<html>"+Messages.getString("CommandJPanel.18")+"<p><b>"+sDJ+"</b></p></html>"); //$NON-NLS-1$
         }
         catch(Exception e){
             Log.error(e);
