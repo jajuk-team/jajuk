@@ -710,6 +710,10 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
         }
         else if ( e.getClickCount() == 1 ){
             int iSelectedRow = jtable.rowAtPoint(e.getPoint());
+            //if no multiple previous selection, select row before displaying popup
+            if (jtable.getSelectedRowCount() < 2){
+                jtable.getSelectionModel().setSelectionInterval(iSelectedRow,iSelectedRow);
+            }
             if (e.getButton()==MouseEvent.BUTTON3){  //right clic on a selected node set
                 jmenuFile.show(jtable,e.getX(),e.getY());
             }
