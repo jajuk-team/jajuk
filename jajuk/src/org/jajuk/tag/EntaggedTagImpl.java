@@ -48,7 +48,7 @@ public class EntaggedTagImpl implements ITagImpl,ITechnicalStrings {
 	 */
 	public String getTrackName() throws Exception {
 		String sOut = tag.getFirstTitle();
-		if ( sOut == null || sOut.startsWith("Track")){//$NON-NLS-1$
+		if ( sOut == null ){//$NON-NLS-1$
 			return ""; //doing that, the item wil be the default jajuk unknown string //$NON-NLS-1$
 		}
 		return sOut;
@@ -59,7 +59,7 @@ public class EntaggedTagImpl implements ITagImpl,ITechnicalStrings {
 	 */
 	public String getAlbumName() throws Exception {
 		String sOut = tag.getFirstAlbum();
-		if ( sOut == null || sOut.equals("title")){//$NON-NLS-1$
+		if ( sOut == null ){//$NON-NLS-1$
 			return ""; //doing that, the item wil be the default jajuk unknown string //$NON-NLS-1$
 		}
 		return sOut;
@@ -70,7 +70,7 @@ public class EntaggedTagImpl implements ITagImpl,ITechnicalStrings {
 	 */
 	public String getAuthorName() throws Exception {
 		String sOut = tag.getFirstArtist();
-		if ( sOut == null || sOut.equals("title")){//$NON-NLS-1$
+		if ( sOut == null ){//$NON-NLS-1$
 			return ""; //doing that, the item wil be the default jajuk unknown string //$NON-NLS-1$
 		}
 		return sOut;
@@ -81,11 +81,11 @@ public class EntaggedTagImpl implements ITagImpl,ITechnicalStrings {
 	 */
 	public String getStyleName() throws Exception {
 		String sOut = tag.getFirstGenre();
-		if ( sOut==null || sOut.equals("genre")){//$NON-NLS-1$
+		if ( sOut == null || sOut.equals("genre")){//$NON-NLS-1$
 			return ""; //doing that, the item wil be the default jajuk unknown string //$NON-NLS-1$
 		}
 		//Sometimes, the style has this form : (nb)
-		if ( sOut.startsWith("(") && sOut.indexOf(')')!=-1){//$NON-NLS-1$//$NON-NLS-2$
+		if ( sOut.matches("(.*)")){//$NON-NLS-1$
 			sOut = sOut.substring(1,sOut.indexOf(')'));
 			try{
 				sOut = Util.genres[Integer.parseInt(sOut)];
@@ -135,10 +135,7 @@ public class EntaggedTagImpl implements ITagImpl,ITechnicalStrings {
 		        sOut += ' '+it.next().toString();
 		    }
 		}
-        if (sOut.contains("()")){ //$NON-NLS-1$
-            sOut = sOut.substring(9,sOut.length()); //remove [LAN]()
-        }
-		return sOut;
+ 		return sOut;
 	}
 
       /* (non-Javadoc)
