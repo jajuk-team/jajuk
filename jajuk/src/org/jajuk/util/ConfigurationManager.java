@@ -128,8 +128,7 @@ public class ConfigurationManager implements ITechnicalStrings{
 	 *
 	 */
 	public static void setDefaultProperties() {
-		properties.put(CONF_RELEASE,JAJUK_VERSION); 
-        // User preferences
+		// User preferences
 		properties.put(CONF_PERSPECTIVE_DEFAULT,PERSPECTIVE_NAME_PHYSICAL); 
 		properties.put(CONF_STATE_REPEAT,FALSE); 
 		properties.put(CONF_STATE_SHUFFLE,FALSE); 
@@ -181,7 +180,7 @@ public class ConfigurationManager implements ITechnicalStrings{
 		properties.put(CONF_VOLUME,"0.5"); //$NON-NLS-1$
 		properties.put(CONF_REGEXP,FALSE); //$NON-NLS-1$
 		properties.put(CONF_BACKUP_SIZE,"20");//$NON-NLS-1$
-        properties.put(CONF_REFACTOR_PATTERN,PATTERN_ARTIST+"/"+PATTERN_YEAR+" - "+PATTERN_ALBUM+"/"+PATTERN_TRACKORDER+" - "+PATTERN_TRACKNAME);//$NON-NLS-1$        
+        properties.put(CONF_REFACTOR_PATTERN,DEFAULT_REORG_PATTERN);//$NON-NLS-1$        
 		properties.put(CONF_COLLECTION_CHARSET,"UTF-8");//$NON-NLS-1$
 		properties.put(CONF_NETWORK_USE_PROXY,FALSE);
 		properties.put(CONF_NETWORK_PROXY_HOSTNAME,"proxy");//default proxy name, just a guess //$NON-NLS-1$

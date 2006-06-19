@@ -76,7 +76,6 @@ import org.jajuk.base.Observer;
 import org.jajuk.base.Player;
 import org.jajuk.base.SearchResult;
 import org.jajuk.base.StackItem;
-import org.jajuk.base.StyleManager;
 import org.jajuk.dj.DigitalDJ;
 import org.jajuk.dj.DigitalDJManager;
 import org.jajuk.i18n.Messages;
@@ -205,22 +204,14 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		jbNovelties = new JajukButton(ActionManager.getAction(NOVELTIES));
 		jbNorm = new JajukButton(ActionManager.getAction(FINISH_ALBUM));
         popupDDJ = new JPopupMenu();
-        populateDJs();
         ddbDDJ = new DropDownButton(Util.getIcon(ICON_DIGITAL_DJ)) {
-            @Override
-            protected JPopupMenu getPopupMenu() {
-                //can access to menu only if collection is not void
-                if (StyleManager.getInstance().getItems().size() > 0){
-                    return popupDDJ;
-                }
-                else{
-                    return new JPopupMenu();
-                }
-            }
+        	@Override
+        	protected JPopupMenu getPopupMenu() {
+        		return popupDDJ;
+        	}
         };
         ddbDDJ.setAction(ActionManager.getAction(JajukAction.DJ));
-        String sDJ = DigitalDJManager.getInstance().getDJByID(ConfigurationManager.getProperty(CONF_DEFAULT_DJ)).getName();
-        ddbDDJ.setToolTipText("<html>"+Messages.getString("CommandJPanel.18")+"<p><b>"+sDJ+"</b></p></html>"); //$NON-NLS-1$
+        populateDJs();
         ddbDDJ.setText("");//no text visible
         jtbSpecial.add(jbGlobalRandom);
 		jtbSpecial.add(jbBestof);
@@ -613,8 +604,14 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
             popupDDJ.add(jmiNew);
             popupDDJ.add(jmiAmbiences);
             //Set new tooltip for DJ button
-            String sDJ = DigitalDJManager.getInstance().getDJByID(ConfigurationManager.getProperty(CONF_DEFAULT_DJ)).getName();
-            ddbDDJ.setToolTipText("<html>"+Messages.getString("CommandJPanel.18")+"<p><b>"+sDJ+"</b></p></html>"); //$NON-NLS-1$
+            DigitalDJ dj = DigitalDJManager.getInstance().getDJByID(ConfigurationManager.getProperty(CONF_DEFAULT_DJ));
+            if (dj != null){
+            	String sDJ = dj.getName();
+            	ddbDDJ.setToolTipText("<html>"+Messages.getString("CommandJPanel.18")+"<p><b>"+sDJ+"</b></p></html>"); //$NON-NLS-1$
+            }
+            else{
+            	ddbDDJ.setToolTipText(Messages.getString("CommandJPanel.18")); //$NON-NLS-1$
+            }
         }
         catch(Exception e){
             Log.error(e);

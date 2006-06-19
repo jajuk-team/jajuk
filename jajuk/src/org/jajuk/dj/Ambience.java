@@ -23,13 +23,15 @@ package org.jajuk.dj;
 import java.util.HashSet;
 
 import org.jajuk.base.Style;
+import org.jajuk.base.StyleManager;
+import org.jajuk.util.log.Log;
 
 /**
  * An ambience is a set of styles
  * @author     Bertrand Florat
  * @created    18 march 2006
  */
-public class Ambience {
+public class Ambience implements Comparable{
 
     /**List of styles*/
     private HashSet<Style> styles;
@@ -42,6 +44,7 @@ public class Ambience {
     
     /**
      * Constructor
+     * @param sID Ambience uniq id
      * @param sName Ambience name
      * @param styles list of styles
      */
@@ -49,6 +52,28 @@ public class Ambience {
         this.sID = sID;
         this.sName = sName;
         this.styles = styles;
+    }
+    
+    /**
+     * Constructor
+     * @param sID Ambience uniq id
+     * @param sName Ambience name
+     * @param styles list by name
+     */
+    public Ambience(String sID,String sName,String[] styles) {
+        HashSet<Style> hstyles = new HashSet(styles.length);
+        for (int i=0;i<styles.length;i++){
+        	Style style = StyleManager.getInstance().getStyleByName(styles[i]);
+        	if (style != null){
+        		hstyles.add(style);
+        	}
+        	else{
+        		Log.debug("Unknown style");
+        	}
+        }
+    	this.sID = sID;
+    	this.sName = sName;
+    	this.styles = hstyles;
     }
     
     /**
@@ -130,6 +155,13 @@ public class Ambience {
         }
         return this.sName.equals(ambienceOther.getName()) && 
             this.styles.equals(ambienceOther.getStyles());
+    }
+    
+    /**
+     * Compare to method : alphabetical
+     */
+    public int compareTo(Object o){
+        return this.getName().compareToIgnoreCase(((Ambience)o).getName());
     }
     
     /**

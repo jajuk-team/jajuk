@@ -22,6 +22,8 @@ package org.jajuk.ui;
 
 import java.awt.Color;
 import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
@@ -36,6 +38,7 @@ import javax.swing.JTextField;
 import javax.swing.Popup;
 import javax.swing.PopupFactory;
 import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 import javax.swing.event.ListSelectionListener;
 
 import org.jajuk.base.FileManager;
@@ -73,6 +76,18 @@ public class SearchBox extends JTextField implements KeyListener{
     /**Listener to handle selections*/
     private ListSelectionListener lsl;
     
+    /**Search when typing timer*/
+    Timer timer = new Timer(100,new ActionListener() {
+        
+        public void actionPerformed(ActionEvent arg0) {
+            if ( bNeedSearch && (System.currentTimeMillis()-lDateTyped >= WAIT_TIME)){
+                search();
+            }
+            
+        }
+    
+    });
+    
     /**
      * Constructor
      * @param lsl
@@ -80,22 +95,7 @@ public class SearchBox extends JTextField implements KeyListener{
     public SearchBox(ListSelectionListener lsl){
         super(10);
         this.lsl = lsl;
-        // launches a thread used to perform dynamic search chen user is typing
-        new Thread(){
-            public void run(){
-                while (true){
-                    try{
-                        Thread.sleep(100);
-                    }
-                    catch(InterruptedException ie){
-                        Log.error(ie);
-                    }
-                    if ( bNeedSearch && (System.currentTimeMillis()-lDateTyped >= WAIT_TIME)){
-                        search();
-                    }
-                }
-            }
-        }.start();
+        timer.start();
         addKeyListener(this);
         setToolTipText(Messages.getString("SearchBox.0")); //$NON-NLS-1$
     }

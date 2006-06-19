@@ -67,6 +67,7 @@ import org.jajuk.ui.JajukWindow;
 import org.jajuk.ui.LNFManager;
 import org.jajuk.ui.PerspectiveBarJPanel;
 import org.jajuk.ui.TipOfTheDay;
+import org.jajuk.ui.action.ActionManager;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
@@ -278,7 +279,7 @@ public class Main implements ITechnicalStrings {
     
             //Load ambiences
             AmbienceManager.getInstance().load();
-            
+                        
             //Load djs
             DigitalDJManager.getInstance().loadAllDJs();
             
@@ -742,6 +743,14 @@ public class Main implements ITechnicalStrings {
         if ( file!= null ){
             file.delete();
         }
+        //upgrade code; if ugrade from <1.2, set default ambiences
+        String sRelease = ConfigurationManager.getProperty(CONF_RELEASE);
+        if (sRelease == null || sRelease.matches("0..*")
+                || sRelease.matches("1.0..*")
+                || sRelease.matches("1.1.*")){
+            AmbienceManager.getInstance().createDefaultAmbiences();
+        }
+        
     }
     
     /**
@@ -770,7 +779,10 @@ public class Main implements ITechnicalStrings {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    //  Set look and feel, needs local to be set for error messages
+                    //Start up action manager
+                    ActionManager.getInstance();
+                    
+                	//  Set look and feel, needs local to be set for error messages
                     LNFManager.setLookAndFeel(ConfigurationManager.getProperty(CONF_OPTIONS_LNF));
                     
                     //starts ui
@@ -790,7 +802,7 @@ public class Main implements ITechnicalStrings {
                     
                     // Create the information bar panel
                     information = InformationJPanel.getInstance();
-                    
+
                     //Main panel
                     jpContentPane = new JPanel();
                     jpContentPane.setOpaque(true);
@@ -823,6 +835,7 @@ public class Main implements ITechnicalStrings {
                         //First time wizard
                         FirstTimeWizard fsw = new FirstTimeWizard();
                         fsw.pack();
+                        fsw.setLocationRelativeTo(jw);
                         fsw.setVisible(true);
                         ConfigurationManager.setProperty(CONF_FIRST_CON,FALSE);
                     }

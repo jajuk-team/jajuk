@@ -195,6 +195,49 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter,IT
     
     /**
      * 
+     *  Image filter
+     *
+     * @author     Bertrand Florat
+     * @created    25 may 2006
+     */
+    public static class ImageFilter implements java.io.FileFilter{
+        /**Self instance*/
+        private static ImageFilter self = null;
+        
+        /* (non-Javadoc)
+         * @see java.io.FileFilter#accept(java.io.File)
+         */
+        public boolean accept(File f) {
+            if (f.isDirectory()){
+                return false;
+            }
+            //check extension is known
+            String ext = Util.getExtension(f);
+            if (ext.equalsIgnoreCase("jpg") || 
+                    ext.equalsIgnoreCase("gif") ||
+                    ext.equalsIgnoreCase("png")){
+                return true;
+            }
+            return false;
+        }
+        
+        /**No instanciation*/
+        private ImageFilter(){};
+        
+        /**
+         * 
+         * @return singleton
+         */
+        public static ImageFilter getInstance(){
+            if (self == null){
+                self = new ImageFilter();
+            }
+            return self;
+        }
+    }
+    
+    /**
+     * 
      *  Not Audio file filter (must be a file)
      *
      * @author     Bertrand Florat
@@ -306,18 +349,21 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter,IT
      * @param f file to test 
 	 */
     public boolean accept(File f) {
-		boolean bResu = true;
 		if (bAND){
+		    boolean bResu = true;
 		    for (int i=0;i<filters.length;i++){
 		        bResu = bResu & filters[i].accept(f);
 		    }
+            return bResu;
 		}
 		else{ //OR applied
+            boolean bResu = false;
             for (int i=0;i<filters.length;i++){
                 bResu = bResu | filters[i].accept(f);
             }
+            return bResu;
         }
-	    return bResu;
+	    
 	}
 	
 	

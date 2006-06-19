@@ -301,7 +301,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                         try{
                             int iCoversBeforeSearch = alCovers.size(); //stores number of covers before web search
                             final String sQuery = createQuery(fCurrent);
-                            Log.debug("Query="+sQuery); //$NON-NLS-1$
+                            Log.debug("Query={{"+sQuery+"}}"); //$NON-NLS-1$
                             if (!sQuery.equals("")){ //there is not enough information in tags for a web search //$NON-NLS-1$
                                 ArrayList alUrls;
                                 alUrls = DownloadManager.getRemoteCoversList(sQuery);
@@ -316,7 +316,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                                     try{
                                         Cover cover = new Cover(url,Cover.REMOTE_COVER);//create a cover with given url ( image will be really downloaded when required if no preload)
                                         if (!alCovers.contains(cover)){
-                                            Log.debug("Found Cover: "+url.toString()); //$NON-NLS-1$
+                                            Log.debug("Found Cover: {{"+url.toString()+"}}"); //$NON-NLS-1$
                                             alCovers.add(cover);
                                         }
                                     }
@@ -355,7 +355,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                         alCovers.add(coverDefault); 
                     }
                     Collections.sort(alCovers); //sort the list
-                    Log.debug("Local cover list: "+alCovers); //$NON-NLS-1$
+                    Log.debug("Local cover list: {{"+alCovers+"}}"); //$NON-NLS-1$
                     if (ConfigurationManager.getBoolean(CONF_COVERS_SHUFFLE) || PerspectiveManager.getCurrentPerspective() instanceof PlayerPerspective){ //in player perspective, always show shuffle covers
                         index = (int)(Math.random()*alCovers.size()); //choose a random cover
                     }
@@ -516,7 +516,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                             return null; //OK, leave
                         }
                         catch(Exception e){
-                            Log.debug("Removed cover: "+alCovers.get(index)); //$NON-NLS-1$
+                            Log.debug("Removed cover: {{"+alCovers.get(index)+"}}"); //$NON-NLS-1$
                             alCovers.remove(index);    
                             //refresh number of found covers
                             if (!bGotoBetter){ //we go to worse covers. If we go to better covers, we just keep the same index
@@ -607,7 +607,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
             }
         }
         catch(Exception e){  //the url code can throw out of bounds exception for unkwown reasons so check it
-            Log.debug("jl="+jl+" url="+url); //$NON-NLS-1$ //$NON-NLS-2$
+            Log.debug("jl="+jl+" url={{"+url+"}}"); //$NON-NLS-1$ //$NON-NLS-2$
             Log.error(e);
         }
         setCursor(Util.WAIT_CURSOR);

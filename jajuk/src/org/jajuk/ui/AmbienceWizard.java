@@ -7,6 +7,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Locale;
 
@@ -60,6 +61,8 @@ public class AmbienceWizard extends Wizard implements ITechnicalStrings{
         
         JButton jbNew;
         JButton jbDelete;
+        JButton jbDefaults;
+        
         JPanel jpButtons;
         
         /**DJ**/
@@ -83,14 +86,14 @@ public class AmbienceWizard extends Wizard implements ITechnicalStrings{
          */
         public void initUI(){
             ambiences = new ArrayList(AmbienceManager.getInstance().getAmbiences());
+            Collections.sort(ambiences);
             setCanFinish(true);
             //set layout
             double[][] dSizeGeneral = {{10,0.99,5},
                     {10,TableLayout.FILL,10,TableLayout.PREFERRED,10}};
             setLayout(new TableLayout(dSizeGeneral));
             //button layout
-            double[][] dButtons = {{10,TableLayout.PREFERRED,
-                20,0.99,10},{20}};
+            double[][] dButtons = {{10,TableLayout.PREFERRED,5,TableLayout.PREFERRED,5,TableLayout.PREFERRED,10},{20}};
             jpButtons = new JPanel(new TableLayout(dButtons));
             jbNew = new JButton(Messages.getString("DigitalDJWizard.32"),Util.getIcon(ICON_NEW));
             jbNew.addActionListener(this);
@@ -98,8 +101,12 @@ public class AmbienceWizard extends Wizard implements ITechnicalStrings{
             jbDelete = new JButton(Messages.getString("DigitalDJWizard.34"),Util.getIcon(ICON_DELETE));
             jbDelete.addActionListener(this);
             jbDelete.setToolTipText(Messages.getString("DigitalDJWizard.35"));
+            jbDefaults = new JButton(Messages.getString("DigitalDJWizard.62"),Util.getIcon(ICON_DEFAULTS));
+            jbDefaults.addActionListener(this);
+            jbDefaults.setToolTipText(Messages.getString("DigitalDJWizard.63"));
             jpButtons.add(jbNew,"1,0");
             jpButtons.add(jbDelete,"3,0");
+            jpButtons.add(jbDefaults,"5,0");
             add(getPanel(),"1,1");
             add(jpButtons,"1,3,c,c");
         }
@@ -111,7 +118,7 @@ public class AmbienceWizard extends Wizard implements ITechnicalStrings{
         private JScrollPane getPanel(){
             widgets = new JComponent[ambiences.size()][3];
             JPanel out = new JPanel();
-            //Delete|Style list|proportion in %  
+            //Delete|Style name|styles list  
             double[] dHoriz = {25,120,200};
             double[] dVert = new double[widgets.length+2]; 
             dVert[0] = 20;
@@ -272,6 +279,7 @@ public class AmbienceWizard extends Wizard implements ITechnicalStrings{
         public void actionPerformed(ActionEvent ae) {
             if (ae.getSource() == jbNew){
                 ambiences.add(new Ambience(Long.toString(System.currentTimeMillis()),"")); //create a void ambience
+                Collections.sort(ambiences);
                 //refresh screen
                 refreshScreen();
                 //select new row
@@ -297,6 +305,13 @@ public class AmbienceWizard extends Wizard implements ITechnicalStrings{
                     JRadioButton jrb = (JRadioButton)widgets[ambienceIndex][0];
                     jrb.setSelected(true);
                 }
+                //refresh screen
+                refreshScreen();
+            }
+            else if (ae.getSource() == jbDefaults){
+                AmbienceManager.getInstance().createDefaultAmbiences();
+                ambiences = new ArrayList(AmbienceManager.getInstance().getAmbiences());
+                Collections.sort(ambiences);
                 //refresh screen
                 refreshScreen();
             }

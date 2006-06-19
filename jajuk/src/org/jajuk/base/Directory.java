@@ -82,7 +82,7 @@ public class Directory extends PropertyAdapter implements Comparable{
      * toString method
      */
     public String toString() {
-        return "Directory[ID=" + sId + " Name={{" + getRelativePath() + "}} ParentID=" + (dParent == null ? "null" : dParent.getId()) + " Device=" + device.getName() + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$ //$NON-NLS-6$
+        return "Directory[ID=" + sId + " Name={{" + getRelativePath() + "}} ParentID=" + (dParent == null ? "null" : dParent.getId()) + " Device={{" + device.getName() + "}}]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$ //$NON-NLS-6$
     }
     
     /**

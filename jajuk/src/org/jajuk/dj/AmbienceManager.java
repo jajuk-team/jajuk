@@ -33,6 +33,7 @@ import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Observer;
 import org.jajuk.base.Style;
 import org.jajuk.base.StyleManager;
+import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 
@@ -72,7 +73,12 @@ public class AmbienceManager implements ITechnicalStrings,Observer{
      * Format: jajuk.ambience.<ID>/<name>=style1,style2,...
      * */
     public void load() {
-        Properties properties = ConfigurationManager.getProperties();
+    	//if first startup, define default ambiences
+        if (ConfigurationManager.getBoolean(CONF_FIRST_CON)){ 
+        	createDefaultAmbiences();
+        	return;
+    	}
+    	Properties properties = ConfigurationManager.getProperties();
         Enumeration e = properties.keys();
         while (e.hasMoreElements()){
             String sKey = (String)e.nextElement();
@@ -182,6 +188,55 @@ public class AmbienceManager implements ITechnicalStrings,Observer{
         Properties properties = new Properties();
         properties.put(DETAIL_CONTENT,sAmbienceID);
         ObservationManager.notify(new Event(EVENT_AMBIENCE_REMOVED,properties));
+    }
+    
+    /**
+     * Create out of the box ambiences
+     *
+     */
+    public void createDefaultAmbiences(){
+    	//Define default amience by style name
+    	String[] stylesRockPop = new String[]{"Classic Rock","Pop","Rock","Ska","AlternRock","Instrumental Pop",
+    			"Instrumental Rock","Southern Rock","Pop/Funk","Folk-Rock","Rock & Roll","Symphonic Rock"
+    			,"Ballad","Christian Rock","JPop", "SynthPop"};
+    	AmbienceManager.getInstance().registerAmbience(new Ambience("0",Messages.getString("Ambience.0"),stylesRockPop));
+    	String[] stylesRap = new String[]{"Hip-Hop","R&B","Rap","Fusion","Gangsta","Christian Rap",
+    			"Porn Groove","Rhytmic Soul","Christian Gangsta"};
+    	AmbienceManager.getInstance().registerAmbience(new Ambience("1",Messages.getString("Ambience.1"),stylesRap));
+    	String[] stylesHardRock = new String[]{"Grunge","Metal","Industrial","Death Metal","Fusion","Punk",
+    			"Gothic","Darkwave","Fast Fusion","Hard Rock","Gothic Rock","Progressive Rock","Punk Rock"
+    			,"Terror","Negerpunk", "Polsk Punk","Heavy Metal","Black Metal","Thrash Metal"};
+    	AmbienceManager.getInstance().registerAmbience(new Ambience("2",Messages.getString("Ambience.2"),stylesHardRock));
+    	String[] stylesTechno = new String[]{"Dance","New Age","Techno","Euro-Techno","Ambient","Trance","House",
+    			"Game","Space","Techno-Industrial","Eurodance","Dream","Jungle","Rave","Euro-House","Goa",
+    			"Club-House","Hardcore","Beat"};
+    	AmbienceManager.getInstance().registerAmbience(new Ambience("3",Messages.getString("Ambience.3"),stylesTechno));
+    	String[] stylesElectro = new String[]{"Trip-Hop","Acid","Electronic","Club"};
+    	AmbienceManager.getInstance().registerAmbience(new Ambience("4",Messages.getString("Ambience.4"),stylesElectro));
+    	String[] stylesClassical = new String[]{"Classical","Chorus","Opera", "Chamber Music", "Sonata",
+    			"Symphony"};
+    	AmbienceManager.getInstance().registerAmbience(new Ambience("5",Messages.getString("Ambience.5"),stylesClassical));
+    	String[] stylesSoft = new String[]{"Classic Rock", "Pop", "Rock","Reggae","Acid Jazz","Slow Rock",
+    			"Jazz","Easy Listening","Acoustic","Ballad"};
+    	AmbienceManager.getInstance().registerAmbience(new Ambience("6",Messages.getString("Ambience.6"),stylesSoft));
+    	String[] stylesParty = new String[]{"Dance", "Disco", "Funk","Ska","Soul","Eurodance","Big Band",
+    			"Club","Rhytmic Soul","Dance Hall","Club-House"};
+    	AmbienceManager.getInstance().registerAmbience(new Ambience("7",Messages.getString("Ambience.7"),stylesParty));
+    	String[] stylesJazzBlues = new String[]{"Jazz","Jazz+Funk","Bass","Acid Jazz"};
+    	AmbienceManager.getInstance().registerAmbience(new Ambience("8",Messages.getString("Ambience.8"),stylesJazzBlues));
+    	String[] stylesWorld = new String[]{"Ethnic","Native American","Tribal","Polka","Celtic","Folklore","Indie"};
+    	AmbienceManager.getInstance().registerAmbience(new Ambience("9",Messages.getString("Ambience.9"),stylesWorld));
+    	String[] stylesOthers = new String[]{"Other","Alternative","Soundtrack","Vocal","Meditative","Comedy",
+    			"Humour","Speech","Anime"};
+    	AmbienceManager.getInstance().registerAmbience(new Ambience("10",Messages.getString("Ambience.10"),stylesOthers));
+    	String[] stylesFolkOldies = new String[]{"Country", "Oldies","Gospel","Pop-Folk","Southern Rock","Cabaret"
+    			,"Retro","Folk-Rock","National Folk","Swing","Rock & Roll","Folk","Revival","Chanson"};
+    	AmbienceManager.getInstance().registerAmbience(new Ambience("11",Messages.getString("Ambience.11"),stylesFolkOldies));
+    	String[] stylesInde = new String[]{"Noise","AlternRock","New Wave","Psychedelic","Acid Punk",
+    			"Avantgarde","Psychedelic Rock","Freestyle","Drum Solo","Drum & Bass"};
+    	AmbienceManager.getInstance().registerAmbience(new Ambience("12",Messages.getString("Ambience.12"),stylesInde));
+    	String[] stylesLatin = new String[]{"Latin","Tango", "Samba","Acapella","Salsa"};
+    	AmbienceManager.getInstance().registerAmbience(new Ambience("13",Messages.getString("Ambience.13"),stylesLatin));
     }
     
 }

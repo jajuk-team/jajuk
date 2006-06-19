@@ -165,11 +165,13 @@ public class JajukListener implements ActionListener, ITechnicalStrings {
                 //First time wizard
                 FirstTimeWizard fsw = new FirstTimeWizard();
                 fsw.pack();
+                fsw.setLocationRelativeTo(Main.getWindow());
                 fsw.setVisible(true);
             }
             else if(EVENT_CREATE_PROPERTY.equals(e.getActionCommand())){
                 NewPropertyWizard npw = new NewPropertyWizard();
                 npw.pack();
+                npw.setLocationRelativeTo(Main.getWindow());
                 npw.setVisible(true);
             }
             else if(EVENT_DELETE_PROPERTY.equals(e.getActionCommand())){

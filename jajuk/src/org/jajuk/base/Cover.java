@@ -195,7 +195,7 @@ public class Cover implements Comparable,ITechnicalStrings {
             }
             image.getImage().flush();
         }
-        Log.debug("Loaded "+url.toString()+" in  "+(System.currentTimeMillis()-l)+" ms"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        Log.debug("Loaded {{"+url.toString()+"}} in  "+(System.currentTimeMillis()-l)+" ms"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         return image;
     }
     

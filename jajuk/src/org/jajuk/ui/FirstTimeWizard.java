@@ -81,8 +81,6 @@ public class FirstTimeWizard extends JDialog implements ITechnicalStrings,Action
     public FirstTimeWizard() {
         super(Main.getWindow(),true); //make it modal
         setTitle(Messages.getString("FirstTimeWizard.0"));//$NON-NLS-1$
-        setLocation(org.jajuk.Main.getWindow().getX()+200,
-            org.jajuk.Main.getWindow().getY()+200);
         int iX_SEPARATOR = 5;
         int iY_SEPARATOR = 10;
         jlLeftIcon = new JLabel(Util.getIcon(IMAGE_SEARCH));
@@ -221,7 +219,7 @@ public class FirstTimeWizard extends JDialog implements ITechnicalStrings,Action
             }
             device.setProperty(XML_DEVICE_AUTO_REFRESH,dRefreshTime);
             try{
-                device.refresh(true);
+                device.refresh(true,false);
             }
             catch(Exception e2){
                 Log.error("112",device.getName(),e2); //$NON-NLS-1$

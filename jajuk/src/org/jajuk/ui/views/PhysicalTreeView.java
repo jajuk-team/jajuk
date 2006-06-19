@@ -407,7 +407,8 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
                     }
                     File current = FIFO.getInstance().getCurrentFile();
                     if ( current != null && file.equals(current)){
-                        setForeground(Color.ORANGE);
+                        setFont(new Font("Dialog",Font.BOLD,10));
+                        setForeground(Color.DARK_GRAY);
                     }
                 }
                 else if (value instanceof PlaylistFileNode){
@@ -1005,7 +1006,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         }
         else if ( e.getSource() == jmiDevRefresh){
             Device device = ((DeviceNode)(paths[0].getLastPathComponent())).getDevice();
-            device.refresh(true);
+            device.refresh(true,true); //ask user if he wants to make deep or fast scan
         }
         else if ( e.getSource() == jmiDevSynchronize){
             Device device = ((DeviceNode)(paths[0].getLastPathComponent())).getDevice();

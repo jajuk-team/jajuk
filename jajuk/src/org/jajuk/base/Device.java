@@ -34,6 +34,7 @@ import org.jajuk.i18n.Messages;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.JajukFileFilter;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
@@ -127,13 +128,21 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
         return getId().hashCode();
     }
     
+    /**
+     * Refresh : scan asynchronously the device to find tracks
+     * @param bAsynchronous : set asynchonous or synchronous mode
+     * @param bAsk: should we ask user if he wants to perform a deep or fast scan? default=deep
+     */
+    public void refresh(boolean bAsynchronous) {
+        refresh(bAsynchronous,false);
+    }
     
     /**
      * Refresh : scan asynchronously the device to find tracks
-     * @param bAsynchronous : set asyncrhonous or synchronous mode
-     * @return
+     * @param bAsynchronous : set asynchonous or synchronous mode
+     * @param bAsk: should we ask user if he wants to perform a deep or fast scan? default=deep
      */
-    public void refresh(boolean bAsynchronous) {
+    public void refresh(boolean bAsynchronous,final boolean bAsk) {
         final Device device = this;
         if ( !device.isMounted()){
             try{
@@ -152,41 +161,45 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
         if ( bAsynchronous){
             Thread t = new Thread(){
                 public void run(){
-                    manualRefresh();
+                    manualRefresh(bAsk);
                 }
             };
             t.setPriority(Thread.MIN_PRIORITY);
             t.start();
         }
         else{
-            manualRefresh();
+            manualRefresh(bAsk);
         }
         
     }
     
     /**
      * Manual refresh
-     *
+     *@param bAsk: should we ask user if a deep or fast scan is required? default=deep
      */
-    private void manualRefresh(){
-        Object[] possibleValues = { Messages.getString("PhysicalTreeView.60"),//fast
-                                    Messages.getString("PhysicalTreeView.61"),//deep
-                                    Messages.getString("Cancel")};//cancel
-        int i = JOptionPane.showOptionDialog(null,
-                                   Messages.getString("PhysicalTreeView.59"),
-                                   Messages.getString("Option"),
-                                   JOptionPane.DEFAULT_OPTION,
-                                   JOptionPane.QUESTION_MESSAGE,
-                                   null,
-                                   possibleValues,
-                                   possibleValues[0]);
-        if (i == 2){ //Cancel
-            return;
+    private void manualRefresh(boolean bAsk){
+        int i = 1; 
+        if (bAsk){
+            Object[] possibleValues = { Messages.getString("PhysicalTreeView.60"),//fast
+                    Messages.getString("PhysicalTreeView.61"),//deep
+                    Messages.getString("Cancel")};//cancel
+            //0:fast, 1:deep, 2: cancel
+            i = JOptionPane.showOptionDialog(null,
+                Messages.getString("PhysicalTreeView.59"),
+                Messages.getString("Option"),
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                possibleValues,
+                possibleValues[0]);
+            if (i == 2){ //Cancel
+                return;
+            }
         }
         //clean old files up
         cleanRemovedFiles();
         //Actual refresh
-        refreshCommand((i==1));
+        refreshCommand((i == 1));
         InformationJPanel.getInstance().setMessage(sFinalMessage,InformationJPanel.INFORMATIVE); //$NON-NLS-1$
         //notify views to refresh
         ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH));
@@ -295,8 +308,8 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
             //Display end of refresh message with stats
             lTime = System.currentTimeMillis()-lTime;
             StringBuffer sbOut = new StringBuffer("[").append(getName()).append(Messages.getString("Device.25")). //$NON-NLS-1$ //$NON-NLS-2$
-                append(((lTime < 1000)?lTime+" ms":lTime/1000+" s")). //$NON-NLS-1$ //$NON-NLS-2$
-                append(" - ").append(iNbNewFiles).append(Messages.getString("Device.27")); //$NON-NLS-1$ //$NON-NLS-2$
+            append(((lTime < 1000)?lTime+" ms":lTime/1000+" s")). //$NON-NLS-1$ //$NON-NLS-2$
+            append(" - ").append(iNbNewFiles).append(Messages.getString("Device.27")); //$NON-NLS-1$ //$NON-NLS-2$
             if (iNbCorruptedFiles > 0){
                 sbOut.append(" - ").append(iNbCorruptedFiles).append(Messages.getString("Device.43")); //$NON-NLS-1$ //$NON-NLS-2$
             }
@@ -364,28 +377,38 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
             iNbCreatedFilesSrc = 0;
             iNbDeletedFiles = 0;
             lVolume = 0;
+            boolean bidi = (getValue(XML_DEVICE_SYNCHRO_MODE).equals(DEVICE_SYNCHRO_MODE_BI));
             //check this device is synchronized
             String sIdSrc = (String)getValue(XML_DEVICE_SYNCHRO_SOURCE); 
             if ( sIdSrc == null || sIdSrc.equals(getId())){  //cannot synchro with itself
                 return;
             }
-            //force a refresh of this device and src device before any sync
-            refreshCommand(false);
             Device dSrc = (Device)DeviceManager.getInstance().getItem(sIdSrc);
-            dSrc.refreshCommand(false);
+             //perform a fast refresh
+            this.refreshCommand(false);
+            //if bidi sync, refresh the other device as well (new file can have been copied to it)
+            if (bidi){
+                dSrc.refreshCommand(false);
+            }
             //start message
             InformationJPanel.getInstance().setMessage(new StringBuffer(Messages.getString("Device.31")). //$NON-NLS-1$
                 append(dSrc.getName()).append(',').append(this.getName()).append("]"). //$NON-NLS-1$
                 toString(),InformationJPanel.INFORMATIVE);
-            //in both cases ( bi or uni-directional ), make an unidirectional sync from source device to this one
+            //in both cases (bi or uni-directional), make an unidirectional sync from source device to this one
             iNbCreatedFilesDest = synchronizeUnidirectonal(dSrc,this);
+            //now the other one if bidi
+            iNbCreatedFilesDest += synchronizeUnidirectonal(this,dSrc);
             //end message
             lTime = System.currentTimeMillis()-lTime;
             String sOut = new StringBuffer(Messages.getString("Device.33")).append(((lTime < 1000)?lTime+" ms":lTime/1000+" s")) //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             .append(" - ").append(iNbCreatedFilesSrc+iNbCreatedFilesDest).append(Messages.getString("Device.35")). //$NON-NLS-1$ //$NON-NLS-2$
             append(lVolume/1048576).append(Messages.getString("Device.36")).toString(); //$NON-NLS-1$
-            //perform a refresh
-            this.refresh(false);
+            //perform a fast refresh
+            this.refreshCommand(false);
+            //if bidi sync, refresh the other device as well (new file can have been copied to it)
+            if (bidi){
+                dSrc.refreshCommand(false);
+            }
             InformationJPanel.getInstance().setMessage(sOut,InformationJPanel.INFORMATIVE);
             Log.debug(sOut);
         }
@@ -402,17 +425,18 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
     
     
     /**
-     * Synchronize a device with another one ( unidirectional )
+     * Synchronize a device with another one (unidirectional)
      *@param device : device to synchronize
      *@return nb of created files
      */
     private int synchronizeUnidirectonal(Device dSrc,Device dest){
+        Iterator it = null;
+        HashSet hsSourceDirs = new HashSet(100);
+        HashSet hsDesynchroPaths = new HashSet(10); //contains paths ( relative to device) of desynchronized dirs
+        HashSet hsDestDirs = new HashSet(100);
+        int iNbCreatedFiles = 0;
         synchronized(DirectoryManager.getInstance().getLock()){
-            int iNbCreatedFiles = 0;
-            //copy new directories from source device
-            HashSet hsSourceDirs = new HashSet(100);
-            HashSet hsDesynchroPaths = new HashSet(10); //contains paths ( relative to device) of desynchronized dirs
-            Iterator it = DirectoryManager.getInstance().getItems().iterator();
+           it = DirectoryManager.getInstance().getItems().iterator();
             while ( it.hasNext()){
                 Directory dir = (Directory)it.next();
                 if ( dir.getDevice().equals(dSrc)){
@@ -424,7 +448,6 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
                     }
                 }
             }
-            HashSet hsDestDirs = new HashSet(100);
             it = DirectoryManager.getInstance().getItems().iterator();
             while ( it.hasNext()){
                 Directory dir = (Directory)it.next();
@@ -437,85 +460,78 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
                     }
                 }
             }
-            it = hsSourceDirs.iterator();
-            Iterator it2;
-            while ( it.hasNext()){
-                //give a chance to exit during sync
-                if (Main.isExiting()){
-                    return iNbCreatedFiles;
+        }
+        it = hsSourceDirs.iterator();
+        Iterator it2;
+        FileFilter filter = new JajukFileFilter(false,new FileFilter[]{
+                    JajukFileFilter.KnownTypeFilter.getInstance(),JajukFileFilter.ImageFilter.getInstance()}); //concidere known exte,sions and image files
+        while ( it.hasNext()){
+            //give a chance to exit during sync
+            if (Main.isExiting()){
+                return iNbCreatedFiles;
+            }
+            boolean bNeedCreate = true;
+            Directory dir = (Directory)it.next();
+            String sPath = dir.getRelativePath();
+            //check the directory on source is not desynchronized. If it is, leave without checking files
+            if ( hsDesynchroPaths.contains(sPath)){
+                continue;
+            }
+            it2 = hsDestDirs.iterator(); 
+            while ( it2.hasNext()){
+                Directory dir2 = (Directory)it2.next();
+                if ( dir2.getRelativePath().equals(sPath)){  //directory already exists on this device
+                    bNeedCreate = false;
+                    break;
                 }
-                boolean bNeedCreate = true;
-                Directory dir = (Directory)it.next();
-                String sPath = dir.getRelativePath();
-                //check the directory on source is not desynchronized. If it is, leave without checking files
-                if ( hsDesynchroPaths.contains(sPath)){
-                    continue;
-                }
-                it2 = hsDestDirs.iterator(); 
-                while ( it2.hasNext()){
-                    Directory dir2 = (Directory)it2.next();
-                    if ( dir2.getRelativePath().equals(sPath)){  //directory already exists on this device
-                        bNeedCreate = false;
-                        break;
+            }
+            //create it if needed
+            File fileNewDir  = new File(new StringBuffer(dest.getUrl()).append(sPath).toString());
+            if ( bNeedCreate ){ 
+                fileNewDir.mkdirs();
+            }
+            //synchronize files 
+            File fileSrc = new File(new StringBuffer(dSrc.getUrl()).append(sPath).toString());
+            File[] fSrcFiles = fileSrc.listFiles(filter);
+            if ( fSrcFiles != null){
+                for (int i=0; i<fSrcFiles.length; i++){
+                    File[] files = fileNewDir.listFiles(filter);
+                    if ( files == null){  //fileNewDir is not a directory or an error occured ( read/write right ? )
+                        continue;
                     }
-                }
-                //create it if needed
-                File fileNewDir  = new File(new StringBuffer(dest.getUrl()).append(sPath).toString());
-                if ( bNeedCreate ){ 
-                    fileNewDir.mkdirs();
-                }
-                //synchronize files 
-                File fileSrc = new File(new StringBuffer(dSrc.getUrl()).append(sPath).toString());
-                FileFilter filter = new FileFilter() {
-                    public boolean accept(File file) {
-                        String sExt = Util.getExtension(file).toLowerCase();
-                        if (TypeManager.getInstance().isExtensionSupported(sExt) || "jpg".equals(sExt) || "gif".equals(sExt)){  //$NON-NLS-1$ //$NON-NLS-2$
-                            return true;
+                    boolean bNeedCopy = true;
+                    for (int j=0;j<files.length;j++){
+                        if ( fSrcFiles[i].getName().equalsIgnoreCase(files[j].getName())){
+                            bNeedCopy = false;
                         }
-                        return false;
                     }
-                };
-                File[] fSrcFiles = fileSrc.listFiles(filter);
-                if ( fSrcFiles != null){
-                    for (int i=0; i<fSrcFiles.length; i++){
-                        File[] files = fileNewDir.listFiles(filter);
-                        if ( files == null){  //fileNewDir is not a directory or an error occured ( read/write right ? )
-                            continue;
+                    if ( bNeedCopy) {
+                        try{
+                            Util.copyToDir(fSrcFiles[i],fileNewDir);
+                            iNbCreatedFiles ++;
+                            lVolume += fSrcFiles[i].length();
+                            InformationJPanel.getInstance().setMessage(new StringBuffer(Messages.getString("Device.41")). //$NON-NLS-1$
+                                append(dSrc.getName()).append(',').append(dest.getName()).append(Messages.getString("Device.42")) //$NON-NLS-1$
+                                .append(fSrcFiles[i].getAbsolutePath()).append("]"). //$NON-NLS-1$
+                                toString(),InformationJPanel.INFORMATIVE);
                         }
-                        boolean bNeedCopy = true;
-                        for (int j=0;j<files.length;j++){
-                            if ( fSrcFiles[i].getName().equalsIgnoreCase(files[j].getName())){
-                                bNeedCopy = false;
-                            }
+                        catch(JajukException je){
+                            Messages.showErrorMessage(je.getCode(),fSrcFiles[i].getAbsolutePath());
+                            Messages.showErrorMessage("027"); //$NON-NLS-1$
+                            Log.error(je);
+                            return iNbCreatedFiles;
                         }
-                        if ( bNeedCopy) {
-                            try{
-                                Util.copyToDir(fSrcFiles[i],fileNewDir);
-                                iNbCreatedFiles ++;
-                                lVolume += fSrcFiles[i].length();
-                                InformationJPanel.getInstance().setMessage(new StringBuffer(Messages.getString("Device.41")). //$NON-NLS-1$
-                                    append(dSrc.getName()).append(',').append(dest.getName()).append(Messages.getString("Device.42")) //$NON-NLS-1$
-                                    .append(fSrcFiles[i].getAbsolutePath()).append("]"). //$NON-NLS-1$
-                                    toString(),InformationJPanel.INFORMATIVE);
-                            }
-                            catch(JajukException je){
-                                Messages.showErrorMessage(je.getCode(),fSrcFiles[i].getAbsolutePath());
-                                Messages.showErrorMessage("027"); //$NON-NLS-1$
-                                Log.error(je);
-                                return iNbCreatedFiles;
-                            }
-                            catch(Exception e){
-                                Messages.showErrorMessage("020",fSrcFiles[i].getAbsolutePath()); //$NON-NLS-1$
-                                Messages.showErrorMessage("027"); //$NON-NLS-1$
-                                Log.error("020",fSrcFiles[i].getAbsolutePath(),e); //$NON-NLS-1$
-                                return iNbCreatedFiles;
-                            }
+                        catch(Exception e){
+                            Messages.showErrorMessage("020",fSrcFiles[i].getAbsolutePath()); //$NON-NLS-1$
+                            Messages.showErrorMessage("027"); //$NON-NLS-1$
+                            Log.error("020",fSrcFiles[i].getAbsolutePath(),e); //$NON-NLS-1$
+                            return iNbCreatedFiles;
                         }
                     }
                 }
             }
-            return iNbCreatedFiles;
         }
+        return iNbCreatedFiles;
     }
     
     

@@ -87,9 +87,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
     JPanel jpHistory;
     JLabel jlHistory;
     JTextField jtfHistory;
-    JLabel jlClearHistory;
     JButton jbClearHistory;
-    JLabel jlResetRatings;
     JButton jbResetRatings;
     JPanel jpStart;
     JLabel jlStart;
@@ -202,7 +200,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
         
         //--History
         jpHistory = new JPanel();
-        double sizeHistory[][] = {{iXSeparator,TableLayout.PREFERRED,iXSeparator,0.2},
+        double sizeHistory[][] = {{iXSeparator,TableLayout.PREFERRED,iXSeparator,TableLayout.PREFERRED},
                 {5*iYSeparator,20,10*iYSeparator,25,10*iYSeparator,25}};
         jpHistory.setLayout(new TableLayout(sizeHistory));
         jlHistory = new JLabel(Messages.getString("ParameterView.0")); //$NON-NLS-1$
@@ -231,21 +229,15 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
             }
         });
         jtfHistory.setToolTipText(Messages.getString("ParameterView.2")); //$NON-NLS-1$
-        jlClearHistory = new JLabel(Messages.getString("ParameterView.3")); //$NON-NLS-1$
-        jlClearHistory.setToolTipText(Messages.getString("ParameterView.4")); //$NON-NLS-1$
-        jbClearHistory = new JButton(Util.getIcon(ICON_CLEAR)); //$NON-NLS-1$
+        jbClearHistory = new JButton(Messages.getString("ParameterView.3"),Util.getIcon(ICON_CLEAR)); //$NON-NLS-1$
         jbClearHistory.setToolTipText(Messages.getString("ParameterView.4")); //$NON-NLS-1$
         jbClearHistory.addActionListener(this);
-        jlResetRatings = new JLabel(Messages.getString("ParameterView.186")); //$NON-NLS-1$
-        jlResetRatings.setToolTipText(Messages.getString("ParameterView.187")); //$NON-NLS-1$
-        jbResetRatings = new JButton(Util.getIcon(ICON_CLEAR)); //$NON-NLS-1$
+        jbResetRatings = new JButton(Messages.getString("ParameterView.186"),Util.getIcon(ICON_CLEAR)); //$NON-NLS-1$
         jbResetRatings.setToolTipText(Messages.getString("ParameterView.187")); //$NON-NLS-1$
         jbResetRatings.addActionListener(this);
         jpHistory.add(jlHistory,"1,1"); //$NON-NLS-1$
         jpHistory.add(jtfHistory,"3,1"); //$NON-NLS-1$
-        jpHistory.add(jlClearHistory,"1,3"); //$NON-NLS-1$
         jpHistory.add(jbClearHistory,"3,3"); //$NON-NLS-1$
-        jpHistory.add(jlResetRatings,"1,5"); //$NON-NLS-1$
         jpHistory.add(jbResetRatings,"3,5"); //$NON-NLS-1$
         
         //--Startup
@@ -796,10 +788,10 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
         //--OK/cancel panel
         jpOKCancel = new JPanel();
         jpOKCancel.setLayout(new FlowLayout());
-        jbOK = new JButton(Messages.getString("ParameterView.85")); //$NON-NLS-1$
+        jbOK = new JButton(Messages.getString("ParameterView.85"),Util.getIcon(ICON_OK)); //$NON-NLS-1$
         jbOK.addActionListener(this);
         jpOKCancel.add(jbOK);
-        jbDefault = new JButton(Messages.getString("ParameterView.86")); //$NON-NLS-1$
+        jbDefault = new JButton(Messages.getString("ParameterView.86"),Util.getIcon(ICON_DEFAULTS_BIG)); //$NON-NLS-1$
         jbDefault.addActionListener(this);
         jpOKCancel.add(jbDefault);
         

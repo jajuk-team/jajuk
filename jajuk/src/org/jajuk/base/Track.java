@@ -279,13 +279,13 @@ public class Track extends PropertyAdapter implements Comparable{
     public int getStarsNumber() {
         long lRate = getRate();
         long lInterval = TrackManager.getInstance().getMaxRate() / 4;    
-        if (lRate < lInterval){
+        if (lRate <= lInterval){
             return 1;
         }
-        else if (lRate < 2*lInterval){
+        else if (lRate <= 2*lInterval){
             return 2;
         }
-        else if (lRate < 3*lInterval){
+        else if (lRate <= 3*lInterval){
             return 3;
         }
         else {

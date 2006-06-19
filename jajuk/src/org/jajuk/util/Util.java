@@ -589,8 +589,7 @@ public class Util implements ITechnicalStrings {
 	 *            destination directory
 	 */
 	public static void copyToDir(File file, File directory) throws Exception {
-		Log
-				.debug("Copying: " + file.getAbsolutePath() + "  to : " + directory.getAbsolutePath()); //$NON-NLS-1$ //$NON-NLS-2$
+		Log.debug("Copying: " + file.getAbsolutePath() + "  to : " + directory.getAbsolutePath()); //$NON-NLS-1$ //$NON-NLS-2$
 		File fileNew = new File(new StringBuffer(directory.getAbsolutePath())
 				.append("/").append(file.getName()).toString()); //$NON-NLS-1$
 		if (!file.exists() || !file.canRead()) {

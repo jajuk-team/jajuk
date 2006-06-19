@@ -82,7 +82,8 @@ public interface ITechnicalStrings {
     
     
 	// Jajuk version
-	public static final String JAJUK_VERSION = "VERSION_REPLACED_BY_ANT";
+	public static final String JAJUK_VERSION_TEST = "VERSION_REPLACED_BY_ANT";
+    public static final String JAJUK_VERSION = JAJUK_VERSION_TEST;
 	public static final String JAJUK_VERSION_DATE = "Build: DATE_REPLACED_BY_ANT";
 	
 	//About 
@@ -178,7 +179,8 @@ public interface ITechnicalStrings {
 	public static final String ICON_DEVICE_REMOTE_MOUNTED_SMALL =  PATH_ICONS + "22x22/remote_mount.png";
 	public static final String ICON_DEVICE_REMOTE_UNMOUNTED_SMALL =  PATH_ICONS + "22x22/remote_unmount.png";
 	public static final String ICON_OK =  PATH_ICONS + "22x22/ok.png";
-	public static final String ICON_KO =  PATH_ICONS + "22x22/ko.png";
+	public static final String ICON_OK_SMALL =  PATH_ICONS + "16x16/ok.png";
+    public static final String ICON_KO =  PATH_ICONS + "22x22/ko.png";
 	public static final String ICON_FILE =  PATH_ICONS + "16x16/track.png";
 	public static final String ICON_DIRECTORY_SYNCHRO =  PATH_ICONS + "16x16/dir_synchro.png";
 	public static final String ICON_DIRECTORY_DESYNCHRO =  PATH_ICONS + "16x16/dir_desynchro.png";
@@ -230,6 +232,8 @@ public interface ITechnicalStrings {
     public static final String ICON_DIGITAL_DJ = PATH_ICONS + "16x16/ddj.png";
     public static final String ICON_LIST = PATH_ICONS + "16x16/contents.png";
     public static final String ICON_PLAY2 = PATH_ICONS + "16x16/play.png";
+    public static final String ICON_DEFAULTS = PATH_ICONS + "16x16/undo.png";
+    public static final String ICON_DEFAULTS_BIG = PATH_ICONS + "22x22/undo.png";
     
     //images
 	public static final String IMAGES_SPLASHSCREEN =  PATH_IMAGES + "jajuk-splashscreen.jpg";
@@ -549,7 +553,7 @@ public interface ITechnicalStrings {
 	//miscelanous
 	public static final String TRUE= "true";
 	public static final String FALSE= "false";
-		
+    	
 	//views identifiers 
 	/** Identifier of the physical tree view */
 	public static final String VIEW_PHYSICAL_TREE	= "VIEW_PHYSICAL_TREE";
@@ -693,7 +697,8 @@ public interface ITechnicalStrings {
     public static final String PATTERN_YEAR = "%year";
     public static final String PATTERN_TRACKNAME = "%track";
     public static final String PATTERN_TRACKORDER = "%n";
-    
+    public static final String DEFAULT_REORG_PATTERN = PATTERN_ARTIST+"/"+PATTERN_YEAR+" - "+PATTERN_ALBUM+"/"+PATTERN_TRACKORDER+" - "+PATTERN_TRACKNAME;
+        
     //Actions
     public static final String ACTION_NEXT = "next";
     public static final String ACTION_PREV = "prev";

@@ -434,7 +434,7 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
             dw.setVisible(true);
         }
         else if (ae.getActionCommand().equals(EVENT_DEVICE_REFRESH)){
-            diSelected.getDevice().refresh(true);
+            diSelected.getDevice().refresh(true,true); //ask deep or fast scan
         }
         else if (ae.getActionCommand().equals(EVENT_DEVICE_SYNCHRO)){
             diSelected.getDevice().synchronize(true);

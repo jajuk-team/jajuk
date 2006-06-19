@@ -21,6 +21,7 @@ package org.jajuk.ui.action;
 
 import java.awt.event.ActionEvent;
 
+import org.jajuk.Main;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.FirstTimeWizard;
 import org.jajuk.util.Util;
@@ -44,6 +45,7 @@ public class WizardAction extends ActionBase {
     public void perform(ActionEvent evt) {
         FirstTimeWizard fsw = new FirstTimeWizard();
         fsw.pack();
+        fsw.setLocationRelativeTo(Main.getWindow());
         fsw.setVisible(true);
     }
 }

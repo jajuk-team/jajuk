@@ -56,7 +56,7 @@ import javax.swing.UIManager;
 
 /**
  * Helper class used to create, store and lookup actions.
- *
+ *<p>Singleton</p>
  * @author Bart Cremers
  * @version 12-dec-2005
  */
@@ -66,9 +66,23 @@ public final class ActionManager {
         new EnumMap<JajukAction, ActionBase>(JajukAction.class);
     private static final List<KeyStroke> strokeList = new ArrayList<KeyStroke>();
 
-    static {
-
-        // CommandJPanel: Mode Panel
+    /**Self instance*/
+    public static ActionManager self = null;
+    
+    /**
+     * 
+     * @return singleton
+     */
+    public static ActionManager getInstance(){
+    	if (self == null){
+    		self = new ActionManager();
+    	}
+    	return self;
+    }
+    
+    private ActionManager() {
+        // Private constructor to disallow instantiation.
+    	// CommandJPanel: Mode Panel
         installAction(REPEAT_MODE_STATUS_CHANGE, new RepeatModeAction(), false);
         installAction(SHUFFLE_MODE_STATUS_CHANGED, new ShuffleModeAction(), false);
         installAction(CONTINUE_MODE_STATUS_CHANGED, new ContinueModeAction(), false);
@@ -105,10 +119,7 @@ public final class ActionManager {
         installAction(WIZARD, new WizardAction(), false);
         installAction(QUALITY, new QualityAction(), false);
         installAction(TIP_OF_THE_DAY, new TipOfTheDayAction(), false);
-    }
 
-    private ActionManager() {
-        // Private constructor to disallow instantiation.
     }
 
     /**

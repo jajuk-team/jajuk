@@ -111,7 +111,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
          */
         public void initUI(){
             double[][] size = new double[][]
-                                           {{20,TableLayout.PREFERRED,20},
+                    {{20,TableLayout.PREFERRED,20},
                     {20,TableLayout.PREFERRED,20,TableLayout.PREFERRED,20,TableLayout.PREFERRED,20}};
             setLayout(new TableLayout(size));
             bgTypes = new ButtonGroup();
@@ -201,9 +201,9 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
             }
             //main panel
             double[][] main = new double[][]
-                                           {{0.99},{20,TableLayout.PREFERRED}};
+                                           {{0.99},{20,0.99}};
             setLayout(new TableLayout(main));
-            add(jpDjs,"0,1");
+            add(new JScrollPane(jpDjs),"0,1");
             setProblem(Messages.getString("DigitalDJWizard.40"));
             //select first ambience found
             JRadioButton jrb = (JRadioButton)widgets[0][0];
@@ -272,9 +272,9 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
             }
             //main panel
             double[][] main = new double[][]
-                                           {{0.99},{20,TableLayout.PREFERRED}};
+                                           {{0.99},{20,0.99}};
             setLayout(new TableLayout(main));
-            add(jpDjs,"0,1");
+            add(new JScrollPane(jpDjs),"0,1");
             //If more than one DJ, select first
             if (djs.size() > 0){
                 JRadioButton jrb = (JRadioButton)widgets[0][0];
@@ -1137,6 +1137,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
          */
         public void initUI(){
             ambiences = new ArrayList(AmbienceManager.getInstance().getAmbiences());
+            Collections.sort(ambiences);
             widgets = new JComponent[ambiences.size()][1];
             //We need at least one ambience
             if (AmbienceManager.getInstance().getAmbiences().size() == 0){
@@ -1152,9 +1153,9 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
                 dVert[i] = 20;
             }
             double[][] size = new double[][]
-                                           {{0.99},dVert};
+                      {{TableLayout.PREFERRED},dVert};
             ButtonGroup bg = new ButtonGroup();
-            JPanel jpAmbiences = new JPanel(new TableLayout(size));
+            JPanel jpAmbiences = new JPanel();
             TableLayout layout = new TableLayout(size);
             layout.setVGap(10);
             layout.setHGap(10);
@@ -1170,9 +1171,9 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
             }
             //main panel
             double[][] main = new double[][]
-                                           {{0.99},{20,TableLayout.PREFERRED}};
+                                           {{0.99},{20,0.99}};
             setLayout(new TableLayout(main));
-            add(jpAmbiences,"0,1");
+            add(new JScrollPane(jpAmbiences),"0,1");
             //DJ change, set right ambience
             if (ActionSelectionPanel.ACTION_CHANGE.equals(data.get(KEY_ACTION))){
                 DigitalDJ dj = (DigitalDJ)data.get(KEY_CHANGE);
