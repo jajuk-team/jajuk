@@ -4,14 +4,19 @@
 
 
 
+
+  
   
   
   <meta http-equiv="CONTENT-TYPE" content="text/html; charset=utf-8">
 
 
+
   
 
 
+  
+  
   
   
   
@@ -20,24 +25,32 @@
 
 
 
+
+  
   
   
   <meta name="CREATED" content="20050308;19375000">
 
 
 
+
+  
   
   
   <meta name="CHANGEDBY" content="bflorat">
 
 
 
+
+  
   
   
   <meta name="CHANGED" content="20051009;17413500">
 
 
 
+
+  
   
   
   <style>
@@ -54,7 +67,9 @@ H2 { color: #000000 }
 
 
 
+
 <h1>The Physical/Logical Table view</h1>
+
 
 
 
@@ -71,7 +86,9 @@ several files but will only be displayed once in this view.</p>
 
 
 
+
 <p><u>Notes</u>: </p>
+
 
 
 
@@ -79,7 +96,9 @@ several files but will only be displayed once in this view.</p>
 
 
 
+
   <li>
+    
     
     
     <p style="margin-bottom: 0cm;">Rate is related to the
@@ -88,11 +107,14 @@ is added in queue and +2 when it is played. </p>
 
 
 
+
   </li>
 
 
 
+
   <li>
+    
     
     
     <p>As usual, you can limit to files from mounted devices
@@ -101,7 +123,9 @@ tab. </p>
 
 
 
+
   </li>
+
 
 
 
@@ -109,7 +133,9 @@ tab. </p>
 
 
 
+
 <h2>Drag and Drop</h2>
+
 
 
 
@@ -120,7 +146,9 @@ Playlist Editor.</p>
 
 
 
+
 <h2>Contextual menu</h2>
+
 
 
 
@@ -128,11 +156,14 @@ Playlist Editor.</p>
 
 
 
+
 <ul>
 
 
 
+
   <li>
+    
     
     
     <p style="margin-bottom: 0cm;">Play: Stop current
@@ -140,11 +171,14 @@ track/file and play it </p>
 
 
 
+
   </li>
 
 
 
+
   <li>
+    
     
     
     <p style="margin-bottom: 0cm;">Push: Don't stop
@@ -153,11 +187,14 @@ playlist) </p>
 
 
 
+
   </li>
 
 
 
+
   <li>
+    
     
     
     <p style="margin-bottom: 0cm;">Play shuffle: Stop
@@ -167,11 +204,14 @@ command view) </p>
 
 
 
+
   </li>
 
 
 
+
   <li>
+    
     
     
     <p style="margin-bottom: 0cm;">Play repeat: Stop
@@ -181,11 +221,14 @@ command view) </p>
 
 
 
+
   </li>
 
 
 
+
   <li>
+    
     
     
     <p style="margin-bottom: 0cm;">Play directory (only
@@ -194,11 +237,14 @@ selection directory </p>
 
 
 
+
   </li>
 
 
 
+
   <li>
+    
     
     
     <p style="margin-bottom: 0cm;">Play album (only
@@ -207,16 +253,20 @@ album </p>
 
 
 
+
   </li>
+
 
 
 
   <li>
     
     
-    <p style="margin-bottom: 0cm;">Play author (only
+    
+    <p style="margin-bottom: 0cm;">Play artist (only
 logical table): stop current track and play all tracks of the selection
-author </p>
+artist </p>
+
 
 
 
@@ -224,19 +274,32 @@ author </p>
 
 
 
+
   <li>
+    
     
     
     <p style="margin-bottom: 0cm;">Properties : Show item
-properties. </p>
-
-
-
+properties.<br>
+    </p>
   </li>
-
-
-
 </ul>
+<h2>Editing table items</h2>
+Table view owns two modes:<br>
+<ul>
+  <li>
+    <p>Read only (default): double clicking on a row launches the track and it is not allowed to change values.</p>
+  </li>
+  <li>
+    <p>Read/write: double clicking on an editable value allows to change it. To launch a track, use the first column icon (play).</p>
+  </li>
+</ul>
+Use this button&nbsp;<img style="border: 0px solid ; width: 16px; height: 16px;" alt="" src="../icons/16x16/edit.png" name="Image1"> located in the filtering panel to switch from one mode to the other.<br>
+
+
+
+
+
 
 
 
@@ -244,12 +307,14 @@ properties. </p>
 
 
 
+
 <p>To filter tracks/files following some criteria, select the
-criteria using the combo box (track name, author and so on), then
+criteria using the combo box (track name, artist and so on), then
 type the filter value in the text field and type [enter] (note that
 filtering occurs also automatically when typing stops). If filter
 value is void, all tracks/files will be displayed. "Any"
 criteria means that search is done on all available criteria.</p>
+
 
 
 
@@ -259,7 +324,9 @@ on. </p>
 
 
 
+
 <p>o Filter value text field: type value you want to filter on. </p>
+
 
 
 
@@ -268,18 +335,23 @@ the filter (you can also type [Enter])</p>
 
 
 
+
 <p><img style="border: 0px solid ; width: 16px; height: 16px;" alt="" src="../icons/16x16/clear.png" name="Image2">&nbsp;Clear
 filter and show all tracks/files</p>
+
 
 
 
 <p><img style="border: 0px solid ; width: 16px; height: 16px;" alt="" src="../icons/16x16/complex_search.png" name="Image3">&nbsp;Use
 complex filters (not yet implemented)<br>
 
+
 </p>
+
 
 <h2><a name="show_col"></a>Selecting columns
 to show</h2>
+
 
 
 
@@ -289,7 +361,9 @@ button:<br>
 
 
 
+
 <font color="#000000"><font color="#000000"><img style="border: 1px solid ; width: 360px; height: 252px;" alt="" src="../images/cols01.jpg" name="Image1"></font></font><br>
+
 
 
 
@@ -298,7 +372,9 @@ button:<br>
 
 
 
+
 <br>
+
 
 
 
@@ -307,7 +383,9 @@ by checking columns:<br>
 
 
 
+
 <font color="#000000"><font color="#000000"><img style="border: 1px solid ; width: 344px; height: 356px;" alt="" src="../images/cols02.jpg" name="Image1"></font></font><br>
+
 
 
 
@@ -316,7 +394,9 @@ by checking columns:<br>
 
 
 
+
 <p>Others features:</p>
+
 
 
 
@@ -324,7 +404,9 @@ by checking columns:<br>
 
 
 
+
   <li>
+    
     
     
     <p><i>Horizontal Scroll</i>: resize columns a way
@@ -332,11 +414,14 @@ that they are all fully displayed.</p>
 
 
 
+
   </li>
 
 
 
+
   <li>
+    
     
     
     <p><i>Pack All Columns</i>: optimizes columns
@@ -344,11 +429,14 @@ size to remove blanks. </p>
 
 
 
+
   </li>
 
 
 
+
 </ul>
+
 
 
 

@@ -10,8 +10,10 @@
 		<tocitem text="Jouer de la musique" target="pm"/>
    		<tocitem text="Utiliser les playlistes" target="up"/>
   		<tocitem text="Modifier les tags et attributs" target="editing"/>
-		<tocitem text="Utiliser les attributs personnels" target="ucp"/>
+		<tocitem text="Utiliser les DJs" target="dj"/>
 	 	<tocitem text="Utiliser le tray" target="tray"/>
+	 	<tocitem text="Reorganisation des fichiers" target="reorg"/>
+	 	<tocitem text="Utiliser les attributs personnels" target="ucp"/>
 	 	<tocitem text="Les raccourcis clavier" target="keys"/>
 	</tocitem>
 	<tocitem text="Vues"  expand="true">
@@ -22,12 +24,13 @@
 		<tocitem text="La vue Table Physique/Logique" target="view_table"/>
 		<tocitem text="La vue Référentiel de playlistes" target="view_playlist_repository"/>
 		<tocitem text="La vue Editeur de playlistes" target="view_playlist_editor"/>
-		<tocitem text="La vue Jaquettes" target="view_cover"/>
+		<tocitem text="La vue Pochettes" target="view_cover"/>
 		<tocitem text="La vue Catalogue" target="view_catalog"/>
 		<tocitem text="La vue Animation" target="view_animation"/>
 		<tocitem text="La vue Paramétrage" target="view_parameter"/>
 		<tocitem text="La vue scanner de CDs" target="view_cd_scanner"/>
 		<tocitem text="La vue Supports" target="view_devices"/>
+		<tocitem text="La vue Wikipedia" target="view_wiki"/>
 		<tocitem text="La vue statistiques" target="view_stats"/>
 		<tocitem text="La vue Aide" target="view_help"/>
 		<tocitem text="La vue A Propos" target="view_about"/>

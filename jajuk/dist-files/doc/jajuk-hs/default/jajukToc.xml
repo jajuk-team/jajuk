@@ -10,8 +10,10 @@
 			<tocitem text="Playing music" target="pm"/>
 			<tocitem text="Using playlists" target="up"/>
 			<tocitem text="Editing tags and properties" target="editing"/>
-			<tocitem text="Using custom properties" target="ucp"/>
+			<tocitem text="Using digital DJs" target="dj"/>
 			<tocitem text="Using the tray" target="tray"/>
+			<tocitem text="Reorganize files" target="reorg"/>
+			<tocitem text="Using custom properties" target="ucp"/>
 			<tocitem text="Keyboard controls" target="keys"/>
 		</tocitem>
 		<tocitem text="Views"  expand="true">
@@ -28,6 +30,7 @@
 			<tocitem text="The Parameter view" target="view_parameter"/>
 			<tocitem text="The CD Scanner view" target="view_cd_scanner"/>
 			<tocitem text="The Device View" target="view_devices"/>
+			<tocitem text="The Wikipedia view" target="view_wiki"/>
 			<tocitem text="The Statistics view" target="view_stats"/>
 			<tocitem text="The Help view" target="view_help"/>
 			<tocitem text="The About view" target="view_about"/>
