@@ -146,7 +146,7 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,Obser
         jpbCurrent.setStringPainted(true);
         jlCurrent = new JLabel();
         jpCurrent.add(jlCurrent);
-        jpCurrent.add(Box.createHorizontalStrut(3));
+        jpCurrent.add(Box.createHorizontalStrut(6));
         jpCurrent.add(jpbCurrent);
         
         //add widgets
