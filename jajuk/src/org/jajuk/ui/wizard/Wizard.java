@@ -27,6 +27,7 @@ import java.awt.Frame;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Locale;
 
@@ -65,6 +66,8 @@ public abstract class Wizard extends Object implements ActionListener{
     Frame parentWindow;
     /**Locale*/
     Locale locale;
+    /**Screens instance repository*/
+    HashMap<Class,Screen> hmClassScreens = new HashMap(10);
     
     /**
      * Wizard constructor
@@ -167,7 +170,19 @@ public abstract class Wizard extends Object implements ActionListener{
     private void setScreen(Class screenClass) {
         Screen screen = null;
         try {
-            screen = (Screen)screenClass.newInstance();
+        	//If the class is an history cleaner, we clean up all previous screens
+        	if (Arrays.asList(screenClass.getInterfaces()).contains(WizardCleaner.class)){
+        		clearScreens();
+        		screen = (Screen)screenClass.newInstance();
+        	}
+        	//otherwise, try to get a screen from buffer or create it if needed
+        	else{
+        		if (!hmClassScreens.containsKey(screenClass)){
+        			screen = (Screen)screenClass.newInstance();
+        			hmClassScreens.put(screenClass,screen);
+        		}
+        		screen = (Screen)hmClassScreens.get(screenClass);
+        	}
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -230,6 +245,14 @@ public abstract class Wizard extends Object implements ActionListener{
      * @return previous screen class
      */
     abstract public Class getPreviousScreen(Class screen);
+    
+    
+    /**
+     * Clear screens history
+     */
+    public void clearScreens(){
+    	hmClassScreens.clear();
+    }
     
     /**
      * 

@@ -42,8 +42,7 @@ public abstract class Screen extends JPanel {
     public HashMap data;
     /**Problem*/
     private String sProblem;
-   
-    
+        
     /**
      * Construct a screen
      * @param sName Screen name
