@@ -516,7 +516,7 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 	 */
 	public void commit() throws JajukException{
 		BufferedWriter bw = null;
-		if ( isModified()){
+		if (isModified()){
 			try {
 				bw = new BufferedWriter(new FileWriter(getFio()));
 				bw.write(PLAYLIST_NOTE); 
@@ -524,7 +524,12 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
                 Iterator it = getFiles().iterator();
 				while ( it.hasNext()){
 					File bfile = (File)it.next();
-					bw.write(bfile.getAbsolutePath());
+					if (bfile.getDirectory().equals(getDirectory())){
+					    bw.write(bfile.getName());
+                    }
+                    else{
+                        bw.write(bfile.getAbsolutePath());
+                    }
                     bw.newLine();
 				}
 			}
