@@ -130,7 +130,7 @@ public class Player implements ITechnicalStrings{
             Properties pDetails = new Properties();
             pDetails.put(DETAIL_CURRENT_FILE,file);
             ObservationManager.notify(new Event(EVENT_PLAY_ERROR,pDetails)); //notify the error 
-            Log.error("007",fCurrent.getAbsolutePath(), t); //$NON-NLS-1$
+            Log.error("007","{{"+fCurrent.getAbsolutePath()+"}}", t); //$NON-NLS-1$
             //process playing error asynchonously to avoid loop problems when capscading errors
             new Thread(){
                 public void run(){

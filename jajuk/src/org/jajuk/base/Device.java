@@ -149,7 +149,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
                 device.mount();  
             }
             catch(Exception e){
-                Log.error("011",getName(),e);	//mount failed //$NON-NLS-1$
+                Log.error("011","{{"+getName()+"}}",e);	//mount failed //$NON-NLS-1$
                 Messages.showErrorMessage("011",getName()); //$NON-NLS-1$
                 return;
             }
@@ -345,7 +345,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
                 device.mount();  
             }
             catch(Exception e){
-                Log.error("011",getName(),e);	//mount failed //$NON-NLS-1$
+                Log.error("011","{{"+getName()+"}}",e);	//mount failed //$NON-NLS-1$
                 Messages.showErrorMessage("011",getName()); //$NON-NLS-1$
                 return;
             }
@@ -524,7 +524,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
                         catch(Exception e){
                             Messages.showErrorMessage("020",fSrcFiles[i].getAbsolutePath()); //$NON-NLS-1$
                             Messages.showErrorMessage("027"); //$NON-NLS-1$
-                            Log.error("020",fSrcFiles[i].getAbsolutePath(),e); //$NON-NLS-1$
+                            Log.error("020","{{"+fSrcFiles[i].getAbsolutePath()+"}}",e); //$NON-NLS-1$
                             return iNbCreatedFiles;
                         }
                     }

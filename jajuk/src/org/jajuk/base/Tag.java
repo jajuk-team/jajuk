@@ -88,7 +88,7 @@ public class Tag implements ITechnicalStrings{
                 sTrackName = Util.formatTag(sTemp);  //remove the extension
             }
         } catch (Exception e) {
-            Log.info("Wrong track name:"+fio.getName()); //$NON-NLS-1$
+            Log.info("Wrong track name:{{"+fio.getName()+"}}"); //$NON-NLS-1$
         }
         return sTrackName;
     }
@@ -111,7 +111,7 @@ public class Tag implements ITechnicalStrings{
                 sAlbumlName = sTemp;
             }
         } catch (Exception e) {
-            Log.info("Wrong album name:"+fio.getName()); //$NON-NLS-1$
+            Log.info("Wrong album name:{{"+fio.getName()+"}}"); //$NON-NLS-1$
         }
         if (sAlbumlName == null){  //album tag cannot be found
             if (Boolean.valueOf(ConfigurationManager.getProperty(CONF_TAGS_USE_PARENT_DIR)).booleanValue()){
@@ -144,7 +144,7 @@ public class Tag implements ITechnicalStrings{
                 sAuthorName = Util.formatTag(sTemp);
             }
         } catch (Exception e) {
-            Log.info("Wrong author name:"+fio.getName()); //$NON-NLS-1$
+            Log.info("Wrong author name:{{"+fio.getName()+"}}"); //$NON-NLS-1$
         }
         return sAuthorName;
 
@@ -248,7 +248,7 @@ public class Tag implements ITechnicalStrings{
                 sComment = Util.formatTag(sTemp);
             }
         } catch (Exception e) {
-            Log.info("Wrong comment:"+fio.getName()); //$NON-NLS-1$
+            Log.info("Wrong comment:{{"+fio.getName()+"}}"); //$NON-NLS-1$
         }
         return sComment;    
     }

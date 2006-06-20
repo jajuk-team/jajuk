@@ -271,7 +271,7 @@ public class Directory extends PropertyAdapter implements Comparable{
                 }
                 //Check file name is correct (usefull to fix name encoding issues)
                 if (!new File(files[i].getAbsolutePath()).exists()){
-                    Log.warn("Cannot read file name (please rename it): "+files[i].getAbsolutePath()); //$NON-NLS-1$
+                    Log.warn("Cannot read file name (please rename it): {{"+files[i].getAbsolutePath()+"}}"); //$NON-NLS-1$
                     continue;
                 }
                 boolean bIsMusic = (Boolean)TypeManager.getInstance().getTypeByExtension(Util.getExtension(files[i])).getValue(XML_TYPE_IS_MUSIC);
@@ -288,7 +288,7 @@ public class Directory extends PropertyAdapter implements Comparable{
                     tag = new Tag(files[i],true); //ignore tag error to make sure to get a tag object in all cases
                     if (tag.isCorrupted()){
                         device.iNbCorruptedFiles ++; //stats
-                        Log.error("103",files[i].getAbsolutePath(),null); //$NON-NLS-1$
+                        Log.error("103","{{"+files[i].getAbsolutePath()+"}}",null); //$NON-NLS-1$
                     }
                     //if an error occurs, just notice it but keep the track
                     String sTrackName = tag.getTrackName();
@@ -339,7 +339,7 @@ public class Directory extends PropertyAdapter implements Comparable{
                 }
             }
             catch(Exception e){ 
-                Log.error("103",files.length>0?files[i].toString():"",e); //$NON-NLS-1$ //$NON-NLS-2$
+                Log.error("103",files.length>0?"{{"+files[i].toString()+"}}":"",e); //$NON-NLS-1$ //$NON-NLS-2$
             }
         }
     }

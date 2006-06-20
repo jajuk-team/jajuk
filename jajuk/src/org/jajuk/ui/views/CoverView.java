@@ -325,7 +325,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                                         if (e instanceof org.apache.commons.httpclient.ConnectTimeoutException){
                                             iErrorCounter ++;
                                             if (iErrorCounter == STOP_TO_SEARCH){
-                                                Log.warn("Too much connection fails, stop to search for covers online"); //$NON-NLS-1$
+                                                Log.warn("Too many connection fails, stop to search for covers online"); //$NON-NLS-1$
                                                 InformationJPanel.getInstance().setMessage(Messages.getString("Error.030"),InformationJPanel.WARNING); //$NON-NLS-1$
                                             }
                                         }
@@ -342,7 +342,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                                 Log.warn(e.getMessage()); //can occur in case of timeout or error during covers list download
                                 iErrorCounter ++;
                                 if (iErrorCounter == STOP_TO_SEARCH){
-                                    Log.warn("Too much connection fails, stop to search for covers online"); //$NON-NLS-1$
+                                    Log.warn("Too many connection fails, stop to search for covers online"); //$NON-NLS-1$
                                     InformationJPanel.getInstance().setMessage(Messages.getString("Error.030"),InformationJPanel.WARNING); //$NON-NLS-1$
                                 }
                             }

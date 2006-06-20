@@ -47,6 +47,7 @@ import org.jajuk.dj.TransitionDigitalDJ;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.wizard.Screen;
 import org.jajuk.ui.wizard.Wizard;
+import org.jajuk.ui.wizard.WizardCleaner;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
@@ -321,7 +322,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
      * @author     Bertrand Florat
      * @created    4 march 2006
      */
-    public static class ActionSelectionPanel extends Screen implements ActionListener{
+    public static class ActionSelectionPanel extends Screen implements WizardCleaner,ActionListener{
         /**NEW code*/
         public static final String ACTION_CREATION = "0";
         /**CHANGE code*/

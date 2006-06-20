@@ -137,7 +137,7 @@ public class DigitalDJManager implements ITechnicalStrings,Observer{
     		bw.close();
     	}
     	catch(Exception e){
-    		Log.error("145",(dj!=null)?dj.getName():null,e);
+    		Log.error("145",(dj!=null)?"{{"+dj.getName()+"}}":null,e);
     	}
     }
     
@@ -211,7 +211,7 @@ public class DigitalDJManager implements ITechnicalStrings,Observer{
     				djs.put(dj.getID(),dj);
     			}
     			catch(Exception e){
-    				Log.error("144",files[i].getAbsolutePath(),e);
+    				Log.error("144","{{"+files[i].getAbsolutePath()+"}}",e);
     			}
     		}
     	}

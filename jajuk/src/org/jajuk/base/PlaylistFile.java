@@ -598,7 +598,7 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 		    }
 		}
 		catch(Exception e){
-		    Log.error("017",getName(),e); //$NON-NLS-1$
+		    Log.error("017","{{"+getName()+"}}",e); //$NON-NLS-1$
 		    throw new JajukException("017",getFio().getAbsolutePath(),e); //$NON-NLS-1$
 		}
 		finally{

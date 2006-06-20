@@ -404,7 +404,7 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 		                    play(plfiSelected);
 		                }
 		                catch(JajukException je){
-		                    Log.error(je.getCode(),plfiSelected.getName(),null); //$NON-NLS-1$
+		                    Log.error(je.getCode(),"{{"+plfiSelected.getName()+"}}",null); //$NON-NLS-1$
 		                    Messages.showErrorMessage(je.getCode(),plfiSelected.getName()); //$NON-NLS-1$
                             selectQueue();
                             return;
