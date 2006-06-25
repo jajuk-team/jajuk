@@ -330,7 +330,10 @@ public class Main implements ITechnicalStrings {
             //Launch startup track if any
             launchInitialTrack();        
             
-            //show window if set in the systray conf
+            //Start up action manager. TO be done before lauching ui and tray
+            ActionManager.getInstance();
+                    
+            //show window if set in the systray conf. 
             if ( ConfigurationManager.getBoolean(CONF_SHOW_AT_STARTUP) ){
                 //Display progress
                 sc.setProgress(80,Messages.getString("SplashScreen.3")); //$NON-NLS-1$
@@ -779,10 +782,7 @@ public class Main implements ITechnicalStrings {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    //Start up action manager
-                    ActionManager.getInstance();
-                    
-                	//  Set look and feel, needs local to be set for error messages
+                    //  Set look and feel, needs local to be set for error messages
                     LNFManager.setLookAndFeel(ConfigurationManager.getProperty(CONF_OPTIONS_LNF));
                     
                     //starts ui

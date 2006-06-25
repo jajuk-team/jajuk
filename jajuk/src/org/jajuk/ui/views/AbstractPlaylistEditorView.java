@@ -130,9 +130,6 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
     /**Last selected directory using add button*/
     java.io.File fileLast;
     
-    /**playing track row*/
-    int playingRow = 0;
-    
     /**Model refreshing flag*/
     boolean bReloading = false;
     
@@ -259,16 +256,6 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
                 Font font = null;
                 StackItem item = getItem(iRow);
                 StackItem itemCurrent = FIFO.getInstance().getCurrentItem();
-                if (itemCurrent != null  && itemCurrent.equals(item)){ //if it is the currently played track, change color
-                    if (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE){ //for queue playlist, only highlight real current track
-                        if ( FIFO.getInstance().getIndex() == iRow){
-                            playingRow = iRow;
-                        }
-                    }
-                    else{ //for others, we can't guess whish one to highlight if several times the same EVO
-                        playingRow = iRow;
-                    }
-                }
                 if( item.isPlanned() ){ //it is a planned file
                     bPlanned = true;
                     font = fontPlanned;
@@ -404,7 +391,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
         jpControl.add(jbClear,"13,0"); //$NON-NLS-1$
         jpControl.add(Util.getCentredPanel(jlTitle),"15,0"); //$NON-NLS-1$
         model = new PlayListEditorTableModel();
-        jtable = new JajukTable(model);
+        jtable = new JajukTable(model,CONF_PLAYLIST_EDITOR_COLUMNS);
         jtable.setSelectionMode(DefaultListSelectionModel.MULTIPLE_INTERVAL_SELECTION); //multi-row selection
         jtable.setSortable(false);
         jtable.setDragEnabled(true);
@@ -421,9 +408,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
                 StackItem itemCurrent = FIFO.getInstance().getCurrentItem();
                 if (itemCurrent != null  && itemCurrent.equals(item)){ //if it is the currently played track, change color
                     if (plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE){ //for queue playlist, only highlight real current track
-                        if ( FIFO.getInstance().getIndex() == playingRow){
-                            return true;
-                        }
+                        return (adapter.row == FIFO.getInstance().getIndex());
                     }
                     else{ //for others, we can't guess whish one to highlight if several times the same EVO
                         return true;
@@ -435,7 +420,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
             
         });
         jtable.addMouseListener(this);
-        jtable.keepColumns(jtable.getColumnsConf(CONF_PLAYLIST_EDITOR_COLUMNS));
+        jtable.showColumns(jtable.getColumnsConf());
         jtable.getColumnModel().addColumnModelListener(this); //add this listener after hiding columns
         //selection listener to hide some buttons when selecting planned tracks
         ListSelectionModel lsm = jtable.getSelectionModel();
@@ -483,7 +468,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
     
     private void columnChange(){
         if (!bReloading){ //ignore this column change when reloading model
-            ConfigurationManager.setProperty(CONF_PLAYLIST_EDITOR_COLUMNS,jtable.createColumnsConf());
+            jtable.createColumnsConf();
         }
     }
     
@@ -514,6 +499,9 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
         col.setCellRenderer(new JajukCellRender());
         col.setMinWidth(RATE_COLUMN_SIZE);
         col.setMaxWidth(RATE_COLUMN_SIZE);
+        col = (TableColumn)jtable.getColumnModel().getColumn(0); //icon
+        col.setMinWidth(PLAY_COLUMN_SIZE);
+        col.setMaxWidth(PLAY_COLUMN_SIZE);
     }
     
     
@@ -592,23 +580,20 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
                         model = new PlayListEditorTableModel();//create a new model
                         jtable.setModel(model);
                         setRenderers();
-                        String sTableCols = ConfigurationManager.getProperty(CONF_PLAYLIST_EDITOR_COLUMNS);
-                        ConfigurationManager.setProperty(CONF_PLAYLIST_EDITOR_COLUMNS,sTableCols+","+(model.getIdentifier(model.getColumnCount()-1)));     //$NON-NLS-1$
-                        jtable.keepColumns(jtable.getColumnsConf(CONF_PLAYLIST_EDITOR_COLUMNS));
+                        jtable.addColumnIntoConf((String)properties.get(DETAIL_CONTENT));
+                        jtable.showColumns(jtable.getColumnsConf());
                     }
                     else if (EVENT_CUSTOM_PROPERTIES_REMOVE.equals(subject)){
                         Properties properties = event.getDetails();
                         if (properties == null){ //can be null at view populate
                             return;
                         }
-                        ArrayList al = jtable.getColumnsConf(CONF_PLAYLIST_EDITOR_COLUMNS);
-                        al.remove(properties.get(DETAIL_CONTENT));
                         model = new PlayListEditorTableModel();//create a new model
                         jtable.setModel(model);
                         setRenderers();
                         //remove item from configuration cols
-                        ConfigurationManager.setProperty(CONF_PLAYLIST_EDITOR_COLUMNS,jtable.getColumnsConf(al));    
-                        jtable.keepColumns(jtable.getColumnsConf(CONF_PLAYLIST_EDITOR_COLUMNS));
+                        jtable.removeColumnFromConf((String)properties.get(DETAIL_CONTENT));
+                        jtable.showColumns(jtable.getColumnsConf());
                     }
                 }
                 catch(Exception e){

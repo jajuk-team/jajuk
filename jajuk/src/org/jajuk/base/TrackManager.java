@@ -208,6 +208,11 @@ public class TrackManager extends ItemManager implements Observer{
                 tag.setAuthorName(sNewAuthor);
                 tag.commit();
             }
+            //if current track author name is changed, notify it
+            if (FIFO.getInstance().getCurrentFile() != null 
+                    && FIFO.getInstance().getCurrentFile().getTrack().getAuthor().equals(track.getAuthor())){
+                ObservationManager.notify(new Event(EVENT_AUTHOR_CHANGED));
+            }
             //register the new item
             Author newAuthor = AuthorManager.getInstance().registerAuthor(sNewAuthor);
             Track newTrack = registerTrack(track.getName(),track.getAlbum(),track.getStyle(),

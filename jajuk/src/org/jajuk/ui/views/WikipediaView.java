@@ -152,6 +152,7 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings,Obse
         //subscriptions to events
         ObservationManager.register(EVENT_FILE_LAUNCHED,this);
         ObservationManager.register(EVENT_ZERO,this);
+        ObservationManager.register(EVENT_AUTHOR_CHANGED,this);
     
         //force event
         update(new Event(EVENT_FILE_LAUNCHED,ObservationManager.getDetailsLastOccurence(EVENT_FILE_LAUNCHED)));        
@@ -163,7 +164,7 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings,Obse
 	 */
 	public void update(Event event) {
 		String subject = event.getSubject();
-		if (subject.equals(EVENT_FILE_LAUNCHED)){
+		if (subject.equals(EVENT_FILE_LAUNCHED) && FIFO.getInstance().getCurrentFile() != null){
             Properties details = ObservationManager.getDetailsLastOccurence(EVENT_FILE_LAUNCHED);
             if (details != null){ //a file has been laucnh before view creation
                 this.search = FIFO.getInstance().getCurrentFile().getTrack().getAuthor().getName2();
@@ -174,6 +175,10 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings,Obse
             this.search = ""; //reset //$NON-NLS-1$
             launchSearch(search);
 		}
+        //User changed author name, so we have to reload new author wikipedia page
+        else if (subject.equals(EVENT_AUTHOR_CHANGED)){
+            update( new Event(EVENT_FILE_LAUNCHED));
+        }
 	}
    
    

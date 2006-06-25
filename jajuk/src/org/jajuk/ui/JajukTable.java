@@ -50,13 +50,17 @@ import org.jdesktop.swingx.table.TableColumnExt;
  */
 public class JajukTable extends JXTable implements ITechnicalStrings{
 	
+    private String sConf;
+    
 	/**
 	 * Constructor
 	 * @param model : model to use
 	 * @param bSortable : is this table sortable
-	 * */
-	public JajukTable(TableModel model,TableColumnModel colModel, boolean bSortable) {
+	 * @sConf: configuration variable used to store columns conf
+    	 * */
+	public JajukTable(TableModel model,TableColumnModel colModel, boolean bSortable,String sConf) {
 		super(model,colModel);
+        this.sConf = sConf;
 		init(bSortable);
 	}
 	
@@ -64,10 +68,21 @@ public class JajukTable extends JXTable implements ITechnicalStrings{
      * Constructor
      * @param model : model to use
      * @param bSortable : is this table sortable
+     * @sConf: configuration variable used to store columns conf
      * */
-    public JajukTable(TableModel model,boolean bSortable) {
+    public JajukTable(TableModel model,boolean bSortable,String sConf) {
         super(model);
+        this.sConf = sConf;
         init(bSortable);
+    }
+    
+    /**
+     * Constructor
+     * @param model : model to use
+     * @sConf: configuration variable used to store columns conf
+     */
+    public JajukTable(TableModel model,String sConf) {
+        this(model,true,sConf);
     }
     
     private void init(boolean bSortable){
@@ -81,19 +96,12 @@ public class JajukTable extends JXTable implements ITechnicalStrings{
         packAll();   
     }
     
-	/**
-	 * Constructor
-	 * @param model : model to use
-	 */
-	public JajukTable(TableModel model) {
-		this(model,true);
-	}
-    
+	    
     /**
-     * Hide columns
+     * Select columns to show
      *colsToShow list of columns id to keep
      */
-    public void keepColumns(ArrayList<String> colsToShow){
+    public void showColumns(ArrayList<String> colsToShow){
         Iterator it = ((DefaultTableColumnModelExt)getColumnModel()).getColumns(false).iterator();
         while (it.hasNext()){
             TableColumnExt col = (TableColumnExt)it.next();
@@ -108,22 +116,50 @@ public class JajukTable extends JXTable implements ITechnicalStrings{
      * @return list of visible columns names as string
      * @param Name of the configuration key giving configuration
      */
-    public ArrayList getColumnsConf(String property){
+    public ArrayList getColumnsConf(){
         ArrayList alOut = new ArrayList(10);
-        String sConf = ConfigurationManager.getProperty(property);
-        StringTokenizer st = new StringTokenizer(sConf,","); //$NON-NLS-1$
+        String value = ConfigurationManager.getProperty(sConf);
+        StringTokenizer st = new StringTokenizer(value,","); //$NON-NLS-1$
         while (st.hasMoreTokens()){
             alOut.add(st.nextToken());
         }
         return alOut;
     }
+    
+    /**
+     * Add a new property into columns conf
+     * @param property
+     */
+    public void addColumnIntoConf(String property){
+        if (sConf == null){
+            return;
+        }
+        ArrayList alOut = getColumnsConf();
+        if (!alOut.contains(property)){
+            String value = ConfigurationManager.getProperty(sConf);
+            ConfigurationManager.setProperty(sConf,value+","+property);     //$NON-NLS-1$
+        }
+    }
+    
+    /**
+     * Remove a property from columns conf
+     * @param property
+     */
+    public void removeColumnFromConf(String property){
+        if (sConf == null){
+            return;
+        }
+        ArrayList alOut = getColumnsConf();
+        alOut.remove(property);
+        ConfigurationManager.setProperty(sConf,getColumnsConf(alOut));
+    }
    
      /**
      * 
-     * @return columns configuration
+     * Create the jtable visible columns conf
      * 
      */
-    public String createColumnsConf(){
+    public void createColumnsConf(){
         StringBuffer sb = new StringBuffer();
         Iterator it = ((DefaultTableColumnModelExt)getColumnModel()).getColumns(true).iterator();
         while (it.hasNext()){
@@ -133,13 +169,15 @@ public class JajukTable extends JXTable implements ITechnicalStrings{
                 sb.append(sIdentifier+",");     //$NON-NLS-1$
             }
         }
+        String value;
         //remove last coma
         if (sb.length()>0){
-            return sb.substring(0,sb.length()-1);
+            value = sb.substring(0,sb.length()-1);
         }
         else{
-            return sb.toString();    
+            value = sb.toString();    
         }
+        ConfigurationManager.setProperty(sConf,value);
     }
     
     /**
@@ -147,7 +185,7 @@ public class JajukTable extends JXTable implements ITechnicalStrings{
      * @return columns configuration from given list of columns identifiers
      * 
      */
-    public String getColumnsConf(ArrayList alCol){
+    private String getColumnsConf(ArrayList alCol){
         StringBuffer sb = new StringBuffer();
         Iterator it = alCol.iterator();
         while (it.hasNext()){

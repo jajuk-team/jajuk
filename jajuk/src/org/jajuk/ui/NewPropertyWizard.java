@@ -147,13 +147,20 @@ public class NewPropertyWizard extends CustomPropertyWizard implements KeyListen
                     return;
                 }
             }
+            ItemManager im = getItemManager();
+            //check if this property is not already used
+            for (PropertyMetaInformation meta:im.getCustomProperties()){
+                if (meta.getName().equals(jtfName.getText())){
+                    Messages.showErrorMessage("162"); //$NON-NLS-1$
+                    return;   
+                }
+            }
             //check format
             if (!Util.isXMLValid(jtfName.getText())){
                 Messages.showErrorMessage("140"); //$NON-NLS-1$
                 return;
             }
             //OK, store it
-            ItemManager im = getItemManager();
             //get selected format
              Class cType = null;
             switch(jcbClass.getSelectedIndex()){

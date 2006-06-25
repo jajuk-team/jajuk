@@ -284,7 +284,7 @@ public class CDDBWizard extends JDialog implements ITechnicalStrings,
 	/** Fill the table */
 	public JajukTable populateTable(FreedbQueryResult fdbResult) {
 		model = populateModel();
-		jtable = new JajukTable(model, true);
+		jtable = new JajukTable(model, true, null);
 		jtable.selectAll();
 		jtable.getColumnModel().addColumnModelListener(this);
 		//new TableTransferHandler(jtable, DnDConstants.ACTION_COPY_OR_MOVE);

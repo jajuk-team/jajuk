@@ -141,6 +141,11 @@ public class AuthorManager extends ItemManager{
                     TrackManager.getInstance().changeTrackAuthor(track,sNewName,null);
                 }
             }
+            //if current track author name is changed, notify it
+            if (FIFO.getInstance().getCurrentFile() != null 
+                    && FIFO.getInstance().getCurrentFile().getTrack().getAuthor().equals(old)){
+                ObservationManager.notify(new Event(EVENT_AUTHOR_CHANGED));
+            }
             return newItem;
         }
     }

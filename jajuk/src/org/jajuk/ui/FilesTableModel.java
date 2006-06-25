@@ -33,6 +33,7 @@ import org.jajuk.base.FileManager;
 import org.jajuk.base.IPropertyable;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.base.PropertyMetaInformation;
+import org.jajuk.base.TrackManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
@@ -103,13 +104,21 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
         vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_DIRECTORY));
         vId.add(XML_DIRECTORY);
         
-        //Custom properties now
-        Iterator it = FileManager.getInstance().getCustomProperties().iterator();
+        //custom properties now
+        //for tracks
+        Iterator it = TrackManager.getInstance().getCustomProperties().iterator();
         while (it.hasNext()){
             PropertyMetaInformation meta = (PropertyMetaInformation)it.next();
             vColNames.add(meta.getName());
             vId.add(meta.getName());
         }   
+        //for files
+        it = FileManager.getInstance().getCustomProperties().iterator();
+        while (it.hasNext()){
+            PropertyMetaInformation meta = (PropertyMetaInformation)it.next();
+            vColNames.add(meta.getName());
+            vId.add(meta.getName());
+        }
     }
     
     /**
@@ -167,7 +176,9 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
             }
         }
         it = alToShow.iterator();
-        int iColNum = iNumberStandardCols + FileManager.getInstance().getCustomProperties().size();
+        int iColNum = iNumberStandardCols 
+            + FileManager.getInstance().getCustomProperties().size()
+            + TrackManager.getInstance().getCustomProperties().size();
         iRowNum = alToShow.size();
         it = alToShow.iterator();
         oValues = new Object[iRowNum][iColNum];
@@ -237,8 +248,36 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
             oValues[iRow][15] = file.getDirectory().getAbsolutePath();
             bCellEditable[iRow][15] = false;
             //Custom properties now
+            //files
             Iterator it2 = FileManager.getInstance().getCustomProperties().iterator();
             for (int i=0;it2.hasNext();i++){
+                PropertyMetaInformation meta = (PropertyMetaInformation)it2.next();
+                Object o = properties.get(meta.getName());
+                if (o != null){
+                    oValues[iRow][iNumberStandardCols+i] = properties.get(meta.getName());    
+                }
+                else{
+                    oValues[iRow][iNumberStandardCols+i] = meta.getDefaultValue();
+                }
+                //For date format, just display date conversion
+                if (meta.getType().equals(Date.class)){
+                    try {
+                        oValues[iRow][iNumberStandardCols+i] = Util.format(oValues[iRow][iNumberStandardCols+i],meta);
+                    } catch (Exception e) {
+                        Log.error(e);
+                    }
+                }
+                //Date values not editable, use properties panel instead to edit
+                if (meta.getType().equals(Date.class)){
+                    bCellEditable[iRow][iNumberStandardCols+i] = false;    
+                }
+                else{
+                    bCellEditable[iRow][iNumberStandardCols+i] = true;
+                }
+            }   
+            //tracks
+            it2 = TrackManager.getInstance().getCustomProperties().iterator();
+            for (int i=FileManager.getInstance().getCustomProperties().size();it2.hasNext();i++){
                 PropertyMetaInformation meta = (PropertyMetaInformation)it2.next();
                 Object o = properties.get(meta.getName());
                 if (o != null){

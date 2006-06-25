@@ -750,10 +750,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
                 for (int i=0;i<alTransitions.size();i++){
                     Transition t = alTransitions.get(i);
                     //ignore all styles expect those from current button
-                    if (bFrom || i != row){   
-                        disabledStyles.addAll(t.getTo().getStyles());
-                    }
-                    if (!bFrom || i != row){
+                    if (bFrom && i != row){   
                         disabledStyles.addAll(t.getFrom().getStyles());
                     }
                 }
@@ -1380,7 +1377,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
             DigitalDJManager.commit(dj);
         }
         //Refresh command panel (usefull for ie if DJ names changed)
-        ObservationManager.notify(new Event(EVENT_DJ_CHANGE));
+        ObservationManager.notify(new Event(EVENT_DJS_CHANGE));
     }
 
 }

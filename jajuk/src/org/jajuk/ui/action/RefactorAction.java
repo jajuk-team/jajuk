@@ -295,7 +295,7 @@ public class RefactorAction implements ITechnicalStrings {
 		java.io.File fList[] = d.getFio().listFiles(
 				new JajukFileFilter(JajukFileFilter.DirectoryFilter.getInstance()));
 
-		if (fList.length != 0) {
+		if (fList!= null && fList.length != 0) {
 			for (java.io.File f : fList) {
 				Directory dir = DirectoryManager.getInstance()
 						.registerDirectory(f.getName(), d, d.getDevice());

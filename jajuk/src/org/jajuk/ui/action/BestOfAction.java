@@ -10,6 +10,8 @@ import java.util.ArrayList;
 
 import org.jajuk.base.FIFO;
 import org.jajuk.base.FileManager;
+import org.jajuk.dj.Ambience;
+import org.jajuk.dj.AmbienceManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Util;
@@ -27,7 +29,9 @@ public class BestOfAction extends ActionBase {
     }
 
     public void perform(ActionEvent evt) throws JajukException {
-        ArrayList alToPlay = FileManager.getInstance().getGlobalBestofPlaylist();
+        Ambience ambience = AmbienceManager.getInstance().getDefaultAmbience();
+        ArrayList alToPlay = Util.filterByAmbience(FileManager.
+            getInstance().getGlobalBestofPlaylist(),ambience);
         FIFO.getInstance().push(Util.createStackItems(alToPlay, ConfigurationManager.getBoolean(
             CONF_STATE_REPEAT), false), false);
     }

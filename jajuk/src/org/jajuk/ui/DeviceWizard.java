@@ -31,6 +31,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -351,7 +352,15 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 		} 
         else if (e.getSource() == jbOk){
 			//surface checks
-			if ( jtfUrl.getText().trim().equals("")){ //$NON-NLS-1$
+            try {
+                jftfAutoRefresh.commitEdit();
+            }
+            catch (ParseException e1) {
+                Messages.showErrorMessage("137"); //$NON-NLS-1$
+                this.setVisible(true);
+                return;
+            }
+            if ( jtfUrl.getText().trim().equals("")){ //$NON-NLS-1$
 				Messages.showErrorMessage("021"); //$NON-NLS-1$
 				this.setVisible(true);
 				return;

@@ -65,6 +65,8 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
     private volatile boolean bAlreadySynchronizing = false;
     /** Number of files in this device before refresh ( for refresh stats ) */
     public int iNbFilesBeforeRefresh;
+    /** Number of dirs in this device before refresh*/
+    public int iNbDirsBeforeRefresh;
     /** Number of new files found during refresh for stats*/
     public int iNbNewFiles;
     /** Number of corrupted files found during refresh for stats*/
@@ -248,6 +250,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
                 }
             }
             iNbFilesBeforeRefresh = FileManager.getInstance().getElementCount();
+            iNbDirsBeforeRefresh = DirectoryManager.getInstance().getElementCount();
             iNbNewFiles = 0;
             iNbCorruptedFiles = 0;
             if (bDeepScan && Log.isDebugEnabled()){
@@ -315,7 +318,9 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
             }
             sFinalMessage = sbOut.toString();
             Log.debug(sFinalMessage); 
-            if (iNbNewFiles > 0 ){
+            //refresh requiered if nb of files or dirs changed
+            if ((FileManager.getInstance().getElementCount()-iNbFilesBeforeRefresh) != 0
+                    || (DirectoryManager.getInstance().getElementCount()-iNbDirsBeforeRefresh) != 0){
                 return true;
             }
             return false;

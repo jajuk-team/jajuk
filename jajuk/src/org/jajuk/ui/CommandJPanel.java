@@ -76,9 +76,12 @@ import org.jajuk.base.Observer;
 import org.jajuk.base.Player;
 import org.jajuk.base.SearchResult;
 import org.jajuk.base.StackItem;
+import org.jajuk.dj.Ambience;
+import org.jajuk.dj.AmbienceManager;
 import org.jajuk.dj.DigitalDJ;
 import org.jajuk.dj.DigitalDJManager;
 import org.jajuk.i18n.Messages;
+import org.jajuk.ui.action.ActionBase;
 import org.jajuk.ui.action.ActionManager;
 import org.jajuk.ui.action.ActionUtil;
 import org.jajuk.ui.action.JajukAction;
@@ -87,6 +90,7 @@ import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
+
 
 import ext.DropDownButton;
 import ext.SwingWorker;
@@ -310,7 +314,8 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		ObservationManager.register(EVENT_FILE_LAUNCHED,this);
         ObservationManager.register(EVENT_CLEAR_HISTORY,this);
         ObservationManager.register(EVENT_VOLUME_CHANGED,this);
-        ObservationManager.register(EVENT_DJ_CHANGE,this);
+        ObservationManager.register(EVENT_DJS_CHANGE,this);
+        ObservationManager.register(EVENT_AMBIENCES_CHANGE,this);
         
         //if a track is playing, display right state
 		if ( FIFO.getInstance().getCurrentFile() != null){
@@ -560,7 +565,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
                     jsVolume.addChangeListener(CommandJPanel.this);
                     jbMute.setSelected(false);
                 }
-                else if(EVENT_DJ_CHANGE.equals(event.getSubject())){
+                else if(EVENT_DJS_CHANGE.equals(event.getSubject())){
                     populateDJs();
                 }
 			}
@@ -569,12 +574,16 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 	}
     
     /**
-     * Populate DJs
+     * Populate DJs and ambiences
      *
      */
     private void populateDJs(){
         try{
             popupDDJ.removeAll();
+            JMenuItem jmiNew = new JMenuItem(Messages.getString("CommandJPanel.17"),Util.getIcon(ICON_WIZARD)); 
+            popupDDJ.add(jmiNew);
+            popupDDJ.addSeparator();
+            popupDDJ.add("- "+Messages.getString("DigitalDJWizard.65")+" -");
             Iterator it = DigitalDJManager.getInstance().getDJs().iterator();
             while (it.hasNext()){
                 final DigitalDJ dj = (DigitalDJ)it.next();
@@ -582,35 +591,67 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
                 jmi.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent arg0) {
                         ConfigurationManager.setProperty(CONF_DEFAULT_DJ,dj.getID());
-                        ObservationManager.notify(new Event(EVENT_DJ_CHANGE));
+                        populateDJs();
+                        ActionBase action = ActionManager.getAction(JajukAction.DJ);
+                        action.setShortDescription("<html>"+Messages.getString("CommandJPanel.18")+"<p><b>"+dj.getName()+"</b></p></html>");
                     }
                 });
                 popupDDJ.add(jmi);
                 jmi.setSelected(ConfigurationManager.getProperty(CONF_DEFAULT_DJ).equals(dj.getID()));
             }
-            popupDDJ.addSeparator();
-            JMenuItem jmiNew = new JMenuItem(Messages.getString("CommandJPanel.17"),Util.getIcon(ICON_WIZARD)); 
             jmiNew.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent arg0) {
                     new DigitalDJWizard();
                 }
             });
+            popupDDJ.addSeparator();
+            popupDDJ.addSeparator();
+            //Ambiences
             JMenuItem jmiAmbiences = new JMenuItem(Messages.getString("CommandJPanel.19"),Util.getIcon(ICON_STYLE)); 
             jmiAmbiences.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent arg0) {
                     new AmbienceWizard();
                 }
             });
-            popupDDJ.add(jmiNew);
             popupDDJ.add(jmiAmbiences);
-            //Set new tooltip for DJ button
-            DigitalDJ dj = DigitalDJManager.getInstance().getDJByID(ConfigurationManager.getProperty(CONF_DEFAULT_DJ));
-            if (dj != null){
-            	String sDJ = dj.getName();
-            	ddbDDJ.setToolTipText("<html>"+Messages.getString("CommandJPanel.18")+"<p><b>"+sDJ+"</b></p></html>"); //$NON-NLS-1$
-            }
-            else{
-            	ddbDDJ.setToolTipText(Messages.getString("CommandJPanel.18")); //$NON-NLS-1$
+            popupDDJ.addSeparator();
+            popupDDJ.add("- "+Messages.getString("DigitalDJWizard.66")+" -");
+            //Add "any" ambience item
+            JCheckBoxMenuItem jmi = new JCheckBoxMenuItem("<html><i>"+
+                Messages.getString("DigitalDJWizard.64")+"</i></html>");
+            jmi.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent arg0) {
+                    //reset default ambience and tooltips
+                    ConfigurationManager.setProperty(CONF_DEFAULT_AMBIENCE,"");
+                    populateDJs();
+                    ActionBase action = ActionManager.getAction(JajukAction.NOVELTIES);
+                    action.setShortDescription(Messages.getString("JajukWindow.31"));
+                    action = ActionManager.getAction(JajukAction.BEST_OF);
+                    action.setShortDescription(Messages.getString("JajukWindow.24"));
+                    action = ActionManager.getAction(JajukAction.SHUFFLE_GLOBAL);
+                    action.setShortDescription(Messages.getString("JajukWindow.23"));
+                }
+            });
+            jmi.setSelected(ConfigurationManager.getProperty(CONF_DEFAULT_AMBIENCE) == null
+                || ConfigurationManager.getProperty(CONF_DEFAULT_AMBIENCE).equals(""));
+            popupDDJ.add(jmi);
+            //Add available ambiences
+            for (final Ambience ambience: AmbienceManager.getInstance().getAmbiences()){
+                jmi = new JCheckBoxMenuItem(ambience.getName());
+                jmi.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent arg0) {
+                        ConfigurationManager.setProperty(CONF_DEFAULT_AMBIENCE,ambience.getID());
+                        populateDJs();
+                        ActionBase action = ActionManager.getAction(JajukAction.NOVELTIES);
+                        action.setShortDescription("<html>"+Messages.getString("JajukWindow.31")+"<p><b>"+ambience.getName()+"</b></p></html>");
+                        action = ActionManager.getAction(JajukAction.SHUFFLE_GLOBAL);
+                        action.setShortDescription("<html>"+Messages.getString("JajukWindow.23")+"<p><b>"+ambience.getName()+"</b></p></html>");
+                        action = ActionManager.getAction(JajukAction.BEST_OF);
+                        action.setShortDescription("<html>"+Messages.getString("JajukWindow.24")+"<p><b>"+ambience.getName()+"</b></p></html>");
+                    }
+                });
+                jmi.setSelected(ConfigurationManager.getProperty(CONF_DEFAULT_AMBIENCE).equals(ambience.getID()));
+                popupDDJ.add(jmi);
             }
         }
         catch(Exception e){

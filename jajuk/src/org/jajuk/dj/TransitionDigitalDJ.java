@@ -22,7 +22,6 @@ package org.jajuk.dj;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
@@ -79,19 +78,16 @@ public class TransitionDigitalDJ extends DigitalDJ {
      /**
      * 
      * @param style
-     * @return transition mapping this style or null if none maps it
+     * @return transition mapping this FROM ambience or null if none maps it
      */
-    public Transition getTransition(Style style){
+    public Transition getTransition(Ambience ambience){
         Transition out = null;
         for (Transition transition: transitions){
-            HashSet<Style> set = transition.getFrom().getStyles();
-            for (Style s:set){
-                if (s.equals(style)){
-                    return transition;
-                }
+            if (transition.getFrom().equals(ambience)){
+                return transition;
             }
         }
-        return out;
+        return null;
     }
 
     /* (non-Javadoc)
@@ -108,16 +104,28 @@ public class TransitionDigitalDJ extends DigitalDJ {
         if (global.size() == 0){
             return out;
         }
-        //Sort tracks by TO ambience (set of styles)
+        //Sort tracks by FROM ambience (set of styles)
         HashMap<Ambience,ArrayList<File>> hmAmbienceFiles = new HashMap(100); 
-        //This list contains all files not yat sorted (used for null key)
+        //This list contains all files not yet sorted (used for null key)
         ArrayList<File> alFilesToSort = (ArrayList)global.clone();
         for (Transition tr:transitions){
+            Ambience from = null;
+            if (tr != null){
+                from = tr.getFrom();
+            }
+            ArrayList<File> files = new ArrayList(100);
+            for (File file:global){
+                if (from.getStyles().contains(file.getTrack().getStyle())){
+                    files.add(file);
+                    alFilesToSort.remove(file);
+                }
+            }
+            hmAmbienceFiles.put(from,files);
             Ambience to = null;
             if (tr != null){
                 to = tr.getTo();
             }
-            ArrayList<File> files = new ArrayList(100);
+            files = new ArrayList(100);
             for (File file:global){
                 if (to.getStyles().contains(file.getTrack().getStyle())){
                     files.add(file);
@@ -145,85 +153,48 @@ public class TransitionDigitalDJ extends DigitalDJ {
             //under a limit, if collection is too small and no unicity, use several times the same files
             items = MIN_TRACKS_NUMBER_WITHOUT_UNICITY;
         }
-        Ambience current  = getAmbience(out.get(0).getTrack().getStyle());
+        //initialize current ambience with firs track ambience (can be null for unsorted tracks)
+        Ambience currentAmbience  = getAmbience(out.get(0).getTrack().getStyle());
         int comp = 1; //item compt
+        boolean bFirstTrack = true; //flag used to remove one track to selection
         //start transition applying
         while (comp < items){
-            Ambience next = null;
-            Transition tr = null;
-            //find next ambience
-            if (current != null){
-                for (Transition transition:transitions){
-                    for (Style style:current.getStyles()){
-                        if (transition.getFrom().getStyles().contains(style)){
-                            tr = transition;
-                            next = tr.getTo();
-                            break;
-                        }
-                    }
+            int nb = 1;
+            Transition currentTransition = getTransition(currentAmbience);
+            if (currentTransition != null){
+                nb = currentTransition.getNbTracks();
+                if (bFirstTrack){
+                    nb --;
+                    bFirstTrack = false;
                 }
             }
-            else{ //startup style doesn't match any known ambience, take an ambience associated with
-                //any file style
-                File fShuffle = (File)Util.getShuffleItem(global);
-                next = getAmbience(fShuffle.getTrack().getStyle());
-            }
-            //store the new ambience
-            current = next;
-            int iterations = 1;
-            if (tr != null){
-                iterations = tr.getNbTracks();
-            }
-            for (int j=0;j<iterations;j++){
-                ArrayList<File> files = hmAmbienceFiles.get(next);
-                //take any file from files associated with this ambience
-                //if no more files, try from 'null' ambience
-                if (files != null && files.size() > 0){
+            ArrayList<File> files = hmAmbienceFiles.get(currentAmbience);
+            if (files != null && files.size() > nb){
+                for (int i=0;i<nb;i++){
                     File file = (File)Util.getShuffleItem(files);
                     out.add(file);
+                    comp ++;
                     //unicity in selection, remove it from this ambience
                     if (bUnicity){
                         files.remove(file);
                     }
                 }
-                else{ //no more files in this ambience, search in null ambience
-                    files = hmAmbienceFiles.get(null);
-                    //no more tracks even in others, leave
-                    if (files == null || files.size() == 0){
-                        return out;
-                    }
-                    else{
-                        File file = (File)Util.getShuffleItem(files);
-                        out.add(file);
-                        //unicity in selection, remove it from this ambience
-                        if (bUnicity){
-                            files.remove(file);
-                        }   
-                    }
-                }
-                comp ++;
+            }
+            else{ //no more tracks for this ambience ? leave
+                return out;
+            }
+            //get next ambience
+            if (currentTransition != null){
+                currentAmbience = currentTransition.getTo();
+            }
+            else{
+                return out;
             }
         }
         return out;
     }
-        
-    /**
-     * 
-     * @return next ambience according to transitions or null if no transition defined
-     */
-    private Ambience getNextAmbience(Ambience ambience){
-        Ambience out = null;
-        for (Transition transition:transitions){
-            for (Style style:ambience.getStyles()){
-                if (transition.getFrom().getStyles().contains(style)){
-                    return transition.getTo();
-                }
-            }
-        }
-        //if here, it means than the given style is not in from styles, return null
-        return null;
-    }
-   
+       
+  
      /**
      * @return ambience associated with a style known in transitions or null if none
      */

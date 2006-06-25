@@ -28,7 +28,6 @@ import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseListener;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Properties;
@@ -64,7 +63,6 @@ import org.jajuk.ui.JajukTable;
 import org.jajuk.ui.JajukTableModel;
 import org.jajuk.ui.JajukToggleButton;
 import org.jajuk.ui.TableTransferHandler;
-import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.CannotRenameException;
@@ -230,14 +228,19 @@ public abstract class AbstractTableView extends ViewAdapter
                         {30,0.99}};
                 setLayout(new TableLayout(size));
                 add(jpControl,"0,0"); //$NON-NLS-1$
-                jtable = new JajukTable(model,true);
+                if (AbstractTableView.this instanceof PhysicalTableView){
+                    jtable = new JajukTable(model,true,CONF_PHYSICAL_TABLE_COLUMNS);
+                }
+                else{
+                    jtable = new JajukTable(model,true,CONF_LOGICAL_TABLE_COLUMNS);
+                }
                 jtable.getColumnModel().addColumnModelListener(AbstractTableView.this);
                 setRenderers();
                 add(new JScrollPane(jtable),"0,1"); //$NON-NLS-1$
                 jtable.setDragEnabled(true);
                 jtable.setTransferHandler(new TableTransferHandler(jtable));
                 jtable.addMouseListener(AbstractTableView.this);
-                jtable.keepColumns(jtable.getColumnsConf(sConf));
+                jtable.showColumns(jtable.getColumnsConf());
                 applyFilter(null,null);
                 jtable.packTable(5);
                 //Register on the list for subject we are interrested in
@@ -327,16 +330,8 @@ public abstract class AbstractTableView extends ViewAdapter
                         jtable.setModel(model);
                         setRenderers();
                         //add new item in configuration cols
-                        if (AbstractTableView.this instanceof PhysicalTableView){
-                            String sTableCols = ConfigurationManager.getProperty(CONF_PHYSICAL_TABLE_COLUMNS);
-                            ConfigurationManager.setProperty(CONF_PHYSICAL_TABLE_COLUMNS,sTableCols+","+(model.getIdentifier(model.getColumnCount()-1)));     //$NON-NLS-1$
-                            jtable.keepColumns(jtable.getColumnsConf(CONF_PHYSICAL_TABLE_COLUMNS));
-                        }
-                        else {
-                            String sTableCols = ConfigurationManager.getProperty(CONF_LOGICAL_TABLE_COLUMNS);
-                            ConfigurationManager.setProperty(CONF_LOGICAL_TABLE_COLUMNS,sTableCols+","+(model.getIdentifier(model.getColumnCount()-1))); //$NON-NLS-1$
-                            jtable.keepColumns(jtable.getColumnsConf(CONF_LOGICAL_TABLE_COLUMNS));
-                        }
+                        jtable.addColumnIntoConf((String)properties.get(DETAIL_CONTENT));
+                        jtable.showColumns(jtable.getColumnsConf());
                         applyFilter(sAppliedCriteria,sAppliedFilter);
                         jcbProperty.addItem(properties.get(DETAIL_CONTENT));
                     }
@@ -345,22 +340,15 @@ public abstract class AbstractTableView extends ViewAdapter
                         if (properties == null){ //can be null at view populate
                         	return;
                         }
-                        ArrayList al = jtable.getColumnsConf(CONF_LOGICAL_TABLE_COLUMNS);
-                        al.remove(properties.get(DETAIL_CONTENT));
+                        //remove item from configuration cols
                         model = populateTable();//create a new model
                         jtable.setModel(model);
                         setRenderers();
-                        //remove item from configuration cols
-                        if (AbstractTableView.this instanceof PhysicalTableView){
-                            ConfigurationManager.setProperty(CONF_PHYSICAL_TABLE_COLUMNS,jtable.getColumnsConf(al));    
-                        }
-                        else {
-                            ConfigurationManager.setProperty(CONF_LOGICAL_TABLE_COLUMNS,jtable.getColumnsConf(al));
-                        }
-                        jtable.keepColumns(jtable.getColumnsConf(CONF_LOGICAL_TABLE_COLUMNS));
+                        jtable.addColumnIntoConf((String)properties.get(DETAIL_CONTENT));
+                        jtable.showColumns(jtable.getColumnsConf());
                         applyFilter(sAppliedCriteria,sAppliedFilter);
                         jcbProperty.removeItem(properties.get(DETAIL_CONTENT));
-                    }
+                     }
                 }
                 catch(Exception e){
                     Log.error(e);
@@ -400,6 +388,8 @@ public abstract class AbstractTableView extends ViewAdapter
             //create a button for playing
             else if (XML_PLAY.equals(sIdentifier)){
                 col.setCellRenderer(new JajukCellRender());
+                col.setMinWidth(PLAY_COLUMN_SIZE);
+                col.setMaxWidth(PLAY_COLUMN_SIZE);
             }
             else if (XML_TRACK_RATE.equals(sIdentifier)){
                 col.setCellRenderer(new JajukCellRender());
@@ -423,12 +413,7 @@ public abstract class AbstractTableView extends ViewAdapter
     
     private void columnChange(){
         if (!bReloading){ //ignore this column change when reloading model
-            if (this instanceof PhysicalTableView){
-                ConfigurationManager.setProperty(CONF_PHYSICAL_TABLE_COLUMNS,jtable.createColumnsConf());
-            }
-            else{
-                ConfigurationManager.setProperty(CONF_LOGICAL_TABLE_COLUMNS,jtable.createColumnsConf());
-            }
+            jtable.createColumnsConf();
         }
     }
     

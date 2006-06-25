@@ -164,7 +164,7 @@ public class ConfigurationManager implements ITechnicalStrings{
         properties.put(CONF_OPTIONS_TAB,"0"); //$NON-NLS-1$
 		properties.put(CONF_OPTIONS_INTRO_BEGIN,"0"); //$NON-NLS-1$
 		properties.put(CONF_OPTIONS_INTRO_LENGTH,"20"); //$NON-NLS-1$
-		properties.put(CONF_OPTIONS_LNF,LNF_TINY);
+		properties.put(CONF_OPTIONS_LNF,LNF_LIQUID);
         properties.put(CONF_OPTIONS_SYNC_TABLE_TREE,FALSE);
         properties.put(CONF_OPTIONS_SHOW_POPUP,TRUE);
         properties.put(CONF_P2P_SHARE,FALSE);
@@ -221,6 +221,7 @@ public class ConfigurationManager implements ITechnicalStrings{
         properties.put(CONF_FADE_DURATION,"0"); //$NON-NLS-1$
         properties.put(CONF_LOGICAL_TREE_SORT_ORDER,"0"); //sort by style //$NON-NLS-1$        
         properties.put(CONF_DEFAULT_DJ,"");//default dj        
+        properties.put(CONF_DEFAULT_AMBIENCE,"");//default ambience        
     }
 	
     /**

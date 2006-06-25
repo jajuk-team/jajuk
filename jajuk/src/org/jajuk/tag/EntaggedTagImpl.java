@@ -85,7 +85,7 @@ public class EntaggedTagImpl implements ITagImpl,ITechnicalStrings {
 			return ""; //doing that, the item wil be the default jajuk unknown string //$NON-NLS-1$
 		}
 		//Sometimes, the style has this form : (nb)
-		if ( sOut.matches("(.*)")){//$NON-NLS-1$
+       if ( sOut.matches("\\(.*\\)")){//$NON-NLS-1$
 			sOut = sOut.substring(1,sOut.indexOf(')'));
 			try{
 				sOut = Util.genres[Integer.parseInt(sOut)];

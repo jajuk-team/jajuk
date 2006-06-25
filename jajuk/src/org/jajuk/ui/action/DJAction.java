@@ -40,13 +40,14 @@ public class DJAction extends ActionBase {
 
     DJAction() {
         super(Messages.getString("CommandJPanel.16"),Util.getIcon(ICON_DIGITAL_DJ), true); //$NON-NLS-1$
-   /*     DigitalDJ dj = DigitalDJManager.getInstance().getDJByID(ConfigurationManager.getProperty(CONF_DEFAULT_DJ));
+        String sTooltip = Messages.getString("CommandJPanel.18");
+        DigitalDJ dj = DigitalDJManager.getInstance().getDJByID(ConfigurationManager.getProperty(CONF_DEFAULT_DJ));
         if (dj != null){
-        	String sDJ = dj.getName();
-        	setShortDescription("<html>"+Messages.getString("CommandJPanel.18")+"<p><b>"+sDJ+"</b></p></html>"); //$NON-NLS-1$
+          String sDJ = dj.getName();
+          sTooltip = "<html>"+Messages.getString("CommandJPanel.18")+"<p><b>"+sDJ+"</b></p></html>"; //$NON-NLS-1$
         }
-        setShortDescription(Messages.getString("CommandJPanel.18")); //$NON-NLS-1$
-    */}
+        setShortDescription(sTooltip); //$NON-NLS-1$
+   }
 
     public void perform(ActionEvent evt) throws JajukException {
         if (StyleManager.getInstance().getItems().size() == 0){

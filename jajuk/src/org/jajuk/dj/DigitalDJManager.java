@@ -153,7 +153,7 @@ public class DigitalDJManager implements ITechnicalStrings,Observer{
             ConfigurationManager.setProperty(CONF_DEFAULT_DJ,"");
         }
         //alert command panel
-        ObservationManager.notify(new Event(EVENT_DJ_CHANGE));
+        ObservationManager.notify(new Event(EVENT_DJS_CHANGE));
     }
     
     /**
@@ -163,7 +163,7 @@ public class DigitalDJManager implements ITechnicalStrings,Observer{
     public void register(DigitalDJ dj){
         djs.put(dj.getID(),dj);
         //alert command panel
-        ObservationManager.notify(new Event(EVENT_DJ_CHANGE));
+        ObservationManager.notify(new Event(EVENT_DJS_CHANGE));
     }
     
      /* (non-Javadoc)

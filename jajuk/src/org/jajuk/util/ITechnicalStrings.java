@@ -79,6 +79,8 @@ public interface ITechnicalStrings {
     public static final int DEFAULT_TRANSITION_TRACK_NUMBER = 2;
     /**Rate Stars columns size in pixels*/
     public static final int RATE_COLUMN_SIZE = 75;
+    /**Play icon columns size in pixels*/
+    public static final int PLAY_COLUMN_SIZE = 20;
     
     
 	// Jajuk version
@@ -405,8 +407,10 @@ public interface ITechnicalStrings {
     public static final String EVENT_LOGICAL_TREE_SORT = "logical tree sort"; //logical tree osrt method changed
     public static final String EVENT_COVER_DEFAULT_CHANGED = "cover default changed"; //cover default changed
     public static final String EVENT_TABLE_CLEAR_SELECTION = "table.clear_selection"; //clear table selection
-    public static final String EVENT_DJ_CHANGE = "dj_change"; //DJ creation or removal
+    public static final String EVENT_DJS_CHANGE = "djs_change"; //DJ creation or removal
+    public static final String EVENT_AMBIENCES_CHANGE = "ambiences_change"; //One or more ambiences have been removed/added/changed
     public static final String EVENT_AMBIENCE_REMOVED = "ambience_removed"; //An ambience has been removed
+    public static final String EVENT_AUTHOR_CHANGED = "author changed"; //Current played track author name has been changed
     
     //details keys
 	public static final String DETAIL_CURRENT_FILE_ID="current file id";
@@ -544,6 +548,7 @@ public interface ITechnicalStrings {
     public static final String CONF_LOGICAL_TREE_SORT_ORDER = "jajuk.logical_tree_sort_order";// logical tree sort order
     public static final String CONF_REFACTOR_PATTERN = "jajuk.refactor_pattern";// logical tree sort order
     public static final String CONF_DEFAULT_DJ="jajuk.default_dj"; //default dj
+    public static final String CONF_DEFAULT_AMBIENCE="jajuk.default_ambience"; //default ambience
 
     //Accuracy levels
 	public static final String ACCURACY_LOW = "low";

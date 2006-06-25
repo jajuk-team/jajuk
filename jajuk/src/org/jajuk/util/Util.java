@@ -81,6 +81,7 @@ import org.jajuk.base.StackItem;
 import org.jajuk.base.Style;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
+import org.jajuk.dj.Ambience;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.CommandJPanel;
 import org.jajuk.ui.InformationJPanel;
@@ -1457,4 +1458,28 @@ public class Util implements ITechnicalStrings {
         }
         return alSelectedFiles;
     }
+    
+   
+    /**
+     * Filter a given file list by ambience 
+     * @param al file list
+     * @param ambience ambience
+     * @return the list filtered
+     */
+    public static ArrayList<org.jajuk.base.File> filterByAmbience(ArrayList<org.jajuk.base.File> al,Ambience ambience){
+        //Void filter, return the input
+        if (ambience == null || ambience.getStyles().size() == 0){
+            return al;
+        }
+        //Filter by ambience
+        Iterator it = al.iterator();
+        while (it.hasNext()){
+            org.jajuk.base.File file =(org.jajuk.base.File)it.next();
+            if (!ambience.getStyles().contains(file.getTrack().getStyle())){
+                it.remove();
+            }
+        }
+        return al;
+    }
+    
 }

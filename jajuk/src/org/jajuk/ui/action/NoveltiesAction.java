@@ -11,6 +11,8 @@ import java.util.Collections;
 
 import org.jajuk.base.FIFO;
 import org.jajuk.base.FileManager;
+import org.jajuk.dj.Ambience;
+import org.jajuk.dj.AmbienceManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Util;
@@ -28,7 +30,9 @@ public class NoveltiesAction extends ActionBase {
     }
 
     public void perform(ActionEvent evt) throws JajukException {
-        ArrayList alToPlay = FileManager.getInstance().getGlobalNoveltiesPlaylist();
+        Ambience ambience = AmbienceManager.getInstance().getDefaultAmbience();
+        ArrayList alToPlay = Util.filterByAmbience(FileManager.
+            getInstance().getGlobalNoveltiesPlaylist(),ambience);
         if (alToPlay != null && alToPlay.size() != 0) {
             Collections.shuffle(alToPlay);//shuffle the selection
         }

@@ -131,6 +131,15 @@ public class AmbienceManager implements ITechnicalStrings,Observer{
         ambiences.put(ambience.getID(),ambience);
     }
     
+    /**
+     * 
+     * @return default Ambience
+     */
+    public Ambience getDefaultAmbience(){
+        String sDefault = ConfigurationManager.getProperty(CONF_DEFAULT_AMBIENCE);
+        return getAmbience(sDefault);
+    }
+    
     /* (non-Javadoc)
      * @see org.jajuk.ui.Observer#update(java.lang.String)
      */

@@ -362,14 +362,15 @@ public class AmbienceWizard extends Wizard implements ITechnicalStrings{
      */
     @Override
     public void finish() {
-        //Refresh command panel (usefull for ie if DJ names changed)
-        ObservationManager.notify(new Event(EVENT_DJ_CHANGE));
         for (Ambience ambience:ambiences){
             AmbienceManager.getInstance().registerAmbience(ambience);
         }
          //commit it to avoid it is lost before the app close
         AmbienceManager.getInstance().commit();
         ConfigurationManager.commit();
+        //Refresh UI
+        ObservationManager.notify(new Event(EVENT_AMBIENCES_CHANGE));
+        
     }
 
 }

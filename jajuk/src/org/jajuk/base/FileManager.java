@@ -358,12 +358,12 @@ public class FileManager extends ItemManager implements Observer{
     public ArrayList<File> getGlobalShufflePlaylist(){
         synchronized(FileManager.getInstance().getLock()){
             ArrayList alEligibleFiles = getReadyFiles();
-            
             Collections.shuffle(alEligibleFiles);
             return alEligibleFiles;
         }
     }
     
+        
     /**
      * Return a shuffle mounted file from the noveties
      * @return
@@ -375,6 +375,7 @@ public class FileManager extends ItemManager implements Observer{
         }
     }
     
+    
     /**
      * Return a playlist with the entire accessible shuffled novelties collection 
      * @return The entire accessible novelties collection or null if none track in given time interval
@@ -384,6 +385,7 @@ public class FileManager extends ItemManager implements Observer{
             return getGlobalNoveltiesPlaylist(true);
         }
     }
+    
     
     /**
      * Return a playlist with the entire accessible novelties collection 
