@@ -20,24 +20,8 @@ creation wizard</span><br>
 
 <h2>Context</h2>
 
-<p>Within the framework of <a href="http://jajuk.sourceforge.net">Jajuk</a>
-project, we had to write some complex multi-branching wizard for
-several features. After a quick search, it appears that only one Swing
-project was maintened and able to match our needs: <a href="https://wizard.dev.java.net/">Wizard Project</a>
-from <a href="http://java.net/">java.net</a>.
-However, since this project is well documented, provides
-a good support, it is still in early stages, too complex, doesn't
-provide i18n and the worst: we didn't manage to make it work and had to
-give up after about 20 hours. We tried later the EzBranch
-from this project that is not yet merged into the head. This branch is
-better and fixes multi-branching issues but brings other issues and
-limitations and is not yet officially supported.</p>
-
-<p>Being pretty in a hurry with jajuk, we decided to write a new
-API
-from scratch. We will decide in the future to switch back to Wizard API
-or to enhance
-QDWizard instead depending on the Wizard project evolution.</p>
+<p>We developed this API within the framework of <a href="http://jajuk.sourceforge.net">Jajuk</a>
+project as complex multi-branching wizard for several features.</p>
 
 <h2>License</h2>
 
@@ -200,11 +184,15 @@ available from wizard and screen classes.</li>
     </span>method in a screen to set the fact that the screen is
 the last one (user can click on Finished button).</li>
 
+<li>By default, QDwizard keeps screens into memory so user can go previous or next and keep typed values. If you want
+to clear this history, just make your screen(s) implement <span style="font-family: monospace;">WizardCleaner</span> interface.
+When user will reach this screen(s), all previous history will be cleaned up.</li>
+
 </ul>
 
 <h2>Download</h2>
 
-The last QDWizard is 1.0(2006/05/13) This zip contains API binaries,
+QDWizard distribution includes API binaries,
 sources and doc for any system supporting Java 1.5+.
 <a href="http://sourceforge.net/project/showfiles.php?group_id=168745">Download
 it here.</a>
@@ -220,6 +208,14 @@ support</a>.
 
 <ul>
 
+ <li>2006/06/22: [1.3] Fixes and enhancements
+    <ul>
+
+      <li>Keep screens memory</li>
+
+      <li>Added WizardClearer stuff to reset screens history</li>
+
+    </ul>
   <li>2006/05/22: [1.2] Fixes and enhancements
     <ul>
 
@@ -234,7 +230,7 @@ the default locale)</li>
 
   </li>
 
-  <li>2006/05/19: [1.1] Fixes
+   <li>2006/05/19: [1.1] Fixes
     <ul>
 
       <li>[FATAL] Fixed wrong jajuk Main class dependency</li>

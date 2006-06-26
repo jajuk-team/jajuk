@@ -16,12 +16,14 @@ fi
 
 cd /data/projects/jajuk/maven_rep
 
-#### PDF TASK ####
+#### SEND TASK ####
 if [ "$1" = "send" ]; then
  cd target/docs
  scp -C -r * bflorat@jajuk.sourceforge.net:/home/groups/j/ja/jajuk/htdocs
  exit 0
 fi
+
+### PDF TASK ####
 if [ "$1" = "pdf" ]; then
  maven pdf
  exit 0
@@ -75,6 +77,8 @@ cp -rp $WEBSITE_SOURCE/jajuk-logo.png $DOC_DEST/images/logos/
 
 cp -rp $WEBSITE_SOURCE/*.html $WEBSITE_SOURCE/*.xml $WEBSITE_SOURCE/*.js $WEBSITE_SOURCE/*.fml $XDOC_DEST
 rm $XDOC_DEST/project.xml $XDOC_DEST/maven.xml
+#replace official qdwizard page by a notice
+cp $WEBSITE_SOURCE/qdwizard_info.html $XDOC_DEST/QDWizard.html
 
 #Sources Checkout
 cvs checkout jajuk
@@ -95,10 +99,8 @@ cd $DOC_DEST
 java -cp $WEBSITE_SOURCE Xiti SCRIPT_XITI $WEBSITE_SOURCE/script_xiti_home.txt index.html > /tmp/index.html
 java -cp $WEBSITE_SOURCE Xiti SCRIPT_XITI $WEBSITE_SOURCE/script_xiti_jws.txt jws.html > /tmp/jws.html
 java -cp $WEBSITE_SOURCE Xiti SCRIPT_XITI $WEBSITE_SOURCE/script_xiti_downloads.txt downloads.html > /tmp/downloads.html
-java -cp $WEBSITE_SOURCE Xiti SCRIPT_XITI $WEBSITE_SOURCE/script_xiti_qdwizard.txt QDWizard.html > /tmp/QDWizard.html
 #marche pas à la fin sed -e '\#SCRIPT_XITI#{r/data/scripts/script_xiti' -e ';d;}' ./index.html > /tmp/index.html
 cp /tmp/index.html .
 cp /tmp/jws.html .
 cp /tmp/downloads.html .
-cp /tmp/QDWizard.html .
 fi

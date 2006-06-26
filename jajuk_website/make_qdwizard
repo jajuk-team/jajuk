@@ -1,0 +1,29 @@
+#This script generates Jajuk public website
+#For first use, launch twice, errors for first launch are normal
+
+cd /data/projects/jajuk/maven_rep
+
+SITE=/tmp/qdwizard_website
+WEBSITE_SOURCE=/data/java/workspace/jajuk_website
+
+#### SITE TASK ####
+if [ "$1" = "site" ]; then
+
+rm -rf $SITE
+mkdir -p $SITE/images
+
+cp $WEBSITE_SOURCE/QDWizard.html $SITE/index.html
+cp $WEBSITE_SOURCE/images/qdwizard.jpg $SITE/images/
+
+#Replace variables
+cd $SITE
+java -cp $WEBSITE_SOURCE Xiti SCRIPT_XITI $WEBSITE_SOURCE/script_xiti_qdwizard.txt index.html > /tmp/index.html
+cp /tmp/index.html .
+fi
+
+#SEND TASK
+if [ "$1" = "send" ]; then
+ cd $SITE
+ scp -C -r * bflorat@qdwizard.sourceforge.net:/home/groups/q/qd/qdwizard/htdocs
+ exit 0
+fi
