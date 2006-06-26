@@ -3,10 +3,10 @@
 
 <project default='all' name='jajuk' basedir='..'>
   <!--VARIABLES-->
-  <property name='version' value='1.2rc2'/>
+  <property name='version' value='1.2rc7'/>
   <property name='test' value='-test'/>
   <property name='jwsdeploy' value='test'/>
-  <property name='qdwizard_version' value='1.2'/>
+  <property name='qdwizard_version' value='1.3'/>
 	  
   <!--CONST-->
   <property name='rootdir' value='/tmp/jajuk-dist'/>
@@ -487,7 +487,7 @@
 			 <fileset file='${basedir}/../jajuk_website/QDWizard.html'/>
 		</copy>
 		<copy todir='${qdwizarddir}/doc/images' >
-			 <fileset file='${basedir}/../jajuk_website/images/qdwizard.png'/>
+			 <fileset file='${basedir}/../jajuk_website/images/qdwizard.jpg'/>
 		</copy>
 		<jar jarfile='${qdwizarddir}/qdwizard-${qdwizard_version}.jar' includes='**/org/jajuk/ui/wizard/*.class' 
     	basedir='${basedir}/bin' 

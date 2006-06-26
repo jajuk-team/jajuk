@@ -1316,7 +1316,10 @@ public class Util implements ITechnicalStrings {
 		properties.remove("java.ext.dirs");// can contain external program
 		// paths
 		properties.remove("sun.boot.class.path");// can contain external
-		// program paths
+		properties.remove("deployment.user.security.trusted.certs");
+        properties.remove("deployment.user.security.trusted.clientauthcerts");
+        properties.remove("jajuk.log");
+        
 		return properties;
 	}
 
