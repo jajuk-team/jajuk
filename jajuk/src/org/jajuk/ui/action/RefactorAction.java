@@ -82,7 +82,7 @@ public class RefactorAction implements ITechnicalStrings {
 			Track tCurrent = fCurrent.getTrack();
 			filename = ConfigurationManager.getProperty(CONF_REFACTOR_PATTERN)
 					.toLowerCase();
-
+			
 			String sValue;
 			// Check Author name
 			if (filename.contains(PATTERN_ARTIST)) {
@@ -268,26 +268,27 @@ public class RefactorAction implements ITechnicalStrings {
 	}
 
 	public String getCheckedPath(String sRoot, String sPathname) {
-
+		
+		String sFS = java.io.File.separator; 
 		java.io.File fioRoot = new java.io.File(sRoot);
 		java.io.File[] fioList = fioRoot.listFiles(new JajukFileFilter(JajukFileFilter.DirectoryFilter.getInstance()));
-		String[] sPaths = sPathname.split("\\" + java.io.File.separator);
+		String[] sPaths = sPathname.split(sFS);
 		String sReturn = sRoot;
 		for (int i = 0; i < sPaths.length - 1; i++) {
 			String sPath = sPaths[i];
 			boolean bool = false;
 			for (java.io.File fio : fioList) {
 				String s = fio.getPath();
-				if (s.equalsIgnoreCase(sReturn + sPath)) {
-					sReturn += "/" + s.replace(sReturn, "");
+				if (s.equalsIgnoreCase(sReturn + sFS + sPath)) {
+					sReturn += sFS + s.replace(sReturn, "");
 					bool = true;
 				}
 			}
 			if (bool == false) {
-				sReturn += "/" + sPath;
+				sReturn += sFS + sPath;
 			}
 		}
-		return sReturn + "/" + sPaths[sPaths.length - 1];
+		return sReturn + sFS + sPaths[sPaths.length - 1];
 	}
 
 	public void registerFile(Directory d) {
