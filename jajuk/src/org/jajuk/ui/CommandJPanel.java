@@ -568,6 +568,9 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
                 else if(EVENT_DJS_CHANGE.equals(event.getSubject())){
                     populateDJs();
                 }
+                else if(EVENT_AMBIENCES_CHANGE.equals(event.getSubject())){
+                    populateDJs(); //refresh DJ and ambiances
+                }
 			}
 		});
 
