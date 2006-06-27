@@ -1,4 +1,4 @@
-#Tue Aug 16 08:17:05 CEST 2005
+#Tue Jun 27 18:59:57 CEST 2006
 eclipse.preferences.version=1
 encoding//src/org/jajuk/i18n/jajuk.properties=UTF-8
 encoding//src/org/jajuk/i18n/jajuk_ca.properties=UTF-8
@@ -6,6 +6,7 @@ encoding//src/org/jajuk/i18n/jajuk_de.properties=UTF-8
 encoding//src/org/jajuk/i18n/jajuk_es.properties=UTF-8
 encoding//src/org/jajuk/i18n/jajuk_fr.properties=UTF-8
 encoding//src/org/jajuk/i18n/jajuk_it.properties=UTF-8
+encoding//src/org/jajuk/i18n/jajuk_ko.properties=UTF-8
 encoding//src/org/jajuk/i18n/jajuk_nl.properties=UTF-8
 encoding//src/org/jajuk/i18n/jajuk_sv.properties=UTF-8
 encoding//src/org/jajuk/i18n/jajuk_zh.properties=UTF-8
