@@ -93,7 +93,7 @@ public class AmbienceWizard extends Wizard implements ITechnicalStrings{
                     {10,TableLayout.FILL,10,TableLayout.PREFERRED,10}};
             setLayout(new TableLayout(dSizeGeneral));
             //button layout
-            double[][] dButtons = {{10,TableLayout.PREFERRED,5,TableLayout.PREFERRED,5,TableLayout.PREFERRED,10},{20}};
+            double[][] dButtons = {{10,0.33,5,0.33,5,0.33,10},{20}};
             jpButtons = new JPanel(new TableLayout(dButtons));
             jbNew = new JButton(Messages.getString("DigitalDJWizard.32"),Util.getIcon(ICON_NEW));
             jbNew.addActionListener(this);
@@ -315,6 +315,8 @@ public class AmbienceWizard extends Wizard implements ITechnicalStrings{
                 //refresh screen
                 refreshScreen();
             }
+            //in all cases, notify command panel
+            ObservationManager.notify(new Event(EVENT_AMBIENCES_CHANGE));
         }
     }
     
