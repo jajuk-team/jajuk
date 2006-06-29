@@ -47,6 +47,8 @@ public class RefactorAction implements ITechnicalStrings {
 	ArrayList<File> alFiles;
 
 	String filename;
+	
+	static String sFS = java.io.File.separator;
 
 	public RefactorAction(ArrayList<File> al) {
 		alFiles = al;
@@ -67,6 +69,7 @@ public class RefactorAction implements ITechnicalStrings {
 		}
 		new Thread() {
 			public void run() {
+				Util.waiting();
 				refactor();
 				ObservationManager.notify(new Event(EVENT_DEVICE_REFRESH));
 			}
@@ -86,7 +89,7 @@ public class RefactorAction implements ITechnicalStrings {
 			String sValue;
 			// Check Author name
 			if (filename.contains(PATTERN_ARTIST)) {
-				sValue = tCurrent.getAuthor().getName2().replace("/", "-");
+				sValue = tCurrent.getAuthor().getName2().replace("[/\\:]", "-");
 				if (!sValue.equalsIgnoreCase(Messages.getString("unknown"))) {
 					filename = filename.replace(PATTERN_ARTIST, AuthorManager
 							.format(sValue));
@@ -99,7 +102,7 @@ public class RefactorAction implements ITechnicalStrings {
 
 			// Check Style name
 			if (filename.contains(PATTERN_GENRE)) {
-				sValue = tCurrent.getStyle().getName2().replace("/", "-");
+				sValue = tCurrent.getStyle().getName2().replace("[/\\:]", "-");
 				if (!sValue.equalsIgnoreCase(Messages.getString("unknown"))) {
 					filename = filename.replace(PATTERN_GENRE, StyleManager
 							.format(sValue));
@@ -112,7 +115,7 @@ public class RefactorAction implements ITechnicalStrings {
 
 			// Check Album Name
 			if (filename.contains(PATTERN_ALBUM)) {
-				sValue = tCurrent.getAlbum().getName2().replace("/", "-");
+				sValue = tCurrent.getAlbum().getName2().replace("[/\\:]", "-");
 				if (!sValue.equalsIgnoreCase(Messages.getString("unknown"))) {
 					filename = filename.replace(PATTERN_ALBUM, AlbumManager
 							.format(sValue));
@@ -159,7 +162,7 @@ public class RefactorAction implements ITechnicalStrings {
 			// Check Track name
 			if (filename.contains(PATTERN_TRACKNAME)) {
 
-				sValue = tCurrent.getName().replace("/", "-");
+				sValue = tCurrent.getName().replace("[/\\:]", "-");
 
 				if (!sValue.equalsIgnoreCase(Messages.getString("unknown"))) {
 					filename = filename.replace(PATTERN_TRACKNAME,
@@ -185,12 +188,11 @@ public class RefactorAction implements ITechnicalStrings {
 			}
 
 			filename += "." + tCurrent.getType().getExtension();
-
+			filename = filename.replace("/",sFS);
+			
 			// Compute the new filename
 			java.io.File fOld = fCurrent.getIO();
-			String sRoot = fCurrent.getDevice().getUrl();
-			String[] split = filename.split("\\" + java.io.File.separator);
-			String sName = split[0];
+			String sRoot = fCurrent.getDevice().getFio().getPath();
 
 			// Check if directories exists, and if not create them
 			String sPathname = getCheckedPath(sRoot, filename);
@@ -201,7 +203,7 @@ public class RefactorAction implements ITechnicalStrings {
 			// futur deletion
 			java.io.File fCover = tCurrent.getAlbum().getCoverFile();
 			if (fCover != null) {
-				fCover.renameTo(new java.io.File(fNew.getParent() + "/"
+				fCover.renameTo(new java.io.File(fNew.getParent() + sFS
 						+ fCover.getName()));
 			}
 			boolean bState = false;
@@ -225,10 +227,13 @@ public class RefactorAction implements ITechnicalStrings {
 				}
 			}
 			
-
-			// Register and scans new directories
+            // Register and scans new directories
+			String sFirstDir = "";				
+			String sTest[] = sPathname.split(sRoot.replace("\\","\\\\"));			
+			sFirstDir = sTest[1].split("\\"+sFS)[1];
+			
 			Directory dir = DirectoryManager.getInstance().registerDirectory(
-					sName,
+					sFirstDir,
 					DirectoryManager.getInstance().getDirectoryForIO(
 							fCurrent.getDevice().getFio()),
 					fCurrent.getDevice());
@@ -243,7 +248,7 @@ public class RefactorAction implements ITechnicalStrings {
 						.removeDirectory(fOld.getParent());
 			} else if (list.length != 0) {
 				for (java.io.File f : list) {
-					f.renameTo(new java.io.File(fNew.getParent() + "/"
+					f.renameTo(new java.io.File(fNew.getParent() + sFS
 							+ f.getName()));
 				}
 			} else if (list.length == 0) {
@@ -254,6 +259,9 @@ public class RefactorAction implements ITechnicalStrings {
 				}
 			}
 			fCurrent.getDevice().cleanRemovedFiles();
+			
+			InformationJPanel.getInstance().setMessage(
+					Messages.getString("RefactorWizard.0")+sPathname, 0); //$NON-NLS-1$
 		}
 
 		if (!sErrors.equals("")) {
@@ -268,11 +276,10 @@ public class RefactorAction implements ITechnicalStrings {
 	}
 
 	public String getCheckedPath(String sRoot, String sPathname) {
-		
-		String sFS = java.io.File.separator; 
+			
 		java.io.File fioRoot = new java.io.File(sRoot);
 		java.io.File[] fioList = fioRoot.listFiles(new JajukFileFilter(JajukFileFilter.DirectoryFilter.getInstance()));
-		String[] sPaths = sPathname.split(sFS);
+		String[] sPaths = sPathname.split("\\"+sFS);
 		String sReturn = sRoot;
 		for (int i = 0; i < sPaths.length - 1; i++) {
 			String sPath = sPaths[i];
@@ -280,7 +287,7 @@ public class RefactorAction implements ITechnicalStrings {
 			for (java.io.File fio : fioList) {
 				String s = fio.getPath();
 				if (s.equalsIgnoreCase(sReturn + sFS + sPath)) {
-					sReturn += sFS + s.replace(sReturn, "");
+					sReturn += sFS + fio.getName();
 					bool = true;
 				}
 			}
@@ -302,7 +309,7 @@ public class RefactorAction implements ITechnicalStrings {
 						.registerDirectory(f.getName(), d, d.getDevice());
 				registerFile(dir);
 			}
-		} else {
+		} else {			
 			d.scan(true);
 		}
 	}
