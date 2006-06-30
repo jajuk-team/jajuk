@@ -3,9 +3,9 @@
 
 <project default='all' name='jajuk' basedir='..'>
   <!--VARIABLES-->
-  <property name='version' value='1.2rc7'/>
-  <property name='test' value='-test'/>
-  <property name='jwsdeploy' value='test'/>
+  <property name='version' value='1.2'/>
+  <property name='test' value='-notest'/>
+  <property name='jwsdeploy' value='default'/>
   <property name='qdwizard_version' value='1.3'/>
 	  
   <!--CONST-->
