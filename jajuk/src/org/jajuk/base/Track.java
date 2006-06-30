@@ -301,16 +301,16 @@ public class Track extends PropertyAdapter implements Comparable{
         long lRate = getRate();
         switch(getStarsNumber()){
         case 1:
-            ilRate = new IconLabel(Util.getIcon(ICON_STAR_1),"",null,null,null,Long.toString(getRate()));
+            ilRate = new IconLabel(Util.getIcon(ICON_STAR_1),"",null,null,null,Long.toString(getRate())); //$NON-NLS-1$
             break;
         case 2:
-            ilRate = new IconLabel(Util.getIcon(ICON_STAR_2),"",null,null,null,Long.toString(getRate()));
+            ilRate = new IconLabel(Util.getIcon(ICON_STAR_2),"",null,null,null,Long.toString(getRate())); //$NON-NLS-1$
             break;
         case 3:
-            ilRate = new IconLabel(Util.getIcon(ICON_STAR_3),"",null,null,null,Long.toString(getRate()));
+            ilRate = new IconLabel(Util.getIcon(ICON_STAR_3),"",null,null,null,Long.toString(getRate())); //$NON-NLS-1$
             break;
         case 4:
-            ilRate = new IconLabel(Util.getIcon(ICON_STAR_4),"",null,null,null,Long.toString(getRate()));
+            ilRate = new IconLabel(Util.getIcon(ICON_STAR_4),"",null,null,null,Long.toString(getRate())); //$NON-NLS-1$
             break;
         }
         ilRate.setInteger(true);

@@ -140,6 +140,7 @@ public class AboutView extends ViewAdapter {
         alContribs.add(new Contributor("Erwan Richard","erwan.richard@laposte.net")); //$NON-NLS-1$ //$NON-NLS-2$
         alContribs.add(new Contributor("Jérome Fortain","jf_sourceforge@khiplus.fr")); //$NON-NLS-1$ //$NON-NLS-2$
         alContribs.add(new Contributor("Mike Kelp","")); //$NON-NLS-1$ //$NON-NLS-2$
+        alContribs.add(new Contributor("Sung Pil Moon","")); //$NON-NLS-1$ //$NON-NLS-2$
         cp = new ContributorsPanel(alContribs);
 		JPanel jpAbout = new JPanel();
 		jpAbout.setLayout(new BoxLayout(jpAbout,BoxLayout.Y_AXIS));

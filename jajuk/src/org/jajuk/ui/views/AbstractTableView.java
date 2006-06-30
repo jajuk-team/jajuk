@@ -181,7 +181,7 @@ public abstract class AbstractTableView extends ViewAdapter
                 jpControl = new JPanel();
                 jpControl.setBorder(BorderFactory.createEtchedBorder());
                 jtbEditable = new JajukToggleButton(Util.getIcon(ICON_EDIT));
-                jtbEditable.setToolTipText(Messages.getString("AbstractTableView.11"));
+                jtbEditable.setToolTipText(Messages.getString("AbstractTableView.11")); //$NON-NLS-1$
                 jtbEditable.addActionListener(AbstractTableView.this);
                 jlFilter = new JLabel(Messages.getString("AbstractTableView.0")); //$NON-NLS-1$
                 //properties combo box, fill with colums names expect ID

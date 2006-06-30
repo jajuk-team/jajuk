@@ -304,7 +304,7 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
             HashMap<String,String> hm = Collection.getInstance().getHmWrongRightFileID();
             if (hm.size() > 0 && hm.containsKey(sID)){
                 sID = hm.get(sID);
-                Log.debug("upload:"+sID);
+                Log.debug("upload:"+sID); //$NON-NLS-1$
             }
             //test if this file is still kwown int the collection
             if (FileManager.getInstance().getItem(sID) != null){

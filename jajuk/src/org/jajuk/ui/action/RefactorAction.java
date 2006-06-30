@@ -53,10 +53,10 @@ public class RefactorAction implements ITechnicalStrings {
 	public RefactorAction(ArrayList<File> al) {
 		alFiles = al;
 		Iterator it = alFiles.iterator();
-		String sFiles = "";
+		String sFiles = ""; //$NON-NLS-1$
 		while (it.hasNext()) {
 			File f = (File) it.next();
-			sFiles += f.getName() + "\n";
+			sFiles += f.getName() + "\n"; //$NON-NLS-1$
 		}		
 		if (ConfigurationManager.getBoolean(CONF_CONFIRMATIONS_REFACTOR_FILES)) {
 			int iResu = Messages
@@ -79,7 +79,7 @@ public class RefactorAction implements ITechnicalStrings {
 
 	public void refactor() {
 		Iterator it = alFiles.iterator();
-		String sErrors = "";
+		String sErrors = ""; //$NON-NLS-1$
 		while (it.hasNext()) {
 			File fCurrent = (File) it.next();
 			Track tCurrent = fCurrent.getTrack();
@@ -89,39 +89,39 @@ public class RefactorAction implements ITechnicalStrings {
 			String sValue;
 			// Check Author name
 			if (filename.contains(PATTERN_ARTIST)) {
-				sValue = tCurrent.getAuthor().getName2().replace("[/\\:]", "-");
-				if (!sValue.equalsIgnoreCase(Messages.getString("unknown"))) {
+				sValue = tCurrent.getAuthor().getName2().replace("[/\\:]", "-"); //$NON-NLS-1$ //$NON-NLS-2$
+				if (!sValue.equalsIgnoreCase(Messages.getString("unknown"))) { //$NON-NLS-1$
 					filename = filename.replace(PATTERN_ARTIST, AuthorManager
 							.format(sValue));
 				} else {
-					sErrors += fCurrent.getAbsolutePath() + " ("
-							+ Messages.getString("Error.150") + ")\n";
+					sErrors += fCurrent.getAbsolutePath() + " (" //$NON-NLS-1$
+							+ Messages.getString("Error.150") + ")\n"; //$NON-NLS-1$ //$NON-NLS-2$
 					continue;
 				}
 			}
 
 			// Check Style name
 			if (filename.contains(PATTERN_GENRE)) {
-				sValue = tCurrent.getStyle().getName2().replace("[/\\:]", "-");
-				if (!sValue.equalsIgnoreCase(Messages.getString("unknown"))) {
+				sValue = tCurrent.getStyle().getName2().replace("[/\\:]", "-"); //$NON-NLS-1$ //$NON-NLS-2$
+				if (!sValue.equalsIgnoreCase(Messages.getString("unknown"))) { //$NON-NLS-1$
 					filename = filename.replace(PATTERN_GENRE, StyleManager
 							.format(sValue));
 				} else {
-					sErrors += fCurrent.getAbsolutePath() + " ("
-							+ Messages.getString("Error.153") + ")\n";
+					sErrors += fCurrent.getAbsolutePath() + " (" //$NON-NLS-1$
+							+ Messages.getString("Error.153") + ")\n"; //$NON-NLS-1$ //$NON-NLS-2$
 					continue;
 				}
 			}
 
 			// Check Album Name
 			if (filename.contains(PATTERN_ALBUM)) {
-				sValue = tCurrent.getAlbum().getName2().replace("[/\\:]", "-");
-				if (!sValue.equalsIgnoreCase(Messages.getString("unknown"))) {
+				sValue = tCurrent.getAlbum().getName2().replace("[/\\:]", "-"); //$NON-NLS-1$ //$NON-NLS-2$
+				if (!sValue.equalsIgnoreCase(Messages.getString("unknown"))) { //$NON-NLS-1$
 					filename = filename.replace(PATTERN_ALBUM, AlbumManager
 							.format(sValue));
 				} else {
-					sErrors += fCurrent.getAbsolutePath() + " ("
-							+ Messages.getString("Error.149") + ")\n";
+					sErrors += fCurrent.getAbsolutePath() + " (" //$NON-NLS-1$
+							+ Messages.getString("Error.149") + ")\n"; //$NON-NLS-1$ //$NON-NLS-2$
 					continue;
 				}
 			}
@@ -133,17 +133,17 @@ public class RefactorAction implements ITechnicalStrings {
 				if (lOrder == 0) {
 					String sFilename = fCurrent.getName();
 					if (!Character.isDigit(sFilename.charAt(0))) {
-						sErrors += fCurrent.getAbsolutePath() + " ("
-								+ Messages.getString("Error.152") + ")\n";
+						sErrors += fCurrent.getAbsolutePath() + " (" //$NON-NLS-1$
+								+ Messages.getString("Error.152") + ")\n"; //$NON-NLS-1$ //$NON-NLS-2$
 						continue;
 					} else {
 						String sTo = fCurrent.getName().substring(0, 3).trim()
-								.replaceAll("[^0-9]", "");
+								.replaceAll("[^0-9]", ""); //$NON-NLS-1$ //$NON-NLS-2$
 						for (char c : sTo.toCharArray()) {
 							if (!Character.isDigit(c)) {
-								sErrors += fCurrent.getAbsolutePath() + " ("
-										+ Messages.getString("Error.152")
-										+ ")\n";
+								sErrors += fCurrent.getAbsolutePath() + " (" //$NON-NLS-1$
+										+ Messages.getString("Error.152") //$NON-NLS-1$
+										+ ")\n"; //$NON-NLS-1$
 								continue;
 							}
 						}
@@ -151,25 +151,25 @@ public class RefactorAction implements ITechnicalStrings {
 					}
 				}
 				if (lOrder < 10) {
-					filename = filename.replace(PATTERN_TRACKORDER, "0"
+					filename = filename.replace(PATTERN_TRACKORDER, "0" //$NON-NLS-1$
 							+ lOrder);
 				} else {
 					filename = filename
-							.replace(PATTERN_TRACKORDER, lOrder + "");
+							.replace(PATTERN_TRACKORDER, lOrder + ""); //$NON-NLS-1$
 				}
 			}
 
 			// Check Track name
 			if (filename.contains(PATTERN_TRACKNAME)) {
 
-				sValue = tCurrent.getName().replace("[/\\:]", "-");
+				sValue = tCurrent.getName().replace("[/\\:]", "-"); //$NON-NLS-1$ //$NON-NLS-2$
 
-				if (!sValue.equalsIgnoreCase(Messages.getString("unknown"))) {
+				if (!sValue.equalsIgnoreCase(Messages.getString("unknown"))) { //$NON-NLS-1$
 					filename = filename.replace(PATTERN_TRACKNAME,
 							AuthorManager.format(sValue));
 				} else {
-					sErrors += fCurrent.getAbsolutePath() + " ("
-							+ Messages.getString("Error.151") + ")\n";
+					sErrors += fCurrent.getAbsolutePath() + " (" //$NON-NLS-1$
+							+ Messages.getString("Error.151") + ")\n"; //$NON-NLS-1$ //$NON-NLS-2$
 					continue;
 				}
 			}
@@ -178,17 +178,17 @@ public class RefactorAction implements ITechnicalStrings {
 				if (tCurrent.getYear() != 0) {
 					filename = filename.replace(PATTERN_YEAR, tCurrent
 							.getYear()
-							+ "");
+							+ ""); //$NON-NLS-1$
 				} else {
-					sErrors += fCurrent.getAbsolutePath() + " ("
-							+ Messages.getString("Error.148") + ")\n";
+					sErrors += fCurrent.getAbsolutePath() + " (" //$NON-NLS-1$
+							+ Messages.getString("Error.148") + ")\n"; //$NON-NLS-1$ //$NON-NLS-2$
 					continue;
 				}
 
 			}
 
-			filename += "." + tCurrent.getType().getExtension();
-			filename = filename.replace("/",sFS);
+			filename += "." + tCurrent.getType().getExtension(); //$NON-NLS-1$
+			filename = filename.replace("/",sFS); //$NON-NLS-1$
 			
 			// Compute the new filename
 			java.io.File fOld = fCurrent.getIO();
@@ -209,28 +209,28 @@ public class RefactorAction implements ITechnicalStrings {
 			boolean bState = false;
 
 			if (fNew.getAbsolutePath().equalsIgnoreCase(fOld.getAbsolutePath())) {
-				sErrors += fCurrent.getAbsolutePath() + " ("
-						+ Messages.getString("Error.160") + ")\n";
+				sErrors += fCurrent.getAbsolutePath() + " (" //$NON-NLS-1$
+						+ Messages.getString("Error.160") + ")\n"; //$NON-NLS-1$ //$NON-NLS-2$
 			} else {
 				if (fNew.getParentFile().canWrite()) {
 					bState = fOld.renameTo(fNew);
 					if (!bState) {
-						sErrors += fCurrent.getAbsolutePath() + " ("
-								+ Messages.getString("Error.154") + ")\n";
+						sErrors += fCurrent.getAbsolutePath() + " (" //$NON-NLS-1$
+								+ Messages.getString("Error.154") + ")\n"; //$NON-NLS-1$ //$NON-NLS-2$
 					}
-					Log.debug("[Refactoring] " + fNew.getAbsolutePath()
-							+ " Success ? " + bState);
+					Log.debug("[Refactoring] " + fNew.getAbsolutePath() //$NON-NLS-1$
+							+ " Success ? " + bState); //$NON-NLS-1$
 
 				} else {
-					sErrors += fCurrent.getAbsolutePath() + " ("
-							+ Messages.getString("Error.161") + ")\n";
+					sErrors += fCurrent.getAbsolutePath() + " (" //$NON-NLS-1$
+							+ Messages.getString("Error.161") + ")\n"; //$NON-NLS-1$ //$NON-NLS-2$
 				}
 			}
 			
             // Register and scans new directories
-			String sFirstDir = "";				
-			String sTest[] = sPathname.split(sRoot.replace("\\","\\\\"));			
-			sFirstDir = sTest[1].split("\\"+sFS)[1];
+			String sFirstDir = "";				 //$NON-NLS-1$
+			String sTest[] = sPathname.split(sRoot.replace("\\","\\\\"));			 //$NON-NLS-1$ //$NON-NLS-2$
+			sFirstDir = sTest[1].split("\\"+sFS)[1]; //$NON-NLS-1$
 			
 			Directory dir = DirectoryManager.getInstance().registerDirectory(
 					sFirstDir,
@@ -264,8 +264,8 @@ public class RefactorAction implements ITechnicalStrings {
 					Messages.getString("RefactorWizard.0")+sPathname, 0); //$NON-NLS-1$
 		}
 
-		if (!sErrors.equals("")) {
-			Messages.showDetailedErrorMessage("147", "", sErrors);
+		if (!sErrors.equals("")) { //$NON-NLS-1$
+			Messages.showDetailedErrorMessage("147", "", sErrors); //$NON-NLS-1$ //$NON-NLS-2$
 		} else {
 			InformationJPanel
 					.getInstance()
@@ -279,7 +279,7 @@ public class RefactorAction implements ITechnicalStrings {
 			
 		java.io.File fioRoot = new java.io.File(sRoot);
 		java.io.File[] fioList = fioRoot.listFiles(new JajukFileFilter(JajukFileFilter.DirectoryFilter.getInstance()));
-		String[] sPaths = sPathname.split("\\"+sFS);
+		String[] sPaths = sPathname.split("\\"+sFS); //$NON-NLS-1$
 		String sReturn = sRoot;
 		for (int i = 0; i < sPaths.length - 1; i++) {
 			String sPath = sPaths[i];

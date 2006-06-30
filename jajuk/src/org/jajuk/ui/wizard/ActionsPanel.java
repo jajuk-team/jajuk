@@ -53,11 +53,11 @@ public class ActionsPanel extends JPanel {
     /**Locale*/
     Locale locale;
     
-    private static final String[] locales = {"fr","nl","ca","de","es"};
-    private static final String[] Finish = {"Terminé","Afgerond","Finalitzar","Fertig","Finalizar"};
-    private static final String[] Cancel = {"Annuler","Annuleren","Cancelar","Abbrechen","Cancelar"};
-    private static final String[] Previous = {"Précédent","Vooropgaand","Anterior","Vorig","Anterior"};
-    private static final String[] Next = {"Suivant","Aanstaande","Següent","Folgende","Siguiente"};
+    private static final String[] locales = {"fr","nl","ca","de","es"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+    private static final String[] Finish = {"Terminé","Afgerond","Finalitzar","Fertig","Finalizar"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+    private static final String[] Cancel = {"Annuler","Annuleren","Cancelar","Abbrechen","Cancelar"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+    private static final String[] Previous = {"Précédent","Vooropgaand","Anterior","Zurück","Anterior"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+    private static final String[] Next = {"Suivant","Aanstaande","Següent","Weiter","Siguiente"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 
     private static final int CODE_FINISH = 0;
     private static final int CODE_CANCEL = 1;
@@ -77,11 +77,11 @@ public class ActionsPanel extends JPanel {
         //Problem panel
         jlProblem = new JLabel(); 
         jlProblem.setForeground(Color.RED);
-        jlProblem.setFont(new Font("Dialog",Font.BOLD,12));
+        jlProblem.setFont(new Font("Dialog",Font.BOLD,12)); //$NON-NLS-1$
         
         //Action buttons
         int xSeparator = 10;
-        float fButton = 0.2f;
+        float fButton = 0.24f;
         double[][] layout = new double[][]{
                 {TableLayout.FILL,fButton,xSeparator,fButton,xSeparator,fButton,xSeparator,fButton,20},
                 {20}
@@ -89,20 +89,20 @@ public class ActionsPanel extends JPanel {
         JPanel jpButtons = new JPanel(new TableLayout(layout));
         jbPrevious = new JButton(getMessage(CODE_PREVIOUS));
         jbPrevious.addActionListener(al);
-        jbPrevious.setActionCommand("Prev");
+        jbPrevious.setActionCommand("Prev"); //$NON-NLS-1$
         jbNext = new JButton(getMessage(CODE_NEXT));
         jbNext.addActionListener(al);
-        jbNext.setActionCommand("Next");
+        jbNext.setActionCommand("Next"); //$NON-NLS-1$
         jbCancel = new JButton(getMessage(CODE_CANCEL));
         jbCancel.addActionListener(al);
-        jbCancel.setActionCommand("Cancel");
+        jbCancel.setActionCommand("Cancel"); //$NON-NLS-1$
         jbFinish = new JButton(getMessage(CODE_FINISH));
         jbFinish.addActionListener(al);
-        jbFinish.setActionCommand("Finish");
-        jpButtons.add(jbCancel,"1,0");
-        jpButtons.add(jbPrevious,"3,0");
-        jpButtons.add(jbNext,"5,0");
-        jpButtons.add(jbFinish,"7,0");
+        jbFinish.setActionCommand("Finish"); //$NON-NLS-1$
+        jpButtons.add(jbCancel,"1,0"); //$NON-NLS-1$
+        jpButtons.add(jbPrevious,"3,0"); //$NON-NLS-1$
+        jpButtons.add(jbNext,"5,0"); //$NON-NLS-1$
+        jpButtons.add(jbFinish,"7,0"); //$NON-NLS-1$
         
         //Main panel
         double[][] dScreenLayout = new double[][]{
@@ -111,8 +111,8 @@ public class ActionsPanel extends JPanel {
         };
         TableLayout l = new TableLayout(dScreenLayout);
         setLayout(l);
-        add(jlProblem,"0,0");
-        add(jpButtons,"0,2");
+        add(jlProblem,"0,0"); //$NON-NLS-1$
+        add(jpButtons,"0,2"); //$NON-NLS-1$
     }
     
     /**
@@ -128,7 +128,7 @@ public class ActionsPanel extends JPanel {
     
     void setProblem(String sProblem){
         jlProblem.setText(sProblem);
-        if (sProblem != null && !"".equals(sProblem)){
+        if (sProblem != null && !"".equals(sProblem)){ //$NON-NLS-1$
             jlProblem.setBorder(BorderFactory.createMatteBorder(1,0,0,0,Color.DARK_GRAY));    
         }
         else{
@@ -164,16 +164,16 @@ public class ActionsPanel extends JPanel {
         else{ //english is default
             switch(message){
             case CODE_FINISH:
-                return "OK";
+                return "OK"; //$NON-NLS-1$
             case CODE_NEXT:
-                return "Next";
+                return "Next"; //$NON-NLS-1$
             case CODE_CANCEL:
-                return "Cancel";
+                return "Cancel"; //$NON-NLS-1$
             case CODE_PREVIOUS:
-                return "Previous";
+                return "Previous"; //$NON-NLS-1$
             }
         }
-        return "";
+        return ""; //$NON-NLS-1$
     }
     
   

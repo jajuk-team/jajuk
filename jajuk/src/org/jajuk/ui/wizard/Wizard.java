@@ -152,16 +152,16 @@ public abstract class Wizard extends Object implements ActionListener{
     public void actionPerformed(ActionEvent ae) {
         //Previous required. Note that the prev button is enabled only if 
         //the user can go previous
-        if (ae.getActionCommand().equals("Prev")){
+        if (ae.getActionCommand().equals("Prev")){ //$NON-NLS-1$
             setScreen(getPreviousScreen(current.getClass()));
         }
-        else if (ae.getActionCommand().equals("Next")){
+        else if (ae.getActionCommand().equals("Next")){ //$NON-NLS-1$
             setScreen(getNextScreen(current.getClass()));
         }
-        else if (ae.getActionCommand().equals("Cancel")){
+        else if (ae.getActionCommand().equals("Cancel")){ //$NON-NLS-1$
             dialog.dispose();
         }
-        else if (ae.getActionCommand().equals("Finish")){
+        else if (ae.getActionCommand().equals("Finish")){ //$NON-NLS-1$
             finish();
             dialog.dispose();
         }
@@ -193,12 +193,12 @@ public abstract class Wizard extends Object implements ActionListener{
         current.setCanGoNext((getNextScreen(screenClass) != null));
         String sDesc = screen.getDescription(); 
         if (sDesc != null){
-        header.setText("<html><b>&nbsp;"+screen.getName()+
-            "</b><p><p>&nbsp;"+sDesc);
+        header.setText("<html><b>&nbsp;"+screen.getName()+ //$NON-NLS-1$
+            "</b><p><p>&nbsp;"+sDesc); //$NON-NLS-1$
         }
         else{
-        header.setText("<html><b>&nbsp;"+screen.getName()+
-            "</b>");
+        header.setText("<html><b>&nbsp;"+screen.getName()+ //$NON-NLS-1$
+            "</b>"); //$NON-NLS-1$
         }
         display();
     }
@@ -215,14 +215,14 @@ public abstract class Wizard extends Object implements ActionListener{
                 {TableLayout.PREFERRED,250,10,TableLayout.PREFERRED}
         };
         JPanel jpVert = new JPanel(new TableLayout(dVertical));
-        jpVert.add(header,"0,0");
+        jpVert.add(header,"0,0"); //$NON-NLS-1$
         if (current != null){
-            jpVert.add(current,"0,1");
+            jpVert.add(current,"0,1"); //$NON-NLS-1$
         }
         else{ //current is null in initial state
-            jpVert.add(new JPanel(),"0,1");
+            jpVert.add(new JPanel(),"0,1"); //$NON-NLS-1$
         }
-        jpVert.add(actions,"0,3");
+        jpVert.add(actions,"0,3"); //$NON-NLS-1$
         //left part:icon, right part:buttons+problem+screen+header
         if (icon != null){
             double[][] dGlobal = new double[][]{
@@ -230,8 +230,8 @@ public abstract class Wizard extends Object implements ActionListener{
                     {TableLayout.FILL}
             };
             dialog.setLayout(new TableLayout(dGlobal));
-            dialog.add(new JLabel(getResizedImage(icon,200,400)),"0,0");
-            dialog.add(jpVert,"2,0");
+            dialog.add(new JLabel(getResizedImage(icon,200,400)),"0,0"); //$NON-NLS-1$
+            dialog.add(jpVert,"2,0"); //$NON-NLS-1$
         }
         else{
             dialog.add(jpVert);

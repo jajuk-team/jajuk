@@ -213,9 +213,9 @@ public class JajukFileFilter extends FileFilter implements java.io.FileFilter,IT
             }
             //check extension is known
             String ext = Util.getExtension(f);
-            if (ext.equalsIgnoreCase("jpg") || 
-                    ext.equalsIgnoreCase("gif") ||
-                    ext.equalsIgnoreCase("png")){
+            if (ext.equalsIgnoreCase("jpg") ||  //$NON-NLS-1$
+                    ext.equalsIgnoreCase("gif") || //$NON-NLS-1$
+                    ext.equalsIgnoreCase("png")){ //$NON-NLS-1$
                 return true;
             }
             return false;

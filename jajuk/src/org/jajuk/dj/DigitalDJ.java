@@ -66,7 +66,7 @@ public abstract class DigitalDJ implements ITechnicalStrings,Comparable{
      * @return String representation of this object
      */
     public String toString(){
-        return "DJ "+sName;
+        return "DJ "+sName; //$NON-NLS-1$
     }
     
     /**
@@ -91,12 +91,12 @@ public abstract class DigitalDJ implements ITechnicalStrings,Comparable{
      */
     protected String toXMLGeneralParameters(){
     	StringBuffer sb = new StringBuffer();
-    	sb.append("<?xml version='1.0' encoding='UTF-8'?>\n");
-        sb.append("<"+XML_DJ_DJ+" "+XML_VERSION+"='"+JAJUK_VERSION+"' "+XML_ID+"='"+sID+"' "+XML_NAME+"='"+sName+"' "+XML_TYPE+"='"+this.getClass().getName()+"'>\n");
-        sb.append("\t<"+XML_DJ_GENERAL+" ");
-        sb.append(XML_DJ_RATING_LEVEL+"='"+iRatingLevel+"' ");
-        sb.append(XML_DJ_UNICITY+"='"+bUnicity+"' ");
-        sb.append(XML_DJ_FADE_DURATION+"='"+iFadingDuration+"'/>\n");
+    	sb.append("<?xml version='1.0' encoding='UTF-8'?>\n"); //$NON-NLS-1$
+        sb.append("<"+XML_DJ_DJ+" "+XML_VERSION+"='"+JAJUK_VERSION+"' "+XML_ID+"='"+sID+"' "+XML_NAME+"='"+sName+"' "+XML_TYPE+"='"+this.getClass().getName()+"'>\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$
+        sb.append("\t<"+XML_DJ_GENERAL+" "); //$NON-NLS-1$ //$NON-NLS-2$
+        sb.append(XML_DJ_RATING_LEVEL+"='"+iRatingLevel+"' "); //$NON-NLS-1$ //$NON-NLS-2$
+        sb.append(XML_DJ_UNICITY+"='"+bUnicity+"' "); //$NON-NLS-1$ //$NON-NLS-2$
+        sb.append(XML_DJ_FADE_DURATION+"='"+iFadingDuration+"'/>\n"); //$NON-NLS-1$ //$NON-NLS-2$
         return sb.toString();
     }
     

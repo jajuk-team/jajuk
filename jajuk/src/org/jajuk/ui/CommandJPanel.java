@@ -216,7 +216,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
         };
         ddbDDJ.setAction(ActionManager.getAction(JajukAction.DJ));
         populateDJs();
-        ddbDDJ.setText("");//no text visible
+        ddbDDJ.setText("");//no text visible //$NON-NLS-1$
         jtbSpecial.add(jbGlobalRandom);
 		jtbSpecial.add(jbBestof);
 		jtbSpecial.add(jbNovelties);
@@ -583,10 +583,10 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
     private void populateDJs(){
         try{
             popupDDJ.removeAll();
-            JMenuItem jmiNew = new JMenuItem(Messages.getString("CommandJPanel.17"),Util.getIcon(ICON_WIZARD)); 
+            JMenuItem jmiNew = new JMenuItem(Messages.getString("CommandJPanel.17"),Util.getIcon(ICON_WIZARD));  //$NON-NLS-1$
             popupDDJ.add(jmiNew);
             popupDDJ.addSeparator();
-            popupDDJ.add("- "+Messages.getString("DigitalDJWizard.65")+" -");
+            popupDDJ.add("- "+Messages.getString("DigitalDJWizard.65")+" -"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             Iterator it = DigitalDJManager.getInstance().getDJs().iterator();
             while (it.hasNext()){
                 final DigitalDJ dj = (DigitalDJ)it.next();
@@ -596,7 +596,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
                         ConfigurationManager.setProperty(CONF_DEFAULT_DJ,dj.getID());
                         populateDJs();
                         ActionBase action = ActionManager.getAction(JajukAction.DJ);
-                        action.setShortDescription("<html>"+Messages.getString("CommandJPanel.18")+"<p><b>"+dj.getName()+"</b></p></html>");
+                        action.setShortDescription("<html>"+Messages.getString("CommandJPanel.18")+"<p><b>"+dj.getName()+"</b></p></html>"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
                     }
                 });
                 popupDDJ.add(jmi);
@@ -610,7 +610,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
             popupDDJ.addSeparator();
             popupDDJ.addSeparator();
             //Ambiences
-            JMenuItem jmiAmbiences = new JMenuItem(Messages.getString("CommandJPanel.19"),Util.getIcon(ICON_STYLE)); 
+            JMenuItem jmiAmbiences = new JMenuItem(Messages.getString("CommandJPanel.19"),Util.getIcon(ICON_STYLE));  //$NON-NLS-1$
             jmiAmbiences.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent arg0) {
                     new AmbienceWizard();
@@ -618,25 +618,25 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
             });
             popupDDJ.add(jmiAmbiences);
             popupDDJ.addSeparator();
-            popupDDJ.add("- "+Messages.getString("DigitalDJWizard.66")+" -");
+            popupDDJ.add("- "+Messages.getString("DigitalDJWizard.66")+" -"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             //Add "any" ambience item
-            JCheckBoxMenuItem jmi = new JCheckBoxMenuItem("<html><i>"+
-                Messages.getString("DigitalDJWizard.64")+"</i></html>");
+            JCheckBoxMenuItem jmi = new JCheckBoxMenuItem("<html><i>"+ //$NON-NLS-1$
+                Messages.getString("DigitalDJWizard.64")+"</i></html>"); //$NON-NLS-1$ //$NON-NLS-2$
             jmi.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent arg0) {
                     //reset default ambience and tooltips
-                    ConfigurationManager.setProperty(CONF_DEFAULT_AMBIENCE,"");
+                    ConfigurationManager.setProperty(CONF_DEFAULT_AMBIENCE,""); //$NON-NLS-1$
                     populateDJs();
                     ActionBase action = ActionManager.getAction(JajukAction.NOVELTIES);
-                    action.setShortDescription(Messages.getString("JajukWindow.31"));
+                    action.setShortDescription(Messages.getString("JajukWindow.31")); //$NON-NLS-1$
                     action = ActionManager.getAction(JajukAction.BEST_OF);
-                    action.setShortDescription(Messages.getString("JajukWindow.24"));
+                    action.setShortDescription(Messages.getString("JajukWindow.24")); //$NON-NLS-1$
                     action = ActionManager.getAction(JajukAction.SHUFFLE_GLOBAL);
-                    action.setShortDescription(Messages.getString("JajukWindow.23"));
+                    action.setShortDescription(Messages.getString("JajukWindow.23")); //$NON-NLS-1$
                 }
             });
             jmi.setSelected(ConfigurationManager.getProperty(CONF_DEFAULT_AMBIENCE) == null
-                || ConfigurationManager.getProperty(CONF_DEFAULT_AMBIENCE).equals(""));
+                || ConfigurationManager.getProperty(CONF_DEFAULT_AMBIENCE).equals("")); //$NON-NLS-1$
             popupDDJ.add(jmi);
             //Add available ambiences
             for (final Ambience ambience: AmbienceManager.getInstance().getAmbiences()){
@@ -646,11 +646,11 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
                         ConfigurationManager.setProperty(CONF_DEFAULT_AMBIENCE,ambience.getID());
                         populateDJs();
                         ActionBase action = ActionManager.getAction(JajukAction.NOVELTIES);
-                        action.setShortDescription("<html>"+Messages.getString("JajukWindow.31")+"<p><b>"+ambience.getName()+"</b></p></html>");
+                        action.setShortDescription("<html>"+Messages.getString("JajukWindow.31")+"<p><b>"+ambience.getName()+"</b></p></html>"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
                         action = ActionManager.getAction(JajukAction.SHUFFLE_GLOBAL);
-                        action.setShortDescription("<html>"+Messages.getString("JajukWindow.23")+"<p><b>"+ambience.getName()+"</b></p></html>");
+                        action.setShortDescription("<html>"+Messages.getString("JajukWindow.23")+"<p><b>"+ambience.getName()+"</b></p></html>"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
                         action = ActionManager.getAction(JajukAction.BEST_OF);
-                        action.setShortDescription("<html>"+Messages.getString("JajukWindow.24")+"<p><b>"+ambience.getName()+"</b></p></html>");
+                        action.setShortDescription("<html>"+Messages.getString("JajukWindow.24")+"<p><b>"+ambience.getName()+"</b></p></html>"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
                     }
                 });
                 jmi.setSelected(ConfigurationManager.getProperty(CONF_DEFAULT_AMBIENCE).equals(ambience.getID()));

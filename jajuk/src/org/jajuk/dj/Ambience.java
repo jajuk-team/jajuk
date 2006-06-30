@@ -68,7 +68,7 @@ public class Ambience implements Comparable{
         		hstyles.add(style);
         	}
         	else{
-        		Log.debug("Unknown style");
+        		Log.debug("Unknown style"); //$NON-NLS-1$
         	}
         }
     	this.sID = sID;
@@ -88,7 +88,7 @@ public class Ambience implements Comparable{
      * Constructor
      */
     public Ambience() {
-        this.sName = "";
+        this.sName = ""; //$NON-NLS-1$
         this.styles = new HashSet(10);
     }
     
@@ -126,7 +126,7 @@ public class Ambience implements Comparable{
      * From String, return style1,style2,...
      */
     public String getStylesDesc(){
-        String out = "";
+        String out = ""; //$NON-NLS-1$
         for (Style s:styles){
             out += s.getName2()+',';
         }
@@ -141,7 +141,7 @@ public class Ambience implements Comparable{
      * @return String representation of this item
      */
     public String toString(){
-        return sName+ " "+styles;
+        return sName+ " "+styles; //$NON-NLS-1$
     }
     
     /**
@@ -169,9 +169,9 @@ public class Ambience implements Comparable{
      * @return String used in DJ XML representation
      */
     public String toXML(){
-        String s = "";
+        String s = ""; //$NON-NLS-1$
         for (Style style:getStyles()){
-            s += style.getId()+","; 
+            s += style.getId()+",";  //$NON-NLS-1$
         }
         return s.substring(0,s.length()-1); //remove last coma
     }

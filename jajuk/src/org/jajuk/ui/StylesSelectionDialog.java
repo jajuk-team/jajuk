@@ -70,7 +70,7 @@ public class StylesSelectionDialog extends JDialog implements ActionListener{
         this.selectedStyles = new HashSet();
         this.disabledStyles = disabledStyles; 
         setLocationByPlatform(true);
-        setTitle(Messages.getString("DigitalDJWizard.14"));
+        setTitle(Messages.getString("DigitalDJWizard.14")); //$NON-NLS-1$
         setModal(true);
         initUI();
         pack();
@@ -141,8 +141,8 @@ public class StylesSelectionDialog extends JDialog implements ActionListener{
                 {20}
         };
         jpAmbiences.setLayout(new TableLayout(layoutCombo));
-        jpAmbiences.add(new JLabel(Messages.getString("DigitalDJWizard.58")),"0,0");
-        jpAmbiences.add(jcbAmbiences,"2,0");
+        jpAmbiences.add(new JLabel(Messages.getString("DigitalDJWizard.58")),"0,0"); //$NON-NLS-1$ //$NON-NLS-2$
+        jpAmbiences.add(jcbAmbiences,"2,0"); //$NON-NLS-1$
         jlist = new JList(list);
         jlist.setLayoutOrientation(JList.VERTICAL_WRAP);
         jlist.setPreferredSize(new Dimension(600,600));
@@ -167,9 +167,9 @@ public class StylesSelectionDialog extends JDialog implements ActionListener{
                 {10,20,5,TableLayout.PREFERRED,5,20,10}
         };
         setLayout(new TableLayout(layout));
-        add(jpAmbiences,"1,1");
-        add(jsp,"1,3");
-        add(okc,"1,5");
+        add(jpAmbiences,"1,1"); //$NON-NLS-1$
+        add(jsp,"1,3"); //$NON-NLS-1$
+        add(okc,"1,5"); //$NON-NLS-1$
         getRootPane().setDefaultButton(okc.getOKButton());
     }
 

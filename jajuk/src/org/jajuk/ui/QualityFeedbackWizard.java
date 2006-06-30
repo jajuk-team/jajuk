@@ -88,7 +88,7 @@ public class QualityFeedbackWizard extends JDialog implements KeyListener,Action
         jtaNotice.setOpaque(true);
         jtaNotice.setBackground(Color.ORANGE);
         jtaNotice.setForeground(Color.DARK_GRAY);
-        jtaNotice.setFont(new Font("Dialog",Font.BOLD,12));
+        jtaNotice.setFont(new Font("Dialog",Font.BOLD,12)); //$NON-NLS-1$
         //From
         jlFrom = new JLabel(Messages.getString("QualityFeedbackWizard.1")); //$NON-NLS-1$
         jlFrom.setToolTipText(Messages.getString("QualityFeedbackWizard.2")); //$NON-NLS-1$
@@ -104,10 +104,10 @@ public class QualityFeedbackWizard extends JDialog implements KeyListener,Action
         jlType = new JLabel(Messages.getString("QualityFeedbackWizard.12")); //$NON-NLS-1$
         jlType.setToolTipText(Messages.getString("QualityFeedbackWizard.12")); //$NON-NLS-1$
         jcbType = new JComboBox();
-        jcbType.addItem(Messages.getString("QualityFeedbackWizard.8"));
-        jcbType.addItem(Messages.getString("QualityFeedbackWizard.9"));
-        jcbType.addItem(Messages.getString("QualityFeedbackWizard.10"));
-        jcbType.addItem(Messages.getString("QualityFeedbackWizard.11"));
+        jcbType.addItem(Messages.getString("QualityFeedbackWizard.8")); //$NON-NLS-1$
+        jcbType.addItem(Messages.getString("QualityFeedbackWizard.9")); //$NON-NLS-1$
+        jcbType.addItem(Messages.getString("QualityFeedbackWizard.10")); //$NON-NLS-1$
+        jcbType.addItem(Messages.getString("QualityFeedbackWizard.11")); //$NON-NLS-1$
         jcbType.setToolTipText(Messages.getString("QualityFeedbackWizard.12")); //$NON-NLS-1$
         //Details
         jlDetail = new JLabel(Messages.getString("QualityFeedbackWizard.5")); //$NON-NLS-1$
@@ -125,8 +125,8 @@ public class QualityFeedbackWizard extends JDialog implements KeyListener,Action
         jpMain.setLayout(new TableLayout(dSize));
         jpMain.add(new JLabel(Util.getIcon(IMAGE_WRITE)),"1,1"); //$NON-NLS-1$
         jpMain.add(jtaNotice,"3,1"); //$NON-NLS-1$
-        jpMain.add(jlType,"1,3");
-        jpMain.add(jcbType,"3,3");
+        jpMain.add(jlType,"1,3"); //$NON-NLS-1$
+        jpMain.add(jcbType,"3,3"); //$NON-NLS-1$
         jpMain.add(jlFrom,"1,5"); //$NON-NLS-1$
         jpMain.add(jtfFrom,"3,5"); //$NON-NLS-1$
         jpMain.add(jlDesc,"1,7"); //$NON-NLS-1$

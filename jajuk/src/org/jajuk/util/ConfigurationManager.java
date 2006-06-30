@@ -199,12 +199,10 @@ public class ConfigurationManager implements ITechnicalStrings{
 		properties.put(CONF_COVERS_ACCURACY+"_4","4"); //Album accuracy //$NON-NLS-1$ //$NON-NLS-2$
 		properties.put(CONF_COVERS_CHANGE_AT_EACH_TRACK,FALSE); 
         properties.put(CONF_PHYSICAL_TABLE_COLUMNS,XML_PLAY+','+XML_TRACK+','+XML_ALBUM+','+XML_AUTHOR+','+
-                XML_TRACK_STYLE+','+XML_TRACK_LENGTH+','+XML_DEVICE+','+XML_NAME+','+','+
-                XML_TRACK_RATE );
+                XML_TRACK_STYLE+','+ XML_TRACK_RATE+','+XML_TRACK_LENGTH );
         properties.put(CONF_LOGICAL_TABLE_COLUMNS,XML_PLAY+','+XML_NAME+','+XML_ALBUM+','+XML_AUTHOR+','+
-              XML_TRACK_STYLE+','+XML_TRACK_LENGTH+','+','+XML_TRACK_RATE+','+XML_TRACK_ADDED+','+
-              XML_TRACK_YEAR);
-        properties.put(CONF_PLAYLIST_EDITOR_COLUMNS,"0"+','+XML_TRACK_NAME+','+','+XML_TRACK_AUTHOR+','+
+              XML_TRACK_STYLE+','+XML_TRACK_LENGTH+','+','+XML_TRACK_RATE);
+        properties.put(CONF_PLAYLIST_EDITOR_COLUMNS,"0"+','+XML_TRACK_NAME+','+','+XML_TRACK_AUTHOR+','+ //$NON-NLS-1$
               XML_TRACK_RATE);
         properties.put(CONF_WINDOW_POSITION,"100,100,"+ //$NON-NLS-1$
             (int)(Toolkit.getDefaultToolkit().getScreenSize().getWidth()-250)+","+ //$NON-NLS-1$
@@ -220,8 +218,8 @@ public class ConfigurationManager implements ITechnicalStrings{
         properties.put(CONF_WIKIPEDIA_LANGUAGE,Messages.getInstance().getLocal());
         properties.put(CONF_FADE_DURATION,"0"); //$NON-NLS-1$
         properties.put(CONF_LOGICAL_TREE_SORT_ORDER,"0"); //sort by style //$NON-NLS-1$        
-        properties.put(CONF_DEFAULT_DJ,"");//default dj        
-        properties.put(CONF_DEFAULT_AMBIENCE,"");//default ambience        
+        properties.put(CONF_DEFAULT_DJ,"");//default dj         //$NON-NLS-1$
+        properties.put(CONF_DEFAULT_AMBIENCE,"");//default ambience         //$NON-NLS-1$
     }
 	
     /**

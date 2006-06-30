@@ -130,7 +130,7 @@ public class Player implements ITechnicalStrings{
             Properties pDetails = new Properties();
             pDetails.put(DETAIL_CURRENT_FILE,file);
             ObservationManager.notify(new Event(EVENT_PLAY_ERROR,pDetails)); //notify the error 
-            Log.error("007","{{"+fCurrent.getAbsolutePath()+"}}", t); //$NON-NLS-1$
+            Log.error("007",org.jajuk.base.Messages.getString("Player.0")+fCurrent.getAbsolutePath()+"}}", t); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             //process playing error asynchonously to avoid loop problems when capscading errors
             new Thread(){
                 public void run(){

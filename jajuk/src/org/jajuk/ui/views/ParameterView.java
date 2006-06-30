@@ -548,29 +548,29 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
         jpTags.setLayout(new TableLayout(sizeTags));
         jcbUseParentDir = new JCheckBox(Messages.getString("ParameterView.101"));  //$NON-NLS-1$
         jcbUseParentDir.setToolTipText(Messages.getString("ParameterView.102")); //$NON-NLS-1$
-        jlRefactorPattern = new JLabel(Messages.getString("ParameterView.192"));
-        jlRefactorPattern.setToolTipText(Messages.getString("ParameterView.193"));
+        jlRefactorPattern = new JLabel(Messages.getString("ParameterView.192")); //$NON-NLS-1$
+        jlRefactorPattern.setToolTipText(Messages.getString("ParameterView.193")); //$NON-NLS-1$
         jtfRefactorPattern = new JTextField();
         jtfRefactorPattern.setInputVerifier(new InputVerifier(){
         	public boolean verify(JComponent input) {
                 JTextField tf = (JTextField) input;
                 String sText = tf.getText().toLowerCase();
                 try{
-                	String[] stPattern = sText.split("[% /-]");
+                	String[] stPattern = sText.split("[% /-]"); //$NON-NLS-1$
                 	for (String sPattern : stPattern){
-                		if (!sPattern.equals("")){
+                		if (!sPattern.equals("")){ //$NON-NLS-1$
                 			if (sPattern.equalsIgnoreCase(PATTERN_ALBUM.substring(1))||
                 				sPattern.equalsIgnoreCase(PATTERN_ARTIST.substring(1)) ||
                 				sPattern.equalsIgnoreCase(PATTERN_YEAR.substring(1)) ||
                 				sPattern.equalsIgnoreCase(PATTERN_TRACKNAME.substring(1)) ||
                 				sPattern.equalsIgnoreCase(PATTERN_TRACKORDER.substring(1)) ||
                 				sPattern.equalsIgnoreCase(PATTERN_GENRE.substring(1))){
-                				Log.debug("[Refactor Verifier] "+sPattern+" : OK !");
+                				Log.debug("[Refactor Verifier] "+sPattern+" : OK !"); //$NON-NLS-1$ //$NON-NLS-2$
                 			} else {
-                				Log.debug("[Refactor Verifier] "+sPattern+" : Wrong !");
+                				Log.debug("[Refactor Verifier] "+sPattern+" : Wrong !"); //$NON-NLS-1$ //$NON-NLS-2$
                 				JOptionPane.showMessageDialog(jtpMain,
-                					    Messages.getString("Error.146"),
-                					    Messages.getString("Error"),
+                					    Messages.getString("Error.146"), //$NON-NLS-1$
+                					    Messages.getString("Error"), //$NON-NLS-1$
                 					    JOptionPane.ERROR_MESSAGE);
                 				jbOK.setEnabled(false);
                 				return false;
@@ -590,8 +590,8 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
             }
         });
         jpTags.add(jcbUseParentDir,"0,1"); //$NON-NLS-1$
-        jpTags.add(jlRefactorPattern,"0,3");
-        jpTags.add(jtfRefactorPattern,"1,3");
+        jpTags.add(jlRefactorPattern,"0,3"); //$NON-NLS-1$
+        jpTags.add(jtfRefactorPattern,"1,3"); //$NON-NLS-1$
         
         //--Advanced
         jpAdvanced = new JPanel();
@@ -783,7 +783,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
         jpCovers.add(jlMinSize,"0,7"); //$NON-NLS-1$
         jpCovers.add(jtfMinSize,"1,7"); //$NON-NLS-1$
         jpCovers.add(jlMaxSize,"0,9"); //$NON-NLS-1$
-        jpCovers.add(jtfMaxSize,"1,9");
+        jpCovers.add(jtfMaxSize,"1,9"); //$NON-NLS-1$
         
         //--OK/cancel panel
         jpOKCancel = new JPanel();

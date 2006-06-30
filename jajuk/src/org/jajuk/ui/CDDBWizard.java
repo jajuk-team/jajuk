@@ -349,7 +349,7 @@ public class CDDBWizard extends JDialog implements ITechnicalStrings,
 	public void retagFiles() {
 		aIdxToTag = jtable.getSelectedRows();
 		boolean b = false;
-		String error = "";
+		String error = ""; //$NON-NLS-1$
 		if (aIdxToTag.length == 0) {
 			dispose();
 		} else {

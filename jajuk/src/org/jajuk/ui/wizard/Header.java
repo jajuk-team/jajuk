@@ -58,8 +58,8 @@ public class Header extends JPanel{
         jta.setOpaque(true);
         jta.setBackground(Color.WHITE);
         jta.setForeground(Color.BLACK);
-        jta.setFont(new Font("Dialog",Font.PLAIN,14));
-        add(jta,"0,0");
+        jta.setFont(new Font("Dialog",Font.PLAIN,14)); //$NON-NLS-1$
+        add(jta,"0,0"); //$NON-NLS-1$
     }
     
     /**

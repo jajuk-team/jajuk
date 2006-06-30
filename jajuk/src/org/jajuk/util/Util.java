@@ -698,7 +698,7 @@ public class Util implements ITechnicalStrings {
 				|| sFileName.toLowerCase().matches(
 						".*" + FILE_DEFAULT_COVER_2 + ".*") //$NON-NLS-1$ //$NON-NLS-2$
 				|| sFileName.toLowerCase().matches(
-						".*" + FILE_ABSOLUTE_DEFAULT_COVER + ".*"); // just for
+						".*" + FILE_ABSOLUTE_DEFAULT_COVER + ".*"); // just for //$NON-NLS-1$ //$NON-NLS-2$
 		// previous
 		// compatibility,
 		// now it is
@@ -1157,11 +1157,11 @@ public class Util implements ITechnicalStrings {
 			throws Exception {
 		Object oDefaultValue = sValue; // String by default
 		if (cType.equals(Boolean.class)) {
-			if (sValue.equals("y")) { // "y" and "n" is an old boolean
+			if (sValue.equals("y")) { // "y" and "n" is an old boolean //$NON-NLS-1$
 				// attribute notation prior to 1.0
 				// //$NON-NLS-1$
 				oDefaultValue = true;
-			} else if (sValue.equals("n")) { // "y" and "n" is an old boolean
+			} else if (sValue.equals("n")) { // "y" and "n" is an old boolean //$NON-NLS-1$
 				// attribute notation prior to
 				// 1.0 //$NON-NLS-1$
 				oDefaultValue = false;
@@ -1308,17 +1308,17 @@ public class Util implements ITechnicalStrings {
 	public static Properties getAnonymizedSystemProperties() {
 		Properties properties = (Properties) System.getProperties().clone();
 		// We remove sensible data from logs
-		properties.remove("java.library.path"); // can contain external program
+		properties.remove("java.library.path"); // can contain external program //$NON-NLS-1$
 		// paths
-		properties.remove("java.class.path"); // can contain external program
+		properties.remove("java.class.path"); // can contain external program //$NON-NLS-1$
 		// paths
-		properties.remove("user.name"); // user name is private
-		properties.remove("java.ext.dirs");// can contain external program
+		properties.remove("user.name"); // user name is private //$NON-NLS-1$
+		properties.remove("java.ext.dirs");// can contain external program //$NON-NLS-1$
 		// paths
-		properties.remove("sun.boot.class.path");// can contain external
-		properties.remove("deployment.user.security.trusted.certs");
-        properties.remove("deployment.user.security.trusted.clientauthcerts");
-        properties.remove("jajuk.log");
+		properties.remove("sun.boot.class.path");// can contain external //$NON-NLS-1$
+		properties.remove("deployment.user.security.trusted.certs"); //$NON-NLS-1$
+        properties.remove("deployment.user.security.trusted.clientauthcerts"); //$NON-NLS-1$
+        properties.remove("jajuk.log"); //$NON-NLS-1$
         
 		return properties;
 	}
@@ -1330,10 +1330,10 @@ public class Util implements ITechnicalStrings {
 		Properties properties = (Properties) ConfigurationManager
 				.getProperties().clone();
 		// We remove sensible data from logs
-		properties.remove("jajuk.network.proxy_login");
-		properties.remove("jajuk.network.proxy_port");
-		properties.remove("jajuk.network.proxy_hostname");
-		properties.remove("jajuk.options.p2p.password");
+		properties.remove("jajuk.network.proxy_login"); //$NON-NLS-1$
+		properties.remove("jajuk.network.proxy_port"); //$NON-NLS-1$
+		properties.remove("jajuk.network.proxy_hostname"); //$NON-NLS-1$
+		properties.remove("jajuk.options.p2p.password"); //$NON-NLS-1$
 		return properties;
 	}
 
@@ -1475,14 +1475,13 @@ public class Util implements ITechnicalStrings {
             return al;
         }
         //Filter by ambience
-        Iterator it = al.iterator();
-        while (it.hasNext()){
-            org.jajuk.base.File file =(org.jajuk.base.File)it.next();
-            if (!ambience.getStyles().contains(file.getTrack().getStyle())){
-                it.remove();
+        ArrayList<org.jajuk.base.File> out = new ArrayList(al.size()/2);
+        for (org.jajuk.base.File file:al){
+            if (ambience.getStyles().contains(file.getTrack().getStyle())){
+                out.add(file);
             }
         }
-        return al;
+        return out;
     }
     
 }

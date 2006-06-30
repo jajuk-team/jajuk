@@ -272,7 +272,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         jmiDirCDDBQuery.addActionListener(this);
         jmiDirExport = new JMenuItem(Messages.getString("PhysicalTreeView.58")); //$NON-NLS-1$
         jmiDirExport.addActionListener(this); 
-        jmiDirRefactor = new JMenuItem(Messages.getString(("PhysicalTreeView.62")));
+        jmiDirRefactor = new JMenuItem(Messages.getString(("PhysicalTreeView.62"))); //$NON-NLS-1$
         jmiDirRefactor.addActionListener(this);       
         jmenuDir.add(jmiDirPlay);
         jmenuDir.add(jmiDirPush);
@@ -407,7 +407,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
                     }
                     File current = FIFO.getInstance().getCurrentFile();
                     if ( current != null && file.equals(current)){
-                        setFont(new Font("Dialog",Font.BOLD,10));
+                        setFont(new Font("Dialog",Font.BOLD,10)); //$NON-NLS-1$
                         setForeground(Color.DARK_GRAY);
                     }
                 }
@@ -938,9 +938,9 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         			|| (e.getSource() == jmiDevExport
         			|| (e.getSource() == jmiCollectionExport))) {
         	final JFileChooser filechooser = new JFileChooser();
-        	ExportFileFilter filter = new ExportFileFilter(".xml");
+        	ExportFileFilter filter = new ExportFileFilter(".xml"); //$NON-NLS-1$
         	
-        	filechooser.setCurrentDirectory(new java.io.File(System.getProperty("user.home")));
+        	filechooser.setCurrentDirectory(new java.io.File(System.getProperty("user.home"))); //$NON-NLS-1$
         	
         	filechooser.addChoosableFileFilter(filter);
        // 	filter = new ExportFileFilter(".pdf");
@@ -954,8 +954,8 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         		java.io.File file = filechooser.getSelectedFile();
         		String filepath = file.getAbsolutePath();
         		String filetypename = Util.getExtension(file);
-        		String result = "";
-        		if (filetypename.equals("xml")) {
+        		String result = ""; //$NON-NLS-1$
+        		if (filetypename.equals("xml")) { //$NON-NLS-1$
         			final XMLExporter xmlexporter = XMLExporter.getInstance();
         			if (e.getSource() == jmiDirExport) {
         				Directory dir = ((DirectoryNode)paths[0].getLastPathComponent()).getDirectory();         				

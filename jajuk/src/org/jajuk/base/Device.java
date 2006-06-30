@@ -82,7 +82,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
     /**date last refresh*/
     long lDateLastRefresh;
     /**Refresh message*/
-    private String sFinalMessage = ""; 
+    private String sFinalMessage = "";  //$NON-NLS-1$
     
     /**
      * Device constructor
@@ -106,7 +106,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
      * toString method
      */
     public String toString() {
-        return "Device[ID=" + sId + " Name=" + sName + " Type=" + 
+        return "Device[ID=" + sId + " Name=" + sName + " Type=" +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         DeviceManager.getInstance().getDeviceType(getLongValue(XML_TYPE)) +
         " URL=" + sUrl+ " Mount point="+sMountPoint + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$ //$NON-NLS-6$
     }
@@ -151,7 +151,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
                 device.mount();  
             }
             catch(Exception e){
-                Log.error("011","{{"+getName()+"}}",e);	//mount failed //$NON-NLS-1$
+                Log.error("011","{{"+getName()+"}}",e);	//mount failed //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                 Messages.showErrorMessage("011",getName()); //$NON-NLS-1$
                 return;
             }
@@ -182,13 +182,13 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
     private void manualRefresh(boolean bAsk){
         int i = 1; 
         if (bAsk){
-            Object[] possibleValues = { Messages.getString("PhysicalTreeView.60"),//fast
-                    Messages.getString("PhysicalTreeView.61"),//deep
-                    Messages.getString("Cancel")};//cancel
+            Object[] possibleValues = { Messages.getString("PhysicalTreeView.60"),//fast //$NON-NLS-1$
+                    Messages.getString("PhysicalTreeView.61"),//deep //$NON-NLS-1$
+                    Messages.getString("Cancel")};//cancel //$NON-NLS-1$
             //0:fast, 1:deep, 2: cancel
             i = JOptionPane.showOptionDialog(null,
-                Messages.getString("PhysicalTreeView.59"),
-                Messages.getString("Option"),
+                Messages.getString("PhysicalTreeView.59"), //$NON-NLS-1$
+                Messages.getString("Option"), //$NON-NLS-1$
                 JOptionPane.DEFAULT_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
                 null,
@@ -350,7 +350,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
                 device.mount();  
             }
             catch(Exception e){
-                Log.error("011","{{"+getName()+"}}",e);	//mount failed //$NON-NLS-1$
+                Log.error("011","{{"+getName()+"}}",e);	//mount failed //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                 Messages.showErrorMessage("011",getName()); //$NON-NLS-1$
                 return;
             }
@@ -529,7 +529,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
                         catch(Exception e){
                             Messages.showErrorMessage("020",fSrcFiles[i].getAbsolutePath()); //$NON-NLS-1$
                             Messages.showErrorMessage("027"); //$NON-NLS-1$
-                            Log.error("020","{{"+fSrcFiles[i].getAbsolutePath()+"}}",e); //$NON-NLS-1$
+                            Log.error("020","{{"+fSrcFiles[i].getAbsolutePath()+"}}",e); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                             return iNbCreatedFiles;
                         }
                     }

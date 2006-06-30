@@ -749,9 +749,9 @@ public class Main implements ITechnicalStrings {
         }
         //upgrade code; if ugrade from <1.2, set default ambiences
         String sRelease = ConfigurationManager.getProperty(CONF_RELEASE);
-        if (sRelease == null || sRelease.matches("0..*")
-                || sRelease.matches("1.0..*")
-                || sRelease.matches("1.1.*")){
+        if (sRelease == null || sRelease.matches("0..*") //$NON-NLS-1$
+                || sRelease.matches("1.0..*") //$NON-NLS-1$
+                || sRelease.matches("1.1.*")){ //$NON-NLS-1$
             AmbienceManager.getInstance().createDefaultAmbiences();
         }
         

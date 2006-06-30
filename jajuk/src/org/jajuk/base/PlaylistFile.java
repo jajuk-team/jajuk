@@ -104,9 +104,9 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 	 * toString method
 	 */
 	public String toString() {
-		return "Playlist file[ID="+sId+" Name={{" + getName() + "}} Hashcode="+
+		return "Playlist file[ID="+sId+" Name={{" + getName() + "}} Hashcode="+ //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         getStringValue(XML_HASHCODE)+
-        " Dir="+dParentDirectory.getId()+"]"; 
+        " Dir="+dParentDirectory.getId()+"]";  //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
 	/**
@@ -603,7 +603,7 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 		    }
 		}
 		catch(Exception e){
-		    Log.error("017","{{"+getName()+"}}",e); //$NON-NLS-1$
+		    Log.error("017","{{"+getName()+"}}",e); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		    throw new JajukException("017",getFio().getAbsolutePath(),e); //$NON-NLS-1$
 		}
 		finally{

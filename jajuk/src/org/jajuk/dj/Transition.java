@@ -58,8 +58,8 @@ public class Transition {
      * @param nb initial number of tracks
      **/
     public Transition(int nb){
-        this.from = new Ambience(Long.toString(System.currentTimeMillis()),"");
-        this.to = new Ambience(Long.toString(System.currentTimeMillis()-100),"");
+        this.from = new Ambience(Long.toString(System.currentTimeMillis()),""); //$NON-NLS-1$
+        this.to = new Ambience(Long.toString(System.currentTimeMillis()-100),""); //$NON-NLS-1$
         this.nb = nb;
     }
     
@@ -91,7 +91,7 @@ public class Transition {
      * From String, return style1,style2,...
      */
     public String getFromString(){
-        String out = "";
+        String out = ""; //$NON-NLS-1$
         for (Style s:from.getStyles()){
             out += s.getName2()+',';
         }
@@ -105,7 +105,7 @@ public class Transition {
      * "To" String, return style1,style2,...
      */
     public String getToString(){
-        String out = "";
+        String out = ""; //$NON-NLS-1$
         for (Style s:to.getStyles()){
             out += s.getName2()+',';
         }

@@ -222,7 +222,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
             vId.add(XML_DIRECTORY);
             
             // File name
-            vColNames.add(Messages.getString("Property_filename"));
+            vColNames.add(Messages.getString("Property_filename")); //$NON-NLS-1$
             vId.add(XML_FILE);
             
             //custom properties now

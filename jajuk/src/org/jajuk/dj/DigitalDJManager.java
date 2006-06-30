@@ -130,14 +130,14 @@ public class DigitalDJManager implements ITechnicalStrings,Observer{
      */
     public static void commit(DigitalDJ dj){
     	try{
-    		BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_DJ_DIR+"/"+
-    			dj.getID()+"."+XML_DJ_EXTENSION));
+    		BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_DJ_DIR+"/"+ //$NON-NLS-1$
+    			dj.getID()+"."+XML_DJ_EXTENSION)); //$NON-NLS-1$
     		bw.write(dj.toXML());
     		bw.flush();
     		bw.close();
     	}
     	catch(Exception e){
-    		Log.error("145",(dj!=null)?"{{"+dj.getName()+"}}":null,e);
+    		Log.error("145",(dj!=null)?"{{"+dj.getName()+"}}":null,e); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     	}
     }
     
@@ -147,10 +147,10 @@ public class DigitalDJManager implements ITechnicalStrings,Observer{
      */
     public void remove(DigitalDJ dj){
         djs.remove(dj.getID());
-        new File(FILE_DJ_DIR+"/"+dj.getID()+"."+XML_DJ_EXTENSION).delete();
+        new File(FILE_DJ_DIR+"/"+dj.getID()+"."+XML_DJ_EXTENSION).delete(); //$NON-NLS-1$ //$NON-NLS-2$
         //reset default DJ if this DJ was default
         if (ConfigurationManager.getProperty(CONF_DEFAULT_DJ).equals(dj.getID())){
-            ConfigurationManager.setProperty(CONF_DEFAULT_DJ,"");
+            ConfigurationManager.setProperty(CONF_DEFAULT_DJ,""); //$NON-NLS-1$
         }
         //alert command panel
         ObservationManager.notify(new Event(EVENT_DJS_CHANGE));
@@ -177,7 +177,7 @@ public class DigitalDJManager implements ITechnicalStrings,Observer{
                 if (dj instanceof AmbienceDigitalDJ
                     && ((AmbienceDigitalDJ)dj).getAmbience().getID().equals(sID)){
                     int i = Messages.getChoice(
-                        Messages.getString("DigitalDJWizard.61")+" "+dj.getName()+" ?",
+                        Messages.getString("DigitalDJWizard.61")+" "+dj.getName()+" ?", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                         JOptionPane.YES_NO_CANCEL_OPTION);
                     if (i == JOptionPane.YES_OPTION){
                         remove(dj);
@@ -211,7 +211,7 @@ public class DigitalDJManager implements ITechnicalStrings,Observer{
     				djs.put(dj.getID(),dj);
     			}
     			catch(Exception e){
-    				Log.error("144","{{"+files[i].getAbsolutePath()+"}}",e);
+    				Log.error("144","{{"+files[i].getAbsolutePath()+"}}",e); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     			}
     		}
     	}
@@ -304,7 +304,7 @@ abstract class DigitalDJFactory extends DefaultHandler implements ITechnicalStri
         //Error parsing the DJ ? delete it
         catch(Exception e){
             Log.error(e);
-            Log.debug("Corrupted DJ: "+file.getAbsolutePath()+" deleted");
+            Log.debug("Corrupted DJ: "+file.getAbsolutePath()+" deleted"); //$NON-NLS-1$ //$NON-NLS-2$
             file.delete();
         }
         if (XML_DJ_PROPORTION_CLASS.equals(factoryType)){
@@ -355,8 +355,8 @@ class DigitalDJFactoryProportionImpl extends DigitalDJFactory{
 				if (XML_DJ_PROPORTION.equals(sQname)){
 					styles = attributes.getValue(attributes.getIndex(XML_DJ_STYLES));
 					proportion = Float.parseFloat(attributes.getValue(attributes.getIndex(XML_DJ_VALUE)));
-					StringTokenizer st = new StringTokenizer(styles,",");
-					Ambience ambience = new Ambience(Long.toString(System.currentTimeMillis()),"");
+					StringTokenizer st = new StringTokenizer(styles,","); //$NON-NLS-1$
+					Ambience ambience = new Ambience(Long.toString(System.currentTimeMillis()),""); //$NON-NLS-1$
 					while (st.hasMoreTokens()){
 						ambience.addStyle((Style)StyleManager.getInstance().getItem(st.nextToken()));
 					}
@@ -444,14 +444,14 @@ class DigitalDJFactoryTransitionImpl extends DigitalDJFactory{
 				if (XML_DJ_TRANSITION.equals(sQname)){
 					int number = Integer.parseInt(attributes.getValue(attributes.getIndex(XML_DJ_NUMBER)));
 					String fromStyles = attributes.getValue(attributes.getIndex(XML_DJ_FROM));
-					StringTokenizer st = new StringTokenizer(fromStyles,",");
+					StringTokenizer st = new StringTokenizer(fromStyles,","); //$NON-NLS-1$
 					Ambience fromAmbience = new Ambience();
                     while (st.hasMoreTokens()){
 						fromAmbience.addStyle((Style)StyleManager.getInstance().getItem(st.nextToken()));
 					}
 					String toStyles = attributes.getValue(attributes.getIndex(XML_DJ_TO));
 					Ambience toAmbience = new Ambience();
-                    st = new StringTokenizer(toStyles,",");
+                    st = new StringTokenizer(toStyles,","); //$NON-NLS-1$
 					while (st.hasMoreTokens()){
 						toAmbience.addStyle((Style)StyleManager.getInstance().getItem(st.nextToken()));
 					}

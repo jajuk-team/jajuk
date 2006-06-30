@@ -216,16 +216,16 @@ public class TransitionDigitalDJ extends DigitalDJ {
      public String toXML(){
          StringBuffer sb = new StringBuffer(2000);
          sb.append(toXMLGeneralParameters());
-         sb.append("\t<"+XML_DJ_TRANSITIONS+ " "+XML_DJ_STARTUP_STYLE+"='"+
-             getStartupStyle().getId()+"'>\n");
+         sb.append("\t<"+XML_DJ_TRANSITIONS+ " "+XML_DJ_STARTUP_STYLE+"='"+ //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+             getStartupStyle().getId()+"'>\n"); //$NON-NLS-1$
          for (Transition transition: transitions){
-             sb.append("\t\t<"+XML_DJ_TRANSITION+" "+
-            		 XML_DJ_FROM+"='"+transition.getFrom().toXML()+
-                     "' "+XML_DJ_TO+"='"+transition.getTo().toXML()+"' "+
-            		 XML_DJ_NUMBER+"='"+transition.getNbTracks()+"'/>\n");
+             sb.append("\t\t<"+XML_DJ_TRANSITION+" "+ //$NON-NLS-1$ //$NON-NLS-2$
+            		 XML_DJ_FROM+"='"+transition.getFrom().toXML()+ //$NON-NLS-1$
+                     "' "+XML_DJ_TO+"='"+transition.getTo().toXML()+"' "+ //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            		 XML_DJ_NUMBER+"='"+transition.getNbTracks()+"'/>\n"); //$NON-NLS-1$ //$NON-NLS-2$
          }
-         sb.append("\t</"+XML_DJ_TRANSITIONS+">\n");
-         sb.append("</"+XML_DJ_DJ+">\n");
+         sb.append("\t</"+XML_DJ_TRANSITIONS+">\n"); //$NON-NLS-1$ //$NON-NLS-2$
+         sb.append("</"+XML_DJ_DJ+">\n"); //$NON-NLS-1$ //$NON-NLS-2$
          return sb.toString();
      }
 

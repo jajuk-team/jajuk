@@ -50,7 +50,7 @@ public class Proportion {
     /**Constructor for void proportion
      * */
     public Proportion(){
-        this.ambience = new Ambience(Long.toString(System.currentTimeMillis()),"");
+        this.ambience = new Ambience(Long.toString(System.currentTimeMillis()),""); //$NON-NLS-1$
         this.proportion = 0.2f;
     }
    
@@ -86,14 +86,14 @@ public class Proportion {
      * @return String representation of this proportion
      */
     public String toString(){
-        return ""+proportion;
+        return ""+proportion; //$NON-NLS-1$
     }
         
     /**
      * From String, return style1,style2,...
      */
     public String getStylesDesc(){
-        String out = "";
+        String out = ""; //$NON-NLS-1$
         for (Style s:ambience.getStyles()){
             out += s.getName2()+',';
         }

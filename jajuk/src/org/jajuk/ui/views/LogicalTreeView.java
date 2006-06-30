@@ -196,7 +196,7 @@ ActionListener, Observer {
         jcbSort = new JComboBox();
         jcbSort.addItem(Messages.getString("Property_style")); //$NON-NLS-1$
         jcbSort.addItem(Messages.getString("Property_author")); //$NON-NLS-1$
-        jcbSort.addItem(Messages.getString("Property_album")); //$NON-NLS-1    
+        jcbSort.addItem(Messages.getString("Property_album")); //$NON-NLS-1     //$NON-NLS-1$ //$NON-NLS-1$
         jcbSort.setSelectedIndex(iSortOrder);
         jcbSort.setActionCommand(EVENT_LOGICAL_TREE_SORT);
         jcbSort.addActionListener(this); 
@@ -330,7 +330,7 @@ ActionListener, Observer {
         jmiAlbumAddFavorite.addActionListener(this);
         jmiAlbumExport = new JMenuItem(Messages.getString("LogicalTreeView.33")); //$NON-NLS-1$
         jmiAlbumExport.addActionListener(this);        
-        jmiAlbumCDDBWizard = new JMenuItem(Messages.getString("LogicalTreeView.34"));
+        jmiAlbumCDDBWizard = new JMenuItem(Messages.getString("LogicalTreeView.34")); //$NON-NLS-1$
         jmiAlbumCDDBWizard.addActionListener(this);
         jmiAlbumProperties = new JMenuItem(Messages
             .getString("LogicalTreeView.21")); //$NON-NLS-1$
@@ -406,7 +406,7 @@ ActionListener, Observer {
                     Track track = ((TrackNode)value).getTrack();
                     File current = FIFO.getInstance().getCurrentFile();
                     if ( current != null && track.equals(current.getTrack())){
-                        setFont(new Font("Dialog",Font.BOLD,10));
+                        setFont(new Font("Dialog",Font.BOLD,10)); //$NON-NLS-1$
                         setForeground(Color.DARK_GRAY);
                     }
                 }
@@ -800,7 +800,7 @@ ActionListener, Observer {
      * Create a Misc node
      */
     public void cleanTree() {
-        AuthorNode amisc = new AuthorNode(AuthorManager.getInstance().registerAuthor("Misc"));
+        AuthorNode amisc = new AuthorNode(AuthorManager.getInstance().registerAuthor("Misc")); //$NON-NLS-1$
 
         DefaultMutableTreeNode authorNode = new DefaultMutableTreeNode();
         DefaultMutableTreeNode albumNode = new DefaultMutableTreeNode();
@@ -810,7 +810,7 @@ ActionListener, Observer {
 
         while (eAuthor.hasMoreElements()) {
             authorNode = (AuthorNode) eAuthor.nextElement();
-            misc = new AlbumNode(AlbumManager.getInstance().registerAlbum("Misc"));
+            misc = new AlbumNode(AlbumManager.getInstance().registerAlbum("Misc")); //$NON-NLS-1$
 
             for (Enumeration<AlbumNode> eAlbum = authorNode.children(); eAlbum.hasMoreElements();) {
                 albumNode = eAlbum.nextElement();
@@ -933,9 +933,9 @@ ActionListener, Observer {
             				|| e.getSource() == jmiAlbumExport
             				|| e.getSource() == jmiCollectionExport) {
                 		final JFileChooser filechooser = new JFileChooser();
-                		ExportFileFilter filter = new ExportFileFilter(".xml");
+                		ExportFileFilter filter = new ExportFileFilter(".xml"); //$NON-NLS-1$
             	
-                		filechooser.setCurrentDirectory(new java.io.File(System.getProperty("user.home")));
+                		filechooser.setCurrentDirectory(new java.io.File(System.getProperty("user.home"))); //$NON-NLS-1$
                 		
                 		filechooser.addChoosableFileFilter(filter);
                 		// 	filter = new ExportFileFilter(".pdf");
@@ -950,8 +950,8 @@ ActionListener, Observer {
                 			String filepath = file.getAbsolutePath();
                 			String filetypename = Util.getExtension(file);
                 			final XMLExporter xmlexporter = XMLExporter.getInstance();        		        		
-                				if (filetypename.equals("xml")) {
-                					String result = "";
+                				if (filetypename.equals("xml")) { //$NON-NLS-1$
+                					String result = ""; //$NON-NLS-1$
                 					if (e.getSource() == jmiStyleExport) {
                 						Style style = ((StyleNode)paths[0].getLastPathComponent()).getStyle();                    						                		
                 						result = xmlexporter.styleToXML(style);	

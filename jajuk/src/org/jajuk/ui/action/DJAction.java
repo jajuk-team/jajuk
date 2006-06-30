@@ -40,18 +40,18 @@ public class DJAction extends ActionBase {
 
     DJAction() {
         super(Messages.getString("CommandJPanel.16"),Util.getIcon(ICON_DIGITAL_DJ), true); //$NON-NLS-1$
-        String sTooltip = Messages.getString("CommandJPanel.18");
+        String sTooltip = Messages.getString("CommandJPanel.18"); //$NON-NLS-1$
         DigitalDJ dj = DigitalDJManager.getInstance().getDJByID(ConfigurationManager.getProperty(CONF_DEFAULT_DJ));
         if (dj != null){
           String sDJ = dj.getName();
-          sTooltip = "<html>"+Messages.getString("CommandJPanel.18")+"<p><b>"+sDJ+"</b></p></html>"; //$NON-NLS-1$
+          sTooltip = "<html>"+Messages.getString("CommandJPanel.18")+"<p><b>"+sDJ+"</b></p></html>"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
         }
         setShortDescription(sTooltip); //$NON-NLS-1$
    }
 
     public void perform(ActionEvent evt) throws JajukException {
         if (StyleManager.getInstance().getItems().size() == 0){
-            Messages.showErrorMessage("156"); //void collection error
+            Messages.showErrorMessage("156"); //void collection error //$NON-NLS-1$
         }
         else{
             new Thread(){
@@ -64,14 +64,14 @@ public class DJAction extends ActionBase {
                         ArrayList al = dj.generatePlaylist();
                         Util.stopWaiting();
                         if (al.size() == 0){ //DJ constraints cannot be respected
-                            Messages.showErrorMessage("158");
+                            Messages.showErrorMessage("158"); //$NON-NLS-1$
                             return;
                         }
                         FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(al),
                             ConfigurationManager.getBoolean(CONF_STATE_REPEAT), false), false);
                     }
                     else{
-                        Messages.showErrorMessage("157");
+                        Messages.showErrorMessage("157"); //$NON-NLS-1$
                     }
                 }
             }.start();

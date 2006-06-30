@@ -102,11 +102,11 @@ public class DownloadManager implements ITechnicalStrings {
     public static ArrayList<URL> getRemoteCoversList(String search) throws Exception{
         ArrayList alOut = new ArrayList(20); //URL list   
         //check void searches
-        if (search == null || search.trim().equals("")){
+        if (search == null || search.trim().equals("")){ //$NON-NLS-1$
             return alOut;
         }
         String sSearchUrl = "http://images.google.com/images?q="+URLEncoder.encode(search, "ISO-8859-1")+"&ie=ISO-8859-1&hl=en&btnG=Google+Search"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        Log.debug("Search URL: {{"+sSearchUrl+"}}"); //$NON-NLS-1$
+        Log.debug("Search URL: {{"+sSearchUrl+"}}"); //$NON-NLS-1$ //$NON-NLS-2$
         byte[] bRes = download(new URL(sSearchUrl),false);
         if (bRes == null || bRes.length==0){
             return alOut;
@@ -119,10 +119,10 @@ public class DownloadManager implements ITechnicalStrings {
             return alOut;
         }
         for (int i=1;i<strings.length;i++){
-            String s = strings[i].split(",")[3];
+            String s = strings[i].split(",")[3]; //$NON-NLS-1$
             s = s.substring(1,s.length()-1);
             s = s.replaceAll("%2520","%20"); //$NON-NLS-1$ //$NON-NLS-2$
-            alOut.add(new URL("http://"+s));
+            alOut.add(new URL("http://"+s)); //$NON-NLS-1$
         }
         //get sizes
         strings = sRes.split("pixels - "); //$NON-NLS-1$

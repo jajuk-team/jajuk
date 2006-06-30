@@ -22,7 +22,6 @@ package org.jajuk.ui.views;
 
 import info.clearthought.layout.TableLayout;
 
-import java.awt.Color;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -142,7 +141,6 @@ public class StatView extends ViewAdapter implements Observer{
                 //chart
                 jfchart = ChartFactory.createPieChart3D(Messages.getString("StatView.1"),pdata,true,true,true); //$NON-NLS-1$
                 // set the background color for the chart...
-                jfchart.setBackgroundPaint(Color.BLUE);
                 PiePlot plot = (PiePlot) jfchart.getPlot();
                 plot.setLabelFont(PiePlot.DEFAULT_LABEL_FONT);
                 plot.setNoDataMessage(Messages.getString("StatView.2")); //$NON-NLS-1$
@@ -200,7 +198,6 @@ public class StatView extends ViewAdapter implements Observer{
                 //chart
                 jfchart = ChartFactory.createPieChart3D(Messages.getString("StatView.4"),pdata,true,true,true); //$NON-NLS-1$
                 // set the background color for the chart...
-                jfchart.setBackgroundPaint(Color.BLUE);
                 PiePlot plot = (PiePlot) jfchart.getPlot();
                 plot.setLabelFont(PiePlot.DEFAULT_LABEL_FONT);
                 plot.setNoDataMessage(Messages.getString("StatView.5")); //$NON-NLS-1$
@@ -266,7 +263,6 @@ public class StatView extends ViewAdapter implements Observer{
             axis.setCategoryLabelPositions(CategoryLabelPositions.STANDARD);
             
             // set the background color for the chart...
-            jfchart.setBackgroundPaint(Color.BLUE);
             plot.setNoDataMessage(Messages.getString("StatView.10")); //$NON-NLS-1$
             plot.setForegroundAlpha(0.5f);
             plot.setBackgroundAlpha(0.5f);
@@ -328,7 +324,6 @@ public class StatView extends ViewAdapter implements Observer{
                     axis.setCategoryLabelPositions(CategoryLabelPositions.STANDARD);
                 
                 // set the background color for the chart...
-                jfchart.setBackgroundPaint(Color.BLUE);
                 plot.setNoDataMessage(Messages.getString("StatView.15")); //$NON-NLS-1$
                 plot.setForegroundAlpha(0.5f);
                 plot.setBackgroundAlpha(0.5f);
