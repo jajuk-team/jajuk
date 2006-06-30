@@ -29,7 +29,7 @@ Option for show_trackers=1; * To show a specific Tracker instead of all
 	&amp;tracker_to_show=TRACKER_ID
 
 --><export_details>
-<time>1145710291</time>
+<time>1151703359</time>
 <project_group_id>91412</project_group_id>
 <project_unix_name>jajuk</project_unix_name>
 <exporter>bflorat</exporter>
@@ -193,21 +193,21 @@ http://www.florat.net/jajuk-specs.pdf</registration_description>
 </projectresources>
 <project_admin_detail>
 <trove_details>
-<trove_category>Translations :: Spanish</trove_category>
-<trove_category>Operating System :: Grouping and Descriptive Categories :: OS Independent (Written in an interpreted language)</trove_category>
-<trove_category>License :: OSI-Approved Open Source :: GNU General Public License (GPL)</trove_category>
-<trove_category>Translations :: Dutch</trove_category>
-<trove_category>Programming Language :: Java</trove_category>
 <trove_category>Intended Audience :: by End-User Class :: End Users/Desktop</trove_category>
-<trove_category>Development Status :: 5 - Production/Stable</trove_category>
+<trove_category>Translations :: Catalan</trove_category>
+<trove_category>Translations :: Spanish</trove_category>
+<trove_category>Topic :: Multimedia :: Sound/Audio :: Players</trove_category>
 <trove_category>Translations :: Italian</trove_category>
-<trove_category>Translations :: English</trove_category>
+<trove_category>User Interface :: Graphical :: Java Swing</trove_category>
 <trove_category>Translations :: French</trove_category>
+<trove_category>Translations :: English</trove_category>
+<trove_category>Operating System :: Grouping and Descriptive Categories :: OS Independent (Written in an interpreted language)</trove_category>
+<trove_category>Programming Language :: Java</trove_category>
 <trove_category>Translations :: German</trove_category>
 <trove_category>Translations :: Swedish</trove_category>
-<trove_category>User Interface :: Graphical :: Java Swing</trove_category>
-<trove_category>Topic :: Multimedia :: Sound/Audio :: Players</trove_category>
-<trove_category>Translations :: Catalan</trove_category>
+<trove_category>Development Status :: 5 - Production/Stable</trove_category>
+<trove_category>License :: OSI-Approved Open Source :: GNU General Public License (GPL)</trove_category>
+<trove_category>Translations :: Dutch</trove_category>
 </trove_details>
 </project_admin_detail>
 <projectnews>
@@ -633,6 +633,66 @@ http://www.florat.net/jajuk-specs.pdf</registration_description>
 <package_id>96449</package_id>
 <file_size>505228</file_size>
 <release_time>1140827029</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=411996</url>
+<filename>jajuk-1.1.5-1mdk.noarch.rpm</filename>
+<release_id>411996</release_id>
+<package_id>96449</package_id>
+<file_size>7066915</file_size>
+<release_time>1145718484</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=411996</url>
+<filename>jajuk-1.1.5-suse.noarch.rpm</filename>
+<release_id>411996</release_id>
+<package_id>96449</package_id>
+<file_size>7065232</file_size>
+<release_time>1145718495</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=411996</url>
+<filename>jajuk-1.1.5-win32.exe</filename>
+<release_id>411996</release_id>
+<package_id>96449</package_id>
+<file_size>9629696</file_size>
+<release_time>1145718507</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=411996</url>
+<filename>jajuk-java-installer-1.1.5.jar</filename>
+<release_id>411996</release_id>
+<package_id>96449</package_id>
+<file_size>9231344</file_size>
+<release_time>1145718525</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=411996</url>
+<filename>jajuk-sources-1.1.5.zip</filename>
+<release_id>411996</release_id>
+<package_id>96449</package_id>
+<file_size>505645</file_size>
+<release_time>1145718543</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=412159</url>
+<filename>jajuk-1.1.6-1mdk.noarch.rpm</filename>
+<release_id>412159</release_id>
+<package_id>96449</package_id>
+<file_size>7067064</file_size>
+<release_time>1145789971</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=412159</url>
+<filename>jajuk-1.1.6-suse.noarch.rpm</filename>
+<release_id>412159</release_id>
+<package_id>96449</package_id>
+<file_size>7065569</file_size>
+<release_time>1145789987</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=412159</url>
+<filename>jajuk-1.1.6-win32.exe</filename>
+<release_id>412159</release_id>
+<package_id>96449</package_id>
+<file_size>9626112</file_size>
+<release_time>1145790006</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=412159</url>
+<filename>jajuk-java-installer-1.1.6.jar</filename>
+<release_id>412159</release_id>
+<package_id>96449</package_id>
+<file_size>9227809</file_size>
+<release_time>1145790028</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=412159</url>
+<filename>jajuk-sources-1.1.6.zip</filename>
+<release_id>412159</release_id>
+<package_id>96449</package_id>
+<file_size>505640</file_size>
+<release_time>1145790047</release_time>
 </filereleases>
 <docmanager>
 <docgroup>
@@ -692,6 +752,67 @@ http://www.florat.net/jajuk-specs.pdf</registration_description>
 <send_posts_to></send_posts_to>
 <anonymous_posting>Yes</anonymous_posting>
 <forum_posts>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=3796933</url>
+<msg_id>3796933</msg_id>
+<poster_user>nobody</poster_user>
+<poster_name>Nobody/Anonymous</poster_name>
+<subject>a plug-in like the plug-in of winamp for msn </subject>
+<thread_id>1525387</thread_id>
+<is_followup_to>0</is_followup_to>
+<has_followups>0</has_followups>
+<date>1151344635</date>
+<is_deleted>No</is_deleted>
+<body>hello everybody
+
+I have an idee for jajuk but I don&#226;&#8364;&#8482;t know if it&#226;&#8364;&#8482;s possible it&#226;&#8364;&#8482;s a plug-in like the plug-in of winamp for msn  who describe what the music you listen
+
+Ps sorry for my English but I&#226;&#8364;&#8482;m French and I really  like jajuk</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=3751950</url>
+<msg_id>3751950</msg_id>
+<poster_user>nobody</poster_user>
+<poster_name>Nobody/Anonymous</poster_name>
+<subject>RE: 1.1.6 doesn't show sorting table headers</subject>
+<thread_id>1507977</thread_id>
+<is_followup_to>3751926</is_followup_to>
+<has_followups>0</has_followups>
+<date>1148651920</date>
+<is_deleted>No</is_deleted>
+<body>Not sure to see what we mean: do you only see sorting ticks so columns are only few pixels in width or the columns have proper width but you can't see headers ? Please provide a screenshot. 
+did you tried to pack all columns using columns manager (icon at the right/top of the table) ?</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=3751926</url>
+<msg_id>3751926</msg_id>
+<poster_user>nobody</poster_user>
+<poster_name>Nobody/Anonymous</poster_name>
+<subject>1.1.6 doesn't show sorting table headers</subject>
+<thread_id>1507977</thread_id>
+<is_followup_to>0</is_followup_to>
+<has_followups>1</has_followups>
+<date>1148650584</date>
+<is_deleted>No</is_deleted>
+<body>1.1.6 doesn't show sorting table headers of physical table properly.
+It's only 2-3 pixels tick (not enough to show the labels etc decently).
+Forcing a refresh doesn't help (by adding a new column or undocking etc)
+
+I didn not have this in 1.0.x</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=3731039</url>
+<msg_id>3731039</msg_id>
+<poster_user>nobody</poster_user>
+<poster_name>Nobody/Anonymous</poster_name>
+<subject>RE: Jajuk Sound in version 1.0.2</subject>
+<thread_id>1393713</thread_id>
+<is_followup_to>3451091</is_followup_to>
+<has_followups>0</has_followups>
+<date>1147708576</date>
+<is_deleted>No</is_deleted>
+<body>Note that this issue was fixed with 1.1.6</body>
+</forum_post>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3569389</url>
 <msg_id>3569389</msg_id>
@@ -775,6 +896,7 @@ Yes, I did that now. When I decrease the volume to ca. 50-60% of the maximum the
 <is_deleted>No</is_deleted>
 <body>Did you try to decrease volume (gain) and increase systeme volume ?</body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3505823</url>
 <msg_id>3505823</msg_id>
@@ -929,7 +1051,6 @@ Please:
 
 Thanks.</body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3455574</url>
 <msg_id>3455574</msg_id>
@@ -1029,6 +1150,7 @@ Richard</body>
 <is_deleted>No</is_deleted>
 <body>Thanks again, I will use some parts of it to update install and FAQ jajuk doc.</body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3335761</url>
 <msg_id>3335761</msg_id>
@@ -1094,7 +1216,6 @@ Please excuse my english because I'm a french guy ;o)
 
 Ragerds and thanx for your help.</body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3282474</url>
 <msg_id>3282474</msg_id>
@@ -1191,6 +1312,7 @@ Looks strange as it works perfectly for me with or without arts 1.3.0 / Suse 9.2
 
 -chris worley</body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3280669</url>
 <msg_id>3280669</msg_id>
@@ -1275,7 +1397,6 @@ cworley   7688  7652  0 11:00 pts/19   00:00:00 java -client -Xms25M -Djava.libr
 
 ...repeats a number of times</body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3280025</url>
 <msg_id>3280025</msg_id>
@@ -1401,6 +1522,7 @@ Last message English translation
 
 As I have no mac and I even never saw jajuk runing under macosx, I can't figure out what you mean exactly. Could you provide a screenshot please ? Other thing : does Mac OsX support JRE 1.5 as next jajuk release requires it ? </body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3250994</url>
 <msg_id>3250994</msg_id>
@@ -1460,7 +1582,6 @@ Please check http://jajuk.sourceforge.net/installation.html
 and check that your jre is OK by typing java --version'
 If you don't manage to make it work, please open a support request at https://sourceforge.net/tracker/?group_id=91412&#38;atid=597087</body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3240412</url>
 <msg_id>3240412</msg_id>
@@ -1564,6 +1685,7 @@ o Use a FM emettor :
 
 </body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3003406</url>
 <msg_id>3003406</msg_id>
@@ -1637,7 +1759,6 @@ Please tell me if you solved it or not, I will add a doc in the installation gui
 
 Bertrand.</body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=2973386</url>
 <msg_id>2973386</msg_id>
@@ -1773,6 +1894,7 @@ Java HotSpot(TM) Client VM (build 1.4.2_06-b03, mixed mode)
 <is_deleted>No</is_deleted>
 <body>Cool ! Can you try with jajuk 0.3.1 and JRE 1.4.2_05 Please ?</body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=2920602</url>
 <msg_id>2920602</msg_id>
@@ -1838,7 +1960,6 @@ Jajuk 0.3 </body>
 <is_deleted>No</is_deleted>
 <body>I downloaded the latest windows exe (0.3.1) from two different servers, and AVG found the same virus in both. PSW.Banker.3.H</body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=2902769</url>
 <msg_id>2902769</msg_id>
@@ -1956,6 +2077,7 @@ But I still think it's imported to split up the buffering (loading from disk to 
 
 </body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=2863519</url>
 <msg_id>2863519</msg_id>
@@ -2026,7 +2148,6 @@ There is a RPM plugin for Maven at maven-plugins.sf.net
 But you might need to really mavenize Jajuk.
 Or just drop everything in the binary distribution directory (see dist plugin). I 'll bet the plugin just gets his dist from there.</body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=2840185</url>
 <msg_id>2840185</msg_id>
@@ -2128,6 +2249,7 @@ thread.start();</body>
 <body>starting javaw with &#34;-server&#34; might help though :)
 Then it uses more memory but works faster too.</body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=2829627</url>
 <msg_id>2829627</msg_id>
@@ -2194,7 +2316,6 @@ For example: is anyone working on a IzPack plugin for maven?</body>
 <is_deleted>No</is_deleted>
 <body>Right, the tag editions are planned for 0.4 (probably for the end of november). We also planned to provide advanced auto-retagging features using CDDB and custom properties. </body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=2814348</url>
 <msg_id>2814348</msg_id>
@@ -2300,6 +2421,7 @@ I hope you enjoy it :)</body>
 <is_deleted>No</is_deleted>
 <body>Welcome to Open Discussion</body>
 </forum_post>
+</forum_posts>
 </forum_posts>
 </forum>
 </forums>
@@ -15609,6 +15731,23 @@ user_id=363565
 Hi, can you detail your case ? (jajuk release, JRE,
 operating system). Thanks.</details>
 </followup>
+<followup>
+<id>1994781</id>
+<submitter>nobody</submitter>
+<date>1146438078</date>
+<details>Logged In: NO 
+
+HOW IT CAN HELP ME TO HEAR MY MUSIC AND WHAT TV ON CUMPUTE?</details>
+</followup>
+<followup>
+<id>2011052</id>
+<submitter>nobody</submitter>
+<date>1147980710</date>
+<details>Logged In: NO 
+
+how do you download music from this site!
+</details>
+</followup>
 </followups>
 <attachments>
 </attachments>
@@ -16066,6 +16205,23 @@ user_id=363565
 I will have a look with javazoom team but I don't think so.
 Thx for feddback.</details>
 </followup>
+<followup>
+<id>2011881</id>
+<submitter>nobody</submitter>
+<date>1148038841</date>
+<details>Logged In: NO 
+
+suzzy20033@yahoo.com</details>
+</followup>
+<followup>
+<id>2039371</id>
+<submitter>nobody</submitter>
+<date>1150705654</date>
+<details>Logged In: NO 
+
+egerci
+</details>
+</followup>
 </followups>
 <attachments>
 </attachments>
@@ -16442,6 +16598,244 @@ not a problem during install. great gui.
 
 keep up the good work!</details>
 <followups>
+<followup>
+<id>2003930</id>
+<submitter>nobody</submitter>
+<date>1147289046</date>
+<details>Logged In: NO 
+
+this is best</details>
+</followup>
+<followup>
+<id>2004332</id>
+<submitter>nobody</submitter>
+<date>1147333327</date>
+<details>Logged In: NO 
+
+Thanks for the feedback, new features upcoming soon with 1.2...</details>
+</followup>
+<followup>
+<id>2007573</id>
+<submitter>nobody</submitter>
+<date>1147715886</date>
+<details>Logged In: NO 
+
+LimeWire version 4.8.1
+Java version 1.5.0_06 from Sun Microsystems Inc.
+Windows XP v. 5.1 on x86
+Free/total memory: 3694800/4128768
+
+com.limegroup.gnutella.gui.GUILoader$StartupFailedException
+: invalid update.ver
+	at com.limegroup.gnutella.gui.GUILoader.sanityCheck
+(GUILoader.java:277)
+	at com.limegroup.gnutella.gui.GUILoader.load
+(GUILoader.java:43)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0
+(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke
+(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke
+(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at com.limegroup.gnutella.gui.Main.main
+(Main.java:31)
+
+STARTUP ERROR!
+
+-- listing properties --
+FILTER_HASH_QUERIES=true
+DIRECTORIES_TO_SEARCH_FOR_FILES=C:\Documents and 
+Settings\henry yee\S...
+LAST_EXPIRE_TIME=1147660861421
+DIRECTORY_FOR_SAVING_FILES=C:\Documents and Settings\henry 
+yee\S...
+RUN_ONCE=true
+COUNTRY=
+CLIENT_ID=F4CEE3ADA051F875F0139F82D2102E00
+THEME_FILE=C:\Documents and Settings\henry yee\....
+THEME_DIR=C:\Documents and Settings\henry yee\....
+TOTAL_UPTIME=12055
+AVERAGE_UPTIME=12055
+UNSET_FIREWALLED_FROM_CONNECTBACK=true
+FLUSH_DELAY_TIME=256
+APP_WIDTH=960
+INSTALLED=true
+MAX_SIM_DOWNLOAD=3
+LAST_GWEBCACHE_FETCH_TIME=1147660917015
+UPDATE_DELAY=252000020
+MAX_DOWNLOAD_BYTES_PER_SEC=70
+WINDOW_Y=112
+WINDOW_X=219
+
+
+
+FILES IN CURRENT DIRECTORY:
+C:\Program Files\LimeWire\clink.jar
+LAST MODIFIED: 1147660850359
+SIZE: 627752
+
+C:\Program Files\LimeWire\commons-httpclient.jar
+LAST MODIFIED: 1147660850578
+SIZE: 463786
+
+C:\Program Files\LimeWire\commons-logging.jar
+LAST MODIFIED: 1147660850765
+SIZE: 59154
+
+C:\Program Files\LimeWire\daap.jar
+LAST MODIFIED: 1147660850968
+SIZE: 310773
+
+C:\Program Files\LimeWire\GenericWindowsUtils.dll
+LAST MODIFIED: 1110397777750
+SIZE: 12279
+
+C:\Program Files\LimeWire\i18n.jar
+LAST MODIFIED: 1147660851156
+SIZE: 25678
+
+C:\Program Files\LimeWire\icu4j.jar
+LAST MODIFIED: 1147660851359
+SIZE: 741440
+
+C:\Program Files\LimeWire\id3v2.jar
+LAST MODIFIED: 1147660851562
+SIZE: 94430
+
+C:\Program Files\LimeWire\jcraft.jar
+LAST MODIFIED: 1147660851750
+SIZE: 135834
+
+C:\Program Files\LimeWire\jl011.jar
+LAST MODIFIED: 1147660851953
+SIZE: 255016
+
+C:\Program Files\LimeWire\jmdns.jar
+LAST MODIFIED: 1147660852156
+SIZE: 69306
+
+C:\Program Files\LimeWire\LimeWire.exe
+LAST MODIFIED: 1110397778015
+SIZE: 81920
+
+C:\Program Files\LimeWire\LimeWire.jar
+LAST MODIFIED: 1147660848859
+SIZE: 5262588
+
+C:\Program Files\LimeWire\LimeWire20.dll
+LAST MODIFIED: 1110397777828
+SIZE: 32768
+
+C:\Program Files\LimeWire\logicrypto.jar
+LAST MODIFIED: 1147660852359
+SIZE: 227510
+
+C:\Program Files\LimeWire\looks.jar
+LAST MODIFIED: 1147660852562
+SIZE: 630634
+
+C:\Program Files\LimeWire\MessagesBundles.jar
+LAST MODIFIED: 1147660849937
+SIZE: 2057292
+
+C:\Program Files\LimeWire\mp3sp14.jar
+LAST MODIFIED: 1147660852765
+SIZE: 40064
+
+C:\Program Files\LimeWire\ProgressTabs.jar
+LAST MODIFIED: 1147660850140
+SIZE: 5964
+
+C:\Program Files\LimeWire\themes.jar
+LAST MODIFIED: 1147660852953
+SIZE: 193884
+
+C:\Program Files\LimeWire\tritonus.jar
+LAST MODIFIED: 1147660853156
+SIZE: 152711
+
+C:\Program Files\LimeWire\vorbis.jar
+LAST MODIFIED: 1147660853343
+SIZE: 27215
+
+C:\Program Files\LimeWire\WindowsV5PlusUtils.dll
+LAST MODIFIED: 1110397777890
+SIZE: 12808
+
+C:\Program Files\LimeWire\xerces.jar
+LAST MODIFIED: 1147660853640
+SIZE: 2147687
+
+C:\Program Files\LimeWire\xml-apis.jar
+LAST MODIFIED: 1147660853968
+SIZE: 207655
+
+</details>
+</followup>
+<followup>
+<id>2017845</id>
+<submitter>nobody</submitter>
+<date>1148581475</date>
+<details>Logged In: NO 
+
+janmoorlag moorlag26@hotmail.com</details>
+</followup>
+<followup>
+<id>2017846</id>
+<submitter>nobody</submitter>
+<date>1148581663</date>
+<details>Logged In: NO 
+
+date  2006-05-25  20:25  sender :nobody  logged in :no jan 
+moorlag  e.mail: moorlag26@hotmail.com</details>
+</followup>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1496412</url>
+<id>1496412</id>
+<status_id>1</status_id>
+<category_id>571113</category_id>
+<group_id>100</group_id>
+<submitter>nobody</submitter>
+<assignee>nobody</assignee>
+<closer>nobody</closer>
+<submit_date>1148825608</submit_date>
+<close_date>0</close_date>
+<priority>5</priority>
+<summary>Won't start because program claims java not present</summary>
+<details>&#34;Check your path points to the right JRE (type java --
+version in case of problem) and not to gcj or others 
+JVM than are not supported by Jajuk, it is a common 
+issue, especially for Fedora, take a look in support 
+database.&#34;
+
+I know I have the latest jre installed. but I don't 
+know how to 'check my path'
+
+when I try to lauch from /usr/bin/jajuk it returns
+line 8: java : command not found
+
+</details>
+<followups>
+<followup>
+<id>2020297</id>
+<submitter>bflorat</submitter>
+<date>1148836939</date>
+<details>Logged In: YES 
+user_id=363565
+
+If you installed a 1.5 jre and that a java command return
+&#34;command not found&#34;, it means that you $JRE_PATH/bin
+directory is not in your PATH variable. Add it for exemple
+into your ~/.bashrc file : add this line : export PATH=&#60;the
+JRE directory&#62;/bin:$PATH, log again and retry.</details>
+</followup>
 </followups>
 <attachments>
 </attachments>
@@ -19390,6 +19784,16 @@ find lining the top of some keyboards.
 
 -ChazZ</details>
 <followups>
+<followup>
+<id>2049642</id>
+<submitter>bflorat</submitter>
+<date>1151699959</date>
+<details>Logged In: YES 
+user_id=363565
+
+Not currently faisable in Java. Could be done if JDIC API
+brings it somedays.</details>
+</followup>
 </followups>
 <attachments>
 </attachments>
@@ -19679,14 +20083,14 @@ Regards,
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1424188</url>
 <id>1424188</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>100</category_id>
 <group_id>100</group_id>
 <submitter>mybytes</submitter>
 <assignee>nobody</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1139081036</submit_date>
-<close_date>0</close_date>
+<close_date>1151699803</close_date>
 <priority>5</priority>
 <summary>Default view for new user</summary>
 <details>should be configuration for new devices, as the first
@@ -19712,19 +20116,33 @@ how to switch to others perspectives...</details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>3730009</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1151699803</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3730010</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1151699803</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1424191</url>
 <id>1424191</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>100</category_id>
 <group_id>100</group_id>
 <submitter>mybytes</submitter>
 <assignee>nobody</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1139081100</submit_date>
-<close_date>0</close_date>
+<close_date>1151699882</close_date>
 <priority>5</priority>
 <summary>Remember settings in device dialog</summary>
 <details>when creating a couple of new devices, it would be nice
@@ -19747,19 +20165,33 @@ limited task so I don't think this is really useful.</details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>3730011</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1151699882</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3730012</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1151699882</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1424193</url>
 <id>1424193</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>100</category_id>
 <group_id>100</group_id>
 <submitter>mybytes</submitter>
 <assignee>nobody</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1139081181</submit_date>
-<close_date>0</close_date>
+<close_date>1151699758</close_date>
 <priority>5</priority>
 <summary>Select all w/ Ctrl-A</summary>
 <details>I would like to select all trakcs in the logical table
@@ -19782,6 +20214,20 @@ a bug here.</details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>3730007</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1151699758</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3730008</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1151699758</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
@@ -19837,14 +20283,14 @@ implement it for 1.2</details>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1430405</url>
 <id>1430405</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>571115</category_id>
 <group_id>100</group_id>
 <submitter>vavilu</submitter>
 <assignee>nobody</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1139798955</submit_date>
-<close_date>0</close_date>
+<close_date>1151699696</close_date>
 <priority>5</priority>
 <summary>Could 'Device' have the actual folder name?</summary>
 <details>Hi,
@@ -19911,6 +20357,20 @@ Thanks :)</details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>3730005</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1151699696</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3730006</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1151699696</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
@@ -19949,6 +20409,254 @@ directory...</details>
 <attachments>
 </attachments>
 <history_entries>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1487686</url>
+<id>1487686</id>
+<status_id>1</status_id>
+<category_id>100</category_id>
+<group_id>100</group_id>
+<submitter>nobody</submitter>
+<assignee>nobody</assignee>
+<closer>nobody</closer>
+<submit_date>1147474566</submit_date>
+<close_date>0</close_date>
+<priority>5</priority>
+<summary>mp4 and flac support</summary>
+<details>I would like it if jajuk supported either external
+plugins from say Foobar2000 or winamp or had internal
+support for mp4 and flac. I use ogg and mp3 for the
+majority of my songs, but with itunes AAC is becoming
+more common and so is FLAC from CDs.
+
+Adam
+jacobvi123@hotmail.com</details>
+<followups>
+<followup>
+<id>2006074</id>
+<submitter>bflorat</submitter>
+<date>1147514435</date>
+<details>Logged In: YES 
+user_id=363565
+
+Hi, thanks for the feedback.
+It is not planned to use external native plugins for the
+moment. AAC will not be supported since no Java API are
+provided. Nevertheless, flac should be supported soon
+(probably this summer or automn).
+
+</details>
+</followup>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1487776</url>
+<id>1487776</id>
+<status_id>1</status_id>
+<category_id>100</category_id>
+<group_id>100</group_id>
+<submitter>karakal</submitter>
+<assignee>nobody</assignee>
+<closer>nobody</closer>
+<submit_date>1147501589</submit_date>
+<close_date>0</close_date>
+<priority>5</priority>
+<summary>MP3s from server</summary>
+<details>Some users have all their MP3s on a network server, attached to the 
+clients either via share or a playlist server (like mt-daapd for iTunes)
+It would be very cool, if you start a server program, which handles 
+scanning the files and delievering playlists to Januk Clients. But in 
+difference to iTunes you should be able to create (local) playlists from 
+remote MP3s. Perfect would be, if one can edit informations of the MP3s 
+too.</details>
+<followups>
+<followup>
+<id>2006075</id>
+<submitter>bflorat</submitter>
+<date>1147514548</date>
+<details>Logged In: YES 
+user_id=363565
+
+It is planned for a long time (P2P device type) but not yet
+implemented. It may implemented in the future but we have to
+deal with legal issues too.</details>
+</followup>
+<followup>
+<id>2006725</id>
+<submitter>karakal</submitter>
+<date>1147621501</date>
+<details>Logged In: YES 
+user_id=986335
+
+I wasn't thinking of anything P2P (because of the legal issues)
+I think of a dedicated server process with login and
+password. So that you can handle the ressource-intensive
+tasks (scanning and rescanning of folders with mp3s) for
+many clients on one server.
+Very interesting would also be many clients playing in sync
+one playlist...</details>
+</followup>
+<followup>
+<id>2006731</id>
+<submitter>bflorat</submitter>
+<date>1147623565</date>
+<details>Logged In: YES 
+user_id=363565
+
+Actually, what we call P2P should be renamed and is similar
+from what you mean: a jajuk user (or server) has one or more
+directory devices and others jajuk user can create a new
+kind of device: remote device mapping this server or peer
+(protected by password). Then, music itself is transfered
+over http by streaming. 
+About several users sharing the same collection, we already
+tought about it but had to give up: lock/sync of collection
+would be too complex.
+Playing a same playlist in sync is another feature and is
+similar to a podcast server. We think about podcast clients
+into jajuk but writing a podcast server too can be a good
+idea ...</details>
+</followup>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1492038</url>
+<id>1492038</id>
+<status_id>1</status_id>
+<category_id>100</category_id>
+<group_id>100</group_id>
+<submitter>nobody</submitter>
+<assignee>nobody</assignee>
+<closer>nobody</closer>
+<submit_date>1148124815</submit_date>
+<close_date>0</close_date>
+<priority>3</priority>
+<summary>file chaging</summary>
+<details>before i try this program....
+does it have the ability to change a wave file to mp3 
+or reverse or ... or...
+this would MAKE BURNING CD'S EASIER.
+I FIND WITH ALL PROGRAMS  THEY WILL NOT ALLOW THE 
+CROSS OVER FOR BURNING AND PLAYING...
+
+FROM WHAT I HAVE VIEWED YOUR PROGRAM DOES NOT HAVE 
+THE TRANSLATION ABILITY.. AM I RIGHT?
+
+HOW LONG BEFORE YOU WILL?
+
+brokenwhee1@hotmail.com</details>
+<followups>
+<followup>
+<id>2012833</id>
+<submitter>bflorat</submitter>
+<date>1148126240</date>
+<details>Logged In: YES 
+user_id=363565
+
+You're right, Jajuk is not a ripper nor a decoder, nor a CD
+burner. It's not planned for the forseeable future to
+implement this (and it's not faisable in java today). Jajuk
+is a music organizer of already available MP3 or OGG and Wav.</details>
+</followup>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+<history_entry>
+<id>3652226</id>
+<field_name>data_type</field_name>
+<old_value>597089</old_value>
+<date>1148126240</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3652227</id>
+<field_name>category_id</field_name>
+<old_value>571114</old_value>
+<date>1148126240</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3652228</id>
+<field_name>priority</field_name>
+<old_value>5</old_value>
+<date>1148126240</date>
+<updator>bflorat</updator>
+</history_entry>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1493454</url>
+<id>1493454</id>
+<status_id>2</status_id>
+<category_id>571115</category_id>
+<group_id>340387</group_id>
+<submitter>guy_m</submitter>
+<assignee>bflorat</assignee>
+<closer>bflorat</closer>
+<submit_date>1148376257</submit_date>
+<close_date>1151699662</close_date>
+<priority>5</priority>
+<summary>Current queue in player perspective</summary>
+<details>I would like to have au current playing queue (your
+play list system is difficult to use) this queue had to
+be displayed in player perspective.
+
+J'aimerai disposer de la file de lecture courante (le
+syst&#195;&#168;me actuel de playlist est difficile &#195;&#160; utiliser) et
+que cette file soit affich&#195;&#169;e dans la perspective lecteur.</details>
+<followups>
+<followup>
+<id>2016048</id>
+<submitter>nobody</submitter>
+<date>1148420630</date>
+<details>Logged In: NO 
+
+You're absolutely right about the need of the queue in the
+player perspective. I just implemented it (will be included
+in  the upcoming 1.2). 
+You already have a current playing queue (Playlist editor
+view). This view is able to display any playlist (queue,
+novelties, bookmarks, or regular playlists) and diplays the
+playing queue by default. If you don't see it, make sure you
+selected the queue (first icon) in the Playlist Repository View.
+Thanks for feedback,
+Bertrand.</details>
+</followup>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+<history_entry>
+<id>3730002</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1151699662</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3730003</id>
+<field_name>assigned_to</field_name>
+<old_value>100</old_value>
+<date>1151699662</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3730004</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1151699662</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 </tracker_items>
@@ -20498,14 +21206,14 @@ refreshed with some delay.</details>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1170390</url>
 <id>1170390</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>100</category_id>
 <group_id>100</group_id>
 <submitter>bflorat</submitter>
 <assignee>nobody</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1111737965</submit_date>
-<close_date>0</close_date>
+<close_date>1151700066</close_date>
 <priority>2</priority>
 <summary>No dynamical rate refresh in tables </summary>
 <details>In physical/logical table views: When a new track is
@@ -20522,19 +21230,33 @@ in the filter value for exemple) to refresh values.</details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>3730017</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1151700066</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3730018</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1151700066</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1175047</url>
 <id>1175047</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>100</category_id>
 <group_id>100</group_id>
 <submitter>bflorat</submitter>
 <assignee>bflorat</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1112388772</submit_date>
-<close_date>0</close_date>
+<close_date>1151700048</close_date>
 <priority>5</priority>
 <summary>Cannot read some MP3 files</summary>
 <details>Some MP3 cannot be read (&#34;error  reading file&#34; in
@@ -20552,6 +21274,20 @@ caused by MP3 using pictures inside id3 tags.</details>
 <field_name>assigned_to</field_name>
 <old_value>100</old_value>
 <date>1112388905</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3730015</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1151700048</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3730016</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1151700048</date>
 <updator>bflorat</updator>
 </history_entry>
 </history_entries>
@@ -21141,15 +21877,15 @@ file, uncompress occurs then, nothing appears.</details>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1178796</url>
 <id>1178796</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>100</category_id>
 <group_id>100</group_id>
 <resolution_id>100</resolution_id>
 <submitter>bflorat</submitter>
 <assignee>nobody</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1112901897</submit_date>
-<close_date>0</close_date>
+<close_date>1151700003</close_date>
 <priority>9</priority>
 <summary>LineUnavailableException</summary>
 <details> in some cases, I get this:
@@ -21186,6 +21922,20 @@ you get that before ?</details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>3730013</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1151700003</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3730014</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1151700003</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>

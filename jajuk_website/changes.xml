@@ -5,6 +5,31 @@
     <author email='bflorat@users.sourceforge.net'>Bertrand Florat</author>
   </properties>
   <body>
+    <release version='1.2' date='2006-06-30' description='Digital DJ, Reorganizer, Wikipedia, Korean langpack'>
+    	<action dev='bflorat' type='add'>Digital DJ feature</action>
+    	<action dev='dhalsim' type='add'>Collection reorganizer with pattern</action>
+    	<action dev='bflorat' type='add'>Wikipedia View (Windows only)</action>
+    	<action dev='Sung Pil Moon' type='add'>Korean langpack</action>
+    	<action dev='dhalsim' type='add'>CDDB retagging available for albums in addition to directories</action>
+    	<action dev='jespo' type='add'>Statistics View upgrades</action>
+    	<action dev='bflorat' type='add'>Now possible to perform fast refreshes manualy</action>
+    	<action dev='bflorat' type='add'>Many quality agent improvements + anonymization (thanks Jerome Fortain)</action>
+    	<action dev='bflorat' type='add'>Device wizard now directly accessible from device toolbar (thanks Jerome Fortain)</action>
+    	<action dev='bflorat' type='add'>New editable switch button in table views (thanks Jerome Fortain)</action>
+    	<action dev='bflorat' type='add'>Using of stars for rating in tables. Actual value is accessible using tooltips (thanks Jerome Fortain)</action>
+    	<action dev='bflorat' type='add'>Devices path and type now editable: possible to move a device without recreating it (thanks Jerome Fortain)</action>
+    	<action dev='bflorat' type='add'>Better cross-fade experience (no more volume gaps)</action>
+    	<action dev='bflorat' type='add'>Artists auto-completed combo boxes (in edition mode) in tables and in Properties wizard</action>
+    	<action dev='bflorat' type='add'>Parameter view refactoring to use more sliders (thanks Laurent WITKOWSKI)</action>
+    	<action dev='bflorat' type='add'>Played tracks in bold in tree views (thanks Laurent WITKOWSKI)</action>
+    	<action dev='bflorat' type='add'>Queue now visible in Player perspective (thanks Guy_M)</action>
+    	<action dev='bflorat' type='add'>Now possible to select columns in playlist editor</action>
+		<action dev='bflorat' type='update'>Relooked first time wizard</action>
+		<action dev='sky,jespo' type='update'>German, Spanish and Catalan langpacks upgrade</action>
+		<action dev='bflorat' type='update'>Changed rating method (see playing music page on doc, thanks Jerome Fortain)</action>
+    	<action dev='bflorat' type='fix'>CDDB rettaging doesn't work if using custom properties</action>
+		<action dev='bflorat' type='fix'>Randomly, jajuk can launch wrong track in playlist editor view when double clicking</action>
+    </release>
     <release version='1.1.6' date='2006-04-22' description='Fixes'>
     	<action dev='bflorat' type='fix' issue=''>Fix wrong thumb size when creating finding a new cover online
      [7]</action>

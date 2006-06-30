@@ -7,7 +7,7 @@
  
   <id>jajuk</id>
  
-  <currentVersion>1.1</currentVersion>
+  <currentVersion>1.2</currentVersion>
  
   <organization>
     <name>Jajuk team</name>
@@ -123,6 +123,18 @@
 	      <organization>Jajuk team</organization>
 	      <timezone>+2</timezone>
 	    </developer>
+	    
+	    <developer>
+	      <name>Sung Pil Moon</name>
+	      <id></id>
+	     <roles>
+			<role>Korean translator</role>
+	     </roles>
+	      <email></email>
+	      <organization>Jajuk team</organization>
+	      <timezone>+10</timezone>
+	    </developer>
+	    
   </developers>
 
  	<contributors>
@@ -130,6 +142,11 @@
 			<name>Jérome Fortain</name>
 			 <email>jf_sourceforge@khiplus.fr</email>
 			<roles><role>Bug reports, qualification</role></roles>
+		</contributor>
+		<contributor>
+			<name>Mike Kelp</name>
+			<roles><role>Documentation/English labels review</role></roles>
+			<email></email>
 		</contributor>
 		<contributor>
 			<name>Jean-Yves Durand-Daubin</name>
