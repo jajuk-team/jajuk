@@ -8,6 +8,7 @@ XDOC_DEST=/data/projects/jajuk/maven_rep/xdocs
 MAVEN_DIR=/data/projects/jajuk/maven_rep
 DOC_DEST=$MAVEN_DIR/target/docs
 STATCVS_JAR=/prog/api/statcvs-xml-0.9.6-full.jar
+XITI_SCRIPT_PATH=/data/scripts
 USAGE="Usage: make_jajuk [site] [pdf] [jws <release:default|test>]"
 
 if [ "$1" = "" ]; then
@@ -96,9 +97,9 @@ maven site
 
 #Replace variables
 cd $DOC_DEST
-java -cp $WEBSITE_SOURCE Xiti SCRIPT_XITI $WEBSITE_SOURCE/script_xiti_home.txt index.html > /tmp/index.html
-java -cp $WEBSITE_SOURCE Xiti SCRIPT_XITI $WEBSITE_SOURCE/script_xiti_jws.txt jws.html > /tmp/jws.html
-java -cp $WEBSITE_SOURCE Xiti SCRIPT_XITI $WEBSITE_SOURCE/script_xiti_downloads.txt downloads.html > /tmp/downloads.html
+java -cp $XITI_SCRIPT_PATH Xiti SCRIPT_XITI $WEBSITE_SOURCE/script_xiti_home.txt index.html > /tmp/index.html
+java -cp $XITI_SCRIPT_PATH Xiti SCRIPT_XITI $WEBSITE_SOURCE/script_xiti_jws.txt jws.html > /tmp/jws.html
+java -cp $XITI_SCRIPT_PATH Xiti SCRIPT_XITI $WEBSITE_SOURCE/script_xiti_downloads.txt downloads.html > /tmp/downloads.html
 #marche pas à la fin sed -e '\#SCRIPT_XITI#{r/data/scripts/script_xiti' -e ';d;}' ./index.html > /tmp/index.html
 cp /tmp/index.html .
 cp /tmp/jws.html .

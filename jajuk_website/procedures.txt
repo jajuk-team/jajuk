@@ -17,8 +17,8 @@ o- Create a maintenance branch for new major releases (x.y level)
 
 *SF*
 o- Close bugs, known issues and RFE at SF
-- Release on SF
-- Make a news at SF
+o- Release on SF
+o- Make a news at SF
 
 *Web site*
 o- Update and set date to release in changes.xml
@@ -30,16 +30,16 @@ o- Upgrade project.xml maven file (version and users)
 o- Backup SF data (php file)
 o- Generate website PDF (make_jajuk pdf) 
 o- Generate maven site (make_jajuk site)
-- Refresh jajuk_website project and commit all changes in jajuk_website project
-- Upload new web site (make_jajuk send)
-- Upload java web start distribution (make_jajuk jws default)
-- Clean snapshots directory
-- Check website (links, pages...)
-- Check JWS distribution
+o- Refresh jajuk_website project and commit all changes in jajuk_website project
+o- Upload new web site (make_jajuk send)
+o- Upload java web start distribution (make_jajuk jws default)
+o- Clean snapshots directory
+o- Check website (links, pages...)
+o- Check JWS distribution
 
 *Others*
-- Save dist file in the releases save dir
-- Send a message in the developer forum
+o- Save dist file in the releases save dir
+o- Send a message in the developer forum
 *********************************************************
 FIX RELEASE (x.y.z) PROCEDURE
 *Code*
@@ -101,7 +101,6 @@ NEW LANGUAGE PROCEDURE
 - If new contributor, see New contributor procedure
 *********************************************************
 API ADDITION PROCEDURE
-- Add file in lib directory
 - Add jar in MANIFEST
 - Change project.xml maven file for dependencies
 - Add jnlp file and update jajuk.jnlp file
