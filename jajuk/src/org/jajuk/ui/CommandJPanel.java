@@ -90,7 +90,7 @@ import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
-
+import org.jdesktop.swingx.JXComboBox;
 
 import ext.DropDownButton;
 import ext.SwingWorker;
@@ -121,7 +121,8 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 	JButton jbNorm;
     DropDownButton ddbDDJ;
     JPopupMenu popupDDJ;
-	
+	JXComboBox jxcbAmbiences;
+    
     JPanel jpPlay;
 	JButton jbPrevious;
 	JButton jbNext;
@@ -199,7 +200,39 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		jpMode.add(jbRandom);
 		jpMode.add(jbContinue);
 		jpMode.add(jbIntro);
-
+        
+        //Ambience combo
+        jxcbAmbiences = new JXComboBox();
+        populateAmbiences();
+        jxcbAmbiences.addActionListener(new ActionListener() {
+        
+            public void actionPerformed(ActionEvent ae) {
+                //Selected 'Any" ambience
+                if (jxcbAmbiences.getSelectedIndex() == 0){
+                    //reset default ambience and tooltips
+                    ConfigurationManager.setProperty(CONF_DEFAULT_AMBIENCE,""); //$NON-NLS-1$
+                    ActionBase action = ActionManager.getAction(JajukAction.NOVELTIES);
+                    action.setShortDescription(Messages.getString("JajukWindow.31")); //$NON-NLS-1$
+                    action = ActionManager.getAction(JajukAction.BEST_OF);
+                    action.setShortDescription(Messages.getString("JajukWindow.24")); //$NON-NLS-1$
+                    action = ActionManager.getAction(JajukAction.SHUFFLE_GLOBAL);
+                    action.setShortDescription(Messages.getString("JajukWindow.23")); //$NON-NLS-1$
+                }
+                   //Selected an ambience
+                else {
+                    Ambience ambience = AmbienceManager.getInstance().getAmbienceByName((String)jxcbAmbiences.getSelectedItem());    
+                    ConfigurationManager.setProperty(CONF_DEFAULT_AMBIENCE,ambience.getID());
+                    ActionBase action = ActionManager.getAction(JajukAction.NOVELTIES);
+                    action.setShortDescription("<html>"+Messages.getString("JajukWindow.31")+"<p><b>"+ambience.getName()+"</b></p></html>"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+                    action = ActionManager.getAction(JajukAction.SHUFFLE_GLOBAL);
+                    action.setShortDescription("<html>"+Messages.getString("JajukWindow.23")+"<p><b>"+ambience.getName()+"</b></p></html>"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+                    action = ActionManager.getAction(JajukAction.BEST_OF);
+                    action.setShortDescription("<html>"+Messages.getString("JajukWindow.24")+"<p><b>"+ambience.getName()+"</b></p></html>"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+                }
+            }
+        
+        });
+            
 		//Special functions toolbar
 		jtbSpecial = new JToolBar();
         jtbSpecial.setFloatable(false);
@@ -282,7 +315,8 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		double[][] size ={{iXSeparator/2,0.14,iXSeparator, //search box
 			TableLayout.FILL,iXSeparator,// history 
 			TableLayout.PREFERRED,iXSeparator, //mode buttons
-			TableLayout.PREFERRED,iXSeparator, //special functions buttons
+			0.1,iXSeparator, //Ambience combo
+            TableLayout.PREFERRED,iXSeparator, //special functions buttons
 			TableLayout.PREFERRED,iXSeparator, //play buttons
 			0.2,iXSeparator/2, //position
 			0.2,iXSeparator, //volume
@@ -295,11 +329,12 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		add(sbSearch,"1,0"); //$NON-NLS-1$
 		add(jcbHistory,"3,0"); //$NON-NLS-1$
 		add(Util.getCentredPanel(Util.getCentredPanel(jpMode),BoxLayout.Y_AXIS),"5,0");  //$NON-NLS-1$
-		add(Util.getCentredPanel(Util.getCentredPanel(jtbSpecial),BoxLayout.Y_AXIS),"7,0"); //$NON-NLS-1$
-		add(Util.getCentredPanel(jpPlay),"9,0"); //$NON-NLS-1$
-		add(jpPosition,"11,0"); //$NON-NLS-1$
-		add(jpVolume,"13,0"); //$NON-NLS-1$
-		add(jbMute,"15,0"); //$NON-NLS-1$
+		add(jxcbAmbiences,"7,0"); //$NON-NLS-1$
+        add(Util.getCentredPanel(Util.getCentredPanel(jtbSpecial),BoxLayout.Y_AXIS),"9,0"); //$NON-NLS-1$
+		add(Util.getCentredPanel(jpPlay),"11,0"); //$NON-NLS-1$
+		add(jpPosition,"13,0"); //$NON-NLS-1$
+		add(jpVolume,"15,0"); //$NON-NLS-1$
+		add(jbMute,"17,0"); //$NON-NLS-1$
 
 		//register to player events
 		ObservationManager.register(EVENT_PLAYER_PLAY,CommandJPanel.this);
@@ -567,9 +602,14 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
                 }
                 else if(EVENT_DJS_CHANGE.equals(event.getSubject())){
                     populateDJs();
+                    //If no more DJ, chnage the tooltip
+                    if (DigitalDJManager.getInstance().getDJs().size() == 0){
+                        ActionBase action = ActionManager.getAction(JajukAction.DJ);
+                        action.setShortDescription(Messages.getString("CommandJPanel.18")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+                    }
                 }
                 else if(EVENT_AMBIENCES_CHANGE.equals(event.getSubject())){
-                    populateDJs(); //refresh DJ and ambiances
+                    populateAmbiences();
                 }
 			}
 		});
@@ -577,7 +617,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 	}
     
     /**
-     * Populate DJs and ambiences
+     * Populate DJs
      *
      */
     private void populateDJs(){
@@ -586,7 +626,15 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
             JMenuItem jmiNew = new JMenuItem(Messages.getString("CommandJPanel.17"),Util.getIcon(ICON_WIZARD));  //$NON-NLS-1$
             popupDDJ.add(jmiNew);
             popupDDJ.addSeparator();
-            popupDDJ.add("- "+Messages.getString("DigitalDJWizard.65")+" -"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            //Ambiences
+            JMenuItem jmiAmbiences = new JMenuItem(Messages.getString("CommandJPanel.19"),Util.getIcon(ICON_STYLE));  //$NON-NLS-1$
+            jmiAmbiences.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent arg0) {
+                    new AmbienceWizard();
+                }
+            });
+            popupDDJ.addSeparator();
+            popupDDJ.add(jmiAmbiences);
             Iterator it = DigitalDJManager.getInstance().getDJs().iterator();
             while (it.hasNext()){
                 final DigitalDJ dj = (DigitalDJ)it.next();
@@ -607,59 +655,31 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
                     new DigitalDJWizard();
                 }
             });
-            popupDDJ.addSeparator();
-            popupDDJ.addSeparator();
-            //Ambiences
-            JMenuItem jmiAmbiences = new JMenuItem(Messages.getString("CommandJPanel.19"),Util.getIcon(ICON_STYLE));  //$NON-NLS-1$
-            jmiAmbiences.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent arg0) {
-                    new AmbienceWizard();
-                }
-            });
-            popupDDJ.add(jmiAmbiences);
-            popupDDJ.addSeparator();
-            popupDDJ.add("- "+Messages.getString("DigitalDJWizard.66")+" -"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-            //Add "any" ambience item
-            JCheckBoxMenuItem jmi = new JCheckBoxMenuItem("<html><i>"+ //$NON-NLS-1$
-                Messages.getString("DigitalDJWizard.64")+"</i></html>"); //$NON-NLS-1$ //$NON-NLS-2$
-            jmi.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent arg0) {
-                    //reset default ambience and tooltips
-                    ConfigurationManager.setProperty(CONF_DEFAULT_AMBIENCE,""); //$NON-NLS-1$
-                    populateDJs();
-                    ActionBase action = ActionManager.getAction(JajukAction.NOVELTIES);
-                    action.setShortDescription(Messages.getString("JajukWindow.31")); //$NON-NLS-1$
-                    action = ActionManager.getAction(JajukAction.BEST_OF);
-                    action.setShortDescription(Messages.getString("JajukWindow.24")); //$NON-NLS-1$
-                    action = ActionManager.getAction(JajukAction.SHUFFLE_GLOBAL);
-                    action.setShortDescription(Messages.getString("JajukWindow.23")); //$NON-NLS-1$
-                }
-            });
-            jmi.setSelected(ConfigurationManager.getProperty(CONF_DEFAULT_AMBIENCE) == null
-                || ConfigurationManager.getProperty(CONF_DEFAULT_AMBIENCE).equals("")); //$NON-NLS-1$
-            popupDDJ.add(jmi);
-            //Add available ambiences
-            for (final Ambience ambience: AmbienceManager.getInstance().getAmbiences()){
-                jmi = new JCheckBoxMenuItem(ambience.getName());
-                jmi.addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent arg0) {
-                        ConfigurationManager.setProperty(CONF_DEFAULT_AMBIENCE,ambience.getID());
-                        populateDJs();
-                        ActionBase action = ActionManager.getAction(JajukAction.NOVELTIES);
-                        action.setShortDescription("<html>"+Messages.getString("JajukWindow.31")+"<p><b>"+ambience.getName()+"</b></p></html>"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-                        action = ActionManager.getAction(JajukAction.SHUFFLE_GLOBAL);
-                        action.setShortDescription("<html>"+Messages.getString("JajukWindow.23")+"<p><b>"+ambience.getName()+"</b></p></html>"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-                        action = ActionManager.getAction(JajukAction.BEST_OF);
-                        action.setShortDescription("<html>"+Messages.getString("JajukWindow.24")+"<p><b>"+ambience.getName()+"</b></p></html>"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-                    }
-                });
-                jmi.setSelected(ConfigurationManager.getProperty(CONF_DEFAULT_AMBIENCE).equals(ambience.getID()));
-                popupDDJ.add(jmi);
-            }
         }
         catch(Exception e){
             Log.error(e);
         }
+    }
+    
+    /**
+     * Populate ambiences combo
+     *
+     */
+    private void populateAmbiences(){
+        jxcbAmbiences.removeAll();
+        jxcbAmbiences.addItem("<html><i>"+ //$NON-NLS-1$
+                Messages.getString("DigitalDJWizard.64")+"</i></html>");
+        //Add available ambiences
+        for (final Ambience ambience: AmbienceManager.getInstance().getAmbiences()){
+            jxcbAmbiences.addItem(ambience.getName());
+        }
+        //Select right item
+        jxcbAmbiences.setSelectedIndex(1); //Any by default
+        //or any other existing ambience
+        Ambience defaultAmbience = AmbienceManager.getInstance()
+        .getAmbience(ConfigurationManager.getProperty(CONF_DEFAULT_AMBIENCE));
+        jxcbAmbiences.setSelectedItem(defaultAmbience.getName());
+        jxcbAmbiences.setToolTipText(Messages.getString("DigitalDJWizard.66"));
     }
 
 	/**
