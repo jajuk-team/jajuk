@@ -45,13 +45,13 @@ import org.jajuk.dj.ProportionDigitalDJ;
 import org.jajuk.dj.Transition;
 import org.jajuk.dj.TransitionDigitalDJ;
 import org.jajuk.i18n.Messages;
-import org.jajuk.ui.wizard.Screen;
-import org.jajuk.ui.wizard.Wizard;
-import org.jajuk.ui.wizard.WizardCleaner;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
+import org.qdwizard.ClearPoint;
+import org.qdwizard.Screen;
+import org.qdwizard.Wizard;
 /**
  * DJ creation wizard
  *
@@ -322,7 +322,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
      * @author     Bertrand Florat
      * @created    4 march 2006
      */
-    public static class ActionSelectionPanel extends Screen implements WizardCleaner,ActionListener{
+    public static class ActionSelectionPanel extends Screen implements ClearPoint,ActionListener{
         /**NEW code*/
         public static final String ACTION_CREATION = "0"; //$NON-NLS-1$
         /**CHANGE code*/

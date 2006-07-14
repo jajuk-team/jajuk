@@ -31,11 +31,11 @@ import org.jajuk.dj.Ambience;
 import org.jajuk.dj.AmbienceDigitalDJ;
 import org.jajuk.dj.AmbienceManager;
 import org.jajuk.i18n.Messages;
-import org.jajuk.ui.wizard.Screen;
-import org.jajuk.ui.wizard.Wizard;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
+import org.qdwizard.Screen;
+import org.qdwizard.Wizard;
 /**
  * Ambiences management wizard 
  *
