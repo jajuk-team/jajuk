@@ -22,6 +22,7 @@ package org.jajuk.ui.action;
 import static org.jajuk.ui.action.JajukAction.BEST_OF;
 import static org.jajuk.ui.action.JajukAction.CONTINUE_MODE_STATUS_CHANGED;
 import static org.jajuk.ui.action.JajukAction.DECREASE_VOLUME;
+import static org.jajuk.ui.action.JajukAction.DJ;
 import static org.jajuk.ui.action.JajukAction.EXIT;
 import static org.jajuk.ui.action.JajukAction.FAST_FORWARD_TRACK;
 import static org.jajuk.ui.action.JajukAction.FINISH_ALBUM;
@@ -44,7 +45,6 @@ import static org.jajuk.ui.action.JajukAction.SHUFFLE_MODE_STATUS_CHANGED;
 import static org.jajuk.ui.action.JajukAction.STOP_TRACK;
 import static org.jajuk.ui.action.JajukAction.TIP_OF_THE_DAY;
 import static org.jajuk.ui.action.JajukAction.WIZARD;
-import static org.jajuk.ui.action.JajukAction.DJ;
 
 import java.util.ArrayList;
 import java.util.EnumMap;

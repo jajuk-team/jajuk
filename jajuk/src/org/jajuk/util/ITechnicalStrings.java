@@ -411,6 +411,7 @@ public interface ITechnicalStrings {
     public static final String EVENT_AMBIENCES_CHANGE = "ambiences_change"; //One or more ambiences have been removed/added/changed
     public static final String EVENT_AMBIENCE_REMOVED = "ambience_removed"; //An ambience has been removed
     public static final String EVENT_AUTHOR_CHANGED = "author changed"; //Current played track author name has been changed
+    public static final String EVENT_LANGUAGE_CHANGED = "language changed"; //Language changed
     
     //details keys
 	public static final String DETAIL_CURRENT_FILE_ID="current file id";
