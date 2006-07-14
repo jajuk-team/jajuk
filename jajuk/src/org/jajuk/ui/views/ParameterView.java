@@ -177,8 +177,6 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
     JButton jbOK;
     JButton jbDefault;
     
-    /**Previous lacole*/
-    private String sLocal;
     /** Previous value for hidden option, used to check if a refresh is need*/
     boolean bHidden;
     
@@ -880,13 +878,9 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
                     jcbLoadEachTrack.setEnabled(jcbShuffleCover.isSelected());
                 }
                 else if (e.getSource() == jbOK){
-                    //save previous locale
-                    sLocal = (String)Messages.getInstance().getLocals().get(scbLanguage.getSelectedIndex());
                     applyParameters();
                 }
                 else if (e.getSource() == jbDefault){
-                    //save previous locale
-                    sLocal = (String)Messages.getInstance().getLocals().get(scbLanguage.getSelectedIndex());
                     ConfigurationManager.setDefaultProperties();
                     ConfigurationManager.setProperty(CONF_FIRST_CON,FALSE);//not first connection
                     updateSelection();//update UI
@@ -951,6 +945,14 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
                         });
                     }
                 }
+                else if (e.getSource() == scbLanguage){
+                    String sLocal = (String)Messages.getInstance().getLocals().get(scbLanguage.getSelectedIndex());
+                    String sPreviousLocal = Messages.getInstance().getLocal(); 
+                    if (!sPreviousLocal.equals(sLocal)){  //local has changed
+                        ConfigurationManager.setProperty(CONF_OPTIONS_LANGUAGE,sLocal);
+                        Messages.showInfoMessage(Messages.getString("ParameterView.103")); //$NON-NLS-1$
+                    }
+                }
             }
         }.start();
     }
@@ -969,10 +971,6 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
         ConfigurationManager.setProperty(CONF_OPTIONS_DEFAULT_ACTION_DROP,Boolean.toString(jcbDefaultActionDrop.isSelected()));
         ConfigurationManager.setProperty(CONF_OPTIONS_SYNC_TABLE_TREE,Boolean.toString(jcbSyncTableTree.isSelected()));
         ConfigurationManager.setProperty(CONF_OPTIONS_SHOW_POPUP,Boolean.toString(jcbShowPopup.isSelected()));
-        if (!Messages.getInstance().getLocal().equals(sLocal)){  //local has changed
-            Messages.showInfoMessage(Messages.getString("ParameterView.103")); //$NON-NLS-1$
-        }
-        ConfigurationManager.setProperty(CONF_OPTIONS_LANGUAGE,sLocal);
         int iLogLevel = scbLogLevel.getSelectedIndex(); 
         Log.setVerbosity(iLogLevel);
         ConfigurationManager.setProperty(CONF_OPTIONS_LOG_LEVEL,Integer.toString(iLogLevel));
@@ -1114,6 +1112,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
         jcbShowPopup.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_SHOW_POPUP));
         jcbSyncTableTree.setSelected(ConfigurationManager.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE));
         scbLanguage.setSelectedIndex(Messages.getInstance().getLocals().indexOf(ConfigurationManager.getProperty(CONF_OPTIONS_LANGUAGE)));
+        scbLanguage.addActionListener(this);
         scbLAF.setSelectedItem(ConfigurationManager.getProperty(CONF_OPTIONS_LNF));
         scbLAF.addActionListener(this);
         scbLogLevel.setSelectedIndex(Integer.parseInt(ConfigurationManager.getProperty(CONF_OPTIONS_LOG_LEVEL)));
