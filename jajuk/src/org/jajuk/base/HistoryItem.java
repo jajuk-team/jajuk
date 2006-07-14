@@ -20,10 +20,7 @@
 
 package org.jajuk.base;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import org.jajuk.i18n.Messages;
 
 /**
  * An history item
@@ -35,7 +32,7 @@ public class HistoryItem{
 	private String sFileId;
 	/**Play date*/
 	private long lDate;
-	
+    
 	public HistoryItem(String sFileId,long lDate){
 		this.sFileId = sFileId;
 		this.lDate = lDate;
@@ -78,7 +75,7 @@ public class HistoryItem{
 			return null;
 		}
 		StringBuffer sbAuthor = new StringBuffer(file.getTrack().getAuthor().getName2());
-		String sDate = new SimpleDateFormat(Messages.getString("HistoryItem.0")).format(new Date(getDate())); //$NON-NLS-1$
-		return sbAuthor.append(" / ").append(file.getTrack().getName()).append(" [").append(sDate).append("]").toString(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		String sDate = History.getInstance().getDateFormatter().format(new Date(getDate())); //$NON-NLS-1$
+        return sbAuthor.append(" / ").append(file.getTrack().getName()).append(" [").append(sDate).append("]").toString(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 }

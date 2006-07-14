@@ -20,7 +20,9 @@
 
 package org.jajuk.dj;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -110,16 +112,32 @@ public class AmbienceManager implements ITechnicalStrings,Observer{
      * @return list of registated ambiences
      */
     public Collection<Ambience> getAmbiences(){
-        return ambiences.values();
+        ArrayList<Ambience> al = new ArrayList(ambiences.values());
+        Collections.sort(al);
+        return al;
     }
     
     /**
      * 
-     * @param sName Ambience id
+     * @param sID Ambience id
      * @return registrated ambience
      */
     public Ambience getAmbience(String sID){
         return ambiences.get(sID);
+    }
+    
+    /**
+     * 
+     * @param sName Ambience name
+     * @return registrated ambience or null if no matching name
+     */
+    public Ambience getAmbienceByName(String sName){
+        for (Ambience ambience: ambiences.values()){
+            if (ambience.getName().equals(sName)){
+                return ambience;
+            }
+        }
+        return null;
     }
     
     

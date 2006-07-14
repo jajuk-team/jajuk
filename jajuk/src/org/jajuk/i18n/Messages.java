@@ -40,6 +40,7 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import org.jajuk.Main;
+import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
@@ -185,7 +186,8 @@ public class Messages extends DefaultHandler implements ITechnicalStrings	{
 	 * @param sLocal
 	 */
 	public void setLocal(String sLocal) throws Exception{
-	    this.properties = null; //make sure to reinitialize cached strings
+	    ConfigurationManager.setProperty(CONF_OPTIONS_LANGUAGE,sLocal);
+        this.properties = null; //make sure to reinitialize cached strings
 	    this.sLocal = sLocal;
   	}
 

@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Properties;
@@ -59,6 +60,9 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
     /** History begin date*/
     private static  long lDateStart;
     
+    /**Cached date formatter*/
+    private SimpleDateFormat formatter;
+    
     /** Instance getter */
     public static synchronized History getInstance() {
         if (history == null) {
@@ -73,12 +77,14 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
         ObservationManager.register(EVENT_DEVICE_REFRESH,this);
         ObservationManager.register(EVENT_CLEAR_HISTORY,this);
         ObservationManager.register(EVENT_FILE_NAME_CHANGED,this);
-        
+        ObservationManager.register(EVENT_LANGUAGE_CHANGED,this);
         //check if something has already started
         if (ObservationManager.getDetailLastOccurence(EVENT_FILE_LAUNCHED,DETAIL_CURRENT_FILE_ID) != null &&
                 ObservationManager.getDetailLastOccurence(EVENT_FILE_LAUNCHED,DETAIL_CURRENT_DATE) != null){
             update(new Event(EVENT_FILE_LAUNCHED,ObservationManager.getDetailsLastOccurence(EVENT_FILE_LAUNCHED)));
         }
+        //Fill date formater
+        formatter = new SimpleDateFormat(Messages.getString("HistoryItem.0"));
     }
     
     /**
@@ -337,7 +343,11 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
             }
             else if(EVENT_CLEAR_HISTORY.equals(subject)){
                 clear();   
-              }
+            }
+            else if(EVENT_LANGUAGE_CHANGED.equals(subject)){
+                //reset formatter
+                formatter = new SimpleDateFormat(Messages.getString("HistoryItem.0"));   
+            }
             else if (EVENT_FILE_NAME_CHANGED.equals(subject)){
                 Properties properties = event.getDetails();
                 org.jajuk.base.File fileOld = (org.jajuk.base.File)properties.get(DETAIL_OLD);
@@ -350,6 +360,14 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
             Log.error(e);
             return;
         }
+    }
+
+    /**
+     * 
+     * @return Cached date formater
+     */
+    public SimpleDateFormat getDateFormatter() {
+        return this.formatter;
     }
     
     
