@@ -108,6 +108,18 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
         return jsystray;
     }
     
+    
+    /**
+     * Reset the systray (useful for language reload)
+     *
+     */
+    public static void dispose(){
+        if (jsystray != null){
+            jsystray.closeSystray();
+            jsystray = null;
+        }
+    }
+    
     /**
      * Systray constructor
      *
@@ -268,6 +280,9 @@ public class JajukSystray implements ITechnicalStrings,Observer,ActionListener,M
      * @see org.jajuk.ui.Observer#update(java.lang.String)
      */
     public void update(final Event event) {
+        if (jsystray == null){ //test if the systray is visible
+            return;
+        }
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 String subject = event.getSubject();
