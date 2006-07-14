@@ -74,6 +74,7 @@ import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
+import org.jdesktop.swingx.util.JVM;
 
 import ext.JSplash;
 
@@ -133,16 +134,10 @@ public class Main implements ITechnicalStrings {
         //non ui init
         try{
             //check JVM version
-            String sJVM = System.getProperty("java.vm.version"); //$NON-NLS-1$
-            if (	sJVM.startsWith("1.0")  //$NON-NLS-1$
-                    || sJVM.startsWith("1.1")  //$NON-NLS-1$
-                    || sJVM.startsWith("1.2")  //$NON-NLS-1$
-                    || sJVM.startsWith("1.3")  //$NON-NLS-1$
-                    || sJVM.startsWith("1.4")){  //$NON-NLS-1$
-                System.out.println("Java Runtime Environment 1.5 minimum required. You use a JVM "+sJVM); //$NON-NLS-1$
+            if (!JVM.current().isOrLater(JVM.JDK1_5)){
+                System.out.println("Java Runtime Environment 1.5 minimum required. You use a JVM "+JVM.current()); //$NON-NLS-1$
                 System.exit(2); //error code 2 : wrong JVM
             }
-            
             //set command line options
             for (int i=0;i<args.length;i++){
                 //Tells jajuk it is inside the IDE (usefull to find right location for images and jar resources)
@@ -866,6 +861,7 @@ public class Main implements ITechnicalStrings {
                         sc.splashOff();
                     }
                     bUILauched = true;
+                    Util.stopWaiting();
                 }
             }
         });
@@ -909,4 +905,14 @@ public class Main implements ITechnicalStrings {
     public static void setDefaultPerspective(String perspective) {
         sPerspective = perspective;
     }
+
+    /**
+     * 
+     * @return the systray
+     */
+    public static JajukSystray getSystray() {
+        return jsystray;
+    }
+    
+    
 }
