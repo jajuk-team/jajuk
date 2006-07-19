@@ -256,7 +256,14 @@ abstract public class PropertyAdapter implements IPropertyable, Serializable,ITe
             if (oValue != null){
                 PropertyMetaInformation meta = getMeta(sKey);
                 try {
-                    sValue = Util.format(oValue,meta);
+                    /*Store dates as simple date format YYYYMMDD to ensure it will be parsed correctly 
+                    if user selected default locale and locale changed*/
+                    if (meta.getType().equals(Date.class)){
+                        sValue = Util.getAdditionDateFormat().format((Date)oValue);
+                    }//else, simple format the value to human readable value
+                    else{
+                        sValue = Util.format(oValue,meta);
+                    }
                 } catch (Exception e) { //should not occur
                     Log.error(e);
                 }
@@ -280,7 +287,17 @@ abstract public class PropertyAdapter implements IPropertyable, Serializable,ITe
                 String sValue = attributes.getValue(i);
                 PropertyMetaInformation meta = getMeta(sProperty);
                 try {
-                    setProperty(sProperty, Util.parse(sValue,meta.getType(),meta.getFormat()));
+                    Object oValue = null;
+                    /*Dates are stored always using the YYYYMMDD date format to stay independant 
+                    from default locale*/
+                    if (meta.getType().equals(Date.class)){
+                        oValue = Util.getAdditionDateFormat().parseObject(sValue);
+                    }
+                    //else, simple parse the value
+                    else{
+                        oValue = Util.parse(sValue,meta.getType(),meta.getFormat());
+                    }
+                    setProperty(sProperty, oValue);
                 } catch (Exception e) {
                     Log.error("137",sProperty,e); //$NON-NLS-1$
                 }    

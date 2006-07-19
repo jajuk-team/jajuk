@@ -65,6 +65,14 @@ public class NewPropertyWizard extends CustomPropertyWizard implements KeyListen
     JXDatePicker jdpDefault;
     JLabel jlFormat;
     JComboBox jcbFormat;
+    
+    //Type constants
+    private static final int STRING = 0;
+    private static final int LONG = 1;
+    private static final int DOUBLE = 2;
+    private static final int BOOLEAN = 3;
+    private static final int DATE = 4;
+    
     /**
      * Constructor
      */
@@ -164,25 +172,25 @@ public class NewPropertyWizard extends CustomPropertyWizard implements KeyListen
             //get selected format
              Class cType = null;
             switch(jcbClass.getSelectedIndex()){
-                case 0:
+                case STRING:
                    cType =  String.class;
                    break;
-                case 1:
+                case LONG:
                     cType =  Long.class;
                     break;
-                case 2:
+                case DOUBLE:
                     cType =  Double.class;
                     break;
-                case 3:
+                case BOOLEAN:
                     cType =  Boolean.class;
                     break;
-                case 4:
+                case DATE:
                     cType =  Date.class;
                     break;
             }
             String sProperty = jtfName.getText();
             String sFormat = null;
-            if (jcbClass.getSelectedIndex() == 4){
+            if (jcbClass.getSelectedIndex() == DATE){
                 sFormat = (String)jcbFormat.getSelectedItem();
             }
             Object oDefault = jtfDefault.getText();
@@ -230,7 +238,7 @@ public class NewPropertyWizard extends CustomPropertyWizard implements KeyListen
      */
     public void itemStateChanged(ItemEvent e) {
         //Date format
-        if (jcbClass.getSelectedIndex() == 4){ 
+        if (jcbClass.getSelectedIndex() == DATE){ 
             jcbFormat.setEnabled(true);
             jdpDefault.setEnabled(true);
         }
@@ -239,14 +247,15 @@ public class NewPropertyWizard extends CustomPropertyWizard implements KeyListen
             jdpDefault.setEnabled(false);
         }
         //Boolean format
-        if (jcbClass.getSelectedIndex() == 3){ 
+        if (jcbClass.getSelectedIndex() == BOOLEAN){ 
             jcbDefault.setEnabled(true);
         }
         else{
             jcbDefault.setEnabled(false);
         }
         //Others formats
-        if (jcbClass.getSelectedIndex() != 3 && jcbClass.getSelectedIndex() != 4){ 
+        if (jcbClass.getSelectedIndex() != BOOLEAN 
+                && jcbClass.getSelectedIndex() != DATE){ 
             jtfDefault.setEnabled(true);
         }
         else{
