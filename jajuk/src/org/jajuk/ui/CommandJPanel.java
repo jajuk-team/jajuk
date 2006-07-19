@@ -90,7 +90,6 @@ import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
-import org.jdesktop.swingx.JXComboBox;
 
 import ext.DropDownButton;
 import ext.SwingWorker;
@@ -121,7 +120,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 	JButton jbNorm;
     DropDownButton ddbDDJ;
     JPopupMenu popupDDJ;
-	JXComboBox jxcbAmbiences;
+	SteppedComboBox ambiencesCombo;
     
     JPanel jpPlay;
 	JButton jbPrevious;
@@ -202,13 +201,15 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		jpMode.add(jbIntro);
         
         //Ambience combo
-        jxcbAmbiences = new JXComboBox();
+        ambiencesCombo = new SteppedComboBox();
+        iWidth = (int)(Toolkit.getDefaultToolkit().getScreenSize().getWidth()/4);
+        ambiencesCombo.setPopupWidth(iWidth);
         populateAmbiences();
-        jxcbAmbiences.addActionListener(new ActionListener() {
+        ambiencesCombo.addActionListener(new ActionListener() {
         
             public void actionPerformed(ActionEvent ae) {
                 //Selected 'Any" ambience
-                if (jxcbAmbiences.getSelectedIndex() == 0){
+                if (ambiencesCombo.getSelectedIndex() == 0){
                     //reset default ambience and tooltips
                     ConfigurationManager.setProperty(CONF_DEFAULT_AMBIENCE,""); //$NON-NLS-1$
                     ActionBase action = ActionManager.getAction(JajukAction.NOVELTIES);
@@ -220,7 +221,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
                 }
                    //Selected an ambience
                 else {
-                    Ambience ambience = AmbienceManager.getInstance().getAmbienceByName((String)jxcbAmbiences.getSelectedItem());    
+                    Ambience ambience = AmbienceManager.getInstance().getAmbienceByName((String)ambiencesCombo.getSelectedItem());    
                     ConfigurationManager.setProperty(CONF_DEFAULT_AMBIENCE,ambience.getID());
                     ActionBase action = ActionManager.getAction(JajukAction.NOVELTIES);
                     action.setShortDescription("<html>"+Messages.getString("JajukWindow.31")+"<p><b>"+ambience.getName()+"</b></p></html>"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
@@ -322,16 +323,17 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 			0.2,iXSeparator, //volume
 			20,iXSeparator},   //mute button
 			{height1}}; //note we can't set a % for history combo box because of popup size
-		setLayout(new TableLayout(size));
+		TableLayout layout = new TableLayout(size);
+        setLayout(layout);
 		setAlignmentY(Component.CENTER_ALIGNMENT);
 
 		//add toolbars to main panel
 		add(sbSearch,"1,0"); //$NON-NLS-1$
 		add(jcbHistory,"3,0"); //$NON-NLS-1$
-		add(Util.getCentredPanel(Util.getCentredPanel(jpMode),BoxLayout.Y_AXIS),"5,0");  //$NON-NLS-1$
-		add(jxcbAmbiences,"7,0"); //$NON-NLS-1$
-        add(Util.getCentredPanel(Util.getCentredPanel(jtbSpecial),BoxLayout.Y_AXIS),"9,0"); //$NON-NLS-1$
-		add(Util.getCentredPanel(jpPlay),"11,0"); //$NON-NLS-1$
+		add(jpMode,"5,0,c,c");  //$NON-NLS-1$
+		add(ambiencesCombo,"7,0,c,c"); //$NON-NLS-1$
+        add(jtbSpecial,"9,0,c,c"); //$NON-NLS-1$
+		add(jpPlay,"11,0,c,c"); //$NON-NLS-1$
 		add(jpPosition,"13,0"); //$NON-NLS-1$
 		add(jpVolume,"15,0"); //$NON-NLS-1$
 		add(jbMute,"17,0"); //$NON-NLS-1$
@@ -666,20 +668,22 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
      *
      */
     private void populateAmbiences(){
-        jxcbAmbiences.removeAll();
-        jxcbAmbiences.addItem("<html><i>"+ //$NON-NLS-1$
+        ambiencesCombo.removeAllItems();
+        ambiencesCombo.addItem("<html><i>"+ //$NON-NLS-1$
                 Messages.getString("DigitalDJWizard.64")+"</i></html>");
         //Add available ambiences
         for (final Ambience ambience: AmbienceManager.getInstance().getAmbiences()){
-            jxcbAmbiences.addItem(ambience.getName());
+            ambiencesCombo.addItem(ambience.getName());
         }
         //Select right item
-        jxcbAmbiences.setSelectedIndex(1); //Any by default
+        ambiencesCombo.setSelectedIndex(0); //Any by default
         //or any other existing ambience
         Ambience defaultAmbience = AmbienceManager.getInstance()
         .getAmbience(ConfigurationManager.getProperty(CONF_DEFAULT_AMBIENCE));
-        jxcbAmbiences.setSelectedItem(defaultAmbience.getName());
-        jxcbAmbiences.setToolTipText(Messages.getString("DigitalDJWizard.66"));
+        if (defaultAmbience != null){
+            ambiencesCombo.setSelectedItem(defaultAmbience.getName());
+        }
+        ambiencesCombo.setToolTipText(Messages.getString("DigitalDJWizard.66"));
     }
 
 	/**
