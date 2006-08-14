@@ -53,22 +53,22 @@ o- Commit all changes in jajuk project
 o- Tag as version
 
 *SF*
-- Close bugs, known issues and RFE at SF
+o- Close bugs, known issues and RFE at SF
 - Release on SF
 
 *Web site*
-- Update and set date to release in changes.xml
-- Change download.html file for file names
+o- Update and set date to release in changes.xml
+o- Change download.html file for file names
 - Generate maven site (make_jajuk site)
 - Backup SF data (php file)
+- Commit all changes in jajuk_website project- Commit all changes in jajuk_website project
 - Upload maven site (make_jajuk send)
-- Commit all changes in jajuk_website project
 - Upload java web start distribution (make_jajuk jws default)
 - Check website (links, pages...)
 - Check JWS distribution
 
 *Others*
-- Save dist file in the releases save dir
+o- Save dist file in the releases save dir
 - Send a message in the developer forum
 *********************************************************
 RELEASE CANDIDATE (x.y.zRCn) PROCEDURE
