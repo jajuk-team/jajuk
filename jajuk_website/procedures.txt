@@ -46,7 +46,6 @@ FIX RELEASE (x.y.z) PROCEDURE
 o- Refresh workspace
 o- Set right version (no more rc), test to '-notest' and jwsdeploy to 'default'  in build-dist script
 o- Check new incoming updates (i18n)
-o- String externalization
 o- Search for debug System.out
 o- Generate packages
 o- Test it a minima under several OS
@@ -54,23 +53,23 @@ o- Commit all changes in jajuk project
 o- Tag as version
 
 *SF*
-o- Close bugs, known issues and RFE at SF
+- Close bugs, known issues and RFE at SF
 - Release on SF
 
 *Web site*
-o- Update and set date to release in changes.xml
-o- Change download.html file for file names
+- Update and set date to release in changes.xml
+- Change download.html file for file names
 - Generate maven site (make_jajuk site)
-o- Backup SF data (php file)
+- Backup SF data (php file)
 - Upload maven site (make_jajuk send)
-o- Commit all changes in jajuk_website project
+- Commit all changes in jajuk_website project
 - Upload java web start distribution (make_jajuk jws default)
 - Check website (links, pages...)
 - Check JWS distribution
 
 *Others*
-o- Save dist file in the releases save dir
-o- Send a message in the developer forum
+- Save dist file in the releases save dir
+- Send a message in the developer forum
 *********************************************************
 RELEASE CANDIDATE (x.y.zRCn) PROCEDURE
 *Code*

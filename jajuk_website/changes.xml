@@ -5,6 +5,10 @@
     <author email='bflorat@users.sourceforge.net'>Bertrand Florat</author>
   </properties>
   <body>
+    <release version='1.2.1' date='2006-08-14' description='Fixes'>
+    	<action dev='bflorat' type='fix' issue=''>Fixed online covers grabbing problem [7]</action>
+    	<action dev='bflorat' type='fix' issue=''>Few minor fixes including an ambiences sorting issue [3]</action>
+    </release>
     <release version='1.2' date='2006-06-30' description='Digital DJ, Reorganizer, Wikipedia, Korean langpack'>
     	<action dev='bflorat' type='add'>Digital DJ feature</action>
     	<action dev='dhalsim' type='add'>Collection reorganizer with pattern</action>
