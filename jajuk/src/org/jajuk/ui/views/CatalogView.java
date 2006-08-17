@@ -298,17 +298,19 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
      * Make thumbnail file exists (album id.jpg or.gif or .png) in thumbs directory
      * if it doesn't exist yet 
      * @param album
+     * @return IO file used to create the thumb
      */
-    private void refreshThumbnail(Album album){
+    private File refreshThumbnail(Album album){
         File fThumb = new File(FILE_THUMBS+'/'+(String)jcbSize.getSelectedItem()+'/'+album.getId()+'.'+EXT_THUMB);
+        File fCover = null;
         if (!fThumb.exists()){
             //search for local covers in all directories mapping the current track to reach other devices covers and display them together
             ArrayList<Track> tracks = TrackManager.getInstance().getAssociatedTracks(album);
             if (tracks.size() == 0){
-                return;
+                return null;
             }
             Track trackCurrent = (Track)tracks.iterator().next(); //take first track found to get associated directories as we assume all tracks for an album are in the same directory 
-            File fCover = trackCurrent.getAlbum().getCoverFile();
+            fCover = trackCurrent.getAlbum().getCoverFile();
             if (fCover == null){
                 try {
                     //use void file to store the fact we didn't find a cover, too long to scan again
@@ -341,6 +343,7 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
                 }
             }
         }
+        return fCover;
     }
     
     
@@ -425,6 +428,9 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
                         
                     });
                 }
+                 
+                HashSet<File> coverFiles = new HashSet<File>(albums.size()); //this set contains cover images already used to prevent duplicates
+                //Now process each album    
                 for (Object item:albums){
                     Album album = (Album)item;
                     //if hide unmounted tracks is set, continue
@@ -447,8 +453,14 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
                             continue;
                         }
                     }
-                    //make sure thumbnail exists
-                    refreshThumbnail(album);
+                    //create the thumbnail if it doesn't exist
+                    File image = refreshThumbnail(album); //image is null if none cover file found
+                    if (image != null 
+                            && coverFiles.contains(image) //known source image ? leave 
+                            && !image.equals(new File(IMAGE_NO_COVER))){ //if it is a no cover item, display it!
+                        continue;
+                    }
+                    coverFiles.add(image);
                     CatalogItem cover = new CatalogItem(album,(String)jcbSize.getSelectedItem(),hmAlbumTrack.get(album));
                     
                     if (cover.isNoCover()){
@@ -456,7 +468,7 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
                             jpItems.add(cover);
                         }
                     }
-                    else{
+                    else {
                         jpItems.add(cover);
                         hsItems.add(cover);
                     }
@@ -612,6 +624,9 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
         JTextArea jlAuthor;
         JTextArea jlAlbum;
         
+        /**No covers image cache*/
+        private HashMap<String,ImageIcon> noCoversCache = new HashMap<String, ImageIcon>(10);
+        
         /**
          * Constructor
          * @param album : associated album
@@ -624,7 +639,7 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
             this.fCover = new File(FILE_THUMBS+'/'+size+'/'+album.getId()+'.'+EXT_THUMB);
             if (!fCover.exists() || fCover.length() == 0){
                 bNoCover = true;
-                this.fCover = new File(FILE_THUMBS+'/'+size+'/'+FILE_THUMB_NO_COVER);
+                this.fCover = new File(FILE_THUMBS+'/'+size+'/'+FILE_THUMB_NO_COVER); 
             }
             double[][] dMain = {{TableLayout.FILL,TableLayout.PREFERRED,TableLayout.FILL}
             ,{TableLayout.PREFERRED,10,TableLayout.PREFERRED,5,TableLayout.PREFERRED}};
@@ -635,8 +650,16 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
             ,{TableLayout.PREFERRED}};
             jpIcon.setLayout(new TableLayout(dIcon));
             jlIcon = new JLabel();
-            ImageIcon ii = new ImageIcon(fCover.getAbsolutePath());
-            if (!bNoCover){ //avoif flushing no cover thumb: it blinks
+            ImageIcon ii = null;
+            String sPath = fCover.getAbsolutePath();
+            if (noCoversCache.containsKey(sPath)){
+                ii = noCoversCache.get(sPath);
+            }
+            else{
+                ii = new ImageIcon(sPath);
+                noCoversCache.put(sPath, ii);
+            }
+            if (!bNoCover){ //avoid flushing no cover thumb: it blinks
                 ii.getImage().flush(); //flush image buffer to avoid jre to use old image
             }
             jlIcon.setIcon(ii);
@@ -770,6 +793,7 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
         public Album getAlbum() {
             return album;
         }
+       
     }
     
     
