@@ -164,13 +164,17 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings,Obse
 	 */
 	public void update(Event event) {
 		String subject = event.getSubject();
-		if (subject.equals(EVENT_FILE_LAUNCHED) && FIFO.getInstance().getCurrentFile() != null){
+		//Make a search after a stop period
+        if (subject.equals(EVENT_FILE_LAUNCHED) && FIFO.getInstance().getCurrentFile() != null){
             Properties details = ObservationManager.getDetailsLastOccurence(EVENT_FILE_LAUNCHED);
-            if (details != null){ //a file has been laucnh before view creation
-                this.search = FIFO.getInstance().getCurrentFile().getTrack().getAuthor().getName2();
+            String search = FIFO.getInstance().
+                    getCurrentFile().getTrack().getAuthor().getName2();
+            if (details != null && !search.equals(this.search)){ //a file has been laucnh before view creation
+                this.search = search;
                 launchSearch(search);
             }
         }
+        //Reset the page when stopping
 		else if (subject.equals(EVENT_ZERO)){
             this.search = ""; //reset //$NON-NLS-1$
             launchSearch(search);
