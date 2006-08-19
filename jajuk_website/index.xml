@@ -78,7 +78,7 @@
 		   		</ul>	
 		<p><b>Tag support</b></p>
   	   			<ul>	
-	   				<li>Ogg, ID3 V1 and V2 support (not yet V2.4)</li>
+	   				<li>Ogg, ID3 V1 and V2 support</li>
 	   				<li>Tag edition (single and multiple tracks)</li>
 	   				<li>Online(CDDB) retagging</li>
 	   				<li>Collection reorganizer using tags and a pattern</li>
@@ -122,7 +122,7 @@
 						<img alt='German' title='German' src='flags/flag_de.png' style='width: 21px; height: 14px;'/>
 						<img alt='Italian' title='Italian' src='flags/flag_it.png' style='width: 21px; height: 14px;'/>*
 						<img alt='Swedish' title='Swedish' src='flags/flag_sv.png' style='width: 21px; height: 14px;'/>*
-						<img alt='Dutch' title='Dutch' src='flags/flag_nl.png' style='width: 21px; height: 14px;'/>
+						<img alt='Dutch' title='Dutch' src='flags/flag_nl.png' style='width: 21px; height: 14px;'/>*
 						<img alt='Spanish' title='Spanish' src='flags/flag_sp.png' style='width: 21px; height: 14px;'/>
 						<img alt='Catalan' title='Catalan' src='flags/flag_ct.png' style='width: 21px; height: 14px;'/> 
 						<img alt='Korean' title='Korean' src='flags/flag_ko.png' style='width: 21px; height: 14px;'/> 
