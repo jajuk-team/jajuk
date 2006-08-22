@@ -932,6 +932,7 @@ ActionListener, Observer {
             				|| e.getSource() == jmiAuthorExport
             				|| e.getSource() == jmiAlbumExport
             				|| e.getSource() == jmiCollectionExport) {
+                	/*
                 		final JFileChooser filechooser = new JFileChooser();
                 		ExportFileFilter filter = new ExportFileFilter(".xml"); //$NON-NLS-1$
             	
@@ -972,7 +973,7 @@ ActionListener, Observer {
                 					}
                 					xmlexporter.commit(filepath, result);
                 				}
-                		}  
+                		}  */
                 }                
                 else {
                     // compute selection

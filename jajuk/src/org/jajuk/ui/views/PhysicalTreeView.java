@@ -201,7 +201,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
     	jmiCollectionExport = new JMenuItem(Messages
     			.getString("LogicalTreeView.33")); //$NON-NLS-1$
     	jmiCollectionExport.addActionListener(this);
-    	//TBI EXP jmenuCollection.add(jmiCollectionExport);
+    //	jmenuCollection.add(jmiCollectionExport);
     	
         //File menu
         jmenuFile = new JPopupMenu();
@@ -287,7 +287,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         jmenuDir.add(jmiDirDelete);
         jmenuDir.add(jmiDirAddFavorites);
         jmenuDir.add(jmiDirCDDBQuery);
-        //TBI EXP jmenuDir.add(jmiDirExport);
+    //    jmenuDir.add(jmiDirExport);
         jmenuDir.add(jmiDirRefactor);
         jmenuDir.add(jmiDirProperties);
         
@@ -334,7 +334,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         jmenuDev.add(jmiDevCreatePlaylist);
         jmenuDev.add(jmiDevConfiguration);
         jmenuDev.add(jmiDevCDDBQuery);
-        //TBI EXP jmenuDev.add(jmiDevExport);
+   //      jmenuDev.add(jmiDevExport);
         jmenuDev.add(jmiDevProperties);
         
         //Playlist file menu
@@ -943,10 +943,10 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         	filechooser.setCurrentDirectory(new java.io.File(System.getProperty("user.home"))); //$NON-NLS-1$
         	
         	filechooser.addChoosableFileFilter(filter);
-       // 	filter = new ExportFileFilter(".pdf");
-       // 	filechooser.addChoosableFileFilter(filter);
-       // 	filter = new ExportFileFilter(".html");
-       // 	filechooser.addChoosableFileFilter(filter);
+        	filter = new ExportFileFilter(".pdf");
+        	filechooser.addChoosableFileFilter(filter);
+        	filter = new ExportFileFilter(".html");
+        	filechooser.addChoosableFileFilter(filter);
         	
         	int returnVal = filechooser.showSaveDialog(PhysicalTreeView.this);
         	
@@ -959,16 +959,23 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         			final XMLExporter xmlexporter = XMLExporter.getInstance();
         			if (e.getSource() == jmiDirExport) {
         				Directory dir = ((DirectoryNode)paths[0].getLastPathComponent()).getDirectory();         				
-            			result = xmlexporter.directoryToXML(dir);	
+            			result = xmlexporter.process(dir);        
         			} else if (e.getSource() == jmiDevExport) {
         				Device device = ((DeviceNode)paths[0].getLastPathComponent()).getDevice();
-        				result = xmlexporter.deviceToXML(device);
+        				result = xmlexporter.process(device);
         			} else if (e.getSource() == jmiCollectionExport) {
-        				result = xmlexporter.collectionToXML();
+        				result = xmlexporter.process(XMLExporter.PHYSICAL_COLLECTION);
         			}
-        			xmlexporter.commit(filepath, result);
+        			if (result != null) {
+        				if (!xmlexporter.saveToFile(result, filepath)) {
+        					Log.error("Could not write out to the specified file.");
+        				}
+        			} else {
+        				Log.error("Could not create report.");
+        			}
         		} 
         	}   	
+        	
         }
         else if (alFiles!= null  && (e.getSource() == jmiDirPush || e.getSource() == jmiDevPush)){
             FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFiles),
