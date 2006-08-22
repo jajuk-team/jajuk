@@ -617,6 +617,7 @@ public interface ITechnicalStrings {
     public static final String XML_PLAYLIST = "playlist";
 	public static final String XML_NAME = "name";
     public static final String XML_FILE_NAME = "filename";
+    public static final String XML_PATH = "path";
     public static final String XML_URL = "url";
 	public static final String XML_QUALITY = "quality";
     public static final String XML_SIZE = "size";
