@@ -70,8 +70,10 @@ import org.jajuk.base.PlaylistFile;
 import org.jajuk.base.PlaylistFileManager;
 import org.jajuk.base.StackItem;
 import org.jajuk.base.Track;
+import org.jajuk.util.JajukFileFilter;
 import org.jajuk.base.exporters.ExportFileFilter;
 import org.jajuk.base.exporters.XMLExporter;
+import org.jajuk.base.exporters.HTMLExporter;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.CDDBWizard;
 import org.jajuk.ui.DeviceWizard;
@@ -80,6 +82,7 @@ import org.jajuk.ui.PropertiesWizard;
 import org.jajuk.ui.TransferableTreeNode;
 import org.jajuk.ui.TreeTransferHandler;
 import org.jajuk.ui.action.RefactorAction;
+import org.jajuk.ui.JajukFileChooser;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
@@ -201,8 +204,8 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
     	jmiCollectionExport = new JMenuItem(Messages
     			.getString("LogicalTreeView.33")); //$NON-NLS-1$
     	jmiCollectionExport.addActionListener(this);
-    //	jmenuCollection.add(jmiCollectionExport);
-    	
+   // 	jmenuCollection.add(jmiCollectionExport);
+    
         //File menu
         jmenuFile = new JPopupMenu();
         jmiFilePlay = new JMenuItem(Messages.getString("PhysicalTreeView.1")); //$NON-NLS-1$
@@ -334,7 +337,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         jmenuDev.add(jmiDevCreatePlaylist);
         jmenuDev.add(jmiDevConfiguration);
         jmenuDev.add(jmiDevCDDBQuery);
-   //      jmenuDev.add(jmiDevExport);
+    //    jmenuDev.add(jmiDevExport);
         jmenuDev.add(jmiDevProperties);
         
         //Playlist file menu
@@ -744,7 +747,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
                         }
                         jmenuDev.show(jtree,e.getX(),e.getY()); 
                     } else if (paths[0].getLastPathComponent() instanceof DefaultMutableTreeNode) {
-                    	jmenuCollection.show(jtree, e.getX(), e.getY());
+                   // 	jmenuCollection.show(jtree, e.getX(), e.getY());
                     }
                 }
             }
@@ -937,16 +940,20 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         else if ((alFiles != null && e.getSource() == jmiDirExport) 
         			|| (e.getSource() == jmiDevExport
         			|| (e.getSource() == jmiCollectionExport))) {
-        	final JFileChooser filechooser = new JFileChooser();
-        	ExportFileFilter filter = new ExportFileFilter(".xml"); //$NON-NLS-1$
+        	// Create filters.
+        	ExportFileFilter xmlFilter = new ExportFileFilter(".xml");
+        	ExportFileFilter htmlFilter = new ExportFileFilter(".html");
+        //	ExportFileFilter pdfFilter = new ExportFileFilter(".pdf");
+   
+        	JFileChooser filechooser = new JFileChooser();
+        	// Add filters.
+        	filechooser.addChoosableFileFilter(xmlFilter);
+        	filechooser.addChoosableFileFilter(htmlFilter);
+       // 	filechooser.addChoosableFileFilter(pdfFilter);
         	
-        	filechooser.setCurrentDirectory(new java.io.File(System.getProperty("user.home"))); //$NON-NLS-1$
-        	
-        	filechooser.addChoosableFileFilter(filter);
-        	filter = new ExportFileFilter(".pdf");
-        	filechooser.addChoosableFileFilter(filter);
-        	filter = new ExportFileFilter(".html");
-        	filechooser.addChoosableFileFilter(filter);
+        	filechooser.setCurrentDirectory(new java.io.File(System.getProperty("user.home"))); //$NON-NLS-1$ 
+        	filechooser.setDialogTitle(Messages.getString("PhysicalTreeView.58"));
+        	filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);   
         	
         	int returnVal = filechooser.showSaveDialog(PhysicalTreeView.this);
         	
@@ -955,25 +962,58 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         		String filepath = file.getAbsolutePath();
         		String filetypename = Util.getExtension(file);
         		String result = ""; //$NON-NLS-1$
+        		
+        		// If we are exporting to xml...
         		if (filetypename.equals("xml")) { //$NON-NLS-1$
-        			final XMLExporter xmlexporter = XMLExporter.getInstance();
+        			XMLExporter xmlExporter = XMLExporter.getInstance();
+        			
+        			// If we are exporting a directory...
         			if (e.getSource() == jmiDirExport) {
         				Directory dir = ((DirectoryNode)paths[0].getLastPathComponent()).getDirectory();         				
-            			result = xmlexporter.process(dir);        
+            			result = xmlExporter.process(dir);        
+            		// Else if we are exporting a device...
         			} else if (e.getSource() == jmiDevExport) {
         				Device device = ((DeviceNode)paths[0].getLastPathComponent()).getDevice();
-        				result = xmlexporter.process(device);
+        				result = xmlExporter.process(device);
+        			// Else if we are exporting the entire collection...
         			} else if (e.getSource() == jmiCollectionExport) {
-        				result = xmlexporter.process(XMLExporter.PHYSICAL_COLLECTION);
+        				result = xmlExporter.processCollection(XMLExporter.PHYSICAL_COLLECTION,null);
         			}
+        			
         			if (result != null) {
-        				if (!xmlexporter.saveToFile(result, filepath)) {
-        					Log.error("Could not write out to the specified file.");
+        				// Save the results.
+        				if (!xmlExporter.saveToFile(result, filepath)) {
+        					Log.error("Could not write out the xml to the specified file.");
         				}
         			} else {
         				Log.error("Could not create report.");
         			}
-        		} 
+        		// Else if we are exporting to html...
+        		} else if (filetypename.equals("html")) {
+        			HTMLExporter htmlExporter = HTMLExporter.getInstance();
+        			
+        			// If we are exporting a directory...
+        			if (e.getSource() == jmiDirExport) {
+        				Directory dir = ((DirectoryNode)paths[0].getLastPathComponent()).getDirectory();         				
+            			result = htmlExporter.process(dir);        
+            		// Else if we are exporting a device...
+        			} else if (e.getSource() == jmiDevExport) {
+        				Device device = ((DeviceNode)paths[0].getLastPathComponent()).getDevice();
+        				result = htmlExporter.process(device);
+        			// Else if we are exporting the entire collection...
+        			} else if (e.getSource() == jmiCollectionExport) {
+        				result = htmlExporter.processCollection(HTMLExporter.PHYSICAL_COLLECTION,null);
+        			}
+        			
+        			if (result != null) {        				
+        				// Save the results.
+        				if (!htmlExporter.saveToFile(result, filepath)) {
+        					Log.error("Could not write out the html to the specified file.");
+        				}
+        			} else {
+        				Log.error("Could not create report.");
+        			}
+        		}
         	}   	
         	
         }

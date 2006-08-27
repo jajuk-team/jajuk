@@ -63,6 +63,8 @@ import org.jajuk.base.AlbumManager;
 import org.jajuk.base.Author;
 import org.jajuk.base.AuthorManager;
 import org.jajuk.base.Bookmarks;
+import org.jajuk.base.Device;
+import org.jajuk.base.Directory;
 import org.jajuk.base.Event;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
@@ -74,7 +76,11 @@ import org.jajuk.base.Style;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackComparator;
 import org.jajuk.base.TrackManager;
+import org.jajuk.base.PopulatedAlbum;
+import org.jajuk.base.PopulatedAuthor;
+import org.jajuk.base.PopulatedStyle;
 import org.jajuk.base.exporters.ExportFileFilter;
+import org.jajuk.base.exporters.HTMLExporter;
 import org.jajuk.base.exporters.XMLExporter;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.CDDBWizard;
@@ -242,8 +248,8 @@ ActionListener, Observer {
         jmenuCollection.add(jmiCollectionStyle);
         jmenuCollection.add(jmiCollectionAuthor);
         jmenuCollection.add(jmiCollectionAlbum);
-        //TBI EXP jmenuCollection.add(new JLabel(Messages.getString("LogicalTreeView.33"))); //$NON-NLS-1$
-        //TBI EXP jmenuCollection.add(jmiCollectionExport);
+   //     jmenuCollection.add(new JLabel(Messages.getString("LogicalTreeView.33"))); //$NON-NLS-1$
+   //     jmenuCollection.add(jmiCollectionExport);
                 
         // Style menu
         jmenuStyle = new JPopupMenu();
@@ -274,7 +280,7 @@ ActionListener, Observer {
         jmenuStyle.add(jmiStylePlayRepeat);
         jmenuStyle.add(jmiStyleDelete);
         jmenuStyle.add(jmiStyleAddFavorite);
-        //TBI EXP jmenuStyle.add(jmiStyleExport);
+    //    jmenuStyle.add(jmiStyleExport);
         jmenuStyle.add(jmiStyleProperties);
         
         // Author menu
@@ -307,7 +313,7 @@ ActionListener, Observer {
         jmenuAuthor.add(jmiAuthorPlayRepeat);
         jmenuAuthor.add(jmiAuthorDelete);
         jmenuAuthor.add(jmiAuthorAddFavorite);
-        //TBI EXP jmenuAuthor.add(jmiAuthorExport);
+    //    jmenuAuthor.add(jmiAuthorExport);
         jmenuAuthor.add(jmiAuthorProperties);
         
         // Album menu
@@ -341,8 +347,8 @@ ActionListener, Observer {
         jmenuAlbum.add(jmiAlbumPlayRepeat);
         jmenuAlbum.add(jmiAlbumDelete);
         jmenuAlbum.add(jmiAlbumAddFavorite);
-        //TBI EXP jmenuAlbum.add(jmiAlbumExport);
         jmenuAlbum.add(jmiAlbumCDDBWizard);
+     //   jmenuAlbum.add(jmiAlbumExport);
         jmenuAlbum.add(jmiAlbumProperties);
         
         // Track menu
@@ -853,7 +859,7 @@ ActionListener, Observer {
                     }
                     new PropertiesWizard(alSelected, alTracks);
                 } else if (e.getSource() == jmiAuthorProperties) {
-                    ArrayList<IPropertyable> alTracks = new ArrayList(100);
+                    ArrayList<IPropertyable> alTracks= new ArrayList(100);
                     for (IPropertyable item : alSelected) {
                         Author author = (Author) item;
                         alTracks.addAll(TrackManager.getInstance()
@@ -932,48 +938,119 @@ ActionListener, Observer {
             				|| e.getSource() == jmiAuthorExport
             				|| e.getSource() == jmiAlbumExport
             				|| e.getSource() == jmiCollectionExport) {
-                	/*
-                		final JFileChooser filechooser = new JFileChooser();
-                		ExportFileFilter filter = new ExportFileFilter(".xml"); //$NON-NLS-1$
-            	
-                		filechooser.setCurrentDirectory(new java.io.File(System.getProperty("user.home"))); //$NON-NLS-1$
+                	// Create filters.
+                	ExportFileFilter xmlFilter = new ExportFileFilter(".xml");
+                	ExportFileFilter htmlFilter = new ExportFileFilter(".html");
+                //	ExportFileFilter pdfFilter = new ExportFileFilter(".pdf");
+           
+                	JFileChooser filechooser = new JFileChooser();
+                	// Add filters.
+                	filechooser.addChoosableFileFilter(xmlFilter);
+                	filechooser.addChoosableFileFilter(htmlFilter);
+               // 	filechooser.addChoosableFileFilter(pdfFilter);
+                	
+                	filechooser.setCurrentDirectory(new java.io.File(System.getProperty("user.home"))); //$NON-NLS-1$ 
+                	filechooser.setDialogTitle(Messages.getString("LogicalTreeView.33"));
+                	filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);   
+                	
+                	int returnVal = filechooser.showSaveDialog(LogicalTreeView.this);
+                	
+                	if (returnVal == JFileChooser.APPROVE_OPTION) {
+                		java.io.File file = filechooser.getSelectedFile();
+                		String filepath = file.getAbsolutePath();
+                		String filetypename = Util.getExtension(file);
+                		String result = null; //$NON-NLS-1$
                 		
-                		filechooser.addChoosableFileFilter(filter);
-                		// 	filter = new ExportFileFilter(".pdf");
-                		// 	filechooser.addChoosableFileFilter(filter);
-                		// 	filter = new ExportFileFilter(".html");
-                		// 	filechooser.addChoosableFileFilter(filter);
-            	
-                		int returnVal = filechooser.showSaveDialog(LogicalTreeView.this);
-            	
-                		if (returnVal == JFileChooser.APPROVE_OPTION) {
-                			java.io.File file = filechooser.getSelectedFile();
-                			String filepath = file.getAbsolutePath();
-                			String filetypename = Util.getExtension(file);
-                			final XMLExporter xmlexporter = XMLExporter.getInstance();        		        		
-                				if (filetypename.equals("xml")) { //$NON-NLS-1$
-                					String result = ""; //$NON-NLS-1$
-                					if (e.getSource() == jmiStyleExport) {
-                						Style style = ((StyleNode)paths[0].getLastPathComponent()).getStyle();                    						                		
-                						result = xmlexporter.styleToXML(style);	
-                					} else if (e.getSource() == jmiAuthorExport) {                	                						
-                						Author author = ((AuthorNode)paths[0].getLastPathComponent()).getAuthor();                						
-                						result = xmlexporter.authorToXML(author);
-                					} else if (e.getSource() == jmiAlbumExport) {                 						
-                						Album album = ((AlbumNode)paths[0].getLastPathComponent()).getAlbum();
-                						result = xmlexporter.albumToXML(album);
-                					} else if (e.getSource() == jmiCollectionExport) {
-                						if (iSortOrder == 0) {
-                							result = xmlexporter.logicalStyleCollectionToXML();
-                						} else if (iSortOrder == 1) {
-                							result = xmlexporter.logicalAuthorCollectionToXML();
-                						} else if (iSortOrder == 2) {
-                							result = xmlexporter.logicalAlbumCollectionToXML();
-                						}
-                					}
-                					xmlexporter.commit(filepath, result);
+                		// If we are exporting to xml...
+                		if (filetypename.equals("xml")) { //$NON-NLS-1$
+                			XMLExporter xmlExporter = XMLExporter.getInstance();
+                			
+                			// If we are exporting a album...
+                			if (e.getSource() == jmiAlbumExport) {                			
+                				PopulatedAlbum album = LogicalTreeUtilities.getPopulatedAlbumFromTree((DefaultMutableTreeNode)paths[0].getLastPathComponent());      				
+                    			result = xmlExporter.process(album);       
+                			// Else if we are exporting an author in any other view...
+                			} else if (e.getSource() == jmiAuthorExport) {
+                				PopulatedAuthor author = LogicalTreeUtilities.getPopulatedAuthorFromTree((DefaultMutableTreeNode)paths[0].getLastPathComponent());
+                				result = xmlExporter.process(author);
+                			// Else if we are exporting a style...
+                			} else if (e.getSource() == jmiStyleExport) {
+                				PopulatedStyle style = LogicalTreeUtilities.getPopulatedStyleFromTree((DefaultMutableTreeNode)paths[0].getLastPathComponent());
+                				result = xmlExporter.process(style);
+                			// Else if we are exporting a collection...
+                			} else if (e.getSource() == jmiCollectionExport) {
+                				// If we are exporting the styles...
+                				if (iSortOrder == 0) {
+                					DefaultMutableTreeNode node = (DefaultMutableTreeNode)paths[0].getLastPathComponent();
+                					ArrayList collection = LogicalTreeUtilities.getStyleCollectionFromTree(node);
+                					result = xmlExporter.processCollection(XMLExporter.LOGICAL_GENRE_COLLECTION,collection);
+                				// Else if we are exporting the authors...
+                				} else if (iSortOrder == 1) {
+                					DefaultMutableTreeNode node = (DefaultMutableTreeNode)paths[0].getLastPathComponent();
+                					ArrayList collection = LogicalTreeUtilities.getAuthorCollectionFromTree(node);
+                					result = xmlExporter.processCollection(XMLExporter.LOGICAL_ARTIST_COLLECTION,collection);
+                				// Else if we are exporting the albums...
+                				} else if (iSortOrder == 2) {
+                					DefaultMutableTreeNode node = (DefaultMutableTreeNode)paths[0].getLastPathComponent();
+                					ArrayList collection = LogicalTreeUtilities.getAlbumCollectionFromTree(node);
+                					result = xmlExporter.processCollection(XMLExporter.LOGICAL_ALBUM_COLLECTION, collection);
                 				}
-                		}  */
+                			}
+                			
+                			if (result != null) {
+                				// Save the results.
+                				if (!xmlExporter.saveToFile(result, filepath)) {
+                					Log.error("Could not write out the xml to the specified file.");
+                				}
+                			} else {
+                				Log.error("Could not create report.");
+                			}
+                		// Else if we are exporting to html...
+                		} else if (filetypename.equals("html")) {
+                			HTMLExporter htmlExporter = HTMLExporter.getInstance();
+                			
+                			// If we are exporting an album...
+                			if (e.getSource() == jmiAlbumExport) {
+                				PopulatedAlbum album = LogicalTreeUtilities.getPopulatedAlbumFromTree((DefaultMutableTreeNode)paths[0].getLastPathComponent());  
+                				result = htmlExporter.process(album);
+                			// Else if we are exporting an author in any other view...
+                			} else if (e.getSource() == jmiAuthorExport) {
+                				PopulatedAuthor author = LogicalTreeUtilities.getPopulatedAuthorFromTree((DefaultMutableTreeNode)paths[0].getLastPathComponent());
+                				result = htmlExporter.process(author);
+                			// Else if we are exporting a style...
+                			} else if (e.getSource() == jmiStyleExport) {
+                				PopulatedStyle style = LogicalTreeUtilities.getPopulatedStyleFromTree((DefaultMutableTreeNode)paths[0].getLastPathComponent());
+                				result = htmlExporter.process(style);
+                			// Else if we are exporting a collection...
+                			} else if (e.getSource() == jmiCollectionExport) {
+                				// If we are exporting the styles...
+                				if (iSortOrder == 0) {
+                					DefaultMutableTreeNode node = (DefaultMutableTreeNode)paths[0].getLastPathComponent();
+                					ArrayList collection = LogicalTreeUtilities.getStyleCollectionFromTree(node);
+                					result = htmlExporter.processCollection(HTMLExporter.LOGICAL_GENRE_COLLECTION,collection);
+                				// Else if we are exporting the authors...
+                				} else if (iSortOrder == 1) {
+                					DefaultMutableTreeNode node = (DefaultMutableTreeNode)paths[0].getLastPathComponent();
+                					ArrayList collection = LogicalTreeUtilities.getAuthorCollectionFromTree(node);
+                					result = htmlExporter.processCollection(HTMLExporter.LOGICAL_ARTIST_COLLECTION,collection);
+                    				// Else if we are exporting the albums...
+                				} else if (iSortOrder == 2) {
+                					DefaultMutableTreeNode node = (DefaultMutableTreeNode)paths[0].getLastPathComponent();
+                					ArrayList collection = LogicalTreeUtilities.getAlbumCollectionFromTree(node);
+                					result = htmlExporter.processCollection(HTMLExporter.LOGICAL_ALBUM_COLLECTION, collection);
+                				}
+                			}
+                			
+                			if (result != null) {
+                				// Save the results.
+                				if (!htmlExporter.saveToFile(result, filepath)) {
+                					Log.error("Could not write out the xml to the specified file.");
+                				}
+                			} else {
+                				Log.error("Could not create report.");
+                			}
+                		}
+                	} 
                 }                
                 else {
                     // compute selection
@@ -1267,5 +1344,189 @@ class TrackNode extends TransferableTreeNode {
      */
     public Track getTrack() {
         return (Track) super.getData();
+    }
+}
+
+/**
+ * A bunch of utility methods for the Logical Tree that uses the AlbumNode, AuthorNode, etc. classes.
+ *
+ * @author     Ronak Patel
+ * @created    Aug 26, 2006
+ */
+class LogicalTreeUtilities {
+    /**
+     * This method will take a selected Album from the logical tree and return a PopulatedAlbum.
+     * @param node The node to take the children from.
+     * @return Returns a PopulatedAlbum.
+     */
+    public static PopulatedAlbum getPopulatedAlbumFromTree(DefaultMutableTreeNode node) {
+    	PopulatedAlbum album = null;
+    	    	
+    	// Make sure we have a valid node.
+    	if (node != null) {
+    		Enumeration children = node.children();
+    		
+    		// If there are children...
+    		if (children != null) {
+    			album = new PopulatedAlbum(((AlbumNode)node).getAlbum());
+    			
+    			while (children.hasMoreElements()) {
+    				Track track = ((TrackNode)children.nextElement()).getTrack();
+    				album.addTrack(track);
+    			}
+    		}
+    	}
+    	
+    	return album;
+    }
+    
+    /**
+     * This method will take a selected Author from the logical tree and return a PopulatedAuthor.
+     * @param node The node to take the children from.
+     * @return Returns a PopulatedAuthor.
+     */
+    public static PopulatedAuthor getPopulatedAuthorFromTree(DefaultMutableTreeNode node) {
+    	PopulatedAuthor author = null;
+    	
+    	// Make sure we have a valid node.
+    	if (node != null) {
+    		Enumeration children = node.children();
+    		
+    		// If there are children...
+    		if (children != null) {
+    			author = new PopulatedAuthor(((AuthorNode)node).getAuthor());
+    			
+    			while (children.hasMoreElements()) {
+    				// Get a child node, in this case an album.
+    				DefaultMutableTreeNode albumNode = (DefaultMutableTreeNode)children.nextElement();
+    				// Create a PopulatedAlbum from the node.
+    				PopulatedAlbum album = LogicalTreeUtilities.getPopulatedAlbumFromTree(albumNode);
+    				// Add the newly created PopulatedAlbum to the PopulatedAuthor.
+    				author.addAlbum(album);
+    			}
+    		}
+    	}
+    	
+    	return author;
+    }
+    
+    /**
+     * This method will take a selected Style from the logical tree and return a PopulatedStyle.
+     * @param node The node to take the children from.
+     * @return Returns a PopulatedStyle.
+     */
+    public static PopulatedStyle getPopulatedStyleFromTree(DefaultMutableTreeNode node) {
+    	PopulatedStyle style = null;
+    	
+    	// Make sure we have a valid node.
+    	if (node != null) {
+    		Enumeration children = node.children();
+    		
+    		// If there are children...
+    		if (children != null) {
+    			style = new PopulatedStyle(((StyleNode)node).getStyle());
+    			
+    			while (children.hasMoreElements()) {
+    				// Get a child node, in this case an author.
+        			DefaultMutableTreeNode authorNode = (DefaultMutableTreeNode)children.nextElement();
+        			// Create a PopulatedAuthor from the node.
+        			PopulatedAuthor author = LogicalTreeUtilities.getPopulatedAuthorFromTree(authorNode);
+        			// Add the newly created PopulatedAuthor to the PopulatedStyle.
+        			style.addAuthor(author);
+    			}
+    		}
+    	}
+    	
+    	return style;
+    }
+    
+    /**
+     * This method will create an ArrayList of all the styles in this collection.
+     * @param node The node (collection) to take the children from.
+     * @return Returns an ArrayList of PopulatedStyles.
+     */
+    public static ArrayList getStyleCollectionFromTree(DefaultMutableTreeNode node) {
+    	ArrayList<PopulatedStyle> collection = null;
+    	
+    	// Make sure we have a valid node.
+    	if (node != null) {
+    		Enumeration children = node.children();
+    		
+    		// If there are children...
+    		if (children != null) {
+    			collection = new ArrayList<PopulatedStyle>();
+    			
+    			while (children.hasMoreElements()) {
+    				// Get a child node, in this case a style.
+    				DefaultMutableTreeNode styleNode = (DefaultMutableTreeNode)children.nextElement();
+    				// Create a PopulatedStyle from the node.
+    				PopulatedStyle style = LogicalTreeUtilities.getPopulatedStyleFromTree(styleNode);
+    				// Add the newly created PopulatedStyle to the Collection.
+    				collection.add(style);
+    			}
+    		}
+    	}
+    	
+    	return collection;
+    }
+    
+    /**
+     * This method will create an ArrayList of all the Authors in this collection.
+     * @param node The node (collection) to take the children from.
+     * @return Returns an ArrayList of PopulatedAuthors.
+     */
+    public static ArrayList getAuthorCollectionFromTree(DefaultMutableTreeNode node) {
+    	ArrayList<PopulatedAuthor> collection = null;
+    	
+    	// Make sure we have a valid node.
+    	if (node != null) {
+    		Enumeration children = node.children();
+    		
+    		// If there are children...
+    		if (children != null) {
+    			collection = new ArrayList<PopulatedAuthor>();
+    			
+    			while (children.hasMoreElements()) {
+    				// Get a child node, in this case a style.
+    				DefaultMutableTreeNode authorNode = (DefaultMutableTreeNode)children.nextElement();
+    				// Create a PopulatedAuthor from the node.
+    				PopulatedAuthor author = LogicalTreeUtilities.getPopulatedAuthorFromTree(authorNode);
+    				// Add the newly created PopulatedAuthor to the Collection.
+    				collection.add(author);
+    			}
+    		}
+    	}
+    	
+    	return collection;
+    }
+    
+    /**
+     * This method will create an ArrayList of all the Albums in this collection.
+     * @param node The node (collection) to take the children from.
+     * @return Returns an ArrayList of PopulatedAlbums.
+     */
+    public static ArrayList getAlbumCollectionFromTree(DefaultMutableTreeNode node) {
+    	ArrayList<PopulatedAlbum> collection = null;
+    	
+    	// Make sure we have a valid node.
+    	if (node != null) {
+    		Enumeration children = node.children();
+    		
+    		// If there are children...
+    		if (children != null) {
+    			collection = new ArrayList<PopulatedAlbum>();
+    			
+    			while (children.hasMoreElements()) {
+    				// Get a child node, in this case a style.
+    				DefaultMutableTreeNode albumNode = (DefaultMutableTreeNode)children.nextElement();
+    				// Create a PopulatedAlbum from the node.
+    				PopulatedAlbum album = LogicalTreeUtilities.getPopulatedAlbumFromTree(albumNode);
+    				// Add the newly created PopulatedAlbum to the Collection.
+    				collection.add(album);
+    			}
+    		}
+    	}
+    	
+    	return collection;
     }
 }
