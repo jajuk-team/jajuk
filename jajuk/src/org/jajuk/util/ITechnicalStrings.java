@@ -277,6 +277,19 @@ public interface ITechnicalStrings {
     public static final String FILE_DEFAULT_BOOKMARKS_PLAYLIST = "bookmarks";
     public static final String FILE_DEFAULT_QUEUE_PLAYLIST = "queue";
     public static final String FILE_DJ_DIR = FILE_JAJUK_DIR+"/djs";
+    
+    // XSLT Files
+    // These paths need to be updated once xslts are put into the jar file.
+	public static final String ARTIST_XSLT = "dist-files/xslt/artist.xsl";
+	public static final String ALBUM_XSLT = "dist-files/xslt/album.xsl";
+	public static final String STYLE_XSLT = "dist-files/xslt/style.xsl";
+	public static final String DIRECTORY_XSLT = "jajuk/dist-files/xslt/directory.xsl";
+	public static final String DEVICE_XSLT = "jajuk/dist-files/xslt/device.xsl";
+	public static final String COLLECTION_XSLT = "jajuk/dist-files/xslt/collection.xsl";
+	public static final String STYLE_COLLECTION_XSLT = "jajuk/dist-files/xslt/style_collection.xsl";
+	public static final String ARTIST_COLLECTION_XSLT = "jajuk/dist-files/xslt/artist_collection.xsl";
+	public static final String ALBUM_COLLECTION_XSLT = "jajuk/dist-files/xslt/album_collection.xsl";
+	
     //Command line options
     public static final String CLI_NOTASKBAR="notaskbar"; //if selected, no jajuk window at startup, only tray 
     public static final String CLI_IDE = "ide"; //Tells jajuk it is inside the IDE 
@@ -586,8 +599,10 @@ public interface ITechnicalStrings {
 	public static final String XML_DEVICE = "device";
 	public static final String XML_STYLES = "styles";
 	public static final String XML_STYLE = "style";
+	public static final String XML_GENRE = "genre";
 	public static final String XML_AUTHORS = "authors";
 	public static final String XML_AUTHOR = "author";
+	public static final String XML_ARTIST = "artist";
 	public static final String XML_ALBUMS = "albums";
 	public static final String XML_ALBUM = "album";
 	public static final String XML_TRACKS = "tracks";
@@ -606,7 +621,9 @@ public interface ITechnicalStrings {
     public static final String XML_TRACK_NAME = "name";
 	public static final String XML_TRACK_ALBUM = "album";
 	public static final String XML_TRACK_STYLE = "style";
+	public static final String XML_TRACK_GENRE = "genre";
 	public static final String XML_TRACK_AUTHOR = "author";
+	public static final String XML_TRACK_ARTIST = "artist";
 	public static final String XML_TRACK_LENGTH = "length";
 	public static final String XML_TRACK_YEAR = "year";
 	public static final String XML_TRACK_TYPE = "type";
