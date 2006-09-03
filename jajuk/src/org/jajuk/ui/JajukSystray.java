@@ -166,8 +166,9 @@ public class JajukSystray extends CommandJPanel implements ChangeListener{
         jsVolume.addChangeListener(this);
         
         //Ambiences menu
+        Ambience defaultAmbience = AmbienceManager.getInstance().getDefaultAmbience();
         jmAmbience = new JMenu(Messages.getString("JajukWindow.36")+ " "+
-            AmbienceManager.getInstance().getDefaultAmbience().getName());
+            ((defaultAmbience == null)? Messages.getString("DigitalDJWizard.64"):defaultAmbience.getName()));
         populateAmbiences();
         
         jmenu.add(new JLabel(Util.getIcon(IMAGE_TRAY_TITLE)));
