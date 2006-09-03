@@ -197,7 +197,7 @@ public class JajukSystray extends CommandJPanel implements ChangeListener{
         jmenu.addSeparator();
         jmenu.add(jmiExit);
         jmenu.add(new JMenuItem(" ")); //used to close the tray
-        trayIcon = new TrayIcon(Util.getIcon(ICON_LOGO_TRAY),Messages.getString("JajukWindow.18"),jmenu); //$NON-NLS-1$);
+        trayIcon = new TrayIcon(Util.getIcon(ICON_LOGO),Messages.getString("JajukWindow.18"),jmenu); //$NON-NLS-1$);
         trayIcon.setIconAutoSize(true);
         trayIcon.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
