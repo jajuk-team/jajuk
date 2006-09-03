@@ -31,8 +31,8 @@
 	<classpathentry kind="lib" path="lib/tablelayout-20050920.jar"/>
 	<classpathentry kind="lib" path="lib/commons-collections-3.1.jar"/>
 	<classpathentry kind="lib" path="lib/entagged-audioformats-0.15.jar"/>
-	<classpathentry sourcepath="ECLIPSE_HOME/plugins/org.eclipse.jdt.source_3.1.0/src/org.junit_3.8.1/junitsrc.zip" kind="var" path="JUNIT_HOME/junit.jar"/>
 	<classpathentry sourcepath="/prog/api/swingx-20051112180732/src" kind="lib" path="lib/swingx-20060402.jar"/>
-	<classpathentry kind="lib" path="lib/qdwizard-1.4.jar"/>
+	<classpathentry kind="lib" path="jajuk.jar"/>
+	<classpathentry kind="lib" path="lib/qdwizard-1.6.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
