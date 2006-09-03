@@ -6,7 +6,7 @@
             <vendor>Jajuk team</vendor> 
             <description>Jajuk advanced jukebox</description> 
            <description kind="short">Jajuk advanced jukebox</description> 
-            <icon href="jajuk-logo.gif"/>
+            <icon href="jajuk-icon_64x64.gif"/>
 		    <icon kind="splash" href="jajuk-splashscreen.png"/>
 		    <shortcut online="true">
       			<desktop/>

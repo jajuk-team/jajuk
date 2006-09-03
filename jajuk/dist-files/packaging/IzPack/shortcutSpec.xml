@@ -17,7 +17,7 @@
      workingDirectory=''
      description='Jajuk advanced JukeBox'
      iconIndex='0'
-     iconFile='$INSTALL_PATH/jajuk-logo.png'
+     iconFile='$INSTALL_PATH/jajuk-icon_64x64.png'
      initialState='noShow'
      os='unix'>
      <createForPack name='main pack'/>
@@ -56,7 +56,7 @@
      workingDirectory='$INSTALL_PATH/bin'
      description='Jajuk advanced JukeBox'
      iconIndex='0'
-     iconFile='$INSTALL_PATH/dist-files/images/jajuk-logo.ico'
+     iconFile='$INSTALL_PATH/dist-files/images/jajuk-icon.ico'
      initialState='noShow'
      os='windows'>
      <createForPack name='main pack'/>

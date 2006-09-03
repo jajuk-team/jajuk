@@ -78,7 +78,7 @@
             <fileset override='true' targetdir='$INSTALL_PATH/dist-files' dir='/tmp/jajuk-dist/jajuk/dist-files'/>
             <fileset override='true' targetdir='$INSTALL_PATH/lib' dir='/tmp/jajuk-dist/jajuk/lib'/>
             <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/build.xml'/>
-            <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/jajuk-logo.png'/>
+            <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/jajuk-icon_64x64.png'/>
             <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/LICENSE.txt'/>
             <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/README.html'/>
             <file override='true' targetdir='$INSTALL_PATH' src='/tmp/jajuk-dist/jajuk/README_fra.html'/>
