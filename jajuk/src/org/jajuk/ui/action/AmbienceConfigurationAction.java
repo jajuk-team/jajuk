@@ -22,22 +22,22 @@ package org.jajuk.ui.action;
 import java.awt.event.ActionEvent;
 
 import org.jajuk.i18n.Messages;
-import org.jajuk.ui.perspectives.PerspectiveManager;
+import org.jajuk.ui.AmbienceWizard;
 import org.jajuk.util.Util;
 
 /**
- * Action for displaying the online help
+ * Action for configure ambiences
  *
- * @author Bart Cremers
- * @since 4-jan-2006
+ * @author Bertrand Florat
+ * @version 27-08-2006
  */
-public class HelpRequiredAction extends ActionBase {
+public class AmbienceConfigurationAction extends ActionBase {
 
-    HelpRequiredAction() {
-        super(Messages.getString("JajukJMenuBar.15"), Util.getIcon(ICON_INFO), "F1", true); //$NON-NLS-1$ //$NON-NLS-2$
+    AmbienceConfigurationAction() {
+        super(Messages.getString("CommandJPanel.19"), Util.getIcon(ICON_STYLE), true); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     public void perform(ActionEvent evt) {
-        PerspectiveManager.setCurrentPerspective(PERSPECTIVE_NAME_HELP);
+        new AmbienceWizard(); //display the ambience wizard
     }
 }

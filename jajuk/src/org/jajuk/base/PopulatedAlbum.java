@@ -22,9 +22,6 @@ package org.jajuk.base;
 
 import java.util.ArrayList;
 
-import org.jajuk.base.Album;
-import org.jajuk.base.Track;
-
 /**
  *  This class contains an Album and an ArrayList of the Tracks
  *  associated with the Album. Used in the exporting process.

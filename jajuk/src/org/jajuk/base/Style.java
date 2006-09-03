@@ -30,7 +30,7 @@ import org.jajuk.i18n.Messages;
  * @author Bertrand Florat 
  * @created 17 oct. 2003
  */
-public class Style extends PropertyAdapter implements Comparable{
+public class Style extends Item implements Comparable{
 
 	/**
      * Style constructor
@@ -43,7 +43,7 @@ public class Style extends PropertyAdapter implements Comparable{
 	}
 
 /* (non-Javadoc)
-     * @see org.jajuk.base.IPropertyable#getIdentifier()
+     * @see org.jajuk.base.Item#getIdentifier()
      */
     public String getIdentifier() {
         return XML_STYLE;
@@ -123,7 +123,7 @@ public class Style extends PropertyAdapter implements Comparable{
     }
       
 /* (non-Javadoc)
-     * @see org.jajuk.base.IPropertyable#getHumanValue(java.lang.String)
+     * @see org.jajuk.base.Item#getHumanValue(java.lang.String)
      */
     final public String getHumanValue(String sKey){
         if (XML_NAME.equals(sKey)){
@@ -141,7 +141,7 @@ public class Style extends PropertyAdapter implements Comparable{
     public ArrayList<Track> getTracksRecursively(){
         synchronized(TrackManager.getInstance().getLock()){
             ArrayList<Track> alTracks = new ArrayList(1000);
-            for (IPropertyable item:TrackManager.getInstance().getItems()){
+            for (Item item:TrackManager.getInstance().getItems()){
                 Track track = (Track)item;
                 if (track.getStyle().equals(this)){
                     alTracks.add(track);

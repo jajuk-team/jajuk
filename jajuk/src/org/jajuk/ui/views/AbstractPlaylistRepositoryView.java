@@ -99,7 +99,7 @@ abstract public class AbstractPlaylistRepositoryView extends ViewAdapter impleme
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.IView#display()
 	 */
-	public void populate(){
+	public void initUI(){
 		setLayout(new BoxLayout(this,BoxLayout.X_AXIS));
 		
 		//root pane

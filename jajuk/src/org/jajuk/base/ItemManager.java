@@ -103,9 +103,9 @@ public abstract class ItemManager implements ITechnicalStrings{
     /**Remove a custom property to all items for the given manager*/
     public void applyRemoveProperty(PropertyMetaInformation meta) {
         synchronized(getLock()){
-            Collection<IPropertyable> items = getItems();
+            Collection<Item> items = getItems();
             if (items != null){
-                for (IPropertyable item:items){
+                for (Item item:items){
                     item.removeProperty(meta.getName());
                 }    
             }
@@ -115,9 +115,9 @@ public abstract class ItemManager implements ITechnicalStrings{
     /**Add a custom property to all items for the given manager*/
     public void applyNewProperty(PropertyMetaInformation meta) {
         synchronized(getLock()){
-            Collection<IPropertyable> items = getItems();
+            Collection<Item> items = getItems();
             if (items != null){
-                for (IPropertyable item:items){
+                for (Item item:items){
                     item.setProperty(meta.getName(),meta.getDefaultValue());
                 }    
             }
@@ -178,7 +178,7 @@ public abstract class ItemManager implements ITechnicalStrings{
     
     
     /**
-     *  Get Item manager with a given attribute name   
+     *  Get ItemManager manager with a given attribute name   
      * @param sItem
      * @return
      */
@@ -219,7 +219,7 @@ public abstract class ItemManager implements ITechnicalStrings{
     }
     
     /**
-     *  Get Item manager for given item class  
+     *  Get ItemManager manager for given item class  
      * @param class
      * @return associated item manager or null if none was found
      */
@@ -241,7 +241,7 @@ public abstract class ItemManager implements ITechnicalStrings{
         synchronized(getLock()){
             //build used items set
             HashSet hsItems = new HashSet(TrackManager.getInstance().getItems().size());
-            for (IPropertyable item:TrackManager.getInstance().getItems()){
+            for (Item item:TrackManager.getInstance().getItems()){
                 Track track = (Track)item;
                 if (this instanceof AlbumManager){
                     hsItems.add(track.getAlbum());   
@@ -255,7 +255,7 @@ public abstract class ItemManager implements ITechnicalStrings{
             }
             Iterator it = hmItems.values().iterator();
             while (it.hasNext()) {
-                IPropertyable item = (IPropertyable) it.next();
+                Item item = (Item) it.next();
                 //check if this item still maps some tracks
                 if (!hsItems.contains(item)){
                     it.remove();
@@ -267,28 +267,28 @@ public abstract class ItemManager implements ITechnicalStrings{
     /**
      * Perform a cleanup for a given item
      */
-    public void cleanup(IPropertyable item) {
+    public void cleanup(Item item) {
         synchronized(getLock()){
             if ( TrackManager.getInstance().getAssociatedTracks(item).size() == 0){
-                hmItems.remove(((PropertyAdapter)item).getId());
+                hmItems.remove(((Item)item).getId());
             }
         }
     }
     
     /**Return all registred items*/
-    public Collection<IPropertyable> getItems() {
+    public Collection<Item> getItems() {
         synchronized(getLock()){
             return hmItems.inverseBidiMap().keySet();
         }
     }
     
     /**Return all registred items with filter applied*/
-    public Collection<IPropertyable> getItems(Filter filter) {
+    public Collection<Item> getItems(Filter filter) {
         synchronized(getLock()){
             if (filter == null){
                 return getItems();
             }
-            Collection<IPropertyable> col = hmItems.values();
+            Collection<Item> col = hmItems.values();
             String comparator = null;
             String checked = null;
             if (filter.isExact()){
@@ -298,7 +298,7 @@ public abstract class ItemManager implements ITechnicalStrings{
                 checked = ".*" + filter.getValue() + ".*"; //$NON-NLS-1$ //$NON-NLS-2$
             }
             ArrayList out = new ArrayList(col.size());
-            for (IPropertyable item:col){
+            for (Item item:col){
                 if (filter.isHuman()){
                     comparator = item.getHumanValue(filter.getProperty().getName());
                 }
@@ -315,9 +315,9 @@ public abstract class ItemManager implements ITechnicalStrings{
     }
     
     /**Return a given item*/
-    public synchronized IPropertyable getItem(String sID) {
+    public synchronized Item getItem(String sID) {
         synchronized(getLock()){
-            return (IPropertyable)hmItems.get(sID);
+            return (Item)hmItems.get(sID);
         }
     }
     
@@ -345,11 +345,11 @@ public abstract class ItemManager implements ITechnicalStrings{
      * @param filter: files we want to deal with
      * @return the changed item
      */
-    public static IPropertyable changeItem(IPropertyable itemToChange,String sKey,Object oValue,HashSet filter) throws JajukException{
+    public static Item changeItem(Item itemToChange,String sKey,Object oValue,HashSet filter) throws JajukException{
         if (Log.isDebugEnabled()){
             Log.debug("Set "+sKey+"="+oValue.toString()+" to "+itemToChange); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         }
-        IPropertyable newItem = itemToChange;
+        Item newItem = itemToChange;
         if (itemToChange instanceof File){
             File file = (File)itemToChange;
             if (XML_NAME.equals(sKey)){ //file name

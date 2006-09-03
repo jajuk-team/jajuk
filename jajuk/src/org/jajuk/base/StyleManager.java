@@ -49,11 +49,11 @@ public class StyleManager extends ItemManager {
         super();
         //register properties
         //ID
-        registerProperty(new PropertyMetaInformation(XML_ID,false,true,false,false,false,String.class,null,null));
+        registerProperty(new PropertyMetaInformation(XML_ID,false,true,false,false,false,String.class,null));
         //Name
-        registerProperty(new PropertyMetaInformation(XML_NAME,false,true,true,true,false,String.class,null,null));
+        registerProperty(new PropertyMetaInformation(XML_NAME,false,true,true,true,false,String.class,null));
         //Expand
-        registerProperty(new PropertyMetaInformation(XML_EXPANDED,false,false,false,false,true,Boolean.class,null,false));
+        registerProperty(new PropertyMetaInformation(XML_EXPANDED,false,false,false,false,true,Boolean.class,false));
         //create default style list
         stylesList = new Vector(Arrays.asList(Util.genres));
         Collections.sort(stylesList);
@@ -82,7 +82,7 @@ public class StyleManager extends ItemManager {
     /**
      * Return hashcode for this item
      * @param sName item name
-     * @return Item ID
+     * @return ItemManager ID
      */
     protected static String getID(String sName){
         return MD5Processor.hash(sName);

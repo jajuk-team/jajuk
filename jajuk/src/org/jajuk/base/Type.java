@@ -29,7 +29,7 @@ import org.jajuk.util.log.Log;
  * @author     Bertrand Florat
  * @created    12 oct. 2003
  */
-public class Type extends PropertyAdapter implements Comparable{
+public class Type extends Item implements Comparable{
 	
 	/**Type extension ex:mp3,ogg */
 	private String sExtension;
@@ -60,7 +60,7 @@ public class Type extends PropertyAdapter implements Comparable{
     }
 
 	/* (non-Javadoc)
-     * @see org.jajuk.base.IPropertyable#getIdentifier()
+     * @see org.jajuk.base.Item#getIdentifier()
      */
     final public String getIdentifier() {
         return XML_TYPE;

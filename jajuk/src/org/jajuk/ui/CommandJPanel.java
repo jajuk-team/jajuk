@@ -20,6 +20,8 @@
 package org.jajuk.ui;
 
 import static org.jajuk.ui.action.JajukAction.BEST_OF;
+import static org.jajuk.ui.action.JajukAction.CONFIGURE_AMBIENCES;
+import static org.jajuk.ui.action.JajukAction.CONFIGURE_DJS;
 import static org.jajuk.ui.action.JajukAction.DECREASE_VOLUME;
 import static org.jajuk.ui.action.JajukAction.FAST_FORWARD_TRACK;
 import static org.jajuk.ui.action.JajukAction.FINISH_ALBUM;
@@ -130,8 +132,10 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 	JButton jbStop;
 	JPressButton jbFwd;
 	JLabel jlVolume;
-	JSlider jsVolume;
-	JLabel jlPosition;
+	JPanel jpVolume;
+    JSlider jsVolume;
+	JPanel jpPosition;
+    JLabel jlPosition;
 	JSlider jsPosition;
 	public JajukToggleButton jbMute;
 
@@ -154,6 +158,24 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 			update(new Event(EVENT_HEART_BEAT));
 		}
 	});
+    /**Ambience combo listener*/
+	class ambienceListener implements ActionListener{
+	    public void actionPerformed(ActionEvent ae) {
+	        //Selected 'Any" ambience
+	        if (ambiencesCombo.getSelectedIndex() == 0){
+	            //reset default ambience
+	            ConfigurationManager.setProperty(CONF_DEFAULT_AMBIENCE,""); //$NON-NLS-1$
+	        }
+	        else {//Selected an ambience
+	            Ambience ambience = AmbienceManager.getInstance().getAmbienceByName((String)ambiencesCombo.getSelectedItem());    
+	            ConfigurationManager.setProperty(CONF_DEFAULT_AMBIENCE,ambience.getID());
+	        }
+	        ObservationManager.notify(new Event(EVENT_AMBIENCES_SELECTION_CHANGE));
+        }
+     };
+     /**An instance of the ambience combo listener*/
+     ambienceListener ambienceListener;
+        
 
     /**
 	 * @return singleton
@@ -166,9 +188,14 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 	}
 
 	/**
-	 * Constructor
+	 * Constructor, this objects needs to be implemented for the tray (child object)
 	 */
-	private CommandJPanel(){
+	CommandJPanel(){
+	    //mute
+        jbMute = new JajukToggleButton(ActionManager.getAction(MUTE_STATE));
+    }
+    
+    public void initUI(){
 		sbSearch = new SearchBox(CommandJPanel.this);
 		//history
 		jcbHistory = new SteppedComboBox();
@@ -200,41 +227,44 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		jpMode.add(jbContinue);
 		jpMode.add(jbIntro);
         
+        //Volume
+        jpVolume = new JPanel();
+        ActionUtil.installKeystrokes(jpVolume, ActionManager.getAction(DECREASE_VOLUME),
+                                     ActionManager.getAction(INCREASE_VOLUME));
+
+        jpVolume.setLayout(new BoxLayout(jpVolume,BoxLayout.X_AXIS));
+        jlVolume = new JLabel(Util.getIcon(ICON_VOLUME));
+        int iVolume = (int)(100*ConfigurationManager.getFloat(CONF_VOLUME));
+        if (iVolume > 100){ //can occur in some undefined cases
+            iVolume = 100;
+        }
+        jsVolume = new JSlider(0,100,iVolume);
+        jpVolume.add(jlVolume);
+        jpVolume.add(jsVolume);
+        jsVolume.setToolTipText(Messages.getString("CommandJPanel.14")); //$NON-NLS-1$
+        jsVolume.addChangeListener(CommandJPanel.this);
+        jsVolume.addMouseWheelListener(CommandJPanel.this);
+
+        //Position
+        jpPosition = new JPanel();
+        jpPosition.setLayout(new BoxLayout(jpPosition,BoxLayout.X_AXIS));
+        jlPosition = new JLabel(Util.getIcon(ICON_POSITION));
+        jsPosition = new JSlider(0,100,0);
+        jpPosition.add(jlPosition);
+        jpPosition.add(jsPosition);
+        jsPosition.addChangeListener(CommandJPanel.this);
+        jsPosition.setEnabled(false);
+        jsPosition.setToolTipText(Messages.getString("CommandJPanel.15")); //$NON-NLS-1$
+        
         //Ambience combo
         ambiencesCombo = new SteppedComboBox();
         iWidth = (int)(Toolkit.getDefaultToolkit().getScreenSize().getWidth()/4);
         ambiencesCombo.setPopupWidth(iWidth);
         populateAmbiences();
-        ambiencesCombo.addActionListener(new ActionListener() {
-        
-            public void actionPerformed(ActionEvent ae) {
-                //Selected 'Any" ambience
-                if (ambiencesCombo.getSelectedIndex() == 0){
-                    //reset default ambience and tooltips
-                    ConfigurationManager.setProperty(CONF_DEFAULT_AMBIENCE,""); //$NON-NLS-1$
-                    ActionBase action = ActionManager.getAction(JajukAction.NOVELTIES);
-                    action.setShortDescription(Messages.getString("JajukWindow.31")); //$NON-NLS-1$
-                    action = ActionManager.getAction(JajukAction.BEST_OF);
-                    action.setShortDescription(Messages.getString("JajukWindow.24")); //$NON-NLS-1$
-                    action = ActionManager.getAction(JajukAction.SHUFFLE_GLOBAL);
-                    action.setShortDescription(Messages.getString("JajukWindow.23")); //$NON-NLS-1$
-                }
-                   //Selected an ambience
-                else {
-                    Ambience ambience = AmbienceManager.getInstance().getAmbienceByName((String)ambiencesCombo.getSelectedItem());    
-                    ConfigurationManager.setProperty(CONF_DEFAULT_AMBIENCE,ambience.getID());
-                    ActionBase action = ActionManager.getAction(JajukAction.NOVELTIES);
-                    action.setShortDescription("<html>"+Messages.getString("JajukWindow.31")+"<p><b>"+ambience.getName()+"</b></p></html>"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-                    action = ActionManager.getAction(JajukAction.SHUFFLE_GLOBAL);
-                    action.setShortDescription("<html>"+Messages.getString("JajukWindow.23")+"<p><b>"+ambience.getName()+"</b></p></html>"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-                    action = ActionManager.getAction(JajukAction.BEST_OF);
-                    action.setShortDescription("<html>"+Messages.getString("JajukWindow.24")+"<p><b>"+ambience.getName()+"</b></p></html>"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-                }
-            }
-        
-        });
-            
-		//Special functions toolbar
+        ambienceListener = new ambienceListener();
+        ambiencesCombo.addActionListener(ambienceListener);    
+		
+        //Special functions toolbar
 		jtbSpecial = new JToolBar();
         jtbSpecial.setFloatable(false);
         jbGlobalRandom = new JajukButton(ActionManager.getAction(SHUFFLE_GLOBAL));
@@ -276,38 +306,6 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		jpPlay.add(jbPlayPause);
 		jpPlay.add(jbStop);
 		jpPlay.add(jbFwd);
-
-		//Volume
-		JPanel jpVolume = new JPanel();
-        ActionUtil.installKeystrokes(jpVolume, ActionManager.getAction(DECREASE_VOLUME),
-                                     ActionManager.getAction(INCREASE_VOLUME));
-
-        jpVolume.setLayout(new BoxLayout(jpVolume,BoxLayout.X_AXIS));
-        jlVolume = new JLabel(Util.getIcon(ICON_VOLUME));
-		int iVolume = (int)(100*ConfigurationManager.getFloat(CONF_VOLUME));
-        if (iVolume > 100){ //can occur in some undefined cases
-            iVolume = 100;
-        }
-        jsVolume = new JSlider(0,100,iVolume);
-		jpVolume.add(jlVolume);
-		jpVolume.add(jsVolume);
-		jsVolume.setToolTipText(Messages.getString("CommandJPanel.14")); //$NON-NLS-1$
-		jsVolume.addChangeListener(CommandJPanel.this);
-		jsVolume.addMouseWheelListener(CommandJPanel.this);
-
-		//Position
-		JPanel jpPosition = new JPanel();
-        jpPosition.setLayout(new BoxLayout(jpPosition,BoxLayout.X_AXIS));
-    	jlPosition = new JLabel(Util.getIcon(ICON_POSITION));
-		jsPosition = new JSlider(0,100,0);
-		jpPosition.add(jlPosition);
-		jpPosition.add(jsPosition);
-		jsPosition.addChangeListener(CommandJPanel.this);
-		jsPosition.setEnabled(false);
-		jsPosition.setToolTipText(Messages.getString("CommandJPanel.15")); //$NON-NLS-1$
-
-		//mute
-        jbMute = new JajukToggleButton(ActionManager.getAction(MUTE_STATE));
 
 		//dimensions
 		int height1 = 25;  //buttons, components
@@ -353,6 +351,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
         ObservationManager.register(EVENT_VOLUME_CHANGED,this);
         ObservationManager.register(EVENT_DJS_CHANGE,this);
         ObservationManager.register(EVENT_AMBIENCES_CHANGE,this);
+        ObservationManager.register(EVENT_AMBIENCES_SELECTION_CHANGE,this);
         
         //if a track is playing, display right state
 		if ( FIFO.getInstance().getCurrentFile() != null){
@@ -480,7 +479,7 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 	}
 
 
-	public void setVolume(final float fVolume){
+	private void setVolume(final float fVolume){
 	    jsVolume.removeChangeListener(CommandJPanel.this);
 	    jsVolume.removeMouseWheelListener(CommandJPanel.this);
 	    //if user move the volume slider, unmute
@@ -610,14 +609,41 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
                         action.setShortDescription(Messages.getString("CommandJPanel.18")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
                     }
                 }
-                else if(EVENT_AMBIENCES_CHANGE.equals(event.getSubject())){
+                else if(EVENT_AMBIENCES_CHANGE.equals(event.getSubject())
+                        || EVENT_AMBIENCES_SELECTION_CHANGE.equals(event.getSubject())){
                     populateAmbiences();
+                    updateTooltips();
                 }
 			}
 		});
-
 	}
     
+	/**
+     * Update global functions tooltip after a change in ambiences or an ambience selection 
+     * using the ambience selector 
+     *
+	 */
+    private void updateTooltips(){
+	    //Selected 'Any" ambience
+	    if (ambiencesCombo.getSelectedIndex() == 0){
+	        ActionBase action = ActionManager.getAction(JajukAction.NOVELTIES);
+	        action.setShortDescription(Messages.getString("JajukWindow.31")); //$NON-NLS-1$
+	        action = ActionManager.getAction(JajukAction.BEST_OF);
+	        action.setShortDescription(Messages.getString("JajukWindow.24")); //$NON-NLS-1$
+	        action = ActionManager.getAction(JajukAction.SHUFFLE_GLOBAL);
+	        action.setShortDescription(Messages.getString("JajukWindow.23")); //$NON-NLS-1$
+	    }
+	    else {//Selected an ambience
+	        Ambience ambience = AmbienceManager.getInstance().getAmbienceByName((String)ambiencesCombo.getSelectedItem());    
+	        ActionBase action = ActionManager.getAction(JajukAction.NOVELTIES);
+	        action.setShortDescription("<html>"+Messages.getString("JajukWindow.31")+"<p><b>"+ambience.getName()+"</b></p></html>"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+	        action = ActionManager.getAction(JajukAction.SHUFFLE_GLOBAL);
+	        action.setShortDescription("<html>"+Messages.getString("JajukWindow.23")+"<p><b>"+ambience.getName()+"</b></p></html>"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+	        action = ActionManager.getAction(JajukAction.BEST_OF);
+	        action.setShortDescription("<html>"+Messages.getString("JajukWindow.24")+"<p><b>"+ambience.getName()+"</b></p></html>"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+	    }
+	}
+
     /**
      * Populate DJs
      *
@@ -625,16 +651,11 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
     private void populateDJs(){
         try{
             popupDDJ.removeAll();
-            JMenuItem jmiNew = new JMenuItem(Messages.getString("CommandJPanel.17"),Util.getIcon(ICON_WIZARD));  //$NON-NLS-1$
+            JMenuItem jmiNew = new JMenuItem(ActionManager.getAction(CONFIGURE_DJS));  //$NON-NLS-1$
             popupDDJ.add(jmiNew);
             popupDDJ.addSeparator();
             //Ambiences
-            JMenuItem jmiAmbiences = new JMenuItem(Messages.getString("CommandJPanel.19"),Util.getIcon(ICON_STYLE));  //$NON-NLS-1$
-            jmiAmbiences.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent arg0) {
-                    new AmbienceWizard();
-                }
-            });
+            JMenuItem jmiAmbiences = new JMenuItem(ActionManager.getAction(CONFIGURE_AMBIENCES));  //$NON-NLS-1$
             popupDDJ.addSeparator();
             popupDDJ.add(jmiAmbiences);
             Iterator it = DigitalDJManager.getInstance().getDJs().iterator();
@@ -652,11 +673,6 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
                 popupDDJ.add(jmi);
                 jmi.setSelected(ConfigurationManager.getProperty(CONF_DEFAULT_DJ).equals(dj.getID()));
             }
-            jmiNew.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent arg0) {
-                    new DigitalDJWizard();
-                }
-            });
         }
         catch(Exception e){
             Log.error(e);
@@ -667,7 +683,8 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
      * Populate ambiences combo
      *
      */
-    private void populateAmbiences(){
+    void populateAmbiences(){
+        ambiencesCombo.removeActionListener(ambienceListener);
         ambiencesCombo.removeAllItems();
         ambiencesCombo.addItem("<html><i>"+ //$NON-NLS-1$
                 Messages.getString("DigitalDJWizard.64")+"</i></html>");
@@ -684,7 +701,8 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
             ambiencesCombo.setSelectedItem(defaultAmbience.getName());
         }
         ambiencesCombo.setToolTipText(Messages.getString("DigitalDJWizard.66"));
-    }
+        ambiencesCombo.addActionListener(ambienceListener);    
+   }
 
 	/**
 	 * ToString() method

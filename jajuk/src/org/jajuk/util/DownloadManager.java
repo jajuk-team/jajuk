@@ -122,7 +122,10 @@ public class DownloadManager implements ITechnicalStrings {
             String s = strings[i].split(",")[3]; //$NON-NLS-1$
             s = s.substring(1,s.length()-1);
             s = s.replaceAll("%2520","%20"); //$NON-NLS-1$ //$NON-NLS-2$
-            alOut.add(new URL("http://"+s)); //$NON-NLS-1$
+            if (!s.matches("http://.*")){
+              s = "http://" +s;  
+            }
+            alOut.add(new URL(s)); //$NON-NLS-1$
         }
         //get sizes
         strings = sRes.split("pixels - "); //$NON-NLS-1$

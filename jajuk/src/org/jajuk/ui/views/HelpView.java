@@ -70,7 +70,7 @@ public class HelpView extends ViewAdapter{
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.IView#display()
 	 */
-	public void populate(){
+	public void initUI(){
 		try{
 			setLayout(new BoxLayout(this,BoxLayout.X_AXIS));
 			ClassLoader cl = HelpView.class.getClassLoader();

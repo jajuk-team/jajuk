@@ -21,11 +21,9 @@
 package org.jajuk.base;
 
 import java.io.Serializable;
-import java.text.DateFormat;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.Locale;
 
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
@@ -36,11 +34,11 @@ import org.xml.sax.Attributes;
  * Generic property handler, mother class for all items
  * <p>Note that some properties can be omitted (not in properties object), 
  * in this case, we take default value given in meta infos, this can
- * decrease collection fiel size</p>
+ * decrease collection file size</p>
  * @author Bertrand Florat 
  * @created 17 oct. 2003
  */
-abstract public class PropertyAdapter implements IPropertyable, Serializable,ITechnicalStrings {
+abstract public class Item implements Serializable,ITechnicalStrings {
     
     /** Item properties, singleton */
     private LinkedHashMap properties;
@@ -48,21 +46,23 @@ abstract public class PropertyAdapter implements IPropertyable, Serializable,ITe
     protected final String sId;
     /** Name */
     protected final String sName;
-    /** "Any" value : concatenation of all properties*/
-    protected String sAny =""; //$NON-NLS-1$
-    /** Flag for need to refresh any criteria */
-    protected boolean bNeedRefresh = true;
     
     /**
      * Constructor
      * @param sId element ID
      * @param sName element name
      */
-    PropertyAdapter(final String sId,final String sName){
-        this.sId = sId;
-        setProperty(XML_ID,sId);
-        this.sName = sName;
-        setProperty(XML_NAME,sName);
+    Item(final String sId,final String sName){
+        this.sId = sId.intern();
+        setProperty(XML_ID,sId.intern());
+        if (sName != null){
+            this.sName = sName.intern();
+            setProperty(XML_NAME,sName.intern());
+        }
+        else{
+            this.sName = sName;
+            setProperty(XML_NAME,sName);
+        }
     }
     
     /**
@@ -80,10 +80,17 @@ abstract public class PropertyAdapter implements IPropertyable, Serializable,ITe
     }
     
     /**
-     * Equals method, two propertyable are equals if all properties are equals
+     * Get item description (HTML)
+     * @return item description
+     */
+    abstract public String getDesc();
+    
+       
+    /**
+     * Equals method, two item are equals if all properties are equals
      */
     public boolean equals(Object other){
-        IPropertyable paOther = (IPropertyable)other;
+        Item paOther = (Item)other;
         for (Object oKey : paOther.getProperties().keySet()){
             //if the property is known and equals
             if (!properties.containsKey(oKey) 
@@ -98,11 +105,11 @@ abstract public class PropertyAdapter implements IPropertyable, Serializable,ITe
     /*
      * (non-Javadoc)
      * 
-     * @see org.jajuk.base.Propertyable#getProperties()
+     * @see org.jajuk.base.Item#getProperties()
      */
     public LinkedHashMap getProperties() {
         if ( properties == null){
-            properties = new LinkedHashMap(10);
+            properties = new LinkedHashMap(5,1f);//use very hifh load factor as this size will not change often
         }
         return properties;
     }
@@ -110,7 +117,7 @@ abstract public class PropertyAdapter implements IPropertyable, Serializable,ITe
     /*
      * (non-Javadoc)
      * 
-     * @see org.jajuk.base.Propertyable#getProperty(java.lang.String)
+     * @see org.jajuk.base.Item#getProperty(java.lang.String)
      */
     public Object getValue(String sKey) {
         //look at properties to check the given property is known
@@ -173,7 +180,7 @@ abstract public class PropertyAdapter implements IPropertyable, Serializable,ITe
     /*
      * (non-Javadoc)
      * 
-     * @see org.jajuk.base.Propertyable#containsKey(java.lang.String)
+     * @see org.jajuk.base.Item#containsKey(java.lang.String)
      */
     public boolean containsProperty(String sKey) {
         return properties.containsKey(sKey) 
@@ -184,41 +191,37 @@ abstract public class PropertyAdapter implements IPropertyable, Serializable,ITe
     /*
      * (non-Javadoc)
      * 
-     * @see org.jajuk.base.Propertyable#setProperty(java.lang.String, java.lang.String)
+     * @see org.jajuk.base.Item#setProperty(java.lang.String, java.lang.String)
      */
     public void setProperty(String sKey, Object oValue) {
         LinkedHashMap properties = getProperties();
         properties.put(sKey, oValue);
-        bNeedRefresh = true; //notice getAny to we need to rebuild Any criteria
     }
     
     /* (non-Javadoc)
-     * @see org.jajuk.base.IPropertyable#getAny()
+     * @see org.jajuk.base.Item#getAny()
      */
     public String getAny(){
-        if (bNeedRefresh){
-            StringBuffer sb = new StringBuffer(100); //$NON-NLS-1$
-            LinkedHashMap properties = getProperties();
-            Iterator it = properties.keySet().iterator();
-            while (it.hasNext()) {
-                String sKey = (String) it.next();
-                String sValue = getHumanValue(sKey);
-                if (sValue != null){
-                    PropertyMetaInformation meta = getMeta(sKey);
-                    if (!meta.isVisible()){ //computes "any" only on visible items
-                        continue;
-                    }
-                    sb.append(sValue);
+        StringBuffer sb = new StringBuffer(100); //$NON-NLS-1$
+        LinkedHashMap properties = getProperties();
+        Iterator it = properties.keySet().iterator();
+        while (it.hasNext()) {
+            String sKey = (String) it.next();
+            String sValue = getHumanValue(sKey);
+            if (sValue != null){
+                PropertyMetaInformation meta = getMeta(sKey);
+                if (!meta.isVisible()){ //computes "any" only on visible items
+                    continue;
                 }
-                
+                sb.append(sValue);
             }
-            this.sAny = sb.toString();
+
         }
-        return sAny;
+        return sb.toString();
     }
-    
+
     /* (non-Javadoc)
-     * @see org.jajuk.base.IPropertyable#setDefaultProperty(java.lang.String, java.lang.String)
+     * @see org.jajuk.base.Item#setDefaultProperty(java.lang.String, java.lang.String)
      */
     public void populateDefaultProperty(PropertyMetaInformation meta) {
         properties.put(meta.getName(),meta.getDefaultValue());
@@ -242,6 +245,11 @@ abstract public class PropertyAdapter implements IPropertyable, Serializable,ITe
     }
     
     /**
+     * @return an identifier used to generate XML representation of this item
+     */
+    abstract String getIdentifier();
+    
+    /**
      * 
      * @return XML representation for item properties
      */
@@ -256,14 +264,7 @@ abstract public class PropertyAdapter implements IPropertyable, Serializable,ITe
             if (oValue != null){
                 PropertyMetaInformation meta = getMeta(sKey);
                 try {
-                    /*Store dates as simple date format YYYYMMDD to ensure it will be parsed correctly 
-                    if user selected default locale and locale changed*/
-                    if (meta.getType().equals(Date.class)){
-                        sValue = Util.getAdditionDateFormat().format((Date)oValue);
-                    }//else, simple format the value to human readable value
-                    else{
-                        sValue = Util.format(oValue,meta);
-                    }
+                    sValue = Util.format(oValue,meta);
                 } catch (Exception e) { //should not occur
                     Log.error(e);
                 }
@@ -287,17 +288,9 @@ abstract public class PropertyAdapter implements IPropertyable, Serializable,ITe
                 String sValue = attributes.getValue(i);
                 PropertyMetaInformation meta = getMeta(sProperty);
                 try {
-                    Object oValue = null;
-                    /*Dates are stored always using the YYYYMMDD date format to stay independant 
-                    from default locale*/
-                    if (meta.getType().equals(Date.class)){
-                        oValue = Util.getAdditionDateFormat().parseObject(sValue);
+                    if (meta != null){
+                        setProperty(sProperty, Util.parse(sValue,meta.getType()));
                     }
-                    //else, simple parse the value
-                    else{
-                        oValue = Util.parse(sValue,meta.getType(),meta.getFormat());
-                    }
-                    setProperty(sProperty, oValue);
                 } catch (Exception e) {
                     Log.error("137",sProperty,e); //$NON-NLS-1$
                 }    
@@ -313,7 +306,7 @@ abstract public class PropertyAdapter implements IPropertyable, Serializable,ITe
     }
     
     /* (non-Javadoc)
-     * @see org.jajuk.base.IPropertyable#removeProperty(java.lang.String)
+     * @see org.jajuk.base.Item#removeProperty(java.lang.String)
      */
     public void removeProperty(String sKey) {
         LinkedHashMap properties = getProperties();
@@ -323,7 +316,7 @@ abstract public class PropertyAdapter implements IPropertyable, Serializable,ITe
     }
     
     /* (non-Javadoc)
-     * @see org.jajuk.base.IPropertyable#displayProperty()
+     * @see org.jajuk.base.Item#displayProperty()
      */
     public void displayProperties() {
     }
@@ -341,35 +334,7 @@ abstract public class PropertyAdapter implements IPropertyable, Serializable,ITe
         }
     }
     
-    /**
-     * Get formated property if a format is given
-     * Implements for now:
-     * - date
-     * TODO: number(n), florat(n,m)
-     * @return formated result
-     */
-    public String getFormatedValue(String sKey){
-        String sOut = null;
-        Object o = getValue(sKey);
-        PropertyMetaInformation meta = getMeta(sKey);
-        if (meta.getFormat() != null){
-            if (meta.getType().equals(java.util.Date.class)){
-                try{
-                    sOut = meta.getFormat().format((Date)o);
-                }
-                catch(Exception e){ //parsing error
-                    Log.error("137",e); //$NON-NLS-1$
-                }
-            }
-        }
-        else{ //no format defined
-            if (meta.getType().equals(java.util.Date.class)){//if date and no format defined, use default format for locale
-                DateFormat dateFormatter = DateFormat.getDateInstance(DateFormat.DEFAULT,Locale.getDefault());
-                sOut = dateFormatter.format((Date)o);
-            }
-        }
-        return sOut;
-    }
+   
     
     /**
      * @param sProperty Property name
@@ -383,7 +348,7 @@ abstract public class PropertyAdapter implements IPropertyable, Serializable,ITe
      * Clone all properties from a given properties list but not overwrite constructor properties
      * @param propertiesSource
      */
-    public void cloneProperties(IPropertyable propertiesSource){
+    public void cloneProperties(Item propertiesSource){
         Iterator it = propertiesSource.getProperties().keySet().iterator();
         while (it.hasNext()){
             String sProperty = (String)it.next();

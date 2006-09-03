@@ -68,7 +68,7 @@ import org.jajuk.base.Cover;
 import org.jajuk.base.Directory;
 import org.jajuk.base.Event;
 import org.jajuk.base.FIFO;
-import org.jajuk.base.IPropertyable;
+import org.jajuk.base.Item;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Observer;
 import org.jajuk.base.PropertyMetaInformation;
@@ -78,6 +78,7 @@ import org.jajuk.i18n.Messages;
 import org.jajuk.ui.InformationJPanel;
 import org.jajuk.ui.OKCancelPanel;
 import org.jajuk.ui.PropertiesWizard;
+import org.jajuk.ui.SteppedComboBox;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.DownloadManager;
 import org.jajuk.util.Filter;
@@ -95,20 +96,23 @@ import ext.SwingWorker;
  * @author     Bertrand Florat
  * @created   01/12/2005
  */
-public class CatalogView extends ViewAdapter implements Observer,ComponentListener,ActionListener,ITechnicalStrings{
+public class CatalogView extends ViewAdapter implements Observer,ComponentListener,ActionListener{
     
     //control panel
     JPanel jpControl;
     JLabel jlSorter;
-    JComboBox jcbSorter;
+    SteppedComboBox jcbSorter;
     JLabel jlFilter;
-    JComboBox jcbFilter;
+    SteppedComboBox jcbFilter;
     JLabel jlContains;
     JTextField jtfValue;
     JCheckBox jcbShow;
     JLabel jlSize;
     JComboBox jcbSize;
     JButton jbRefresh;
+    JButton jbPrev;
+    JButton jbNext;
+    SteppedComboBox jcbPage;
     FlowScrollPanel jpItems;
     JScrollPane jsp;
     
@@ -144,6 +148,12 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
     /**Last selected item*/
     public CatalogItem item;
     
+    /**Page index*/
+    private int page = 0;
+    
+    /**Number of page in current selection*/
+    int iNbPages = 0;
+    
     /**Number of created thumbs, used for garbage collection*/
     public int iNbCreatedThumbs = 0;
     
@@ -152,6 +162,8 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
         public void actionPerformed(ActionEvent e) {
             if ( bNeedSearch && !bPopulating &&
                     (System.currentTimeMillis()-lDateTyped >= WAIT_TIME)){
+                //reset paging
+                page = 0;
                 populateCatalog();
                 bNeedSearch = false;
             }
@@ -176,24 +188,34 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
         
         hsItems = new HashSet();
         
-        timer.start();
     }
     
     /* (non-Javadoc)
      * @see org.jajuk.ui.IView#display()
      */
-    public void populate(){
+    public void initUI(){
         //Control panel
         jpControl = new JPanel();
         jpControl.setBorder(BorderFactory.createEtchedBorder());
         int iXspace = 10;
         double sizeControl[][] =
-            //        Sort by                       combo sorter                    Filter:                       combo filter                  contains:                     value textfield               show albums without covers       Size:                      Size combo                    refresh                          
-        {{iXspace,TableLayout.PREFERRED,iXspace,TableLayout.PREFERRED,3*iXspace,TableLayout.PREFERRED,iXspace,TableLayout.PREFERRED,iXspace,TableLayout.PREFERRED,iXspace,TableLayout.PREFERRED,iXspace,TableLayout.PREFERRED,iXspace,TableLayout.PREFERRED,TableLayout.FILL,TableLayout.PREFERRED,2*iXspace},
-                {25}};
+                                                                                        
+        {{iXspace,TableLayout.PREFERRED,// "Sort by"
+            iXspace,0.1,//combo sorter
+            3*iXspace,TableLayout.PREFERRED, //"Filter:"
+            iXspace,0.1,//combo filter
+            iXspace,TableLayout.PREFERRED,//"contains:"
+            iXspace,0.2,//value textfield
+            iXspace,TableLayout.PREFERRED,//show albums without covers
+            iXspace,0.15, //Size combo
+            3*iXspace,TableLayout.PREFERRED,//previous button
+            5,0.15, //page selector
+            5,TableLayout.PREFERRED,//next button
+            TableLayout.FILL,TableLayout.PREFERRED},//Refresh button
+            {25}};
         jpControl.setLayout(new TableLayout(sizeControl));
         jlSorter = new JLabel(Messages.getString("Sort")); //$NON-NLS-1$
-        jcbSorter = new JComboBox();
+        jcbSorter = new SteppedComboBox();
         jcbSorter.setEditable(false);
         //note that a single album can contains tracks with different authors or styles, we will show it only one
         for (PropertyMetaInformation meta:alSorters){
@@ -204,7 +226,7 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
         
         jlFilter = new JLabel(Messages.getString("AbstractTableView.0")); //$NON-NLS-1$
         jlContains = new JLabel(Messages.getString("AbstractTableView.7")); //$NON-NLS-1$
-        jcbFilter = new JComboBox();
+        jcbFilter = new SteppedComboBox();
         jcbFilter.setEditable(false);
         //note that a single album can contains tracks with different authors or styles, we will show it only one
         for (PropertyMetaInformation meta:alFilters){
@@ -237,6 +259,16 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
         jbRefresh.setToolTipText(Messages.getString("CatalogView.3")); //$NON-NLS-1$
         jbRefresh.addActionListener(this);
         
+        jbPrev = new JButton(Util.getIcon(ICON_PREVIOUS));
+        jbPrev.setToolTipText(Messages.getString("CatalogView.12"));
+        jbPrev.addActionListener(this);
+        jbNext = new JButton(Util.getIcon(ICON_NEXT));
+        jbNext.setToolTipText(Messages.getString("CatalogView.13"));
+        jbNext.addActionListener(this);
+        jcbPage = new SteppedComboBox();
+        jcbPage.setToolTipText(Messages.getString("CatalogView.14"));
+        jcbPage.addActionListener(this);
+        
         jpControl.add(jlSorter,"1,0");//$NON-NLS-1$
         jpControl.add(jcbSorter,"3,0");//$NON-NLS-1$
         jpControl.add(jlFilter,"5,0");//$NON-NLS-1$
@@ -245,7 +277,10 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
         jpControl.add(jtfValue,"11,0");//$NON-NLS-1$
         jpControl.add(jcbShow,"13,0");//$NON-NLS-1$
         jpControl.add(jcbSize,"15,0");//$NON-NLS-1$
-        jpControl.add(jbRefresh,"17,0");//$NON-NLS-1$
+        jpControl.add(jbPrev,"17,0");//$NON-NLS-1$
+        jpControl.add(jcbPage,"19,0");//$NON-NLS-1$
+        jpControl.add(jbNext,"21,0");//$NON-NLS-1$
+        jpControl.add(jbRefresh,"23,0");//$NON-NLS-1$
         
         //Covers
         jpItems = new FlowScrollPanel();
@@ -255,7 +290,10 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
             JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         jpItems.setScroller(jsp);
         jpItems.setLayout(new FlowLayout(FlowLayout.LEFT));
+        jsp.setOpaque(true);
         jsp.setBackground(Color.WHITE);
+        jpItems.setOpaque(true);
+        jpItems.setBackground(Color.WHITE);
         
         //Menu items
         //Album menu
@@ -292,22 +330,26 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
         //subscriptions to events
         ObservationManager.register(EVENT_DEVICE_REFRESH,this);
         ObservationManager.register(EVENT_COVER_DEFAULT_CHANGED,this);
+        
+        //Start the timer
+        timer.start();
+    
     }
     
     /**
      * Make thumbnail file exists (album id.jpg or.gif or .png) in thumbs directory
      * if it doesn't exist yet 
      * @param album
-     * @return IO file used to create the thumb
+     * @return wether a new cover has been created
      */
-    private File refreshThumbnail(Album album){
+    private boolean refreshThumbnail(Album album){
         File fThumb = new File(FILE_THUMBS+'/'+(String)jcbSize.getSelectedItem()+'/'+album.getId()+'.'+EXT_THUMB);
         File fCover = null;
         if (!fThumb.exists()){
             //search for local covers in all directories mapping the current track to reach other devices covers and display them together
             ArrayList<Track> tracks = TrackManager.getInstance().getAssociatedTracks(album);
             if (tracks.size() == 0){
-                return null;
+                return false;
             }
             Track trackCurrent = (Track)tracks.iterator().next(); //take first track found to get associated directories as we assume all tracks for an album are in the same directory 
             fCover = trackCurrent.getAlbum().getCoverFile();
@@ -315,11 +357,6 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
                 try {
                     //use void file to store the fact we didn't find a cover, too long to scan again
                     fThumb.createNewFile();
-                    iNbCreatedThumbs ++;
-                    if (iNbCreatedThumbs > 30){
-                        iNbCreatedThumbs = 0;
-                        System.gc(); //invoke garbage collecting to avoid using too mush memory
-                    }
                 }
                 catch (Exception e) {
                     Log.error(e);
@@ -330,6 +367,7 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
                     Util.createThumbnail(fCover,fThumb,getSelectedSize());
                     InformationJPanel.getInstance().setMessage(Messages.getString("CatalogView.5") //$NON-NLS-1$
                         +' '+album.getName2(),InformationJPanel.INFORMATIVE);
+                    return true;
                 }
                 catch (Exception e) {
                     //create a void thumb to avoid trying to create again this thumb 
@@ -343,7 +381,8 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
                 }
             }
         }
-        return fCover;
+        return false; //thumb already exist
+        
     }
     
     
@@ -357,6 +396,9 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
         jcbFilter.setEnabled(false);
         jcbShow.setEnabled(false);
         jcbSorter.setEnabled(false);
+        jbPrev.setEnabled(false);
+        jbNext.setEnabled(false);
+        jcbPage.setEnabled(false);
         SwingWorker sw = new SwingWorker() {
             @Override
             public Object construct() {
@@ -375,9 +417,9 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
                 final HashMap<Album,Track> hmAlbumTrack = new HashMap();
                 synchronized(TrackManager.getInstance().getLock()){
                     //filter on tracks properties
-                    Collection<IPropertyable> alAllTracks = TrackManager.getInstance().getItems(filter);
+                    Collection<Item> alAllTracks = TrackManager.getInstance().getItems(filter);
                     //keep matching albums (we use sets to drop duplicates)
-                    for (IPropertyable item:alAllTracks){
+                    for (Item item:alAllTracks){
                         Track track = (Track)item;
                         Album album = track.getAlbum();
                         if (!albums.contains(album)){
@@ -389,7 +431,7 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
                     //store mapped tracks for perfs
                     for (Album album:albums){
                         Track track = null;
-                        for (IPropertyable item : TrackManager.getInstance().getItems()){
+                        for (Item item : TrackManager.getInstance().getItems()){
                             track = (Track)item;
                             if (track.getAlbum().equals(album)){
                                 hmAlbumTrack.put(album,track);
@@ -428,9 +470,9 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
                         
                     });
                 }
-                 
-                HashSet<File> coverFiles = new HashSet<File>(albums.size()); //this set contains cover images already used to prevent duplicates
                 //Now process each album    
+                HashSet<Directory> directories = new HashSet<Directory>(albums.size());
+                ArrayList<CatalogItem> alItemsToDisplay = new ArrayList<CatalogItem>(albums.size());
                 for (Object item:albums){
                     Album album = (Album)item;
                     //if hide unmounted tracks is set, continue
@@ -453,24 +495,43 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
                             continue;
                         }
                     }
-                    //create the thumbnail if it doesn't exist
-                    File image = refreshThumbnail(album); //image is null if none cover file found
-                    if (image != null 
-                            && coverFiles.contains(image) //known source image ? leave 
-                            && !image.equals(new File(IMAGE_NO_COVER))){ //if it is a no cover item, display it!
+                    //Take first track of album (to get detailed information)
+                    Track anyTrack = hmAlbumTrack.get(album);
+                    //Take the directory of any file of the track 
+                    Directory dir = anyTrack.getFiles().get(0).getDirectory();
+                    //We want to limit duplicate covers, so we display only one album whose files are in a given directory
+                    if (directories.contains(dir)){
                         continue;
                     }
-                    coverFiles.add(image);
-                    CatalogItem cover = new CatalogItem(album,(String)jcbSize.getSelectedItem(),hmAlbumTrack.get(album));
-                    
-                    if (cover.isNoCover()){
-                        if (jcbShow.isSelected()){
-                            jpItems.add(cover);
-                        }
+                    directories.add(dir);
+                    CatalogItem cover = new CatalogItem(album,(String)jcbSize.getSelectedItem(),anyTrack);
+                    alItemsToDisplay.add(cover);
+                    hsItems.add(cover); //stores information on non-null covers
+                }
+                iNbPages = alItemsToDisplay.size() / CATALOG_PAGE_SIZE + //computes the number of page
+                    ((alItemsToDisplay.size() % CATALOG_PAGE_SIZE == 0)? 0:1); //add one page for trailling items
+                //populate page selector
+                jcbPage.removeActionListener(CatalogView.this); //remove action listener
+                jcbPage.removeAllItems(); //void it
+                for (int i=0;i<iNbPages;i++){ //add the pages
+                    jcbPage.addItem(Messages.getString("CatalogView.11")+" "+(i+1)); //start at page 1, not 0
+                }
+                if (iNbPages > 0){
+                    jcbPage.setSelectedIndex(page);
+                    jcbPage.addActionListener(CatalogView.this);
+                    //Add all items
+                    int max = alItemsToDisplay.size(); //upper limit
+                    if (page < (iNbPages-1)){ //if last page, take simply to total number of
+                        //items to display
+                        max = (page+1)*CATALOG_PAGE_SIZE;
                     }
-                    else {
-                        jpItems.add(cover);
-                        hsItems.add(cover);
+                    for (int i = page*CATALOG_PAGE_SIZE;i<max;i++){
+                        CatalogItem item = alItemsToDisplay.get(i);
+                        item.populate(); //populate item (construct UI) only when needed
+                        if (!item.isNoCover() || 
+                                (item.isNoCover() && jcbShow.isSelected())){
+                            jpItems.add(item);
+                        }
                     }
                 }
                 Util.stopWaiting();
@@ -485,6 +546,9 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
                 jcbFilter.setEnabled(true);
                 jcbShow.setEnabled(true);
                 jcbSorter.setEnabled(true);
+                jbPrev.setEnabled(true);
+                jbNext.setEnabled(true);
+                jcbPage.setEnabled(true);
                 bPopulating = false;
             }
         };
@@ -500,6 +564,8 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
                 || EVENT_COVER_DEFAULT_CHANGED.equals(event.getSubject())){
             //save selected item
             CatalogItem oldItem = CatalogView.this.item;
+            //reset paging
+            page = 0;
             populateCatalog();
             //try to restore previous item
             if (oldItem != null){
@@ -552,7 +618,6 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
             cleanThumbs("100x100"); //$NON-NLS-1$
             cleanThumbs("150x150"); //$NON-NLS-1$
             cleanThumbs("200x200"); //$NON-NLS-1$
-            
             //display thumbs
             populateCatalog();
         }
@@ -564,6 +629,28 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
         else if (e.getSource() == jcbSize){
             ConfigurationManager.setProperty(CONF_THUMBS_SIZE,(String)jcbSize.getSelectedItem());
             //display thumbs
+            populateCatalog();
+        }
+        else if (e.getSource() == jbPrev){
+            if (page > 0){
+                page --;
+            }
+            else{
+            page = iNbPages - 1; //go to last
+            }
+            populateCatalog();
+        }
+        else if (e.getSource() == jbNext){
+            if (page < (iNbPages-1)){
+                page ++;    
+            }
+            else{
+                page = 0; //go to first
+            }
+            populateCatalog();
+        }
+        else if (e.getSource() == jcbPage){
+            page = jcbPage.getSelectedIndex();
             populateCatalog();
         }
         else{
@@ -631,13 +718,20 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
          * Constructor
          * @param album : associated album
          * @param size : size of the thumbnail
+         * @param track: any track of the album used to get author.. information (perfs)
          */
         public CatalogItem(Album album,String size,Track track){
             this.album = album;
             this.size = size;
             this.track = track;
             this.fCover = new File(FILE_THUMBS+'/'+size+'/'+album.getId()+'.'+EXT_THUMB);
-            if (!fCover.exists() || fCover.length() == 0){
+            
+        }
+        
+        void populate(){
+            //create the thumbnail if it doesn't exist
+            refreshThumbnail(album);
+            if ( !fCover.exists() || fCover.length() == 0){
                 bNoCover = true;
                 this.fCover = new File(FILE_THUMBS+'/'+size+'/'+FILE_THUMB_NO_COVER); 
             }
@@ -663,6 +757,8 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
                 ii.getImage().flush(); //flush image buffer to avoid jre to use old image
             }
             jlIcon.setIcon(ii);
+            jpIcon.setOpaque(true);
+            jpIcon.setBackground(Color.WHITE);
             addMouseListener(this);
             jpIcon.add(jlIcon,"1,0"); //$NON-NLS-1$
             int iRows = 9 + 3*(jcbSize.getSelectedIndex());
@@ -671,17 +767,24 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
             jlAuthor.setLineWrap(true);
             jlAuthor.setWrapStyleWord(true);
             jlAuthor.setEditable(false);
+            jlAuthor.setOpaque(true);
+            jlAuthor.setBackground(Color.WHITE);
+        
             jlAlbum = new JTextArea(album.getName2(),1,iRows);
             jlAlbum.setLineWrap(true);
             jlAlbum.setWrapStyleWord(true);
             jlAlbum.setEditable(false);
             jlAuthor.setFont(new Font("Dialog",Font.BOLD,12)); //$NON-NLS-1$
             jlAlbum.setFont(new Font("Dialog",Font.BOLD,12)); //$NON-NLS-1$
-            
+            jlAlbum.setOpaque(true);
+            jlAlbum.setBackground(Color.WHITE);
+        
             add(jpIcon,"1,0"); //$NON-NLS-1$
             add(jlAuthor,"1,2"); //$NON-NLS-1$
             add(jlAlbum,"1,4"); //$NON-NLS-1$
             setBorder(BorderFactory.createEmptyBorder(2,2,2,2));
+            setOpaque(true);
+            setBackground(Color.WHITE);
         }
         
         public boolean isNoCover() {
@@ -731,7 +834,7 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
                 }.start();
             }
             else if (e.getSource() == jmiAlbumProperties){
-                ArrayList<IPropertyable> alAlbums = new ArrayList();
+                ArrayList<Item> alAlbums = new ArrayList();
                 alAlbums.add(album);
                 new PropertiesWizard(alAlbums,
                     new ArrayList(TrackManager.getInstance().getAssociatedTracks(album)));
@@ -790,10 +893,14 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
             icon.getImage().flush();
         }
         
+        /**
+         * 
+         * @return the album
+         */
         public Album getAlbum() {
             return album;
         }
-       
+
     }
     
     

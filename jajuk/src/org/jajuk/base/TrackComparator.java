@@ -35,6 +35,11 @@ public class TrackComparator implements Comparator{
      */
     private int iSortingMethod = 0;
     
+    /**sorting methods constants*/
+    public static final int STYLE_AUTHOR_ALBUM = 0;
+    public static final int AUTHOR_ALBUM = 1;
+    public static final int ALBUM = 2;
+        
     /**
      * Constructor
      * @param iSortingMethod Sorting method
@@ -54,7 +59,7 @@ public class TrackComparator implements Comparator{
         //note we need to use year because in sorted set, we must differenciate 2 tracks with different years
         switch(iSortingMethod){
         //Style/author/album
-        case 0:
+        case STYLE_AUTHOR_ALBUM:
             sHashCompare = new StringBuffer()
             .append(track.getStyle().getName2())
             .append(track.getAuthor().getName2())//need 2 spaces to make a right sorting (ex: Rock and Rock & Roll) //$NON-NLS-1$
@@ -62,14 +67,14 @@ public class TrackComparator implements Comparator{
             .append(track.getName()).toString(); //$NON-NLS-1$
             break;
             //Author/album
-        case 1:
+        case AUTHOR_ALBUM:
             sHashCompare = new StringBuffer()
             .append(track.getAuthor().getName2())//need 2 spaces to make a right sorting (ex: Rock and Rock & Roll) //$NON-NLS-1$
             .append(track.getAlbum().getName2()) //$NON-NLS-1$
             .append(track.getName()).toString(); //$NON-NLS-1$
             break;
             //Album    
-        case 2:
+        case ALBUM:
             sHashCompare = new StringBuffer()
             .append(track.getAlbum().getName2()) //$NON-NLS-1$
             .append(track.getName()).toString(); //$NON-NLS-1$
@@ -100,12 +105,6 @@ public class TrackComparator implements Comparator{
         }
         String sHashCompare = getCompareString(track1);
         String sHashCompareOther = getCompareString(track2);
-        if (sHashCompare.equalsIgnoreCase(sHashCompareOther) 
-                && !sHashCompare.equals(sHashCompareOther)){
-            return sHashCompare.compareTo(sHashCompareOther);
-        }
-        else{
-            return sHashCompare.compareToIgnoreCase(sHashCompareOther);
-        }
+        return sHashCompare.compareTo(sHashCompareOther);
     }
 }

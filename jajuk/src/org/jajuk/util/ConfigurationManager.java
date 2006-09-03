@@ -209,7 +209,7 @@ public class ConfigurationManager implements ITechnicalStrings{
             (int)(Toolkit.getDefaultToolkit().getScreenSize().getHeight()-250)); //Window position: X,Y,X_size,Y_size
         properties.put(CONF_LOGICAL_TABLE_EDITION,FALSE);
         properties.put(CONF_PHYSICAL_TABLE_EDITION,FALSE);
-        properties.put(CONF_THUMBS_SHOW_WITHOUT_COVER,FALSE);
+        properties.put(CONF_THUMBS_SHOW_WITHOUT_COVER,TRUE);
         properties.put(CONF_THUMBS_SIZE,THUMBNAIL_SIZE_150x150);
         properties.put(CONF_THUMBS_SORTER,"2"); //sort by album //$NON-NLS-1$
         properties.put(CONF_THUMBS_FILTER,"2"); //filter on albums //$NON-NLS-1$

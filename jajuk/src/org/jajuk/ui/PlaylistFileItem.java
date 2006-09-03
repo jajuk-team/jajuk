@@ -20,13 +20,11 @@
 
 package org.jajuk.ui;
 
-import java.awt.Dimension;
+import info.clearthought.layout.TableLayout;
+
 import java.awt.Font;
 import java.awt.dnd.DnDConstants;
 
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -58,7 +56,9 @@ import org.jajuk.util.Util;
 		public static final int PLAYLIST_TYPE_QUEUE = 4;
         public static final int PLAYLIST_TYPE_NOVELTIES = 5;
         
-		/**
+        private static final Font font = new Font("Dialog",Font.PLAIN,10);
+        
+        /**
 		 * Constructor
 		 * @param iType : Playlist file type : 0: normal, 1:new, 2:bookmarks, 3:bestif
 		 * @param sIcon : icon to be shown
@@ -67,25 +67,15 @@ import org.jajuk.util.Util;
 		public PlaylistFileItem(int iType,String sIcon,PlaylistFile plf, String sName){
 			this.iType = iType;
 			this.plf = plf;
-			setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
-			setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
-			JPanel jpIcon  = new JPanel();
-			jpIcon.setLayout(new BoxLayout(jpIcon,BoxLayout.X_AXIS));
+			double[][] dSize = {{85},{40,10,5}};
+            TableLayout layout = new TableLayout(dSize);
+            layout.setVGap(5);
+            setLayout(layout);
 			JLabel jlIcon = new JLabel(Util.getIcon(sIcon)); 
-			jpIcon.add(Box.createGlue());
-			jpIcon.add(jlIcon);
-			jpIcon.add(Box.createGlue());
-			add(jpIcon);
 			JLabel jlName = new JLabel(sName);
-			jlName.setFont(new Font("Dialog",Font.PLAIN,10)); //$NON-NLS-1$
-			JPanel jpName  = new JPanel();
-			jpName.setLayout(new BoxLayout(jpName,BoxLayout.X_AXIS));
-			jpName.add(Box.createGlue());
-			jpName.add(jlName);
-			jpName.add(Box.createGlue());
-			jpName.setPreferredSize(new Dimension(40,10));
-			add(jpName);
-			add(Box.createVerticalGlue());
+			jlName.setFont(font); //$NON-NLS-1$
+			add(jlIcon,"0,0,c,c");
+            add(jlName,"0,1,c,c");
 			new PlaylistTransferHandler(this,DnDConstants.ACTION_COPY_OR_MOVE);
 		}
 		

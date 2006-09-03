@@ -22,8 +22,6 @@ package org.jajuk.base;
 
 import java.util.ArrayList;
 
-import org.jajuk.base.Style;
-
 /**
  *  This class contains a Style and an ArrayList of 
  *  PopulatedAuthors associated with this Style.

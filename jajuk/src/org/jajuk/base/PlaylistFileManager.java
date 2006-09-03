@@ -45,13 +45,13 @@ public class PlaylistFileManager extends ItemManager implements Observer{
         super();
         //---register properties---
         //ID
-        registerProperty(new PropertyMetaInformation(XML_ID,false,true,false,false,false,String.class,null,null));
+        registerProperty(new PropertyMetaInformation(XML_ID,false,true,false,false,false,String.class,null));
         //Name
-        registerProperty(new PropertyMetaInformation(XML_NAME,false,true,true,true,false,String.class,null,null));
+        registerProperty(new PropertyMetaInformation(XML_NAME,false,true,true,true,false,String.class,null));
         //Hashcode
-        registerProperty(new PropertyMetaInformation(XML_HASHCODE,false,false,false,false,false,String.class,null,null));
+        registerProperty(new PropertyMetaInformation(XML_HASHCODE,false,false,false,false,false,String.class,null));
         //Directory
-        registerProperty(new PropertyMetaInformation(XML_DIRECTORY,false,true,true,false,false,String.class,null,null));
+        registerProperty(new PropertyMetaInformation(XML_DIRECTORY,false,true,true,false,false,String.class,null));
     }
     
     /**
@@ -80,7 +80,7 @@ public class PlaylistFileManager extends ItemManager implements Observer{
     /**
      * @param sName
      * @param dParentDirectory
-     * @return Item ID
+     * @return ItemManager ID
      */
     protected static String getID(String sName,Directory dParentDirectory){
         return MD5Processor.hash(new StringBuffer(

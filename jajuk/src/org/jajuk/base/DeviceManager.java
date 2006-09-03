@@ -68,25 +68,25 @@ public class DeviceManager extends ItemManager{
         super();
         //register properties
         //ID
-        registerProperty(new PropertyMetaInformation(XML_ID,false,true,false,false,false,String.class,null,null));
+        registerProperty(new PropertyMetaInformation(XML_ID,false,true,false,false,false,String.class,null));
         //Name
-        registerProperty(new PropertyMetaInformation(XML_NAME,false,true,true,false,false,String.class,null,null));
+        registerProperty(new PropertyMetaInformation(XML_NAME,false,true,true,false,false,String.class,null));
         //Type
-        registerProperty(new PropertyMetaInformation(XML_TYPE,false,true,true,false,false,Long.class,null,null));
+        registerProperty(new PropertyMetaInformation(XML_TYPE,false,true,true,false,false,Long.class,null));
         //URL
-        registerProperty(new PropertyMetaInformation(XML_URL,false,true,true,false,false,Long.class,null,null));
+        registerProperty(new PropertyMetaInformation(XML_URL,false,true,true,false,false,Long.class,null));
         //Mount point
-        registerProperty(new PropertyMetaInformation(XML_DEVICE_MOUNT_POINT,false,true,true,false,false,String.class,null,null));
+        registerProperty(new PropertyMetaInformation(XML_DEVICE_MOUNT_POINT,false,true,true,false,false,String.class,null));
         //Auto-mount
-        registerProperty(new PropertyMetaInformation(XML_DEVICE_AUTO_MOUNT,false,true,true,false,false,Boolean.class,null,null));
+        registerProperty(new PropertyMetaInformation(XML_DEVICE_AUTO_MOUNT,false,true,true,false,false,Boolean.class,null));
         //Auto-refresh
-        registerProperty(new PropertyMetaInformation(XML_DEVICE_AUTO_REFRESH,false,true,true,false,false,Double.class,null,0d));
+        registerProperty(new PropertyMetaInformation(XML_DEVICE_AUTO_REFRESH,false,true,true,false,false,Double.class,0d));
         //Expand
-        registerProperty(new PropertyMetaInformation(XML_EXPANDED,false,false,false,false,true,Boolean.class,null,false));
+        registerProperty(new PropertyMetaInformation(XML_EXPANDED,false,false,false,false,true,Boolean.class,false));
         //Synchro source
-        registerProperty(new PropertyMetaInformation(XML_DEVICE_SYNCHRO_SOURCE,false,false,true,false,false,String.class,null,null));
+        registerProperty(new PropertyMetaInformation(XML_DEVICE_SYNCHRO_SOURCE,false,false,true,false,false,String.class,null));
         //Synchro mode
-        registerProperty(new PropertyMetaInformation(XML_DEVICE_SYNCHRO_MODE,false,false,true,false,false,String.class,null,null));
+        registerProperty(new PropertyMetaInformation(XML_DEVICE_SYNCHRO_MODE,false,false,true,false,false,String.class,null));
     }
     
     public void startAutoRefreshThread(){
@@ -333,7 +333,7 @@ public class DeviceManager extends ItemManager{
             long l = System.currentTimeMillis();
             lDateLastGlobalRefresh = System.currentTimeMillis();
             boolean bNeedUIRefresh = false;
-            for (IPropertyable item:getItems()){
+            for (Item item:getItems()){
                 Device device = (Device)item;
                 double frequency = 60000 * device.getDoubleValue(XML_DEVICE_AUTO_REFRESH);
                 //check if this device needs auto-refresh

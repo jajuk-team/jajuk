@@ -30,7 +30,7 @@ import java.util.regex.PatternSyntaxException;
 
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
-import org.jajuk.base.IPropertyable;
+import org.jajuk.base.Item;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.base.PropertyMetaInformation;
 import org.jajuk.base.TrackManager;
@@ -53,7 +53,7 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
 	 * @param sColName columns names
 	 */
 	public FilesTableModel(){
-		super(16);
+		super(17);
         //Columns names
         //play column
         vColNames.add(""); //$NON-NLS-1$
@@ -104,6 +104,9 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
         vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_DIRECTORY));
         vId.add(XML_DIRECTORY);
         
+        vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_TRACK_HITS));
+        vId.add(XML_TRACK_HITS);
+        
         //custom properties now
         //for tracks
         Iterator it = TrackManager.getInstance().getCustomProperties().iterator();
@@ -131,7 +134,7 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
         boolean bSyncWithTreeOption = ConfigurationManager.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE);
         Collection files = FileManager.getInstance().getItems();
         ArrayList alToShow = new ArrayList(files.size());
-        oItems = new IPropertyable[iRowNum];
+        oItems = new Item[iRowNum];
         Iterator it = files.iterator();
         while ( it.hasNext()){
             File file = (File)it.next();
@@ -182,7 +185,7 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
         iRowNum = alToShow.size();
         it = alToShow.iterator();
         oValues = new Object[iRowNum][iColNum];
-        oItems = new IPropertyable[iRowNum];
+        oItems = new Item[iRowNum];
         bCellEditable = new boolean[iRowNum][iColNum];
         for (int iRow = 0;it.hasNext();iRow++){
             File file = (File)it.next();
@@ -247,6 +250,10 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
             //directory full path
             oValues[iRow][15] = file.getDirectory().getAbsolutePath();
             bCellEditable[iRow][15] = false;
+            //Hits
+            oValues[iRow][16] = file.getTrack().getHits();
+            bCellEditable[iRow][16] = false;
+            
             //Custom properties now
             //files
             Iterator it2 = FileManager.getInstance().getCustomProperties().iterator();

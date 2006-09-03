@@ -102,7 +102,7 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
     /* (non-Javadoc)
      * @see org.jajuk.ui.IView#display()
      */
-    public void populate(){
+    public void initUI(){
         //buttons
         jtbButtons = new JToolBar();
         jtbButtons.setRollover(true);

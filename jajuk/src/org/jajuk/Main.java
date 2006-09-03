@@ -223,7 +223,7 @@ public class Main implements ITechnicalStrings {
             //Display progress
             sc.setProgress(0,Messages.getString("SplashScreen.0")); //$NON-NLS-1$
             
-            //Registers Item managers
+            //Registers ItemManager managers
             ItemManager.registerItemManager(org.jajuk.base.Album.class,AlbumManager.getInstance());
             ItemManager.registerItemManager(org.jajuk.base.Author.class,AuthorManager.getInstance());
             ItemManager.registerItemManager(org.jajuk.base.Device.class,DeviceManager.getInstance());
@@ -412,19 +412,19 @@ public class Main implements ITechnicalStrings {
         //check for default covers
         fThumbs = new File(FILE_THUMBS+"/50x50/"+FILE_THUMB_NO_COVER); //$NON-NLS-1$
         if (!fThumbs.exists()){
-            Util.createThumbnail(new File(IMAGE_NO_COVER),fThumbs,50);
+            Util.createThumbnail(Util.getIcon(IMAGE_NO_COVER),fThumbs,50);
         }
         fThumbs = new File(FILE_THUMBS+"/100x100/"+FILE_THUMB_NO_COVER); //$NON-NLS-1$
         if (!fThumbs.exists()){
-            Util.createThumbnail(new File(IMAGE_NO_COVER),fThumbs,100);
+            Util.createThumbnail(Util.getIcon(IMAGE_NO_COVER),fThumbs,100);
         }
         fThumbs = new File(FILE_THUMBS+"/150x150/"+FILE_THUMB_NO_COVER); //$NON-NLS-1$
         if (!fThumbs.exists()){
-            Util.createThumbnail(new File(IMAGE_NO_COVER),fThumbs,150);
+            Util.createThumbnail(Util.getIcon(IMAGE_NO_COVER),fThumbs,150);
         }
         fThumbs = new File(FILE_THUMBS+"/200x200/"+FILE_THUMB_NO_COVER); //$NON-NLS-1$
         if (!fThumbs.exists()){
-            Util.createThumbnail(new File(IMAGE_NO_COVER),fThumbs,200);
+            Util.createThumbnail(Util.getIcon(IMAGE_NO_COVER),fThumbs,200);
         }
         //check for djs directory
         File fdjs = new File(FILE_DJ_DIR); 
@@ -795,6 +795,7 @@ public class Main implements ITechnicalStrings {
                     
                     //create the command bar
                     command = CommandJPanel.getInstance();
+                    command.initUI();
                     
                     // Create the information bar panel
                     information = InformationJPanel.getInstance();

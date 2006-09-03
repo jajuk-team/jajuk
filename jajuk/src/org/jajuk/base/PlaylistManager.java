@@ -46,9 +46,9 @@ public class PlaylistManager extends ItemManager{
         super();
         //---register properties---
         //ID
-        registerProperty(new PropertyMetaInformation(XML_ID,false,true,false,false,false,String.class,null,null));
+        registerProperty(new PropertyMetaInformation(XML_ID,false,true,false,false,false,String.class,null));
         //Playlist file
-        registerProperty(new PropertyMetaInformation(XML_PLAYLIST_FILES,false,true,true,false,false,String.class,null,null));
+        registerProperty(new PropertyMetaInformation(XML_PLAYLIST_FILES,false,true,true,false,false,String.class,null));
     }
     
     /**
@@ -72,7 +72,7 @@ public class PlaylistManager extends ItemManager{
     
      /**
      * @param plf playlist file
-     * @return Item ID
+     * @return ItemManager ID
      */
     protected static String getID(PlaylistFile plf){
         return plf.getHashcode();
@@ -95,7 +95,7 @@ public class PlaylistManager extends ItemManager{
             else { //new playlist
                 //firstly, make sure the playlist file is not already referenced by another playlist
                 boolean bPresence = false;
-                for (IPropertyable item:getItems()){
+                for (Item item:getItems()){
                     Playlist pl = (Playlist)item;
                     if (pl.getPlaylistFiles().contains(plFile)){
                         bPresence = true;

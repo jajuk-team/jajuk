@@ -74,7 +74,7 @@ public abstract class ViewAdapter extends JPanel implements IView,ITechnicalStri
 	    if (getComponentCount() > 0){
 	        removeAll();
 	    }
-	    populate();
+	    initUI();
 		this.revalidate();
 		this.repaint();
 	}

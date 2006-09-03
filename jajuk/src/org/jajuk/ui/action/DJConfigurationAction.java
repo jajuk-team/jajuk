@@ -22,22 +22,22 @@ package org.jajuk.ui.action;
 import java.awt.event.ActionEvent;
 
 import org.jajuk.i18n.Messages;
-import org.jajuk.ui.perspectives.PerspectiveManager;
+import org.jajuk.ui.DigitalDJWizard;
 import org.jajuk.util.Util;
 
 /**
- * Action for displaying the online help
+ * Action for configure DJs
  *
- * @author Bart Cremers
- * @since 4-jan-2006
+ * @author Bertrand Florat
+ * @version 27-08-2006
  */
-public class HelpRequiredAction extends ActionBase {
+public class DJConfigurationAction extends ActionBase {
 
-    HelpRequiredAction() {
-        super(Messages.getString("JajukJMenuBar.15"), Util.getIcon(ICON_INFO), "F1", true); //$NON-NLS-1$ //$NON-NLS-2$
+    DJConfigurationAction() {
+        super(Messages.getString("CommandJPanel.17"), Util.getIcon(ICON_DIGITAL_DJ), true); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     public void perform(ActionEvent evt) {
-        PerspectiveManager.setCurrentPerspective(PERSPECTIVE_NAME_HELP);
+        new DigitalDJWizard(); //display the DJ wizard
     }
 }

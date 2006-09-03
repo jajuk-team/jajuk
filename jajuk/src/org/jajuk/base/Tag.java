@@ -77,15 +77,15 @@ public class Tag implements ITechnicalStrings{
      */
     public String getTrackName() {
         //by default, track name is the file name without extension
-        String sTrackName = Util.removeExtension(fio.getName());
+        String sTrackName = Util.removeExtension(fio.getName()).intern();
         if (tagImpl == null){  //if the type doesn't support tags ( like wav )
             return sTrackName;
         }
-        String sTemp = ""; //$NON-NLS-1$
+        String sTemp = "".intern(); //$NON-NLS-1$
         try {
-            sTemp = tagImpl.getTrackName().trim();
+            sTemp = tagImpl.getTrackName().trim().intern();
             if (!"".equals(sTemp)){ //$NON-NLS-1$
-                sTrackName = Util.formatTag(sTemp);  //remove the extension
+                sTrackName = Util.formatTag(sTemp).intern();  //remove the extension
             }
         } catch (Exception e) {
             Log.info("Wrong track name:{{"+fio.getName()+"}}"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -101,9 +101,9 @@ public class Tag implements ITechnicalStrings{
             return UNKNOWN_ALBUM; //$NON-NLS-1$
         }
         String sAlbumlName = null;
-        String sTemp = ""; //$NON-NLS-1$
+        String sTemp = "".intern(); //$NON-NLS-1$
         try {
-            sTemp = tagImpl.getAlbumName().trim();
+            sTemp = tagImpl.getAlbumName().trim().intern();
             if (Messages.getString(UNKNOWN_ALBUM).equals(sTemp)){  //it is done to avoid duplicates unknown albums if the tag is the real string "unknown" in the current language  //$NON-NLS-1$
                 sAlbumlName = UNKNOWN_ALBUM; //$NON-NLS-1$
             }
@@ -115,13 +115,13 @@ public class Tag implements ITechnicalStrings{
         }
         if (sAlbumlName == null){  //album tag cannot be found
             if (Boolean.valueOf(ConfigurationManager.getProperty(CONF_TAGS_USE_PARENT_DIR)).booleanValue()){
-                sAlbumlName = fio.getParentFile().getName(); //if album is not found, take current dirtectory as album name
+                sAlbumlName = fio.getParentFile().getName().intern(); //if album is not found, take current dirtectory as album name
             }
             else{
                 sAlbumlName = Messages.getString(UNKNOWN_ALBUM);  //album inconnu //$NON-NLS-1$
             }
         }
-        sAlbumlName = Util.formatTag(sAlbumlName);
+        sAlbumlName = Util.formatTag(sAlbumlName).intern();
         return sAlbumlName;
     }
 
@@ -134,14 +134,14 @@ public class Tag implements ITechnicalStrings{
         if (tagImpl == null){  
             return sAuthorName;
         }
-        String sTemp = ""; //$NON-NLS-1$
+        String sTemp = "".intern(); //$NON-NLS-1$
         try {
-            sTemp = tagImpl.getAuthorName().trim();
+            sTemp = tagImpl.getAuthorName().trim().intern();
             if (Messages.getString(UNKNOWN_AUTHOR).equals(sTemp)){  //it is done to avoid duplicates unknown authors if the tag is the real string "unknown" in the current language  //$NON-NLS-1$
                 sAuthorName = UNKNOWN_AUTHOR; //$NON-NLS-1$
             }
             else if (!"".equals(sTemp)){ //$NON-NLS-1$
-                sAuthorName = Util.formatTag(sTemp);
+                sAuthorName = Util.formatTag(sTemp).intern();
             }
         } catch (Exception e) {
             Log.info("Wrong author name:{{"+fio.getName()+"}}"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -160,9 +160,9 @@ public class Tag implements ITechnicalStrings{
         if (tagImpl == null){  
             return style;
         }
-        String sTemp = ""; //$NON-NLS-1$
+        String sTemp = "".intern(); //$NON-NLS-1$
         try {
-            sTemp = tagImpl.getStyleName().trim();
+            sTemp = tagImpl.getStyleName().trim().intern();
             if (Messages.getString(UNKNOWN_STYLE).equals(sTemp)){  //it is done to avoid duplicates unknown styles if the tag is the real string "unknown" in the current language  //$NON-NLS-1$
                 style = UNKNOWN_STYLE; //$NON-NLS-1$
             }
@@ -170,7 +170,7 @@ public class Tag implements ITechnicalStrings{
                 if( sTemp.equals("unknown")){ //$NON-NLS-1$
                     sTemp = style;
                 }
-                style = Util.formatTag(sTemp);
+                style = Util.formatTag(sTemp).intern();
             }
         } catch (Exception e) {
             Log.info("Wrong style name:"+fio.getName()); //$NON-NLS-1$
@@ -223,7 +223,6 @@ public class Tag implements ITechnicalStrings{
         if (tagImpl == null){  
             return lQuality;
         }
-        String sTemp = ""; //$NON-NLS-1$
         try {
             lQuality = tagImpl.getQuality();
         } catch (Exception e) {
@@ -236,16 +235,16 @@ public class Tag implements ITechnicalStrings{
      * @return comment
      */
     public String getComment() {
-        String sComment = ""; //$NON-NLS-1$
+        String sComment = "".intern(); //$NON-NLS-1$
         //if the type doesn't support tags ( like wav )
         if (tagImpl == null){  
             return sComment;
         }
-        String sTemp = ""; //$NON-NLS-1$
+        String sTemp = "".intern(); //$NON-NLS-1$
         try {
-            sTemp = tagImpl.getComment();
+            sTemp = tagImpl.getComment().intern();
             if (sTemp != null && !sTemp.equals("")){ //$NON-NLS-1$
-                sComment = Util.formatTag(sTemp);
+                sComment = Util.formatTag(sTemp).intern();
             }
         } catch (Exception e) {
             Log.info("Wrong comment:{{"+fio.getName()+"}}"); //$NON-NLS-1$ //$NON-NLS-2$

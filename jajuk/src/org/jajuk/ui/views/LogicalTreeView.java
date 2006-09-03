@@ -63,22 +63,20 @@ import org.jajuk.base.AlbumManager;
 import org.jajuk.base.Author;
 import org.jajuk.base.AuthorManager;
 import org.jajuk.base.Bookmarks;
-import org.jajuk.base.Device;
-import org.jajuk.base.Directory;
 import org.jajuk.base.Event;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
-import org.jajuk.base.IPropertyable;
+import org.jajuk.base.Item;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Observer;
+import org.jajuk.base.PopulatedAlbum;
+import org.jajuk.base.PopulatedAuthor;
+import org.jajuk.base.PopulatedStyle;
 import org.jajuk.base.StackItem;
 import org.jajuk.base.Style;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackComparator;
 import org.jajuk.base.TrackManager;
-import org.jajuk.base.PopulatedAlbum;
-import org.jajuk.base.PopulatedAuthor;
-import org.jajuk.base.PopulatedStyle;
 import org.jajuk.base.exporters.ExportFileFilter;
 import org.jajuk.base.exporters.HTMLExporter;
 import org.jajuk.base.exporters.XMLExporter;
@@ -187,7 +185,7 @@ ActionListener, Observer {
      * 
      * @see org.jajuk.ui.IView#display()
      */
-    public void populate() {
+    public void initUI() {
         //init sort order
         iSortOrder = ConfigurationManager.getInt(CONF_LOGICAL_TREE_SORT_ORDER);
         
@@ -462,8 +460,7 @@ ActionListener, Observer {
                 for (int i = 0; i < tpSelected.length; i++) {
                     Object o = tpSelected[i].getLastPathComponent();
                     if (o instanceof TransferableTreeNode) {
-                        alSelected
-                        .add((IPropertyable) ((TransferableTreeNode) o)
+                        alSelected.add((Item) ((TransferableTreeNode) o)
                             .getData());
                     } else { // collection node
                         synchronized (TrackManager.getInstance().getLock()) {
@@ -852,23 +849,23 @@ ActionListener, Observer {
         new Thread() {
             public void run() {
                 if (e.getSource() == jmiStyleProperties) {
-                    ArrayList<IPropertyable> alTracks = new ArrayList(1000);
-                    for (IPropertyable item : alSelected) {
+                    ArrayList<Item> alTracks = new ArrayList(1000);
+                    for (Item item : alSelected) {
                         Style style = (Style) item;
                         alTracks.addAll(style.getTracksRecursively());
                     }
                     new PropertiesWizard(alSelected, alTracks);
                 } else if (e.getSource() == jmiAuthorProperties) {
-                    ArrayList<IPropertyable> alTracks= new ArrayList(100);
-                    for (IPropertyable item : alSelected) {
+                    ArrayList<Item> alTracks = new ArrayList(100);
+                    for (Item item : alSelected) {
                         Author author = (Author) item;
                         alTracks.addAll(TrackManager.getInstance()
                             .getAssociatedTracks(author));
                     }
                     new PropertiesWizard(alSelected, alTracks);
                 } else if (e.getSource() == jmiAlbumProperties) {
-                    ArrayList<IPropertyable> alTracks = new ArrayList(10);
-                    for (IPropertyable item : alSelected) {
+                    ArrayList<Item> alTracks = new ArrayList(10);
+                    for (Item item : alSelected) {
                         Album album = (Album) item;
                         alTracks.addAll(TrackManager.getInstance()
                             .getAssociatedTracks(album));
@@ -878,8 +875,8 @@ ActionListener, Observer {
                     PropertiesWizard p = new PropertiesWizard(alSelected);
                     //Sorting  
                 } else if (e.getSource() == jmiAlbumCDDBWizard) {
-                    ArrayList<IPropertyable> alTracks = new ArrayList<IPropertyable>(100);
-                    for (IPropertyable item : alSelected) {
+                    ArrayList<Item> alTracks = new ArrayList<Item>(100);
+                    for (Item item : alSelected) {
                         Album album = (Album) item;
                         alTracks.addAll(TrackManager.getInstance().getAssociatedTracks(album));
                     }

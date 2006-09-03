@@ -19,9 +19,12 @@
  */
 package org.jajuk.ui;
 
+import static org.jajuk.ui.action.JajukAction.CONFIGURE_AMBIENCES;
+import static org.jajuk.ui.action.JajukAction.CONFIGURE_DJS;
 import static org.jajuk.ui.action.JajukAction.CONTINUE_MODE_STATUS_CHANGED;
 import static org.jajuk.ui.action.JajukAction.HELP_REQUIRED;
 import static org.jajuk.ui.action.JajukAction.INTRO_MODE_STATUS_CHANGED;
+import static org.jajuk.ui.action.JajukAction.OPTIONS;
 import static org.jajuk.ui.action.JajukAction.QUALITY;
 import static org.jajuk.ui.action.JajukAction.REPEAT_MODE_STATUS_CHANGE;
 import static org.jajuk.ui.action.JajukAction.SHOW_ABOUT;
@@ -69,11 +72,15 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings{
             public JCheckBoxMenuItem jcbmiShuffle;
             public JCheckBoxMenuItem jcbmiContinue;
             public JCheckBoxMenuItem jcbmiIntro;
+        JMenu configuration;
+            JMenuItem jmiDJ;
+            JMenuItem jmiAmbience;
+            JMenuItem jmiWizard;
+            JMenuItem jmiOptions;
         JMenu help;
             JMenuItem jmiHelp;
             JMenuItem jmiTipOfTheDay;
             JMenuItem jmiAbout;
-            JMenuItem jmiWizard;
             JMenuItem jmiQualityAgent;
 
         /**Hashmap JCheckBoxMenuItem -> associated view*/
@@ -126,20 +133,31 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings{
         mode.add(jcbmiContinue);
         mode.add(jcbmiIntro);
 
+        //Configuration menu
+        configuration = new JMenu(Messages.getString("JajukJMenuBar.21"));
+        jmiDJ = new JMenuItem(ActionManager.getAction(CONFIGURE_DJS));
+        jmiAmbience = new JMenuItem(ActionManager.getAction(CONFIGURE_AMBIENCES));
+        jmiWizard = new JMenuItem(ActionManager.getAction(WIZARD));
+        jmiOptions = new JMenuItem(ActionManager.getAction(OPTIONS));
+        configuration.add(jmiDJ);
+        configuration.add(jmiAmbience);
+        configuration.add(jmiWizard);
+        configuration.add(jmiOptions);
+        
         //Help menu
         String helpText = Messages.getString("JajukJMenuBar.14"); //$NON-NLS-1$
         help = new JMenu(ActionUtil.strip(helpText));
         help.setMnemonic(ActionUtil.getMnemonic(helpText));
-
+        jmiDJ = new JMenuItem(ActionManager.getAction(HELP_REQUIRED));
+        jmiAbout = new JMenuItem(ActionManager.getAction(SHOW_ABOUT));
+        
         jmiHelp = new JMenuItem(ActionManager.getAction(HELP_REQUIRED));
         jmiAbout = new JMenuItem(ActionManager.getAction(SHOW_ABOUT));
-        jmiWizard = new JMenuItem(ActionManager.getAction(WIZARD));
         jmiQualityAgent = new JMenuItem(ActionManager.getAction(QUALITY));
         jmiTipOfTheDay = new JMenuItem(ActionManager.getAction(TIP_OF_THE_DAY));
 
         help.add(jmiHelp);
         help.add(jmiTipOfTheDay);
-        help.add(jmiWizard);
         help.add(jmiQualityAgent);
         help.add(jmiAbout);
         
@@ -148,6 +166,7 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings{
         add(views);
         add(properties);
         add(mode);
+        add(configuration);
         add(help);
     }
 

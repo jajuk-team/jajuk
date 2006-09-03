@@ -243,7 +243,7 @@ public class AmbienceManager implements ITechnicalStrings,Observer{
     	String[] stylesClassical = new String[]{"Classical","Chorus","Opera", "Chamber Music", "Sonata", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
     			"Symphony"}; //$NON-NLS-1$
     	AmbienceManager.getInstance().registerAmbience(new Ambience("5",Messages.getString("Ambience.5"),stylesClassical)); //$NON-NLS-1$ //$NON-NLS-2$
-    	String[] stylesSoft = new String[]{"Classic Rock", "Pop", "Rock","Reggae","Acid Jazz","Slow Rock", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+    	String[] stylesSoft = new String[]{"Reggae","Acid Jazz","Slow Rock", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
     			"Jazz","Easy Listening","Acoustic","Ballad"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
     	AmbienceManager.getInstance().registerAmbience(new Ambience("6",Messages.getString("Ambience.6"),stylesSoft)); //$NON-NLS-1$ //$NON-NLS-2$
     	String[] stylesParty = new String[]{"Dance", "Disco", "Funk","Ska","Soul","Eurodance","Big Band", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$

@@ -47,7 +47,7 @@ import javax.swing.event.TableModelListener;
 
 import org.jajuk.Main;
 import org.jajuk.base.Event;
-import org.jajuk.base.IPropertyable;
+import org.jajuk.base.Item;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Track;
 import org.jajuk.base.TrackManager;
@@ -207,7 +207,7 @@ public class CDDBWizard extends JDialog implements ITechnicalStrings,
 	 * CDDB wizard
 	 * @param dir directory to retag
 	 */
-	public CDDBWizard(final ArrayList<IPropertyable> alGivenTracks) {
+	public CDDBWizard(final ArrayList<Item> alGivenTracks) {
 		// windows title: absolute path name of the given directory
 		super(Main.getWindow(), Messages.getString("CDDBWizard.19"), true); // modal //$NON-NLS-1$
 		SwingWorker sw = new SwingWorker() {

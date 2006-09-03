@@ -20,12 +20,7 @@
 
 package org.jajuk.base;
 
-import java.text.DateFormat;
-import java.text.Format;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.Locale;
 
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ITechnicalStrings;
@@ -48,8 +43,6 @@ public class PropertyMetaInformation implements ITechnicalStrings{
     private boolean bConstructor = false;
     /**Property Type (java.lang.String for ie)*/
     private Class cType;
-    /**Format like YYYYmmDD for a date for ie or number of digits for an Integer*/
-    Format format;
     /**Default value (null: no default)*/
     Object oDefaultValue;
     /**This property should be displayed to UI?*/
@@ -60,21 +53,6 @@ public class PropertyMetaInformation implements ITechnicalStrings{
     boolean bMergeable = false;
     /**Human Type*/
     private String sHumanType; 
-    /**Supported date formats desc*/
-    private static ArrayList<String> alDateFormatsDesc = new ArrayList(10);
-    /**Supported date formats*/
-    private static ArrayList<Format> alDateFormats = new ArrayList(10);
-    //Add supported date formats
-    static{
-        alDateFormatsDesc.add(DATE_FORMAT_DEFAULT);
-        alDateFormats.add(DateFormat.getDateInstance(DateFormat.DEFAULT,Locale.getDefault()));
-        alDateFormatsDesc.add(DATE_FORMAT_1);
-        alDateFormats.add(new SimpleDateFormat(DATE_FORMAT_1));
-        alDateFormatsDesc.add(DATE_FORMAT_2);
-        alDateFormats.add(new SimpleDateFormat(DATE_FORMAT_2));
-        alDateFormatsDesc.add(DATE_FORMAT_3);
-        alDateFormats.add(new SimpleDateFormat(DATE_FORMAT_3));
-    };
     /**
      * constructor
      * @param sName Property name
@@ -84,19 +62,17 @@ public class PropertyMetaInformation implements ITechnicalStrings{
      * @param bEditable Is this property editable 
      * @param bMergeable Is this property mergeable if we display several items together
      * @param cType Property type
-     * @param format Property format.
      * @param oDefaultValue Default value
      */
     public PropertyMetaInformation(String sName,boolean bCustom,boolean bConstructor,
             boolean bShouldBeDisplayed,boolean bEditable,boolean bMergeable,Class cType,
-            Format format,Object oDefaultValue){
+            Object oDefaultValue){
         this.sName = sName;
         this.bCustom = bCustom;
         this.bConstructor = bConstructor;
         this.bShouldBeDisplayed = bShouldBeDisplayed;
         this.bEditable = bEditable;
         this.bMergeable = bMergeable;
-        this.format = format;
         this.cType = cType;
         this.oDefaultValue = oDefaultValue;
         if (cType.equals(Boolean.class)){
@@ -140,21 +116,7 @@ public class PropertyMetaInformation implements ITechnicalStrings{
             Log.debug("Class not supported !!!"); //$NON-NLS-1$
         }
     }
-        
-    /**
-     * @return
-     */
-    public Format getFormat() {
-        return format;
-    }
-
-    /**
-     * @param format
-     */
-    public void setFormat(Format format){
-        this.format = format;
-    }
-
+    
     /**
      * @return
      */
@@ -203,7 +165,6 @@ public class PropertyMetaInformation implements ITechnicalStrings{
             XML_EDITABLE+"='"+bEditable+"' "+ //$NON-NLS-1$ //$NON-NLS-2$
             XML_UNIQUE+"='"+bMergeable+"' "+ //$NON-NLS-1$ //$NON-NLS-2$
             XML_TYPE+"='"+cType.getName()+"' "+ //$NON-NLS-1$ //$NON-NLS-2$
-            XML_FORMAT+"='"+ Util.formatXML((format==null ? "":getFormatDesc(format)))+"' "+ //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             XML_DEFAULT_VALUE+"='"+Util.formatXML(sDefault)+"'/>"; //$NON-NLS-1$ //$NON-NLS-2$
     }
 
@@ -217,8 +178,8 @@ public class PropertyMetaInformation implements ITechnicalStrings{
     
     public String toString(){
         return "Name="+sName+" Custom="+bCustom+" Constructor="+bConstructor //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        +" Type="+cType+" Default="+oDefaultValue+" Format=" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        + format+" Editable="+isEditable()+" Visible="+isVisible()  //$NON-NLS-1$ //$NON-NLS-2$
+        +" Type="+cType+" Default="+oDefaultValue //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        +" Editable="+isEditable()+" Visible="+isVisible()  //$NON-NLS-1$ //$NON-NLS-2$
         +" Mergeable="+isMergeable(); //$NON-NLS-1$
     }
 
@@ -242,22 +203,7 @@ public class PropertyMetaInformation implements ITechnicalStrings{
         return sHumanType;
     }
     
-    public static ArrayList<Format> getSupportedDateFormats(){
-        return alDateFormats;
-    }
-    
-    public static ArrayList<String> getSupportedDateFormatsDesc(){
-        return alDateFormatsDesc;
-    }
-    
-    public static Format getDateFormat(String sDesc){
-        return alDateFormats.get(alDateFormatsDesc.indexOf(sDesc));
-    }
-    
-    public static String getFormatDesc(Format format){
-        return alDateFormatsDesc.get(alDateFormats.indexOf(format));
-    }
-    
+      
     public String getHumanName(){
         return Messages.getInstance().contains("Property_"+getName())? //$NON-NLS-1$
                         Messages.getString("Property_"+getName()):getName(); //$NON-NLS-1$

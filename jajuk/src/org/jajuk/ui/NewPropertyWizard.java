@@ -28,7 +28,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.text.Format;
 import java.util.Date;
 import java.util.Properties;
 
@@ -63,8 +62,6 @@ public class NewPropertyWizard extends CustomPropertyWizard implements KeyListen
     JTextField jtfDefault;
     JCheckBox jcbDefault;
     JXDatePicker jdpDefault;
-    JLabel jlFormat;
-    JComboBox jcbFormat;
     
     //Type constants
     private static final int STRING = 0;
@@ -91,14 +88,6 @@ public class NewPropertyWizard extends CustomPropertyWizard implements KeyListen
         jcbClass.addItem(Messages.getString(FORMAT_BOOLEAN));
         jcbClass.addItem(Messages.getString(FORMAT_DATE));
         jcbClass.addItemListener(this);
-        //Format
-        jlFormat = new JLabel(Messages.getString("NewPropertyWizard.4")); //$NON-NLS-1$
-        jcbFormat = new JComboBox();
-        //add supported date formats
-        for (String s:PropertyMetaInformation.getSupportedDateFormatsDesc()){
-            jcbFormat.addItem(s);
-        }
-        jcbFormat.setEnabled(false);
         //Default
         jlDefault= new JLabel(Messages.getString("NewPropertyWizard.5")); //$NON-NLS-1$
         jtfDefault = new JTextField(40);
@@ -117,7 +106,7 @@ public class NewPropertyWizard extends CustomPropertyWizard implements KeyListen
         int iYSeparator = 20;
         double[][] dSize = {
                 {iXSeparator,TableLayout.PREFERRED,iXSeparator,TableLayout.PREFERRED,iXSeparator},
-                {iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator} };
+                {iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator,20,iYSeparator} };
         jpMain.setLayout(new TableLayout(dSize));
         jpMain.add(jlItemChoice,"1,1"); //$NON-NLS-1$
         jpMain.add(jcbItemChoice,"3,1"); //$NON-NLS-1$
@@ -127,8 +116,6 @@ public class NewPropertyWizard extends CustomPropertyWizard implements KeyListen
         jpMain.add(jcbClass,"3,5"); //$NON-NLS-1$
         jpMain.add(jlDefault,"1,7"); //$NON-NLS-1$
         jpMain.add(jpDefault,"3,7"); //$NON-NLS-1$
-        jpMain.add(jlFormat,"1,9"); //$NON-NLS-1$
-        jpMain.add(jcbFormat,"3,9"); //$NON-NLS-1$
         getContentPane().add(jpMain);
         getContentPane().add(okp);
         getContentPane().add(Box.createVerticalStrut(10));
@@ -189,10 +176,6 @@ public class NewPropertyWizard extends CustomPropertyWizard implements KeyListen
                     break;
             }
             String sProperty = jtfName.getText();
-            String sFormat = null;
-            if (jcbClass.getSelectedIndex() == DATE){
-                sFormat = (String)jcbFormat.getSelectedItem();
-            }
             Object oDefault = jtfDefault.getText();
             //Check number and float formats (others are safe)
             try{
@@ -214,12 +197,8 @@ public class NewPropertyWizard extends CustomPropertyWizard implements KeyListen
             else if (cType.equals(Date.class)){
                 oDefault = jdpDefault.getDate();
             }
-            Format format = null;
-            if (sFormat!= null && !sFormat.trim().equals("")) { //$NON-NLS-1$
-                format = PropertyMetaInformation.getDateFormat(sFormat);
-            }
             PropertyMetaInformation meta = new PropertyMetaInformation(
-                    sProperty,true,false,true,true,true,cType,format,oDefault);
+                    sProperty,true,false,true,true,true,cType,oDefault);
             im.registerProperty(meta);
             im.applyNewProperty(meta);
             Properties properties = new Properties();
@@ -239,11 +218,9 @@ public class NewPropertyWizard extends CustomPropertyWizard implements KeyListen
     public void itemStateChanged(ItemEvent e) {
         //Date format
         if (jcbClass.getSelectedIndex() == DATE){ 
-            jcbFormat.setEnabled(true);
             jdpDefault.setEnabled(true);
         }
         else{
-            jcbFormat.setEnabled(false);
             jdpDefault.setEnabled(false);
         }
         //Boolean format

@@ -51,7 +51,7 @@ import javax.swing.event.TableModelListener;
 import org.jajuk.base.AuthorManager;
 import org.jajuk.base.Event;
 import org.jajuk.base.File;
-import org.jajuk.base.IPropertyable;
+import org.jajuk.base.Item;
 import org.jajuk.base.ItemManager;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.base.PropertyMetaInformation;
@@ -170,7 +170,7 @@ public abstract class AbstractTableView extends ViewAdapter
     /* (non-Javadoc)
      * @see org.jajuk.ui.IView#display()
      */
-    public void populate() {
+    public void initUI() {
         SwingWorker sw = new SwingWorker() {
             public Object construct() {
                 model = populateTable();
@@ -443,7 +443,7 @@ public abstract class AbstractTableView extends ViewAdapter
     public void tableChanged(TableModelEvent e) {
         String sKey = model.getIdentifier(e.getColumn());
         Object oValue = model.getValueAt(e.getFirstRow(),e.getColumn());//can be Boolean or String
-        IPropertyable item = model.getItemAt(e.getFirstRow());
+        Item item = model.getItemAt(e.getFirstRow());
         try{
             //file filter used by physical table view to change only the file, not all files associated with the track
             HashSet filter = null;
@@ -451,7 +451,7 @@ public abstract class AbstractTableView extends ViewAdapter
               filter = new HashSet();
               filter.add(item);
             }
-            IPropertyable itemNew = ItemManager.changeItem(item,sKey,oValue,filter);
+            Item itemNew = ItemManager.changeItem(item,sKey,oValue,filter);
             model.setItemAt(e.getFirstRow(),itemNew); //update model
             //user message
             PropertyMetaInformation meta = itemNew.getMeta(sKey);

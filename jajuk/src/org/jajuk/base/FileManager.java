@@ -20,7 +20,6 @@
 
 package org.jajuk.base;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -99,19 +98,19 @@ public class FileManager extends ItemManager implements Observer{
         super();
         //---register properties---
         //ID
-        registerProperty(new PropertyMetaInformation(XML_ID,false,true,false,false,false,String.class,null,null));
+        registerProperty(new PropertyMetaInformation(XML_ID,false,true,false,false,false,String.class,null));
         //Name
-        registerProperty(new PropertyMetaInformation(XML_NAME,false,true,true,true,false,String.class,null,null));
+        registerProperty(new PropertyMetaInformation(XML_NAME,false,true,true,true,false,String.class,null));
         //Directory
-        registerProperty(new PropertyMetaInformation(XML_DIRECTORY,false,true,true,false,true,String.class,null,null));
+        registerProperty(new PropertyMetaInformation(XML_DIRECTORY,false,true,true,false,true,String.class,null));
         //Track
-        registerProperty(new PropertyMetaInformation(XML_TRACK,false,true,true,false,false,String.class,null,null));
+        registerProperty(new PropertyMetaInformation(XML_TRACK,false,true,true,false,false,String.class,null));
         //Size
-        registerProperty(new PropertyMetaInformation(XML_SIZE,false,true,true,false,false,Long.class,null,null));
+        registerProperty(new PropertyMetaInformation(XML_SIZE,false,true,true,false,false,Long.class,null));
         //Quality
-        registerProperty(new PropertyMetaInformation(XML_QUALITY,false,true,true,false,false,Long.class,null,0));
+        registerProperty(new PropertyMetaInformation(XML_QUALITY,false,true,true,false,false,Long.class,0));
         //Date
-        registerProperty(new PropertyMetaInformation(XML_FILE_DATE,false,false,true,false,false,Date.class,new SimpleDateFormat(PropertyMetaInformation.DATE_FORMAT_2),new Date()));
+        registerProperty(new PropertyMetaInformation(XML_FILE_DATE,false,false,true,false,false,Date.class,new Date()));
     }
     
     /**
@@ -303,7 +302,6 @@ public class FileManager extends ItemManager implements Observer{
     public File getFileByPath(String sPath) {
         synchronized(FileManager.getInstance().getLock()){
             File fOut = null;
-            
             java.io.File fToCompare = new java.io.File(sPath);
             Iterator it = hmItems.values().iterator();
             while ( it.hasNext()){
@@ -353,7 +351,7 @@ public class FileManager extends ItemManager implements Observer{
     
     /**
      * Return a playlist with the entire accessible shuffle collection 
-     * @return The entire accessible shuffle collection
+     * @return The entire accessible shuffle collection  (can return a void collection)
      */
     public ArrayList<File> getGlobalShufflePlaylist(){
         synchronized(FileManager.getInstance().getLock()){
@@ -378,7 +376,7 @@ public class FileManager extends ItemManager implements Observer{
     
     /**
      * Return a playlist with the entire accessible shuffled novelties collection 
-     * @return The entire accessible novelties collection or null if none track in given time interval
+     * @return The entire accessible novelties collection (can return a void collection)
      */
     public ArrayList getGlobalNoveltiesPlaylist(){
         synchronized(FileManager.getInstance().getLock()){
@@ -390,26 +388,22 @@ public class FileManager extends ItemManager implements Observer{
     /**
      * Return a playlist with the entire accessible novelties collection 
      * @param bHideUnmounted 
-     * @return The entire accessible novelties collection or null if none track in given time interval
+     * @return The entire accessible novelties collection
      */
     public ArrayList getGlobalNoveltiesPlaylist(boolean bHideUnmounted){
         synchronized(TrackManager.getInstance().getLock()){
-            ArrayList alEligibleFiles = new ArrayList(1000);
-            Iterator it = TrackManager.getInstance().getItems().iterator(); //search in tracks, not files to avoid duplicates items
-            Date now = new Date();
-            while ( it.hasNext()){
-                Track track = (Track)it.next();
+            ArrayList<File> alEligibleFiles = new ArrayList(1000);
+            //take tracks matching required age
+            java.util.Collection<Item> alTracks = 
+                TrackManager.getAgeFilter(ConfigurationManager.getInt(CONF_OPTIONS_NOVELTIES_AGE))
+                .apply(TrackManager.getInstance().getItems());
+            for (Item item : alTracks){
+                Track track = (Track)item;
                 File file = track.getPlayeableFile(bHideUnmounted); //try to get a mounted file (can return null)
                 if (file == null){//none mounted file, take first file we find
                     continue;
                 }
-                int iTrackAge = (int)((now.getTime()-track.getAdditionDate().getTime())/86400000); //)/1000/60/60/24;
-                if ( iTrackAge <= ConfigurationManager.getInt(CONF_OPTIONS_NOVELTIES_AGE)){
-                    alEligibleFiles.add(file);
-                }
-            }
-            if (alEligibleFiles.size() ==0 ){
-                return null;
+                alEligibleFiles.add(file);
             }
             //sort alphabetinaly and by date, newest first
             Collections.sort(alEligibleFiles,new Comparator() {
@@ -427,7 +421,7 @@ public class FileManager extends ItemManager implements Observer{
        
     /**
      * 
-     * @return a sorted set of the collection by rate, lowest first
+     * @return a sorted set of the collection by rate, highest first
      */
     private ArrayList<File> getSortedByRate(){
         synchronized(TrackManager.getInstance().getLock()){
@@ -441,12 +435,20 @@ public class FileManager extends ItemManager implements Observer{
     
     /**
      * Return a playlist with the entire accessible bestof collection, best first
-     * @return The entire accessible bestof collection
+     * @return Shuffled best tracks (n% of favorite)
      */
     public ArrayList getGlobalBestofPlaylist(){
         synchronized(FileManager.getInstance().getLock()){
             ArrayList al = getSortedByRate();
-            return al;
+            ArrayList<File> alBest = new ArrayList<File>();
+            if (al.size() > 0){
+                int sup = (int)((BESTOF_PROPORTION)*al.size()); //find superior interval value
+                if (sup > 0){
+                    alBest = new ArrayList<File>(al.subList(0,sup-1));
+                    Collections.shuffle(alBest); //shufflelize
+                }
+            }
+            return alBest;
         }
     }
     

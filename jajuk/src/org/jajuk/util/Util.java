@@ -27,6 +27,7 @@ import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Frame;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.MediaTracker;
@@ -46,12 +47,12 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.text.DateFormat;
-import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -65,6 +66,8 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
@@ -75,7 +78,7 @@ import org.jajuk.base.Album;
 import org.jajuk.base.Author;
 import org.jajuk.base.Device;
 import org.jajuk.base.Directory;
-import org.jajuk.base.IPropertyable;
+import org.jajuk.base.Item;
 import org.jajuk.base.PropertyMetaInformation;
 import org.jajuk.base.StackItem;
 import org.jajuk.base.Style;
@@ -130,6 +133,9 @@ public class Util implements ITechnicalStrings {
 	/** File filter used in refresh */
 	public static JajukFileFilter fileFilter = new JajukFileFilter(JajukFileFilter.KnownTypeFilter.getInstance());
 
+    /**Icons cache*/
+    private static HashMap<String,ImageIcon> iconCache= new HashMap(200);
+    
 	/**
 	 * Genres
 	 */
@@ -495,7 +501,14 @@ public class Util implements ITechnicalStrings {
 	public static ImageIcon getIcon(String sURL) {
 		ImageIcon ii = null;
 		try {
-			ii = new ImageIcon(new URL(sURL));
+			if (iconCache.containsKey(sURL)){
+                ii = iconCache.get(sURL); 
+            }
+            else{
+               ii = new ImageIcon(new URL(sURL));
+               iconCache.put(sURL,ii);
+            }
+            
 		} catch (Exception e) {
 			Log.error(e);
 		}
@@ -998,9 +1011,40 @@ public class Util implements ITechnicalStrings {
 		Image scaleImg = image.getScaledInstance(iNewWidth, iNewHeight,
 				Image.SCALE_AREA_AVERAGING);
 		iiNew.setImage(scaleImg);
-		return iiNew;
-	}
-
+	    return iiNew;
+   }
+    
+    /**
+     * Transform an image to a BufferedImage
+     * <p>Thanks http://java.developpez.com/faq/java/?page=graphique_general_images</p>
+     * @param image
+     * @return buffured image from an image
+     */
+    public static BufferedImage toBufferedImage(Image image) {
+        if( image instanceof BufferedImage ) {
+                return( (BufferedImage)image );
+        } else {
+                /** Make sure image is fullt loaded*/
+                image = new ImageIcon(image).getImage();
+                /** Create the new image */
+                BufferedImage bufferedImage = new BufferedImage(
+                                                      image.getWidth(null),
+                                                      image.getHeight(null),
+                                                      BufferedImage.TYPE_INT_RGB );
+                Graphics g = bufferedImage.createGraphics();
+                g.drawImage(image,0,0,null);
+                g.dispose();
+                return( bufferedImage );
+        } 
+}
+   
+    
+    /**
+     * 
+     * @param img
+     * @param iScale
+     * @return a scaled image
+     */
 	public static ImageIcon getScaledImage(ImageIcon img, int iScale) {
 		int iNewWidth;
 		int iNewHeight;
@@ -1018,7 +1062,6 @@ public class Util implements ITechnicalStrings {
 					.getIconHeight()));
 		}
 		return getResizedImage(img, iNewWidth, iNewHeight);
-
 	}
 
 	/**
@@ -1149,11 +1192,10 @@ public class Util implements ITechnicalStrings {
 	 * 
 	 * @param sValue
 	 * @param cType
-	 * @param format
-	 * @return
+	 * @return parsed item
 	 * @throws Exception
 	 */
-	public static Object parse(String sValue, Class cType, Format format)
+	public static Object parse(String sValue, Class cType)
 			throws Exception {
 		Object oDefaultValue = sValue; // String by default
 		if (cType.equals(Boolean.class)) {
@@ -1169,7 +1211,7 @@ public class Util implements ITechnicalStrings {
 				oDefaultValue = Boolean.parseBoolean(sValue);
 			}
 		} else if (cType.equals(Date.class)) {
-			oDefaultValue = format.parseObject(sValue);
+			oDefaultValue = getAdditionDateFormat().parseObject(sValue);
 		} else if (cType.equals(Long.class)) {
 			oDefaultValue = Long.parseLong(sValue);
 		} else if (cType.equals(Double.class)) {
@@ -1185,18 +1227,16 @@ public class Util implements ITechnicalStrings {
 	 * 
 	 * @param sValue
 	 * @param cType
-	 * @param format
 	 * @return
 	 * @throws Exception
 	 */
 	public static String format(Object oValue, PropertyMetaInformation meta)
 			throws Exception {
 		Class cType = meta.getType();
-		Format format = meta.getFormat();
 		String sValue = oValue.toString();// default (works for strings, long
 		// and double)
 		if (cType.equals(Date.class)) {
-			sValue = format.format(oValue);
+			sValue = getAdditionDateFormat().format(oValue);
 		} else if (cType.equals(Class.class)) {
 			sValue = oValue.getClass().getName();
 		}
@@ -1235,6 +1275,17 @@ public class Util implements ITechnicalStrings {
     public static void createThumbnail(
             File orig, File thumb,int maxDim) throws Exception{
           createThumbnail(new ImageIcon(orig.getAbsolutePath()),thumb,maxDim); //do not use URL object has it can corrupt special paths
+    }
+    
+     /**
+     * Display a given image in a frame (for debuging purpose)
+     * @param ii
+     */
+    public static void displayImage(ImageIcon ii){
+        JFrame jf = new JFrame();
+        jf.add(new JLabel(ii));
+        jf.pack();
+        jf.setVisible(true);
     }
     
     /**
@@ -1421,14 +1472,14 @@ public class Util implements ITechnicalStrings {
      * @param oData the item (a directory, a file...)
      * @return the files
      */
-    public static ArrayList<org.jajuk.base.File> getfilesFromSelection(IPropertyable oData){
+    public static ArrayList<org.jajuk.base.File> getfilesFromSelection(Item oData){
         //computes selection
         ArrayList alSelectedFiles = new ArrayList(100);
         //computes logical selection if any
         ArrayList alLogicalTracks = null;
         if(oData instanceof Style || oData instanceof Author || oData instanceof Album || oData instanceof Track){
             if( oData instanceof Style || oData instanceof Author || oData instanceof Album ){
-                alLogicalTracks = TrackManager.getInstance().getAssociatedTracks((IPropertyable)oData);
+                alLogicalTracks = TrackManager.getInstance().getAssociatedTracks((Item)oData);
             }
             else if( oData instanceof Track){
                 alLogicalTracks = new ArrayList(100);

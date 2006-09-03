@@ -26,18 +26,18 @@ import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.util.Util;
 
 /**
- * Action for displaying the online help
+ * Action for configurate the application
  *
- * @author Bart Cremers
- * @since 4-jan-2006
+ * @author Bertrand Florat
+ * @version 28/08/2006
  */
-public class HelpRequiredAction extends ActionBase {
+public class ConfigurationRequiredAction extends ActionBase {
 
-    HelpRequiredAction() {
-        super(Messages.getString("JajukJMenuBar.15"), Util.getIcon(ICON_INFO), "F1", true); //$NON-NLS-1$ //$NON-NLS-2$
+    ConfigurationRequiredAction() {
+        super(Messages.getString("JajukJMenuBar.22"), Util.getIcon(ICON_CONFIGURATION),true); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     public void perform(ActionEvent evt) {
-        PerspectiveManager.setCurrentPerspective(PERSPECTIVE_NAME_HELP);
+        PerspectiveManager.setCurrentPerspective(PERSPECTIVE_NAME_CONFIGURATION);
     }
 }

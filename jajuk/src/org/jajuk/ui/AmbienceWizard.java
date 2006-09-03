@@ -355,7 +355,8 @@ public class AmbienceWizard extends Wizard implements ITechnicalStrings{
     
     public AmbienceWizard() {
         super(Messages.getString("DigitalDJWizard.56"),AmbiencePanel.class, //$NON-NLS-1$
-            Util.getIcon(IMAGE_DJ),Main.getWindow(),new Locale(Messages.getInstance().getLocal()));
+            Util.getIcon(IMAGE_DJ),Main.getWindow(),
+            new Locale(Messages.getInstance().getLocal()),700,600);
     }
 
 

@@ -21,22 +21,13 @@
 package org.jajuk.base.exporters;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.ListIterator;
 
-import org.jajuk.base.exporters.Tag;
-import org.jajuk.util.Util;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.base.Album;
-import org.jajuk.base.Author;
-import org.jajuk.base.Directory;
 import org.jajuk.base.Device;
-import org.jajuk.base.Style;
-import org.jajuk.base.DeviceManager;
-import org.jajuk.base.DirectoryManager;
+import org.jajuk.base.Directory;
 import org.jajuk.base.PopulatedAlbum;
 import org.jajuk.base.PopulatedAuthor;
 import org.jajuk.base.PopulatedStyle;
+import org.jajuk.util.ITechnicalStrings;
 
 /**
  *  This class exports music contents to HTML.

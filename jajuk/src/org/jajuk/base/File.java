@@ -31,7 +31,7 @@ import org.jajuk.util.Util;
  * @author     Bertrand Florat
  * @created    12 oct. 2003
  */
-public class File extends PropertyAdapter implements Comparable,ITechnicalStrings{
+public class File extends Item implements Comparable,ITechnicalStrings{
 	/**Parent directory*/
 	protected final Directory directory;
 	/**Associated track */
@@ -40,8 +40,6 @@ public class File extends PropertyAdapter implements Comparable,ITechnicalString
 	protected final long lSize;
 	/**File quality. Ex: 192 for 192kb/s*/
 	protected final long lQuality;
-	/** pre-calculated absolute path for perf*/
-	private String sAbs = null;
 	/** IO file associated with this file*/
 	private java.io.File fio;
     
@@ -58,9 +56,9 @@ public class File extends PropertyAdapter implements Comparable,ITechnicalString
             Track track,long lSize,long lQuality) {
         super(sId,sName);
         this.directory = directory;
-        setProperty(XML_DIRECTORY,directory.getId());
+        setProperty(XML_DIRECTORY,directory.getId().intern());
         this.track = track;
-        setProperty(XML_TRACK,track.getId());
+        setProperty(XML_TRACK,track.getId().intern());
         this.lSize = lSize;
         setProperty(XML_SIZE,lSize);
         this.lQuality = lQuality;
@@ -68,7 +66,7 @@ public class File extends PropertyAdapter implements Comparable,ITechnicalString
    }
 		
 /* (non-Javadoc)
-     * @see org.jajuk.base.IPropertyable#getIdentifier()
+     * @see org.jajuk.base.Item#getIdentifier()
      */
     final public String getIdentifier() {
         return XML_FILE;
@@ -172,15 +170,11 @@ public class File extends PropertyAdapter implements Comparable,ITechnicalString
 	 * @return String
 	 */
 	public String getAbsolutePath(){
-		if (sAbs != null){
-			return sAbs;
-		}
 		StringBuffer sbOut = new StringBuffer(getDevice().getUrl())
 			.append(getDirectory().getRelativePath()).
             append(java.io.File.separatorChar).
             append(this.getName());
-		sAbs = sbOut.toString();
-		return sAbs;
+        return sbOut.toString();
 	}
 	
 	/**
@@ -194,12 +188,15 @@ public class File extends PropertyAdapter implements Comparable,ITechnicalString
         File otherFile = (File)o;
         String sAbs = getAbsolutePath();
         String sOtherAbs = otherFile.getAbsolutePath();
-        if (sAbs.equalsIgnoreCase(sOtherAbs) && !sAbs.equals(sOtherAbs)){
-            return sAbs.compareTo(sOtherAbs);
+        int iOrder = (int)getTrack().getOrder();
+        int iOrderOther = (int)otherFile.getTrack().getOrder();
+        //If both files are in the same directectory, sort by track order
+        if (getDirectory().getAbsolutePath().equals(otherFile.getDirectory().getAbsolutePath())
+                && iOrder != iOrderOther){
+            return iOrder - iOrderOther;
         }
-        else{
-            return sAbs.compareToIgnoreCase(sOtherAbs);
-        }
+        //else simply compare full path name
+        return sAbs.compareTo(sOtherAbs);
    }
 	
 	/**Return true if the file can be accessed right now 
@@ -259,7 +256,7 @@ public class File extends PropertyAdapter implements Comparable,ITechnicalString
     }
       
 /* (non-Javadoc)
-     * @see org.jajuk.base.IPropertyable#getHumanValue(java.lang.String)
+     * @see org.jajuk.base.Item#getHumanValue(java.lang.String)
      */
     public String getHumanValue(String sKey){
         if (XML_DIRECTORY.equals(sKey)){
@@ -301,36 +298,31 @@ public class File extends PropertyAdapter implements Comparable,ITechnicalString
         }
     }
     
-    
-    /* (non-Javadoc)
-     * @see org.jajuk.base.IPropertyable#getAny()
+    /**
+     * @return a human representation of all concatenated properties
      */
     public String getAny(){
-        if (bNeedRefresh){
-            //rebuild any
-            StringBuffer sb  = new StringBuffer(100);
-            File file = (File)this;
-            Track track = file.getTrack();
-            sb.append(super.getAny()); //add all files-based properties
-            //now add others properties
-            sb.append(file.getDirectory().getDevice().getName());
-            sb.append(track.getName());
-            sb.append(track.getStyle().getName2());
-            sb.append(track.getAuthor().getName2());
-            sb.append(track.getAlbum().getName2());
-            sb.append(track.getLength());
-            sb.append(track.getRate());
-            sb.append(track.getValue(XML_TRACK_COMMENT));//custom properties now
-            sb.append(track.getValue(XML_TRACK_ORDER));//custom properties now
-            this.sAny = sb.toString();
-            bNeedRefresh = false;
-        }
-        return this.sAny;
+        //rebuild any
+        StringBuffer sb  = new StringBuffer(100);
+        File file = (File)this;
+        Track track = file.getTrack();
+        sb.append(super.getAny()); //add all files-based properties
+        //now add others properties
+        sb.append(file.getDirectory().getDevice().getName());
+        sb.append(track.getName());
+        sb.append(track.getStyle().getName2());
+        sb.append(track.getAuthor().getName2());
+        sb.append(track.getAlbum().getName2());
+        sb.append(track.getLength());
+        sb.append(track.getRate());
+        sb.append(track.getValue(XML_TRACK_COMMENT));//custom properties now
+        sb.append(track.getValue(XML_TRACK_ORDER));//custom properties now
+        return sb.toString();
     }
     
     /**Reset pre-calculated paths**/
     protected void reset(){
-        sAbs = null;
+       // sAbs = null;
         fio = null;
     }
   

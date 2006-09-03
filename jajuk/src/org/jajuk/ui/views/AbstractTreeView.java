@@ -30,7 +30,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
-import org.jajuk.base.IPropertyable;
+import org.jajuk.base.Item;
 import org.jdesktop.swingx.JXTree;
 import org.jdesktop.swingx.decorator.Highlighter;
 import org.jdesktop.swingx.decorator.HighlighterPipeline;
@@ -55,7 +55,7 @@ public abstract class AbstractTreeView extends ViewAdapter {
     TreePath[] paths;
     
     /**Items selection*/
-    ArrayList<IPropertyable> alSelected;
+    ArrayList<Item> alSelected;
     
      /** Top tree node */
     DefaultMutableTreeNode top;

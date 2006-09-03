@@ -48,7 +48,7 @@ import org.jajuk.util.log.Log;
  * @Author     Bertrand Florat
  * @created    17 oct. 2003
  */
-public class PlaylistFile extends PropertyAdapter implements Comparable {
+public class PlaylistFile extends Item implements Comparable {
 	
 	/**Playlist parent directory*/
 	private Directory dParentDirectory;
@@ -77,12 +77,12 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
 	public PlaylistFile(int iType,String sId, String sName,Directory dParentDirectory) {
         super(sId,sName);
         this.dParentDirectory = dParentDirectory;
-        setProperty(XML_DIRECTORY,dParentDirectory==null?"-1":dParentDirectory.getId()); //$NON-NLS-1$
+        setProperty(XML_DIRECTORY,dParentDirectory==null?"-1":dParentDirectory.getId().intern()); //$NON-NLS-1$
         this.iType = iType;
    }
 	
 /* (non-Javadoc)
-     * @see org.jajuk.base.IPropertyable#getIdentifier()
+     * @see org.jajuk.base.Item#getIdentifier()
      */
     final public String getIdentifier() {
         return XML_PLAYLIST_FILE;
@@ -793,7 +793,7 @@ public class PlaylistFile extends PropertyAdapter implements Comparable {
     }
     
     /* (non-Javadoc)
-     * @see org.jajuk.base.IPropertyable#getHumanValue(java.lang.String)
+     * @see org.jajuk.base.Item#getHumanValue(java.lang.String)
      */
     public String getHumanValue(String sKey){
         if (XML_DIRECTORY.equals(sKey)){

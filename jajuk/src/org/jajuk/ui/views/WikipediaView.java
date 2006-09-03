@@ -98,7 +98,7 @@ public class WikipediaView extends ViewAdapter implements ITechnicalStrings,Obse
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.views.IView#populate()
 	 */
-	public void populate() {
+	public void initUI() {
 	        //Control panel
         jpControl = new JPanel();
         jpControl.setBorder(BorderFactory.createEtchedBorder());

@@ -22,8 +22,6 @@ package org.jajuk.base;
 
 import java.util.ArrayList;
 
-import org.jajuk.base.Author;
-
 /**
  *  This class contains an Author and an ArrayList of PopulatedAlbums
  *  associated with this Author. This class is used in the

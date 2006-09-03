@@ -64,16 +64,15 @@ import org.jajuk.base.Event;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
-import org.jajuk.base.IPropertyable;
+import org.jajuk.base.Item;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.base.PlaylistFile;
 import org.jajuk.base.PlaylistFileManager;
 import org.jajuk.base.StackItem;
 import org.jajuk.base.Track;
-import org.jajuk.util.JajukFileFilter;
 import org.jajuk.base.exporters.ExportFileFilter;
-import org.jajuk.base.exporters.XMLExporter;
 import org.jajuk.base.exporters.HTMLExporter;
+import org.jajuk.base.exporters.XMLExporter;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.CDDBWizard;
 import org.jajuk.ui.DeviceWizard;
@@ -82,7 +81,6 @@ import org.jajuk.ui.PropertiesWizard;
 import org.jajuk.ui.TransferableTreeNode;
 import org.jajuk.ui.TreeTransferHandler;
 import org.jajuk.ui.action.RefactorAction;
-import org.jajuk.ui.JajukFileChooser;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
@@ -195,7 +193,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
     /* (non-Javadoc)
      * @see org.jajuk.ui.IView#display()
      */
-    public void populate(){
+    public void initUI(){
         //**Menu items**
     	
     	// Collection menu
@@ -529,13 +527,13 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
                 for (int i=0;i<paths.length;i++){
                     Object o = paths[i].getLastPathComponent();
                     if (o instanceof TransferableTreeNode){
-                        alSelected.add((IPropertyable)((TransferableTreeNode)o).getData());
+                        alSelected.add((Item)((TransferableTreeNode)o).getData());
                     }
                     else{
                         alSelected = new ArrayList(FileManager.getInstance().getItems());
                         items = alSelected.size();
                         hsSelectedFiles.addAll(alSelected);
-                        for (IPropertyable item:alSelected){
+                        for (Item item:alSelected){
                             lSize += ((File)item).getSize();
                         }
                         break;
@@ -571,7 +569,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
                 //No CDDB on directories without files
                 if (alSelected.size()>0 && alSelected.get(0) instanceof Directory){
                     boolean bShowCDDB = false;
-                    for (IPropertyable item:alSelected){ //if at least one selected dir contains a file, show option
+                    for (Item item:alSelected){ //if at least one selected dir contains a file, show option
                         Directory dir = (Directory)item;
                         if (dir.getFiles().size() > 0){
                             bShowCDDB = true;
@@ -906,8 +904,8 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
             Bookmarks.getInstance().addFiles(alFiles);
         }
         else if (alFiles != null && (e.getSource() == jmiDirCDDBQuery)) {
-            ArrayList<IPropertyable> alCDDBTracks = new ArrayList<IPropertyable>();
-            for (IPropertyable item : alSelected) {
+            ArrayList<Item> alCDDBTracks = new ArrayList<Item>();
+            for (Item item : alSelected) {
                 final Directory dir = (Directory) item;
                 Util.waiting();
                 for (File file : dir.getFiles()) {
@@ -919,7 +917,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
             Device device = ((DeviceNode) (paths[0].getLastPathComponent())).getDevice();
             final Directory dir = DirectoryManager.getInstance().registerDirectory(device);
             Util.waiting();
-            ArrayList<IPropertyable> alCDDBTracks = new ArrayList<IPropertyable>(100);
+            ArrayList<Item> alCDDBTracks = new ArrayList<Item>(100);
             for (File file : dir.getFiles()) {
                 alCDDBTracks.add(file.getTrack());
             }
@@ -928,7 +926,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         else if ((alFiles != null && e.getSource() == jmiDirRefactor)){
             Util.waiting();
             ArrayList<File> alRefactor = new ArrayList<File>();
-            for (IPropertyable item : alSelected) {
+            for (Item item : alSelected) {
                 final Directory dir = (Directory) item;
                 Util.waiting();
                 /*for (File file : dir.getFilesRecursively()) {
@@ -1149,16 +1147,16 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
             dw.setVisible(true);
         }
         else if (e.getSource() == jmiFileProperties){
-            ArrayList alTracks = new ArrayList<IPropertyable>(alSelected.size()); //tracks items
-            for (IPropertyable pa:alSelected){
+            ArrayList alTracks = new ArrayList<Item>(alSelected.size()); //tracks items
+            for (Item pa:alSelected){
                 File file = (File)pa;
                 alTracks.add(file.getTrack());
             }
             new PropertiesWizard(alSelected,alTracks);
         }
         else if (e.getSource() == jmiDirProperties){
-            ArrayList<IPropertyable> alTracks = new ArrayList(alSelected.size());
-            for (IPropertyable item:alSelected){
+            ArrayList<Item> alTracks = new ArrayList(alSelected.size());
+            for (Item item:alSelected){
                 Directory dir = (Directory)item;
                 for (File file:dir.getFilesRecursively()){
                     Track track = file.getTrack();

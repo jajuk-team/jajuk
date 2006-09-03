@@ -342,4 +342,19 @@ public enum JajukAction {
      * Used to decrease the volume.
      */
     DECREASE_VOLUME,
+    
+    /**
+     * Used to configure djs.
+     */
+    CONFIGURE_DJS,
+    
+    /**
+     * Used to configure ambiences.
+     */
+    CONFIGURE_AMBIENCES,
+    /**
+     * Used to configure the application
+     */
+    OPTIONS,
+
 }

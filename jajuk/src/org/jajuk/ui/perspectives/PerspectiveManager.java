@@ -133,7 +133,7 @@ public class PerspectiveManager  implements ITechnicalStrings {
 				while ( it.hasNext()){
 					final IView view = (IView)it.next();
 					if (!view.isPopulated() ){
-						view.populate();
+						view.initUI();
 						view.setIsPopulated(true);
 					}
                     else{//view already populated, should be activated

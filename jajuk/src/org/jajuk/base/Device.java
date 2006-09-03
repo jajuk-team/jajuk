@@ -47,7 +47,7 @@ import org.xml.sax.Attributes;
  * @Author     Bertrand Florat
  * @created    17 oct. 2003
  */
-public class Device extends PropertyAdapter implements ITechnicalStrings, Comparable{
+public class Device extends Item implements ITechnicalStrings, Comparable{
     
     /**Device URL (used for perfs)*/
     private String sUrl;
@@ -96,7 +96,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
     }
     
     /* (non-Javadoc)
-     * @see org.jajuk.base.IPropertyable#getIdentifier()
+     * @see org.jajuk.base.Item#getIdentifier()
      */
     final public String getIdentifier() {
         return XML_DEVICE;
@@ -851,7 +851,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
     }
     
     /* (non-Javadoc)
-     * @see org.jajuk.base.IPropertyable#getHumanValue(java.lang.String)
+     * @see org.jajuk.base.Item#getHumanValue(java.lang.String)
      */
     public String getHumanValue(String sKey){
         if (XML_TYPE.equals(sKey)){
@@ -880,7 +880,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
         synchronized(DirectoryManager.getInstance().getLock()){
             alDirs = new ArrayList(DirectoryManager.getInstance().getItems());
         }
-        for (IPropertyable item:alDirs){
+        for (Item item:alDirs){
             Directory dir = (Directory)item;
             if (!Main.isExiting()
                     &&dir.getDevice().equals(this) 
@@ -977,7 +977,7 @@ public class Device extends PropertyAdapter implements ITechnicalStrings, Compar
                     }
                 }
                 try {
-                    setProperty(sProperty, Util.parse(sValue,meta.getType(),meta.getFormat()));
+                    setProperty(sProperty, Util.parse(sValue,meta.getType()));
                 } catch (Exception e) {
                     Log.error("137",sProperty,e); //$NON-NLS-1$
                 }    

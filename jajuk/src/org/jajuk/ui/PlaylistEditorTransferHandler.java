@@ -32,7 +32,7 @@ import org.jajuk.base.Bookmarks;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
-import org.jajuk.base.IPropertyable;
+import org.jajuk.base.Item;
 import org.jajuk.ui.views.AbstractPlaylistEditorView;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
@@ -101,7 +101,7 @@ public class PlaylistEditorTransferHandler extends TransferHandler implements IT
                     TransferableTreeNode ttn = (TransferableTreeNode)t.getTransferData(TransferableTreeNode.NODE_FLAVOR);
                     oData = ttn.getData();  
                 }
-                ArrayList<File> alSelectedFiles = Util.getfilesFromSelection((IPropertyable)oData);
+                ArrayList<File> alSelectedFiles = Util.getfilesFromSelection((Item)oData);
                 //queue case
                 if ( plfi.getType() == PlaylistFileItem.PLAYLIST_TYPE_QUEUE){
                     FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alSelectedFiles),

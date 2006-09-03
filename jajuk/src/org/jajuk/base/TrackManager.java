@@ -20,7 +20,6 @@
 
 package org.jajuk.base;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -60,33 +59,33 @@ public class TrackManager extends ItemManager implements Observer{
         super();
         //---register properties---
         //ID
-        registerProperty(new PropertyMetaInformation(XML_ID,false,true,false,false,false,String.class,null,null));
+        registerProperty(new PropertyMetaInformation(XML_ID,false,true,false,false,false,String.class,null));
         //Name
-        registerProperty(new PropertyMetaInformation(XML_NAME,false,true,true,true,false,String.class,null,null));
+        registerProperty(new PropertyMetaInformation(XML_NAME,false,true,true,true,false,String.class,null));
         //Album
-        registerProperty(new PropertyMetaInformation(XML_ALBUM,false,true,true,true,true,String.class,null,null));
+        registerProperty(new PropertyMetaInformation(XML_ALBUM,false,true,true,true,true,String.class,null));
         //Style
-        registerProperty(new PropertyMetaInformation(XML_STYLE,false,true,true,true,true,String.class,null,null));
+        registerProperty(new PropertyMetaInformation(XML_STYLE,false,true,true,true,true,String.class,null));
         //Author
-        registerProperty(new PropertyMetaInformation(XML_AUTHOR,false,true,true,true,true,String.class,null,null));
+        registerProperty(new PropertyMetaInformation(XML_AUTHOR,false,true,true,true,true,String.class,null));
         //Length
-        registerProperty(new PropertyMetaInformation(XML_TRACK_LENGTH,false,true,true,false,false,Long.class,null,null));
+        registerProperty(new PropertyMetaInformation(XML_TRACK_LENGTH,false,true,true,false,false,Long.class,null));
         //Type
-        registerProperty(new PropertyMetaInformation(XML_TRACK_TYPE,false,true,true,false,false,Long.class,null,null));
+        registerProperty(new PropertyMetaInformation(XML_TRACK_TYPE,false,true,true,false,false,Long.class,null));
         //Year
-        registerProperty(new PropertyMetaInformation(XML_TRACK_YEAR,false,true,true,true,true,Long.class,null,0));
+        registerProperty(new PropertyMetaInformation(XML_TRACK_YEAR,false,true,true,true,true,Long.class,0));
         //Rate
-        registerProperty(new PropertyMetaInformation(XML_TRACK_RATE,false,false,true,true,true,Long.class,null,0));
+        registerProperty(new PropertyMetaInformation(XML_TRACK_RATE,false,false,true,true,true,Long.class,0));
         //Files
-        registerProperty(new PropertyMetaInformation(XML_FILES,false,false,true,false,false,String.class,null,null));
+        registerProperty(new PropertyMetaInformation(XML_FILES,false,false,true,false,false,String.class,null));
         //Hits
-        registerProperty(new PropertyMetaInformation(XML_TRACK_HITS,false,false,true,false,false,Long.class,null,0));
+        registerProperty(new PropertyMetaInformation(XML_TRACK_HITS,false,false,true,false,false,Long.class,0));
         //Addition date
-        registerProperty(new PropertyMetaInformation(XML_TRACK_ADDED,false,false,true,false,false,Date.class,new SimpleDateFormat(ADDITION_DATE_FORMAT),null));
+        registerProperty(new PropertyMetaInformation(XML_TRACK_ADDED,false,false,true,false,false,Date.class,null));
         //Comment
-        registerProperty(new PropertyMetaInformation(XML_TRACK_COMMENT,false,false,true,true,true,String.class,null,null));
+        registerProperty(new PropertyMetaInformation(XML_TRACK_COMMENT,false,false,true,true,true,String.class,null));
         //Track order
-        registerProperty(new PropertyMetaInformation(XML_TRACK_ORDER,false,true,true,true,false,Long.class,null,null));
+        registerProperty(new PropertyMetaInformation(XML_TRACK_ORDER,false,true,true,true,false,Long.class,null));
         //---subscriptions---
         ObservationManager.register(EVENT_FILE_NAME_CHANGED,this);
         //select comparator
@@ -528,7 +527,7 @@ public class TrackManager extends ItemManager implements Observer{
      * @param item
      * @return
      **/
-    public ArrayList<Track> getAssociatedTracks(IPropertyable item){
+    public ArrayList<Track> getAssociatedTracks(Item item){
         synchronized(TrackManager.getInstance().getLock()){
             ArrayList out = new ArrayList(10);
             for (Object item2:hmItems.values()){
@@ -540,7 +539,7 @@ public class TrackManager extends ItemManager implements Observer{
                 }
             }
             //sort by style/author/album
-            Collections.sort(out,new TrackComparator(0));
+            Collections.sort(out,new TrackComparator(TrackComparator.STYLE_AUTHOR_ALBUM));
             return out;
         }
     }
@@ -577,6 +576,48 @@ public class TrackManager extends ItemManager implements Observer{
      */
     public void setMaxRate(long lRate){
         this.lMaxRate = lRate;
+    }
+    
+    /**
+     * 
+     * @pamam iAge minimum age in days for a track since addition in collection to be token into account  
+     * @return an age filter
+     */
+    public static AgeTrackFilter getAgeFilter(int iAge){
+        return new AgeTrackFilter(iAge);
+    }
+    
+    /**
+     * 
+     *  Track filter by age
+     *
+     * @author     Bertrand Florat
+     * @created    28 août 06
+     */
+    static class AgeTrackFilter implements IItemFilter{
+     
+        private int iAge = 0;
+        
+        public AgeTrackFilter(int iAge){
+            this.iAge=iAge;
+        }
+        
+        /* (non-Javadoc)
+         * @see org.jajuk.base.IItemFilter#apply(java.util.ArrayList)
+         */
+        public java.util.Collection<Item> apply(java.util.Collection<Item> al) {
+            Date now = new Date();
+            java.util.Collection<Item> out = new ArrayList<Item>(al.size()/2);
+            for (Item item:al){
+                Track track = (Track)item;
+                int iTrackAge = (int)((now.getTime()-track.getAdditionDate().getTime())/86400000); //)/1000/60/60/24;
+                if ( iTrackAge <= iAge){
+                    out.add(track);
+                }
+            }
+            return out;
+        }
+
     }
     
 }    

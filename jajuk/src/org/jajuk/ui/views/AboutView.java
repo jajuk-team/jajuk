@@ -93,7 +93,7 @@ public class AboutView extends ViewAdapter {
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.IView#display()
 	 */
-	public void populate(){
+	public void initUI(){
 		setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
 		//licence panel
 		jpLicence = new JPanel(new BorderLayout());

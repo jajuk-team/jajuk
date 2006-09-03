@@ -83,7 +83,7 @@ public class AnimationView extends ViewAdapter implements ITechnicalStrings,Obse
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.views.IView#populate()
 	 */
-	public void populate() {
+	public void initUI() {
 		setLayout(new BorderLayout());
 		addComponentListener(this);
 		btl1 = new BasicTextLabel(" "); //$NON-NLS-1$

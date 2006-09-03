@@ -25,7 +25,7 @@ import java.util.Vector;
 import javax.swing.ImageIcon;
 import javax.swing.table.DefaultTableModel;
 
-import org.jajuk.base.IPropertyable;
+import org.jajuk.base.Item;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 
@@ -53,7 +53,7 @@ public abstract class JajukTableModel extends DefaultTableModel  implements ITec
     public static final ImageIcon UNMOUNT_PLAY_ICON = Util.getIcon(ICON_UNKNOWN);
     
     /** Objects*/
-    public IPropertyable[] oItems;
+    public Item[] oItems;
     
     /**Number of standard columns*/
     public int iNumberStandardCols;
@@ -99,7 +99,7 @@ public abstract class JajukTableModel extends DefaultTableModel  implements ITec
      * @param iRow
      * @return
      */
-    public IPropertyable getItemAt(int iRow){
+    public Item getItemAt(int iRow){
         return oItems[iRow];
     }
     
@@ -108,7 +108,7 @@ public abstract class JajukTableModel extends DefaultTableModel  implements ITec
      * @param iRow
      * @param IPropertyabe item to set
      */
-    public void setItemAt(int iRow,IPropertyable item){
+    public void setItemAt(int iRow,Item item){
         oItems[iRow]=item;
     }
         

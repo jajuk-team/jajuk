@@ -22,6 +22,7 @@ package org.jajuk.ui.views;
 
 import info.clearthought.layout.TableLayout;
 
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -192,7 +193,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
     /* (non-Javadoc)
      * @see org.jajuk.ui.IView#display()
      */
-    public void populate(){
+    public void initUI(){
         int iXSeparator = 5;
         int iYSeparator = 5;
         
@@ -784,12 +785,15 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
         jpCovers.add(jtfMaxSize,"1,9"); //$NON-NLS-1$
         
         //--OK/cancel panel
+        Dimension dim = new Dimension(200,20);
         jpOKCancel = new JPanel();
         jpOKCancel.setLayout(new FlowLayout());
         jbOK = new JButton(Messages.getString("ParameterView.85"),Util.getIcon(ICON_OK)); //$NON-NLS-1$
+        jbOK.setPreferredSize(dim);
         jbOK.addActionListener(this);
         jpOKCancel.add(jbOK);
         jbDefault = new JButton(Messages.getString("ParameterView.86"),Util.getIcon(ICON_DEFAULTS_BIG)); //$NON-NLS-1$
+        jbDefault.setPreferredSize(dim);
         jbDefault.addActionListener(this);
         jpOKCancel.add(jbDefault);
         

@@ -1,6 +1,6 @@
 /*
  *  Jajuk
- *  Copyright (C) 2005 Bart Cremers
+ *  Copyright (C) 2004 bflorat
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -15,29 +15,25 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *  $$Revision$$
+ *  $Revision$
  */
-package org.jajuk.ui.action;
 
-import java.awt.event.ActionEvent;
+package org.jajuk.base;
 
-import org.jajuk.i18n.Messages;
-import org.jajuk.ui.perspectives.PerspectiveManager;
-import org.jajuk.util.Util;
 
 /**
- * Action for displaying the online help
+ *  Collection item filter
  *
- * @author Bart Cremers
- * @since 4-jan-2006
+ * @author     Bertrand Florat
+ * @created    28 août 06
  */
-public class HelpRequiredAction extends ActionBase {
+public interface IItemFilter {
 
-    HelpRequiredAction() {
-        super(Messages.getString("JajukJMenuBar.15"), Util.getIcon(ICON_INFO), "F1", true); //$NON-NLS-1$ //$NON-NLS-2$
-    }
-
-    public void perform(ActionEvent evt) {
-        PerspectiveManager.setCurrentPerspective(PERSPECTIVE_NAME_HELP);
-    }
+    
+    /**
+     * Apply filter
+     * @param al ordored list to be filtered
+     * @return filtered a *new* ordored list (can contain 0 elements)
+     */
+    public java.util.Collection<Item> apply(java.util.Collection<Item> col);
 }

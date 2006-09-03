@@ -62,8 +62,8 @@ public class LogicalPlaylistRepositoryView extends AbstractPlaylistRepositoryVie
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.IView#display()
 	 */
-	public void populate(){
-		super.populate();
+	public void initUI(){
+		super.initUI();
 	}
 
 	/* (non-Javadoc)

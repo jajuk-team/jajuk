@@ -32,7 +32,7 @@ import org.jajuk.util.Util;
  * @Author     Bertrand Florat
  * @created    17 oct. 2003
  */
-public class Album extends PropertyAdapter implements Comparable{
+public class Album extends Item implements Comparable{
 	
 	/**
 	 * Album constructor
@@ -101,7 +101,7 @@ public class Album extends PropertyAdapter implements Comparable{
    }
 	
 	/* (non-Javadoc)
-     * @see org.jajuk.base.IPropertyable#getIdentifier()
+     * @see org.jajuk.base.Item#getIdentifier()
      */
     final public String getIdentifier() {
         return XML_ALBUM;
@@ -116,7 +116,7 @@ public class Album extends PropertyAdapter implements Comparable{
  
  
  /* (non-Javadoc)
-     * @see org.jajuk.base.IPropertyable#getHumanValue(java.lang.String)
+     * @see org.jajuk.base.Item#getHumanValue(java.lang.String)
      */
     public String getHumanValue(String sKey){
         if (XML_NAME.equals(sKey)){

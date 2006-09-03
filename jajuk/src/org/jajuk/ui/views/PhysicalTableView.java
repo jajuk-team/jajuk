@@ -32,7 +32,7 @@ import org.jajuk.base.Bookmarks;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
-import org.jajuk.base.IPropertyable;
+import org.jajuk.base.Item;
 import org.jajuk.base.Observer;
 import org.jajuk.base.StackItem;
 import org.jajuk.i18n.Messages;
@@ -200,7 +200,7 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
             public void run(){
                 //computes selected files
                 ArrayList alFilesToPlay = new ArrayList(jtable.getSelectedRowCount());
-                ArrayList<IPropertyable> alSelectedFiles = new ArrayList<IPropertyable>(jtable.getSelectedRowCount());
+                ArrayList<Item> alSelectedFiles = new ArrayList<Item>(jtable.getSelectedRowCount());
                 int[] indexes = jtable.getSelectedRows();
                 for (int i=0;i<indexes.length;i++){ //each selected track
                     File file = (File)model.getItemAt(jtable.convertRowIndexToModel(indexes[i]));
@@ -252,8 +252,8 @@ public class PhysicalTableView extends AbstractTableView implements Observer, Mo
                 }
                 //properties
                 else if ( e.getSource() == jmiProperties){
-                    ArrayList alItems1 = new ArrayList<IPropertyable>(1); //file items
-                    ArrayList alItems2 = new ArrayList<IPropertyable>(1); //tracks items
+                    ArrayList alItems1 = new ArrayList<Item>(1); //file items
+                    ArrayList alItems2 = new ArrayList<Item>(1); //tracks items
                     if (jtable.getSelectedRowCount() == 1){ //mono selection
                         File file = (File)model.getItemAt(
                                 jtable.convertRowIndexToModel(jtable.getSelectedRow()));

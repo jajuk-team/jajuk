@@ -40,19 +40,19 @@ public class DirectoryManager extends ItemManager{
         super();
         //---register properties---
         //ID
-        registerProperty(new PropertyMetaInformation(XML_ID,false,true,false,false,false,String.class,null,null));
+        registerProperty(new PropertyMetaInformation(XML_ID,false,true,false,false,false,String.class,null));
         //Name test with (getParentDirectory() != null); //name editable only for standard directories, not root
-        registerProperty(new PropertyMetaInformation(XML_NAME,false,true,true,false,false,String.class,null,null)); //edition to yet implemented TBI
+        registerProperty(new PropertyMetaInformation(XML_NAME,false,true,true,false,false,String.class,null)); //edition to yet implemented TBI
         //Parent
-        registerProperty(new PropertyMetaInformation(XML_DIRECTORY_PARENT,false,true,true,false,false,String.class,null,null));
+        registerProperty(new PropertyMetaInformation(XML_DIRECTORY_PARENT,false,true,true,false,false,String.class,null));
         //Device
-        registerProperty(new PropertyMetaInformation(XML_DEVICE,false,true,true,false,false,String.class,null,null));
+        registerProperty(new PropertyMetaInformation(XML_DEVICE,false,true,true,false,false,String.class,null));
         //Expand
-        registerProperty(new PropertyMetaInformation(XML_EXPANDED,false,false,false,false,true,Boolean.class,null,false));
+        registerProperty(new PropertyMetaInformation(XML_EXPANDED,false,false,false,false,true,Boolean.class,false));
         //Synchonized directory
-        registerProperty(new PropertyMetaInformation(XML_DIRECTORY_SYNCHRONIZED,false,false,true,false,false,Boolean.class,null,true));
+        registerProperty(new PropertyMetaInformation(XML_DIRECTORY_SYNCHRONIZED,false,false,true,false,false,Boolean.class,true));
         //Default cover
-        registerProperty(new PropertyMetaInformation(XML_DIRECTORY_DEFAULT_COVER,false,false,true,false,false,String.class,null,null));
+        registerProperty(new PropertyMetaInformation(XML_DIRECTORY_DEFAULT_COVER,false,false,true,false,false,String.class,null));
     }
     
     /**
@@ -91,7 +91,7 @@ public class DirectoryManager extends ItemManager{
      * @param sName directory name
      * @param device device
      * @param dParent parent directory
-     * @return Item ID
+     * @return ItemManager ID
      */
     protected static String getID(String sName,Device device,Directory dParent){
         StringBuffer sbAbs = new StringBuffer(device.getName());

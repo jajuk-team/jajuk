@@ -81,6 +81,10 @@ public interface ITechnicalStrings {
     public static final int RATE_COLUMN_SIZE = 75;
     /**Play icon columns size in pixels*/
     public static final int PLAY_COLUMN_SIZE = 20;
+    /**Max Number of thumbs displayed at the same time in catalog view*/
+    public static final int CATALOG_PAGE_SIZE = 50;
+    /**Proporion of best tracks*/
+    public static final float BESTOF_PROPORTION = 0.05f;
     
     
 	// Jajuk version
@@ -240,10 +244,11 @@ public interface ITechnicalStrings {
     //images
 	public static final String IMAGES_SPLASHSCREEN =  PATH_IMAGES + "jajuk-splashscreen.jpg";
 	public static final String IMAGES_STAT_PAPER =  PATH_IMAGES + "No-Ones-Laughing-3.jpg";
-	public static final String IMAGE_NO_COVER = PATH_IMAGES + "unknown.png";
+	public static final String IMAGE_NO_COVER = PATH_IMAGES + "nocover.jpg";
     public static final String IMAGE_WRITE = PATH_IMAGES + "write.png";
     public static final String IMAGE_SEARCH = PATH_IMAGES + "search.png";
     public static final String IMAGE_DJ = PATH_IMAGES + "dj.jpg";
+    public static final String IMAGE_TRAY_TITLE = PATH_IMAGES + "tray_title.png";
         
 	//files
 	public static final String FILE_JAJUK_DIR = System.getProperty("user.home")+(Main.bTestMode?"/.jajuk_test":"/.jajuk");
@@ -422,6 +427,7 @@ public interface ITechnicalStrings {
     public static final String EVENT_TABLE_CLEAR_SELECTION = "table.clear_selection"; //clear table selection
     public static final String EVENT_DJS_CHANGE = "djs_change"; //DJ creation or removal
     public static final String EVENT_AMBIENCES_CHANGE = "ambiences_change"; //One or more ambiences have been removed/added/changed
+    public static final String EVENT_AMBIENCES_SELECTION_CHANGE = "ambiences_selection_change"; //user changed current ambience
     public static final String EVENT_AMBIENCE_REMOVED = "ambience_removed"; //An ambience has been removed
     public static final String EVENT_AUTHOR_CHANGED = "author changed"; //Current played track author name has been changed
     public static final String EVENT_LANGUAGE_CHANGED = "language changed"; //Language changed
@@ -657,7 +663,6 @@ public interface ITechnicalStrings {
     public static final String XML_TRACK_COMMENT = "comment"; //comment tag 
     public static final String XML_TRACK_NUMBER = "number"; //track number 
     public static final String XML_ANY = "any"; //"any" criteria 
-    public static final String XML_FORMAT = "format"; //custom property format 
     public static final String XML_CONSTRUCTOR = "constructor";  //constructor property flag
     public static final String XML_VISIBLE = "visible";  //property should be displayed?
     public static final String XML_EDITABLE = "editable";  //property editable?

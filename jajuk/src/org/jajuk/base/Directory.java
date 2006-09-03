@@ -38,7 +38,7 @@ import org.jajuk.util.log.Log;
  * @Author Bertrand Florat 
  * @created 17 oct. 2003
  */
-public class Directory extends PropertyAdapter implements Comparable{
+public class Directory extends Item implements Comparable{
     
    /** Parent directory ID* */
     private Directory dParent;
@@ -52,9 +52,7 @@ public class Directory extends PropertyAdapter implements Comparable{
     private TreeSet<PlaylistFile> playlistFiles = new TreeSet();
     /** IO file for optimizations* */
     private java.io.File fio;
-    /** pre-calculated absolute path for perf*/
-    private String sAbs = null;
-
+ 
     /**
      * Direcotry constructor
      * 
@@ -73,7 +71,7 @@ public class Directory extends PropertyAdapter implements Comparable{
     }
 
 /* (non-Javadoc)
-     * @see org.jajuk.base.IPropertyable#getIdentifier()
+     * @see org.jajuk.base.Item#getIdentifier()
      */
     final public String getIdentifier() {
         return XML_DIRECTORY;
@@ -276,7 +274,7 @@ public class Directory extends PropertyAdapter implements Comparable{
                 }
                 boolean bIsMusic = (Boolean)TypeManager.getInstance().getTypeByExtension(Util.getExtension(files[i])).getValue(XML_TYPE_IS_MUSIC);
                 if (bIsMusic) {
-                    String sId = FileManager.getID(files[i].getName(),this);
+                    String sId = FileManager.getID(files[i].getName(),this).intern();
                     //check the file is not already known in database
                     org.jajuk.base.File fileRef = (org.jajuk.base.File)FileManager.getInstance().getItem(sId);
                     //if known file and no deep scan, just leave
@@ -350,12 +348,8 @@ public class Directory extends PropertyAdapter implements Comparable{
      * @return String
      */
     public String getRelativePath() {
-        if (sAbs!=null){
-            return sAbs;
-        }
         if (getName().equals("")){  //if this directory is a root device directory //$NON-NLS-1$
-            sAbs = ""; //$NON-NLS-1$
-            return sAbs;
+            return "";
         }
         StringBuffer sbOut = new StringBuffer().append(java.io.File.separatorChar).append(getName());
         boolean bTop = false;
@@ -368,8 +362,7 @@ public class Directory extends PropertyAdapter implements Comparable{
                 bTop = true;
             }
         }
-        sAbs = sbOut.toString();
-        return sAbs;
+        return sbOut.toString();
     }
     
     /**
@@ -427,7 +420,7 @@ public class Directory extends PropertyAdapter implements Comparable{
     }
     
     /* (non-Javadoc)
-     * @see org.jajuk.base.IPropertyable#getHumanValue(java.lang.String)
+     * @see org.jajuk.base.Item#getHumanValue(java.lang.String)
      */
     public String getHumanValue(String sKey){
         if (XML_DIRECTORY_PARENT.equals(sKey)){

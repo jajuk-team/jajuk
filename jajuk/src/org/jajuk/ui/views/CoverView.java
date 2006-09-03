@@ -140,7 +140,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
     /* (non-Javadoc)
      * @see org.jajuk.ui.IView#display()
      */
-    public void populate(){
+    public void initUI(){
         //global layout
         double size[][] =
         {{0.99},

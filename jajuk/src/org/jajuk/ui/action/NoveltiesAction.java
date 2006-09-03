@@ -36,7 +36,7 @@ public class NoveltiesAction extends ActionBase {
         if (alToPlay != null && alToPlay.size() != 0) {
             Collections.shuffle(alToPlay);//shuffle the selection
         }
-        if (alToPlay != null) {
+        if (alToPlay != null && alToPlay.size() > 0) {
             FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alToPlay),
                                                           ConfigurationManager.getBoolean(
                                                               CONF_STATE_REPEAT), false), false);

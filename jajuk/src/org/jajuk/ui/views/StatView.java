@@ -91,7 +91,7 @@ public class StatView extends ViewAdapter implements Observer{
     /* (non-Javadoc)
      * @see org.jajuk.ui.IView#display()
      */
-    public void populate(){
+    public void initUI(){
         double[][] size = new double[][]{
                 {0.5f,10,0.5f},
                 {0.5f,10,0.5f}

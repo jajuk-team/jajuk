@@ -58,7 +58,7 @@ import org.jajuk.base.Event;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
 import org.jajuk.base.FileManager;
-import org.jajuk.base.IPropertyable;
+import org.jajuk.base.Item;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.base.Observer;
 import org.jajuk.base.Playlist;
@@ -119,10 +119,10 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
     int iType;
     
     /**Values*/
-    ArrayList<IPropertyable> alItems = new ArrayList(10);
+    ArrayList<StackItem> alItems = new ArrayList(10);
     
     /**Values planned*/
-    ArrayList<IPropertyable> alPlanned = new ArrayList(10);
+    ArrayList<StackItem> alPlanned = new ArrayList(10);
     
     /**Selection set flag*/
     boolean bSettingSelection = false;
@@ -148,7 +148,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
         final Font fontPlanned = new Font("serif",Font.ITALIC,12); //font for planned items //$NON-NLS-1$
         
         public PlayListEditorTableModel(){
-            super(14); 
+            super(15); 
             setEditable(false); //table not editable
             prepareColumns();
             populateModel();
@@ -157,7 +157,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
         /**
          * Need to overwrite this method for drag and drop
          */
-        public IPropertyable getItemAt(int iRow){
+        public Item getItemAt(int iRow){
             return AbstractPlaylistEditorView.this.getItem(iRow).getFile();
         }
         
@@ -174,27 +174,28 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
             vId.add("0");//$NON-NLS-1$
             
             // Track name
+            //Note we display "title" and not "name" for this property for clearness
             vColNames.add(Messages.getString("AbstractPlaylistEditorView.0")); //$NON-NLS-1$
             vId.add(XML_TRACK_NAME); //$NON-NLS-1$
             
             // Album
-            vColNames.add(Messages.getString("Item_Album")); //$NON-NLS-1$
+            vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_TRACK_ALBUM)); //$NON-NLS-1$
             vId.add(XML_TRACK_ALBUM); //$NON-NLS-1$
             
             // Author
-            vColNames.add(Messages.getString("Item_Author")); //$NON-NLS-1$
+            vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_TRACK_AUTHOR)); //$NON-NLS-1$
             vId.add(XML_TRACK_AUTHOR); //$NON-NLS-1$
             
             // Style
-            vColNames.add(Messages.getString("Item_Style")); //$NON-NLS-1$
+            vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_TRACK_STYLE)); //$NON-NLS-1$
             vId.add(XML_TRACK_STYLE); //$NON-NLS-1$
             
             // Stars
-            vColNames.add(Messages.getString("Property_rate")); //$NON-NLS-1$
+            vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_TRACK_RATE)); //$NON-NLS-1$
             vId.add(XML_TRACK_RATE); //$NON-NLS-1$
             
             // Year
-            vColNames.add(Messages.getString("Property_year")); //$NON-NLS-1$
+            vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_TRACK_YEAR)); //$NON-NLS-1$
             vId.add(XML_TRACK_YEAR); //$NON-NLS-1$
             
             // Length
@@ -224,6 +225,10 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
             // File name
             vColNames.add(Messages.getString("Property_filename")); //$NON-NLS-1$
             vId.add(XML_FILE);
+            
+            // Hits
+            vColNames.add(Messages.getString("Property_hits")); //$NON-NLS-1$
+            vId.add(XML_TRACK_HITS);
             
             //custom properties now
             //for tracks
@@ -305,6 +310,8 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
                 oValues[iRow][12] = bf.getDirectory().getName(); 
                 //file name
                 oValues[iRow][13] = bf.getName(); 
+                //Hits
+                oValues[iRow][14] = bf.getTrack().getHits();
                 //Custom properties now
                 //for tracks
                 Iterator it2 = TrackManager.getInstance().getCustomProperties().iterator();
@@ -342,7 +349,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
      * @param iRow
      * @return
      */
-    public IPropertyable getItemAt(int iRow){
+    public Item getItemAt(int iRow){
         StackItem item = getItem(iRow);
         return item.getFile();
     }
@@ -350,7 +357,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
     /* (non-Javadoc)
      * @see org.jajuk.ui.IView#display()
      */
-    public void populate(){
+    public void initUI(){
         //Control panel
         jpControl = new JPanel();
         jpControl.setBorder(BorderFactory.createEtchedBorder());
@@ -883,8 +890,8 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
                 Bookmarks.getInstance().addFiles(alFiles);
             }
             else if ( ae.getSource() == jmiFileProperties ){
-                ArrayList alItems1 = new ArrayList<IPropertyable>(1); //file items
-                ArrayList alItems2 = new ArrayList<IPropertyable>(1); //tracks items
+                ArrayList alItems1 = new ArrayList<Item>(1); //file items
+                ArrayList alItems2 = new ArrayList<Item>(1); //tracks items
                 if (jtable.getSelectedRowCount() == 1){ //mono selection
                     File file = (File)model.getItemAt(
                         jtable.convertRowIndexToModel(jtable.getSelectedRow()));

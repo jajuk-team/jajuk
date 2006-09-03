@@ -63,9 +63,9 @@ public class PhysicalPlaylistRepositoryView extends AbstractPlaylistRepositoryVi
     /* (non-Javadoc)
      * @see org.jajuk.ui.IView#display()
      */
-    public void populate(){
+    public void initUI(){
         //commons
-        super.populate();
+        super.initUI();
     }
     
     /* (non-Javadoc)

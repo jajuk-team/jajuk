@@ -7,6 +7,7 @@ package org.jajuk.ui.action;
 
 import java.awt.event.ActionEvent;
 
+import org.jajuk.base.Player;
 import org.jajuk.ui.CommandJPanel;
 
 /**
@@ -24,6 +25,6 @@ public class IncreaseVolumeAction extends ActionBase {
     public void perform(ActionEvent evt) {
         int iOld = CommandJPanel.getInstance().getCurrentVolume();
         int iNew = iOld + 5;
-        CommandJPanel.getInstance().setVolume(((float) iNew) / 100);
+        Player.setVolume(((float) iNew) / 100);
     }
 }

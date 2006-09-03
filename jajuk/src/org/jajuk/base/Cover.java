@@ -61,7 +61,8 @@ public class Cover implements Comparable,ITechnicalStrings {
     private static final ImageIcon iiDefaultCover = Util.getIcon(IMAGES_SPLASHSCREEN);
     
     /**Default URL*/
-    private static URL urlDefault;
+    private static URL urlDefault = null;
+    
     static{
         try {
             urlDefault = new URL(IMAGES_SPLASHSCREEN);
@@ -131,11 +132,11 @@ public class Cover implements Comparable,ITechnicalStrings {
                String sOtherFile = Util.getOnlyFile(cOther.getURL().getFile());
                 //     files named "cover" or "front" are prioritary upon others : 
                 if ( Util.isStandardCover(sFile)){
-                    if ( !Util.isStandardCover(sOtherFile)){
-                        return 1; //i'm a local standard cover and the other is only a local non-standard cover
+                    if ( Util.isStandardCover(sOtherFile)){
+                        return 0; //both are local-standard covers
                     }
                     else{
-                        return 0; //both are local-standard covers
+                        return 1; //i'm a local standard cover and the other is only a local non-standard cover
                     }
                 }
                 else{
@@ -226,6 +227,14 @@ public class Cover implements Comparable,ITechnicalStrings {
        return bOut;
     }
 
+    /**
+     * 
+     * @return object hashcode
+     */
+    public int hashCode(){
+        return this.url.hashCode()+iType; 
+    }
+    
 
     public File getFile() {
         return file;

@@ -27,7 +27,7 @@ import org.jajuk.i18n.Messages;
  * @author     Bertrand Florat
  * @created    17 oct. 2003
  */
-public class Author extends PropertyAdapter implements Comparable{
+public class Author extends Item implements Comparable{
  
 	/**
 	 * Author constructor
@@ -39,7 +39,7 @@ public class Author extends PropertyAdapter implements Comparable{
 	}
 	
 /* (non-Javadoc)
-     * @see org.jajuk.base.IPropertyable#getIdentifier()
+     * @see org.jajuk.base.Item#getIdentifier()
      */
     final public String getIdentifier() {
         return XML_AUTHOR;
@@ -113,7 +113,7 @@ public class Author extends PropertyAdapter implements Comparable{
 	
    
 /* (non-Javadoc)
-     * @see org.jajuk.base.IPropertyable#getHumanValue(java.lang.String)
+     * @see org.jajuk.base.Item#getHumanValue(java.lang.String)
      */
     public String getHumanValue(String sKey){
         if (XML_NAME.equals(sKey)){

@@ -20,19 +20,16 @@
 
 package org.jajuk.base.exporters;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.StringWriter;
 import java.io.StringReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.StringWriter;
 
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.stream.StreamSource;
-import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
 
 import org.jajuk.util.log.Log;
 

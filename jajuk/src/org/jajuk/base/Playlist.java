@@ -30,7 +30,7 @@ import org.jajuk.i18n.Messages;
  * @Playlist     Bertrand Florat
  * @created    17 oct. 2003
  */
-public class Playlist extends PropertyAdapter implements Comparable{
+public class Playlist extends Item implements Comparable{
 
 	/**Associated playlist files**/
 	private ArrayList<PlaylistFile> alPlaylistFiles = new ArrayList(2);
@@ -47,7 +47,7 @@ public class Playlist extends PropertyAdapter implements Comparable{
    }
 
 /* (non-Javadoc)
-     * @see org.jajuk.base.IPropertyable#getIdentifier()
+     * @see org.jajuk.base.Item#getIdentifier()
      */
     final public String getIdentifier() {
         return XML_PLAYLIST;
@@ -95,7 +95,7 @@ public class Playlist extends PropertyAdapter implements Comparable{
 	}
 	
     /* (non-Javadoc)
-     * @see org.jajuk.base.IPropertyable#getHumanValue(java.lang.String)
+     * @see org.jajuk.base.Item#getHumanValue(java.lang.String)
      */
 	public String getHumanValue(String sKey){
 	    if (XML_PLAYLIST_FILES.equals(sKey)){

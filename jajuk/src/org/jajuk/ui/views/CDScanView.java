@@ -80,7 +80,7 @@ public class CDScanView extends ViewAdapter implements ActionListener {
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.IView#display()
 	 */
-	public void populate(){
+	public void initUI(){
 		float fXSeparator = 0.05f;
 		float fYSeparator = 0.15f;
 		double[][] dSize={

@@ -71,7 +71,7 @@ public class ViewManager implements ITechnicalStrings{
 	}
 	private static void addViewToPerspective(IView view){
 	    if (!view.isPopulated()){
-		    view.populate();
+		    view.initUI();
 		}
 		PerspectiveManager.getCurrentPerspective().addViewAndPlaceIt(view);  
 	}
@@ -91,7 +91,7 @@ public class ViewManager implements ITechnicalStrings{
 		try{
 			if (sEvent.equals(EVENT_VIEW_REFRESH_REQUEST)){
 				if (!view.isPopulated()){
-				    view.populate();
+				    view.initUI();
 				}
 				view.refresh();
 			}

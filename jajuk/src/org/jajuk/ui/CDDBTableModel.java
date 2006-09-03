@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.jajuk.base.File;
-import org.jajuk.base.IPropertyable;
+import org.jajuk.base.Item;
 import org.jajuk.base.Track;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.CDDBWizard.CDDBTrack;
@@ -76,7 +76,7 @@ public class CDDBTableModel extends JajukTableModel {
         int iColNum = iNumberStandardCols;
         Iterator it = alItems.iterator();
         oValues = new Object[iRowNum][iColNum];
-        oItems = new IPropertyable[iRowNum];
+        oItems = new Item[iRowNum];
         bCellEditable = new boolean[iRowNum][iColNum];
         for (int iRow = 0; it.hasNext(); iRow++) {
             Track track = ((CDDBTrack) it.next()).track;

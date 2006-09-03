@@ -39,7 +39,7 @@ import org.jajuk.util.Util;
  * @Author   Bertrand Florat
  * @created    17 oct. 2003
  */
-public class Track extends PropertyAdapter implements Comparable{
+public class Track extends Item implements Comparable{
     
     /**Track album**/
     private final Album album;
@@ -77,19 +77,19 @@ public class Track extends PropertyAdapter implements Comparable{
         super(sId,sName);
         //album
         this.album = album;
-        setProperty(XML_ALBUM,album.getId());
+        setProperty(XML_ALBUM,album.getId().intern());
         //style
         this.style = style;
-        setProperty(XML_STYLE,style.getId());
+        setProperty(XML_STYLE,style.getId().intern());
         //author
         this.author = author;
-        setProperty(XML_AUTHOR,author.getId());
+        setProperty(XML_AUTHOR,author.getId().intern());
         //Length
         this.length = length;
         setProperty(XML_TRACK_LENGTH,length);
         //Type
         this.type = type;
-        setProperty(XML_TYPE,type.getId());
+        setProperty(XML_TYPE,type.getId().intern());
         //Year
         this.lYear = lYear;
         setProperty(XML_TRACK_YEAR,lYear);
@@ -447,7 +447,7 @@ public class Track extends PropertyAdapter implements Comparable{
     }
     
     /* (non-Javadoc)
-     * @see org.jajuk.base.IPropertyable#getIdentifier()
+     * @see org.jajuk.base.Item#getIdentifier()
      */
     final public String getIdentifier() {
         return XML_TRACK;
@@ -463,7 +463,7 @@ public class Track extends PropertyAdapter implements Comparable{
     
     
     /* (non-Javadoc)
-     * @see org.jajuk.base.IPropertyable#getHumanValue(java.lang.String)
+     * @see org.jajuk.base.Item#getHumanValue(java.lang.String)
      */
     public String getHumanValue(String sKey){
         if (XML_ALBUM.equals(sKey)){

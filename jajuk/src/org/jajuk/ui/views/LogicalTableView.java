@@ -32,7 +32,7 @@ import org.jajuk.base.Author;
 import org.jajuk.base.Bookmarks;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.File;
-import org.jajuk.base.IPropertyable;
+import org.jajuk.base.Item;
 import org.jajuk.base.Observer;
 import org.jajuk.base.StackItem;
 import org.jajuk.base.Track;
@@ -211,7 +211,7 @@ public class LogicalTableView extends AbstractTableView implements Observer{
                 //computes selected tracks
                 ArrayList alFilesToPlay = new ArrayList(10);
                 int[] indexes = jtable.getSelectedRows();
-                ArrayList<IPropertyable> alSelectedTracks = new ArrayList<IPropertyable>(indexes.length);
+                ArrayList<Item> alSelectedTracks = new ArrayList<Item>(indexes.length);
                 for (int i=0;i<indexes.length;i++){ //each track in selection
                     Track track = (Track)model.getItemAt(jtable.convertRowIndexToModel(indexes[i]));
                     alSelectedTracks.add(track);

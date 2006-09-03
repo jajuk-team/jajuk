@@ -44,9 +44,9 @@ public interface IView extends ComponentListener{
 	public String getDesc();
 	
 	/**
-	 * Populate the view 
+	 * Display view UI 
 	 */
-	public void populate();
+	public void initUI();
 	
 	/**
 	 * Get displayed state

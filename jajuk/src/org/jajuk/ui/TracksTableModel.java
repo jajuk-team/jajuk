@@ -29,7 +29,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.regex.PatternSyntaxException;
 
-import org.jajuk.base.IPropertyable;
+import org.jajuk.base.Item;
 import org.jajuk.base.ObservationManager;
 import org.jajuk.base.PropertyMetaInformation;
 import org.jajuk.base.Track;
@@ -38,7 +38,6 @@ import org.jajuk.base.TrackManager;
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.Util;
-import org.jajuk.util.log.Log;
 
 /**
  *  Table model used for logical table view
@@ -53,7 +52,7 @@ public class TracksTableModel extends JajukTableModel{
 	 * @param sColName columns names
 	 */
 	public TracksTableModel(){
-	    super(11);
+	    super(12);
         
         //Columns names
         vColNames.add(""); //$NON-NLS-1$
@@ -88,7 +87,10 @@ public class TracksTableModel extends JajukTableModel{
     
         vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_TRACK_YEAR));
         vId.add(XML_TRACK_YEAR);
-    
+        
+        vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_TRACK_HITS));
+        vId.add(XML_TRACK_HITS);
+        
         //custom properties now
         Iterator it = TrackManager.getInstance().getCustomProperties().iterator();
         while (it.hasNext()){
@@ -106,9 +108,9 @@ public class TracksTableModel extends JajukTableModel{
         boolean bShowWithTree = true;
         HashSet hs = (HashSet)ObservationManager.getDetailLastOccurence(EVENT_SYNC_TREE_TABLE,DETAIL_SELECTION);//look at selection
         boolean bSyncWithTreeOption = ConfigurationManager.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE);
-        Collection<IPropertyable> alTracks = TrackManager.getInstance().getItems();
+        Collection<Item> alTracks = TrackManager.getInstance().getItems();
         ArrayList alToShow = new ArrayList(alTracks.size());
-        for (IPropertyable item:alTracks){
+        for (Item item:alTracks){
             Track track = (Track)item;
             bShowWithTree =  !bSyncWithTreeOption || ((hs != null && hs.size() > 0 
                     && hs.contains(track))); //show it if no sync option or if item is in the selection
@@ -158,7 +160,7 @@ public class TracksTableModel extends JajukTableModel{
         iRowNum = alToShow.size();
         it = alToShow.iterator();
         oValues = new Object[iRowNum][iColNum];
-        oItems = new IPropertyable[iRowNum];
+        oItems = new Item[iRowNum];
         bCellEditable = new boolean[iRowNum][iColNum];
         for (int iRow = 0;it.hasNext();iRow++){
             Track track = (Track)it.next();
@@ -207,9 +209,12 @@ public class TracksTableModel extends JajukTableModel{
             //Order
             oValues[iRow][9] = track.getOrder();
             bCellEditable[iRow][9] = true;
-             //Year
+            //Year
             oValues[iRow][10] = track.getYear();
             bCellEditable[iRow][10] = true;
+            //Hits
+            oValues[iRow][11] = track.getHits();
+            bCellEditable[iRow][11] = false;
             //Custom properties now
             Iterator it2 = TrackManager.getInstance().getCustomProperties().iterator();
             for (int i=0;it2.hasNext();i++){
@@ -221,15 +226,6 @@ public class TracksTableModel extends JajukTableModel{
                 else{
                     oValues[iRow][iNumberStandardCols+i] = meta.getDefaultValue();
                 }
-                //For date format, just display date conversion
-                if (meta.getType().equals(Date.class)){
-                    try {
-                        oValues[iRow][iNumberStandardCols+i] = Util.format(oValues[iRow][iNumberStandardCols+i],meta);
-                    } catch (Exception e) {
-                        Log.error(e);
-                    }
-                }
-                
                 //Date values not editable, use properties panel instead to edit
                 if (meta.getType().equals(Date.class)){
                     bCellEditable[iRow][iNumberStandardCols+i] = false;    
