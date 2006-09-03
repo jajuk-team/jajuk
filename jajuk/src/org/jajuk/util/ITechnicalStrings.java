@@ -285,15 +285,16 @@ public interface ITechnicalStrings {
     
     // XSLT Files
     // These paths need to be updated once xslts are put into the jar file.
-	public static final String ARTIST_XSLT = "dist-files/xslt/artist.xsl";
-	public static final String ALBUM_XSLT = "dist-files/xslt/album.xsl";
-	public static final String STYLE_XSLT = "dist-files/xslt/style.xsl";
-	public static final String DIRECTORY_XSLT = "jajuk/dist-files/xslt/directory.xsl";
-	public static final String DEVICE_XSLT = "jajuk/dist-files/xslt/device.xsl";
-	public static final String COLLECTION_XSLT = "jajuk/dist-files/xslt/collection.xsl";
-	public static final String STYLE_COLLECTION_XSLT = "jajuk/dist-files/xslt/style_collection.xsl";
-	public static final String ARTIST_COLLECTION_XSLT = "jajuk/dist-files/xslt/artist_collection.xsl";
-	public static final String ALBUM_COLLECTION_XSLT = "jajuk/dist-files/xslt/album_collection.xsl";
+	public static final String XSLT_BASEDIR = "dist-files/xslt/";
+    public static final String ARTIST_XSLT = XSLT_BASEDIR + "artist.xsl";
+	public static final String ALBUM_XSLT = XSLT_BASEDIR + "album.xsl";
+	public static final String STYLE_XSLT = XSLT_BASEDIR + "style.xsl";
+	public static final String DIRECTORY_XSLT = XSLT_BASEDIR + "directory.xsl";
+	public static final String DEVICE_XSLT = XSLT_BASEDIR + "device.xsl";
+	public static final String COLLECTION_XSLT = XSLT_BASEDIR + "collection.xsl";
+	public static final String STYLE_COLLECTION_XSLT = XSLT_BASEDIR + "style_collection.xsl";
+	public static final String ARTIST_COLLECTION_XSLT = XSLT_BASEDIR + "artist_collection.xsl";
+	public static final String ALBUM_COLLECTION_XSLT = XSLT_BASEDIR + "album_collection.xsl";
 	
     //Command line options
     public static final String CLI_NOTASKBAR="notaskbar"; //if selected, no jajuk window at startup, only tray 
