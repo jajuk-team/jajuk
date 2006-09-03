@@ -44,6 +44,11 @@ public final class JSplashLabel extends JLabel {
      * Used to draw the text string.
      */
     private String m_text = null;
+    
+    /**
+     * Used to draw the copyright notice
+     */
+    private String m_copyright = null;
 
     /**
      * Font to use when drawing the text.
@@ -64,7 +69,7 @@ public final class JSplashLabel extends JLabel {
      * @param f     The font to use (can be null).
      * @param c     The color to use (can be null).
      */
-    public JSplashLabel(URL url, String s, Font f, Color c)
+    public JSplashLabel(URL url, String copyright, String s, Font f, Color c)
     {
         super();
         
@@ -77,6 +82,7 @@ public final class JSplashLabel extends JLabel {
         else
         {
             setIcon( icon );
+            m_copyright = copyright;
             m_text = s;
             m_font = f;
             m_color = c;
@@ -104,11 +110,13 @@ public final class JSplashLabel extends JLabel {
             {
                 g.setColor( m_color );
             }            
-            
+            //Draw copyright notice
             FontMetrics fm = g.getFontMetrics();
-            int width = fm.stringWidth(m_text) + 20;
+            int width = fm.stringWidth(m_copyright) + 100;
             int height = fm.getHeight();
+            g.drawString(m_copyright, getWidth() - width, (getHeight() - height) - 30);
             
+            //Draw release 
             g.drawString(m_text, getWidth() - width, getHeight() - height);
         }
     }

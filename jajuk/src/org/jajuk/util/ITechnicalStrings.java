@@ -91,7 +91,8 @@ public interface ITechnicalStrings {
 	public static final String JAJUK_VERSION_TEST = "VERSION_REPLACED_BY_ANT";
     public static final String JAJUK_VERSION = JAJUK_VERSION_TEST;
 	public static final String JAJUK_VERSION_DATE = "Build: DATE_REPLACED_BY_ANT";
-	
+	public static final String JAJUK_COPYRIGHT = "Copyright 2004, 2006 The Jajuk Team";
+    
 	//About 
 	public static final String ABOUT = "<html>Jajuk version "+JAJUK_VERSION+"</html>";
     
@@ -112,10 +113,8 @@ public interface ITechnicalStrings {
 	public static final String UNKNOWN_STYLE = "unknown_style";
 		
 	// icons
-	public static final String ICON_LOGO = PATH_ICONS + "64x64/jajuk-logo.png";
-	public static final String ICON_LOGO_TRAY = PATH_ICONS + "22x22/jajuk-logo.png";
-	public static final String ICON_LOGO_ICO = PATH_IMAGES + "jajuk-logo.ico";
-	public static final String ICON_LOGO_FRAME = PATH_ICONS + "16x16/jajuk-logo.png";
+	public static final String ICON_LOGO = PATH_ICONS + "64x64/jajuk-icon_64x64.png";
+	public static final String ICON_LOGO_FRAME = PATH_ICONS + "16x16/jajuk-icon_16x16.png";
 	public static final String ICON_REPEAT = PATH_ICONS + "16x16/repeat.png";
 	public static final String ICON_SHUFFLE = PATH_ICONS + "16x16/shuffle.png"; 
 	public static final String ICON_CONTINUE = PATH_ICONS + "16x16/continue.png";

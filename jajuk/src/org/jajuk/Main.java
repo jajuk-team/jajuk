@@ -211,7 +211,8 @@ public class Main implements ITechnicalStrings {
                     try {
                         //  Set look and feel, needs local to be set for error messages
                         LNFManager.setLookAndFeel(ConfigurationManager.getProperty(CONF_OPTIONS_LNF));
-                        sc = new JSplash(new URL (IMAGES_SPLASHSCREEN),true,true,false,JAJUK_VERSION+" "+JAJUK_VERSION_DATE,null,null); //$NON-NLS-1$
+                        sc = new JSplash(new URL (IMAGES_SPLASHSCREEN),true,true,false,JAJUK_COPYRIGHT,
+                            JAJUK_VERSION+" "+JAJUK_VERSION_DATE,null,null); //$NON-NLS-1$
                         sc.setTitle(Messages.getString("JajukWindow.3")); //$NON-NLS-1$
                         sc.splashOn();
                     } catch (MalformedURLException e) {

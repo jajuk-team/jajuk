@@ -84,6 +84,7 @@ public final class JSplash extends JFrame implements ITechnicalStrings{
      *                              display messages inside the progress bar?
      * @param percent               If we want a progress bar, do we want to
      *                              display the percent?
+     * @param CopyrightString       Copyright notice
      * @param versionString         If null no string is displayed on the
      *                              bottom-right of the splash window.
      * @param versionStringFont     Font for version string, if null default.
@@ -94,7 +95,7 @@ public final class JSplash extends JFrame implements ITechnicalStrings{
      */
     public JSplash(URL url, 
         boolean progress, boolean messages, boolean percent,
-        String versionString, Font versionStringFont, Color versionStringColor)
+        String copyrightString,String versionString, Font versionStringFont, Color versionStringColor)
     {
         super();
         setTitle(Messages.getString("JajukWindow.17"));  //$NON-NLS-1$
@@ -117,7 +118,7 @@ public final class JSplash extends JFrame implements ITechnicalStrings{
         // build a label and set it's icon
         //
         JSplashLabel label = new JSplashLabel(url, 
-                versionString, versionStringFont, versionStringColor);
+                copyrightString, versionString, versionStringFont, versionStringColor);
         
         // build a progress bar
         //
