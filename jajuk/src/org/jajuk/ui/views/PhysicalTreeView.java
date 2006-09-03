@@ -202,7 +202,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
     	jmiCollectionExport = new JMenuItem(Messages
     			.getString("LogicalTreeView.33")); //$NON-NLS-1$
     	jmiCollectionExport.addActionListener(this);
-   // 	jmenuCollection.add(jmiCollectionExport);
+    	jmenuCollection.add(jmiCollectionExport);
     
         //File menu
         jmenuFile = new JPopupMenu();
@@ -288,7 +288,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         jmenuDir.add(jmiDirDelete);
         jmenuDir.add(jmiDirAddFavorites);
         jmenuDir.add(jmiDirCDDBQuery);
-    //    jmenuDir.add(jmiDirExport);
+        jmenuDir.add(jmiDirExport);
         jmenuDir.add(jmiDirRefactor);
         jmenuDir.add(jmiDirProperties);
         
@@ -335,7 +335,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         jmenuDev.add(jmiDevCreatePlaylist);
         jmenuDev.add(jmiDevConfiguration);
         jmenuDev.add(jmiDevCDDBQuery);
-    //    jmenuDev.add(jmiDevExport);
+        jmenuDev.add(jmiDevExport);
         jmenuDev.add(jmiDevProperties);
         
         //Playlist file menu

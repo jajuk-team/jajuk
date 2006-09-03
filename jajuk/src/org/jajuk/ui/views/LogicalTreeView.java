@@ -246,8 +246,8 @@ ActionListener, Observer {
         jmenuCollection.add(jmiCollectionStyle);
         jmenuCollection.add(jmiCollectionAuthor);
         jmenuCollection.add(jmiCollectionAlbum);
-   //     jmenuCollection.add(new JLabel(Messages.getString("LogicalTreeView.33"))); //$NON-NLS-1$
-   //     jmenuCollection.add(jmiCollectionExport);
+        jmenuCollection.add(new JLabel(Messages.getString("LogicalTreeView.33"))); //$NON-NLS-1$
+        jmenuCollection.add(jmiCollectionExport);
                 
         // Style menu
         jmenuStyle = new JPopupMenu();
@@ -278,7 +278,7 @@ ActionListener, Observer {
         jmenuStyle.add(jmiStylePlayRepeat);
         jmenuStyle.add(jmiStyleDelete);
         jmenuStyle.add(jmiStyleAddFavorite);
-    //    jmenuStyle.add(jmiStyleExport);
+        jmenuStyle.add(jmiStyleExport);
         jmenuStyle.add(jmiStyleProperties);
         
         // Author menu
@@ -311,7 +311,7 @@ ActionListener, Observer {
         jmenuAuthor.add(jmiAuthorPlayRepeat);
         jmenuAuthor.add(jmiAuthorDelete);
         jmenuAuthor.add(jmiAuthorAddFavorite);
-    //    jmenuAuthor.add(jmiAuthorExport);
+        jmenuAuthor.add(jmiAuthorExport);
         jmenuAuthor.add(jmiAuthorProperties);
         
         // Album menu
@@ -346,7 +346,7 @@ ActionListener, Observer {
         jmenuAlbum.add(jmiAlbumDelete);
         jmenuAlbum.add(jmiAlbumAddFavorite);
         jmenuAlbum.add(jmiAlbumCDDBWizard);
-     //   jmenuAlbum.add(jmiAlbumExport);
+        jmenuAlbum.add(jmiAlbumExport);
         jmenuAlbum.add(jmiAlbumProperties);
         
         // Track menu
