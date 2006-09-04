@@ -29,7 +29,7 @@ Option for show_trackers=1; * To show a specific Tracker instead of all
 	&amp;tracker_to_show=TRACKER_ID
 
 --><export_details>
-<time>1155586301</time>
+<time>1157405454</time>
 <project_group_id>91412</project_group_id>
 <project_unix_name>jajuk</project_unix_name>
 <exporter>bflorat</exporter>
@@ -109,6 +109,14 @@ http://www.florat.net/jajuk-specs.pdf</registration_description>
 <user_name>perpetualburn</user_name>
 <public_name>Mike Kelp</public_name>
 <email>perpetualburn@users.sourceforge.net</email>
+<project_admin>No</project_admin>
+</projectmember>
+<projectmember>
+<url>https://sourceforge.net/users/nicolasschudel/</url>
+<user_id>1519080</user_id>
+<user_name>nicolasschudel</user_name>
+<public_name>nicolas</public_name>
+<email>nicolasschudel@users.sourceforge.net</email>
 <project_admin>No</project_admin>
 </projectmember>
 </projectmembers>
@@ -193,21 +201,21 @@ http://www.florat.net/jajuk-specs.pdf</registration_description>
 </projectresources>
 <project_admin_detail>
 <trove_details>
-<trove_category>Intended Audience :: by End-User Class :: End Users/Desktop</trove_category>
 <trove_category>Translations :: Catalan</trove_category>
-<trove_category>Translations :: Spanish</trove_category>
 <trove_category>Topic :: Multimedia :: Sound/Audio :: Players</trove_category>
-<trove_category>Translations :: Italian</trove_category>
 <trove_category>User Interface :: Graphical :: Java Swing</trove_category>
+<trove_category>Translations :: Swedish</trove_category>
+<trove_category>Translations :: German</trove_category>
 <trove_category>Translations :: French</trove_category>
 <trove_category>Translations :: English</trove_category>
-<trove_category>Operating System :: Grouping and Descriptive Categories :: OS Independent (Written in an interpreted language)</trove_category>
-<trove_category>Programming Language :: Java</trove_category>
-<trove_category>Translations :: German</trove_category>
-<trove_category>Translations :: Swedish</trove_category>
+<trove_category>Translations :: Italian</trove_category>
 <trove_category>Development Status :: 5 - Production/Stable</trove_category>
-<trove_category>License :: OSI-Approved Open Source :: GNU General Public License (GPL)</trove_category>
+<trove_category>Intended Audience :: by End-User Class :: End Users/Desktop</trove_category>
+<trove_category>Programming Language :: Java</trove_category>
 <trove_category>Translations :: Dutch</trove_category>
+<trove_category>License :: OSI-Approved Open Source :: GNU General Public License (GPL)</trove_category>
+<trove_category>Operating System :: Grouping and Descriptive Categories :: OS Independent (Written in an interpreted language)</trove_category>
+<trove_category>Translations :: Spanish</trove_category>
 </trove_details>
 </project_admin_detail>
 <projectnews>
@@ -723,6 +731,36 @@ http://www.florat.net/jajuk-specs.pdf</registration_description>
 <package_id>96449</package_id>
 <file_size>598432</file_size>
 <release_time>1151711509</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=439507</url>
+<filename>jajuk-1.2.1-1mdk.noarch.rpm</filename>
+<release_id>439507</release_id>
+<package_id>96449</package_id>
+<file_size>8368284</file_size>
+<release_time>1155594838</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=439507</url>
+<filename>jajuk-1.2.1-suse.noarch.rpm</filename>
+<release_id>439507</release_id>
+<package_id>96449</package_id>
+<file_size>8364802</file_size>
+<release_time>1155594851</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=439507</url>
+<filename>jajuk-1.2.1-win32.exe</filename>
+<release_id>439507</release_id>
+<package_id>96449</package_id>
+<file_size>11050496</file_size>
+<release_time>1155594864</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=439507</url>
+<filename>jajuk-java-installer-1.2.1.jar</filename>
+<release_id>439507</release_id>
+<package_id>96449</package_id>
+<file_size>10652135</file_size>
+<release_time>1155594887</release_time>
+<url>https://sourceforge.net/project/showfiles.php?group_id=91412&#38;package_id=96449&#38;release_id=439507</url>
+<filename>jajuk-sources-1.2.1.zip</filename>
+<release_id>439507</release_id>
+<package_id>96449</package_id>
+<file_size>598700</file_size>
+<release_time>1155594906</release_time>
 </filereleases>
 <docmanager>
 <docgroup>
@@ -782,6 +820,66 @@ http://www.florat.net/jajuk-specs.pdf</registration_description>
 <send_posts_to></send_posts_to>
 <anonymous_posting>Yes</anonymous_posting>
 <forum_posts>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=3896280</url>
+<msg_id>3896280</msg_id>
+<poster_user>bflorat</poster_user>
+<poster_name>Bertrand Florat</poster_name>
+<subject>RE: Create DJ doesn't work on Win JRE1.5?</subject>
+<thread_id>1565732</thread_id>
+<is_followup_to>3896177</is_followup_to>
+<has_followups>0</has_followups>
+<date>1157218748</date>
+<is_deleted>No</is_deleted>
+<body>Hi,
+
+Seems that you are not the first one to get this issue. Could you send us a bug report using the quality agent (Help-&#62;Report an issue) as it contains (anonymized) debug logs ?
+
+Thx</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=3896177</url>
+<msg_id>3896177</msg_id>
+<poster_user>ge0ffrey</poster_user>
+<poster_name>Geoffrey De Smet</poster_name>
+<subject>Create DJ doesn't work on Win JRE1.5?</subject>
+<thread_id>1565732</thread_id>
+<is_followup_to>0</is_followup_to>
+<has_followups>1</has_followups>
+<date>1157209030</date>
+<is_deleted>No</is_deleted>
+<body>I open the manage DJ's dialog, select &#34;create DJ&#34; and klik next, but nothing happens.
+Nothing is shown in the log either.
+I even tried deleting my .jajuk folder in my user home, but it didn't help. I just downloaded the lastest .exe installer from the site.</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=3871460</url>
+<msg_id>3871460</msg_id>
+<poster_user>nobody</poster_user>
+<poster_name>Nobody/Anonymous</poster_name>
+<subject>RE: Can I get Jajuk to use /dev/dsp1?</subject>
+<thread_id>1555636</thread_id>
+<is_followup_to>3871049</is_followup_to>
+<has_followups>0</has_followups>
+<date>1155818579</date>
+<is_deleted>No</is_deleted>
+<body>Sorry, it has been already discussed (here and on javasound forum) and the java sound APIs we use (Tritonus ad javasound) don't support multiple audio lines, so i'm afraid we can't propose such features for the moment.</body>
+</forum_post>
+<forum_post>
+<url>https://sourceforge.net/forum/message.php?msg_id=3871049</url>
+<msg_id>3871049</msg_id>
+<poster_user>nobody</poster_user>
+<poster_name>Nobody/Anonymous</poster_name>
+<subject>Can I get Jajuk to use /dev/dsp1?</subject>
+<thread_id>1555636</thread_id>
+<is_followup_to>0</is_followup_to>
+<has_followups>1</has_followups>
+<date>1155799515</date>
+<is_deleted>No</is_deleted>
+<body>I sort of looked around the parameters and can't seem to find a way of change the sound device in there. Is it possible to get Jajuk to run with an alternate sound device? What about Jack audio, does Jajuk support Jack audio? Is there any way of changing the sound driver that Jajuk uses?
+
+I would be satisfied with just an answer to the first question. :) Namely, can I get Jajuk to use /dev/dsp1.</body>
+</forum_post>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3796933</url>
 <msg_id>3796933</msg_id>
@@ -872,6 +970,7 @@ Thanks in advance...</body>
 <is_deleted>No</is_deleted>
 <body>You may be right, we will have a try for 1.1 to limit to 2/3 max.</body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3522386</url>
 <msg_id>3522386</msg_id>
@@ -926,7 +1025,6 @@ Yes, I did that now. When I decrease the volume to ca. 50-60% of the maximum the
 <is_deleted>No</is_deleted>
 <body>Did you try to decrease volume (gain) and increase systeme volume ?</body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3505823</url>
 <msg_id>3505823</msg_id>
@@ -1109,6 +1207,7 @@ What I meant was break of voice and music. There are these abrupt breaks, like w
 <is_deleted>No</is_deleted>
 <body>What do you mean by strange noise ? blanks ? during playing or at stopping ? where are located your files ? on a network drive ? hard drive?  </body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3451091</url>
 <msg_id>3451091</msg_id>
@@ -1180,7 +1279,6 @@ Richard</body>
 <is_deleted>No</is_deleted>
 <body>Thanks again, I will use some parts of it to update install and FAQ jajuk doc.</body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3335761</url>
 <msg_id>3335761</msg_id>
@@ -1277,6 +1375,7 @@ I have been hunting around for java and artsd intergration.  I'll post what I fi
 
 -chris worley</body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3282256</url>
 <msg_id>3282256</msg_id>
@@ -1342,7 +1441,6 @@ Looks strange as it works perfectly for me with or without arts 1.3.0 / Suse 9.2
 
 -chris worley</body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3280669</url>
 <msg_id>3280669</msg_id>
@@ -1478,6 +1576,7 @@ This is the output in the log when I press play.
 2005/08/04 08:27:23 [DEBUG] Player state changed: OPENED:2048  [Thread-20] (Log.java:83)
 </body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3279503</url>
 <msg_id>3279503</msg_id>
@@ -1552,7 +1651,6 @@ Last message English translation
 
 As I have no mac and I even never saw jajuk runing under macosx, I can't figure out what you mean exactly. Could you provide a screenshot please ? Other thing : does Mac OsX support JRE 1.5 as next jajuk release requires it ? </body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3250994</url>
 <msg_id>3250994</msg_id>
@@ -1646,6 +1744,7 @@ I'm running debian based Xandros. I used the .jar installer and everythin went s
 
 Anyways. This seems to be fixed. Thanks. And good job!</body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3012158</url>
 <msg_id>3012158</msg_id>
@@ -1715,7 +1814,6 @@ o Use a FM emettor :
 
 </body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=3003406</url>
 <msg_id>3003406</msg_id>
@@ -1821,6 +1919,7 @@ JAVA_HOME=
 <is_deleted>No</is_deleted>
 <body>When launching IzPack installer, you should have set an installation path, isn't it ? If install was OK, you should get an ${installation_path}/jajuk.sh file...</body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=2972104</url>
 <msg_id>2972104</msg_id>
@@ -1924,7 +2023,6 @@ Java HotSpot(TM) Client VM (build 1.4.2_06-b03, mixed mode)
 <is_deleted>No</is_deleted>
 <body>Cool ! Can you try with jajuk 0.3.1 and JRE 1.4.2_05 Please ?</body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=2920602</url>
 <msg_id>2920602</msg_id>
@@ -2029,6 +2127,7 @@ Could you tell us:
 
 Thanks in advance.</body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=2902639</url>
 <msg_id>2902639</msg_id>
@@ -2107,7 +2206,6 @@ But I still think it's imported to split up the buffering (loading from disk to 
 
 </body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=2863519</url>
 <msg_id>2863519</msg_id>
@@ -2208,6 +2306,7 @@ Willing to help me? I suggest collaborating on http://maven-plugins.sourceforge.
 <is_deleted>No</is_deleted>
 <body>PS: Just using BufferedInputStream doesn't do the trick: it only reads new data from the hard disk when the buffer is empty and more data is requested. read() still blocks (but not each time).</body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=2840176</url>
 <msg_id>2840176</msg_id>
@@ -2279,7 +2378,6 @@ thread.start();</body>
 <body>starting javaw with &#34;-server&#34; might help though :)
 Then it uses more memory but works faster too.</body>
 </forum_post>
-</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=2829627</url>
 <msg_id>2829627</msg_id>
@@ -2376,6 +2474,7 @@ I need some help : I would like to change tracks attributes, such as note or som
 I mention that the &#34;collection&#34; is on a windows partition.
 Thanks a lot...</body>
 </forum_post>
+</forum_posts>
 <forum_post>
 <url>https://sourceforge.net/forum/message.php?msg_id=2547735</url>
 <msg_id>2547735</msg_id>
@@ -2451,7 +2550,6 @@ I hope you enjoy it :)</body>
 <is_deleted>No</is_deleted>
 <body>Welcome to Open Discussion</body>
 </forum_post>
-</forum_posts>
 </forum_posts>
 </forum>
 </forums>
@@ -15036,16 +15134,16 @@ exemple that has no path reference .</details>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=938666</url>
 <id>938666</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>100</category_id>
 <group_id>100</group_id>
 <submitter>nobody</submitter>
 <assignee>bflorat</assignee>
 <closer>bflorat</closer>
 <submit_date>1082477761</submit_date>
-<close_date>1082838548</close_date>
+<close_date>1156079177</close_date>
 <priority>5</priority>
-<summary>can't start it up</summary>
+<summary>can\\\'t start it up</summary>
 <details>os: windows ME 
 java: 1.4.2_03
 
@@ -15590,19 +15688,47 @@ Source)
 <date>1103886042</date>
 <updator>bflorat</updator>
 </history_entry>
+<history_entry>
+<id>3828522</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1156079177</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3828523</id>
+<field_name>summary</field_name>
+<old_value>can't start it up</old_value>
+<date>1156079177</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3828524</id>
+<field_name>close_date</field_name>
+<old_value>1082838548</old_value>
+<date>1156079177</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3828529</id>
+<field_name>summary</field_name>
+<old_value>can\'t start it up</old_value>
+<date>1156079196</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1079969</url>
 <id>1079969</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>100</category_id>
 <group_id>100</group_id>
 <submitter>nobody</submitter>
 <assignee>nobody</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1102337761</submit_date>
-<close_date>0</close_date>
+<close_date>1156079177</close_date>
 <priority>5</priority>
 <summary>How to launch Jajuk under OSX</summary>
 <details>LO all
@@ -15684,6 +15810,20 @@ directory.</details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>3828520</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1156079176</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3828521</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1156079177</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
@@ -15758,16 +15898,16 @@ can use the Java installer instead
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1215955</url>
 <id>1215955</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>571113</category_id>
 <group_id>100</group_id>
 <submitter>nobody</submitter>
 <assignee>nobody</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1118089286</submit_date>
-<close_date>0</close_date>
+<close_date>1156079176</close_date>
 <priority>8</priority>
-<summary>WinXP: can't start up</summary>
+<summary>WinXP: can\\\'t start up</summary>
 <details>installed 0.3.4. --&#62; fine.
 Jajuk starts with the flush screen but hangs in the
 main window. Trying with java from the command line:
@@ -15868,19 +16008,47 @@ how do you download music from this site!
 <date>1118263573</date>
 <updator>bflorat</updator>
 </history_entry>
+<history_entry>
+<id>3828517</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1156079176</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3828518</id>
+<field_name>summary</field_name>
+<old_value>WinXP: can't start up</old_value>
+<date>1156079176</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3828519</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1156079176</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3828528</id>
+<field_name>summary</field_name>
+<old_value>WinXP: can\'t start up</old_value>
+<date>1156079196</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1217644</url>
 <id>1217644</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>571113</category_id>
 <group_id>100</group_id>
 <submitter>nobody</submitter>
 <assignee>nobody</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1118337608</submit_date>
-<close_date>0</close_date>
+<close_date>1156079176</close_date>
 <priority>5</priority>
 <summary>How to install?</summary>
 <details>Yes, I know, I'm a super-n00b and I'm really annoying, 
@@ -15917,19 +16085,33 @@ Hope it helps</details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>3828515</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1156079176</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3828516</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1156079176</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1229014</url>
 <id>1229014</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>100</category_id>
 <group_id>100</group_id>
 <submitter>nobody</submitter>
 <assignee>nobody</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1119967218</submit_date>
-<close_date>0</close_date>
+<close_date>1156079176</close_date>
 <priority>5</priority>
 <summary>How to change Device Location?</summary>
 <details>When I first installed jajuk is just set something as
@@ -15955,21 +16137,35 @@ elsewhere.</details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>3828513</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1156079176</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3828514</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1156079176</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1231697</url>
 <id>1231697</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>100</category_id>
 <group_id>100</group_id>
 <submitter>nobody</submitter>
 <assignee>nobody</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1120363518</submit_date>
-<close_date>0</close_date>
+<close_date>1156079176</close_date>
 <priority>5</priority>
-<summary>Doesn't remember devices</summary>
+<summary>Doesn\\\'t remember devices</summary>
 <details>I can set up a device that's mapped to a folder on my 
 hard drive, but it's not remembered when I restart.
 
@@ -15991,19 +16187,47 @@ the probleme still occurs.</details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>3828510</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1156079176</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3828511</id>
+<field_name>summary</field_name>
+<old_value>Doesn't remember devices</old_value>
+<date>1156079176</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3828512</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1156079176</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3828527</id>
+<field_name>summary</field_name>
+<old_value>Doesn\'t remember devices</old_value>
+<date>1156079196</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1356564</url>
 <id>1356564</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>100</category_id>
 <group_id>100</group_id>
 <submitter>nobody</submitter>
 <assignee>nobody</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1131976129</submit_date>
-<close_date>0</close_date>
+<close_date>1156079176</close_date>
 <priority>5</priority>
 <summary>OSX main menu throws exception</summary>
 <details>Hi,
@@ -16119,19 +16343,33 @@ test it ?
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>3828508</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1156079176</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3828509</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1156079176</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1371586</url>
 <id>1371586</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>100</category_id>
 <group_id>100</group_id>
 <submitter>patrick71</submitter>
 <assignee>nobody</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1133517398</submit_date>
-<close_date>0</close_date>
+<close_date>1156079175</close_date>
 <priority>5</priority>
 <summary>Change/specify collection</summary>
 <details>Hi,
@@ -16235,19 +16473,33 @@ Thanks!</details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>3828506</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1156079175</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3828507</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1156079175</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1373598</url>
 <id>1373598</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>100</category_id>
 <group_id>100</group_id>
 <submitter>patrick71</submitter>
 <assignee>nobody</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1133794691</submit_date>
-<close_date>0</close_date>
+<close_date>1156079175</close_date>
 <priority>5</priority>
 <summary>Commandline tools?</summary>
 <details>Is there any possibility of updating the collection.xml
@@ -16278,19 +16530,33 @@ automaticaly... </details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>3828504</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1156079175</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3828505</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1156079175</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1375817</url>
 <id>1375817</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>100</category_id>
 <group_id>100</group_id>
 <submitter>nobody</submitter>
 <assignee>nobody</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1134000745</submit_date>
-<close_date>0</close_date>
+<close_date>1156079175</close_date>
 <priority>5</priority>
 <summary>selection of sound device</summary>
 <details>would it be possible to integrate a configuration
@@ -16335,19 +16601,33 @@ egerci
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>3828502</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1156079175</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3828503</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1156079175</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1384961</url>
 <id>1384961</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>100</category_id>
 <group_id>100</group_id>
 <submitter>guyd</submitter>
 <assignee>nobody</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1134979033</submit_date>
-<close_date>0</close_date>
+<close_date>1156079175</close_date>
 <priority>5</priority>
 <summary>concurrent access over network</summary>
 <details>Just came across the Jajuk project and it looks really
@@ -16446,19 +16726,33 @@ Bertrand.</details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>3828500</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1156079175</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3828501</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1156079175</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1385239</url>
 <id>1385239</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>571113</category_id>
 <group_id>340385</group_id>
 <submitter>nobody</submitter>
 <assignee>nobody</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1135005841</submit_date>
-<close_date>0</close_date>
+<close_date>1156079175</close_date>
 <priority>5</priority>
 <summary>Shortcut issues under mandriva</summary>
 <details>Hello,
@@ -16652,21 +16946,35 @@ Arnaud</details>
 <date>1135130051</date>
 <updator>bflorat</updator>
 </history_entry>
+<history_entry>
+<id>3828498</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1156079175</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3828499</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1156079175</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1434149</url>
 <id>1434149</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>100</category_id>
 <group_id>100</group_id>
 <submitter>nobody</submitter>
 <assignee>nobody</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1140271918</submit_date>
-<close_date>0</close_date>
+<close_date>1156079175</close_date>
 <priority>5</priority>
-<summary>Can't find some options...</summary>
+<summary>Can\\\'t find some options...</summary>
 <details>Hello, and first of all, thanks for this great program!!! 
 I'm running under Debian etch and i've got some
 problems with tags. I've read that jajuk can't modify
@@ -16684,19 +16992,47 @@ wrong section of the forum... sorry for that!</details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>3828495</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1156079175</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3828496</id>
+<field_name>summary</field_name>
+<old_value>Can't find some options...</old_value>
+<date>1156079175</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3828497</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1156079175</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3828526</id>
+<field_name>summary</field_name>
+<old_value>Can\'t find some options...</old_value>
+<date>1156079196</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1470977</url>
 <id>1470977</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>100</category_id>
 <group_id>100</group_id>
 <submitter>nobody</submitter>
 <assignee>nobody</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1145131592</submit_date>
-<close_date>0</close_date>
+<close_date>1156079174</close_date>
 <priority>5</priority>
 <summary>great program!!</summary>
 <details>
@@ -16903,21 +17239,35 @@ moorlag  e.mail: moorlag26@hotmail.com</details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>3828493</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1156079174</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3828494</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1156079174</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1496412</url>
 <id>1496412</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>571113</category_id>
 <group_id>100</group_id>
 <submitter>nobody</submitter>
 <assignee>nobody</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1148825608</submit_date>
-<close_date>0</close_date>
+<close_date>1156079133</close_date>
 <priority>5</priority>
-<summary>Won't start because program claims java not present</summary>
+<summary>Won\'t start because program claims java not present</summary>
 <details>&#34;Check your path points to the right JRE (type java --
 version in case of problem) and not to gcj or others 
 JVM than are not supported by Jajuk, it is a common 
@@ -16949,19 +17299,40 @@ JRE directory&#62;/bin:$PATH, log again and retry.</details>
 <attachments>
 </attachments>
 <history_entries>
+<history_entry>
+<id>3828491</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1156079133</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3828492</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1156079133</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3828525</id>
+<field_name>summary</field_name>
+<old_value>Won't start because program claims java not present</old_value>
+<date>1156079196</date>
+<updator>bflorat</updator>
+</history_entry>
 </history_entries>
 </tracker_item>
 <tracker_item>
 <url>https://sourceforge.net/support/tracker.php?aid=1525692</url>
 <id>1525692</id>
-<status_id>1</status_id>
+<status_id>2</status_id>
 <category_id>100</category_id>
 <group_id>100</group_id>
 <submitter>louie55</submitter>
 <assignee>bflorat</assignee>
-<closer>nobody</closer>
+<closer>bflorat</closer>
 <submit_date>1153371888</submit_date>
-<close_date>0</close_date>
+<close_date>1156079118</close_date>
 <priority>5</priority>
 <summary>How to play albums in Track Order??</summary>
 <details>When I play an album from &#34;Catalog Perspective&#34;, it
@@ -17005,6 +17376,20 @@ for each file ? (otherwise, alphabetical order is used) </details>
 <field_name>assigned_to</field_name>
 <old_value>100</old_value>
 <date>1153429580</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3828489</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1156079118</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3828490</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1156079118</date>
 <updator>bflorat</updator>
 </history_entry>
 </history_entries>
@@ -17092,6 +17477,121 @@ Done in qdwizard 1.5</details>
 <date>1153776174</date>
 <updator>bflorat</updator>
 </history_entry>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1540994</url>
+<id>1540994</id>
+<status_id>2</status_id>
+<category_id>100</category_id>
+<group_id>100</group_id>
+<submitter>louie55</submitter>
+<assignee>nobody</assignee>
+<closer>bflorat</closer>
+<submit_date>1155686011</submit_date>
+<close_date>1156079094</close_date>
+<priority>5</priority>
+<summary>How to add just 1 song to playlist?</summary>
+<details>Whenever I double-click on a song in logical view, it 
+adds the whole album to the playlist. It does the 
+same thing if I right-click on the song and 
+click &#34;Play&#34;. I only want to add that ONE song to the 
+playlist. Not the WHOLE album. Is this possible?
+
+Thanks.
+
+Louie</details>
+<followups>
+<followup>
+<id>2093278</id>
+<submitter>bflorat</submitter>
+<date>1155748758</date>
+<details>Logged In: YES 
+user_id=363565
+
+When you double click on a track or draging a track to
+playlist editor view, the default behavior is to play only
+this track alone (tracks you see in italic are planned
+tracks: tracks that will be played when selection is done).
+Note that you can change the push or play behavior in the
+Parameter view/ option tab or using a right click on the
+track -&#62; push to add a track  at the end of a selection.
+what do you want to do? play only a track and stopping sound
+(in this case, click on the continue mode switch near repeat
+button at top) ? playing a track in repeat mode (in this
+case, make a right click -&#62; play repeat) ? 
+
+Please have a look at
+http://jajuk.sourceforge.net/jajuk-hs/default/html/pm.html </details>
+</followup>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+<history_entry>
+<id>3828487</id>
+<field_name>status_id</field_name>
+<old_value>1</old_value>
+<date>1156079094</date>
+<updator>bflorat</updator>
+</history_entry>
+<history_entry>
+<id>3828488</id>
+<field_name>close_date</field_name>
+<old_value>0</old_value>
+<date>1156079094</date>
+<updator>bflorat</updator>
+</history_entry>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1546507</url>
+<id>1546507</id>
+<status_id>1</status_id>
+<category_id>100</category_id>
+<group_id>100</group_id>
+<submitter>nobody</submitter>
+<assignee>nobody</assignee>
+<closer>nobody</closer>
+<submit_date>1156495892</submit_date>
+<close_date>0</close_date>
+<priority>5</priority>
+<summary>DJ Feature not working</summary>
+<details>Hi,
+I tried JAJUK on windows and Linux with the correct
+java enviroment.
+
+Everything is working fine but the Dj Feature.
+
+I open Manage DJs (and it opens) but I can't create a
+new DJ (the window is stuck at the Digital DJ Wizard).
+
+Is there a correct way to create a dj?
+
+Am I doing something wrong?
+
+Thanks for your time.
+
+dREI</details>
+<followups>
+<followup>
+<id>2102320</id>
+<submitter>nobody</submitter>
+<date>1156507484</date>
+<details>Logged In: NO 
+
+Hi, 
+
+What do you mean by &#34;stuck&#34; ? frozen ? The best thing to 
+do now should be to send a Bug report using the Quality 
+Agent (Help-&#62;Report an issue) so we would get debug logs.
+
+Thanks for feedback.</details>
+</followup>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
 </history_entries>
 </tracker_item>
 </tracker_items>
@@ -21185,6 +21685,227 @@ user_id=363565
 Doesn't Custom Properties feature
 (http://jajuk.sourceforge.net/jajuk-hs/default/html/using_custom_properties.html)
 solves your problem ?</details>
+</followup>
+<followup>
+<id>2091025</id>
+<submitter>nobody</submitter>
+<date>1155588839</date>
+<details>Logged In: NO 
+
+Thanks for pointing this and sorry for not having seen it
+myself. This really great. Jajuk is quite powerful indeed :)
+
+Still, I believe if some of these properties could be turned
+to tags as those displayed on Flickr, it would be really cool.</details>
+</followup>
+<followup>
+<id>2091053</id>
+<submitter>bflorat</submitter>
+<date>1155590571</date>
+<details>Logged In: YES 
+user_id=363565
+
+you mean associate a set of words to a music file to find it
+later ? If you write this words (comma separated for ie) to
+&#34;comment&#34; property, you should be able to find them using
+the table view filter isn't it ?
+Do mean we should add a kind of &#34;add a keyword&#34; feature on
+any jajuk item (file,album,artist...)?
+</details>
+</followup>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1540973</url>
+<id>1540973</id>
+<status_id>1</status_id>
+<category_id>100</category_id>
+<group_id>100</group_id>
+<submitter>louie55</submitter>
+<assignee>nobody</assignee>
+<closer>nobody</closer>
+<submit_date>1155681222</submit_date>
+<close_date>0</close_date>
+<priority>5</priority>
+<summary>Refresh Smaller Groups than the Whole Library</summary>
+<details>It would great if you could &#34;Refresh&#34; just one folder 
+or a group of folders, instead of having to refresh 
+the WHOLE music library if you change 1 song or 
+rename 1 song. Especially for people like me that 
+have a LARGE music library. I hate to have to wait 
+for the whole library to refresh just because I 
+changed a few mp3 files or tags. The natural action I 
+wanted to take was to right-click on the album and 
+click &#34;Refresh&#34; or &#34;Refresh Folder&#34; in the context 
+menu. But the option wasn't there. If you can do this 
+by some other means, let me know. If not, then I am 
+officially requesting it.
+
+Thanks.
+
+Louie</details>
+<followups>
+<followup>
+<id>2092720</id>
+<submitter>nobody</submitter>
+<date>1155713749</date>
+<details>Logged In: NO 
+
+Why don't you use auto-refresh (set a refresh quick delay 
+in the device configuration) ? this way your collection 
+will be always up-to-date without having to deal with 
+manual refreshing... Where is located your collection ? on 
+an harddisk /external disk or on a file server ?</details>
+</followup>
+<followup>
+<id>2093173</id>
+<submitter>louie55</submitter>
+<date>1155742541</date>
+<details>Logged In: YES 
+user_id=1003260
+
+My collection is on both. On the server computer, I use 
+Jajuk, so the collection is local there, but I also use it 
+on the client computers, so the collection is not local. 
+(Although it is 100Mbps). Anyway, what is the difference 
+between a fast refresh and a &#34;Deep&#34; refresh?? Many times I 
+am changing the tags &#38; even the filenames, so I figured I 
+needed the deep refresh which takes a long time if I do it 
+to the whole library. If a fast refresh will do, then I 
+have no problem with setting up an auto-refresh. But if a 
+deep refresh is needed, then the ability to just refresh a 
+few folders or a single folder would be great.
+
+Louie</details>
+</followup>
+<followup>
+<id>2093268</id>
+<submitter>bflorat</submitter>
+<date>1155748203</date>
+<details>Logged In: YES 
+user_id=363565
+
+A fast refresh will detect all new (or removed) files but is
+not aware of tag changes on an existing file (id3 tags are
+not read again). Deep scan force tags. Auto-refresh performs
+fast refresh so if you want to be aware of tags changed
+outside jajuk, you will have to perform a deep refresh
+manually but jajuk should be smart enough to change tags by
+itself so you will not have to do it...
+
+If you change tags with jajuk, i advice you to use the
+auto-refresh feature (with a delay of saying 30 min) so your
+collection will be always up-to-date automatically (with a
+delay of 30 mins). Do not use a delay too short if your
+collection is really big because it could use a significant
+bandwith.
+
+Please have a try and tell us as we are interrested into
+user feedback.</details>
+</followup>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1545543</url>
+<id>1545543</id>
+<status_id>1</status_id>
+<category_id>100</category_id>
+<group_id>100</group_id>
+<submitter>vehakki</submitter>
+<assignee>nobody</assignee>
+<closer>nobody</closer>
+<submit_date>1156366727</submit_date>
+<close_date>0</close_date>
+<priority>5</priority>
+<summary>number of hits should be shown under playlist</summary>
+<details>Right now only way to see number of hits of a song is
+through its property. I think it would be valuable to
+get how many times the song played somewhere in
+playlist menu. 
+</details>
+<followups>
+<followup>
+<id>2100528</id>
+<submitter>bflorat</submitter>
+<date>1156369662</date>
+<details>Logged In: YES 
+user_id=363565
+
+OK, should be done in 1.3. 
+Thanks for feedback.</details>
+</followup>
+<followup>
+<id>2100532</id>
+<submitter>vehakki</submitter>
+<date>1156369993</date>
+<details>Logged In: YES 
+user_id=1182203
+
+ok that was fast :) I think that is going to be very
+valuable addition, this way one would know if a song was
+played or not. 
+Although it would be more beneficiary to have a playing
+option that would only play unplayed songs. Also one  should
+able to list-play songs based on amount of hits for example.
+
+thanks.</details>
+</followup>
+<followup>
+<id>2101749</id>
+<submitter>bflorat</submitter>
+<date>1156451821</date>
+<details>Logged In: YES 
+user_id=363565
+
+A way to play unplayed tracks in priority ? that's an idea,
+we will think about it indeed...</details>
+</followup>
+</followups>
+<attachments>
+</attachments>
+<history_entries>
+</history_entries>
+</tracker_item>
+<tracker_item>
+<url>https://sourceforge.net/support/tracker.php?aid=1549449</url>
+<id>1549449</id>
+<status_id>1</status_id>
+<category_id>100</category_id>
+<group_id>100</group_id>
+<submitter>vehakki</submitter>
+<assignee>nobody</assignee>
+<closer>nobody</closer>
+<submit_date>1156959444</submit_date>
+<close_date>0</close_date>
+<priority>5</priority>
+<summary>easier rating system</summary>
+<details>as far as i know to be able to rate a song you need to
+open properties, this is not very intuitive. We should
+have one click easy to access rating system
+
+thanks
+</details>
+<followups>
+<followup>
+<id>2108111</id>
+<submitter>nobody</submitter>
+<date>1157009697</date>
+<details>Logged In: NO 
+
+No, rating is automatic (if i remember well, +1 after 20 
+sec of playback and +1 again at the end of the song). You 
+can change manually the rating (one song by one or 
+recursilvely) but it's absolutely not necessary. Note that 
+you can also create custom rating systems using Custom 
+Properties (see the manual).</details>
 </followup>
 </followups>
 <attachments>
