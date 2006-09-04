@@ -5,6 +5,12 @@
     <author email='bflorat@users.sourceforge.net'>Bertrand Florat</author>
   </properties>
   <body>
+    <release version='1.2.2' date='2006-09-04' description='Fixes'>
+    	<action dev='bflorat' type='fix' issue=''>DJ wizard creation doesn't work [8]</action>
+    	<action dev='bflorat' type='fix' issue=''>No cover icon not found in catalog view [4]</action>
+    	<action dev='bflorat' type='fix' issue=''>Wrong message if none novelties available [2]</action>
+    	<action dev='bflorat' type='fix' issue=''>Useless perspective reset when upgrading to 1.2.x [5]</action>
+    </release>
     <release version='1.2.1' date='2006-08-14' description='Fixes'>
     	<action dev='bflorat' type='fix' issue=''>Fixed online covers grabbing problem [7]</action>
     	<action dev='bflorat' type='fix' issue=''>Few minor fixes including an ambiences sorting issue [3]</action>

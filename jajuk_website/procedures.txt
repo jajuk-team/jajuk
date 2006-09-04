@@ -58,7 +58,7 @@ o- Release on SF
 
 *Web site*
 o- Update and set date to release in changes.xml
-o- Change download.html file for file names
+o- Change download.html file for file names. CAUTION: KEEP X.Y link for NOTES.
 o- Backup SF data (php file)
 - Commit all changes in jajuk_website project- Commit all changes in jajuk_website project
 - Generate maven site (make_jajuk site)
@@ -108,9 +108,9 @@ API ADDITION PROCEDURE
 *********************************************************
 API CHANGE PROCEDURE
 - Change file in lib directory
-- Change MANIFEST (check new versions)
-- Change project.xml maven file for dependencies
-- Change jnlp file
+- Change dist-files/packaging/MANIFEST (check new versions)
+- Change JAJUK_WEBSITE project/project.xml maven file for dependencies
+- Change packaging/jws/jnlp file
 - Sign all jar (jarsigner myjar.jar jajukteam)
 *********************************************************
 API REMOVE PROCEDURE
