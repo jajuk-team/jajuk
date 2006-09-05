@@ -32,13 +32,14 @@ fi
 
 #### JWS TASK ####
 if [ "$1" = "jws" ]; then
- if [ "$2" = "" ]; then
-  echo $USAGE
-  exit 1  
- fi
  cd /tmp/jajuk-dist/jws
- scp -C -r * bflorat@jajuk.sourceforge.net:/home/groups/j/ja/jajuk/htdocs/jws/$2/
- exit 0
+ if [ "$2" = "test" ]; then
+  scp -C -r * bflorat@trantor:/srv/www/htdocs/jws/test/
+  exit 0
+ else 
+  scp -C -r * bflorat@jajuk.sourceforge.net:/home/groups/j/ja/jajuk/htdocs/jws/$2/
+  exit 0
+ fi
 fi
 
 #### SITE TASK ####
