@@ -38,6 +38,7 @@ public class DJConfigurationAction extends ActionBase {
     }
 
     public void perform(ActionEvent evt) {
-        new DigitalDJWizard(); //display the DJ wizard
+        DigitalDJWizard wizard = new DigitalDJWizard(); //display the DJ wizard
+        wizard.show();
     }
 }

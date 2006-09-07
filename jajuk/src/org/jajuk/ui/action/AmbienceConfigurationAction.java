@@ -38,6 +38,7 @@ public class AmbienceConfigurationAction extends ActionBase {
     }
 
     public void perform(ActionEvent evt) {
-        new AmbienceWizard(); //display the ambience wizard
+        AmbienceWizard ambience = new AmbienceWizard(); //display the ambience wizard
+        ambience.show();
     }
 }
