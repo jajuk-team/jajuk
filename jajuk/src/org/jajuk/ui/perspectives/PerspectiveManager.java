@@ -77,7 +77,8 @@ public class PerspectiveManager  implements ITechnicalStrings {
         registerDefaultPerspectives();
         //upgrade code; if > 1.1, do not overwrie default conf by user conf
         String sRelease = ConfigurationManager.getProperty(CONF_RELEASE);
-        if (sRelease == null || !sRelease.matches(JAJUK_VERSION+".*")){ //$NON-NLS-1$
+        //See if it is a new major 'x.y' release: 1.2 != 1.3 for instance
+        if (sRelease == null || !sRelease.substring(0,3).equals(JAJUK_VERSION.substring(0,3))){ //$NON-NLS-1$
             ConfigurationManager.setProperty(CONF_RELEASE,JAJUK_VERSION);
             //upgrade message
             if (sRelease != null){
