@@ -19,6 +19,7 @@
 package org.jajuk;
 
 import java.awt.BorderLayout;
+import java.awt.Font;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
@@ -212,7 +213,7 @@ public class Main implements ITechnicalStrings {
                         //  Set look and feel, needs local to be set for error messages
                         LNFManager.setLookAndFeel(ConfigurationManager.getProperty(CONF_OPTIONS_LNF));
                         sc = new JSplash(new URL (IMAGES_SPLASHSCREEN),true,true,false,JAJUK_COPYRIGHT,
-                            JAJUK_VERSION+" "+JAJUK_VERSION_DATE,null,null); //$NON-NLS-1$
+                            JAJUK_VERSION+" "+JAJUK_VERSION_DATE,new Font("Dialog",Font.TRUETYPE_FONT,12),null); //$NON-NLS-1$
                         sc.setTitle(Messages.getString("JajukWindow.3")); //$NON-NLS-1$
                         sc.splashOn();
                     } catch (MalformedURLException e) {

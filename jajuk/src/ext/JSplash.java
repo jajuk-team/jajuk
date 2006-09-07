@@ -143,7 +143,7 @@ public final class JSplash extends JFrame implements ITechnicalStrings{
             m_progress.setMaximum( 100 );
             m_progress.setMinimum( 0 );
             m_progress.setValue( 0 );
-            m_progress.setFont(new Font("Dialog",Font.BOLD,14)); //$NON-NLS-1$
+            m_progress.setFont(new Font("Dialog",Font.BOLD,15)); //$NON-NLS-1$
         }
 
         // add the components to the panel

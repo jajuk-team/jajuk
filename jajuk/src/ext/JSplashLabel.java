@@ -112,12 +112,12 @@ public final class JSplashLabel extends JLabel {
             }            
             //Draw copyright notice
             FontMetrics fm = g.getFontMetrics();
-            int width = fm.stringWidth(m_copyright) + 100;
-            int height = fm.getHeight();
-            g.drawString(m_copyright, getWidth() - width, (getHeight() - height) - 30);
+            int width = fm.stringWidth(m_copyright) + 50;
+            int height = fm.getHeight() ;
+            g.drawString(m_copyright, getWidth() - width, (getHeight() - height) - 20);
             
             //Draw release 
-            g.drawString(m_text, getWidth() - width, getHeight() - height);
+            g.drawString(m_text, getWidth() - width, (getHeight() - height) );
         }
     }
     

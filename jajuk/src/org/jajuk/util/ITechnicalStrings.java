@@ -114,7 +114,8 @@ public interface ITechnicalStrings {
 		
 	// icons
 	public static final String ICON_LOGO = PATH_ICONS + "64x64/jajuk-icon_64x64.png";
-	public static final String ICON_LOGO_FRAME = PATH_ICONS + "16x16/jajuk-icon_16x16.png";
+	public static final String ICON_TRAY = PATH_ICONS + "22x22/jajuk-icon_22x22.png";
+    public static final String ICON_LOGO_FRAME = PATH_ICONS + "16x16/jajuk-icon_16x16.png";
 	public static final String ICON_REPEAT = PATH_ICONS + "16x16/repeat.png";
 	public static final String ICON_SHUFFLE = PATH_ICONS + "16x16/shuffle.png"; 
 	public static final String ICON_CONTINUE = PATH_ICONS + "16x16/continue.png";

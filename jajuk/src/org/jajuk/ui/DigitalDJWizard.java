@@ -129,8 +129,8 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
             bgTypes.add(jrbTransitions);
             bgTypes.add(jrbAmbiance);
             add(jrbTransitions,"1,1"); //$NON-NLS-1$
-            add(jrbProp,org.jajuk.ui.Messages.getString("DigitalDJWizard.19")); //$NON-NLS-1$
-            add(jrbAmbiance,org.jajuk.ui.Messages.getString("DigitalDJWizard.20")); //$NON-NLS-1$
+            add(jrbProp,"1,3"); //$NON-NLS-1$
+            add(jrbAmbiance,"1,5"); //$NON-NLS-1$
         }
   
         /* (non-Javadoc)
