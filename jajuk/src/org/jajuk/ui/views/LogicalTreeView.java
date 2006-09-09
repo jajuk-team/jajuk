@@ -949,14 +949,23 @@ ActionListener, Observer {
                 	filechooser.setCurrentDirectory(new java.io.File(System.getProperty("user.home"))); //$NON-NLS-1$ 
                 	filechooser.setDialogTitle(Messages.getString("LogicalTreeView.33"));
                 	filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);   
+                	filechooser.setDialogType(JFileChooser.SAVE_DIALOG);                	
                 	
                 	int returnVal = filechooser.showSaveDialog(LogicalTreeView.this);
                 	
                 	if (returnVal == JFileChooser.APPROVE_OPTION) {
-                		java.io.File file = filechooser.getSelectedFile();
+                		java.io.File file = filechooser.getSelectedFile();                		
+                		
                 		String filepath = file.getAbsolutePath();
-                		String filetypename = Util.getExtension(file);
-                		String result = null; //$NON-NLS-1$
+                		String filetypename = Util.getExtension(file);                		
+                		
+                		if (filetypename.equals("")) {
+                			ExportFileFilter filter = (ExportFileFilter)filechooser.getFileFilter();                			
+                			filetypename = filter.getExtension();
+                			filepath += "." + filetypename;
+                		}
+                		
+                		String result = null; //$NON-NLS-1$                		
                 		
                 		// If we are exporting to xml...
                 		if (filetypename.equals("xml")) { //$NON-NLS-1$
@@ -1003,7 +1012,7 @@ ActionListener, Observer {
                 				Log.error("Could not create report.");
                 			}
                 		// Else if we are exporting to html...
-                		} else if (filetypename.equals("html")) {
+                		} else if (filetypename.equals("html") || filetypename.equals("htm")) {
                 			HTMLExporter htmlExporter = HTMLExporter.getInstance();
                 			
                 			// If we are exporting an album...

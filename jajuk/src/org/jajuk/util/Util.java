@@ -183,9 +183,11 @@ public class Util implements ITechnicalStrings {
 		String s = file.getName();
 		StringTokenizer st = new StringTokenizer(s, "."); //$NON-NLS-1$
 		String sExt = ""; //$NON-NLS-1$
-		while (st.hasMoreTokens()) {
-			sExt = st.nextToken();
-		}
+		if (st.countTokens() > 1) {
+			while (st.hasMoreTokens()) {
+				sExt = st.nextToken();
+			}
+		}		
 		return sExt.toLowerCase();
 	}
 

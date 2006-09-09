@@ -73,6 +73,7 @@ import org.jajuk.base.Track;
 import org.jajuk.base.exporters.ExportFileFilter;
 import org.jajuk.base.exporters.HTMLExporter;
 import org.jajuk.base.exporters.XMLExporter;
+import org.jajuk.base.exporters.PDFExporter;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.CDDBWizard;
 import org.jajuk.ui.DeviceWizard;
@@ -952,6 +953,15 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         	filechooser.setCurrentDirectory(new java.io.File(System.getProperty("user.home"))); //$NON-NLS-1$ 
         	filechooser.setDialogTitle(Messages.getString("PhysicalTreeView.58"));
         	filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);   
+       /* 	java.text.DateFormat dateFormat = new java.text.SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        	java.util.Date date = new java.util.Date();
+        	try {
+        		filechooser.setSelectedFile(new java.io.File("JajukMusicReport-"+dateFormat.parse(dateFormat.format(date))));
+        	} catch (java.text.ParseException ex) {
+        		Log.error(ex);
+        		filechooser.setSelectedFile(new java.io.File("JajukMusicReport"));
+        	}*/
+        	
         	
         	int returnVal = filechooser.showSaveDialog(PhysicalTreeView.this);
         	
@@ -959,6 +969,13 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         		java.io.File file = filechooser.getSelectedFile();
         		String filepath = file.getAbsolutePath();
         		String filetypename = Util.getExtension(file);
+        		
+        		if (filetypename.equals("")) {
+        			ExportFileFilter filter = (ExportFileFilter)filechooser.getFileFilter();                			
+        			filetypename = filter.getExtension();
+        			filepath += "." + filetypename;
+        		}
+        		
         		String result = ""; //$NON-NLS-1$
         		
         		// If we are exporting to xml...
@@ -987,7 +1004,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         				Log.error("Could not create report.");
         			}
         		// Else if we are exporting to html...
-        		} else if (filetypename.equals("html")) {
+        		} else if (filetypename.equals("html") || filetypename.equals("htm")) {
         			HTMLExporter htmlExporter = HTMLExporter.getInstance();
         			
         			// If we are exporting a directory...
@@ -1011,9 +1028,22 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         			} else {
         				Log.error("Could not create report.");
         			}
-        		}
-        	}   	
-        	
+        		// Else if we are exporting to pdf...
+        		} /*else if (filetypename.equals("pdf")) {
+        			boolean bResult = false;
+        			PDFExporter pdfExporter = PDFExporter.getInstance();
+        			
+        			// If we are exporting a directory...
+        			if (e.getSource() == jmiDirExport) {
+        				Directory dir = ((DirectoryNode)paths[0].getLastPathComponent()).getDirectory();
+        				bResult = pdfExporter.process(dir, filepath);
+        			}
+        			
+        			if (bResult == false) {
+        				Log.error("Could not create the pdf file.");
+        			}
+        		}*/
+        	}   	        	
         }
         else if (alFiles!= null  && (e.getSource() == jmiDirPush || e.getSource() == jmiDevPush)){
             FIFO.getInstance().push(Util.createStackItems(Util.applyPlayOption(alFiles),

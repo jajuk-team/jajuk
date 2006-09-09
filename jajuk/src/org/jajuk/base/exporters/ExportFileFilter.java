@@ -33,8 +33,19 @@ public class ExportFileFilter extends FileFilter {
 	 * Constructor
 	 * @param Takes a String that represents the file to be filtered. Example: ".htm" or ".pdf"
 	 */
-	public ExportFileFilter(String filtertype) {
-		sFilterType = filtertype;
+	public ExportFileFilter(String filtertype) throws NullPointerException, IllegalArgumentException {
+		if (filtertype != null) {
+			if (filtertype.length() != 0) {
+				if (filtertype.charAt(0) != '.') {
+					filtertype = "." + filtertype;
+				}
+				sFilterType = filtertype;
+			} else {
+				throw new IllegalArgumentException();
+			}
+		} else {
+			throw new NullPointerException();
+		}		
 	}
 	
 	/**
@@ -60,5 +71,13 @@ public class ExportFileFilter extends FileFilter {
 	 */
 	public String getDescription() {
 		return sFilterType + " File";
+	}
+	
+	/**
+	 * 
+	 * @return Returns the file extension.
+	 */
+	public String getExtension() {
+		return sFilterType.substring(1);
 	}
 }
