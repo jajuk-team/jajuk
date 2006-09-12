@@ -30,6 +30,7 @@
   <property name='uploaddir' value='${rootdir}/upload'/>
   <property name='helpdir' value='${rootdir}/help'/>
   <property name='jwsdir' value='${rootdir}/jws'/>
+  
 	  
   <target name='all' description='o Create the entire package' depends='startup,prepare_upload'>
   </target>
@@ -399,10 +400,10 @@
         izPackDir='/prog/IzPack'/>
       </target>
       
-   <target name='jws' description='o Create the Java Web Start distribution' depends='jar,helpsetjar'>
+   <target name='jws' description='o Create the Java Web Start war distribution' depends='jar,helpsetjar'>
 	<!--Note that all jars (including jajuk-native.jar must be signed with the same certificate), we do this manually -->
 	<mkdir dir='${jwsdir}'/>
-    <mkdir dir='${jwsdir}/windows'/>
+	<mkdir dir='${jwsdir}/windows'/>
     <mkdir dir='${jwsdir}/linux'/>
     <!--Copy files -->
     <copy todir='${jwsdir}'>
@@ -412,11 +413,15 @@
     	<fileset file='${distdir}/bin/*.jar'/>
     </copy>
     <copy todir='${jwsdir}'>
-    	<fileset file='${basedir}/dist-files/packaging/jws/*.*'/>
+    	<fileset file='${basedir}/dist-files/packaging/jws/*.jnlp'/>
     </copy>
     <copy todir='${jwsdir}'>
-    	<fileset file='${basedir}/dist-files/images/jajuk-splashscreen.png'/>
+    	<fileset file='${basedir}/dist-files/packaging/jws/*.gif'/>
     </copy>
+    <copy todir='${jwsdir}'>
+    	<fileset file='${basedir}/dist-files/images/included/jajuk-splashscreen.jpg'/>
+    </copy>
+   
     <!--Copy native jars -->
     <copy todir='${jwsdir}/linux'>
     	<fileset file='${basedir}/dist-files/packaging/jws/linux/jdic-native.jar'/>
@@ -434,6 +439,12 @@
   		<include name='*.jnlp'/>
   		<replacetoken>JWS_DEPLOY_REPLACED_BY_ANT</replacetoken>
  	</replace>
+ 	<!-- Create the war -->
+ 	<war destfile='${rootdir}/jajuk${test}.war' webxml='${basedir}/dist-files/packaging/jws/web.xml'>
+	  <fileset dir='${jwsdir}'/>
+  	  <fileset file='${jwsdir}'/>
+  	  <lib file='${basedir}/dist-files/packaging/jws/jnlp-servlet.jar'/>
+  	</war>
   </target>
       
       

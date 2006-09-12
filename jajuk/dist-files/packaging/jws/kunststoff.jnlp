@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <jnlp spec="1.0+" codebase="http://jajuk.sourceforge.net/jws/JWS_DEPLOY_REPLACED_BY_ANT" href="kunststoff.jnlp">
+    <jnlp spec="1.0+" codebase="$$codebase" href="kunststoff.jnlp">
     <information>
         <title>Kunststoff</title>
         <vendor>Incors</vendor>

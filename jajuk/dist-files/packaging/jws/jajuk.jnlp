@@ -1,13 +1,13 @@
  <?xml version="1.0" encoding="utf-8"?> 
     <!-- JNLP File for Jajauk --> 
-    <jnlp spec="1.0+" codebase="http://jajuk.sourceforge.net/jws/JWS_DEPLOY_REPLACED_BY_ANT" href="jajuk.jnlp"> 
+    <jnlp spec="1.0+" codebase="$$codebase" href="jajuk.jnlp"> 
         <information> 
             <title>Jajuk</title> 
             <vendor>Jajuk team</vendor> 
             <description>Jajuk advanced jukebox</description> 
            <description kind="short">Jajuk advanced jukebox</description> 
             <icon href="jajuk-icon_64x64.gif"/>
-		    <icon kind="splash" href="jajuk-splashscreen.png"/>
+		    <icon kind="splash" href="jajuk-splashscreen.jpg"/>
 		    <shortcut online="true">
       			<desktop/>
       			<menu submenu="Jajuk"/>
@@ -63,6 +63,6 @@
        </resources>
       <application-desc main-class="org.jajuk.Main">
       	<argument>-notaskbar</argument>
-      	<argument>TEST_FLAG_REPLACED_BY_ANT</argument>
+      	<argument>-test</argument>
       </aplication-desc>
     </jnlp>

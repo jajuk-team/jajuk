@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <jnlp spec="1.0+" codebase="http://jajuk.sourceforge.net/jws/JWS_DEPLOY_REPLACED_BY_ANT" href="infonode_docking_windows.jnlp">
+    <jnlp spec="1.0+" codebase="$$codebase" href="infonode_docking_windows.jnlp">
     <information>
         <title>InfonodeDockingWindows</title>
         <vendor>NNL Technology AB</vendor>
