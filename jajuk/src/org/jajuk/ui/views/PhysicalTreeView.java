@@ -73,7 +73,6 @@ import org.jajuk.base.Track;
 import org.jajuk.base.exporters.ExportFileFilter;
 import org.jajuk.base.exporters.HTMLExporter;
 import org.jajuk.base.exporters.XMLExporter;
-import org.jajuk.base.exporters.PDFExporter;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.CDDBWizard;
 import org.jajuk.ui.DeviceWizard;
