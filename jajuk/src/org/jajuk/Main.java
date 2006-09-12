@@ -751,6 +751,12 @@ public class Main implements ITechnicalStrings {
                 || sRelease.matches("1.1.*")){ //$NON-NLS-1$
             AmbienceManager.getInstance().createDefaultAmbiences();
         }
+        //- For Jajuk < 1.3 : changed track pattern from %track to %title
+        String sPattern = ConfigurationManager.getProperty(CONF_REFACTOR_PATTERN);
+        if (sPattern.contains("track")){
+            ConfigurationManager.setProperty(CONF_REFACTOR_PATTERN, 
+                sPattern.replaceAll("track", "title"));
+        }
         
     }
     
