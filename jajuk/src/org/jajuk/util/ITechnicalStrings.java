@@ -725,7 +725,7 @@ public interface ITechnicalStrings {
     public static final String PATTERN_ALBUM = "%album";
     public static final String PATTERN_GENRE = "%genre";
     public static final String PATTERN_YEAR = "%year";
-    public static final String PATTERN_TRACKNAME = "%track";
+    public static final String PATTERN_TRACKNAME = "%title";
     public static final String PATTERN_TRACKORDER = "%n";
     public static final String DEFAULT_REORG_PATTERN = PATTERN_ARTIST+"/"+PATTERN_YEAR+" - "+PATTERN_ALBUM+"/"+PATTERN_TRACKORDER+" - "+PATTERN_TRACKNAME;
         
