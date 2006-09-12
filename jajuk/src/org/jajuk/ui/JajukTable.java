@@ -22,7 +22,6 @@ package org.jajuk.ui;
 
 import java.awt.Color;
 import java.awt.event.MouseEvent;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -34,6 +33,7 @@ import javax.swing.table.TableModel;
 
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Util;
 import org.jdesktop.swingx.JXTable;
 import org.jdesktop.swingx.decorator.Highlighter;
 import org.jdesktop.swingx.decorator.HighlighterPipeline;
@@ -220,7 +220,7 @@ public class JajukTable extends JXTable implements ITechnicalStrings{
 		    return ((IconLabel)o).getTooltip(); 
 		}
         else if(o instanceof Date){
-            return new SimpleDateFormat().format((Date)o); 
+            return Util.getLocaleDateFormatter().format((Date)o); 
         }
 		else{
 		    return o.toString();

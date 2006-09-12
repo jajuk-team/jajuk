@@ -98,11 +98,11 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
         vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_TRACK_YEAR));
         vId.add(XML_TRACK_YEAR);
         
-        vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_FILE_DATE));
-        vId.add(XML_FILE_DATE);
-        
         vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_DIRECTORY));
         vId.add(XML_DIRECTORY);
+        
+        vColNames.add(Messages.getString("Property_file_date"));
+        vId.add(XML_FILE_DATE);
         
         vColNames.add(Messages.getString(PROPERTY_SEPARATOR+XML_TRACK_HITS));
         vId.add(XML_TRACK_HITS);
@@ -244,11 +244,11 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
             //year
             oValues[iRow][13] = file.getTrack().getYear();
             bCellEditable[iRow][13] = true;
-            //file date
-            oValues[iRow][14] = file.getDateValue(XML_FILE_DATE);
-            bCellEditable[iRow][14] = false;
             //directory full path
-            oValues[iRow][15] = file.getDirectory().getAbsolutePath();
+            oValues[iRow][14] = file.getDirectory().getAbsolutePath();
+            bCellEditable[iRow][14] = false;
+            //file date
+            oValues[iRow][15] = file.getDateValue(XML_FILE_DATE);
             bCellEditable[iRow][15] = false;
             //Hits
             oValues[iRow][16] = file.getTrack().getHits();
