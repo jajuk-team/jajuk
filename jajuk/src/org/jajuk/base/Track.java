@@ -19,14 +19,12 @@
  */
 package org.jajuk.base;
 
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Locale;
 
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.IconLabel;
@@ -506,8 +504,7 @@ public class Track extends Item implements Comparable{
             return sbOut.substring(0,sbOut.length()-1); //remove last ','
         }
         else if (XML_TRACK_ADDED.equals(sKey)){
-            DateFormat dateFormatter = DateFormat.getDateInstance(DateFormat.DEFAULT,Locale.getDefault());
-            return dateFormatter.format(getAdditionDate());
+            return Util.getLocaleDateFormatter().format(getAdditionDate());
         }
         else if (XML_ANY.equals(sKey)){
             return getAny();
