@@ -55,6 +55,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 import java.util.StringTokenizer;
@@ -123,6 +124,9 @@ public class Util implements ITechnicalStrings {
 	/** Addition date Date format */
 	private static SimpleDateFormat sdfAdded = new SimpleDateFormat(
 			ADDITION_DATE_FORMAT);
+    
+    /** Default locale format**/
+    private static DateFormat dateFormatter = DateFormat.getDateInstance(DateFormat.DEFAULT,Locale.getDefault());
 
 	/** Jajuk release */
 	private static String sRelease = null;
@@ -1474,7 +1478,7 @@ public class Util implements ITechnicalStrings {
      * @param oData the item (a directory, a file...)
      * @return the files
      */
-    public static ArrayList<org.jajuk.base.File> getfilesFromSelection(Item oData){
+    public static ArrayList<org.jajuk.base.File> getFilesFromSelection(Item oData){
         //computes selection
         ArrayList alSelectedFiles = new ArrayList(100);
         //computes logical selection if any
@@ -1535,6 +1539,14 @@ public class Util implements ITechnicalStrings {
             }
         }
         return out;
+    }
+
+    /**
+     * 
+     * @return locale date formatter
+     */
+    public static DateFormat getLocaleDateFormatter() {
+        return dateFormatter;
     }
     
 }

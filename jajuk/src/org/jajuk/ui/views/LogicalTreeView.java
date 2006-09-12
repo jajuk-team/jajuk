@@ -246,7 +246,7 @@ ActionListener, Observer {
         jmenuCollection.add(jmiCollectionStyle);
         jmenuCollection.add(jmiCollectionAuthor);
         jmenuCollection.add(jmiCollectionAlbum);
-        jmenuCollection.add(new JLabel(Messages.getString("LogicalTreeView.33"))); //$NON-NLS-1$
+        jmenuCollection.addSeparator();
         jmenuCollection.add(jmiCollectionExport);
                 
         // Style menu
