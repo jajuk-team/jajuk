@@ -435,30 +435,20 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
                 lDateLastAdjust = System.currentTimeMillis();
             }
         }
-        else if (e.getSource() == jsPosition && !jsPosition.getValueIsAdjusting()){
-			if (jsPosition.getValueIsAdjusting()){
-                lDateLastAdjust = System.currentTimeMillis();
-            }
-            else{
-                setPosition((float)jsPosition.getValue()/100);
-            }
-
-		}
+        else if (e.getSource() == jsPosition ){
+            lDateLastAdjust = System.currentTimeMillis();
+			setPosition((float)jsPosition.getValue()/100);
+        }
 	}
 
-	private void setPosition(float fPosition){
-        Log.debug("Seeking to: "+fPosition); //$NON-NLS-1$
-        //max position can't be 100% to allow seek properly
-        if (fPosition < 0.0f){
-            fPosition = 0.0f;
-        }
-        if (fPosition == 1.0f){
-            fPosition = 0.99f;
-        }
-        final float f = fPosition;
+    /**
+     * Call a seek
+     * @param fPosition
+     */
+	private void setPosition(final float fPosition){
         new Thread(){
             public void run(){
-                Player.seek(f);        
+                Player.seek(fPosition);        
             }
         }.start();
     }
@@ -558,10 +548,11 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
                         return;
                     }
                     //make sure not to set to old position
-                    if ((System.currentTimeMillis() - lDateLastAdjust) < 4000){
+                    if ((System.currentTimeMillis() - lDateLastAdjust) < 2000){
                         return;
                     }
                     int iPos = (int)(100*JajukTimer.getInstance().getCurrentTrackPosition());
+                    jsPosition.removeChangeListener(CommandJPanel.this);
                     jsPosition.removeChangeListener(CommandJPanel.this);
                     jsPosition.setValue(iPos);
                     jsPosition.addChangeListener(CommandJPanel.this);
