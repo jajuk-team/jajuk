@@ -303,7 +303,8 @@ public interface ITechnicalStrings {
         
 	//players impls
 	public static final String PLAYER_IMPL_JAVALAYER= "org.jajuk.players.JavaLayerPlayerImpl";
-	
+	public static final String PLAYER_IMPL_MPLAYER= "org.jajuk.players.MPlayerPlayerImpl";
+    
 	//tag impls
 	public static final String TAG_IMPL_JID3LIB= "org.jajuk.tag.JID3LibTagImpl";
 	public static final String TAG_IMPL_MP3INFO= "org.jajuk.tag.MP3InfoTagImpl";
@@ -408,7 +409,8 @@ public interface ITechnicalStrings {
 	public static final String EVENT_ADD_HISTORY_ITEM="add history item"; //a new element has been added in the history
 	public static final String EVENT_SPECIAL_MODE="special mode changed"; //special mode (global shuffle, novelties, bestof...) changed
 	public static final String EVENT_PLAY_ERROR="error"; //an error occured during a play
-	public static final String EVENT_MUTE_STATE="mute_state"; //mute state changed
+	public static final String EVENT_PLAY_FINISHED="play_finished"; //send at the end of a track
+    public static final String EVENT_MUTE_STATE="mute_state"; //mute state changed
 	public static final String EVENT_SYNC_TREE_TABLE="sync_tree_table"; //sync table and tree views
     public static final String EVENT_CLEAR_HISTORY="clear history"; //clear history
     public static final String EVENT_WIZARD="launch wizard"; //launch first time wizard
