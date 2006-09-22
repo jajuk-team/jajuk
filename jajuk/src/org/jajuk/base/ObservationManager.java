@@ -84,7 +84,9 @@ public class ObservationManager implements ITechnicalStrings{
 			alComponents = new ArrayList(1);
 			hEventComponents.put(subject,alComponents);
 		}
-		alComponents.add(obj);
+		if (!alComponents.contains(obj)){
+            alComponents.add(obj);
+        }
 	}
 	
 	/**
