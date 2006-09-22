@@ -39,7 +39,7 @@ public class JajukTimer {
     private long lTimeToPlay = 0;
 
     /** A default heartbet time in ms*/
-    public static final int DEFAULT_HEARTBEAT = 1000;
+    public static final int DEFAULT_HEARTBEAT = 800;
     /**
      * @return JajukTimer singleton
      */
