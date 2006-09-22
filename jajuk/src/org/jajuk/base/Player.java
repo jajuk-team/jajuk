@@ -332,6 +332,7 @@ public class Player implements ITechnicalStrings{
             fPosition = 0.99f;
         }
         try{
+            Log.debug("Seeking to: "+fPosition); //$NON-NLS-1$
             playerImpl.seek(fPosition);
         }
         catch(Exception e){ //we can get some errors in unexpected cases
