@@ -24,14 +24,10 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.util.StringTokenizer;
 
-import org.jajuk.base.Event;
 import org.jajuk.base.FIFO;
 import org.jajuk.base.FileManager;
-import org.jajuk.base.ObservationManager;
-import org.jajuk.base.Observer;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 
 
@@ -41,7 +37,7 @@ import org.jajuk.util.log.Log;
  * @author Bertrand Florat
  * @created 16 sept. 2006
  */
-public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Observer {
+public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings {
 
     /** Time elapsed in ms */
     private long lTime = 0;
@@ -65,7 +61,7 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Observ
     int iFadeDuration = 0;
 
     /**Fading state*/
-    boolean bFading = false;
+    private volatile boolean bFading = false;
 
     /**Progress step in ms*/
     private static final int PROGRESS_STEP = 300;//need a fast refresh, especially for fading
@@ -97,14 +93,14 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Observ
      /**
      * Position and elapsed time getter
      */
-    class PositionThread extends Thread{
+    private class PositionThread extends Thread{
         /**Stop flag*/
         volatile boolean bStop = false;
 
         public void run(){
             while (!bStop){ //stop this thread when exiting
                 try {
-                    Thread.sleep(500);
+                    Thread.sleep(PROGRESS_STEP);
                     if (!bPaused && !bStop){ //a get_percent_pos resumes (mplayer issue)
                         sendCommand("get_time_pos");
                     }
@@ -123,62 +119,35 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Observ
     /**
      * Reader : read information from mplayer like position 
      */
-    class ReaderThread extends Thread{
+    private class ReaderThread extends Thread{
         public void run(){
             try {
                 BufferedReader in = new BufferedReader(
                     new InputStreamReader(proc.getInputStream()));
                 String line = null;
                 for (; (line = in.readLine()) != null;) {
-                    Log.debug(line);
-                    if (line.matches("ANS_TIME_POSITION.*")){
+                    if (line.matches(".*ANS_TIME_POSITION.*")){
                         StringTokenizer st = new StringTokenizer(line,"=");
                         st.nextToken();
                         lTime = (int)(Float.parseFloat(st.nextToken()) * 1000);
-                        if (bFading){
-                            //computes the volume we have to sub to reach zero at last progress()
-                            float fVolumeStep = fadingVolume * ((float)500/iFadeDuration);
-                            float fNewVolume = fVolume - (fVolumeStep/2); //divide step by two to make fade softer
-                            //decrease volume by n% of initial volume 
-                            if (fNewVolume < 0){
-                                fNewVolume = 0;
-                            }
-                            try {
-                                setVolume(fNewVolume);
-                            }
-                            catch (Exception e) {
-                                Log.error(e);
-                            }
-                            return;
-                        }
                         //Cross-Fade test
-                        else if (iFadeDuration > 0 
-                                && lDuration != 0
+                        if (!bFading
+                                && iFadeDuration > 0 
+                                && lDuration > 0 //can be null before getting length
                                 && lTime > (lDuration - iFadeDuration)){
                             bFading = true;
+                            //store current volume
                             MPlayerPlayerImpl.this.fadingVolume = fVolume;
-                            new Thread(){
-                                public void run(){
-                                    FIFO.getInstance().finished();
-                                }
-                            }.start();
+                            //force a finished (that doesn't stop but only make a FIFO request to switch track)
+                            FIFO.getInstance().finished();
                         }
                         // test end of length for intro mode
                         if (length != TO_THE_END 
-                                && lDuration != 0 
+                                && lDuration > 0 //can be null before getting length
                                 && (lTime-(fPosition*lDuration)) > length) {
                             // length=-1 means there is no max length
-                            new Thread(){
-                                public void run(){
-                                    try {
-                                        MPlayerPlayerImpl.this.stop();
-                                    }
-                                    catch (Exception e) {
-                                        Log.error(e);
-                                    }
-                                    FIFO.getInstance().finished();
-                                }
-                            }.start();
+                            MPlayerPlayerImpl.this.stop();
+                            FIFO.getInstance().finished();
                         }
                     }
                     else if (line.matches("ANS_LENGTH.*")){
@@ -189,7 +158,22 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Observ
                     //EOF
                     else if (line.matches("Exiting.*End.*")){
                         //Launch next track
-                        ObservationManager.notify(new Event(EVENT_PLAY_FINISHED));
+                        try{
+                            //End of file
+                            // inc rate by 1 if file is fully played
+                            fCurrent.getTrack().setRate(fCurrent.getTrack().getRate() + 1); 
+                            FileManager.getInstance().setRateHasChanged(true); // alert bestof playlist something changed
+                            if (!bFading){ //if using crossfade, ignore end of file
+                                System.gc();//Benefit from end of file to perform a full gc
+                                FIFO.getInstance().finished();
+                            }
+                            else{
+                                bFading = false;
+                            }
+                        }
+                        catch (Exception e) {
+                            Log.error(e);
+                        }
                         break;
                     }
                     //Opening ?
@@ -209,18 +193,7 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Observ
             }
         }
     };
-
-    
-    
-    /**
-     * Constructor
-     */
-    public MPlayerPlayerImpl() {
-        super();
-       //Subscribe to events
-        ObservationManager.register(EVENT_PLAY_FINISHED, this);
-    }
-
+   
     /*
      * (non-Javadoc)
      * 
@@ -250,7 +223,6 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Observ
         int i = 0;
         while (bOpening && i<500){
             try {
-                Log.debug("Loading...");
                 Thread.sleep(10);
                 i++;
             }
@@ -272,35 +244,13 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Observ
      * @see org.jajuk.base.IPlayerImpl#stop()
      */
     public void stop() throws Exception {
-        //Kill the mplayer process (this way, killing is synchronous, and easier than sending a quit command)
+        //Kill abrutely the mplayer process (this way, killing is synchronous, and easier than sending a quit command)
         Log.debug("Stop");
         if (proc != null){
             proc.destroy();
         }
     }
-    
-    /**
-     * Manage incoming events
-     * @param event
-     */
-    public void update(Event event){
-        if (EVENT_PLAY_FINISHED.equals(event.getSubject())){
-            try{
-                //End of file
-                // inc rate by 1 if file is fully played
-                fCurrent.getTrack().setRate(fCurrent.getTrack().getRate() + 1); 
-                FileManager.getInstance().setRateHasChanged(true); // alert bestof playlist something changed
-                if (!bFading){ //if using crossfade, ignore end of file
-                    System.gc();//Benefit from end of file to perform a full gc
-                    FIFO.getInstance().finished();
-                }
-                bFading = false;
-            }
-            catch (Exception e) {
-                Log.error(e);
-            }
-        }
-    }
+ 
 
     /*
      * (non-Javadoc)
@@ -309,6 +259,7 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Observ
      */
     public void setVolume(float fVolume)  {
         this.fVolume = fVolume;
+        Log.debug("Volume="+(int)(100*fVolume));
         sendCommand("volume "+(int)(100*fVolume)+" 2");
     }
 
@@ -393,71 +344,4 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Observ
             return -1;
         }
     }
-
-    /**
-     * Progress listener implementation. Called several times by sec
-     */
-    public void progress(int iBytesread, long lMicroseconds, byte[] bPcmdata,
-            java.util.Map mProperties) {
-        if ((System.currentTimeMillis() - lDateLastUpdate) > PROGRESS_STEP) { 
-            lDateLastUpdate = System.currentTimeMillis();
-            this.iFadeDuration = 1000 * ConfigurationManager.getInt(CONF_FADE_DURATION);
-            if (bFading){
-                //computes the volume we have to sub to reach zero at last progress()
-                float fVolumeStep = fadingVolume * ((float)500/iFadeDuration);
-                float fNewVolume = fVolume - (fVolumeStep/2); //divide step by two to make fade softer
-                //decrease volume by n% of initial volume 
-                if (fNewVolume < 0){
-                    fNewVolume = 0;
-                }
-                try {
-                    setVolume(fNewVolume);
-                }
-                catch (Exception e) {
-                    Log.error(e);
-                }
-                return;
-            }
-            // Store position
-            ConfigurationManager.setProperty(CONF_STARTUP_LAST_POSITION, Float.toString(getCurrentPosition()));
-            //check if the track get rate increasing level (INC_RATE_TIME secs or intro length)
-            if (!bHasBeenRated && (lTime >= INC_RATE_TIME*1000 || 
-                    (length != TO_THE_END && lTime > length))){
-                // inc rate by 1 if file is played at least INC_RATE_TIME secs
-                fCurrent.getTrack().setRate(fCurrent.getTrack().getRate() + 1); 
-                FileManager.getInstance().setRateHasChanged(true); // alert bestof playlist something changed
-                bHasBeenRated = true;
-            }
-            //Cross-Fade test
-            if (iFadeDuration > 0   
-                    && lTime > (lDuration - iFadeDuration)){
-                //if memory is low, we force full gc to avoid blanck during fade
-                if (Util.needFullFC()){
-                    Log.debug("Need full gc, no cross fade"); //$NON-NLS-1$
-                }
-                else{
-                    bFading = true;
-                    this.fadingVolume = fVolume;
-                    /*we have to launch the next file from another thread to avoid stopping current track 
-                    (perceptible during player.open() for remote files)*/
-                    new Thread(){
-                        public void run(){
-                            FIFO.getInstance().finished();
-                        }
-                    }.start();
-                }
-            }
-            //Caution: lMicroseconds reset to zero after a seek
-            // test end of length for intro mode
-            else if (length != TO_THE_END && lTime > length) {
-                // length=-1 means there is no max length
-                new Thread(){
-                    public void run(){
-                        FIFO.getInstance().finished();
-                    }
-                }.start();
-            }
-        }
-    }
-
 }
