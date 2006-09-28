@@ -27,6 +27,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -54,7 +55,7 @@ public abstract class PerspectiveAdapter implements IPerspective,ITechnicalStrin
 	/** Perspective id (class)*/
 	private String sID;
 	/** Perspective icon path*/
-	private String sIconPath;
+	private URL iconPath;
 	/** Perspective views list*/
 	private ArrayList alViews = new ArrayList(10);
 	/**Associated desktop pane*/
@@ -147,15 +148,15 @@ public abstract class PerspectiveAdapter implements IPerspective,ITechnicalStrin
 	/* (non-Javadoc)
 	 * @see org.jajuk.ui.IPerspective#getIconPath()
 	 */
-	public String getIconPath() {
-		return sIconPath;
+	public URL getIconPath() {
+		return iconPath;
 	}
 	
 	/**
 	 * Set icon path
 	 */
-	public void setIconPath(String sIconPath) {
-		this.sIconPath = sIconPath;
+	public void setIconPath(URL iconURL) {
+		this.iconPath = iconURL;
 	}
 
 	/* (non-Javadoc)

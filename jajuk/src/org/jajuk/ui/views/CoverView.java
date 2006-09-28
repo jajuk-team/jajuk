@@ -203,7 +203,7 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
         try {
             //instanciate default cover
             if (coverDefault == null){
-                coverDefault = new Cover(new URL(IMAGES_SPLASHSCREEN),Cover.DEFAULT_COVER);
+                coverDefault = new Cover(IMAGES_SPLASHSCREEN,Cover.DEFAULT_COVER);
             }
         } catch (Exception e) {
             Log.error(e);

@@ -39,11 +39,8 @@
 		<mkdir dir='${classdir}/org/jajuk/icons' />
 		<mkdir dir='${classdir}/org/jajuk/images' />
 		<mkdir dir='${classdir}/org/jajuk/docs' />
-		<copy todir='${classdir}/org/jajuk/icons'>
-			<fileset dir='${distfilesdir}/icons' />
-		</copy>
-		<copy todir='${classdir}/org/jajuk/images'>
-			<fileset dir='${distfilesdir}/images' />
+		<copy todir='${classdir}/'>
+			<fileset dir='${distfilesdir}' />
 		</copy>
 		<copy todir='${classdir}/org/jajuk/i18n'>
 			<fileset file='${srcdir}/org/jajuk/i18n/*.properties' />

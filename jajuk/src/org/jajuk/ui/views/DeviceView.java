@@ -23,39 +23,19 @@ package org.jajuk.ui.views;
 import static org.jajuk.ui.action.JajukAction.WIZARD;
 import info.clearthought.layout.TableLayout;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.*;
+import java.awt.event.*;
+import java.net.URL;
 import java.util.Iterator;
 
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JMenuItem;
-import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
-import javax.swing.JScrollPane;
-import javax.swing.JToolBar;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 
-import org.jajuk.base.Device;
-import org.jajuk.base.DeviceManager;
+import org.jajuk.base.*;
 import org.jajuk.base.Event;
-import org.jajuk.base.ObservationManager;
-import org.jajuk.base.Observer;
 import org.jajuk.i18n.Messages;
-import org.jajuk.ui.DeviceWizard;
-import org.jajuk.ui.JajukButton;
+import org.jajuk.ui.*;
 import org.jajuk.ui.action.ActionManager;
-import org.jajuk.util.ITechnicalStrings;
-import org.jajuk.util.Util;
+import org.jajuk.util.*;
 
 import ext.FlowScrollPanel;
 
@@ -267,65 +247,65 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
             Iterator it = DeviceManager.getInstance().getItems().iterator();
             while (it.hasNext()){
                 final Device device = (Device)it.next();
-                String sIcon = ICON_DEVICE_DIRECTORY_MOUNTED;
+                URL urlIcon = ICON_DEVICE_DIRECTORY_MOUNTED;
                 String sTooltip = ""; //$NON-NLS-1$
                 switch ((int)device.getDeviceType()){
                 case 0 :
                     sTooltip = Messages.getString("Device_type.directory"); //$NON-NLS-1$
                     if ( device.isMounted()){
-                        sIcon = ICON_DEVICE_DIRECTORY_MOUNTED;
+                        urlIcon = ICON_DEVICE_DIRECTORY_MOUNTED;
                     }
                     else{
-                        sIcon = ICON_DEVICE_DIRECTORY_UNMOUNTED;
+                        urlIcon = ICON_DEVICE_DIRECTORY_UNMOUNTED;
                     }
                     break;
                 case 1 : 
                     sTooltip = Messages.getString("Device_type.file_cd"); //$NON-NLS-1$
                     if ( device.isMounted()){
-                        sIcon = ICON_DEVICE_CD_MOUNTED;
+                        urlIcon = ICON_DEVICE_CD_MOUNTED;
                     }
                     else{
-                        sIcon = ICON_DEVICE_CD_UNMOUNTED;
+                        urlIcon = ICON_DEVICE_CD_UNMOUNTED;
                     }
                     break;
                 case 2 : 
                     sTooltip = Messages.getString("Device_type.network_drive"); //$NON-NLS-1$
                     if ( device.isMounted()){
-                        sIcon = ICON_DEVICE_NETWORK_DRIVE_MOUNTED;
+                        urlIcon = ICON_DEVICE_NETWORK_DRIVE_MOUNTED;
                     }
                     else{
-                        sIcon = ICON_DEVICE_NETWORK_DRIVE_UNMOUNTED;
+                        urlIcon = ICON_DEVICE_NETWORK_DRIVE_UNMOUNTED;
                     }
                     break;
                 case 3 : 
                     sTooltip = Messages.getString("Device_type.extdd"); //$NON-NLS-1$
                     if ( device.isMounted()){
-                        sIcon = ICON_DEVICE_EXT_DD_MOUNTED;
+                        urlIcon = ICON_DEVICE_EXT_DD_MOUNTED;
                     }
                     else{
-                        sIcon = ICON_DEVICE_EXT_DD_UNMOUNTED;
+                        urlIcon = ICON_DEVICE_EXT_DD_UNMOUNTED;
                     }
                     break;
                 case 4 : 
                     sTooltip = Messages.getString("Device_type.player"); //$NON-NLS-1$
                     if ( device.isMounted()){
-                        sIcon = ICON_DEVICE_PLAYER_MOUNTED;
+                        urlIcon = ICON_DEVICE_PLAYER_MOUNTED;
                     }
                     else{
-                        sIcon = ICON_DEVICE_PLAYER_UNMOUNTED;
+                        urlIcon = ICON_DEVICE_PLAYER_UNMOUNTED;
                     }
                     break;
                 case 5 : 
                     sTooltip = Messages.getString("Device_type.remote"); //$NON-NLS-1$
                     if ( device.isMounted()){
-                        sIcon = ICON_DEVICE_REMOTE_MOUNTED;
+                        urlIcon = ICON_DEVICE_REMOTE_MOUNTED;
                     }
                     else{
-                        sIcon = ICON_DEVICE_REMOTE_UNMOUNTED;
+                        urlIcon = ICON_DEVICE_REMOTE_UNMOUNTED;
                     }
                     break;
                 }
-                DeviceItem di = new DeviceItem(sIcon,device.getName(),device);
+                DeviceItem di = new DeviceItem(urlIcon,device.getName(),device);
                 di.setToolTipText(sTooltip);
                 di.addMouseListener(this);
                 di.setToolTipText(device.getDeviceTypeS());
@@ -529,11 +509,11 @@ class DeviceItem extends JPanel{
     /**
      * Constructor
      */
-    DeviceItem(String sIcon,String sName,Device device){
+    DeviceItem(URL urlIcon,String sName,Device device){
         this.device = device;
         setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
         setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
-        JLabel jlIcon = new JLabel(Util.getIcon(sIcon)); 
+        JLabel jlIcon = new JLabel(Util.getIcon(urlIcon)); 
         add(jlIcon);
         JLabel jlName = new JLabel(sName);
         add(jlName);

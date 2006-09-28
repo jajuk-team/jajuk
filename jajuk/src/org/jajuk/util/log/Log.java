@@ -19,7 +19,6 @@
  */
 package org.jajuk.util.log;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -63,7 +62,7 @@ public class Log  implements ITechnicalStrings{
     private   Log () {
         try {
            System.setProperty("jajuk.log",FILE_LOGS); //set env variable used in the log4j conf file //$NON-NLS-1$
-           DOMConfigurator.configure(new URL(FILE_LOG4j_CONF));
+           DOMConfigurator.configure(FILE_LOG4j_CONF);
            loggerRoot = Logger.getRootLogger();
            logger = Logger.getLogger(Log.class.getName());
            loggerHttp = Logger.getLogger("org.apache.commons.httpclient"); //$NON-NLS-1$

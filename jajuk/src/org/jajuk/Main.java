@@ -23,9 +23,7 @@ import java.awt.Font;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.ServerSocket;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -155,9 +153,6 @@ public class Main implements ITechnicalStrings {
                 }
             }
             
-            //set exec location path ( normal or debug )
-            Util.setExecLocation(bIdeMode);//$NON-NLS-1$ 
-            
             //perform initial checkups and create needed files
             initialCheckups();
             
@@ -209,16 +204,12 @@ public class Main implements ITechnicalStrings {
             //Launch splashscreen. Depends on: log.setVerbosity, configurationManager.load (for local) 
             SwingUtilities.invokeAndWait(new Runnable() {
                 public void run() {
-                    try {
-                        //  Set look and feel, needs local to be set for error messages
-                        LNFManager.setLookAndFeel(ConfigurationManager.getProperty(CONF_OPTIONS_LNF));
-                        sc = new JSplash(new URL (IMAGES_SPLASHSCREEN),true,true,false,JAJUK_COPYRIGHT,
-                            JAJUK_VERSION+" "+JAJUK_VERSION_DATE,new Font("Dialog",Font.TRUETYPE_FONT,12),null); //$NON-NLS-1$
-                        sc.setTitle(Messages.getString("JajukWindow.3")); //$NON-NLS-1$
-                        sc.splashOn();
-                    } catch (MalformedURLException e) {
-                        Log.error(e);
-                    }
+                    //  Set look and feel, needs local to be set for error messages
+                    LNFManager.setLookAndFeel(ConfigurationManager.getProperty(CONF_OPTIONS_LNF));
+                    sc = new JSplash(IMAGES_SPLASHSCREEN,true,true,false,JAJUK_COPYRIGHT,
+                        JAJUK_VERSION+" "+JAJUK_VERSION_DATE,new Font("Dialog",Font.TRUETYPE_FONT,12),null); //$NON-NLS-1$
+                    sc.setTitle(Messages.getString("JajukWindow.3")); //$NON-NLS-1$
+                    sc.splashOn();
                 }
             });
             
@@ -441,6 +432,60 @@ public class Main implements ITechnicalStrings {
      */
     private static void registerTypes(){
         try { 
+            /*
+            //mp3
+            Type type = TypeManager.getInstance().registerType(Messages.getString("Type.mp3"), 
+                EXT_MP3, Class.forName(PLAYER_IMPL_MPLAYER), 
+                Class.forName(TAG_IMPL_ENTAGGED)); //$NON-NLS-1$ //$NON-NLS-2$
+            type.setProperty(XML_TYPE_IS_MUSIC,true); //$NON-NLS-1$
+            type.setProperty(XML_TYPE_SEEK_SUPPORTED,true); //$NON-NLS-1$
+            type.setProperty(XML_TYPE_TECH_DESC,TYPE_PROPERTY_TECH_DESC_MP3);
+            type.setProperty(XML_TYPE_ICON,ICON_TYPE_MP3);
+            //playlists
+            type = TypeManager.getInstance().registerType(Messages.getString("Type.playlist"), EXT_PLAYLIST, Class.forName(PLAYER_IMPL_JAVALAYER), null); //$NON-NLS-1$ //$NON-NLS-2$
+            type.setProperty(XML_TYPE_IS_MUSIC,false); //$NON-NLS-1$
+            type.setProperty(XML_TYPE_SEEK_SUPPORTED,false); //$NON-NLS-1$
+            //Ogg vorbis
+            type = TypeManager.getInstance().registerType(Messages.getString("Type.ogg"), 
+                EXT_OGG, Class.forName(PLAYER_IMPL_MPLAYER), 
+                Class.forName(TAG_IMPL_ENTAGGED)); //$NON-NLS-1$ //$NON-NLS-2$
+            type.setProperty(XML_TYPE_IS_MUSIC,true); //$NON-NLS-1$
+            type.setProperty(XML_TYPE_SEEK_SUPPORTED,true); //$NON-NLS-1$
+            type.setProperty(XML_TYPE_TECH_DESC,TYPE_PROPERTY_TECH_DESC_OGG);
+            type.setProperty(XML_TYPE_ICON,ICON_TYPE_OGG);
+            //Wave
+            type = TypeManager.getInstance().registerType(Messages.getString("Type.wav"), 
+                EXT_WAV, Class.forName(PLAYER_IMPL_MPLAYER), 
+                Class.forName(TAG_IMPL_NO_TAGS)); //$NON-NLS-1$ //$NON-NLS-2$
+            type.setProperty(XML_TYPE_IS_MUSIC,true); //$NON-NLS-1$
+            type.setProperty(XML_TYPE_SEEK_SUPPORTED,true); //$NON-NLS-1$
+            type.setProperty(XML_TYPE_TECH_DESC,TYPE_PROPERTY_TECH_DESC_WAVE);
+            type.setProperty(XML_TYPE_ICON,ICON_TYPE_WAV);
+            //au
+            type = TypeManager.getInstance().registerType(Messages.getString("Type.au"), 
+                EXT_AU, Class.forName(PLAYER_IMPL_MPLAYER), 
+                Class.forName(TAG_IMPL_NO_TAGS)); //$NON-NLS-1$ //$NON-NLS-2$
+            type.setProperty(XML_TYPE_IS_MUSIC,true); //$NON-NLS-1$
+            type.setProperty(XML_TYPE_SEEK_SUPPORTED,true); //$NON-NLS-1$
+            type.setProperty(XML_TYPE_TECH_DESC,TYPE_PROPERTY_TECH_DESC_AU);
+            type.setProperty(XML_TYPE_ICON,ICON_TYPE_AU);
+            //aiff
+            type = TypeManager.getInstance().registerType(Messages.getString("Type.aiff"), 
+                EXT_AIFF, Class.forName(PLAYER_IMPL_MPLAYER), 
+                Class.forName(TAG_IMPL_NO_TAGS)); //$NON-NLS-1$ //$NON-NLS-2$
+            type.setProperty(XML_TYPE_IS_MUSIC,true); //$NON-NLS-1$
+            type.setProperty(XML_TYPE_SEEK_SUPPORTED,true); //$NON-NLS-1$
+            type.setProperty(XML_TYPE_TECH_DESC,TYPE_PROPERTY_TECH_DESC_AIFF);
+            type.setProperty(XML_TYPE_ICON,ICON_TYPE_AIFF);
+            //flac
+            type = TypeManager.getInstance().registerType(Messages.getString("Type.flac"), 
+                EXT_FLAC, Class.forName(PLAYER_IMPL_MPLAYER), 
+                Class.forName(TAG_IMPL_ENTAGGED)); //$NON-NLS-1$ //$NON-NLS-2$
+            type.setProperty(XML_TYPE_IS_MUSIC,true); //$NON-NLS-1$
+            type.setProperty(XML_TYPE_SEEK_SUPPORTED,true); //$NON-NLS-1$
+            type.setProperty(XML_TYPE_TECH_DESC,TYPE_PROPERTY_TECH_DESC_FLAC);
+            type.setProperty(XML_TYPE_ICON,ICON_TYPE_FLAC);*/
+            
             //mp3
             Type type = TypeManager.getInstance().registerType(Messages.getString("Type.mp3"), EXT_MP3, Class.forName(PLAYER_IMPL_JAVALAYER), Class.forName(TAG_IMPL_ENTAGGED)); //$NON-NLS-1$ //$NON-NLS-2$
             type.setProperty(XML_TYPE_IS_MUSIC,true); //$NON-NLS-1$
@@ -475,6 +520,7 @@ public class Main implements ITechnicalStrings {
             type.setProperty(XML_TYPE_SEEK_SUPPORTED,false); //$NON-NLS-1$
             type.setProperty(XML_TYPE_TECH_DESC,TYPE_PROPERTY_TECH_DESC_AIFF);
             type.setProperty(XML_TYPE_ICON,ICON_TYPE_AIFF);
+            
         } catch (Exception e1) {
             Log.error("026",e1); //$NON-NLS-1$
         }

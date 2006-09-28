@@ -22,6 +22,7 @@ package org.jajuk.i18n;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -204,20 +205,15 @@ public class Messages extends DefaultHandler implements ITechnicalStrings	{
 		    sbFilename.append('_').append(sLocal);
 		}
 		sbFilename.append(FILE_LANGPACK_PART2);
-		String sUrl; //property file URL, either in the jajuk.jar jar (normal execution) or found as regular file if in development debug mode
-		if (Main.bIdeMode){
-		    sUrl = "file:"+System.getProperty("user.dir")+"/src/org/jajuk/i18n/"+ sbFilename.toString(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		}
-		else{
-		    sUrl = "jar:"+Util.getExecLocation()+"!/org/jajuk/i18n/"+ sbFilename.toString(); //$NON-NLS-1$ //$NON-NLS-2$
-		}
+		URL url; //property file URL, either in the jajuk.jar jar (normal execution) or found as regular file if in development debug mode
+		url = ClassLoader.getSystemResource("org/jajuk/i18n/"+ sbFilename.toString());
 		//parse it, actually it is a big properties file as CDATA in an XML file
 		try {
 			SAXParserFactory spf = SAXParserFactory.newInstance();
 			spf.setValidating(false);
 			spf.setNamespaceAware(false);
 			SAXParser saxParser = spf.newSAXParser();
-			saxParser.parse(sUrl,new DefaultHandler() {
+			saxParser.parse(url.openStream(),new DefaultHandler() {
 			    StringBuffer sb = new StringBuffer(15000); //this buffer will contain the entire properties strings
 			    //call for each element strings, actually will be called several time if the element is large (our case : large CDATA)
 			    public void characters(char[] ch, int start, int length) throws SAXException {

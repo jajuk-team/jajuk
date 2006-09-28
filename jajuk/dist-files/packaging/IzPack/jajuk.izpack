@@ -43,16 +43,16 @@
          <res id='LicencePanel.licence' src='./dist-files/legals/LICENSE.txt'/>
         <res id='shortcutSpec.xml' src='/tmp/jajuk-dist/java/shortcutSpec.xml' />
         <res id='installer.langsel.img' src='./dist-files/images/jajuk-installer.jpg' />
-    	<res id='Installer.image.0' src='./dist-files/images/border2.png' />
-        <res id='Installer.image.1' src='./dist-files/images/border3.png' />
-        <res id='Installer.image.2' src='./dist-files/images/border4.png' />
-        <res id='Installer.image.3' src='./dist-files/images/border5.png' />
-        <res id='Installer.image.4' src='./dist-files/images/border6.png' />
-        <res id='Installer.image.5' src='./dist-files/images/border7.png' />
-        <res id='Installer.image.6' src='./dist-files/images/border8.png' />
-       <res id='ImgPacksPanel.img.0' src='./dist-files/images/core.png'  />
-       <res id='ImgPacksPanel.img.1' src='./dist-files/images/src.png'  />
-       <res id='TargetPanel.dir.unix' src='./dist-files/packaging/IzPack/installDirectory.unix.txt'  parse='yes' type='plain' />
+    	<res id='Installer.image.0' src='./dist-files/org/jajuk/images/border2.png' />
+        <res id='Installer.image.1' src='./dist-files/org/jajuk/images/border3.png' />
+        <res id='Installer.image.2' src='./dist-files/org/jajuk/images/border4.png' />
+        <res id='Installer.image.3' src='./dist-files/org/jajuk/images/border5.png' />
+        <res id='Installer.image.4' src='./dist-files/org/jajuk/images/border6.png' />
+        <res id='Installer.image.5' src='./dist-files/org/jajuk/images/border7.png' />
+        <res id='Installer.image.6' src='./dist-files/org/jajuk/images/border8.png' />
+       <res id='ImgPacksPanel.img.0' src='./dist-files/org/jajuk/images/core.png'  />
+       <res id='ImgPacksPanel.img.1' src='./dist-files/org/jajuk/images/src.png'  />
+       <res id='TargetPanel.dir.unix' src='./dist-files/packaging/IzPack/installDirectory.unix.txt' parse='yes' type='plain' />
     </resources>
     <panels>
 	    <panel classname='HTMLInfoPanel'/>

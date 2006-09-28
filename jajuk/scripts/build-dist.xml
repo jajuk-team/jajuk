@@ -71,14 +71,14 @@
      <fileset file='${basedir}/scripts/build.xml'/>
   	</copy>
   	<mkdir dir='${distdir}/dist-files'/>
-    <copy todir='${distdir}/dist-files/icons' >
+    <copy todir='${distdir}/dist-files/org/jajuk/icons' >
      <fileset file='${basedir}/dist-files/icons/**'/>
      </copy>
-    <copy todir='${distdir}/dist-files/images' >
-     <fileset file='${basedir}/dist-files/images/included/**'/>
+    <copy todir='${distdir}/dist-files/org/jajuk/images' >
+     <fileset file='${basedir}/dist-files/images/**'/>
      </copy>
      <copy todir='${distdir}' >
-     	<fileset file='${basedir}/dist-files/icons/64x64/jajuk-icon_64x64.png'/>
+     	<fileset file='${basedir}/dist-files/org/jajuk/icons/64x64/jajuk-icon_64x64.png'/>
      </copy>
      <copy todir='${distdir}' >
      	<fileset file='${basedir}/scripts/jajuk.sh'/>
@@ -147,7 +147,7 @@
     	<fileset file='${basedir}/dist-files/doc/README*.html'/>
     </copy>
     <copy todir='${rpmdistdir_suse}/usr/share/pixmaps' >
-    	<fileset file='${basedir}/dist-files/icons/64x64/jajuk-icon_64x64.png'/>
+    	<fileset file='${basedir}/dist-files/org/jajuk/icons/64x64/jajuk-icon_64x64.png'/>
     </copy>
         	<!--Mandrake-->
     <copy todir='${rpmbuilddir_mdk}/SPECS' >
@@ -193,10 +193,10 @@
     <mkdir dir='${distdir}/${classdir}/org/jajuk/images'/>
   	<mkdir dir='${distdir}/${classdir}/org/jajuk/docs'/>
   	<copy todir='${distdir}/${classdir}/org/jajuk/icons' >
-     <fileset dir='${basedir}/dist-files/icons'/>
+     <fileset dir='${basedir}/dist-files/org/jajuk/icons'/>
   	</copy>
-  	<copy todir='${distdir}/${classdir}/org/jajuk/images'>
-     <fileset file='${distdir}/dist-files/images/*'/>
+  	<copy todir='${distdir}/${classdir}/org/jajuk/images/included'>
+     <fileset file='${basedir}/dist-files/org/jajuk/images/included/*'/>
    </copy>
   	<copy todir='${distdir}/${classdir}/org/jajuk/docs' >
      <fileset file='${basedir}/dist-files/doc/about.html'/>
@@ -419,7 +419,7 @@
     	<fileset file='${basedir}/dist-files/packaging/jws/*.gif'/>
     </copy>
     <copy todir='${jwsdir}'>
-    	<fileset file='${basedir}/dist-files/images/included/jajuk-splashscreen.jpg'/>
+    	<fileset file='${basedir}/dist-files/org/jajuk/images/included/jajuk-splashscreen.jpg'/>
     </copy>
    
     <!--Copy native jars -->

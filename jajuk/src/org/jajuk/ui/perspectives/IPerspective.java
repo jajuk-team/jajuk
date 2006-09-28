@@ -22,6 +22,7 @@ package org.jajuk.ui.perspectives;
 
 import java.awt.Container;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 
 import org.jajuk.ui.views.IView;
@@ -84,14 +85,14 @@ public interface IPerspective {
 	 * Return the icon's jar path   
 	 * @return String Icon's jar path representing the perspective.
 	 */
-	public abstract String getIconPath();
+	public abstract URL getIconPath();
 	
 
 	/**
 	 * Set icon path inside jar
-	 * @param sIconPath icon path inside jar
+	 * @param iconURL icon path inside jar
 	 */
-	public void setIconPath(String sIconPath);
+	public void setIconPath(URL iconURL);
 	
 	/**
 	 * @return Arraylist views registered in the perspective.

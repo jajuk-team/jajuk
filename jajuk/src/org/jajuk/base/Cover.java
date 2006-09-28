@@ -22,7 +22,6 @@ package org.jajuk.base;
 
 import java.awt.MediaTracker;
 import java.io.File;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 import javax.swing.ImageIcon;
@@ -64,12 +63,7 @@ public class Cover implements Comparable,ITechnicalStrings {
     private static URL urlDefault = null;
     
     static{
-        try {
-            urlDefault = new URL(IMAGES_SPLASHSCREEN);
-        }
-        catch (MalformedURLException e) {
-            Log.error(e);
-        }
+        urlDefault = IMAGES_SPLASHSCREEN;
     }
      
    /**
