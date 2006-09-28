@@ -42,7 +42,7 @@
          <res id='HTMLInfoPanel.info_chn' src='./dist-files/doc/README_chn.html'/>
          <res id='LicencePanel.licence' src='./dist-files/legals/LICENSE.txt'/>
         <res id='shortcutSpec.xml' src='/tmp/jajuk-dist/java/shortcutSpec.xml' />
-        <res id='installer.langsel.img' src='./dist-files/images/jajuk-installer.jpg' />
+        <res id='installer.langsel.img' src='./dist-files/org/jajuk/images/jajuk-installer.jpg' />
     	<res id='Installer.image.0' src='./dist-files/org/jajuk/images/border2.png' />
         <res id='Installer.image.1' src='./dist-files/org/jajuk/images/border3.png' />
         <res id='Installer.image.2' src='./dist-files/org/jajuk/images/border4.png' />

@@ -72,10 +72,10 @@
   	</copy>
   	<mkdir dir='${distdir}/dist-files'/>
     <copy todir='${distdir}/dist-files/org/jajuk/icons' >
-     <fileset file='${basedir}/dist-files/icons/**'/>
+     <fileset file='${basedir}/dist-files/org/jajuk//icons/**'/>
      </copy>
     <copy todir='${distdir}/dist-files/org/jajuk/images' >
-     <fileset file='${basedir}/dist-files/images/**'/>
+     <fileset file='${basedir}/dist-files/org/jajuk/images/**'/>
      </copy>
      <copy todir='${distdir}' >
      	<fileset file='${basedir}/dist-files/org/jajuk/icons/64x64/jajuk-icon_64x64.png'/>
