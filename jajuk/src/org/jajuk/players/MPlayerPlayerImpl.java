@@ -127,6 +127,7 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings {
                     new InputStreamReader(proc.getInputStream()));
                 String line = null;
                 for (; (line = in.readLine()) != null;) {
+                    Log.debug(line);
                     if (line.matches(".*ANS_TIME_POSITION.*")){
                         StringTokenizer st = new StringTokenizer(line,"=");
                         st.nextToken();
@@ -271,7 +272,7 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings {
     private void sendCommand(String command){
         if (proc != null){
             PrintStream out = new PrintStream(proc.getOutputStream());
-            out.println(command);
+            out.print(command+'\n'); //Do not use a println : it doesn't work under windows
             out.flush();
         }
     }
