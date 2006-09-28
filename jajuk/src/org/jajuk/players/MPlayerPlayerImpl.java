@@ -90,6 +90,7 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings {
     /**Current reader thread*/
     private volatile ReaderThread reader;
     
+    
      /**
      * Position and elapsed time getter
      */
@@ -211,7 +212,7 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings {
         this.bOpening = true;
         this.iFadeDuration = 1000 * ConfigurationManager.getInt(CONF_FADE_DURATION);
         //Start
-        String[] cmd = {"/usr/bin/mplayer","-quiet","-slave",file.getAbsolutePath()};
+        String[] cmd = {"mplayer","-quiet","-slave",file.getAbsolutePath()};
         proc = Runtime.getRuntime().exec(cmd);
         if (position == null){
             position = new PositionThread();
@@ -230,12 +231,12 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings {
                 Log.error(e);
             }
         }
+        setVolume(fVolume);
         //Get track length
         sendCommand("get_time_length");
         if (fPosition > 0.0f) {
            seek(fPosition);
         }
-        setVolume(fVolume);
     }
 
     /*

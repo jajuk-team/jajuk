@@ -24,7 +24,6 @@ import java.util.Properties;
 import javax.sound.sampled.LineUnavailableException;
 
 import javazoom.jlgui.basicplayer.BasicPlayer;
-import javazoom.jlgui.basicplayer.BasicPlayerException;
 
 import org.jajuk.i18n.Messages;
 import org.jajuk.players.IPlayerImpl;
@@ -111,7 +110,7 @@ public class Player implements ITechnicalStrings{
                     }
                     bWaitingLine = false;
                 }
-                catch(BasicPlayerException bpe){
+                catch(Exception bpe){
                     if (!(bpe.getCause() instanceof LineUnavailableException)){
                         throw bpe;
                     }
