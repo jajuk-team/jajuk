@@ -54,6 +54,8 @@ import org.jajuk.util.Util;
  */
 public final class JSplash extends JFrame implements ITechnicalStrings{ 
 
+    private static final long serialVersionUID = 1L;
+
     /**
      * Progress bar to use in the splash screen.
      */

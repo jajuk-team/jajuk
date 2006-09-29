@@ -49,8 +49,6 @@ public class PerspectiveManager  implements ITechnicalStrings {
     private static ArrayList<String> alNames = new ArrayList(10);
     /**perspective  */
     private static ArrayList<IPerspective> alPerspectives = new ArrayList(10);
-    /** Parsing temporary variable */
-    private static IPerspective pCurrent = null;
     /**Date used by probe */
     private static long lTime;
     /**Temporary perspective name used when parsing*/

@@ -21,6 +21,8 @@ import org.jajuk.util.log.Log;
  * @since 13-dec-2005
  */
 public class NextAlbumAction extends ActionBase {
+    private static final long serialVersionUID = 1L;
+
     NextAlbumAction() {
         super("next album", "ctrl shift RIGHT", false); //$NON-NLS-1$ //$NON-NLS-2$
     }

@@ -45,6 +45,7 @@ import org.jajuk.i18n.Messages;
  * @created    20 juin 2005
  */
 class RemovePropertyWizard extends CustomPropertyWizard { 
+    private static final long serialVersionUID = 1L;
     JComboBox jcbName;
     /**
      * Constructor

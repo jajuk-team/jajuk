@@ -27,7 +27,6 @@ import java.awt.FontMetrics;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 
-import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 
 import org.jajuk.Main;
@@ -54,13 +53,13 @@ import com.jgoodies.animation.components.BasicTextLabel;
  */
 public class AnimationView extends ViewAdapter implements ITechnicalStrings,Observer,ComponentListener {
 	
-	private static final int DEFAULT_FRAME_RATE = 15;
+	private static final long serialVersionUID = 1L;
+    private static final int DEFAULT_FRAME_RATE = 15;
 	private static final int DEFAULT_DURATION = 5000;
 	private static final int DEFAULT_PAUSE = 500;
 	/**Current panel width**/
 	private int iSize;
 	private BasicTextLabel btl1;
-	private JLabel jl1;
 	private Animator animator;
 	
 	public AnimationView(){

@@ -41,6 +41,7 @@ import org.jajuk.i18n.Messages;
  * @created    2 nov. 2005
  */
 public class PasswordDialog extends JDialog implements ActionListener{
+    private static final long serialVersionUID = 1L;
     JPasswordField pf;
     JOptionPane optionPane;
     

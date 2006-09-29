@@ -62,6 +62,8 @@ public abstract class AbstractTreeView extends ViewAdapter {
     
     protected JTree createTree(){
         jtree = new JXTree(top){
+            private static final long serialVersionUID = 1L;
+
             public void setUI(TreeUI ui) { //overwrite this method to make sure all rows have icon own height
                 super.setUI(ui);
                 setRowHeight(-1);

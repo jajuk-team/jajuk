@@ -39,7 +39,9 @@ import org.jajuk.ui.SteppedComboBox;
 public class JajukBasicComboPopup extends BasicComboPopup {
 
 		
-	public JajukBasicComboPopup(JComboBox jcb){
+	private static final long serialVersionUID = 1L;
+
+    public JajukBasicComboPopup(JComboBox jcb){
 		super(jcb);
 	}
 	

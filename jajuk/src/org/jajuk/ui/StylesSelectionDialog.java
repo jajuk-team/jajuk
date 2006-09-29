@@ -52,6 +52,7 @@ import org.jajuk.i18n.Messages;
  */
 public class StylesSelectionDialog extends JDialog implements ActionListener{
 
+    private static final long serialVersionUID = 1L;
     JComboBox jcbAmbiences;
     JList jlist;
     OKCancelPanel okc;

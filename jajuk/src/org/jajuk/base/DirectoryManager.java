@@ -157,7 +157,7 @@ public class DirectoryManager extends ItemManager{
             synchronized(FileManager.getInstance().getLock()){
                 //remove all files
                 //need to use a shallow copy to avoid concurent exceptions
-                ArrayList<File> alFiles = new ArrayList(dir.getFiles());
+                ArrayList<File> alFiles = new ArrayList<File>(dir.getFiles());
                 for (File file:alFiles){
                     FileManager.getInstance().removeFile(file);
                 }

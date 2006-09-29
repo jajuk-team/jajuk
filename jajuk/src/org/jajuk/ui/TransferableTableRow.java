@@ -34,7 +34,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
  * @created    13 feb. 2004
  */
 public class TransferableTableRow extends DefaultMutableTreeNode implements Transferable{
-	public static final DataFlavor ROW_FLAVOR = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType, "Row"); //$NON-NLS-1$
+	private static final long serialVersionUID = 1L;
+    public static final DataFlavor ROW_FLAVOR = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType, "Row"); //$NON-NLS-1$
 	private Object oData;
 	
 	public TransferableTableRow(Object oData){
@@ -67,8 +68,6 @@ public class TransferableTableRow extends DefaultMutableTreeNode implements Tran
 		if (flavor == ROW_FLAVOR) {
 			return this;
 		}
-		else {
-			throw new UnsupportedFlavorException(flavor);	
-		}		
+		throw new UnsupportedFlavorException(flavor);	
 	}
 }

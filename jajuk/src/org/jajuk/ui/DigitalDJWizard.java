@@ -93,6 +93,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
      * @created    4 march 2006
      */
     public static class TypeSelectionPanel extends Screen implements ActionListener{
+        private static final long serialVersionUID = 1L;
         /**Transition DJ code*/
         private static final String DJ_TYPE_TRANSITION = "0"; //$NON-NLS-1$
         /**Proportions DJ code*/
@@ -165,6 +166,8 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
      * @created    26 march 2006
      */
     public static class RemovePanel extends Screen implements ActionListener{
+        private static final long serialVersionUID = 1L;
+
         JComponent[][] widgets;
 
         ButtonGroup bgDJS;
@@ -237,6 +240,8 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
      * @created    26 march 2006
      */
     public static class ChangePanel extends Screen implements ActionListener{
+        private static final long serialVersionUID = 1L;
+    
         JComponent[][] widgets;
 
         ButtonGroup bgDJS;
@@ -323,6 +328,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
      * @created    4 march 2006
      */
     public static class ActionSelectionPanel extends Screen implements ClearPoint,ActionListener{
+        private static final long serialVersionUID = 1L;
         /**NEW code*/
         public static final String ACTION_CREATION = "0"; //$NON-NLS-1$
         /**CHANGE code*/
@@ -402,6 +408,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
     public static class GeneralOptionsPanel extends Screen 
         implements ActionListener,CaretListener,ChangeListener{
         
+        private static final long serialVersionUID = 1L;
         JLabel jlName;
         JTextField jtfName;
         JLabel jlRatingLevel;
@@ -555,6 +562,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
      */
     public static class TransitionsPanel extends Screen{
             
+        private static final long serialVersionUID = 1L;
         JLabel jlStartWith;
         JComboBox jcbStartwith;
         JPanel jpStartwith;
@@ -854,6 +862,8 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
      */
     public static class ProportionsPanel extends Screen{
           
+        private static final long serialVersionUID = 1L;
+
         /**All dynamic widgets*/
         JComponent[][] widgets;
         
@@ -1047,7 +1057,6 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
                     sText += style.getName2()+',';  
                 }
                 sText = sText.substring(0,sText.length()-1);
-                int nb = Integer.parseInt(((JSpinner)widgets[row][2]).getValue().toString());
                 //Set button text
                 ((JButton)widgets[row][1]).setText(sText);
                 //check if the proportion is fully selected now
@@ -1109,6 +1118,8 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
      */
     public static class AmbiencePanel extends Screen implements ActionListener{
         
+        private static final long serialVersionUID = 1L;
+    
         /**All dynamic widgets*/
         JComponent[][] widgets;
         

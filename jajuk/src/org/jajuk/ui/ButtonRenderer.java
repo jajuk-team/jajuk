@@ -35,6 +35,7 @@ import javax.swing.table.TableCellRenderer;
  */
 public class ButtonRenderer extends JButton implements TableCellRenderer {
 
+    private static final long serialVersionUID = 1L;
     
     public ButtonRenderer(String sText,Icon icon){
         super(sText,icon);

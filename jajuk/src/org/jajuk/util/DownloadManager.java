@@ -171,9 +171,7 @@ public class DownloadManager implements ITechnicalStrings {
 	    get.addRequestHeader("Accept-Language","en-us"); //$NON-NLS-1$ //$NON-NLS-2$
 	    get.addRequestHeader("User-Agent","Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)"); //$NON-NLS-1$ //$NON-NLS-2$
 	    get.addRequestHeader("Connection","Keep-Alive"); //$NON-NLS-1$ //$NON-NLS-2$
-	    int status = client.executeMethod(get);
 	    if (bUseCache){
-            
             BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(Util.getCachePath(url)));
             BufferedInputStream bis = new BufferedInputStream(get.getResponseBodyAsStream());
             int i;

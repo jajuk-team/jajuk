@@ -23,6 +23,8 @@ import org.jajuk.util.error.JajukException;
  */
 public class FinishAlbumAction extends ActionBase {
 
+    private static final long serialVersionUID = 1L;
+
     FinishAlbumAction() {
         super(Messages.getString("JajukWindow.16"), Util.getIcon(ICON_MODE_NORMAL), //$NON-NLS-1$
               FIFO.getInstance().getCurrentItem() != null);

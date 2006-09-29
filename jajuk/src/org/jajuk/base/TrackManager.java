@@ -29,6 +29,7 @@ import java.util.Properties;
 
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.MD5Processor;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.error.NoneAccessibleFileException;
@@ -473,32 +474,6 @@ public class TrackManager extends ItemManager implements Observer{
         }
     }
     
-    /**
-     * Format the tracks names to be normalized :
-     * <p>
-     * -no underscores or other non-ascii characters
-     * <p>
-     * -no spaces at the begin and the end
-     * <p>
-     * -All in lower cas expect first letter of first word
-     * <p>
-     * exemple: "My track title"
-     * 
-     * @param sName
-     * @return
-     */
-    private String format(String sName) {
-        String sOut;
-        sOut = sName.trim(); //supress spaces at the begin and the end
-        sOut.replace('-', ' '); //move - to space
-        sOut.replace('_', ' '); //move _ to space
-        char c = sOut.charAt(0);
-        sOut = sOut.toLowerCase();
-        StringBuffer sb = new StringBuffer(sOut);
-        sb.setCharAt(0, Character.toUpperCase(c));
-        return sb.toString();
-    }
-    
     /* (non-Javadoc)
      * @see org.jajuk.base.ItemManager#getIdentifier()
      */
@@ -529,7 +504,7 @@ public class TrackManager extends ItemManager implements Observer{
      **/
     public ArrayList<Track> getAssociatedTracks(Item item){
         synchronized(TrackManager.getInstance().getLock()){
-            ArrayList out = new ArrayList(10);
+            ArrayList<Track> out = new ArrayList<Track>(10);
             for (Object item2:hmItems.values()){
                 Track track = (Track)item2;
                 if ( (item instanceof Album &&  track.getAlbum().equals(item))
@@ -610,7 +585,7 @@ public class TrackManager extends ItemManager implements Observer{
             java.util.Collection<Item> out = new ArrayList<Item>(al.size()/2);
             for (Item item:al){
                 Track track = (Track)item;
-                int iTrackAge = (int)((now.getTime()-track.getAdditionDate().getTime())/86400000); //)/1000/60/60/24;
+                int iTrackAge = (int)((now.getTime()-track.getAdditionDate().getTime())/ITechnicalStrings.MILLISECONDS_IN_A_DAY);
                 if ( iTrackAge <= iAge){
                     out.add(track);
                 }

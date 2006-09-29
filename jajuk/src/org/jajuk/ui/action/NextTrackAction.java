@@ -23,6 +23,8 @@ import org.jajuk.util.log.Log;
  * @since 13-dec-2005
  */
 public class NextTrackAction extends ActionBase {
+    private static final long serialVersionUID = 1L;
+
     NextTrackAction() {
         super(Messages.getString("JajukWindow.14"), Util.getIcon(ICON_NEXT), "ctrl RIGHT", false); //$NON-NLS-1$ //$NON-NLS-2$
         setShortDescription(Messages.getString("JajukWindow.30")); //$NON-NLS-1$

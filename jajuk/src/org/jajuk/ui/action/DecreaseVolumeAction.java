@@ -17,6 +17,8 @@ import org.jajuk.ui.CommandJPanel;
  * @since 13-dec-2005
  */
 public class DecreaseVolumeAction extends ActionBase {
+    private static final long serialVersionUID = 1L;
+    
     DecreaseVolumeAction() {
         super("decrease volume", "ctrl DOWN", true); //$NON-NLS-1$ //$NON-NLS-2$
     }

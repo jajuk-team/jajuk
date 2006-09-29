@@ -24,70 +24,81 @@ import java.net.URL;
 import org.jajuk.Main;
 
 /**
- *  Contains all technical/ non-translatable strings
- * @author     Bertrand Florat
- * @created    5 oct. 2003
+ * Contains all technical/ non-translatable strings
+ * 
+ * @author Bertrand Florat
+ * @created 5 oct. 2003
  */
 public interface ITechnicalStrings {
 
-    //Misc
-	/**Information bar and command bar default vertical size in pixels*/
+    // Misc
+	/** Information bar and command bar default vertical size in pixels */
 	public static final int BORDER_Y_SIZE = 112;
-	/**Command bar default vertical size in pixels*/
+	/** Command bar default vertical size in pixels */
 	public static final int BORDER_X_SIZE = 55;
-	/**panels precisions in percent*/
+	/** panels precisions in percent */
 	public static final int PRECISION = 5;
-	/**Generic border*/
+	/** Generic border */
 	public static final int BORDER = 4;
-	/**Maximum size for covers in KB*/
+	/** Maximum size for covers in KB */
     public static final int MAX_COVER_SIZE=1000;
-    /**Maximum number of remote covers*/
+    /** Maximum number of remote covers */
     public static final int MAX_REMOTE_COVERS=10;
-    /**Special length for player meaning end of file*/
+    /** Special length for player meaning end of file */
     public static final long TO_THE_END=-1;
-    /**Time we wait after an error in ms*/
+    /** Time we wait after an error in ms */
     public static final int WAIT_AFTER_ERROR= 2000;
-    /**Default playlist file name*/
+    /** Default playlist file name */
     public static final String DEFAULT_PLAYLIST_FILE = "playlist";
-    /**Max number of connection time out before stoping to look for covers*/
+    /** Max number of connection time out before stoping to look for covers */
     public static final int STOP_TO_SEARCH= 5;
-    /**Listening port to check others jajuk sessions*/
+    /** Listening port to check others jajuk sessions */
     public static final int PORT = 62321;
-    /**Quality agent e-mail*/
+    /** Quality agent e-mail */
     public static final String FEEDBACK_EMAIL = "jajuk-support@lists.sourceforge.net";
-    /**Number of lines in the feedback mail*/
+    /** Number of lines in the feedback mail */
     public static final int FEEDBACK_LINES = 100;
-    /**Max history size*/
+    /** Max history size */
     public static final int MAX_HISTORY_SIZE = 1000;
-    /**Autocommit delay in ms*/
+    /** Autocommit delay in ms */
     public static final int AUTO_COMMIT_DELAY = 3600000;
-    /**Autorefresh thread delay in ms*/
+    /** Autorefresh thread delay in ms */
     public static final int AUTO_REFRESH_DELAY = 30000;
-    /**Minimum reresh fequency (ms)*/
+    /** Minimum reresh fequency (ms) */
     public static final int MIN_AUTO_REFRESH_DELAY = 30000;
-    /**Garbager delay in ms*/
+    /** Garbager delay in ms */
     public static final int GARBAGER_DELAY = 600000;
-    /**Fading status code*/
+    /** Fading status code */
     public static final int FADING_STATUS = 9999;
-    /**Need full gc memory %*/
+    /** Need full gc memory % */
     public static final float NEED_FULL_GC_LEVEL = 0.90f;
-    /**Play time to get rate +1 in secs*/
+    /** Play time to get rate +1 in secs */
     public static final int INC_RATE_TIME = 20;
-    /**Min Number of tracks in an AuthorNode*/
+    /** Min Number of tracks in an AuthorNode */
     public static final int MIN_TRACKS_NUMBER = 4;
-    /**Min number of tracks in a DJ selection without track unicity*/
+    /** Min number of tracks in a DJ selection without track unicity */
     public static final int MIN_TRACKS_NUMBER_WITHOUT_UNICITY = 200;
-    /**Default number of tracks in a transition*/
+    /** Default number of tracks in a transition */
     public static final int DEFAULT_TRANSITION_TRACK_NUMBER = 2;
-    /**Rate Stars columns size in pixels*/
+    /** Rate Stars columns size in pixels */
     public static final int RATE_COLUMN_SIZE = 75;
-    /**Play icon columns size in pixels*/
+    /** Play icon columns size in pixels */
     public static final int PLAY_COLUMN_SIZE = 20;
-    /**Max Number of thumbs displayed at the same time in catalog view*/
+    /** Max Number of thumbs displayed at the same time in catalog view */
     public static final int CATALOG_PAGE_SIZE = 50;
-    /**Proporion of best tracks*/
+    /** Proporion of best tracks */
     public static final float BESTOF_PROPORTION = 0.05f;
-    
+    /** Number of milliseconds in a second */
+    public static final int MILLISECONDS_IN_A_SECOND = 1000;
+    /** Number of seconds in a minute */
+    public static final int SECONDS_IN_A_MINUTE = 60;
+    /** Number of minutes in an hour */
+    public static final int MINUTES_IN_AN_HOUR = 60;
+    /** Number of hours in a day */
+    public static final int HOURS_IN_A_DAY = 24;
+    /** Number of milliseconds in a day */
+    public static final int MILLISECONDS_IN_A_DAY = MILLISECONDS_IN_A_SECOND
+			* SECONDS_IN_A_MINUTE * MINUTES_IN_AN_HOUR * HOURS_IN_A_DAY;
     
 	// Jajuk version
 	public static final String JAJUK_VERSION_TEST = "VERSION_REPLACED_BY_ANT";
@@ -95,21 +106,26 @@ public interface ITechnicalStrings {
 	public static final String JAJUK_VERSION_DATE = "Build: DATE_REPLACED_BY_ANT";
 	public static final String JAJUK_COPYRIGHT = "Copyright 2004, 2006 The Jajuk Team";
     
-	//About 
+	// About
 	public static final String ABOUT = "<html>Jajuk version "+JAJUK_VERSION+"</html>";
     
-    //Properties
-    public static final String PROPERTY_SEQ = "sequence";//playlist item sequence
+    // Properties
+    public static final String PROPERTY_SEQ = "sequence";// playlist item
+															// sequence
     public static final String AMBIENCE_PREFIX = "jajuk.ambience.";
     
 	// directory path
-	//public static final String PATH_ICONS = "jar:"+Util.getExecLocation()+"!/org/jajuk/icons/";
-	//public static final String PATH_IMAGES = "jar:"+Util.getExecLocation()+"!/org/jajuk/images/";
+	// public static final String PATH_ICONS =
+	// "jar:"+Util.getExecLocation()+"!/org/jajuk/icons/";
+	// public static final String PATH_IMAGES =
+	// "jar:"+Util.getExecLocation()+"!/org/jajuk/images/";
 	public static final String PATH_RELATIVE_DOCS = "docs/";
-	//public static final String PATH_DOCS = "jar:"+Util.getExecLocation()+"!/org/jajuk/"+PATH_RELATIVE_DOCS;
-	//public static final String PATH_LOG_CONF = "jar:"+Util.getExecLocation()+"!/org/jajuk/util/log/";
+	// public static final String PATH_DOCS =
+	// "jar:"+Util.getExecLocation()+"!/org/jajuk/"+PATH_RELATIVE_DOCS;
+	// public static final String PATH_LOG_CONF =
+	// "jar:"+Util.getExecLocation()+"!/org/jajuk/util/log/";
     		
-	//Unknown
+	// Unknown
 	public static final String UNKNOWN_AUTHOR = "unknown_author";
 	public static final String UNKNOWN_ALBUM = "unknown_album";
 	public static final String UNKNOWN_STYLE = "unknown_style";
@@ -244,7 +260,7 @@ public interface ITechnicalStrings {
     public static final URL ICON_DEFAULTS = ClassLoader.getSystemResource("org/jajuk/icons/16x16/undo.png");
     public static final URL ICON_DEFAULTS_BIG = ClassLoader.getSystemResource("org/jajuk/icons/22x22/undo.png");
     
-    //images
+    // images
 	public static final URL IMAGES_SPLASHSCREEN =  ClassLoader.getSystemResource("org/jajuk/images/included/jajuk-splashscreen.jpg");
 	public static final URL IMAGE_NO_COVER = ClassLoader.getSystemResource("org/jajuk/images/included/nocover.jpg");
     public static final URL IMAGE_WRITE = ClassLoader.getSystemResource("org/jajuk/images/included/write.png");
@@ -252,11 +268,22 @@ public interface ITechnicalStrings {
     public static final URL IMAGE_DJ = ClassLoader.getSystemResource("org/jajuk/images/included/dj.jpg");
     public static final URL IMAGE_TRAY_TITLE = ClassLoader.getSystemResource("org/jajuk/images/included/tray_title.png");
         
-	//files
+	// files
 	public static final String FILE_JAJUK_DIR = System.getProperty("user.home")+(Main.bTestMode?"/.jajuk_test":"/.jajuk");
 	public static final String FILE_COLLECTION = FILE_JAJUK_DIR+"/collection.xml";
-	public static final String FILE_COLLECTION_EXIT = FILE_JAJUK_DIR+"/collection_exit.xml"; //FIle written by the exit hook
-    public static final String FILE_COLLECTION_EXIT_PROOF = FILE_JAJUK_DIR+"/exit_proof"; //Void file created after exit collection file
+	public static final String FILE_COLLECTION_EXIT = FILE_JAJUK_DIR+"/collection_exit.xml"; // FIle
+																								// written
+																								// by
+																								// the
+																								// exit
+																								// hook
+    public static final String FILE_COLLECTION_EXIT_PROOF = FILE_JAJUK_DIR+"/exit_proof"; // Void
+																							// file
+																							// created
+																							// after
+																							// exit
+																							// collection
+																							// file
     public static final String FILE_PERSPECTIVES_CONF = FILE_JAJUK_DIR+"/perspectives.xml";
 	public static final String FILE_PHYSICAL_PERSPECTIVE = FILE_JAJUK_DIR+"/physicalPerspectives.ser";
 	public static final String FILE_LOGICAL_PERSPECTIVE = FILE_JAJUK_DIR+"/logicalPerspectives.ser";
@@ -272,9 +299,13 @@ public interface ITechnicalStrings {
 	public static final String FILE_DEFAULT_COVER = "cover";
 	public static final String FILE_DEFAULT_COVER_2 = "front";
 	public static final String FILE_ABSOLUTE_DEFAULT_COVER = "jajuk-default-cover.";
-	public static final String FILE_LANGPACK_PART1 = "jajuk"; //langpack name : jajuk_<locale>.properties
-	public static final String FILE_LANGPACK_PART2 = ".properties"; //langpack name : jajuk_<locale>.properties
-    public static final String FILE_LOGS = FILE_JAJUK_DIR+"/jajuk.log"; //logs
+	public static final String FILE_LANGPACK_PART1 = "jajuk"; // langpack name
+																// :
+																// jajuk_<locale>.properties
+	public static final String FILE_LANGPACK_PART2 = ".properties"; // langpack
+																	// name :
+																	// jajuk_<locale>.properties
+    public static final String FILE_LOGS = FILE_JAJUK_DIR+"/jajuk.log"; // logs
     public static final URL FILE_LOG4j_CONF = ClassLoader.getSystemResource("org/jajuk/util/log/jajuk-log4j-conf.xml"); 
     public static final String FILE_IMAGE_CACHE = FILE_JAJUK_DIR +"/cache"; 
     public static final String FILE_THUMBS = FILE_JAJUK_DIR +"/thumbs";
@@ -298,16 +329,21 @@ public interface ITechnicalStrings {
 	public static final String ARTIST_COLLECTION_XSLT = XSLT_BASEDIR + "artist_collection.xsl";
 	public static final String ALBUM_COLLECTION_XSLT = XSLT_BASEDIR + "album_collection.xsl";
 	
-    //Command line options
-    public static final String CLI_NOTASKBAR="notaskbar"; //if selected, no jajuk window at startup, only tray 
-    public static final String CLI_IDE = "ide"; //Tells jajuk it is inside the IDE 
-    public static final String CLI_TEST = "test";  //Tells jajuk to use a .jajuk_test repository
+    // Command line options
+    public static final String CLI_NOTASKBAR="notaskbar"; // if selected, no
+															// jajuk window at
+															// startup, only
+															// tray
+    public static final String CLI_IDE = "ide"; // Tells jajuk it is inside the
+												// IDE
+    public static final String CLI_TEST = "test";  // Tells jajuk to use a
+													// .jajuk_test repository
         
-	//players impls
+	// players impls
 	public static final String PLAYER_IMPL_JAVALAYER= "org.jajuk.players.JavaLayerPlayerImpl";
 	public static final String PLAYER_IMPL_MPLAYER= "org.jajuk.players.MPlayerPlayerImpl";
     
-	//tag impls
+	// tag impls
 	public static final String TAG_IMPL_JID3LIB= "org.jajuk.tag.JID3LibTagImpl";
 	public static final String TAG_IMPL_MP3INFO= "org.jajuk.tag.MP3InfoTagImpl";
 	public static final String TAG_IMPL_RABBIT_FARM= "org.jajuk.tag.RabbitFarmTagImpl";
@@ -316,14 +352,14 @@ public interface ITechnicalStrings {
 	public static final String TAG_IMPL_NO_TAGS= "org.jajuk.tag.NoTagsTagImpl";
 	public static final String TAG_IMPL_ENTAGGED = "org.jajuk.tag.EntaggedTagImpl";
     
-	//device types
+	// device types
 	public static final String DEVICE_TYPE_DIRECTORY = "Device_type.directory";
 	public static final String DEVICE_TYPE_FILE_CD = "Device_type.file_cd";
 	public static final String DEVICE_TYPE_AUDIO_CD = "Device_type.audio_cd";
 	public static final String DEVICE_TYPE_REMOTE = "Device_type.remote";
 	public static final String DEVICE_TYPE_USBKEY = "Device_type.usbkey";
 	
-	//Types properties
+	// Types properties
 	public static final String TYPE_PROPERTY_TECH_DESC_MP3 = "mp3"; 
 	public static final String TYPE_PROPERTY_TECH_DESC_OGG = "ogg"; 
 	public static final String TYPE_PROPERTY_TECH_DESC_AIFF = "aiff"; 
@@ -332,12 +368,12 @@ public interface ITechnicalStrings {
 	public static final String TYPE_PROPERTY_TECH_DESC_SPEEX = "speex"; 
     public static final String TYPE_PROPERTY_TECH_DESC_FLAC = "flac"; 
     	
-	//Devices sync mode
+	// Devices sync mode
     public static final String DEVICE_SYNCHRO_MODE_BI = "bi";
     public static final String DEVICE_SYNCHRO_MODE_UNI = "uni";
   
     
-    //perspectives
+    // perspectives
 	public static final String PERSPECTIVE_NAME_PHYSICAL = "org.jajuk.ui.perspectives.PhysicalPerspective";
 	public static final String PERSPECTIVE_NAME_LOGICAL = "org.jajuk.ui.perspectives.LogicalPerspective";
 	public static final String PERSPECTIVE_NAME_CONFIGURATION = "org.jajuk.ui.perspectives.ConfigurationPerspective";
@@ -347,7 +383,7 @@ public interface ITechnicalStrings {
 	public static final String PERSPECTIVE_NAME_CATALOG = "org.jajuk.ui.perspectives.CatalogPerspective";
 	public static final String PERSPECTIVE_NAME_INFO = "org.jajuk.ui.perspectives.InfoPerspective";
     
-    //views
+    // views
 	public static final String VIEW_NAME_DEVICES = "org.jajuk.ui.views.DeviceView";
 	public static final String VIEW_NAME_PARAMETERS = "org.jajuk.ui.views.ParameterView";
 	public static final String VIEW_NAME_PHYSICAL_TREE = "org.jajuk.ui.views.PhysicalTreeView";
@@ -366,7 +402,7 @@ public interface ITechnicalStrings {
 	public static final String VIEW_NAME_LOGICAL_NAVIGATION_BAR = "org.jajuk.ui.views.LogicalNavigationBarView";
 	public static final String VIEW_NAME_CD_SCAN = "org.jajuk.ui.views.CDScanView";
 	 	
-	//extensions
+	// extensions
 	public static final String EXT_MP3 = "mp3";
 	public static final String EXT_PLAYLIST = "m3u";
 	public static final String EXT_OGG = "ogg";
@@ -376,68 +412,204 @@ public interface ITechnicalStrings {
 	public static final String EXT_FLAC = "flac";
     public static final String EXT_THUMB = "jpg";
         	
-	//event keys
-	public static final String EVENT_EXIT ="exit"; //exit has be required
-	public static final String EVENT_REPEAT_MODE_STATUS_CHANGED="repeat status changed"; //repeat mode changed
-	public static final String EVENT_SHUFFLE_MODE_STATUS_CHANGED="shuffle status changed"; //shuffle mode changed
-	public static final String EVENT_CONTINUE_MODE_STATUS_CHANGED="continue status changed"; //continue mode changed
-	public static final String EVENT_INTRO_MODE_STATUS_CHANGED="intro status changed"; //intro mode changed
-	public static final String EVENT_DEVICE_NEW="new device"; //new device
-	public static final String EVENT_DEVICE_DELETE="delete device"; //removed device
-	public static final String EVENT_DEVICE_PROPERTIES="device properties"; //device properties display
-	public static final String EVENT_DEVICE_MOUNT="mount device"; //mount device
-	public static final String EVENT_DEVICE_UNMOUNT="unmount device"; //unmount a device
-	public static final String EVENT_DEVICE_TEST="test device"; //test a device
-	public static final String EVENT_DEVICE_REFRESH="refresh device"; //refresh a device
-	public static final String EVENT_DEVICE_SYNCHRO="synchronize device"; //sync. a device
-    public static final String EVENT_VIEW_REFRESH_REQUEST="refresh view"; //refresh a view is required, used in the device view
-	public static final String EVENT_VIEW_CLOSE_REQUEST="close view"; //close a view
-	public static final String EVENT_VIEW_SHOW_REQUEST="show view"; //show a view
-	public static final String EVENT_VIEW_SHOW_STATUS_CHANGED_REQUEST="change status view"; //change 
+	// event keys
+	public static final String EVENT_EXIT ="exit"; // exit has be required
+	public static final String EVENT_REPEAT_MODE_STATUS_CHANGED="repeat status changed"; // repeat
+																							// mode
+																							// changed
+	public static final String EVENT_SHUFFLE_MODE_STATUS_CHANGED="shuffle status changed"; // shuffle
+																							// mode
+																							// changed
+	public static final String EVENT_CONTINUE_MODE_STATUS_CHANGED="continue status changed"; // continue
+																								// mode
+																								// changed
+	public static final String EVENT_INTRO_MODE_STATUS_CHANGED="intro status changed"; // intro
+																						// mode
+																						// changed
+	public static final String EVENT_DEVICE_NEW="new device"; // new device
+	public static final String EVENT_DEVICE_DELETE="delete device"; // removed
+																	// device
+	public static final String EVENT_DEVICE_PROPERTIES="device properties"; // device
+																			// properties
+																			// display
+	public static final String EVENT_DEVICE_MOUNT="mount device"; // mount
+																	// device
+	public static final String EVENT_DEVICE_UNMOUNT="unmount device"; // unmount
+																		// a
+																		// device
+	public static final String EVENT_DEVICE_TEST="test device"; // test a device
+	public static final String EVENT_DEVICE_REFRESH="refresh device"; // refresh
+																		// a
+																		// device
+	public static final String EVENT_DEVICE_SYNCHRO="synchronize device"; // sync.
+																			// a
+																			// device
+    public static final String EVENT_VIEW_REFRESH_REQUEST="refresh view"; // refresh
+																			// a
+																			// view
+																			// is
+																			// required,
+																			// used
+																			// in
+																			// the
+																			// device
+																			// view
+	public static final String EVENT_VIEW_CLOSE_REQUEST="close view"; // close
+																		// a
+																		// view
+	public static final String EVENT_VIEW_SHOW_REQUEST="show view"; // show a
+																	// view
+	public static final String EVENT_VIEW_SHOW_STATUS_CHANGED_REQUEST="change status view"; // change
 	public static final String EVENT_VIEW_RESTORE_DEFAULTS="restore default views";
 	public static final String EVENT_VIEW_COMMAND_SELECT_HISTORY_ITEM="select history item";
-	public static final String EVENT_HELP_REQUIRED="help required";//The help should be displayed
-	public static final String EVENT_COVER_REFRESH="cover refresh";//the cover should be refreshed
-	public static final String EVENT_COVER_CHANGE="cover change";//Request for a cover change
-    public static final String EVENT_PLAYER_STOP="player stop";//the stop button has been pressed
-	public static final String EVENT_PLAYER_PLAY="player play";  //the play button has been pressed
-	public static final String EVENT_PLAYER_PAUSE="player pause";//the pause button has been pressed
-	public static final String EVENT_PLAYER_RESUME="player resume";//the resume button has been pressed
+	public static final String EVENT_HELP_REQUIRED="help required";// The help
+																	// should be
+																	// displayed
+	public static final String EVENT_COVER_REFRESH="cover refresh";// the cover
+																	// should be
+																	// refreshed
+	public static final String EVENT_COVER_CHANGE="cover change";// Request
+																	// for a
+																	// cover
+																	// change
+    public static final String EVENT_PLAYER_STOP="player stop";// the stop
+																// button has
+																// been pressed
+	public static final String EVENT_PLAYER_PLAY="player play";  // the play
+																	// button
+																	// has been
+																	// pressed
+	public static final String EVENT_PLAYER_PAUSE="player pause";// the pause
+																	// button
+																	// has been
+																	// pressed
+	public static final String EVENT_PLAYER_RESUME="player resume";// the
+																	// resume
+																	// button
+																	// has been
+																	// pressed
 	public static final String EVENT_PLAYLIST_REFRESH="playlist refresh";
 	public static final String EVENT_PLAYLIST_CHANGED="playlist changed";
-	public static final String EVENT_FILE_LAUNCHED="file launched";//a file has been lauched by the fifo
-	public static final String EVENT_HEART_BEAT="heart beat";//heart beat for geenral use to refresh subscribers every n secs
-	public static final String EVENT_ZERO="zero"; //a reinit has been required
-	public static final String EVENT_ADD_HISTORY_ITEM="add history item"; //a new element has been added in the history
-	public static final String EVENT_SPECIAL_MODE="special mode changed"; //special mode (global shuffle, novelties, bestof...) changed
-	public static final String EVENT_PLAY_ERROR="error"; //an error occured during a play
-	public static final String EVENT_PLAY_FINISHED="play_finished"; //send at the end of a track
-    public static final String EVENT_MUTE_STATE="mute_state"; //mute state changed
-	public static final String EVENT_SYNC_TREE_TABLE="sync_tree_table"; //sync table and tree views
-    public static final String EVENT_CLEAR_HISTORY="clear history"; //clear history
-    public static final String EVENT_WIZARD="launch wizard"; //launch first time wizard
-    public static final String EVENT_QUALITY="quality feedback"; //quality feedback agent
-    public static final String EVENT_VOLUME_CHANGED="volume changed"; //volume changed
-    public static final String EVENT_CREATE_PROPERTY="create property"; //create a new property
-    public static final String EVENT_DELETE_PROPERTY="delete property"; //delete property
-    public static final String EVENT_CUSTOM_PROPERTIES_ADD="custom property add"; //new custom property
-    public static final String EVENT_CUSTOM_PROPERTIES_REMOVE="custom property remove"; //remove custom property
-    public static final String EVENT_FILE_NAME_CHANGED="file name changed"; //file name change
-	public static final String EVENT_STYLE_NAME_CHANGED="style name changed"; //Style name change
-    public static final String EVENT_RATE_CHANGED="file rate changed"; //file rate change
-    public static final String EVENT_TIP_OF_THE_DAY="tip of the day"; // show tip of the day
-    public static final String EVENT_CDDB_WIZARD = "cddb.wizard"; //Cddb wizard required
-    public static final String EVENT_LOGICAL_TREE_SORT = "logical tree sort"; //logical tree osrt method changed
-    public static final String EVENT_COVER_DEFAULT_CHANGED = "cover default changed"; //cover default changed
-    public static final String EVENT_TABLE_CLEAR_SELECTION = "table.clear_selection"; //clear table selection
-    public static final String EVENT_DJS_CHANGE = "djs_change"; //DJ creation or removal
-    public static final String EVENT_AMBIENCES_CHANGE = "ambiences_change"; //One or more ambiences have been removed/added/changed
-    public static final String EVENT_AMBIENCES_SELECTION_CHANGE = "ambiences_selection_change"; //user changed current ambience
-    public static final String EVENT_AMBIENCE_REMOVED = "ambience_removed"; //An ambience has been removed
-    public static final String EVENT_AUTHOR_CHANGED = "author changed"; //Current played track author name has been changed
-    public static final String EVENT_LANGUAGE_CHANGED = "language changed"; //Language changed
+	public static final String EVENT_FILE_LAUNCHED="file launched";// a file
+																	// has been
+																	// lauched
+																	// by the
+																	// fifo
+	public static final String EVENT_HEART_BEAT="heart beat";// heart beat
+																// for geenral
+																// use to
+																// refresh
+																// subscribers
+																// every n secs
+	public static final String EVENT_ZERO="zero"; // a reinit has been
+													// required
+	public static final String EVENT_ADD_HISTORY_ITEM="add history item"; // a
+																			// new
+																			// element
+																			// has
+																			// been
+																			// added
+																			// in
+																			// the
+																			// history
+	public static final String EVENT_SPECIAL_MODE="special mode changed"; // special
+																			// mode
+																			// (global
+																			// shuffle,
+																			// novelties,
+																			// bestof...)
+																			// changed
+	public static final String EVENT_PLAY_ERROR="error"; // an error occured
+															// during a play
+	public static final String EVENT_PLAY_FINISHED="play_finished"; // send at
+																	// the end
+																	// of a
+																	// track
+    public static final String EVENT_MUTE_STATE="mute_state"; // mute state
+																// changed
+	public static final String EVENT_SYNC_TREE_TABLE="sync_tree_table"; // sync
+																		// table
+																		// and
+																		// tree
+																		// views
+    public static final String EVENT_CLEAR_HISTORY="clear history"; // clear
+																	// history
+    public static final String EVENT_WIZARD="launch wizard"; // launch first
+																// time wizard
+    public static final String EVENT_QUALITY="quality feedback"; // quality
+																	// feedback
+																	// agent
+    public static final String EVENT_VOLUME_CHANGED="volume changed"; // volume
+																		// changed
+    public static final String EVENT_CREATE_PROPERTY="create property"; // create
+																		// a new
+																		// property
+    public static final String EVENT_DELETE_PROPERTY="delete property"; // delete
+																		// property
+    public static final String EVENT_CUSTOM_PROPERTIES_ADD="custom property add"; // new
+																					// custom
+																					// property
+    public static final String EVENT_CUSTOM_PROPERTIES_REMOVE="custom property remove"; // remove
+																						// custom
+																						// property
+    public static final String EVENT_FILE_NAME_CHANGED="file name changed"; // file
+																			// name
+																			// change
+	public static final String EVENT_STYLE_NAME_CHANGED="style name changed"; // Style
+																				// name
+																				// change
+    public static final String EVENT_RATE_CHANGED="file rate changed"; // file
+																		// rate
+																		// change
+    public static final String EVENT_TIP_OF_THE_DAY="tip of the day"; // show
+																		// tip
+																		// of
+																		// the
+																		// day
+    public static final String EVENT_CDDB_WIZARD = "cddb.wizard"; // Cddb
+																	// wizard
+																	// required
+    public static final String EVENT_LOGICAL_TREE_SORT = "logical tree sort"; // logical
+																				// tree
+																				// osrt
+																				// method
+																				// changed
+    public static final String EVENT_COVER_DEFAULT_CHANGED = "cover default changed"; // cover
+																						// default
+																						// changed
+    public static final String EVENT_TABLE_CLEAR_SELECTION = "table.clear_selection"; // clear
+																						// table
+																						// selection
+    public static final String EVENT_DJS_CHANGE = "djs_change"; // DJ creation
+																// or removal
+    public static final String EVENT_AMBIENCES_CHANGE = "ambiences_change"; // One
+																			// or
+																			// more
+																			// ambiences
+																			// have
+																			// been
+																			// removed/added/changed
+    public static final String EVENT_AMBIENCES_SELECTION_CHANGE = "ambiences_selection_change"; // user
+																								// changed
+																								// current
+																								// ambience
+    public static final String EVENT_AMBIENCE_REMOVED = "ambience_removed"; // An
+																			// ambience
+																			// has
+																			// been
+																			// removed
+    public static final String EVENT_AUTHOR_CHANGED = "author changed"; // Current
+																		// played
+																		// track
+																		// author
+																		// name
+																		// has
+																		// been
+																		// changed
+    public static final String EVENT_LANGUAGE_CHANGED = "language changed"; // Language
+																			// changed
     
-    //details keys
+    // details keys
 	public static final String DETAIL_CURRENT_FILE_ID="current file id";
 	public static final String DETAIL_CURRENT_FILE="current file";
 	public static final String DETAIL_CURRENT_DATE="current date";
@@ -458,7 +630,7 @@ public interface ITechnicalStrings {
     public static final String DETAIL_NEW="new";
     public static final String DETAIL_OPTION="option";
                			
-	//Look and feel
+	// Look and feel
 	public static final String LNF_METAL = "Ocean";
 	public static final String LNF_METAL_CLASS = "javax.swing.plaf.metal.MetalLookAndFeel";
 	public static final String LNF_METAL_CBUI = "org.jajuk.ui.laf.MetalComboBoxUI";
@@ -487,7 +659,7 @@ public interface ITechnicalStrings {
     public static final String LNF_TINY = "Tiny";
     public static final String LNF_TINY_CLASS = "de.muntjak.tinylookandfeel.TinyLookAndFeel";
     
-	//statup mode
+	// statup mode
 	public static final String STARTUP_MODE_NOTHING = "nothing";
 	public static final String STARTUP_MODE_SHUFFLE = "shuffle";
 	public static final String STARTUP_MODE_FILE = "file";
@@ -496,14 +668,23 @@ public interface ITechnicalStrings {
 	public static final String STARTUP_MODE_BESTOF = "bestof";
 	public static final String STARTUP_MODE_NOVELTIES = "novelties";
 	
-	//	configuration keys
+	// configuration keys
 	public static final String CONF_RELEASE = "jajuk.release";
     public static final String CONF_PERSPECTIVE_DEFAULT = "jajuk.preference.perspective.default";
 	public static final String CONF_STATE_REPEAT = "jajuk.state.mode.repeat";
 	public static final String CONF_STATE_SHUFFLE = "jajuk.state.mode.shuffle";
 	public static final String CONF_STATE_CONTINUE = "jajuk.state.mode.continue";
 	public static final String CONF_STATE_INTRO = "jajuk.state.mode.intro";
-	public static final String CONF_STATE_WAS_PLAYING = "jajuk.state.was_playing"; //wether user exited jajuk in stop state or playing state
+	public static final String CONF_STATE_WAS_PLAYING = "jajuk.state.was_playing"; // wether
+																					// user
+																					// exited
+																					// jajuk
+																					// in
+																					// stop
+																					// state
+																					// or
+																					// playing
+																					// state
 	public static final String CONF_STARTUP_FILE = "jajuk.startup.file";
 	public static final String CONF_STARTUP_MODE = "jajuk.startup.mode";
 	public static final String CONF_CONFIRMATIONS_DELETE_FILE = "jajuk.confirmations.delete_file";
@@ -520,11 +701,38 @@ public interface ITechnicalStrings {
 	public static final String CONF_OPTIONS_INTRO_LENGTH = "jajuk.options.intro.length";
 	public static final String CONF_OPTIONS_LNF = "jajuk.options.lnf";
 	public static final String CONF_OPTIONS_NOVELTIES_AGE = "jajuk.options.novelties";
-	public static final String CONF_OPTIONS_VISIBLE_PLANNED = "jajuk.options.visible_planned"; //number of visible planned tracks
-	public static final String CONF_OPTIONS_DEFAULT_ACTION_CLICK = "jajuk.options.default_action_click"; //default action (play or push) when clicking on an item
-	public static final String CONF_OPTIONS_DEFAULT_ACTION_DROP = "jajuk.options.default_action_drop"; //default action (play or push) when droping on an item
-	public static final String CONF_OPTIONS_SYNC_TABLE_TREE = "jajuk.options.sync_table_tree"; //synchronize table and tree views
-	public static final String CONF_OPTIONS_SHOW_POPUP = "jajuk.options.show_popup"; //show popup
+	public static final String CONF_OPTIONS_VISIBLE_PLANNED = "jajuk.options.visible_planned"; // number
+																								// of
+																								// visible
+																								// planned
+																								// tracks
+	public static final String CONF_OPTIONS_DEFAULT_ACTION_CLICK = "jajuk.options.default_action_click"; // default
+																											// action
+																											// (play
+																											// or
+																											// push)
+																											// when
+																											// clicking
+																											// on
+																											// an
+																											// item
+	public static final String CONF_OPTIONS_DEFAULT_ACTION_DROP = "jajuk.options.default_action_drop"; // default
+																										// action
+																										// (play
+																										// or
+																										// push)
+																										// when
+																										// droping
+																										// on
+																										// an
+																										// item
+	public static final String CONF_OPTIONS_SYNC_TABLE_TREE = "jajuk.options.sync_table_tree"; // synchronize
+																								// table
+																								// and
+																								// tree
+																								// views
+	public static final String CONF_OPTIONS_SHOW_POPUP = "jajuk.options.show_popup"; // show
+																						// popup
     public static final String CONF_P2P_SHARE = "jajuk.options.p2p.share";
 	public static final String CONF_P2P_ADD_REMOTE_PROPERTIES = "jajuk.options.p2p.add_remote_properties";
 	public static final String CONF_P2P_HIDE_LOCAL_PROPERTIES = "jajuk.options.p2p.hide_local_properties";
@@ -532,13 +740,33 @@ public interface ITechnicalStrings {
 	public static final String CONF_HISTORY = "jajuk.options.history";
 	public static final String CONF_FIRST_CON = "jajuk.first_con";
 	public static final String CONF_TAGS_USE_PARENT_DIR = "jajuk.tags.use_parent_dir";
-	public static final String CONF_BOOKMARKS = "jajuk.bookmarks"; //contains files id separated by a colon
-	public static final String CONF_SHOW_AT_STARTUP = "jajuk.show_at_startup"; //show jajuk window at startup
-	public static final String CONF_BESTOF_SIZE = "jajuk.bestof_size"; //best of size
-	public static final String CONF_VOLUME = "jajuk.volume"; //gain (float)
-	public static final String CONF_REGEXP = "jajuk.regexp"; //use regular expressions ?
-	public static final String CONF_BACKUP_SIZE = "jajuk.backup_size"; //backup size for collection.xml in MB
-	public static final String CONF_COLLECTION_CHARSET = "jajuk.collection_charset";//collection file charset (utf-8 or utf-16)
+	public static final String CONF_BOOKMARKS = "jajuk.bookmarks"; // contains
+																	// files id
+																	// separated
+																	// by a
+																	// colon
+	public static final String CONF_SHOW_AT_STARTUP = "jajuk.show_at_startup"; // show
+																				// jajuk
+																				// window
+																				// at
+																				// startup
+	public static final String CONF_BESTOF_SIZE = "jajuk.bestof_size"; // best
+																		// of
+																		// size
+	public static final String CONF_VOLUME = "jajuk.volume"; // gain (float)
+	public static final String CONF_REGEXP = "jajuk.regexp"; // use regular
+																// expressions ?
+	public static final String CONF_BACKUP_SIZE = "jajuk.backup_size"; // backup
+																		// size
+																		// for
+																		// collection.xml
+																		// in MB
+	public static final String CONF_COLLECTION_CHARSET = "jajuk.collection_charset";// collection
+																					// file
+																					// charset
+																					// (utf-8
+																					// or
+																					// utf-16)
 	public static final String CONF_STARTUP_LAST_POSITION = "jajuk.startup.last_position";
 	public static final String CONF_NETWORK_USE_PROXY = "jajuk.network.use_proxy";
 	public static final String CONF_NETWORK_PROXY_HOSTNAME = "jajuk.network.proxy_hostname";
@@ -550,47 +778,105 @@ public interface ITechnicalStrings {
 	public static final String CONF_COVERS_MIN_SIZE = "jajuk.covers.min_size";
 	public static final String CONF_COVERS_MAX_SIZE = "jajuk.covers.max_size";
 	public static final String CONF_COVERS_ACCURACY = "jajuk.covers.accuracy";
-	public static final String CONF_COVERS_CHANGE_AT_EACH_TRACK = "jajuk.covers.change_on_each_track"; //Load cover at each track 
+	public static final String CONF_COVERS_CHANGE_AT_EACH_TRACK = "jajuk.covers.change_on_each_track"; // Load
+																										// cover
+																										// at
+																										// each
+																										// track
 	public static final String CONF_NETWORK_CONNECTION_TO = "jajuk.network.connection_timeout";
 	public static final String CONF_NETWORK_TRANSFERT_TO = "jajuk.network.transfert_timeout";
-	public static final String CONF_OPTIONS_TAB = "jajuk.options.tab"; //Last Option selected tab 
-    public static final String CONF_BUFFER_SIZE = "jajuk.buffer_size"; //data buffer size in bytes
-    public static final String CONF_AUDIO_BUFFER_SIZE = "jajuk.audio_buffer_size"; //Audio buffer size in bytes
-    public static final String CONF_WINDOW_POSITION = "jajuk.window_position"; //Window position and size
-    public static final String CONF_PHYSICAL_TABLE_COLUMNS = "jajuk.ui.physical_table_columns"; //Physical table columns
-    public static final String CONF_PHYSICAL_TABLE_EDITION = "jajuk.ui.physical_table_edition"; //Physical table edition state
-    public static final String CONF_LOGICAL_TABLE_COLUMNS = "jajuk.ui.logical_table_columns"; //Logical table columns
-    public static final String CONF_PLAYLIST_EDITOR_COLUMNS = "jajuk.ui.playlist_editor_columns"; //playlist editor columns to display
-    public static final String CONF_LOGICAL_TABLE_EDITION = "jajuk.ui.logical_table_edition"; //Logical table edition state
-    public static final String CONF_THUMBS_SIZE = "jajuk.ui.cover_catalog.thumbs_size"; //Catalog items size
-    public static final String CONF_THUMBS_SHOW_WITHOUT_COVER = "jajuk.ui.cover_catalog.show_without_cover"; //Catalog items size
-    public static final String CONF_THUMBS_SORTER = "jajuk.catalog.sorter"; //Catalog sorter
-    public static final String CONF_THUMBS_FILTER = "jajuk.catalog.filter"; //Catalog filter
-    public static final String CONF_SHOW_TIP_ON_STARTUP = "jajuk.tip.show_on_startup"; //Display tips on startup
-    public static final String CONF_TIP_OF_DAY_INDEX = "jajuk.tip.index"; // Index of current displayed tip
-    public static final String CONF_WIKIPEDIA_LANGUAGE = "jajuk.wikipedia.lang"; // wikipedia language
-    public static final String CONF_FADE_DURATION = "jajuk.fade_duration"; // cross fade duration in secs
-    public static final String CONF_LOGICAL_TREE_SORT_ORDER = "jajuk.logical_tree_sort_order";// logical tree sort order
-    public static final String CONF_REFACTOR_PATTERN = "jajuk.refactor_pattern";// logical tree sort order
-    public static final String CONF_DEFAULT_DJ="jajuk.default_dj"; //default dj
-    public static final String CONF_DEFAULT_AMBIENCE="jajuk.default_ambience"; //default ambience
+	public static final String CONF_OPTIONS_TAB = "jajuk.options.tab"; // Last
+																		// Option
+																		// selected
+																		// tab
+    public static final String CONF_BUFFER_SIZE = "jajuk.buffer_size"; // data
+																		// buffer
+																		// size
+																		// in
+																		// bytes
+    public static final String CONF_AUDIO_BUFFER_SIZE = "jajuk.audio_buffer_size"; // Audio
+																					// buffer
+																					// size
+																					// in
+																					// bytes
+    public static final String CONF_WINDOW_POSITION = "jajuk.window_position"; // Window
+																				// position
+																				// and
+																				// size
+    public static final String CONF_PHYSICAL_TABLE_COLUMNS = "jajuk.ui.physical_table_columns"; // Physical
+																								// table
+																								// columns
+    public static final String CONF_PHYSICAL_TABLE_EDITION = "jajuk.ui.physical_table_edition"; // Physical
+																								// table
+																								// edition
+																								// state
+    public static final String CONF_LOGICAL_TABLE_COLUMNS = "jajuk.ui.logical_table_columns"; // Logical
+																								// table
+																								// columns
+    public static final String CONF_PLAYLIST_EDITOR_COLUMNS = "jajuk.ui.playlist_editor_columns"; // playlist
+																									// editor
+																									// columns
+																									// to
+																									// display
+    public static final String CONF_LOGICAL_TABLE_EDITION = "jajuk.ui.logical_table_edition"; // Logical
+																								// table
+																								// edition
+																								// state
+    public static final String CONF_THUMBS_SIZE = "jajuk.ui.cover_catalog.thumbs_size"; // Catalog
+																						// items
+																						// size
+    public static final String CONF_THUMBS_SHOW_WITHOUT_COVER = "jajuk.ui.cover_catalog.show_without_cover"; // Catalog
+																												// items
+																												// size
+    public static final String CONF_THUMBS_SORTER = "jajuk.catalog.sorter"; // Catalog
+																			// sorter
+    public static final String CONF_THUMBS_FILTER = "jajuk.catalog.filter"; // Catalog
+																			// filter
+    public static final String CONF_SHOW_TIP_ON_STARTUP = "jajuk.tip.show_on_startup"; // Display
+																						// tips
+																						// on
+																						// startup
+    public static final String CONF_TIP_OF_DAY_INDEX = "jajuk.tip.index"; // Index
+																			// of
+																			// current
+																			// displayed
+																			// tip
+    public static final String CONF_WIKIPEDIA_LANGUAGE = "jajuk.wikipedia.lang"; // wikipedia
+																					// language
+    public static final String CONF_FADE_DURATION = "jajuk.fade_duration"; // cross
+																			// fade
+																			// duration
+																			// in
+																			// secs
+    public static final String CONF_LOGICAL_TREE_SORT_ORDER = "jajuk.logical_tree_sort_order";// logical
+																								// tree
+																								// sort
+																								// order
+    public static final String CONF_REFACTOR_PATTERN = "jajuk.refactor_pattern";// logical
+																				// tree
+																				// sort
+																				// order
+    public static final String CONF_DEFAULT_DJ="jajuk.default_dj"; // default
+																	// dj
+    public static final String CONF_DEFAULT_AMBIENCE="jajuk.default_ambience"; // default
+																				// ambience
 
-    //Accuracy levels
+    // Accuracy levels
 	public static final String ACCURACY_LOW = "low";
 	public static final String ACCURACY_NORMAL = "normal";
 	public static final String ACCURACY_HIGH = "high";
 	
-	//miscelanous
+	// miscelanous
 	public static final String TRUE= "true";
 	public static final String FALSE= "false";
     	
-	//views identifiers 
+	// views identifiers
 	/** Identifier of the physical tree view */
 	public static final String VIEW_PHYSICAL_TREE	= "VIEW_PHYSICAL_TREE";
 	/** Identifier of the track list view */
 	public static final String VIEW_TRACK_LIST		= "VIEW_TRACK_LIST";
 	
-	//Date format
+	// Date format
 	public static final String DATE_FILE = "yyyyMMdd";
 	public static final String ADDITION_DATE_FORMAT = "yyyyMMdd";
     public static final String DATE_FORMAT_DEFAULT = "Date_Default";
@@ -598,10 +884,10 @@ public interface ITechnicalStrings {
     public static final String DATE_FORMAT_2 = "yyyy/MM/dd";
     public static final String DATE_FORMAT_3 = "yyyyMMdd";
     
-	//Playlists
+	// Playlists
 	public static final String PLAYLIST_NOTE = "#Playlist generated by Jajuk "+JAJUK_VERSION;
 	
-	//XML tags
+	// XML tags
 	public static final String XML_COLLECTION = "collection";
 	public static final String XML_VERSION = "jajuk_version";
     public static final String XML_TYPES = "types";
@@ -654,7 +940,7 @@ public interface ITechnicalStrings {
     public static final String XML_DEVICE_AUTO_MOUNT = "auto_mount";
     public static final String XML_DEVICE_SYNCHRO_SOURCE = "synchro_source";
     public static final String XML_DEVICE_SYNCHRO_MODE = "synchro_mode";
-    public static final String XML_EXPANDED = "exp";  //can be 'y' or 'n'
+    public static final String XML_EXPANDED = "exp";  // can be 'y' or 'n'
     public static final String XML_DIRECTORY_PARENT = "parent";
     public static final String XML_DIRECTORY_SYNCHRONIZED = "sync"; 
     public static final String XML_HASHCODE = "hashcode";
@@ -663,21 +949,32 @@ public interface ITechnicalStrings {
 	public static final String XML_TYPE_TAG_IMPL = "tag_impl";
 	public static final String XML_TYPE_IS_MUSIC = "music";  
     public static final String XML_TYPE_SEEK_SUPPORTED = "seek";  
-    public static final String XML_TYPE_TECH_DESC = "tech_desc"; //type description as given in the steam 
-    public static final String XML_TYPE_ICON = "icon"; //icon used in the physical tree 
-    public static final String XML_TRACK_COMMENT = "comment"; //comment tag 
-    public static final String XML_TRACK_NUMBER = "number"; //track number 
-    public static final String XML_ANY = "any"; //"any" criteria 
-    public static final String XML_CONSTRUCTOR = "constructor";  //constructor property flag
-    public static final String XML_VISIBLE = "visible";  //property should be displayed?
-    public static final String XML_EDITABLE = "editable";  //property editable?
-    public static final String XML_UNIQUE = "unique";  //property unique?
-    public static final String XML_CUSTOM = "custom"; //custom property flag 
-    public static final String XML_PROPERTY = "property"; //property 
-    public static final String XML_DEFAULT_VALUE = "default_value"; //default value  
+    public static final String XML_TYPE_TECH_DESC = "tech_desc"; // type
+																	// description
+																	// as given
+																	// in the
+																	// steam
+    public static final String XML_TYPE_ICON = "icon"; // icon used in the
+														// physical tree
+    public static final String XML_TRACK_COMMENT = "comment"; // comment tag
+    public static final String XML_TRACK_NUMBER = "number"; // track number
+    public static final String XML_ANY = "any"; // "any" criteria
+    public static final String XML_CONSTRUCTOR = "constructor";  // constructor
+																	// property
+																	// flag
+    public static final String XML_VISIBLE = "visible";  // property should
+															// be displayed?
+    public static final String XML_EDITABLE = "editable";  // property
+															// editable?
+    public static final String XML_UNIQUE = "unique";  // property unique?
+    public static final String XML_CUSTOM = "custom"; // custom property flag
+    public static final String XML_PROPERTY = "property"; // property
+    public static final String XML_DEFAULT_VALUE = "default_value"; // default
+																	// value
         
-    public static final String XML_DJ_DJ = "dj"; //general dj tag
-    public static final String XML_DJ_GENERAL = "general_parameters"; //general parameters
+    public static final String XML_DJ_DJ = "dj"; // general dj tag
+    public static final String XML_DJ_GENERAL = "general_parameters"; // general
+																		// parameters
     public static final String XML_DJ_RATING_LEVEL = "rating_level";
     public static final String XML_DJ_UNICITY = "unicity";
     public static final String XML_DJ_FADE_DURATION = "fade_duration";
@@ -698,7 +995,8 @@ public interface ITechnicalStrings {
     public static final String XML_DJ_NUMBER = "number";
     public static final String XML_DJ_STARTUP_STYLE = "startup_style";
     
-    //Reserved XML tags for property names (note that a user can choose a property name equals to meta information attributes names without pbm)
+    // Reserved XML tags for property names (note that a user can choose a
+	// property name equals to meta information attributes names without pbm)
     public static final String[] XML_RESERVED_ATTRIBUTE_NAMES = {
         XML_NAME,XML_ID,XML_TYPE_EXTENSION,XML_TYPE_PLAYER_IMPL,XML_TYPE_TAG_IMPL,
         XML_TYPE_TECH_DESC,XML_TYPE_SEEK_SUPPORTED,XML_TYPE_ICON,XML_TYPE_IS_MUSIC,
@@ -707,24 +1005,24 @@ public interface ITechnicalStrings {
         XML_DIRECTORY_PARENT,XML_DEVICE,XML_DIRECTORY,XML_TRACK,XML_SIZE,XML_QUALITY,
         XML_HASHCODE,XML_PLAYLIST_FILES,XML_TRACK_COMMENT,XML_ANY,XML_TRACK_ORDER,
         XML_DEVICE_SYNCHRO_MODE,XML_DEVICE_SYNCHRO_SOURCE,XML_FILE_DATE   
-    }; //contains variables names
+    }; // contains variables names
 
     public static final String PROPERTY_SEPARATOR = "Property_";
     
-    //Formats
+    // Formats
     public static final String FORMAT_STRING = "Property_Format_String";
     public static final String FORMAT_NUMBER = "Property_Format_Number";
     public static final String FORMAT_BOOLEAN = "Property_Format_Boolean";
     public static final String FORMAT_FLOAT = "Property_Format_Float";
     public static final String FORMAT_DATE = "Property_Format_Date";
     
-    //Thumbs
+    // Thumbs
     public static final String THUMBNAIL_SIZE_50x50 = "50x50";
     public static final String THUMBNAIL_SIZE_100x100 = "100x100";
     public static final String THUMBNAIL_SIZE_150x150 = "150x150";
     public static final String THUMBNAIL_SIZE_200x200 = "200x200";
     
-    //Patterns
+    // Patterns
     public static final String PATTERN_ARTIST = "%artist";
     public static final String PATTERN_ALBUM = "%album";
     public static final String PATTERN_GENRE = "%genre";
@@ -733,11 +1031,10 @@ public interface ITechnicalStrings {
     public static final String PATTERN_TRACKORDER = "%n";
     public static final String DEFAULT_REORG_PATTERN = PATTERN_ARTIST+"/"+PATTERN_YEAR+" - "+PATTERN_ALBUM+"/"+PATTERN_TRACKORDER+" - "+PATTERN_TRACKNAME;
         
-    //Actions
+    // Actions
     public static final String ACTION_NEXT = "next";
     public static final String ACTION_PREV = "prev";
     public static final String ACTION_FINISH = "finish";
     public static final String ACTION_Cancel = "cancel";
-    
     
 }

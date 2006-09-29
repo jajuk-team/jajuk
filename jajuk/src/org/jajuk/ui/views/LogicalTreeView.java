@@ -102,6 +102,8 @@ import ext.SwingWorker;
 public class LogicalTreeView extends AbstractTreeView implements
 ActionListener, Observer {
     
+    private static final long serialVersionUID = 1L;
+
     /** Self instance */
     private static LogicalTreeView ltv;
     
@@ -393,6 +395,8 @@ ActionListener, Observer {
         // create tree
         createTree();
         jtree.setCellRenderer(new DefaultTreeCellRenderer() {
+            private static final long serialVersionUID = 1L;
+
             public Component getTreeCellRendererComponent(JTree tree,
                     Object value, boolean sel, boolean expanded, boolean leaf,
                     int row, boolean hasFocus) {
@@ -772,8 +776,6 @@ ActionListener, Observer {
         Collections.sort(tracks,TrackManager.getInstance().getComparator());
         for (Track track : tracks) {
             if (!track.shouldBeHidden()) {
-                AuthorNode authorNode = null;
-                Author author = track.getAuthor();
                 AlbumNode albumNode = null;
                 Album album = track.getAlbum();
                 
@@ -807,7 +809,6 @@ ActionListener, Observer {
 
         DefaultMutableTreeNode authorNode = new DefaultMutableTreeNode();
         DefaultMutableTreeNode albumNode = new DefaultMutableTreeNode();
-        DefaultMutableTreeNode trackNode = new DefaultMutableTreeNode();
         AlbumNode misc;
         Enumeration eAuthor = top.children();
 
@@ -1232,6 +1233,8 @@ ActionListener, Observer {
  */
 class StyleNode extends TransferableTreeNode {
     
+    private static final long serialVersionUID = 1L;
+
     /**
      * Constructor
      * 
@@ -1265,6 +1268,11 @@ class StyleNode extends TransferableTreeNode {
 class AuthorNode extends TransferableTreeNode {
     
     /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
+    /**
      * Constructor
      * 
      * @param author
@@ -1296,6 +1304,8 @@ class AuthorNode extends TransferableTreeNode {
  * @created 29 nov. 2003
  */
 class AlbumNode extends TransferableTreeNode {
+    
+    private static final long serialVersionUID = 1L;
     
     /**
      * Constructor
@@ -1329,6 +1339,8 @@ class AlbumNode extends TransferableTreeNode {
  */
 class TrackNode extends TransferableTreeNode {
     
+    private static final long serialVersionUID = 1L;
+
     /**
      * Constructor
      * 

@@ -30,7 +30,9 @@ import java.util.ArrayList;
  */
 public class PhysicalPlaylistEditorView extends AbstractPlaylistEditorView{
         
-	/**
+	private static final long serialVersionUID = 1L;
+
+    /**
 	 * Constructor
 	 */
 	public PhysicalPlaylistEditorView() {

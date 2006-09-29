@@ -33,6 +33,8 @@ import javax.swing.table.DefaultTableCellRenderer;
  */
 public class JajukCellRender extends DefaultTableCellRenderer {
    
+    private static final long serialVersionUID = 1L;
+
     public Component getTableCellRendererComponent(JTable table, Object oValue, boolean selected, boolean focused, int row, int column)  {
         setEnabled(table == null || table.isEnabled()); // see question above
         if (oValue instanceof IconLabel) { 

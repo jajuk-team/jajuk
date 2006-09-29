@@ -34,7 +34,7 @@ import org.jajuk.util.log.Log;
  */
 public class TypeManager extends ItemManager{
     /**extenssions->types*/
-    private HashMap hmSupportedTypes = new HashMap(10);
+    private HashMap<String, Type> hmSupportedTypes = new HashMap<String, Type>(10);
     /**Self instance*/
     private static TypeManager singleton;
     
@@ -160,7 +160,7 @@ public class TypeManager extends ItemManager{
      */
     public ArrayList getAllMusicTypes() {
         synchronized(TrackManager.getInstance().getLock()){
-            ArrayList alResu = new ArrayList(5);	
+            ArrayList<Type> alResu = new ArrayList<Type>(5);	
             Iterator it = hmSupportedTypes.values().iterator();
             while (it.hasNext()){
                 Type type = (Type)it.next();

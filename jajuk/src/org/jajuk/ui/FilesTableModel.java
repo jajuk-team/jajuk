@@ -47,7 +47,9 @@ import org.jajuk.util.log.Log;
  */
 public class FilesTableModel extends JajukTableModel implements ITechnicalStrings{
 	
-	/**
+	private static final long serialVersionUID = 1L;
+
+    /**
 	 * Model constructor
 	 * @param iColNum number of rows
 	 * @param sColName columns names

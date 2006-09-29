@@ -38,6 +38,8 @@ import org.jajuk.util.error.JajukException;
  */
 public class DJAction extends ActionBase {
 
+    private static final long serialVersionUID = 1L;
+
     DJAction() {
         super(Messages.getString("CommandJPanel.16"),Util.getIcon(ICON_DIGITAL_DJ), true); //$NON-NLS-1$
         String sTooltip = Messages.getString("CommandJPanel.18"); //$NON-NLS-1$

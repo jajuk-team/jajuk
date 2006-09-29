@@ -61,7 +61,7 @@ public class Ambience implements Comparable{
      * @param styles list by name
      */
     public Ambience(String sID,String sName,String[] styles) {
-        HashSet<Style> hstyles = new HashSet(styles.length);
+        HashSet<Style> hstyles = new HashSet<Style>(styles.length);
         for (int i=0;i<styles.length;i++){
         	Style style = StyleManager.getInstance().getStyleByName(styles[i]);
         	if (style != null){
@@ -89,7 +89,7 @@ public class Ambience implements Comparable{
      */
     public Ambience() {
         this.sName = ""; //$NON-NLS-1$
-        this.styles = new HashSet(10);
+        this.styles = new HashSet<Style>(10);
     }
     
     public void addStyle(Style style){

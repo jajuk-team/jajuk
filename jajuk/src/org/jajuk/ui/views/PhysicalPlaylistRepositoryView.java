@@ -43,6 +43,7 @@ import org.jajuk.util.error.JajukException;
  */
 public class PhysicalPlaylistRepositoryView extends AbstractPlaylistRepositoryView implements Observer,ActionListener{
     
+    private static final long serialVersionUID = 1L;
     /**Self instance*/
     static PhysicalPlaylistRepositoryView ppr;
     

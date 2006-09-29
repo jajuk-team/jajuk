@@ -34,6 +34,8 @@ import org.jajuk.util.Util;
  */
 public class WizardAction extends ActionBase {
 
+    private static final long serialVersionUID = 1L;
+
     WizardAction() {
         super(Messages.getString("JajukJMenuBar.18"), Util.getIcon(ICON_WIZARD), true); //$NON-NLS-1$
     }

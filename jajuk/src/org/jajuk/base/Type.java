@@ -31,6 +31,7 @@ import org.jajuk.util.log.Log;
  */
 public class Type extends Item implements Comparable{
 	
+	private static final long serialVersionUID = 1L;
 	/**Type extension ex:mp3,ogg */
 	private String sExtension;
 	/**Player impl*/

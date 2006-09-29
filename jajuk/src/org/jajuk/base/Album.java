@@ -34,6 +34,9 @@ import org.jajuk.util.Util;
  */
 public class Album extends Item implements Comparable{
 	
+	private static final long serialVersionUID = 1L;
+
+
 	/**
 	 * Album constructor
 	 * @param id
@@ -122,9 +125,8 @@ public class Album extends Item implements Comparable{
         if (XML_NAME.equals(sKey)){
             return getName2();
         }
-        else{//default
-            return super.getHumanValue(sKey);
-        }
+        //default
+        return super.getHumanValue(sKey);
     }
      
     
@@ -141,7 +143,7 @@ public class Album extends Item implements Comparable{
             return null;
         }
         //List if directories we have to look in
-        HashSet<Directory> dirs = new HashSet(2);
+        HashSet<Directory> dirs = new HashSet<Directory>(2);
         for (Track track:tracks){
             for (org.jajuk.base.File file:track.getFiles()){
                 //note that hashset ensures directory unicity

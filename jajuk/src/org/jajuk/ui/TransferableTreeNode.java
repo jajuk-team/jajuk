@@ -34,7 +34,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
  * @created    13 feb.. 2004
  */
 public class TransferableTreeNode extends DefaultMutableTreeNode implements Transferable{
-	public static final DataFlavor NODE_FLAVOR = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType, "Node"); //$NON-NLS-1$
+	private static final long serialVersionUID = 1L;
+    public static final DataFlavor NODE_FLAVOR = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType, "Node"); //$NON-NLS-1$
 	private Object oData;
 	
 	public TransferableTreeNode(Object oData){

@@ -37,6 +37,7 @@ import org.jajuk.util.ITechnicalStrings;
 
 public class TableTransferHandler extends TransferHandler implements ITechnicalStrings {
     
+    private static final long serialVersionUID = 1L;
     private JTable jtable;
     public static int iSelectedRow = 0;
     

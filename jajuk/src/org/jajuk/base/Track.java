@@ -39,7 +39,8 @@ import org.jajuk.util.Util;
  */
 public class Track extends Item implements Comparable{
     
-    /**Track album**/
+    private static final long serialVersionUID = 1L;
+	/**Track album**/
     private final Album album;
     /**Track style*/
     private final Style style;
@@ -54,7 +55,7 @@ public class Track extends Item implements Comparable{
     /**Track type*/
     private final Type type;
     /**Track associated files*/
-    private ArrayList<File> alFiles = new ArrayList(1);
+    private ArrayList<File> alFiles = new ArrayList<File>(1);
     /** Number of hits for current jajuk session */
     private int iSessionHits = 0;
     
@@ -143,7 +144,7 @@ public class Track extends Item implements Comparable{
      * @return ready files
      */
     public ArrayList<File> getReadyFiles() {
-        ArrayList alReadyFiles = new ArrayList(alFiles.size());
+        ArrayList<File> alReadyFiles = new ArrayList<File>(alFiles.size());
         for (File file:alFiles){
             if (file.isReady()){
                 alReadyFiles.add(file);
@@ -157,7 +158,7 @@ public class Track extends Item implements Comparable{
      * @param filter files we want to deal with, null means no filter
      */
     public ArrayList<File> getReadyFiles(HashSet filter) {
-        ArrayList alReadyFiles = new ArrayList(alFiles.size());
+        ArrayList<File> alReadyFiles = new ArrayList<File>(alFiles.size());
         for (File file:alFiles){
             if (file.isReady() && 
                     (filter == null || filter.contains(file))){
@@ -188,7 +189,7 @@ public class Track extends Item implements Comparable{
      */
     public File getPlayeableFile(boolean bHideUnmounted) {
         File fileOut = null;
-        ArrayList<File> alMountedFiles = new ArrayList(2);
+        ArrayList<File> alMountedFiles = new ArrayList<File>(2);
         //firstly, filter mounted files if needed
         Iterator it = alFiles.iterator();
         while ( it.hasNext()){
@@ -202,12 +203,10 @@ public class Track extends Item implements Comparable{
         }
         else if (alMountedFiles.size() > 0){
             //then keep best quality and mounted first
-            Collections.sort(alMountedFiles,new Comparator() {
-                public int compare(Object arg0, Object arg1) {
-                    File file1 = (File)arg0;
+            Collections.sort(alMountedFiles,new Comparator<File>() {
+                public int compare(File file1, File file2) {
                     long lQuality1 = file1.getQuality();
                     boolean bMounted1 = file1.isReady();
-                    File file2 = (File)arg1;
                     long lQuality2 = file2.getQuality(); //quality for out file
                     boolean bMounted2 = file2.isReady();
                     if (bMounted1 && !bMounted2){//first item mounted, not second
@@ -296,7 +295,7 @@ public class Track extends Item implements Comparable{
      */
     public IconLabel getStars() {
         IconLabel ilRate = null;
-        long lRate = getRate();
+        getRate();
         switch(getStarsNumber()){
         case 1:
             ilRate = new IconLabel(Util.getIcon(ICON_STAR_1),"",null,null,null,Long.toString(getRate())); //$NON-NLS-1$

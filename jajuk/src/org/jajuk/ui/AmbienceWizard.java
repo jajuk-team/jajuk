@@ -56,6 +56,11 @@ public class AmbienceWizard extends Wizard implements ITechnicalStrings{
      */
     public static class AmbiencePanel extends Screen implements ActionListener{
         
+        /**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
+
         /**All dynamic widgets*/
         JComponent[][] widgets;
         
@@ -293,7 +298,6 @@ public class AmbienceWizard extends Wizard implements ITechnicalStrings{
                 jtf.requestFocusInWindow();
             }
             else if (ae.getSource() == jbDelete){
-                JTextField jtf = (JTextField)widgets[ambienceIndex][1];
                 Ambience ambience = ambiences.get(ambienceIndex);
                 ambiences.remove(ambience);
                 AmbienceManager.getInstance().removeAmbience(ambience.getID());

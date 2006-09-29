@@ -20,6 +20,7 @@ import org.jajuk.util.Util;
  */
 public class RewindTrackAction extends ActionBase {
 
+    private static final long serialVersionUID = 1L;
     private static final float JUMP_SIZE = 0.1f;
 
     RewindTrackAction() {

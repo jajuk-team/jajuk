@@ -28,7 +28,8 @@ import org.jajuk.i18n.Messages;
  * @created		5 oct. 2003
  */
 public class JajukException extends Exception {
-	/** Error code */
+	private static final long serialVersionUID = 1L;
+    /** Error code */
 	private String code = null;
 		
 	/**

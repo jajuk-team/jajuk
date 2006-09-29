@@ -32,7 +32,8 @@ import org.jajuk.util.JajukFileFilter;
  */
 public class JajukFileChooser extends JFileChooser {
 
-	javax.swing.filechooser.FileFilter filter;
+	private static final long serialVersionUID = 1L;
+    javax.swing.filechooser.FileFilter filter;
 
 	/**
 	 * Constructor with specified file filter

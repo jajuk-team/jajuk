@@ -50,6 +50,7 @@ import org.jajuk.util.log.Log;
  */
 public class PlaylistFile extends Item implements Comparable {
 	
+	private static final long serialVersionUID = 1L;
 	/**Playlist parent directory*/
 	private Directory dParentDirectory;
 	/**Files list, singleton*/
@@ -251,14 +252,14 @@ public class PlaylistFile extends Item implements Comparable {
 			}
 		}
 		else if ( iType == PlaylistFileItem.PLAYLIST_TYPE_BESTOF){ //bestof playlist
-			alFiles = new ArrayList(10);
+			alFiles = new ArrayList<File>(10);
 			Iterator it = FileManager.getInstance().getBestOfFiles(ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED)).iterator(); //even unmounted files if required
 			while ( it.hasNext()){
 			    alFiles.add((File)it.next());
 			}
 		}
         else if ( iType == PlaylistFileItem.PLAYLIST_TYPE_NOVELTIES){ //novelties playlist
-            alFiles = new ArrayList(10);
+            alFiles = new ArrayList<File>(10);
             ArrayList alNovelties = FileManager.getInstance().getGlobalNoveltiesPlaylist(ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED));//even unmounted files if required 
             if (alNovelties == null){
                 return alFiles;
@@ -269,7 +270,7 @@ public class PlaylistFile extends Item implements Comparable {
             }
         }
 		else if ( iType == PlaylistFileItem.PLAYLIST_TYPE_BOOKMARK){ //bookmark playlist
-			alFiles = new ArrayList(10);
+			alFiles = new ArrayList<File>(10);
 			Iterator it = Bookmarks.getInstance().getFiles().iterator();
 			while ( it.hasNext()){
 				alFiles.add((File)it.next());
@@ -277,12 +278,12 @@ public class PlaylistFile extends Item implements Comparable {
 		}
 		else if ( iType == PlaylistFileItem.PLAYLIST_TYPE_NEW){ //new playlist
 			if (alFiles == null ){
-				alFiles = new ArrayList(10);
+				alFiles = new ArrayList<File>(10);
 			}
 		}
 		else if ( iType == PlaylistFileItem.PLAYLIST_TYPE_QUEUE){ //queue playlist
 			//clean data
-			alFiles = new ArrayList(10);
+			alFiles = new ArrayList<File>(10);
 			if ( !FIFO.isStopped()){
 				ArrayList alQueue = (ArrayList)FIFO.getInstance().getFIFO().clone();
 				Iterator it = alQueue.iterator();
@@ -468,8 +469,9 @@ public class PlaylistFile extends Item implements Comparable {
      * Relace a file inside a playlist
      * @param fOld
      * @param fNew
+     * @throws JajukException 
      */
-    public void replaceFile(File fOld,File fNew){
+    public void replaceFile(File fOld,File fNew) throws JajukException{
         if ( iType == PlaylistFileItem.PLAYLIST_TYPE_BOOKMARK){
             Iterator it = Bookmarks.getInstance().getFiles().iterator();
             for (int i=0; it.hasNext(); i++){
@@ -486,8 +488,8 @@ public class PlaylistFile extends Item implements Comparable {
                 File fileToTest = (File)it.next();
                 if (fileToTest.equals(fOld)){
                     FIFO.getInstance().remove(i,i); //just emove
-                    ArrayList al = new ArrayList(1);
-                    al.add(fNew);
+                    ArrayList<StackItem> al = new ArrayList<StackItem>(1);
+                    al.add(new StackItem(fNew));
                     FIFO.getInstance().insert(al,i);
                 }
             }
@@ -558,8 +560,8 @@ public class PlaylistFile extends Item implements Comparable {
 	/**
 	 * Parse a playlist file
 	 */
-	public ArrayList load() throws JajukException{
-		ArrayList alFiles = new ArrayList(10);
+	public ArrayList<File> load() throws JajukException{
+		ArrayList<File> alFiles = new ArrayList<File>(10);
 		BufferedReader br = null;
 		try {
 		    br = new BufferedReader(new FileReader(getFio()));
@@ -709,7 +711,7 @@ public class PlaylistFile extends Item implements Comparable {
 	/**
 	 * @param alFiles The alFiles to set.
 	 */
-	public void setFiles(ArrayList alFiles) {
+	public void setFiles(ArrayList<File> alFiles) {
 		this.alFiles = alFiles;
 	}
 	

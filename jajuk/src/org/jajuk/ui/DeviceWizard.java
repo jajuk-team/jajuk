@@ -68,7 +68,8 @@ import org.jajuk.util.log.Log;
  * @created 9 nov. 2003
  */
 public class DeviceWizard extends JDialog implements ActionListener,ITechnicalStrings {
-	JPanel jpMain;
+	private static final long serialVersionUID = 1L;
+    JPanel jpMain;
 	JPanel jp1;
 	JLabel jlType;
 	JComboBox jcbType;

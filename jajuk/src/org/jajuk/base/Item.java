@@ -41,7 +41,7 @@ import org.xml.sax.Attributes;
 abstract public class Item implements Serializable,ITechnicalStrings {
     
     /** Item properties, singleton */
-    private LinkedHashMap properties;
+    private LinkedHashMap<String, Object> properties;
     /** ID. Ex:1,2,3... */
     protected final String sId;
     /** Name */
@@ -107,9 +107,9 @@ abstract public class Item implements Serializable,ITechnicalStrings {
      * 
      * @see org.jajuk.base.Item#getProperties()
      */
-    public LinkedHashMap getProperties() {
+    public LinkedHashMap<String, Object> getProperties() {
         if ( properties == null){
-            properties = new LinkedHashMap(5,1f);//use very hifh load factor as this size will not change often
+            properties = new LinkedHashMap<String, Object>(5,1f);//use very hifh load factor as this size will not change often
         }
         return properties;
     }
@@ -194,8 +194,7 @@ abstract public class Item implements Serializable,ITechnicalStrings {
      * @see org.jajuk.base.Item#setProperty(java.lang.String, java.lang.String)
      */
     public void setProperty(String sKey, Object oValue) {
-        LinkedHashMap properties = getProperties();
-        properties.put(sKey, oValue);
+        getProperties().put(sKey, oValue);
     }
     
     /* (non-Javadoc)
@@ -301,7 +300,7 @@ abstract public class Item implements Serializable,ITechnicalStrings {
     /**
      * @param properties The properties to set.
      */
-    public void setProperties(LinkedHashMap properties) {
+    public void setProperties(LinkedHashMap<String, Object> properties) {
         this.properties = properties;
     }
     

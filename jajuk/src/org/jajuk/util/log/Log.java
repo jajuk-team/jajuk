@@ -293,12 +293,12 @@ public class Log  implements ITechnicalStrings{
         }
         try{
             //anonymize standard labels (with {{xxx}})
-            sMessage = sMessage.replaceAll("\\{\\{.*\\}\\}","***"); //$NON-NLS-1$ //$NON-NLS-2$
+            String sAnonymizedMessage = sMessage.replaceAll("\\{\\{.*\\}\\}","***"); //$NON-NLS-1$ //$NON-NLS-2$
             //anonymize Basic Player logs
-            if (sMessage.indexOf("Player state changed: OPENING") != -1){ //$NON-NLS-1$
-                sMessage = sMessage.substring(0,40);
+            if (sAnonymizedMessage.indexOf("Player state changed: OPENING") != -1){ //$NON-NLS-1$
+                sAnonymizedMessage = sAnonymizedMessage.substring(0,40);
             }
-            alSpool.add(sMessage);
+            alSpool.add(sAnonymizedMessage);
         }
         catch(Exception e){ //make sure to avoid looping tracing
             System.out.print("Spooling error:"+e); //$NON-NLS-1$

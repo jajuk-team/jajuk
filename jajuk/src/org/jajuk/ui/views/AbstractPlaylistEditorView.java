@@ -145,6 +145,7 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
     /**Model for table*/
     class PlayListEditorTableModel extends JajukTableModel {
         
+        private static final long serialVersionUID = 1L;
         final Font fontPlanned = new Font("serif",Font.ITALIC,12); //font for planned items //$NON-NLS-1$
         
         public PlayListEditorTableModel(){
@@ -260,7 +261,6 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
                 boolean bPlanned = false;
                 Font font = null;
                 StackItem item = getItem(iRow);
-                StackItem itemCurrent = FIFO.getInstance().getCurrentItem();
                 if( item.isPlanned() ){ //it is a planned file
                     bPlanned = true;
                     font = fontPlanned;
@@ -738,7 +738,6 @@ public abstract class AbstractPlaylistEditorView extends ViewAdapter implements 
      * @return an arraylist of stackitems or null if index is out of bounds
      */
     private ArrayList getItemsFrom(int index){
-        ArrayList alOut = new ArrayList(alItems.size());
         if (index < alItems.size()){
             return new ArrayList(alItems.subList(index,alItems.size()));
         }

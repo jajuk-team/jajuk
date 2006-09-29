@@ -21,7 +21,9 @@ import javax.swing.border.TitledBorder;
  */
 public class SliderMenuItem extends JSlider implements MenuElement {
 
-  public SliderMenuItem(int iMin,int iMax,int iValue,String sTitle) {
+  private static final long serialVersionUID = 1L;
+
+public SliderMenuItem(int iMin,int iMax,int iValue,String sTitle) {
     setBorder(new CompoundBorder(new TitledBorder(sTitle),
         new EmptyBorder(10, 10, 10, 10)));
 

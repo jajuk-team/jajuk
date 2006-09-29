@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -49,7 +50,8 @@ import org.xml.sax.Attributes;
  */
 public class Device extends Item implements ITechnicalStrings, Comparable{
     
-    /**Device URL (used for perfs)*/
+    private static final long serialVersionUID = 1L;
+	/**Device URL (used for perfs)*/
     private String sUrl;
     /** IO file for optimizations* */
     private java.io.File fio;
@@ -58,7 +60,7 @@ public class Device extends Item implements ITechnicalStrings, Comparable{
     /**Mounted device flag*/
     private boolean bMounted;
     /**directories*/
-    private ArrayList alDirectories = new ArrayList(20);
+    private ArrayList<Directory> alDirectories = new ArrayList<Directory>(20);
     /**Already refreshing flag*/
     private volatile boolean bAlreadyRefreshing = false;
     /**Already synchronizing flag*/
@@ -436,9 +438,9 @@ public class Device extends Item implements ITechnicalStrings, Comparable{
      */
     private int synchronizeUnidirectonal(Device dSrc,Device dest){
         Iterator it = null;
-        HashSet hsSourceDirs = new HashSet(100);
-        HashSet hsDesynchroPaths = new HashSet(10); //contains paths ( relative to device) of desynchronized dirs
-        HashSet hsDestDirs = new HashSet(100);
+        HashSet<Directory> hsSourceDirs = new HashSet<Directory>(100);
+        HashSet<String> hsDesynchroPaths = new HashSet<String>(10); //contains paths ( relative to device) of desynchronized dirs
+        HashSet<Directory> hsDestDirs = new HashSet<Directory>(100);
         int iNbCreatedFiles = 0;
         synchronized(DirectoryManager.getInstance().getLock()){
            it = DirectoryManager.getInstance().getItems().iterator();
@@ -639,15 +641,13 @@ public class Device extends Item implements ITechnicalStrings, Comparable{
         if (bMounted){
             Messages.showErrorMessage("111"); //$NON-NLS-1$
         }
-        String sOS = (String)System.getProperties().get("os.name"); //$NON-NLS-1$
-        int iExit = 0;
         try{
             if ( !Util.isUnderWindows() && !getMountPoint().trim().equals("")){  //not under windows //$NON-NLS-1$ //$NON-NLS-2$
                 //look to see if the device is already mounted ( the mount command cannot say that )
                 File file = new File(getMountPoint());
                 if ( file.exists() && file.list().length == 0){//if none file in this directory, it probably means device is not mounted, try to mount it
                     Process process = Runtime.getRuntime().exec("mount "+getMountPoint());//run the actual mount command //$NON-NLS-1$
-                    iExit = process.waitFor(); //just make a try, do not report error if it fails (linux 2.6 doesn't require anymore to mount devices)
+                    process.waitFor(); //just make a try, do not report error if it fails (linux 2.6 doesn't require anymore to mount devices)
                 }
             }
             else{  //windows mount point or mount point not given, check if path exists 
@@ -687,7 +687,7 @@ public class Device extends Item implements ITechnicalStrings, Comparable{
      */
     public  void unmount(boolean bEjection,boolean bUIRefresh) throws Exception{
         //look to see if the device is already mounted ( the unix 'mount' command cannot say that )
-        File file = new File(getMountPoint());
+        new File(getMountPoint());
         if (!bMounted ){
             Messages.showErrorMessage("125"); //already unmounted //$NON-NLS-1$
             return;
@@ -878,7 +878,8 @@ public class Device extends Item implements ITechnicalStrings, Comparable{
         //need to use a shallow copy to avoid concurent exceptions
         ArrayList<Directory> alDirs = null;
         synchronized(DirectoryManager.getInstance().getLock()){
-            alDirs = new ArrayList(DirectoryManager.getInstance().getItems());
+        	Collection<Item> items = DirectoryManager.getInstance().getItems();
+            alDirs = new ArrayList<Directory>(Arrays.asList(items.toArray(new Directory[items.size()])));
         }
         for (Item item:alDirs){
             Directory dir = (Directory)item;
@@ -898,7 +899,8 @@ public class Device extends Item implements ITechnicalStrings, Comparable{
         
         ArrayList<org.jajuk.base.File> alFiles = null;
         synchronized(FileManager.getInstance().getLock()){
-            alFiles = new ArrayList(FileManager.getInstance().getItems());
+        	Collection<Item> items = FileManager.getInstance().getItems();
+            alFiles = new ArrayList<org.jajuk.base.File>(Arrays.asList(items.toArray(new org.jajuk.base.File[items.size()])));
         }
         for (org.jajuk.base.File file:alFiles){
             if (!Main.isExiting() 
@@ -915,7 +917,8 @@ public class Device extends Item implements ITechnicalStrings, Comparable{
         }
         ArrayList<PlaylistFile> alplf = null;
         synchronized(PlaylistFileManager.getInstance().getLock()){
-            alplf = new ArrayList(PlaylistFileManager.getInstance().getItems());
+        	Collection<Item> items = PlaylistFileManager.getInstance().getItems(); 
+            alplf = new ArrayList<PlaylistFile>(Arrays.asList(items.toArray(new PlaylistFile[items.size()])));
         }
         for (PlaylistFile plf:alplf){
             if (!Main.isExiting()

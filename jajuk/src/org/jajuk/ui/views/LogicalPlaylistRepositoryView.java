@@ -41,7 +41,8 @@ import org.jajuk.util.error.NoneAccessibleFileException;
  */
 public class LogicalPlaylistRepositoryView extends AbstractPlaylistRepositoryView implements Observer{
 
-	/**Self instance*/
+	private static final long serialVersionUID = 1L;
+    /**Self instance*/
 	static LogicalPlaylistRepositoryView lpr;
 		
 	/**Return self instance*/

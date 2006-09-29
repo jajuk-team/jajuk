@@ -23,19 +23,40 @@ package org.jajuk.ui.views;
 import static org.jajuk.ui.action.JajukAction.WIZARD;
 import info.clearthought.layout.TableLayout;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.net.URL;
 import java.util.Iterator;
 
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+import javax.swing.JScrollPane;
+import javax.swing.JToolBar;
+import javax.swing.SwingUtilities;
 
-import org.jajuk.base.*;
+import org.jajuk.base.Device;
+import org.jajuk.base.DeviceManager;
 import org.jajuk.base.Event;
+import org.jajuk.base.ObservationManager;
+import org.jajuk.base.Observer;
 import org.jajuk.i18n.Messages;
-import org.jajuk.ui.*;
+import org.jajuk.ui.DeviceWizard;
+import org.jajuk.ui.JajukButton;
 import org.jajuk.ui.action.ActionManager;
-import org.jajuk.util.*;
+import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Util;
 
 import ext.FlowScrollPanel;
 
@@ -48,6 +69,7 @@ import ext.FlowScrollPanel;
  * @created    8 nov. 2003
  */
 public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,ActionListener,Observer,MouseListener {
+    private static final long serialVersionUID = 1L;
     
     static private DeviceView dv; //self instance
     
@@ -502,6 +524,8 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
  * @created    8 nov. 2003
  */
 class DeviceItem extends JPanel{
+    private static final long serialVersionUID = 1L;
+    
     
     /** Associated device */
     Device device;

@@ -81,7 +81,6 @@ public class TransitionDigitalDJ extends DigitalDJ {
      * @return transition mapping this FROM ambience or null if none maps it
      */
     public Transition getTransition(Ambience ambience){
-        Transition out = null;
         for (Transition transition: transitions){
             if (transition.getFrom().equals(ambience)){
                 return transition;
@@ -199,7 +198,6 @@ public class TransitionDigitalDJ extends DigitalDJ {
      * @return ambience associated with a style known in transitions or null if none
      */
     private Ambience getAmbience(Style style){
-        Ambience out = null;
         for (Transition transition:transitions){
             if (transition.getFrom().getStyles().contains(style)){
                 return transition.getFrom();

@@ -56,29 +56,28 @@ import org.xml.sax.helpers.DefaultHandler;
  * @created 16 oct. 2003
  */
 public class Collection extends DefaultHandler implements ITechnicalStrings, ErrorHandler,Serializable {
-    /** Self instance */
+    private static final long serialVersionUID = 1L;
+	/** Self instance */
     private static Collection collection;
     private static long lTime;
     /**Current ItemManager manager*/
     private ItemManager manager;
     /**upgrade for track IDs*/
-    private HashMap<String,String> hmWrongRightTrackID = new HashMap();
+    private HashMap<String,String> hmWrongRightTrackID = new HashMap<String,String>();
     /**upgrade for album IDs*/
-    private HashMap<String,String> hmWrongRightAlbumID = new HashMap();
+    private HashMap<String,String> hmWrongRightAlbumID = new HashMap<String,String>();
     /**upgrade for author IDs*/
-    private HashMap<String,String> hmWrongRightAuthorID= new HashMap();
+    private HashMap<String,String> hmWrongRightAuthorID= new HashMap<String,String>();
     /**upgrade for style IDs*/
-    private HashMap<String,String> hmWrongRightStyleID = new HashMap();
+    private HashMap<String,String> hmWrongRightStyleID = new HashMap<String,String>();
     /**upgrade for device IDs*/
-    private HashMap<String,String> hmWrongRightDeviceID = new HashMap();
+    private HashMap<String,String> hmWrongRightDeviceID = new HashMap<String,String>();
     /**upgrade for directory IDs*/
-    private HashMap<String,String> hmWrongRightDirectoryID = new HashMap();
+    private HashMap<String,String> hmWrongRightDirectoryID = new HashMap<String,String>();
     /**upgrade for file IDs*/
-    private HashMap<String,String> hmWrongRightFileID = new HashMap();
+    private HashMap<String,String> hmWrongRightFileID = new HashMap<String,String>();
     /**upgrade for playlist file IDs*/
-    private HashMap<String,String> hmWrongRightPlaylistFileID = new HashMap();
-    /**Garbager activity flag*/
-    private static volatile boolean bGarbaging = false;
+    private HashMap<String,String> hmWrongRightPlaylistFileID = new HashMap<String,String>();
     /**Auto commit thread*/
     private static Thread tAutoCommit = new Thread(){
         public void run(){

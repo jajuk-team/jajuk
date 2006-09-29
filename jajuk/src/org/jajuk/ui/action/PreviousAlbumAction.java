@@ -22,6 +22,8 @@ import org.jajuk.util.log.Log;
  */
 public class PreviousAlbumAction extends ActionBase {
 
+    private static final long serialVersionUID = 1L;
+
     PreviousAlbumAction() {
         super("previous album", "ctrl shift LEFT", false); //$NON-NLS-1$ //$NON-NLS-2$
     }

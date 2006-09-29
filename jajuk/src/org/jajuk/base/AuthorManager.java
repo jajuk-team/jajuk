@@ -53,7 +53,7 @@ public class AuthorManager extends ItemManager{
         //Expand
         registerProperty(new PropertyMetaInformation(XML_EXPANDED,false,false,false,false,true,Boolean.class,false));
         //create author list
-        authorsList = new Vector(100);
+        authorsList = new Vector<String>(100);
 	}
     
 	/**
@@ -133,7 +133,7 @@ public class AuthorManager extends ItemManager{
             //re apply old properties from old item
             newItem.cloneProperties(old);
             //update tracks
-            ArrayList alTracks = new ArrayList(TrackManager.getInstance().getItems()); //we need to create a new list to avoid concurrent exceptions
+            ArrayList<Item> alTracks = new ArrayList<Item>(TrackManager.getInstance().getItems()); //we need to create a new list to avoid concurrent exceptions
             Iterator it = alTracks.iterator();
             while (it.hasNext()){
                 Track track = (Track)it.next();

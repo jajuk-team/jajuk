@@ -39,6 +39,8 @@ import javax.swing.plaf.ButtonUI;
  */
 public class JPressButton extends JajukButton {
 
+    private static final long serialVersionUID = 1L;
+
     private static final long DEFAULT_INTERVAL = 250;
 
     /**
@@ -195,6 +197,7 @@ public class JPressButton extends JajukButton {
      */
     public static class PressButtonModel extends DefaultButtonModel {
 
+        private static final long serialVersionUID = 1L;
         private ActionThread thread;
         private JPressButton button;
 

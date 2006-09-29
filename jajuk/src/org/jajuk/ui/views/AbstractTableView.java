@@ -366,7 +366,6 @@ public abstract class AbstractTableView extends ViewAdapter
     
     
     private void setRenderers(){
-        StringBuffer sb = new StringBuffer();
         Iterator it = ((DefaultTableColumnModelExt)jtable.getColumnModel()).getColumns(true).iterator();
         while (it.hasNext()){
             TableColumnExt col = (TableColumnExt)it.next();

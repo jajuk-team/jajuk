@@ -104,6 +104,8 @@ import ext.SwingWorker;
  */
 public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionListener,ListSelectionListener,ChangeListener,Observer,MouseWheelListener{
 
+    private static final long serialVersionUID = 1L;
+    
 	//singleton
 	static private CommandJPanel command;
 
@@ -273,7 +275,9 @@ public class CommandJPanel extends JPanel implements ITechnicalStrings,ActionLis
 		jbNorm = new JajukButton(ActionManager.getAction(FINISH_ALBUM));
         popupDDJ = new JPopupMenu();
         ddbDDJ = new DropDownButton(Util.getIcon(ICON_DIGITAL_DJ)) {
-        	@Override
+        	private static final long serialVersionUID = 1L;
+
+            @Override
         	protected JPopupMenu getPopupMenu() {
         		return popupDDJ;
         	}

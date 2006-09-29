@@ -55,6 +55,7 @@ import org.jajuk.util.log.Log;
  * @created    27 avr. 2005
  */
 public class FirstTimeWizard extends JDialog implements ITechnicalStrings,ActionListener{
+    private static final long serialVersionUID = 1L;
     JLabel jlLeftIcon;
     JPanel jpRightPanel;
     JLabel jlWelcome;

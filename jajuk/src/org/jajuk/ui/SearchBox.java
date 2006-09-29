@@ -54,6 +54,8 @@ import org.jajuk.util.log.Log;
  */
 public class SearchBox extends JTextField implements KeyListener{
     
+    private static final long serialVersionUID = 1L;
+
     /**Do search panel need a search*/
     private boolean bNeedSearch = false;
     

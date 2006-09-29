@@ -39,9 +39,6 @@ public class Transition {
     /** Nb of tracks  */
     private int nb;
     
-    /**Nb of played tracks*/
-    private int played = 0;
-    
     /**Constructor
      * @param from source styles
      * @param to destination style

@@ -55,6 +55,7 @@ import org.jdesktop.swingx.JXDatePicker;
  * @created    20 juin 2005
  */
 public class NewPropertyWizard extends CustomPropertyWizard implements KeyListener{ 
+    private static final long serialVersionUID = 1L;
     JTextField jtfName;
     JLabel jlClass;
     JComboBox jcbClass;

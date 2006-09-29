@@ -72,7 +72,6 @@ public class Cover implements Comparable,ITechnicalStrings {
     * @param iType
     */
     public Cover(URL url, int iType) throws Exception{
-        long l = System.currentTimeMillis();
         this.url = url;
         this.iType = iType;
         if ( iType == Cover.LOCAL_COVER 

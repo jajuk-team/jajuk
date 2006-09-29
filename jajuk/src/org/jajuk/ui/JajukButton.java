@@ -23,6 +23,7 @@ import javax.swing.border.Border;
  */
 public class JajukButton extends JButton {
 
+    private static final long serialVersionUID = 1L;
     private static final Border JAJUK_BORDER = BorderFactory.createEmptyBorder(4, 4, 4, 4);
 
     public JajukButton() {
@@ -74,6 +75,8 @@ public class JajukButton extends JButton {
     }
 
     private class ActionWrapper extends AbstractAction {
+        private static final long serialVersionUID = 1L;
+
         public void actionPerformed(ActionEvent e) {
             fireActionPerformed(e);
         }

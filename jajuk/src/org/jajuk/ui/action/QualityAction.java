@@ -34,6 +34,8 @@ import org.jajuk.util.Util;
  */
 public class QualityAction extends ActionBase {
 
+    private static final long serialVersionUID = 1L;
+
     QualityAction() {
         super(Messages.getString("JajukJMenuBar.19"), Util.getIcon(ICON_EDIT), true); //$NON-NLS-1$
     }

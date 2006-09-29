@@ -45,39 +45,13 @@ public class FileManager extends ItemManager implements Observer{
     /**Flag the fact a rate has change for a track, used by bestof view refresh for perfs*/
     private boolean bRateHasChanged = true;
     /**Best of files*/
-    private ArrayList alBestofFiles = new ArrayList(20);
-    /**Novelties files*/
-    private ArrayList alNovelties = new ArrayList(20);
+    private ArrayList<File> alBestofFiles = new ArrayList<File>(20);
     /**Self instance*/
     private static FileManager singleton;
-    /**File comparator based on score*/
-    private Comparator scoreComparator = new Comparator() {
-                public int compare(Object arg0, Object arg1) {
-                    File file1 = (File)arg0;
-                    long lRate1 = file1.getTrack().getRate();
-                    long lScore1 = (long)(Math.random()*
-                            (100/(file1.getTrack().getSessionHits()+1))*Math.log(lRate1));  //computes score for each file ( part of shuffleness, part of hits weight )
-                    File file2 = (File)arg1;
-                    long lRate2 = file2.getTrack().getRate();
-                    long lScore2 = (long)(Math.random()*
-                            (100/(file2.getTrack().getSessionHits()+1))*Math.log(lRate2));  //computes score for each file ( part of shuffleness, part of hits weight )
-                    if (lScore1 == lScore2){
-                        return 0;
-                    }
-                    else if (lScore1 < lScore2){
-                        return 1;
-                    }
-                    else{
-                        return -1;
-                    }
-                }
-    };
     /**File comparator based on rate*/
-    private Comparator rateComparator = new Comparator() {
-                public int compare(Object arg0, Object arg1) {
-                    File file1 = (File)arg0;
+    private Comparator<File> rateComparator = new Comparator<File>() {
+                public int compare(File file1, File file2) {
                     long lRate1 = file1.getTrack().getRate();
-                    File file2 = (File)arg1;
                     long lRate2 = file2.getTrack().getRate();
                     if (lRate1 == lRate2){
                         return 0;
@@ -319,10 +293,10 @@ public class FileManager extends ItemManager implements Observer{
     /**
      * @return All accessible files of the collection
      */
-    public ArrayList getReadyFiles(){
+    public ArrayList<File> getReadyFiles(){
         synchronized(FileManager.getInstance().getLock()){
             // create a tempory table to remove unmounted files
-            ArrayList alEligibleFiles = new ArrayList(1000);
+            ArrayList<File> alEligibleFiles = new ArrayList<File>(1000);
             Iterator it = hmItems.values().iterator();
             while ( it.hasNext()){
                 File file = (File)it.next();
@@ -355,7 +329,7 @@ public class FileManager extends ItemManager implements Observer{
      */
     public ArrayList<File> getGlobalShufflePlaylist(){
         synchronized(FileManager.getInstance().getLock()){
-            ArrayList alEligibleFiles = getReadyFiles();
+            ArrayList<File> alEligibleFiles = getReadyFiles();
             Collections.shuffle(alEligibleFiles);
             return alEligibleFiles;
         }
@@ -378,7 +352,7 @@ public class FileManager extends ItemManager implements Observer{
      * Return a playlist with the entire accessible shuffled novelties collection 
      * @return The entire accessible novelties collection (can return a void collection)
      */
-    public ArrayList getGlobalNoveltiesPlaylist(){
+    public ArrayList<org.jajuk.base.File> getGlobalNoveltiesPlaylist(){
         synchronized(FileManager.getInstance().getLock()){
             return getGlobalNoveltiesPlaylist(true);
         }
@@ -390,9 +364,9 @@ public class FileManager extends ItemManager implements Observer{
      * @param bHideUnmounted 
      * @return The entire accessible novelties collection
      */
-    public ArrayList getGlobalNoveltiesPlaylist(boolean bHideUnmounted){
+    public ArrayList<File> getGlobalNoveltiesPlaylist(boolean bHideUnmounted){
         synchronized(TrackManager.getInstance().getLock()){
-            ArrayList<File> alEligibleFiles = new ArrayList(1000);
+            ArrayList<File> alEligibleFiles = new ArrayList<File>(1000);
             //take tracks matching required age
             java.util.Collection<Item> alTracks = 
                 TrackManager.getAgeFilter(ConfigurationManager.getInt(CONF_OPTIONS_NOVELTIES_AGE))
@@ -406,10 +380,8 @@ public class FileManager extends ItemManager implements Observer{
                 alEligibleFiles.add(file);
             }
             //sort alphabetinaly and by date, newest first
-            Collections.sort(alEligibleFiles,new Comparator() {
-                public int compare(Object o1, Object o2) {
-                    File file1 = (File)o1;
-                    File file2 = (File)o2;
+            Collections.sort(alEligibleFiles,new Comparator<File>() {
+                public int compare(File file1, File file2) {
                     String sCompared1 = file1.getTrack().getAdditionDate().getTime()+file1.getAbsolutePath(); 
                     String sCompared2 = file2.getTrack().getAdditionDate().getTime()+file2.getAbsolutePath(); 
                     return sCompared2.compareTo(sCompared1);            
@@ -426,7 +398,7 @@ public class FileManager extends ItemManager implements Observer{
     private ArrayList<File> getSortedByRate(){
         synchronized(TrackManager.getInstance().getLock()){
             //use only mounted files
-            ArrayList alEligibleFiles = getReadyFiles();
+            ArrayList<File> alEligibleFiles = getReadyFiles();
             //now sort by rate
             Collections.sort(alEligibleFiles,rateComparator);
             return alEligibleFiles;
@@ -437,9 +409,9 @@ public class FileManager extends ItemManager implements Observer{
      * Return a playlist with the entire accessible bestof collection, best first
      * @return Shuffled best tracks (n% of favorite)
      */
-    public ArrayList getGlobalBestofPlaylist(){
+    public ArrayList<File> getGlobalBestofPlaylist(){
         synchronized(FileManager.getInstance().getLock()){
-            ArrayList al = getSortedByRate();
+            ArrayList<File> al = getSortedByRate();
             ArrayList<File> alBest = new ArrayList<File>();
             if (al.size() > 0){
                 int sup = (int)((BESTOF_PROPORTION)*al.size()); //find superior interval value
@@ -474,7 +446,7 @@ public class FileManager extends ItemManager implements Observer{
                 alBestofFiles.clear();
                 int iNbBestofFiles = Integer.parseInt(ConfigurationManager.getProperty(CONF_BESTOF_SIZE));
                 //create a tempory table to remove unmounted files
-                ArrayList<File> alEligibleFiles = new ArrayList(iNbBestofFiles);
+                ArrayList<File> alEligibleFiles = new ArrayList<File>(iNbBestofFiles);
                 Iterator it = TrackManager.getInstance().getItems().iterator();
                 while ( it.hasNext()){
                     Track track = (Track)it.next();
@@ -546,7 +518,7 @@ public class FileManager extends ItemManager implements Observer{
                 return null;
             }
             File filePrevious = null;
-            ArrayList alSortedFiles = new ArrayList(getItems());
+            ArrayList<Item> alSortedFiles = new ArrayList<Item>(getItems());
             int i = alSortedFiles.indexOf(file);
             //test if this file is the very first one
             if (i == 0){
@@ -596,7 +568,7 @@ public class FileManager extends ItemManager implements Observer{
             if (file == null){
                 return null;
             }
-            ArrayList alResu = new ArrayList(10);
+            ArrayList<File> alResu = new ArrayList<File>(10);
             Directory dir = file.getDirectory();
             Iterator it = getItems().iterator();
             while ( it.hasNext()){
@@ -620,7 +592,7 @@ public class FileManager extends ItemManager implements Observer{
             if (file == null){
                 return null;
             }
-            ArrayList alResu = new ArrayList(10);
+            ArrayList<File> alResu = new ArrayList<File>(10);
             Directory dir = file.getDirectory();
             Iterator it = getItems().iterator();
             boolean bSeenTheOne = false;
@@ -646,9 +618,9 @@ public class FileManager extends ItemManager implements Observer{
      * @param sCriteria
      * @return
      */
-    public TreeSet search(String sCriteria){
+    public TreeSet<SearchResult> search(String sCriteria){
         synchronized(FileManager.getInstance().getLock()){
-            TreeSet tsResu = new TreeSet(); 
+            TreeSet<SearchResult> tsResu = new TreeSet<SearchResult>(); 
             
             sCriteria = sCriteria.toLowerCase();
             Iterator it = hmItems.values().iterator();

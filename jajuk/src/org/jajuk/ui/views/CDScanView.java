@@ -52,6 +52,8 @@ import ext.SwingWorker;
  */
 public class CDScanView extends ViewAdapter implements ActionListener {
 	
+    private static final long serialVersionUID = 1L;
+    
 	/**Self instance*/
 	private static CDScanView cds;
 	

@@ -40,6 +40,8 @@ import javax.swing.JLabel;
  */
 public final class JSplashLabel extends JLabel {
     
+    private static final long serialVersionUID = 1L;
+
     /**
      * Used to draw the text string.
      */

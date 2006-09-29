@@ -54,6 +54,7 @@ import org.jajuk.util.log.Log;
  * @created    11 oct. 2003
  */
 public class InformationJPanel extends JPanel implements ITechnicalStrings,Observer{
+    private static final long serialVersionUID = 1L;
     //consts
     /** Informative message type  ( displayed in blue ) **/
     public static final int INFORMATIVE = 0;
@@ -322,7 +323,6 @@ public class InformationJPanel extends JPanel implements ITechnicalStrings,Obser
                     if (EVENT_HEART_BEAT.equals(subject) &&!FIFO.isStopped() && !Player.isPaused()){
                         long length = JajukTimer.getInstance().getCurrentTrackTotalTime(); 
                         long lTime = JajukTimer.getInstance().getCurrentTrackEllapsedTime();
-                        long lTotalTime = JajukTimer.getInstance().getTotalTimeToPlay();
                         int iPos = (int)(100*JajukTimer.getInstance().getCurrentTrackPosition()); 
                         setCurrentStatus(iPos);
                         String sCurrentTotalMessage =  Util.formatTimeBySec(JajukTimer.getInstance().getTotalTimeToPlay(),false);

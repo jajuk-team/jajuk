@@ -40,7 +40,7 @@ public class Bookmarks implements ITechnicalStrings {
 	private static Bookmarks bookmarks; 
 	
 	/** Bookmarks files*/
-	ArrayList alFiles = new ArrayList(100);
+	ArrayList<File> alFiles = new ArrayList<File>(100);
 	
 	/** Singleton accessor
 	 * @return the singleton*/

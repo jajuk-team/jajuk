@@ -66,14 +66,8 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings {
     /**Progress step in ms*/
     private static final int PROGRESS_STEP = 300;//need a fast refresh, especially for fading
 
-    /**Volume when starting fade*/
-    private float fadingVolume;
-
     /**current file*/
     private org.jajuk.base.File fCurrent;
-
-    /**Inc rating flag*/
-    private boolean bHasBeenRated = false;
 
     /** Mplayer process*/
     private volatile Process proc;
@@ -138,8 +132,6 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings {
                                 && lDuration > 0 //can be null before getting length
                                 && lTime > (lDuration - iFadeDuration)){
                             bFading = true;
-                            //store current volume
-                            MPlayerPlayerImpl.this.fadingVolume = fVolume;
                             //force a finished (that doesn't stop but only make a FIFO request to switch track)
                             FIFO.getInstance().finished();
                         }
@@ -209,7 +201,6 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings {
         this.fPosition = fPosition;
         this.bFading = false;
         this.fCurrent = file;
-        this.bHasBeenRated = false;
         this.bOpening = true;
         this.iFadeDuration = 1000 * ConfigurationManager.getInt(CONF_FADE_DURATION);
         //Start

@@ -37,7 +37,8 @@ import org.jajuk.util.Util;
  */
 public class JajukContainer extends JPanel{
 	
-	/**Waiting state*/
+	private static final long serialVersionUID = 1L;
+    /**Waiting state*/
 	private boolean bWaiting = false;
 	
 	

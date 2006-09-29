@@ -24,6 +24,8 @@ import org.jajuk.util.error.JajukException;
  */
 public class NoveltiesAction extends ActionBase {
 
+    private static final long serialVersionUID = 1L;
+
     NoveltiesAction() {
         super(Messages.getString("JajukWindow.15"), Util.getIcon(ICON_NOVELTIES), true); //$NON-NLS-1$
         setShortDescription(Messages.getString("JajukWindow.31")); //$NON-NLS-1$

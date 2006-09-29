@@ -51,6 +51,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import org.jajuk.Main;
 import org.jajuk.base.DeviceManager;
 import org.jajuk.base.Event;
 import org.jajuk.base.File;
@@ -81,7 +82,9 @@ import org.jajuk.util.log.Log;
  */
 public class ParameterView extends ViewAdapter implements ActionListener,ListSelectionListener,ItemListener,ChangeListener {
     
-    /**Self instance*/
+	private static final long serialVersionUID = 1L;
+
+	/**Self instance*/
     private static ParameterView pv;
     
     JTabbedPane jtpMain;
@@ -943,8 +946,8 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
                         SwingUtilities.invokeLater(new Runnable() {
                             public void run() {
                                 LNFManager.setLookAndFeel(ConfigurationManager.getProperty(CONF_OPTIONS_LNF));
+                                SwingUtilities.updateComponentTreeUI(Main.getWindow());
                                 PerspectiveBarJPanel.getInstance().setActivated(PerspectiveManager. getCurrentPerspective());  //force the perspective panel to refresh
-                                Util.updateAllUIs();
                             }
                         });
                     }

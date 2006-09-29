@@ -40,7 +40,7 @@ import org.jajuk.util.log.Log;
  */
 public class DeviceManager extends ItemManager{
     /**Supported device types names*/
-    private ArrayList alDevicesTypes = new ArrayList(10);
+    private ArrayList<String> alDevicesTypes = new ArrayList<String>(10);
     /**Self instance*/
     private static DeviceManager singleton;
     /**Date last global refresh*/

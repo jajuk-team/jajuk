@@ -98,6 +98,8 @@ import ext.SwingWorker;
  */
 public class CatalogView extends ViewAdapter implements Observer,ComponentListener,ActionListener{
     
+    private static final long serialVersionUID = 1L;
+    
     //control panel
     JPanel jpControl;
     JLabel jlSorter;
@@ -691,6 +693,8 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
     
     class CatalogItem extends JPanel implements ITechnicalStrings,ActionListener,MouseListener{
         
+        private static final long serialVersionUID = 1L;
+    
         /** Associated album*/
         Album album;
         
@@ -913,6 +917,8 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
      */
     class CoverSelectionWizard extends JDialog implements ActionListener,ITechnicalStrings{
         
+        private static final long serialVersionUID = 1L;
+    
         JPanel jpMain;
         JLabel jlSearch;
         JLabel jlIcon;

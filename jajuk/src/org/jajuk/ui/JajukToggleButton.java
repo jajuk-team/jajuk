@@ -17,6 +17,7 @@ import javax.swing.border.Border;
  * @since 13-dec-2005
  */
 public class JajukToggleButton extends JajukButton {
+    private static final long serialVersionUID = 1L;
     private static final Border PRESSED_BORDER = BorderFactory.createLoweredBevelBorder();
     private static final Border UNPRESSED_BORDER = BorderFactory.createRaisedBevelBorder();
 

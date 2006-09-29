@@ -27,7 +27,9 @@ package org.jajuk.util.error;
  */
 public class CannotRenameException extends JajukException {
 		
-	/**
+	private static final long serialVersionUID = 1L;
+
+    /**
 	 * constructor.
 	 * 
 	 * @param pCode Code of the current error.

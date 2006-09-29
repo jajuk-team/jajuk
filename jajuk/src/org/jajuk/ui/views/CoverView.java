@@ -57,7 +57,6 @@ import org.jajuk.base.Observer;
 import org.jajuk.base.Track;
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.InformationJPanel;
-import org.jajuk.ui.perspectives.IPerspective;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.ui.perspectives.PlayerPerspective;
 import org.jajuk.util.ConfigurationManager;
@@ -76,6 +75,8 @@ import ext.SwingWorker;
  * @created   28 dec. 2003
  */
 public class CoverView extends ViewAdapter implements Observer,ComponentListener,ActionListener,ITechnicalStrings{
+    
+    private static final long serialVersionUID = 1L;
     
     /**Current directory used as a cache for perfs*/
     private Directory dirCurrent;
@@ -299,7 +300,6 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                     if (ConfigurationManager.getBoolean(CONF_COVERS_AUTO_COVER) 
                             && (bOnceConnected || iErrorCounter < STOP_TO_SEARCH)){
                         try{
-                            int iCoversBeforeSearch = alCovers.size(); //stores number of covers before web search
                             final String sQuery = createQuery(fCurrent);
                             Log.debug("Query={{"+sQuery+"}}"); //$NON-NLS-1$ //$NON-NLS-2$
                             if (!sQuery.equals("")){ //there is not enough information in tags for a web search //$NON-NLS-1$
@@ -510,7 +510,6 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
                     }
                     //else, there is at least one local cover and no default cover
                     while (alCovers.size() > 0){
-                        Cover cover = null;
                         try{
                             prepareDisplay(index);
                             return null; //OK, leave
@@ -657,7 +656,6 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
         }
         int iNewWidth;
         int iNewHeight;
-        float fRatio;
         if ( iDisplayAreaHeight > iDisplayAreaWidth){
             // Width is smaller than height : try to optimize height
             iNewHeight = iDisplayAreaHeight; //take all possible height
@@ -970,7 +968,6 @@ public class CoverView extends ViewAdapter implements Observer,ComponentListener
      * @return whether this view is in current perspective
      */
     public boolean isInCurrentPerspective(){
-        IPerspective current = PerspectiveManager.getCurrentPerspective();
         for (IView view:PerspectiveManager.getCurrentPerspective().getViews()){
             if (view instanceof CoverView){
                 CoverView cv = (CoverView)view;

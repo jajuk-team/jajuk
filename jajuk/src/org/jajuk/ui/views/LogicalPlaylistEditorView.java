@@ -33,7 +33,9 @@ import java.util.ArrayList;
 public class LogicalPlaylistEditorView extends AbstractPlaylistEditorView{
    
    
-	/**
+	private static final long serialVersionUID = 1L;
+
+    /**
 	 * Constructor
 	 */
 	public LogicalPlaylistEditorView() {

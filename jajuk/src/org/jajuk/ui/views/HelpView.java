@@ -40,7 +40,9 @@ import org.jajuk.util.log.Log;
  */
 public class HelpView extends ViewAdapter{
 
-	/**Self instance*/
+	private static final long serialVersionUID = 1L;
+
+    /**Self instance*/
 	private static HelpView hv;
 	
 	/**hepl set*/

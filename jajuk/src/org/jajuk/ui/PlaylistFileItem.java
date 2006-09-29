@@ -26,7 +26,9 @@ import java.awt.Font;
 import java.awt.dnd.DnDConstants;
 import java.net.URL;
 
-import javax.swing.*;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 import org.jajuk.base.PlaylistFile;
 import org.jajuk.i18n.Messages;

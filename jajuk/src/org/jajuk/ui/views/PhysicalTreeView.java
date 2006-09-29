@@ -96,6 +96,8 @@ import ext.SwingWorker;
  */
 public class PhysicalTreeView extends AbstractTreeView implements ActionListener,org.jajuk.base.Observer{
     
+    private static final long serialVersionUID = 1L;
+
     /** Self instance */
     private static PhysicalTreeView ptv;
     
@@ -391,6 +393,8 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         createTree();
         
         jtree.setCellRenderer(new DefaultTreeCellRenderer() {
+            private static final long serialVersionUID = 1L;
+
             public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) {
                 super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
                 setFont(new Font("Dialog",Font.PLAIN,10)); //$NON-NLS-1$
@@ -713,7 +717,6 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
                         while ( e2.hasMoreElements()){
                             DefaultMutableTreeNode node = (DefaultMutableTreeNode)e2.nextElement();
                             if (node instanceof FileNode){
-                                File file = ((FileNode)node).getFile();
                                 getInstance().alFiles.add(((FileNode)node).getFile());
                             }
                             else if (node instanceof DirectoryNode){
@@ -794,7 +797,6 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         top.removeAllChildren();
         //add devices
         synchronized (DeviceManager.getInstance().getLock()) {
-            ArrayList alDevices = new ArrayList(DeviceManager.getInstance().getItems());
             Iterator it1 = DeviceManager.getInstance().getItems().iterator();
             while ( it1.hasNext()){
                 Device device = (Device)it1.next();
@@ -925,13 +927,9 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         } 
         else if ((alFiles != null && e.getSource() == jmiDirRefactor)){
             Util.waiting();
-            ArrayList<File> alRefactor = new ArrayList<File>();
             for (Item item : alSelected) {
                 final Directory dir = (Directory) item;
                 Util.waiting();
-                /*for (File file : dir.getFilesRecursively()) {
-                    alRefactor.add(file);
-                }*/
                 new RefactorAction(dir.getFilesRecursively());
             }
         }
@@ -1200,7 +1198,6 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
             Device device =  ((DeviceNode)paths[0].getLastPathComponent()).getDevice();
             ArrayList alItems = new ArrayList(1);
             alItems.add(device);
-            PropertiesWizard p = new PropertiesWizard(alItems);
         }
         else if (e.getSource() == jmiPlaylistFileProperties){
             PlaylistFile plf =  ((PlaylistFileNode)paths[0].getLastPathComponent()).getPlaylistFile();
@@ -1279,8 +1276,6 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         for (int i=0;i<jtree.getRowCount();i++){
             Object o = jtree.getPathForRow(i).getLastPathComponent(); 
             if ( o instanceof DeviceNode ){
-                Device device = ((DeviceNode)o).getDevice();
-                boolean bExp = device.getBooleanValue(XML_EXPANDED); 
                 //we want to expand following user selection (exp attribute) except after a mount (force expand) or 
                 //an unmount (force collapse)
                 if ( bDependsOnMountState){
@@ -1306,6 +1301,8 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
  */
 class FileNode extends TransferableTreeNode{
     
+    private static final long serialVersionUID = 1L;
+
     /**
      * Constructor
      * @param file
@@ -1337,8 +1334,10 @@ class FileNode extends TransferableTreeNode{
  */
 class DeviceNode extends TransferableTreeNode{
     
+    private static final long serialVersionUID = 1L;
+  
     /**device -> deviceNode hashmap */
-    public static HashMap hmDeviceDeviceNode = new HashMap(100);
+    public static HashMap<Device,DeviceNode> hmDeviceDeviceNode = new HashMap<Device,DeviceNode>(100);
     
     /**
      * Constructor
@@ -1377,6 +1376,10 @@ class DeviceNode extends TransferableTreeNode{
  */
 class DirectoryNode  extends TransferableTreeNode{
     
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
     /**directory -> directoryNode hashmap */
     public static HashMap hmDirectoryDirectoryNode = new HashMap(100);
     
@@ -1416,6 +1419,8 @@ class DirectoryNode  extends TransferableTreeNode{
  */
 class PlaylistFileNode  extends TransferableTreeNode{
     
+    private static final long serialVersionUID = 1L;
+
     /**
      * Constructor
      * @param PlaylistFile

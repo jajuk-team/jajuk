@@ -35,6 +35,8 @@ import org.jajuk.util.Util;
  */
 public class ShowAboutAction extends ActionBase {
 
+    private static final long serialVersionUID = 1L;
+
     ShowAboutAction() {
         super(Messages.getString("JajukWindow.5"), Util.getIcon(ICON_INFO), true); //$NON-NLS-1$
         setShortDescription(Messages.getString("JajukWindow.22")); //$NON-NLS-1$

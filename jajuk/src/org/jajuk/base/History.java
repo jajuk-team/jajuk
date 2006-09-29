@@ -55,7 +55,7 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
     private static History history;
     
     /** History repository, last play first*/
-    private static Vector vHistory = new Vector(100);
+    private static Vector<HistoryItem> vHistory = new Vector<HistoryItem>(100);
     
     /** History begin date*/
     private static  long lDateStart;
@@ -91,7 +91,7 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
      * 
      * @return the history
      */
-    public synchronized Vector getHistory(){
+    public synchronized Vector<HistoryItem> getHistory(){
         return vHistory;
     }
     
@@ -174,7 +174,7 @@ public class History extends DefaultHandler implements ITechnicalStrings, ErrorH
         it = vHistory.iterator();
         while (it.hasNext()){
             HistoryItem hi = (HistoryItem)it.next();
-            if (hi.getDate() < (System.currentTimeMillis()- (iDays*86400000))){
+            if (hi.getDate() < (System.currentTimeMillis()- (iDays*ITechnicalStrings.MILLISECONDS_IN_A_DAY))){
                 it.remove();
             }
         }

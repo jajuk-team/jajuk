@@ -50,6 +50,7 @@ import org.jdesktop.swingx.table.TableColumnExt;
  */
 public class JajukTable extends JXTable implements ITechnicalStrings{
 	
+    private static final long serialVersionUID = 1L;
     private String sConf;
     
 	/**
@@ -204,11 +205,9 @@ public class JajukTable extends JXTable implements ITechnicalStrings{
 	 * add tooltips to each cell
 	*/
 	public String getToolTipText(MouseEvent e) {
-		String tip = null;
 		java.awt.Point p = e.getPoint();
 		int rowIndex = rowAtPoint(p);
 		int colIndex = columnAtPoint(p);
-		TableModel model = getModel();
 		if (rowIndex < 0 || colIndex < 0){
 			return null;
 		}

@@ -53,7 +53,8 @@ import org.jdesktop.swingx.JXFrame;
  */
 public class JajukWindow extends JXFrame implements ITechnicalStrings,Observer {
 	
-	/**Max width*/
+	private static final long serialVersionUID = 1L;
+    /**Max width*/
 	private int iMaxWidth ; 
 	/**Max height*/
 	private int iMaxHeight;

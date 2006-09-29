@@ -29,6 +29,9 @@ import org.jajuk.i18n.Messages;
  */
 public class Author extends Item implements Comparable{
  
+	private static final long serialVersionUID = 1L;
+
+
 	/**
 	 * Author constructor
 	 * @param id
@@ -119,9 +122,8 @@ public class Author extends Item implements Comparable{
         if (XML_NAME.equals(sKey)){
             return getName2();
         }
-        else{//default
-            return super.getHumanValue(sKey);
-        }
+        //default
+        return super.getHumanValue(sKey);
     }
     
 }

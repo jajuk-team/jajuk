@@ -84,6 +84,8 @@ import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
  */
 public class PropertiesWizard extends JDialog implements ITechnicalStrings,ActionListener {
     
+    private static final long serialVersionUID = 1L;
+
     /*Main panel*/
     JPanel jpMain;
     
@@ -264,6 +266,8 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
      */
     class PropertiesPanel extends JPanel implements ActionListener{
         
+        private static final long serialVersionUID = 1L;
+
         /**Properties panel*/
         JPanel jpProperties;
         
@@ -610,7 +614,6 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
         public void actionPerformed(ActionEvent ae) {
             //Link
             if (ae.getActionCommand().equals("link")){ //$NON-NLS-1$
-                Object oValue = null;
                 PropertyMetaInformation meta = alToDisplay.get(getWidgetIndex((JComponent)ae.getSource()));
                 String sProperty = meta.getName();
                 if (XML_FILES.equals(sProperty)) {
@@ -652,8 +655,6 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
             Item newItem = null;
             //list of really changed tracks (for message)
             ArrayList<PropertyMetaInformation> alChanged = new ArrayList(2);
-            //keep a reference to first item to change
-            Item itemReference = alItems.get(0);
             //none change, leave
             if (hmPropertyToChange.keySet().size() == 0){
                 return;

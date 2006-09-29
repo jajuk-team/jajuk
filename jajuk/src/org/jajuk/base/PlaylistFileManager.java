@@ -178,7 +178,7 @@ public class PlaylistFileManager extends ItemManager implements Observer{
             java.io.File ioNew = new java.io.File(plfOld.getFio().getParentFile().getAbsolutePath()
                 +java.io.File.separator+sNewName);
             //recalculate file ID
-            Directory dir = plfOld.getDirectory(); 
+            plfOld.getDirectory(); 
             String sNewId = PlaylistFileManager.getID(sNewName,plfOld.getDirectory());
             //create a new playlist file (with own fio and sAbs)
             PlaylistFile plfNew = new PlaylistFile(sNewId,sNewName,plfOld.getDirectory());

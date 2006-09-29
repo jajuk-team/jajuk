@@ -573,6 +573,7 @@ class MessageDialog implements Runnable{
             int maxCharactersPerLineCount) {
         // Our inner class definition
         class NarrowOptionPane extends JOptionPane {
+            private static final long serialVersionUID = 1L;
             int maxCharactersPerLineCount;
             NarrowOptionPane(int maxCharactersPerLineCount) {
                 this.maxCharactersPerLineCount = maxCharactersPerLineCount;

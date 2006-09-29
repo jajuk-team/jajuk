@@ -40,21 +40,22 @@ import org.jajuk.util.log.Log;
  */
 public class Directory extends Item implements Comparable{
     
-   /** Parent directory ID* */
+    private static final long serialVersionUID = 1L;
+    /** Parent directory ID* */
     private Directory dParent;
     /** Directory device */
     private Device device;
     /** Child directories */
-    private ArrayList alDirectories = new ArrayList(20);
+    private ArrayList<Directory> alDirectories = new ArrayList<Directory>(20);
     /** Child files */
-    private TreeSet<org.jajuk.base.File> files = new TreeSet();
+    private TreeSet<org.jajuk.base.File> files = new TreeSet<org.jajuk.base.File>();
     /** Playlist files */
-    private TreeSet<PlaylistFile> playlistFiles = new TreeSet();
+    private TreeSet<PlaylistFile> playlistFiles = new TreeSet<PlaylistFile>();
     /** IO file for optimizations* */
     private java.io.File fio;
  
     /**
-     * Direcotry constructor
+     * Directory constructor
      * 
      * @param id
      * @param sName
@@ -198,7 +199,7 @@ public class Directory extends Item implements Comparable{
      */
     public ArrayList getFilesFromFile(org.jajuk.base.File fileStart) {
         Iterator it = files.iterator();
-        ArrayList alOut = new ArrayList(files.size());
+        ArrayList<org.jajuk.base.File> alOut = new ArrayList<org.jajuk.base.File>(files.size());
         boolean bOK = false;
         while (it.hasNext()){
             org.jajuk.base.File file = (org.jajuk.base.File)it.next();
@@ -215,7 +216,7 @@ public class Directory extends Item implements Comparable{
      * @return child files recursively
      */
     public ArrayList<org.jajuk.base.File> getFilesRecursively() {
-        ArrayList alFiles = new ArrayList(100);
+        ArrayList<org.jajuk.base.File> alFiles = new ArrayList<org.jajuk.base.File>(100);
         Iterator it = FileManager.getInstance().getItems().iterator();
         while ( it.hasNext()){
             org.jajuk.base.File file = (org.jajuk.base.File)it.next();
@@ -354,7 +355,7 @@ public class Directory extends Item implements Comparable{
         StringBuffer sbOut = new StringBuffer().append(java.io.File.separatorChar).append(getName());
         boolean bTop = false;
         Directory dCurrent = this;
-        while (!bTop) {
+        while (!bTop && dCurrent != null) {
             dCurrent = dCurrent.getParentDirectory();
             if (dCurrent != null && !dCurrent.getName().equals("")) { //if it is the root directory, no parent //$NON-NLS-1$
                 sbOut.insert(0, java.io.File.separatorChar).insert(1, dCurrent.getName());

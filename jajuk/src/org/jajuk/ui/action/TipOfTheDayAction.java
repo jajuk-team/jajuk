@@ -33,6 +33,8 @@ import org.jajuk.util.Util;
  */
 public class TipOfTheDayAction extends ActionBase {
 
+    private static final long serialVersionUID = 1L;
+
     TipOfTheDayAction() {
         super(Messages.getString("JajukJMenuBar.20"), Util.getIcon(ICON_TIP_SMALL), true); //$NON-NLS-1$
     }

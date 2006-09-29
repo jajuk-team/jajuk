@@ -25,6 +25,8 @@ import org.jajuk.util.error.JajukException;
  */
 public class ContinueModeAction extends ActionBase {
 
+    private static final long serialVersionUID = 1L;
+    
     ContinueModeAction() {
         super(Messages.getString("JajukJMenuBar.12"), Util.getIcon(ICON_CONTINUE), //$NON-NLS-1$
               true); //$NON-NLS-1$

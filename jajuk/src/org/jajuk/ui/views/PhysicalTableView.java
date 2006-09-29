@@ -53,6 +53,8 @@ import org.jajuk.util.log.Log;
  */
 public class PhysicalTableView extends AbstractTableView implements Observer, MouseListener{
     
+    private static final long serialVersionUID = 1L;
+
     /** Self instance */
     private static PhysicalTableView ltv;
     

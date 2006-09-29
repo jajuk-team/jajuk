@@ -47,6 +47,7 @@ import org.jajuk.util.log.Log;
 
 public class PlaylistEditorTransferHandler extends TransferHandler implements ITechnicalStrings {
     
+    private static final long serialVersionUID = 1L;
     private JTable jtable;
     public static int iSelectedRow = 0;
     

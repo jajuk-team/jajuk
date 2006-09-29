@@ -18,6 +18,8 @@ import org.jajuk.ui.CommandJPanel;
  */
 public class IncreaseVolumeAction extends ActionBase {
 
+    private static final long serialVersionUID = 1L;
+
     IncreaseVolumeAction() {
         super("increase volume", "ctrl UP", true); //$NON-NLS-1$ //$NON-NLS-2$
     }

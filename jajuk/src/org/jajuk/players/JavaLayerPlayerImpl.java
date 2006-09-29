@@ -116,8 +116,6 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
         }
         player.open(new File(file.getAbsolutePath()));
         if (fPosition > 0.0f) {
-            // if we don't start at the begining of file, seek to this point
-            int iFirstFrame = (int) (file.getTrack().getLength() * fPosition * 41.666);
             // (position*fPosition(%))*1000(ms) /24 because 1 frame =24ms
             // test if this is a audio format supporting seeking
             if (TypeManager.getInstance().getTypeByExtension(Util.getExtension(file.getIO())).getBooleanValue(
@@ -195,8 +193,6 @@ public class JavaLayerPlayerImpl implements IPlayerImpl, ITechnicalStrings, Basi
         if (bFading){
             return;
         }
-        //save current position
-        float fCurrentPos = fPos;
         //Do not seek to a position too near from the end : it can cause freeze. MAX=98%
         if (posValue>0.98f){
             posValue = 0.98f;

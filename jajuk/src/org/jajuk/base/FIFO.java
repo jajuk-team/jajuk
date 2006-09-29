@@ -92,8 +92,8 @@ public class FIFO implements ITechnicalStrings {
      * Initialisation
      */
     private void reset() {
-        alFIFO = new ArrayList(50);
-        alPlanned = new ArrayList(10);
+        alFIFO = new ArrayList<StackItem>(50);
+        alPlanned = new ArrayList<StackItem>(10);
         JajukTimer.getInstance().reset();
         index = 0;
         playlist = null;
@@ -270,7 +270,7 @@ public class FIFO implements ITechnicalStrings {
      *            keep previous files or stop them to start a new one ?
      */
     private void pushCommand(StackItem item, boolean bAppend) {
-        ArrayList alFiles = new ArrayList(1);
+        ArrayList<StackItem> alFiles = new ArrayList<StackItem>(1);
         alFiles.add(item);
         pushCommand(alFiles, bAppend);
     }
@@ -345,10 +345,9 @@ public class FIFO implements ITechnicalStrings {
         try {
             Util.waiting();
             // intro workaround : intro mode is only read at track launch and can't be set during the play
-            boolean bIntroEnabled = ConfigurationManager.getBoolean(CONF_STATE_INTRO); // re-read intro mode
+            ConfigurationManager.getBoolean(CONF_STATE_INTRO); // re-read intro mode
             ObservationManager.notify(new Event(EVENT_PLAYER_PLAY)); // notify to devices like commandJPanel to update ui when the play button has been pressed
             ConfigurationManager.setProperty(CONF_STATE_WAS_PLAYING, TRUE); // set was playing state
-            long lOffset = 0; // track offset in secs
             File fCurrent = getCurrentFile();
             boolean bPlayOK = false;
             if (bFirstFile
@@ -644,7 +643,7 @@ public class FIFO implements ITechnicalStrings {
                 if (bOK) { //some tracks of other album were already in fifo, sraer them
                     //add a fake album at the top the fifo because the finish will drop first element and we won't
                     //drop first track of the next album
-                    ArrayList alFake = new ArrayList(1);
+                    ArrayList<StackItem> alFake = new ArrayList<StackItem>(1);
                     alFake.add(getItem(0));
                     insert(alFake,0);
                     finished(); // stop current track and start the new one
@@ -796,7 +795,7 @@ public class FIFO implements ITechnicalStrings {
      * @param iPos
      */
     public synchronized void insert(StackItem item, int iPos) {
-        ArrayList alStack = new ArrayList(1);
+        ArrayList<StackItem> alStack = new ArrayList<StackItem>(1);
         alStack.add(item);
         insert(alStack, iPos);
     }
@@ -807,7 +806,7 @@ public class FIFO implements ITechnicalStrings {
      * @param file
      * @param iPos
      */
-    public synchronized void insert(ArrayList alFiles, int iPos) {
+    public synchronized void insert(ArrayList<StackItem> alFiles, int iPos) {
         if (iPos <= alFIFO.size()) { // add in the FIFO, accept a file at size() position to allow increasing FIFO at the end
             alFIFO.addAll(iPos, alFiles);
             JajukTimer.getInstance().addTrackTime(alFiles);

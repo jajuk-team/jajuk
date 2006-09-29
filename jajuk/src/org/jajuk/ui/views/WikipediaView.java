@@ -53,7 +53,8 @@ import org.jdesktop.jdic.browser.WebBrowser;
  */
 public class WikipediaView extends ViewAdapter implements ITechnicalStrings,Observer,ChangeListener {
 	
-	//control panel
+	private static final long serialVersionUID = 1L;
+    //control panel
     JPanel jpControl;
     JLabel jlLanguage;
     JSpinner jspLanguage;

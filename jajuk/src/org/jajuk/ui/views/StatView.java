@@ -69,6 +69,7 @@ import org.jfree.ui.TextAnchor;
  */
 public class StatView extends ViewAdapter implements Observer{
     
+    private static final long serialVersionUID = 1L;
     /**Self instance*/
     private static StatView sv;
     

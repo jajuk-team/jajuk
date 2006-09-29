@@ -44,9 +44,9 @@ public abstract class ItemManager implements ITechnicalStrings{
     /**Items collection**/
     protected TreeBidiMap hmItems = new TreeBidiMap();
     /**Maps item classes -> instance*/
-    static private LinkedHashMap hmItemManagers  = new LinkedHashMap(10);
+    static private LinkedHashMap<Class, ItemManager> hmItemManagers  = new LinkedHashMap<Class, ItemManager>(10);
     /**Maps properties meta information name and object*/
-    private LinkedHashMap hmPropertiesMetaInformation = new LinkedHashMap(10);
+    private LinkedHashMap<String, PropertyMetaInformation> hmPropertiesMetaInformation = new LinkedHashMap<String, PropertyMetaInformation>(10);
     /**Manager lock, should be synchronized before any iteration on items*/
     private byte[] bLock = new byte[0];
     /**
@@ -150,7 +150,7 @@ public abstract class ItemManager implements ITechnicalStrings{
      * @return custom properties Meta informations
      */
     public Collection<PropertyMetaInformation> getCustomProperties(){
-        ArrayList col = new ArrayList();
+        ArrayList<PropertyMetaInformation> col = new ArrayList<PropertyMetaInformation>();
         Iterator it = hmPropertiesMetaInformation.values().iterator();
         while (it.hasNext()){
             PropertyMetaInformation meta = (PropertyMetaInformation)it.next();
@@ -165,7 +165,7 @@ public abstract class ItemManager implements ITechnicalStrings{
      * @return visible properties Meta informations
      */
     public Collection getVisibleProperties(){
-        ArrayList col = new ArrayList();
+        ArrayList<PropertyMetaInformation> col = new ArrayList<PropertyMetaInformation>();
         Iterator it = hmPropertiesMetaInformation.values().iterator();
         while (it.hasNext()){
             PropertyMetaInformation meta = (PropertyMetaInformation)it.next();
@@ -240,7 +240,7 @@ public abstract class ItemManager implements ITechnicalStrings{
     public void cleanup() {
         synchronized(getLock()){
             //build used items set
-            HashSet hsItems = new HashSet(TrackManager.getInstance().getItems().size());
+            HashSet<Item> hsItems = new HashSet<Item>(TrackManager.getInstance().getItems().size());
             for (Item item:TrackManager.getInstance().getItems()){
                 Track track = (Track)item;
                 if (this instanceof AlbumManager){
@@ -278,7 +278,7 @@ public abstract class ItemManager implements ITechnicalStrings{
     /**Return all registred items*/
     public Collection<Item> getItems() {
         synchronized(getLock()){
-            return hmItems.inverseBidiMap().keySet();
+			return hmItems.inverseBidiMap().keySet();
         }
     }
     
@@ -297,7 +297,7 @@ public abstract class ItemManager implements ITechnicalStrings{
             else{
                 checked = ".*" + filter.getValue() + ".*"; //$NON-NLS-1$ //$NON-NLS-2$
             }
-            ArrayList out = new ArrayList(col.size());
+            ArrayList<Item> out = new ArrayList<Item>(col.size());
             for (Item item:col){
                 if (filter.isHuman()){
                     comparator = item.getHumanValue(filter.getProperty().getName());
@@ -389,13 +389,11 @@ public abstract class ItemManager implements ITechnicalStrings{
             }
         }
         else if (itemToChange instanceof PlaylistFile){
-            PlaylistFile plf = (PlaylistFile)itemToChange;
             if (XML_NAME.equals(sKey)){ //playlistfile name
                 newItem = PlaylistFileManager.getInstance().changePlaylistFileName((PlaylistFile)itemToChange,(String)oValue);
             }
         }
         else if (itemToChange instanceof Directory){
-            Directory dir = (Directory)itemToChange;
             if (XML_NAME.equals(sKey)){ //file name
                 //TBI    newItem = DirectoryManager.getInstance().changeDirectoryName((Directory)itemToChange,(String)oValue);
             }

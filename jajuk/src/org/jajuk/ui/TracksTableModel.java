@@ -46,7 +46,9 @@ import org.jajuk.util.Util;
  */
 public class TracksTableModel extends JajukTableModel{
 	
-	/**
+	private static final long serialVersionUID = 1L;
+
+    /**
 	 * Model constructor
 	 * @param iColNum number of rows
 	 * @param sColName columns names

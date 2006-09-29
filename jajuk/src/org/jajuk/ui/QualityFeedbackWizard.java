@@ -61,6 +61,7 @@ import org.jdesktop.jdic.desktop.Message;
  * @created    20 juin 2005
  */
 public class QualityFeedbackWizard extends JDialog implements KeyListener,ActionListener,ITechnicalStrings{
+    private static final long serialVersionUID = 1L;
     JPanel jpMain;
     JTextArea jtaNotice;
     JLabel jlType;

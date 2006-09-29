@@ -32,8 +32,9 @@ import org.jajuk.i18n.Messages;
  */
 public class Playlist extends Item implements Comparable{
 
+	private static final long serialVersionUID = 1L;
 	/**Associated playlist files**/
-	private ArrayList<PlaylistFile> alPlaylistFiles = new ArrayList(2);
+	private ArrayList<PlaylistFile> alPlaylistFiles = new ArrayList<PlaylistFile>(2);
   	
 	/**
 	 * Playlist constructor
@@ -164,21 +165,6 @@ public class Playlist extends Item implements Comparable{
 	    }
 	    setProperty(XML_PLAYLIST_FILES,sPlaylistFiles);
 	}
-	
-	    
-	/**
-	 * Return true if this playlist map to specified playlist file id 
-	 * @param sId
-	 * @return
-	 */
-	private boolean mapPlaylistFile(String sId){
-		for (int i=0;i<alPlaylistFiles.size();i++){
-			if (((PlaylistFile)alPlaylistFiles.get(i)).getId().equals(sId)){
-				return true;
-			}	
-		}
-		return false;
-	}	
 	
 	/**
 	 * Get playlist name

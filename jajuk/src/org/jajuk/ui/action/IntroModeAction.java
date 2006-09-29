@@ -18,6 +18,8 @@ import org.jajuk.util.Util;
  * @since 13-dec-2005
  */
 public class IntroModeAction extends ActionBase {
+    private static final long serialVersionUID = 1L;
+
     IntroModeAction() {
         super(Messages.getString("JajukJMenuBar.13"), Util.getIcon(ICON_INTRO), true); //$NON-NLS-1$
         setShortDescription(Messages.getString("CommandJPanel.4")); //$NON-NLS-1$

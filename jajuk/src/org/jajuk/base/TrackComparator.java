@@ -29,7 +29,7 @@ import java.util.Comparator;
  * @author     Bertrand Florat
  * @created    8 janv. 2006
  */
-public class TrackComparator implements Comparator{
+public class TrackComparator implements Comparator<Track>{
     /**
      * Sorting method
      */
@@ -89,9 +89,7 @@ public class TrackComparator implements Comparator{
      * @param arg1
      * @return
      */
-    public int compare(Object arg0, Object arg1) {
-        Track track1 = (Track)arg0;
-        Track track2 = (Track)arg1;
+    public int compare(Track track1, Track track2) {
         if (track1.equals(track2)){
             return 0;
         }

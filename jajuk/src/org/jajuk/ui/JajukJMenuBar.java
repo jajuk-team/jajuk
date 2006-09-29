@@ -39,7 +39,6 @@ import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JPanel;
 
 import org.jajuk.i18n.Messages;
 import org.jajuk.ui.action.ActionManager;
@@ -57,6 +56,7 @@ import org.jajuk.util.Util;
  */
 public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings{
 
+    private static final long serialVersionUID = 1L;
     static JajukJMenuBar jjmb;
         JMenu file;
             JMenuItem jmiFileOpen;
@@ -99,7 +99,6 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings{
         jmiNewProperty = new JMenuItem(Messages.getString("JajukJMenuBar.6"),Util.getIcon(ICON_NEW)); //$NON-NLS-1$
         jmiNewProperty.addActionListener(JajukListener.getInstance());
         jmiNewProperty.setActionCommand(EVENT_CREATE_PROPERTY);
-        JPanel jpNewProperty = new JPanel();
         jmiNewProperty.setLayout(new FlowLayout(FlowLayout.LEFT));
         jmiDeleteProperty = new JMenuItem(Messages.getString("JajukJMenuBar.7"),Util.getIcon(ICON_DELETE)); //$NON-NLS-1$
         jmiDeleteProperty.addActionListener(JajukListener.getInstance());

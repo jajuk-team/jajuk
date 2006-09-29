@@ -33,6 +33,11 @@ import org.jajuk.util.Util;
  */
 public class DJConfigurationAction extends ActionBase {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
     DJConfigurationAction() {
         super(Messages.getString("CommandJPanel.17"), Util.getIcon(ICON_DIGITAL_DJ), true); //$NON-NLS-1$ //$NON-NLS-2$
     }

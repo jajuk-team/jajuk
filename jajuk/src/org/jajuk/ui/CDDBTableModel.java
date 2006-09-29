@@ -37,6 +37,8 @@ import entagged.freedb.FreedbReadResult;
 
 public class CDDBTableModel extends JajukTableModel {
 
+    private static final long serialVersionUID = 1L;
+    
     ArrayList<CDDBTrack> alItems;
 
     /**

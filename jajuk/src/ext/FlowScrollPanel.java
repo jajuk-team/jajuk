@@ -21,6 +21,7 @@ import javax.swing.JScrollPane;
 import javax.swing.Scrollable;
 
 public class FlowScrollPanel extends JPanel implements Scrollable {
+  private static final long serialVersionUID = 1L;
   private FlowLayout layout = new FlowLayout();
   private JScrollPane scroller;
 
@@ -55,53 +56,51 @@ public class FlowScrollPanel extends JPanel implements Scrollable {
   }
 
   public Dimension getPreferredSize() {
-    if (scroller == null) {
-      Dimension result = super.getPreferredSize();
-      return result;
-    }
-    else {
+      if (scroller == null) {
+          Dimension result = super.getPreferredSize();
+          return result;
+      }
       Insets insets = getInsets();
       int hgap = layout.getHgap();
       int vgap = layout.getVgap();
       JScrollBar vsb = scroller.getVerticalScrollBar();
       if (vsb == null) {
-        vsb = scroller.createVerticalScrollBar();
+          vsb = scroller.createVerticalScrollBar();
       }
       int scrollerWidth = scroller.getSize().width -
-        (insets.left + insets.right + hgap*2) - vsb.getSize().width /*-2*/;
+      (insets.left + insets.right + hgap*2) - vsb.getSize().width /*-2*/;
       // the -2 is a voodoo constant.  I don't know why it's needed, but
       // it is.  (I suspect that this routine and FlowLayout compute
       // required sizes in a subtly different way.)
       // No longer needed with Swing 1.1 (I think).
       int nmembers = getComponentCount();
       int x = 0, y = insets.top + vgap;
-      int rowh = 0, start = 0;
+      int rowh = 0;
       int maxRowWidth = scrollerWidth;
 
       for (int i = 0 ; i < nmembers ; i++) {
-        Component m = getComponent(i);
-        if (m.isVisible()) {
-          Dimension d = m.getPreferredSize();
-          if ((x == 0) || ((x + d.width) <= scrollerWidth)) {
-            if (x > 0) {
-              x += hgap;
-            }
-            x += d.width;
-            rowh = Math.max(rowh, d.height);
-          } else {
-            if (x > maxRowWidth)
-              maxRowWidth = x + hgap;
-            x = d.width;
-            y += vgap + rowh;
-            rowh = d.height;
+          Component m = getComponent(i);
+          if (m.isVisible()) {
+              Dimension d = m.getPreferredSize();
+              if ((x == 0) || ((x + d.width) <= scrollerWidth)) {
+                  if (x > 0) {
+                      x += hgap;
+                  }
+                  x += d.width;
+                  rowh = Math.max(rowh, d.height);
+              } else {
+                  if (x > maxRowWidth)
+                      maxRowWidth = x + hgap;
+                  x = d.width;
+                  y += vgap + rowh;
+                  rowh = d.height;
+              }
           }
-        }
       }
       if (x > maxRowWidth)
-        maxRowWidth = x + 2 * hgap + insets.left + insets.right;
+          maxRowWidth = x + 2 * hgap + insets.left + insets.right;
       y += vgap + rowh + insets.bottom;
       return new Dimension(maxRowWidth, y);
-    }
   }
 
   public void setLayout(LayoutManager l)

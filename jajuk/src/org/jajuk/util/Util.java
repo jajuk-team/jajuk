@@ -22,31 +22,83 @@
  */
 package org.jajuk.util;
 
-import java.awt.*;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Frame;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.MediaTracker;
+import java.awt.RenderingHints;
+import java.awt.Window;
 import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
-import java.text.*;
-import java.util.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Properties;
+import java.util.StringTokenizer;
 
-import javax.sound.sampled.*;
-import javax.swing.*;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Line;
+import javax.sound.sampled.Mixer;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JPanel;
+import javax.swing.JToolBar;
+import javax.swing.SwingUtilities;
 
 import org.jajuk.Main;
-import org.jajuk.base.*;
+import org.jajuk.base.Album;
+import org.jajuk.base.Author;
+import org.jajuk.base.Device;
+import org.jajuk.base.Directory;
+import org.jajuk.base.Item;
+import org.jajuk.base.PropertyMetaInformation;
+import org.jajuk.base.StackItem;
+import org.jajuk.base.Style;
+import org.jajuk.base.Track;
+import org.jajuk.base.TrackManager;
 import org.jajuk.dj.Ambience;
 import org.jajuk.i18n.Messages;
-import org.jajuk.ui.*;
-import org.jajuk.ui.perspectives.*;
+import org.jajuk.ui.CommandJPanel;
+import org.jajuk.ui.InformationJPanel;
+import org.jajuk.ui.JajukContainer;
+import org.jajuk.ui.PerspectiveBarJPanel;
+import org.jajuk.ui.perspectives.IPerspective;
+import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.util.error.JajukException;
 import org.jajuk.util.log.Log;
 
-import com.sun.image.codec.jpeg.*;
+import com.sun.image.codec.jpeg.JPEGCodec;
+import com.sun.image.codec.jpeg.JPEGEncodeParam;
+import com.sun.image.codec.jpeg.JPEGImageEncoder;
 import com.sun.media.sound.MixerSourceLine;
 
 /**
@@ -71,10 +123,7 @@ public class Util implements ITechnicalStrings {
     /** Default locale format* */
     private static DateFormat dateFormatter = DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.getDefault());
 
-    /** Jajuk release */
-    private static String sRelease = null;
-
-    /** Directory filter used in refresh */
+     /** Directory filter used in refresh */
     public static JajukFileFilter dirFilter = new JajukFileFilter(JajukFileFilter.DirectoryFilter.getInstance());
 
     /** File filter used in refresh */
@@ -904,7 +953,7 @@ public class Util implements ITechnicalStrings {
      * @param bUserLauched
      * @return
      */
-    public static ArrayList createStackItems(ArrayList alFiles, boolean bRepeat,
+    public static ArrayList<StackItem> createStackItems(ArrayList alFiles, boolean bRepeat,
             boolean bUserLauched) {
         ArrayList alOut = new ArrayList(alFiles.size());
         Iterator it = alFiles.iterator();
@@ -973,7 +1022,6 @@ public class Util implements ITechnicalStrings {
     public static ImageIcon getScaledImage(ImageIcon img, int iScale) {
         int iNewWidth;
         int iNewHeight;
-        float fRatio;
         // Height is smaller or equal than width : try to optimize width
         iNewWidth = iScale; // take all possible width
         // we check now if height will be visible entirely with optimized width
@@ -995,10 +1043,8 @@ public class Util implements ITechnicalStrings {
      */
     public static void updateAllUIs() {
         Frame frames[];
-        int i1;
         frames = Frame.getFrames();
-        i1 = 0;
-
+       
         for (int i = 0; i < frames.length; i++) {
             updateWindowUI(frames[i]);
         }

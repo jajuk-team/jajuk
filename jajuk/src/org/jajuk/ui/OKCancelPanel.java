@@ -37,6 +37,7 @@ import org.jajuk.i18n.Messages;
  */
 public class OKCancelPanel extends JPanel {
     
+    private static final long serialVersionUID = 1L;
     private JButton jbOk;
     private JButton jbCancel;
     

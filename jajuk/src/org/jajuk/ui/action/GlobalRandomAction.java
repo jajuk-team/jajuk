@@ -23,6 +23,8 @@ import org.jajuk.util.error.JajukException;
  */
 public class GlobalRandomAction extends ActionBase {
 
+    private static final long serialVersionUID = 1L;
+
     GlobalRandomAction() {
         super(Messages.getString("JajukWindow.6"), Util.getIcon(ICON_SHUFFLE_GLOBAL), true); //$NON-NLS-1$
         String sTooltip = Messages.getString("JajukWindow.23"); //$NON-NLS-1$

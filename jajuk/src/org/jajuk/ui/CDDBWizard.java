@@ -75,6 +75,8 @@ public class CDDBWizard extends JDialog implements ITechnicalStrings,
 		ActionListener, TableColumnModelListener, TableModelListener,
 		MouseListener {
 
+    private static final long serialVersionUID = 1L;
+    
 	/** Main panel */
 	JPanel jpMain;
 
@@ -135,7 +137,9 @@ public class CDDBWizard extends JDialog implements ITechnicalStrings,
 
 	class NavigationPanel extends JPanel {
 
-		SteppedComboBox jcbAlbum;
+		private static final long serialVersionUID = 1L;
+
+        SteppedComboBox jcbAlbum;
 
 		JLabel jlCurrent;
 
@@ -349,7 +353,6 @@ public class CDDBWizard extends JDialog implements ITechnicalStrings,
 	public void retagFiles() {
 		aIdxToTag = jtable.getSelectedRows();
 		boolean b = false;
-		String error = ""; //$NON-NLS-1$
 		if (aIdxToTag.length == 0) {
 			dispose();
 		} else {

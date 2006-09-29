@@ -33,7 +33,8 @@ import javax.swing.plaf.ComboBoxUI;
 */
 
 public class SteppedComboBox extends JComboBox {
-  protected int popupWidth;
+  private static final long serialVersionUID = 1L;
+protected int popupWidth;
 
   public SteppedComboBox() {
     super();

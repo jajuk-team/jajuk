@@ -46,6 +46,7 @@ import org.jajuk.util.Util;
  */
 public class TipOfTheDay extends JFrame implements ITechnicalStrings {
 
+    private static final long serialVersionUID = 1L;
     private static final String[] tips = Messages.getAll("TipOfTheDay"); //$NON-NLS-1$
     private int iLastTip;
     private JCheckBox cbShow;

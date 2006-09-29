@@ -54,7 +54,9 @@ import org.jfree.ui.about.SystemPropertiesPanel;
  */
 public class AboutView extends ViewAdapter {
 
-	/**Self instance*/
+	private static final long serialVersionUID = 1L;
+
+    /**Self instance*/
 	private static AboutView av;
 	
 	/**Licence panel*/

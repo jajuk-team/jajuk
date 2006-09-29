@@ -44,6 +44,8 @@ import org.jajuk.util.Util;
  */
 public class PerspectiveBarJPanel extends JPanel implements ITechnicalStrings{
 
+    private static final long serialVersionUID = 1L;
+
     /** Perspectives tool bar**/
     private JToolBar jtbPerspective = null;
 

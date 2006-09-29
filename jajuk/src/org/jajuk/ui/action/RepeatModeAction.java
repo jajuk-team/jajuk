@@ -20,6 +20,8 @@ import org.jajuk.util.Util;
  * @since 13-dec-2005
  */
 public class RepeatModeAction extends ActionBase {
+    private static final long serialVersionUID = 1L;
+
     RepeatModeAction() {
         super(Messages.getString("JajukJMenuBar.10"), Util.getIcon(ICON_REPEAT), "ctrl T", true); //$NON-NLS-1$ //$NON-NLS-2$
         setShortDescription(Messages.getString("CommandJPanel.1")); //$NON-NLS-1$

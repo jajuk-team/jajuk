@@ -43,12 +43,12 @@ import org.jajuk.util.log.Log;
 public class ObservationManager implements ITechnicalStrings{
 	
 	/** one event -> list of components*/
-	static Hashtable hEventComponents = new Hashtable(10);
+	static Hashtable<String, ArrayList> hEventComponents = new Hashtable<String, ArrayList>(10);
 	
 	/**Last event for a given subject (used for new objects that just registrated to this subject)*/
-	static HashMap hLastEventBySubject = new HashMap(10);
+	static HashMap<String, Properties> hLastEventBySubject = new HashMap<String, Properties>(10);
 	
-    static volatile Vector vFIFO = new Vector(10);
+    static volatile Vector<Event> vFIFO = new Vector<Event>(10);
     
     static private Thread t = new Thread(){
             public void run(){
@@ -79,9 +79,9 @@ public class ObservationManager implements ITechnicalStrings{
 	 */
 	public static synchronized  void register(String subject,Object obj){
 		Log.debug("Register: \""+subject+"\" by: "+obj); //$NON-NLS-1$ //$NON-NLS-2$
-		ArrayList alComponents = (ArrayList)hEventComponents.get(subject);
+		ArrayList<Object> alComponents = (ArrayList<Object>)hEventComponents.get(subject);
 		if (alComponents == null){
-			alComponents = new ArrayList(1);
+			alComponents = new ArrayList<Object>(1);
 			hEventComponents.put(subject,alComponents);
 		}
 		if (!alComponents.contains(obj)){
@@ -118,7 +118,7 @@ public class ObservationManager implements ITechnicalStrings{
 		Log.debug("Notify: "+subject); //$NON-NLS-1$
 	    //save last event
         hLastEventBySubject.put(subject,event.getDetails());
-		ArrayList alComponents =(ArrayList)hEventComponents.get(subject);
+		ArrayList<Object> alComponents =(ArrayList)hEventComponents.get(subject);
 	    if (alComponents == null){
 	        return;
 	    }

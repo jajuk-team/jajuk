@@ -16,6 +16,11 @@ import org.jajuk.util.Util;
  * @since 4-jan-2006
  */
 public class ExitAction extends ActionBase {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
     ExitAction() {
         super(Messages.getString("JajukWindow.4"), Util.getIcon(ICON_EXIT), "alt X", true); //$NON-NLS-1$ //$NON-NLS-2$ $NON-NLS-2$
         setShortDescription(Messages.getString("JajukWindow.21")); //$NON-NLS-1$
