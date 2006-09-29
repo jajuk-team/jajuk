@@ -80,8 +80,6 @@ public class NoTagsTagImpl implements ITagImpl {
 			public void opened(Object arg0, Map mProperties) {
 				NoTagsTagImpl.this.mapInfo = mProperties;
 			}
-			public void display(String msg){		
-			}
 			public void progress(int iBytesread,long lMicroseconds,byte[] bPcmdata,java.util.Map mProperties) {
 			}
 			public void stateUpdated(BasicPlayerEvent bpe) {

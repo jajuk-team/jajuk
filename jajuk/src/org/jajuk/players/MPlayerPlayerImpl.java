@@ -121,7 +121,6 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings {
                     new InputStreamReader(proc.getInputStream()));
                 String line = null;
                 for (; (line = in.readLine()) != null;) {
-                    Log.debug(line);
                     if (line.matches(".*ANS_TIME_POSITION.*")){
                         StringTokenizer st = new StringTokenizer(line,"=");
                         st.nextToken();

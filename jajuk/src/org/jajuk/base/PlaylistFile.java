@@ -356,7 +356,7 @@ public class PlaylistFile extends Item implements Comparable {
 	 * Add some files to this playlist file. 
 	 * @param alFilesToAdd : List of File
 	 */
-	public synchronized void addFiles(ArrayList alFilesToAdd) throws JajukException{
+	public synchronized void addFiles(ArrayList alFilesToAdd){
 	    try{
 	        Iterator it = alFilesToAdd.iterator();
 	        while (it.hasNext()){

@@ -916,18 +916,6 @@ public class FIFO implements ITechnicalStrings {
     }
     
     /**
-     * Computes next file to play given current option configuration and FIFO
-     * 
-     * @return the file to play
-     */
-    private File nextTrack() {
-        File file = null;
-        // next file choice
-        file = FileManager.getInstance().getNextFile(itemLast.getFile());
-        return file;
-    }
-    
-    /**
      * 
      * @return Last Stack item in FIFO
      */
@@ -935,7 +923,7 @@ public class FIFO implements ITechnicalStrings {
         if (alFIFO.size() == 0) {
             return null;
         }
-        return (StackItem) alFIFO.get(alFIFO.size() - 1);
+        return alFIFO.get(alFIFO.size() - 1);
     }
     
     /**

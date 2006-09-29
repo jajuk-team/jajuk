@@ -87,13 +87,7 @@ public class DownloadManager implements ITechnicalStrings {
 		return host;
 	}
 	
-	/**
-	 * @param sHostname, the host name
-	 * @return Get an host configuration without proxy
-	 */
-	private static HostConfiguration getHostConfiguration(String sHostname){
-		return getHostConfiguration(sHostname,null,-1);
-	}
+	
 	
 	/**
 	 * @param search

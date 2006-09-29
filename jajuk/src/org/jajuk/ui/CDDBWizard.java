@@ -270,7 +270,7 @@ public class CDDBWizard extends JDialog implements ITechnicalStrings,
 					jpMain = new JPanel();
 					jpMain.setBorder(BorderFactory.createEtchedBorder());
 					jpMain.setLayout(new TableLayout(dSize));
-					jtable = populateTable(aResult[idx]);
+					jtable = populateTable();
 					jpNav = new NavigationPanel();
 					okc = new OKCancelPanel(CDDBWizard.this, Messages
 							.getString("Apply"), Messages //$NON-NLS-1$
@@ -286,7 +286,7 @@ public class CDDBWizard extends JDialog implements ITechnicalStrings,
 	}
 
 	/** Fill the table */
-	public JajukTable populateTable(FreedbQueryResult fdbResult) {
+	public JajukTable populateTable() {
 		model = populateModel();
 		jtable = new JajukTable(model, true, null);
 		jtable.selectAll();

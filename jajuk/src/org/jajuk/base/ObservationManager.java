@@ -79,7 +79,7 @@ public class ObservationManager implements ITechnicalStrings{
 	 */
 	public static synchronized  void register(String subject,Object obj){
 		Log.debug("Register: \""+subject+"\" by: "+obj); //$NON-NLS-1$ //$NON-NLS-2$
-		ArrayList<Object> alComponents = (ArrayList<Object>)hEventComponents.get(subject);
+		ArrayList<Object> alComponents = hEventComponents.get(subject);
 		if (alComponents == null){
 			alComponents = new ArrayList<Object>(1);
 			hEventComponents.put(subject,alComponents);
