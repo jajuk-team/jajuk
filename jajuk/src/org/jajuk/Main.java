@@ -20,9 +20,11 @@ package org.jajuk;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -100,8 +102,6 @@ public class Main implements ITechnicalStrings {
     public static JPanel jpFrame;
     /**splashscreen*/
     public static JSplash sc;
-    /**Temporary panel*/
-    private static JPanel jpTmp;
     /**Exit code*/
     private static int iExitCode = 0;
     /**Debug mode*/
@@ -110,8 +110,6 @@ public class Main implements ITechnicalStrings {
     public static boolean bTestMode = false;
     /**Exiting flag*/
     public static boolean bExiting = false;
-    /**General use lock used for synchronization*/
-    private static byte[] bLock = new byte[0];
     /**Systray*/
     private static JajukSystray jsystray;
     /**UI lauched flag*/
@@ -432,95 +430,130 @@ public class Main implements ITechnicalStrings {
      */
     private static void registerTypes(){
         try { 
-            /*
-            //mp3
-            Type type = TypeManager.getInstance().registerType(Messages.getString("Type.mp3"), 
-                EXT_MP3, Class.forName(PLAYER_IMPL_MPLAYER), 
-                Class.forName(TAG_IMPL_ENTAGGED)); //$NON-NLS-1$ //$NON-NLS-2$
-            type.setProperty(XML_TYPE_IS_MUSIC,true); //$NON-NLS-1$
-            type.setProperty(XML_TYPE_SEEK_SUPPORTED,true); //$NON-NLS-1$
-            type.setProperty(XML_TYPE_TECH_DESC,TYPE_PROPERTY_TECH_DESC_MP3);
-            type.setProperty(XML_TYPE_ICON,ICON_TYPE_MP3);
-            //playlists
-            type = TypeManager.getInstance().registerType(Messages.getString("Type.playlist"), EXT_PLAYLIST, Class.forName(PLAYER_IMPL_JAVALAYER), null); //$NON-NLS-1$ //$NON-NLS-2$
-            type.setProperty(XML_TYPE_IS_MUSIC,false); //$NON-NLS-1$
-            type.setProperty(XML_TYPE_SEEK_SUPPORTED,false); //$NON-NLS-1$
-            //Ogg vorbis
-            type = TypeManager.getInstance().registerType(Messages.getString("Type.ogg"), 
-                EXT_OGG, Class.forName(PLAYER_IMPL_MPLAYER), 
-                Class.forName(TAG_IMPL_ENTAGGED)); //$NON-NLS-1$ //$NON-NLS-2$
-            type.setProperty(XML_TYPE_IS_MUSIC,true); //$NON-NLS-1$
-            type.setProperty(XML_TYPE_SEEK_SUPPORTED,true); //$NON-NLS-1$
-            type.setProperty(XML_TYPE_TECH_DESC,TYPE_PROPERTY_TECH_DESC_OGG);
-            type.setProperty(XML_TYPE_ICON,ICON_TYPE_OGG);
-            //Wave
-            type = TypeManager.getInstance().registerType(Messages.getString("Type.wav"), 
-                EXT_WAV, Class.forName(PLAYER_IMPL_MPLAYER), 
-                Class.forName(TAG_IMPL_NO_TAGS)); //$NON-NLS-1$ //$NON-NLS-2$
-            type.setProperty(XML_TYPE_IS_MUSIC,true); //$NON-NLS-1$
-            type.setProperty(XML_TYPE_SEEK_SUPPORTED,true); //$NON-NLS-1$
-            type.setProperty(XML_TYPE_TECH_DESC,TYPE_PROPERTY_TECH_DESC_WAVE);
-            type.setProperty(XML_TYPE_ICON,ICON_TYPE_WAV);
-            //au
-            type = TypeManager.getInstance().registerType(Messages.getString("Type.au"), 
-                EXT_AU, Class.forName(PLAYER_IMPL_MPLAYER), 
-                Class.forName(TAG_IMPL_NO_TAGS)); //$NON-NLS-1$ //$NON-NLS-2$
-            type.setProperty(XML_TYPE_IS_MUSIC,true); //$NON-NLS-1$
-            type.setProperty(XML_TYPE_SEEK_SUPPORTED,true); //$NON-NLS-1$
-            type.setProperty(XML_TYPE_TECH_DESC,TYPE_PROPERTY_TECH_DESC_AU);
-            type.setProperty(XML_TYPE_ICON,ICON_TYPE_AU);
-            //aiff
-            type = TypeManager.getInstance().registerType(Messages.getString("Type.aiff"), 
-                EXT_AIFF, Class.forName(PLAYER_IMPL_MPLAYER), 
-                Class.forName(TAG_IMPL_NO_TAGS)); //$NON-NLS-1$ //$NON-NLS-2$
-            type.setProperty(XML_TYPE_IS_MUSIC,true); //$NON-NLS-1$
-            type.setProperty(XML_TYPE_SEEK_SUPPORTED,true); //$NON-NLS-1$
-            type.setProperty(XML_TYPE_TECH_DESC,TYPE_PROPERTY_TECH_DESC_AIFF);
-            type.setProperty(XML_TYPE_ICON,ICON_TYPE_AIFF);
-            //flac
-            type = TypeManager.getInstance().registerType(Messages.getString("Type.flac"), 
-                EXT_FLAC, Class.forName(PLAYER_IMPL_MPLAYER), 
-                Class.forName(TAG_IMPL_ENTAGGED)); //$NON-NLS-1$ //$NON-NLS-2$
-            type.setProperty(XML_TYPE_IS_MUSIC,true); //$NON-NLS-1$
-            type.setProperty(XML_TYPE_SEEK_SUPPORTED,true); //$NON-NLS-1$
-            type.setProperty(XML_TYPE_TECH_DESC,TYPE_PROPERTY_TECH_DESC_FLAC);
-            type.setProperty(XML_TYPE_ICON,ICON_TYPE_FLAC);*/
-            
-            //mp3
-            Type type = TypeManager.getInstance().registerType(Messages.getString("Type.mp3"), EXT_MP3, Class.forName(PLAYER_IMPL_JAVALAYER), Class.forName(TAG_IMPL_ENTAGGED)); //$NON-NLS-1$ //$NON-NLS-2$
-            type.setProperty(XML_TYPE_IS_MUSIC,true); //$NON-NLS-1$
-            type.setProperty(XML_TYPE_SEEK_SUPPORTED,true); //$NON-NLS-1$
-            type.setProperty(XML_TYPE_TECH_DESC,TYPE_PROPERTY_TECH_DESC_MP3);
-            type.setProperty(XML_TYPE_ICON,ICON_TYPE_MP3);
-            //playlists
-            type = TypeManager.getInstance().registerType(Messages.getString("Type.playlist"), EXT_PLAYLIST, Class.forName(PLAYER_IMPL_JAVALAYER), null); //$NON-NLS-1$ //$NON-NLS-2$
-            type.setProperty(XML_TYPE_IS_MUSIC,false); //$NON-NLS-1$
-            type.setProperty(XML_TYPE_SEEK_SUPPORTED,false); //$NON-NLS-1$
-            //Ogg vorbis
-            type = TypeManager.getInstance().registerType(Messages.getString("Type.ogg"), EXT_OGG, Class.forName(PLAYER_IMPL_JAVALAYER), Class.forName(TAG_IMPL_ENTAGGED)); //$NON-NLS-1$ //$NON-NLS-2$
-            type.setProperty(XML_TYPE_IS_MUSIC,true); //$NON-NLS-1$
-            type.setProperty(XML_TYPE_SEEK_SUPPORTED,false); //$NON-NLS-1$
-            type.setProperty(XML_TYPE_TECH_DESC,TYPE_PROPERTY_TECH_DESC_OGG);
-            type.setProperty(XML_TYPE_ICON,ICON_TYPE_OGG);
-            //Wave
-            type = TypeManager.getInstance().registerType(Messages.getString("Type.wav"), EXT_WAV, Class.forName(PLAYER_IMPL_JAVALAYER), Class.forName(TAG_IMPL_NO_TAGS)); //$NON-NLS-1$ //$NON-NLS-2$
-            type.setProperty(XML_TYPE_IS_MUSIC,true); //$NON-NLS-1$
-            type.setProperty(XML_TYPE_SEEK_SUPPORTED,true); //$NON-NLS-1$
-            type.setProperty(XML_TYPE_TECH_DESC,TYPE_PROPERTY_TECH_DESC_WAVE);
-            type.setProperty(XML_TYPE_ICON,ICON_TYPE_WAV);
-            //au
-            type = TypeManager.getInstance().registerType(Messages.getString("Type.au"), EXT_AU, Class.forName(PLAYER_IMPL_JAVALAYER), Class.forName(TAG_IMPL_NO_TAGS)); //$NON-NLS-1$ //$NON-NLS-2$
-            type.setProperty(XML_TYPE_IS_MUSIC,true); //$NON-NLS-1$
-            type.setProperty(XML_TYPE_SEEK_SUPPORTED,false); //$NON-NLS-1$
-            type.setProperty(XML_TYPE_TECH_DESC,TYPE_PROPERTY_TECH_DESC_AU);
-            type.setProperty(XML_TYPE_ICON,ICON_TYPE_AU);
-            //aiff
-            type = TypeManager.getInstance().registerType(Messages.getString("Type.aiff"), EXT_AIFF, Class.forName(PLAYER_IMPL_JAVALAYER), Class.forName(TAG_IMPL_NO_TAGS)); //$NON-NLS-1$ //$NON-NLS-2$
-            type.setProperty(XML_TYPE_IS_MUSIC,true); //$NON-NLS-1$
-            type.setProperty(XML_TYPE_SEEK_SUPPORTED,false); //$NON-NLS-1$
-            type.setProperty(XML_TYPE_TECH_DESC,TYPE_PROPERTY_TECH_DESC_AIFF);
-            type.setProperty(XML_TYPE_ICON,ICON_TYPE_AIFF);
-            
+            //mplayer tests: 0: OK, 1: no mplayer in path, 2: wrong mplayer release
+            //test mplayer presence in PATH
+            int result = 0;
+            Process proc = null;
+            try{
+                proc =  Runtime.getRuntime().exec("mplayer");
+                result = proc.waitFor();
+                //check Mplayer release : 1.0pre8 min
+                proc =  Runtime.getRuntime().exec(
+                    new String[]{"mplayer","-input","cmdlist"});
+                BufferedReader in = new BufferedReader(
+                    new InputStreamReader(proc.getInputStream()));
+                String line = null;
+                result = 2;
+                for (; (line = in.readLine()) != null;) {
+                    if (line.matches("get_time_pos.*")){
+                        result = 0;
+                        break;
+                    }
+                }
+            }
+            catch(IOException ioe){
+                result = 1;
+            }
+            if (result != 0){
+                //no mplayer
+                if (result == 1){
+                    Messages.showWarningMessage(Messages.getString("Warning.0"));
+                }
+                else if (result == 2){
+                    Messages.showWarningMessage(Messages.getString("Warning.1"));
+                }
+                //mp3
+                Type type = TypeManager.getInstance().registerType(Messages.getString("Type.mp3"), EXT_MP3, Class.forName(PLAYER_IMPL_JAVALAYER), Class.forName(TAG_IMPL_ENTAGGED)); //$NON-NLS-1$ //$NON-NLS-2$
+                type.setProperty(XML_TYPE_IS_MUSIC,true); //$NON-NLS-1$
+                type.setProperty(XML_TYPE_SEEK_SUPPORTED,true); //$NON-NLS-1$
+                type.setProperty(XML_TYPE_TECH_DESC,TYPE_PROPERTY_TECH_DESC_MP3);
+                type.setProperty(XML_TYPE_ICON,ICON_TYPE_MP3);
+                //playlists
+                type = TypeManager.getInstance().registerType(Messages.getString("Type.playlist"), EXT_PLAYLIST, Class.forName(PLAYER_IMPL_JAVALAYER), null); //$NON-NLS-1$ //$NON-NLS-2$
+                type.setProperty(XML_TYPE_IS_MUSIC,false); //$NON-NLS-1$
+                type.setProperty(XML_TYPE_SEEK_SUPPORTED,false); //$NON-NLS-1$
+                //Ogg vorbis
+                type = TypeManager.getInstance().registerType(Messages.getString("Type.ogg"), EXT_OGG, Class.forName(PLAYER_IMPL_JAVALAYER), Class.forName(TAG_IMPL_ENTAGGED)); //$NON-NLS-1$ //$NON-NLS-2$
+                type.setProperty(XML_TYPE_IS_MUSIC,true); //$NON-NLS-1$
+                type.setProperty(XML_TYPE_SEEK_SUPPORTED,false); //$NON-NLS-1$
+                type.setProperty(XML_TYPE_TECH_DESC,TYPE_PROPERTY_TECH_DESC_OGG);
+                type.setProperty(XML_TYPE_ICON,ICON_TYPE_OGG);
+                //Wave
+                type = TypeManager.getInstance().registerType(Messages.getString("Type.wav"), EXT_WAV, Class.forName(PLAYER_IMPL_JAVALAYER), Class.forName(TAG_IMPL_NO_TAGS)); //$NON-NLS-1$ //$NON-NLS-2$
+                type.setProperty(XML_TYPE_IS_MUSIC,true); //$NON-NLS-1$
+                type.setProperty(XML_TYPE_SEEK_SUPPORTED,true); //$NON-NLS-1$
+                type.setProperty(XML_TYPE_TECH_DESC,TYPE_PROPERTY_TECH_DESC_WAVE);
+                type.setProperty(XML_TYPE_ICON,ICON_TYPE_WAV);
+                //au
+                type = TypeManager.getInstance().registerType(Messages.getString("Type.au"), EXT_AU, Class.forName(PLAYER_IMPL_JAVALAYER), Class.forName(TAG_IMPL_NO_TAGS)); //$NON-NLS-1$ //$NON-NLS-2$
+                type.setProperty(XML_TYPE_IS_MUSIC,true); //$NON-NLS-1$
+                type.setProperty(XML_TYPE_SEEK_SUPPORTED,false); //$NON-NLS-1$
+                type.setProperty(XML_TYPE_TECH_DESC,TYPE_PROPERTY_TECH_DESC_AU);
+                type.setProperty(XML_TYPE_ICON,ICON_TYPE_AU);
+                //aiff
+                type = TypeManager.getInstance().registerType(Messages.getString("Type.aiff"), EXT_AIFF, Class.forName(PLAYER_IMPL_JAVALAYER), Class.forName(TAG_IMPL_NO_TAGS)); //$NON-NLS-1$ //$NON-NLS-2$
+                type.setProperty(XML_TYPE_IS_MUSIC,true); //$NON-NLS-1$
+                type.setProperty(XML_TYPE_SEEK_SUPPORTED,false); //$NON-NLS-1$
+                type.setProperty(XML_TYPE_TECH_DESC,TYPE_PROPERTY_TECH_DESC_AIFF);
+                type.setProperty(XML_TYPE_ICON,ICON_TYPE_AIFF);
+
+            }
+            else{ //mplayer enabled
+
+
+                //mp3
+                Type type = TypeManager.getInstance().registerType(Messages.getString("Type.mp3"), 
+                    EXT_MP3, Class.forName(PLAYER_IMPL_MPLAYER), 
+                    Class.forName(TAG_IMPL_ENTAGGED)); //$NON-NLS-1$ //$NON-NLS-2$
+                type.setProperty(XML_TYPE_IS_MUSIC,true); //$NON-NLS-1$
+                type.setProperty(XML_TYPE_SEEK_SUPPORTED,true); //$NON-NLS-1$
+                type.setProperty(XML_TYPE_TECH_DESC,TYPE_PROPERTY_TECH_DESC_MP3);
+                type.setProperty(XML_TYPE_ICON,ICON_TYPE_MP3);
+                //playlists
+                type = TypeManager.getInstance().registerType(Messages.getString("Type.playlist"), EXT_PLAYLIST, Class.forName(PLAYER_IMPL_JAVALAYER), null); //$NON-NLS-1$ //$NON-NLS-2$
+                type.setProperty(XML_TYPE_IS_MUSIC,false); //$NON-NLS-1$
+                type.setProperty(XML_TYPE_SEEK_SUPPORTED,false); //$NON-NLS-1$
+                //Ogg vorbis
+                type = TypeManager.getInstance().registerType(Messages.getString("Type.ogg"), 
+                    EXT_OGG, Class.forName(PLAYER_IMPL_MPLAYER), 
+                    Class.forName(TAG_IMPL_ENTAGGED)); //$NON-NLS-1$ //$NON-NLS-2$
+                type.setProperty(XML_TYPE_IS_MUSIC,true); //$NON-NLS-1$
+                type.setProperty(XML_TYPE_SEEK_SUPPORTED,true); //$NON-NLS-1$
+                type.setProperty(XML_TYPE_TECH_DESC,TYPE_PROPERTY_TECH_DESC_OGG);
+                type.setProperty(XML_TYPE_ICON,ICON_TYPE_OGG);
+                //Wave
+                type = TypeManager.getInstance().registerType(Messages.getString("Type.wav"), 
+                    EXT_WAV, Class.forName(PLAYER_IMPL_MPLAYER), 
+                    Class.forName(TAG_IMPL_NO_TAGS)); //$NON-NLS-1$ //$NON-NLS-2$
+                type.setProperty(XML_TYPE_IS_MUSIC,true); //$NON-NLS-1$
+                type.setProperty(XML_TYPE_SEEK_SUPPORTED,true); //$NON-NLS-1$
+                type.setProperty(XML_TYPE_TECH_DESC,TYPE_PROPERTY_TECH_DESC_WAVE);
+                type.setProperty(XML_TYPE_ICON,ICON_TYPE_WAV);
+                //au
+                type = TypeManager.getInstance().registerType(Messages.getString("Type.au"), 
+                    EXT_AU, Class.forName(PLAYER_IMPL_MPLAYER), 
+                    Class.forName(TAG_IMPL_NO_TAGS)); //$NON-NLS-1$ //$NON-NLS-2$
+                type.setProperty(XML_TYPE_IS_MUSIC,true); //$NON-NLS-1$
+                type.setProperty(XML_TYPE_SEEK_SUPPORTED,true); //$NON-NLS-1$
+                type.setProperty(XML_TYPE_TECH_DESC,TYPE_PROPERTY_TECH_DESC_AU);
+                type.setProperty(XML_TYPE_ICON,ICON_TYPE_AU);
+                //aiff
+                type = TypeManager.getInstance().registerType(Messages.getString("Type.aiff"), 
+                    EXT_AIFF, Class.forName(PLAYER_IMPL_MPLAYER), 
+                    Class.forName(TAG_IMPL_NO_TAGS)); //$NON-NLS-1$ //$NON-NLS-2$
+                type.setProperty(XML_TYPE_IS_MUSIC,true); //$NON-NLS-1$
+                type.setProperty(XML_TYPE_SEEK_SUPPORTED,true); //$NON-NLS-1$
+                type.setProperty(XML_TYPE_TECH_DESC,TYPE_PROPERTY_TECH_DESC_AIFF);
+                type.setProperty(XML_TYPE_ICON,ICON_TYPE_AIFF);
+                //flac
+                type = TypeManager.getInstance().registerType(Messages.getString("Type.flac"), 
+                    EXT_FLAC, Class.forName(PLAYER_IMPL_MPLAYER), 
+                    Class.forName(TAG_IMPL_ENTAGGED)); //$NON-NLS-1$ //$NON-NLS-2$
+                type.setProperty(XML_TYPE_IS_MUSIC,true); //$NON-NLS-1$
+                type.setProperty(XML_TYPE_SEEK_SUPPORTED,true); //$NON-NLS-1$
+                type.setProperty(XML_TYPE_TECH_DESC,TYPE_PROPERTY_TECH_DESC_FLAC);
+                type.setProperty(XML_TYPE_ICON,ICON_TYPE_FLAC);
+            }
         } catch (Exception e1) {
             Log.error("026",e1); //$NON-NLS-1$
         }
