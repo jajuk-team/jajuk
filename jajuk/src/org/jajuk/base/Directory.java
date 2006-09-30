@@ -217,9 +217,8 @@ public class Directory extends Item implements Comparable{
      */
     public ArrayList<org.jajuk.base.File> getFilesRecursively() {
         ArrayList<org.jajuk.base.File> alFiles = new ArrayList<org.jajuk.base.File>(100);
-        Iterator it = FileManager.getInstance().getItems().iterator();
-        while ( it.hasNext()){
-            org.jajuk.base.File file = (org.jajuk.base.File)it.next();
+        for (Item item:FileManager.getInstance().getItems()){
+            org.jajuk.base.File file = (org.jajuk.base.File)item;
             if ( file.hasAncestor(this)){
                 alFiles.add(file);
             }
