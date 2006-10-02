@@ -19,6 +19,10 @@
  */
 package org.jajuk.base;
 
+import java.io.BufferedOutputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -305,7 +309,7 @@ public class FIFO implements ITechnicalStrings {
                 if (ConfigurationManager.getBoolean(CONF_STATE_CONTINUE) && itemLast != null) { // check if we are in continue mode
                     File file = null;
                     if (alPlanned.size() != 0) { // if some tracks are planned (can be 0 if planned size=0)
-                        file = ((StackItem) alPlanned.get(0)).getFile();
+                        file = alPlanned.get(0).getFile();
                         alPlanned.remove(0); // remove the planned track
                     } else { // otherwise, take next track from file manager
                         file = FileManager.getInstance().getNextFile(itemLast.getFile()); // take next available file
@@ -429,9 +433,9 @@ public class FIFO implements ITechnicalStrings {
             StackItem siLast = null; // last item in fifo or planned
             // if planned stack contains yet some tracks
             if (alPlanned.size() > 0) {
-                siLast = (StackItem) alPlanned.get(alPlanned.size() - 1); // last one
+                siLast = alPlanned.get(alPlanned.size() - 1); // last one
             } else if (alFIFO.size() > 0) { // if fifo contains yet some tracks to play
-                siLast = (StackItem) alFIFO.get(alFIFO.size() - 1); // last one
+                siLast = alFIFO.get(alFIFO.size() - 1); // last one
             }
             try {
                 // if random mode, add shuffle tracks
@@ -618,7 +622,7 @@ public class FIFO implements ITechnicalStrings {
     public synchronized void playNextAlbum() {
         try {
             // we don't support album navigation inside repeated tracks
-            if (((StackItem) getItem(0)).isRepeat()) {
+            if (getItem(0).isRepeat()) {
                 playNext();
                 return;
             }
@@ -688,7 +692,7 @@ public class FIFO implements ITechnicalStrings {
      */
     public synchronized StackItem getCurrentItem() {
         if (index < alFIFO.size()) {
-            StackItem item = (StackItem) alFIFO.get(index);
+            StackItem item = alFIFO.get(index);
             return item;
         } else {
             return null;
@@ -703,7 +707,7 @@ public class FIFO implements ITechnicalStrings {
      * @return stack item
      */
     public synchronized StackItem getItem(int index) {
-        return (StackItem) alFIFO.get(index);
+        return alFIFO.get(index);
     }
     
     /**
@@ -824,11 +828,11 @@ public class FIFO implements ITechnicalStrings {
             return;
         }
         if (index < alFIFO.size()) {
-            StackItem item = (StackItem) alFIFO.get(index);
+            StackItem item = alFIFO.get(index);
             alFIFO.remove(index); // remove the item
             alFIFO.add(index - 1, item); // add it again above
         } else { // planned track
-            StackItem item = (StackItem) alPlanned.get(index - alFIFO.size());
+            StackItem item = alPlanned.get(index - alFIFO.size());
             alFIFO.remove(index - alFIFO.size()); // remove the item
             alFIFO.add(index - alFIFO.size() - 1, item); // add it again above
         }
@@ -845,11 +849,11 @@ public class FIFO implements ITechnicalStrings {
             return;
         }
         if (index < alFIFO.size()) {
-            StackItem item = (StackItem) alFIFO.get(index);
+            StackItem item = alFIFO.get(index);
             alFIFO.remove(index); // remove the item
             alFIFO.add(index + 1, item); // add it again above
         } else { // planned track
-            StackItem item = (StackItem) alPlanned.get(index - alFIFO.size());
+            StackItem item = alPlanned.get(index - alFIFO.size());
             alFIFO.remove(index - alFIFO.size()); // remove the item
             alFIFO.add((index - alFIFO.size()) + 1, item); // add it again above
         }
@@ -905,7 +909,7 @@ public class FIFO implements ITechnicalStrings {
                     alPlanned.remove(i - alFIFO.size()); // remove this file from plan
                     computesPlanned(false); // complete missing planned tracks
                 } else { // planned items
-                    StackItem item = (StackItem) alFIFO.get(i);
+                    StackItem item = alFIFO.get(i);
                     JajukTimer.getInstance().removeTrackTime(item.getFile());
                     alFIFO.remove(i); // remove this file from fifo
                     computesPlanned(true); // Recomputes all planned tracks from last file in fifo
@@ -971,10 +975,10 @@ public class FIFO implements ITechnicalStrings {
      **/
     public synchronized  void cleanDevice(Device device) {
         if (alFIFO.size()>0){
-            ArrayList<StackItem> alFIFOCopy = (ArrayList)alFIFO.clone();
+            ArrayList<StackItem> alFIFOCopy = (ArrayList<StackItem>)alFIFO.clone();
             if (alFIFO.size() > 1){ //keep first item (being played)
                 for (int i=1;i<alFIFO.size();i++){
-                    StackItem item = (StackItem)alFIFO.get(i);
+                    StackItem item = alFIFO.get(i);
                     File file = item.getFile();
                     if (file.getDirectory().getDevice().equals(device)){
                         alFIFOCopy.remove(item);
@@ -985,5 +989,23 @@ public class FIFO implements ITechnicalStrings {
             clear();
             pushCommand(alFIFOCopy,true);
         }
+    }
+    
+    /**
+     * Store current FIFO as a list 
+     */
+    public synchronized void commit() throws IOException {
+        java.io.File file = new java.io.File(FILE_FIFO);
+        PrintWriter writer = new PrintWriter(
+            new BufferedOutputStream(new FileOutputStream(file,false)));
+        int index  = 0;
+        for (StackItem st:alFIFO){
+            if (index > 0){ //do not store current trask (otherwise, it will be duplicate at stratup)
+                writer.println(st.getFile().getId());
+            }
+            index ++;
+        }
+        writer.flush();
+        writer.close();
     }
 }
