@@ -70,6 +70,7 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
@@ -1535,5 +1536,28 @@ public class Util implements ITechnicalStrings {
     public static DateFormat getLocaleDateFormatter() {
         return dateFormatter;
     }
+    
+     /**
+     * code from http://java.sun.com/developer/onlineTraining/new2java/supplements/2005/July05.html#1
+     * Used to correctly display long messages
+     * @param maxCharactersPerLineCount
+     * @return
+     */
+    public static JOptionPane getNarrowOptionPane(
+            int maxCharactersPerLineCount) {
+        // Our inner class definition
+        class NarrowOptionPane extends JOptionPane {
+            private static final long serialVersionUID = 1L;
+            int maxCharactersPerLineCount;
+            NarrowOptionPane(int maxCharactersPerLineCount) {
+                this.maxCharactersPerLineCount = maxCharactersPerLineCount;
+            }
+            public int getMaxCharactersPerLineCount() {
+                return maxCharactersPerLineCount;
+            }
+        }
+        return new NarrowOptionPane(maxCharactersPerLineCount);
+    }
+
 
 }
