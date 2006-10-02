@@ -22,6 +22,7 @@ import java.awt.BorderLayout;
 import java.awt.Font;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -198,6 +199,7 @@ public class Main implements ITechnicalStrings {
             LNFManager.register(LNF_INFONODE,LNF_INFONODE_CLASS);
             LNFManager.register(LNF_SQUARENESS,LNF_SQUARENESS_CLASS);
             LNFManager.register(LNF_TINY,LNF_TINY_CLASS);
+            LNFManager.register(LNF_LOOKS,LNF_LOOKS_CLASS);
             
             //Launch splashscreen. Depends on: log.setVerbosity, configurationManager.load (for local) 
             SwingUtilities.invokeAndWait(new Runnable() {
@@ -433,34 +435,42 @@ public class Main implements ITechnicalStrings {
             //mplayer tests: 0: OK, 1: no mplayer in path, 2: wrong mplayer release
             //test mplayer presence in PATH
             int result = 0;
-            Process proc = null;
-            try{
-                proc =  Runtime.getRuntime().exec("mplayer");
-                result = proc.waitFor();
-                //check Mplayer release : 1.0pre8 min
-                proc =  Runtime.getRuntime().exec(
-                    new String[]{"mplayer","-input","cmdlist"});
-                BufferedReader in = new BufferedReader(
-                    new InputStreamReader(proc.getInputStream()));
-                String line = null;
-                result = 2;
-                for (; (line = in.readLine()) != null;) {
-                    if (line.matches("get_time_pos.*")){
-                        result = 0;
-                        break;
+            if (!Util.isUnderWindows()){ //no test if under windows, mplayer is embedded
+                Process proc = null;
+                try{
+                    proc =  Runtime.getRuntime().exec("mplayer");
+                    result = proc.waitFor();
+                    //check Mplayer release : 1.0pre8 min
+                    proc =  Runtime.getRuntime().exec(
+                        new String[]{"mplayer","-input","cmdlist"});
+                    BufferedReader in = new BufferedReader(
+                        new InputStreamReader(proc.getInputStream()));
+                    String line = null;
+                    result = 2;
+                    for (; (line = in.readLine()) != null;) {
+                        if (line.matches("get_time_pos.*")){
+                            result = 0;
+                            break;
+                        }
                     }
                 }
-            }
-            catch(IOException ioe){
-                result = 1;
-            }
-            if (result != 0){
-                //no mplayer
-                if (result == 1){
-                    Messages.showWarningMessage(Messages.getString("Warning.0"));
+                catch(IOException ioe){
+                    result = 1;
                 }
-                else if (result == 2){
-                    Messages.showWarningMessage(Messages.getString("Warning.1"));
+            }
+            if (result != 0){ //no mplayer
+                //Test if user didn't already select "don't show again"
+                if (!ConfigurationManager.getBoolean(CONF_NOT_SHOW_AGAIN_PLAYER)){
+                    if (result == 1){
+                        //No mplayer
+                        Messages.showHideableWarningMessage(
+                            Messages.getString("Warning.0"),CONF_NOT_SHOW_AGAIN_PLAYER);
+                    }
+                    else if (result == 2){
+                        //wrong mplayer release
+                        Messages.showHideableWarningMessage(
+                            Messages.getString("Warning.1"), CONF_NOT_SHOW_AGAIN_PLAYER);
+                    }
                 }
                 //mp3
                 Type type = TypeManager.getInstance().registerType(Messages.getString("Type.mp3"), EXT_MP3, Class.forName(PLAYER_IMPL_JAVALAYER), Class.forName(TAG_IMPL_ENTAGGED)); //$NON-NLS-1$ //$NON-NLS-2$
@@ -499,8 +509,6 @@ public class Main implements ITechnicalStrings {
 
             }
             else{ //mplayer enabled
-
-
                 //mp3
                 Type type = TypeManager.getInstance().registerType(Messages.getString("Type.mp3"), 
                     EXT_MP3, Class.forName(PLAYER_IMPL_MPLAYER), 
@@ -599,6 +607,13 @@ public class Main implements ITechnicalStrings {
      *                <p>1: unexpected error
      */
     public static void exit(int iExitCode) {
+        //Store current FIFO for next session
+        try {
+            FIFO.getInstance().commit();
+        }
+        catch (IOException e) {
+            Log.error(e);
+        }
         //check if a confirmation is needed
         if (Boolean.valueOf(ConfigurationManager.getProperty(CONF_CONFIRMATIONS_EXIT)).booleanValue()){
             int iResu = Messages.getChoice(Messages.getString("Confirmation_exit"),JOptionPane.INFORMATION_MESSAGE);  //$NON-NLS-1$ //$NON-NLS-2$
@@ -675,7 +690,7 @@ public class Main implements ITechnicalStrings {
                     return false;
                 }
             });
-            ArrayList alBackupFiles = new ArrayList(Arrays.asList(fBackups));
+            ArrayList<File> alBackupFiles = new ArrayList<File>(Arrays.asList(fBackups));
             Collections.sort(alBackupFiles); //sort alphabeticaly (newest last)
             Collections.reverse(alBackupFiles); //newest first now
             Iterator it = alBackupFiles.iterator();
@@ -712,7 +727,7 @@ public class Main implements ITechnicalStrings {
      * Launch initial track at startup
      */
     private static void launchInitialTrack(){
-        ArrayList alToPlay = new ArrayList();
+        ArrayList<org.jajuk.base.File> alToPlay = new ArrayList<org.jajuk.base.File>();
         org.jajuk.base.File fileToPlay = null;
         if (!ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_NOTHING)){
             if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_LAST) ||
@@ -756,6 +771,30 @@ public class Main implements ITechnicalStrings {
                     Messages.getChoice(Messages.getErrorMessage("023"),JOptionPane.DEFAULT_OPTION); //$NON-NLS-1$
                     FIFO.setFirstFile(false); //no more first file
                     return;
+                }
+                //For last tracks playing, add all ready files from last session stored FIFO
+                if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_LAST) ||
+                        ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_LAST_KEEP_POS) ){
+                    File fifo = new File(FILE_FIFO);
+                    if (!fifo.exists()){
+                        Log.debug("No fifo file");
+                    }
+                    else{
+                        try{
+                            BufferedReader br = new BufferedReader(new FileReader(FILE_FIFO));
+                            String s = null;
+                            for (;(s = br.readLine()) != null;){
+                                org.jajuk.base.File file = (org.jajuk.base.File)FileManager.getInstance().getItem(s);
+                                if (file.isReady()){
+                                    alToPlay.add(file);
+                                }
+                            }
+                            br.close();
+                        }
+                        catch(IOException ioe){
+                            Log.error(ioe);  
+                        }
+                    }
                 }
             }
             else if (ConfigurationManager.getProperty(CONF_STARTUP_MODE).equals(STARTUP_MODE_SHUFFLE)){
@@ -820,9 +859,7 @@ public class Main implements ITechnicalStrings {
     public static void upgradeStep1() throws Exception {
         //--For jajuk < 0.2 : remove backup file : collection~.xml
         File file = new File(FILE_COLLECTION+"~"); //$NON-NLS-1$
-        if ( file!= null ){
-            file.delete();
-        }
+        file.delete();
         //upgrade code; if ugrade from <1.2, set default ambiences
         String sRelease = ConfigurationManager.getProperty(CONF_RELEASE);
         if (sRelease == null || sRelease.matches("0..*") //$NON-NLS-1$
