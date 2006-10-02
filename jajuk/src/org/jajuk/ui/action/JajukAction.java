@@ -128,6 +128,11 @@ public enum JajukAction {
     HELP_REQUIRED,
 
     /**
+     * Used to see debug traces
+     */
+    SHOW_TRACES,
+    
+    /**
      * Used when the cover should be refreshed.
      */
     COVER_REFRESH,

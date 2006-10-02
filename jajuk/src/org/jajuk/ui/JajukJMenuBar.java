@@ -19,18 +19,7 @@
  */
 package org.jajuk.ui;
 
-import static org.jajuk.ui.action.JajukAction.CONFIGURE_AMBIENCES;
-import static org.jajuk.ui.action.JajukAction.CONFIGURE_DJS;
-import static org.jajuk.ui.action.JajukAction.CONTINUE_MODE_STATUS_CHANGED;
-import static org.jajuk.ui.action.JajukAction.HELP_REQUIRED;
-import static org.jajuk.ui.action.JajukAction.INTRO_MODE_STATUS_CHANGED;
-import static org.jajuk.ui.action.JajukAction.OPTIONS;
-import static org.jajuk.ui.action.JajukAction.QUALITY;
-import static org.jajuk.ui.action.JajukAction.REPEAT_MODE_STATUS_CHANGE;
-import static org.jajuk.ui.action.JajukAction.SHOW_ABOUT;
-import static org.jajuk.ui.action.JajukAction.SHUFFLE_MODE_STATUS_CHANGED;
-import static org.jajuk.ui.action.JajukAction.TIP_OF_THE_DAY;
-import static org.jajuk.ui.action.JajukAction.WIZARD;
+import static org.jajuk.ui.action.JajukAction.*;
 
 import java.awt.FlowLayout;
 import java.util.HashMap;
@@ -80,9 +69,10 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings{
         JMenu help;
             JMenuItem jmiHelp;
             JMenuItem jmiTipOfTheDay;
-            JMenuItem jmiAbout;
             JMenuItem jmiQualityAgent;
-
+            JMenuItem jmiTraces;
+            JMenuItem jmiAbout;
+            
         /**Hashmap JCheckBoxMenuItem -> associated view*/
         public HashMap hmCheckboxView = new HashMap(10);
 
@@ -147,17 +137,16 @@ public class JajukJMenuBar extends JMenuBar implements ITechnicalStrings{
         String helpText = Messages.getString("JajukJMenuBar.14"); //$NON-NLS-1$
         help = new JMenu(ActionUtil.strip(helpText));
         help.setMnemonic(ActionUtil.getMnemonic(helpText));
-        jmiDJ = new JMenuItem(ActionManager.getAction(HELP_REQUIRED));
-        jmiAbout = new JMenuItem(ActionManager.getAction(SHOW_ABOUT));
-        
         jmiHelp = new JMenuItem(ActionManager.getAction(HELP_REQUIRED));
         jmiAbout = new JMenuItem(ActionManager.getAction(SHOW_ABOUT));
         jmiQualityAgent = new JMenuItem(ActionManager.getAction(QUALITY));
+        jmiTraces = new JMenuItem(ActionManager.getAction(SHOW_TRACES));
         jmiTipOfTheDay = new JMenuItem(ActionManager.getAction(TIP_OF_THE_DAY));
 
         help.add(jmiHelp);
         help.add(jmiTipOfTheDay);
         help.add(jmiQualityAgent);
+        help.add(jmiTraces);
         help.add(jmiAbout);
         
         //add menus
