@@ -220,6 +220,7 @@ public class ConfigurationManager implements ITechnicalStrings{
         properties.put(CONF_LOGICAL_TREE_SORT_ORDER,"0"); //sort by style //$NON-NLS-1$        
         properties.put(CONF_DEFAULT_DJ,"");//default dj         //$NON-NLS-1$
         properties.put(CONF_DEFAULT_AMBIENCE,"");//default ambience         //$NON-NLS-1$
+        properties.put(CONF_NOT_SHOW_AGAIN_PLAYER,FALSE);//wrong player show again boolean
     }
 	
     /**

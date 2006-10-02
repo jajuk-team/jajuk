@@ -210,7 +210,6 @@ public class FileManager extends ItemManager implements Observer{
     public File changeFileDirectory(File old,Directory newDir) throws JajukException{
         synchronized(FileManager.getInstance().getLock()){
             //recalculate file ID
-            
             String sNewId = MD5Processor.hash(new StringBuffer(newDir.getDevice().getName())
                 .append(newDir.getDevice().getUrl()).append(newDir.getRelativePath())
                 .append(old.getName()).toString());

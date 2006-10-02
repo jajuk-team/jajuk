@@ -120,14 +120,14 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
      */
     public PropertiesWizard(ArrayList<Item> alItems) {
         //windows title: name of the element of only one item, or "selection" word otherwise
-        super(Main.getWindow(),alItems.size()==1 ? ((Item)alItems.get(0)).getDesc():Messages.getString("PropertiesWizard.6"),true); //modal //$NON-NLS-1$
+        super(Main.getWindow(),alItems.size()==1 ? (alItems.get(0)).getDesc():Messages.getString("PropertiesWizard.6"),true); //modal //$NON-NLS-1$
         this.alItems = alItems;
         boolean bMerged = false;
         if (alItems.size() > 1){
             bMerged = true;
         }
         panel1 = new PropertiesPanel(alItems,alItems.size()==1 ? 
-                ((Item)alItems.get(0)).getDesc():
+                (alItems.get(0)).getDesc():
                     Messages.getString("PropertiesWizard.6"),bMerged); //$NON-NLS-1$
         jpMain = new JPanel();
         jpMain.setLayout(new TableLayout(dSize));
@@ -145,19 +145,19 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
     public PropertiesWizard(ArrayList<Item> alItems1,ArrayList<Item> alItems2) {
         //windows title: name of the element of only one item, or "selection" word otherwise
         super(Main.getWindow(),alItems1.size()==1 ? 
-                ((Item)alItems1.get(0)).getDesc():Messages.getString("PropertiesWizard.6"),true); //modal //$NON-NLS-1$
+                (alItems1.get(0)).getDesc():Messages.getString("PropertiesWizard.6"),true); //modal //$NON-NLS-1$
         this.alItems = alItems1;
         this.alItems2 = alItems2;
         //computes filter
         if (alItems1.get(0) instanceof Directory){
-            filter = new HashSet(alItems1.size()*10);
+            filter = new HashSet<File>(alItems1.size()*10);
             for (Item item:alItems1){
                 Directory dir = (Directory)item;
                 filter.addAll(dir.getFilesRecursively());
             }
         }
         else if (alItems1.get(0) instanceof File){
-            filter = new HashSet(alItems1.size());
+            filter = new HashSet<File>(alItems1.size());
             for (Item item:alItems1){
                 filter.add((File)item);
             }
@@ -284,7 +284,8 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
         ArrayList<Item> alItems;
         
         /**Changed properties*/
-        HashMap<PropertyMetaInformation,Object> hmPropertyToChange = new HashMap();
+        HashMap<PropertyMetaInformation,Object> hmPropertyToChange 
+            = new HashMap<PropertyMetaInformation,Object>();
             
         /**Merge flag*/
         boolean bMerged = false;
@@ -301,8 +302,9 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
             this.bMerged = bMerged;
             Item pa = alItems.get(0); //first item 
             //Process properties to display
-            alToDisplay = new ArrayList(10);
-            for (PropertyMetaInformation meta:ItemManager.getItemManager(pa.getClass()).getProperties()){;//add only editable and non constructor properties
+            alToDisplay = new ArrayList<PropertyMetaInformation>(10);
+            for (PropertyMetaInformation meta:
+                ItemManager.getItemManager(pa.getClass()).getProperties()){//add only editable and non constructor properties
                 if (meta.isVisible() && (bMerged ? meta.isMergeable() : true)){ //if more than one item to display, show only mergeable properties
                     alToDisplay.add(meta);    
                 }
@@ -618,14 +620,14 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
                 String sProperty = meta.getName();
                 if (XML_FILES.equals(sProperty)) {
                     Track track =(Track)alItems.get(0);
-                    ArrayList<Item> alFiles = new ArrayList(track.getFiles().size());
+                    ArrayList<Item> alFiles = new ArrayList<Item>(track.getFiles().size());
                     alFiles.addAll(track.getFiles());
                     new PropertiesWizard(alFiles); //show properties window for this item
                 }
                 else if (XML_PLAYLIST_FILES.equals(sProperty)) {
                     String sValue = alItems.get(0).getStringValue(sProperty); //can be only a set a files
                     StringTokenizer st = new StringTokenizer(sValue, ","); //$NON-NLS-1$
-                    ArrayList alItems = new ArrayList(3);
+                    ArrayList<Item> alItems = new ArrayList<Item>(3);
                     while (st.hasMoreTokens()) {
                         String sPlf = st.nextToken();
                         Item pa = PlaylistFileManager.getInstance().getItem(sPlf);
@@ -638,7 +640,7 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
                     String sValue = alItems.get(0).getStringValue(sProperty); //can be only an ID
                     Item pa = ItemManager.getItemManager(sProperty).getItem(sValue);
                     if (pa != null) {
-                        ArrayList alItems = new ArrayList(1);
+                        ArrayList<Item> alItems = new ArrayList<Item>(1);
                         alItems.add(pa);
                         new PropertiesWizard(alItems); //show properties window for this item
                     }
@@ -654,23 +656,23 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
             Object oValue = null;
             Item newItem = null;
             //list of really changed tracks (for message)
-            ArrayList<PropertyMetaInformation> alChanged = new ArrayList(2);
+            ArrayList<PropertyMetaInformation> alChanged = new ArrayList<PropertyMetaInformation>(2);
             //none change, leave
             if (hmPropertyToChange.keySet().size() == 0){
                 return;
             }
             //Computes all items to change
-            ArrayList<Item> alItemsToCheck = new ArrayList(alItems.size()); //contains items to be changed
+            ArrayList<Item> alItemsToCheck = new ArrayList<Item>(alItems.size()); //contains items to be changed
             for (Item item:alItems){
                 if (!alItemsToCheck.contains(item)){ //avoid duplicates for perfs
                     alItemsToCheck.add(item); //add item
                 }
             }
-            ArrayList<Item> alInError = new ArrayList(alItemsToCheck.size());
+            ArrayList<Item> alInError = new ArrayList<Item>(alItemsToCheck.size());
             String sDetails = ""; //details for errors //$NON-NLS-1$
             //Now we have all items to considere, write tags for each property to change
             for (PropertyMetaInformation meta:hmPropertyToChange.keySet()){
-                ArrayList<Item> alIntermediate = new ArrayList(alItemsToCheck.size());
+                ArrayList<Item> alIntermediate = new ArrayList<Item>(alItemsToCheck.size());
                 for (Item item:alItemsToCheck){
                     //New value
                     oValue = hmPropertyToChange.get(meta);
@@ -685,9 +687,6 @@ public class PropertiesWizard extends JDialog implements ITechnicalStrings,Actio
                     //Old value
                     String  sOldValue = item.getHumanValue(meta.getName());
                     if ( (sOldValue!= null && ! Util.format(oValue,meta).equals(sOldValue))){
-                        if (oValue == null){
-                            throw new JajukException("137"); //$NON-NLS-1$
-                        }
                         try{
                             //if we change track properties for only one file
                             newItem = ItemManager.changeItem(item,meta.getName(),oValue,filter);    

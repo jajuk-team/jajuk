@@ -151,7 +151,7 @@ public class QualityFeedbackWizard extends JDialog implements KeyListener,Action
         if (ae.getSource().equals(this.okp.getOKButton())){
             final Message message = new Message();
             message.setSubject(jtfDesc.getText());
-            ArrayList alTo = new ArrayList();
+            ArrayList<String> alTo = new ArrayList<String>();
             alTo.add(FEEDBACK_EMAIL);
             message.setToAddrs(alTo);
             String sBody = ""; //$NON-NLS-1$
