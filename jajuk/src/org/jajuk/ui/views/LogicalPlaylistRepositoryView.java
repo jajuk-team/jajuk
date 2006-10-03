@@ -88,10 +88,9 @@ public class LogicalPlaylistRepositoryView extends AbstractPlaylistRepositoryVie
 	    synchronized(PlaylistManager.getInstance().getLock()){
 	        super.populatePlaylists();
 	        //normal playlists
-	        ArrayList alItems = new ArrayList(PlaylistManager.getInstance().getItems());
-	        Iterator it = alItems.iterator();
+	        Iterator<Playlist> it = PlaylistManager.getInstance().getPlayLists().iterator();
 	        while ( it.hasNext()){
-	            Playlist pl = (Playlist)it.next();
+	            Playlist pl = it.next();
 	            PlaylistFile plf = pl.getPlayeablePlaylistFile();
 	            //if none accessible and hide devices unmounted, continue
 	            if (plf == null && ConfigurationManager.getBoolean(CONF_OPTIONS_HIDE_UNMOUNTED)){

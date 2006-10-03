@@ -60,9 +60,6 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Line;
-import javax.sound.sampled.Mixer;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -100,7 +97,6 @@ import org.jajuk.util.log.Log;
 import com.sun.image.codec.jpeg.JPEGCodec;
 import com.sun.image.codec.jpeg.JPEGEncodeParam;
 import com.sun.image.codec.jpeg.JPEGImageEncoder;
-import com.sun.media.sound.MixerSourceLine;
 
 /**
  * General use utilities methods
@@ -131,7 +127,7 @@ public class Util implements ITechnicalStrings {
     public static JajukFileFilter fileFilter = new JajukFileFilter(JajukFileFilter.KnownTypeFilter.getInstance());
 
     /** Icons cache */
-    private static HashMap<String, ImageIcon> iconCache = new HashMap(200);
+    private static HashMap<String, ImageIcon> iconCache = new HashMap<String, ImageIcon>(200);
 
     /**
      * Genres
@@ -531,7 +527,7 @@ public class Util implements ITechnicalStrings {
             // calculates total size in MB for the file to backup and its backup
             // files
             long lUsedMB = 0;
-            ArrayList alFiles = new ArrayList(10);
+            ArrayList<File> alFiles = new ArrayList<File>(10);
             File[] files = new File(file.getAbsolutePath()).getParentFile().listFiles();
             if (files != null) {
                 for (int i = 0; i < files.length; i++) {
@@ -661,41 +657,6 @@ public class Util implements ITechnicalStrings {
         fcDest.transferFrom(fcSrc, 0, fcSrc.size());
         fcSrc.close();
         fcDest.close();
-    }
-
-    /**
-     * Get current line. Wait until line appears ( with a time out )
-     * 
-     * @return waited audio line
-     */
-    private static Line getCurrentLine() {
-        Mixer mixer = AudioSystem.getMixer(null);
-        Line line = null;
-        int iTimeOut = 200; // time out to exit line waiting and kill a calling
-        // thread
-        do {
-            Line[] lines = mixer.getSourceLines();
-            for (int i = 0; i < lines.length; i++) {
-                if (lines[i] instanceof MixerSourceLine) {
-                    line = lines[i];
-                    break;
-                }
-            }
-            if (iTimeOut > 0) {
-                try {
-                    Thread.sleep(20);
-                }
-                catch (InterruptedException e) {
-                    Log.error(e);
-                }
-                iTimeOut--;
-            }
-            else {
-                return null; // time out reached, leave
-            }
-        }
-        while (line == null);
-        return line;
     }
 
     /**
@@ -954,9 +915,9 @@ public class Util implements ITechnicalStrings {
      * @param bUserLauched
      * @return
      */
-    public static ArrayList<StackItem> createStackItems(ArrayList alFiles, boolean bRepeat,
+    public static ArrayList<StackItem> createStackItems(ArrayList<org.jajuk.base.File> alFiles, boolean bRepeat,
             boolean bUserLauched) {
-        ArrayList alOut = new ArrayList(alFiles.size());
+        ArrayList<StackItem> alOut = new ArrayList<StackItem>(alFiles.size());
         Iterator it = alFiles.iterator();
         while (it.hasNext()) {
             org.jajuk.base.File file = (org.jajuk.base.File) it.next();
@@ -1441,16 +1402,16 @@ public class Util implements ITechnicalStrings {
      * @return a single shuffle element from a list, null if none element in
      *         provided collection
      */
-    public static Object getShuffleItem(Collection col) {
+    public static Object getShuffleItem(Collection<? extends Object> col) {
         if (col.size() == 0) {
             return null;
         }
         List list = null;
         if (col instanceof List) {
-            list = (List) col;
+            list = (List<? extends Object>) col;
         }
         else {
-            list = new ArrayList(col);
+            list = new ArrayList<Object>(col);
         }
         return list.get((int) (Math.random() * list.size()));
     }
@@ -1464,17 +1425,17 @@ public class Util implements ITechnicalStrings {
      */
     public static ArrayList<org.jajuk.base.File> getFilesFromSelection(Item oData) {
         // computes selection
-        ArrayList alSelectedFiles = new ArrayList(100);
+        ArrayList<org.jajuk.base.File> alSelectedFiles = new ArrayList<org.jajuk.base.File>(100);
         // computes logical selection if any
-        ArrayList alLogicalTracks = null;
+        ArrayList<Track> alLogicalTracks = null;
         if (oData instanceof Style || oData instanceof Author || oData instanceof Album
                 || oData instanceof Track) {
             if (oData instanceof Style || oData instanceof Author || oData instanceof Album) {
                 alLogicalTracks = TrackManager.getInstance().getAssociatedTracks((Item) oData);
             }
             else if (oData instanceof Track) {
-                alLogicalTracks = new ArrayList(100);
-                alLogicalTracks.add(oData);
+                alLogicalTracks = new ArrayList<Track>(100);
+                alLogicalTracks.add((Track)oData);
             }
             // prepare files
             if (alLogicalTracks != null && alLogicalTracks.size() > 0) {
@@ -1493,7 +1454,7 @@ public class Util implements ITechnicalStrings {
         else if (oData instanceof org.jajuk.base.File || oData instanceof Directory
                 || oData instanceof Device) {
             if (oData instanceof org.jajuk.base.File) {
-                alSelectedFiles.add(oData);
+                alSelectedFiles.add((org.jajuk.base.File)oData);
             }
             else if (oData instanceof Directory) {
                 alSelectedFiles = ((Directory) oData).getFilesRecursively();
@@ -1521,7 +1482,7 @@ public class Util implements ITechnicalStrings {
             return al;
         }
         // Filter by ambience
-        ArrayList<org.jajuk.base.File> out = new ArrayList(al.size() / 2);
+        ArrayList<org.jajuk.base.File> out = new ArrayList<org.jajuk.base.File>(al.size() / 2);
         for (org.jajuk.base.File file : al) {
             if (ambience.getStyles().contains(file.getTrack().getStyle())) {
                 out.add(file);
@@ -1559,5 +1520,11 @@ public class Util implements ITechnicalStrings {
         return new NarrowOptionPane(maxCharactersPerLineCount);
     }
 
-
+    /**
+     * Resource loading is done this way to meet the requirements for Web Start.
+     * http://java.sun.com/j2se/1.5.0/docs/guide/javaws/developersguide/faq.html#211
+     */
+    public static URL getResource(String name) {
+        return Thread.currentThread().getContextClassLoader().getResource(name);
+    }
 }

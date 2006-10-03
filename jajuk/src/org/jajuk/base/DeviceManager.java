@@ -22,7 +22,9 @@ package org.jajuk.base;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import javax.swing.JOptionPane;
 
@@ -377,7 +379,14 @@ public class DeviceManager extends ItemManager{
         finally{
             bGlobalRefreshing = false;
         }
-        
+    }
+    
+    public Set<Device> getDevices(){
+        Set<Device> deviceSet = new HashSet<Device>();
+        for(Item item: getItems()){
+            deviceSet.add((Device)item);
+        }
+        return deviceSet;
     }
 }
 

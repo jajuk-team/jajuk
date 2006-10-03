@@ -52,7 +52,7 @@ public class DJAction extends ActionBase {
    }
 
     public void perform(ActionEvent evt) throws JajukException {
-        if (StyleManager.getInstance().getItems().size() == 0){
+        if (StyleManager.getInstance().getStyles().size() == 0){
             Messages.showErrorMessage("156"); //void collection error //$NON-NLS-1$
         }
         else{

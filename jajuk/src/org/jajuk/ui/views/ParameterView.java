@@ -869,7 +869,7 @@ public class ParameterView extends ViewAdapter implements ActionListener,ListSel
                     }
                     if (!DeviceManager.getInstance().isAnyDeviceRefreshing()){ //make sure none device is refreshing
                         synchronized(TrackManager.getInstance().getLock()){
-                            Iterator it  = TrackManager.getInstance().getItems().iterator();
+                            Iterator it  = TrackManager.getInstance().getTracks().iterator();
                             while (it.hasNext()){
                                 Track track = (Track)it.next();
                                 track.setRate(0);

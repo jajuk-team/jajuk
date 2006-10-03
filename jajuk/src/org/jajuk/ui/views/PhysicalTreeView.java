@@ -534,7 +534,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
                         alSelected.add((Item)((TransferableTreeNode)o).getData());
                     }
                     else{
-                        alSelected = new ArrayList(FileManager.getInstance().getItems());
+                        alSelected = new ArrayList(FileManager.getInstance().getFiles());
                         items = alSelected.size();
                         hsSelectedFiles.addAll(alSelected);
                         for (Item item:alSelected){
@@ -797,9 +797,9 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         top.removeAllChildren();
         //add devices
         synchronized (DeviceManager.getInstance().getLock()) {
-            Iterator it1 = DeviceManager.getInstance().getItems().iterator();
+            Iterator<Device> it1 = DeviceManager.getInstance().getDevices().iterator();
             while ( it1.hasNext()){
-                Device device = (Device)it1.next();
+                Device device = it1.next();
                 DefaultMutableTreeNode nodeDevice = new DeviceNode(device);
                 top.add(nodeDevice);
             }
@@ -807,7 +807,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         //add directories
         ArrayList directories = null;
         synchronized (DirectoryManager.getInstance().getLock()) {
-            directories = new ArrayList(DirectoryManager.getInstance().getItems());
+            directories = new ArrayList(DirectoryManager.getInstance().getDirectories());
         }
         Iterator it2 = directories.iterator();
         while (it2.hasNext()){
@@ -845,7 +845,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         //add files
         ArrayList files = null;
         synchronized (FileManager.getInstance().getLock()) {
-            files = new ArrayList(FileManager.getInstance().getItems());
+            files = new ArrayList(FileManager.getInstance().getFiles());
         }
         Iterator it3 = files.iterator();
         while (it3.hasNext()){
@@ -862,7 +862,7 @@ public class PhysicalTreeView extends AbstractTreeView implements ActionListener
         //add playlist files
         ArrayList playlists = null;
         synchronized (PlaylistFileManager.getInstance().getLock()) {
-            playlists = new ArrayList(PlaylistFileManager.getInstance().getItems());
+            playlists = new ArrayList(PlaylistFileManager.getInstance().getPlaylistFiles());
         }
         Iterator it4 = playlists.iterator();
         while (it4.hasNext()){

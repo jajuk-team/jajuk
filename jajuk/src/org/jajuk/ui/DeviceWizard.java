@@ -188,9 +188,9 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
 		jcbSynchronized = new JComboBox();
 		//populate combo
 		synchronized(DeviceManager.getInstance().getLock()){
-		    Iterator it = DeviceManager.getInstance().getItems().iterator();
+		    Iterator<Device> it = DeviceManager.getInstance().getDevices().iterator();
 		    while (it.hasNext()) {
-		        Device device2 = (Device) it.next();
+		        Device device2 = it.next();
 		        alDevices.add(device2);
 		        jcbSynchronized.addItem(device2.getName());
 		    }
@@ -287,9 +287,9 @@ public class DeviceWizard extends JDialog implements ActionListener,ITechnicalSt
         //set default values for widgets
         updateWidgetsDefault();
         synchronized(DeviceManager.getInstance().getLock()){
-            Iterator it = DeviceManager.getInstance().getItems().iterator();
+            Iterator<Device> it = DeviceManager.getInstance().getDevices().iterator();
             while (it.hasNext()) {
-                Device device2 = (Device) it.next();
+                Device device2 = it.next();
                 if ( !device2.equals(device)){
                     alDevices.add(device2);
                     jcbSynchronized.addItem(device2.getName());

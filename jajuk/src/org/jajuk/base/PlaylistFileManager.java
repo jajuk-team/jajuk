@@ -20,8 +20,10 @@
 
 package org.jajuk.base;
 
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Properties;
+import java.util.Set;
 
 import org.jajuk.i18n.Messages;
 import org.jajuk.util.MD5Processor;
@@ -243,5 +245,13 @@ public class PlaylistFileManager extends ItemManager implements Observer{
                 ObservationManager.notify(new Event(EVENT_PLAYLIST_REFRESH));
             }
         }
+    }
+    
+    public Set<PlaylistFile> getPlaylistFiles(){
+        Set<PlaylistFile> playListFileSet = new HashSet<PlaylistFile>();
+        for(Item item: getItems()){
+            playListFileSet.add((PlaylistFile)item);
+        }
+        return playListFileSet;
     }
 }

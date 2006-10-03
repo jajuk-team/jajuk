@@ -469,7 +469,7 @@ ActionListener, Observer {
                     } else { // collection node
                         synchronized (TrackManager.getInstance().getLock()) {
                             alSelected = new ArrayList(TrackManager
-                                .getInstance().getItems());
+                                .getInstance().getTracks());
                         }
                         items = alSelected.size();
                         hsSelectedTracks.addAll(alSelected);
@@ -643,7 +643,7 @@ ActionListener, Observer {
         top.removeAllChildren();
         ArrayList<Track> tracks;
         synchronized (TrackManager.getInstance().getLock()) {
-            tracks = new ArrayList(TrackManager.getInstance().getItems());
+            tracks = new ArrayList(TrackManager.getInstance().getTracks());
         }
         Collections.sort(tracks,TrackManager.getInstance().getComparator());
         for (Track track : tracks) {
@@ -716,7 +716,7 @@ ActionListener, Observer {
         top.removeAllChildren();
         ArrayList<Track> tracks;
         synchronized (TrackManager.getInstance().getLock()) {
-            tracks = new ArrayList(TrackManager.getInstance().getItems());
+            tracks = new ArrayList(TrackManager.getInstance().getTracks());
         }
         Collections.sort(tracks,TrackManager.getInstance().getComparator());
         for (Track track : tracks) {
@@ -771,7 +771,7 @@ ActionListener, Observer {
         top.removeAllChildren();
         ArrayList<Track> tracks;
         synchronized (TrackManager.getInstance().getLock()) {
-            tracks = new ArrayList(TrackManager.getInstance().getItems());
+            tracks = new ArrayList(TrackManager.getInstance().getTracks());
         }
         Collections.sort(tracks,TrackManager.getInstance().getComparator());
         for (Track track : tracks) {

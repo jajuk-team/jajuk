@@ -21,62 +21,73 @@
 package org.jajuk.base;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import org.jajuk.util.MD5Processor;
 
 /**
  * Convenient class to manage directories
- * @Author Bertrand Florat 
+ * 
+ * @Author Bertrand Florat
  * @created 17 oct. 2003
  */
-public class DirectoryManager extends ItemManager{
-    /**Self instance*/
+public class DirectoryManager extends ItemManager {
+    /** Self instance */
     private static DirectoryManager singleton;
+
     /**
      * No constructor available, only static access
      */
     private DirectoryManager() {
         super();
-        //---register properties---
-        //ID
-        registerProperty(new PropertyMetaInformation(XML_ID,false,true,false,false,false,String.class,null));
-        //Name test with (getParentDirectory() != null); //name editable only for standard directories, not root
-        registerProperty(new PropertyMetaInformation(XML_NAME,false,true,true,false,false,String.class,null)); //edition to yet implemented TBI
-        //Parent
-        registerProperty(new PropertyMetaInformation(XML_DIRECTORY_PARENT,false,true,true,false,false,String.class,null));
-        //Device
-        registerProperty(new PropertyMetaInformation(XML_DEVICE,false,true,true,false,false,String.class,null));
-        //Expand
-        registerProperty(new PropertyMetaInformation(XML_EXPANDED,false,false,false,false,true,Boolean.class,false));
-        //Synchonized directory
-        registerProperty(new PropertyMetaInformation(XML_DIRECTORY_SYNCHRONIZED,false,false,true,false,false,Boolean.class,true));
-        //Default cover
-        registerProperty(new PropertyMetaInformation(XML_DIRECTORY_DEFAULT_COVER,false,false,true,false,false,String.class,null));
+        // ---register properties---
+        // ID
+        registerProperty(new PropertyMetaInformation(XML_ID, false, true, false, false, false,
+                String.class, null));
+        // Name test with (getParentDirectory() != null); //name editable only for standard
+        // directories, not root
+        registerProperty(new PropertyMetaInformation(XML_NAME, false, true, true, false, false,
+                String.class, null)); // edition to yet implemented TBI
+        // Parent
+        registerProperty(new PropertyMetaInformation(XML_DIRECTORY_PARENT, false, true, true,
+                false, false, String.class, null));
+        // Device
+        registerProperty(new PropertyMetaInformation(XML_DEVICE, false, true, true, false, false,
+                String.class, null));
+        // Expand
+        registerProperty(new PropertyMetaInformation(XML_EXPANDED, false, false, false, false,
+                true, Boolean.class, false));
+        // Synchonized directory
+        registerProperty(new PropertyMetaInformation(XML_DIRECTORY_SYNCHRONIZED, false, false,
+                true, false, false, Boolean.class, true));
+        // Default cover
+        registerProperty(new PropertyMetaInformation(XML_DIRECTORY_DEFAULT_COVER, false, false,
+                true, false, false, String.class, null));
     }
-    
+
     /**
      * @return singleton
      */
-    public static DirectoryManager getInstance(){
-        if (singleton == null){
+    public static DirectoryManager getInstance() {
+        if (singleton == null) {
             singleton = new DirectoryManager();
         }
         return singleton;
     }
-    
+
     /**
      * Register a directory
      * 
      * @param sName
      */
     public Directory registerDirectory(String sName, Directory dParent, Device device) {
-        synchronized(DirectoryManager.getInstance().getLock()){
-            return registerDirectory(getID(sName,device,dParent),
-                sName, dParent, device);
+        synchronized (DirectoryManager.getInstance().getLock()) {
+            return registerDirectory(getID(sName, device, dParent), sName, dParent, device);
         }
     }
-    
+
     /**
      * Register a root device directory
      * 
@@ -85,119 +96,132 @@ public class DirectoryManager extends ItemManager{
     public Directory registerDirectory(Device device) {
         return registerDirectory(device.getId(), "", null, device); //$NON-NLS-1$
     }
-    
+
     /**
      * Return hashcode for this item
-     * @param sName directory name
-     * @param device device
-     * @param dParent parent directory
+     * 
+     * @param sName
+     *            directory name
+     * @param device
+     *            device
+     * @param dParent
+     *            parent directory
      * @return ItemManager ID
      */
-    protected static String getID(String sName,Device device,Directory dParent){
+    protected static String getID(String sName, Device device, Directory dParent) {
         StringBuffer sbAbs = new StringBuffer(device.getName());
-            if (dParent != null) {
-                sbAbs.append(dParent.getRelativePath());
-            }
-            sbAbs.append(sName);
-            String sId = MD5Processor.hash(sbAbs.toString());
+        if (dParent != null) {
+            sbAbs.append(dParent.getRelativePath());
+        }
+        sbAbs.append(sName);
+        String sId = MD5Processor.hash(sbAbs.toString());
         return sId;
     }
-    
-    
+
     /**
      * Register a directory with a known id
      * 
      * @param sName
      */
     public Directory registerDirectory(String sId, String sName, Directory dParent, Device device) {
-        synchronized(DirectoryManager.getInstance().getLock()){
+        synchronized (DirectoryManager.getInstance().getLock()) {
             if (hmItems.containsKey(sId)) {
-                return (Directory)hmItems.get(sId);
+                return (Directory) hmItems.get(sId);
             }
             Directory directory = null;
             directory = new Directory(sId, sName, dParent, device);
-            if (dParent != null ){
-                dParent.addDirectory(directory);//add the direcotry to parent collection
+            if (dParent != null) {
+                dParent.addDirectory(directory);// add the direcotry to parent collection
             }
-            hmItems.put(sId,directory);
+            hmItems.put(sId, directory);
             return directory;
         }
     }
-    
+
     /**
      * Clean all references for the given device
      * 
      * @param sId :
-     *                   Device id
+     *            Device id
      */
     public void cleanDevice(String sId) {
-        synchronized(DirectoryManager.getInstance().getLock()){
+        synchronized (DirectoryManager.getInstance().getLock()) {
             Iterator it = hmItems.keySet().iterator();
-            while(it.hasNext()){
-                Directory directory = (Directory)getItem((String)it.next());
+            while (it.hasNext()) {
+                Directory directory = (Directory) getItem((String) it.next());
                 if (directory.getDevice().getId().equals(sId)) {
                     it.remove();
                 }
             }
         }
     }
-    
+
     /**
-     * Remove a directory and all subdirectories from main directory repository. 
-     * Remove reference from parent directories as well.
+     * Remove a directory and all subdirectories from main directory repository. Remove reference
+     * from parent directories as well.
      * 
      * @param sId
      */
     public void removeDirectory(String sId) {
-        synchronized(DirectoryManager.getInstance().getLock()){
-            Directory dir = (Directory)getItem(sId);
-            if (dir == null){//check the directory has not already been removed
+        synchronized (DirectoryManager.getInstance().getLock()) {
+            Directory dir = (Directory) getItem(sId);
+            if (dir == null) {// check the directory has not already been removed
                 return;
             }
-            synchronized(FileManager.getInstance().getLock()){
-                //remove all files
-                //need to use a shallow copy to avoid concurent exceptions
+            synchronized (FileManager.getInstance().getLock()) {
+                // remove all files
+                // need to use a shallow copy to avoid concurent exceptions
                 ArrayList<File> alFiles = new ArrayList<File>(dir.getFiles());
-                for (File file:alFiles){
+                for (File file : alFiles) {
                     FileManager.getInstance().removeFile(file);
                 }
             }
-            synchronized(PlaylistFileManager.getInstance().getLock()){
-                //remove all playlists
-                for (PlaylistFile plf:dir.getPlaylistFiles()){
+            synchronized (PlaylistFileManager.getInstance().getLock()) {
+                // remove all playlists
+                for (PlaylistFile plf : dir.getPlaylistFiles()) {
                     PlaylistFileManager.getInstance().removeItem(plf.getId());
                 }
             }
-            //remove all sub dirs
+            // remove all sub dirs
             Iterator it = dir.getDirectories().iterator();
-            while (it.hasNext()){
-                Directory dSub = (Directory)it.next();
-                removeDirectory(dSub.getId()); //self call
-                //remove it 
+            while (it.hasNext()) {
+                Directory dSub = (Directory) it.next();
+                removeDirectory(dSub.getId()); // self call
+                // remove it
                 it.remove();
             }
-            //remove this dir from collection
+            // remove this dir from collection
             hmItems.remove(dir.getId());
         }
     }
-    
-    /* (non-Javadoc)
+
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.jajuk.base.ItemManager#getIdentifier()
      */
     public String getIdentifier() {
         return XML_DIRECTORIES;
     }
-    
-    public Directory getDirectoryForIO(java.io.File fio){
-        synchronized(DirectoryManager.getInstance().getLock()){
+
+    public Directory getDirectoryForIO(java.io.File fio) {
+        synchronized (DirectoryManager.getInstance().getLock()) {
             Iterator it = getItems().iterator();
-            while (it.hasNext()){
-                Directory dir = (Directory)it.next();
-                if (dir.getFio().equals(fio)){
+            while (it.hasNext()) {
+                Directory dir = (Directory) it.next();
+                if (dir.getFio().equals(fio)) {
                     return dir;
                 }
             }
             return null;
         }
+    }
+
+    public Set<Directory> getDirectories() {
+        Set<Directory> directorySet = new HashSet<Directory>();
+        for (Item item : getItems()) {
+            directorySet.add((Directory) item);
+        }
+        return directorySet;
     }
 }

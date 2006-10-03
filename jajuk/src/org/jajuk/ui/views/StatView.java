@@ -114,7 +114,7 @@ public class StatView extends ViewAdapter implements Observer{
                 JFreeChart jfchart = null;
                 //data
                 pdata = new DefaultPieDataset();
-                Iterator it = StyleManager.getInstance().getItems().iterator();
+                Iterator<Style> it = StyleManager.getInstance().getStyles().iterator();
                 int iTotal = 0;
                 double dOthers = 0;
                 TreeMap tm = new TreeMap();
@@ -124,9 +124,9 @@ public class StatView extends ViewAdapter implements Observer{
                     iTotal += iCount;
                     tm.put(style.getName2(),new Integer(iCount));
                 }
-                it = tm.keySet().iterator();
-                while (it.hasNext()){
-                    String sName = (String)it.next();
+                Iterator<String> keys = tm.keySet().iterator();
+                while (keys.hasNext()){
+                    String sName = (String)keys.next();
                     Integer i = (Integer)tm.get(sName);
                     double d = i.doubleValue();
                     if ( iTotal>0 && d/iTotal < 0.05){ //less than 5% -> go to others
@@ -170,21 +170,21 @@ public class StatView extends ViewAdapter implements Observer{
                 JFreeChart jfchart = null;
                 //data
                 pdata = new DefaultPieDataset();
-                Iterator itFiles = FileManager.getInstance().getItems().iterator();
+                Iterator itFiles = FileManager.getInstance().getFiles().iterator();
                 //prepare devices
                 long lTotalSize = 0;
                 double dOthers = 0;
                 ArrayList alDevices = null;
-                alDevices = new ArrayList(DeviceManager.getInstance().getItems());
+                alDevices = new ArrayList(DeviceManager.getInstance().getDevices());
                 long[] lSizes = new long[DeviceManager.getInstance().getElementCount()];
                 while (itFiles.hasNext()){
                     File file = (File)itFiles.next();
                     lTotalSize += file.getSize();
                     lSizes[alDevices.indexOf(file.getDirectory().getDevice())] += file.getSize();
                 }
-                Iterator itDevices = DeviceManager.getInstance().getItems().iterator();
+                Iterator<Device> itDevices = DeviceManager.getInstance().getDevices().iterator();
                 while (itDevices.hasNext()){
-                    Device device = (Device)itDevices.next();
+                    Device device = itDevices.next();
                     long lSize = lSizes[alDevices.indexOf(device)];
                     if ( lTotalSize >0 && (double)lSize/lTotalSize < 0.05){ //less than 5% -> go to others
                         dOthers += lSize;
@@ -228,9 +228,9 @@ public class StatView extends ViewAdapter implements Observer{
             //data
             int[] iMounts = getMounts(iMounthsNumber);
             synchronized(TrackManager.getInstance().getLock()){
-                Iterator it = TrackManager.getInstance().getItems().iterator();
+                Iterator<Track> it = TrackManager.getInstance().getTracks().iterator();
                 while ( it.hasNext()){
-                    Track track = (Track)it.next();
+                    Track track = it.next();
                     int i =  Integer.parseInt(Util.getAdditionDateFormat().format(track.getAdditionDate()))/100;
                     for (int j=0;j<iMounthsNumber+1;j++){
                         if ( i <= iMounts[j]){
@@ -290,9 +290,9 @@ public class StatView extends ViewAdapter implements Observer{
                 int iTracksByMounth[] = new int[iMounthsNumber+1]; //contains number of tracks for each mounth, first cell is 'before'
                 //data
                 int[] iMounts = getMounts(iMounthsNumber);
-                Iterator it = TrackManager.getInstance().getItems().iterator();
+                Iterator<Track> it = TrackManager.getInstance().getTracks().iterator();
                 while ( it.hasNext()){
-                    Track track = (Track)it.next();
+                    Track track = it.next();
                     int i =  Integer.parseInt(Util.getAdditionDateFormat().format(track.getAdditionDate()))/100;
                     for (int j=0;j<iMounthsNumber+1;j++){
                         if ( i <= iMounts[j]){
@@ -413,6 +413,4 @@ public class StatView extends ViewAdapter implements Observer{
         }
         return iMounths;
     }
-    
-    
 }

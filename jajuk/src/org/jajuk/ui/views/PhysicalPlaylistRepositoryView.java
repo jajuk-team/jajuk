@@ -91,7 +91,7 @@ public class PhysicalPlaylistRepositoryView extends AbstractPlaylistRepositoryVi
         synchronized(PlaylistFileManager.getInstance().getLock()){
             super.populatePlaylists();
             //normal playlists
-            ArrayList alItems = new ArrayList(PlaylistFileManager.getInstance().getItems());
+            ArrayList alItems = new ArrayList(PlaylistFileManager.getInstance().getPlaylistFiles());
             Iterator it = alItems.iterator();
             while ( it.hasNext()){
                 PlaylistFile plf = (PlaylistFile)it.next();

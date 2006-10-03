@@ -28,6 +28,7 @@ import org.jajuk.base.FIFO;
 import org.jajuk.base.FileManager;
 import org.jajuk.util.ConfigurationManager;
 import org.jajuk.util.ITechnicalStrings;
+import org.jajuk.util.Util;
 import org.jajuk.util.log.Log;
 
 
@@ -109,7 +110,7 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings {
         public void stopThread(){
             this.bStop = true;
         }
-    };
+    }
 
     /**
      * Reader : read information from mplayer like position 
@@ -185,7 +186,7 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings {
                 }
             }
         }
-    };
+    }
    
     /*
      * (non-Javadoc)
@@ -203,7 +204,11 @@ public class MPlayerPlayerImpl implements IPlayerImpl, ITechnicalStrings {
         this.bOpening = true;
         this.iFadeDuration = 1000 * ConfigurationManager.getInt(CONF_FADE_DURATION);
         //Start
-        String[] cmd = {"mplayer","-quiet","-slave",file.getAbsolutePath()};
+        String sCommand = "mplayer";
+        if (Util.isUnderWindows()){
+            sCommand = FILE_MPLAYER_EXE;
+        }
+        String[] cmd = {sCommand,"-quiet","-slave",file.getAbsolutePath()};
         proc = Runtime.getRuntime().exec(cmd);
         if (position == null){
             position = new PositionThread();

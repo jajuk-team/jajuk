@@ -266,9 +266,9 @@ public class DeviceView extends ViewAdapter implements IView,ITechnicalStrings,A
                 }
             });
             //Add devices
-            Iterator it = DeviceManager.getInstance().getItems().iterator();
+            Iterator<Device> it = DeviceManager.getInstance().getDevices().iterator();
             while (it.hasNext()){
-                final Device device = (Device)it.next();
+                final Device device = it.next();
                 URL urlIcon = ICON_DEVICE_DIRECTORY_MOUNTED;
                 String sTooltip = ""; //$NON-NLS-1$
                 switch ((int)device.getDeviceType()){

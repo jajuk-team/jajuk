@@ -136,13 +136,25 @@ public class DownloadManager implements ITechnicalStrings {
     }
     
 	/**
+     * Download the resource at the given url
+     * @param url to download
+     * @param Use cache : store file in image cache
+     * @throws Exception
+     * @return result as an array of bytes, null if a problem occured
+     */
+    public static byte[] download(URL url,boolean bUseCache) throws Exception{
+        return download(url,new File(Util.getCachePath(url)),bUseCache);
+    }
+    
+    /**
 	 * Download the resource at the given url
 	 * @param url to download
+     * @param fDestination destination file
      * @param Use cache : store file in image cache
 	 * @throws Exception
 	 * @return result as an array of bytes, null if a problem occured
 	 */
-	public static byte[] download(URL url,boolean bUseCache) throws Exception{
+	public static byte[] download(URL url,File fDestination,boolean bUseCache) throws Exception{
         byte[] bOut = null;
 	    //check if file is not already downloaded or being downloaded
         if (bUseCache){
@@ -166,7 +178,7 @@ public class DownloadManager implements ITechnicalStrings {
 	    get.addRequestHeader("User-Agent","Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)"); //$NON-NLS-1$ //$NON-NLS-2$
 	    get.addRequestHeader("Connection","Keep-Alive"); //$NON-NLS-1$ //$NON-NLS-2$
 	    if (bUseCache){
-            BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(Util.getCachePath(url)));
+            BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(fDestination));
             BufferedInputStream bis = new BufferedInputStream(get.getResponseBodyAsStream());
             int i;
             while((i = bis.read()) != -1) {

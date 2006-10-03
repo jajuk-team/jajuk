@@ -54,7 +54,7 @@ public class Log  implements ITechnicalStrings{
     //Http client logger
     private static Logger loggerHttp;
     /**Debug traces spool*/
-    private static ArrayList alSpool;
+    private static ArrayList<String> alSpool;
     
     /**
      *  Constructor for the Log object
@@ -66,7 +66,7 @@ public class Log  implements ITechnicalStrings{
            loggerRoot = Logger.getRootLogger();
            logger = Logger.getLogger(Log.class.getName());
            loggerHttp = Logger.getLogger("org.apache.commons.httpclient"); //$NON-NLS-1$
-           alSpool = new ArrayList(FEEDBACK_LINES);
+           alSpool = new ArrayList<String>(FEEDBACK_LINES);
             //message for logging system start
             Log.info("******************JAJUK******************"); //$NON-NLS-1$
             Log.info("Version: "+JAJUK_VERSION);  //$NON-NLS-1$
@@ -288,7 +288,7 @@ public class Log  implements ITechnicalStrings{
      * @param sMessage
      */
     private static void spool(String sMessage){
-        if (alSpool.size() == FEEDBACK_LINES ){ //we have tro make some room
+        if (alSpool.size() == FEEDBACK_LINES ){ //we have to make some room
             alSpool.remove(0);
         }
         try{

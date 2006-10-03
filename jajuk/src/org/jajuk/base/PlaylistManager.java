@@ -21,7 +21,9 @@
 package org.jajuk.base;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import javax.swing.JOptionPane;
 
@@ -258,5 +260,12 @@ public class PlaylistManager extends ItemManager{
     public String getIdentifier() {
         return XML_PLAYLISTS;
     }
-    
+ 
+    public Set<Playlist> getPlayLists(){
+        Set<Playlist> playListSet = new HashSet<Playlist>();
+        for(Item item :getItems()){
+            playListSet.add((Playlist)item);
+        }
+        return playListSet;
+    }
 }

@@ -21,12 +21,12 @@
 package org.jajuk.ui;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.Set;
 import java.util.regex.PatternSyntaxException;
 
 import org.jajuk.base.Item;
@@ -110,10 +110,9 @@ public class TracksTableModel extends JajukTableModel{
         boolean bShowWithTree = true;
         HashSet hs = (HashSet)ObservationManager.getDetailLastOccurence(EVENT_SYNC_TREE_TABLE,DETAIL_SELECTION);//look at selection
         boolean bSyncWithTreeOption = ConfigurationManager.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE);
-        Collection<Item> alTracks = TrackManager.getInstance().getItems();
+        Set<Track> alTracks = TrackManager.getInstance().getTracks();
         ArrayList alToShow = new ArrayList(alTracks.size());
-        for (Item item:alTracks){
-            Track track = (Track)item;
+        for (Track track:alTracks){
             bShowWithTree =  !bSyncWithTreeOption || ((hs != null && hs.size() > 0 
                     && hs.contains(track))); //show it if no sync option or if item is in the selection
             if ( !track.shouldBeHidden() && bShowWithTree){

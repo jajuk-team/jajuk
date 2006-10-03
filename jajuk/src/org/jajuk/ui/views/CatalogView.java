@@ -432,15 +432,13 @@ public class CatalogView extends ViewAdapter implements Observer,ComponentListen
                     final int index = jcbSorter.getSelectedIndex();
                     //store mapped tracks for perfs
                     for (Album album:albums){
-                        Track track = null;
-                        for (Item item : TrackManager.getInstance().getItems()){
-                            track = (Track)item;
+                        for (Track track : TrackManager.getInstance().getTracks()){
                             if (track.getAlbum().equals(album)){
                                 hmAlbumTrack.put(album,track);
                                 break;
                             }
                         }
-                        hmAlbumTrack.put(album,track);
+                        hmAlbumTrack.put(album,null);
                     }
                     
                     Collections.sort(albums,new Comparator() {

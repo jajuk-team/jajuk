@@ -25,6 +25,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.Set;
 
 import org.apache.commons.collections.bidimap.TreeBidiMap;
 import org.jajuk.i18n.Messages;
@@ -276,7 +277,7 @@ public abstract class ItemManager implements ITechnicalStrings{
     }
     
     /**Return all registred items*/
-    public Collection<Item> getItems() {
+    protected Set<Item> getItems() {
         synchronized(getLock()){
 			return hmItems.inverseBidiMap().keySet();
         }

@@ -807,7 +807,7 @@ public class Device extends Item implements ITechnicalStrings, Comparable{
      * return child files recursively
      * @return child files recursively
      */
-    public ArrayList getFilesRecursively() {
+    public ArrayList<org.jajuk.base.File> getFilesRecursively() {
         synchronized(DirectoryManager.getInstance().getLock()){
             //looks for the root directory for this device
             Directory dirRoot = null;
@@ -819,7 +819,7 @@ public class Device extends Item implements ITechnicalStrings, Comparable{
                     dirRoot = dir;
                 }
             }
-            ArrayList alFiles = new ArrayList(100);
+            ArrayList<org.jajuk.base.File> alFiles = new ArrayList<org.jajuk.base.File>(100);
             if (dirRoot != null){
                 alFiles = dirRoot.getFilesRecursively();
             }

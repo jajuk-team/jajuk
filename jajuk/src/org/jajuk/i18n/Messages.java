@@ -206,7 +206,7 @@ public class Messages extends DefaultHandler implements ITechnicalStrings	{
         }
         sbFilename.append(FILE_LANGPACK_PART2);
         URL url; //property file URL, either in the jajuk.jar jar (normal execution) or found as regular file if in development debug mode
-        url = ClassLoader.getSystemResource("org/jajuk/i18n/"+ sbFilename.toString());
+        url = Util.getResource("org/jajuk/i18n/"+ sbFilename.toString());
         //parse it, actually it is a big properties file as CDATA in an XML file
         try {
             SAXParserFactory spf = SAXParserFactory.newInstance();

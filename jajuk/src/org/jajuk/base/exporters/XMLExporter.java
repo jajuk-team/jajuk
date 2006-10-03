@@ -255,13 +255,13 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
             
             sb.append(Tag.openTag(XML_COLLECTION) + NEWLINE);
             
-            Iterator itr0;
+            Iterator<Device> itr0;
             // Tag each device.
             synchronized (DeviceManager.getInstance().getLock()) {
-                itr0 = DeviceManager.getInstance().getItems().iterator();
+                itr0 = DeviceManager.getInstance().getDevices().iterator();
             }
             while (itr0.hasNext()) {
-                Device device = (Device)itr0.next();
+                Device device = itr0.next();
                 
                 sb.append(addTabs(1) + Tag.openTag(XML_DEVICE) + NEWLINE);
                 
@@ -527,12 +527,12 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
     
     private String getAuthorOfAlbum(Album album) {
         String sAuthorName = null;
-        Iterator itr;
+        Iterator<Track> itr;
         synchronized (TrackManager.getInstance().getLock()) {
-            itr = TrackManager.getInstance().getItems().iterator();
+            itr = TrackManager.getInstance().getTracks().iterator();
         }
         while (itr.hasNext()) {
-            Track track = (Track)itr.next();
+            Track track = itr.next();
             
             if (track.getAlbum().getId().equals(album.getId())) {
                 sAuthorName = track.getAuthor().getName2();
@@ -545,12 +545,12 @@ public class XMLExporter extends Exporter implements ITechnicalStrings {
     
     private String getStyleOfAlbum(Album album) {
         String sStyleName = null;
-        Iterator itr;
+        Iterator<Track> itr;
         synchronized (TrackManager.getInstance().getLock()) {
-            itr = TrackManager.getInstance().getItems().iterator();
+            itr = TrackManager.getInstance().getTracks().iterator();
         }
         while (itr.hasNext()) {
-            Track track = (Track)itr.next();
+            Track track = itr.next();
             
             if (track.getAlbum().getId().equals(album.getId())) {
                 sStyleName = track.getStyle().getName2();

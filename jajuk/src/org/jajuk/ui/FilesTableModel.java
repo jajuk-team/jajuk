@@ -21,11 +21,11 @@
 package org.jajuk.ui;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.Set;
 import java.util.regex.PatternSyntaxException;
 
 import org.jajuk.base.File;
@@ -134,7 +134,7 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
         boolean bShowWithTree = true;
         HashSet hs = (HashSet)ObservationManager.getDetailLastOccurence(EVENT_SYNC_TREE_TABLE,DETAIL_SELECTION);//look at selection
         boolean bSyncWithTreeOption = ConfigurationManager.getBoolean(CONF_OPTIONS_SYNC_TABLE_TREE);
-        Collection files = FileManager.getInstance().getItems();
+        Set<File> files = FileManager.getInstance().getFiles();
         ArrayList alToShow = new ArrayList(files.size());
         oItems = new Item[iRowNum];
         Iterator it = files.iterator();
@@ -151,7 +151,7 @@ public class FilesTableModel extends JajukTableModel implements ITechnicalString
             it = alToShow.iterator();
             //Prepare filter pattern
             String sNewPattern = sPattern;
-            if ( !ConfigurationManager.getBoolean(CONF_REGEXP) && sNewPattern != null){ //do we use regular expression or not? if not, we allow user to use '*'
+            if ( !ConfigurationManager.getBoolean(CONF_REGEXP)){ //do we use regular expression or not? if not, we allow user to use '*'
                 sNewPattern = sNewPattern.replaceAll("\\*",".*"); //$NON-NLS-1$ //$NON-NLS-2$
                 sNewPattern = ".*"+sNewPattern+".*"; //$NON-NLS-1$ //$NON-NLS-2$
             }
