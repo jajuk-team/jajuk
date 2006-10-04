@@ -112,7 +112,7 @@ public class AmbienceManager implements ITechnicalStrings,Observer{
      * @return list of registated ambiences
      */
     public Collection<Ambience> getAmbiences(){
-        ArrayList<Ambience> al = new ArrayList(ambiences.values());
+        ArrayList<Ambience> al = new ArrayList<Ambience>(ambiences.values());
         Collections.sort(al);
         return al;
     }

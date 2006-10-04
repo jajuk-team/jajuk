@@ -20,7 +20,6 @@
 
 package org.jajuk.ui.views;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.jajuk.base.Observer;

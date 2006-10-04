@@ -90,7 +90,7 @@ public class AmbienceWizard extends Wizard implements ITechnicalStrings{
          *
          */
         public void initUI(){
-            ambiences = new ArrayList(AmbienceManager.getInstance().getAmbiences());
+            ambiences = new ArrayList<Ambience>(AmbienceManager.getInstance().getAmbiences());
             Collections.sort(ambiences);
             setCanFinish(true);
             //set layout
@@ -247,7 +247,7 @@ public class AmbienceWizard extends Wizard implements ITechnicalStrings{
                 }
                 String sText = ""; //$NON-NLS-1$
                 //reset old styles
-                ambience.setStyles(new HashSet(10));
+                ambience.setStyles(new HashSet<Style>(10));
                 for (Style style:styles){
                     ambience.addStyle(style);
                     sText += style.getName2()+',';  
@@ -314,7 +314,7 @@ public class AmbienceWizard extends Wizard implements ITechnicalStrings{
             }
             else if (ae.getSource() == jbDefaults){
                 AmbienceManager.getInstance().createDefaultAmbiences();
-                ambiences = new ArrayList(AmbienceManager.getInstance().getAmbiences());
+                ambiences = new ArrayList<Ambience>(AmbienceManager.getInstance().getAmbiences());
                 Collections.sort(ambiences);
                 //refresh screen
                 refreshScreen();

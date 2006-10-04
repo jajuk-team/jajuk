@@ -23,7 +23,6 @@ package org.jajuk.ui.action;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.jajuk.base.File;
 import org.jajuk.base.Track;

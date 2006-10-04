@@ -178,7 +178,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
          *
          */
         public void initUI(){
-            djs = new ArrayList(DigitalDJManager.getInstance().getDJs()); 
+            djs = new ArrayList<DigitalDJ>(DigitalDJManager.getInstance().getDJs()); 
             Collections.sort(djs);
             widgets = new JComponent[djs.size()][1];
             double[] dVert = new double[djs.size()];
@@ -252,7 +252,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
          *
          */
         public void initUI(){
-            djs = new ArrayList(DigitalDJManager.getInstance().getDJs()); 
+            djs = new ArrayList<DigitalDJ>(DigitalDJManager.getInstance().getDJs()); 
             Collections.sort(djs);
             widgets = new JComponent[djs.size()][1];
             double[] dVert = new double[djs.size()];
@@ -586,7 +586,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
           * @return Filled transitions only
           */
          private ArrayList<Transition> getCleanedTransitions(){
-             ArrayList<Transition> out = new ArrayList(alTransitions.size());
+             ArrayList<Transition> out = new ArrayList<Transition>(alTransitions.size());
              for (Transition transition:alTransitions){
                  if (transition.getFrom() != null && transition.getTo() != null && 
                          transition.getFrom().getStyles().size() > 0 && transition.getTo().getStyles().size() > 0){
@@ -605,13 +605,13 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
             final Vector<String> styles = StyleManager.getInstance().getStylesList();
             if (ActionSelectionPanel.ACTION_CHANGE.equals(data.get(KEY_ACTION))){
                 TransitionDigitalDJ dj = (TransitionDigitalDJ)data.get(KEY_CHANGE);
-                alTransitions = (ArrayList)dj.getTransitions().clone();
+                alTransitions = (ArrayList<Transition>)dj.getTransitions().clone();
                 data.put(KEY_TRANSITIONS,getCleanedTransitions());
                 alTransitions.add(new Transition(DEFAULT_TRANSITION_TRACK_NUMBER)); //add a void transition
                 data.put(KEY_STARTUP_STYLE,dj.getStartupStyle());
             }
             else{ //DJ creation
-                alTransitions = new ArrayList(10);
+                alTransitions = new ArrayList<Transition>(10);
                 alTransitions.add(new Transition(DEFAULT_TRANSITION_TRACK_NUMBER)); //add a void transition
                 setProblem(Messages.getString("DigitalDJWizard.26")); //$NON-NLS-1$
                 //set first style by default
@@ -754,7 +754,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
             synchronized(StyleManager.getInstance().getLock()){
                 Transition transition = alTransitions.get(row);
                 //create list of styles used in existing transitions
-                HashSet disabledStyles = new HashSet();
+                HashSet<Style> disabledStyles = new HashSet<Style>();
                 for (int i=0;i<alTransitions.size();i++){
                     Transition t = alTransitions.get(i);
                     //ignore all styles expect those from current button
@@ -889,7 +889,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
                 proportions.add(new Proportion()); //add a void item
             }
             else{
-                proportions = new ArrayList(10);
+                proportions = new ArrayList<Proportion>(10);
                 proportions.add(new Proportion()); //add a void item
                 setProblem(Messages.getString("DigitalDJWizard.30")); //$NON-NLS-1$
             }
@@ -907,7 +907,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
           * @return Filled proportions only
           */
          private ArrayList<Proportion> getCleanedProportions(){
-             ArrayList<Proportion> out = new ArrayList(proportions.size());
+             ArrayList<Proportion> out = new ArrayList<Proportion>(proportions.size());
              for (Proportion proportion:proportions){
                  if (proportion.getStyles() != null && proportion.getStyles().size() > 0){
                      out.add(proportion);
@@ -1035,7 +1035,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
             synchronized(StyleManager.getInstance().getLock()){
                 Proportion proportion = proportions.get(row);
                 //create list of styles used in existing transitions
-                HashSet disabledStyles = new HashSet();
+                HashSet<Style> disabledStyles = new HashSet<Style>();
                 for (int i=0;i<proportions.size();i++){
                     if (i != row){ //do not exlude current proportion that will be selected
                         disabledStyles.addAll(proportions.get(i).getStyles());    
@@ -1145,7 +1145,7 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
          *
          */
         public void initUI(){
-            ambiences = new ArrayList(AmbienceManager.getInstance().getAmbiences());
+            ambiences = new ArrayList<Ambience>(AmbienceManager.getInstance().getAmbiences());
             Collections.sort(ambiences);
             widgets = new JComponent[ambiences.size()][1];
             //We need at least one ambience
@@ -1335,11 +1335,11 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
             }
             else if (TypeSelectionPanel.DJ_TYPE_PROPORTION.equals(sType)){
                 dj = new ProportionDigitalDJ(sID);
-                ArrayList proportions = (ArrayList)data.get(KEY_PROPORTIONS);
+                ArrayList<Proportion> proportions = (ArrayList<Proportion>)data.get(KEY_PROPORTIONS);
                 ((ProportionDigitalDJ)dj).setProportions(proportions);
             }
             else if (TypeSelectionPanel.DJ_TYPE_TRANSITION.equals(sType)){
-                ArrayList transitions = (ArrayList)data.get(KEY_TRANSITIONS);
+                ArrayList<Transition> transitions = (ArrayList<Transition>)data.get(KEY_TRANSITIONS);
                 dj = new TransitionDigitalDJ(sID);
                 ((TransitionDigitalDJ)dj).setTransitions(transitions);
                 Style startup = (Style)data.get(KEY_STARTUP_STYLE);
@@ -1368,11 +1368,11 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
                 ((AmbienceDigitalDJ)dj).setAmbience(ambience);
             }
             else if (TypeSelectionPanel.DJ_TYPE_PROPORTION.equals(sType)){
-                ArrayList proportions = (ArrayList)data.get(KEY_PROPORTIONS);
+                ArrayList<Proportion> proportions = (ArrayList)data.get(KEY_PROPORTIONS);
                 ((ProportionDigitalDJ)dj).setProportions(proportions);
             }
             else if (TypeSelectionPanel.DJ_TYPE_TRANSITION.equals(sType)){
-                ArrayList transitions = (ArrayList)data.get(KEY_TRANSITIONS);
+                ArrayList<Transition> transitions = (ArrayList)data.get(KEY_TRANSITIONS);
                 ((TransitionDigitalDJ)dj).setTransitions(transitions);
                 Style startup = (Style)data.get(KEY_STARTUP_STYLE);
                 ((TransitionDigitalDJ)dj).setStartupStyle(startup);
@@ -1391,5 +1391,4 @@ public class DigitalDJWizard extends Wizard implements ITechnicalStrings{
         //Refresh command panel (usefull for ie if DJ names changed)
         ObservationManager.notify(new Event(EVENT_DJS_CHANGE));
     }
-
 }

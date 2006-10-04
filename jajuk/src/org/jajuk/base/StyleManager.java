@@ -154,11 +154,11 @@ public class StyleManager extends ItemManager {
             // re apply old properties from old item
             newItem.cloneProperties(old);
             // update tracks
-            ArrayList alTracks = new ArrayList(TrackManager.getInstance().getItems()); 
+            ArrayList<Track> alTracks = new ArrayList<Track>(TrackManager.getInstance().getTracks()); 
             // we need to create a new list to avoid concurrent exceptions
-            Iterator it = alTracks.iterator();
+            Iterator<Track> it = alTracks.iterator();
             while (it.hasNext()) {
-                Track track = (Track) it.next();
+                Track track = it.next();
                 if (track.getStyle().equals(old)) {
                     TrackManager.getInstance().changeTrackStyle(track, sNewName, null);
                 }
