@@ -85,7 +85,7 @@ public class Cover implements Comparable,ITechnicalStrings {
         //if Pre-load option is enabled, download this cover
         if (ConfigurationManager.getBoolean(CONF_COVERS_PRELOAD) &&
                 iType == Cover.REMOTE_COVER){
-                DownloadManager.download(url,true);
+                DownloadManager.downloadCover(url);
         }
     }
     
@@ -178,7 +178,7 @@ public class Cover implements Comparable,ITechnicalStrings {
         }
         long l = System.currentTimeMillis();
         if (!file.exists()){
-            DownloadManager.download(url,true);
+            DownloadManager.downloadCover(url);
         }
         ImageIcon image = null;
         synchronized (Cover.class){

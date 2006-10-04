@@ -27,6 +27,7 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -72,6 +73,7 @@ import org.jajuk.ui.TipOfTheDay;
 import org.jajuk.ui.action.ActionManager;
 import org.jajuk.ui.perspectives.PerspectiveManager;
 import org.jajuk.util.ConfigurationManager;
+import org.jajuk.util.DownloadManager;
 import org.jajuk.util.ITechnicalStrings;
 import org.jajuk.util.Util;
 import org.jajuk.util.error.JajukException;
@@ -435,7 +437,24 @@ public class Main implements ITechnicalStrings {
             //mplayer tests: 0: OK, 1: no mplayer in path, 2: wrong mplayer release
             //test mplayer presence in PATH
             int result = 0;
-            if (!Util.isUnderWindows()){ //no test if under windows, mplayer is embedded
+            if (Util.isUnderWindows()){ 
+                //try to find mplayer executable in know locations first
+                if (Util.getMPlayerPath() == null){
+                    //probably in JNLP mode,
+                    //try to download static mplayer distro if needed
+                    try {
+                        DownloadManager.download(
+                            new URL(ConfigurationManager.getProperty(CONF_MPLAYER_URL)),
+                            new File(FILE_JAJUK_DIR+"/"+FILE_MPLAYER_EXE));
+                    }
+                    catch(Exception e){
+                        result = 1;
+                    }
+                }
+            }
+            //Under non-windows OS, we assume mplayer has been installed 
+            //using external standard distributions
+            else{ 
                 Process proc = null;
                 try{
                     proc =  Runtime.getRuntime().exec("mplayer");
@@ -458,6 +477,7 @@ public class Main implements ITechnicalStrings {
                     result = 1;
                 }
             }
+            //Display warning messages if needed
             if (result != 0){ //no mplayer
                 //Test if user didn't already select "don't show again"
                 if (!ConfigurationManager.getBoolean(CONF_NOT_SHOW_AGAIN_PLAYER)){
@@ -824,9 +844,7 @@ public class Main implements ITechnicalStrings {
      */
     private static void autoMount(){
         synchronized(DeviceManager.getInstance().getLock()){
-            Iterator<Device> it = DeviceManager.getInstance().getDevices().iterator();
-            while (it.hasNext()){
-                Device device = it.next();
+            for (Device device:DeviceManager.getInstance().getDevices()){
                 if (device.getBooleanValue(XML_DEVICE_AUTO_MOUNT)){
                     try{
                         device.mount();
@@ -1038,6 +1056,5 @@ public class Main implements ITechnicalStrings {
     public static JajukSystray getSystray() {
         return jsystray;
     }
-    
-    
+
 }

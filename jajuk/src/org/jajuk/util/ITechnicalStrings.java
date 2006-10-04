@@ -297,7 +297,7 @@ public interface ITechnicalStrings {
     public static final String FILE_DEFAULT_QUEUE_PLAYLIST = "queue";
     public static final String FILE_DJ_DIR = FILE_JAJUK_DIR+"/djs";
     public static final String FILE_FIFO = FILE_JAJUK_DIR+"/fifo.lst";
-    public static final String FILE_MPLAYER_EXE = FILE_JAJUK_DIR+"/mplayer.exe";
+    public static final String FILE_MPLAYER_EXE = "mplayer.exe";
         
     // XSLT Files
     // These paths need to be updated once xslts are put into the jar file.

@@ -128,7 +128,10 @@ public class Util implements ITechnicalStrings {
 
     /** Icons cache */
     private static HashMap<String, ImageIcon> iconCache = new HashMap<String, ImageIcon>(200);
-
+    
+    /**Mplayer exe path*/
+    private static String sMplayerPath = null;
+    
     /**
      * Genres
      */
@@ -394,7 +397,8 @@ public class Util implements ITechnicalStrings {
     }
 
     /** Format a time from secs to a human readable format */
-    public static String formatTimeBySec(long l, boolean bTrimZeros) {
+    public static String formatTimeBySec(long lTime, boolean bTrimZeros) {
+        long l = lTime;
         if (l == -1) { // means we are in repeat mode
             return "--:--"; //$NON-NLS-1$
         }
@@ -425,7 +429,7 @@ public class Util implements ITechnicalStrings {
             Container container = null;
             IPerspective perspective = PerspectiveManager.getCurrentPerspective();
             if (perspective != null) {
-                container = (Container) perspective.getContentPane();
+                container = perspective.getContentPane();
                 int numComp = container.getComponentCount();
                 Component comp = null;
                 for (int i = 0; i < numComp; i++) {
@@ -448,7 +452,7 @@ public class Util implements ITechnicalStrings {
             Container container = null;
             IPerspective perspective = PerspectiveManager.getCurrentPerspective();
             if (perspective != null) {
-                container = (Container) perspective.getContentPane();
+                container = perspective.getContentPane();
                 int numComp = container.getComponentCount();
                 Component comp = null;
                 for (int i = 0; i < numComp; i++) {
@@ -552,7 +556,7 @@ public class Util implements ITechnicalStrings {
                     // files
                     // delete older backup
                     if (alFiles.size() > 0) {
-                        File fileToDelete = (File) alFiles.get(0);
+                        File fileToDelete = alFiles.get(0);
                         if (fileToDelete != null) {
                             fileToDelete.delete();
                         }
@@ -738,6 +742,11 @@ public class Util implements ITechnicalStrings {
         return new File(sPath).getName();
     }
 
+    /**
+     * 
+     * @param url ressource URL
+     * @return Cache PATH
+     */
     public static String getCachePath(URL url) {
         return FILE_IMAGE_CACHE + '/' + Util.getOnlyFile(url.toString());
     }
@@ -752,6 +761,13 @@ public class Util implements ITechnicalStrings {
         for (int i = 0; i < files.length; i++) {
             files[i].delete();
         }
+    }
+    
+    /**
+     * @return Jajuk installation runtime directory
+     */
+    public static String getRuntimeDirectory(){
+        return getJarLocation(Main.class).getPath();
     }
 
     /**
@@ -791,7 +807,7 @@ public class Util implements ITechnicalStrings {
             }
             if (properties.containsKey("duration")) //$NON-NLS-1$
             {
-                milliseconds = (long) (((Long) properties.get("duration")).longValue()) / 1000; //$NON-NLS-1$
+                milliseconds = (((Long) properties.get("duration")).longValue()) / 1000; //$NON-NLS-1$
             }
             else {
                 // Try to compute duration
@@ -966,11 +982,11 @@ public class Util implements ITechnicalStrings {
         }
         else {
             /** Make sure image is fullt loaded */
-            image = new ImageIcon(image).getImage();
+            Image image2 = new ImageIcon(image).getImage();
             /** Create the new image */
-            BufferedImage bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_RGB);
+            BufferedImage bufferedImage = new BufferedImage(image2.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_RGB);
             Graphics g = bufferedImage.createGraphics();
-            g.drawImage(image, 0, 0, null);
+            g.drawImage(image2, 0, 0, null);
             g.dispose();
             return (bufferedImage);
         }
@@ -1280,7 +1296,7 @@ public class Util implements ITechnicalStrings {
         JPEGEncodeParam param = encoder.getDefaultJPEGEncodeParam(thumbImage);
         int quality = 100;
         quality = Math.max(0, Math.min(quality, 100));
-        param.setQuality((float) quality / 100.0f, false);
+        param.setQuality(quality / 100.0f, false);
         encoder.setJPEGEncodeParam(param);
         encoder.encode(thumbImage);
         out.close();
@@ -1291,8 +1307,8 @@ public class Util implements ITechnicalStrings {
      * @return whether we need a full gc or not
      */
     public static boolean needFullFC() {
-        float fTotal = (float) Runtime.getRuntime().totalMemory();
-        float fFree = (float) Runtime.getRuntime().freeMemory();
+        float fTotal = Runtime.getRuntime().totalMemory();
+        float fFree = Runtime.getRuntime().freeMemory();
         float fLevel = (fTotal - fFree) / fTotal;
         return fLevel >= NEED_FULL_GC_LEVEL;
     }
@@ -1431,7 +1447,7 @@ public class Util implements ITechnicalStrings {
         if (oData instanceof Style || oData instanceof Author || oData instanceof Album
                 || oData instanceof Track) {
             if (oData instanceof Style || oData instanceof Author || oData instanceof Album) {
-                alLogicalTracks = TrackManager.getInstance().getAssociatedTracks((Item) oData);
+                alLogicalTracks = TrackManager.getInstance().getAssociatedTracks(oData);
             }
             else if (oData instanceof Track) {
                 alLogicalTracks = new ArrayList<Track>(100);
@@ -1526,5 +1542,31 @@ public class Util implements ITechnicalStrings {
      */
     public static URL getResource(String name) {
         return Thread.currentThread().getContextClassLoader().getResource(name);
+    }
+    
+    
+    
+    
+    /**
+     * 
+     * @return MPLayer exe path
+     */
+    public static String getMPlayerPath(){
+        //Use cache
+        if (sMplayerPath != null){
+            return sMplayerPath;
+        }
+        File file = null;
+        //Check in ~/.jajuk/ directory (used by .exe or .jar distribution installers)
+        if ((file = new java.io.File(FILE_JAJUK_DIR+"/"+FILE_MPLAYER_EXE)).exists()){
+            sMplayerPath = file.getAbsolutePath();
+            return sMplayerPath;
+        }
+        else if ( (file = new File(Util.getRuntimeDirectory()
+            +"../"+FILE_MPLAYER_EXE)).exists()){
+            sMplayerPath = file.getAbsolutePath();
+            return sMplayerPath;
+        }
+        return sMplayerPath;
     }
 }
