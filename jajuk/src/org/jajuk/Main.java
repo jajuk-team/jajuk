@@ -824,9 +824,9 @@ public class Main implements ITechnicalStrings {
      */
     private static void autoMount(){
         synchronized(DeviceManager.getInstance().getLock()){
-            Iterator it = DeviceManager.getInstance().getItems().iterator();
+            Iterator<Device> it = DeviceManager.getInstance().getDevices().iterator();
             while (it.hasNext()){
-                Device device = (Device)it.next();
+                Device device = it.next();
                 if (device.getBooleanValue(XML_DEVICE_AUTO_MOUNT)){
                     try{
                         device.mount();
