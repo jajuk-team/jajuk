@@ -32,13 +32,13 @@
       <item name="Get Java" href="http://java.com/java/download/index.jsp?cid=jdp77505" img="http://java.com/en/img/everywhere/getjava_med.gif?cid=jdp77505"/>
     </menu>
     <menu name='Project'>
-      <item name='Team' href='./team-list.html' />      
-      <item name='Jobs' href='./jobs.html' />
       <item name='Roadmap' href='./roadmap.html' />
+      <item name='Jobs' href='./jobs.html' />
       <item name='Tasks list' href='http://sourceforge.net/pm/?group_id=91412' />
       <item name='Translator guide' href='./translation_howto.html' />
       <item name='Developer guide' href='./developer_guide.html' />
       <item name='Brand Identity Guidelines' href='./jajuk_bi_quidelines.html' />
+      <item name='Team' href='./team-list.html' />      
       <item name='Specifications (PDF) ' href='./specs.pdf' />
       <item name='Dependencies' href='./jajuk_dependencies.html' />
       <item name='QDWizard' href='http://qdwizard.sourceforge.net/' />

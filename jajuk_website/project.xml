@@ -26,7 +26,7 @@
  
  <url>http://jajuk.sourceforge.net/</url>
  
- <logo>/images/logos/jajuk-logo.png</logo>
+ <logo>/images/jajuk-title.png</logo>
  
  <issueTrackingUrl>http://sourceforge.net/tracker/?group_id=91412</issueTrackingUrl>
  
@@ -114,7 +114,7 @@
 	    </developer>
 
 	    <developer>
-	      <name>Richard Erwan</name>
+	      <name>Erwan Richard</name>
 	      <id>dhalsim44</id>
 	     <roles>
 			<role>Developer</role>
@@ -125,16 +125,26 @@
 	    </developer>
 	    
 	    <developer>
-	      <name>Sung Pil Moon</name>
+	      <name>Nicolas Schudel</name>
 	      <id></id>
 	     <roles>
-			<role>Korean translator</role>
+			<role>Graphist</role>
 	     </roles>
-	      <email></email>
+	      <email>https://sourceforge.net/users/nicolasschudel/</email>
 	      <organization>Jajuk team</organization>
-	      <timezone>+10</timezone>
+	      <timezone>+12</timezone>
 	    </developer>
 	    
+	    <developer>
+	      <name>David Hadley</name>
+	      <id></id>
+	     <roles>
+			<role>Developer</role>
+	     </roles>
+	      <email>https://sourceforge.net/users/nicolasschudel/</email>
+	      <organization>Jajuk team</organization>
+	      <timezone>+12</timezone>
+	    </developer>
   </developers>
 
  	<contributors>
@@ -142,6 +152,11 @@
 			<name>Jérome Fortain</name>
 			 <email>jf_sourceforge@khiplus.fr</email>
 			<roles><role>Bug reports, qualification</role></roles>
+		</contributor>
+		<contributor>
+			<name>Sung Pil Moon</name>
+			 <email></email>
+			<roles><role>Korean translation</role></roles>
 		</contributor>
 		<contributor>
 			<name>Mike Kelp</name>
@@ -352,7 +367,7 @@
      <dependency>
 	   <groupId>lib</groupId>
         <artifactId>animation</artifactId>
-        <version>1.1.3</version> 
+        <version>1.2.0</version> 
     </dependency>
     
      <dependency>
@@ -376,7 +391,7 @@
      <dependency>
 	   <groupId>lib</groupId>
         <artifactId>looks</artifactId>
-        <version>1.3.1</version> 
+        <version>2.0.4</version> 
     </dependency>
     
     <dependency>

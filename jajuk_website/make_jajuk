@@ -33,13 +33,8 @@ fi
 #### JWS TASK ####
 if [ "$1" = "jws" ]; then
  cd /tmp/jajuk-dist/jws
- if [ "$2" = "test" ]; then
-  scp -C -r * bflorat@trantor:/srv/www/htdocs/jws/test/
-  exit 0
- else 
-  scp -C -r * bflorat@jajuk.sourceforge.net:/home/groups/j/ja/jajuk/htdocs/jws/$2/
-  exit 0
- fi
+ scp -C -r * bflorat@jajuk.sourceforge.net:/home/groups/j/ja/jajuk/htdocs/jws/$2/
+ exit 0
 fi
 
 #### SITE TASK ####
@@ -75,7 +70,6 @@ cp -rp $DOC_SOURCE/README*.html $DOC_DEST
 
 mkdir -p $DOC_DEST/images/logos
 cp -rp $WEBSITE_SOURCE/images/* $DOC_DEST/images/
-cp -rp $WEBSITE_SOURCE/jajuk-logo.png $DOC_DEST/images/logos/ 
 
 cp -rp $WEBSITE_SOURCE/*.html $WEBSITE_SOURCE/*.xml $WEBSITE_SOURCE/*.js $WEBSITE_SOURCE/*.fml $XDOC_DEST
 rm $XDOC_DEST/project.xml $XDOC_DEST/maven.xml
