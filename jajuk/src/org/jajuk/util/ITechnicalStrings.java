@@ -238,6 +238,8 @@ public interface ITechnicalStrings {
     public static final URL ICON_TYPE_AU = Util.getResource("org/jajuk/icons/16x16/type_wav.png");
     public static final URL ICON_TYPE_AIFF = Util.getResource("org/jajuk/icons/16x16/type_wav.png");
     public static final URL ICON_TYPE_FLAC = Util.getResource("org/jajuk/icons/16x16/type_flac.png");
+    public static final URL ICON_TYPE_MPC = Util.getResource("org/jajuk/icons/16x16/type_wav.png");
+    public static final URL ICON_TYPE_WMA = Util.getResource("org/jajuk/icons/16x16/type_wma.png");
     public static final URL ICON_TYPE_WAV = Util.getResource("org/jajuk/icons/16x16/type_wav.png");
     public static final URL ICON_NO_EDIT = Util.getResource("org/jajuk/icons/16x16/stop.png");
     public static final URL ICON_EDIT = Util.getResource("org/jajuk/icons/16x16/edit.png");
@@ -345,6 +347,8 @@ public interface ITechnicalStrings {
     public static final String TYPE_PROPERTY_TECH_DESC_AU = "au"; 
     public static final String TYPE_PROPERTY_TECH_DESC_SPEEX = "speex"; 
     public static final String TYPE_PROPERTY_TECH_DESC_FLAC = "flac"; 
+    public static final String TYPE_PROPERTY_TECH_DESC_MPC = "mpc";
+    public static final String TYPE_PROPERTY_TECH_DESC_WMA = "wma";
         
     //Devices sync mode
     public static final String DEVICE_SYNCHRO_MODE_BI = "bi";
@@ -389,6 +393,8 @@ public interface ITechnicalStrings {
     public static final String EXT_AIFF = "aiff";
     public static final String EXT_FLAC = "flac";
     public static final String EXT_THUMB = "jpg";
+    public static final String EXT_MPC = "mpc";
+    public static final String EXT_WMA = "wma";
             
     //details keys
     public static final String DETAIL_CURRENT_FILE_ID="current file id";

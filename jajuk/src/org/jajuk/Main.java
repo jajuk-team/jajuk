@@ -582,6 +582,22 @@ public class Main implements ITechnicalStrings {
                 type.setProperty(XML_TYPE_SEEK_SUPPORTED,true); //$NON-NLS-1$
                 type.setProperty(XML_TYPE_TECH_DESC,TYPE_PROPERTY_TECH_DESC_FLAC);
                 type.setProperty(XML_TYPE_ICON,ICON_TYPE_FLAC);
+                //MPC
+                type = TypeManager.getInstance().registerType(Messages.getString("Type.mpc"), 
+                    EXT_MPC, Class.forName(PLAYER_IMPL_MPLAYER), 
+                    Class.forName(TAG_IMPL_ENTAGGED)); //$NON-NLS-1$ //$NON-NLS-2$
+                type.setProperty(XML_TYPE_IS_MUSIC,true); //$NON-NLS-1$
+                type.setProperty(XML_TYPE_SEEK_SUPPORTED,true); //$NON-NLS-1$
+                type.setProperty(XML_TYPE_TECH_DESC,TYPE_PROPERTY_TECH_DESC_MPC);
+                type.setProperty(XML_TYPE_ICON,ICON_TYPE_MPC);
+                //WMA
+                type = TypeManager.getInstance().registerType(Messages.getString("Type.mpc"), 
+                    EXT_WMA, Class.forName(PLAYER_IMPL_MPLAYER), 
+                    Class.forName(TAG_IMPL_ENTAGGED)); //$NON-NLS-1$ //$NON-NLS-2$
+                type.setProperty(XML_TYPE_IS_MUSIC,true); //$NON-NLS-1$
+                type.setProperty(XML_TYPE_SEEK_SUPPORTED,true); //$NON-NLS-1$
+                type.setProperty(XML_TYPE_TECH_DESC,TYPE_PROPERTY_TECH_DESC_WMA);
+                type.setProperty(XML_TYPE_ICON,ICON_TYPE_WMA);
             }
         } catch (Exception e1) {
             Log.error("026",e1); //$NON-NLS-1$
